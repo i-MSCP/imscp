@@ -73,12 +73,10 @@ class Client
         'keepalive' => false,
         'rfc3986strict' => false,
         'encodecookies' => true,
-        'keepcookies' => true, // Flag indicating whether cookies of previous request should be keep
-        'keepheaders' => true, // Flag indicating whether headers from previous request should be keep
 
         // HTTP parameters
         'method' => 'GET', // HTTP method to use (see above for supported HTTP methods)
-        'headers' => null, // An string containing raw headers or an associative array of header fieldname/fieldvalue
+        'headers' => null, // A string containing raw headers or an associative array of header fieldname/fieldvalue
         'cookies' => null, // an array of cookies (see below for the expected structure)
         'body' => null, // Either a string representing the request body (properly encoded), or an array or object describing POST parameters
     );
@@ -89,7 +87,7 @@ class Client
     protected $adapter = null;
 
     /**
-     * @var array|null Holds authentication data used to create authentication header (OPTIONAL)
+     * @var array|null Holds authentication data used to create HTTP Authorization header
      */
     protected $authData = null;
 
@@ -122,12 +120,12 @@ class Client
      *            'value' => 'cookie value',
      *            'expires' => '1381791292',
      *            'path' => '/',
-     *            'domain' => '.nuxwin.com'
+     *            'domain' => '.nuxwin.com',
      *            'secure' =>  false,
      *            'httponly => true
      *     ),
      *  'body' => array(
-     *        'param1' => 'value'
+     *        'param1' => 'value',
      *        'param2 => 'value'
      *  )
      * )
@@ -135,7 +133,7 @@ class Client
      * Also possible for header and body options:
      *
      * array(
-     *  'headers' => "User-Agent: iMSCP\r\nAccept-Encoding: gzip, deflate\r\nConnection: Keepalive\r\n",
+     *  'headers' => "User-Agent: iMSCP\r\nAccept-Encoding: gzip, deflate\r\nConnection: Keep-Alive",
      *  'body' => 'param1=value&param2=&value'
      * )
      *
@@ -149,7 +147,7 @@ class Client
     }
 
     /**
-     * Set options by merging them with default and any previously set options
+     * Set options by merging them with defaults and any previously set options
      *
      * @throws \InvalidArgumentException
      * @param array $options Options
@@ -166,14 +164,14 @@ class Client
                 $options['headers'] = $this->parseRawHeaders($options['headers']);
             } else {
                 throw new \InvalidArgumentException(
-                    'Http request faild: headers option should either be a string or array'
+                    "Http request failed: The 'headers' option should either be an array or string"
                 );
             }
         }
 
         if (isset($options['cookies'])) {
             if (!is_array($options['cookies'])) {
-                throw new \InvalidArgumentException('HTTP request failed: Cookies options must be an array');
+                throw new \InvalidArgumentException("Http request failed: The 'cookies' options must be an array");
             }
 
             foreach($options['cookies'] as &$cookie) {
@@ -276,15 +274,15 @@ class Client
             );
         }
 
-        do {
-            // Check HTTP method
-            $this->options['method'] = strtoupper($this->options['method']);
-            if (!in_array($this->options['method'], $this->httpMethods)) {
-                throw new \InvalidArgumentException(
-                    sprintf("Http request failed: HTTP method '%s' not supported", $this->options['method'])
-                );
-            }
+        // Check HTTP method
+        $this->options['method'] = strtoupper($this->options['method']);
+        if (!in_array($this->options['method'], $this->httpMethods)) {
+            throw new \InvalidArgumentException(
+                sprintf("Http request failed: HTTP method '%s' not supported", $this->options['method'])
+            );
+        }
 
+        do {
             // Prepare HTTP request body
             $body = $this->prepareBody($this->options['body']);
 
@@ -295,9 +293,8 @@ class Client
             $secure = ($url['scheme'] == 'https');
 
             // Prepare cookie header
-            $cookieHeaderValue = $this->prepareCookieHeader($url['host'], $url['path'], $secure);
-            if ($cookieHeaderValue) {
-                $headers['Cookie'] = $cookieHeaderValue;
+            if ($cookieHeaderValue = $this->prepareCookieHeader($url['host'], $url['path'], $secure)) {
+                $headers['cookie'] = $cookieHeaderValue;
             }
 
             // Process the request by using the client adapter
@@ -361,7 +358,7 @@ class Client
      *
      * @param string $url URL
      * @param array $options Request options
-     * @return array An array containing all HTTP response elements (HTTP status code, Headers and Cookies)
+     * @return array An array containing http version, status code, reason phrase, headers, cookies
      */
     public function doHeadRequest($url, array $options = array())
     {
@@ -374,7 +371,7 @@ class Client
      *
      * @param string $url URL
      * @param array $options Request options
-     * @return array An array containing all HTTP response elements (HTTP status code, Headers and Cookies)
+     * @return array An array containing http version, status code, reason phrase, headers, cookies and body
      */
     public function doGetRequest($url, array $options = array())
     {
@@ -387,7 +384,7 @@ class Client
      *
      * @param string $url URL
      * @param array $options Request options
-     * @return array An array containing all HTTP response elements (HTTP status code, Headers and Cookies)
+     * @return array An array containing http version, status code, reason phrase, headers, cookies and body
      */
     public function doPostRequest($url, array $options = array())
     {
@@ -400,7 +397,7 @@ class Client
      *
      * @param string $url URL
      * @param array $options Request options
-     * @return array An array containing all HTTP response elements (HTTP status code, Headers and Cookies)
+     * @return array An array containing http version, status code, reason phrase, headers, cookies and body
      */
     public function doPutRequest($url, array $options = array())
     {
@@ -413,7 +410,7 @@ class Client
      *
      * @param string $url URL
      * @param array $options Request options
-     * @return array An array containing all HTTP response elements (HTTP status code, Headers and Cookies)
+     * @return array An array containing http version, status code, reason phrase, headers, cookies and body
      */
     public function doDeleteRequest($url, array $options = array())
     {
@@ -426,7 +423,7 @@ class Client
      *
      * @param string $url URL
      * @param array $options Request options
-     * @return array An array containing all HTTP response elements (HTTP status code, Headers and Cookies)
+     * @return array An array containing http version, status code, reason phrase, headers, cookies and body
      */
     public function doPatchRequest($url, array $options = array())
     {
@@ -439,7 +436,7 @@ class Client
      *
      * @param string $url URL
      * @param array $options Request options
-     * @return array An array containing all HTTP response elements (HTTP status code, Headers and Cookies)
+     * @return array An array containing http version, status code, reason phrase, headers, cookies and body
      */
     public function doTraceRequest($url, array $options = array())
     {
@@ -448,7 +445,7 @@ class Client
     }
 
     /**
-     * Parse a raw HTTP response to extract all its parts (Status-Line, headers and body)
+     * Parse a raw HTTP response to extract all its parts
      *
      * Assume an HTTP message such as:
      *
@@ -465,7 +462,7 @@ class Client
      * @throws \InvalidArgumentException
      * @throws \RuntimeException
      * @param string $response Raw response
-     * @return array An array containing the response parts including http version, status code, reason phrase, headers, cookies and body
+     * @return array An array containing http version, status code, reason phrase, headers, cookies and body
      */
     public static function parseRawResponse($response)
     {
@@ -493,14 +490,14 @@ class Client
 
         $body = $response[1];
 
-        // Try to extract status-line parts (Http version, Status code and reason phrase
+        // Try to extract status-line (Http version, Status code and reason phrase)
         if (!preg_match('/^HTTP\/(?P<version>1\.[01]) (?P<status>\d{3})(?:[ ]+(?P<reason>.*))?$/', $statusLine, $statusLine)) {
             throw new \RuntimeException('Http request failed: Response Status line was not found or is invalid');
         }
 
         if (!empty($body)) {
             // Decode chunked response
-            if (isset($headers['Transfer-Encoding']) && strtolower($headers['Transfer-Encoding']) == 'chunked') {
+            if (isset($headers['transfer-encoding']) && strtolower($headers['transfer-encoding']) == 'chunked') {
                 $body = static::decodeChunckedMessage($body);
             }
 
@@ -856,23 +853,22 @@ class Client
      * @param string $host Host
      * @param string $path Path
      * @param bool $secure
-     * @return string
+     * @return string Cookie header value
      */
     protected function prepareCookieHeader($host, $path, $secure)
     {
         $cookies = $this->options['cookies'];
-        $cookiesToSend = array();
+        $header = array();
 
         if (null !== $cookies) {
             if (!empty($cookies)) {
-                $encodeCookies = $this->options['encodecookies'];
+                $encode = $this->options['encodecookies'];
 
                 foreach ($cookies as $identifier => &$cookie) {
                     if (isset($cookies['expires']) && is_int($cookie['expires']) && $cookies['expires'] < time()) {
-                        unset($cookies[$identifier]);
+                        unset($cookies[$identifier]); // Do not keep expired cookies
                         continue;
-                    }
-                    elseif (
+                    } elseif (
                         (isset($cookie['domain']) && (strrpos($host, $cookie['domain']) === false)) ||
                         (isset($cookie['path']) && (strpos($path, $cookie['path']) !== 0)) ||
                         (isset($cookie['secure']) && $cookie['secure'] !== $secure)
@@ -880,12 +876,12 @@ class Client
                         continue;
                     }
 
-                    $cookiesToSend[] = $cookie['name'] . '=' . (($encodeCookies) ? urlencode($cookie['value']) : $cookie['value']);
+                    $header[] = $cookie['name'] . '=' . (($encode) ? urlencode($cookie['value']) : $cookie['value']);
                 }
             }
         }
 
-        return implode('; ', $cookiesToSend);
+        return implode('; ', $header);
     }
 
     /**
@@ -898,8 +894,8 @@ class Client
     {
         foreach ($cookies as $key => $cookie) {
             // Generate unique cookie identifier for later use
-            $domain = (!empty($cookie['domain'])) ? $cookie['domain'] : null;
             $path = (!empty($cookie['path'])) ? $cookie['path'] : null;
+            $domain = (!empty($cookie['domain'])) ? $cookie['domain'] : null;
             $cookies[$cookie['name'] . $domain . $path] = $cookie;
             unset($cookies[$key]);
         }
@@ -969,7 +965,7 @@ class Client
 
         while (trim($body)) {
             if (!preg_match("/^([\da-fA-F]+)[^\r\n]*\r\n/sm", $body, $matches)) {
-                throw new \RuntimeException('HTTP request failed: Invalid chunked message');
+                throw new \RuntimeException('Http request failed: Invalid chunked message');
             }
 
             $length = hexdec(trim($matches[1]));
@@ -991,7 +987,9 @@ class Client
     protected static function decodeGzipMessage($body)
     {
         if (!function_exists('gzinflate')) {
-            throw new \RuntimeException('Http request failed: zlib extension is required in order to decode "gzip" encoding');
+            throw new \RuntimeException(
+                'Http request failed: zlib extension is required in order to decode "gzip" encoding'
+            );
         }
 
         return gzinflate(substr($body, 10));
@@ -1007,7 +1005,9 @@ class Client
     protected static function decodeDeflateMessage($body)
     {
         if (!function_exists('gzuncompress')) {
-            throw new \RuntimeException('Http request failed: zlib extension is required in order to decode "deflate" encoding');
+            throw new \RuntimeException(
+                'Http request failed: zlib extension is required in order to decode "deflate" encoding'
+            );
         }
 
         /**

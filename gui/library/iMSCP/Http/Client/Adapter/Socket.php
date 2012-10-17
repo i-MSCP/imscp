@@ -98,22 +98,22 @@ class Socket extends AbstractAdapter
         $this->connect($url['host'], $url['port'], $secure);
 
         if (!$this->socket) {
-            throw new \RuntimeException('Http request failed: Trying to send request but we are not connected');
+            throw new \RuntimeException('Http request failed: Trying to send request not connected');
         }
 
         $host = (strtolower($url['scheme']) == 'https' ? $this->options['ssltransport'] : 'tcp') . '://' . $url['host'];
         if ($this->host != $host || $this->port != $url['port']) {
-            throw new \RuntimeException('Http request failed: Trying to write but we are connected to the wrong host');
+            throw new \RuntimeException('Http request failed: Trying to write but connected to the wrong host');
         }
 
-        // Build request Line
+        // Add request Line
         $path = $url['path'];
         if (null !== $url['query']) {
             $path .= '?' . $url['query'];
         }
         $request = "{$this->options['method']} {$path} HTTP/{$this->options['httpversion']}\r\n"; // HTTP request line
 
-        // Build request headers
+        // Add request headers
         foreach ($headers as $name => $value) { // Headers
             if (is_string($name)) {
                 $value = ucfirst($name) . ": $value";
@@ -172,9 +172,6 @@ class Socket extends AbstractAdapter
         $this->checkSocketReadTimeout();
 
         // Parse the raw response to retrieve both Status-line and headers
-        echo '<strong>Response (Only headers)</strong>', "\n\n";
-        echo $response, "\n";
-
         $responseArr = $this->parseRawResponse($response);
         $statusCode = $responseArr['status_code'];
 
@@ -283,8 +280,6 @@ class Socket extends AbstractAdapter
             $this->close();
         }
 
-        echo '<strong>Entire response</strong>', "\n\n";
-        echo $response, "\n";
         return $response;
     }
 
@@ -301,7 +296,9 @@ class Socket extends AbstractAdapter
 
             if ($metadata['timed_out']) {
                 $this->close();
-                throw new \RuntimeException("Http request failed: Read timed out after {$this->options['timeout']} seconds");
+                throw new \RuntimeException(
+                    sprintf('Http request failed: Read timed out after %s seconds', $this->options['timeout'])
+                );
             }
         }
     }
@@ -374,7 +371,7 @@ class Socket extends AbstractAdapter
                 );
             }
 
-            // Set the stream timeout
+            // Set stream timeout
             if (!stream_set_timeout($this->socket, (int)$this->options['timeout'])) {
                 throw new \RuntimeException('Http request failed: Unable to set the connection timeout');
             }
@@ -387,7 +384,6 @@ class Socket extends AbstractAdapter
                 }
 
                 if (!($ret = @stream_socket_enable_crypto($this->socket, true, $sslCryptoMethod))) {
-                    // Error handling is kind of difficult when it comes to SSL
                     $errorString = '';
                     while (($sslError = openssl_error_string()) != false) {
                         $errorString .= "; SSL error: $sslError";
@@ -396,7 +392,6 @@ class Socket extends AbstractAdapter
                     $this->close();
 
                     if ((!$errorString) && $this->options['sslverifypeer']) {
-                        // There's good chance our error is due to sslcapath not being properly set
                         if (!($this->options['sslcapath'] && is_dir($this->options['sslcapath']))) {
                             $errorString = 'make sure the "sslcapath" option points to a valid SSL certificate directory';
                         }
