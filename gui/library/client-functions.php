@@ -780,5 +780,5 @@ function customerHasFeature($featureNames, $forceReload = false)
  */
 function delete_autoreplies_log_entries()
 {
-	exec_query("DELETE FROM `autoreplies_log` WHERE `from` NOT IN (SELECT `mail_addr` FROM `mail_users`");
+	exec_query("DELETE FROM `autoreplies_log` WHERE `from` NOT IN (SELECT `mail_addr` FROM `mail_users`)");
 }

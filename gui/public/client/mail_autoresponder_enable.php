@@ -144,8 +144,9 @@ function client_ActivateAutoresponder($mailAccountId, $autoresponderMessage)
  */
 function client_generatePage($tpl, $mailAccountId)
 {
-	$autoresponderMessage = (isset($_POST['autoresponder_message'])) ? tohtml($_POST['autoresponder_message']) : '';
-	$tpl->assign('AUTORESPONDER_MESSAGE', $autoresponderMessage);
+	$query = "SELECT `mail_auto_respond_text`, `mail_acc` FROM `mail_users` WHERE `mail_id` = ?";
+	$stmt = exec_query($query, $mailAccountId);
+	$tpl->assign('AUTORESPONDER_MESSAGE', tohtml($stmt->fields['mail_auto_respond_text']));
 }
 
 /***********************************************************************************************************************
