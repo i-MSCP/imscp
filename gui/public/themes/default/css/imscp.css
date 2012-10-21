@@ -603,7 +603,7 @@ input[type="text"], input[type="password"], select, textarea {
 .body input[type="submit"], .body input[type="button"], .body button {border:0 none;}
 
 textarea {
-	width: 75%;
+	width: 100%;
 	height:250px;
 }
 .inputTitle {width: 75%;}

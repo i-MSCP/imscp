@@ -66,9 +66,6 @@ function formatBytes($bytes, $precision = 0) {
 	return round($bytes, $precision) . ' ' . $units[$pow];
 }
 
-
-
-
 // Include core library
 require_once 'imscp-lib.php';
 
@@ -131,16 +128,15 @@ function gen_user_mail_action($mail_id, $mail_status) {
 }
 
 /**
+ * Generate auto-resonder action links
  *
  * @param iMSCP_pTemplate $tpl pTemplate instance
  * @param int $mail_id
- * @param string $mail_type
  * @param string $mail_status
  * @param int $mail_auto_respond
  * @return void
  */
-function gen_user_mail_auto_respond(
-	$tpl, $mail_id, $mail_type, $mail_status, $mail_auto_respond) {
+function gen_user_mail_auto_respond($tpl, $mail_id, $mail_status, $mail_auto_respond) {
 
 	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
@@ -151,20 +147,24 @@ function gen_user_mail_auto_respond(
 				array(
 					'AUTO_RESPOND_DISABLE' => tr('Enable'),
 					'AUTO_RESPOND_DISABLE_SCRIPT' =>
-						"mail_autoresponder_enable.php?id=$mail_id",
+						"mail_autoresponder_enable.php?mail_account_id=$mail_id",
 					'AUTO_RESPOND_EDIT' => tr('N/A'),
 					'AUTO_RESPOND_EDIT_SCRIPT' => '#',
-					'AUTO_RESPOND_VIS' => 'inline'));
+					'AUTO_RESPOND_VIS' => 'inline'
+				)
+			);
 		} else {
 			$tpl->assign(
 				array(
 					'AUTO_RESPOND_DISABLE' => tr('Disable'),
 					'AUTO_RESPOND_DISABLE_SCRIPT' =>
-						"mail_autoresponder_disable.php?id=$mail_id",
+						"mail_autoresponder_disable.php?mail_account_id=$mail_id",
 					'AUTO_RESPOND_EDIT' => tr('Edit'),
 					'AUTO_RESPOND_EDIT_SCRIPT' =>
-						"mail_autoresponder_edit.php?id=$mail_id",
-					'AUTO_RESPOND_VIS' => 'inline'));
+						"mail_autoresponder_edit.php?mail_account_id=$mail_id",
+					'AUTO_RESPOND_VIS' => 'inline'
+				)
+			);
 		}
 	} else {
 		$tpl->assign(
@@ -173,7 +173,9 @@ function gen_user_mail_auto_respond(
 				'AUTO_RESPOND_DISABLE_SCRIPT' => '#',
 				'AUTO_RESPOND_EDIT' => tr('N/A'),
 				'AUTO_RESPOND_EDIT_SCRIPT' => '#',
-				'AUTO_RESPOND_VIS' => 'inline'));
+				'AUTO_RESPOND_VIS' => 'inline'
+			)
+		);
 	}
 }
 
@@ -317,8 +319,7 @@ function gen_page_dmn_mail_list($tpl, $dmn_id, $dmn_name) {
 			);
 
 			gen_user_mail_auto_respond(
-				$tpl, $rs->fields['mail_id'], $rs->fields['mail_type'],
-				$rs->fields['status'], $rs->fields['mail_auto_respond']
+				$tpl, $rs->fields['mail_id'], $rs->fields['status'], $rs->fields['mail_auto_respond']
 			);
 
 			$tpl->parse('MAIL_ITEM', '.mail_item');
@@ -479,8 +480,8 @@ function gen_page_sub_mail_list($tpl, $dmn_id, $dmn_name) {
 					'DISABLED_DEL_ITEM' => ($rs->fields['status'] != 'ok') ? $cfg->HTML_DISABLED : ''));
 
 			gen_user_mail_auto_respond(
-				$tpl, $rs->fields['mail_id'], $rs->fields['mail_type'],
-				$rs->fields['status'], $rs->fields['mail_auto_respond']);
+				$tpl, $rs->fields['mail_id'], $rs->fields['status'], $rs->fields['mail_auto_respond']
+			);
 
 			$tpl->parse('MAIL_ITEM', '.mail_item');
 
@@ -640,8 +641,7 @@ function gen_page_als_sub_mail_list($tpl, $dmn_id, $dmn_name) {
 					'DISABLED_DEL_ITEM' => ($rs->fields['status'] != 'ok') ? $cfg->HTML_DISABLED : ''));
 
 			gen_user_mail_auto_respond(
-				$tpl, $rs->fields['mail_id'], $rs->fields['mail_type'],
-				$rs->fields['status'], $rs->fields['mail_auto_respond']
+				$tpl, $rs->fields['mail_id'], $rs->fields['status'], $rs->fields['mail_auto_respond']
 			);
 
 			$tpl->parse('MAIL_ITEM', '.mail_item');
@@ -794,8 +794,8 @@ function gen_page_als_mail_list($tpl, $dmn_id, $dmn_name) {
 					'DISABLED_DEL_ITEM' => ($rs->fields['status'] != 'ok') ? $cfg->HTML_DISABLED : ''));
 
 			gen_user_mail_auto_respond(
-				$tpl, $rs->fields['mail_id'], $rs->fields['mail_type'],
-				$rs->fields['status'], $rs->fields['mail_auto_respond']);
+				$tpl, $rs->fields['mail_id'], $rs->fields['status'], $rs->fields['mail_auto_respond']
+			);
 
 			$tpl->parse('MAIL_ITEM', '.mail_item');
 			$rs->moveNext();
