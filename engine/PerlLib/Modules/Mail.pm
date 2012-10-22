@@ -48,14 +48,19 @@ sub loadData{
 
 	my $sql = '
 		SELECT
-			if(isnull(`t2`.`mail_addr`), "no", "yes") AS "haveCatchAll",
+			if(isnull(`t2`.`mail_addr`), "no", "yes") AS `hasCatchAll`,
+			if(count(`t3`.`mail_addr`) <> 0, "yes", "no") AS `hasAutoResponder`,
 			`t1`.*
 		FROM
-			`mail_users`AS `t1`
+			`mail_users` AS `t1`
 		LEFT JOIN
 			(SELECT `mail_addr` FROM `mail_users` WHERE `mail_addr` LIKE "@%") AS `t2`
 		ON
 			substr(`t1`.`mail_addr`, locate("@", `t1`.`mail_addr`)) = `t2`.`mail_addr`
+		LEFT JOIN
+			(SELECT `mail_addr` FROM `mail_users` WHERE `mail_auto_respond` = 1) AS `t3`
+		ON
+			`t3`.`mail_addr` LIKE concat("%", substr(`t1`.`mail_addr`, locate("@", `t1`.`mail_addr`)))
 		WHERE
 			`t1`.`mail_id` = ?
 	';
@@ -132,13 +137,25 @@ sub buildMTAData{
 		MAIL_TYPE			=> $self->{mail_type},
 		MAIL_AUTO_RSPND		=> $self->{mail_auto_respond},
 		MAIL_AUTO_RSPND_TXT	=> $self->{mail_auto_respond_text},
-		MAIL_HAVE_CATCH_ALL	=> $self->{haveCatchAll},
+		MAIL_HAS_AUTO_RSPND	=> $self->{hasAutoResponder},
+		MAIL_HAS_CATCH_ALL	=> $self->{hasCatchAll},
 		MAIL_STATUS			=> $self->{status},
 		MAIL_ON_CATCHALL	=> undef
 	};
 
 	if($self->{mail_type} =~ m/_catchall/){
-		my $sql = "SELECT `mail_addr` FROM `mail_users` WHERE `mail_addr` LIKE '\%$self->{mail_addr}' AND `mail_type` LIKE '\%mail'";
+		my $sql = "
+			SELECT
+				`mail_addr`
+			FROM
+				`mail_users`
+			WHERE
+				`mail_addr`
+			LIKE
+				'\%$self->{mail_addr}'
+			AND
+				`mail_type` LIKE '\%mail'
+		";
 		my $rdata = iMSCP::Database->factory()->doQuery('mail_addr', $sql);
 		error("$rdata") and return 1 if(ref $rdata ne 'HASH');
 		@{$self->{mta}->{MAIL_ON_CATCHALL}} = keys %{$rdata};

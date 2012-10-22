@@ -492,8 +492,8 @@ sub addMail{
 	$rs |= $self->addMailBox($data) if $data->{MAIL_TYPE} =~ m/_mail/;
 	$rs |= $self->delMailBox($data) if $data->{MAIL_TYPE} !~ m/_mail/;
 
-	$rs |= $self->addAutoRspnd($data) if $data->{MAIL_AUTO_RSPND};
-	$rs |= $self->delAutoRspnd($data) unless $data->{MAIL_AUTO_RSPND};
+	$rs |= $self->addAutoRspnd($data) if $data->{MAIL_HAS_AUTO_RSPND}  eq 'yes';
+	$rs |= $self->delAutoRspnd($data) if $data->{MAIL_HAS_AUTO_RSPND} eq 'no';
 
 	$rs |= $self->addMailForward($data) if $data->{MAIL_TYPE} =~ m/_forward/;
 	$rs |= $self->delMailForward($data) if $data->{MAIL_TYPE} !~ m/_forward/;
@@ -784,7 +784,7 @@ sub delMailForward{
 		my @line;
 		push(@line, $data->{MAIL_ADDR}) if ($data->{MAIL_HAVE_CATCH_ALL} eq 'yes' || $data->{MAIL_AUTO_RSPND}) && $data->{MAIL_TYPE} =~ m/_mail/;
 		#for catch all we need a line like a@aa.aa\t[...]a@imscp-arpl.aa.aa
-		push(@line, "$data->{MAIL_ACC}\@imscp-arpl.$data->{DMN_NAME}")if $data->{MAIL_AUTO_RSPND} && $data->{MAIL_TYPE} =~ m/_mail/;
+		push(@line, "$data->{MAIL_ACC}\@imscp-arpl.$data->{DMN_NAME}") if $data->{MAIL_AUTO_RSPND} && $data->{MAIL_TYPE} =~ m/_mail/;
 		$wrkContent .= "$data->{MAIL_ADDR}\t".join(',', @line)."\n" if scalar @line;
 	}
 
@@ -827,7 +827,7 @@ sub addMailForward{
 
 	push(@line, $data->{MAIL_FORWARD});
 	#for catch all we need a line like a@aa.aa\t[...]a@imscp-arpl.aa.aa
-	push(@line, "$data->{MAIL_ACC}\@imscp-arpl.$data->{DMN_NAME}")if $data->{MAIL_AUTO_RSPND};
+	push(@line, "$data->{MAIL_ACC}\@imscp-arpl.$data->{DMN_NAME}") if $data->{MAIL_AUTO_RSPND};
 	$wrkContent .= "$data->{MAIL_ADDR}\t".join(',', @line)."\n" if scalar @line;
 
 	$wrkFile->set($wrkContent);
