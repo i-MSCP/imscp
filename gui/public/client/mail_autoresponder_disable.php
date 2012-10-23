@@ -24,15 +24,102 @@
  * Portions created by the i-MSCP Team are Copyright (C) 2010-2012 by
  * i-MSCP a internet Multi Server Control Panel. All Rights Reserved.
  *
- * @category	i-MSCP
- * @package		iMSCP_Core
- * @subpackage	Client
- * @copyright   2001-2006 by moleSoftware GmbH
- * @copyright   2006-2010 by ispCP | http://isp-control.net
- * @copyright   2010-2012 by i-MSCP | http://i-mscp.net
- * @author      ispCP Team
- * @author      i-MSCP Team
+ * @category    i-MSCP
+ * @package        iMSCP_Core
+ * @subpackage    Client
+ * @copyright    2001-2006 by moleSoftware GmbH
+ * @copyright    2006-2010 by ispCP | http://isp-control.net
+ * @copyright    2010-2012 by i-MSCP | http://i-mscp.net
+ * @author        ispCP Team
+ * @author        i-MSCP Team
  * @link        http://i-mscp.net
+ */
+
+/***********************************************************************************************************************
+ * Functions
+ */
+
+/**
+ * Checks that the given mail account is owned by current customer and its responder is active
+ *
+ * @param int $mailAccountId Mail account id to check
+ * @return bool TRUE if the mail account is owned by the current customer, FALSE otherwise
+ */
+function client_checkMailAccountOwner($mailAccountId)
+{
+	$domainProps = get_domain_default_props($_SESSION['user_id']);
+
+	/** @var $config iMSCP_Config_Handler_File */
+	$config = iMSCP_Registry::get('config');
+
+	$query = '
+		SELECT
+			`t1`.*, `t2`.`domain_id`, `t2`.`domain_name`
+		FROM
+			`mail_users` AS `t1`, `domain` AS `t2`
+		WHERE
+			`t1`.`mail_id` = ?
+		AND
+			`t2`.`domain_id` = `t1`.`domain_id`
+		AND
+			`t2`.`domain_id` = ?
+		AND
+			`t1`.`mail_auto_respond` = ?
+		AND
+			`t1`.`status` = ?
+	';
+	$stmt = exec_query($query, array($mailAccountId, $domainProps['domain_id'], 1, $config->ITEM_OK_STATUS));
+
+	return (bool) $stmt->rowCount();
+}
+
+/**
+ * Deactivate autoresponder of the given mail account
+ *
+ * @param int $mailAccountId Mail account id
+ * @return void
+ */
+function client_deactivateAutoresponder($mailAccountId)
+{
+	/** @var $config iMSCP_Config_Handler_File */
+	$config = iMSCP_Registry::get('config');
+
+	/** @var $db iMSCP_Database */
+	$db = iMSCP_Registry::get('db');
+
+	try {
+		$db->beginTransaction();
+
+		$query = "SELECT `mail_addr` FROM `mail_users` WHERE `mail_id` = ?";
+		$stmt = exec_query($query, $mailAccountId);
+
+		$query = "UPDATE `mail_users` SET `status` = ?, `mail_auto_respond` = ? WHERE `mail_id` = ?";
+		exec_query($query, array($config->ITEM_CHANGE_STATUS, 0, $mailAccountId));
+
+		// Purge autoreplies log entries
+		delete_autoreplies_log_entries();
+
+		$db->commit();
+
+		// Ask iMSCP daemon to trigger engine dispatcher
+		send_request();
+		write_log(
+			sprintf(
+				"%s: deactivated auto-responder for the '%s' mail account",
+				$_SESSION['user_logged'],
+				$stmt->fields['mail_addr']
+			),
+			E_USER_NOTICE
+		);
+		set_page_message(tr('Auto-responder successfully scheduled for deactivation.'), 'success');
+	} catch (iMSCP_Exception_Database $e) {
+		$db->rollBack();
+		set_page_message(tr('An unexpected error occured, please contact your reseller.'), 'error');
+	}
+}
+
+/***********************************************************************************************************************
+ * Main
  */
 
 // Include core library
@@ -43,97 +130,17 @@ iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptStart)
 check_login('user');
 
 // If the feature is disabled, redirects in silent way
-if (!customerHasFeature('mail')) {
-    redirectTo('index.php');
-}
+if (customerHasFeature('mail') && isset($_REQUEST['mail_account_id']) && is_numeric($_REQUEST['mail_account_id'])) {
+	$mailAccountId = intval($_REQUEST['mail_account_id']);
 
-/** @var $cfg iMSCP_Config_Handler_File */
-$cfg = iMSCP_Registry::get('config');
-
-/**
- * @return void
- */
-function check_email_user() {
-
-	$dmn_name = $_SESSION['user_logged'];
-	$mail_id = $_GET['id'];
-
-	$query = "
-		SELECT
-			`t1`.*,
-			`t2`.`domain_id`,
-			`t2`.`domain_name`
-		FROM
-			`mail_users` AS `t1`,
-			`domain` AS `t2`
-		WHERE
-			`t1`.`mail_id` = ?
-		AND
-			`t2`.`domain_id` = `t1`.`domain_id`
-		AND
-			`t2`.`domain_name` = ?
-    ";
-
-	$rs = exec_query($query, array($mail_id, $dmn_name));
-	$mail_acc = $rs->fields['mail_acc'];
-
-	if ($rs->recordCount() == 0) {
-		set_page_message(tr('User does not exist or you do not have permission to access this interface.'), 'error');
+	if (client_checkMailAccountOwner($mailAccountId)) {
+		client_deactivateAutoresponder($mailAccountId);
 		redirectTo('mail_accounts.php');
+	} else {
+		set_page_message(tr('Wrong request.'), 'error');
+		redirectTo('index.php');
 	}
-}
-
-check_email_user();
-
-if (isset($_GET['id']) && $_GET['id'] !== '') {
-	$mail_id = $_GET['id'];
-	$item_change_status = $cfg->ITEM_CHANGE_STATUS;
-
-	$query = "
-		UPDATE
-			`mail_users`
-		SET
-			`status` = ?,
-			`mail_auto_respond` = 0
-		WHERE
-			`mail_id` = ?
-	";
-
-	$rs = exec_query($query, array($item_change_status, $mail_id));
-
-	send_request();
-	$query = "
-		SELECT
-			`mail_acc`,
-			`mail_type`,
-			IF(`mail_type` like 'normal_%',`t2`.`domain_name`,
-				IF(`mail_type` like 'alias_%',`t3`.`alias_name`,
-					IF(`mail_type` like 'subdom_%', CONCAT(`t4`.`subdomain_name`,'.',`t6`.`domain_name`), CONCAT(`t5`.`subdomain_alias_name`,'.',`t7`.`alias_name`))
-				)
-			) AS mailbox
-		FROM
-			`mail_users` AS `t1`
-		LEFT JOIN (`domain` AS `t2`) ON (`t1`.`domain_id` = `t2`.`domain_id`)
-		LEFT JOIN (`domain_aliasses` AS `t3`) ON (`sub_id` = `alias_id`)
-		LEFT JOIN (`subdomain` AS `t4`) ON (`sub_id` = `subdomain_id`)
-		LEFT JOIN (`subdomain_alias` AS `t5`) ON (`sub_id` = `subdomain_alias_id`)
-		LEFT JOIN (`domain` AS `t6`) ON (`t4`.`domain_id` = `t6`.`domain_id`)
-		LEFT JOIN (`domain_aliasses` AS `t7`) ON (`t5`.`alias_id` = `t7`.`alias_id`)
-		WHERE
-			`mail_id` = ?
-	";
-
-	$rs = exec_query($query, $mail_id);
-	$mail_name = $rs->fields['mailbox'];
-	
-	/* Removing old autoreplies_log entries */
-	delete_autoreplies_log_entries($rs->fields['mail_acc'].'@'.$rs->fields['mailbox']);
-	/* Removing old autoreplies_log entries */
-	
-	write_log($_SESSION['user_logged'].": disabled mail autoresponder: ".$mail_name, E_USER_NOTICE);
-	set_page_message(tr('Mail account scheduled for update.'), 'success');
-	redirectTo('mail_accounts.php');
-
 } else {
-	redirectTo('mail_accounts.php');
+	set_page_message(tr('Wrong request.'), 'error');
+	redirectTo('index.php');
 }

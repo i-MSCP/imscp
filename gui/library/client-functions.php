@@ -774,17 +774,11 @@ function customerHasFeature($featureNames, $forceReload = false)
 }
 
 /**
- * DELETE existing autoreplies_log for emailaddress.
- * @author Sascha Bay <worst.case@gmx.de>
- * @param string $email_address emailaddress to match against
+ * Delete all autoreplies log for which not mail address is found in the mail_users database table
+ *
+ * @return void
  */
-function delete_autoreplies_log_entries($email_address)
+function delete_autoreplies_log_entries()
 {
-    $query = "
-		DELETE FROM
-			`autoreplies_log`
-		WHERE
-			`from` = ?
-	";
-    $stmt = exec_query($query, $email_address);
+	exec_query("DELETE FROM `autoreplies_log` WHERE `from` NOT IN (SELECT `mail_addr` FROM `mail_users`)");
 }

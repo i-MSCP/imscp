@@ -1,7 +1,7 @@
 #!/usr/bin/perl
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010 - 2011 by internet Multi Server Control Panel
+# Copyright (C) 2010 - 2012 by internet Multi Server Control Panel
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -20,7 +20,6 @@
 # @category		i-MSCP
 # @copyright	2010 - 2012 by i-MSCP | http://i-mscp.net
 # @author		Daniel Andreca <sci2tech@gmail.com>
-# @version		SVN: $Id$
 # @link			http://i-mscp.net i-MSCP Home Site
 # @license		http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
@@ -492,14 +491,14 @@ sub addMail{
 	$rs |= $self->addMailBox($data) if $data->{MAIL_TYPE} =~ m/_mail/;
 	$rs |= $self->delMailBox($data) if $data->{MAIL_TYPE} !~ m/_mail/;
 
-	$rs |= $self->addAutoRspnd($data) if $data->{MAIL_AUTO_RSPND};
-	$rs |= $self->delAutoRspnd($data) unless $data->{MAIL_AUTO_RSPND};
+	$rs |= $self->addAutoRspnd($data) if $data->{MAIL_HAS_AUTO_RSPND}  eq 'yes';
+	$rs |= $self->delAutoRspnd($data) if $data->{MAIL_HAS_AUTO_RSPND} eq 'no';
 
 	$rs |= $self->addMailForward($data) if $data->{MAIL_TYPE} =~ m/_forward/;
 	$rs |= $self->delMailForward($data) if $data->{MAIL_TYPE} !~ m/_forward/;
 
-	$rs |= $self->addCatchAll($data) if $data->{MAIL_TYPE} =~ m/_catchall/;
-	#$rs |= $self->delCatchAll($data) if $data->{MAIL_TYPE} !~ m/_catchall/;
+	$rs |= $self->addCatchAll($data) if $data->{MAIL_HAS_CATCH_ALL} eq 'yes';
+	$rs |= $self->delCatchAll($data) if $data->{MAIL_HAS_CATCH_ALL} eq 'no';
 
 	$rs;
 }
@@ -777,15 +776,20 @@ sub delMailForward{
 	my $mailbox		= $data->{MAIL_ADDR};
 	$mailbox		=~ s/\./\\\./g;
 	$wrkContent		=~ s/^$mailbox\t[^\n]*\n//gmi;
-	#if we have an autoresponder or a catch all we re-add entry
-	#but only if we not delete mail
+
+	# handle normal mail accounts entries for which auto-responder is active
 	if($data->{MAIL_STATUS} ne'delete'){
-		#for catch all we need a line like a@aa.aa\ta@aa.aa
 		my @line;
-		push(@line, $data->{MAIL_ADDR}) if ($data->{MAIL_HAVE_CATCH_ALL} eq 'yes' || $data->{MAIL_AUTO_RSPND}) && $data->{MAIL_TYPE} =~ m/_mail/;
-		#for catch all we need a line like a@aa.aa\t[...]a@imscp-arpl.aa.aa
-		push(@line, "$data->{MAIL_ACC}\@imscp-arpl.$data->{DMN_NAME}")if $data->{MAIL_AUTO_RSPND} && $data->{MAIL_TYPE} =~ m/_mail/;
-		$wrkContent .= "$data->{MAIL_ADDR}\t".join(',', @line)."\n" if scalar @line;
+
+		# if auto-responder is activated, we must add the recipient as address to keep local copy of any forwarded mail
+		push(@line, $data->{MAIL_ADDR})
+			if $data->{MAIL_AUTO_RSPND} && $data->{MAIL_TYPE} =~ m/_mail/;
+
+		# if auto-responder is activated, we need an address such as user@imscp-arpl.domain.tld
+		push(@line, "$data->{MAIL_ACC}\@imscp-arpl.$data->{DMN_NAME}")
+			if $data->{MAIL_AUTO_RSPND} && $data->{MAIL_TYPE} =~ m/_mail/;
+
+		$wrkContent .= "$data->{MAIL_ADDR}\t" . join(',', @line) . "\n" if scalar @line;
 	}
 
 	$wrkFile->set($wrkContent);
@@ -823,12 +827,17 @@ sub addMailForward{
 	$wrkContent		=~ s/^$mailbox\t[^\n]*\n//gmi;
 
 	my @line;
+
+	# for a normal+foward mail account, we must add the recipient as address to keep local copy of any forwarded mail
 	push(@line, $data->{MAIL_ADDR}) if $data->{MAIL_TYPE} =~ m/_mail/;
 
+	# add address(s) to which mail will be forwarded
 	push(@line, $data->{MAIL_FORWARD});
-	#for catch all we need a line like a@aa.aa\t[...]a@imscp-arpl.aa.aa
-	push(@line, "$data->{MAIL_ACC}\@imscp-arpl.$data->{DMN_NAME}")if $data->{MAIL_AUTO_RSPND};
-	$wrkContent .= "$data->{MAIL_ADDR}\t".join(',', @line)."\n" if scalar @line;
+
+	# if the auto-responder is activated, we must add an address such as user@imscp-arpl.domain.tld
+	push(@line, "$data->{MAIL_ACC}\@imscp-arpl.$data->{DMN_NAME}") if $data->{MAIL_AUTO_RSPND};
+
+	$wrkContent .= "$data->{MAIL_ADDR}\t" . join(',', @line) . "\n" if scalar @line;
 
 	$wrkFile->set($wrkContent);
 	return 1 if $wrkFile->save();
@@ -988,10 +997,13 @@ sub addCatchAll{
 		$wrkContent		.= "$_\t$_\n";
 	}
 
-	my $catchAll	= "\@$data->{DMN_NAME}";
-	$catchAll		=~ s/\./\\\./g;
-	$wrkContent		=~ s/^$catchAll\t[^\n]*\n//gmi;
-	$wrkContent		.= "\@$data->{DMN_NAME}\t$data->{MAIL_CATCHALL}\n";
+	if($data->{MAIL_TYPE} =~ m/_catchall/) {
+		my $catchAll	= "\@$data->{DMN_NAME}";
+		$catchAll		=~ s/\./\\\./g;
+		$wrkContent		=~ s/^$catchAll\t[^\n]*\n//gmi;
+		$wrkContent		.= "\@$data->{DMN_NAME}\t$data->{MAIL_CATCHALL}\n";
+	}
+
 	$wrkFile->set($wrkContent);
 	return 1 if $wrkFile->save();
 	$rs |=	$wrkFile->mode(0644);
