@@ -1,7 +1,7 @@
 #!/usr/bin/perl
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010 - 2011 by internet Multi Server Control Panel
+# Copyright (C) 2010 - 2012 by internet Multi Server Control Panel
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -20,7 +20,6 @@
 # @category		i-MSCP
 # @copyright	2010 - 2012 by i-MSCP | http://i-mscp.net
 # @author		Daniel Andreca <sci2tech@gmail.com>
-# @version		SVN: $Id$
 # @link			http://i-mscp.net i-MSCP Home Site
 # @license		http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
@@ -143,7 +142,7 @@ sub buildMTAData{
 		MAIL_ON_CATCHALL	=> undef
 	};
 
-	if($self->{mail_type} =~ m/_catchall/){
+	if($self->{hasCatchAll} eq 'yes'){
 		my $sql = "
 			SELECT
 				`mail_addr`
@@ -155,6 +154,8 @@ sub buildMTAData{
 				'\%$self->{mail_addr}'
 			AND
 				`mail_type` LIKE '\%mail'
+			AND
+				`mail_auto_respond` = 0
 		";
 		my $rdata = iMSCP::Database->factory()->doQuery('mail_addr', $sql);
 		error("$rdata") and return 1 if(ref $rdata ne 'HASH');
