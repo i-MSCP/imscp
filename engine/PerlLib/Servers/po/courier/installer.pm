@@ -256,15 +256,14 @@ sub sslConf{
 }
 
 sub registerHooks{
+
+	use iMSCP::HooksManager;
+
 	my $self = shift;
 
-	use Servers::mta;
-
-	my $mta = Servers::mta->factory($main::imscpConfig{MTA_SERVER});
-
-	$mta->registerPostHook(
-		'buildConf', sub { return $self->mtaConf(@_); }
-	) if $mta->can('registerPostHook');
+	iMSCP::HooksManager->getInstance()->register(
+		'afterMtaBuildConf', sub { return $self->mtaConf(@_); }
+	) and return 1;
 
 	0;
 }
@@ -275,30 +274,30 @@ sub mtaConf{
 	my $content	= shift || '';
 
 	use iMSCP::Templator;
-	use Servers::mta;
+	use iMSCP::HooksManager;
 
 	my $mta	= Servers::mta->factory($main::imscpConfig{MTA_SERVER});
 
 	my $poBloc = getBloc(
 		"$mta->{commentChar} courier begin",
 		"$mta->{commentChar} courier end",
-		$content
+		$$content
 	);
 
-	$content = replaceBloc(
+	$$content = replaceBloc(
 		"$mta->{commentChar} po setup begin",
 		"$mta->{commentChar} po setup end",
 		$poBloc,
-		$content,
+		$$content,
 		undef
 	);
 
-	#register again wait next config file
-	$mta->registerPostHook(
-		'buildConf', sub { return $self->mtaConf(@_); }
-	) if $mta->can('registerPostHook');
+	# register again and wait next config file
+	iMSCP::HooksManager->getInstance()->register(
+		'afterMtaBuildConf', sub { return $self->mtaConf(@_); }
+	) and return 1;
 
-	$content;
+	0;
 }
 
 1;

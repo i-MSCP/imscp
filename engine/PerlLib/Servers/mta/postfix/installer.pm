@@ -280,27 +280,16 @@ sub buildMaster{
 
 	use iMSCP::File;
 	use iMSCP::Templator;
+	use iMSCP::HooksManager;
 
 	# Storing the new file in the working directory
 	my $file = iMSCP::File->new(filename => "$self->{cfgDir}/master.cf");
 	my $cfgTpl	= $file->get();
 	return 1 if (!$cfgTpl);
 
-	my @calls = exists $self->{preCalls}->{buildConf}
-				?
-				(@{$self->{preCalls}->{buildConf}})
-				:
-				()
-	; # is a reason for this!!! Simplify code and you have infinite loop
-
-	# avoid running same hook again if is not self register again
-	delete $self->{preCalls}->{buildConf};
-
-	foreach(@calls){
-		eval {$cfgTpl = &$_($cfgTpl);};
-		error("$@") if ($@);
-		$rs |= 1 if $@;
-	}
+	iMSCP::HooksManager->getInstance()->trigger(
+		'beforeMtaBuildConf', \$cfgTpl
+	);
 
 	$cfgTpl = iMSCP::Templator::process(
 		{
@@ -312,21 +301,9 @@ sub buildMaster{
 	);
 	return 1 if (!$cfgTpl);
 
-	@calls = exists $self->{postCalls}->{buildConf}
-				?
-				(@{$self->{postCalls}->{buildConf}})
-				:
-				()
-	; # is a reason for this!!! Simplify code and you have infinite loop
-
-	# avoid running same hook again if is not self register again
-	delete $self->{postCalls}->{buildConf};
-
-	foreach(@calls){
-		eval {$cfgTpl = &$_($cfgTpl);};
-		error("$@") if ($@);
-		$rs |= 1 if $@;
-	}
+	$rs |= iMSCP::HooksManager->getInstance()->trigger(
+		'afterMtaBuildConf', \$cfgTpl
+	);
 
 	$file = iMSCP::File->new(filename => "$self->{wrkDir}/master.cf");
 	$rs |= $file->set($cfgTpl);
@@ -347,6 +324,7 @@ sub buildMain{
 
 	use iMSCP::File;
 	use iMSCP::Templator;
+	use iMSCP::HooksManager;
 
 	# Loading the template from /etc/imscp/postfix/
 	my $file	= iMSCP::File->new(filename => "$self->{cfgDir}/main.cf");
@@ -358,21 +336,9 @@ sub buildMain{
 	my $gid	= getgrnam($self::postfixConfig{'MTA_MAILBOX_GID_NAME'});
 	my $uid	= getpwnam($self::postfixConfig{'MTA_MAILBOX_UID_NAME'});
 
-	my @calls = exists $self->{preCalls}->{buildConf}
-				?
-				(@{$self->{preCalls}->{buildConf}})
-				:
-				()
-	; # is a reason for this!!! Simplify code and you have infinite loop
-
-	# avoid running same hook again if is not self register again
-	delete $self->{preCalls}->{buildConf};
-
-	foreach(@calls){
-		eval {$cfgTpl = &$_($cfgTpl);};
-		error("$@") if ($@);
-		$rs |= 1 if $@;
-	}
+	iMSCP::HooksManager->getInstance()->trigger(
+		'beforeMtaBuildConf', \$cfgTpl
+	);
 
 	$cfgTpl = iMSCP::Templator::process(
 		{
@@ -398,21 +364,9 @@ sub buildMain{
 	);
 	return 1 if (!$cfgTpl);
 
-	@calls = exists $self->{postCalls}->{buildConf}
-				?
-				(@{$self->{postCalls}->{buildConf}})
-				:
-				()
-	; # is a reason for this!!! Simplify code and you have infinite loop
-
-	# avoid running same hook again if is not self register again
-	delete $self->{postCalls}->{buildConf};
-
-	foreach(@calls){
-		eval {$cfgTpl = &$_($cfgTpl);};
-		error("$@") if ($@);
-		$rs |= 1 if $@;
-	}
+	$rs |= iMSCP::HooksManager->getInstance()->trigger(
+		'afterMtaBuildConf', \$cfgTpl
+	);
 
 	# Storing the new file in working directory
 	$file = iMSCP::File->new(filename => "$self->{wrkDir}/main.cf");

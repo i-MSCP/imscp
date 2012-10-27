@@ -30,6 +30,7 @@ use strict;
 use warnings;
 use iMSCP::Debug;
 use Data::Dumper;
+use iMSCP::HooksManager;
 
 use vars qw/@ISA/;
 

@@ -30,6 +30,7 @@ use strict;
 use warnings;
 use iMSCP::Debug;
 use Data::Dumper;
+use iMSCP::HooksManager;
 
 use vars qw/@ISA/;
 
@@ -71,7 +72,12 @@ sub install{
 
 	my $self	= shift;
 	my $rs		= 0;
+
+	iMSCP::HooksManager->getInstance()->trigger('beforeHttpdInstall', 'apache_fcgi');
+
 	$rs |= Servers::httpd::apache_fcgi::installer->new()->install();
+
+	iMSCP::HooksManager->getInstance()->trigger('afterHttpdInstall', 'apache_fcgi');
 
 	$rs;
 }
@@ -84,7 +90,13 @@ sub uninstall{
 	my $rs		= 0;
 
 	$rs |= $self->stop();
+
+	iMSCP::HooksManager->getInstance()->trigger('beforeHttpdUninstall', 'apache_fcgi');
+
 	$rs |= Servers::httpd::apache_fcgi::uninstaller->new()->uninstall();
+
+	iMSCP::HooksManager->getInstance()->trigger('afterHttpdUninstall', 'apache_fcgi');
+
 	$rs |= $self->start();
 
 	$rs;
@@ -109,50 +121,6 @@ sub setGuiPermissions{
 	$rs;
 }
 
-sub registerPreHook{
-
-	my $self		= shift;
-	my $fname		= shift;
-	my $callback	= shift;
-
-	my $installer	= Servers::httpd::apache_fcgi::installer->new();
-
-	debug("Register pre hook to $fname on installer")
-		if (ref $callback eq 'CODE' && $installer->can($fname));
-	push (@{$installer->{preCalls}->{$fname}}, $callback)
-		if (ref $callback eq 'CODE' && $installer->can($fname));
-
-	debug("Register pre hook to $fname")
-		if (ref $callback eq 'CODE' && $self->can($fname));
-	push (@{$self->{preCalls}->{$fname}}, $callback)
-		if (ref $callback eq 'CODE' && $self->can($fname));
-
-	0;
-}
-
-sub registerPostHook{
-
-	my $self		= shift;
-	my $fname		= shift;
-	my $callback	= shift;
-
-	debug("Attaching to $fname... $callback");
-
-	my $installer	= Servers::httpd::apache_fcgi::installer->new();
-
-	debug("Register post hook to $fname on installer")
-		if (ref $callback eq 'CODE' && $installer->can($fname));
-	push (@{$installer->{postCalls}->{$fname}}, $callback)
-		if (ref $callback eq 'CODE' && $installer->can($fname));
-
-	debug("Register post hook to $fname")
-		if (ref $callback eq 'CODE' && $self->can($fname));
-	push (@{$self->{postCalls}->{$fname}}, $callback)
-		if (ref $callback eq 'CODE' && $self->can($fname));
-
-	0;
-}
-
 sub enableSite{
 
 	use iMSCP::Execute;
@@ -160,6 +128,8 @@ sub enableSite{
 	my $self	= shift;
 	my $sites	= shift;
 	my ($rs, $stdout, $stderr);
+
+	iMSCP::HooksManager->getInstance()->trigger('beforeHttpdEnableSite', \$sites);
 
 	for(split(' ', $sites)){
 		if(-f "$self::apacheConfig{APACHE_SITES_DIR}/$_"){
@@ -172,6 +142,8 @@ sub enableSite{
 		}
 	}
 
+	iMSCP::HooksManager->getInstance()->trigger('afterHttpdEnableSite', $sites);
+
 	0;
 }
 
@@ -182,6 +154,8 @@ sub disableSite{
 	my $self	= shift;
 	my $sites	= shift;
 	my ($rs, $stdout, $stderr);
+
+	iMSCP::HooksManager->getInstance()->trigger('beforeHttpdDisableSite', \$sites);
 
 	for(split(' ', $sites)){
 		if(-f "$self::apacheConfig{APACHE_SITES_DIR}/$_"){
@@ -194,6 +168,8 @@ sub disableSite{
 		}
 	}
 
+	iMSCP::HooksManager->getInstance()->trigger('afterHttpdDisableSite', \$sites);
+
 	0;
 }
 
@@ -205,10 +181,14 @@ sub enableMod{
 	my $mod		= shift;
 	my ($rs, $stdout, $stderr);
 
+	iMSCP::HooksManager->getInstance()->trigger('beforeHttpdEnableMod', \$mod);
+
 	$rs = execute("a2enmod $mod", \$stdout, \$stderr);
 	debug("$stdout") if($stdout);
 	error("$stderr") if($stderr);
 	return $rs if $rs;
+
+	iMSCP::HooksManager->getInstance()->trigger('afterHttpdEnableMod', $mod);
 
 	0;
 }
@@ -221,10 +201,14 @@ sub disableMod{
 	my $mod		= shift;
 	my ($rs, $stdout, $stderr);
 
+	iMSCP::HooksManager->getInstance()->trigger('beforeHttpdDisableMod', \$mod);
+
 	$rs = execute("a2dismod $mod", \$stdout, \$stderr);
 	debug("$stdout") if($stdout);
 	error("$stderr") if($stderr);
 	return $rs if $rs;
+
+	iMSCP::HooksManager->getInstance()->trigger('afterHttpdDisableMod', \$mod);
 
 	0;
 }
@@ -244,13 +228,17 @@ sub start{
 
 	use iMSCP::Execute;
 
-	# Reload apache config
+	iMSCP::HooksManager->getInstance()->trigger('beforeHttpdStart');
+
+	# Start apache
 	$rs = execute("$self->{tplValues}->{CMD_HTTPD} start", \$stdout, \$stderr);
 	debug("$stdout") if $stdout;
 	warning("$stderr") if $stderr && !$rs;
 	error("$stderr") if $stderr && $rs;
 	error("Error while stating") if $rs && !$stderr;
 	return $rs if $rs;
+
+	iMSCP::HooksManager->getInstance()->trigger('afterHttpdStart');
 
 	0;
 }
@@ -262,13 +250,17 @@ sub stop{
 
 	use iMSCP::Execute;
 
-	# Reload apache config
+	iMSCP::HooksManager->getInstance()->trigger('beforeHttpdStop');
+
+	# stop apache
 	$rs = execute("$self->{tplValues}->{CMD_HTTPD} stop", \$stdout, \$stderr);
 	debug("$stdout") if $stdout;
 	warning("$stderr") if $stderr && !$rs;
 	error("$stderr") if $stderr && $rs;
 	error("Error while stoping") if $rs && !$stderr;
 	return $rs if $rs;
+
+	iMSCP::HooksManager->getInstance()->trigger('afterHttpdStop');
 
 	0;
 }
@@ -280,6 +272,8 @@ sub restart{
 
 	use iMSCP::Execute;
 
+	iMSCP::HooksManager->getInstance()->trigger('beforeHttpdRestart');
+
 	# Reload apache config
 	$rs = execute("$self->{tplValues}->{CMD_HTTPD} ".($self->{forceRestart} ? 'restart' : 'reload'), \$stdout, \$stderr);
 	debug("$stdout") if $stdout;
@@ -287,6 +281,8 @@ sub restart{
 	error("$stderr") if $stderr && $rs;
 	error("Error while restating") if $rs && !$stderr;
 	return $rs if $rs;
+
+	iMSCP::HooksManager->getInstance()->trigger('afterHttpdRestart');
 
 	0;
 }
@@ -305,41 +301,12 @@ sub buildConf($ $ $){
 	$self->{tplValues}->{$_} = $self->{data}->{$_} foreach(keys %{$self->{data}});
 	warning('Nothing to do...') unless keys %{$self->{tplValues}} > 0;
 
-	my @calls = exists $self->{preCalls}->{buildConf}
-				?
-				(@{$self->{preCalls}->{buildConf}})
-				:
-				()
-	; # is a reason for this!!! Simplify code and you have infinite loop
-
-	# avoid running same hook again if is not self register again
-	delete $self->{preCalls}->{buildConf};
-
-	foreach(@calls){
-		eval {$cfgTpl = &$_($cfgTpl, $filename);};
-		error("$@") if ($@);
-		return undef if $@;
-	};
+	iMSCP::HooksManager->getInstance()->trigger('beforeHttpdBuildConf', \$cfgTpl, $filename);
 
 	$cfgTpl = process($self->{tplValues}, $cfgTpl);
 	return undef if (!$cfgTpl);
 
-	# avoid running same hook again if is not self register again
-	@calls = exists $self->{postCalls}->{buildConf}
-				?
-				(@{$self->{postCalls}->{buildConf}})
-				:
-				()
-	; # is a reason for this!!! Simplify code and you have infinite loop
-
-	# avoid running same hook again if is not self register again
-	delete $self->{postCalls}->{buildConf};
-
-	foreach(@calls){
-		eval {$cfgTpl = &$_($cfgTpl, $filename);};
-		error("$@") if ($@);
-		return undef if $@;
-	};
+	iMSCP::HooksManager->getInstance()->trigger('afterHttpdBuildConf', \$cfgTpl, $filename);
 
 	$cfgTpl;
 }
@@ -364,53 +331,23 @@ sub buildConfFile{
 	error("Empty config template $file...") unless $cfgTpl;
 	return 1 unless $cfgTpl;
 
-	my @calls = exists $self->{preCalls}->{buildConfFile}
-				?
-				(@{$self->{preCalls}->{buildConfFile}})
-				:
-				()
-	; # is a reason for this!!! Simplify code and you have infinite loop
-
-	# avoid running same hook again if is not self register again
-	delete $self->{preCalls}->{buildConfFile};
-
-	foreach(@calls){
-		eval {$cfgTpl = &$_($cfgTpl, "$filename$suffix");};
-		error("$@") if ($@);
-		return undef if $@;
-	}
+	iMSCP::HooksManager->getInstance()->trigger('beforeHttpdBuildConfFile', \$cfgTpl, "$filename$suffix");
 
 	$cfgTpl = $self->buildConf($cfgTpl, "$filename$suffix");
 	return 1 if (!$cfgTpl);
 
-	@calls = exists $self->{postCalls}->{buildConfFile}
-				?
-				(@{$self->{postCalls}->{buildConfFile}})
-				:
-				()
-	; # is a reason for this!!! Simplify code and you have infinite loop
-
-	# avoid running same hook again if is not self register again
-	delete $self->{postCalls}->{buildConfFile};
-
-	foreach(@calls){
-		eval {$cfgTpl = &$_($cfgTpl, "$filename$suffix");};
-		error("$@") if ($@);
-		return undef if $@;
-	}
+	iMSCP::HooksManager->getInstance()->trigger('afterHttpdBuildConfFile', \$cfgTpl, "$filename$suffix");
 
 	$fileH = iMSCP::File->new(
-				filename => ($option->{destination}
-				?
-				$option->{destination} :
-				"$self->{wrkDir}/$filename$suffix")
+		filename => ($option->{destination} ? $option->{destination} : "$self->{wrkDir}/$filename$suffix")
 	);
+
 	$fileH->set($cfgTpl) and return 1;
 	$fileH->save() and return 1;
 	$fileH->mode($option->{mode} ? $option->{mode} : 0644) and return 1;
 	$fileH->owner(
-			$option->{user}		? $option->{user}	: $main::imscpConfig{'ROOT_USER'},
-			$option->{group}	? $option->{group}	: $main::imscpConfig{'ROOT_GROUP'}
+			$option->{user}	? $option->{user}	: $main::imscpConfig{'ROOT_USER'},
+			$option->{group} ? $option->{group}	: $main::imscpConfig{'ROOT_GROUP'}
 	) and return 1;
 
 	0;
@@ -824,16 +761,17 @@ sub addCfg{
 
 	foreach(keys %configs){
 		unless($data->{FORWARD} && $data->{FORWARD} =~ m~(http|htpps|ftp)://~i){
-			$self->registerPostHook(
-				'buildConf', sub { return $self->removeSection('cgi support', @_); }
+
+			iMSCP::HooksManager->getInstance()->register(
+				'afterHttpdBuildConf', sub { return $self->removeSection('cgi support', @_); }
 			) unless ($data->{have_cgi} && $data->{have_cgi} eq 'yes');
 
-			$self->registerPostHook(
-				'buildConf', sub { return $self->removeSection('php enabled', @_); }
+			iMSCP::HooksManager->getInstance()->register(
+				'afterHttpdBuildConf', sub { return $self->removeSection('php enabled', @_); }
 			) unless ($data->{have_php} && $data->{have_php} eq 'yes');
 
-			$self->registerPostHook(
-				'buildConf', sub { return $self->removeSection('php disabled', @_); }
+			iMSCP::HooksManager->getInstance()->register(
+				'afterHttpdBuildConf', sub { return $self->removeSection('php disabled', @_); }
 			) if ($data->{have_php} && $data->{have_php} eq 'yes');
 		}
 
