@@ -287,9 +287,7 @@ sub buildMaster{
 	my $cfgTpl	= $file->get();
 	return 1 if (!$cfgTpl);
 
-	iMSCP::HooksManager->getInstance()->trigger(
-		'beforeMtaBuildConf', \$cfgTpl
-	);
+	iMSCP::HooksManager->getInstance()->trigger('beforeMtaBuildConf', \$cfgTpl);
 
 	$cfgTpl = iMSCP::Templator::process(
 		{
@@ -301,9 +299,7 @@ sub buildMaster{
 	);
 	return 1 if (!$cfgTpl);
 
-	$rs |= iMSCP::HooksManager->getInstance()->trigger(
-		'afterMtaBuildConf', \$cfgTpl
-	);
+	$rs |= iMSCP::HooksManager->getInstance()->trigger('afterMtaBuildConf', \$cfgTpl);
 
 	$file = iMSCP::File->new(filename => "$self->{wrkDir}/master.cf");
 	$rs |= $file->set($cfgTpl);
@@ -336,9 +332,7 @@ sub buildMain{
 	my $gid	= getgrnam($self::postfixConfig{'MTA_MAILBOX_GID_NAME'});
 	my $uid	= getpwnam($self::postfixConfig{'MTA_MAILBOX_UID_NAME'});
 
-	iMSCP::HooksManager->getInstance()->trigger(
-		'beforeMtaBuildConf', \$cfgTpl
-	);
+	iMSCP::HooksManager->getInstance()->trigger('beforeMtaBuildConf', \$cfgTpl);
 
 	$cfgTpl = iMSCP::Templator::process(
 		{
@@ -364,9 +358,7 @@ sub buildMain{
 	);
 	return 1 if (!$cfgTpl);
 
-	$rs |= iMSCP::HooksManager->getInstance()->trigger(
-		'afterMtaBuildConf', \$cfgTpl
-	);
+	$rs |= iMSCP::HooksManager->getInstance()->trigger('afterMtaBuildConf', \$cfgTpl);
 
 	# Storing the new file in working directory
 	$file = iMSCP::File->new(filename => "$self->{wrkDir}/main.cf");

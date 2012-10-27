@@ -168,7 +168,7 @@ sub disableSite{
 		}
 	}
 
-	iMSCP::HooksManager->getInstance()->trigger('afterHttpdDisableSite', \$sites);
+	iMSCP::HooksManager->getInstance()->trigger('afterHttpdDisableSite', $sites);
 
 	0;
 }
@@ -208,7 +208,7 @@ sub disableMod{
 	error("$stderr") if($stderr);
 	return $rs if $rs;
 
-	iMSCP::HooksManager->getInstance()->trigger('afterHttpdDisableMod', \$mod);
+	iMSCP::HooksManager->getInstance()->trigger('afterHttpdDisableMod', $mod);
 
 	0;
 }

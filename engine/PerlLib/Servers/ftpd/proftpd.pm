@@ -191,7 +191,7 @@ sub delDmn{
 		return 1 unless $data->{$_};
 	}
 
-	iMSCP::HooksManager->getInstance()->trigger('beforeFtpdDelDmn', $data);
+	iMSCP::HooksManager->getInstance()->trigger('beforeFtpdDelDmn', \$data);
 
 	iMSCP::File->new(
 		filename => "$self::proftpdConfig{FTPD_CONF_DIR}/$data->{FILE_NAME}"

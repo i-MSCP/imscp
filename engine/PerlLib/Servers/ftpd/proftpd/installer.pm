@@ -32,6 +32,7 @@ use iMSCP::Debug;
 use iMSCP::Execute;
 use iMSCP::File;
 use iMSCP::Templator;
+use iMSCP::HooksManager;
 
 use vars qw/@ISA/;
 
@@ -165,16 +166,12 @@ sub buildConf{
 	my $cfgTpl	= $file->get();
 	return 1 if (!$cfgTpl);
 
-	iMSCP::HooksManager->getInstance()->trigger(
-    	'beforeFtpdBuildConf', \$cfgTpl, 'proftpd.conf'
-    );
+	iMSCP::HooksManager->getInstance()->trigger('beforeFtpdBuildConf', \$cfgTpl, 'proftpd.conf');
 
 	$cfgTpl = iMSCP::Templator::process($cfg, $cfgTpl);
 	return 1 if (!$cfgTpl);
 
-	iMSCP::HooksManager->getInstance()->trigger(
-    	'afterFtpdBuildConf', \$cfgTpl, 'proftpd.conf'
-    );
+	iMSCP::HooksManager->getInstance()->trigger('afterFtpdBuildConf', \$cfgTpl, 'proftpd.conf');
 
 	$file = iMSCP::File->new(filename => "$self->{wrkDir}/proftpd.conf");
 	$rs |= $file->set($cfgTpl);
