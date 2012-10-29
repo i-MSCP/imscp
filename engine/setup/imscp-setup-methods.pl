@@ -1,7 +1,7 @@
 #!/usr/bin/perl
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010 - 2011 by internet Multi Server Control Panel
+# Copyright (C) 2010 - 2012 by internet Multi Server Control Panel
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -20,7 +20,6 @@
 # @category		i-MSCP
 # @copyright	2010 - 2012 by i-MSCP | http://i-mscp.net
 # @author		Daniel Andreca <sci2tech@gmail.com>
-# @version		SVN: $Id: imscp-setup-methods.pl 5372 2011-10-01 21:39:16Z sci2tech $
 # @link			http://i-mscp.net i-MSCP Home Site
 # @license		http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
@@ -41,7 +40,6 @@ sub setup_start_up {
 
 	0;
 }
-
 
 sub setup_engine {
 
@@ -827,7 +825,7 @@ sub setup_imscp_daemon_network {
 }
 
 ################################################################################
-# Set engine and gui permissions
+# Set permissions for sensitive data
 #
 # @return int 0 on success, other on failure
 #
@@ -1722,8 +1720,8 @@ sub preinstallServers{
 	endDetail();
 
 	$rs;
-
 }
+
 sub preinstallAddons{
 
 	use iMSCP::Dir;
