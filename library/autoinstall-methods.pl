@@ -42,21 +42,26 @@ use warnings;
 #
 # @return int 0 on success, other on failure
 sub preInstall {
+
 	debug('Starting...');
 
 	use iMSCP::Execute;
 
-	my ($rs, $stdout, $stderr);
+	my ($rs, $stdout, $stderr, $command);
 
-	fatal('Not a Debian like system') if(_checkPkgManager());
+	fatal('Not a Debian like system') if(checkCommandAvailability('apt-get'));
 
 	my @pkg = ();
-	push @pkg, 'lsb-release' if(execute("which lsb_release", \$stdout, \$stderr));
-	push @pkg, 'dialog' if(execute("which dialog", \$stdout, \$stderr));
+	push @pkg, 'lsb-release' if(checkCommandAvailability('lsb_release'));
+	push @pkg, 'dialog' if(checkCommandAvailability('dialog'));
 
+	$command = 'apt-get';
+	if(!checkCommandAvailability('debconf-apt-progress')) {
+		$command = 'debconf-apt-progress -- ' . $command;
+	}
 
 	if(scalar @pkg){
-		$rs = execute("apt-get -y install @pkg", \$stdout, \$stderr);
+		$rs = execute("$command -y install @pkg", \$stdout, \$stderr);
 		debug("$stdout") if $stdout;
 		error("$stderr") if $stderr;
 		error("Unable to install the @pkg package(s)") if $rs && !$stderr;
@@ -65,6 +70,7 @@ sub preInstall {
 	}
 
 	debug('Ending...');
+
 	0;
 }
 
@@ -75,6 +81,7 @@ sub preInstall {
 #
 # @return int 0 on success, other on failure
 sub installDependencies {
+
 	debug('Starting...');
 
 	my $autoinstallFile = "$FindBin::Bin/library/" .
@@ -90,6 +97,7 @@ sub installDependencies {
 	}
 
 	debug('Ending...');
+
 	0;
 }
 
@@ -99,11 +107,13 @@ sub installDependencies {
 # @See Requirements.pm
 # @return int 0
 sub testRequirements {
+
 	debug('Starting...');
 
 	iMSCP::Requirements->new()->test('all');
 
 	debug('Ending...');
+
 	0;
 }
 
@@ -117,14 +127,14 @@ sub testRequirements {
 # @return int 0 on success, other on failure
 # @todo The chown nodes are not processed...
 sub processConfFile {
+
 	debug('Starting...');
 
 	use iMSCP::SO;
 
 	my $confFile = shift;
 
-	$confFile = "$FindBin::Bin/library/" . lc(iMSCP::SO->new()->{Distribution}) .
-		'-variable.xml' unless $confFile;
+	$confFile = "$FindBin::Bin/library/" . lc(iMSCP::SO->new()->{Distribution}) . '-variable.xml' unless $confFile;
 
 	unless(-f $confFile) {
 		error("Error $confFile not found");
@@ -190,6 +200,7 @@ sub processConfFile {
 	}
 
 	debug('Ending...');
+
 	0;
 }
 
@@ -198,6 +209,7 @@ sub processConfFile {
 # @see processConfFile
 # @return int 0 on success, other on failure
 sub processSpecificConfFile {
+
 	debug('Starting...');
 
 	use iMSCP::Dir;
@@ -224,7 +236,6 @@ sub processSpecificConfFile {
 	# /configs/debian
 	$dir->{dirname} = $commonPath;
 
-
 	$rs = $dir->get();
 	return $rs if $rs;
 
@@ -240,7 +251,6 @@ sub processSpecificConfFile {
 			return 1;
 		}
 
-
 		$file = -f "$specificPath/$_/install.xml"
 			? "$specificPath/$_/install.xml" : "$commonPath/$_/install.xml";
 
@@ -250,6 +260,7 @@ sub processSpecificConfFile {
 	}
 
 	debug('Ending...');
+
 	0;
 }
 
@@ -257,6 +268,7 @@ sub processSpecificConfFile {
 #
 # @return void
 sub buildImscpDaemon {
+
 	debug('Starting...');
 
 	unless(chdir "$FindBin::Bin/daemon"){
@@ -293,6 +305,7 @@ sub buildImscpDaemon {
 	$return |= $rs;
 
 	debug('Ending...');
+
 	$return;
 }
 
@@ -301,6 +314,7 @@ sub buildImscpDaemon {
 # @see processConfFile
 # @return int 0 on success, other on failure
 sub installEngine {
+
 	debug('Starting...');
 
 	unless(chdir "$FindBin::Bin/engine"){
@@ -321,7 +335,6 @@ sub installEngine {
 	my @configs = $dir->getDirs();
 
 	foreach(@configs){
-
 		next if($_ eq '.svn');
 
 		if (-f "$FindBin::Bin/engine/$_/install.xml"){
@@ -337,6 +350,7 @@ sub installEngine {
 	}
 
 	debug('Ending...');
+
 	0;
 }
 
@@ -344,6 +358,7 @@ sub installEngine {
 #
 # @return int
 sub installGui {
+
 	debug('Starting...');
 
 	my ($rs, $stdout, $stderr);
@@ -353,6 +368,7 @@ sub installGui {
 	error("$stderr") if $stderr;
 
 	debug('Ending...');
+
 	$rs;
 }
 
@@ -365,6 +381,7 @@ sub installGui {
 #
 # @return void
 sub InstallDistMaintainerScripts {
+
 	debug('Starting...');
 
 	my $SO = iMSCP::SO->new();
@@ -393,6 +410,7 @@ sub InstallDistMaintainerScripts {
 	}
 
 	debug('Ending...');
+
 	0;
 }
 
@@ -400,17 +418,17 @@ sub InstallDistMaintainerScripts {
 #
 # @return int 0 on success, other on failure
 sub finishBuild {
+
 	debug('Starting...');
 
-	my $rs = $main::autoInstallClass->postBuild()
-		if(
-			defined $main::autoInstallClass
-			&&
-			$main::autoInstallClass->can('postBuild')
-		);
+	my $rs = 0;
+
+	$rs = $main::autoInstallClass->postBuild()
+		if(defined $main::autoInstallClass && $main::autoInstallClass->can('postBuild'));
 	return $rs if $rs;
 
 	debug('Ending...');
+
 	0;
 }
 
@@ -418,22 +436,20 @@ sub finishBuild {
 #
 # @return int 0 on success, other on failure
 sub cleanUpTmp {
+
 	debug('Starting...');
 
 	my $tmp = qualify_to_ref('INST_PREF', 'main');
 	my ($rs, $stdout, $stderr);
 
-	$rs = execute(
-		"find $$$tmp -type d -name '.svn' -print0 |xargs -0 -r rm -fr",
-		\$stdout, \$stderr
-	);
+	$rs = execute("find $$$tmp -type d -name '.svn' -print0 |xargs -0 -r rm -fr", \$stdout, \$stderr);
 
 	debug("$stdout") if $stdout;
 	error("$stderr") if $stderr;
-
 	return $rs if $rs;
 
 	debug('Ending...');
+
 	0;
 }
 
@@ -441,15 +457,13 @@ sub cleanUpTmp {
 #
 # @return int 0 on success, other on failure
 sub doImscpBackup {
+
 	debug('Starting...');
 
 	my ($rs, $stdout, $stderr);
 
 	if(-x "$main::defaultConf{'ROOT_DIR'}/engine/backup/imscp-backup-imscp noreport") {
-		$rs = execute(
-			"$main::defaultConf{'ROOT_DIR'}/engine/backup/imscp-backup-imscp",
-			\$stdout, \$stderr
-		);
+		$rs = execute("$main::defaultConf{'ROOT_DIR'}/engine/backup/imscp-backup-imscp", \$stdout, \$stderr);
 
 		debug("$stdout") if $stdout;
 		warning("$stderr") if $stderr;
@@ -457,13 +471,14 @@ sub doImscpBackup {
 
 		$rs = iMSCP::Dialog->factory()->yesno(
 			"\n\n\\Z1Unable to create backups\\Zn\n\n".
-			'This is not a fatal error, setup may continue, but '.
-			"you will not have a backup (unless you have previously builded one)\n\n".
+			'This is not a fatal error, setup may continue, but you will not have a backup ' .
+			"(unless you have previously builded one)\n\n".
 			'Do you want to continue?'
 		) if $rs;
 	}
 
 	debug('Ending...');
+
 	$rs;
 }
 
@@ -471,6 +486,7 @@ sub doImscpBackup {
 #
 # @return int 0 on success, other on failure
 sub saveGuiWorkingData {
+
 	debug('Starting...');
 
 	my ($rs, $stdout, $stderr);
@@ -491,7 +507,8 @@ sub saveGuiWorkingData {
 		# Save filemanager data (ajaxplorer)
 		if(-d "$main::defaultConf{'ROOT_DIR'}/gui/public/tools/filemanager/data") {
 			$rs = execute(
-				"cp -vRTf $main::defaultConf{'ROOT_DIR'}/gui/public/tools/filemanager/data $$$tmp$main::defaultConf{'ROOT_DIR'}/gui/public/tools/filemanager/data",
+				"cp -vRTf $main::defaultConf{'ROOT_DIR'}/gui/public/tools/filemanager/data " .
+				"$$$tmp$main::defaultConf{'ROOT_DIR'}/gui/public/tools/filemanager/data",
 				\$stdout, \$stderr
 			);
 
@@ -503,7 +520,8 @@ sub saveGuiWorkingData {
 		# Save GUI plugins
 		if(-d "$main::defaultConf{'ROOT_DIR'}/gui/plugins") {
 			$rs = execute(
-				"cp -vRTf $main::defaultConf{'ROOT_DIR'}/gui/plugins $$$tmp$main::defaultConf{'ROOT_DIR'}/gui/plugins",
+				"cp -vRTf $main::defaultConf{'ROOT_DIR'}/gui/plugins " .
+				"$$$tmp$main::defaultConf{'ROOT_DIR'}/gui/plugins",
 				\$stdout, \$stderr
 			);
 
@@ -517,7 +535,8 @@ sub saveGuiWorkingData {
 		# Save i-MSCP GUI data (isp logos)
 		if(-d "$main::defaultConf{'ROOT_DIR'}/gui/themes/user_logos") {
 			$rs = execute(
-				"cp -TvRf $main::defaultConf{'ROOT_DIR'}/gui/themes/user_logos $$$tmp$main::defaultConf{'ROOT_DIR'}/gui/data/ispLogos",
+				"cp -TvRf $main::defaultConf{'ROOT_DIR'}/gui/themes/user_logos " .
+				"$$$tmp$main::defaultConf{'ROOT_DIR'}/gui/data/ispLogos",
 				\$stdout, \$stderr
 			);
 
@@ -529,7 +548,8 @@ sub saveGuiWorkingData {
 		# Save i-MSCP GUI data (isp domain default index.html page)
 		if(-d "$main::defaultConf{'ROOT_DIR'}/gui/domain_default_page") {
 			$rs = execute(
-				"cp -TRfv $main::defaultConf{'ROOT_DIR'}/gui/domain_default_page $$$tmp$main::defaultConf{'ROOT_DIR'}/gui/data/domain_default_page",
+				"cp -TRfv $main::defaultConf{'ROOT_DIR'}/gui/domain_default_page " .
+				"$$$tmp$main::defaultConf{'ROOT_DIR'}/gui/data/domain_default_page",
 				\$stdout, \$stderr
 			);
 
@@ -541,7 +561,8 @@ sub saveGuiWorkingData {
 		# Save i-MSCP GUI data (isp domain default index.html page for disabled domains)
 		if(-d "$main::defaultConf{'ROOT_DIR'}/gui/domain_disable_page") {
 			$rs = execute(
-				"cp -TRfv $main::defaultConf{'ROOT_DIR'}/gui/domain_disable_page $$$tmp$main::defaultConf{'ROOT_DIR'}/gui/data/domain_disable_page",
+				"cp -TRfv $main::defaultConf{'ROOT_DIR'}/gui/domain_disable_page " .
+				"$$$tmp$main::defaultConf{'ROOT_DIR'}/gui/data/domain_disable_page",
 				\$stdout, \$stderr
 			);
 
@@ -552,6 +573,7 @@ sub saveGuiWorkingData {
 	}
 
 	debug('Ending...');
+
 	0;
 }
 
@@ -559,6 +581,7 @@ sub saveGuiWorkingData {
 #
 # @return int 0 on success, other on failure
 sub installTmp {
+
 	debug('Starting...');
 
 	use iMSCP::Execute;
@@ -575,20 +598,14 @@ sub installTmp {
 	}
 
 	# Session files must not be saved to prevent any troubles after update.
-	$rs = execute(
-		"rm -fr $$$tmp$main::defaultConf{'ROOT_DIR'}/gui/data/sessions/*",
-		\$stdout, \$stderr
-	);
+	$rs = execute("rm -fr $$$tmp$main::defaultConf{'ROOT_DIR'}/gui/data/sessions/*", \$stdout, \$stderr);
 
 	debug("$stdout") if $stdout;
 	error("$stderr") if $stderr;
 	return $rs if $rs;
 
 	# Cache files must not be saved to prevent any troubles after update.
-	$rs = execute(
-		"rm -fr $$$tmp$main::defaultConf{'ROOT_DIR'}/gui/data/cache/*",
-		\$stdout, \$stderr
-	);
+	$rs = execute("rm -fr $$$tmp$main::defaultConf{'ROOT_DIR'}/gui/data/cache/*", \$stdout, \$stderr);
 
 	debug("$stdout") if $stdout;
 	error("$stderr") if $stderr;
@@ -614,6 +631,7 @@ sub installTmp {
 	return $rs if $rs;
 
 	debug('Ending...');
+
 	0;
 }
 
@@ -621,6 +639,7 @@ sub installTmp {
 #
 # @return int 0 on success, other on failure
 sub removeTmp {
+
 	debug('Starting...');
 
 	my ($rs, $stdout, $stderr);
@@ -634,6 +653,7 @@ sub removeTmp {
 	}
 
 	debug('Ending...');
+
 	0;
 }
 
@@ -646,6 +666,7 @@ sub removeTmp {
 # @param string $var variable to be expanded
 # @return string expanded variable
 sub _expandVars {
+
 	debug('Starting...');
 
 	my $var = shift;
@@ -662,6 +683,7 @@ sub _expandVars {
 	debug("Expanded... $var");
 
 	debug('Ending...');
+
 	$var;
 }
 
@@ -671,6 +693,7 @@ sub _expandVars {
 #
 # @return int 0 on success, other on failure
 sub _processFolder {
+
 	debug('Starting...');
 
 	my $data = shift;
@@ -692,6 +715,7 @@ sub _processFolder {
 	return $rs if $rs;
 
 	debug('Ending...');
+
 	0;
 }
 
@@ -699,6 +723,7 @@ sub _processFolder {
 #
 # @return int 0 on success, other on failure
 sub _copyConfig {
+
 	debug('Starting...');
 
 	use Cwd;
@@ -743,6 +768,7 @@ sub _copyConfig {
 	}
 
 	debug('Ending...');
+
 	0;
 }
 
@@ -750,6 +776,7 @@ sub _copyConfig {
 #
 # @return int 0 on success, other on failure
 sub _copy {
+
 	debug('Starting...');
 
 	use iMSCP::Execute;
@@ -782,6 +809,7 @@ sub _copy {
 	}
 
 	debug('Ending...');
+
 	0;
 }
 
@@ -790,6 +818,7 @@ sub _copy {
 # @param XML object $data XML create_file node
 # @return int 0 on success, other on failure
 sub _createFile {
+
 	debug('Starting...');
 
 	use iMSCP::File;
@@ -800,6 +829,7 @@ sub _createFile {
 	return $rs if $rs;
 
 	debug('Ending...');
+
 	0;
 }
 
@@ -808,6 +838,7 @@ sub _createFile {
 # @param XML object $data XML chown_file node
 # @return int 0 on success, other on failure
 sub _chownFile {
+
 	debug('Starting...');
 
 	my $data = shift;
@@ -821,6 +852,7 @@ sub _chownFile {
 	}
 
 	debug('Ending...');
+
 	0;
 }
 
@@ -828,6 +860,7 @@ sub _chownFile {
 #
 # @return int 0 on success, other on failure
 sub _chmodFile {
+
 	debug('Starting...');
 
 	my $data = shift;
@@ -841,22 +874,28 @@ sub _chmodFile {
 	}
 
 	debug('Ending...');
+
 	0;
 }
 
-# Checks for debian packager availability.
+# Check command availability
 #
-# @access private
-# @return int 0 on success, other on failure
-sub _checkPkgManager {
+# @return int 0 on success, 1 on failure
+sub checkCommandAvailability($)
+{
 	debug('Starting...');
+
+	my $command = shift;
 
 	use iMSCP::Execute;
 
 	my ($rs, $stdout, $stderr);
 
+	$rs = execute("which $command", \$stdout, \$stderr);
+
 	debug('Ending...');
-	return execute('which apt-get', \$stdout, \$stderr);
+
+	$rs;
 }
 
 1;

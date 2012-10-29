@@ -20,7 +20,6 @@
 # @category		i-MSCP
 # @copyright	2010 - 2012 by i-MSCP | http://i-mscp.net
 # @author		Daniel Andreca <sci2tech@gmail.com>
-# @version		SVN: $Id$
 # @link			http://i-mscp.net i-MSCP Home Site
 # @license		http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
@@ -57,6 +56,7 @@ sub _init {
 	$self->{nonfree} = 'non-free';
 
 	debug('Ending...');
+
 	0;
 }
 
@@ -65,6 +65,7 @@ sub _init {
 # @param self $self iMSCP::debian_autoinstall instance
 # @return int 0 on success, other on failure
 sub preBuild {
+
 	debug('Starting...');
 
 	my $self = shift;
@@ -88,6 +89,7 @@ sub preBuild {
 	return $rs if $rs;
 
 	debug('Ending...');
+
 	0;
 }
 
@@ -95,6 +97,7 @@ sub preBuild {
 #
 # @return int 0 on success, other on failure
 sub updateSystemPackagesIndex {
+
 	debug('Starting...');
 
 	iMSCP::Dialog->factory()->infobox('Updating system packages index');
@@ -108,6 +111,7 @@ sub updateSystemPackagesIndex {
 	return $rs if $rs;
 
 	debug('Ending...');
+
 	0;
 }
 
@@ -116,23 +120,25 @@ sub updateSystemPackagesIndex {
 # @param self $self iMSCP::debian_autoinstall instance
 # @return int 0 on success, other on failure
 sub preRequish {
+
 	debug('Starting...');
 
 	my $self = shift;
 
-	iMSCP::Dialog->factory()->infobox('Installing pre-required packages');
+	#iMSCP::Dialog->factory()->infobox('Installing pre-required packages');
 
 	my($rs, $stderr);
 
-	$rs = execute('apt-get -y install dialog libxml-simple-perl', undef, \$stderr);
+	$rs = execute('debconf-apt-progress -- apt-get -y install dialog libxml-simple-perl', undef, \$stderr);
 	error("$stderr") if $stderr;
 	error('Unable to install pre-required packages.') if $rs && ! $stderr;
 	return $rs if $rs;
 
 	# Force dialog now
-	iMSCP::Dialog->reset();
+	#iMSCP::Dialog->reset();
 
 	debug('Ending...');
+
 	0;
 }
 
@@ -152,6 +158,7 @@ sub loadOldImscpConfigFile {
 	tie %main::imscpConfigOld, 'iMSCP::Config', 'fileName' => $oldConf, noerrors => 1 if (-f $oldConf);
 
 	debug('Ending...');
+
 	0;
 }
 
@@ -164,6 +171,7 @@ sub loadOldImscpConfigFile {
 # @param self $self iMSCP::debian_autoinstall instance
 # @return int 0 on success, other on failure
 sub UpdateAptSourceList {
+
 	debug('Starting...');
 
 	my $self = shift;
@@ -221,6 +229,7 @@ sub UpdateAptSourceList {
 	}
 
 	debug('Ending...');
+
 	0;
 }
 
@@ -229,21 +238,23 @@ sub UpdateAptSourceList {
 # @param self $self iMSCP::debian_autoinstall instance
 # @return int 0 on success, other on failure
 sub readPackagesList {
+
 	debug('Starting...');
 
 	my $self = shift;
 	my $SO = iMSCP::SO->new();
-	my $confile = "$FindBin::Bin/docs/" . ucfirst($SO->{Distribution}) . "/" .
-		lc($SO->{Distribution}) . "-packages-" . lc($SO->{CodeName}) . ".xml";
+	my $conffile = "$FindBin::Bin/docs/" . ucfirst($SO->{Distribution}) . '/' . lc($SO->{Distribution}) . '-packages-' .
+		lc($SO->{CodeName}) . '.xml';
 
-	fatal(ucfirst($SO->{Distribution})." $SO->{CodeName} is not supported!") if (! -f  $confile);
+	fatal(ucfirst($SO->{Distribution}) . " $SO->{CodeName} is not supported!") if (! -f  $conffile);
 
-	eval "use XML::Simple";
+	eval "use XML::Simple; 1";
 
-	fatal('Unable to load perl module XML::Simple...') if($@);
+	fatal('Unable to load perl
+	module XML::Simple...') if($@);
 
 	my $xml = XML::Simple->new(NoEscape => 1);
-	my $data = eval { $xml->XMLin($confile, KeyAttr => 'name') };
+	my $data = eval { $xml->XMLin($conffile, KeyAttr => 'name') };
 
 	foreach(keys %{$data}){
 		if(ref($data->{$_}) eq 'ARRAY'){
@@ -253,7 +264,7 @@ sub readPackagesList {
 				my $server  = $_;
 				my @alternative = keys %{$data->{$server}->{alternative}};
 
-				for (my $index = $#alternative; $index >= 0; --$index ){
+				for (my $index = $#alternative; $index >= 0; --$index){
 					my $defServer = $alternative[$index];
 					my $oldServer = $main::imscpConfigOld{uc($server) . '_SERVER'};
 
@@ -273,9 +284,9 @@ sub readPackagesList {
 
 				do{
 					$rs = iMSCP::Dialog->factory()->radiolist(
-						"Choose server $server",
+						"Choose server type to use for $server",
 						@alternative,
-						#uncoment after dependicies check is implemented
+						#uncoment after dependencies check is implemented
 						#'Not Used'
 					);
 				} while (!$rs);
@@ -289,9 +300,10 @@ sub readPackagesList {
 
 			$self->_parseHash($data->{$_});
 		}
-	};
+	}
 
 	debug('Ending...');
+
 	0;
 }
 
@@ -300,20 +312,22 @@ sub readPackagesList {
 # @param self $self iMSCP::debian_autoinstall instance
 # @return in 0 on success, other on failure
 sub installPackagesList {
+
 	debug('Starting...');
 
 	my $self = shift;
 
-	iMSCP::Dialog->factory()->infobox('Installing needed packages');
+	#iMSCP::Dialog->factory()->infobox('Installing needed packages');
 
 	my($rs, $stderr);
 
-	$rs = execute("apt-get -y install $self->{toInstall}", undef, \$stderr);
+	$rs = execute("debconf-apt-progress -- apt-get -y install $self->{toInstall}", undef, \$stderr);
 	error("$stderr") if $stderr && $rs;
 	error('Can not install packages.') if $rs && ! $stderr;
 	return $rs if $rs;
 
 	debug('Ending...');
+
 	0;
 }
 
@@ -322,6 +336,7 @@ sub installPackagesList {
 # @param self $self iMSCP::debian_autoinstall instance
 # @return in 0 on success, other on failure
 sub postBuild {
+
 	debug('Starting...');
 
 	my $self = shift;
@@ -334,6 +349,7 @@ sub postBuild {
 	$main::nextConf{uc($_) . "_SERVER"} = lc($self->{userSelection}->{$_}) foreach(keys %{$self->{userSelection}});
 
 	debug('Ending...');
+
 	0;
 }
 
@@ -343,6 +359,7 @@ sub postBuild {
 # @param string $var String to be trimmed
 # @return string
 sub _trim {
+
 	my $var = shift;
 	$var =~ s/^\s+//;
 	$var =~ s/\s+$//;
@@ -356,6 +373,7 @@ sub _trim {
 # @param HASH $hash Hash to be parsed
 # @return void
 sub _parseHash {
+
 	my $self = shift;
 	my $hash = shift;
 
