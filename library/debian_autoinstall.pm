@@ -263,7 +263,8 @@ sub readPackagesList {
 				my $server  = $_;
 				my @alternative = keys %{$data->{$server}->{alternative}};
 
-				for (my $index = $#alternative; $index >= 0; --$index){
+				#for (my $index = $#alternative; $index >= 0; --$index){
+				for (my $index = scalar @alternative; $index >= 0; --$index){
 					my $defServer = $alternative[$index];
 					my $oldServer = $main::imscpConfigOld{uc($server) . '_SERVER'};
 
@@ -283,7 +284,7 @@ sub readPackagesList {
 
 				do{
 					$rs = iMSCP::Dialog->factory()->radiolist(
-						"Choose server/software for $server",
+						"Choose server type to use for $server",
 						@alternative,
 						#uncoment after dependencies check is implemented
 						#'Not Used'
