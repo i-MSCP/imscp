@@ -246,9 +246,7 @@ sub _lookupCodename($$)
 
 	my $shortRelease = sprintf '%s.%s', $1, $2;
 
-	return $$RELEASE_CODENAME_LOOKUP{$shortRelease} if exists $$RELEASE_CODENAME_LOOKUP{$shortRelease};
-
-	$unknown;
+	$$RELEASE_CODENAME_LOOKUP{$shortRelease} ? $$RELEASE_CODENAME_LOOKUP{$shortRelease} : $unknown;
 }
 
 =item _parsePolicyLine($data)
@@ -279,7 +277,7 @@ sub _parsePolicyLine($$)
 		}
 	}
 
-	return $retval;
+	$retval;
 }
 
 =item _parseAptPolicy()
@@ -312,7 +310,7 @@ sub _parseAptPolicy
 		}
 	}
 
-	return $data;
+	$data;
 }
 
 =item _guessReleaseFromApt($origin = 'Debian', $component = 'main', $label = 'Debian')
@@ -349,7 +347,7 @@ sub _guessReleaseFromApt
 
     # We've sorted the list by descending priority, so the first entry should
     # be the "main" release in use on the system
-	return @$releases[0]->[1];
+	@$releases[0]->[1];
 }
 
 =item _guessDebianRelease()
@@ -368,10 +366,9 @@ sub _guessDebianRelease
 	my $distinfo = {'ID' => 'Debian'};
 
 	my ($rs, $stdout, $stderr, $release, $codename);
-	$rs = execute('uname', \$stdout, \$stderr);
+	my $rs = execute('uname', \$stdout, \$stderr); # We are safe here
 	error($stderr) if $stderr;
 	debug ($stdout) if $stdout;
-	return $rs if $rs;
 
 	$stdout =~ s/^\s+|\s+$//g;;
 
