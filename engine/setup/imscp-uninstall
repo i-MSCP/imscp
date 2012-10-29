@@ -77,7 +77,7 @@ sub user_dialog {
 						All domain users and their accounts will be removed.
 
 						\\Zu\\Z4[NOTE]\\Zn
-						During the migration process some or all services might require to be shut down or restarted.
+						During the uninstall process some or all services might require to be shut down or restarted.
 
 						You can stop this process by pushing \\Z1EXIT\\Z0 button
 						To continue select \\Z1CONTINUE\\Z0 button"
@@ -88,7 +88,7 @@ sub user_dialog {
 					"\n
 					\\Z1[NOTICE]\\Zn
 
-					The update process was aborted by user..."
+					The uninstall process was aborted by user..."
 		);
 		exit 0;
 	}
@@ -106,7 +106,7 @@ sub uninstall_shut_down {
 					"\n
 					\\Z1Congratulations!!!\\Zn
 
-					You have uninstall i-MSCP successfully!\n\n
+					iMSCP has been successfully uninstalled!\n\n
 
 					"
 	);
