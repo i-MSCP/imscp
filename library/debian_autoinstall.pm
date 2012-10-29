@@ -250,7 +250,8 @@ sub readPackagesList {
 
 	eval "use XML::Simple; 1";
 
-	fatal('Unable to load perl module XML::Simple...') if($@);
+	fatal('Unable to load perl
+	module XML::Simple...') if($@);
 
 	my $xml = XML::Simple->new(NoEscape => 1);
 	my $data = eval { $xml->XMLin($conffile, KeyAttr => 'name') };
@@ -263,8 +264,7 @@ sub readPackagesList {
 				my $server  = $_;
 				my @alternative = keys %{$data->{$server}->{alternative}};
 
-				#for (my $index = $#alternative; $index >= 0; --$index){
-				for (my $index = scalar @alternative; $index >= 0; --$index){
+				for (my $index = $#alternative; $index >= 0; --$index){
 					my $defServer = $alternative[$index];
 					my $oldServer = $main::imscpConfigOld{uc($server) . '_SERVER'};
 
