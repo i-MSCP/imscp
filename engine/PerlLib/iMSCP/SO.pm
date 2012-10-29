@@ -67,8 +67,6 @@ sub getSO{
 	my $self = shift;
 	my ($rs, $stdout, $stderr);
 
-	fatal('Not a Debian like system') if(execute('which apt-get', \$stdout, \$stderr));
-
 	if(execute('which lsb_release', \$stdout, \$stderr)){
 		$rs = execute('apt-get -y install lsb-release', \$stdout, \$stderr);
 		debug("$stdout") if $stdout;

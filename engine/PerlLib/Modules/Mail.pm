@@ -116,10 +116,6 @@ sub process{
 	$rs;
 }
 
-sub restore{
-	0;
-}
-
 sub buildMTAData{
 
 	my $self	= shift;
