@@ -34,7 +34,6 @@ package iMSCP::LsbRelease;
 use strict;
 use warnings;
 use iMSCP::Execute;
-use Data::Dumper;
 use iMSCP::Debug;
 use base 'Common::SimpleClass';
 
@@ -158,7 +157,7 @@ sub getAll
 
 =item getDistroInformation()
 
-Return distribution specific information as an hash such as:
+Return distribution specific information as a hash such as:
 
 	{
 		'ID' => 'Debian',
