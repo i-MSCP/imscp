@@ -1,4 +1,5 @@
 #/usr/bin/perl
+
 =head1 NAME
 
 iMSCP::LsbRelease - print distribution-specific information
@@ -253,14 +254,14 @@ sub _lookupCodename($$)
 
 =item _parsePolicyLine($data)
 
-Parse a line from the apt-cache policy command output to retrieve either distribution
-version, origin, suite, component or label field value.
+Parse a line from the apt-cache policy command output to retrieve distribution
+version, origin, suite, component and label field value.
 
-Return HASH reference A reference to a hash containing a pair of fieldname/fieldvalue
+Return HASH reference A reference to a hash containing pairs of fieldname/fieldvalue
 
 =cut
 
-# map short filed names to long field names
+# map short field names to long field names
 my $longnames = {'v' => 'version', 'o' => 'origin', 'a' => 'suite', 'c'  => 'component', 'l' => 'label'};
 
 sub _parsePolicyLine($$)
@@ -297,7 +298,7 @@ sub _parseAptPolicy
 
 	my ($rs, $stdout, $stderr);
 	$rs = execute('LANG=C apt-cache policy', \$stdout, \$stderr);
-	error("Unable to query apt-cache policy: $stderr") if $rs;
+	error("Unable to execute apt-cache policy: $stderr") if $rs;
 	debug($stdout) if $stdout;
 
 	return [] if $rs;
@@ -446,7 +447,7 @@ sub _guessDebianRelease
 
 Returns lsb information from the lsb-release file if any.
 
-Returns HASH reference. A reference to an hash containing pairs of fieldname/fielvalue.
+Returns HASH reference. A reference to a hash containing pairs of fieldname/fielvalue.
 
 =cut
 
