@@ -126,7 +126,11 @@ sub trigger($$)
 		delete $self->{hooks}->{$hookName};
 		for(@hookFunctions) {
 			$rs = $_->(@_);
-			error("Hook function failed for the '$hookName' hook") if $rs;
+
+			if($rs) {
+				my $caller = (caller(1))[3] ? (caller(1))[3] : 'main';
+				error("An hook function registered on the '$hookName' hook triggered in $caller has failed")
+			}
 			return $rs if $rs;
 		}
 	}
