@@ -885,7 +885,7 @@ sub checkCommandAvailability($)
 {
 	debug('Starting...');
 
-	my $command = shift
+	my $command = shift;
 
 	use iMSCP::Execute;
 
