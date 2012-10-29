@@ -58,7 +58,7 @@ sub getId
 	my $self = shift;
 	my $short = shift;
 
-	$self->{lsbInformation} = $self->getDistroInformation() if ! $self->{lsbInfo};
+	$self->{lsbInfo} = $self->getDistroInformation() if ! $self->{lsbInfo};
 
 	if($short) {
 		$self->{lsbInfo}->{ID} ? $self->{lsbInfo}->{ID} : "n/a" ;
