@@ -9,6 +9,10 @@ i-MSCP 1.1.0-beta2
 Features / Enhancements:
 
 GUI:
+	Engine:
+		- Added a hooks manager (engine is now pluggable)
+		- Added several hooks in the servers packages (a lot more to add...)
+		- Updated the awstats addon package  (hooks manager integration + small fixes)
 	Libs:
 		- Updated Zend Framework to 1.11.12
 

@@ -1,7 +1,7 @@
 #!/usr/bin/perl
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010 - 2011 by internet Multi Server Control Panel
+# Copyright (C) 2010 - 2012 by internet Multi Server Control Panel
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -20,7 +20,6 @@
 # @category		i-MSCP
 # @copyright	2010 - 2012 by i-MSCP | http://i-mscp.net
 # @author		Daniel Andreca <sci2tech@gmail.com>
-# @version		SVN: $Id: installer.pm 5417 2011-10-05 20:17:21Z sci2tech $
 # @link			http://i-mscp.net i-MSCP Home Site
 # @license		http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
@@ -367,13 +366,11 @@ sub registerHooks{
 
 	my $self = shift;
 
-	use Servers::mta;
+	use iMSCP::HooksManager;
 
-	my $mta = Servers::mta->factory();
-
-	$mta->registerPostHook(
-		'buildConf', sub { return $self->mtaConf(@_); }
-	) if $mta->can('registerPostHook');
+	iMSCP::HooksManager->getInstance()->register(
+		'afterMtaBuildConf', sub { return $self->mtaConf(@_); }
+	) and return 1;
 
 	0;
 }
@@ -386,9 +383,7 @@ sub mtaConf{
 	debug($content);
 
 	use iMSCP::Templator;
-	use Servers::mta;
-
-	my $mta	= Servers::mta->factory($main::imscpConfig{MTA_SERVER});
+	use iMSCP::HooksManager;
 
 	my $poBloc = getBloc(
 		"$mta->{commentChar} dovecot begin",
@@ -396,15 +391,7 @@ sub mtaConf{
 		$content
 	);
 
-	my $tpl = {
-		SFLAG		=>(
-								version->new($self->{version}) < version->new('2.0.0')
-								?
-								'-s'
-								:
-								''
-		)
-	};
+	my $tpl = { SFLAG =>(version->new($self->{version}) < version->new('2.0.0') ? '-s' : '') };
 
 	$poBloc = iMSCP::Templator::process($tpl, $poBloc);
 
@@ -417,10 +404,10 @@ sub mtaConf{
 		undef
 	);
 
-	#register again wait next config file
-	$mta->registerPostHook(
-		'buildConf', sub { return $self->mtaConf(@_); }
-	) if $mta->can('registerPostHook');
+	# register again for next config file
+	iMSCP::HooksManager->getInstance()->register(
+		'afterMtaBuildConf', sub { return $self->mtaConf(@_); }
+	);
 
 	debug($content);
 
