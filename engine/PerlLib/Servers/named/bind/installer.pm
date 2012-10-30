@@ -1,7 +1,7 @@
 #!/usr/bin/perl
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010 - 2011 by internet Multi Server Control Panel
+# Copyright (C) 2010 - 2012 by internet Multi Server Control Panel
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -20,7 +20,6 @@
 # @category		i-MSCP
 # @copyright	2010 - 2012 by i-MSCP | http://i-mscp.net
 # @author		Daniel Andreca <sci2tech@gmail.com>
-# @version		SVN: $Id$
 # @link			http://i-mscp.net i-MSCP Home Site
 # @license		http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
@@ -79,8 +78,12 @@ sub buildConf{
 	$cfgTpl = iMSCP::File->new(filename => "$self->{cfgDir}/named.conf")->get();
 	return 1 if(!$cfgTpl);
 
+	iMSCP::HooksManager->getInstance()->trigger('beforeNamedBuildConf', \$cfgTpl, 'named.conf');
+
 	# Building new file
 	$cfg .= $cfgTpl;
+
+	iMSCP::HooksManager->getInstance()->trigger('afterNamedBuildConf', \$cfg, 'named.conf');
 
 	## Storage and installation of new file
 
@@ -129,6 +132,7 @@ sub addMasterZone{
 		DMN_IP		=> $main::imscpConfig{BASE_SERVER_IP},
 		MX			=> ''
 	});
+
 	return $rs if $rs;
 
 	0;

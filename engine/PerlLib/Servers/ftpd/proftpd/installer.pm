@@ -1,7 +1,7 @@
 #!/usr/bin/perl
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010 - 2011 by internet Multi Server Control Panel
+# Copyright (C) 2010 - 2012 by internet Multi Server Control Panel
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -20,7 +20,6 @@
 # @category		i-MSCP
 # @copyright	2010 - 2012 by i-MSCP | http://i-mscp.net
 # @author		Daniel Andreca <sci2tech@gmail.com>
-# @version		SVN: $Id$
 # @link			http://i-mscp.net i-MSCP Home Site
 # @license		http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
@@ -32,6 +31,7 @@ use iMSCP::Debug;
 use iMSCP::Execute;
 use iMSCP::File;
 use iMSCP::Templator;
+use iMSCP::HooksManager;
 
 use vars qw/@ISA/;
 
@@ -165,8 +165,12 @@ sub buildConf{
 	my $cfgTpl	= $file->get();
 	return 1 if (!$cfgTpl);
 
+	iMSCP::HooksManager->getInstance()->trigger('beforeFtpdBuildConf', \$cfgTpl, 'proftpd.conf');
+
 	$cfgTpl = iMSCP::Templator::process($cfg, $cfgTpl);
 	return 1 if (!$cfgTpl);
+
+	iMSCP::HooksManager->getInstance()->trigger('afterFtpdBuildConf', \$cfgTpl, 'proftpd.conf');
 
 	$file = iMSCP::File->new(filename => "$self->{wrkDir}/proftpd.conf");
 	$rs |= $file->set($cfgTpl);

@@ -1,7 +1,7 @@
 #!/usr/bin/perl
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010 - 2011 by internet Multi Server Control Panel
+# Copyright (C) 2010 - 2012 by internet Multi Server Control Panel
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -20,7 +20,6 @@
 # @category		i-MSCP
 # @copyright	2010 - 2012 by i-MSCP | http://i-mscp.net
 # @author		Daniel Andreca <sci2tech@gmail.com>
-# @version		SVN: $Id$
 # @link			http://i-mscp.net i-MSCP Home Site
 # @license		http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
@@ -29,18 +28,15 @@ package Addons::awstats::installer;
 use strict;
 use warnings;
 use iMSCP::Debug;
+use iMSCP::HooksManager;
+use base 'Common::SingletonClass';
 
-use vars qw/@ISA/;
-
-@ISA = ('Common::SingletonClass');
-use Common::SingletonClass;
-
-
-sub askAwstats{
+sub askAwstats
+{
+	my $self = shift;
+	my ($rs, $force);
 
 	use iMSCP::Dialog;
-
-	my ($rs, $force);
 
 	if(!$main::imscpConfig{'AWSTATS_ACTIVE'}){
 		if($main::imscpConfigOld{'AWSTATS_ACTIVE'} && $main::imscpConfigOld{'AWSTATS_ACTIVE'} =~ /yes|no/){
@@ -76,45 +72,45 @@ sub askAwstats{
 	0;
 }
 
-sub registerHooks{
+sub registerHooks
+{
 	my $self = shift;
 
-	use Servers::httpd;
-
-	my $httpd = Servers::httpd->factory();
-
-	$httpd->registerPreHook(
-		'buildConf', sub { return $self->installLogrotate(@_); }
-	);
+	iMSCP::HooksManager->getInstance()->register(
+		'beforeHttpdBuildConf', sub { return $self->installLogrotate(@_); }
+	) and return 1;
 
 	0;
 }
 
-sub install{
+sub install
+{
+	my $self = shift;
+	my $rs = 0;
 
-	my $self	= shift;
-	my $rs		= 0;
 	$self->{httpd} = Servers::httpd->factory() unless $self->{httpd} ;
 
 	$self->{user} = $self->{httpd}->can('getRunningUser') ? $self->{httpd}->getRunningUser() : $main::imscpConfig{ROOT_USER};
 	$self->{group} = $self->{httpd}->can('getRunningUser') ? $self->{httpd}->getRunningGroup() : $main::imscpConfig{ROOT_GROUP};
 
 	$self->askAwstats() and return 1;
+
 	if ($main::imscpConfig{'AWSTATS_ACTIVE'} eq 'yes') {
 		$self->makeDirs() and return 1;
 		$self->vhost() and return 1;
 	}
+
 	$self->disableConf() and return 1;
 	$self->disableCron() and return 1;
 
 	$rs;
 }
 
-sub makeDirs{
+sub makeDirs
+{
+	my $self = shift;
 
 	use iMSCP::Dir;
-
-	my $self		= shift;
 
 	iMSCP::Dir->new(
 		dirname => $main::imscpConfig{'AWSTATS_CACHE_DIR'}
@@ -126,7 +122,6 @@ sub makeDirs{
 
 	0;
 }
-
 
 ################################################################################
 # i-MSCP awstats vhost - (Setup / Update)
@@ -140,10 +135,12 @@ sub makeDirs{
 
 sub vhost {
 
+	my $self = shift;
+	my $rs = 0;
+
 	use Servers::httpd;
 
-	my $rs		= 0;
-	my $httpd	= Servers::httpd->factory();
+	my $httpd = Servers::httpd->factory();
 
 	$httpd->setData({
 		AWSTATS_ENGINE_DIR	=> $main::imscpConfig{'AWSTATS_ENGINE_DIR'},
@@ -167,11 +164,11 @@ sub vhost {
 
 	0;
 }
-sub disableConf{
+sub disableConf
+{
+	my $self = shift;
 
 	use iMSCP::File;
-
-	my $self	= shift;
 
 	if(-f "$main::imscpConfig{'AWSTATS_CONFIG_DIR'}/awstats.conf") {
 		iMSCP::File->new(
@@ -184,11 +181,11 @@ sub disableConf{
 	0;
 }
 
-sub disableCron{
+sub disableCron
+{
+	my $self = shift;
 
 	use iMSCP::File;
-
-	my $self	= shift;
 
 	# Removing default Debian Package cron task for awstats
 	if(-f "$main::imscpConfig{'CRON_D_DIR'}/awstats") {
@@ -202,16 +199,16 @@ sub disableCron{
 	0;
 }
 
-sub installLogrotate{
+sub installLogrotate
+{
+	my $self = shift;
+	my $content = shift;
+	my $file = shift;
 
 	use iMSCP::Templator;
 
-	my $self	= shift;
-	my $content	= shift || '';
-	my $file	= shift || '';
-
 	if ($file eq 'logrotate.conf') {
-		$content = replaceBloc(
+		$$content = replaceBloc(
 			'# AWSTATS SECTION BEGIN',
 			'# AWSTATS SECTION END',
 			(
@@ -224,19 +221,17 @@ sub installLogrotate{
 				:
 				''
 			),
-			$content,
+			$$content,
 			undef
 		);
 	} else {
 		# Not file we expect, register again
-		my $httpd = Servers::httpd->factory();
-
-		$httpd->registerPreHook(
-			'buildConf', sub { return $self->installLogrotate(@_); }
-		);
+		iMSCP::HooksManager->getInstance()->register(
+			'beforeHttpdBuildConf', sub { return $self->installLogrotate(@_); }
+		) and return 1;
 	}
 
-	$content;
+	0;
 }
 
 1;

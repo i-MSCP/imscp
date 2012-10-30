@@ -9,6 +9,11 @@ i-MSCP 1.1.0-beta2
 Features / Enhancements:
 
 GUI:
+	Engine:
+		- Added progress bar for Debian packages installation
+		- Added a hooks manager (engine is now pluggable)
+		- Added several hooks in the servers packages (a lot more to add...)
+		- Updated the awstats addon package  (hooks manager integration + small fixes)
 	Libs:
 		- Updated Zend Framework to 1.11.12
 
@@ -36,6 +41,10 @@ Tickets:
 	- Fixed #504: Roundcube 0.8.2
 	- Fixed #507: Cosmetics - External mail servers features status not show
 	- Fixed #508: German Umlaut in Custom DNS were shown wrong
+	- Fixed #509: Tools: PHPMyAdmin 3.5.3 released
+	- Fixed #511: Enhancement - Show disk usage detail (web, mail, sql) on client side
+	- Fixed #512: autoresponder: lines in transport file not correct
+	- Fixed #514: Email forward from domain A to domain B not working
 
 -------------------------------------------------------------------------------------
 i-MSCP 1.1.0-beta1
@@ -50,7 +59,6 @@ GUI:
 		- Updated PhpMyAdmin to version 3.5.2
 		- Updated AjaxPlorer to 4.2.2
 		- Updated Roundcube to 0.7.2
-
 
 Tickets:
 	- Fixed #17: Feature - Send mail if quota reached
