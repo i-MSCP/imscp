@@ -372,7 +372,7 @@ sub buildNAMEDData{
 
 	} elsif($self->{mail_on_domain} || $self->{domain_mailacc_limit} >= 0) {
 
-		$self->{named}->{MX}->{1}->{domain_text} = "10\tmail.".$self->{user_home};
+		$self->{named}->{MX}->{1}->{domain_text} = "10\tmail.".$self->{user_home}.".";
 
 	}
 
