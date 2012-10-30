@@ -97,8 +97,6 @@
 	</perl>
 	<other>bash</other>
 	<other>bzip2</other>
-	<other>lsb-base</other>
-	<other>lsb-release</other>
 	<other>awstats</other>
 	<other>chkrootkit</other>
 	<other>dialog</other>

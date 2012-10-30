@@ -1,5 +1,11 @@
 #!/usr/bin/perl
 
+=head1 NAME
+
+iMSCP::SO - Provides distribution-specific information
+
+=cut
+
 # i-MSCP - internet Multi Server Control Panel
 # Copyright (C) 2010 - 2011 by internet Multi Server Control Panel
 #
@@ -20,83 +26,144 @@
 # @category		i-MSCP
 # @copyright	2010 - 2012 by i-MSCP | http://i-mscp.net
 # @author		Daniel Andreca <sci2tech@gmail.com>
-# @version		SVN: $Id$
+# @author		Laurent Declercq <l.declercq@nuxwin.com>
 # @link			http://i-mscp.net i-MSCP Home Site
 # @license		http://www.gnu.org/licenses/gpl-2.0.html GPL v2
-
-
-#####################################################################################
-# Package description:
-#
-# Package that allows to get distribution information. For now:
-# distribution name, distribution code name, and distribution version.
-#
-# Note: Only distributions that provides lsb_release tool are supported.
 
 package iMSCP::SO;
 
 use strict;
 use warnings;
-
 use iMSCP::Debug;
-use iMSCP::Execute qw/execute/;
+use iMSCP::LsbRelease;
+use base 'Common::SingletonClass';
 
-use vars qw/@ISA/;
-@ISA = ('Common::SingletonClass');
-use Common::SingletonClass;
+=head1 DESCRIPTION
 
+This class provides distribution-specific information.
 
-sub _init{
+=head1 PUBLIC METHODS
+
+=over 4
+
+=item loadInfo($forceReload = false)
+
+Make distribution-specific information available via the following public attributes.
+
+ - Distribution: Holds the distributor ID such as 'Debian'
+ - Version: Holds the distribution version such as '6.0.6'
+ - CodeName: Holds the distribution codename such as 'squeeze'
+
+You can force reload of distribution-specific information by passing a true value as
+parameter. In case one of the information is not found, a fatal error is raised.
+
+Return self Provides fluent interface
+
+=cut
+
+sub loadInfo
+{
 	my $self = shift;
-	fatal('Can not guess operating system') if ($self->getSO);
-}
+	my $forceReload = shift;
 
-# Gets information about distribution.
-#
-# When this method is called, the following public attributes are populated:
-#
-# - Distribution : Contains the distribution name
-# - CodeName :  Contains the distribution code name
-# - Version :  Contains the distribution version
-#
-# @param self $self iMSCP::SO instance
-# @return int 0 on success, other on failure
+	my $lsbRelease = iMSCP::LsbRelease->new();
 
-sub getSO{
-
-	my $self = shift;
-	my ($rs, $stdout, $stderr);
-
-	if(execute('which lsb_release', \$stdout, \$stderr)){
-		$rs = execute('apt-get -y install lsb-release', \$stdout, \$stderr);
-		debug("$stdout") if $stdout;
-		error("$stderr") if $stderr;
-		return $rs if $rs;
+	if($forceReload) {
+		$lsbRelease->reset();
+		$self->{Distribution} = undef;
+		$self->{Version} = undef;
+		$self->{CodeName} = undef;
 	}
 
-	# Retrieves distribution name
-	$rs = execute('lsb_release -si', \$stdout, \$stderr);
-	debug("Distribution is $stdout") if $stdout;
-	error("Can not guess operating system: $stderr") if $stderr;
-	return $rs if $rs;
-	$self->{Distribution} = $stdout;
+	$self->{Distribution} = $lsbRelease->getId(1);
+	$self->{Version} = $lsbRelease->getRelease(1);
+	$self->{CodeName} = $lsbRelease->getCodename(1);
 
-	# Retrieves distribution code name
-	$rs = execute('lsb_release -sr', \$stdout, \$stderr);
-	debug("Version is $stdout") if $stdout;
-	error("Can not guess operating system: $stderr") if $stderr;
-	return $rs if $rs;
-	$self->{Version} = $stdout;
-
-	# Retrieves distribution version
-	$rs = execute('lsb_release -sc', \$stdout, \$stderr);
-	debug("Codename is $stdout") if $stdout;
-	error("Can not guess operating system: $stderr") if $stderr;
-	return $rs if $rs;
-	$self->{CodeName} = $stdout;
+	if($self->{Distribution} eq "n/a" || $self->{Version} eq "n/a" || $self->{CodeName} eq "n/a") {
+		fatal('Can not guess distribution-specific information');
+	}
 
 	debug ("Found $self->{Distribution} $self->{Version} $self->{CodeName}");
-	0;
+
+	$self;
 }
+
+=item getDistribution()
+
+Return distributor ID.
+
+Return string
+
+=cut
+
+sub getDistribution
+{
+	my $self = shift;
+
+	$self->loadInformation() if ! $self->{Distribution};
+	$self->{Distribution};
+}
+
+=item getVersion()
+
+Return distribution version.
+
+Return string
+
+=cut
+
+sub getVersion
+{
+	my $self = shift;
+
+	$self->loadInformation() if ! $self->{Version};
+	$self->{Version};
+}
+
+=item getCodeName()
+
+Returns distribution codename.
+
+Return string
+
+=cut
+
+sub getCodeName
+{
+	my $self = shift;
+
+	$self->loadInformation() if ! $self->{CodeName};
+	$self->{CodeName};
+}
+
+=back
+
+=head1 PRIVATE METHODS
+
+=over 4
+
+=item _init()
+
+Called by new(). Initialize instance.
+
+=cut
+
+sub _init()
+{
+	my $self = shift;
+
+	$self->{Distribution} = undef;
+	$self->{Version} = undef;
+	$self->{CodeName} = undef;
+}
+
+=back
+
+=head1 AUTHORS
+
+ - Daniel Andreca <sci2tech@gmail.com>
+ - Laurent Declercq <l.declercq@nuxwin.com>
+
+=cut
 
 1;
