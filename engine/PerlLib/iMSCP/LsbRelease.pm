@@ -2,7 +2,7 @@
 
 =head1 NAME
 
-iMSCP::LsbRelease - print distribution-specific information
+iMSCP::LsbRelease - Provides distribution-specific information
 
 =cut
 
@@ -35,7 +35,7 @@ use strict;
 use warnings;
 use iMSCP::Execute;
 use iMSCP::Debug;
-use base 'Common::SimpleClass';
+use base 'Common::SingletonClass';
 
 =head1 DESCRIPTION
 
@@ -45,9 +45,9 @@ This class provides distribution-specific information as provided by the lsb_rel
 
 =over 4
 
-=item getId($short = "false")
+=item getId($short = false)
 
-Show distributor ID.
+Return distributor ID.
 
 Return string
 
@@ -67,9 +67,11 @@ sub getId
 	}
 }
 
-=item getDescription($short = "false")
+=item getDescription($short = false)
 
-Show description of the distribution.
+Returns description of the distribution.
+
+You can get short value by passing a true value as parameter.
 
 Return string
 
@@ -89,9 +91,11 @@ sub getDescription
 	}
 }
 
-=item getRelease($short = "false")
+=item getRelease($short = false)
 
-Show release number of the distribution.
+Return release number of the distribution.
+
+You can get short value by passing a true value as parameter.
 
 Return string
 
@@ -111,9 +115,11 @@ sub getRelease()
 	}
 }
 
-=item getCodename($short = "false")
+=item getCodename($short = false)
 
-Show code name of the distribution.
+Return code name of the distribution.
+
+You can get short value by passing a true value as parameter.
 
 Return string
 
@@ -133,9 +139,11 @@ sub getCodename
 	}
 }
 
-=item getAll($short = "false")
+=item getAll($short = false)
 
-Show all distribution information.
+Return all distribution-specific information.
+
+You can get short values by passing a true value as parameter.
 
 Return string
 
@@ -162,7 +170,7 @@ Return distribution specific information as a hash such as:
 	{
 		'ID' => 'Debian',
 		'RELEASE' => '6.0.6',
-		'DESCRIPTION' => 'Debian GNU/Linux6.0.6 (squeeze)',
+		'DESCRIPTION' => 'Debian GNU/Linux 6.0.6 (squeeze)',
 		'CODENAME' => 'squeeze'
 	}
 
@@ -190,6 +198,18 @@ sub getDistroInformation
     $self->{lsbInfo};
 }
 
+=item reset()
+
+Reset instance. Allow to force reload of distribution-specific information
+
+=cut
+
+sub reset
+{
+	my $self = shift;
+	my $self->{lsbInfo} = undef;
+}
+
 =back
 
 =head1 PRIVATE METHODS
@@ -198,7 +218,7 @@ sub getDistroInformation
 
 =item _init()
 
-Called by new(). Initialize instance
+Called by new(). Initialize instance.
 
 =cut
 
@@ -251,8 +271,8 @@ sub _lookupCodename($$)
 
 =item _parsePolicyLine($data)
 
-Parse a line from the apt-cache policy command output to retrieve distribution
-version, origin, suite, component and label field value.
+Parse a line from the apt-cache policy command output to retrieve distribution version,
+origin, suite, component and label field value.
 
 Return HASH reference A reference to a hash containing pairs of fieldname/fieldvalue
 
@@ -395,7 +415,7 @@ sub _guessDebianRelease
 		if($release =~ /^[0-9]/) {
 			# /etc/debian_version should be numeric
 			$$distinfo{RELEASE} = $release;
-			$$distinfo{CODENAME} = $self->_lookupCodename($release, 'n/a');
+			$$distinfo{CODENAME} = $self->_lookupCodename($release, "n/a");
 		} elsif($release =~ m%(.*)/sid$%) {
 			$TESTING_CODENAME = $1 if lc $1 ne 'testing';
 			$$distinfo{RELEASE} = 'testing/unstable';
@@ -412,20 +432,22 @@ sub _guessDebianRelease
     # This is slightly faster and less error prone in case the user
     # has an entry in his /etc/apt/sources.list but has not actually
     # upgraded the system.
-	my $rinfo = $self->_guessReleaseFromApt();
+    if(!$$distinfo{CODENAME} || $$distinfo{CODENAME} eq "n/a") {
+		my $rinfo = $self->_guessReleaseFromApt();
 
-	if($rinfo && !$$distinfo{CODENAME}) {
-		$release = $$rinfo{version};
+		if($rinfo) {
+			$release = $$rinfo{version};
 
-		if($release) {
-			$codename = $self->lookup_codename($release, 'n/a');
-		} else {
-			$release = $$rinfo{suite} || 'unstable';
-
-			if($release eq 'testing') {
-				$codename = $TESTING_CODENAME;
+			if($release) {
+				$codename = $self->_lookupCodename($release, "n/a");
 			} else {
-				$codename = 'sid';
+				$release = $$rinfo{suite} || 'unstable';
+
+				if($release eq 'testing') {
+					$codename = $TESTING_CODENAME;
+				} else {
+					$codename = 'sid';
+				}
 			}
 
 			$$distinfo{RELEASE} = $release;
@@ -433,7 +455,7 @@ sub _guessDebianRelease
 		}
 	}
 
-	$$distinfo{DESCRIPTION} .= "$$distinfo{RELEASE}" if $$distinfo{RELEASE};
+	$$distinfo{DESCRIPTION} .= " $$distinfo{RELEASE}" if $$distinfo{RELEASE};
 	$$distinfo{DESCRIPTION} .= " ($$distinfo{CODENAME})" if $$distinfo{CODENAME};
 
 	$distinfo;
@@ -441,9 +463,9 @@ sub _guessDebianRelease
 
 =item _getLsbInformation()
 
-Returns lsb information from the lsb-release file if any.
+Return lsb information from the lsb-release file if any.
 
-Returns HASH reference. A reference to a hash containing pairs of fieldname/fielvalue.
+Return HASH reference. A reference to a hash containing pairs of fieldname/fielvalue.
 
 =cut
 

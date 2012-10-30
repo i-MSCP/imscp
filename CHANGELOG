@@ -10,6 +10,7 @@ Features / Enhancements:
 
 GUI:
 	Engine:
+		- Added i-MSCP implementation of lsb_release (better performances)
 		- Added progress bar for Debian packages installation
 		- Added a hooks manager (engine is now pluggable)
 		- Added several hooks in the servers packages (a lot more to add...)

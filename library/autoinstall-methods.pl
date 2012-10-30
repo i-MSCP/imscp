@@ -52,7 +52,7 @@ sub preInstall {
 	fatal('Not a Debian like system') if(checkCommandAvailability('apt-get'));
 
 	my @pkg = ();
-	push @pkg, 'lsb-release' if(checkCommandAvailability('lsb_release'));
+
 	push @pkg, 'dialog' if(checkCommandAvailability('dialog'));
 
 	$command = 'apt-get';
