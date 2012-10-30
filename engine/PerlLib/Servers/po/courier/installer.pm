@@ -30,6 +30,7 @@ use warnings;
 use iMSCP::Debug;
 use iMSCP::File;
 use iMSCP::Execute;
+use iMSCP::HooksManager;
 
 use vars qw/@ISA/;
 
@@ -256,8 +257,6 @@ sub sslConf{
 
 sub registerHooks{
 
-	use iMSCP::HooksManager;
-
 	my $self = shift;
 
 	iMSCP::HooksManager->getInstance()->register(
@@ -273,7 +272,6 @@ sub mtaConf{
 	my $content	= shift || '';
 
 	use iMSCP::Templator;
-	use iMSCP::HooksManager;
 
 	my $mta	= Servers::mta->factory($main::imscpConfig{MTA_SERVER});
 

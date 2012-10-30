@@ -140,7 +140,7 @@ sub awstatsSection
 			AWSTATS_GROUP_AUTH	=> $main::imscpConfig{AWSTATS_GROUP_AUTH}
 		};
 
-		$data = process($tags, $data);
+		$$data = process($tags, $$data);
 	}
 
 	iMSCP::HooksManager->getInstance()->register(

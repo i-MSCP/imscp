@@ -33,6 +33,7 @@ use iMSCP::Debug;
 use iMSCP::Execute;
 use iMSCP::File;
 use iMSCP::Templator;
+use iMSCP::HooksManager;
 
 use vars qw/@ISA/;
 
@@ -280,26 +281,25 @@ sub buildMaster{
 
 	use iMSCP::File;
 	use iMSCP::Templator;
-	use iMSCP::HooksManager;
 
 	# Storing the new file in the working directory
 	my $file = iMSCP::File->new(filename => "$self->{cfgDir}/master.cf");
 	my $cfgTpl	= $file->get();
 	return 1 if (!$cfgTpl);
 
-	iMSCP::HooksManager->getInstance()->trigger('beforeMtaBuildConf', \$cfgTpl);
+	iMSCP::HooksManager->getInstance()->trigger('beforeMtaBuildConf', \$cfgTpl, 'master.cf');
 
 	$cfgTpl = iMSCP::Templator::process(
 		{
-			ARPL_USER					=> $self::postfixConfig{'MTA_MAILBOX_UID_NAME'},
-			ARPL_GROUP					=> $main::imscpConfig{'MASTER_GROUP'},
-			ARPL_PATH					=> $main::imscpConfig{'ROOT_DIR'}."/engine/messenger/imscp-arpl-msgr"
+			ARPL_USER	=> $self::postfixConfig{'MTA_MAILBOX_UID_NAME'},
+			ARPL_GROUP	=> $main::imscpConfig{'MASTER_GROUP'},
+			ARPL_PATH	=> $main::imscpConfig{'ROOT_DIR'}."/engine/messenger/imscp-arpl-msgr"
 		},
 		$cfgTpl
 	);
 	return 1 if (!$cfgTpl);
 
-	$rs |= iMSCP::HooksManager->getInstance()->trigger('afterMtaBuildConf', \$cfgTpl);
+	$rs |= iMSCP::HooksManager->getInstance()->trigger('afterMtaBuildConf', \$cfgTpl, 'master.cf');
 
 	$file = iMSCP::File->new(filename => "$self->{wrkDir}/master.cf");
 	$rs |= $file->set($cfgTpl);
@@ -320,7 +320,6 @@ sub buildMain{
 
 	use iMSCP::File;
 	use iMSCP::Templator;
-	use iMSCP::HooksManager;
 
 	# Loading the template from /etc/imscp/postfix/
 	my $file	= iMSCP::File->new(filename => "$self->{cfgDir}/main.cf");
@@ -332,7 +331,7 @@ sub buildMain{
 	my $gid	= getgrnam($self::postfixConfig{'MTA_MAILBOX_GID_NAME'});
 	my $uid	= getpwnam($self::postfixConfig{'MTA_MAILBOX_UID_NAME'});
 
-	iMSCP::HooksManager->getInstance()->trigger('beforeMtaBuildConf', \$cfgTpl);
+	iMSCP::HooksManager->getInstance()->trigger('beforeMtaBuildConf', \$cfgTpl, 'main.cf');
 
 	$cfgTpl = iMSCP::Templator::process(
 		{
@@ -358,7 +357,7 @@ sub buildMain{
 	);
 	return 1 if (!$cfgTpl);
 
-	$rs |= iMSCP::HooksManager->getInstance()->trigger('afterMtaBuildConf', \$cfgTpl);
+	$rs |= iMSCP::HooksManager->getInstance()->trigger('afterMtaBuildConf', \$cfgTpl, 'main.cf');
 
 	# Storing the new file in working directory
 	$file = iMSCP::File->new(filename => "$self->{wrkDir}/main.cf");
