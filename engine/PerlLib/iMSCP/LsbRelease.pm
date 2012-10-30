@@ -253,7 +253,7 @@ my $RELEASE_CODENAME_LOOKUP = {
     '5.0' => 'lenny',
 	'6.0' => 'squeeze',
 	'7.0' => 'wheezy',
-	'8.0' => 'Jessie'
+	'8.0' => 'jessie'
 };
 
 sub _lookupCodename($$)
