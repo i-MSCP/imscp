@@ -31,6 +31,7 @@ use iMSCP::Debug;
 use iMSCP::File;
 use iMSCP::Execute;
 use Data::Dumper;
+use iMSCP::HooksManager;
 
 use vars qw/@ISA/;
 
@@ -366,8 +367,6 @@ sub registerHooks{
 
 	my $self = shift;
 
-	use iMSCP::HooksManager;
-
 	iMSCP::HooksManager->getInstance()->register(
 		'afterMtaBuildConf', sub { return $self->mtaConf(@_); }
 	) and return 1;
@@ -380,38 +379,34 @@ sub mtaConf{
 	my $self	= shift;
 	my $content	= shift || '';
 
-	debug($content);
-
 	use iMSCP::Templator;
-	use iMSCP::HooksManager;
+
+	my $mta	= Servers::mta->factory($main::imscpConfig{MTA_SERVER});
 
 	my $poBloc = getBloc(
 		"$mta->{commentChar} dovecot begin",
 		"$mta->{commentChar} dovecot end",
-		$content
+		$$content
 	);
 
 	my $tpl = { SFLAG =>(version->new($self->{version}) < version->new('2.0.0') ? '-s' : '') };
 
 	$poBloc = iMSCP::Templator::process($tpl, $poBloc);
 
-
-	$content = replaceBloc(
+	$$content = replaceBloc(
 		"$mta->{commentChar} po setup begin",
 		"$mta->{commentChar} po setup end",
 		$poBloc,
-		$content,
+		$$content,
 		undef
 	);
 
 	# register again for next config file
 	iMSCP::HooksManager->getInstance()->register(
 		'afterMtaBuildConf', sub { return $self->mtaConf(@_); }
-	);
+	) and return 1;
 
-	debug($content);
-
-	$content;
+	0;
 }
 
 1;
