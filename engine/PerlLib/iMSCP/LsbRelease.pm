@@ -241,16 +241,16 @@ Return string Distribution codename if found or $unknown value
 # This should really be included in apt-cache policy output... it is already
 # in the Release file...
 my $RELEASE_CODENAME_LOOKUP = {
-    '1.1' => 'buzz',
-    '1.2' => 'rex',
-    '1.3' => 'bo',
-    '2.0' => 'hamm',
-    '2.1' => 'slink',
-    '2.2' => 'potato',
-    '3.0' => 'woody',
-    '3.1' => 'sarge',
-    '4.0' => 'etch',
-    '5.0' => 'lenny',
+	'1.1' => 'buzz',
+	'1.2' => 'rex',
+	'1.3' => 'bo',
+	'2.0' => 'hamm',
+	'2.1' => 'slink',
+	'2.2' => 'potato',
+	'3.0' => 'woody',
+	'3.1' => 'sarge',
+	'4.0' => 'etch',
+	'5.0' => 'lenny',
 	'6.0' => 'squeeze',
 	'7.0' => 'wheezy',
 	'8.0' => 'jessie'
@@ -424,15 +424,15 @@ sub _guessDebianRelease
 		}
 	}
 
-    # Only use apt information if we did not get the proper information
-    # from /etc/debian_version or if we don't have a codename
-    # (which will happen if /etc/debian_version does not contain a
-    # number but some text like 'testing/unstable' or 'lenny/sid')
-    #
-    # This is slightly faster and less error prone in case the user
-    # has an entry in his /etc/apt/sources.list but has not actually
-    # upgraded the system.
-    if(!$$distinfo{CODENAME} || $$distinfo{CODENAME} eq "n/a") {
+	# Only use apt information if we did not get the proper information
+	# from /etc/debian_version or if we don't have a codename
+	# (which will happen if /etc/debian_version does not contain a
+	# number but some text like 'testing/unstable' or 'lenny/sid')
+	#
+	# This is slightly faster and less error prone in case the user
+	# has an entry in his /etc/apt/sources.list but has not actually
+	# upgraded the system.
+	if(!$$distinfo{CODENAME} || $$distinfo{CODENAME} eq "n/a") {
 		my $rinfo = $self->_guessReleaseFromApt();
 
 		if($rinfo) {
