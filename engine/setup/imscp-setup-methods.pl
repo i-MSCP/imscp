@@ -66,10 +66,6 @@ sub setupLoadOldConfig
 		%main::imscpOldConfig = %main::imscpConfig;
 	}
 
-	#use Data::Dumper;
-	#print Dumper(%main::imscpOldConfig);
-	#exit;
-
 	#verbose(iMSCP::Getopt->debug || $main::imscpConfig{'DEBUG'} || 0);
 
 	0;
