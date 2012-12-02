@@ -129,7 +129,7 @@ sub setupDialog
 {
 	my $dialogStack = [];
 
-	iMSCP::HooksManager->getInstance()->trigger('beforeSetupDialog', $dialogStack);
+	#iMSCP::HooksManager->getInstance()->trigger('beforeSetupDialog', $dialogStack);
 
 	unshift(
 		@$dialogStack,
@@ -179,9 +179,9 @@ sub setupDialog
 		}
 	}
 
-	#use Data::Dumper;
-	#print Dumper(\%main::questions);
-	#exit;
+	use Data::Dumper;
+	print Dumper(\%main::questions);
+	exit;
 
 	iMSCP::HooksManager->getInstance()->trigger('afterSetupDialog');
 
@@ -340,13 +340,14 @@ sub setupAskServerIps
 {
 	my $dialog = shift;
 	my $baseServerIp = setupGetQuestion('BASE_SERVER_IP');
-	my @serverIps = setupGetQuestion('SERVER_IPS') ? @{setupGetQuestion('SERVER_IPS')} : ();
+	#my @serverIps = setupGetQuestion('SERVER_IPS') ? @{setupGetQuestion('SERVER_IPS')} : ();
 	my $manualIp = 0;
 	my $serverIps = '';
 	my $currentServerIps = {};
-	my @serverIpsToKeepOrAdd = ();
+	my @serverIpsToKeepOrAdd = setupGetQuestion('SERVER_IPS') ? @{setupGetQuestion('SERVER_IPS')} : ();;
 	my %serverIpsToDelete = ();
 	my %serverIpsReplMap = ();
+	my $database = '';
 
 	my $ips = iMSCP::IP->new();
 	my $rs = $ips->loadIPs();
@@ -357,6 +358,22 @@ sub setupAskServerIps
 	if(! @serverIps) {
 		error('Unable to retrieve servers ips');
 		return 1;
+	}
+
+	if(setupGetQuestion('DATABASE_NAME')) {
+		# We do not raise error in case we cannot get SQL connection since it's expected on first install
+    	my $database = setupGetSqlConnect(setupGetQuestion('DATABASE_NAME'));
+
+		if($database) {
+			$currentServerIps = $database->doQuery('ip_number', 'SELECT `ip_id`, `ip_number` FROM `server_ips`');
+
+			if(ref $currentServerIps ne 'HASH') {
+				error('Cannot retrieve current server ips');
+				return 1
+			}
+		}
+
+		@serverIpsToKeepOrAdd = (@serverIpsToKeepOrAdd, keys %$currentServerIps);
 	}
 
 	if(
@@ -424,23 +441,6 @@ sub setupAskServerIps
 			if(@serverIps > 1 && ! $dialog->yesno("\nDo you want add or remove IP addresses?")) {
 				$dialog->set('defaultno', undef);
 
-				# We do not raise error in case we cannot get SQL connection since it's expected on first install
-				# TODO setup SQL before server ips ?
-				my $database = setupGetSqlConnect(setupGetQuestion('DATABASE_NAME') || 'imscp');
-
-				if(setupGetQuestion('DATABASE_NAME')) {
-					if($database) {
-						$currentServerIps = $database->doQuery(
-							'ip_number', 'SELECT `ip_id`, `ip_number` FROM `server_ips`'
-						);
-
-						if(ref $currentServerIps ne 'HASH') {
-							error('Cannot retrieve current server ips');
-							return 1
-						}
-					}
-				}
-
 				@serverIps = grep $_ ne $baseServerIp, @serverIps; # Remove base server ip from the list
 				my $sshConnectIp = defined ($ENV{'SSH_CONNECTION'}) ? (split ' ', $ENV{'SSH_CONNECTION'})[2] : undef;
 
@@ -450,7 +450,8 @@ sub setupAskServerIps
 					($rs, $serverIps) = $dialog->checkbox(
 						"\nPlease, select the IP addresses to add into the database and deselect those to delete: $msg",
 						[@serverIps],
-						keys %$currentServerIps
+						#keys %$currentServerIps
+						@serverIpsToKeepOrAdd
 					);
 
 					$msg = '';
@@ -474,7 +475,9 @@ sub setupAskServerIps
 					}
 
 					if($database) {
-						my $resellerIps = $database->doQuery('reseller_ips', 'SELECT `reseller_ips` FROMs `reseller_props`');
+						my $resellerIps = $database->doQuery(
+							'reseller_ips', 'SELECT `reseller_ips` FROM `reseller_props`'
+						);
 						if(ref $resellerIps ne 'HASH') {
 							error("Cannot retrieve resellers's addresses IP: $resellerIps");
 							return 1;
@@ -1314,10 +1317,12 @@ sub setupServerIps
 	}
 
 	# Process server ips addition
+	my ($defaultNetcard) = $ips->getNetCards();
+
 	for (@serverIps) {
 		next if exists $$serverIpsToReplace{$_};
 
-		my $netCard = $ips->getCardByIP($_);
+		my $netCard = $ips->getCardByIP($_) || $defaultNetcard;
 
 		if($netCard) {
 			my $rs = $database->doQuery(
@@ -1337,7 +1342,7 @@ sub setupServerIps
 				return 1;
 			}
 		} else {
-			error("Cannot add unconfigured IP into database: $_");
+			error("Cannot add the '$è' IP into database");
 			return 1;
 		}
 	}

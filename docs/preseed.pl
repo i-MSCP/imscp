@@ -30,7 +30,7 @@ $main::preseed{'LOCAL_DNS_RESOLVER'} = 'yes';
 $main::preseed{'BASE_SERVER_IP'} = ''; # 192.168.5.110
 
 # Additional ips to make available for i-MSCP - Accept both IPv4 and IPv6
-# Any ips listed must be already configured (see ifconfig)
+# Any unconfigured ips will be added to the first netcard found (eg: eth0)
 $main::preseed{'SERVER_IPS'} = []; # ['192.168.5.115', '192.168.5.115']
 
 # SQL DSN and i-MSCP SQL user
