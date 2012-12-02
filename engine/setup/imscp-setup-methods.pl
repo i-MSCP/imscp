@@ -54,7 +54,6 @@ use iMSCP::Servers;
 use iMSCP::Addons;
 use iMSCP::Getopt;
 
-
 # Global variable that holds some questions
 %main::questions = ();
 
