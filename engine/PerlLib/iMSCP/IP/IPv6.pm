@@ -1,7 +1,7 @@
 #!/usr/bin/perl
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010 - 2011 by internet Multi Server Control Panel
+# Copyright (C) 2010 - 2012 by internet Multi Server Control Panel
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -20,7 +20,6 @@
 # @category		i-MSCP
 # @copyright	2010 - 2012 by i-MSCP | http://i-mscp.net
 # @author		Daniel Andreca <sci2tech@gmail.com>
-# @version		SVN: $Id$
 # @link			http://i-mscp.net i-MSCP Home Site
 # @license		http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
@@ -43,8 +42,7 @@ sub parseIPs{
 	my $data = shift;
 
 	unless($self->{_loadedIPs}){
-
-		my $ips = {};
+		$self->{ips} = {};
 
 		while($data =~ m/^(([^\s]+).*?)\n(\n|$)/smgi){
 			my $netCardName = (split(':', $2))[0];
@@ -84,6 +82,7 @@ sub parseNetCards{
 	my $data = shift;
 
 	unless($self->{_loadedCards}){
+		$self->{cards} = {};
 
 		while($data =~ m/^([^\s]+)\s{1,}[^\n]*\n/mgi){
 			debug("$1") if $1;

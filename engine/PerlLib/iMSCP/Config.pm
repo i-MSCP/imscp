@@ -1,4 +1,9 @@
 #!/usr/bin/perl
+=head1 NAME
+
+ iMSCP::Config - i-MSCP configuration files handler
+
+=cut
 
 # i-MSCP - internet Multi Server Control Panel
 # Copyright (C) 2010 - 2012 by internet Multi Server Control Panel
@@ -20,6 +25,7 @@
 # @category		i-MSCP
 # @copyright	2010 - 2012 by i-MSCP | http://i-mscp.net
 # @author		Daniel Andreca <sci2tech@gmail.com>
+# @author		Laurent Declercq <l.declercq@nuxwin.com>
 # @link			http://i-mscp.net i-MSCP Home Site
 # @license      http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
@@ -29,108 +35,245 @@ use strict;
 use warnings;
 use Tie::File;
 use iMSCP::Debug;
+use Fcntl 'O_RDWR', 'O_CREAT', 'O_RDONLY';
+use parent 'Common::SimpleClass';
 
-use vars qw/@ISA/;
-@ISA = ('Common::SimpleClass');
-use Common::SimpleClass;
+=head1 DESCRIPTION
 
-sub TIEHASH {
+ This class allow to tie an i-MSCP configuration file to a hash variable.
+ See perl tie and tie::file for more information.
+
+=head1 PRIVATE METHODS
+
+=over 4
+
+=item
+
+ Constructor. Called by the tie command.
+
+ The required arguments for the tie command are:
+  - fileName: Filename of the configuration file (including path)
+
+ Optional arguments for the tie command are:
+  - noerrors: Do not warn when trying to access to an inexistent configuration parameter
+  - nocreate: Do not create file if it doesn't already exist (thrown a fatal error instead)
+  - readonly: Sets  a read-only access on the tied configuration file
+
+=cut
+
+sub TIEHASH
+{
+	(shift)->new(@_);
+}
+
+=item
+
+ Initialize tied hash variable.
+
+ Return self
+
+=cut
+
+sub _init
+{
 	my $self = shift;
-	$self = $self->new(@_);
 
 	$self->{confFile} = ();
-
 	$self->{configValues} = {};
 	$self->{lineMap} = {};
 
-	$self->{confFileName} = $self->{args}->{fileName};
+	if(defined $self->{args}->{fileName}) {
+		$self->{confFileName} = $self->{args}->{fileName};
+	} else {
+		fatal('fileName attribut is not defined');
+	}
 
-	debug("Tieing $self->{confFileName}");
+	debug("Tying $self->{confFileName}");
 
 	$self->_loadConfig();
 	$self->_parseConfig();
 
-	return $self;
+	$self;
 }
 
-sub _loadConfig{
-	my $self	= shift;
+=item
 
-	debug('Config file ' . $self->{confFileName});
+ Load i-MSCP configuration file.
 
-	tie @{$self->{confFile}}, 'Tie::File', $self->{confFileName} or
-		fatal("Can`t read " . $self->{confFileName}, 1);
+ Return undef
 
+=cut
+
+sub _loadConfig
+{
+	my $self = shift;
+	my $mode;
+
+	debug("Tying configuration file: $self->{confFileName}");
+
+	if($self->{args}->{nocreate}) {
+		$mode = O_RDWR;
+	} elsif($self->{args}->{readonly}) {
+		$mode = O_RDONLY;
+	} else {
+		$mode = O_RDWR | O_CREAT;
+	}
+
+	tie @{$self->{confFile}}, 'Tie::File', $self->{confFileName}, mode => $mode or
+		fatal("Can`t open file $self->{confFileName}");
+
+	undef;
 }
 
-sub _parseConfig{
+=item
+
+ Parse configuration file.
+
+ Return undef
+
+=cut
+
+sub _parseConfig
+{
 	my $self = shift;
 
 	my $lineNo = 0;
 
-	for my $line (@{$self->{confFile}}){
-		if ($line =~ /^([^#\s=]+)\s{0,}=\s{0,}(.{0,})$/) {
+	for (@{$self->{confFile}}) {
+		if (/^([^#\s=]+)\s{0,}=\s{0,}(.{0,})$/) {
 			$self->{configValues}->{$1}	= $2;
-			$self->{lineMap}->{$1}		= $lineNo;
+			$self->{lineMap}->{$1} = $lineNo;
 		}
+
 		$lineNo++;
 	}
 
+	undef;
 }
 
-sub FETCH {
-	my $self	= shift;
-	my $config	= shift;
+=item
+
+ Return value of the given configuration parameter.
+
+ Return scalar|undef - Configuration parameter value or undef if config parameter is not defined
+=cut
+
+sub FETCH
+{
+	my $self = shift;
+	my $config = shift;
 
 	debug("Fetching ${config}..." );
 
-	if (!exists($self->{configValues}->{$config}) && !$self->{args}->{noerrors}){
+	if (! exists $self->{configValues}->{$config} && ! $self->{args}->{noerrors}){
 		error(sprintf('Accessing non existing config value %s', $config));
 	}
 
-	return $self->{configValues}->{$config};
+	$self->{configValues}->{$config};
 }
 
-sub STORE {
-	my $self	= shift;
-	my $config	= shift;
-	my $value	= shift;
+=item
 
-	debug("Store ${config} as ".($value ? $value : 'empty')."..." );
+ Store the given configuration parameters.
 
-	if(!exists($self->{configValues}->{$config})){
-		$self->_insertConfig($config, $value);
+ Return undef;
+=cut
+
+sub STORE
+{
+	my $self = shift;
+	my $config = shift;
+	my $value = shift;
+
+	if(! $self->{args}->{readonly}) {
+		debug("Store ${config} as " . ($value ? $value : 'empty') . "...");
+
+		if(! exists $self->{configValues}->{$config}) {
+			$self->_insertConfig($config, $value);
+		} else {
+			$self->_replaceConfig($config, $value);
+		}
 	} else {
-		$self->_replaceConfig($config, $value);
+		fatal('Config object is readonly');
 	}
 
+	undef;
 }
 
-sub FIRSTKEY {
+=item
+
+ Return the first configuration parameter.
+
+ Return scalar
+
+=cut
+
+sub FIRSTKEY
+{
 	my $self = shift;
 
 	$self->{_list} = [ sort keys %{$self->{configValues}} ];
 
-	return $self->NEXTKEY;
+	$self->NEXTKEY;
 }
 
-sub NEXTKEY {
+=item
+
+ Return the next configuration parameters.
+
+ Return scalar
+
+=cut
+
+sub NEXTKEY
+{
 	my $self = shift;
 
-	return shift @{$self->{_list}};
+	shift @{$self->{_list}};
 }
 
-sub EXISTS {
+=item
+
+ Verify that the given configuration parameter exists.
+
+ Return true if the given configuration parameter exists, false otherwise
+
+=cut
+
+sub EXISTS
+{
 	my $self = shift;
-	my $config	= shift;
+	my $config = shift;
 
-	return exists $self->{configValues}->{$config};
+	exists $self->{configValues}->{$config};
 }
 
-sub _replaceConfig{
-	my $self	= shift;
-	my $config	= shift;
-	my $value	= shift;
+=item
+
+ Clear all values from the tied hash.
+
+=cut
+
+sub CLEAR
+{
+
+}
+
+=item _insertConfig($config, $value)
+
+ Replace the given configuration parameter value
+
+ Param scalar $config - Configuration parameter name
+ Param scalar $config - Configuration parameter value
+ Return scalar - Configuration parameter value
+
+=cut
+
+sub _replaceConfig
+{
+	my $self = shift;
+	my $config = shift;
+	my $value = shift;
 
 	$value = '' unless defined $value;
 
@@ -140,10 +283,21 @@ sub _replaceConfig{
 	$self->{configValues}->{$config} = $value;
 }
 
-sub _insertConfig{
-	my $self	= shift;
-	my $config	= shift;
-	my $value	= shift;
+=item _insertConfig($config, $value)
+
+ Insert the given configuration parameter.
+
+ Param scalar $config - Configuration parameter name
+ Param scalar $config - Configuration parameter value
+ Return scalar - Configuration parameter value
+
+=cut
+
+sub _insertConfig
+{
+	my $self = shift;
+	my $config = shift;
+	my $value = shift;
 
 	$value = '' unless defined $value;
 
@@ -153,5 +307,12 @@ sub _insertConfig{
 	$self->{lineMap}->{$config} = $#{$self->{confFile}};
 	$self->{configValues}->{$config} = $value;
 }
+
+=head1 AUTHORS
+
+ Daniel Andreca <sci2tech@gmail.com>
+ Laurent Declercq <l.declercq@nuxwin.com>
+
+=cut
 
 1;

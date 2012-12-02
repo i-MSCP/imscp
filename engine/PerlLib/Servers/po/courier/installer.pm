@@ -31,21 +31,18 @@ use iMSCP::Debug;
 use iMSCP::File;
 use iMSCP::Execute;
 use iMSCP::HooksManager;
+use parent 'Common::SingletonClass';
 
-use vars qw/@ISA/;
+sub _init
+{
+	my $self = shift;
 
-@ISA = ('Common::SingletonClass');
-use Common::SingletonClass;
+	$self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/courier";
+	$self->{'bkpDir'} = "$self->{cfgDir}/backup";
+	$self->{'wrkDir'} = "$self->{cfgDir}/working";
 
-sub _init{
-
-	my $self		= shift;
-	$self->{cfgDir}	= "$main::imscpConfig{'CONF_DIR'}/courier";
-	$self->{bkpDir}	= "$self->{cfgDir}/backup";
-	$self->{wrkDir}	= "$self->{cfgDir}/working";
-
-	my $conf		= "$self->{cfgDir}/courier.data";
-	my $oldConf		= "$self->{cfgDir}/courier.old.data";
+	my $conf = "$self->{cfgDir}/courier.data";
+	my $oldConf = "$self->{cfgDir}/courier.old.data";
 
 	tie %self::courierConfig, 'iMSCP::Config','fileName' => $conf;
 	tie %self::courierOldConfig, 'iMSCP::Config','fileName' => $oldConf if -f $oldConf;
@@ -53,20 +50,18 @@ sub _init{
 	0;
 }
 
-sub migrateMailboxes{
+sub migrateMailboxes
+{
+	my $self = shift;
 
-	if(
-		$main::imscpConfigOld{PO_SERVER}
-		&&
-		$main::imscpConfigOld{PO_SERVER} eq 'dovecot'
-		&&
-		$main::imscpConfig{PO_SERVER}  eq 'courier'
+	if($main::imscpOldConfig{'PO_SERVER'} && $main::imscpOldConfig{'PO_SERVER'} eq 'dovecot' &&
+		main::imscpConfig{'PO_SERVER'}  eq 'courier'
 	){
 		use iMSCP::Execute;
 		use FindBin;
 		use Servers::mta;
 
-		my $mta	= Servers::mta->factory($main::imscpConfig{MTA_SERVER});
+		my $mta	= Servers::mta->factory($main::imscpConfig{'MTA_SERVER'});
 		my ($rs, $stdout, $stderr);
 		my $binPath = "perl $main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlVendor/courier-dovecot-migrate.pl";
 		my $mailPath = "$mta->{'MTA_VIRTUAL_MAIL_DIR'}";
@@ -81,18 +76,13 @@ sub migrateMailboxes{
 	0;
 }
 
-sub install{
-
-	my $self	= shift;
-	my $rs		= 0;
+sub install
+{
+	my $self = shift;
+	my $rs = 0;
 
 	# Saving all system configuration files if they exists
-	for ((
-		'authdaemonrc',
-		'userdb',
-		"$self::courierConfig{COURIER_IMAP_SSL}",
-		"$self::courierConfig{COURIER_POP_SSL}"
-	)) {
+	for (('authdaemonrc', 'userdb', "$self::courierConfig{COURIER_IMAP_SSL}", "$self::courierConfig{COURIER_POP_SSL}")) {
 		$rs |= $self->bkpConfFile($_);
 	}
 
@@ -106,20 +96,20 @@ sub install{
 	$rs |= $self->sslConf();
 
 	$rs |= $self->saveConf();
-
 	$rs |= $self->migrateMailboxes();
 
 	$rs;
 }
 
-sub saveConf{
+sub saveConf
+{
+	my $self = shift;
+	my $rs = 0;
 
 	use iMSCP::File;
 
-	my $self	= shift;
-	my $rs		= 0;
-	my$file		= iMSCP::File->new(filename => "$self->{cfgDir}/courier.data");
-	my $cfg		= $file->get() or return 1;
+	my$file = iMSCP::File->new(filename => "$self->{cfgDir}/courier.data");
+	my $cfg = $file->get() or return 1;
 
 	$file = iMSCP::File->new(filename => "$self->{cfgDir}/courier.old.data");
 	$rs |= $file->set($cfg);
@@ -130,16 +120,15 @@ sub saveConf{
 	$rs;
 }
 
-sub bkpConfFile{
-
-	my $self		= shift;
-	my $cfgFile		= shift;
-	my $timestamp	= time;
+sub bkpConfFile
+{
+	my $self = shift;
+	my $cfgFile = shift;
+	my $timestamp = time;
 
 	if(-f "$self::courierConfig{'AUTHLIB_CONF_DIR'}/$cfgFile"){
-		my $file	= iMSCP::File->new(
-						filename => "$self::courierConfig{'AUTHLIB_CONF_DIR'}/$cfgFile"
-					);
+		my $file = iMSCP::File->new(filename => "$self::courierConfig{'AUTHLIB_CONF_DIR'}/$cfgFile");
+
 		if(!-f "$self->{bkpDir}/$cfgFile.system") {
 			$file->copyFile("$self->{bkpDir}/$cfgFile.system") and return 1;
 		} else {
@@ -150,14 +139,15 @@ sub bkpConfFile{
 	0;
 }
 
-sub authDaemon{
-
+sub authDaemon
+{
 	my $self = shift;
 	my ($rdata, $file);
 
 	# Loading the system file from /etc/imscp/backup
 	$file = iMSCP::File->new(filename => "$self->{bkpDir}/authdaemonrc.system");
 	$rdata = $file->get();
+
 	if (!$rdata){
 		error("Error while reading $self->{bkpDir}/authdaemonrc.system");
 		return 1 ;
@@ -181,8 +171,8 @@ sub authDaemon{
 	0;
 }
 
-sub userDB{
-
+sub userDB
+{
 	my $self = shift;
 	my ($rdata, $file);
 
@@ -215,17 +205,15 @@ sub userDB{
 	0;
 }
 
-sub sslConf{
-
-	my $self	= shift;
-	my $rs		= 0;
+sub sslConf
+{
+	my $self = shift;
+	my $rs = 0;
 	my ($rdata, $file);
 
 	for (($self::courierConfig{'COURIER_IMAP_SSL'}, $self::courierConfig{'COURIER_POP_SSL'})) {
-
 		#if ssl is not enabled
 		last if lc($main::imscpConfig{'SSL_ENABLED'}) ne 'yes';
-
 
 		$file = iMSCP::File->new(filename => "$self::courierConfig{'AUTHLIB_CONF_DIR'}/$_");
 		#read file exit if can not read
@@ -255,8 +243,8 @@ sub sslConf{
 	$rs;
 }
 
-sub registerHooks{
-
+sub registerHooks
+{
 	my $self = shift;
 
 	iMSCP::HooksManager->getInstance()->register(
@@ -266,9 +254,9 @@ sub registerHooks{
 	0;
 }
 
-sub mtaConf{
-
-	my $self	= shift;
+sub mtaConf
+{
+	my $self = shift;
 	my $content	= shift || '';
 
 	use iMSCP::Templator;

@@ -1,5 +1,11 @@
 #!/usr/bin/perl
 
+=head1 NAME
+
+ autoinstaller::Adapter::Ubuntu - Ubuntu autoinstaller adapter class
+
+=cut
+
 # i-MSCP - internet Multi Server Control Panel
 # Copyright 2010 - 2012 by internet Multi Server Control Panel
 #
@@ -20,35 +26,35 @@
 # @category		i-MSCP
 # @copyright	2010 - 2012 by i-MSCP | http://i-mscp.net
 # @author		Daniel Andreca <sci2tech@gmail.com>
-# @version		SVN: $Id$
 # @link			http://i-mscp.net i-MSCP Home Site
 # @license		http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
-#####################################################################################
-# Package description:
-#
-# This package provides a class that is responsible to install all dependencies
-# (libraries, tools and softwares) required by i-MSCP on Ubuntu operating systems.
-#
-
-package library::ubuntu_autoinstall;
+package autoinstaller::Adapter::Ubuntu;
 
 use strict;
 use warnings;
+use parent 'autoinstaller::Adapter::Debian';
 
-use iMSCP::Debug;
-use iMSCP::Execute qw/execute/;
+=head1 DESCRIPTION
 
-use vars qw/@ISA/;
-@ISA = ('Common::SingletonClass', 'library::debian_autoinstall');
-use Common::SingletonClass;
-use library::debian_autoinstall;
+ i-MSCP distro autoinstaller adapter implementation for Ubuntu.
 
-# Initializer.
-#
-# @param self $self iMSCP::debian_autoinstall instance
-# return int 0
-sub _init {
+ See the autoinstaller::Adapter::Debian autoinstaller adapter for more information.
+
+=head1 PRIVATE METHODS
+
+=over 4
+
+=item _init()
+
+ Called by new(). Initialize instance.
+
+ Return self
+
+=cut
+
+sub _init
+{
 	debug('Starting...');
 
 	my $self = shift;
@@ -57,7 +63,15 @@ sub _init {
 
 	debug('Ending...');
 
-	0;
+	$self;
 }
+
+=back
+
+=head1 Author
+
+ Daniel Andreca <sci2tech@gmail.com>
+
+=cut
 
 1;

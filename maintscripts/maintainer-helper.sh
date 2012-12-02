@@ -5,7 +5,7 @@
 # Copyright (C) 2006-2010 by isp Control Panel - http://ispcp.net
 # Copyright (C) 2010-2012 by internet Multi Server Control Panel - http://i-mscp.net
 #
-# Author: Laurent Declercq <laurent.declercq@i-mscp.net>
+# Author: Laurent Declercq <l.declercq@nuxwin.com>
 #
 # The contents of this file are subject to the Mozilla Public License
 # Version 1.1 (the "License"); you may not use this file except in

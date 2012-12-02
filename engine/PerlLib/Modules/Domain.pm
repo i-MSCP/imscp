@@ -1,7 +1,7 @@
 #!/usr/bin/perl
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010 - 2011 by internet Multi Server Control Panel
+# Copyright (C) 2010 - 2012 by internet Multi Server Control Panel
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -20,7 +20,6 @@
 # @category		i-MSCP
 # @copyright	2010 - 2012 by i-MSCP | http://i-mscp.net
 # @author		Daniel Andreca <sci2tech@gmail.com>
-# @version		SVN: $Id$
 # @link			http://i-mscp.net i-MSCP Home Site
 # @license		http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
@@ -447,6 +446,22 @@ sub buildADDONData{
 	};
 
 	0;
+}
+
+sub testCert{
+
+	my $self = shift;
+	my $domainName = shift;
+	my $certPath = "$main::imscpConfig{GUI_ROOT_DIR}/data/certs";
+	my $certFile = "$certPath/$domainName.pem";
+
+    use Modules::openssl;
+
+	Modules::openssl->new()->{openssl_path} = $main::imscpConfig{'CMD_OPENSSL'};
+	Modules::openssl->new()->{cert_path} = $certFile;
+	Modules::openssl->new()->{intermediate_cert_path} = $certFile;
+	Modules::openssl->new()->{key_path} = $certFile;
+	Modules::openssl->new()->ssl_check_all();
 }
 
 1;

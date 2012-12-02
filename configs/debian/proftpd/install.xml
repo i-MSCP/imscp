@@ -18,7 +18,6 @@ program. If not, see <http://www.gnu.org/licenses/>
 @category	i-MSCP
 @copyright	2010 - 2012 by i-MSCP | http://i-mscp.net
 @author		Daniel Andreca <sci2tech@i-mscp.net>
-@version	SVN: $Id$
 @link		http://i-mscp.net i-MSCP Home Site
 @license	http://www.gnu.org/licenses/ GPL v2
 -->
@@ -29,17 +28,8 @@ program. If not, see <http://www.gnu.org/licenses/>
 	<folders>${SYSTEM_CONF}/proftpd/working</folders>
 	<folders>${ROOT_CONF}/proftpd</folders>
 	<folders>${ROOT_CONF}/proftpd/imscp</folders>
-
 	<copy_config>${SYSTEM_CONF}/proftpd/parts</copy_config>
 	<copy_config>${ROOT_CONF}/proftpd/root_domain.conf</copy_config>
 	<copy_config>${SYSTEM_CONF}/proftpd/proftpd.conf</copy_config>
 	<copy_config>${SYSTEM_CONF}/proftpd/proftpd.data</copy_config>
-
-	<copy />
-
-	<create_file />
-
-	<chown_file />
-
-	<chmod_file />
 </install>

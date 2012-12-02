@@ -20,555 +20,1222 @@
 # @category		i-MSCP
 # @copyright	2010 - 2012 by i-MSCP | http://i-mscp.net
 # @author		Daniel Andreca <sci2tech@gmail.com>
+# @author		Laurent Declercq <l.declercq@nuxwin.com>
 # @link			http://i-mscp.net i-MSCP Home Site
 # @license		http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
 use strict;
 use warnings;
+use FindBin;
+use iMSCP::HooksManager;
+use DateTime;
+use DateTime::TimeZone;
+use Net::LibIDN qw/idn_to_ascii idn_to_unicode/;
+use Data::Validate::Domain qw/is_domain/;
+use iMSCP::LsbRelease;
+use iMSCP::Debug;
+use iMSCP::IP;
+use iMSCP::Boot;
+use iMSCP::Dialog;
+use iMSCP::Stepper;
+use iMSCP::Crypt;
+use iMSCP::Database;
+use iMSCP::Dir;
+use iMSCP::File;
+use iMSCP::Execute;
+use iMSCP::HooksManager;
+use iMSCP::Rights;
+use iMSCP::Templator;
+use Modules::SystemGroup;
+use Modules::SystemUser;
+use Modules::openssl;
+use Email::Valid;
+use iMSCP::Servers;
+use iMSCP::Addons;
+use iMSCP::Getopt;
 
-################################################################################
-# Starting update process
-#
-# @return void
-#
-sub setup_start_up {
 
-	iMSCP::Boot->new(mode => 'setup')->init({nodatabase => 'yes'});
+# Global variable that holds some questions
+%main::questions = ();
 
-	#enter silent mode
-	silent(1);
+# Load old i-MSCP configuration file if any
+sub setupLoadOldConfig
+{
+	# Load old config (only if not already loaded)
+	if(! defined %main::imscpOldConfig) {
+		%main::imscpOldConfig = %main::imscpConfig;
+	}
+
+	#use Data::Dumper;
+	#print Dumper(%main::imscpOldConfig);
+	#exit;
+
+	#verbose(iMSCP::Getopt->debug || $main::imscpConfig{'DEBUG'} || 0);
 
 	0;
 }
 
-sub setup_engine {
+# Allow any server/addon to register its setup hook functions on the hooks manager before any other tasks
+sub setupRegisterHooks()
+{
+	my ($rs, $file, $class, $item);
+	my $hooksManager = iMSCP::HooksManager->getInstance();
 
-	use iMSCP::Stepper;
-	## Starting user dialog
-	user_dialog();
+	my @servers = iMSCP::Servers::get();
 
-	my @steps = (
-		[\&load_old_imscp_cfg, 'Loading old i-MSCP configuration file: '],
-		[\&update_imscp_cfg, 'Save old variable if needed: '],
-		[\&setup_system_users, 'Creating default users: '],
-		[\&setup_imscp_database_connection, 'i-MSCP database connection: '],
-		[\&setup_imscp_database, 'i-MSCP database: '],
-		[\&setup_system_dirs, 'i-MSCP directories: '],
-		[\&setup_base_server_IP, 'i-MSCP system IP: '],
-		[\&setup_hosts, 'i-MSCP system hosts file: '],
-		[\&askVHOST, 'i-MSCP virtual hostname'],
-		[\&setup_resolver, 'i-MSCP system resolver: '],
-		[\&askPHPTimezone, 'PHP timezone: '],
-		[\&setup_default_sql_data, 'i-MSCP default SQL data: '],
-		[\&setup_ssl, 'i-MSCP certificate setup: '],
-		[\&setup_gui_pma, 'i-MSCP PMA configuration file: '],
-		[\&preinstallServers, 'i-MSCP server preinstall task: '],
-		[\&preinstallAddons, 'i-MSCP addons preinstall task: '],
-		[\&installServers, 'i-MSCP server install task: '],
-		[\&installAddons, 'i-MSCP addons install task: '],
-		[\&postinstallServers, 'i-MSCP server postinstall task: '],
-		[\&postinstallAddons, 'i-MSCP addons postinstall task: '],
-		[\&setup_crontab, 'i-MSCP crontab file: '],
-		[\&setup_imscp_daemon_network, 'i-MSCP init scripts: '],
-		[\&askBackup, 'Setting backup: '],
-		[\&rebuild_customers_cfg, 'Rebuilding all customers configuration files: '],
-		[\&set_permissions, 'Permissions setup: '],
-		[\&restart_services, 'Starting all services: '],
-		[\&save_conf, 'Backup conf file: '],
-		[\&additional_tasks, 'Additional tasks: '],
-	);
-	my $rs = 0;
-	my $step = 1;
-	for (@steps){
-		$rs |= step($_->[0], $_->[1], scalar @steps, $step);
-		$step++;
+	unless(scalar @servers){
+		error('Cannot get servers list');
+		return 1;
 	}
-	iMSCP::Dialog->factory()->endGauge() if iMSCP::Dialog->factory()->needGauge();
+
+	for(@servers) {
+		s/\.pm//;
+		$file = "Servers/$_.pm";
+		$class = "Servers::$_";
+		require $file;
+		$item = $class->factory();
+		$rs |= $item->registerSetupHooks($hooksManager) if $item->can('registerSetupHooks');
+
+		last if $rs;
+	}
+
+	my @addons = iMSCP::Addons::get();
+	unless(scalar @addons){
+		error('Cannot get addons list');
+		return 1;
+	}
+
+	for(@addons) {
+		s/\.pm//;
+		$file = "Addons/$_.pm";
+		$class = "Addons::$_";
+		require $file;
+		$item = $class->new();
+		$rs |= $item->registerSetupHooks($hooksManager) if $item->can('registerSetupHooks');
+		last if $rs;
+	}
+
+	#use Data::Dumper;
+	#local $Data::Dumper::Deparse = 1;
+	#print Dumper($hooksManager);
+	#exit;
 
 	$rs;
 }
 
-################################################################################
-# User dialog
+# Trigger all dialog subroutines
 #
-# @return void
-#
-sub user_dialog {
+sub setupDialog
+{
+	my $dialogStack = [];
 
-	use iMSCP::Dialog;
+	iMSCP::HooksManager->getInstance()->trigger('beforeSetupDialog', $dialogStack);
 
-	return 0 if $main::noprompt;
-
-	iMSCP::Dialog->factory()->set('yes-label','CONTINUE');
-	iMSCP::Dialog->factory()->set('no-label','EXIT');
-	if (iMSCP::Dialog->factory()->yesno(
-					"\n
-						Welcome to \\Z1i-MSCP version $main::imscpConfig{'Version'}\\Zn Setup Dialog.
-
-						\\Zu\\Z4[NOTICE]\\Zn
-						Make sure you have read and performed all steps from docs/distro/INSTALL document (where distro is your linux distribution).
-
-						\\Zu\\Z4[NOTE]\\Zn
-						During the migration process some or all services might require to be shut down or restarted.
-
-						Only services that are not marked with 'NO' in your imscp.conf configuration file will be processed by this program.
-						You can stop this process by pushing \\Z1EXIT\\Z0 button
-						To continue select \\Z1CONTINUE\\Z0 button"
-
-					)
-	){
-		iMSCP::Dialog->factory()->msgbox(
-					"\n
-					\\Z1[NOTICE]\\Zn
-
-					The update process was aborted by user..."
-		);
-		exit 0;
-	}
-
-	0;
-}
-
-################################################################################
-# Load old i-MSCP main configuration file
-#
-# @return void
-#
-sub load_old_imscp_cfg {
-
-	use iMSCP::Config;
-
-	$main::imscpConfigOld = {};
-
-	$main::imscpConfigOld = {};
-	my $oldConf = "$main::imscpConfig{'CONF_DIR'}/imscp.old.conf";
-
-	tie %main::imscpConfigOld, 'iMSCP::Config','fileName' => $oldConf if (-f $oldConf);
-	verbose($main::imscpConfigOld{'DEBUG'} || $main::imscpConfig{'DEBUG'});
-
-	0;
-}
-
-################################################################################
-# Creating i-MSCP database
-#
-# @return int 0 on success, other on failure
-#
-sub setup_imscp_database_connection {
-
-	use iMSCP::Crypt;
-	use iMSCP::Dialog;
-
-	my $pass = $main::imscpConfig{'DATABASE_PASSWORD'};
-	my $crypt = iMSCP::Crypt->new();
-
-	if(!check_sql_connection(
-			$main::imscpConfig{'DATABASE_TYPE'},
-			'',
-			$main::imscpConfig{'DATABASE_HOST'} || '',
-			$main::imscpConfig{'DATABASE_PORT'} || '',
-			$main::imscpConfig{'DATABASE_USER'} || '',
-			$main::imscpConfig{'DATABASE_PASSWORD'} ? $crypt->decrypt_db_password($main::imscpConfig{'DATABASE_PASSWORD'}) : ''
+	unshift(
+		@$dialogStack,
+		(
+			#\&setupAskServerHostname,
+			#\&setupAskImscpVhost,
+			#\&setupAskLocalDnsResolver,
+			\&setupAskServerIps,
+			#\&setupAskSqlDsn,
+			#\&setupAskImscpDbName,
+			#\&setupAskDbPrefixSuffix,
+			#\&setupAskDefaultAdmin,
+			#\&setupAskAdminEmail,
+			#\&setupAskPhpMyAdmin,
+			#\&setupAskTimezone,
+			#\&setupAskSsl,
+			#\&setupAskImscpBackup,
+			#\&setupAskDomainBackup
 		)
-	){
-	}elsif($main::imscpConfigOld{'DATABASE_TYPE'} && !check_sql_connection(
-			$main::imscpConfigOld{'DATABASE_TYPE'},
-			'',
-			$main::imscpConfigOld{'DATABASE_HOST'} || '',
-			$main::imscpConfigOld{'DATABASE_PORT'} || '',
-			$main::imscpConfigOld{'DATABASE_USER'} || '',
-			$main::imscpConfigOld{'DATABASE_PASSWORD'} ? $crypt->decrypt_db_password($main::imscpConfigOld{'DATABASE_PASSWORD'}) : ''
-		)
-	){
-		$main::imscpConfig{'DATABASE_TYPE'}		= $main::imscpConfigOld{'DATABASE_TYPE'};
-		$main::imscpConfig{'DATABASE_HOST'}		= $main::imscpConfigOld{'DATABASE_HOST'};
-		$main::imscpConfig{'DATABASE_PORT'}		= $main::imscpConfigOld{'DATABASE_PORT'};
-		$main::imscpConfig{'DATABASE_USER'}		= $main::imscpConfigOld{'DATABASE_USER'};
-		$main::imscpConfig{'DATABASE_PASSWORD'}	= $main::imscpConfigOld{'DATABASE_PASSWORD'};
-	} else {
-		my (
-			$dbType,
-			$dbHost,
-			$dbPort,
-			$dbUser,
-			$dbPass
-		) = (
-			'mysql',
-			$main::imscpConfig{'DATABASE_HOST'},
-			$main::imscpConfig{'DATABASE_PORT'},
-			$main::imscpConfig{'DATABASE_USER'}
-		);
+	);
 
-		use Data::Validate::Domain qw/is_domain/;
-		my %options = $main::imscpConfig{'DEBUG'} ? (domain_private_tld => qr /^(?:bogus|test)$/) : ();
+	my $dialog = iMSCP::Dialog->factory();
 
-		while (check_sql_connection($dbType, '', $dbHost, $dbPort, $dbUser, $dbPass)){
-			my $msg = '';
-			do{
-				$dbHost = iMSCP::Dialog->factory()->inputbox( "Please enter database host name (default localhost) $msg", $dbHost);
-				$msg = "\n\n$dbHost is not a valid hostname!"
-			} while (! (Data::Validate::Domain->new(%options)->is_domain($dbHost)) && $dbHost ne 'localhost');
+	$dialog->resetLabels();
+	$ENV{DIALOGOPTS} = "--ok-label Ok --yes-label Yes --no-label No --cancel-label Back";
 
-			$msg = '';
-			do{
-				$dbPort = iMSCP::Dialog->factory()->inputbox("Please enter database port name (default null or 3306) $msg", $dbPort);
-				$dbPort =~ s/[^\d]//g;
-				$msg = "\n\n$dbPort is not a valid port number!";
-			} while ($dbPort && $dbPort !~ /^[\d]*$/);
+	# We want get 30 as exit code for both ESC and CANCEL events (ESC will be handled in different way later)
+	$ENV{DIALOG_CANCEL} = 30;
+	$ENV{DIALOG_ESC} = 30;
 
-			$dbUser = iMSCP::Dialog->factory()->inputbox('Please enter database user name (default root)', $dbUser);
+	#my ($state, $nbDialog, $ret) = (1, scalar(@$dialogStack) + 1, 0);
+	my ($state, $nbDialog, $ret) = (1, @$dialogStack + 1, 0);
 
-			$dbPass = iMSCP::Dialog->factory()->inputbox('Please enter database password','');
+	# Implements a simple state machine (backup capability)
+	# Any dialog subroutine *should* allow user to step back by returning 30 when 'back' button is pushed
+	while ($state != 0 && $state != $nbDialog) {
+		$main::reconfigure = 0 if $main::reconfigure == 2;
+		$ret = $$dialogStack[$state - 1]->($dialog);
+		return $ret if $ret && $ret != 30;
 
-		}
-
-		use Net::LibIDN qw/idn_to_ascii idn_to_unicode/;
-
-		if ($main::imscpConfig{'DATABASE_TYPE'} ne $dbType) {$main::imscpConfig{'DATABASE_TYPE'} = $dbType};
-		if ($main::imscpConfig{'DATABASE_HOST'} ne idn_to_ascii($dbHost, 'utf-8')) {$main::imscpConfig{'DATABASE_HOST'} = idn_to_ascii($dbHost, 'utf-8');}
-		if ($main::imscpConfig{'DATABASE_PORT'} ne $dbPort) {$main::imscpConfig{'DATABASE_PORT'} = $dbPort;}
-		if ($main::imscpConfig{'DATABASE_USER'} ne $dbUser) {$main::imscpConfig{'DATABASE_USER'} = $dbUser;}
-		if ($main::imscpConfig{'DATABASE_PASSWORD'} ne $crypt->encrypt_db_password($dbPass)) {$main::imscpConfig{'DATABASE_PASSWORD'} = $crypt->encrypt_db_password($dbPass);}
-
-	}
-	0;
-}
-
-################################################################################
-# Check Sql connection
-#
-# This subroutine can be used to check an MySQL server connection with different
-# login credentials.
-#
-# @param string $dbType SQL server type
-# [@param string $dbName SQL database to use]
-# @param string $dbHost SQL server hostname
-# @param string $dbPort SQL server port
-# @param string $dbUser SQL username
-# @param string $dbPass SQL user password
-# @return int 0 on success, error string on failure
-#
-sub check_sql_connection{
-
-	my ($dbType, $dbName, $dbHost, $dbPort, $dbUser, $dbPass) = (@_);
-
-	use iMSCP::Database;
-
-	my $database = iMSCP::Database->new(db => $dbType)->factory();
-	$database->set('DATABASE_NAME', $dbName);
-	$database->set('DATABASE_HOST', $dbHost);
-	$database->set('DATABASE_PORT', $dbPort);
-	$database->set('DATABASE_USER', $dbUser);
-	$database->set('DATABASE_PASSWORD', $dbPass);
-
-	return $database->connect();
-}
-
-################################################################################
-# Creating / Update i-MSCP database
-#
-# @return int 0 on success, other on failure
-#
-sub setup_imscp_database {
-
-	use iMSCP::Crypt;
-	use iMSCP::Dialog;
-
-	my $crypt = iMSCP::Crypt->new();
-
-	my $dbName = $main::imscpConfig{'DATABASE_NAME'} ? $main::imscpConfig{'DATABASE_NAME'} : ($main::imscpConfigOld{'DATABASE_NAME'} ? $main::imscpConfigOld{'DATABASE_NAME'} : undef);
-
-	if(!$dbName || check_sql_connection(
-			$main::imscpConfig{'DATABASE_TYPE'},
-			$dbName,
-			$main::imscpConfig{'DATABASE_HOST'},
-			$main::imscpConfig{'DATABASE_PORT'},
-			$main::imscpConfig{'DATABASE_USER'},
-			$main::imscpConfig{'DATABASE_PASSWORD'} ? $crypt->decrypt_db_password($main::imscpConfig{'DATABASE_PASSWORD'}) : ''
-		)
-	){
-
-		$dbName = 'imscp' unless $dbName;
-		my $msg = '';
-
-		do{
-			$dbName = iMSCP::Dialog->factory()->inputbox("Please enter database name (default $dbName)$msg", $dbName);
-
-			if($dbName =~ /[:;]/){
-				$dbName = undef ;
-				$msg = "\nNot allowed chars : and ;";
-			} else {
-				$msg = '';
-			}
-		} while (!$dbName);
-
-		#test if we can connect using user`s suplied database
-		if(check_sql_connection(
-				$main::imscpConfig{'DATABASE_TYPE'},
-				$dbName,
-				$main::imscpConfig{'DATABASE_HOST'},
-				$main::imscpConfig{'DATABASE_PORT'},
-				$main::imscpConfig{'DATABASE_USER'},
-				$main::imscpConfig{'DATABASE_PASSWORD'} ? $crypt->decrypt_db_password($main::imscpConfig{'DATABASE_PASSWORD'}) : ''
-			)
-		){
-			#no, then we create tables in database
-			if (my $error = createDB($dbName, $main::imscpConfig{'DATABASE_TYPE'})){
-				error("$error");
-				return 1;
-			}
+		# User asked for step back?
+		if($ret == 30) {
+			$state != 1 ? $state-- : 1; # We don't allow to step back before first question
+			$main::reconfigure = 2 if $main::reconfigure != 1;
 		} else {
-			#yes we make sure we have last db possible
-			if (my $error = updateDb()){
-				error("$error");
-				return 1;
-			}
-		}
-
-		#save new database name
-		if ($main::imscpConfig{'DATABASE_NAME'} ne $dbName) {$main::imscpConfig{'DATABASE_NAME'} = $dbName};
-
-	} else {
-
-		$main::imscpConfig{'DATABASE_NAME'} = $main::imscpConfigOld{'DATABASE_NAME'} if(! $main::imscpConfig{'DATABASE_NAME'});
-
-		if (my $error = updateDb()){
-			error("$error");
-			return 1;
+			$state++;
 		}
 	}
 
-	#secure accounts
-	my $rdata = iMSCP::Database->factory()->doQuery('User', "SELECT `User`, `Host` FROM `mysql`.`user` WHERE `Password` = ''");
-	if(ref $rdata ne 'HASH'){
-		error("$rdata");
-		return 1;
-	}
+	#use Data::Dumper;
+	#print Dumper(\%main::questions);
+	#exit;
 
-	foreach (keys %$rdata) {
-		my $error = iMSCP::Database->factory()->doQuery('drop', "DROP USER ?@?", $_, $rdata->{$_}->{Host});
-		error("$error") if(ref $error ne 'HASH');
-	}
+	iMSCP::HooksManager->getInstance()->trigger('afterSetupDialog');
 
-	0;
+	$ret;
 }
 
-################################################################################
-# Creating i-MSCP database
-#
-# @return int 0 on success, other on failure
-#
-sub createDB{
-	my $dbName = shift;
-	my $dbType = shift;
+# Process setup tasks
+sub setupTasks
+{
+	#iMSCP::HooksManager->getInstance()->trigger('beforeSetupTasks');
 
-	use iMSCP::Database;
-
-	my $database = iMSCP::Database->new(db => $dbType)->factory();
-	$database->set('DATABASE_NAME', '');
-	my $error = $database->connect();
-	return $error if $error;
-
-	my $qdbName = $database->quoteIdentifier($dbName);
-	$error = $database->doQuery('dummy', "CREATE DATABASE $qdbName CHARACTER SET utf8 COLLATE utf8_unicode_ci;");
-
-	$database->set('DATABASE_NAME', $dbName);
-	$error = $database->connect();
-	return $error if $error;
-
-	$error = importSQLFile($database, "$main::imscpConfig{'CONF_DIR'}/database/database.sql");
-	return $error if ($error);
-
-	0;
-}
-
-sub importSQLFile{
-	my $database	= shift;
-	my $file		= shift;
-
-	use iMSCP::File;
-	use iMSCP::Dialog;
-	use iMSCP::Stepper;
-
-	my $content = iMSCP::File->new(filename => $file)->get();
-	$content =~ s/^(--[^\n]{0,})?\n//mg;
-	my @queries = (split /;\n/, $content);
-
-	my $title = "Executing ".@queries." queries:";
-
-	startDetail();
+	my $rs = 0;
+	my @steps = (
+		[\&setupWriteConfig,				'Write new i-MSCP configuration'],
+	#	[\&setupCreateMasterGroup,			'Creating i-MSCP system master group'], # Ok
+	#	[\&setupCreateSystemDirectories,	'Creating system directories'], # OK
+	#	[\&setupServerHostname,				'Setting server hostname'], # Ok
+	#	[\&setupLocalResolver,				'Setting local resolver'], # OK
+	#	[\&setupCreateDatabase,				'Creating/updating i-MSCP database'], # Ok
+	#	[\&setupSecureSqlAccounts,			'Securing SQL accounts'], # OK
+		[\&setupServerIps,					'Setting server ips'],
+	#	[\&setupDefaultAdmin, 				'Creating default admin'],
+	#	[\&setupPhpMyAdmin, 				'Setting PhpMyAdmin'],
+	#	[\&setupPreInstallServers,			'Servers pre-installation'],
+	#	[\&setupPreInstallAddons,			'Addons pre-installation'],
+    #	[\&setupInstallServers,			'Servers installation'],
+    #	[\&setupInstallAddons,				'Addons installation'],
+    #	[\&setupPostInstallServers,		'Servers post-installation'],
+    #	[\&setupPostInstallAddons,			'Addons post-installation'],
+    #	[\&setupInitScripts,				'Setting i-MSCP init scripts'],
+    #	[\&setupRebuildCustomerFiles, 	'Rebuilding customers files']
+    #	[\&setupBasePermissions,			'Setting base file permissions'],
+    #	[\&setupRestartServices,			'Restarting services'],
+    #	[\&setupSaveConfig,					'Saving i-MSCP configuration'], Should be removed
+    #	[\&setupAdditionalTasks,			'Processing additional tasks']
+	#
+	);
 
 	my $step = 1;
-	for (@queries){
-		my $error = $database->doQuery('dummy', $_);
-		return $error if (ref $error ne 'HASH');
-		my $msg = $queries[$step] ? "$title\n$queries[$step]" : $title;
-		step('', $msg, scalar @queries, $step);
+	my $nbSteps = @steps;
+
+	for (@steps) {
+		$rs |= step($_->[0], $_->[1], $nbSteps, $step);
+		last if $rs;
 		$step++;
 	}
 
-	endDetail();
-	0;
+	iMSCP::Dialog->factory()->endGauge() if iMSCP::Dialog->factory()->needGauge();
+
+	iMSCP::HooksManager->getInstance()->trigger('afterSetupTasks');
+
+	$rs;
 }
 
-################################################################################
-# Update i-MSCP database schema
 #
-# @return int 1 on success, other on failure
+## Dialog subroutines
 #
-sub updateDb {
 
-	use iMSCP::File;
-	use iMSCP::Execute;
+# Ask for server hostname
+sub setupAskServerHostname
+{
+	my $dialog = shift;
+	my $hostname = setupGetQuestion('SERVER_HOSTNAME');
+	my %options = ($main::imscpConfig{'DEBUG'} || iMSCP::Getopt->debug)
+		? (domain_private_tld => qr /^(?:bogus|test)$/)
+		: ();
+	my ($rs, @labels) = (0, $hostname ? split(/\./, $hostname) : ());
 
-	my ($rs, $stdout, $stderr);
+	if($main::reconfigure || ! (@labels >= 3 && Data::Validate::Domain->new(%options)->is_domain($hostname))) {
+		if(! $hostname) {
+			my $err = undef;
 
-	my $file	= iMSCP::File->new(filename => "$main::imscpConfig{'ROOT_DIR'}/engine/setup/updDB.php");
-	my $content	= $file->get();
-	return 1 if(!$content);
+			if (execute("$main::imscpConfig{'CMD_HOSTNAME'} -f", \$hostname, \$err)) {
+				error("Unable to find server hostname (server misconfigured?): $err");
+			} else {
+				chomp($hostname);
+			}
+		}
 
-	if($content =~ s/{GUI_ROOT_DIR}/$main::imscpConfig{'GUI_ROOT_DIR'}/) {
-		$rs = $file->set($content);
-		return 1 if($rs != 0);
-		$rs = $file->save();
-		return 1 if($rs != 0);
+		my $msg = '';
+		$dialog->set('no-cancel', '');
+
+		do {
+			($rs, $hostname) = $dialog->inputbox(
+				"\nPlease enter a fully-qualified hostname (FQHN): $msg", idn_to_unicode($hostname, 'utf-8')
+			);
+			$msg = "\n\n\\Z1'$hostname' is not a valid fully-qualified host name.\\Zn\n\nPlease, try again:";
+			$hostname = idn_to_ascii($hostname, 'utf-8');
+			@labels = split(/\./, $hostname);
+
+		} while($rs != 30 && ! (@labels >= 3 && Data::Validate::Domain->new(%options)->is_domain($hostname)));
+
+		$dialog->set('no-cancel', undef);
 	}
 
-	$rs = execute("$main::imscpConfig{'CMD_PHP'} $main::imscpConfig{'ROOT_DIR'}/engine/setup/updDB.php", \$stdout, \$stderr);
-	error("$stdout $stderr") if $rs;
-	return ($stdout ? "$stdout " : '' ).$stderr." exitcode: $rs" if $rs;
+	$main::questions{'SERVER_HOSTNAME'} = $hostname if $rs != 30;
 
-	0;
+	$rs;
 }
 
-################################################################################
-# create all directories required by i-MSCP and the managed services
-#
-# @return int 0 on success, other on failure
-#
-sub setup_system_dirs {
+# Ask for i-MSCP frontend vhost
+sub setupAskImscpVhost
+{
+	my $dialog = shift;
+	my $vhost = setupGetQuestion('BASE_SERVER_VHOST') || "admin." . setupGetQuestion('SERVER_HOSTNAME');
 
-	use iMSCP::Dir;
-	my $rootUName = $main::imscpConfig{'ROOT_USER'};
-	my $rootGName = $main::imscpConfig{'ROOT_GROUP'};
+	my %options = ($main::imscpConfig{'DEBUG'} || iMSCP::Getopt->debug)
+		? (domain_private_tld => qr /^(?:bogus|test)$/)
+		: ();
 
-	for (
-		[$main::imscpConfig{'USER_HOME_DIR'},	$rootUName,	$rootGName,	0555],
-		[$main::imscpConfig{'LOG_DIR'},			$rootUName,	$rootGName,	0555],
-		[$main::imscpConfig{'BACKUP_FILE_DIR'},	$rootUName,	$rootGName,	0750],
-	) {
-		iMSCP::Dir->new(dirname => $_->[0])->make({ user => $_->[1], group => $_->[2], mode => $_->[3]}) and return 1;
+	my ($rs, $msg, @labels) = (0, $vhost ? split(/\./, $vhost) : ());
+
+	if($main::reconfigure || ! (@labels >= 3 && Data::Validate::Domain->new(%options)->is_domain($vhost))) {
+		$vhost = "admin.$main::imscpConfig{'SERVER_HOSTNAME'}" if !$vhost;
+		my $msg = '';
+
+		do {
+			($rs, $vhost) = $dialog->inputbox(
+				"\nPlease enter the domain name from which i-MSCP must be reachable: $msg",
+				idn_to_unicode($vhost, 'utf-8')
+			);
+			$msg = "\n\n\\Z1'$vhost' is not a fully-qualified domain name (FQDN).\\Zn\n\nPlease, try again:";
+			$vhost = idn_to_ascii($vhost, 'utf-8');
+			@labels = split(/\./, $vhost);
+		} while($rs != 30 && ! (@labels >= 3 && Data::Validate::Domain->new(%options)->is_domain($vhost)));
 	}
 
-	0;
+	$main::questions{'BASE_SERVER_VHOST'} = $vhost if $rs != 30;
+
+	$rs;
 }
 
-sub setup_base_server_IP{
-	use iMSCP::Dialog;
-	use iMSCP::IP;
-	my $rs;
+# ask for local DNS resolver
+sub setupAskLocalDnsResolver
+{
+	my $dialog = shift;
+	my $localDnsResolver = setupGetQuestion('LOCAL_DNS_RESOLVER');
+	$localDnsResolver = lc($localDnsResolver);
+	my $rs = 0;
+
+	if($main::reconfigure || $localDnsResolver !~ /^yes|no$/) {
+		($rs, $localDnsResolver) = $dialog->radiolist(
+			"\nDo you want allow the system resolver to use the local nameserver?",
+			['yes', 'no'],
+			$localDnsResolver ne 'no' ? 'yes' : 'no'
+		);
+	}
+
+	$main::questions{'LOCAL_DNS_RESOLVER'} = $localDnsResolver if $rs != 30;
+
+	$rs;
+}
+
+# Ask for server ips
+sub setupAskServerIps
+{
+	my $dialog = shift;
+	my $baseServerIp = setupGetQuestion('BASE_SERVER_IP');
+	my @serverIps = setupGetQuestion('SERVER_IPS') ? @{setupGetQuestion('SERVER_IPS')} : ();
+	my $manualIp = 0;
+	my $serverIps = '';
+	my $currentServerIps = {};
+	my @serverIpsToKeepOrAdd = ();
+	my %serverIpsToDelete = ();
+	my %serverIpsReplMap = ();
 
 	my $ips = iMSCP::IP->new();
-	$rs = $ips->loadIPs();
+	my $rs = $ips->loadIPs();
 	return $rs if $rs;
 
-	return 0 if(
-		$main::imscpConfig{'BASE_SERVER_IP'} &&
-		$main::imscpConfig{'BASE_SERVER_IP'} ne '127.0.0.1' &&
-		$main::imscpConfig{'BASE_SERVER_IP'} ne $ips->normalize('::1')
-	);
-
-	if(
-		$main::imscpConfigOld{'BASE_SERVER_IP'} &&
-		$main::imscpConfigOld{'BASE_SERVER_IP'} ne '127.0.0.1' &&
-		$main::imscpConfig{'BASE_SERVER_IP'} ne $ips->normalize('::1')
-	){
-		$main::imscpConfig{'BASE_SERVER_IP'} = $main::imscpConfigOld{'BASE_SERVER_IP'};
-		return 0;
-	}
-
-	my %allIPs = map { $_ => undef } ($ips->getIPs());
-
-	if(keys %allIPs == 0){
-		error('Can not determine servers ips');
+	# Retrieve list of all configured server ips
+	my @serverIps = $ips->getIPs();
+	if(! @serverIps) {
+		error('Unable to retrieve servers ips');
 		return 1;
 	}
 
-	my ($out, $card);
+	if(
+		$main::reconfigure ||
+		! ($baseServerIp ~~ @serverIps && $baseServerIp ne '127.0.0.1' && $baseServerIp ne $ips->normalize('::1'))
+	) {
+		# Ask user for the primary external IP
+		($rs, $baseServerIp) = $dialog->radiolist(
+			"\nPlease, select your primary external IP:", [@serverIps, 'Add new ip'], $baseServerIp
+		);
 
-	while (! ($out = iMSCP::Dialog->factory()->radiolist("Please select your external ip:", keys %allIPs, 'none'))){}
-	if(! ($ips->isValidIp($out))){
-		do{
-			while (! ($out = iMSCP::Dialog->factory()->inputbox("Please enter your ip:", (keys %allIPs)[0]))){}
-		} while(! ($ips->isValidIp($out) && $out ne '127.0.0.1' && $out ne $ips->normalize('::1')) );
-		unless(exists $ips->{ips}->{$out}){
-			while (! ($card = iMSCP::Dialog->factory()->radiolist("Please select your network card:", ($ips->getNetCards)))){}
-			$ips->attachIpToNetCard($card, $out);
+		# Handle server ip addition
+		if($rs != 30 && $baseServerIp eq 'Add new ip') {
+			$baseServerIp = '';
+			my $msg = '';
+			do {
+				($rs, $baseServerIp) = $dialog->inputbox("\nPlease, enter an IP address: $msg", $baseServerIp);
+				$msg = "\n\n\\Z1Invalid or unallowed IP address.\\Zn\n\nPlease, try again:";
+			} while(
+				$rs != 30 &&
+				! (
+					$baseServerIp ne '127.0.0.1' && $baseServerIp ne $ips->normalize('::1') &&
+					$ips->isValidIp($baseServerIp)
+				)
+            );
+
+			if($rs != 30 && ! ($baseServerIp ~~ @serverIps)) {
+				my $networkCard = undef;
+				my @networkCardList = $ips->getNetCards();
+
+				if(@networkCardList > 1) { # Do not ask about network card if not more than one is available					do {
+					($rs, $networkCard) = $dialog->radiolist(
+                    	"\nPlease, select the network card on which you want to add the IP address:", @networkCardList
+                    );
+				} else {
+					$networkCard = pop(@networkCardList);
+				}
+
+				if($rs != 30) {
+					$ips->attachIpToNetCard($networkCard, $baseServerIp);
+					$rs = $ips->reset();
+					return $rs if $rs;
+					$manualIp = 1;
+				}
+			}
+		}
+
+		# Handle ip deletion in case the user stepped back
+		my $manualBaseServerIp = setupGetQuestion('MANUAL_BASE_SERVER_IP');
+
+		if($manualBaseServerIp && $manualBaseServerIp ne $baseServerIp) {
+			$ips->detachIpFromNetCard($manualBaseServerIp);
 			$rs = $ips->reset();
+			return $rs if $rs;
+			@serverIps = grep $_ ne $manualBaseServerIp, @serverIps;
+			delete $main::questions{'MANUAL_BASE_SERVER_IP'};
+		}
+
+		$main::questions{'MANUAL_BASE_SERVER_IP'} = $baseServerIp if $manualIp;
+
+		# Handle additional i-MSCP addition / deletion
+		if($rs != 30) {
+			$dialog->set('defaultno', '');
+
+			if(@serverIps > 1 && ! $dialog->yesno("\nDo you want add or remove IP addresses?")) {
+				$dialog->set('defaultno', undef);
+
+				# We do not raise error in case we cannot get SQL connection since it's expected on first install
+				# TODO setup SQL before server ips ?
+				my $database = setupGetSqlConnect(setupGetQuestion('DATABASE_NAME') || 'imscp');
+
+				if(setupGetQuestion('DATABASE_NAME')) {
+					if($database) {
+						$currentServerIps = $database->doQuery(
+							'ip_number', 'SELECT `ip_id`, `ip_number` FROM `server_ips`'
+						);
+
+						if(ref $currentServerIps ne 'HASH') {
+							error('Cannot retrieve current server ips');
+							return 1
+						}
+					}
+				}
+
+				@serverIps = grep $_ ne $baseServerIp, @serverIps; # Remove base server ip from the list
+				my $sshConnectIp = defined ($ENV{'SSH_CONNECTION'}) ? (split ' ', $ENV{'SSH_CONNECTION'})[2] : undef;
+
+				my $msg = '';
+
+				do {
+					($rs, $serverIps) = $dialog->checkbox(
+						"\nPlease, select the IP addresses to add into the database and deselect those to delete: $msg",
+						[@serverIps],
+						keys %$currentServerIps
+					);
+
+					$msg = '';
+
+					if(defined $sshConnectIp && $sshConnectIp ~~ @serverIps && $serverIps !~ /$sshConnectIp/) {
+						$msg = "\n\n\\Z1You cannot remove the IP '$sshConnectIp' to which you are currently connected (ssh).\\Zn\n\nPlease, try again:";
+					}
+
+				} while ($rs != 30 && $msg);
+
+				if($rs != 30) {
+					$serverIps =~ s/"//g;
+					@serverIpsToKeepOrAdd = split ' ', $serverIps; # We retrieve list of ip to add into database
+					push @serverIpsToKeepOrAdd, $baseServerIp; # Re-add base ip
+
+					# get list of ip to delete
+					my %serverIpsToDelete = ();
+					for(@serverIps) {
+						$serverIpsToDelete{$$currentServerIps{$_}->{'ip_id'}} = $_
+							if(exists $$currentServerIps{$_} && not $_ ~~ @serverIpsToKeepOrAdd);
+					}
+
+					if($database) {
+						my $resellerIps = $database->doQuery('reseller_ips', 'SELECT `reseller_ips` FROMs `reseller_props`');
+						if(ref $resellerIps ne 'HASH') {
+							error("Cannot retrieve resellers's addresses IP: $resellerIps");
+							return 1;
+						}
+
+						# Check for server ips already in use and ask user for ip replacement
+						for(keys %$resellerIps){
+							my @resellerIps = split ';';
+
+							for(@resellerIps) {
+								if(exists $serverIpsToDelete{$_} && ! exists $serverIpsReplMap{$serverIpsToDelete{$_}}) {
+									my $ret = '';
+
+									do {
+										($rs, $ret) = $dialog->radiolist(
+"
+The IP address '$serverIpsToDelete{$_}' is already in use. Please, choose an IP to replace it:
+",
+											[@serverIpsToKeepOrAdd],
+											$baseServerIp
+										);
+									} while($rs != 30 && ! $ret);
+
+									$serverIpsReplMap{$serverIpsToDelete{$_}} = $ret;
+								}
+
+								last if $rs;
+							}
+
+							last if $rs;
+						}
+					}
+				}
+			}
+
+			$dialog->set('defaultno', undef);
+		}
+	}
+
+	if($rs != 30) {
+		$main::questions{'BASE_SERVER_IP'} = $baseServerIp;
+		$main::questions{'SERVER_IPS'} = [@serverIpsToKeepOrAdd];
+		$main::questions{'SERVER_IPS_TO_REPLACE'} = {%serverIpsReplMap};
+	}
+
+	$rs;
+}
+
+# Ask for Sql DSN and SQL username/password
+sub setupAskSqlDsn
+{
+	my $dialog = shift;
+	my $dbType = setupGetQuestion('DATABASE_TYPE') || 'mysql';
+	my $dbHost = setupGetQuestion('DATABASE_HOST') || 'localhost';
+	my $dbPort = setupGetQuestion('DATABASE_PORT') || '3306';
+	my $dbUser = setupGetQuestion('DATABASE_USER') || 'root';
+
+	my $dbPass = '';
+
+	if(setupGetQuestion('DATABASE_PASSWORD', 'preseed')) {
+		$dbPass = setupGetQuestion('DATABASE_PASSWORD', 'preseed');
+	} else {
+		$dbPass = setupGetQuestion('DATABASE_PASSWORD')
+			? iMSCP::Crypt->new()->decrypt_db_password(setupGetQuestion('DATABASE_PASSWORD')) : '';
+	}
+
+	my $rs = 0;
+
+	my %options = ($main::imscpConfig{'DEBUG'} || iMSCP::Getopt->debug)
+		? (domain_private_tld => qr /^(?:bogus|test)$/)
+		: ();
+
+	if($main::reconfigure || ! ($dbPass ne '' && ! setupCheckSqlConnect($dbType, '', $dbHost, $dbPort, $dbUser, $dbPass))) {
+		my $msg = '';
+
+		do {
+			$dialog->msgbox($msg) if $msg;
+			$msg = '';
+
+			# Ask for SQL server hostname (Accept both hostname and Ip)
+			do {
+				($rs, $dbHost) = $dialog->inputbox(
+					"\nPlease enter a hostname or IP for the SQL server: $msg", idn_to_unicode($dbHost, 'utf-8')
+				);
+				$msg = "\n\n\\Z1'$dbHost' is not a valid hostname nor a valid ip.\\Zn\n\nPlease, try again:";
+				$dbHost = idn_to_ascii($dbHost, 'utf-8');
+			} while (
+				$rs != 30 &&
+				! (
+					$dbHost eq 'localhost' || Data::Validate::Domain->new(%options)->is_domain($dbHost) ||
+					iMSCP::IP->new()->isValidIp($dbHost)
+				)
+			);
+
+			if($rs != 30) {
+				$msg = '';
+
+				# Ask for SQL server port only if needed (socket vs tcp)
+				if($dbHost ne 'localhost' || ! ($dbPort =~ /^[\d]+$/ && int($dbPort) > 1024 && int($dbPort) < 65536)) {
+					do {
+						($rs, $dbPort) = $dialog->inputbox("\nPlease enter a port for the SQL server: $msg", $dbPort);
+						$msg  = "\n\n\\Z1'$dbPort' is not a valid port number or is out of allowed range.\\Zn\n\nPlease, try again:";
+					} while($rs != 30 && ! ($dbPort =~ /^[\d]+$/ && int($dbPort) > 1024 && int($dbPort) < 65536));
+				} else { # Simply put the default port even if not used
+					$dbPort = '3306';
+				}
+			}
+
+			# Ask for SQL username
+			if($rs != 30) {
+				do {
+					($rs, $dbUser) = $dialog->inputbox(
+						"\nPlease, enter an SQL username. This user must exists and have full privileges on SQL server:",
+						$dbUser
+					);
+				} while($rs != 30 && $dbUser eq '');
+			}
+
+			# Ask for SQL user password
+			if($rs != 30) {
+				do {
+					($rs, $dbPass) = $dialog->inputbox("\nPlease, enter a password for the '$dbUser' SQL user:", $dbPass);
+				} while($rs != 30 && $dbPass eq '');
+
+				$msg =
+"
+\\Z1Connection to SQL server failed\\Zn
+
+i-MSCP was unable to connect to SQL server with the following data:
+
+\\Z4Host:\\Zn		$dbHost
+\\Z4Port:\\Zn		$dbPort
+\\Z4Username:\\Zn	$dbUser
+\\Z4Password:\\Zn	$dbPass
+
+If you are using an external SQL server, the remote connections must be allowed by changing the value of the bind-address parameter into the my.cnf file.
+
+Please, try again.
+";
+			}
+
+		} while($rs != 30 && setupCheckSqlConnect($dbType, '', $dbHost, $dbPort, $dbUser, $dbPass));
+	}
+
+	if($rs != 30) {
+		$main::questions{'DATABASE_TYPE'} = $dbType;
+		$main::questions{'DATABASE_HOST'} = $dbHost;
+		$main::questions{'DATABASE_PORT'} = $dbPort;
+		$main::questions{'DATABASE_USER'} = $dbUser;
+		$main::questions{'DATABASE_PASSWORD'} = iMSCP::Crypt->new()->encrypt_db_password($dbPass);
+	}
+
+	$rs;
+}
+
+# Ask for i-MSCP database name
+sub setupAskImscpDbName
+{
+	my $dialog = shift;
+	my $dbName = setupGetQuestion('DATABASE_NAME') || 'imscp';
+	my $database = setupGetSqlConnect($dbName);
+	my $rs = 0;
+
+	if($main::reconfigure || ! setupIsImscpDb($dbName)) {
+		my $msg = '';
+
+		do {
+			($rs, $dbName) = $dialog->inputbox("\nPlease, enter a database name for i-MSCP: $msg", $dbName);
+			$msg = '';
+
+			if(!$dbName) {
+				$msg = "\n\n\\Z1Database name cannot be empty.\\Zn\n\nPlease, try again:";
+			} elsif($dbName =~ /[:;]/) {
+				$msg = "\n\n\\Z1Database name contain illegal characters ':' and/or ';'.\\Zn\n\nPlease, try again:";
+			} elsif(setupGetSqlConnect($dbName) && ! setupIsImscpDb($dbName)) {
+				$msg = "\n\n\\Z1Database '$dbName' exists but do not look like an i-MSCP database.\\Zn\n\nPlease, try again:";
+			}
+		} while ($rs != 30 && $msg);
+
+		if($rs != 30) {
+			$database = setupGetSqlConnect($dbName);
+
+			if($dbName ne setupGetQuestion('DATABASE_NAME') && setupIsImscpDb(setupGetQuestion('DATABASE_NAME'))) {
+				$dialog->set('defaultno', '');
+
+
+				$dbName = setupGetQuestion('DATABASE_NAME') if $dialog->yesno(
+"
+\\Z1An i-MSCP database has been found\\Zn
+
+A database '$main::imscpConfig{'DATABASE_NAME'}' for i-MSCP already exists.
+
+Are you sure you want to create a new database?
+
+Keep in mind that the new database will be free of any reseller and customer data.
+
+\\Z4Note:\\Zn If the database you want to create already exists, nothing
+      will happen.
+"
+				);
+
+				$dialog->set('defaultno', undef);
+			}
+		}
+	}
+
+	$main::questions{'DATABASE_NAME'} = $dbName if $rs != 30;
+
+	$rs;
+}
+
+# Ask for database prefix
+sub setupAskDbPrefixSuffix
+{
+	my $dialog = shift;
+	my $prefix = setupGetQuestion('MYSQL_PREFIX');
+	my $prefixType = setupGetQuestion('MYSQL_PREFIX_TYPE');
+	my $rs = 0;
+
+	if(
+		$main::reconfigure ||
+		! (($prefix eq 'no' && $prefixType eq 'none') || ($prefix eq 'yes' && $prefixType =~ /^infront|behind$/))
+	) {
+
+		($rs, $prefix) = $dialog->radiolist(
+"
+\\Z4\\Zb\\ZuMySQL Database Prefix/Suffix\\Zn
+
+Do you want use a prefix or suffix for customers's SQL databases?
+
+\\Z4Infront:\\Zn A numeric prefix such as '1_' will be added to each customer
+         database name.
+ \\Z4Behind:\\Zn A numeric suffix such as '_1' will be added to each customer
+         database name.
+   \\Z4None\\Zn: Choice will be let to customer.
+",
+			['infront', 'behind', 'none'],
+			$prefixType =~ /^infront|behind$/ ? $prefixType : 'none'
+		);
+
+		if($prefix eq 'none') {
+			$prefix = 'no';
+			$prefixType = 'none';
+		} else {
+			$prefixType = $prefix;
+			$prefix = 'yes';
+		}
+	}
+
+	if($rs != 30) {
+		$main::questions{'MYSQL_PREFIX'} = $prefix;
+		$main::questions{'MYSQL_PREFIX_TYPE'} = $prefixType;
+	}
+
+	$rs;
+}
+
+# Ask for default admin data
+sub setupAskDefaultAdmin
+{
+	my $dialog = shift;
+	my $database = setupGetSqlConnect(setupGetQuestion('DATABASE_NAME'));
+
+	my ($adminLoginName, $password, $rpassword) = ('', '', '');
+	my ($rs, $msg) = (0, '');
+
+	if(setupGetQuestion('ADMIN_LOGIN_NAME', 'preseed')) {
+		$adminLoginName = setupGetQuestion('ADMIN_LOGIN_NAME', 'preseed');
+		$password = setupGetQuestion('ADMIN_PASSWORD', 'preseed');
+	} else {
+    	my $defaultAdmin = $database->doQuery(
+    		'admin_id',
+    		'
+    			SELECT
+    				`admin_id`, `admin_name`, `admin_pass`
+    			FROM
+    				`admin` WHERE `created_by` = ? AND `admin_type` = ?
+    			LIMIT
+    				1
+    		',
+    		'0',
+    		'admin'
+    	);
+
+    	if(ref $defaultAdmin eq 'HASH' && %{$defaultAdmin}) {
+			$adminLoginName = $$defaultAdmin{1}->{'admin_name'};
+			$password = $$defaultAdmin{1}->{'admin_pass'};
+    	}
+	}
+
+	if($main::reconfigure ||  $adminLoginName eq '' || $password eq '') {
+		$password = '';
+
+		# Ask for administrator login name
+		do {
+			($rs, $adminLoginName) = $dialog->inputbox(
+				"\nPlease, enter admin login name: $msg", $adminLoginName || 'admin'
+			);
+
+			$msg = '';
+
+			if($adminLoginName eq '') {
+				$msg = '\n\n\\Z1Admin login name cannot be empty.\\Zn\n\nPlease, try again:';
+			} elsif(
+				length $adminLoginName <= 2 ||
+				$adminLoginName !~ /^[a-z0-9](:?(?<![-_])(:?-*|[_.])?(?![-_])[a-z0-9]*)*?(?<![-_.])$/
+			) {
+				$msg = '\n\n\\Z1Bad admin login name syntax or length.\\Zn\n\nPlease, try again:'
+			}
+		} while($rs != 30 &&  $msg);
+
+		if($rs != 30) {
+			$msg = '';
+
+			do {
+				# Ask for administrator password
+				do {
+					($rs, $password) = $dialog->inputbox("\nPlease, enter admin password: $msg", $password);
+					$msg = '\n\n\\Z1The password must be at least 6 characters long.\\Zn\n\nPlease, try again:';
+				} while($rs != 30 && length $password < 6);
+
+				# Ask for administrator password confirmation
+				if($rs != 30) {
+					$msg = '';
+
+					do {
+						($rs, $rpassword) = $dialog->inputbox("\nPlease, confirm admin password: $msg", '');
+						$msg = "\n\n\\Z1Passwords do not match.\\Zn\n\nPlease try again:";
+					} while($rs != 30 &&  $rpassword ne $password);
+				}
+			} while($rs != 30 && $password ne $rpassword);
+		}
+	}
+
+	if($rs != 30) {
+		$main::questions{'ADMIN_LOGIN_NAME'} = $adminLoginName;
+		$main::questions{'ADMIN_PASSWORD'} = $password;
+	}
+
+	$rs;
+}
+
+# Ask for admin email
+sub setupAskAdminEmail
+{
+	my $dialog = shift;
+	my $adminEmail = setupGetQuestion('DEFAULT_ADMIN_ADDRESS');
+	my $rs = 0;
+
+	if($main::reconfigure || ! Email::Valid->address($adminEmail)) {
+		my $msg = '';
+
+		do {
+			($rs, $adminEmail) = $dialog->inputbox("\nPlease, enter admin email address: $msg", $adminEmail);
+			$msg = "\n\n\\Z1'$adminEmail' is not a valid email address.\\Zn\n\nPlease, try again:";
+		} while( $rs != 30 && ! Email::Valid->address($adminEmail));
+	}
+
+	$main::questions{'DEFAULT_ADMIN_ADDRESS'} = $adminEmail if $rs != 30;
+
+	$rs;
+}
+
+# Ask for timezone
+sub setupAskTimezone
+{
+	my $dialog = shift;
+	my $defaultTimezone = DateTime->new(year => 0, time_zone => 'local')->time_zone->name;
+	my $timezone = setupGetQuestion('PHP_TIMEZONE');
+	my $rs = 0;
+
+	if($main::reconfigure || ! ($timezone && DateTime::TimeZone->is_valid_name($timezone))) {
+		$timezone = $defaultTimezone if ! $timezone;
+		my $msg = '';
+
+		do {
+			($rs, $timezone) = $dialog->inputbox("\nPlease enter Server`s timezone: $msg", $timezone);
+        	$msg = "\n\n\\Z1'$timezone' is not a valid timezone.\\Zn\n\nPlease, try again:";
+		} while($rs != 30 && ! DateTime::TimeZone->is_valid_name($timezone));
+	}
+
+	$main::questions{'PHP_TIMEZONE'} = $timezone if $rs != 30;
+
+	$rs;
+}
+
+# Ask for PhpMyAdmin
+# TODO delete old PMA_USER config entry no longer needed
+sub setupAskPhpMyAdmin
+{
+	my $dialog = shift;
+	my $wrkFile = "$main::imscpConfig{'CONF_DIR'}/pma/working/config.inc.php";
+
+	my $dbType = setupGetQuestion('DATABASE_TYPE');
+	my $dbHost = setupGetQuestion('DATABASE_HOST');
+	my $dbPort = setupGetQuestion('DATABASE_PORT');
+    my $dbUser = setupGetQuestion('PMA_USER') || 'pma';
+    my $dbOldUser = '';
+	my $dbPass = setupGetQuestion('PMA_PASSWORD');
+	my $rs = 0;
+
+	if(-f $wrkFile) {
+		# Gets user info from current pma configuration file
+		$wrkFile = iMSCP::File->new(filename => $wrkFile);
+		my $wrkFile = $wrkFile->get();
+		return 1 if ! $wrkFile;
+
+		# Retrieving the needed values from the working file
+		($dbUser, $dbPass) = map { $wrkFile =~ /\['$_'\]\s*=\s*'(.+)'/} qw /controluser controlpass/;
+		$dbOldUser = $dbUser;
+	}
+
+	if($main::reconfigure || setupCheckSqlConnect($dbType, '', $dbHost, $dbPort, $dbUser, $dbPass)) {
+		my $msg = '';
+
+		do {
+			($rs, $dbUser) = $dialog->inputbox(
+				"\nPlease enter an username for the restricted PhpMyAdmin SQL user: $msg", $dbUser
+			);
+
+			if($rs != 30) {
+				$msg = "\n\n\\Z1Username cannot be empty.\\Zn\n\nPlease, try again:";
+
+				# i-MSCP SQL user cannot be reused
+				if($dbUser eq $main::imscpConfig{'DATABASE_USER'}) {
+					$msg = "\n\n\\Z1You cannot reuse the i-MSCP '$main::imscpConfig{'DATABASE_USER'}' SQL user.\\Zn\n\nPlease, try again:";
+					$dbUser = '';
+				} elsif($dbUser ne $dbOldUser && setupIsSqlUser($dbUser)) {
+					$dialog->set('defaultno', '');
+
+					$rs = $dialog->yesno(
+"
+\\Z1SQL user already exists\\Zn
+
+The '$dbUser' SQL user already exists.
+
+Are you sure you want use this user for PhpMyAdmin? If yes, the '$dbUser' SQL user and all its privileges will be reseted.
+"
+					);
+				}
+			}
+
+			$dbUser = '' if $rs;
+			$dialog->set('defaultno', undef);
+
+		} while($rs != 30 && $dbUser eq '');
+
+		if($rs != 30) {
+			# Ask for PhpMyAdmin SQL user password
+			($rs, $dbPass) = $dialog->inputbox(
+				'\nPlease, enter a password for the restricted PhpMyAdmin SQL user (blank for autogenerate):', $dbPass
+			);
+
+			if($rs != 30) {
+				if($dbPass eq '') {
+					$dbPass = '';
+					my @allowedChars = ('A'..'Z', 'a'..'z', '0'..'9', '_');
+					$dbPass .= $allowedChars[rand()*($#allowedChars + 1)]for (1..16);
+				}
+
+				$dbPass =~ s/('|"|`|#|;|\/|\s|\||<|\?|\\)/_/g;
+				$dialog->msgbox("\nPassword for the restricted PhpMyAdmin SQL user set to: $dbPass");
+				$dialog->set('cancel-label');
+			}
+		}
+	}
+
+	if($rs != 30) {
+		$main::questions{'PMA_USER'} = $dbUser;
+		$main::questions{'PMA_OLD_USER'} = $dbOldUser;
+		$main::questions{'PMA_PASSWORD'} = $dbPass;
+	}
+
+	$rs;
+}
+
+# Ask for i-MSCP ssl support
+sub setupAskSsl
+{
+	my($dialog, $rs) = (shift, undef);
+	my $sslEnabled = setupGetQuestion('SSL_ENABLED');
+	my $hostname = setupGetQuestion('SERVER_HOSTNAME');
+	my $guiCertDir = $main::imscpConfig{'GUI_CERT_DIR'};
+	my $cmdOpenSsl = $main::imscpConfig{'CMD_OPENSSL'};
+	my $rs = 0;
+
+	if($main::reconfigure || $sslEnabled !~ /^yes|no$/i) {
+		Modules::openssl->new()->{'openssl_path'} = $cmdOpenSsl;
+		$rs = setupSslDialog($dialog);
+		return $rs if $rs;
+	} elsif($sslEnabled eq 'yes') {
+		Modules::openssl->new()->{'openssl_path'} = $cmdOpenSsl;
+		Modules::openssl->new()->{'cert_path'} = "$guiCertDir/$hostname.pem";
+		Modules::openssl->new()->{'intermediate_cert_path'} = "$guiCertDir/$hostname.pem";
+		Modules::openssl->new()->{'key_path'} = "$guiCertDir/$hostname.pem";
+
+		if(Modules::openssl->new()->ssl_check_all()){
+			iMSCP::Dialog->factory()->msgbox("Certificate is missing or corrupted. Starting recover");
+			$rs = setupSslDialog($dialog);
 			return $rs if $rs;
 		}
 	}
 
-	$main::imscpConfig{'BASE_SERVER_IP'} = $out if($main::imscpConfig{'BASE_SERVER_IP'} ne $out);
+	$main::questions{'BASE_SERVER_VHOST_PREFIX'} = 'http://' if $main::imscpConfig{'SSL_ENABLED'} eq 'no';
 
-	iMSCP::Dialog->factory()->set('yes-label','Yes');
-	iMSCP::Dialog->factory()->set('no-label','No');
+	$rs;
+}
 
-	my $database = iMSCP::Database->new(db => $main::imscpConfig{'DATABASE_TYPE'})->factory();
+sub setupSslDialog
+{
+	my ($dialog, $rs, $ret) = (shift, 0, '');
+	my $sslEnabled = setupGetQuestion('SSL_ENABLED') || 'no';
 
-	my %otherIPs = %allIPs;
-	delete($otherIPs{$out}) if exists $otherIPs{$out};
 
-	my $toSave ='';
-	if (scalar(keys %otherIPs) > 0 ){
-		my $out = iMSCP::Dialog->factory()->yesno("\n\n\t\t\tInsert other ips into database?");
-		$toSave = iMSCP::Dialog->factory()->checkbox("Please select ip`s to be entered to database:", keys %otherIPs) if !$out;
-		$toSave =~ s/"//g;
+	($rs, $sslEnabled) =  $dialog->radiolist(
+		"\nDo you want to activate SSL for i-MSCP?", ['no', 'yes'], lc($sslEnabled) eq 'yes' ? 'yes' : 'no'
+	);
+
+
+	if($rs != 30) {
+		$main::questions{'SSL_ENABLED'} = $sslEnabled;
+
+		if($sslEnabled eq 'yes') {
+			Modules::openssl->new()->{'new_cert_path'} = $main::imscpConfig{'GUI_CERT_DIR'};
+			Modules::openssl->new()->{'new_cert_name'} = $main::imscpConfig{'SERVER_HOSTNAME'};
+
+			# TODO how determine default value here?
+			($rs, $ret) = $dialog->radiolist( "\nDo you have an SSL certificate?", ['yes', 'no']);
+
+			if($rs != 30) {
+				$ret = $ret eq 'yes' ? 1 : 0;
+
+				Modules::openssl->new()->{'cert_selfsigned'} = $ret;
+				Modules::openssl->new()->{'vhost_cert_name'} = $main::imscpConfig{'SERVER_HOSTNAME'} if ! $ret;
+
+				if(Modules::openssl->new()->{'cert_selfsigned'}) {
+					Modules::openssl->new()->{'intermediate_cert_path'} = '';
+					$rs = setupAskCertificateKeyPath($dialog);
+					$rs = setupAskIntermediateCertificatePath($dialog) if $rs != 30;
+					$rs = setupAskCertificatePath($dialog) if $rs != 30;
+				}
+
+				if($rs != 30) {
+					$rs = Modules::openssl->new()->ssl_export_all();
+					return $rs if $rs;
+				}
+			}
+		}
+
+		if($rs != 30 && $sslEnabled eq 'yes') {
+			my $httpPrefix = setupGetQuestion('BASE_SERVER_VHOST_PREFIX');
+
+			($rs, $ret) = $dialog->radiolist(
+				"\nPlease, choose the default access mode for i-MSCP",
+				['https', 'http'],
+				lc($httpPrefix) eq 'http://' ? 'http' : 'https'
+
+			);
+
+			$main::questions{'BASE_SERVER_VHOST_PREFIX'} = "$ret://" if $rs != 30;
+		}
 	}
 
-	for (split(/ /, $toSave), $out){
-		my $error = $database->doQuery(
-			'dummy',
-			"INSERT IGNORE INTO `server_ips` (`ip_number`, `ip_card`, `ip_status`, `ip_id`)
-			VALUES(?, ?, 'toadd', (SELECT `ip_id` FROM `server_ips` as t1 WHERE t1.`ip_number` = ?));",
-			$_, $ips->getCardByIP($_), $_
+	$rs;
+}
+
+sub setupAskCertificateKeyPath
+{
+	my ($dialog, $rs, $ret, $key) = (shift, 0, '', "/root/$main::imscpConfig{'SERVER_HOSTNAME'}.key");
+
+	do {
+		($rs, $ret) = $dialog->passwordbox("\nPlease enter password for key if needed:", $ret);
+
+		if($rs != 30) {
+			$ret =~ s/(["\$`\\])/\\$1/g;
+			Modules::openssl->new()->{'key_pass'} = $ret;
+
+			do {
+				($rs, $ret) = $dialog->fselect($key);
+			} while($rs != 30 && ! ($ret && -f $ret));
+
+			if($rs != 30) {
+				Modules::openssl->new()->{'key_path'} = $ret;
+				$key = $ret;
+			}
+		}
+	} while($rs != 30 && Modules::openssl->new()->ssl_check_key());
+
+	$rs;
+}
+
+sub setupAskIntermediateCertificatePath
+{
+	my ($dialog, $cert, $rs, $ret) = (shift, '/root/', 0, '');
+
+	$rs = $dialog->yesno("\nDo you have an intermediate certificate?");
+	return 0 if $rs;
+
+	do {
+		($rs, $ret) = $dialog->fselect($cert);
+	} while($rs != 30 && ! ($ret && -f $ret));
+
+	Modules::openssl->new()->{'intermediate_cert_path'} = $ret if $rs != 30;
+
+	$rs;
+}
+
+sub setupAskCertificatePath
+{
+	my ($dialog, $cert, $rs, $ret) = (shift, "/root/$main::imscpConfig{'SERVER_HOSTNAME'}.crt", 0, '');
+
+	$dialog->msgbox("\nPlease select your certificate:");
+
+	do {
+		do {
+			($rs, $ret) = $dialog->fselect($cert);
+		} while($rs != 30 && ! ($ret && -f $ret));
+
+		if($rs != 30) {
+			Modules::openssl->new()->{'cert_path'} = $ret;
+			$cert = $ret;
+		}
+	} while($rs != 30 && Modules::openssl->new()->ssl_check_cert());
+
+	$rs;
+}
+
+sub setupAskImscpBackup
+{
+	my $dialog = shift;
+	my $backupImscp = setupGetQuestion('BACKUP_IMSCP');
+	$backupImscp = lc($backupImscp);
+	my $rs = 0;
+
+	if($main::reconfigure || $backupImscp !~ /^yes|no$/) {
+		($rs, $backupImscp) = $dialog->radiolist(
+"
+\\Z4\\Zb\\Zui-MSCP Backup Feature\\Zn
+
+Do you want activate the backup feature for i-MSCP?
+
+The backup feature for i-MSCP allows the daily save of all i-MSCP
+configuration files and its database. It's greatly recommended to
+activate this feature.
+",
+			['yes', 'no'],
+			$backupImscp ne 'no' ? 'yes' : 'no'
 		);
-		return $error if (ref $error ne 'HASH');
 	}
+
+	$main::questions{'BACKUP_IMSCP'} = $backupImscp if $rs != 30;
+
+	$rs;
+}
+
+sub setupAskDomainBackup
+{
+	my $dialog = shift;
+	my $backupDomains = setupGetQuestion('BACKUP_DOMAINS');
+	my $rs = 0;
+
+	if($main::reconfigure || $backupDomains !~ /^yes|no$/) {
+
+		($rs, $backupDomains) = $dialog->radiolist(
+"
+\\Z4\\Zb\\ZuDomains Backup Feature\\Zn
+
+Do you want activate the backup feature for domains?
+
+This feature allows resellers to propose backup options to their customers such as:
+
+ - Full (domains and SQL databases)
+ - Domains only (Web files)
+ - SQL databases only
+ - None (no backup)
+",
+			['yes', 'no'],
+			$backupDomains ne 'yes' ? 'no' : 'yes'
+		);
+	}
+
+	$main::questions{'BACKUP_DOMAINS'} = $backupDomains if $rs != 30;
+
+	$rs;
+}
+
+#
+## Setup subroutines
+#
+
+# Write question answers into imscp.conf file
+sub setupWriteConfig
+{
+	for(keys %main::questions) {
+		if(exists $main::imscpConfig{$_}) {
+			$main::imscpConfig{$_} = $main::questions{$_};
+		}
+   	}
+}
+
+# Create system master group for imscp
+sub setupCreateMasterGroup
+{
+	iMSCP::HooksManager->getInstance()->trigger('beforeSetupCreateMasterGroup');
+
+	my $group = Modules::SystemGroup->new();
+
+	$group->{'system'} = 'yes';
+	$group->addSystemGroup($main::imscpConfig{'MASTER_GROUP'}) and return 1;
+
+	iMSCP::HooksManager->getInstance()->trigger('afterSetupCreateMasterGroup');
+
 	0;
 }
 
-################################################################################
-# Create the system 'hosts' file
-#
-# @return int 0 on success, other on failure
-#
-sub setup_hosts {
+# Create default directories needed by i-MSCP
+sub setupCreateSystemDirectories
+{
+	my $rootUName = $main::imscpConfig{'ROOT_USER'};
+	my $rootGName = $main::imscpConfig{'ROOT_GROUP'};
 
-	use iMSCP::File;
-	use iMSCP::IP;
+	my @systemDirectories  = (
+		[$main::imscpConfig{'USER_HOME_DIR'}, $rootUName, $rootGName, 0555],
+		[$main::imscpConfig{'LOG_DIR'}, $rootUName,	$rootGName, 0555],
+		[$main::imscpConfig{'BACKUP_FILE_DIR'}, $rootUName, $rootGName, 0750]
+	);
 
+	iMSCP::HooksManager->getInstance()->trigger('beforeSetupCreateSystemDirectories', \@systemDirectories);
+
+	for (@systemDirectories) {
+		iMSCP::Dir->new(dirname => $_->[0])->make({ user => $_->[1], group => $_->[2], mode => $_->[3]}) and return 1;
+	}
+
+	iMSCP::HooksManager->getInstance()->trigger('afterSetupCreateSystemDirectories');
+
+	0;
+}
+
+# Setup server hostname
+sub setupServerHostname
+{
+	my $hostname = setupGetQuestion('SERVER_HOSTNAME');
+	my $baseServerIp = setupGetQuestion('BASE_SERVER_IP');
 	my $rs = 0;
-	my $err = askHostname();
-	return 1 if($err);
 
-	my @labels = split /\./, $main::imscpConfig{'SERVER_HOSTNAME'};
+	iMSCP::HooksManager->getInstance()->trigger('beforeSetupServerHostname', \$hostname, \$baseServerIp);
 
-	use Net::LibIDN qw/idn_to_ascii/;
+	my @labels = split /\./, $hostname;
+	my $host = shift(@labels);
+	my $hostnameLocal = "$hostname.local";
 
-	my $host = idn_to_ascii(shift(@labels), 'utf-8');
-	my $hostname_local = "$main::imscpConfig{'SERVER_HOSTNAME'}.local";
-
-	my $file = iMSCP::File->new(filename => "/etc/hosts");
-	$rs |= $file->copyFile("/etc/hosts.bkp") if(!-f '/etc/hosts.bkp');
+	my $file = iMSCP::File->new(filename => '/etc/hosts');
+	$rs |= $file->copyFile('/etc/hosts.bkp') if !-f '/etc/hosts.bkp';
 
 	my $content = "# 'hosts' file configuration.\n\n";
 
-	$content .= "127.0.0.1\t$hostname_local\tlocalhost\n";
-	$content .= "$main::imscpConfig{'BASE_SERVER_IP'}\t$main::imscpConfig{'SERVER_HOSTNAME'}\t$host\n";
-	$content .= "::ffff:$main::imscpConfig{'BASE_SERVER_IP'}\t$main::imscpConfig{'SERVER_HOSTNAME'}\t$host\n" if iMSCP::IP->new()->getIpType($main::imscpConfig{BASE_SERVER_IP}) eq 'ipv4';
-	$content .= "::1\tip6-localhost\tip6-loopback\n" if iMSCP::IP->new()->getIpType($main::imscpConfig{BASE_SERVER_IP}) eq 'ipv4';
-	$content .= "::1\tip6-localhost\tip6-loopback\t$host\n"  if iMSCP::IP->new()->getIpType($main::imscpConfig{BASE_SERVER_IP}) ne 'ipv4';
+	$content .= "127.0.0.1\t$hostnameLocal\tlocalhost\n";
+	$content .= "$baseServerIp\t$hostname\t$host\n";
+	$content .= "::ffff:$baseServerIp\t$hostname\t$host\n" if iMSCP::IP->new()->getIpType($baseServerIp) eq 'ipv4';
+	$content .= "::1\tip6-localhost\tip6-loopback\n" if iMSCP::IP->new()->getIpType($baseServerIp) eq 'ipv4';
+	$content .= "::1\tip6-localhost\tip6-loopback\t$host\n" if iMSCP::IP->new()->getIpType($baseServerIp) ne 'ipv4';
 	$content .= "fe00::0\tip6-localnet\n";
 	$content .= "ff00::0\tip6-mcastprefix\n";
 	$content .= "ff02::1\tip6-allnodes\n";
@@ -580,8 +1247,8 @@ sub setup_hosts {
 	$rs |= $file->mode(0644);
 	$rs |= $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
 
-	$file = iMSCP::File->new(filename => "/etc/hostname");
-	$rs |= $file->copyFile("/etc/hostname.bkp") if(!-f '/etc/hostname.bkp');
+	$file = iMSCP::File->new(filename => '/etc/hostname');
+	$rs |= $file->copyFile('/etc/hostname.bkp') if ! -f '/etc/hostname.bkp';
 	$content = $host;
 	$rs |= $file->set($content);
 	$rs |= $file->save();
@@ -589,68 +1256,137 @@ sub setup_hosts {
 	$rs |= $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
 
 	my ($stdout, $stderr);
-	$rs |= execute("$main::imscpConfig{'CMD_HOSTNAME'} $host", \$stdout, \$stderr);
+	$rs |= execute("$hostname $host", \$stdout, \$stderr);
 	debug("$stdout") if $stdout;
 	warning("$stderr") if !$rs && $stderr;
 	error("$stderr") if $rs && $stderr;
-	error("Can not set hostname") if $rs && !$stderr;
+	error("Unable to set server hostname") if $rs && !$stderr;
+
+	iMSCP::HooksManager->getInstance()->trigger('afterSetupServerHostname');
 
 	$rs;
 }
 
+# Setup server ips
+sub setupServerIps
+{
+	my $baseServerIp = setupGetQuestion('BASE_SERVER_IP');
+	my @serverIps = setupGetQuestion('SERVER_IPS') ? @{setupGetQuestion('SERVER_IPS')} : ();
+	my $serverIpsToReplace = setupGetQuestion('SERVER_IPS_TO_REPLACE') || {};
+	my $serverHostname = setupGetQuestion('SERVER_HOSTNAME');
 
-sub askHostname{
+	my @serverIps = (
+		$main::imscpConfig{'BASE_SERVER_IP'},
+		$main::questions{'SERVER_IPS'} ? @{$main::questions{'SERVER_IPS'}} : ()
+	);
 
-	my ($out, $err, $hostname);
+	iMSCP::HooksManager->getInstance()->trigger(
+		'beforeSetupServerIps', \$baseServerIp, \@serverIps, \$serverIpsToReplace
+	);
 
-	use iMSCP::Dialog;
-	use Socket;
+	my $database = setupGetSqlConnect($main::imscpConfig{'DATABASE_NAME'});
 
-	#$hostname = gethostbyaddr($main::imscpConfig{'BASE_SERVER_IP'}, &AF_INET);
-	if( !$hostname || $hostname !~ /^([\w][\w-]{0,253}[\w])\.([\w][\w-]{0,253}[\w])\.([a-zA-Z]{2,6})$/) {
-		if (execute("$main::imscpConfig{'CMD_HOSTNAME'} -f", \$hostname, \$err)){
-			error("Can not find hostname (misconfigured?): $err");
-			$hostname = '';
+	my $ips = iMSCP::IP->new();
+	my $rs = $ips->loadIPs();
+	return $rs if $rs;
+
+	# Process server ips replacement if any
+	for(keys %{$serverIpsToReplace}) {
+
+		my $netCard = $ips->getCardByIP($_);
+
+		if($netCard) {
+			$ips->detachIpFromNetcard($_) and return 1;
+
+			my $rs = $database->doQuery(
+				'dummy',
+				'UPDATE server_ips SET ip_number = ?, ip_card = ?, ip_status = ? WHERE ip_number = ?',
+				$$serverIpsToReplace{$_}, $netCard, 'toadd', $_
+			);
+			if($rs ne 'hash') {
+				error("Cannot replace the IP address '$_' by '$$serverIpsToReplace{$_}': $rs");
+				return 1;
+			}
+		} else {
+			error("Cannot handle unconfigured IP: $_");
+			return 1;
 		}
 	}
 
-	chomp($hostname);
+	# Process server ips addition
+	for (@serverIps) {
+		next if exists $$serverIpsToReplace{$_};
 
-	if($hostname && $main::imscpConfig{'SERVER_HOSTNAME'} eq $hostname){
-		return 0;
+		my $netCard = $ips->getCardByIP($_);
+
+		if($netCard) {
+			my $rs = $database->doQuery(
+				'dummy',
+				'
+					INSERT IGNORE INTO `server_ips` (
+						`ip_number`, `ip_card`, `ip_status`, `ip_id`
+					) VALUES(
+						?, ?, ?, (SELECT `ip_id` FROM `server_ips` as t1 WHERE t1.`ip_number` = ?)
+					)
+				',
+				$_, $netCard, 'toadd', $_
+			);
+
+			if (ref $rs ne 'HASH') {
+				error("Cannot add/update server address IP '$_': $rs");
+				return 1;
+			}
+		} else {
+			error("Cannot add unconfigured IP into database: $_");
+			return 1;
+		}
 	}
-	if($hostname && $main::imscpConfigOld{'SERVER_HOSTNAME'} && $main::imscpConfigOld{'SERVER_HOSTNAME'} eq $hostname){
-		$main::imscpConfig{'SERVER_HOSTNAME'} = $main::imscpConfigOld{'SERVER_HOSTNAME'};
-		return 0;
+
+	# Process server ips deletion
+	if(@serverIps) {
+		my $serverIps = join q{,}, map $database->quote($_), @serverIps;
+
+		my $rs = $database->doQuery(
+			'dummy',
+			'UPDATE`server_ips` set `ip_status` = ?  WHERE `ip_number` NOT IN(' . $serverIps . ') AND `ip_number` <> ?',
+			'delete',
+			$baseServerIp
+		);
+		if (ref $rs ne 'HASH') {
+			error("Cannot schedule server IPs deletion: $rs");
+			return 1;
+		}
 	}
 
-	use Data::Validate::Domain qw/is_domain/;
+	# Set/update domain name and alias for base server ip
+	my ($alias) =  split /\./, $serverHostname;
 
-	my %options = $main::imscpConfig{'DEBUG'} ? (domain_private_tld => qr /^(?:bogus|test)$/) : ();
+	$rs = $database->doQuery(
+		'dummy',
+		'UPDATE `server_ips` SET `ip_domain` = ?, `ip_alias` = ? WHERE `ip_number` = ?',
+		$serverHostname,
+		$alias,
+		$baseServerIp
+	);
+	return $rs if ref $rs ne 'HASH';
 
-	my ($msg, @labels) = ('', ());
-	do{
-		while (! ($out = iMSCP::Dialog->factory()->inputbox( "Please enter a fully qualified hostname (fqdn): $msg", $hostname))){}
-		$msg = "\n\n$out is not a valid fqdn!";
-		@labels = split(/\./, $out);
-	} while (! (Data::Validate::Domain->new(%options)->is_domain($out) && ( @labels >= 3)));
+	$rs = $database->doQuery(
+		'dummy',
+		'UPDATE `server_ips` SET `ip_domain` = NULL, `ip_alias` = NULL WHERE `ip_number` <> ?  AND `ip_domain` = ?',
+		$baseServerIp,
+		$serverHostname
+	);
+	return $rs if ref $rs ne 'HASH';
 
-	use Net::LibIDN qw/idn_to_ascii idn_to_unicode/;
-
-	$main::imscpConfig{'SERVER_HOSTNAME'} = idn_to_ascii($out, 'utf-8');
+	iMSCP::HooksManager->getInstance()->trigger('afterSetupServerIps');
 
 	0;
 }
 
-################################################################################
-# Set the local dns resolver
-#
-# @return int 0 on success, -1 on failure
-#
-sub setup_resolver {
-
-	use iMSCP::File;
-	use iMSCP::Dialog;
+# Setup local resolver
+sub setupLocalResolver
+{
+	iMSCP::HooksManager->getInstance()->trigger('beforeSetupLocalResolver');
 
 	my ($err, $file, $content, $out);
 
@@ -664,16 +1400,7 @@ sub setup_resolver {
 			return 1;
 		}
 
-		if($main::imscpConfig{'LOCAL_DNS_RESOLVER'} !~ /yes|no/i) {
-			if($main::imscpConfigOld{'LOCAL_DNS_RESOLVER'} && $main::imscpConfigOld{'LOCAL_DNS_RESOLVER'} =~ /yes|no/i){
-				$main::imscpConfig{'LOCAL_DNS_RESOLVER'} = $main::imscpConfigOld{'LOCAL_DNS_RESOLVER'};
-			} else {
-				while (! ($out = iMSCP::Dialog->factory()->radiolist("Do you want allow the system resolver to use the local nameserver?:", ('yes', 'no')))){}
-				$main::imscpConfig{'LOCAL_DNS_RESOLVER'} = $out;
-			}
-		}
-
-		if($main::imscpConfig{'LOCAL_DNS_RESOLVER'} =~ /yes/i) {
+		if(setupGetQuestion('LOCAL_DNS_RESOLVER') =~ /^yes$/i) {
 			if($content !~ /nameserver 127.0.0.1/i) {
 				$content =~ s/(nameserver.*)/nameserver 127.0.0.1\n$1/i;
 			}
@@ -681,8 +1408,10 @@ sub setup_resolver {
 			$content =~ s/nameserver 127.0.0.1//i;
 		}
 
+		$content =~ s/\n+/\n/g; # Remove any empty line
+
 		# Saving the old file if needed
-		if(!-f "$main::imscpConfig{'RESOLVER_CONF_FILE'}.bkp") {
+		if(! -f "$main::imscpConfig{'RESOLVER_CONF_FILE'}.bkp") {
 			$file->copyFile("$main::imscpConfig{'RESOLVER_CONF_FILE'}.bkp") and return 1;
 		}
 
@@ -691,24 +1420,320 @@ sub setup_resolver {
 		$file->save() and return 1;
 		$file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'}) and return 1;
 		$file->mode(0644) and return 1;
-
 	} else {
-		error("Unable to found your resolv.conf file!");
-		return 1;
+		warning("Unable to found the resolv.conf file on your system");
 	}
+
+	iMSCP::HooksManager->getInstance()->trigger('afterSetupLocalResolver');
 
 	0;
 }
 
-################################################################################
-# i-MSCP crontab file - (Setup / Update)
-#
-# This subroutine built, store and install the i-MSCP crontab file
-#
-sub setup_crontab {
+# Create iMSCP database
+sub setupCreateDatabase
+{
+	iMSCP::HooksManager->getInstance()->trigger('beforeSetupCreateDatabase');
 
-	use iMSCP::File;
-	use iMSCP::Templator;
+	my $database = setupGetSqlConnect($main::imscpConfig{'DATABASE_NAME'});
+
+	#if($main::imscpConfig{'DATABASE_NAME'} ne $main::imscpOldConfig{'DATABASE_NAME'} && ! $database) {
+		my $dbName = setupGetQuestion('DATABASE_NAME');
+
+		my $database = iMSCP::Database->new(db => $main::imscpConfig{'DATABASE_TYPE'})->factory();
+		$database->set('DATABASE_NAME', '');
+		my $rs = $database->connect();
+		return $rs if $rs;
+
+		my $qdbName = $database->quoteIdentifier($dbName);
+		$rs = $database->doQuery('create_db', "CREATE DATABASE $qdbName CHARACTER SET utf8 COLLATE utf8_unicode_ci;");
+
+		$database->set('DATABASE_NAME', $dbName);
+		$rs = $database->connect();
+		return $rs if $rs;
+
+		$rs = setupImportSqlSchema($database, "$main::imscpConfig{'CONF_DIR'}/database/database.sql");
+		return $rs if $rs;
+	#}
+
+	# In any case, we ensure we have last db schema by triggering db update
+	setupUpdateDatabase() and return 1;
+
+	iMSCP::HooksManager->getInstance()->trigger('afterSetupCreateDatabase');
+
+	0;
+}
+
+# TODO fix bug here (first query is never show)
+sub setupImportSqlSchema
+{
+	iMSCP::HooksManager->getInstance()->trigger('beforeSetupImportSqlSchema');
+
+	my $database = shift;
+	my $file = shift;
+
+	my $content = iMSCP::File->new(filename => $file)->get();
+	$content =~ s/^(--[^\n]{0,})?\n//mg;
+	my @queries = (split /;\n/, $content);
+
+	my $title = "Executing " . @queries . " queries:";
+
+	startDetail();
+
+	my $step = 1;
+	for (@queries) { # TODO Must be fixed: first query is never show here
+		my $error = $database->doQuery('dummy', $_);
+		return $error if (ref $error ne 'HASH');
+
+		my $msg = $queries[$step] ? "$title\n$queries[$step]" : $title;
+		step('', $msg, scalar @queries, $step);
+		$step++;
+	}
+
+	endDetail();
+
+	iMSCP::HooksManager->getInstance()->trigger('afterSetupImportSqlSchema');
+
+	0;
+}
+
+# Update i-MSCP database schema
+sub setupUpdateDatabase
+{
+	iMSCP::HooksManager->getInstance()->trigger('beforeSetupUpdateDatabase');
+
+	my ($rs, $stdout, $stderr);
+	my $file = iMSCP::File->new(filename => "$main::imscpConfig{'ROOT_DIR'}/engine/setup/updDB.php");
+
+	my $content	= $file->get();
+	return 1 if(!$content);
+
+	if($content =~ s/{GUI_ROOT_DIR}/$main::imscpConfig{'GUI_ROOT_DIR'}/) {
+		$rs = $file->set($content);
+		return 1 if($rs != 0);
+
+		$rs = $file->save();
+		return 1 if($rs != 0);
+	}
+
+	$rs = execute(
+		"$main::imscpConfig{'CMD_PHP'} $main::imscpConfig{'ROOT_DIR'}/engine/setup/updDB.php", \$stdout, \$stderr
+	);
+	error("$stdout $stderr") if $rs;
+	return ($stdout ? "$stdout " : '' ) . $stderr . " exitcode: $rs" if $rs;
+
+	iMSCP::HooksManager->getInstance()->trigger('afterSetupUpdateDatabase');
+
+	0;
+}
+
+# Secure any SQL account by removing those without password
+sub setupSecureSqlAccounts
+{
+	iMSCP::HooksManager->getInstance()->trigger('beforeSetupSecureSqlAccounts');
+
+	my $database = setupGetSqlConnect(setupGetQuestion('DATABASE_NAME'));
+
+	my $rdata = $database->doQuery('User', "SELECT `User`, `Host` FROM `mysql`.`user` WHERE `Password` = ''");
+
+	if(ref $rdata ne 'HASH'){
+		error("$rdata");
+		return 1;
+	}
+
+	for (keys %$rdata) {
+		my $error = $database->doQuery('drop', "DROP USER ?@?", $_, $rdata->{$_}->{Host});
+		error("$error") if(ref $error ne 'HASH');
+	}
+
+	iMSCP::HooksManager->getInstance()->trigger('afterSetupSecureSqlAccounts');
+
+	0;
+}
+
+
+# Add default sql data (admin and server ips)
+sub setupDefaultAdmin
+{
+	iMSCP::HooksManager->getInstance()->trigger('beforeSetupDefaultAdmin');
+
+	my $database = iMSCP::Database->factory();
+	my $rs = 0;
+
+	# Add admin or update it if needed
+	if($main::questions{'ADMIN_LOGIN_NAME'} && $main::question{'ADMIN_PASSWORD'}) {
+		my $adminLoginName = $main::questions{'ADMIN_LOGIN_NAME'};
+		my $password = iMSCP::Crypt->new()->crypt_md5_data($main::question{'ADMIN_PASSWORD'});
+		my $adminEmail = imscpConfig{'DEFAULT_ADMIN_ADDRESS'};
+
+		$rs = $database->doQuery(
+			'dummy',
+			"
+				INSERT INTO `admin` (
+					`admin_name`, `admin_pass`, `admin_type`, `email`
+				) VALUES (
+					?, ?, 'admin', ?)
+			",
+			$adminLoginName, $password, $adminEmail
+		);
+		return $rs if (ref $rs ne 'HASH');
+	}
+
+	iMSCP::HooksManager->getInstance()->trigger('afterSetupDefaultAdmin');
+
+	0;
+}
+
+# Create PhpMyAdmin conffile and SQL user with its privileges
+sub setupPhpMyAdmin
+{
+	iMSCP::HooksManager->getInstance()->trigger('beforeSetupPhpMyAdmin');
+
+	if(setupGetQuestion('PMA_USER')) {
+
+		my $cfgDir = "$main::imscpConfig{'CONF_DIR'}/pma";
+    	my $bkpDir = "$cfgDir/backup";
+    	my $wrkDir = "$cfgDir/working";
+    	my $prodDir	= "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/pma";
+
+    	my $dbHost = setupGetQuestion('DATABASE_HOST');
+    	my $dbUser = setupGetQuestion('PMA_USER');
+        my $dbPass = setupGetQuestion('PMA_PASSWORD');
+
+    	my ($rs, $file, $cfgFile) = (0, undef, undef);
+
+		# Save current production file if it exists
+		if(-f "$prodDir/config.inc.php") {
+			$file = iMSCP::File->new(
+				filename => "$prodDir/config.inc.php")->copyFile("$bkpDir/config.inc.php." . time
+			) and return 1;
+		}
+
+		# Delete old PhpMyAdmin restricted SQL user and all it privileges (if any)
+		if(setupGetQuestion('PMA_OLD_USER') && setupGetQuestion('PMA_OLD_USER') ne $dbUser) {
+			my $dbOldUser = setupGetQuestion('PMA_OLD_USER');
+			$rs = setupDeleteSqlUser($dbOldUser, $main::imscpOldConfig{'DATABASE_HOST'});
+			error("Unable to remove the old PhpMyAdmin '$dbOldUser' restricted SQL user: $rs") if $rs;
+			return 1 if $rs;
+		}
+
+		# Ensure new PhpMyAdmin restricted SQL user do not already exists by deleting it
+		$rs = setupDeleteSqlUser($dbUser, $dbHost);
+		error("Unable to delete the PhpMyAdmin '$dbUser' restricted SQL user: $rs") if $rs;
+		return 1 if $rs;
+
+		#
+		## Setup new PhpMyAdmin restricted SQL user
+		#
+
+		# Get SQL connection with full privileges
+        my $database = setupGetSqlConnect();
+
+		# Add USAGE privilege on the mysql database (also create PhpMyadmin user)
+		$rs = $database->doQuery('dummy', 'GRANT USAGE ON `mysql`.* TO ?@? IDENTIFIED BY ?', $dbUser, $dbHost, $dbPass);
+		if(ref $rs ne 'HASH') {
+			error("Failed to add USAGE privilege on the 'mysql' database for the '$dbUser' SQL user: $rs");
+			return 1;
+		}
+
+		# Add SELECT privilege on the mysql.db table
+		$rs = $database->doQuery('dummy', 'GRANT SELECT ON `mysql`.`db` TO ?@?', $dbUser, $dbHost);
+		if(ref $rs ne 'HASH') {
+        	error("Failed to add SELECT privilege on the 'mysql.db' table for the '$dbUser' SQL user: $rs");
+        	return 1;
+        }
+
+		# Add SELECT privilege on many columns of the mysql.user table
+		$rs = $database->doQuery(
+			'dummy',
+			'
+				GRANT SELECT (Host, User, Select_priv, Insert_priv, Update_priv, Delete_priv, Create_priv, Drop_priv,
+					Reload_priv, Shutdown_priv, Process_priv, File_priv, Grant_priv, References_priv, Index_priv,
+					Alter_priv, Show_db_priv, Super_priv, Create_tmp_table_priv, Lock_tables_priv, Execute_priv,
+					Repl_slave_priv, Repl_client_priv)
+				ON `mysql`.`user`
+				TO ?@?
+			',
+			$dbUser,
+			$dbHost
+		);
+		if(ref $rs ne 'HASH') {
+        	error("Failed to add SELECT privileges on columns of the 'mysql.user' table for the '$dbUser' SQL user: $rs");
+        	return 1;
+        }
+
+		# Add SELECT privilege on the mysql.host table
+		$rs = $database->doQuery('dummy', 'GRANT SELECT ON `mysql`.`host` TO ?@?', $dbUser, $dbHost);
+		if(ref $rs ne 'HASH') {
+        	error("Failed to add SELECT privilege on the 'mysql.host' table for the '$dbUser' SQL user: $rs");
+        	return 1;
+        }
+
+		# Add SELECT privilege on many columns of the mysql.tables_priv table
+		$rs = $database->doQuery(
+			'dummy',
+			'
+				GRANT SELECT (`Host`, `Db`, `User`, `Table_name`, `Table_priv`, `Column_priv`)
+				ON `mysql`.`tables_priv`
+				TO?@?
+			',
+			$dbUser,
+			$dbHost
+		);
+		if(ref $rs ne 'HASH') {
+        	error("Failed to add SELECT privilege on columns of the 'mysql.tables_priv' table for the '$dbUser' SQL user: $rs");
+        	return 1;
+        }
+
+		#
+		## Build new PhpMyAdmin config.inc.php file
+		#
+
+		# Generate blowfish secret
+		my $blowfishSecret	= '';
+		my @allowedChars = ('A'..'Z', 'a'..'z', '0'..'9', '_');
+		$blowfishSecret .= $allowedChars[rand()*($#allowedChars + 1)] for (1..31);
+
+		# Get the template file
+		$file = iMSCP::File->new(filename => "$cfgDir/config.inc.tpl");
+		$cfgFile = $file->get();
+		return 1 if ! $cfgFile;
+
+		$cfgFile = process(
+			{
+				PMA_USER => $dbUser,
+				PMA_PASS => $dbPass,
+				HOSTNAME => $dbHost,
+				UPLOADS_DIR	=> "$main::imscpConfig{'GUI_ROOT_DIR'}/data/uploads",
+				TMP_DIR => "$main::imscpConfig{'GUI_ROOT_DIR'}/data/tmp",
+				BLOWFISH => $blowfishSecret
+			},
+			$cfgFile
+		);
+		return 1 if ! $cfgFile;
+
+		# Store new file in working directory
+		$file = iMSCP::File->new(filename => "$wrkDir/config.inc.php");
+		$file->set($cfgFile) and return 1;
+		$file->save() and return 1;
+		$file->mode(0640) and return 1;
+		$file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'}) and return 1;
+
+		# Install new file in production directory
+		$file->copyFile("$prodDir/") and return 1;
+
+		chmod 0644, "$prodDir/config.inc.php"; # TODO remove this statement
+	}
+
+	iMSCP::HooksManager->getInstance()->trigger('afterSetupPhpMyAdmin');
+
+	0;
+}
+
+# Setup crontab
+# TODO: awstats part should be done via awstats installer
+sub setupCrontab
+{
+	iMSCP::HooksManager->getInstance()->trigger('beforeSetupCrontab');
 
 	my ($rs, $cfgTpl, $err);
 
@@ -735,7 +1760,7 @@ sub setup_crontab {
 	return 1 if (!$cfgTpl);
 
 	# Awstats cron task preparation (On|Off) according status in imscp.conf
-	if ($main::imscpConfig{'AWSTATS_ACTIVE'} ne 'yes' || $main::imscpConfig{'AWSTATS_MODE'} eq 1) {
+	if ($main::imscpConfig{'AWSTATS_ACTIVE'} !~ /^yes/i || $main::imscpConfig{'AWSTATS_MODE'} eq '1') {
 		$awstats = '#';
 	}
 
@@ -765,31 +1790,27 @@ sub setup_crontab {
 		},
 		$cfgTpl
 	);
-	return 1 if (!$cfgTpl);
+	return 1 if ! $cfgTpl;
 
-	## Storage and installation of new file
-
-	# Storing new file in the working directory
+	# Store new file in working directory
 	my $file = iMSCP::File->new(filename => "$wrkDir/imscp");
 	$file->set($cfgTpl);
 	$file->save() and return 1;
 	$file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'}) and return 1;
 	$file->mode(0644) and return 1;
 
-	# Install the new file in production directory
+	# Install new file in production directory
 	$file->copyFile("$prodDir/") and return 1;
+
+	iMSCP::HooksManager->getInstance()->trigger('afterSetupCrontab');
 
 	0;
 }
 
-################################################################################
-# i-MSCP Daemon, network - (Setup / Update)
-#
-# This subroutine install or update the i-MSCP daemon and network init scripts
-#
-# @return int 0 on success, other on failure
-#
-sub setup_imscp_daemon_network {
+# Setup i-MSCP init scripts
+sub setupInitScripts
+{
+	iMSCP::HooksManager->getInstance()->trigger('beforeSetupInitScripts');
 
 	my ($rs, $rdata, $fileName, $stdout, $stderr);
 
@@ -821,25 +1842,23 @@ sub setup_imscp_daemon_network {
 		error("$stderr") if $rs;
 	}
 
+	iMSCP::HooksManager->getInstance()->trigger('afterSetupInitScripts');
+
 	0;
 }
 
-################################################################################
-# Set permissions for sensitive data
-#
-# @return int 0 on success, other on failure
-#
-sub set_permissions {
+# Setup i-MSCP base permissions
+sub setupBasePermissions
+{
+	iMSCP::HooksManager->getInstance()->trigger('beforeSetupBasePermissions');
 
-	use iMSCP::Rights;
-
-	my $rs;
-	my $rootUName	= $main::imscpConfig{'ROOT_USER'};
-	my $rootGName	= $main::imscpConfig{'ROOT_GROUP'};
-	my $masterUName	= $main::imscpConfig{'MASTER_GROUP'};
-	my $CONF_DIR	= $main::imscpConfig{'CONF_DIR'};
-	my $ROOT_DIR	= $main::imscpConfig{'ROOT_DIR'};
-	my $LOG_DIR		= $main::imscpConfig{'LOG_DIR'};
+	my $rootUName = $main::imscpConfig{'ROOT_USER'};
+	my $rootGName = $main::imscpConfig{'ROOT_GROUP'};
+	my $masterUName = $main::imscpConfig{'MASTER_GROUP'};
+	my $CONF_DIR = $main::imscpConfig{'CONF_DIR'};
+	my $ROOT_DIR = $main::imscpConfig{'ROOT_DIR'};
+	my $LOG_DIR = $main::imscpConfig{'LOG_DIR'};
+	my $rs = 0;
 
 	$rs |= setRights("$CONF_DIR", {user => $rootUName, group => $masterUName, mode => '0770'});
 	$rs |= setRights("$CONF_DIR/imscp.conf", {user => $rootUName, group => $masterUName, mode => '0660'});
@@ -847,607 +1866,14 @@ sub set_permissions {
 	$rs |= setRights("$ROOT_DIR/engine", {user => $rootUName, group => $masterUName, mode => '0755', recursive => 'yes'});
 	$rs |= setRights($LOG_DIR, {user => $rootUName, group => $masterUName, mode => '0750'});
 
-	0;
-}
-
-################################################################################
-# Restart services
-#
-# This subroutines restart all the services managed by i-MSCP.
-#
-sub restart_services {
-
-	use iMSCP::Dialog;
-	use iMSCP::Stepper;
-
-	startDetail();
-
-	my @services = (
-		#['Variable holding command', 'command to execute', 'ignore error if 0 exit on error if 1']
-		['CMD_IMSCPN',			'restart',	1],
-		['CMD_IMSCPD',			'restart',	1],
-		['CMD_CLAMD',			'reload',	1],
-		['CMD_POSTGREY',		'restart',	1],
-		['CMD_POLICYD_WEIGHT',	'reload',	0],
-		['CMD_AMAVIS',			'reload',	1]
-	);
-
-	my ($rs, $stdout, $stderr);
-	my $count = 1;
-
-	for (@services) {
-		if($main::imscpConfig{$_->[0]} && ($main::imscpConfig{$_->[0]} !~ /^no$/i) && -f $main::imscpConfig{$_->[0]}) {
-			$rs = step(
-				sub { execute("$main::imscpConfig{$_->[0]} $_->[1]", \$stdout, \$stderr)},
-				"Restarting $main::imscpConfig{$_->[0]}",
-				scalar @services,
-				$count
-			);
-			debug("$main::imscpConfig{$_->[0]} $stdout") if $stdout;
-			error("$main::imscpConfig{$_->[0]} $stderr $rs") if ($rs && $_->[2]);
-			return $rs if ($rs && $_->[2]);
-		}
-		$count++;
-	}
-
-	endDetail();
+	iMSCP::HooksManager->getInstance()->trigger('afterSetupBasePermissions');
 
 	0;
 }
 
-################################################################################
-# Setup i-MSCP database default data
-#
-# Default data are:
-#
-# - Data for the first i-MSCP administrator is none exists
-# - Data for the first Ip
-#
-# @return int 0 on success, other on failure
-#
-sub setup_default_sql_data {
-
-	use iMSCP::Crypt;
-	use iMSCP::Database;
-
-	my ($error);
-
-	my $database = iMSCP::Database->new(db => $main::imscpConfig{'DATABASE_TYPE'})->factory();
-	my $admins = $database->doQuery(
-						'admin_id',
-						'SELECT
-							*
-						FROM
-							`admin`
-						WHERE
-							`admin_type` = \'admin\'
-						'
-	);
-	return 1 if (ref $admins ne 'HASH');
-
-	my $msg = '';
-	if( ! scalar keys %{$admins} ){
-		my ($admin, $pass, $rpass, $msg, $admin_email) = ('admin');
-		while(!($admin	= iMSCP::Dialog->factory()->inputbox('Please enter administrator login name', $admin))){};
-		do{
-			while(!($pass	= iMSCP::Dialog->factory()->passwordbox("Please enter administrator password ". ($msg ? $msg : ''),''))){};
-			while(!($rpass	= iMSCP::Dialog->factory()->passwordbox('Please repeat administrator password',''))){};
-			$msg = "\n\n\\Z1Password do not match\\Zn.\n\nPlease try again";
-		}while($pass ne $rpass);
-		$pass = iMSCP::Crypt->new()->crypt_md5_data($pass);
-		$admin_email = askAdminEmail();
-		my $error = $database->doQuery(
-			'dummy',
-			"INSERT INTO `admin` (`admin_name`, `admin_pass`, `admin_type`, `email`)
-			VALUES (?, ?, 'admin', ?);", $admin, $pass, $admin_email
-		);
-		return $error if (ref $error ne 'HASH');
-
-		$error = $database->doQuery(
-			'dummy',
-			"INSERT INTO `user_gui_props` (`user_id`) values (LAST_INSERT_ID());"
-		);
-		return $error if (ref $error ne 'HASH');
-	} else {
-		askAdminEmail();
-	}
-
-	## First Ip data - Begin
-
-	debug('Inserting primary Ip data...');
-
-	$error = $database->doQuery(
-		'dummy',
-		"
-		UPDATE
-			`server_ips`
-		SET
-			`ip_domain` = ?
-		WHERE
-			`ip_number` = ?
-		", $main::imscpConfig{'SERVER_HOSTNAME'}, $main::imscpConfig{'BASE_SERVER_IP'}
-	);
-	return $error if (ref $error ne 'HASH');
-
-	$error = $database->doQuery(
-		'dummy',
-		"
-		UPDATE
-			`server_ips`
-		SET
-			`ip_domain` = NULL
-		WHERE
-			`ip_number` != ?
-		AND
-			`ip_domain` = ?
-		", $main::imscpConfig{'BASE_SERVER_IP'}, $main::imscpConfig{'SERVER_HOSTNAME'}
-	);
-	return $error if (ref $error ne 'HASH');
-
-	askMYSQLPrefix();
-
-	0;
-}
-
-sub askMYSQLPrefix{
-
-	my $useprefix	= $main::imscpConfig{'MYSQL_PREFIX'} ? $main::imscpConfig{'MYSQL_PREFIX'} : ($main::imscpConfigOld{'MYSQL_PREFIX'} ? $main::imscpConfigOld{'MYSQL_PREFIX'} : '');
-	my $prefix		= $main::imscpConfig{'MYSQL_PREFIX_TYPE'} ? $main::imscpConfig{'MYSQL_PREFIX_TYPE'} : ($main::imscpConfigOld{'MYSQL_PREFIX_TYPE'} ? $main::imscpConfigOld{'MYSQL_PREFIX_TYPE'} : '');
-
-	while(!$useprefix || !$prefix){
-		my $prefix = $prefix = iMSCP::Dialog->factory()->radiolist("Use MySQL Prefix? Possible values:", 'do not use', 'infront', 'after');
-		if($prefix eq 'do not use'){
-			$useprefix	= 'no';
-			$prefix		= 'none';
-		} elsif($prefix =~ /^(infront|after)$/){
-			$useprefix	= 'yes';
-		}
-	}
-
-	$main::imscpConfig{'MYSQL_PREFIX'} = $useprefix if($main::imscpConfig{'MYSQL_PREFIX'} ne $useprefix);
-	$main::imscpConfig{'MYSQL_PREFIX_TYPE'} = $prefix if($main::imscpConfig{'MYSQL_PREFIX_TYPE'} ne $prefix);
-
-	0;
-}
-
-sub askAdminEmail{
-
-	my $admin_email = $main::imscpConfig{'DEFAULT_ADMIN_ADDRESS'} ? $main::imscpConfig{'DEFAULT_ADMIN_ADDRESS'} : ($main::imscpConfigOld{'DEFAULT_ADMIN_ADDRESS'} ? $main::imscpConfigOld{'DEFAULT_ADMIN_ADDRESS'} : '');
-	use Email::Valid;
-	my $msg = '';
-	while(!$admin_email){
-		$admin_email = iMSCP::Dialog->factory()->inputbox("Please enter administrator e-mail address .$msg");
-		$admin_email = '' if(!Email::Valid->address($admin_email));
-		$msg = "\n\n\\Z1Email is not valid\\Zn.\n\nPlease try again";
-	}
-	$main::imscpConfig{'DEFAULT_ADMIN_ADDRESS'} = $admin_email if($main::imscpConfig{'DEFAULT_ADMIN_ADDRESS'} ne $admin_email);
-
-	$admin_email;
-}
-
-################################################################################
-# i-MSCP GUI pma configuration file and pma SQL control user - (Setup / Update)
-#
-# This subroutine built, store and install the PhpMyAdmin configuration file
-#
-# @return int 0 on success, -1 otherwise
-#
-sub setup_gui_pma {
-
-	my $cfgDir	= "$main::imscpConfig{'CONF_DIR'}/pma";
-	my $bkpDir	= "$cfgDir/backup";
-	my $wrkDir	= "$cfgDir/working";
-	my $prodDir	= "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/pma";
-	my $dbType	= $main::imscpConfig{'DATABASE_TYPE'};
-	my $dbHost	= $main::imscpConfig{'DATABASE_HOST'};
-	my $dbPort	= $main::imscpConfig{'DATABASE_PORT'};
-	my $dbName	= $main::imscpConfig{'DATABASE_NAME'};
-
-	my ($error, $blowfishSecret, $ctrlUser, $ctrlUserPwd, $cfgFile, $file, $rebuild);
-
-	# Saving the current production file if it exists
-	if(-f "$prodDir/config.inc.php") {
-		$file = iMSCP::File->new(filename => "$prodDir/config.inc.php")->copyFile("$bkpDir/config.inc.php." . time) and return 1;
-	}
-
-	if(-f "$wrkDir/config.inc.php") {
-		# Gets the pma configuration file
-		$file = iMSCP::File->new(filename => "$cfgDir/working/config.inc.php");
-		$cfgFile = $file->get();
-		return 1 if (!$cfgFile);
-
-		# Retrieving the needed values from the working file
-		($blowfishSecret, $ctrlUser, $ctrlUserPwd) = map {
-			$cfgFile =~ /\['$_'\]\s*=\s*'(.+)'/
-		} qw /blowfish_secret controluser controlpass/;
-		$rebuild = check_sql_connection($dbType, '', $dbHost, $dbPort, $ctrlUser || '', $ctrlUserPwd || '');
-
-		my $crypt = iMSCP::Crypt->new();
-
-		my $err = check_sql_connection(
-			$main::imscpConfig{'DATABASE_TYPE'},
-			$main::imscpConfig{'DATABASE_NAME'},
-			$main::imscpConfig{'DATABASE_HOST'},
-			$main::imscpConfig{'DATABASE_PORT'},
-			$main::imscpConfig{'DATABASE_USER'},
-			$main::imscpConfig{'DATABASE_PASSWORD'} ? $crypt->decrypt_db_password($main::imscpConfig{'DATABASE_PASSWORD'}) : ''
-		);
-		if ($err){
-			error("$err");
-			return 1;
-		}
-
-	} else {
-		$rebuild = 'yes';
-	}
-
-	# Getting blowfish secret
-	if(!defined $blowfishSecret) {
-		$blowfishSecret		= '';
-		my @allowedChars	= ('A'..'Z', 'a'..'z', '0'..'9', '_');
-		$blowfishSecret		.= $allowedChars[rand()*($#allowedChars + 1)] for (1..31);
-	}
-
-	if($rebuild){
-		iMSCP::Dialog->factory()->msgbox("
-							\n\\Z1[WARNING]\\Zn
-
-							Unable to found your working PMA configuration file !
-
-							A new one will be created.
-						"
-		);
-
-		$ctrlUser = $ctrlUser ? $ctrlUser : ($main::imscpConfig{'PMA_USER'} ? $main::imscpConfig{'PMA_USER'} : ($main::imscpConfigOld{'PMA_USER'} ? $main::imscpConfigOld{'PMA_USER'} : 'pma'));
-
-		do{
-			$ctrlUser = iMSCP::Dialog->factory()->inputbox("Please enter database user name for the restricted phpmyadmin user (default pma)", $ctrlUser);
-			#we will not allow root user to be used as database user for proftpd since account will be restricted
-			if($ctrlUser eq $main::imscpConfig{DATABASE_USER}){
-				iMSCP::Dialog->factory()->msgbox("You can not use $main::imscpConfig{DATABASE_USER} as restricted user");
-				$ctrlUser = undef;
-			}
-		} while (!$ctrlUser);
-
-		iMSCP::Dialog->factory()->set('cancel-label','Autogenerate');
-
-		# Ask for proftpd SQL user password
-		$ctrlUserPwd = iMSCP::Dialog->factory()->inputbox("Please enter database password (leave blank for autogenerate)", '');
-		if(!$ctrlUserPwd){
-			$ctrlUserPwd = '';
-			my @allowedChars = ('A'..'Z', 'a'..'z', '0'..'9', '_');
-			$ctrlUserPwd .= $allowedChars[rand()*($#allowedChars + 1)]for (1..16);
-		}
-		$ctrlUserPwd =~ s/('|"|`|#|;|\/|\s|\||<|\?|\\)/_/g;
-		iMSCP::Dialog->factory()->msgbox("Your password is '".$ctrlUserPwd."'");
-		iMSCP::Dialog->factory()->set('cancel-label');
-
-		my $database = iMSCP::Database->new(db => $main::imscpConfig{'DATABASE_TYPE'})->factory();
-
-		## We ensure that new data doesn't exist in database
-		$error = $database->doQuery(
-			'dummy',"
-				DELETE FROM `mysql`.`tables_priv`
-				WHERE `Host` = ?
-				AND `Db` = 'mysql' AND `User` = ?;
-			", $dbHost, $ctrlUser
-		);
-		return $error if (ref $error ne 'HASH');
-
-		$error = $database->doQuery(
-			'dummy',"
-				DELETE FROM `mysql`.`user`
-				WHERE `Host` = ?
-				AND `User` = ?;
-			", $dbHost, $ctrlUser
-		);
-		return $error if (ref $error ne 'HASH');
-
-		$error = $database->doQuery(
-			'dummy',"
-				DELETE FROM `mysql`.`columns_priv`
-				WHERE `Host` = ?
-				AND `User` = ?;
-			", $dbHost, $ctrlUser
-		);
-		return $error if (ref $error ne 'HASH');
-
-		# Flushing privileges
-		$error = $database->doQuery('dummy','FLUSH PRIVILEGES');
-		return $error if (ref $error ne 'HASH');
-
-		# Adding the new pma control user
-		$error = $database->doQuery(
-			'dummy',"
-				GRANT USAGE ON
-					`mysql`.*
-				TO
-					?@?
-				IDENTIFIED BY
-					?
-			", $ctrlUser, $dbHost, $ctrlUserPwd
-		);
-		return $error if (ref $error ne 'HASH');
-
-		## Sets the rights for the pma control user
-
-		$error = $database->doQuery(
-			'dummy',"
-				GRANT SELECT ON `mysql`.`db` TO ?@?;
-			", $ctrlUser, $dbHost
-		);
-		return $error if (ref $error ne 'HASH');
-
-		$error = $database->doQuery(
-			'dummy',"
-				GRANT SELECT (
-					Host, User, Select_priv, Insert_priv, Update_priv, Delete_priv,
-					Create_priv, Drop_priv, Reload_priv, Shutdown_priv, Process_priv,
-					File_priv, Grant_priv, References_priv, Index_priv, Alter_priv,
-					Show_db_priv, Super_priv, Create_tmp_table_priv,
-					Lock_tables_priv, Execute_priv, Repl_slave_priv,
-					Repl_client_priv
-				)
-				ON `mysql`.`user`
-				TO ?@?;
-			", $ctrlUser, $dbHost
-		);
-		return $error if (ref $error ne 'HASH');
-
-		$error = $database->doQuery(
-			'dummy',"GRANT SELECT ON `mysql`.`host` TO ?@?;", $ctrlUser, $dbHost
-		);
-		return $error if (ref $error ne 'HASH');
-
-		$error = $database->doQuery(
-			'dummy',"
-				GRANT SELECT
-					(`Host`, `Db`, `User`, `Table_name`, `Table_priv`, `Column_priv`)
-				ON
-					`mysql`.`tables_priv`
-				TO
-					?@?;
-			", $ctrlUser, $dbHost
-		);
-		return $error if (ref $error ne 'HASH');
-
-		$main::imscpConfig{'PMA_USER'} = $ctrlUser if($main::imscpConfig{'PMA_USER'} ne $ctrlUser);
-	}
-
-	## Building the new file
-
-	# Getting the template file
-	$file = iMSCP::File->new(filename => "$cfgDir/config.inc.tpl");
-	$cfgFile = $file->get();
-	return 1 if (!$cfgFile);
-
-	$cfgFile = process(
-		{
-			PMA_USER	=> $ctrlUser,
-			PMA_PASS	=> $ctrlUserPwd,
-			HOSTNAME	=> $dbHost,
-			UPLOADS_DIR	=> "$main::imscpConfig{'GUI_ROOT_DIR'}/data/uploads",
-			TMP_DIR		=> "$main::imscpConfig{'GUI_ROOT_DIR'}/data/tmp",
-			BLOWFISH	=> $blowfishSecret
-		},
-		$cfgFile
-	);
-	return 1 if (!$cfgFile);
-
-	# Storing the file in the working directory
-	$file = iMSCP::File->new(filename => "$cfgDir/working/config.inc.php");
-	$file->set($cfgFile) and return 1;
-	$file->save() and return 1;
-	$file->mode(0640) and return 1;
-	$file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'}) and return 1;
-
-	# Installing the file in the production directory
-	# Note: permission are set by the set-gui-permissions.sh script
-	$file->copyFile("$prodDir/") and return 1;
-
-	#restore defaul connection
-	my $crypt = iMSCP::Crypt->new();
-
-	$error = check_sql_connection(
-		$main::imscpConfig{'DATABASE_TYPE'},
-		$main::imscpConfig{'DATABASE_NAME'},
-		$main::imscpConfig{'DATABASE_HOST'},
-		$main::imscpConfig{'DATABASE_PORT'},
-		$main::imscpConfig{'DATABASE_USER'},
-		$main::imscpConfig{'DATABASE_PASSWORD'} ? $crypt->decrypt_db_password($main::imscpConfig{'DATABASE_PASSWORD'}) : ''
-	);
-	return $error if ($error);
-
-	0;
-}
-
-sub askPHPTimezone{
-
-	use iMSCP::Dialog;
-	use DateTime;
-	use DateTime::TimeZone;
-
-	my $dt;
-
-	if($main::imscpConfig{'PHP_TIMEZONE'}){
-		return 0;
-	}
-
-	if($main::imscpConfigOld{'PHP_TIMEZONE'}){
-		$main::imscpConfig{'PHP_TIMEZONE'} = $main::imscpConfigOld{'PHP_TIMEZONE'};
-		return 0;
-	}
-
-	$dt = DateTime->new(year => 0, time_zone => 'local')->time_zone->name;
-
-	my $msg = '';
-	do{
-		while (! ($dt = iMSCP::Dialog->factory()->inputbox( "Please enter Server`s Timezone $msg", $dt))){}
-		$msg = "$dt is not a valid timezone! The continent and the city, both must start with a capital letter, e.g. Europe/London'";
-	} while (! DateTime::TimeZone->is_valid_name($dt));
-
-	$main::imscpConfig{'PHP_TIMEZONE'} = $dt;
-
-	0;
-}
-
-sub askVHOST{
-
-	use iMSCP::Dialog;
-
-	if($main::imscpConfig{'BASE_SERVER_VHOST'}){
-		return 0;
-	}
-
-	if($main::imscpConfigOld{'BASE_SERVER_VHOST'}){
-		$main::imscpConfig{'BASE_SERVER_VHOST'} = $main::imscpConfigOld{'BASE_SERVER_VHOST'};
-		return 0;
-	}
-
-	use Data::Validate::Domain qw/is_domain/;
-
-	my $hostname = "admin.$main::imscpConfig{'SERVER_HOSTNAME'}";
-
-	my %options = $main::imscpConfig{'DEBUG'} ? (domain_private_tld => qr /^(?:bogus|test)$/) : ();
-
-	my ($msg, @labels) = ('', ());
-	do{
-		while (! ($hostname = iMSCP::Dialog->factory()->inputbox( "Please enter the domain name where i-MSCP will be reachable on: $msg", $hostname))){}
-		$msg = "\n\n$hostname is not a valid fqdn!";
-		@labels = split(/\./, $hostname);
-	} while (! (Data::Validate::Domain->new(%options)->is_domain($hostname) && ( @labels >= 3)));
-
-	use Net::LibIDN qw/idn_to_ascii/;
-
-	$main::imscpConfig{'BASE_SERVER_VHOST'} = idn_to_ascii($hostname, 'utf-8');
-
-	0;
-}
-
-################################################################################
-# Save old i-MSCP main configuration file to preserve curent settings,
-# because current will be overwritten on update
-#
-# @return int 0
-#
-sub save_conf{
-
-
-	use iMSCP::File;
-
-	my$file = iMSCP::File->new(filename => "$main::imscpConfig{'CONF_DIR'}/imscp.conf");
-	my $cfg = $file->get() or return 1;
-
-	$file = iMSCP::File->new(filename => "$main::imscpConfig{'CONF_DIR'}/imscp.old.conf");
-	$file->set($cfg) and return 1;
-	$file->save and return 1;
-	$file->mode(0644) and return 1;
-	$file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'}) and return 1;
-
-	0;
-}
-
-################################################################################
-# Update i-MSCP main configuration file
-#
-# @return int 0
-#
-sub update_imscp_cfg {
-
-	for(qw/
-		ZIP
-		BACKUP_HOUR
-		BACKUP_MINUTE
-		USER_INITIAL_THEME
-		FTP_USERNAME_SEPARATOR
-		DATE_FORMAT
-		GUI_EXCEPTION_WRITERS
-		DEBUG
-	/){
-		if($main::imscpConfigOld{$_} && $main::imscpConfigOld{$_} ne $main::imscpConfig{$_}){
-			$main::imscpConfig{$_} = $main::imscpConfigOld{$_};
-		}
-	}
-
-	0;
-}
-
-################################################################################
-# Create users and groups for different services
-#
-# @return int 0 on success, other on failure
-#
-sub setup_system_users{
-
-	use Modules::SystemGroup;
-	use Modules::SystemUser;
-
-	my $group = Modules::SystemGroup->new();
-	$group->{system}	= 'yes';
-	$group->addSystemGroup($main::imscpConfig{'MASTER_GROUP'}) and return 1;
-
-	0;
-}
-
-sub askBackup{
-
-
-	use iMSCP::Dialog;
-
-	my $BACKUP_IMSCP	= $main::imscpConfig{'BACKUP_IMSCP'} ? $main::imscpConfig{'BACKUP_IMSCP'} : ($main::imscpConfigOld{'BACKUP_IMSCP'} ? $main::imscpConfigOld{'BACKUP_IMSCP'} : '');
-	my $BACKUP_DOMAINS	= $main::imscpConfig{'BACKUP_DOMAINS'} ? $main::imscpConfig{'BACKUP_DOMAINS'} : ($main::imscpConfigOld{'BACKUP_DOMAINS'} ? $main::imscpConfigOld{'BACKUP_DOMAINS'} : '');
-
-	if (!$BACKUP_IMSCP){
-		while (! ($BACKUP_IMSCP = iMSCP::Dialog->factory()->radiolist("Do you want to enable backup for iMSCP configuration?", 'yes', 'no'))){}
-	}
-	if($BACKUP_IMSCP ne $main::imscpConfig{'BACKUP_IMSCP'}){ $main::imscpConfig{'BACKUP_IMSCP'} = $BACKUP_IMSCP; }
-
-	if (!$BACKUP_DOMAINS){
-		while (! ($BACKUP_DOMAINS = iMSCP::Dialog->factory()->radiolist("Do you want to enable backup for domains?", 'yes', 'no'))){}
-	}
-	if($BACKUP_DOMAINS ne $main::imscpConfig{'BACKUP_DOMAINS'}){ $main::imscpConfig{'BACKUP_DOMAINS'} = $BACKUP_DOMAINS; }
-
-	0;
-}
-
-################################################################################
-# Run all update additional task such as rkhunter configuration
-#
-# @return void
-#
-sub additional_tasks{
-
-	use iMSCP::Stepper;
-
-	startDetail();
-
-	my @steps = (
-		[\&setup_rkhunter, 'i-MSCP Rkhunter configuration:']
-	);
-	my $step = 1;
-	for (@steps){
-		step($_->[0], $_->[1], scalar @steps, $step);
-		$step++;
-	}
-
-	endDetail();
-
-	0;
-}
-
-
-################################################################################
-# Setup rkhunter - (Setup / Update)
-#
-# This subroutine process the following tasks:
-#
-# - update rkhunter database files (only during setup process)
-# - Debian specific: Updates the configuration file and cron task, and
-# remove default unreadable created log file
-#
-# @return int 0 on success, other on failure
-#
-sub setup_rkhunter {
+sub setupRkhunter
+{
+	iMSCP::HooksManager->getInstance()->trigger('beforeSetupRkhunter');
 
 	my ($rs, $rdata);
 
@@ -1466,7 +1892,7 @@ sub setup_rkhunter {
 		$rdata = $file->get();
 		return 1 if(!$rdata);
 
-		# Disable cron task default
+		# Disable default cron task
 		$rdata =~ s/CRON_DAILY_RUN="(yes)?"/CRON_DAILY_RUN="no"/gmi;
 
 		# Saving the modified file
@@ -1475,7 +1901,7 @@ sub setup_rkhunter {
 	}
 
 	# Updates the logrotate configuration provided by Debian like distributions
-	# to modify rigts
+	# to modify right
 	if(-e '/etc/logrotate.d/rkhunter') {
 		# Get the file as a string
 		$file = iMSCP::File->new (filename => '/etc/logrotate.d/rkhunter');
@@ -1506,190 +1932,58 @@ sub setup_rkhunter {
 		$file->save() and return 1;
 	}
 
+	iMSCP::HooksManager->getInstance()->trigger('afterSetupRkhunter');
+
 	0;
 }
 
-################################################################################
-# Rebuild all customers configuration files
-#
-# @return int 1 on success, other on failure
-#
-sub rebuild_customers_cfg {
-
-	use iMSCP::Boot;
+# Rebuild all customers's configuration files
+sub setupRebuildCustomerFiles
+{
+	iMSCP::HooksManager->getInstance()->trigger('beforeSetupRebuildCustomersFiles');
 
 	my $tables = {
-		ssl_certs => 'status', domain => 'domain_status', domain_aliasses => 'alias_status',
-		subdomain => 'subdomain_status', subdomain_alias => 'subdomain_alias_status',
-		mail_users => 'status', htaccess => 'status',
-		htaccess_groups => 'status', htaccess_users => 'status'
+		ssl_certs => 'status',
+		domain => 'domain_status',
+		domain_aliasses => 'alias_status',
+		subdomain => 'subdomain_status',
+		subdomain_alias => 'subdomain_alias_status',
+		mail_users => 'status',
+		htaccess => 'status',
+		htaccess_groups => 'status',
+		htaccess_users => 'status'
 	};
 
 	# Set status as 'change'
-	my $error;
-	my $database = iMSCP::Database->new(db => $main::imscpConfig{'DATABASE_TYPE'})->factory();
-	while (my ($table, $field) = each %$tables) {
-		$error = $database->doQuery('dummy',
-			"
-				UPDATE
-					$table
-				SET
-					$field = 'change'
-				WHERE
-					$field = 'ok'
-				;
-			"
-		);
-		return $error if (ref $error ne 'HASH');
-	}
 
+	my $rs = 0;
+	my $database = setupGetSqlConnect(setupGetQuestion('DATABASE_NAME'));
+
+	while (my ($table, $field) = each %$tables) {
+		$rs = $database->doQuery('dummy', "UPDATE `$table` SET `$field` = 'change' WHERE `$field` = 'ok'");
+		return $rs if (ref $rs ne 'HASH');
+	}
 
 	iMSCP::Boot->new()->unlock();
 
-	my ($stdout, $stderr, $rs);
+	my ($stdout, $stderr);
 	$rs = execute("perl $main::imscpConfig{'ENGINE_ROOT_DIR'}/imscp-rqst-mngr", \$stdout, \$stderr);
 	debug("$stdout") if $stdout;
 	error("$stderr") if $stderr;
-	error("Error while rebuilding customers configuration files") if(!$stderr && $rs);
+	error("Error while rebuilding customers files") if(!$stderr && $rs);
+
 	iMSCP::Boot->new()->lock();
 	return $rs if $rs;
 
-	0;
-}
-
-sub setup_ssl{
-
-	use iMSCP::Dialog;
-
-	my $rs;
-
-	$main::imscpConfig{'SSL_ENABLED'} = $main::imscpConfigOld{'SSL_ENABLED'}
-		if(!$main::imscpConfig{'SSL_ENABLED'} && $main::imscpConfigOld{'SSL_ENABLED'});
-	$main::imscpConfig{'BASE_SERVER_VHOST_PREFIX'} = $main::imscpConfigOld{'BASE_SERVER_VHOST_PREFIX'}
-		if $main::imscpConfigOld{'BASE_SERVER_VHOST_PREFIX'} && ($main::imscpConfig{'BASE_SERVER_VHOST_PREFIX'} ne $main::imscpConfigOld{'BASE_SERVER_VHOST_PREFIX'});
-
-	if(!$main::imscpConfig{'SSL_ENABLED'}){
-		Modules::openssl->new()->{openssl_path} = $main::imscpConfig{'CMD_OPENSSL'};
-		$rs = sslDialog();
-		return $rs if $rs;
-	} elsif($main::imscpConfig{'SSL_ENABLED'} eq 'yes') {
-		Modules::openssl->new()->{openssl_path}				= $main::imscpConfig{'CMD_OPENSSL'};
-		Modules::openssl->new()->{cert_path}				= "$main::imscpConfig{'GUI_CERT_DIR'}/$main::imscpConfig{'SERVER_HOSTNAME'}.pem";
-		Modules::openssl->new()->{intermediate_cert_path}	= "$main::imscpConfig{'GUI_CERT_DIR'}/$main::imscpConfig{'SERVER_HOSTNAME'}.pem";
-		Modules::openssl->new()->{key_path}					= "$main::imscpConfig{'GUI_CERT_DIR'}/$main::imscpConfig{'SERVER_HOSTNAME'}.pem";
-		if(Modules::openssl->new()->ssl_check_all()){
-			iMSCP::Dialog->factory()->msgbox("Certificate is missing or corrupt. Starting recover");
-			$rs = sslDialog();
-			return $rs if $rs;
-		}
-	}
-
-	if($main::imscpConfig{'SSL_ENABLED'} ne 'yes'){
-		$main::imscpConfig{'BASE_SERVER_VHOST_PREFIX'} = "http://";
-	};
+	iMSCP::HooksManager->getInstance()->trigger('afterSetupRebuildCustomersFiles');
 
 	0;
 }
 
-sub ask_certificate_key_path{
-
-	use iMSCP::Dialog;
-	use Modules::openssl;
-
-	my $rs;
-	my $key = "/root/$main::imscpConfig{'SERVER_HOSTNAME'}.key";
-	my $pass = '';
-
-	do{
-		$rs = iMSCP::Dialog->factory()->passwordbox("Please enter password for key if needed:", $pass);
-		$rs =~s/(["\$`\\])/\\$1/g;
-		Modules::openssl->new()->{key_pass} = $rs;
-		do{
-			while (! ($rs = iMSCP::Dialog->factory()->fselect($key))){}
-		}while (! -f $rs);
-		Modules::openssl->new()->{key_path} = $rs;
-		$key = $rs;
-		$rs = Modules::openssl->new()->ssl_check_key();
-	}while($rs);
-
-	0;
-}
-
-sub ask_intermediate_certificate_path{
-
-	use iMSCP::Dialog;
-	use Modules::openssl;
-
-	my $rs;
-	my $cert = '/root/';
-
-	iMSCP::Dialog->factory()->set('yes-label');
-	iMSCP::Dialog->factory()->set('no-label');
-	return 0 if(iMSCP::Dialog->factory()->yesno('Do you have an intermediate certificate?'));
-	do{
-		while (! ($rs = iMSCP::Dialog->factory()->fselect($cert))){}
-	}while ($rs && !-f $rs);
-	Modules::openssl->new()->{intermediate_cert_path} = $rs;
-
-	0;
-}
-
-sub ask_certificate_path{
-
-	use iMSCP::Dialog;
-	use Modules::openssl;
-
-	my $rs;
-	my $cert = "/root/$main::imscpConfig{'SERVER_HOSTNAME'}.crt";
-
-	iMSCP::Dialog->factory()->msgbox('Please select certificate');
-	do{
-		do{
-			while (! ($rs = iMSCP::Dialog->factory()->fselect($cert))){}
-		}while (! -f $rs);
-		Modules::openssl->new()->{cert_path} = $rs;
-		$cert = $rs;
-		$rs = Modules::openssl->new()->ssl_check_cert();
-	}while($rs);
-
-	0;
-}
-
-sub sslDialog{
-
-	use iMSCP::Dialog;
-	use Modules::openssl;
-
-	my $rs;
-
-	while (! ($rs = iMSCP::Dialog->factory()->radiolist("Do you want to activate SSL?", 'no', 'yes'))){}
-	if($rs ne $main::imscpConfig{'SSL_ENABLED'}){ $main::imscpConfig{'SSL_ENABLED'} = $rs; }
-	if($rs eq 'yes'){
-		Modules::openssl->new()->{new_cert_path} = $main::imscpConfig{'GUI_CERT_DIR'};
-		Modules::openssl->new()->{new_cert_name} = $main::imscpConfig{'SERVER_HOSTNAME'};
-		while (! ($rs = iMSCP::Dialog->factory()->radiolist('Select method', 'Create a self signed certificate', 'I already have a signed certificate'))){}
-		$rs = $rs eq 'Create a self signed certificate' ? 0 : 1;
-		Modules::openssl->new()->{cert_selfsigned} = $rs;
-		Modules::openssl->new()->{vhost_cert_name} = $main::imscpConfig{'SERVER_HOSTNAME'} if ( !$rs );
-
-		if( Modules::openssl->new()->{cert_selfsigned}){
-			Modules::openssl->new()->{intermediate_cert_path} = '';
-			ask_certificate_key_path();
-			ask_intermediate_certificate_path();
-			ask_certificate_path();
-		}
-		$rs = Modules::openssl->new()->ssl_export_all();
-		return $rs if $rs;
-	}
-	if($main::imscpConfig{'SSL_ENABLED'} eq 'yes'){
-		while (! ($rs = iMSCP::Dialog->factory()->radiolist("Select default access mode for master domain?", 'https', 'http'))){}
-		$main::imscpConfig{'BASE_SERVER_VHOST_PREFIX'} = "$rs://";
-	}
-
-	0;
-}
-
-sub preinstallServers{
+# Call preinstall method on all i-MSCP server packages
+sub setupPreInstallServers
+{
+	iMSCP::HooksManager->getInstance()->trigger('beforeSetupPreInstallServers');
 
 	use iMSCP::Dir;
 	use FindBin;
@@ -1697,11 +1991,15 @@ sub preinstallServers{
 
 	my ($rs, $file, $class, $server, $msg);
 
-	my $dir	= iMSCP::Dir->new(dirname => "$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Servers");
-	$rs		= $dir->get();
-	return $rs if $rs;
-
-	my @servers = $dir->getFiles();
+	my @servers = iMSCP::Addons::get();
+	unless(scalar @servers){
+		error('Cannot get servers list');
+		return 1;
+	}
+	#my $dir	= iMSCP::Dir->new(dirname => "$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Servers");
+	#$rs	= $dir->get();
+	#return $rs if $rs;
+	#my @servers = $dir->getFiles();
 
 	my $step = 1;
 	startDetail();
@@ -1712,29 +2010,36 @@ sub preinstallServers{
 		$class	= "Servers::$_";
 		require $file;
 		$server	= $class->factory();
-		$msg = "Performing preinstall tasks for ".uc($_)." server". ($main::imscpConfig{uc($_)."_SERVER"} ? ": ".$main::imscpConfig{uc($_)."_SERVER"} : '');
+		$msg = "Performing preinstall tasks for " . uc($_) . " server" .
+			($main::imscpConfig{uc($_)."_SERVER"} ? ": " . $main::imscpConfig{uc($_) . "_SERVER"} : '');
 		$rs |= step(sub{ $server->preinstall() }, $msg, scalar @servers, $step) if($server->can('preinstall'));
 		$step++;
 	}
 
 	endDetail();
 
+	iMSCP::HooksManager->getInstance()->trigger('afterSetupPreInstallServers');
+
 	$rs;
 }
 
-sub preinstallAddons{
-
-	use iMSCP::Dir;
-	use FindBin;
-	use iMSCP::Stepper;
+# Call preinstall method on all i-MSCP addon packages
+sub setupPreInstallAddons
+{
+	iMSCP::HooksManager->getInstance()->trigger('beforeSetupPreInstallAddons');
 
 	my ($rs, $file, $class, $addons, $msg);
 
-	my $dir	= iMSCP::Dir->new(dirname => "$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Addons");
-	$rs		= $dir->get();
-	return $rs if $rs;
+	my @addons = iMSCP::Addons::get();
+	unless(scalar @addons){
+		error('Cannot get addons list');
+		return 1;
+	}
 
-	my @addons = $dir->getFiles();
+	#my $dir	= iMSCP::Dir->new(dirname => "$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Addons");
+	#$rs	= $dir->get();
+	#return $rs if $rs;
+	#my @addons = $dir->getFiles();
 
 	my $step = 1;
 	startDetail();
@@ -1745,29 +2050,34 @@ sub preinstallAddons{
 		$class	= "Addons::$_";
 		require $file;
 		$addons	= $class->new();
-		$msg = "Performing preinstall tasks for ".uc($_);
+		$msg = "Performing preinstall tasks for " . uc($_);
 		$rs |= step(sub{ $addons->preinstall() }, $msg, scalar @addons, $step) if($addons->can('preinstall'));
 		$step++;
 	}
 
 	endDetail();
 
+	iMSCP::HooksManager->getInstance()->trigger('afterSetupPreInstallAddons');
+
 	$rs;
 }
 
-sub installServers{
-
-	use iMSCP::Dir;
-	use FindBin;
-	use iMSCP::Stepper;
+# Call install method on all i-MSCP server packages
+sub setupInstallServers
+{
+	iMSCP::HooksManager->getInstance()->trigger('beforeSetupInstallServers');
 
 	my ($rs, $file, $class, $server, $msg);
 
-	my $dir	= iMSCP::Dir->new(dirname => "$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Servers");
-	$rs		= $dir->get();
-	return $rs if $rs;
-
-	my @servers = $dir->getFiles();
+	my @servers = iMSCP::Addons::get();
+	unless(scalar @servers){
+		error('Cannot get servers list');
+		return 1;
+	}
+	#my $dir	= iMSCP::Dir->new(dirname => "$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Servers");
+	#$rs	= $dir->get();
+	#return $rs if $rs;
+	#my @servers = $dir->getFiles();
 
 	my $step = 1;
 	startDetail();
@@ -1778,29 +2088,35 @@ sub installServers{
 		$class	= "Servers::$_";
 		require $file;
 		$server	= $class->factory();
-		$msg = "Performing install tasks for ".uc($_)." server". ($main::imscpConfig{uc($_)."_SERVER"} ? ": ".$main::imscpConfig{uc($_)."_SERVER"} : '');
+		$msg = "Performing install tasks for " . uc($_) . " server" .
+			($main::imscpConfig{uc($_) . "_SERVER"} ? ": " . $main::imscpConfig{uc($_) . "_SERVER"} : '');
 		$rs |= step(sub{ $server->install() }, $msg, scalar @servers, $step) if($server->can('install'));
 		$step++;
 	}
 
 	endDetail();
 
+	iMSCP::HooksManager->getInstance()->trigger('afterSetupInstallServers');
+
 	$rs;
 }
 
-sub installAddons{
-
-	use iMSCP::Dir;
-	use FindBin;
-	use iMSCP::Stepper;
+# Call install method on all i-MSCP addong packages
+sub setupInstallAddons
+{
+	iMSCP::HooksManager->getInstance()->trigger('beforeSetupInstallAddons');
 
 	my ($rs, $file, $class, $addons, $msg);
 
-	my $dir	= iMSCP::Dir->new(dirname => "$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Addons");
-	$rs		= $dir->get();
-	return $rs if $rs;
-
-	my @addons = $dir->getFiles();
+	my @addons = iMSCP::Addons::get();
+	unless(scalar @addons){
+		error('Cannot get addons list');
+		return 1;
+	}
+	#my $dir	= iMSCP::Dir->new(dirname => "$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Addons");
+	#$rs	= $dir->get();
+	#return $rs if $rs;
+	#my @addons = $dir->getFiles();
 
 	my $step = 1;
 	startDetail();
@@ -1818,22 +2134,27 @@ sub installAddons{
 
 	endDetail();
 
+	iMSCP::HooksManager->getInstance()->trigger('afterSetupInstallAddons');
+
 	$rs;
 }
 
-sub postinstallServers{
-
-	use iMSCP::Dir;
-	use FindBin;
-	use iMSCP::Stepper;
+# Call postinstall method on all i-MSCP server packages
+sub setupPostInstallServers
+{
+	iMSCP::HooksManager->getInstance()->trigger('beforeSetupPostInstallServers');
 
 	my ($rs, $file, $class, $server, $msg);
 
-	my $dir	= iMSCP::Dir->new(dirname => "$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Servers");
-	$rs		= $dir->get();
-	return $rs if $rs;
-
-	my @servers = $dir->getFiles();
+	my @servers = iMSCP::Addons::get();
+	unless(scalar @servers){
+		error('Cannot get servers list');
+		return 1;
+	}
+	#my $dir	= iMSCP::Dir->new(dirname => "$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Servers");
+	#$rs	= $dir->get();
+	#return $rs if $rs;
+	#my @servers = $dir->getFiles();
 
 	my $step = 1;
 	startDetail();
@@ -1844,29 +2165,34 @@ sub postinstallServers{
 		$class	= "Servers::$_";
 		require $file;
 		$server	= $class->factory();
-		$msg = "Performing postinstall tasks for ".uc($_)." server". ($main::imscpConfig{uc($_)."_SERVER"} ? ": ".$main::imscpConfig{uc($_)."_SERVER"} : '');
+		$msg = "Performing postinstall tasks for " .uc($_) . " server" . ($main::imscpConfig{uc($_)."_SERVER"} ? ": ".$main::imscpConfig{uc($_)."_SERVER"} : '');
 		$rs |= step(sub{ $server->postinstall() }, $msg, scalar @servers, $step) if($server->can('postinstall'));
 		$step++;
 	}
 
 	endDetail();
 
+	iMSCP::HooksManager->getInstance()->trigger('afterSetupPostInstallServers');
+
 	$rs;
 }
 
-sub postinstallAddons{
-
-	use iMSCP::Dir;
-	use FindBin;
-	use iMSCP::Stepper;
+# Call postinstall method on all i-MSCP addon packages
+sub setupPostInstallAddons
+{
+	iMSCP::HooksManager->getInstance()->trigger('beforeSetupPostInstallAddons');
 
 	my ($rs, $file, $class, $addons, $msg);
 
-	my $dir	= iMSCP::Dir->new(dirname => "$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Addons");
-	$rs		= $dir->get();
-	return $rs if $rs;
-
-	my @addons = $dir->getFiles();
+	my @addons = iMSCP::Addons::get();
+	unless(scalar @addons){
+		error('Cannot get addons list');
+		return 1;
+	}
+	#my $dir	= iMSCP::Dir->new(dirname => "$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Addons");
+	#$rs	= $dir->get();
+	#return $rs if $rs;
+	#my @addons = $dir->getFiles();
 
 	my $step = 1;
 	startDetail();
@@ -1884,7 +2210,248 @@ sub postinstallAddons{
 
 	endDetail();
 
+	iMSCP::HooksManager->getInstance()->trigger('afterSetupPostInstallAddons');
+
 	$rs;
+}
+
+# Restart all services needed by i-MSCP
+sub setupRestartServices
+{
+	iMSCP::HooksManager->getInstance()->trigger('beforeSetupRestartServices');
+
+	startDetail();
+
+	my @services = (
+		#['Variable holding command', 'command to execute', 'ignore error if 0 exit on error if 1']
+		['CMD_IMSCPN',			'restart',	1],
+		['CMD_IMSCPD',			'restart',	1],
+		['CMD_CLAMD',			'reload',	1],
+		['CMD_POSTGREY',		'restart',	1],
+		['CMD_POLICYD_WEIGHT',	'reload',	0],
+		['CMD_AMAVIS',			'reload',	1]
+	);
+
+	my ($rs, $stdout, $stderr);
+	my $count = 1;
+
+	for (@services) {
+		if($main::imscpConfig{$_->[0]} && ($main::imscpConfig{$_->[0]} !~ /^no$/i) && -f $main::imscpConfig{$_->[0]}) {
+
+			iMSCP::HooksManager->getInstance()->trigger('beforeSetupRestartService', $_->[0]);
+
+			$rs = step(
+				sub { execute("$main::imscpConfig{$_->[0]} $_->[1]", \$stdout, \$stderr)},
+				"Restarting $main::imscpConfig{$_->[0]}",
+				scalar @services,
+				$count
+			);
+			debug("$main::imscpConfig{$_->[0]} $stdout") if $stdout;
+			error("$main::imscpConfig{$_->[0]} $stderr $rs") if ($rs && $_->[2]);
+			return $rs if ($rs && $_->[2]);
+
+			iMSCP::HooksManager->getInstance()->trigger('afterSetupRestartService', $_->[0]);
+		}
+
+		$count++;
+	}
+
+	endDetail();
+
+	iMSCP::HooksManager->getInstance()->trigger('afterRestartServices');
+
+	0;
+}
+
+# TODO should be revisited
+sub setupSaveConfig
+{
+	iMSCP::HooksManager->getInstance()->trigger('beforeSetupSaveConfig');
+
+	my $file = iMSCP::File->new(filename => "$main::imscpConfig{'CONF_DIR'}/imscp.conf");
+	my $cfg = $file->get() or return 1;
+
+	$file = iMSCP::File->new(filename => "$main::imscpConfig{'CONF_DIR'}/imscp.old.conf");
+	$file->set($cfg) and return 1;
+	$file->save and return 1;
+	$file->mode(0644) and return 1;
+	$file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'}) and return 1;
+
+	iMSCP::HooksManager->getInstance()->trigger('afterSetupSaveConfig');
+
+	0;
+}
+
+# Run all update additional task such as rkhunter configuration
+sub setupAdditionalTasks
+{
+	iMSCP::HooksManager->getInstance()->trigger('beforeSetupAdditionalTasks');
+
+	startDetail();
+
+	my @steps = (
+		[\&setupRkhunter, 'i-MSCP Rkhunter configuration:']
+	);
+	my $step = 1;
+	for (@steps){
+		step($_->[0], $_->[1], scalar @steps, $step);
+		$step++;
+	}
+
+	endDetail();
+
+	iMSCP::HooksManager->getInstance()->trigger('afterSetupAdditionalTasks');
+
+	0;
+}
+
+# Retrieve question answer by searching it in the given source or all source
+sub setupGetQuestion
+{
+	my $question = shift;
+	my $searchIn = shift || '';
+
+	if(! $searchIn) {
+		return $main::questions{$question} || $main::preseed{$question} || $main::imscpConfig{$question} || '';
+	} elsif($searchIn = 'questions') {
+		return $main::questions{$question} || '';
+	} elsif($searchIn eq 'preseed') {
+		return $main::preseed{$question} || '';
+	} elsif($searchIn eq 'config') {
+		return $main::imscpConfig{$question} || '';
+	} else {
+		fatal('Unknown question source stack');
+	}
+}
+
+# Check SQL connection
+# Return int 0 on success, 1 on failure
+sub setupCheckSqlConnect
+{
+	my ($dbType, $dbName, $dbHost, $dbPort, $dbUser, $dbPass) = (@_);
+	my $database = iMSCP::Database->new(db => $dbType)->factory();
+
+	$database->set('DATABASE_NAME', $dbName);
+	$database->set('DATABASE_HOST', $dbHost);
+	$database->set('DATABASE_PORT', $dbPort);
+	$database->set('DATABASE_USER', $dbUser);
+	$database->set('DATABASE_PASSWORD', $dbPass);
+
+	$database->connect() ? 1 : 0;
+}
+
+# Return database connection
+#
+# Param string [OPTIONAL] Database name to use (default none)
+# Return ARRAY [iMSCP::Database|0, errstr] or SCALAR iMSCP::Database|0
+sub setupGetSqlConnect
+{
+	my $dbName = shift || '';
+	my $database = iMSCP::Database->new(db => setupGetQuestion('DATABASE_TYPE'))->factory();
+
+	$database->set('DATABASE_NAME', $dbName);
+    $database->set('DATABASE_HOST', setupGetQuestion('DATABASE_HOST') || '');
+    $database->set('DATABASE_PORT', setupGetQuestion('DATABASE_PORT') || '');
+    $database->set('DATABASE_USER', setupGetQuestion('DATABASE_USER') || '');
+    $database->set(
+    	'DATABASE_PASSWORD',
+    	setupGetQuestion('DATABASE_PASSWORD')
+    		? iMSCP::Crypt->new()->decrypt_db_password(setupGetQuestion('DATABASE_PASSWORD'))
+    		: ''
+    );
+
+	my $rs =  $database->connect();
+	my ($ret, $errstr) = ! $rs ? ($database, '') : (0, $rs);
+
+	wantarray ? ($ret, $errstr) : $ret;
+}
+
+# Return int - 1 if database exists and look like an i-MSCP database, 0 othewise
+sub setupIsImscpDb
+{
+	my $dbName = shift;
+	my $rs = 1;
+
+	my ($database, $errstr) = setupGetSqlConnect($dbName);
+	fatal("Unable to connect to the '$database' SQL database: $errstr") if ! $database;
+
+	my $rs = $database->doQuery('1', 'SHOW TABLES');
+	fatal("SQL query failed: $rs") if ref $rs ne 'HASH';
+
+	for (qw/server_ips user_gui_props reseller_props/) {
+		return 0 if ! exists $$rs{$_};
+	}
+
+	1;
+}
+
+# Return int - 1 if the given SQL user exists, 0 otherwise
+sub setupIsSqlUser($)
+{
+	my $sqlUser = shift;
+
+	my ($database, $errstr) = setupGetSqlConnect('mysql');
+	fatal("Unable to connect to the SQL Server: $errstr") if ! $database;
+
+	my $rs = $database->doQuery('1', 'SELECT EXISTS(SELECT 1 FROM `user` WHERE `user` = ?)', $sqlUser);
+	fatal("SQL query failed: $rs") if ref $rs ne 'HASH';
+
+	$$rs{1} ? 1 : 0;
+}
+
+# Delete an SQL user and all its privileges
+#
+# Return int 0 on success, 1 on error
+sub setupDeleteSqlUser($)
+{
+	my $user = shift;
+	my $host = shift || '%';
+
+	my ($database, $errstr) = setupGetSqlConnect('mysql');
+	fatal("Unable to connect to the SQL server: $errstr") if ! $database;
+
+	# Remove any columns privileges for the given user
+	$errstr = $database->doQuery('dummy', "DELETE FROM `columns_priv` WHERE `Host` = ? AND `User` = ?", $host, $user);
+	if(ref $errstr ne 'HASH') {
+		error("Unable to delete columns privileges from the '$user\@$host' SQL user: $errstr");
+		return 1;
+	}
+
+	# Remove any tables privileges for the given user
+	$errstr = $database->doQuery('dummy', 'DELETE FROM `tables_priv` WHERE `Host` = ? AND `User` = ?', $host, $user);
+	if(ref $errstr ne 'HASH') {
+		error("Unable to delete tables privileges from the '$user\@$host' SQL user: $errstr");
+		return 1;
+	}
+
+	# Remove any proc privileges for the given user
+	$errstr = $database->doQuery('dummy', 'DELETE FROM `procs_priv` WHERE `Host` = ? AND `User` = ?', $host, $user);
+	if(ref $errstr ne 'HASH') {
+		error("Unable to delete procs privileges from the '$user\@$host' SQL user: $errstr");
+		return 1;
+	}
+
+	# Remove any database privileges for the given user
+	$errstr = $database->doQuery('dummy', 'DELETE FROM `db` WHERE `Host` = ? AND `User` = ?', $host, $user);
+	if(ref $errstr ne 'HASH') {
+		error("Unable to delete database privileges from the '$user\@$host' SQL user: $errstr");
+		return 1;
+	}
+
+	# Remove any global privileges for the given user and the user itself
+	$errstr = $database->doQuery('dummy', "DELETE FROM `user` WHERE `Host` = ? AND `User` = ?", $host, $user);
+	if(ref $errstr ne 'HASH') {
+		error("Unable to delete the '$user\@$host' SQL user: $errstr");
+		return 1;
+	}
+
+	$errstr = $database->doQuery('dummy','FLUSH PRIVILEGES');
+	if(ref $errstr ne 'HASH') {
+		error("Unable to flush SQL privileges: $errstr");
+		return 1;
+	}
+
+	0;
 }
 
 1;
