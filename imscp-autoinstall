@@ -98,9 +98,9 @@ iMSCP::HooksManager->getInstance->register(
 				fatal "Noninteractive mode: bad entry found in your imscp.conf file."
 			}
 		} else {
-         	my $clearScreen = shift;
-         	$$clearScreen = 0; # Do not clear screen
-        }
+			my $clearScreen = shift;
+		 	$$clearScreen = 0; # Do not clear screen
+		}
 		0;
 	}
 ) if $main::noprompt;

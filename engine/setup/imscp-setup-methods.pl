@@ -206,16 +206,16 @@ sub setupTasks
 		[\&setupPhpMyAdmin, 				'Setting PhpMyAdmin'],
 		[\&setupPreInstallServers,			'Servers pre-installation'],
 		[\&setupPreInstallAddons,			'Addons pre-installation'],
-    	[\&setupInstallServers,				'Servers installation'],
-    	[\&setupInstallAddons,				'Addons installation'],
-    	[\&setupPostInstallServers,			'Servers post-installation'],
-    	[\&setupPostInstallAddons,			'Addons post-installation'],
-    	[\&setupInitScripts,				'Setting i-MSCP init scripts'],
-    	[\&setupRebuildCustomerFiles,		'Rebuilding customers files'],
-    	[\&setupBasePermissions,			'Setting base file permissions'],
-    	[\&setupRestartServices,			'Restarting services'],
-    	[\&setupSaveConfig,					'Saving i-MSCP configuration'],
-    	[\&setupAdditionalTasks,			'Processing additional tasks']
+		[\&setupInstallServers,				'Servers installation'],
+		[\&setupInstallAddons,				'Addons installation'],
+		[\&setupPostInstallServers,			'Servers post-installation'],
+		[\&setupPostInstallAddons,			'Addons post-installation'],
+		[\&setupInitScripts,				'Setting i-MSCP init scripts'],
+		[\&setupRebuildCustomerFiles,		'Rebuilding customers files'],
+		[\&setupBasePermissions,			'Setting base file permissions'],
+		[\&setupRestartServices,			'Restarting services'],
+		[\&setupSaveConfig,					'Saving i-MSCP configuration'],
+		[\&setupAdditionalTasks,			'Processing additional tasks']
 	);
 
 	my $step = 1;
@@ -244,8 +244,7 @@ sub setupAskServerHostname
 	my $dialog = shift;
 	my $hostname = setupGetQuestion('SERVER_HOSTNAME');
 	my %options = ($main::imscpConfig{'DEBUG'} || iMSCP::Getopt->debug)
-		? (domain_private_tld => qr /^(?:bogus|test)$/)
-		: ();
+		? (domain_private_tld => qr /^(?:bogus|test)$/) : ();
 	my ($rs, @labels) = (0, $hostname ? split(/\./, $hostname) : ());
 
 	if($main::reconfigure || ! (@labels >= 3 && Data::Validate::Domain->new(%options)->is_domain($hostname))) {
@@ -473,6 +472,7 @@ sub setupAskServerIps
 
 					# get list of ip to delete
 					my %serverIpsToDelete = ();
+
 					for(@serverIps) {
 						$serverIpsToDelete{$$currentServerIps{$_}->{'ip_id'}} = $_
 							if(exists $$currentServerIps{$_} && not $_ ~~ @serverIpsToKeepOrAdd);
@@ -747,23 +747,23 @@ sub setupAskDefaultAdmin
 		$adminLoginName = setupGetQuestion('ADMIN_LOGIN_NAME', 'preseed');
 		$password = setupGetQuestion('ADMIN_PASSWORD', 'preseed');
 	} elsif($database) {
-    	my $defaultAdmin = $database->doQuery(
-    		'created_by',
-    		'
-    			SELECT
-    				`admin_name`, `created_by`
-    			FROM
-    				`admin` WHERE `created_by` = ? AND `admin_type` = ?
-    			LIMIT
-    				1
-    		',
-    		'0',
-    		'admin'
-    	);
+		my $defaultAdmin = $database->doQuery(
+			'created_by',
+			'
+				SELECT
+					`admin_name`, `created_by`
+				FROM
+					`admin` WHERE `created_by` = ? AND `admin_type` = ?
+				LIMIT
+					1
+			',
+			'0',
+			'admin'
+		);
 
-    	if(ref $defaultAdmin eq 'HASH' && %{$defaultAdmin}) {
+		if(ref $defaultAdmin eq 'HASH' && %{$defaultAdmin}) {
 			$adminLoginName = $$defaultAdmin{'0'}->{'admin_name'};
-    	}
+		}
 	}
 
 	if($main::reconfigure || $adminLoginName eq '') {
@@ -852,7 +852,7 @@ sub setupAskTimezone
 
 		do {
 			($rs, $timezone) = $dialog->inputbox("\nPlease enter Server`s timezone: $msg", $timezone);
-        	$msg = "\n\n\\Z1'$timezone' is not a valid timezone.\\Zn\n\nPlease, try again:";
+			$msg = "\n\n\\Z1'$timezone' is not a valid timezone.\\Zn\n\nPlease, try again:";
 		} while($rs != 30 && ! DateTime::TimeZone->is_valid_name($timezone));
 	}
 
@@ -1307,33 +1307,33 @@ sub setupServerIps
 
 	# Process server ips addition
 
-    my ($defaultNetcard) = $ips->getNetCards();
+	my ($defaultNetcard) = $ips->getNetCards();
 
-    for (@serverIps) {
-    	next if exists $$serverIpsToReplace{$_};
-    	my $netCard = $ips->getCardByIP($_) || $defaultNetcard;
+	for (@serverIps) {
+		next if exists $$serverIpsToReplace{$_};
+		my $netCard = $ips->getCardByIP($_) || $defaultNetcard;
 
-    	if($netCard) {
-    		my $rs = $database->doQuery(
-    			'dummy',
-    			'
-    				INSERT IGNORE INTO `server_ips` (
-    					`ip_number`, `ip_card`, `ip_status`, `ip_id`
-    				) VALUES(
-    					?, ?, ?, (SELECT `ip_id` FROM `server_ips` as t1 WHERE t1.`ip_number` = ?)
-    				)
-    			',
-    			$_, $netCard, 'toadd', $_
-    		);
-    		if (ref $rs ne 'HASH') {
-    			error("Cannot add/update server address IP '$_': $rs");
-    			return 1;
-    		}
-    	} else {
-    		error("Cannot add the '$_' IP into database");
-    		return 1;
-    	}
-    }
+		if($netCard) {
+			my $rs = $database->doQuery(
+				'dummy',
+				'
+					INSERT IGNORE INTO `server_ips` (
+						`ip_number`, `ip_card`, `ip_status`, `ip_id`
+					) VALUES(
+						?, ?, ?, (SELECT `ip_id` FROM `server_ips` as t1 WHERE t1.`ip_number` = ?)
+					)
+				',
+				$_, $netCard, 'toadd', $_
+			);
+			if (ref $rs ne 'HASH') {
+				error("Cannot add/update server address IP '$_': $rs");
+				return 1;
+			}
+		} else {
+			error("Cannot add the '$_' IP into database");
+			return 1;
+		}
+	}
 
 	# Setup/update domain name and alias for base server ip
 
@@ -1517,6 +1517,7 @@ sub setupImportSqlSchema
 	startDetail();
 
 	my $step = 1;
+
 	for (@queries) { # TODO Must be fixed: first query is never show here
 		my $rs = $database->doQuery('dummy', $_);
 		return $rs if (ref $rs ne 'HASH');
@@ -1641,9 +1642,9 @@ sub setupDefaultAdmin
 sub setupPhpMyAdmin
 {
 	my $cfgDir = "$main::imscpConfig{'CONF_DIR'}/pma";
-    my $bkpDir = "$cfgDir/backup";
-    my $wrkDir = "$cfgDir/working";
-    my $prodDir	= "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/pma";
+	my $bkpDir = "$cfgDir/backup";
+	my $wrkDir = "$cfgDir/working";
+	my $prodDir	= "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/pma";
 	my $dbHost = setupGetQuestion('DATABASE_HOST');
 	my $dbUser = setupGetQuestion('PMA_USER');
 	my $dbOldUser = setupGetQuestion('PMA_OLD_USER');
@@ -1654,7 +1655,7 @@ sub setupPhpMyAdmin
 
 	if($dbUser ne $dbOldUser || $dbPass ne $dbOldPass) {
 
-    	my ($rs, $file, $cfgFile) = (0, undef, undef);
+		my ($rs, $file, $cfgFile) = (0, undef, undef);
 
 		# Save current production file if it exists
 		if(-f "$prodDir/config.inc.php") {
@@ -1680,8 +1681,8 @@ sub setupPhpMyAdmin
 		#
 
 		# Get SQL connection with full privileges
-        my ($database, $errStr) = setupGetSqlConnect();
-        fatal('Unable to connect to SQL Server: $errStr') if ! $database;
+		my ($database, $errStr) = setupGetSqlConnect();
+		fatal('Unable to connect to SQL Server: $errStr') if ! $database;
 
 		# Add USAGE privilege on the mysql database (also create PhpMyadmin user)
 		$rs = $database->doQuery('dummy', 'GRANT USAGE ON `mysql`.* TO ?@? IDENTIFIED BY ?', $dbUser, $dbHost, $dbPass);
@@ -1693,9 +1694,9 @@ sub setupPhpMyAdmin
 		# Add SELECT privilege on the mysql.db table
 		$rs = $database->doQuery('dummy', 'GRANT SELECT ON `mysql`.`db` TO ?@?', $dbUser, $dbHost);
 		if(ref $rs ne 'HASH') {
-        	error("Failed to add SELECT privilege on the 'mysql.db' table for the '$dbUser' SQL user: $rs");
-        	return 1;
-        }
+			error("Failed to add SELECT privilege on the 'mysql.db' table for the '$dbUser' SQL user: $rs");
+			return 1;
+		}
 
 		# Add SELECT privilege on many columns of the mysql.user table
 		$rs = $database->doQuery(
@@ -1712,16 +1713,16 @@ sub setupPhpMyAdmin
 			$dbHost
 		);
 		if(ref $rs ne 'HASH') {
-        	error("Failed to add SELECT privileges on columns of the 'mysql.user' table for the '$dbUser' SQL user: $rs");
-        	return 1;
-        }
+			error("Failed to add SELECT privileges on columns of the 'mysql.user' table for the '$dbUser' SQL user: $rs");
+			return 1;
+		}
 
 		# Add SELECT privilege on the mysql.host table
 		$rs = $database->doQuery('dummy', 'GRANT SELECT ON `mysql`.`host` TO ?@?', $dbUser, $dbHost);
 		if(ref $rs ne 'HASH') {
-        	error("Failed to add SELECT privilege on the 'mysql.host' table for the '$dbUser' SQL user: $rs");
-        	return 1;
-        }
+			error("Failed to add SELECT privilege on the 'mysql.host' table for the '$dbUser' SQL user: $rs");
+			return 1;
+		}
 
 		# Add SELECT privilege on many columns of the mysql.tables_priv table
 		$rs = $database->doQuery(
@@ -1735,9 +1736,9 @@ sub setupPhpMyAdmin
 			$dbHost
 		);
 		if(ref $rs ne 'HASH') {
-        	error("Failed to add SELECT privilege on columns of the 'mysql.tables_priv' table for the '$dbUser' SQL user: $rs");
-        	return 1;
-        }
+			error("Failed to add SELECT privilege on columns of the 'mysql.tables_priv' table for the '$dbUser' SQL user: $rs");
+			return 1;
+		}
 
 		#
 		## Build new PhpMyAdmin config.inc.php file
@@ -2381,15 +2382,15 @@ sub setupGetSqlConnect
 	my $database = iMSCP::Database->new(db => setupGetQuestion('DATABASE_TYPE'))->factory();
 
 	$database->set('DATABASE_NAME', $dbName);
-    $database->set('DATABASE_HOST', setupGetQuestion('DATABASE_HOST') || '');
-    $database->set('DATABASE_PORT', setupGetQuestion('DATABASE_PORT') || '');
-    $database->set('DATABASE_USER', setupGetQuestion('DATABASE_USER') || '');
-    $database->set(
-    	'DATABASE_PASSWORD',
-    	setupGetQuestion('DATABASE_PASSWORD')
-    		? iMSCP::Crypt->new()->decrypt_db_password(setupGetQuestion('DATABASE_PASSWORD'))
-    		: ''
-    );
+	$database->set('DATABASE_HOST', setupGetQuestion('DATABASE_HOST') || '');
+	$database->set('DATABASE_PORT', setupGetQuestion('DATABASE_PORT') || '');
+	$database->set('DATABASE_USER', setupGetQuestion('DATABASE_USER') || '');
+	$database->set(
+		'DATABASE_PASSWORD',
+		setupGetQuestion('DATABASE_PASSWORD')
+			? iMSCP::Crypt->new()->decrypt_db_password(setupGetQuestion('DATABASE_PASSWORD'))
+			: ''
+	);
 
 	my $rs =  $database->connect();
 	my ($ret, $errstr) = ! $rs ? ($database, '') : (0, $rs);
