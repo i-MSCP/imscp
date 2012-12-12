@@ -267,6 +267,7 @@ END {
 	&$_ foreach (@{$self->{'callBacks'}});
 
 	my $clearScreen = 1;
+	#use iMSCP::HooksManager;
 	iMSCP::HooksManager->getInstance()->trigger('beforeExit', \$exitCode, \$clearScreen);
 
 	if($exitCode) {

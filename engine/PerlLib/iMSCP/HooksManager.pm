@@ -38,7 +38,7 @@ use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
 
- The i-MSCP Hooks Manager class is the central point of the i-MSCP's engine hooks system.
+ The i-MSCP Hooks Manager is the central point of the i-MSCP's engine hooks system.
 
  The hook functions are registered on the manager and hooks are triggered through the manager.
 
@@ -48,26 +48,15 @@ that in most cases, are passed by reference to allow them to act as filters.
  The i-MSCP hooks are triggered once. That mean that if you want trigger them again, the hook functions must re-register
 by itself on the manager. Any hook function must return 0 on success and 1 on failure.
 
-=head1 METHODS
+=head1 PUBLIC METHODS
 
 =over 4
-
-=item _init()
-
- This is called by new(). Initialize instance.
-
-=cut
-
-sub _init
-{
-	my $self = shift;
-
-	$self->{hooks} = {};
-}
 
 =item getInstance()
 
  Implements Singleton Design Pattern - Returns instance of this class.
+
+ Return iMSCP::HooksManager
 
 =cut
 
@@ -80,7 +69,7 @@ sub getInstance
 
  Register the given hook function on the manager for the given hook.
 
- Return int - 0 on success, 1 on failure.
+ Return int - 0 on success, 1 on failure
 
 =cut
 
@@ -92,7 +81,7 @@ sub register($$$)
 
 	if (ref $hookFunction eq 'CODE') {
 		debug("Register hook function on the '$hook' hook");
-		push(@{$self->{hooks}{$hook}}, $hookFunction);
+		push(@{$self->{'hooks'}{$hook}}, $hookFunction);
 	} else {
 		error("Invalid hook function provided for the '$hook' hook");
 		return 1;
@@ -114,9 +103,7 @@ sub unregisterHook($$)
 	my $self = shift;
 	my $hook = shift;
 
-	if($self->{hooks}->{$hook}) {
-		delete $self->{hooks}->{$hook};
-	}
+	delete $self->{'hooks'}->{$hook} if exists $self->{'hooks'}->{$hook};
 
 	0;
 }
@@ -125,7 +112,7 @@ sub unregisterHook($$)
 
  Trigger the given hook.
 
- Return int - 0 on success, 1 on failure.
+ Return int - 0 on success, 1 on failure
 
 =cut
 
@@ -135,25 +122,46 @@ sub trigger($$)
     my $hook = shift;
     my $rs = 0;
 
-	if($self->{hooks}->{$hook}) {
-		debug("Trigger the $hook hook");
+	if(exists $self->{'hooks'}->{$hook}) {
+		debug("Trigger $hook hook");
 
-		my @hookFunctions = @{$self->{hooks}->{$hook}};
-		delete $self->{hooks}->{$hook};
+		my @hookFunctions = @{$self->{'hooks'}->{$hook}};
+
+		$self->unregisterHook($hook);
 
 		for(@hookFunctions) {
-			$rs = $_->(@_);
-
-			if($rs) {
+			if($_->(@_)) {
 				my $caller = (caller(1))[3] ? (caller(1))[3] : 'main';
-				error("A hook function registered on the '$hook' hook and triggered in $caller has failed")
+				error("A hook function registered on the '$hook' hook and triggered in $caller has failed");
+				last;
 			}
-
-			last if $rs;
 		}
 	}
 
 	$rs;
+}
+
+=back
+
+=head1 PRIVATE METHODS
+
+=over 4
+
+=item _init()
+
+ This is called by new(). Initialize instance.
+
+ Return iMSCP::HooksManager
+
+=cut
+
+sub _init
+{
+	my $self = shift;
+
+	$self->{'hooks'} = {};
+
+	$self;
 }
 
 =back

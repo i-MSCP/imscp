@@ -86,7 +86,8 @@ require "$FindBin::Bin/imscp-setup-methods.pl";
 # Start setup
 sub setupStart
 {
-	iMSCP::Boot->new(mode => 'setup')->init({ nodatabase => 'yes' });
+	# Bootstrap setup
+	setupBoot() and return 1;
 
 	# Load old i-MSCP config (if not already there)
 	setupLoadOldConfig() and return 1;

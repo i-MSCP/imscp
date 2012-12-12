@@ -31,6 +31,7 @@ use iMSCP::Debug;
 use iMSCP::Crypt;
 use iMSCP::Config;
 use iMSCP::Requirements;
+use iMSCP::Getopt;
 use parent 'Common::SingletonClass';
 
 sub init
@@ -41,39 +42,42 @@ sub init
 	$option = {} if ref $option ne 'HASH';
 
 	unless($self->{'loaded'}) {
+
 		debug('Booting...');
 
 		tie
 			%main::imscpConfig,
 			'iMSCP::Config',
 			'fileName' => (($^O =~ /bsd$/ ? '/usr/local/etc/' : '/etc/') . 'imscp/imscp.conf'),
-			nocreate => 1,
-			noerrors => 1;
+			nocreate => 1, # Do not create file if it doesn't exists (raise error instead)
+			noerrors => 1; # Do not raise error when attempting to access to an inexistent configuration parameter
 
-		# on setup DEBUG is off by default.
-		#verbose($main::imscpConfig{'DEBUG'}) unless($self->{args}->{mode} && $self->{args}->{mode} eq 'setup');
-		verbose(0);
 
-		iMSCP::Requirements->new()->test($self->{args}->{mode} && $self->{args}->{mode} eq 'setup' ? 'all' : 'user')
-			unless($option->{norequirements} && $option->{norequirements} eq 'yes');
+		# Set verbose mode
+		verbose(iMSCP::Getopt->debug || $main::imscpConfig{'DEBUG'} || 0);
 
-		$self->lock($main::imscpConfig{MR_LOCK_FILE}) unless($option->{nolock} && $option->{nolock} eq 'yes');
+		iMSCP::Requirements->new()->test(
+			$self->{'args'}->{'mode'} && $self->{'args'}->{'mode'} eq 'setup' ? 'all' : 'user'
+		) unless($option->{'norequirements'} && $option->{'norequirements'} eq 'yes');
 
+		$self->lock($main::imscpConfig{'MR_LOCK_FILE'}) unless($option->{'nolock'} && $option->{'nolock'} eq 'yes');
+
+		# Generate encryption key and vector
 		$self->genKey();
 
-		unless ($option->{nodatabase} && $option->{nodatabase} eq 'yes'){
-				use iMSCP::Database;
+		unless ($option->{'nodatabase'} && $option->{'nodatabase'} eq 'yes') {
+			use iMSCP::Database;
 
-				my $crypt = iMSCP::Crypt->new();
-				my $database = iMSCP::Database->new(db => $main::imscpConfig{'DATABASE_TYPE'})->factory();
+			my $crypt = iMSCP::Crypt->new();
+			my $database = iMSCP::Database->new(db => $main::imscpConfig{'DATABASE_TYPE'})->factory();
 
-				$database->set('DATABASE_HOST', $main::imscpConfig{'DATABASE_HOST'});
-				$database->set('DATABASE_PORT', $main::imscpConfig{'DATABASE_PORT'});
-				$database->set('DATABASE_NAME', $main::imscpConfig{'DATABASE_NAME'});
-				$database->set('DATABASE_USER', $main::imscpConfig{'DATABASE_USER'});
-				$database->set('DATABASE_PASSWORD', $crypt->decrypt_db_password($main::imscpConfig{'DATABASE_PASSWORD'}));
-				my $rs = $database->connect();
-				fatal("$rs") if $rs;
+			$database->set('DATABASE_HOST', $main::imscpConfig{'DATABASE_HOST'});
+			$database->set('DATABASE_PORT', $main::imscpConfig{'DATABASE_PORT'});
+			$database->set('DATABASE_NAME', $main::imscpConfig{'DATABASE_NAME'});
+			$database->set('DATABASE_USER', $main::imscpConfig{'DATABASE_USER'});
+			$database->set('DATABASE_PASSWORD', $crypt->decrypt_db_password($main::imscpConfig{'DATABASE_PASSWORD'}));
+			my $rs = $database->connect();
+			fatal("Unable to connect to the SQL server: $rs") if $rs;
 		}
 
 		$self->{'loaded'} = 1;
@@ -85,12 +89,12 @@ sub init
 sub lock
 {
 	my $self = shift;
-	my $lock = shift || $main::imscpConfig{MR_LOCK_FILE};
+	my $lock = shift || $main::imscpConfig{'MR_LOCK_FILE'};
 
-	fatal('Unable to open lock file') if(!open($self->{lock}, '>', $lock));
+	fatal('Unable to open lock file') if(! open($self->{'lock'}, '>', $lock));
 
-	use Fcntl ":flock";
-	fatal('Unable to acquire global lock') if(!flock($self->{lock}, LOCK_EX));
+	use Fcntl ':flock';
+	fatal('Unable to acquire global lock') if(!flock($self->{'lock'}, LOCK_EX));
 
 	0;
 }
@@ -101,7 +105,7 @@ sub unlock
 	my $lock = shift;
 
 	use Fcntl ":flock";
-	fatal('Unable to release global lock') if(!flock($self->{lock}, LOCK_UN));
+	fatal('Unable to release global lock') if(! flock($self->{'lock'}, LOCK_UN));
 
 	0;
 }

@@ -199,8 +199,6 @@ if (@errors > 0  || @warnings > 0) {
 	iMSCP::Dialog->factory()->set('defaultno', undef);
 }
 
-exit;
-
 if(! $main::buildonly) {
 
 	#
@@ -213,6 +211,7 @@ if(! $main::buildonly) {
 		[\&doImscpBackup,			'Backup existing i-MSCP installation if any'],
 		[\&saveGuiPersistentData,	'Saving GUI persistent data'],
 		[\&installTmp,				'Installing new i-MSCP files on file system'],
+		[\&setupBoot,				'Setup bootstrapping'],
 		[\&setupRegisterHooks,		'Registering servers/addons setup hooks'],
 		[\&setupDialog,				'Processing i-MSCP setup dialog'],
 		[\&setupTasks,				'Processing i-MSCP setup tasks'],

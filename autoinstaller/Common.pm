@@ -47,24 +47,9 @@ use iMSCP::File;
 
 use parent 'Exporter';
 our @EXPORT = qw(
-	installPreRequiredPackages
-	checkDistribution
-	loadConfig
-	preBuild
-	installPackages
-	testRequirements
-	processConfFile
-	processSpecificConfFile
-	buildImscpDaemon
-	installEngine
-	installGui
-	installDistMaintainerScripts
-	postBuild
-	doImscpBackup
-	saveGuiPersistentData
-	installTmp
-	removeTmp
-	checkCommandAvailability
+	installPreRequiredPackages checkDistribution loadConfig preBuild installPackages testRequirements
+	processConfFile processSpecificConfFile buildImscpDaemon installEngine installGui installDistMaintainerScripts
+	postBuild doImscpBackup saveGuiPersistentData installTmp removeTmp checkCommandAvailability
 );
 
 =head1 DESCRIPTION
@@ -201,10 +186,10 @@ sub loadConfig
 	%main::imscpConfig = (%main::imscpNewConfig, %main::imscpOldConfig);
 
 	# Update needed variables with newest values
-	$main::imscpConfig{BuildDate} = $main::imscpNewConfig{BuildDate} if $main::imscpNewConfig{BuildDate};
-	$main::imscpConfig{Version} = $main::imscpNewConfig{Version} if $main::imscpNewConfig{Version};
-	$main::imscpConfig{CodeName} = $main::imscpNewConfig{CodeName} if $main::imscpNewConfig{CodeName};
-	$main::imscpConfig{DistName} = $main::imscpNewConfig{DistName} if $main::imscpNewConfig{DistName};
+	$main::imscpConfig{'BuildDate'} = $main::imscpNewConfig{'BuildDate'} if defined $main::imscpNewConfig{'BuildDate'};
+	$main::imscpConfig{'Version'} = $main::imscpNewConfig{'Version'} if defined $main::imscpNewConfig{'Version'};
+	$main::imscpConfig{'CodeName'} = $main::imscpNewConfig{'CodeName'} if defined $main::imscpNewConfig{'CodeName'};
+	$main::imscpConfig{'DistName'} = $main::imscpNewConfig{'DistName'} if defined $main::imscpNewConfig{'DistName'};
 
 	# No longer needed
 	untie %main::imscpNewConfig;
@@ -289,49 +274,48 @@ sub processConfFile
 	my $rs;
 
 	# Process xml 'folders' nodes if any
-	for(@{$data->{folders}}) {
-		$_->{content} = _expandVars($_->{content}) if $_->{content};
-		#eval("our \$" . $_->{export} . " = \"" . $_->{content} . "\";") if($_->{export});
-		eval("\$main::" . $_->{export} . " = \"" . $_->{content} . "\";") if($_->{export});
+	for(@{$data->{'folders'}}) {
+		$_->{'content'} = _expandVars($_->{'content'}) if $_->{'content'};
+		eval("\$main::" . $_->{'export'} . " = \"" . $_->{'content'} . "\";") if($_->{'export'});
 		fatal("$@") if($@);
 		return $rs if $rs;
 
-		$rs = _processFolder($_) if($_->{content});
+		$rs = _processFolder($_) if($_->{'content'});
 		return $rs if $rs;
 	}
 
 	# Process xml 'copy_config' nodes if any
-	for(@{$data->{copy_config}}) {
-		$_->{content} = _expandVars($_->{content}) if $_->{content};
-		$rs = _copyConfig($_) if($_->{content});
+	for(@{$data->{'copy_config'}}) {
+		$_->{'content'} = _expandVars($_->{'content'}) if $_->{'content'};
+		$rs = _copyConfig($_) if($_->{'content'});
 		return $rs if $rs;
 	}
 
 	# process xml 'copy' nodes if any
-	for(@{$data->{copy}}) {
-		$_->{content} = _expandVars($_->{content}) if $_->{content};
-		$rs = _copy($_) if($_->{content});
+	for(@{$data->{'copy'}}) {
+		$_->{'content'} = _expandVars($_->{'content'}) if $_->{'content'};
+		$rs = _copy($_) if($_->{'content'});
 		return $rs if $rs;
 	}
 
 	# process xml 'create_file' nodes (Doesn't work for now - See the _createFile subroutine)
-	for(@{$data->{create_file}}) {
-		$_->{content} = _expandVars($_->{content}) if $_->{content};
-		$rs = _createFile($_) if($_->{content});
+	for(@{$data->{'create_file'}}) {
+		$_->{'content'} = _expandVars($_->{'content'}) if $_->{'content'};
+		$rs = _createFile($_) if($_->{'content'});
 		return $rs if $rs;
 	}
 
 	# process xml 'chmod_file' nodes if any
-	for(@{$data->{chmod_file}}) {
-		$_->{content} = _expandVars($_->{content}) if($_->{content});
-		$rs = _chmodFile($_) if($_->{content});
+	for(@{$data->{'chmod_file'}}) {
+		$_->{'content'} = _expandVars($_->{'content'}) if($_->{'content'});
+		$rs = _chmodFile($_) if($_->{'content'});
 		return $rs if $rs;
 	}
 
 	# process xml 'chmod_file' nodes if any
-	for(@{$data->{chown_file}}) {
-		$_->{content} = _expandVars($_->{content}) if($_->{content});
-		$rs = _chownFile($_) if($_->{content});
+	for(@{$data->{'chown_file'}}) {
+		$_->{'content'} = _expandVars($_->{'content'}) if($_->{'content'});
+		$rs = _chownFile($_) if($_->{'content'});
 		return $rs if $rs;
 	}
 
@@ -367,7 +351,7 @@ sub processSpecificConfFile
 	my $dir = iMSCP::Dir->new();
 
 	# /configs/debian
-	$dir->{dirname} = $commonPath;
+	$dir->{'dirname'} = $commonPath;
 
 	$rs = $dir->get();
 	return $rs if $rs;
@@ -841,15 +825,15 @@ sub _processFolder
 	my $data = shift;
 
 	my $dir = iMSCP::Dir->new();
-	$dir->{dirname} = $data->{content};
+	$dir->{'dirname'} = $data->{'content'};
 	debug("Create $dir->{dirname}");
 
 	my $options = {};
 
-	$options->{mode} = oct($data->{mode}) if($data->{mode});
-	$options->{user} = _expandVars($data->{owner}) if($data->{owner});
-	$options->{group} = _expandVars($data->{group}) if($data->{group});
-	debug $options->{group} if $options->{group};
+	$options->{'mode'} = oct($data->{'mode'}) if($data->{'mode'});
+	$options->{'user'} = _expandVars($data->{'owner'}) if($data->{'owner'});
+	$options->{'group'} = _expandVars($data->{'group'}) if($data->{'group'});
+	debug $options->{'group'} if $options->{'group'};
 
 	my $rs = $dir->make($options);
 	return $rs if $rs;
@@ -869,7 +853,7 @@ sub _copyConfig
 {
 	my $data = shift;
 
-	my @parts = split '/', $data->{content};
+	my @parts = split '/', $data->{'content'};
 	my $name = pop(@parts);
 	my $path = join '/', @parts;
 	my $distribution = lc(iMSCP::LsbRelease->new()->getId(1));
@@ -888,16 +872,16 @@ sub _copyConfig
 
 	return $rs if $rs;
 
-	if($data->{user} || $data->{group} || $data->{mode}) {
+	if($data->{'user'} || $data->{'group'} || $data->{'mode'}) {
 		my $filename = -e "$path/$name" ? "$path/$name" : $path;
 
 		my $file = iMSCP::File->new(filename => $filename);
-		$file->mode(oct($data->{mode})) and return 1 if $data->{mode};
+		$file->mode(oct($data->{'mode'})) and return 1 if $data->{'mode'};
 
 		$file->owner(
-			$data->{user} ? $data->{user} : -1,
-			$data->{group} ? $data->{group} : -1
-		)  and return 1 if($data->{user} || $data->{group});
+			$data->{'user'} ? $data->{'user'} : -1,
+			$data->{'group'} ? $data->{'group'} : -1
+		)  and return 1 if($data->{'user'} || $data->{'group'});
 	}
 
 	0;
@@ -914,7 +898,7 @@ sub _copyConfig
 sub _copy
 {
 	my $data = shift;
-	my @parts = split '/', $data->{content};
+	my @parts = split '/', $data->{'content'};
 	my $name = pop(@parts);
 	my $path = join '/', @parts;
 
@@ -926,16 +910,16 @@ sub _copy
 	error("$stderr") if $stderr;
 	return $rs if $rs;
 
-	if($data->{user} || $data->{group} || $data->{mode}) {
+	if($data->{'user'} || $data->{'group'} || $data->{'mode'}) {
 
 		my $filename = -e "$path/$name" ? "$path/$name" : $path;
 
 		my $file = iMSCP::File->new(filename => $filename);
-		$file->mode(oct($data->{mode})) and return 1 if $data->{mode};
+		$file->mode(oct($data->{'mode'})) and return 1 if $data->{'mode'};
 		$file->owner(
-			$data->{user} ? $data->{user} : -1,
-			$data->{group} ? $data->{group} : -1
-		)  and return 1 if($data->{user} || $data->{group});
+			$data->{'user'} ? $data->{'user'} : -1,
+			$data->{'group'} ? $data->{'group'} : -1
+		)  and return 1 if($data->{'user'} || $data->{'group'});
 
 	}
 
@@ -954,7 +938,7 @@ sub _createFile
 {
 	my $data = shift;
 
-	iMSCP::File->new(filename => $data->{content})->save();
+	iMSCP::File->new(filename => $data->{'content'})->save();
 }
 
 =item _chownFile()
@@ -969,7 +953,7 @@ sub _chownFile
 {
 	my $data = shift;
 
-	if($data->{owner} && $data->{group}) {
+	if($data->{'owner'} && $data->{'group'}) {
 		my ($rs, $stdout, $stderr);
 		$rs = execute("chown -R $data->{owner}:$data->{group} $data->{content}", \$stdout, \$stderr);
 		debug("$stdout") if $stdout;
@@ -1009,7 +993,7 @@ sub _chmodFile
 
 =item _getDistroAdapter()
 
- Return distro autoinstaller adapter instance
+ Return distro autoinstaller adapter instance.
 
  Return autoinstaller::Adapter::Abstract
  TODO check that adapter is an instance of autoinstaller::Adapter::Abstract

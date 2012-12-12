@@ -267,7 +267,7 @@ sub setupDB
 		return 1 if $rs;
 
 		# Get SQL connection with full privileges
-		my $database = main::setupSqlGetConnect();
+		my $database = main::setupGetSqlConnect();
 
 		# Add new proftpd restricted SQL user with needed privilegess
 		for (qw/ ftp_group ftp_users quotalimits quotatallies /) {

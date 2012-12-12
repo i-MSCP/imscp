@@ -72,8 +72,8 @@ sub installPreRequiredPackages
     	$command = 'debconf-apt-progress --logstderr -- ' . $command;
     }
 
-	$rs = execute("DEBCONF_FORCE_DIALOG=1 $command -y install wget dialog libxml-simple-perl", undef, \$stderr);
-	error("Unable to install pre-required packages: $stderr") if $rs;
+	$rs = execute("$command -y install wget dialog libxml-simple-perl", undef, \$stderr);
+	error("Unable to install pre-required Debian packages: $stderr") if $rs;
 
 	$rs;
 }
@@ -110,24 +110,20 @@ sub installPackages
 {
 	my $self = shift;
 
-	my($rs, $stderr);
-
+	my $stderr = undef;
 	my $command = 'apt-get';
+
+	iMSCP::Dialog->factory()->endGauge(); # Really needed !
 
     if(! checkCommandAvailability('debconf-apt-progress')) {
     	$command = 'debconf-apt-progress --logstderr -- ' . $command;
     }
 
-	$rs |= execute("DEBCONF_FORCE_DIALOG=1 $command -y install $self->{toInstall}", undef, \$stderr);
-	error("$stderr") if $stderr && $rs;
-	error("Unable to install packages: $stderr") if $rs && ! $stderr;
-	return $rs if $rs;
-
-	# Ugly hack to reset screen (better solution will be implemented ASAP)
-	# Problem occurs only when using gauge after debconf-apt-progress
-	iMSCP::Dialog->factory->set('timeout', '0.1');
-	iMSCP::Dialog->factory()->msgbox('');
-	iMSCP::Dialog->factory->set('timeout', undef);
+	my $rs = execute("$command -y install $self->{toInstall}", undef, \$stderr);
+	if($rs) {
+		error("Unable to install Debian packages: $stderr");
+		return $rs;
+	}
 
 	0;
 }
@@ -144,8 +140,8 @@ sub postBuild
 {
 	my $self = shift;
 
-	# Add user server selection in imscp conffile
-	$main::imscpConfig{uc($_) . '_SERVER'} = lc($self->{userSelection}->{$_}) for(keys %{$self->{userSelection}});
+	# Add user server selection in imscp.conf file by creating/updating server variables
+	$main::imscpConfig{uc($_) . '_SERVER'} = lc($self->{'userSelection'}->{$_}) for(keys %{$self->{'userSelection'}});
 
 	0;
 }
@@ -168,7 +164,7 @@ sub _init
 {
 	my $self = shift;
 
-	$self->{nonfree} = 'non-free';
+	$self->{'nonfree'} = 'non-free';
 
 	$self;
 }
@@ -184,11 +180,17 @@ sub _init
 sub _updatePackagesIndex
 {
 	my ($rs, $stdout, $stderr);
+	my $command = 'apt-get';
 
-	$rs = execute('DEBCONF_FORCE_DIALOG=1 debconf-apt-progress -- apt-get -y update', undef, \$stderr);
-	error("$stderr") if $stderr;
-	error('Unable to update package index from remote repository') if $rs && !$stderr;
-	return $rs if $rs;
+    if(! checkCommandAvailability('debconf-apt-progress')) {
+    	$command = 'debconf-apt-progress --logstderr -- ' . $command;
+    }
+
+	$rs = execute("$command -y update", undef, \$stderr);
+	if($rs) {
+		error('Unable to update package index from remote repository: $stderr');
+		return $rs;
+	}
 
 	0;
 }
@@ -223,7 +225,7 @@ sub _updateAptSourceList
 		my %repos = %+;
 
 		# is non-free repository available?
-		unless($repos{'components'} =~ /\s?$self->{nonfree}(\s|$)/ ){
+		unless($repos{'components'} =~ /\s?$self->{'nonfree'}(\s|$)/ ){
 			my $uri = "$repos{uri}/dists/$repos{distrib}/$self->{nonfree}/";
 			$rs = execute("wget --spider $uri", \$stdout, \$stderr);
 			debug("$stdout") if $stdout;
@@ -232,7 +234,7 @@ sub _updateAptSourceList
 			unless ($rs){
 				$foundNonFree = 1;
 				debug("Enabling non free section on $repos{uri}");
-				$content =~ s/^($&)$/$1 $self->{nonfree}/mg;
+				$content =~ s/^($&)$/$1 $self->{'nonfree'}/mg;
 				$needUpdate = 1;
 			}
 		} else {
@@ -285,7 +287,7 @@ sub _preparePackagesList
 		} else {
 			if($data->{$_}->{alternative}) {
 				my $service  = $_;
-				my @alternative = keys %{$data->{$service}->{alternative}};
+				my @alternative = keys %{$data->{$service}->{'alternative'}};
 
 				my $oldServer = $main::imscpConfig{uc($service) . '_SERVER'}; # string or undef
 				my $server = undef;
@@ -325,10 +327,10 @@ Please, choose the server you want use for the $service service:
 					$server = $oldServer;
 				}
 
-				$self->{userSelection}->{$service} = lc($server) eq 'not used' ? 'no' : $server;
+				$self->{'userSelection'}->{$service} = lc($server) eq 'not used' ? 'no' : $server;
 
 				foreach(@alternative) {
-					delete($data->{$service}->{alternative}->{$_}) if $_ ne $server;
+					delete($data->{$service}->{'alternative'}->{$_}) if $_ ne $server;
 				}
 			}
 
@@ -375,7 +377,7 @@ sub _parseHash
 		} elsif(ref($_) eq 'ARRAY') {
 			$self->_parseArray($_);
 		} else {
-			$self->{toInstall} .= " " . _trim($_);
+			$self->{'toInstall'} .= " " . _trim($_);
 		}
 	}
 

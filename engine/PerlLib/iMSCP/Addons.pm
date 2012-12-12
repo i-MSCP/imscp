@@ -38,7 +38,7 @@ sub load
 
 	return 1 if $addons->get();
 
-	@{$self->{addons}} = $addons->getFiles();
+	@{$self->{'addons'}} = $addons->getFiles();
 
 	debug("Returning: @{$self->{addons}}");
 
@@ -49,9 +49,9 @@ sub get
 {
 	my $self = shift || iMSCP::Addons->new();
 
-	$self->load() unless exists $self->{addons};
+	$self->load() unless exists $self->{'addons'};
 
-	return (exists $self->{addons} ? @{$self->{addons}} : ());
+	return (exists $self->{'addons'} ? @{$self->{'addons'}} : ());
 }
 
 1;

@@ -77,8 +77,8 @@ sub registerSetupHooks
 
 =cut
 
-sub install{
-
+sub install
+{
 	my $self = shift;
 	my $rs	= 0;
 
@@ -294,17 +294,17 @@ sub _setupDatabase
 	if($dbUser ne $dbOldUser || $dbPass ne $dbOldPass) {
 
 		# Remove old proftpd restricted SQL user and all it privileges (if any)
-		$rs = setupDeleteSqlUser($dbOldUser);
+		$rs = main::setupDeleteSqlUser($dbOldUser);
 		error("Unable to remove the old roundcube '$dbOldUser' restricted SQL user: $rs") if $rs;
 		return 1 if $rs;
 
 		# Ensure new proftpd user do not already exists by removing it
-		$rs = setupDeleteSqlUser($dbUser);
+		$rs = main::setupDeleteSqlUser($dbUser);
 		error("Unable to delete the roundcube '$dbUser' restricted SQL user: $rs") if $rs;
 		return 1 if $rs;
 
 		# Get SQL connection with full privileges
-		my $database = main::setupSqlGetConnect();
+		my $database = main::setupGetSqlConnect();
 
 		# Add new proftpd restricted SQL user with needed privilegess
 		for ((

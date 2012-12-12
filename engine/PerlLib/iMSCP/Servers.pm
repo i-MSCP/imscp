@@ -39,7 +39,7 @@ sub load
 
 	return 1 if $servers->get();
 
-	@{$self->{servers}}	= $servers->getFiles();
+	@{$self->{'servers'}}	= $servers->getFiles();
 
 	debug("Returning: @{$self->{servers}}");
 
@@ -50,9 +50,9 @@ sub get
 {
 	my $self = shift || iMSCP::Servers->new();
 
-	$self->load() unless exists $self->{servers};
+	$self->load() unless exists $self->{'servers'};
 
-	return (exists $self->{servers} ? @{$self->{servers}} : ());
+	return (exists $self->{'servers'} ? @{$self->{'servers'}} : ());
 }
 
 1;

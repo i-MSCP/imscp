@@ -298,6 +298,9 @@ sub saveConf
 
 	my $file = iMSCP::File->new(filename => "$self->{cfgDir}/bind.data");
 
+	$self::bindConfig{'BIND_MODE'} = $self::bindOldConfig{'BIND_MODE'}
+		if $self::bindOldConfig{'BIND_MODE'} && $self::bindConfig{'BIND_MODE'} ne $self::bindOldConfig{'BIND_MODE'};
+
 	$self::bindConfig{'PRIMARY_DNS'} = $self::bindOldConfig{'PRIMARY_DNS'}
 		if $self::bindOldConfig{'PRIMARY_DNS'} && $self::bindConfig{'PRIMARY_DNS'} ne $self::bindOldConfig{'PRIMARY_DNS'};
 
