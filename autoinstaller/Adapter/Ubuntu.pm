@@ -49,7 +49,7 @@ use parent 'autoinstaller::Adapter::Debian';
 
  Called by new(). Initialize instance.
 
- Return self
+ Return autoinstaller::Adapter::Ubuntu
 
 =cut
 
@@ -59,7 +59,7 @@ sub _init
 
 	my $self = shift;
 
-	$self->{nonfree} = 'multiverse';
+	$self->{'nonfree'} = 'multiverse';
 
 	debug('Ending...');
 

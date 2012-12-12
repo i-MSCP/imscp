@@ -35,7 +35,7 @@ use strict;
 use warnings;
 use iMSCP::HooksManager;
 use iMSCP::Debug qw / error /;
-use fields qw / reconfigure noprompt preseed debug /;
+use fields qw / reconfigure noprompt preseed hookFile debug /;
 our $options = fields::new('iMSCP::Getopt');
 
 =head1 DESCRIPTION
@@ -72,8 +72,9 @@ sub parse
   -r,  --reconfigure    Re-show all questions already seen.
   -n,  --noprompt       Switch to non-interactive mode (Expert option).
   -p,  --preseed        Path to preseed file (Expert option).
+  -h,  --hook-file      Path to hook file (Expert option).
   -d,  --debug          Force debug mode.
-  -h,  --help           Show this help.
+  -?,  --help           Show this help.
 EOF
 		iMSCP::HooksManager->getInstance()->register('beforeExit', sub { exit 1; });
 
@@ -95,8 +96,9 @@ EOF
 			'reconfigure|r', sub { $options->{'reconfigure'} = 'true' },
 			'noprompt|n', sub { $options->{'noprompt'} = 'true' },
 			'preseed|p=s', sub { shift; $class->preseed(shift) },
+			'hook-file|h=s', sub { shift; $class->hookFile(shift) },
 			'debug|d', sub { $options->{'debug'} = 'true' },
-			'help|h|?', $showusage,
+			'help|?', $showusage,
 			@_,
 		) || $showusage->();
 	};
@@ -160,6 +162,29 @@ sub preseed
 	}
 
 	$options->{'preseed'};
+}
+
+=item
+
+ Hook file path
+
+ Return SCALAR|undef Path to hook file or undef
+
+=cut
+
+sub hookFile
+{
+	my ($class, $value) = @_;
+
+	if(defined $value) {
+		if( -f $value) {
+			$options->{'hookFile'} = $value;
+		} else {
+			die("Hook file not found: $value")
+		}
+	}
+
+	$options->{'hookFile'};
 }
 
 =back

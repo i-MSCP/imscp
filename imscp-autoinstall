@@ -61,9 +61,9 @@ $main::skippackages = 0;
 iMSCP::Getopt->parse(
 	qq{Usage: perl imscp-autoinstall [options]
   -b,  --buildonly	Process only build step.
-  -s,  --skippackages  Do not install/update distro packages. (Expert option)},
+  -s,  --skippackages   Do not install/update distro packages. (Expert option)},
   'buildonly|b' => \$main::buildonly,
-  'skippackages|s' => \$main::nopackages
+  'skippackages|s' => \$main::skippackages
 );
 
 # Getting the reconfigure option value
@@ -77,6 +77,14 @@ if($preseedFile) {
 	# Values from preseed file always override those already set.
 	# The preseed option is not compatible with the reconfigure option.
 	$main::reconfigure = 0;
+	undef $preseedFile;
+}
+
+# Handle the hook-file option
+my $hookFile = iMSCP::Getopt->hookFile;
+if($hookFile) {
+	require $hookFile;
+	undef $hookFile;
 }
 
 # handle the noprompt option
@@ -93,9 +101,9 @@ iMSCP::HooksManager->getInstance->register(
 		if($$exitCode == 5) { # We exit with status 5 from iMSCP::Dialog::Dialog in noninteractive mode
 			$$exitCode = 1;
 			if(iMSCP::Getopt->preseed) {
-				fatal "Noninteractive mode: bad entry found in your preseed file."
+				fatal "Noninteractive mode: Missing or bad entry found in your preseed file."
 			} else {
-				fatal "Noninteractive mode: bad entry found in your imscp.conf file."
+				fatal "Noninteractive mode: Missing or bad entry found in an i-MSCP configuration file."
 			}
 		} else {
 			my $clearScreen = shift;
@@ -110,8 +118,12 @@ newDebug('imscp-build.log');
 # Ensure the script is run as root
 iMSCP::Requirements->new()->user();
 
+iMSCP::HooksManager->getInstance()->trigger('beforeInstallPreRequiredPackages');
+
 # Install pre-required package
 installPreRequiredPackages() and exit 1 if ! $main::skippackages;
+
+iMSCP::HooksManager->getInstance()->trigger('afterInstallPreRequiredPackages');
 
 # Entering in silent mode
 silent(1);
@@ -173,6 +185,8 @@ my @steps = (
 # Remove the installPackages step in case the skippackages option is set to true
 splice(@steps, 2, 1) if $main::skippackages;
 
+iMSCP::HooksManager->getInstance()->trigger('beforeBuild', \@steps);
+
 my $rs = 0;
 my $step = 1;
 my $nbSteps = scalar @steps;
@@ -182,6 +196,8 @@ for (@steps) {
 	exit $rs if $rs;
 	$step++;
 }
+
+iMSCP::HooksManager->getInstance()->trigger('afterBuild');
 
 iMSCP::Dialog->factory()->endGauge() if iMSCP::Dialog->factory()->needGauge();
 
@@ -217,6 +233,8 @@ if(! $main::buildonly) {
 		[\&setupTasks,				'Processing i-MSCP setup tasks'],
 	);
 
+	iMSCP::HooksManager->getInstance()->trigger('beforeAutoInstallSetup', \@steps);
+
 	$step = 1;
 	$nbSteps = scalar @steps;
 
@@ -225,6 +243,8 @@ if(! $main::buildonly) {
 		exit $rs if $rs;
 		$step++;
 	}
+
+	iMSCP::HooksManager->getInstance()->trigger('afterAutoInstallSetup');
 
 	iMSCP::Dialog->factory()->endGauge() if iMSCP::Dialog->factory()->needGauge();
 

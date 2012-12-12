@@ -61,16 +61,15 @@ use parent 'autoinstaller::Adapter::Abstract';
 sub installPreRequiredPackages
 {
 	my $self = shift;
-
 	my($rs, $stderr);
 
 	fatal('Not a Debian like system') if checkCommandAvailability('apt-get');
 
 	my $command = 'apt-get';
 
-    if(! checkCommandAvailability('debconf-apt-progress')) {
-    	$command = 'debconf-apt-progress --logstderr -- ' . $command;
-    }
+	if(! checkCommandAvailability('debconf-apt-progress')) {
+		$command = 'debconf-apt-progress --logstderr -- ' . $command;
+	}
 
 	$rs = execute("$command -y install wget dialog libxml-simple-perl", undef, \$stderr);
 	error("Unable to install pre-required Debian packages: $stderr") if $rs;
@@ -91,9 +90,9 @@ sub preBuild
 	my $self = shift;
 	my $rs = 0;
 
-	$rs |= $self->_updateAptSourceList();
-	$rs |= $self->_updatePackagesIndex();
-	$rs |= $self->_preparePackagesList();
+	$rs |= $self->_updateAptSourceList() if ! $main::skippackages;
+	$rs |= $self->_updatePackagesIndex() if ! $main::skippackages;
+	$rs |= $self->_preparePackagesList() if ! $main::skippackages;
 
 	$rs;
 }
@@ -115,9 +114,9 @@ sub installPackages
 
 	iMSCP::Dialog->factory()->endGauge(); # Really needed !
 
-    if(! checkCommandAvailability('debconf-apt-progress')) {
-    	$command = 'debconf-apt-progress --logstderr -- ' . $command;
-    }
+	if(! checkCommandAvailability('debconf-apt-progress')) {
+		$command = 'debconf-apt-progress --logstderr -- ' . $command;
+	}
 
 	my $rs = execute("$command -y install $self->{toInstall}", undef, \$stderr);
 	if($rs) {
@@ -156,7 +155,7 @@ sub postBuild
 
  Called by new(). Initialize instance.
 
- Return self
+ Return autoinstaller::Adapter::Debian
 
 =cut
 
@@ -182,9 +181,9 @@ sub _updatePackagesIndex
 	my ($rs, $stdout, $stderr);
 	my $command = 'apt-get';
 
-    if(! checkCommandAvailability('debconf-apt-progress')) {
-    	$command = 'debconf-apt-progress --logstderr -- ' . $command;
-    }
+	if(! checkCommandAvailability('debconf-apt-progress')) {
+		$command = 'debconf-apt-progress --logstderr -- ' . $command;
+	}
 
 	$rs = execute("$command -y update", undef, \$stderr);
 	if($rs) {

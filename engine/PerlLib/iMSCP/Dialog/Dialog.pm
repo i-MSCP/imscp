@@ -696,12 +696,14 @@ sub _restoreDefaults
 
 sub _execute
 {
-	#my ($self, $text, $init, $type) = (shift, shift, shift, shift);
 	my ($self, $text, $init, $type) = @_;
 
 	if($main::noprompt) {
-		fatal("bad answer found for the following question: $text");
-		exit 5;
+		if($type ne 'infobox' && $type ne 'msgbox') {
+			exit 5;
+		} else {
+			return 0;
+		}
 	}
 
 	$self->endGauge();

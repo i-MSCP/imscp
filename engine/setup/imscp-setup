@@ -51,6 +51,14 @@ if($preseedFile) {
 	# Values from preseed file always override those already set.
 	# The preseed option is not compatible with the reconfigure option.
 	$main::reconfigure = 0;
+	undef $preseedFile;
+}
+
+# Handle the hook-file option
+my $hookFile = iMSCP::Getopt->hookFile;
+if($hookFile) {
+	require $hookFile;
+	undef $hookFile;
 }
 
 # handle noprompt option
@@ -68,7 +76,7 @@ iMSCP::HooksManager->getInstance->register(
 
 		if($$exitCode == 5) { # We exit with status 5 from iMSCP::Dialog::Dialog in noninteractive mode
 			$$exitCode = 1;
-			if($preseedFile) {
+			if(iMSCP::Getopt->preseed) {
 				fatal "Noninteractive mode: bad entry found in your preseed file."
 			} else {
 				fatal "Noninteractive mode: bad entry found in an i-MSCP configuration file."
