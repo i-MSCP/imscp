@@ -10,8 +10,8 @@ Features / Enhancements / Bugfixes:
 SETUP:
 	- Added backup feature for setup dialog (allow user to step back)
 	- Added base class for autoinstall adapters
-	- Added 'buildonly' and 'skippackages' command line options imscp-autoinstall script
-	- Added 'reconfigure', 'preseed' and 'debug' command line options for both imscp-autoinstall and imscp-setup scripts
+	- Added 'buildonly' and 'skippackages' command line options for autoinstall script
+	- Added 'reconfigure', 'preseed', hook-file and 'debug' command line options for both autoinstall and setup scripts
 	- Fixed: Allow IDN for hostname and base server vhost hostname
 	- Fixed: Allow to set ip as MySQL server hostname
 	- Fixed: Do not remove user defined variables in imscp.conf
