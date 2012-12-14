@@ -614,7 +614,7 @@ sub addDmn
 	$self->{'data'} = $data;
 
 	my $rs = $self->addCfg($data);
-	$rs |= $self->addFiles($data) unless $data->{'FORWARD'} && $data->{'FORWARD'} =~ m~(http|htpps|ftp)://~i;
+	$rs |= $self->addFiles($data) unless $data->{'FORWARD'} && $data->{'FORWARD'} =~ m~(http|https|ftp)://~i;
 
 	$self->{'restart'} = 'yes';
 	delete $self->{'data'};
@@ -656,7 +656,7 @@ sub addCfg
 	}
 
 	foreach(keys %configs){
-		unless($data->{'FORWARD'} && $data->{'FORWARD'} =~ m~(http|htpps|ftp)://~i){
+		unless($data->{'FORWARD'} && $data->{'FORWARD'} =~ m~(http|https|ftp)://~i){
 
 			iMSCP::HooksManager->getInstance()->register(
 				'afterHttpdBuildConf', sub { return $self->removeSection('cgi support', @_); }
@@ -692,7 +692,7 @@ sub addCfg
 
 		$rs |= $self->buildConfFile(
 			(
-				$data->{'FORWARD'} && $data->{'FORWARD'} =~ m~(http|htpps|ftp):\/\/~i
+				$data->{'FORWARD'} && $data->{'FORWARD'} =~ m~(http|https|ftp):\/\/~i
 				? "$self->{tplDir}/" . $configs{$_}->{'redirect'}
 				: "$self->{tplDir}/" . $configs{$_}->{'normal'}
 			),

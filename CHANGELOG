@@ -49,6 +49,7 @@ Tickets:
 	- Fixed #511: Enhancement - Show disk usage detail (web, mail, sql) on client side
 	- Fixed #512: autoresponder: lines in transport file not correct
 	- Fixed #514: Email forward from domain A to domain B not working
+	- Fixed #522: Bug - Subdomain redirects with "https" or "ftp" don't work
 
 -------------------------------------------------------------------------------------
 i-MSCP 1.1.0-beta2
