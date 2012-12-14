@@ -266,51 +266,33 @@ i-MSCP '$main::imscpConfig{'Version'}' has been successfully installed/updated.
 "
 \\Z4\\ZuBuild Step Successful\\Zn
 
-To finish the i-MSCP install/update, run the following commands from your console:
+To finish the i-MSCP install process, run the following commands from your console:
 
-\\Zb1. Purge all GUI sessions files\\Zn
+\\ZbI. If you want migrate from ispCP\\Zn
+
+	# cp -R /tmp/imscp/* /
+	# cd $main::imscpConfig{ROOT_DIR}/engine/setup
+	# perl imscp-migrate-from-ispcp
+	# perl imscp-setup
+
+\\ZbII. If you want install or update iMSCP\\Zn
 
 	# rm -Rf $main::imscpConfig{GUI_ROOT_DIR}/data/sessions
-
-\\Zb2. Purge all GUI cache files\\Zn
-
 	# rm -Rf $main::imscpConfig{GUI_ROOT_DIR}/data/cache
-
-\\Zb3. Backup needed files\\Zn
-
 	# cp -Rfv $main::imscpConfig{GUI_ROOT_DIR}/data /tmp/imscp/var/www/imscp/gui
 	# cp -Rfv $main::imscpConfig{GUI_ROOT_DIR}/public/tools/webmail/data \\\\
 	/tmp/imscp/var/www/imscp/gui/public/tools/webmail
 	# cp -Rfv $main::imscpConfig{GUI_ROOT_DIR}/plugins /tmp/imscp/var/www/imscp/gui
-
-\\Zb4. Delete old directories\\Zn
-
 	# rm -Rf $main::imscpConfig{ROOT_DIR}/{daemon,engine,gui}
-
-\\Zb5. Copy directories into your system (you may make backups)\\Zn
-
 	# cp -R /tmp/imscp/* /
-
-\\Zb6. Remove temporary directory\\Zn
-
 	# rm -R /tmp/imscp
-
-\\Zb7. Run setup script\\Zn
-
 	# cd $main::imscpConfig{ROOT_DIR}/engine/setup
-
-	\\Zb1. If you want migrate from ispCP\\Zn
-
-		# perl imscp-migrate-from-ispcp
-		# perl imscp-setup
-
-	\\Zb2. If you want just install or update i-MSCP\\Zn
-
-		# perl imscp-setup
+	# perl imscp-setup
 
 If you get no error, all went good; if you get one, look at http://forum.i-mscp.net to solve the problem.
 
 Thanks for using i-MSCP.
+
 "
 	);
 }

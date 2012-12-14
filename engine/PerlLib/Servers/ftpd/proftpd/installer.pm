@@ -45,8 +45,12 @@ sub _init
 	my $conf = "$self->{cfgDir}/proftpd.data";
 	my $oldConf = "$self->{cfgDir}/proftpd.old.data";
 
-	tie %self::proftpdConfig, 'iMSCP::Config','fileName' => $conf;
-	tie %self::proftpdOldConfig, 'iMSCP::Config','fileName' => $oldConf, noerrors => 1 if -f $oldConf;
+	tie %self::proftpdConfig, 'iMSCP::Config','fileName' => $conf, noerrors => 1;
+
+	if($oldConf) {
+		tie %self::proftpdOldConfig, 'iMSCP::Config','fileName' => $oldConf, noerrors => 1;
+		%self::proftpdConfig = (%self::proftpdConfig, %self::proftpdOldConfig);
+	}
 
 	0;
 }

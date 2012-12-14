@@ -45,8 +45,12 @@ sub _init
 	my $conf = "$self->{cfgDir}/dovecot.data";
 	my $oldConf = "$self->{cfgDir}/dovecot.old.data";
 
-	tie %self::dovecotConfig, 'iMSCP::Config','fileName' => $conf;
-	tie %self::dovecotOldConfig, 'iMSCP::Config','fileName' => $oldConf, noerror => 1 if -f $oldConf;
+	tie %self::dovecotConfig, 'iMSCP::Config','fileName' => $conf, noerrors => 1;
+
+	if($oldConf) {
+		tie %self::dovecotOldConfig, 'iMSCP::Config','fileName' => $oldConf, noerrors => 1;
+		%self::dovecotConfig = (%self::dovecotConfig, %self::dovecotOldConfig);
+	}
 
 	$self->getVersion() and return 1;
 

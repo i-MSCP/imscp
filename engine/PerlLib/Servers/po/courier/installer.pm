@@ -44,8 +44,12 @@ sub _init
 	my $conf = "$self->{cfgDir}/courier.data";
 	my $oldConf = "$self->{cfgDir}/courier.old.data";
 
-	tie %self::courierConfig, 'iMSCP::Config','fileName' => $conf;
-	tie %self::courierOldConfig, 'iMSCP::Config','fileName' => $oldConf if -f $oldConf;
+	tie %self::courierConfig, 'iMSCP::Config','fileName' => $conf, noerrors => 1;
+
+	if($oldConf) {
+		tie %self::courierOldConfig, 'iMSCP::Config','fileName' => $oldConf, noerrors => 1;
+		%self::courierConfig = (%self::courierConfig, %self::courierOldConfig);
+	}
 
 	0;
 }

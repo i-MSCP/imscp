@@ -41,8 +41,12 @@ sub _init
 	my $conf = "$self->{cfgDir}/bind.data";
 	my $oldConf = "$self->{cfgDir}/bind.old.data";
 
-	tie %self::bindConfig, 'iMSCP::Config','fileName' => $conf;
-	tie %self::bindOldConfig, 'iMSCP::Config','fileName' => $oldConf, noerrors => 1 if -f $oldConf;
+	tie %self::bindConfig, 'iMSCP::Config','fileName' => $conf, noerrors => 1;
+
+	if($oldConf) {
+		tie %self::bindOldConfig, 'iMSCP::Config','fileName' => $oldConf, noerrors => 1;
+		%self::bindConfig = (%self::bindConfig, %self::bindOldConfig);
+	}
 
 	0;
 }

@@ -155,7 +155,11 @@ sub _init{
 	my $oldConf	= "$self->{cfgDir}/policyd.old.data";
 
 	tie %self::policydConfig, 'iMSCP::Config','fileName' => $conf, noerrors => 1;
-	tie %self::policydOldConfig, 'iMSCP::Config','fileName' => $oldConf, noerrors => 1 if -f $oldConf;
+
+	if($oldConf) {
+		tie %self::policydOldConfig, 'iMSCP::Config','fileName' => $oldConf, noerrors => 1;
+		%self::policydConfig = (%self::policydConfig, %self::policydOldConfig);
+	}
 
 	$self;
 }

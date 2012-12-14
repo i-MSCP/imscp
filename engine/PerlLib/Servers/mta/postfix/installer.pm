@@ -47,8 +47,12 @@ sub _init
 	my $conf = "$self->{cfgDir}/postfix.data";
 	my $oldConf = "$self->{cfgDir}/postfix.old.data";
 
-	tie %self::postfixConfig, 'iMSCP::Config','fileName' => $conf;
-	tie %self::postfixOldConfig, 'iMSCP::Config','fileName' => $oldConf if -f $oldConf;
+	tie %self::postfixConfig, 'iMSCP::Config','fileName' => $conf, noerrors => 1;
+
+	if($oldConf) {
+		tie %self::postfixOldConfig, 'iMSCP::Config','fileName' => $oldConf, noerrors => 1;
+		%self::postfixConfig = (%self::postfixConfig, %self::postfixOldConfig);
+	}
 
 	0;
 }

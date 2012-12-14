@@ -78,12 +78,12 @@ sub _init
 {
 	my $self = shift;
 
-	$self->{confFile} = ();
-	$self->{configValues} = {};
-	$self->{lineMap} = {};
+	$self->{'confFile'} = ();
+	$self->{'configValues'} = {};
+	$self->{'lineMap'} = {};
 
-	if(defined $self->{args}->{fileName}) {
-		$self->{confFileName} = $self->{args}->{fileName};
+	if(defined $self->{'args'}->{'fileName'}) {
+		$self->{'confFileName'} = $self->{'args'}->{'fileName'};
 	} else {
 		fatal('fileName attribut is not defined');
 	}
@@ -111,15 +111,15 @@ sub _loadConfig
 
 	debug("Tying configuration file: $self->{confFileName}");
 
-	if($self->{args}->{nocreate}) {
+	if($self->{'args'}->{'nocreate'}) {
 		$mode = O_RDWR;
-	} elsif($self->{args}->{readonly}) {
+	} elsif($self->{'args'}->{'readonly'}) {
 		$mode = O_RDONLY;
 	} else {
 		$mode = O_RDWR | O_CREAT;
 	}
 
-	tie @{$self->{confFile}}, 'Tie::File', $self->{confFileName}, mode => $mode or
+	tie @{$self->{'confFile'}}, 'Tie::File', $self->{'confFileName'}, mode => $mode or
 		fatal("Can`t open file $self->{confFileName}");
 
 	undef;
@@ -139,10 +139,10 @@ sub _parseConfig
 
 	my $lineNo = 0;
 
-	for (@{$self->{confFile}}) {
+	for (@{$self->{'confFile'}}) {
 		if (/^([^#\s=]+)\s{0,}=\s{0,}(.{0,})$/) {
-			$self->{configValues}->{$1}	= $2;
-			$self->{lineMap}->{$1} = $lineNo;
+			$self->{'configValues'}->{$1}	= $2;
+			$self->{'lineMap'}->{$1} = $lineNo;
 		}
 
 		$lineNo++;
@@ -165,11 +165,11 @@ sub FETCH
 
 	debug("Fetching ${config}..." );
 
-	if (! exists $self->{configValues}->{$config} && ! $self->{args}->{noerrors}){
+	if (! exists $self->{'configValues'}->{$config} && ! $self->{'args'}->{'noerrors'}){
 		error(sprintf('Accessing non existing config value %s', $config));
 	}
 
-	$self->{configValues}->{$config};
+	$self->{'configValues'}->{$config};
 }
 
 =item
@@ -185,10 +185,10 @@ sub STORE
 	my $config = shift;
 	my $value = shift;
 
-	if(! $self->{args}->{readonly}) {
-		debug("Store ${config} as " . ($value ? $value : 'empty') . "...");
+	if(! $self->{'args'}->{'readonly'}) {
+		debug("Store ${config} as " . ($value ? $value : 'empty') . '...');
 
-		if(! exists $self->{configValues}->{$config}) {
+		if(! exists $self->{'configValues'}->{$config}) {
 			$self->_insertConfig($config, $value);
 		} else {
 			$self->_replaceConfig($config, $value);
@@ -212,7 +212,7 @@ sub FIRSTKEY
 {
 	my $self = shift;
 
-	$self->{_list} = [ sort keys %{$self->{configValues}} ];
+	$self->{'_list'} = [ sort keys %{$self->{'configValues'}} ];
 
 	$self->NEXTKEY;
 }
@@ -229,7 +229,7 @@ sub NEXTKEY
 {
 	my $self = shift;
 
-	shift @{$self->{_list}};
+	shift @{$self->{'_list'}};
 }
 
 =item
@@ -245,7 +245,7 @@ sub EXISTS
 	my $self = shift;
 	my $config = shift;
 
-	exists $self->{configValues}->{$config};
+	exists $self->{'configValues'}->{$config};
 }
 
 =item
@@ -279,8 +279,8 @@ sub _replaceConfig
 
 	debug("Setting $config as $value");
 
-	@{$self->{confFile}}[$self->{lineMap}->{$config}] = "$config = $value";
-	$self->{configValues}->{$config} = $value;
+	@{$self->{'confFile'}}[$self->{'lineMap'}->{$config}] = "$config = $value";
+	$self->{'configValues'}->{$config} = $value;
 }
 
 =item _insertConfig($config, $value)
@@ -303,9 +303,9 @@ sub _insertConfig
 
 	debug("Setting $config as $value");
 
-	push (@{$self->{confFile}}, "$config = $value");
-	$self->{lineMap}->{$config} = $#{$self->{confFile}};
-	$self->{configValues}->{$config} = $value;
+	push (@{$self->{'confFile'}}, "$config = $value");
+	$self->{'lineMap'}->{$config} = $#{$self->{confFile}};
+	$self->{'configValues'}->{$config} = $value;
 }
 
 =head1 AUTHORS

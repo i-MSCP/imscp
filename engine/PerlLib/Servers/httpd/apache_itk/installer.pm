@@ -42,8 +42,12 @@ sub _init
 	my $conf = "$self->{cfgDir}/apache.data";
 	my $oldConf = "$self->{cfgDir}/apache.old.data";
 
-	tie %self::apacheConfig, 'iMSCP::Config','fileName' => $conf;
-	tie %self::apacheOldConfig, 'iMSCP::Config','fileName' => $oldConf if -f $oldConf;
+	tie %self::apacheConfig, 'iMSCP::Config','fileName' => $conf, noerrors => 1;
+
+	if($oldConf) {
+		tie %self::apacheOldConfig, 'iMSCP::Config','fileName' => $oldConf, noerrors => 1;
+		%self::apacheConfig = (%self::apacheConfig, %self::apacheOldConfig);
+	}
 
 	0;
 }
