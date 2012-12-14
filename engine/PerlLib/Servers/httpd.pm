@@ -28,29 +28,25 @@ package Servers::httpd;
 use strict;
 use warnings;
 use iMSCP::Debug;
-
 use FindBin;
+use parent 'Common::SimpleClass';
 
-
-use vars qw/@ISA/;
-@ISA = ('Common::SimpleClass');
-use Common::SimpleClass;
-
-sub factory{
-	my $self	= shift;
-	my $server	= shift || $main::imscpConfig{HTTPD_SERVER};
+sub factory
+{
+	my $self = shift;
+	my $server = shift || $main::imscpConfig{'HTTPD_SERVER'};
 	my ($file, $class);
 
 	if(lc($server) =~ /^no$/ ){
-		$file	= 'Servers/noserver.pm';
-		$class	= 'Servers::noserver';
+		$file = 'Servers/noserver.pm';
+		$class = 'Servers::noserver';
 	} else {
-		$file	= "Servers/httpd/$server.pm";
-		$class	= "Servers::httpd::$server";
+		$file = "Servers/httpd/$server.pm";
+		$class = "Servers::httpd::$server";
 	}
 
 	require $file;
-	return $class->new();
+	$class->new();
 }
 
 1;

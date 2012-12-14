@@ -1,7 +1,7 @@
 #!/usr/bin/perl
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010 by internet Multi Server Control Panel
+# Copyright (C) 2010 - 2012 by internet Multi Server Control Panel
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -20,7 +20,6 @@
 # @category		i-MSCP
 # @copyright	2010 - 2012 by i-MSCP | http://i-mscp.net
 # @author		Daniel Andreca <sci2tech@gmail.com>
-# @version		SVN: $Id$
 # @link			http://i-mscp.net i-MSCP Home Site
 # @license		http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
@@ -41,18 +40,19 @@ use Data::Dumper;
 
 newDebug('imscp-httpd-logs-mngr.log');
 
-sub logs_start_up {
-
+sub logs_start_up
+{
 	umask(027);
+
 	iMSCP::Boot->new()->init({nolock => 'yes'});
 
 	0;
 }
 
-sub copy_logs{
-
+sub copy_logs
+{
 	my $rs = 0;
-	my $httpd	= Servers::httpd->factory();
+	my $httpd = Servers::httpd->factory();
 
 	my $sql = "
 		SELECT `domain_name`, `domain_name`as `mp`, `domain_admin_id` AS `id` FROM `domain` WHERE `domain_status` = 'ok'
@@ -75,25 +75,26 @@ sub copy_logs{
 		$rs = 1;
 	} else {
 		foreach( keys %$rdata){
-			my $groupName	=
-			my $userName	=
+			my $groupName =
+			my $userName =
 								$main::imscpConfig{SYSTEM_USER_PREFIX}.
 								(
 									$main::imscpConfig{SYSTEM_USER_MIN_UID}
 									+
 									$rdata->{$_}->{id}
 								);
-			my $srcFolder	= "$httpd->{tplValues}->{'APACHE_USERS_LOG_DIR'}";
-			my $destFolder	= "$main::imscpConfig{'USER_HOME_DIR'}/$rdata->{$_}->{mp}/logs/";
-			my $accessSRC	= "$srcFolder/$_-access.log";
-			my $accessDST	= "$destFolder/$_-access.log";
-			my $errorSRC	= "$srcFolder/$_-error.log";
-			my $errorDST	= "$destFolder/$_-error.log";
+			my $srcFolder = "$httpd->{tplValues}->{'APACHE_USERS_LOG_DIR'}";
+			my $destFolder = "$main::imscpConfig{'USER_HOME_DIR'}/$rdata->{$_}->{mp}/logs/";
+			my $accessSRC = "$srcFolder/$_-access.log";
+			my $accessDST = "$destFolder/$_-access.log";
+			my $errorSRC = "$srcFolder/$_-error.log";
+			my $errorDST = "$destFolder/$_-error.log";
 			$rs |= iMSCP::Dir->new( dirname => $destFolder)->make({
-				user	=> $userName,
-				group	=> $groupName,
-				mode	=> 0750
+				user => $userName,
+				group => $groupName,
+				mode => 0750
 			}) unless -d $destFolder;
+
 			$rs |= iMSCP::File->new(filename => $accessSRC)->copyFile($accessDST) if (-f $accessSRC);
 			$rs |= iMSCP::File->new(filename => $accessDST)->owner($userName, $groupName) if (-f $accessDST);
 			$rs |= iMSCP::File->new(filename => $accessDST)->mode(0640) if (-f $accessDST);

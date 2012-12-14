@@ -1,7 +1,7 @@
 #!/usr/bin/perl
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010 - 2011 by internet Multi Server Control Panel
+# Copyright (C) 2010 - 2012 by internet Multi Server Control Panel
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -20,7 +20,6 @@
 # @category		i-MSCP
 # @copyright	2010 - 2012 by i-MSCP | http://i-mscp.net
 # @author		Daniel Andreca <sci2tech@gmail.com>
-# @version		SVN: $Id$
 # @link			http://i-mscp.net i-MSCP Home Site
 # @license		http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
@@ -29,31 +28,30 @@ package iMSCP::Addons;
 use strict;
 use warnings;
 use iMSCP::Debug;
-use  iMSCP::Dir;
+use iMSCP::Dir;
+use parent 'Common::SingletonClass';
 
-use vars qw/@ISA/;
-
-@ISA = ('Common::SingletonClass');
-use Common::SingletonClass;
-
-sub load{
+sub load
+{
 	my $self = shift || iMSCP::Addons->new();
-	my $Addons	= iMSCP::Dir->new(dirname => "$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Addons");
+	my $addons = iMSCP::Dir->new(dirname => "$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Addons");
 
-	return 1 if $Addons->get();
+	return 1 if $addons->get();
 
-	@{$self->{Addons}}	= $Addons->getFiles();
+	@{$self->{'addons'}} = $addons->getFiles();
 
-	debug("Returning @{$self->{Addons}}");
+	debug("Returning: @{$self->{addons}}");
+
 	0;
 }
 
-sub get{
+sub get
+{
 	my $self = shift || iMSCP::Addons->new();
 
-	$self->load() unless(exists $self->{Addons});
+	$self->load() unless exists $self->{'addons'};
 
-	return (exists $self->{Addons} ? @{$self->{Addons}} : ());
+	return (exists $self->{'addons'} ? @{$self->{'addons'}} : ());
 }
 
 1;

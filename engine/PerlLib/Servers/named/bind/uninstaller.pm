@@ -28,56 +28,46 @@ package Servers::named::bind::uninstaller;
 use strict;
 use warnings;
 use iMSCP::Debug;
+use parent 'Common::SingletonClass';
 
+sub _init
+{
+	my $self = shift;
 
-use vars qw/@ISA/;
+	$self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/bind";
+	$self->{'bkpDir'} = "$self->{cfgDir}/backup";
+	$self->{'wrkDir'} = "$self->{cfgDir}/working";
 
-@ISA = ('Common::SingletonClass');
-use Common::SingletonClass;
-
-sub _init{
-
-	my $self		= shift;
-
-	$self->{cfgDir}	= "$main::imscpConfig{'CONF_DIR'}/bind";
-	$self->{bkpDir}	= "$self->{cfgDir}/backup";
-	$self->{wrkDir}	= "$self->{cfgDir}/working";
-
-	my $conf		= "$self->{cfgDir}/bind.data";
+	my $conf = "$self->{cfgDir}/bind.data";
 
 	tie %self::bindConfig, 'iMSCP::Config','fileName' => $conf;
 
 	0;
 }
 
-sub uninstall{
+sub uninstall
+{
+	my $self = shift;
 
-	my $self	= shift;
-	my $rs		= 0;
-
-	$rs |= $self->restoreConfFile();
-
-	$rs;
+	$self->restoreConfFile();
 }
 
-sub restoreConfFile{
+sub restoreConfFile
+{
+	my $self = shift;
+	my $rs = 0;
 
 	use File::Basename;
 	use iMSCP::File;
 
-	my $self	= shift;
-	my $rs		= 0;
-
-	for (
-		$self::bindConfig{'BIND_CONF_FILE'}
-	) {
+	for ($self::bindConfig{'BIND_CONF_FILE'}) {
 		my ($filename, $directories, $suffix) = fileparse($_);
 		if(-f "$self->{bkpDir}/$filename$suffix.system"){
 			$rs	|=	iMSCP::File->new(
-						filename => "$self->{bkpDir}/$filename$suffix.system"
-					)->copyFile(
-						$_
-					);
+				filename => "$self->{bkpDir}/$filename$suffix.system"
+			)->copyFile(
+				$_
+			);
 		}
 	}
 

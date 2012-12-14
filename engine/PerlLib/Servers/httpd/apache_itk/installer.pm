@@ -29,38 +29,37 @@ use strict;
 use warnings;
 use iMSCP::Debug;
 use Data::Dumper;
+use parent 'Common::SingletonClass';
 
-use vars qw/@ISA/;
+sub _init
+{
+	my $self = shift;
 
-@ISA = ('Common::SingletonClass');
-use Common::SingletonClass;
+	$self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/apache";
+	$self->{'bkpDir'} = "$self->{cfgDir}/backup";
+	$self->{'wrkDir'} = "$self->{cfgDir}/working";
 
-sub _init{
+	my $conf = "$self->{cfgDir}/apache.data";
+	my $oldConf = "$self->{cfgDir}/apache.old.data";
 
-	my $self		= shift;
+	tie %self::apacheConfig, 'iMSCP::Config','fileName' => $conf, noerrors => 1;
 
-	$self->{cfgDir}	= "$main::imscpConfig{'CONF_DIR'}/apache";
-	$self->{bkpDir}	= "$self->{cfgDir}/backup";
-	$self->{wrkDir}	= "$self->{cfgDir}/working";
-
-	my $conf		= "$self->{cfgDir}/apache.data";
-	my $oldConf		= "$self->{cfgDir}/apache.old.data";
-
-	tie %self::apacheConfig, 'iMSCP::Config','fileName' => $conf;
-	tie %self::apacheOldConfig, 'iMSCP::Config','fileName' => $oldConf if -f $oldConf;
+	if($oldConf) {
+		tie %self::apacheOldConfig, 'iMSCP::Config','fileName' => $oldConf, noerrors => 1;
+		%self::apacheConfig = (%self::apacheConfig, %self::apacheOldConfig);
+	}
 
 	0;
 }
 
-sub install{
-
+sub install
+{
 	my $self = shift;
 	my $rs = 0;
 
 	# Saving all system configuration files if they exists
 	for ((
-		"$main::imscpConfig{LOGROTATE_CONF_DIR}/apache2",
-		"$main::imscpConfig{LOGROTATE_CONF_DIR}/apache",
+		"$main::imscpConfig{LOGROTATE_CONF_DIR}/apache2", "$main::imscpConfig{LOGROTATE_CONF_DIR}/apache",
 		"$self::apacheConfig{APACHE_CONF_DIR}/ports.conf"
 	)) {
 		$rs |= $self->bkpConfFile($_);
@@ -80,64 +79,90 @@ sub install{
 	$rs;
 }
 
-sub setGuiPermissions{
+sub setGuiPermissions
+{
+	my $self = shift;
 
 	use iMSCP::Rights;
 
 	my $rs = 0;
 
-	my $panelUName	= $main::imscpConfig{'SYSTEM_USER_PREFIX'}.$main::imscpConfig{'SYSTEM_USER_MIN_UID'};
-	my $panelGName	= $main::imscpConfig{'SYSTEM_USER_PREFIX'}.$main::imscpConfig{'SYSTEM_USER_MIN_UID'};
-	my $rootUName	= $main::imscpConfig{'ROOT_USER'};
-	my $rootGName	= $main::imscpConfig{'ROOT_GROUP'};
-	my $apacheUName	= $self::apacheConfig{'APACHE_USER'};
-	my $apacheGName	= $self::apacheConfig{'APACHE_GROUP'};
-	my $ROOT_DIR	= $main::imscpConfig{'ROOT_DIR'};
+	my $panelUName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} . $main::imscpConfig{'SYSTEM_USER_MIN_UID'};
+	my $panelGName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} . $main::imscpConfig{'SYSTEM_USER_MIN_UID'};
+	my $rootUName = $main::imscpConfig{'ROOT_USER'};
+	my $rootGName = $main::imscpConfig{'ROOT_GROUP'};
+	my $apacheUName = $self::apacheConfig{'APACHE_USER'};
+	my $apacheGName = $self::apacheConfig{'APACHE_GROUP'};
+	my $ROOT_DIR = $main::imscpConfig{'ROOT_DIR'};
 
-	$rs |= setRights("$ROOT_DIR/gui/public",
-		{user => $panelUName, group => $apacheGName, dirmode => '0550', filemode => '0440', recursive => 'yes'}
+	$rs |= setRights(
+		"$ROOT_DIR/gui/public",
+		{ user => $panelUName, group => $apacheGName, dirmode => '0550', filemode => '0440', recursive => 'yes' }
 	);
-	$rs |= setRights("$ROOT_DIR/gui/themes",
-		{user => $panelUName, group => $apacheGName, dirmode => '0550', filemode => '0440', recursive => 'yes'}
+
+	$rs |= setRights(
+		"$ROOT_DIR/gui/themes",
+		{ user => $panelUName, group => $apacheGName, dirmode => '0550', filemode => '0440', recursive => 'yes' }
 	);
-	$rs |= setRights("$ROOT_DIR/gui/library",
-		{user => $panelUName, group => $panelGName, dirmode => '0500', filemode => '0400', recursive => 'yes'}
+
+	$rs |= setRights(
+		"$ROOT_DIR/gui/library",
+		{ user => $panelUName, group => $panelGName, dirmode => '0500', filemode => '0400', recursive => 'yes' }
 	);
-	$rs |= setRights("$ROOT_DIR/gui/data",
-		{user => $panelUName, group => $panelGName, dirmode => '0700', filemode => '0600', recursive => 'yes'}
+
+	$rs |= setRights(
+		"$ROOT_DIR/gui/data",
+		{ user => $panelUName, group => $panelGName, dirmode => '0700', filemode => '0600', recursive => 'yes' }
 	);
-	$rs |= setRights("$ROOT_DIR/gui/data",
-		{user => $panelUName, group => $apacheGName, mode => '0550'}
+
+	$rs |= setRights(
+		"$ROOT_DIR/gui/data",
+		{ user => $panelUName, group => $apacheGName, mode => '0550'}
 	);
-	$rs |= setRights("$ROOT_DIR/gui/data/ispLogos",
-		{user => $panelUName, group => $apacheGName, dirmode => '0750', filemode => '0640', recursive => 'yes'}
+
+	$rs |= setRights(
+		"$ROOT_DIR/gui/data/ispLogos",
+		{ user => $panelUName, group => $apacheGName, dirmode => '0750', filemode => '0640', recursive => 'yes' }
 	);
-	setRights("$ROOT_DIR/gui/i18n",
-		{user => $panelUName, group => $panelGName, dirmode => '0700', filemode => '0600', recursive => 'yes'}
+
+	$rs |= setRights(
+		"$ROOT_DIR/gui/i18n",
+		{ user => $panelUName, group => $panelGName, dirmode => '0700', filemode => '0600', recursive => 'yes' }
 	);
-	$rs |= setRights("$ROOT_DIR/gui/plugins",
-		{user => $panelUName, group => $panelGName, dirmode => '0700', filemode => '0600', recursive => 'yes'}
+
+	$rs |= setRights(
+		"$ROOT_DIR/gui/plugins",
+		{ user => $panelUName, group => $panelGName, dirmode => '0700', filemode => '0600', recursive => 'yes' }
 	);
-	$rs |= setRights("$ROOT_DIR/gui/plugins",
-		{user => $panelUName, group => $apacheGName, mode => '0550'}
+
+	$rs |= setRights(
+		"$ROOT_DIR/gui/plugins",
+		{ user => $panelUName, group => $apacheGName, mode => '0550' });
+
+	$rs |= setRights(
+		"$ROOT_DIR/gui/public/tools/filemanager/data",
+		{ user => $panelUName, group => $panelGName, dirmode => '0700', filemode => '0600', recursive => 'yes' }
 	);
-	$rs |= setRights("$ROOT_DIR/gui/public/tools/filemanager/data",
-		{user => $panelUName, group => $panelGName, dirmode => '0700', filemode => '0600', recursive => 'yes'}
+
+	$rs |= setRights(
+		"$ROOT_DIR/gui/public/tools/webmail/logs",
+		{ user => $panelUName, group => $panelGName, dirmode => '0750', filemode => '0640', recursive => 'yes' }
 	);
-	$rs |= setRights("$ROOT_DIR/gui/public/tools/webmail/logs",
-		{user => $panelUName, group => $panelGName, dirmode => '0750', filemode => '0640', recursive => 'yes'}
+
+	$rs |= setRights(
+		"$ROOT_DIR/gui",
+		{ user => $panelUName, group => $apacheGName, mode => '0550' }
 	);
-	$rs |= setRights("$ROOT_DIR/gui",
-		{user => $panelUName, group => $apacheGName, mode => '0550'}
-	);
-	$rs |= setRights("$ROOT_DIR",
-		{user => $panelUName, group => $apacheGName, mode => '0555'}
+
+	$rs |= setRights(
+		$ROOT_DIR,
+		{ user => $panelUName, group => $apacheGName, mode => '0555' }
 	);
 
 	$rs;
 }
-sub addUsers{
-
+sub addUsers
+{
 	my $self = shift;
 	my $rs = 0;
 	my ($panelGName, $panelUName);
@@ -151,12 +176,14 @@ sub addUsers{
 	## Panel user
 	use Modules::SystemUser;
 	$panelUName = Modules::SystemUser->new();
-	$panelUName->{skipCreateHome}	= 'yes';
-	$panelUName->{comment}			= 'iMSCP master virtual user';
-	$panelUName->{home}				= $self::imscpConfig{GUI_ROOT_DIR};
-	$panelUName->{group}			= $main::imscpConfig{'SYSTEM_USER_PREFIX'}.$main::imscpConfig{'SYSTEM_USER_MIN_UID'};
+	$panelUName->{'skipCreateHome'} = 'yes';
+	$panelUName->{'comment'} = 'iMSCP master virtual user';
+	$panelUName->{'home'} = $self::imscpConfig{'GUI_ROOT_DIR'};
+	$panelUName->{'group'} = $main::imscpConfig{'SYSTEM_USER_PREFIX'} . $main::imscpConfig{'SYSTEM_USER_MIN_UID'};
 
-	$rs = $panelUName->addSystemUser($main::imscpConfig{'SYSTEM_USER_PREFIX'}.$main::imscpConfig{'SYSTEM_USER_MIN_UID'});
+	$rs = $panelUName->addSystemUser(
+		$main::imscpConfig{'SYSTEM_USER_PREFIX'} . $main::imscpConfig{'SYSTEM_USER_MIN_UID'}
+	);
 	return $rs if $rs;
 
 	$rs = $panelUName->addToGroup($main::imscpConfig{'MASTER_GROUP'});
@@ -165,43 +192,48 @@ sub addUsers{
 	0;
 }
 
-sub makeDirs{
+sub makeDirs
+{
+	my $self = shift;
 
 	use iMSCP::Dir;
 
-	my $rs			= 0;
-	my $self		= shift;
-	my $panelUName	= $main::imscpConfig{'SYSTEM_USER_PREFIX'}.$main::imscpConfig{'SYSTEM_USER_MIN_UID'};
-	my $panelGName	= $main::imscpConfig{'SYSTEM_USER_PREFIX'}.$main::imscpConfig{'SYSTEM_USER_MIN_UID'};
-	my $rootUName	= $main::imscpConfig{'ROOT_USER'};
-	my $rootGName	= $main::imscpConfig{'ROOT_GROUP'};
-	my $apacheUName	= $self::apacheConfig{'APACHE_USER'};
-	my $apacheGName	= $self::apacheConfig{'APACHE_GROUP'};
+	my $rs = 0;
+
+	my $panelUName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} . $main::imscpConfig{'SYSTEM_USER_MIN_UID'};
+	my $panelGName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} . $main::imscpConfig{'SYSTEM_USER_MIN_UID'};
+	my $rootUName = $main::imscpConfig{'ROOT_USER'};
+	my $rootGName = $main::imscpConfig{'ROOT_GROUP'};
+	my $apacheUName = $self::apacheConfig{'APACHE_USER'};
+	my $apacheGName = $self::apacheConfig{'APACHE_GROUP'};
 
 	for (
-		[$self::apacheConfig{'APACHE_USERS_LOG_DIR'},	$apacheUName,	$apacheGName,	0755],
-		[$self::apacheConfig{'APACHE_BACKUP_LOG_DIR'},	$rootUName,		$rootGName, 	0755]
+		[$self::apacheConfig{'APACHE_USERS_LOG_DIR'}, $apacheUName, $apacheGName, 0755],
+		[$self::apacheConfig{'APACHE_BACKUP_LOG_DIR'}, $rootUName, $rootGName, 0755]
 	) {
 		$rs |= iMSCP::Dir->new(dirname => $_->[0])->make({ user => $_->[1], group => $_->[2], mode => $_->[3]});
 	}
 
-	$rs |= iMSCP::Dir->new(dirname => $self::apacheConfig{PHP_STARTER_DIR})->remove() if -d $self::apacheConfig{PHP_STARTER_DIR};
+	$rs |= iMSCP::Dir->new(dirname => $self::apacheConfig{PHP_STARTER_DIR})->remove()
+		if -d $self::apacheConfig{'PHP_STARTER_DIR'};
 
 	$rs;
 }
 
-sub bkpConfFile{
+sub bkpConfFile
+{
+	my $self = shift;
+	my $cfgFile = shift;
 
 	use File::Basename;
 
-	my $self		= shift;
-	my $cfgFile		= shift;
-	my $timestamp	= time;
-	my $rs			= 0;
+	my $timestamp = time;
+	my $rs = 0;
 
 	if(-f $cfgFile){
-		my $file	= iMSCP::File->new( filename => $cfgFile );
+		my $file = iMSCP::File->new( filename => $cfgFile );
 		my ($filename, $directories, $suffix) = fileparse($cfgFile);
+
 		if(!-f "$self->{bkpDir}/$filename$suffix.system") {
 			$rs |= $file->copyFile("$self->{bkpDir}/$filename$suffix.system");
 		} else {
@@ -212,16 +244,17 @@ sub bkpConfFile{
 	$rs;
 }
 
-sub saveConf{
-
+sub saveConf
+{
+	my $self = shift;
 	use iMSCP::File;
 
-	my $self	= shift;
-	my $rs		= 0;
-	my $file	= iMSCP::File->new(filename => "$self->{cfgDir}/apache.data");
-	my $cfg		= $file->get() or return 1;
+	my $rs = 0;
+	my $file = iMSCP::File->new(filename => "$self->{cfgDir}/apache.data");
+	my $cfg = $file->get() or return 1;
 
 	$file = iMSCP::File->new(filename => "$self->{cfgDir}/apache.old.data");
+
 	$rs |= $file->set($cfg);
 	$rs |= $file->save();
 	$rs |= $file->mode(0640);
@@ -231,62 +264,48 @@ sub saveConf{
 }
 
 
-sub oldEngineCompatibility{
+sub oldEngineCompatibility
+{
+	my $self = shift;
 
 	use iMSCP::File;
 	use Servers::httpd::apache_itk;
 
-	my $self	= shift;
-	my $httpd	= Servers::httpd::apache_itk->new();
-	my $rs		= 0;
+	my $httpd = Servers::httpd::apache_itk->new();
+	my $rs = 0;
 
 	if(-f "$self::apacheConfig{APACHE_SITES_DIR}/imscp.conf"){
-		$rs |= $httpd->disableSite("imscp.conf");
+		$rs |= $httpd->disableSite('imscp.conf');
 		$rs |= iMSCP::File->new(filename => "$self::apacheConfig{APACHE_SITES_DIR}/imscp.conf")->delFile();
 	}
 	$rs;
 }
 
-################################################################################
-# i-MSCP GUI PHP configuration files - (Setup / Update)
-#
-# This subroutine do the following tasks:
-#  - Create the master fcgi directory
-#  - Built, store and install gui php related files (starter script, php.ini...)
-#
-# @return int 0 on success, other on failure
-#
-sub phpConf {
+sub phpConf
+{
+	my $self = shift;
 
 	use Servers::httpd::apache_itk;
 	use iMSCP::File;
 
-	my $self		= shift;
-	my $httpd		= Servers::httpd::apache_itk->new();
-	my $rs			= 0;
-	my $rootUName	= $main::imscpConfig{'ROOT_USER'};
-	my $rootGName	= $main::imscpConfig{'ROOT_GROUP'};
+	my $httpd = Servers::httpd::apache_itk->new();
+	my $rs = 0;
+	my $rootUName = $main::imscpConfig{'ROOT_USER'};
+	my $rootGName = $main::imscpConfig{'ROOT_GROUP'};
 
 	## PHP php.ini file
 
 	# Loading the template from /etc/imscp/apache2/parts/php{version}.itk.ini
-	$httpd->setData({
-			PHP_TIMEZONE	=> $main::imscpConfig{PHP_TIMEZONE}
-	});
+	$httpd->setData({ PHP_TIMEZONE => $main::imscpConfig{'PHP_TIMEZONE'} });
 
 	$httpd->buildConfFile(
-						$self->{cfgDir}.'/parts/php'.$self::apacheConfig{PHP_VERSION}.'.itk.ini',
-						{
-							destination	=> "$self->{wrkDir}/php.ini",
-							mode		=> 0644,
-							user		=> $rootUName,
-							group		=> $rootGName
-						}
+		$self->{cfgDir} . '/parts/php' . $self::apacheConfig{'PHP_VERSION'} . '.itk.ini',
+		{ destination => "$self->{wrkDir}/php.ini", mode => 0644, user => $rootUName, group => $rootGName }
 	);
 
 	# Install the new file
 	my $file = iMSCP::File->new(filename => "$self->{wrkDir}/php.ini");
-	$rs |= $file->copyFile($self::apacheConfig{'ITK_PHP'.$self::apacheConfig{PHP_VERSION}.'_PATH'});
+	$rs |= $file->copyFile($self::apacheConfig{'ITK_PHP'.$self::apacheConfig{'PHP_VERSION'}.'_PATH'});
 
 	for("fastcgi", "fcgid", "fastcgi_imscp", "fcgid_imscp", "php4"){
 		$rs |= $httpd->disableMod($_) if( -e "$self::apacheConfig{APACHE_MODS_DIR}/$_.load");
@@ -297,24 +316,16 @@ sub phpConf {
 	$rs;
 }
 
-################################################################################
-# i-MSCP httpd main vhost - (Setup / Update)
-#
-# This subroutine do the following tasks:
-#  - Built, store and install i-MSCP main vhost configuration file
-#  - Enable required modules (cgid, rewrite, suexec)
-#
-# @return int 0 on success, other on failure
-#
-sub vHostConf {
+sub vHostConf
+{
+	my $self = shift;
 
 	use iMSCP::File;
 	use iMSCP::Templator;
 	use version;
 	use Servers::httpd::apache_itk;
 
-	my $self	= shift;
-	my $httpd	= Servers::httpd::apache_itk->new();
+	my $httpd = Servers::httpd::apache_itk->new();
 	my ($rs, $cfgTpl, $err);
 
 	if(-f "$self::apacheConfig{'APACHE_SITES_DIR'}/00_nameserver.conf") {
@@ -329,6 +340,7 @@ sub vHostConf {
 		my $file = iMSCP::File->new(filename => '/etc/apache2/ports.conf');
 		my $rdata = $file->get();
 		return $rdata if(!$rdata);
+
 		$rdata =~ s/^NameVirtualHost \*:80/#NameVirtualHost \*:80/gmi;
 		$file->set($rdata) and return 1;
 		$file->save() and return 1;
@@ -343,17 +355,17 @@ sub vHostConf {
 		$pipeSyntax .= '|';
 	}
 
-	$httpd->setData({
-			APACHE_WWW_DIR	=> $main::imscpConfig{'USER_HOME_DIR'},
-			ROOT_DIR		=> $main::imscpConfig{'ROOT_DIR'},
-			PIPE			=> $pipeSyntax
-	});
+	$httpd->setData(
+		{
+			APACHE_WWW_DIR => $main::imscpConfig{'USER_HOME_DIR'},
+			ROOT_DIR => $main::imscpConfig{'ROOT_DIR'},
+			PIPE => $pipeSyntax
+		}
+	);
 
 	$cfgTpl = $httpd->buildConfFile(
 		"$self->{cfgDir}/00_nameserver.conf",
-		{
-			destination => "$self->{wrkDir}/00_nameserver.conf"
-		}
+		{ destination => "$self->{wrkDir}/00_nameserver.conf" }
 	);
 
 	## Installing the new file in production directory
@@ -370,23 +382,17 @@ sub vHostConf {
 	0;
 }
 
-################################################################################
-# i-MSCP GUI apache vhost - (Setup / Update)
-#
-# This subroutine built, store and install i-MSCP GUI vhost configuration file.
-#
-# @return int 0 on success, other on failure
-#
-sub masterHost {
+sub masterHost
+{
+	my $self = shift;
 
 	use iMSCP::File;
 	use iMSCP::Templator;
 	use iMSCP::Execute;
 	use Servers::httpd;
 
-	my $self	= shift;
-	my $httpd	= Servers::httpd::apache_itk->new();
-	my $rs		= 0;
+	my $httpd = Servers::httpd::apache_itk->new();
+	my $rs = 0;
 
 	$rs = $httpd->disableSite('default');
 	return $rs if $rs;
@@ -396,25 +402,28 @@ sub masterHost {
 	use Net::LibIDN qw/idn_to_ascii/;
 	$adminEmailAddress = "$user@".idn_to_ascii($domain, 'utf-8');
 
-	$httpd->setData({
-		DEFAULT_ADMIN_ADDRESS	=> $adminEmailAddress,
-		SYSTEM_USER_PREFIX		=> $main::imscpConfig{'SYSTEM_USER_PREFIX'},
-		SYSTEM_USER_MIN_UID		=> $main::imscpConfig{'SYSTEM_USER_MIN_UID'},
-		GUI_CERT_DIR			=> $main::imscpConfig{'GUI_CERT_DIR'},
-		SERVER_HOSTNAME			=> $main::imscpConfig{'SERVER_HOSTNAME'},
-		WWW_DIR					=> $main::imscpConfig{'ROOT_DIR'},
-		DMN_NAME				=> 'gui',
-		ROOT_DIR				=> $main::imscpConfig{'ROOT_DIR'},
-		BASE_SERVER_IP			=> $main::imscpConfig{'BASE_SERVER_IP'},
-		BASE_SERVER_VHOST		=> $main::imscpConfig{'BASE_SERVER_VHOST'},
-		PHP_VERSION				=> $main::imscpConfig{'PHP_VERSION'},
-		CONF_DIR				=> $main::imscpConfig{'CONF_DIR'},
-		MR_LOCK_FILE			=> $main::imscpConfig{'MR_LOCK_FILE'},
-		RKHUNTER_LOG			=> $main::imscpConfig{'RKHUNTER_LOG'},
-		CHKROOTKIT_LOG			=> $main::imscpConfig{'CHKROOTKIT_LOG'},
-		PEAR_DIR				=> $main::imscpConfig{'PEAR_DIR'},
-		OTHER_ROOTKIT_LOG		=> ($main::imscpConfig{'OTHER_ROOTKIT_LOG'} ne '') ? ":$main::imscpConfig{'OTHER_ROOTKIT_LOG'}" : ''
-	});
+	$httpd->setData(
+		{
+			DEFAULT_ADMIN_ADDRESS => $adminEmailAddress,
+			SYSTEM_USER_PREFIX => $main::imscpConfig{'SYSTEM_USER_PREFIX'},
+			SYSTEM_USER_MIN_UID => $main::imscpConfig{'SYSTEM_USER_MIN_UID'},
+			GUI_CERT_DIR => $main::imscpConfig{'GUI_CERT_DIR'},
+			SERVER_HOSTNAME => $main::imscpConfig{'SERVER_HOSTNAME'},
+			WWW_DIR => $main::imscpConfig{'ROOT_DIR'},
+			DMN_NAME => 'gui',
+			ROOT_DIR => $main::imscpConfig{'ROOT_DIR'},
+			BASE_SERVER_IP => $main::imscpConfig{'BASE_SERVER_IP'},
+			BASE_SERVER_VHOST => $main::imscpConfig{'BASE_SERVER_VHOST'},
+			PHP_VERSION => $main::imscpConfig{'PHP_VERSION'},
+			CONF_DIR => $main::imscpConfig{'CONF_DIR'},
+			MR_LOCK_FILE => $main::imscpConfig{'MR_LOCK_FILE'},
+			RKHUNTER_LOG => $main::imscpConfig{'RKHUNTER_LOG'},
+			CHKROOTKIT_LOG => $main::imscpConfig{'CHKROOTKIT_LOG'},
+			PEAR_DIR => $main::imscpConfig{'PEAR_DIR'},
+			OTHER_ROOTKIT_LOG => ($main::imscpConfig{'OTHER_ROOTKIT_LOG'} ne '')
+				? ":$main::imscpConfig{'OTHER_ROOTKIT_LOG'}" : ''
+		}
+	);
 
 	$rs = $httpd->buildConfFile("$self->{cfgDir}/00_master.conf");
 	return $rs if $rs;
@@ -429,7 +438,6 @@ sub masterHost {
 	return $rs if $rs;
 
 	if($main::imscpConfig{'SSL_ENABLED'} eq 'yes'){
-
 		$rs = $httpd->buildConfFile("$self->{cfgDir}/00_master_ssl.conf");
 		return $rs if $rs;
 
@@ -454,24 +462,24 @@ sub masterHost {
 		
 		$rs = $httpd->disableSite('00_master_ssl.conf');
 		return $rs if $rs;
-
 	}
 
 	0;
 }
 
-sub installLogrotate{
+sub installLogrotate
+{
+	my $self = shift;
 
 	use Servers::httpd;
 
-	my $self	= shift;
 	my $httpd = Servers::httpd::apache_itk->new();
 
-	my $rs = $httpd->buildConfFile("logrotate.conf");
+	my $rs = $httpd->buildConfFile('logrotate.conf');
 	return $rs if $rs;
 
 	$rs = $httpd->installConfFile(
-		"logrotate.conf", {destination => "$main::imscpConfig{LOGROTATE_CONF_DIR}/apache2"}
+		'logrotate.conf', { destination => "$main::imscpConfig{LOGROTATE_CONF_DIR}/apache2" }
 	);
 	return $rs if $rs;
 

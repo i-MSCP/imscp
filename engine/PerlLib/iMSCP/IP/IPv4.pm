@@ -1,7 +1,7 @@
 #!/usr/bin/perl
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010 - 2011 by internet Multi Server Control Panel
+# Copyright (C) 2010 - 2012 by internet Multi Server Control Panel
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -20,7 +20,6 @@
 # @category		i-MSCP
 # @copyright	2010 - 2012 by i-MSCP | http://i-mscp.net
 # @author		Daniel Andreca <sci2tech@gmail.com>
-# @version		SVN: $Id$
 # @link			http://i-mscp.net i-MSCP Home Site
 # @license		http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
@@ -43,17 +42,22 @@ sub parseIPs{
 	my $data = shift;
 
 	unless($self->{_loadedIPs}){
-		my $ips = {};
+		$self->{ips} = {};
 
 		while($data =~ m/^([^\s]+)\s{1,}[^\n]*\n(?:(?:\s[^\d]+:)?(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})[^\n]*\n)?/mgi){
 			my $_card	= $1;
 			my $_ip		= $2;
 			if($_card ne 'lo'){
-				my @cards = split(':', $_card);
-				my $card = shift(@cards);
-				my $slot = shift(@cards) || 0;
-				$slot = 0 if $slot !~ /^\d*$/;
-				$self->{cards}->{$card}->{'1Slot'} = $slot + 1 if (!$self->{cards}->{$card}->{'1Slot'} || $self->{cards}->{$card}->{'1Slot'} <= $slot);
+				#my @cards = split(':', $_card);
+				#my $card = shift(@cards);
+				#my $slot = shift(@cards) || 0;
+				#$slot = 0 if $slot !~ /^\d*$/;
+				my ($card, $slot) = split ':', $_card, 2;
+                $slot = 0 if ! defined $slot || $slot !~ /^\d*$/;
+
+				$self->{cards}->{$card}->{'1Slot'} = $slot + 1
+					if (!$self->{cards}->{$card}->{'1Slot'} || $self->{cards}->{$card}->{'1Slot'} <= $slot);
+
 				if($_ip){
 					$self->{ips}->{$_ip} = {} unless $self->{ips}->{$_ip} || $_ip;
 					$self->{ips}->{$_ip}->{card} = $card;
@@ -61,8 +65,10 @@ sub parseIPs{
 				}
 			}
 		}
+
 		$self->{_loadedIPs} = 1;
 	}
+
 	0;
 }
 
@@ -71,6 +77,7 @@ sub parseNetCards{
 	my $data = shift;
 
 	unless($self->{_loadedCards}){
+		$self->{cards} = {};
 
 		while($data =~ m/^([^\s]+)\s{1,}[^\n]*\n/mgi){
 			debug("$1") if $1;

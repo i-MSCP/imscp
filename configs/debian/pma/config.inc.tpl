@@ -7,7 +7,6 @@
  * All directives are explained in Documentation.html and on phpMyAdmin
  * wiki <http://wiki.phpmyadmin.net>.
  *
- * @version     $Id$
  * @package     phpMyAdmin
  * @copyright   2010-2012 by i-MSCP | http://i-mscp.net
  * @link        http://i-mscp.net

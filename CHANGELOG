@@ -1,21 +1,68 @@
 i-MSCP ChangeLog
 ~~~~~~~~~~~~~~~~
+
+-------------------------------------------------------------------------------------
+i-MSCP 1.1.0-rc1
+-------------------------------------------------------------------------------------
+
+Features / Enhancements / Bugfixes:
+
+SETUP:
+	- Added backup feature for setup dialog (allow user to step back)
+	- Added base class for autoinstall adapters
+	- Added 'buildonly' and 'skippackages' command line options for autoinstall script
+	- Added 'reconfigure', 'preseed', hook-file and 'debug' command line options for both autoinstall and setup scripts
+	- Fixed: Allow IDN for hostname and base server vhost hostname
+	- Fixed: Allow to set ip as MySQL server hostname
+	- Fixed: Do not remove user defined variables in imscp.conf
+	- Fixed: Do not ask for MySQL server port when using 'localhost'
+	- Fixed: Do no ask for server to use if only one is available
+	- Fixed: iMSCP::Dialog::Dialog - Wrong synstax for the 'timeout' option
+	- Fixed: iMSCP::Dialog::Dialog - Allow both single and double quotes in dialog text boxes
+	- Fixed: iMSCP::Dialog::Dialog - Allow to set default choice for both radiolist and checklist dialog boxes
+	- Refactoring + cs fixes + doc
+
+ENGINE:
+	- Added 'nocreate' and 'readonly' options for the iMSCP::Config package
+	- Added i-MSCP own implementation of lsb_release command
+	- Added progress bar for Debian packages installation
+	- Added engine hooks manager
+	- Added several hooks in both addons and servers packages (still a lot to add...)
+	- Fixed: iMSCP::IP - Ips stack not flushed on reset
+	- Fixed: iMSCP::Boot - Do not create the imscp.conf file if do not exists, raise error instead
+	- Refactoring + cs fixes + doc
+
+GUI:
+	Vendor:
+
+	Tools:
+
+Tickets:
+	- Fixed #482: Defect - Alias edit forward url not possible. Validation incorrect
+	- Fixed #499: When deleting a domain alias, the custom DNS records (including those related to external mail
+		server(s)) should be deleted
+	- Fixed #500: Mail quota edit link has wrong id for alias, subdomain and aliassubs mails.
+	- Fixed #503: Bug - DNS entries for subdomains are not re-added in db zone file
+	- Fixed #504: Roundcube 0.8.2
+	- Fixed #507: Cosmetics - External mail servers features status not show
+	- Fixed #508: German Umlaut in Custom DNS were shown wrong
+	- Fixed #509: Tools: PHPMyAdmin 3.5.3 released
+	- Fixed #511: Enhancement - Show disk usage detail (web, mail, sql) on client side
+	- Fixed #512: autoresponder: lines in transport file not correct
+	- Fixed #514: Email forward from domain A to domain B not working
+	- Fixed #522: Bug - Subdomain redirects with "https" or "ftp" don't work
+
 -------------------------------------------------------------------------------------
 i-MSCP 1.1.0-beta2
 -------------------------------------------------------------------------------------
+
 2012-09-14: Torsten Widmann
 	- RELEASE i-MSCP 1.1.0-beta2
 	
-Features / Enhancements:
+Features / Enhancements / Bugfixes:
 
 GUI:
-	Engine:
-		- Added i-MSCP implementation of lsb_release (better performances)
-		- Added progress bar for Debian packages installation
-		- Added a hooks manager (engine is now pluggable)
-		- Added several hooks in the servers packages (a lot more to add...)
-		- Updated the awstats addon package  (hooks manager integration + small fixes)
-	Libs:
+	Vendor:
 		- Updated Zend Framework to 1.11.12
 
 	Tools:
@@ -34,26 +81,16 @@ Tickets:
 	- Fixed #487: External Mailserver add/edit CNAMES
 	- Fixed #490: Roundcube missing default folders
 	- Fixed #491: Security-Update: Roundcube 0.8.1
-	- Fixed #492: Hostingplans in admin level not complete
-	- Fixed #499: When deleting a domain alias, the custom DNS records (including those related to external mail
-		server(s)) should be deleted
-	- Fixed #500: Mail quota edit link has wrong id for alias, subdomain and aliassubs mails.
-	- Fixed #503: Bug - DNS entries for subdomains are not re-added in db zone file
-	- Fixed #504: Roundcube 0.8.2
-	- Fixed #507: Cosmetics - External mail servers features status not show
-	- Fixed #508: German Umlaut in Custom DNS were shown wrong
-	- Fixed #509: Tools: PHPMyAdmin 3.5.3 released
-	- Fixed #511: Enhancement - Show disk usage detail (web, mail, sql) on client side
-	- Fixed #512: autoresponder: lines in transport file not correct
-	- Fixed #514: Email forward from domain A to domain B not working
+	- Fixed #492: Hosting plans in admin level not complete
 
 -------------------------------------------------------------------------------------
 i-MSCP 1.1.0-beta1
 -------------------------------------------------------------------------------------
+
 2012-07-01: Torsten Widmann
 	- RELEASE i-MSCP 1.1.0-beta1
 
-Features / Enhancements:
+Features / Enhancements / Bugfixes:
 
 GUI:
 	Tools:

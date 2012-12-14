@@ -30,30 +30,27 @@ use warnings;
 use iMSCP::Debug;
 use iMSCP::File;
 use iMSCP::Execute;
+use parent 'Common::SingletonClass';
 
-use vars qw/@ISA/;
+sub _init
+{
+	my $self = shift;
 
-@ISA = ('Common::SingletonClass');
-use Common::SingletonClass;
+	$self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/courier";
+	$self->{'bkpDir'} = "$self->{cfgDir}/backup";
+	$self->{'wrkDir'} = "$self->{cfgDir}/working";
 
-sub _init{
-
-	my $self		= shift;
-	$self->{cfgDir}	= "$main::imscpConfig{'CONF_DIR'}/courier";
-	$self->{bkpDir}	= "$self->{cfgDir}/backup";
-	$self->{wrkDir}	= "$self->{cfgDir}/working";
-
-	my $conf		= "$self->{cfgDir}/courier.data";
+	my $conf = "$self->{cfgDir}/courier.data";
 
 	tie %self::courierConfig, 'iMSCP::Config','fileName' => $conf;
 
 	0;
 }
 
-sub uninstall{
-
-	my $self	= shift;
-	my $rs		= 0;
+sub uninstall
+{
+	my $self = shift;
+	my $rs = 0;
 
 	$rs |= $self->restoreConfFile();
 	$rs |= $self->authDaemon();
@@ -62,34 +59,27 @@ sub uninstall{
 	$rs;
 }
 
-sub restoreConfFile{
-
-	my $self	= shift;
-	my $rs		= 0;
+sub restoreConfFile
+{
+	my $self = shift;
+	my $rs = 0;
 	my $file;
 
-	for (
-		'authdaemonrc',
-		'userdb',
-		$self::courierConfig{COURIER_IMAP_SSL},
-		$self::courierConfig{COURIER_POP_SSL}
-	) {
+	for ('authdaemonrc', 'userdb', $self::courierConfig{'COURIER_IMAP_SSL'}, $self::courierConfig{'COURIER_POP_SSL'}) {
 		$rs	|=	iMSCP::File->new(
-					filename => "$self->{bkpDir}/$_.system"
-				)->copyFile(
-					"$self::courierConfig{'AUTHLIB_CONF_DIR'}/$_"
-				)
-				if -f "$self->{bkpDir}/$_.system"
-		;
+			filename => "$self->{bkpDir}/$_.system"
+		)->copyFile(
+			"$self::courierConfig{'AUTHLIB_CONF_DIR'}/$_"
+		) if -f "$self->{bkpDir}/$_.system";
 	}
 
 	$rs;
 }
 
-sub authDaemon{
-
-	my $self	= shift;
-	my $rs		= 0;
+sub authDaemon
+{
+	my $self= shift;
+	my $rs	= 0;
 	my $file;
 
 	$file = iMSCP::File->new(filename => "$self::courierConfig{'AUTHLIB_CONF_DIR'}/authdaemonrc");
@@ -99,10 +89,10 @@ sub authDaemon{
 	$rs;
 }
 
-sub userDB{
-
+sub userDB
+{
 	my $self = shift;
-	my $rs		= 0;
+	my $rs = 0;
 	my $file;
 
 	$file = iMSCP::File->new(filename => "$self::courierConfig{'AUTHLIB_CONF_DIR'}/userdb");

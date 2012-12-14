@@ -20,6 +20,7 @@
 # @category		i-MSCP
 # @copyright	2010 - 2012 by i-MSCP | http://i-mscp.net
 # @author		Daniel Andreca <sci2tech@gmail.com>
+# @author		Laurent Declercq <l.declercq@nuxwin.com>
 # @link			http://i-mscp.net i-MSCP Home Site
 # @license		http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
@@ -29,173 +30,280 @@
 # This script is responsible to build the i-MSCP tree into a temporary folder from
 # the upstream archive. This script can optionnaly installing all i-MSCP dependencies
 # and launch the i-MSCP setup/update script. It attemp to detect the target
-# distribution, process backup tasks and save the current GUI working data in update
+# distribution, process backup tasks and save the current GUI persistent data in update
 # mode before doing any changes on the files system. In case the target distribution
 # cannot be detected, the script exit with a specific error message.
 
 use strict;
 use warnings;
-
 use FindBin;
-use lib "$FindBin::Bin";
-use lib "$FindBin::Bin/engine/PerlLib";
-use lib "$FindBin::Bin/engine/PerlVendor";
+use lib "$FindBin::Bin", "$FindBin::Bin/engine/PerlLib", "$FindBin::Bin/engine/PerlVendor";
 
 umask(027);
 
 use iMSCP::Debug;
+use iMSCP::Requirements;
 use iMSCP::Dialog;
-use iMSCP::SO;
-use iMSCP::Config;
+use iMSCP::LsbRelease;
+use iMSCP::HooksManager;
+use iMSCP::Stepper;
 use iMSCP::Dir;
+use iMSCP::File;
+use iMSCP::Getopt;
+use autoinstaller::Common;
+
+# Init buildonly option
+$main::buildonly = 0;
+
+# initialize the skippackages option
+$main::skippackages = 0;
+
+iMSCP::Getopt->parse(
+	qq{Usage: perl imscp-autoinstall [options]
+  -b,  --buildonly	Process only build step.
+  -s,  --skippackages   Do not install/update distro packages. (Expert option)},
+  'buildonly|b' => \$main::buildonly,
+  'skippackages|s' => \$main::skippackages
+);
+
+# Getting the reconfigure option value
+$main::reconfigure = iMSCP::Getopt->reconfigure;
+
+# Handle the preseed option
+%main::preseed = ();
+my $preseedFile = iMSCP::Getopt->preseed;
+if($preseedFile) {
+	require $preseedFile;
+	# Values from preseed file always override those already set.
+	# The preseed option is not compatible with the reconfigure option.
+	$main::reconfigure = 0;
+	undef $preseedFile;
+}
+
+# Handle the hook-file option
+my $hookFile = iMSCP::Getopt->hookFile;
+if($hookFile) {
+	require $hookFile;
+	undef $hookFile;
+}
+
+# handle the noprompt option
+$main::noprompt = iMSCP::Getopt->noprompt;
+# In noninteractive mode (nonprompt option), we bypass the default
+# exit handler (as provided by the iMSCP::Debug package) to  raise
+# a specific error in case  an answer is wrong. An answer can be a
+# wrong entry from an i-MSCP conffile, or from a preseed file in
+# case the preseed option is involved.
+iMSCP::HooksManager->getInstance->register(
+	'beforeExit',
+	sub {
+		my $exitCode = shift;
+		if($$exitCode == 5) { # We exit with status 5 from iMSCP::Dialog::Dialog in noninteractive mode
+			$$exitCode = 1;
+			if(iMSCP::Getopt->preseed) {
+				fatal "Noninteractive mode: Missing or bad entry found in your preseed file."
+			} else {
+				fatal "Noninteractive mode: Missing or bad entry found in an i-MSCP configuration file."
+			}
+		} else {
+			my $clearScreen = shift;
+		 	$$clearScreen = 0; # Do not clear screen
+		}
+		0;
+	}
+) if $main::noprompt;
 
 newDebug('imscp-build.log');
 
-require "$FindBin::Bin/library/autoinstall-methods.pl";
-
-use iMSCP::Requirements;
+# Ensure the script is run as root
 iMSCP::Requirements->new()->user();
 
-if(preInstall()){
-	error("Unable to install pre-required packages");
-	exit 1;
-}
+iMSCP::HooksManager->getInstance()->trigger('beforeInstallPreRequiredPackages');
+
+# Install pre-required package
+installPreRequiredPackages() and exit 1 if ! $main::skippackages;
+
+iMSCP::HooksManager->getInstance()->trigger('afterInstallPreRequiredPackages');
 
 # Entering in silent mode
 silent(1);
 
-iMSCP::Dialog->factory()->infobox("\\ZuDetecting the target distribution\\Zn");
-my $SO = iMSCP::SO->new()->loadInfo();
+if(! $main::buildonly && ! $main::noprompt) {
 
-# Display the i-MSCP README file
-use iMSCP::File;
-my $file = iMSCP::File->new(filename => $FindBin::Bin.'/README');
-my $content = $file->get() or fatal("Unable to find the $FindBin::Bin/README file.");
+	$ENV{'DIALOGOPTS'} = "--ok-label Ok --yes-label Yes --no-label No --cancel-label Back";
 
-iMSCP::Dialog->factory()->msgbox($content);
+	# Display the i-MSCP README file
+	my $file = iMSCP::File->new(filename => $FindBin::Bin . '/README');
+	my $content = $file->get() or fatal("Unable to find the $FindBin::Bin/README file.");
 
-if(
-	iMSCP::Dialog->factory()->yesno(
-		"\n$SO->{Distribution} $SO->{CodeName} ($SO->{Version}) has been detected. Is this ok?"
-	)
-) {
-	error(
-		"The installer failing to detect your distribution.\n" .
-		"We are sorry, only Debian-like operating systems are supported.\n"
+	iMSCP::Dialog->factory()->msgbox("\n$content");
+
+	# Check distribution compatibility
+	checkDistribution() and exit 0;
+
+	iMSCP::Dialog->factory()->set('cancel-label', 'Abort');
+	my $rs;
+	($rs, $main::buildonly) = iMSCP::Dialog->factory()->radiolist(
+"
+\\Z4\\Zb\\ZuInstaller Options\\Zn
+
+Please, choose an option:
+
+\\Z4Install:\\Zn Choose this option if you want install or update i-MSCP.
+  \\Z4Build:\\Zn Choose this option if you want install i-MSCP manually or if you
+         want migrate from ispCP (>= 1.0.7).
+",
+			['install', 'build'],
+			'install'
 	);
-	exit 1;
+
+	exit if $rs == 1 || $rs == 255; # (CANCEL, ESC)
+	$main::buildonly = $main::buildonly eq 'build' ? 1 : 0;
 }
 
-my $defaultConf = "$FindBin::Bin/configs/" . lc($SO->{Distribution}) . "/imscp.conf";
-tie %main::defaultConf, 'iMSCP::Config','fileName' => $defaultConf;
+#
+## Build steps
+#
 
-# A supported distribution was detected
+my $distribution = iMSCP::LsbRelease->new()->getId(1);
 
-use iMSCP::Stepper;
-
+# Process build steps
 my @steps = (
-	[\&installDependencies,				"Installing all required $SO->{Distribution} packages for i-MSCP"],
+	[\&loadConfig,						'Loading i-MSCP configuration'],
+	[\&preBuild,						'Processing preBuild tasks'],
+	[\&installPackages,					"Installing all $distribution packages for i-MSCP"],
 	[\&testRequirements,				'Testing i-MSCP requirements'],
-	[\&processConfFile,					"Loading $SO->{Distribution} specific variables"],
-	[\&processSpecificConfFile,			'Processing distribution specific configuration files'],
+	[\&processConfFile,					"Loading $distribution specific variables"],
+	[\&processSpecificConfFile,			"Processing $distribution specific configuration files"],
 	[\&buildImscpDaemon,				'Building i-MSCP daemon'],
-	[\&installEngine,					'Installing engine files'],
-	[\&installGui,						'Installing GUI files'],
-	[\&InstallDistMaintainerScripts,	'Installing distribution maintainer scripts'],
-	[\&finishBuild,						'Processing post-build tasks'],
-	[\&cleanUpTmp,						'Processing cleanup tasks']
+	[\&installEngine,					'Installing engine files in temporary directory'],
+	[\&installGui,						'Installing GUI files in temporary directory'],
+	[\&installDistMaintainerScripts,	"Installing $distribution maintainer scripts in temporary directory"],
+	[\&postBuild,						'Processing postBuild tasks']
 );
+
+# Remove the installPackages step in case the skippackages option is set to true
+splice(@steps, 2, 1) if $main::skippackages;
+
+iMSCP::HooksManager->getInstance()->trigger('beforeBuild', \@steps);
 
 my $rs = 0;
 my $step = 1;
+my $nbSteps = scalar @steps;
 
 for (@steps) {
-	$rs = step($_->[0], $_->[1], scalar @steps, $step);
+	$rs = step($_->[0], $_->[1], $nbSteps, $step);
 	exit $rs if $rs;
 	$step++;
 }
 
+iMSCP::HooksManager->getInstance()->trigger('afterBuild');
+
 iMSCP::Dialog->factory()->endGauge() if iMSCP::Dialog->factory()->needGauge();
 
-my @warnings	= getMessageByType('WARNING');
-my @errors		= getMessageByType('ERROR');
-my $msg;
+my @warnings = getMessageByType('WARNING');
+my @errors = getMessageByType('ERROR');
 
 if (@errors > 0  || @warnings > 0) {
-	$msg  =	"\n\\Z".(@errors > 0 ? 1 : 3 )."Build step finished but with ".
-			(@errors > 0 ? 'errors' : 'warnings') . ":\\Zn\n";
-	$msg .= "\nWARNINGS:\n".join("\n", @warnings)."\n" if @warnings > 0;
-	$msg .= "\nERRORS:\n".join("\n", @errors)."\n" if @errors > 0;
+	my $msg  =	"\n\\Z" . (@errors > 0 ? 1 : 3 ) . "Build step finished but with " .
+		(@errors > 0 ? 'errors' : 'warnings') . ":\\Zn\n";
+	$msg .= "\nWARNINGS:\n" . join("\n", @warnings) . "\n" if @warnings > 0;
+	$msg .= "\nERRORS:\n" . join("\n", @errors) . "\n" if @errors > 0;
+
 	iMSCP::Dialog->factory()->set('defaultno', '');
-} else {
-	$msg  =	"\n\\Z2 -> Build step finished without errors\n";
+	iMSCP::Dialog->factory()->yesno("$msg\nDo you want continue?") and exit 1;
+	iMSCP::Dialog->factory()->set('defaultno', undef);
 }
 
-$msg .= "\nDo you want to continue the i-MSCP installation?";
+if(! $main::buildonly) {
 
-unless(iMSCP::Dialog->factory()->yesno($msg)) {
-
-	iMSCP::Dialog->factory()->set('defaultno', undef);
+	#
+	## Setup steps
+	#
 
 	require "$FindBin::Bin/engine/setup/imscp-setup-methods.pl";
 
 	@steps = (
-		[\&doImscpBackup,		'Backup existing installation'],
-		[\&saveGuiWorkingData,	'Saving GUI working data'],
-		[\&installTmp,			'Installing new i-MSCP files in final destination'],
-		[\&setup_start_up,		'Prepare i-MSCP setup/update'],
-		[\&setup_engine,		'Processing i-MSCP setup/update']
+		[\&doImscpBackup,			'Backup existing i-MSCP installation if any'],
+		[\&saveGuiPersistentData,	'Saving GUI persistent data'],
+		[\&installTmp,				'Installing new i-MSCP files on file system'],
+		[\&setupBoot,				'Setup bootstrapping'],
+		[\&setupRegisterHooks,		'Registering servers/addons setup hooks'],
+		[\&setupDialog,				'Processing i-MSCP setup dialog'],
+		[\&setupTasks,				'Processing i-MSCP setup tasks'],
 	);
 
+	iMSCP::HooksManager->getInstance()->trigger('beforeAutoInstallSetup', \@steps);
+
 	$step = 1;
+	$nbSteps = scalar @steps;
 
 	for (@steps){
-		$rs = step($_->[0], $_->[1], scalar @steps, $step);
+		$rs = step($_->[0], $_->[1], $nbSteps, $step);
 		exit $rs if $rs;
 		$step++;
 	}
 
+	iMSCP::HooksManager->getInstance()->trigger('afterAutoInstallSetup');
+
 	iMSCP::Dialog->factory()->endGauge() if iMSCP::Dialog->factory()->needGauge();
-	iMSCP::Dialog->factory()->msgbox("i-MSCP $main::defaultConf{Version} was successfully installed on your system.");
-	iMSCP::Dialog->factory()->infobox("Removing temporary files...");
+
+	iMSCP::Dialog->factory()->msgbox(
+"
+\\Z1Congratulations!!!\\Zn
+
+i-MSCP '$main::imscpConfig{'Version'}' has been successfully installed/updated.
+"
+	);
+
+	iMSCP::Dialog->factory()->infobox("\nRemoving temporary files...");
 
 	$rs = removeTmp();
+
 	exit $rs;
 } else {
 	iMSCP::Dialog->factory()->msgbox(
-		"To continue setup run from console\n\n".
-		"1.  Purge all GUI sessions files\n\n".
-		"\t# rm -Rf /var/www/imscp/gui/data/sessions\n\n".
-		"2.  Purge all GUI cache files\n\n".
-		"\t# rm -Rf /var/www/imscp/gui/data/cache\n\n".
-		"3.  Backup needed files\n\n".
-		"\t# cp -Rfv /var/www/imscp/gui/data /tmp/imscp/var/www/imscp/gui\n".
-		"\t# cp -Rfv /var/www/imscp/gui/public/tools/webmail/data ".
-		"/tmp/imscp/var/www/imscp/gui/public/tools/webmail\n\n".
-		"\t# cp -Rfv /var/www/imscp/gui/plugins /tmp/imscp/var/www/imscp/gui\n\n".
-		"4.  Delete old directories:\n\n".
-		"\t# rm -Rf /var/www/imscp/{daemon,engine,gui}\n\n".
-		"5.  Copy directories into your system (you may make backups)\n\n".
-		"\t# cp -R /tmp/imscp/* / \n\n".
-		"6. Clean tmp\n\n".
-		"\t# rm -R /tmp/imscp\n\n".
-		"7.  Now it's time to update your installation.".
-		"Change into the engine directory\n\n".
-		"\t# cd /var/www/imscp/engine/setup\n\n".
-		"8. Start the engine update\n\n".
-		"\t# perl imscp-setup\n\n".
-		"9. Update i-MSCP step-by-step\n\n".
-		"If you get no error, all went good; if you get one, look at ".
-		"http://forum.i-mscp.net to solve the problem."
+"
+\\Z4\\ZuBuild Step Successful\\Zn
+
+To finish the i-MSCP install process, run the following commands from your console:
+
+\\ZbI. If you want migrate from ispCP\\Zn
+
+	# cp -R /tmp/imscp/* /
+	# cd $main::imscpConfig{ROOT_DIR}/engine/setup
+	# perl imscp-migrate-from-ispcp
+	# perl imscp-setup
+
+\\ZbII. If you want install or update iMSCP\\Zn
+
+	# rm -Rf $main::imscpConfig{GUI_ROOT_DIR}/data/sessions
+	# rm -Rf $main::imscpConfig{GUI_ROOT_DIR}/data/cache
+	# cp -Rfv $main::imscpConfig{GUI_ROOT_DIR}/data /tmp/imscp/var/www/imscp/gui
+	# cp -Rfv $main::imscpConfig{GUI_ROOT_DIR}/public/tools/webmail/data \\\\
+	/tmp/imscp/var/www/imscp/gui/public/tools/webmail
+	# cp -Rfv $main::imscpConfig{GUI_ROOT_DIR}/plugins /tmp/imscp/var/www/imscp/gui
+	# rm -Rf $main::imscpConfig{ROOT_DIR}/{daemon,engine,gui}
+	# cp -R /tmp/imscp/* /
+	# rm -R /tmp/imscp
+	# cd $main::imscpConfig{ROOT_DIR}/engine/setup
+	# perl imscp-setup
+
+If you get no error, all went good; if you get one, look at http://forum.i-mscp.net to solve the problem.
+
+Thanks for using i-MSCP.
+
+"
 	);
 }
 
 0;
 
-END{
+END
+{
 	my $exitCode = $?;
+	my $logdir = $main::imscpConfig{'LOG_DIR'} || '/tmp';
 
-	my $logdir = $main::defaultConf{LOG_DIR} || '/tmp';
 	iMSCP::Dir->new(dirname => $logdir)->make() unless -d $logdir;
 
 	$? = $exitCode;

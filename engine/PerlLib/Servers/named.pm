@@ -28,26 +28,24 @@ package Servers::named;
 use strict;
 use warnings;
 use iMSCP::Debug;
+use parent 'Common::SimpleClass';
 
-use vars qw/@ISA/;
-@ISA = ('Common::SimpleClass');
-use Common::SimpleClass;
-
-sub factory{
-	my $self	= shift;
-	my $server	= shift || $main::imscpConfig{NAMED_SERVER};
+sub factory
+{
+	my $self = shift;
+	my $server = shift || $main::imscpConfig{'NAMED_SERVER'};
 	my ($file, $class);
 
 	if(lc($server) =~ /^no$/ ){
-		$file	= 'Servers/noserver.pm';
-		$class	= 'Servers::noserver';
+		$file = 'Servers/noserver.pm';
+		$class = 'Servers::noserver';
 	} else {
-		$file	= "Servers/named/$server.pm";
-		$class	= "Servers::named::$server";
+		$file = "Servers/named/$server.pm";
+		$class = "Servers::named::$server";
 	}
 
 	require $file;
-	return $class->new();
+	$class->new();
 }
 
 1;

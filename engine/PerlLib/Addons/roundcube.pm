@@ -1,7 +1,13 @@
 #!/usr/bin/perl
 
+=head1 NAME
+
+Addons::roundcube - i-MSCP Roundcube addon
+
+=cut
+
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010 - 2011 by internet Multi Server Control Panel
+# Copyright (C) 2010 - 2012 by internet Multi Server Control Panel
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -20,7 +26,6 @@
 # @category		i-MSCP
 # @copyright	2010 - 2012 by i-MSCP | http://i-mscp.net
 # @author		Daniel Andreca <sci2tech@gmail.com>
-# @version		SVN: $Id$
 # @link			http://i-mscp.net i-MSCP Home Site
 # @license		http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
@@ -28,37 +33,84 @@ package Addons::roundcube;
 
 use strict;
 use warnings;
-use Data::Dumper;
 use iMSCP::Debug;
+use parent 'Common::SingletonClass';
 
-use vars qw/@ISA/;
+=head1 DESCRIPTION
 
-@ISA = ('Common::SingletonClass');
-use Common::SingletonClass;
+ Roundcube addon for i-MSCP.
 
-sub _init{
+ RoundCube Webmail is a browser-based multilingual IMAP client with an application-like user interface.
+ It provides full functionality expected from an e-mail client, including MIME support, address book,
+folder manipulation and message filters.
 
-	my $self				= shift;
+ The user interface is fully skinnable using XHTML and CSS 2.
 
-	$self->{cfgDir}	= "$main::imscpConfig{'CONF_DIR'}/roundcube";
-	$self->{bkpDir}	= "$self->{cfgDir}/backup";
-	$self->{wrkDir}	= "$self->{cfgDir}/working";
-	$self->{tplDir}	= "$self->{cfgDir}/parts";
+ Project homepage: http://www.roundcube.net/
 
-	0;
+=head1 CLASS METHODS
+
+=over 4
+
+=item factory()
+
+ Implement singleton design pattern. Return instance of this class.
+
+ Return Addons::roundcube
+
+=cut
+
+sub factory
+{
+	Addons::roundcube->new();
 }
 
-sub factory{ return Addons::roundcube->new(); }
+=back
 
-sub install{
+=head1 PUBLIC METHODS
+
+=over 4
+
+=item registerSetupHooks($hooksManager)
+
+ Register setup hook functions.
+
+ Param iMSCP::HooksManager instance
+ Return int - 0 on success, 1 on failure
+
+=cut
+
+sub registerSetupHooks
+{
+	my $self = shift;
+	my $hooksManager = shift;
+
+	use Addons::awstats::installer;
+	Addons::roundcube::installer->new()->registerSetupHooks($hooksManager);
+}
+
+=item install()
+
+ Run the install method on the roundcube addon installer.
+
+ Return int - 0 on success, 1 on failure
+
+=cut
+
+sub install
+{
+	my $self = shift;
 
 	use Addons::roundcube::installer;
-
-	my $self	= shift;
-	my $rs		= 0;
 	Addons::roundcube::installer->new()->install();
-
-	$rs;
 }
+
+=back
+
+=head1 AUTHORS
+
+ - Daniel Andreca <sci2tech@gmail.com>
+
+=cut
 
 1;

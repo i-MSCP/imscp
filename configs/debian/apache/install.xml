@@ -18,7 +18,6 @@ program. If not, see <http://www.gnu.org/licenses/>
 @category	i-MSCP
 @copyright	2010 - 2012 by i-MSCP | http://i-mscp.net
 @author		Daniel Andreca <sci2tech@i-mscp.net>
-@version	SVN: $Id$
 @link		http://i-mscp.net i-MSCP Home Site
 @license	http://www.gnu.org/licenses/ GPL v2
 -->
@@ -34,7 +33,6 @@ program. If not, see <http://www.gnu.org/licenses/>
 	<folders>${ROOT_APACHE_CONF}/mods-available</folders>
 	<folders>${ROOT_APACHE_CONF}/imscp</folders>
 	<folders>${INST_PREF}/var/www/scoreboards</folders>
-
 	<copy_config>${SYSTEM_CONF}/apache/httpd.conf</copy_config>
 	<copy_config>${SYSTEM_CONF}/apache/00_master.conf</copy_config>
 	<copy_config>${SYSTEM_CONF}/apache/00_master_ssl.conf</copy_config>
@@ -47,12 +45,4 @@ program. If not, see <http://www.gnu.org/licenses/>
 	<copy_config>${SYSTEM_CONF}/apache/parts/imscp_base.tpl/httpd.conf</copy_config>
 	<copy_config>${SYSTEM_CONF}/apache/fastcgi_imscp.conf</copy_config>
 	<copy_config>${SYSTEM_CONF}/apache/fcgid_imscp.conf</copy_config>
-
-	<copy />
-
-	<create_file />
-
-	<chown_file />
-
-	<chmod_file />
 </install>
