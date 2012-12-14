@@ -156,6 +156,8 @@ function add_sql_database($user_id)
 			$db_name = $dmn_id . "_" . clean_input($_POST['db_name']);
 		} else if (isset($_POST['id_pos']) && $_POST['id_pos'] === 'end') {
 			$db_name = clean_input($_POST['db_name']) . "_" . $dmn_id;
+		} else { // position of id is not defined - should normally never occurs but... - just fallback to dbname without id
+			$db_name = clean_input($_POST['db_name']);
 		}
 	} else {
 		$db_name = clean_input($_POST['db_name']);
@@ -251,9 +253,9 @@ $tpl->assign(
 		'TR_TITLE_ADD_DATABASE' => tr('Add SQL database'),
 		'TR_DATABASE' => tr('Database'),
 		'TR_DB_NAME' => tr('Database name'),
-		'TR_USE_DMN_ID' => tr('Use numeric ID'),
-		'TR_START_ID_POS' => tr('Before the name'),
-		'TR_END_ID_POS' => tr('After the name'),
+		'TR_USE_DMN_ID' => tr('Database prefix/suffix'),
+		'TR_START_ID_POS' => tr("Numeric prefix"),
+		'TR_END_ID_POS' => tr("Numeric suffix"),
 		'TR_ADD' => tr('Add')));
 
 generatePageMessage($tpl);

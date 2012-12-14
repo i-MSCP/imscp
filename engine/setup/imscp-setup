@@ -1,7 +1,7 @@
 #!/usr/bin/perl
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010 - 2011 by internet Multi Server Control Panel
+# Copyright (C) 2010 - 2012 by internet Multi Server Control Panel
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -20,66 +20,168 @@
 # @category		i-MSCP
 # @copyright	2010 - 2012 by i-MSCP | http://i-mscp.net
 # @author		Daniel Andreca <sci2tech@gmail.com>
-# @version		SVN: $Id$
 # @link			http://i-mscp.net i-MSCP Home Site
 # @license		http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
 use strict;
 use warnings;
-
 use FindBin;
-use lib "$FindBin::Bin/..";
-use lib "$FindBin::Bin/../PerlLib";
-use lib "$FindBin::Bin/../PerlVendor";
+use lib "$FindBin::Bin/..", "$FindBin::Bin/../PerlLib", "$FindBin::Bin/../PerlVendor";
 
 umask(027);
 
 use iMSCP::Debug;
 use iMSCP::Boot;
 use iMSCP::Dialog;
+use iMSCP::HooksManager;
+use iMSCP::Getopt;
 
 newDebug('imscp-setup.log');
 
-our $noprompt;
+iMSCP::Getopt->parse('Usage: perl imscp-setup [options]');
 
-use Getopt::Long;
+# Get reconfigure option
+$main::reconfigure = iMSCP::Getopt->reconfigure;
 
-my $opt = ''; # option variable with default value (false)
-GetOptions ('noprompt' => \$noprompt);
+# Handle preseed option
+%main::preseed = ();
+my $preseedFile = iMSCP::Getopt->preseed;
+if($preseedFile) {
+	require $preseedFile;
+	# Values from preseed file always override those already set.
+	# The preseed option is not compatible with the reconfigure option.
+	$main::reconfigure = 0;
+	undef $preseedFile;
+}
 
+# Handle the hook-file option
+my $hookFile = iMSCP::Getopt->hookFile;
+if($hookFile) {
+	require $hookFile;
+	undef $hookFile;
+}
 
-iMSCP::Dialog->factory()->set('exitOnPrompt', 'yes') if $noprompt;
+# handle noprompt option
+$main::noprompt = iMSCP::Getopt->noprompt;
+
+# In noninteractive mode (nonprompt option), we bypass the default
+# exit handler (as provided by the iMSCP::Debug package) to  raise
+# a specific error in case  an answer is wrong. An answer can be a
+# wrong entry from an i-MSCP conffile, or from a preseed file in
+# case the preseed option is involved.
+iMSCP::HooksManager->getInstance->register(
+	'beforeExit',
+	sub {
+		my $exitCode = shift;
+
+		if($$exitCode == 5) { # We exit with status 5 from iMSCP::Dialog::Dialog in noninteractive mode
+			$$exitCode = 1;
+			if(iMSCP::Getopt->preseed) {
+				fatal "Noninteractive mode: bad entry found in your preseed file."
+			} else {
+				fatal "Noninteractive mode: bad entry found in an i-MSCP configuration file."
+			}
+		} else {
+			my $clearScreen = shift;
+			$$clearScreen = 0; # Do not clear screen
+		}
+		0;
+	}
+) if $main::noprompt;
 
 require "$FindBin::Bin/imscp-setup-methods.pl";
 
+# Start setup
+sub setupStart
+{
+	# Bootstrap setup
+	setupBoot() and return 1;
 
-################################################################################
-# Shutting down setup process
-#
-# @return int 0 on success, other on failure
-#
-sub setup_shut_down {
+	# Load old i-MSCP config (if not already there)
+	setupLoadOldConfig() and return 1;
 
+	# Allow any server/addon to register its setup hook functions on the hooks manager before any other tasks
+	setupRegisterHooks() and return 1;
+
+	# Entering in silent mode
+	silent(1);
+
+	0;
+}
+
+# Process both setup dialog and tasks
+sub setupEngine
+{
+	my $rs = 0;
+
+	if(! $main::noprompt) {
+
+	my $distribution = ucfirst(lc(iMSCP::LsbRelease->new()->getId(1)));
+	my $dialog = iMSCP::Dialog->factory();
+
+	$dialog->set('yes-label', 'Continue');
+	$dialog->set('no-label', 'Abort');
+
+		if ($dialog->yesno(
+"
+Welcome to \\Z1i-MSCP version $main::imscpConfig{'Version'}\\Zn setup dialog.
+
+This program will install/update i-MSCP on your system. This dialog is your last chance to abort without do any change on your system.
+
+\\Z3Warning:\\Zn Make sure you have read and performed all steps from the
+         \\Zbdocs/$distribution/INSTALL\\Zn file.
+
+   \\Z4Note:\\Zn During the setup process some or all services might require
+         to be shutdown or restarted. Only services that are not set as
+         '\\Zbno\\Zn' in your imscp.conf file will be processed by this program.
+"
+		)
+		) {
+			$dialog->msgbox("\nSetup process has been aborted...");
+			exit 0;
+		}
+	}
+
+	# Process setup dialog
+	$rs |= setupDialog();
+
+	# Process setup tasks
+	$rs |= setupTasks();
+
+	$rs;
+}
+
+
+sub setupShutDown
+{
 	return 0 if $main::noprompt;
 
+	my $action = $main::reconfigure ? 'reconfigured' : 'installed';
+
 	iMSCP::Dialog->factory()->msgbox(
-					"\n
-					\\Z1Congratulations!!!\\Zn
+"
+\\Z1!!! Congratulation !!!\\Zn
 
-					You installed i-MSCP '$main::imscpConfig{'Version'}' successfully!\n\n
+i-MSCP '$main::imscpConfig{'Version'}' has been successfully $action.
 
-					Please type $main::imscpConfig{'BASE_SERVER_VHOST_PREFIX'}$main::imscpConfig{'BASE_SERVER_VHOST'} in your browser and log in with your Administrator Account to use i-MSCP."
+Please go to $main::imscpConfig{'BASE_SERVER_VHOST_PREFIX'}$main::imscpConfig{'BASE_SERVER_VHOST'} and log in with your administrator account.
+
+
+Thanks for using i-MSCP.
+"
 	);
 
 	0;
 }
 
-################################################################################
-#                                Main program                                  #
-################################################################################
+setupStart() and exit 1;
 
-setup_start_up() and exit 1;
-setup_engine() and exit 1;
-setup_shut_down() and exit 1;
+iMSCP::HooksManager->getInstance()->trigger('beforeSetup') and exit 1;
+
+setupEngine() and exit 1;
+
+iMSCP::HooksManager->getInstance()->trigger('afterSetup') and exit 1;
+
+setupShutDown() and exit 1;
 
 exit 0;

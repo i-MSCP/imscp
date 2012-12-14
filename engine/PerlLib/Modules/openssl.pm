@@ -1,7 +1,7 @@
 #!/usr/bin/perl
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010 - 2011 by internet Multi Server Control Panel
+# Copyright (C) 2010 - 2012 by internet Multi Server Control Panel
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -20,7 +20,6 @@
 # @category		i-MSCP
 # @copyright	2010 - 2012 by i-MSCP | http://i-mscp.net
 # @author		Daniel Andreca <sci2tech@gmail.com>
-# @version		SVN: $Id$
 # @link			http://i-mscp.net i-MSCP Home Site
 # @license		http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
@@ -76,7 +75,7 @@ sub ssl_check_cert {
 	my $CAfile = '';
 
 	if ( $self->{intermediate_cert_path} ne '' ) {
-			$CAfile = "-CAfile $self->{intermediate_cert_path}";
+		$CAfile = "-CAfile $self->{intermediate_cert_path}";
 	}
 
 	my $cmd = "$self->{openssl_path} verify $CAfile $self->{cert_path}";
@@ -192,14 +191,13 @@ sub ssl_generate_selsigned_cert{
 	my $rs = execute($cmd, \$stdout, \$stderr);
 	debug("$stdout") if $stdout;
 	warning("$stderr") if ($stderr && !$rs);
-	error("Can not save intermediate certificate".($stderr ? ": $stderr" : '').". Exiting...") if $rs;
+	error("Can not generate self-signed certificate".($stderr ? ": $stderr" : '').". Exiting...") if $rs;
 	return $rs if($rs);
 
 	0;
 }
 
 sub ssl_export_all{
-
 
 	my $self	= shift;
 	my $rs		= 0;

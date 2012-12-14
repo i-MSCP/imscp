@@ -1,7 +1,7 @@
 #!/usr/bin/perl
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010 - 2011 by internet Multi Server Control Panel
+# Copyright (C) 2010 - 2012 by internet Multi Server Control Panel
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -20,7 +20,6 @@
 # @category		i-MSCP
 # @copyright	2010 - 2012 by i-MSCP | http://i-mscp.net
 # @author		Daniel Andreca <sci2tech@gmail.com>
-# @version		SVN: $Id$
 # @link			http://i-mscp.net i-MSCP Home Site
 # @license		http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
@@ -42,7 +41,7 @@ sub _init{
 
 	my $self = iMSCP::Stepper->new();
 
-	$self->{title}	= "Performing step %s from total of %s \n\n%s";
+	$self->{title}	= "\n\\ZbPerforming step %s from total of %s\\Zn\n\n%s";
 	$self->{all}	= [];
 	$self->{last}	= '';
 
@@ -73,7 +72,7 @@ sub step($ $ $ $){
 
 	$self->{last} = sprintf ($self->{title}, $index, $steps, $text);
 
-	my $msg = join ("\n", @{$self->{all}}) . "\n\n" . $self->{last};
+	my $msg = join ("\n", @{$self->{all}}) . "\n" . $self->{last};
 
 	iMSCP::Dialog->factory()->startGauge($msg, int($index*100/$steps)) if iMSCP::Dialog->factory()->needGauge();
 	iMSCP::Dialog->factory()->setGauge(int($index*100/$steps), $msg);
@@ -81,22 +80,23 @@ sub step($ $ $ $){
 	my $rs = &{$code}() if (ref $code eq 'CODE');
 
 	if($rs){
-		iMSCP::Dialog->factory()->endGauge()  if iMSCP::Dialog->factory()->needGauge();
+		iMSCP::Dialog->factory()->endGauge() if iMSCP::Dialog->factory()->needGauge();
 		iMSCP::Dialog->factory()->msgbox(
-					"\n
-					\\Z1[ERROR]\\Zn
+			"\n
+				\\Z1[ERROR]\\Zn
 
-					Error while performing step:
+				Error while performing step:
 
-					$text
+				$text
 
-					Error was:
+				Error was:
 
-					\\Z1".($rs =~ /^-?\d+$/ ? getLastError() : $rs)."\\Zn\n
+				\\Z1".($rs =~ /^-?\d+$/ ? getLastError() : $rs)."\\Zn\n
 
-					To obtain help please use http://i-mscp.net/forum/
+				To obtain help please use http://i-mscp.net/forum/
 
-					");
+			"
+		);
 		return $rs;
 	}
 

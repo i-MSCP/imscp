@@ -1,5 +1,11 @@
 #!/usr/bin/perl
 
+=head1 NAME
+
+ Modules::Abstract - Base class for i-MSCP modules
+
+=cut
+
 # i-MSCP - internet Multi Server Control Panel
 # Copyright (C) 2010 - 2012 by internet Multi Server Control Panel
 #
@@ -28,144 +34,201 @@ package Modules::Abstract;
 use strict;
 use warnings;
 use iMSCP::Debug;
-use Data::Dumper;
+use iMSCP::Servers;
+use iMSCP::Addons;
+use parent 'Common::SimpleClass';
 
-use vars qw/@ISA/;
+=head1 DESCRIPTION
 
-@ISA = ('Common::SimpleClass');
-use Common::SimpleClass;
+ Base class for i-MSCP Modules.
 
-sub _init{
+=head1 METHODS
+
+=over 4
+
+=item _init()
+
+ Called by new(). Initialize instance.
+
+=cut
+
+sub _init
+{
 	fatal('Developer must define own function for module');
 }
 
-sub loadData{
+=item loadData()
+
+ Load base data for current item.
+
+ return int - 0 on success, other on failure
+
+=cut
+
+sub loadData
+{
 	fatal('Developer must define own function for module');
 }
 
-sub process{
-	fatal('Developer must define own function for module')
+=item process()
+
+ Process action (add|delete|restore|disable) according item status.
+
+ return int - 0 on success, other on failure
+
+=cut
+
+sub process
+{
+	fatal('Developer must define own function for module');
 }
 
-sub add{
+=item add()
 
-	my $self		= shift;
-	$self->{mode}	= 'add';
-	my $rs = $self->runAllSteps();
+ Add item
 
-	$rs;
+ Should be called for database items with a 'toadd|change|toenable|dnschange' status.
+
+ return int - 0 on success, other on failure
+
+=cut
+
+sub add
+{
+	my $self = shift;
+
+	$self->{action} = 'add';
+	$self->runAllActions();
 }
 
-sub delete{
+=item delete()
 
-	use iMSCP::Servers;
-	use iMSCP::Addons;
+ Delete item.
 
-	my $self		= shift;
-	$self->{mode}	= 'del';
-	my $rs 			= $self->runAllSteps();
+ Should be called for database items with a 'delete' status.
 
-	$rs;
+ return int - 0 on success, other on failure
+
+=cut
+
+sub delete
+{
+	my $self = shift;
+
+	$self->{action} = 'del';
+	$self->runAllActions();
 }
 
-sub restore{
+=item
+
+ Restore item.
+
+ Should be called for database items with a 'restore' status.
+
+ return int - 0 on success, other on failure
+
+=cut restore()
+
+sub restore
+{
 	0;
 }
 
-sub disable{
+=item disable()
 
-	use iMSCP::Servers;
-	use iMSCP::Addons;
+ Disable item.
 
-	my $self		= shift;
-	$self->{mode}	= 'disable';
-	my $rs = $self->runAllSteps();
+ Should be called for database items with a 'todisable' status.
 
-	$rs;
+ return int - 0 on success, other on failure
+
+=cut
+
+sub disable
+{
+	my $self = shift;
+
+	$self->{action} = 'disable';
+	$self->runAllActions();
 }
 
-sub runAllSteps{
+=item runAllActions()
 
-	use iMSCP::Servers;
-	use iMSCP::Addons;
+ Trigger actions (preAction, Action, postAction) on each i-MSCP servers and addons.
 
-	my $self		= shift;
+ return int - 0 on success, other on failure
+
+=cut
+
+sub runAllActions
+{
+	my $self = shift;
 	my $rs = 0;
 
-	@{$self->{Addons}}	= iMSCP::Addons->new()->get();
+	@{$self->{Addons}} = iMSCP::Addons->new()->get();
 	unless(scalar @{$self->{Addons}}){
-		error("Can not get addons list");
-		return 1;
-	}
-	@{$self->{Servers}}	= iMSCP::Servers->new()->get();
-	unless(scalar @{$self->{Servers}}){
-		error("Can not get servers list");
+		error('Cannot get addons list');
 		return 1;
 	}
 
+	@{$self->{Servers}}	= iMSCP::Servers->new()->get();
+	unless(scalar @{$self->{Servers}}){
+		error('Cannot get servers list');
+		return 1;
+	}
+
+	# Build service/addon data if provided by the module
 	for(@{$self->{Servers}}, 'Addon'){
 		next if $_ eq 'noserver.pm';
-		my $fname = "build".uc($_)."Data";
+		my $fname = 'build' . uc($_) . 'Data';
 		$fname =~ s/\.pm//i;
 		$rs = eval "\$self->$fname();";
 		error("$@") if($@);
 		return 1 if($@)
 	}
 
-	$rs |= $self->runStep("pre$self->{mode}$self->{type}",	'Servers');
-	$rs |= $self->runStep("pre$self->{mode}$self->{type}",	'Addons');
-	$rs |= $self->runStep("$self->{mode}$self->{type}", 	'Servers');
-	$rs |= $self->runStep("$self->{mode}$self->{type}",		'Addons');
-	$rs |= $self->runStep("post$self->{mode}$self->{type}",	'Servers');
-	$rs |= $self->runStep("post$self->{mode}$self->{type}",	'Addons');
+	$rs |= $self->runAction("pre$self->{action}$self->{type}",	'Servers');
+	$rs |= $self->runAction("pre$self->{action}$self->{type}",	'Addons');
+	$rs |= $self->runAction("$self->{action}$self->{type}",		'Servers');
+	$rs |= $self->runAction("$self->{action}$self->{type}",		'Addons');
+	$rs |= $self->runAction("post$self->{action}$self->{type}",	'Servers');
+	$rs |= $self->runAction("post$self->{action}$self->{type}",	'Addons');
 
 	$rs;
 }
 
-sub runStep{
+=item runAction()
 
-	my $self	= shift;
-	my $func	= shift;
-	my $type	= shift;
-	my $rs		= 0;
+ Run the given action on each server/addon that implement it.
+
+ return int - 0 on success, other on failure
+
+=cut
+
+sub runAction
+{
+	my $self = shift;
+	my $func = shift;
+	my $type = shift;
+	my $rs = 0;
 
 	my ($file, $class, $instance);
 
-#	for (@{$self->{$type}}){
-#		s/\.pm//;
-#		$file	= "$type/$_.pm";
-#		$class	= "${type}::$_";
-#		require $file;
-#		$instance	= $class->factory();
-#		if($type eq 'Addons'){
-#			debug("Calling addon $_ function $func")
-#				if $instance->can($func) && exists $self->{AddonsData};
-#			$rs |= $instance->$func($self->{AddonsData})
-#					if $instance->can($func) && exists $self->{AddonsData};
-#		} else {
-#			debug("Calling server $_ function $func")
-#				if $instance->can($func) && exists $self->{$_};
-#			$rs |= $instance->$func($self->{$_})
-#					if $instance->can($func) && exists $self->{$_};
-#		}
-#	}
-
-	# Nuxwin to devs (02.10.2012):
-	# This change avoids to load files and to instantiate servers or addons
-	# in case the current module doesn't provide any data for them. Also, it
-	# removes some redundant conditional tests. To resume, it avoids useless
-	# overhead for isolated tasks that are initiated by the frontend
-	for (@{$self->{$type}}){
+	for (@{$self->{$type}}) {
 		s/\.pm//;
 		my $paramName = ($type eq 'Addons') ? 'AddonsData' : $_;
+
 		if(exists $self->{$paramName}) {
 			$file = "$type/$_.pm";
 			$class = "${type}::$_";
 			require $file;
 			$instance = $class->factory();
+
 			if ($instance->can($func)) {
 				debug("Calling function $func from ${type}::$_");
-				$rs |= $instance->$func($self->{$paramName});
+				#$rs |= $instance->$func($self->{$paramName});
+				$rs = $instance->$func($self->{$paramName});
+				last if $rs;
 			}
 		}
 	}
@@ -173,35 +236,124 @@ sub runStep{
 	$rs;
 }
 
-sub testCert{
-	use iMSCP::File;
-	use Modules::openssl;
+=item buildHTTPDData()
 
-	my $self		= shift;
-	my $dmn_name	= shift;
-	my $rs			= 0;
-	my $certPath	= "$main::imscpConfig{GUI_ROOT_DIR}/data/certs";
-	my $certFile	= "$certPath/$dmn_name.pem";
+ Build HTTPD data.
 
-	Modules::openssl->new()->{openssl_path}				= $main::imscpConfig{'CMD_OPENSSL'};
-	Modules::openssl->new()->{cert_path}				= $certFile;
-	Modules::openssl->new()->{intermediate_cert_path}	= $certFile;
-	Modules::openssl->new()->{key_path}					= $certFile;
-	Modules::openssl->new()->ssl_check_all();
+ This method should be implemented by any module that provides data for HTTPD service.
+ Resulting data must be stored in an anonymous array accessible through the 'httpd' attribute.
+
+ return int - 0 on success, other on failure
+
+=cut
+
+sub buildHTTPDData
+{
+	0;
 }
 
-sub buildHTTPDData{ 0; }
+=item buildMTAData()
 
-sub buildMTAData{ 0; }
+ Build MTA data.
 
-sub buildNAMEDData{ 0; }
+ This method should be implemented by any module that provides data for MTA service.
+ Resulting data must be stored in an anonymous array accessible through the 'mta' attribute.
 
-sub buildFTPDData{ 0; }
+ return int - 0 on success, other on failure
 
-sub buildPOData{ 0; }
+=cut
 
-sub buildCRONData{ 0; }
+sub buildMTAData
+{
+	0;
+}
 
-sub buildADDONData{ 0; }
+=item buildPOData()
+
+ Build PO data.
+
+ This method should be implemented by any module that provides data for PO service.
+ Resulting data must be stored in an anonymous array accessible through the 'po' attribute.
+
+ return int - 0 on success, other on failure
+
+=cut
+
+sub buildPOData
+{
+	0;
+}
+
+=item buildNAMEDData()
+
+ Build NAMED data.
+
+ This method should be implemented by any module that provides data for NAMED service.
+ Resulting data must be stored in an anonymous array accessible through the 'named' attribute.
+
+ return int - 0 on success, other on failure
+
+=cut
+
+sub buildNAMEDData
+{
+	0;
+}
+
+=item buildFTPDData()
+
+ Build FTPD data.
+
+ This method should be implemented by any module that provides data for FTPD service.
+ Resulting data must be stored in an anonymous array accessible through the 'ftpd' attribute.
+
+ return int - 0 on success, other on failure
+
+=cut
+
+sub buildFTPDData
+{
+	0;
+}
+
+=item buildCRONData()
+
+ Build CRON data.
+
+ This method should be implemented by any module that provides data for CRON service.
+ Resulting data must be stored in an anonymous array accessible through the 'cron' attribute.
+
+ return int - 0 on success, other on failure
+
+=cut
+
+sub buildCRONData
+{
+	0;
+}
+
+=item buildADDONData()
+
+ Build ADDON data.
+
+ This method should be implemented by any module that provides data for i-MSCP Addonss.
+ Resulting data must be stored in an anonymous array accessible through the 'AddonsData' attribute.
+
+ return int - 0 on success, other on failure
+
+=cut
+
+sub buildADDONData
+{
+	0;
+}
+
+=back
+
+=head1 AUTHOR
+
+ Daniel Andreca <<sci2tech@gmail.com>
+
+=cut
 
 1;

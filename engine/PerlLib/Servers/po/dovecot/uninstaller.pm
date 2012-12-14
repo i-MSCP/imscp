@@ -30,30 +30,27 @@ use warnings;
 use iMSCP::Debug;
 use iMSCP::File;
 use iMSCP::Execute;
+use parent 'Common::SingletonClass';
 
-use vars qw/@ISA/;
+sub _init
+{
+	my $self = shift;
 
-@ISA = ('Common::SingletonClass');
-use Common::SingletonClass;
+	$self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/dovecot";
+	$self->{'bkpDir'} = "$self->{cfgDir}/backup";
+	$self->{'wrkDir'} = "$self->{cfgDir}/working";
 
-sub _init{
-
-	my $self		= shift;
-	$self->{cfgDir}	= "$main::imscpConfig{'CONF_DIR'}/dovecot";
-	$self->{bkpDir}	= "$self->{cfgDir}/backup";
-	$self->{wrkDir}	= "$self->{cfgDir}/working";
-
-	my $conf		= "$self->{cfgDir}/dovecot.data";
+	my $conf = "$self->{cfgDir}/dovecot.data";
 
 	tie %self::dovecotConfig, 'iMSCP::Config','fileName' => $conf;
 
 	0;
 }
 
-sub uninstall{
-
-	my $self	= shift;
-	my $rs		= 0;
+sub uninstall
+{
+	my $self = shift;
+	my $rs = 0;
 
 	$rs |= $self->restoreConfFile();
 	$rs |= $self->removeSQL();
@@ -61,23 +58,18 @@ sub uninstall{
 	$rs;
 }
 
-sub restoreConfFile{
-
-	my $self	= shift;
-	my $rs		= 0;
+sub restoreConfFile
+{
+	my $self = shift;
+	my $rs = 0;
 	my $file;
 
-	for ((
-		'dovecot.conf',
-		'dovecot-sql.conf'
-	)) {
+	for (('dovecot.conf', 'dovecot-sql.conf')) {
 		$rs	|=	iMSCP::File->new(
-					filename => "$self->{bkpDir}/$_.system"
-				)->copyFile(
-					"$self::dovecotConfig{'DOVECOT_CONF_DIR'}/$_"
-				)
-				if -f "$self->{bkpDir}/$_.system"
-		;
+			filename => "$self->{bkpDir}/$_.system"
+		)->copyFile(
+			"$self::dovecotConfig{'DOVECOT_CONF_DIR'}/$_"
+		) if -f "$self->{bkpDir}/$_.system";
 	}
 
 	use Servers::mta;
@@ -95,17 +87,16 @@ sub restoreConfFile{
 	$rs;
 }
 
-sub removeSQL{
-
-	my $self	= shift;
-	my $rs		= 0;
+sub removeSQL
+{
+	my $self = shift;
+	my $rs = 0;
 
 	if($self::dovecotConfig{'DATABASE_USER'}) {
-
 		my $database = iMSCP::Database->new()->factory();
 
-		$database->doQuery( 'delete', "DROP USER ?@?", $self::dovecotConfig{'DATABASE_USER'}, 'localhost');
-		$database->doQuery( 'delete', "DROP USER ?@?", $self::dovecotConfig{'DATABASE_USER'}, '%');
+		$database->doQuery('delete', "DROP USER ?@?", $self::dovecotConfig{'DATABASE_USER'}, 'localhost');
+		$database->doQuery('delete', "DROP USER ?@?", $self::dovecotConfig{'DATABASE_USER'}, '%');
 		$database->doQuery('dummy', 'FLUSH PRIVILEGES');
 
 	}

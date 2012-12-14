@@ -1,7 +1,7 @@
 #!/usr/bin/perl
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010 - 2011 by internet Multi Server Control Panel
+# Copyright (C) 2010 - 2012 by internet Multi Server Control Panel
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -20,7 +20,6 @@
 # @category		i-MSCP
 # @copyright	2010 - 2012 by i-MSCP | http://i-mscp.net
 # @author		Daniel Andreca <sci2tech@gmail.com>
-# @version		SVN: $Id$
 # @link			http://i-mscp.net i-MSCP Home Site
 # @license      http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
@@ -31,10 +30,7 @@ use warnings;
 use iMSCP::Debug;
 use iMSCP::Execute;
 use Data::Dumper;
-
-use vars qw/@ISA/;
-@ISA = ('Common::SimpleClass');
-use Common::SimpleClass;
+use parent 'Common::SimpleClass';
 
 sub loadIPs{
 	my $self	= shift;
@@ -58,9 +54,10 @@ sub loadIPs{
 			my $class	= "iMSCP::IP::$_";
 			require $file;
 			$self->{$_} = $class->new();
-			$rs |= $self->{$_}->parseIPs($configuredIPs);
 			$rs |= $self->{$_}->parseNetCards($netCardUp);
+			$rs |= $self->{$_}->parseIPs($configuredIPs);
 		}
+
 		$self->{_loaded} = 1;
 	}
 	$rs;

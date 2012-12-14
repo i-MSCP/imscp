@@ -28,17 +28,17 @@ package Servers::noserver;
 use strict;
 use warnings;
 use iMSCP::Debug;
+use vars qw/$AUTOLOAD/;
+use parent 'Common::SingletonClass';
 
-use vars qw/@ISA $AUTOLOAD/;
-@ISA = ('Common::SingletonClass');
-use Common::SingletonClass;
-
-sub AUTOLOAD {
+sub AUTOLOAD
+{
 	0;
 }
 
-sub factory {
-	return Servers::noserver->new();
+sub factory
+{
+	Servers::noserver->new();
 }
 
 1;

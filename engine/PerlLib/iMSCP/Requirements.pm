@@ -1,7 +1,7 @@
 #!/usr/bin/perl
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright 2010 - 2011 by internet Multi Server Control Panel
+# Copyright 2010 - 2012 by internet Multi Server Control Panel
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -20,7 +20,6 @@
 # @category		i-MSCP
 # @copyright	2010 - 2012 by i-MSCP | http://i-mscp.net
 # @author		Daniel Andreca <sci2tech@gmail.com>
-# @version		SVN: $Id$
 # @link			http://i-mscp.net i-MSCP Home Site
 # @license      http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
@@ -36,10 +35,7 @@ use strict;
 use warnings;
 use iMSCP::Debug;
 use iMSCP::Execute qw/execute/;
-
-use vars qw/@ISA/;
-@ISA = ('Common::SimpleClass');
-use Common::SimpleClass;
+use parent 'Common::SimpleClass';
 
 # Initializer.
 #
@@ -47,7 +43,7 @@ use Common::SimpleClass;
 # @return void
 
 sub _init{
-	my$self = shift;
+	my $self = shift;
 
 	# Initialize the 'needed' attribute that is a hash where each pair is a Perl
 	# module name and the value, an script that contains the method(s)/subroutine(s)

@@ -28,69 +28,63 @@ package Servers::po::dovecot;
 use strict;
 use warnings;
 use iMSCP::Debug;
-use Data::Dumper;
 use iMSCP::HooksManager;
+use parent 'Common::SingletonClass';
 
-use vars qw/@ISA/;
+sub _init
+{
+	my $self = shift;
 
-@ISA = ('Common::SingletonClass');
-use Common::SingletonClass;
-
-sub _init{
-
-	my $self		= shift;
-	$self->{cfgDir}	= "$main::imscpConfig{'CONF_DIR'}/dovecot";
+	$self->{cfgDir} = "$main::imscpConfig{'CONF_DIR'}/dovecot";
 	$self->{bkpDir}	= "$self->{cfgDir}/backup";
 	$self->{wrkDir}	= "$self->{cfgDir}/working";
 
-	my $conf		= "$self->{cfgDir}/dovecot.data";
+	my $conf = "$self->{cfgDir}/dovecot.data";
 
 	tie %self::dovecotConfig, 'iMSCP::Config','fileName' => $conf;
 
 	0;
 }
 
-sub preinstall{
+sub registerSetupHooks
+{
+	my $self = shift;
+	my $hooksManager = shift;
 
 	use Servers::po::dovecot::installer;
-
-	my $self	= shift;
-	my $rs		= Servers::po::dovecot::installer->new()->registerHooks();
-
-	$rs;
+	Servers::po::dovecot::installer->new()->registerSetupHooks($hooksManager);
 }
 
-sub install{
+sub install
+{
+	my $self = shift;
 
 	use Servers::po::dovecot::installer;
-
-	my $self	= shift;
-	my $rs		= Servers::po::dovecot::installer->new()->install();
-
-	$rs;
+	Servers::po::dovecot::installer->new()->install();
 }
 
-sub uninstall{
+sub uninstall
+{
+	my $self = shift;
 
 	use Servers::po::dovecot::uninstaller;
-
-	my $self	= shift;
-	my $rs		= Servers::po::dovecot::uninstaller->new()->uninstall();
+	my $rs = Servers::po::dovecot::uninstaller->new()->uninstall();
 	$rs |= $self->restart();
 
 	$rs;
 }
 
-sub postinstall{
+sub postinstall
+{
+	my $self = shift;
 
-	my $self	= shift;
-	$self->{restart} = 'yes';
+	$self->{'restart'} = 'yes';
 
 	0;
 }
 
-sub restart{
-
+sub restart
+{
 	my $self = shift;
 	my ($rs, $stdout, $stderr);
 
@@ -106,38 +100,38 @@ sub restart{
 	0;
 }
 
-sub getTraffic{
+sub getTraffic
+{
+	my $self = shift;
+	my $who = shift;
+	my $dbName = "$self->{wrkDir}/log.db";
+	my $logFile = "$main::imscpConfig{TRAFF_LOG_DIR}/mail.log";
+	my $wrkLogFile = "$main::imscpConfig{LOG_DIR}/mail.po.log";
+	my ($rv, $rs, $stdout, $stderr);
 
 	use iMSCP::Execute;
 	use iMSCP::File;
 	use iMSCP::Config;
 	use Tie::File;
 
-	my $self		= shift;
-	my $who			= shift;
-	my $dbName		= "$self->{wrkDir}/log.db";
-	my $logFile		= "$main::imscpConfig{TRAFF_LOG_DIR}/mail.log";
-	my $wrkLogFile	= "$main::imscpConfig{LOG_DIR}/mail.po.log";
-	my ($rv, $rs, $stdout, $stderr);
-
-	##only if files was not aleady parsed this session
-	unless($self->{logDb}){
-		#use a small conf file to memorize last line readed and his content
-		tie %{$self->{logDb}}, 'iMSCP::Config','fileName' => $dbName, noerrors => 1;
-		##first use? we zero line and content
-		$self->{logDb}->{line}		= 0 unless $self->{logDb}->{line};
-		$self->{logDb}->{content}	= '' unless $self->{logDb}->{content};
-		my $lastLineNo	= $self->{logDb}->{line};
-		my $lastLine	= $self->{logDb}->{content};
-		##copy log file
+	## only if files was not already parsed this session
+	unless($self->{'logDb'}){
+		# use a small conf file to memorize last line readed and his content
+		tie %{$self->{'logDb'}}, 'iMSCP::Config','fileName' => $dbName, noerrors => 1;
+		## first use? we zero line and content
+		$self->{'logDb'}->{'line'} = 0 unless $self->{'logDb'}->{'line'};
+		$self->{'logDb'}->{'content'} = '' unless $self->{'logDb'}->{'content'};
+		my $lastLineNo = $self->{'logDb'}->{'line'};
+		my $lastLine = $self->{'logDb'}->{'content'};
+		## copy log file
 		$rs = iMSCP::File->new(filename => $logFile)->copyFile($wrkLogFile) if -f $logFile;
-		#retunt 0 traffic if we fail
+		# return 0 traffic if we fail
 		return 0 if $rs;
-		#link log file to array
+		# link log file to array
 		tie my @content, 'Tie::File', $wrkLogFile or return 0;
 		#save last line
-		$self->{logDb}->{line}		= $#content;
-		$self->{logDb}->{content}	= @content[$#content];
+		$self->{'logDb'}->{'line'} = $#content;
+		$self->{'logDb'}->{'content'} = @content[$#content];
 		#test for logratation
 		if(@content[$lastLineNo] && @content[$lastLineNo] eq $lastLine){
 			## No logratation ocure. We zero already readed files
@@ -169,17 +163,17 @@ sub getTraffic{
 			debug("Traffic for $1 is $self->{traff}->{$1} (added POP traffic: ". ($2 + $3).")") if $1 && defined $2 && defined $3 && ($2+$3);
 		}
 	}
+
 	$self->{traff}->{$who} ? $self->{traff}->{$who} : 0;
 }
 
-END{
-
+END {
 	my $endCode	= $?;
-	my $self	= Servers::po::dovecot->new();
-	my $wrkLogFile	= "$main::imscpConfig{LOG_DIR}/mail.po.log";
-	my $rs		= 0;
+	my $self = Servers::po::dovecot->new();
+	my $wrkLogFile = "$main::imscpConfig{LOG_DIR}/mail.po.log";
+	my $rs = 0;
 
-	$rs |= $self->restart() if $self->{restart} && $self->{restart} eq 'yes';
+	$rs |= $self->restart() if $self->{'restart'} && $self->{'restart'} eq 'yes';
 	$rs |= iMSCP::File->new(filename => $wrkLogFile)->delFile() if -f $wrkLogFile;
 
 	$? = $endCode || $rs;
