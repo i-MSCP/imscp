@@ -729,7 +729,7 @@ sub delMailForward
 	$rs |=	$wrkFile->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
 	$rs |= $wrkFile->copyFile($mFWDHshFile);
 
-	$self->{postmap}->{$self->{'MTA_VIRTUAL_ALIAS_HASH}'}} = $data->{'MAIL_ADDR'};
+	$self->{'postmap'}->{$self->{'MTA_VIRTUAL_ALIAS_HASH'}} = $data->{'MAIL_ADDR'};
 
 	$rs;
 }
