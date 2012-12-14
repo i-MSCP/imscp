@@ -225,8 +225,8 @@ sub delete{
 		push(@savedDirs, $mountPoints{$_});
 	}
 
-	$self->{mode}	= 'del';
-	$rs 			= $self->runAllSteps();
+	$self->{'action'} = 'del';
+	$rs = $self->runAllActions();
 
 	foreach (@savedDirs){
 		my $destDir 	= "$main::imscpConfig{'USER_HOME_DIR'}/$self->{user_home}/$_";
@@ -311,7 +311,7 @@ sub buildMTAData{
 	my $self	= shift;
 
 	if(
-		$self->{mode} ne 'add'
+		$self->{'action'} ne 'add'
 		||
 		defined $self->{mail_on_domain} && $self->{mail_on_domain} > 0
 		||

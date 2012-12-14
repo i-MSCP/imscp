@@ -172,8 +172,8 @@ sub add{
 			group	=> $rootGroup
 	});
 
-	$self->{mode}	= 'add';
-	$rs |= $self->runAllSteps();
+	$self->{'action'} = 'add';
+	$rs |= $self->runAllActions();
 
 	$rs;
 }
@@ -190,8 +190,8 @@ sub delete{
 	error('Data not defined') if ! $self->{domain_admin_id};
 	return 1  if ! $self->{domain_admin_id};
 
-	$self->{mode}	= 'del';
-	$rs = $self->runAllSteps();
+	$self->{'action'} = 'del';
+	$rs = $self->runAllActions();
 
 	my $userName	=
 			$main::imscpConfig{SYSTEM_USER_PREFIX}.

@@ -218,8 +218,8 @@ sub delete{
 		push(@savedDirs, $mountPoints{$_});
 	}
 
-	$self->{mode}	= 'del';
-	$rs 			= $self->runAllSteps();
+	$self->{'action'} = 'del';
+	$rs = $self->runAllActions();
 
 	foreach (@savedDirs){
 		my $destDir 	= "$main::imscpConfig{'USER_HOME_DIR'}/$self->{user_home}/$_";
@@ -308,7 +308,7 @@ sub buildMTAData{
 	my $self	= shift;
 
 	if(
-		$self->{mode} ne 'add'
+		$self->{'action'} ne 'add'
 		||
 		defined $self->{mail_on_domain} && $self->{mail_on_domain} > 0
 		||
@@ -332,7 +332,7 @@ sub buildNAMEDData{
 	my $self	= shift;
 
 	# Both features custom dns and external mail share the same table but are independent
-	if($self->{mode} eq 'add' && ($self->{domain_dns} eq 'yes' || $self->{external_mail} eq 'on')){
+	if($self->{'action'} eq 'add' && ($self->{domain_dns} eq 'yes' || $self->{external_mail} eq 'on')){
 		my $sql = "
 			SELECT
 				*

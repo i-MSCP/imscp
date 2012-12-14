@@ -97,7 +97,7 @@ sub add
 {
 	my $self = shift;
 
-	$self->{action} = 'add';
+	$self->{'action'} = 'add';
 	$self->runAllActions();
 }
 
@@ -115,7 +115,7 @@ sub delete
 {
 	my $self = shift;
 
-	$self->{action} = 'del';
+	$self->{'action'} = 'del';
 	$self->runAllActions();
 }
 
@@ -148,7 +148,7 @@ sub disable
 {
 	my $self = shift;
 
-	$self->{action} = 'disable';
+	$self->{'action'} = 'disable';
 	$self->runAllActions();
 }
 
@@ -165,20 +165,20 @@ sub runAllActions
 	my $self = shift;
 	my $rs = 0;
 
-	@{$self->{Addons}} = iMSCP::Addons->new()->get();
-	unless(scalar @{$self->{Addons}}){
+	@{$self->{'Addons'}} = iMSCP::Addons->new()->get();
+	unless(scalar @{$self->{'Addons'}}){
 		error('Cannot get addons list');
 		return 1;
 	}
 
-	@{$self->{Servers}}	= iMSCP::Servers->new()->get();
-	unless(scalar @{$self->{Servers}}){
+	@{$self->{'Servers'}} = iMSCP::Servers->new()->get();
+	unless(scalar @{$self->{'Servers'}}){
 		error('Cannot get servers list');
 		return 1;
 	}
 
 	# Build service/addon data if provided by the module
-	for(@{$self->{Servers}}, 'Addon'){
+	for(@{$self->{'Servers'}}, 'Addon'){
 		next if $_ eq 'noserver.pm';
 		my $fname = 'build' . uc($_) . 'Data';
 		$fname =~ s/\.pm//i;
@@ -226,7 +226,6 @@ sub runAction
 
 			if ($instance->can($func)) {
 				debug("Calling function $func from ${type}::$_");
-				#$rs |= $instance->$func($self->{$paramName});
 				$rs = $instance->$func($self->{$paramName});
 				last if $rs;
 			}
@@ -352,7 +351,7 @@ sub buildADDONData
 
 =head1 AUTHOR
 
- Daniel Andreca <<sci2tech@gmail.com>
+ Daniel Andreca <sci2tech@gmail.com>
 
 =cut
 
