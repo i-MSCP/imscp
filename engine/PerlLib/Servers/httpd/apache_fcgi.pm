@@ -328,7 +328,7 @@ sub buildConfFile
 	$file = "$self->{cfgDir}/$file" unless -d $directories && $directories ne './';
 
 	my $fileH = iMSCP::File->new(filename => $file);
-	my $cfgTp  = $fileH->get();
+	my $cfgTpl  = $fileH->get();
 	error("Empty config template $file...") unless $cfgTpl;
 	return 1 unless $cfgTpl;
 
@@ -448,7 +448,7 @@ sub buildPHPini
 	$rs |= $self->buildConfFile($fileSource, { destination => $destFile });
 	$rs |= setRights(
 		$destFile,
-		{ user= > $data->{'USER'}, group => $data->{'GROUP'}, mode => '0550' }
+		{ user => $data->{'USER'}, group => $data->{'GROUP'}, mode => '0550' }
 	);
 
 	$fileSource	= "$main::imscpConfig{CONF_DIR}/fcgi/parts/php5/php.ini";
@@ -612,7 +612,7 @@ sub delUser
 	) if (-f "$self->{cfgDir}/00_modcband.conf");
 
 	my $filename = (
-		-f "$self->{wrkDir}/00_modcband.conf" ? "$self->{wrkDir}/00_modcband.conf" : "$self->{cfgDir}/00_modcband.conf"
+		-f "$self->{wrkDir}/00_modcband.conf" ? "$self->{wrkDir}/00_modcband.conf" : "$self->{cfgDir}/00_modcband.conf"
 	);
 
 	my $file = iMSCP::File->new(filename => $filename);

@@ -52,7 +52,7 @@ sub _init
 	0;
 }
 
-sub setupRegisterHooks
+sub registerSetupHooks
 {
 	my $self = shift;
 	my $hooksManager = shift;
@@ -69,7 +69,7 @@ sub askCgiModule
 	my $self = shift;
 	my $dialog = shift;
 
-	my $cgiModule = $main::preseed{'PHP_FASTCGI'} || $self::apacheConfig{'PHP_FASTCGI'} ||
+	my $cgiModule = $main::preseed{'PHP_FASTCGI'} || $self::apacheConfig{'PHP_FASTCGI'} ||
 		$self::apacheOldConfig{'PHP_FASTCGI'} || '';
 
 	my $rs = 0;
