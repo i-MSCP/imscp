@@ -34,10 +34,10 @@ sub _init
 {
 	my $self = shift;
 
-	$self->{cfgDir} = "$main::imscpConfig{'CONF_DIR'}/cron.d";
-	$self->{bkpDir} = "$self->{cfgDir}/backup";
-	$self->{wrkDir} = "$self->{cfgDir}/working";
-	$self->{tplDir}	= "$self->{cfgDir}/parts";
+	$self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/cron.d";
+	$self->{'bkpDir'} = "$self->{cfgDir}/backup";
+	$self->{'wrkDir'} = "$self->{cfgDir}/working";
+	$self->{'tplDir'}	= "$self->{cfgDir}/parts";
 }
 
 sub factory
@@ -74,7 +74,7 @@ sub addTask
 	$data->{'DWEEK'} = 1 unless exists $data->{'DWEEK'};
 	$data->{'LOG_DIR'} = $main::imscpConfig{'LOG_DIR'};
 
-	# BACKUP PRODUCTION FILE
+	# Backup production file
 	$rs |=	iMSCP::File->new(
 		filename => "$main::imscpConfig{CRON_D_DIR}/imscp"
 	)->copyFile(

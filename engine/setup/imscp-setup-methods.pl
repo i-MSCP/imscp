@@ -210,6 +210,7 @@ sub setupTasks
 		[\&setupInstallAddons,				'Addons installation'],
 		[\&setupPostInstallServers,			'Servers post-installation'],
 		[\&setupPostInstallAddons,			'Addons post-installation'],
+		[\&setupCron,						'Setup cron tasks'],
 		[\&setupInitScripts,				'Setting i-MSCP init scripts'],
 		[\&setupRebuildCustomerFiles,		'Rebuilding customers files'],
 		[\&setupBasePermissions,			'Setting base file permissions'],
@@ -1786,9 +1787,9 @@ sub setupPhpMyAdmin
 
 # Setup crontab
 # TODO: awstats part should be done via awstats installer
-sub setupCrontab
+sub setupCron
 {
-	iMSCP::HooksManager->getInstance()->trigger('beforeSetupCrontab');
+	iMSCP::HooksManager->getInstance()->trigger('beforeSetupCron');
 
 	my ($rs, $cfgTpl, $err);
 
@@ -1857,7 +1858,7 @@ sub setupCrontab
 	# Install new file in production directory
 	$file->copyFile("$prodDir/") and return 1;
 
-	iMSCP::HooksManager->getInstance()->trigger('afterSetupCrontab');
+	iMSCP::HooksManager->getInstance()->trigger('afterSetupCron');
 
 	0;
 }
