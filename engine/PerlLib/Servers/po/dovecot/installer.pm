@@ -194,7 +194,7 @@ sub getVersion
 	$stdout =~ m/^([0-9\.]+)\s*/;
 
 	if($1) {
-		$self->{version} = $1;
+		$self->{'version'} = $1;
 	} else {
 		error("Can't get dovecot version");
 		return 1;
@@ -327,7 +327,7 @@ sub setupDB
 		return 1 if $rs;
 
 		# Get SQL connection with full privileges
-		my $database = main::setupSqlGetConnect();
+		my $database = main::setupGetSqlConnect();
 
 		# Add new dovecot restricted SQL user with needed privilegess
 		$rs = $database->doQuery(

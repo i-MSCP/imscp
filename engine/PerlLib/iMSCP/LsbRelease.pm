@@ -390,7 +390,6 @@ sub _guessDebianRelease
 	my ($rs, $stdout, $stderr, $release, $codename);
 	my $rs = execute('uname', \$stdout, \$stderr); # We are safe here
 	error($stderr) if $stderr;
-	debug ($stdout) if $stdout;
 
 	$stdout =~ s/^\s+|\s+$//g;
 
@@ -487,7 +486,7 @@ sub _getLsbInformation
 
 			for(split "\n", $lsbReleaseFile) {
 				s/^\s+|\s+$//g;
-				next if !length || ! /=/; # Skip invalid lines
+				next if ! length || ! /=/; # Skip invalid lines
 
 				my ($var, $arg) = split '=', $_, 2;
 

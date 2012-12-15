@@ -284,7 +284,7 @@ sub _preparePackagesList
 		if(ref($data->{$_}) eq 'ARRAY'){
 			$self->_parseArray($data->{$_});
 		} else {
-			if($data->{$_}->{alternative}) {
+			if($data->{$_}->{'alternative'}) {
 				my $service  = $_;
 				my @alternative = keys %{$data->{$service}->{'alternative'}};
 
@@ -295,7 +295,7 @@ sub _preparePackagesList
 				# or if user asked for reconfiguration
 				if($main::reconfigure || ! $oldServer || ! ($oldServer ~~ @alternative)) {
 					if(@alternative > 1) { # Do no ask for server if only one is available
-						for (my $index = $#alternative; $index >= 0; --$index){
+						for (my $index = $#alternative; $index >= 0; --$index) {
 							my $defServer = $alternative[$index];
 
 							if($oldServer && $defServer eq $oldServer) { # Make old server at first position
@@ -318,7 +318,7 @@ Please, choose the server you want use for the $service service:
 								# uncoment after dependencies check is implemented
 								#'Not Used'
 							);
-						} while (!$server);
+						} while (! $server);
 					} else {
 						$server = pop(@alternative);
 					}

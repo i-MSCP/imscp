@@ -35,9 +35,9 @@ sub _init
 {
 	my $self = shift;
 
-	$self->{cfgDir} = "$main::imscpConfig{'CONF_DIR'}/dovecot";
-	$self->{bkpDir}	= "$self->{cfgDir}/backup";
-	$self->{wrkDir}	= "$self->{cfgDir}/working";
+	$self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/dovecot";
+	$self->{'bkpDir'} = "$self->{cfgDir}/backup";
+	$self->{'wrkDir'} = "$self->{cfgDir}/working";
 
 	my $conf = "$self->{cfgDir}/dovecot.data";
 

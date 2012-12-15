@@ -52,10 +52,10 @@ use iMSCP::File;
 use iMSCP::Getopt;
 use autoinstaller::Common;
 
-# Init buildonly option
+# Initialize the buildonly option
 $main::buildonly = 0;
 
-# initialize the skippackages option
+# Initialize the skippackages option
 $main::skippackages = 0;
 
 iMSCP::Getopt->parse(
@@ -161,9 +161,7 @@ Please, choose an option:
 	$main::buildonly = $main::buildonly eq 'build' ? 1 : 0;
 }
 
-#
 ## Build steps
-#
 
 my $distribution = iMSCP::LsbRelease->new()->getId(1);
 
@@ -217,9 +215,7 @@ if (@errors > 0  || @warnings > 0) {
 
 if(! $main::buildonly) {
 
-	#
 	## Setup steps
-	#
 
 	require "$FindBin::Bin/engine/setup/imscp-setup-methods.pl";
 
