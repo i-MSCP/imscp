@@ -97,7 +97,7 @@ sub setupStart
 	# Bootstrap setup
 	setupBoot() and return 1;
 
-	# Load old i-MSCP config (if not already there)
+	# Load old i-MSCP config
 	setupLoadOldConfig() and return 1;
 
 	# Allow any server/addon to register its setup hook functions on the hooks manager before any other tasks

@@ -156,7 +156,7 @@ Thanks for using i-MSCP.
 
  Load both the new imscp.conf file (upstread conffile) and the current mscp.conf file (old conffile) and merge them
 together in the %main::imscpConfig variable. The old imscp.conf file is is tied to the %main::imscpOldConfig variable
-and setas readonly.
+and set as readonly.
 
  Return int - 0
 
@@ -164,25 +164,24 @@ and setas readonly.
 
 sub loadConfig
 {
-	# Load news imscp.conf conffile from i-MSCP upstream source
+	# Load news imscp.conf conffile from i-MSCP upstream source (tie it to the %main::imscpNewConfig variable)
 	tie
 		%main::imscpNewConfig,
 		'iMSCP::Config',
 		'fileName' => "$FindBin::Bin/configs/" . lc(iMSCP::LsbRelease->new()->getId(1)) . '/imscp.conf';
 
-	# Load old i-MSCP conffile if exists
+	# Load current i-MSCP conffile as readonly if it exists (tie it to the %main::imscpOldConfig variable)
 	if (-f "$main::imscpNewConfig{'CONF_DIR'}/imscp.conf") {
 		tie
 			%main::imscpOldConfig,
 			'iMSCP::Config',
 			fileName => "$main::imscpNewConfig{'CONF_DIR'}/imscp.conf",
-			noerrors => 1,
 			readonly => 1;
 	} else { # No conffile found, assumption is made that it's a new install
 		%main::imscpOldConfig = %main::imscpNewConfig;
 	}
 
-	# We merge old config with new but we do not act on the final file yet (see postBuild step).
+	# We merge current config with the new but we do not write anything yet (see postBuild step).
 	%main::imscpConfig = (%main::imscpNewConfig, %main::imscpOldConfig);
 
 	# Update needed variables with newest values
@@ -248,8 +247,6 @@ sub testRequirements
 
 sub processConfFile
 {
-	debug('Starting...');
-
 	my $conffile = shift;
 
 	$conffile = "$FindBin::Bin/autoinstaller/Adapter/" . iMSCP::LsbRelease->new()->getId(1) . '/variables.xml'
@@ -318,8 +315,6 @@ sub processConfFile
 		$rs = _chownFile($_) if($_->{'content'});
 		return $rs if $rs;
 	}
-
-	debug('Ending...');
 
 	0;
 }
@@ -443,7 +438,7 @@ sub installEngine
 
 	my $dir = iMSCP::Dir->new();
 
-	$dir->{dirname} = "$FindBin::Bin/engine";
+	$dir->{'dirname'} = "$FindBin::Bin/engine";
 
 	$rs = $dir->get();
 	return $rs if $rs;
@@ -524,9 +519,9 @@ sub installDistMaintainerScripts
 
  Process post-build tasks.
 
- Trigger post-build tasks from distro autoinstaller adapter and save main configuration file into the build directory.
+ Trigger post-build tasks from distro autoinstaller adapter and save i-MSCP main configuration file.
 
-  Return int - 0 on success, other on failure
+ Return int - 0 on success, other on failure
 
 =cut
 
@@ -534,6 +529,20 @@ sub postBuild
 {
 	my $rs = _getDistroAdapter()->postBuild();
 	return $rs if $rs;
+
+	# Backup current config if any
+	if(-f "$main::imscpConfig{'CONF_DIR'}/imscp.conf") {
+		my $file = iMSCP::File->new(filename => "$main::imscpConfig{'CONF_DIR'}/imscp.conf");
+		my $cfg = $file->get() or return 1;
+
+		$file = iMSCP::File->new(filename => "$main::imscpConfig{'CONF_DIR'}/imscp.old.conf");
+		$file->set($cfg) and return 1;
+		$file->save and return 1;
+		$file->mode(0660) and return 1;
+		$file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'MASTER_GROUP'}) and return 1;
+	}
+
+	# Write new config file into build directory
 
 	my $x = qualify_to_ref('SYSTEM_CONF', 'main');
 	my %imscpConf = %main::imscpConfig;
@@ -592,7 +601,7 @@ sub saveGuiPersistentData
 	my ($rs, $stdout, $stderr);
 	my $tmp = qualify_to_ref('INST_PREF', 'main');
 
-	# For imscp versions >= 1.0.4
+	# i-MSCP versions >= 1.0.4
 	if(-d "$main::imscpConfig{'ROOT_DIR'}/gui/data") {
 		# Save i-MSCP GUI data
 		$rs = execute(
@@ -630,7 +639,7 @@ sub saveGuiPersistentData
 			return $rs if $rs;
 		}
 
-	# For i-MSCP versions prior 1.0.4
+	# i-MSCP versions prior 1.0.4
 	} else {
 		# Save i-MSCP GUI data (isp logos)
 		if(-d "$main::imscpConfig{'ROOT_DIR'}/gui/themes/user_logos") {
@@ -791,8 +800,6 @@ sub checkCommandAvailability($)
 
 sub _expandVars
 {
-	debug('Starting...');
-
 	my $var = shift;
 
 	debug("Input... $var");
@@ -803,7 +810,6 @@ sub _expandVars
 	}
 
 	debug("Expanded... $var");
-	debug('Ending...');
 
 	$var;
 }

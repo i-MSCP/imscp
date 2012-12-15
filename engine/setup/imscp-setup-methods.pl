@@ -66,16 +66,13 @@ sub setupBoot
 	0;
 }
 
-# Load old i-MSCP configuration
-#
-# Old configuration is simply copy of the current configuration before any modification
-#
+# Load old i-MSCP configuration as readonly
 sub setupLoadOldConfig
 {
-	# Load old config (only if not already loaded)
-	if(! defined %main::imscpOldConfig) {
-		%main::imscpOldConfig = %main::imscpConfig;
-	}
+	my $oldConfig = "$main::imscpConfig{'CONF_DIR'}/imscp.old.conf";
+	$main::imscpOldConfig = {};
+
+	tie %main::imscpOldConfig, 'iMSCP::Config', 'fileName' => $oldConfig, readonly => 1 if (-f $oldConfig);
 
 	0;
 }
@@ -144,7 +141,7 @@ sub setupDialog
 			\&setupAskDefaultAdmin,
 			\&setupAskAdminEmail,
 			\&setupAskPhpMyAdmin,
-			\&setupAskTimezone,
+			\&setupAskPhpTimezone,
 			\&setupAskSsl,
 			\&setupAskImscpBackup,
 			\&setupAskDomainBackup
@@ -178,10 +175,6 @@ sub setupDialog
 		}
 	}
 
-	#use Data::Dumper;
-	#print Dumper(\%main::questions);
-	#exit;
-
 	iMSCP::HooksManager->getInstance()->trigger('afterSetupDialog');
 
 	$ret;
@@ -194,7 +187,8 @@ sub setupTasks
 
 	my $rs = 0;
 	my @steps = (
-		[\&setupWriteConfig,				'Write new i-MSCP configuration'],
+		[\&setupSaveOldConfig,				'Saving old i-MSCP main configuration file'],
+		[\&setupWriteNewConfig,				'Write new i-MSCP main configuration file'],
 		[\&setupCreateMasterGroup,			'Creating i-MSCP system master group'],
 		[\&setupCreateSystemDirectories,	'Creating system directories'],
 		[\&setupServerHostname,				'Setting server hostname'],
@@ -215,7 +209,6 @@ sub setupTasks
 		[\&setupRebuildCustomerFiles,		'Rebuilding customers files'],
 		[\&setupBasePermissions,			'Setting base file permissions'],
 		[\&setupRestartServices,			'Restarting services'],
-		[\&setupSaveConfig,					'Saving i-MSCP configuration'],
 		[\&setupAdditionalTasks,			'Processing additional tasks']
 	);
 
@@ -312,7 +305,7 @@ sub setupAskImscpVhost
 	$rs;
 }
 
-# ask for local DNS resolver
+# Ask for local DNS resolver
 sub setupAskLocalDnsResolver
 {
 	my $dialog = shift;
@@ -689,7 +682,7 @@ Keep in mind that the new database will be free of any reseller and customer dat
 	$rs;
 }
 
-# Ask for database prefix
+# Ask for database prefix/suffix
 sub setupAskDbPrefixSuffix
 {
 	my $dialog = shift;
@@ -735,7 +728,7 @@ Do you want use a prefix or suffix for customers's SQL databases?
 	$rs;
 }
 
-# Ask for default admin data
+# Ask for default administrator
 sub setupAskDefaultAdmin
 {
 	my $dialog = shift;
@@ -818,7 +811,7 @@ sub setupAskDefaultAdmin
 	$rs;
 }
 
-# Ask for admin email
+# Ask for administrator email
 sub setupAskAdminEmail
 {
 	my $dialog = shift;
@@ -839,8 +832,8 @@ sub setupAskAdminEmail
 	$rs;
 }
 
-# Ask for timezone
-sub setupAskTimezone
+# Ask for PHP timezone
+sub setupAskPhpTimezone
 {
 	my $dialog = shift;
 	my $defaultTimezone = DateTime->new(year => 0, time_zone => 'local')->time_zone->name;
@@ -1106,6 +1099,7 @@ sub setupAskCertificatePath
 	$rs;
 }
 
+# Ask for i-MSCP backup feature
 sub setupAskImscpBackup
 {
 	my $dialog = shift;
@@ -1134,6 +1128,7 @@ activate this feature.
 	$rs;
 }
 
+# Ask for customer backup feature
 sub setupAskDomainBackup
 {
 	my $dialog = shift;
@@ -1146,7 +1141,7 @@ sub setupAskDomainBackup
 "
 \\Z4\\Zb\\ZuDomains Backup Feature\\Zn
 
-Do you want activate the backup feature for domains?
+Do you want activate the backup feature for customers?
 
 This feature allows resellers to propose backup options to their customers such as:
 
@@ -1169,8 +1164,26 @@ This feature allows resellers to propose backup options to their customers such 
 ## Setup subroutines
 #
 
+# Save old i-MSCP main configuration file
+#
+sub setupSaveOldConfig
+{
+	iMSCP::HooksManager->getInstance()->trigger('beforeSetupSaveOldConfig');
+
+	my $file = iMSCP::File->new(filename => "$main::imscpConfig{'CONF_DIR'}/imscp.conf");
+	my $cfg = $file->get() or return 1;
+
+	$file = iMSCP::File->new(filename => "$main::imscpConfig{'CONF_DIR'}/imscp.old.conf");
+	$file->set($cfg) and return 1;
+	$file->save and return 1;
+
+	iMSCP::HooksManager->getInstance()->trigger('beforeSetupSaveOldConfig');
+
+	0;
+}
+
 # Write question answers into imscp.conf file
-sub setupWriteConfig
+sub setupWriteNewConfig
 {
 	for(keys %main::questions) {
 		if(exists $main::imscpConfig{$_}) {
@@ -1916,11 +1929,12 @@ sub setupBasePermissions
 	my $LOG_DIR = $main::imscpConfig{'LOG_DIR'};
 	my $rs = 0;
 
-	$rs |= setRights("$CONF_DIR", {user => $rootUName, group => $masterUName, mode => '0770'});
-	$rs |= setRights("$CONF_DIR/imscp.conf", {user => $rootUName, group => $masterUName, mode => '0660'});
-	$rs |= setRights("$CONF_DIR/imscp-db-keys", {user => $rootUName, group => $masterUName, mode => '0640'});
-	$rs |= setRights("$ROOT_DIR/engine", {user => $rootUName, group => $masterUName, mode => '0755', recursive => 'yes'});
-	$rs |= setRights($LOG_DIR, {user => $rootUName, group => $masterUName, mode => '0750'});
+	$rs |= setRights("$CONF_DIR", { user => $rootUName, group => $masterUName, mode => '0770' });
+	$rs |= setRights("$CONF_DIR/imscp.conf", { user => $rootUName, group => $masterUName, mode => '0660' });
+	#$rs |= setRights("$CONF_DIR/imscp.old.conf", { user => $rootUName, group => $masterUName, mode => '0660' });
+	$rs |= setRights("$CONF_DIR/imscp-db-keys", { user => $rootUName, group => $masterUName, mode => '0640' });
+	$rs |= setRights("$ROOT_DIR/engine", { user => $rootUName, group => $masterUName, mode => '0755', recursive => 'yes' });
+	$rs |= setRights($LOG_DIR, { user => $rootUName, group => $masterUName, mode => '0750' });
 
 	iMSCP::HooksManager->getInstance()->trigger('afterSetupBasePermissions');
 
@@ -1956,8 +1970,7 @@ sub setupRkhunter
 		$file->save() and return 1;
 	}
 
-	# Updates the logrotate configuration provided by Debian like distributions
-	# to modify right
+	# Updates the logrotate configuration provided by Debian like distributions to modify rights
 	if(-e '/etc/logrotate.d/rkhunter') {
 		# Get the file as a string
 		$file = iMSCP::File->new (filename => '/etc/logrotate.d/rkhunter');
@@ -1972,8 +1985,7 @@ sub setupRkhunter
 		$file->save() and return 1;
 	}
 
-	# Update weekly cron task provided by Debian like distributions to avoid
-	# creation of unreadable log file
+	# Update weekly cron task provided by Debian like distributions to avoid creation of unreadable log file
 	if(-e '/etc/cron.weekly/rkhunter') {
 		# Get the rkhunter file content
 		$file = iMSCP::File->new (filename => '/etc/cron.weekly/rkhunter');
@@ -2232,7 +2244,7 @@ sub setupPostInstallAddons
 		$class	= "Addons::$_";
 		require $file;
 		$addons	= $class->new();
-		$msg = "Performing postinstall tasks for ".uc($_);
+		$msg = "Performing postinstall tasks for " . uc($_);
 		$rs |= step(sub{ $addons->postinstall() }, $msg, scalar @addons, $step) if $addons->can('postinstall');
 		$step++;
 	}
@@ -2292,29 +2304,6 @@ sub setupRestartServices
 	0;
 }
 
-# Save i-MSCP main configuration file
-#
-# Save new configuration into the imscp.conf file
-# Save old configuration (backup) as imscp.old.conf
-#
-sub setupSaveConfig
-{
-	iMSCP::HooksManager->getInstance()->trigger('beforeSetupSaveConfig');
-
-	#my $file = iMSCP::File->new(filename => "$main::imscpConfig{'CONF_DIR'}/imscp.conf");
-	#my $cfg = $file->get() or return 1;
-
-	#$file = iMSCP::File->new(filename => "$main::imscpConfig{'CONF_DIR'}/imscp.old.conf");
-	#$file->set($cfg) and return 1;
-	#$file->save and return 1;
-	#$file->mode(0644) and return 1;
-	#$file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'}) and return 1;
-
-	iMSCP::HooksManager->getInstance()->trigger('afterSetupSaveConfig');
-
-	0;
-}
-
 # Run all update additional task such as rkhunter configuration
 sub setupAdditionalTasks
 {
@@ -2337,6 +2326,10 @@ sub setupAdditionalTasks
 
 	0;
 }
+
+#
+## Low level subroutines
+#
 
 # Retrieve question answer by searching it in the given source or all source
 sub setupGetQuestion
@@ -2443,6 +2436,7 @@ sub setupIsSqlUser($)
 # Delete an SQL user and all its privileges
 #
 # Return int 0 on success, 1 on error
+# TODO should we try to remove for old host too since host can be reconfigured?
 sub setupDeleteSqlUser($)
 {
 	my $user = shift;

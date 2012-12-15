@@ -36,6 +36,7 @@ GUI:
 	Vendor:
 
 	Tools:
+		Updated PhpMyAdmin to version 3.5.3
 
 Tickets:
 	- Fixed #482: Defect - Alias edit forward url not possible. Validation incorrect
@@ -108,7 +109,6 @@ Tickets:
 	- Fixed #337: Enhancement - Add possibility to edit per user mail quotas
 	- Fixed #368: Enhancement - Add custom TXT DNS resource records
 	- Fixed #387: Enhancement - php.ini modifications to allow the usage of roundcube
-	- Fixed #429: Enhancement - TXT entries should allow * as a valid character
 	- Fixed #402: Task - Ajaxplorer - Not Compatible with php 5.4
 	- Fixed #403: Defect - Hosting Plan Secure Code doesn't work
 	- Fixed #404: Defect - Missing translations
@@ -120,6 +120,7 @@ Tickets:
 	- Fixed #423: Malfunction: Ticket-Summary at Reseller-Overview
 	- Fixed #424: BUG: After deleting alias domain the ftp accounts of this domain still exist
 	- Fixed #427: Malfunction: DNS Servernames not IDN compatible stored in database
+	- Fixed #429: Enhancement - TXT entries should allow * as a valid character
 	- Fixed #432: Awstats static configuration generated when awstats dynamic is enabled
 	- Fixed #440: Broken installer after External email servers commit
 	- Fixed #445: Disabling domain and panel's backups does not work
@@ -127,6 +128,6 @@ Tickets:
 	- Fixed #452: View Support Ticket
 	- Fixed #456: Wrong welcome message usertype when create client
 	- Fixed #457: Domain specific apache2 configuration gets deleted in imscp-setup (tx Jadawin)
-	- Fixed #470: Default mail_quota is still 10485760 bytes
-	- Fixed #468: SSL for Customers does not Work since upgrade to beta
 	- Fixed #467: FTP Account, Datamanager-> no autologin in ajax explorer
+	- Fixed #468: SSL for Customers does not Work since upgrade to beta
+	- Fixed #470: Default mail_quota is still 10485760 bytes

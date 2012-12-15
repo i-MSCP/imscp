@@ -725,8 +725,8 @@ sub delMailForward
 	$wrkFile->set($wrkContent);
 	return 1 if $wrkFile->save();
 
-	$rs |=	$wrkFile->mode(0644);
-	$rs |=	$wrkFile->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
+	$rs |= $wrkFile->mode(0644);
+	$rs |= $wrkFile->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
 	$rs |= $wrkFile->copyFile($mFWDHshFile);
 
 	$self->{'postmap'}->{$self->{'MTA_VIRTUAL_ALIAS_HASH'}} = $data->{'MAIL_ADDR'};
