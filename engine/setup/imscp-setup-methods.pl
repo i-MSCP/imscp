@@ -1931,7 +1931,7 @@ sub setupBasePermissions
 
 	$rs |= setRights("$CONF_DIR", { user => $rootUName, group => $masterUName, mode => '0770' });
 	$rs |= setRights("$CONF_DIR/imscp.conf", { user => $rootUName, group => $masterUName, mode => '0660' });
-	#$rs |= setRights("$CONF_DIR/imscp.old.conf", { user => $rootUName, group => $masterUName, mode => '0660' });
+	$rs |= setRights("$CONF_DIR/imscp.old.conf", { user => $rootUName, group => $masterUName, mode => '0660' });
 	$rs |= setRights("$CONF_DIR/imscp-db-keys", { user => $rootUName, group => $masterUName, mode => '0640' });
 	$rs |= setRights("$ROOT_DIR/engine", { user => $rootUName, group => $masterUName, mode => '0755', recursive => 'yes' });
 	$rs |= setRights($LOG_DIR, { user => $rootUName, group => $masterUName, mode => '0750' });
