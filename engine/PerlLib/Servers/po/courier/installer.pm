@@ -59,7 +59,7 @@ sub migrateMailboxes
 	my $self = shift;
 
 	if($main::imscpOldConfig{'PO_SERVER'} && $main::imscpOldConfig{'PO_SERVER'} eq 'dovecot' &&
-		main::imscpConfig{'PO_SERVER'}  eq 'courier'
+		$main::imscpConfig{'PO_SERVER'}  eq 'courier'
 	){
 		use iMSCP::Execute;
 		use FindBin;
