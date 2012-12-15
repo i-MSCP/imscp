@@ -1177,7 +1177,7 @@ sub setupSaveOldConfig
 	$file->set($cfg) and return 1;
 	$file->save and return 1;
 
-	iMSCP::HooksManager->getInstance()->trigger('beforeSetupSaveOldConfig');
+	iMSCP::HooksManager->getInstance()->trigger('afterSetupSaveOldConfig');
 
 	0;
 }
