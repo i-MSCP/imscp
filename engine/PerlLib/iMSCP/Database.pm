@@ -31,17 +31,17 @@ use iMSCP::Debug;
 use FindBin;
 use parent 'Common::SimpleClass';
 
-sub factory{
-
+sub factory
+{
 	my $self = shift;
-	$self  = iMSCP::Database->new() if ref $self ne 'iMSCP::Database';
-	my $db = defined $self->{args}->{db} ? $self->{args}->{db} : $main::imscpConfig{'DATABASE_TYPE'};
-	my $file	= "iMSCP/Database/${db}/${db}.pm";
-	my $class	= "iMSCP::Database::${db}::${db}";
+	$self = iMSCP::Database->new() if ref $self ne 'iMSCP::Database';
+	my $db = defined $self->{'args'}->{'db'} ? $self->{'args'}->{'db'} : $main::imscpConfig{'DATABASE_TYPE'};
+	my $file = "iMSCP/Database/${db}/${db}.pm";
+	my $class = "iMSCP::Database::${db}::${db}";
 
 	require $file;
 
-	return $class->new();
+	$class->new();
 }
 
 1;

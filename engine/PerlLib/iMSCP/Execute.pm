@@ -27,19 +27,18 @@ package iMSCP::Execute;
 
 use strict;
 use warnings;
-
-use vars qw/@ISA @EXPORT/;
-use Exporter;
-
 use iMSCP::Debug;
 use iMSCP::STDCapture;
+use parent 'Exporter';
 
-@ISA = ('Exporter');
+use vars qw/@EXPORT/;
 @EXPORT = qw/execute/;
 
-sub execute{
+sub execute
+{
 	my ($code, $output, $error) = @_;
 	my $rv;
+
 	if (ref $output && ref $error){
 		$rv = _execCaptureBoth($code, $output, $error);
 	} elsif(ref $output){
@@ -49,43 +48,62 @@ sub execute{
 	} else {
 		$rv = _execCode($code);
 	}
+
 	$rv;
 }
 
-sub _execCaptureBoth {
+sub _execCaptureBoth
+{
 	my ($code, $output, $error) = @_;
 	my $out = new iMSCP::STDCapture('STDOUT', $output);
 	my $err = new iMSCP::STDCapture('STDERR', $error);
+
 	debug("Execute $code");
+
 	system($code);
-	return _getExitCode($?);
+
+	_getExitCode($?);
 }
 
-sub _execCaptureOutput {
+sub _execCaptureOutput
+{
 	my ($code, $output) = @_;
 	my $out = new iMSCP::STDCapture('STDOUT', $output);
+
 	debug("Execute $code");
+
 	system($code);
-	return _getExitCode($?);
+
+	_getExitCode($?);
 }
 
-sub _execCaptureError {
+sub _execCaptureError
+{
 	my ($code, $error) = @_;
 	my $err = new iMSCP::STDCapture('STDERR', $error);
+
 	debug("Execute $code");
+
 	system($code);
-	return _getExitCode($?);
+
+	_getExitCode($?);
 }
 
-sub _execCode {
+sub _execCode
+{
 	my $code = shift;
+
 	debug("Execute $code");
+
 	system($code);
-	return _getExitCode($?);
+
+	_getExitCode($?);
 }
 
-sub _getExitCode {
+sub _getExitCode
+{
 	my $exitValue = shift;
+
 	if ($exitValue == -1) {
 		error("Failed to execute external command: $!");
 	} elsif ($exitValue & 127) {
@@ -99,6 +117,7 @@ sub _getExitCode {
 		$exitValue = $exitValue >> 8;
 		debug("External command exited with value $exitValue");
 	}
+
 	$exitValue;
 }
 

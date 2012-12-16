@@ -30,10 +30,8 @@ use warnings;
 use iMSCP::Debug;
 use parent 'Common::SimpleClass';
 
-sub _init{}
-
-sub errmsg{
-
+sub errmsg
+{
 	my ($self, $errmsg) = @_;
 
 	use POSIX;
@@ -45,12 +43,12 @@ sub errmsg{
 	$dmn = idn_to_ascii($dmn, 'utf-8');
 	push(@parts, $dmn);
 
-	my $admin_email	= join('@', @parts);
-	my $date		=  strftime "%d.%m.%Y %H:%M:%S", localtime;
-	my $server_name	= $main::imscpConfig{'SERVER_HOSTNAME'};
-	my $server_ip	= $main::imscpConfig{'BASE_SERVER_IP'};
-	my $fname		= (caller(1))[3];
-	$fname			= 'main' unless $fname;
+	my $admin_email = join('@', @parts);
+	my $date = strftime "%d.%m.%Y %H:%M:%S", localtime;
+	my $server_name = $main::imscpConfig{'SERVER_HOSTNAME'};
+	my $server_ip = $main::imscpConfig{'BASE_SERVER_IP'};
+	my $fname = (caller(1))[3];
+	$fname = 'main' unless $fname;
 
 	my $msg_data =
 		"Dear admin,\n\n".
@@ -67,11 +65,11 @@ sub errmsg{
 	my $out = new MIME::Entity;
 
 	$out->build(
-		From		=> "$server_name ($server_ip) <$admin_email>",
-		To			=> $admin_email,
-		Subject		=> "[$date] i-MSCP Error report",
-		Data		=> $msg_data,
-		'X-Mailer'	=> "i-MSCP $main::imscpConfig{'Version'} Automatic Error Messenger"
+		From => "$server_name ($server_ip) <$admin_email>",
+		To => $admin_email,
+		Subject => "[$date] i-MSCP Error report",
+		Data => $msg_data,
+		'X-Mailer' => "i-MSCP $main::imscpConfig{'Version'} Automatic Error Messenger"
 	);
 
 	debug("Send message to $admin_email: $msg_data");
@@ -86,9 +84,8 @@ sub errmsg{
 	0;
 }
 
-
-sub warnMsg{
-
+sub warnMsg
+{
 	my ($self, $msg) = @_;
 
 	use POSIX;
@@ -100,10 +97,10 @@ sub warnMsg{
 	$dmn = idn_to_ascii($dmn, 'utf-8');
 	push(@parts, $dmn);
 
-	my $admin_email	= join('@', @parts);
-	my $date		=  strftime "%d.%m.%Y %H:%M:%S", localtime;
-	my $server_name	= $main::imscpConfig{'SERVER_HOSTNAME'};
-	my $server_ip	= $main::imscpConfig{'BASE_SERVER_IP'};
+	my $admin_email = join('@', @parts);
+	my $date =  strftime "%d.%m.%Y %H:%M:%S", localtime;
+	my $server_name = $main::imscpConfig{'SERVER_HOSTNAME'};
+	my $server_ip = $main::imscpConfig{'BASE_SERVER_IP'};
 	my $fname = (caller(1))[3];
 
 	my $msg_data =
@@ -121,11 +118,11 @@ sub warnMsg{
 	my $out = new MIME::Entity;
 
 	$out -> build(
-		From		=> "$server_name ($server_ip) <$admin_email>",
-		To			=> $admin_email,
-		Subject		=> "[$date] i-MSCP Error report",
-		Data		=> $msg_data,
-		'X-Mailer'	=> "i-MSCP $main::imscpConfig{'Version'} Automatic Error Messenger"
+		From => "$server_name ($server_ip) <$admin_email>",
+		To => $admin_email,
+		Subject => "[$date] i-MSCP Error report",
+		Data => $msg_data,
+		'X-Mailer' => "i-MSCP $main::imscpConfig{'Version'} Automatic Error Messenger"
 	);
 
 	debug("Send message to $admin_email: $msg_data");

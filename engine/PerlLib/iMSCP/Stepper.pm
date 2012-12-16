@@ -29,57 +29,57 @@ use strict;
 use warnings;
 use iMSCP::Dialog;
 use iMSCP::Debug;
+use parent 'Common::SingletonClass', 'Exporter';
 
-use vars qw/@ISA @EXPORT_OK @EXPORT %EXPORT_TAGS/;
-use Exporter;
-use Common::SingletonClass;
+use vars qw/@EXPORT_OK @EXPORT %EXPORT_TAGS/;
 
-@ISA = ('Common::SingletonClass', 'Exporter');
 @EXPORT = qw/step startDetail endDetail/;
 
-sub _init{
-
+sub _init
+{
 	my $self = iMSCP::Stepper->new();
 
-	$self->{title}	= "\n\\ZbPerforming step %s from total of %s\\Zn\n\n%s";
-	$self->{all}	= [];
-	$self->{last}	= '';
+	$self->{'title'} = "\n\\ZbPerforming step %s from total of %s\\Zn\n\n%s";
+	$self->{'all'} = [];
+	$self->{'last'} = '';
+
+	$self;
+}
+
+sub startDetail
+{
+	my $self = iMSCP::Stepper->new();
+
+	push (@{$self->{all}}, $self->{'last'});
 
 	0;
 }
 
-sub startDetail{
-
+sub endDetail
+{
 	my $self = iMSCP::Stepper->new();
 
-	push (@{$self->{all}}, $self->{last});
+	$self->{'last'} = pop (@{$self->{'all'}});
+
 	0;
 }
 
-sub endDetail{
-
-	my $self = iMSCP::Stepper->new();
-
-	$self->{last} = pop (@{$self->{all}});
-	0;
-}
-
-sub step($ $ $ $){
-
+sub step($ $ $ $)
+{
 	my $self = iMSCP::Stepper->new();
 
 	my ($code, $text, $steps, $index, $exit) = (@_);
 
-	$self->{last} = sprintf ($self->{title}, $index, $steps, $text);
+	$self->{last} = sprintf ($self->{'title'}, $index, $steps, $text);
 
-	my $msg = join ("\n", @{$self->{all}}) . "\n" . $self->{last};
+	my $msg = join ("\n", @{$self->{'all'}}) . "\n" . $self->{'last'};
 
-	iMSCP::Dialog->factory()->startGauge($msg, int($index*100/$steps)) if iMSCP::Dialog->factory()->needGauge();
-	iMSCP::Dialog->factory()->setGauge(int($index*100/$steps), $msg);
+	iMSCP::Dialog->factory()->startGauge($msg, int($index * 100 / $steps)) if iMSCP::Dialog->factory()->needGauge();
+	iMSCP::Dialog->factory()->setGauge(int($index * 100 / $steps), $msg);
 
 	my $rs = &{$code}() if (ref $code eq 'CODE');
 
-	if($rs){
+	if($rs) {
 		iMSCP::Dialog->factory()->endGauge() if iMSCP::Dialog->factory()->needGauge();
 		iMSCP::Dialog->factory()->msgbox(
 			"\n
@@ -97,6 +97,7 @@ sub step($ $ $ $){
 
 			"
 		);
+
 		return $rs;
 	}
 

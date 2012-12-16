@@ -29,20 +29,16 @@ use strict;
 use warnings;
 use iMSCP::Debug;
 use iMSCP::Execute;
+use parent 'Common::SimpleClass';
 
-use vars qw/@ISA/;
+sub addSystemGroup
+{
+	my $self = shift;
 
-@ISA = ('Common::SimpleClass');
-use Common::SimpleClass;
+	fatal('Please use only instance of class not static calls', 1) if ref $self ne __PACKAGE__;
 
-sub addSystemGroup{
-
-	my $self	= shift;
-
-	fatal('Please use only instance of class not static calls', 1) if(ref $self ne __PACKAGE__);
-
-	my $groupName	= shift || $self->{groupname} || undef;
-	$self->{groupname} = $groupName;
+	my $groupName = shift || $self->{'groupname'} || undef;
+	$self->{'groupname'} = $groupName;
 
 	if(!$groupName){
 		error('No group name was provided');
@@ -51,33 +47,34 @@ sub addSystemGroup{
 
 	if(!getgrnam($groupName)){
 		my ($rs, $stdout, $stderr);
-		my $systemGroup		= $self->{system} ? '-r' : '';
+		my $systemGroup = $self->{'system'} ? '-r' : '';
 
 		my  @cmd = (
 			"$main::imscpConfig{'CMD_GROUPADD'}",
-			($^O !~ /bsd$/ ? "$systemGroup" : ''),	#system group
-			"\"$groupName\""							#group name
+			($^O !~ /bsd$/ ? "$systemGroup" : ''),	# system group
+			"\"$groupName\""						# group name
 		);
 		$rs = execute("@cmd", \$stdout, \$stderr);
 		debug("$stdout") if $stdout;
 		error("$stderr") if ($stderr && $rs);
 		warning("$stderr") if ($stderr && !$rs);
+
 		return $rs if $rs;
 	}
 
 	0;
 }
 
-sub delSystemGroup{
+sub delSystemGroup
+{
+	my $self = shift;
 
-	my $self	= shift;
+	fatal('Please use only instance of class not static calls', 1) if ref $self ne __PACKAGE__;
 
-	fatal('Please use only instance of class not static calls', 1) if(ref $self ne __PACKAGE__);
+	my $groupName = shift || $self->{'groupname'} || undef;
+	$self->{'groupname'} = $groupName;
 
-	my $groupName	= shift || $self->{groupname} || undef;
-	$self->{groupname} = $groupName;
-
-	if(!$groupName){
+	if(! $groupName){
 		error('No group name was provided');
 		return 1;
 	}
@@ -92,6 +89,7 @@ sub delSystemGroup{
 		debug("$stdout") if $stdout;
 		error("$stderr") if ($stderr && $rs);
 		warning("$stderr") if ($stderr && !$rs);
+
 		return $rs if $rs;
 	}
 

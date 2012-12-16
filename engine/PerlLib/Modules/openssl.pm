@@ -27,14 +27,9 @@ package Modules::openssl;
 
 use strict;
 use warnings;
-
 use iMSCP::Debug;
 use iMSCP::Execute qw/execute/;
-use Common::SingletonClass;
-
-use vars qw/@ISA/;
-@ISA = ('Common::SingletonClass');
-use Common::SingletonClass;
+use parent 'Common::SingletonClass';
 
 sub _init  {
 	my $self  = shift;

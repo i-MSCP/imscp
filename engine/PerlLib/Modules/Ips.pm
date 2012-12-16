@@ -30,12 +30,7 @@ use warnings;
 use iMSCP::Debug;
 use iMSCP::Execute;
 use Data::Dumper;
-
-use vars qw/@ISA/;
-
-@ISA = ('Common::SimpleClass', 'Modules::Abstract');
-use Common::SimpleClass;
-use Modules::Abstract;
+use parent 'Modules::Abstract';
 
 sub _init{
 	my $self		= shift;
