@@ -1177,7 +1177,7 @@ sub setupSaveOldConfig
 	$file->set($cfg) and return 1;
 	$file->save and return 1;
 
-	iMSCP::HooksManager->getInstance()->trigger('beforeSetupSaveOldConfig');
+	iMSCP::HooksManager->getInstance()->trigger('afterSetupSaveOldConfig');
 
 	0;
 }
@@ -1185,11 +1185,15 @@ sub setupSaveOldConfig
 # Write question answers into imscp.conf file
 sub setupWriteNewConfig
 {
+	iMSCP::HooksManager->getInstance()->trigger('beforeSetupWriteNewConfig');
+
 	for(keys %main::questions) {
 		if(exists $main::imscpConfig{$_}) {
 			$main::imscpConfig{$_} = $main::questions{$_};
 		}
    	}
+
+   	iMSCP::HooksManager->getInstance()->trigger('afterSetupWriteNewConfig');
 }
 
 # Create system master group for imscp
