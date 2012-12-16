@@ -31,17 +31,18 @@ use warnings;
 sub prop
 {
 	my ($self, $var) = (shift, undef);
+
 	if (@_) {
 		$var = shift;
-		if(ref $var eq 'HASH'){
-			for (keys %{$var}){
-				$self->prop($_, $var->{$_});
-			}
-		}elsif (@_) { $self->{$var} = shift; }
+
+		if(ref $var eq 'HASH') {
+			$self->prop($_, $var->{$_}) for keys %{$var};
+		} elsif (@_) {
+			$self->{$var} = shift;
+		}
 	}
 
-	return ( defined( $var ) && defined( $self->{$var} ) ) ? $self->{$var} : undef;
+	return (defined($var) && defined($self->{$var})) ? $self->{$var} : undef;
 }
-
 
 1;

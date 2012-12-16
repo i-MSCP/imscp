@@ -32,13 +32,14 @@ use iMSCP::Execute;
 use Data::Dumper;
 use parent 'Common::SimpleClass';
 
-sub loadIPs{
-	my $self	= shift;
-	my $rs		= 0;
+sub loadIPs
+{
+	my $self = shift;
+	my $rs = 0;
 
 	my ($netCardUp, $configuredIPs, $stderr);
 
-	unless ($self->{_loaded}){
+	unless ($self->{'_loaded'}){
 		$rs = execute("$main::imscpConfig{'CMD_IFCONFIG'}", \$netCardUp, \$stderr);
 		debug("$netCardUp") if ($netCardUp);
 		error("$stderr") if ($stderr);
@@ -50,25 +51,28 @@ sub loadIPs{
 		return $rs if $rs;
 
 		for('IPv4', 'IPv6'){
-			my $file	= "iMSCP/IP/$_.pm";
-			my $class	= "iMSCP::IP::$_";
+			my $file = "iMSCP/IP/$_.pm";
+			my $class = "iMSCP::IP::$_";
 			require $file;
+
 			$self->{$_} = $class->new();
 			$rs |= $self->{$_}->parseNetCards($netCardUp);
 			$rs |= $self->{$_}->parseIPs($configuredIPs);
 		}
 
-		$self->{_loaded} = 1;
+		$self->{'_loaded'} = 1;
 	}
+
 	$rs;
 }
 
-sub getIPs{
-	my $self	= shift;
-	my $rs		= 0;
-	my @ips		= ();
+sub getIPs
+{
+	my $self = shift;
+	my $rs = 0;
+	my @ips = ();
 
-	$rs = $self->loadIPs() unless $self->{_loaded};
+	$rs = $self->loadIPs() unless $self->{'_loaded'};
 	return (wantarray ? () : '') if $rs;
 
 	@ips = (@ips, ($self->{$_}->getIPs())) for('IPv4', 'IPv6');
@@ -78,12 +82,13 @@ sub getIPs{
 	return (wantarray ? @ips : join( ' ', @ips ));
 }
 
-sub getNetCards{
-	my $self	= shift;
-	my $rs		= 0;
+sub getNetCards
+{
+	my $self = shift;
+	my $rs = 0;
 	my %cards;
 
-	$rs = $self->loadIPs() unless $self->{_loaded};
+	$rs = $self->loadIPs() unless $self->{'_loaded'};
 	return (wantarray ? () : '') if $rs;
 
 	%cards = (%cards, map { $_ => undef }($self->{$_}->getNetCards())) for('IPv4', 'IPv6');
@@ -93,13 +98,14 @@ sub getNetCards{
 	return (wantarray ? keys %cards : join(' ', keys %cards));
 }
 
-sub getCardByIP{
-	my $self	= shift;
-	my $ip		= shift;
-	my $rs		= 0;
+sub getCardByIP
+{
+	my $self = shift;
+	my $ip = shift;
+	my $rs = 0;
 	my $card;
 
-	$rs = $self->loadIPs() unless $self->{_loaded};
+	$rs = $self->loadIPs() unless $self->{'_loaded'};
 	return (wantarray ? () : '') if $rs;
 
 	for('IPv4', 'IPv6'){
@@ -108,15 +114,17 @@ sub getCardByIP{
 	}
 
 	debug("Network card having ip $ip: ". ($card ? $card : 'not exists'));
+
 	return ($card ? $card : '');
 }
 
-sub addedToVCard{
-	my $self	= shift;
-	my $ip		= shift;
-	my $rs		= 0;
+sub addedToVCard
+{
+	my $self = shift;
+	my $ip = shift;
+	my $rs = 0;
 
-	$rs = $self->loadIPs() unless $self->{_loaded};
+	$rs = $self->loadIPs() unless $self->{'_loaded'};
 	return (wantarray ? () : '') if $rs;
 
 	for('IPv4', 'IPv6'){
@@ -125,15 +133,17 @@ sub addedToVCard{
 	}
 
 	debug("Card having ip $ip: ". ($rs ? $rs : 'not exists'));
+
 	$rs;
 }
 
-sub existsNetCard{
-	my $self	= shift;
-	my $card	= shift;
-	my $rs		= 0;
+sub existsNetCard
+{
+	my $self = shift;
+	my $card = shift;
+	my $rs = 0;
 
-	$rs = $self->loadIPs() unless $self->{_loaded};
+	$rs = $self->loadIPs() unless $self->{'_loaded'};
 	return (wantarray ? () : '') if $rs;
 
 	for('IPv4', 'IPv6'){
@@ -142,16 +152,18 @@ sub existsNetCard{
 	}
 
 	debug("Network card $card exists? ". ($rs ? 'yes' : 'no'));
+
 	$rs;
 }
 
 
-sub isCardUp{
-	my $self	= shift;
-	my $card	= shift;
-	my $rs		= 0;
+sub isCardUp
+{
+	my $self = shift;
+	my $card = shift;
+	my $rs = 0;
 
-	$rs = $self->loadIPs() unless $self->{_loaded};
+	$rs = $self->loadIPs() unless $self->{'_loaded'};
 	return (wantarray ? () : '') if $rs;
 
 	for('IPv4', 'IPv6'){
@@ -160,15 +172,17 @@ sub isCardUp{
 	}
 
 	debug("Network card $card is up? ". ($rs ? 'yes' : 'no'));
+
 	$rs;
 }
 
-sub isValidIp{
-	my $self	= shift;
-	my $ip		= shift;
-	my $rs		= 0;
+sub isValidIp
+{
+	my $self = shift;
+	my $ip = shift;
+	my $rs = 0;
 
-	$rs = $self->loadIPs() unless $self->{_loaded};
+	$rs = $self->loadIPs() unless $self->{'_loaded'};
 	return (wantarray ? () : '') if $rs;
 
 	for('IPv4', 'IPv6'){
@@ -177,32 +191,37 @@ sub isValidIp{
 	}
 
 	debug("Ip is valid? ". ($rs ? 'yes' : 'no'));
+
 	$rs;
 }
 
-sub getIpType{
-	my $self	= shift;
-	my $ip		= shift;
+sub getIpType
+{
+	my $self = shift;
+	my $ip = shift;
 
-	my $rs = $self->loadIPs() unless $self->{_loaded};
+	my $rs = $self->loadIPs() unless $self->{'_loaded'};
 	return (wantarray ? () : undef) if $rs;
 
 	debug("Ip $ip is ".($self->{IPv4}->isValidIp($ip) ? 'ipv4' : 'ipv6'));
-	$self->{IPv4}->isValidIp($ip) ? 'ipv4' : 'ipv6';
+	$self->{'IPv4'}->isValidIp($ip) ? 'ipv4' : 'ipv6';
 }
 
-sub normalize{
-	my $self	= shift;
-	my $ip		= shift;
-	return $ip if $self->{IPv4}->isValidIp($ip);
-	return  $self->{IPv6}->normalize($ip) if $self->{IPv6}->isValidIp($ip);
+sub normalize
+{
+	my $self = shift;
+	my $ip = shift;
+
+	return $ip if $self->{'IPv4'}->isValidIp($ip);
+	return  $self->{'IPv6'}->normalize($ip) if $self->{'IPv6'}->isValidIp($ip);
 }
 
-sub attachIpToNetCard{
-	my $self	= shift;
-	my $card	= shift;
-	my $ip		= shift;
-	my $rs		= 0;
+sub attachIpToNetCard
+{
+	my $self = shift;
+	my $card = shift;
+	my $ip = shift;
+	my $rs = 0;
 
 	for('IPv4', 'IPv6'){
 		$rs = $self->{$_}->attachIpToNetCard($card, $ip);
@@ -212,29 +231,34 @@ sub attachIpToNetCard{
 	$rs;
 }
 
-sub detachIpFromNetCard{
-	my $self	= shift;
-	my $ip		= shift;
-	my $rs		= 0;
+sub detachIpFromNetCard
+{
+	my $self = shift;
+	my $ip = shift;
+	my $rs = 0;
 
 	for('IPv4', 'IPv6'){
 		$rs = $self->{$_}->detachIpFromNetCard($ip);
 		last unless $rs;
 	}
+
 	debug("Succesfully detached $ip ") unless $rs;
 	error("Can not detach $ip") if $rs;
 
 	$rs;
 }
 
-sub reset{
-	my $self	= shift;
+sub reset
+{
+	my $self = shift;
 
 	for('IPv4', 'IPv6'){
 		$self->{$_}->reset();
 	}
-	delete $self->{_loaded};
-	return $self->loadIPs();
+
+	delete $self->{'_loaded'};
+
+	$self->loadIPs();
 }
 
 1;

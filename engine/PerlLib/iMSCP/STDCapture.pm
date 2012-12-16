@@ -29,39 +29,43 @@ use File::Temp 'tempfile';
 use Symbol qw/gensym qualify qualify_to_ref/;
 use iMSCP::Debug;
 
-sub new {
-	my $proto			= shift;
-	my $class			= ref($proto) || $proto;
-	my $self			= {};
-	my $STD				= shift;
-	$self->{capture}	= shift;
+sub new
+{
+	my $proto = shift;
+	my $class = ref($proto) || $proto;
+	my $self = {};
+	my $STD = shift;
+	$self->{'capture'} = shift;
 
-	$STD				= qualify($STD);
-	$self->{STDHandler}	= qualify_to_ref($STD);
+	$STD = qualify($STD);
+	$self->{'STDHandler'} = qualify_to_ref($STD);
 
 	debug ("Capturing ${$self->{STDHandler}}");
 
-	open $self->{saved}, ">& $STD" or error("Can't redirect <$STD> - $!");
-	(undef, $self->{newSTDFile}) = tempfile;
-	open $self->{newSTDHandler}, "+> $self->{newSTDFile}" or error("Can't create temporary file for $STD - $!");
-	open $self->{STDHandler}, ">& ".fileno($self->{newSTDHandler}) or error("Can't redirect $STD - $!");
-	$self->{pid} = $$;
+	open $self->{'saved'}, ">& $STD" or error("Can't redirect <$STD> - $!");
+	(undef, $self->{'newSTDFile'}) = tempfile;
+	open $self->{'newSTDHandler'}, "+> $self->{newSTDFile}" or error("Can't create temporary file for $STD - $!");
+	open $self->{'STDHandler'}, ">& ".fileno($self->{'newSTDHandler'}) or error("Can't redirect $STD - $!");
+	$self->{'pid'} = $$;
 
 	bless($self, $class);
 }
 
-sub DESTROY {
-	my $self	= shift;
-	return unless $self->{pid} eq $$;
+sub DESTROY
+{
+	my $self = shift;
+	return unless $self->{'pid'} eq $$;
+
 	debug ("Finishing capture of ${$self->{STDHandler}}");
-	select((select ($self->{STDHandler}), $|=1)[0]);
-	open $self->{STDHandler}, ">& ". fileno($self->{saved}) or error("Can't restore ${$self->{STDHandler}} - $!");
-	seek $self->{newSTDHandler}, 0, 0;
-	my $file			= $self->{newSTDHandler};
-	my $msg				=do {local $/; <$file>};
+
+	select((select ($self->{'STDHandler'}), $|=1)[0]);
+	open $self->{'STDHandler'}, ">& ". fileno($self->{'saved'}) or error("Can't restore ${$self->{STDHandler}} - $!");
+	seek $self->{'newSTDHandler'}, 0, 0;
+	my $file = $self->{'newSTDHandler'};
+	my $msg =do { local $/; <$file> };
 	chomp($msg);
-	${$self->{capture}}	= $msg;
-	unlink $self->{newSTDFile} or error("Couldn't remove temp file '$self->{newSTDFile}' - $!",1);
+	${$self->{'capture'}} = $msg;
+	unlink $self->{'newSTDFile'} or error("Couldn't remove temp file '$self->{newSTDFile}' - $!", 1);
 }
 
 1;

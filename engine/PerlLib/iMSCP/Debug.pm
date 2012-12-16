@@ -32,18 +32,7 @@ use Carp;
 use parent 'Common::SingletonClass', 'Exporter';
 
 our @EXPORT = qw/
-	debug
-	warning
-	error
-	fatal
-	newDebug
-	endDebug
-	getMessage
-	getLastError
-	getMessageByType
-	silent
-	verbose
-	debugRegCallBack
+	debug warning error fatal newDebug endDebug getMessage getLastError getMessageByType silent verbose debugRegCallBack
 /;
 
 BEGIN

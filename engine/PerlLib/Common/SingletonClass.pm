@@ -31,23 +31,23 @@ use Symbol;
 
 my $_instance = undef;
 
-sub new {
-	my $proto	= shift;
-	my $class	= ref($proto) || $proto;
+sub new
+{
+	my $proto = shift;
+	my $class = ref($proto) || $proto;
 	my $x= qualify_to_ref('_instance', $class);
 
 	return ${*$x} if defined ${*$x};
 
 	my $self = {
-		'errors'	=> [],
-		'args'		=> {@_} || {}
+		'errors' => [],
+		'args' => {@_} || {}
 	};
 
 	bless($self, $class);
 
 	${*$x} = $self;
-
-	if($self->can('_init')){ $self->_init();}
+	$self->_init() if $self->can('_init');
 
 	return($self);
 }

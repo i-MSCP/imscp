@@ -30,16 +30,12 @@ use warnings;
 use iMSCP::Debug;
 use iMSCP::Execute;
 use Data::Dumper;
-
-use vars qw/@ISA/;
-
-@ISA = ('Common::SimpleClass');
-use Common::SimpleClass;
+use parent 'Common::SimpleClass';
 
 sub process{
 
-	my $self	= shift;
-	my $rs		= 0;
+	my $self = shift;
+	my $rs = 0;
 	my ($stdour, $stderr);
 	$rs |= execute("$main::imscpConfig{ENGINE_ROOT_DIR}/tools/imscp-net-interfaces-mngr stop", \$stdour, \$stderr);
 	debug($stdour) if $stdour;

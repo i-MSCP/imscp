@@ -31,14 +31,14 @@ use warnings;
 sub new
 {
 	my $proto = shift;
-	my $class = ref($proto) || $proto;
+	my $class = ref $proto || $proto;
 	my $self = {
 		'errors' => [],
 		'args' => {@_} || {}
 	};
 
 	bless($self, $class);
-	if($self->can('_init')){ $self->_init();}
+	$self->_init() if $self->can('_init');
 
 	return($self);
 }

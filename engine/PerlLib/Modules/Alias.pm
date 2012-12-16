@@ -29,12 +29,7 @@ use strict;
 use warnings;
 use iMSCP::Debug;
 use Data::Dumper;
-
-use vars qw/@ISA/;
-
-@ISA = ('Common::SimpleClass', 'Modules::Domain');
-use Common::SimpleClass;
-use Modules::Domain;
+use parent 'Modules::Domain';
 
 sub loadData{
 

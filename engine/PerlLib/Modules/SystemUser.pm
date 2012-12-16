@@ -29,42 +29,37 @@ use strict;
 use warnings;
 use iMSCP::Debug;
 use iMSCP::Execute;
+use parent 'Common::SimpleClass';
 
-use vars qw/@ISA/;
+sub addSystemUser
+{
+	my $self = shift;
 
-@ISA = ('Common::SimpleClass');
-use Common::SimpleClass;
+	fatal('Please use only instance of class not static calls', 1) if ref $self ne __PACKAGE__;
 
-sub addSystemUser{
+	my $userName = shift || $self->{'username'} || undef;
+	$self->{'username'} = $userName;
 
-
-	my $self	= shift;
-
-	fatal('Please use only instance of class not static calls', 1) if(ref $self ne __PACKAGE__);
-
-	my $userName	= shift || $self->{username} || undef;
-	$self->{username} = $userName;
-
-	if(!$userName){
+	if(! $userName){
 		error('No user name was provided');
 		return 1;
 	}
 
 	my ($rs, $stdout, $stderr);
-	my $comment			= $self->{comment} ? "\"$self->{comment}\"" : '"iMSCPuser"';
-	my $home			= $self->{home} ? '"'.$self->{home}.'"' : "\"$main::imscpConfig{'USER_HOME_DIR'}/$userName\"";
-	my $skipGroup		= $self->{skipGroup} || $self->{group} ? '' : '-U';
-	my $group			= $self->{group} ? "-g \"$self->{group}\"" : '';
-	my $createHome		= $self->{skipCreateHome} ? '' : '-m';
-	my $systemUser		= $self->{system} ? '-r' : '';
-	my $copySkeleton	= $self->{system} || $self->{skipCreateHome} ? '' : '-k';
-	my $skeletonPath	= $self->{system} || $self->{skipCreateHome} ? '' : "\"$main::imscpConfig{'GUI_ROOT_DIR'}/data/user_home\"";
-	my $shell			= $self->{shell} ? $self->{shell} : '/bin/false';
-
+	my $comment	= $self->{'comment'} ? "\"$self->{comment}\"" : '"iMSCPuser"';
+	my $home = $self->{'home'} ? '"'.$self->{'home'}.'"' : "\"$main::imscpConfig{'USER_HOME_DIR'}/$userName\"";
+	my $skipGroup = $self->{'skipGroup'} || $self->{'group'} ? '' : '-U';
+	my $group = $self->{'group'} ? "-g \"$self->{group}\"" : '';
+	my $createHome = $self->{'skipCreateHome'} ? '' : '-m';
+	my $systemUser = $self->{'system'} ? '-r' : '';
+	my $copySkeleton = $self->{'system'} || $self->{'skipCreateHome'} ? '' : '-k';
+	my $skeletonPath = $self->{'system'} || $self->{'skipCreateHome'}
+		? '' : "\"$main::imscpConfig{'GUI_ROOT_DIR'}/data/user_home\"";
+	my $shell = $self->{'shell'} ? $self->{'shell'} : '/bin/false';
 
 	my @cmd;
 
-	if(!getpwnam($userName)){
+	if(! getpwnam($userName)){
 		@cmd = (
 			$main::imscpConfig{'CMD_USERADD'},
 			($^O =~ /bsd$/ ? "\"$userName\"" : ''),	#username bsd way
@@ -102,16 +97,16 @@ sub addSystemUser{
 	0;
 }
 
-sub delSystemUser{
+sub delSystemUser
+{
+	my $self = shift;
 
-	my $self	= shift;
+	fatal('Please use only instance of class not static calls', 1) if ref $self ne __PACKAGE__;
 
-	fatal('Please use only instance of class not static calls', 1) if(ref $self ne __PACKAGE__);
+	my $userName = shift || $self->{'username'} || undef;
+	$self->{'username'} = $userName;
 
-	my $userName	= shift || $self->{username} || undef;
-	$self->{username} = $userName;
-
-	if(!$userName){
+	if(! $userName){
 		error('No user name was provided');
 		return 1;
 	}
@@ -128,31 +123,32 @@ sub delSystemUser{
 		$rs = execute("@cmd", \$stdout, \$stderr);
 		debug("$stdout") if $stdout;
 		error("$stderr") if ($stderr && $rs && $rs != 12);
-		warning("$stderr") if ($stderr && !$rs);
+		warning("$stderr") if ($stderr && ! $rs);
+
 		return $rs if ($rs && $rs != 12);
 	}
 
 	0;
 }
 
-sub addToGroup{
+sub addToGroup
+{
+	my $self = shift;
 
+	fatal('Please use only instance of class not static calls', 1) if ref $self ne __PACKAGE__;
 
-	my $self	= shift;
+	my $groupName = shift || $self->{'groupname'} || undef;
+	$self->{'groupname'} = $groupName;
 
-	fatal('Please use only instance of class not static calls', 1) if(ref $self ne __PACKAGE__);
+	my $userName = shift || $self->{'username'} || undef;
+	$self->{'username'} = $userName;
 
-	my $groupName	= shift || $self->{groupname} || undef;
-	$self->{groupname} = $groupName;
-
-	my $userName	= shift || $self->{username} || undef;
-	$self->{username} = $userName;
-
-	if(!$groupName){
+	if(! $groupName){
 		error('No group name was provided');
 		return 1;
 	}
-	if(!$userName){
+
+	if(! $userName){
 		error('No user name was provided');
 		return 1;
 	}
@@ -160,8 +156,9 @@ sub addToGroup{
 	if(getgrnam($groupName) && getpwnam($userName)){
 		my ($rs, $stdout, $stderr);
 		$self->getUserGroups($userName);
-		if(!$self->{userGroups}->{$groupName}){
-			my $newGroups =  join(',', keys %{$self->{userGroups}}) .",$groupName";
+
+		if(!$self->{'userGroups'}->{$groupName}){
+			my $newGroups =  join(',', keys %{$self->{'userGroups'}}) . ",$groupName";
 			my  @cmd = (
 				'skill -KILL -vu ' . $userName . '; ',
 				"$main::imscpConfig{'CMD_USERGROUP'}",
@@ -173,6 +170,7 @@ sub addToGroup{
 			debug("$stdout") if $stdout;
 			error("$stderr") if ($stderr && $rs);
 			warning("$stderr") if ($stderr && !$rs);
+
 			return $rs if $rs;
 		}
 	}
@@ -180,52 +178,56 @@ sub addToGroup{
 	0;
 }
 
-sub getUserGroups{
+sub getUserGroups
+{
+	my $self = shift;
 
+	fatal('Please use only instance of class not static calls', 1) if ref $self ne __PACKAGE__;
 
-	my $self	= shift;
-
-	fatal('Please use only instance of class not static calls', 1) if(ref $self ne __PACKAGE__);
-
-	my $userName	= shift || $self->{username} || undef;
-	$self->{username} = $userName;
+	my $userName = shift || $self->{'username'} || undef;
+	$self->{'username'} = $userName;
 
 	my ($rs, $stdout, $stderr);
+
 	$rs = execute("id -nG $userName", \$stdout, \$stderr);
 	debug("$stdout") if $stdout;
 	error("$stderr") if ($stderr && $rs);
 	warning("$stderr") if ($stderr && !$rs);
 	return $rs if $rs;
-	%{$self->{userGroups}} = map { $_ => 1 } split ' ', $stdout;
+
+	%{$self->{'userGroups'}} = map { $_ => 1 } split ' ', $stdout;
 
 	0;
 }
 
-sub removeFromGroup{
-
-	my $self	= shift;
+sub removeFromGroup
+{
+	my $self = shift;
 
 	fatal(': Please use only instance of class not static calls', 1) if(ref $self ne __PACKAGE__);
 
-	my $groupName	= shift || $self->{groupname} || undef;
-	$self->{groupname} = $groupName;
+	my $groupName = shift || $self->{'groupname'} || undef;
+	$self->{'groupname'} = $groupName;
 
-	my $userName	= shift || $self->{username} || undef;
-	$self->{username} = $userName;
+	my $userName = shift || $self->{'username'} || undef;
+	$self->{'username'} = $userName;
 
-	if(!$groupName){
+	if(! $groupName){
 		error('No group name was provided');
 		return 1;
 	}
-	if(!$userName){
+
+	if(! $userName){
 		error('No user name was provided');
 		return 1;
 	}
 
 	if(getpwnam($userName)){
 		my ($rs, $stdout, $stderr);
+
 		$self->getUserGroups($userName);
-		delete $self->{userGroups}->{$groupName};
+		delete $self->{'userGroups'}->{$groupName};
+
 		my $newGroups =  join(',', keys %{$self->{userGroups}});
 		my  @cmd = (
 			'skill -KILL -vu ' . $userName . '; ',
@@ -238,6 +240,7 @@ sub removeFromGroup{
 		debug("$stdout") if $stdout;
 		error("$stderr") if ($stderr && $rs);
 		warning("$stderr") if ($stderr && !$rs);
+
 		return $rs if $rs;
 	}
 

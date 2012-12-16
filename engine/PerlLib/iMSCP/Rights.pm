@@ -28,72 +28,69 @@ package iMSCP::Rights;
 use strict;
 use warnings;
 use iMSCP::Debug;
+use parent 'Common::SingletonClass', 'Exporter';
 
-use vars qw/@ISA @EXPORT/;
-use Exporter;
-use Common::SingletonClass;
-
-@ISA = ('Common::SingletonClass', 'Exporter');
+use vars qw/@EXPORT/;
 @EXPORT = qw/setRights/;
 
-sub setRights{
-
-	my $file	= shift;
-	my $option	= shift;
-	my $rs		= 0;
-	$option		= {} if ref $option ne 'HASH';
+sub setRights
+{
+	my $file = shift;
+	my $option = shift;
+	my $rs = 0;
+	$option = {} if ref $option ne 'HASH';
 
 	my  @dchmod = (
 		"find $file -type d -print0 | xargs",
 		($^O !~ /bsd$/ ? '-r' : ''),
 		'-0 chmod',
-		($main::imscpConfig{DEBUG} ? '-v' : ''),
-		$option->{dirmode}
-	)if $option->{dirmode};
+		($main::imscpConfig{'DEBUG'} ? '-v' : ''),
+		$option->{'dirmode'}
+	) if $option->{'dirmode'};
 
 	my  @fchmod = (
 		"find $file -type f -print0 | xargs",
 		($^O !~ /bsd$/ ? '-r' : ''),
 		'-0 chmod',
-		($main::imscpConfig{DEBUG} ? '-v' : ''),
-		$option->{filemode}
-	)if $option->{filemode};
+		($main::imscpConfig{'DEBUG'} ? '-v' : ''),
+		$option->{'filemode'}
+	) if $option->{'filemode'};
 
 	my  @chmod = (
 		'chmod',
-		($main::imscpConfig{DEBUG} ? '-v' : ''),
-		($option->{recursive} ? '-R' : ''),
-		$option->{mode},
+		($main::imscpConfig{'DEBUG'} ? '-v' : ''),
+		($option->{'recursive'} ? '-R' : ''),
+		$option->{'mode'},
 		$file
-	)if $option->{mode};
+	) if $option->{'mode'};
 
 	my  @chown = (
 		"chown",
-		($main::imscpConfig{DEBUG} ? '-v' : ''),
-		($option->{recursive} ? '-R' : ''),
+		($main::imscpConfig{'DEBUG'} ? '-v' : ''),
+		($option->{'recursive'} ? '-R' : ''),
 		"$option->{user}:$option->{group} $file"
-	) if $option->{user} && $option->{group};
+	) if $option->{'user'} && $option->{'group'};
 
-	$rs |= _set(@chmod) if($option->{mode});
-
-	$rs |= _set(@dchmod) if($option->{dirmode} && $option->{recursive});
-	$rs |= _set(@fchmod) if($option->{filemode} && $option->{recursive});
-
-	$rs |= _set(@chown) if($option->{user} && $option->{group});
+	$rs |= _set(@chmod) if $option->{'mode'};
+	$rs |= _set(@dchmod) if $option->{'dirmode'} && $option->{'recursive'};
+	$rs |= _set(@fchmod) if $option->{'filemode'} && $option->{'recursive'};
+	$rs |= _set(@chown) if $option->{'user'} && $option->{'group'};
 
 	$rs;
 }
 
-sub _set{
+sub _set
+{
+	my ($rs, $stdout, $stderr);
 
 	use iMSCP::Execute;
 
-	my ($rs, $stdout, $stderr);
 	$rs = execute("@_", \$stdout, \$stderr);
 	debug("$stdout") if $stdout;
 	error("$stderr") if $stderr;
-	error("Error while executing @_") if !$stderr && $rs;
+	error("Error while executing @_") if ! $stderr && $rs;
 
 	$rs;
 }
+
 1;

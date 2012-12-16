@@ -39,6 +39,8 @@ sub _init
 {
 	my $self = shift;
 
+	iMSCP::HooksManager->getInstance()->trigger('beforeMtaInitInstaller', $self);
+
 	$self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/postfix";
 	$self->{'bkpDir'} = "$self->{cfgDir}/backup";
 	$self->{'wrkDir'} = "$self->{cfgDir}/working";
@@ -54,26 +56,33 @@ sub _init
 		%self::postfixConfig = (%self::postfixConfig, %self::postfixOldConfig);
 	}
 
+	iMSCP::HooksManager->getInstance()->trigger('afterMtaInitInstaller', $self);
+
 	0;
 }
 
+# Process Mta preinstall tasks
 sub preinstall
 {
+	iMSCP::HooksManager->getInstance()->trigger('beforeMtaPreInstall');
+
 	my $self = shift;
 
-	$self->addUsers() and return 1;
+	$self->addUsersAndGroups() and return 1;
 	$self->makeDirs() and return 1;
+
+	iMSCP::HooksManager->getInstance()->trigger('afterMtaPreInstall');
 
 	0;
 }
 
+# Process install Mta install tasks
 sub install
 {
 	my $self = shift;
 	my $rs = 0;
 
-	# Saving all system configuration files if they exists
-	for ((
+	my @mtaConffiles = (
 		$self::postfixConfig{'POSTFIX_CONF_FILE'},
 		$self::postfixConfig{'POSTFIX_MASTER_CONF_FILE'},
 		$self::postfixConfig{'MTA_VIRTUAL_CONF_DIR'} . '/aliases',
@@ -82,36 +91,41 @@ sub install
 		$self::postfixConfig{'MTA_VIRTUAL_CONF_DIR'} . '/transport',
 		$self::postfixConfig{'MTA_VIRTUAL_CONF_DIR'} . '/sender-access',
 		$self::postfixConfig{'MTA_VIRTUAL_CONF_DIR'} . '/relay_domains'
-	)) {
-		$rs |= $self->bkpConfFile($_);
-	}
+	);
 
+	iMSCP::HooksManager->getInstance()->trigger('beforeMtaInstall');
+
+	# Saving all system configuration files if they exists
+	$rs |= $self->bkpConfFile($_) for @mtaConffiles;
 	$rs |= $self->buildConf();
-	$rs |= $self->buildLookup();
-	$rs |= $self->buildAliasses();
+	$rs |= $self->buildLookupTables();
+	$rs |= $self->buildAliasesDb();
 	$rs |= $self->arplSetup();
 	$rs |= $self->saveConf();
-	$rs |= $self->setEnginePermissions();
+	$rs |= $self->setPermissions();
+
+	iMSCP::HooksManager->getInstance()->trigger('afterMtaInstall');
 
 	$rs;
 }
 
-sub setEnginePermissions
+# Set Mta files and directories permissions
+sub setPermissions
 {
-	debug('Setting engine permissions');
-
-	use iMSCP::Rights;
-
 	my $self = shift;
-	my $rs;
 	my $rootUName = $main::imscpConfig{'ROOT_USER'};
 	my $rootGName = $main::imscpConfig{'ROOT_GROUP'};
 	my $mtaUName = $self::postfixConfig{'MTA_MAILBOX_UID_NAME'};
 	my $mtaGName = $self::postfixConfig{'MTA_MAILBOX_GID_NAME'};
 	my $mtaCfg = $self::postfixConfig{'MTA_VIRTUAL_CONF_DIR'};
 	my $mtaFolder = $self::postfixConfig{'MTA_VIRTUAL_MAIL_DIR'};
-	my $ROOT_DIR = $main::imscpConfig{'ROOT_DIR'};
-	my $LOG_DIR = $main::imscpConfig{'LOG_DIR'};
+	my $imscpRootDir = $main::imscpConfig{'ROOT_DIR'};
+	my $logDir = $main::imscpConfig{'LOG_DIR'};
+	my $rs = 0;
+
+	use iMSCP::Rights;
+
+	iMSCP::HooksManager->getInstance()->trigger('beforeMtaSetPermissions');
 
 	$rs |= setRights(
 		$mtaCfg,
@@ -119,12 +133,12 @@ sub setEnginePermissions
 	);
 
 	$rs |= setRights(
-		"$ROOT_DIR/engine/messenger",
+		"$imscpRootDir/engine/messenger",
 		{ user => $mtaUName, group => $mtaGName, dirmode => '0750', filemode => '0550', recursive => 'yes' }
 	);
 
 	$rs |= setRights(
-		"$LOG_DIR/imscp-arpl-msgr",
+		"$logDir/imscp-arpl-msgr",
 		{ user => $mtaUName, group => $mtaGName, dirmode => '0750', filemode => '0640', recursive => 'yes' }
 	);
 
@@ -133,9 +147,12 @@ sub setEnginePermissions
 		{ user => $mtaUName, group => $mtaGName, dirmode => '0750', filemode => '0640', recursive => 'yes' }
 	);
 
+	iMSCP::HooksManager->getInstance()->trigger('afterMtaSetPermissions');
+
 	$rs;
 }
 
+# Create needed directories
 sub makeDirs
 {
 	my $self = shift;
@@ -143,81 +160,142 @@ sub makeDirs
 
 	use iMSCP::Dir;
 
-	debug('Creating postfix folders');
+	my @directories = (
+		[
+			$self::postfixConfig{'MTA_VIRTUAL_CONF_DIR'},
+			$main::imscpConfig{'ROOT_USER'},
+			$main::imscpConfig{'ROOT_GROUP'}
+		],
+		[
+			$self::postfixConfig{'MTA_VIRTUAL_MAIL_DIR'},
+			$self::postfixConfig{'MTA_MAILBOX_UID_NAME'},
+			$self::postfixConfig{'MTA_MAILBOX_GID_NAME'}
+		],
+	);
 
-	for (
-		[$self::postfixConfig{'MTA_VIRTUAL_CONF_DIR'}, $main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'}],
-		[$self::postfixConfig{'MTA_VIRTUAL_MAIL_DIR'}, $self::postfixConfig{'MTA_MAILBOX_UID_NAME'}, $self::postfixConfig{'MTA_MAILBOX_GID_NAME'}],
-	) {
-		$rs |= iMSCP::Dir->new(dirname => $_->[0])->make({ user => $_->[1], group => $_->[2], mode => 0755});
-	}
+	iMSCP::HooksManager->getInstance()->trigger('beforeMtaMakeDirs', \@directories);
+
+	$rs |= iMSCP::Dir->new(
+		dirname => $_->[0])->make({ user => $_->[1], group => $_->[2], mode => 0755 }
+	) for @directories;
+
+	iMSCP::HooksManager->getInstance()->trigger('afterMtaMakeDirs');
 
 	$rs;
 }
 
-sub addUsers
+# Add needed users and groups for Mta
+sub addUsersAndGroups
 {
 	my $self = shift;
-
-	debug('Adding system users...');
-
-	use Modules::SystemGroup;
-
 	my $rs = 0;
 
-	my $group = Modules::SystemGroup->new();
-
-	$group->{system} = 'yes';
-	$rs |= $group->addSystemGroup($self::postfixConfig{'MTA_MAILBOX_GID_NAME'});
-
 	use Modules::SystemUser;
-	my $user = Modules::SystemUser->new();
+	use Modules::SystemGroup;
 
-	$user->{'comment'} = 'vmail-user';
-	$user->{'home'} = $self::postfixConfig{'MTA_VIRTUAL_MAIL_DIR'};
-	$user->{'group'} = $self::postfixConfig{'MTA_MAILBOX_GID_NAME'};
-	$user->{'system'} = 'yes';
+	my @groups = (
+		[
+			$self::postfixConfig{'MTA_MAILBOX_GID_NAME'},	# group name
+			'yes'											# Whether it's a system group
+		]
+	);
 
-	$rs |= $user->addSystemUser($self::postfixConfig{'MTA_MAILBOX_UID_NAME'});
-	$rs |= $user->addToGroup($main::imscpConfig{'MASTER_GROUP'});
+	my @users = (
+		[
+			$self::postfixConfig{'MTA_MAILBOX_UID_NAME'},	# User name
+			$self::postfixConfig{'MTA_MAILBOX_GID_NAME'},	# User primary group name
+			'vmail_user',									# Comment
+			$self::postfixConfig{'MTA_VIRTUAL_MAIL_DIR'},	# User homedir
+			'yes',											# Whether it's a system user
+			[$main::imscpConfig{'MASTER_GROUP'}]			# Additional user group(s)
+		]
+	);
 
-	$user = Modules::SystemUser->new();
-	$rs |= $user->addToGroup($self::postfixConfig{'SASLDB_GROUP'}, $self::postfixConfig{'POSTFIX_USER'});
+	my @userToGroups = (
+		[
+			$self::postfixConfig{'POSTFIX_USER'},			# User to add into group
+			[$self::postfixConfig{'SASLDB_GROUP'}]			# group(s) to which add user
+		]
+	);
+
+	iMSCP::HooksManager->getInstance()->trigger('beforeMtaAddUsersAndGroups', \@groups, \@users, \@userToGroups);
+
+	# Create groups
+	for(@groups) {
+		my $systemGroup = Modules::SystemGroup->new();
+		$systemGroup->{'system'} = 'yes' if $_->[1] eq 'yes';
+		$rs |= $systemGroup->addSystemGroup($_->[0]);
+	}
+
+	# Create users
+	for(@users) {
+		my $systemUser = Modules::SystemUser->new();
+
+		$systemUser->{'group'} = $_->[1];
+		$systemUser->{'comment'} = $_->[2];
+		$systemUser->{'home'} = $_->[3];
+		$systemUser->{'system'} = 'yes' if $_->[4] eq 'yes';
+
+		$rs |= $systemUser->addSystemUser($_->[0]);
+
+		if(defined $_->[5]) {
+			$rs |= $systemUser->addToGroup($_) for @{$_->[5]};
+		}
+	}
+
+	# User to groups
+	for(@userToGroups) {
+		my $systemUser = Modules::SystemUser->new();
+		my $user = $_->[0];
+
+		$rs |= $systemUser->addToGroup($_, $user) for @{$_->[1]};
+	}
+
+	iMSCP::HooksManager->getInstance()->trigger('afterMtaAddUsersAndGroups');
 
 	$rs;
 }
 
-sub buildAliasses
+# Build Mta aliases db
+sub buildAliasesDb
 {
 	my $self = shift;
 	my ($rs, $stdout, $stderr);
+
+	iMSCP::HooksManager->getInstance()->trigger('beforeMtaBuildAliases');
 
 	# Rebuilding the database for the mail aliases file - Begin
 	$rs = execute("$self::postfixConfig{'CMD_NEWALIASES'}", \$stdout, \$stderr);
 	debug("$stdout");
 	error("$stderr") if($stderr);
-	error("Error while executing $self::postfixConfig{'CMD_NEWALIASES'}") if(!$stderr && $rs);
+	error("Error while executing $self::postfixConfig{'CMD_NEWALIASES'}") if !$stderr && $rs;
+
+	iMSCP::HooksManager->getInstance()->trigger('afterMtaBuildAliases');
 
 	$rs;
 }
 
+# Setup auto-responder
 sub arplSetup
 {
 	my $self = shift;
 
-	debug('Autoresponder install...');
-
 	my $file;
 	my $rs = 0;
+
+	iMSCP::HooksManager->getInstance()->trigger('beforeMtaArplSetup');
 
 	$file = iMSCP::File->new(filename => "$main::imscpConfig{'ROOT_DIR'}/engine/messenger/imscp-arpl-msgr");
 	$rs |= $file->mode(0755);
 	$rs |= $file->owner($self::postfixConfig{'MTA_MAILBOX_UID_NAME'}, $self::postfixConfig{'MTA_MAILBOX_GID_NAME'});
 
+	iMSCP::HooksManager->getInstance()->trigger('afterMtaArplSetup');
+
 	$rs;
 }
 
-sub buildLookup
+# Build and install Mta lookup tables
+sub buildLookupTables
 {
 	my $self = shift;
 	my $rs = 0;
@@ -226,7 +304,11 @@ sub buildLookup
 	use iMSCP::File;
 	use iMSCP::Execute;
 
-	for (qw/aliases domains mailboxes transport sender-access relay_domains/) {
+	my @lookupTables = qw/aliases domains mailboxes transport sender-access relay_domains/;
+
+	iMSCP::HooksManager->getInstance()->trigger('beforeMtaBuildLookupTables', \@lookupTables);
+
+	for (@lookupTables) {
 		# Storing the new files in the working directory
 		$file = iMSCP::File->new(filename => "$self->{vrlDir}/$_");
 		$rs |= $file->copyFile("$self->{wrkDir}");
@@ -235,15 +317,20 @@ sub buildLookup
 		$rs |= $file->copyFile("$self::postfixConfig{'MTA_VIRTUAL_CONF_DIR'}");
 
 		# Creating/updating databases for all lookup tables
-		my $rv = execute("$self::postfixConfig{'CMD_POSTMAP'} $self::postfixConfig{'MTA_VIRTUAL_CONF_DIR'}/$_", \$stdout, \$stderr);
+		my $rv = execute(
+			"$self::postfixConfig{'CMD_POSTMAP'} $self::postfixConfig{'MTA_VIRTUAL_CONF_DIR'}/$_", \$stdout, \$stderr
+		);
 		debug("$stdout");
-		error("$stderr") if($rv);
+		error("$stderr") if $rv;
 		$rs |= $rv;
 	}
+
+	iMSCP::HooksManager->getInstance()->trigger('afterMtaBuildLookupTables', \@lookupTables);
 
 	$rs;
 }
 
+# Backup the given Mta configuration file
 sub bkpConfFile
 {
 	my $self = shift;
@@ -251,11 +338,14 @@ sub bkpConfFile
 	my $cfgFile = shift;
 	my $timestamp = time;
 
+	iMSCP::HooksManager->getInstance()->trigger('beforeMtaBkpConfFile', $cfgFile);
+
 	use File::Basename;
 
-	if(-f $cfgFile){
+	if(-f $cfgFile) {
 		my $file = iMSCP::File->new( filename => $cfgFile );
 		my ($filename, $directories, $suffix) = fileparse($cfgFile);
+
 		if(!-f "$self->{bkpDir}/$filename$suffix.system") {
 			$rs |= $file->copyFile("$self->{bkpDir}/$filename$suffix.system");
 		} else {
@@ -263,15 +353,20 @@ sub bkpConfFile
 		}
 	}
 
+	iMSCP::HooksManager->getInstance()->trigger('afterMtaBkpConfFile', $cfgFile);
+
 	$rs;
 }
 
+# Save Postfix data file
 sub saveConf
 {
 	my $self = shift;
 	my $rs = 0;
 
 	use iMSCP::File;
+
+	iMSCP::HooksManager->getInstance()->trigger('beforeMtaSaveConf', 'postfix.data');
 
 	my $file = iMSCP::File->new(filename => "$self->{cfgDir}/postfix.data");
 	my $cfg = $file->get() or return 1;
@@ -282,21 +377,29 @@ sub saveConf
 	$rs |= $file->mode(0640);
 	$rs |= $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
 
+	iMSCP::HooksManager->getInstance()->trigger('afterMtaSaveConf', 'postfix.data');
+
 	$rs;
 }
 
+# Build both master.cf and main.cf Postfix configuration files
 sub buildConf
 {
+	iMSCP::HooksManager->getInstance()->trigger('beforeMtabuildConf');
+
 	my $self = shift;
 	my $rs = 0;
 
-	$rs |= $self->buildMain();
-	$rs |= $self->buildMaster();
+	$rs |= $self->buildMainCfFile();
+	$rs |= $self->buildMasterCfFile();
+
+	iMSCP::HooksManager->getInstance()->trigger('afterMtabuildConf');
 
 	$rs;
 }
 
-sub buildMaster
+# Build and install Postfix master.cf configuration file
+sub buildMasterCfFile
 {
 	my $self = shift;
 	my $rs = 0;
@@ -309,7 +412,7 @@ sub buildMaster
 	my $cfgTpl	= $file->get();
 	return 1 if (!$cfgTpl);
 
-	iMSCP::HooksManager->getInstance()->trigger('beforeMtaBuildConf', \$cfgTpl, 'master.cf');
+	iMSCP::HooksManager->getInstance()->trigger('beforeMtaBuildMasterCfFile', \$cfgTpl, 'master.cf');
 
 	$cfgTpl = iMSCP::Templator::process(
 		{
@@ -321,7 +424,7 @@ sub buildMaster
 	);
 	return 1 if (!$cfgTpl);
 
-	$rs |= iMSCP::HooksManager->getInstance()->trigger('afterMtaBuildConf', \$cfgTpl, 'master.cf');
+	$rs |= iMSCP::HooksManager->getInstance()->trigger('afterMtaBuildMasterCfFile', \$cfgTpl, 'master.cf');
 
 	$file = iMSCP::File->new(filename => "$self->{wrkDir}/master.cf");
 
@@ -336,7 +439,8 @@ sub buildMaster
 	$rs;
 }
 
-sub buildMain
+# Build and install Postfix main.cf configuration file
+sub buildMainCfFile
 {
 	my $self = shift;
 	my $rs = 0;
@@ -354,7 +458,7 @@ sub buildMain
 	my $gid	= getgrnam($self::postfixConfig{'MTA_MAILBOX_GID_NAME'});
 	my $uid	= getpwnam($self::postfixConfig{'MTA_MAILBOX_UID_NAME'});
 
-	iMSCP::HooksManager->getInstance()->trigger('beforeMtaBuildConf', \$cfgTpl, 'main.cf');
+	iMSCP::HooksManager->getInstance()->trigger('beforeMtaBuildMainCfFile', \$cfgTpl, 'main.cf');
 
 	$cfgTpl = iMSCP::Templator::process(
 		{
@@ -380,7 +484,7 @@ sub buildMain
 	);
 	return 1 if (!$cfgTpl);
 
-	$rs |= iMSCP::HooksManager->getInstance()->trigger('afterMtaBuildConf', \$cfgTpl, 'main.cf');
+	$rs |= iMSCP::HooksManager->getInstance()->trigger('afterMtaBuildMainCfFile', \$cfgTpl, 'main.cf');
 
 	# Storing the new file in working directory
 	$file = iMSCP::File->new(filename => "$self->{wrkDir}/main.cf");
