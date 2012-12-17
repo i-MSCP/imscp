@@ -35,6 +35,8 @@ sub _init
 {
 	my $self = shift;
 
+	iMSCP::HooksManager->getInstance()->trigger('beforePoInit', $self, 'dovecot');
+
 	$self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/dovecot";
 	$self->{'bkpDir'} = "$self->{cfgDir}/backup";
 	$self->{'wrkDir'} = "$self->{cfgDir}/working";
@@ -43,7 +45,9 @@ sub _init
 
 	tie %self::dovecotConfig, 'iMSCP::Config','fileName' => $conf;
 
-	0;
+	iMSCP::HooksManager->getInstance()->trigger('afterPoInit', $self, 'dovecot');
+
+	$self;
 }
 
 sub registerSetupHooks
@@ -67,9 +71,13 @@ sub uninstall
 {
 	my $self = shift;
 
+	iMSCP::HooksManager->getInstance()->trigger('beforePoUninstall', 'dovecot');
+
 	use Servers::po::dovecot::uninstaller;
 	my $rs = Servers::po::dovecot::uninstaller->new()->uninstall();
 	$rs |= $self->restart();
+
+	iMSCP::HooksManager->getInstance()->trigger('afterPoUninstall', 'dovecot');
 
 	$rs;
 }
@@ -78,7 +86,11 @@ sub postinstall
 {
 	my $self = shift;
 
+	iMSCP::HooksManager->getInstance()->trigger('beforePoPostinstall', 'dovecot');
+
 	$self->{'restart'} = 'yes';
+
+	iMSCP::HooksManager->getInstance()->trigger('afterPoPostinstall', 'dovecot');
 
 	0;
 }
@@ -87,6 +99,8 @@ sub restart
 {
 	my $self = shift;
 	my ($rs, $stdout, $stderr);
+
+	iMSCP::HooksManager->getInstance()->trigger('beforePoRestart') and return 1;
 
 	use iMSCP::Execute;
 
@@ -97,7 +111,7 @@ sub restart
 	error("$stderr") if $stderr && $rs;
 	return $rs if $rs;
 
-	0;
+	iMSCP::HooksManager->getInstance()->trigger('afterPoRestart');
 }
 
 sub getTraffic
@@ -114,25 +128,32 @@ sub getTraffic
 	use iMSCP::Config;
 	use Tie::File;
 
+	iMSCP::HooksManager->getInstance()->trigger('beforePoGetTraffic');
+
 	## only if files was not already parsed this session
 	unless($self->{'logDb'}){
 		# use a small conf file to memorize last line readed and his content
 		tie %{$self->{'logDb'}}, 'iMSCP::Config','fileName' => $dbName, noerrors => 1;
+
 		## first use? we zero line and content
 		$self->{'logDb'}->{'line'} = 0 unless $self->{'logDb'}->{'line'};
 		$self->{'logDb'}->{'content'} = '' unless $self->{'logDb'}->{'content'};
 		my $lastLineNo = $self->{'logDb'}->{'line'};
 		my $lastLine = $self->{'logDb'}->{'content'};
+
 		## copy log file
 		$rs = iMSCP::File->new(filename => $logFile)->copyFile($wrkLogFile) if -f $logFile;
 		# return 0 traffic if we fail
 		return 0 if $rs;
+
 		# link log file to array
 		tie my @content, 'Tie::File', $wrkLogFile or return 0;
-		#save last line
+
+		# save last line
 		$self->{'logDb'}->{'line'} = $#content;
 		$self->{'logDb'}->{'content'} = @content[$#content];
-		#test for logratation
+
+		# test for logratation
 		if(@content[$lastLineNo] && @content[$lastLineNo] eq $lastLine){
 			## No logratation ocure. We zero already readed files
 			(tied @content)->defer;
@@ -164,10 +185,13 @@ sub getTraffic
 		}
 	}
 
-	$self->{traff}->{$who} ? $self->{traff}->{$who} : 0;
+	iMSCP::HooksManager->getInstance()->trigger('afterPoGetTraffic');
+
+	$self->{'traff'}->{$who} ? $self->{'traff'}->{$who} : 0;
 }
 
-END {
+END
+{
 	my $endCode	= $?;
 	my $self = Servers::po::dovecot->new();
 	my $wrkLogFile = "$main::imscpConfig{LOG_DIR}/mail.po.log";

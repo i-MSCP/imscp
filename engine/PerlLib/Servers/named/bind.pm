@@ -35,6 +35,8 @@ sub _init
 {
 	my $self = shift;
 
+	iMSCP::HooksManager->getInstance()->trigger('beforeNamedInit', $self, 'bind');
+
 	$self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/bind";
 	$self->{'bkpDir'} = "$self->{cfgDir}/backup";
 	$self->{'wrkDir'} = "$self->{cfgDir}/working";
@@ -43,7 +45,11 @@ sub _init
 	$self->{'commentChar'} = '#';
 
 	tie %self::bindConfig, 'iMSCP::Config','fileName' => "$self->{cfgDir}/bind.data", noerrors => 1;
-	$self->{$_} = $self::bindConfig{$_} foreach(keys %self::bindConfig);
+	$self->{$_} = $self::bindConfig{$_} for keys %self::bindConfig;
+
+	iMSCP::HooksManager->getInstance()->trigger('afterNamedInit', $self, 'bind');
+
+	$self;
 }
 
 sub registerSetupHooks
@@ -62,13 +68,7 @@ sub install
 
 	use Servers::named::bind::installer;
 
-	iMSCP::HooksManager->getInstance()->trigger('beforeNamedInstall', 'bind');
-
-	$rs |= Servers::named::bind::installer->new()->install();
-
-	iMSCP::HooksManager->getInstance()->trigger('afterNamedInstall', 'bind');
-
-	$rs;
+	Servers::named::bind::installer->new()->install();
 }
 
 sub uninstall
@@ -78,13 +78,13 @@ sub uninstall
 
 	use Servers::named::bind::uninstaller;
 
-	iMSCP::HooksManager->getInstance()->trigger('beforeNamedUninstall', 'bind');
+	iMSCP::HooksManager->getInstance()->trigger('beforeNamedUninstall', 'bind') and return 1;
 
 	$rs |= Servers::named::bind::uninstaller->new()->uninstall();
 
-	iMSCP::HooksManager->getInstance()->trigger('afterNamedUninstall', 'bind');
-
 	$rs |= $self->restart();
+
+	$rs |= iMSCP::HooksManager->getInstance()->trigger('afterNamedUninstall', 'bind');
 
 	$rs;
 }
@@ -93,9 +93,11 @@ sub postinstall
 {
 	my $self = shift;
 
+	iMSCP::HooksManager->getInstance()->trigger('beforeNamedPostinstall') and return 1;
+
 	$self->{'restart'} = 'yes';
 
-	0;
+	iMSCP::HooksManager->getInstance()->trigger('afterNamedPostinstall')
 }
 
 sub restart
@@ -105,7 +107,7 @@ sub restart
 
 	use iMSCP::Execute;
 
-	iMSCP::HooksManager->getInstance()->trigger('beforeNamedRestart');
+	iMSCP::HooksManager->getInstance()->trigger('beforeNamedRestart') and return 1;
 
 	# Reload config
 	$rs = execute("$self->{CMD_NAMED} restart", \$stdout, \$stderr);
@@ -114,8 +116,6 @@ sub restart
 	return $rs if $rs;
 
 	iMSCP::HooksManager->getInstance()->trigger('afterNamedRestart');
-
-	0;
 }
 
 sub incTimeStamp
@@ -124,6 +124,8 @@ sub incTimeStamp
 	my $oldZoneFile	= shift;
 	my $dmnName = shift;
 	my $newZoneFile	= shift || $oldZoneFile;
+
+	iMSCP::HooksManager->getInstance()->trigger('beforeNamedIncTimeStamp');
 
 	use iMSCP::File;
 	use iMSCP::Templator;
@@ -134,12 +136,12 @@ sub incTimeStamp
 	my $entries = iMSCP::File->new(filename => "$self->{tplDir}/db_e.tpl")->get();
 	return undef if (!$entries);
 
-	my $tags = { DMN_NAME	=> $dmnName };
+	my $tags = { DMN_NAME => $dmnName };
 	my $cleanBTag = iMSCP::File->new(filename => "$self->{tplDir}/db_time_b.tpl")->get();
 	my $cleanETag = iMSCP::File->new(filename => "$self->{tplDir}/db_time_e.tpl")->get();
 	my $bTag = process($tags, $cleanBTag);
 	my $eTag = process($tags, $cleanETag);
-	return undef if(!$cleanBTag ||!$bTag || !$cleanETag || !$eTag);
+	return undef if(! $cleanBTag || ! $bTag || ! $cleanETag || ! $eTag);
 
 	my $timeStampBlock = getBloc($bTag, $eTag, $oldZoneFile);
 	my $cleanTimeStampBlock	= getBloc($cleanBTag, $cleanETag, $entries);
@@ -149,7 +151,7 @@ sub incTimeStamp
 	my (undef, undef, undef, $day, $mon, $year) = localtime;
 	if((my $tyear, my $tmon, my $tday, my $nn, my $setup) = ($timeStampBlock =~ /$regExp/)) {
 		if($setup){
-			$timestamp = sprintf '%04d%02d%02d00', $year+1900, $mon+1, $day;
+			$timestamp = sprintf '%04d%02d%02d00', $year + 1900, $mon + 1, $day;
 		} else {
 			$nn++;
 
@@ -158,8 +160,8 @@ sub incTimeStamp
 				$tday++;
 			}
 
-			$timestamp = ((($year+1900)*10000+($mon+1)*100+$day) > ($tyear*10000 + $tmon*100 + $tday))
-				? (sprintf '%04d%02d%02d00', $year+1900, $mon+1, $day)
+			$timestamp = ((($year + 1900) * 10000 + ($mon + 1) * 100 + $day) > ($tyear * 10000 + $tmon * 100 + $tday))
+				? (sprintf '%04d%02d%02d00', $year + 1900, $mon + 1, $day)
 				: (sprintf '%04d%02d%02d%02d', $tyear, $tmon, $tday, $nn);
 		}
 		$timeStampBlock = process({ TIMESTAMP => $timestamp}, $cleanTimeStampBlock);
@@ -170,6 +172,8 @@ sub incTimeStamp
 
 	$newZoneFile = replaceBloc($bTag, $eTag, "$bTag$timeStampBlock$eTag", $newZoneFile, undef);
 
+	iMSCP::HooksManager->getInstance()->trigger('afterNamedIncTimeStamp');
+
 	$newZoneFile;
 }
 
@@ -178,6 +182,8 @@ sub addDmnDb
 	my $self = shift;
 	my $option = shift;
 	my $zoneFile = "$self::bindConfig{BIND_DB_DIR}/$option->{DMN_NAME}.db";
+
+	iMSCP::HooksManager->getInstance()->trigger('beforeNamedAddDmnDb') and return 1;
 
 	use iMSCP::Dialog;
 	use iMSCP::File;
@@ -197,13 +203,13 @@ sub addDmnDb
 
 	# Load the current working db file
 	my $wrkCfg = "$self->{wrkDir}/$option->{DMN_NAME}.db";
-	my $wrkFileContent = iMSCP::File->new(filename => $wrkCfg)->get() if(-f $wrkCfg);
+	my $wrkFileContent = iMSCP::File->new(filename => $wrkCfg)->get() if -f $wrkCfg;
 
 	## Building new configuration file
 
 	# Loading the template from /etc/imscp/bind/parts
 	my $entries = iMSCP::File->new(filename => "$self->{tplDir}/db_e.tpl")->get();
-	return 1 if (!$entries);
+	return 1 if ! $entries;
 
 	########################## NS SECTION START #################################
 
@@ -271,7 +277,7 @@ sub addDmnDb
 
 	$entries = $self->incTimeStamp(($wrkFileContent ? $wrkFileContent : $entries), $option->{'DMN_NAME'}, $entries);
 
-	if(!$entries) {
+	if(! $entries) {
 		error("Cannot update timestamp for $option->{DMN_NAME}");
 		return 1;
 	}
@@ -319,14 +325,13 @@ sub addDmnDb
 
 	##################### CUSTOM DATA SECTION START ##########################
 
-	if( keys(%{$option->{DMN_CUSTOM}}) > 0 ){
-
+	if(keys(%{$option->{'DMN_CUSTOM'}}) > 0 ) {
 		my $bTag = iMSCP::File->new(filename => "$self->{tplDir}/db_dns_entry_b.tpl")->get();
 		my $eTag = iMSCP::File->new(filename =>"$self->{tplDir}/db_dns_entry_e.tpl")->get();
 		my $FormatTag = iMSCP::File->new(filename => "$self->{tplDir}/db_dns_entry.tpl")->get();
 		my $custom = '';
 
-		for(keys %{$option->{'DMN_CUSTOM'}}){
+		for(keys %{$option->{'DMN_CUSTOM'}}) {
 			next unless
 				$option->{'DMN_CUSTOM'}->{$_}->{'domain_text'} &&
 				$option->{'DMN_CUSTOM'}->{$_}->{'domain_class'} &&
@@ -358,7 +363,7 @@ sub addDmnDb
 	# Install the file in the production directory
 	$file->copyFile($self::bindConfig{'BIND_DB_DIR'}) and return 1;
 
-	0;
+	iMSCP::HooksManager->getInstance()->trigger('afterNamedAddDmnDb');
 }
 
 sub addDmnConfig
@@ -367,6 +372,8 @@ sub addDmnConfig
 	my $option = shift;
 	my $rs = 0;
 	my ($rdata, $cfg, $file);
+
+	iMSCP::HooksManager->getInstance()->trigger('beforeNamedAddDmnConfig') and return 1;
 
 	use iMSCP::File;
 	use iMSCP::Templator;
@@ -432,6 +439,8 @@ sub addDmnConfig
 	# Install the new file in the production directory
 	$rs |= $file->copyFile($self::bindConfig{'BIND_CONF_FILE'});
 
+	$rs |= iMSCP::HooksManager->getInstance()->trigger('afterNamedAddDmnConfig');
+
 	$rs;
 }
 
@@ -447,10 +456,12 @@ sub addDmn
 		'DMN_IP' => 'You must supply ip for domain!'
 	};
 
-	foreach(keys %{$errmsg}){
+	for(keys %{$errmsg}){
 		error("$errmsg->{$_}") unless $option->{$_};
 		return 1 unless $option->{$_};
 	}
+
+	iMSCP::HooksManager->getInstance()->trigger('beforeNamedAddDmn') and return 1;
 
 	iMSCP::HooksManager->getInstance()->trigger('beforeNamedAddDmn', \$option);
 
@@ -461,7 +472,7 @@ sub addDmn
 
 	$self->{'restart'} = 'yes';
 
-	0;
+	iMSCP::HooksManager->getInstance()->trigger('afterNamedAddDmn');
 }
 
 sub postaddDmn
@@ -469,6 +480,8 @@ sub postaddDmn
 	my $self = shift;
 	my $option = shift;
 	my $rs = 0;
+
+	iMSCP::HooksManager->getInstance()->trigger('beforeNamedPostAddDmn') and return 1;
 
 	use iMSCP::IP;
 
@@ -481,7 +494,7 @@ sub postaddDmn
 		'DMN_IP' => 'You must supply ip for domain!'
 	};
 
-	foreach(keys %{$errmsg}){
+	for(keys %{$errmsg}){
 		error("$errmsg->{$_}") unless $option->{$_};
 		return 1 unless $option->{$_};
 	}
@@ -507,6 +520,8 @@ sub postaddDmn
 	$self->{'restart'} = 'yes';
 	delete $self->{'data'};
 
+	$rs |= iMSCP::HooksManager->getInstance()->trigger('afterNamedPostAddDmn');
+
 	$rs;
 }
 
@@ -514,8 +529,10 @@ sub delDmnConfig
 {
 	my $self = shift;
 	my $option = shift;
-	my $rs = 0;
 	my ($rdata, $cfg, $file);
+	my $rs = 0;
+
+	iMSCP::HooksManager->getInstance()->trigger('beforeNamedDelDmnConfig') and return 1;
 
 	use iMSCP::File;
 	use iMSCP::Templator;
@@ -523,7 +540,7 @@ sub delDmnConfig
 
 	# backup config file
 	if(-f "$self->{wrkDir}/named.conf"){
-		my $file = iMSCP::File->new( filename => "$self->{wrkDir}/named.conf" );
+		my $file = iMSCP::File->new(filename => "$self->{wrkDir}/named.conf");
 		$file->copyFile("$self->{bkpDir}/named.conf.".time) and return 1;
 	} else {
 		error("$self->{wrkDir}/named.conf not found. Run setup again to fix this");
@@ -558,7 +575,9 @@ sub delDmnConfig
 	$rs |= $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
 
 	# Install the new file in the production directory
-	$rs |= $file->copyFile($self::bindConfig{BIND_CONF_FILE});
+	$rs |= $file->copyFile($self::bindConfig{'BIND_CONF_FILE'});
+
+	$rs |= iMSCP::HooksManager->getInstance()->trigger('afterNamedDelDmnConfig');
 
 	$rs;
 }
@@ -571,10 +590,10 @@ sub delDmn
 
 	$option = {} if ref $option ne 'HASH';
 
-	error('You must supply domain name!') unless $option->{DMN_NAME};
-	return 1 unless $option->{DMN_NAME};
+	error('You must supply domain name!') unless $option->{'DMN_NAME'};
+	return 1 unless $option->{'DMN_NAME'};
 
-	iMSCP::HooksManager->getInstance()->trigger('beforeNamedDelDmn', \$option);
+	iMSCP::HooksManager->getInstance()->trigger('beforeNamedDelDmn', $option) and return 1;
 
 	$rs |= $self->delDmnConfig($option);
 
@@ -601,7 +620,7 @@ sub delDmn
 		return 1;
 	}
 
-	$zContent =~ s/$option->{USER_NAME}\.$main::imscpConfig{BASE_SERVER_VHOST}\.\s[^\n]*\n//gmi;
+	$zContent =~ s/$option->{'USER_NAME'}\.$main::imscpConfig{'BASE_SERVER_VHOST'}\.\s[^\n]*\n//gmi;
 
 	# Store the new builded file in the working directory
 	my $file = iMSCP::File->new(filename => "$self->{wrkDir}/$main::imscpConfig{BASE_SERVER_VHOST}.db");
@@ -613,7 +632,7 @@ sub delDmn
 	# Install the new file in the production directory
 	$rs |= $file->copyFile($self::bindConfig{'BIND_DB_DIR'});
 
-	iMSCP::HooksManager->getInstance()->trigger('afterNamedDelDmn', $option);
+	$rs |= iMSCP::HooksManager->getInstance()->trigger('afterNamedDelDmn', $option);
 
 	$rs;
 }
@@ -624,7 +643,7 @@ sub postdelDmn
 	my $data = shift;
 	my $rs = 0;
 
-	iMSCP::HooksManager->getInstance()->trigger('beforeNamedPostDelDmn', \$data);
+	iMSCP::HooksManager->getInstance()->trigger('beforeNamedPostDelDmn', $data);
 
 	$rs |= $self->addDmn(
 		{
@@ -659,12 +678,12 @@ sub addSub
 		'DMN_IP' => 'You must supply ip for domain!'
 	};
 
-	foreach(keys %{$errmsg}){
+	for(keys %{$errmsg}){
 		error("$errmsg->{$_}") unless $data->{$_};
 		return 1 unless $data->{$_};
 	}
 
-	iMSCP::HooksManager->getInstance()->trigger('beforeNamedAddSub', \$data);
+	iMSCP::HooksManager->getInstance()->trigger('beforeNamedAddSub', $data) and return 1;
 
 	my $zoneFile = "$self::bindConfig{BIND_DB_DIR}/$data->{PARENT_DMN_NAME}.db";
 
@@ -679,14 +698,14 @@ sub addSub
 	my $wrkCfg = "$self->{wrkDir}/$data->{PARENT_DMN_NAME}.db";
 	my $wrkFileContent = iMSCP::File->new(filename => $wrkCfg)->get();
 
-	if(!$wrkFileContent){
+	if(! $wrkFileContent){
 		error("Can not load $wrkCfg");
 		return 1;
 	}
 
-	$wrkFileContent = $self->incTimeStamp($wrkFileContent, $data->{PARENT_DMN_NAME});
+	$wrkFileContent = $self->incTimeStamp($wrkFileContent, $data->{'PARENT_DMN_NAME'});
 
-	if(!$wrkFileContent) {
+	if(! $wrkFileContent) {
 		error("Can not update timestamp for $data->{PARENT_DMN_NAME}");
 		return 1;
 	}
@@ -701,9 +720,9 @@ sub addSub
 	my $eTag = "; sub MX entry END\n";
 	my $mxBlock;
 
-	if($data->{MX}) {
+	if($data->{'MX'}) {
 		my $cleanMXBlock = getBloc($bTag, $eTag, $cleanTag);
-		$mxBlock .= process({ MAIL_SERVER => $data->{'MX'}->{$_}->{'domain_text'} }, $cleanMXBlock) for(keys %{$data->{MX}});
+		$mxBlock .= process({ MAIL_SERVER => $data->{'MX'}->{$_}->{'domain_text'} }, $cleanMXBlock) for keys %{$data->{'MX'}};
 		$cleanTag = replaceBloc($bTag, $eTag, $mxBlock, $cleanTag, undef);
 	} else {
 		$cleanTag = replaceBloc($bTag, $eTag, '', $cleanTag, undef);
@@ -736,7 +755,7 @@ sub addSub
 	# Install the file in the production directory
 	$rs |= $file->copyFile($self::bindConfig{'BIND_DB_DIR'});
 
-	iMSCP::HooksManager->getInstance()->trigger('afterNamedAddSub', $data);
+	$rs |= iMSCP::HooksManager->getInstance()->trigger('afterNamedAddSub', $data);
 
 	$rs;
 }
@@ -751,7 +770,7 @@ sub postaddSub
 
 	my $ipH = iMSCP::IP->new();
 
-	iMSCP::HooksManager->getInstance()->trigger('beforeNamedPostAddSub', \$data);
+	iMSCP::HooksManager->getInstance()->trigger('beforeNamedPostAddSub', $data) and return 1;
 
 	$rs |= $self->addDmn(
 		{
@@ -767,7 +786,7 @@ sub postaddSub
 		}
 	);
 
-	iMSCP::HooksManager->getInstance()->trigger('afterNamedPostAddSub', $data);
+	$rs |= iMSCP::HooksManager->getInstance()->trigger('afterNamedPostAddSub', $data);
 
 	$self->{'restart'} = 'yes';
 	delete $self->{'data'};
@@ -791,12 +810,12 @@ sub delSub
 		'PARENT_DMN_NAME' => 'You must supply parent domain name!'
 	};
 
-	foreach(keys %{$errmsg}){
+	for(keys %{$errmsg}){
 		error("$errmsg->{$_}") unless $data->{$_};
 		return 1 unless $data->{$_};
 	}
 
-	iMSCP::HooksManager->getInstance()->trigger('beforeNamedDelSub', \$data);
+	iMSCP::HooksManager->getInstance()->trigger('beforeNamedDelSub', $data) and return 1;
 
 	my $zoneFile = "$self::bindConfig{BIND_DB_DIR}/$data->{PARENT_DMN_NAME}.db";
 
@@ -817,6 +836,7 @@ sub delSub
 	}
 
 	$wrkFileContent = $self->incTimeStamp($wrkFileContent, $data->{'PARENT_DMN_NAME'});
+
 	if(!$wrkFileContent) {
 		error("Can not update timestamp for $data->{PARENT_DMN_NAME}");
 		return 1;
@@ -842,7 +862,7 @@ sub delSub
 	# Install the file in the production directory
 	$rs |= $file->copyFile($self::bindConfig{'BIND_DB_DIR'});
 
-	iMSCP::HooksManager->getInstance()->trigger('afterNamedDelSub', $data);
+	$rs |= iMSCP::HooksManager->getInstance()->trigger('afterNamedDelSub', $data);
 
 	$rs;
 }
@@ -853,7 +873,7 @@ sub postdelSub
 	my $data = shift;
 	my $rs = 0;
 
-	iMSCP::HooksManager->getInstance()->trigger('beforeNamedPostDelSub', \$data);
+	iMSCP::HooksManager->getInstance()->trigger('beforeNamedPostDelSub', $data) and return 1;
 
 	$rs |= $self->addDmn(
 		{
@@ -866,7 +886,7 @@ sub postdelSub
 		}
 	);
 
-	iMSCP::HooksManager->getInstance()->trigger('afterNamedPostDelSub', $data);
+	$rs |= iMSCP::HooksManager->getInstance()->trigger('afterNamedPostDelSub', $data);
 
 	$self->{'restart'} = 'yes';
 	delete $self->{'data'};
@@ -874,11 +894,13 @@ sub postdelSub
 	$rs;
 }
 
-END {
+END
+{
 	my $endCode	= $?;
 	my $self = Servers::named::bind->new();
 	my $rs = 0;
-	$rs	= $self->restart() if $self->{restart} && $self->{restart} eq 'yes';
+
+	$rs	= $self->restart() if $self->{'restart'} && $self->{'restart'} eq 'yes';
 	$? = $endCode || $rs;
 }
 

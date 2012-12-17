@@ -36,6 +36,8 @@ sub _init
 {
 	my $self = shift;
 
+	iMSCP::HooksManager->getInstance()->trigger('beforeHttpdInit', $self, 'apache_itk');
+
 	$self->{'masterConf'} = '00_master.conf';
 	$self->{'masterSSLConf'} = '00_master_ssl.conf';
 
@@ -47,21 +49,31 @@ sub _init
 	my $conf = "$self->{cfgDir}/apache.data";
 	tie %self::apacheConfig, 'iMSCP::Config','fileName' => $conf;
 
-	$self->{tplValues}->{$_} = $self::apacheConfig{$_} foreach(keys %self::apacheConfig);
+	$self->{'tplValues'}->{$_} = $self::apacheConfig{$_} for keys %self::apacheConfig;
 
-	0;
+	iMSCP::HooksManager->getInstance()->trigger('afterHttpdInit', $self, 'apache_itk');
+
+	$self;
+}
+
+sub registerSetupHooks
+{
+	my $self = shift;
+	my $hooksManager = shift;
+
+	use Servers::httpd::apache_itk::installer;
+	Servers::httpd::apache_itk::installer->new()->registerSetupHooks($hooksManager);
 }
 
 sub preinstall
 {
 	my $self = shift;
-	my $rs = 0;
 
-	iMSCP::HooksManager->getInstance()->trigger('beforeHttpdPreInstall', 'apache_itk');
+	iMSCP::HooksManager->getInstance()->trigger('beforeHttpdPreInstall', 'apache_itk') and return 1;
 
-	$rs = $self->stop();
+	my $rs = $self->stop();
 
-	iMSCP::HooksManager->getInstance()->trigger('afterHttpdPreInstall', 'apache_itk');
+	$rs |= iMSCP::HooksManager->getInstance()->trigger('afterHttpdPreInstall', 'apache_itk');
 
 	$rs;
 }
@@ -73,13 +85,7 @@ sub install
 
 	use Servers::httpd::apache_itk::installer;
 
-	iMSCP::HooksManager->getInstance()->trigger('beforeHttpdInstall', 'apache_itk');
-
-	$rs |= Servers::httpd::apache_itk::installer->new()->install();
-
-	iMSCP::HooksManager->getInstance()->trigger('afterHttpdInstall', 'apache_itk');
-
-	$rs;
+	Servers::httpd::apache_itk::installer->new()->install();
 }
 
 sub uninstall
@@ -91,11 +97,11 @@ sub uninstall
 
 	$rs |= $self->stop();
 
-	iMSCP::HooksManager->getInstance()->trigger('beforeHttpdUninstall', 'apache_itk');
+	$rs |= iMSCP::HooksManager->getInstance()->trigger('beforeHttpdUninstall', 'apache_itk');
 
 	$rs |= Servers::httpd::apache_itk::uninstaller->new()->uninstall();
 
-	iMSCP::HooksManager->getInstance()->trigger('afterHttpdUninstall', 'apache_itk');
+	$rs |= iMSCP::HooksManager->getInstance()->trigger('afterHttpdUninstall', 'apache_itk');
 
 	$rs |= $self->start();
 
@@ -106,13 +112,11 @@ sub postinstall
 {
 	my $self = shift;
 
-	iMSCP::HooksManager->getInstance()->trigger('beforeHttpdPostInstall', 'apache_itk');
+	iMSCP::HooksManager->getInstance()->trigger('beforeHttpdPostInstall', 'apache_itk') and return 1;
 
 	$self->{'start'} = 'yes';
 
 	iMSCP::HooksManager->getInstance()->trigger('afterHttpdPostInstall', 'apache_itk');
-
-	0;
 }
 
 sub setGuiPermissions
@@ -131,7 +135,7 @@ sub enableSite
 
 	use iMSCP::Execute;
 
-	iMSCP::HooksManager->getInstance()->trigger('beforeHttpdEnableSite', \$sites);
+	iMSCP::HooksManager->getInstance()->trigger('beforeHttpdEnableSite', \$sites) and return 1;
 
 	for(split(' ', $sites)){
 		if(-f "$self::apacheConfig{APACHE_SITES_DIR}/$_"){
@@ -145,8 +149,6 @@ sub enableSite
 	}
 
 	iMSCP::HooksManager->getInstance()->trigger('afterHttpdEnableSite', $sites);
-
-	0;
 }
 
 sub disableSite
@@ -157,7 +159,7 @@ sub disableSite
 
 	use iMSCP::Execute;
 
-	iMSCP::HooksManager->getInstance()->trigger('beforeHttpdDisableSite', \$sites);
+	iMSCP::HooksManager->getInstance()->trigger('beforeHttpdDisableSite', \$sites) and return 1;
 
 	for(split(' ', $sites)){
 		if(-f "$self::apacheConfig{APACHE_SITES_DIR}/$_"){
@@ -171,8 +173,6 @@ sub disableSite
 	}
 
 	iMSCP::HooksManager->getInstance()->trigger('afterHttpdDisableSite', $sites);
-
-	0;
 }
 
 sub enableMod
@@ -183,7 +183,7 @@ sub enableMod
 
 	use iMSCP::Execute;
 
-	iMSCP::HooksManager->getInstance()->trigger('beforeHttpdEnableMod', \$mod);
+	iMSCP::HooksManager->getInstance()->trigger('beforeHttpdEnableMod', \$mod) and return 1;
 
 	$rs = execute("a2enmod $mod", \$stdout, \$stderr);
 	debug("$stdout") if($stdout);
@@ -191,8 +191,6 @@ sub enableMod
 	return $rs if $rs;
 
 	iMSCP::HooksManager->getInstance()->trigger('afterHttpdEnableMod', $mod);
-
-	0;
 }
 
 sub disableMod
@@ -203,7 +201,7 @@ sub disableMod
 
 	use iMSCP::Execute;
 
-	iMSCP::HooksManager->getInstance()->trigger('beforeHttpdDisableMod', \$mod);
+	iMSCP::HooksManager->getInstance()->trigger('beforeHttpdDisableMod', \$mod) and return 1;
 
 	$rs = execute("a2dismod $mod", \$stdout, \$stderr);
 	debug("$stdout") if($stdout);
@@ -211,8 +209,6 @@ sub disableMod
 	return $rs if $rs;
 
 	iMSCP::HooksManager->getInstance()->trigger('afterHttpdDisableMod', $mod);
-
-	0;
 }
 
 sub forceRestart
@@ -230,9 +226,8 @@ sub start
 
 	use iMSCP::Execute;
 
-	iMSCP::HooksManager->getInstance()->trigger('beforeHttpdStart');
+	iMSCP::HooksManager->getInstance()->trigger('beforeHttpdStart') and return 1;
 
-	# start apache
 	$rs = execute("$self->{tplValues}->{CMD_HTTPD} start", \$stdout, \$stderr);
 	debug("$stdout") if $stdout;
 	warning("$stderr") if $stderr && !$rs;
@@ -241,8 +236,6 @@ sub start
 	return $rs if $rs;
 
 	iMSCP::HooksManager->getInstance()->trigger('afterHttpdStart');
-
-	0;
 }
 
 sub stop
@@ -252,9 +245,8 @@ sub stop
 
 	use iMSCP::Execute;
 
-	iMSCP::HooksManager->getInstance()->trigger('beforeHttpdStop');
+	iMSCP::HooksManager->getInstance()->trigger('beforeHttpdStop') and return 1;
 
-	# stop apache
 	$rs = execute("$self->{tplValues}->{CMD_HTTPD} stop", \$stdout, \$stderr);
 	debug("$stdout") if $stdout;
 	warning("$stderr") if $stderr && !$rs;
@@ -263,8 +255,6 @@ sub stop
 	return $rs if $rs;
 
 	iMSCP::HooksManager->getInstance()->trigger('afterHttpdStop');
-
-	0;
 }
 
 sub restart
@@ -274,10 +264,10 @@ sub restart
 
 	use iMSCP::Execute;
 
-	iMSCP::HooksManager->getInstance()->trigger('beforeHttpdRestart');
+	iMSCP::HooksManager->getInstance()->trigger('beforeHttpdRestart') and return 1;
 
 	# Reload apache config
-	$rs = execute("$self->{tplValues}->{CMD_HTTPD} ".($self->{forceRestart} ? 'restart' : 'reload'), \$stdout, \$stderr);
+	$rs = execute("$self->{tplValues}->{CMD_HTTPD} ".($self->{'forceRestart'} ? 'restart' : 'reload'), \$stdout, \$stderr);
 	debug("$stdout") if $stdout;
 	warning("$stderr") if $stderr && !$rs;
 	error("$stderr") if $stderr && $rs;
@@ -285,8 +275,6 @@ sub restart
 	return $rs if $rs;
 
 	iMSCP::HooksManager->getInstance()->trigger('afterHttpdRestart');
-
-	0;
 }
 
 sub buildConf($ $ $)
@@ -305,8 +293,8 @@ sub buildConf($ $ $)
 
 	iMSCP::HooksManager->getInstance()->trigger('beforeHttpdBuildConf', \$cfgTpl, $filename);
 
-	$cfgTpl = process($self->{tplValues}, $cfgTpl);
-	return undef if (!$cfgTpl);
+	$cfgTpl = process($self->{'tplValues'}, $cfgTpl);
+	return undef if ! $cfgTpl;
 
     iMSCP::HooksManager->getInstance()->trigger('afterHttpdBuildConf', \$cfgTpl, $filename);
 
@@ -333,12 +321,12 @@ sub buildConfFile
 	error("Empty config template $file...") unless $cfgTpl;
 	return 1 unless $cfgTpl;
 
-	iMSCP::HooksManager->getInstance()->trigger('beforeHttpdBuildConfFile', \$cfgTpl, "$filename$suffix");
+	iMSCP::HooksManager->getInstance()->trigger('beforeHttpdBuildConfFile', \$cfgTpl, "$filename$suffix") and return 1;
 
 	$cfgTpl = $self->buildConf($cfgTpl, "$filename$suffix");
 	return 1 if (! $cfgTpl);
 
-	iMSCP::HooksManager->getInstance()->trigger('afterHttpdBuildConfFile', \$cfgTpl, "$filename$suffix");
+	iMSCP::HooksManager->getInstance()->trigger('afterHttpdBuildConfFile', \$cfgTpl, "$filename$suffix") and return 1;
 
 	$fileH = iMSCP::File->new(
 		filename => ($option->{'destination'} ? $option->{'destination'} : "$self->{wrkDir}/$filename$suffix")
@@ -367,6 +355,8 @@ sub installConfFile
 
 	my ($filename, $directories, $suffix) = fileparse($file);
 
+	iMSCP::HooksManager->getInstance()->trigger('beforeHttpdInstallConfFile', "$filename$suffix") and return 1;
+
 	$file = "$self->{wrkDir}/$file" unless -d $directories && $directories ne './';
 
 	my $fileH = iMSCP::File->new(filename => $file);
@@ -381,7 +371,7 @@ sub installConfFile
 		$option->{'destination'} ? $option->{'destination'} : "$self::apacheConfig{APACHE_SITES_DIR}/$filename$suffix"
 	);
 
-	0;
+	iMSCP::HooksManager->getInstance()->trigger('afterHttpdInstallConfFile', "$filename$suffix");
 }
 
 sub setData
@@ -389,10 +379,12 @@ sub setData
 	my $self = shift;
 	my $data = shift;
 
+	iMSCP::HooksManager->getInstance()->trigger('beforeHttpdSetData', $data) and return 1;
+
 	$data = {} if ref $data ne 'HASH';
 	$self->{'data'} = $data;
 
-	0;
+	iMSCP::HooksManager->getInstance()->trigger('afterHttpdSetData');
 }
 
 sub getRunningUser
@@ -426,6 +418,8 @@ sub addUser
 {
 	my $self = shift;
 	my $data = shift;
+
+	iMSCP::HooksManager->getInstance()->trigger('beforeHttpdAddUser') and return 1;
 
 	use iMSCP::File;
 	use iMSCP::Templator;
@@ -528,6 +522,8 @@ sub addUser
 
 	$self->{'restart'} = 'yes';
 
+	$rs |= iMSCP::HooksManager->getInstance()->trigger('beforeHttpdAddUser');
+
 	$rs;
 }
 
@@ -538,13 +534,15 @@ sub delUser
 	my $hDir = $data->{'HOME_DIR'};
 	my $rs = 0;
 
+	iMSCP::HooksManager->getInstance()->trigger('beforeHttpdDelUser') and return 1;
+
 	use iMSCP::File;
 	use iMSCP::Dir;
 	use iMSCP::Templator;
 
 	my $errmsg = { 'USER' => 'You must supply user name!' };
 
-	foreach(keys %{$errmsg}){
+	for(keys %{$errmsg}){
 		error("$errmsg->{$_}") unless exists $data->{$_};
 		return 1 unless exists $data->{$_};
 	}
@@ -552,6 +550,7 @@ sub delUser
 	$self->{'data'} = $data;
 
 	########################## START MOD CBAND SECTION ##############################
+
 	$rs |= iMSCP::File->new(
 		filename => "$self->{cfgDir}/00_modcband.conf"
 	)->copyFile(
@@ -591,6 +590,8 @@ sub delUser
 
 	$self->{'restart'} = 'yes';
 
+	$rs |= iMSCP::HooksManager->getInstance()->trigger('afterHttpdDelUser');
+
 	$rs;
 }
 
@@ -606,10 +607,12 @@ sub addDmn
 		'DMN_IP' => 'You must supply ip for domain!'
 	};
 
-	foreach(keys %{$errmsg}){
+	for(keys %{$errmsg}){
 		error("$errmsg->{$_}") unless $data->{$_};
 		return 1 unless $data->{$_};
 	}
+
+	iMSCP::HooksManager->getInstance()->trigger('beforeHttpdAddDmn') and return 1;
 
 	$self->{'data'} = $data;
 
@@ -618,6 +621,8 @@ sub addDmn
 
 	$self->{'restart'} = 'yes';
 	delete $self->{'data'};
+
+	$rs |= iMSCP::HooksManager->getInstance()->trigger('afterHttpdAddDmn');
 
 	$rs;
 }
@@ -629,6 +634,8 @@ sub addCfg
 	my $rs = 0;
 	my $certPath = "$main::imscpConfig{GUI_ROOT_DIR}/data/certs";
 	my $certFile = "$certPath/$data->{DMN_NAME}.pem";
+
+	iMSCP::HooksManager->getInstance()->trigger('beforeHttpdAddCfg') and return 1;
 
 	use iMSCP::File;
 
@@ -709,6 +716,8 @@ sub addCfg
 
 	$rs |= $self->enableSite($_) foreach(keys %configs);
 
+	$rs |= iMSCP::HooksManager->getInstance()->trigger('afterHttpdAddCfg');
+
 	$rs;
 }
 
@@ -730,7 +739,11 @@ sub dmnFolders
 		["$hDir/phptmp", $data->{'USER'}, $data->{'GROUP'}, 0770]
 	);
 
+	iMSCP::HooksManager->getInstance()->trigger('beforeHttpdDmnFolders', \@folders);
+
 	push(@folders, ["$hDir/errors", $data->{'USER'}, $apacheGroup, 0710]) if $self->{'mode'} eq 'dmn';
+
+	iMSCP::HooksManager->getInstance()->trigger('afterHttpdDmnFolders', \@folders);
 
 	@folders;
 }
@@ -745,6 +758,8 @@ sub addFiles
 	my $apacheGroup = $self::apacheConfig{'APACHE_GROUP'};
 	my $newHtdocs = -d "$hDir/htdocs";
 	my ($rs, $stdout, $stderr);
+
+	iMSCP::HooksManager->getInstance()->trigger('beforeHttpdAddFiles') and return 1;
 
 	use iMSCP::Dir;
 	use iMSCP::Rights;
@@ -793,6 +808,8 @@ sub addFiles
 		{ user => $rootUser, group => $apacheGroup, filemode => '0640', dirmode => '0710', recursive => 'yes' }
 	);
 
+	$rs |= iMSCP::HooksManager->getInstance()->trigger('afterHttpdAddFiles');
+
 	$rs;
 }
 
@@ -803,6 +820,8 @@ sub delDmn
 
 	error('You must supply domain name!') unless $data->{'DMN_NAME'};
 	return 1 unless $data->{'DMN_NAME'};
+
+	iMSCP::HooksManager->getInstance()->trigger('beforeHttpdDelDmn') and return 1;
 
 	my $rs = 0;
 
@@ -825,6 +844,8 @@ sub delDmn
 	$self->{'restart'} = 'yes';
 	delete $self->{'data'};
 
+	$rs |= iMSCP::HooksManager->getInstance()->trigger('afterHttpdDelDmn');
+
 	$rs;
 }
 
@@ -840,10 +861,13 @@ sub disableDmn
 		'DMN_NAME' => 'You must supply domain name!',
 		'DMN_IP' => 'You must supply ip for domain!'
 	};
-	foreach(keys %{$errmsg}){
+
+	for(keys %{$errmsg}){
 		error("$errmsg->{$_}") unless $data->{$_};
 		return 1 unless $data->{$_};
 	}
+
+	iMSCP::HooksManager->getInstance()->trigger('beforeHttpdDisableDmn') and return 1;
 
 	$self->{'data'} = $data;
 
@@ -866,6 +890,8 @@ sub disableDmn
 	$self->{'restart'} = 'yes';
 	delete $self->{'data'};
 
+	iMSCP::HooksManager->getInstance()->trigger('afterHttpdDisableDmn');
+
 	0;
 }
 
@@ -881,7 +907,9 @@ sub addSub
 		'DMN_IP' => 'You must supply ip for subdomain!'
 	};
 
-	foreach(keys %{$errmsg}){
+	iMSCP::HooksManager->getInstance()->trigger('beforeHttpdAddSub') and return 1;
+
+	for(keys %{$errmsg}){
 		error("$errmsg->{$_}") unless $data->{$_};
 		return 1 unless $data->{$_};
 	}
@@ -894,6 +922,8 @@ sub addSub
 	$self->{'restart'} = 'yes';
 	delete $self->{'data'};
 
+	$rs |= iMSCP::HooksManager->getInstance()->trigger('afterHttpdAddSub');
+
 	$rs;
 }
 
@@ -901,14 +931,26 @@ sub delSub
 {
 	my $self = shift;
 
-	$self->delDmn(@_);
+	iMSCP::HooksManager->getInstance()->trigger('beforeHttpdDelSub') and return 1;
+
+	my $rs = $self->delDmn(@_);
+
+	$rs |= iMSCP::HooksManager->getInstance()->trigger('afterHttpdDelSub');
+
+	$rs;
 }
 
 sub disableSub
 {
 	my $self = shift;
 
-	$self->disableDmn(@_);
+	iMSCP::HooksManager->getInstance()->trigger('beforeHttpdDisableSub') and return 1;
+
+	my $rs = $self->disableDmn(@_);
+
+	$rs |= iMSCP::HooksManager->getInstance()->trigger('beforeHttpdDisableSub');
+
+	$rs;
 }
 
 sub addHtuser
@@ -916,6 +958,8 @@ sub addHtuser
 	my $self = shift;
 	my $data = shift;
 	my $rs = 0;
+
+	iMSCP::HooksManager->getInstance()->trigger('beforeHttpdAddHtuser') and return 1;
 
 	use iMSCP::File;
 
@@ -933,6 +977,8 @@ sub addHtuser
 	$rs |= $fileH->mode(0644);
 	$rs |= $fileH->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
 
+	$rs |= iMSCP::HooksManager->getInstance()->trigger('afterHttpdAddHtuser');
+
 	$rs;
 }
 
@@ -941,6 +987,8 @@ sub delHtuser
 	my $self = shift;
 	my $data = shift;
 	my $rs = 0;
+
+	iMSCP::HooksManager->getInstance()->trigger('beforeHttpdDelHtuser') and return 1;
 
 	use iMSCP::File;
 
@@ -956,6 +1004,8 @@ sub delHtuser
 	$rs |= $fileH->mode(0644);
 	$rs |= $fileH->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
 
+	$rs |= iMSCP::HooksManager->getInstance()->trigger('afterHttpdDelHtuser');
+
 	$rs;
 }
 
@@ -964,6 +1014,8 @@ sub addHtgroup
 	my $self = shift;
 	my $data = shift;
 	my $rs = 0;
+
+	iMSCP::HooksManager->getInstance()->trigger('beforeHttpdAddHtgroup') and return 1;
 
 	use iMSCP::File;
 
@@ -980,6 +1032,8 @@ sub addHtgroup
 	$rs |= $fileH->mode(0644);
 	$rs |= $fileH->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
 
+	$rs |= iMSCP::HooksManager->getInstance()->trigger('afterHttpdAddHtgroup');
+
 	$rs;
 }
 
@@ -988,6 +1042,8 @@ sub delHtgroup
 	my $self = shift;
 	my $data = shift;
 	my $rs = 0;
+
+	iMSCP::HooksManager->getInstance()->trigger('beforeHttpdDelHtgroup') and return 1;
 
 	use iMSCP::File;
 
@@ -1003,6 +1059,8 @@ sub delHtgroup
 	$rs |= $fileH->mode(0644);
 	$rs |= $fileH->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
 
+	$rs |= iMSCP::HooksManager->getInstance()->trigger('afterHttpdDelHtgroup');
+
 	$rs;
 }
 
@@ -1011,6 +1069,8 @@ sub addHtaccess
 	my $self = shift;
 	my $data = shift;
 	my $rs = 0;
+
+	iMSCP::HooksManager->getInstance()->trigger('beforeHttpdAddHtaccess') and return 1;
 
 	use iMSCP::File;
 	use iMSCP::Templator;
@@ -1041,6 +1101,8 @@ sub addHtaccess
 	$rs |= $fileH->mode(0644);
 	$rs |= $fileH->owner($data->{'USER'}, $data->{'GROUP'});
 
+	$rs |= iMSCP::HooksManager->getInstance()->trigger('afterHttpdAddHtaccess');
+
 	$rs;
 }
 
@@ -1049,6 +1111,8 @@ sub delHtaccess
 	my $self = shift;
 	my $data = shift;
 	my $rs = 0;
+
+	iMSCP::HooksManager->getInstance()->trigger('beforeHttpdDelHtaccess') and return 1;
 
 	use iMSCP::File;
 	use iMSCP::Templator;
@@ -1074,6 +1138,8 @@ sub delHtaccess
 		$rs |= $fileH->delFile() if -f $filePath;
 	}
 
+	$rs |= iMSCP::HooksManager->getInstance()->trigger('afterHttpdDelHtaccess');
+
 	$rs;
 }
 
@@ -1082,6 +1148,8 @@ sub addIps
 	my $self = shift;
 	my $data = shift;
 	my $rs = 0;
+
+	iMSCP::HooksManager->getInstance()->trigger('beforeHttpdAddIps') and return 1;
 
 	use iMSCP::File;
 	use iMSCP::Templator;
@@ -1125,6 +1193,8 @@ sub addIps
 	$self->{'restart'} = 'yes';
 	delete $self->{'data'};
 
+	$rs |= iMSCP::HooksManager->getInstance()->trigger('afterHttpdAddIps');
+
 	$rs;
 }
 
@@ -1135,6 +1205,8 @@ sub getTraffic
 	my $traff = 0;
 	my $trfDir = "$self::apacheConfig{APACHE_LOG_DIR}/traff";
 	my ($rv, $rs, $stdout, $stderr);
+
+	iMSCP::HooksManager->getInstance()->trigger('beforeHttpdGetTraffic');
 
 	use iMSCP::Execute;
 	use iMSCP::Dir;
@@ -1173,16 +1245,20 @@ sub getTraffic
 		}
 	}
 
+	iMSCP::HooksManager->getInstance()->trigger('afterHttpdGetTraffic');
+
 	$traff;
 }
 
-sub del_old_logs
+sub delOldLogs
 {
 	my $rs = 0;
 	my $logDir = $self::apacheConfig{'APACHE_LOG_DIR'};
 	my $bLogDir = $self::apacheConfig{'APACHE_BACKUP_LOG_DIR'};
 	my $uLogDir = $self::apacheConfig{'APACHE_USERS_LOG_DIR'};
 	my ($stdout, $stderr);
+
+	iMSCP::HooksManager->getInstance()->trigger('beforeHttpdDelOldLogs') and return 1;
 
 	for ($logDir, $bLogDir, $uLogDir){
 		my $cmd = "nice -n 19 find $_ -maxdepth 1 -type f -name '*.log*' -mtime +365 -exec rm -v {} \\;";
@@ -1192,10 +1268,12 @@ sub del_old_logs
 		error("Error while executing $cmd.\nReturned value is $rs") if !$stderr && $rs;
 	}
 
+	$rs |= iMSCP::HooksManager->getInstance()->trigger('afterHttpdDelOldLogs');
+
 	$rs;
 }
 
-sub del_tmp
+sub delTmp
 {
 	my $rs = 0;
 	my ($stdout, $stderr);
@@ -1203,13 +1281,15 @@ sub del_tmp
 	use iMSCP::Execute;
 	use POSIX;
 
+	iMSCP::HooksManager->getInstance()->trigger('beforeHttpdDelTmp') and return 1;
+
 	# panel sessions gc (since we are not using default session path)
 	if(-d "/var/www/imscp/gui/data/sessions"){
 		my $cmd = '[ -x /usr/lib/php5/maxlifetime ] && find /var/www/imscp/gui/data/sessions/ -type f -cmin +$(/usr/lib/php5/maxlifetime) -delete';
 		$rs |= execute($cmd, \$stdout, \$stderr);
 		debug($stdout) if $stdout;
 		error($stderr) if $stderr;
-		error("Error while executing $cmd.\nReturned value is $rs") if !$stderr && $rs;
+		error("Error while executing $cmd.\nReturned value is $rs") if ! $stderr && $rs;
 	}
 
 #
@@ -1260,10 +1340,14 @@ sub del_tmp
 #		}
 #	}
 
+
+	$rs |= iMSCP::HooksManager->getInstance()->trigger('afterHttpdDelTmp');
+
 	$rs;
 }
 
-END {
+END
+{
 	use iMSCP::Dir;
 
 	my $endCode = $?;
@@ -1273,7 +1357,7 @@ END {
 
 	if($self->{'start'} && $self->{'start'} eq 'yes'){
 		$rs = $self->start();
-	} elsif($self->{restart} && $self->{'restart'} eq 'yes') {
+	} elsif($self->{'restart'} && $self->{'restart'} eq 'yes') {
 		$rs = $self->restart();
 	}
 

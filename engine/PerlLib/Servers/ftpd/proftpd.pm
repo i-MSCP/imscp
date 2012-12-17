@@ -35,6 +35,8 @@ sub _init
 {
 	my $self = shift;
 
+	iMSCP::HooksManager->getInstance()->trigger('beforeFtpdInit', $self, 'proftpd');
+
 	$self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/proftpd";
 	$self->{'bkpDir'} = "$self->{cfgDir}/backup";
 	$self->{'wrkDir'} = "$self->{cfgDir}/working";
@@ -43,7 +45,11 @@ sub _init
 	$self->{'commentChar'} = '#';
 
 	tie %self::proftpdConfig, 'iMSCP::Config','fileName' => "$self->{cfgDir}/proftpd.data";
-	$self->{$_} = $self::proftpdConfig{$_} foreach(keys %self::proftpdConfig);
+	$self->{$_} = $self::proftpdConfig{$_} for keys %self::proftpdConfig;
+
+	iMSCP::HooksManager->getInstance()->trigger('afterFtpdInit', $self, 'proftpd');
+
+	$self;
 }
 
 sub registerSetupHooks
@@ -60,13 +66,9 @@ sub install
 	my $self = shift;
 	my $rs = 0;
 
-	iMSCP::HooksManager->getInstance()->trigger('beforeFtpdInstall', 'proftpd');
-
 	use Servers::ftpd::proftpd::installer;
 
 	$rs |= Servers::ftpd::proftpd::installer->new()->install();
-
-	iMSCP::HooksManager->getInstance()->trigger('afterFtpdInstall', 'proftpd');
 
 	$rs;
 }
@@ -93,7 +95,7 @@ sub postinstall
 {
 	my $self = shift;
 
-	$self->{restart} = 'yes';
+	$self->{'restart'} = 'yes';
 
 	0;
 }
@@ -143,12 +145,12 @@ sub addDmn
 	)->copyFile( "$self->{bkpDir}/$data->{FILE_NAME}.".time ) and $rs = 1
 	if -f "$self::proftpdConfig{FTPD_CONF_DIR}/$data->{FILE_NAME}";
 
-	my $template = ($data->{ROOT_DOMAIN} eq "true") ? "proftpd_root.conf.tpl" : "proftpd.conf.tpl";
-	my $file = iMSCP::File->new( filename => "$self->{tplDir}/".$template);
+	my $template = ($data->{ROOT_DOMAIN} eq 'true') ? 'proftpd_root.conf.tpl' : 'proftpd.conf.tpl';
+	my $file = iMSCP::File->new( filename => "$self->{tplDir}/$template");
 	my $content	= $file->get();
 
-	if(!$content){
-		error("Can not read $self->{tplDir}/".$template);
+	if(! $content){
+		error("Can not read $self->{tplDir}/$template");
 		return 1;
 	}
 
@@ -234,7 +236,7 @@ sub getTraffic
 		}
 	}
 
-	$self->{logDb}->{$who} ? $self->{logDb}->{$who} : 0;
+	$self->{'logDb'}->{$who} ? $self->{'logDb'}->{$who} : 0;
 }
 
 END {
@@ -245,7 +247,7 @@ END {
 	my $rs = 0;
 	my $trfFile	= "$main::imscpConfig{TRAFF_LOG_DIR}/$self::proftpdConfig{FTP_TRAFF_LOG}";
 
-	$rs = $self->restart() if $self->{restart} && $self->{restart} eq 'yes';
+	$rs = $self->restart() if $self->{'restart'} && $self->{'restart'} eq 'yes';
 	$rs |= iMSCP::File->new(filename => "$trfFile.old")->delFile() if -f "$trfFile.old";
 
 	$? = $endCode || $rs;

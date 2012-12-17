@@ -34,6 +34,8 @@ sub _init
 {
 	my $self = shift;
 
+	iMSCP::HooksManager->getInstance()->trigger('beforeNamedInitInstaller', $self, 'bind');
+
 	$self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/bind";
 	$self->{'bkpDir'} = "$self->{cfgDir}/backup";
 	$self->{'wrkDir'} = "$self->{cfgDir}/working";
@@ -48,6 +50,8 @@ sub _init
 		%self::bindConfig = (%self::bindConfig, %self::bindOldConfig);
 	}
 
+	iMSCP::HooksManager->getInstance()->trigger('afterNamedInitInstaller', $self, 'bind');
+
 	0;
 }
 
@@ -56,11 +60,15 @@ sub registerSetupHooks
 	my $self = shift;
 	my $hooksManager = shift;
 
+	$hooksManager->trigger('beforeNamedRegisterSetupHooks', $hooksManager, 'bind') and return 1;
+
 	# Add bind installer dialog in setup dialog stack
 	$hooksManager->register(
 		'beforeSetupDialog',
 		sub { my $dialogStack = shift; push(@$dialogStack, sub { $self->askMode(@_) }); 0; }
-	);
+	) and return 1;
+
+	$hooksManager->trigger('afterNamedRegisterSetupHooks', $hooksManager, 'bind');
 }
 
 sub askMode
@@ -196,10 +204,14 @@ sub install
 	my $self = shift;
 	my $rs = 0;
 
+	iMSCP::HooksManager->getInstance()->trigger('beforeNamedInstall', 'bind') and return 1;
+
 	$rs |= $self->bkpConfFile($self::bindConfig{'BIND_CONF_FILE'});
 	$rs |= $self->buildConf();
 	$rs |= $self->addMasterZone();
 	$rs |= $self->saveConf();
+
+	$rs |= iMSCP::HooksManager->getInstance()->trigger('afterNamedInstall', 'bind');
 
 	$rs;
 }
@@ -212,6 +224,8 @@ sub bkpConfFile
 
 	use File::Basename;
 
+	iMSCP::HooksManager->getInstance()->trigger('beforeNamedBkpConfFile', $cfgFile) and return 1;
+
 	if(-f $cfgFile){
 		my $file = iMSCP::File->new( filename => $cfgFile );
 		my ($filename, $directories, $suffix) = fileparse($cfgFile);
@@ -223,7 +237,7 @@ sub bkpConfFile
 		}
 	}
 
-	0;
+	iMSCP::HooksManager->getInstance()->trigger('afterNamedBkpConfFile', $cfgFile);
 }
 
 sub buildConf
@@ -252,12 +266,12 @@ sub buildConf
 	$cfgTpl = iMSCP::File->new(filename => "$self->{cfgDir}/named.conf")->get();
 	return 1 if(!$cfgTpl);
 
-	iMSCP::HooksManager->getInstance()->trigger('beforeNamedBuildConf', \$cfgTpl, 'named.conf');
+	iMSCP::HooksManager->getInstance()->trigger('beforeNamedBuildConf', \$cfgTpl, 'named.conf') and return 1;
 
 	# Building new file
 	$cfg .= $cfgTpl;
 
-	iMSCP::HooksManager->getInstance()->trigger('afterNamedBuildConf', \$cfg, 'named.conf');
+	iMSCP::HooksManager->getInstance()->trigger('afterNamedBuildConf', \$cfg, 'named.conf') and return 1;
 
 	## Storage and installation of new file
 
@@ -282,6 +296,8 @@ sub addMasterZone
 
 	my $named = Servers::named->factory();
 
+	iMSCP::HooksManager->getInstance()->trigger('beforeNamedAddMasterZone') and return 1;
+
 	my $rs = $named->addDmn({
 		DMN_NAME => $main::imscpConfig{'BASE_SERVER_VHOST'},
 		DMN_IP => $main::imscpConfig{'BASE_SERVER_IP'},
@@ -290,7 +306,7 @@ sub addMasterZone
 
 	return $rs if $rs;
 
-	0;
+	iMSCP::HooksManager->getInstance()->trigger('afterNamedAddMasterZone');
 }
 
 sub saveConf
@@ -313,6 +329,8 @@ sub saveConf
 
 	my $cfg = $file->get() or return 1;
 
+	iMSCP::HooksManager->getInstance()->trigger('beforeNamedSaveConf', \$cfg, 'bind.old.data') and return 1;
+
 	$rs |= $file->mode(0644);
 	$rs |= $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
 
@@ -321,6 +339,8 @@ sub saveConf
 	$rs |= $file->save();
 	$rs |= $file->mode(0644);
 	$rs |= $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
+
+	$rs |= iMSCP::HooksManager->getInstance()->trigger('afterNamedSaveConf', 'bind.old.data');
 
 	$rs;
 }
