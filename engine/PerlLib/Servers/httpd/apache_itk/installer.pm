@@ -63,7 +63,7 @@ sub registerSetupHooks
 
 	$hooksManager->trigger('beforeHttpdRegisterSetupHooks', $hooksManager, 'apache_itk') and return 1;
 
-	$hooksManager->trigger('afterPoRegisterSetupHooks', $hooksManager, 'apache_itk');
+	$hooksManager->trigger('afterHttpdRegisterSetupHooks', $hooksManager, 'apache_itk');
 }
 
 sub install

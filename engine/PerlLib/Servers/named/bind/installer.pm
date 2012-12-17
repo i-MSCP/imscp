@@ -68,7 +68,7 @@ sub registerSetupHooks
 		sub { my $dialogStack = shift; push(@$dialogStack, sub { $self->askMode(@_) }); 0; }
 	) and return 1;
 
-	$hooksManager->trigger('afterRegisterSetupHooks', $hooksManager, 'bind');
+	$hooksManager->trigger('afterNamedRegisterSetupHooks', $hooksManager, 'bind');
 }
 
 sub askMode
