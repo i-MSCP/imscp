@@ -56,6 +56,16 @@ sub _init
 	$self;
 }
 
+sub registerSetupHooks
+{
+	my $self = shift;
+	my $hooksManager = shift;
+
+	$hooksManager->trigger('beforeHttpdRegisterSetupHooks', $hooksManager, 'apache_itk') and return 1;
+
+	$hooksManager->trigger('afterPoRegisterSetupHooks', $hooksManager, 'apache_itk');
+}
+
 sub install
 {
 	my $self = shift;

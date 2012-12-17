@@ -62,7 +62,7 @@ sub registerSetupHooks
 	my $self = shift;
 	my $hooksManager = shift;
 
-	iMSCP::HooksManager->getInstance()->trigger('beforeRegisterSetupHooks', 'dovecot');
+	$hooksManager->trigger('beforePoRegisterSetupHooks', $hooksManager, 'dovecot') and return 1;
 
 	# Add installer dialog in setup dialog stack
 	$hooksManager->register(
@@ -70,13 +70,11 @@ sub registerSetupHooks
 		sub { my $dialogStack = shift; push(@$dialogStack, sub { $self->askDovecot(@_) }); 0; }
 	) and return 1;
 
-	iMSCP::HooksManager->getInstance()->register(
-		'afterMtaBuildConf', sub { return $self->mtaConf(@_); }
+	$hooksManager->register(
+		'afterMtaBuildConf', sub { return $self->buildMtaConf(@_); }
 	) and return 1;
 
-	iMSCP::HooksManager->getInstance()->trigger('afterRegisterSetupHooks', 'dovecot');
-
-	0;
+	$hooksManager->trigger('afterPoRegisterSetupHooks', $hooksManager, 'dovecot');
 }
 
 sub askDovecot
@@ -144,15 +142,17 @@ sub install
 	my $self = shift;
 	my $rs = 0;
 
-	# Saving all system configuration files if they exists
-	for (('dovecot.conf', 'dovecot-sql.conf')) {
-		$rs |= $self->bkpConfFile($_);
-	}
+	iMSCP::HooksManager->getInstance()->trigger('beforePoInstall', 'dovecot') and return 1;
 
-	$rs |= $self->setupDB();
+	# Save all system configuration files if they exists
+	$rs |= $self->bkpConfFile($_) for ('dovecot.conf', 'dovecot-sql.conf');
+
+	$rs |= $self->setupDb();
 	$rs |= $self->buildConf();
 	$rs |= $self->saveConf();
 	$rs |= $self->migrateMailboxes();
+
+	$rs |= iMSCP::HooksManager->getInstance()->trigger('afterPoInstall', 'dovecot');
 
 	$rs;
 }
@@ -160,6 +160,8 @@ sub install
 sub migrateMailboxes
 {
 	my $self = shift;
+
+	iMSCP::HooksManager->getInstance()->trigger('beforePoMigrateMailboxes') and return 1;
 
 	if($main::imscpOldConfig{'PO_SERVER'} && $main::imscpOldConfig{'PO_SERVER'} eq 'courier' &&
 		$main::imscpConfig{'PO_SERVER'} eq 'dovecot'
@@ -180,13 +182,15 @@ sub migrateMailboxes
 		error("Error while converting mails") if !$stderr && $rs;
 	}
 
-	0;
+	iMSCP::HooksManager->getInstance()->trigger('afterPoMigrateMailboxes');
 }
 
 sub getVersion
 {
 	my $self = shift;
 	my ($rs, $stdout, $stderr);
+
+	iMSCP::HooksManager->getInstance()->trigger('beforePoGetVersion');
 
 	$rs = execute('dovecot --version', \$stdout, \$stderr);
 	debug("$stdout") if $stdout;
@@ -204,7 +208,7 @@ sub getVersion
 		return 1;
 	}
 
-	0;
+	iMSCP::HooksManager->getInstance()->trigger('afterPoGetVersion');
 }
 
 sub saveConf
@@ -216,6 +220,9 @@ sub saveConf
 	my $file = iMSCP::File->new(filename => "$self->{cfgDir}/dovecot.data");
 
 	my $cfg = $file->get() or return 1;
+
+	iMSCP::HooksManager->getInstance()->trigger('beforePoSaveConf', \$cfg, 'dovecot.old.data') and return 1;
+
 	$file->mode(0640) and return 1;
 	$file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'}) and return 1;
 
@@ -225,7 +232,7 @@ sub saveConf
 	$file->mode(0640) and return 1;
 	$file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'}) and return 1;
 
-	0;
+	iMSCP::HooksManager->getInstance()->trigger('afterPoSaveConf', 'dovecot.old.data');
 }
 
 
@@ -234,6 +241,8 @@ sub bkpConfFile
 	my $self = shift;
 	my $cfgFile = shift;
 	my $timestamp = time;
+
+	iMSCP::HooksManager->getInstance()->trigger('beforePoBkpConfFile', $cfgFile) and return 1;
 
 	if(-f "$self::dovecotConfig{'DOVECOT_CONF_DIR'}/$cfgFile"){
 		my $file = iMSCP::File->new(filename => "$self::dovecotConfig{'DOVECOT_CONF_DIR'}/$cfgFile");
@@ -245,7 +254,7 @@ sub bkpConfFile
 		}
 	}
 
-	0;
+	iMSCP::HooksManager->getInstance()->trigger('afterPoBkpConfFile', $cfgFile);
 }
 
 sub buildConf
@@ -289,10 +298,14 @@ sub buildConf
 	for (keys %{$cfgFiles}) {
 		my $file = iMSCP::File->new(filename => "$self->{cfgDir}/$cfgFiles->{$_}");
 		my $cfgTpl = $file->get();
-		return 1 if (!$cfgTpl);
+		return 1 if ! $cfgTpl;
+
+		iMSCP::HooksManager->getInstance()->trigger('beforePoBuildConf', \$cfgTpl, $_) and return 1;
 
 		$cfgTpl = iMSCP::Templator::process($cfg, $cfgTpl);
-		return 1 if (!$cfgTpl);
+		return 1 if ! $cfgTpl;
+
+		iMSCP::HooksManager->getInstance()->trigger('afterPoBuildConf', \$cfgTpl, $_) and return 1;
 
 		$file = iMSCP::File->new(filename => "$self->{wrkDir}/$_");
 		$file->set($cfgTpl) and return 1;
@@ -308,7 +321,7 @@ sub buildConf
 	0;
 }
 
-sub setupDB
+sub setupDb
 {
 	my $self = shift;
 
@@ -317,6 +330,10 @@ sub setupDB
 	my $dbPass = $self::dovecotConfig{'DATABASE_PASSWORD'};
 	my $dbOldPass = $self::dovecotOldConfig{'DATABASE_PASSWORD'} || '';
 	my $rs = 0;
+
+	iMSCP::HooksManager->getInstance()->trigger(
+		'beforePoSetupDb', $dbUser, $dbOldUser, $dbPass, $dbOldPass
+	) and return 1;
 
 	if($dbUser ne $dbOldUser || $dbPass ne $dbOldPass) {
 
@@ -364,10 +381,11 @@ sub setupDB
         }
 	}
 
-	0;
+	iMSCP::HooksManager->getInstance()->trigger('afterPoSetupDb');
 }
 
-sub mtaConf
+# Hook function acting on the afterMtaBuildConf hook
+sub buildMtaConf
 {
 	my $self = shift;
 	my $content	= shift || '';

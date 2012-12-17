@@ -61,7 +61,7 @@ sub registerSetupHooks
 	my $self = shift;
 	my $hooksManager = shift;
 
-	iMSCP::HooksManager->getInstance()->trigger('beforeRegisterSetupHooks', 'apache_fcgi') and return 1;
+	$hooksManager->trigger('beforeHttpdRegisterSetupHooks', $hooksManager, 'apache_fcgi') and return 1;
 
 	# Add installer dialog in setup dialog stack
 	$hooksManager->register(
@@ -69,7 +69,7 @@ sub registerSetupHooks
 		sub { my $dialogStack = shift; push(@$dialogStack, sub { $self->askCgiModule(@_) }); 0; }
 	) and return 1;
 
-	iMSCP::HooksManager->getInstance()->trigger('afterRegisterSetupHooks', 'apache_fcgi');
+	$hooksManager->trigger('afterHttpdRegisterSetupHooks', $hooksManager, 'apache_fcgi');
 }
 
 sub askCgiModule

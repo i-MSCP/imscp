@@ -56,6 +56,15 @@ sub _init
 	$self;
 }
 
+sub registerSetupHooks
+{
+	my $self = shift;
+	my $hooksManager = shift;
+
+	use Servers::httpd::apache_itk::installer;
+	Servers::httpd::apache_itk::installer->new()->registerSetupHooks($hooksManager);
+}
+
 sub preinstall
 {
 	my $self = shift;

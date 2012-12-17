@@ -51,6 +51,15 @@ sub _init
 	$self;
 }
 
+sub registerSetupHooks
+{
+	my $self = shift;
+	my $hooksManager = shift;
+
+	use Servers::mta::postfix::installer;
+	Servers::mta::postfix::installer->new()->registerSetupHooks($hooksManager);
+}
+
 sub preinstall
 {
 	my $self = shift;

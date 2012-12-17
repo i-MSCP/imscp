@@ -65,17 +65,15 @@ sub registerSetupHooks
 	my $hooksManager = shift;
 	my $rs = 0;
 
-	$rs = iMSCP::HooksManager->getInstance()->trigger('beforeRegisterSetupHooks', 'proftpd');
+	$hooksManager->trigger('beforeFtpdRegisterSetupHooks', $hooksManager, 'proftpd') and return 1;
 
 	# Add proftpd installer dialog in setup dialog stack
-	$rs |= $hooksManager->register(
+	$hooksManager->register(
 		'beforeSetupDialog',
 		sub { my $dialogStack = shift; push(@$dialogStack, sub { $self->askProftpd(@_) }); 0; }
-	);
+	) and return 1;
 
-	$rs |= iMSCP::HooksManager->getInstance()->trigger('afterRegisterSetupHooks', 'proftpd');
-
-	$rs;
+	$hooksManager->trigger('afterFtpdRegisterSetupHooks', $hooksManager, 'proftpd');
 }
 
 sub askProftpd
@@ -167,7 +165,7 @@ sub removeOldFiles
 
 	use iMSCP::Execute;
 
-	$rs |= execute("$main::imscpConfig{'CMD_RM'} $self::proftpdConfig{'FTPD_CONF_DIR'}/*", \$stdout, \$stderr);
+	$rs |= execute("$main::imscpConfig{'CMD_RM'} -f $self::proftpdConfig{'FTPD_CONF_DIR'}/*", \$stdout, \$stderr);
 	debug("$stdout") if $stdout;
 
 	$rs |= iMSCP::HooksManager->getInstance()->trigger('afterFtpdRemoveOldFiles');

@@ -61,6 +61,16 @@ sub _init
 	0;
 }
 
+sub registerSetupHooks
+{
+	my $self = shift;
+	my $hooksManager = shift;
+
+	$hooksManager->trigger('beforeMtaRegisterSetupHooks', $hooksManager, 'postfix') and return 1;
+
+	$hooksManager->trigger('afterMtaRegisterSetupHooks', $hooksManager, 'postfix');
+}
+
 # Process Mta preinstall tasks
 sub preinstall
 {
