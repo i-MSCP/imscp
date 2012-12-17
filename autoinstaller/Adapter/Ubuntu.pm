@@ -33,6 +33,7 @@ package autoinstaller::Adapter::Ubuntu;
 
 use strict;
 use warnings;
+use iMSCP::Debug;
 use parent 'autoinstaller::Adapter::Debian';
 
 =head1 DESCRIPTION
@@ -55,13 +56,9 @@ use parent 'autoinstaller::Adapter::Debian';
 
 sub _init
 {
-	debug('Starting...');
-
 	my $self = shift;
 
 	$self->{'nonfree'} = 'multiverse';
-
-	debug('Ending...');
 
 	$self;
 }
