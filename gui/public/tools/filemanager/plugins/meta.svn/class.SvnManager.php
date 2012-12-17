@@ -92,15 +92,25 @@ class SvnManager extends AJXP_Plugin {
 	}
 		
 	protected function addIfNotVersionned($repoFile, $realFile){
-		$res = ExecSvnCmd("svnversion", $realFile, "");
-		if(!is_numeric(implode("", $res[IDX_STDOUT]))){
+        $error = false;
+        try{
+            //$res = ExecSvnCmd("svnversion", $realFile, "");
+            $res = ExecSvnCmd("svn status ", $realFile);
+        }catch(Exception $e){
+            $error = true;
+        }
+        if($error || (count($res[IDX_STDOUT]) && substr($res[IDX_STDOUT][0],0,1) == "?")){
 			$res2 = ExecSvnCmd("svn add", "$realFile");
 			$this->commitMessageParams = "Recycle cache file";
 			$this->commitChanges("ADD", array("dir" => dirname($repoFile)), array());
 		}
 	}
-	
-	public function commitFile($file){
+
+    /**
+     * @param String $file URL of the file to commit (probably a metadata)
+     * @param AJXP_Node $ajxpNode Optionnal node to commit along.
+     */
+	public function commitFile($file, $ajxpNode = null){
 		$repo = ConfService::getRepository();
 		$repo->detectStreamWrapper();
 		$wrapperData = $repo->streamData;
@@ -110,7 +120,23 @@ class SvnManager extends AJXP_Plugin {
 		if(count($res[IDX_STDOUT]) && substr($res[IDX_STDOUT][0],0,1) == "?"){
 			$res2 = ExecSvnCmd("svn add", "$realFile");
 		}
-		$this->commitChanges("COMMIT_META", $realFile, array());
+        if($ajxpNode != null){
+            $nodeRealFile = call_user_func(array($wrapperData["classname"], "getRealFSReference"), $ajxpNode->getUrl());
+            try{
+                ExecSvnCmd("svn propset metachange ".time(), $nodeRealFile);
+            }catch(Exception $e){
+                $this->commitChanges("COMMIT_META", $realFile, array());
+                return;
+            }
+            // WILL COMMIT BOTH AT ONCE
+            $command = "svn commit";
+            $user = AuthService::getLoggedUser()->getId();
+            $switches = "-m \"AjaXplorer||$user||COMMIT_META||file:".escapeshellarg($file)."\"";
+            ExecSvnCmd($command, array($realFile, $nodeRealFile), $switches);
+            ExecSvnCmd('svn update', dirname($nodeRealFile), '');
+        }else{
+            $this->commitChanges("COMMIT_META", $realFile, array());
+        }
 	}
 	
 	public function switchAction($actionName, $httpVars, $filesVars){
@@ -161,9 +187,24 @@ class SvnManager extends AJXP_Plugin {
                 header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
                 header("Cache-Control: private",false);
             }
-			
+			$realFile = escapeshellarg($realFile);
 			system( (SVNLIB_PATH!=""?SVNLIB_PATH."/":"") ."svn cat -r$revision $realFile");
 			exit(0);
+        }else if($actionName == "revert_file"){
+
+            $revision = $httpVars["revision"];
+   			$realFile = $init["SELECTION"][0];
+            $compare = (isSet($httpVars["compare"]) && $httpVars["compare"] == "true");
+            $escapedFile = escapeshellarg($realFile);
+            if($compare){
+                $ext = pathinfo($realFile, PATHINFO_EXTENSION);
+                $targetFile = preg_replace("/\.$ext$/", "-r$revision.$ext", $realFile);
+                system( (SVNLIB_PATH!=""?SVNLIB_PATH."/":"") ."svn cat -r$revision $escapedFile > ".escapeshellarg($targetFile));
+            }else{
+                system( (SVNLIB_PATH!=""?SVNLIB_PATH."/":"") ."svn cat -r$revision $escapedFile > $escapedFile");
+                $this->commitChanges($actionName, $realFile, array());
+            }
+
 		}else if($actionName == "svnswitch"){
 			$revision = $httpVars["revision"];
 			ExecSvnCmd("svn update -r$revision ".$init["DIR"]);
@@ -185,7 +226,13 @@ class SvnManager extends AJXP_Plugin {
 			case "upload":
 				if(isSet($filesVars) && isSet($filesVars["userfile_0"]) && isSet($filesVars["userfile_0"]["name"])){
 					$init = $this->initDirAndSelection($httpVars, array("NEW_FILE" => SystemTextEncoding::fromUTF8($httpVars["dir"])."/".$filesVars["userfile_0"]["name"]));
-					$res = ExecSvnCmd("svn add", $init["NEW_FILE"]);
+                    $res = ExecSvnCmd("svn status ", $init["NEW_FILE"]);
+                    if(count($res[IDX_STDOUT]) && substr($res[IDX_STDOUT][0],0,1) == "?"){
+                        $res = ExecSvnCmd("svn add", $init["NEW_FILE"]);
+                    }else {
+                        $res = true;
+                    }
+					//$res = ExecSvnCmd("svn add", $init["NEW_FILE"]);
 					$this->commitMessageParams = $filesVars["userfile_0"]["name"];
 				}
 			break;
@@ -202,6 +249,7 @@ class SvnManager extends AJXP_Plugin {
 		}else{
 			$init = $this->initDirAndSelection($httpVars, array(), true);
 		}
+        AJXP_Logger::debug("Entering SVN MAnager for action $actionName", $init);
 		$action = 'copy';
 		if($actionName == "move" || $actionName == "rename"){
 			$action = 'move';
@@ -213,13 +261,14 @@ class SvnManager extends AJXP_Plugin {
 			}else{
 				$destFile = $init["DEST_DIR"]."/".basename($selectedFile);			
 			}
-			$res = ExecSvnCmd("svn $action", "$selectedFile $destFile", '');
+            $this->addIfNotVersionned(str_replace($init["DIR"], "", $selectedFile), $selectedFile);
+			$res = ExecSvnCmd("svn $action", array($selectedFile,$destFile), '');
 		}
 		if($actionName != "rename"){
 			$this->commitMessageParams .= "[".implode(",",$init["SELECTION"])."]";
 		}
 		$this->commitChanges($actionName, $httpVars, $filesVars);
-		if($action != "rename"){
+		if($actionName != "rename"){
 			$this->commitChanges($actionName, array("dir" => $httpVars["dest"]), $filesVars);
 		}
 		AJXP_Logger::logAction("CopyMove/Rename (svn delegate)", array("files"=>$init["SELECTION"]));
@@ -267,12 +316,20 @@ class SvnManager extends AJXP_Plugin {
 		}else{
 			$args = $httpVars;
 		}
+        $status = ExecSvnCmd('svn status', $args);
+        if(trim(implode("", $status[IDX_STDOUT])) == ""){
+            return;
+        }
 		$command = "svn commit";
 		$user = AuthService::getLoggedUser()->getId();		
 		$switches = "-m \"AjaXplorer||$user||$actionName".(isSet($this->commitMessageParams)?"||".$this->commitMessageParams:"")."\"";
-		$res = ExecSvnCmd($command, $args, $switches);		
-		$res2 = ExecSvnCmd('svn update', dirname($args), '');
-	}		
+		$res = ExecSvnCmd($command, $args, $switches);
+        if(is_file($args)){
+            $res2 = ExecSvnCmd('svn update', dirname($args), '');
+        }else if(is_dir($args)){
+            $res2 = ExecSvnCmd('svn update', $args, '');
+        }
+	}
 	/**
 	 *
 	 * @param AJXP_Node $ajxpNode
@@ -305,7 +362,11 @@ class SvnManager extends AJXP_Plugin {
 		}
 		$_SESSION["SVN_COMMAND_RUNNING"] = true;
 		//if(substr(strtolower(PHP_OS), 0, 3) == "win") session_write_close();
-		$res = ExecSvnCmd($command, $realPath, $switches);
+        try {
+            $res = ExecSvnCmd($command, $realPath, $switches);
+        }catch(Exception $e){
+            return array();
+        }
 		//if(substr(strtolower(PHP_OS), 0, 3) == "win") session_start();
 		unset($_SESSION["SVN_COMMAND_RUNNING"]);
         $domDoc = new DOMDocument();

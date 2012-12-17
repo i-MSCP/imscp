@@ -37,6 +37,7 @@ GUI:
 
 	Tools:
 		Updated PhpMyAdmin to version 3.5.3
+		Updated AjaxPlorer to version 4.2.3
 
 Tickets:
 	- Fixed #482: Defect - Alias edit forward url not possible. Validation incorrect
@@ -53,6 +54,7 @@ Tickets:
 	- Fixed #514: Email forward from domain A to domain B not working
 	- Fixed #520: Defect - migrateMailboxes: Use of uninitialized value
 	- Fixed #522: Bug - Subdomain redirects with "https" or "ftp" don't work
+	- Fixed #524: Update - AjaxPlorer 4.2.3 released
 
 -------------------------------------------------------------------------------------
 i-MSCP 1.1.0-beta2

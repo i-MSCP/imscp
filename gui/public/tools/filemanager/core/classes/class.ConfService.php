@@ -134,21 +134,29 @@ class ConfService
 	public function initActivePluginsInst(){
 		$pServ = AJXP_PluginsService::getInstance();
         $detected = $pServ->getDetectedPlugins();
+        $toActivate = array();
         foreach ($detected as $pType => $pObjects){
             if(in_array($pType, array("conf", "auth", "log", "access", "meta","metastore", "index"))) continue;
             foreach ($pObjects as $pName => $pObject){
-                $pObject->init(array());
-                try{
-                    $pObject->performChecks();
-                    if(!$pObject->isEnabled()) continue;
-                    $pServ->setPluginActiveInst($pType, $pName, true);
-                }catch (Exception $e){
-                    //$this->errors[$pName] = "[$pName] ".$e->getMessage();
-                }
-
+                $toActivate[$pObject->getId()] = $pObject ;
             }
         }
-	}
+        $o = $pServ->getOrderByDependency($toActivate, false);
+        foreach ($o as $id) {
+            $pObject = $toActivate[$id];
+            $pObject->init(array());
+            try{
+                $pObject->performChecks();
+                if(!$pObject->isEnabled()) continue;
+                $pServ->setPluginActiveInst($pObject->getType(), $pObject->getName(), true);
+            }catch (Exception $e){
+                //$this->errors[$pName] = "[$pName] ".$e->getMessage();
+            }
+
+        }
+
+    }
+
 	/**
      * Initialize the "unique" plugins (CONF, AUTH, LOG)
      * @throws Exception
@@ -672,7 +680,7 @@ class ConfService
         $crtLang = self::getLanguage();
         $messageCacheDir = dirname(AJXP_PLUGINS_MESSAGES_FILE)."/i18n";
         $messageFile = $messageCacheDir."/".$crtLang."_".basename(AJXP_PLUGINS_MESSAGES_FILE);
-        if(isSet($this->configs["MESSAGES"]) && !$forceRefresh){
+        if(isSet($this->configs["MESSAGES"]) && !$forceRefresh && !AJXP_SKIP_CACHE){
             return $this->configs["MESSAGES"];
         }
         if(!isset($this->configs["MESSAGES"]) && is_file($messageFile)){
