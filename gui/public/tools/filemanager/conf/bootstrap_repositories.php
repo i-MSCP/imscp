@@ -24,7 +24,7 @@
  * Use the GUI to add new repositories.
  *   + Log in as "admin" and open the "Settings" Repository
  */
-defined('AJXP_EXEC') or die('Access not allowed');
+defined('AJXP_EXEC') or die( 'Access not allowed');
 
 $REPOSITORIES["imscp_ftp"] = array(
 	"DISPLAY" => "FTP Server",
@@ -39,25 +39,143 @@ $REPOSITORIES["imscp_ftp"] = array(
 	)
 );
 
-// DO NOT REMOVE THIS! (Disabled for i-MSCP)
-// SHARE ELEMENTS
 /*
+$REPOSITORIES[0] = array(
+	"DISPLAY"		=>	"Default Files",
+    "DISPLAY_ID"    =>  430,
+	"AJXP_SLUG"		=>  "default",
+	"DRIVER"		=>	"fs",
+	"DRIVER_OPTIONS"=> array(
+		"PATH"			=>	"AJXP_DATA_PATH/files",
+		"CREATE"		=>	true,
+		"RECYCLE_BIN" 	=> 	'recycle_bin',
+		"CHMOD_VALUE"   =>  '0600',
+		"DEFAULT_RIGHTS"=>  "",
+		"PAGINATION_THRESHOLD" => 500,
+		"PAGINATION_NUMBER" => 200,
+		"META_SOURCES"		=> array(
+			"metastore.serial"=> array(
+				"METADATA_FILE"	=> ".ajxp_meta",
+                "METADATA_FILE_LOCATION" => "infolders"
+            ),
+            "meta.user"     => array(
+				"meta_fields"		=> "comment",
+				"meta_labels"		=> "Comment",
+                "meta_visibility"   => "hidden"
+			),
+            "index.lucene" => array(
+                "index_meta_fields" => "comment"
+            )
+		)
+	),
+
+);
+*/
+
+/*
+$REPOSITORIES[1] = array(
+	"DISPLAY"		=>	"My Files",
+    "DISPLAY_ID"    =>  432,
+	"AJXP_SLUG"		=>  "my-files",
+	"DRIVER"		=>	"fs",
+	"DRIVER_OPTIONS"=> array(
+		"PATH"			=>	"AJXP_DATA_PATH/personal/AJXP_USER",
+		"CREATE"		=>	true,
+		"RECYCLE_BIN" 	=> 	'recycle_bin',
+		"CHMOD_VALUE"   =>  '0600',
+		"DEFAULT_RIGHTS"=>  "rw",
+		"PAGINATION_THRESHOLD" => 500,
+		"PAGINATION_NUMBER" => 200,
+		"META_SOURCES"		=> array(
+			"metastore.serial"=> array(
+				"METADATA_FILE"	=> ".ajxp_meta",
+                "METADATA_FILE_LOCATION" => "infolders"
+            ),
+            "meta.user"     => array(
+				"meta_fields"		=> "comment",
+				"meta_labels"		=> "Comment",
+                "meta_visibility"   => "hidden"
+			),
+            "index.lucene" => array(
+                "index_meta_fields" => "comment"
+            )
+		)
+	),
+
+);
+*/
+/*
+// DO NOT REMOVE THIS!
+// SHARE ELEMENTS
 $REPOSITORIES["ajxp_shared"] = array(
-	"DISPLAY" => "Shared Elements",
-	"DISPLAY_ID" => "363",
-	"DRIVER" => "ajxp_shared",
-	"DRIVER_OPTIONS" => array(
-	"DEFAULT_RIGHTS" => "rw"
+	"DISPLAY"		=>	"Shared Elements",
+	"DISPLAY_ID"		=>	"363",
+	"DRIVER"		=>	"ajxp_shared",
+	"DRIVER_OPTIONS"=> array(
+		"DEFAULT_RIGHTS" => "rw"
 	)
 );
 */
 
-// ADMIN REPOSITORY - Admin account disabled for i-MSCP
 /*
+// ADMIN REPOSITORY
 $REPOSITORIES["ajxp_conf"] = array(
-	"DISPLAY" => "Settings",
-	"DISPLAY_ID" => "165",
-	"DRIVER" => "ajxp_conf",
-	"DRIVER_OPTIONS" => array()
+	"DISPLAY"		=>	"Settings",
+	"DISPLAY_ID"		=>	"165",
+	"DRIVER"		=>	"ajxp_conf",
+	"DRIVER_OPTIONS"=> array()
+);
+*/
+
+/*
+$REPOSITORIES["fs_template"] = array(
+	"DISPLAY"		=>	"Sample Template",
+    "DISPLAY_ID"    =>  431,
+	"IS_TEMPLATE"	=>  true,
+	"DRIVER"		=>	"fs",
+	"DRIVER_OPTIONS"=> array(
+		"CREATE"		=>	true,
+		"RECYCLE_BIN" 	=> 	'recycle_bin',
+		"CHMOD_VALUE"   =>  '0600',
+		"PAGINATION_THRESHOLD" => 500,
+		"PAGINATION_NUMBER" => 200,
+        "PURGE_AFTER"       => 0,
+        "CHARSET"           => "",
+		"META_SOURCES"		=> array(
+			"metastore.serial"=> array(
+				"METADATA_FILE"	=> ".ajxp_meta",
+                "METADATA_FILE_LOCATION" => "infolders"
+            ),
+            "meta.user"     => array(
+				"meta_fields"		=> "comment",
+				"meta_labels"		=> "Comment",
+                "meta_visibility"   => "hidden"
+			),
+            "index.lucene" => array(
+                "index_meta_fields" => "comment"
+            )
+		)
+	),
+
+);
+*/
+
+// UNCOMMENT THIS TO SET UP A WEBFTP INSTALL
+// SEE conf/templates/bootstrap_plugins.webftp.php
+/*
+$REPOSITORIES["predefined_ftp"] = array(
+
+    "DISPLAY"    => "FTP Server",
+    "DRIVER"    => "ftp",
+    "DRIVER_OPTIONS" => array(
+        // SET THIS TO true IF YOU WANT THE USER TO CONNECT TO ANY FTP SERVER
+        "DYNAMIC_FTP"               => false,
+        // OR USE THESE PARAMETERS TO PREDEFINE AN FTP SERVER
+        //"FTP_HOST"                  => "ftp.yourserver.com",
+        //"FTP_PORT"                  => "21",
+        "DEFAULT_RIGHTS"            => "rw",
+        "USE_SESSION_CREDENTIALS"   => true,
+    )
+
 );
 */

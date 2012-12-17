@@ -82,6 +82,9 @@ class textLogDriver extends AbstractLogDriver {
 				$create = true; 
 			}
 			$this->fileHandle = @fopen($this->storageDir . $this->logFileName, "at+");
+            if($this->fileHandle === false){
+                error_log("[AjaXplorer] Cannot open log file ".$this->storageDir . $this->logFileName);
+            }
 			if($this->fileHandle !== false && count($this->stack)){
 				$this->stackFlush();
 			}
@@ -135,7 +138,7 @@ class textLogDriver extends AbstractLogDriver {
 		if ($this->fileHandle !== false) {
 			if(count($this->stack)) $this->stackFlush();						
 			if (@fwrite($this->fileHandle, $textMessage) === false) {
-				//print "There was an error writing to log file.";
+                error_log("[AjaXplorer] There was an error writing to log file - Error was $textMessage");
 			}
 		}else{			
 			$this->stack[] = $textMessage;
@@ -177,12 +180,12 @@ class textLogDriver extends AbstractLogDriver {
 	 * @return String the formatted message.
 	 */
 	function formatMessage($message, $severity) {
-		$msg = date("m-d-y") . " " . date("G:i:s") . "\t"; 
-		$msg .= $_SERVER['REMOTE_ADDR'];
-		
-		$msg .= "\t".strtoupper($severity)."\t";
-		
-		// Get the user if it exists
+		$msg = date("m-d-y") . " " . date("G:i:s") . "\t";
+
+        $msg .= AJXP_Logger::getClientAdress()."\t";
+        $msg .= strtoupper($severity)."\t";
+
+        // Get the user if it exists
 		$user = "No User";
 		if(AuthService::usersEnabled()){
 			$logged = AuthService::getLoggedUser();

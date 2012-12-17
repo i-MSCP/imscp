@@ -609,9 +609,15 @@ define('IDX_VALUE', 1);
 		set_time_limit(100);
 		$cwd = NULL; //'/tmp';
 		$pipes = NULL;
-		
+
+        if(is_array($arg)){
+            $arg = implode(" ", array_map("escapeshellarg", $arg));
+        }else{
+            $arg = escapeshellarg(SystemTextEncoding::toUTF8($arg));
+        }
+
 		$cmdline = (SVNLIB_PATH!=""?SVNLIB_PATH."/":"").$cmd." ".$switches." ".$arg;
-		
+
 		/*
 		$output = shell_exec($cmdline);
 		$result = array();
@@ -625,8 +631,13 @@ define('IDX_VALUE', 1);
 		$result[IDX_ERROUT] = "";
 		return $result;
 		*/
-		
-		$process = proc_open($cmdline, $descriptorspec, $pipes, NULL, NULL, array("bypass_shell"=>false));
+
+        $env = null;
+        if(defined('AJXP_LOCALE')){
+            $env = array("LC_ALL" => AJXP_LOCALE);
+        }
+
+		$process = proc_open($cmdline, $descriptorspec, $pipes, NULL, $env, array("bypass_shell"=>false));
 		
 		$result = array();
 		$result[IDX_CMDLINE] = $cmdline;

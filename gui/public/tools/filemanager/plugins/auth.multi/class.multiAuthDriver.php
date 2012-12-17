@@ -175,7 +175,11 @@ class multiAuthDriver extends AbstractAuthDriver {
     }
 
     function getUsersCount(){
-        return $this->drivers[$this->baseName]->getUsersCount();
+        if(empty($this->baseName)){
+            return $this->drivers[$this->slaveName]->getUsersCount() +  $this->drivers[$this->masterName]->getUsersCount();
+        }else{
+            return $this->drivers[$this->baseName]->getUsersCount();
+        }
     }
 
 	function listUsers(){
@@ -245,6 +249,10 @@ class multiAuthDriver extends AbstractAuthDriver {
                         $this->drivers[$this->slaveName]->changePassword($login, $pass);
                     }else{
                         $this->drivers[$this->slaveName]->createUser($login, $pass);
+                        // Make sure we apply defaultRights (roles)
+                        $confDriver = ConfService::getConfStorageImpl();
+                        $user = $confDriver->createUserObject($login);
+                        $user->save("superuser");
                     }
                     return true;
                 }else{
