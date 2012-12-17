@@ -35,6 +35,8 @@ sub _init
 {
 	my $self = shift;
 
+	iMSCP::HooksManager->getInstance()->trigger('beforePoInit', $self, 'dovecot');
+
 	$self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/dovecot";
 	$self->{'bkpDir'} = "$self->{cfgDir}/backup";
 	$self->{'wrkDir'} = "$self->{cfgDir}/working";
@@ -43,7 +45,9 @@ sub _init
 
 	tie %self::dovecotConfig, 'iMSCP::Config','fileName' => $conf;
 
-	0;
+	iMSCP::HooksManager->getInstance()->trigger('afterPoInit', $self, 'dovecot');
+
+	$self;
 }
 
 sub registerSetupHooks
@@ -67,9 +71,13 @@ sub uninstall
 {
 	my $self = shift;
 
+iMSCP::HooksManager->getInstance()->trigger('beforePoUninstall', 'dovecot');
+
 	use Servers::po::dovecot::uninstaller;
 	my $rs = Servers::po::dovecot::uninstaller->new()->uninstall();
 	$rs |= $self->restart();
+
+	iMSCP::HooksManager->getInstance()->trigger('afterPoUninstall', 'dovecot');
 
 	$rs;
 }
@@ -78,7 +86,11 @@ sub postinstall
 {
 	my $self = shift;
 
+	iMSCP::HooksManager->getInstance()->trigger('beforePoPostinstall', 'dovecot');
+
 	$self->{'restart'} = 'yes';
+
+	iMSCP::HooksManager->getInstance()->trigger('afterPoPostinstall', 'dovecot');
 
 	0;
 }

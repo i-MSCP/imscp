@@ -34,10 +34,16 @@ sub _init
 {
 	my $self = shift;
 
+	iMSCP::HooksManager->getInstance()->trigger('beforeCronInit', $self, 'cron');
+
 	$self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/cron.d";
 	$self->{'bkpDir'} = "$self->{cfgDir}/backup";
 	$self->{'wrkDir'} = "$self->{cfgDir}/working";
-	$self->{'tplDir'}	= "$self->{cfgDir}/parts";
+	$self->{'tplDir'} = "$self->{cfgDir}/parts";
+
+	iMSCP::HooksManager->getInstance()->trigger('afterCronInit', $self, 'cron');
+
+	$self;
 }
 
 sub factory

@@ -62,6 +62,8 @@ sub registerSetupHooks
 	my $self = shift;
 	my $hooksManager = shift;
 
+	iMSCP::HooksManager->getInstance()->trigger('beforeRegisterSetupHooks', 'dovecot');
+
 	# Add installer dialog in setup dialog stack
 	$hooksManager->register(
 		'beforeSetupDialog',
@@ -71,6 +73,8 @@ sub registerSetupHooks
 	iMSCP::HooksManager->getInstance()->register(
 		'afterMtaBuildConf', sub { return $self->mtaConf(@_); }
 	) and return 1;
+
+	iMSCP::HooksManager->getInstance()->trigger('afterRegisterSetupHooks', 'dovecot');
 
 	0;
 }

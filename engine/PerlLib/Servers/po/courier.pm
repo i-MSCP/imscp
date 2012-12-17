@@ -35,6 +35,8 @@ sub _init
 {
 	my $self = shift;
 
+	iMSCP::HooksManager->getInstance()->trigger('beforePoInit', $self, 'courier');
+
 	$self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/courier";
 	$self->{'bkpDir'} = "$self->{cfgDir}/backup";
 	$self->{'wrkDir'} = "$self->{cfgDir}/working";
@@ -44,19 +46,24 @@ sub _init
 
 	$self->{$_} = $self::courierConfig{$_} foreach(keys %self::courierConfig);
 
-	0;
+	iMSCP::HooksManager->getInstance()->trigger('afterPoInit', $self, 'courier');
+
+	$self;
 }
 
 sub preinstall
 {
 	my $self = shift;
+	my $rs = 0;
+
+	iMSCP::HooksManager->getInstance()->trigger('beforePoPreinstall', 'courier');
 
 	use Servers::po::courier::installer;
 
-	my $rs = 0;
-
 	$rs |= $self->stop();
-	my $rs |= Servers::po::courier::installer->new()->registerHooks();
+	$rs |= Servers::po::courier::installer->new()->registerHooks();
+
+	iMSCP::HooksManager->getInstance()->trigger('afterPoPreinstall', 'courier');
 
 	$rs;
 }
@@ -73,9 +80,13 @@ sub uninstall
 {
 	my $self = shift;
 
+	iMSCP::HooksManager->getInstance()->trigger('beforePoUninstall', 'courier');
+
 	use Servers::po::courier::uninstaller;
 	my $rs = Servers::po::courier::uninstaller->new()->uninstall();
 	$rs |= $self->restart();
+
+	iMSCP::HooksManager->getInstance()->trigger('afterPoUninstall', 'courier');
 
 	$rs;
 }
@@ -84,7 +95,11 @@ sub postinstall
 {
 	my $self = shift;
 
+	iMSCP::HooksManager->getInstance()->trigger('beforePoPostinstall', 'courier');
+
 	$self->start();
+
+	iMSCP::HooksManager->getInstance()->trigger('afterPoPostinstall', 'courier');
 }
 
 sub start

@@ -37,6 +37,8 @@ sub _init
 {
 	my $self = shift;
 
+	iMSCP::HooksManager->getInstance()->trigger('beforePodInitInstaller', $self, 'courier');
+
 	$self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/courier";
 	$self->{'bkpDir'} = "$self->{cfgDir}/backup";
 	$self->{'wrkDir'} = "$self->{cfgDir}/working";
@@ -51,12 +53,16 @@ sub _init
 		%self::courierConfig = (%self::courierConfig, %self::courierOldConfig);
 	}
 
-	0;
+	iMSCP::HooksManager->getInstance()->trigger('afterPodInitInstaller', $self, 'courier');
+
+	$self;
 }
 
 sub migrateMailboxes
 {
 	my $self = shift;
+
+	iMSCP::HooksManager->getInstance()->trigger('beforePoMigrateMailboxes') and return 1;
 
 	if($main::imscpOldConfig{'PO_SERVER'} && $main::imscpOldConfig{'PO_SERVER'} eq 'dovecot' &&
 		$main::imscpConfig{'PO_SERVER'}  eq 'courier'
@@ -77,13 +83,15 @@ sub migrateMailboxes
 		error("Error while converting mails") if !$stderr && $rs;
 	}
 
-	0;
+	iMSCP::HooksManager->getInstance()->trigger('afterPoMigrateMailboxes');
 }
 
 sub install
 {
 	my $self = shift;
 	my $rs = 0;
+
+	iMSCP::HooksManager->getInstance()->trigger('beforePoInstall', 'courier') and return 1;
 
 	# Saving all system configuration files if they exists
 	for (('authdaemonrc', 'userdb', "$self::courierConfig{COURIER_IMAP_SSL}", "$self::courierConfig{COURIER_POP_SSL}")) {
@@ -102,6 +110,8 @@ sub install
 	$rs |= $self->saveConf();
 	$rs |= $self->migrateMailboxes();
 
+	$rs |= iMSCP::HooksManager->getInstance()->trigger('afterPoInstall', 'courier');
+
 	$rs;
 }
 
@@ -115,11 +125,15 @@ sub saveConf
 	my$file = iMSCP::File->new(filename => "$self->{cfgDir}/courier.data");
 	my $cfg = $file->get() or return 1;
 
+	iMSCP::HooksManager->getInstance()->trigger('beforePoSaveConf', \$cfg, 'courier.old.data') and return 1;
+
 	$file = iMSCP::File->new(filename => "$self->{cfgDir}/courier.old.data");
 	$rs |= $file->set($cfg);
 	$rs |= $file->save();
 	$rs |= $file->mode(0640);
 	$rs |= $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
+
+	$rs |= iMSCP::HooksManager->getInstance()->trigger('afterPoSaveConf', 'courier.old.data');
 
 	$rs;
 }
@@ -129,6 +143,8 @@ sub bkpConfFile
 	my $self = shift;
 	my $cfgFile = shift;
 	my $timestamp = time;
+
+	iMSCP::HooksManager->getInstance()->trigger('beforePoBkpConfFile', $cfgFile) and return 1;
 
 	if(-f "$self::courierConfig{'AUTHLIB_CONF_DIR'}/$cfgFile"){
 		my $file = iMSCP::File->new(filename => "$self::courierConfig{'AUTHLIB_CONF_DIR'}/$cfgFile");
@@ -140,9 +156,10 @@ sub bkpConfFile
 		}
 	}
 
-	0;
+	iMSCP::HooksManager->getInstance()->trigger('afterPoBkpConfFile', $cfgFile);
 }
 
+# Build authdaemonrc file
 sub authDaemon
 {
 	my $self = shift;
@@ -152,7 +169,7 @@ sub authDaemon
 	$file = iMSCP::File->new(filename => "$self->{bkpDir}/authdaemonrc.system");
 	$rdata = $file->get();
 
-	if (!$rdata){
+	if (! $rdata){
 		error("Error while reading $self->{bkpDir}/authdaemonrc.system");
 		return 1 ;
 	}
@@ -175,6 +192,7 @@ sub authDaemon
 	0;
 }
 
+# Build userdb file
 sub userDB
 {
 	my $self = shift;
@@ -209,6 +227,7 @@ sub userDB
 	0;
 }
 
+#
 sub sslConf
 {
 	my $self = shift;

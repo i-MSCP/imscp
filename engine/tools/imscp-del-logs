@@ -52,7 +52,7 @@ sub del_logs
 {
 	my $rs = 0;
 	my $httpd = Servers::httpd->factory();
-	$rs = $httpd->del_old_logs() if $httpd->can('del_old_logs');
+	$rs = $httpd->delOldLogs() if $httpd->can('delOldLogs');
 
 	$rs;
 }

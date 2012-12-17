@@ -65,8 +65,8 @@ sub del_tmp{
 		my $class	= "Servers::$_";
 		require $file;
 		my $instance	= $class->factory();
-		if($instance->can('del_tmp')){
-			$rs |= $instance->del_tmp();
+		if($instance->can('delTmp')){
+			$rs |= $instance->delTmp();
 		}
 	}
 
@@ -83,8 +83,8 @@ sub del_tmp{
 		my $class	= "Addons::$_";
 		require $file;
 		my $instance	= $class->factory();
-		if($instance->can('del_tmp')){
-			$rs |= $instance->del_tmp();
+		if($instance->can('delTmp')){
+			$rs |= $instance->delTmp();
 		}
 	}
 
