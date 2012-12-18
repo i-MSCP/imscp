@@ -85,7 +85,7 @@ sub registerSetupHooks
 	my $self = shift;
 	my $hooksManager = shift;
 
-	use Addons::awstats::installer;
+	use Addons::roundcube::installer;
 	Addons::roundcube::installer->new()->registerSetupHooks($hooksManager);
 }
 
