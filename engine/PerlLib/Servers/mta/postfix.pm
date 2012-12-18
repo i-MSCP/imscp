@@ -85,13 +85,13 @@ sub uninstall
 
 	use Servers::mta::postfix::uninstaller;
 
-	iMSCP::HooksManager->getInstance()->trigger('beforeMtaUninstall', 'postfix');
+	iMSCP::HooksManager->getInstance()->trigger('beforeMtaUninstall', 'postfix') and return 1;
 
 	my $rs = Servers::mta::postfix::uninstaller->new()->uninstall();
 
 	$rs |= $self->restart();
 
-	iMSCP::HooksManager->getInstance()->trigger('afterMtaUninstall', 'postfix');
+	$rs |= iMSCP::HooksManager->getInstance()->trigger('afterMtaUninstall', 'postfix');
 
 	$rs;
 }
@@ -104,7 +104,7 @@ sub postinstall
 
 	$self->{'restart'} = 'yes';
 
-	iMSCP::HooksManager->getInstance()->trigger('afterMtaPostinstall', 'postfix') and return 1;
+	iMSCP::HooksManager->getInstance()->trigger('afterMtaPostinstall', 'postfix');
 }
 
 sub setEnginePermissions

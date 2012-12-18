@@ -44,7 +44,7 @@ sub _init
 	my $conf = "$self->{cfgDir}/courier.data";
 	tie %self::courierConfig, 'iMSCP::Config','fileName' => $conf;
 
-	$self->{$_} = $self::courierConfig{$_} foreach(keys %self::courierConfig);
+	$self->{$_} = $self::courierConfig{$_} for keys %self::courierConfig;
 
 	iMSCP::HooksManager->getInstance()->trigger('afterPoInit', $self, 'courier');
 
@@ -104,9 +104,9 @@ sub postinstall
 {
 	my $self = shift;
 
-	iMSCP::HooksManager->getInstance()->trigger('beforePoPostinstall', 'courier');
+	iMSCP::HooksManager->getInstance()->trigger('beforePoPostinstall', 'courier') and return 1;
 
-	$self->start();
+	$self->start() and return 1;
 
 	iMSCP::HooksManager->getInstance()->trigger('afterPoPostinstall', 'courier');
 }
@@ -251,11 +251,11 @@ sub addMail
 		$rs |=	iMSCP::File->new(
 			filename => "$self->{AUTHLIB_CONF_DIR}/userdb"
 		)->copyFile(
-			"$self->{bkpDir}/userdb.".time
+			"$self->{bkpDir}/userdb." . time
 		);
 	}
 
-	if($data->{MAIL_TYPE} =~ /_mail/){
+	if($data->{'MAIL_TYPE'} =~ /_mail/){
 		my $mBoxHashFile = (-f "$self->{wrkDir}/userdb" ? "$self->{wrkDir}/userdb" : "$self->{cfgDir}/userdb");
 
 		my $wrkFileName = "$self->{wrkDir}/userdb";
@@ -324,7 +324,7 @@ sub delMail
 		);
 	}
 
-	my $mBoxHashFile	= (-f "$self->{wrkDir}/userdb" ? "$self->{wrkDir}/userdb" : "$self->{cfgDir}/userdb");
+	my $mBoxHashFile = (-f "$self->{wrkDir}/userdb" ? "$self->{wrkDir}/userdb" : "$self->{cfgDir}/userdb");
 
 	my $wrkFileName = "$self->{wrkDir}/userdb";
 	my $wrkFileH = iMSCP::File->new(filename => $mBoxHashFile);
@@ -340,7 +340,6 @@ sub delMail
 	$rs |=	$wrkFileH->mode(0600);
 	$rs |=	$wrkFileH->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
 	$rs |= $wrkFileH->copyFile("$self->{AUTHLIB_CONF_DIR}/userdb");
-
 	$rs |= execute($self->{'CMD_MAKEUSERDB'}, \$stdout, \$stderr);
 	debug($stdout) if $stdout;
 	error($stderr) if $stderr;
