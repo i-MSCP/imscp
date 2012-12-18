@@ -39,6 +39,8 @@ use iMSCP::Dir;
 use iMSCP::Execute;
 use iMSCP::Templator;
 use iMSCP::HooksManager;
+use iMSCP::Dialog;
+use Cwd;
 use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
@@ -109,6 +111,7 @@ sub _init()
 	iMSCP::HooksManager->getInstance()->register('afterSetupPreInstallAddons', sub { $self->_installPackages(@_) });
 
 	# Schedule /tmp cleanup (done after addons installation)
+	# Todo see if we should do that more later to avoid to redo after setup failure
 	iMSCP::HooksManager->getInstance()->register('afterSetupInstallAddons', sub { $self->_cleanTmp(@_) });
 
 	$self;
@@ -132,7 +135,16 @@ sub _installPackages
 	$self->_getComposer() and return 1;
 
 	# Install packages
-	my $rs = execute("$self->{'phpCmd'} composer.phar -d=$self->{'tmpDir'} install", \$stdout, \$stderr);
+	iMSCP::Dialog->factory()->infobox(
+"
+Getting all addon packages from packagist.org.
+
+please wait, this may take a few seconds...
+"
+	);
+	my $rs = execute(
+		"$self->{'phpCmd'} $self->{'tmpDir'}/composer.phar -d=$self->{'tmpDir'} install", \$stdout, \$stderr
+	);
 	error("Unable to install i-MSCP tools: $stderr") if $rs;
 	debug($stdout) if $stdout;
 
@@ -150,6 +162,8 @@ sub _installPackages
 sub _buildComposerFile
 {
 	my $self = shift;
+
+	iMSCP::Dialog->factory()->infobox("\nBuilding composer.json file for addons packages...");
 
 	my $composerJsonFile = iMSCP::Templator::process(
 		{ 'PACKAGES' => join ",\n", @{$self->{'toInstall'}} },
@@ -173,19 +187,36 @@ sub _getComposer
 {
 	my $self = shift;
 	my ($stdout, $stderr) = (undef, undef);
+	my $curDir = getcwd();
+	my $rs = 0;
 
-	unless(chdir($self->{'tmpDir'})) {
-		error("Unable to change working directory to $self->{'tmpDir'}: $!");
-		return 1;
-	}
+	if (! -f "$self->{'tmpDir'}/composer.phar") {
+		unless(chdir($self->{'tmpDir'})) {
+			error("Unable to change working directory to $self->{'tmpDir'}: $!");
+			return 1;
+		}
 
-	my $rs = execute(
-		"$main::imscpConfig{'CMD_CURL'} -s http://getcomposer.org/installer | $self->{'phpCmd'}",
-		\$stdout,
-		\$stderr
-	);
-	error("Unable to get composer installer from http://getcomposer.org: $stderr") if $rs;
-	debug($stdout) if $stdout;
+		iMSCP::Dialog->factory()->infobox(
+"
+Getting composer installer from http://getcomposer.org.
+
+please wait, this may take a few seconds...
+"
+		);
+
+		$rs = execute(
+			"$main::imscpConfig{'CMD_CURL'} -s http://getcomposer.org/installer | $self->{'phpCmd'}",
+			\$stdout,
+			\$stderr
+		);
+		error("Unable to get composer installer from http://getcomposer.org: $stderr") if $rs;
+		debug($stdout) if $stdout;
+
+		unless(chdir($curDir)) {
+    		error("Unable to change working directory to $curDir: $!");
+    		return 1;
+    	}
+    }
 
 	$rs;
 }
@@ -225,6 +256,8 @@ EOF
 sub _cleanTmp
 {
 	my $self = shift;
+
+	iMSCP::Dialog->factory()->infobox("\nRemoving composer installer temporary directory.");
 
 	execute("$main::imscpConfig{'CMD_RM'} -rf $self->{'tmpDir'}");
 }
