@@ -35,7 +35,7 @@ use strict;
 use warnings;
 use iMSCP::HooksManager;
 use iMSCP::Debug qw / error /;
-use fields qw / reconfigure noprompt preseed hookFile debug /;
+use fields qw / reconfigure noprompt preseed hookFile cleanAddons debug /;
 our $options = fields::new('iMSCP::Getopt');
 
 =head1 DESCRIPTION
@@ -73,6 +73,7 @@ sub parse
   -n,  --noprompt       Switch to non-interactive mode (Expert option).
   -p,  --preseed        Path to preseed file (Expert option).
   -h,  --hook-file      Path to hook file (Expert option).
+  -c   --clean-addons   Cleanup local addon packages repository.
   -d,  --debug          Force debug mode.
   -?,  --help           Show this help.
 EOF
@@ -97,6 +98,7 @@ EOF
 			'noprompt|n', sub { $options->{'noprompt'} = 'true' },
 			'preseed|p=s', sub { shift; $class->preseed(shift) },
 			'hook-file|h=s', sub { shift; $class->hookFile(shift) },
+			'clean-addons|c', sub { $options->{'cleanAddons'} = 'true' },
 			'debug|d', sub { $options->{'debug'} = 'true' },
 			'help|?', $showusage,
 			@_,

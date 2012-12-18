@@ -39,6 +39,7 @@ use iMSCP::Dir;
 use iMSCP::Execute;
 use iMSCP::Templator;
 use iMSCP::HooksManager;
+use iMSCP::Getopt;
 use iMSCP::Dialog;
 use Cwd;
 use parent 'Common::SingletonClass';
@@ -77,7 +78,7 @@ sub registerPackage($ $)
 	my $self = shift;
 	my $package = shift;
 
-	push(@{$self->{'toInstall'}}, "\t\t\"$package\" : \"dev-master\"");
+	push(@{$self->{'toInstall'}}, "\t\t\"$package\":\"dev-master\"");
 
 	0;
 }
@@ -96,23 +97,25 @@ sub registerPackage($ $)
 
 =cut
 
-sub _init()
+sub _init
 {
 	my $self = shift;
 
 	$self->{'toInstall'} = ();
-	$self->{'tmpDir'} = '/tmp/imscpTools';
+	$self->{'cacheDir'} = $main::imscpConfig{'ADDON_PACKAGES_CACHE_DIR'};
 	$self->{'phpCmd'} = "$main::imscpConfig{'CMD_PHP'} -d suhosin.executor.include.whitelist=phar";
 
-	my $dir = iMSCP::Dir->new(dirname => $self->{'tmpDir'});
-	$dir->make() and die("Cannot create $self->{'tmpDir'} directory");
+	my $dir = iMSCP::Dir->new(dirname => $self->{'cacheDir'});
+	$dir->make() and die("Unable to create the cache directory for addon packages");
+
+	# Override default composer home directory
+	$ENV{'COMPOSER_HOME'} = "$self->{'cacheDir'}/.composer";
+
+	# Cleanup addon packages cache directory if asked by user - This will cause all addon packages to be fetched again
+	$self->_cleanCacheDir() if iMSCP::Getopt->cleanAddons;
 
 	# Schedule package installation (done after addons preinstallation)
 	iMSCP::HooksManager->getInstance()->register('afterSetupPreInstallAddons', sub { $self->_installPackages(@_) });
-
-	# Schedule /tmp cleanup (done after addons installation)
-	# Todo see if we should do that more later to avoid to redo after setup failure
-	iMSCP::HooksManager->getInstance()->register('afterSetupInstallAddons', sub { $self->_cleanTmp(@_) });
 
 	$self;
 }
@@ -122,7 +125,6 @@ sub _init()
  Install packages in temporary directory
 
  return 0 on success, other on failure
- TODO: Implements composer installer to install package in the tools directory directy
 
 =cut
 
@@ -137,15 +139,17 @@ sub _installPackages
 	# Install packages
 	iMSCP::Dialog->factory()->infobox(
 "
-Getting all addon packages from packagist.org.
+Getting composer addon packages from packagist.org.
 
-please wait, this may take a few seconds...
+Please wait, this may take a few seconds...
 "
 	);
+
+	# update option is used here but composer will automatically fallback to installation when needed
 	my $rs = execute(
-		"$self->{'phpCmd'} $self->{'tmpDir'}/composer.phar -d=$self->{'tmpDir'} install", \$stdout, \$stderr
+		"$self->{'phpCmd'} $self->{'cacheDir'}/composer.phar -d=$self->{'cacheDir'} update", \$stdout, \$stderr
 	);
-	error("Unable to install i-MSCP tools: $stderr") if $rs;
+	error("Unable to get i-MSCP addon packages from packagist.org: $stderr") if $rs;
 	debug($stdout) if $stdout;
 
 	$rs;
@@ -170,7 +174,7 @@ sub _buildComposerFile
 		$self->_getComposerFileTpl()
 	);
 
-	my $file = iMSCP::File->new(filename => "$self->{'tmpDir'}/composer.json");
+	my $file = iMSCP::File->new(filename => "$self->{'cacheDir'}/composer.json");
 	$file->set($composerJsonFile) and return 1;
 	$file->save();
 }
@@ -190,9 +194,9 @@ sub _getComposer
 	my $curDir = getcwd();
 	my $rs = 0;
 
-	if (! -f "$self->{'tmpDir'}/composer.phar") {
-		unless(chdir($self->{'tmpDir'})) {
-			error("Unable to change working directory to $self->{'tmpDir'}: $!");
+	if (! -f "$self->{'cacheDir'}/composer.phar") {
+		unless(chdir($self->{'cacheDir'})) {
+			error("Unable to change working directory to $self->{'cacheDir'}: $!");
 			return 1;
 		}
 
@@ -200,7 +204,7 @@ sub _getComposer
 "
 Getting composer installer from http://getcomposer.org.
 
-please wait, this may take a few seconds...
+Please wait, this may take a few seconds...
 "
 		);
 
@@ -235,10 +239,13 @@ sub _getComposerFileTpl
 
 	my $json = <<EOF;
 {
-	"require": {
+	"name":"imscp/addons",
+	"description":"i-MSCP addons composer file",
+	"license":"GPL-2.0+",
+	"require":{
 {PACKAGES}
 	},
-	"minimum-stability": "dev"
+	"minimum-stability":"dev"
 }
 EOF
 
@@ -247,20 +254,28 @@ EOF
 
 =item _cleanTmp()
 
- Clean temporary directory
+ Clean local addon packages repository directory
 
  return 0 on success, other on failure
 
 =cut
 
-sub _cleanTmp
+sub _cleanCacheDir
 {
 	my $self = shift;
 
-	iMSCP::Dialog->factory()->infobox("\nRemoving composer installer temporary directory.");
+	iMSCP::Dialog->factory()->infobox("\nCleaning composer installer cache directory.");
 
-	execute("$main::imscpConfig{'CMD_RM'} -rf $self->{'tmpDir'}");
+	execute("$main::imscpConfig{'CMD_RM'} -rf $self->{'cacheDir'}/*");
 }
+
+=back
+
+=head1
+
+ TODO: Implements composer installer to install package in the tools directory directy
+
+=cut
 
 =back
 
