@@ -31,13 +31,16 @@ ENGINE:
 	- Fixed: iMSCP::IP - Ips stack not flushed on reset
 	- Fixed: iMSCP::Boot - Do not create the imscp.conf file if do not exists, raise error instead
 	- Refactoring + cs fixes + doc
+	- Added composer installer for i-MSCP addons
 
 GUI:
 	Vendor:
 
 	Tools:
+		Moved Roundcube to packagist.org (composer package)
 		Updated PhpMyAdmin to version 3.5.3
 		Updated AjaxPlorer to version 4.2.3
+		Updated Roundube to version 0.8.4
 
 Tickets:
 	- Fixed #482: Defect - Alias edit forward url not possible. Validation incorrect
@@ -55,6 +58,8 @@ Tickets:
 	- Fixed #520: Defect - migrateMailboxes: Use of uninitialized value
 	- Fixed #522: Bug - Subdomain redirects with "https" or "ftp" don't work
 	- Fixed #524: Update - AjaxPlorer 4.2.3 released
+	- Fixed #527: Update - Roundcube 0.8.4 released
+	- Fixed #539: Enhancement - i-MSCP tools - Composer support
 
 -------------------------------------------------------------------------------------
 i-MSCP 1.1.0-beta2
