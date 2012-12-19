@@ -125,4 +125,5 @@
 	<other>ssh</other>
 	<other>tar</other>
 	<other>wget</other>
+	<other>curl</other>
 </packages>

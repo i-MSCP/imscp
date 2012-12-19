@@ -195,11 +195,6 @@ sub setGuiPermissions
 	);
 
 	$rs |= setRights(
-		"$rootDir/gui/public/tools/webmail/logs",
-		{ user => $panelUName, group => $panelGName, dirmode => '0750', filemode => '0640', recursive => 'yes' }
-	);
-
-	$rs |= setRights(
 		"$rootDir/gui",
 		{ user => $panelUName, group => $apacheGName, mode => '0550' }
 	);

@@ -1002,6 +1002,7 @@ sub _chmodFile
 
  Return autoinstaller::Adapter::Abstract
  TODO check that adapter is an instance of autoinstaller::Adapter::Abstract
+
 =cut
 
 sub _getDistroAdapter
@@ -1021,6 +1022,8 @@ sub _getDistroAdapter
 
 	$main::autoinstallerAdapter;
 }
+
+=back
 
 =head1 AUTHORS
 
