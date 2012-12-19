@@ -78,7 +78,7 @@ sub registerPackage($ $)
 	my $self = shift;
 	my $package = shift;
 
-	push(@{$self->{'toInstall'}}, "\t\t\"$package\":\"dev-master\"");
+	push @{$self->{'toInstall'}}, "\t\t\"$package\":\"dev-master\"";
 
 	0;
 }
@@ -89,9 +89,9 @@ sub registerPackage($ $)
 
 =over 4
 
-=item getInstance()
+=item _init()
 
- Called by new(). initialize instance
+ Called by new(). Initialize instance of this class.
 
  Return iMSCP::Addons::ComposerInstaller
 
@@ -106,7 +106,7 @@ sub _init
 	$self->{'phpCmd'} = "$main::imscpConfig{'CMD_PHP'} -d suhosin.executor.include.whitelist=phar";
 
 	my $dir = iMSCP::Dir->new(dirname => $self->{'cacheDir'});
-	$dir->make() and die("Unable to create the cache directory for addon packages");
+	$dir->make() and die('Unable to create the cache directory for addon packages');
 
 	# Override default composer home directory
 	$ENV{'COMPOSER_HOME'} = "$self->{'cacheDir'}/.composer";
@@ -124,7 +124,7 @@ sub _init
 
  Install packages in temporary directory
 
- return 0 on success, other on failure
+ Return 0 on success, other on failure
 
 =cut
 
@@ -136,7 +136,6 @@ sub _installPackages
 	$self->_buildComposerFile() and return 1;
 	$self->_getComposer() and return 1;
 
-	# Install packages
 	iMSCP::Dialog->factory()->infobox(
 "
 Getting composer addon packages from packagist.org.
@@ -145,7 +144,7 @@ Please wait, this may take a few seconds...
 "
 	);
 
-	# update option is used here but composer will automatically fallback to installation when needed
+	# update option is used here but composer will automatically fallback to install mode when needed
 	my $rs = execute(
 		"$self->{'phpCmd'} $self->{'cacheDir'}/composer.phar -d=$self->{'cacheDir'} update", \$stdout, \$stderr
 	);
@@ -167,11 +166,10 @@ sub _buildComposerFile
 {
 	my $self = shift;
 
-	iMSCP::Dialog->factory()->infobox("\nBuilding composer.json file for addons packages...");
+	iMSCP::Dialog->factory()->infobox("\nBuilding composer.json file for addon packages...");
 
 	my $composerJsonFile = iMSCP::Templator::process(
-		{ 'PACKAGES' => join ",\n", @{$self->{'toInstall'}} },
-		$self->_getComposerFileTpl()
+		{ 'PACKAGES' => join ",\n", @{$self->{'toInstall'}} }, $self->_getComposerFileTpl()
 	);
 
 	my $file = iMSCP::File->new(filename => "$self->{'cacheDir'}/composer.json");
@@ -225,11 +223,11 @@ Please wait, this may take a few seconds...
 	$rs;
 }
 
-=item _getComposer()
+=item _getComposerFileTpl()
 
  Get composer.json template
 
- return string
+ Return string
 
 =cut
 
@@ -256,7 +254,7 @@ EOF
 
  Clean local addon packages repository repository
 
- return 0 on success, other on failure
+ Return 0 on success, other on failure
 
 =cut
 

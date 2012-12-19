@@ -617,7 +617,7 @@ sub saveGuiPersistentData
 		# TODO should be moved in related addon (possible by using hooks)
 		if(-d "$main::imscpConfig{'ROOT_DIR'}/gui/public/tools/filemanager/data") {
 			my $dir = iMSCP::Dir->new(
-				'dirname' => "$$$tmp$main::imscpConfig{'ROOT_DIR'}/gui/public/tools/filemanager/data"
+				dirname => "$$$tmp$main::imscpConfig{'ROOT_DIR'}/gui/public/tools/filemanager/data"
 			);
 			$dir->make() and return 1;
 
