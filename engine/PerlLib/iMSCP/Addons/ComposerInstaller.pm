@@ -252,9 +252,9 @@ EOF
 	$json;
 }
 
-=item _cleanTmp()
+=item _cleanCacheDir()
 
- Clean local addon packages repository directory
+ Clean local addon packages repository repository
 
  return 0 on success, other on failure
 
@@ -264,18 +264,10 @@ sub _cleanCacheDir
 {
 	my $self = shift;
 
-	iMSCP::Dialog->factory()->infobox("\nCleaning composer installer cache directory.");
+	iMSCP::Dialog->factory()->infobox("\nCleaning local addon packages repository.");
 
 	execute("$main::imscpConfig{'CMD_RM'} -rf $self->{'cacheDir'}/*");
 }
-
-=back
-
-=head1
-
- TODO: Implements composer installer to install package in the tools directory directy
-
-=cut
 
 =back
 

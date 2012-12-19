@@ -26,6 +26,7 @@ Addons::roundcube - i-MSCP Roundcube addon
 # @category		i-MSCP
 # @copyright	2010 - 2012 by i-MSCP | http://i-mscp.net
 # @author		Daniel Andreca <sci2tech@gmail.com>
+# @author		Laurent Declercq <l.declercq@nuxwin.com>
 # @link			http://i-mscp.net i-MSCP Home Site
 # @license		http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
@@ -89,6 +90,18 @@ sub registerSetupHooks
 	Addons::roundcube::installer->new()->registerSetupHooks($hooksManager);
 }
 
+=item preinstall()
+
+=cut
+
+sub preinstall
+{
+	my $self = shift;
+
+	use Addons::roundcube::installer;
+	Addons::roundcube::installer->new()->preinstall();
+}
+
 =item install()
 
  Run the install method on the roundcube addon installer.
@@ -110,6 +123,7 @@ sub install
 =head1 AUTHORS
 
  - Daniel Andreca <sci2tech@gmail.com>
+ - Laurent Declercq <l.declercq@nuxwin.com>
 
 =cut
 
