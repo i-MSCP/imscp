@@ -38,6 +38,7 @@ GUI:
 
 	Tools:
 		Moved Roundcube to packagist.org (composer package)
+		Moved Ajaxplorer to packagist.org (composer package)
 		Updated PhpMyAdmin to version 3.5.3
 		Updated AjaxPlorer to version 4.2.3
 		Updated Roundube to version 0.8.4

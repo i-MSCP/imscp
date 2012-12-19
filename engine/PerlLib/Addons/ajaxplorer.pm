@@ -2,7 +2,7 @@
 
 =head1 NAME
 
-Addons::roundcube - i-MSCP Roundcube addon
+Addons::ajaxplorer - i-MSCP AjaxPlorer addon
 
 =cut
 
@@ -25,12 +25,11 @@ Addons::roundcube - i-MSCP Roundcube addon
 #
 # @category		i-MSCP
 # @copyright	2010 - 2012 by i-MSCP | http://i-mscp.net
-# @author		Daniel Andreca <sci2tech@gmail.com>
 # @author		Laurent Declercq <l.declercq@nuxwin.com>
 # @link			http://i-mscp.net i-MSCP Home Site
 # @license		http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
-package Addons::roundcube;
+package Addons::ajaxplorer;
 
 use strict;
 use warnings;
@@ -39,15 +38,12 @@ use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
 
- Roundcube addon for i-MSCP.
+ AjaxPlorer addon for i-MSCP.
 
- RoundCube Webmail is a browser-based multilingual IMAP client with an application-like user interface.
- It provides full functionality expected from an e-mail client, including MIME support, address book,
-folder manipulation and message filters.
+ AjaXplorer is a software that can turn any web server into a powerfull file management system and an alternative to
+mainstream cloud storage providers.
 
- The user interface is fully skinnable using XHTML and CSS 2.
-
- Project homepage: http://www.roundcube.net/
+ Project homepage: http://ajaxplorer.info/
 
 =head1 CLASS METHODS
 
@@ -57,13 +53,13 @@ folder manipulation and message filters.
 
  Implement singleton design pattern. Return instance of this class.
 
- Return Addons::roundcube
+ Return Addons::ajaxplorer
 
 =cut
 
 sub factory
 {
-	Addons::roundcube->new();
+	Addons::ajaxplorer->new();
 }
 
 =back
@@ -72,27 +68,9 @@ sub factory
 
 =over 4
 
-=item registerSetupHooks($hooksManager)
-
- Register setup hook functions.
-
- Param iMSCP::HooksManager instance
- Return int - 0 on success, 1 on failure
-
-=cut
-
-sub registerSetupHooks
-{
-	my $self = shift;
-	my $hooksManager = shift;
-
-	use Addons::roundcube::installer;
-	Addons::roundcube::installer->new()->registerSetupHooks($hooksManager);
-}
-
 =item preinstall()
 
- Run the install method on the Roundcube addon installer.
+ Run the preinstall method on the AjaxPlorer addon installer.
 
 =cut
 
@@ -100,13 +78,13 @@ sub preinstall
 {
 	my $self = shift;
 
-	use Addons::roundcube::installer;
-	Addons::roundcube::installer->new()->preinstall();
+	use Addons::ajaxplorer::installer;
+	Addons::ajaxplorer::installer->new()->preinstall();
 }
 
 =item install()
 
- Run the install method on the Roundcube addon installer.
+ Run the install method on the AjaxPlorer addon installer.
 
  Return int - 0 on success, 1 on failure
 
@@ -116,16 +94,15 @@ sub install
 {
 	my $self = shift;
 
-	use Addons::roundcube::installer;
-	Addons::roundcube::installer->new()->install();
+	use Addons::ajaxplorer::installer;
+	Addons::ajaxplorer::installer->new()->install();
 }
 
 =back
 
-=head1 AUTHORS
+=head1 AUTHOR
 
- - Daniel Andreca <sci2tech@gmail.com>
- - Laurent Declercq <l.declercq@nuxwin.com>
+ Laurent Declercq <l.declercq@nuxwin.com>
 
 =cut
 

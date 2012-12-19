@@ -190,11 +190,6 @@ sub setGuiPermissions
 	);
 
 	$rs |= setRights(
-		"$rootDir/gui/public/tools/filemanager/data",
-		{ user => $panelUName, group => $panelGName, dirmode => '0700', filemode => '0600', recursive => 'yes' }
-	);
-
-	$rs |= setRights(
 		"$rootDir/gui",
 		{ user => $panelUName, group => $apacheGName, mode => '0550' }
 	);

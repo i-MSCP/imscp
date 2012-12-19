@@ -614,7 +614,13 @@ sub saveGuiPersistentData
 		return $rs if $rs;
 
 		# Save filemanager data (ajaxplorer)
+		# TODO should be moved in related addon (possible by using hooks)
 		if(-d "$main::imscpConfig{'ROOT_DIR'}/gui/public/tools/filemanager/data") {
+			my $dir = iMSCP::Dir->new(
+				'dirname' => "$$$tmp$main::imscpConfig{'ROOT_DIR'}/gui/public/tools/filemanager/data"
+			);
+			$dir->make() and return 1;
+
 			$rs = execute(
 				"cp -vRTf $main::imscpConfig{'ROOT_DIR'}/gui/public/tools/filemanager/data " .
 				"$$$tmp$main::imscpConfig{'ROOT_DIR'}/gui/public/tools/filemanager/data",

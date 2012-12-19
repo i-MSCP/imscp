@@ -43,9 +43,9 @@ use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
 
-This is the installer for the i-MSCP Roundcube addon.
+ This is the installer for the i-MSCP Roundcube addon.
 
-See Addons::roundcube for more information.
+ See Addons::roundcube for more information.
 
 =head1 PUBLIC METHODS
 
@@ -53,7 +53,7 @@ See Addons::roundcube for more information.
 
 =item registerSetupHooks(HooksManager)
 
- Register Roundcube setup hook functions
+ Register Roundcube setup hook functions.
 
  Param iMSCP::HooksManager instance
  Return int - 0 on success, 1 on failure
@@ -75,7 +75,7 @@ sub registerSetupHooks
 
 =item preinstall()
 
- Register roundcube composer package for installation
+ Register Roundcube composer package for installation.
 
  Return int - 0 on success, other on failure
 
@@ -90,7 +90,7 @@ sub preinstall
 
 =item install()
 
- Process roundcube addon install tasks.
+ Process Roundcube addon install tasks.
 
  Return int - 0 on success, 1 on failure
 
@@ -139,7 +139,7 @@ sub install
 
  Show roundcube questions.
 
- Hook function responsible to show awstats installer questions.
+ Hook function responsible to show Roundcube installer questions.
 
  Param iMSCP::Dialog
  Return int - 0 or 30
@@ -214,7 +214,7 @@ sub askRoundcube
 
 =item _init()
 
- Called by new(). Initialize roundcube addon installer instance
+ Called by new(). Initialize Roundcube addon installer instance.
 
  Return Addons::roundcube::installer
 
@@ -243,7 +243,7 @@ sub _init
 
 =item _backupConfigFile()
 
- Backup the given configuration file.
+ Backup the given Roundcube configuration file.
 
  Return int - 0
 
@@ -269,7 +269,7 @@ sub _backupConfigFile
 
 =item _installFiles()
 
- Install roundcube files in production directory
+ Install Roundcube files in production directory.
 
  Return int - 0 on success, other on failure
 
@@ -284,14 +284,22 @@ sub _installFiles
 
 	if(-d "$repoDir/vendor/imscp/roundcube") {
 		$rs = execute(
-			"$main::imscpConfig{CMD_CP} -r $repoDir/vendor/imscp/roundcube $main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/webmail",
+			"$main::imscpConfig{CMD_CP} -rTf $repoDir/vendor/imscp/roundcube $main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/webmail",
+			\$stdout,
+			\$stderr
+		);
+		debug($stdout) if $stdout;
+		error($stderr) if $rs && $stderr;
+
+		$rs |= execute(
+			"$main::imscpConfig{CMD_RM} -rf $main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/webmail/.git",
 			\$stdout,
 			\$stderr
 		);
 		debug($stdout) if $stdout;
 		error($stderr) if $rs && $stderr;
 	} else {
-		error('Cannot found roundcube addon package in local composer repository');
+		error('Cannot found Roundcube addon package in local composer repository');
 		$rs = 1;
 	}
 
@@ -300,7 +308,7 @@ sub _installFiles
 
 =item _setPermissions()
 
- Set roundcube files permissions
+ Set Roundcube files permissions.
 
  Return int - 0 on success, other on failure
 
@@ -330,7 +338,7 @@ sub _setPermissions
 
 =item _saveConfig()
 
- Save roundcube configuration.
+ Save Roundcube configuration.
 
  Return int - 0 on success, 1 on failure
 
@@ -363,7 +371,7 @@ sub _saveConfig
 
 =item _setupDatabase()
 
- Setup roundcube database
+ Setup Roundcube database.
 
  Return int - 0 on success, 1 on failure
 
@@ -448,7 +456,7 @@ sub _setupDatabase
 
 =item _generateDESKey()
 
- Generate DES key for roundcube
+ Generate DES key for Roundcube.
 
  Return int - 0
 
@@ -474,7 +482,7 @@ sub _generateDESKey
 
 =item _savePlugins()
 
- Save roundcube plugins.
+ Save Roundcube plugins.
 
  Return int - 0
 
@@ -492,7 +500,7 @@ sub _savePlugins
 
 =item _buildConfig()
 
- Process awstats addon install tasks.
+ Process Roundcube addon install tasks.
 
  Return int - 0 on success, 1 on failure
 
