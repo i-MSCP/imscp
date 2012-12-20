@@ -517,7 +517,7 @@ sub _setupDatabase
 
 		$rs = $database->doQuery(
 			'dummy',
-			"GRANT ALL PRIVILEGES ON `imscp_roundcube`.`*` TO ?@? IDENTIFIED BY ?;",
+			"GRANT ALL PRIVILEGES ON `imscp\_roundcube`.* TO ?@? IDENTIFIED BY ?;",
 			$dbUser,
 			$main::imscpConfig{'DATABASE_HOST'},
 			$dbPass
