@@ -476,7 +476,7 @@ sub _parseVersion( $ $)
 	my $version = shift;
 
 	$version =~ s/-stable/.0/; # stable is lower than rc, beta and alpha
-	$version =~ s/-git/.99/; # git is lower than rc, beta and alpha and should be greater than stable
+	$version =~ s/-git/.99/; # git is greater than stable, rc, beta and alpha
 
 	lc($version);
 }
