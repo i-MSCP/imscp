@@ -123,7 +123,6 @@ sub install
 	$rs |= $self->_createDatabase();	# Create/update roundcube database
 	$rs |= $self->_setupDatabase();		# Setup roundcube database
 	$rs |= $self->_generateDESKey();	# Generate DES key
-	$rs |= $self->_savePlugins();		# Save plugins
 	$rs |= $self->_buildConfig();		# Build new configuration files
 	$rs |= $self->_saveConfig();		# Save configuration
 
@@ -569,24 +568,6 @@ sub _generateDESKey
 		$DESKey .= $allowedChars[rand()*($#allowedChars + 1)] for (1..24);
 		$self::roundcubeConfig{'DES_KEY'} = $DESKey;
 	}
-
-	0;
-}
-
-=item _savePlugins()
-
- Save Roundcube plugins.
-
- Return int - 0
-
-=cut
-
-sub _savePlugins
-{
-	my $self = shift;
-
-	$self::roundcubeConfig{'PLUGINS'} = $self::roundcubeOldConfig{'PLUGINS'}
-		if ! $self::roundcubeConfig{'PLUGINS'} && $self::roundcubeOldConfig{'PLUGINS'};
 
 	0;
 }
