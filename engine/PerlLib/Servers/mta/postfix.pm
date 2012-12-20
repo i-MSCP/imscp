@@ -928,7 +928,7 @@ sub addMailBox
 	$rs |=	$wrkFile->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
 	$rs |= $wrkFile->copyFile($mBoxHashFile);
 
-	$self->{postmap}->{$self->{'MTA_VIRTUAL_MAILBOX_HASH'}} = $data->{'MAIL_ADDR'};
+	$self->{'postmap'}->{$self->{'MTA_VIRTUAL_MAILBOX_HASH'}} = $data->{'MAIL_ADDR'};
 
 	my $mailDir = "$self->{MTA_VIRTUAL_MAIL_DIR}/$data->{DMN_NAME}/$data->{MAIL_ACC}";
 
@@ -936,9 +936,7 @@ sub addMailBox
 		{ user => $self->{'MTA_MAILBOX_UID_NAME'}, group => $self->{'MTA_MAILBOX_GID_NAME'}, mode => 0700 }
 	);
 
-	for (
-		"$mailDir", "$mailDir/.Draft", "$mailDir/.Sent", "$mailDir/.Junk", "$mailDir/.Trash"
-	) {
+	for ("$mailDir", "$mailDir/.Draft", "$mailDir/.Sent", "$mailDir/.Junk", "$mailDir/.Trash") {
 		# Creating bal directory
 		if(! -d $_) {
 			$rs |= iMSCP::Dir->new(dirname => $_)->make(
@@ -975,7 +973,7 @@ sub addMailBox
 		$subscriptionsFileContent = "INBOX.Drafts\nINBOX.Sent\nINBOX.Junk\nINBOX.Trash\n";
 	}
 
-	my $subscriptionsFile = iMSCP::File->new(filename => $subscriptionsFile);
+	$subscriptionsFile = iMSCP::File->new(filename => $subscriptionsFile);
 	$subscriptionsFile->set($subscriptionsFileContent) and return 1;
 	$subscriptionsFile->save() and return 1;
 
