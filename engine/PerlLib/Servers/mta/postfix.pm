@@ -907,9 +907,6 @@ sub addMailBox
 
 	iMSCP::HooksManager->getInstance()->trigger('beforeMtaAddMailbox', $data) and return 1;
 
-	my $subscribedName;
-	my $wrkSubscribedContent;
-
 	use File::Basename;
 	use iMSCP::File;
 	use iMSCP::Dir;
@@ -940,28 +937,50 @@ sub addMailBox
 	);
 
 	for (
-		"$mailDir/cur", "$mailDir/tmp", "$mailDir/new", "$mailDir/.Drafts", "$mailDir/.Sent", "$mailDir/.Junk",
-		"$mailDir/.Trash"
+		"$mailDir", "$mailDir/.Draft", "$mailDir/.Sent", "$mailDir/.Junk", "$mailDir/.Trash"
 	) {
-		$rs |= iMSCP::Dir->new(dirname => $_)->make(
-			{ user => $self->{'MTA_MAILBOX_UID_NAME'}, group => $self->{'MTA_MAILBOX_GID_NAME'}, mode => 0700 }
-		);
-	
-		if($main::imscpConfig{'PO_SERVER'} eq 'dovecot'){
-			$subscribedName = "$mailDir/subscriptions";
-			$wrkSubscribedContent = "Drafts\nSent\nJunk\nTrash\n";
-		} else {
-			$subscribedName = "$mailDir/courierimapsubscribed";
-			$wrkSubscribedContent = "INBOX.Drafts\nINBOX.Sent\nINBOX.Junk\nINBOX.Trash\n";
+		# Creating bal directory
+		if(! -d $_) {
+			$rs |= iMSCP::Dir->new(dirname => $_)->make(
+				{ user => $self->{'MTA_MAILBOX_UID_NAME'}, group => $self->{'MTA_MAILBOX_GID_NAME'}, mode => 0700 }
+			);
 		}
 
-		my $wrkSubscribedFile = iMSCP::File->new(filename => $subscribedName);
-		$wrkSubscribedFile->set($wrkSubscribedContent);
-		return 1 if $wrkSubscribedFile->save();
+		# Creating cur directory
+		$rs |= iMSCP::Dir->new(dirname => "$_/cur")->make(
+			{ user => $self->{'MTA_MAILBOX_UID_NAME'}, group => $self->{'MTA_MAILBOX_GID_NAME'}, mode => 0700 }
+		);
 
-		$rs |=	$wrkSubscribedFile->mode(0600);
-		$rs |=	$wrkSubscribedFile->owner($self->{'MTA_MAILBOX_UID_NAME'}, $self->{'MTA_MAILBOX_GID_NAME'});
+		# Creating new directory
+		$rs |= iMSCP::Dir->new(dirname => "$_/new")->make(
+			{ user => $self->{'MTA_MAILBOX_UID_NAME'}, group => $self->{'MTA_MAILBOX_GID_NAME'}, mode => 0700 }
+		);
+
+		# Creating tmp directory
+		$rs |= iMSCP::Dir->new(dirname => "$_/tmp")->make(
+			{ user => $self->{'MTA_MAILBOX_UID_NAME'}, group => $self->{'MTA_MAILBOX_GID_NAME'}, mode => 0700 }
+		);
 	}
+
+	# Creating subscriptions file
+
+	my $subscriptionsFile;
+	my $subscriptionsFileContent;
+
+	if($main::imscpConfig{'PO_SERVER'} eq 'dovecot'){
+		$subscriptionsFile = "$mailDir/subscriptions";
+		$subscriptionsFileContent = "Drafts\nSent\nJunk\nTrash\n";
+	} else {
+		$subscriptionsFile = "$mailDir/courierimapsubscribed";
+		$subscriptionsFileContent = "INBOX.Drafts\nINBOX.Sent\nINBOX.Junk\nINBOX.Trash\n";
+	}
+
+	my $subscriptionsFile = iMSCP::File->new(filename => $subscriptionsFile);
+	$subscriptionsFile->set($subscriptionsFileContent) and return 1;
+	$subscriptionsFile->save() and return 1;
+
+	$rs |= $subscriptionsFile->mode(0600);
+	$rs |= $subscriptionsFile->owner($self->{'MTA_MAILBOX_UID_NAME'}, $self->{'MTA_MAILBOX_GID_NAME'});
 
 	$rs |= iMSCP::HooksManager->getInstance()->trigger('afterMtaAddMailbox', $data);
 

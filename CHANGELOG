@@ -60,6 +60,7 @@ Tickets:
 	- Fixed #522: Bug - Subdomain redirects with "https" or "ftp" don't work
 	- Fixed #524: Update - AjaxPlorer 4.2.3 released
 	- Fixed #527: Update - Roundcube 0.8.4 released
+	- Fixed #535: Defect - Roundcube does not work with courier
 	- Fixed #539: Enhancement - i-MSCP tools - Composer support
 
 -------------------------------------------------------------------------------------
