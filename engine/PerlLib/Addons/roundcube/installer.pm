@@ -409,7 +409,7 @@ sub _createDatabase
 	if(! $self->{'forceDbSetup'}) {
 		my $fromVersion = $self->_parseVersion($self::roundcubeOldConfig{'ROUNDCUBE_VERSION'} || '0.8.4');
 		my $newVersion = $self->_parseVersion($self::roundcubeConfig{'ROUNDCUBE_VERSION'});
-		my $needUpdate = `$main::imscpConfig{'CMD_PHP'} -r "print (version_compare('$fromVersion', '$newVersion', '>'));"`;
+		my $needUpdate = `$main::imscpConfig{'CMD_PHP'} -r "print (version_compare('$fromVersion', '$newVersion', '<'));"`;
 
 		if($fromVersion && $needUpdate) {
 			open my($file), '<', "$roundcubeDir/SQL/mysql.update.sql"
@@ -437,24 +437,24 @@ sub _createDatabase
 				$sql .= $line . "\n" if $from && ! $isComment;
 			}
 
-			# Save roundcube db update file in temporary directory
-			#$file = iMSCP::File->new(filename => '/tmp/roundcube_update.sql');
-			#$file->set($sql) and return 1;
-			#$file->save() and return 1;
+			if($sql) {
+				debug("Updating Roundcube database schema:\n\n$sql");
 
-			$database->set('DATABASE_NAME', $dbName);
-			$rs = $database->connect();
-			return $rs if $rs;
+				# Save roundcube db update file in temporary directory
+				$file = iMSCP::File->new(filename => '/tmp/roundcube_update.sql');
+				$file->set($sql) and return 1;
+				$file->save() and return 1;
 
-			# Update roundcube database
-			$rs = $database->doQuery('dummy', $sql);
-			error("Query failed: $rs") if $rs;
+				$database->set('DATABASE_NAME', $dbName);
+				$rs = $database->connect();
+				return $rs if $rs;
 
-			#$rs = main::setupImportSqlSchema($database, '/tmp/roundcube_update.sql');
-			#return $rs if $rs;
+				$rs = main::setupImportSqlSchema($database, '/tmp/roundcube_update.sql');
+				return $rs if $rs;
 
-			# Remove temporary file
-			#$file->delFile() and return 1;
+				# Remove temporary file
+				$file->delFile() and return 1;
+			}
 		}
 	}
 

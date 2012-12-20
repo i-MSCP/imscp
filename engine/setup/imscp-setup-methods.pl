@@ -1518,7 +1518,7 @@ sub setupCreateDatabase
 	0;
 }
 
-#
+# Convenience method allowing to create or update a database schema
 sub setupImportSqlSchema
 {
 	my $database = shift;
