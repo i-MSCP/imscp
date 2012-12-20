@@ -75,7 +75,7 @@ sub preinstall
 sub install
 {
 	my $self = shift;
-	my $rs	= 0;
+	my $rs = 0;
 
 	$self->{'httpd'} = Servers::httpd->factory();
 
@@ -129,7 +129,7 @@ sub _installFiles
 		debug($stdout) if $stdout;
 		error($stderr) if $rs && $stderr;
 	} else {
-		error('Cannot found AjaxPlorer addon package in local composer repository');
+		error("Couldn't find the imscp/ajaxplorer package into the local repository");
 		$rs = 1;
 	}
 

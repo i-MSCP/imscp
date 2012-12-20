@@ -125,7 +125,7 @@ sub doQuery
 
 # Return tables for the current database (see DATABASE_NAME attribute)
 #
-# Return HASH REFERENCCE on success, error string on failure
+# Return ARRAY REFERENCCE on success, error string on failure
 sub getDBTables{
 
 	my $self = shift;
@@ -136,12 +136,42 @@ sub getDBTables{
 
 	return "Error while executing query: $DBI::errstr" unless $self->{'sth'}->execute();
 
-	my $href = $self->{sth}->fetchall_hashref("TABLE_NAME");
+	my $href = $self->{sth}->fetchall_hashref('TABLE_NAME');
 
 	my @tables = keys %$href;
 
 	return  \@tables;
 
+}
+
+# Return columns for the given table of the current database (see DATABASE_NAME attribute)
+#
+# Return ARRAY REFERENCCE on success, error string on failure
+sub getTableColumns($ $)
+{
+	my $self = shift;
+	my $tableName = shift;
+
+	$self->{sth} = $self->{connection}->prepare(
+		"
+			SELECT
+				`COLUMN_NAME`
+			FROM
+				`INFORMATION_SCHEMA`.`COLUMNS`
+			WHERE
+				`TABLE_SCHEMA` = '$self->{db}->{DATABASE_NAME}';
+			AND
+				`TABLE_NAME` = '$tableName';
+			"
+	);
+
+	return "Error while executing query: $DBI::errstr" unless $self->{'sth'}->execute();
+
+	my $href = $self->{sth}->fetchall_hashref('COLUMN_NAME');
+
+	my @columns = keys %$href;
+
+	return  \@columns;
 }
 
 # Dump the given database in the given filename

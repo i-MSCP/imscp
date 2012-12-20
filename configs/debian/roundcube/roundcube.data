@@ -21,6 +21,8 @@
 # @link			http://i-mscp.net i-MSCP Home Site
 # @license		http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
+ROUNDCUBE_VERSION = 0.8.4
+
 ROUNDCUBE_CONF_DIR = tools/webmail/config
 
 ROUNDCUBE_PWCHANGER_DIR = tools/webmail/plugins/imscp_pw_changer

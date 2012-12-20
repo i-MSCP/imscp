@@ -105,8 +105,8 @@ sub _init
 	$self->{'cacheDir'} = $main::imscpConfig{'ADDON_PACKAGES_CACHE_DIR'};
 	$self->{'phpCmd'} = "$main::imscpConfig{'CMD_PHP'} -d suhosin.executor.include.whitelist=phar";
 
-	my $dir = iMSCP::Dir->new(dirname => $self->{'cacheDir'});
-	$dir->make() and die('Unable to create the cache directory for addon packages');
+	my $cacheDir = iMSCP::Dir->new(dirname => $self->{'cacheDir'});
+	$cacheDir->make() and die('Unable to create the cache directory for addon packages');
 
 	# Override default composer home directory
 	$ENV{'COMPOSER_HOME'} = "$self->{'cacheDir'}/.composer";
@@ -122,7 +122,7 @@ sub _init
 
 =item _installPackages()
 
- Install packages in temporary directory
+ Install or update packages in addons cache repository.
 
  Return 0 on success, other on failure
 
@@ -144,7 +144,7 @@ Please wait, this may take a few seconds...
 "
 	);
 
-	# update option is used here but composer will automatically fallback to install mode when needed
+	# The update option is used here but composer will automatically fallback to install mode when needed
 	my $rs = execute(
 		"$self->{'phpCmd'} $self->{'cacheDir'}/composer.phar -d=$self->{'cacheDir'} update", \$stdout, \$stderr
 	);
@@ -156,7 +156,7 @@ Please wait, this may take a few seconds...
 
 =item _buildComposerFile()
 
- Build composer.json file
+ Build composer.json file.
 
  Return 0 on success, other on failure
 
@@ -179,7 +179,7 @@ sub _buildComposerFile
 
 =item _getComposer()
 
- Get composer.phar
+ Get composer.phar.
 
  Return 0 on success, other on failure
 
@@ -207,9 +207,7 @@ Please wait, this may take a few seconds...
 		);
 
 		$rs = execute(
-			"$main::imscpConfig{'CMD_CURL'} -s http://getcomposer.org/installer | $self->{'phpCmd'}",
-			\$stdout,
-			\$stderr
+			"$main::imscpConfig{'CMD_CURL'} -s http://getcomposer.org/installer | $self->{'phpCmd'}", \$stdout, \$stderr
 		);
 		error("Unable to get composer installer from http://getcomposer.org: $stderr") if $rs;
 		debug($stdout) if $stdout;
@@ -225,7 +223,7 @@ Please wait, this may take a few seconds...
 
 =item _getComposerFileTpl()
 
- Get composer.json template
+ Get composer.json template.
 
  Return string
 
@@ -252,7 +250,7 @@ EOF
 
 =item _cleanCacheDir()
 
- Clean local addon packages repository repository
+ Clean local addon packages repository repository.
 
  Return 0 on success, other on failure
 
@@ -264,7 +262,11 @@ sub _cleanCacheDir
 
 	iMSCP::Dialog->factory()->infobox("\nCleaning local addon packages repository.");
 
-	execute("$main::imscpConfig{'CMD_RM'} -rf $self->{'cacheDir'}/*");
+	if(-d $self->{'cacheDir'}) {
+		execute("$main::imscpConfig{'CMD_RM'} -rf $self->{'cacheDir'}/*");
+	} else {
+		0;
+	}
 }
 
 =back
