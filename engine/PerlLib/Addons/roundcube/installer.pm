@@ -464,7 +464,7 @@ sub _createDatabase
 
 =item _parseVersion()
 
- parse Roundcube version.
+ Parse Roundcube version.
 
  Return string
 
@@ -612,7 +612,7 @@ sub _buildConfig
 		DB_HOST => $main::imscpConfig{'DATABASE_HOST'},
 		DB_USER => $self::roundcubeConfig{'DATABASE_USER'},
 		DB_PASS => $self::roundcubeConfig{'DATABASE_PASSWORD'},
-		DB_NAME => $main::imscpConfig{'DATABASE_NAME'},
+		DB_NAME => 'imscp_roundcube',
 		BASE_SERVER_VHOST => $main::imscpConfig{'BASE_SERVER_VHOST'},
 		TMP_PATH => "$main::imscpConfig{'GUI_ROOT_DIR'}/data/tmp",
 		DES_KEY => $self::roundcubeConfig{'DES_KEY'},
