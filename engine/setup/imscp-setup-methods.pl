@@ -890,8 +890,7 @@ sub setupSslDialog
 	my ($dialog, $rs, $ret) = (shift, 0, '');
 	my $sslEnabled = setupGetQuestion('SSL_ENABLED') || 'no';
 
-
-	($rs, $sslEnabled) =  $dialog->radiolist(
+	($rs, $sslEnabled) = $dialog->radiolist(
 		"\nDo you want to activate SSL for i-MSCP?", ['no', 'yes'], lc($sslEnabled) eq 'yes' ? 'yes' : 'no'
 	);
 
@@ -901,16 +900,16 @@ sub setupSslDialog
 
 		if($sslEnabled eq 'yes') {
 			Modules::openssl->new()->{'new_cert_path'} = $main::imscpConfig{'GUI_CERT_DIR'};
-			Modules::openssl->new()->{'new_cert_name'} = $main::imscpConfig{'SERVER_HOSTNAME'};
+			Modules::openssl->new()->{'new_cert_name'} = setupGetQuestion('SERVER_HOSTNAME');
 
-			# TODO how determine default value here?
-			($rs, $ret) = $dialog->radiolist( "\nDo you have an SSL certificate?", ['yes', 'no']);
+			# TODO determine default value here
+			($rs, $ret) = $dialog->radiolist( "\nDo you have an SSL certificate?", ['yes', 'no'], 'no');
 
 			if($rs != 30) {
 				$ret = $ret eq 'yes' ? 1 : 0;
 
 				Modules::openssl->new()->{'cert_selfsigned'} = $ret;
-				Modules::openssl->new()->{'vhost_cert_name'} = $main::imscpConfig{'SERVER_HOSTNAME'} if ! $ret;
+				Modules::openssl->new()->{'vhost_cert_name'} = setupGetQuestion('SERVER_HOSTNAME') if ! $ret;
 
 				if(Modules::openssl->new()->{'cert_selfsigned'}) {
 					Modules::openssl->new()->{'intermediate_cert_path'} = '';
@@ -945,7 +944,8 @@ sub setupSslDialog
 
 sub setupAskCertificateKeyPath
 {
-	my ($dialog, $rs, $ret, $key) = (shift, 0, '', "/root/$main::imscpConfig{'SERVER_HOSTNAME'}.key");
+	my ($dialog, $rs, $ret) = (shift, 0, '');
+	my $key = '/root/' . setupGetQuestion('SERVER_HOSTNAME') . '.key';
 
 	do {
 		($rs, $ret) = $dialog->passwordbox("\nPlease enter password for key if needed:", $ret);
@@ -986,7 +986,8 @@ sub setupAskIntermediateCertificatePath
 
 sub setupAskCertificatePath
 {
-	my ($dialog, $cert, $rs, $ret) = (shift, "/root/$main::imscpConfig{'SERVER_HOSTNAME'}.crt", 0, '');
+	my ($dialog, $rs, $ret) = (shift, 0, '');
+	my $cert = '/root/' . setupGetQuestion('SERVER_HOSTNAME') . '.crt';
 
 	$dialog->msgbox("\nPlease select your certificate:");
 
