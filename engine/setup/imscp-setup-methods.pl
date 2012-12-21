@@ -1547,12 +1547,18 @@ sub setupDefaultAdmin
 			'dummy',
 			'
 				INSERT IGNORE INTO `user_gui_props` (
-					`user_id`, `lang`, `layout_color`
+					`user_id`, `lang`, `layout`, `layout_color`, `logo`, `show_main_menu_labels`
 				) VALUES (
-					LAST_INSERT_ID(), ?, ?
+					LAST_INSERT_ID(), ?, ?, ?, ?, ?
 				)
 			',
-			'en_GB', 'black'
+			'en_GB', 'default', 'black', '', '1'
+		);
+		return $rs if ref $rs ne 'HASH';
+
+		# Remove any orphaned user properties
+		$rs = $database->doQuery(
+			'dummy', 'DELETE FROM `user_gui_props` WHERE `user_id` NOT IN (SELECT `admin_id` FROM `admin`)'
 		);
 		return $rs if ref $rs ne 'HASH';
 	}

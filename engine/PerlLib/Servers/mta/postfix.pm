@@ -936,7 +936,7 @@ sub addMailBox
 		{ user => $self->{'MTA_MAILBOX_UID_NAME'}, group => $self->{'MTA_MAILBOX_GID_NAME'}, mode => 0700 }
 	);
 
-	for ("$mailDir", "$mailDir/.Draft", "$mailDir/.Sent", "$mailDir/.Junk", "$mailDir/.Trash") {
+	for ("$mailDir", "$mailDir/.Drafts", "$mailDir/.Sent", "$mailDir/.Junk", "$mailDir/.Trash") {
 		# Creating bal directory
 		if(! -d $_) {
 			$rs |= iMSCP::Dir->new(dirname => $_)->make(

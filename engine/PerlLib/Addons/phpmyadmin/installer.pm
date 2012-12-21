@@ -106,7 +106,7 @@ sub install
 	$self->{'group'} = $self->{'httpd'}->can('getRunningGroup')
 		? $self->{'httpd'}->getRunningGroup() : $main::imscpConfig{'ROOT_GROUP'};
 
-	# Backup current configuration files if they exists (only relevant when running imscp-setup)
+	# Backup current configuration file if it exists (only relevant when running imscp-setup)
 	$rs |= $self->_backupConfigFile(
 		"$main::imscpConfig{'GUI_PUBLIC_DIR'}/$self::phpmyadminConfig{'PHPMYADMIN_CONF_DIR'}/config.inc.php"
 	);
