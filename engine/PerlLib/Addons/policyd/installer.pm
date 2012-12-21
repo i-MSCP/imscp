@@ -156,7 +156,7 @@ sub _init{
 
 	tie %self::policydConfig, 'iMSCP::Config','fileName' => $conf, noerrors => 1;
 
-	if($oldConf) {
+	if(-f $oldConf) {
 		tie %self::policydOldConfig, 'iMSCP::Config','fileName' => $oldConf, noerrors => 1;
 		%self::policydConfig = (%self::policydConfig, %self::policydOldConfig);
 	}

@@ -151,10 +151,10 @@ sub askRoundcube
 	my $self = shift;
 	my $dialog = shift;
 
-	my $dbType = $main::imscpConfig{'DATABASE_TYPE'};
-    my $dbHost = $main::imscpConfig{'DATABASE_HOST'};
-    my $dbPort = $main::imscpConfig{'DATABASE_PORT'};
-    my $dbName = $main::imscpConfig{'DATABASE_NAME'};
+	my $dbType = main::setupGetQuestion('DATABASE_TYPE');
+    my $dbHost = main::setupGetQuestion('DATABASE_HOST');
+    my $dbPort = main::setupGetQuestion('DATABASE_PORT');
+    my $dbName = main::setupGetQuestion('DATABASE_NAME');
 
 	my $dbUser = $main::preseed{'ROUNDCUBE_SQL_USER'} || $self::roundcubeConfig{'DATABASE_USER'} ||
 		$self::roundcubeOldConfig{'DATABASE_USER'} || 'roundcube_user';
@@ -234,7 +234,7 @@ sub _init
 
 	tie %self::roundcubeConfig, 'iMSCP::Config','fileName' => $conf, noerrors => 1;
 
-	if($oldConf) {
+	if(-f $oldConf) {
 		tie %self::roundcubeOldConfig, 'iMSCP::Config','fileName' => $oldConf, noerrors => 1;
 		%self::roundcubeConfig = (%self::roundcubeConfig, %self::roundcubeOldConfig);
 	}
@@ -499,12 +499,12 @@ sub _setupDatabase
 
 	if($dbUser ne $dbOldUser || $dbPass ne $dbOldPass || $self->{'forceDbSetup'}) {
 
-		# Remove old proftpd restricted SQL user and all it privileges (if any)
+		# Remove old roundcube restricted SQL user and all it privileges (if any)
 		$rs = main::setupDeleteSqlUser($dbOldUser);
 		error("Unable to remove the old roundcube '$dbOldUser' restricted SQL user: $rs") if $rs;
 		return 1 if $rs;
 
-		# Ensure new proftpd user do not already exists by removing it
+		# Ensure new roundcube user do not already exists by removing it
 		$rs = main::setupDeleteSqlUser($dbUser);
 		error("Unable to delete the roundcube '$dbUser' restricted SQL user: $rs") if $rs;
 		return 1 if $rs;
