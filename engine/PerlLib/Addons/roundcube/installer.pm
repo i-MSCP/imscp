@@ -583,6 +583,7 @@ sub _buildConfig
 	my $self = shift;
 	my $panelUName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} . $main::imscpConfig{'SYSTEM_USER_MIN_UID'};
 	my $panelGName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} . $main::imscpConfig{'SYSTEM_USER_MIN_UID'};
+	my $confDir = "$main::imscpConfig{'GUI_PUBLIC_DIR'}/$self::roundcubeConfig{'ROUNDCUBE_CONF_DIR'}";
 	my $rs = 0;
 
 	my $cfg = {
@@ -596,13 +597,13 @@ sub _buildConfig
 	};
 
 	my $cfgFiles = {
-		'db.inc.php' => "$main::imscpConfig{'GUI_PUBLIC_DIR'}/$self::roundcubeConfig{'ROUNDCUBE_CONF_DIR'}/db.inc.php",
-		'main.inc.php' => "$main::imscpConfig{'GUI_PUBLIC_DIR'}/$self::roundcubeConfig{'ROUNDCUBE_CONF_DIR'}/main.inc.php",
-		'config.inc.php' => "$main::imscpConfig{'GUI_PUBLIC_DIR'}/$self::roundcubeConfig{'ROUNDCUBE_PWCHANGER_DIR'}/config.inc.php"
+		'imscp.db.inc.php' => "$confDir/db.inc.php",
+		'imscp.main.inc.php' => "$confDir/main.inc.php",
+		'imscp.pw.changer.inc.php' => "$main::imscpConfig{'GUI_PUBLIC_DIR'}/$self::roundcubeConfig{'ROUNDCUBE_PWCHANGER_DIR'}/config.inc.php"
 	};
 
 	for (keys %{$cfgFiles}) {
-		my $file = iMSCP::File->new(filename => "$self->{cfgDir}/$_");
+		my $file = iMSCP::File->new(filename => "$confDir/$_");
 		my $cfgTpl = $file->get();
 
 		if (! $cfgTpl) {
@@ -611,7 +612,7 @@ sub _buildConfig
 		}
 
 		# the password changer plugin act on the immscp database
-		if($_ eq 'config.inc.php') {
+		if($_ eq 'imscp.pw.changer.inc.php') {
 			$cfg->{'DB_NAME'} = $main::imscpConfig{'DATABASE_NAME'};
 		} else {
 			$cfg->{'DB_NAME'} = 'imscp_roundcube';
