@@ -47,7 +47,7 @@ sub _init
 
 	tie %self::dovecotConfig, 'iMSCP::Config','fileName' => $conf, noerrors => 1;
 
-	if($oldConf) {
+	if(-f $oldConf) {
 		tie %self::dovecotOldConfig, 'iMSCP::Config','fileName' => $oldConf, noerrors => 1;
 		%self::dovecotConfig = (%self::dovecotConfig, %self::dovecotOldConfig);
 	}
@@ -70,9 +70,8 @@ sub registerSetupHooks
 		sub { my $dialogStack = shift; push(@$dialogStack, sub { $self->askDovecot(@_) }); 0; }
 	) and return 1;
 
-	$hooksManager->register(
-		'afterMtaBuildConf', sub { return $self->buildMtaConf(@_); }
-	) and return 1;
+	$hooksManager->register('afterMtaBuildMasterCfFile', sub { $self->buildMtaConf(@_); }) and return 1;
+	$hooksManager->register('afterMtaBuildMainCfFile', sub { $self->buildMtaConf(@_); }) and return 1;
 
 	$hooksManager->trigger('afterPoRegisterSetupHooks', $hooksManager, 'dovecot');
 }
@@ -395,8 +394,8 @@ sub buildMtaConf
 	my $mta	= Servers::mta->factory($main::imscpConfig{'MTA_SERVER'});
 
 	my $poBloc = getBloc(
-		"$mta->{commentChar} dovecot begin",
-		"$mta->{commentChar} dovecot end",
+		"$mta->{'commentChar'} dovecot begin",
+		"$mta->{'commentChar'} dovecot end",
 		$$content
 	);
 
@@ -405,19 +404,19 @@ sub buildMtaConf
 	$poBloc = iMSCP::Templator::process($tpl, $poBloc);
 
 	$$content = replaceBloc(
-		"$mta->{commentChar} po setup begin",
-		"$mta->{commentChar} po setup end",
+		"$mta->{'commentChar'} po setup begin",
+		"$mta->{'commentChar'} po setup end",
 		$poBloc,
 		$$content,
 		undef
 	);
 
-	# register again for next config file
+	# self register again and wait for next configuration file
 	iMSCP::HooksManager->getInstance()->register(
-		'afterMtaBuildConf', sub { return $self->mtaConf(@_); }
+		'afterMtaBuildMasterCfFile', sub { $self->buildMtaConf(@_); }
 	) and return 1;
 
-	0;
+	iMSCP::HooksManager->getInstance()->register('afterMtaBuildMainCfFile', sub { $self->buildMtaConf(@_); });
 }
 
 1;

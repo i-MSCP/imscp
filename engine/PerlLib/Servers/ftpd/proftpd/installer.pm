@@ -49,7 +49,7 @@ sub _init
 
 	tie %self::proftpdConfig, 'iMSCP::Config','fileName' => $conf, noerrors => 1;
 
-	if($oldConf) {
+	if(-f $oldConf) {
 		tie %self::proftpdOldConfig, 'iMSCP::Config','fileName' => $oldConf, noerrors => 1;
 		%self::proftpdConfig = (%self::proftpdConfig, %self::proftpdOldConfig);
 	}

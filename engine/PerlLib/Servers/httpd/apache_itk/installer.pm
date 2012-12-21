@@ -46,7 +46,7 @@ sub _init
 
 	tie %self::apacheConfig, 'iMSCP::Config','fileName' => $conf, noerrors => 1;
 
-	if($oldConf) {
+	if(-f $oldConf) {
 		tie %self::apacheOldConfig, 'iMSCP::Config','fileName' => $oldConf, noerrors => 1;
 		%self::apacheConfig = (%self::apacheConfig, %self::apacheOldConfig);
 	}

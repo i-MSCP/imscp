@@ -51,7 +51,7 @@ sub _init
 
 	tie %self::postfixConfig, 'iMSCP::Config','fileName' => $conf, noerrors => 1;
 
-	if($oldConf) {
+	if(-f $oldConf) {
 		tie %self::postfixOldConfig, 'iMSCP::Config','fileName' => $oldConf, noerrors => 1;
 		%self::postfixConfig = (%self::postfixConfig, %self::postfixOldConfig);
 	}

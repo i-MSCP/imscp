@@ -48,7 +48,7 @@ sub _init
 
 	tie %self::courierConfig, 'iMSCP::Config','fileName' => $conf, noerrors => 1;
 
-	if($oldConf) {
+	if(-f $oldConf) {
 		tie %self::courierOldConfig, 'iMSCP::Config','fileName' => $oldConf, noerrors => 1;
 		%self::courierConfig = (%self::courierConfig, %self::courierOldConfig);
 	}
@@ -93,9 +93,8 @@ sub registerSetupHooks
 
 	$hooksManager->trigger('beforePoRegisterSetupHooks', $hooksManager, 'courier') and return 1;
 
-	$hooksManager->register(
-		'afterMtaBuildConf', sub { return $self->buildMtaConf(@_); }
-	) and return 1;
+	$hooksManager->register('afterMtaBuildMasterCfFile', sub { $self->buildMtaConf(@_); }) and return 1;
+	$hooksManager->register('afterMtaBuildMainCfFile', sub { $self->buildMtaConf(@_); }) and return 1;
 
 	$hooksManager->trigger('afterPoRegisterSetupHooks', $hooksManager, 'courier');
 }
@@ -302,21 +301,25 @@ sub buildMtaConf
 	my $mta	= Servers::mta->factory($main::imscpConfig{'MTA_SERVER'});
 
 	my $poBloc = getBloc(
-		"$mta->{commentChar} courier begin",
-		"$mta->{commentChar} courier end",
+		"$mta->{'commentChar'} courier begin",
+		"$mta->{'commentChar'} courier end",
 		$$content
 	);
 
 	$$content = replaceBloc(
-		"$mta->{commentChar} po setup begin",
-		"$mta->{commentChar} po setup end",
+		"$mta->{'commentChar'} po setup begin",
+		"$mta->{'commentChar'} po setup end",
 		$poBloc,
 		$$content,
 		undef
 	);
 
 	# self register again and wait for next configuration file
-	iMSCP::HooksManager->getInstance()->register('afterMtaBuildConf', sub { return $self->buildMtaConf(@_); })
+	iMSCP::HooksManager->getInstance()->register(
+		'afterMtaBuildMasterCfFile', sub { $self->buildMtaConf(@_); }
+	) and return 1;
+
+	iMSCP::HooksManager->getInstance()->register('afterMtaBuildMainCfFile', sub { $self->buildMtaConf(@_); });
 }
 
 1;

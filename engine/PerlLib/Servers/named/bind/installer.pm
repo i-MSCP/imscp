@@ -45,7 +45,7 @@ sub _init
 
 	tie %self::bindConfig, 'iMSCP::Config','fileName' => $conf, noerrors => 1;
 
-	if($oldConf) {
+	if(-f $oldConf) {
 		tie %self::bindOldConfig, 'iMSCP::Config','fileName' => $oldConf, noerrors => 1;
 		%self::bindConfig = (%self::bindConfig, %self::bindOldConfig);
 	}
