@@ -735,7 +735,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 
 		// Ftp users passwords
 
-		$stmt = exec_query("SELECT `userid`, `rawpasswd` FROM `ftp_users`");
+		$stmt = exec_query("SELECT `userid`, `passwd` FROM `ftp_users`");
 
 		if ($stmt->rowCount() != 0) {
 			while (!$stmt->EOF) {
@@ -743,7 +743,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 					UPDATE
 						`ftp_users`
 					SET
-						`rawpasswd` = " . $db->quote(decrypt_db_password($stmt->fields['rawpasswd'])) . "
+						`rawpasswd` = " . $db->quote(decrypt_db_password($stmt->fields['passwd'])) . "
 					WHERE
 						`userid` = '" . $stmt->fields['userid'] . "'
 				";

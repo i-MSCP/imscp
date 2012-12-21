@@ -65,6 +65,7 @@ Tickets:
 	- Fixed #524: Update - AjaxPlorer 4.2.3 released
 	- Fixed #525: Update - phpMyAdmin 3.5.5 released
 	- Fixed #527: Update - Roundcube 0.8.4 released
+	- Fixed #532: Review - Database update 53 - ftp password
 	- Fixed #535: Defect - Roundcube does not work with courier
 	- Fixed #539: Enhancement - i-MSCP tools - Composer support
 	- Fixed #541: Task - Move PhpMyAdmin to packagist and make it as addon
