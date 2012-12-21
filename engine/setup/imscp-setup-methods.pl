@@ -140,7 +140,6 @@ sub setupDialog
 			\&setupAskDbPrefixSuffix,
 			\&setupAskDefaultAdmin,
 			\&setupAskAdminEmail,
-			\&setupAskPhpMyAdmin,
 			\&setupAskPhpTimezone,
 			\&setupAskSsl,
 			\&setupAskImscpBackup,
@@ -197,7 +196,6 @@ sub setupTasks
 		[\&setupSecureSqlAccounts,			'Securing SQL accounts'],
 		[\&setupServerIps,					'Setting server ips'],
 		[\&setupDefaultAdmin, 				'Creating default admin'],
-		[\&setupPhpMyAdmin, 				'Setting PhpMyAdmin'],
 		[\&setupPreInstallServers,			'Servers pre-installation'],
 		[\&setupPreInstallAddons,			'Addons pre-installation'],
 		[\&setupInstallServers,				'Servers installation'],
@@ -851,99 +849,6 @@ sub setupAskPhpTimezone
 	}
 
 	$main::questions{'PHP_TIMEZONE'} = $timezone if $rs != 30;
-
-	$rs;
-}
-
-# Ask for PhpMyAdmin
-# TODO delete old PMA_USER config entry no longer needed
-sub setupAskPhpMyAdmin
-{
-	my $dialog = shift;
-	my $wrkFile = "$main::imscpConfig{'CONF_DIR'}/pma/working/config.inc.php";
-
-	my $dbType = setupGetQuestion('DATABASE_TYPE');
-	my $dbHost = setupGetQuestion('DATABASE_HOST');
-	my $dbPort = setupGetQuestion('DATABASE_PORT');
-    my $dbUser = setupGetQuestion('PMA_USER') || 'pma';
-    my $dbOldUser = '';
-	my $dbPass = setupGetQuestion('PMA_PASSWORD');
-	my $dbOldPass = '';
-	my $rs = 0;
-
-	if(-f $wrkFile) {
-		# Gets user info from current pma configuration file
-		$wrkFile = iMSCP::File->new(filename => $wrkFile);
-		my $wrkFile = $wrkFile->get();
-		return 1 if ! $wrkFile;
-
-		# Retrieve needed values from the working file
-		($dbUser, $dbPass) = map { $wrkFile =~ /\['$_'\]\s*=\s*'(.+)'/} qw /controluser controlpass/;
-		$dbOldUser = $dbUser;
-		$dbOldPass = $dbPass;
-	}
-
-	if($main::reconfigure || setupCheckSqlConnect($dbType, '', $dbHost, $dbPort, $dbUser, $dbPass)) {
-		my $msg = '';
-
-		do {
-			($rs, $dbUser) = $dialog->inputbox(
-				"\nPlease enter an username for the restricted PhpMyAdmin SQL user: $msg", $dbUser
-			);
-
-			if($rs != 30) {
-				$msg = "\n\n\\Z1Username cannot be empty.\\Zn\n\nPlease, try again:";
-
-				# i-MSCP SQL user cannot be reused
-				if($dbUser eq $main::imscpConfig{'DATABASE_USER'}) {
-					$msg = "\n\n\\Z1You cannot reuse the i-MSCP '$main::imscpConfig{'DATABASE_USER'}' SQL user.\\Zn\n\nPlease, try again:";
-					$dbUser = '';
-				} elsif($dbUser ne $dbOldUser && setupIsSqlUser($dbUser)) {
-					$dialog->set('defaultno', '');
-
-					$rs = $dialog->yesno(
-"
-\\Z1SQL user already exists\\Zn
-
-The '$dbUser' SQL user already exists.
-
-Are you sure you want use this user for PhpMyAdmin? If yes, the '$dbUser' SQL user and all its privileges will be reseted.
-"
-					);
-				}
-			}
-
-			$dbUser = '' if $rs;
-			$dialog->set('defaultno', undef);
-
-		} while($rs != 30 && $dbUser eq '');
-
-		if($rs != 30) {
-			# Ask for PhpMyAdmin SQL user password
-			($rs, $dbPass) = $dialog->inputbox(
-				'\nPlease, enter a password for the restricted PhpMyAdmin SQL user (blank for autogenerate):', $dbPass
-			);
-
-			if($rs != 30) {
-				if($dbPass eq '') {
-					$dbPass = '';
-					my @allowedChars = ('A'..'Z', 'a'..'z', '0'..'9', '_');
-					$dbPass .= $allowedChars[rand()*($#allowedChars + 1)]for (1..16);
-				}
-
-				$dbPass =~ s/('|"|`|#|;|\/|\s|\||<|\?|\\)/_/g;
-				$dialog->msgbox("\nPassword for the restricted PhpMyAdmin SQL user set to: $dbPass");
-				$dialog->set('cancel-label');
-			}
-		}
-	}
-
-	if($rs != 30) {
-		$main::questions{'PMA_USER'} = $dbUser;
-		$main::questions{'PMA_OLD_USER'} = $dbOldUser;
-		$main::questions{'PMA_PASSWORD'} = $dbPass;
-		$main::questions{'PMA_OLD_PASSWORD'} = $dbOldPass;
-	}
 
 	$rs;
 }
@@ -1652,152 +1557,6 @@ sub setupDefaultAdmin
 	}
 
 	iMSCP::HooksManager->getInstance()->trigger('afterSetupDefaultAdmin');
-
-	0;
-}
-
-# Create PhpMyAdmin conffile and SQL user with its privileges
-sub setupPhpMyAdmin
-{
-	my $cfgDir = "$main::imscpConfig{'CONF_DIR'}/pma";
-	my $bkpDir = "$cfgDir/backup";
-	my $wrkDir = "$cfgDir/working";
-	my $prodDir	= "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/pma";
-	my $dbHost = setupGetQuestion('DATABASE_HOST');
-	my $dbUser = setupGetQuestion('PMA_USER');
-	my $dbOldUser = setupGetQuestion('PMA_OLD_USER');
-	my $dbPass = setupGetQuestion('PMA_PASSWORD');
-	my $dbOldPass = setupGetQuestion('PMA_OLD_PASSWORD');
-
-	iMSCP::HooksManager->getInstance()->trigger('beforeSetupPhpMyAdmin', \$dbUser, \$dbOldUser, \$dbPass, \$dbOldPass);
-
-	if($dbUser ne $dbOldUser || $dbPass ne $dbOldPass) {
-
-		my ($rs, $file, $cfgFile) = (0, undef, undef);
-
-		# Save current production file if it exists
-		if(-f "$prodDir/config.inc.php") {
-			$file = iMSCP::File->new(
-				filename => "$prodDir/config.inc.php")->copyFile("$bkpDir/config.inc.php." . time
-			) and return 1;
-		}
-
-		# Delete old PhpMyAdmin restricted SQL user and all it privileges (if any)
-		if($dbOldUser ne $dbUser) {
-			$rs = setupDeleteSqlUser($dbOldUser, $main::imscpOldConfig{'DATABASE_HOST'});
-			error("Unable to remove the old PhpMyAdmin '$dbOldUser' restricted SQL user: $rs") if $rs;
-			return 1 if $rs;
-		}
-
-		# Ensure new PhpMyAdmin restricted SQL user do not already exists by deleting it
-		$rs = setupDeleteSqlUser($dbUser, $dbHost);
-		error("Unable to delete the PhpMyAdmin '$dbUser' restricted SQL user: $rs") if $rs;
-		return 1 if $rs;
-
-		#
-		## Setup new PhpMyAdmin restricted SQL user
-		#
-
-		# Get SQL connection with full privileges
-		my ($database, $errStr) = setupGetSqlConnect();
-		fatal('Unable to connect to SQL Server: $errStr') if ! $database;
-
-		# Add USAGE privilege on the mysql database (also create PhpMyadmin user)
-		$rs = $database->doQuery('dummy', 'GRANT USAGE ON `mysql`.* TO ?@? IDENTIFIED BY ?', $dbUser, $dbHost, $dbPass);
-		if(ref $rs ne 'HASH') {
-			error("Failed to add USAGE privilege on the 'mysql' database for the '$dbUser' SQL user: $rs");
-			return 1;
-		}
-
-		# Add SELECT privilege on the mysql.db table
-		$rs = $database->doQuery('dummy', 'GRANT SELECT ON `mysql`.`db` TO ?@?', $dbUser, $dbHost);
-		if(ref $rs ne 'HASH') {
-			error("Failed to add SELECT privilege on the 'mysql.db' table for the '$dbUser' SQL user: $rs");
-			return 1;
-		}
-
-		# Add SELECT privilege on many columns of the mysql.user table
-		$rs = $database->doQuery(
-			'dummy',
-			'
-				GRANT SELECT (Host, User, Select_priv, Insert_priv, Update_priv, Delete_priv, Create_priv, Drop_priv,
-					Reload_priv, Shutdown_priv, Process_priv, File_priv, Grant_priv, References_priv, Index_priv,
-					Alter_priv, Show_db_priv, Super_priv, Create_tmp_table_priv, Lock_tables_priv, Execute_priv,
-					Repl_slave_priv, Repl_client_priv)
-				ON `mysql`.`user`
-				TO ?@?
-			',
-			$dbUser,
-			$dbHost
-		);
-		if(ref $rs ne 'HASH') {
-			error("Failed to add SELECT privileges on columns of the 'mysql.user' table for the '$dbUser' SQL user: $rs");
-			return 1;
-		}
-
-		# Add SELECT privilege on the mysql.host table
-		$rs = $database->doQuery('dummy', 'GRANT SELECT ON `mysql`.`host` TO ?@?', $dbUser, $dbHost);
-		if(ref $rs ne 'HASH') {
-			error("Failed to add SELECT privilege on the 'mysql.host' table for the '$dbUser' SQL user: $rs");
-			return 1;
-		}
-
-		# Add SELECT privilege on many columns of the mysql.tables_priv table
-		$rs = $database->doQuery(
-			'dummy',
-			'
-				GRANT SELECT (`Host`, `Db`, `User`, `Table_name`, `Table_priv`, `Column_priv`)
-				ON `mysql`.`tables_priv`
-				TO?@?
-			',
-			$dbUser,
-			$dbHost
-		);
-		if(ref $rs ne 'HASH') {
-			error("Failed to add SELECT privilege on columns of the 'mysql.tables_priv' table for the '$dbUser' SQL user: $rs");
-			return 1;
-		}
-
-		#
-		## Build new PhpMyAdmin config.inc.php file
-		#
-
-		# Generate blowfish secret
-		my $blowfishSecret	= '';
-		my @allowedChars = ('A'..'Z', 'a'..'z', '0'..'9', '_');
-		$blowfishSecret .= $allowedChars[rand()*($#allowedChars + 1)] for (1..31);
-
-		# Get the template file
-		$file = iMSCP::File->new(filename => "$cfgDir/config.inc.tpl");
-		$cfgFile = $file->get();
-		return 1 if ! $cfgFile;
-
-		$cfgFile = process(
-			{
-				PMA_USER => $dbUser,
-				PMA_PASS => $dbPass,
-				HOSTNAME => $dbHost,
-				UPLOADS_DIR	=> "$main::imscpConfig{'GUI_ROOT_DIR'}/data/uploads",
-				TMP_DIR => "$main::imscpConfig{'GUI_ROOT_DIR'}/data/tmp",
-				BLOWFISH => $blowfishSecret
-			},
-			$cfgFile
-		);
-		return 1 if ! $cfgFile;
-
-		# Store new file in working directory
-		$file = iMSCP::File->new(filename => "$wrkDir/config.inc.php");
-		$file->set($cfgFile) and return 1;
-		$file->save() and return 1;
-		$file->mode(0640) and return 1;
-		$file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'}) and return 1;
-	}
-
-	# Install working file in production directory
-    my $file = iMSCP::File->new(filename => "$wrkDir/config.inc.php");
-    $file->copyFile("$prodDir/") and return 1;
-
-	iMSCP::HooksManager->getInstance()->trigger('afterSetupPhpMyAdmin');
 
 	0;
 }
