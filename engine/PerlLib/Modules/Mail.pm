@@ -173,4 +173,22 @@ sub buildPOData{
 	0;
 }
 
+sub buildADDONData
+{
+	my $self = shift;
+	my $mail = $self->{'mail_addr'};
+
+	$mail =~ s/^\s+//;
+
+	$self->{'AddonsData'} = {
+		DMN_NAME => (split('@', $mail))[1],
+		MAIL_ACC => (split('@', $mail))[0],
+		MAIL_ADDR => $mail,
+		MAIL_PASS => $self->{'mail_pass'},
+		MAIL_TYPE => $self->{'mail_type'},
+	};
+
+	0;
+}
+
 1;

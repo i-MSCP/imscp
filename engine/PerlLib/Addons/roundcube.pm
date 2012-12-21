@@ -120,6 +120,40 @@ sub install
 	Addons::roundcube::installer->new()->install();
 }
 
+=item delMail()
+
+ Delete mail user from Roundcube database.
+
+ Return int - 0 on success, other on failure
+
+=cut
+
+sub delMail
+{
+	my $self = shift;
+	my $data = shift;
+	my $rs = 0;
+
+	if($data->{'MAIL_TYPE'} =~ /_mail/) {
+		my $database = iMSCP::Database->factory();
+		$database->set('DATABASE_NAME', 'imscp_roundcube');
+		$rs = $database->connect();
+		return $rs if $rs;
+
+		$rs = $database->doQuery('dummy', 'DELETE FROM `users` WHERE `username` = ?', $data->{'MAIL_ADDR'});
+		if(ref $rs ne 'HASH') {
+			error("Unable to remove mail user '$data->{'MAIL_ADDR'}' from the roundcube database: $rs");
+			return $rs;
+		}
+
+		# Restore connection to imscp database
+		$database->set('DATABASE_NAME', $main::imscpConfig{'DATABASE_NAME'});
+		$rs = $database->connect();
+	}
+
+	$rs;
+}
+
 =back
 
 =head1 AUTHORS
