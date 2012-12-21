@@ -493,6 +493,7 @@ sub _buildConfig
 	my $self = shift;
 	my $panelUName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} . $main::imscpConfig{'SYSTEM_USER_MIN_UID'};
 	my $panelGName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} . $main::imscpConfig{'SYSTEM_USER_MIN_UID'};
+	my $confDir = "$main::imscpConfig{'GUI_PUBLIC_DIR'}/$self::phpmyadminConfig{'PHPMYADMIN_CONF_DIR'}";
 	my $rs = 0;
 
 	my $cfg = {
@@ -505,7 +506,7 @@ sub _buildConfig
 		BLOWFISH => $self::phpmyadminConfig{'BLOWFISH_SECRET'},
 	};
 
-	my $file = iMSCP::File->new(filename => "$self->{cfgDir}/config.inc.php");
+	my $file = iMSCP::File->new(filename => "$confDir/imscp.config.inc.php");
     my $cfgTpl = $file->get();
 	return 1 if ! $cfgTpl;
 
@@ -520,9 +521,7 @@ sub _buildConfig
 	$rs |= $file->owner($panelUName, $panelGName);
 
 	# Install new file in production directory
-	$rs |= $file->copyFile(
-		"$main::imscpConfig{'GUI_PUBLIC_DIR'}/$self::phpmyadminConfig{'PHPMYADMIN_CONF_DIR'}/config.inc.php"
-	);
+	$rs |= $file->copyFile("$confDir/config.inc.php");
 
 	0;
 }

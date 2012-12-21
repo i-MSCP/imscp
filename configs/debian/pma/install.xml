@@ -27,5 +27,4 @@ program. If not, see <http://www.gnu.org/licenses/>
 	<folders>${SYSTEM_CONF}/pma/backup</folders>
 	<folders>${SYSTEM_CONF}/pma/working</folders>
     <copy_config>${SYSTEM_CONF}/pma/phpmyadmin.data</copy_config>
-   	<copy_config>${SYSTEM_CONF}/pma/config.inc.php</copy_config>
 </install>
