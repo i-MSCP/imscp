@@ -499,6 +499,7 @@ sub _buildConfig
 		PMA_USER => $self::phpmyadminConfig{'DATABASE_USER'},
 		PMA_PASS => $self::phpmyadminConfig{'DATABASE_PASSWORD'},
 		HOSTNAME => $main::imscpConfig{'DATABASE_HOST'},
+		PORT => $main::imscpConfig{'DATABASE_PORT'},
 		UPLOADS_DIR	=> "$main::imscpConfig{'GUI_ROOT_DIR'}/data/uploads",
 		TMP_DIR => "$main::imscpConfig{'GUI_ROOT_DIR'}/data/tmp",
 		BLOWFISH => $self::phpmyadminConfig{'BLOWFISH_SECRET'},
