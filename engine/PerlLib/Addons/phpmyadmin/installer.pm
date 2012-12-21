@@ -68,8 +68,6 @@ sub registerSetupHooks
 	$hooksManager->register(
 		'beforeSetupDialog', sub { my $dialogStack = shift; push(@$dialogStack, sub { $self->askPhpmyadmin(@_) }); 0; }
 	);
-
-	0;
 }
 
 =item preinstall()

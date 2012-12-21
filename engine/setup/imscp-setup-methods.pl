@@ -1552,7 +1552,7 @@ sub setupDefaultAdmin
 					LAST_INSERT_ID(), ?, ?
 				)
 			',
-			'en_GB', 'red'
+			'en_GB', 'black'
 		);
 		return $rs if ref $rs ne 'HASH';
 	}

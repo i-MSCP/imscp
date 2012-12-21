@@ -69,8 +69,6 @@ sub registerSetupHooks
 	$hooksManager->register(
 		'beforeSetupDialog', sub { my $dialogStack = shift; push(@$dialogStack, sub { $self->askRoundcube(@_) }); 0; }
 	);
-
-	0;
 }
 
 =item preinstall()
@@ -586,8 +584,6 @@ sub _buildConfig
 	my $panelUName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} . $main::imscpConfig{'SYSTEM_USER_MIN_UID'};
 	my $panelGName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} . $main::imscpConfig{'SYSTEM_USER_MIN_UID'};
 	my $rs = 0;
-
-	use Servers::mta;
 
 	my $cfg = {
 		DB_HOST => $main::imscpConfig{'DATABASE_HOST'},
