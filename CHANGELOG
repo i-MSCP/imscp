@@ -11,6 +11,7 @@ SETUP:
 	- Added backup feature for setup dialog (allow user to step back)
 	- Added base class for autoinstall adapters
 	- Added 'buildonly' and 'skippackages' command line options for autoinstall script
+	- Added composer installer for i-MSCP addons
 	- Added 'reconfigure', 'preseed', hook-file and 'debug' command line options for both autoinstall and setup scripts
 	- Fixed: Allow IDN for hostname and base server vhost hostname
 	- Fixed: Allow to set ip as MySQL server hostname
@@ -31,18 +32,20 @@ ENGINE:
 	- Fixed: iMSCP::IP - Ips stack not flushed on reset
 	- Fixed: iMSCP::Boot - Do not create the imscp.conf file if do not exists, raise error instead
 	- Refactoring + cs fixes + doc
-	- Added composer installer for i-MSCP addons
 
 GUI:
+	Core:
+		- Rewritten external mail interface
+
 	Vendor:
 
 	Tools:
-		Moved Ajaxplorer to packagist.org (composer package)
-		Moved PhpMyAdmin to packagist.org (composer package)
-		Moved Roundcube to packagist.org (composer package)
-		Updated AjaxPlorer to version 4.2.3
-		Updated PhpMyAdmin to version 3.5.5
-		Updated Roundube to version 0.8.4
+		- Moved Ajaxplorer to packagist.org (composer package)
+		- Moved PhpMyAdmin to packagist.org (composer package)
+		- Moved Roundcube to packagist.org (composer package)
+		- Updated AjaxPlorer addon to version 4.2.3
+		- Updated PhpMyAdmin addon to version 3.5.5
+		- Updated Roundube addon to version 0.8.4
 
 Tickets:
 	- Fixed #482: Defect - Alias edit forward url not possible. Validation incorrect
