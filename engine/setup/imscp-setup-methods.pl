@@ -755,6 +755,7 @@ sub setupAskDefaultAdmin
 
 		if(ref $defaultAdmin eq 'HASH' && %{$defaultAdmin}) {
 			$adminLoginName = $$defaultAdmin{'0'}->{'admin_name'};
+			$main::questions{'ADMIN_OLD_LOGIN_NAME'} = $adminLoginName;
 		}
 	}
 
@@ -1517,6 +1518,7 @@ sub setupSecureSqlAccounts
 sub setupDefaultAdmin
 {
 	my $adminLoginName = setupGetQuestion('ADMIN_LOGIN_NAME');
+	my $adminOldLoginName = setupGetQuestion('ADMIN_OLD_LOGIN_NAME');
 	my $adminPassword= setupGetQuestion('ADMIN_PASSWORD');
 	my $adminEmail= setupGetQuestion('DEFAULT_ADMIN_ADDRESS');
 
@@ -1533,13 +1535,39 @@ sub setupDefaultAdmin
 
 		my $rs = $database->doQuery(
 			'dummy',
+			'DELETE FROM `admin` WHERE `admin_name` = ? OR `admin_name` = ?',
+			$adminLoginName,
+			$adminOldLoginName
+		);
+		return $rs if ref $rs ne 'HASH';
+
+		my $rs = $database->doQuery(
+			'dummy',
 			'
-				INSERT IGNORE INTO `admin` (
+				INSERT INTO `admin` (
 					`admin_name`, `admin_pass`, `admin_type`, `email`
 				) VALUES (
-					?, ?, ?, ?)
+					?, ?, ?, ?
+				)
 			',
 			$adminLoginName, $adminPassword, 'admin', $adminEmail
+		);
+		return $rs if ref $rs ne 'HASH';
+
+		$rs = $database->doQuery('admin_id', 'SELECT `admin_id` FROM `admin` WHERE `admin_type` = ?', 'reseller');
+		return $rs if ref $rs ne 'HASH';
+
+		$rs = $database->doQuery(
+			'dummy',
+			'
+				UPDATE
+					`admin` SET `created_by` = LAST_INSERT_ID()
+				WHERE
+					`admin_type` = ?
+				AND
+					`created_by` NOT IN (' . join(',', keys %$rs) . ')
+			',
+			'reseller'
 		);
 		return $rs if ref $rs ne 'HASH';
 
