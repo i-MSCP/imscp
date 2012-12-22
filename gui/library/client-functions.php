@@ -93,15 +93,20 @@ function get_domain_running_sub_cnt($domain_id)
  */
 function get_domain_running_als_cnt($domain_id)
 {
+	/** @var $cfg iMSCP_Config_Handler_File */
+	$cfg = iMSCP_Registry::get('config');
+
     $query = "
 		SELECT
-			COUNT(*) AS `cnt`
+			COUNT(`alias_id`) AS `cnt`
 		FROM
 			`domain_aliasses`
 		WHERE
 			`domain_id` = ?
+		AND
+			`alias_status` != ?
 	";
-    $stmt = exec_query($query, $domain_id);
+    $stmt = exec_query($query, array($domain_id, $cfg->ITEM_ORDERED_STATUS));
 
     return $stmt->fields['cnt'];
 }

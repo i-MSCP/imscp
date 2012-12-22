@@ -43,6 +43,84 @@
  */
 
 /**
+ * Return properties for the given reseller.
+ *
+ * @param int $resellerId Reseller id
+ * @return array Reseller properties
+ */
+function reseller_getResellerProps($resellerId)
+{
+	$query = '
+		SELECT
+			`reseller_id`, `current_sub_cnt`, `max_sub_cnt`, `current_als_cnt`, `max_als_cnt`, `current_mail_cnt`,
+			`max_mail_cnt`, `current_ftp_cnt`, `max_ftp_cnt`, `current_sql_db_cnt`, `max_sql_db_cnt`, `current_sql_user_cnt`,
+			`max_sql_user_cnt`, `current_disk_amnt`, `max_disk_amnt`, `current_traff_amnt`, `max_traff_amnt`, `software_allowed`,
+			`php_ini_system` `reseller_php_ini_system`
+		FROM
+			`reseller_props`
+		WHERE
+			`reseller_id` = ?
+		';
+	$stmt = exec_query($query, $resellerId);
+
+	return $stmt->fetchRow();
+}
+
+/**
+ * Return properties for the given domain.
+ *
+ * @param int $domainId Domain id
+ * @return array Array containing domain properties
+ */
+function reseller_getDomainProps($domainId)
+{
+	$query = "
+		SELECT
+			`domain_id`, `domain_name`, `domain_expires`, `domain_status`, `domain_subd_limit`, `domain_alias_limit`,
+			`domain_mailacc_limit`, `domain_ftpacc_limit`, `domain_sqld_limit`, `domain_sqlu_limit`, `domain_disk_limit`,
+			`domain_disk_usage`, `domain_traffic_limit`, `domain_php`, `domain_cgi`, `domain_dns`, `domain_software_allowed`,
+			`allowbackup`, `phpini_perm_system` `customer_php_ini_system`, `domain_external_mail`,
+			domain_ip_id
+		FROM
+			`domain`
+		WHERE
+			`domain_id` = ?
+		";
+	$stmt = exec_query($query, $domainId);
+	$data = $stmt->fetchRow();
+
+	// domain traffic
+
+	$fdofmnth = mktime(0, 0, 0, date('m'), 1, date('Y'));
+	$ldofmnth = mktime(1, 0, 0, date('m') + 1, 0, date('Y'));
+
+	$query = '
+		SELECT
+			IFNULL(SUM(`dtraff_web`) + SUM(`dtraff_ftp`) + SUM(`dtraff_mail`) +
+			SUM(`dtraff_pop`), 0) `traffic`
+		FROM
+			`domain_traffic`
+		WHERE
+			`domain_id` = ?
+		AND
+			`dtraff_time` > ?
+		AND
+			`dtraff_time` < ?
+	';
+	$stmt = exec_query($query, array($domainId, $fdofmnth, $ldofmnth));
+
+	$data['domainTraffic'] = $stmt->fields['traffic'];
+
+	// Domain ip
+
+	$query = 'SELECT `ip_number`, `ip_domain` FROM `server_ips` WHERE `ip_id` = ?';
+	$stmt = exec_query($query, $data['domain_ip_id']);
+	$data = array_merge($data, $stmt->fetchRow());
+
+	return $data;
+}
+
+/**
  * Returns domain related data.
  *
  * @param int $domainId Domain unique identifier
@@ -91,102 +169,22 @@ function &reseller_getData($domainId, $forUpdate = false, $recoveryMode = false)
 			set_page_message(tr('The domain is currently deactivated. The modification of some of its properties will result by a complete or partial reactivation of it.'), 'warning');
 		}
 
-		// Getting domain data
+		$domainProps = reseller_getDomainProps($domainId);
+		$resellerProps = reseller_getResellerProps($_SESSION['user_id']);
 
-		$bindParams = array();
-		$bindParams[] = $cfg->ITEM_ORDERED_STATUS;
+		list(
+			$subCount, $alsCount, $mailCount, $ftpCount, $sqlDbCount, $sqlUsersCount
+		) = get_domain_running_props_cnt($domainId);
 
-		$notRlikeCondition = '';
 
-		if(!$cfg->COUNT_DEFAULT_EMAIL_ADDRESSES) {
-			$notRlikeCondition = "AND `t7`.`mail_addr` NOT RLIKE ?";
-			$bindParams[] = '^(webmaster|abuse|postmaster)@';
-		}
+		$data['nbSubdomains'] = $subCount;
+		$data['nbAliasses'] = $alsCount;
+		$data['nbMailAccounts'] = $mailCount;
+		$data['nbFtpAccounts'] = $ftpCount;
+		$data['nbSqlDatabases'] = $sqlDbCount;
+		$data['nbSqlUsers'] = $sqlUsersCount;
 
-		$bindParams[] = $domainId;
-
-		// Request for update ?
-		$lockInShareMode = ($forUpdate) ? 'LOCK IN SHARE MODE' : '';
-
-		$query = "
-			SELECT
-				-- domain data
-				`t1`.`domain_id`, `t1`.`domain_name`, `t1`.`domain_expires`,
-				`t1`.`domain_status`, `t1`.`domain_subd_limit`, `t1`.`domain_alias_limit`,
-				`t1`.`domain_mailacc_limit`, `t1`.`domain_ftpacc_limit`, `t1`.`domain_sqld_limit`,
-				`t1`.`domain_sqlu_limit`, `t1`.`domain_disk_limit`, `t1`.`domain_disk_usage`,
-				`t1`.`domain_traffic_limit`, `t1`.`domain_php`, `t1`.`domain_cgi`, `t1`.`domain_dns`,
-				`t1`.`domain_software_allowed`, `t1`.`allowbackup`, `t1`.`phpini_perm_system` `customer_php_ini_system`,
-				`t1`.`domain_external_mail`,
-
-				-- domain reseller props
-				`t2`.`reseller_id`, `t2`.`current_sub_cnt`, `t2`.`max_sub_cnt`,
-				`t2`.`current_als_cnt`, `t2`.`max_als_cnt`, `t2`.`current_mail_cnt`,
-				`t2`.`max_mail_cnt`, `t2`.`current_ftp_cnt`, `t2`.`max_ftp_cnt`,
-				`t2`.`current_sql_db_cnt`, `t2`.`max_sql_db_cnt`, `t2`.`current_sql_user_cnt`,
-				`t2`.`max_sql_user_cnt`, `t2`.`current_disk_amnt`, `t2`.`max_disk_amnt`,
-				`t2`.`current_traff_amnt`, `t2`.`max_traff_amnt`, `t2`.`software_allowed`,
-				`t2`.`php_ini_system` `reseller_php_ini_system`,
-
-				-- domain ip info
-				`t3`.`ip_number`, `t3`.`ip_domain`,
-
-				-- count domain aliasses
-				COUNT(DISTINCT `t4`.`alias_id`) `nbAliasses`,
-
-				-- count subdomains (belong to domain and domain aliasses)
-				COUNT(DISTINCT `t5`.`subdomain_id`) + COUNT(DISTINCT `t6`.`subdomain_alias_id`) `nbSubdomains`,
-
-				-- count mail accounts
-				COUNT(DISTINCT `t7`.`mail_id`) `nbMailAccounts`,
-
-				-- count ftp accounts
-				COUNT(DISTINCT `t8`.`userid`) `nbFtpAccounts`,
-
-				-- count Sql databases
-				COUNT(DISTINCT `t9`.`sqld_id`) `nbSqlDatabases`,
-
-				-- count Sql users
-				COUNT(DISTINCT `t10`.`sqlu_id`) `nbSqlUsers`,
-
-				-- domain traffic
-				IFNULL(
-					SUM(DISTINCT `t11`.`dtraff_web`) +
-					SUM(DISTINCT `t11`.`dtraff_ftp`) +
-					SUM(DISTINCT `t11`.`dtraff_mail`) +
-					SUM(DISTINCT `t11`.`dtraff_pop`),
-					0
-				) `domainTraffic`
-			FROM
-				`domain` `t1`
-			INNER JOIN
-				`reseller_props` `t2` ON (`t1`.`domain_created_id` = `t2`.`reseller_id`)
-			INNER JOIN
-				`server_ips` `t3` ON (`t3`.`ip_id` = `t1`.`domain_ip_id`)
-			LEFT JOIN
-				`domain_aliasses` `t4` ON (`t1`.`domain_id` = `t4`.`domain_id` AND `t4`.`alias_status` != ?)
-			LEFT JOIN
-				`subdomain` `t5` ON (`t1`.`domain_id` = `t5`.`domain_id`)
-			LEFT JOIN
-				`subdomain_alias` `t6` ON (`t4`.`alias_id` = `t6`.`alias_id`)
-			LEFT JOIN
-				`mail_users` `t7` ON (`t1`.`domain_id` = `t7`.`domain_id` {$notRlikeCondition} AND t7.`mail_type` NOT RLIKE '_catchall')
-			LEFT JOIN
-				`ftp_users` `t8` ON (`t8`.`userid` RLIKE CONCAT('@', `t1`.`domain_name`, '$') OR `t8`.`userid` RLIKE CONCAT('@', `t4`.`alias_name`, '$'))
-			LEFT JOIN
-				`sql_database` `t9` ON (`t1`.`domain_id` = `t9`.`domain_id`)
-			LEFT JOIN
-				`sql_user` `t10` ON (`t9`.`sqld_id` = `t10`.`sqld_id`)
-			LEFT JOIN
-				`domain_traffic` `t11` ON (`t1`.`domain_id` = `t11`.`domain_id`)
-			WHERE
-				`t1`.`domain_id` = ?
-
-			-- prevent inconsistency data
-			{$lockInShareMode}
-		";
-		$stmt = exec_query($query, $bindParams);
-		$data = $stmt->fetchRow();
+		$data = array_merge($data, $domainProps, $resellerProps);
 
 		// Fallback values
 		$data['fallback_domain_expires'] = $data['domain_expires'];
