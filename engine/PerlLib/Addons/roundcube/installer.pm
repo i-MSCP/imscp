@@ -407,7 +407,7 @@ sub _createDatabase
 	}
 
 	if(! $self->{'forceDbSetup'}) {
-		my $fromVersion = $self->_parseVersion($self::roundcubeOldConfig{'ROUNDCUBE_VERSION'} || '0.8.2');
+		my $fromVersion = $self->_parseVersion($self::roundcubeOldConfig{'ROUNDCUBE_VERSION'} || '0.8.4');
 		my $newVersion = $self->_parseVersion($self::roundcubeConfig{'ROUNDCUBE_VERSION'});
 		my $needUpdate = `$main::imscpConfig{'CMD_PHP'} -r "print (version_compare('$fromVersion', '$newVersion', '<'));"`;
 
