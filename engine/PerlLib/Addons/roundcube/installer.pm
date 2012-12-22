@@ -39,6 +39,7 @@ use iMSCP::HooksManager;
 use iMSCP::Addons::ComposerInstaller;
 use iMSCP::Rights;
 use iMSCP::Execute;
+use JSON;
 use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
@@ -118,6 +119,7 @@ sub install
 
 	$rs |= $self->_installFiles();		# Install roundcube files from local addon packages repository
 	$rs |= $self->_setPermissions();	# Set roundcube permissions
+	$rs |= $self->_setVersion();		# Set new roundcube version
 	$rs |= $self->_createDatabase();	# Create/update roundcube database
 	$rs |= $self->_setupDatabase();		# Setup roundcube database
 	$rs |= $self->_generateDESKey();	# Generate DES key
@@ -150,7 +152,7 @@ sub askRoundcube
 	my $dialog = shift;
 
 	my $dbType = main::setupGetQuestion('DATABASE_TYPE');
- 	my $dbHost = main::setupGetQuestion('DATABASE_HOST');
+	my $dbHost = main::setupGetQuestion('DATABASE_HOST');
 	my $dbPort = main::setupGetQuestion('DATABASE_PORT');
 	my $dbName = main::setupGetQuestion('DATABASE_NAME');
 
@@ -405,13 +407,13 @@ sub _createDatabase
 	}
 
 	if(! $self->{'forceDbSetup'}) {
-		my $fromVersion = $self->_parseVersion($self::roundcubeOldConfig{'ROUNDCUBE_VERSION'} || '0.8.4');
+		my $fromVersion = $self->_parseVersion($self::roundcubeOldConfig{'ROUNDCUBE_VERSION'} || '0.8.2');
 		my $newVersion = $self->_parseVersion($self::roundcubeConfig{'ROUNDCUBE_VERSION'});
 		my $needUpdate = `$main::imscpConfig{'CMD_PHP'} -r "print (version_compare('$fromVersion', '$newVersion', '<'));"`;
 
 		if($fromVersion && $needUpdate) {
-			open my($file), '<', "$roundcubeDir/SQL/mysql.update.sql"
-				or die "Couldn't found the Roundcube database schema update file : $!\n";
+			open my $file, '<', "$roundcubeDir/SQL/mysql.update.sql"
+				or die "Couldn't found the Roundcube database schema update file: $!\n";
 
 			my $from = 0;
 			my $sql = '';
@@ -435,6 +437,8 @@ sub _createDatabase
 				$sql .= $line . "\n" if $from && ! $isComment;
 			}
 
+			close $file;
+
 			if($sql) {
 				debug("Updating Roundcube database schema:\n\n$sql");
 
@@ -455,6 +459,32 @@ sub _createDatabase
 			}
 		}
 	}
+
+	0;
+}
+
+=item _setVersion()
+
+ Get new Roundcube version.
+
+ Return string
+
+=cut
+
+sub _setVersion
+{
+	my $json;
+
+	open my $file, '<', "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/webmail/composer.json"
+		or die "Couldn't found the Roundcube composer.json file: $!\n";
+
+	local $/;
+	$json = <$file>;
+	close $file;
+
+	my $data = decode_json($json);
+	debug("Set roundcube version to $data->{'version'}");
+	$self::roundcubeConfig{'ROUNDCUBE_VERSION'} = $data->{'version'};
 
 	0;
 }

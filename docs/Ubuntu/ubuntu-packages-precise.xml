@@ -96,6 +96,7 @@
 		<library>libxml-parser-perl</library>
 		<library>libxml-simple-perl</library>
 		<library>libemail-simple-perl</library>
+        <library>libjson-perl</library>
 	</perl>
 	<other>bash</other>
 	<other>bzip2</other>
