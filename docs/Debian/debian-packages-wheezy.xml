@@ -97,7 +97,7 @@
 		<library>libjson-perl</library>
 	</perl>
 	<other>bash</other>
-    <other>pbzip2</other>
+	<other>pbzip2</other>
 	<other>bzip2</other>
 	<other>awstats</other>
 	<other>chkrootkit</other>

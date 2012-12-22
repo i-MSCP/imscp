@@ -26,7 +26,7 @@ SETUP:
 ENGINE:
 	- Added i-MSCP own implementation of lsb_release command
 	- Added 'nocreate' and 'readonly' options for the iMSCP::Config package
-	- Added pbzip2 (parallel bzip2 file compressor) for bzip2 compression algorythm
+	- Added pbzip2 (parallel bzip2 file compressor) for bzip2 compression algorithm
 	- Added progress bar for Debian packages installation
 	- Added engine hooks manager
 	- Added several hooks in both addons and servers packages (still a lot to add...)
