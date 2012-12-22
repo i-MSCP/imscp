@@ -144,9 +144,9 @@ sub askPhpmyadmin
 	my $dialog = shift;
 
 	my $dbType = main::setupGetQuestion('DATABASE_TYPE');
-    my $dbHost = main::setupGetQuestion('DATABASE_HOST');
-    my $dbPort = main::setupGetQuestion('DATABASE_PORT');
-    my $dbName = main::setupGetQuestion('DATABASE_NAME');
+	my $dbHost = main::setupGetQuestion('DATABASE_HOST');
+	my $dbPort = main::setupGetQuestion('DATABASE_PORT');
+	my $dbName = main::setupGetQuestion('DATABASE_NAME');
 
 	my $dbUser = $main::preseed{'PHPMYADMIN_SQL_USER'} || $self::phpmyadminConfig{'DATABASE_USER'} ||
 		$self::phpmyadminOldConfig{'DATABASE_USER'} || 'pma';
@@ -192,8 +192,8 @@ sub askPhpmyadmin
 
 	if($rs != 30) {
 		$self::phpmyadminConfig{'DATABASE_USER'} = $dbUser;
-    	$self::phpmyadminConfig{'DATABASE_PASSWORD'} = $dbPass;
-    }
+		$self::phpmyadminConfig{'DATABASE_PASSWORD'} = $dbPass;
+	}
 
 	$rs;
 }
@@ -507,7 +507,7 @@ sub _buildConfig
 	};
 
 	my $file = iMSCP::File->new(filename => "$confDir/imscp.config.inc.php");
-    my $cfgTpl = $file->get();
+	my $cfgTpl = $file->get();
 	return 1 if ! $cfgTpl;
 
 	$cfgTpl = iMSCP::Templator::process($cfg, $cfgTpl);

@@ -150,9 +150,9 @@ sub askRoundcube
 	my $dialog = shift;
 
 	my $dbType = main::setupGetQuestion('DATABASE_TYPE');
-    my $dbHost = main::setupGetQuestion('DATABASE_HOST');
-    my $dbPort = main::setupGetQuestion('DATABASE_PORT');
-    my $dbName = main::setupGetQuestion('DATABASE_NAME');
+ 	my $dbHost = main::setupGetQuestion('DATABASE_HOST');
+	my $dbPort = main::setupGetQuestion('DATABASE_PORT');
+	my $dbName = main::setupGetQuestion('DATABASE_NAME');
 
 	my $dbUser = $main::preseed{'ROUNDCUBE_SQL_USER'} || $self::roundcubeConfig{'DATABASE_USER'} ||
 		$self::roundcubeOldConfig{'DATABASE_USER'} || 'roundcube_user';
