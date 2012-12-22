@@ -40,6 +40,7 @@ use Data::Dumper;
 newDebug('imscp-backup-all.log');
 
 our $command = {
+				pbzip2	=> {extension => 'bz2',		command => 'CMD_PBZIP'},
 				bzip2	=> {extension => 'bz2',		command => 'CMD_BZIP'},
 				gzip	=> {extension => 'gz',		command => 'CMD_GZIP'},
 				lzma	=> {extension => 'lzma',	command => 'CMD_LZMA'},
@@ -64,7 +65,7 @@ sub backup{
 	}
 
 
-	unless ($main::imscpConfig{ZIP} =~ /^(bzip2|gzip|lzma|xz)$/i) {
+	unless ($main::imscpConfig{ZIP} =~ /^(pbzip2|bzip2|gzip|lzma|xz)$/i) {
 		my $msg = "Backup algorithm not supported: $main::imscpConfig{ZIP}!";
 		error($msg);
 		return 1;
@@ -121,7 +122,7 @@ sub backup{
 					my @cmd = (
 						lc($main::imscpConfig{CMD_TAR}),
 						"--create --directory=$hDir",
-						"--".lc($main::imscpConfig{ZIP}),
+						"--use-compress-program=" . lc($main::imscpConfig{ZIP}),
 						"--file=$bkpDir/$_-backup-$date.tar.$ext",
 						"--exclude=logs",
 						"--exclude=phptmp",

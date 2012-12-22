@@ -35,9 +35,10 @@ use iMSCP::Debug;
 use iMSCP::Boot;
 use iMSCP::Dialog;
 
-newDebug('imscp-net-interfaces-mngr.log');
+newDebug('imscp-backup-imscp.log');
 
 our $command = {
+				pbzip2	=> {extension => 'bz2',		command => 'CMD_PBZIP'},
 				bzip2	=> {extension => 'bz2',		command => 'CMD_BZIP'},
 				gzip	=> {extension => 'gz',		command => 'CMD_GZIP'},
 				lzma	=> {extension => 'lzma',	command => 'CMD_LZMA'}
@@ -160,7 +161,7 @@ sub backup_imscp_configs{
 	my $bkpCmd	= "$main::imscpConfig{CMD_TAR} ".
 					"--create ".
 					"-C $main::imscpConfig{CONF_DIR} ".
-					"--$main::imscpConfig{ZIP} ".
+					"--use-compress-program=" . lc($main::imscpConfig{ZIP}) . ' ' .
 					"--exclude=?*[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9] ".
 					"-p ".
 					"--file=$fName .";
