@@ -231,8 +231,8 @@ function i18n_getDomain($upstreamDomain)
  *
  * @author Laurent Declercq <l.declercq@nuxwin.com>
  * @since i-MSCP 1.0.1.4
- * @param $domainDirectory Current domain directory path
- * @param $skipDomain Domain that must not be removed
+ * @param string $domainDirectory Current domain directory path
+ * @param string $skipDomain Domain that must not be removed
  * @return void
  */
 function i18n_domainsGarbageCollector($domainDirectory, $skipDomain)

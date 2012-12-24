@@ -502,11 +502,6 @@ class iMSCP_Initializer
 
 		$locale = isset($_SESSION['user_def_lang']) ? $_SESSION['user_def_lang'] : $this->_config->USER_INITIAL_LANG;
 
-		// Small fix for ar_AE locale
-		if ($locale == 'ar') {
-			$locale = 'ar_AE';
-		}
-
 		$checkedLocale = setlocale(
 			LC_MESSAGES,
 			array($locale . '.utf8', $locale . '.utf-8', $locale . '.UTF8', $locale . '.UTF-8')
