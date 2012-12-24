@@ -842,7 +842,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 		// third step: Update users language property
 
 		$languagesMap = array(
-			'Arabic' => 'ar_AE', 'Azerbaijani' => 'az_AZ', 'BasqueSpain' => 'eu_ES',
+			'Arabic' => 'ar', 'Azerbaijani' => 'az_AZ', 'BasqueSpain' => 'eu_ES',
 			'Bulgarian' => 'bg_BG', 'Catalan' => 'ca_ES', 'ChineseChina' => 'zh_CN',
 			'ChineseHongKong' => 'zh_HK', 'ChineseTaiwan' => 'zh_TW', 'Czech' => 'cs_CZ',
 			'Danish' => 'da_DK', 'Dutch' => 'nl_NL', 'EnglishBritain' => 'en_GB',
@@ -1737,5 +1737,16 @@ class iMSCP_Update_Database extends iMSCP_Update
                 `roundcube_users`
             '
         );
+    }
+
+    /**
+     * Fix Arabic locale name
+     *
+     * @author Laurent Declercq <l.declercq@i-mscp.net>
+     * @return string SQL statement to be executed
+     */
+    protected function _databaseUpdate_118()
+    {
+        return "UPDATE `user_gui_props` SET `lang` = 'ar' WHERE `lang` = 'ar_AE'";
     }
 }
