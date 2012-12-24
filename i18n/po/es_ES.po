@@ -3,6 +3,7 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
+#   <adriangam@gmail.com>, 2012.
 #   <sagi@canbasis.com>, 2012.
 # Sagi Roca <sagi@canbasis.com>, 2012.
 #   <vh.rodriguez.a@gmail.com>, 2012.
@@ -10,9 +11,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2012-10-11 04:04+0200\n"
-"PO-Revision-Date: 2012-10-09 10:45+0000\n"
-"Last-Translator: Torsten Widmann <info@goover.de>\n"
+"POT-Creation-Date: 2012-12-24 22:12+0100\n"
+"PO-Revision-Date: 2012-12-24 18:38+0000\n"
+"Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -562,11 +563,14 @@ msgstr "Acción"
 msgid "Activate"
 msgstr "Activar"
 
+msgid "Activate mail auto-responder"
+msgstr ""
+
 msgid "Activate this plugin"
 msgstr "Activar este plugin"
 
 msgid "Activated"
-msgstr ""
+msgstr "Activado"
 
 msgid "Activated softwares"
 msgstr "Software activado"
@@ -608,7 +612,7 @@ msgid "Add SSL certificate"
 msgstr "Añadir certificado SSL"
 
 msgid "Add a new entry"
-msgstr ""
+msgstr "Añadir un nuevo registro"
 
 msgid "Add admin"
 msgstr "Añadir administrador"
@@ -638,10 +642,10 @@ msgid "Add email account"
 msgstr "Añadir cuenta de email"
 
 msgid "Add external mail server entry"
-msgstr ""
+msgstr "Añadir un servidor de correo externo"
 
 msgid "Add external mail servers for {DOMAIN_UTF8}"
-msgstr ""
+msgstr "Añadir servidores de correo externos para {DOMAIN_UTF8}"
 
 msgid "Add group"
 msgstr "Añadir grupo"
@@ -662,7 +666,7 @@ msgid "Add new database"
 msgstr "Añadir nueva Base de Datos"
 
 msgid "Add new entry"
-msgstr ""
+msgstr "Añadir nuevo registro"
 
 msgid "Add new protected area"
 msgstr "Añadir nueva area protegida"
@@ -756,9 +760,6 @@ msgstr "Inciar sesión como administrador"
 
 msgid "Administrators"
 msgstr "Administradores"
-
-msgid "After the name"
-msgstr "Después del nombre"
 
 msgid ""
 "After your upload the package it will be installed on your systems.<br "
@@ -870,6 +871,9 @@ msgstr "Ha ocurrido un error. Por favor, póngase en contacto con el administrad
 msgid "An error occurred while the authentication attempt."
 msgstr "Se produjo un error durante el intento de autenticación."
 
+msgid "An unexpected error occured, please contact your reseller."
+msgstr ""
+
 #, php-format
 msgid "An unknown error occured during file upload: %s"
 msgstr "Ha ocurrido un error desconocido mientras se cargaba el fichero: %s"
@@ -920,7 +924,7 @@ msgstr "¿Está seguro que quiere cambiar el estado de de %s?"
 msgid ""
 "Are you sure you want to deactivate the external mail server(s) for the '%s'"
 " domain?"
-msgstr ""
+msgstr "Estás seguro de que quieres desactivar un servidor de correo externo para el dominio '%s'?"
 
 #, php-format
 msgid "Are you sure you want to delete %s service port ?"
@@ -1006,6 +1010,18 @@ msgstr "¡Datos de la plantilla de auto email actualizados!"
 msgid "Auto respond"
 msgstr "Auto responder"
 
+msgid "Auto-responder message cannot be empty."
+msgstr ""
+
+msgid "Auto-responder successfully scheduled for activation."
+msgstr ""
+
+msgid "Auto-responder successfully scheduled for deactivation."
+msgstr ""
+
+msgid "Auto-responder successfully scheduled for update."
+msgstr ""
+
 msgid "Automatic updates"
 msgstr "Actualizaciones automáticas"
 
@@ -1054,11 +1070,11 @@ msgstr "Archivo de backup programado para ser restaurado."
 msgid "Backup support"
 msgstr "Soporte copia de seguridad"
 
+msgid "Bad password."
+msgstr ""
+
 msgid "Bandwidth"
 msgstr "Ancho de banda"
-
-msgid "Before the name"
-msgstr "Antes del nombre"
 
 msgid "Behind the name"
 msgstr "Detras del nombre"
@@ -1479,6 +1495,9 @@ msgstr "El nombre de la Base de Datos es demasiado largo."
 msgid "Database prefix"
 msgstr "Prefijo de Base de Datos"
 
+msgid "Database prefix/suffix"
+msgstr ""
+
 msgid "Database required"
 msgstr "Base de Datos requerida"
 
@@ -1487,6 +1506,9 @@ msgstr "Actualización de Base de Datos disponible."
 
 msgid "Database updates"
 msgstr "Actualizaciones de la Base de Datos"
+
+msgid "Database usage"
+msgstr ""
 
 msgid "Database user list is empty!"
 msgstr "¡La lista de ususrios de la Base de Datos está vacia!"
@@ -1510,13 +1532,13 @@ msgid "Deactivate"
 msgstr "Desactivar"
 
 msgid "Deactivate selected items"
-msgstr ""
+msgstr "Desactivar los elementos seleccionados"
 
 msgid "Deactivate this plugin"
 msgstr "Desactivar este plug-in"
 
 msgid "Deactivated"
-msgstr ""
+msgstr "Desactivado"
 
 #, php-format
 msgid ""
@@ -1678,6 +1700,9 @@ msgstr "Límite de espacio en disco [MiB] <br /><span class=\"italic\">(0 ilimit
 msgid "Disk usage"
 msgstr "Uso del disco"
 
+msgid "Disk usage detail"
+msgstr ""
+
 msgid "Do not show any error"
 msgstr "No mostrar ningún error"
 
@@ -1790,7 +1815,7 @@ msgstr "El álias de dominio que intentas eliminar tiene cuentas FTP.<br>Elimín
 msgid ""
 "Domain alias you are trying to remove has custom DNS records!<br>First "
 "remove them!"
-msgstr ""
+msgstr "Los alias de dominio que estás intentando eliminar tienen registros DNS personalizados!\nElimina primero estos registros."
 
 msgid ""
 "Domain alias you are trying to remove has email accounts !<br>First remove "
@@ -1918,7 +1943,7 @@ msgstr "Ya existe un dominio con este nombre"
 msgid ""
 "Domain: Setup an MX record to relay mail of your entire domain (including "
 "subdomains) to an external mail server."
-msgstr ""
+msgstr "Dominio: Configurar un registro MX para retransmitir el correo de tu dominio completo (incluidos los subdominios) a un servidor de correo externo."
 
 msgid "Domains"
 msgstr "Dominios"
@@ -1999,7 +2024,7 @@ msgid "Edit error page"
 msgstr "Editar pagina de error"
 
 msgid "Edit external mail servers for {DOMAIN_UTF8}"
-msgstr ""
+msgstr "Editar servidores de correo externos para {DOMAIN_UTF8}"
 
 msgid "Edit hosting plan"
 msgstr "Editar plan de hosting"
@@ -2010,8 +2035,8 @@ msgstr "Editar usuario htaccess"
 msgid "Edit mail account"
 msgstr "Editar cuenta de correo"
 
-msgid "Edit mail auto responder"
-msgstr "Editar el mensaje de auto-respuesta"
+msgid "Edit mail auto-responder"
+msgstr ""
 
 msgid "Edit mail quota"
 msgstr "Editar cuota de correo"
@@ -2109,7 +2134,7 @@ msgstr "Las contraseñas introducidas no coinciden."
 msgid ""
 "Entries associated to your external mail servers were not found. A "
 "Resynchronization has been scheduled."
-msgstr ""
+msgstr "Los registros asociados a los servidores de correo externos no fueron encontrados. Se ha programado una resincronización."
 
 msgid "Error"
 msgstr "Error"
@@ -2172,22 +2197,22 @@ msgid "Expire time for unconfirmed orders<br /><small>(In days)</small>"
 msgstr "Tiempo de expiración para órdenes no confirmadas<br /><small>(En dias)</small>"
 
 msgid "External Mail Host"
-msgstr ""
+msgstr "Anfitrión de correo electrónico externo"
 
 msgid "External Mail Servers"
-msgstr ""
+msgstr "Servidor de correo externos"
 
 msgid "External mail server"
 msgstr "Servidor de correo externo"
 
 msgid "External mail server entries scheduled for modification."
-msgstr ""
+msgstr "Registros de servidores de correo externos programados para ser modificados"
 
 msgid "External mail server entries successfully scheduled for addition."
-msgstr ""
+msgstr "Registros de servidores de correo externos programados para ser añadidos"
 
 msgid "External mail server entries successfully scheduled for deletion."
-msgstr ""
+msgstr "Registros de servidores de correo externos programados para ser eliminados"
 
 msgid "External mail servers"
 msgstr "Servidores de correo externos"
@@ -2287,6 +2312,9 @@ msgstr "El archivo debe ser un .tar.gz-archive"
 
 msgid "File successfully uploaded."
 msgstr "El fichero se ha cargado correctamente."
+
+msgid "File usage"
+msgstr ""
 
 msgid "File was successfully uploaded."
 msgstr "Archivo cargado correctamente."
@@ -2709,7 +2737,7 @@ msgid "Internationalization"
 msgstr "Internacionalización"
 
 msgid "Invalid MX priority."
-msgstr ""
+msgstr "Prioridad MX inválida"
 
 msgid "Invalid NAME"
 msgstr "NAME no válido"
@@ -2752,7 +2780,7 @@ msgid "Invalid target."
 msgstr "Destino no válido."
 
 msgid "Invalid type detected."
-msgstr ""
+msgstr "Tipo inválido detectado"
 
 msgid "Invalid type given. String expected"
 msgstr "El tipo introducido no es válido. Se espera un string."
@@ -3004,6 +3032,9 @@ msgstr "¡Error en la lista de redireccionamiento de correo!"
 
 msgid "Mail successfully sent to your users."
 msgstr "El correo ha sido enviado a tus usuarios."
+
+msgid "Mail usage"
+msgstr ""
 
 msgid "Mail users"
 msgstr "Usuarios de correo"
@@ -3428,7 +3459,7 @@ msgid "Not used"
 msgstr "No usado"
 
 msgid "Note: You can mix these options."
-msgstr ""
+msgstr "Nota: Puedes mezclar las opciones"
 
 msgid "Nothing been changed."
 msgstr "No se ha modificado nada."
@@ -3440,7 +3471,7 @@ msgid "Nothing has been changed."
 msgstr "No se ha cambiado nada."
 
 msgid "Nothing has been scheduled for deletion."
-msgstr ""
+msgstr "No se ha programado nada para su eliminación."
 
 msgid "Nothing's been changed"
 msgstr "No se ha modificado nada."
@@ -3453,6 +3484,12 @@ msgstr "Notificaciones, Avisos y Errores"
 
 msgid "Number of CPU Cores"
 msgstr "Numero de Núcleos de CPU"
+
+msgid "Numeric prefix"
+msgstr ""
+
+msgid "Numeric suffix"
+msgstr ""
 
 msgid "OK"
 msgstr "OK"
@@ -3909,9 +3946,6 @@ msgstr "Por favor, teclee el nombre de la Base de Datos."
 msgid "Please type user password."
 msgstr "Por favor teclee su contraseña de usuario."
 
-msgid "Please type your mail autorespond message."
-msgstr "Por favor, escribe tu mensaje de correo de autorespuesta."
-
 msgid "Please type your message."
 msgstr "Por favor escribe el mensaje."
 
@@ -3926,6 +3960,9 @@ msgstr "Por favor, comprueba la configuración del editor PHP."
 
 msgid "Please, don't use special chars such as '@, $, %...' in the password."
 msgstr "Por favor, no uses caracteres especiales tal como '@, $, %...' para la contraseña."
+
+msgid "Please, enter your auto-responder message below"
+msgstr ""
 
 msgid "Plugin"
 msgstr "Plug-in"
@@ -4134,7 +4171,7 @@ msgid "Remove IP"
 msgstr "Eliminar IP"
 
 msgid "Remove last entry"
-msgstr ""
+msgstr "Eliminar el último registro"
 
 msgid "Remove permissions"
 msgstr "Eliminar permisos"
@@ -4236,7 +4273,7 @@ msgid "Reset"
 msgstr "Limpiar"
 
 msgid "Reset entries"
-msgstr ""
+msgstr "Reinicializar registros"
 
 msgid "Restore"
 msgstr "Restaurar"
@@ -4405,7 +4442,7 @@ msgid "Select Domain"
 msgstr "Seleccionar Dominio"
 
 msgid "Select all entries for deletion."
-msgstr ""
+msgstr "Seleccionar todos los registros para ser eliminados"
 
 msgid "Select database"
 msgstr "Seleccionar Base de Datos"
@@ -4414,12 +4451,12 @@ msgid "Select group:"
 msgstr "Selecciona un grupo:"
 
 msgid "Select this entry for deletion."
-msgstr ""
+msgstr "Seleccionar este registro para ser eliminado"
 
 msgid ""
 "Selecting all entries for deletion will cause deactivation of external mail "
 "server."
-msgstr ""
+msgstr "Seleccionando todos los registros para ser eliminados causará la desactivación del servidor de correo externo"
 
 msgid "Send"
 msgstr "Enviar"
@@ -4995,12 +5032,12 @@ msgstr "El archivo <strong>%s</strong> de el plug-in <strong>%s</strong> no exis
 msgid ""
 "The DNS MX record is no longer allowed. Contact your reseller for further "
 "information."
-msgstr ""
+msgstr "Los registros DNS MX ya no están permitidos. Póngase en contacto con su distribuidor para obtener más información."
 
 msgid ""
 "The DNS MX record is no longer allowed. You must now use the interface "
 "dedicated to external mail servers."
-msgstr ""
+msgstr "Los registros DNS MX ya no están permitidos. Ahora debe utilizar la interfaz dedicada a servidores de correo externos."
 
 msgid "The IP address you trying to remove is assigned to a reseller."
 msgstr "La dirección IP que intentas eliminar está asignada a un distribuidor."
@@ -5046,7 +5083,7 @@ msgstr "El dominio que estas intentando editar no existe."
 
 #, php-format
 msgid "The entry %s already exists or is defined twice below."
-msgstr ""
+msgstr "El registro %s ya existe o está definido dos veces debajo"
 
 msgid "The external mail feature needs min. 1 email account."
 msgstr "La función de correo externo necesita al menos 1 cuenta de email."
@@ -5056,7 +5093,7 @@ msgstr "El instalador de aplicación i-MSCP necesita PHP para habilitarlo."
 
 msgid ""
 "The mail host must not be equal to the domain name for which you add it."
-msgstr ""
+msgstr "El servidor de correo no debe ser igual al nombre de dominio para el que agregarlo."
 
 msgid "The menu you trying to edit doesn't exist."
 msgstr "El menú que estas intentando editar no existe."
@@ -5068,6 +5105,9 @@ msgid ""
 "The package will be installed automaticly to your system after upload.<br "
 "/>Refresh your site to see the new status!"
 msgstr "El paquete se instalará automaticamente en tu sistema después de su carga.<br/>¡Refresca tu sitio para ver el nuevo estado!"
+
+msgid "The password field is empty."
+msgstr ""
 
 msgid "The password is too long."
 msgstr "La contraseña es demasiado larga."
@@ -5100,17 +5140,20 @@ msgstr "El fichero cargado solo se ha cargado parcialmente."
 msgid "The username %s is not available."
 msgstr "El nombre de usuario %s no está disponible."
 
-msgid "The value has been found in the stack"
+msgid "The username field is empty."
 msgstr ""
+
+msgid "The value has been found in the stack"
+msgstr "El valor se ha encontrado en la pila"
 
 msgid "The value has not been found in the stack"
-msgstr ""
+msgstr "El valor no se ha encontrado en la pila"
 
 msgid "The values must not be equal"
-msgstr ""
+msgstr "Los valores no deben ser iguales"
 
 msgid "The values must not be equals"
-msgstr ""
+msgstr "Los valores no deben ser iguales"
 
 #, php-format
 msgid "There are <em>%s</em> records on system."
@@ -5464,6 +5507,9 @@ msgstr "Nombre de idioma desconocido."
 msgid "Unknown layout color."
 msgstr "Color de diseño desconocido."
 
+msgid "Unknown reason."
+msgstr ""
+
 msgid "Unknown subdomain type."
 msgstr "Tipo de subdominio desconocido."
 
@@ -5789,15 +5835,15 @@ msgid ""
 msgstr "Cuando está permitido, los scripts pueden llamar a la función de PHP exec(). Esta función es necesaria para muchas aplicaciones, pero puede causar algunos problemas de seguridad"
 
 msgid "Wildcard"
-msgstr ""
+msgstr "Comodín"
 
 msgid "Wildcard MX only"
-msgstr ""
+msgstr "Sólo comodines MX"
 
 msgid ""
 "Wildcard: Setup an MX record for inexistent subdomains, for which an "
 "external mail server can handle mail."
-msgstr ""
+msgstr "Comodín: Configurar un registro MX para subdominios inexistentes, para que un servidor de correo externo puede manejar el correo."
 
 #, php-format
 msgid "Wildcards such as %% and ? are not allowed."
@@ -5875,9 +5921,6 @@ msgstr "Sintaxis de etiqueta incorrecta: <b>%s</b>"
 msgid "Wrong order ID."
 msgstr "ID. de pedido incorrecto."
 
-msgid "Wrong password."
-msgstr "Contraseña incorrecta."
-
 msgid "Wrong redirect URL."
 msgstr "Redirección URL incorrecta."
 
@@ -5888,7 +5931,7 @@ msgid "Wrong request."
 msgstr "Peticion errónea."
 
 msgid "Wrong request: all expected data were not received."
-msgstr ""
+msgstr "Solicitud incorrecta: No se han recibido todos los datos esperados"
 
 msgid "Wrong reseller id."
 msgstr "Id. de distribuidor incorrecto."
@@ -6030,7 +6073,7 @@ msgid "You cannot remove the %s IP address."
 msgstr "No puedes eliminar la dirección IP %s."
 
 msgid "You cannot remove this entry."
-msgstr ""
+msgstr "No puedes eliminar este registro"
 
 msgid "You cannot set expire date in past."
 msgstr "No puedes asignar una fecha de expiración pasada."
@@ -6271,7 +6314,7 @@ msgid "You must select a file to upload/download."
 msgstr "Debes escoger un archivo para cargar/descargar."
 
 msgid "You must select a least one item to deactivate."
-msgstr ""
+msgstr "Tienes que seleccionar al menos un elemento para desactivar"
 
 msgid "You must select a network card."
 msgstr "Debes seleccionar una tarjeta de red."
@@ -6305,10 +6348,10 @@ msgid "Your account has expired. Please renew your subscription."
 msgstr "Tu cuenta ha expirado. Por favor, renueva tu subscripción."
 
 msgid "Your are not the owner of this domain alias."
-msgstr ""
+msgstr "No eres el propietario de este alias de dominio"
 
 msgid "Your are not the owner of this domain."
-msgstr ""
+msgstr "No eres el propietario de este dominio"
 
 msgid "Your consumption"
 msgstr "Tu consumo"
@@ -6598,9 +6641,15 @@ msgid "i-MSCP - Client / Change Language"
 msgstr "i-MSCP - Cliente / Cambiar Idioma"
 
 msgid "i-MSCP - Client / Mail Account / Add external mail server"
-msgstr ""
+msgstr "i-MSCP - Cliente / Cuentas de correo / Añadir servidor de correo externo"
 
 msgid "i-MSCP - Client / Mail Accounts / External mail servers"
+msgstr "i-MSCP - Cliente / Cuentas de correo / Servidores de correo externos"
+
+msgid "i-MSCP - Client / Mail accounts / Activate auto-responder"
+msgstr ""
+
+msgid "i-MSCP - Client / Mail accounts / Edit auto-responder"
 msgstr ""
 
 msgid "i-MSCP - Client / Manage domains - Add subdomain"
@@ -6621,14 +6670,8 @@ msgstr "i-MSCP - Cliente / Administrar correo / CatchAll"
 msgid "i-MSCP - Client / Manage mail / Edit account"
 msgstr "i-MSCP - Cliente / Administrar correo / Editar cuenta"
 
-msgid "i-MSCP - Client / Manage mail / Edit autoresponder"
-msgstr "i-MSCP - Cliente / Administrar correo / Editar autorespuesta"
-
 msgid "i-MSCP - Client / Manage mail / Edit quota"
 msgstr "i-MSCP - Cliente / Administrar correo / Editar cuota"
-
-msgid "i-MSCP - Client / Manage mail / Enable autoresponder"
-msgstr "i-MSCP - Cliente / Administrar correo / Activar autorespuesta"
 
 msgid "i-MSCP - Client / Support Ticket System / Closed Tickets"
 msgstr "i-MSCP - Client / Sistema de Tiquets de Soporte / Tiquets Cerrados"
@@ -6686,9 +6729,6 @@ msgstr "i-MSCP - Cliente/Backup diario"
 
 msgid "i-MSCP - Client/Edit FTP Account"
 msgstr "i-MSCP - Cliente/Editar cuenta FTP"
-
-msgid "i-MSCP - Client/Enable Mail Auto Responder"
-msgstr "i-MSCP - Cliente/Habilitar auto-responder correo"
 
 msgid "i-MSCP - Client/Manage Domains"
 msgstr "i-MSCP - Cliente/Administrar dominios"
@@ -7058,7 +7098,7 @@ msgid "{RESELLER} uploaded a new software package"
 msgstr "{RESELLER} ha cargado un nuevo paquete de software"
 
 msgid "{TR_EDIT_HOSTING_PLAN} hosting plan"
-msgstr ""
+msgstr "Plan de alojamiento: {TR_EDIT_HOSTING_PLAN}"
 
 msgid "© 2010-2012 i-MSCP Team<br/>All Rights Reserved"
 msgstr "© 2010-2012 i-MSCP Team<br/>Todos los Derechos Reservados"
