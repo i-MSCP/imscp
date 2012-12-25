@@ -131,4 +131,5 @@
 	<other>tar</other>
 	<other>wget</other>
 	<other>curl</other>
+	<other>git</other>
 </packages>

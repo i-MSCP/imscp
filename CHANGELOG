@@ -2,13 +2,12 @@ i-MSCP ChangeLog
 ~~~~~~~~~~~~~~~~
 
 -------------------------------------------------------------------------------------
-i-MSCP 1.1.0-rc2
+i-MSCP 1.1.0-rc1-1
 -------------------------------------------------------------------------------------
-
-Features / Enhancements / Bugfixes:
 
 Tickets:
 	- Fixed #540: Bug - C-style symbols intead of graphic lines in the autoinstall console
+	- Fixed #542: Bug - Unable to install addon packages - git is missing
 
 -------------------------------------------------------------------------------------
 i-MSCP 1.1.0-rc1
