@@ -8,6 +8,7 @@ i-MSCP 1.1.0-rc2
 Features / Enhancements / Bugfixes:
 
 Tickets:
+	- Fixed #540: Bug - C-style symbols intead of graphic lines in the autoinstall console
 
 -------------------------------------------------------------------------------------
 i-MSCP 1.1.0-rc1
@@ -57,7 +58,7 @@ GUI:
 		- Moved Roundcube to packagist.org (composer package)
 		- Updated AjaxPlorer addon to version 4.2.3
 		- Updated PhpMyAdmin addon to version 3.5.5
-		- Updated Roundube addon to version 0.8.4
+		- Updated Roundcube addon to version 0.8.4
 
 Tickets:
 	- Fixed #482: Defect - Alias edit forward url not possible. Validation incorrect
@@ -73,6 +74,7 @@ Tickets:
 	- Fixed #511: Enhancement - Show disk usage detail (web, mail, sql) on client side
 	- Fixed #512: autoresponder: lines in transport file not correct
 	- Fixed #514: Email forward from domain A to domain B not working
+	- Fixed #518: Bug - Setup broken
 	- Fixed #520: Defect - migrateMailboxes: Use of uninitialized value
 	- Fixed #522: Bug - Subdomain redirects with "https" or "ftp" don't work
 	- Fixed #524: Update - AjaxPlorer 4.2.3 released

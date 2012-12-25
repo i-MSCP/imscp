@@ -446,6 +446,9 @@ sub _init
 {
 	my $self = shift;
 
+	# Force usage of graphic lines (UNICODE values) when using putty (See #540)
+	$ENV{'NCURSES_NO_UTF8_ACS'} = '1';
+
 	$self->{'autosize'} = undef;
 	$self->{'autoreset'} = '';
 	$self->{'lines'} = undef;
