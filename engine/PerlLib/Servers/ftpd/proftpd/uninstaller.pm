@@ -51,7 +51,7 @@ sub _init
 sub uninstall
 {
 	my $self = shift;
-	my $rs = 0;
+	my $rs;
 
 	$rs |= $self->restoreConfFile();
 	$rs |= $self->removeDB();
@@ -63,7 +63,7 @@ sub uninstall
 sub removeDirs
 {
 	my $self = shift;
-	my $rs = 0;
+	my $rs;
 
 	use iMSCP::Dir;
 
@@ -99,7 +99,7 @@ sub removeDB
 sub restoreConfFile
 {
 	my $self = shift;
-	my $rs = 0;
+	my $rs;
 
 	use File::Basename;
 	use iMSCP::File;

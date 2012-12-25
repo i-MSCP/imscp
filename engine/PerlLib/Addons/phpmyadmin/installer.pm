@@ -312,7 +312,7 @@ sub _setPermissions
 	my $panelUName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} . $main::imscpConfig{'SYSTEM_USER_MIN_UID'};
 	my $rootDir = $main::imscpConfig{'ROOT_DIR'};
 	my $apacheGName = $self->{'group'};
-	my $rs = 0;
+	my $rs;
 
 	$rs |= setRights(
 		"$rootDir/gui/public/tools/pma",
@@ -335,7 +335,7 @@ sub _saveConfig
 	my $self = shift;
 	my $rootUsr = $main::imscpConfig{'ROOT_USER'};
 	my $rootGrp = $main::imscpConfig{'ROOT_GROUP'};
-	my $rs = 0;
+	my $rs;
 
 	use iMSCP::File;
 

@@ -62,7 +62,7 @@ sub registerSetupHooks
 	my $self = shift;
 	my $hooksManager = shift;
 
-	my $rs = 0;
+	my $rs;
 
 	# Register add awstats dialog in setup dialog stack to show awstats addon questions on install
 	$rs |= $hooksManager->register(

@@ -144,7 +144,7 @@ sub addDmn{
 
 	my $self = shift;
 	my $data = shift;
-	my $rs = 0;
+	my $rs;
 
 	$rs |= iMSCP::Dir->new(
 		dirname => "/$data->{HOME_DIR}/statistics"
@@ -199,7 +199,7 @@ sub delDmn
 {
 	my $self = shift;
 	my $data = shift;
-	my $rs = 0;
+	my $rs;
 
 	my $cfgFileName = "$main::imscpConfig{AWSTATS_CONFIG_DIR}/awstats.$data->{DMN_NAME}.conf";
 	my $wrkFileName = "$self->{wrkDir}/awstats.$data->{DMN_NAME}.conf";
@@ -353,7 +353,7 @@ sub _addAwstatsCfg
 {
 	my $self = shift;
 	my $data = shift;
-	my $rs = 0;
+	my $rs;
 
 	use iMSCP::File;
 	use iMSCP::Templator;

@@ -64,7 +64,6 @@ sub registerSetupHooks
 sub install
 {
 	my $self = shift;
-	my $rs = 0;
 
 	use Servers::named::bind::installer;
 
@@ -74,7 +73,7 @@ sub install
 sub uninstall
 {
 	my $self = shift;
-	my $rs = 0;
+	my $rs;
 
 	use Servers::named::bind::uninstaller;
 
@@ -370,7 +369,7 @@ sub addDmnConfig
 {
 	my $self = shift;
 	my $option = shift;
-	my $rs = 0;
+	my $rs;
 	my ($rdata, $cfg, $file);
 
 	iMSCP::HooksManager->getInstance()->trigger('beforeNamedAddDmnConfig') and return 1;
@@ -479,7 +478,7 @@ sub postaddDmn
 {
 	my $self = shift;
 	my $option = shift;
-	my $rs = 0;
+	my $rs;
 
 	iMSCP::HooksManager->getInstance()->trigger('beforeNamedPostAddDmn') and return 1;
 
@@ -530,7 +529,7 @@ sub delDmnConfig
 	my $self = shift;
 	my $option = shift;
 	my ($rdata, $cfg, $file);
-	my $rs = 0;
+	my $rs;
 
 	iMSCP::HooksManager->getInstance()->trigger('beforeNamedDelDmnConfig') and return 1;
 
@@ -586,7 +585,7 @@ sub delDmn
 {
 	my $self = shift;
 	my $option = shift;
-	my $rs = 0;
+	my $rs;
 
 	$option = {} if ref $option ne 'HASH';
 
@@ -641,7 +640,7 @@ sub postdelDmn
 {
 	my $self = shift;
 	my $data = shift;
-	my $rs = 0;
+	my $rs;
 
 	iMSCP::HooksManager->getInstance()->trigger('beforeNamedPostDelDmn', $data);
 
@@ -668,7 +667,7 @@ sub addSub
 {
 	my $self = shift;
 	my $data = shift;
-	my $rs = 0;
+	my $rs;
 
 	use iMSCP::File;
 	use iMSCP::Templator;
@@ -764,7 +763,7 @@ sub postaddSub
 {
 	my $self = shift;
 	my $data = shift;
-	my $rs = 0;
+	my $rs;
 
 	use iMSCP::IP;
 
@@ -798,7 +797,7 @@ sub delSub
 {
 	my $self = shift;
 	my $data = shift;
-	my $rs = 0;
+	my $rs;
 
 	use iMSCP::Dialog;
 	use iMSCP::File;
@@ -819,7 +818,7 @@ sub delSub
 
 	my $zoneFile = "$self::bindConfig{BIND_DB_DIR}/$data->{PARENT_DMN_NAME}.db";
 
-	#Saving the current production file if it exists
+	# Saving the current production file if it exists
 	$rs |=	iMSCP::File->new(
 		filename => $zoneFile
 	)->copyFile(
@@ -871,7 +870,7 @@ sub postdelSub
 {
 	my $self = shift;
 	my $data = shift;
-	my $rs = 0;
+	my $rs;
 
 	iMSCP::HooksManager->getInstance()->trigger('beforeNamedPostDelSub', $data) and return 1;
 
@@ -898,7 +897,7 @@ END
 {
 	my $endCode	= $?;
 	my $self = Servers::named::bind->new();
-	my $rs = 0;
+	my $rs;
 
 	$rs	= $self->restart() if $self->{'restart'} && $self->{'restart'} eq 'yes';
 	$? = $endCode || $rs;

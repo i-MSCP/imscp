@@ -140,7 +140,7 @@ sub _installPackages
 "
 Getting composer addon packages from packagist.org.
 
-Please wait, this may take a few seconds...
+Please wait, this may take a few minutes...
 "
 	);
 

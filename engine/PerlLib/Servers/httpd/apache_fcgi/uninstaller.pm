@@ -49,7 +49,7 @@ sub _init
 sub uninstall
 {
 	my $self = shift;
-	my $rs = 0;
+	my $rs;
 
 	$rs |= $self->removeUsers();
 	$rs |= $self->removeDirs();
@@ -63,7 +63,7 @@ sub uninstall
 sub removeUsers
 {
 	my $self = shift;
-	my $rs = 0;
+	my $rs;
 	my ($panelGName, $panelUName);
 
 	# Panel user
@@ -132,7 +132,7 @@ sub fastcgiConf
 	use Servers::httpd::apache_fcgi;
 
 	my $httpd = Servers::httpd::apache_fcgi->new();
-	my $rs = 0;
+	my $rs;
 
 	$rs |= $httpd->disableMod("fastcgi_imscp fcgid_imscp");
 
@@ -151,7 +151,7 @@ sub vHostConf
 	use Servers::httpd::apache_fcgi;
 
 	my $httpd = Servers::httpd::apache_fcgi->new();
-	my $rs = 0;
+	my $rs;
 
 	for('00_nameserver.conf', '00_master_ssl.conf', '00_master.conf', '00_modcband.conf', '01_awstats.conf') {
 

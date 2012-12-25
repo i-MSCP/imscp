@@ -130,7 +130,7 @@ sub trigger($$)
 		$self->unregisterHook($hook);
 
 		for(@hookFunctions) {
-			if($_->(@_)) {
+			if($rs = $_->(@_)) {
 				my $caller = (caller(1))[3] ? (caller(1))[3] : 'main';
 				error("A hook function registered on the '$hook' hook and triggered in $caller has failed");
 				last;

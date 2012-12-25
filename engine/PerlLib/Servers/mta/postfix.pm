@@ -118,7 +118,7 @@ sub setEnginePermissions
 sub restart
 {
 	my $self = shift;
-	my $rs = 0;
+	my $rs;
 	my ($stdout, $stderr);
 
 	use iMSCP::Execute;
@@ -139,7 +139,7 @@ sub postmap
 {
 	my $self = shift;
 	my $postmap	= shift;
-	my $rs = 0;
+	my $rs;
 	my ($stdout, $stderr);
 
 	use iMSCP::Execute;
@@ -160,7 +160,7 @@ sub addDmn
 {
 	my $self = shift;
 	my $data = shift;
-	my $rs = 0;
+	my $rs;
 
 	use iMSCP::File;
 
@@ -209,7 +209,7 @@ sub addToRelayHash
 {
 	my $self = shift;
 	my $data = shift;
-	my $rs = 0;
+	my $rs;
 
 	iMSCP::HooksManager->getInstance()->trigger('beforeMtaAddToRelayHash', $data) and return 1;
 
@@ -249,7 +249,7 @@ sub delFromRelayHash
 {
 	my $self = shift;
 	my $data = shift;
-	my $rs = 0;
+	my $rs;
 
 	iMSCP::HooksManager->getInstance()->trigger('beforeMtaDelFromRelayHash', $data) and return 1;
 
@@ -289,7 +289,7 @@ sub addToDomainHash
 {
 	my $self = shift;
 	my $data = shift;
-	my $rs = 0;
+	my $rs;
 
 	iMSCP::HooksManager->getInstance()->trigger('beforeMtaAddToDomainHash', $data) and return 1;
 
@@ -335,7 +335,7 @@ sub delDmn
 {
 	my $self = shift;
 	my $data = shift;
-	my $rs = 0;
+	my $rs;
 
 	use iMSCP::File;
 	use iMSCP::Dir;
@@ -357,7 +357,7 @@ sub disableDmn
 {
 	my $self = shift;
 	my $data = shift;
-	my $rs = 0;
+	my $rs;
 
 	use iMSCP::File;
 	use iMSCP::Dir;
@@ -443,7 +443,7 @@ sub addMail
 {
 	my $self = shift;
 	my $data = shift;
-	my $rs = 0;
+	my $rs;
 
 	use File::Basename;
 	use iMSCP::File;
@@ -497,7 +497,7 @@ sub delMail
 {
 	my $self = shift;
 	my $data = shift;
-	my $rs = 0;
+	my $rs;
 
 	use File::Basename;
 	use iMSCP::File;
@@ -541,7 +541,7 @@ sub disableMail
 {
 	my $self = shift;
 	my $data = shift;
-	my $rs = 0;
+	my $rs;
 
 	use File::Basename;
 	use iMSCP::File;
@@ -585,7 +585,7 @@ sub delSaslData
 {
 	my $self = shift;
 	my $data = shift;
-	my $rs = 0;
+	my $rs;
 
 	iMSCP::HooksManager->getInstance()->trigger('beforeMtaDelSaslData', $data) and return 1;
 
@@ -628,7 +628,7 @@ sub addSaslData
 {
 	my $self = shift;
 	my $data = shift;
-	my $rs = 0;
+	my $rs;
 
 	iMSCP::HooksManager->getInstance()->trigger('beforeMtaAddSaslData', $data) and return 1;
 
@@ -676,7 +676,7 @@ sub delAutoRspnd
 {
 	my $self = shift;
 	my $data = shift;
-	my $rs = 0;
+	my $rs;
 
 	iMSCP::HooksManager->getInstance()->trigger('beforeMtaDelAutoRspnd', $data) and return 1;
 
@@ -711,7 +711,7 @@ sub addAutoRspnd
 {
 	my $self = shift;
 	my $data = shift;
-	my $rs = 0;
+	my $rs;
 
 	iMSCP::HooksManager->getInstance()->trigger('beforeMtaAddAutoRspnd', $data) and return 1;
 
@@ -747,7 +747,7 @@ sub delMailForward
 {
 	my $self = shift;
 	my $data = shift;
-	my $rs = 0;
+	my $rs;
 
 	iMSCP::HooksManager->getInstance()->trigger('beforeMtaDelMailForward', $data) and return 1;
 
@@ -797,7 +797,7 @@ sub addMailForward
 {
 	my $self = shift;
 	my $data = shift;
-	my $rs = 0;
+	my $rs;
 
 	iMSCP::HooksManager->getInstance()->trigger('beforeMtaAddMailForward', $data) and return 1;
 
@@ -846,7 +846,7 @@ sub delMailBox
 {
 	my $self = shift;
 	my $data = shift;
-	my $rs = 0;
+	my $rs;
 
 	iMSCP::HooksManager->getInstance()->trigger('beforeMtaDelMailbox', $data) and return 1;
 
@@ -869,7 +869,7 @@ sub disableMailBox
 {
 	my $self = shift;
 	my $data = shift;
-	my $rs = 0;
+	my $rs;
 
 	iMSCP::HooksManager->getInstance()->trigger('beforeMtaDisableMailbox', $data) and return 1;
 
@@ -903,7 +903,7 @@ sub addMailBox
 {
 	my $self = shift;
 	my $data = shift;
-	my $rs = 0;
+	my $rs;
 
 	iMSCP::HooksManager->getInstance()->trigger('beforeMtaAddMailbox', $data) and return 1;
 
@@ -989,7 +989,7 @@ sub addCatchAll
 {
 	my $self = shift;
 	my $data = shift;
-	my $rs = 0;
+	my $rs;
 
 	iMSCP::HooksManager->getInstance()->trigger('beforeMtaAddCatchAll', $data) and return 1;
 
@@ -1035,7 +1035,7 @@ sub delCatchAll
 {
 	my $self = shift;
 	my $data = shift;
-	my $rs = 0;
+	my $rs;
 
 	iMSCP::HooksManager->getInstance()->trigger('beforeMtaDelCatchAll', $data) and return 1;
 
@@ -1147,7 +1147,7 @@ END
 	my $endCode = $?;
 	my $self = Servers::mta::postfix->new();
 	my $wrkLogFile = "$main::imscpConfig{LOG_DIR}/mail.smtp.log";
-	my $rs = 0;
+	my $rs;
 
 	use iMSCP::File;
 

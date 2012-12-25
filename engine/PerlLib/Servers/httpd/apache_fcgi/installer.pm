@@ -98,7 +98,7 @@ sub askCgiModule
 sub install
 {
 	my $self = shift;
-	my $rs = 0;
+	my $rs;
 
 	$rs = iMSCP::HooksManager->getInstance()->trigger('beforeHttpdInstall', 'apache_fcgi');
 
@@ -138,7 +138,7 @@ sub setGuiPermissions
 	my $apacheGName = $self::apacheConfig{'APACHE_GROUP'};
 	my $phpDir = $self::apacheConfig{'PHP_STARTER_DIR'};
 	my $rootDir = $main::imscpConfig{'ROOT_DIR'};
-	my $rs = 0;
+	my $rs;
 
 	$rs = iMSCP::HooksManager->getInstance()->trigger('beforeHttpdSetGuiPermissions');
 
@@ -213,7 +213,7 @@ sub addUsersAndGroups
 {
 	my $self = shift;
 	my ($panelGName, $panelUName);
-	my $rs = 0;
+	my $rs;
 
 	iMSCP::HooksManager->getInstance()->trigger('beforeHttpdAddUsersAndGroups') and return 1;
 
@@ -257,7 +257,7 @@ sub makeDirs
 	my $apacheUName = $self::apacheConfig{'APACHE_USER'};
 	my $apacheGName = $self::apacheConfig{'APACHE_GROUP'};
 	my $phpdir = $self::apacheConfig{'PHP_STARTER_DIR'};
-	my $rs = 0;
+	my $rs;
 
 	use iMSCP::Dir;
 
@@ -281,7 +281,7 @@ sub bkpConfFile
 	my $self = shift;
 	my $cfgFile = shift;
 	my $timestamp = time;
-	my $rs = 0;
+	my $rs;
 
 	iMSCP::HooksManager->getInstance()->trigger('beforeHttpdBkpConfFile', $cfgFile) and return 1;
 
@@ -306,7 +306,7 @@ sub bkpConfFile
 sub saveConf
 {
 	my $self = shift;
-	my $rs = 0;
+	my $rs;
 
 	use iMSCP::File;
 
@@ -336,7 +336,7 @@ sub oldEngineCompatibility
 	use Servers::httpd::apache_fcgi;
 
 	my $httpd = Servers::httpd::apache_fcgi->new();
-	my $rs = 0;
+	my $rs;
 
 	iMSCP::HooksManager->getInstance()->trigger('beforeHttpdOldEngineCompatibility') and return 1;
 
@@ -360,7 +360,7 @@ sub buildFastCgiConfFiles
 	use Servers::httpd::apache_fcgi;
 
 	my $httpd = Servers::httpd::apache_fcgi->new();
-	my $rs = 0;
+	my $rs;
 	my ($cfgTpl, $err);
 
 	# Saving the current production file if they exists
@@ -635,7 +635,7 @@ sub buildMasterVhostFiles
 	use Servers::httpd;
 
 	my $httpd = Servers::httpd::apache_fcgi->new();
-	my $rs = 0;
+	my $rs;
 
 	$rs = $httpd->disableSite('default default-ssl');
 	return $rs if $rs;

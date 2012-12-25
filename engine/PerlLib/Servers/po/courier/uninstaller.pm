@@ -50,7 +50,7 @@ sub _init
 sub uninstall
 {
 	my $self = shift;
-	my $rs = 0;
+	my $rs;
 
 	$rs |= $self->restoreConfFile();
 	$rs |= $self->authDaemon();
@@ -92,7 +92,7 @@ sub authDaemon
 sub userDB
 {
 	my $self = shift;
-	my $rs = 0;
+	my $rs;
 	my $file;
 
 	$file = iMSCP::File->new(filename => "$self::courierConfig{'AUTHLIB_CONF_DIR'}/userdb");

@@ -126,7 +126,7 @@ sub setupDialog
 {
 	my $dialogStack = [];
 
-	iMSCP::HooksManager->getInstance()->trigger('beforeSetupDialog', $dialogStack);
+	iMSCP::HooksManager->getInstance()->trigger('beforeSetupDialog', $dialogStack) and return 1;
 
 	unshift(
 		@$dialogStack,
@@ -174,7 +174,7 @@ sub setupDialog
 		}
 	}
 
-	iMSCP::HooksManager->getInstance()->trigger('afterSetupDialog');
+	iMSCP::HooksManager->getInstance()->trigger('afterSetupDialog') and return 1;
 
 	$ret;
 }
@@ -182,9 +182,10 @@ sub setupDialog
 # Process setup tasks
 sub setupTasks
 {
-	iMSCP::HooksManager->getInstance()->trigger('beforeSetupTasks');
+	iMSCP::HooksManager->getInstance()->trigger('beforeSetupTasks') and return 1;
 
-	my $rs = 0;
+	my $rs;
+
 	my @steps = (
 		[\&setupSaveOldConfig,				'Saving old i-MSCP main configuration file'],
 		[\&setupWriteNewConfig,				'Write new i-MSCP main configuration file'],
@@ -214,14 +215,14 @@ sub setupTasks
 	my $nbSteps = @steps;
 
 	for (@steps) {
-		$rs |= step($_->[0], $_->[1], $nbSteps, $step);
+		$rs = step($_->[0], $_->[1], $nbSteps, $step);
 		last if $rs;
 		$step++;
 	}
 
 	iMSCP::Dialog->factory()->endGauge() if iMSCP::Dialog->factory()->needGauge();
 
-	iMSCP::HooksManager->getInstance()->trigger('afterSetupTasks');
+	iMSCP::HooksManager->getInstance()->trigger('afterSetupTasks') and return 1;
 
 	$rs;
 }
@@ -1075,7 +1076,7 @@ This feature allows resellers to propose backup options to their customers such 
 #
 sub setupSaveOldConfig
 {
-	iMSCP::HooksManager->getInstance()->trigger('beforeSetupSaveOldConfig');
+	iMSCP::HooksManager->getInstance()->trigger('beforeSetupSaveOldConfig') and return 1;
 
 	my $file = iMSCP::File->new(filename => "$main::imscpConfig{'CONF_DIR'}/imscp.conf");
 	my $cfg = $file->get() or return 1;
@@ -1084,7 +1085,7 @@ sub setupSaveOldConfig
 	$file->set($cfg) and return 1;
 	$file->save and return 1;
 
-	iMSCP::HooksManager->getInstance()->trigger('afterSetupSaveOldConfig');
+	iMSCP::HooksManager->getInstance()->trigger('afterSetupSaveOldConfig') and return 1;
 
 	0;
 }
@@ -1092,7 +1093,7 @@ sub setupSaveOldConfig
 # Write question answers into imscp.conf file
 sub setupWriteNewConfig
 {
-	iMSCP::HooksManager->getInstance()->trigger('beforeSetupWriteNewConfig');
+	iMSCP::HooksManager->getInstance()->trigger('beforeSetupWriteNewConfig') and return 1;
 
 	for(keys %main::questions) {
 		if(exists $main::imscpConfig{$_}) {
@@ -1100,20 +1101,20 @@ sub setupWriteNewConfig
 		}
    	}
 
-   	iMSCP::HooksManager->getInstance()->trigger('afterSetupWriteNewConfig');
+   	iMSCP::HooksManager->getInstance()->trigger('afterSetupWriteNewConfig') and return 1;
 }
 
 # Create system master group for imscp
 sub setupCreateMasterGroup
 {
-	iMSCP::HooksManager->getInstance()->trigger('beforeSetupCreateMasterGroup');
+	iMSCP::HooksManager->getInstance()->trigger('beforeSetupCreateMasterGroup') and return 1;
 
 	my $group = Modules::SystemGroup->new();
 
 	$group->{'system'} = 'yes';
 	$group->addSystemGroup($main::imscpConfig{'MASTER_GROUP'}) and return 1;
 
-	iMSCP::HooksManager->getInstance()->trigger('afterSetupCreateMasterGroup');
+	iMSCP::HooksManager->getInstance()->trigger('afterSetupCreateMasterGroup') and return 1;
 
 	0;
 }
@@ -1130,13 +1131,13 @@ sub setupCreateSystemDirectories
 		[$main::imscpConfig{'BACKUP_FILE_DIR'}, $rootUName, $rootGName, 0750]
 	);
 
-	iMSCP::HooksManager->getInstance()->trigger('beforeSetupCreateSystemDirectories', \@systemDirectories);
+	iMSCP::HooksManager->getInstance()->trigger('beforeSetupCreateSystemDirectories', \@systemDirectories) and return 1;
 
 	for (@systemDirectories) {
 		iMSCP::Dir->new(dirname => $_->[0])->make({ user => $_->[1], group => $_->[2], mode => $_->[3]}) and return 1;
 	}
 
-	iMSCP::HooksManager->getInstance()->trigger('afterSetupCreateSystemDirectories');
+	iMSCP::HooksManager->getInstance()->trigger('afterSetupCreateSystemDirectories') and return 1;
 
 	0;
 }
@@ -1148,7 +1149,7 @@ sub setupServerHostname
 	my $baseServerIp = setupGetQuestion('BASE_SERVER_IP');
 	my $rs = 0;
 
-	iMSCP::HooksManager->getInstance()->trigger('beforeSetupServerHostname', \$hostname, \$baseServerIp);
+	iMSCP::HooksManager->getInstance()->trigger('beforeSetupServerHostname', \$hostname, \$baseServerIp) and return 1;
 
 	my @labels = split /\./, $hostname;
 	my $host = shift(@labels);
@@ -1190,7 +1191,7 @@ sub setupServerHostname
 	error("$stderr") if $rs && $stderr;
 	error("Unable to set server hostname") if $rs && !$stderr;
 
-	iMSCP::HooksManager->getInstance()->trigger('afterSetupServerHostname');
+	iMSCP::HooksManager->getInstance()->trigger('afterSetupServerHostname') and return 1;
 
 	$rs;
 }
@@ -1211,7 +1212,7 @@ sub setupServerIps
 
 	iMSCP::HooksManager->getInstance()->trigger(
 		'beforeSetupServerIps', \$baseServerIp, \@serverIps, $serverIpsToReplace
-	);
+	) and return 1;
 
 	my $database = setupGetSqlConnect(setupGetQuestion('DATABASE_NAME'));
 
@@ -1343,7 +1344,7 @@ sub setupServerIps
 		}
 	}
 
-	iMSCP::HooksManager->getInstance()->trigger('afterSetupServerIps');
+	iMSCP::HooksManager->getInstance()->trigger('afterSetupServerIps') and return 1;
 
 	0;
 }
@@ -1351,7 +1352,7 @@ sub setupServerIps
 # Setup local resolver
 sub setupLocalResolver
 {
-	iMSCP::HooksManager->getInstance()->trigger('beforeSetupLocalResolver');
+	iMSCP::HooksManager->getInstance()->trigger('beforeSetupLocalResolver') and return 1;
 
 	my ($err, $file, $content, $out);
 
@@ -1389,7 +1390,7 @@ sub setupLocalResolver
 		warning("Unable to found the resolv.conf file on your system");
 	}
 
-	iMSCP::HooksManager->getInstance()->trigger('afterSetupLocalResolver');
+	iMSCP::HooksManager->getInstance()->trigger('afterSetupLocalResolver') and return 1;
 
 	0;
 }
@@ -1399,7 +1400,7 @@ sub setupCreateDatabase
 {
 	my $dbName = setupGetQuestion('DATABASE_NAME');
 
-	iMSCP::HooksManager->getInstance()->trigger('beforeSetupCreateDatabase', \$dbName);
+	iMSCP::HooksManager->getInstance()->trigger('beforeSetupCreateDatabase', \$dbName) and return 1;
 
 	if(! setupIsImscpDb($dbName)) {
 		my ($database, $errStr) = setupGetSqlConnect();
@@ -1420,7 +1421,7 @@ sub setupCreateDatabase
 	# In any case, we ensure we have last db schema by triggering db update
 	setupUpdateDatabase() and return 1;
 
-	iMSCP::HooksManager->getInstance()->trigger('afterSetupCreateDatabase');
+	iMSCP::HooksManager->getInstance()->trigger('afterSetupCreateDatabase') and return 1;
 
 	0;
 }
@@ -1431,7 +1432,7 @@ sub setupImportSqlSchema
 	my $database = shift;
 	my $file = shift;
 
-	iMSCP::HooksManager->getInstance()->trigger('beforeSetupImportSqlSchema', \$file);
+	iMSCP::HooksManager->getInstance()->trigger('beforeSetupImportSqlSchema', \$file) and return 1;
 
 	my $content = iMSCP::File->new(filename => $file)->get();
 	$content =~ s/^(--[^\n]{0,})?\n//mg;
@@ -1454,7 +1455,7 @@ sub setupImportSqlSchema
 
 	endDetail();
 
-	iMSCP::HooksManager->getInstance()->trigger('afterSetupImportSqlSchema');
+	iMSCP::HooksManager->getInstance()->trigger('afterSetupImportSqlSchema') and return 1;
 
 	0;
 }
@@ -1462,7 +1463,7 @@ sub setupImportSqlSchema
 # Update i-MSCP database schema
 sub setupUpdateDatabase
 {
-	iMSCP::HooksManager->getInstance()->trigger('beforeSetupUpdateDatabase');
+	iMSCP::HooksManager->getInstance()->trigger('beforeSetupUpdateDatabase') and return 1;
 
 	my ($rs, $stdout, $stderr);
 	my $file = iMSCP::File->new(filename => "$main::imscpConfig{'ROOT_DIR'}/engine/setup/updDB.php");
@@ -1484,7 +1485,7 @@ sub setupUpdateDatabase
 	error("$stdout $stderr") if $rs;
 	return ($stdout ? "$stdout " : '' ) . $stderr . " exitcode: $rs" if $rs;
 
-	iMSCP::HooksManager->getInstance()->trigger('afterSetupUpdateDatabase');
+	iMSCP::HooksManager->getInstance()->trigger('afterSetupUpdateDatabase') and return 1;
 
 	0;
 }
@@ -1492,7 +1493,7 @@ sub setupUpdateDatabase
 # Secure any SQL account by removing those without password
 sub setupSecureSqlAccounts
 {
-	iMSCP::HooksManager->getInstance()->trigger('beforeSetupSecureSqlAccounts');
+	iMSCP::HooksManager->getInstance()->trigger('beforeSetupSecureSqlAccounts') and return 1;
 
 	my ($database, $errStr) = setupGetSqlConnect(setupGetQuestion('DATABASE_NAME'));
 	fatal('Unable to connect to SQL Server: $errStr') if ! $database;
@@ -1509,7 +1510,7 @@ sub setupSecureSqlAccounts
 		error("$rs") if ref $rs ne 'HASH';
 	}
 
-	iMSCP::HooksManager->getInstance()->trigger('afterSetupSecureSqlAccounts');
+	iMSCP::HooksManager->getInstance()->trigger('afterSetupSecureSqlAccounts') and return 1;
 
 	0;
 }
@@ -1524,7 +1525,7 @@ sub setupDefaultAdmin
 
 	iMSCP::HooksManager->getInstance()->trigger(
 		'beforeSetupDefaultAdmin', \$adminLoginName, \$adminPassword, \$adminEmail
-	);
+	) and return 1;
 
 	if($adminLoginName && $adminPassword) {
 
@@ -1557,19 +1558,21 @@ sub setupDefaultAdmin
 		$rs = $database->doQuery('admin_id', 'SELECT `admin_id` FROM `admin` WHERE `admin_type` = ?', 'reseller');
 		return $rs if ref $rs ne 'HASH';
 
-		$rs = $database->doQuery(
-			'dummy',
-			'
-				UPDATE
-					`admin` SET `created_by` = LAST_INSERT_ID()
-				WHERE
-					`admin_type` = ?
-				AND
-					`created_by` NOT IN (' . join(',', keys %$rs) . ')
-			',
-			'reseller'
-		);
-		return $rs if ref $rs ne 'HASH';
+		if(%{$rs}) {
+			$rs = $database->doQuery(
+				'dummy',
+				'
+					UPDATE
+						`admin` SET `created_by` = LAST_INSERT_ID()
+					WHERE
+						`admin_type` = ?
+					AND
+						`created_by` NOT IN (' . join(',', keys %{$rs}) . ')
+				',
+				'reseller'
+			);
+			return $rs if ref $rs ne 'HASH';
+		}
 
 		$rs = $database->doQuery(
 			'dummy',
@@ -1591,7 +1594,7 @@ sub setupDefaultAdmin
 		return $rs if ref $rs ne 'HASH';
 	}
 
-	iMSCP::HooksManager->getInstance()->trigger('afterSetupDefaultAdmin');
+	iMSCP::HooksManager->getInstance()->trigger('afterSetupDefaultAdmin') and return 1;
 
 	0;
 }
@@ -1600,7 +1603,7 @@ sub setupDefaultAdmin
 # TODO: awstats part should be done via awstats installer
 sub setupCron
 {
-	iMSCP::HooksManager->getInstance()->trigger('beforeSetupCron');
+	iMSCP::HooksManager->getInstance()->trigger('beforeSetupCron') and return 1;
 
 	my ($rs, $cfgTpl, $err);
 
@@ -1669,7 +1672,7 @@ sub setupCron
 	# Install new file in production directory
 	$file->copyFile("$prodDir/") and return 1;
 
-	iMSCP::HooksManager->getInstance()->trigger('afterSetupCron');
+	iMSCP::HooksManager->getInstance()->trigger('afterSetupCron') and return 1;
 
 	0;
 }
@@ -1677,7 +1680,7 @@ sub setupCron
 # Setup i-MSCP init scripts
 sub setupInitScripts
 {
-	iMSCP::HooksManager->getInstance()->trigger('beforeSetupInitScripts');
+	iMSCP::HooksManager->getInstance()->trigger('beforeSetupInitScripts') and return 1;
 
 	my ($rs, $rdata, $fileName, $stdout, $stderr);
 
@@ -1709,7 +1712,7 @@ sub setupInitScripts
 		error("$stderr") if $rs;
 	}
 
-	iMSCP::HooksManager->getInstance()->trigger('afterSetupInitScripts');
+	iMSCP::HooksManager->getInstance()->trigger('afterSetupInitScripts') and return 1;
 
 	0;
 }
@@ -1717,7 +1720,7 @@ sub setupInitScripts
 # Setup i-MSCP base permissions
 sub setupBasePermissions
 {
-	iMSCP::HooksManager->getInstance()->trigger('beforeSetupBasePermissions');
+	iMSCP::HooksManager->getInstance()->trigger('beforeSetupBasePermissions') and return 1;
 
 	my $rootUName = $main::imscpConfig{'ROOT_USER'};
 	my $rootGName = $main::imscpConfig{'ROOT_GROUP'};
@@ -1734,14 +1737,14 @@ sub setupBasePermissions
 	$rs |= setRights("$ROOT_DIR/engine", { user => $rootUName, group => $masterUName, mode => '0755', recursive => 'yes' });
 	$rs |= setRights($LOG_DIR, { user => $rootUName, group => $masterUName, mode => '0750' });
 
-	iMSCP::HooksManager->getInstance()->trigger('afterSetupBasePermissions');
+	iMSCP::HooksManager->getInstance()->trigger('afterSetupBasePermissions') and return 1;
 
 	0;
 }
 
 sub setupRkhunter
 {
-	iMSCP::HooksManager->getInstance()->trigger('beforeSetupRkhunter');
+	iMSCP::HooksManager->getInstance()->trigger('beforeSetupRkhunter') and return 1;
 
 	my ($rs, $rdata);
 
@@ -1798,7 +1801,7 @@ sub setupRkhunter
 		$file->save() and return 1;
 	}
 
-	iMSCP::HooksManager->getInstance()->trigger('afterSetupRkhunter');
+	iMSCP::HooksManager->getInstance()->trigger('afterSetupRkhunter') and return 1;
 
 	0;
 }
@@ -1806,7 +1809,7 @@ sub setupRkhunter
 # Rebuild all customers's configuration files
 sub setupRebuildCustomerFiles
 {
-	iMSCP::HooksManager->getInstance()->trigger('beforeSetupRebuildCustomersFiles');
+	iMSCP::HooksManager->getInstance()->trigger('beforeSetupRebuildCustomersFiles') and return 1;
 
 	my $tables = {
 		ssl_certs => 'status',
@@ -1842,7 +1845,7 @@ sub setupRebuildCustomerFiles
 	iMSCP::Boot->new()->lock();
 	return $rs if $rs;
 
-	iMSCP::HooksManager->getInstance()->trigger('afterSetupRebuildCustomersFiles');
+	iMSCP::HooksManager->getInstance()->trigger('afterSetupRebuildCustomersFiles') and return 1;
 
 	0;
 }
@@ -1850,7 +1853,7 @@ sub setupRebuildCustomerFiles
 # Call preinstall method on all i-MSCP server packages
 sub setupPreInstallServers
 {
-	iMSCP::HooksManager->getInstance()->trigger('beforeSetupPreInstallServers');
+	iMSCP::HooksManager->getInstance()->trigger('beforeSetupPreInstallServers') and return 1;
 
 	my ($rs, $file, $class, $server, $msg);
 	my @servers = iMSCP::Servers::get();
@@ -1877,7 +1880,7 @@ sub setupPreInstallServers
 
 	endDetail();
 
-	iMSCP::HooksManager->getInstance()->trigger('afterSetupPreInstallServers');
+	iMSCP::HooksManager->getInstance()->trigger('afterSetupPreInstallServers') and return 1;
 
 	$rs;
 }
@@ -1885,7 +1888,7 @@ sub setupPreInstallServers
 # Call preinstall method on all i-MSCP addon packages
 sub setupPreInstallAddons
 {
-	iMSCP::HooksManager->getInstance()->trigger('beforeSetupPreInstallAddons');
+	iMSCP::HooksManager->getInstance()->trigger('beforeSetupPreInstallAddons') and return 1;
 
 	my ($rs, $file, $class, $addons, $msg);
 	my @addons = iMSCP::Addons::get();
@@ -1911,7 +1914,7 @@ sub setupPreInstallAddons
 
 	endDetail();
 
-	iMSCP::HooksManager->getInstance()->trigger('afterSetupPreInstallAddons');
+	iMSCP::HooksManager->getInstance()->trigger('afterSetupPreInstallAddons') and return 1;
 
 	$rs;
 }
@@ -1919,7 +1922,7 @@ sub setupPreInstallAddons
 # Call install method on all i-MSCP server packages
 sub setupInstallServers
 {
-	iMSCP::HooksManager->getInstance()->trigger('beforeSetupInstallServers');
+	iMSCP::HooksManager->getInstance()->trigger('beforeSetupInstallServers') and return 1;
 
 	my ($rs, $file, $class, $server, $msg);
 	my @servers = iMSCP::Servers::get();
@@ -1946,7 +1949,7 @@ sub setupInstallServers
 
 	endDetail();
 
-	iMSCP::HooksManager->getInstance()->trigger('afterSetupInstallServers');
+	iMSCP::HooksManager->getInstance()->trigger('afterSetupInstallServers') and return 1;
 
 	$rs;
 }
@@ -1954,7 +1957,7 @@ sub setupInstallServers
 # Call install method on all i-MSCP addong packages
 sub setupInstallAddons
 {
-	iMSCP::HooksManager->getInstance()->trigger('beforeSetupInstallAddons');
+	iMSCP::HooksManager->getInstance()->trigger('beforeSetupInstallAddons') and return 1;
 
 	my ($rs, $file, $class, $addons, $msg);
 	my @addons = iMSCP::Addons::get();
@@ -1980,7 +1983,7 @@ sub setupInstallAddons
 
 	endDetail();
 
-	iMSCP::HooksManager->getInstance()->trigger('afterSetupInstallAddons');
+	iMSCP::HooksManager->getInstance()->trigger('afterSetupInstallAddons') and return 1;
 
 	$rs;
 }
@@ -1988,7 +1991,7 @@ sub setupInstallAddons
 # Call postinstall method on all i-MSCP server packages
 sub setupPostInstallServers
 {
-	iMSCP::HooksManager->getInstance()->trigger('beforeSetupPostInstallServers');
+	iMSCP::HooksManager->getInstance()->trigger('beforeSetupPostInstallServers') and return 1;
 
 	my ($rs, $file, $class, $server, $msg);
 	my @servers = iMSCP::Servers::get();
@@ -2015,7 +2018,7 @@ sub setupPostInstallServers
 
 	endDetail();
 
-	iMSCP::HooksManager->getInstance()->trigger('afterSetupPostInstallServers');
+	iMSCP::HooksManager->getInstance()->trigger('afterSetupPostInstallServers') and return 1;
 
 	$rs;
 }
@@ -2023,7 +2026,7 @@ sub setupPostInstallServers
 # Call postinstall method on all i-MSCP addon packages
 sub setupPostInstallAddons
 {
-	iMSCP::HooksManager->getInstance()->trigger('beforeSetupPostInstallAddons');
+	iMSCP::HooksManager->getInstance()->trigger('beforeSetupPostInstallAddons') and return 1;
 
 	my ($rs, $file, $class, $addons, $msg);
 	my @addons = iMSCP::Addons::get();
@@ -2049,7 +2052,7 @@ sub setupPostInstallAddons
 
 	endDetail();
 
-	iMSCP::HooksManager->getInstance()->trigger('afterSetupPostInstallAddons');
+	iMSCP::HooksManager->getInstance()->trigger('afterSetupPostInstallAddons') and return 1;
 
 	$rs;
 }
@@ -2057,7 +2060,7 @@ sub setupPostInstallAddons
 # Restart all services needed by i-MSCP
 sub setupRestartServices
 {
-	iMSCP::HooksManager->getInstance()->trigger('beforeSetupRestartServices');
+	iMSCP::HooksManager->getInstance()->trigger('beforeSetupRestartServices') and return 1;
 
 	startDetail();
 
@@ -2097,7 +2100,7 @@ sub setupRestartServices
 
 	endDetail();
 
-	iMSCP::HooksManager->getInstance()->trigger('afterRestartServices');
+	iMSCP::HooksManager->getInstance()->trigger('afterRestartServices') and return 1;
 
 	0;
 }
@@ -2105,7 +2108,7 @@ sub setupRestartServices
 # Run all update additional task such as rkhunter configuration
 sub setupAdditionalTasks
 {
-	iMSCP::HooksManager->getInstance()->trigger('beforeSetupAdditionalTasks');
+	iMSCP::HooksManager->getInstance()->trigger('beforeSetupAdditionalTasks') and return 1;
 
 	startDetail();
 
@@ -2120,7 +2123,7 @@ sub setupAdditionalTasks
 
 	endDetail();
 
-	iMSCP::HooksManager->getInstance()->trigger('afterSetupAdditionalTasks');
+	iMSCP::HooksManager->getInstance()->trigger('afterSetupAdditionalTasks') and return 1;
 
 	0;
 }

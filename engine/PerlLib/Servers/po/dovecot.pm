@@ -195,7 +195,7 @@ END
 	my $endCode	= $?;
 	my $self = Servers::po::dovecot->new();
 	my $wrkLogFile = "$main::imscpConfig{LOG_DIR}/mail.po.log";
-	my $rs = 0;
+	my $rs;
 
 	$rs |= $self->restart() if $self->{'restart'} && $self->{'restart'} eq 'yes';
 	$rs |= iMSCP::File->new(filename => $wrkLogFile)->delFile() if -f $wrkLogFile;

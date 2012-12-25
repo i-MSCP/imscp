@@ -63,14 +63,13 @@ sub registerSetupHooks
 sub preinstall
 {
 	my $self = shift;
-	my $rs = 0;
+	my $rs;
 
 	iMSCP::HooksManager->getInstance()->trigger('beforePoPreinstall', 'courier');
 
 	use Servers::po::courier::installer;
 
 	$rs |= $self->stop();
-	#$rs |= Servers::po::courier::installer->new()->registerHooks();
 
 	iMSCP::HooksManager->getInstance()->trigger('afterPoPreinstall', 'courier');
 
@@ -190,7 +189,7 @@ sub stop
 sub restart
 {
 	my $self = shift;
-	my $rs = 0;
+	my $rs;
 	my ($stdout, $stderr);
 
 	iMSCP::HooksManager->getInstance()->trigger('beforePoRestart') and return 1;
@@ -227,7 +226,7 @@ sub addMail
 {
 	my $self = shift;
 	my $data = shift;
-	my $rs = 0;
+	my $rs;
 	my ($stdout, $stderr);
 
 	use iMSCP::File;
@@ -298,7 +297,7 @@ sub delMail
 {
 	my $self = shift;
 	my $data = shift;
-	my $rs = 0;
+	my $rs;
 	my ($stdout, $stderr);
 
 	use iMSCP::File;
@@ -444,7 +443,7 @@ END
 	my $endCode = $?;
 	my $self = Servers::po::courier->new();
 	my $wrkLogFile = "$main::imscpConfig{LOG_DIR}/mail.po.log";
-	my $rs = 0;
+	my $rs;
 
 	$rs |= $self->restart() if $self->{'restart'} && $self->{'restart'} eq 'yes';
 	$rs |= iMSCP::File->new(filename => $wrkLogFile)->delFile() if -f $wrkLogFile;
