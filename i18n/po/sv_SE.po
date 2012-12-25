@@ -8,9 +8,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2012-12-24 22:12+0100\n"
-"PO-Revision-Date: 2012-12-24 18:38+0000\n"
-"Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
+"POT-Creation-Date: 2012-12-25 13:47+0100\n"
+"PO-Revision-Date: 2012-12-24 22:00+0000\n"
+"Last-Translator: Cool <barni@telia.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -561,7 +561,7 @@ msgid "Activate"
 msgstr "Aktivera"
 
 msgid "Activate mail auto-responder"
-msgstr ""
+msgstr "Aktivera e-post auto-responder"
 
 msgid "Activate this plugin"
 msgstr "Activate this plugin"
@@ -869,7 +869,7 @@ msgid "An error occurred while the authentication attempt."
 msgstr "An error occurred while the authentication attempt."
 
 msgid "An unexpected error occured, please contact your reseller."
-msgstr ""
+msgstr "Ett oväntat fel uppstod, vänligen kontakta din återförsäljare."
 
 #, php-format
 msgid "An unknown error occured during file upload: %s"
@@ -1008,16 +1008,16 @@ msgid "Auto respond"
 msgstr "Automatiskt svar"
 
 msgid "Auto-responder message cannot be empty."
-msgstr ""
+msgstr "Auto-responder meddelande får inte vara tomt."
 
 msgid "Auto-responder successfully scheduled for activation."
-msgstr ""
+msgstr "Auto-responder schemalagt för aktivering."
 
 msgid "Auto-responder successfully scheduled for deactivation."
-msgstr ""
+msgstr "Auto-responder schemalagt för avaktivering."
 
 msgid "Auto-responder successfully scheduled for update."
-msgstr ""
+msgstr "Auto-responder schemalagt för uppdatering."
 
 msgid "Automatic updates"
 msgstr "Auto. uppdateringar"
@@ -1068,7 +1068,7 @@ msgid "Backup support"
 msgstr "Backupstöd"
 
 msgid "Bad password."
-msgstr ""
+msgstr "Felaktigt lösenord."
 
 msgid "Bandwidth"
 msgstr "Bandbredd"
@@ -1493,7 +1493,7 @@ msgid "Database prefix"
 msgstr "Databas prefix"
 
 msgid "Database prefix/suffix"
-msgstr ""
+msgstr "Databas prefix/suffix"
 
 msgid "Database required"
 msgstr "Databas krävs"
@@ -1505,7 +1505,7 @@ msgid "Database updates"
 msgstr "Databasuppdateringar"
 
 msgid "Database usage"
-msgstr ""
+msgstr "Database usage"
 
 msgid "Database user list is empty!"
 msgstr "Database user listan är tom!"
@@ -1698,7 +1698,7 @@ msgid "Disk usage"
 msgstr "Diskanvändning"
 
 msgid "Disk usage detail"
-msgstr ""
+msgstr "Diskanvändning detaljer"
 
 msgid "Do not show any error"
 msgstr "Visa inte fel"
@@ -2033,7 +2033,7 @@ msgid "Edit mail account"
 msgstr "Redigera e-postkonto"
 
 msgid "Edit mail auto-responder"
-msgstr ""
+msgstr "Edit epost auto-responder"
 
 msgid "Edit mail quota"
 msgstr "Edit mail quota"
@@ -2311,7 +2311,7 @@ msgid "File successfully uploaded."
 msgstr "Filen har laddats upp."
 
 msgid "File usage"
-msgstr ""
+msgstr "File usage"
 
 msgid "File was successfully uploaded."
 msgstr "Fil har laddats upp."
@@ -3031,7 +3031,7 @@ msgid "Mail successfully sent to your users."
 msgstr "E-post skickats till dina användare."
 
 msgid "Mail usage"
-msgstr ""
+msgstr "Mail usage"
 
 msgid "Mail users"
 msgstr "E-postanvändare"
@@ -3483,10 +3483,10 @@ msgid "Number of CPU Cores"
 msgstr "Antal CPU-känor"
 
 msgid "Numeric prefix"
-msgstr ""
+msgstr "Numeriska prefix"
 
 msgid "Numeric suffix"
-msgstr ""
+msgstr "Numeriska suffix"
 
 msgid "OK"
 msgstr "OK"
@@ -3959,7 +3959,7 @@ msgid "Please, don't use special chars such as '@, $, %...' in the password."
 msgstr "Var god och inte använd '@, $, %...' i lösenord."
 
 msgid "Please, enter your auto-responder message below"
-msgstr ""
+msgstr "Ange ditt auto-responder meddelande nedan"
 
 msgid "Plugin"
 msgstr "Plugin"
@@ -5104,7 +5104,7 @@ msgid ""
 msgstr "The package will be installed automaticly to your system after upload.<br />Refresh your site to see the new status!"
 
 msgid "The password field is empty."
-msgstr ""
+msgstr "Fältet för lösenord är tomt."
 
 msgid "The password is too long."
 msgstr "Lösenordet är för långt."
@@ -5138,7 +5138,7 @@ msgid "The username %s is not available."
 msgstr "The username %s is not available."
 
 msgid "The username field is empty."
-msgstr ""
+msgstr "Användarnamnet är tomt."
 
 msgid "The value has been found in the stack"
 msgstr "Värdet har hittats i stapeln"
@@ -5505,7 +5505,7 @@ msgid "Unknown layout color."
 msgstr "Okänt layout färg."
 
 msgid "Unknown reason."
-msgstr ""
+msgstr "Okänd orsak."
 
 msgid "Unknown subdomain type."
 msgstr "Okänd underdomän typ."
@@ -6644,10 +6644,10 @@ msgid "i-MSCP - Client / Mail Accounts / External mail servers"
 msgstr "i-MSCP - Client / Mail Accounts / External mail servers"
 
 msgid "i-MSCP - Client / Mail accounts / Activate auto-responder"
-msgstr ""
+msgstr "i-MSCP - Client / Mail accounts / Activate auto-responder"
 
 msgid "i-MSCP - Client / Mail accounts / Edit auto-responder"
-msgstr ""
+msgstr "i-MSCP - Client / Mail accounts / Edit auto-responder"
 
 msgid "i-MSCP - Client / Manage domains - Add subdomain"
 msgstr "i-MSCP - Client / Manage domains - Add subdomain"
