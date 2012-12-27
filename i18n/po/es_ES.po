@@ -7,13 +7,14 @@
 #   <sagi@canbasis.com>, 2012.
 # Sagi Roca <sagi@canbasis.com>, 2012.
 #   <vh.rodriguez.a@gmail.com>, 2012.
+#   <victor53134@gmail.com>, 2012.
 msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2012-12-25 23:40+0100\n"
-"PO-Revision-Date: 2012-12-24 18:38+0000\n"
-"Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
+"POT-Creation-Date: 2012-12-27 03:23+0100\n"
+"PO-Revision-Date: 2012-12-26 23:51+0000\n"
+"Last-Translator: victor531 <victor53134@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -564,7 +565,7 @@ msgid "Activate"
 msgstr "Activar"
 
 msgid "Activate mail auto-responder"
-msgstr ""
+msgstr "Activar correo de Autor-espuesta"
 
 msgid "Activate this plugin"
 msgstr "Activar este plugin"
@@ -872,7 +873,7 @@ msgid "An error occurred while the authentication attempt."
 msgstr "Se produjo un error durante el intento de autenticación."
 
 msgid "An unexpected error occured, please contact your reseller."
-msgstr ""
+msgstr "Ha ocurrido un error inesperado, favor contáctese con su revendedor"
 
 #, php-format
 msgid "An unknown error occured during file upload: %s"
@@ -990,7 +991,7 @@ msgid "Are you sure you want to restore the backup?"
 msgstr "¿Está seguro que quiere restaurar esta copia de seguridad?"
 
 msgid "Area name"
-msgstr "Nombre de area"
+msgstr "Nombre de área"
 
 msgid "Assign"
 msgstr "Asignar"
@@ -1011,16 +1012,16 @@ msgid "Auto respond"
 msgstr "Auto responder"
 
 msgid "Auto-responder message cannot be empty."
-msgstr ""
+msgstr "El mensaje de la Auto-respuesta no puede estar vacio"
 
 msgid "Auto-responder successfully scheduled for activation."
-msgstr ""
+msgstr "Correo de Auto-respuesta exitosamente agendado para su activación"
 
 msgid "Auto-responder successfully scheduled for deactivation."
-msgstr ""
+msgstr "Correo de Auto-respuesta exitosamente agendado para su desactivación"
 
 msgid "Auto-responder successfully scheduled for update."
-msgstr ""
+msgstr "Correo de Auto-respuesta exitosamente agendado para su actualización "
 
 msgid "Automatic updates"
 msgstr "Actualizaciones automáticas"
@@ -1071,13 +1072,13 @@ msgid "Backup support"
 msgstr "Soporte copia de seguridad"
 
 msgid "Bad password."
-msgstr ""
+msgstr "Contraseña equivocada"
 
 msgid "Bandwidth"
 msgstr "Ancho de banda"
 
 msgid "Behind the name"
-msgstr "Detras del nombre"
+msgstr "Detrás del nombre"
 
 msgid "Being enabled"
 msgstr "Habilitado"
@@ -1309,7 +1310,7 @@ msgid "Core data"
 msgstr "Datos importantes"
 
 msgid "Costs"
-msgstr "Costes"
+msgstr "Costos"
 
 msgid "Could not upload file."
 msgstr "No se ha podido cargar el fichero."
@@ -1342,7 +1343,7 @@ msgid "Create catch all mail account"
 msgstr "Crear cuenta de correo Catch-All"
 
 msgid "Create default E-Mail addresses"
-msgstr "Crear una dirección E-Mail por defecto"
+msgstr "Crear direcciones de E-Mail por defecto"
 
 msgid "Create directory, if not exist!"
 msgstr "Crear directorio, si no existe!"
@@ -1496,7 +1497,7 @@ msgid "Database prefix"
 msgstr "Prefijo de Base de Datos"
 
 msgid "Database prefix/suffix"
-msgstr ""
+msgstr "Prefijo / Sufijo Bases de Datos"
 
 msgid "Database required"
 msgstr "Base de Datos requerida"
@@ -1508,7 +1509,7 @@ msgid "Database updates"
 msgstr "Actualizaciones de la Base de Datos"
 
 msgid "Database usage"
-msgstr ""
+msgstr "Uso de Base de Datos"
 
 msgid "Database user list is empty!"
 msgstr "¡La lista de ususrios de la Base de Datos está vacia!"
@@ -1701,7 +1702,7 @@ msgid "Disk usage"
 msgstr "Uso del disco"
 
 msgid "Disk usage detail"
-msgstr ""
+msgstr "Detalle de uso de disco"
 
 msgid "Do not show any error"
 msgstr "No mostrar ningún error"
@@ -2036,7 +2037,7 @@ msgid "Edit mail account"
 msgstr "Editar cuenta de correo"
 
 msgid "Edit mail auto-responder"
-msgstr ""
+msgstr "Editar correo de Auto-respuesta "
 
 msgid "Edit mail quota"
 msgstr "Editar cuota de correo"
@@ -2314,7 +2315,7 @@ msgid "File successfully uploaded."
 msgstr "El fichero se ha cargado correctamente."
 
 msgid "File usage"
-msgstr ""
+msgstr "Uso de archivos"
 
 msgid "File was successfully uploaded."
 msgstr "Archivo cargado correctamente."
@@ -2756,7 +2757,7 @@ msgid "Invalid expiration date."
 msgstr "Fecha de expiración no válida."
 
 msgid "Invalid group name!"
-msgstr "¡Nombre de grupo invalido!"
+msgstr "¡Nombre de grupo inválido!"
 
 msgid "Invalid htaccess group name."
 msgstr "Nombre de grupo htaccess no válido."
@@ -2803,7 +2804,7 @@ msgid "Ip usage"
 msgstr "Uso de IP"
 
 msgid "Kernel Version"
-msgstr "Version del Kernel"
+msgstr "Versión del Kernel"
 
 msgid "Kill session"
 msgstr "Terminar sesión"
@@ -2934,7 +2935,7 @@ msgid "Logs successfully deleted."
 msgstr "Registro (logs) eliminado correctamente."
 
 msgid "Lost password"
-msgstr "No recuerdo mi contraseña"
+msgstr "Recuperar contraseña"
 
 msgid "Lost password e-mail"
 msgstr "Correo electrónico de contraseña perdida"
@@ -3034,7 +3035,7 @@ msgid "Mail successfully sent to your users."
 msgstr "El correo ha sido enviado a tus usuarios."
 
 msgid "Mail usage"
-msgstr ""
+msgstr "Uso de Correos"
 
 msgid "Mail users"
 msgstr "Usuarios de correo"
@@ -3486,10 +3487,10 @@ msgid "Number of CPU Cores"
 msgstr "Numero de Núcleos de CPU"
 
 msgid "Numeric prefix"
-msgstr ""
+msgstr "Prefijo numérico"
 
 msgid "Numeric suffix"
-msgstr ""
+msgstr "Sufijo numérico"
 
 msgid "OK"
 msgstr "OK"
@@ -3799,7 +3800,7 @@ msgid "Path"
 msgstr "Ruta"
 
 msgid "Payment period"
-msgstr "Periodo de pago"
+msgstr "Período de pago"
 
 msgid "Percent"
 msgstr "Porcentaje"
@@ -3935,7 +3936,7 @@ msgid "Please specify message!"
 msgstr "¡Por favor especifique un mensaje!"
 
 msgid "Please specify other FTP account directory!"
-msgstr "Por favor especifica otro directorio para la cuenta FTP!"
+msgstr "Por favor especificar otro directorio para la cuenta FTP!"
 
 msgid "Please specify subdomain name."
 msgstr "Por favor, especifica el nombre de subdominio"
@@ -3962,7 +3963,7 @@ msgid "Please, don't use special chars such as '@, $, %...' in the password."
 msgstr "Por favor, no uses caracteres especiales tal como '@, $, %...' para la contraseña."
 
 msgid "Please, enter your auto-responder message below"
-msgstr ""
+msgstr "Ingrese su mensaje de Auto-respuesta por favor"
 
 msgid "Plugin"
 msgstr "Plug-in"
@@ -4024,7 +4025,7 @@ msgid "Port must be a number!"
 msgstr "¡Puerto debe ser un número!"
 
 msgid "Prevent external login for admins"
-msgstr "Evitar accesos externos de admins"
+msgstr "Evitar accesos externos de administradores"
 
 msgid "Prevent external login for clients"
 msgstr "Evitar accesos externos de clientes"
@@ -5107,7 +5108,7 @@ msgid ""
 msgstr "El paquete se instalará automaticamente en tu sistema después de su carga.<br/>¡Refresca tu sitio para ver el nuevo estado!"
 
 msgid "The password field is empty."
-msgstr ""
+msgstr "El campo Contraseña está vacío"
 
 msgid "The password is too long."
 msgstr "La contraseña es demasiado larga."
@@ -5141,7 +5142,7 @@ msgid "The username %s is not available."
 msgstr "El nombre de usuario %s no está disponible."
 
 msgid "The username field is empty."
-msgstr ""
+msgstr "El campo Nombre de Usuario está vacío"
 
 msgid "The value has been found in the stack"
 msgstr "El valor se ha encontrado en la pila"
@@ -5414,7 +5415,7 @@ msgid "URL protocol"
 msgstr "URL protocolo"
 
 msgid "URL to this admin panel"
-msgstr "URL a este panel de adminsitracion"
+msgstr "URL a este panel de administración"
 
 #, php-format
 msgid "Unable to close ticket with Id '%s'."
@@ -5508,7 +5509,7 @@ msgid "Unknown layout color."
 msgstr "Color de diseño desconocido."
 
 msgid "Unknown reason."
-msgstr ""
+msgstr "Razón desconocida"
 
 msgid "Unknown subdomain type."
 msgstr "Tipo de subdominio desconocido."
@@ -5593,7 +5594,7 @@ msgid "Use normal connection (No SSL)"
 msgstr "Usar conexión normal (No SSL)"
 
 msgid "Use numeric ID"
-msgstr "Usar ID numerico"
+msgstr "Usar ID numérico"
 
 msgid "Use other dir"
 msgstr "Usar otro directorio"
@@ -6647,10 +6648,10 @@ msgid "i-MSCP - Client / Mail Accounts / External mail servers"
 msgstr "i-MSCP - Cliente / Cuentas de correo / Servidores de correo externos"
 
 msgid "i-MSCP - Client / Mail accounts / Activate auto-responder"
-msgstr ""
+msgstr "i-MSCP - Cliente/cuentas de Correo / Activar Auto-respuesta"
 
 msgid "i-MSCP - Client / Mail accounts / Edit auto-responder"
-msgstr ""
+msgstr "i-MSCP - Cliente / cuentas de Correo / Editar Auto-respuesta"
 
 msgid "i-MSCP - Client / Manage domains - Add subdomain"
 msgstr "i-MSCP - Cliente / Administrar dominios - añadir subdominio"

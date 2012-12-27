@@ -11,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2012-12-25 23:40+0100\n"
-"PO-Revision-Date: 2012-12-25 13:38+0000\n"
+"POT-Creation-Date: 2012-12-27 03:23+0100\n"
+"PO-Revision-Date: 2012-12-26 15:11+0000\n"
 "Last-Translator: DragonZX <DragonZX@yandex.ru>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -1686,13 +1686,13 @@ msgid "Disk limit"
 msgstr "Ограничение дискового пространства"
 
 msgid "Disk limit [MB]<br><i>(0 unlimited)</i>"
-msgstr "Дисковое пространство [МБ]<br/><span class=\"italic\">(0 неограничено)</span>"
+msgstr "Дисковое пространство [МБ]<br><i>(0 неограничено)</i>"
 
 msgid "Disk limit [MiB]<br/><span class=\"italic\">(0 unlimited)</span>"
-msgstr "Дисковое пространство [МБ]<br/><span class=\"italic\">(0 неограничено)</span>"
+msgstr "Дисковое пространство [МБ]<span class=\"italic\">(0 неограничено)</span>"
 
 msgid "Disk limit [MiB]<br><i>(0 unlimited)</i>"
-msgstr "Дисковое пространство [МБ]<br/><span class=\"italic\">(0 неограничено)</span>"
+msgstr "Дисковое пространство [МБ]<br><i>(0 неограничено)</i>"
 
 msgid "Disk space limit [MiB] <br /><span class=\"italic\">(0 unlimited)</span>"
 msgstr "Ограничения диска [MiB]<br/><span class=\"italic\">(0 неограничено)</span>"
@@ -4594,7 +4594,7 @@ msgstr "Использовать ярлыки для ссылок главног
 
 #, php-format
 msgid "Showing %s to %s of %s records"
-msgstr "Показано с %s до %s из %s записей"
+msgstr "Показано с %s по %s из %s записей"
 
 msgid "Showing 0 to 0 of 0 records"
 msgstr "Показано с 0 по 0 из 0 записей"
@@ -5387,7 +5387,7 @@ msgid "Traffic limit [MiB]<br/><span class=\"italic\">(0 unlimited)</span>"
 msgstr "Ограничение трафика [МБ] <br /><span class=\"italic\">(0 неограничено)</span>"
 
 msgid "Traffic limit [MiB]<br><i>(0 unlimited)</i>"
-msgstr "Ограничение трафика [МБ] <br /><span class=\"italic\">(0 неограничено)</span>"
+msgstr "Ограничение трафика [МБ] <br><i>(0 неограничено)</i>"
 
 msgid "Traffic limit must be a digit."
 msgstr "Лимит трафика должен быть числом."
@@ -5746,7 +5746,7 @@ msgid "View Support Ticket"
 msgstr "Просмотреть тикет службы поддержки"
 
 msgid "View aliases"
-msgstr "Смотреть алиасы"
+msgstr "Показать алиасы"
 
 msgid "View certificates"
 msgstr "Просмотр сертификатов"
@@ -6506,7 +6506,7 @@ msgid "help"
 msgstr "помощь"
 
 msgid "hide aliases"
-msgstr "скрыть псевдонимы"
+msgstr "скрыть алиасы"
 
 msgid "i-MSCP - Admin - Email Marketing"
 msgstr "i-MSCP - Администратор / Почтовая рассылка"
@@ -7080,7 +7080,7 @@ msgid "upload_max_filesize out of range."
 msgstr "upload_max_filesize переполнен."
 
 msgid "view aliases"
-msgstr "смотреть алиасы"
+msgstr "показать алиасы"
 
 msgid "waiting for activation"
 msgstr "ожидание активации"
