@@ -6,7 +6,7 @@ PHPRC="{PHP_STARTER_DIR}/{DMN_NAME}/php5/"
 export PHPRC
 
 # This should *always* be 0 when running with mod_fcgid, because
-mod_fcgid is unable to send requests to the children
+# mod_fcgid is unable to send requests to the children
 PHP_FCGI_CHILDREN=0
 export PHP_FCGI_CHILDREN
 
