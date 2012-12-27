@@ -12,6 +12,9 @@ Tickets:
 i-MSCP 1.1.0-rc1.3
 -------------------------------------------------------------------------------------
 
+2012-12-27: Laurent Declercq
+	- RELEASE i-MSCP 1.1.0-rc1.3
+
 SETUP:
 	- Fixed: Any hook function should return 1 on failure
 	- Fixed: Do not install suexec module when using ITK
