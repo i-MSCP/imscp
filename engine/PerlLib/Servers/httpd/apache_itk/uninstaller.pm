@@ -48,7 +48,7 @@ sub _init
 sub uninstall
 {
 	my $self = shift;
-	my $rs;
+	my $rs = 0;
 
 	$rs |= $self->removeUsers();
 	$rs |= $self->removeDirs();
@@ -61,7 +61,7 @@ sub uninstall
 sub removeUsers
 {
 	my $self = shift;
-	my $rs;
+	my $rs = 0;
 	my ($panelGName, $panelUName);
 
 	## Panel user
@@ -128,7 +128,7 @@ sub vHostConf
 
 	my $self = shift;
 	my $httpd = Servers::httpd::apache_itk->new();
-	my $rs;
+	my $rs = 0;
 
 	for('00_nameserver.conf', '00_master_ssl.conf', '00_master.conf', '00_modcband.conf', '01_awstats.conf') {
 

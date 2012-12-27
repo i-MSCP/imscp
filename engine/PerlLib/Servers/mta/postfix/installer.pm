@@ -88,7 +88,7 @@ sub preinstall
 sub install
 {
 	my $self = shift;
-	my $rs;
+	my $rs = 0;
 
 	my @mtaConffiles = (
 		$self::postfixConfig{'POSTFIX_CONF_FILE'},
@@ -129,7 +129,7 @@ sub setPermissions
 	my $mtaFolder = $self::postfixConfig{'MTA_VIRTUAL_MAIL_DIR'};
 	my $imscpRootDir = $main::imscpConfig{'ROOT_DIR'};
 	my $logDir = $main::imscpConfig{'LOG_DIR'};
-	my $rs;
+	my $rs = 0;
 
 	use iMSCP::Rights;
 
@@ -164,7 +164,7 @@ sub setPermissions
 sub makeDirs
 {
 	my $self = shift;
-	my $rs;
+	my $rs = 0;
 
 	use iMSCP::Dir;
 
@@ -196,7 +196,7 @@ sub makeDirs
 sub addUsersAndGroups
 {
 	my $self = shift;
-	my $rs;
+	my $rs = 0;
 
 	use Modules::SystemUser;
 	use Modules::SystemGroup;
@@ -291,7 +291,7 @@ sub arplSetup
 	my $self = shift;
 
 	my $file;
-	my $rs;
+	my $rs = 0;
 
 	iMSCP::HooksManager->getInstance()->trigger('beforeMtaArplSetup') and return 1;
 
@@ -308,7 +308,7 @@ sub arplSetup
 sub buildLookupTables
 {
 	my $self = shift;
-	my $rs;
+	my $rs = 0;
 	my ($stdout, $stderr, $file);
 
 	use iMSCP::File;
@@ -344,7 +344,7 @@ sub buildLookupTables
 sub bkpConfFile
 {
 	my $self = shift;
-	my $rs;
+	my $rs = 0;
 	my $cfgFile = shift;
 	my $timestamp = time;
 
@@ -372,7 +372,7 @@ sub bkpConfFile
 sub saveConf
 {
 	my $self = shift;
-	my $rs;
+	my $rs = 0;
 
 	use iMSCP::File;
 
@@ -396,7 +396,7 @@ sub saveConf
 sub buildConf
 {
 	my $self = shift;
-	my $rs;
+	my $rs = 0;
 
 	iMSCP::HooksManager->getInstance()->trigger('beforeMtabuildConf') and return 1;
 
@@ -412,7 +412,7 @@ sub buildConf
 sub buildMasterCfFile
 {
 	my $self = shift;
-	my $rs;
+	my $rs = 0;
 
 	use iMSCP::File;
 	use iMSCP::Templator;
@@ -452,7 +452,7 @@ sub buildMasterCfFile
 sub buildMainCfFile
 {
 	my $self = shift;
-	my $rs;
+	my $rs = 0;
 
 	use iMSCP::File;
 	use iMSCP::Templator;

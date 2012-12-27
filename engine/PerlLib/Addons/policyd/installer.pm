@@ -78,7 +78,7 @@ sub registerSetupHooks
 sub install
 {
 	my $self = shift;
-	my $rs;
+	my $rs = 0;
 
 	$rs |= $self->bkpConfFile($self::policydConfig{'POLICYD_CONF_FILE'});
 	$rs |= $self->buildConf();
@@ -204,7 +204,7 @@ sub saveConf
 	my $self = shift;
 	my $rootUsr	= $main::imscpConfig{'ROOT_USER'};
 	my $rootGrp	= $main::imscpConfig{'ROOT_GROUP'};
-	my $rs;
+	my $rs = 0;
 
 	use iMSCP::File;
 
@@ -238,7 +238,7 @@ sub buildConf
 	use iMSCP::Execute;
     use File::Basename;
 
-	my $rs;
+	my $rs = 0;
 	my $uName = $self::policydConfig{'POLICYD_USER'};
 	my $gName = $self::policydConfig{'POLICYD_GROUP'};
 	my ($name, $path, $suffix) = fileparse($self::policydConfig{'POLICYD_CONF_FILE'});

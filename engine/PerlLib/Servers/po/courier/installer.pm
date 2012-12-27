@@ -102,12 +102,17 @@ sub registerSetupHooks
 sub install
 {
 	my $self = shift;
-	my $rs;
+	my $rs = 0;
 
 	iMSCP::HooksManager->getInstance()->trigger('beforePoInstall', 'courier') and return 1;
 
 	# Saving all system configuration files if they exists
-	for ('authdaemonrc', 'userdb', $self::courierConfig{'COURIER_IMAP_SSL'}, $self::courierConfig{'COURIER_POP_SSL'}) {
+	for (
+		'authdaemonrc',
+		'userdb',
+		$self::courierConfig{'COURIER_IMAP_SSL'},
+		$self::courierConfig{'COURIER_POP_SSL'}
+	) {
 		$rs |= $self->bkpConfFile($_);
 	}
 
@@ -125,7 +130,7 @@ sub install
 sub saveConf
 {
 	my $self = shift;
-	my $rs;
+	my $rs = 0;
 
 	use iMSCP::File;
 

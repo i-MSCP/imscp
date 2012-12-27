@@ -82,6 +82,7 @@ sub preinstall
 sub install
 {
 	my $self = shift;
+	my $rs = 0;
 
 	use Servers::httpd::apache_fcgi::installer;
 
@@ -91,7 +92,7 @@ sub install
 sub uninstall
 {
 	my $self = shift;
-	my $rs;
+	my $rs = 0;
 
 	use Servers::httpd::apache_fcgi::uninstaller;
 
@@ -422,7 +423,7 @@ sub buildPHPini
 {
 	my $self = shift;
 	my $data = shift;
-	my $rs;
+	my $rs = 0;
 	my $php5Dir = "$self::apacheConfig{PHP_STARTER_DIR}/$data->{DMN_NAME}";
 
 	iMSCP::HooksManager->getInstance()->trigger('beforeHttpdBuildPhpIni') and return 1;
@@ -590,7 +591,7 @@ sub delUser
 	my $self = shift;
 	my $data = shift;
 	my $hDir = $data->{'HOME_DIR'};
-	my $rs;
+	my $rs = 0;
 
 	iMSCP::HooksManager->getInstance()->trigger('beforeHttpdDelUser') and return 1;
 
@@ -691,7 +692,7 @@ sub addCfg
 {
 	my $self = shift;
 	my $data = shift;
-	my $rs;
+	my $rs = 0;
 	my $certPath = "$main::imscpConfig{GUI_ROOT_DIR}/data/certs";
 	my $certFile = "$certPath/$data->{DMN_NAME}.pem";
 
@@ -894,7 +895,7 @@ sub delDmn
 
 	iMSCP::HooksManager->getInstance()->trigger('beforeHttpdDelDmn') and return 1;
 
-	my $rs;
+	my $rs = 0;
 
 	for("$data->{DMN_NAME}.conf", "$data->{DMN_NAME}_ssl.conf") {
 		$rs |= $self->disableSite($_) if -f "$self::apacheConfig{APACHE_SITES_DIR}/$_";
@@ -928,7 +929,7 @@ sub disableDmn
 {
 	my $self = shift;
 	my $data = shift;
-	my $rs;
+	my $rs = 0;
 
 	use iMSCP::File;
 
@@ -1029,7 +1030,7 @@ sub addHtuser
 {
 	my $self = shift;
 	my $data = shift;
-	my $rs;
+	my $rs = 0;
 
 	iMSCP::HooksManager->getInstance()->trigger('beforeHttpdAddHtuser') and return 1;
 
@@ -1057,7 +1058,7 @@ sub delHtuser
 {
 	my $self = shift;
 	my $data = shift;
-	my $rs;
+	my $rs = 0;
 
 	iMSCP::HooksManager->getInstance()->trigger('beforeHttpdDelHtuser') and return 1;
 
@@ -1084,7 +1085,7 @@ sub addHtgroup
 {
 	my $self = shift;
 	my $data = shift;
-	my $rs;
+	my $rs = 0;
 
 	iMSCP::HooksManager->getInstance()->trigger('beforeHttpdAddHtgroup') and return 1;
 
@@ -1112,7 +1113,7 @@ sub delHtgroup
 {
 	my $self = shift;
 	my $data = shift;
-	my $rs;
+	my $rs = 0;
 
 	iMSCP::HooksManager->getInstance()->trigger('beforeHttpdDelHtgroup') and return 1;
 
@@ -1140,7 +1141,7 @@ sub addHtaccess
 {
 	my $self = shift;
 	my $data = shift;
-	my $rs;
+	my $rs = 0;
 
 	iMSCP::HooksManager->getInstance()->trigger('beforeHttpdAddHtaccess') and return 1;
 
@@ -1152,7 +1153,7 @@ sub addHtaccess
 	my $filePath = "$data->{AUTH_PATH}/.htaccess";
 	my $fileH = iMSCP::File->new(filename => $filePath);
 	my $fileContent = $fileH->get() if -f $filePath;
-	$fileContent = '' if ! $fileContent;
+	$fileContent = '' if !$fileContent;
 
 	my $bTag = "\t\t### START i-MSCP PROTECTION ###\n";
 	my $eTag = "\t\t### END i-MSCP PROTECTION ###\n";
@@ -1181,7 +1182,7 @@ sub delHtaccess
 {
 	my $self = shift;
 	my $data = shift;
-	my $rs;
+	my $rs = 0;
 
 	iMSCP::HooksManager->getInstance()->trigger('beforeHttpdDelHtaccess') and return 1;
 
@@ -1218,7 +1219,7 @@ sub addIps
 {
 	my $self = shift;
 	my $data = shift;
-	my $rs;
+	my $rs = 0;
 
 	iMSCP::HooksManager->getInstance()->trigger('beforeHttpdAddIps') and return 1;
 
@@ -1320,7 +1321,7 @@ sub getTraffic
 
 sub delOldLogs
 {
-	my $rs;
+	my $rs = 0;
 	my $logDir = $self::apacheConfig{'APACHE_LOG_DIR'};
 	my $bLogDir = $self::apacheConfig{'APACHE_BACKUP_LOG_DIR'};
 	my $uLogDir = $self::apacheConfig{'APACHE_USERS_LOG_DIR'};
@@ -1343,7 +1344,7 @@ sub delOldLogs
 
 sub delTmp
 {
-	my $rs;
+	my $rs = 0;
 	my ($stdout, $stderr);
 
 	use iMSCP::Dir;
@@ -1438,7 +1439,7 @@ END
 
 	my $endCode = $?;
 	my $self = Servers::httpd::apache_fcgi->new();
-	my $rs;
+	my $rs = 0;
 	my $trfDir	= "$self::apacheConfig{APACHE_LOG_DIR}/traff";
 
 	if($self->{start} && $self->{'start'} eq 'yes'){

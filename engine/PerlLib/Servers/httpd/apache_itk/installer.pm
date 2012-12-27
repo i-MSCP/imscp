@@ -69,7 +69,7 @@ sub registerSetupHooks
 sub install
 {
 	my $self = shift;
-	my $rs;
+	my $rs = 0;
 
 	iMSCP::HooksManager->getInstance()->trigger('beforeHttpdInstall', 'apache_itk');
 
@@ -110,7 +110,7 @@ sub setGuiPermissions
 	my $apacheUName = $self::apacheConfig{'APACHE_USER'};
 	my $apacheGName = $self::apacheConfig{'APACHE_GROUP'};
 	my $ROOT_DIR = $main::imscpConfig{'ROOT_DIR'};
-	my $rs;
+	my $rs = 0;
 
 	$rs = iMSCP::HooksManager->getInstance()->trigger('beforeHttpdSetGuiPermissions');
 
@@ -176,7 +176,7 @@ sub setGuiPermissions
 sub addUsersAndGroups
 {
 	my $self = shift;
-	my $rs;
+	my $rs = 0;
 	my ($panelGName, $panelUName);
 
 	iMSCP::HooksManager->getInstance()->trigger('beforeHttpdAddUsersAndGroups') and return 1;
@@ -219,7 +219,7 @@ sub makeDirs
 	my $apacheUName = $self::apacheConfig{'APACHE_USER'};
 	my $apacheGName = $self::apacheConfig{'APACHE_GROUP'};
 
-	my $rs;
+	my $rs = 0;
 
 	use iMSCP::Dir;
 
@@ -246,7 +246,7 @@ sub bkpConfFile
 	use File::Basename;
 
 	my $timestamp = time;
-	my $rs;
+	my $rs = 0;
 
 	if(-f $cfgFile){
 		my $file = iMSCP::File->new( filename => $cfgFile );
@@ -269,7 +269,7 @@ sub saveConf
 	my $self = shift;
 	use iMSCP::File;
 
-	my $rs;
+	my $rs = 0;
 	my $file = iMSCP::File->new(filename => "$self->{cfgDir}/apache.data");
 	my $cfg = $file->get() or return 1;
 
@@ -296,7 +296,7 @@ sub oldEngineCompatibility
 	use Servers::httpd::apache_itk;
 
 	my $httpd = Servers::httpd::apache_itk->new();
-	my $rs;
+	my $rs = 0;
 
 	iMSCP::HooksManager->getInstance()->trigger('beforeHttpdOldEngineCompatibility') and return 1;
 
@@ -320,7 +320,7 @@ sub buildPhpConfFiles
 	use iMSCP::File;
 
 	my $httpd = Servers::httpd::apache_itk->new();
-	my $rs;
+	my $rs = 0;
 	my $rootUName = $main::imscpConfig{'ROOT_USER'};
 	my $rootGName = $main::imscpConfig{'ROOT_GROUP'};
 
@@ -435,7 +435,7 @@ sub buildMasterVhostFiles
 	use Servers::httpd;
 
 	my $httpd = Servers::httpd::apache_itk->new();
-	my $rs;
+	my $rs = 0;
 
 	$rs = $httpd->disableSite('default');
 	return $rs if $rs;

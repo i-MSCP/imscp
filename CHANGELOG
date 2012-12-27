@@ -2,6 +2,19 @@ i-MSCP ChangeLog
 ~~~~~~~~~~~~~~~~
 
 -------------------------------------------------------------------------------------
+i-MSCP 1.1.0-rc1.3
+-------------------------------------------------------------------------------------
+
+SETUP:
+	- Fixed: Any hook function should return 1 on failure
+	- Fixed: Do not install suexec module when using ITK
+	- Fixed: Make fcgid as default FastCGI module
+	- Fixed: Self-signed SSL certificate for i-MSCP must be a wildcard SSL certificate
+	- Fixed: Self-signed SSL certificate for i-MSCP must use 2048-bit RSA Keys (Minimum recommended)
+	- Fixed: Suppress warning for self-signed certificate generation (still in log file)
+	- Fixed: Use of uninitialized value in bitwise or (|) errors
+
+-------------------------------------------------------------------------------------
 i-MSCP 1.1.0-rc1.2
 -------------------------------------------------------------------------------------
 

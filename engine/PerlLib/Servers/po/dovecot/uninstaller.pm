@@ -50,7 +50,7 @@ sub _init
 sub uninstall
 {
 	my $self = shift;
-	my $rs;
+	my $rs = 0;
 
 	$rs |= $self->restoreConfFile();
 	$rs |= $self->removeSQL();
@@ -61,7 +61,7 @@ sub uninstall
 sub restoreConfFile
 {
 	my $self = shift;
-	my $rs;
+	my $rs = 0;
 	my $file;
 
 	for (('dovecot.conf', 'dovecot-sql.conf')) {

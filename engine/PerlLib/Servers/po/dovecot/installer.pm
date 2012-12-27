@@ -139,7 +139,7 @@ sub askDovecot
 sub install
 {
 	my $self = shift;
-	my $rs;
+	my $rs = 0;
 
 	iMSCP::HooksManager->getInstance()->trigger('beforePoInstall', 'dovecot') and return 1;
 
@@ -328,7 +328,7 @@ sub setupDb
 	my $dbOldUser = $self::dovecotOldConfig{'DATABASE_USER'} || '';
 	my $dbPass = $self::dovecotConfig{'DATABASE_PASSWORD'};
 	my $dbOldPass = $self::dovecotOldConfig{'DATABASE_PASSWORD'} || '';
-	my $rs;
+	my $rs = 0;
 
 	iMSCP::HooksManager->getInstance()->trigger(
 		'beforePoSetupDb', $dbUser, $dbOldUser, $dbPass, $dbOldPass

@@ -55,7 +55,7 @@ sub addTask
 {
 	my $self = shift;
 	my $data = shift;
-	my $rs;
+	my $rs = 0;
 
 	use iMSCP::File;
 	use iMSCP::Templator;
@@ -68,7 +68,7 @@ sub addTask
 		TASKID	=> 'You must provide a unique task id!',
 	};
 
-	for(keys %{$errmsg}){
+	foreach(keys %{$errmsg}){
 		error("$errmsg->{$_}") unless $data->{$_};
 		return 1 unless $data->{$_};
 	}

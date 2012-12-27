@@ -63,6 +63,7 @@ sub registerSetupHooks
 {
 	my $self = shift;
 	my $hooksManager = shift;
+	my $rs = 0;
 
 	$hooksManager->trigger('beforeFtpdRegisterSetupHooks', $hooksManager, 'proftpd') and return 1;
 
@@ -138,7 +139,7 @@ sub askProftpd
 sub install
 {
 	my $self = shift;
-	my $rs;
+	my $rs = 0;
 
 	$rs = iMSCP::HooksManager->getInstance()->trigger('beforeFtpdInstall', 'proftpd');
 
@@ -158,7 +159,7 @@ sub removeOldFiles
 {
 	my $self = shift;
 	my ($stdout, $stderr);
-	my $rs;
+	my $rs = 0;
 
 	$rs = iMSCP::HooksManager->getInstance()->trigger('beforeFtpdRemoveOldFiles');
 
@@ -177,7 +178,7 @@ sub saveConf
 	use iMSCP::File;
 
 	my $self = shift;
-	my $rs;
+	my $rs = 0;
 
 	my $file = iMSCP::File->new(filename => "$self->{cfgDir}/proftpd.data");
 	my $cfg = $file->get() or return 1;
@@ -202,7 +203,7 @@ sub saveConf
 sub createLogFiles
 {
 	my $self = shift;
-	my $rs;
+	my $rs = 0;
 
 	$rs = iMSCP::HooksManager->getInstance()->trigger('beforeFtpdCreateLogFiles');
 
@@ -233,7 +234,7 @@ sub createLogFiles
 sub buildConf
 {
 	my $self = shift;
-	my $rs;
+	my $rs = 0;
 
 	my $cfg = {
 		HOST_NAME => $main::imscpConfig{'SERVER_HOSTNAME'},
@@ -278,7 +279,7 @@ sub setupDB
 	my $dbOldUser = $self::proftpdOldConfig{'DATABASE_USER'} || '';
 	my $dbPass = $self::proftpdConfig{'DATABASE_PASSWORD'};
 	my $dbOldPass = $self::proftpdOldConfig{'DATABASE_PASSWORD'} || '';
-	my $rs;
+	my $rs = 0;
 
 	iMSCP::HooksManager->getInstance()->trigger(
 		'beforeFtpdSetupDb', $dbUser, $dbOldUser, $dbPass, $dbOldPass

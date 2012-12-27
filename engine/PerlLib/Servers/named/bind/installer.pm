@@ -202,7 +202,7 @@ sub askOtherDns
 sub install
 {
 	my $self = shift;
-	my $rs;
+	my $rs = 0;
 
 	iMSCP::HooksManager->getInstance()->trigger('beforeNamedInstall', 'bind') and return 1;
 
@@ -312,7 +312,7 @@ sub addMasterZone
 sub saveConf
 {
 	my $self = shift;
-	my $rs;
+	my $rs = 0;
 
 	use iMSCP::File;
 

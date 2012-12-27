@@ -75,7 +75,7 @@ sub preinstall
 sub install
 {
 	my $self = shift;
-	my $rs;
+	my $rs = 0;
 
 	$self->{'httpd'} = Servers::httpd->factory();
 

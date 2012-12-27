@@ -2197,7 +2197,7 @@ sub setupGetSqlConnect
 sub setupIsImscpDb
 {
 	my $dbName = shift;
-	my $rs = 1;
+	my $rs;
 
 	my ($database, $errstr) = setupGetSqlConnect();
 	fatal("Unable to connect to the SQL Server: $errstr") if ! $database;

@@ -152,7 +152,7 @@ sub ssl_export_cert {
 	my $rs = execute($cmd, \$stdout, \$stderr);
 	debug("$stdout") if $stdout;
 	warning("$stderr") if ($stderr && !$rs);
-	error("Can not save certificate".($stderr ? ": $stderr" : '').". Exiting...") if $rs;
+	error("Cannot save certificate".($stderr ? ": $stderr" : '').". Exiting...") if $rs;
 	return $rs if $rs;
 
 	0;
@@ -180,12 +180,12 @@ sub ssl_generate_selsigned_cert{
 
 	my $self = shift;
 
-	my $cmd = "$self->{openssl_path} req -x509 -nodes -days 1825 -subj '/C=/ST=/L=/CN=$self->{vhost_cert_name}' -newkey rsa:1024 -keyout $self->{new_cert_path}/$self->{new_cert_name}.pem -out $self->{new_cert_path}/$self->{new_cert_name}.pem";
+	my $cmd = "$self->{openssl_path} req -x509 -nodes -days 1825 -subj '/C=/ST=/L=/CN=*.$self->{vhost_cert_name}' -newkey rsa:2048 -keyout $self->{new_cert_path}/$self->{new_cert_name}.pem -out $self->{new_cert_path}/$self->{new_cert_name}.pem";
 
 	my ($stdout, $stderr);
 	my $rs = execute($cmd, \$stdout, \$stderr);
 	debug("$stdout") if $stdout;
-	warning("$stderr") if ($stderr && !$rs);
+	debug("$stderr") if ($stderr && !$rs);
 	error("Can not generate self-signed certificate".($stderr ? ": $stderr" : '').". Exiting...") if $rs;
 	return $rs if($rs);
 

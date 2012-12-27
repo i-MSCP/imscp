@@ -34,6 +34,7 @@ package iMSCP::HooksManager;
 use strict;
 use warnings;
 use iMSCP::Debug;
+use Data::Dumper;
 use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
@@ -131,8 +132,14 @@ sub trigger($$)
 
 		for(@hookFunctions) {
 			if($rs = $_->(@_)) {
+				debug("nuxwin hook function returned $rs");
 				my $caller = (caller(1))[3] ? (caller(1))[3] : 'main';
-				error("A hook function registered on the '$hook' hook and triggered in $caller has failed");
+				local $Data::Dumper::Terse = 1;
+				local $Data::Dumper::Deparse = 1;
+				error(
+					"A hook function registered on the '$hook' hook and triggered in $caller has failed.\n" .
+					"Hook function was:\n" . Dumper($_)
+				);
 				last;
 			}
 		}

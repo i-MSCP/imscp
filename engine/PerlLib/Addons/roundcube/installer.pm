@@ -322,7 +322,7 @@ sub _setPermissions
 	my $panelGName = $panelUName;
 	my $rootDir = $main::imscpConfig{'ROOT_DIR'};
 	my $apacheGName = $self->{'group'};
-	my $rs;
+	my $rs = 0;
 
 	$rs |= setRights(
 		"$rootDir/gui/public/tools/webmail",
@@ -350,7 +350,7 @@ sub _saveConfig
 	my $self = shift;
 	my $rootUsr = $main::imscpConfig{'ROOT_USER'};
 	my $rootGrp = $main::imscpConfig{'ROOT_GROUP'};
-	my $rs;
+	my $rs = 0;
 
 	use iMSCP::File;
 
