@@ -238,7 +238,7 @@ sub addToRelayHash
 	$rs |= $file->mode(0644);
 	$rs |= $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
 	$rs |= $file->copyFile( $self->{'MTA_RELAY_HASH'} );
-	$self->{'postmap'}->{$self->{'MTA_RELAY_HASH}'}} = $data->{'DMN_NAME'};
+	$self->{'postmap'}->{$self->{'MTA_RELAY_HASH'}} = $data->{'DMN_NAME'};
 
 	$rs |= iMSCP::HooksManager->getInstance()->trigger('afterMtaAddToRelayHash', $data);
 
