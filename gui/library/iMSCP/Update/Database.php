@@ -1751,7 +1751,7 @@ class iMSCP_Update_Database extends iMSCP_Update
     }
 
    /**
-    * Fix Lowercase PHP INI boolean
+    * Lowercase PHP INI boolean
     *
     * @author Laurent Declercq <l.declercq@i-mscp.net>
     * @return array Stack of SQL statements to be executed
@@ -1759,13 +1759,13 @@ class iMSCP_Update_Database extends iMSCP_Update
     protected function _databaseUpdate_119()
     {
         return array(
-			// System wide PHP directives values
-			"REPLACE INTO `config` (`name`, `value`) VALUES ('PHPINI_ALLOW_URL_FOPEN', 'off')",
-			"REPLACE INTO `config` (`name`, `value`) VALUES ('PHPINI_DISPLAY_ERRORS', 'off')",
-			"UPDATE php_ini SET allow_url_fopen = 'on' WHERE allow_url_fopen = 'On'",
-			"UPDATE php_ini SET allow_url_fopen = 'off' WHERE allow_url_fopen = 'Off'",
-			"UPDATE php_ini SET display_errors = 'on' WHERE display_errors = 'On'",
-			"UPDATE php_ini SET display_errors = 'off' WHERE display_errors = 'Off'",
+            // System wide PHP directives values
+            "REPLACE INTO `config` (`name`, `value`) VALUES ('PHPINI_ALLOW_URL_FOPEN', 'off')",
+            "REPLACE INTO `config` (`name`, `value`) VALUES ('PHPINI_DISPLAY_ERRORS', 'off')",
+            "UPDATE `php_ini` SET `allow_url_fopen` = 'on' WHERE `allow_url_fopen` = 'On'",
+            "UPDATE `php_ini` SET `allow_url_fopen` = 'off' WHERE `allow_url_fopen` = 'Off'",
+            "UPDATE `php_ini` SET `display_errors` = 'on' WHERE `display_errors` = 'On'",
+            "UPDATE `php_ini` SET `display_errors` = 'off' WHERE `display_errors` = 'Off'"
         );
     }
 }
