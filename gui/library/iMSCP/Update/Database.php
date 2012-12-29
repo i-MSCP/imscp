@@ -1135,9 +1135,9 @@ class iMSCP_Update_Database extends iMSCP_Update
 	{
 		return array(
 			// System wide PHP directives values
-			"REPLACE INTO `config` (`name`,`value`) VALUES ('PHPINI_ALLOW_URL_FOPEN', 'Off')",
-			"REPLACE INTO `config` (`name`,`value`) VALUES ('PHPINI_DISPLAY_ERRORS', 'On')",
-			"REPLACE INTO `config` (`name`,`value`) VALUES ('PHPINI_REGISTER_GLOBALS', 'Off')",
+			"REPLACE INTO `config` (`name`,`value`) VALUES ('PHPINI_ALLOW_URL_FOPEN', 'off')",
+			"REPLACE INTO `config` (`name`,`value`) VALUES ('PHPINI_DISPLAY_ERRORS', 'off')",
+			"REPLACE INTO `config` (`name`,`value`) VALUES ('PHPINI_REGISTER_GLOBALS', 'off')",
 			"REPLACE INTO `config` (`name`,`value`) VALUES ('PHPINI_UPLOAD_MAX_FILESIZE', '2')",
 			"REPLACE INTO `config` (`name`,`value`) VALUES ('PHPINI_POST_MAX_SIZE', '8')",
 			"REPLACE INTO `config` (`name`,`value`) VALUES ('PHPINI_MEMORY_LIMIT', '128')",
@@ -1199,9 +1199,9 @@ class iMSCP_Update_Database extends iMSCP_Update
 				`domain_id` int(10) NOT NULL,
 				`status` varchar(55) COLLATE utf8_unicode_ci NOT NULL,
 				`disable_functions` varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'show_source,system,shell_exec,passthru,exec,phpinfo,shell,symlink',
-				`allow_url_fopen` varchar(10) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'Off',
-				`register_globals` varchar(10) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'Off',
-				`display_errors` varchar(10) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'Off',
+				`allow_url_fopen` varchar(10) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'off',
+				`register_globals` varchar(10) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'off',
+				`display_errors` varchar(10) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'off',
 				`error_reporting` varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'E_ALL & ~E_NOTICE',
 				`post_max_size` int(11) NOT NULL DEFAULT '8',
 				`upload_max_filesize` int(11) NOT NULL DEFAULT '2',
@@ -1748,5 +1748,24 @@ class iMSCP_Update_Database extends iMSCP_Update
     protected function _databaseUpdate_118()
     {
         return "UPDATE `user_gui_props` SET `lang` = 'ar' WHERE `lang` = 'ar_AE'";
+    }
+
+   /**
+    * Fix Lowercase PHP INI boolean
+    *
+    * @author Laurent Declercq <l.declercq@i-mscp.net>
+    * @return array Stack of SQL statements to be executed
+    */
+    protected function _databaseUpdate_119()
+    {
+        return array(
+			// System wide PHP directives values
+			"REPLACE INTO `config` (`name`, `value`) VALUES ('PHPINI_ALLOW_URL_FOPEN', 'off')",
+			"REPLACE INTO `config` (`name`, `value`) VALUES ('PHPINI_DISPLAY_ERRORS', 'off')",
+			"UPDATE php_ini SET allow_url_fopen = 'on' WHERE allow_url_fopen = 'On'",
+			"UPDATE php_ini SET allow_url_fopen = 'off' WHERE allow_url_fopen = 'Off'",
+			"UPDATE php_ini SET display_errors = 'on' WHERE display_errors = 'On'",
+			"UPDATE php_ini SET display_errors = 'off' WHERE display_errors = 'Off'",
+        );
     }
 }

@@ -729,11 +729,11 @@ class iMSCP_PHPini
 			return true;
 		}
 
-		if ($key == 'phpiniAllowUrlFopen' && ($value == 'On' || $value == 'Off')) {
+		if ($key == 'phpiniAllowUrlFopen' && ($value == 'on' || $value == 'off')) {
 			return true;
 		}
 
-		if ($key == 'phpiniDisplayErrors' && ($value == 'On' || $value == 'Off')) {
+		if ($key == 'phpiniDisplayErrors' && ($value == 'on' || $value == 'off')) {
 			return true;
 		}
 

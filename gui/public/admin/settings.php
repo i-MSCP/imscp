@@ -438,7 +438,7 @@ if ($cfg->PREVENT_EXTERNAL_LOGIN_CLIENT) {
 			 'PREVENT_EXTERNAL_LOGIN_CLIENT_SELECTED_OFF' => $html_selected));
 }
 
-if ($phpini->getDataVal('phpiniAllowUrlFopen') == 'On') {
+if ($phpini->getDataVal('phpiniAllowUrlFopen') == 'on') {
 	$tpl->assign(
 		array(
 			 'PHPINI_ALLOW_URL_FOPEN_ON' => $html_selected,
@@ -450,7 +450,7 @@ if ($phpini->getDataVal('phpiniAllowUrlFopen') == 'On') {
 			 'PHPINI_ALLOW_URL_FOPEN_OFF' => $html_selected));
 }
 
-if ($phpini->getDataVal('phpiniDisplayErrors') == 'On') {
+if ($phpini->getDataVal('phpiniDisplayErrors') == 'on') {
 	$tpl->assign(
 		array(
 			 'PHPINI_DISPLAY_ERRORS_ON' => $html_selected,

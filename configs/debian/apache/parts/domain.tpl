@@ -121,17 +121,17 @@
             php_admin_value open_basedir "{HOME_DIR}/:{HOME_DIR}/phptmp/:{PEAR_DIR}/{PHPINI_OPEN_BASEDIR}"
             php_admin_value upload_tmp_dir "{HOME_DIR}/phptmp/"
             php_admin_value session.save_path "{HOME_DIR}/phptmp/"
-            php_admin_value sendmail_path '/usr/sbin/sendmail -f webmaster@{DMN_NAME} -t -i'
+            php_admin_value sendmail_path "/usr/sbin/sendmail -f webmaster@{DMN_NAME} -t -i"
 
-            #Custom values
+            # Custom values
             php_admin_value max_execution_time "{MAX_EXECUTION_TIME}"
             php_admin_value max_input_time "{MAX_INPUT_TIME}"
             php_admin_value memory_limit "{MEMORY_LIMIT}M"
             php_value error_reporting "{ERROR_REPORTING}"
-            php_value display_errors "{DISPLAY_ERRORS}"
+            php_flag display_errors {DISPLAY_ERRORS}
             php_admin_value post_max_size "{POST_MAX_SIZE}M"
             php_admin_value upload_max_filesize "{UPLOAD_MAX_FILESIZE}M"
-            php_admin_value allow_url_fopen "{ALLOW_URL_FOPEN}"
+            php_admin_flag allow_url_fopen {ALLOW_URL_FOPEN}
         </IfModule>
     # SECTION php enabled END.
 

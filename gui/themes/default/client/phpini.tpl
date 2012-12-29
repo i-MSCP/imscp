@@ -29,8 +29,8 @@
 						</td>
 						<td>
 							<select name="allow_url_fopen" id="allow_url_fopen">
-								<option value="Off"{ALLOW_URL_FOPEN_OFF}>{TR_VALUE_OFF}</option>
-								<option value="On"{ALLOW_URL_FOPEN_ON}>{TR_VALUE_ON}</option>
+								<option value="off"{ALLOW_URL_FOPEN_OFF}>{TR_VALUE_OFF}</option>
+								<option value="on"{ALLOW_URL_FOPEN_ON}>{TR_VALUE_ON}</option>
 							</select>
 						</td>
 					</tr>
@@ -42,8 +42,8 @@
 						</td>
 						<td>
 							<select name="display_errors" id="display_errors">
-								<option value="Off"{DISPLAY_ERRORS_OFF}>{TR_VALUE_OFF}</option>
-								<option value="On"{DISPLAY_ERRORS_ON}>{TR_VALUE_ON}</option>
+								<option value="off"{DISPLAY_ERRORS_OFF}>{TR_VALUE_OFF}</option>
+								<option value="on"{DISPLAY_ERRORS_ON}>{TR_VALUE_ON}</option>
 							</select>
 						</td>
 					</tr>

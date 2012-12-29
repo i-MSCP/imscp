@@ -7,6 +7,7 @@ i-MSCP 1.1.0-rc1.4
 
 Tickets:
 	- Fixed #548: Bug - Missing comment character in configs/debian/fcgi/parts/php5-fcgid-starter.tpl
+	- Fixed #550: Boolean PHP Values should be set with php_flag and not php_value
 	- Fixed #551: Bug - Preseed feature is broken
 
 -------------------------------------------------------------------------------------
