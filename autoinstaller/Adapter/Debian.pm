@@ -61,17 +61,18 @@ use parent 'autoinstaller::Adapter::Abstract';
 sub installPreRequiredPackages
 {
 	my $self = shift;
-	my($rs, $stderr);
+	my($rs, $stdout, $stderr);
 
 	fatal('Not a Debian like system') if checkCommandAvailability('apt-get');
 
 	my $command = 'apt-get';
 
-	if(! checkCommandAvailability('debconf-apt-progress')) {
+	if(! %main::preseed && ! checkCommandAvailability('debconf-apt-progress')) {
 		$command = 'debconf-apt-progress --logstderr -- ' . $command;
 	}
 
-	$rs = execute("$command -y install wget dialog libxml-simple-perl", undef, \$stderr);
+	$rs = execute("$command -y install wget dialog libxml-simple-perl", (%main::preseed) ? \$stdout : undef, \$stderr);
+	debug($stdout) if $stdout;
 	error("Unable to install pre-required Debian packages: $stderr") if $rs;
 
 	$rs;
@@ -109,16 +110,17 @@ sub installPackages
 {
 	my $self = shift;
 
-	my $stderr = undef;
+	my ($stdout, $stderr);
 	my $command = 'apt-get';
 
 	iMSCP::Dialog->factory()->endGauge(); # Really needed !
 
-	if(! checkCommandAvailability('debconf-apt-progress')) {
+	if(! %main::preseed && ! checkCommandAvailability('debconf-apt-progress')) {
 		$command = 'debconf-apt-progress --logstderr -- ' . $command;
 	}
 
-	my $rs = execute("$command -y install $self->{toInstall}", undef, \$stderr);
+	my $rs = execute("$command -y install $self->{toInstall}", (%main::preseed) ? \$stdout : undef, \$stderr);
+	debug($stdout) if $stdout;
 	if($rs) {
 		error("Unable to install Debian packages: $stderr");
 		return $rs;
@@ -181,11 +183,12 @@ sub _updatePackagesIndex
 	my ($rs, $stdout, $stderr);
 	my $command = 'apt-get';
 
-	if(! checkCommandAvailability('debconf-apt-progress')) {
+	if(! %main::preseed && ! checkCommandAvailability('debconf-apt-progress')) {
 		$command = 'debconf-apt-progress --logstderr -- ' . $command;
 	}
 
-	$rs = execute("$command -y update", undef, \$stderr);
+	$rs = execute("$command -y update", (%main::preseed) ? \$stdout : undef, \$stderr);
+	debug($stdout) if $stdout;
 	if($rs) {
 		error('Unable to update package index from remote repository: $stderr');
 		return $rs;
@@ -289,7 +292,6 @@ sub _preparePackagesList
 				my @alternative = keys %{$data->{$service}->{'alternative'}};
 
 				my $serviceName = uc($service) . '_SERVER';
-				#error($main::preseed{'SERVERS'}->{$serviceName}); exit;
 				my $oldServer = $main::preseed{'SERVERS'}->{$serviceName} || $main::imscpConfig{$serviceName}; # string or undef
 				my $server = undef;
 
