@@ -37,9 +37,9 @@ sub _init  {
 	$self->{new_cert_path}			= undef;
 	$self->{new_cert_name}			= undef;
 	$self->{vhost_cert_name}		= undef;
-	$self->{cert_selfsigned}		= undef;
+	$self->{cert_selfsigned}		= 0;
 	$self->{cert_path}				= undef;
-	$self->{intermediate_cert_path}	= undef;
+	$self->{intermediate_cert_path}	= '';
 	$self->{key_path}				= undef;
 	$self->{key_pass}				= undef;
 	$self->{errors}					= '';
@@ -197,7 +197,7 @@ sub ssl_export_all{
 	my $self	= shift;
 	my $rs		= 0;
 
-	if( $self->{cert_selfsigned} == 0 ){
+	if($self->{cert_selfsigned}){
 
 		$rs = $self->ssl_generate_selsigned_cert();
 		return $rs if $rs;

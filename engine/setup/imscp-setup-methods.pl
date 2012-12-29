@@ -333,7 +333,7 @@ sub setupAskServerIps
 	my $manualIp = 0;
 	my $serverIps = '';
 
-	my @serverIpsToKeepOrAdd = setupGetQuestion('SERVER_IPS') ? @{setupGetQuestion('SERVER_IPS')} : ();;
+	my @serverIpsToKeepOrAdd = setupGetQuestion('SERVER_IPS') ? @{setupGetQuestion('SERVER_IPS')} : ();
 	my %serverIpsToDelete = ();
 	my %serverIpsReplMap = ();
 
@@ -634,7 +634,7 @@ sub setupAskImscpDbName
 	my $dbName = setupGetQuestion('DATABASE_NAME') || 'imscp';
 	my $rs = 0;
 
-	if($main::reconfigure || ! setupIsImscpDb($dbName)) {
+	if($main::reconfigure || (! setupGetQuestion('DATABASE_NAME', 'preseed') && ! setupIsImscpDb($dbName))) {
 		my $msg = '';
 
 		do {
@@ -869,6 +869,33 @@ sub setupAskSsl
 		Modules::openssl->new()->{'openssl_path'} = $cmdOpenSsl;
 		$rs = setupSslDialog($dialog);
 		return $rs if $rs;
+	} elsif(setupGetQuestion('SSL_ENABLED', 'preseed') eq 'yes') { # We are in preseed mode
+		$main::questions{'SSL_ENABLED'} = $sslEnabled;
+		Modules::openssl->new()->{'openssl_path'} = $cmdOpenSsl;
+		Modules::openssl->new()->{'new_cert_path'} = $main::imscpConfig{'GUI_CERT_DIR'};
+		Modules::openssl->new()->{'new_cert_name'} = setupGetQuestion('SERVER_HOSTNAME');
+		Modules::openssl->new()->{'cert_selfsigned'} = setupGetQuestion('SELFSIGNED_CERTIFICATE');
+
+		if(! Modules::openssl->new()->{'cert_selfsigned'}) {
+			Modules::openssl->new()->{'key_path'} = setupGetQuestion('CERTIFICATE_KEY_PATH');
+			Modules::openssl->new()->{'key_pass'} = setupGetQuestion('CERTIFICATE_KEY_PASSWORD');
+			Modules::openssl->new()->{'intermediate_cert_path'} = setupGetQuestion('INTERMEDIATE_CERTIFICATE_PATH');
+			Modules::openssl->new()->{'cert_path'} = setupGetQuestion('CERTIFICATE_PATH');
+
+			$rs |= Modules::openssl->new()->ssl_check_all();
+			#$rs |= Modules::openssl->new()->ssl_check_intermediate_cert();
+			#$rs |= Modules::openssl->new()->ssl_check_cert()
+		} else {
+			Modules::openssl->new()->{'vhost_cert_name'} = setupGetQuestion('SERVER_HOSTNAME')
+		}
+
+		if($rs) { # In preseed mode, will cause fatal error and it's expected
+			$rs = setupSslDialog($dialog);
+        	return $rs if $rs;
+        } else {
+        	$rs = Modules::openssl->new()->ssl_export_all();
+        	return $rs if $rs;
+        }
 	} elsif($sslEnabled eq 'yes') {
 		Modules::openssl->new()->{'openssl_path'} = $cmdOpenSsl;
 		Modules::openssl->new()->{'cert_path'} = "$guiCertDir/$hostname.pem";
@@ -880,6 +907,8 @@ sub setupAskSsl
 			$rs = setupSslDialog($dialog);
 			return $rs if $rs;
 		}
+	} else {
+		$main::questions{'SSL_ENABLED'} = 'no';
 	}
 
 	$main::questions{'BASE_SERVER_VHOST_PREFIX'} = 'http://' if $main::imscpConfig{'SSL_ENABLED'} eq 'no';
@@ -896,7 +925,6 @@ sub setupSslDialog
 		"\nDo you want to activate SSL for i-MSCP?", ['no', 'yes'], lc($sslEnabled) eq 'yes' ? 'yes' : 'no'
 	);
 
-
 	if($rs != 30) {
 		$main::questions{'SSL_ENABLED'} = $sslEnabled;
 
@@ -910,11 +938,11 @@ sub setupSslDialog
 			if($rs != 30) {
 				$ret = $ret eq 'yes' ? 1 : 0;
 
-				Modules::openssl->new()->{'cert_selfsigned'} = $ret;
+				Modules::openssl->new()->{'cert_selfsigned'} = 1 if ! $ret;
 				Modules::openssl->new()->{'vhost_cert_name'} = setupGetQuestion('SERVER_HOSTNAME') if ! $ret;
 
-				if(Modules::openssl->new()->{'cert_selfsigned'}) {
-					Modules::openssl->new()->{'intermediate_cert_path'} = '';
+				if(! Modules::openssl->new()->{'cert_selfsigned'}) {
+					#Modules::openssl->new()->{'intermediate_cert_path'} = '';
 					$rs = setupAskCertificateKeyPath($dialog);
 					$rs = setupAskIntermediateCertificatePath($dialog) if $rs != 30;
 					$rs = setupAskCertificatePath($dialog) if $rs != 30;
@@ -933,7 +961,7 @@ sub setupSslDialog
 			($rs, $ret) = $dialog->radiolist(
 				"\nPlease, choose the default access mode for i-MSCP",
 				['https', 'http'],
-				lc($httpPrefix) eq 'http://' ? 'http' : 'https'
+				lc($httpPrefix) eq 'https://' ? 'https' : 'http'
 
 			);
 
@@ -1216,7 +1244,7 @@ sub setupServerIps
 
 	my $database = setupGetSqlConnect(setupGetQuestion('DATABASE_NAME'));
 
-	if(%$serverIpsToReplace) {
+	if(%{$serverIpsToReplace}) {
 		my $ipsToReplace = join q{,}, map $database->quote($_), keys %$serverIpsToReplace;
 		$oldIptoIdMap = $database->doQuery(
 			'ip_number', 'SELECT `ip_id`, `ip_number` FROM `server_ips` WHERE `ip_number` IN ('. $ipsToReplace .')'
@@ -1284,7 +1312,7 @@ sub setupServerIps
 
 	# Server ips replacement
 
-	if(%$serverIpsToReplace) {
+	if(%{$serverIpsToReplace}) {
 		# for each ip to replace
 		for(keys %$serverIpsToReplace) {
 			my $newIp = $serverIpsToReplace->{$_}; # New IP
@@ -1837,7 +1865,10 @@ sub setupRebuildCustomerFiles
 	iMSCP::Boot->new()->unlock();
 
 	my ($stdout, $stderr);
+	my $debug = $main::imscpConfig{'DEBUG'} || 0;
+	$main::imscpConfig{'DEBUG'} = (iMSCP::Getopt->debug) ? 1 : 0;
 	$rs = execute("perl $main::imscpConfig{'ENGINE_ROOT_DIR'}/imscp-rqst-mngr", \$stdout, \$stderr);
+	$main::imscpConfig{'DEBUG'} = $debug;
 	debug("$stdout") if $stdout;
 	error("$stderr") if $stderr;
 	error("Error while rebuilding customers files") if(!$stderr && $rs);
@@ -2139,13 +2170,15 @@ sub setupGetQuestion
 	my $searchIn = shift || '';
 
 	if(! $searchIn) {
-		return $main::questions{$question} || $main::preseed{$question} || $main::imscpConfig{$question} || '';
-	} elsif($searchIn = 'questions') {
-		return $main::questions{$question} || '';
+		return $main::questions{$question} if exists $main::questions{$question};
+		return $main::preseed{$question} if exists $main::preseed{$question};
+		return exists $main::imscpConfig{$question} ? $main::imscpConfig{$question} : '';
+	} elsif($searchIn eq 'questions') {
+		return exists $main::questions{$question} ? $main::questions{$question} : '';
 	} elsif($searchIn eq 'preseed') {
-		return $main::preseed{$question} || '';
+		return exists $main::preseed{$question} ? $main::preseed{$question} : '';
 	} elsif($searchIn eq 'config') {
-		return $main::imscpConfig{$question} || '';
+		return exists $main::imscpConfig{$question} ? $main::imscpConfig{$question} : '';
 	} else {
 		fatal('Unknown question source stack');
 	}

@@ -156,7 +156,14 @@ sub askPhpmyadmin
 
 	my ($rs, $msg) = (0, '');
 
-	if($main::reconfigure || main::setupCheckSqlConnect($dbType, '', $dbHost, $dbPort, $dbUser, $dbPass)) {
+	if(
+		$main::reconfigure ||
+		(
+			! $main::preseed{'PHPMYADMIN_SQL_USER'} &&
+			main::setupCheckSqlConnect($dbType, '', $dbHost, $dbPort, $dbUser, $dbPass)
+		)
+	) {
+	#if($main::reconfigure || main::setupCheckSqlConnect($dbType, '', $dbHost, $dbPort, $dbUser, $dbPass)) {
 		# Ask for the phpmyadmin restricted SQL username
 		do{
 			($rs, $dbUser) = iMSCP::Dialog->factory()->inputbox(

@@ -148,7 +148,7 @@ sub process{
 		}
 	}
 
-	my $rdata = iMSCP::Database->factory()->doQuery('delete', @sql);
+	my $rdata = iMSCP::Database->factory()->doQuery('dummy', @sql);
 	error("$rdata") and return 1 if(ref $rdata ne 'HASH');
 
 	$rs;

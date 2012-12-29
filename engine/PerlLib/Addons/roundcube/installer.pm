@@ -164,7 +164,13 @@ sub askRoundcube
 
 	my ($rs, $msg) = (0, '');
 
-	if($main::reconfigure || main::setupCheckSqlConnect($dbType, '', $dbHost, $dbPort, $dbUser, $dbPass)) {
+	if(
+		$main::reconfigure ||
+		(
+			! $main::preseed{'ROUNDCUBE_SQL_USER'} &&
+			main::setupCheckSqlConnect($dbType, '', $dbHost, $dbPort, $dbUser, $dbPass)
+		)
+	) {
 		# Ask for the roundcube restricted SQL username
 		do{
 			($rs, $dbUser) = iMSCP::Dialog->factory()->inputbox(

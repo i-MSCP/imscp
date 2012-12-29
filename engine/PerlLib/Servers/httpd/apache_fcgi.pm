@@ -50,7 +50,7 @@ sub _init
 	my $conf = "$self->{cfgDir}/apache.data";
 	tie %self::apacheConfig, 'iMSCP::Config','fileName' => $conf;
 
-	$self->{tplValues}->{$_} = $self::apacheConfig{$_} foreach(keys %self::apacheConfig);
+	$self->{tplValues}->{$_} = $self::apacheConfig{$_} for(keys %self::apacheConfig);
 
 	iMSCP::HooksManager->getInstance()->trigger('afterHttpdInit', $self, 'apache_fcgi');
 
@@ -145,7 +145,7 @@ sub enableSite
 			error("stderr $stderr") if($stderr);
 			return $rs if $rs;
 		} else {
-			warning("Site $_ do not exists");
+			warning("Site $_ doesn't exists");
 		}
 	}
 
@@ -169,7 +169,7 @@ sub disableSite
 			error("stderr $stderr") if($stderr);
 			return $rs if $rs;
 		} else {
-			warning("Site $_ do not exists");
+			warning("Site $_ doesn't exists");
 		}
 	}
 
@@ -321,7 +321,7 @@ sub buildConfFile
 	$file = "$self->{cfgDir}/$file" unless -d $directories && $directories ne './';
 
 	my $fileH = iMSCP::File->new(filename => $file);
-	my $cfgTpl  = $fileH->get();
+	my $cfgTpl = $fileH->get();
 	error("Empty config template $file...") unless $cfgTpl;
 	return 1 unless $cfgTpl;
 
@@ -677,7 +677,7 @@ sub addDmn
 
 	$self->{'data'} = $data;
 
-	my $rs	= $self->addCfg($data);
+	my $rs = $self->addCfg($data);
 	$rs |= $self->addFiles($data) unless $data->{'FORWARD'} && $data->{'FORWARD'} =~ m~(http|https|ftp)://~i;
 
 	$self->{'restart'} = 'yes';
@@ -1245,6 +1245,30 @@ sub addIps
 	my $file = iMSCP::File->new(filename => $filename);
 	my $content = $file->get();
 	$content =~ s/NameVirtualHost[^\n]+\n//gi;
+
+#	my $ips = iMSCP::IP->new();
+
+	# Add SSL IPs
+#	for (@{$data->{'SSLIPS'}}) {
+#		my $ipType = $ips->getIpType($_);
+
+#		if($ipType eq 'ipv4') {
+#			$content.= "NameVirtualHost $_:443\n"
+#		} else {
+#			$content.= "NameVirtualHost [$_]:443\n"
+#		}
+#	}
+
+	# Add IP
+#	for (@{$data->{'IPS'}}) {
+#		my $ipType = $ips->getIpType($_);
+
+#		if($ipType eq 'ipv4') {
+#			$content.= "NameVirtualHost [$_]:80\n"
+#		} else {
+#			$content.= "NameVirtualHost [$_]:80\n"
+#		}
+#	}
 
 	$content.= "NameVirtualHost $_:443\n" for @{$data->{'SSLIPS'}};
 	$content.= "NameVirtualHost $_:80\n" for @{$data->{'IPS'}};

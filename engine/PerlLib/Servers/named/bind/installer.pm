@@ -121,6 +121,8 @@ sub askMode
 		}
 	}
 
+	$self::bindConfig{'BIND_MODE'} = $mode if $rs != 30; # Really needed for preseed mode
+
 	$rs;
 }
 

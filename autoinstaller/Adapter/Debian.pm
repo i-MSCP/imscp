@@ -288,7 +288,9 @@ sub _preparePackagesList
 				my $service  = $_;
 				my @alternative = keys %{$data->{$service}->{'alternative'}};
 
-				my $oldServer = $main::imscpConfig{uc($service) . '_SERVER'}; # string or undef
+				my $serviceName = uc($service) . '_SERVER';
+				#error($main::preseed{'SERVERS'}->{$serviceName}); exit;
+				my $oldServer = $main::preseed{'SERVERS'}->{$serviceName} || $main::imscpConfig{$serviceName}; # string or undef
 				my $server = undef;
 
 				# Only ask for server to use if not already defined or not found in list of available server
@@ -328,7 +330,7 @@ Please, choose the server you want use for the $service service:
 
 				$self->{'userSelection'}->{$service} = lc($server) eq 'not used' ? 'no' : $server;
 
-				foreach(@alternative) {
+				for(@alternative) {
 					delete($data->{$service}->{'alternative'}->{$_}) if $_ ne $server;
 				}
 			}

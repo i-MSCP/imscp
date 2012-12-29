@@ -126,7 +126,7 @@ sub process{
 		);
 	}
 
-	my $rdata = iMSCP::Database->factory()->doQuery('delete', @sql);
+	my $rdata = iMSCP::Database->factory()->doQuery('dummy', @sql);
 	error("$rdata") and return 1 if(ref $rdata ne 'HASH');
 
 	$rs;
@@ -203,7 +203,8 @@ sub delete{
 
 	my $dir = File::Temp->newdir(CLEANUP => 1);
 	my @savedDirs;
-	foreach(keys %mountPoints){
+
+	for(keys %mountPoints){
 		my $sourceDir 	= "$main::imscpConfig{'USER_HOME_DIR'}/$self->{user_home}/".$mountPoints{$_};
 		$sourceDir		=~ s~/+~/~g;
 		my $destDir 	= "$dir/".$mountPoints{$_};
@@ -220,10 +221,9 @@ sub delete{
 		push(@savedDirs, $mountPoints{$_});
 	}
 
-	$self->{'action'} = 'del';
-	$rs = $self->runAllActions();
+	$rs = $self->SUPER::delete();
 
-	foreach (@savedDirs){
+	for (@savedDirs){
 		my $destDir 	= "$main::imscpConfig{'USER_HOME_DIR'}/$self->{user_home}/$_";
 		$destDir		=~ s~/+~/~g;
 		my $sourceDir	= "$dir/$_";

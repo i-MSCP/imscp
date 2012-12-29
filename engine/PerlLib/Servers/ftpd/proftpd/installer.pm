@@ -94,7 +94,13 @@ sub askProftpd
 
 	my ($rs, $msg) = (0, '');
 
-	if($main::reconfigure || main::setupCheckSqlConnect($dbType, '', $dbHost, $dbPort, $dbUser, $dbPass)) {
+	if(
+		$main::reconfigure ||
+		(
+			! $main::preseed{'FTPD_SQL_USER'} &&
+			main::setupCheckSqlConnect($dbType, '', $dbHost, $dbPort, $dbUser, $dbPass)
+		)
+	) {
 		# Ask for the proftpd restricted SQL username
 		do{
 			($rs, $dbUser) = iMSCP::Dialog->factory()->inputbox(

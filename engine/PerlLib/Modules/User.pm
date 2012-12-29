@@ -94,7 +94,7 @@ sub process{
 	}
 
 	if(scalar @sql){
-		$rdata = iMSCP::Database->factory()->doQuery('delete', @sql);
+		$rdata = iMSCP::Database->factory()->doQuery('dummy', @sql);
 		error("$rdata") and return 1 if(ref $rdata ne 'HASH');
 	}
 
@@ -167,8 +167,7 @@ sub add{
 			group	=> $rootGroup
 	});
 
-	$self->{'action'} = 'add';
-	$rs |= $self->runAllActions();
+	$rs |= $self->SUPER::add();
 
 	$rs;
 }
@@ -185,11 +184,10 @@ sub delete{
 	error('Data not defined') if ! $self->{domain_admin_id};
 	return 1  if ! $self->{domain_admin_id};
 
-	$self->{'action'} = 'del';
-	$rs = $self->runAllActions();
+	$rs = $self->SUPER::delete();
 
 	my $userName	=
-			$main::imscpConfig{SYSTEM_USER_PREFIX}.
+			$main::imscpConfig{SYSTEM_USER_PREFIX} .
 			($main::imscpConfig{SYSTEM_USER_MIN_UID} + $self->{domain_admin_id});
 
 	my $user = Modules::SystemUser->new();
@@ -326,4 +324,5 @@ sub buildHTTPDData{
 
 	0;
 }
+
 1;

@@ -1,63 +1,61 @@
 #!/usr/bin/perl
 
-# i-MSCP preseed.pl template file for installer preseeding and hooking features
+# i-MSCP preseed.pl template file for installer preseeding
 # See documentation at LINK TO DOC
-
-#
-## Preseeding
-#
+# Last update on 2012.12.28
+# Status (Experimental)
 
 ## Autoinstall questions
 
+# Service to use
 $main::preseed{'SERVERS'} = {
-	'HTTPD' => 'apache_itk',	# Server to use for the Httpd service (apache_itk|apache_fgcid)
-	'PO' => 'courier'			# Server to use for the po service (courier|dovecot)
+	'HTTPD_SERVER' => 'apache_itk',	# Server to use for the Httpd service (apache_itk|apache_fgcid)
+	'PO_SERVER' => 'courier',		# Server to use for the po service (courier|dovecot)
+	'FTPD_SERVER' => 'proftpd',		# No relevant for now since only proftpd is supported
+	'MTA_SERVER' => 'postfix',		# No relevant for now since only postfix is supported
+	'NAMED_SERVER' => 'bind'		# No relevant for now since only Bind9 is supported
 };
 
 ## Setup questions
 
 # Server hostname
-$main::preseed{'SERVER_HOSTNAME'} = ''; # Fully qualified hostname name such as imscp.i-mscp.net
+$main::preseed{'SERVER_HOSTNAME'} = 'host.domain.tld'; # Fully qualified hostname name
 
 # Domain name from which the i-MSCP frontEnd should be reachable
-$main::preseed{'BASE_SERVER_VHOST'} = ''; # Fully qualified domain name such as panel. imscp.i-mscp.net
+$main::preseed{'BASE_SERVER_VHOST'} = 'panel.host.domain.tld'; # Fully qualified domain name
 
 # Local DNS resolver
 $main::preseed{'LOCAL_DNS_RESOLVER'} = 'yes';
 
-# Base server Ip (primary external ip) - Accept both ipV4 and ipV6 ips
-# Ip must be already configured (see ifconfig)
-$main::preseed{'BASE_SERVER_IP'} = ''; # 192.168.5.110
+# Base server Ip (primary external IP) - Accept both IPv4 and IPv6
+# IP must be already configured (see ifconfig)
+$main::preseed{'BASE_SERVER_IP'} = '192.168.5.110';
 
-# Additional ips to make available for i-MSCP - Accept both IPv4 and IPv6
-# Any unconfigured ips will be added to the first netcard found (eg: eth0)
-$main::preseed{'SERVER_IPS'} = []; # ['192.168.5.115', '192.168.5.115']
+# IPs to keep or add in the i-MSCP database - Accept both IPv4 and IPv6
+# Any unconfigured IPs will be added to the first netcard found (eg: eth0)
+$main::preseed{'SERVER_IPS'} = ['192.168.5.115']; # ['192.168.5.115', '192.168.5.115']
 
-# SQL DSN and i-MSCP SQL user
-$main::preseed{'DATABASE_TYPE'} = 'mysql'; # database type (for now, only 'mysql' is allowed)
-$main::preseed{'DATABASE_HOST'} = 'localhost'; # Accept both hostname and ip
-$main::preseed{'DATABASE_PORT'} = '3306'; # Only relevant for TCP (eg: when DATABASE_HOST is not equal to localhost)
-$main::preseed{'DATABASE_USER'} = 'root'; # SQL user (user must exist and have full privileges on SQL server)
-$main::preseed{'DATABASE_PASSWORD'} = 'password'; # Password shouldn't be empty
-
-# i-MSCP database name
+# SQL DSN
+$main::preseed{'DATABASE_TYPE'} = 'mysql'; # Database type (for now, only 'mysql' is supported)
+$main::preseed{'DATABASE_HOST'} = 'localhost'; # Accept both hostname and IP
+$main::preseed{'DATABASE_PORT'} = '3306'; # Only relevant for TCP (eg: when DATABASE_HOST is not equal to 'localhost')
 $main::preseed{'DATABASE_NAME'} = 'imscp';
+
+# iMSCP SQL user
+$main::preseed{'DATABASE_USER'} = 'root'; # SQL user (user must exist and have full privileges on SQL server)
+$main::preseed{'DATABASE_PASSWORD'} = '<password>'; # Password shouldn't be empty
 
 # MySQL prefix/sufix
 $main::preseed{'MYSQL_PREFIX'} = 'no'; # (yes|no)
-$main::preseed{'MYSQL_PREFIX_TYPE'} = 'none'; # (none if MYSQL_PREFIX equal to 'no' or infront or behind)
+$main::preseed{'MYSQL_PREFIX_TYPE'} = 'none'; # (none if MYSQL_PREFIX question is set to 'no' or 'infront' or 'behind')
 
 # Default admin
-$main::preseed{'ADMIN_LOGIN_NAME'} = 'admin'; #
-$main::preseed{'ADMIN_PASSWORD'} = 'password'; # Password shouldn't be empty
-$main::preseed{'DEFAULT_ADMIN_ADDRESS'} = ''; # Valid email address
+$main::preseed{'ADMIN_LOGIN_NAME'} = 'admin'; # Default admin name
+$main::preseed{'ADMIN_PASSWORD'} = '<password>'; # Default admin password (A least 6 characters long)
+$main::preseed{'DEFAULT_ADMIN_ADDRESS'} = 'user@domain.tld'; # Default admin email address (should be a valid email)
 
 # PHP Timzone
 $main::preseed{'PHP_TIMEZONE'} = 'Europe/London'; # A valid PHP timezone (see http://php.net/manual/en/timezones.php)
-
-# PhpMyAdmin restricted SQL user
-$main::preseed{'PMA_USER'} = 'pma';
-$main::preseed{'PMA_PASSWORD'} = 'password'; # Password shouldn't be empty
 
 #
 ## SSL questions
@@ -66,17 +64,31 @@ $main::preseed{'PMA_PASSWORD'} = 'password'; # Password shouldn't be empty
 # SSL for i-MSCP services
 $main::preseed{'SSL_ENABLED'} = 'no'; # (yes|no)
 
-# Only releavant if the SSL_ENABLED parameter is set to 'yes'
-$main::preseed{'CERTIFICATE_PATH'} = ''; # Leave blank if you do not have certificate (selfsigned certificate will be used instead)
+# Only relevant if the SSL_ENABLED question is set to 'yes'
+$main::preseed{'SELFSIGNED_CERTIFICATE'} = 1; # (1 for selfsigned, 0 for own certificate)
 
-# Only releavant if the SSL_ENABLED parameter is set to 'yes'
-$main::preseed{'CERTIFICATE_PASSPHRASE'} = ''; # Leave blank if your certificate is not protected by a passphrase
+# Only relevant if the SSL_ENABLED question is set to 'yes' and the SELFSIGNED_CERTIFICATE is set to 0
+$main::preseed{'CERTIFICATE_KEY_PATH'} = ''; # Path to certificate key
 
-# Only releavant if the SSL_ENABLED parameter is set to 'yes'
+# Only relevant if the SSL_ENABLED question is set to 'yes' and the SELFSIGNED_CERTIFICATE is set to 0
+$main::preseed{'CERTIFICATE_KEY_PASSWORD'} = ''; # Leave blank if your certificate key is not protected by a passphrase
+
+# Only relevant if the SSL_ENABLED question is set to 'yes' and the SELFSIGNED_CERTIFICATE is set to 0
 $main::preseed{'INTERMEDIATE_CERTIFICATE_PATH'} = ''; # Leave blank if you do not have intermediate certificate
 
+# Only relevant if the SSL_ENABLED question is set to 'yes' and the SELFSIGNED_CERTIFICATE is set to 0
+$main::preseed{'CERTIFICATE_PATH'} = ''; # Path to SSL certificat
 
-# iMSCP backup feature
+
+# Only relevant if the SSL_ENABLED question is set to 'yes' ;
+# Let's value set to 'http://' if you set the SSL_ENABLED question to 'no'
+$main::preseed{'BASE_SERVER_VHOST_PREFIX'} = 'http://'; # Default panel access mode (http:// or https://)
+
+# PhpMyAdmin restricted SQL user
+$main::preseed{'PMA_USER'} = 'pma';
+$main::preseed{'PMA_PASSWORD'} = '<password>'; # Password shouldn't be empty
+
+# iMSCP backup feature - Allows resellers to propose backup feature for their customers
 $main::preseed{'BACKUP_IMSCP'} = 'yes'; # (yes|no) - It's recommended to set this question to 'yes'
 
 # Customers backup feature
@@ -84,43 +96,46 @@ $main::preseed{'BACKUP_DOMAINS'} = 'no'; # (yes|no)
 
 ## Server questions
 
-# Proftpd sql user
-$main::preseed['FTPD_SQL_USER'] = 'vftp'
-$main::preseed['FTPD_SQL_PASSWORD'] = '' # Password shouldn't be empty
+# Proftpd SQL user
+$main::preseed['FTPD_SQL_USER'] = 'vftp';
+$main::preseed['FTPD_SQL_PASSWORD'] = '<password>'; # Password shouldn't be empty
 
-# apache_fcgi - Only relevant if server for httpd service is set to apache_fcgi
+# apache_fcgi - Only relevant if server for the HTTPD_SERVICE question is set to 'apache_fcgi'
 $main::preseed{'PHP_FASTCGI'}  = 'fcgid'; # (fcgid|fastcgi)
 
 # bind
-$main::preseed{'BIND_MODE'} = 'master'; # (master|slave)
+$main::preseed{'BIND_MODE'} = 'master'; # (master|slave) - Mode in which the DNS server should acts
 
-# Only relevant if you set the BIND_MODE parameter to 'slave'
+# Only relevant if you set the BIND_MODE question to 'slave'
 # Allow to indicate IP addresses of your primary DNS server(s)
-$main::preseed{'PRIMARY_DNS'} = '' # (empty value or list of ips, each separated by semicolon)
+$main::preseed{'PRIMARY_DNS'} = ''; # (empty value or list of ips, each separated by semicolon)
 
-# Only relevant if you set the BIND_MODE parameter to master and if you have slave DNS server(s)
-$main::preseed{'SECONDARY_DNS'} = 'no' # (no|list of ips, each separated by semicolon)
+# Only relevant if you set the BIND_MODE question to 'master' and if you have slave DNS server(s)
+$main::preseed{'SECONDARY_DNS'} = 'no'; # (no|list of IPs, each separated by semicolon)
 
-# dovecot SQL USER (only relevant if you choice dovecot for the PO service
+# dovecot SQL user (only relevant if you set the  PO_SERVER question to 'dovecot'
 $main::preseed{'DOVECOT_SQL_USER'} = 'dovecot_user';
-$main::preseed{'DOVECOT_SQL_PASSWORD'} = 'password'; # Password shouldn't be empty
+
+# dovecot SQL user (only relevant if you set the  PO_SERVER question to 'dovecot'
+$main::preseed{'DOVECOT_SQL_PASSWORD'} = '<password>'; # Password shouldn't be empty
 
 ## Addons questions
 
 # Aswtats addon
-$main::preseed{'AWSTATS_ACTIVE'} = 'yes' # (yes|no)
-$main::preseed{'AWSTATS_MODE'} = '0'; # (0 for dynamic ; 1 for static) - Only relevant if the question above is set to 'yes'
+$main::preseed{'AWSTATS_ACTIVE'} = 'no'; # (yes|no)
 
-# Policyd Weight configurator addon
-$main::preseed['DNSBL_CHECKS_ONLY'] = 'no' # (yes|no)
+# Only relevant if the AWSTATS_ACTIVE question is set to 'yes'
+$main::preseed{'AWSTATS_MODE'} = ''; # (empty value if the AWSTATS_ACTIVE question is set to 'no', 0 for dynamic or 1 for static)
+
+# Policyd Weight addon
+$main::preseed{'DNSBL_CHECKS_ONLY'} = 'no'; # (yes|no)
+
+# Phpmyadmin addon
+$main::preseed{'PHPMYADMIN_SQL_USER'} = 'pma';
+$main::preseed{'PHPMYADMIN_SQL_PASSWORD'} = '<password>'; # Password shouldn't be empty
 
 # Roundcube addon
-$main::preseed['ROUNDCUBE_SQL_USER'] = 'roundcube_user'
-$main::preseed['ROUNDCUBE_SQL_PASSWORD'] = 'password'; # Password shouldn't be empty
-
-
-#
-## Hooking - See the documentation at LINK TO DOC
-#
+$main::preseed{'ROUNDCUBE_SQL_USER'} = 'roundcube_user';
+$main::preseed{'ROUNDCUBE_SQL_PASSWORD'} = '<password>'; # Password shouldn't be empty
 
 1;

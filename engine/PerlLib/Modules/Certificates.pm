@@ -179,7 +179,7 @@ sub add{
 		Modules::openssl->new()->{new_cert_path} = $certPath,
 		Modules::openssl->new()->{new_cert_name} = $self->{name};
 
-		Modules::openssl->new()->{cert_selfsigned} = 1;
+		Modules::openssl->new()->{cert_selfsigned} = 0;
 		Modules::openssl->new()->ssl_export_all();
 	}
 
