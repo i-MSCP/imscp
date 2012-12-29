@@ -1,8 +1,8 @@
 #!/usr/bin/perl
 
 # i-MSCP preseed.pl template file for installer preseeding
-# See documentation at LINK TO DOC
-# Last update on 2012.12.28
+# See documentation at http://wiki.i-mscp.net/doku.php?id=start:preseeding
+# Last update on 2012.12.29
 # Status (Experimental)
 
 ## Autoinstall questions
@@ -17,6 +17,9 @@ $main::preseed{'SERVERS'} = {
 };
 
 ## Setup questions
+
+# apache_fcgi - Only relevant if server for the HTTPD_SERVICE question is set to 'apache_fcgi'
+$main::preseed{'PHP_FASTCGI'}  = 'fcgid'; # (fcgid|fastcgi)
 
 # Server hostname
 $main::preseed{'SERVER_HOSTNAME'} = 'host.domain.tld'; # Fully qualified hostname name
@@ -99,9 +102,6 @@ $main::preseed{'BACKUP_DOMAINS'} = 'no'; # (yes|no)
 # Proftpd SQL user
 $main::preseed['FTPD_SQL_USER'] = 'vftp';
 $main::preseed['FTPD_SQL_PASSWORD'] = '<password>'; # Password shouldn't be empty
-
-# apache_fcgi - Only relevant if server for the HTTPD_SERVICE question is set to 'apache_fcgi'
-$main::preseed{'PHP_FASTCGI'}  = 'fcgid'; # (fcgid|fastcgi)
 
 # bind
 $main::preseed{'BIND_MODE'} = 'master'; # (master|slave) - Mode in which the DNS server should acts
