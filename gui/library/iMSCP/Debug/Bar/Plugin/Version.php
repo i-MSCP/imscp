@@ -1,7 +1,7 @@
 <?php
 /**
  * i-MSCP - internet Multi Server Control Panel
- * Copyright (C) 2010-2012 by i-MSCP Team.
+ * Copyright (C) 2010-2013 by i-MSCP Team.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -20,7 +20,7 @@
  * @package		iMSCP
  * @package		iMSCP_Debug
  * @subpackage	Bar_Plugin
- * @copyright	2010-2012 by i-MSCP team
+ * @copyright	2010-2013 by i-MSCP team
  * @author		Laurent Declercq <l.declercq@nuxwin.com>
  * @link		http://www.i-mscp.net i-MSCP Home Site
  * @license		http://www.gnu.org/licenses/gpl-2.0.txt GPL v2
@@ -75,7 +75,7 @@ class iMSCP_Debug_Bar_Plugin_Version extends iMSCP_Debug_Bar_Plugin
 	{
 		$version = iMSCP_Registry::get('config')->Version;
 		$panel = '<h4>i-MSCP DebugBar v0.0.2</h4>' .
-			'<p>©2010-2012 <a href="http://www.i-mscp.net">i-MSCP Team</a><br />' .
+			'<p>©2010-2013 <a href="http://www.i-mscp.net">i-MSCP Team</a><br />' .
 			'Includes images from the <a href="http://www.famfamfam.com/lab/icons/silk/">Silk Icon set</a> by Mark James<br />
                  Based upon project hosted at <a href="http://code.google.com/p/zfdebug">ZFDebug</a></p>';
 		$panel .= '<h4>i-MSCP ' . $version . ' / PHP ' . phpversion() . ' with extensions:</h4>';
