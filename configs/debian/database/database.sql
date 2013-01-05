@@ -125,7 +125,7 @@ INSERT IGNORE INTO `config` (`name`, `value`) VALUES
 ('PHPINI_OPEN_BASEDIR', ''),
 ('PHPINI_MAX_INPUT_TIME', '60'),
 ('PHPINI_MAX_EXECUTION_TIME', '30'),
-('PHPINI_ERROR_REPORTING', '22527'),
+('PHPINI_ERROR_REPORTING', '30711'),
 ('PHPINI_DISABLE_FUNCTIONS', 'show_source,system,shell_exec,passthru,exec,phpinfo,shell,symlink');
 
 -- --------------------------------------------------------
@@ -488,7 +488,7 @@ CREATE TABLE IF NOT EXISTS `php_ini` (
   `disable_functions` varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'show_source, system, shell_exec, passthru, exec, phpinfo, shell, symlink, popen, proc_open',
   `allow_url_fopen` varchar(10) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'off',
   `display_errors` varchar(10) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'off',
-  `error_reporting` varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT '22527',
+  `error_reporting` varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT '30711',
   `post_max_size` int(11) NOT NULL DEFAULT '10',
   `upload_max_filesize` int(11) NOT NULL DEFAULT '10',
   `max_execution_time` int(11) NOT NULL DEFAULT '30',
