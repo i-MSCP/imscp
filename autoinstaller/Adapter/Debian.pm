@@ -292,7 +292,8 @@ sub _preparePackagesList
 				my @alternative = keys %{$data->{$service}->{'alternative'}};
 
 				my $serviceName = uc($service) . '_SERVER';
-				my $oldServer = $main::preseed{'SERVERS'}->{$serviceName} || $main::imscpConfig{$serviceName}; # string or undef
+				my $oldServer = exists $main::preseed{'SERVERS'}
+					? $main::preseed{'SERVERS'}->{$serviceName} : $main::imscpConfig{$serviceName} || undef;
 				my $server = undef;
 
 				# Only ask for server to use if not already defined or not found in list of available server
