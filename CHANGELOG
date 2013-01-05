@@ -12,6 +12,7 @@ Tickets:
 	- Fixed #552: Bug - PHP constants are not recognized outside of PHP (such as in Apache vhost files)
 	- Fixed #555: Cosmetics - Missing translation at reseller level
 	- Fixed #560: Review - Backup filenames are not windows-friendly
+	- Fixed #562: Bug - Error in apache_fcgi installer
 
 -------------------------------------------------------------------------------------
 i-MSCP 1.1.0-rc1.3

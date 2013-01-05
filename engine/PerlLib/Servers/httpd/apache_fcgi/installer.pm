@@ -172,7 +172,7 @@ sub _fixPhpErrorReportingValues
 
 			$rs = $database->doQuery(
 				'dummy',
-				'UPDATE `config` SET `value` = ? WHERE `name` = 'PHPINI_ERROR_REPORTING' AND `value` = ?',
+				"UPDATE `config` SET `value` = ? WHERE `name` = 'PHPINI_ERROR_REPORTING' AND `value` = ?",
 				$to,
 				$from
 			);
