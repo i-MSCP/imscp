@@ -70,7 +70,7 @@ sub registerSetupHooks
 	) and return 1;
 
 	# Fix error_reporting value into the database
-	$hooksManager->register('afterSetupCreateDatabase', sub { $self->_fixPhpErrorReportingValues(@_) });
+	$hooksManager->register('afterSetupCreateDatabase', sub { $self->_fixPhpErrorReportingValues(@_) }) and return 1;
 
 	$hooksManager->trigger('afterHttpdRegisterSetupHooks', $hooksManager, 'apache_fcgi');
 }
