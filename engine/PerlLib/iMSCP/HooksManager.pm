@@ -132,7 +132,6 @@ sub trigger($$)
 
 		for(@hookFunctions) {
 			if($rs = $_->(@_)) {
-				debug("nuxwin hook function returned $rs");
 				my $caller = (caller(1))[3] ? (caller(1))[3] : 'main';
 				local $Data::Dumper::Terse = 1;
 				local $Data::Dumper::Deparse = 1;

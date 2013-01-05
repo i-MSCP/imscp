@@ -1432,7 +1432,7 @@ sub setupCreateDatabase
 
 	if(! setupIsImscpDb($dbName)) {
 		my ($database, $errStr) = setupGetSqlConnect();
-		fatal('Unable to connect to SQL Server: $errStr') if ! $database;
+		fatal("Unable to connect to SQL Server: $errStr") if ! $database;
 
 		my $qdbName = $database->quoteIdentifier($dbName);
 		my $rs = $database->doQuery('dummy', "CREATE DATABASE $qdbName CHARACTER SET utf8 COLLATE utf8_unicode_ci;");
@@ -1524,7 +1524,7 @@ sub setupSecureSqlAccounts
 	iMSCP::HooksManager->getInstance()->trigger('beforeSetupSecureSqlAccounts') and return 1;
 
 	my ($database, $errStr) = setupGetSqlConnect(setupGetQuestion('DATABASE_NAME'));
-	fatal('Unable to connect to SQL Server: $errStr') if ! $database;
+	fatal("Unable to connect to SQL Server: $errStr") if ! $database;
 
 	my $rdata = $database->doQuery('User', "SELECT `User`, `Host` FROM `mysql`.`user` WHERE `Password` = ''");
 
@@ -1560,7 +1560,7 @@ sub setupDefaultAdmin
 		$adminPassword = iMSCP::Crypt->new()->crypt_md5_data($adminPassword);
 
 		my ($database, $errStr) = setupGetSqlConnect(setupGetQuestion('DATABASE_NAME'));
-		fatal('Unable to connect to SQL Server: $errStr') if ! $database;
+		fatal("Unable to connect to SQL Server: $errStr") if ! $database;
 
 		my $rs = $database->doQuery(
 			'dummy',
@@ -1855,7 +1855,7 @@ sub setupRebuildCustomerFiles
 
 	my $rs = 0;
 	my ($database, $errStr) = setupGetSqlConnect(setupGetQuestion('DATABASE_NAME'));
-	fatal('Unable to connect to SQL Server: $errStr') if ! $database;
+	fatal("Unable to connect to SQL Server: $errStr") if ! $database;
 
 	while (my ($table, $field) = each %$tables) {
 		$rs = $database->doQuery('dummy', "UPDATE `$table` SET `$field` = 'change' WHERE `$field` = 'ok'");

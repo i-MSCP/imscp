@@ -116,7 +116,7 @@ INSERT IGNORE INTO `config` (`name`, `value`) VALUES
 ('PREVENT_EXTERNAL_LOGIN_ADMIN', '1'),
 ('PREVENT_EXTERNAL_LOGIN_RESELLER', '1'),
 ('PREVENT_EXTERNAL_LOGIN_CLIENT', '1'),
-('DATABASE_REVISION', '119'),
+('DATABASE_REVISION', '120'),
 ('PHPINI_ALLOW_URL_FOPEN', 'off'),
 ('PHPINI_DISPLAY_ERRORS', 'off'),
 ('PHPINI_UPLOAD_MAX_FILESIZE', '10'),
@@ -125,7 +125,7 @@ INSERT IGNORE INTO `config` (`name`, `value`) VALUES
 ('PHPINI_OPEN_BASEDIR', ''),
 ('PHPINI_MAX_INPUT_TIME', '60'),
 ('PHPINI_MAX_EXECUTION_TIME', '30'),
-('PHPINI_ERROR_REPORTING', 'E_ALL & ~E_NOTICE & ~E_WARNING'),
+('PHPINI_ERROR_REPORTING', '22527'),
 ('PHPINI_DISABLE_FUNCTIONS', 'show_source,system,shell_exec,passthru,exec,phpinfo,shell,symlink');
 
 -- --------------------------------------------------------
@@ -488,7 +488,7 @@ CREATE TABLE IF NOT EXISTS `php_ini` (
   `disable_functions` varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'show_source, system, shell_exec, passthru, exec, phpinfo, shell, symlink, popen, proc_open',
   `allow_url_fopen` varchar(10) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'off',
   `display_errors` varchar(10) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'off',
-  `error_reporting` varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'E_ALL & ~E_DEPRECATED',
+  `error_reporting` varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT '22527',
   `post_max_size` int(11) NOT NULL DEFAULT '10',
   `upload_max_filesize` int(11) NOT NULL DEFAULT '10',
   `max_execution_time` int(11) NOT NULL DEFAULT '30',

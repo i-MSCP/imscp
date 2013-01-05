@@ -462,7 +462,9 @@ if ($phpini->getDataVal('phpiniDisplayErrors') == 'on') {
 			 'PHPINI_DISPLAY_ERRORS_OFF' => $html_selected));
 }
 
-switch ($phpini->getDataVal('phpiniErrorReporting')) {
+$errorReportingValue = $phpini->errorReportingToLitteral($phpini->getDataVal('phpiniErrorReporting'));
+
+switch ($errorReportingValue) {
 	case 'E_ALL & ~E_NOTICE':
 		$tpl->assign(
 			array(

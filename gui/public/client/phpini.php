@@ -177,15 +177,18 @@ if ($phpini->getClPermVal('phpiniDisplayErrors') == 'no') {
 if ($phpini->getClPermVal('phpiniDisplayErrors') == 'no') {
 	$tplVars['ERROR_REPORTING_BLOCK'] = '';
 } else {
+	$errorReportingValue = $phpini->errorReportingToLitteral($phpini->getDataVal('phpiniErrorReporting'));
+	#echo $errorReportingValue; exit;
+
 	$tplVars['TR_ERROR_REPORTING'] = 'error_reporting';
 	$tplVars['TR_ERROR_REPORTING_DEFAULT'] = tr('Show all errors, except for notices and coding standards warnings (Default)');
 	$tplVars['TR_ERROR_REPORTING_DEVELOPEMENT'] = tr('Show all errors, warnings and notices including coding standards (Development)');
 	$tplVars['TR_ERROR_REPORTING_PRODUCTION'] = tr(' Show all errors, except for warnings about deprecated code (Production)');
 	$tplVars['TR_ERROR_REPORTING_NONE'] = tr('Do not show any error');
-	$tplVars['ERROR_REPORTING_0'] = ($phpini->getDataVal('phpiniErrorReporting') == 'E_ALL & ~E_NOTICE') ? $htmlSelected : '';
-	$tplVars['ERROR_REPORTING_1'] = ($phpini->getDataVal('phpiniErrorReporting') == 'E_ALL | E_STRICT') ? $htmlSelected : '';
-	$tplVars['ERROR_REPORTING_2'] = ($phpini->getDataVal('phpiniErrorReporting') == 'E_ALL & ~E_DEPRECATED') ? $htmlSelected : '';
-	$tplVars['ERROR_REPORTING_3'] = ($phpini->getDataVal('phpiniErrorReporting') == '0') ? $htmlSelected : '';
+	$tplVars['ERROR_REPORTING_0'] = ($errorReportingValue == 'E_ALL & ~E_NOTICE') ? $htmlSelected : '';
+	$tplVars['ERROR_REPORTING_1'] = ($errorReportingValue == 'E_ALL | E_STRICT') ? $htmlSelected : '';
+	$tplVars['ERROR_REPORTING_2'] = ($errorReportingValue == 'E_ALL & ~E_DEPRECATED') ? $htmlSelected : '';
+	$tplVars['ERROR_REPORTING_3'] = ($errorReportingValue == '0') ? $htmlSelected : '';
 	$firstBlock = true;
 }
 

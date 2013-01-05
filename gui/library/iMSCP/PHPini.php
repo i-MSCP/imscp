@@ -273,10 +273,18 @@ class iMSCP_PHPini
 	public function setData($key, $value, $withCheck = true)
 	{
 		if(!$withCheck) {
-			$this->_phpiniData[$key] = $value;
+			if($key == 'phpiniErrorReporting') {
+				$this->_phpiniData[$key] = $this->errorReportingToInteger($value);
+			} else {
+				$this->_phpiniData[$key] = $value;
+			}
 			return true;
 		} elseif($this->_rawCheckData($key, $value)) {
-			$this->_phpiniData[$key] = $value;
+			if($key == 'phpiniErrorReporting') {
+				$this->_phpiniData[$key] = $this->errorReportingToInteger($value);
+			} else {
+				$this->_phpiniData[$key] = $value;
+			}
 			return true;
 		}
 
@@ -717,6 +725,58 @@ class iMSCP_PHPini
 	}
 
 	/**
+	 * Returns error reporting integer value
+	 *
+	 * @param string $value Litteral error reporting value such as 'E_ALL & ~E_NOTICE'
+	 * @return int error reporing integer value
+	 */
+	public function errorReportingToInteger($value)
+	{
+		switch($value) {
+			case 'E_ALL & ~E_NOTICE':
+				$int = E_ALL & ~E_NOTICE;
+				break;
+			case 'E_ALL | E_STRICT':
+				$int = E_ALL | E_STRICT;
+				break;
+			case 'E_ALL & ~E_DEPRECATED':
+				$int = E_ALL & ~E_DEPRECATED;
+				break;
+			default:
+				$int = 0;
+		}
+
+		return $int;
+	}
+
+	/**
+	 * Returns error reporting litteral value
+	 *
+	 * @param int $value integer error reporting value
+	 * @return int error reporing litteral value
+	 */
+	public function errorReportingToLitteral($value)
+	{
+		switch($value) {
+			case '30711':
+			case '32759':
+				$litteral = 'E_ALL & ~E_NOTICE';
+				break;
+			case '32767':
+				$litteral = 'E_ALL | E_STRICT';
+				break;
+			case '22527':
+			case '24575':
+				$litteral = 'E_ALL & ~E_DEPRECATED';
+				break;
+			default:
+				$litteral = 0;
+		}
+
+		return $litteral;
+	}
+
+	/**
 	 * Checks value for the given PHP data.
 	 *
 	 * @param string $key PHP data key name
@@ -784,8 +844,8 @@ class iMSCP_PHPini
 	protected function _checkDisableFunctionsSyntax($disabledFunctions)
 	{
 		$defaultDisabledFunctions = array(
-			'show_source', 'system', 'shell_exec', 'passthru', 'exec', 'shell',
-			'symlink', 'phpinfo');
+			'show_source', 'system', 'shell_exec', 'passthru', 'exec', 'shell', 'symlink', 'phpinfo'
+		);
 
 		if (!empty($disabledFunctions)) {
 			if (is_string($disabledFunctions)) {

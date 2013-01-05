@@ -63,6 +63,9 @@ sub registerSetupHooks
 
 	$hooksManager->trigger('beforeHttpdRegisterSetupHooks', $hooksManager, 'apache_itk') and return 1;
 
+	# Fix error_reporting value into the database
+	$hooksManager->register('afterSetupCreateDatabase', sub { $self->_fixPhpErrorReportingValues(@_) });
+
 	$hooksManager->trigger('afterHttpdRegisterSetupHooks', $hooksManager, 'apache_itk');
 }
 
@@ -95,6 +98,71 @@ sub install
 	iMSCP::HooksManager->getInstance()->trigger('afterHttpdInstall', 'apache_itk');
 
 	$rs;
+}
+
+# Fix PHP error_reporting value according PHP version
+#
+# This rustine fix the error_reporting integer values in the iMSCP databse according the PHP version installed on
+# the system.
+#
+# This hook function acts on the 'afterSetupCreateDatabase' hook.
+#
+# Return int - 0 on success, 1 on failure
+#
+sub _fixPhpErrorReportingValues
+{
+	my $self = shift;
+	my ($rs, $stdout, $stderr);
+	my $database = main::setupGetSqlConnect($main::imscpConfig{'DATABASE_NAME'});
+	fatal('Unable to connect to SQL Server: $errStr') if ! $database;
+
+	use iMSCP::Execute;
+
+	$rs = execute('php -v', \$stdout, \$stderr);
+	return $rs if $rs;
+
+	my $phpVersion = $1 if $stdout =~ /^PHP\s([0-9.]{3})/;
+
+	if(defined $phpVersion and ($phpVersion eq '5.3' || $phpVersion eq '5.4')) {
+		my %errorReportingValues = (
+			'5.3' => {
+				32759 => 30711,	# E_ALL & ~E_NOTICE
+				32767 => 32767,	# E_ALL | E_STRICT
+				24575 => 22527	# E_ALL & ~E_DEPRECATED
+			},
+			'5.4' => {
+				30711 => 32759,	# E_ALL & ~E_NOTICE
+				32767 => 32767,	# E_ALL | E_STRICT
+				22527 => 24575	# E_ALL & ~E_DEPRECATED
+			}
+		);
+
+		for(keys %{$errorReportingValues{$phpVersion}}) {
+			my $from = $_;
+			my $to = $errorReportingValues{$phpVersion}->{$_};
+
+			$rs = $database->doQuery(
+				'dummy',
+				"UPDATE `config` SET `value` = ? WHERE `name` = 'PHPINI_ERROR_REPORTING' AND `value` = ?",
+				$to,
+				$from
+			);
+			return 1 if ref $rs ne 'HASH';
+
+			$rs = $database->doQuery(
+				'dummy',
+				'UPDATE `php_ini` SET `error_reporting` = ? WHERE `error_reporting` = ?',
+				$to,
+				$from
+			);
+			return 1 if ref $rs ne 'HASH';
+		}
+	} else {
+		error('Unable to retrieve your PHP version');
+		return 1;
+	}
+
+	0;
 }
 
 sub setGuiPermissions
