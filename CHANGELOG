@@ -11,6 +11,7 @@ Tickets:
 	- Fixed #551: Bug - Preseed feature is broken
 	- Fixed #552: Bug - PHP constants are not recognized outside of PHP (such as in Apache vhost files)
 	- Fixed #560: Review - Backup filenames are not windows-friendly
+	- Fixed #555: Cosmetics - Missing translation at reseller level
 
 -------------------------------------------------------------------------------------
 i-MSCP 1.1.0-rc1.3

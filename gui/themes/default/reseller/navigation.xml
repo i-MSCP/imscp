@@ -159,7 +159,7 @@
 					<title_class>hosting_plans</title_class>
 					<pages>
 						<hosting_plan_edit_link>
-							<label>{TR_EDIT_HOSTING_PLAN} hosting plan</label>
+							<label>Edit hosting plan</label>
 							<uri>/reseller/hosting_plan_edit.php</uri>
 							<title_class>hosting_plans</title_class>
 							<visible>0</visible>
