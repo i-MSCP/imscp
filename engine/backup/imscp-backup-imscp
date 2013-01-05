@@ -75,7 +75,7 @@ sub backup_imscp_database {
 	use iMSCP::Execute;
 	use iMSCP::File;
 
-	my $date		= strftime "%Y.%m.%d-%H:%M", localtime;
+	my $date		= strftime "%Y.%m.%d-%H-%M", localtime;
 	my $zip			= $main::imscpConfig{'ZIP'};
 	my $sqlFName	= "$main::imscpConfig{'BACKUP_FILE_DIR'}/$main::imscpConfig{DATABASE_NAME}-$date.sql";
 	my $compressCmd = $main::imscpConfig{$command->{$zip}->{command}}." --force \'$sqlFName\'";
@@ -155,7 +155,7 @@ sub backup_imscp_engine {
 
 sub backup_imscp_configs{
 
-	my $date		= strftime "%Y.%m.%d-%H:%M", localtime;
+	my $date		= strftime "%Y.%m.%d-%H-%M", localtime;
 	my $tarName	= "$main::imscpConfig{BACKUP_FILE_DIR}/config-backup-$date.tar";
 	my $fName	= "$tarName.$command->{$main::imscpConfig{ZIP}}->{extension}";
 	my $bkpCmd	= "$main::imscpConfig{CMD_TAR} ".
