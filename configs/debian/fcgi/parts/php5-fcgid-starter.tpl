@@ -13,7 +13,7 @@ export PHP_FCGI_CHILDREN
 # This directive should be made ineffective by setting a number
 # higher than the FcgidMaxRequestsPerProcess defined in the file
 # /etc/apache2/mods-enabled/fcgid_imscp.conf
-PHP_FCGI_MAX_REQUESTS=1000
+PHP_FCGI_MAX_REQUESTS=1500
 export PHP_FCGI_MAX_REQUESTS
 
 TMPDIR="{HOME_DIR}/phptmp"
