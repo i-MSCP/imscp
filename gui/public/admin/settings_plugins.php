@@ -48,7 +48,7 @@ function admin_pluginManagerGeneratePluginList($tpl, $pluginManager)
 		set_page_message(tr('Plugin list is empty. To install a new plugin, extract its archive content into the <strong>gui/plugins</strong> directory and update the plugin list.'), 'info');
 	} else {
 		sort($pluginList);
-		$cacheFile = 'gui/cache/protected_plugins.php';
+		$cacheFile = 'gui/data/persistent/protected_plugins.php';
 		$protectTooltip = '<span style="color:rgb(96, 0, 14);cursor:pointer" title="' . tr('To unprotect this plugin, you must edit the %s file', $cacheFile) . '">' . tr('Protected plugin') . '</span>';
 
 		$hasLoadedPlugins = false;
@@ -270,7 +270,7 @@ $tpl->assign(
 		'TR_PROTECT' => tr('Protect'),
 		'TR_PROTECT_TOOLTIP' => tr('Protect this plugin'),
 		'TR_PLUGIN_CONFIRMATION_TITLE' => tr('Confirmation for plugin protection'),
-		'TR_PROTECT_CONFIRMATION' => tr("If you protect a plugin, you'll no longer be able to deactivate it from the plugin management interface.<br /><br />To unprotect  a plugin, you'll have to edit the %s file.", 'gui/cache/protected_plugins.php'),
+		'TR_PROTECT_CONFIRMATION' => tr("If you protect a plugin, you'll no longer be able to deactivate it from the plugin management interface.<br /><br />To unprotect  a plugin, you'll have to edit the %s file.", 'gui/data/persistent/protected_plugins.php'),
 		'TR_CANCEL' => tr('Cancel'),
 		'TR_VERSION' => tr('Version'),
 		'TR_BY' => tr('By'),

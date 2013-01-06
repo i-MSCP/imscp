@@ -16,6 +16,7 @@ Tickets:
 	- Fixed #555: Cosmetics - Missing translation at reseller level
 	- Fixed #560: Review - Backup filenames are not windows-friendly
 	- Fixed #562: Bug - Error in apache_fcgi installer
+	- Fixed #563: Defect - protected_plugins.php file not in gui/cache
 
 -------------------------------------------------------------------------------------
 i-MSCP 1.1.0-rc1.3
