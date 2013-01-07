@@ -5,3 +5,4 @@ host = https://www.transifex.com
 file_filter = po/<lang>.po
 source_file = po/iMSCP.pot
 source_lang = en
+type = PO
