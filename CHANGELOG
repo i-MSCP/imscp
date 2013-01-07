@@ -12,6 +12,7 @@ CONFIGS:
 	- Updated fcgid configuration files for high-load sites
 
 Tickets:
+	- Fixed #274 (reopened): Defect - Proftpd limits doesn't work
 	- Fixed #548: Bug - Missing comment character in configs/debian/fcgi/parts/php5-fcgid-starter.tpl
 	- Fixed #550: Boolean PHP Values should be set with php_flag and not php_value
 	- Fixed #551: Bug - Preseed feature is broken
@@ -20,6 +21,7 @@ Tickets:
 	- Fixed #560: Review - Backup filenames are not windows-friendly
 	- Fixed #562: Bug - Error in apache_fcgi installer
 	- Fixed #563: Defect - protected_plugins.php file not in gui/cache
+	- Fixed #565: Bug - Ftp limits not applied - Proftpd not restarted
 
 -------------------------------------------------------------------------------------
 i-MSCP 1.1.0-rc1.3
