@@ -51,6 +51,7 @@
 		<base>php5-cgi</base>
 		<base>php5-cli</base>
 		<library>php-pear</library>
+		<library>php5</library>
 		<library>php5-adodb</library>
 		<library>php5-gd</library>
 		<library>php-gettext</library>
@@ -62,7 +63,7 @@
 	<perl>
 		<base>perl</base>
 		<base>perl-base</base>
-		<library>libperl5.10</library>
+		<library>libperl5.14</library>
 		<library>libberkeleydb-perl</library>
 		<library>libcrypt-blowfish-perl</library>
 		<library>libcrypt-cbc-perl</library>
@@ -98,7 +99,7 @@
 		<library>libjson-perl</library>
 	</perl>
 	<other>bash</other>
-	<other>pbzip2</other>
+    <other>pbzip2</other>
 	<other>bzip2</other>
 	<other>awstats</other>
 	<other>chkrootkit</other>
@@ -130,5 +131,5 @@
 	<other>tar</other>
 	<other>wget</other>
 	<other>curl</other>
-	<other>git-core</other>
+	<other>git</other>
 </packages>

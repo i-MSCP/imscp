@@ -5,6 +5,9 @@ i-MSCP ChangeLog
 i-MSCP 1.1.0-rc1.4
 -------------------------------------------------------------------------------------
 
+DISTROS:
+	- Added package files for Ubuntu Quantal Quetzal and Ubuntu Raring Ringtail
+
 CONFIGS:
 	- Updated fcgid configuration files for high-load sites
 
