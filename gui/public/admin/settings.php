@@ -635,7 +635,7 @@ $tpl->assign(
 		 'TR_PHPINI_MAX_INPUT_TIME' => tr('Value for the %s directive', true, '<span class="bold">max_input_time</span>'),
 		 'TR_PHPINI_MEMORY_LIMIT' => tr('Value for the %s directive', true, '<span class="bold">memory_limit</span>'),
 		 'TR_PHPINI_OPEN_BASEDIR' => tr('Value for the %s directive', true, '<span class="bold">open_basedir</span>'),
-		 'TR_PHPINI_OPEN_BASEDIR_TOOLTIP' => json_encode(tr('The directory/file paths are appended to the default PHP open_basedir directive of customers. Each of them must be separated by PATH_SEPARATOR. See the PHP documentation for more information.')),
+		 'TR_PHPINI_OPEN_BASEDIR_TOOLTIP' => json_encode(tr('Paths are appended to the default PHP open_basedir directive of customers. Each of them must be separated by PATH_SEPARATOR. See the PHP documentation for more information.')),
 		 'TR_PHPINI_DISABLE_FUNCTIONS' => tr('Value for the %s directive', true, '<span class="bold">disable_functions</span>'),
 		 'TR_ORDERS_SETTINGS' => tr('Orders settings'),
 		 'TR_ORDERS_EXPIRE_TIME' => tr('Expire time for unconfirmed orders<br /><small>(In days)</small>', true),
