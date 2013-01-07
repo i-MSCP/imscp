@@ -12,9 +12,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2012-12-27 03:23+0100\n"
-"PO-Revision-Date: 2012-12-26 23:51+0000\n"
-"Last-Translator: victor531 <victor53134@gmail.com>\n"
+"POT-Creation-Date: 2013-01-07 04:57+0100\n"
+"PO-Revision-Date: 2013-01-07 03:52+0000\n"
+"Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -1358,7 +1358,7 @@ msgid "Currency"
 msgstr "Moneda"
 
 msgid "Current password"
-msgstr "contraseña actual"
+msgstr "Contraseña actual"
 
 msgid "Custom DNS record"
 msgstr "Registro DNS personalizado"
@@ -1648,7 +1648,7 @@ msgid "Depot import"
 msgstr "Repositorio de importación "
 
 msgid "Description"
-msgstr "Descripcion"
+msgstr "Descripción"
 
 msgid "Details"
 msgstr "Detalles"
@@ -1729,7 +1729,7 @@ msgid "Domain IP"
 msgstr "IP del dominio"
 
 msgid "Domain Limit"
-msgstr "Limite de Dominio"
+msgstr "Límite de Dominio"
 
 msgid "Domain Name"
 msgstr "Nombre de Dominio"
@@ -1826,7 +1826,7 @@ msgstr "¡El alias de dominio que intenta eliminar tiene cuentas de correo!<br> 
 msgid ""
 "Domain alias you are trying to remove has email accounts.<br>First remove "
 "them."
-msgstr "El álias de dominio que estás intentando eliminar tiene cuentas de email.<br>Elimínalas primero."
+msgstr "El álias de dominio que estás intentando eliminar tiene cuentas de Email.<br>Elimínalas primero."
 
 msgid ""
 "Domain alias you are trying to remove has subdomains!<br>First remove them!"
@@ -2076,7 +2076,7 @@ msgid "Email marketing"
 msgstr "Email masivo"
 
 msgid "Email setup"
-msgstr "Configuración de eMail"
+msgstr "Configuración de Email"
 
 msgid "Emailadress"
 msgstr "Dirección de Email"
@@ -2162,7 +2162,7 @@ msgid "Error page not found."
 msgstr "Página de error no encontrada."
 
 msgid "Error pages"
-msgstr "Paginas de error"
+msgstr "Páginas de error"
 
 msgid "Error state..."
 msgstr "Estado de error..."
@@ -2268,7 +2268,7 @@ msgid "FTPs"
 msgstr "FTPs"
 
 msgid "FTPs total"
-msgstr "Total FTPs"
+msgstr "Total cuentas FTP"
 
 msgid "Failed to write file to disk."
 msgstr "Fallo al grabar fichero en el disco."
@@ -2300,7 +2300,7 @@ msgid "File does not exist. %1$s.tar.gz"
 msgstr "Fichero no existe. %1$s.tar.gz"
 
 msgid "File exceeds the size limit."
-msgstr "El fichero excede el limite de tamaño."
+msgstr "El fichero excede el límite de tamaño."
 
 msgid "File is not readable."
 msgstr "No se puede leer el archivo."
@@ -2648,7 +2648,7 @@ msgstr "La longitud o la sintaxis del email són incorrectas."
 
 #, php-format
 msgid "Incorrect limit for %s."
-msgstr "Limite incorrecto para %s."
+msgstr "Límite incorrecto para %s."
 
 msgid "Incorrect mail accounts limit."
 msgstr "Límite de cuentas de email incorrecto."
@@ -2868,7 +2868,7 @@ msgid "Level"
 msgstr "Nivel"
 
 msgid "Limit"
-msgstr "Limite"
+msgstr "Límite"
 
 msgid "Limit value"
 msgstr "Valor límite"
@@ -3163,7 +3163,7 @@ msgid ""
 msgstr "Máximo número de etiquetas para nombres de dominio<br />(<small>Excluyendo SLD & TLD</small>)"
 
 msgid "Maximum number of captcha validation attempts"
-msgstr "Número máximo de intntos validaciones captcha"
+msgstr "Número máximo de intentos validaciones captcha"
 
 msgid "Maximum number of labels for subdomains"
 msgstr "Máximo número de etiquetas para subdominios"
@@ -3347,7 +3347,7 @@ msgid "No domain system errors"
 msgstr "No hay errores en el sistema de dominio"
 
 msgid "No email account system errors"
-msgstr "No hay errores en el sistema de cuentas de eMail"
+msgstr "No hay errores en el sistema de cuentas de Email"
 
 msgid "No file was uploaded."
 msgstr "No se cargó ningún archivo."
@@ -3406,7 +3406,7 @@ msgid "No software is waiting for activation"
 msgstr "No hay software esperando activación"
 
 msgid "No statistics found for the given period. Try another period."
-msgstr "No se encontraron estadísticas para el periodo indicado. Pruebe con otro período."
+msgstr "No se encontraron estadísticas para el período indicado. Pruebe con otro período."
 
 msgid "No subdomain system errors"
 msgstr "No hay errores en el sistema de subdominios"
@@ -3439,7 +3439,7 @@ msgid "Normal connection"
 msgstr "Conexión normal"
 
 msgid "Normal mail"
-msgstr "Correo comun"
+msgstr "Correo común"
 
 msgid "Normal users"
 msgstr "Usuarios comunes"
@@ -3536,10 +3536,10 @@ msgid "Order"
 msgstr "Pedido"
 
 msgid "Order Canceled: resellers limit(s) exceeded."
-msgstr "Pedido cancelado: excedido(s) el/los limite(s) de distribuidores."
+msgstr "Pedido cancelado: excedido(s) el/los límite(s) de distribuidores."
 
 msgid "Order Cancelled: resellers limit(s) exceeded."
-msgstr "Pedido Cancelado: se superó/superaron el/los limite(s) de distribuidores."
+msgstr "Pedido Cancelado: se superó/superaron el/los límite(s) de distribuidores."
 
 msgid "Order Panel / Chart"
 msgstr "Panel de Pedido / Gráfico"
@@ -3572,7 +3572,7 @@ msgid "Order email"
 msgstr "Pedido de email"
 
 msgid "Order email setup"
-msgstr "Configuración del eMail de pedidos"
+msgstr "Configuración del Email de pedidos"
 
 msgid "Order for domain alias deleted."
 msgstr "El pedido de alias de dominio ha sido eliminado."
@@ -3699,7 +3699,7 @@ msgid "Package price"
 msgstr "Precio de paquete"
 
 msgid "Package title"
-msgstr "Titulo del paquete"
+msgstr "Título del paquete"
 
 msgid "Package type"
 msgstr "Tipo de paquete"
@@ -4325,7 +4325,7 @@ msgid "SQL Users"
 msgstr "Usuarios de base de datos"
 
 msgid "SQL accounts limit reached."
-msgstr "Se ha alcanzado el limite de cuentas SQL."
+msgstr "Se ha alcanzado el límite de cuentas SQL."
 
 msgid "SQL database successfully added."
 msgstr "La Base de Datos SQL ha sido añadida correctamente."
@@ -4368,7 +4368,7 @@ msgid "SQL user name"
 msgstr "Nombre de usuario SQL"
 
 msgid "SQL user password successfully updated."
-msgstr "La contraseña del usuari SQL ha sido actualizada correctamente."
+msgstr "La contraseña del usuario SQL ha sido actualizada correctamente."
 
 msgid "SQL user successfully added."
 msgstr "El usuario SQL ha sido añadido correctamente."
@@ -5172,7 +5172,7 @@ msgstr "No hay planes de alojamiento disponibles para actualizaciones."
 
 #, php-format
 msgid "There are reseller limits for the <em>%s</em> service."
-msgstr "Hay limites de distribuidor para el servicio <em>%s</em>."
+msgstr "Hay límites de distribuidor para el servicio <em>%s</em>."
 
 msgid "There is a subdomain with the same mount point."
 msgstr "Ya existe un subdominio con el mismo punto de montaje."
@@ -5750,7 +5750,7 @@ msgid "View aliases"
 msgstr "Ver alias"
 
 msgid "View certificates"
-msgstr "er certificados"
+msgstr "Ver certificados"
 
 msgid "View details"
 msgstr "Ver detalles"
@@ -5998,7 +5998,7 @@ msgstr "Estas excediendo tu límite de alias."
 
 #, php-format
 msgid "You are exceeding reseller limits for the <em>%s</em> service."
-msgstr "Estás excediendo los limites de distribuidor para el servicio <em>%s</em>."
+msgstr "Estás excediendo los límites de distribuidor para el servicio <em>%s</em>."
 
 msgid "You are exceeding the server traffic limit."
 msgstr "Estas excediendo el límite de tráfico del servidor."
@@ -6013,7 +6013,7 @@ msgid "You are exceeding your SQL databases limit."
 msgstr "Estas excediendo tu límite de Bases de Datos SQL"
 
 msgid "You are exceeding your disk limit."
-msgstr "Estas excediendo tu limite de espacio en disco."
+msgstr "Estas excediendo tu límite de espacio en disco."
 
 msgid "You are exceeding your disk space limit."
 msgstr "Estás excediendo el límite de espacio en disco."
@@ -6089,7 +6089,7 @@ msgid "You cant't install the software outside the htdocs directory."
 msgstr "No puedes instalar el software fuera del directorio htdocs."
 
 msgid "You did have more traffic than the new hosting plan limits."
-msgstr "Tienes mas tráfico que los limites del nuevo plan de hospedaje."
+msgstr "Tienes mas tráfico que los límites del nuevo plan de hospedaje."
 
 msgid "You did not fill all required fields"
 msgstr "No has completado todos los campos requeridos"
@@ -6222,36 +6222,36 @@ msgid ""
 msgstr "Tienes desactivado bases de datos SQL para este usuario. <br /> No se puede tener usuarios SQL aquí."
 
 msgid "You have more Email addresses in use than the new hosting plan limits."
-msgstr "Tienes mas direcciones de correo en uso que los limites del nuevo plan de hospedaje."
+msgstr "Tienes mas direcciones de correo en uso que los límites del nuevo plan de hospedaje."
 
 msgid "You have more FTP accounts in use than the new hosting plan limits."
-msgstr "Tienes mas cuentas FTP en uso que los limites del nuevo plan de hospedaje."
+msgstr "Tienes mas cuentas FTP en uso que los límites del nuevo plan de hospedaje."
 
 msgid ""
 "You have more SQL database users in use than the new hosting plan limits."
-msgstr "Tienes mas usuarios de base de datos SQL en uso que los limites del nuevo plan de hospedaje."
+msgstr "Tienes mas usuarios de base de datos SQL en uso que los límites del nuevo plan de hospedaje."
 
 msgid "You have more SQL databases in use than the new hosting plan limits."
-msgstr "Tienes mas base de datos SQL en uso que los limites del nuevo plan de hospedaje."
+msgstr "Tienes mas base de datos SQL en uso que los límites del nuevo plan de hospedaje."
 
 msgid "You have more aliases in use than the new hosting plan limits."
-msgstr "Tienes mas alias en uso que los limites del nuevo plan de hospedaje."
+msgstr "Tienes mas alias en uso que los límites del nuevo plan de hospedaje."
 
 msgid "You have more disk space in use than the new hosting plan limits."
-msgstr "Tienes mas espacio de disco en uso que los limites del nuevo plan de hospedaje."
+msgstr "Tienes mas espacio de disco en uso que los límites del nuevo plan de hospedaje."
 
 msgid "You have more domain aliases in use than the new hosting plan limits"
 msgstr "Tienes mas alias de dominio en uso que los permitidos por los límites del nuevo plan de alojamiento."
 
 msgid ""
 "You have more e-mail addresses in use than the new hosting plan limits."
-msgstr "Tienes mas direcciones de correo en uso que los limites del nuevo plan de hospedaje."
+msgstr "Tienes mas direcciones de correo en uso que los límites del nuevo plan de hospedaje."
 
 msgid "You have more subdomains in use than the new hosting plan limits"
 msgstr "Tienes mas subdominios en uso que los permitidos en los limites del nuevo plan de alojamiento"
 
 msgid "You have more subdomains in use than the new hosting plan limits."
-msgstr "Tienes mas subdominios en uso que los limites del nuevo plan de hospedaje."
+msgstr "Tienes mas subdominios en uso que los límites del nuevo plan de hospedaje."
 
 msgid "You have no custom service ports defined."
 msgstr "No tienes puertos de servicio personalizados definidos."
@@ -6446,10 +6446,10 @@ msgid "conflict with CNAME record"
 msgstr "conflicto con el registro CNAME"
 
 msgid "day"
-msgstr "dia"
+msgstr "día"
 
 msgid "days"
-msgstr "dias"
+msgstr "días"
 
 msgid "deactivate"
 msgstr "Desactivar"
@@ -7023,7 +7023,7 @@ msgid "older than 6 months"
 msgstr "anterior a 6 meses"
 
 msgid "or Check for <strong>never Expire</strong>"
-msgstr "o comprovar que <strong>nunca Expira</strong>"
+msgstr "o comprobar que <strong>nunca Expira</strong>"
 
 #, php-format
 msgid "or remote file (Max: %1$d MB)"
@@ -7098,8 +7098,5 @@ msgstr "{ADMIN} ha activado tu paquete de software"
 msgid "{RESELLER} uploaded a new software package"
 msgstr "{RESELLER} ha cargado un nuevo paquete de software"
 
-msgid "{TR_EDIT_HOSTING_PLAN} hosting plan"
-msgstr "Plan de alojamiento: {TR_EDIT_HOSTING_PLAN}"
-
-msgid "© 2010-2012 i-MSCP Team<br/>All Rights Reserved"
-msgstr "© 2010-2012 i-MSCP Team<br/>Todos los Derechos Reservados"
+msgid "© 2010-2013 i-MSCP Team<br/>All Rights Reserved"
+msgstr ""

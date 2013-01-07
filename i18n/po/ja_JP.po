@@ -3,13 +3,13 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-#   <kazu.nito@gmail.com>, 2011-2012.
+#   <kazu.nito@gmail.com>, 2011-2013.
 msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2012-12-27 03:23+0100\n"
-"PO-Revision-Date: 2012-12-24 18:38+0000\n"
+"POT-Creation-Date: 2013-01-07 04:57+0100\n"
+"PO-Revision-Date: 2013-01-07 03:52+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -561,7 +561,7 @@ msgid "Activate"
 msgstr "アクティブ"
 
 msgid "Activate mail auto-responder"
-msgstr ""
+msgstr "メール自動応答を有効化する"
 
 msgid "Activate this plugin"
 msgstr "このプラグインをアクティブにする"
@@ -869,7 +869,7 @@ msgid "An error occurred while the authentication attempt."
 msgstr "認証処理中にエラーが発生しました。"
 
 msgid "An unexpected error occured, please contact your reseller."
-msgstr ""
+msgstr "予期しないエラーが発生し、代理店にお問い合せください。"
 
 #, php-format
 msgid "An unknown error occured during file upload: %s"
@@ -1008,16 +1008,16 @@ msgid "Auto respond"
 msgstr "自動応答"
 
 msgid "Auto-responder message cannot be empty."
-msgstr ""
+msgstr "自動応答メッセージは、空にすることはできません。"
 
 msgid "Auto-responder successfully scheduled for activation."
-msgstr ""
+msgstr "自動応答のスケジュールが有効化されました。"
 
 msgid "Auto-responder successfully scheduled for deactivation."
-msgstr ""
+msgstr "自動応答のスケジュールが無効化されました。"
 
 msgid "Auto-responder successfully scheduled for update."
-msgstr ""
+msgstr "自動応答のスケジュールが更新されました。"
 
 msgid "Automatic updates"
 msgstr "自動更新"
@@ -1068,7 +1068,7 @@ msgid "Backup support"
 msgstr "バックアップサポート"
 
 msgid "Bad password."
-msgstr ""
+msgstr "パスワードが間違っています。"
 
 msgid "Bandwidth"
 msgstr "帯域幅"
@@ -1493,7 +1493,7 @@ msgid "Database prefix"
 msgstr "データベースプレフィックス"
 
 msgid "Database prefix/suffix"
-msgstr ""
+msgstr "データベース プレフィックス/サフィックス"
 
 msgid "Database required"
 msgstr "必要なデータベース"
@@ -1505,7 +1505,7 @@ msgid "Database updates"
 msgstr "データベースアップデート"
 
 msgid "Database usage"
-msgstr ""
+msgstr "データベースを使用"
 
 msgid "Database user list is empty!"
 msgstr "データベースのユーザーリストが空です！"
@@ -1698,7 +1698,7 @@ msgid "Disk usage"
 msgstr "ディスク使用量"
 
 msgid "Disk usage detail"
-msgstr ""
+msgstr "ディスクの使用状況の詳細"
 
 msgid "Do not show any error"
 msgstr "全てのエラーを表示しない"
@@ -2033,7 +2033,7 @@ msgid "Edit mail account"
 msgstr "メールアカウント編集"
 
 msgid "Edit mail auto-responder"
-msgstr ""
+msgstr "メール自動応答を編集"
 
 msgid "Edit mail quota"
 msgstr "メール容量制限の編集"
@@ -2311,7 +2311,7 @@ msgid "File successfully uploaded."
 msgstr "ファイルがアップロードされました。"
 
 msgid "File usage"
-msgstr ""
+msgstr "ファイルの使用"
 
 msgid "File was successfully uploaded."
 msgstr "ファイルがアップロードされました。"
@@ -3031,7 +3031,7 @@ msgid "Mail successfully sent to your users."
 msgstr "メールがユーザーに送信されました。"
 
 msgid "Mail usage"
-msgstr ""
+msgstr "メールの使用"
 
 msgid "Mail users"
 msgstr "メールユーザー"
@@ -3483,10 +3483,10 @@ msgid "Number of CPU Cores"
 msgstr "CPUコア数"
 
 msgid "Numeric prefix"
-msgstr ""
+msgstr "数字のプレフィックス"
 
 msgid "Numeric suffix"
-msgstr ""
+msgstr "数字のサフィックス"
 
 msgid "OK"
 msgstr "OK"
@@ -3959,7 +3959,7 @@ msgid "Please, don't use special chars such as '@, $, %...' in the password."
 msgstr "パスワードに、'@, $, %...'のような特殊文字を使用しないでください。"
 
 msgid "Please, enter your auto-responder message below"
-msgstr ""
+msgstr "以下にあなたの自動返信メッセージを入力してください"
 
 msgid "Plugin"
 msgstr "プラグイン"
@@ -5104,7 +5104,7 @@ msgid ""
 msgstr "パッケージは、アップロード後に、システムに自動にインストールされます。<br />新しいステータスを表示するにはサイトを更新してください！"
 
 msgid "The password field is empty."
-msgstr ""
+msgstr "パスワードの項目が空です。"
 
 msgid "The password is too long."
 msgstr "パスワードが長すぎます。"
@@ -5138,7 +5138,7 @@ msgid "The username %s is not available."
 msgstr "ユーザ名 %s は使用できません。"
 
 msgid "The username field is empty."
-msgstr ""
+msgstr "ユーザ名の項目が空です。"
 
 msgid "The value has been found in the stack"
 msgstr "値はスタックで発見されている"
@@ -5505,7 +5505,7 @@ msgid "Unknown layout color."
 msgstr "不明なレイアウトカラーが指定されました。"
 
 msgid "Unknown reason."
-msgstr ""
+msgstr "理由が不明。"
 
 msgid "Unknown subdomain type."
 msgstr "サブドメインタイプがありません。"
@@ -6644,10 +6644,10 @@ msgid "i-MSCP - Client / Mail Accounts / External mail servers"
 msgstr "i-MSCP - クライアント / メールアカウント / 外部メールサーバ"
 
 msgid "i-MSCP - Client / Mail accounts / Activate auto-responder"
-msgstr ""
+msgstr "i-MSCP - クライアント / メールアカウント / 自動応答を有効"
 
 msgid "i-MSCP - Client / Mail accounts / Edit auto-responder"
-msgstr ""
+msgstr "i-MSCP - クライアント / メールアカウント / 自動応答編集"
 
 msgid "i-MSCP - Client / Manage domains - Add subdomain"
 msgstr "i-MSCP - クライアント / ドメイン管理 - サブドメイン追加"
@@ -7094,8 +7094,5 @@ msgstr "{ADMIN} ソフトウェアパッケージを有効化"
 msgid "{RESELLER} uploaded a new software package"
 msgstr "{RESELLER} 新しいソフトウェアパッケージをアップロード"
 
-msgid "{TR_EDIT_HOSTING_PLAN} hosting plan"
-msgstr "{TR_EDIT_HOSTING_PLAN} ホスティングプラン"
-
-msgid "© 2010-2012 i-MSCP Team<br/>All Rights Reserved"
-msgstr "© 2010-2012 i-MSCP Team<br/>All Rights Reserved"
+msgid "© 2010-2013 i-MSCP Team<br/>All Rights Reserved"
+msgstr ""

@@ -5,6 +5,9 @@ i-MSCP ChangeLog
 i-MSCP 1.1.0-rc1.4
 -------------------------------------------------------------------------------------
 
+2013-01-07: Laurent Declercq
+	- RELEASE i-MSCP 1.1.0-rc1.4
+
 DISTROS:
 	- Added package files for Ubuntu Quantal Quetzal and Ubuntu Raring Ringtail
 

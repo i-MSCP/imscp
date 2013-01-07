@@ -5,7 +5,7 @@
 # Translators:
 #   <alexander@wachert.com>, 2011.
 # Alex H <paderwan@googlemail.com>, 2012.
-#   <barni@telia.com>, 2011.
+#   <barni@telia.com>, 2011,2013.
 #   <bene@deluxe-styles.de>, 2011, 2012.
 # Christian Hernmarck <joximu@web.de>, 2012.
 #   <eiweleit@osob.de>, 2011.
@@ -28,8 +28,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2012-12-27 03:23+0100\n"
-"PO-Revision-Date: 2012-12-24 18:38+0000\n"
+"POT-Creation-Date: 2013-01-07 04:57+0100\n"
+"PO-Revision-Date: 2013-01-07 03:52+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -581,7 +581,7 @@ msgid "Activate"
 msgstr "Aktivieren"
 
 msgid "Activate mail auto-responder"
-msgstr ""
+msgstr "E-Mail Auto-Antwort aktivieren"
 
 msgid "Activate this plugin"
 msgstr "Aktiviere dieses Plugin"
@@ -889,7 +889,7 @@ msgid "An error occurred while the authentication attempt."
 msgstr "Ein Fehler trat auf während der Authentisierung"
 
 msgid "An unexpected error occured, please contact your reseller."
-msgstr ""
+msgstr "Ein unerwarteter Fehler trat auf. Bitte kontaktieren Sie den Admin."
 
 #, php-format
 msgid "An unknown error occured during file upload: %s"
@@ -1028,16 +1028,16 @@ msgid "Auto respond"
 msgstr "E-Mail Autoresponder"
 
 msgid "Auto-responder message cannot be empty."
-msgstr ""
+msgstr "E-Mail Auto-Antwort Text darf nicht leer sein."
 
 msgid "Auto-responder successfully scheduled for activation."
-msgstr ""
+msgstr "E-Mail Auto-Antwort zur Aktivierung hinzugefuegt."
 
 msgid "Auto-responder successfully scheduled for deactivation."
-msgstr ""
+msgstr "E-Mail Auto-Antwort fuer De-Aktivierung hinzugefuegt."
 
 msgid "Auto-responder successfully scheduled for update."
-msgstr ""
+msgstr "E-Mail Auto-Antwort fuer Update hinzugefuegt."
 
 msgid "Automatic updates"
 msgstr "Automatische Updates"
@@ -1088,7 +1088,7 @@ msgid "Backup support"
 msgstr "Backup Support"
 
 msgid "Bad password."
-msgstr ""
+msgstr "Schlechtes Passwort"
 
 msgid "Bandwidth"
 msgstr "Bandbreite"
@@ -1513,7 +1513,7 @@ msgid "Database prefix"
 msgstr "Datenbank Präfix"
 
 msgid "Database prefix/suffix"
-msgstr ""
+msgstr "Datenbank präfix/suffix"
 
 msgid "Database required"
 msgstr "Datenbank erforderlich"
@@ -1525,7 +1525,7 @@ msgid "Database updates"
 msgstr "i-MSCP Datenbank Updates"
 
 msgid "Database usage"
-msgstr ""
+msgstr "Datenbank detail"
 
 msgid "Database user list is empty!"
 msgstr "Die Datenbank Benutzerliste ist leer!"
@@ -1718,7 +1718,7 @@ msgid "Disk usage"
 msgstr "Speicherplatzverbrauch"
 
 msgid "Disk usage detail"
-msgstr ""
+msgstr "Festplattenspeicher detail"
 
 msgid "Do not show any error"
 msgstr "Zeige keinen Fehler"
@@ -2053,7 +2053,7 @@ msgid "Edit mail account"
 msgstr "Mail Konto bearbeiten"
 
 msgid "Edit mail auto-responder"
-msgstr ""
+msgstr "Ändere E-Mail Auto-Antwort."
 
 msgid "Edit mail quota"
 msgstr "Mailquota bearbeiten"
@@ -2331,7 +2331,7 @@ msgid "File successfully uploaded."
 msgstr "Datei erfolgreich hochgeladen."
 
 msgid "File usage"
-msgstr ""
+msgstr "Datei detail"
 
 msgid "File was successfully uploaded."
 msgstr "Datei wurde erfolgreich hochgeladen. "
@@ -3051,7 +3051,7 @@ msgid "Mail successfully sent to your users."
 msgstr "Die E-Mail wurde an Ihre Benutzer erfolgreich versendet."
 
 msgid "Mail usage"
-msgstr ""
+msgstr "E-Mail detail"
 
 msgid "Mail users"
 msgstr "E-Mail Konten"
@@ -3503,10 +3503,10 @@ msgid "Number of CPU Cores"
 msgstr "Anzahl der CPU-Kerne"
 
 msgid "Numeric prefix"
-msgstr ""
+msgstr "Numerischer präfix"
 
 msgid "Numeric suffix"
-msgstr ""
+msgstr "Numerischer suffix"
 
 msgid "OK"
 msgstr "OK"
@@ -3979,7 +3979,7 @@ msgid "Please, don't use special chars such as '@, $, %...' in the password."
 msgstr "Bitte verwenden Sie im Passwort keine Sonderzeichen wie @, $, %... \"."
 
 msgid "Please, enter your auto-responder message below"
-msgstr ""
+msgstr "Bitte Ihren E-Mail Auto-Antwort text unten eingeben."
 
 msgid "Plugin"
 msgstr "Plugin"
@@ -5124,7 +5124,7 @@ msgid ""
 msgstr "Das Paket wird nach dem Upload automatich installiert.<br/>Bitte aktualisieren Sie die Seite um den neuen Status zu sehen."
 
 msgid "The password field is empty."
-msgstr ""
+msgstr "Das Passwort-Feld ist leer."
 
 msgid "The password is too long."
 msgstr "Das Passwort ist zu lang."
@@ -5158,7 +5158,7 @@ msgid "The username %s is not available."
 msgstr "Der Benutzername %s ist nicht Verfügbar."
 
 msgid "The username field is empty."
-msgstr ""
+msgstr "Das Username-Feld ist leer."
 
 msgid "The value has been found in the stack"
 msgstr "Der Wert wurde im Stapel gefunden"
@@ -5525,7 +5525,7 @@ msgid "Unknown layout color."
 msgstr "Unbekannte Layout-Farbe."
 
 msgid "Unknown reason."
-msgstr ""
+msgstr "Unbekannter Grund."
 
 msgid "Unknown subdomain type."
 msgstr "Unbekannter Subdomain Typ."
@@ -6664,10 +6664,10 @@ msgid "i-MSCP - Client / Mail Accounts / External mail servers"
 msgstr "i-MSCP - Client / Mail Konten / Externe Mailserver"
 
 msgid "i-MSCP - Client / Mail accounts / Activate auto-responder"
-msgstr ""
+msgstr "i-MSCP - Kunde / Mail-konto / Aktivieren der Auto-Antwort"
 
 msgid "i-MSCP - Client / Mail accounts / Edit auto-responder"
-msgstr ""
+msgstr "i-MSCP - Kunde / Mail-konto / Ändern der Auto-Antwort"
 
 msgid "i-MSCP - Client / Manage domains - Add subdomain"
 msgstr "i-MSCP - Kunde / Domains verwalten - Subdomain hinzufügen"
@@ -7114,8 +7114,5 @@ msgstr "{ADMIN} hat ihr Software Paket aktiviert"
 msgid "{RESELLER} uploaded a new software package"
 msgstr "{RESELLER} hat ein neues Software Paket hinzugefügt"
 
-msgid "{TR_EDIT_HOSTING_PLAN} hosting plan"
-msgstr "{TR_EDIT_HOSTING_PLAN} Hosting Plan"
-
-msgid "© 2010-2012 i-MSCP Team<br/>All Rights Reserved"
-msgstr "© 2010-2012 i-MSCP Team<br/>Alle Rechte vorbehalten"
+msgid "© 2010-2013 i-MSCP Team<br/>All Rights Reserved"
+msgstr ""

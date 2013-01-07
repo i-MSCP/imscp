@@ -7,6 +7,7 @@
 # David Bancells <el_slaughter@yahoo.es>, 2012.
 # Esteve Camós <ecamos@grn.cat>, 2008.
 # Joan Juvanteny <jjuvan@grn.cat>, 2008, 2009, 2010, 2011.
+#   <sacoo2@hotmail.com>, 2013.
 #   <sagi@canbasis.com>, 2012.
 # Sagi Roca <sagi@canbasis.com>, 2012.
 #   <shadow+transifex@la3.org>, 2011, 2012.
@@ -14,8 +15,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2012-12-27 03:23+0100\n"
-"PO-Revision-Date: 2012-12-24 18:38+0000\n"
+"POT-Creation-Date: 2013-01-07 04:57+0100\n"
+"PO-Revision-Date: 2013-01-07 03:52+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -573,7 +574,7 @@ msgid "Activate this plugin"
 msgstr "Activar aquest pluguin"
 
 msgid "Activated"
-msgstr ""
+msgstr "Activat"
 
 msgid "Activated softwares"
 msgstr "Programes activats"
@@ -615,7 +616,7 @@ msgid "Add SSL certificate"
 msgstr "Afegir certificat SSL"
 
 msgid "Add a new entry"
-msgstr ""
+msgstr "Afegir una nova entrada"
 
 msgid "Add admin"
 msgstr "Afegir administrador"
@@ -645,10 +646,10 @@ msgid "Add email account"
 msgstr "Afegir compte de correu"
 
 msgid "Add external mail server entry"
-msgstr ""
+msgstr "Afegir una nova entrada de correu extern"
 
 msgid "Add external mail servers for {DOMAIN_UTF8}"
-msgstr ""
+msgstr "Afegir servidors de correu extern per {DOMAIN_UTF8}"
 
 msgid "Add group"
 msgstr "Afegir grup"
@@ -669,7 +670,7 @@ msgid "Add new database"
 msgstr "Afegir nova Base de Dades"
 
 msgid "Add new entry"
-msgstr ""
+msgstr "Afegir nova entrada"
 
 msgid "Add new protected area"
 msgstr "Afegir nova àrea protegida"
@@ -927,7 +928,7 @@ msgstr "Esteu segurs que voleu canviar l'estat del domini %s?"
 msgid ""
 "Are you sure you want to deactivate the external mail server(s) for the '%s'"
 " domain?"
-msgstr ""
+msgstr "Esteu segur que voleu desactivar el(s) servidor(s) de correu extern(s) per el domini '%s'?"
 
 #, php-format
 msgid "Are you sure you want to delete %s service port ?"
@@ -1535,13 +1536,13 @@ msgid "Deactivate"
 msgstr "Desactivar"
 
 msgid "Deactivate selected items"
-msgstr ""
+msgstr "Desactivar els seleccionats"
 
 msgid "Deactivate this plugin"
 msgstr "Desactivar aquest plugin"
 
 msgid "Deactivated"
-msgstr ""
+msgstr "Desactivat"
 
 #, php-format
 msgid ""
@@ -1818,7 +1819,7 @@ msgstr "L'àlies de domini que voleu eliminar disposa de comptes FTP.<br>Elimine
 msgid ""
 "Domain alias you are trying to remove has custom DNS records!<br>First "
 "remove them!"
-msgstr ""
+msgstr "L'alies de domini que voleu esborrar té entrades personalitzades de DNS!<br> Primeu les heu d'esborrar!"
 
 msgid ""
 "Domain alias you are trying to remove has email accounts !<br>First remove "
@@ -4529,7 +4530,7 @@ msgid "Service port was successfully removed."
 msgstr "Port de servei eliminat."
 
 msgid "Service ports"
-msgstr "Pots dels serveis"
+msgstr "Ports dels serveis"
 
 msgid "Service protocol"
 msgstr "Protocol del servei"
@@ -7100,8 +7101,5 @@ msgstr "{ADMIN} ha activat el teu paquet de programari"
 msgid "{RESELLER} uploaded a new software package"
 msgstr "{RESELLER} ha carregat un nou paquet de programari"
 
-msgid "{TR_EDIT_HOSTING_PLAN} hosting plan"
+msgid "© 2010-2013 i-MSCP Team<br/>All Rights Reserved"
 msgstr ""
-
-msgid "© 2010-2012 i-MSCP Team<br/>All Rights Reserved"
-msgstr "© 2010-2012 i-MSCP Team<br/>Tots els Drets Reservats"

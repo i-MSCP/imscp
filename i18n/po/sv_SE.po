@@ -3,14 +3,14 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-#   <barni@telia.com>, 2011-2012.
+#   <barni@telia.com>, 2011-2013.
 msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2012-12-27 03:23+0100\n"
-"PO-Revision-Date: 2012-12-24 22:00+0000\n"
-"Last-Translator: Cool <barni@telia.com>\n"
+"POT-Creation-Date: 2013-01-07 04:57+0100\n"
+"PO-Revision-Date: 2013-01-07 03:52+0000\n"
+"Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -3396,10 +3396,10 @@ msgid "No software in software depot available!"
 msgstr "No software in software depot available!"
 
 msgid "No software in webdepot found!"
-msgstr "No software in webdepot found!"
+msgstr "Ingen programvara i webdepot hittades!"
 
 msgid "No software is waiting for activation"
-msgstr "No software is waiting for activation"
+msgstr "Ingen mjukvara väntar på aktivering"
 
 msgid "No statistics found for the given period. Try another period."
 msgstr "Ingen statistik finns för angiven tidsperiod. Försök med en annan period."
@@ -3414,7 +3414,7 @@ msgid "No unassigned users was found in database."
 msgstr "Inget ledigt användare hittades i databasen."
 
 msgid "No update for the websoftware depot list available"
-msgstr "No update for the websoftware depot list available"
+msgstr "Ingen uppdatering för websoftware depå förteckning är tillgängliga"
 
 msgid "No user found."
 msgstr "Ingen användare hittades."
@@ -3896,7 +3896,7 @@ msgstr "Välj minst ett mail typ."
 msgid ""
 "Please set now the Username and Password for the later Login in the "
 "Application. (Required fiels!)"
-msgstr "Please set now the Username and Password for the later Login in the Application. (Required fiels!)"
+msgstr "Ange nu ditt användarnamn och lösenord för att senare logga in i programmet. (Obligatoriska fält!)"
 
 msgid "Please specify a message content!"
 msgstr "Vänligen skriv något i meddelande!"
@@ -4186,7 +4186,7 @@ msgid "Repeat password"
 msgstr "Upprepa lösenord"
 
 msgid "Request from foreign host was blocked."
-msgstr "Request from foreign host was blocked."
+msgstr "Begäran från värd var blockerad."
 
 msgid "Requires Database?"
 msgstr "Kräver databas?"
@@ -4644,7 +4644,7 @@ msgid "Software name"
 msgstr "Mjukvara namn"
 
 msgid "Software not found!"
-msgstr "Software not found!"
+msgstr "Programvara hittades inte!"
 
 msgid "Software options"
 msgstr "Software options"
@@ -4662,7 +4662,7 @@ msgid "Software status"
 msgstr "Programvara status"
 
 msgid "Software status:"
-msgstr "Software status:"
+msgstr "Programstatus:"
 
 msgid "Software total"
 msgstr "Programvara totala"
@@ -4742,7 +4742,7 @@ msgid "Sql users limit<br><i>(-1 disabled, 0 unlimited)</i>"
 msgstr "Sql users limit<br><i>(-1 disabled, 0 unlimited)</i>"
 
 msgid "Start installation"
-msgstr "Start installation"
+msgstr "Starta installationen"
 
 msgid "State"
 msgstr "State"
@@ -4787,13 +4787,13 @@ msgid "Subdomain errors"
 msgstr "Subdomänsfel"
 
 msgid "Subdomain forward"
-msgstr "Subdomain forward"
+msgstr "Subdomain framåt"
 
 msgid "Subdomain list is empty! You cannot add FTP accounts there!"
 msgstr "Subdomänlistan är tom! Du kan inte lägga till FTP-konton där!"
 
 msgid "Subdomain mail"
-msgstr "Subdomain mail"
+msgstr "Subdomain e-post"
 
 msgid "Subdomain mails"
 msgstr "E-poster för subdomän"
@@ -7094,8 +7094,5 @@ msgstr "{ADMIN} aktiverat ditt programpaket"
 msgid "{RESELLER} uploaded a new software package"
 msgstr "{ÅTERFÖRSÄLJARE} överfört en ny programvarupaket"
 
-msgid "{TR_EDIT_HOSTING_PLAN} hosting plan"
-msgstr "{TR_EDIT_HOSTING_PLAN} hosting plan"
-
-msgid "© 2010-2012 i-MSCP Team<br/>All Rights Reserved"
-msgstr "© 2010-2012 i-MSCP Team<br/>All Rights Reserved"
+msgid "© 2010-2013 i-MSCP Team<br/>All Rights Reserved"
+msgstr ""

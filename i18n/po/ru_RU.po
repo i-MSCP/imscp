@@ -4,16 +4,16 @@
 # 
 # Translators:
 #   <9beliy@gmail.com>, 2012.
-#   <DragonZX@yandex.ru>, 2012.
+#   <DragonZX@yandex.ru>, 2012-2013.
 # Oleg Olegov <>, 2012.
 #   <rwer353453534@mail.ru>, 2011.
 msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2012-12-27 03:23+0100\n"
-"PO-Revision-Date: 2012-12-26 15:11+0000\n"
-"Last-Translator: DragonZX <DragonZX@yandex.ru>\n"
+"POT-Creation-Date: 2013-01-07 04:57+0100\n"
+"PO-Revision-Date: 2013-01-07 03:52+0000\n"
+"Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -46,7 +46,7 @@ msgid ""
 "___________________________\n"
 "The i-MSCP Team\n"
 "\n"
-msgstr "\n\nУважаемый {NAME},\n\nНовая i-MSCP учетная запись была создана для Вас.\n\nИнформация об Вашей учетной записи:\n\nUser type: {USERTYPE}\nИмя пользователя: {USERNAME}\nПароль: {PASSWORD}\n\nНе забудьте сменить пароль в целях безопасности при первом же входе в i-MSCP панель.\n\nВы можете войти сейчас в {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}\n\nСтатистика: {BASE_SERVER_VHOST_PREFIX}{USERNAME}/stats/\n(То же имя пользователя и пароль, что указано выше)\n\nБлагодарим за использование сервисов i-MSCP.\n\n___________________________\nКоманда i-MSCP\n\n"
+msgstr "\n\nУважаемый {NAME},\n\nНовая учетная запись i-MSCP была создана для Вас..\n\nИнформация о Вашей учетной записи:\n\nТип пользователя: {USERTYPE}\nИмя пользователя: {USERNAME}\nПароль: {PASSWORD}\n\nПожалуйста, для Вашей безопасности, измените Ваш пароль при первом входе.\n\nВы можете войти прямо сейчас {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}\n\nСтатистика: {BASE_SERVER_VHOST_PREFIX}{USERNAME}/stats/\n(Те же имя пользователя и пароль, которые указаны выше)\n\nБлагодарим за использование сервисов i-MSCP.\n\n___________________________\nКоманда i-MSCP\n\n"
 
 msgid ""
 "\n"
@@ -642,7 +642,7 @@ msgid "Add email account"
 msgstr "Добавить почтовый ящик"
 
 msgid "Add external mail server entry"
-msgstr "Добавить вхождение внешнего почтового сервера"
+msgstr "Добавить запись внешнего почтового сервера"
 
 msgid "Add external mail servers for {DOMAIN_UTF8}"
 msgstr "Добавить внешний почтовый сервер для {DOMAIN_UTF8}"
@@ -2134,7 +2134,7 @@ msgstr "Введенные пароли не сопадают."
 msgid ""
 "Entries associated to your external mail servers were not found. A "
 "Resynchronization has been scheduled."
-msgstr "Вхождений, ассоциирующихся с Вашим внешним почтовым сервером не было найдено. Будет помечено на пересинхронизацию. "
+msgstr "Записей, ассоциирующихся с Вашим внешним почтовым сервером не было найдено. Будет помечено на пересинхронизацию. "
 
 msgid "Error"
 msgstr "Ошибка"
@@ -2601,7 +2601,7 @@ msgid "Images have to be smaller than 500 x 90 pixels."
 msgstr "Изображения должны быть меньше, чем 500 x 90 пикселей."
 
 msgid "Implementation URL"
-msgstr "Исполнительный URL"
+msgstr "URL выполнения"
 
 msgid "Import"
 msgstr "Импорт"
@@ -4036,7 +4036,7 @@ msgid "Preview"
 msgstr "Предпросмотр"
 
 msgid "Previous"
-msgstr "Предыдущий"
+msgstr "Назад"
 
 msgid "Price"
 msgstr "Цена"
@@ -4171,7 +4171,7 @@ msgid "Remove IP"
 msgstr "Удалить IP"
 
 msgid "Remove last entry"
-msgstr "Удалить последнее вхождение"
+msgstr "Удалить последнюю запись"
 
 msgid "Remove permissions"
 msgstr "Удалить права"
@@ -4273,7 +4273,7 @@ msgid "Reset"
 msgstr "Сбросить"
 
 msgid "Reset entries"
-msgstr "Сбросить вхождения"
+msgstr "Сбросить записи"
 
 msgid "Restore"
 msgstr "Восстановить"
@@ -4442,7 +4442,7 @@ msgid "Select Domain"
 msgstr "Выбрать домен"
 
 msgid "Select all entries for deletion."
-msgstr "Выбрать все вхождения для удаления."
+msgstr "Выбрать все записи для удаления."
 
 msgid "Select database"
 msgstr "Выбрать базу данных"
@@ -4451,12 +4451,12 @@ msgid "Select group:"
 msgstr "Выбрать группу:"
 
 msgid "Select this entry for deletion."
-msgstr "Выберите вхождение для удаления."
+msgstr "Выберите запись для удаления."
 
 msgid ""
 "Selecting all entries for deletion will cause deactivation of external mail "
 "server."
-msgstr "Выбор всех вхождений для удаления, приведет к деактивации внешнего почтового сервера."
+msgstr "Выбор всех записей для удаления, приведет к деактивации внешнего почтового сервера."
 
 msgid "Send"
 msgstr "Отправит"
@@ -5076,14 +5076,14 @@ msgstr "Сейчас домен деактивирован. Изменение �
 
 msgid ""
 "The domain or at least one of its entities has a different status than 'ok'."
-msgstr "Домен, или как минимум одно его вхождений не имеет статуса 'ok'."
+msgstr "Домен, или как минимум одно его записей не имеет статуса 'ok'."
 
 msgid "The domain you are trying to edit doesn't exist."
 msgstr "Домен, который Вы пытаетесь отредактировать, не существует."
 
 #, php-format
 msgid "The entry %s already exists or is defined twice below."
-msgstr "Вхождение %s уже существует или указано дважды."
+msgstr "Запись %s уже существует или указано дважды."
 
 msgid "The external mail feature needs min. 1 email account."
 msgstr "Функция внешней почты требует минимум 1 почтового ящика."
@@ -6036,7 +6036,7 @@ msgid "You are not allowed to remove this DNS record."
 msgstr "Вы не имеете права удалять эту DNS запись."
 
 msgid "You are not allowed to remove this service port entry."
-msgstr "Вам не разрешено удалять это вхождение порта служб."
+msgstr "Вам не разрешено удалять эту запись порта служб."
 
 msgid "You can only upload images."
 msgstr "Вы можете загружать только изображения."
@@ -6073,7 +6073,7 @@ msgid "You cannot remove the %s IP address."
 msgstr "Вы не можете удалить IP адрес %s ."
 
 msgid "You cannot remove this entry."
-msgstr "Вы не можете удалить это вхождение."
+msgstr "Вы не можете удалить эту запись."
 
 msgid "You cannot set expire date in past."
 msgstr "Дата истечения не может быть в прошлом."
@@ -7097,8 +7097,5 @@ msgstr "{ADMIN} активировал Ваш пакет ПО"
 msgid "{RESELLER} uploaded a new software package"
 msgstr "{RESELLER} загрузил новый пакет ПО"
 
-msgid "{TR_EDIT_HOSTING_PLAN} hosting plan"
-msgstr "{TR_EDIT_HOSTING_PLAN} хостинг-план"
-
-msgid "© 2010-2012 i-MSCP Team<br/>All Rights Reserved"
-msgstr "© 2010-2012 i-MSCP Team<br/>Все права защищены"
+msgid "© 2010-2013 i-MSCP Team<br/>All Rights Reserved"
+msgstr ""
