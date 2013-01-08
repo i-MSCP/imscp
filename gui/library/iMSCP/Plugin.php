@@ -81,7 +81,7 @@ abstract class iMSCP_Plugin
 	 * desc: Plugin short description (text only)
 	 * url: Website in which it's possible to found more information about the plugin.
 	 *
-	 * @throws iMSCP_Plugin_Exception in case plugin info file cannot be opened
+	 * @throws iMSCP_Plugin_Exception in case plugin info file cannot be read
 	 * @return array An array containing information about plugin
 	 */
 	public function getInfo()
@@ -96,7 +96,7 @@ abstract class iMSCP_Plugin
 				$info = include $infoFile;
 			} else {
 				throw new iMSCP_Plugin_Exception(
-					"Unable to open the plugin $infoFile file. Please, check file permissions"
+					"Unable to read the plugin $infoFile file. Please, check file permissions"
 				);
 			}
 		} else {
@@ -226,7 +226,7 @@ abstract class iMSCP_Plugin
 	/**
 	 * Load default plugin configuration parameters.
 	 *
-	 * @throws iMSCP_Plugin_Exception in case plugin configuration file cannot be opened
+	 * @throws iMSCP_Plugin_Exception in case plugin configuration file cannot be read
 	 * @return array
 	 */
 	final protected function _loadDefaultConfig()
@@ -239,7 +239,7 @@ abstract class iMSCP_Plugin
 				$config = include $configFile;
 			} else {
 				throw new iMSCP_Plugin_Exception(
-					"Unable to open the plugin $configFile file. Please, check file permissions"
+					"Unable to read the plugin $configFile file. Please, check file permissions"
 				);
 			}
 		}
