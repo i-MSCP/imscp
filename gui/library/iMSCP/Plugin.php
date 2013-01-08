@@ -37,7 +37,7 @@
  * @package		iMSCP_Core
  * @subpackage	Plugin
  * @author		Laurent Declercq <l.declercq@nuxwin.com>
- * @version		0.0.3
+ * @version		0.0.4
  */
 abstract class iMSCP_Plugin
 {
@@ -54,7 +54,6 @@ abstract class iMSCP_Plugin
 	 * @var bool TRUE if plugin configuration is loaded, FALSE otherwise
 	 */
 	protected $_isLoadedConfig = false;
-
 
 	/**
 	 * Constructor
@@ -82,7 +81,8 @@ abstract class iMSCP_Plugin
 	 * desc: Plugin short description (text only)
 	 * url: Website in which it's possible to found more information about the plugin.
 	 *
-	 * @return array
+	 * @throws iMSCP_Plugin_Exception in case plugin info file cannot be opened
+	 * @return array An array containing information about plugin
 	 */
 	public function getInfo()
 	{
@@ -91,8 +91,14 @@ abstract class iMSCP_Plugin
 
 		$info = array();
 
-		if (is_readable($infoFile)) {
-			$info = include $infoFile;
+		if(file_exists($infoFile)) {
+			if (is_readable($infoFile)) {
+				$info = include $infoFile;
+			} else {
+				throw new iMSCP_Plugin_Exception(
+					"Unable to open the plugin $infoFile file. Please, check file permissions"
+				);
+			}
 		} else {
 			set_page_message(
 				tr(
@@ -197,7 +203,6 @@ abstract class iMSCP_Plugin
 		$default = $this->_loadDefaultConfig();
 		$name = $this->getName();
 
-		// TODO Should be reviewed to avoid too many queries when multiple plugins call this method.
 		$stmt = exec_query('SELECT `plugin_config` FROM `plugin` WHERE `plugin_name` = ?', $name);
 
 		if ($stmt->rowCount()) {
@@ -221,6 +226,7 @@ abstract class iMSCP_Plugin
 	/**
 	 * Load default plugin configuration parameters.
 	 *
+	 * @throws iMSCP_Plugin_Exception in case plugin configuration file cannot be opened
 	 * @return array
 	 */
 	final protected function _loadDefaultConfig()
@@ -228,8 +234,14 @@ abstract class iMSCP_Plugin
 		$configFile = PLUGINS_PATH . '/' . $this->getName() . '/config.php';
 		$config = array();
 
-		if (is_readable($configFile)) {
-			$config = include $configFile;
+		if(file_exists($configFile)) {
+			if (is_readable($configFile)) {
+				$config = include $configFile;
+			} else {
+				throw new iMSCP_Plugin_Exception(
+					"Unable to open the plugin $configFile file. Please, check file permissions"
+				);
+			}
 		}
 
 		return $config;
