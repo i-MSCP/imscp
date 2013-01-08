@@ -118,6 +118,9 @@ GUI:
 		- Updated Roundcube addon to version 0.8.4
 
 Tickets:
+	- Fixed #350: Defect - Setup - cancel doesn't work for some dialogs
+	- Fixed #437: Enhancement - Roundcube should use its own database
+	- Fixed #438: Enhancement - Add defaults switch to autoinstaller
 	- Fixed #482: Defect - Alias edit forward url not possible. Validation incorrect
 	- Fixed #499: When deleting a domain alias, the custom DNS records (including those related to external mail
 		server(s)) should be deleted
