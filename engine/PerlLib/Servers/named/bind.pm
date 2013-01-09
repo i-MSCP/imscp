@@ -261,13 +261,16 @@ sub addDmnDb
 
 	####################### TIMESTAMP SECTION START #############################
 
+	my $domainIpType = $ipH->getIpType($option->{'DMN_IP'}) eq 'ipv4' ? 'ip4' : 'ip6';
+	my $serverIpType = $ipH->getIpType($main::imscpConfig{'BASE_SERVER_IP'}) eq 'ipv4' ? 'ip4' : 'ip6';
+
 	my $tags = {
 		MX => $option->{'MX'},
 		DMN_NAME => $option->{'DMN_NAME'},
 		DMN_IP => $option->{'DMN_IP'},
-		IP_TYPE => (lc($ipH->getIpType($option->{'DMN_IP'})) eq 'ipv4' ? 'A' : 'AAAA'),
-		TXT_DMN_IP_TYPE => lc($ipH->getIpType($option->{'DMN_IP'})),
-		TXT_SERVER_IP_TYPE => lc($ipH->getIpType($main::imscpConfig{'BASE_SERVER_IP'})),
+		IP_TYPE => $domainIpType eq 'ip4' ? 'A' : 'AAAA',
+		TXT_DMN_IP_TYPE => $domainIpType,
+		TXT_SERVER_IP_TYPE => $serverIpType,
 		BASE_SERVER_IP => $main::imscpConfig{'BASE_SERVER_IP'}
 	};
 
