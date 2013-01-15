@@ -1,7 +1,7 @@
 #!/usr/bin/perl
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010 - 2011 by internet Multi Server Control Panel
+# Copyright (C) 2010-2013 by internet Multi Server Control Panel
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -18,9 +18,8 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
 # @category		i-MSCP
-# @copyright	2010 - 2012 by i-MSCP | http://i-mscp.net
+# @copyright	2010-2013 by i-MSCP | http://i-mscp.net
 # @author		Daniel Andreca <sci2tech@gmail.com>
-# @version		SVN: $Id: installer.pm 5417 2011-10-05 20:17:21Z sci2tech $
 # @link			http://i-mscp.net i-MSCP Home Site
 # @license		http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
@@ -31,30 +30,27 @@ use warnings;
 use iMSCP::Debug;
 use iMSCP::File;
 use iMSCP::Execute;
+use parent 'Common::SingletonClass';
 
-use vars qw/@ISA/;
+sub _init
+{
+	my $self = shift;
 
-@ISA = ('Common::SingletonClass');
-use Common::SingletonClass;
+	$self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/dovecot";
+	$self->{'bkpDir'} = "$self->{cfgDir}/backup";
+	$self->{'wrkDir'} = "$self->{cfgDir}/working";
 
-sub _init{
-
-	my $self		= shift;
-	$self->{cfgDir}	= "$main::imscpConfig{'CONF_DIR'}/dovecot";
-	$self->{bkpDir}	= "$self->{cfgDir}/backup";
-	$self->{wrkDir}	= "$self->{cfgDir}/working";
-
-	my $conf		= "$self->{cfgDir}/dovecot.data";
+	my $conf = "$self->{cfgDir}/dovecot.data";
 
 	tie %self::dovecotConfig, 'iMSCP::Config','fileName' => $conf;
 
 	0;
 }
 
-sub uninstall{
-
-	my $self	= shift;
-	my $rs		= 0;
+sub uninstall
+{
+	my $self = shift;
+	my $rs = 0;
 
 	$rs |= $self->restoreConfFile();
 	$rs |= $self->removeSQL();
@@ -62,23 +58,18 @@ sub uninstall{
 	$rs;
 }
 
-sub restoreConfFile{
-
-	my $self	= shift;
-	my $rs		= 0;
+sub restoreConfFile
+{
+	my $self = shift;
+	my $rs = 0;
 	my $file;
 
-	for ((
-		'dovecot.conf',
-		'dovecot-sql.conf'
-	)) {
+	for (('dovecot.conf', 'dovecot-sql.conf')) {
 		$rs	|=	iMSCP::File->new(
-					filename => "$self->{bkpDir}/$_.system"
-				)->copyFile(
-					"$self::dovecotConfig{'DOVECOT_CONF_DIR'}/$_"
-				)
-				if -f "$self->{bkpDir}/$_.system"
-		;
+			filename => "$self->{bkpDir}/$_.system"
+		)->copyFile(
+			"$self::dovecotConfig{'DOVECOT_CONF_DIR'}/$_"
+		) if -f "$self->{bkpDir}/$_.system";
 	}
 
 	use Servers::mta;
@@ -96,17 +87,16 @@ sub restoreConfFile{
 	$rs;
 }
 
-sub removeSQL{
-
-	my $self	= shift;
-	my $rs		= 0;
+sub removeSQL
+{
+	my $self = shift;
+	my $rs = 0;
 
 	if($self::dovecotConfig{'DATABASE_USER'}) {
-
 		my $database = iMSCP::Database->new()->factory();
 
-		$database->doQuery( 'delete', "DROP USER ?@?", $self::dovecotConfig{'DATABASE_USER'}, 'localhost');
-		$database->doQuery( 'delete', "DROP USER ?@?", $self::dovecotConfig{'DATABASE_USER'}, '%');
+		$database->doQuery('delete', "DROP USER ?@?", $self::dovecotConfig{'DATABASE_USER'}, 'localhost');
+		$database->doQuery('delete', "DROP USER ?@?", $self::dovecotConfig{'DATABASE_USER'}, '%');
 		$database->doQuery('dummy', 'FLUSH PRIVILEGES');
 
 	}

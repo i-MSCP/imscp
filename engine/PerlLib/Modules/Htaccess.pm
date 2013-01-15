@@ -1,7 +1,7 @@
 #!/usr/bin/perl
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010 - 2011 by internet Multi Server Control Panel
+# Copyright (C) 2010-2013 by internet Multi Server Control Panel
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -18,9 +18,8 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 #
 # @category		i-MSCP
-# @copyright	2010 - 2012 by i-MSCP | http://i-mscp.net
+# @copyright	2010-2013 by i-MSCP | http://i-mscp.net
 # @author		Daniel Andreca <sci2tech@gmail.com>
-# @version		SVN: $Id$
 # @link			http://i-mscp.net i-MSCP Home Site
 # @license		http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
@@ -30,12 +29,7 @@ use strict;
 use warnings;
 use iMSCP::Debug;
 use Data::Dumper;
-
-use vars qw/@ISA/;
-
-@ISA = ('Common::SimpleClass', 'Modules::Abstract');
-use Common::SimpleClass;
-use Modules::Abstract;
+use parent 'Modules::Abstract';
 
 sub _init{
 	my $self		= shift;
@@ -154,7 +148,7 @@ sub process{
 		}
 	}
 
-	my $rdata = iMSCP::Database->factory()->doQuery('delete', @sql);
+	my $rdata = iMSCP::Database->factory()->doQuery('dummy', @sql);
 	error("$rdata") and return 1 if(ref $rdata ne 'HASH');
 
 	$rs;

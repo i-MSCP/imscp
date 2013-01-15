@@ -1,7 +1,13 @@
 #!/usr/bin/perl
 
+=head1 NAME
+
+Addons::policyd - i-MSCP Policyd Weight configurator addon
+
+=cut
+
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010 - 2011 by internet Multi Server Control Panel
+# Copyright (C) 2010-2013 by internet Multi Server Control Panel
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -18,9 +24,8 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
 # @category		i-MSCP
-# @copyright	2010 - 2012 by i-MSCP | http://i-mscp.net
+# @copyright	2010-2013 by i-MSCP | http://i-mscp.net
 # @author		Daniel Andreca <sci2tech@gmail.com>
-# @version		SVN: $Id$
 # @link			http://i-mscp.net i-MSCP Home Site
 # @license		http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
@@ -28,37 +33,78 @@ package Addons::policyd;
 
 use strict;
 use warnings;
-use Data::Dumper;
 use iMSCP::Debug;
+use parent 'Common::SingletonClass';
 
-use vars qw/@ISA/;
+=head1 DESCRIPTION
 
-@ISA = ('Common::SingletonClass');
-use Common::SingletonClass;
+ This is the Policyd Weight configurator addon for i-MSCP.
 
-sub _init{
+ Perl policy daemon for the Postfix MTA Its intended to eliminate forged envelope senders and HELOs
+(i.e. in bogus mails). It allows you to score DNSBLs (RBL/RHSBL), HELO, MAIL FROM and client IP addresses
+before any queuing is done. It allows you to REJECT messages which have a score higher than allowed, providing
+improved blocking of spam and virus mails. policyd-weight caches the most frequent client/sender combinations
+(SPAM as well as HAM) to reduce the number of DNS queries.
 
-	my $self				= shift;
+ Project homepage: http://www.policyd-weight.org/
 
-	$self->{cfgDir}	= "$main::imscpConfig{'CONF_DIR'}/policyd";
-	$self->{bkpDir}	= "$self->{cfgDir}/backup";
-	$self->{wrkDir}	= "$self->{cfgDir}/working";
-	$self->{tplDir}	= "$self->{cfgDir}/parts";
+=head1 CLASS METHODS
 
-	0;
+=over 4
+
+=item factory()
+
+ Implement singleton design pattern. Return instance of this class.
+
+ Return Addons::policyd - Instance of the Addons::policyd class
+
+=cut
+
+sub factory
+{
+	Addons::policyd->new();
 }
 
-sub factory{ return Addons::policyd->new(); }
+=item registerSetupHooks($hooksManager)
 
-sub install{
+ Register setup hook functions.
+
+ Param iMSCP::HooksManager instance
+ Return int - 0 on success, 1 on failure
+
+=cut
+
+sub registerSetupHooks
+{
+	my $self = shift;
+	my $hooksManager = shift;
 
 	use Addons::policyd::installer;
-
-	my $self	= shift;
-	my $rs		= 0;
-	Addons::policyd::installer->new()->install();
-
-	$rs;
+    Addons::policyd::installer->new()->registerSetupHooks($hooksManager);
 }
+
+=item install()
+
+ Run the install method on the policyd addon installer.
+
+ Return int - 0 on success, 1 on failure
+
+=cut
+
+sub install
+{
+	my $self = shift;
+
+	use Addons::policyd::installer;
+	Addons::policyd::installer->new()->install();
+}
+
+=back
+
+=head1 AUTHORS
+
+ - Daniel Andreca <sci2tech@gmail.com>
+
+=cut
 
 1;

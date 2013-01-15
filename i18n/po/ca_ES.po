@@ -7,6 +7,7 @@
 # David Bancells <el_slaughter@yahoo.es>, 2012.
 # Esteve Camós <ecamos@grn.cat>, 2008.
 # Joan Juvanteny <jjuvan@grn.cat>, 2008, 2009, 2010, 2011.
+#   <sacoo2@hotmail.com>, 2013.
 #   <sagi@canbasis.com>, 2012.
 # Sagi Roca <sagi@canbasis.com>, 2012.
 #   <shadow+transifex@la3.org>, 2011, 2012.
@@ -14,9 +15,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2012-10-11 04:04+0200\n"
-"PO-Revision-Date: 2012-10-09 10:45+0000\n"
-"Last-Translator: Torsten Widmann <info@goover.de>\n"
+"POT-Creation-Date: 2013-01-07 04:57+0100\n"
+"PO-Revision-Date: 2013-01-07 03:52+0000\n"
+"Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -566,11 +567,14 @@ msgstr "Accions"
 msgid "Activate"
 msgstr "Activar"
 
+msgid "Activate mail auto-responder"
+msgstr ""
+
 msgid "Activate this plugin"
 msgstr "Activar aquest pluguin"
 
 msgid "Activated"
-msgstr ""
+msgstr "Activat"
 
 msgid "Activated softwares"
 msgstr "Programes activats"
@@ -612,7 +616,7 @@ msgid "Add SSL certificate"
 msgstr "Afegir certificat SSL"
 
 msgid "Add a new entry"
-msgstr ""
+msgstr "Afegir una nova entrada"
 
 msgid "Add admin"
 msgstr "Afegir administrador"
@@ -642,10 +646,10 @@ msgid "Add email account"
 msgstr "Afegir compte de correu"
 
 msgid "Add external mail server entry"
-msgstr ""
+msgstr "Afegir una nova entrada de correu extern"
 
 msgid "Add external mail servers for {DOMAIN_UTF8}"
-msgstr ""
+msgstr "Afegir servidors de correu extern per {DOMAIN_UTF8}"
 
 msgid "Add group"
 msgstr "Afegir grup"
@@ -666,7 +670,7 @@ msgid "Add new database"
 msgstr "Afegir nova Base de Dades"
 
 msgid "Add new entry"
-msgstr ""
+msgstr "Afegir nova entrada"
 
 msgid "Add new protected area"
 msgstr "Afegir nova àrea protegida"
@@ -760,9 +764,6 @@ msgstr "Accedir com a administrador"
 
 msgid "Administrators"
 msgstr "Administradors"
-
-msgid "After the name"
-msgstr "Després del nom"
 
 msgid ""
 "After your upload the package it will be installed on your systems.<br "
@@ -874,6 +875,9 @@ msgstr "Hi ha hagut un error. Siusplau, contacta amb l'administrador."
 msgid "An error occurred while the authentication attempt."
 msgstr "S'ha produït un error durant l'intent d'identificació."
 
+msgid "An unexpected error occured, please contact your reseller."
+msgstr ""
+
 #, php-format
 msgid "An unknown error occured during file upload: %s"
 msgstr "Hi ha hagut un error desconegut mentre es carregava l'arxiu: %s"
@@ -924,7 +928,7 @@ msgstr "Esteu segurs que voleu canviar l'estat del domini %s?"
 msgid ""
 "Are you sure you want to deactivate the external mail server(s) for the '%s'"
 " domain?"
-msgstr ""
+msgstr "Esteu segur que voleu desactivar el(s) servidor(s) de correu extern(s) per el domini '%s'?"
 
 #, php-format
 msgid "Are you sure you want to delete %s service port ?"
@@ -1010,6 +1014,18 @@ msgstr "Plantilla automàtica de correu actualitzada!"
 msgid "Auto respond"
 msgstr "Autoresposta"
 
+msgid "Auto-responder message cannot be empty."
+msgstr ""
+
+msgid "Auto-responder successfully scheduled for activation."
+msgstr ""
+
+msgid "Auto-responder successfully scheduled for deactivation."
+msgstr ""
+
+msgid "Auto-responder successfully scheduled for update."
+msgstr ""
+
 msgid "Automatic updates"
 msgstr "Actualitzacions automàtiques"
 
@@ -1058,11 +1074,11 @@ msgstr "S'ha programat la restauració del domini a partir de l'arxiu especifica
 msgid "Backup support"
 msgstr "Suport de copia de seguretat"
 
+msgid "Bad password."
+msgstr ""
+
 msgid "Bandwidth"
 msgstr "Ample de banda"
-
-msgid "Before the name"
-msgstr "Abans del nom"
 
 msgid "Behind the name"
 msgstr "Darrera del nom"
@@ -1483,6 +1499,9 @@ msgstr "El nom de la Base de Dades és massa llarg."
 msgid "Database prefix"
 msgstr "Prefix de la base de dades"
 
+msgid "Database prefix/suffix"
+msgstr ""
+
 msgid "Database required"
 msgstr "Base de dades requerida"
 
@@ -1491,6 +1510,9 @@ msgstr "Hi ha una actualització de la base de dades."
 
 msgid "Database updates"
 msgstr "Actualitzacions de la base de dades"
+
+msgid "Database usage"
+msgstr ""
 
 msgid "Database user list is empty!"
 msgstr "El limit d'usuaris de Base de Dades està buid!"
@@ -1514,13 +1536,13 @@ msgid "Deactivate"
 msgstr "Desactivar"
 
 msgid "Deactivate selected items"
-msgstr ""
+msgstr "Desactivar els seleccionats"
 
 msgid "Deactivate this plugin"
 msgstr "Desactivar aquest plugin"
 
 msgid "Deactivated"
-msgstr ""
+msgstr "Desactivat"
 
 #, php-format
 msgid ""
@@ -1682,6 +1704,9 @@ msgstr "Quota de disc [MIB]<br/><span class=\"italic\">(0 il·limitat)</span>"
 msgid "Disk usage"
 msgstr "Ús de disc"
 
+msgid "Disk usage detail"
+msgstr ""
+
 msgid "Do not show any error"
 msgstr "No mostrar cap error."
 
@@ -1794,7 +1819,7 @@ msgstr "L'àlies de domini que voleu eliminar disposa de comptes FTP.<br>Elimine
 msgid ""
 "Domain alias you are trying to remove has custom DNS records!<br>First "
 "remove them!"
-msgstr ""
+msgstr "L'alies de domini que voleu esborrar té entrades personalitzades de DNS!<br> Primeu les heu d'esborrar!"
 
 msgid ""
 "Domain alias you are trying to remove has email accounts !<br>First remove "
@@ -2014,8 +2039,8 @@ msgstr "Editar usuari htaccess"
 msgid "Edit mail account"
 msgstr "Modificar compte de correu"
 
-msgid "Edit mail auto responder"
-msgstr "Editar autoresposta de correu"
+msgid "Edit mail auto-responder"
+msgstr ""
 
 msgid "Edit mail quota"
 msgstr "Editar quota de correu"
@@ -2291,6 +2316,9 @@ msgstr "Has d'escollir un arxiu .tar.gz"
 
 msgid "File successfully uploaded."
 msgstr "Arxiu pujat correctament."
+
+msgid "File usage"
+msgstr ""
 
 msgid "File was successfully uploaded."
 msgstr "L'arxiu s'ha pujat correctament"
@@ -3009,6 +3037,9 @@ msgstr "Error en la llista de reenviament!"
 msgid "Mail successfully sent to your users."
 msgstr "Correu enviat correctament als seus usuaris."
 
+msgid "Mail usage"
+msgstr ""
+
 msgid "Mail users"
 msgstr "Usuaris de correu"
 
@@ -3457,6 +3488,12 @@ msgstr "Notificacions, Alertes i Errors"
 
 msgid "Number of CPU Cores"
 msgstr "Número de núclis de CPU"
+
+msgid "Numeric prefix"
+msgstr ""
+
+msgid "Numeric suffix"
+msgstr ""
 
 msgid "OK"
 msgstr "OK"
@@ -3913,9 +3950,6 @@ msgstr "Siusplau introdueix el nom de la Base de Dades."
 msgid "Please type user password."
 msgstr "Siusplau intrudueix la contrasenya d'usuari."
 
-msgid "Please type your mail autorespond message."
-msgstr "Siusplau, introdueix el missatge d'autoresposta d'email."
-
 msgid "Please type your message."
 msgstr "Introduïu el vostre missatge."
 
@@ -3930,6 +3964,9 @@ msgstr "Siusplau, comproveu la configuració de l'editor de PHP."
 
 msgid "Please, don't use special chars such as '@, $, %...' in the password."
 msgstr "Siusplau, no facis servir caracters especials tals com '@, $, %...' per la contrasenya."
+
+msgid "Please, enter your auto-responder message below"
+msgstr ""
 
 msgid "Plugin"
 msgstr "Plugin"
@@ -4493,7 +4530,7 @@ msgid "Service port was successfully removed."
 msgstr "Port de servei eliminat."
 
 msgid "Service ports"
-msgstr "Pots dels serveis"
+msgstr "Ports dels serveis"
 
 msgid "Service protocol"
 msgstr "Protocol del servei"
@@ -5073,6 +5110,9 @@ msgid ""
 "/>Refresh your site to see the new status!"
 msgstr "El paquet s'instal.larà automàticament en el teu sistema després de carregar-el.<br/>Refresca el teu lloc per veure el nou estat!"
 
+msgid "The password field is empty."
+msgstr ""
+
 msgid "The password is too long."
 msgstr "La contrasenya és massa llarga."
 
@@ -5103,6 +5143,9 @@ msgstr "El fitxer carregat només s'ha carregat parcialment."
 #, php-format
 msgid "The username %s is not available."
 msgstr "El nom d'usuari %s no està disponible."
+
+msgid "The username field is empty."
+msgstr ""
 
 msgid "The value has been found in the stack"
 msgstr ""
@@ -5467,6 +5510,9 @@ msgstr "Nom de llenguatge desconegut."
 
 msgid "Unknown layout color."
 msgstr "Capa de color desconeguda."
+
+msgid "Unknown reason."
+msgstr ""
 
 msgid "Unknown subdomain type."
 msgstr "Tipus de subdomini desconegut."
@@ -5878,9 +5924,6 @@ msgstr "Sintaxi d'etiqueta incorrecta: <b>%s</b>"
 
 msgid "Wrong order ID."
 msgstr "Identificador de comanda invàlid."
-
-msgid "Wrong password."
-msgstr "Contrasenya errònia."
 
 msgid "Wrong redirect URL."
 msgstr "L'adreça URL de redirecció és incorrecte."
@@ -6607,6 +6650,12 @@ msgstr ""
 msgid "i-MSCP - Client / Mail Accounts / External mail servers"
 msgstr ""
 
+msgid "i-MSCP - Client / Mail accounts / Activate auto-responder"
+msgstr ""
+
+msgid "i-MSCP - Client / Mail accounts / Edit auto-responder"
+msgstr ""
+
 msgid "i-MSCP - Client / Manage domains - Add subdomain"
 msgstr "i-MSCP - Client / Administrar dominis - Afegir subdomini"
 
@@ -6625,14 +6674,8 @@ msgstr "i-MSCP - Client / Administrar mail / Catchall"
 msgid "i-MSCP - Client / Manage mail / Edit account"
 msgstr "i-MSCP - Client / Administrar mail / Editar compte"
 
-msgid "i-MSCP - Client / Manage mail / Edit autoresponder"
-msgstr "i-MSCP - Client / Administrar mail / Editar autoresposta"
-
 msgid "i-MSCP - Client / Manage mail / Edit quota"
 msgstr "i-MSCP - Client / Administrar correu / Editar quota"
-
-msgid "i-MSCP - Client / Manage mail / Enable autoresponder"
-msgstr "i-MSCP - Client / Ad ministrarmail / Habilitar autoresposta"
 
 msgid "i-MSCP - Client / Support Ticket System / Closed Tickets"
 msgstr "i-MSCP - Client / Sistema de Suport / Tiquets Tancats"
@@ -6690,9 +6733,6 @@ msgstr "i-MSCP - Client/Backup Diari"
 
 msgid "i-MSCP - Client/Edit FTP Account"
 msgstr "i-MSCP - Client/Editar Compte FTP"
-
-msgid "i-MSCP - Client/Enable Mail Auto Responder"
-msgstr "i-MSCP - Client/Activar Autoresposta de Correu"
 
 msgid "i-MSCP - Client/Manage Domains"
 msgstr "i-MSCP - Client/Administrar Dominis"
@@ -7061,8 +7101,5 @@ msgstr "{ADMIN} ha activat el teu paquet de programari"
 msgid "{RESELLER} uploaded a new software package"
 msgstr "{RESELLER} ha carregat un nou paquet de programari"
 
-msgid "{TR_EDIT_HOSTING_PLAN} hosting plan"
+msgid "© 2010-2013 i-MSCP Team<br/>All Rights Reserved"
 msgstr ""
-
-msgid "© 2010-2012 i-MSCP Team<br/>All Rights Reserved"
-msgstr "© 2010-2012 i-MSCP Team<br/>Tots els Drets Reservats"

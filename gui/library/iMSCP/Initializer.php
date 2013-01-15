@@ -18,14 +18,14 @@
  * Portions created by the ispCP Team are Copyright (C) 2006-2010 by
  * isp Control Panel. All Rights Reserved.
  *
- * Portions created by the i-MSCP Team are Copyright (C) 2010-2012 by
+ * Portions created by the i-MSCP Team are Copyright (C) 2010-2013 by
  * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
  *
  * @category	i-MSCP
  * @package		iMSCP_Core
  * @subpackage	Initializer
  * @copyright	2006-2010 by ispCP | http://isp-control.net
- * @copyright	2010-2012 by i-MSCP | http://i-mscp.net
+ * @copyright	2010-2013 by i-MSCP | http://i-mscp.net
  * @author		Laurent Declercq <l.declercq@i-mscp.net>
  * @link		http://i-mscp.net i-MSCP Home Site
  * @license		http://www.mozilla.org/MPL/ MPL 1.1
@@ -501,11 +501,6 @@ class iMSCP_Initializer
 		require_once 'vendor/php-gettext/gettext.inc';
 
 		$locale = isset($_SESSION['user_def_lang']) ? $_SESSION['user_def_lang'] : $this->_config->USER_INITIAL_LANG;
-
-		// Small fix for ar_AE locale
-		if ($locale == 'ar') {
-			$locale = 'ar_AE';
-		}
 
 		$checkedLocale = setlocale(
 			LC_MESSAGES,

@@ -3,6 +3,7 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
+#   <barni@telia.com>, 2012.
 #   <flo_jung@web.de>, 2012.
 # Laurent Declercq <l.declercq@nuxwin.com>, 2011.
 # Torsten Widmann <goover0976@googlemail.com>, 2012.
@@ -12,9 +13,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2012-10-11 04:04+0200\n"
-"PO-Revision-Date: 2012-10-09 10:45+0000\n"
-"Last-Translator: Torsten Widmann <info@goover.de>\n"
+"POT-Creation-Date: 2013-01-07 04:57+0100\n"
+"PO-Revision-Date: 2013-01-07 03:52+0000\n"
+"Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -564,6 +565,9 @@ msgstr "Actions"
 msgid "Activate"
 msgstr "Activate"
 
+msgid "Activate mail auto-responder"
+msgstr "Activate mail auto-responder"
+
 msgid "Activate this plugin"
 msgstr "Activate this plugin"
 
@@ -759,9 +763,6 @@ msgstr "Administrator login"
 msgid "Administrators"
 msgstr "Administrators"
 
-msgid "After the name"
-msgstr "After the name"
-
 msgid ""
 "After your upload the package it will be installed on your systems.<br "
 "/>Refresh your site to see the new status!"
@@ -871,6 +872,9 @@ msgstr "An error occured. Please, contact your administrator."
 
 msgid "An error occurred while the authentication attempt."
 msgstr "An error occurred while the authentication attempt."
+
+msgid "An unexpected error occured, please contact your reseller."
+msgstr "An unexpected error occured, please contact your reseller."
 
 #, php-format
 msgid "An unknown error occured during file upload: %s"
@@ -1008,6 +1012,18 @@ msgstr "Auto email template data updated!"
 msgid "Auto respond"
 msgstr "Auto respond"
 
+msgid "Auto-responder message cannot be empty."
+msgstr "Auto-responder message cannot be empty."
+
+msgid "Auto-responder successfully scheduled for activation."
+msgstr "Auto-responder successfully scheduled for activation."
+
+msgid "Auto-responder successfully scheduled for deactivation."
+msgstr "Auto-responder successfully scheduled for deactivation."
+
+msgid "Auto-responder successfully scheduled for update."
+msgstr "Auto-responder successfully scheduled for update."
+
 msgid "Automatic updates"
 msgstr "Automatic updates"
 
@@ -1056,11 +1072,11 @@ msgstr "Backup archive scheduled for restoring."
 msgid "Backup support"
 msgstr "Backup support"
 
+msgid "Bad password."
+msgstr "Bad password."
+
 msgid "Bandwidth"
 msgstr "Bandwidth"
-
-msgid "Before the name"
-msgstr "Before the name"
 
 msgid "Behind the name"
 msgstr "Behind the name"
@@ -1481,6 +1497,9 @@ msgstr "Database name is too long."
 msgid "Database prefix"
 msgstr "Database prefix"
 
+msgid "Database prefix/suffix"
+msgstr "Database prefix/suffix"
+
 msgid "Database required"
 msgstr "Database required"
 
@@ -1489,6 +1508,9 @@ msgstr "Database update is available."
 
 msgid "Database updates"
 msgstr "Database updates"
+
+msgid "Database usage"
+msgstr "Database usage"
 
 msgid "Database user list is empty!"
 msgstr "Database user list is empty!"
@@ -1679,6 +1701,9 @@ msgstr "Disk space limit [MiB] <br /><span class=\"italic\">(0 unlimited)</span>
 
 msgid "Disk usage"
 msgstr "Disk usage"
+
+msgid "Disk usage detail"
+msgstr "Disk usage detail"
 
 msgid "Do not show any error"
 msgstr "Do not show any error"
@@ -2012,8 +2037,8 @@ msgstr "Edit htaccess user"
 msgid "Edit mail account"
 msgstr "Edit mail account"
 
-msgid "Edit mail auto responder"
-msgstr "Edit mail auto responder"
+msgid "Edit mail auto-responder"
+msgstr "Edit mail auto-responder"
 
 msgid "Edit mail quota"
 msgstr "Edit mail quota"
@@ -2111,7 +2136,7 @@ msgstr "Entered passwords doesn't matches."
 msgid ""
 "Entries associated to your external mail servers were not found. A "
 "Resynchronization has been scheduled."
-msgstr ""
+msgstr "Entries associated to your external mail servers were not found. A Resynchronization has been scheduled."
 
 msgid "Error"
 msgstr "Error"
@@ -2177,7 +2202,7 @@ msgid "External Mail Host"
 msgstr "External Mail Host"
 
 msgid "External Mail Servers"
-msgstr ""
+msgstr "External Mail Servers"
 
 msgid "External mail server"
 msgstr "External mail server"
@@ -2289,6 +2314,9 @@ msgstr "File needs to be a .tar.gz-archive"
 
 msgid "File successfully uploaded."
 msgstr "File successfully uploaded."
+
+msgid "File usage"
+msgstr "File usage"
 
 msgid "File was successfully uploaded."
 msgstr "File was successfully uploaded."
@@ -3007,6 +3035,9 @@ msgstr "Mail forward list error!"
 msgid "Mail successfully sent to your users."
 msgstr "Mail successfully sent to your users."
 
+msgid "Mail usage"
+msgstr "Mail usage"
+
 msgid "Mail users"
 msgstr "Mail users"
 
@@ -3455,6 +3486,12 @@ msgstr "Notices, Warnings and Errors"
 
 msgid "Number of CPU Cores"
 msgstr "Number of CPU Cores"
+
+msgid "Numeric prefix"
+msgstr "Numeric prefix"
+
+msgid "Numeric suffix"
+msgstr "Numeric suffix"
 
 msgid "OK"
 msgstr "OK"
@@ -3911,9 +3948,6 @@ msgstr "Please type database name."
 msgid "Please type user password."
 msgstr "Please type user password."
 
-msgid "Please type your mail autorespond message."
-msgstr "Please type your mail autorespond message."
-
 msgid "Please type your message."
 msgstr "Please type your message."
 
@@ -3928,6 +3962,9 @@ msgstr "Please, check the PHP Editor settings."
 
 msgid "Please, don't use special chars such as '@, $, %...' in the password."
 msgstr "Please, don't use special chars such as '@, $, %...' in the password."
+
+msgid "Please, enter your auto-responder message below"
+msgstr "Please, enter your auto-responder message below"
 
 msgid "Plugin"
 msgstr "Plugin"
@@ -5071,6 +5108,9 @@ msgid ""
 "/>Refresh your site to see the new status!"
 msgstr "The package will be installed automaticly to your system after upload.<br />Refresh your site to see the new status!"
 
+msgid "The password field is empty."
+msgstr "The password field is empty."
+
 msgid "The password is too long."
 msgstr "The password is too long."
 
@@ -5101,6 +5141,9 @@ msgstr "The uploaded file was only partially uploaded."
 #, php-format
 msgid "The username %s is not available."
 msgstr "The username %s is not available."
+
+msgid "The username field is empty."
+msgstr "The username field is empty."
 
 msgid "The value has been found in the stack"
 msgstr "The value has been found in the stack"
@@ -5465,6 +5508,9 @@ msgstr "Unknown language name."
 
 msgid "Unknown layout color."
 msgstr "Unknown layout color."
+
+msgid "Unknown reason."
+msgstr "Unknown reason."
 
 msgid "Unknown subdomain type."
 msgstr "Unknown subdomain type."
@@ -5876,9 +5922,6 @@ msgstr "Wrong label syntax: <b>%s</b>"
 
 msgid "Wrong order ID."
 msgstr "Wrong order ID."
-
-msgid "Wrong password."
-msgstr "Wrong password."
 
 msgid "Wrong redirect URL."
 msgstr "Wrong redirect URL."
@@ -6605,6 +6648,12 @@ msgstr "i-MSCP - Client / Mail Account / Add external mail server"
 msgid "i-MSCP - Client / Mail Accounts / External mail servers"
 msgstr "i-MSCP - Client / Mail Accounts / External mail servers"
 
+msgid "i-MSCP - Client / Mail accounts / Activate auto-responder"
+msgstr "i-MSCP - Client / Mail accounts / Activate auto-responder"
+
+msgid "i-MSCP - Client / Mail accounts / Edit auto-responder"
+msgstr "i-MSCP - Client / Mail accounts / Edit auto-responder"
+
 msgid "i-MSCP - Client / Manage domains - Add subdomain"
 msgstr "i-MSCP - Client / Manage domains - Add subdomain"
 
@@ -6623,14 +6672,8 @@ msgstr "i-MSCP - Client / Manage mail / Catchall"
 msgid "i-MSCP - Client / Manage mail / Edit account"
 msgstr "i-MSCP - Client / Manage mail / Edit account"
 
-msgid "i-MSCP - Client / Manage mail / Edit autoresponder"
-msgstr "i-MSCP - Client / Manage mail / Edit autoresponder"
-
 msgid "i-MSCP - Client / Manage mail / Edit quota"
 msgstr "i-MSCP - Client / Manage mail / Edit quota"
-
-msgid "i-MSCP - Client / Manage mail / Enable autoresponder"
-msgstr "i-MSCP - Client / Manage mail / Enable autoresponder"
 
 msgid "i-MSCP - Client / Support Ticket System / Closed Tickets"
 msgstr "i-MSCP - Client / Support Ticket System / Closed Tickets"
@@ -6688,9 +6731,6 @@ msgstr "i-MSCP - Client/Daily Backup"
 
 msgid "i-MSCP - Client/Edit FTP Account"
 msgstr "i-MSCP - Client/Edit FTP Account"
-
-msgid "i-MSCP - Client/Enable Mail Auto Responder"
-msgstr "i-MSCP - Client/Enable Mail Auto Responder"
 
 msgid "i-MSCP - Client/Manage Domains"
 msgstr "i-MSCP - Client/Manage Domains"
@@ -7059,8 +7099,5 @@ msgstr "{ADMIN} activated your software package"
 msgid "{RESELLER} uploaded a new software package"
 msgstr "{RESELLER} uploaded a new software package"
 
-msgid "{TR_EDIT_HOSTING_PLAN} hosting plan"
-msgstr "{TR_EDIT_HOSTING_PLAN} hosting plan"
-
-msgid "© 2010-2012 i-MSCP Team<br/>All Rights Reserved"
-msgstr "© 2010-2012 i-MSCP Team<br/>All Rights Reserved"
+msgid "© 2010-2013 i-MSCP Team<br/>All Rights Reserved"
+msgstr ""

@@ -21,11 +21,11 @@
  * Portions created by the ispCP Team are Copyright (C) 2006-2010 by
  * isp Control Panel. All Rights Reserved.
  *
- * Portions created by the i-MSCP Team are Copyright (C) 2010-2012 by
- * i-MSCP a internet Multi Server Control Panel. All Rights Reserved.
+ * Portions created by the i-MSCP Team are Copyright (C) 2010-2013 by
+ * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
  *
  * @copyright   2006-2010 by ispCP | http://isp-control.net
- * @copyright   2010-2012 by i-MSCP | http://i-mscp.net
+ * @copyright   2010-2013 by i-MSCP | http://i-mscp.net
  * @link        http://i-mscp.net
  * @author      ispCP Team
  * @author      i-MSCP Team
@@ -93,15 +93,20 @@ function get_domain_running_sub_cnt($domain_id)
  */
 function get_domain_running_als_cnt($domain_id)
 {
+	/** @var $cfg iMSCP_Config_Handler_File */
+	$cfg = iMSCP_Registry::get('config');
+
     $query = "
 		SELECT
-			COUNT(*) AS `cnt`
+			COUNT(`alias_id`) AS `cnt`
 		FROM
 			`domain_aliasses`
 		WHERE
 			`domain_id` = ?
+		AND
+			`alias_status` != ?
 	";
-    $stmt = exec_query($query, $domain_id);
+    $stmt = exec_query($query, array($domain_id, $cfg->ITEM_ORDERED_STATUS));
 
     return $stmt->fields['cnt'];
 }
@@ -774,17 +779,11 @@ function customerHasFeature($featureNames, $forceReload = false)
 }
 
 /**
- * DELETE existing autoreplies_log for emailaddress.
- * @author Sascha Bay <worst.case@gmx.de>
- * @param string $email_address emailaddress to match against
+ * Delete all autoreplies log for which not mail address is found in the mail_users database table
+ *
+ * @return void
  */
-function delete_autoreplies_log_entries($email_address)
+function delete_autoreplies_log_entries()
 {
-    $query = "
-		DELETE FROM
-			`autoreplies_log`
-		WHERE
-			`from` = ?
-	";
-    $stmt = exec_query($query, $email_address);
+	exec_query("DELETE FROM `autoreplies_log` WHERE `from` NOT IN (SELECT `mail_addr` FROM `mail_users`)");
 }

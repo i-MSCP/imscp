@@ -1,7 +1,7 @@
 #!/usr/bin/perl
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010 - 2011 by internet Multi Server Control Panel
+# Copyright (C) 2010-2013 by internet Multi Server Control Panel
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -18,9 +18,8 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
 # @category		i-MSCP
-# @copyright	2010 - 2012 by i-MSCP | http://i-mscp.net
+# @copyright	2010-2013 by i-MSCP | http://i-mscp.net
 # @author		Daniel Andreca <sci2tech@gmail.com>
-# @version		SVN: $Id$
 # @link			http://i-mscp.net i-MSCP Home Site
 # @license		http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
@@ -30,21 +29,16 @@ use strict;
 use warnings;
 use iMSCP::Debug;
 use iMSCP::Execute;
+use parent 'Common::SimpleClass';
 
-use vars qw/@ISA/;
+sub addSystemGroup
+{
+	my $self = shift;
 
-@ISA = ('Common::SimpleClass');
-use Common::SimpleClass;
+	fatal('Please use only instance of class not static calls', 1) if ref $self ne __PACKAGE__;
 
-sub addSystemGroup{
-
-
-	my $self	= shift;
-
-	fatal('Please use only instance of class not static calls', 1) if(ref $self ne __PACKAGE__);
-
-	my $groupName	= shift || $self->{groupname} || undef;
-	$self->{groupname} = $groupName;
+	my $groupName = shift || $self->{'groupname'} || undef;
+	$self->{'groupname'} = $groupName;
 
 	if(!$groupName){
 		error('No group name was provided');
@@ -53,33 +47,34 @@ sub addSystemGroup{
 
 	if(!getgrnam($groupName)){
 		my ($rs, $stdout, $stderr);
-		my $systemGroup		= $self->{system} ? '-r' : '';
+		my $systemGroup = $self->{'system'} ? '-r' : '';
 
 		my  @cmd = (
 			"$main::imscpConfig{'CMD_GROUPADD'}",
-			($^O !~ /bsd$/ ? "$systemGroup" : ''),	#system group
-			"\"$groupName\""							#group name
+			($^O !~ /bsd$/ ? "$systemGroup" : ''),	# system group
+			"\"$groupName\""						# group name
 		);
 		$rs = execute("@cmd", \$stdout, \$stderr);
 		debug("$stdout") if $stdout;
 		error("$stderr") if ($stderr && $rs);
 		warning("$stderr") if ($stderr && !$rs);
+
 		return $rs if $rs;
 	}
 
 	0;
 }
 
-sub delSystemGroup{
+sub delSystemGroup
+{
+	my $self = shift;
 
-	my $self	= shift;
+	fatal('Please use only instance of class not static calls', 1) if ref $self ne __PACKAGE__;
 
-	fatal('Please use only instance of class not static calls', 1) if(ref $self ne __PACKAGE__);
+	my $groupName = shift || $self->{'groupname'} || undef;
+	$self->{'groupname'} = $groupName;
 
-	my $groupName	= shift || $self->{groupname} || undef;
-	$self->{groupname} = $groupName;
-
-	if(!$groupName){
+	if(! $groupName){
 		error('No group name was provided');
 		return 1;
 	}
@@ -94,6 +89,7 @@ sub delSystemGroup{
 		debug("$stdout") if $stdout;
 		error("$stderr") if ($stderr && $rs);
 		warning("$stderr") if ($stderr && !$rs);
+
 		return $rs if $rs;
 	}
 

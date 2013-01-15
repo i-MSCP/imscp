@@ -8,7 +8,6 @@
 			<apache_fcgi>libapache2-mod-fcgid</apache_fcgi>
 			<apache_itk>apache2</apache_itk>
 			<apache_itk>apache2-mpm-itk</apache_itk>
-			<apache_itk>apache2-suexec</apache_itk>
 			<apache_itk>libapache2-mod-php5</apache_itk>
 		</alternative>
 	</httpd>
@@ -48,21 +47,21 @@
 		<mysql>mysql-client</mysql>
 	</sql>
 	<php>
-		<common>php-pear</common>
-		<php5>php5</php5>
-		<php5>php5-adodb</php5>
-		<php5>php5-cgi</php5>
-		<php5>php5-cli</php5>
-		<php5>php5-gd</php5>
-		<php5>php-gettext</php5>
-		<php5>php5-intl</php5>
-		<php5>php5-mcrypt</php5>
-		<php5>php5-mysql</php5>
-		<php5>php5-suhosin</php5>
+        <base>php5</base>
+		<base>php5-cgi</base>
+		<base>php5-cli</base>
+		<library>php-pear</library>
+		<library>php5-adodb</library>
+		<library>php5-gd</library>
+		<library>php-gettext</library>
+		<library>php5-intl</library>
+		<library>php5-mcrypt</library>
+		<library>php5-mysql</library>
+		<library>php5-suhosin</library>
 	</php>
 	<perl>
-		perl
-		<other>perl-base</other>
+		<base>perl</base>
+		<base>perl-base</base>
 		<library>libperl5.14</library>
 		<library>libberkeleydb-perl</library>
 		<library>libcrypt-blowfish-perl</library>
@@ -96,11 +95,11 @@
 		<library>libxml-parser-perl</library>
 		<library>libxml-simple-perl</library>
 		<library>libemail-simple-perl</library>
+		<library>libjson-perl</library>
 	</perl>
 	<other>bash</other>
+    <other>pbzip2</other>
 	<other>bzip2</other>
-	<other>lsb-base</other>
-	<other>lsb-release</other>
 	<other>awstats</other>
 	<other>chkrootkit</other>
 	<other>dialog</other>
@@ -130,4 +129,6 @@
 	<other>ssh</other>
 	<other>tar</other>
 	<other>wget</other>
+	<other>curl</other>
+	<other>git</other>
 </packages>

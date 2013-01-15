@@ -20,7 +20,7 @@
  * @category	iMSCP
  * @package		iMSCP_Core
  * @subpackage	Reseller
- * @copyright	2010-2012 by i-MSCP team
+ * @copyright	2010-2013 by i-MSCP team
  * @author		Laurent Declercq <l.declercq@nuxwin.com>
  * @version     0.0.1
  * @link		http://www.i-mscp.net i-MSCP Home Site
@@ -159,7 +159,7 @@
 					<title_class>hosting_plans</title_class>
 					<pages>
 						<hosting_plan_edit_link>
-							<label>{TR_EDIT_HOSTING_PLAN} hosting plan</label>
+							<label>Edit hosting plan</label>
 							<uri>/reseller/hosting_plan_edit.php</uri>
 							<title_class>hosting_plans</title_class>
 							<visible>0</visible>

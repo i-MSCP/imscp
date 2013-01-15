@@ -1,6 +1,6 @@
 <?php
 /**
- * i-MSCP a internet Multi Server Control Panel
+ * i-MSCP - internet Multi Server Control Panel
  *
  * The contents of this file are subject to the Mozilla Public License
  * Version 1.1 (the "License"); you may not use this file except in
@@ -21,13 +21,13 @@
  * Portions created by the ispCP Team are Copyright (C) 2006-2010 by
  * isp Control Panel. All Rights Reserved.
  *
- * Portions created by the i-MSCP Team are Copyright (C) 2010-2012 by
- * i-MSCP a internet Multi Server Control Panel. All Rights Reserved.
+ * Portions created by the i-MSCP Team are Copyright (C) 2010-2013 by
+ * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
  *
  * @category	i-MSCP
  * @package		i-MSCP
  * @copyright	2006-2010 by ispCP | http://isp-control.net
- * @copyright	2010-2012 by i-MSCP | http://i-mscp.net
+ * @copyright	2010-2013 by i-MSCP | http://i-mscp.net
  * @author		ispCP Team
  * @author		i-MSCP Team
  * @author		Laurent Declercq <l.declercq@nuxwin.com>
@@ -69,11 +69,19 @@ define('CACHE_PATH', GUI_ROOT_DIR .'/data/cache');
 // Define persistent directory path
 define('PERSISTENT_PATH', GUI_ROOT_DIR .'/data/persistent');
 
-/**
- * Autoloading classes
- */
-require_once 'imscp-loader.php';
-spl_autoload_register('autoload_class');
+// Autoloader
+// TODO generate a classmap on first load and cache it for better performances
+require_once 'iMSCP/Loader/AutoloaderFactory.php';
+iMSCP\Loader\AutoloaderFactory::factory(
+    array(
+        'iMSCP\Loader\UniversalLoader' => array(
+            'prefixes' => array(
+                'iMSCP' => __DIR__, // Setup namespace for iMSCP classes using PHP5.3 namespaces
+                'Zend_' => __DIR__ . '/vendor', // Setup prefix for Zend class using Pear naming convention
+            )
+        )
+    )
+);
 
 /**
  * Attach the primary exception writer to write uncaught exceptions messages to the

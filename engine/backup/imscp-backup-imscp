@@ -1,7 +1,7 @@
 #!/usr/bin/perl
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010 by internet Multi Server Control Panel
+# Copyright (C) 2010-2013 by internet Multi Server Control Panel
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -18,9 +18,8 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
 # @category		i-MSCP
-# @copyright	2010 - 2012 by i-MSCP | http://i-mscp.net
+# @copyright	2010-2013 by i-MSCP | http://i-mscp.net
 # @author		Daniel Andreca <sci2tech@gmail.com>
-# @version		SVN: $Id$
 # @link			http://i-mscp.net i-MSCP Home Site
 # @license		http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
@@ -36,9 +35,10 @@ use iMSCP::Debug;
 use iMSCP::Boot;
 use iMSCP::Dialog;
 
-newDebug('imscp-net-interfaces-mngr.log');
+newDebug('imscp-backup-imscp.log');
 
 our $command = {
+				pbzip2	=> {extension => 'bz2',		command => 'CMD_PBZIP'},
 				bzip2	=> {extension => 'bz2',		command => 'CMD_BZIP'},
 				gzip	=> {extension => 'gz',		command => 'CMD_GZIP'},
 				lzma	=> {extension => 'lzma',	command => 'CMD_LZMA'}
@@ -47,6 +47,7 @@ our $command = {
 sub backup_imscp_start_up {
 
 	umask(027);
+
 	iMSCP::Boot->new()->init({nolock => 'yes'});
 
 	iMSCP::Boot->new()->lock('/tmp/imscp-backup-imscp.lock');
@@ -74,7 +75,7 @@ sub backup_imscp_database {
 	use iMSCP::Execute;
 	use iMSCP::File;
 
-	my $date		= strftime "%Y.%m.%d-%H:%M", localtime;
+	my $date		= strftime "%Y.%m.%d-%H-%M", localtime;
 	my $zip			= $main::imscpConfig{'ZIP'};
 	my $sqlFName	= "$main::imscpConfig{'BACKUP_FILE_DIR'}/$main::imscpConfig{DATABASE_NAME}-$date.sql";
 	my $compressCmd = $main::imscpConfig{$command->{$zip}->{command}}." --force \'$sqlFName\'";
@@ -112,7 +113,6 @@ sub backup_imscp_database {
 sub backup_imscp_engine {
 
 	if ($main::imscpConfig{'BACKUP_IMSCP'} ne 'yes') {
-		#warning('main backup is disabled');
 		return 0;
 	}
 
@@ -155,13 +155,13 @@ sub backup_imscp_engine {
 
 sub backup_imscp_configs{
 
-	my $date		= strftime "%Y.%m.%d-%H:%M", localtime;
+	my $date		= strftime "%Y.%m.%d-%H-%M", localtime;
 	my $tarName	= "$main::imscpConfig{BACKUP_FILE_DIR}/config-backup-$date.tar";
 	my $fName	= "$tarName.$command->{$main::imscpConfig{ZIP}}->{extension}";
 	my $bkpCmd	= "$main::imscpConfig{CMD_TAR} ".
 					"--create ".
 					"-C $main::imscpConfig{CONF_DIR} ".
-					"--$main::imscpConfig{ZIP} ".
+					"--use-compress-program=" . lc($main::imscpConfig{ZIP}) . ' ' .
 					"--exclude=?*[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9] ".
 					"-p ".
 					"--file=$fName .";

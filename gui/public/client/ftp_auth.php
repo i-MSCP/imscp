@@ -19,7 +19,7 @@
  * @category	iMSCP
  * @package		iMSCP_Core
  * @subpackage	Client
- * @copyright	2010-2012 by i-MSCP team
+ * @copyright	2010-2013 by i-MSCP team
  * @author		iMSCP Team
  * @author		Laurent Declercq <l.declercq@nuxwin.com>
  * @link		http://www.i-mscp.net i-MSCP Home Site

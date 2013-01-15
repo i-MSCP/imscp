@@ -1,6 +1,6 @@
 <?php
 /**
- * i-MSCP a internet Multi Server Control Panel
+ * i-MSCP - internet Multi Server Control Panel
  *
  * The contents of this file are subject to the Mozilla Public License
  * Version 1.1 (the "License"); you may not use this file except in
@@ -21,15 +21,15 @@
  * Portions created by the ispCP Team are Copyright (C) 2006-2010 by
  * isp Control Panel. All Rights Reserved.
  *
- * Portions created by the i-MSCP Team are Copyright (C) 2010-2012 by
- * i-MSCP a internet Multi Server Control Panel. All Rights Reserved.
+ * Portions created by the i-MSCP Team are Copyright (C) 2010-2013 by
+ * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
  *
  * @category	i-MSCP
  * @package		iMSCP_Core
  * @subpackage	Reseller
  * @copyright   2001-2006 by moleSoftware GmbH
  * @copyright   2006-2010 by ispCP | http://isp-control.net
- * @copyright   2010-2012 by i-MSCP | http://i-mscp.net
+ * @copyright   2010-2013 by i-MSCP | http://i-mscp.net
  * @author      ispCP Team
  * @author      i-MSCP Team
  * @link        http://i-mscp.net
@@ -212,7 +212,7 @@ function gen_editalias_page($tpl, $edit_id) {
 /**
  * Check input data
  *
- * @param iMSCP_pTemplate $tpl
+ * @param iMSCP_pTemplate $tpl Template engine
  * @param $alias_id
  * @return bool
  */
@@ -220,65 +220,87 @@ function check_fwd_data($tpl, $alias_id) {
 
 	$cfg = iMSCP_Registry::get('config');
 
-	$forward_url = strtolower(clean_input($_POST['forward']));
-
 	if (isset($_POST['status']) && $_POST['status'] == 1) {
 		$forward_prefix = clean_input($_POST['forward_prefix']);
-		if (substr_count($forward_url, '.') <= 2) {
-			$ret = validates_dname($forward_url);
-		} else {
-			$ret = validates_dname($forward_url, true);
-		}
-		if (!$ret) {
-			set_page_message(tr("Wrong domain part in forward URL."), 'error');
-		} else {
-			$forward_url = encode_idna($forward_prefix.$forward_url);
-		}
+		$forward = strtolower(clean_input($_POST['forward']));
+        $aurl = @parse_url($forward_prefix . $forward);
+
+        if ($aurl === false) {
+            set_page_message(tr('Wrong address in forward URL.'), 'error');
+        } else {
+            $domain = $aurl['host'];
+
+            if (substr_count($domain, '.') <= 2) {
+                $ret = validates_dname($domain);
+            } else {
+                $ret = validates_dname($domain, true);
+            }
+
+            if (!$ret) {
+                set_page_message(tr('Wrong domain part in forward URL.', 'error'));
+            } else {
+                $domain = encode_idna($aurl['host']);
+                $forward = $aurl['scheme'] . '://';
+
+                if (isset($aurl['user'])) {
+                    $forward .= $aurl['user'] . (isset($aurl['pass']) ? ':' . $aurl['pass'] : '') . '@';
+                }
+
+                $forward .= $domain;
+
+                if (isset($aurl['port'])) {
+                    $forward .= ':' . $aurl['port'];
+                }
+
+                if (isset($aurl['path'])) {
+                    $forward .= $aurl['path'];
+                } else {
+                    $forward .= '/';
+                }
+
+                if (isset($aurl['query'])) {
+                    $forward .= '?' . $aurl['query'];
+                }
+
+                if (isset($aurl['fragment'])) {
+                    $forward .= '#' . $aurl['fragment'];
+                }
+            }
+        }
 
 		$check_en = $cfg->HTML_CHECKED;
 		$check_dis = '';
 		$tpl->assign(
 			array(
-				'FORWARD' => tohtml($forward_url),
+				'FORWARD' => tohtml($forward),
 				'HTTP_YES' => ($forward_prefix === 'http://') ? $cfg->HTML_SELECTED : '',
 				'HTTPS_YES' => ($forward_prefix === 'https://') ? $cfg->HTML_SELECTED : '',
 				'FTP_YES' => ($forward_prefix === 'ftp://') ? $cfg->HTML_SELECTED : '',
 				'CHECK_EN' => $check_en,
 				'CHECK_DIS' => $check_dis,
 				'DISABLE_FORWARD' => '',
-				'READONLY_FORWARD' => ''));
+				'READONLY_FORWARD' => ''
+			)
+		);
 	} else {
 		$check_en = $cfg->HTML_CHECKED;
 		$check_dis = '';
-		$forward_url = 'no';
+		$forward = 'no';
 		$tpl->assign(
 			array(
 				'READONLY_FORWARD' => $cfg->HTML_READONLY,
 				'DISABLE_FORWARD' => $cfg->HTML_DISABLED,
 				'CHECK_EN' => $check_en,
-				'CHECK_DIS' => $check_dis,));
+				'CHECK_DIS' => $check_dis
+			)
+		);
 	}
 
 	if (!Zend_Session::namespaceIsset('pageMessages')) {
-		$query = "
-			UPDATE
-				`domain_aliasses`
-			SET
-				`url_forward` = ?,
-				`alias_status` = ?
-			WHERE
-				`alias_id` = ?
-		";
-		exec_query($query, array($forward_url, $cfg->ITEM_CHANGE_STATUS, $alias_id));
+		$query = "UPDATE `domain_aliasses` SET `url_forward` = ?, `alias_status` = ? WHERE `alias_id` = ?";
+		exec_query($query, array($forward, $cfg->ITEM_CHANGE_STATUS, $alias_id));
 
-		$query = "
-			UPDATE
-				`subdomain_alias`
-			SET
-				`subdomain_alias_status` = ?
-			WHERE
-				`alias_id` = ?
-		";
+		$query = "UPDATE `subdomain_alias` SET `subdomain_alias_status` = ? WHERE `alias_id` = ?";
 		exec_query($query, array($cfg->ITEM_CHANGE_STATUS, $alias_id));
 
 		send_request();

@@ -20,7 +20,7 @@
  * @category	iMSCP
  * @package		iMSCP_Core
  * @subpackage	Uri
- * @copyright	2010-2012 by by i-MSCP team
+ * @copyright	2010-2013 by by i-MSCP team
  * @author		Laurent Declercq <l.declercq@i-mscp.net>
  * @version		0.0.1
  * @link		http://www.i-mscp.net i-MSCP Home Site

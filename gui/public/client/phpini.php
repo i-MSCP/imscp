@@ -19,7 +19,7 @@
  * @category    iMSCP
  * @package     iMSCP_Core
  * @subpackage  Client
- * @copyright   2010-2012 by i-MSCP team
+ * @copyright   2010-2013 by i-MSCP team
  * @author		Hannes Koschier <hannes@cheat.at>
  * @author      iMSCP Team
  * @link        http://www.i-mscp.net i-MSCP Home Site
@@ -158,8 +158,8 @@ if ($phpini->getClPermVal('phpiniAllowUrlFopen') == 'no') {
 	$tplVars['ALLOW_URL_FOPEN_BLOCK'] = '';
 } else {
 	$tplVars['TR_ALLOW_URL_FOPEN'] = 'allow_url_fopen';
-	$tplVars['ALLOW_URL_FOPEN_ON'] = ($phpini->getDataVal('phpiniAllowUrlFopen') == 'On') ? $htmlSelected : '';
-	$tplVars['ALLOW_URL_FOPEN_OFF'] = ($phpini->getDataVal('phpiniAllowUrlFopen') == 'Off') ? $htmlSelected : '';
+	$tplVars['ALLOW_URL_FOPEN_ON'] = ($phpini->getDataVal('phpiniAllowUrlFopen') == 'on') ? $htmlSelected : '';
+	$tplVars['ALLOW_URL_FOPEN_OFF'] = ($phpini->getDataVal('phpiniAllowUrlFopen') == 'off') ? $htmlSelected : '';
 	$firstBlock = true;
 }
 
@@ -168,8 +168,8 @@ if ($phpini->getClPermVal('phpiniDisplayErrors') == 'no') {
 	$tplVars['DISPLAY_ERRORS_BLOCK'] = '';
 } else {
 	$tplVars['TR_DISPLAY_ERRORS'] = 'display_errors';
-	$tplVars['DISPLAY_ERRORS_ON'] = ($phpini->getDataVal('phpiniDisplayErrors') == 'On') ? $htmlSelected : '';
-	$tplVars['DISPLAY_ERRORS_OFF'] = ($phpini->getDataVal('phpiniDisplayErrors') == 'Off') ? $htmlSelected : '';
+	$tplVars['DISPLAY_ERRORS_ON'] = ($phpini->getDataVal('phpiniDisplayErrors') == 'on') ? $htmlSelected : '';
+	$tplVars['DISPLAY_ERRORS_OFF'] = ($phpini->getDataVal('phpiniDisplayErrors') == 'off') ? $htmlSelected : '';
 	$firstBlock = true;
 }
 
@@ -177,15 +177,18 @@ if ($phpini->getClPermVal('phpiniDisplayErrors') == 'no') {
 if ($phpini->getClPermVal('phpiniDisplayErrors') == 'no') {
 	$tplVars['ERROR_REPORTING_BLOCK'] = '';
 } else {
+	$errorReportingValue = $phpini->errorReportingToLitteral($phpini->getDataVal('phpiniErrorReporting'));
+	#echo $errorReportingValue; exit;
+
 	$tplVars['TR_ERROR_REPORTING'] = 'error_reporting';
 	$tplVars['TR_ERROR_REPORTING_DEFAULT'] = tr('Show all errors, except for notices and coding standards warnings (Default)');
 	$tplVars['TR_ERROR_REPORTING_DEVELOPEMENT'] = tr('Show all errors, warnings and notices including coding standards (Development)');
 	$tplVars['TR_ERROR_REPORTING_PRODUCTION'] = tr(' Show all errors, except for warnings about deprecated code (Production)');
 	$tplVars['TR_ERROR_REPORTING_NONE'] = tr('Do not show any error');
-	$tplVars['ERROR_REPORTING_0'] = ($phpini->getDataVal('phpiniErrorReporting') == 'E_ALL & ~E_NOTICE') ? $htmlSelected : '';
-	$tplVars['ERROR_REPORTING_1'] = ($phpini->getDataVal('phpiniErrorReporting') == 'E_ALL | E_STRICT') ? $htmlSelected : '';
-	$tplVars['ERROR_REPORTING_2'] = ($phpini->getDataVal('phpiniErrorReporting') == 'E_ALL & ~E_DEPRECATED') ? $htmlSelected : '';
-	$tplVars['ERROR_REPORTING_3'] = ($phpini->getDataVal('phpiniErrorReporting') == '0') ? $htmlSelected : '';
+	$tplVars['ERROR_REPORTING_0'] = ($errorReportingValue == 'E_ALL & ~E_NOTICE') ? $htmlSelected : '';
+	$tplVars['ERROR_REPORTING_1'] = ($errorReportingValue == 'E_ALL | E_STRICT') ? $htmlSelected : '';
+	$tplVars['ERROR_REPORTING_2'] = ($errorReportingValue == 'E_ALL & ~E_DEPRECATED') ? $htmlSelected : '';
+	$tplVars['ERROR_REPORTING_3'] = ($errorReportingValue == '0') ? $htmlSelected : '';
 	$firstBlock = true;
 }
 
@@ -231,8 +234,8 @@ if (!$firstBlock) {
 } else {
 	$tplVars['TR_DIRECTIVE_NAME'] = tr('Directive name');
 	$tplVars['TR_DIRECTIVE_VALUE'] = tr('Directive value');
-	$tplVars['TR_VALUE_ON'] = 'On';
-	$tplVars['TR_VALUE_OFF'] = 'Off';
+	$tplVars['TR_VALUE_ON'] = 'on';
+	$tplVars['TR_VALUE_OFF'] = 'off';
 }
 
 $tpl->assign($tplVars);

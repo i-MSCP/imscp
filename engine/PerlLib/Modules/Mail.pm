@@ -1,7 +1,7 @@
 #!/usr/bin/perl
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010 - 2011 by internet Multi Server Control Panel
+# Copyright (C) 2010-2013 by internet Multi Server Control Panel
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -18,9 +18,8 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 #
 # @category		i-MSCP
-# @copyright	2010 - 2012 by i-MSCP | http://i-mscp.net
+# @copyright	2010-2013 by i-MSCP | http://i-mscp.net
 # @author		Daniel Andreca <sci2tech@gmail.com>
-# @version		SVN: $Id$
 # @link			http://i-mscp.net i-MSCP Home Site
 # @license		http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
@@ -30,12 +29,7 @@ use strict;
 use warnings;
 use iMSCP::Debug;
 use Data::Dumper;
-
-use vars qw/@ISA/;
-
-@ISA = ('Common::SimpleClass', 'Modules::Abstract');
-use Common::SimpleClass;
-use Modules::Abstract;
+use parent 'Modules::Abstract';
 
 sub _init{
 	my $self		= shift;
@@ -48,14 +42,19 @@ sub loadData{
 
 	my $sql = '
 		SELECT
-			if(isnull(`t2`.`mail_addr`), "no", "yes") AS "haveCatchAll",
+			if(isnull(`t2`.`mail_addr`), "no", "yes") AS `hasCatchAll`,
+			if(count(`t3`.`mail_addr`) <> 0, "yes", "no") AS `hasAutoResponder`,
 			`t1`.*
 		FROM
-			`mail_users`AS `t1`
+			`mail_users` AS `t1`
 		LEFT JOIN
 			(SELECT `mail_addr` FROM `mail_users` WHERE `mail_addr` LIKE "@%") AS `t2`
 		ON
 			substr(`t1`.`mail_addr`, locate("@", `t1`.`mail_addr`)) = `t2`.`mail_addr`
+		LEFT JOIN
+			(SELECT `mail_addr` FROM `mail_users` WHERE `mail_auto_respond` = 1) AS `t3`
+		ON
+			`t3`.`mail_addr` LIKE concat("%", substr(`t1`.`mail_addr`, locate("@", `t1`.`mail_addr`)))
 		WHERE
 			`t1`.`mail_id` = ?
 	';
@@ -106,14 +105,10 @@ sub process{
 		);
 	}
 
-	my $rdata = iMSCP::Database->factory()->doQuery('misc', @sql);
+	my $rdata = iMSCP::Database->factory()->doQuery('dummy', @sql);
 	error("$rdata") and return 1 if(ref $rdata ne 'HASH');
 
 	$rs;
-}
-
-sub restore{
-	0;
 }
 
 sub buildMTAData{
@@ -132,13 +127,27 @@ sub buildMTAData{
 		MAIL_TYPE			=> $self->{mail_type},
 		MAIL_AUTO_RSPND		=> $self->{mail_auto_respond},
 		MAIL_AUTO_RSPND_TXT	=> $self->{mail_auto_respond_text},
-		MAIL_HAVE_CATCH_ALL	=> $self->{haveCatchAll},
+		MAIL_HAS_AUTO_RSPND	=> $self->{hasAutoResponder},
+		MAIL_HAS_CATCH_ALL	=> $self->{hasCatchAll},
 		MAIL_STATUS			=> $self->{status},
 		MAIL_ON_CATCHALL	=> undef
 	};
 
-	if($self->{mail_type} =~ m/_catchall/){
-		my $sql = "SELECT `mail_addr` FROM `mail_users` WHERE `mail_addr` LIKE '\%$self->{mail_addr}' AND `mail_type` LIKE '\%mail'";
+	if($self->{hasCatchAll} eq 'yes'){
+		my $sql = "
+			SELECT
+				`mail_addr`
+			FROM
+				`mail_users`
+			WHERE
+				`mail_addr`
+			LIKE
+				'\%$self->{mail_addr}'
+			AND
+				`mail_type` LIKE '\%mail'
+			AND
+				`mail_auto_respond` = 0
+		";
 		my $rdata = iMSCP::Database->factory()->doQuery('mail_addr', $sql);
 		error("$rdata") and return 1 if(ref $rdata ne 'HASH');
 		@{$self->{mta}->{MAIL_ON_CATCHALL}} = keys %{$rdata};
@@ -159,6 +168,24 @@ sub buildPOData{
 		MAIL_ADDR			=> $mail,
 		MAIL_PASS			=> $self->{mail_pass},
 		MAIL_TYPE			=> $self->{mail_type},
+	};
+
+	0;
+}
+
+sub buildADDONData
+{
+	my $self = shift;
+	my $mail = $self->{'mail_addr'};
+
+	$mail =~ s/^\s+//;
+
+	$self->{'AddonsData'} = {
+		DMN_NAME => (split('@', $mail))[1],
+		MAIL_ACC => (split('@', $mail))[0],
+		MAIL_ADDR => $mail,
+		MAIL_PASS => $self->{'mail_pass'},
+		MAIL_TYPE => $self->{'mail_type'},
 	};
 
 	0;

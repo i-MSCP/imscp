@@ -18,14 +18,14 @@
  * Portions created by Initial Developer are Copyright (C) 2006-2010 by
  * isp Control Panel. All Rights Reserved.
  *
- * Portions created by the i-MSCP Team are Copyright (C) 2010-2012 by
- * i-MSCP a internet Multi Server Control Panel. All Rights Reserved.
+ * Portions created by the i-MSCP Team are Copyright (C) 2010-2013 by
+ * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
  *
  * @category	i-MSCP
  * @package		iMSCP_Exception
  * @subpackage	Writer
  * @copyright	2006-2010 by ispCP | http://isp-control.net
- * @copyright	2010-2012 by i-MSCP | http://i-mscp.net
+ * @copyright	2010-2013 by i-MSCP | http://i-mscp.net
  * @author		Laurent Declercq <l.declercq@nuxwin.com>
  * @link		http://i-mscp.net i-MSCP Home Site
  * @license		http://www.mozilla.org/MPL/ MPL 1.1
@@ -183,7 +183,7 @@ class iMSCP_Exception_Writer_Browser extends iMSCP_Exception_Writer
 				'CONTEXT_CLASS' => 'box_message',
 				'productLink' => 'http://www.i-mscp.net',
 				'productLongName' => 'internet Multi Server Control Panel',
-				'productCopyright' => '© 2010-2012 i-MSCP Team<br/>All Rights Reserved',
+				'productCopyright' => '© 2010-2013 i-MSCP Team<br/>All Rights Reserved',
 				'THEME_COLOR_PATH' => '/themes/' . 'default',
 				'BOX_MESSAGE_TITLE' => 'An exception have been thrown',
 				'PAGE_MESSAGE' => '',

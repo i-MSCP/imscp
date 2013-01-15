@@ -4,6 +4,7 @@ i-MSCP - internet Multi Server Control Panel
 http://i-mscp.net
 http://i-mscp.us
 http://i-mscp.info
+http://i-mscp.ru
 
 i-MSCP software appliance provides complete hosting automation for Linux platforms.
 i-MSCP offers an easy-to-use graphical interface for administrators, resellers and
@@ -25,13 +26,13 @@ INSTALLATION
 ============
 
 Select the folder of the distribution you are using inside the docs directory. For
-Debian: ./docs/Debian/INSTALL If there is none, select Debian and try it with this
+Debian: ./docs/Debian/INSTALL. If there is none, select Debian and try it with this
 one.
 
 You have successfully installed i-MSCP on a non-listed distribution? Great, send us
 your install instructions.
 
-LICENSING
+LICENCING
 =========
 
 i-MSCP was originally developed by moleSoftware http://molesoftware.com/ under the
@@ -45,12 +46,12 @@ Public License version 2 and states the following: Copyright (C) 2000-2007 - Lau
 Destailleur - eldy@users.sourceforge.net
 
 Unless otherwise stated all code is licensed under GPL 2.0 and has the following
-copyright: Copyright 2010-2012 by i-MSCP Team - All rights reserved.
+copyright: Copyright 2010-2013 by i-MSCP Team - All rights reserved.
 
 Please have a look at these Licenses if interested. They are shipped with this
 release in the next files:
 
-LICENSE-MPL1.1
+LICENCE-MPL1.1
 LICENSE-GPL2
 LICENSE-LGPL2.1
 
@@ -66,3 +67,6 @@ other themes.
 
 We hope you enjoy using i-MSCP. If you like it, help us, to make it better. We would
 be glad on any help provided.
+
+
+

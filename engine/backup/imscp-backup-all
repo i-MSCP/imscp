@@ -1,7 +1,7 @@
 #!/usr/bin/perl
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010 - 2011 by internet Multi Server Control Panel
+# Copyright (C) 2010-2013 by internet Multi Server Control Panel
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -18,10 +18,8 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
 # @category		i-MSCP
-# @copyright	2010 - 2012 by i-MSCP | http://i-mscp.net
+# @copyright	2010-2013 by i-MSCP | http://i-mscp.net
 # @author		Daniel Andreca <sci2tech@gmail.com>
-# @version		SVN: $Id$
-# @version		SVN: $Revision$
 # @link			http://i-mscp.net i-MSCP Home Site
 # @license		http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
@@ -42,6 +40,7 @@ use Data::Dumper;
 newDebug('imscp-backup-all.log');
 
 our $command = {
+				pbzip2	=> {extension => 'bz2',		command => 'CMD_PBZIP'},
 				bzip2	=> {extension => 'bz2',		command => 'CMD_BZIP'},
 				gzip	=> {extension => 'gz',		command => 'CMD_GZIP'},
 				lzma	=> {extension => 'lzma',	command => 'CMD_LZMA'},
@@ -62,12 +61,11 @@ sub backup{
 	my ($stdout, $stderr);
 
 	if ($main::imscpConfig{'BACKUP_DOMAINS'} ne 'yes') {
-		#warning('Domain backup is disabled');
 		return 0;
 	}
 
 
-	unless ($main::imscpConfig{ZIP} =~ /^(bzip2|gzip|lzma|xz)$/i) {
+	unless ($main::imscpConfig{ZIP} =~ /^(pbzip2|bzip2|gzip|lzma|xz)$/i) {
 		my $msg = "Backup algorithm not supported: $main::imscpConfig{ZIP}!";
 		error($msg);
 		return 1;
@@ -117,14 +115,14 @@ sub backup{
 
 				use POSIX qw(strftime);
 				my $ext		= $command->{lc($main::imscpConfig{ZIP})}->{extension};
-				my $date	= strftime "%Y.%m.%d-%H:%M", localtime;
+				my $date	= strftime "%Y.%m.%d-%H-%M", localtime;
 
 				if ($rdata->{$_}->{allowbackup} =~ m/full|dmn/i) {
 
 					my @cmd = (
 						lc($main::imscpConfig{CMD_TAR}),
 						"--create --directory=$hDir",
-						"--".lc($main::imscpConfig{ZIP}),
+						"--use-compress-program=" . lc($main::imscpConfig{ZIP}),
 						"--file=$bkpDir/$_-backup-$date.tar.$ext",
 						"--exclude=logs",
 						"--exclude=phptmp",

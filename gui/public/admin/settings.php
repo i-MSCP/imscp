@@ -1,6 +1,6 @@
 <?php
 /**
- * i-MSCP a internet Multi Server Control Panel
+ * i-MSCP - internet Multi Server Control Panel
  *
  * The contents of this file are subject to the Mozilla Public License
  * Version 1.1 (the "License"); you may not use this file except in
@@ -21,15 +21,15 @@
  * Portions created by the ispCP Team are Copyright (C) 2006-2010 by
  * isp Control Panel. All Rights Reserved.
  *
- * Portions created by the i-MSCP Team are Copyright (C) 2010-2012 by
- * i-MSCP a internet Multi Server Control Panel. All Rights Reserved.
+ * Portions created by the i-MSCP Team are Copyright (C) 2010-2013 by
+ * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
  *
  * @category	i-MSCP
  * @package		iMSCP_Core
  * @subpackage	Admin
  * @copyright   2001-2006 by moleSoftware GmbH
  * @copyright   2006-2010 by ispCP | http://isp-control.net
- * @copyright   2010-2012 by i-MSCP | http://i-mscp.net
+ * @copyright   2010-2013 by i-MSCP | http://i-mscp.net
  * @author      ispCP Team
  * @author      i-MSCP Team
  * @link        http://i-mscp.net
@@ -438,7 +438,7 @@ if ($cfg->PREVENT_EXTERNAL_LOGIN_CLIENT) {
 			 'PREVENT_EXTERNAL_LOGIN_CLIENT_SELECTED_OFF' => $html_selected));
 }
 
-if ($phpini->getDataVal('phpiniAllowUrlFopen') == 'On') {
+if ($phpini->getDataVal('phpiniAllowUrlFopen') == 'on') {
 	$tpl->assign(
 		array(
 			 'PHPINI_ALLOW_URL_FOPEN_ON' => $html_selected,
@@ -450,7 +450,7 @@ if ($phpini->getDataVal('phpiniAllowUrlFopen') == 'On') {
 			 'PHPINI_ALLOW_URL_FOPEN_OFF' => $html_selected));
 }
 
-if ($phpini->getDataVal('phpiniDisplayErrors') == 'On') {
+if ($phpini->getDataVal('phpiniDisplayErrors') == 'on') {
 	$tpl->assign(
 		array(
 			 'PHPINI_DISPLAY_ERRORS_ON' => $html_selected,
@@ -462,7 +462,9 @@ if ($phpini->getDataVal('phpiniDisplayErrors') == 'On') {
 			 'PHPINI_DISPLAY_ERRORS_OFF' => $html_selected));
 }
 
-switch ($phpini->getDataVal('phpiniErrorReporting')) {
+$errorReportingValue = $phpini->errorReportingToLitteral($phpini->getDataVal('phpiniErrorReporting'));
+
+switch ($errorReportingValue) {
 	case 'E_ALL & ~E_NOTICE':
 		$tpl->assign(
 			array(
@@ -633,7 +635,7 @@ $tpl->assign(
 		 'TR_PHPINI_MAX_INPUT_TIME' => tr('Value for the %s directive', true, '<span class="bold">max_input_time</span>'),
 		 'TR_PHPINI_MEMORY_LIMIT' => tr('Value for the %s directive', true, '<span class="bold">memory_limit</span>'),
 		 'TR_PHPINI_OPEN_BASEDIR' => tr('Value for the %s directive', true, '<span class="bold">open_basedir</span>'),
-		 'TR_PHPINI_OPEN_BASEDIR_TOOLTIP' => json_encode(tr('The directory/file paths are appended to the default PHP open_basedir directive of customers. Each of them must be separated by PATH_SEPARATOR. See the PHP documentation for more information.')),
+		 'TR_PHPINI_OPEN_BASEDIR_TOOLTIP' => json_encode(tr('Paths are appended to the default PHP open_basedir directive of customers. Each of them must be separated by PATH_SEPARATOR. See the PHP documentation for more information.')),
 		 'TR_PHPINI_DISABLE_FUNCTIONS' => tr('Value for the %s directive', true, '<span class="bold">disable_functions</span>'),
 		 'TR_ORDERS_SETTINGS' => tr('Orders settings'),
 		 'TR_ORDERS_EXPIRE_TIME' => tr('Expire time for unconfirmed orders<br /><small>(In days)</small>', true),

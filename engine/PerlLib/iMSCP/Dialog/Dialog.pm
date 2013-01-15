@@ -1,7 +1,13 @@
 #!/usr/bin/perl
 
+=head1 NAME
+
+ iMSCP::Dialog::Dialog - i-MSCP Dialog
+
+=cut
+
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010 - 2011 by internet Multi Server Control Panel
+# Copyright (C) 2010-2013 by internet Multi Server Control Panel
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -18,9 +24,9 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
 # @category		i-MSCP
-# @copyright	2010 - 2012 by i-MSCP | http://i-mscp.net
+# @copyright	2010-2013 by i-MSCP | http://i-mscp.net
 # @author		Daniel Andreca <sci2tech@gmail.com>
-# @version		SVN: $Id$
+# @author		Laurent Declercq <l.declercq@nuxwin.com>
 # @link			http://i-mscp.net i-MSCP Home Site
 # @license		http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
@@ -28,331 +34,278 @@ package iMSCP::Dialog::Dialog;
 
 use strict;
 use warnings;
-
-use FileHandle;
 use iMSCP::Debug;
-use iMSCP::Execute qw/execute/;
-use Exporter;
-use Common::SingletonClass;
+use iMSCP::Execute 'execute';
+use FileHandle;
+use parent 'Common::SingletonClass';
 
-use vars qw/@ISA @EXPORT/;
-@ISA = ('Common::SingletonClass');
+=head1 DESCRIPTION
 
-sub _init{
-	my $self	= shift;
+ Class that wrap dialog and cdialog programs.
 
-	$self->{'autosize'}						= undef;
-	$self->{'autoreset'}					= '';
-	$self->{'lines'}						= undef;
-	$self->{'columns'}						= undef;
+=head1 PUBLIC METHODS
 
-	$self->{'_opts'}->{'title'}				= $self->{'args'}->{'title'} || undef;
-	$self->{'_opts'}->{'backtitle'}			= $self->{'args'}->{'backtitle'} || undef;
+=over 4
 
-	$self->{'_opts'}->{'colors'}			= '';
-	$self->{'_opts'}->{'begin'}				= [1, 0];
+=item resetLabels()
 
-	$self->{'_opts'}->{'exit-label'}		= $self->{'args'}->{'exit-label'} || undef;
-	$self->{'_opts'}->{'no-label'}			= $self->{'args'}->{'no-label'} || undef;
-	$self->{'_opts'}->{'ok-label'}			= $self->{'args'}->{'ok-label'} || undef;
-	$self->{'_opts'}->{'cancel-label'}		= $self->{'args'}->{'cancel-label'} || undef;
-	$self->{'_opts'}->{'help-label'}		= $self->{'args'}->{'help-label'} || undef;
-	$self->{'_opts'}->{'extra-label'}		= $self->{'argsextra-label'} || undef;
-	$self->{'_opts'}->{'yes-label'}			= $self->{'args'}->{'yes-label'} || undef;
+ Reset labels to their default values.
 
-	$self->{'_opts'}->{'extra-button'}		= $self->{'args'}->{'extra-button'} || undef;
-	$self->{'_opts'}->{'help-button'}		= $self->{'args'}->{'help-button'} || undef;
+ Return INT 0
 
-	$self->{'_opts'}->{'defaultno'}			= $self->{'args'}->{'defaultno'} || undef;
-	$self->{'_opts'}->{'default-item'}		= $self->{'args'}->{'default-item'} || undef;
+=cut
 
-	$self->{'_opts'}->{'no-cancel'}			= $self->{'args'}->{'no-cancel'} || undef;
-	$self->{'_opts'}->{'no-ok'}				= $self->{'args'}->{'no-ok'} || undef;
-	$self->{'_opts'}->{'clear'}				= '';
-
-	$self->{'_opts'}->{'column-separator'}	= undef;
-
-	$self->{'_opts'}->{'cr-wrap'}			= undef;
-	$self->{'_opts'}->{'no-collapse'}		= undef;
-	$self->{'_opts'}->{'trim'}				= undef;
-	$self->{'_opts'}->{'date-format'}		= undef;
-
-	$self->{'_opts'}->{'help-status'}		= undef;
-	$self->{'_opts'}->{'insecure'}			= undef;
-	$self->{'_opts'}->{'item-help'}			= undef;
-	$self->{'_opts'}->{'max-input'}			= undef;
-	$self->{'_opts'}->{'no-shadow'}			= undef;
-	$self->{'_opts'}->{'shadow'}			= undef;
-	$self->{'_opts'}->{'single-quoted'}		= undef;
-	$self->{'_opts'}->{'tab-correct'}		= undef;
-	$self->{'_opts'}->{'tab-len'}			= undef;
-	$self->{'_opts'}->{'time-out'}			= undef;
-
-	$self->{'_opts'}->{'height'}			= undef;
-	$self->{'_opts'}->{'width'}				= undef;
-	$self->{'_opts'}->{'aspect'}			= undef;
-
-	$self->_find_bin($^O	=~ /bsd$/ ? 'cdialog' : 'dialog');
-	$self->_determine_dialog_variant();
-	$self->_getConsoleSize();
-}
-
-sub _determine_dialog_variant {
+sub resetLabels
+{
 	my $self = shift;
-	my $str = `$self->{'bin'} --help 2>&1`;
-	if ($str =~ /cdialog\s\(ComeOn\sDialog\!\)\sversion\s\d+\.\d+\-(.{4})/ && $1 >= 2003) {
-		debug('Have colors!');
-	} else {
-		delete $self->{'_opts'}->{'colors'};
-		debug('No colors!');
-		if ($str =~ /version\s0\.[34]/m) {
-			$self->{'_opts'}->{'force-no-separate-output'} = '';
-			debug('No separate output!');
-		}
-	}
+
+	$self->{'_opts'}->{"$_-label"} = undef for (qw/ok yes no cancel extra help/);
+
+	0;
 }
 
-sub _getConsoleSize{
+=item fselect($file)
+
+ Show file selection dialog box.
+
+ Param STRING $file File path
+ Return STRING|ARRAY Dialog output or array containing both dialog exit code and dialog output
+
+=cut
+
+sub fselect
+{
 	my $self = shift;
-	my ($output, $error);
-	execute($self->{'bin'} . ' --print-maxsize', \$output, \$error);
-	$error =~ /MaxSize:\s(\d+),\s(\d+)/;
-	$self->{'lines'}	= (defined($1) && $1 != 0) ? $1-3 : 23;
-	$self->{'columns'}	= (defined($2) && $2 != 0) ? $2-2 : 79;
-	error("$error") unless (!$?);
-	debug("Lines->$self->{'lines'}");
-	debug("Columns->$self->{'columns'}");
-}
-
-sub _find_bin {
-	my ($self, $variant)	= (shift, shift);
-	my ($rs, $stdout, $stderr);
-	$rs = execute("which $variant", \$stdout, \$stderr);
-	debug("Found $stdout") if $stdout;
-	fatal(": Can't find $variant binary $stderr") if $stderr;
-
-	$self->{'bin'} = $stdout if $stdout;
-	fatal('Can`t find dialog binary '.$variant) unless ($self->{'bin'} && -x $self->{'bin'});
-}
-
-sub _strip_formats {
-	my ($self, $text)	= (shift, shift);
-	$text =~ s!\\Z[0-9bBuUrRn]!!gmi;
-	return($text);
-}
-
-sub _buildCommand {
-	my $self = shift;
-	my $command = '';
-	foreach my $prop (keys %{$self->{'_opts'}}){
-		if(
-			defined($self->{'_opts'}->{$prop})
-		){
-			$command .= " --$prop ";
-			if (ref $self->{'_opts'}->{$prop} eq 'ARRAY') {
-				$command .= $self->_clean("@{$self->{'_opts'}->{$prop}}")
-			}elsif($self->{'_opts'}->{$prop} !~ /^\d+$/ && $self->{'_opts'}->{$prop}){
-					$command .= '\''.$self->_clean($self->{'_opts'}->{$prop}).'\'';
-			} elsif($self->{'_opts'}->{$prop} =~ /^\d+$/){
-				$command .= $self->{'_opts'}->{$prop};
-			}
-		}
-	}
-	return $command;
-}
-
-sub _clean{
-	my ($self, $text) = (shift, shift);
-	$text =~ s!'!"!g;
-	#$text =~ s!\\!\\\\!g;
-	return $text;
-}
-
-sub _restoreDefaults{
-	my $self = shift;
-	foreach my $prop (keys %{$self->{'_opts'}}){
-		if(!(grep $_ eq $prop, qw/title backtitle colors begin exitOnPrompt/)){
-			$self->{'_opts'}->{$prop} = undef;
-		}
-	}
-	$self->{'_opts'}->{'begin'} = [1,0];
-}
-
-sub _execute{
-	my ($self, $text, $init, $mode, $background) = (shift, shift, shift, shift, shift || 0);
-
-	$self->endGauge();
-
-	$text = $self->_strip_formats($text) unless( exists $self->{'_opts'}->{'colors'} );
-
-	my $command = $self->_buildCommand();
-	$text = $self->_clean($text);
-	$init = $init ? $init : '';
-
-	my $height = defined $self->{'autosize'} ? 0 : ($self->{'lines'});
-	my $width = defined $self->{'autosize'} ? 0 : ($self->{'columns'});
-
-	my ($return, $rv);
-	$rv = execute("$self->{'bin'} $command --$mode '$text' $height $width $init", undef, \$return);
-
-	debug('Returned text: '.$return) if($return);
-
-	$self->_init() if($self->{'autoreset'});
-
-	wantarray ? return ($rv, $return) : $return;
-}
-
-sub fselect{
-	my $self = shift;
-	my $file = shift;
-
-	exit 1 if $main::noprompt;
 
 	$self->{'lines'} = $self->{'lines'} - 8;
-	my $rv = $self->_execute($file, undef, "fselect");
+	my ($exitCode, $output) = $self->_execute(shift, undef, 'fselect');
 	$self->{'lines'} = $self->{'lines'} + 8;
-	return $rv;
+
+	wantarray ? ($exitCode, $output) : $output;
 }
 
-sub _textbox{
+=item radiolist($text, \$choices, $default = '')
+
+ Show radio list dialog box.
+
+ Param STRING $text - Text to show
+ Param ARRAY REFERENCE \$choices Reference to an array containing list of choices
+ Param STRING $default OPTIONAL Default choice
+ Return STRING|ARRAY Dialog output or array containing both dialog exit code and dialog output
+
+=cut
+
+sub radiolist
+{
 	my $self = shift;
 	my $text = shift;
-	my $mode = shift;
-	my $init = shift || 0;
-	my $autosize = $self->{'autosize'};
-	$self->{'autosize'} = undef;
-	my $begin = $self->{'_opts'}->{'begin'};
-	$self->{'_opts'}->{'begin'} = undef;
-	my ($rv, $rs) = $self->_execute($text, $init, $mode);
-	$self->{'_opts'}->{'begin'} = $begin;
-	$self->{'autosize'} = $autosize;
-	wantarray ? return ($rv, $rs) : $rs;
+	my @choices = @{(shift)};
+	my $default = shift || '';
+
+	my @init = ();
+	push @init, ("'$_'", "''", $default eq $_ ? 'on' : 'off') for @choices;
+
+	$self->_textbox($text, 'radiolist', @choices . " @init");
 }
 
-sub radiolist{
+=item checkbox($text, \$choices, $defaults = ())
+
+ Show check list dialog box.
+
+ Param STRING $text - Text to show
+ Param ARRAY REFERENCE \$choices Reference to an array containing list of choices
+ Param STRING $default OPTIONAL Default choices
+ Return STRING|ARRAY Dialog output or array containing both dialog exit code and dialog output
+
+=cut
+
+sub checkbox
+{
 	my $self = shift;
 	my $text = shift;
-	my @init = (@_);
-	my $opts = '';
+	my @choices = @{(shift)};
+	my @defaults = (@_);
 
-	exit 1 if $main::noprompt;
+	my %values = map { $_ => 1 } @defaults;
+	my @init = ();
 
-	for my $init (@init){
-		if(!$opts){
-			$opts = "'$init' '' on ";
-		} else {
-			$opts .= "'$init' '' off ";
-		}
-	}
-	return $self->_textbox($text, 'radiolist', (@init +1)." $opts");
+	push @init, ("'$_'", "''", $values{$_} ? 'on' : 'off') for @choices;
+
+	$self->_textbox($text, 'checklist', @choices . " @init");
 }
 
-sub checkbox{
+=item tailbox($file)
+
+ Show tail dialog box.
+
+ Param SCALAR $file - File path
+ Return INT Dialog exit code
+
+=cut
+
+sub tailbox
+{
 	my $self = shift;
-	my $text = shift;
-	my @init = (@_);
-	my $opts = '';
 
-	exit 1 if $main::noprompt;
+	my ($exitCode) = $self->_execute(shift, undef, 'tailbox');
 
-	$opts .= "$_ '' on " foreach(@init);
-
-	return $self->_textbox($text, 'checklist', (@init +1)." $opts");
+	$exitCode;
 }
 
-sub tailbox{
+=item editbox($file)
+
+ Show edit dialog box.
+
+ Param STRING $file - File path
+ Return STRING|ARRAY Dialog output or array containing both dialog exit code and dialog output
+
+=cut
+
+sub editbox
+{
 	my $self = shift;
-	my $file = shift;
 
-	exit 1 if $main::noprompt;
-
-	return $self->_execute($file, undef, 'tailbox');
+	$self->_execute(shift, undef, 'editbox');
 }
 
-sub editbox{
+=item dselect($dir)
+
+ Show directory select dialog box.
+
+ Return STRING|ARRAY Dialog output or array containing both dialog exit code and dialog output
+
+=cut
+
+sub dselect
+{
 	my $self = shift;
-	my $file = shift;
-
-	exit 1 if $main::noprompt;
-
-	return $self->_execute($file, undef, 'editbox');
-}
-
-sub dselect{
-	my $self = shift;
-	my $file = shift;
-
-	exit 1 if $main::noprompt;
 
 	$self->{'lines'} = $self->{'lines'} - 8;
-	my $rv = $self->_execute($file, undef, 'dselect');
+	my ($exitCode, $output) = $self->_execute(shift, undef, 'dselect');
 	$self->{'lines'} = $self->{'lines'} + 8;
-	return $rv;
+
+	wantarray ? ($exitCode, $output) : $output;
 }
 
-sub msgbox{
+=item msgbox($text)
+
+ Show message dialog box.
+
+ Param STRING $text Text to show in message dialog box
+ Return STRING|ARRAY Dialog output or array containing both dialog exit code and dialog output
+
+=cut
+
+sub msgbox
+{
 	my $self = shift;
-	my $text = shift;
 
-	exit 1 if $main::noprompt;
-
-	return $self->_textbox($text, 'msgbox');
+	$self->_textbox(shift, 'msgbox');
 }
 
-sub yesno{
+=item yesno($text)
+
+ Show boolean dialog box.
+
+ Param STRING $text Text to show
+ Return INT - Dialog exit code
+
+=cut
+
+sub yesno
+{
 	my $self = shift;
-	my $text = shift;
 
-	exit 1 if $main::noprompt;
+	my ($exitCode) = $self->_textbox(shift, 'yesno');
 
-	my ($rv, undef) = ($self->_textbox($text, 'yesno'));
-	return $rv;
+	$exitCode;
 }
 
-sub inputbox{
+=item inputbox($text, $init = '')
+
+ Show string input dialog box.
+
+ Param STRING $text Text to show
+ Param STRING $init OPTIONAL Default string value
+ Return STRING|ARRAY Dialog output or array containing both dialog exit code and dialog output
+
+=cut
+
+sub inputbox
+{
 	my $self = shift;
 	my $text = shift;
 	my $init = shift || '';
 
-	exit 1 if $main::noprompt;
-
-	return $self->_textbox($text, 'inputbox', $init);
+	$self->_textbox($text, 'inputbox', $self->_quote($init));
 }
 
-sub infobox{
-	my $self = shift;
-	my $text = shift;
+=item passwordbox($text, $init = '')
 
-	exit 1 if $main::noprompt;
+ Show password dialog box.
 
-	my $clear					= $self->{'_opts'}->{'clear'};
-	$self->{'_opts'}->{'clear'}	= undef;
-	my $rs						= $self->_textbox($text, 'infobox');
-	$self->{'_opts'}->{'clear'}	= $clear;
-	$rs;
-}
+ Param STRING $text Text to show
+ Param STRING $init OPTIONAL Default password value
+ Return STRING|ARRAY Dialog output or array containing both dialog exit code and dialog output
 
-sub passwordbox{
+=cut
+
+sub passwordbox
+{
 	my $self = shift;
 	my $text = shift;
 	my $init = shift || '';
-
-	exit 1 if $main::noprompt;
 
 	$self->{'_opts'}->{'insecure'} = '';
-	return $self->_textbox($text, 'passwordbox', "'$init'");
+
+	$self->_textbox($text, 'passwordbox', $self->_quote($init));
 }
 
-sub startGauge{
+=item infobox($text)
+
+ Show info dialog box.
+
+ Param STRING $text Text to show
+ Return INT - Dialog exit code
+
+=cut
+
+sub infobox
+{
+	my $self = shift;
+
+	my $clear = $self->{'_opts'}->{'clear'};
+	$self->{'_opts'}->{'clear'} = undef;
+
+	my ($exitCode) = $self->_textbox(shift, 'infobox');
+	$self->{'_opts'}->{'clear'}	= $clear;
+
+	$exitCode;
+}
+
+=item startGauge($text, $percent = 0)
+
+ Start gauge dialog box.
+
+ Param STRING $text Text to show
+ Param INT $percent OPTIONAL Initial percentage show in the meter
+ Return INT Dialog exit code
+
+=cut
+
+sub startGauge
+{
+	return 0 if $main::noprompt;
+
 	my $self = shift;
 	my $text = shift;
-	my $init = shift || 0; #initial value
+	my $percent = shift || 0;
 
 	$self->{'gauge'} ||= {};
-	return(0) if (defined $self->{'gauge'}->{'FH'});
+	return 0 if defined $self->{'gauge'}->{'FH'};
 
-	$text = $self->_clean($text);
-	$init = $init ? " $init" : 0;
+	$text = $self->_escape($text);
+	$percent = $percent ? " $percent" : 0;
 
 	my $height = $self->{'autosize'} ? 0 : ($self->{'lines'});
 	my $width = $self->{'autosize'} ? 0 : ($self->{'columns'});
@@ -360,76 +313,461 @@ sub startGauge{
 	my $begin = $self->{'_opts'}->{'begin'};
 	$self->{'_opts'}->{'begin'} = undef;
 
-	my $command = $self->_buildCommand();
+	my $command = $self->_buildCommandOptions();
 
-	$command = "$self->{'bin'} $command --gauge '$text' $height $width $init";
+	$command = "$self->{'bin'} $command --gauge \"$text\" $height $width $percent";
 
 	$self->{'_opts'}->{'begin'} = $begin;
 
-	debug("$command");
+	debug($command);
 
 	$self->{'gauge'}->{'FH'} = new FileHandle;
 	$self->{'gauge'}->{'FH'}->open("| $command") || error("Can`t start gauge!");
 	debugRegCallBack(\&endGauge);
 	$SIG{PIPE} = \&endGauge;
-	my $rv = $? >> 8;
+	my $exitCode = $? >> 8;
 	$self->{'gauge'}->{'FH'}->autoflush(1);
-	debug("Returned value $rv");
-	$rv;
+	debug("Returned value $exitCode");
+
+	$exitCode;
 }
 
-sub needGauge{
+=item needGauge()
 
-	my $self	= shift;
+ Determine if gauge dialog box is needed by testing file handle existence.
 
-	return 0 if $self->{'gauge'}->{'FH'};
-	1;
+ Return INT 0 if gauge is needed, 1 otherwise
+
+=cut
+
+sub needGauge
+{
+	return 0 if $main::noprompt;
+
+	my $self = shift;
+
+	$self->{'gauge'}->{'FH'} ? 0 : 1;
 }
 
-sub setGauge{
-	my $self	= shift;
-	my $value	= shift;
-	my $text	= shift || undef;
+=item setGauge($value, $text = '')
+
+ Set new percentage and optionaly new text to show
+
+ Param INT $percent New percentage to show in gauge dialog box
+ Param STRING $text OPTIONAL New text to show in gauge dialog box
+ Return INT 0 on success, 1 on failure (when SIGPIPE  has been received for any reason)
+
+=cut
+
+sub setGauge
+{
+	return 0 if $main::noprompt;
+
+	my $self = shift;
+	my $percent = shift;
+	my $text = shift || '';
 
 	return 0 unless $self->{'gauge'}->{'FH'};
 
-	if($text){
-		$text = "XXX\n$value\n".$self->_clean($text)."\nXXX\n" ;
-	} else {
-		$text = "$value\n";
-	}
+	$text = $text ? "XXX\n$percent\n" . $self->_escape($text) . "\nXXX\n" : "$percent\n";
 
-	debug("$text");
+	debug($text);
 
 	my $fh = $self->{'gauge'}->{'FH'};
 
 	print $fh $text;
 	$SIG{PIPE} = \&endGauge;
 
-	return(((defined $self->{'gauge'}->{'FH'}) ? 1 : 0));
-
+	defined $self->{'gauge'}->{'FH'} ? 1 : 0;
 }
 
-sub endGauge{
+=item endGauge()
+
+ Terminate gauge dialog box.
+
+ Return INT 0
+
+=cut
+
+sub endGauge
+{
+	return 0 if $main::noprompt;
+
 	my $self = iMSCP::Dialog->factory();
 
 	return 0 unless ref $self->{'gauge'}->{'FH'};
+
 	$self->{'gauge'}->{'FH'}->close();
 	delete($self->{'gauge'});
 
 	0;
 }
 
-sub set{
-	my $self	= shift;
-	my $param	= shift;
-	my $value	= shift;
-	my $return	= undef;
-	if($param  && exists $self->{'_opts'}->{$param}){
-		$return						= $self->{'_opts'}->{$param};
-		$self->{'_opts'}->{$param}	= $value;
+=item set($option, $value)
+
+ Set dialog option.
+
+ Param STRING $param Option name
+ Param STRING $value Option value
+ Return STRING|undef Old option value if exists, undef otherwise
+
+=cut
+
+sub set
+{
+	my $self = shift;
+	my $option = shift;
+	my $value = shift;
+	my $return = undef;
+
+	if($option && exists $self->{'_opts'}->{$option}) {
+		$return = $self->{'_opts'}->{$option};
+		$self->{'_opts'}->{$option} = $value;
 	}
+
 	$return;
 }
+
+=back
+
+=head1 PRIVATE METHODS
+
+=over 4
+
+=item _init()
+
+ Called by new(). Initialize instance.
+
+ Return iMSCP::Dialog::Dialog
+
+=cut
+
+sub _init
+{
+	my $self = shift;
+
+	# Force usage of graphic lines (UNICODE values) when using putty (See #540)
+	$ENV{'NCURSES_NO_UTF8_ACS'} = '1';
+
+	$self->{'autosize'} = undef;
+	$self->{'autoreset'} = '';
+	$self->{'lines'} = undef;
+	$self->{'columns'} = undef;
+
+	$self->{'_opts'}->{'title'} = $self->{'args'}->{'title'} || undef;
+	$self->{'_opts'}->{'backtitle'} = $self->{'args'}->{'backtitle'} || undef;
+
+	$self->{'_opts'}->{'colors'} = '';
+	$self->{'_opts'}->{'begin'} = [1, 0];
+
+	$self->{'_opts'}->{'exit-label'} = $self->{'args'}->{'exit-label'} || undef;
+	$self->{'_opts'}->{'no-label'} = $self->{'args'}->{'no-label'} || undef;
+	$self->{'_opts'}->{'ok-label'} = $self->{'args'}->{'ok-label'} || undef;
+	$self->{'_opts'}->{'cancel-label'} = $self->{'args'}->{'cancel-label'} || undef;
+	$self->{'_opts'}->{'help-label'} = $self->{'args'}->{'help-label'} || undef;
+	$self->{'_opts'}->{'extra-label'} = $self->{'args'}->{'extra-label'} || undef;
+	$self->{'_opts'}->{'yes-label'} = $self->{'args'}->{'yes-label'} || undef;
+
+	$self->{'_opts'}->{'extra-button'} = $self->{'args'}->{'extra-button'} || undef;
+	$self->{'_opts'}->{'help-button'} = $self->{'args'}->{'help-button'} || undef;
+
+	$self->{'_opts'}->{'defaultno'} = $self->{'args'}->{'defaultno'} || undef;
+	$self->{'_opts'}->{'default-item'} = $self->{'args'}->{'default-item'} || undef;
+
+	$self->{'_opts'}->{'no-cancel'} = $self->{'args'}->{'no-cancel'} || undef;
+	$self->{'_opts'}->{'no-ok'} = $self->{'args'}->{'no-ok'} || undef;
+	$self->{'_opts'}->{'clear'} = '';
+
+	$self->{'_opts'}->{'column-separator'} = undef;
+
+	$self->{'_opts'}->{'cr-wrap'} = undef;
+	$self->{'_opts'}->{'no-collapse'} = undef;
+	$self->{'_opts'}->{'trim'} = undef;
+	$self->{'_opts'}->{'date-format'} = undef;
+
+	$self->{'_opts'}->{'help-status'} = undef;
+	$self->{'_opts'}->{'insecure'} = undef;
+	$self->{'_opts'}->{'item-help'} = undef;
+	$self->{'_opts'}->{'max-input'} = undef;
+	$self->{'_opts'}->{'no-shadow'} = undef;
+	$self->{'_opts'}->{'shadow'} = undef;
+	$self->{'_opts'}->{'single-quoted'} = undef;
+	$self->{'_opts'}->{'tab-correct'} = undef;
+	$self->{'_opts'}->{'tab-len'} = undef;
+	$self->{'_opts'}->{'timeout'} = undef;
+
+	$self->{'_opts'}->{'height'} = undef;
+	$self->{'_opts'}->{'width'} = undef;
+	$self->{'_opts'}->{'aspect'} = undef;
+
+	$self->_findBin($^O =~ /bsd$/ ? 'cdialog' : 'dialog');
+	$self->_determineDialogVariant();
+	$self->_determineConsoleSize();
+
+	$self;
+}
+
+=item _determineDialogVariant()
+
+ Determine dialog variant.
+
+ Return iMSCP::Dialog::Dialog
+
+=cut
+
+sub _determineDialogVariant
+{
+	my $self = shift;
+	my $str = `$self->{'bin'} --help 2>&1`;
+
+	if ($str =~ /cdialog\s\(ComeOn\sDialog\!\)\sversion\s\d+\.\d+\-(.{4})/ && $1 >= 2003) {
+		debug('Dialog color support enabled');
+	} else {
+		delete $self->{'_opts'}->{'colors'};
+		debug('Dialog color support disabled (not supported)');
+
+		if ($str =~ /version\s0\.[34]/m) {
+			$self->{'_opts'}->{'force-no-separate-output'} = '';
+			debug('No separate output!');
+		}
+	}
+
+	$self;
+}
+
+=item _determineConsoleSize()
+
+ Determine console size.
+
+ Return iMSCP::Dialog::Dialog
+
+=cut
+
+sub _determineConsoleSize
+{
+	my $self = shift;
+	my ($output, $error);
+
+	execute($self->{'bin'} . ' --print-maxsize', \$output, \$error);
+	$error =~ /MaxSize:\s(\d+),\s(\d+)/;
+	$self->{'lines'} = (defined($1) && $1 != 0) ? $1 - 3 : 23;
+	$self->{'columns'} = (defined($2) && $2 != 0) ? $2 - 2 : 79;
+	error("$error") unless (!$?);
+	debug("Lines->$self->{'lines'}");
+	debug("Columns->$self->{'columns'}");
+
+	$self;
+}
+
+=item _findBin($variant)
+
+ Find dialog variant (dialog|cdialog).
+
+ Return iMSCP::Dialog::Dialog
+
+=cut
+
+sub _findBin
+{
+	my ($self, $variant) = (shift, shift);
+	my ($rs, $stdout, $stderr);
+
+	$rs = execute("which $variant", \$stdout, \$stderr);
+	debug("Found $stdout") if $stdout;
+	fatal("Can't find $variant binary: $stderr") if $stderr;
+
+	$self->{'bin'} = $stdout if $stdout;
+	fatal("Can`t find dialog binary: $variant") unless ($self->{'bin'} && -x $self->{'bin'});
+
+	$self;
+}
+
+=item _stripFormats($string)
+
+ Strip out any format characters (\Z sequences) from the given string.
+
+ Param STRING $string String from which any format character must be stripped
+ Return STRING String stripped out of any format character
+
+=cut
+
+sub _stripFormats
+{
+	my ($self, $string) = (shift, shift);
+
+	$string =~ s!\\Z[0-9bBuUrRn]!!gmi;
+
+	$string;
+}
+
+=item _buildCommandOptions()
+
+ Build dialog command options.
+
+ Return STRING Dialog command
+
+=cut
+
+sub _buildCommandOptions
+{
+	my $self = shift;
+	my $commandOptions = '';
+
+	for(keys %{$self->{'_opts'}}){
+		if(defined $self->{'_opts'}->{$_} ) {
+			$commandOptions .= " --$_ ";
+
+			if (ref $self->{'_opts'}->{$_} eq 'ARRAY') {
+				$commandOptions .=  $self->_escape("@{$self->{'_opts'}->{$_}}")
+			} elsif($self->{'_opts'}->{$_} !~ /^\d+$/ && $self->{'_opts'}->{$_}){
+				$commandOptions .= '"' . $self->_escape($self->{'_opts'}->{$_}) . '"';
+			} elsif($self->{'_opts'}->{$_} =~ /^\d+$/){
+				$commandOptions .= $self->{'_opts'}->{$_};
+			}
+		}
+	}
+
+	$commandOptions;
+}
+
+=item _escape($string)
+
+ Escape the given string.
+
+ Param STRING $string String to escape
+ Return STRING Escaped string
+
+=cut
+
+sub _escape
+{
+	my ($self, $string) = (shift, shift);
+
+	$string =~ s/(["`])/\\$1/g;
+
+	$string;
+}
+
+=item _quote($string)
+
+ Quote the given string.
+
+ Param STRING $string String to quote
+ Return STRING Quoted string
+
+=cut
+
+sub _quote
+{
+	my $self = shift;
+
+	'"' . $self->_escape(shift) . '"';
+}
+
+=item _restoreDefaults()
+
+ Restore default options.
+
+ Return iMSCP::Dialog::Dialog
+
+=cut
+
+sub _restoreDefaults
+{
+	my $self = shift;
+
+	for my $prop (keys %{$self->{'_opts'}}) {
+		$self->{'_opts'}->{$prop} = undef if ! grep $_ eq $prop, qw/title backtitle colors begin/;
+	}
+
+	$self->{'_opts'}->{'begin'} = [1, 0];
+
+	$self;
+}
+
+=item _execute($text, $init, $type, [$background])
+
+ Wrap execution of dialog commands (except gauge dialog commands).
+
+ Param STRING $text Dialog text
+ Param STRING $init Default value
+ Param STRING $type Dialog box type
+
+ Return STRING|ARRAY Dialog output or array containing both dialog exit code and dialog output
+
+=cut
+
+sub _execute
+{
+	my ($self, $text, $init, $type) = @_;
+
+	if($main::noprompt) {
+		if($type ne 'infobox' && $type ne 'msgbox') {
+			exit 5;
+		} else {
+			return 0;
+		}
+	}
+
+	$self->endGauge();
+
+	$text = $self->_stripFormats($text) unless( exists $self->{'_opts'}->{'colors'} );
+
+	my $command = $self->_buildCommandOptions();
+
+	$text = $self->_escape($text);
+	$init = $init ? $init : '';
+
+	my $height = defined $self->{'autosize'} ? 0 : $self->{'lines'};
+	my $width = defined $self->{'autosize'} ? 0 : $self->{'columns'};
+
+	my ($output, $exitCode);
+
+	$exitCode = execute("$self->{'bin'} $command --$type \"$text\" $height $width $init", undef, \$output);
+
+	debug('Returned text: ' . $output) if $output;
+
+	$self->_init() if $self->{'autoreset'};
+
+	wantarray ? ($exitCode, $output) : $output;
+}
+
+=item _textbox($text, $type, $init = 0)
+
+ Wrap execution of several dialog box.
+
+ Param STRING $text Text to show
+ Param STRING $mode Text dialog box type (radiolist|checklist|msgbox|yesno|inputbox|passwordbox|infobox)
+ Param STRING $init Default value
+ Return STRING|ARRAY Dialog output or array containing both dialog exit code and dialog output
+
+=cut
+
+sub _textbox
+{
+	my $self = shift;
+	my $text = shift;
+	my $type = shift;
+	my $init = shift || 0;
+	my $autosize = $self->{'autosize'};
+
+	$self->{'autosize'} = undef;
+	my $begin = $self->{'_opts'}->{'begin'};
+	$self->{'_opts'}->{'begin'} = undef;
+	my ($exitCode, $output) = $self->_execute($text, $init, $type);
+	$self->{'_opts'}->{'begin'} = $begin;
+	$self->{'autosize'} = $autosize;
+
+	wantarray ? ($exitCode, $output) : $output;
+}
+
+=back
+
+=head1 AUTHORS
+
+ Daniel Andreca <sci2tech@gmail.com>
+ Laurent Declercq <l.declercq@nuxwin.com>
+
+=cut
 
 1;

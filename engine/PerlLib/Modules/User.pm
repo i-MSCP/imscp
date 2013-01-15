@@ -1,7 +1,7 @@
 #!/usr/bin/perl
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010 - 2011 by internet Multi Server Control Panel
+# Copyright (C) 2010-2013 by internet Multi Server Control Panel
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -18,9 +18,8 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
 # @category		i-MSCP
-# @copyright	2010 - 2012 by i-MSCP | http://i-mscp.net
+# @copyright	2010-2013 by i-MSCP | http://i-mscp.net
 # @author		Daniel Andreca <sci2tech@gmail.com>
-# @version		SVN: $Id$
 # @link			http://i-mscp.net i-MSCP Home Site
 # @license		http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
@@ -32,12 +31,7 @@ use iMSCP::Debug;
 use iMSCP::Execute;
 use iMSCP::Database;
 use Data::Dumper;
-
-use vars qw/@ISA/;
-
-@ISA = ('Common::SimpleClass', 'Modules::Abstract');
-use Common::SimpleClass;
-use Modules::Abstract;
+use parent 'Modules::Abstract';
 
 sub _init{
 	my $self		= shift;
@@ -100,7 +94,7 @@ sub process{
 	}
 
 	if(scalar @sql){
-		$rdata = iMSCP::Database->factory()->doQuery('delete', @sql);
+		$rdata = iMSCP::Database->factory()->doQuery('dummy', @sql);
 		error("$rdata") and return 1 if(ref $rdata ne 'HASH');
 	}
 
@@ -173,8 +167,7 @@ sub add{
 			group	=> $rootGroup
 	});
 
-	$self->{mode}	= 'add';
-	$rs |= $self->runAllSteps();
+	$rs |= $self->SUPER::add();
 
 	$rs;
 }
@@ -191,11 +184,10 @@ sub delete{
 	error('Data not defined') if ! $self->{domain_admin_id};
 	return 1  if ! $self->{domain_admin_id};
 
-	$self->{mode}	= 'del';
-	$rs = $self->runAllSteps();
+	$rs = $self->SUPER::delete();
 
 	my $userName	=
-			$main::imscpConfig{SYSTEM_USER_PREFIX}.
+			$main::imscpConfig{SYSTEM_USER_PREFIX} .
 			($main::imscpConfig{SYSTEM_USER_MIN_UID} + $self->{domain_admin_id});
 
 	my $user = Modules::SystemUser->new();
@@ -332,4 +324,5 @@ sub buildHTTPDData{
 
 	0;
 }
+
 1;

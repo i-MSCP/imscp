@@ -1,7 +1,7 @@
 #!/usr/bin/perl
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010 - 2011 by internet Multi Server Control Panel
+# Copyright (C) 2010-2013 by internet Multi Server Control Panel
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -18,9 +18,8 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
 # @category		i-MSCP
-# @copyright	2010 - 2012 by i-MSCP | http://i-mscp.net
+# @copyright	2010-2013 by i-MSCP | http://i-mscp.net
 # @author		Daniel Andreca <sci2tech@gmail.com>
-# @version		SVN: $Id$
 # @link			http://i-mscp.net i-MSCP Home Site
 # @license      http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
@@ -29,29 +28,25 @@ package Servers::httpd;
 use strict;
 use warnings;
 use iMSCP::Debug;
-
 use FindBin;
+use parent 'Common::SimpleClass';
 
-
-use vars qw/@ISA/;
-@ISA = ('Common::SimpleClass');
-use Common::SimpleClass;
-
-sub factory{
-	my $self	= shift;
-	my $server	= shift || $main::imscpConfig{HTTPD_SERVER};
+sub factory
+{
+	my $self = shift;
+	my $server = shift || $main::imscpConfig{'HTTPD_SERVER'};
 	my ($file, $class);
 
 	if(lc($server) =~ /^no$/ ){
-		$file	= 'Servers/noserver.pm';
-		$class	= 'Servers::noserver';
+		$file = 'Servers/noserver.pm';
+		$class = 'Servers::noserver';
 	} else {
-		$file	= "Servers/httpd/$server.pm";
-		$class	= "Servers::httpd::$server";
+		$file = "Servers/httpd/$server.pm";
+		$class = "Servers::httpd::$server";
 	}
 
 	require $file;
-	return $class->new();
+	$class->new();
 }
 
 1;

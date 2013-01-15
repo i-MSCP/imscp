@@ -1,7 +1,7 @@
 #!/usr/bin/perl
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010 - 2011 by internet Multi Server Control Panel
+# Copyright (C) 2010-2013 by internet Multi Server Control Panel
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -18,9 +18,8 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
 # @category		i-MSCP
-# @copyright	2010 - 2012 by i-MSCP | http://i-mscp.net
+# @copyright	2010-2013 by i-MSCP | http://i-mscp.net
 # @author		Daniel Andreca <sci2tech@gmail.com>
-# @version		SVN: $Id$
 # @link			http://i-mscp.net i-MSCP Home Site
 # @license		http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
@@ -28,42 +27,50 @@ package iMSCP::Dialog;
 
 use strict;
 use warnings;
-
 use iMSCP::Debug;
-use iMSCP::Execute qw/execute/;
-use Common::SingletonClass;
+use iMSCP::Execute 'execute';
+use parent 'Common::SingletonClass';
 
-use vars qw/@ISA/;
-@ISA = ('Common::SingletonClass');
+sub factory
+{
+	my $self = iMSCP::Dialog->new();
 
-sub factory{
+	unless($self->{instance}) {
+		#my ($dialog, $whiptail, $rs, $stdout, $stderr, $file, $class);
+		my ($dialog, $stdout, $stderr, $file, $class);
 
-	my $self	= iMSCP::Dialog->new();
-
-	unless($self->{instance}){
-		my ($dialog, $whiptail, $rs, $stdout, $stderr, $file, $class);
-		if(!execute('which dialog', \$stdout, \$stderr)){
-			$file	= "iMSCP/Dialog/Dialog.pm";
-			$class	= "iMSCP::Dialog::Dialog";
+		if(! execute('which dialog', \$stdout, \$stderr)) {
+			$file = "iMSCP/Dialog/Dialog.pm";
+			$class = "iMSCP::Dialog::Dialog";
 			require $file;
 			$self->{instance} = $class->new();
-		}elsif(!execute('which whiptail', \$stdout, \$stderr)){
-			$file	= "iMSCP/Dialog/Whiptail.pm";
-			$class	= "iMSCP::Dialog::Whiptail";
-			require $file;
-			$self->{instance} = $class->new();
+		# Commented out since whiptail implementation is not ready
+		#} elsif(!execute('which whiptail', \$stdout, \$stderr)) {
+		#	$file = "iMSCP/Dialog/Whiptail.pm";
+		#	$class = "iMSCP::Dialog::Whiptail";
+		#	require $file;
+		#	$self->{instance} = $class->new();
+		#} else {
+		#	fatal('Can not find whiptail or dialog. Please reinstall...');
+		#}
 		} else {
-			fatal('Can not find whiptail or dialog. Please reinstall...');
+			fatal('Cannot find dialog program on your system. Please reinstall...');
 		}
-		$self->{instance}->set('title', 'i-MSCP Setup');
-		$self->{instance}->set('backtitle',	'i-MSCP internet Multi Server Control Panel');
+
+		$self->{'instance'}->set('title', 'i-MSCP Setup Dialog');
+		$self->{'instance'}->set('backtitle', 'i-MSCP - internet Multi Server Control Panel');
 	}
+
 	$self->{instance};
 }
 
-sub reset{
-	my $self	= iMSCP::Dialog->new();
-	$self->{instance} = undef;
+sub reset
+{
+	my $self = iMSCP::Dialog->new();
+
+	$self->{'instance'} = undef;
+
 	0;
 }
+
 1;

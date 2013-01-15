@@ -3,15 +3,16 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
+#   <andrei_sebastyan@yahoo.com>, 2012.
 # Ivan Petre Paul <ivanpetrepaul@gmail.com>, 2012.
 # Ovidiu Teacă <ovidiuteaca@yahoo.com>, 2012.
 msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2012-10-11 04:04+0200\n"
-"PO-Revision-Date: 2012-10-09 10:45+0000\n"
-"Last-Translator: Torsten Widmann <info@goover.de>\n"
+"POT-Creation-Date: 2013-01-07 04:57+0100\n"
+"PO-Revision-Date: 2013-01-07 03:52+0000\n"
+"Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -561,6 +562,9 @@ msgstr "Actiuni"
 msgid "Activate"
 msgstr "Activeaza"
 
+msgid "Activate mail auto-responder"
+msgstr ""
+
 msgid "Activate this plugin"
 msgstr ""
 
@@ -756,9 +760,6 @@ msgstr "Autentificare Administrator"
 msgid "Administrators"
 msgstr "Administratori"
 
-msgid "After the name"
-msgstr "Dupa nume"
-
 msgid ""
 "After your upload the package it will be installed on your systems.<br "
 "/>Refresh your site to see the new status!"
@@ -867,6 +868,9 @@ msgid "An error occured. Please, contact your administrator."
 msgstr ""
 
 msgid "An error occurred while the authentication attempt."
+msgstr ""
+
+msgid "An unexpected error occured, please contact your reseller."
 msgstr ""
 
 #, php-format
@@ -1005,6 +1009,18 @@ msgstr "Sablunul pentru email a fost actualizat!"
 msgid "Auto respond"
 msgstr "Raspuns automat"
 
+msgid "Auto-responder message cannot be empty."
+msgstr ""
+
+msgid "Auto-responder successfully scheduled for activation."
+msgstr ""
+
+msgid "Auto-responder successfully scheduled for deactivation."
+msgstr ""
+
+msgid "Auto-responder successfully scheduled for update."
+msgstr ""
+
 msgid "Automatic updates"
 msgstr ""
 
@@ -1053,11 +1069,11 @@ msgstr ""
 msgid "Backup support"
 msgstr "Suport Backup"
 
+msgid "Bad password."
+msgstr ""
+
 msgid "Bandwidth"
 msgstr "Banda"
-
-msgid "Before the name"
-msgstr "Inaintea numelui"
 
 msgid "Behind the name"
 msgstr "Dupa nume"
@@ -1478,6 +1494,9 @@ msgstr ""
 msgid "Database prefix"
 msgstr ""
 
+msgid "Database prefix/suffix"
+msgstr ""
+
 msgid "Database required"
 msgstr ""
 
@@ -1486,6 +1505,9 @@ msgstr ""
 
 msgid "Database updates"
 msgstr "Actualizari baza de date"
+
+msgid "Database usage"
+msgstr ""
 
 msgid "Database user list is empty!"
 msgstr ""
@@ -1677,6 +1699,9 @@ msgstr ""
 msgid "Disk usage"
 msgstr "Utilizare disc"
 
+msgid "Disk usage detail"
+msgstr ""
+
 msgid "Do not show any error"
 msgstr ""
 
@@ -1705,7 +1730,7 @@ msgid "Domain Limit"
 msgstr ""
 
 msgid "Domain Name"
-msgstr ""
+msgstr "Nume Domenii"
 
 msgid "Domain account"
 msgstr "Cont domeniu"
@@ -2009,8 +2034,8 @@ msgstr ""
 msgid "Edit mail account"
 msgstr ""
 
-msgid "Edit mail auto responder"
-msgstr "Editeaza raspunsul automat la e-mail"
+msgid "Edit mail auto-responder"
+msgstr ""
 
 msgid "Edit mail quota"
 msgstr ""
@@ -2285,6 +2310,9 @@ msgid "File needs to be a .tar.gz-archive"
 msgstr ""
 
 msgid "File successfully uploaded."
+msgstr ""
+
+msgid "File usage"
 msgstr ""
 
 msgid "File was successfully uploaded."
@@ -3004,6 +3032,9 @@ msgstr "Eroare in lista de forward mailuri!"
 msgid "Mail successfully sent to your users."
 msgstr ""
 
+msgid "Mail usage"
+msgstr ""
+
 msgid "Mail users"
 msgstr "Utilizatori mail"
 
@@ -3176,7 +3207,7 @@ msgid "Minutes"
 msgstr "Minute"
 
 msgid "Missing domain"
-msgstr ""
+msgstr "Lipseste domeniul"
 
 msgid "Modification in progress"
 msgstr ""
@@ -3346,7 +3377,7 @@ msgid "No provided"
 msgstr ""
 
 msgid "No records found"
-msgstr ""
+msgstr "Nici o inregistrare"
 
 msgid "No reseller accounts found."
 msgstr ""
@@ -3452,6 +3483,12 @@ msgstr "Informatii, Atentionari si Erori"
 
 msgid "Number of CPU Cores"
 msgstr "Numar de core ale procesorului"
+
+msgid "Numeric prefix"
+msgstr ""
+
+msgid "Numeric suffix"
+msgstr ""
 
 msgid "OK"
 msgstr "OK"
@@ -3908,9 +3945,6 @@ msgstr ""
 msgid "Please type user password."
 msgstr ""
 
-msgid "Please type your mail autorespond message."
-msgstr ""
-
 msgid "Please type your message."
 msgstr ""
 
@@ -3924,6 +3958,9 @@ msgid "Please, check the PHP Editor settings."
 msgstr ""
 
 msgid "Please, don't use special chars such as '@, $, %...' in the password."
+msgstr ""
+
+msgid "Please, enter your auto-responder message below"
 msgstr ""
 
 msgid "Plugin"
@@ -4160,7 +4197,7 @@ msgid "Reseller"
 msgstr "Reseller"
 
 msgid "Reseller Name"
-msgstr ""
+msgstr "Nume Reseller"
 
 msgid "Reseller account successfully created."
 msgstr ""
@@ -5068,6 +5105,9 @@ msgid ""
 "/>Refresh your site to see the new status!"
 msgstr ""
 
+msgid "The password field is empty."
+msgstr ""
+
 msgid "The password is too long."
 msgstr ""
 
@@ -5097,6 +5137,9 @@ msgstr ""
 
 #, php-format
 msgid "The username %s is not available."
+msgstr ""
+
+msgid "The username field is empty."
 msgstr ""
 
 msgid "The value has been found in the stack"
@@ -5307,7 +5350,7 @@ msgid "Total"
 msgstr "Total"
 
 msgid "Total Domains"
-msgstr ""
+msgstr "Total Domenii"
 
 msgid "Total Softwares"
 msgstr ""
@@ -5461,6 +5504,9 @@ msgid "Unknown language name."
 msgstr ""
 
 msgid "Unknown layout color."
+msgstr ""
+
+msgid "Unknown reason."
 msgstr ""
 
 msgid "Unknown subdomain type."
@@ -5872,9 +5918,6 @@ msgid "Wrong label syntax: <b>%s</b>"
 msgstr ""
 
 msgid "Wrong order ID."
-msgstr ""
-
-msgid "Wrong password."
 msgstr ""
 
 msgid "Wrong redirect URL."
@@ -6322,7 +6365,7 @@ msgid "Your new i-MSCP login"
 msgstr ""
 
 msgid "Your new password has been sent. Check your mail."
-msgstr ""
+msgstr "Noua parola a fost trimisa. Verifica adresa de mail"
 
 msgid "Your order"
 msgstr "Comanda dumneavoastra"
@@ -6602,6 +6645,12 @@ msgstr ""
 msgid "i-MSCP - Client / Mail Accounts / External mail servers"
 msgstr ""
 
+msgid "i-MSCP - Client / Mail accounts / Activate auto-responder"
+msgstr ""
+
+msgid "i-MSCP - Client / Mail accounts / Edit auto-responder"
+msgstr ""
+
 msgid "i-MSCP - Client / Manage domains - Add subdomain"
 msgstr ""
 
@@ -6620,13 +6669,7 @@ msgstr ""
 msgid "i-MSCP - Client / Manage mail / Edit account"
 msgstr ""
 
-msgid "i-MSCP - Client / Manage mail / Edit autoresponder"
-msgstr ""
-
 msgid "i-MSCP - Client / Manage mail / Edit quota"
-msgstr ""
-
-msgid "i-MSCP - Client / Manage mail / Enable autoresponder"
 msgstr ""
 
 msgid "i-MSCP - Client / Support Ticket System / Closed Tickets"
@@ -6685,9 +6728,6 @@ msgstr "i-MSCP - Client/ Salvare Zilnic"
 
 msgid "i-MSCP - Client/Edit FTP Account"
 msgstr "i-MSCP - Client/Editeaza contul FTP"
-
-msgid "i-MSCP - Client/Enable Mail Auto Responder"
-msgstr "i-MSCP - Client/Activeaza Raspuns Automat La E-Mail"
 
 msgid "i-MSCP - Client/Manage Domains"
 msgstr "i-MSCP - Client/ Administrare Domenii"
@@ -7056,8 +7096,5 @@ msgstr ""
 msgid "{RESELLER} uploaded a new software package"
 msgstr ""
 
-msgid "{TR_EDIT_HOSTING_PLAN} hosting plan"
-msgstr ""
-
-msgid "© 2010-2012 i-MSCP Team<br/>All Rights Reserved"
+msgid "© 2010-2013 i-MSCP Team<br/>All Rights Reserved"
 msgstr ""

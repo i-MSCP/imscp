@@ -19,7 +19,7 @@
  * @category    iMSCP
  * @package     iMSCP_Core
  * @subpackage  Client
- * @copyright   2010-2012 by i-MSCP team
+ * @copyright   2010-2013 by i-MSCP team
  * @author		Daniel Andreca <sci2tech@gmail.com>
  * @author      iMSCP Team
  * @link        http://www.i-mscp.net i-MSCP Home Site

@@ -21,12 +21,12 @@
  * Portions created by the ispCP Team are Copyright (C) 2006-2010 by
  * isp Control Panel. All Rights Reserved.
  *
- * Portions created by the i-MSCP Team are Copyright (C) 2010-2012 by
- * i-MSCP a internet Multi Server Control Panel. All Rights Reserved.
+ * Portions created by the i-MSCP Team are Copyright (C) 2010-2013 by
+ * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
  *
  * @copyright   2001-2006 by moleSoftware GmbH
  * @copyright   2006-2010 by ispCP | http://isp-control.net
- * @copyright   2010-2012 by i-MSCP | http://i-mscp.net
+ * @copyright   2010-2013 by i-MSCP | http://i-mscp.net
  * @link        http://i-mscp.net
  * @author      ispCP Team
  * @author      i-MSCP Team
@@ -231,8 +231,8 @@ function i18n_getDomain($upstreamDomain)
  *
  * @author Laurent Declercq <l.declercq@nuxwin.com>
  * @since i-MSCP 1.0.1.4
- * @param $domainDirectory Current domain directory path
- * @param $skipDomain Domain that must not be removed
+ * @param string $domainDirectory Current domain directory path
+ * @param string $skipDomain Domain that must not be removed
  * @return void
  */
 function i18n_domainsGarbageCollector($domainDirectory, $skipDomain)

@@ -24,31 +24,28 @@
 # @category		i-MSCP
 # @package		i-MSCP_Tools
 # @subpackage	Tools_i18n
-# @copyright	2010-2012 by i-MSCP | http://i-mscp.net
+# @copyright	2010-2013 by i-MSCP | http://i-mscp.net
 # @author		Laurent Declercq <l.declercq@nuxwin.com>
 # @link			http://i-mscp.net i-MSCP Home Site
 # @license		http://www.gnu.org/licenses/ GPL v2
 
 set -e
 
-GUI=../../gui
+GUI="../.."
 
-if [ ! -f ${GUI}/public/index.php ]; then
-	echo "${GUI} isn't a valid gui/ location!"
+if [ ! -f "${GUI}/gui/public/index.php" ]; then
+	echo "You must run this script from the i18n/tools directory!"
 	exit 1
 fi
 
-for i in `find ../po -name "*.po"` ; do
-	echo "Compiling $i file"
-	FILENAME=`expr substr $i 7 5`
+cd $GUI
 
-	if [ "$FILENAME" = 'ar.po' ] ; then
-		FILENAME="ar_AE"
-	fi
-
-	DESTDIR=${GUI}/i18n/locales/${FILENAME}/LC_MESSAGES
+for i in `find i18n/po -name '*.po' | sed -r 's/.*\/(.*)/\1/'`; do
+	echo "Compiling the ${i} machine object file..."
+	LOCALE=`echo ${i} | cut -d '.' -f 1`
+	DESTDIR="gui/i18n/locales/${LOCALE}/LC_MESSAGES"
 	mkdir -p ${DESTDIR}
-	msgfmt --strict --no-hash -o ${DESTDIR}/${FILENAME}.mo $i
+	msgfmt --strict --no-hash -o ${DESTDIR}/${LOCALE}.mo i18n/po/${i}
 done
 
-exit 0
+exit

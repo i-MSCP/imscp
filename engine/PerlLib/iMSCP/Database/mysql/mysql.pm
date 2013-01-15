@@ -1,7 +1,7 @@
 #!/usr/bin/perl
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010 - 2011 by internet Multi Server Control Panel
+# Copyright (C) 2010-2013 by internet Multi Server Control Panel
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -18,9 +18,8 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
 # @category		i-MSCP
-# @copyright	2010 - 2012 by i-MSCP | http://i-mscp.net
+# @copyright	2010-2013 by i-MSCP | http://i-mscp.net
 # @author		Daniel Andreca <sci2tech@gmail.com>
-# @version		SVN: $Id$
 # @link			http://i-mscp.net i-MSCP Home Site
 # @license      http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
@@ -28,36 +27,41 @@ package iMSCP::Database::mysql::mysql;
 
 use strict;
 use warnings;
-
 use DBI;
 use iMSCP::Debug;
 use iMSCP::Database::mysql::Result;
+use parent 'Common::SingletonClass';
 
-use Common::SingletonClass;
-
-use vars qw/@ISA/;
-@ISA = ('Common::SingletonClass');
-
-sub _init{
+sub _init
+{
 	my $self = shift;
-	$self->{db}->{DATABASE_NAME}		= '';
-	$self->{db}->{DATABASE_HOST}		= '';
-	$self->{db}->{DATABASE_PORT}		= '';
-	$self->{db}->{DATABASE_USER}		= '';
-	$self->{db}->{DATABASE_PASSWORD}	= '';
-	$self->{db}->{DATABASE_SETTINGS}	= { PrintError => 0 };
+
+	$self->{db}->{DATABASE_NAME} = '';
+	$self->{db}->{DATABASE_HOST} = '';
+	$self->{db}->{DATABASE_PORT} = '';
+	$self->{db}->{DATABASE_USER} = '';
+	$self->{db}->{DATABASE_PASSWORD} = '';
+	$self->{db}->{DATABASE_SETTINGS} = { PrintError => 0 };
+
+	# for internal use only
+	$self->{dns} = '';
 }
 
-sub set{
-	my $self		= shift;
-	my $prop		= shift;
-	my $value		= shift;
+# Set database properties (eg DSN propertie)
+sub set
+{
+	my $self = shift;
+	my $prop = shift;
+	my $value = shift;
 	debug("Setting $prop as ".($value ? $value : 'undef'));
 	$self->{db}->{$prop} = $value if(exists $self->{db}->{$prop});
 }
 
-sub connect{
-	my $self		= shift;
+# Try to connect to the MySQL server with the current DSN (as set via the set() method)
+# Return mixed - 0 on success, error string on failure
+sub connect
+{
+	my $self = shift;
 
 	my $data_source	=
 		'dbi:mysql:'.
@@ -65,29 +69,42 @@ sub connect{
 		($self->{db}->{DATABASE_HOST} ? ';host=' . $self->{db}->{DATABASE_HOST} : '').
 		($self->{db}->{DATABASE_PORT} ? ';port=' . $self->{db}->{DATABASE_PORT} : '');
 
-	debug("Connect with $data_source");
+	if($self->{dns} ne $data_source) { # Avoid to disconnect and reconnect when using same DSN
+		debug("Connect with $data_source");
 
-	if($self->{connection}){
-		$self->{connection}->disconnect;
-	}
+		if($self->{connection}){
+			$self->{connection}->disconnect();
+		}
 
-	if(! ($self->{connection} = DBI->connect(
-		$data_source,
-		$self->{db}->{DATABASE_USER},
-		$self->{db}->{DATABASE_PASSWORD},
-		(defined($self->{db}->{DATABASE_SETTINGS}) && ref($self->{db}->{DATABASE_SETTINGS}) eq 'HASH' ? $self->{db}->{DATABASE_SETTINGS} : ())
-	))){
-		return $DBI::errstr;
+		if(! ($self->{connection} = DBI->connect(
+			$data_source,
+			$self->{db}->{DATABASE_USER},
+			$self->{db}->{DATABASE_PASSWORD},
+			(
+				defined($self->{db}->{DATABASE_SETTINGS}) &&
+				ref($self->{db}->{DATABASE_SETTINGS}) eq 'HASH' ? $self->{db}->{DATABASE_SETTINGS} : ()
+			)
+		))){
+			return $DBI::errstr;
+		}
+
+		$self->{dsn} = $data_source;
 	}
 
 	0;
 }
 
-sub doQuery{
-	my $self			= shift;
-	my $key				= shift;
-	my $query			= shift || error("No query provided");
-	my @subs			= @_;
+# Execute the given query
+#
+# Param int|string Query key
+# Param string SQL statement to be executed
+# Param array| string... Optionnal binds parameters
+sub doQuery
+{
+	my $self = shift;
+	my $key = shift;
+	my $query = shift || error("No query provided");
+	my @subs = @_;
 
 	debug("$query with @subs");
 
@@ -106,15 +123,20 @@ sub doQuery{
 	return \%href;
 }
 
+# Return tables for the current database (see DATABASE_NAME attribute)
+#
+# Return ARRAY REFERENCCE on success, error string on failure
 sub getDBTables{
 
-	my $self			= shift;
+	my $self = shift;
 
-	$self->{sth} = $self->{connection}->prepare("SELECT `TABLE_NAME` FROM `INFORMATION_SCHEMA`.`COLUMNS` WHERE `TABLE_SCHEMA` = '$self->{db}->{DATABASE_NAME}';");
+	$self->{sth} = $self->{connection}->prepare(
+		"SELECT `TABLE_NAME` FROM `INFORMATION_SCHEMA`.`COLUMNS` WHERE `TABLE_SCHEMA` = '$self->{db}->{DATABASE_NAME}';"
+	);
 
 	return "Error while executing query: $DBI::errstr" unless $self->{'sth'}->execute();
 
-	my $href = $self->{sth}->fetchall_hashref("TABLE_NAME");
+	my $href = $self->{sth}->fetchall_hashref('TABLE_NAME');
 
 	my @tables = keys %$href;
 
@@ -122,11 +144,46 @@ sub getDBTables{
 
 }
 
+# Return columns for the given table of the current database (see DATABASE_NAME attribute)
+#
+# Return ARRAY REFERENCCE on success, error string on failure
+sub getTableColumns($ $)
+{
+	my $self = shift;
+	my $tableName = shift;
+
+	$self->{sth} = $self->{connection}->prepare(
+		"
+			SELECT
+				`COLUMN_NAME`
+			FROM
+				`INFORMATION_SCHEMA`.`COLUMNS`
+			WHERE
+				`TABLE_SCHEMA` = '$self->{db}->{DATABASE_NAME}';
+			AND
+				`TABLE_NAME` = '$tableName';
+			"
+	);
+
+	return "Error while executing query: $DBI::errstr" unless $self->{'sth'}->execute();
+
+	my $href = $self->{sth}->fetchall_hashref('COLUMN_NAME');
+
+	my @columns = keys %$href;
+
+	return  \@columns;
+}
+
+# Dump the given database in the given filename
+#
+# Param string Database name
+# Param string Path of filename where the database should be dumped
+# Return int 0 on success 1 on failure
 sub dumpdb{
 
-	my $self		= shift;
-	my $db			= shift;
-	my $filename	= shift;
+	my $self = shift;
+	my $db = shift;
+	my $filename = shift;
 
 	unless($self->{connection}){
 		error('Not connected');
@@ -190,7 +247,11 @@ sub dumpdb{
 	0;
 }
 
-sub quoteIdentifier{
+# Quote the given identifier (database name, table name or column name)
+#
+# Return string Quoted identifier
+sub quoteIdentifier
+{
 	my ($self, $identifier)	= (@_);
 
 	$identifier = join(', ', $identifier) if( ref $identifier eq 'ARRAY');
@@ -199,6 +260,13 @@ sub quoteIdentifier{
 	debug("Quote identifier: |$rv|");
 
 	return $rv;
+}
+
+sub quote
+{
+	my ($self, $string)	= (@_);
+
+	$self->{'connection'}->quote($string);
 }
 
 1;

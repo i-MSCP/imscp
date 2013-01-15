@@ -1,7 +1,7 @@
 <?php
 /**
  * i-MSCP - internet Multi Server Control Panel
- * Copyright (C) 2010-2012 by i-MSCP team
+ * Copyright (C) 2010-2013 by i-MSCP team
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -20,7 +20,7 @@
  * @category	iMSCP
  * @package		iMSCP_Update
  * @subpackage	Database
- * @copyright	2010-2012 by i-MSCP team
+ * @copyright	2010-2013 by i-MSCP team
  * @author		Daniel Andreca <sci2tech@gmail.com>
  * @author		Laurent Declercq <l.declercq@nuxwin.com>
  * @link		http://www.i-mscp.net i-MSCP Home Site
@@ -103,7 +103,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * Checks for available database update.
 	 *
-	 * @author Laurent Declercq <l.declercq@i-mscp.net>
+	 * @author Laurent Declercq <l.declercq@nuxwin.com>
 	 * @return bool TRUE if a database update is available, FALSE otherwise
 	 */
 	public function isAvailableUpdate()
@@ -118,7 +118,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * Apply all available database updates.
 	 *
-	 * @author Laurent Declercq <l.declercq@i-mscp.net>
+	 * @author Laurent Declercq <l.declercq@nuxwin.com>
 	 * @return bool TRUE on success, FALSE otherwise
 	 */
 	public function applyUpdates()
@@ -198,7 +198,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * Returns database update(s) details.
 	 *
-	 * @author Laurent Declercq <l.declercq@i-mscp.net>
+	 * @author Laurent Declercq <l.declercq@nuxwin.com>
 	 * @return array
 	 */
 	public function getDatabaseUpdatesDetails()
@@ -244,7 +244,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * Return next database update revision.
 	 *
-	 * @author Laurent Declercq <l.declercq@i-mscp.net>
+	 * @author Laurent Declercq <l.declercq@nuxwin.com>
 	 * @return int 0 if no update is available
 	 */
 	protected function _getNextUpdate()
@@ -264,7 +264,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	 *
 	 * Note: For performances reasons, the revision is retrieved once per process.
 	 *
-	 * @author Laurent Declercq <l.declercq@i-mscp.net>
+	 * @author Laurent Declercq <l.declercq@nuxwin.com>
 	 * @return int Last database update revision number
 	 */
 	protected function _getLastAvailableUpdateRevision()
@@ -292,7 +292,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * Returns the revision number of the last applied database update.
 	 *
-	 * @author Laurent Declercq <l.declercq@i-mscp.net>
+	 * @author Laurent Declercq <l.declercq@nuxwin.com>
 	 * @return int Revision number of the last applied database update
 	 */
 	protected function _getLastAppliedUpdate()
@@ -482,7 +482,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * Removes useless 'suexec_props' table
 	 *
-	 * @author Laurent Declercq <l.declercq@i-mscp.net>
+	 * @author Laurent Declercq <l.declercq@nuxwin.com>
 	 * @since r3709
 	 * @return array SQL Statement
 	 */
@@ -579,7 +579,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * Adds i-MSCP daemon service properties in config table
 	 *
-	 * @author Laurent Declercq <l.declercq@i-mscp.net>
+	 * @author Laurent Declercq <l.declercq@nuxwin.com>
 	 * @since r4004
 	 * @return void
 	 */
@@ -735,7 +735,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 
 		// Ftp users passwords
 
-		$stmt = exec_query("SELECT `userid`, `rawpasswd` FROM `ftp_users`");
+		$stmt = exec_query("SELECT `userid`, `passwd` FROM `ftp_users`");
 
 		if ($stmt->rowCount() != 0) {
 			while (!$stmt->EOF) {
@@ -743,7 +743,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 					UPDATE
 						`ftp_users`
 					SET
-						`rawpasswd` = " . $db->quote(decrypt_db_password($stmt->fields['rawpasswd'])) . "
+						`rawpasswd` = " . $db->quote(decrypt_db_password($stmt->fields['passwd'])) . "
 					WHERE
 						`userid` = '" . $stmt->fields['userid'] . "'
 				";
@@ -810,7 +810,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * #124: Enhancement - Switch to gettext (Machine Object Files)
 	 *
-	 * @author Laurent Declercq <l.declercq@i-mscp.net>
+	 * @author Laurent Declercq <l.declercq@nuxwin.com>
 	 * @since r4792
 	 * @return array Stack of SQL statements to be executed
 	 */
@@ -842,7 +842,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 		// third step: Update users language property
 
 		$languagesMap = array(
-			'Arabic' => 'ar_AE', 'Azerbaijani' => 'az_AZ', 'BasqueSpain' => 'eu_ES',
+			'Arabic' => 'ar', 'Azerbaijani' => 'az_AZ', 'BasqueSpain' => 'eu_ES',
 			'Bulgarian' => 'bg_BG', 'Catalan' => 'ca_ES', 'ChineseChina' => 'zh_CN',
 			'ChineseHongKong' => 'zh_HK', 'ChineseTaiwan' => 'zh_TW', 'Czech' => 'cs_CZ',
 			'Danish' => 'da_DK', 'Dutch' => 'nl_NL', 'EnglishBritain' => 'en_GB',
@@ -909,7 +909,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * Some fixes for the user_gui_props table
 	 *
-	 * @author Laurent Declercq <l.declercq@i-mscp.net>
+	 * @author Laurent Declercq <l.declercq@nuxwin.com>
 	 * @since r4961
 	 * @return array Stack of SQL statements to be executed
 	 */
@@ -929,7 +929,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * Changes the log table schema to allow storage of large messages
 	 *
-	 * @author Laurent Declercq <l.declercq@i-mscp.net>
+	 * @author Laurent Declercq <l.declercq@nuxwin.com>
 	 * @since r5002
 	 * @return string SQL statement to be executed
 	 */
@@ -982,7 +982,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * Adds unique index on user_gui_props.user_id column
 	 *
-	 * @author Laurent Declercq <l.declercq@i-mscp.net>
+	 * @author Laurent Declercq <l.declercq@nuxwin.com>
 	 * @since r4592
 	 * @return array Stack of SQL statements to be executed
 	 */
@@ -1017,7 +1017,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * Drops useless column 'id' in user_gui_props table
 	 *
-	 * @author Laurent Declercq <l.declercq@i-mscp.net>
+	 * @author Laurent Declercq <l.declercq@nuxwin.com>
 	 * @since r4644
 	 * @return string SQL Statement to be executed
 	 */
@@ -1114,7 +1114,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * #188: Defect - Table quota_dovecot is still myisam than innoDB
 	 *
-	 * @author Laurent Declercq <l.declercq@i-mscp.net>
+	 * @author Laurent Declercq <l.declercq@nuxwin.com>
 	 * @since r5227
 	 * @return string SQL Statement
 	 */
@@ -1127,7 +1127,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	 * #15: Feature - PHP directives editor: Add/Update system wide values for PHP directives
 	 *
 	 * @author Hannes Koschier <hannes@cheat.at>
-	 * @author Laurent Declercq <l.declercq@i-mscp.net>
+	 * @author Laurent Declercq <l.declercq@nuxwin.com>
 	 * @since r5286
 	 * @return array Stack of SQL statements to be executed
 	 */
@@ -1135,9 +1135,9 @@ class iMSCP_Update_Database extends iMSCP_Update
 	{
 		return array(
 			// System wide PHP directives values
-			"REPLACE INTO `config` (`name`,`value`) VALUES ('PHPINI_ALLOW_URL_FOPEN', 'Off')",
-			"REPLACE INTO `config` (`name`,`value`) VALUES ('PHPINI_DISPLAY_ERRORS', 'On')",
-			"REPLACE INTO `config` (`name`,`value`) VALUES ('PHPINI_REGISTER_GLOBALS', 'Off')",
+			"REPLACE INTO `config` (`name`,`value`) VALUES ('PHPINI_ALLOW_URL_FOPEN', 'off')",
+			"REPLACE INTO `config` (`name`,`value`) VALUES ('PHPINI_DISPLAY_ERRORS', 'off')",
+			"REPLACE INTO `config` (`name`,`value`) VALUES ('PHPINI_REGISTER_GLOBALS', 'off')",
 			"REPLACE INTO `config` (`name`,`value`) VALUES ('PHPINI_UPLOAD_MAX_FILESIZE', '2')",
 			"REPLACE INTO `config` (`name`,`value`) VALUES ('PHPINI_POST_MAX_SIZE', '8')",
 			"REPLACE INTO `config` (`name`,`value`) VALUES ('PHPINI_MEMORY_LIMIT', '128')",
@@ -1152,7 +1152,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	 * #202: Bug - Unknown column php_ini_al_disable_functions in reseller_props table
 	 *
 	 * @author Hannes Koschier <hannes@cheat.at>
-	 * @author Laurent Declercq <l.declercq@i-mscp.net>
+	 * @author Laurent Declercq <l.declercq@nuxwin.com>
 	 * @since r5286
 	 * @return array Stack of SQL statements to be executed
 	 */
@@ -1186,7 +1186,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	 * #15: Feature - PHP directives editor: Add php_ini table
 	 *
 	 * @author Hannes Koschier <hannes@cheat.at>
-	 * @author Laurent Declercq <l.declercq@i-mscp.net>
+	 * @author Laurent Declercq <l.declercq@nuxwin.com>
 	 * @since r5286
 	 * @return string SQL Statement
 	 */
@@ -1199,9 +1199,9 @@ class iMSCP_Update_Database extends iMSCP_Update
 				`domain_id` int(10) NOT NULL,
 				`status` varchar(55) COLLATE utf8_unicode_ci NOT NULL,
 				`disable_functions` varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'show_source,system,shell_exec,passthru,exec,phpinfo,shell,symlink',
-				`allow_url_fopen` varchar(10) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'Off',
-				`register_globals` varchar(10) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'Off',
-				`display_errors` varchar(10) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'Off',
+				`allow_url_fopen` varchar(10) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'off',
+				`register_globals` varchar(10) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'off',
+				`display_errors` varchar(10) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'off',
 				`error_reporting` varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'E_ALL & ~E_NOTICE',
 				`post_max_size` int(11) NOT NULL DEFAULT '8',
 				`upload_max_filesize` int(11) NOT NULL DEFAULT '2',
@@ -1217,7 +1217,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	 *
 	 * Note: For consistency reasons, this update will reset the feature values..
 	 *
-	 * @author Laurent Declercq <l.declercq@i-mscp.net>
+	 * @author Laurent Declercq <l.declercq@nuxwin.com>
 	 * @since r5286
 	 * @return array Stack of SQL statements to be executed
 	 */
@@ -1250,7 +1250,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * Truncate the php_ini table (related to _databaseUpdate_88)
 	 *
-	 * @author Laurent Declercq <l.declercq@i-mscp.net>
+	 * @author Laurent Declercq <l.declercq@nuxwin.com>
 	 * @since r5286
 	 * @return string SQL Statement to be executed
 	 */
@@ -1510,162 +1510,6 @@ class iMSCP_Update_Database extends iMSCP_Update
 	}
 
 	/**
-	 * Enhancement - Roundcube integration
-	 *
-	 * @author Daniel Andreca <sci2tech@gmail.com>
-	 * @return array Stack of SQL statements to be executed
-	 */
-	protected function _databaseUpdate_108()
-	{
-		return array(
-			"CREATE TABLE IF NOT EXISTS `roundcube_users` (
-				`user_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-				`username` varchar(128) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL,
-				`mail_host` varchar(128) NOT NULL,
-				`alias` varchar(128) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL,
-				`created` datetime NOT NULL DEFAULT '1000-01-01 00:00:00',
-				`last_login` datetime DEFAULT NULL,
-				`language` varchar(5) DEFAULT NULL,
-				`preferences` text,
-				PRIMARY KEY (`user_id`),
-				UNIQUE KEY `username` (`username`,`mail_host`),
-				KEY `alias_index` (`alias`)
-			) ENGINE=InnoDB DEFAULT CHARSET=utf8",
-
-			"CREATE TABLE IF NOT EXISTS `roundcube_cache` (
-				`cache_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-				`cache_key` varchar(128) CHARACTER SET ascii NOT NULL,
-				`created` datetime NOT NULL DEFAULT '1000-01-01 00:00:00',
-				`data` longtext NOT NULL,
-				`user_id` int(10) unsigned NOT NULL,
-				PRIMARY KEY (`cache_id`),
-				KEY `created_index` (`created`),
-				KEY `user_cache_index` (`user_id`,`cache_key`),
-				CONSTRAINT `user_id_fk_cache` FOREIGN KEY (`user_id`) REFERENCES `roundcube_users` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE
-			) ENGINE=InnoDB DEFAULT CHARSET=utf8",
-
-			"CREATE TABLE IF NOT EXISTS `roundcube_cache_index` (
-				`user_id` int(10) unsigned NOT NULL,
-				`mailbox` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL,
-				`changed` datetime NOT NULL DEFAULT '1000-01-01 00:00:00',
-				`valid` tinyint(1) NOT NULL DEFAULT '0',
-				`data` longtext NOT NULL,
-				PRIMARY KEY (`user_id`,`mailbox`),
-				KEY `changed_index` (`changed`),
-				CONSTRAINT `user_id_fk_cache_index` FOREIGN KEY (`user_id`) REFERENCES `roundcube_users` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE
-			) ENGINE=InnoDB DEFAULT CHARSET=utf8",
-
-			"CREATE TABLE IF NOT EXISTS `roundcube_cache_messages` (
-				`user_id` int(10) unsigned NOT NULL,
-				`mailbox` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL,
-				`uid` int(11) unsigned NOT NULL DEFAULT '0',
-				`changed` datetime NOT NULL DEFAULT '1000-01-01 00:00:00',
-				`data` longtext NOT NULL,
-				`flags` int(11) NOT NULL DEFAULT '0',
-				PRIMARY KEY (`user_id`,`mailbox`,`uid`),
-				KEY `changed_index` (`changed`),
-				CONSTRAINT `user_id_fk_cache_messages` FOREIGN KEY (`user_id`) REFERENCES `roundcube_users` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE
-			) ENGINE=InnoDB DEFAULT CHARSET=utf8",
-
-			"CREATE TABLE IF NOT EXISTS `roundcube_cache_thread` (
-				`user_id` int(10) unsigned NOT NULL,
-				`mailbox` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL,
-				`changed` datetime NOT NULL DEFAULT '1000-01-01 00:00:00',
-				`data` longtext NOT NULL,
-				PRIMARY KEY (`user_id`,`mailbox`),
-				KEY `changed_index` (`changed`),
-				CONSTRAINT `user_id_fk_cache_thread` FOREIGN KEY (`user_id`) REFERENCES `roundcube_users` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE
-			) ENGINE=InnoDB DEFAULT CHARSET=utf8",
-
-			"CREATE TABLE IF NOT EXISTS `roundcube_contactgroups` (
-				`contactgroup_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-				`user_id` int(10) unsigned NOT NULL,
-				`changed` datetime NOT NULL DEFAULT '1000-01-01 00:00:00',
-				`del` tinyint(1) NOT NULL DEFAULT '0',
-				`name` varchar(128) NOT NULL DEFAULT '',
-				PRIMARY KEY (`contactgroup_id`),
-				KEY `contactgroups_user_index` (`user_id`,`del`),
-				CONSTRAINT `user_id_fk_contactgroups` FOREIGN KEY (`user_id`) REFERENCES `roundcube_users` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE
-			) ENGINE=InnoDB DEFAULT CHARSET=utf8",
-
-			"CREATE TABLE IF NOT EXISTS `roundcube_contacts` (
-				`contact_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-				`changed` datetime NOT NULL DEFAULT '1000-01-01 00:00:00',
-				`del` tinyint(1) NOT NULL DEFAULT '0',
-				`name` varchar(128) NOT NULL DEFAULT '',
-				`email` text NOT NULL,
-				`firstname` varchar(128) NOT NULL DEFAULT '',
-				`surname` varchar(128) NOT NULL DEFAULT '',
-				`vcard` longtext,
-				`words` text,
-				`user_id` int(10) unsigned NOT NULL,
-				PRIMARY KEY (`contact_id`),
-				KEY `user_contacts_index` (`user_id`,`del`),
-				CONSTRAINT `user_id_fk_contacts` FOREIGN KEY (`user_id`) REFERENCES `roundcube_users` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE
-			) ENGINE=InnoDB DEFAULT CHARSET=utf8",
-
-			"CREATE TABLE IF NOT EXISTS `roundcube_contactgroupmembers` (
-				`contactgroup_id` int(10) unsigned NOT NULL,
-				`contact_id` int(10) unsigned NOT NULL,
-				`created` datetime NOT NULL DEFAULT '1000-01-01 00:00:00',
-				PRIMARY KEY (`contactgroup_id`,`contact_id`),
-				KEY `contactgroupmembers_contact_index` (`contact_id`),
-				CONSTRAINT `contactgroup_id_fk_contactgroups` FOREIGN KEY (`contactgroup_id`) REFERENCES `roundcube_contactgroups` (`contactgroup_id`) ON DELETE CASCADE ON UPDATE CASCADE,
-				CONSTRAINT `contact_id_fk_contacts` FOREIGN KEY (`contact_id`) REFERENCES `roundcube_contacts` (`contact_id`) ON DELETE CASCADE ON UPDATE CASCADE
-			) ENGINE=InnoDB DEFAULT CHARSET=latin1",
-
-			"CREATE TABLE IF NOT EXISTS `roundcube_dictionary` (
-				`user_id` int(10) unsigned DEFAULT NULL,
-				`language` varchar(5) NOT NULL,
-				`data` longtext NOT NULL,
-				UNIQUE KEY `uniqueness` (`user_id`,`language`),
-				CONSTRAINT `user_id_fk_dictionary` FOREIGN KEY (`user_id`) REFERENCES `roundcube_users` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE
-			) ENGINE=InnoDB DEFAULT CHARSET=utf8",
-
-			"CREATE TABLE IF NOT EXISTS `roundcube_identities` (
-				`identity_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-				`user_id` int(10) unsigned NOT NULL,
-				`changed` datetime NOT NULL DEFAULT '1000-01-01 00:00:00',
-				`del` tinyint(1) NOT NULL DEFAULT '0',
-				`standard` tinyint(1) NOT NULL DEFAULT '0',
-				`name` varchar(128) NOT NULL,
-				`organization` varchar(128) NOT NULL DEFAULT '',
-				`email` varchar(128) NOT NULL,
-				`reply-to` varchar(128) NOT NULL DEFAULT '',
-				`bcc` varchar(128) NOT NULL DEFAULT '',
-				`signature` text,
-				`html_signature` tinyint(1) NOT NULL DEFAULT '0',
-				PRIMARY KEY (`identity_id`),
-				KEY `user_identities_index` (`user_id`,`del`),
-				CONSTRAINT `user_id_fk_identities` FOREIGN KEY (`user_id`) REFERENCES `roundcube_users` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE
-			) ENGINE=InnoDB DEFAULT CHARSET=utf8",
-
-
-			"CREATE TABLE IF NOT EXISTS `roundcube_searches` (
-				`search_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-				`user_id` int(10) unsigned NOT NULL,
-				`type` int(3) NOT NULL DEFAULT '0',
-				`name` varchar(128) NOT NULL,
-				`data` text,
-				PRIMARY KEY (`search_id`),
-				UNIQUE KEY `uniqueness` (`user_id`,`type`,`name`),
-				CONSTRAINT `user_id_fk_searches` FOREIGN KEY (`user_id`) REFERENCES `roundcube_users` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE
-			) ENGINE=InnoDB DEFAULT CHARSET=utf8",
-
-
-			"CREATE TABLE IF NOT EXISTS `roundcube_session` (
-				`sess_id` varchar(128) NOT NULL,
-				`created` datetime NOT NULL DEFAULT '1000-01-01 00:00:00',
-				`changed` datetime NOT NULL DEFAULT '1000-01-01 00:00:00',
-				`ip` varchar(40) NOT NULL,
-				`vars` mediumtext NOT NULL,
-				PRIMARY KEY (`sess_id`),
-				KEY `changed_index` (`changed`)
-			) ENGINE=InnoDB DEFAULT CHARSET=utf8"
-		);
-	}
-
-	/**
 	 * #157: Enhancement - Relaying Domains
 	 *
 	 * @author Sascha Bay <worst.case@gmx.de>
@@ -1828,7 +1672,7 @@ class iMSCP_Update_Database extends iMSCP_Update
      *
      * Moved from database update 70 due to duplicate key in foreign keys map.
      *
-     * @author Laurent Declercq <l.declercq@i-mscp.net>
+     * @author Laurent Declercq <l.declercq@nuxwin.com>
      * @return array Stack of SQL statements to be executed
      */
     protected function _databaseUpdate_115()
@@ -1876,4 +1720,77 @@ class iMSCP_Update_Database extends iMSCP_Update
             $this->_addColumn('domain', 'domain_disk_sql', 'bigint(20) unsigned default NULL AFTER `domain_disk_mail`')
         );
     }
+
+    /**
+     * Deletion of useless tables
+     *
+     * @author Laurent Declercq <l.declercq@nuxwin.com>
+     * @return array Stack of SQL statements to be executed
+     */
+    protected function _databaseUpdate_117()
+    {
+        return array(
+        	'DROP TABLE IF EXISTS
+                `roundcube_session`, `roundcube_searches`, `roundcube_identities`, `roundcube_dictionary`,
+                `roundcube_contactgroupmembers`, `roundcube_contacts`, `roundcube_contactgroups`,
+                `roundcube_cache_thread`, `roundcube_cache_messages`, `roundcube_cache_index`, `roundcube_cache`,
+                `roundcube_users`
+            '
+        );
+    }
+
+    /**
+     * Fix Arabic locale name
+     *
+     * @author Laurent Declercq <l.declercq@nuxwin.com>
+     * @return string SQL statement to be executed
+     */
+    protected function _databaseUpdate_118()
+    {
+        return "UPDATE `user_gui_props` SET `lang` = 'ar' WHERE `lang` = 'ar_AE'";
+    }
+
+   /**
+    * Lowercase PHP INI boolean
+    *
+    * @author Laurent Declercq <l.declercq@nuxwin.com>
+    * @return array Stack of SQL statements to be executed
+    */
+    protected function _databaseUpdate_119()
+    {
+        return array(
+            // System wide PHP directives values
+            "REPLACE INTO `config` (`name`, `value`) VALUES ('PHPINI_ALLOW_URL_FOPEN', 'off')",
+            "REPLACE INTO `config` (`name`, `value`) VALUES ('PHPINI_DISPLAY_ERRORS', 'off')",
+            "UPDATE `php_ini` SET `allow_url_fopen` = 'on' WHERE `allow_url_fopen` = 'On'",
+            "UPDATE `php_ini` SET `allow_url_fopen` = 'off' WHERE `allow_url_fopen` = 'Off'",
+            "UPDATE `php_ini` SET `display_errors` = 'on' WHERE `display_errors` = 'On'",
+            "UPDATE `php_ini` SET `display_errors` = 'off' WHERE `display_errors` = 'Off'"
+        );
+    }
+
+ /**
+  * #552: Bug - PHP constants are not recognized outside of PHP (such as in Apache vhost files)
+  *
+  * @author Laurent Declercq <l.declercq@nuxwin.com>
+  * @return array Stack of SQL statements to be executed
+  */
+	protected function _databaseUpdate_120()
+	{
+		$sqlQueries = array();
+
+		$constantToInteger = array(
+			'E_ALL & ~E_NOTICE & ~E_WARNING' => '30711', // Switch to E_ALL & ~E_NOTICE
+			'E_ALL & ~E_DEPRECATED' => '22527', // Production
+			'E_ALL & ~E_NOTICE' => '30711', // Default
+			'E_ALL | E_STRICT' => '32767' // Development
+		);
+
+		foreach($constantToInteger as $c => $i) {
+			$sqlQueries[] = "UPDATE `config` SET `value` = '$i' WHERE `name` = 'PHPINI_ERROR_REPORTING' AND `value` ='$c'";
+			$sqlQueries[] = "UPDATE `php_ini` SET `error_reporting` = '$i' WHERE `error_reporting` = '$c'";
+		}
+
+		return $sqlQueries;
+	}
 }

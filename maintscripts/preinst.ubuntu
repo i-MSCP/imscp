@@ -1,11 +1,11 @@
 #!/bin/sh
 
-# i-MSCP a internet Multi Server Control Panel
+# i-MSCP - internet Multi Server Control Panel
 #
 # Copyright (C) 2006-2010 by isp Control Panel - http://ispcp.net
-# Copyright (C) 2010-2012 by internet Multi Server Control Panel - http://i-mscp.net
+# Copyright (C) 2010-2013 by internet Multi Server Control Panel - http://i-mscp.net
 #
-# Author: Laurent Declercq <laurent.declercq@i-mscp.net>
+# Author: Laurent Declercq <l.declercq@nuxwin.com>
 #
 # The contents of this file are subject to the Mozilla Public License
 # Version 1.1 (the "License"); you may not use this file except in
@@ -23,7 +23,7 @@
 # Portions created by Initial Developer are Copyright (C) 2006-2010 by
 # isp Control Panel. All Rights Reserved.
 #
-# Portions created by the i-MSCP Team are Copyright (C) 2010-2012 by
+# Portions created by the i-MSCP Team are Copyright (C) 2010-2013 by
 # internet Multi Server Control Panel. All Rights Reserved.
 #
 # The i-MSCP Home Page is:

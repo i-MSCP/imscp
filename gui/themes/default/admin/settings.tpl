@@ -201,8 +201,8 @@
 							<td><label for="phpini_allow_url_fopen">{TR_PHPINI_ALLOW_URL_FOPEN}</label></td>
 							<td>
 								<select name="phpini_allow_url_fopen" id="phpini_allow_url_fopen">
-									<option value="Off" {PHPINI_ALLOW_URL_FOPEN_OFF}>{TR_DISABLED}</option>
-									<option value="On" {PHPINI_ALLOW_URL_FOPEN_ON}>{TR_ENABLED}</option>
+									<option value="off" {PHPINI_ALLOW_URL_FOPEN_OFF}>{TR_DISABLED}</option>
+									<option value="on" {PHPINI_ALLOW_URL_FOPEN_ON}>{TR_ENABLED}</option>
 								</select>
 							</td>
 						</tr>
@@ -210,8 +210,8 @@
 							<td><label for="phpini_display_errors">{TR_PHPINI_DISPLAY_ERRORS}</label></td>
 							<td>
 								<select name="phpini_display_errors" id="phpini_display_errors">
-									<option value="Off" {PHPINI_DISPLAY_ERRORS_OFF}>{TR_DISABLED}</option>
-									<option value="On" {PHPINI_DISPLAY_ERRORS_ON}>{TR_ENABLED}</option>
+									<option value="off" {PHPINI_DISPLAY_ERRORS_OFF}>{TR_DISABLED}</option>
+									<option value="on" {PHPINI_DISPLAY_ERRORS_ON}>{TR_ENABLED}</option>
 								</select>
 							</td>
 						</tr>

@@ -2,7 +2,7 @@
 <!--
 i-MSCP - internet Multi Server Control Panel
 
-Copyright 2010 - 2012 by internet Multi Server Control Panel - http://i-mscp.net
+Copyright 2010-2013 by internet Multi Server Control Panel - http://i-mscp.net
 
 This program is free software; you can redistribute it and/or modify it under the
 terms of the GNU General Public License as published by the Free Software Foundation;
@@ -16,9 +16,8 @@ You should have received a copy of the GNU General Public License along with thi
 program. If not, see <http://www.gnu.org/licenses/>
 
 @category	i-MSCP
-@copyright	2010 - 2012 by i-MSCP | http://i-mscp.net
+@copyright	2010-2013 by i-MSCP | http://i-mscp.net
 @author		Daniel Andreca <sci2tech@i-mscp.net>
-@version	SVN: $Id$
 @link		http://i-mscp.net i-MSCP Home Site
 @license	http://www.gnu.org/licenses/ GPL v2
 -->
@@ -34,7 +33,6 @@ program. If not, see <http://www.gnu.org/licenses/>
 	<folders>${ROOT_APACHE_CONF}/mods-available</folders>
 	<folders>${ROOT_APACHE_CONF}/imscp</folders>
 	<folders>${INST_PREF}/var/www/scoreboards</folders>
-
 	<copy_config>${SYSTEM_CONF}/apache/httpd.conf</copy_config>
 	<copy_config>${SYSTEM_CONF}/apache/00_master.conf</copy_config>
 	<copy_config>${SYSTEM_CONF}/apache/00_master_ssl.conf</copy_config>
@@ -47,12 +45,4 @@ program. If not, see <http://www.gnu.org/licenses/>
 	<copy_config>${SYSTEM_CONF}/apache/parts/imscp_base.tpl/httpd.conf</copy_config>
 	<copy_config>${SYSTEM_CONF}/apache/fastcgi_imscp.conf</copy_config>
 	<copy_config>${SYSTEM_CONF}/apache/fcgid_imscp.conf</copy_config>
-
-	<copy />
-
-	<create_file />
-
-	<chown_file />
-
-	<chmod_file />
 </install>

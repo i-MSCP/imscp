@@ -3,14 +3,14 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-#   <barni@telia.com>, 2011-2012.
+#   <barni@telia.com>, 2011-2013.
 msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2012-10-11 04:04+0200\n"
-"PO-Revision-Date: 2012-10-09 12:02+0000\n"
-"Last-Translator: Cool <barni@telia.com>\n"
+"POT-Creation-Date: 2013-01-07 04:57+0100\n"
+"PO-Revision-Date: 2013-01-07 03:52+0000\n"
+"Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -560,6 +560,9 @@ msgstr "Åtgärder"
 msgid "Activate"
 msgstr "Aktivera"
 
+msgid "Activate mail auto-responder"
+msgstr "Aktivera e-post auto-responder"
+
 msgid "Activate this plugin"
 msgstr "Activate this plugin"
 
@@ -723,7 +726,7 @@ msgid "Admin log"
 msgstr "Administratörslogg"
 
 msgid "Admin not available"
-msgstr "Admin not available"
+msgstr "Admin inte tillgänglig"
 
 msgid "Admin users"
 msgstr "Administratörer"
@@ -754,9 +757,6 @@ msgstr "Administratörsinloggning"
 
 msgid "Administrators"
 msgstr "Administratörer"
-
-msgid "After the name"
-msgstr "Efter namnet"
 
 msgid ""
 "After your upload the package it will be installed on your systems.<br "
@@ -863,10 +863,13 @@ msgid "Alternative URL to reach your website"
 msgstr "Alternativ URL för att nå din webbplats"
 
 msgid "An error occured. Please, contact your administrator."
-msgstr "An error occured. Please, contact your administrator."
+msgstr "Ett fel inträffade. Kontakta din administratör."
 
 msgid "An error occurred while the authentication attempt."
 msgstr "An error occurred while the authentication attempt."
+
+msgid "An unexpected error occured, please contact your reseller."
+msgstr "Ett oväntat fel uppstod, vänligen kontakta din återförsäljare."
 
 #, php-format
 msgid "An unknown error occured during file upload: %s"
@@ -879,7 +882,7 @@ msgid "Apache logfiles"
 msgstr "Apache loggfiler"
 
 msgid "Application Description"
-msgstr "Application Description"
+msgstr "Applikations beskrivning"
 
 msgid "Application installer"
 msgstr "Programinstallerare"
@@ -894,7 +897,7 @@ msgid "Are you sure to install this package from the webdepot?"
 msgstr "Är du säker på att installera det här paketet från webdepot?"
 
 msgid "Are you sure to install this package?"
-msgstr "Are you sure to install this package?"
+msgstr "Är du säker på att du vill installera detta paket?"
 
 msgid "Are you sure to remove the permissions ?"
 msgstr "Är du säker på att du vill ta bort behörigheter ?"
@@ -1004,6 +1007,18 @@ msgstr "Automatisk e-postmall uppdaterad!"
 msgid "Auto respond"
 msgstr "Automatiskt svar"
 
+msgid "Auto-responder message cannot be empty."
+msgstr "Auto-responder meddelande får inte vara tomt."
+
+msgid "Auto-responder successfully scheduled for activation."
+msgstr "Auto-responder schemalagt för aktivering."
+
+msgid "Auto-responder successfully scheduled for deactivation."
+msgstr "Auto-responder schemalagt för avaktivering."
+
+msgid "Auto-responder successfully scheduled for update."
+msgstr "Auto-responder schemalagt för uppdatering."
+
 msgid "Automatic updates"
 msgstr "Auto. uppdateringar"
 
@@ -1052,11 +1067,11 @@ msgstr "Backup arkiv planeras för att återställa."
 msgid "Backup support"
 msgstr "Backupstöd"
 
+msgid "Bad password."
+msgstr "Felaktigt lösenord."
+
 msgid "Bandwidth"
 msgstr "Bandbredd"
-
-msgid "Before the name"
-msgstr "Innan namnet"
 
 msgid "Behind the name"
 msgstr "Bakom namnet"
@@ -1477,6 +1492,9 @@ msgstr "Databas namn är för långt."
 msgid "Database prefix"
 msgstr "Databas prefix"
 
+msgid "Database prefix/suffix"
+msgstr "Databas prefix/suffix"
+
 msgid "Database required"
 msgstr "Databas krävs"
 
@@ -1485,6 +1503,9 @@ msgstr "Databas uppdatering finns tillgänglig."
 
 msgid "Database updates"
 msgstr "Databasuppdateringar"
+
+msgid "Database usage"
+msgstr "Database usage"
 
 msgid "Database user list is empty!"
 msgstr "Database user listan är tom!"
@@ -1611,7 +1632,7 @@ msgid "Delete the ticket"
 msgstr "Ta bort ticket"
 
 msgid "Deletion in progress"
-msgstr "Deletion in progress"
+msgstr "Radering pågår"
 
 msgid "Deletion in progress..."
 msgstr "Deletion in progress..."
@@ -1620,7 +1641,7 @@ msgid "Demo Version!"
 msgstr "Demoversion!"
 
 msgid "Depot import"
-msgstr "Depot import"
+msgstr "Depå import"
 
 msgid "Description"
 msgstr "Beskrivning"
@@ -1676,6 +1697,9 @@ msgstr "Disk space limit [MiB] <br /><span class=\"italic\">(0 unlimited)</span>
 msgid "Disk usage"
 msgstr "Diskanvändning"
 
+msgid "Disk usage detail"
+msgstr "Diskanvändning detaljer"
+
 msgid "Do not show any error"
 msgstr "Visa inte fel"
 
@@ -1713,7 +1737,7 @@ msgid "Domain account expired."
 msgstr "Domänkonto löpt ut."
 
 msgid "Domain account is in inconsistent state."
-msgstr "Domain account is in inconsistent state."
+msgstr "Domänkonto är i inkonsekvent status."
 
 msgid "Domain account scheduled for activation."
 msgstr "Domänkonto planeras för aktivering."
@@ -2008,8 +2032,8 @@ msgstr "Ändra Htaccess användare"
 msgid "Edit mail account"
 msgstr "Redigera e-postkonto"
 
-msgid "Edit mail auto responder"
-msgstr "Redigera e-postautosvar"
+msgid "Edit mail auto-responder"
+msgstr "Edit epost auto-responder"
 
 msgid "Edit mail quota"
 msgstr "Edit mail quota"
@@ -2272,7 +2296,7 @@ msgid "File does not exist. %1$s.tar.gz"
 msgstr "Fil finns inte. %1$s.tar.gz"
 
 msgid "File exceeds the size limit."
-msgstr "File exceeds the size limit."
+msgstr "Filen överskrider storleksgränsen."
 
 msgid "File is not readable."
 msgstr "Filen är inte läsbar."
@@ -2285,6 +2309,9 @@ msgstr "Fil måste vara en. Tar.gz-arkiv"
 
 msgid "File successfully uploaded."
 msgstr "Filen har laddats upp."
+
+msgid "File usage"
+msgstr "File usage"
 
 msgid "File was successfully uploaded."
 msgstr "Fil har laddats upp."
@@ -2568,7 +2595,7 @@ msgid "If you want to limit the reseller, you must first limit its customers."
 msgstr "Om du vill begränsa återförsäljare, måste du begränsa först sina kunder."
 
 msgid "Images have to be smaller than 500 x 90 pixels."
-msgstr "Images have to be smaller than 500 x 90 pixels."
+msgstr "Bilder måste vara mindre än 500 x 90 pixlar."
 
 msgid "Implementation URL"
 msgstr "Länk för att genomföra beställning"
@@ -2680,7 +2707,7 @@ msgid "Installation path:"
 msgstr "Installation path:"
 
 msgid "Installed Package which was deleted by your reseller."
-msgstr "Installed Package which was deleted by your reseller."
+msgstr "Installerade paket som tagits bort från din återförsäljare."
 
 msgid "Installed in reseller depot"
 msgstr "Installed in reseller depot"
@@ -2723,7 +2750,7 @@ msgid "Invalid characters in TXT data (\"%s\")"
 msgstr "Ogiltiga tecken i TXT data (\"%s\")"
 
 msgid "Invalid expiration date."
-msgstr "Invalid expiration date."
+msgstr "Ogiltigt förfallodatum."
 
 msgid "Invalid group name!"
 msgstr "Ogiltigt gruppnamn!"
@@ -2855,7 +2882,7 @@ msgid "Load (1 Min, 5 Min, 15 Min)"
 msgstr "Load (1 min, 5 min, 15 min)"
 
 msgid "Log in to answer"
-msgstr "Log in to answer"
+msgstr "Logga in för att svara"
 
 msgid "Login"
 msgstr "Logga in"
@@ -2865,7 +2892,7 @@ msgstr "Logga in som"
 
 #, php-format
 msgid "Login data successfully sent to %s."
-msgstr "Login data successfully sent to %s."
+msgstr "Inloggningsdata har skickats till %s."
 
 msgid "Login into PhpMyAdmin"
 msgstr "Logga in till PhpMyAdmin"
@@ -2901,7 +2928,7 @@ msgid "Logout"
 msgstr "Logga ut"
 
 msgid "Logs successfully deleted."
-msgstr "Logs successfully deleted."
+msgstr "Loggar har tagits bort."
 
 msgid "Lost password"
 msgstr "Glömt lösenord"
@@ -3002,6 +3029,9 @@ msgstr "Fel i listan för e-postvidarebefordring!"
 
 msgid "Mail successfully sent to your users."
 msgstr "E-post skickats till dina användare."
+
+msgid "Mail usage"
+msgstr "Mail usage"
 
 msgid "Mail users"
 msgstr "E-postanvändare"
@@ -3178,7 +3208,7 @@ msgid "Missing domain"
 msgstr "Saknade domän"
 
 msgid "Modification in progress"
-msgstr "Modification in progress"
+msgstr "Ändring pågår"
 
 msgid "Modify"
 msgstr "Ändra"
@@ -3205,7 +3235,7 @@ msgid "Move"
 msgstr "Flytta"
 
 msgid "Moving aborted."
-msgstr "Moving aborted."
+msgstr "Flytta avbröts."
 
 msgid "MySQL support"
 msgstr "MySQL-stöd"
@@ -3223,7 +3253,7 @@ msgid "Network interface"
 msgstr "Nätverksgränssnitt"
 
 msgid "Never"
-msgstr "Never"
+msgstr "Aldrig"
 
 msgid "Never expires"
 msgstr "Never expires"
@@ -3304,7 +3334,7 @@ msgid "No domain alias system errors"
 msgstr "Inga domänalias systemfel"
 
 msgid "No domain statistics to display for this reseller."
-msgstr "No domain statistics to display for this reseller."
+msgstr "Ingen domän statistik för denna återförsäljare."
 
 msgid "No domain statistics to display."
 msgstr "Inga domain statistik att visa."
@@ -3319,7 +3349,7 @@ msgid "No file was uploaded."
 msgstr "No file was uploaded."
 
 msgid "No found."
-msgstr "No found."
+msgstr "Not found."
 
 msgid "No group found."
 msgstr "Ingen grupp hittades."
@@ -3327,7 +3357,7 @@ msgstr "Ingen grupp hittades."
 msgid ""
 "No hosting plan available for purchasing. Please contact your system "
 "administrator."
-msgstr "No hosting plan available for purchasing. Please contact your system administrator."
+msgstr "Inget webbhotell tillgängliga för inköp. Kontakta systemadministratören."
 
 msgid "No htaccess related system errors"
 msgstr "Inga htaccess relaterade systemfel"
@@ -3336,13 +3366,13 @@ msgid "No languages found."
 msgstr "Inga språk hittats."
 
 msgid "No logs found."
-msgstr "No logs found."
+msgstr "Inga loggar hittades."
 
 msgid "No new i-MSCP updates available"
 msgstr "Det finns inga tillgängliga uppdateringar för i-MSCP"
 
 msgid "No provided"
-msgstr "No provided"
+msgstr "Medföljer inte"
 
 msgid "No records found"
 msgstr "Inga poster hittades"
@@ -3366,13 +3396,13 @@ msgid "No software in software depot available!"
 msgstr "No software in software depot available!"
 
 msgid "No software in webdepot found!"
-msgstr "No software in webdepot found!"
+msgstr "Ingen programvara i webdepot hittades!"
 
 msgid "No software is waiting for activation"
-msgstr "No software is waiting for activation"
+msgstr "Ingen mjukvara väntar på aktivering"
 
 msgid "No statistics found for the given period. Try another period."
-msgstr "No statistics found for the given period. Try another period."
+msgstr "Ingen statistik finns för angiven tidsperiod. Försök med en annan period."
 
 msgid "No subdomain system errors"
 msgstr "Inga systemfel för subdomäner"
@@ -3381,16 +3411,16 @@ msgid "No such update order found."
 msgstr "Ingen sådan uppdatering hittades."
 
 msgid "No unassigned users was found in database."
-msgstr "No unassigned users was found in database."
+msgstr "Inget ledigt användare hittades i databasen."
 
 msgid "No update for the websoftware depot list available"
-msgstr "No update for the websoftware depot list available"
+msgstr "Ingen uppdatering för websoftware depå förteckning är tillgängliga"
 
 msgid "No user found."
 msgstr "Ingen användare hittades."
 
 msgid "No users found for this reseller."
-msgstr "No users found for this reseller."
+msgstr "Inga användare finns för denna återförsäljare."
 
 msgid "No valid alias domain selected."
 msgstr "Ingen giltig alias valt."
@@ -3451,6 +3481,12 @@ msgstr "Notiser, varningar och fel"
 
 msgid "Number of CPU Cores"
 msgstr "Antal CPU-känor"
+
+msgid "Numeric prefix"
+msgstr "Numeriska prefix"
+
+msgid "Numeric suffix"
+msgstr "Numeriska suffix"
 
 msgid "OK"
 msgstr "OK"
@@ -3602,7 +3638,7 @@ msgid "PHP Support: enabled"
 msgstr "PHP-stöd: aktiverat"
 
 msgid "PHP configuration scheduled for update."
-msgstr "PHP configuration scheduled for update."
+msgstr "PHP-konfigurationen schemalagda för uppdatering."
 
 msgid "PHP directives values"
 msgstr "PHP directives values"
@@ -3845,7 +3881,7 @@ msgid "Please fill up both data fields for password."
 msgstr "Fyll upp både datafält för lösenord."
 
 msgid "Please select a least one user."
-msgstr "Please select a least one user."
+msgstr "Välj minst en användare."
 
 msgid "Please select a valid  SQL user for the database."
 msgstr "Please select a valid  SQL user for the database."
@@ -3860,7 +3896,7 @@ msgstr "Välj minst ett mail typ."
 msgid ""
 "Please set now the Username and Password for the later Login in the "
 "Application. (Required fiels!)"
-msgstr "Please set now the Username and Password for the later Login in the Application. (Required fiels!)"
+msgstr "Ange nu ditt användarnamn och lösenord för att senare logga in i programmet. (Obligatoriska fält!)"
 
 msgid "Please specify a message content!"
 msgstr "Vänligen skriv något i meddelande!"
@@ -3907,9 +3943,6 @@ msgstr "Vänligen ange databas-namn."
 msgid "Please type user password."
 msgstr "Vänligen skriv användarens lösenord."
 
-msgid "Please type your mail autorespond message."
-msgstr "Skriv ditt meddelande post autorespond."
-
 msgid "Please type your message."
 msgstr "Skriv ditt meddelande."
 
@@ -3924,6 +3957,9 @@ msgstr "Please, check the PHP Editor settings."
 
 msgid "Please, don't use special chars such as '@, $, %...' in the password."
 msgstr "Var god och inte använd '@, $, %...' i lösenord."
+
+msgid "Please, enter your auto-responder message below"
+msgstr "Ange ditt auto-responder meddelande nedan"
 
 msgid "Plugin"
 msgstr "Plugin"
@@ -4150,7 +4186,7 @@ msgid "Repeat password"
 msgstr "Upprepa lösenord"
 
 msgid "Request from foreign host was blocked."
-msgstr "Request from foreign host was blocked."
+msgstr "Begäran från värd var blockerad."
 
 msgid "Requires Database?"
 msgstr "Kräver databas?"
@@ -4391,7 +4427,7 @@ msgid "Second Level Domain name strict validation"
 msgstr "Strikt validering av huvuddomän"
 
 msgid "Secure connection"
-msgstr "Secure connection"
+msgstr "Säker anslutning"
 
 msgid "Security code"
 msgstr "Säkerhetskod"
@@ -4469,7 +4505,7 @@ msgid "Server traffic settings"
 msgstr "Servertrafikinställningar"
 
 msgid "Server traffic settings successfully updated."
-msgstr "Server traffic settings successfully updated."
+msgstr "Server trafik inställningar har uppdaterats."
 
 msgid "Service"
 msgstr "Tjänst"
@@ -4484,7 +4520,7 @@ msgid "Service port was successfully added"
 msgstr "Serviceport har lagts till"
 
 msgid "Service port was successfully removed."
-msgstr "Service port was successfully removed."
+msgstr "Service port har tagits bort."
 
 msgid "Service ports"
 msgstr "Service ports"
@@ -4608,7 +4644,7 @@ msgid "Software name"
 msgstr "Mjukvara namn"
 
 msgid "Software not found!"
-msgstr "Software not found!"
+msgstr "Programvara hittades inte!"
 
 msgid "Software options"
 msgstr "Software options"
@@ -4626,7 +4662,7 @@ msgid "Software status"
 msgstr "Programvara status"
 
 msgid "Software status:"
-msgstr "Software status:"
+msgstr "Programstatus:"
 
 msgid "Software total"
 msgstr "Programvara totala"
@@ -4706,7 +4742,7 @@ msgid "Sql users limit<br><i>(-1 disabled, 0 unlimited)</i>"
 msgstr "Sql users limit<br><i>(-1 disabled, 0 unlimited)</i>"
 
 msgid "Start installation"
-msgstr "Start installation"
+msgstr "Starta installationen"
 
 msgid "State"
 msgstr "State"
@@ -4751,13 +4787,13 @@ msgid "Subdomain errors"
 msgstr "Subdomänsfel"
 
 msgid "Subdomain forward"
-msgstr "Subdomain forward"
+msgstr "Subdomain framåt"
 
 msgid "Subdomain list is empty! You cannot add FTP accounts there!"
 msgstr "Subdomänlistan är tom! Du kan inte lägga till FTP-konton där!"
 
 msgid "Subdomain mail"
-msgstr "Subdomain mail"
+msgstr "Subdomain e-post"
 
 msgid "Subdomain mails"
 msgstr "E-poster för subdomän"
@@ -4853,7 +4889,7 @@ msgid "System tools"
 msgstr "Systemverktyg"
 
 msgid "System under maintenance"
-msgstr "System under maintenance"
+msgstr "System är på underhåll"
 
 msgid "System was unable to add the SQL database."
 msgstr "Systemet kunde inte skapa SQL databasen."
@@ -5067,6 +5103,9 @@ msgid ""
 "/>Refresh your site to see the new status!"
 msgstr "The package will be installed automaticly to your system after upload.<br />Refresh your site to see the new status!"
 
+msgid "The password field is empty."
+msgstr "Fältet för lösenord är tomt."
+
 msgid "The password is too long."
 msgstr "Lösenordet är för långt."
 
@@ -5089,14 +5128,17 @@ msgid "The reseller account you trying to edit doesn't exist."
 msgstr "The reseller account you trying to edit doesn't exist."
 
 msgid "The softwares installer needs PHP."
-msgstr "The softwares installer needs PHP."
+msgstr "De mjukvaror installationsprogram behöver PHP."
 
 msgid "The uploaded file was only partially uploaded."
-msgstr "The uploaded file was only partially uploaded."
+msgstr "Den överförda filen var bara delvis överförd."
 
 #, php-format
 msgid "The username %s is not available."
 msgstr "The username %s is not available."
+
+msgid "The username field is empty."
+msgstr "Användarnamnet är tomt."
 
 msgid "The value has been found in the stack"
 msgstr "Värdet har hittats i stapeln"
@@ -5165,10 +5207,10 @@ msgid "This hosting plan is not available for purchase."
 msgstr "Detta webbhotell är inte tillgänglig för köp."
 
 msgid "This htaccess group already exists."
-msgstr "This htaccess group already exists."
+msgstr "Detta htaccess-grupp finns redan."
 
 msgid "This htaccess user already exist."
-msgstr "This htaccess user already exist."
+msgstr "Denna htaccess användaren finns redan."
 
 msgid "This mount point is not allowed."
 msgstr "Denna monteringspunkt är inte tillåtet."
@@ -5345,7 +5387,7 @@ msgid "Traffic limit [MiB]<br><i>(0 unlimited)</i>"
 msgstr "Traffic limit [MiB]<br><i>(0 unlimited)</i>"
 
 msgid "Traffic limit must be a digit."
-msgstr "Traffic limit must be a digit."
+msgstr "Trafikgränsen måste vara en siffra."
 
 msgid "Traffic usage"
 msgstr "Trafikanvändning"
@@ -5354,7 +5396,7 @@ msgid "Traffic warning cannot be bigger than traffic limit."
 msgstr "Traffic warning cannot be bigger than traffic limit."
 
 msgid "Traffic warning must be a digit."
-msgstr "Traffic warning must be a digit."
+msgstr "Trafik varning måste vara en siffra."
 
 msgid "Translated strings"
 msgstr "Översatta strängar"
@@ -5401,7 +5443,7 @@ msgid ""
 msgstr "Kunde inte hitta nätverkskort. Formulär för att lägga till nya IP-adressen har inaktiverats."
 
 msgid "Unable to get the IP addresses list. Please fix this problem."
-msgstr "Unable to get the IP addresses list. Please fix this problem."
+msgstr "Det gick inte att hämta IP-adresser. Var vänlig och åtgärda detta problem."
 
 msgid "Unable to move file."
 msgstr "Det gick inte att flytta filen."
@@ -5419,7 +5461,7 @@ msgstr "Det gick inte att öppna ticket med Id '%s'."
 msgid ""
 "Unable to retrieve directories list for your domain. Please contact your "
 "reseller."
-msgstr "Unable to retrieve directories list for your domain. Please contact your reseller."
+msgstr "Det gick inte att hämta kataloger lista för din domän. Kontakta din återförsäljare."
 
 #, php-format
 msgid "Unbale not upload file. Max. upload filesize (%1$d MB) reached?"
@@ -5429,7 +5471,7 @@ msgid "Undefined reference to data."
 msgstr "Odefinierade hänvisning till data."
 
 msgid "Under maintenance mode, only administrators can login."
-msgstr "Under maintenance mode, only administrators can login."
+msgstr "Under maintenance mode, endast administratörer kan logga in."
 
 msgid "Uninstall"
 msgstr "Avinstallera"
@@ -5457,10 +5499,13 @@ msgid "Unknown error"
 msgstr "Okänt fel"
 
 msgid "Unknown language name."
-msgstr "Unknown language name."
+msgstr "Okänt språk namn."
 
 msgid "Unknown layout color."
-msgstr "Unknown layout color."
+msgstr "Okänt layout färg."
+
+msgid "Unknown reason."
+msgstr "Okänd orsak."
 
 msgid "Unknown subdomain type."
 msgstr "Okänd underdomän typ."
@@ -5469,10 +5514,10 @@ msgid "Unknown type"
 msgstr "Okänd typ"
 
 msgid "Unknown type."
-msgstr "Unknown type."
+msgstr "Okänd typ."
 
 msgid "Unknown username."
-msgstr "Unknown username."
+msgstr "Okänt användarnamn."
 
 #, php-format
 msgid "Unknown zone type %s."
@@ -5581,7 +5626,7 @@ msgid "User data were not updated."
 msgstr "Användardata uppdaterades inte."
 
 msgid "User data were successfully updated."
-msgstr "User data were successfully updated."
+msgstr "Användarinformation har uppdaterats."
 
 msgid ""
 "User does not exist or you do not have permission to access this interface"
@@ -5596,7 +5641,7 @@ msgid ""
 msgstr "Användaren finns inte eller om du inte har behörighet till detta gränssnitt."
 
 msgid "User does not exist."
-msgstr "User does not exist."
+msgstr "Användaren finns inte."
 
 msgid "User login (system) name"
 msgstr "Användarinloggning för systemet"
@@ -5623,7 +5668,7 @@ msgid "User scheduled for deletion."
 msgstr "Användare schemalagd för radering."
 
 msgid "User session successfully killed for password change."
-msgstr "User session successfully killed for password change."
+msgstr "Användare sessionen avlivas för ändring av lösenord."
 
 msgid "User session was killed."
 msgstr "Användarsession dödades."
@@ -5644,13 +5689,13 @@ msgid "Username"
 msgstr "Användarnamn"
 
 msgid "Username and password for application login"
-msgstr "Username and password for application login"
+msgstr "Användarnamn och lösenord för inloggning"
 
 msgid "Users"
 msgstr "Användare"
 
 msgid "Users and groups"
-msgstr "Users and groups"
+msgstr "Användare och grupper"
 
 msgid "Users list"
 msgstr "Användarlista"
@@ -5873,9 +5918,6 @@ msgstr "Wrong label syntax: <b>%s</b>"
 msgid "Wrong order ID."
 msgstr "Fel order ID."
 
-msgid "Wrong password."
-msgstr "Wrong password."
-
 msgid "Wrong redirect URL."
 msgstr "Fel omdirigeringsadress."
 
@@ -5927,7 +5969,7 @@ msgid "Wrong username."
 msgstr "Fel användarnamn"
 
 msgid "Wrong value for the PHP open_basedir directive."
-msgstr "Wrong value for the PHP open_basedir directive."
+msgstr "Felaktigt värde för PHP open_basedir direktiv."
 
 msgid "XML file URL for the Web software repository"
 msgstr "XML file URL for the Web software repository"
@@ -5955,7 +5997,7 @@ msgid "You are exceeding reseller limits for the <em>%s</em> service."
 msgstr "Du överskrider återförsäljare gränser <em>för%s-tjänsten.</em>"
 
 msgid "You are exceeding the server traffic limit."
-msgstr "You are exceeding the server traffic limit."
+msgstr "Du överskrider serverns trafikgräns."
 
 msgid "You are exceeding your FTP accounts limit."
 msgstr "You are exceeding your FTP accounts limit."
@@ -6088,7 +6130,7 @@ msgid "You do not have subdomains."
 msgstr "Du har inga underdomäner."
 
 msgid "You do not have sufficient permissions to perform this operation."
-msgstr "mail konto"
+msgstr "Du har inte tillräcklig behörighet för att utföra denna åtgärd."
 
 msgid "You do not need 'www.' i-MSCP will add it automatically."
 msgstr "Du behöver inte \"www.\" i-MSCP kommer att lägga till den automatiskt."
@@ -6163,7 +6205,7 @@ msgstr "Du blev utloggad."
 
 msgid ""
 "You have chosen a directory which doesn't matches the domain directory."
-msgstr "You have chosen a directory which doesn't matches the domain directory."
+msgstr "Du har valt en katalog som inte matchar den domän katalog."
 
 msgid ""
 "You have custom DNS enabled, but the new hosting plan doesn't provide this "
@@ -6257,13 +6299,13 @@ msgid "You must fill out all required fields."
 msgstr "Du måste fylla i alla obligatoriska fält."
 
 msgid "You must first generate a password"
-msgstr "You must first generate a password"
+msgstr "Du måste först skapa ett lösenord"
 
 msgid "You must first update the template to preview your changes."
 msgstr "You must first update the template to preview your changes."
 
 msgid "You must provide a password."
-msgstr "You must provide a password."
+msgstr "Du måste ange ett lösenord."
 
 msgid "You must select a file to upload/download."
 msgstr "Du måste välja en fil att ladda upp / ladda ner."
@@ -6601,6 +6643,12 @@ msgstr "i-MSCP - Client / Mail Account / Add external mail server"
 msgid "i-MSCP - Client / Mail Accounts / External mail servers"
 msgstr "i-MSCP - Client / Mail Accounts / External mail servers"
 
+msgid "i-MSCP - Client / Mail accounts / Activate auto-responder"
+msgstr "i-MSCP - Client / Mail accounts / Activate auto-responder"
+
+msgid "i-MSCP - Client / Mail accounts / Edit auto-responder"
+msgstr "i-MSCP - Client / Mail accounts / Edit auto-responder"
+
 msgid "i-MSCP - Client / Manage domains - Add subdomain"
 msgstr "i-MSCP - Client / Manage domains - Add subdomain"
 
@@ -6619,14 +6667,8 @@ msgstr "i-MSCP - Client / Manage mail / Catchall"
 msgid "i-MSCP - Client / Manage mail / Edit account"
 msgstr "i-MSCP - Client / Manage mail / Edit account"
 
-msgid "i-MSCP - Client / Manage mail / Edit autoresponder"
-msgstr "i-MSCP - Client / Manage mail / Edit autoresponder"
-
 msgid "i-MSCP - Client / Manage mail / Edit quota"
 msgstr "i-MSCP - Client / Manage mail / Edit quota"
-
-msgid "i-MSCP - Client / Manage mail / Enable autoresponder"
-msgstr "i-MSCP - Client / Manage mail / Enable autoresponder"
 
 msgid "i-MSCP - Client / Support Ticket System / Closed Tickets"
 msgstr "i-MSCP - Client / Supportsystem / stängda tickets"
@@ -6684,9 +6726,6 @@ msgstr "i-MSCP - Kund/Daglig backup"
 
 msgid "i-MSCP - Client/Edit FTP Account"
 msgstr "i-MSCP - Kund/Redigera FTP-konto"
-
-msgid "i-MSCP - Client/Enable Mail Auto Responder"
-msgstr "i-MSCP - Kund/Aktivera e-postautosvar"
 
 msgid "i-MSCP - Client/Manage Domains"
 msgstr "i-MSCP - Kund/Hantera domäner"
@@ -7055,8 +7094,5 @@ msgstr "{ADMIN} aktiverat ditt programpaket"
 msgid "{RESELLER} uploaded a new software package"
 msgstr "{ÅTERFÖRSÄLJARE} överfört en ny programvarupaket"
 
-msgid "{TR_EDIT_HOSTING_PLAN} hosting plan"
-msgstr "{TR_EDIT_HOSTING_PLAN} hosting plan"
-
-msgid "© 2010-2012 i-MSCP Team<br/>All Rights Reserved"
-msgstr "© 2010-2012 i-MSCP Team<br/>All Rights Reserved"
+msgid "© 2010-2013 i-MSCP Team<br/>All Rights Reserved"
+msgstr ""

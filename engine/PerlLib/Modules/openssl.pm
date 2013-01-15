@@ -1,7 +1,7 @@
 #!/usr/bin/perl
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010 - 2011 by internet Multi Server Control Panel
+# Copyright (C) 2010-2013 by internet Multi Server Control Panel
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -18,9 +18,8 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
 # @category		i-MSCP
-# @copyright	2010 - 2012 by i-MSCP | http://i-mscp.net
+# @copyright	2010-2013 by i-MSCP | http://i-mscp.net
 # @author		Daniel Andreca <sci2tech@gmail.com>
-# @version		SVN: $Id$
 # @link			http://i-mscp.net i-MSCP Home Site
 # @license		http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
@@ -28,14 +27,9 @@ package Modules::openssl;
 
 use strict;
 use warnings;
-
 use iMSCP::Debug;
 use iMSCP::Execute qw/execute/;
-use Common::SingletonClass;
-
-use vars qw/@ISA/;
-@ISA = ('Common::SingletonClass');
-use Common::SingletonClass;
+use parent 'Common::SingletonClass';
 
 sub _init  {
 	my $self  = shift;
@@ -43,9 +37,9 @@ sub _init  {
 	$self->{new_cert_path}			= undef;
 	$self->{new_cert_name}			= undef;
 	$self->{vhost_cert_name}		= undef;
-	$self->{cert_selfsigned}		= undef;
+	$self->{cert_selfsigned}		= 0;
 	$self->{cert_path}				= undef;
-	$self->{intermediate_cert_path}	= undef;
+	$self->{intermediate_cert_path}	= '';
 	$self->{key_path}				= undef;
 	$self->{key_pass}				= undef;
 	$self->{errors}					= '';
@@ -76,7 +70,7 @@ sub ssl_check_cert {
 	my $CAfile = '';
 
 	if ( $self->{intermediate_cert_path} ne '' ) {
-			$CAfile = "-CAfile $self->{intermediate_cert_path}";
+		$CAfile = "-CAfile $self->{intermediate_cert_path}";
 	}
 
 	my $cmd = "$self->{openssl_path} verify $CAfile $self->{cert_path}";
@@ -158,7 +152,7 @@ sub ssl_export_cert {
 	my $rs = execute($cmd, \$stdout, \$stderr);
 	debug("$stdout") if $stdout;
 	warning("$stderr") if ($stderr && !$rs);
-	error("Can not save certificate".($stderr ? ": $stderr" : '').". Exiting...") if $rs;
+	error("Cannot save certificate".($stderr ? ": $stderr" : '').". Exiting...") if $rs;
 	return $rs if $rs;
 
 	0;
@@ -186,13 +180,13 @@ sub ssl_generate_selsigned_cert{
 
 	my $self = shift;
 
-	my $cmd = "$self->{openssl_path} req -x509 -nodes -days 1825 -subj '/C=/ST=/L=/CN=$self->{vhost_cert_name}' -newkey rsa:1024 -keyout $self->{new_cert_path}/$self->{new_cert_name}.pem -out $self->{new_cert_path}/$self->{new_cert_name}.pem";
+	my $cmd = "$self->{openssl_path} req -x509 -nodes -days 1825 -subj '/C=/ST=/L=/CN=*.$self->{vhost_cert_name}' -newkey rsa:2048 -keyout $self->{new_cert_path}/$self->{new_cert_name}.pem -out $self->{new_cert_path}/$self->{new_cert_name}.pem";
 
 	my ($stdout, $stderr);
 	my $rs = execute($cmd, \$stdout, \$stderr);
 	debug("$stdout") if $stdout;
-	warning("$stderr") if ($stderr && !$rs);
-	error("Can not save intermediate certificate".($stderr ? ": $stderr" : '').". Exiting...") if $rs;
+	debug("$stderr") if ($stderr && !$rs);
+	error("Can not generate self-signed certificate".($stderr ? ": $stderr" : '').". Exiting...") if $rs;
 	return $rs if($rs);
 
 	0;
@@ -200,11 +194,10 @@ sub ssl_generate_selsigned_cert{
 
 sub ssl_export_all{
 
-
 	my $self	= shift;
 	my $rs		= 0;
 
-	if( $self->{cert_selfsigned} == 0 ){
+	if($self->{cert_selfsigned}){
 
 		$rs = $self->ssl_generate_selsigned_cert();
 		return $rs if $rs;

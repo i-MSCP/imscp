@@ -1,7 +1,7 @@
 #!/usr/bin/perl
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010 - 2011 by internet Multi Server Control Panel
+# Copyright (C) 2010-2013 by internet Multi Server Control Panel
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -18,9 +18,8 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
 # @category		i-MSCP
-# @copyright	2010 - 2012 by i-MSCP | http://i-mscp.net
+# @copyright	2010-2013 by i-MSCP | http://i-mscp.net
 # @author		Daniel Andreca <sci2tech@gmail.com>
-# @version		SVN: $Id$
 # @link			http://i-mscp.net i-MSCP Home Site
 # @license      http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
@@ -29,15 +28,10 @@ package iMSCP::Mail;
 use strict;
 use warnings;
 use iMSCP::Debug;
+use parent 'Common::SimpleClass';
 
-use vars qw/@ISA/;
-@ISA = ('Common::SimpleClass');
-use Common::SimpleClass;
-
-sub _init{}
-
-sub errmsg{
-
+sub errmsg
+{
 	my ($self, $errmsg) = @_;
 
 	use POSIX;
@@ -49,12 +43,12 @@ sub errmsg{
 	$dmn = idn_to_ascii($dmn, 'utf-8');
 	push(@parts, $dmn);
 
-	my $admin_email	= join('@', @parts);
-	my $date		=  strftime "%d.%m.%Y %H:%M:%S", localtime;
-	my $server_name	= $main::imscpConfig{'SERVER_HOSTNAME'};
-	my $server_ip	= $main::imscpConfig{'BASE_SERVER_IP'};
-	my $fname		= (caller(1))[3];
-	$fname			= 'main' unless $fname;
+	my $admin_email = join('@', @parts);
+	my $date = strftime "%d.%m.%Y %H:%M:%S", localtime;
+	my $server_name = $main::imscpConfig{'SERVER_HOSTNAME'};
+	my $server_ip = $main::imscpConfig{'BASE_SERVER_IP'};
+	my $fname = (caller(1))[3];
+	$fname = 'main' unless $fname;
 
 	my $msg_data =
 		"Dear admin,\n\n".
@@ -71,11 +65,11 @@ sub errmsg{
 	my $out = new MIME::Entity;
 
 	$out->build(
-		From		=> "$server_name ($server_ip) <$admin_email>",
-		To			=> $admin_email,
-		Subject		=> "[$date] i-MSCP Error report",
-		Data		=> $msg_data,
-		'X-Mailer'	=> "i-MSCP $main::imscpConfig{'Version'} Automatic Error Messenger"
+		From => "$server_name ($server_ip) <$admin_email>",
+		To => $admin_email,
+		Subject => "[$date] i-MSCP Error report",
+		Data => $msg_data,
+		'X-Mailer' => "i-MSCP $main::imscpConfig{'Version'} Automatic Error Messenger"
 	);
 
 	debug("Send message to $admin_email: $msg_data");
@@ -90,9 +84,8 @@ sub errmsg{
 	0;
 }
 
-
-sub warnMsg{
-
+sub warnMsg
+{
 	my ($self, $msg) = @_;
 
 	use POSIX;
@@ -104,10 +97,10 @@ sub warnMsg{
 	$dmn = idn_to_ascii($dmn, 'utf-8');
 	push(@parts, $dmn);
 
-	my $admin_email	= join('@', @parts);
-	my $date		=  strftime "%d.%m.%Y %H:%M:%S", localtime;
-	my $server_name	= $main::imscpConfig{'SERVER_HOSTNAME'};
-	my $server_ip	= $main::imscpConfig{'BASE_SERVER_IP'};
+	my $admin_email = join('@', @parts);
+	my $date =  strftime "%d.%m.%Y %H:%M:%S", localtime;
+	my $server_name = $main::imscpConfig{'SERVER_HOSTNAME'};
+	my $server_ip = $main::imscpConfig{'BASE_SERVER_IP'};
 	my $fname = (caller(1))[3];
 
 	my $msg_data =
@@ -125,11 +118,11 @@ sub warnMsg{
 	my $out = new MIME::Entity;
 
 	$out -> build(
-		From		=> "$server_name ($server_ip) <$admin_email>",
-		To			=> $admin_email,
-		Subject		=> "[$date] i-MSCP Error report",
-		Data		=> $msg_data,
-		'X-Mailer'	=> "i-MSCP $main::imscpConfig{'Version'} Automatic Error Messenger"
+		From => "$server_name ($server_ip) <$admin_email>",
+		To => $admin_email,
+		Subject => "[$date] i-MSCP Error report",
+		Data => $msg_data,
+		'X-Mailer' => "i-MSCP $main::imscpConfig{'Version'} Automatic Error Messenger"
 	);
 
 	debug("Send message to $admin_email: $msg_data");

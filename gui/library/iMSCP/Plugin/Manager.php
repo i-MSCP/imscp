@@ -1,7 +1,7 @@
 <?php
 /**
  * i-MSCP - internet Multi Server Control Panel
- * Copyright (C) 2010 - 2012 by i-MSCP Team
+ * Copyright (C) 2010-2013 by i-MSCP Team
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -20,7 +20,7 @@
  * @category	iMSCP
  * @package		iMSCP_Core
  * @subpackage	Plugin_Manager
- * @copyright	2010 - 2012 by i-MSCP Team
+ * @copyright	2010-2013 by i-MSCP Team
  * @author		Laurent Declercq <l.declercq@nuxwin.com>
  * @link		http://www.i-mscp.net i-MSCP Home Site
  * @license		http://www.gnu.org/licenses/gpl-2.0.html GPL v2
@@ -33,7 +33,7 @@
  * @package		iMSCP_Core
  * @subpackage	Plugin_Manager
  * @author		Laurent Declercq <l.declercq@nuxwin.com>
- * @version		0.0.3
+ * @version		0.0.4
  */
 class iMSCP_Plugin_Manager
 {
@@ -78,7 +78,7 @@ class iMSCP_Plugin_Manager
 		// Allow access to loaded plugins outside this namespace
 		iMSCP_Registry::set('PLUGINS', array());
 
-		// Register autoloader for plugin classes
+		// Setup autoloader for plugin classes
 		spl_autoload_register(array($this, '_autoload'));
 	}
 
@@ -105,22 +105,26 @@ class iMSCP_Plugin_Manager
 	/**
 	 * Autoloader for plugin classes.
 	 *
-	 * @param string $className Plugin class to load
-	 */
-	public function _autoload($className)
-	{
-		list(, , $className) = explode('_', $className, 3);
-		$filePath = $this->getPluginDirectory() . "/{$className}/{$className}.php";
+     * @param string $className Plugin class to load
+     * @return void
+     */
+    public function _autoload($className)
+    {
+        // Do not try to load class outside of the plugin namespace
+        if (strpos($className, 'iMSCP_Plugin_', 0) === 0) {
+            list(, , $className) = explode('_', $className, 3);
+            $filePath = $this->getPluginDirectory() . "/{$className}/{$className}.php";
 
-		if (is_readable($filePath)) {
-			require_once $filePath;
-		}
-	}
+            if (is_readable($filePath)) {
+                require_once $filePath;
+            }
+        }
+    }
 
-	/**
+    /**
 	 * Sets plugins directory.
 	 *
-	 * @thrown iMSCP_Plugin_Exception When $pluginDirectory doesn't exists or is not readable.
+	 * @throws iMSCP_Plugin_Exception When $pluginDirectory doesn't exists or is not readable.
 	 * @param string $pluginDirectory Plugins directory path
 	 */
 	public function setDirectory($pluginDirectory)

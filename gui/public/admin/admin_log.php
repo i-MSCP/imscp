@@ -1,6 +1,6 @@
 <?php
 /**
- * i-MSCP a internet Multi Server Control Panel
+ * i-MSCP - internet Multi Server Control Panel
  *
  * The contents of this file are subject to the Mozilla Public License
  * Version 1.1 (the "License"); you may not use this file except in
@@ -21,15 +21,15 @@
  * Portions created by the ispCP Team are Copyright (C) 2006-2010 by
  * isp Control Panel. All Rights Reserved.
  *
- * Portions created by the i-MSCP Team are Copyright (C) 2010-2012 by
- * i-MSCP a internet Multi Server Control Panel. All Rights Reserved.
+ * Portions created by the i-MSCP Team are Copyright (C) 2010-2013 by
+ * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
  *
  * @category	i-MSCP
  * @package		iMSCP_Core
  * @subpackage	Admin
  * @copyright   2001-2006 by moleSoftware GmbH
  * @copyright   2006-2010 by ispCP | http://isp-control.net
- * @copyright	2010-2012 by i-MSCP | http://i-mscp.net
+ * @copyright	2010-2013 by i-MSCP | http://i-mscp.net
  * @author		ispCP Team
  * @author		i-MSCP Team
  * @link		http://i-mscp.net
@@ -111,10 +111,10 @@ function admin_generatePage($tpl)
 			$logMessage = $stmt->fields['log_message'];
 
 			$replaces = array(
-				'/[^a-zA-Z](delete[sd]?|failed)[^a-zA-Z]/i' => ' <strong style="color:#FF0000">\\1</strong> ',
+				'/[^a-zA-Z](deactivated|delete[sd]?|failed)[^a-zA-Z]/i' => ' <strong style="color:#FF0000">\\1</strong> ',
 				'/[^a-zA-Z](remove[sd]?)[^a-zA-Z]/i' => ' <strong style="color:#FF0000">\\1</strong> ',
 				'/[^a-zA-Z](unable?)[^a-zA-Z]/i' => ' <strong style="color:#FF0000">\\1</strong> ',
-				'/[^a-zA-Z](add(s|ed)?)[^a-zA-Z]/i' => ' <strong style="color:#33CC66">\\1</strong> ',
+				'/[^a-zA-Z](activated|add(s|ed)?|switched)[^a-zA-Z]/i' => ' <strong style="color:#33CC66">\\1</strong> ',
 				'/[^a-zA-Z](created)[^a-zA-Z]/i' => ' <strong style="color:#3300FF">\\1</strong> ',
 				'/[^a-zA-Z](update[sd]?)[^a-zA-Z]/i' => ' <strong style="color:#3300FF">\\1</strong> ',
 				'/[^a-zA-Z](edit(s|ed)?)[^a-zA-Z]/i' => ' <strong style="color:#33CC66">\\1</strong> ',

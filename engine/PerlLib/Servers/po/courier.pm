@@ -1,7 +1,7 @@
 #!/usr/bin/perl
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010 - 2011 by internet Multi Server Control Panel
+# Copyright (C) 2010-2013 by internet Multi Server Control Panel
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -18,9 +18,8 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
 # @category		i-MSCP
-# @copyright	2010 - 2012 by i-MSCP | http://i-mscp.net
+# @copyright	2010-2013 by i-MSCP | http://i-mscp.net
 # @author		Daniel Andreca <sci2tech@gmail.com>
-# @version		SVN: $Id$
 # @link			http://i-mscp.net i-MSCP Home Site
 # @license		http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
@@ -29,76 +28,95 @@ package Servers::po::courier;
 use strict;
 use warnings;
 use iMSCP::Debug;
-use Data::Dumper;
+use iMSCP::HooksManager;
+use parent 'Common::SingletonClass';
 
-use vars qw/@ISA/;
+sub _init
+{
+	my $self = shift;
 
-@ISA = ('Common::SingletonClass');
-use Common::SingletonClass;
+	iMSCP::HooksManager->getInstance()->trigger('beforePoInit', $self, 'courier');
 
-sub _init{
+	$self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/courier";
+	$self->{'bkpDir'} = "$self->{cfgDir}/backup";
+	$self->{'wrkDir'} = "$self->{cfgDir}/working";
 
-	my $self		= shift;
-	$self->{cfgDir}	= "$main::imscpConfig{'CONF_DIR'}/courier";
-	$self->{bkpDir}	= "$self->{cfgDir}/backup";
-	$self->{wrkDir}	= "$self->{cfgDir}/working";
-
-	my $conf		= "$self->{cfgDir}/courier.data";
+	my $conf = "$self->{cfgDir}/courier.data";
 	tie %self::courierConfig, 'iMSCP::Config','fileName' => $conf;
 
-	$self->{$_} = $self::courierConfig{$_} foreach(keys %self::courierConfig);
+	$self->{$_} = $self::courierConfig{$_} for keys %self::courierConfig;
 
-	0;
+	iMSCP::HooksManager->getInstance()->trigger('afterPoInit', $self, 'courier');
+
+	$self;
 }
 
-sub preinstall{
+sub registerSetupHooks
+{
+	my $self = shift;
+	my $hooksManager = shift;
+
+	use Servers::po::courier::installer;
+	Servers::po::courier::installer->new()->registerSetupHooks($hooksManager);
+}
+
+sub preinstall
+{
+	my $self = shift;
+	my $rs = 0;
+
+	iMSCP::HooksManager->getInstance()->trigger('beforePoPreinstall', 'courier');
 
 	use Servers::po::courier::installer;
 
-	my $self	= shift;
-	my $rs		= 0;
+	$rs |= $self->stop();
+	#$rs |= Servers::po::courier::installer->new()->registerHooks();
 
-	$rs		|= $self->stop();
-	my $rs	|= Servers::po::courier::installer->new()->registerHooks();
+	iMSCP::HooksManager->getInstance()->trigger('afterPoPreinstall', 'courier');
 
 	$rs;
 }
 
-sub install{
+sub install
+{
+	my $self = shift;
 
 	use Servers::po::courier::installer;
-
-	my $self		= shift;
-	my $rs			= Servers::po::courier::installer->new()->install();
-
-	$rs;
+	Servers::po::courier::installer->new()->install();
 }
 
-sub uninstall{
+sub uninstall
+{
+	my $self = shift;
+
+	iMSCP::HooksManager->getInstance()->trigger('beforePoUninstall', 'courier');
 
 	use Servers::po::courier::uninstaller;
-
-	my $self	= shift;
-	my $rs		= Servers::po::courier::uninstaller->new()->uninstall();
+	my $rs = Servers::po::courier::uninstaller->new()->uninstall();
 	$rs |= $self->restart();
 
-	$rs;
-}
-
-sub postinstall{
-
-	my $self	= shift;
-	my $rs		= 0;
-
-	$rs = $self->start();
+	iMSCP::HooksManager->getInstance()->trigger('afterPoUninstall', 'courier');
 
 	$rs;
 }
 
-sub start{
+sub postinstall
+{
+	my $self = shift;
 
+	iMSCP::HooksManager->getInstance()->trigger('beforePoPostinstall', 'courier') and return 1;
+
+	$self->start() and return 1;
+
+	iMSCP::HooksManager->getInstance()->trigger('afterPoPostinstall', 'courier');
+}
+
+sub start
+{
 	my $self = shift;
 	my ($rs, $stdout, $stderr);
+
+	iMSCP::HooksManager->getInstance()->trigger('beforePoStart') and return 1;
 
 	use iMSCP::Execute;
 
@@ -128,13 +146,15 @@ sub start{
 	error("$stderr") if $stderr;
 	return $rs if $rs;
 
-	0;
+	iMSCP::HooksManager->getInstance()->trigger('afterPoStart')
 }
 
-sub stop{
-
+sub stop
+{
 	my $self = shift;
 	my ($rs, $stdout, $stderr);
+
+	iMSCP::HooksManager->getInstance()->trigger('beforePoStop') and return 1;
 
 	use iMSCP::Execute;
 
@@ -164,14 +184,16 @@ sub stop{
 	error("$stderr") if $stderr;
 	return $rs if $rs;
 
-	0;
+	iMSCP::HooksManager->getInstance()->trigger('afterPoStop');
 }
 
-sub restart{
-
-	my $self	= shift;
-	my $rs		= 0;
+sub restart
+{
+	my $self = shift;
+	my $rs = 0;
 	my ($stdout, $stderr);
+
+	iMSCP::HooksManager->getInstance()->trigger('beforePoRestart') and return 1;
 
 	use iMSCP::Execute;
 
@@ -196,187 +218,177 @@ sub restart{
 	debug("$stdout") if $stdout;
 	error("$stderr") if $stderr;
 
+	$rs |= iMSCP::HooksManager->getInstance()->trigger('afterPoRestart');
+
 	$rs;
 }
 
-sub addMail{
+sub addMail
+{
+	my $self = shift;
+	my $data = shift;
+	my $rs = 0;
+	my ($stdout, $stderr);
 
 	use iMSCP::File;
 	use iMSCP::Execute;
 	use Servers::mta;
 	use Crypt::PasswdMD5;
 
-	my $self = shift;
-	my $data = shift;
-	my $rs = 0;
-	my ($stdout, $stderr);
-
-	local $Data::Dumper::Terse = 1;
-	debug("Data: ". (Dumper $data));
-
 	my $errmsg = {
 		'MAIL_ADDR'	=> 'You must supply mail address!',
 		'MAIL_PASS'	=> 'You must supply account password!'
 	};
 
-	foreach(keys %{$errmsg}){
+	for(keys %{$errmsg}){
 		error("$errmsg->{$_}") unless $data->{$_};
 		return 1 unless $data->{$_};
 	}
 
+	iMSCP::HooksManager->getInstance()->trigger('beforePoAddMail') and return 1;
+
 	if(-f "$self->{AUTHLIB_CONF_DIR}/userdb"){
 		$rs |=	iMSCP::File->new(
-					filename => "$self->{AUTHLIB_CONF_DIR}/userdb"
-				)->copyFile(
-					"$self->{bkpDir}/userdb.".time
-				)
-		;
+			filename => "$self->{AUTHLIB_CONF_DIR}/userdb"
+		)->copyFile(
+			"$self->{bkpDir}/userdb." . time
+		);
 	}
 
-	if($data->{MAIL_TYPE} =~ /_mail/){
-		my $mBoxHashFile	= (
-			-f "$self->{wrkDir}/userdb"
-			?
-			"$self->{wrkDir}/userdb"
-			:
-			"$self->{cfgDir}/userdb"
-		);
+	if($data->{'MAIL_TYPE'} =~ /_mail/){
+		my $mBoxHashFile = (-f "$self->{wrkDir}/userdb" ? "$self->{wrkDir}/userdb" : "$self->{cfgDir}/userdb");
 
-		my $wrkFileName	= "$self->{wrkDir}/userdb";
-		my $wrkFileH	= iMSCP::File->new(filename => $mBoxHashFile);
-		my $wrkContent	= $wrkFileH->get();
+		my $wrkFileName = "$self->{wrkDir}/userdb";
+		my $wrkFileH = iMSCP::File->new(filename => $mBoxHashFile);
+		my $wrkContent = $wrkFileH->get();
 		return 1 unless defined $wrkContent;
 
-		my $mailbox		= $data->{MAIL_ADDR};
-		$mailbox		=~ s/\./\\\./g;
-		$wrkContent		=~ s/^$mailbox\t[^\n]*\n//gmi;
-		my @rand_data	= ('A'..'Z', 'a'..'z', '0'..'9', '.', '/');
+		my $mailbox = $data->{'MAIL_ADDR'};
+		$mailbox =~ s/\./\\\./g;
+		$wrkContent =~ s/^$mailbox\t[^\n]*\n//gmi;
+		my @rand_data = ('A'..'Z', 'a'..'z', '0'..'9', '.', '/');
 		my $rand;
-		$rand			.= $rand_data[rand()*($#rand_data + 1)] for('1'..'8');
-		my $password	= unix_md5_crypt($data->{MAIL_PASS}, $rand);
-		my $mta			= Servers::mta->factory();
-		my $uid			= scalar getpwnam($mta->{'MTA_MAILBOX_UID_NAME'});
-		my $gid			= scalar getgrnam($mta->{'MTA_MAILBOX_GID_NAME'});
-		my $mailDir		= $mta->{'MTA_VIRTUAL_MAIL_DIR'};
-		$wrkContent		.=	"$data->{MAIL_ADDR}\tuid=$uid|gid=$gid|home=$mailDir/".
-							"$data->{DMN_NAME}/$data->{MAIL_ACC}|shell=/bin/false|".
-							"systempw=$password|mail=$mailDir/$data->{DMN_NAME}/$data->{MAIL_ACC}\n";
-		$wrkFileH	= iMSCP::File->new(filename => $wrkFileName);
+		$rand .= $rand_data[rand()*($#rand_data + 1)] for('1'..'8');
+		my $password = unix_md5_crypt($data->{'MAIL_PASS'}, $rand);
+		my $mta = Servers::mta->factory();
+		my $uid = scalar getpwnam($mta->{'MTA_MAILBOX_UID_NAME'});
+		my $gid = scalar getgrnam($mta->{'MTA_MAILBOX_GID_NAME'});
+		my $mailDir = $mta->{'MTA_VIRTUAL_MAIL_DIR'};
+		$wrkContent .=	"$data->{MAIL_ADDR}\tuid=$uid|gid=$gid|home=$mailDir/".
+						"$data->{DMN_NAME}/$data->{MAIL_ACC}|shell=/bin/false|".
+						"systempw=$password|mail=$mailDir/$data->{DMN_NAME}/$data->{MAIL_ACC}\n";
+		$wrkFileH = iMSCP::File->new(filename => $wrkFileName);
 		$wrkFileH->set($wrkContent);
 		return 1 if $wrkFileH->save();
 		$rs |=	$wrkFileH->mode(0600);
-		$rs |=	$wrkFileH->owner(
-					$main::imscpConfig{ROOT_USER},
-					$main::imscpConfig{ROOT_GROUP}
-				);
+		$rs |=	$wrkFileH->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
 		$rs |= $wrkFileH->copyFile("$self->{AUTHLIB_CONF_DIR}/userdb");
 
-		$rs |= execute($self->{CMD_MAKEUSERDB}, \$stdout, \$stderr);
+		$rs |= execute($self->{'CMD_MAKEUSERDB'}, \$stdout, \$stderr);
 		debug($stdout) if $stdout;
 		error($stderr) if $stderr;
 	}
 
+	$rs |= iMSCP::HooksManager->getInstance()->trigger('afterPoAddMail');
+
 	$rs;
 }
 
-sub delMail{
-
-	use iMSCP::File;
-	use iMSCP::Execute;
-
+sub delMail
+{
 	my $self = shift;
 	my $data = shift;
 	my $rs = 0;
 	my ($stdout, $stderr);
 
-	local $Data::Dumper::Terse = 1;
-	debug("Data: ". (Dumper $data));
+	use iMSCP::File;
+	use iMSCP::Execute;
 
 	my $errmsg = {
 		'MAIL_ADDR'	=> 'You must supply mail address!',
 		'MAIL_PASS'	=> 'You must supply account password!'
 	};
 
-	foreach(keys %{$errmsg}){
+	for(keys %{$errmsg}){
 		error("$errmsg->{$_}") unless $data->{$_};
 		return 1 unless $data->{$_};
 	}
 
+	iMSCP::HooksManager->getInstance()->trigger('beforePoDelMail') and return 1;
+
 	if(-f "$self->{AUTHLIB_CONF_DIR}/userdb"){
 		$rs |=	iMSCP::File->new(
-					filename => "$self->{AUTHLIB_CONF_DIR}/userdb"
-				)->copyFile(
-					"$self->{bkpDir}/userdb.".time
-				)
-		;
+			filename => "$self->{AUTHLIB_CONF_DIR}/userdb"
+		)->copyFile(
+			"$self->{bkpDir}/userdb." . time
+		);
 	}
 
-	my $mBoxHashFile	= (
-		-f "$self->{wrkDir}/userdb"
-		?
-		"$self->{wrkDir}/userdb"
-		:
-		"$self->{cfgDir}/userdb"
-	);
+	my $mBoxHashFile = (-f "$self->{wrkDir}/userdb" ? "$self->{wrkDir}/userdb" : "$self->{cfgDir}/userdb");
 
-	my $wrkFileName	= "$self->{wrkDir}/userdb";
-	my $wrkFileH	= iMSCP::File->new(filename => $mBoxHashFile);
-	my $wrkContent	= $wrkFileH->get();
+	my $wrkFileName = "$self->{wrkDir}/userdb";
+	my $wrkFileH = iMSCP::File->new(filename => $mBoxHashFile);
+	my $wrkContent = $wrkFileH->get();
 	return 1 unless defined $wrkContent;
 
-	my $mailbox		= $data->{MAIL_ADDR};
-	$mailbox		=~ s/\./\\\./g;
-	$wrkContent		=~ s/^$mailbox\t[^\n]*\n//gmi;
-	$wrkFileH	= iMSCP::File->new(filename => $wrkFileName);
+	my $mailbox = $data->{'MAIL_ADDR'};
+	$mailbox =~ s/\./\\\./g;
+	$wrkContent =~ s/^$mailbox\t[^\n]*\n//gmi;
+	$wrkFileH = iMSCP::File->new(filename => $wrkFileName);
 	$wrkFileH->set($wrkContent);
 	return 1 if $wrkFileH->save();
 	$rs |=	$wrkFileH->mode(0600);
-	$rs |=	$wrkFileH->owner(
-				$main::imscpConfig{ROOT_USER},
-				$main::imscpConfig{ROOT_GROUP}
-			);
+	$rs |=	$wrkFileH->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
 	$rs |= $wrkFileH->copyFile("$self->{AUTHLIB_CONF_DIR}/userdb");
-
-	$rs |= execute($self->{CMD_MAKEUSERDB}, \$stdout, \$stderr);
+	$rs |= execute($self->{'CMD_MAKEUSERDB'}, \$stdout, \$stderr);
 	debug($stdout) if $stdout;
 	error($stderr) if $stderr;
+
+	$rs |= iMSCP::HooksManager->getInstance()->trigger('afterPoDelMail');
 
 	$rs;
 }
 
-sub getTraffic{
+sub getTraffic
+{
+	my $self = shift;
+	my $who = shift;
+	my $dbName = "$self->{wrkDir}/log.db";
+	my $logFile = "$main::imscpConfig{TRAFF_LOG_DIR}/mail.log";
+	my $wrkLogFile = "$main::imscpConfig{LOG_DIR}/mail.po.log";
+	my ($rv, $rs, $stdout, $stderr);
 
 	use iMSCP::Execute;
 	use iMSCP::File;
 	use iMSCP::Config;
 	use Tie::File;
 
-	my $self		= shift;
-	my $who			= shift;
-	my $dbName		= "$self->{wrkDir}/log.db";
-	my $logFile		= "$main::imscpConfig{TRAFF_LOG_DIR}/mail.log";
-	my $wrkLogFile	= "$main::imscpConfig{LOG_DIR}/mail.po.log";
-	my ($rv, $rs, $stdout, $stderr);
+	iMSCP::HooksManager->getInstance()->trigger('beforePoGetTraffic');
 
-	##only if files was not aleady parsed this session
-	unless($self->{logDb}){
-		#use a small conf file to memorize last line readed and his content
-		tie %{$self->{logDb}}, 'iMSCP::Config','fileName' => $dbName, noerrors => 1;
-		##first use? we zero line and content
-		$self->{logDb}->{line}		= 0 unless $self->{logDb}->{line};
-		$self->{logDb}->{content}	= '' unless $self->{logDb}->{content};
-		my $lastLineNo	= $self->{logDb}->{line};
-		my $lastLine	= $self->{logDb}->{content};
-		##copy log file
+	## only if files was not aleady parsed this session
+	unless($self->{'logDb'}){
+		# use a small conf file to memorize last line readed and his content
+		tie %{$self->{'logDb'}}, 'iMSCP::Config','fileName' => $dbName, noerrors => 1;
+
+		## first use? we zero line and content
+		$self->{'logDb'}->{'line'} = 0 unless $self->{'logDb'}->{'line'};
+		$self->{'logDb'}->{'content'} = '' unless $self->{'logDb'}->{'content'};
+		my $lastLineNo = $self->{'logDb'}->{'line'};
+		my $lastLine = $self->{'logDb'}->{'content'};
+
+		## copy log file
 		$rs = iMSCP::File->new(filename => $logFile)->copyFile($wrkLogFile) if -f $logFile;
-		#retunt 0 traffic if we fail
+		# retunt 0 traffic if we fail
 		return 0 if $rs;
+
 		#link log file to array
 		tie my @content, 'Tie::File', $wrkLogFile or return 0;
-		#save last line
-		$self->{logDb}->{line}		= $#content;
-		$self->{logDb}->{content}	= @content[$#content];
-		#test for logratation
+
+		# save last line
+		$self->{'logDb'}->{'line'} = $#content;
+		$self->{'logDb'}->{'content'} = @content[$#content];
+
+		# test for logratation
 		if(@content[$lastLineNo] && @content[$lastLineNo] eq $lastLine){
 			## No logratation ocure. We zero already readed files
 			(tied @content)->defer;
@@ -393,7 +405,7 @@ sub getTraffic{
 		while($content =~ m/^.*(?:imapd|imapd\-ssl).*user=[^\@]*\@([^,]*),\sip=\[([^\]]+)\],\sheaders=(\d+),\sbody=(\d+),\srcvd=(\d+),\ssent=(\d+),.*$/mg){
 						# date time imap(-ssl)         mailfrom @ domain       ip             headers size      body size  received size   send size      etc
 						#                                             1         2                     3              4         5              6
-			if($2 !~ /localhost|127.0.0.1/){
+			if($2 !~ /localhost|127.0.0.1/) {
 					#$self->{traff}->{$1} += $3 + $4 + $5 + $6;
 					#Why we count only headers and body, not all traffic?!! to be checked
 					$self->{traff}->{$1} += $3 + $4
@@ -411,7 +423,7 @@ sub getTraffic{
 		while($content =~ m/^.*(?:courierpop3login|pop3d|pop3d-ssl).*user=[^\@]*\@([^,]*),\sip=\[([^\]]+)\].*\stop=(\d+),\sretr=(\d+),\srcvd=(\d+),\ssent=(\d+),.*$/mg){
 						# date time imap(-ssl)                mailfrom @ domain                  ip           top size    retr size   received size   send size      etc
 						#                                              1                         2                3           4            5              6
-			if($2 !~ /localhost|127.0.0.1/){
+			if($2 !~ /localhost|127.0.0.1/) {
 					#$self->{traff}->{$1} += $3 + $4 + $5 + $6;
 					#Why we count some of fields, not all traffic?!! to be checked
 					$self->{traff}->{$1} += $4 + $5 + $6
@@ -421,20 +433,21 @@ sub getTraffic{
 			}
 		}
 	}
-	$self->{traff}->{$who} ? $self->{traff}->{$who} : 0;
+
+	iMSCP::HooksManager->getInstance()->trigger('afterPoGetTraffic');
+
+	$self->{'traff'}->{$who} ? $self->{'traff'}->{$who} : 0;
 }
 
-END{
+END
+{
+	my $endCode = $?;
+	my $self = Servers::po::courier->new();
+	my $wrkLogFile = "$main::imscpConfig{LOG_DIR}/mail.po.log";
+	my $rs = 0;
 
-	my $endCode		= $?;
-	my $self		= Servers::po::courier->new();
-	my $wrkLogFile	= "$main::imscpConfig{LOG_DIR}/mail.po.log";
-	my $rs			= 0;
-
-	$rs |= $self->restart() if $self->{restart} && $self->{restart} eq 'yes';
-
+	$rs |= $self->restart() if $self->{'restart'} && $self->{'restart'} eq 'yes';
 	$rs |= iMSCP::File->new(filename => $wrkLogFile)->delFile() if -f $wrkLogFile;
-
 	$? = $endCode || $rs;
 }
 

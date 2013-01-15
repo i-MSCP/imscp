@@ -1,6 +1,7 @@
 #!/usr/bin/perl
 #
-# i-MSCP a internet Multi Server Control Panel
+# i-MSCP - internet Multi Server Control Panel
+# Copyright (C) 2010-2013 by internet Multi Server Control Panel
 #
 # The contents of this file are subject to the Mozilla Public License
 # Version 1.1 (the "License"); you may not use this file except in
@@ -18,7 +19,7 @@
 # Portions created by Initial Developer are Copyright (C) 2006-2010 by
 # isp Control Panel. All Rights Reserved.
 #
-# Portions created by the i-MSCP Team are Copyright (C) 2010-2012 by
+# Portions created by the i-MSCP Team are Copyright (C) 2010-2013 by
 # internet Multi Server Control Panel. All Rights Reserved.
 #
 # The i-MSCP Home Page is:
@@ -26,7 +27,7 @@
 #    http://i-mscp.net
 #
 # Copyright (C) 2006-2010 by isp Control Panel - http://ispcp.net
-# Copyright (C) 2010-2012 by internet Multi Server Control Panel - http://i-mscp.net
+# Copyright (C) 2010-2013 by internet Multi Server Control Panel - http://i-mscp.net
 # Author Laurent Declercq <l.declercq@nuxwin.com>
 
 ################################################################################
@@ -94,18 +95,12 @@ GetOptions(\%opt, 'loggingType|t=s', 'logDir|l=s');
 
 %main::cfg = ();
 
-################################################################################
-#                                 Subroutines                                  #
-################################################################################
-
-
-################################################################################
-#
 # Load configuration from i-MSCP configuration file
 #
 # @return int 0 on success, negative int otherwise
 #
-sub getConf {
+sub getConf
+{
 	my $file;
 
 	if(-e '/usr/local/etc/imscp/imscp.conf'){
@@ -121,14 +116,13 @@ sub getConf {
 	%main::cfg = join('', <F>) =~ /^\s*(\w+)\s*=\s*(.*)$/gm;
 	close F;
 
-	$main::cfg{'APACHE_LOG_DIR'} = "/var/log/apache2";
+	$main::cfg{'APACHE_LOG_DIR'} = '/var/log/apache2';
 	$main::cfg{'PHP_STARTER_DIR'} = '/var/www/fcgi';
 	$main::cfg{'APACHE_USERS_LOG_DIR'} = '/var/log/apache2/users';
 
 	%main::cfg ? 0 : 1;
 }
 
-################################################################################
 # Create/update all custom log files
 #
 # This subroutine is the handler that is responsible to grab and parse all error
@@ -136,12 +130,9 @@ sub getConf {
 #
 # @return void
 #
-sub ErrorLogHandler {
-
-	eventLog(
-		'notice', 'i-MSCP Apache Logger started ErrorLog Handler -- ' .
-			'resuming normal operations'
-	);
+sub ErrorLogHandler
+{
+	eventLog('notice', 'i-MSCP Apache Logger started ErrorLog Handler -- resuming normal operations');
 
 	while (<STDIN>) {
 		my $vhost = 'default';
@@ -153,7 +144,7 @@ sub ErrorLogHandler {
 		/x;
 
 		# Error from i-MSCP Frontend ?
-		$vhost = $main::cfg{'BASE_SERVER_VHOST'} if ($vhost eq 'master');
+		$vhost = $main::cfg{'BASE_SERVER_VHOST'} if $vhost eq 'master';
 
 		# Write the error log line in the default|domain.tld-error.log
 		my $fh;
@@ -161,8 +152,7 @@ sub ErrorLogHandler {
 		if($vhost eq 'default') {
 			$fh = cacheout '>>', "$main::cfg{'APACHE_LOG_DIR'}/$vhost-error.log";
 		} else {
-			$fh = cacheout '>>',
-				"$main::cfg{'APACHE_USERS_LOG_DIR'}/$vhost-error.log";
+			$fh = cacheout '>>', "$main::cfg{'APACHE_USERS_LOG_DIR'}/$vhost-error.log";
 		}
 
 		$fh->autoflush(1);
@@ -174,7 +164,6 @@ sub ErrorLogHandler {
 	signalHandler('eol');
 }
 
-################################################################################
 # Create/update all custom log files
 #
 # This subroutine is the handler that is responsible to grab and parse all
@@ -182,12 +171,9 @@ sub ErrorLogHandler {
 #
 # @return void
 #
-sub CustomLoghandler {
-
-	eventLog(
-		'notice', 'i-MSCP Apache Logger started CustomLog Handler -- ' .
-			'resuming normal operations'
-	);
+sub CustomLoghandler
+{
+	eventLog('notice', 'i-MSCP Apache Logger started CustomLog Handler -- resuming normal operations');
 
 	while (<STDIN>) {
 		my ($vhost, $inBytes, $outBytes) = /^(\S+|\s) .* (\d+) (\d+)$/;
@@ -209,8 +195,7 @@ sub CustomLoghandler {
 		s/^\S*\s+(.*)\s\d+\s\d+$/$1/;
 
 		# Write the log line in the domain.tld-combined.log file
-		my $fh = cacheout '>>',
-			"$main::cfg{'APACHE_LOG_DIR'}/$vhost-combined.log";
+		my $fh = cacheout '>>', "$main::cfg{'APACHE_LOG_DIR'}/$vhost-combined.log";
 		$fh->autoflush(1);
 		print $fh $_;
 
@@ -220,50 +205,41 @@ sub CustomLoghandler {
 		print $fh $inBytes + $outBytes, "\n";
 
 		# Write the log line in the default|domain.tld-access.log file
-		$fh = cacheout '>>',
-			"$main::cfg{'APACHE_USERS_LOG_DIR'}/$vhost-access.log";
+		$fh = cacheout '>>', "$main::cfg{'APACHE_USERS_LOG_DIR'}/$vhost-access.log";
 		$fh->autoflush(1);
 		print $fh $_;
 	}
 }
 
-################################################################################
-#
+
 # Convenience subroutines to log events from this script
 #
 # @return void
 #
-sub eventLog {
-
+sub eventLog
+{
 	($priority, $message) = @_;
 
 	my $date = strftime "%a %b %e %H:%M:%S %Y", localtime;
 
 	if(-d $opt{'logDir'}) {
 		if($priority ne 'debug' && $priority ne 'info' && $priority ne 'notice') {
-			*STDERR = cacheout '>>',
-				"$opt{'logDir'}/imscp-apache-logger.stderr";
+			*STDERR = cacheout '>>', "$opt{'logDir'}/imscp-apache-logger.stderr";
 			STDERR->autoflush(1);
-
 			print STDERR "[$date] [$priority] $message\n";
 		} elsif($priority eq 'debug' && !$main::cfg{'DEBUG'}) {
 			return 0;
 		} else {
-			*STDOUT = cacheout '>>',
-				"$opt{'logDir'}/imscp-apache-logger.stdout";
+			*STDOUT = cacheout '>>', "$opt{'logDir'}/imscp-apache-logger.stdout";
 			STDOUT->autoflush(1);
-
 			print STDOUT "[$date] [$priority] $message\n";
 		}
 	} else { # Logging on STDERR
 		STDERR->autoflush(1);
-
 		print STDERR "[$date] [$priority] $message\n";
 	}
 }
 
-################################################################################
-#
 # This subroutine is the handler that is responsible to handle some signals that
 # can be received from Apache. This handler ensure that all filehandles are
 # correctly closed before shutting down.
@@ -271,8 +247,8 @@ sub eventLog {
 # This method is also called by the errorLog handler in condition exposed here:
 # https://issues.apache.org/bugzilla/show_bug.cgi?id=49800
 #
-sub signalHandler {
-
+sub signalHandler
+{
 	my $signal =  shift;
 	my $loggingType = ($opt{'loggingType'} eq 'access') ? 'Access' : 'Error';
 
@@ -290,44 +266,25 @@ sub signalHandler {
 	exit;
 }
 
-################################################################################
-#                              Main program                                    #
-################################################################################
+#  Main
 
 umask(027);
 eventLog('notice', "Starting i-MSCP Apache logger (pid $$)");
 
 # Get i-MSCP configuration file
 if(getConf() != 0) {
-	eventLog(
-		'err',
-		"Unable to load i-MSCP configuration from the imscp.conf file."
-	);
-
+	eventLog('err', "Unable to load i-MSCP configuration from the imscp.conf file.");
 } else {
-
 	mkdir $main::cfg{'APACHE_LOG_DIR'} unless -d $main::cfg{'APACHE_LOG_DIR'};
 	mkdir "$main::cfg{'APACHE_LOG_DIR'}/traff" unless -d "$main::cfg{'APACHE_LOG_DIR'}/traff";
 	mkdir $main::cfg{'APACHE_USERS_LOG_DIR'} unless -d $main::cfg{'APACHE_USERS_LOG_DIR'};
 
-	if (!-d $main::cfg{'APACHE_LOG_DIR'}) {
-		eventLog(
-			'err',
-			"Apache $main::cfg{'APACHE_LOG_DIR'} directory does not exist."
-		);
-
+	if (! -d $main::cfg{'APACHE_LOG_DIR'}) {
+		eventLog('err', "Apache $main::cfg{'APACHE_LOG_DIR'} directory does not exist.");
 	} elsif (!-d "$main::cfg{'APACHE_LOG_DIR'}/traff") {
-		eventLog(
-			'err',
-			"Apache $main::cfg{'APACHE_LOG_DIR'}/traff directory does not exist!"
-		);
-
+		eventLog('err', "Apache $main::cfg{'APACHE_LOG_DIR'}/traff directory does not exist!");
 	} elsif (!-d $main::cfg{'APACHE_USERS_LOG_DIR'}) {
-		eventLog(
-			'err',
-			"Apache $main::cfg{'APACHE_USERS_LOG_DIR'} directory does not exist."
-		);
-
+		eventLog('err', "Apache $main::cfg{'APACHE_USERS_LOG_DIR'} directory does not exist.");
 	} elsif ($opt{'loggingType'} eq 'access') {
 		# Stating Apache access log processing
 		CustomLoghandler();
@@ -343,10 +300,7 @@ if(getConf() != 0) {
 # resources consumption. But the side effect of this is that the administrator
 # will not be able to see the problem until he reads the log file.
 
-eventLog(
-	'notice', "Acts as /dev/null to avoid too many re-spawn attempts by " .
-		"Apache (pid $$)"
-);
+eventLog('notice', "Acts as /dev/null to avoid too many re-spawn attempts by Apache (pid $$)");
 
 while(<STDIN>) {}
 

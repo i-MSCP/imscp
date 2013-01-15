@@ -1,7 +1,7 @@
 #!/usr/bin/perl
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010 - 2011 by internet Multi Server Control Panel
+# Copyright (C) 2010-2013 by internet Multi Server Control Panel
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -18,9 +18,8 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 #
 # @category		i-MSCP
-# @copyright	2010 - 2012 by i-MSCP | http://i-mscp.net
+# @copyright	2010-2013 by i-MSCP | http://i-mscp.net
 # @author		Daniel Andreca <sci2tech@gmail.com>
-# @version		SVN: $Id$
 # @link			http://i-mscp.net i-MSCP Home Site
 # @license		http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
@@ -30,12 +29,7 @@ use strict;
 use warnings;
 use iMSCP::Debug;
 use Data::Dumper;
-
-use vars qw/@ISA/;
-
-@ISA = ('Common::SimpleClass', 'Modules::Subdomain');
-use Common::SimpleClass;
-use Modules::Subdomain;
+use parent 'Modules::Subdomain';
 
 sub loadData{
 
@@ -132,7 +126,7 @@ sub process{
 		);
 	}
 
-	my $rdata = iMSCP::Database->factory()->doQuery('delete', @sql);
+	my $rdata = iMSCP::Database->factory()->doQuery('dummy', @sql);
 	error("$rdata") and return 1 if(ref $rdata ne 'HASH');
 
 	$rs;
@@ -209,7 +203,8 @@ sub delete{
 
 	my $dir = File::Temp->newdir(CLEANUP => 1);
 	my @savedDirs;
-	foreach(keys %mountPoints){
+
+	for(keys %mountPoints){
 		my $sourceDir 	= "$main::imscpConfig{'USER_HOME_DIR'}/$self->{user_home}/".$mountPoints{$_};
 		$sourceDir		=~ s~/+~/~g;
 		my $destDir 	= "$dir/".$mountPoints{$_};
@@ -226,10 +221,9 @@ sub delete{
 		push(@savedDirs, $mountPoints{$_});
 	}
 
-	$self->{mode}	= 'del';
-	$rs 			= $self->runAllSteps();
+	$rs = $self->SUPER::delete();
 
-	foreach (@savedDirs){
+	for (@savedDirs){
 		my $destDir 	= "$main::imscpConfig{'USER_HOME_DIR'}/$self->{user_home}/$_";
 		$destDir		=~ s~/+~/~g;
 		my $sourceDir	= "$dir/$_";
@@ -312,7 +306,7 @@ sub buildMTAData{
 	my $self	= shift;
 
 	if(
-		$self->{mode} ne 'add'
+		$self->{'action'} ne 'add'
 		||
 		defined $self->{mail_on_domain} && $self->{mail_on_domain} > 0
 		||
@@ -350,7 +344,7 @@ sub buildNAMEDData{
 
 		my $sql = "
 			SELECT
-				*
+				`domain_dns_id`, `domain_text`
 			FROM
 				`domain_dns`
 			WHERE
@@ -368,11 +362,11 @@ sub buildNAMEDData{
 		my $rdata = iMSCP::Database->factory()->doQuery('domain_dns_id', $sql, $self->{domain_id}, $self->{alias_id}, 'MX', 'yes');
 		error("$rdata") and return 1 if(ref $rdata ne 'HASH');
 
-		$self->{named}->{MX}->{$_} = $rdata->{$_} for (keys %$rdata);
+		($self->{named}->{MX}->{$_}->{domain_text}) = ($rdata->{$_}->{domain_text} =~ /(.*)\.$/) for(keys %$rdata);
 
 	} elsif($self->{mail_on_domain} || $self->{domain_mailacc_limit} >= 0) {
 
-		$self->{named}->{MX}->{1}->{domain_text} = "10\tmail.".$self->{alias_name}
+		$self->{named}->{MX}->{1}->{domain_text} = "10\tmail.$self->{alias_name}";
 
 	}
 

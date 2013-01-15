@@ -1,15 +1,164 @@
 i-MSCP ChangeLog
 ~~~~~~~~~~~~~~~~
+
+-------------------------------------------------------------------------------------
+i-MSCP Git Master
+-------------------------------------------------------------------------------------
+
+ENGINE:
+	- Fixed SPF record syntax
+
+-------------------------------------------------------------------------------------
+i-MSCP 1.1.0-rc1.4
+-------------------------------------------------------------------------------------
+
+2013-01-07: Laurent Declercq
+	- RELEASE i-MSCP 1.1.0-rc1.4
+
+DISTROS:
+	- Added package files for Ubuntu Quantal Quetzal and Ubuntu Raring Ringtail
+
+CONFIGS:
+	- Updated fcgid configuration files for high-load sites
+
+Tickets:
+	- Fixed #274 (reopened): Defect - Proftpd limits doesn't work
+	- Fixed #548: Bug - Missing comment character in configs/debian/fcgi/parts/php5-fcgid-starter.tpl
+	- Fixed #550: Boolean PHP Values should be set with php_flag and not php_value
+	- Fixed #551: Bug - Preseed feature is broken
+	- Fixed #552: Bug - PHP constants are not recognized outside of PHP (such as in Apache vhost files)
+	- Fixed #555: Cosmetics - Missing translation at reseller level
+	- Fixed #560: Review - Backup filenames are not windows-friendly
+	- Fixed #562: Bug - Error in apache_fcgi installer
+	- Fixed #563: Defect - protected_plugins.php file not in gui/cache
+	- Fixed #565: Bug - Ftp limits not applied - Proftpd not restarted
+
+-------------------------------------------------------------------------------------
+i-MSCP 1.1.0-rc1.3
+-------------------------------------------------------------------------------------
+
+2012-12-27: Laurent Declercq
+	- RELEASE i-MSCP 1.1.0-rc1.3
+
+SETUP:
+	- Fixed: Any hook function should return 1 on failure
+	- Fixed: Do not install suexec module when using ITK
+	- Fixed: Make fcgid as default FastCGI module
+	- Fixed: Self-signed SSL certificate for i-MSCP must be a wildcard SSL certificate
+	- Fixed: Self-signed SSL certificate for i-MSCP must use 2048-bit RSA Keys (Minimum recommended)
+	- Fixed: Suppress warning for self-signed certificate generation (still in log file)
+	- Fixed: Use of uninitialized value in bitwise or (|) errors
+
+-------------------------------------------------------------------------------------
+i-MSCP 1.1.0-rc1.2
+-------------------------------------------------------------------------------------
+
+2012-12-25: Laurent Declercq
+	- RELEASE i-MSCP 1.1.0-rc1.2
+
+Tickets:
+	- Fixed #546: Bug - SQL error on first install due to empty reseller list
+
+-------------------------------------------------------------------------------------
+i-MSCP 1.1.0-rc1-1
+-------------------------------------------------------------------------------------
+
+2012-12-25: Laurent Declercq
+	- RELEASE i-MSCP 1.1.0-rc1.1
+
+Tickets:
+	- Fixed #540: Bug - C-style symbols intead of graphic lines in the autoinstall console
+	- Fixed #542: Bug - Unable to install addon packages - git is missing
+
+-------------------------------------------------------------------------------------
+i-MSCP 1.1.0-rc1
+-------------------------------------------------------------------------------------
+
+2012-12-24: Laurent Declercq
+	- RELEASE i-MSCP 1.1.0-rc1
+
+Features / Enhancements / Bugfixes:
+
+SETUP:
+	- Added backup feature for setup dialog (allow user to step back)
+	- Added base class for autoinstall adapters
+	- Added 'buildonly' and 'skippackages' command line options for autoinstall script
+	- Added composer installer for i-MSCP addons
+	- Added 'reconfigure', 'preseed', hook-file and 'debug' command line options for both autoinstall and setup scripts
+	- Fixed: Allow IDN for hostname and base server vhost hostname
+	- Fixed: Allow to set ip as MySQL server hostname
+	- Fixed: Do not remove user defined variables in imscp.conf
+	- Fixed: Do not ask for MySQL server port when using 'localhost'
+	- Fixed: Do no ask for server to use if only one is available
+	- Fixed: iMSCP::Dialog::Dialog - Wrong synstax for the 'timeout' option
+	- Fixed: iMSCP::Dialog::Dialog - Allow both single and double quotes in dialog text boxes
+	- Fixed: iMSCP::Dialog::Dialog - Allow to set default choice for both radiolist and checklist dialog boxes
+	- Refactoring + cs fixes + doc
+
+ENGINE:
+	- Added i-MSCP own implementation of lsb_release command
+	- Added 'nocreate' and 'readonly' options for the iMSCP::Config package
+	- Added pbzip2 (parallel bzip2 file compressor) for bzip2 compression algorithm
+	- Added progress bar for Debian packages installation
+	- Added engine hooks manager
+	- Added several hooks in both addons and servers packages (still a lot to add...)
+	- Fixed: iMSCP::IP - Ips stack not flushed on reset
+	- Fixed: iMSCP::Boot - Do not create the imscp.conf file if do not exists, raise error instead
+	- Refactoring + cs fixes + doc
+
+GUI:
+	Core:
+		- Rewritten external mail interface
+
+	Vendor:
+
+	Tools:
+		- Moved Ajaxplorer to packagist.org (composer package)
+		- Moved PhpMyAdmin to packagist.org (composer package)
+		- Moved Roundcube to packagist.org (composer package)
+		- Updated AjaxPlorer addon to version 4.2.3
+		- Updated PhpMyAdmin addon to version 3.5.5
+		- Updated Roundcube addon to version 0.8.4
+
+Tickets:
+	- Fixed #350: Defect - Setup - cancel doesn't work for some dialogs
+	- Fixed #437: Enhancement - Roundcube should use its own database
+	- Fixed #438: Enhancement - Add defaults switch to autoinstaller
+	- Fixed #482: Defect - Alias edit forward url not possible. Validation incorrect
+	- Fixed #499: When deleting a domain alias, the custom DNS records (including those related to external mail
+		server(s)) should be deleted
+	- Fixed #500: Mail quota edit link has wrong id for alias, subdomain and aliassubs mails.
+	- Fixed #501: Slow query and wrong traffic count in "Edit Domain"
+	- Fixed #503: Bug - DNS entries for subdomains are not re-added in db zone file
+	- Fixed #504: Roundcube 0.8.2
+	- Fixed #507: Cosmetics - External mail servers features status not show
+	- Fixed #508: German Umlaut in Custom DNS were shown wrong
+	- Fixed #509: Tools: PHPMyAdmin 3.5.3 released
+	- Fixed #511: Enhancement - Show disk usage detail (web, mail, sql) on client side
+	- Fixed #512: autoresponder: lines in transport file not correct
+	- Fixed #514: Email forward from domain A to domain B not working
+	- Fixed #518: Bug - Setup broken
+	- Fixed #520: Defect - migrateMailboxes: Use of uninitialized value
+	- Fixed #522: Bug - Subdomain redirects with "https" or "ftp" don't work
+	- Fixed #524: Update - AjaxPlorer 4.2.3 released
+	- Fixed #525: Update - phpMyAdmin 3.5.5 released
+	- Fixed #527: Update - Roundcube 0.8.4 released
+	- Fixed #532: Review - Database update 53 - ftp password
+	- Fixed #535: Defect - Roundcube does not work with courier
+	- Fixed #539: Enhancement - i-MSCP tools - Composer support
+	- Fixed #541: Task - Move PhpMyAdmin to packagist and make it as addon
+
 -------------------------------------------------------------------------------------
 i-MSCP 1.1.0-beta2
 -------------------------------------------------------------------------------------
+
 2012-09-14: Torsten Widmann
 	- RELEASE i-MSCP 1.1.0-beta2
 	
-Features / Enhancements:
+Features / Enhancements / Bugfixes:
 
 GUI:
-	Libs:
+	Vendor:
 		- Updated Zend Framework to 1.11.12
 
 	Tools:
@@ -28,29 +177,22 @@ Tickets:
 	- Fixed #487: External Mailserver add/edit CNAMES
 	- Fixed #490: Roundcube missing default folders
 	- Fixed #491: Security-Update: Roundcube 0.8.1
-	- Fixed #492: Hostingplans in admin level not complete
-	- Fixed #499: When deleting a domain alias, the custom DNS records (including those related to external mail
-		server(s)) should be deleted
-	- Fixed #500: Mail quota edit link has wrong id for alias, subdomain and aliassubs mails.
-	- Fixed #503: Bug - DNS entries for subdomains are not re-added in db zone file
-	- Fixed #504: Roundcube 0.8.2
-	- Fixed #507: Cosmetics - External mail servers features status not show
-	- Fixed #508: German Umlaut in Custom DNS were shown wrong
+	- Fixed #492: Hosting plans in admin level not complete
 
 -------------------------------------------------------------------------------------
 i-MSCP 1.1.0-beta1
 -------------------------------------------------------------------------------------
+
 2012-07-01: Torsten Widmann
 	- RELEASE i-MSCP 1.1.0-beta1
 
-Features / Enhancements:
+Features / Enhancements / Bugfixes:
 
 GUI:
 	Tools:
 		- Updated PhpMyAdmin to version 3.5.2
 		- Updated AjaxPlorer to 4.2.2
 		- Updated Roundcube to 0.7.2
-
 
 Tickets:
 	- Fixed #17: Feature - Send mail if quota reached
@@ -62,7 +204,6 @@ Tickets:
 	- Fixed #337: Enhancement - Add possibility to edit per user mail quotas
 	- Fixed #368: Enhancement - Add custom TXT DNS resource records
 	- Fixed #387: Enhancement - php.ini modifications to allow the usage of roundcube
-	- Fixed #429: Enhancement - TXT entries should allow * as a valid character
 	- Fixed #402: Task - Ajaxplorer - Not Compatible with php 5.4
 	- Fixed #403: Defect - Hosting Plan Secure Code doesn't work
 	- Fixed #404: Defect - Missing translations
@@ -74,6 +215,7 @@ Tickets:
 	- Fixed #423: Malfunction: Ticket-Summary at Reseller-Overview
 	- Fixed #424: BUG: After deleting alias domain the ftp accounts of this domain still exist
 	- Fixed #427: Malfunction: DNS Servernames not IDN compatible stored in database
+	- Fixed #429: Enhancement - TXT entries should allow * as a valid character
 	- Fixed #432: Awstats static configuration generated when awstats dynamic is enabled
 	- Fixed #440: Broken installer after External email servers commit
 	- Fixed #445: Disabling domain and panel's backups does not work
@@ -81,6 +223,6 @@ Tickets:
 	- Fixed #452: View Support Ticket
 	- Fixed #456: Wrong welcome message usertype when create client
 	- Fixed #457: Domain specific apache2 configuration gets deleted in imscp-setup (tx Jadawin)
-	- Fixed #470: Default mail_quota is still 10485760 bytes
-	- Fixed #468: SSL for Customers does not Work since upgrade to beta
 	- Fixed #467: FTP Account, Datamanager-> no autologin in ajax explorer
+	- Fixed #468: SSL for Customers does not Work since upgrade to beta
+	- Fixed #470: Default mail_quota is still 10485760 bytes

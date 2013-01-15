@@ -1,7 +1,7 @@
 #!/usr/bin/perl
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010 - 2011 by internet Multi Server Control Panel
+# Copyright (C) 2010-2013 by internet Multi Server Control Panel
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -18,9 +18,8 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
 # @category		i-MSCP
-# @copyright	2010 - 2012 by i-MSCP | http://i-mscp.net
+# @copyright	2010-2013 by i-MSCP | http://i-mscp.net
 # @author		Daniel Andreca <sci2tech@gmail.com>
-# @version		SVN: $Id: imscp-migrate-from-ispcp 5363 2011-10-01 10:06:32Z sci2tech $
 # @link			http://i-mscp.net i-MSCP Home Site
 # @license      http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 #
@@ -62,7 +61,7 @@ sub setup_engine {
 		[\&userTest, 'System users are in place?: '],
 		[\&systemConfigTest, 'Save system config files if exists: '],
 		[\&confSave, 'Save system configuration: '],
-		[\&dbUpgrade, 'Save system configuration: '],
+		[\&dbUpgrade, 'Upgrade database: '],
 		[\&otherMessCleanup, 'Some system cleaning: '],
 		[\&daemonRemove, 'Remove imscp daemon: '],
 		[\&removeDirs, 'Delete ispcp directories: '],
@@ -218,7 +217,7 @@ sub databaseIntegrityTest{
 	use iMSCP::Database;
 	use iMSCP::Dialog;
 
-	#dependicies broken
+	# broken dependencies
 	my $query = "SELECT t1.* FROM `%s` as t1 LEFT JOIN `%s` as t2 ON t1.`%s` = t2.`%s` WHERE t2.`%s` is null %s";
 	my @tests = (
 		{group => 'admin_id', childTable => 'admin', parentTable=>'admin', childField => 'created_by', parentField => 'admin_id', limit => "AND t1.`admin_type` = 'user'"},
