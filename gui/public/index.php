@@ -1,6 +1,4 @@
 <?php
-echo 'Hello there';
-exit;
 /**
  * i-MSCP - internet Multi Server Control Panel
  *
