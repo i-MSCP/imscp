@@ -66,7 +66,7 @@ function client_updateHtaccessUser(&$dmn_id, &$uuser_id)
 			}
 
 			if ($_POST['pass'] !== $_POST['pass_rep']) {
-				set_page_message(tr("Passwords doesn't matches."), 'error');
+				set_page_message(tr("Passwords doesn't match."), 'error');
 				return;
 			}
 

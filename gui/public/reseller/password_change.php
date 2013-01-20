@@ -64,7 +64,7 @@ if (isset($_POST['uaction']) && $_POST['uaction'] === 'updt_pass') {
 	if (empty($_POST['pass']) || empty($_POST['pass_rep']) || empty($_POST['curr_pass'])) {
 		set_page_message(tr('All fields are required.'), 'error');
 	} else if ($_POST['pass'] !== $_POST['pass_rep']) {
-		set_page_message(tr('Passwords do not match.'), 'error');
+		set_page_message(tr("Passwords doesn't match."), 'error');
 	} else if (!chk_password($_POST['pass'])) {
 		if ($cfg->PASSWD_STRONG) {
 			set_page_message(sprintf(tr('The password must be at least %s long and contain letters and numbers to be valid.'), $cfg->PASSWD_CHARS), 'error');

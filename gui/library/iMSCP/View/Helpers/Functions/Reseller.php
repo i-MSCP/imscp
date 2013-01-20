@@ -318,7 +318,7 @@ function check_ruser_data($tpl, $noPass)
         if (('' === $inpass_re) || ('' === $inpass)) {
             set_page_message(tr('Please fill up both data fields for password.'), 'error');
         } else if ($inpass_re !== $inpass) {
-            set_page_message(tr("Passwords doesn't matches"), 'error');
+            set_page_message(tr("Passwords doesn't match."), 'error');
         } else if (!chk_password($inpass)) {
             if ($cfg->PASSWD_STRONG) {
                 set_page_message(sprintf(tr('The password must be at least %s long and contain letters and numbers to be valid.'), $cfg->PASSWD_CHARS), 'error');

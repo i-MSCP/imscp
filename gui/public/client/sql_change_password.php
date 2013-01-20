@@ -86,7 +86,7 @@ function change_sql_user_pass($db_user_id, $db_user_name)
 	}
 
 	if ($_POST['pass'] !== $_POST['pass_rep']) {
-		set_page_message(tr('Entered passwords do not match.'), 'error');
+		set_page_message(tr("Passwords doesn't match."), 'error');
 		return;
 	}
 

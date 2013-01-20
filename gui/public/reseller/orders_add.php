@@ -110,7 +110,7 @@ $props = $data['props'];
 $_SESSION["ch_hpprops"] = $props;
 
 if (!reseller_limits_check($reseller_id, $hpid)) {
-	set_page_message(tr('Order Cancelled: resellers limit(s) exceeded.'), 'error');
+	set_page_message(tr('Order Canceled: resellers limit(s) exceeded.'), 'error');
 	unset($_SESSION['domain_ip']);
 	redirectTo('orders.php');
 }

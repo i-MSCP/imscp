@@ -233,7 +233,7 @@ sub output
 	} elsif ($options->{'mode'} && lc($options->{'mode'}) eq 'warning'){
 		return "[ \033[0;33m" . ($options->{'text'} ? uc($options->{'text'}) : 'WARNING') . "\033[0m ] ${text}\n";
 	} elsif ($options->{'mode'} && lc($options->{'mode'}) eq 'ok'){
-		return "[ \033[0;32m" . ($options->{'text'} ? uc($options->{'text'}) : 'OK') . "\033[0m ] ${text}\n";
+		return "[ \033[0;32m" . ($options->{'text'} ? uc($options->{'text'}) : 'ok') . "\033[0m ] ${text}\n";
 	} else {
 		return "$text\n";
 	}

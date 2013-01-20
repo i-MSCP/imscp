@@ -472,7 +472,7 @@ function check_ftp_acc_data($tpl, $dmn_id, $dmn_name) {
 	}
 
 	if ($_POST['pass'] !== $_POST['pass_rep']) {
-		set_page_message(tr('Entered passwords do not match.'), 'error');
+		set_page_message(tr("Passwords doesn't match."), 'error');
 		return;
 	}
 
