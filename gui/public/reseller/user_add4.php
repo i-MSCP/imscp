@@ -353,7 +353,7 @@ if (!is_xhr()) {
 			'TR_DOMAIN_NAME' => tr('Domain name'),
 			'TR_DOMAIN_ACCOUNT' => tr('User account'),
 			'TR_MOUNT_POINT' => tr('Directory mount point'),
-			'TR_DMN_HELP' => tr("You do not need 'www.' i-MSCP will add it on its own."),
+			'TR_DMN_HELP' => tr("You do not need 'www.' i-MSCP will add it automatically."),
 			'TR_DOMAIN_IP' => tr('Domain IP'),
 			'TR_FORWARD' => tr('Forward to URL'),
 			'TR_ADD' => tr('Add alias'),
@@ -388,7 +388,7 @@ if (!is_xhr()) {
         $stmt = exec_query($query, array($domain_id, $reseller_id));
 
         if ($stmt->recordCount() == 0) {
-            set_page_message(tr('User does not exist or you do not have permission to access this interface!'), 'error');
+            set_page_message(tr('User does not exist or you do not have permission to access this interface'), 'error');
             redirectTo('users.php?psi=last');
         } else {
             $row = $stmt->fetchRow();
@@ -402,7 +402,7 @@ if (!is_xhr()) {
             }
         }
     } else {
-        set_page_message(tr('User does not exist or you do not have permission to access this interface!'), 'error');
+        set_page_message(tr('User does not exist or you do not have permission to access this interface'), 'error');
         redirectTo('users.php?psi=last');
     }
 }

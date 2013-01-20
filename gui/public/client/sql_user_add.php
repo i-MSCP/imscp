@@ -110,7 +110,7 @@ function check_sql_permissions($tpl, $customerId, $databaseId, $sqlUserList)
 	$stmt = exec_query($query, array($domainProperties['domain_id'], $databaseId));
 
 	if (!$stmt->rowCount()) {
-		set_page_message(tr('Wrong request'), 'error');
+		set_page_message(tr('Wrong request.'), 'error');
 		redirectTo('sql_manage.php');
 	}
 }

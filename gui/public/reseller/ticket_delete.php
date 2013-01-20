@@ -77,7 +77,7 @@ if (isset($_GET['ticket_id']) && !empty($_GET['ticket_id'])) {
 	$stmt = exec_query($query, array($ticketId, $userId, $userId));
 
 	if ($stmt->rowCount() == 0) {
-        set_page_message(tr("Ticket with Id: '%d' no found.", $ticketId), 'error');
+        set_page_message(tr("Ticket with Id '%d' was not found.", $ticketId), 'error');
 		redirectTo($previousPage . '.php');
 	}
 

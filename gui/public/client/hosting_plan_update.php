@@ -137,7 +137,7 @@ function client_generateHostingPlanEntries($tpl, $customerId)
 			)
 		);
 
-		set_page_message(tr('There are no available hosting plans for updates.'), 'info');
+		set_page_message(tr('There are no available hosting plans for update.'), 'info');
 		return;
 	}
 
@@ -222,14 +222,14 @@ function client_generateHostingPlanEntries($tpl, $customerId)
 			$currentValue = get_domain_running_als_cnt($domainProperties['domain_id']);
 
 			if (!client_checkHpLimit($currentValue, $hpAliases)) {
-				$errorsMessages[] = tr('You have more domain aliases in use than the new hosting plan limits');
+				$errorsMessages[] = tr('You have more domain aliases in use than the new hosting plan limits.');
 			}
 
 			$details .= tr('Domain Aliases') . ': ' . translate_limit_value($hpAliases) . '<br />';
 			$currentValue = get_domain_running_sub_cnt($domainProperties['domain_id']);
 
 			if (!client_checkHpLimit($currentValue, $hpSubdomains)) {
-				$errorsMessages[] = tr('You have more subdomains in use than the new hosting plan limits');
+				$errorsMessages[] = tr('You have more subdomains in use than the new hosting plan limits.');
 			}
 
 			$details .= tr('Subdomains') . ': ' . translate_limit_value($hpSubdomains) . '<br />';

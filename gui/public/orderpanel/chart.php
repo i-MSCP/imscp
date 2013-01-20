@@ -96,8 +96,8 @@ function generateChart($tpl, $user_id, $plan_id)
 		if ($stmt->fields['tos'] != '') {
 			$tpl->assign(
 				array(
-					'TR_TOS_PROPS' => tr('Term of Service'),
-					'TR_TOS_ACCEPT' => tr('I Accept The Term of Service'),
+					'TR_TOS_PROPS' => tr('Terms of Service'),
+					'TR_TOS_ACCEPT' => tr('I Accept The Terms of Service'),
 					'TOS' => tohtml($stmt->fields['tos'])));
 
 			$_SESSION['order_panel_tos'] = true;

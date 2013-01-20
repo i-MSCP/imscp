@@ -395,7 +395,7 @@ class iMSCP_Validate
     {
         if (($value1 === $value2)) {
             if (null === $messages) {
-                $messages = tr('The values must not be equals', $value1, $value2);
+                $messages = tr('The values must not be equal', $value1, $value2);
             }
 
             $this->_lastValidationErrorMessages = array_merge($this->_lastValidationErrorMessages, (array)$messages);

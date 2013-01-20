@@ -119,10 +119,10 @@ function &admin_getData($domainId, $forUpdate = false, $recoveryMode = false)
 				-- domain ip info
 				`t3`.`ip_number`, `t3`.`ip_domain`,
 
-				-- count domain aliasses
+				-- count domain aliases
 				COUNT(DISTINCT `t4`.`alias_id`) `nbAliasses`,
 
-				-- count subdomains (belong to domain and domain aliasses)
+				-- count subdomains (belong to domain and domain aliases)
 				COUNT(DISTINCT `t5`.`subdomain_id`) + COUNT(DISTINCT `t6`.`subdomain_alias_id`) `nbSubdomains`,
 
 				-- count mail accounts
@@ -296,7 +296,7 @@ function _admin_generateLimitsForm($tpl, &$data)
 		$tplVars['TR_RESELLER_SUBDOMAINS_COMSUPTION'] = tohtml($data['current_sub_cnt']) . ' / ' . (($data['max_sub_cnt'] != 0) ? tohtml($data['max_sub_cnt']) : tr('Unlimited'));
 	}
 
-	// Domain aliasses limit
+	// Domain aliases limit
 	if ($data['max_als_cnt'] == -1) { // Reseller has no permissions on this service
 		$tpl->assign('DOMAIN_ALIASES_LIMIT_BLOCK', '');
 	} else {
@@ -342,7 +342,7 @@ function _admin_generateLimitsForm($tpl, &$data)
 	}
 
 	// Traffic limit
-	$tplVars['TR_TRAFFIC_LIMIT'] = tr('Traffic limit [MiB] <br /><span class="italic">(0 unlimited)</span>', true);
+	$tplVars['TR_TRAFFIC_LIMIT'] = tr('Traffic limit [MiB]<br/><span class="italic">(0 unlimited)</span>', true);
 	$tplVars['TRAFFIC_LIMIT'] = tohtml($data['domain_traffic_limit']);
 
 	$tplVars['TR_CUSTOMER_TRAFFIC_COMSUPTION'] = tohtml(bytesHuman($data['domainTraffic'], 'MiB')) . ' / ' .
@@ -575,14 +575,14 @@ function admin_checkAndUpdateData($domainId, $recoveryMode = false)
 			}
 		}
 
-		// Check for the domain aliasses limit
+		// Check for the domain aliases limit
 		if ($data["fallback_domain_alias_limit"] != -1) {
 			if (!imscp_limit_check($data['domain_alias_limit'])) {
-				set_page_message(tr('Wrong syntax for the %s limit.', tr('domain aliasses')), 'error');
+				set_page_message(tr('Wrong syntax for the %s limit.', tr('domain aliases')), 'error');
 				$errFieldsStack[] = 'domain_alias_limit';
 			} elseif (!_admin_isValidServiceLimit($data['domain_alias_limit'], $data['nbAliasses'],
 												  $data["fallback_domain_alias_limit"], $data['current_als_cnt'],
-												  $data['max_als_cnt'], ($data['nbAliasses'] > 1) ? tr('domain aliasses') : tr('domain alias'))
+												  $data['max_als_cnt'], ($data['nbAliasses'] > 1) ? tr('domain aliases') : tr('domain alias'))
 			) {
 				$errFieldsStack[] = 'domain_alias_limit';
 			}

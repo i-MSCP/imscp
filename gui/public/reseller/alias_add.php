@@ -472,7 +472,7 @@ if (!is_xhr()) {
 			'TR_DOMAIN_IP' => tr('Domain IP'),
 			'TR_FORWARD' => tr('Forward to URL'),
 			'TR_ADD' => tr('Add alias'),
-			'TR_DMN_HELP' => tr("You do not need 'www.' i-MSCP will add it on its own."),
+			'TR_DMN_HELP' => tr("You do not need 'www.' i-MSCP will add it automatically."),
 			'TR_JS_EMPTYDATA' => tr("Empty data or wrong field!"),
 			'TR_JS_WDNAME' => tr("Wrong domain name!"),
 			'TR_JS_MPOINTERROR' => tr("Please write mount point!"),

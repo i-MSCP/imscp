@@ -245,7 +245,7 @@ if (!Zend_Session::namespaceIsset('pageMessages')) {
 function calculate_user_dvals($data, $u, &$umax, &$r, $rmax, $obj) {
 	if ($rmax == -1 && $umax >= 0) {
 		if ($u > 0) {
-			set_page_message(tr('The <em>%s</em> service cannot be disabled.', $obj) . tr('There are <em>%s</em> records on system.', $obj), 'error');
+			set_page_message(tr('The <em>%s</em> service cannot be disabled.', $obj) . tr('There are <em>%s</em> records on the system.', $obj), 'error');
 			return;
 		} else if ($data != -1){
 			set_page_message(tr('The <em>%s</em> have to be disabled.', $obj) . tr('The admin has <em>%s</em> disabled on this system.', $obj), 'error');

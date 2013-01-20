@@ -194,7 +194,7 @@ $db_user_name = gen_page_data($tpl, $db_user_id);
 
 if(!check_user_sql_perms($db_user_id))
 {
-    set_page_message(tr('User does not exist or you do not have permission to access this interface.'), 'error');
+    set_page_message(tr('User does not exist or you do not have permission to access this interface'), 'error');
     redirectTo('sql_manage.php');
 }
 

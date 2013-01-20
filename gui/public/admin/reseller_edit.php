@@ -307,7 +307,7 @@ function _admin_generateLimitsForm($tpl, &$data)
 			 'TR_ACCOUNT_LIMITS' => tr('Account limits'),
 			 'TR_MAX_DMN_CNT' => tr('Domains limit<br/><span class="italic">(0 unlimited)</span>', true),
 			 'MAX_DMN_CNT' => tohtml($data['max_dmn_cnt']),
-			 'TR_MAX_SUB_CNT' => tr('Subdomains limit<br/><span class="italic">(-1 disabled, 0 unlimited)</span>', true),
+			 'TR_MAX_SUB_CNT' => tr('Subdomains limit<br /><span class="italic">(-1 disabled, 0 unlimited)</span>', true),
 			 'MAX_SUB_CNT' => tohtml($data['max_sub_cnt']),
 			 'TR_MAX_ALS_CNT' => tr('Domain aliases limit<br/><span class="italic">(-1 disabled, 0 unlimited)</span>', true),
 			 'MAX_ALS_CNT' => tohtml($data['max_als_cnt']),

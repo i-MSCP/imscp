@@ -50,7 +50,7 @@ check_login('admin');
 $cfg = iMSCP_Registry::get('config');
 
 if (!isset($_GET['delete_id'])) {
-	set_page_message(tr('Wrong request'));
+	set_page_message(tr('Wrong request.'));
 	redirectTo('ip_manage.php');
 }
 

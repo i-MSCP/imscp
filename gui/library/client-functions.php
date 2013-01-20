@@ -86,10 +86,10 @@ function get_domain_running_sub_cnt($domain_id)
 }
 
 /**
- * Returns number of domain aliasses that belong to a specific domain.
+ * Returns number of domain aliases that belong to a specific domain.
  *
  * @param  int $domain_id Domain unique identifier
- * @return int Total number of domain aliasses
+ * @return int Total number of domain aliases
  */
 function get_domain_running_als_cnt($domain_id)
 {
@@ -256,7 +256,7 @@ function get_domain_running_sub_ftp_acc_cnt($domain_id)
 }
 
 /**
- * Returns total number of Ftp accounts that belong to domain aliasses of a specific
+ * Returns total number of Ftp accounts that belong to domain aliases of a specific
  * domain.
  *
  * @param  int $domain_id Domain unique identifier

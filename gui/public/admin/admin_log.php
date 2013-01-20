@@ -203,7 +203,7 @@ if(isset($_POST['uaction']) && $_POST['uaction'] == 'clear_log') {
 		admin_ClearLogs();
 		set_page_message(tr('Logs successfully deleted.'), 'success');
 	} else {
-		set_page_message(tr('Wrong request'), 'error');
+		set_page_message(tr('Wrong request.'), 'error');
 	}
 }
 
