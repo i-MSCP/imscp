@@ -86,7 +86,7 @@ function change_sql_user_pass($db_user_id, $db_user_name)
 	}
 
 	if ($_POST['pass'] !== $_POST['pass_rep']) {
-		set_page_message(tr('Entered passwords do not match.'), 'error');
+		set_page_message(tr("Passwords doesn't match."), 'error');
 		return;
 	}
 
@@ -194,7 +194,7 @@ $db_user_name = gen_page_data($tpl, $db_user_id);
 
 if(!check_user_sql_perms($db_user_id))
 {
-    set_page_message(tr('User does not exist or you do not have permission to access this interface.'), 'error');
+    set_page_message(tr('User does not exist or you do not have permission to access this interface'), 'error');
     redirectTo('sql_manage.php');
 }
 

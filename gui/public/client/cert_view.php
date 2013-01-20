@@ -237,7 +237,7 @@ $tpl->assign(
 		'TR_CERT_FOR' => tr('Certificate for'),
 		'TR_STATUS' => tr('Status'),
 		'TR_PASSWORD' => tr('Password'),
-		'TR_PASSWORD_REPEAT' => tr('Repeat  password'),
+		'TR_PASSWORD_REPEAT' => tr('Repeat password'),
 		'TR_CERTIFICATE_KEY' => tr('Certificate key'),
 		'TR_CERTIFICATE' => tr('Certificate'),
 		'TR_INTERM_CERTIFICATE' => tr('Intermediar certificate'),

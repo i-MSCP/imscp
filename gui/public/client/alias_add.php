@@ -412,7 +412,7 @@ if ($currentNumberDomainAliases != 0 && $currentNumberDomainAliases == $domainPr
 		redirectTo('domains_manage.php');
 	}
 
-	set_page_message(tr('We are sorry but you reached the maximum number of domain aliases allowed by your subscription. Contact your reseller for more information.'), 'warning');
+	set_page_message(tr('We are sorry but you have reached the maximum number of domain aliases allowed by your subscription. Contact to your reseller for more information.'), 'warning');
 
 	$tpl->assign(
 		array(

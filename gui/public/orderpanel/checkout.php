@@ -121,10 +121,10 @@ if (!isset($_POST['capcode']) || $_POST['capcode'] != $_SESSION['image']) {
 	redirectTo('chart.php');
 }
 
-// If term of service field was set (not empty value)
+// If terms of service field was set (not empty value)
 if (isset($_SESSION['order_panel_tos']) && $_SESSION['order_panel_tos'] == true) {
 	if (!isset($_POST['tosAccept']) || $_POST['tosAccept'] != 1) {
-		set_page_message(tr('You have to accept the Term of Service.'), 'error');
+		set_page_message(tr('You have to accept the Terms of Service.'), 'error');
 		redirectTo('chart.php');
 	}
 }

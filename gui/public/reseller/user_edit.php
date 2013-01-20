@@ -348,7 +348,7 @@ function update_data_in_db($hpid)
 
 		if ($_POST['userpassword'] != $_POST['userpassword_repeat']) {
 
-			set_page_message(tr("Passwords doesn't not matches."), 'error');
+			set_page_message(tr("Passwords doesn't match."), 'error');
 
 			redirectTo('user_edit.php?edit_id=' . $hpid);
             exit;

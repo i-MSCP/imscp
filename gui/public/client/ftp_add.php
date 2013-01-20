@@ -416,7 +416,7 @@ function add_ftp_user($dmn_name)
 		$res = $vfs->exists($ftp_vhome);
 
 		if (!$res) {
-			set_page_message(tr('%s does not exist', $ftp_vhome), 'error');
+			set_page_message(tr("%s doesn't exist", $ftp_vhome), 'error');
 			return;
 		}
 	} // End of user-specified mount-point
@@ -472,7 +472,7 @@ function check_ftp_acc_data($tpl, $dmn_id, $dmn_name) {
 	}
 
 	if ($_POST['pass'] !== $_POST['pass_rep']) {
-		set_page_message(tr('Entered passwords do not match.'), 'error');
+		set_page_message(tr("Passwords doesn't match."), 'error');
 		return;
 	}
 

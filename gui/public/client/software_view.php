@@ -40,7 +40,7 @@
 function client_generatePage($tpl, $customerId)
 {
 	if (!isset($_GET['id']) || $_GET['id'] === '' || !is_numeric($_GET['id'])) {
-		set_page_message(tr('Wrong request'), 'error');
+		set_page_message(tr('Wrong request.'), 'error');
 		redirectTo('software.php');
 		exit; // Useless but avoid IDE warning about possible undefined variable
 	} else {

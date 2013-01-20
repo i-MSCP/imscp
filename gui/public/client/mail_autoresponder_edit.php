@@ -197,15 +197,15 @@ if (customerHasFeature('mail') && (isset($_REQUEST['mail_account_id']) && is_num
 			client_updateAutoresponder($mailAccountId, $_POST['autoresponder_message']);
 			redirectTo('mail_accounts.php');
 		} else {
-			set_page_message(tr('Wrong request'), 'error');
+			set_page_message(tr('Wrong request.'), 'error');
 			redirectTo('index.php');
 		}
 	} else {
-		set_page_message(tr('Wrong request'), 'error');
+		set_page_message(tr('Wrong request.'), 'error');
 		redirectTo('index.php');
 	}
 
 } else {
-	set_page_message(tr('Wrong request'), 'error');
+	set_page_message(tr('Wrong request.'), 'error');
 	redirectTo('index.php');
 }

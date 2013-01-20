@@ -548,7 +548,7 @@ $subdomainsUsage = get_domain_running_sub_cnt($domainProperties['domain_id']);
 
 if ($domainProperties['domain_subd_limit'] != 0 && $subdomainsUsage >= $domainProperties['domain_subd_limit']) {
 
-	set_page_message(tr('We are sorry but You reached the maximum number of subdomains allowed by your subscription.'), 'warning');
+	set_page_message(tr('We are sorry but you have reached the maximum number of domain aliases allowed by your subscription. Contact to your reseller for more information.'), 'warning');
 
 	if (is_xhr()) {
 		header('Status: 403 Operation not allowed');
@@ -569,7 +569,7 @@ if ($domainProperties['domain_subd_limit'] != 0 && $subdomainsUsage >= $domainPr
 		client_generatePage($tpl, $_SESSION['user_id']);
 		client_checkSubdomain($_SESSION['user_id'], $domainProperties['domain_name']);
 	} else {
-		set_page_message(tr('Wrong request'), 'error');
+		set_page_message(tr('Wrong request.'), 'error');
 		redirectTo('domains_manage.php');
 	}
 } else {

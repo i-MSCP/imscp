@@ -285,7 +285,7 @@ function gen_protect_it($tpl, $domainId)
 		$tpl->assign(
 			array(
 				'USER_VALUE' => "-1",
-				'USER_LABEL' => tr('You have no users !'),
+				'USER_LABEL' => tr('You do not have customers.'),
 				'USER_SELECTED' => ''));
 
 		$tpl->parse('USER_ITEM', 'user_item');

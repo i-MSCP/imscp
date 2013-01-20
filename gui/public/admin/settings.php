@@ -199,7 +199,7 @@ if (isset($_POST['uaction']) && $_POST['uaction'] == 'apply') {
 		}
 
 		if ($new_count == 0 && $updt_count == 0) {
-			set_page_message(tr("Nothing's been changed."), 'info');
+			set_page_message(tr("Nothing has been changed."), 'info');
 		}
 	}
 
@@ -591,7 +591,7 @@ $tpl->assign(
 		 'TR_COUNT_DEFAULT_EMAIL_ADDRESSES' => tr('Count default E-Mail addresses'),
 		 'TR_HARD_MAIL_SUSPENSION' => tr('E-Mail accounts are hard suspended'),
 		 'TR_USER_INITIAL_LANG' => tr('Panel default language'),
-		 'TR_SUPPORT_SYSTEM' => tr('Support System'),
+		 'TR_SUPPORT_SYSTEM' => tr('Support system'),
 		 'TR_ENABLED' => tr('Enabled'),
 		 'TR_DISABLED' => tr('Disabled'),
 		 'TR_APPLY_CHANGES' => tr('Apply changes'),
@@ -629,7 +629,7 @@ $tpl->assign(
 		 'TR_PHPINI_ERROR_REPORTING_DEVELOPEMENT' => tr('Show all errors, warnings and notices including coding standards (Development)'),
 		 'TR_PHPINI_ERROR_REPORTING_PRODUCTION' => tr(' Show all errors, except for warnings about deprecated code (Production)'),
 		 'TR_PHPINI_ERROR_REPORTING_NONE' => tr('Do not show any error'),
-		 'TR_PHPINI_POST_MAX_SIZE' => tr('Value for the %s  directive', true, '<span class="bold">post_max_size</span>'),
+		 'TR_PHPINI_POST_MAX_SIZE' => tr('Value for the %s directive', true, '<span class="bold">post_max_size</span>'),
 		 'TR_PHPINI_UPLOAD_MAX_FILESIZE' => tr('Value for the %s directive', true, '<span class="bold">upload_max_filesize</span>'),
 		 'TR_PHPINI_MAX_EXECUTION_TIME' => tr('Value for the %s directive', true, '<span class="bold">max_execution_time</span>'),
 		 'TR_PHPINI_MAX_INPUT_TIME' => tr('Value for the %s directive', true, '<span class="bold">max_input_time</span>'),

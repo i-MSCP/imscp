@@ -149,7 +149,7 @@ function admin_isValidData()
 
 	if(!empty($_POST['pass']) && !empty($_POST['pass_rep'])) {
 		if ($_POST['pass'] != $_POST['pass_rep']) {
-			set_page_message(tr("Password doesn't matches."), 'error');
+			set_page_message(tr("Passwords doesn't match."), 'error');
 		} elseif(!chk_password($_POST['pass'])) {
 			if ($cfg->PASSWD_STRONG) {
 				set_page_message(sprintf(tr('The password must be at least %s long and contain letters and numbers to be valid.'), $cfg->PASSWD_CHARS), 'error');
@@ -229,7 +229,7 @@ $tpl->assign(
 		'ISP_LOGO' => layout_getUserLogo(),
 		'TR_PAGE_TITLE' => tr('i-MSCP - Admin / Edit customer'),
 		'TR_EMPTY_OR_WORNG_DATA' => tr('Empty data or wrong field.'),
-		'TR_PASSWORD_NOT_MATCH' => tr("Passwords don't match!"),
+		'TR_PASSWORD_NOT_MATCH' => tr("Passwords doesn't match."),
 		'TR_CORE_DATA' => tr('Core data'),
 		'TR_USERNAME' => tr('Username'),
 		'TR_PASSWORD' => tr('Password'),

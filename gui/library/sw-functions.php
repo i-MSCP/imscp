@@ -1203,7 +1203,7 @@ function get_avail_software_reseller($tpl, $user_id)
 					} else {
 						if ($rs->fields['swstatus'] == "delete") {
 							$tpl->assign(array(
-											  'SW_NAME' => tr('Failure in package. Deleting!'),
+											  'SW_NAME' => tr('Failure in the package. Deleting!'),
 											  'LINK_COLOR' => '#FF0000',
 											  'SW_VERSION' => '',
 											  'SW_LANGUAGE' => '',

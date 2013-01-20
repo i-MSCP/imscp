@@ -273,7 +273,7 @@ $tpl->define_dynamic(
 $tpl->assign(
 	array(
 		'TR_PAGE_TITLE' => tr('Order Panel / Personal Data'),
-		'TR_PERSONAL_DATA' => tr('Personal Data'),
+		'TR_PERSONAL_DATA' => tr('Personal data'),
 		'TR_FIRSTNAME' => tr('First name'),
 		'TR_LASTNAME' => tr('Last name'),
 		'TR_COMPANY' => tr('Company'),

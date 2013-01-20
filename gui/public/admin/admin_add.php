@@ -223,7 +223,7 @@ function check_user_data()
     }
 
     if ($_POST['pass'] != $_POST['pass_rep']) {
-        set_page_message(tr("Entered passwords do not match."), 'error');
+        set_page_message(tr("Passwords doesn't match."), 'error');
 
         return false;
     }
@@ -254,7 +254,7 @@ add_user($tpl);
 $tpl->assign(
 	array(
 		'TR_EMPTY_OR_WORNG_DATA' => tr('Empty data or wrong field.'),
-		'TR_PASSWORD_NOT_MATCH' => tr("Passwords don't match."),
+		'TR_PASSWORD_NOT_MATCH' => tr("Passwords doesn't match."),
 		'TR_ADD_ADMIN' => tr('Add admin'),
 		'TR_CORE_DATA' => tr('Core data'),
 		'TR_USERNAME' => tr('Username'),

@@ -101,7 +101,7 @@ if (!empty($_POST)) { // Post request
 		}
 
 		if($phpini->getData() == $oldData) {
-			set_page_message(tr("Nothing's been changed."), 'info');
+			set_page_message(tr("Nothing has been changed."), 'info');
 			redirectTo('domains_manage.php');
 		}
 

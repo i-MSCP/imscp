@@ -112,13 +112,13 @@ if (isset($_POST['upload']) && $_SESSION['software_upload_token'] == $_POST['sen
 	} else {
 		if ($_FILES['sw_file']['name'] && $_FILES['sw_file']['name'] != "none") {
 			if (substr($_FILES['sw_file']['name'], -7) != '.tar.gz') {
-				set_page_message(tr('File needs to be a .tar.gz-archive'), 'error');
+				set_page_message(tr("File needs to be a 'tar.gz' archive."), 'error');
 				$success = 0;
 			}
 			$file = 0;
 		} else {
 			if (substr($_POST['sw_wget'], -7) != '.tar.gz') {
-				set_page_message(tr('File needs to be a .tar.gz-archive'), 'error');
+				set_page_message(tr("File needs to be a 'tar.gz' archive."), 'error');
 				$success = 0;
 			}
 			$file = 1;

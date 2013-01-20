@@ -120,7 +120,7 @@ function showTicketContent($tpl, $ticketId, $userId)
         $trAction = tr('Open ticket');
         $action = 'open';
     } else {
-        $trAction = tr('Close ticket');
+        $trAction = tr('Close the ticket');
         $action = 'close';
     }
 
@@ -418,8 +418,8 @@ function generateTicketList($tpl, $userId, $start, $count, $userLevel, $status)
 function closeTicket($ticketId)
 {
     if(!changeTicketStatus($ticketId, 0)) {
-        set_page_message(tr("Unable to close ticket with Id '%s'.", $ticketId), 'error');
-        write_log(sprintf("Unable to close ticket with Id '%s'.", $ticketId), E_USER_ERROR);
+        set_page_message(tr("Unable to close the ticket with Id '%s'.", $ticketId), 'error');
+        write_log(sprintf("Unable to close the ticket with Id '%s'.", $ticketId), E_USER_ERROR);
         return false;
     }
 

@@ -67,7 +67,7 @@ $tpl->assign(
 		'TR_ALIAS_NAME' => tr('Alias name'),
 		'TR_DOMAIN_IP' => tr('Domain IP'),
 		'TR_FORWARD' => tr('Forward to URL'),
-		'TR_MOUNT_POINT' => tr('Mount Point'),
+		'TR_MOUNT_POINT' => tr('Mount point'),
 		'TR_MODIFY' => tr('Modify'),
 		'TR_CANCEL' => tr('Cancel'),
 		'TR_ENABLE_FWD' => tr("Enable Forward"),

@@ -81,7 +81,7 @@ function gen_reseller_mainmenu($tpl, $menu_file)
 			'TR_MENU_ORDERS' => tr('Manage Orders'),
 			'TR_MENU_ORDER_SETTINGS' => tr('Order settings'),
 			'TR_MENU_ORDER_EMAIL' => tr('Order email setup'),
-			'TR_MENU_LOSTPW_EMAIL' => tr('Lostpw email setup')));
+			'TR_MENU_LOSTPW_EMAIL' => tr('Lost password email setup')));
 
     $query = 'SELECT * FROM `custom_menus` WHERE `menu_level` = ? OR `menu_level` = ?';
     $stmt = exec_query($query, array('reseller', 'all'));
@@ -164,7 +164,7 @@ function gen_reseller_menu($tpl, $menu_file)
 			'TR_MENU_ORDERS' => tr('Manage Orders'),
 			'TR_MENU_ORDER_SETTINGS' => tr('Order settings'),
 			'TR_MENU_ORDER_EMAIL' => tr('Order email setup'),
-			'TR_MENU_LOSTPW_EMAIL' => tr('Lostpw email setup'),
+			'TR_MENU_LOSTPW_EMAIL' => tr('Lost password email setup'),
 			'TR_MENU_IP_USAGE' => tr('IP usage'),
 			'TR_SOFTWARE_MENU' => tr('Softwares management'),
 			'VERSION' => tohtml($cfg->Version),
@@ -318,7 +318,7 @@ function check_ruser_data($tpl, $noPass)
         if (('' === $inpass_re) || ('' === $inpass)) {
             set_page_message(tr('Please fill up both data fields for password.'), 'error');
         } else if ($inpass_re !== $inpass) {
-            set_page_message(tr("Passwords doesn't matches"), 'error');
+            set_page_message(tr("Passwords doesn't match."), 'error');
         } else if (!chk_password($inpass)) {
             if ($cfg->PASSWD_STRONG) {
                 set_page_message(sprintf(tr('The password must be at least %s long and contain letters and numbers to be valid.'), $cfg->PASSWD_CHARS), 'error');

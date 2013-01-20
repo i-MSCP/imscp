@@ -213,7 +213,7 @@ function change_user_interface($fromId, $toId)
         $stmt = exec_query($query, array($fromId, $toId, $fromId, $toId));
 
         if ($stmt->rowCount() < 2) {
-            set_page_message(tr('Wrong request'), 'error');
+            set_page_message(tr('Wrong request.'), 'error');
         }
 
         list($from, $to) = $stmt->fetchAll(PDO::FETCH_OBJ);

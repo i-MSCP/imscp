@@ -193,7 +193,7 @@ function client_subdomainEditAction()
 			if($subdomainData['schemeSpecific'] != $form->schemeSpecific) {
 				_client_updateSubdomainData($subdomainId, $subdomainType, $forwardUrl);
 			} else {
-				set_page_message(tr('Nothing been changed.'), 'info');
+				set_page_message(tr('Nothing has been changed.'), 'info');
 				redirectTo('domains_manage.php');
 			}
 

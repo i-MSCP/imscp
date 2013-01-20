@@ -110,7 +110,7 @@ function check_sql_permissions($tpl, $customerId, $databaseId, $sqlUserList)
 	$stmt = exec_query($query, array($domainProperties['domain_id'], $databaseId));
 
 	if (!$stmt->rowCount()) {
-		set_page_message(tr('Wrong request'), 'error');
+		set_page_message(tr('Wrong request.'), 'error');
 		redirectTo('sql_manage.php');
 	}
 }
@@ -251,7 +251,7 @@ function add_sql_user($user_id, $databaseId)
 
 	if ((isset($_POST['pass']) && isset($_POST['pass_rep'])) && $_POST['pass'] !== $_POST['pass_rep']
 		&& !isset($_POST['Add_Exist'])) {
-		set_page_message(tr("Entered passwords doesn't matches."), 'error');
+		set_page_message(tr("Passwords doesn't match."), 'error');
 		return;
 	}
 

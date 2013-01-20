@@ -396,7 +396,7 @@ function check_user_data($phpini)
 	} elseif (!imscp_limit_check($hp_sql_db, -1)) {
 		set_page_message(tr('Incorrect SQL databases limit.'), 'error');
 	} elseif ($hp_sql_user != -1 && $hp_sql_db == -1) {
-		set_page_message(tr('SQL users limit is <i>disabled</i>!'), 'error');
+		set_page_message(tr('SQL users limit is <i>disabled</i>.'), 'error');
 	}
 
 	if ($rsql_user_max == '-1') {

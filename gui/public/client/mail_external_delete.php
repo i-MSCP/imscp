@@ -165,7 +165,7 @@ if (customerHasFeature(array('mail', 'external_mail'))) {
         $items[$item[1]][] = $item[0];
         $postRequest = false;
     } else {
-        set_page_message(tr('Wrong request'), 'error');
+        set_page_message(tr('Wrong request.'), 'error');
         redirectTo('mail_external.php');
         exit; // Only to make some IDE happy
     }

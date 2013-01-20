@@ -238,7 +238,7 @@ function admin_addUpdateServices($mode = 'add')
 		if($updateCount > 0) {
 			set_page_message(tr('%d Service(s) port was successfully updated', $updateCount), 'success');
 		} else {
-			set_page_message(tr("Nothing's been changed"));
+			set_page_message(tr("Nothing has been changed."));
 		}
 	}
 }

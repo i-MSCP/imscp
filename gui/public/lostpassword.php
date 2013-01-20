@@ -115,7 +115,7 @@ if (isset($_GET['key']) && $_GET['key'] != '') {
 		if ($_SESSION['image'] != $_POST['capcode']) {
 			set_page_message(tr('Wrong security code'), 'error');
 		} elseif (!requestPassword($_POST['uname'])) {
-			set_page_message(tr('Wrong username'), 'error');
+			set_page_message(tr('Wrong username.'), 'error');
 		} else {
 			set_page_message(tr('Your request for new password was registered. You will receive an email with instructions to complete the process.'), 'success');
 		}

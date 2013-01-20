@@ -203,7 +203,7 @@ if(isset($_POST['uaction']) && $_POST['uaction'] == 'clear_log') {
 		admin_ClearLogs();
 		set_page_message(tr('Logs successfully deleted.'), 'success');
 	} else {
-		set_page_message(tr('Wrong request'), 'error');
+		set_page_message(tr('Wrong request.'), 'error');
 	}
 }
 
@@ -229,6 +229,8 @@ $tpl->assign(
 		'TR_CLEAR_LOG' => tr('Clear log'),
 		'TR_DATE' => tr('Date'),
 		'TR_MESSAGE' => tr('Message'),
+		'TR_NEXT' => tr('Next'),
+		'TR_PREVIOUS' => tr('Previous'),
 		'TR_CLEAR_LOG_MESSAGE' => tr('Delete from log:'),
 		'TR_CLEAR_LOG_EVERYTHING' => tr('everything'),
 		'TR_CLEAR_LOG_LAST2' => tr('older than 2 weeks'),

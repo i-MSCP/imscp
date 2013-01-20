@@ -113,7 +113,7 @@ $tpl->assign(
 		'TR_PERCENT' => tr('Percent'),
 		'TR_SIZE' => tr('Size'),
 		'TR_SWAP' => tr('Swap'),
-		'TR_SYSTEM_INFO_TITLE' => tr('System info'),
+		'TR_SYSTEM_INFO_TITLE' => tr('System information'),
 		'TR_SYSTEM_INFO' => tr('Vital system info'),
 		'TR_TOTAL' => tr('Total'),
 		'TR_TYPE' => tr('Type'),

@@ -140,7 +140,7 @@ function update_ftp_account($ftp_acc, $dmn_name) {
 
 				$rs = $vfs->exists($other_dir);
 				if (!$rs) {
-					set_page_message(tr('%s does not exist', clean_input($_POST['other_dir'])), 'error');
+					set_page_message(tr("%s doesn't exist", clean_input($_POST['other_dir'])), 'error');
 					return;
 				} // domain_id
 
@@ -190,7 +190,7 @@ function update_ftp_account($ftp_acc, $dmn_name) {
 				// Check for directory existence
 				$res = $vfs->exists($other_dir);
 				if (!$res) {
-					set_page_message(tr('%s does not exist', $other_dir), 'error');
+					set_page_message(tr("%s doesn't exist", $other_dir), 'error');
 					return;
 				}
 				$other_dir = $cfg->FTP_HOMEDIR . "/" . $_SESSION['user_logged'] . $other_dir;

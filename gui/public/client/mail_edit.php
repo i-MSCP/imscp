@@ -153,7 +153,7 @@ function client_UpdateMailAccount($mailAccountData)
 		(!empty($_POST['password']) || !empty($_POST['passwordConfirmation']))
 	) {
 		if($mailAccountData['mail_pass'] !== $mailAccountData['mail_pass_confirmation']){
-			set_page_message(tr("Password doesn't matches"), 'error');
+			set_page_message(tr("Passwords doesn't match."), 'error');
 		} elseif(!chk_password($mailAccountData['mail_pass'], 50, "/[`\xb4'\"\\\\\x01-\x1f\015\012|<>^$]/i")) {
 			if ($cfg->PASSWD_STRONG) {
 				set_page_message(tr('The password must be at least %s long and contain letters and numbers to be valid.', $cfg->PASSWD_CHARS), 'error');
@@ -241,7 +241,7 @@ function client_UpdateMailAccount($mailAccountData)
 			set_page_message(tr('Mail account scheduled for update.'), 'success');
 			write_log("{$_SESSION['user_logged']}: updated mail account: {$mailAccountData['mail_addr']}", E_USER_NOTICE);
 		} else {
-			set_page_message(tr("Nothing's been changed."), 'info');
+			set_page_message(tr("Nothing has been changed."), 'info');
 		}
 
 		return true;

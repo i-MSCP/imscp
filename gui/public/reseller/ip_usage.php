@@ -159,7 +159,7 @@ function listIPDomains($tpl)
         }
     } else {
         $tpl->assign('IP_USAGE_STATISTICS', '');
-        set_page_message(tr('No Ip statistics to be show.'), 'info');
+        set_page_message(tr('No IP statistics to be shown.'), 'info');
     }
 }
 

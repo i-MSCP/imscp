@@ -96,8 +96,8 @@ function generateChart($tpl, $user_id, $plan_id)
 		if ($stmt->fields['tos'] != '') {
 			$tpl->assign(
 				array(
-					'TR_TOS_PROPS' => tr('Term of Service'),
-					'TR_TOS_ACCEPT' => tr('I Accept The Term of Service'),
+					'TR_TOS_PROPS' => tr('Terms of Service'),
+					'TR_TOS_ACCEPT' => tr('I Accept The Terms of Service'),
 					'TOS' => tohtml($stmt->fields['tos'])));
 
 			$_SESSION['order_panel_tos'] = true;
@@ -200,7 +200,7 @@ $tpl->assign(
 		'TR_EMAIL' => tr('Email'),
 		'TR_PHONE' => tr('Phone'),
 		'TR_FAX' => tr('Fax'),
-		'TR_PERSONAL_DATA' => tr('Personal Data'),
+		'TR_PERSONAL_DATA' => tr('Personal data'),
 		'TR_CAPCODE' => tr('Security code'),
 		'TR_IMGCAPCODE_DESCRIPTION' => tr('To avoid abuse, we ask you to write the combination of letters on the above picture.'),
 		'TR_IMGCAPCODE' => '<img src="/imagecode.php" width="' .

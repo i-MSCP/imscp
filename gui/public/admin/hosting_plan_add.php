@@ -75,7 +75,7 @@ $tpl->assign(
 		 'TR_MAX_FTP' => tr('FTP accounts limit<br><i>(-1 disabled, 0 unlimited)</i>'),
 		 'TR_MAX_SQL' => tr('SQL databases limit<br><i>(-1 disabled, 0 unlimited)</i>'),
 		 'TR_MAX_SQL_USERS' => tr('SQL users limit<br><i>(-1 disabled, 0 unlimited)</i>'),
-		 'TR_MAX_TRAFFIC' => tr('Traffic limit [MB]<br><i>(0 unlimited)</i>'),
+		 'TR_MAX_TRAFFIC' => tr('Traffic limit [MiB]<br/><span class="italic">(0 unlimited)</span>'),
 		 'TR_DISK_LIMIT' => tr('Disk limit [MB]<br><i>(0 unlimited)</i>'),
          'TR_EXTMAIL' => tr('External mail server'),
 		 'TR_PHP' => tr('PHP'),
@@ -100,8 +100,8 @@ $tpl->assign(
 		 'TR_TEMPLATE_DESCRIPTON' => tr('Description'),
 		 'TR_EXAMPLE' => tr('(e.g. EUR)'),
 		 // BEGIN TOS
-		 'TR_TOS_PROPS' => tr('Term Of Service'),
-		 'TR_TOS_NOTE' => tr('<b>Optional:</b> Leave this field empty if you do not want term of service for this hosting plan.'),
+		 'TR_TOS_PROPS' => tr('Terms of Service'),
+		 'TR_TOS_NOTE' => tr('<b>Optional:</b> Leave this field empty if you do not want terms of service for this hosting plan.'),
 		 'TR_TOS_DESCRIPTION' => tr('Text Only'),
 		 // END TOS
 		 'TR_PHPINI_SYSTEM' => tr('PHP Editor'),

@@ -83,6 +83,8 @@ $tpl->assign(
 	array(
 		'TR_PAGE_TITLE' => tr('i-MSCP - Admin/Manage Users'),
 		'THEME_CHARSET' => tr('encoding'),
+		'TR_NEXT' => tr('Next'),
+		'TR_PREVIOUS' => tr('Previous'),
 		'ISP_LOGO' => layout_getUserLogo()));
 
 if (isset($_POST['details']) && !empty($_POST['details'])) {
