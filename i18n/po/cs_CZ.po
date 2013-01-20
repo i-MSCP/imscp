@@ -8,9 +8,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2013-01-07 04:57+0100\n"
-"PO-Revision-Date: 2013-01-07 03:52+0000\n"
-"Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
+"POT-Creation-Date: 2013-01-20 16:04+0100\n"
+"PO-Revision-Date: 2013-01-20 15:05+0000\n"
+"Last-Translator: Torsten Widmann <info@goover.de>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -297,10 +297,6 @@ msgid "%s deleted the full admin log."
 msgstr ""
 
 #, php-format
-msgid "%s does not exist"
-msgstr "%s neexistuje"
-
-#, php-format
 msgid "%s doesn't exist"
 msgstr "%s neexistuje"
 
@@ -499,7 +495,7 @@ msgid ""
 msgstr ""
 
 msgid ""
-"<b>Optional:</b> Leave this field empty if you do not want term of service "
+"<b>Optional:</b> Leave this field empty if you do not want terms of service "
 "for this hosting plan."
 msgstr ""
 
@@ -1274,9 +1270,6 @@ msgstr "Zavřít"
 
 msgid "Close the ticket"
 msgstr "Zavřít lístek"
-
-msgid "Close ticket"
-msgstr ""
 
 msgid "Closed tickets"
 msgstr "Uzavřené požadavky"
@@ -2119,14 +2112,8 @@ msgstr ""
 msgid "Enabled for domain data and databases"
 msgstr ""
 
-msgid "Entered passwords do not match."
-msgstr "Zadané hesla se neshodují."
-
 msgid "Entered passwords doesn't match."
 msgstr "Zadané hesla se neshodují."
-
-msgid "Entered passwords doesn't matches."
-msgstr ""
 
 msgid ""
 "Entries associated to your external mail servers were not found. A "
@@ -2217,9 +2204,6 @@ msgstr "Externí mail servery"
 msgid "FTP"
 msgstr "FTP"
 
-msgid "FTP Accounts"
-msgstr "FTP účty"
-
 msgid "FTP Users"
 msgstr "FTP uživatelé"
 
@@ -2269,9 +2253,6 @@ msgstr "Celkem FTP"
 msgid "Failed to write file to disk."
 msgstr ""
 
-msgid "Failure in package. Deleting!"
-msgstr ""
-
 msgid "Failure in the package. Deleting!"
 msgstr ""
 
@@ -2288,8 +2269,8 @@ msgid "Female"
 msgstr "žena"
 
 #, php-format
-msgid "File %s does not exists or cannot be reached!"
-msgstr "Soubor %s neexistuje nebo nelze přečíst!"
+msgid "File %s doesn't exists or cannot be reached!"
+msgstr ""
 
 #, php-format
 msgid "File does not exist. %1$s.tar.gz"
@@ -2303,9 +2284,6 @@ msgstr "Soubor není čitelný."
 
 msgid "File needs to be a 'tar.gz' archive."
 msgstr "Soubor musí být  'tar.gz' archiv."
-
-msgid "File needs to be a .tar.gz-archive"
-msgstr "Soubor musí být .tar.gz archív"
 
 msgid "File successfully uploaded."
 msgstr ""
@@ -2372,9 +2350,6 @@ msgstr "Od partnera"
 
 msgid "Ftp"
 msgstr "Ftp"
-
-msgid "Ftp Accounts"
-msgstr "Ftp účty"
 
 msgid "Ftp account"
 msgstr "Ftp účet"
@@ -2446,6 +2421,9 @@ msgid "Header"
 msgstr "Hlavička"
 
 msgid "Help"
+msgstr ""
+
+msgid "Hide aliases"
 msgstr ""
 
 msgid "Hide default E-Mail Addresses"
@@ -2540,7 +2518,7 @@ msgstr ""
 msgid "Http traffic"
 msgstr ""
 
-msgid "I Accept The Term of Service"
+msgid "I Accept The Terms of Service"
 msgstr ""
 
 msgid "I understand the warnings - Purchase!"
@@ -2936,6 +2914,9 @@ msgstr "Zapomenuté heslo"
 msgid "Lost password e-mail"
 msgstr "Zapomenuté heslo"
 
+msgid "Lost password email setup"
+msgstr ""
+
 msgid "Lost password link"
 msgstr "Zapomenuté heslo - odkaz"
 
@@ -2944,9 +2925,6 @@ msgstr ""
 
 msgid "Lostpw email"
 msgstr "Lostpw email"
-
-msgid "Lostpw email setup"
-msgstr "Lostpw nastavení emailu"
 
 msgid "Lostpw link"
 msgstr "Lostpw odkaz"
@@ -3222,9 +3200,6 @@ msgstr ""
 msgid "Mount"
 msgstr "Bod připojení"
 
-msgid "Mount Point"
-msgstr "Bod připojení"
-
 msgid "Mount point"
 msgstr "Bod připojení"
 
@@ -3294,7 +3269,7 @@ msgstr "Ne"
 msgid "No IP address found."
 msgstr ""
 
-msgid "No Ip statistics to be show."
+msgid "No IP statistics to be shown."
 msgstr ""
 
 msgid "No Reseller available to add the permissions"
@@ -3380,6 +3355,9 @@ msgstr "Nebyly nalezeny žádné záznamy"
 msgid "No reseller accounts found."
 msgstr "Nenalezeny účty prodejce."
 
+msgid "No reseller statistics to display."
+msgstr ""
+
 msgid "No reseller with activated software installer found!"
 msgstr ""
 
@@ -3446,9 +3424,6 @@ msgstr "Nenastaveno"
 msgid "Not found records matching the search criteria."
 msgstr ""
 
-msgid "Not found user records matching the search criteria"
-msgstr ""
-
 msgid "Not found user records matching the search criteria."
 msgstr ""
 
@@ -3456,9 +3431,6 @@ msgid "Not used"
 msgstr ""
 
 msgid "Note: You can mix these options."
-msgstr ""
-
-msgid "Nothing been changed."
 msgstr ""
 
 msgid "Nothing found - sorry"
@@ -3469,12 +3441,6 @@ msgstr "Nic nebylo změněno."
 
 msgid "Nothing has been scheduled for deletion."
 msgstr ""
-
-msgid "Nothing's been changed"
-msgstr "Nic nebylo změněno"
-
-msgid "Nothing's been changed."
-msgstr "Nic nebylo změněno."
 
 msgid "Notices, Warnings and Errors"
 msgstr "Upozornění, varování a chyby"
@@ -3532,9 +3498,6 @@ msgid "Order"
 msgstr "Objednávka"
 
 msgid "Order Canceled: resellers limit(s) exceeded."
-msgstr ""
-
-msgid "Order Cancelled: resellers limit(s) exceeded."
 msgstr ""
 
 msgid "Order Panel / Chart"
@@ -3746,12 +3709,6 @@ msgid ""
 "Password data is shorter than %s signs or includes not permitted signs."
 msgstr ""
 
-msgid "Password doesn't matches"
-msgstr "Hesla se neshodují."
-
-msgid "Password doesn't matches."
-msgstr "Hesla se neshodují."
-
 msgid "Password is missing."
 msgstr "Chybí heslo."
 
@@ -3771,29 +3728,20 @@ msgstr "Heslo bylo úspěšně aktualizováno."
 msgid "Password updated."
 msgstr "Heslo aktualizováno."
 
-msgid "Passwords do not match."
-msgstr "Hesla se neshodují."
-
 msgid "Passwords doesn't match."
-msgstr ""
-
-msgid "Passwords doesn't matches"
-msgstr "Hesla se neshodují"
-
-msgid "Passwords doesn't matches."
 msgstr ""
 
 msgid "Passwords doesn't not matches."
 msgstr "Hesla se neshodují."
 
-msgid "Passwords don't match!"
-msgstr "Heslo nenalezeno!"
-
-msgid "Passwords don't match."
-msgstr "Hesla se neshodují."
-
 msgid "Path"
 msgstr "Cesta"
+
+msgid ""
+"Paths are appended to the default PHP open_basedir directive of customers. "
+"Each of them must be separated by PATH_SEPARATOR. See the PHP documentation "
+"for more information."
+msgstr ""
 
 msgid "Payment period"
 msgstr "Platební období"
@@ -3809,9 +3757,6 @@ msgstr ""
 
 msgid "Permissions"
 msgstr "Oprávnění"
-
-msgid "Personal Data"
-msgstr "Osobní údaje"
 
 msgid "Personal data"
 msgstr "Osobní údaje"
@@ -4179,9 +4124,6 @@ msgstr "Znovu otevřít"
 msgid "Reopen the ticket"
 msgstr "Znovu otevřít lístek"
 
-msgid "Repeat  password"
-msgstr ""
-
 msgid "Repeat password"
 msgstr "Zopakovat heslo"
 
@@ -4379,9 +4321,6 @@ msgid ""
 "SQL users limit <br /><span class=\"italic\">(-1 disabled, 0 "
 "unlimited)</span>"
 msgstr ""
-
-msgid "SQL users limit is <i>disabled</i>!"
-msgstr "Limit SQL uživatelů je <i>zakázán</i>!"
 
 msgid "SQL users limit is <i>disabled</i>."
 msgstr ""
@@ -4811,11 +4750,6 @@ msgid "Subdomain successfully scheduled for addition."
 msgstr ""
 
 msgid ""
-"Subdomain you are trying to remove has email accounts !<br>First remove "
-"them!"
-msgstr "Subdoména, kterou se snažíte odstranit má poštovní účty!<br>Nejprve je odstraňte!"
-
-msgid ""
 "Subdomain you are trying to remove has email accounts.<br>First remove them."
 msgstr ""
 
@@ -4827,11 +4761,6 @@ msgid ""
 "unlimited)</span>"
 msgstr ""
 
-msgid ""
-"Subdomains limit<br/><span class=\"italic\">(-1 disabled, 0 "
-"unlimited)</span>"
-msgstr ""
-
 msgid "Subject"
 msgstr "Předmět"
 
@@ -4840,9 +4769,6 @@ msgstr "Potvrdit změny"
 
 msgid "Support"
 msgstr "Podpora"
-
-msgid "Support System"
-msgstr "Systém podpory"
 
 msgid "Support Ticket System"
 msgstr "Systém lístků podpory"
@@ -4874,9 +4800,6 @@ msgstr "Systémová chyba - vlastní chybové stránky nebyly aktualizovány."
 #, php-format
 msgid "System error with Domain Id: %d"
 msgstr ""
-
-msgid "System info"
-msgstr "Systémové informace"
 
 msgid "System information"
 msgstr ""
@@ -4950,10 +4873,7 @@ msgstr ""
 msgid "Temporary folder not found."
 msgstr "Dočasná složka nebyla nalezena."
 
-msgid "Term Of Service"
-msgstr ""
-
-msgid "Term of Service"
+msgid "Terms of Service"
 msgstr ""
 
 msgid "Text"
@@ -5046,9 +4966,6 @@ msgstr ""
 msgid "The admin has <em>%s</em> disabled on this system."
 msgstr ""
 
-msgid "The current password is wrong!"
-msgstr "Špatné heslo!"
-
 msgid "The current password is wrong."
 msgstr "Aktuální heslo je špatné."
 
@@ -5058,12 +4975,6 @@ msgstr ""
 
 #, php-format
 msgid "The directory %s was created."
-msgstr ""
-
-msgid ""
-"The directory/file paths are appended to the default PHP open_basedir "
-"directive of customers. Each of them must be separated by PATH_SEPARATOR. "
-"See the PHP documentation for more information."
 msgstr ""
 
 msgid ""
@@ -5149,21 +5060,11 @@ msgstr ""
 msgid "The values must not be equal"
 msgstr ""
 
-msgid "The values must not be equals"
-msgstr ""
-
-#, php-format
-msgid "There are <em>%s</em> records on system."
-msgstr ""
-
 #, php-format
 msgid "There are <em>%s</em> records on the system."
 msgstr ""
 
 msgid "There are no available hosting plans for update."
-msgstr ""
-
-msgid "There are no available hosting plans for updates."
 msgstr ""
 
 #, php-format
@@ -5301,10 +5202,6 @@ msgstr "Lístek s ID '%d' nebyl nalezen."
 msgid "Ticket with Id '%s' was not found."
 msgstr "Lístek s ID '%s' nebyl nalezen."
 
-#, php-format
-msgid "Ticket with Id: '%d' no found."
-msgstr "Lístek s ID: '%d' nenalezen."
-
 msgid "Tickets closed"
 msgstr ""
 
@@ -5374,12 +5271,6 @@ msgstr "Přenesená data"
 msgid "Traffic limit"
 msgstr "Přenesená data"
 
-msgid "Traffic limit [MB]<br><i>(0 unlimited)</i>"
-msgstr "Limit přenesených dat [MB]<br><i>(0 bez omezení)</i>"
-
-msgid "Traffic limit [MiB] <br /><span class=\"italic\">(0 unlimited)</span>"
-msgstr ""
-
 msgid "Traffic limit [MiB]<br/><span class=\"italic\">(0 unlimited)</span>"
 msgstr ""
 
@@ -5414,8 +5305,8 @@ msgid "URL to this admin panel"
 msgstr "URL tohoto administračního panelu"
 
 #, php-format
-msgid "Unable to close ticket with Id '%s'."
-msgstr "Nelze uzavřít lístek s ID '%s'."
+msgid "Unable to close the ticket with Id '%s'."
+msgstr ""
 
 #, php-format
 msgid "Unable to create '%s' directory for language file."
@@ -5632,14 +5523,6 @@ msgid ""
 "User does not exist or you do not have permission to access this interface"
 msgstr ""
 
-msgid ""
-"User does not exist or you do not have permission to access this interface!"
-msgstr "Uživatel neexistuje nebo nemáte práva přístupu k rozhraní!"
-
-msgid ""
-"User does not exist or you do not have permission to access this interface."
-msgstr ""
-
 msgid "User does not exist."
 msgstr ""
 
@@ -5699,10 +5582,6 @@ msgstr "Uživatelé a skupiny"
 
 msgid "Users list"
 msgstr "Seznam uživatelů"
-
-#, php-format
-msgid "Value for the %s  directive"
-msgstr ""
 
 #, php-format
 msgid "Value for the %s directive"
@@ -5770,13 +5649,8 @@ msgid "Warnings and Errors"
 msgstr "Varování a chyby"
 
 msgid ""
-"We are sorry but You reached the maximum number of subdomains allowed by "
-"your subscription."
-msgstr ""
-
-msgid ""
-"We are sorry but you reached the maximum number of domain aliases allowed by"
-" your subscription. Contact your reseller for more information."
+"We are sorry but you have reached the maximum number of domain aliases "
+"allowed by your subscription. Contact to your reseller for more information."
 msgstr ""
 
 msgid ""
@@ -5921,9 +5795,6 @@ msgstr "Špatné ID objednávky."
 msgid "Wrong redirect URL."
 msgstr ""
 
-msgid "Wrong request"
-msgstr "Špatná žádost"
-
 msgid "Wrong request."
 msgstr "Chybný požadavek."
 
@@ -5961,9 +5832,6 @@ msgstr ""
 
 msgid "Wrong user level provided."
 msgstr ""
-
-msgid "Wrong username"
-msgstr "Chybné uživatelské jméno"
 
 msgid "Wrong username."
 msgstr ""
@@ -6135,9 +6003,6 @@ msgstr ""
 msgid "You do not need 'www.' i-MSCP will add it automatically."
 msgstr "Nemusíte psát \"www.\" i-MSCP doplní automaticky."
 
-msgid "You do not need 'www.' i-MSCP will add it on its own."
-msgstr "Nepotřebujete 'www.' i-MSCP jej doplní sám."
-
 #, php-format
 msgid "You have %d new accounts %s."
 msgstr ""
@@ -6236,14 +6101,11 @@ msgstr ""
 msgid "You have more disk space in use than the new hosting plan limits."
 msgstr "Využíváte více diskového prostoru než je u nového hostingového plánu možné."
 
-msgid "You have more domain aliases in use than the new hosting plan limits"
+msgid "You have more domain aliases in use than the new hosting plan limits."
 msgstr ""
 
 msgid ""
 "You have more e-mail addresses in use than the new hosting plan limits."
-msgstr ""
-
-msgid "You have more subdomains in use than the new hosting plan limits"
 msgstr ""
 
 msgid "You have more subdomains in use than the new hosting plan limits."
@@ -6261,9 +6123,6 @@ msgstr ""
 msgid "You have no tickets open."
 msgstr ""
 
-msgid "You have no users !"
-msgstr "Nemáte žádné uživatele!"
-
 msgid "You have reached your domains limit.<br />You cannot add more domains."
 msgstr ""
 
@@ -6280,8 +6139,8 @@ msgid ""
 "provide this feature."
 msgstr ""
 
-msgid "You have to accept the Term of Service."
-msgstr "Musíte přijmout Podmínky pro provoz"
+msgid "You have to accept the Terms of Service."
+msgstr ""
 
 msgid "You have to choose between file-upload and wget-function."
 msgstr "Můžete si vybrat mezi nahrát soubor a wget funkcí."
@@ -6471,9 +6330,6 @@ msgstr ""
 msgid "domain aliases"
 msgstr "alias domény"
 
-msgid "domain aliasses"
-msgstr ""
-
 msgid "domains"
 msgstr ""
 
@@ -6501,9 +6357,6 @@ msgstr ""
 
 msgid "help"
 msgstr ""
-
-msgid "hide aliases"
-msgstr "skrýt aliasy"
 
 msgid "i-MSCP - Admin - Email Marketing"
 msgstr "i-MSCP - Admin - Email marketing"
@@ -6598,8 +6451,8 @@ msgstr ""
 msgid "i-MSCP - Admin/IP Usage"
 msgstr ""
 
-msgid "i-MSCP - Admin/Lostpw email setup"
-msgstr "i-MSCP - Admin/Lostpw nastavení emailu"
+msgid "i-MSCP - Admin/Lost password email setup"
+msgstr ""
 
 msgid "i-MSCP - Admin/Maintenance mode"
 msgstr "i-MSCP - Admin/Servisní mód"

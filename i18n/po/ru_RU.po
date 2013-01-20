@@ -7,13 +7,14 @@
 #   <DragonZX@yandex.ru>, 2012-2013.
 # Oleg Olegov <>, 2012.
 #   <rwer353453534@mail.ru>, 2011.
+# Vitaliy Zhukov <DragonZX@yandex.ru>, 2013.
 msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2013-01-07 04:57+0100\n"
-"PO-Revision-Date: 2013-01-07 03:52+0000\n"
-"Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
+"POT-Creation-Date: 2013-01-20 16:04+0100\n"
+"PO-Revision-Date: 2013-01-20 15:05+0000\n"
+"Last-Translator: Torsten Widmann <info@goover.de>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -177,7 +178,7 @@ msgstr "%1$d / %2$d из %3$d</b>"
 
 #, php-format
 msgid "%1$d / %2$d of unlimited"
-msgstr "%1$d / %2$d из неограничено"
+msgstr "%1$d / %2$d из не ограничено"
 
 #, php-format
 msgid "%1$d of %2$d"
@@ -189,7 +190,7 @@ msgstr "%1$d%% [%2$s из %3$s]"
 
 #, php-format
 msgid "%1$d%% [%2$s of unlimited]"
-msgstr "%1$d%% [%2$s из неограниченно]"
+msgstr "%1$d%% [%2$s из не ограничено]"
 
 #, php-format
 msgid "%1$s (%2$s)"
@@ -209,7 +210,7 @@ msgstr "%1$s / %2$s из %3$s"
 
 #, php-format
 msgid "%1$s / %2$s of unlimited"
-msgstr "%1$s / %2$s из неограничено"
+msgstr "%1$s / %2$s из не ограничено"
 
 #, php-format
 msgid "%1$s of %2$s"
@@ -221,7 +222,7 @@ msgstr "%1$s из %2$s Мб"
 
 #, php-format
 msgid "%1$s of <b>unlimited</b> MB"
-msgstr "%1$s из <b>неограниченно</b> Мб"
+msgstr "%1$s из <b>не ограничено</b> Мб"
 
 #, php-format
 msgid "%1$s you are now logged as %2$s"
@@ -233,7 +234,7 @@ msgstr "%1$s%% [%2$s из %3$s]"
 
 #, php-format
 msgid "%1$s%% [%2$s of unlimited]"
-msgstr "%1$s%% [%2$s из неограниченно]"
+msgstr "%1$s%% [%2$s из не ограничено]"
 
 #, php-format
 msgid "%1$s`s - Software"
@@ -265,7 +266,7 @@ msgstr "%d из не ограничено"
 
 #, php-format
 msgid "%d strings translated"
-msgstr "%d строк переведено"
+msgstr "Переведено %d строк "
 
 #, php-format
 msgid "%s Errors in database"
@@ -298,10 +299,6 @@ msgstr "%s удалил логи администратора старше дв�
 #, php-format
 msgid "%s deleted the full admin log."
 msgstr "%s удалил лог админа полностью."
-
-#, php-format
-msgid "%s does not exist"
-msgstr "%s не существует"
 
 #, php-format
 msgid "%s doesn't exist"
@@ -354,11 +351,11 @@ msgstr "'%hostname%' - немаршрутизируемый сегмент се�
 
 #, php-format
 msgid "'%localPart%' can not be matched against dot-atom format"
-msgstr "'%localPart%' cне соответствует формату dot-atom"
+msgstr "'%localPart%' не соответствует формату dot-atom"
 
 #, php-format
 msgid "'%localPart%' can not be matched against quoted-string format"
-msgstr "'%localPart%' cне соответствует формату quoted-string"
+msgstr "'%localPart%' не соответствует формату quoted-string"
 
 msgid "'%localPart%' is no valid local part for email address '%value%'"
 msgstr "'%localPart%' неверная локальная часть для электронного адреса '%value%'"
@@ -474,7 +471,7 @@ msgstr "(например example.com)"
 
 #, php-format
 msgid "(filtered from %s total records)"
-msgstr "(отфильтрован из %s записей)"
+msgstr "(отфильтровано из %s записей)"
 
 msgid "(usually named"
 msgstr "(Обычное имя архива: "
@@ -502,9 +499,9 @@ msgid ""
 msgstr "<b>%s</b> имеет IP адрес, который не может управляться целевым реселлером!<br />Этот пользователь не может быть перемещен!"
 
 msgid ""
-"<b>Optional:</b> Leave this field empty if you do not want term of service "
+"<b>Optional:</b> Leave this field empty if you do not want terms of service "
 "for this hosting plan."
-msgstr "<b>Опционально:</b> Оставьте это поле пустым, если вы не хотите выводить Условия соглашения для данного хостинг-плана."
+msgstr ""
 
 msgid ""
 "<strong>Thank you for purchasing.</strong><br /><br />An email has been sent"
@@ -582,7 +579,7 @@ msgid "Activation Link"
 msgstr "Ссылка активации"
 
 msgid "Activation link expire time (minutes)"
-msgstr "Время действия ссылки активации (минуты)"
+msgstr "Время действия ссылки активации (в минутах)"
 
 msgid "Add"
 msgstr "Добавить"
@@ -657,7 +654,7 @@ msgid "Add mail user"
 msgstr "Добавить почтовый ящик"
 
 msgid "Add mail users"
-msgstr "Добавить почтовый ящик"
+msgstr "Добавить почтовые ящики"
 
 msgid "Add new IP address"
 msgstr "Добавить новый IP адрес"
@@ -1095,7 +1092,7 @@ msgid "Blocking time between logins and captcha attempts"
 msgstr "Время блокировки между попытками входа"
 
 msgid "Blocktime (minutes)"
-msgstr "Время блокировки (минуты)"
+msgstr "Время блокировки (в минутах)"
 
 msgid "Both source and destination are identical."
 msgstr "Источник и место назначения идентичны."
@@ -1278,14 +1275,11 @@ msgstr "Закрыть"
 msgid "Close the ticket"
 msgstr "Закрыть тикет"
 
-msgid "Close ticket"
-msgstr "Закрыть тикет"
-
 msgid "Closed tickets"
 msgstr "Закрытые тикеты"
 
 msgid "Closes tickets"
-msgstr "Закрытые тикеты"
+msgstr "Закрыть тикеты"
 
 msgid "Company"
 msgstr "Компания"
@@ -1342,7 +1336,7 @@ msgid "Create catch all mail account"
 msgstr "Создать Catch all почтовый ящик"
 
 msgid "Create default E-Mail addresses"
-msgstr "Создать email адреса по умолчанию"
+msgstr "Создавать email адреса по умолчанию"
 
 msgid "Create directory, if not exist!"
 msgstr "Создать каталог, если не существует!"
@@ -1686,16 +1680,16 @@ msgid "Disk limit"
 msgstr "Ограничение дискового пространства"
 
 msgid "Disk limit [MB]<br><i>(0 unlimited)</i>"
-msgstr "Дисковое пространство [МБ]<br><i>(0 неограничено)</i>"
+msgstr "Дисковое пространство [МБ]<br><i>(0 не ограничено)</i>"
 
 msgid "Disk limit [MiB]<br/><span class=\"italic\">(0 unlimited)</span>"
-msgstr "Дисковое пространство [МБ]<span class=\"italic\">(0 неограничено)</span>"
+msgstr "Дисковое пространство [МБ]<span class=\"italic\">(0 не ограничено)</span>"
 
 msgid "Disk limit [MiB]<br><i>(0 unlimited)</i>"
-msgstr "Дисковое пространство [МБ]<br><i>(0 неограничено)</i>"
+msgstr "Дисковое пространство [МБ]<br><i>(0 не ограничено)</i>"
 
 msgid "Disk space limit [MiB] <br /><span class=\"italic\">(0 unlimited)</span>"
-msgstr "Ограничения диска [MiB]<br/><span class=\"italic\">(0 неограничено)</span>"
+msgstr "Ограничения диска [MiB]<br/><span class=\"italic\">(0 не ограничено)</span>"
 
 msgid "Disk usage"
 msgstr "Использование диска"
@@ -1840,12 +1834,12 @@ msgstr "Лимит алиасов домена исчерпан."
 msgid ""
 "Domain aliases limit<br /><span class=\"italic\">(-1 disabled, 0 "
 "unlimited)</span>"
-msgstr "Количество алиасов домена<br /><span class=\"italic\">(-1 отключено, 0 неограничено)</span>"
+msgstr "Количество алиасов домена<br /><span class=\"italic\">(-1 отключено, 0 не ограничено)</span>"
 
 msgid ""
 "Domain aliases limit<br/><span class=\"italic\">(-1 disabled, 0 "
 "unlimited)</span>"
-msgstr "Количество алиасов домена<br /><span class=\"italic\">(-1 отключено, 0 неограничено)</span>"
+msgstr "Количество алиасов домена<br /><span class=\"italic\">(-1 отключено, 0 не ограничено)</span>"
 
 msgid "Domain already assigned to another IP address."
 msgstr "Домен уже назначен на другой IP адрес."
@@ -1949,7 +1943,7 @@ msgid "Domains"
 msgstr "Домены"
 
 msgid "Domains limit<br/><span class=\"italic\">(0 unlimited)</span>"
-msgstr "Количество доменов <br/><span class=\"italic\">(0 неограничено)</span>"
+msgstr "Количество доменов <br/><span class=\"italic\">(0 не ограничено)</span>"
 
 msgid "Domains per page"
 msgstr "Доменов на странице"
@@ -2122,13 +2116,7 @@ msgstr "Включено для данных домена"
 msgid "Enabled for domain data and databases"
 msgstr "Включено для данных домена и баз данных"
 
-msgid "Entered passwords do not match."
-msgstr "Введенные пароли не сопадают."
-
 msgid "Entered passwords doesn't match."
-msgstr "Введенные пароли не сопадают."
-
-msgid "Entered passwords doesn't matches."
 msgstr "Введенные пароли не сопадают."
 
 msgid ""
@@ -2194,7 +2182,7 @@ msgid "Expire date"
 msgstr "Дата истечения"
 
 msgid "Expire time for unconfirmed orders<br /><small>(In days)</small>"
-msgstr "Время истечения для неподтвержденых заказов<br /><small>(В днях)</small>"
+msgstr "Время истечения для неподтвержденых заказов<br /><small>(в днях)</small>"
 
 msgid "External Mail Host"
 msgstr "Внешний почтовый узел"
@@ -2220,9 +2208,6 @@ msgstr "Внешние почтовые сервера"
 msgid "FTP"
 msgstr "FTP"
 
-msgid "FTP Accounts"
-msgstr "Учётные записи FTP"
-
 msgid "FTP Users"
 msgstr "FTP Пользователи"
 
@@ -2247,7 +2232,7 @@ msgstr "Учётные записи FTP"
 msgid ""
 "FTP accounts limit <br /><span class=\"italic\">(-1 disabled, 0 "
 "unlimited)</span>"
-msgstr "Учетных записей FTP <br /><span class=\"italic\">(-1 отключено, 0 неограничено)</span>"
+msgstr "Учетных записей FTP <br /><span class=\"italic\">(-1 отключено, 0 не ограничено)</span>"
 
 msgid "FTP accounts limit reached!"
 msgstr "Достигнут лимит учётных записей FTP!"
@@ -2255,10 +2240,10 @@ msgstr "Достигнут лимит учётных записей FTP!"
 msgid ""
 "FTP accounts limit<br/><span class=\"italic\">(-1 disabled, 0 "
 "unlimited)</span>"
-msgstr "Учетных записей FTP <br /><span class=\"italic\">(-1 отключено, 0 неограничено)</span>"
+msgstr "Учетных записей FTP <br /><span class=\"italic\">(-1 отключено, 0 не ограничено)</span>"
 
 msgid "FTP accounts limit<br><i>(-1 disabled, 0 unlimited)</i>"
-msgstr "Лимит учётных записей FTP<br><i>(-1 отключено, 0 неограниченно)</i>"
+msgstr "Лимит учётных записей FTP<br><i>(-1 отключено, 0 не ограничено)</i>"
 
 msgid "FTP traffic"
 msgstr "FTP трафик"
@@ -2271,9 +2256,6 @@ msgstr "FTP всего"
 
 msgid "Failed to write file to disk."
 msgstr "Не удалось записать файл на диск."
-
-msgid "Failure in package. Deleting!"
-msgstr "Ошибка пакета. Удаление!"
 
 msgid "Failure in the package. Deleting!"
 msgstr "Ошибка пакета. Удаление!"
@@ -2291,8 +2273,8 @@ msgid "Female"
 msgstr "Женский"
 
 #, php-format
-msgid "File %s does not exists or cannot be reached!"
-msgstr "Файл %s не существует или недоступен!"
+msgid "File %s doesn't exists or cannot be reached!"
+msgstr ""
 
 #, php-format
 msgid "File does not exist. %1$s.tar.gz"
@@ -2305,9 +2287,6 @@ msgid "File is not readable."
 msgstr "Нечитаемый файл."
 
 msgid "File needs to be a 'tar.gz' archive."
-msgstr "Файл должен быть 'tar.gz' архивом."
-
-msgid "File needs to be a .tar.gz-archive"
 msgstr "Файл должен быть 'tar.gz' архивом."
 
 msgid "File successfully uploaded."
@@ -2376,9 +2355,6 @@ msgstr "От реселлера"
 msgid "Ftp"
 msgstr "FTP"
 
-msgid "Ftp Accounts"
-msgstr "Учетные записи FTP"
-
 msgid "Ftp account"
 msgstr "Учетная запись FTP"
 
@@ -2389,7 +2365,7 @@ msgid "Ftp accounts"
 msgstr "Учетные записи FTP"
 
 msgid "Ftp accounts limit<br><i>(-1 disabled, 0 unlimited)</i>"
-msgstr "Учетных записей FTP<br><i>(-1 отключено, 0 неограничено)</i>"
+msgstr "Учетных записей FTP<br><i>(-1 отключено, 0 не ограничено)</i>"
 
 msgid "Ftp user data"
 msgstr "Данные пользователя FTP"
@@ -2450,6 +2426,9 @@ msgstr "Шапка"
 
 msgid "Help"
 msgstr "Помощь"
+
+msgid "Hide aliases"
+msgstr ""
 
 msgid "Hide default E-Mail Addresses"
 msgstr "Скрывать email адреса по умолчанию"
@@ -2543,8 +2522,8 @@ msgstr "Пользователь Htaccess успешно помечен для �
 msgid "Http traffic"
 msgstr "HTTP трафик"
 
-msgid "I Accept The Term of Service"
-msgstr "Я принимаю условия соглашения"
+msgid "I Accept The Terms of Service"
+msgstr ""
 
 msgid "I understand the warnings - Purchase!"
 msgstr "Я понимаю предупреждения - Заказать!"
@@ -2671,7 +2650,7 @@ msgid "Incorrect subdomains limit."
 msgstr "Неверное ограничение поддоменов."
 
 msgid "Incorrect syntax for email address."
-msgstr "Неверны синтаксис email адреса"
+msgstr "Неверный синтаксис email адреса"
 
 msgid "Incorrect template description length."
 msgstr "Неверная длина описания шаблона."
@@ -2939,6 +2918,9 @@ msgstr "Восстановление пароля"
 msgid "Lost password e-mail"
 msgstr "Восстановление пароля"
 
+msgid "Lost password email setup"
+msgstr ""
+
 msgid "Lost password link"
 msgstr "Ссылка восстановления пароля"
 
@@ -2947,9 +2929,6 @@ msgstr "Восстановление пароля"
 
 msgid "Lostpw email"
 msgstr "Восстановление пароля"
-
-msgid "Lostpw email setup"
-msgstr "Настройка восстановления пароля"
 
 msgid "Lostpw link"
 msgstr "Ссылка восстановления пароля"
@@ -3002,7 +2981,7 @@ msgstr "Почтовые ящики"
 msgid ""
 "Mail accounts limit <br /><span class=\"italic\">(-1 disabled, 0 "
 "unlimited)</span>"
-msgstr "Количество почтовых ящиков <br /><span class=\"italic\">(-1 отключено, 0 неограничено)</span>"
+msgstr "Количество почтовых ящиков <br /><span class=\"italic\">(-1 отключено, 0 не ограничено)</span>"
 
 msgid "Mail accounts limit reached!"
 msgstr "Достигнут лимит почтовых ящиков!"
@@ -3013,10 +2992,10 @@ msgstr "Лимит почтовых ящиков исчерпан."
 msgid ""
 "Mail accounts limit<br/><span class=\"italic\">(-1 disabled, 0 "
 "unlimited)</span>"
-msgstr "Количество почтовых ящиков <br /><span class=\"italic\">(-1 отключено, 0 неограничено)</span>"
+msgstr "Количество почтовых ящиков <br /><span class=\"italic\">(-1 отключено, 0 не ограничено)</span>"
 
 msgid "Mail accounts limit<br><i>(-1 disabled, 0 unlimited)</i>"
-msgstr "Лимит почтовых ящиков<br><i>(-1 отключено, 0 неограниченно)</i>"
+msgstr "Лимит почтовых ящиков<br><i>(-1 отключено, 0 не ограничено)</i>"
 
 msgid "Mail accounts list"
 msgstr "Список почтовых ящиков"
@@ -3129,16 +3108,16 @@ msgid "Master domain cannot be used."
 msgstr "Мастер-домен не может быть использован."
 
 msgid "Max aliases<br><i>(-1 disabled, 0 unlimited)</i>"
-msgstr "Максимум алиасов<br><i>(-1 отключено, 0 неограниченно)</i>"
+msgstr "Максимум алиасов<br><i>(-1 отключено, 0 не ограничено)</i>"
 
 msgid "Max domains<br><i>(-1 disabled, 0 unlimited)</i>"
-msgstr "Максимум доменов<br><i>(-1 отключено, 0 неограниченно)</i>"
+msgstr "Максимум доменов<br><i>(-1 отключено, 0 не ограничено)</i>"
 
 msgid "Max number of login attempts"
 msgstr "Максимальное количество попыток входа"
 
 msgid "Max subdomains<br><i>(-1 disabled, 0 unlimited)</i>"
-msgstr "Максимум поддоменов<br><i>(-1 отключено, 0 неограниченно)</i>"
+msgstr "Максимум поддоменов<br><i>(-1 отключено, 0 не ограничено)</i>"
 
 msgid "Max traffic"
 msgstr "Максимальный трафик"
@@ -3225,9 +3204,6 @@ msgstr "Больше данных"
 msgid "Mount"
 msgstr "Точка монтирования"
 
-msgid "Mount Point"
-msgstr "Точка монтирования"
-
 msgid "Mount point"
 msgstr "Точка монтирования"
 
@@ -3297,8 +3273,8 @@ msgstr "Нет"
 msgid "No IP address found."
 msgstr "Не найдено IP адресов."
 
-msgid "No Ip statistics to be show."
-msgstr "Нет статистики IP адресов для отображения."
+msgid "No IP statistics to be shown."
+msgstr ""
 
 msgid "No Reseller available to add the permissions"
 msgstr "Нет доступного реселлера для добавления прав"
@@ -3328,10 +3304,10 @@ msgid "No custom menu found."
 msgstr "Не найдены пользовательские меню."
 
 msgid "No customer accounts found."
-msgstr "Не найдено клиентов."
+msgstr "Не найдено учетных записей клиентов."
 
 msgid "No database updates available."
-msgstr "Нет обновлений баз данных."
+msgstr "Обновления базы данных отсутствуют."
 
 msgid "No domain alias system errors"
 msgstr "Нет ошибок системы алиасов доменов"
@@ -3383,6 +3359,9 @@ msgstr "Записей не найдено"
 msgid "No reseller accounts found."
 msgstr "Не найдено учетных записей реселлеров"
 
+msgid "No reseller statistics to display."
+msgstr ""
+
 msgid "No reseller with activated software installer found!"
 msgstr "Не найдено реселлеров с активированным установщиком ПО"
 
@@ -3396,7 +3375,7 @@ msgid "No software available!"
 msgstr "Нет доступоного ПО!"
 
 msgid "No software in software depot available!"
-msgstr "Нет доступного ПО в репозитории!"
+msgstr "В репозитории нет доступного ПО !"
 
 msgid "No software in webdepot found!"
 msgstr "Не найдено ПО в Web-репозитории!"
@@ -3449,9 +3428,6 @@ msgstr "Не задано"
 msgid "Not found records matching the search criteria."
 msgstr "Не найдено записей, удовлетворяющих критерию."
 
-msgid "Not found user records matching the search criteria"
-msgstr "Не найдено пользовательских записей по этому критерию"
-
 msgid "Not found user records matching the search criteria."
 msgstr "Не найдено пользовательских записей по этому критерию"
 
@@ -3461,9 +3437,6 @@ msgstr "Не используется"
 msgid "Note: You can mix these options."
 msgstr "Замечание: Вы можете совмещать эти опции."
 
-msgid "Nothing been changed."
-msgstr "Ничего не было изменено"
-
 msgid "Nothing found - sorry"
 msgstr "Ничего не найдено"
 
@@ -3472,12 +3445,6 @@ msgstr "Ничего не было изменено"
 
 msgid "Nothing has been scheduled for deletion."
 msgstr "Ничего не было помечено для удаления."
-
-msgid "Nothing's been changed"
-msgstr "Ничего не было изменено"
-
-msgid "Nothing's been changed."
-msgstr "Ничего не было изменено"
 
 msgid "Notices, Warnings and Errors"
 msgstr "Уведомления, предупреждения и ошибки"
@@ -3502,7 +3469,7 @@ msgstr "Одно или более обновление базы данных б
 
 msgid ""
 "Only Top Level Domains (TLD) listed in IANA root zone database can be used."
-msgstr "Только TLD перечисленные в базе корневых зон IANA допустимо использовать."
+msgstr "Допустимо использование только доменных зон верхнего уровня (TLD), перечисленных в базе корневых зон IANA."
 
 msgid "Only administrators can login when maintenance mode is activated."
 msgstr "Только администраторы могут входить при включенном режиме техобслуживания."
@@ -3535,9 +3502,6 @@ msgid "Order"
 msgstr "Заказ"
 
 msgid "Order Canceled: resellers limit(s) exceeded."
-msgstr "Заказ отменен: ограничение(я) реселлера достигнуто(ы)"
-
-msgid "Order Cancelled: resellers limit(s) exceeded."
 msgstr "Заказ отменен: ограничение(я) реселлера достигнуто(ы)"
 
 msgid "Order Panel / Chart"
@@ -3749,12 +3713,6 @@ msgid ""
 "Password data is shorter than %s signs or includes not permitted signs."
 msgstr "Пароль короче чем %s знаков или содержит неразрешенные знаки."
 
-msgid "Password doesn't matches"
-msgstr "Пароли не совпадают."
-
-msgid "Password doesn't matches."
-msgstr "Пароли не совпадают."
-
 msgid "Password is missing."
 msgstr "Пароль отсутствует."
 
@@ -3774,29 +3732,20 @@ msgstr "Пароль успешно обновлен."
 msgid "Password updated."
 msgstr "Пароль обновлен."
 
-msgid "Passwords do not match."
-msgstr "Пароли не совпадают."
-
 msgid "Passwords doesn't match."
-msgstr "Пароли не совпадают."
-
-msgid "Passwords doesn't matches"
-msgstr "Пароли не совпадают."
-
-msgid "Passwords doesn't matches."
 msgstr "Пароли не совпадают."
 
 msgid "Passwords doesn't not matches."
 msgstr "Пароли не совпадают."
 
-msgid "Passwords don't match!"
-msgstr "Пароли не совпадают!"
-
-msgid "Passwords don't match."
-msgstr "Пароли не совпадают."
-
 msgid "Path"
 msgstr "Путь"
+
+msgid ""
+"Paths are appended to the default PHP open_basedir directive of customers. "
+"Each of them must be separated by PATH_SEPARATOR. See the PHP documentation "
+"for more information."
+msgstr ""
 
 msgid "Payment period"
 msgstr "Период оплаты"
@@ -3812,9 +3761,6 @@ msgstr "Доступ зпрещен."
 
 msgid "Permissions"
 msgstr "Разрешения"
-
-msgid "Personal Data"
-msgstr "Персональные данные"
 
 msgid "Personal data"
 msgstr "Персональные данные"
@@ -4113,7 +4059,7 @@ msgid "Quota"
 msgstr "Квота"
 
 msgid "Quota in MB (0 unlimited)"
-msgstr "Квота в MB (0 неограниченно)"
+msgstr "Квота в Mб (0 не ограничено)"
 
 msgid "Quota must be number"
 msgstr "Квота должна быть числом"
@@ -4162,7 +4108,7 @@ msgid "Remote File not found."
 msgstr "Удаленный файл не найден."
 
 msgid "Remote Web software repository"
-msgstr "Удаленный Web-репозиторий"
+msgstr "Внешний Web-репозиторий"
 
 msgid "Remove"
 msgstr "Удалить"
@@ -4181,9 +4127,6 @@ msgstr "Возобновить"
 
 msgid "Reopen the ticket"
 msgstr "Возобновить тикет"
-
-msgid "Repeat  password"
-msgstr "Повторить пароль"
 
 msgid "Repeat password"
 msgstr "Повторите пароль"
@@ -4338,7 +4281,7 @@ msgstr "Базы данных SQL"
 msgid ""
 "SQL databases limit <br /><span class=\"italic\">(-1 disabled, 0 "
 "unlimited)</span>"
-msgstr "Количество SQL баз данных <br /><span class=\"italic\">(-1 отключено, 0 неограничено)</span>"
+msgstr "Количество SQL баз данных <br /><span class=\"italic\">(-1 отключено, 0 не ограничено)</span>"
 
 msgid "SQL databases limit is <i>disabled</i>."
 msgstr "Базы данных SQL  <i>отключены</i>."
@@ -4355,10 +4298,10 @@ msgstr "Базы данных SQL не <i>отключены</i>."
 msgid ""
 "SQL databases limit<br/><span class=\"italic\">(-1 disabled, 0 "
 "unlimited)</span>"
-msgstr "Количество SQL баз данных <br /><span class=\"italic\">(-1 отключено, 0 неограничено)</span>"
+msgstr "Количество SQL баз данных <br /><span class=\"italic\">(-1 отключено, 0 не ограничено)</span>"
 
 msgid "SQL databases limit<br><i>(-1 disabled, 0 unlimited)</i>"
-msgstr "Лимит баз данных SQL<br><i>(-1 отключено, 0 неограниченно)</i>"
+msgstr "Лимит баз данных SQL<br><i>(-1 отключено, 0 не ограничено)</i>"
 
 msgid "SQL support"
 msgstr "Поддержка SQL"
@@ -4381,10 +4324,7 @@ msgstr "Пользователи SQL"
 msgid ""
 "SQL users limit <br /><span class=\"italic\">(-1 disabled, 0 "
 "unlimited)</span>"
-msgstr "Пользователей SQL <br /><span class=\"italic\">(-1 отключено, 0 неограничено)</span>"
-
-msgid "SQL users limit is <i>disabled</i>!"
-msgstr "Лимит пользователей SQL <i>отключен</i>"
+msgstr "Пользователей SQL <br /><span class=\"italic\">(-1 отключено, 0 не ограничено)</span>"
 
 msgid "SQL users limit is <i>disabled</i>."
 msgstr "Лимит пользователей SQL <i>отключен</i>."
@@ -4400,10 +4340,10 @@ msgstr "Лимит пользователей SQL достигнут."
 
 msgid ""
 "SQL users limit<br/><span class=\"italic\">(-1 disabled, 0 unlimited)</span>"
-msgstr "Пользователей SQL <br /><span class=\"italic\">(-1 отключено, 0 неограничено)</span>"
+msgstr "Пользователей SQL <br /><span class=\"italic\">(-1 отключено, 0 не ограничено)</span>"
 
 msgid "SQL users limit<br><i>(-1 disabled, 0 unlimited)</i>"
-msgstr "Лимит пользователей SQL<br><i>(-1 отключенно, 0 неограниченно)</i>"
+msgstr "Лимит пользователей SQL<br><i>(-1 отключенно, 0 не ограничено)</i>"
 
 msgid "SQL-User"
 msgstr "Пользователь SQL"
@@ -4602,7 +4542,7 @@ msgstr "Показано с 0 по 0 из 0 записей"
 msgid ""
 "Single letter Second Level Domains (SLD) are not allowed under the most Top "
 "Level Domains (TLD). There is a small list of exceptions, e.g. the TLD .de."
-msgstr "Однобуквенные домены второго уровня (SLD) не разрешены для большинства доменов верхнего уровня (TLD). Существует небольшое количество исключений, например для домена верхнего уровня .de."
+msgstr "Однобуквенные домены второго уровня (SLD) запрещены для большинства доменов верхнего уровня (TLD). Существует несколько исключений, например для домена верхнего уровня .de."
 
 msgid "Size"
 msgstr "Размер"
@@ -4733,7 +4673,7 @@ msgid "Sql databases"
 msgstr "Баз данных SQL"
 
 msgid "Sql databases limit<br><i>(-1 disabled, 0 unlimited)</i>"
-msgstr "Баз данных<br><i>(-1 отключено, 0 неограничено)</i>"
+msgstr "Баз данных<br><i>(-1 отключено, 0 не ограничено)</i>"
 
 msgid "Sql user"
 msgstr "Пользователь SQL"
@@ -4742,7 +4682,7 @@ msgid "Sql users"
 msgstr "Пользователей SQL"
 
 msgid "Sql users limit<br><i>(-1 disabled, 0 unlimited)</i>"
-msgstr "Пользователей БД<br><i>(-1 отключено, 0 неограничено)</i>"
+msgstr "Пользователей БД<br><i>(-1 отключено, 0 не ограничено)</i>"
 
 msgid "Start installation"
 msgstr "Добавить в репозиторий"
@@ -4814,11 +4754,6 @@ msgid "Subdomain successfully scheduled for addition."
 msgstr "Поддомен успешно помечен для добавления."
 
 msgid ""
-"Subdomain you are trying to remove has email accounts !<br>First remove "
-"them!"
-msgstr "У поддомена удаляемого вами есть почтовые ящики !<br>Сперва удалите их!"
-
-msgid ""
 "Subdomain you are trying to remove has email accounts.<br>First remove them."
 msgstr "Поддомен, который вы пытаетесь удалить, содержит учетные записи почты.<br>Сначала удалите их."
 
@@ -4828,12 +4763,7 @@ msgstr "Поддомены"
 msgid ""
 "Subdomains limit<br /><span class=\"italic\">(-1 disabled, 0 "
 "unlimited)</span>"
-msgstr "Количество поддоменов <br /><span class=\"italic\">(-1 отключено, 0 неограничено)</span>"
-
-msgid ""
-"Subdomains limit<br/><span class=\"italic\">(-1 disabled, 0 "
-"unlimited)</span>"
-msgstr "Количество поддоменов <br /><span class=\"italic\">(-1 отключено, 0 неограничено)</span>"
+msgstr "Количество поддоменов <br /><span class=\"italic\">(-1 отключено, 0 не ограничено)</span>"
 
 msgid "Subject"
 msgstr "Тема"
@@ -4843,9 +4773,6 @@ msgstr "Применить изменения"
 
 msgid "Support"
 msgstr "Поддержка"
-
-msgid "Support System"
-msgstr "Служба поддержки"
 
 msgid "Support Ticket System"
 msgstr "Служба поддержки"
@@ -4877,9 +4804,6 @@ msgstr "Системная ошибка - пользовательская  ст
 #, php-format
 msgid "System error with Domain Id: %d"
 msgstr "Системная ошибка домена ID: %d"
-
-msgid "System info"
-msgstr "Системная информация"
 
 msgid "System information"
 msgstr "Системная информация"
@@ -4953,11 +4877,8 @@ msgstr "Шаблон успешно обновлен."
 msgid "Temporary folder not found."
 msgstr "Временная папка не найдена."
 
-msgid "Term Of Service"
-msgstr "Условие Соглашения"
-
-msgid "Term of Service"
-msgstr "Условие Соглашения"
+msgid "Terms of Service"
+msgstr ""
 
 msgid "Text"
 msgstr "Текст"
@@ -4993,13 +4914,13 @@ msgstr "Лимит %s для этого клиента не может быть 
 msgid ""
 "The %s limit for this customer cannot be unlimited because his reseller is "
 "limited for this service."
-msgstr "Лимит %s для этого клиента не может быть неограничено, потому что существует ограничение для реселлера."
+msgstr "Лимит %s для этого клиента не может быть неограниченнным, потому что существует ограничение для реселлера."
 
 #, php-format
 msgid ""
 "The %s limit for this customer cannot be unlimited because your are limited "
 "for this service."
-msgstr "Лимит %s для этого клиента не может быть неограничено, потому что существует ограничение для Вас."
+msgstr "Лимит %s для этого клиента не может быть неограниченнным, потому что существует ограничение для Вас."
 
 #, php-format
 msgid "The <em>%s</em> have to be disabled."
@@ -5049,9 +4970,6 @@ msgstr "Клавиша `Enter` отключена по причинам прои
 msgid "The admin has <em>%s</em> disabled on this system."
 msgstr "У администратора отключен <em>%s</em> в этой системе."
 
-msgid "The current password is wrong!"
-msgstr "Текущий пароль неправильный!"
-
 msgid "The current password is wrong."
 msgstr "Ваш текущий пароль неверен."
 
@@ -5062,12 +4980,6 @@ msgstr "Каталог %s не существует. Сначала создай
 #, php-format
 msgid "The directory %s was created."
 msgstr "Каталог %s был создан."
-
-msgid ""
-"The directory/file paths are appended to the default PHP open_basedir "
-"directive of customers. Each of them must be separated by PATH_SEPARATOR. "
-"See the PHP documentation for more information."
-msgstr "Путь к каталогу/файлу directory/file paths are appended to the default PHP open_basedir directive of customers. Each of them must be separated by PATH_SEPARATOR. See the PHP documentation for more information."
 
 msgid ""
 "The domain is currently deactivated. The modification of some of its "
@@ -5152,22 +5064,12 @@ msgstr "Значение не было найдено в стеке"
 msgid "The values must not be equal"
 msgstr "Значения не должны быть равны"
 
-msgid "The values must not be equals"
-msgstr "Значения не должны быть равны"
-
-#, php-format
-msgid "There are <em>%s</em> records on system."
-msgstr "В системе <em>%s</em> записей."
-
 #, php-format
 msgid "There are <em>%s</em> records on the system."
 msgstr "В системе <em>%s</em> записей."
 
 msgid "There are no available hosting plans for update."
 msgstr "Нет доступных для обновления хостинг-планов."
-
-msgid "There are no available hosting plans for updates."
-msgstr "Нет доступных хостинг-планов для изменения."
 
 #, php-format
 msgid "There are reseller limits for the <em>%s</em> service."
@@ -5304,10 +5206,6 @@ msgstr "Тикет с Id '%d' не был найден."
 msgid "Ticket with Id '%s' was not found."
 msgstr "Тикет с Id '%s' не был найден."
 
-#, php-format
-msgid "Ticket with Id: '%d' no found."
-msgstr "Тикет c ID: '%d' не найден."
-
 msgid "Tickets closed"
 msgstr "Закрытые тикеты"
 
@@ -5360,7 +5258,7 @@ msgid "Total Web softwares repositories"
 msgstr "Всего Web-репозиториев"
 
 msgid "Total installations"
-msgstr "Всего инсталяций"
+msgstr "Всего установок"
 
 msgid "Total packages in Web softwares repository"
 msgstr "Всего пакетов в Web-репозитории"
@@ -5377,17 +5275,11 @@ msgstr "Трафик"
 msgid "Traffic limit"
 msgstr "Лимит трафика"
 
-msgid "Traffic limit [MB]<br><i>(0 unlimited)</i>"
-msgstr "Лимит трафика [МБ]<br><i>(0 неограниченно)</i>"
-
-msgid "Traffic limit [MiB] <br /><span class=\"italic\">(0 unlimited)</span>"
-msgstr "Ограничение трафика [МБ] <br /><span class=\"italic\">(0 неограничено)</span>"
-
 msgid "Traffic limit [MiB]<br/><span class=\"italic\">(0 unlimited)</span>"
-msgstr "Ограничение трафика [МБ] <br /><span class=\"italic\">(0 неограничено)</span>"
+msgstr "Ограничение трафика [МБ] <br /><span class=\"italic\">(0 не ограничено)</span>"
 
 msgid "Traffic limit [MiB]<br><i>(0 unlimited)</i>"
-msgstr "Ограничение трафика [МБ] <br><i>(0 неограничено)</i>"
+msgstr "Ограничение трафика [МБ] <br><i>(0 не ограничено)</i>"
 
 msgid "Traffic limit must be a digit."
 msgstr "Лимит трафика должен быть числом."
@@ -5411,14 +5303,14 @@ msgid "UP"
 msgstr "РАБОТАЕТ"
 
 msgid "URL protocol"
-msgstr "URL протокол"
+msgstr "Протокол ссылки"
 
 msgid "URL to this admin panel"
-msgstr "Ссылка на админ панель"
+msgstr "Ссылка на панель управления"
 
 #, php-format
-msgid "Unable to close ticket with Id '%s'."
-msgstr "Невозможно закрыть билет с Id '%s'."
+msgid "Unable to close the ticket with Id '%s'."
+msgstr ""
 
 #, php-format
 msgid "Unable to create '%s' directory for language file."
@@ -5527,7 +5419,7 @@ msgid "Unknown zone type %s."
 msgstr "Неизвестный тип зоны %s."
 
 msgid "Unlimited"
-msgstr "Неограничено"
+msgstr "Не ограничено"
 
 msgid "Unprotect it"
 msgstr "Снять защиту"
@@ -5614,7 +5506,7 @@ msgid "User"
 msgstr "Пользователь"
 
 msgid "User (first and last) name"
-msgstr "Имя и фамилия пользователя"
+msgstr "Фамилия и Имя пользователя"
 
 msgid "User account"
 msgstr "Учётная запись пользователя"
@@ -5634,14 +5526,6 @@ msgstr "Данные были успешно обновлены."
 msgid ""
 "User does not exist or you do not have permission to access this interface"
 msgstr "Пользователь не существует, или у Вас нет прав для доступа к этому интерфейсу"
-
-msgid ""
-"User does not exist or you do not have permission to access this interface!"
-msgstr "Пользователь не существует или Вы не имеете доступа к этому интерфейсу!"
-
-msgid ""
-"User does not exist or you do not have permission to access this interface."
-msgstr "Пользователь не существует, у вас нет прав для доступа к этому интерфейсу."
 
 msgid "User does not exist."
 msgstr "Пользователь не существует."
@@ -5665,7 +5549,7 @@ msgid "User personal data successfully updated."
 msgstr "Личные данные пользователя успешно обновлены"
 
 msgid "User real (first and last) name"
-msgstr "Настоящие имя и фамилия пользователя"
+msgstr "Настоящие Фамилия и Имя пользователя"
 
 msgid "User scheduled for deletion."
 msgstr "Пользователь помечен для удаления."
@@ -5702,10 +5586,6 @@ msgstr "Пользователи и группы"
 
 msgid "Users list"
 msgstr "Список пользователей"
-
-#, php-format
-msgid "Value for the %s  directive"
-msgstr "Значение директивы %s"
 
 #, php-format
 msgid "Value for the %s directive"
@@ -5773,14 +5653,9 @@ msgid "Warnings and Errors"
 msgstr "Предупреждения и ошибки"
 
 msgid ""
-"We are sorry but You reached the maximum number of subdomains allowed by "
-"your subscription."
-msgstr "К сожалению, Вы достигли максимального количество поддоменов."
-
-msgid ""
-"We are sorry but you reached the maximum number of domain aliases allowed by"
-" your subscription. Contact your reseller for more information."
-msgstr "Извините, но Вы достигли максимального количества алиасов домена, доступного вашей подписке. Свяжитесь с Вашим реселлером, чтобы получить более подробную информацию."
+"We are sorry but you have reached the maximum number of domain aliases "
+"allowed by your subscription. Contact to your reseller for more information."
+msgstr ""
 
 msgid ""
 "We are sorry, but the system is currently under maintenance.\n"
@@ -5827,7 +5702,7 @@ msgid "Welcome mail"
 msgstr "Приветственное письмо"
 
 msgid "Welcome {USERNAME} to i-MSCP"
-msgstr "Добро пожаловать, {USERNAME} в i-MSCP"
+msgstr "{USERNAME}, добро пожаловать в i-MSCP"
 
 msgid ""
 "When allowed, scripts can call the PHP exec() function. This function is "
@@ -5924,9 +5799,6 @@ msgstr "Неверный ID заказа"
 msgid "Wrong redirect URL."
 msgstr "Неверный URL переадресации."
 
-msgid "Wrong request"
-msgstr "Неверный запрос."
-
 msgid "Wrong request."
 msgstr "Неверный запрос."
 
@@ -5964,9 +5836,6 @@ msgstr "Неверный синтаксис адреса следования."
 
 msgid "Wrong user level provided."
 msgstr "Неверный уровень пользователя."
-
-msgid "Wrong username"
-msgstr "Неверное имя пользователя"
 
 msgid "Wrong username."
 msgstr "Неверное имя пользователя"
@@ -6138,9 +6007,6 @@ msgstr "У Вас нет прав на эту операцию."
 msgid "You do not need 'www.' i-MSCP will add it automatically."
 msgstr "Вам не нужен префикс 'www.' i-MSCP допишет его самостоятельно."
 
-msgid "You do not need 'www.' i-MSCP will add it on its own."
-msgstr "Не вводите 'www.', система добавит его сама."
-
 #, php-format
 msgid "You have %d new accounts %s."
 msgstr "У Вас %d новых аккаунтов %s."
@@ -6239,15 +6105,12 @@ msgstr "У Вас используется больше алиасов чем д
 msgid "You have more disk space in use than the new hosting plan limits."
 msgstr "У Вас используется больше дискового пространства чем доступно в новом хостинг-плане."
 
-msgid "You have more domain aliases in use than the new hosting plan limits"
-msgstr "У Вас больше алиасов домена, чем ограничено в новом хостинг-плане"
+msgid "You have more domain aliases in use than the new hosting plan limits."
+msgstr ""
 
 msgid ""
 "You have more e-mail addresses in use than the new hosting plan limits."
 msgstr "У Вас используется больше адресов email чем доступно в новом хостинг-плане."
-
-msgid "You have more subdomains in use than the new hosting plan limits"
-msgstr "У Вас больше поддоменов, чем позволяет новый хостинг-план"
 
 msgid "You have more subdomains in use than the new hosting plan limits."
 msgstr "У Вас используется больше поддоменов чем доступно в новом хостинг-плане."
@@ -6263,9 +6126,6 @@ msgstr "У вас нет закрытых тикетов."
 
 msgid "You have no tickets open."
 msgstr "У вас нет открытых тикетов."
-
-msgid "You have no users !"
-msgstr "У вас нет пользователей!"
 
 msgid "You have reached your domains limit.<br />You cannot add more domains."
 msgstr "Вы достигли Вашего лимита доменов.<br />Вы не можете добавить больше доменов."
@@ -6283,8 +6143,8 @@ msgid ""
 "provide this feature."
 msgstr "У Вас подключен установщик ПО, но новый хостинг-план не поддерживает этой возможности."
 
-msgid "You have to accept the Term of Service."
-msgstr "Вы должны принять условия Соглашения."
+msgid "You have to accept the Terms of Service."
+msgstr ""
 
 msgid "You have to choose between file-upload and wget-function."
 msgstr "Вы должны выбрать между загрузкой файлов и функцией wget."
@@ -6474,9 +6334,6 @@ msgstr "алиас домена"
 msgid "domain aliases"
 msgstr "алиасы домена"
 
-msgid "domain aliasses"
-msgstr "алиасы домена"
-
 msgid "domains"
 msgstr "домены"
 
@@ -6504,9 +6361,6 @@ msgstr "getInfo() не реализован в %s и %s не найден. <br /
 
 msgid "help"
 msgstr "помощь"
-
-msgid "hide aliases"
-msgstr "скрыть алиасы"
 
 msgid "i-MSCP - Admin - Email Marketing"
 msgstr "i-MSCP - Администратор / Почтовая рассылка"
@@ -6601,8 +6455,8 @@ msgstr "i-MSCP - Администратор / Управление пользо�
 msgid "i-MSCP - Admin/IP Usage"
 msgstr "i-MSCP - Администратор / Использование IP"
 
-msgid "i-MSCP - Admin/Lostpw email setup"
-msgstr "i-MSCP - Администратор / Настройка восстановления пароля"
+msgid "i-MSCP - Admin/Lost password email setup"
+msgstr ""
 
 msgid "i-MSCP - Admin/Maintenance mode"
 msgstr "i-MSCP - Администратор / Режим техобслуживания"
@@ -7074,7 +6928,7 @@ msgid "udp"
 msgstr "udp"
 
 msgid "unlimited"
-msgstr "неограничено"
+msgstr "не ограничено"
 
 msgid "upload_max_filesize out of range."
 msgstr "upload_max_filesize переполнен."
@@ -7098,4 +6952,4 @@ msgid "{RESELLER} uploaded a new software package"
 msgstr "{RESELLER} загрузил новый пакет ПО"
 
 msgid "© 2010-2013 i-MSCP Team<br/>All Rights Reserved"
-msgstr ""
+msgstr "© 2010-2013 i-MSCP Team<br/>Все права защищены"

@@ -9,9 +9,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2013-01-07 04:57+0100\n"
-"PO-Revision-Date: 2013-01-07 03:52+0000\n"
-"Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
+"POT-Creation-Date: 2013-01-20 16:04+0100\n"
+"PO-Revision-Date: 2013-01-20 15:05+0000\n"
+"Last-Translator: Torsten Widmann <info@goover.de>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -298,10 +298,6 @@ msgid "%s deleted the full admin log."
 msgstr ""
 
 #, php-format
-msgid "%s does not exist"
-msgstr "%s non esiste"
-
-#, php-format
 msgid "%s doesn't exist"
 msgstr "%s non esiste"
 
@@ -500,9 +496,9 @@ msgid ""
 msgstr ""
 
 msgid ""
-"<b>Optional:</b> Leave this field empty if you do not want term of service "
+"<b>Optional:</b> Leave this field empty if you do not want terms of service "
 "for this hosting plan."
-msgstr "<b> Facoltativo: </ b> Lasciare questo campo vuoto se non volete un termine del servizioper questo piano di hosting."
+msgstr ""
 
 msgid ""
 "<strong>Thank you for purchasing.</strong><br /><br />An email has been sent"
@@ -1275,9 +1271,6 @@ msgstr "Chiudi"
 
 msgid "Close the ticket"
 msgstr "Chiudi il ticket"
-
-msgid "Close ticket"
-msgstr ""
 
 msgid "Closed tickets"
 msgstr "Tickets chiusi"
@@ -2120,13 +2113,7 @@ msgstr ""
 msgid "Enabled for domain data and databases"
 msgstr ""
 
-msgid "Entered passwords do not match."
-msgstr ""
-
 msgid "Entered passwords doesn't match."
-msgstr ""
-
-msgid "Entered passwords doesn't matches."
 msgstr ""
 
 msgid ""
@@ -2218,9 +2205,6 @@ msgstr ""
 msgid "FTP"
 msgstr "FTP"
 
-msgid "FTP Accounts"
-msgstr "Gestione FTP"
-
 msgid "FTP Users"
 msgstr ""
 
@@ -2270,9 +2254,6 @@ msgstr "FTP totali"
 msgid "Failed to write file to disk."
 msgstr ""
 
-msgid "Failure in package. Deleting!"
-msgstr ""
-
 msgid "Failure in the package. Deleting!"
 msgstr ""
 
@@ -2289,8 +2270,8 @@ msgid "Female"
 msgstr "Femminile"
 
 #, php-format
-msgid "File %s does not exists or cannot be reached!"
-msgstr "Il file %s non esiste o non può essere raggiunto!"
+msgid "File %s doesn't exists or cannot be reached!"
+msgstr ""
 
 #, php-format
 msgid "File does not exist. %1$s.tar.gz"
@@ -2304,9 +2285,6 @@ msgstr "Il file non é leggibile."
 
 msgid "File needs to be a 'tar.gz' archive."
 msgstr "Il file deve essere un archivio 'tar.gz'."
-
-msgid "File needs to be a .tar.gz-archive"
-msgstr "Il file deve essere un archivio .tar.gz"
 
 msgid "File successfully uploaded."
 msgstr "File aggiunto con successo."
@@ -2373,9 +2351,6 @@ msgstr "Dal rivenditore"
 
 msgid "Ftp"
 msgstr ""
-
-msgid "Ftp Accounts"
-msgstr "Account Ftp."
 
 msgid "Ftp account"
 msgstr ""
@@ -2447,6 +2422,9 @@ msgid "Header"
 msgstr "Testata"
 
 msgid "Help"
+msgstr ""
+
+msgid "Hide aliases"
 msgstr ""
 
 msgid "Hide default E-Mail Addresses"
@@ -2541,8 +2519,8 @@ msgstr ""
 msgid "Http traffic"
 msgstr ""
 
-msgid "I Accept The Term of Service"
-msgstr "Io accetto i termini del servizio"
+msgid "I Accept The Terms of Service"
+msgstr ""
 
 msgid "I understand the warnings - Purchase!"
 msgstr "Dichiaro di aver letto le avvertenze - Acquista!"
@@ -2937,6 +2915,9 @@ msgstr "Password dimenticata"
 msgid "Lost password e-mail"
 msgstr "Recupera la password della casella di posta"
 
+msgid "Lost password email setup"
+msgstr ""
+
 msgid "Lost password link"
 msgstr "Link per la password persa"
 
@@ -2945,9 +2926,6 @@ msgstr ""
 
 msgid "Lostpw email"
 msgstr "EMail password dimenticata"
-
-msgid "Lostpw email setup"
-msgstr "Setup eMail password dimenticata"
 
 msgid "Lostpw link"
 msgstr "Link password dimenticata"
@@ -3223,9 +3201,6 @@ msgstr ""
 msgid "Mount"
 msgstr "Mount"
 
-msgid "Mount Point"
-msgstr "Mount Point"
-
 msgid "Mount point"
 msgstr "Mount point"
 
@@ -3295,7 +3270,7 @@ msgstr "No"
 msgid "No IP address found."
 msgstr ""
 
-msgid "No Ip statistics to be show."
+msgid "No IP statistics to be shown."
 msgstr ""
 
 msgid "No Reseller available to add the permissions"
@@ -3381,6 +3356,9 @@ msgstr "Nessun record trovato"
 msgid "No reseller accounts found."
 msgstr ""
 
+msgid "No reseller statistics to display."
+msgstr ""
+
 msgid "No reseller with activated software installer found!"
 msgstr ""
 
@@ -3447,9 +3425,6 @@ msgstr "Non impostato"
 msgid "Not found records matching the search criteria."
 msgstr ""
 
-msgid "Not found user records matching the search criteria"
-msgstr ""
-
 msgid "Not found user records matching the search criteria."
 msgstr ""
 
@@ -3459,9 +3434,6 @@ msgstr ""
 msgid "Note: You can mix these options."
 msgstr ""
 
-msgid "Nothing been changed."
-msgstr ""
-
 msgid "Nothing found - sorry"
 msgstr ""
 
@@ -3469,12 +3441,6 @@ msgid "Nothing has been changed."
 msgstr ""
 
 msgid "Nothing has been scheduled for deletion."
-msgstr ""
-
-msgid "Nothing's been changed"
-msgstr ""
-
-msgid "Nothing's been changed."
 msgstr ""
 
 msgid "Notices, Warnings and Errors"
@@ -3533,9 +3499,6 @@ msgid "Order"
 msgstr "Ordine"
 
 msgid "Order Canceled: resellers limit(s) exceeded."
-msgstr ""
-
-msgid "Order Cancelled: resellers limit(s) exceeded."
 msgstr ""
 
 msgid "Order Panel / Chart"
@@ -3747,12 +3710,6 @@ msgid ""
 "Password data is shorter than %s signs or includes not permitted signs."
 msgstr ""
 
-msgid "Password doesn't matches"
-msgstr "La password non corrisponde"
-
-msgid "Password doesn't matches."
-msgstr ""
-
 msgid "Password is missing."
 msgstr ""
 
@@ -3772,29 +3729,20 @@ msgstr "Password aggiornata con successo."
 msgid "Password updated."
 msgstr ""
 
-msgid "Passwords do not match."
-msgstr ""
-
 msgid "Passwords doesn't match."
-msgstr ""
-
-msgid "Passwords doesn't matches"
-msgstr ""
-
-msgid "Passwords doesn't matches."
 msgstr ""
 
 msgid "Passwords doesn't not matches."
 msgstr "Le password non corrispondono."
 
-msgid "Passwords don't match!"
-msgstr "Le Passwords non coincidono!"
-
-msgid "Passwords don't match."
-msgstr ""
-
 msgid "Path"
 msgstr "Percorso"
+
+msgid ""
+"Paths are appended to the default PHP open_basedir directive of customers. "
+"Each of them must be separated by PATH_SEPARATOR. See the PHP documentation "
+"for more information."
+msgstr ""
 
 msgid "Payment period"
 msgstr "Tipo pagamento"
@@ -3810,9 +3758,6 @@ msgstr "Nessun permesso."
 
 msgid "Permissions"
 msgstr "Permessi"
-
-msgid "Personal Data"
-msgstr "Dati personali"
 
 msgid "Personal data"
 msgstr "Dati personali"
@@ -4180,9 +4125,6 @@ msgstr "Riapri"
 msgid "Reopen the ticket"
 msgstr "Riapri il ticket"
 
-msgid "Repeat  password"
-msgstr ""
-
 msgid "Repeat password"
 msgstr "Ripeti la Password"
 
@@ -4380,9 +4322,6 @@ msgid ""
 "SQL users limit <br /><span class=\"italic\">(-1 disabled, 0 "
 "unlimited)</span>"
 msgstr ""
-
-msgid "SQL users limit is <i>disabled</i>!"
-msgstr "utenti SQL<i>disabilitati</i>!"
 
 msgid "SQL users limit is <i>disabled</i>."
 msgstr ""
@@ -4812,11 +4751,6 @@ msgid "Subdomain successfully scheduled for addition."
 msgstr ""
 
 msgid ""
-"Subdomain you are trying to remove has email accounts !<br>First remove "
-"them!"
-msgstr "Il sottodominio che stai cercando di rimuovere ha accounts email!<br> e non può pertanto essere cancellato."
-
-msgid ""
 "Subdomain you are trying to remove has email accounts.<br>First remove them."
 msgstr ""
 
@@ -4828,11 +4762,6 @@ msgid ""
 "unlimited)</span>"
 msgstr ""
 
-msgid ""
-"Subdomains limit<br/><span class=\"italic\">(-1 disabled, 0 "
-"unlimited)</span>"
-msgstr ""
-
 msgid "Subject"
 msgstr "Oggetto"
 
@@ -4840,9 +4769,6 @@ msgid "Submit changes"
 msgstr "Applica modifiche"
 
 msgid "Support"
-msgstr ""
-
-msgid "Support System"
 msgstr ""
 
 msgid "Support Ticket System"
@@ -4875,9 +4801,6 @@ msgstr ""
 #, php-format
 msgid "System error with Domain Id: %d"
 msgstr ""
-
-msgid "System info"
-msgstr "Info del sistema"
 
 msgid "System information"
 msgstr ""
@@ -4951,10 +4874,7 @@ msgstr ""
 msgid "Temporary folder not found."
 msgstr ""
 
-msgid "Term Of Service"
-msgstr "Termini del servizio"
-
-msgid "Term of Service"
+msgid "Terms of Service"
 msgstr ""
 
 msgid "Text"
@@ -5047,9 +4967,6 @@ msgstr ""
 msgid "The admin has <em>%s</em> disabled on this system."
 msgstr ""
 
-msgid "The current password is wrong!"
-msgstr "La password corrente è sbagliata!"
-
 msgid "The current password is wrong."
 msgstr ""
 
@@ -5059,12 +4976,6 @@ msgstr ""
 
 #, php-format
 msgid "The directory %s was created."
-msgstr ""
-
-msgid ""
-"The directory/file paths are appended to the default PHP open_basedir "
-"directive of customers. Each of them must be separated by PATH_SEPARATOR. "
-"See the PHP documentation for more information."
 msgstr ""
 
 msgid ""
@@ -5150,21 +5061,11 @@ msgstr ""
 msgid "The values must not be equal"
 msgstr ""
 
-msgid "The values must not be equals"
-msgstr ""
-
-#, php-format
-msgid "There are <em>%s</em> records on system."
-msgstr ""
-
 #, php-format
 msgid "There are <em>%s</em> records on the system."
 msgstr ""
 
 msgid "There are no available hosting plans for update."
-msgstr ""
-
-msgid "There are no available hosting plans for updates."
 msgstr ""
 
 #, php-format
@@ -5302,10 +5203,6 @@ msgstr ""
 msgid "Ticket with Id '%s' was not found."
 msgstr ""
 
-#, php-format
-msgid "Ticket with Id: '%d' no found."
-msgstr ""
-
 msgid "Tickets closed"
 msgstr ""
 
@@ -5375,12 +5272,6 @@ msgstr "Traffico"
 msgid "Traffic limit"
 msgstr "Limite di traffico"
 
-msgid "Traffic limit [MB]<br><i>(0 unlimited)</i>"
-msgstr "Limite di traffico [MB]<br><i>(0 illimitato)</i>"
-
-msgid "Traffic limit [MiB] <br /><span class=\"italic\">(0 unlimited)</span>"
-msgstr ""
-
 msgid "Traffic limit [MiB]<br/><span class=\"italic\">(0 unlimited)</span>"
 msgstr ""
 
@@ -5415,7 +5306,7 @@ msgid "URL to this admin panel"
 msgstr "URL per accedere al pannello di amministratore"
 
 #, php-format
-msgid "Unable to close ticket with Id '%s'."
+msgid "Unable to close the ticket with Id '%s'."
 msgstr ""
 
 #, php-format
@@ -5633,14 +5524,6 @@ msgid ""
 "User does not exist or you do not have permission to access this interface"
 msgstr ""
 
-msgid ""
-"User does not exist or you do not have permission to access this interface!"
-msgstr "L' Utente è inesistente o non ha sufficienti permessi per accedere a questa interfaccia!"
-
-msgid ""
-"User does not exist or you do not have permission to access this interface."
-msgstr ""
-
 msgid "User does not exist."
 msgstr ""
 
@@ -5700,10 +5583,6 @@ msgstr ""
 
 msgid "Users list"
 msgstr "Lista degli utenti"
-
-#, php-format
-msgid "Value for the %s  directive"
-msgstr ""
 
 #, php-format
 msgid "Value for the %s directive"
@@ -5771,13 +5650,8 @@ msgid "Warnings and Errors"
 msgstr "Warnings e Errori"
 
 msgid ""
-"We are sorry but You reached the maximum number of subdomains allowed by "
-"your subscription."
-msgstr ""
-
-msgid ""
-"We are sorry but you reached the maximum number of domain aliases allowed by"
-" your subscription. Contact your reseller for more information."
+"We are sorry but you have reached the maximum number of domain aliases "
+"allowed by your subscription. Contact to your reseller for more information."
 msgstr ""
 
 msgid ""
@@ -5922,9 +5796,6 @@ msgstr ""
 msgid "Wrong redirect URL."
 msgstr ""
 
-msgid "Wrong request"
-msgstr "Richiesta errata"
-
 msgid "Wrong request."
 msgstr ""
 
@@ -5962,9 +5833,6 @@ msgstr ""
 
 msgid "Wrong user level provided."
 msgstr ""
-
-msgid "Wrong username"
-msgstr "Nome utente non valido"
 
 msgid "Wrong username."
 msgstr ""
@@ -6136,9 +6004,6 @@ msgstr ""
 msgid "You do not need 'www.' i-MSCP will add it automatically."
 msgstr ""
 
-msgid "You do not need 'www.' i-MSCP will add it on its own."
-msgstr "Non hai bisogno di specificare 'www.', i-MSCP lo aggiungerà automaticamente."
-
 #, php-format
 msgid "You have %d new accounts %s."
 msgstr ""
@@ -6237,15 +6102,12 @@ msgstr "Hai più traffico rispetto ai limiti del piano di hosting."
 msgid "You have more disk space in use than the new hosting plan limits."
 msgstr "Stai occupando spazio su disco oltre i limiti del piano di hosting."
 
-msgid "You have more domain aliases in use than the new hosting plan limits"
+msgid "You have more domain aliases in use than the new hosting plan limits."
 msgstr ""
 
 msgid ""
 "You have more e-mail addresses in use than the new hosting plan limits."
 msgstr "Hai più indirizzi Email rispetto ai limiti del piano di hosting."
-
-msgid "You have more subdomains in use than the new hosting plan limits"
-msgstr ""
 
 msgid "You have more subdomains in use than the new hosting plan limits."
 msgstr "Hai più sottodomini rispetto ai limiti del piano di hosting."
@@ -6261,9 +6123,6 @@ msgstr ""
 
 msgid "You have no tickets open."
 msgstr ""
-
-msgid "You have no users !"
-msgstr "Non hai utenti!"
 
 msgid "You have reached your domains limit.<br />You cannot add more domains."
 msgstr ""
@@ -6281,8 +6140,8 @@ msgid ""
 "provide this feature."
 msgstr ""
 
-msgid "You have to accept the Term of Service."
-msgstr "Hai accetto i Temini di Servizio."
+msgid "You have to accept the Terms of Service."
+msgstr ""
 
 msgid "You have to choose between file-upload and wget-function."
 msgstr ""
@@ -6472,9 +6331,6 @@ msgstr ""
 msgid "domain aliases"
 msgstr ""
 
-msgid "domain aliasses"
-msgstr ""
-
 msgid "domains"
 msgstr ""
 
@@ -6502,9 +6358,6 @@ msgstr ""
 
 msgid "help"
 msgstr "aiuto"
-
-msgid "hide aliases"
-msgstr "nascondere gli alias"
 
 msgid "i-MSCP - Admin - Email Marketing"
 msgstr "i-MSCP- Amministrazione - Email Marketing"
@@ -6599,8 +6452,8 @@ msgstr ""
 msgid "i-MSCP - Admin/IP Usage"
 msgstr ""
 
-msgid "i-MSCP - Admin/Lostpw email setup"
-msgstr "i-MSCP - Admin/Setup EMail password dimenticata"
+msgid "i-MSCP - Admin/Lost password email setup"
+msgstr ""
 
 msgid "i-MSCP - Admin/Maintenance mode"
 msgstr "i-MSCP - Admin/Modo manutenzione"
