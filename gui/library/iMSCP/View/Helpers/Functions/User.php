@@ -74,7 +74,7 @@ function gen_client_mainmenu($tpl, $menuTemplateFile)
 	}
 
 	if (customerHasFeature('ftp')) {
-		$tpl->assign('TR_MENU_FTP_ACCOUNTS', tr('Ftp Accounts'));
+		$tpl->assign('TR_MENU_FTP_ACCOUNTS', tr('Ftp accounts'));
 	} else {
 		$tpl->assign('FTP_FEATURE', '');
 	}
@@ -190,7 +190,7 @@ function gen_client_menu($tpl, $menuTemplateFile)
 			array(
 				 'TR_LMENU_ADD_FTP_USER' => tr('Add FTP user'),
 				 'TR_LMENU_FILEMANAGER' => tr('Filemanager'),
-				 'TR_LMENU_FTP_ACCOUNTS' => tr('FTP Accounts'),
+				 'TR_LMENU_FTP_ACCOUNTS' => tr('FTP accounts'),
 				 'FILEMANAGER_PATH' => $cfg->FILEMANAGER_PATH,
 				 'FILEMANAGER_TARGET' => $cfg->FILEMANAGER_TARGET));
 	} else {

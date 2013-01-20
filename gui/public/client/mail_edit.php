@@ -241,7 +241,7 @@ function client_UpdateMailAccount($mailAccountData)
 			set_page_message(tr('Mail account scheduled for update.'), 'success');
 			write_log("{$_SESSION['user_logged']}: updated mail account: {$mailAccountData['mail_addr']}", E_USER_NOTICE);
 		} else {
-			set_page_message(tr("Nothing's been changed."), 'info');
+			set_page_message(tr("Nothing has been changed."), 'info');
 		}
 
 		return true;

@@ -772,7 +772,7 @@ function admin_checkAndUpdateData($domainId, $recoveryMode = false)
 
 			// Nothing's been changed?
 			if ($newValues == $oldValues && $phpEditorNew == $phpEditorOld) {
-				set_page_message(tr("Nothing's been changed."), 'info');
+				set_page_message(tr("Nothing has been changed."), 'info');
 				return true;
 			}
 

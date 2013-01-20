@@ -57,7 +57,7 @@ function admin_generatePage($tpl)
 		}
 	} else {
 		$tpl->assign('RESELLER_STATISTICS_ENTRIES_BLOCK', '');
-		set_page_message('No reseller statistics to display.');
+		set_page_message('{TR_NO_RESELLER_STATISTICS}');
 	}
 }
 
@@ -162,6 +162,7 @@ $tpl->assign(
 		'TR_SQL_DB' => tr('SQL databases'),
 		'TR_SQL_USER' => tr('SQL users'),
 		'TR_RESELLER_TOOLTIP' => tr('Show detailed statistics for this reseller'),
+		'TR_NO_RESELLER_STATISTICS' => tr('No reseller statistics to display.'),
 		'DATATABLE_TRANSLATIONS' => getDataTablesPluginTranslations()));
 
 generateNavigation($tpl);

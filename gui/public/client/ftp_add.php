@@ -416,7 +416,7 @@ function add_ftp_user($dmn_name)
 		$res = $vfs->exists($ftp_vhome);
 
 		if (!$res) {
-			set_page_message(tr('%s does not exist', $ftp_vhome), 'error');
+			set_page_message(tr("%s doesn't exist", $ftp_vhome), 'error');
 			return;
 		}
 	} // End of user-specified mount-point

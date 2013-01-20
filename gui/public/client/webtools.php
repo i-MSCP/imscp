@@ -107,7 +107,7 @@ $tpl->assign(
 		'TR_FILEMANAGER_TXT' => tr('Access your files through the web interface.'),
 		'TR_AWSTATS' => tr('Awstats'),
 		'TR_AWSTATS_TXT' => tr('Access your domain statistics through the Awstats Web interface.'),
-		'TR_APP_INSTALLER' => 'Application installer',
+		'TR_APP_INSTALLER' => tr('Application installer'),
 		'TR_APP_INSTALLER_TXT' => tr('Install various Web applications with a few clicks.')));
 
 generateNavigation($tpl);

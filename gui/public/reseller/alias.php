@@ -215,7 +215,7 @@ function generate_als_list($tpl, $reseller_id)
 		}
 
 		if (isset($_SESSION['search_for'])) {
-            set_page_message(tr('Not found user records matching the search criteria', 'info'));
+            set_page_message(tr('Not found user records matching the search criteria.', 'info'));
 		} else {
 			if (isset($_SESSION['almax'])) {
 				if ($_SESSION['almax'] === '_yes_') {

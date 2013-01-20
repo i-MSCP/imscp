@@ -646,7 +646,7 @@ class iMSCP_SystemInfo {
 			$result = file_get_contents($filename);
 		} else {
 			$this->_error = tr(
-				'File %s does not exists or cannot be reached!',
+				"File %s doesn't exists or cannot be reached!",
 				$filename
 			);
 

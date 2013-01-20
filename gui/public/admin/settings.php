@@ -199,7 +199,7 @@ if (isset($_POST['uaction']) && $_POST['uaction'] == 'apply') {
 		}
 
 		if ($new_count == 0 && $updt_count == 0) {
-			set_page_message(tr("Nothing's been changed."), 'info');
+			set_page_message(tr("Nothing has been changed."), 'info');
 		}
 	}
 

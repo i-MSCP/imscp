@@ -80,7 +80,7 @@ if (!empty($_POST)) {
 
 		set_page_message(tr('Language successfully updated.'), 'success');
 	} else {
-		set_page_message(tr("Nothing's been changed."), 'info');
+		set_page_message(tr("Nothing has been changed."), 'info');
 	}
 
 	// Force update on next load

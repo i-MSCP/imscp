@@ -101,7 +101,7 @@ class iMSCP_NetworkCard
     public function read($filename)
     {
         if (($result = @file_get_contents($filename)) === false) {
-            $this->_errors .= sprintf(tr('File %s does not exists or cannot be reached!'),
+            $this->_errors .= sprintf(tr("File %s doesn't exists or cannot be reached!"),
                                       $filename);
 
             return '';
