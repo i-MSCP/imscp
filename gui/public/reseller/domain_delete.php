@@ -316,7 +316,7 @@ if (isset($_GET['domain_id']) && !empty($_GET['domain_id'])) {
 	exit; // Avoid IDE warning
 } else {
     if (isset($_GET['delete'])) {
-        set_page_message(tr('Wrong domain Id.'), 'error');
+        set_page_message(tr('Wrong domain ID.'), 'error');
     } else {
         set_page_message(tr('You must confirm domain deletion.'), 'error');
         redirectTo('domain_delete.php?domain_id=' . intval($_POST['domain_id']));

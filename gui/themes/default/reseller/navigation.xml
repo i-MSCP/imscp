@@ -31,7 +31,7 @@
 <config>
 	<navigation>
 		<general_information>
-			<label>General Information</label>
+			<label>General information</label>
 			<uri>/reseller/index.php</uri>
 			<class>general</class>
 			<pages>
@@ -217,7 +217,7 @@
 					</pages>
 				</customer_statistics>
 				<ip_usage>
-					<label>IPs usage</label>
+					<label>IP usage</label>
 					<uri>/reseller/ip_usage.php</uri>
 					<title_class>stats</title_class>
 				</ip_usage>

@@ -119,18 +119,18 @@ function check_user_data()
     $sender_name = clean_input($_POST['sender_name'], false);
 
     if (empty($msg_subject)) {
-        $err_message .= tr('Please specify a message subject!') . '<br />';
+        $err_message .= tr('Please specify a message subject.') . '<br />';
     }
     if (empty($msg_text)) {
-        $err_message .= tr('Please specify a message content!') . '<br />';
+        $err_message .= tr('Please specify a message content.') . '<br />';
     }
     if (empty($sender_name)) {
-        $err_message .= tr('Please specify a sender name!') . '<br />';
+        $err_message .= tr('Please specify a sender name.') . '<br />';
     }
     if (empty($sender_email)) {
-        $err_message .= tr('Please specify a sender email!') . '<br />';
+        $err_message .= tr('Please specify a sender email.') . '<br />';
     } else if (!chk_email($sender_email)) {
-        $err_message .= tr("Incorrect email length or syntax!");
+        $err_message .= tr("Incorrect email length or syntax.");
     }
 
     if (!empty($err_message)) {

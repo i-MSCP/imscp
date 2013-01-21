@@ -103,7 +103,7 @@ $tpl->assign(
 		'TR_BACKUP_TXT' => tr('Backup and restore settings.'),
 		'TR_WEBMAIL' => tr('Webmail'),
 		'TR_WEBMAIL_TXT' => tr('Access your mail through the web interface.'),
-		'TR_FILEMANAGER' => tr('Filemanager'),
+		'TR_FILEMANAGER' => tr('FileManager'),
 		'TR_FILEMANAGER_TXT' => tr('Access your files through the web interface.'),
 		'TR_AWSTATS' => tr('Awstats'),
 		'TR_AWSTATS_TXT' => tr('Access your domain statistics through the Awstats Web interface.'),

@@ -427,7 +427,7 @@ function get_avail_softwaredepot($tpl)
 				if ($rs->fields['swstatus'] == 'toadd') {
 					$del_url = 'software_delete.php?id=' . $rs->fields['id'];
 					$tpl->assign(array(
-									  'TR_NAME' => tr('Installing your uploaded package. Please refresh this site.'),
+									  'TR_NAME' => tr('Installing your uploaded package. Please refresh this page.'),
 									  'LINK_COLOR' => '#FF0000',
 									  'TR_VERSION' => '',
 									  'TR_LANGUAGE' => '',
@@ -666,7 +666,7 @@ function get_installed_res_software($tpl, $reseller_id)
 
 		if ($reseller->recordCount() > 0) {
 			$tpl->assign(array(
-							  'NO_SOFTWAREDEPOT' => tr('No software available!'),
+							  'NO_SOFTWAREDEPOT' => tr('No software available'),
 							  'TR_SOFTWARE_DEPOT' => tr('%1$s`s - Software', $reseller->fields['admin']),
 							  'TR_SOFTWARE_IMPORT' => tr('Depot import'),
 							  'TR_SOFTWARE_DELETE' => tr('Delete')));
@@ -1190,7 +1190,7 @@ function get_avail_software_reseller($tpl, $user_id)
 					if ($rs->fields['swstatus'] == "toadd") {
 						$url = "software_delete.php?id=" . $rs->fields['id'];
 						$tpl->assign(array(
-										  'SW_NAME' => tr('Installing your uploaded package. Please refresh the site.'),
+										  'SW_NAME' => tr('Installing your uploaded package. Please refresh this page.'),
 										  'LINK_COLOR' => '#FF0000',
 										  'SW_VERSION' => '',
 										  'SW_LANGUAGE' => '',
@@ -1564,7 +1564,7 @@ function check_is_installed($tpl, $dmn_id, $software_id)
 						  'SOFTWARE_STATUS' => tr('installed'),
 						  'SOFTWARE_INSTALL_PATH' => $is_inst->fields['path'],
 						  'SOFTWARE_INSTALL_DATABASE' => $is_inst->fields['db'],
-						  'TR_SOFTWARE_INFO' => tr('Installation infos'),
+						  'TR_SOFTWARE_INFO' => tr('Installation details'),
 						  'TR_SOFTWARE_STATUS' => tr('Software status:'),
 						  'TR_SOFTWARE_INSTALL_PATH' => tr('Installation path:'),
 						  'TR_SOFTWARE_INSTALL_DATABASE' => tr('Used database:'),

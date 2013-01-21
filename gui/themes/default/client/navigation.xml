@@ -31,7 +31,7 @@
 <config>
 	<navigation>
 		<general_information>
-			<label>General Information</label>
+			<label>General information</label>
 			<uri>/client/index.php</uri>
 			<class>general</class>
 			<pages>
@@ -183,7 +183,7 @@
 		</databases>
 
 		<mail_account>
-			<label>Mail Accounts</label>
+			<label>Mail accounts</label>
 			<uri>/client/mail_accounts.php</uri>
 			<class>email</class>
 			<privilege_callback name="customerHasFeature" param="mail"/>

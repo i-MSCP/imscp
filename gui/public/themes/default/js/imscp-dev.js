@@ -330,7 +330,7 @@ function MM_jumpMenu(targ,selObj,restore) {
 }
 
 // copied from reseller/alias_add.tpl + client/alias_add.tpl
-var emptyData	= 'Empty data or wrong field!';
+var emptyData	= 'Empty data or wrong field.';
 var wdname		= 'Wrong domain name!';
 var mpointError	= 'Please write mount point!';
 

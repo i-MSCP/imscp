@@ -169,7 +169,7 @@ $tpl->assign(
 		'TR_PHPMYADMIN' => tr('phpMyAdmin'),
 		'TR_DATABASE_USERS' => tr('Database users'),
 		'TR_ADD_USER' => tr('Add SQL user'),
-		'TR_LOGIN_PMA' => tr('Login into PhpMyAdmin'),
+		'TR_LOGIN_PMA' => tr('Login into phpMyAdmin'),
 		'TR_DATABASE_MESSAGE_DELETE' => tr("This database will be permanently deleted. This process cannot be recovered. All users linked to this database will also be deleted if not linked to another database. Are you sure you want to delete the '%s' database?", true, '%s'),
 		'TR_USER_MESSAGE_DELETE' => tr("Are you sure you want delete the '%s' SQL user?", true, '%s'),
 		'PMA_TARGET' => $cfg->PMA_TARGET));

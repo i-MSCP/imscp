@@ -480,7 +480,7 @@ function check_ftp_acc_data($tpl, $dmn_id, $dmn_name) {
 		if ($cfg->PASSWD_STRONG) {
 			set_page_message(sprintf(tr('The password must be at least %s long and contain letters and numbers to be valid.'), $cfg->PASSWD_CHARS), 'error');
 		} else {
-			set_page_message(sprintf(tr('Password data is shorter than %s signs or includes not permitted signs!'), $cfg->PASSWD_CHARS), 'error');
+			set_page_message(sprintf(tr('Password data is shorter than %s signs or includes not permitted signs.'), $cfg->PASSWD_CHARS), 'error');
 		}
 		return;
 	}

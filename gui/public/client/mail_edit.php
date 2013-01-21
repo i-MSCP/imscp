@@ -158,7 +158,7 @@ function client_UpdateMailAccount($mailAccountData)
 			if ($cfg->PASSWD_STRONG) {
 				set_page_message(tr('The password must be at least %s long and contain letters and numbers to be valid.', $cfg->PASSWD_CHARS), 'error');
 			} else {
-				set_page_message(tr('Password is shorter than %s signs or includes not permitted signs.', $cfg->PASSWD_CHARS), 'error');
+				set_page_message(tr('Password data is shorter than %s signs or includes not permitted signs.', $cfg->PASSWD_CHARS), 'error');
 			}
 		}
 

@@ -445,7 +445,7 @@ function user_trans_mail_type($mail_type)
     } else if ($mail_type === MT_ALIAS_CATCHALL) {
         return tr('Domain mail');
     } else {
-        return tr('Unknown type');
+        return tr('Unknown type.');
     }
 }
 

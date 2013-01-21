@@ -260,7 +260,7 @@ $tpl->assign(
 		'TR_ADD_USER' => tr('Add user'),
 		'TR_CORE_DATA' => tr('Core data'),
 		'TR_DOMAIN_NAME' => tr('Domain name'),
-		'TR_DOMAIN_EXPIRE' => tr('Domain expire date'),
+		'TR_DOMAIN_EXPIRE' => tr('Domain expiration date'),
 		'TR_EXPIRE_CHECKBOX' => tr('or Check for <strong>never Expire</strong>'),
 		'TR_CHOOSE_HOSTING_PLAN' => tr('Choose hosting plan'),
 		'TR_PERSONALIZE_TEMPLATE' => tr('Personalise template'),

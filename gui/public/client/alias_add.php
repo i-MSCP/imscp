@@ -192,7 +192,7 @@ function add_domain_alias()
 	$alias_name = encode_idna($alias_name);
 
 	if (imscp_domain_exists($alias_name, 0)) {
-		set_page_message(tr('Domain with that name already exists on the system.'), 'error');
+		set_page_message(tr('Domain with same name already exists.'), 'error');
 	} elseif (!validates_mpoint($mount_point)) {
 		set_page_message(tr('Incorrect mount point syntax.'), 'error');
 	} elseif(!_client_isAllowedMountPoint($mount_point, $domain_id)) {
@@ -252,7 +252,7 @@ function add_domain_alias()
 
 		if ($res->rowCount() || $res2->rowCount()) {
 			// we already have domain with this name
-			set_page_message(tr('Domain with this name already exist.'), 'error');
+			set_page_message(tr('Domain with same name already exists.'), 'error');
 		}
 
 		$query = "

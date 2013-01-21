@@ -214,7 +214,7 @@ function add_domain_alias()
     $alias_name = encode_idna($alias_name);
 
     if (imscp_domain_exists($alias_name, $_SESSION['user_id'])) {
-        set_page_message(tr('Domain with that name already exists on the system.'), 'error');
+        set_page_message(tr('Domain with same name already exists.'), 'error');
     } elseif (!validates_mpoint($mount_point)) {
        set_page_message(tr('Incorrect mount point syntax.'), 'error');
 	} elseif(!_reseller_isAllowedMountPoint($mount_point, $cr_user_id)) {
@@ -473,7 +473,7 @@ if (!is_xhr()) {
 			'TR_FORWARD' => tr('Forward to URL'),
 			'TR_ADD' => tr('Add alias'),
 			'TR_DMN_HELP' => tr("You do not need 'www.' i-MSCP will add it automatically."),
-			'TR_JS_EMPTYDATA' => tr("Empty data or wrong field!"),
+			'TR_JS_EMPTYDATA' => tr("Empty data or wrong field."),
 			'TR_JS_WDNAME' => tr("Wrong domain name!"),
 			'TR_JS_MPOINTERROR' => tr("Please write mount point!"),
 			'TR_ENABLE_FWD' => tr("Enable Forward"),
