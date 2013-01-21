@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2013-01-20 16:04+0100\n"
-"PO-Revision-Date: 2013-01-20 15:05+0000\n"
+"POT-Creation-Date: 2013-01-21 21:39+0100\n"
+"PO-Revision-Date: 2013-01-21 20:40+0000\n"
 "Last-Translator: Torsten Widmann <info@goover.de>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -1029,9 +1029,6 @@ msgstr ""
 msgid "AwStats"
 msgstr ""
 
-msgid "Awaiting Activation"
-msgstr ""
-
 msgid "Awaiting activation"
 msgstr ""
 
@@ -1674,16 +1671,13 @@ msgstr ""
 msgid "Disk limit"
 msgstr ""
 
-msgid "Disk limit [MB]<br><i>(0 unlimited)</i>"
-msgstr ""
-
 msgid "Disk limit [MiB]<br/><span class=\"italic\">(0 unlimited)</span>"
 msgstr ""
 
-msgid "Disk limit [MiB]<br><i>(0 unlimited)</i>"
+msgid "Disk limit [MiB]<br/><span class=\\\"italic\\\">(0 unlimited)</span>"
 msgstr ""
 
-msgid "Disk space limit [MiB] <br /><span class=\"italic\">(0 unlimited)</span>"
+msgid "Disk limit [MiB]<br><i>(0 unlimited)</i>"
 msgstr ""
 
 msgid "Disk usage"
@@ -1792,11 +1786,6 @@ msgid "Domain alias successfully scheduled for deletion."
 msgstr ""
 
 msgid ""
-"Domain alias you are trying to remove has FTP accounts.<br>First remove them"
-" first."
-msgstr ""
-
-msgid ""
 "Domain alias you are trying to remove has FTP accounts.<br>First remove "
 "them."
 msgstr ""
@@ -1804,11 +1793,6 @@ msgstr ""
 msgid ""
 "Domain alias you are trying to remove has custom DNS records!<br>First "
 "remove them!"
-msgstr ""
-
-msgid ""
-"Domain alias you are trying to remove has email accounts !<br>First remove "
-"them!"
 msgstr ""
 
 msgid ""
@@ -1824,11 +1808,6 @@ msgid "Domain aliases"
 msgstr ""
 
 msgid "Domain aliases limit reached."
-msgstr ""
-
-msgid ""
-"Domain aliases limit<br /><span class=\"italic\">(-1 disabled, 0 "
-"unlimited)</span>"
 msgstr ""
 
 msgid ""
@@ -1869,13 +1848,10 @@ msgstr ""
 msgid "Domain errors"
 msgstr ""
 
+msgid "Domain expiration date"
+msgstr ""
+
 msgid "Domain expiration date must be filled."
-msgstr ""
-
-msgid "Domain expire date"
-msgstr ""
-
-msgid "Domain expires date"
 msgstr ""
 
 msgid "Domain mail"
@@ -1890,7 +1866,7 @@ msgstr ""
 msgid "Domain names validation"
 msgstr ""
 
-msgid "Domain new expires date"
+msgid "Domain new expiration date"
 msgstr ""
 
 msgid "Domain not found."
@@ -1921,12 +1897,6 @@ msgid "Domain successfully updated."
 msgstr ""
 
 msgid "Domain with same name already exists."
-msgstr ""
-
-msgid "Domain with that name already exists on the system."
-msgstr ""
-
-msgid "Domain with this name already exist."
 msgstr ""
 
 msgid ""
@@ -2066,16 +2036,10 @@ msgstr ""
 msgid "Email setup"
 msgstr ""
 
-msgid "Emailadress"
-msgstr ""
-
 msgid "Emails"
 msgstr ""
 
 msgid "Empty List"
-msgstr ""
-
-msgid "Empty data or wrong field!"
 msgstr ""
 
 msgid "Empty data or wrong field."
@@ -2180,9 +2144,6 @@ msgid "Expire time for unconfirmed orders<br /><small>(In days)</small>"
 msgstr ""
 
 msgid "External Mail Host"
-msgstr ""
-
-msgid "External Mail Servers"
 msgstr ""
 
 msgid "External mail server"
@@ -2308,9 +2269,6 @@ msgstr ""
 msgid "First name"
 msgstr ""
 
-msgid "Firstname"
-msgstr ""
-
 msgid "Footer"
 msgstr ""
 
@@ -2359,9 +2317,6 @@ msgstr ""
 msgid "Ftp accounts"
 msgstr ""
 
-msgid "Ftp accounts limit<br><i>(-1 disabled, 0 unlimited)</i>"
-msgstr ""
-
 msgid "Ftp user data"
 msgstr ""
 
@@ -2372,9 +2327,6 @@ msgid "GB"
 msgstr ""
 
 msgid "Gender"
-msgstr ""
-
-msgid "General Information"
 msgstr ""
 
 msgid "General information"
@@ -2473,16 +2425,13 @@ msgstr ""
 msgid "Hosting plans"
 msgstr ""
 
+msgid "Hosting plans are not found."
+msgstr ""
+
 msgid "Hosting plans available for"
 msgstr ""
 
 msgid "Hosting plans available for update"
-msgstr ""
-
-msgid "Hosting plans not found!"
-msgstr ""
-
-msgid "Hosting plans not found."
 msgstr ""
 
 msgid "Hour"
@@ -2550,9 +2499,6 @@ msgstr ""
 msgid "IP usage"
 msgstr ""
 
-msgid "IPs usage"
-msgstr ""
-
 msgid "IPv6 address"
 msgstr ""
 
@@ -2584,8 +2530,8 @@ msgid "Import in local repository"
 msgstr ""
 
 msgid ""
-"In case domain expires date is 'N/A', the expiration date will be set from "
-"today."
+"In case domain expiration date is 'N/A', the expiration date will be set "
+"from today."
 msgstr ""
 
 msgid "In front the name"
@@ -2613,9 +2559,6 @@ msgstr ""
 msgid "Incorrect disk quota limit."
 msgstr ""
 
-msgid "Incorrect email length or syntax!"
-msgstr ""
-
 msgid "Incorrect email length or syntax."
 msgstr ""
 
@@ -2624,9 +2567,6 @@ msgid "Incorrect limit for %s."
 msgstr ""
 
 msgid "Incorrect mail accounts limit."
-msgstr ""
-
-msgid "Incorrect mount point length or syntax"
 msgstr ""
 
 msgid "Incorrect mount point length or syntax."
@@ -2677,9 +2617,6 @@ msgstr ""
 msgid "Installation details"
 msgstr ""
 
-msgid "Installation infos"
-msgstr ""
-
 msgid "Installation path:"
 msgstr ""
 
@@ -2695,10 +2632,7 @@ msgstr ""
 msgid "Installed on"
 msgstr ""
 
-msgid "Installing your uploaded package. Please refresh the site."
-msgstr ""
-
-msgid "Installing your uploaded package. Please refresh this site."
+msgid "Installing your uploaded package. Please refresh this page."
 msgstr ""
 
 msgid "Instructions to download today's backup"
@@ -2822,9 +2756,6 @@ msgstr ""
 msgid "Last translator"
 msgstr ""
 
-msgid "Lastname"
-msgstr ""
-
 msgid "Layout"
 msgstr ""
 
@@ -2871,10 +2802,7 @@ msgstr ""
 msgid "Login data successfully sent to %s."
 msgstr ""
 
-msgid "Login into PhpMyAdmin"
-msgstr ""
-
-msgid "Login into PḧpMyAdmin"
+msgid "Login into phpMyAdmin"
 msgstr ""
 
 msgid "Login into the filemanager"
@@ -2913,6 +2841,9 @@ msgstr ""
 msgid "Lost password e-mail"
 msgstr ""
 
+msgid "Lost password email"
+msgstr ""
+
 msgid "Lost password email setup"
 msgstr ""
 
@@ -2920,9 +2851,6 @@ msgid "Lost password link"
 msgstr ""
 
 msgid "Lost password mail"
-msgstr ""
-
-msgid "Lostpw email"
 msgstr ""
 
 msgid "Lostpw link"
@@ -2936,9 +2864,6 @@ msgstr ""
 
 msgid "Mail"
 msgstr "e-mail"
-
-msgid "Mail Accounts"
-msgstr ""
 
 msgid "Mail Log Level"
 msgstr ""
@@ -2971,14 +2896,6 @@ msgid "Mail account scheduled for update."
 msgstr ""
 
 msgid "Mail accounts"
-msgstr ""
-
-msgid ""
-"Mail accounts limit <br /><span class=\"italic\">(-1 disabled, 0 "
-"unlimited)</span>"
-msgstr ""
-
-msgid "Mail accounts limit reached!"
 msgstr ""
 
 msgid "Mail accounts limit reached."
@@ -3125,11 +3042,6 @@ msgstr ""
 msgid "Max. remote filesize (%1$d MB) is reached. Your remote file is %2$d MB"
 msgstr ""
 
-#, php-format
-msgid ""
-"Max. remote filesize (%1$d MB) is reached. Your remote file ist %2$d MB"
-msgstr ""
-
 msgid ""
 "Maximal number of labels for domain names<br />(<small>Excluding SLD & "
 "TLD</small>)"
@@ -3239,9 +3151,6 @@ msgid "New alias order for {CUSTOMER}"
 msgstr ""
 
 msgid "New i-MSCP update is available"
-msgstr ""
-
-msgid "New i-MSCP update is now available"
 msgstr ""
 
 msgid "New order"
@@ -3364,9 +3273,6 @@ msgid "No set"
 msgstr ""
 
 msgid "No software available"
-msgstr ""
-
-msgid "No software available!"
 msgstr ""
 
 msgid "No software in software depot available!"
@@ -3700,19 +3606,10 @@ msgstr ""
 
 #, php-format
 msgid ""
-"Password data is shorter than %s signs or includes not permitted signs!"
-msgstr ""
-
-#, php-format
-msgid ""
 "Password data is shorter than %s signs or includes not permitted signs."
 msgstr ""
 
 msgid "Password is missing."
-msgstr ""
-
-#, php-format
-msgid "Password is shorter than %s signs or includes not permitted signs."
 msgstr ""
 
 msgid "Password length"
@@ -3842,37 +3739,16 @@ msgid ""
 "Application. (Required fiels!)"
 msgstr ""
 
-msgid "Please specify a message content!"
-msgstr ""
-
 msgid "Please specify a message content."
-msgstr ""
-
-msgid "Please specify a message subject!"
 msgstr ""
 
 msgid "Please specify a message subject."
 msgstr ""
 
-msgid "Please specify a sender email!"
-msgstr ""
-
 msgid "Please specify a sender email."
 msgstr ""
 
-msgid "Please specify a sender name!"
-msgstr ""
-
 msgid "Please specify a sender name."
-msgstr ""
-
-msgid "Please specify a subject!"
-msgstr ""
-
-msgid "Please specify message subject."
-msgstr ""
-
-msgid "Please specify message!"
 msgstr ""
 
 msgid "Please specify other FTP account directory!"
@@ -4020,9 +3896,6 @@ msgstr ""
 msgid "Protected"
 msgstr ""
 
-msgid "Protected Areas"
-msgstr ""
-
 msgid "Protected area status should be 'OK' if you want to delete it."
 msgstr ""
 
@@ -4165,9 +4038,6 @@ msgstr ""
 msgid "Reseller list"
 msgstr ""
 
-msgid "Reseller list is empty!"
-msgstr ""
-
 msgid "Reseller list is empty."
 msgstr ""
 
@@ -4282,9 +4152,6 @@ msgid "SQL databases limit is <i>disabled</i>."
 msgstr ""
 
 msgid "SQL databases limit is disabled but SQL users limit is not."
-msgstr ""
-
-msgid "SQL databases limit is disabled but SQL users limit not."
 msgstr ""
 
 msgid "SQL databases limit is not <i>disabled</i>."
@@ -4667,16 +4534,10 @@ msgstr ""
 msgid "Sql databases"
 msgstr ""
 
-msgid "Sql databases limit<br><i>(-1 disabled, 0 unlimited)</i>"
-msgstr ""
-
 msgid "Sql user"
 msgstr ""
 
 msgid "Sql users"
-msgstr ""
-
-msgid "Sql users limit<br><i>(-1 disabled, 0 unlimited)</i>"
 msgstr ""
 
 msgid "Start installation"
@@ -5338,9 +5199,6 @@ msgstr ""
 msgid "Unable to move file."
 msgstr ""
 
-msgid "Unable to read xml file for Web softwares."
-msgstr ""
-
 msgid "Unable to read xml file for web softwares."
 msgstr ""
 
@@ -5400,9 +5258,6 @@ msgstr ""
 msgid "Unknown subdomain type."
 msgstr ""
 
-msgid "Unknown type"
-msgstr ""
-
 msgid "Unknown type."
 msgstr ""
 
@@ -5426,9 +5281,6 @@ msgid "Update"
 msgstr ""
 
 msgid "Update SQL user password"
-msgstr ""
-
-msgid "Update checking is disabled!"
 msgstr ""
 
 msgid "Update checking is disabled."
@@ -5755,9 +5607,6 @@ msgstr ""
 msgid "Wrong domain ID."
 msgstr ""
 
-msgid "Wrong domain Id."
-msgstr ""
-
 msgid "Wrong domain name lenght!"
 msgstr ""
 
@@ -5870,9 +5719,6 @@ msgid "You are exceeding your FTP accounts limit."
 msgstr ""
 
 msgid "You are exceeding your SQL database limit."
-msgstr ""
-
-msgid "You are exceeding your SQL databases limit."
 msgstr ""
 
 msgid "You are exceeding your disk limit."
@@ -6696,7 +6542,7 @@ msgstr ""
 msgid "i-MSCP - Reseller/IP Usage"
 msgstr ""
 
-msgid "i-MSCP - Reseller/Lostpw email setup"
+msgid "i-MSCP - Reseller/Lost password email setup"
 msgstr ""
 
 msgid "i-MSCP - Reseller/Manage users/Email setup"

@@ -15,8 +15,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2013-01-20 16:04+0100\n"
-"PO-Revision-Date: 2013-01-20 15:05+0000\n"
+"POT-Creation-Date: 2013-01-21 21:39+0100\n"
+"PO-Revision-Date: 2013-01-21 20:40+0000\n"
 "Last-Translator: Torsten Widmann <info@goover.de>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -1037,9 +1037,6 @@ msgstr "Programari disponible"
 msgid "AwStats"
 msgstr "AwStats"
 
-msgid "Awaiting Activation"
-msgstr "Esperant activació"
-
 msgid "Awaiting activation"
 msgstr "Esperant activació"
 
@@ -1682,17 +1679,14 @@ msgstr "Disc"
 msgid "Disk limit"
 msgstr "Límit disc"
 
-msgid "Disk limit [MB]<br><i>(0 unlimited)</i>"
-msgstr "Límit de disc<br><i>(0 il·limitat)</i>"
-
 msgid "Disk limit [MiB]<br/><span class=\"italic\">(0 unlimited)</span>"
 msgstr "Quota de disc [MIB]<br><span class=\"italic\">(0 il·limitat)</span>"
 
+msgid "Disk limit [MiB]<br/><span class=\\\"italic\\\">(0 unlimited)</span>"
+msgstr ""
+
 msgid "Disk limit [MiB]<br><i>(0 unlimited)</i>"
 msgstr "Quota de disc [MIB]<br><span class=\"italic\">(0 il·limitat)</span>"
-
-msgid "Disk space limit [MiB] <br /><span class=\"italic\">(0 unlimited)</span>"
-msgstr "Quota de disc [MIB]<br/><span class=\"italic\">(0 il·limitat)</span>"
 
 msgid "Disk usage"
 msgstr "Ús de disc"
@@ -1800,11 +1794,6 @@ msgid "Domain alias successfully scheduled for deletion."
 msgstr "Àlies de domini programat per eliminar."
 
 msgid ""
-"Domain alias you are trying to remove has FTP accounts.<br>First remove them"
-" first."
-msgstr "L'àlies de domini que proveu d'eliminar té comptes FTP actius.<br/>Elimineu aquests comptes abans d'eliminar el domini."
-
-msgid ""
 "Domain alias you are trying to remove has FTP accounts.<br>First remove "
 "them."
 msgstr "L'àlies de domini que voleu eliminar disposa de comptes FTP.<br>Elimineu-los primer i torneu a intentar d'eliminar l'àlies."
@@ -1813,11 +1802,6 @@ msgid ""
 "Domain alias you are trying to remove has custom DNS records!<br>First "
 "remove them!"
 msgstr "L'alies de domini que voleu esborrar té entrades personalitzades de DNS!<br> Primeu les heu d'esborrar!"
-
-msgid ""
-"Domain alias you are trying to remove has email accounts !<br>First remove "
-"them!"
-msgstr "L'àlies de domini que esteu intentant eliminar té comptes de correu!<br> Elimineu-los primer!"
 
 msgid ""
 "Domain alias you are trying to remove has email accounts.<br>First remove "
@@ -1833,11 +1817,6 @@ msgstr "Àlies de domini"
 
 msgid "Domain aliases limit reached."
 msgstr "S'ha assolit el límit d'àlies de domini."
-
-msgid ""
-"Domain aliases limit<br /><span class=\"italic\">(-1 disabled, 0 "
-"unlimited)</span>"
-msgstr "Límit d'àlies de domini<br/><span class=\"italic\">(-1 desactivat, 0 il·limitat)</span>"
 
 msgid ""
 "Domain aliases limit<br/><span class=\"italic\">(-1 disabled, 0 "
@@ -1877,14 +1856,11 @@ msgstr "Adreces de correu"
 msgid "Domain errors"
 msgstr "Errors de domini"
 
+msgid "Domain expiration date"
+msgstr ""
+
 msgid "Domain expiration date must be filled."
 msgstr "Has d'introduïr la data d'expiració del domini."
-
-msgid "Domain expire date"
-msgstr "Data d'expiració del domini"
-
-msgid "Domain expires date"
-msgstr "Data d'expiració"
 
 msgid "Domain mail"
 msgstr "Mail de domini"
@@ -1898,8 +1874,8 @@ msgstr "Nom del domini"
 msgid "Domain names validation"
 msgstr "Validació del nom del domini"
 
-msgid "Domain new expires date"
-msgstr "Nova data d'expiració"
+msgid "Domain new expiration date"
+msgstr ""
 
 msgid "Domain not found."
 msgstr "No s'ha trobat el domini."
@@ -1930,12 +1906,6 @@ msgstr "El domini ha estat actualitzat."
 
 msgid "Domain with same name already exists."
 msgstr "Aquest domini ja està donat d'alta al sistema."
-
-msgid "Domain with that name already exists on the system."
-msgstr "Un domini amb aquest nom ja existeix al sistema. "
-
-msgid "Domain with this name already exist."
-msgstr "Aquest domini ja està registrat al servidor."
 
 msgid ""
 "Domain: Setup an MX record to relay mail of your entire domain (including "
@@ -2074,17 +2044,11 @@ msgstr "Màrqueting per correu"
 msgid "Email setup"
 msgstr "Configurar Email"
 
-msgid "Emailadress"
-msgstr "Adreça d'email"
-
 msgid "Emails"
 msgstr "Correus"
 
 msgid "Empty List"
 msgstr "Llista Buida"
-
-msgid "Empty data or wrong field!"
-msgstr "Dades buides o camp incorrecte"
 
 msgid "Empty data or wrong field."
 msgstr "No hi ha dades o el camp és erroni"
@@ -2188,9 +2152,6 @@ msgid "Expire time for unconfirmed orders<br /><small>(In days)</small>"
 msgstr "Temps d'expiració per les comandes no confirmades<br><small>(en dies)</small>"
 
 msgid "External Mail Host"
-msgstr ""
-
-msgid "External Mail Servers"
 msgstr ""
 
 msgid "External mail server"
@@ -2316,9 +2277,6 @@ msgstr "Omplir un missatge de text."
 msgid "First name"
 msgstr "Nom"
 
-msgid "Firstname"
-msgstr "Nom"
-
 msgid "Footer"
 msgstr "Peu de pàgina"
 
@@ -2367,9 +2325,6 @@ msgstr "Compte Ftp no trobat."
 msgid "Ftp accounts"
 msgstr "comptes FTP"
 
-msgid "Ftp accounts limit<br><i>(-1 disabled, 0 unlimited)</i>"
-msgstr "Limit de comptes Ftp<br><i>(-1 desactivat, 0 il.limitat)</i>"
-
 msgid "Ftp user data"
 msgstr "Dades de l'usuari FTP"
 
@@ -2381,9 +2336,6 @@ msgstr "GB"
 
 msgid "Gender"
 msgstr "Gènere"
-
-msgid "General Information"
-msgstr "Informació General"
 
 msgid "General information"
 msgstr "Informació General"
@@ -2481,17 +2433,14 @@ msgstr "Ja existeix un plà d'hostatge amb el mateix nom."
 msgid "Hosting plans"
 msgstr "Plans de hosting"
 
+msgid "Hosting plans are not found."
+msgstr ""
+
 msgid "Hosting plans available for"
 msgstr "Plans de hosting disponibles per"
 
 msgid "Hosting plans available for update"
 msgstr "Plans de hosting disponibles per a actualització "
-
-msgid "Hosting plans not found!"
-msgstr "No s'han trobat plans de hosting!"
-
-msgid "Hosting plans not found."
-msgstr "No hi ha plans d'allotjament."
 
 msgid "Hour"
 msgstr "Hora"
@@ -2558,9 +2507,6 @@ msgstr "S'ha programat la IP per l'esborrat."
 msgid "IP usage"
 msgstr "Ús de IPs"
 
-msgid "IPs usage"
-msgstr "Ús de la IP"
-
 msgid "IPv6 address"
 msgstr "Adreça IPv6"
 
@@ -2592,9 +2538,9 @@ msgid "Import in local repository"
 msgstr "Importar al repositori local"
 
 msgid ""
-"In case domain expires date is 'N/A', the expiration date will be set from "
-"today."
-msgstr "Si la data d'expiració és 'N/A' s'utilitzarà la data d'avui."
+"In case domain expiration date is 'N/A', the expiration date will be set "
+"from today."
+msgstr ""
 
 msgid "In front the name"
 msgstr "Davant del nom"
@@ -2621,9 +2567,6 @@ msgstr "Límit d'àlies incorrecte."
 msgid "Incorrect disk quota limit."
 msgstr "Límit de disc incorrecte."
 
-msgid "Incorrect email length or syntax!"
-msgstr "Llargada o sintaxi del correu incorrecta"
-
 msgid "Incorrect email length or syntax."
 msgstr "La sintaxi o longitud del correu no són valides."
 
@@ -2633,9 +2576,6 @@ msgstr "Límit incorrecte per a %s."
 
 msgid "Incorrect mail accounts limit."
 msgstr "Límit de comptes de correu incorrecte."
-
-msgid "Incorrect mount point length or syntax"
-msgstr "Llargada o sintaxi del punt de muntatge incorrecta"
 
 msgid "Incorrect mount point length or syntax."
 msgstr "Punt de montatge incorrecte."
@@ -2685,9 +2625,6 @@ msgstr "Instal·lar diverses aplicacions amb uns pocs clics."
 msgid "Installation details"
 msgstr "Detalls de la instal·lació"
 
-msgid "Installation infos"
-msgstr "Informació de la instal.lació"
-
 msgid "Installation path:"
 msgstr "Ruta de  la instal.lació:"
 
@@ -2703,11 +2640,8 @@ msgstr "Instal.lat al magatzem de programari"
 msgid "Installed on"
 msgstr "Instal·lat el"
 
-msgid "Installing your uploaded package. Please refresh the site."
-msgstr "Instal.lant el paquet que has carregat. Siusplau refresca el lloc."
-
-msgid "Installing your uploaded package. Please refresh this site."
-msgstr "Instal.lant el paquet que has carregat. Siusplau refresca aquest lloc."
+msgid "Installing your uploaded package. Please refresh this page."
+msgstr ""
 
 msgid "Instructions to download today's backup"
 msgstr "Instruccions per descarregar el backup diari"
@@ -2830,9 +2764,6 @@ msgstr "Última resposta"
 msgid "Last translator"
 msgstr "Últim traductor"
 
-msgid "Lastname"
-msgstr "Cognoms"
-
 msgid "Layout"
 msgstr "Presentació"
 
@@ -2879,11 +2810,8 @@ msgstr "Identificarse com"
 msgid "Login data successfully sent to %s."
 msgstr "Les dades de connexió han estat enviades a %s."
 
-msgid "Login into PhpMyAdmin"
-msgstr "Iniciar sessio al PhpMyAdmin"
-
-msgid "Login into PḧpMyAdmin"
-msgstr "Entrar al phpMyAdmin"
+msgid "Login into phpMyAdmin"
+msgstr ""
 
 msgid "Login into the filemanager"
 msgstr "Entrar al gestor d'arxius web"
@@ -2921,6 +2849,9 @@ msgstr "Contrasenya perduda"
 msgid "Lost password e-mail"
 msgstr "Contrasenya de correu perduda"
 
+msgid "Lost password email"
+msgstr ""
+
 msgid "Lost password email setup"
 msgstr ""
 
@@ -2929,9 +2860,6 @@ msgstr "Link de contrasenya perduda"
 
 msgid "Lost password mail"
 msgstr "Correu de contrasenya perduda"
-
-msgid "Lostpw email"
-msgstr "pèrdua de contrasenya de correu"
 
 msgid "Lostpw link"
 msgstr "Link Pèrdua de contrasenya de correu"
@@ -2944,9 +2872,6 @@ msgstr "MB"
 
 msgid "Mail"
 msgstr "Correu"
-
-msgid "Mail Accounts"
-msgstr "Comptes de Correu"
 
 msgid "Mail Log Level"
 msgstr "Nivell de registre (log) de mail"
@@ -2980,14 +2905,6 @@ msgstr "Compte d'email programat per a ésser actualitzat."
 
 msgid "Mail accounts"
 msgstr "Comptes de correu"
-
-msgid ""
-"Mail accounts limit <br /><span class=\"italic\">(-1 disabled, 0 "
-"unlimited)</span>"
-msgstr "Límit de comptes de correu <br/><span class=\"italic\">(-1 disabled, 0 unlimited)</span>"
-
-msgid "Mail accounts limit reached!"
-msgstr "S'ha arribat al límit de comptes de correu!"
 
 msgid "Mail accounts limit reached."
 msgstr "S'ha superat el límit de comptes d'email."
@@ -3133,11 +3050,6 @@ msgstr "Valor màxim per la directiva PHP %s"
 msgid "Max. remote filesize (%1$d MB) is reached. Your remote file is %2$d MB"
 msgstr "S'ha arribat a la mida màxima del fitxer remot (%1$d MB). El vostre fitxewr remot és de  %2$d MB"
 
-#, php-format
-msgid ""
-"Max. remote filesize (%1$d MB) is reached. Your remote file ist %2$d MB"
-msgstr "L'arxiu remot ocupa %2$d MB, mentre que el tamany màxim permès és de %1$d MB."
-
 msgid ""
 "Maximal number of labels for domain names<br />(<small>Excluding SLD & "
 "TLD</small>)"
@@ -3248,9 +3160,6 @@ msgstr "Nova ordre d'àlies per a {CUSTOMER}"
 
 msgid "New i-MSCP update is available"
 msgstr "Hi ha una actualització de i-MSCP disponibles"
-
-msgid "New i-MSCP update is now available"
-msgstr "Una nova actualització de i-MSCP està disponible"
 
 msgid "New order"
 msgstr "Nova petició"
@@ -3373,9 +3282,6 @@ msgstr "No establert"
 
 msgid "No software available"
 msgstr "No hi ha programari disponible"
-
-msgid "No software available!"
-msgstr "No hi ha programari disponible!"
 
 msgid "No software in software depot available!"
 msgstr "No hi ha programari disponible al magatzem de programari!"
@@ -3708,20 +3614,11 @@ msgstr "No hi ha informació de la contrasenya."
 
 #, php-format
 msgid ""
-"Password data is shorter than %s signs or includes not permitted signs!"
-msgstr "La contrasenya té menys de %s caràcters o inclou caràcters no permesos!"
-
-#, php-format
-msgid ""
 "Password data is shorter than %s signs or includes not permitted signs."
 msgstr "La contrasenya és més curta de %s caràcters o inclou caràcters no permesos."
 
 msgid "Password is missing."
 msgstr "Introduïu la contrasenya per aquest usuari."
-
-#, php-format
-msgid "Password is shorter than %s signs or includes not permitted signs."
-msgstr "La contrasenya és més curta del mínim permès (%s caràcters) o inclou caràcters no vàlids."
 
 msgid "Password length"
 msgstr "Mida de la contrasenya"
@@ -3850,38 +3747,17 @@ msgid ""
 "Application. (Required fiels!)"
 msgstr "Si us plau, estableix ara el nom d'usuari i contrasenya per a l'inici de sessió més endavant en l'aplicació. (Camps obligatoris!)"
 
-msgid "Please specify a message content!"
-msgstr "Si us plau especifica el contingut del missatge!"
-
 msgid "Please specify a message content."
 msgstr "Introduïu el contingut del missatge."
-
-msgid "Please specify a message subject!"
-msgstr "Si us plau especifica l'assumpte del missatge!"
 
 msgid "Please specify a message subject."
 msgstr "Introduïu l'assumpte pel missatge."
 
-msgid "Please specify a sender email!"
-msgstr "Si us plau especifica el correu del remitent! "
-
 msgid "Please specify a sender email."
 msgstr "Introduïu l'adreça del remitent."
 
-msgid "Please specify a sender name!"
-msgstr "Si us plau especifica el nom del remitent!"
-
 msgid "Please specify a sender name."
 msgstr "Introduïu el nom del remitent."
-
-msgid "Please specify a subject!"
-msgstr "Si us plau especifiqueu un assumpte!"
-
-msgid "Please specify message subject."
-msgstr "Introduiu l'assumpte del missatge."
-
-msgid "Please specify message!"
-msgstr "Si us plau especifiqueu un missatge!"
 
 msgid "Please specify other FTP account directory!"
 msgstr "Escull un directori alternatiu per aquest usuari FTP!"
@@ -4028,9 +3904,6 @@ msgstr "Protegir aquest plugin"
 msgid "Protected"
 msgstr "Protegit"
 
-msgid "Protected Areas"
-msgstr "Àrees Protegides"
-
 msgid "Protected area status should be 'OK' if you want to delete it."
 msgstr "L'estat de l'àrea protegida ha désser 'OK' per tal de poder ser esborrada."
 
@@ -4173,9 +4046,6 @@ msgstr "Nivell distribuïdor"
 msgid "Reseller list"
 msgstr "Llista de distribuïdors"
 
-msgid "Reseller list is empty!"
-msgstr "La llista de distribuïdors és buida!"
-
 msgid "Reseller list is empty."
 msgstr "La llista de distribuïdors és buida."
 
@@ -4290,9 +4160,6 @@ msgid "SQL databases limit is <i>disabled</i>."
 msgstr "Límit de bases de dades SQL <i>desactivat</i>"
 
 msgid "SQL databases limit is disabled but SQL users limit is not."
-msgstr "Les bases de dades estàn desactivades però els usuaris SQL no."
-
-msgid "SQL databases limit is disabled but SQL users limit not."
 msgstr "Les bases de dades estàn desactivades però els usuaris SQL no."
 
 msgid "SQL databases limit is not <i>disabled</i>."
@@ -4675,17 +4542,11 @@ msgstr "Base de dades Sql"
 msgid "Sql databases"
 msgstr "Bases de dades Sql"
 
-msgid "Sql databases limit<br><i>(-1 disabled, 0 unlimited)</i>"
-msgstr "Límit de bases de dades SQL <br/><span class=\"italic\">(-1 desactivat, 0 il·limitat)</span>"
-
 msgid "Sql user"
 msgstr "Usuari Sql"
 
 msgid "Sql users"
 msgstr "Usuaris Sql"
-
-msgid "Sql users limit<br><i>(-1 disabled, 0 unlimited)</i>"
-msgstr "Límit d'usuaris Sql<br><i>(-1 desactivat, 0 il·limitat)</i>"
 
 msgid "Start installation"
 msgstr "Iniciar instal.lació"
@@ -5346,9 +5207,6 @@ msgstr "Impossible obtenir la llista d'adreces IP. Si us plau arregleu el proble
 msgid "Unable to move file."
 msgstr "No s'ha pogut moure l'arxiu."
 
-msgid "Unable to read xml file for Web softwares."
-msgstr "No s'ha pogut llegir l'arxiu xml de descripció del software."
-
 msgid "Unable to read xml file for web softwares."
 msgstr "No s'ha pogut llegir l'arxiu xml de definició del software."
 
@@ -5408,9 +5266,6 @@ msgstr ""
 msgid "Unknown subdomain type."
 msgstr "Tipus de subdomini desconegut."
 
-msgid "Unknown type"
-msgstr "Tipus desconegut"
-
 msgid "Unknown type."
 msgstr "Tipus desconegut."
 
@@ -5435,9 +5290,6 @@ msgstr "Actualitzar"
 
 msgid "Update SQL user password"
 msgstr "Actualitzar contrasenya d'usuari de SQL."
-
-msgid "Update checking is disabled!"
-msgstr "Busca d'actualitzacions deshabilitada"
 
 msgid "Update checking is disabled."
 msgstr "S'ha deshabilitat la cerca d'actualitzacions."
@@ -5763,9 +5615,6 @@ msgstr "L'adreça introduïda per la redirecció no és correcte."
 msgid "Wrong domain ID."
 msgstr "ID de domini erroni."
 
-msgid "Wrong domain Id."
-msgstr "Identificador de domini incorrecte."
-
 msgid "Wrong domain name lenght!"
 msgstr "Longitut de nom de domini errònia!"
 
@@ -5878,9 +5727,6 @@ msgid "You are exceeding your FTP accounts limit."
 msgstr "Estàs excedint el teu límit de comptes FTP."
 
 msgid "You are exceeding your SQL database limit."
-msgstr "Estàs excedint el teu límit de Bases de Dades SQL."
-
-msgid "You are exceeding your SQL databases limit."
 msgstr "Estàs excedint el teu límit de Bases de Dades SQL."
 
 msgid "You are exceeding your disk limit."
@@ -6704,8 +6550,8 @@ msgstr "i-MSCP - Distribuïdor/Canviar dades personals"
 msgid "i-MSCP - Reseller/IP Usage"
 msgstr "i-MSCP - Distribuïdor / Adreces IP"
 
-msgid "i-MSCP - Reseller/Lostpw email setup"
-msgstr "i-MSCP - Distribuïdor/Configuració pèrdua de contrasenya de correu"
+msgid "i-MSCP - Reseller/Lost password email setup"
+msgstr ""
 
 msgid "i-MSCP - Reseller/Manage users/Email setup"
 msgstr "i-MSCP - Distribuïdor/Administració usuaris/Configuració Correu"

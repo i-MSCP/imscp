@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2013-01-20 16:04+0100\n"
-"PO-Revision-Date: 2013-01-20 15:05+0000\n"
+"POT-Creation-Date: 2013-01-21 21:39+0100\n"
+"PO-Revision-Date: 2013-01-21 20:40+0000\n"
 "Last-Translator: Torsten Widmann <info@goover.de>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -1030,9 +1030,6 @@ msgstr "利用可能なソフトウェア"
 msgid "AwStats"
 msgstr "AwStats"
 
-msgid "Awaiting Activation"
-msgstr "アクティベーション待ち"
-
 msgid "Awaiting activation"
 msgstr "アクティベーション待ち"
 
@@ -1675,17 +1672,14 @@ msgstr "ディスク"
 msgid "Disk limit"
 msgstr "ディスク容量制限"
 
-msgid "Disk limit [MB]<br><i>(0 unlimited)</i>"
-msgstr "ディスク容量制限[MB]<br><i>(0 無制限)</i>"
-
 msgid "Disk limit [MiB]<br/><span class=\"italic\">(0 unlimited)</span>"
 msgstr "ディスク容量制限 [MiB]<br/><span class=\"italic\">(0 無制限)</span>"
 
+msgid "Disk limit [MiB]<br/><span class=\\\"italic\\\">(0 unlimited)</span>"
+msgstr ""
+
 msgid "Disk limit [MiB]<br><i>(0 unlimited)</i>"
 msgstr "ディスク容量制限 [MiB]<br><i>(0 無制限)</i>"
-
-msgid "Disk space limit [MiB] <br /><span class=\"italic\">(0 unlimited)</span>"
-msgstr "ディスク容量制限 [MiB] <br /><span class=\"italic\">(0 unlimited)</span>"
 
 msgid "Disk usage"
 msgstr "ディスク使用量"
@@ -1793,11 +1787,6 @@ msgid "Domain alias successfully scheduled for deletion."
 msgstr "ドメインエイリアスは予定通り削除されました。"
 
 msgid ""
-"Domain alias you are trying to remove has FTP accounts.<br>First remove them"
-" first."
-msgstr "削除しようとしているドメインのエイリアスはFTPアカウントを持っています。 <br>まず最初にそれらを取り除いてください。"
-
-msgid ""
 "Domain alias you are trying to remove has FTP accounts.<br>First remove "
 "them."
 msgstr "削除しようとしているドメインエイリアスは、FTPアカウントがあります。<br>最初に削除をしてください。"
@@ -1806,11 +1795,6 @@ msgid ""
 "Domain alias you are trying to remove has custom DNS records!<br>First "
 "remove them!"
 msgstr "削除しようとしたドメインエイリアスには、カスタムDNSレコードを持っています！<br>最初にそれを削除してください！"
-
-msgid ""
-"Domain alias you are trying to remove has email accounts !<br>First remove "
-"them!"
-msgstr "削除しようとしたドメインエイリアスにはEメールアカウントがあります！ <br>先に削除してください！"
 
 msgid ""
 "Domain alias you are trying to remove has email accounts.<br>First remove "
@@ -1826,11 +1810,6 @@ msgstr "ドメインエイリアス"
 
 msgid "Domain aliases limit reached."
 msgstr "ドメインエイリアスが制限に達しています。"
-
-msgid ""
-"Domain aliases limit<br /><span class=\"italic\">(-1 disabled, 0 "
-"unlimited)</span>"
-msgstr "ドメインエイリアス制限<br /><span class=\"italic\">(-1 無効, 0 無制限)</span>"
 
 msgid ""
 "Domain aliases limit<br/><span class=\"italic\">(-1 disabled, 0 "
@@ -1870,14 +1849,11 @@ msgstr "ドメインのEメール"
 msgid "Domain errors"
 msgstr "ドメインエラー"
 
+msgid "Domain expiration date"
+msgstr ""
+
 msgid "Domain expiration date must be filled."
 msgstr "ドメイン有効期限を入力する必要があります。"
-
-msgid "Domain expire date"
-msgstr "ドメインの有効期限"
-
-msgid "Domain expires date"
-msgstr "ドメインの有効期限"
 
 msgid "Domain mail"
 msgstr "ドメインメール"
@@ -1891,8 +1867,8 @@ msgstr "ドメイン名"
 msgid "Domain names validation"
 msgstr "ドメイン名の確認"
 
-msgid "Domain new expires date"
-msgstr "ドメインの新しい有効期限"
+msgid "Domain new expiration date"
+msgstr ""
 
 msgid "Domain not found."
 msgstr "ドメインが見つかりません。"
@@ -1923,12 +1899,6 @@ msgstr "ドメインが更新されました。"
 
 msgid "Domain with same name already exists."
 msgstr "同じ名前のドメインがすでに存在しています。"
-
-msgid "Domain with that name already exists on the system."
-msgstr "システム上にその名前のドメインは既に存在しています。"
-
-msgid "Domain with this name already exist."
-msgstr "この名前のドメインが既に存在している。"
 
 msgid ""
 "Domain: Setup an MX record to relay mail of your entire domain (including "
@@ -2067,17 +2037,11 @@ msgstr "Eメールマーケティング"
 msgid "Email setup"
 msgstr "Eメール設定"
 
-msgid "Emailadress"
-msgstr "Eメールアドレス"
-
 msgid "Emails"
 msgstr "Eメール"
 
 msgid "Empty List"
 msgstr "未登録"
-
-msgid "Empty data or wrong field!"
-msgstr "誤り、または空欄があります！"
 
 msgid "Empty data or wrong field."
 msgstr "空のデータまたは誤ったフィールドがあります。"
@@ -2182,9 +2146,6 @@ msgstr "未確認オーダーの有効期限<br /><small>(営業日)</small>"
 
 msgid "External Mail Host"
 msgstr "外部メールホスト"
-
-msgid "External Mail Servers"
-msgstr "外部メールサーバ"
 
 msgid "External mail server"
 msgstr "外部メールサーバ"
@@ -2309,9 +2270,6 @@ msgstr "メッセージテキストを記入してください。"
 msgid "First name"
 msgstr "名字"
 
-msgid "Firstname"
-msgstr "名"
-
 msgid "Footer"
 msgstr "フッター"
 
@@ -2360,9 +2318,6 @@ msgstr "Ftp アカウントがありません。"
 msgid "Ftp accounts"
 msgstr "FTPアカウント"
 
-msgid "Ftp accounts limit<br><i>(-1 disabled, 0 unlimited)</i>"
-msgstr "Ftp アカウントの制限<br><i>(-1 無効, 0 無制限)</i>"
-
 msgid "Ftp user data"
 msgstr "FTPユーザーデーター"
 
@@ -2374,9 +2329,6 @@ msgstr "GB"
 
 msgid "Gender"
 msgstr "性別"
-
-msgid "General Information"
-msgstr "基本情報"
 
 msgid "General information"
 msgstr "基本情報"
@@ -2474,17 +2426,14 @@ msgstr "同じ名前のホスティングプランが既に存在しています
 msgid "Hosting plans"
 msgstr "ホスティングプラン"
 
+msgid "Hosting plans are not found."
+msgstr ""
+
 msgid "Hosting plans available for"
 msgstr "ホスティングプランを使えるユーザー"
 
 msgid "Hosting plans available for update"
 msgstr "ホスティングプランのアップデート"
-
-msgid "Hosting plans not found!"
-msgstr "ホスティングプランが見つかりません"
-
-msgid "Hosting plans not found."
-msgstr "ホスティングプランが見つかりません。"
 
 msgid "Hour"
 msgstr "時間"
@@ -2551,9 +2500,6 @@ msgstr "IPアドレスの削除が予定されました。"
 msgid "IP usage"
 msgstr "IPアドレス使用"
 
-msgid "IPs usage"
-msgstr "IPアドレスの使用状況"
-
 msgid "IPv6 address"
 msgstr "IPv6アドレス"
 
@@ -2585,9 +2531,9 @@ msgid "Import in local repository"
 msgstr "ローカルリポジトリのインポート"
 
 msgid ""
-"In case domain expires date is 'N/A', the expiration date will be set from "
-"today."
-msgstr "ドメインの有効期限が 'N/A'の場合、有効期限は今日の日付から設定されます。"
+"In case domain expiration date is 'N/A', the expiration date will be set "
+"from today."
+msgstr ""
 
 msgid "In front the name"
 msgstr "名前の前に付加"
@@ -2614,9 +2560,6 @@ msgstr "エイリアス制限に誤っています。"
 msgid "Incorrect disk quota limit."
 msgstr "ディスクの容量制限が誤っています。"
 
-msgid "Incorrect email length or syntax!"
-msgstr "Eメールの長さか構文が誤っています！"
-
 msgid "Incorrect email length or syntax."
 msgstr "Eメールの長さか構文が誤っています。"
 
@@ -2626,9 +2569,6 @@ msgstr "%sの制限が誤っています。"
 
 msgid "Incorrect mail accounts limit."
 msgstr "メールアカウント制限が誤っています。"
-
-msgid "Incorrect mount point length or syntax"
-msgstr "マウント先の長さか構文が誤っています"
 
 msgid "Incorrect mount point length or syntax."
 msgstr "マウント先の長さか構文が誤っています。"
@@ -2678,9 +2618,6 @@ msgstr "数回のクリックでさまざまなWebアプリケーションをイ
 msgid "Installation details"
 msgstr "インストールの詳細"
 
-msgid "Installation infos"
-msgstr "インストールに関する情報"
-
 msgid "Installation path:"
 msgstr "インストールのパス："
 
@@ -2696,11 +2633,8 @@ msgstr "ソフトウェアデポットにインストールされている"
 msgid "Installed on"
 msgstr "インストールされました"
 
-msgid "Installing your uploaded package. Please refresh the site."
-msgstr "アップロードしたパッケージをインストールします。サイトを更新してください。"
-
-msgid "Installing your uploaded package. Please refresh this site."
-msgstr "アップロードしたパッケージをインストールします。サイトを更新してください。"
+msgid "Installing your uploaded package. Please refresh this page."
+msgstr ""
 
 msgid "Instructions to download today's backup"
 msgstr "今日のバックアップをダウンロードする指示"
@@ -2823,9 +2757,6 @@ msgstr "最終返信日"
 msgid "Last translator"
 msgstr "最後の翻訳者"
 
-msgid "Lastname"
-msgstr "姓"
-
 msgid "Layout"
 msgstr "レイアウト"
 
@@ -2872,11 +2803,8 @@ msgstr "ログイン"
 msgid "Login data successfully sent to %s."
 msgstr "ログインデータを %s に送りました。"
 
-msgid "Login into PhpMyAdmin"
-msgstr "phpMyAdminにログイン"
-
-msgid "Login into PḧpMyAdmin"
-msgstr "phpMyAdminにログイン"
+msgid "Login into phpMyAdmin"
+msgstr ""
 
 msgid "Login into the filemanager"
 msgstr "ファイルマネージャーにログイン"
@@ -2914,6 +2842,9 @@ msgstr "パスワードを忘れた"
 msgid "Lost password e-mail"
 msgstr "パスワード忘れEメール"
 
+msgid "Lost password email"
+msgstr ""
+
 msgid "Lost password email setup"
 msgstr ""
 
@@ -2921,9 +2852,6 @@ msgid "Lost password link"
 msgstr "パスワード忘れリンク"
 
 msgid "Lost password mail"
-msgstr "パスワード忘れEメール"
-
-msgid "Lostpw email"
 msgstr "パスワード忘れEメール"
 
 msgid "Lostpw link"
@@ -2937,9 +2865,6 @@ msgstr "MB"
 
 msgid "Mail"
 msgstr "メール"
-
-msgid "Mail Accounts"
-msgstr "メールアカウント"
 
 msgid "Mail Log Level"
 msgstr "メールログレベル"
@@ -2973,14 +2898,6 @@ msgstr "メールアカウントの更新が予定されました。"
 
 msgid "Mail accounts"
 msgstr "メールアカウント"
-
-msgid ""
-"Mail accounts limit <br /><span class=\"italic\">(-1 disabled, 0 "
-"unlimited)</span>"
-msgstr "メールアカウント制限 <br /><span class=\"italic\">(-1 無効, 0 無制限)</span>"
-
-msgid "Mail accounts limit reached!"
-msgstr "メールアカウントが限界です！"
 
 msgid "Mail accounts limit reached."
 msgstr "メールアカウントが制限に達しています。"
@@ -3126,11 +3043,6 @@ msgstr "%s のPHPディレクティブの最大値"
 msgid "Max. remote filesize (%1$d MB) is reached. Your remote file is %2$d MB"
 msgstr "最大。リモートファイルサイズ (%1$d MB) に達しました。あなたのリモートファイルは、%2$d MBです"
 
-#, php-format
-msgid ""
-"Max. remote filesize (%1$d MB) is reached. Your remote file ist %2$d MB"
-msgstr "最大。リモートファイルサイズ (%1$d MB) に達しました。あなたのリモートファイルは%2$d MBです"
-
 msgid ""
 "Maximal number of labels for domain names<br />(<small>Excluding SLD & "
 "TLD</small>)"
@@ -3240,9 +3152,6 @@ msgid "New alias order for {CUSTOMER}"
 msgstr "{CUSTOMER} ための新しいエイリアスのオーダー"
 
 msgid "New i-MSCP update is available"
-msgstr "i-MSCPのアップデートが見つかりました"
-
-msgid "New i-MSCP update is now available"
 msgstr "i-MSCPのアップデートが見つかりました"
 
 msgid "New order"
@@ -3366,9 +3275,6 @@ msgstr "設定されない"
 
 msgid "No software available"
 msgstr "利用可能なソフトウェアがありません"
-
-msgid "No software available!"
-msgstr "利用可能なソフトウェアがありません！"
 
 msgid "No software in software depot available!"
 msgstr "利用可能なソフトウェアデポットにソフトウェアがありません！"
@@ -3701,20 +3607,11 @@ msgstr "パスワードデータが入力されていません。"
 
 #, php-format
 msgid ""
-"Password data is shorter than %s signs or includes not permitted signs!"
-msgstr "パスワードデータ %s は短いか、許可されてません！"
-
-#, php-format
-msgid ""
 "Password data is shorter than %s signs or includes not permitted signs."
 msgstr "パスワード・データは%sサインより短いかあるいは含んでいます、サインを可能にされませんでした。"
 
 msgid "Password is missing."
 msgstr "パスワードが入力されていません。"
-
-#, php-format
-msgid "Password is shorter than %s signs or includes not permitted signs."
-msgstr "パスワードは%sサインより短いかあるいは含んでいます、サインを可能にされませんでした。"
 
 msgid "Password length"
 msgstr "パスワードの長さ"
@@ -3843,38 +3740,17 @@ msgid ""
 "Application. (Required fiels!)"
 msgstr "アプリケーションで後のログインのためにユーザー名とパスワードをセットしてください。(必須項目です!)"
 
-msgid "Please specify a message content!"
-msgstr "内容を指定してください！"
-
 msgid "Please specify a message content."
 msgstr "メッセージの内容を指定してください。"
-
-msgid "Please specify a message subject!"
-msgstr "件名を指定してください！"
 
 msgid "Please specify a message subject."
 msgstr "メッセージの件名を指定してください。"
 
-msgid "Please specify a sender email!"
-msgstr "Eメール送信者を指定してください！"
-
 msgid "Please specify a sender email."
 msgstr "送信者のEメールを指定してください。"
 
-msgid "Please specify a sender name!"
-msgstr "送信者名を指定してください！"
-
 msgid "Please specify a sender name."
 msgstr "送信者名を指定してください。"
-
-msgid "Please specify a subject!"
-msgstr "件名を指定してください！"
-
-msgid "Please specify message subject."
-msgstr "メッセージの件名を指定してください。"
-
-msgid "Please specify message!"
-msgstr "メッセージを指定してください！"
 
 msgid "Please specify other FTP account directory!"
 msgstr "他のFTPアカウントのディレクトリを指定してください！"
@@ -4021,9 +3897,6 @@ msgstr "このプラグインを保護する"
 msgid "Protected"
 msgstr "保護された"
 
-msgid "Protected Areas"
-msgstr "アクセス制限領域"
-
 msgid "Protected area status should be 'OK' if you want to delete it."
 msgstr "アクセス制限領域削除したいならば、ステータスは'OK'でなければなりません。"
 
@@ -4166,9 +4039,6 @@ msgstr "代理店レベル"
 msgid "Reseller list"
 msgstr "代理店リスト"
 
-msgid "Reseller list is empty!"
-msgstr "代理店が登録されていません"
-
 msgid "Reseller list is empty."
 msgstr "代理店リストは未登録です。"
 
@@ -4283,9 +4153,6 @@ msgid "SQL databases limit is <i>disabled</i>."
 msgstr "SQLデータベース制限が無効です。"
 
 msgid "SQL databases limit is disabled but SQL users limit is not."
-msgstr "SQLデータベース制限は無効になりますが、SQLユーザー制限はありません。"
-
-msgid "SQL databases limit is disabled but SQL users limit not."
 msgstr "SQLデータベース制限は無効になりますが、SQLユーザー制限はありません。"
 
 msgid "SQL databases limit is not <i>disabled</i>."
@@ -4668,17 +4535,11 @@ msgstr "SQL データベース"
 msgid "Sql databases"
 msgstr "SQL データベース"
 
-msgid "Sql databases limit<br><i>(-1 disabled, 0 unlimited)</i>"
-msgstr "SQLlデータベース制限<br><i>(-1 無効, 0 無制限)</i>"
-
 msgid "Sql user"
 msgstr "SQLユーザー"
 
 msgid "Sql users"
 msgstr "SQLユーザー"
-
-msgid "Sql users limit<br><i>(-1 disabled, 0 unlimited)</i>"
-msgstr "SQL ユーザー制限<br /><i>(-1 無効, 0 無制限)</i>"
 
 msgid "Start installation"
 msgstr "インストールを開始します。"
@@ -5339,9 +5200,6 @@ msgstr "IPアドレスのリストを取得することができません。こ�
 msgid "Unable to move file."
 msgstr "ファイルを移動することができません。"
 
-msgid "Unable to read xml file for Web softwares."
-msgstr "WebソフトウェアのためのXMLファイルを読み込むことができません。"
-
 msgid "Unable to read xml file for web softwares."
 msgstr "WebソフトウェアのためのXMLファイルを読み込むことができません。"
 
@@ -5401,9 +5259,6 @@ msgstr "理由が不明。"
 msgid "Unknown subdomain type."
 msgstr "サブドメインタイプがありません。"
 
-msgid "Unknown type"
-msgstr "不明な種別"
-
 msgid "Unknown type."
 msgstr "不明な種別が指定されました。"
 
@@ -5428,9 +5283,6 @@ msgstr "更新"
 
 msgid "Update SQL user password"
 msgstr "SQLユーザーパスワードの更新"
-
-msgid "Update checking is disabled!"
-msgstr "更新チェック機能が無効です！"
 
 msgid "Update checking is disabled."
 msgstr "更新のチェックが無効になっています。"
@@ -5756,9 +5608,6 @@ msgstr "転送先URLのアドレスに誤りがあります。"
 msgid "Wrong domain ID."
 msgstr "ドメインIDに誤りがあります。"
 
-msgid "Wrong domain Id."
-msgstr "ドメインIDに誤りがあります。"
-
 msgid "Wrong domain name lenght!"
 msgstr "ドメイン名の長さに誤り！"
 
@@ -5871,9 +5720,6 @@ msgid "You are exceeding your FTP accounts limit."
 msgstr "FTPアカウント数の制限を超えています。"
 
 msgid "You are exceeding your SQL database limit."
-msgstr "SQLデータベースの制限を超えています。"
-
-msgid "You are exceeding your SQL databases limit."
 msgstr "SQLデータベースの制限を超えています。"
 
 msgid "You are exceeding your disk limit."
@@ -6697,8 +6543,8 @@ msgstr "i-MSCP - 代理店/個人情報変更"
 msgid "i-MSCP - Reseller/IP Usage"
 msgstr "i-MSCP - 代理店/IPアドレス管理"
 
-msgid "i-MSCP - Reseller/Lostpw email setup"
-msgstr "i-MSCP - 代理店/パスワード忘れEメール設定"
+msgid "i-MSCP - Reseller/Lost password email setup"
+msgstr ""
 
 msgid "i-MSCP - Reseller/Manage users/Email setup"
 msgstr "i-MSCP - 代理店/ユーザー管理/Eメール設定"

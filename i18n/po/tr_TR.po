@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2013-01-20 16:04+0100\n"
-"PO-Revision-Date: 2013-01-20 15:05+0000\n"
+"POT-Creation-Date: 2013-01-21 21:39+0100\n"
+"PO-Revision-Date: 2013-01-21 20:40+0000\n"
 "Last-Translator: Torsten Widmann <info@goover.de>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -1031,9 +1031,6 @@ msgstr ""
 msgid "AwStats"
 msgstr "AwStats"
 
-msgid "Awaiting Activation"
-msgstr "Etkinleştirme Bekleniyor"
-
 msgid "Awaiting activation"
 msgstr ""
 
@@ -1676,16 +1673,13 @@ msgstr "Disk"
 msgid "Disk limit"
 msgstr "Disk limiti"
 
-msgid "Disk limit [MB]<br><i>(0 unlimited)</i>"
-msgstr "Disk limiti [MB]<br><i>(0 limitsiz)</i>"
-
 msgid "Disk limit [MiB]<br/><span class=\"italic\">(0 unlimited)</span>"
 msgstr ""
 
-msgid "Disk limit [MiB]<br><i>(0 unlimited)</i>"
+msgid "Disk limit [MiB]<br/><span class=\\\"italic\\\">(0 unlimited)</span>"
 msgstr ""
 
-msgid "Disk space limit [MiB] <br /><span class=\"italic\">(0 unlimited)</span>"
+msgid "Disk limit [MiB]<br><i>(0 unlimited)</i>"
 msgstr ""
 
 msgid "Disk usage"
@@ -1794,11 +1788,6 @@ msgid "Domain alias successfully scheduled for deletion."
 msgstr ""
 
 msgid ""
-"Domain alias you are trying to remove has FTP accounts.<br>First remove them"
-" first."
-msgstr ""
-
-msgid ""
 "Domain alias you are trying to remove has FTP accounts.<br>First remove "
 "them."
 msgstr ""
@@ -1807,11 +1796,6 @@ msgid ""
 "Domain alias you are trying to remove has custom DNS records!<br>First "
 "remove them!"
 msgstr ""
-
-msgid ""
-"Domain alias you are trying to remove has email accounts !<br>First remove "
-"them!"
-msgstr "Silmeye çalıştığınız domain aliasına kayıtlı eposta hesapları var!<br>Önce onları silin"
 
 msgid ""
 "Domain alias you are trying to remove has email accounts.<br>First remove "
@@ -1826,11 +1810,6 @@ msgid "Domain aliases"
 msgstr "Domain alias"
 
 msgid "Domain aliases limit reached."
-msgstr ""
-
-msgid ""
-"Domain aliases limit<br /><span class=\"italic\">(-1 disabled, 0 "
-"unlimited)</span>"
 msgstr ""
 
 msgid ""
@@ -1871,13 +1850,10 @@ msgstr ""
 msgid "Domain errors"
 msgstr "Domain hataları"
 
+msgid "Domain expiration date"
+msgstr ""
+
 msgid "Domain expiration date must be filled."
-msgstr ""
-
-msgid "Domain expire date"
-msgstr ""
-
-msgid "Domain expires date"
 msgstr ""
 
 msgid "Domain mail"
@@ -1892,7 +1868,7 @@ msgstr "Domain adı"
 msgid "Domain names validation"
 msgstr "Domain adı doğrulaması"
 
-msgid "Domain new expires date"
+msgid "Domain new expiration date"
 msgstr ""
 
 msgid "Domain not found."
@@ -1923,12 +1899,6 @@ msgid "Domain successfully updated."
 msgstr ""
 
 msgid "Domain with same name already exists."
-msgstr ""
-
-msgid "Domain with that name already exists on the system."
-msgstr ""
-
-msgid "Domain with this name already exist."
 msgstr ""
 
 msgid ""
@@ -2068,17 +2038,11 @@ msgstr "Email pazarlama"
 msgid "Email setup"
 msgstr "Eposta ayarları"
 
-msgid "Emailadress"
-msgstr ""
-
 msgid "Emails"
 msgstr "Eposta"
 
 msgid "Empty List"
 msgstr "Boş Liste"
-
-msgid "Empty data or wrong field!"
-msgstr "Boş veri veya hatalı alan"
 
 msgid "Empty data or wrong field."
 msgstr ""
@@ -2182,9 +2146,6 @@ msgid "Expire time for unconfirmed orders<br /><small>(In days)</small>"
 msgstr ""
 
 msgid "External Mail Host"
-msgstr ""
-
-msgid "External Mail Servers"
 msgstr ""
 
 msgid "External mail server"
@@ -2310,9 +2271,6 @@ msgstr ""
 msgid "First name"
 msgstr "Ad"
 
-msgid "Firstname"
-msgstr ""
-
 msgid "Footer"
 msgstr "Sayfasonu"
 
@@ -2361,9 +2319,6 @@ msgstr ""
 msgid "Ftp accounts"
 msgstr ""
 
-msgid "Ftp accounts limit<br><i>(-1 disabled, 0 unlimited)</i>"
-msgstr ""
-
 msgid "Ftp user data"
 msgstr ""
 
@@ -2375,9 +2330,6 @@ msgstr ""
 
 msgid "Gender"
 msgstr "Cinsiyet"
-
-msgid "General Information"
-msgstr ""
 
 msgid "General information"
 msgstr "Genel bilgi"
@@ -2475,17 +2427,14 @@ msgstr ""
 msgid "Hosting plans"
 msgstr "Hosting planları"
 
+msgid "Hosting plans are not found."
+msgstr ""
+
 msgid "Hosting plans available for"
 msgstr "Kullanılabilir server planları"
 
 msgid "Hosting plans available for update"
 msgstr "Hosting planları güncelleme için uygun"
-
-msgid "Hosting plans not found!"
-msgstr "Hosting planı bulunamadı!"
-
-msgid "Hosting plans not found."
-msgstr ""
 
 msgid "Hour"
 msgstr "Saat"
@@ -2552,9 +2501,6 @@ msgstr ""
 msgid "IP usage"
 msgstr "IP kullanımı"
 
-msgid "IPs usage"
-msgstr ""
-
 msgid "IPv6 address"
 msgstr "IPv6 adresi"
 
@@ -2586,8 +2532,8 @@ msgid "Import in local repository"
 msgstr ""
 
 msgid ""
-"In case domain expires date is 'N/A', the expiration date will be set from "
-"today."
+"In case domain expiration date is 'N/A', the expiration date will be set "
+"from today."
 msgstr ""
 
 msgid "In front the name"
@@ -2615,9 +2561,6 @@ msgstr ""
 msgid "Incorrect disk quota limit."
 msgstr ""
 
-msgid "Incorrect email length or syntax!"
-msgstr "Eposta uzun veya yazım hatası var"
-
 msgid "Incorrect email length or syntax."
 msgstr ""
 
@@ -2627,9 +2570,6 @@ msgstr ""
 
 msgid "Incorrect mail accounts limit."
 msgstr ""
-
-msgid "Incorrect mount point length or syntax"
-msgstr "Monte noktası yazımı hatalı veya uzun"
 
 msgid "Incorrect mount point length or syntax."
 msgstr ""
@@ -2679,9 +2619,6 @@ msgstr ""
 msgid "Installation details"
 msgstr ""
 
-msgid "Installation infos"
-msgstr ""
-
 msgid "Installation path:"
 msgstr ""
 
@@ -2697,10 +2634,7 @@ msgstr ""
 msgid "Installed on"
 msgstr "Yüklendi"
 
-msgid "Installing your uploaded package. Please refresh the site."
-msgstr ""
-
-msgid "Installing your uploaded package. Please refresh this site."
+msgid "Installing your uploaded package. Please refresh this page."
 msgstr ""
 
 msgid "Instructions to download today's backup"
@@ -2824,9 +2758,6 @@ msgstr ""
 msgid "Last translator"
 msgstr ""
 
-msgid "Lastname"
-msgstr ""
-
 msgid "Layout"
 msgstr "Taslak"
 
@@ -2873,10 +2804,7 @@ msgstr ""
 msgid "Login data successfully sent to %s."
 msgstr ""
 
-msgid "Login into PhpMyAdmin"
-msgstr ""
-
-msgid "Login into PḧpMyAdmin"
+msgid "Login into phpMyAdmin"
 msgstr ""
 
 msgid "Login into the filemanager"
@@ -2915,6 +2843,9 @@ msgstr "Kayıp şifre"
 msgid "Lost password e-mail"
 msgstr "Kayıp Şifre epostası"
 
+msgid "Lost password email"
+msgstr ""
+
 msgid "Lost password email setup"
 msgstr ""
 
@@ -2923,9 +2854,6 @@ msgstr "Kayıf şifre linki"
 
 msgid "Lost password mail"
 msgstr ""
-
-msgid "Lostpw email"
-msgstr "Kayıp şifre Epostası"
 
 msgid "Lostpw link"
 msgstr "Kayıp şifre Linki"
@@ -2938,9 +2866,6 @@ msgstr ""
 
 msgid "Mail"
 msgstr "Eposta"
-
-msgid "Mail Accounts"
-msgstr ""
 
 msgid "Mail Log Level"
 msgstr ""
@@ -2974,14 +2899,6 @@ msgstr ""
 
 msgid "Mail accounts"
 msgstr "Eposta hesapları"
-
-msgid ""
-"Mail accounts limit <br /><span class=\"italic\">(-1 disabled, 0 "
-"unlimited)</span>"
-msgstr ""
-
-msgid "Mail accounts limit reached!"
-msgstr "Azami posta hesabı sayısına ulaşıldı!"
 
 msgid "Mail accounts limit reached."
 msgstr ""
@@ -3127,11 +3044,6 @@ msgstr ""
 msgid "Max. remote filesize (%1$d MB) is reached. Your remote file is %2$d MB"
 msgstr ""
 
-#, php-format
-msgid ""
-"Max. remote filesize (%1$d MB) is reached. Your remote file ist %2$d MB"
-msgstr ""
-
 msgid ""
 "Maximal number of labels for domain names<br />(<small>Excluding SLD & "
 "TLD</small>)"
@@ -3242,9 +3154,6 @@ msgstr ""
 
 msgid "New i-MSCP update is available"
 msgstr ""
-
-msgid "New i-MSCP update is now available"
-msgstr "Yeni i-MSCP güncellemesi var"
 
 msgid "New order"
 msgstr "Yeni sipariş"
@@ -3366,9 +3275,6 @@ msgid "No set"
 msgstr ""
 
 msgid "No software available"
-msgstr ""
-
-msgid "No software available!"
 msgstr ""
 
 msgid "No software in software depot available!"
@@ -3702,19 +3608,10 @@ msgstr ""
 
 #, php-format
 msgid ""
-"Password data is shorter than %s signs or includes not permitted signs!"
-msgstr "Şifre %s karakterden kısa veya izin verilmeyen işaretler var!"
-
-#, php-format
-msgid ""
 "Password data is shorter than %s signs or includes not permitted signs."
 msgstr ""
 
 msgid "Password is missing."
-msgstr ""
-
-#, php-format
-msgid "Password is shorter than %s signs or includes not permitted signs."
 msgstr ""
 
 msgid "Password length"
@@ -3844,38 +3741,17 @@ msgid ""
 "Application. (Required fiels!)"
 msgstr ""
 
-msgid "Please specify a message content!"
-msgstr "Lütfen, mesaj içeriğini yazınız"
-
 msgid "Please specify a message content."
 msgstr ""
-
-msgid "Please specify a message subject!"
-msgstr "Lütfen, mesaj konusu yazınız"
 
 msgid "Please specify a message subject."
 msgstr ""
 
-msgid "Please specify a sender email!"
-msgstr "Lütfen, gönderen epostasını yazınız"
-
 msgid "Please specify a sender email."
 msgstr ""
 
-msgid "Please specify a sender name!"
-msgstr "Lütfen, gönderen adı yazınız"
-
 msgid "Please specify a sender name."
 msgstr ""
-
-msgid "Please specify a subject!"
-msgstr "Lütfen bir konu belirtiniz"
-
-msgid "Please specify message subject."
-msgstr "Mesaj konusu belirtiniz."
-
-msgid "Please specify message!"
-msgstr "Lütfen bir mesaj yazınız!"
 
 msgid "Please specify other FTP account directory!"
 msgstr ""
@@ -4022,9 +3898,6 @@ msgstr ""
 msgid "Protected"
 msgstr ""
 
-msgid "Protected Areas"
-msgstr "Korunan Alanlar"
-
 msgid "Protected area status should be 'OK' if you want to delete it."
 msgstr ""
 
@@ -4167,9 +4040,6 @@ msgstr "Bayi seviyesi"
 msgid "Reseller list"
 msgstr "Bayi listesi"
 
-msgid "Reseller list is empty!"
-msgstr "Bayi listesi boş!"
-
 msgid "Reseller list is empty."
 msgstr ""
 
@@ -4284,9 +4154,6 @@ msgid "SQL databases limit is <i>disabled</i>."
 msgstr ""
 
 msgid "SQL databases limit is disabled but SQL users limit is not."
-msgstr ""
-
-msgid "SQL databases limit is disabled but SQL users limit not."
 msgstr ""
 
 msgid "SQL databases limit is not <i>disabled</i>."
@@ -4669,16 +4536,10 @@ msgstr ""
 msgid "Sql databases"
 msgstr ""
 
-msgid "Sql databases limit<br><i>(-1 disabled, 0 unlimited)</i>"
-msgstr ""
-
 msgid "Sql user"
 msgstr ""
 
 msgid "Sql users"
-msgstr ""
-
-msgid "Sql users limit<br><i>(-1 disabled, 0 unlimited)</i>"
 msgstr ""
 
 msgid "Start installation"
@@ -5340,9 +5201,6 @@ msgstr ""
 msgid "Unable to move file."
 msgstr ""
 
-msgid "Unable to read xml file for Web softwares."
-msgstr ""
-
 msgid "Unable to read xml file for web softwares."
 msgstr ""
 
@@ -5402,9 +5260,6 @@ msgstr ""
 msgid "Unknown subdomain type."
 msgstr ""
 
-msgid "Unknown type"
-msgstr ""
-
 msgid "Unknown type."
 msgstr ""
 
@@ -5429,9 +5284,6 @@ msgstr "Güncelleme"
 
 msgid "Update SQL user password"
 msgstr ""
-
-msgid "Update checking is disabled!"
-msgstr "Güncelleme takibi pasif"
 
 msgid "Update checking is disabled."
 msgstr ""
@@ -5757,9 +5609,6 @@ msgstr ""
 msgid "Wrong domain ID."
 msgstr ""
 
-msgid "Wrong domain Id."
-msgstr ""
-
 msgid "Wrong domain name lenght!"
 msgstr ""
 
@@ -5872,9 +5721,6 @@ msgid "You are exceeding your FTP accounts limit."
 msgstr ""
 
 msgid "You are exceeding your SQL database limit."
-msgstr ""
-
-msgid "You are exceeding your SQL databases limit."
 msgstr ""
 
 msgid "You are exceeding your disk limit."
@@ -6698,8 +6544,8 @@ msgstr "i-MSCP - Bayi/Kişisel Bilgileri Değiştir"
 msgid "i-MSCP - Reseller/IP Usage"
 msgstr ""
 
-msgid "i-MSCP - Reseller/Lostpw email setup"
-msgstr "i-MSCP - BAyi/Kayıp şifre eposta kurulumu"
+msgid "i-MSCP - Reseller/Lost password email setup"
+msgstr ""
 
 msgid "i-MSCP - Reseller/Manage users/Email setup"
 msgstr "i-MSCP - Bayi/Kullanıcıları Düzenle/Eposta Kurulumu"

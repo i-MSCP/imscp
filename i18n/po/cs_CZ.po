@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2013-01-20 16:04+0100\n"
-"PO-Revision-Date: 2013-01-20 15:05+0000\n"
+"POT-Creation-Date: 2013-01-21 21:39+0100\n"
+"PO-Revision-Date: 2013-01-21 20:40+0000\n"
 "Last-Translator: Torsten Widmann <info@goover.de>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -1030,9 +1030,6 @@ msgstr ""
 msgid "AwStats"
 msgstr "AwStats"
 
-msgid "Awaiting Activation"
-msgstr ""
-
 msgid "Awaiting activation"
 msgstr ""
 
@@ -1675,16 +1672,13 @@ msgstr "Diskový prostor"
 msgid "Disk limit"
 msgstr "Diskový prostor"
 
-msgid "Disk limit [MB]<br><i>(0 unlimited)</i>"
-msgstr "Limit disku [MB]<br><i>(0 bez omezení)</i>"
-
 msgid "Disk limit [MiB]<br/><span class=\"italic\">(0 unlimited)</span>"
 msgstr ""
 
-msgid "Disk limit [MiB]<br><i>(0 unlimited)</i>"
+msgid "Disk limit [MiB]<br/><span class=\\\"italic\\\">(0 unlimited)</span>"
 msgstr ""
 
-msgid "Disk space limit [MiB] <br /><span class=\"italic\">(0 unlimited)</span>"
+msgid "Disk limit [MiB]<br><i>(0 unlimited)</i>"
 msgstr ""
 
 msgid "Disk usage"
@@ -1793,11 +1787,6 @@ msgid "Domain alias successfully scheduled for deletion."
 msgstr ""
 
 msgid ""
-"Domain alias you are trying to remove has FTP accounts.<br>First remove them"
-" first."
-msgstr ""
-
-msgid ""
 "Domain alias you are trying to remove has FTP accounts.<br>First remove "
 "them."
 msgstr ""
@@ -1806,11 +1795,6 @@ msgid ""
 "Domain alias you are trying to remove has custom DNS records!<br>First "
 "remove them!"
 msgstr ""
-
-msgid ""
-"Domain alias you are trying to remove has email accounts !<br>First remove "
-"them!"
-msgstr "Odstraňovaný doménový alias obsahuje poštovní účty!<br>Nejdříve tyto účty smažte!"
 
 msgid ""
 "Domain alias you are trying to remove has email accounts.<br>First remove "
@@ -1825,11 +1809,6 @@ msgid "Domain aliases"
 msgstr "Doménové aliasy"
 
 msgid "Domain aliases limit reached."
-msgstr ""
-
-msgid ""
-"Domain aliases limit<br /><span class=\"italic\">(-1 disabled, 0 "
-"unlimited)</span>"
 msgstr ""
 
 msgid ""
@@ -1870,14 +1849,11 @@ msgstr "Doménové e-maily"
 msgid "Domain errors"
 msgstr "Chyby domén"
 
+msgid "Domain expiration date"
+msgstr ""
+
 msgid "Domain expiration date must be filled."
 msgstr "Datum konce platnosti domény musí být vyplněno."
-
-msgid "Domain expire date"
-msgstr "Doména vyprší dne"
-
-msgid "Domain expires date"
-msgstr ""
 
 msgid "Domain mail"
 msgstr ""
@@ -1891,7 +1867,7 @@ msgstr "Jméno domény"
 msgid "Domain names validation"
 msgstr "Validace doménových jmen"
 
-msgid "Domain new expires date"
+msgid "Domain new expiration date"
 msgstr ""
 
 msgid "Domain not found."
@@ -1923,12 +1899,6 @@ msgstr ""
 
 msgid "Domain with same name already exists."
 msgstr "Doména se stejným názvem již existuje."
-
-msgid "Domain with that name already exists on the system."
-msgstr "Doména s tímto jménem již v systému existuje."
-
-msgid "Domain with this name already exist."
-msgstr "Doména s tímto jménem již existuje."
 
 msgid ""
 "Domain: Setup an MX record to relay mail of your entire domain (including "
@@ -2067,17 +2037,11 @@ msgstr "Email marketing"
 msgid "Email setup"
 msgstr "Nastavení el. pošty"
 
-msgid "Emailadress"
-msgstr ""
-
 msgid "Emails"
 msgstr "Emaily"
 
 msgid "Empty List"
 msgstr "Prázdný Seznam"
-
-msgid "Empty data or wrong field!"
-msgstr "Nevyplněné údaje nebo chybné políčko!"
 
 msgid "Empty data or wrong field."
 msgstr ""
@@ -2181,9 +2145,6 @@ msgid "Expire time for unconfirmed orders<br /><small>(In days)</small>"
 msgstr ""
 
 msgid "External Mail Host"
-msgstr ""
-
-msgid "External Mail Servers"
 msgstr ""
 
 msgid "External mail server"
@@ -2309,9 +2270,6 @@ msgstr ""
 msgid "First name"
 msgstr "Křestní jméno"
 
-msgid "Firstname"
-msgstr ""
-
 msgid "Footer"
 msgstr "Patička"
 
@@ -2360,9 +2318,6 @@ msgstr ""
 msgid "Ftp accounts"
 msgstr "Ftp účty"
 
-msgid "Ftp accounts limit<br><i>(-1 disabled, 0 unlimited)</i>"
-msgstr ""
-
 msgid "Ftp user data"
 msgstr ""
 
@@ -2374,9 +2329,6 @@ msgstr "GB"
 
 msgid "Gender"
 msgstr "Pohlaví"
-
-msgid "General Information"
-msgstr "Obecné informace"
 
 msgid "General information"
 msgstr "Hlavní informace"
@@ -2474,17 +2426,14 @@ msgstr ""
 msgid "Hosting plans"
 msgstr "Plány hostingu"
 
+msgid "Hosting plans are not found."
+msgstr ""
+
 msgid "Hosting plans available for"
 msgstr "Hostingové plány dostupné pro"
 
 msgid "Hosting plans available for update"
 msgstr "Dostupná vylepšení plánů hostingu"
-
-msgid "Hosting plans not found!"
-msgstr "Plán hostingu nenalezen!"
-
-msgid "Hosting plans not found."
-msgstr ""
 
 msgid "Hour"
 msgstr "Hodina"
@@ -2551,9 +2500,6 @@ msgstr ""
 msgid "IP usage"
 msgstr "Využití IP"
 
-msgid "IPs usage"
-msgstr ""
-
 msgid "IPv6 address"
 msgstr "IPv6 adresa"
 
@@ -2585,8 +2531,8 @@ msgid "Import in local repository"
 msgstr ""
 
 msgid ""
-"In case domain expires date is 'N/A', the expiration date will be set from "
-"today."
+"In case domain expiration date is 'N/A', the expiration date will be set "
+"from today."
 msgstr ""
 
 msgid "In front the name"
@@ -2614,9 +2560,6 @@ msgstr ""
 msgid "Incorrect disk quota limit."
 msgstr ""
 
-msgid "Incorrect email length or syntax!"
-msgstr "Nesprávná délka nebo syntaxe emailu!"
-
 msgid "Incorrect email length or syntax."
 msgstr "Nesprávná délka nebo syntaxe emailu."
 
@@ -2626,9 +2569,6 @@ msgstr ""
 
 msgid "Incorrect mail accounts limit."
 msgstr ""
-
-msgid "Incorrect mount point length or syntax"
-msgstr "Nesprávná délka nebo syntaxe přípojného bodu"
 
 msgid "Incorrect mount point length or syntax."
 msgstr ""
@@ -2678,9 +2618,6 @@ msgstr "Instalace různých webových aplikací několika málo kliknutími."
 msgid "Installation details"
 msgstr ""
 
-msgid "Installation infos"
-msgstr ""
-
 msgid "Installation path:"
 msgstr ""
 
@@ -2696,10 +2633,7 @@ msgstr ""
 msgid "Installed on"
 msgstr "Instalován na"
 
-msgid "Installing your uploaded package. Please refresh the site."
-msgstr ""
-
-msgid "Installing your uploaded package. Please refresh this site."
+msgid "Installing your uploaded package. Please refresh this page."
 msgstr ""
 
 msgid "Instructions to download today's backup"
@@ -2823,9 +2757,6 @@ msgstr "Poslední odpověď dne"
 msgid "Last translator"
 msgstr "Poslední překladatel"
 
-msgid "Lastname"
-msgstr ""
-
 msgid "Layout"
 msgstr "Motivy vzhledu"
 
@@ -2872,10 +2803,7 @@ msgstr "Přihlásit se jako"
 msgid "Login data successfully sent to %s."
 msgstr ""
 
-msgid "Login into PhpMyAdmin"
-msgstr "Přihlásit se do phpMyAdminu"
-
-msgid "Login into PḧpMyAdmin"
+msgid "Login into phpMyAdmin"
 msgstr ""
 
 msgid "Login into the filemanager"
@@ -2914,6 +2842,9 @@ msgstr "Zapomenuté heslo"
 msgid "Lost password e-mail"
 msgstr "Zapomenuté heslo"
 
+msgid "Lost password email"
+msgstr ""
+
 msgid "Lost password email setup"
 msgstr ""
 
@@ -2922,9 +2853,6 @@ msgstr "Zapomenuté heslo - odkaz"
 
 msgid "Lost password mail"
 msgstr ""
-
-msgid "Lostpw email"
-msgstr "Lostpw email"
 
 msgid "Lostpw link"
 msgstr "Lostpw odkaz"
@@ -2937,9 +2865,6 @@ msgstr "MB"
 
 msgid "Mail"
 msgstr "Mail"
-
-msgid "Mail Accounts"
-msgstr ""
 
 msgid "Mail Log Level"
 msgstr ""
@@ -2973,14 +2898,6 @@ msgstr ""
 
 msgid "Mail accounts"
 msgstr "Poštovní účty"
-
-msgid ""
-"Mail accounts limit <br /><span class=\"italic\">(-1 disabled, 0 "
-"unlimited)</span>"
-msgstr ""
-
-msgid "Mail accounts limit reached!"
-msgstr "Dosažen limit pro poštovní účty!"
 
 msgid "Mail accounts limit reached."
 msgstr ""
@@ -3126,11 +3043,6 @@ msgstr ""
 msgid "Max. remote filesize (%1$d MB) is reached. Your remote file is %2$d MB"
 msgstr ""
 
-#, php-format
-msgid ""
-"Max. remote filesize (%1$d MB) is reached. Your remote file ist %2$d MB"
-msgstr ""
-
 msgid ""
 "Maximal number of labels for domain names<br />(<small>Excluding SLD & "
 "TLD</small>)"
@@ -3241,9 +3153,6 @@ msgstr ""
 
 msgid "New i-MSCP update is available"
 msgstr "Je k dispozici aktualizace nového i-MSCP"
-
-msgid "New i-MSCP update is now available"
-msgstr "Je dostupná nová aktualizace i-MSCP"
 
 msgid "New order"
 msgstr "Nová objednávka"
@@ -3365,9 +3274,6 @@ msgid "No set"
 msgstr "Nenastaveno"
 
 msgid "No software available"
-msgstr ""
-
-msgid "No software available!"
 msgstr ""
 
 msgid "No software in software depot available!"
@@ -3701,20 +3607,11 @@ msgstr "Chybí heslo."
 
 #, php-format
 msgid ""
-"Password data is shorter than %s signs or includes not permitted signs!"
-msgstr "Heslo je kratší než %s znaků nebo obsahuje nepovolené znaky!"
-
-#, php-format
-msgid ""
 "Password data is shorter than %s signs or includes not permitted signs."
 msgstr ""
 
 msgid "Password is missing."
 msgstr "Chybí heslo."
-
-#, php-format
-msgid "Password is shorter than %s signs or includes not permitted signs."
-msgstr ""
 
 msgid "Password length"
 msgstr "Délka hesla"
@@ -3843,38 +3740,17 @@ msgid ""
 "Application. (Required fiels!)"
 msgstr ""
 
-msgid "Please specify a message content!"
-msgstr "Vyplňte prosím tělo zprávy!"
-
 msgid "Please specify a message content."
 msgstr "Zadejte prosím obsah zprávy."
-
-msgid "Please specify a message subject!"
-msgstr "Vyplňte prosím předmět zprávy!"
 
 msgid "Please specify a message subject."
 msgstr "Zadejte předmět zprávy."
 
-msgid "Please specify a sender email!"
-msgstr "Vyplňte prosím email odesílatele!"
-
 msgid "Please specify a sender email."
 msgstr "Zadejte e-mail odesílatele."
 
-msgid "Please specify a sender name!"
-msgstr "Vyplňte prosím jméno odesílatele!"
-
 msgid "Please specify a sender name."
 msgstr "Zadejte jméno odesílatele."
-
-msgid "Please specify a subject!"
-msgstr "Prosím zadejte předmět!"
-
-msgid "Please specify message subject."
-msgstr "Prosím, zadejte předmět zprávy."
-
-msgid "Please specify message!"
-msgstr "Prosím zadejte zprávu!"
 
 msgid "Please specify other FTP account directory!"
 msgstr "Uveďte prosím další adresář FTP účetu !"
@@ -4021,9 +3897,6 @@ msgstr ""
 msgid "Protected"
 msgstr ""
 
-msgid "Protected Areas"
-msgstr "Chráněné zóny"
-
 msgid "Protected area status should be 'OK' if you want to delete it."
 msgstr ""
 
@@ -4166,9 +4039,6 @@ msgstr "Úroveň partnera"
 msgid "Reseller list"
 msgstr ""
 
-msgid "Reseller list is empty!"
-msgstr "Seznam partnerů je prázdný!"
-
 msgid "Reseller list is empty."
 msgstr ""
 
@@ -4283,9 +4153,6 @@ msgid "SQL databases limit is <i>disabled</i>."
 msgstr ""
 
 msgid "SQL databases limit is disabled but SQL users limit is not."
-msgstr ""
-
-msgid "SQL databases limit is disabled but SQL users limit not."
 msgstr ""
 
 msgid "SQL databases limit is not <i>disabled</i>."
@@ -4668,17 +4535,11 @@ msgstr ""
 msgid "Sql databases"
 msgstr ""
 
-msgid "Sql databases limit<br><i>(-1 disabled, 0 unlimited)</i>"
-msgstr ""
-
 msgid "Sql user"
 msgstr ""
 
 msgid "Sql users"
 msgstr "Sql uživatelé"
-
-msgid "Sql users limit<br><i>(-1 disabled, 0 unlimited)</i>"
-msgstr ""
 
 msgid "Start installation"
 msgstr ""
@@ -5339,9 +5200,6 @@ msgstr ""
 msgid "Unable to move file."
 msgstr ""
 
-msgid "Unable to read xml file for Web softwares."
-msgstr ""
-
 msgid "Unable to read xml file for web softwares."
 msgstr ""
 
@@ -5401,9 +5259,6 @@ msgstr ""
 msgid "Unknown subdomain type."
 msgstr "Neznámý typ poddomény."
 
-msgid "Unknown type"
-msgstr "Neznámý typ"
-
 msgid "Unknown type."
 msgstr ""
 
@@ -5428,9 +5283,6 @@ msgstr "Aktualizace"
 
 msgid "Update SQL user password"
 msgstr ""
-
-msgid "Update checking is disabled!"
-msgstr "Kontrola aktualizací je vypnuta!"
 
 msgid "Update checking is disabled."
 msgstr "Kontrola aktualizací  je zakázána."
@@ -5756,9 +5608,6 @@ msgstr ""
 msgid "Wrong domain ID."
 msgstr "Špatní doménové ID."
 
-msgid "Wrong domain Id."
-msgstr "Špatné ID domény."
-
 msgid "Wrong domain name lenght!"
 msgstr ""
 
@@ -5871,9 +5720,6 @@ msgid "You are exceeding your FTP accounts limit."
 msgstr ""
 
 msgid "You are exceeding your SQL database limit."
-msgstr ""
-
-msgid "You are exceeding your SQL databases limit."
 msgstr ""
 
 msgid "You are exceeding your disk limit."
@@ -6697,8 +6543,8 @@ msgstr "i-MSCP - Partner/Změnit osobní údaje"
 msgid "i-MSCP - Reseller/IP Usage"
 msgstr ""
 
-msgid "i-MSCP - Reseller/Lostpw email setup"
-msgstr "i-MSCP - Partner/Lostpw nastavení emailu"
+msgid "i-MSCP - Reseller/Lost password email setup"
+msgstr ""
 
 msgid "i-MSCP - Reseller/Manage users/Email setup"
 msgstr "i-MSCP - Partner/Správa uživatelů/Email setup"
