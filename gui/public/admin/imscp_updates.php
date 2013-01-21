@@ -74,7 +74,7 @@ function get_update_infos($tpl)
 		$tpl->assign(
 			array(
 				'UPDATE_MESSAGE' => '',
-				'UPDATE' => tr('Update checking is disabled!'),
+				'UPDATE' => tr('Update checking is disabled.'),
 				'INFOS' => tr('Enable update at') . " <a href=\"settings.php\">" . tr('Settings') . '</a>'));
 
 		$tpl->parse('UPDATE_INFOS', 'update_infos');
@@ -85,7 +85,7 @@ function get_update_infos($tpl)
         $tpl->assign(
 			array(
 				'UPDATE_INFOS' => '',
-				'UPDATE' => tr('New i-MSCP update is now available'),
+				'UPDATE' => tr('New i-MSCP update is available'),
 				'TR_MESSAGE' => tr('Get it at') . " <a href=\"http://www.i-mscp.net/download\" class=\"link\" target=\"_blank\">http://www.i-mscp.net/download</a>"));
 
         $tpl->parse('UPDATE_MESSAGE', 'update_message');

@@ -271,7 +271,7 @@ function admin_generateDomainAcountDeletionValidationPage($domainId)
     $stmt = exec_query($query, $domainId);
 
     if ($stmt->rowCount() == 0) {
-        set_page_message(tr('Wrong domain Id.'), 'error');
+        set_page_message(tr('Wrong domain ID.'), 'error');
         redirectTo('manage_users.php');
     }
 

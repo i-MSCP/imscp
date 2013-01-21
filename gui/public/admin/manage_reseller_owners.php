@@ -83,7 +83,7 @@ function gen_reseller_table($tpl) {
 	if ($rs->recordCount() == 0) {
 		$tpl->assign(
 			array(
-				'MESSAGE' => tr('Reseller list is empty!'),
+				'MESSAGE' => tr('Reseller list is empty.'),
 				'RESELLER_LIST' => '',
 			)
 		);

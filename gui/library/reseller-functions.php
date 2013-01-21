@@ -683,7 +683,7 @@ function reseller_limits_check($reseller_id, $hpid, $newprops = '')
             if ($sql_db_new == 0) {
                 set_page_message(tr('You have a SQL databases limit.<br />You cannot add an user with unlimited SQL databases.'), 'error');
             } else if ($sql_db_current + $sql_db_new > $sql_db_max) {
-                set_page_message(tr('You are exceeding your SQL databases limit.'), 'error');
+                set_page_message(tr('You are exceeding your SQL database limit.'), 'error');
             }
         }
     }

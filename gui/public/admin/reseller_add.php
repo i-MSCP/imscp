@@ -325,9 +325,9 @@ function  _admin_generatePersonalDataFrom($tpl, &$data)
 			 'TR_PERSONAL_DATA' => tr('Personal data'),
 			 'TR_CUSTOMER_ID' => tr('Customer ID'),
 			 'CUSTOMER_ID' => tohtml($data['customer_id']),
-			 'TR_FNAME' => tr('Firstname'),
+			 'TR_FNAME' => tr('First name'),
 			 'FNAME' => tohtml($data['fname']),
-			 'TR_LNAME' => tr('Lastname'),
+			 'TR_LNAME' => tr('Last name'),
 			 'LNAME' => tohtml($data['lname']),
 			 'TR_GENDER' => tr('Gender'),
 			 'TR_MALE' => tr('Male'),
@@ -492,7 +492,7 @@ function admin_checkAndCreateResellerAccount()
 			set_page_message(tr('Incorrect limit for %s.', tr('SQL databases')), 'error');
 			$errFieldsStack[] = 'max_sql_db_cnt';
 		} elseif ($_POST['max_sql_db_cnt'] == -1 && $_POST['max_sql_user_cnt'] != -1) {
-			set_page_message(tr('SQL databases limit is disabled but SQL users limit not.'), 'error');
+			set_page_message(tr('SQL databases limit is disabled but SQL users limit is not.'), 'error');
 			$errFieldsStack[] = 'max_sql_db_cnt';
 		}
 

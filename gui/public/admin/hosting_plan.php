@@ -67,7 +67,7 @@ function admin_generateHostingPlansList($tpl)
 	$stmt = exec_query($query, 'admin');
 
 	if (!$stmt->rowCount()) {
-		set_page_message(tr('Hosting plans not found.'), 'info');
+		set_page_message(tr("Hosting plans are not found."), 'info');
 		$tpl->assign('HP_TABLE', '');
 	} else {
 		$editTranslation = tr('Edit');

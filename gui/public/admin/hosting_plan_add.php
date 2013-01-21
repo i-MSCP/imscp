@@ -76,7 +76,7 @@ $tpl->assign(
 		 'TR_MAX_SQL' => tr('SQL databases limit<br><i>(-1 disabled, 0 unlimited)</i>'),
 		 'TR_MAX_SQL_USERS' => tr('SQL users limit<br><i>(-1 disabled, 0 unlimited)</i>'),
 		 'TR_MAX_TRAFFIC' => tr('Traffic limit [MiB]<br/><span class="italic">(0 unlimited)</span>'),
-		 'TR_DISK_LIMIT' => tr('Disk limit [MB]<br><i>(0 unlimited)</i>'),
+		 'TR_DISK_LIMIT' => tr('Disk limit [MiB]<br><i>(0 unlimited)</i>'),
          'TR_EXTMAIL' => tr('External mail server'),
 		 'TR_PHP' => tr('PHP'),
 		 'TR_SOFTWARE_SUPP' => tr('Softwares installer'),

@@ -167,7 +167,7 @@ function gen_hp_table($tpl, $reseller_id) {
 
 	if ($rs->rowCount() == 0) {
 		// if ($external_event == '_off_') {
-		set_page_message(tr('Hosting plans not found!'));
+		set_page_message(tr("Hosting plans are not found."));
 		// }
 		$tpl->assign('HP_TABLE', '');
 	} else { // There are data for hosting plans :-)
@@ -237,7 +237,7 @@ function gen_hp_table($tpl, $reseller_id) {
 		}
 
 		if ($orders_count == 0) {
-			set_page_message(tr('Hosting plans not found!'));
+			set_page_message(tr("Hosting plans are not found."));
 			$tpl->assign('HP_TABLE', '');
 		} else {
 			$tpl->parse('HP_TABLE', 'hp_table');

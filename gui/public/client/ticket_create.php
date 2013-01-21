@@ -56,7 +56,7 @@ if (!customerHasFeature('support')) {
 
 if (isset($_POST['uaction'])) {
 	if (empty($_POST['subject'])) {
-		set_page_message(tr('Please specify message subject.'), 'error');
+		set_page_message(tr('Please specify a message subject.'), 'error');
 	} elseif (empty($_POST['user_message'])) {
 		set_page_message(tr('Please type your message.'), 'error');
 	} else {

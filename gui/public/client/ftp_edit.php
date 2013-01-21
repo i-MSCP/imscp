@@ -127,7 +127,7 @@ function update_ftp_account($ftp_acc, $dmn_name) {
 				if ($cfg->PASSWD_STRONG) {
 					set_page_message(sprintf(tr('The password must be at least %s long and contain letters and numbers to be valid.'), $cfg->PASSWD_CHARS), 'error');
 				} else {
-					set_page_message(sprintf(tr('Password data is shorter than %s signs or includes not permitted signs!'), $cfg->PASSWD_CHARS), 'error');
+					set_page_message(sprintf(tr('Password data is shorter than %s signs or includes not permitted signs.'), $cfg->PASSWD_CHARS), 'error');
 				}
 				return;
 			}
@@ -178,7 +178,7 @@ function update_ftp_account($ftp_acc, $dmn_name) {
 				// Check for updirs ".."
 				$res = preg_match("/\.\./", $other_dir);
 				if ($res !== 0) {
-					set_page_message(tr('Incorrect mount point length or syntax'), 'error');
+					set_page_message(tr('Incorrect mount point length or syntax.'), 'error');
 					return;
 				}
 				$ftp_home = $cfg->FTP_HOMEDIR . "/$dmn_name/" . $other_dir;

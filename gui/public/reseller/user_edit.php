@@ -339,7 +339,7 @@ function update_data_in_db($hpid)
 					), 'error'
 				);
 			} else {
-				set_page_message(sprintf(tr('Password data is shorter than %s signs or includes not permitted signs!'), $cfg->PASSWD_CHARS), 'error');
+				set_page_message(sprintf(tr('Password data is shorter than %s signs or includes not permitted signs.'), $cfg->PASSWD_CHARS), 'error');
 			}
 
 			redirectTo('user_edit.php?edit_id=' . $hpid);

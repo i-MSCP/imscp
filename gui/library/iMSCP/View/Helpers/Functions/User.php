@@ -59,7 +59,7 @@ function gen_client_mainmenu($tpl, $menuTemplateFile)
 
 	$tpl->assign(
 		array(
-			 'TR_MENU_GENERAL_INFORMATION' => tr('General Information'),
+			 'TR_MENU_GENERAL_INFORMATION' => tr('General information'),
 			 'TR_MENU_STATISTICS' => tr('Statistics'),
 			 'TR_MENU_WEBTOOLS' => tr('Webtools'),
 
@@ -86,7 +86,7 @@ function gen_client_mainmenu($tpl, $menuTemplateFile)
 	}
 
 	if (customerHasFeature('mail')) {
-		$tpl->assign('TR_MENU_MAIL_ACCOUNTS', 'Mail Accounts');
+		$tpl->assign('TR_MENU_MAIL_ACCOUNTS', 'Mail accounts');
 	} else {
 		$tpl->assign('MAIL_FEATURE', '');
 	}
@@ -189,7 +189,7 @@ function gen_client_menu($tpl, $menuTemplateFile)
 		$tpl->assign(
 			array(
 				 'TR_LMENU_ADD_FTP_USER' => tr('Add FTP user'),
-				 'TR_LMENU_FILEMANAGER' => tr('Filemanager'),
+				 'TR_LMENU_FILEMANAGER' => tr('FileManager'),
 				 'TR_LMENU_FTP_ACCOUNTS' => tr('FTP accounts'),
 				 'FILEMANAGER_PATH' => $cfg->FILEMANAGER_PATH,
 				 'FILEMANAGER_TARGET' => $cfg->FILEMANAGER_TARGET));
