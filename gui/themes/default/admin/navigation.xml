@@ -31,7 +31,7 @@
 <config>
 	<navigation>
 		<general_information>
-			<label>General Information</label>
+			<label>General information</label>
 			<uri>/admin/index.php</uri>
 			<class>general</class>
 			<pages>

@@ -69,10 +69,10 @@ if (isset($_POST['uaction']) && $_POST['uaction'] == 'apply') {
 	$data_2['message'] = clean_input($_POST['message2'], false);
 
 	if (empty($data_1['subject']) || empty($data_2['subject'])) {
-		$err_message = tr('Please specify a subject!');
+		$err_message = tr('Please specify a message subject.');
 	}
 	if (empty($data_1['message']) || empty($data_2['message'])) {
-		$err_message = tr('Please specify message!');
+		$err_message = tr('Please specify a message content.');
 	}
 
 	if (!empty($err_message)) {

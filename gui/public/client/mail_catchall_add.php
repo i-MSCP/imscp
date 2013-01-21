@@ -87,7 +87,7 @@ function gen_dynamic_page_data($tpl, $id) {
 		$alssub_mail_acc_cnt) = get_domain_running_mail_acc_cnt($dmn_id);
 
 	if ($dmn_mailacc_limit != 0 && $mail_acc_cnt >= $dmn_mailacc_limit) {
-		set_page_message(tr('Mail accounts limit reached!'), 'error');
+		set_page_message(tr('Mail accounts limit reached.'), 'error');
 		redirectTo('mail_catchall.php');
 	}
 

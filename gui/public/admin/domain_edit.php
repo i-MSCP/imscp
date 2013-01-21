@@ -300,7 +300,7 @@ function _admin_generateLimitsForm($tpl, &$data)
 	if ($data['max_als_cnt'] == -1) { // Reseller has no permissions on this service
 		$tpl->assign('DOMAIN_ALIASES_LIMIT_BLOCK', '');
 	} else {
-		$tplVars['TR_ALIASSES_LIMIT'] = tr('Domain aliases limit<br /><span class="italic">(-1 disabled, 0 unlimited)</span>', true);
+		$tplVars['TR_ALIASSES_LIMIT'] = tr('Domain aliases limit<br/><span class="italic">(-1 disabled, 0 unlimited)</span>', true);
 		$tplVars['DOMAIN_ALIASSES_LIMIT'] = tohtml($data['domain_alias_limit']);
 		$tplVars['TR_CUSTOMER_DOMAIN_ALIASSES_COMSUPTION'] = ($data['fallback_domain_alias_limit'] != -1) ? tohtml($data['nbAliasses']) . ' / ' . (($data['fallback_domain_alias_limit'] != 0) ? tohtml($data['fallback_domain_alias_limit']) : tr('Unlimited')) : tr('Disabled');
 		$tplVars['TR_RESELLER_DOMAIN_ALIASSES_COMSUPTION'] = tohtml($data['current_als_cnt']) . ' / ' . (($data['max_als_cnt'] != 0) ? tohtml($data['max_als_cnt']) : tr('Unlimited'));
@@ -310,7 +310,7 @@ function _admin_generateLimitsForm($tpl, &$data)
 	if ($data['max_mail_cnt'] == -1) { // Reseller has no permissions on this service
 		$tplVars['MAIL_ACCOUNTS_LIMIT_BLOCK'] = '';
 	} else {
-		$tplVars['TR_MAIL_ACCOUNTS_LIMIT'] = tr('Mail accounts limit <br /><span class="italic">(-1 disabled, 0 unlimited)</span>', true);
+		$tplVars['TR_MAIL_ACCOUNTS_LIMIT'] = tr('Mail accounts limit<br/><span class="italic">(-1 disabled, 0 unlimited)</span>', true);
 		$tplVars['MAIL_ACCOUNTS_LIMIT'] = tohtml($data['domain_mailacc_limit']);
 		$tplVars['TR_CUSTOMER_MAIL_ACCOUNTS_COMSUPTION'] = ($data['fallback_domain_mailacc_limit'] != -1) ? tohtml($data['nbMailAccounts']) . ' / ' . (($data['fallback_domain_mailacc_limit'] != 0) ? tohtml($data['fallback_domain_mailacc_limit']) : tr('Unlimited')): tr('Disabled');
 		$tplVars['TR_RESELLER_MAIL_ACCOUNTS_COMSUPTION'] = tohtml($data['current_mail_cnt']) . ' / ' . (($data['max_mail_cnt'] != 0) ? tohtml($data['max_mail_cnt']) : tr('Unlimited'));
@@ -352,7 +352,7 @@ function _admin_generateLimitsForm($tpl, &$data)
 												 (($data['max_traff_amnt'] != 0) ? tohtml(bytesHuman($data['max_traff_amnt'] * 1048576)) : tr('Unlimited'));
 
 	// Disk space limit
-	$tplVars['TR_DISK_LIMIT'] = tr('Disk space limit [MiB] <br /><span class="italic">(0 unlimited)</span>', true);
+	$tplVars['TR_DISK_LIMIT'] = tr('Disk limit [MiB]<br/><span class=\"italic\">(0 unlimited)</span>', true);
 	$tplVars['DISK_LIMIT'] = tohtml($data['domain_disk_limit']);
 
 	$tplVars['TR_CUSTOMER_DISKPACE_COMSUPTION'] = tohtml(bytesHuman($data['domain_disk_usage'], 'MiB')) . ' / ' .
@@ -1023,10 +1023,10 @@ $tpl->assign(
 		 'TR_DOMAIN_OVERVIEW' => tr('Domain overview'),
 		 'TR_DOMAIN_NAME' => tr('Domain name'),
 		 'DOMAIN_NAME' => tohtml(decode_idna($data['domain_name'])),
-		 'TR_DOMAIN_EXPIRE_DATE' => tr('Domain expires date'),
+		 'TR_DOMAIN_EXPIRE_DATE' => tr('Domain expiration date'),
 		 'DOMAIN_EXPIRE_DATE' => ($data['fallback_domain_expires'] != 0) ? date($cfg->DATE_FORMAT, $data['fallback_domain_expires']) : tr('N/A'),
-		 'TR_DOMAIN_NEW_EXPIRE_DATE' => tr('Domain new expires date'),
-		 'TR_DOMAIN_EXPIRE_HELP' => tr("In case domain expires date is 'N/A', the expiration date will be set from today."),
+		 'TR_DOMAIN_NEW_EXPIRE_DATE' => tr('Domain new expiration date'),
+		 'TR_DOMAIN_EXPIRE_HELP' => tr("In case domain expiration date is 'N/A', the expiration date will be set from today."),
 		 'DOMAIN_NEW_EXPIRE_DATE' => tohtml(($data['domain_expires'] != 0) ? ($data['domain_expires_ok'] ? date('m/d/Y', $data['domain_expires'])  : $data['domain_expires']) : ''),
 		 'DOMAIN_NEW_EXPIRE_DATE_DISABLED' => ($data['domain_never_expires'] == 'on') ? 'disabled="disabled"' : '',
 		 'TR_DOMAIN_NEVER_EXPIRES' => tr('Never expires'),

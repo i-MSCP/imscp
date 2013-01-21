@@ -65,7 +65,7 @@ if($use_webdepot) {
         //$xml_file =  @file_get_contents(encode_idna(strtolower(clean_input($_POST['webdepot_xml_url']))));
         $xml_file = @file_get_contents($webdepot_xml_url);
         if (!strpos($xml_file, 'i-MSCP web software repositories list')) {
-            set_page_message(tr("Unable to read xml file for Web softwares."), 'error');
+            set_page_message(tr("Unable to read xml file for web softwares."), 'error');
             $error = 1;
         }
         if(!$error) {
@@ -293,7 +293,7 @@ $tpl->assign(
 		'TR_SOFTWARE_FILE' => tr('Choose file (Max: %1$d MB)', ini_get('upload_max_filesize')),
 		'TR_SOFTWARE_URL' => tr('or remote file (Max: %1$d MB)', formatFilesize($cfg->MAX_REMOTE_FILESIZE)),
 		'TR_UPLOAD_SOFTWARE_BUTTON' => tr('Upload now'),
-		'TR_AWAITING_ACTIVATION' => tr('Awaiting Activation'),
+		'TR_AWAITING_ACTIVATION' => tr('Awaiting activation'),
 		'TR_ACTIVATED_SOFTWARE' => tr('Reseller software list'),
 		'TR_SOFTWARE_NAME' => tr('Software name'),
 		'TR_SOFTWARE_VERSION' => tr('Version'),
