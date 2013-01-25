@@ -300,12 +300,13 @@ sub addMasterZone
 
 	iMSCP::HooksManager->getInstance()->trigger('beforeNamedAddMasterZone') and return 1;
 
-	my $rs = $named->addDmn({
-		DMN_NAME => $main::imscpConfig{'BASE_SERVER_VHOST'},
-		DMN_IP => $main::imscpConfig{'BASE_SERVER_IP'},
-		MX => ''
-	});
-
+	my $rs = $named->addDmn(
+		{
+			DMN_NAME => $main::imscpConfig{'BASE_SERVER_VHOST'},
+			DMN_IP => $main::imscpConfig{'BASE_SERVER_IP'},
+			MX => ''
+		}
+	);
 	return $rs if $rs;
 
 	iMSCP::HooksManager->getInstance()->trigger('afterNamedAddMasterZone');

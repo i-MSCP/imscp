@@ -87,7 +87,7 @@ sub install
 	$rs |= $self->addUsersAndGroups();
 	$rs |= $self->makeDirs();
 	$rs |= $self->buildPhpConfFiles();
-	$rs |= $self->buildMainVhostFile();
+	$rs |= $self->buildApacheConfFiles();
 	$rs |= $self->buildMasterVhostFiles();
 	$rs |= $self->installLogrotate();
 	$rs |= $self->saveConf();
@@ -95,7 +95,7 @@ sub install
 
 	$rs |= $self->oldEngineCompatibility();
 
-	iMSCP::HooksManager->getInstance()->trigger('afterHttpdInstall', 'apache_itk');
+	$rs |= iMSCP::HooksManager->getInstance()->trigger('afterHttpdInstall', 'apache_itk');
 
 	$rs;
 }
@@ -113,7 +113,7 @@ sub _fixPhpErrorReportingValues
 {
 	my $self = shift;
 	my ($rs, $stdout, $stderr);
-	my $database = main::setupGetSqlConnect($main::imscpConfig{'DATABASE_NAME'});
+	my ($database, $errStr) = main::setupGetSqlConnect($main::imscpConfig{'DATABASE_NAME'});
 	fatal('Unable to connect to SQL Server: $errStr') if ! $database;
 
 	use iMSCP::Execute;
@@ -260,7 +260,7 @@ sub addUsersAndGroups
 	$panelUName = Modules::SystemUser->new();
 	$panelUName->{'skipCreateHome'} = 'yes';
 	$panelUName->{'comment'} = 'iMSCP master virtual user';
-	$panelUName->{'home'} = $self::imscpConfig{'GUI_ROOT_DIR'};
+	$panelUName->{'home'} = $main::imscpConfig{'GUI_ROOT_DIR'};
 	$panelUName->{'group'} = $main::imscpConfig{'SYSTEM_USER_PREFIX'} . $main::imscpConfig{'SYSTEM_USER_MIN_UID'};
 
 	$rs = $panelUName->addSystemUser(
@@ -341,7 +341,7 @@ sub saveConf
 	my $file = iMSCP::File->new(filename => "$self->{cfgDir}/apache.data");
 	my $cfg = $file->get() or return 1;
 
-	iMSCP::HooksManager->getInstance()->trigger('beforeHttpdBkpConfFile', \$cfg, 'apache.old.data') and return 1;
+	iMSCP::HooksManager->getInstance()->trigger('beforeHttpdBkpConfFile', \$cfg, "$self->{cfgDir}/apache.data") and return 1;
 
 	$file = iMSCP::File->new(filename => "$self->{cfgDir}/apache.old.data");
 
@@ -350,11 +350,10 @@ sub saveConf
 	$rs |= $file->mode(0640);
 	$rs |= $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
 
-	$rs |= iMSCP::HooksManager->getInstance()->trigger('afterHttpdBkpConfFile', 'apache.old.data');
+	$rs |= iMSCP::HooksManager->getInstance()->trigger('afterHttpdBkpConfFile', "$self->{cfgDir}/apache.data");
 
 	$rs;
 }
-
 
 sub oldEngineCompatibility
 {
@@ -398,56 +397,57 @@ sub buildPhpConfFiles
 	$httpd->setData({ PHP_TIMEZONE => $main::imscpConfig{'PHP_TIMEZONE'} });
 
 	$httpd->buildConfFile(
-		$self->{cfgDir} . '/parts/php' . $self::apacheConfig{'PHP_VERSION'} . '.itk.ini',
+		$self->{'cfgDir'} . '/parts/php' . $self::apacheConfig{'PHP_VERSION'} . '.itk.ini',
 		{ destination => "$self->{wrkDir}/php.ini", mode => 0644, user => $rootUName, group => $rootGName }
 	);
 
 	# Install the new file
 	my $file = iMSCP::File->new(filename => "$self->{wrkDir}/php.ini");
-	$rs |= $file->copyFile($self::apacheConfig{'ITK_PHP'.$self::apacheConfig{'PHP_VERSION'}.'_PATH'});
+	$rs |= $file->copyFile($self::apacheConfig{'ITK_PHP' . $self::apacheConfig{'PHP_VERSION'} . '_PATH'});
 
-	for("fastcgi", "fcgid", "fastcgi_imscp", "fcgid_imscp", "php4"){
+	# Disable un-needed apache modules
+	for('suexec', 'fastcgi', 'fcgid', 'fastcgi_imscp', 'fcgid_imscp', 'php5_fpm_imscp', 'php4') {
 		$rs |= $httpd->disableMod($_) if( -e "$self::apacheConfig{APACHE_MODS_DIR}/$_.load");
 	}
 
-	$rs |= $httpd->enableMod("actions php5");
+	# Enable needed apache modules
+	$rs |= $httpd->enableMod('php5');
 
 	$rs |= iMSCP::HooksManager->getInstance()->trigger('afterHttpdBuildPhpConfFiles');
 
 	$rs;
 }
 
-sub buildMainVhostFile
+sub buildApacheConfFiles
 {
 	my $self = shift;
 
-	iMSCP::HooksManager->getInstance()->trigger('beforeHttpdBuildMainVhostFile', '00_nameserver.conf') and return 1;
+	iMSCP::HooksManager->getInstance()->trigger('beforeHttpdBuildApacheConfFiles') and return 1;
 
 	use iMSCP::File;
 	use version;
 	use Servers::httpd::apache_itk;
 
 	my $httpd = Servers::httpd::apache_itk->new();
-	my ($rs, $cfgTpl, $err);
 
 	if(-f "$self::apacheConfig{'APACHE_SITES_DIR'}/00_nameserver.conf") {
 		iMSCP::File->new(
 			filename => "$self::apacheConfig{'APACHE_SITES_DIR'}/00_nameserver.conf"
-		)->copyFile("$self->{bkpDir}/00_nameserver.conf.". time) and return 1;
+		)->copyFile("$self->{'bkpDir'}/00_nameserver.conf.". time) and return 1;
 	}
 
 	## Building, storage and installation of new file
-	if(-f '/etc/apache2/ports.conf') {
+	if(-f "$self::apacheConfig{'APACHE_CONF_DIR'}/ports.conf") {
 		# Loading the file
-		my $file = iMSCP::File->new(filename => '/etc/apache2/ports.conf');
+		my $file = iMSCP::File->new(filename => "$self::apacheConfig{'APACHE_CONF_DIR'}/ports.conf");
 		my $rdata = $file->get();
 		return $rdata if ! $rdata;
 
-		iMSCP::HooksManager->getInstance()->trigger('beforeHttpdBuildPortConfFile', \$rdata, 'port.conf') and return 1;
+		iMSCP::HooksManager->getInstance()->trigger('beforeHttpdBuildConfFile', \$rdata, 'ports.conf') and return 1;
 
 		$rdata =~ s/^NameVirtualHost \*:80/#NameVirtualHost \*:80/gmi;
 
-		iMSCP::HooksManager->getInstance()->trigger('afterHttpdBuildPortConfFile', \$rdata, 'port.conf') and return 1;
+		iMSCP::HooksManager->getInstance()->trigger('afterHttpdBuildConfFile', \$rdata, 'ports.conf') and return 1;
 
 		$file->set($rdata) and return 1;
 		$file->save() and return 1;
@@ -462,6 +462,7 @@ sub buildMainVhostFile
 		$pipeSyntax .= '|';
 	}
 
+	# Set needed data
 	$httpd->setData(
 		{
 			APACHE_WWW_DIR => $main::imscpConfig{'USER_HOME_DIR'},
@@ -470,27 +471,21 @@ sub buildMainVhostFile
 		}
 	);
 
-	$cfgTpl = $httpd->buildConfFile(
-		"$self->{cfgDir}/00_nameserver.conf",
-		{ destination => "$self->{wrkDir}/00_nameserver.conf" }
-	);
+	$httpd->buildConfFile(
+		"$self->{'cfgDir'}/00_nameserver.conf", { 'destination' => "$self->{'wrkDir'}/00_nameserver.conf" }
+	) and return 1;
 
 	# Installing the new file in production directory
-	my $file = iMSCP::File->new(filename => "$self->{wrkDir}/00_nameserver.conf");
+	my $file = iMSCP::File->new(filename => "$self->{'wrkDir'}/00_nameserver.conf");
 	$file->copyFile($self::apacheConfig{'APACHE_SITES_DIR'}) and return 1;
 
 	# Enable required modules
-	$rs = $httpd->enableMod('cgid rewrite proxy proxy_http ssl');
-	return $rs if $rs;
+	$httpd->enableMod('cgi rewrite proxy proxy_http ssl') and return 1;
 
-	# Disable un-needed modules
-	$rs = $httpd->disableMod('suexec');
-	return $rs if $rs;
+	# Enable 00_nameserver.conf file
+	$httpd->enableSite('00_nameserver.conf') and return 1;
 
-	$rs = $httpd->enableSite('00_nameserver.conf');
-	return $rs if $rs;
-
-	iMSCP::HooksManager->getInstance()->trigger('afterHttpdBuildMainVhostFile', '00_nameserver.conf');
+	iMSCP::HooksManager->getInstance()->trigger('afterHttpdBuildApacheConfFiles');
 }
 
 sub buildMasterVhostFiles
@@ -503,42 +498,55 @@ sub buildMasterVhostFiles
 	use Servers::httpd;
 
 	my $httpd = Servers::httpd::apache_itk->new();
-	my $rs = 0;
-
-	$rs = $httpd->disableSite('default');
-	return $rs if $rs;
 
 	my $adminEmailAddress = $main::imscpConfig{'DEFAULT_ADMIN_ADDRESS'};
 	my ($user, $domain) = split /@/, $adminEmailAddress;
 	use Net::LibIDN qw/idn_to_ascii/;
-	$adminEmailAddress = "$user@".idn_to_ascii($domain, 'utf-8');
+	$adminEmailAddress = "$user@" . idn_to_ascii($domain, 'utf-8');
 
 	$httpd->setData(
 		{
-			DEFAULT_ADMIN_ADDRESS => $adminEmailAddress,
-			SYSTEM_USER_PREFIX => $main::imscpConfig{'SYSTEM_USER_PREFIX'},
-			SYSTEM_USER_MIN_UID => $main::imscpConfig{'SYSTEM_USER_MIN_UID'},
-			GUI_CERT_DIR => $main::imscpConfig{'GUI_CERT_DIR'},
-			SERVER_HOSTNAME => $main::imscpConfig{'SERVER_HOSTNAME'},
-			WWW_DIR => $main::imscpConfig{'ROOT_DIR'},
-			DMN_NAME => 'gui',
-			ROOT_DIR => $main::imscpConfig{'ROOT_DIR'},
 			BASE_SERVER_IP => $main::imscpConfig{'BASE_SERVER_IP'},
 			BASE_SERVER_VHOST => $main::imscpConfig{'BASE_SERVER_VHOST'},
-			PHP_VERSION => $main::imscpConfig{'PHP_VERSION'},
+			DEFAULT_ADMIN_ADDRESS => $adminEmailAddress,
+			ROOT_DIR => $main::imscpConfig{'ROOT_DIR'},
+			SYSTEM_USER_PREFIX => $main::imscpConfig{'SYSTEM_USER_PREFIX'},
+			SYSTEM_USER_MIN_UID => $main::imscpConfig{'SYSTEM_USER_MIN_UID'},
 			CONF_DIR => $main::imscpConfig{'CONF_DIR'},
 			MR_LOCK_FILE => $main::imscpConfig{'MR_LOCK_FILE'},
 			RKHUNTER_LOG => $main::imscpConfig{'RKHUNTER_LOG'},
 			CHKROOTKIT_LOG => $main::imscpConfig{'CHKROOTKIT_LOG'},
 			PEAR_DIR => $main::imscpConfig{'PEAR_DIR'},
 			OTHER_ROOTKIT_LOG => ($main::imscpConfig{'OTHER_ROOTKIT_LOG'} ne '')
-				? ":$main::imscpConfig{'OTHER_ROOTKIT_LOG'}" : ''
+				? ":$main::imscpConfig{'OTHER_ROOTKIT_LOG'}" : '',
+			GUI_CERT_DIR => $main::imscpConfig{'GUI_CERT_DIR'},
+			SERVER_HOSTNAME => $main::imscpConfig{'SERVER_HOSTNAME'}
 		}
 	);
 
 	# Build 00_master.conf file
-	$rs = $httpd->buildConfFile("$self->{cfgDir}/00_master.conf");
-	return $rs if $rs;
+
+	# Schedule useless suexec section deletion
+	iMSCP::HooksManager->getInstance()->register(
+		'beforeHttpdBuildConfFile', sub { $httpd->removeSection('suexec', @_)}
+	) and return 1;
+
+	# Schedule useless fcgid section deletion
+	iMSCP::HooksManager->getInstance()->register(
+		'beforeHttpdBuildConfFile', sub { $httpd->removeSection('fcgid', @_)}
+	) and return 1;
+
+	# Schedule useless fastcgi section deletion
+	iMSCP::HooksManager->getInstance()->register(
+		'beforeHttpdBuildConfFile', sub { $httpd->removeSection('fastcgi', @_)}
+	) and return 1;
+
+	# Schedule useless php_fpm sections deletion
+	iMSCP::HooksManager->getInstance()->register(
+		'beforeHttpdBuildConfFile', sub { $httpd->removeSection('php_fpm', @_) }
+	) and return 1;
+
+	$httpd->buildConfFile("$self->{cfgDir}/00_master.conf") and return 1;
 
 	iMSCP::File->new(
 		filename => "$self->{wrkDir}/00_master.conf"
@@ -547,8 +555,28 @@ sub buildMasterVhostFiles
 	) and return 1;
 
 	# Build 00_master_ssl.conf file
-	$rs = $httpd->buildConfFile("$self->{cfgDir}/00_master_ssl.conf");
-	return $rs if $rs;
+
+	# Schedule useless suexec section deletion
+	iMSCP::HooksManager->getInstance()->register(
+		'beforeHttpdBuildConfFile', sub { $httpd->removeSection('suexec', @_) }
+	) and return 1;
+
+	# Schedule useless fcgid section deletion
+	iMSCP::HooksManager->getInstance()->register(
+		'beforeHttpdBuildConfFile', sub { $httpd->removeSection('fcgid', @_) }
+	) and return 1;
+
+	# Schedule useless fastcgi section deletion
+	iMSCP::HooksManager->getInstance()->register(
+		'beforeHttpdBuildConfFile', sub { $httpd->removeSection('fastcgi', @_) }
+	) and return 1;
+
+	# Schedule useless php_fpm sections deletion
+	iMSCP::HooksManager->getInstance()->register(
+		'beforeHttpdBuildConfFile', sub { $httpd->removeSection('php_fpm', @_) }
+	) and return 1;
+
+	$httpd->buildConfFile("$self->{'cfgDir'}/00_master_ssl.conf") and return 1;
 
 	iMSCP::File->new(
 		filename => "$self->{wrkDir}/00_master_ssl.conf"
@@ -558,15 +586,15 @@ sub buildMasterVhostFiles
 
 	# Enable and disable vhost files
 	if($main::imscpConfig{'SSL_ENABLED'} eq 'yes') {
-		$rs = $httpd->enableSite('00_master.conf 00_master_ssl.conf');
-		return $rs if $rs;
+		$httpd->enableSite('00_master.conf 00_master_ssl.conf') and return 1;
 	} else {
-		$rs = $httpd->enableSite('00_master.conf');
-        return $rs if $rs;
-
-		$rs = $httpd->disableSite('00_master_ssl.conf');
-		return $rs if $rs;
+		$httpd->enableSite('00_master.conf') and return 1;
+		$httpd->disableSite('00_master_ssl.conf' and return 1);
 	}
+
+	# Disable defaults sites if exists
+	$httpd->disableSite('default') and return 1 if -f "$self::apacheConfig{'APACHE_SITES_DIR'}/default";
+	$httpd->disableSite('default-ssl') and return 1 if -f "$self::apacheConfig{'APACHE_SITES_DIR'}/default-ssl";
 
 	iMSCP::HooksManager->getInstance()->trigger('afterHttpdBuildMasterVhostFiles');
 }
@@ -575,7 +603,7 @@ sub installLogrotate
 {
 	my $self = shift;
 
-	iMSCP::HooksManager->getInstance()->trigger('beforeHttpdInstallLogrotate') and return 1;
+	iMSCP::HooksManager->getInstance()->trigger('beforeHttpdInstallLogrotate', 'apache2') and return 1;
 
 	use Servers::httpd;
 
@@ -589,7 +617,7 @@ sub installLogrotate
 	);
 	return $rs if $rs;
 
-	iMSCP::HooksManager->getInstance()->trigger('afterHttpdInstallLogrotate');
+	iMSCP::HooksManager->getInstance()->trigger('afterHttpdInstallLogrotate', 'apache2');
 }
 
 1;

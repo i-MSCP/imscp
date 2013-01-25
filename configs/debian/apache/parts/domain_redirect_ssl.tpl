@@ -1,23 +1,14 @@
 <VirtualHost {DMN_IP}:443>
 
-	#
-	# SSL Start
-	#
+    ServerAdmin	webmaster@{DMN_NAME}
+    ServerName	{DMN_NAME}
+    ServerAlias	*.{DMN_NAME} {DMN_NAME} {ALIAS}.{BASE_SERVER_VHOST}
 
-	SSLEngine On
-	SSLCertificateFile		{CERT}
-	SSLCertificateKeyFile	{CERT}
-	SSLCertificateChainFile	{CERT}
+    Redirect / {FORWARD}
 
-	#
-	# SSL End
-	#
-
-	ServerAdmin	webmaster@{DMN_NAME}
-
-	ServerName	{DMN_NAME}
-	ServerAlias	*.{DMN_NAME} {DMN_NAME} {ALIAS}.{BASE_SERVER_VHOST}
-
-	Redirect / {FORWARD}
+    SSLEngine On
+    SSLCertificateFile		{CERT}
+    SSLCertificateKeyFile	{CERT}
+    SSLCertificateChainFile	{CERT}
 
 </VirtualHost>

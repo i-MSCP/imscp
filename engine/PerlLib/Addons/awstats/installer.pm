@@ -127,8 +127,6 @@ file received is not the one expected, this function will auto-register itself t
 
 sub installLogrotate
 {
-	debug('begin');
-
 	my $self = shift;
 	my $content = shift;
 	my $filename = shift;
@@ -138,8 +136,8 @@ sub installLogrotate
 		use iMSCP::Templator;
 
 		$$content = replaceBloc(
-			'# AWSTATS SECTION BEGIN',
-			'# AWSTATS SECTION END',
+			'# SECTION awstats BEGIN.',
+			'# SECTION awstats END.',
 			(
 				main::setupGetQuestion('AWSTATS_ACTIVE') =~ /^yes$/i
 				?

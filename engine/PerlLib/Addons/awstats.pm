@@ -121,13 +121,9 @@ sub preaddDmn
 	use iMSCP::HooksManager;
 
 	if($main::imscpConfig{'AWSTATS_ACTIVE'} && $main::imscpConfig{'AWSTATS_ACTIVE'} =~ /^yes$/i) {
-		iMSCP::HooksManager->getInstance()->register(
-			'beforeHttpdBuildConf', sub { return $self->awstatsSection(@_); }
-		);
+		iMSCP::HooksManager->getInstance()->register('beforeHttpdBuildConf', sub { $self->awstatsSection(@_); });
 	} else {
-		iMSCP::HooksManager->getInstance()->register(
-    		'beforeHttpdBuildConf', sub { return $self->delAwstatsSection(@_); }
-    	);
+		iMSCP::HooksManager->getInstance()->register('beforeHttpdBuildConf', sub { $self->delAwstatsSection(@_); });
 	}
 }
 
@@ -147,12 +143,14 @@ sub addDmn{
 	my $rs = 0;
 
 	$rs |= iMSCP::Dir->new(
-		dirname => "/$data->{HOME_DIR}/statistics"
-	)->make({
-		mode => 0755,
-		user => $data->{'USER'},
-		group => $data->{'GROUP'}
-	}) if $main::imscpConfig{'AWSTATS_MODE'};
+		dirname => "/$data->{'HOME_DIR'}/statistics"
+	)->make(
+		{
+			'mode' => 0755,
+			'user' => $data->{'USER'},
+			'group' => $data->{'GROUP'}
+		}
+	) if $main::imscpConfig{'AWSTATS_MODE'};
 
 	if($main::imscpConfig{'AWSTATS_ACTIVE'} && $main::imscpConfig{'AWSTATS_ACTIVE'} =~ /^yes$/i){
 		$rs |= $self->_addAwstatsCfg($data);
@@ -178,9 +176,7 @@ sub preaddSub
 
 	use iMSCP::HooksManager;
 
-	iMSCP::HooksManager->getInstance()->register(
-		'beforeHttpdBuildConf', sub { return $self->delAwstatsSection(@_); }
-	);
+	iMSCP::HooksManager->getInstance()->register('beforeHttpdBuildConf', sub { $self->delAwstatsSection(@_); });
 }
 
 =item delDmn()
@@ -201,8 +197,8 @@ sub delDmn
 	my $data = shift;
 	my $rs = 0;
 
-	my $cfgFileName = "$main::imscpConfig{AWSTATS_CONFIG_DIR}/awstats.$data->{DMN_NAME}.conf";
-	my $wrkFileName = "$self->{wrkDir}/awstats.$data->{DMN_NAME}.conf";
+	my $cfgFileName = "$main::imscpConfig{'AWSTATS_CONFIG_DIR'}/awstats.$data->{'DMN_NAME'}.conf";
+	my $wrkFileName = "$self->{'wrkDir'}/awstats.$data->{'DMN_NAME'}.conf";
 
 	$rs |= iMSCP::File->new(filename => $cfgFileName)->delFile() if -f $cfgFileName;
 	$rs |= iMSCP::File->new(filename => $wrkFileName)->delFile() if -f $wrkFileName;
@@ -244,12 +240,12 @@ sub awstatsSection
 		my ($bTag, $eTag);
 
 		# Define tags for unused awstats section
-		if($main::imscpConfig{AWSTATS_MODE} ne '1') {
-			$bTag = "# SECTION awstats static BEGIN.\n";
-			$eTag = "# SECTION awstats static END.\n";
+		if($main::imscpConfig{'AWSTATS_MODE'} ne '1') {
+			$bTag = "# SECTION awstats_static BEGIN.\n";
+			$eTag = "# SECTION awstats_static END.\n";
 		} else {
-			$bTag = "# SECTION awstats dynamic BEGIN.\n";
-			$eTag = "# SECTION awstats dynamic END.\n";
+			$bTag = "# SECTION awstats_dynamic BEGIN.\n";
+			$eTag = "# SECTION awstats_dynamic END.\n";
 		}
 
 		# Remove useless section
@@ -267,9 +263,7 @@ sub awstatsSection
 		# Process placeholders data for awstats section
 		$$content = process($tags, $$content);
 	} else {
-		iMSCP::HooksManager->getInstance()->register(
-			'beforeHttpdBuildConf', sub { return $self->awstatsSection(@_); }
-		);
+		iMSCP::HooksManager->getInstance()->register('beforeHttpdBuildConf', sub { $self->awstatsSection(@_); });
 	}
 
 	0;
@@ -298,13 +292,13 @@ sub delAwstatsSection
 
 		use iMSCP::Templator;
 
-		my $bTag = "# SECTION awstats support BEGIN.\n";
-		my $eTag = "# SECTION awstats support END.\n";
+		my $bTag = "# SECTION awstats_support BEGIN.\n";
+		my $eTag = "# SECTION awstats_support END.\n";
 
 		$$content = replaceBloc($bTag, $eTag, '', $$content, undef);
 	}  else {
 		iMSCP::HooksManager->getInstance()->register(
-			'beforeHttpdBuildConf', sub { return $self->delAwstatsSection(@_); }
+			'beforeHttpdBuildConf', sub { $self->delAwstatsSection(@_); }
 		) and return 1;
 	}
 
@@ -330,9 +324,9 @@ sub _init
 	my $self = shift;
 
 	$self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/awstats";
-	$self->{'bkpDir'} = "$self->{cfgDir}/backup";
-	$self->{'wrkDir'} = "$self->{cfgDir}/working";
-	$self->{'tplDir'} = "$self->{cfgDir}/parts";
+	$self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
+	$self->{'wrkDir'} = "$self->{'cfgDir'}/working";
+	$self->{'tplDir'} = "$self->{'cfgDir'}/parts";
 
 	$self;
 }
@@ -359,18 +353,18 @@ sub _addAwstatsCfg
 	use iMSCP::Templator;
 	use Servers::httpd;
 
-	my $cfgFileName	= "awstats.$data->{DMN_NAME}.conf";
-	my $cfgFile	= "$main::imscpConfig{AWSTATS_CONFIG_DIR}/$cfgFileName";
-	my $tplFile	= "$self->{tplDir}/awstats.imscp_tpl.conf";
-	my $wrkFile	= "$self->{wrkDir}/$cfgFileName";
+	my $cfgFileName	= "awstats.$data->{'DMN_NAME'}.conf";
+	my $cfgFile	= "$main::imscpConfig{'AWSTATS_CONFIG_DIR'}/$cfgFileName";
+	my $tplFile	= "$self->{'tplDir'}/awstats.imscp_tpl.conf";
+	my $wrkFile	= "$self->{'wrkDir'}/$cfgFileName";
 
 	my $cfgFileContent = iMSCP::File->new(filename => $tplFile)->get();
 
 	# Saving the current production file if it exists
-	$rs |= iMSCP::File->new(filename => $cfgFile)->copyFile("$self->{bkpDir}/$cfgFileName." . time) if -f $cfgFile;
+	$rs |= iMSCP::File->new(filename => $cfgFile)->copyFile("$self->{'bkpDir'}/$cfgFileName." . time) if -f $cfgFile;
 
 	# Load template file
-	if(!$cfgFileContent){
+	if(! $cfgFileContent){
 		error("Can not load $tplFile");
 		return 1;
 	}
@@ -425,21 +419,21 @@ sub _addAwstatsCron
 	use iMSCP::Templator;
 	use Servers::cron;
 
-	my $cron = Servers::cron->factory();
-
-	$cron->addTask({
-		MINUTE => int(rand(61)), # random number between 0..60
-		HOUR => int(rand(6)), # random number between 0..5
-		DAY => '*',
-		MONTH => '*',
-		DWEEK => '*',
-		USER => $data->{'USER'},
-		C0MMAND	=>	"perl $main::imscpConfig{AWSTATS_ROOT_DIR}/awstats_buildstaticpages.pl ".
-					"-config=$data->{DMN_NAME} -update ".
-					"-awstatsprog=$main::imscpConfig{AWSTATS_ENGINE_DIR}/awstats.pl ".
-					"-dir=$data->{HOME_DIR}/statistics/",
-		TASKID	=> "AWSTATS:$data->{DMN_NAME}"
-	});
+	Servers::cron->factory()->addTask(
+		{
+			MINUTE => int(rand(61)), # random number between 0..60
+			HOUR => int(rand(6)), # random number between 0..5
+			DAY => '*',
+			MONTH => '*',
+			DWEEK => '*',
+			USER => $data->{'USER'},
+			C0MMAND	=>	"perl $main::imscpConfig{'AWSTATS_ROOT_DIR'}/awstats_buildstaticpages.pl ".
+						"-config=$data->{'DMN_NAME'} -update ".
+						"-awstatsprog=$main::imscpConfig{'AWSTATS_ENGINE_DIR'}/awstats.pl ".
+						"-dir=$data->{'HOME_DIR'}/statistics/",
+			TASKID	=> "AWSTATS:$data->{'DMN_NAME'}"
+		}
+	);
 }
 
 =item _addAwstatsCron(\$data)
@@ -458,9 +452,7 @@ sub _delAwstatsCron
 
 	use Servers::cron;
 
-	my $cron = Servers::cron->factory();
-
-	$cron->delTask({ TASKID	=> "AWSTATS:$data->{DMN_NAME}" });
+	Servers::cron->factory()->delTask({ TASKID	=> "AWSTATS:$data->{'DMN_NAME'}" });
 }
 
 =back

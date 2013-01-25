@@ -25,7 +25,7 @@
 #
 # @category		i-MSCP
 # @copyright	2010-2013 by i-MSCP | http://i-mscp.net
-# @author		Daniel Andreca <sci2tech@gmail.com>
+# @Author		Laurent Declercq <l.declercq@nuxwin.com>
 # @link			http://i-mscp.net i-MSCP Home Site
 # @license		http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
@@ -58,16 +58,82 @@ sub _init
 {
 	my $self = shift;
 
-	$self->{'nonfree'} = 'multiverse';
+	$self->{'preRequiredPackages'} = ['wget', 'dialog', 'libxml-simple-perl', 'python-software-properties'];
+	$self->{'packagesToInstall'} = [];
+	$self->{'externalRepositories'} = [];
+	$self->{'repositorySections'} = ['main', 'universe', 'multiverse'];
 
 	$self;
+}
+
+=item _addExternalRepositories()
+
+ Add external repositories to the sources.list file and their gpg keys.
+
+ Return int 0 on success, other on failure.
+
+=cut
+
+sub _addExternalRepositories
+{
+	my $self = shift;
+
+	if(@{$self->{'externalRepositories'}}) {
+
+		my $file = iMSCP::File->new(filename => '/etc/apt/sources.list');
+
+		$file->copyFile('/etc/apt/sources.list.bkp') unless -f '/etc/apt/sources.list.bkp';
+
+		my ($rs, $cmd, $stdout, $stderr);
+
+		for(@{$self->{'externalRepositories'}}) {
+			if($_->{'repository'} =~ /^ppa:/) { # PPA repository
+				if($_->{'repository_key_srv'}) {
+					$cmd = "add-apt-repository -y -k $_->{'repository_key_srv'} $_->{'repository'}";
+				} else {
+					$cmd = "add-apt-repository -y $_->{'repository'}":
+				}
+
+				$rs = execute($cmd, \$stdout, \$stderr);
+    	    	debug($stdout) if $stdout;
+        		error($stderr) if $stderr && $rs;
+        		return $rs if $rs
+			} else { # normal repository
+				$rs = execute("add-apt-repository -y $_->{'repository'}", \$stdout, \$stderr);
+    	    	debug($stdout) if $stdout;
+        		error($stderr) if $stderr && $rs;
+        		return $rs if $rs
+
+				if($_->{'repository_key_srv'}) {
+					if($_->{'repository_key_id'}) {
+						$cmd = "apt-key adv --recv-keys --keyserver $_->{'repository_key_srv'} $_->{'repository_key_id'}";
+					} else {
+						error("The repository_key_id entry for the '$_->{'repository'} repository was not found");
+						return 1;
+					}
+				} elsif($_->{'repository_key_uri'}) {
+					$cmd = "wget -qO- $_->{'repository_key_uri'} | apt-key add -"
+				} else {
+					error("The repository_key_uri entry for the '$_->{'repository'}' repository was not found");
+					return 1;
+				}
+
+				$rs = execute($cmd, \$stdout, \$stderr);
+				debug($stdout) if $stdout;
+				error($stderr) if $stderr && $rs;
+				return $rs if $rs
+			}
+		}
+	}
+
+	0;
 }
 
 =back
 
 =head1 Author
 
- Daniel Andreca <sci2tech@gmail.com>
+ Laurent Declercq <l.declercq@nuxwin.com>
 
 =cut
 

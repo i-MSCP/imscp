@@ -56,11 +56,6 @@ sub set($ $)
 	$self->{$prop} = $value if exists $self->{$prop};
 }
 
-sub loadlayout
-{
-
-}
-
 sub process($ $)
 {
 	my $self = iMSCP::Templator->new();
@@ -71,7 +66,6 @@ sub process($ $)
 
 	$self->_replaceStatic();
 
-	#restore default tags
 	$self->{'args'} = {};
 	$self->_init();
 
@@ -82,23 +76,16 @@ sub _replaceStatic
 {
 	my $self = shift;
 
-	my $meta = "\\\|\(\)\[\{\^\$\*\+\?\.";
+	for (keys %{$self->{'vars'}}) {
+		next unless defined $self->{'vars'}->{$_};
 
-	for my $key (keys %{$self->{'vars'}}){
-
-		next unless defined $self->{'vars'}->{$key};
-
-		my $cleanKey = $key;
-		$cleanKey =~ s/([$meta])/\\$1/g;
-
-		my $regexp = sprintf($self->{'varRegexp'}, $cleanKey);
-
-		$self->{'tContent'} =~ s/$regexp/$self->{'vars'}->{$key}/mig
+		my $regexp = sprintf($self->{'varRegexp'}, quotemeta($_));
+		$self->{'tContent'} =~ s/$regexp/$self->{'vars'}->{$_}/gim
 	}
 }
 
-sub replaceBloc($ $ $ $ $){
-
+sub replaceBloc($ $ $ $ $)
+{
 	my $self = iMSCP::Templator->new();
 	my $startTag = shift;
 	my $endTag = shift;
@@ -106,35 +93,25 @@ sub replaceBloc($ $ $ $ $){
 	my $content = shift;
 	my $preserve = shift;
 
-	my $meta = "\\\|\(\)\[\{\^\$\*\+\?\.";
-
-	$startTag =~ s/([$meta])/\\$1/g;
-	$endTag =~ s/([$meta])/\\$1/g;
-
-	my $regexp = "(" . $startTag . ".*" . $endTag . ")";
+	my $regexp = '([\t ]*' . quotemeta($startTag) . '.*?' . quotemeta($endTag) . ')';
 
 	if($preserve){
-		$content =~ s/$regexp/$1$replacement/smig;
+		$content =~ s/$regexp/$1$replacement/gis;
 	} else {
-		$content =~ s/$regexp/$replacement/smig;
+		$content =~ s/$regexp/$replacement/gis;
 	}
 
 	return $content;
 }
 
-sub getBloc($ $ $){
-
+sub getBloc($ $ $)
+{
 	my $self = iMSCP::Templator->new();
 	my $startTag = shift;
 	my $endTag = shift;
 	my $content = shift;
 
-	my $meta = "\\\|\(\)\[\{\^\$\*\+\?\.";
-
-	$startTag =~ s/([$meta])/\\$1/g;
-	$endTag =~ s/([$meta])/\\$1/g;
-
-	my $regexp = $startTag . "(.*)" . $endTag;
+	my $regexp = quotemeta($startTag) . '(.*)' . quotemeta($endTag);
 	my $rs;
 
 	if($content =~ m/$regexp/smig){

@@ -1,40 +1,32 @@
 <VirtualHost {DMN_IP}:443>
 
-	#
-	# SSL Start
-	#
+    ServerAdmin	webmaster@{DMN_NAME}
+    ServerName	{DMN_NAME}
+    ServerAlias	*.{DMN_NAME} {DMN_NAME} {ALIAS}.{BASE_SERVER_VHOST}
 
-	SSLEngine On
-	SSLCertificateFile		{CERT}
-	SSLCertificateKeyFile	{CERT}
-	SSLCertificateChainFile	{CERT}
+    DocumentRoot	{PARENT_DIR}/domain_disable_page
 
-	#
-	# SSL End
-	#
+    Alias /errors {WWW_DIR}/{ROOT_DMN_NAME}/errors/
 
-	ServerAdmin	webmaster@{DMN_NAME}
-	DocumentRoot	{PARENT_DIR}/domain_disable_page
+    #RedirectMatch permanent ^/ftp[\/]?$		{BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}/ftp/
+    #RedirectMatch permanent ^/pma[\/]?$		{BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}/pma/
+    #RedirectMatch permanent ^/webmail[\/]?$	{BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}/webmail/
+    #RedirectMatch permanent ^/imscp[\/]?$	{BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}/
 
-	ServerName	{DMN_NAME}
-	ServerAlias	*.{DMN_NAME} {DMN_NAME} {ALIAS}.{BASE_SERVER_VHOST}
+    <IfModule mod_cband.c>
+        CBandUser {USER}
+    </IfModule>
 
-	Alias /errors {WWW_DIR}/{ROOT_DMN_NAME}/errors/
+    <Directory {PARENT_DIR}/domain_disable_page>
+        Options -Indexes Includes FollowSymLinks MultiViews
+        AllowOverride None
+        Order allow,deny
+        Allow from all
+    </Directory>
 
-	RedirectMatch permanent ^/ftp[\/]?$		{BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}/ftp/
-	RedirectMatch permanent ^/pma[\/]?$		{BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}/pma/
-	RedirectMatch permanent ^/webmail[\/]?$	{BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}/webmail/
-	RedirectMatch permanent ^/imscp[\/]?$	{BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}/
-
-	<IfModule mod_cband.c>
-		CBandUser {USER}
-	</IfModule>
-
-	<Directory {PARENT_DIR}/domain_disable_page>
-		Options -Indexes Includes FollowSymLinks MultiViews
-		AllowOverride None
-		Order allow,deny
-		Allow from all
-	</Directory>
+    SSLEngine On
+    SSLCertificateFile		{CERT}
+    SSLCertificateKeyFile	{CERT}
+    SSLCertificateChainFile	{CERT}
 
 </VirtualHost>

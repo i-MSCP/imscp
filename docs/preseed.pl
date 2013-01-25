@@ -2,24 +2,29 @@
 
 # i-MSCP preseed.pl template file for installer preseeding
 # See documentation at http://wiki.i-mscp.net/doku.php?id=start:preseeding
-# Last update on 2012.12.29
+# Last update on 2013.01.24
 # Status (Experimental)
 
 ## Autoinstall questions
 
 # Service to use
 $main::preseed{'SERVERS'} = {
-	'HTTPD_SERVER' => 'apache_itk',	# Server to use for the Httpd service (apache_itk|apache_fgcid)
+	'HTTPD_SERVER' => 'apache_itk',	# Server to use for the Httpd service (apache_itk|apache_fgci|apache_php_fpm)
 	'PO_SERVER' => 'courier',		# Server to use for the po service (courier|dovecot)
 	'FTPD_SERVER' => 'proftpd',		# No relevant for now since only proftpd is supported
 	'MTA_SERVER' => 'postfix',		# No relevant for now since only postfix is supported
 	'NAMED_SERVER' => 'bind'		# No relevant for now since only Bind9 is supported
+	'SQL_SERVER' => 'mysql'			# Server to use for the Sql service (mysql|mariadb)
 };
 
-## Setup questions
-
-# apache_fcgi - Only relevant if server for the HTTPD_SERVICE question is set to 'apache_fcgi'
+# apache_fcgi - Only relevant if server for the HTTPD server question is set to 'apache_fcgi'
 $main::preseed{'PHP_FASTCGI'}  = 'fcgid'; # (fcgid|fastcgi)
+
+# apache_php_fpm - Only relevant if server for the HTTPD server question is set to 'apache_fgci'
+#$main::preseed{'FCGI_PHP_INI_LEVEL'} = 'per_user'; # (per_user|per_domain|per_vhost)
+
+# apache_php_fpm - Only relevant if server for the HTTPD server question is set to 'apache_php_fpm'
+$main::preseed{'PHP_FPM_POOLS_LEVEL'} = 'per_user'; # (per_user|per_domain|per_site)
 
 # Server hostname
 $main::preseed{'SERVER_HOSTNAME'} = 'host.domain.tld'; # Fully qualified hostname name
@@ -60,10 +65,6 @@ $main::preseed{'DEFAULT_ADMIN_ADDRESS'} = 'user@domain.tld'; # Default admin ema
 # PHP Timzone
 $main::preseed{'PHP_TIMEZONE'} = 'Europe/London'; # A valid PHP timezone (see http://php.net/manual/en/timezones.php)
 
-#
-## SSL questions
-#
-
 # SSL for i-MSCP services
 $main::preseed{'SSL_ENABLED'} = 'no'; # (yes|no)
 
@@ -82,7 +83,6 @@ $main::preseed{'INTERMEDIATE_CERTIFICATE_PATH'} = ''; # Leave blank if you do no
 # Only relevant if the SSL_ENABLED question is set to 'yes' and the SELFSIGNED_CERTIFICATE is set to 0
 $main::preseed{'CERTIFICATE_PATH'} = ''; # Path to SSL certificat
 
-
 # Only relevant if the SSL_ENABLED question is set to 'yes' ;
 # Let's value set to 'http://' if you set the SSL_ENABLED question to 'no'
 $main::preseed{'BASE_SERVER_VHOST_PREFIX'} = 'http://'; # Default panel access mode (http:// or https://)
@@ -96,8 +96,6 @@ $main::preseed{'BACKUP_IMSCP'} = 'yes'; # (yes|no) - It's recommended to set thi
 
 # Customers backup feature
 $main::preseed{'BACKUP_DOMAINS'} = 'no'; # (yes|no)
-
-## Server questions
 
 # Proftpd SQL user
 $main::preseed['FTPD_SQL_USER'] = 'vftp';
@@ -118,8 +116,6 @@ $main::preseed{'DOVECOT_SQL_USER'} = 'dovecot_user';
 
 # dovecot SQL user (only relevant if you set the  PO_SERVER question to 'dovecot'
 $main::preseed{'DOVECOT_SQL_PASSWORD'} = '<password>'; # Password shouldn't be empty
-
-## Addons questions
 
 # Aswtats addon
 $main::preseed{'AWSTATS_ACTIVE'} = 'no'; # (yes|no)

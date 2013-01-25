@@ -25,7 +25,6 @@ Addons::roundcube::installer - i-MSCP Roundcube addon installer
 #
 # @category		i-MSCP
 # @copyright	2010-2013 by i-MSCP | http://i-mscp.net
-# @author		Daniel Andreca <sci2tech@gmail.com>
 # @author		Laurent Declercq <l.declercq@nuxwin.com>
 # @link			http://i-mscp.net i-MSCP Home Site
 # @license		http://www.gnu.org/licenses/gpl-2.0.html GPL v2
@@ -57,7 +56,7 @@ use parent 'Common::SingletonClass';
  Register Roundcube setup hook functions.
 
  Param iMSCP::HooksManager instance
- Return int - 0 on success, 1 on failure
+ Return int 0 on success, 1 on failure
 
 =cut
 
@@ -91,7 +90,7 @@ sub preinstall
 
  Process Roundcube addon install tasks.
 
- Return int - 0 on success, 1 on failure
+ Return int 0 on success, 1 on failure
 
 =cut
 
@@ -142,7 +141,7 @@ sub install
  Hook function responsible to show Roundcube installer questions.
 
  Param iMSCP::Dialog
- Return int - 0 or 30
+ Return int 0 or 30
 
 =cut
 
@@ -231,17 +230,17 @@ sub _init
 	my $self = shift;
 
 	$self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/roundcube";
-	$self->{'bkpDir'} = "$self->{cfgDir}/backup";
-	$self->{'wrkDir'} = "$self->{cfgDir}/working";
+	$self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
+	$self->{'wrkDir'} = "$self->{'cfgDir'}/working";
 	$self->{'forceDbSetup'} = '';
 
-	my $conf = "$self->{cfgDir}/roundcube.data";
-	my $oldConf	= "$self->{cfgDir}/roundcube.old.data";
+	my $conf = "$self->{'cfgDir'}/roundcube.data";
+	my $oldConf	= "$self->{'cfgDir'}/roundcube.old.data";
 
-	tie %self::roundcubeConfig, 'iMSCP::Config','fileName' => $conf, noerrors => 1;
+	tie %self::roundcubeConfig, 'iMSCP::Config','fileName' => $conf, 'noerrors' => 1;
 
 	if(-f $oldConf) {
-		tie %self::roundcubeOldConfig, 'iMSCP::Config','fileName' => $oldConf, noerrors => 1;
+		tie %self::roundcubeOldConfig, 'iMSCP::Config','fileName' => $oldConf, 'noerrors' => 1;
 		%self::roundcubeConfig = (%self::roundcubeConfig, %self::roundcubeOldConfig);
 	}
 
@@ -252,7 +251,7 @@ sub _init
 
  Backup the given Roundcube configuration file.
 
- Return int - 0
+ Return int 0
 
 =cut
 
@@ -267,8 +266,8 @@ sub _backupConfigFile
 	my ($name, $path, $suffix) = fileparse($cfgFile);
 
 	if(-f $cfgFile) {
-		my $file = iMSCP::File->new(filename => $cfgFile);
-		$file->copyFile("$self->{bkpDir}/$name$suffix.$timestamp") and return 1;
+		my $file = iMSCP::File->new('filename' => $cfgFile);
+		$file->copyFile("$self->{'bkpDir'}/$name$suffix.$timestamp") and return 1;
 	}
 
 	0;
@@ -278,7 +277,7 @@ sub _backupConfigFile
 
  Install Roundcube files in production directory.
 
- Return int - 0 on success, other on failure
+ Return int 0 on success, other on failure
 
 =cut
 
@@ -291,7 +290,7 @@ sub _installFiles
 
 	if(-d "$repoDir/vendor/imscp/roundcube") {
 		$rs = execute(
-			"$main::imscpConfig{CMD_CP} -rTf $repoDir/vendor/imscp/roundcube $main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/webmail",
+			"$main::imscpConfig{'CMD_CP'} -rTf $repoDir/vendor/imscp/roundcube $main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/webmail",
 			\$stdout,
 			\$stderr
 		);
@@ -299,7 +298,7 @@ sub _installFiles
 		error($stderr) if $rs && $stderr;
 
 		$rs |= execute(
-			"$main::imscpConfig{CMD_RM} -rf $main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/webmail/.git",
+			"$main::imscpConfig{'CMD_RM'} -rf $main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/webmail/.git",
 			\$stdout,
 			\$stderr
 		);
@@ -317,7 +316,7 @@ sub _installFiles
 
  Set Roundcube files permissions.
 
- Return int - 0 on success, other on failure
+ Return int 0 on success, other on failure
 
 =cut
 
@@ -332,12 +331,12 @@ sub _setPermissions
 
 	$rs |= setRights(
 		"$rootDir/gui/public/tools/webmail",
-		{ user => $panelUName, group => $apacheGName, dirmode => '0550', filemode => '0440', recursive => 'yes' }
+		{ 'user' => $panelUName, 'group' => $apacheGName, 'dirmode' => '0550', 'filemode' => '0440', 'recursive' => 'yes' }
 	);
 
 	$rs |= setRights(
 		"$rootDir/gui/public/tools/webmail/logs",
-		{ user => $panelUName, group => $panelGName, dirmode => '0750', filemode => '0640', recursive => 'yes' }
+		{ 'user' => $panelUName, 'group' => $panelGName, 'dirmode' => '0750', 'filemode' => '0640', 'recursive' => 'yes' }
 	);
 
 	$rs;
@@ -360,14 +359,14 @@ sub _saveConfig
 
 	use iMSCP::File;
 
-	my $file = iMSCP::File->new(filename => "$self->{cfgDir}/roundcube.data");
+	my $file = iMSCP::File->new(filename => "$self->{'cfgDir'}/roundcube.data");
 	my $cfg = $file->get();
 	return 1 unless $cfg;
 
 	$rs |= $file->mode(0640);
 	$rs |= $file->owner($rootUsr, $rootGrp);
 
-	$file = iMSCP::File->new(filename => "$self->{cfgDir}/roundcube.old.data");
+	$file = iMSCP::File->new(filename => "$self->{'cfgDir'}/roundcube.old.data");
 	$rs |= $file->set($cfg);
 	$rs |= $file->save();
 	$rs |= $file->mode(0640);
@@ -399,7 +398,7 @@ sub _createDatabase
 
 	if(! %$rs) {
 		my $qdbName = $database->quoteIdentifier($dbName);
-		my $rs = $database->doQuery('dummy', "CREATE DATABASE $qdbName CHARACTER SET utf8 COLLATE utf8_unicode_ci;");
+		my $rs = $database->doQuery('dummy', "CREATE DATABASE `$qdbName` CHARACTER SET utf8 COLLATE utf8_unicode_ci;");
 		fatal("Unable to create the '$dbName' SQL database: $rs") if ref $rs ne 'HASH';
 
 		$database->set('DATABASE_NAME', $dbName);
@@ -503,7 +502,7 @@ sub _setVersion
 
 =cut
 
-sub _parseVersion( $ $)
+sub _parseVersion($ $)
 {
 	my $self = shift;
 	my $version = shift;
@@ -544,7 +543,8 @@ sub _setupDatabase
 		return 1 if $rs;
 
 		# Get SQL connection with full privileges
-		my $database = main::setupGetSqlConnect();
+		my ($database, $errStr) = main::setupGetSqlConnect();
+		fatal('Unable to connect to SQL Server: $errStr') if ! $database;
 
 		# Add new roundcube restricted SQL user with needed privilegess
 
@@ -662,7 +662,7 @@ sub _buildConfig
 		}
 
 		# store file in working directory
-		$file = iMSCP::File->new(filename => "$self->{wrkDir}/$_");
+		$file = iMSCP::File->new(filename => "$self->{'wrkDir'}/$_");
 		$rs |= $file->set($cfgTpl);
 		$rs |= $file->save();
 		$rs |= $file->mode(0640);
@@ -679,7 +679,6 @@ sub _buildConfig
 
 =head1 AUTHORS
 
- - Daniel Andreca <sci2tech@gmail.com>
  - Laurent Declercq <l.declercq@nuxwin.com>
 
 =cut

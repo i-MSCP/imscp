@@ -71,10 +71,6 @@ sub loadData{
 
 	$self->{$_} = $rdata->{$self->{dmnId}}->{$_} for keys %{$rdata->{$self->{dmnId}}};
 
-	use Modules::User;
-
-	my $rs = Modules::User->new()->process($self->{domain_admin_id});
-
 	0;
 }
 
@@ -85,6 +81,10 @@ sub process{
 
 	my $rs = $self->loadData();
 	return $rs if $rs;
+
+	use Modules::User;
+    $rs = Modules::User->new()->process($self->{domain_admin_id});
+    return $rs if $rs;
 
 	my @sql;
 

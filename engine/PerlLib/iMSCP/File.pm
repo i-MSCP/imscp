@@ -28,6 +28,9 @@ package iMSCP::File;
 use strict;
 use warnings;
 use iMSCP::Debug;
+use FileHandle;
+use File::Copy;
+use File::Basename;
 use parent 'Common::SimpleClass';
 use vars qw/$AUTOLOAD/;
 
@@ -67,7 +70,7 @@ sub mode
 		return 1;
 	}
 
-	debug( sprintf ": Change mode mode: %o for '$self->{filename}'", $fileMode);
+	debug(sprintf ": Change mode mode: %o for '$self->{filename}'", $fileMode);
 
 	unless (chmod($fileMode, $self->{'filename'})) {
 		error("Cannot change permissions of file '$self->{filename}': $!");
@@ -114,8 +117,6 @@ sub get
 		return undef;
 	}
 
-	use FileHandle;
-
 	if(! $self->{'fileHandle'}) {
 		$self->{'fileHandle'} = FileHandle->new($self->{'filename'}, 'r') or delete($self->{'fileHandle'});
 		error("Can`t open $self->{filename}!") if ! $self->{'fileHandle'};
@@ -124,10 +125,10 @@ sub get
 
 	if(! $self->{'fileContent'}) {
 		my $fh = $self->{'fileHandle'};
-		@{$self->{'fileContent'}} = <$fh>;
+		$self->{'fileContent'} =  do { local $/; <$fh> };
 	}
 
-	return join('', @{$self->{'fileContent'}});
+	$self->{'fileContent'};
 }
 
 sub copyFile
@@ -137,9 +138,6 @@ sub copyFile
 	my $option = shift;
 
 	$option = {} if(ref $option ne 'HASH');
-
-	use File::Copy;
-	use File::Basename;
 
 	if(!$self->{'filename'} || !-e $self->{'filename'}) {
 		error("".($self->{filename} ? "File $self->{filename} do not exits" : "File name not set!"));
@@ -194,8 +192,6 @@ sub moveFile
 
 	debug("Move $self->{filename} to $dest");
 
-	use File::Copy ;
-
 	if(! move ($self->{'filename'}, $dest)) {
 		error("Move $self->{filename} to $dest failed: $!");
 		return 1;
@@ -207,8 +203,6 @@ sub moveFile
 sub delFile
 {
 	my $self= shift;
-
-	use File::Copy;
 
 	if(! $self->{'filename'}) {
 		error("File name not set!");
@@ -235,8 +229,6 @@ sub save
 	}
 
 	debug("Save $self->{filename}");
-
-	use FileHandle;
 
 	$self->{'fileHandle'}->close() if $self->{'fileHandle'};
 	$self->{'fileHandle'} = FileHandle->new($self->{'filename'}, 'w');

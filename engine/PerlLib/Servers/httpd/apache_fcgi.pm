@@ -1,5 +1,4 @@
 #!/usr/bin/perl
-#!/usr/bin/perl
 
 # i-MSCP - internet Multi Server Control Panel
 # Copyright (C) 2010-2013 by internet Multi Server Control Panel
@@ -39,9 +38,6 @@ sub _init
 
 	iMSCP::HooksManager->getInstance()->trigger('beforeHttpdInit', $self, 'apache_fcgi');
 
-	$self->{'masterConf'} = '00_master.conf';
-	$self->{'masterSSLConf'} = '00_master_ssl.conf';
-
 	$self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/apache";
 	$self->{'bkpDir'} = "$self->{cfgDir}/backup";
 	$self->{'wrkDir'} = "$self->{cfgDir}/working";
@@ -50,7 +46,7 @@ sub _init
 	my $conf = "$self->{cfgDir}/apache.data";
 	tie %self::apacheConfig, 'iMSCP::Config','fileName' => $conf;
 
-	$self->{tplValues}->{$_} = $self::apacheConfig{$_} for(keys %self::apacheConfig);
+	$self->{'tplValues'}->{$_} = $self::apacheConfig{$_} for(keys %self::apacheConfig);
 
 	iMSCP::HooksManager->getInstance()->trigger('afterHttpdInit', $self, 'apache_fcgi');
 
@@ -275,7 +271,7 @@ sub restart
 	debug("$stdout") if $stdout;
 	warning("$stderr") if $stderr && ! $rs;
 	error("$stderr") if $stderr && $rs;
-	error("Error while restating") if $rs && ! $stderr;
+	error("Error while restarting") if $rs && ! $stderr;
 	return $rs if $rs;
 
 	iMSCP::HooksManager->getInstance()->trigger('afterHttpdRestart');
@@ -329,6 +325,8 @@ sub buildConfFile
 
 	$cfgTpl = $self->buildConf($cfgTpl, "$filename$suffix");
 	return 1 if ! $cfgTpl;
+
+	$cfgTpl =~ s/\n{2,}/\n\n/g; # Remove duplicate blank lines
 
 	iMSCP::HooksManager->getInstance()->trigger('afterHttpdBuildConfFile', \$cfgTpl, "$filename$suffix") and return 1;
 
@@ -405,16 +403,19 @@ sub getRunningGroup
 sub removeSection
 {
 	my $self = shift;
-	my $section = shift;
-	my $data = shift;
-	my $bTag = "# SECTION $section BEGIN.\n";
-	my $eTag = "# SECTION $section END.\n";
+	my $sectionName = shift;
+	my $cfgTpl = shift;
 
-	debug("$section...");
+	iMSCP::HooksManager->getInstance()->trigger('beforeHttpdRemoveSection', $sectionName, $cfgTpl);
 
-	use iMSCP::Templator;
+	my $bTag = "# SECTION $sectionName BEGIN.\n";
+	my $eTag = "# SECTION $sectionName END.\n";
 
-	$$data = replaceBloc($bTag, $eTag, '', $$data, undef);
+	debug("Removing useless section: $sectionName");
+
+	$$cfgTpl = replaceBloc($bTag, $eTag, '', $$cfgTpl, undef);
+
+	iMSCP::HooksManager->getInstance()->trigger('afterHttpdRemoveSection', $sectionName, $cfgTpl);
 
 	0;
 }
@@ -678,7 +679,7 @@ sub addDmn
 	$self->{'data'} = $data;
 
 	my $rs = $self->addCfg($data);
-	$rs |= $self->addFiles($data) unless $data->{'FORWARD'} && $data->{'FORWARD'} =~ m~(http|https|ftp)://~i;
+	$rs |= $self->addFiles($data) if $data->{'FORWARD'} eq 'no';
 
 	$self->{'restart'} = 'yes';
 	delete $self->{'data'};
@@ -702,10 +703,18 @@ sub addCfg
 
 	$self->{'data'} = $data;
 
+	# Disable and backup Apache sites if any
 	for("$data->{DMN_NAME}.conf", "$data->{DMN_NAME}_ssl.conf") {
 		$rs |= $self->disableSite($_) if -f "$self::apacheConfig{APACHE_SITES_DIR}/$_";
+
+		$rs |= iMSCP::File->new(
+			filename => "$self::apacheConfig{APACHE_SITES_DIR}/$_"
+		)->copyFile(
+			"$self->{'bkpDir'}/$_." . time
+		) if -f "$self::apacheConfig{APACHE_SITES_DIR}/$_";
 	}
 
+	# Remove previous Apache sites if any
 	for(
 		"$self::apacheConfig{APACHE_SITES_DIR}/$data->{DMN_NAME}.conf",
 		"$self::apacheConfig{APACHE_SITES_DIR}/$data->{DMN_NAME}_ssl.conf",
@@ -715,6 +724,7 @@ sub addCfg
 		$rs |= iMSCP::File->new(filename => $_)->delFile() if -f $_;
 	}
 
+	# Build Apache vhost files - Begin
 	my %configs;
 	$configs{"$data->{DMN_NAME}.conf"} = { redirect => 'domain_redirect.tpl', normal => 'domain.tpl' };
 
@@ -724,21 +734,41 @@ sub addCfg
 	}
 
 	for(keys %configs) {
-		unless($data->{'FORWARD'} && $data->{'FORWARD'} =~ m~(http|https|ftp)://~i) {
-			iMSCP::HooksManager->getInstance()->register(
-				'afterHttpdBuildConf', sub { return $self->removeSection('cgi support', @_); }
-			) unless ($data->{'have_cgi'} && $data->{'have_cgi'} eq 'yes');
+
+		# Schedule deletion of useless sections if needed
+		if($data->{'FORWARD'} eq 'no') {
 
 			iMSCP::HooksManager->getInstance()->register(
-				'afterHttpdBuildConf', sub { return $self->removeSection('php enabled', @_); }
-			) unless ($data->{'have_php'} && $data->{'have_php'} eq 'yes');
+				'beforeHttpdBuildConfFile', sub { $self->removeSection('cgi_support', @_) }
+			) and return 1 unless ($data->{'have_cgi'} eq 'yes');
 
 			iMSCP::HooksManager->getInstance()->register(
-				'afterHttpdBuildConf', sub { return $self->removeSection('php disabled', @_); }
-			) if ($data->{'have_php'} && $data->{'have_php'} eq 'yes');
+				'beforeHttpdBuildConfFile', sub { $self->removeSection('php_enabled', @_) }
+			) and return 1 unless ($data->{'have_php'} eq 'yes');
+
+			iMSCP::HooksManager->getInstance()->register(
+				'beforeHttpdBuildConfFile', sub { $self->removeSection('php_disabled', @_) }
+			) and return 1 if ($data->{'have_php'} eq 'yes');
+
+			if($self::apacheConfig{'PHP_FASTCGI'} eq 'fastcgi') {
+				iMSCP::HooksManager->getInstance()->register(
+					'beforeHttpdBuildConfFile', sub { $self->removeSection('fcgid', @_) }
+				) and return 1;
+			} else {
+				iMSCP::HooksManager->getInstance()->register(
+					'beforeHttpdBuildConfFile', sub { $self->removeSection('fastcgi', @_) }
+				) and return 1;
+			}
+
+			iMSCP::HooksManager->getInstance()->register(
+				'beforeHttpdBuildConfFile', sub { $self->removeSection('php_fpm', @_) }
+			) and return 1;
+
+			iMSCP::HooksManager->getInstance()->register(
+				'beforeHttpdBuildConfFile', sub { $self->removeSection('itk', @_) }
+			) and return 1 if ($data->{'have_php'} eq 'yes');
+
 		}
-
-		############################ START CONFIG SECTION ###############################
 
 		$self->{'data'}->{'FCGID_NAME'} = $data->{'ROOT_DMN_NAME'}
 			if($self::apacheConfig{INI_LEVEL} =~ /^per_user$/i);
@@ -749,29 +779,27 @@ sub addCfg
 		$self->{'data'}->{'FCGID_NAME'} = $data->{'DMN_NAME'}
 			if($self::apacheConfig{'INI_LEVEL'} =~ /^per_vhost$/i);
 
-		$rs |= iMSCP::File->new(
-			filename => "$self->{cfgDir}/$_"
-		)->copyFile(
-			"$self->{bkpDir}/$_.". time
-		) if (-f "$self->{cfgDir}/$_");
-
 		$rs |= $self->buildConfFile(
 			(
-				$data->{'FORWARD'} && $data->{'FORWARD'} =~ m~(http|https|ftp):\/\/~i
-				? "$self->{tplDir}/" . $configs{$_}->{'redirect'} : "$self->{tplDir}/" . $configs{$_}->{'normal'}
+				$data->{'FORWARD'} eq 'no'
+					? "$self->{tplDir}/" . $configs{$_}->{'normal'}
+					: "$self->{tplDir}/" . $configs{$_}->{'redirect'}
 			),
 			{ destination => "$self->{wrkDir}/$_" }
 		);
-		$rs |= $self->installConfFile($_);
 
-		############################ END CONFIG SECTION ###############################
+		$rs |= $self->installConfFile($_);
 	}
 
+	# Build Apache sites - End
+
+	# Build and install custom Apache configuration file
 	$rs |=	$self->buildConfFile(
 		"$self->{tplDir}/custom.conf.tpl",
 		{ destination => "$self::apacheConfig{APACHE_CUSTOM_SITES_CONFIG_DIR}/$data->{DMN_NAME}.conf" }
 	) unless (-f "$self::apacheConfig{APACHE_CUSTOM_SITES_CONFIG_DIR}/$data->{DMN_NAME}.conf");
 
+	# Enable all Apache sites
 	$rs |= $self->enableSite($_) for keys %configs;
 
 	$rs |= iMSCP::HooksManager->getInstance()->trigger('afterHttpdAddCfg');
@@ -876,7 +904,7 @@ sub addFiles
 	$rs |= $self->buildPHPini($data)
 		if(
 			$self::apacheConfig{'INI_LEVEL'} =~ /^per_domain$/i &&
-			$self->{mode} eq"dmn" ||
+			$self->{mode} eq "dmn" ||
 			$self::apacheConfig{'INI_LEVEL'} =~ /^per_vhost$/i
 		);
 
@@ -990,7 +1018,7 @@ sub addSub
 	$self->{'data'} = $data;
 
 	my $rs = $self->addCfg($data);
-	$rs |= $self->addFiles($data);
+	$rs |= $self->addFiles($data) if $data->{'FORWARD'} eq 'no';
 
 	$self->{'restart'} = 'yes';
 	delete $self->{'data'};
@@ -1380,13 +1408,13 @@ sub delTmp
 	# panel sessions gc
 	if(-d "$self::apacheConfig{PHP_STARTER_DIR}/master") {
 		unless (-f "$self::apacheConfig{PHP_STARTER_DIR}/master/php5/php.ini") {
-			error("$self::apacheConfig{PHP_STARTER_DIR}/master/php5/php.ini!");
+			error("$self::apacheConfig{PHP_STARTER_DIR}/master/php5/php.ini doesn't exists");
 			$rs |= 1;
 		} else {
 			my $hFile = iMSCP::File->new(filename => "$self::apacheConfig{PHP_STARTER_DIR}/master/php5/php.ini");
 			my $file = $hFile->get();
 			unless ($file) {
-				error("Can not read $self::apacheConfig{PHP_STARTER_DIR}/master/php5/php.ini!");
+				error("Cannot read $self::apacheConfig{PHP_STARTER_DIR}/master/php5/php.ini!");
 				$rs |= 1;
 			} else {
 				my $max = 0;
@@ -1396,7 +1424,7 @@ sub delTmp
 				my $cmd = "[ -d /var/www/imscp/gui/data/sessions/ ] && find /var/www/imscp/gui/data/sessions/ -type f -cmin +$max -delete";
 				$rs |= execute($cmd, \$stdout, \$stderr);
 				debug($stdout) if $stdout;
-				error($stderr) if $stderr;
+				error($stderr) if $stderr && $rs;
 				error("Error while executing $cmd.\nReturned value is $rs") if !$stderr && $rs;
 			}
 		}
@@ -1423,9 +1451,9 @@ sub delTmp
 			my @phpInis = $hPHPINI->getDirs();
 			my $max = 0;
 
-			foreach(@phpInis) {
+			for(@phpInis) {
 				unless (-f "$self::apacheConfig{PHP_STARTER_DIR}/$dmn/$_/php.ini"){
-					error("File not found $self::apacheConfig{PHP_STARTER_DIR}/$dmn/$_/php.ini!");
+					error("File $self::apacheConfig{PHP_STARTER_DIR}/$dmn/$_/php.ini doesn't exists");
 					$rs |= 1;
 					next;
 				}
@@ -1434,7 +1462,7 @@ sub delTmp
 				my $file = $hFile->get();
 
 				unless ($file) {
-					error("Can not read $self::apacheConfig{PHP_STARTER_DIR}/$dmn/$_/php.ini!");
+					error("Cannot read $self::apacheConfig{PHP_STARTER_DIR}/$dmn/$_/php.ini");
 					$rs |= 1;
 					next;
 				}
@@ -1447,7 +1475,7 @@ sub delTmp
 			my $cmd = "nice -n 19 find $main::imscpConfig{USER_HOME_DIR}/$dmn -type f -path '*/phptmp/sess_*' -cmin +$max -exec rm -v {} \\;";
 			$rs |= execute($cmd, \$stdout, \$stderr);
 			debug($stdout) if $stdout;
-			error($stderr) if $stderr;
+			error($stderr) if $stderr && $rs;
 			error("Error while executing $cmd.\nReturned value is $rs") if !$stderr && $rs;
 		}
 	}

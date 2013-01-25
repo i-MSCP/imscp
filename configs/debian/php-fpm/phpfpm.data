@@ -1,0 +1,17 @@
+PHP_FPM_CONF_DIR = /etc/php5/fpm
+
+PHP_FPM_POOLS_CONF_DIR = /etc/php5/fpm/pool.d
+
+CMD_PHP_FPM = /etc/init.d/php5-fpm
+
+###### LEVEL FOR PHP FPM POOLS
+# Accepted values are: per_user, per_domain or per_site
+#
+# per_user: each customer will have only one pool
+# per_domain: each domain / domain alias will have its own pool
+# per_site: each site will have its own pool
+#
+# PHP FPM has a global php.ini file but you can override settings
+# in pool files.
+#
+PHP_FPM_POOLS_LEVEL =

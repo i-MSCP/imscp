@@ -5,10 +5,20 @@ i-MSCP ChangeLog
 i-MSCP Git Master
 -------------------------------------------------------------------------------------
 
+SETUP:
+	- Added support for external repositories (Debian/Ubuntu)
+	- Fixed: Do not show any dialog when --noprompt option is used
+
+CONFIGS:
+	- Fixed: Remove useless sections in Apache configuration files
+	- Updated php.ini files
+
 ENGINE:
+	- Added support for Apache + PHP FPM
 	- Fixed SPF record syntax
 
 Tickets:
+	- Fixed #64:  Nice to have - PHP FPM
 	- Fixed #566: Cosmetics - i18n issues
 
 -------------------------------------------------------------------------------------

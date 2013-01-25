@@ -390,11 +390,11 @@ sub addDmnConfig
 		my ($filename, $directories, $suffix) = fileparse("$self->{wrkDir}/named.conf");
 		$file->copyFile("$self->{bkpDir}/$filename$suffix.$timestamp") and return 1;
 	} else {
-		error("$self->{wrkDir}/named.conf not found. Run the setup script to fix this");
+		error("$self->{wrkDir}/named.conf not found. Run the setup script to fix this error.");
 		return 1;
 	}
 
-	# Building of new configuration file
+	# Build config file
 
 	# Loading all needed templates from /etc/imscp/bind/parts
 	my ($entry_b, $entry_e, $entry) = ('', '', '');
@@ -464,14 +464,12 @@ sub addDmn
 		return 1 unless $option->{$_};
 	}
 
-	iMSCP::HooksManager->getInstance()->trigger('beforeNamedAddDmn') and return 1;
-
-	iMSCP::HooksManager->getInstance()->trigger('beforeNamedAddDmn', \$option);
+	iMSCP::HooksManager->getInstance()->trigger('beforeNamedAddDmn', $option) and return 1;
 
 	$self->addDmnConfig($option) and return 1;
 	$self->addDmnDb($option) and return 1 if $self::bindConfig{'BIND_MODE'} =~ /^master$/i;
 
-	iMSCP::HooksManager->getInstance()->trigger('afterNamedAddDmn', $option);
+	iMSCP::HooksManager->getInstance()->trigger('afterNamedAddDmn', $option) and return 1;
 
 	$self->{'restart'} = 'yes';
 
@@ -484,7 +482,7 @@ sub postaddDmn
 	my $option = shift;
 	my $rs = 0;
 
-	iMSCP::HooksManager->getInstance()->trigger('beforeNamedPostAddDmn') and return 1;
+	iMSCP::HooksManager->getInstance()->trigger('beforeNamedPostAddDmn', $option) and return 1;
 
 	use iMSCP::IP;
 
@@ -502,7 +500,7 @@ sub postaddDmn
 		return 1 unless $option->{$_};
 	}
 
-	iMSCP::HooksManager->getInstance()->trigger('beforeNamedPostAddDmn', \$option);
+	iMSCP::HooksManager->getInstance()->trigger('beforeNamedPostAddDmn', $option);
 
 	$rs |= $self->addDmn(
 		{

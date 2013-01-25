@@ -54,7 +54,7 @@ use parent 'autoinstaller::Adapter::Abstract';
 
  Install pre-required packages.
 
- Return int - 0 on success, other on failure
+ Return int 0 on success, other on failure
 
 =cut
 
@@ -67,13 +67,13 @@ sub installPreRequiredPackages
 
 	my $command = 'apt-get';
 
-	if(! %main::preseed && ! checkCommandAvailability('debconf-apt-progress')) {
+	if(! %main::preseed && ! $main::noprompt && ! checkCommandAvailability('debconf-apt-progress')) {
 		$command = 'debconf-apt-progress --logstderr -- ' . $command;
 	}
 
-	$rs = execute("$command -y install wget dialog libxml-simple-perl", (%main::preseed) ? \$stdout : undef, \$stderr);
+	$rs = execute("$command -y install @{$self->{'preRequiredPackages'}}", (%main::preseed || $main::noprompt) ? \$stdout : undef, \$stderr);
 	debug($stdout) if $stdout;
-	error("Unable to install pre-required Debian packages: $stderr") if $rs;
+	error("Unable to install pre-required packages: $stderr") if $rs;
 
 	$rs;
 }
@@ -82,7 +82,7 @@ sub installPreRequiredPackages
 
  Process preBuild tasks.
 
- Return int - 0 on success, other on failure
+ Return int 0 on success, other on failure
 
 =cut
 
@@ -91,9 +91,12 @@ sub preBuild
 	my $self = shift;
 	my $rs = 0;
 
-	$rs |= $self->_updateAptSourceList() if ! $main::skippackages;
-	$rs |= $self->_updatePackagesIndex() if ! $main::skippackages;
-	$rs |= $self->_preparePackagesList() if ! $main::skippackages;
+	unless($main::skippackages) {
+		$rs |= $self->_preparePackagesList();
+		$rs |= $self->_updateAptSourceList();
+		$rs |= $self->_addExternalRepositories;
+		$rs |= $self->_updatePackagesIndex();
+	}
 
 	$rs;
 }
@@ -102,7 +105,7 @@ sub preBuild
 
  Install Debian packages for i-MSCP.
 
- Return int - 0 on success, other on failure
+ Return int 0 on success, other on failure
 
 =cut
 
@@ -115,14 +118,15 @@ sub installPackages
 
 	iMSCP::Dialog->factory()->endGauge(); # Really needed !
 
-	if(! %main::preseed && ! checkCommandAvailability('debconf-apt-progress')) {
+	if(! %main::preseed&& ! $main::noprompt && ! checkCommandAvailability('debconf-apt-progress')) {
 		$command = 'debconf-apt-progress --logstderr -- ' . $command;
 	}
 
-	my $rs = execute("$command -y install $self->{toInstall}", (%main::preseed) ? \$stdout : undef, \$stderr);
+	my $rs = execute("$command -y install @{$self->{'packagesToInstall'}}", (%main::preseed || $main::noprompt) ? \$stdout : undef, \$stderr);
 	debug($stdout) if $stdout;
+
 	if($rs) {
-		error("Unable to install Debian packages: $stderr");
+		error("Unable to install packages: $stderr");
 		return $rs;
 	}
 
@@ -133,7 +137,7 @@ sub installPackages
 
  Process postBuild tasks.
 
- Return int - 0 on success, other on failure
+ Return int 0 on success, other on failure
 
 =cut
 
@@ -142,7 +146,7 @@ sub postBuild
 	my $self = shift;
 
 	# Add user server selection in imscp.conf file by creating/updating server variables
-	$main::imscpConfig{uc($_) . '_SERVER'} = lc($self->{'userSelection'}->{$_}) for(keys %{$self->{'userSelection'}});
+	$main::imscpConfig{uc($_) . '_SERVER'} = lc($self->{'userSelection'}->{$_}) for keys %{$self->{'userSelection'}};
 
 	0;
 }
@@ -165,33 +169,123 @@ sub _init
 {
 	my $self = shift;
 
-	$self->{'nonfree'} = 'non-free';
+	$self->{'preRequiredPackages'} = ['wget', 'dialog', 'libxml-simple-perl'];
+	$self->{'packagesToInstall'} = [];
+	$self->{'externalRepositories'} = [];
+	$self->{'repositorySections'} = ['main', 'non-free'];
 
 	$self;
 }
 
-=item _updatePackagesIndex()
+=item _preparePackagesList()
 
- Update Debian packages index.
+ Prepare list of Debian packages to be installed.
 
- Return int - 0 on success, other on failure
+ Return int 0 on success, other on failure
 
 =cut
 
-sub _updatePackagesIndex
+sub _preparePackagesList
 {
-	my ($rs, $stdout, $stderr);
-	my $command = 'apt-get';
+	my $self = shift;
+	my $lsbRelease = iMSCP::LsbRelease->new();
+	my $distribution = lc($lsbRelease->getId(1));
+	my $codename = lc($lsbRelease->getCodename(1));
+	my $packagesFile = "$FindBin::Bin/docs/" . ucfirst($distribution) . '/' . $distribution . '-packages-' . $codename . '.xml';
+	my $rs;
 
-	if(! %main::preseed && ! checkCommandAvailability('debconf-apt-progress')) {
-		$command = 'debconf-apt-progress --logstderr -- ' . $command;
-	}
+	eval "use XML::Simple; 1";
+	fatal('Unable to load perl module XML::Simple') if($@);
 
-	$rs = execute("$command -y update", (%main::preseed) ? \$stdout : undef, \$stderr);
-	debug($stdout) if $stdout;
-	if($rs) {
-		error('Unable to update package index from remote repository: $stderr');
-		return $rs;
+	my $xml = XML::Simple->new(NoEscape => 1);
+	my $data = eval { $xml->XMLin($packagesFile, KeyAttr => 'name') };
+
+	for(sort keys %{$data}) {
+		if($data->{$_}->{'alternative'}) {
+			my $service  = $_;
+
+			my $default = $data->{$service}->{'alternative'}->{'default'} || '';
+			delete $data->{$service}->{'alternative'}->{'default'};
+
+			my @alternative = sort keys %{$data->{$service}->{'alternative'}};
+			my $serviceName = uc($service) . '_SERVER';
+			my $currentServer = exists $main::preseed{'SERVERS'}
+				? $main::preseed{'SERVERS'}->{$serviceName} : $main::imscpConfig{$serviceName} || '';
+
+			my $server = '';
+
+			# Only ask for server to use if not already defined or not found in list of available server
+			# or if user asked for reconfiguration
+			 if($main::reconfigure || ! $currentServer || ! ($currentServer ~~ @alternative)) {
+				if(@alternative > 1) { # Do no ask for server if only one is available
+					do {
+						iMSCP::Dialog->factory->set('no-cancel', '');
+						$server = iMSCP::Dialog->factory()->radiolist(
+"
+\\Z4\\Zu" . uc($_) . " service\\Zn
+
+Please, choose the server you want use for the $_ service:
+",
+							[@alternative],
+							$currentServer ? $currentServer : $default
+							# uncoment after dependencies check is implemented
+							#'Not Used'
+						);
+
+						if(
+							ref $data->{$service}->{'alternative'}->{$server} eq 'HASH' &&
+							exists $data->{$service}->{'alternative'}->{$server}->{'repository'}
+						) {
+							$rs = iMSCP::Dialog->factory()->yesno(
+"
+\\Z4\\ZuExternal repository\\Zn
+
+The server '$server' requires usage of an external repository:
+
+$data->{$service}->{'alternative'}->{$server}->{'repository'}
+
+Do you agree?
+"
+							);
+						}
+
+						$server = '' if $rs;
+					} while (! $server);
+				} else {
+					$server = pop(@alternative);
+				}
+			} else {
+				$server = $currentServer;
+			}
+
+			$self->{'userSelection'}->{$service} = $server eq 'Not used' ? 'no' : $server;
+
+			for(@alternative) {
+				# Remove unselected server
+				if($server ne $_) {
+					delete($data->{$service}->{'alternative'}->{$_});
+				} elsif(
+					ref $data->{$service}->{'alternative'}->{$_} eq 'HASH' &&
+                   	exists $data->{$service}->{'alternative'}->{$_}->{'repository'}
+				) { # Set needed external repository if any
+					push (
+						@{$self->{'externalRepositories'}},
+						{
+							'repository' => $data->{$service}->{'alternative'}->{$_}->{'repository'},
+							'repository_key_uri' => $data->{$service}->{'alternative'}->{$_}->{'repository_key_uri'} || undef,
+							'repository_key_id' => $data->{$service}->{'alternative'}->{$_}->{'repository_key_id'} || undef,
+							'repository_key_srv' => $data->{$service}->{'alternative'}->{$_}->{'repository_key_srv'} || undef
+						}
+					);
+				}
+
+				for my $attr (keys %{$data->{$service}->{'alternative'}->{$_}}) {
+					delete $data->{$service}->{'alternative'}->{$_}->{$attr} if $attr ne 'package';
+				}
+			}
+		}
+
+		$self->_parseHash($data->{$_});
 	}
 
 	0;
@@ -199,9 +293,9 @@ sub _updatePackagesIndex
 
 =item _updateAptSourceList()
 
- Add non-free component in Debian apt sources.list file.
+ Add required repository sections to repositories that support them.
 
- Return int - 0 on success, other on failure
+ Return int 0 on success, other on failure
 
 =cut
 
@@ -213,160 +307,151 @@ sub _updateAptSourceList
 
 	my $file = iMSCP::File->new(filename => '/etc/apt/sources.list');
 
-	$file->copyFile('/etc/apt/sources.list.bkp') unless( -f '/etc/apt/sources.list.bkp');
+	$file->copyFile('/etc/apt/sources.list.bkp') unless -f '/etc/apt/sources.list.bkp';
 	my $content = $file->get();
 
-	unless ($content){
+	unless ($content) {
 		error('Unable to read /etc/apt/sources.list file');
 		return 1;
 	}
 
-	my ($foundNonFree, $needUpdate, $rs, $stdout, $stderr);
+	my ($foundSection, $needUpdate, $rs, $stdout, $stderr);
 
-	while($content =~ /^deb\s+(?<uri>(?:https?|ftp)[^\s]+)\s+(?<distrib>[^\s]+)\s+(?<components>.+)$/mg){
-		my %repos = %+;
+	for(@{$self->{'repositorySections'}}) {
+		my $section = $_;
 
-		# is non-free repository available?
-		unless($repos{'components'} =~ /\s?$self->{'nonfree'}(\s|$)/ ){
-			my $uri = "$repos{uri}/dists/$repos{distrib}/$self->{nonfree}/";
-			$rs = execute("wget --spider $uri", \$stdout, \$stderr);
-			debug("$stdout") if $stdout;
-			debug("$stderr") if $stderr;
+		while($content =~ /^deb\s+(?<uri>(?:https?|ftp)[^\s]+)\s+(?<distrib>[^\s]+)\s+(?<components>.+)$/mg) {
+			my %repos = %+;
 
-			unless ($rs){
-				$foundNonFree = 1;
-				debug("Enabling non free section on $repos{uri}");
-				$content =~ s/^($&)$/$1 $self->{'nonfree'}/mg;
-				$needUpdate = 1;
+			# is a section available in repository?
+			unless($repos{'components'} =~ /\s?$section(\s|$)/) {
+				my $uri = "$repos{uri}/dists/$repos{'distrib'}/$section/";
+				$rs = execute("wget --spider $uri", \$stdout, \$stderr);
+				debug($stdout) if $stdout;
+				debug($stderr) if $stderr;
+
+				unless ($rs) {
+					$foundSection = 1;
+					debug("Enabling section '$section' on $repos{uri}");
+					$content =~ s/^($&)$/$1 $section/mg;
+					$needUpdate = 1;
+				}
+			} else {
+				debug("Section '$section' is already enabled on $repos{uri}");
+				$foundSection = 1;
 			}
-		} else {
-			debug("Non free section is already enabled on $repos{uri}");
-			$foundNonFree = 1;
+		}
+
+		unless($foundSection) {
+			error("Unable to found repository supporting '$section' packages");
+			return 1;
 		}
 	}
 
-	unless($foundNonFree){
-		error('Unable to found repository that support non-free packages');
-		return 1;
-	}
-
-	if($needUpdate){
+	if($needUpdate) {
 		$file->set($content);
 		$file->save() and return 1;
-
-		$rs = $self->_updatePackagesIndex();
-		return $rs if $rs;
 	}
 
 	0;
 }
 
-=item _preparePackagesList()
+=item _addExternalRepositories()
 
- Prepare list of Debuian packages to be installed.
+ Add external repositories to the sources.list file and their gpg keys.
 
- Return int - 0 on success, other on failure
+ Return int 0 on success, other on failure.
 
 =cut
 
-sub _preparePackagesList
+sub _addExternalRepositories
 {
 	my $self = shift;
-	my $lsbRelease = iMSCP::LsbRelease->new();
-	my $distribution = lc($lsbRelease->getId(1));
-	my $codename = lc($lsbRelease->getCodename(1));
-	my $packagesFile = "$FindBin::Bin/docs/" . ucfirst($distribution) . '/' . $distribution . '-packages-' . $codename . '.xml';
 
-	eval "use XML::Simple; 1";
-	fatal('Unable to load perl module XML::Simple') if($@);
+	if(@{$self->{'externalRepositories'}}) {
 
-	my $xml = XML::Simple->new(NoEscape => 1);
-	my $data = eval { $xml->XMLin($packagesFile, KeyAttr => 'name') };
+		my $file = iMSCP::File->new(filename => '/etc/apt/sources.list');
 
-	for(keys %{$data}){
-		if(ref($data->{$_}) eq 'ARRAY'){
-			$self->_parseArray($data->{$_});
-		} else {
-			if($data->{$_}->{'alternative'}) {
-				my $service  = $_;
-				my @alternative = keys %{$data->{$service}->{'alternative'}};
+		$file->copyFile('/etc/apt/sources.list.bkp') unless -f '/etc/apt/sources.list.bkp';
+		my $content = $file->get();
 
-				my $serviceName = uc($service) . '_SERVER';
-				my $oldServer = exists $main::preseed{'SERVERS'}
-					? $main::preseed{'SERVERS'}->{$serviceName} : $main::imscpConfig{$serviceName} || undef;
-				my $server = undef;
+		unless ($content) {
+			error('Unable to read /etc/apt/sources.list file');
+			return 1;
+		}
 
-				# Only ask for server to use if not already defined or not found in list of available server
-				# or if user asked for reconfiguration
-				if($main::reconfigure || ! $oldServer || ! ($oldServer ~~ @alternative)) {
-					if(@alternative > 1) { # Do no ask for server if only one is available
-						for (my $index = $#alternative; $index >= 0; --$index) {
-							my $defServer = $alternative[$index];
+		my ($rs, $cmd, $stdout, $stderr, $needUpdate);
 
-							if($oldServer && $defServer eq $oldServer) { # Make old server at first position
-								splice @alternative, $index, 1 ;
-								unshift(@alternative, $defServer);
-								last;
-							}
-						}
+		for(@{$self->{'externalRepositories'}}) {
+			if($content !~ /^deb\s+$_->{'repository'}$/mg) {
+				$content .= "\ndeb $_->{'repository'}\ndeb-src $_->{'repository'}\n";
 
-						do {
-							iMSCP::Dialog->factory->set('no-cancel', '');
-							$server = iMSCP::Dialog->factory()->radiolist(
-"
-\\Z4\\Zu" . uc($service) . " service\\Zn
-
-Please, choose the server you want use for the $service service:
-",
-								[@alternative],
-								$oldServer
-								# uncoment after dependencies check is implemented
-								#'Not Used'
-							);
-						} while (! $server);
+				if($_->{'repository_key_srv'}) {
+					if($_->{'repository_key_id'}) {
+						$cmd = "apt-key adv --recv-keys --keyserver $_->{'repository_key_srv'} $_->{'repository_key_id'}";
 					} else {
-						$server = pop(@alternative);
+						error("The repository_key_id entry for the '$_->{'repository'} repository was not found");
+						return 1;
 					}
+				} elsif($_->{'repository_key_uri'}) {
+					$cmd = "wget -qO- $_->{'repository_key_uri'} | apt-key add -"
 				} else {
-					$server = $oldServer;
+					error("The repository_key_uri entry for the '$_->{'repository'}' repository was not found");
+					return 1;
 				}
 
-				$self->{'userSelection'}->{$service} = lc($server) eq 'not used' ? 'no' : $server;
+				$rs = execute($cmd, \$stdout, \$stderr);
+				debug($stdout) if $stdout;
+				error($stderr) if $stderr && $rs;
+				return $rs if $rs;
 
-				for(@alternative) {
-					delete($data->{$service}->{'alternative'}->{$_}) if $_ ne $server;
-				}
+				$needUpdate = 1;
 			}
+		}
 
-			$self->_parseHash($data->{$_});
+		if($needUpdate) {
+			$file->set($content);
+			$file->save() and return 1;
 		}
 	}
 
 	0;
 }
 
-=item _trim($string)
+=item _updatePackagesIndex()
 
- Trim the given string
+ Update Debian packages index.
 
- Param SCALAR - String to trim
- Return SCALAR - Trimmed string
+ Return int 0 on success, other on failure
 
 =cut
 
-sub _trim
+sub _updatePackagesIndex
 {
-	my $var = shift;
-	$var =~ s/^\s+//;
-	$var =~ s/\s+$//;
-	$var;
+	my $self = shift;
+	my ($rs, $stdout, $stderr);
+	my $command = 'apt-get';
+
+	if(! %main::preseed && ! $main::noprompt &&  ! checkCommandAvailability('debconf-apt-progress')) {
+		$command = 'debconf-apt-progress --logstderr -- ' . $command;
+	}
+
+	$rs = execute("$command -y update", (%main::preseed || $main::noprompt) ? \$stdout : undef, \$stderr);
+	debug($stdout) if $stdout;
+
+	if($rs) {
+		error('Unable to update package index from remote repository: $stderr');
+		return $rs;
+	}
+
+	0;
 }
 
-=item _parseHash(\$hash)
+=item _parseHash(\%hash)
 
  Parse the given hash and put result in the toInstall attribute.
 
- Param HASH Reference
+ Param hash_ref $hash Reference to a hash
  Return undef
 =cut
 
@@ -376,23 +461,23 @@ sub _parseHash
 	my $hash = shift;
 
 	for(values %{$hash}) {
-		if(ref($_) eq 'HASH') {
+		if(ref $_  eq 'HASH') {
 			$self->_parseHash($_);
-		} elsif(ref($_) eq 'ARRAY') {
+		} elsif(ref $_  eq 'ARRAY') {
 			$self->_parseArray($_);
 		} else {
-			$self->{'toInstall'} .= " " . _trim($_);
-		}
+         	push @{$self->{'packagesToInstall'}}, $_;
+        }
 	}
 
 	undef;
 }
 
-=item _parseArray(\$array)
+=item _parseArray(\@array)
 
  Parse the given array and put the result in the toInstall attribute.
 
- Param ARRAY Reference
+ Param array_ref $array Reference to an array
  Return undef
 =cut
 
@@ -401,13 +486,13 @@ sub _parseArray
 	my $self = shift;
 	my $array = shift;
 
-	for(@{$array}){
-		if(ref($_) eq 'HASH') {
+	for(@{$array}) {
+		if(ref $_ eq 'HASH') {
 			$self->_parseHash($_);
-		} elsif(ref($_) eq 'ARRAY') {
+		} elsif(ref $_ eq 'ARRAY') {
 			$self->_parseArray($_);
 		} else {
-			$self->{toInstall} .= " " . _trim($_);
+			push @{$self->{'packagesToInstall'}}, $_;
 		}
 	}
 
@@ -422,6 +507,5 @@ sub _parseArray
  Laurent Declercq <l.declercq@nuxwin.com>
 
 =cut
-
 
 1;

@@ -113,6 +113,8 @@ iMSCP::HooksManager->getInstance->register(
 	}
 ) if $main::noprompt;
 
+print STDOUT "Installation in progress... Please wait.\n" if $main::noprompt;
+
 newDebug('imscp-build.log');
 
 # Ensure the script is run as root

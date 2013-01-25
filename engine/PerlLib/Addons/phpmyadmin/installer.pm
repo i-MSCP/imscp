@@ -163,7 +163,6 @@ sub askPhpmyadmin
 			main::setupCheckSqlConnect($dbType, '', $dbHost, $dbPort, $dbUser, $dbPass)
 		)
 	) {
-	#if($main::reconfigure || main::setupCheckSqlConnect($dbType, '', $dbHost, $dbPort, $dbUser, $dbPass)) {
 		# Ask for the phpmyadmin restricted SQL username
 		do{
 			($rs, $dbUser) = iMSCP::Dialog->factory()->inputbox(
@@ -393,13 +392,10 @@ sub _setupSqlUser
 		return 1 if $rs;
 
 		# Get SQL connection with full privileges
-		my $database = main::setupGetSqlConnect();
-
-		# Add new phpmyadmin restricted SQL user with needed privileges
-
-		# Get SQL connection with full privileges
 		my ($database, $errStr) = main::setupGetSqlConnect();
 		fatal('Unable to connect to SQL Server: $errStr') if ! $database;
+
+		# Add new phpmyadmin restricted SQL user with needed privileges
 
 		# Add USAGE privilege on the mysql database (also create PhpMyadmin user)
 		$rs = $database->doQuery('dummy', 'GRANT USAGE ON `mysql`.* TO ?@? IDENTIFIED BY ?', $dbUser, $dbHost, $dbPass);

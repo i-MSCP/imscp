@@ -70,7 +70,6 @@ sub preinstall
 	use Servers::po::courier::installer;
 
 	$rs |= $self->stop();
-	#$rs |= Servers::po::courier::installer->new()->registerHooks();
 
 	iMSCP::HooksManager->getInstance()->trigger('afterPoPreinstall', 'courier');
 

@@ -98,4 +98,3 @@ exit 1 if logs_start_up();
 $rs |= del_tmp();
 
 exit $rs;
-

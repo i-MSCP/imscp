@@ -36,8 +36,6 @@ use iMSCP::Dialog;
 use iMSCP::HooksManager;
 use iMSCP::Getopt;
 
-newDebug('imscp-setup.log');
-
 iMSCP::Getopt->parse('Usage: perl imscp-setup [options]');
 
 # Get reconfigure option
@@ -88,6 +86,10 @@ iMSCP::HooksManager->getInstance->register(
 		0;
 	}
 ) if $main::noprompt;
+
+print STDOUT "Installation in progress... Please wait.\n" if $main::noprompt;
+
+newDebug('imscp-setup.log');
 
 require "$FindBin::Bin/imscp-setup-methods.pl";
 
