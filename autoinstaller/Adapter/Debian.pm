@@ -94,7 +94,7 @@ sub preBuild
 	unless($main::skippackages) {
 		$rs |= $self->_preparePackagesList();
 		$rs |= $self->_updateAptSourceList();
-		$rs |= $self->_addExternalRepositories;
+		$rs |= $self->_addExternalRepositories();
 		$rs |= $self->_updatePackagesIndex();
 	}
 

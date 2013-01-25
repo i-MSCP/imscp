@@ -1733,9 +1733,7 @@ sub _addCfg
 	# Build PHP FPM pool file - Begin
 
 	# Backup older pool files if any
-	for($self->{'data'}->{'POOL_NAME'}, $data->{'DMN_NAME'}) {
-		$rs |= $self->phpfpmBkpConfFile("$self->{'phpfpmWrkDir'}/$_.conf");
-	}
+	$rs |= $self->phpfpmBkpConfFile("$self->{'phpfpmWrkDir'}/$data->{'DMN_NAME'}.conf");
 
 	# Remove any previous pool file (needed in case pools level has been changed)
 	for("$self::phpfpmConfig{'PHP_FPM_POOLS_CONF_DIR'}", $self->{'phpfpmWrkDir'}) {
