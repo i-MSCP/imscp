@@ -398,7 +398,7 @@ sub _createDatabase
 
 	if(! %$rs) {
 		my $qdbName = $database->quoteIdentifier($dbName);
-		my $rs = $database->doQuery('dummy', "CREATE DATABASE `$qdbName` CHARACTER SET utf8 COLLATE utf8_unicode_ci;");
+		my $rs = $database->doQuery('dummy', "CREATE DATABASE $qdbName CHARACTER SET utf8 COLLATE utf8_unicode_ci;");
 		fatal("Unable to create the '$dbName' SQL database: $rs") if ref $rs ne 'HASH';
 
 		$database->set('DATABASE_NAME', $dbName);
