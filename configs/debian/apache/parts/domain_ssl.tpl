@@ -88,7 +88,12 @@
 
     <Directory {HOME_DIR}/htdocs>
         Options -Indexes Includes FollowSymLinks MultiViews
+        # SECTION php_enabled BEGIN.
         AllowOverride All
+        # SECTION php_enabled END.
+        # SECTION php_disabled BEGIN.
+        AllowOverride AuthConfig Indexes Limit Options
+        # SECTION php_disabled END.
         Order allow,deny
         Allow from all
     </Directory>
