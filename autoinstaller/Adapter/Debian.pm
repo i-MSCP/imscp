@@ -39,7 +39,6 @@ use iMSCP::Debug;
 use iMSCP::Execute 'execute';
 use iMSCP::Dialog;
 use iMSCP::File;
-use List::MoreUtils qw(uniq);
 use autoinstaller::Common 'checkCommandAvailability';
 use parent 'autoinstaller::Adapter::Abstract';
 
@@ -104,7 +103,7 @@ sub preBuild
 
 =item uninstallPackages()
 
- Uninstall Debian packages not needed i-MSCP.
+ Uninstall Debian packages not longer needed by i-MSCP.
 
  Return int 0 on success, other on failure
 
@@ -232,7 +231,10 @@ sub _preparePackagesList
 	my $rs;
 
 	eval "use XML::Simple; 1";
-	fatal('Unable to load perl module XML::Simple') if($@);
+	fatal('Unable to load the XML::Simple perl module') if($@);
+
+	eval "use List::MoreUtils qw(uniq); 1";
+	fatal('Unable to load the List::MoreUtils perl module') if($@);
 
 	my $xml = XML::Simple->new(NoEscape => 1);
 	my $data = eval { $xml->XMLin($packagesFile, KeyAttr => 'name') };
