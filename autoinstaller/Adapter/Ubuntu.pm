@@ -58,7 +58,9 @@ sub _init
 {
 	my $self = shift;
 
-	$self->{'preRequiredPackages'} = ['wget', 'dialog', 'libxml-simple-perl', 'python-software-properties'];
+	$self->{'preRequiredPackages'} = [
+		'wget', 'dialog', 'libxml-simple-perl', 'liblist-moreutils-perl', 'python-software-properties'
+	];
 	$self->{'packagesToInstall'} = [];
 	$self->{'externalRepositories'} = [];
 	$self->{'repositorySections'} = ['main', 'universe', 'multiverse'];

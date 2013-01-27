@@ -39,6 +39,7 @@ use iMSCP::Debug;
 use iMSCP::Execute 'execute';
 use iMSCP::Dialog;
 use iMSCP::File;
+use List::MoreUtils qw(uniq);
 use autoinstaller::Common 'checkCommandAvailability';
 use parent 'autoinstaller::Adapter::Abstract';
 
@@ -99,6 +100,41 @@ sub preBuild
 	}
 
 	$rs;
+}
+
+=item uninstallPackages()
+
+ Uninstall Debian packages not needed i-MSCP.
+
+ Return int 0 on success, other on failure
+
+=cut
+
+sub uninstallPackages
+{
+	my $self = shift;
+
+	my ($stdout, $stderr);
+	my $command = 'apt-get';
+
+	iMSCP::Dialog->factory()->endGauge(); # Really needed !
+
+	if(! %main::preseed&& ! $main::noprompt && ! checkCommandAvailability('debconf-apt-progress')) {
+		$command = 'debconf-apt-progress --logstderr -- ' . $command;
+	}
+
+	my $rs = execute(
+		"$command -y remove @{$self->{'packagesToUninstall'}} --auto-remove",
+		(%main::preseed || $main::noprompt) ? \$stdout : undef, \$stderr
+	);
+	debug($stdout) if $stdout;
+
+	if($rs) {
+		error("Unable to uninstall packages: $stderr");
+		return $rs;
+	}
+
+	0;
 }
 
 =item installPackages()
@@ -169,8 +205,9 @@ sub _init
 {
 	my $self = shift;
 
-	$self->{'preRequiredPackages'} = ['wget', 'dialog', 'libxml-simple-perl'];
+	$self->{'preRequiredPackages'} = ['wget', 'dialog', 'libxml-simple-perl', 'liblist-moreutils-perl'];
 	$self->{'packagesToInstall'} = [];
+	$self->{'packagesToUninstall'} = [];
 	$self->{'externalRepositories'} = [];
 	$self->{'repositorySections'} = ['main', 'non-free'];
 
@@ -179,7 +216,7 @@ sub _init
 
 =item _preparePackagesList()
 
- Prepare list of Debian packages to be installed.
+ Prepare lists of Debian packages to be uninstalled and installed.
 
  Return int 0 on success, other on failure
 
@@ -263,6 +300,11 @@ Do you agree?
 			for(@alternative) {
 				# Remove unselected server
 				if($server ne $_) {
+					# Add package to purge
+					for my $attr (keys %{$data->{$service}->{'alternative'}->{$_}}) {
+						delete $data->{$service}->{'alternative'}->{$_}->{$attr} if $attr ne 'package';
+					}
+					$self->_parseHash($data->{$service}->{'alternative'}->{$_}, 'packagesToUninstall');
 					delete($data->{$service}->{'alternative'}->{$_});
 				} elsif(
 					ref $data->{$service}->{'alternative'}->{$_} eq 'HASH' &&
@@ -287,6 +329,10 @@ Do you agree?
 
 		$self->_parseHash($data->{$_});
 	}
+
+	@{$self->{'packagesToUninstall'}} = uniq(
+		grep {  ! ( $_ ~~ @{$self->{'packagesToInstall'}} ) } @{$self->{'packagesToUninstall'}}
+	);
 
 	0;
 }
@@ -447,11 +493,12 @@ sub _updatePackagesIndex
 	0;
 }
 
-=item _parseHash(\%hash)
+=item _parseHash(\%hash, $target)
 
- Parse the given hash and put result in the toInstall attribute.
+ Parse the given hash and put result in the target array.
 
  Param hash_ref $hash Reference to a hash
+ Param string Target array name (packagesToUninstall|packagesToInstall)
  Return undef
 =cut
 
@@ -459,25 +506,27 @@ sub _parseHash
 {
 	my $self = shift;
 	my $hash = shift;
+	my $target = shift || 'packagesToInstall';
 
 	for(values %{$hash}) {
 		if(ref $_  eq 'HASH') {
-			$self->_parseHash($_);
+			$self->_parseHash($_, $target);
 		} elsif(ref $_  eq 'ARRAY') {
-			$self->_parseArray($_);
+			$self->_parseArray($_, $target);
 		} else {
-         	push @{$self->{'packagesToInstall'}}, $_;
+         	push @{$self->{$target}}, $_;
         }
 	}
 
 	undef;
 }
 
-=item _parseArray(\@array)
+=item _parseArray(\@array, $target)
 
- Parse the given array and put the result in the toInstall attribute.
+ Parse the given array and put the result in the target array.
 
  Param array_ref $array Reference to an array
+ Param string Target array (packagesToUninstall|packagesToInstall)
  Return undef
 =cut
 
@@ -485,14 +534,15 @@ sub _parseArray
 {
 	my $self = shift;
 	my $array = shift;
+	my $target = shift || 'packagesToInstall';
 
 	for(@{$array}) {
 		if(ref $_ eq 'HASH') {
-			$self->_parseHash($_);
+			$self->_parseHash($_, $target);
 		} elsif(ref $_ eq 'ARRAY') {
-			$self->_parseArray($_);
+			$self->_parseArray($_, $target);
 		} else {
-			push @{$self->{'packagesToInstall'}}, $_;
+			push @{$self->{$target}}, $_;
 		}
 	}
 
