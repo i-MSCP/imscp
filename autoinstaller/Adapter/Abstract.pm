@@ -71,6 +71,21 @@ sub preBuild
 	0;
 }
 
+=item uninstallPackages()
+
+ Uninstall distribution packages.
+
+ Return int - 0 on success, other on failure
+
+=cut
+
+sub installPackages
+{
+	my $self = shift;
+
+	fatal(ref($self) . ' adapter must implement the uninstallPackages() method');
+}
+
 =item installPackages()
 
  Install distribution packages.

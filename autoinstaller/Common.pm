@@ -47,7 +47,7 @@ use iMSCP::File;
 
 use parent 'Exporter';
 our @EXPORT = qw(
-	installPreRequiredPackages checkDistribution loadConfig preBuild installPackages testRequirements
+	installPreRequiredPackages checkDistribution loadConfig preBuild uninstallPackages installPackages testRequirements
 	processConfFile processSpecificConfFile buildImscpDaemon installEngine installGui installDistMaintainerScripts
 	postBuild doImscpBackup saveGuiPersistentData installTmp removeTmp checkCommandAvailability
 );
@@ -208,6 +208,19 @@ sub loadConfig
 sub preBuild
 {
 	_getDistroAdapter()->preBuild();
+}
+
+=item uninstallPackages()
+
+ Trigger packages uninstallation from distro autoinstaller adapter.
+
+ Return int - 0 on success, other on failure
+
+=cut
+
+sub uninstallPackages
+{
+	_getDistroAdapter()->uninstallPackages();
 }
 
 =item installPackages()

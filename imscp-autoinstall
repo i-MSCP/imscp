@@ -171,6 +171,7 @@ my $distribution = iMSCP::LsbRelease->new()->getId(1);
 my @steps = (
 	[\&loadConfig,						'Loading i-MSCP configuration'],
 	[\&preBuild,						'Processing preBuild tasks'],
+	[\&uninstallPackages,				"Uninstalling $distribution packages not longer needed by i-MSCP"],
 	[\&installPackages,					"Installing all $distribution packages for i-MSCP"],
 	[\&testRequirements,				'Testing i-MSCP requirements'],
 	[\&processConfFile,					"Loading $distribution specific variables"],
