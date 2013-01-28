@@ -131,6 +131,28 @@ sub get
 	$self->{'fileContent'};
 }
 
+sub getRFileHandle
+{
+	my $self = shift;
+
+	$self->{'fileHandle'} = FileHandle->new($self->{'filename'}, 'r') or delete($self->{'fileHandle'});
+	error("Can`t open $self->{filename}!") if ! $self->{'fileHandle'};
+	return undef if ! $self->{'fileHandle'};
+
+	$self->{'fileHandle'};
+}
+
+sub getWFileHandle
+{
+	my $self = shift;
+
+	$self->{'fileHandle'} = FileHandle->new($self->{'filename'}, 'w') or delete($self->{'fileHandle'});
+	error("Can`t open $self->{filename}!") if ! $self->{'fileHandle'};
+	return undef if ! $self->{'fileHandle'};
+
+	$self->{'fileHandle'};
+}
+
 sub copyFile
 {
 	my $self = shift;

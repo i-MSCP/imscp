@@ -38,6 +38,7 @@ use iMSCP::HooksManager;
 use iMSCP::Addons::ComposerInstaller;
 use iMSCP::Rights;
 use iMSCP::Execute;
+use iMSCP::File;
 use JSON;
 use parent 'Common::SingletonClass';
 
@@ -75,7 +76,7 @@ sub registerSetupHooks
 
  Register Roundcube composer package for installation.
 
- Return int - 0 on success, other on failure
+ Return int 0 on success, other on failure
 
 =cut
 
@@ -346,7 +347,7 @@ sub _setPermissions
 
  Save Roundcube configuration.
 
- Return int - 0 on success, 1 on failure
+ Return int 0 on success, 1 on failure
 
 =cut
 
@@ -379,7 +380,7 @@ sub _saveConfig
 
  Create or update Roundcube database
 
- Return int - 0 on success other on failure
+ Return int 0 on success other on failure
 
 =cut
 
@@ -417,18 +418,23 @@ sub _createDatabase
 		my $needUpdate = `$main::imscpConfig{'CMD_PHP'} -r "print (version_compare('$fromVersion', '$newVersion', '<'));"`;
 
 		if($fromVersion && $needUpdate) {
-			open my $file, '<', "$roundcubeDir/SQL/mysql.update.sql"
-				or die "Couldn't found the Roundcube database schema update file: $!\n";
+
+			my $file = iMSCP::File->new('filename' => "$roundcubeDir/SQL/mysql.update.sql")->getRFileHandle();
+
+			if(! $file) {
+				error("Couldn't read the Roundcube database schema update file");
+				return 1;
+			}
 
 			my $from = 0;
 			my $sql = '';
 
-			while(my $line = <$file>) {
-				chomp($line);
-				next if ! $line; # skip empty line
-				my $isComment = (index($line, '--') == 0);
+			while($file->getline()) {
+				chomp;
+				next if ! $_; # skip empty line
+				my $isComment = (index($_, '--') == 0);
 
-				if(! $from && $isComment && $line =~ /from version\s([0-9.]+[a-z-]*)/) {
+				if(! $from && $isComment && /from version\s([0-9.]+[a-z-]*)/) {
 					my $fileVersion = $self->_parseVersion($1);
 
 					if(
@@ -439,16 +445,16 @@ sub _createDatabase
 					}
 				}
 
-				$sql .= $line . "\n" if $from && ! $isComment;
+				$sql .= $_ . "\n" if $from && ! $isComment;
 			}
 
-			close $file;
+			undef $file;
 
 			if($sql) {
 				debug("Updating Roundcube database schema:\n\n$sql");
 
 				# Save roundcube db update file in temporary directory
-				$file = iMSCP::File->new(filename => '/tmp/roundcube_update.sql');
+				$file = iMSCP::File->new('filename' => '/tmp/roundcube_update.sql');
 				$file->set($sql) and return 1;
 				$file->save() and return 1;
 
@@ -470,26 +476,26 @@ sub _createDatabase
 
 =item _setVersion()
 
- Get new Roundcube version.
+ Set Roundcube version.
 
- Return string
+ Return int 0 on success, 1 on failure
 
 =cut
 
 sub _setVersion
 {
-	my $json;
+	my $self = shift;
 
-	open my $file, '<', "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/webmail/composer.json"
-		or die "Couldn't found the Roundcube composer.json file: $!\n";
+	my $json = iMSCP::File->new('filename' => "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/webmail/composer.json")->get();
 
-	local $/;
-	$json = <$file>;
-	close $file;
+	if(! $json) {
+		error('Cannot read the Roundcube composer.json file');
+		return 1;
+	}
 
-	my $data = decode_json($json);
-	debug("Set roundcube version to $data->{'version'}");
-	$self::roundcubeConfig{'ROUNDCUBE_VERSION'} = $data->{'version'};
+	$json = decode_json($json);
+	debug("Set roundcube version to $json->{'version'}");
+	$self::roundcubeConfig{'ROUNDCUBE_VERSION'} = $json->{'version'};
 
 	0;
 }
@@ -517,7 +523,7 @@ sub _parseVersion($ $)
 
  Setup Roundcube database.
 
- Return int - 0 on success, 1 on failure
+ Return int 0 on success, 1 on failure
 
 =cut
 
@@ -584,7 +590,7 @@ sub _setupDatabase
 
  Generate DES key for Roundcube.
 
- Return int - 0
+ Return int 0
 
 =cut
 
@@ -610,7 +616,7 @@ sub _generateDESKey
 
  Process Roundcube addon install tasks.
 
- Return int - 0 on success, 1 on failure
+ Return int 0 on success, 1 on failure
 
 =cut
 
@@ -639,7 +645,7 @@ sub _buildConfig
 	};
 
 	for (keys %{$cfgFiles}) {
-		my $file = iMSCP::File->new(filename => "$confDir/$_");
+		my $file = iMSCP::File->new('filename' => "$confDir/$_");
 		my $cfgTpl = $file->get();
 
 		if (! $cfgTpl) {
@@ -670,6 +676,9 @@ sub _buildConfig
 
 		# Install new file in production directory
 		$rs |= $file->copyFile($cfgFiles->{$_});
+
+		# Remove template file in production directory
+		$rs |= $file = iMSCP::File->new('filename' => "$confDir/$_")->delFile();
 	}
 
 	0;
