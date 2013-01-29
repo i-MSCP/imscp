@@ -100,7 +100,7 @@ sub preBuild
 			[sub { $self->_updateAptSourceList }, 'Updating apt source.list file'],
 		);
 
-		push @steps, [sub { $self->_addExternalRepositories }, 'Add required external repositories']
+		push @steps, [sub { $self->_addExternalRepositories }, 'Adding required external repositories']
 			if @{$self->{'externalRepositories'}};
 
 		push @steps, [sub { $self->_updatePackagesIndex }, 'Updating packages index'];
@@ -111,7 +111,6 @@ sub preBuild
 		for (@steps) {
 			$rs = step($_->[0], $_->[1], $nbSteps, $step);
 			return $rs if $rs;
-			sleep 1;
 			$step++;
 		}
 	}
