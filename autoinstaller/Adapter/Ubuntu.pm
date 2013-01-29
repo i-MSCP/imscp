@@ -59,7 +59,7 @@ sub _init
 	my $self = shift;
 
 	$self->{'preRequiredPackages'} = [
-		'wget', 'dialog', 'libxml-simple-perl', 'liblist-moreutils-perl', 'python-software-properties'
+		'dialog', 'liblist-moreutils-perl', 'libxml-simple-perl', 'python-software-properties', 'wget'
 	];
 	$self->{'packagesToInstall'} = [];
 	$self->{'externalRepositories'} = [];

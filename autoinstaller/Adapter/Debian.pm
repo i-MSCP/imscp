@@ -39,6 +39,7 @@ use iMSCP::Debug;
 use iMSCP::Execute 'execute';
 use iMSCP::Dialog;
 use iMSCP::File;
+use iMSCP::Stepper;
 use autoinstaller::Common 'checkCommandAvailability';
 use parent 'autoinstaller::Adapter::Abstract';
 
@@ -92,13 +93,30 @@ sub preBuild
 	my $rs = 0;
 
 	unless($main::skippackages) {
-		$rs |= $self->_preparePackagesList();
-		$rs |= $self->_updateAptSourceList();
-		$rs |= $self->_addExternalRepositories();
-		$rs |= $self->_updatePackagesIndex();
+		iMSCP::Dialog->factory()->endGauge(); # Really needed !
+
+		my @steps = (
+			[sub { $self->_preparePackagesList }, 'Generating lists of package to uninstall and install'],
+			[sub { $self->_updateAptSourceList }, 'Updating apt source.list file'],
+		);
+
+		push @steps, [sub { $self->_addExternalRepositories }, 'Add required external repositories']
+			if @{$self->{'externalRepositories'}};
+
+		push @steps, [sub { $self->_updatePackagesIndex }, 'Updating packages index'];
+
+		my $step = 1;
+		my $nbSteps = scalar @steps;
+
+		for (@steps) {
+			$rs = step($_->[0], $_->[1], $nbSteps, $step);
+			return $rs if $rs;
+			sleep 1;
+			$step++;
+		}
 	}
 
-	$rs;
+	0;
 }
 
 =item uninstallPackages()
@@ -113,24 +131,26 @@ sub uninstallPackages
 {
 	my $self = shift;
 
-	my ($stdout, $stderr);
-	my $command = 'apt-get';
+	if(@{$self->{'packagesToUninstall'}}) {
+		my ($stdout, $stderr);
+		my $command = 'apt-get';
 
-	iMSCP::Dialog->factory()->endGauge(); # Really needed !
+		iMSCP::Dialog->factory()->endGauge(); # Really needed !
 
-	if(! %main::preseed&& ! $main::noprompt && ! checkCommandAvailability('debconf-apt-progress')) {
-		$command = 'debconf-apt-progress --logstderr -- ' . $command;
-	}
+		if(! %main::preseed&& ! $main::noprompt && ! checkCommandAvailability('debconf-apt-progress')) {
+			$command = 'debconf-apt-progress --logstderr -- ' . $command;
+		}
 
-	my $rs = execute(
-		"$command -y remove @{$self->{'packagesToUninstall'}} --auto-remove",
-		(%main::preseed || $main::noprompt) ? \$stdout : undef, \$stderr
-	);
-	debug($stdout) if $stdout;
+		my $rs = execute(
+			"$command -y remove @{$self->{'packagesToUninstall'}} --auto-remove",
+			(%main::preseed || $main::noprompt) ? \$stdout : undef, \$stderr
+		);
+		debug($stdout) if $stdout;
 
-	if($rs) {
-		error("Unable to uninstall packages: $stderr");
-		return $rs;
+		if($rs) {
+			error("Unable to uninstall packages: $stderr");
+			return $rs;
+		}
 	}
 
 	0;
@@ -157,7 +177,10 @@ sub installPackages
 		$command = 'debconf-apt-progress --logstderr -- ' . $command;
 	}
 
-	my $rs = execute("$command -y install @{$self->{'packagesToInstall'}}", (%main::preseed || $main::noprompt) ? \$stdout : undef, \$stderr);
+	my $rs = execute(
+		"$command -y install @{$self->{'packagesToInstall'}} --auto-remove",
+		(%main::preseed || $main::noprompt) ? \$stdout : undef, \$stderr
+	);
 	debug($stdout) if $stdout;
 
 	if($rs) {
@@ -204,7 +227,7 @@ sub _init
 {
 	my $self = shift;
 
-	$self->{'preRequiredPackages'} = ['wget', 'dialog', 'libxml-simple-perl', 'liblist-moreutils-perl'];
+	$self->{'preRequiredPackages'} = ['dialog', 'liblist-moreutils-perl', 'libxml-simple-perl', 'wget'];
 	$self->{'packagesToInstall'} = [];
 	$self->{'packagesToUninstall'} = [];
 	$self->{'externalRepositories'} = [];
@@ -302,7 +325,6 @@ Do you agree?
 			for(@alternative) {
 				# Remove unselected server
 				if($server ne $_) {
-					# Add package to purge
 					for my $attr (keys %{$data->{$service}->{'alternative'}->{$_}}) {
 						delete $data->{$service}->{'alternative'}->{$_}->{$attr} if $attr ne 'package';
 					}
@@ -332,9 +354,24 @@ Do you agree?
 		$self->_parseHash($data->{$_});
 	}
 
+	# Build list of packages to uninstall
+
 	@{$self->{'packagesToUninstall'}} = uniq(
-		grep {  ! ( $_ ~~ @{$self->{'packagesToInstall'}} ) } @{$self->{'packagesToUninstall'}}
+		grep { ! ($_ ~~ @{$self->{'packagesToInstall'}}) } @{$self->{'packagesToUninstall'}}
 	);
+
+	my ($stdout, $stderr);
+	my $rs = execute(
+		"dpkg-query -W -f='\${package}/\${Status}\n' @{$self->{'packagesToUninstall'}}", \$stdout, \$stderr
+	);
+	error($stderr) if $stderr && $rs > 1;
+	return $rs if $rs;
+
+	@{$self->{'packagesToUninstall'}} = ();
+
+	for(split "\n", $stdout) {
+		push @{$self->{'packagesToUninstall'}}, $1 if m%^(.*?)/install%;
+	}
 
 	0;
 }
@@ -350,8 +387,6 @@ Do you agree?
 sub _updateAptSourceList
 {
 	my $self = shift;
-
-	iMSCP::Dialog->factory()->infobox("\nProcessing apt sources list");
 
 	my $file = iMSCP::File->new(filename => '/etc/apt/sources.list');
 
