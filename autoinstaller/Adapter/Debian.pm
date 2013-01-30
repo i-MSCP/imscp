@@ -98,12 +98,9 @@ sub preBuild
 		my @steps = (
 			[sub { $self->_preparePackagesList }, 'Generating lists of package to uninstall and install'],
 			[sub { $self->_updateAptSourceList }, 'Updating apt source.list file'],
+			[sub { $self->_addExternalRepositories }, 'Adding required external repositories if any'],
+			[sub { $self->_updatePackagesIndex }, 'Updating packages index']
 		);
-
-		push @steps, [sub { $self->_addExternalRepositories }, 'Adding required external repositories']
-			if @{$self->{'externalRepositories'}};
-
-		push @steps, [sub { $self->_updatePackagesIndex }, 'Updating packages index'];
 
 		my $step = 1;
 		my $nbSteps = scalar @steps;
@@ -364,7 +361,7 @@ Do you agree?
 		"dpkg-query -W -f='\${package}/\${Status}\n' @{$self->{'packagesToUninstall'}}", \$stdout, \$stderr
 	);
 	error($stderr) if $stderr && $rs > 1;
-	return $rs if $rs;
+	return $rs if $rs > 1;
 
 	@{$self->{'packagesToUninstall'}} = ();
 
