@@ -24,6 +24,7 @@ Tickets:
 	- Fixed #566: Cosmetics - i18n issues
 	- Fixed #583: Bug - Disabling PHP will not prevent user to use it
 	- Fixed #586: defect - PHP FPM still running when switching to another server
+	- Fixed #591: Bug - PHP FPM - SSL connection for the panel is not working
 
 -------------------------------------------------------------------------------------
 i-MSCP 1.1.0-rc1.4
