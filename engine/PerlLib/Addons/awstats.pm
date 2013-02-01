@@ -421,7 +421,7 @@ sub _addAwstatsCron
 
 	Servers::cron->factory()->addTask(
 		{
-			MINUTE => int(rand(61)), # random number between 0..60
+			MINUTE => int(rand(60)), # random number between 0..59
 			HOUR => int(rand(6)), # random number between 0..5
 			DAY => '*',
 			MONTH => '*',
