@@ -115,7 +115,9 @@ sub _init
 	$self->_cleanCacheDir() if iMSCP::Getopt->cleanAddons;
 
 	# Schedule package installation (done after addons preinstallation)
-	iMSCP::HooksManager->getInstance()->register('afterSetupPreInstallAddons', sub { $self->_installPackages(@_) });
+	iMSCP::HooksManager->getInstance()->register(
+		'afterSetupPreInstallAddons', sub { iMSCP::Dialog->factory()->endGauge(); $self->_installPackages(@_) }
+	);
 
 	$self;
 }

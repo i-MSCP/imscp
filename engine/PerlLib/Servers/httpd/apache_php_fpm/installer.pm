@@ -100,8 +100,10 @@ sub askForPhpFpmPoolsLevel
 	my $poolsLevel = $main::preseed{'PHP_FPM_POOLS_LEVEL'} || $self::phpfpmConfig{'PHP_FPM_POOLS_LEVEL'} ||
 		$self::phpfpmOldConfig{'PHP_FPM_POOLS_LEVEL'} || '';
 
-	if($main::reconfigure || $poolsLevel !~ /^per_user|per_domain|per_site$/) {
-
+	if(
+		$main::reconfigure ~~ ['httpd', 'servers', 'all', 'forced'] ||
+		$poolsLevel !~ /^per_user|per_domain|per_site$/
+	) {
 		$poolsLevel =~ s/_/ /g;
 
 		($rs, $poolsLevel) = $dialog->radiolist(

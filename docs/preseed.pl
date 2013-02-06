@@ -2,7 +2,7 @@
 
 # i-MSCP preseed.pl template file for installer preseeding
 # See documentation at http://wiki.i-mscp.net/doku.php?id=start:preseeding
-# Last update on 2013.01.24
+# Last update on 2013.01.31
 # Status (Experimental)
 
 ## Autoinstall questions
@@ -39,7 +39,7 @@ $main::preseed{'LOCAL_DNS_RESOLVER'} = 'yes';
 # IP must be already configured (see ifconfig)
 $main::preseed{'BASE_SERVER_IP'} = '192.168.5.110';
 
-# IPs to keep or add in the i-MSCP database - Accept both IPv4 and IPv6
+# IPs to add in the i-MSCP database - Accept both IPv4 and IPv6
 # Any unconfigured IPs will be added to the first netcard found (eg: eth0)
 $main::preseed{'SERVER_IPS'} = ['192.168.5.115']; # ['192.168.5.115', '192.168.5.115']
 

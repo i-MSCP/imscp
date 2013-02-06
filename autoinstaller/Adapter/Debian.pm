@@ -36,7 +36,7 @@ use strict;
 use warnings;
 use Symbol;
 use iMSCP::Debug;
-use iMSCP::Execute 'execute';
+use iMSCP::Execute;
 use iMSCP::Dialog;
 use iMSCP::File;
 use iMSCP::Stepper;
@@ -93,13 +93,17 @@ sub preBuild
 	my $rs = 0;
 
 	unless($main::skippackages) {
-		iMSCP::Dialog->factory()->endGauge(); # Really needed !
+		iMSCP::Dialog->factory()->endGauge();
+
+		if($main::imscpConfig{'DATABASE_PASSWORD'} ne '' && not $main::reconfigure ~~ ['sql', 'servers', 'all']) {
+			$ENV{'DEBIAN_PRIORITY'} = 'critical';
+		}
 
 		my @steps = (
-			[sub { $self->_preparePackagesList }, 'Generating lists of package to uninstall and install'],
-			[sub { $self->_updateAptSourceList }, 'Updating apt source.list file'],
-			[sub { $self->_addExternalRepositories }, 'Adding required external repositories if any'],
-			[sub { $self->_updatePackagesIndex }, 'Updating packages index']
+			[sub { $self->_preparePackagesList() }, 'Generating list of packages to uninstall and install'],
+			[sub { $self->_addExternalRepositories() }, 'Adding external repositories if any'],
+			[sub { $self->_addAptPreferencesFile() }, 'Adding apt preferences file if any'],
+			[sub { $self->_updatePackagesIndex() }, 'Updating packages index']
 		);
 
 		my $step = 1;
@@ -138,7 +142,7 @@ sub uninstallPackages
 		}
 
 		my $rs = execute(
-			"$command -y remove @{$self->{'packagesToUninstall'}} --auto-remove",
+			"$command -y remove @{$self->{'packagesToUninstall'}} --auto-remove --purge",
 			(%main::preseed || $main::noprompt) ? \$stdout : undef, \$stderr
 		);
 		debug($stdout) if $stdout;
@@ -174,7 +178,7 @@ sub installPackages
 	}
 
 	my $rs = execute(
-		"$command -y install @{$self->{'packagesToInstall'}} --auto-remove",
+		"$command -y install @{$self->{'packagesToInstall'}} --auto-remove --purge",
 		(%main::preseed || $main::noprompt) ? \$stdout : undef, \$stderr
 	);
 	debug($stdout) if $stdout;
@@ -223,11 +227,14 @@ sub _init
 {
 	my $self = shift;
 
+	$self->{'repositorySections'} = ['main', 'non-free'];
 	$self->{'preRequiredPackages'} = ['dialog', 'liblist-moreutils-perl', 'libxml-simple-perl', 'wget'];
+	$self->{'externalRepositories'} = [];
+	$self->{'aptPreferences'} = [];
 	$self->{'packagesToInstall'} = [];
 	$self->{'packagesToUninstall'} = [];
-	$self->{'externalRepositories'} = [];
-	$self->{'repositorySections'} = ['main', 'non-free'];
+
+	$self->_updateAptSourceList() and fatal('Unable to configure APT packages manager') if ! $main::skippackages;
 
 	$self;
 }
@@ -246,7 +253,7 @@ sub _preparePackagesList
 	my $lsbRelease = iMSCP::LsbRelease->new();
 	my $distribution = lc($lsbRelease->getId(1));
 	my $codename = lc($lsbRelease->getCodename(1));
-	my $packagesFile = "$FindBin::Bin/docs/" . ucfirst($distribution) . '/' . $distribution . '-packages-' . $codename . '.xml';
+	my $packagesFile = "$FindBin::Bin/docs/" . ucfirst($distribution) . "/packages-$codename.xml";
 	my $rs;
 
 	eval "use XML::Simple; 1";
@@ -272,10 +279,19 @@ sub _preparePackagesList
 
 			my $server = '';
 
-			# Only ask for server to use if not already defined or not found in list of available server
+			# Only ask for server to use if not already defined or not found in list of available servers
 			# or if user asked for reconfiguration
-			 if($main::reconfigure || ! $currentServer || ! ($currentServer ~~ @alternative)) {
+			 if(
+			 	$main::reconfigure ~~ [$service, 'servers', 'all'] || ! $currentServer ||
+			 	! ($currentServer ~~ @alternative)
+			 ) {
 				if(@alternative > 1) { # Do no ask for server if only one is available
+
+					my @humanAlternative = @alternative;
+					s/_/ /g for @humanAlternative; # Humanize
+					$currentServer =~ s/_/ /g; # Humanize
+					$default =~ s/_/ /g; # Humanize
+
 					do {
 						iMSCP::Dialog->factory->set('no-cancel', '');
 						$server = iMSCP::Dialog->factory()->radiolist(
@@ -284,11 +300,13 @@ sub _preparePackagesList
 
 Please, choose the server you want use for the $_ service:
 ",
-							[@alternative],
+							[@humanAlternative],
 							$currentServer ? $currentServer : $default
 							# uncoment after dependencies check is implemented
 							#'Not Used'
 						);
+
+						$server =~ s/ /_/g; # Normalize
 
 						if(
 							ref $data->{$service}->{'alternative'}->{$server} eq 'HASH' &&
@@ -298,7 +316,7 @@ Please, choose the server you want use for the $_ service:
 "
 \\Z4\\ZuExternal repository\\Zn
 
-The server '$server' requires usage of an external repository:
+The server $service requires usage of an external repository:
 
 $data->{$service}->{'alternative'}->{$server}->{'repository'}
 
@@ -318,6 +336,11 @@ Do you agree?
 
 			$self->{'userSelection'}->{$service} = $server eq 'Not used' ? 'no' : $server;
 
+			# TODO Add server name alias if any
+			#if(exists $data->{$service}->{'alternative'}->{$_}->{'imscp_server'}) {
+			#	$self->{'userSelection'}->{"${service}_ALIAS"} = $data->{$service}->{'alternative'}->{$_}->{'imscp_server'};
+			#}
+
 			for(@alternative) {
 				# Remove unselected server
 				if($server ne $_) {
@@ -326,10 +349,14 @@ Do you agree?
 					}
 					$self->_parseHash($data->{$service}->{'alternative'}->{$_}, 'packagesToUninstall');
 					delete($data->{$service}->{'alternative'}->{$_});
-				} elsif(
+					next;
+				}
+
+				# Add external repositories if any
+				if(
 					ref $data->{$service}->{'alternative'}->{$_} eq 'HASH' &&
                    	exists $data->{$service}->{'alternative'}->{$_}->{'repository'}
-				) { # Set needed external repository if any
+				) {
 					push (
 						@{$self->{'externalRepositories'}},
 						{
@@ -341,6 +368,22 @@ Do you agree?
 					);
 				}
 
+				# Add apt preferences if any
+				if(
+					ref $data->{$service}->{'alternative'}->{$_} eq 'HASH' &&
+                   	exists $data->{$service}->{'alternative'}->{$_}->{'pinning_package'}
+				) {
+					push(
+						@{$self->{'aptPreferences'}},
+						{
+							'pinning_package' => $data->{$service}->{'alternative'}->{$_}->{'pinning_package'},
+							'pinning_pin' => $data->{$service}->{'alternative'}->{$_}->{'pinning_pin'} || undef,
+							'pinning_pin_priority' => $data->{$service}->{'alternative'}->{$_}->{'pinning_pin_priority'} || undef,
+						}
+					);
+				}
+
+				# keep only packages
 				for my $attr (keys %{$data->{$service}->{'alternative'}->{$_}}) {
 					delete $data->{$service}->{'alternative'}->{$_}->{$attr} if $attr ne 'package';
 				}
@@ -352,18 +395,14 @@ Do you agree?
 
 	# Build list of packages to uninstall
 
-	@{$self->{'packagesToUninstall'}} = uniq(
-		grep { ! ($_ ~~ @{$self->{'packagesToInstall'}}) } @{$self->{'packagesToUninstall'}}
-	);
+	@{$self->{'packagesToUninstall'}} = uniq(@{$self->{'packagesToUninstall'}});
 
 	my ($stdout, $stderr);
-	my $rs = execute(
-		"dpkg-query -W -f='\${package}/\${Status}\n' @{$self->{'packagesToUninstall'}}", \$stdout, \$stderr
-	);
+	$rs = execute("dpkg-query -W -f='\${Package}/\${Status}\n' @{$self->{'packagesToUninstall'}}", \$stdout, \$stderr);
 	error($stderr) if $stderr && $rs > 1;
 	return $rs if $rs > 1;
 
-	@{$self->{'packagesToUninstall'}} = ();
+	$self->{'packagesToUninstall'} = [];
 
 	for(split "\n", $stdout) {
 		push @{$self->{'packagesToUninstall'}}, $1 if m%^(.*?)/install%;
@@ -398,26 +437,31 @@ sub _updateAptSourceList
 
 	for(@{$self->{'repositorySections'}}) {
 		my $section = $_;
+		my @seen = ();
 
 		while($content =~ /^deb\s+(?<uri>(?:https?|ftp)[^\s]+)\s+(?<distrib>[^\s]+)\s+(?<components>.+)$/mg) {
-			my %repos = %+;
+			my %repository = %+;
+
+			next if "$repository{'uri'}#$repository{'distrib'}" ~~ @seen;
 
 			# is a section available in repository?
-			unless($repos{'components'} =~ /\s?$section(\s|$)/) {
-				my $uri = "$repos{uri}/dists/$repos{'distrib'}/$section/";
+			unless($repository{'components'} =~ /\s?$section(\s|$)/) {
+				my $uri = "$repository{'uri'}/dists/$repository{'distrib'}/$section/";
 				$rs = execute("wget --spider $uri", \$stdout, \$stderr);
 				debug($stdout) if $stdout;
 				debug($stderr) if $stderr;
 
 				unless ($rs) {
 					$foundSection = 1;
-					debug("Enabling section '$section' on $repos{uri}");
+					debug("Enabling section '$section' on $repository{uri}");
 					$content =~ s/^($&)$/$1 $section/mg;
 					$needUpdate = 1;
+					push @seen, "$repository{'uri'} $repository{'distrib'}";
 				}
 			} else {
-				debug("Section '$section' is already enabled on $repos{uri}");
+				debug("Section '$section' is already enabled on $repository{uri}");
 				$foundSection = 1;
+				push @seen, "$repository{'uri'} $repository{'distrib'}";
 			}
 		}
 
@@ -430,6 +474,7 @@ sub _updateAptSourceList
 	if($needUpdate) {
 		$file->set($content);
 		$file->save() and return 1;
+		$self->_updatePackagesIndex() and return 1;
 	}
 
 	0;
@@ -497,6 +542,42 @@ sub _addExternalRepositories
 	0;
 }
 
+=item _addAptPreferencesFile()
+
+ Create apt preferences file for i-MSCP (according selected packages)
+
+ Return 0 on success, other on failure
+
+=cut
+
+sub _addAptPreferencesFile
+{
+	my $self = shift;
+	my $fileContent = '';
+
+	for(@{$self->{'aptPreferences'}}) {
+		if(! $_->{'pinning_pin'} || ! $_->{'pinning_pin_priority'}) {
+			error('One of these attributes is missing: pinning_pin or pinning_pin_priority');
+			return 1;
+		}
+
+		$fileContent .= "Package: $_->{'pinning_package'}\n";
+		$fileContent .= "Pin: $_->{'pinning_pin'}\n";
+		$fileContent .= "Pin-Priority: $_->{'pinning_pin_priority'}\n\n";
+	}
+
+	my $file = iMSCP::File->new('filename' => '/etc/apt/preferences.d/imscp');
+
+	if($fileContent) {
+		$file->set($fileContent) and return 1;
+		$file->save() and return 1;
+	} else {
+		$file->delFile() and return 1;
+	}
+
+	0;
+}
+
 =item _updatePackagesIndex()
 
  Update Debian packages index.
@@ -533,6 +614,7 @@ sub _updatePackagesIndex
  Param hash_ref $hash Reference to a hash
  Param string Target array name (packagesToUninstall|packagesToInstall)
  Return undef
+
 =cut
 
 sub _parseHash
@@ -547,8 +629,8 @@ sub _parseHash
 		} elsif(ref $_  eq 'ARRAY') {
 			$self->_parseArray($_, $target);
 		} else {
-         	push @{$self->{$target}}, $_;
-        }
+			push @{$self->{$target}}, $_;
+		}
 	}
 
 	undef;

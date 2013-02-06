@@ -83,7 +83,7 @@ sub askCgiModule
 	my $cgiModule = $main::preseed{'PHP_FASTCGI'} || $self::apacheConfig{'PHP_FASTCGI'} ||
 		$self::apacheOldConfig{'PHP_FASTCGI'} || '';
 
-	if($main::reconfigure || $cgiModule !~ /^fcgid|fastcgi$/) {
+	if($main::reconfigure ~~ ['httpd', 'servers', 'all', 'forced'] || $cgiModule !~ /^fcgid|fastcgi$/) {
 		($rs, $cgiModule) = $dialog->radiolist(
 			"\nPlease, select the fastCGI Apache module you want use:",
 			['fcgid', 'fastcgi'],

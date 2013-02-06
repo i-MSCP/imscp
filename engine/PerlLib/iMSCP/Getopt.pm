@@ -34,9 +34,12 @@ package iMSCP::Getopt;
 use strict;
 use warnings;
 use iMSCP::HooksManager;
+use Text::Wrap;
 use iMSCP::Debug qw / error /;
 use fields qw / reconfigure noprompt preseed hookFile cleanAddons debug /;
 our $options = fields::new('iMSCP::Getopt');
+
+our $optionHelp = '';
 
 =head1 DESCRIPTION
 
@@ -67,26 +70,35 @@ sub parse
 	my $usage = shift;
 
 	my $showusage = sub {
-		print STDERR $usage."\n";
-		print STDERR <<EOF;
-  -r,  --reconfigure    Re-show all questions already seen.
-  -n,  --noprompt       Switch to non-interactive mode (Expert option).
-  -p,  --preseed        Path to preseed file (Expert option).
-  -h,  --hook-file      Path to hook file (Expert option).
-  -c   --clean-addons   Cleanup local addon packages repository.
-  -d,  --debug          Force debug mode.
-  -?,  --help           Show this help.
-EOF
-		iMSCP::HooksManager->getInstance()->register('beforeExit', sub { exit 1; });
 
+		local $Text::Wrap::columns = 80;
+		local $Text::Wrap::break =  qr/[\s\n\|]/;
+
+		print STDERR $usage."\n";
+		print STDERR wrap('','', <<EOF);
+ -r,  --reconfigure  <item>  Type --reconfigure help for more information.
+ -n,  --noprompt             Switch to non-interactive mode.
+ -p,  --preseed      <file>  Path to preseed file.
+ -h,  --hook-file    <file>  Path to hook file.
+ -c   --clean-addons         Cleanup local addon packages repository.
+ -d,  --debug                Force debug mode.
+ -?,  --help                 Show this help.
+
+ $optionHelp
+EOF
+		print "\n";
+		iMSCP::HooksManager->getInstance()->register('beforeExit', sub { exit 1; });
 		exit 1;
 	};
 
 	# Do not load Getopt::Long if not needed
 	return unless grep { $_ =~ /^-/ } @ARGV;
 
-	my $previousHandler = $SIG{__WARN__};
-    $SIG{__WARN__} = sub{ print STDERR "@_" };
+    local $SIG{__WARN__} = sub {
+    	my $error = shift;
+    	$error =~ s/(.*?) at.*/$1/;
+    	print STDERR $error if $error ne "Died\n";
+    };
 
 	require Getopt::Long;
 
@@ -94,7 +106,7 @@ EOF
 
 	eval {
 		Getopt::Long::GetOptions(
-			'reconfigure|r', sub { $options->{'reconfigure'} = 'true' },
+			'reconfigure|r=s', sub { shift, $class->reconfigure(shift) },
 			'noprompt|n', sub { $options->{'noprompt'} = 'true' },
 			'preseed|p=s', sub { shift; $class->preseed(shift) },
 			'hook-file|h=s', sub { shift; $class->hookFile(shift) },
@@ -105,17 +117,19 @@ EOF
 		) || $showusage->();
 	};
 
-	# Restore previous handler
-	$SIG{__WARN__} = $previousHandler;
-
 	undef;
 }
+
+our $reconfigureItems = [
+	'all', 'servers', 'httpd', 'po', 'mta', 'ftpd', 'named', 'sql', 'hostname', 'resolver', 'ips', 'admin', 'php',
+	'backup', 'awstats', 'phpmyadmin', 'policyd', 'roundcube'
+];
 
 =item reconfigure()
 
  Whether user asked for reconfiguration
 
- Return int 0 or 1
+ Return int|string 0 or name of item to reconfigure
 
 =cut
 
@@ -123,8 +137,22 @@ sub reconfigure
 {
 	my ($class, $value) = @_;
 
-	$options->{'reconfigure'} = $value if defined $value;
-	$options->{'reconfigure'} ? 1 : 0;
+	if(defined $value) {
+		if($value eq 'help') {
+			$optionHelp .= "The --reconfigure option allows to reconfigure a specific item.\n";
+			$optionHelp .= " Available items:\n\n ";
+			$optionHelp .=  (join '|', @{$reconfigureItems});
+			$optionHelp .= "\n\n";
+			die();
+		}
+
+		die("Error: '$value' is not a valid value for the --reconfigure option.")
+			if not $value ~~ $reconfigureItems;
+
+		$options->{'reconfigure'} = $value;
+	}
+
+	$options->{'reconfigure'} ? $options->{'reconfigure'} : 'none';
 }
 
 =item noprompt()
@@ -159,7 +187,7 @@ sub preseed
 		if( -f $value) {
 			$options->{'preseed'} = $value;
 		} else {
-			die("Preseed file not found: $value")
+			die("Preseed file not found: $value");
 		}
 	}
 

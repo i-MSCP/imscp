@@ -67,16 +67,11 @@ Make sure you as logged as root
 
 3.  (optional) Check the imscp.conf and adapt it to your requirements.
 
-4.  Change or create MySQL root password, remove anonymous users, disallow root
-    login remotely, remove test database (and access to it), reload privilege tables
-
-    # mysql_secure_installation
-
-5.  Install by running the imscp-autoinstall script
+4.  Install by running the imscp-autoinstall script
 
     # sudo perl imscp-autoinstall
 
-6.  Install i-MSCP step-by-step
+5.  Install i-MSCP step-by-step
 
     If you get no error, all went good; if you get one, look at
     http://i-mscp.net to solve the problem.

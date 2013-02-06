@@ -7,26 +7,36 @@ i-MSCP Git Master
 
 SETUP:
 	- Added support for external repositories (Debian/Ubuntu)
+	- Fixed: APT packages manager must be configured before any package installation
+	- Fixed: All mysql secure installation tasks are now done by the i-MSCP installer
+	- Fixed: Allow usage of remote mysql server
+	- Fixed: Allow per item reconfiguration
+	- Fixed: Duplicate entries in sources.list file (Ubuntu)
 	- Fixed: Do not show any dialog when --noprompt option is used
 	- Fixed: Uninstall unneeded packages when switching to another server type
 
 CONFIGS:
+	- Added MariaDb support
 	- Fixed: Remove useless sections in Apache configuration files
+	- Fixed: The diff package is not available for Ubuntu > 12.04 (replaced by diffutils)
 	- Updated php.ini files
 
 ENGINE:
 	- Added support for Apache + PHP FPM
+	- Fixed: i-MSCP network daemon should start/stop MySQL server only if installed
 	- Fixed SPF record syntax
 
 Tickets:
 	- Fixed #64:  Nice to have - PHP FPM
 	- Fixed #543: Bug - Dovecot not stopped when switching to courier
 	- Fixed #566: Cosmetics - i18n issues
+	- Fixed #581: Task - Add support for MariaDB
 	- Fixed #583: Bug - Disabling PHP will not prevent user to use it
 	- Fixed #586: defect - PHP FPM still running when switching to another server
 	- Fixed #591: Bug - PHP FPM - SSL connection for the panel is not working
 	- Fixed #593: Bug - Setup (update) is not working
-	- Fixed #594: Defect - Awstats addon - cron task is not working
+	- Fixed #595: Enhancement - Allow per item reconfiguration
+	- Fixed #599: Bug - Ubuntu auto-installer adapter is broken
 
 -------------------------------------------------------------------------------------
 i-MSCP 1.1.0-rc1.4

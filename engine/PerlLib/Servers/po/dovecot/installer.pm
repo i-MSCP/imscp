@@ -94,7 +94,10 @@ sub askDovecot
 
 	my ($rs, $msg) = (0, '');
 
-	if($main::reconfigure || main::setupCheckSqlConnect($dbType, '', $dbHost, $dbPort, $dbUser, $dbPass)) {
+	if(
+		$main::reconfigure ~~ ['po', 'servers', 'all', 'forced']
+		|| main::setupCheckSqlConnect($dbType, '', $dbHost, $dbPort, $dbUser, $dbPass)
+	) {
 		# Ask for the dovecot restricted SQL username
 		do{
 			($rs, $dbUser) = iMSCP::Dialog->factory()->inputbox(

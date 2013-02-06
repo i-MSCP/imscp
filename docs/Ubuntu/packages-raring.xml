@@ -7,16 +7,14 @@
                 <package>apache2-suexec</package>
                 <package>libapache2-mod-fcgid</package>
                 <package>libapache2-mod-fastcgi</package>
+                <package>php5-cgi</package>
             </apache_fcgi>
             <apache_itk>
                 <package>apache2</package>
                 <package>apache2-mpm-itk</package>
                 <package>libapache2-mod-php5</package>
             </apache_itk>
-            <apache_php_fpm
-                    repository="http://php53.dotdeb.org squeeze all"
-                    repository_key_uri="http://www.dotdeb.org/dotdeb.gpg"
-                    >
+            <apache_php_fpm>
                 <package>apache2</package>
                 <package>apache2-mpm-worker</package>
                 <package>libapache2-mod-fastcgi</package>
@@ -37,6 +35,9 @@
             <dovecot>
                 <package>dovecot-imapd</package>
                 <package>dovecot-pop3d</package>
+                <package>dovecot-mysql</package>
+                <package>dovecot-sieve</package>
+                <package>dovecot-managesieved</package>
             </dovecot>
         </alternative>
     </po>
@@ -63,18 +64,24 @@
         </alternative>
     </named>
     <sql>
-        <alternative default="mysql">
-            <mysql>
+        <alternative default="mysql_5.5">
+            <mysql_5.5
+                    pinning_package="mysql-server mysql-server mysql-common libmysqlclient18"
+                    pinning_pin="release o=Ubuntu,n=raring"
+                    pinning_pin_priority="1001"
+                    >
                 <package>mysql-server</package>
                 <package>mysql-client</package>
-            </mysql>
+                <package>mysql-common</package>
+            </mysql_5.5>
+            <remote_server/>
         </alternative>
     </sql>
     <php>
         <package>php5</package>
-        <package>php5-cgi</package>
         <package>php5-cli</package>
         <package>php-pear</package>
+        <package>php5</package>
         <package>php5-adodb</package>
         <package>php5-gd</package>
         <package>php-gettext</package>
@@ -86,7 +93,7 @@
     <perl>
         <package>perl</package>
         <package>perl-base</package>
-        <package>libperl5.10</package>
+        <package>libperl5.14</package>
         <package>libberkeleydb-perl</package>
         <package>libcrypt-blowfish-perl</package>
         <package>libcrypt-cbc-perl</package>
@@ -128,7 +135,7 @@
         <package>awstats</package>
         <package>chkrootkit</package>
         <package>dialog</package>
-        <package>diff</package>
+        <package>diffutils</package>
         <package>dnsutils</package>
         <package>gcc</package>
         <package>gzip</package>

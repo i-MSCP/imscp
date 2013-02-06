@@ -95,7 +95,7 @@ sub askProftpd
 	my ($rs, $msg) = (0, '');
 
 	if(
-		$main::reconfigure ||
+		$main::reconfigure ~~ ['ftpd', 'servers', 'all', 'forced'] ||
 		(
 			! $main::preseed{'FTPD_SQL_USER'} &&
 			main::setupCheckSqlConnect($dbType, '', $dbHost, $dbPort, $dbUser, $dbPass)
@@ -284,53 +284,50 @@ sub setupDB
 	my $dbUser = $self::proftpdConfig{'DATABASE_USER'};
 	my $dbOldUser = $self::proftpdOldConfig{'DATABASE_USER'} || '';
 	my $dbPass = $self::proftpdConfig{'DATABASE_PASSWORD'};
-	my $dbOldPass = $self::proftpdOldConfig{'DATABASE_PASSWORD'} || '';
+	my $dbUserHost = $main::imscpConfig{'SQL_SERVER'} ne 'remote_server'
+		? $main::imscpConfig{'DATABASE_HOST'} : $main::imscpConfig{'BASE_SERVER_IP'};
 	my $rs = 0;
 
-	iMSCP::HooksManager->getInstance()->trigger(
-		'beforeFtpdSetupDb', $dbUser, $dbOldUser, $dbPass, $dbOldPass
-	) and return 1;
+	iMSCP::HooksManager->getInstance()->trigger('beforeFtpdSetupDb', $dbUser, $dbPass,  $dbOldUser,) and return 1;
 
-	if($dbUser ne $dbOldUser || $dbPass ne $dbOldPass) {
-
-		# Remove old proftpd restricted SQL user and all it privileges (if any)
-		$rs = main::setupDeleteSqlUser($dbOldUser);
+	# Remove old proftpd restricted SQL user and all it privileges (if any)
+	for($main::imscpOldConfig{'DATABASE_HOST'} || '', $main::imscpOldConfig{'BASE_SERVER_IP'} || '') {
+		next if $_ eq '' || $dbOldUser eq '';
+		$rs = main::setupDeleteSqlUser($dbOldUser, $_);
 		error("Unable to remove the old proftpd '$dbOldUser' restricted SQL user: $rs") if $rs;
 		return 1 if $rs;
+	}
 
-		# Ensure new proftpd user do not already exists by removing it
-		$rs = main::setupDeleteSqlUser($dbUser);
-		error("Unable to delete the proftpd '$dbUser' restricted SQL user: $rs") if $rs;
-		return 1 if $rs;
+	# Ensure new proftpd user do not already exists by removing it
+	$rs = main::setupDeleteSqlUser($dbUser, $_);
+	error("Unable to delete the proftpd '$dbUser' restricted SQL user: $rs") if $rs;
+	return 1 if $rs;
 
-		# Get SQL connection with full privileges
-		my $database = main::setupGetSqlConnect();
+	# Get SQL connection with full privileges
+	my $database = main::setupGetSqlConnect();
 
-		# Add new proftpd restricted SQL user with needed privilegess
-		for (qw/ ftp_group ftp_users quotalimits quotatallies /) {
-			$rs = $database->doQuery(
-				'dummy',
-				"
-					GRANT SELECT,INSERT,UPDATE,DELETE ON `$main::imscpConfig{'DATABASE_NAME'}`.`$_`
-					TO ?@?
-					IDENTIFIED BY ?;
-				",
-				$dbUser,
-				$main::imscpConfig{'DATABASE_HOST'},
-				$dbPass
+	# Add new proftpd restricted SQL user with needed privilegess
+	for ('ftp_group', 'ftp_users', 'quotalimits', 'quotatallies') {
+		$rs = $database->doQuery(
+			'dummy',
+			"
+				GRANT SELECT, INSERT, UPDATE, DELETE ON `$main::imscpConfig{'DATABASE_NAME'}`.`$_`
+				TO ?@?
+				IDENTIFIED BY ?;
+			",
+			$dbUser, $dbUserHost, $dbPass
+		);
+
+		if(ref $rs ne 'HASH') {
+			error(
+				"Unable to add privileges on the '$main::imscpConfig{'DATABASE_NAME'}.$_' table for the '$dbUser'" .
+				" SQL user: $rs"
 			);
-
-			if(ref $rs ne 'HASH') {
-				error(
-					"Unable to add privileges on the '$main::imscpConfig{'DATABASE_NAME'}.$_' table for the '$dbUser'" .
-					" SQL user: $rs"
-				);
-				return 1;
-			}
+			return 1;
 		}
 	}
 
-	iMSCP::HooksManager->getInstance()->trigger('afterFtpSetupDb');
+	iMSCP::HooksManager->getInstance()->trigger('afterFtpSetupDb', $dbUser, $dbPass,  $dbOldUser,);
 }
 
 sub bkpConfFile

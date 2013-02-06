@@ -31,6 +31,7 @@
 #    http://i-mscp.net
 #
 
+# Skeleton for distribution maintenance script. Rename this script to preinst|postinst.<distname> according your need
 # IMPORTANT:
 # This script must be idempotent.
 
@@ -42,33 +43,7 @@ SELFDIR=$(dirname "$0")
 
 case "$1" in
 	install|upgrade)
-
-		# Fix for #2224 Postgrey - Port changed to 10023 for some distributions
-		# @author Laurent Declercq <laurent.declercq@i-mscp.net>
-		# @since  1.0.7 (rc2)
-		if $CMD_GREP -qe "--inet=.*60000" /etc/default/postgrey; then
-			print_title "Postgrey configuration (Updating listening port):"
-
-			# Updating the imscp.conf file here to revert back to the old port
-			if test -f /etc/imscp/imscp.old.conf; then
-				$CMD_SED -i s'/\(PORT_POSTGREY.*=.*\)10023/\160000/' \
-					/etc/imscp/imscp.old.conf >> $LOGFILE 2>&1 || failed \
-						"The script was unable to update the Postgrey listening port in your\n\t imscp.old.conf file!";
-			fi
-
-			$CMD_SED -i s'/\(PORT_POSTGREY.*=.*\)10023/\160000/' \
-				/etc/imscp/imscp.conf >> $LOGFILE 2>&1 || failed \
-					"The script was unable to update the Postgrey listening port in your\n\t imscp.conf file!";
-
-			# Updating database.sql file only on install
-			if [ "$1" = "install" ] ; then
-				$CMD_SED -i s'/10023\(;tcp;POSTGREY\)/60000\1/' \
-					/etc/imscp/database/database.sql >> $LOGFILE 2>&1 || failed \
-                        "The script was unable to update the Postgrey listening port in the\n\t database schema!";
-			fi
-
-			print_status
-		fi
+		# Do something special
 	;;
 	*)
 		exit 0

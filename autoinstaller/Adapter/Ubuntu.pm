@@ -34,6 +34,8 @@ package autoinstaller::Adapter::Ubuntu;
 use strict;
 use warnings;
 use iMSCP::Debug;
+use iMSCP::LsbRelease;
+use iMSCP::Execute;
 use parent 'autoinstaller::Adapter::Debian';
 
 =head1 DESCRIPTION
@@ -58,12 +60,21 @@ sub _init
 {
 	my $self = shift;
 
-	$self->{'preRequiredPackages'} = [
-		'dialog', 'liblist-moreutils-perl', 'libxml-simple-perl', 'python-software-properties', 'wget'
-	];
-	$self->{'packagesToInstall'} = [];
-	$self->{'externalRepositories'} = [];
 	$self->{'repositorySections'} = ['main', 'universe', 'multiverse'];
+	$self->{'preRequiredPackages'} = ['dialog', 'liblist-moreutils-perl', 'libxml-simple-perl', 'wget'];
+
+	if(iMSCP::LsbRelease->new()->getRelease(1) < 12.10) {
+		push @{$self->{'preRequiredPackages'}}, 'python-software-properties';
+	} else {
+		push @{$self->{'preRequiredPackages'}}, 'software-properties-common';
+	}
+
+	$self->{'externalRepositories'} = [];
+	$self->{'aptPreferences'} = [];
+	$self->{'packagesToInstall'} = [];
+	$self->{'packagesToUninstall'} = [];
+
+	$self->_updateAptSourceList() and fatal('Unable to configure APT packages manager') if ! $main::skippackages;
 
 	$self;
 }
@@ -93,18 +104,18 @@ sub _addExternalRepositories
 				if($_->{'repository_key_srv'}) {
 					$cmd = "add-apt-repository -y -k $_->{'repository_key_srv'} $_->{'repository'}";
 				} else {
-					$cmd = "add-apt-repository -y $_->{'repository'}":
+					$cmd = "add-apt-repository -y $_->{'repository'}";
 				}
 
 				$rs = execute($cmd, \$stdout, \$stderr);
-    	    	debug($stdout) if $stdout;
-        		error($stderr) if $stderr && $rs;
-        		return $rs if $rs
+				debug($stdout) if $stdout;
+				error($stderr) if $stderr && $rs;
+				return $rs if $rs
 			} else { # normal repository
 				$rs = execute("add-apt-repository -y $_->{'repository'}", \$stdout, \$stderr);
-    	    	debug($stdout) if $stdout;
-        		error($stderr) if $stderr && $rs;
-        		return $rs if $rs
+				debug($stdout) if $stdout;
+				error($stderr) if $stderr && $rs;
+				return $rs if $rs;
 
 				if($_->{'repository_key_srv'}) {
 					if($_->{'repository_key_id'}) {
@@ -114,7 +125,7 @@ sub _addExternalRepositories
 						return 1;
 					}
 				} elsif($_->{'repository_key_uri'}) {
-					$cmd = "wget -qO- $_->{'repository_key_uri'} | apt-key add -"
+					$cmd = "wget -qO- $_->{'repository_key_uri'} | apt-key add -";
 				} else {
 					error("The repository_key_uri entry for the '$_->{'repository'}' repository was not found");
 					return 1;

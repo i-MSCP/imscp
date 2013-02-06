@@ -7,6 +7,7 @@
                 <package>apache2-suexec</package>
                 <package>libapache2-mod-fcgid</package>
                 <package>libapache2-mod-fastcgi</package>
+                <package>php5-cgi</package>
             </apache_fcgi>
             <apache_itk>
                 <package>apache2</package>
@@ -34,9 +35,8 @@
             <dovecot>
                 <package>dovecot-imapd</package>
                 <package>dovecot-pop3d</package>
-                <package>dovecot-mysql</package>
                 <package>dovecot-sieve</package>
-                <package>dovecot-managesieved</package>
+                <package>dovecot-mysql</package>
             </dovecot>
         </alternative>
     </po>
@@ -72,17 +72,14 @@
     </sql>
     <php>
         <package>php5</package>
-        <package>php5-cgi</package>
         <package>php5-cli</package>
         <package>php-pear</package>
-        <package>php5</package>
         <package>php5-adodb</package>
         <package>php5-gd</package>
         <package>php-gettext</package>
         <package>php5-intl</package>
         <package>php5-mcrypt</package>
         <package>php5-mysql</package>
-        <package>php5-suhosin</package>
     </php>
     <perl>
         <package>perl</package>
@@ -129,7 +126,7 @@
         <package>awstats</package>
         <package>chkrootkit</package>
         <package>dialog</package>
-        <package>diff</package>
+        <package>diffutils</package>
         <package>dnsutils</package>
         <package>gcc</package>
         <package>gzip</package>

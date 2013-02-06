@@ -157,7 +157,7 @@ sub askPhpmyadmin
 	my ($rs, $msg) = (0, '');
 
 	if(
-		$main::reconfigure ||
+		$main::reconfigure ~~ ['phpmyadmin', 'all', 'forced'] ||
 		(
 			! $main::preseed{'PHPMYADMIN_SQL_USER'} &&
 			main::setupCheckSqlConnect($dbType, '', $dbHost, $dbPort, $dbUser, $dbPass)
@@ -223,11 +223,11 @@ sub _init
 	my $self = shift;
 
 	$self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/pma";
-	$self->{'bkpDir'} = "$self->{cfgDir}/backup";
-	$self->{'wrkDir'} = "$self->{cfgDir}/working";
+	$self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
+	$self->{'wrkDir'} = "$self->{'cfgDir'}/working";
 
-	my $conf = "$self->{cfgDir}/phpmyadmin.data";
-	my $oldConf	= "$self->{cfgDir}/phpmyadmin.old.data";
+	my $conf = "$self->{'cfgDir'}/phpmyadmin.data";
+	my $oldConf	= "$self->{'cfgDir'}/phpmyadmin.old.data";
 
 	tie %self::phpmyadminConfig, 'iMSCP::Config','fileName' => $conf, noerrors => 1;
 
@@ -259,7 +259,7 @@ sub _backupConfigFile
 
 	if(-f $cfgFile) {
 		my $file = iMSCP::File->new(filename => $cfgFile);
-		$file->copyFile("$self->{bkpDir}/$name$suffix.$timestamp") and return 1;
+		$file->copyFile("$self->{'bkpDir'}/$name$suffix.$timestamp") and return 1;
 	}
 
 	0;
@@ -282,7 +282,7 @@ sub _installFiles
 
 	if(-d "$repoDir/vendor/imscp/phpmyadmin") {
 		$rs = execute(
-			"$main::imscpConfig{CMD_CP} -rTf $repoDir/vendor/imscp/phpmyadmin $main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/pma",
+			"$main::imscpConfig{'CMD_CP'} -rTf $repoDir/vendor/imscp/phpmyadmin $main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/pma",
 			\$stdout,
 			\$stderr
 		);
@@ -290,7 +290,7 @@ sub _installFiles
 		error($stderr) if $rs && $stderr;
 
 		$rs |= execute(
-			"$main::imscpConfig{CMD_RM} -rf $main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/pma/.git",
+			"$main::imscpConfig{'CMD_RM'} -rf $main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/pma/.git",
 			\$stdout,
 			\$stderr
 		);
@@ -322,7 +322,7 @@ sub _setPermissions
 
 	$rs |= setRights(
 		"$rootDir/gui/public/tools/pma",
-		{ user => $panelUName, group => $apacheGName, dirmode => '0550', filemode => '0440', recursive => 'yes' }
+		{ 'user' => $panelUName, 'group' => $apacheGName, 'dirmode' => '0550', 'filemode' => '0440', 'recursive' => 'yes' }
 	);
 
 	$rs;
@@ -345,14 +345,14 @@ sub _saveConfig
 
 	use iMSCP::File;
 
-	my $file = iMSCP::File->new(filename => "$self->{cfgDir}/phpmyadmin.data");
+	my $file = iMSCP::File->new(filename => "$self->{'cfgDir'}/phpmyadmin.data");
 	my $cfg = $file->get();
 	return 1 unless $cfg;
 
 	$rs |= $file->mode(0640);
 	$rs |= $file->owner($rootUsr, $rootGrp);
 
-	$file = iMSCP::File->new(filename => "$self->{cfgDir}/phpmyadmin.old.data");
+	$file = iMSCP::File->new(filename => "$self->{'cfgDir'}/phpmyadmin.old.data");
 	$rs |= $file->set($cfg);
 	$rs |= $file->save();
 	$rs |= $file->mode(0640);
@@ -376,82 +376,82 @@ sub _setupSqlUser
 	my $dbUser = $self::phpmyadminConfig{'DATABASE_USER'};
 	my $dbOldUser = $self::phpmyadminOldConfig{'DATABASE_USER'} || '';
 	my $dbPass = $self::phpmyadminConfig{'DATABASE_PASSWORD'};
-	my $dbOldPass = $self::phpmyadminOldConfig{'DATABASE_PASSWORD'} || '';
+	my $dbUserHost = $main::imscpConfig{'SQL_SERVER'} ne 'remote_server'
+		? $main::imscpConfig{'DATABASE_HOST'} : $main::imscpConfig{'BASE_SERVER_IP'};
 	my $rs = 0;
 
-	if($dbUser ne $dbOldUser || $dbPass ne $dbOldPass) {
-
-		# Remove old phpmyadmin restricted SQL user and all it privileges (if any)
-		$rs = main::setupDeleteSqlUser($dbOldUser);
+	# Remove old phpmyadmin restricted SQL user and all it privileges (if any)
+	for($main::imscpOldConfig{'DATABASE_HOST'} || '', $main::imscpOldConfig{'BASE_SERVER_IP'} || '') {
+		next if $_ eq '' || $dbOldUser eq '';
+		$rs = main::setupDeleteSqlUser($dbOldUser, $_);
 		error("Unable to remove the old phpmyadmin '$dbOldUser' restricted SQL user: $rs") if $rs;
 		return 1 if $rs;
+	}
 
-		# Ensure new phpmyadmin user do not already exists by removing it
-		$rs = main::setupDeleteSqlUser($dbUser);
-		error("Unable to delete the phpmyadmin '$dbUser' restricted SQL user: $rs") if $rs;
-		return 1 if $rs;
+	# Ensure new phpmyadmin user do not already exists by removing it
+	$rs = main::setupDeleteSqlUser($dbUserHost);
+	error("Unable to delete the phpmyadmin '$dbUser' restricted SQL user: $rs") if $rs;
+	return 1 if $rs;
 
-		# Get SQL connection with full privileges
-		my ($database, $errStr) = main::setupGetSqlConnect();
-		fatal('Unable to connect to SQL Server: $errStr') if ! $database;
+	# Get SQL connection with full privileges
+	my ($database, $errStr) = main::setupGetSqlConnect();
+	fatal('Unable to connect to SQL Server: $errStr') if ! $database;
 
-		# Add new phpmyadmin restricted SQL user with needed privileges
+	# Add new phpmyadmin restricted SQL user with needed privileges
 
-		# Add USAGE privilege on the mysql database (also create PhpMyadmin user)
-		$rs = $database->doQuery('dummy', 'GRANT USAGE ON `mysql`.* TO ?@? IDENTIFIED BY ?', $dbUser, $dbHost, $dbPass);
-		if(ref $rs ne 'HASH') {
-			error("Failed to add USAGE privilege on the 'mysql' database for the '$dbUser' SQL user: $rs");
-			return 1;
-		}
+	# Add USAGE privilege on the mysql database (also create PhpMyAdmin user)
+	$rs = $database->doQuery('dummy', 'GRANT USAGE ON `mysql`.* TO ?@? IDENTIFIED BY ?', $dbUser, $dbUserHost, $dbPass);
+	if(ref $rs ne 'HASH') {
+		error("Failed to add USAGE privilege on the 'mysql' database for the '$dbUser' SQL user: $rs");
+		return 1;
+	}
 
-		# Add SELECT privilege on the mysql.db table
-		$rs = $database->doQuery('dummy', 'GRANT SELECT ON `mysql`.`db` TO ?@?', $dbUser, $dbHost);
-		if(ref $rs ne 'HASH') {
-			error("Failed to add SELECT privilege on the 'mysql.db' table for the '$dbUser' SQL user: $rs");
-			return 1;
-		}
+	# Add SELECT privilege on the mysql.db table
+	$rs = $database->doQuery('dummy', 'GRANT SELECT ON `mysql`.`db` TO ?@?', $dbUser, $dbUserHost);
+	if(ref $rs ne 'HASH') {
+		error("Failed to add SELECT privilege on the 'mysql.db' table for the '$dbUser' SQL user: $rs");
+		return 1;
+	}
 
-		# Add SELECT privilege on many columns of the mysql.user table
-		$rs = $database->doQuery(
-			'dummy',
-			'
-				GRANT SELECT (Host, User, Select_priv, Insert_priv, Update_priv, Delete_priv, Create_priv, Drop_priv,
-					Reload_priv, Shutdown_priv, Process_priv, File_priv, Grant_priv, References_priv, Index_priv,
-					Alter_priv, Show_db_priv, Super_priv, Create_tmp_table_priv, Lock_tables_priv, Execute_priv,
-					Repl_slave_priv, Repl_client_priv)
-				ON `mysql`.`user`
-				TO ?@?
-			',
-			$dbUser,
-			$dbHost
-		);
-		if(ref $rs ne 'HASH') {
-			error("Failed to add SELECT privileges on columns of the 'mysql.user' table for the '$dbUser' SQL user: $rs");
-			return 1;
-		}
+	# Add SELECT privilege on many columns of the mysql.user table
+	$rs = $database->doQuery(
+		'dummy',
+		'
+			GRANT SELECT (Host, User, Select_priv, Insert_priv, Update_priv, Delete_priv, Create_priv, Drop_priv,
+				Reload_priv, Shutdown_priv, Process_priv, File_priv, Grant_priv, References_priv, Index_priv,
+				Alter_priv, Show_db_priv, Super_priv, Create_tmp_table_priv, Lock_tables_priv, Execute_priv,
+				Repl_slave_priv, Repl_client_priv)
+			ON `mysql`.`user`
+			TO ?@?
+		',
+		$dbUser, $dbUserHost
+	);
+	if(ref $rs ne 'HASH') {
+		error("Failed to add SELECT privileges on columns of the 'mysql.user' table for the '$dbUser' SQL user: $rs");
+		return 1;
+	}
 
-		# Add SELECT privilege on the mysql.host table
-		$rs = $database->doQuery('dummy', 'GRANT SELECT ON `mysql`.`host` TO ?@?', $dbUser, $dbHost);
-		if(ref $rs ne 'HASH') {
-			error("Failed to add SELECT privilege on the 'mysql.host' table for the '$dbUser' SQL user: $rs");
-			return 1;
-		}
+	# Add SELECT privilege on the mysql.host table
+	$rs = $database->doQuery('dummy', 'GRANT SELECT ON `mysql`.`host` TO ?@?', $dbUser, $dbUserHost);
+	if(ref $rs ne 'HASH') {
+		error("Failed to add SELECT privilege on the 'mysql.host' table for the '$dbUser' SQL user: $rs");
+		return 1;
+	}
 
-		# Add SELECT privilege on many columns of the mysql.tables_priv table
-		$rs = $database->doQuery(
-			'dummy',
-			'
-				GRANT SELECT (`Host`, `Db`, `User`, `Table_name`, `Table_priv`, `Column_priv`)
-				ON `mysql`.`tables_priv`
-				TO?@?
-			',
-			$dbUser,
-			$dbHost
-		);
-		if(ref $rs ne 'HASH') {
-			error("Failed to add SELECT privilege on columns of the 'mysql.tables_priv' table for the '$dbUser' SQL user: $rs");
-			return 1;
-		}
+	# Add SELECT privilege on many columns of the mysql.tables_priv table
+	$rs = $database->doQuery(
+		'dummy',
+		'
+			GRANT SELECT (`Host`, `Db`, `User`, `Table_name`, `Table_priv`, `Column_priv`)
+			ON `mysql`.`tables_priv`
+			TO?@?
+		',
+		$dbUser,
+		$dbUserHost
+	);
+	if(ref $rs ne 'HASH') {
+		error("Failed to add SELECT privilege on columns of the 'mysql.tables_priv' table for the '$dbUser' SQL user: $rs");
+		return 1;
 	}
 
 	0;
@@ -517,7 +517,7 @@ sub _buildConfig
 	return 1 if ! $cfgTpl;
 
 	# store file in working directory
-	$file = iMSCP::File->new(filename => "$self->{wrkDir}/$_");
+	$file = iMSCP::File->new(filename => "$self->{'wrkDir'}/$_");
 	$rs = $file->set($cfgTpl);
 	$rs |= $file->save();
 	$rs |= $file->mode(0640);

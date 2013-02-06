@@ -36,7 +36,7 @@ sub factory
 	my $server = shift || $main::imscpConfig{'PO_SERVER'};
 	my ($file, $class);
 
-	if(lc($server) =~ /^no$/ ){
+	if(lc($server) eq 'no') {
 		$file = "Servers/noserver.pm";
 		$class = "Servers::noserver";
 	} else {

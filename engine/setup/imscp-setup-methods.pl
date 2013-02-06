@@ -167,9 +167,9 @@ sub setupDialog
 		# User asked for step back?
 		if($ret == 30) {
 			$state != 0 ? $state-- : 0; # We don't allow to step back before first question
-			$main::reconfigure = 2 if $main::reconfigure != 1;
+			$main::reconfigure = 'forced' if $main::reconfigure eq 'none';
 		} else {
-			$main::reconfigure = 0 if $main::reconfigure == 2;
+			$main::reconfigure = 'none' if $main::reconfigure eq 'forced';
 			$state++;
 		}
 	}
@@ -194,7 +194,7 @@ sub setupTasks
 		[\&setupServerHostname,				'Setting server hostname'],
 		[\&setupLocalResolver,				'Setting local resolver'],
 		[\&setupCreateDatabase,				'Creating/updating i-MSCP database'],
-		[\&setupSecureSqlAccounts,			'Securing SQL accounts'],
+		[\&setupSecureSqlInstallation,		'Securing SQL installation'],
 		[\&setupServerIps,					'Setting server ips'],
 		[\&setupDefaultAdmin, 				'Creating default admin'],
 		[\&setupPreInstallServers,			'Servers pre-installation'],
@@ -240,7 +240,10 @@ sub setupAskServerHostname
 		? (domain_private_tld => qr /^(?:bogus|test)$/) : ();
 	my ($rs, @labels) = (0, $hostname ? split(/\./, $hostname) : ());
 
-	if($main::reconfigure || ! (@labels >= 3 && Data::Validate::Domain->new(%options)->is_domain($hostname))) {
+	if(
+		$main::reconfigure ~~ ['hostname', 'all', 'forced'] ||
+		! (@labels >= 3 && Data::Validate::Domain->new(%options)->is_domain($hostname))
+	) {
 		if(! $hostname) {
 			my $err = undef;
 
@@ -282,7 +285,10 @@ sub setupAskImscpVhost
 
 	my ($rs, @labels) = (0, $vhost ? split(/\./, $vhost) : ());
 
-	if($main::reconfigure || ! (@labels >= 3 && Data::Validate::Domain->new(%options)->is_domain($vhost))) {
+	if(
+		$main::reconfigure ~~ ['hostname', 'all', 'forced'] ||
+		! (@labels >= 3 && Data::Validate::Domain->new(%options)->is_domain($vhost))
+	) {
 
 		$vhost = "admin." . setupGetQuestion('SERVER_HOSTNAME') if ! $vhost;
 
@@ -312,7 +318,7 @@ sub setupAskLocalDnsResolver
 	$localDnsResolver = lc($localDnsResolver);
 	my $rs = 0;
 
-	if($main::reconfigure || $localDnsResolver !~ /^yes|no$/) {
+	if($main::reconfigure ~~ ['resolver', 'all', 'forced'] || $localDnsResolver !~ /^yes|no$/) {
 		($rs, $localDnsResolver) = $dialog->radiolist(
 			"\nDo you want allow the system resolver to use the local nameserver?",
 			['yes', 'no'],
@@ -333,7 +339,7 @@ sub setupAskServerIps
 	my $manualIp = 0;
 	my $serverIps = '';
 
-	my @serverIpsToKeepOrAdd = setupGetQuestion('SERVER_IPS') ? @{setupGetQuestion('SERVER_IPS')} : ();
+	my @serverIpsToAdd = setupGetQuestion('SERVER_IPS') ? @{setupGetQuestion('SERVER_IPS')} : ();
 	my %serverIpsToDelete = ();
 	my %serverIpsReplMap = ();
 
@@ -341,7 +347,7 @@ sub setupAskServerIps
 	my $rs = $ips->loadIPs();
 	return $rs if $rs;
 
-	# Retrieve list of all configured server ips
+	# Retrieve list of all configured IP addresses
 	my @serverIps = $ips->getIPs();
 	if(! @serverIps) {
 		error('Unable to retrieve servers ips');
@@ -352,7 +358,7 @@ sub setupAskServerIps
 	my $database = '';
 
 	if(setupGetQuestion('DATABASE_NAME')) {
-		# We do not raise error in case we cannot get SQL connection since it's expected on first install
+		# We do not raise error in case we cannot get SQL connection since it's expected in some context
     	$database = setupGetSqlConnect(setupGetQuestion('DATABASE_NAME'));
 
 		if($database) {
@@ -364,17 +370,17 @@ sub setupAskServerIps
 			}
 		}
 
-		@serverIpsToKeepOrAdd = (@serverIpsToKeepOrAdd, keys %$currentServerIps);
+		@serverIpsToAdd = (@serverIpsToAdd, keys %{$currentServerIps});
 	}
 
-	@serverIps = sort keys %{ { map { $_ => 1 } @serverIps, @serverIpsToKeepOrAdd } };
+	@serverIps = sort keys %{ { map { $_ => 1 } @serverIps, @serverIpsToAdd } };
 
 	if(
-		$main::reconfigure ||
+		$main::reconfigure ~~ ['ips', 'all', 'forced'] ||
 		! ($baseServerIp ~~ @serverIps && $baseServerIp ne '127.0.0.1' && $baseServerIp ne $ips->normalize('::1'))
 	) {
 		do {
-			# Ask user for the primary external IP
+			# Ask user for the server base IP
 			($rs, $baseServerIp) = $dialog->radiolist(
 				"\nPlease, select the base server IP for i-MSCP:",
 				[@serverIps, 'Add new ip'],
@@ -382,7 +388,7 @@ sub setupAskServerIps
 			);
 		} while($rs != 30 && ! $baseServerIp);
 
-		# Handle server ip addition
+		# Handle server IP addresses addition
 		if($rs != 30 && $baseServerIp eq 'Add new ip') {
 			$baseServerIp = '';
 			my $msg = '';
@@ -401,7 +407,7 @@ sub setupAskServerIps
 				my $networkCard = undef;
 				my @networkCardList = $ips->getNetCards();
 
-				if(@networkCardList > 1) { # Do not ask about network card if not more than one is available					do {
+				if(@networkCardList > 1) { # Do not ask about network card if not more than one is available
 					($rs, $networkCard) = $dialog->radiolist(
                     	"\nPlease, select the network card on which you want to add the IP address:", @networkCardList
                     );
@@ -418,7 +424,7 @@ sub setupAskServerIps
 			}
 		}
 
-		# Handle ip deletion in case the user stepped back
+		# Handle IP deletion in case the user stepped back
 		my $manualBaseServerIp = setupGetQuestion('MANUAL_BASE_SERVER_IP');
 
 		if($manualBaseServerIp && $manualBaseServerIp ne $baseServerIp) {
@@ -431,14 +437,16 @@ sub setupAskServerIps
 
 		$main::questions{'MANUAL_BASE_SERVER_IP'} = $baseServerIp if $manualIp;
 
-		# Handle additional i-MSCP addition / deletion
+		# Handle additional IP addition / deletion
 		if($rs != 30) {
 			$dialog->set('defaultno', '');
 
 			if(@serverIps > 1 && ! $dialog->yesno("\nDo you want add or remove IP addresses?")) {
 				$dialog->set('defaultno', undef);
 
-				@serverIps = grep $_ ne $baseServerIp, @serverIps; # Remove base server ip from the list
+				@serverIps = grep $_ ne $baseServerIp, @serverIps; # Remove the base server IP from the list
+
+				# Retrieve IP to which the user is currently connected (SSH)
 				my $sshConnectIp = defined ($ENV{'SSH_CONNECTION'}) ? (split ' ', $ENV{'SSH_CONNECTION'})[2] : undef;
 
 				my $msg = '';
@@ -447,31 +455,31 @@ sub setupAskServerIps
 					($rs, $serverIps) = $dialog->checkbox(
 						"\nPlease, select the IP addresses to add into the database and deselect those to delete: $msg",
 						[@serverIps],
-						@serverIpsToKeepOrAdd
+						@serverIpsToAdd
 					);
 
 					$msg = '';
 
 					if(defined $sshConnectIp && $sshConnectIp ~~ @serverIps && $serverIps !~ /$sshConnectIp/) {
-						$msg = "\n\n\\Z1You cannot remove the IP '$sshConnectIp' to which you are currently connected (ssh).\\Zn\n\nPlease, try again:";
+						$msg = "\n\n\\Z1You cannot remove the IP '$sshConnectIp' to which you are currently connected (SSH).\\Zn\n\nPlease, try again:";
 					}
 
 				} while ($rs != 30 && $msg);
 
 				if($rs != 30) {
 					$serverIps =~ s/"//g;
-					@serverIpsToKeepOrAdd = split ' ', $serverIps; # We retrieve list of ip to add into database
-					push @serverIpsToKeepOrAdd, $baseServerIp; # Re-add base ip
-
-					# get list of ip to delete
-					my %serverIpsToDelete = ();
-
-					for(@serverIps) {
-						$serverIpsToDelete{$$currentServerIps{$_}->{'ip_id'}} = $_
-							if(exists $$currentServerIps{$_} && not $_ ~~ @serverIpsToKeepOrAdd);
-					}
+					@serverIpsToAdd = split ' ', $serverIps; # Retrieve list of IP to add into database
+					push @serverIpsToAdd, $baseServerIp; # Re-add base ip
 
 					if($database) {
+						# Get list of IP addresses to delete
+						%serverIpsToDelete = ();
+						for(@serverIps) {
+							$serverIpsToDelete{$currentServerIps->{$_}->{'ip_id'}} = $_
+								if(exists $currentServerIps->{$_} && not $_ ~~ @serverIpsToAdd);
+						}
+
+						# Check for server IP addresses already in use and ask for replacement
 						my $resellerIps = $database->doQuery('reseller_ips', 'SELECT `reseller_ips` FROM `reseller_props`');
 
 						if(ref $resellerIps ne 'HASH') {
@@ -479,7 +487,6 @@ sub setupAskServerIps
 							return 1;
 						}
 
-						# Check for server ips already in use and ask user for ip replacement
 						for(keys %$resellerIps){
 							my @resellerIps = split ';';
 
@@ -492,7 +499,7 @@ sub setupAskServerIps
 "
 The IP address '$serverIpsToDelete{$_}' is already in use. Please, choose an IP to replace it:
 ",
-											[@serverIpsToKeepOrAdd],
+											[@serverIpsToAdd],
 											$baseServerIp
 										);
 									} while($rs != 30 && ! $ret);
@@ -515,8 +522,10 @@ The IP address '$serverIpsToDelete{$_}' is already in use. Please, choose an IP 
 
 	if($rs != 30) {
 		$main::questions{'BASE_SERVER_IP'} = $baseServerIp;
-		$main::questions{'SERVER_IPS'} = [@serverIpsToKeepOrAdd];
+		$main::questions{'SERVER_IPS'} = [@serverIpsToAdd];
 		$main::questions{'SERVER_IPS_TO_REPLACE'} = {%serverIpsReplMap};
+		$main::questions{'SERVER_IPS_TO_DELETE'} = [values %serverIpsToDelete];
+		debug("nuxwin: ips to delete: @{$main::questions{'SERVER_IPS_TO_DELETE'}}");
 	}
 
 	$rs;
@@ -546,7 +555,7 @@ sub setupAskSqlDsn
 		? (domain_private_tld => qr /^(?:bogus|test)$/)
 		: ();
 
-	if($main::reconfigure || ! ($dbPass ne '' && ! setupCheckSqlConnect($dbType, '', $dbHost, $dbPort, $dbUser, $dbPass))) {
+	if($main::reconfigure ~~ ['sql', 'servers', 'all', 'forced'] || ! ($dbPass ne '' && ! setupCheckSqlConnect($dbType, '', $dbHost, $dbPort, $dbUser, $dbPass))) {
 		my $msg = '';
 
 		do {
@@ -602,7 +611,7 @@ sub setupAskSqlDsn
 "
 \\Z1Connection to SQL server failed\\Zn
 
-i-MSCP was unable to connect to SQL server with the following data:
+i-MSCP was unable to connect to the SQL server with the following data:
 
 \\Z4Host:\\Zn		$dbHost
 \\Z4Port:\\Zn		$dbPort
@@ -634,7 +643,10 @@ sub setupAskImscpDbName
 	my $dbName = setupGetQuestion('DATABASE_NAME') || 'imscp';
 	my $rs = 0;
 
-	if($main::reconfigure || (! setupGetQuestion('DATABASE_NAME', 'preseed') && ! setupIsImscpDb($dbName))) {
+	if(
+		$main::reconfigure ~~ ['sql', 'servers', 'all', 'forced'] ||
+		(! setupGetQuestion('DATABASE_NAME', 'preseed') && ! setupIsImscpDb($dbName))
+	) {
 		my $msg = '';
 
 		do {
@@ -690,7 +702,7 @@ sub setupAskDbPrefixSuffix
 	my $rs = 0;
 
 	if(
-		$main::reconfigure ||
+		$main::reconfigure ~~ ['sql', 'servers', 'all', 'forced'] ||
 		! (($prefix eq 'no' && $prefixType eq 'none') || ($prefix eq 'yes' && $prefixType =~ /^infront|behind$/))
 	) {
 
@@ -701,9 +713,9 @@ sub setupAskDbPrefixSuffix
 Do you want use a prefix or suffix for customers's SQL databases?
 
 \\Z4Infront:\\Zn A numeric prefix such as '1_' will be added to each customer
-         database name.
+         SQL user and database name.
  \\Z4Behind:\\Zn A numeric suffix such as '_1' will be added to each customer
-         database name.
+         SQL user and database name.
    \\Z4None\\Zn: Choice will be let to customer.
 ",
 			['infront', 'behind', 'none'],
@@ -760,7 +772,7 @@ sub setupAskDefaultAdmin
 		}
 	}
 
-	if($main::reconfigure || $adminLoginName eq '') {
+	if($main::reconfigure ~~ ['admin', 'all', 'forced'] || $adminLoginName eq '') {
 
 		# Ask for administrator login name
 		do {
@@ -818,7 +830,7 @@ sub setupAskAdminEmail
 	my $adminEmail = setupGetQuestion('DEFAULT_ADMIN_ADDRESS');
 	my $rs = 0;
 
-	if($main::reconfigure || ! Email::Valid->address($adminEmail)) {
+	if($main::reconfigure ~~ ['admin', 'all', 'forced'] || ! Email::Valid->address($adminEmail)) {
 		my $msg = '';
 
 		do {
@@ -840,12 +852,15 @@ sub setupAskPhpTimezone
 	my $timezone = setupGetQuestion('PHP_TIMEZONE');
 	my $rs = 0;
 
-	if($main::reconfigure || ! ($timezone && DateTime::TimeZone->is_valid_name($timezone))) {
+	if(
+		$main::reconfigure ~~ ['php', 'all', 'forced'] ||
+		! ($timezone && DateTime::TimeZone->is_valid_name($timezone))
+	) {
 		$timezone = $defaultTimezone if ! $timezone;
 		my $msg = '';
 
 		do {
-			($rs, $timezone) = $dialog->inputbox("\nPlease enter Server`s timezone: $msg", $timezone);
+			($rs, $timezone) = $dialog->inputbox("\nPlease enter timezone for PHP: $msg", $timezone);
 			$msg = "\n\n\\Z1'$timezone' is not a valid timezone.\\Zn\n\nPlease, try again:";
 		} while($rs != 30 && ! DateTime::TimeZone->is_valid_name($timezone));
 	}
@@ -865,7 +880,7 @@ sub setupAskSsl
 	my $cmdOpenSsl = $main::imscpConfig{'CMD_OPENSSL'};
 	my $rs = 0;
 
-	if($main::reconfigure || $sslEnabled !~ /^yes|no$/i) {
+	if($main::reconfigure ~~ ['ssl', 'all', 'forced'] || $sslEnabled !~ /^yes|no$/i) {
 		Modules::openssl->new()->{'openssl_path'} = $cmdOpenSsl;
 		$rs = setupSslDialog($dialog);
 		return $rs if $rs;
@@ -1043,7 +1058,7 @@ sub setupAskImscpBackup
 	$backupImscp = lc($backupImscp);
 	my $rs = 0;
 
-	if($main::reconfigure || $backupImscp !~ /^yes|no$/) {
+	if($main::reconfigure ~~ ['backup', 'all', 'forced'] || $backupImscp !~ /^yes|no$/) {
 		($rs, $backupImscp) = $dialog->radiolist(
 "
 \\Z4\\Zb\\Zui-MSCP Backup Feature\\Zn
@@ -1071,7 +1086,7 @@ sub setupAskDomainBackup
 	my $backupDomains = setupGetQuestion('BACKUP_DOMAINS');
 	my $rs = 0;
 
-	if($main::reconfigure || $backupDomains !~ /^yes|no$/) {
+	if($main::reconfigure ~~ ['backup', 'all', 'forced'] || $backupDomains !~ /^yes|no$/) {
 
 		($rs, $backupDomains) = $dialog->radiolist(
 "
@@ -1228,8 +1243,8 @@ sub setupServerHostname
 sub setupServerIps
 {
 	my $baseServerIp = setupGetQuestion('BASE_SERVER_IP');
-	my @serverIps = setupGetQuestion('SERVER_IPS') ? @{setupGetQuestion('SERVER_IPS')} : ();
 	my $serverIpsToReplace = setupGetQuestion('SERVER_IPS_TO_REPLACE') || {};
+	my $serverIpsToDelete = setupGetQuestion('SERVER_IPS_TO_DELETE') || [];
 	my $serverHostname = setupGetQuestion('SERVER_HOSTNAME');
 	my $oldIptoIdMap = {};
 
@@ -1242,10 +1257,12 @@ sub setupServerIps
 		'beforeSetupServerIps', \$baseServerIp, \@serverIps, $serverIpsToReplace
 	) and return 1;
 
-	my $database = setupGetSqlConnect(setupGetQuestion('DATABASE_NAME'));
+	my ($database, $errstr) = setupGetSqlConnect(setupGetQuestion('DATABASE_NAME'));
+    fatal("Unable to connect to the SQL database: $errstr") if ! $database;
 
+	# Get IDs of IP addresses to replace
 	if(%{$serverIpsToReplace}) {
-		my $ipsToReplace = join q{,}, map $database->quote($_), keys %$serverIpsToReplace;
+		my $ipsToReplace = join q{,}, map $database->quote($_), keys %{$serverIpsToReplace};
 		$oldIptoIdMap = $database->doQuery(
 			'ip_number', 'SELECT `ip_id`, `ip_number` FROM `server_ips` WHERE `ip_number` IN ('. $ipsToReplace .')'
 		);
@@ -1259,12 +1276,12 @@ sub setupServerIps
 	my $rs = $ips->loadIPs();
 	return $rs if $rs;
 
-	# Process server ips addition
+	# Process server IP addresses addition
 
 	my ($defaultNetcard) = $ips->getNetCards();
 
 	for (@serverIps) {
-		next if exists $$serverIpsToReplace{$_};
+		next if exists $serverIpsToReplace->{$_};
 		my $netCard = $ips->getCardByIP($_) || $defaultNetcard;
 
 		if($netCard) {
@@ -1274,7 +1291,7 @@ sub setupServerIps
 					INSERT IGNORE INTO `server_ips` (
 						`ip_number`, `ip_card`, `ip_status`, `ip_id`
 					) VALUES(
-						?, ?, ?, (SELECT `ip_id` FROM `server_ips` as t1 WHERE t1.`ip_number` = ?)
+						?, ?, ?, (SELECT `ip_id` FROM `server_ips` AS `t1` WHERE `t1`.`ip_number` = ?)
 					)
 				',
 				$_, $netCard, 'toadd', $_
@@ -1289,7 +1306,7 @@ sub setupServerIps
 		}
 	}
 
-	# Setup/update domain name and alias for base server ip
+	# Setup/update domain name and alias for the base server IP
 
 	my ($alias) =  split /\./, $serverHostname;
 
@@ -1313,7 +1330,7 @@ sub setupServerIps
 	# Server ips replacement
 
 	if(%{$serverIpsToReplace}) {
-		# for each ip to replace
+		# for each IP to replace
 		for(keys %$serverIpsToReplace) {
 			my $newIp = $serverIpsToReplace->{$_}; # New IP
 			my $oldIpId = $oldIptoIdMap->{$_}->{'ip_id'}; # Old IP ID
@@ -1338,7 +1355,7 @@ sub setupServerIps
 				return 1;
 			}
 
-			$newIpId = $$newIpId{$newIp}->{'ip_id'};
+			$newIpId = $newIpId->{$newIp}->{'ip_id'};
 
 			for(keys %$resellerIps) {
 				my $ips = $resellerIps->{$_}->{'reseller_ips'};
@@ -1357,12 +1374,12 @@ sub setupServerIps
 		}
 	}
 
-	# Process server ips deletion
-	if(@serverIps) {
-		my $serverIps = join q{,}, map $database->quote($_), @serverIps;
+	# Process IP deletion
+	if(@{$serverIpsToDelete}) {
+		my $serverIpsToDelete = join q{,}, map $database->quote($_), @{$serverIpsToDelete};
 		my $rs = $database->doQuery(
 			'dummy',
-			'UPDATE`server_ips` set `ip_status` = ?  WHERE `ip_number` NOT IN(' . $serverIps . ') AND `ip_number` <> ?',
+			'UPDATE`server_ips` set `ip_status` = ?  WHERE `ip_number` IN(' . $serverIpsToDelete . ') AND `ip_number` <> ?',
 			'delete',
 			$baseServerIp
 		);
@@ -1519,26 +1536,66 @@ sub setupUpdateDatabase
 }
 
 # Secure any SQL account by removing those without password
-sub setupSecureSqlAccounts
+# Basically, this method do same job as the mysql_secure_installation script
+# - Remove anonymous users
+# - Remove users without password set
+# - Remove remote sql root user
+# - Remove test database if any
+# - Reload privileges tables
+sub setupSecureSqlInstallation
 {
-	iMSCP::HooksManager->getInstance()->trigger('beforeSetupSecureSqlAccounts') and return 1;
+	iMSCP::HooksManager->getInstance()->trigger('beforeSetupSecureSqlInstallation') and return 1;
 
-	my ($database, $errStr) = setupGetSqlConnect(setupGetQuestion('DATABASE_NAME'));
-	fatal("Unable to connect to SQL Server: $errStr") if ! $database;
+	my ($database, $errStr) = setupGetSqlConnect();
+	fatal("Unable to connect to the SQL Server: $errStr") if ! $database;
 
-	my $rdata = $database->doQuery('User', "SELECT `User`, `Host` FROM `mysql`.`user` WHERE `Password` = ''");
-
-	if(ref $rdata ne 'HASH'){
-		error("$rdata");
+	# Remove anonymous users
+	my $errStr = $database->doQuery('dummy', "DELETE FROM `mysql`.`user` WHERE `User` = '';");
+	if(ref $errStr ne 'HASH') {
+		error("Unable to delete anonymous users: $errStr");
 		return 1;
 	}
 
-	for (keys %$rdata) {
-		my $rs = $database->doQuery('drop', "DROP USER ?@?", $_, $rdata->{$_}->{Host});
-		error("$rs") if ref $rs ne 'HASH';
+	# Remove user without password set
+	my $rdata = $database->doQuery('User', "SELECT `User`, `Host` FROM `mysql`.`user` WHERE `Password` = '';");
+
+	for (keys %{$rdata}) {
+		$errStr = $database->doQuery('dummy', "DROP USER ?@?", $_, $rdata->{$_}->{'Host'});
+		error("Unable to remove SQL user $_\\@$rdata->{$_}->{'Host'}: $errStr") if ref $errStr ne 'HASH';
 	}
 
-	iMSCP::HooksManager->getInstance()->trigger('afterSetupSecureSqlAccounts') and return 1;
+    # Remove test database if any
+    $errStr = $database->doQuery('dummy', 'DROP DATABASE `test`;');
+   	if(ref $errStr ne 'HASH'){
+    	debug("Unable to remove database test (not critical): $errStr"); # Not critical, keep moving...
+    }
+
+    # Remove privileges on test database
+    $errStr = $database->doQuery('dummy', "DELETE FROM `mysql`.`db` WHERE `Db` = 'test' OR `Db` = 'test\\_%';");
+   	if(ref $errStr ne 'HASH'){
+    	debug("Unable to remove privilege on test database (not critical): $errStr"); # Not critical, keep moving...
+    }
+
+	# Disallow remote root login
+	if($main::imscpConfig{'SQL_SERVER'} ne 'remote_server') {
+		$errStr = $database->doQuery(
+			'dummy',
+			"DELETE FROM `mysql`.`user` WHERE `User` = 'root' AND `Host` NOT IN ('localhost', '127.0.0.1', '::1');"
+		);
+   		if(ref $errStr ne 'HASH'){
+    		error("Unable to remove remote root user: $errStr");
+    		return 1;
+    	}
+    }
+
+	# Reload privilege tables
+    $errStr = $database->doQuery('dummy', 'FLUSH PRIVILEGES;');
+   	if(ref $errStr ne 'HASH'){
+    	debug("Unable to reload privileges tables: $errStr");
+    	return 1;
+    }
+
+	iMSCP::HooksManager->getInstance()->trigger('afterSetupSecureSqlInstallation') and return 1;
 
 	0;
 }
@@ -1855,10 +1912,10 @@ sub setupRebuildCustomerFiles
 
 	my $rs = 0;
 	my ($database, $errStr) = setupGetSqlConnect(setupGetQuestion('DATABASE_NAME'));
-	fatal("Unable to connect to SQL Server: $errStr") if ! $database;
+	fatal("Unable to connect to the SQL Server: $errStr") if ! $database;
 
 	while (my ($table, $field) = each %$tables) {
-		$rs = $database->doQuery('dummy', "UPDATE `$table` SET `$field` = 'change' WHERE `$field` = 'ok'");
+		$rs = $database->doQuery('dummy', "UPDATE `$table` SET `$field` = 'change' WHERE `$field` <> 'disabled'");
 		return $rs if (ref $rs ne 'HASH');
 	}
 
@@ -2271,32 +2328,32 @@ sub setupIsSqlUser($)
 #
 # Return int 0 on success, 1 on error
 # TODO should we try to remove for old host too since host can be reconfigured?
-sub setupDeleteSqlUser($)
+sub setupDeleteSqlUser
 {
 	my $user = shift;
 	my $host = shift || '%';
 
 	my ($database, $errstr) = setupGetSqlConnect('mysql');
-	fatal("Unable to connect to the SQL server: $errstr") if ! $database;
+	fatal("Unable to connect to the mysql database: $errstr") if ! $database;
 
 	# Remove any columns privileges for the given user
 	$errstr = $database->doQuery('dummy', "DELETE FROM `columns_priv` WHERE `Host` = ? AND `User` = ?", $host, $user);
 	if(ref $errstr ne 'HASH') {
-		error("Unable to delete columns privileges from the '$user\@$host' SQL user: $errstr");
+		error("Unable to delete columns privileges for the '$user\@$host' SQL user: $errstr");
 		return 1;
 	}
 
 	# Remove any tables privileges for the given user
 	$errstr = $database->doQuery('dummy', 'DELETE FROM `tables_priv` WHERE `Host` = ? AND `User` = ?', $host, $user);
 	if(ref $errstr ne 'HASH') {
-		error("Unable to delete tables privileges from the '$user\@$host' SQL user: $errstr");
+		error("Unable to delete tables privileges for the '$user\@$host' SQL user: $errstr");
 		return 1;
 	}
 
 	# Remove any proc privileges for the given user
 	$errstr = $database->doQuery('dummy', 'DELETE FROM `procs_priv` WHERE `Host` = ? AND `User` = ?', $host, $user);
 	if(ref $errstr ne 'HASH') {
-		error("Unable to delete procs privileges from the '$user\@$host' SQL user: $errstr");
+		error("Unable to delete procs privileges for the '$user\@$host' SQL user: $errstr");
 		return 1;
 	}
 

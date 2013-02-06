@@ -60,8 +60,8 @@ $main::skippackages = 0;
 
 iMSCP::Getopt->parse(
 	qq{Usage: perl imscp-autoinstall [options]
-  -b,  --buildonly	Process only build step.
-  -s,  --skippackages   Do not install/update distro packages. (Expert option)},
+ -b,  --buildonly	     Process only build step.
+ -s,  --skippackages         Do not install/update distro packages.},
   'buildonly|b' => \$main::buildonly,
   'skippackages|s' => \$main::skippackages
 );
@@ -76,7 +76,7 @@ if($preseedFile) {
 	require $preseedFile;
 	# Values from preseed file always override those already set.
 	# The preseed option is not compatible with the reconfigure option.
-	$main::reconfigure = 0;
+	$main::reconfigure = 'none';
 	undef $preseedFile;
 }
 
@@ -120,12 +120,12 @@ newDebug('imscp-build.log');
 # Ensure the script is run as root
 iMSCP::Requirements->new()->user();
 
-iMSCP::HooksManager->getInstance()->trigger('beforeInstallPreRequiredPackages');
+iMSCP::HooksManager->getInstance()->trigger('beforeInstallPreRequiredPackages') if ! $main::skippackages;
 
 # Install pre-required package
 installPreRequiredPackages() and exit 1 if ! $main::skippackages;
 
-iMSCP::HooksManager->getInstance()->trigger('afterInstallPreRequiredPackages');
+iMSCP::HooksManager->getInstance()->trigger('afterInstallPreRequiredPackages') if ! $main::skippackages;
 
 # Entering in silent mode
 silent(1);
@@ -228,7 +228,7 @@ if(! $main::buildonly) {
 		[\&installTmp,				'Installing new i-MSCP files on file system'],
 		[\&setupBoot,				'Setup bootstrapping'],
 		[\&setupRegisterHooks,		'Registering servers/addons setup hooks'],
-		[\&setupDialog,				'Processing i-MSCP setup dialog'],
+		[\&setupDialog,				'Processing i-MSCP setup dialog if any'],
 		[\&setupTasks,				'Processing i-MSCP setup tasks'],
 	);
 

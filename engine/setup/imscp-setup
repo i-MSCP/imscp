@@ -48,7 +48,7 @@ if($preseedFile) {
 	require $preseedFile;
 	# Values from preseed file always override those already set.
 	# The preseed option is not compatible with the reconfigure option.
-	$main::reconfigure = 0;
+	$main::reconfigure = 'none';
 	undef $preseedFile;
 }
 
@@ -158,7 +158,7 @@ sub setupShutDown
 {
 	return 0 if $main::noprompt;
 
-	my $action = $main::reconfigure ? 'reconfigured' : 'installed';
+	my $action = $main::reconfigure ne 'none' ? 'reconfigured' : 'installed';
 
 	iMSCP::Dialog->factory()->msgbox(
 "

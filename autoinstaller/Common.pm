@@ -92,7 +92,7 @@ sub checkDistribution()
 	my $codename = lc($lsbRelease->getCodename(1));
 	my $release = $lsbRelease->getRelease(1);
 	my $description = $lsbRelease->getDescription(1);
-	my $packagesFile = "$FindBin::Bin/docs/" . ucfirst($distribution) ."/${distribution}-packages-${codename}.xml";
+	my $packagesFile = "$FindBin::Bin/docs/" . ucfirst($distribution) . "/packages-${codename}.xml";
 
 	if($distribution ne "n/a" && ($distribution eq 'debian' || $distribution eq 'ubuntu') && $codename ne "n/a") {
 		if(! -f $packagesFile) {

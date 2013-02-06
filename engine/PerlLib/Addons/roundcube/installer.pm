@@ -165,7 +165,7 @@ sub askRoundcube
 	my ($rs, $msg) = (0, '');
 
 	if(
-		$main::reconfigure ||
+		$main::reconfigure ~~ ['roundcube', 'all', 'forced'] ||
 		(
 			! $main::preseed{'ROUNDCUBE_SQL_USER'} &&
 			main::setupCheckSqlConnect($dbType, '', $dbHost, $dbPort, $dbUser, $dbPass)
@@ -533,54 +533,48 @@ sub _setupDatabase
 	my $dbUser = $self::roundcubeConfig{'DATABASE_USER'};
 	my $dbOldUser = $self::roundcubeOldConfig{'DATABASE_USER'} || '';
 	my $dbPass = $self::roundcubeConfig{'DATABASE_PASSWORD'};
-	my $dbOldPass = $self::roundcubeOldConfig{'DATABASE_PASSWORD'} || '';
+	my $dbUserHost = $main::imscpConfig{'SQL_SERVER'} ne 'remote_server'
+		? $main::imscpConfig{'DATABASE_HOST'} : $main::imscpConfig{'BASE_SERVER_IP'};
 	my $rs = 0;
 
-	if($dbUser ne $dbOldUser || $dbPass ne $dbOldPass || $self->{'forceDbSetup'}) {
-
-		# Remove old roundcube restricted SQL user and all it privileges (if any)
-		$rs = main::setupDeleteSqlUser($dbOldUser);
+	# Remove old roundcube restricted SQL user and all it privileges (if any)
+	for($main::imscpOldConfig{'DATABASE_HOST'} || '', $main::imscpOldConfig{'BASE_SERVER_IP'} || '') {
+		next if $_ eq '' || $dbOldUser eq '';
+		$rs = main::setupDeleteSqlUser($dbOldUser, $_);
 		error("Unable to remove the old roundcube '$dbOldUser' restricted SQL user: $rs") if $rs;
 		return 1 if $rs;
+	}
 
-		# Ensure new roundcube user do not already exists by removing it
-		$rs = main::setupDeleteSqlUser($dbUser);
-		error("Unable to delete the roundcube '$dbUser' restricted SQL user: $rs") if $rs;
-		return 1 if $rs;
+	# Ensure new roundcube user do not already exists by removing it
+	$rs = main::setupDeleteSqlUser($dbUser, $dbUserHost);
+	error("Unable to delete the roundcube '$dbUser' restricted SQL user: $rs") if $rs;
+	return 1 if $rs;
 
-		# Get SQL connection with full privileges
-		my ($database, $errStr) = main::setupGetSqlConnect();
-		fatal('Unable to connect to SQL Server: $errStr') if ! $database;
+	# Get SQL connection with full privileges
+	my ($database, $errStr) = main::setupGetSqlConnect();
+	fatal('Unable to connect to SQL Server: $errStr') if ! $database;
 
-		# Add new roundcube restricted SQL user with needed privilegess
+	# Add new roundcube restricted SQL user with needed privilegess
 
-		$rs = $database->doQuery(
-			'dummy',
-			"GRANT ALL PRIVILEGES ON `imscp\_roundcube`.* TO ?@? IDENTIFIED BY ?;",
-			$dbUser,
-			$main::imscpConfig{'DATABASE_HOST'},
-			$dbPass
+	$rs = $database->doQuery(
+		'dummy', "GRANT ALL PRIVILEGES ON `imscp\\_roundcube`.* TO ?@? IDENTIFIED BY ?;", $dbUser, $dbUserHost , $dbPass
+	);
+	if(ref $rs ne 'HASH') {
+		error("Unable to add privileges on the 'imscp_roundcube.$_' table for the '$dbUser' SQL user: $rs");
+		return 1;
+	}
+
+	$rs = $database->doQuery(
+		'dummy',
+		"GRANT SELECT,UPDATE ON `$main::imscpConfig{'DATABASE_NAME'}`.`mail_users` TO ?@? IDENTIFIED BY ?;",
+		$dbUser, $dbUserHost, $dbPass
+	);
+	if(ref $rs ne 'HASH') {
+		error(
+			"Unable to add privileges on the '$main::imscpConfig{'DATABASE_NAME'}.mail_users' table for the" .
+			" '$dbUser' SQL user: $rs"
 		);
-		if(ref $rs ne 'HASH') {
-			error("Unable to add privileges on the 'imscp_roundcube.$_' table for the '$dbUser' SQL user: $rs");
-			return 1;
-		}
-
-		$rs = $database->doQuery(
-			'dummy',
-			"GRANT SELECT,UPDATE ON `$main::imscpConfig{'DATABASE_NAME'}`.`mail_users` TO ?@? IDENTIFIED BY ?;",
-			$dbUser,
-			$main::imscpConfig{'DATABASE_HOST'},
-			$dbPass
-		);
-
-		if(ref $rs ne 'HASH') {
-			error(
-				"Unable to add privileges on the '$main::imscpConfig{'DATABASE_NAME'}.mail_users' table for the" .
-				" '$dbUser' SQL user: $rs"
-			);
-			return 1;
-		}
+		return 1;
 	}
 
 	0;

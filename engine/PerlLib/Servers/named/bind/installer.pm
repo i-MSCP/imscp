@@ -110,7 +110,7 @@ sub askMode
 		}
 	}
 
-	if($main::reconfigure || $mode !~ /^master|slave$/) {
+	if($main::reconfigure ~~ ['named', 'servers', 'all', 'forced'] || $mode !~ /^master|slave$/) {
 		($rs, $mode) = $dialog->radiolist(
 			"\nSelect bind mode", ['master', 'slave'], $mode eq 'slave' ? 'slave' : 'master'
 		);
