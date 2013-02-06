@@ -33,8 +33,9 @@ package iMSCP::LsbRelease;
 
 use strict;
 use warnings;
-use iMSCP::Execute;
 use iMSCP::Debug;
+use iMSCP::Execute;
+use iMSCP::File;
 use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
@@ -404,7 +405,6 @@ sub _guessDebianRelease
 	$distinfo->{'DESCRIPTION'} = sprintf('%s %s', $$distinfo{'ID'}, $$distinfo{'OS'});
 
 	if(-e '/etc/debian_version') {
-		use iMSCP::File;
 		$release = iMSCP::File->new(filename => '/etc/debian_version')->get();
 		unless($release) {
 			error('Unable to open /etc/debian_version');
@@ -476,7 +476,7 @@ sub _getLsbInformation
 	my $distinfo = {};
 
 	if(-f '/etc/lsb-release') {
-		use iMSCP::File;
+
 		my $lsbReleaseFile = iMSCP::File->new(filename => '/etc/lsb-release')->get();
 
 		unless($lsbReleaseFile) {

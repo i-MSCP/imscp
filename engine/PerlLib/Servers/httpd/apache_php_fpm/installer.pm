@@ -162,12 +162,77 @@ sub install
 	$rs |= $self->_AddUsersAndGroups();
 	$rs |= $self->_buildMasterVhostFiles();
 	$rs |= $self->_buildMasterPhpFpmPoolFile();
-	$rs |= $self->_setGuiPermissions();
+	$rs |= $self->setGuiPermissions();
 
 	# Save both the apache.data and the phpfpm.data configuration files
 	$rs |= $self->saveConf();
 
 	$self->{'hooksManager'}->trigger('afterHttpdInstall', 'apache_php_fpm');
+}
+
+=item setGuiPermissions
+
+ Set i-MSCP Gui files and directories permissions.
+
+ Return int 0 on success, other on failure
+
+=cut
+
+sub setGuiPermissions
+{
+	my $self = shift;
+
+	my $panelUName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} . $main::imscpConfig{'SYSTEM_USER_MIN_UID'};
+	my $panelGName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} . $main::imscpConfig{'SYSTEM_USER_MIN_UID'};
+	my $apacheGName = $self::apacheConfig{'APACHE_GROUP'};
+	my $rootDir = $main::imscpConfig{'ROOT_DIR'};
+	my $rs = 0;
+
+	$rs = $self->{'hooksManager'}->trigger('beforeHttpdSetGuiPermissions');
+
+	$rs |= setRights(
+		"$rootDir/gui/public",
+		{ 'user' => $panelUName, 'group' => $apacheGName, 'dirmode' => '0550', 'filemode' => '0440', 'recursive' => 'yes' }
+	);
+
+	$rs |= setRights(
+		"$rootDir/gui/themes",
+		{ 'user' => $panelUName, 'group' => $apacheGName, 'dirmode' => '0550', 'filemode' => '0440', 'recursive' => 'yes' }
+	);
+
+	$rs |= setRights(
+		"$rootDir/gui/library",
+		{ 'user' => $panelUName, 'group' => $panelGName, 'dirmode' => '0500', 'filemode' => '0400', 'recursive' => 'yes' }
+	);
+
+	$rs |= setRights(
+		"$rootDir/gui/data",
+		{ 'user' => $panelUName, 'group' => $panelGName, 'dirmode' => '0700', 'filemode' => '0600', recursive => 'yes' }
+	);
+
+	$rs |= setRights("$rootDir/gui/data", { 'user' => $panelUName, 'group' => $apacheGName, 'mode' => '0550'});
+
+	$rs |= setRights(
+		"$rootDir/gui/data/ispLogos",
+		{ 'user' => $panelUName, 'group' => $apacheGName, 'dirmode' => '0750', 'filemode' => '0640', recursive => 'yes' }
+	);
+
+	$rs |= setRights(
+		"$rootDir/gui/i18n",
+		{ 'user' => $panelUName, 'group' => $panelGName, 'dirmode' => '0700', 'filemode' => '0600', recursive => 'yes' }
+	);
+
+	$rs |= setRights(
+		"$rootDir/gui/plugins",
+		{ 'user' => $panelUName, 'group' => $panelGName, 'dirmode' => '0700', 'filemode' => '0600', recursive => 'yes' }
+	);
+
+	$rs |= setRights("$rootDir/gui/plugins", { 'user' => $panelUName, 'group' => $apacheGName, 'mode' => '0550' });
+	$rs |= setRights("$rootDir/gui", { 'user' => $panelUName, 'group' => $apacheGName, 'mode' => '0550' });
+	$rs |= setRights($rootDir, { 'user' => $panelUName, group => $apacheGName, 'mode' => '0555' });
+	$rs |= $self->{'hooksManager'}->trigger('afterHttpdSetGuiPermissions');
+
+	$rs;
 }
 
 =back
@@ -667,7 +732,7 @@ sub _buildMasterVhostFiles
 	$self->{'hooksManager'}->trigger('afterHttpdBuildMasterVhostFiles');
 }
 
-=item _setGuiPermissions()
+=item _buildMasterPhpFpmPoolFile()
 
  Build Master PHP FPM pool file.
 
@@ -717,71 +782,6 @@ sub _buildMasterPhpFpmPoolFile
 	}
 
 	$self->{'hooksManager'}->trigger('beforeBuildMasterPhpFpmPoolFile');
-}
-
-=item _setGuiPermissions
-
- Set i-MSCP Gui files and directories permissions.
-
- Return int 0 on success, other on failure
-
-=cut
-
-sub _setGuiPermissions
-{
-	my $self = shift;
-
-	my $panelUName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} . $main::imscpConfig{'SYSTEM_USER_MIN_UID'};
-	my $panelGName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} . $main::imscpConfig{'SYSTEM_USER_MIN_UID'};
-	my $apacheGName = $self::apacheConfig{'APACHE_GROUP'};
-	my $rootDir = $main::imscpConfig{'ROOT_DIR'};
-	my $rs = 0;
-
-	$rs = $self->{'hooksManager'}->trigger('beforeHttpdSetGuiPermissions');
-
-	$rs |= setRights(
-		"$rootDir/gui/public",
-		{ 'user' => $panelUName, 'group' => $apacheGName, 'dirmode' => '0550', 'filemode' => '0440', 'recursive' => 'yes' }
-	);
-
-	$rs |= setRights(
-		"$rootDir/gui/themes",
-		{ 'user' => $panelUName, 'group' => $apacheGName, 'dirmode' => '0550', 'filemode' => '0440', 'recursive' => 'yes' }
-	);
-
-	$rs |= setRights(
-		"$rootDir/gui/library",
-		{ 'user' => $panelUName, 'group' => $panelGName, 'dirmode' => '0500', 'filemode' => '0400', 'recursive' => 'yes' }
-	);
-
-	$rs |= setRights(
-		"$rootDir/gui/data",
-		{ 'user' => $panelUName, 'group' => $panelGName, 'dirmode' => '0700', 'filemode' => '0600', recursive => 'yes' }
-	);
-
-	$rs |= setRights("$rootDir/gui/data", { 'user' => $panelUName, 'group' => $apacheGName, 'mode' => '0550'});
-
-	$rs |= setRights(
-		"$rootDir/gui/data/ispLogos",
-		{ 'user' => $panelUName, 'group' => $apacheGName, 'dirmode' => '0750', 'filemode' => '0640', recursive => 'yes' }
-	);
-
-	$rs |= setRights(
-		"$rootDir/gui/i18n",
-		{ 'user' => $panelUName, 'group' => $panelGName, 'dirmode' => '0700', 'filemode' => '0600', recursive => 'yes' }
-	);
-
-	$rs |= setRights(
-		"$rootDir/gui/plugins",
-		{ 'user' => $panelUName, 'group' => $panelGName, 'dirmode' => '0700', 'filemode' => '0600', recursive => 'yes' }
-	);
-
-	$rs |= setRights("$rootDir/gui/plugins", { 'user' => $panelUName, 'group' => $apacheGName, 'mode' => '0550' });
-	$rs |= setRights("$rootDir/gui", { 'user' => $panelUName, 'group' => $apacheGName, 'mode' => '0550' });
-	$rs |= setRights($rootDir, { 'user' => $panelUName, group => $apacheGName, 'mode' => '0555' });
-	$rs |= $self->{'hooksManager'}->trigger('afterHttpdSetGuiPermissions');
-
-	$rs;
 }
 
 =item saveConf()

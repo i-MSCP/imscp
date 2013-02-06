@@ -88,23 +88,22 @@ sub checkDistribution()
 	iMSCP::Dialog->factory()->infobox("\nDetecting target distribution...");
 
 	my $lsbRelease = iMSCP::LsbRelease->new();
-	my $distribution = lc($lsbRelease->getId(1));
+	my $distribution = $lsbRelease->getId(1);
 	my $codename = lc($lsbRelease->getCodename(1));
 	my $release = $lsbRelease->getRelease(1);
 	my $description = $lsbRelease->getDescription(1);
-	my $packagesFile = "$FindBin::Bin/docs/" . ucfirst($distribution) . "/packages-${codename}.xml";
+	my $packagesFile = "$FindBin::Bin/docs/$distribution/packages-${codename}.xml";
 
-	if($distribution ne "n/a" && ($distribution eq 'debian' || $distribution eq 'ubuntu') && $codename ne "n/a") {
+	if($distribution ne "n/a" && (lc($distribution) eq 'debian' || lc($distribution) eq 'ubuntu') && $codename ne "n/a") {
 		if(! -f $packagesFile) {
 			iMSCP::Dialog->factory()->msgbox(
 "
-\\Z1$description not supported yet\\Zn
-
+\\Z1$distribution $release ($codename) not supported yet\\Zn
 
 We are sorry but the version of your distribution is not supported yet.
 
 You can try to provide your own packages file by putting it into the
-\\Z4docs/" . ucfirst($distribution) . "\\Zn directory and try again, or ask the i-MSCP team to add it for you.
+\\Z4docs/$distribution\\Zn directory and try again, or ask the i-MSCP team to add it for you.
 
 Thanks for using i-MSCP.
 "
@@ -113,12 +112,11 @@ Thanks for using i-MSCP.
 			return 1;
 		}
 
-		my $rs = iMSCP::Dialog->factory()->yesno("\n$description has been detected. Is this ok?");
+		my $rs = iMSCP::Dialog->factory()->yesno("\n$distribution $release ($codename) has been detected. Is this ok?");
 
 		iMSCP::Dialog->factory()->msgbox(
 "
 \\Z1Distribution not supported\\Zn
-
 
 We are sorry but the installer has failed to detect your distribution, or
 process has been aborted by user.
@@ -134,7 +132,6 @@ Thanks for using i-MSCP.
 		iMSCP::Dialog->factory()->msgbox(
 "
 \\Z1Distribution not supported\\Zn
-
 
 We are sorry but your distribution is not supported yet.
 

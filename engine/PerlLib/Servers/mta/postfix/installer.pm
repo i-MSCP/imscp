@@ -110,7 +110,7 @@ sub install
 	$rs |= $self->buildAliasesDb();
 	$rs |= $self->arplSetup();
 	$rs |= $self->saveConf();
-	$rs |= $self->setPermissions();
+	$rs |= $self->setEnginePermissions();
 
 	$rs |= iMSCP::HooksManager->getInstance()->trigger('afterMtaInstall', 'postfix');
 
@@ -118,7 +118,7 @@ sub install
 }
 
 # Set Mta files and directories permissions
-sub setPermissions
+sub setEnginePermissions
 {
 	my $self = shift;
 	my $rootUName = $main::imscpConfig{'ROOT_USER'};
