@@ -59,20 +59,21 @@ switch ($action) {
 	case 'login':
 		// Authentication process is triggered whatever the status of the following variables since authentication
 		// is pluggable and plugins can provide their own authentication logic without using these variables.
-		if (!empty($_REQUEST['uname'])) $auth->setUsername($_REQUEST['uname']);
-		if (!empty($_REQUEST['upass'])) $auth->setPassword($_REQUEST['upass']);
+		if (!empty($_REQUEST['uname'])) $auth->setUsername(clean_input($_REQUEST['uname']));
+		if (!empty($_REQUEST['upass'])) $auth->setPassword(clean_input($_REQUEST['upass']));
 		$result = $auth->authenticate();
 
 		if ($result->isValid()) { // Authentication process succeeded
 			write_log(sprintf("%s logged in", $result->getIdentity()->admin_name), E_USER_NOTICE);
-			//redirectToUiLevel(); // We now redirect the user to it ui level
 		} elseif (($messages = $result->getMessages())) { // Authentication process failed
 			$messages = format_message($messages);
 			set_page_message($messages, 'error');
 			write_log(sprintf("Authentication failed. Reason: %s", $messages), E_USER_NOTICE);
 		}
-		redirectToUiLevel();
 }
+
+# Redirect user to its interface level
+redirectToUiLevel();
 
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic(
