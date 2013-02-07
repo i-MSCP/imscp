@@ -2,8 +2,8 @@
 
 ### BEGIN INIT INFO
 # Provides:             imscp_network
-# Required-Star:		$local_fs $remote_fs $network
-# Required-Stop			$local_fs $remote_fs $network
+# Required-Start:		$local_fs $remote_fs $network
+# Required-Stop:		$local_fs $remote_fs $network
 # Should-Start:			mysql
 # Should-Stop:			mysql
 # Default-Start:        2 3 4 5
