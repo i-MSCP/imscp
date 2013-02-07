@@ -2,7 +2,7 @@
 
 # i-MSCP preseed.pl template file for installer preseeding
 # See documentation at http://wiki.i-mscp.net/doku.php?id=start:preseeding
-# Last update on 2013.01.31
+# Last update on 2013.02.07
 # Status (Experimental)
 
 ## Autoinstall questions
@@ -13,8 +13,8 @@ $main::preseed{'SERVERS'} = {
 	'PO_SERVER' => 'courier',		# Server to use for the po service (courier|dovecot)
 	'FTPD_SERVER' => 'proftpd',		# No relevant for now since only proftpd is supported
 	'MTA_SERVER' => 'postfix',		# No relevant for now since only postfix is supported
-	'NAMED_SERVER' => 'bind'		# No relevant for now since only Bind9 is supported
-	'SQL_SERVER' => 'mysql'			# Server to use for the Sql service (mysql|mariadb)
+	'NAMED_SERVER' => 'bind',		# No relevant for now since only Bind9 is supported
+	'SQL_SERVER' => 'mysql_5.5'		# Server to use for the Sql service (mysql_5.1|mysql_5.5|mariadb_5.3|mariadb_5.5)
 };
 
 # apache_fcgi - Only relevant if server for the HTTPD server question is set to 'apache_fcgi'

@@ -13,7 +13,7 @@ SETUP:
 	- Fixed: Allow per item reconfiguration
 	- Fixed: Duplicate entries in sources.list file (Ubuntu)
 	- Fixed: Do not show any dialog when --noprompt option is used
-	- Fixed: Uninstall unneeded packages when switching to another server type
+	- Fixed: Uninstall unneeded packages when switching to another server
 
 CONFIGS:
 	- Added MariaDb support
