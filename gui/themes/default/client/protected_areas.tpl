@@ -14,7 +14,7 @@
 			</tr>
 			<!-- BDP: dir_item -->
 			<tr>
-				<td>{AREA_NAME}<br/><u>{AREA_PATH}</u></td>
+				<td>{AREA_NAME}<br/><span style="text-decoration: underline;">{AREA_PATH}</span></td>
 				<td>{STATUS}</td>
 				<td>
 					<a href="protected_areas_add.php?id={PID}" class="icon i_edit">{TR_EDIT}</a>
