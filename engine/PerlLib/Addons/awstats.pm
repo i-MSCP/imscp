@@ -430,7 +430,7 @@ sub _addAwstatsCron
 			C0MMAND	=>	"perl $main::imscpConfig{'AWSTATS_ROOT_DIR'}/awstats_buildstaticpages.pl ".
 						"-config=$data->{'DMN_NAME'} -update ".
 						"-awstatsprog=$main::imscpConfig{'AWSTATS_ENGINE_DIR'}/awstats.pl ".
-						"-dir=$data->{'HOME_DIR'}/statistics/",
+						"-dir=$data->{'HOME_DIR'}/statistics/ >/dev/null 2>&1",
 			TASKID	=> "AWSTATS:$data->{'DMN_NAME'}"
 		}
 	);
