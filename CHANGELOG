@@ -26,6 +26,9 @@ ENGINE:
 	- Fixed: i-MSCP network daemon should start/stop MySQL server only if installed
 	- Fixed SPF record syntax
 
+Vendor Updates:
+    - Updated Zend Framework to 1.12.1
+
 Tickets:
 	- Fixed #64:  Nice to have - PHP FPM
 	- Fixed #543: Bug - Dovecot not stopped when switching to courier
