@@ -36,6 +36,10 @@ use strict;
 use warnings;
 use iMSCP::Debug;
 use iMSCP::HooksManager;
+use iMSCP::Templator;
+use iMSCP::Dir;
+use iMSCP::File;
+use Servers::httpd;
 use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
@@ -53,7 +57,7 @@ use parent 'Common::SingletonClass';
  Register setup hook functions
 
  Param iMSCP::HooksManager instance
- Return int - 0 on success, 1 on failure
+ Return int 0 on success, 1 on failure
 
 =cut
 
@@ -79,7 +83,7 @@ sub registerSetupHooks
 
  Process install tasks.
 
- Return int - 0 on success, 1 on failure
+ Return int 0 on success, 1 on failure
 
 =cut
 
@@ -121,7 +125,7 @@ file received is not the one expected, this function will auto-register itself t
 
  Param SCALAR reference - A reference to a scalar containing file content
  Param Param SCALAR Filename
- Return int - 0 on success, 1 on failure
+ Return int 0 on success, 1 on failure
 
 =cut
 
@@ -132,9 +136,6 @@ sub installLogrotate
 	my $filename = shift;
 
 	if ($filename eq 'logrotate.conf') {
-
-		use iMSCP::Templator;
-
 		$$content = replaceBloc(
 			'# SECTION awstats BEGIN.',
 			'# SECTION awstats END.',
@@ -166,7 +167,7 @@ sub installLogrotate
 
  Hook function responsible to show awstats installer questions.
 
- Return int -  0 or 30
+ Return int 0 or 30
 
 =cut
 
@@ -225,15 +226,13 @@ Do you want activate the Awstats addon?
 
  Create awstats cache directory.
 
- Return int - 0 on success, 1 on failure
+ Return int 0 on success, 1 on failure
 
 =cut
 
 sub _makeCacheDir
 {
 	my $self = shift;
-
-	use iMSCP::Dir;
 
 	iMSCP::Dir->new(
 		dirname => $main::imscpConfig{'AWSTATS_CACHE_DIR'}
@@ -250,7 +249,7 @@ sub _makeCacheDir
 
  Create and install global awstats Apache vhost file.
 
- Return int - 0 on success, 1 on failure
+ Return int 0 on success, 1 on failure
 
 =cut
 
@@ -259,14 +258,14 @@ sub _createVhost {
 	my $self = shift;
 	my $rs = 0;
 
-	use Servers::httpd;
-
 	my $httpd = Servers::httpd->factory();
 
-	$httpd->setData({
-		AWSTATS_ENGINE_DIR => $main::imscpConfig{'AWSTATS_ENGINE_DIR'},
-		AWSTATS_WEB_DIR => $main::imscpConfig{'AWSTATS_WEB_DIR'}
-	});
+	$httpd->setData(
+		{
+			AWSTATS_ENGINE_DIR => $main::imscpConfig{'AWSTATS_ENGINE_DIR'},
+			AWSTATS_WEB_DIR => $main::imscpConfig{'AWSTATS_WEB_DIR'}
+		}
+	);
 
 	if($httpd->can('buildConfFile')){
 		$rs = $httpd->buildConfFile('01_awstats.conf');
@@ -290,7 +289,7 @@ sub _createVhost {
 
  Disable default awstats configuration file provided by awstats Debian package.
 
- Return int - 0 on success, 1 on failure
+ Return int 0 on success, 1 on failure
 
 =cut
 
@@ -299,9 +298,6 @@ sub _disableDefaultConfig
 	my $self = shift;
 
 	if(-f "$main::imscpConfig{'AWSTATS_CONFIG_DIR'}/awstats.conf") {
-
-		use iMSCP::File;
-
 		iMSCP::File->new(
 			filename => "$main::imscpConfig{'AWSTATS_CONFIG_DIR'}/awstats.conf"
 		)->moveFile(
@@ -316,7 +312,7 @@ sub _disableDefaultConfig
 
  Disable default awstats cron task provided by awstats Debian package.
 
- Return int - 0 on success, 1 on failure
+ Return int 0 on success, 1 on failure
 
 =cut
 
@@ -325,9 +321,6 @@ sub _disableDefaultCronTask
 	my $self = shift;
 
 	if(-f "$main::imscpConfig{'CRON_D_DIR'}/awstats") {
-
-		use iMSCP::File;
-
 		iMSCP::File->new(
 			filename => "$main::imscpConfig{'CRON_D_DIR'}/awstats"
 		)->moveFile(

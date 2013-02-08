@@ -35,6 +35,9 @@ package Addons::awstats;
 use strict;
 use warnings;
 use iMSCP::Debug;
+use iMSCP::HooksManager;
+use iMSCP::Templator;
+use iMSCP::File;
 use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
@@ -84,7 +87,7 @@ sub registerSetupHooks
 	my $self = shift;
 	my $hooksManager = shift;
 
-	use Addons::awstats::installer;
+	require Addons::awstats::installer;
 	Addons::awstats::installer->new()->registerSetupHooks($hooksManager);
 }
 
@@ -100,7 +103,7 @@ sub install
 {
 	my $self = shift;
 
-	use Addons::awstats::installer;
+	require Addons::awstats::installer;
 	Addons::awstats::installer->new()->install();
 }
 
@@ -117,8 +120,6 @@ sub preaddDmn
 {
 	my $self = shift;
 	my $data = shift;
-
-	use iMSCP::HooksManager;
 
 	if($main::imscpConfig{'AWSTATS_ACTIVE'} && $main::imscpConfig{'AWSTATS_ACTIVE'} =~ /^yes$/i) {
 		iMSCP::HooksManager->getInstance()->register('beforeHttpdBuildConf', sub { $self->awstatsSection(@_); });
@@ -173,8 +174,6 @@ sub preaddSub
 {
 	my $self = shift;
 	my $data = shift;
-
-	use iMSCP::HooksManager;
 
 	iMSCP::HooksManager->getInstance()->register('beforeHttpdBuildConf', sub { $self->delAwstatsSection(@_); });
 }
@@ -234,9 +233,6 @@ sub awstatsSection
 	my $filename = shift;
 
 	if($filename =~ /domain.*tpl/) {
-
-		use iMSCP::Templator;
-
 		my ($bTag, $eTag);
 
 		# Define tags for unused awstats section
@@ -289,9 +285,6 @@ sub delAwstatsSection
 	my $filename = shift;
 
 	if($filename =~ /domain.*tpl/){
-
-		use iMSCP::Templator;
-
 		my $bTag = "# SECTION awstats_support BEGIN.\n";
 		my $eTag = "# SECTION awstats_support END.\n";
 
@@ -347,12 +340,8 @@ sub _addAwstatsCfg
 {
 	my $self = shift;
 	my $data = shift;
+
 	my $rs = 0;
-
-	use iMSCP::File;
-	use iMSCP::Templator;
-	use Servers::httpd;
-
 	my $cfgFileName	= "awstats.$data->{'DMN_NAME'}.conf";
 	my $cfgFile	= "$main::imscpConfig{'AWSTATS_CONFIG_DIR'}/$cfgFileName";
 	my $tplFile	= "$self->{'tplDir'}/awstats.imscp_tpl.conf";
@@ -378,6 +367,8 @@ sub _addAwstatsCfg
 	};
 
 	$cfgFileContent = process($tags, $cfgFileContent);
+
+	require Servers::httpd;
 
 	my $httpd = Servers::httpd->factory();
 	$cfgFileContent = $httpd->buildConf($cfgFileContent);
@@ -415,9 +406,7 @@ sub _addAwstatsCron
 	my $self = shift;
 	my $data = shift;
 
-	use iMSCP::File;
-	use iMSCP::Templator;
-	use Servers::cron;
+	require Servers::cron;
 
 	Servers::cron->factory()->addTask(
 		{
@@ -450,7 +439,7 @@ sub _delAwstatsCron
 	my $self = shift;
 	my $data = shift;
 
-	use Servers::cron;
+	require Servers::cron;
 
 	Servers::cron->factory()->delTask({ TASKID	=> "AWSTATS:$data->{'DMN_NAME'}" });
 }

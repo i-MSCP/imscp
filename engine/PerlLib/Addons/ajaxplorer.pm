@@ -72,13 +72,15 @@ sub factory
 
  Run the preinstall method on the AjaxPlorer addon installer.
 
+ Return int 0 on success, other on failure
+
 =cut
 
 sub preinstall
 {
 	my $self = shift;
 
-	use Addons::ajaxplorer::installer;
+	require Addons::ajaxplorer::installer;
 	Addons::ajaxplorer::installer->new()->preinstall();
 }
 
@@ -86,7 +88,7 @@ sub preinstall
 
  Run the install method on the AjaxPlorer addon installer.
 
- Return int - 0 on success, 1 on failure
+ Return int 0 on success, 1 on failure
 
 =cut
 
@@ -94,8 +96,24 @@ sub install
 {
 	my $self = shift;
 
-	use Addons::ajaxplorer::installer;
+	require Addons::ajaxplorer::installer;
 	Addons::ajaxplorer::installer->new()->install();
+}
+
+=item setGuiPermissions()
+
+ Set AjaxPlorer files permissions.
+
+ Return int 0 on success, other on failure
+
+=cut
+
+sub setGuiPermissions
+{
+	my $self = shift;
+
+	require Addons::ajaxplorer::installer;
+	Addons::ajaxplorer::installer->new()->setGuiPermissions();
 }
 
 =back

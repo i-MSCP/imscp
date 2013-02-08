@@ -39,6 +39,7 @@ use iMSCP::Addons::ComposerInstaller;
 use iMSCP::Rights;
 use iMSCP::Execute;
 use iMSCP::File;
+use File::Basename;
 use JSON;
 use parent 'Common::SingletonClass';
 
@@ -118,7 +119,7 @@ sub install
 	}
 
 	$rs |= $self->_installFiles();		# Install roundcube files from local addon packages repository
-	$rs |= $self->_setPermissions();	# Set roundcube permissions
+	$rs |= $self->setGuiPermissions();	# Set roundcube permissions
 	$rs |= $self->_setVersion();		# Set new roundcube version
 	$rs |= $self->_createDatabase();	# Create/update roundcube database
 	$rs |= $self->_setupDatabase();		# Setup roundcube database
@@ -212,6 +213,36 @@ sub askRoundcube
 	$rs;
 }
 
+=item setGuiPermissions()
+
+ Set Roundcube files permissions.
+
+ Return int 0 on success, other on failure
+
+=cut
+
+sub setGuiPermissions
+{
+	my $self = shift;
+	my $panelUName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} . $main::imscpConfig{'SYSTEM_USER_MIN_UID'};
+	my $panelGName = $panelUName;
+	my $rootDir = $main::imscpConfig{'ROOT_DIR'};
+	my $apacheGName = $self->{'group'};
+	my $rs = 0;
+
+	$rs |= setRights(
+		"$rootDir/gui/public/tools/webmail",
+		{ 'user' => $panelUName, 'group' => $apacheGName, 'dirmode' => '0550', 'filemode' => '0440', 'recursive' => 'yes' }
+	);
+
+	$rs |= setRights(
+		"$rootDir/gui/public/tools/webmail/logs",
+		{ 'user' => $panelUName, 'group' => $panelGName, 'dirmode' => '0750', 'filemode' => '0640', 'recursive' => 'yes' }
+	);
+
+	$rs;
+}
+
 =back
 
 =head1 PRIVATE METHODS
@@ -260,10 +291,8 @@ sub _backupConfigFile
 {
 	my $self = shift;
 	my $cfgFile = shift;
+
 	my $timestamp = time;
-
-	use File::Basename;
-
 	my ($name, $path, $suffix) = fileparse($cfgFile);
 
 	if(-f $cfgFile) {
@@ -313,36 +342,6 @@ sub _installFiles
 	$rs;
 }
 
-=item _setPermissions()
-
- Set Roundcube files permissions.
-
- Return int 0 on success, other on failure
-
-=cut
-
-sub _setPermissions
-{
-	my $self = shift;
-	my $panelUName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} . $main::imscpConfig{'SYSTEM_USER_MIN_UID'};
-	my $panelGName = $panelUName;
-	my $rootDir = $main::imscpConfig{'ROOT_DIR'};
-	my $apacheGName = $self->{'group'};
-	my $rs = 0;
-
-	$rs |= setRights(
-		"$rootDir/gui/public/tools/webmail",
-		{ 'user' => $panelUName, 'group' => $apacheGName, 'dirmode' => '0550', 'filemode' => '0440', 'recursive' => 'yes' }
-	);
-
-	$rs |= setRights(
-		"$rootDir/gui/public/tools/webmail/logs",
-		{ 'user' => $panelUName, 'group' => $panelGName, 'dirmode' => '0750', 'filemode' => '0640', 'recursive' => 'yes' }
-	);
-
-	$rs;
-}
-
 =item _saveConfig()
 
  Save Roundcube configuration.
@@ -357,8 +356,6 @@ sub _saveConfig
 	my $rootUsr = $main::imscpConfig{'ROOT_USER'};
 	my $rootGrp = $main::imscpConfig{'ROOT_GROUP'};
 	my $rs = 0;
-
-	use iMSCP::File;
 
 	my $file = iMSCP::File->new(filename => "$self->{'cfgDir'}/roundcube.data");
 	my $cfg = $file->get();

@@ -34,6 +34,9 @@ package Addons::policyd::installer;
 use strict;
 use warnings;
 use iMSCP::Debug;
+use File::Basename;
+use iMSCP::File;
+use iMSCP::Execute;
 use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
@@ -51,7 +54,7 @@ See Addons::policyd for more information.
  Register setup hook functions.
 
  Param iMSCP::HooksManager instance
- Return int - 0 on success, 1 on failure
+ Return int 0 on success, 1 on failure
 
 =cut
 
@@ -71,7 +74,7 @@ sub registerSetupHooks
 
  Process policyd addon install tasks.
 
- Return int -  0 on success, other on failure
+ Return int 0 on success, other on failure
 
 =cut
 
@@ -97,7 +100,7 @@ sub install
 
  Ask user about RBL.
 
- Return int - 0;
+ Return int 0;
 
 =cut
 
@@ -141,6 +144,7 @@ sub askRBL
  Called by new(). Initialize Addons::policyd::installer instance.
 
  Return Addons::policyd::installer
+
 =cut
 
 sub _init{
@@ -169,7 +173,7 @@ sub _init{
  Backup configuration file.
 
  Param SCALAR Path of file to backup
- Return int -  0 on success, 1 on failure
+ Return int 0 on success, 1 on failure
 
 =cut
 
@@ -178,8 +182,6 @@ sub bkpConfFile
 	my $self = shift;
 	my $cfgFile = shift;
 	my $timestamp = time;
-
-	use File::Basename;
 
 	my ($name, $path, $suffix) = fileparse($cfgFile);
 
@@ -195,7 +197,7 @@ sub bkpConfFile
 
  Save configuration
 
- Return int - 0 on success, other on failure
+ Return int 0 on success, other on failure
 
 =cut
 
@@ -205,8 +207,6 @@ sub saveConf
 	my $rootUsr	= $main::imscpConfig{'ROOT_USER'};
 	my $rootGrp	= $main::imscpConfig{'ROOT_GROUP'};
 	my $rs = 0;
-
-	use iMSCP::File;
 
 	my $file = iMSCP::File->new(filename => "$self->{cfgDir}/policyd.data");
 	my $cfg = $file->get();
@@ -227,16 +227,13 @@ sub saveConf
 
  Build configuration file.
 
- Return int -  0 on success, other on failure
+ Return int 0 on success, other on failure
 
 =cut
 
 sub buildConf
 {
 	my $self = shift;
-
-	use iMSCP::Execute;
-    use File::Basename;
 
 	my $rs = 0;
 	my $uName = $self::policydConfig{'POLICYD_USER'};

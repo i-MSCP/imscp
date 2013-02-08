@@ -81,7 +81,7 @@ sub registerSetupHooks
 	my $self = shift;
 	my $hooksManager = shift;
 
-	use Addons::phpmyadmin::installer;
+	require Addons::phpmyadmin::installer;
 	Addons::phpmyadmin::installer->new()->registerSetupHooks($hooksManager);
 }
 
@@ -95,7 +95,7 @@ sub preinstall
 {
 	my $self = shift;
 
-	use Addons::phpmyadmin::installer;
+	require Addons::phpmyadmin::installer;
 	Addons::phpmyadmin::installer->new()->preinstall();
 }
 
@@ -111,8 +111,24 @@ sub install
 {
 	my $self = shift;
 
-	use Addons::phpmyadmin::installer;
+	require Addons::phpmyadmin::installer;
 	Addons::phpmyadmin::installer->new()->install();
+}
+
+=item setGuiPermissions()
+
+ Set PhpMyAdmin files permissions.
+
+ Return int - 0 on success, other on failure
+
+=cut
+
+sub setGuiPermissions
+{
+	my $self = shift;
+
+	require Addons::phpmyadmin::installer;
+	Addons::phpmyadmin::installer->new()->setGuiPermissions();
 }
 
 =back

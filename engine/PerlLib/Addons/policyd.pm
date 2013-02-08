@@ -70,7 +70,7 @@ sub factory
  Register setup hook functions.
 
  Param iMSCP::HooksManager instance
- Return int - 0 on success, 1 on failure
+ Return int 0 on success, 1 on failure
 
 =cut
 
@@ -79,7 +79,7 @@ sub registerSetupHooks
 	my $self = shift;
 	my $hooksManager = shift;
 
-	use Addons::policyd::installer;
+	require Addons::policyd::installer;
     Addons::policyd::installer->new()->registerSetupHooks($hooksManager);
 }
 
@@ -87,7 +87,7 @@ sub registerSetupHooks
 
  Run the install method on the policyd addon installer.
 
- Return int - 0 on success, 1 on failure
+ Return int 0 on success, 1 on failure
 
 =cut
 
@@ -95,7 +95,7 @@ sub install
 {
 	my $self = shift;
 
-	use Addons::policyd::installer;
+	require Addons::policyd::installer;
 	Addons::policyd::installer->new()->install();
 }
 

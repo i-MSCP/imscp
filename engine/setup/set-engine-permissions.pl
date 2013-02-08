@@ -34,28 +34,29 @@ use lib "$FindBin::Bin/../PerlVendor";
 use iMSCP::Debug;
 use iMSCP::Boot;
 
-
 newDebug('imscp-set-engine-permissions.log');
 
-sub start_up {
-
-
+sub start_up
+{
 	umask(027);
-	iMSCP::Boot->new()->init({nolock => 'yes', nodatabase => 'yes'});
+
+	iMSCP::Boot->new()->init({ 'nolock' => 'yes', 'nodatabase' => 'yes'});
 
 	0;
 }
 
-sub shut_down {
+sub shut_down
+{
+	my @warnings = getMessageByType('WARNING');
+	my @errors = getMessageByType('ERROR');
 
-	use iMSCP::Mail;
+	my $msg = "\nWARNINGS:\n" . join("\n", @warnings) . "\n" if @warnings > 0;
+	$msg .= "\nERRORS:\n" . join("\n", @errors) . "\n" if @errors > 0;
 
-	my @warnings	= getMessageByType('WARNING');
-	my @errors		= getMessageByType('ERROR');
-
-	my $msg	 = "\nWARNINGS:\n"		. join("\n", @warnings)	. "\n" if @warnings > 0;
-	$msg	.= "\nERRORS:\n"		. join("\n", @errors)	. "\n" if @errors > 0;
-	iMSCP::Mail->new()->errmsg($msg) if ($msg);
+	if($msg) {
+		require iMSCP::Mail;
+		iMSCP::Mail->new()->errmsg($msg);
+	}
 
 	0;
 }
@@ -65,33 +66,30 @@ sub set_permissions {
 	use iMSCP::Rights;
 
 	my ($rs, $server, $file, $class);
-	my $rootUName	= $main::imscpConfig{'ROOT_USER'};
-	my $rootGName	= $main::imscpConfig{'ROOT_GROUP'};
-	my $masterUName	= $main::imscpConfig{'MASTER_GROUP'};
-	my $CONF_DIR	= $main::imscpConfig{'CONF_DIR'};
-	my $ROOT_DIR	= $main::imscpConfig{'ROOT_DIR'};
-	my $LOG_DIR		= $main::imscpConfig{'LOG_DIR'};
+	my $rootUName = $main::imscpConfig{'ROOT_USER'};
+	my $rootGName = $main::imscpConfig{'ROOT_GROUP'};
+	my $masterUName = $main::imscpConfig{'MASTER_GROUP'};
+	my $CONF_DIR = $main::imscpConfig{'CONF_DIR'};
+	my $ROOT_DIR = $main::imscpConfig{'ROOT_DIR'};
+	my $LOG_DIR = $main::imscpConfig{'LOG_DIR'};
 
-	$rs |= setRights("$CONF_DIR/imscp.conf", {user => $rootUName, group => $masterUName, mode => '0660'});
-	$rs |= setRights("$CONF_DIR/imscp-db-keys", {user => $rootUName, group => $masterUName, mode => '0640'});
-	$rs |= setRights("$ROOT_DIR/engine", {user => $rootUName, group => $masterUName, mode => '0755', recursive => 'yes'});
-	$rs |= setRights($LOG_DIR, {user => $rootUName, group => $masterUName, mode => '0750'});
+	$rs |= setRights("$CONF_DIR/imscp.conf", { user => $rootUName, group => $masterUName, mode => '0660'} );
+	$rs |= setRights("$CONF_DIR/imscp-db-keys", { user => $rootUName, group => $masterUName, mode => '0640'} );
+	$rs |= setRights("$ROOT_DIR/engine", { user => $rootUName, group => $masterUName, mode => '0755', recursive => 'yes'} );
+	$rs |= setRights($LOG_DIR, { user => $rootUName, group => $masterUName, mode => '0750'} );
 
-	for(qw/named ftpd mta po httpd/){
-		$file	= "Servers/$_.pm";
-		$class	= "Servers::$_";
+	for('named', 'ftpd', 'mta', 'po', 'httpd') {
+		$file = "Servers/$_.pm";
+		$class = "Servers::$_";
 		require $file;
-		$server	= $class->factory();
-		$rs |= $server->setEnginePermissions() if($server->can('setEnginePermissions'));
+		$server = $class->factory();
+		$rs |= $server->setEnginePermissions() if $server->can('setEnginePermissions');
 	}
 
 	$rs;
 }
 
 exit 1 if start_up();
-
 exit 1 if set_permissions();
-
 exit 1 if shut_down();
-
 exit 0;

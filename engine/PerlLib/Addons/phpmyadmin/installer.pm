@@ -55,7 +55,7 @@ use parent 'Common::SingletonClass';
  Register PhpMyAdmin setup hook functions.
 
  Param iMSCP::HooksManager instance
- Return int - 0 on success, 1 on failure
+ Return int 0 on success, 1 on failure
 
 =cut
 
@@ -74,7 +74,7 @@ sub registerSetupHooks
 
  Register PhpMyAdmin composer package for installation.
 
- Return int - 0 on success, other on failure
+ Return int 0 on success, other on failure
 
 =cut
 
@@ -89,7 +89,7 @@ sub preinstall
 
  Process PhpMyAdmin addon install tasks.
 
- Return int - 0 on success, 1 on failure
+ Return int 0 on success, 1 on failure
 
 =cut
 
@@ -112,7 +112,7 @@ sub install
 	);
 
 	$rs |= $self->_installFiles();				# Install phpmyadmin files from local addon packages repository
-	$rs |= $self->_setPermissions();			# Set phpmyadmin permissions
+	$rs |= $self->setGuiPermissions();			# Set phpmyadmin permissions
 	$rs |= $self->_setupSqlUser();				# Setup phpmyadmin restricted SQL user
 	$rs |= $self->_generateBlowfishSecret();	# Generate Blowfish secret
 	$rs |= $self->_buildConfig();				# Build new configuration files
@@ -134,7 +134,7 @@ sub install
  Hook function responsible to show PhpMyAdmin installer questions.
 
  Param iMSCP::Dialog
- Return int - 0 or 30
+ Return int 0 or 30
 
 =cut
 
@@ -204,6 +204,30 @@ sub askPhpmyadmin
 	$rs;
 }
 
+=item setGuiPermissions()
+
+ Set PhpMyAdmin files permissions.
+
+ Return int 0 on success, other on failure
+
+=cut
+
+sub setGuiPermissions
+{
+	my $self = shift;
+	my $panelUName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} . $main::imscpConfig{'SYSTEM_USER_MIN_UID'};
+	my $rootDir = $main::imscpConfig{'ROOT_DIR'};
+	my $apacheGName = $self->{'group'};
+	my $rs = 0;
+
+	$rs |= setRights(
+		"$rootDir/gui/public/tools/pma",
+		{ 'user' => $panelUName, 'group' => $apacheGName, 'dirmode' => '0550', 'filemode' => '0440', 'recursive' => 'yes' }
+	);
+
+	$rs;
+}
+
 =back
 
 =head1 PRIVATE METHODS
@@ -243,7 +267,7 @@ sub _init
 
  Backup the given PhpMyAdmin configuration file.
 
- Return int - 0
+ Return int 0
 
 =cut
 
@@ -269,7 +293,7 @@ sub _backupConfigFile
 
  Install PhpMyAdmin files in production directory.
 
- Return int - 0 on success, other on failure
+ Return int 0 on success, other on failure
 
 =cut
 
@@ -304,35 +328,11 @@ sub _installFiles
 	$rs;
 }
 
-=item _setPermissions()
-
- Set PhpMyAdmin files permissions.
-
- Return int - 0 on success, other on failure
-
-=cut
-
-sub _setPermissions
-{
-	my $self = shift;
-	my $panelUName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} . $main::imscpConfig{'SYSTEM_USER_MIN_UID'};
-	my $rootDir = $main::imscpConfig{'ROOT_DIR'};
-	my $apacheGName = $self->{'group'};
-	my $rs = 0;
-
-	$rs |= setRights(
-		"$rootDir/gui/public/tools/pma",
-		{ 'user' => $panelUName, 'group' => $apacheGName, 'dirmode' => '0550', 'filemode' => '0440', 'recursive' => 'yes' }
-	);
-
-	$rs;
-}
-
 =item _saveConfig()
 
  Save PhpMyAdmin configuration.
 
- Return int - 0 on success, 1 on failure
+ Return int 0 on success, 1 on failure
 
 =cut
 
@@ -365,7 +365,7 @@ sub _saveConfig
 
  Setup PhpMyAdmin restricted SQL user.
 
- Return int - 0 on success, 1 on failure
+ Return int 0 on success, 1 on failure
 
 =cut
 
@@ -461,7 +461,7 @@ sub _setupSqlUser
 
  Generate blowfish secret for PhpMyAdmin.
 
- Return int - 0
+ Return int 0
 
 =cut
 
@@ -487,7 +487,7 @@ sub _generateBlowfishSecret
 
  Build PhpMyAdmin configuration file.
 
- Return int - 0 on success, 1 on failure
+ Return int 0 on success, 1 on failure
 
 =cut
 

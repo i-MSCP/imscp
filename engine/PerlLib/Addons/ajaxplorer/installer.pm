@@ -53,7 +53,7 @@ use parent 'Common::SingletonClass';
 
  Register AjaxPlorer composer package for installation.
 
- Return int - 0 on success, other on failure
+ Return int 0 on success, other on failure
 
 =cut
 
@@ -68,7 +68,7 @@ sub preinstall
 
  Process AjaxPlorer addon install tasks.
 
- Return int - 0 on success, 1 on failure
+ Return int 0 on success, 1 on failure
 
 =cut
 
@@ -86,7 +86,37 @@ sub install
 		? $self->{'httpd'}->getRunningGroup() : $main::imscpConfig{'ROOT_GROUP'};
 
 	$rs |= $self->_installFiles();		# Install ajaxplorer files from local addon packages repository
-	$rs |= $self->_setPermissions();	# Set ajaxplorer permissions
+	$rs |= $self->setGuiPermissions();	# Set ajaxplorer permissions
+
+	$rs;
+}
+
+=item setGuiPermissions()
+
+ Set AjaxPlorer files permissions.
+
+ Return int 0 on success, other on failure
+
+=cut
+
+sub setGuiPermissions
+{
+	my $self = shift;
+	my $panelUName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} . $main::imscpConfig{'SYSTEM_USER_MIN_UID'};
+	my $panelGName = $panelUName;
+	my $rootDir = $main::imscpConfig{'ROOT_DIR'};
+	my $apacheGName = $self->{'group'};
+	my $rs = 0;
+
+	$rs |= setRights(
+		"$rootDir/gui/public/tools/filemanager",
+		{ user => $panelUName, group => $apacheGName, dirmode => '0550', filemode => '0440', recursive => 'yes' }
+	);
+
+	$rs |= setRights(
+		"$rootDir/gui/public/tools/filemanager/data",
+		{ user => $panelUName, group => $panelGName, dirmode => '0700', filemode => '0600', recursive => 'yes' }
+	);
 
 	$rs;
 }
@@ -101,7 +131,7 @@ sub install
 
  Install AjaxPlorer files in production directory.
 
- Return int - 0 on success, other on failure
+ Return int 0 on success, other on failure
 
 =cut
 
@@ -132,36 +162,6 @@ sub _installFiles
 		error("Couldn't find the imscp/ajaxplorer package into the local repository");
 		$rs = 1;
 	}
-
-	$rs;
-}
-
-=item _setPermissions()
-
- Set AjaxPlorer files permissions.
-
- Return int - 0 on success, other on failure
-
-=cut
-
-sub _setPermissions
-{
-	my $self = shift;
-	my $panelUName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} . $main::imscpConfig{'SYSTEM_USER_MIN_UID'};
-	my $panelGName = $panelUName;
-	my $rootDir = $main::imscpConfig{'ROOT_DIR'};
-	my $apacheGName = $self->{'group'};
-	my $rs = 0;
-
-	$rs |= setRights(
-		"$rootDir/gui/public/tools/filemanager",
-		{ user => $panelUName, group => $apacheGName, dirmode => '0550', filemode => '0440', recursive => 'yes' }
-	);
-
-	$rs |= setRights(
-		"$rootDir/gui/public/tools/filemanager/data",
-		{ user => $panelUName, group => $panelGName, dirmode => '0700', filemode => '0600', recursive => 'yes' }
-	);
 
 	$rs;
 }
