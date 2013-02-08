@@ -290,7 +290,7 @@ function _admin_generateLimitsForm($tpl, &$data)
 	if ($data['max_sub_cnt'] == -1) { // Reseller has no permissions on this service
 		$tplVars['SUBDOMAIN_LIMIT_BLOCK'] = '';
 	} else {
-		$tplVars['TR_SUBDOMAINS_LIMIT'] = tr('Subdomains limit<br /><span class="italic">(-1 disabled, 0 unlimited)</span>', true);
+		$tplVars['TR_SUBDOMAINS_LIMIT'] = tr('Subdomains limit<br /><i>(-1 disabled, 0 unlimited)</i>', true);
 		$tplVars['SUBDOMAIN_LIMIT'] = tohtml($data['domain_subd_limit']);
 		$tplVars['TR_CUSTOMER_SUBDOMAINS_COMSUPTION'] =  ($data['fallback_domain_subd_limit'] != -1) ? tohtml($data['nbSubdomains']) . ' / ' . (($data['fallback_domain_subd_limit'] != 0) ? tohtml($data['fallback_domain_subd_limit']) : tr('Unlimited')) : tr('Disabled');
 		$tplVars['TR_RESELLER_SUBDOMAINS_COMSUPTION'] = tohtml($data['current_sub_cnt']) . ' / ' . (($data['max_sub_cnt'] != 0) ? tohtml($data['max_sub_cnt']) : tr('Unlimited'));
@@ -300,7 +300,7 @@ function _admin_generateLimitsForm($tpl, &$data)
 	if ($data['max_als_cnt'] == -1) { // Reseller has no permissions on this service
 		$tpl->assign('DOMAIN_ALIASES_LIMIT_BLOCK', '');
 	} else {
-		$tplVars['TR_ALIASSES_LIMIT'] = tr('Domain aliases limit<br/><span class="italic">(-1 disabled, 0 unlimited)</span>', true);
+		$tplVars['TR_ALIASSES_LIMIT'] = tr('Domain aliases limit<br/><i>(-1 disabled, 0 unlimited)</i>', true);
 		$tplVars['DOMAIN_ALIASSES_LIMIT'] = tohtml($data['domain_alias_limit']);
 		$tplVars['TR_CUSTOMER_DOMAIN_ALIASSES_COMSUPTION'] = ($data['fallback_domain_alias_limit'] != -1) ? tohtml($data['nbAliasses']) . ' / ' . (($data['fallback_domain_alias_limit'] != 0) ? tohtml($data['fallback_domain_alias_limit']) : tr('Unlimited')) : tr('Disabled');
 		$tplVars['TR_RESELLER_DOMAIN_ALIASSES_COMSUPTION'] = tohtml($data['current_als_cnt']) . ' / ' . (($data['max_als_cnt'] != 0) ? tohtml($data['max_als_cnt']) : tr('Unlimited'));
@@ -310,7 +310,7 @@ function _admin_generateLimitsForm($tpl, &$data)
 	if ($data['max_mail_cnt'] == -1) { // Reseller has no permissions on this service
 		$tplVars['MAIL_ACCOUNTS_LIMIT_BLOCK'] = '';
 	} else {
-		$tplVars['TR_MAIL_ACCOUNTS_LIMIT'] = tr('Mail accounts limit<br/><span class="italic">(-1 disabled, 0 unlimited)</span>', true);
+		$tplVars['TR_MAIL_ACCOUNTS_LIMIT'] = tr('Mail accounts limit<br/><i>(-1 disabled, 0 unlimited)</i>', true);
 		$tplVars['MAIL_ACCOUNTS_LIMIT'] = tohtml($data['domain_mailacc_limit']);
 		$tplVars['TR_CUSTOMER_MAIL_ACCOUNTS_COMSUPTION'] = ($data['fallback_domain_mailacc_limit'] != -1) ? tohtml($data['nbMailAccounts']) . ' / ' . (($data['fallback_domain_mailacc_limit'] != 0) ? tohtml($data['fallback_domain_mailacc_limit']) : tr('Unlimited')): tr('Disabled');
 		$tplVars['TR_RESELLER_MAIL_ACCOUNTS_COMSUPTION'] = tohtml($data['current_mail_cnt']) . ' / ' . (($data['max_mail_cnt'] != 0) ? tohtml($data['max_mail_cnt']) : tr('Unlimited'));
@@ -320,7 +320,7 @@ function _admin_generateLimitsForm($tpl, &$data)
 	if ($data['max_ftp_cnt'] == -1) { // Reseller has no permissions on this service
 		$tplVars['FTP_ACCOUNTS_LIMIT_BLOCK'] = '';
 	} else {
-		$tplVars['TR_FTP_ACCOUNTS_LIMIT'] = tr('FTP accounts limit <br /><span class="italic">(-1 disabled, 0 unlimited)</span>', true);
+		$tplVars['TR_FTP_ACCOUNTS_LIMIT'] = tr('FTP accounts limit <br /><i>(-1 disabled, 0 unlimited)</i>', true);
 		$tplVars['FTP_ACCOUNTS_LIMIT'] = tohtml($data['domain_ftpacc_limit']);
 		$tplVars['TR_CUSTOMER_FTP_ACCOUNTS_COMSUPTION'] = ($data['fallback_domain_ftpacc_limit'] != -1) ? tohtml($data['nbFtpAccounts']) . ' / ' . (($data['fallback_domain_ftpacc_limit'] != 0) ? tohtml($data['fallback_domain_ftpacc_limit']) : tr('Unlimited')) : tr('Disabled');
 		$tplVars['TR_RESELLER_FTP_ACCOUNTS_COMSUPTION'] = tohtml($data['current_ftp_cnt']) . ' / ' . (($data['max_ftp_cnt'] != 0) ? tohtml($data['max_ftp_cnt']) : tr('Unlimited'));
@@ -330,19 +330,19 @@ function _admin_generateLimitsForm($tpl, &$data)
 	if ($data['max_sql_db_cnt'] == -1 || $data['max_sql_user_cnt'] == -1) { // Reseller has no permissions on this service
 		$tplVars['SQL_DB_AND_USERS_LIMIT_BLOCK'] = '';
 	} else {
-		$tplVars['TR_SQL_DATABASES_LIMIT'] = tr('SQL databases limit <br /><span class="italic">(-1 disabled, 0 unlimited)</span>', true);
+		$tplVars['TR_SQL_DATABASES_LIMIT'] = tr('SQL databases limit <br /><i>(-1 disabled, 0 unlimited)</i>', true);
 		$tplVars['SQL_DATABASES_LIMIT'] = tohtml($data['domain_sqld_limit']);
 		$tplVars['TR_CUSTOMER_SQL_DATABASES_COMSUPTION'] = ($data['fallback_domain_sqld_limit'] != -1) ? tohtml($data['nbSqlDatabases']) . ' / ' .(($data['fallback_domain_sqld_limit'] != 0) ? tohtml($data['fallback_domain_sqld_limit']) : tr('Unlimited')) : tr('Disabled');
 		$tplVars['TR_RESELLER_SQL_DATABASES_COMSUPTION'] = tohtml($data['current_sql_db_cnt']) . ' / ' . (($data['max_sql_db_cnt'] != 0) ? tohtml($data['max_sql_db_cnt']) : tr('Unlimited'));
 
-		$tplVars['TR_SQL_USERS_LIMIT'] = tr('SQL users limit <br /><span class="italic">(-1 disabled, 0 unlimited)</span>', true);
+		$tplVars['TR_SQL_USERS_LIMIT'] = tr('SQL users limit <br /><i>(-1 disabled, 0 unlimited)</i>', true);
 		$tplVars['SQL_USERS_LIMIT'] = tohtml($data['domain_sqlu_limit']);
 		$tplVars['TR_CUSTOMER_SQL_USERS_COMSUPTION'] = ($data['fallback_domain_sqlu_limit'] != -1) ? tohtml($data['nbSqlUsers']) . ' / ' . (($data['fallback_domain_sqlu_limit'] != 0) ? tohtml($data['fallback_domain_sqlu_limit']) : tr('Unlimited')) : tr('Disabled');
 		$tplVars['TR_RESELLER_SQL_USERS_COMSUPTION'] = tohtml($data['current_sql_user_cnt']) . ' / ' . (($data['max_sql_user_cnt'] != 0) ? tohtml($data['max_sql_user_cnt']) : tr('Unlimited'));
 	}
 
 	// Traffic limit
-	$tplVars['TR_TRAFFIC_LIMIT'] = tr('Traffic limit [MiB]<br/><span class="italic">(0 unlimited)</span>', true);
+	$tplVars['TR_TRAFFIC_LIMIT'] = tr('Traffic limit [MiB]<br/><i>(0 unlimited)</i>', true);
 	$tplVars['TRAFFIC_LIMIT'] = tohtml($data['domain_traffic_limit']);
 
 	$tplVars['TR_CUSTOMER_TRAFFIC_COMSUPTION'] = tohtml(bytesHuman($data['domainTraffic'], 'MiB')) . ' / ' .
@@ -352,7 +352,7 @@ function _admin_generateLimitsForm($tpl, &$data)
 												 (($data['max_traff_amnt'] != 0) ? tohtml(bytesHuman($data['max_traff_amnt'] * 1048576)) : tr('Unlimited'));
 
 	// Disk space limit
-	$tplVars['TR_DISK_LIMIT'] = tr('Disk limit [MiB]<br/><span class=\"italic\">(0 unlimited)</span>', true);
+	$tplVars['TR_DISK_LIMIT'] = tr('Disk limit [MiB]<br/><i>(0 unlimited)</i>', true);
 	$tplVars['DISK_LIMIT'] = tohtml($data['domain_disk_limit']);
 
 	$tplVars['TR_CUSTOMER_DISKPACE_COMSUPTION'] = tohtml(bytesHuman($data['domain_disk_usage'], 'MiB')) . ' / ' .
@@ -420,7 +420,7 @@ function _admin_generateFeaturesForm($tpl, &$data)
 		if (!$phpEditor->checkRePerm('phpiniAllowUrlFopen')) {
 			$tplVars['PHP_EDITOR_ALLOW_URL_FOPEN_BLOCK'] = '';
 		} else {
-			$tplVars['TR_CAN_EDIT_ALLOW_URL_FOPEN'] = tr('Can edit the PHP %s directive', true, '<span class="bold">allow_url_fopen</span>');
+			$tplVars['TR_CAN_EDIT_ALLOW_URL_FOPEN'] = tr('Can edit the PHP %s directive', true, '<b>allow_url_fopen</b>');
 			$tplVars['ALLOW_URL_FOPEN_YES'] = ($phpEditor->getClPermVal('phpiniAllowUrlFopen') == 'yes') ? $htmlChecked : '';
 			$tplVars['ALLOW_URL_FOPEN_NO'] = ($phpEditor->getClPermVal('phpiniAllowUrlFopen') == 'no') ? $htmlChecked : '';
 			$permissionsBlock = true;
@@ -429,7 +429,7 @@ function _admin_generateFeaturesForm($tpl, &$data)
 		if (!$phpEditor->checkRePerm('phpiniDisplayErrors')) {
 			$tplVars['PHP_EDITOR_DISPLAY_ERRORS_BLOCK'] = '';
 		} else {
-			$tplVars['TR_CAN_EDIT_DISPLAY_ERRORS'] = tr('Can edit the PHP %s directive', true, '<span class="bold">display_errors</span>');
+			$tplVars['TR_CAN_EDIT_DISPLAY_ERRORS'] = tr('Can edit the PHP %s directive', true, '<b>display_errors</b>');
 			$tplVars['DISPLAY_ERRORS_YES'] = ($phpEditor->getClPermVal('phpiniDisplayErrors') == 'yes') ? $htmlChecked : '';
 			$tplVars['DISPLAY_ERRORS_NO'] = ($phpEditor->getClPermVal('phpiniDisplayErrors') == 'no') ? $htmlChecked : '';
 			$permissionsBlock = true;
@@ -438,7 +438,7 @@ function _admin_generateFeaturesForm($tpl, &$data)
 		if (!$phpEditor->checkRePerm('phpiniDisableFunctions') || PHP_SAPI == 'apache2handler') {
 			$tplVars['PHP_EDITOR_DISABLE_FUNCTIONS_BLOCK'] = '';
 		} else {
-			$tplVars['TR_CAN_EDIT_DISABLE_FUNCTIONS'] = tr('Can edit the PHP %s directive', true, '<span class="bold">disable_functions</span>');
+			$tplVars['TR_CAN_EDIT_DISABLE_FUNCTIONS'] = tr('Can edit the PHP %s directive', true, '<b>disable_functions</b>');
 			$tplVars['DISABLE_FUNCTIONS_YES'] = ($phpEditor->getClPermVal('phpiniDisableFunctions') == 'yes') ? $htmlChecked : '';
 			$tplVars['DISABLE_FUNCTIONS_NO'] = ($phpEditor->getClPermVal('phpiniDisableFunctions') == 'no') ? $htmlChecked : '';
 			$tplVars['TR_ONLY_EXEC'] = tr('Only exec');
@@ -450,19 +450,19 @@ function _admin_generateFeaturesForm($tpl, &$data)
 			$tplVars['PHP_EDITOR_PERMISSIONS_BLOCK'] = '';
 		}
 
-		$tplVars['TR_PHP_POST_MAX_SIZE_DIRECTIVE'] = tr('PHP %s directive', true, '<span class="bold">post_max_size</span>');
+		$tplVars['TR_PHP_POST_MAX_SIZE_DIRECTIVE'] = tr('PHP %s directive', true, '<b>post_max_size</b>');
 		$tplVars['POST_MAX_SIZE'] = tohtml($phpEditor->getDataVal('phpiniPostMaxSize'));
 
-		$tplVars['PHP_UPLOAD_MAX_FILEZISE_DIRECTIVE'] = tr('PHP %s directive', true, '<span class="bold">upload_max_filezize</span>');
+		$tplVars['PHP_UPLOAD_MAX_FILEZISE_DIRECTIVE'] = tr('PHP %s directive', true, '<b>upload_max_filezize</b>');
 		$tplVars['UPLOAD_MAX_FILESIZE'] = tohtml($phpEditor->getDataVal('phpiniUploadMaxFileSize'));
 
-		$tplVars['TR_PHP_MAX_EXECUTION_TIME_DIRECTIVE'] = tr('PHP %s directive', true, '<span class="bold">max_execution_time</span>');
+		$tplVars['TR_PHP_MAX_EXECUTION_TIME_DIRECTIVE'] = tr('PHP %s directive', true, '<b>max_execution_time</b>');
 		$tplVars['MAX_EXECUTION_TIME'] = tohtml($phpEditor->getDataVal('phpiniMaxExecutionTime'));
 
-		$tplVars['TR_PHP_MAX_INPUT_TIME_DIRECTIVE'] = tr('PHP %s directive', true, '<span class="bold">max_input_time</span>');
+		$tplVars['TR_PHP_MAX_INPUT_TIME_DIRECTIVE'] = tr('PHP %s directive', true, '<b>max_input_time</b>');
 		$tplVars['MAX_INPUT_TIME'] = tohtml($phpEditor->getDataVal('phpiniMaxInputTime'));
 
-		$tplVars['TR_PHP_MEMORY_LIMIT_DIRECTIVE'] = tr('PHP %s directive', true, '<span class="bold">memory_limit</span>');
+		$tplVars['TR_PHP_MEMORY_LIMIT_DIRECTIVE'] = tr('PHP %s directive', true, '<b>memory_limit</b>');
 		$tplVars['MEMORY_LIMIT'] = tohtml($phpEditor->getDataVal('phpiniMemoryLimit'));
 
 

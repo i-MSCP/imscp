@@ -263,7 +263,7 @@ function check_externel_events()
         unset($_SESSION['edit']);
     } elseif (isset($_SESSION['user_has_domain'])) {
         if ($_SESSION['user_has_domain'] == '_yes_') {
-            set_page_message(tr('This user has domain record.<br>First remove the domain from the system.'), 'error');
+            set_page_message(tr('This user has domain record.<br/>First remove the domain from the system.'), 'error');
         }
 
         unset($_SESSION['user_has_domain']);

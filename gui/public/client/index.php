@@ -82,7 +82,7 @@ function client_generateSupportSystemNotices()
 	$stmt = exec_query($query, $userId);
 
 	if ($stmt->fields('cnt')) {
-		set_page_message(tr('You received %d new answer(s) to your support questions.', '<span class="bold">' . $stmt->fields('cnt') . '</span>'), 'info');
+		set_page_message(tr('You received %d new answer(s) to your support questions.', '<b>' . $stmt->fields('cnt') . '</b>'), 'info');
 	}
 }
 

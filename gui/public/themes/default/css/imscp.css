@@ -361,8 +361,8 @@ h2 span, h3 span {
 p { margin: 0.5em 0;}
 
 /* other */
-.bold, strong {font-weight: bold;}
-.italic {font-style: italic;}
+.bold, strong, b {font-weight: bold;}
+.italic, i {font-style: italic;}
 
 /** Flash messages */
 .warning, .success, .error, .info {

@@ -24,9 +24,9 @@
  * Portions created by the i-MSCP Team are Copyright (C) 2010-2013 by
  * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
  *
- * @category	i-MSCP
- * @package		iMSCP_Core
- * @subpackage	Admin
+ * @category    i-MSCP
+ * @package        iMSCP_Core
+ * @subpackage    Admin
  * @copyright   2001-2006 by moleSoftware GmbH
  * @copyright   2006-2010 by ispCP | http://isp-control.net
  * @copyright   2010-2013 by i-MSCP | http://i-mscp.net
@@ -59,11 +59,15 @@ function count_requests($statusField, $tableName)
 		WHERE
 			`$statusField` IN (?, ?, ?, ?, ?, ?, ?)
 	";
-	$stmt = exec_query($query, array(
-								  $cfg->ITEM_ADD_STATUS, $cfg->ITEM_CHANGE_STATUS,
-								  $cfg->ITEM_DELETE_STATUS, $cfg->ITEM_RESTORE_STATUS,
-								  $cfg->ITEM_TOENABLE_STATUS, $cfg->ITEM_TODISABLED_STATUS,
-								  $cfg->ITEM_DNSCHANGE_STATUS));
+	$stmt = exec_query(
+		$query,
+		array(
+			$cfg->ITEM_ADD_STATUS, $cfg->ITEM_CHANGE_STATUS,
+			$cfg->ITEM_DELETE_STATUS, $cfg->ITEM_RESTORE_STATUS,
+			$cfg->ITEM_TOENABLE_STATUS, $cfg->ITEM_TODISABLED_STATUS,
+			$cfg->ITEM_DNSCHANGE_STATUS
+		)
+	);
 
 	$count = $stmt->recordCount();
 
@@ -99,30 +103,38 @@ function get_error_domains($tpl)
 		WHERE
 			`domain_status` NOT IN (?, ?, ?, ?, ?, ?, ?, ?, ?)
 	";
-	$stmt = exec_query($dmn_query, array(
-									  $ok_status, $disabled_status, $delete_status,
-									  $add_status, $restore_status, $change_status,
-									  $toenable_status, $todisable_status,
-									  $dnschange_status));
+	$stmt = exec_query(
+		$dmn_query,
+		array(
+			$ok_status, $disabled_status, $delete_status,
+			$add_status, $restore_status, $change_status,
+			$toenable_status, $todisable_status,
+			$dnschange_status
+		)
+	);
 
 	$errors = $stmt->recordCount();
 
 	if ($errors == 0) {
 		$tpl->assign(
 			array(
-				 'DOMAIN_LIST' => '',
-				 'TR_DOMAIN_MESSAGE' => tr('No domain system errors')));
+				'DOMAIN_LIST' => '',
+				'TR_DOMAIN_MESSAGE' => tr('No domain system errors')
+			)
+		);
 
 		$tpl->parse('DOMAIN_MESSAGE', 'domain_message');
 	} else {
 		while (!$stmt->EOF) {
 			$tpl->assign(
 				array(
-					 'DOMAIN_MESSAGE' => '',
-					 'TR_DOMAIN_NAME' => tohtml($stmt->fields['domain_name']),
-					 'TR_DOMAIN_ERROR' => tohtml($stmt->fields['domain_status']),
-					 'CHANGE_ID' => tohtml($stmt->fields['domain_id']),
-					 'CHANGE_TYPE' => 'domain'));
+					'DOMAIN_MESSAGE' => '',
+					'TR_DOMAIN_NAME' => tohtml($stmt->fields['domain_name']),
+					'TR_DOMAIN_ERROR' => tohtml($stmt->fields['domain_status']),
+					'CHANGE_ID' => tohtml($stmt->fields['domain_id']),
+					'CHANGE_TYPE' => 'domain'
+				)
+			);
 
 			$tpl->parse('DOMAIN_LIST', '.domain_list');
 			$stmt->moveNext();
@@ -165,17 +177,17 @@ function get_error_aliases($tpl)
 			(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
 	";
 	$stmt = exec_query($dmn_query, array(
-									  $ok_status, $disabled_status, $delete_status, $add_status,
-									  $restore_status, $change_status, $toenable_status, $todisable_status,
-									  $ordered_status, $dnschange_status));
+		$ok_status, $disabled_status, $delete_status, $add_status,
+		$restore_status, $change_status, $toenable_status, $todisable_status,
+		$ordered_status, $dnschange_status));
 
 	$errors = $stmt->recordCount();
 
 	if ($errors == 0) {
 		$tpl->assign(
 			array(
-				 'ALIAS_LIST' => '',
-				 'TR_ALIAS_MESSAGE' => tr('No domain alias system errors'),
+				'ALIAS_LIST' => '',
+				'TR_ALIAS_MESSAGE' => tr('No domain alias system errors'),
 			)
 		);
 
@@ -184,11 +196,11 @@ function get_error_aliases($tpl)
 		while (!$stmt->EOF) {
 			$tpl->assign(
 				array(
-					 'ALIAS_MESSAGE' => '',
-					 'TR_ALIAS_NAME' => tohtml($stmt->fields['alias_name']),
-					 'TR_ALIAS_ERROR' => tohtml($stmt->fields['alias_status']),
-					 'CHANGE_ID' => $stmt->fields['alias_id'],
-					 'CHANGE_TYPE' => 'alias',
+					'ALIAS_MESSAGE' => '',
+					'TR_ALIAS_NAME' => tohtml($stmt->fields['alias_name']),
+					'TR_ALIAS_ERROR' => tohtml($stmt->fields['alias_status']),
+					'CHANGE_ID' => $stmt->fields['alias_id'],
+					'CHANGE_TYPE' => 'alias',
 				)
 			);
 
@@ -231,27 +243,27 @@ function get_error_subdomains($tpl)
 			(?, ?, ?, ?, ?, ?, ?, ?)
 	";
 	$stmt = exec_query($dmn_query, array($ok_status, $disabled_status, $delete_status,
-									  $add_status, $restore_status, $change_status,
-									  $toenable_status, $todisable_status));
+		$add_status, $restore_status, $change_status,
+		$toenable_status, $todisable_status));
 
 	$errors = $stmt->recordCount();
 
 	if ($errors == 0) {
 		$tpl->assign(
 			array(
-				 'SUBDOMAIN_LIST' => '',
-				 'TR_SUBDOMAIN_MESSAGE' => tr('No subdomain system errors')));
+				'SUBDOMAIN_LIST' => '',
+				'TR_SUBDOMAIN_MESSAGE' => tr('No subdomain system errors')));
 
 		$tpl->parse('SUBDOMAIN_MESSAGE', 'subdomain_message');
 	} else {
 		while (!$stmt->EOF) {
 			$tpl->assign(
 				array(
-					 'SUBDOMAIN_MESSAGE' => '',
-					 'TR_SUBDOMAIN_NAME' => tohtml($stmt->fields['subdomain_name']),
-					 'TR_SUBDOMAIN_ERROR' => tohtml($stmt->fields['subdomain_status']),
-					 'CHANGE_ID' => $stmt->fields['subdomain_id'],
-					 'CHANGE_TYPE' => 'subdomain'));
+					'SUBDOMAIN_MESSAGE' => '',
+					'TR_SUBDOMAIN_NAME' => tohtml($stmt->fields['subdomain_name']),
+					'TR_SUBDOMAIN_ERROR' => tohtml($stmt->fields['subdomain_status']),
+					'CHANGE_ID' => $stmt->fields['subdomain_id'],
+					'CHANGE_TYPE' => 'subdomain'));
 
 			$tpl->parse('SUBDOMAIN_LIST', '.subdomain_list');
 
@@ -293,28 +305,28 @@ function get_error_alias_subdomains($tpl)
 		NOT IN
 			(?, ?, ?, ?, ?, ?, ?, ?)
 	";
-	$stmt = exec_query($dmn_query, array( $ok_status, $disabled_status, $delete_status,
-									  $add_status, $restore_status, $change_status,
-									  $toenable_status, $todisable_status));
+	$stmt = exec_query($dmn_query, array($ok_status, $disabled_status, $delete_status,
+		$add_status, $restore_status, $change_status,
+		$toenable_status, $todisable_status));
 
 	$errors = $stmt->recordCount();
 
 	if ($errors == 0) {
 		$tpl->assign(
 			array(
-				 'SUBDOMAIN_ALIAS_LIST' => '',
-				 'TR_SUBDOMAIN_ALIAS_MESSAGE' => tr('No alias subdomain system errors')));
+				'SUBDOMAIN_ALIAS_LIST' => '',
+				'TR_SUBDOMAIN_ALIAS_MESSAGE' => tr('No alias subdomain system errors')));
 
 		$tpl->parse('SUBDOMAIN_ALIAS_MESSAGE', 'subdomain_alias_message');
 	} else {
 		while (!$stmt->EOF) {
 			$tpl->assign(
 				array(
-					 'SUBDOMAIN_ALIAS_MESSAGE' => '',
-					 'TR_SUBDOMAIN_ALIAS_NAME' => tohtml($stmt->fields['subdomain_alias_name']),
-					 'TR_SUBDOMAIN_ALIAS_ERROR' => tohtml($stmt->fields['subdomain_alias_status']),
-					 'CHANGE_ID' => $stmt->fields['subdomain_alias_id'],
-					 'CHANGE_TYPE' => 'subdomain_alias'));
+					'SUBDOMAIN_ALIAS_MESSAGE' => '',
+					'TR_SUBDOMAIN_ALIAS_NAME' => tohtml($stmt->fields['subdomain_alias_name']),
+					'TR_SUBDOMAIN_ALIAS_ERROR' => tohtml($stmt->fields['subdomain_alias_status']),
+					'CHANGE_ID' => $stmt->fields['subdomain_alias_id'],
+					'CHANGE_TYPE' => 'subdomain_alias'));
 
 			$tpl->parse('SUBDOMAIN_ALIAS_LIST', '.subdomain_alias_list');
 
@@ -357,17 +369,17 @@ function get_error_mails($tpl)
 			(?, ?, ?, ?, ?, ?, ?, ?, ?)
 	";
 	$stmt = exec_query($dmn_query, array($ok_status, $disabled_status, $delete_status,
-									  $add_status, $restore_status, $change_status,
-									  $toenable_status, $todisable_status,
-									  $ordered_status));
+		$add_status, $restore_status, $change_status,
+		$toenable_status, $todisable_status,
+		$ordered_status));
 
 	$errors = $stmt->recordCount();
 
 	if ($errors == 0) {
 		$tpl->assign(
 			array(
-				 'MAIL_LIST' => '',
-				 'TR_MAIL_MESSAGE' => tr('No email account system errors')));
+				'MAIL_LIST' => '',
+				'TR_MAIL_MESSAGE' => tr('No email account system errors')));
 
 		$tpl->parse('MAIL_MESSAGE', 'mail_message');
 	} else {
@@ -459,11 +471,11 @@ function get_error_mails($tpl)
 
 			$tpl->assign(
 				array(
-					 'MAIL_MESSAGE' => '',
-					 'TR_MAIL_NAME' => tohtml($mail_acc . ($domain_name == '' ? '@ ' . tr('orphan entry') : $domain_name)),
-					 'TR_MAIL_ERROR' => tohtml($mail_status),
-					 'CHANGE_ID' => $mail_id,
-					 'CHANGE_TYPE' => 'mail'));
+					'MAIL_MESSAGE' => '',
+					'TR_MAIL_NAME' => tohtml($mail_acc . ($domain_name == '' ? '@ ' . tr('orphan entry') : $domain_name)),
+					'TR_MAIL_ERROR' => tohtml($mail_status),
+					'CHANGE_ID' => $mail_id,
+					'CHANGE_TYPE' => 'mail'));
 
 			$tpl->parse('MAIL_LIST', '.mail_list');
 
@@ -532,29 +544,29 @@ function get_error_htaccess($tpl)
 			(?, ?, ?, ?)
 	";
 	$stmt = exec_query($dmn_query, array($ok_status, $delete_status, $add_status,
-									  $change_status, $ok_status, $delete_status,
-									  $add_status, $change_status, $ok_status,
-									  $delete_status, $add_status, $change_status));
+		$change_status, $ok_status, $delete_status,
+		$add_status, $change_status, $ok_status,
+		$delete_status, $add_status, $change_status));
 
 	$errors = $stmt->recordCount();
 
 	if ($errors == 0) {
 		$tpl->assign(
 			array(
-				 'HTACCESS_LIST' => '',
-				 'TR_HTACCESS_MESSAGE' => tr('No htaccess related system errors')));
+				'HTACCESS_LIST' => '',
+				'TR_HTACCESS_MESSAGE' => tr('No htaccess related system errors')));
 
 		$tpl->parse('HTACCESS_MESSAGE', 'htaccess_message');
 	} else {
 		while (!$stmt->EOF) {
 			$tpl->assign(
 				array(
-					 'HTACCESS_MESSAGE' => '',
-					 'TR_HTACCESS_NAME' => ($stmt->fields['domain_name'] == null)
-						 ? tr('Missing domain') : tohtml($stmt->fields['domain_name']),
-					 'TR_HTACCESS_ERROR' => tohtml($stmt->fields['status']),
-					 'CHANGE_ID' => $stmt->fields['id'],
-					 'CHANGE_TYPE' => $stmt->fields['type']));
+					'HTACCESS_MESSAGE' => '',
+					'TR_HTACCESS_NAME' => ($stmt->fields['domain_name'] == null)
+						? tr('Missing domain') : tohtml($stmt->fields['domain_name']),
+					'TR_HTACCESS_ERROR' => tohtml($stmt->fields['status']),
+					'CHANGE_ID' => $stmt->fields['id'],
+					'CHANGE_TYPE' => $stmt->fields['type']));
 
 			$tpl->parse('HTACCESS_LIST', '.htaccess_list');
 
@@ -589,9 +601,14 @@ $exec_count = $exec_count + count_requests('status', 'htaccess_groups');
 $exec_count = $exec_count + count_requests('status', 'htaccess_users');
 
 if (isset($_GET['action'])) {
-	if ($_GET['action'] == 'run_engine' && $exec_count > 0) {
-		$code = send_request();
-		set_page_message(tr('Daemon returned %d as status code', $code));
+	if ($_GET['action'] == 'run_engine') {
+		if($exec_count > 0) {
+			$code = send_request();
+			set_page_message(tr('Daemon returned %d as status code', $code));
+		} else {
+			set_page_message(tr('Nothing to do. Daemon request has been canceled.', $code), 'warning');
+		}
+		redirectTo('imscp_debugger.php');
 	} elseif ($_GET['action'] == 'change_status' && (isset($_GET['id']) && isset($_GET['type']))) {
 
 		switch ($_GET['type']) {
@@ -666,13 +683,13 @@ if (isset($_GET['action'])) {
 
 		if ($stmt !== false) {
 			set_page_message(tr('Done'), 'success');
-			redirectTo('imscp_debugger.php');
 		} else {
 			/** @var $db iMSCP_Database */
 			$db = iMSCP_Registry::get('db');
 			set_page_message(tr('Unknown Error') . '<br />' . $db->errorMsg(), 'error');
-			redirectTo('imscp_debugger.php');
 		}
+
+		redirectTo('imscp_debugger.php');
 	}
 }
 
@@ -680,21 +697,21 @@ $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic(
 	array(
 		'layout' => 'shared/layouts/ui.tpl',
-		 'page' => 'admin/imscp_debugger.tpl',
-		 'page_message' => 'layout',
-		 'hosting_plans' => 'page',
-		 'domain_message' => 'page',
-		 'alias_message' => 'page',
-		 'subdomain_message' => 'page',
-		 'subdomain_alias_message' => 'page',
-		 'mail_message' => 'page',
-		 'htaccess_message' => 'page',
-		 'domain_list' => 'page',
-		 'alias_list' => 'page',
-		 'subdomain_list' => 'page',
-		 'subdomain_alias_list' => 'page',
-		 'mail_list' => 'page',
-		 'htaccess_list' => 'page'));
+		'page' => 'admin/imscp_debugger.tpl',
+		'page_message' => 'layout',
+		'hosting_plans' => 'page',
+		'domain_message' => 'page',
+		'alias_message' => 'page',
+		'subdomain_message' => 'page',
+		'subdomain_alias_message' => 'page',
+		'mail_message' => 'page',
+		'htaccess_message' => 'page',
+		'domain_list' => 'page',
+		'alias_list' => 'page',
+		'subdomain_list' => 'page',
+		'subdomain_alias_list' => 'page',
+		'mail_list' => 'page',
+		'htaccess_list' => 'page'));
 
 $errors = get_error_domains($tpl);
 $errors += get_error_aliases($tpl);
@@ -705,21 +722,21 @@ $errors += get_error_htaccess($tpl);
 
 $tpl->assign(
 	array(
-		 'TR_PAGE_TITLE' => tr('i-MSCP - Multi Server Control Panel'),
-		 'THEME_CHARSET' => tr('encoding'),
-		 'ISP_LOGO' => layout_getUserLogo(),
-		 'TR_DEBUGGER_TITLE' => tr('i-MSCP debugger'),
-		 'TR_DOMAIN_ERRORS' => tr('Domain errors'),
-		 'TR_ALIAS_ERRORS' => tr('Domain alias errors'),
-		 'TR_SUBDOMAIN_ERRORS' => tr('Subdomain errors'),
-		 'TR_SUBDOMAIN_ALIAS_ERRORS' => tr('Alias subdomain errors'),
-		 'TR_MAIL_ERRORS' => tr('Mail account errors'),
-		 'TR_HTACCESS_ERRORS' => tr('.htaccess related errors'),
-		 'TR_DAEMON_TOOLS' => tr('i-MSCP Daemon tools'),
-		 'TR_EXEC_REQUESTS' => tr('Execute requests'),
-		 'TR_CHANGE_STATUS' => tr("Set status to 'change'"),
-		 'EXEC_COUNT' => $exec_count,
-		 'TR_ERRORS' => tr('%s Errors in database', $errors)));
+		'TR_PAGE_TITLE' => tr('i-MSCP - Multi Server Control Panel'),
+		'THEME_CHARSET' => tr('encoding'),
+		'ISP_LOGO' => layout_getUserLogo(),
+		'TR_DEBUGGER_TITLE' => tr('i-MSCP debugger'),
+		'TR_DOMAIN_ERRORS' => tr('Domain errors'),
+		'TR_ALIAS_ERRORS' => tr('Domain alias errors'),
+		'TR_SUBDOMAIN_ERRORS' => tr('Subdomain errors'),
+		'TR_SUBDOMAIN_ALIAS_ERRORS' => tr('Alias subdomain errors'),
+		'TR_MAIL_ERRORS' => tr('Mail account errors'),
+		'TR_HTACCESS_ERRORS' => tr('.htaccess related errors'),
+		'TR_DAEMON_TOOLS' => tr('i-MSCP Daemon tools'),
+		'TR_EXEC_REQUESTS' => tr('Execute requests'),
+		'TR_CHANGE_STATUS' => tr("Set status to 'change'"),
+		'EXEC_COUNT' => $exec_count,
+		'TR_ERRORS' => tr('%s Errors in database', $errors)));
 
 generateNavigation($tpl);
 generatePageMessage($tpl);

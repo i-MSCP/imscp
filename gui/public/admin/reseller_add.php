@@ -199,23 +199,23 @@ function _admin_generateLimitsForm($tpl, &$data)
 	$tpl->assign(
 		array(
 			 'TR_ACCOUNT_LIMITS' => tr('Account limits'),
-			 'TR_MAX_DMN_CNT' => tr('Domains limit<br/><span class="italic">(0 unlimited)</span>', true),
+			 'TR_MAX_DMN_CNT' => tr('Domains limit<br/><i>(0 unlimited)</i>', true),
 			 'MAX_DMN_CNT' => tohtml($data['max_dmn_cnt']),
-			 'TR_MAX_SUB_CNT' => tr('Subdomains limit<br /><span class="italic">(-1 disabled, 0 unlimited)</span>', true),
+			 'TR_MAX_SUB_CNT' => tr('Subdomains limit<br /><i>(-1 disabled, 0 unlimited)</i>', true),
 			 'MAX_SUB_CNT' => tohtml($data['max_sub_cnt']),
-			 'TR_MAX_ALS_CNT' => tr('Domain aliases limit<br/><span class="italic">(-1 disabled, 0 unlimited)</span>', true),
+			 'TR_MAX_ALS_CNT' => tr('Domain aliases limit<br/><i>(-1 disabled, 0 unlimited)</i>', true),
 			 'MAX_ALS_CNT' => tohtml($data['max_als_cnt']),
-			 'TR_MAX_MAIL_CNT' => tr('Mail accounts limit<br/><span class="italic">(-1 disabled, 0 unlimited)</span>', true),
+			 'TR_MAX_MAIL_CNT' => tr('Mail accounts limit<br/><i>(-1 disabled, 0 unlimited)</i>', true),
 			 'MAX_MAIL_CNT' => tohtml($data['max_mail_cnt']),
-			 'TR_MAX_FTP_CNT' => tr('FTP accounts limit<br/><span class="italic">(-1 disabled, 0 unlimited)</span>', true),
+			 'TR_MAX_FTP_CNT' => tr('FTP accounts limit<br/><i>(-1 disabled, 0 unlimited)</i>', true),
 			 'MAX_FTP_CNT' => tohtml($data['max_ftp_cnt']),
-			 'TR_MAX_SQL_DB_CNT' => tr('SQL databases limit<br/><span class="italic">(-1 disabled, 0 unlimited)</span>', true),
+			 'TR_MAX_SQL_DB_CNT' => tr('SQL databases limit<br/><i>(-1 disabled, 0 unlimited)</i>', true),
 			 'MAX_SQL_DB_CNT' => tohtml($data['max_sql_db_cnt']),
-			 'TR_MAX_SQL_USER_CNT' => tr('SQL users limit<br/><span class="italic">(-1 disabled, 0 unlimited)</span>', true),
+			 'TR_MAX_SQL_USER_CNT' => tr('SQL users limit<br/><i>(-1 disabled, 0 unlimited)</i>', true),
 			 'MAX_SQL_USER_CNT' => tohtml($data['max_sql_user_cnt']),
-			 'TR_MAX_TRAFF_AMNT' => tr('Traffic limit [MiB]<br/><span class="italic">(0 unlimited)</span>', true),
+			 'TR_MAX_TRAFF_AMNT' => tr('Traffic limit [MiB]<br/><i>(0 unlimited)</i>', true),
 			 'MAX_TRAFF_AMNT' => tohtml($data['max_traff_amnt']),
-			 'TR_MAX_DISK_AMNT' => tr('Disk limit [MiB]<br/><span class="italic">(0 unlimited)</span>', true),
+			 'TR_MAX_DISK_AMNT' => tr('Disk limit [MiB]<br/><i>(0 unlimited)</i>', true),
 			 'MAX_DISK_AMNT' => tohtml($data['max_disk_amnt'])));
 }
 
@@ -249,27 +249,27 @@ function _admin_generateFeaturesForm($tpl, &$data)
 			'PHP_INI_SYSTEM_YES' => ($data['php_ini_system'] == 'yes') ? $htmlChecked : '',
 			'PHP_INI_SYSTEM_NO' => ($data['php_ini_system'] != 'yes') ? $htmlChecked : '',
 
-			'TR_PHP_INI_AL_ALLOW_URL_FOPEN' => tr('Can edit the PHP %s directive', true, '<span class="bold">allow_url_fopen</span>'),
+			'TR_PHP_INI_AL_ALLOW_URL_FOPEN' => tr('Can edit the PHP %s directive', true, '<b>allow_url_fopen</b>'),
 			'PHP_INI_AL_ALLOW_URL_FOPEN_YES' => ($data['php_ini_al_allow_url_fopen'] == 'yes') ? $htmlChecked : '',
 			'PHP_INI_AL_ALLOW_URL_FOPEN_NO' => ($data['php_ini_al_allow_url_fopen'] != 'yes') ? $htmlChecked : '',
 
-			'TR_PHP_INI_AL_DISPLAY_ERRORS' => tr('Can edit the PHP %s directive', true, '<span class="bold">display_errors</span>'),
+			'TR_PHP_INI_AL_DISPLAY_ERRORS' => tr('Can edit the PHP %s directive', true, '<b>display_errors</b>'),
 			'PHP_INI_AL_DISPLAY_ERRORS_YES' => ($data['php_ini_al_display_errors'] == 'yes') ? $htmlChecked : '',
 			'PHP_INI_AL_DISPLAY_ERRORS_NO' => ($data['php_ini_al_display_errors'] != 'yes') ? $htmlChecked : '',
 
-			'TR_PHP_INI_MAX_MEMORY_LIMIT' => tr('Max value for the %s PHP directive', true, '<span class="bold">memory_limit</span>'),
+			'TR_PHP_INI_MAX_MEMORY_LIMIT' => tr('Max value for the %s PHP directive', true, '<b>memory_limit</b>'),
 			'PHP_INI_MAX_MEMORY_LIMIT' => tohtml($data['php_ini_max_memory_limit']),
 
-			'TR_PHP_INI_MAX_UPLOAD_MAX_FILESIZE' => tr('Max value for the %s PHP directive', true, '<span class="bold">upload_max_filesize</span>'),
+			'TR_PHP_INI_MAX_UPLOAD_MAX_FILESIZE' => tr('Max value for the %s PHP directive', true, '<b>upload_max_filesize</b>'),
 			'PHP_INI_MAX_UPLOAD_MAX_FILESIZE' => tohtml($data['php_ini_max_upload_max_filesize']),
 
-			'TR_PHP_INI_MAX_POST_MAX_SIZE' => tr('Max value for the %s PHP directive', true, '<span class="bold">post_max_size</span>'),
+			'TR_PHP_INI_MAX_POST_MAX_SIZE' => tr('Max value for the %s PHP directive', true, '<b>post_max_size</b>'),
 			'PHP_INI_MAX_POST_MAX_SIZE' => tohtml($data['php_ini_max_post_max_size']),
 
-			'TR_PHP_INI_MAX_MAX_EXECUTION_TIME' => tr('Max value for the %s PHP directive', true, '<span class="bold">max_execution_time</span>'),
+			'TR_PHP_INI_MAX_MAX_EXECUTION_TIME' => tr('Max value for the %s PHP directive', true, '<b>max_execution_time</b>'),
 			'PHP_INI_MAX_MAX_EXECUTION_TIME' => tohtml($data['php_ini_max_max_execution_time']),
 
-			'TR_PHP_INI_MAX_MAX_INPUT_TIME' => tr('Max value for the %s PHP directive', true, '<span class="bold">max_input_time</span>'),
+			'TR_PHP_INI_MAX_MAX_INPUT_TIME' => tr('Max value for the %s PHP directive', true, '<b>max_input_time</b>'),
 			'PHP_INI_MAX_MAX_INPUT_TIME' => tohtml($data['php_ini_max_max_input_time']),
 
 			'TR_SOFTWARES_INSTALLER' => tr('Softwares installer'),
@@ -298,7 +298,7 @@ function _admin_generateFeaturesForm($tpl, &$data)
 		if(PHP_SAPI != 'apache2handler') {
 			$tpl->assign(
 				array(
-					'TR_PHP_INI_AL_DISABLE_FUNCTIONS' => tr('Can edit the PHP %s directive', true, '<span class="bold">disable_functions</span>'),
+					'TR_PHP_INI_AL_DISABLE_FUNCTIONS' => tr('Can edit the PHP %s directive', true, '<b>disable_functions</b>'),
 					'PHP_INI_AL_DISABLE_FUNCTIONS_YES' => ($data['php_ini_al_disable_functions'] == 'yes') ? $htmlChecked : '',
 					'PHP_INI_AL_DISABLE_FUNCTIONS_NO' => ($data['php_ini_al_disable_functions'] != 'yes') ? $htmlChecked : ''));
 		} else {
@@ -401,7 +401,7 @@ function admin_checkAndCreateResellerAccount()
 		$stmt = exec_query($query, $data['admin_name']);
 
 		if ($stmt->fields['usernameExist']) {
-			set_page_message(tr("The username %s is not available.", true, '<span class="bold">' . $data['admin_name'] . '</span>'), 'error');
+			set_page_message(tr("The username %s is not available.", true, '<b>' . $data['admin_name'] . '</b>'), 'error');
 			$errFieldsStack[] = 'admin_name';
 		} elseif(!validates_username($data['admin_name'])) {
 			set_page_message(tr('Incorrect username length or syntax.'), 'error');
@@ -624,7 +624,7 @@ function admin_checkAndCreateResellerAccount()
 				$_SESSION['user_id'], $data['admin_name'], $data['password'],
 				$data['email'], $data['fname'], $data['lname'], tr('Reseller'));
 
-			write_log("A new reseller account (<span class=\"bold\">{$data['admin_name']}</span>) has been created by {$_SESSION['user_logged']}", E_USER_NOTICE);
+			write_log("A new reseller account (<b>{$data['admin_name']}</b>) has been created by {$_SESSION['user_logged']}", E_USER_NOTICE);
 
 			set_page_message(tr('Reseller account successfully created.'), 'success');
 

@@ -298,7 +298,7 @@ function gen_page_dmn_mail_list($tpl, $dmn_id, $dmn_name) {
 					$userquotamax = formatBytes($userquotamax);
 				}
 				$userquota= formatBytes($userquota);
-				$txt_quota = $userquota . " / " . $userquotamax . "<br>" . $userquotapercent . " %";
+				$txt_quota = $userquota . " / " . $userquotamax . "<br/>" . $userquotapercent . " %";
 			}
 
 			$tpl->assign(
@@ -460,7 +460,7 @@ function gen_page_sub_mail_list($tpl, $dmn_id, $dmn_name) {
 					$userquotamax = formatBytes($userquotamax);
 				}
 				$userquota= formatBytes($userquota);
-				$txt_quota = $userquota . " / " . $userquotamax . "<br>" . $userquotapercent . " %";
+				$txt_quota = $userquota . " / " . $userquotamax . "<br/>" . $userquotapercent . " %";
 			}
 
 			$tpl->assign(
@@ -622,7 +622,7 @@ function gen_page_als_sub_mail_list($tpl, $dmn_id, $dmn_name) {
 					$userquotamax = formatBytes($userquotamax);
 				}
 				$userquota= formatBytes($userquota);
-				$txt_quota = $userquota . " / " . $userquotamax . "<br>" . $userquotapercent . " %";
+				$txt_quota = $userquota . " / " . $userquotamax . "<br/>" . $userquotapercent . " %";
 			}
 
 			$tpl->assign(
@@ -775,7 +775,7 @@ function gen_page_als_mail_list($tpl, $dmn_id, $dmn_name) {
 					$userquotamax = formatBytes($userquotamax);
 				}
 				$userquota= formatBytes($userquota);
-				$txt_quota = $userquota . " / " . $userquotamax . "<br>" . $userquotapercent . " %";
+				$txt_quota = $userquota . " / " . $userquotamax . "<br/>" . $userquotapercent . " %";
 			}
 
 			$tpl->assign(
