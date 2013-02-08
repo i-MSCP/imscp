@@ -589,7 +589,7 @@ sub buildMasterVhostFiles
 		$httpd->enableSite('00_master.conf 00_master_ssl.conf') and return 1;
 	} else {
 		$httpd->enableSite('00_master.conf') and return 1;
-		$httpd->disableSite('00_master_ssl.conf' and return 1);
+		$httpd->disableSite('00_master_ssl.conf');
 	}
 
 	# Disable defaults sites if exists
