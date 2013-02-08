@@ -180,6 +180,18 @@ if (isset($_POST['month']) && isset($_POST['year'])) {
 	$year = date('y');
 }
 
+// Retrieve small timestamp to define max number of years to show in select element
+$stmt = exec_query(
+	'SELECT `dtraff_time` FROM `domain_traffic` WHERE `domain_id` = ? ORDER BY `dtraff_time` ASC LIMIT 1', $domainId
+);
+
+if($stmt->recordCount()) {
+	$numberYears = date('y') - date('y', $stmt->fields['dtraff_time']);
+	$numberYears = $numberYears == 0 ? 1 : $numberYears;
+} else {
+	$numberYears = 1;
+}
+
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic(
 	array(
@@ -212,7 +224,7 @@ $tpl->assign(
 		'TR_DAY' => tr('Day')));
 
 generateNavigation($tpl);
-generateSelectListForMonthsAndYears($tpl, $month, $year);
+generateSelectListForMonthsAndYears($tpl, $month, $year, $numberYears);
 admin_generatePage($tpl, $domainId, $month, $year);
 generatePageMessage($tpl);
 

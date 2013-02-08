@@ -87,7 +87,7 @@ function admin_generatePage($tpl, $month, $year)
 	$query = "SELECT `bytes_in` FROM `server_traffic` WHERE `traff_time` > ? AND `traff_time` < ? LIMIT 1";
 	$stmt = exec_query($query, array(getFirstDayOfMonth($month, $year), getLastDayOfMonth($month, $year)));
 
-	if ($stmt->rowCount()) { // Statistic were found the the period
+	if ($stmt->rowCount()) { // Statistic were found for the period
 		if ($month == date('m') && $year == date('y')) { // Statistics needed only from begin of month to today
 			$curday = date('j');
 		} else { // Statistics needed for entire month
@@ -176,6 +176,16 @@ if (isset($_GET['month']) && isset($_GET['year'])) {
 	$year = date('y');
 }
 
+// Retrieve small timestamp to define max number of years to show in select element
+$stmt = exec_query('SELECT `traff_time` FROM `server_traffic`  ORDER BY `traff_time` ASC LIMIT 1');
+
+if($stmt->recordCount()) {
+	$numberYears = date('y') - date('y', $stmt->fields['traff_time']);
+	$numberYears = $numberYears == 0 ? 1 : $numberYears;
+} else {
+	$numberYears = 1;
+}
+
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic(
 	array(
@@ -214,7 +224,7 @@ $tpl->assign(
 );
 
 generateNavigation($tpl);
-generateSelectListForMonthsAndYears($tpl, $month, $year);
+generateSelectListForMonthsAndYears($tpl, $month, $year, $numberYears);
 admin_generatePage($tpl, $month, $year);
 generatePageMessage($tpl);
 

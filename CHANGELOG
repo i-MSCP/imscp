@@ -47,6 +47,7 @@ Tickets:
 	- Fixed #599: Bug - Ubuntu auto-installer adapter is broken
 	- Fixed #603 Bug - Awstats Addon - cron task is sending messages to stdout
 	- Fixed #604: Bug - insserv - Script imscp_network is broken: incomplete LSB comment
+	- Fixed #607: Bug - History of customer stats is limited to 3 years
 
 -------------------------------------------------------------------------------------
 i-MSCP 1.1.0-rc1.4
