@@ -41,7 +41,7 @@
 			});
 
 			// Disable enter key for form submission (really needed ?)
-			$(':input').live('keypress', function(e){
+			$(':input').on('keypress', function(e){
 				if(e.keyCode==13){
 					e.preventDefault();
 					$('#dialog_box').dialog("option", "title", '{TR_NOTICE}').html('<br />{TR_EVENT_NOTICE}');

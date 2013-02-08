@@ -5,16 +5,6 @@ i-MSCP ChangeLog
 i-MSCP Git Master
 -------------------------------------------------------------------------------------
 
-SETUP:
-	- Added support for external repositories (Debian/Ubuntu)
-	- Fixed: APT packages manager must be configured before any package installation
-	- Fixed: All mysql secure installation tasks are now done by the i-MSCP installer
-	- Fixed: Allow usage of remote mysql server
-	- Fixed: Allow per item reconfiguration
-	- Fixed: Duplicate entries in sources.list file (Ubuntu)
-	- Fixed: Do not show any dialog when --noprompt option is used
-	- Fixed: Uninstall unneeded packages when switching to another server
-
 CONFIGS:
 	- Added MariaDb support
 	- Fixed: Remove useless sections in Apache configuration files
@@ -26,8 +16,23 @@ ENGINE:
 	- Fixed: i-MSCP network daemon should start/stop MySQL server only if installed
 	- Fixed SPF record syntax
 
-Vendor Updates:
-    - Updated Zend Framework to 1.12.1
+GUI:
+	- Updated iMSCP jQuery tooltip plugin according jQuery library changes
+
+SETUP:
+	- Added support for external repositories (Debian/Ubuntu)
+	- Fixed: APT packages manager must be configured before any package installation
+	- Fixed: All mysql secure installation tasks are now done by the i-MSCP installer
+	- Fixed: Allow usage of remote mysql server
+	- Fixed: Allow per item reconfiguration
+	- Fixed: Duplicate entries in sources.list file (Ubuntu)
+	- Fixed: Do not show any dialog when --noprompt option is used
+	- Fixed: Uninstall unneeded packages when switching to another server
+
+VENDOR:
+	- Updated jQuery to 1.9.1
+	- Updated jQuery UI to 1.10.0
+	- Updated Zend Framework to 1.12.1
 
 Tickets:
 	- Fixed #64:  Nice to have - PHP FPM

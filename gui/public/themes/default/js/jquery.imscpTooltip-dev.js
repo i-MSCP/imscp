@@ -21,7 +21,7 @@
  * @copyright   2010-2013 by i-MSCP | http://i-mscp.net
  * @link        http://i-mscp.net
  * @author      Laurent Declercq <l.declercq@nuxwin.com>
- * @version 0.0.2
+ * @version 0.0.3
  */
 (function ($) {
 
@@ -35,7 +35,7 @@
 		// flag for mouse tracking
 		followCursor = true, // TODO Something goes wrong here
 		// IE 5.5 or 6
-		IE = $.browser.msie && /MSIE\s(5\.5|6\.)/.test(navigator.userAgent);
+		IE = $.support.cssFloat && /MSIE\s(5\.5|6\.)/.test(navigator.userAgent);
 
 	$.imscpTooltip = {
 		defaultsSettings:{ // Default getSettings
