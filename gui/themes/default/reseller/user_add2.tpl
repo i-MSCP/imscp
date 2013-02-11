@@ -152,19 +152,6 @@
 				<tr>
 					<th colspan="2">{TR_FEATURES}</th>
 				</tr>
-                <!-- BDP: ext_mail_feature -->
-                <tr>
-                    <td>{TR_EXTMAIL}</td>
-                    <td>
-                        <div class="radio">
-                            <input type="radio" id="extmail_yes" name="external_mail" value="_yes_" {VL_EXTMAILY} />
-                            <label for="extmail_yes">{TR_YES}</label>
-                            <input type="radio" id="extmail_no" name="external_mail"  value="_no_" {VL_EXTMAILN} />
-                            <label for="extmail_no">{TR_NO}</label>
-                        </div>
-                    </td>
-                </tr>
-                <!-- EDP: ext_mail_feature -->
 				<tr>
 					<td>{TR_PHP}</td>
 					<td>
@@ -301,6 +288,19 @@
 						</div>
 					</td>
 				</tr>
+                <!-- BDP: ext_mail_feature -->
+                <tr>
+                    <td>{TR_EXTMAIL}</td>
+                    <td>
+                        <div class="radio">
+                            <input type="radio" id="extmail_yes" name="external_mail" value="_yes_" {VL_EXTMAILY} />
+                            <label for="extmail_yes">{TR_YES}</label>
+                            <input type="radio" id="extmail_no" name="external_mail"  value="_no_" {VL_EXTMAILN} />
+                            <label for="extmail_no">{TR_NO}</label>
+                        </div>
+                    </td>
+                </tr>
+                <!-- EDP: ext_mail_feature -->
 				<!-- BDP: aps_feature -->
 				<tr>
 					<td>{TR_SOFTWARE_SUPP}</td>

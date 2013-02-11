@@ -51,12 +51,9 @@
 
 			// Workaround to prevent click event on readonly input (and their labels)
 			$('input, label').click(function(e){
-				if(this.type==undefined) {
-					var id = $(this).attr('for');
-					if($('#'+id).is('[readonly]')) {
-						e.preventDefault();
-					}
-				} else if($(this).attr('title') == '') {e.preventDefault();}
+				if(this.type == 'checkbox' && $(this).is('[readonly]')) {
+					e.preventDefault();
+				}
 			});
 
 			// PHP Editor settings dialog
@@ -65,7 +62,7 @@
 				bgiframe: true,
 				hide:'blind', show:'slide', focus:false, autoOpen:false, width:700, modal:true, dialogClass:'body',
 				buttons:{'{TR_CLOSE}':function(){$(this).dialog('close');}},
-				//create: function(){$('.input').button();},
+                create: function(){$('.ui-buttonset').buttonset();},
 				open: function(){$('input[type=radio]').blur();}
 			});
 
@@ -248,7 +245,7 @@
 								<tr>
 									<td>{TR_PHP_INI_AL_ALLOW_URL_FOPEN}<span class="permission_help icon i_help" title="{TR_PHP_INI_PERMISSION_HELP}">{TR_HELP}</span></td>
 									<td>
-										<div class="ui-buttonset">
+                                        <div class="ui-buttonset">
 											<input type="radio" name="php_ini_al_allow_url_fopen" id="php_ini_al_allow_url_fopen_yes" value="yes" {PHP_INI_AL_ALLOW_URL_FOPEN_YES}/>
 											<label for="php_ini_al_allow_url_fopen_yes">{TR_YES}</label>
 											<input type="radio" name="php_ini_al_allow_url_fopen" id="php_ini_al_allow_url_fopen_no" value="no" {PHP_INI_AL_ALLOW_URL_FOPEN_NO}/>
@@ -280,8 +277,6 @@
 									</td>
 								</tr>
 								<!-- EDP: php_editor_disable_functions_block -->
-							</table>
-							<table>
 								<tr class="description">
 									<th colspan="2">{TR_DIRECTIVES_VALUES}</th>
 								</tr>

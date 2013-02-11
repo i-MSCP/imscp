@@ -217,7 +217,7 @@ if (!isset($domainId)) {
 	redirectTo('user_statistics.php');
 }
 
-// Retrieve small timestamp to define max number of years to show in select element
+// Retrieve smaller timestamp to define max number of years to show in select element
 $stmt = exec_query(
 	'SELECT `dtraff_time` FROM `domain_traffic` WHERE `domain_id` = ? ORDER BY `dtraff_time` ASC LIMIT 1', $domainId
 );

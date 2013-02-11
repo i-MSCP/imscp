@@ -176,7 +176,6 @@ function &reseller_getData($domainId, $forUpdate = false, $recoveryMode = false)
 			$subCount, $alsCount, $mailCount, $ftpCount, $sqlDbCount, $sqlUsersCount
 		) = get_domain_running_props_cnt($domainId);
 
-
 		$data['nbSubdomains'] = $subCount;
 		$data['nbAliasses'] = $alsCount;
 		$data['nbMailAccounts'] = $mailCount;
@@ -884,20 +883,24 @@ function reseller_checkAndUpdateData($domainId, $recoveryMode = false)
 				WHERE
 					`domain_id` = ?
 			";
-			exec_query($query, array(
-									$data['domain_expires'], time(), $data['domain_mailacc_limit'],
-									$data['domain_ftpacc_limit'], $data['domain_traffic_limit'],
-									$data['domain_sqld_limit'], $data['domain_sqlu_limit'],
-									($daemonRequest) ? $cfg->ITEM_CHANGE_STATUS : $cfg->ITEM_OK_STATUS,
-									$data['domain_alias_limit'], $data['domain_subd_limit'],
-									$data['domain_disk_limit'], $data['domain_php'], $data['domain_cgi'],
-									$data['allowbackup'], $data['domain_dns'],
-									$data['domain_software_allowed'], $phpEditor->getClPermVal('phpiniSystem'),
-									$phpEditor->getClPermVal('phpiniAllowUrlFopen'),
-									$phpEditor->getClPermVal('phpiniDisplayErrors'),
-									$phpEditor->getClPermVal('phpiniDisableFunctions'),
-                                    $data['domain_external_mail'],
-									$domainId));
+			exec_query(
+				$query,
+				array(
+					$data['domain_expires'], time(), $data['domain_mailacc_limit'],
+					$data['domain_ftpacc_limit'], $data['domain_traffic_limit'],
+					$data['domain_sqld_limit'], $data['domain_sqlu_limit'],
+					($daemonRequest) ? $cfg->ITEM_CHANGE_STATUS : $cfg->ITEM_OK_STATUS,
+					$data['domain_alias_limit'], $data['domain_subd_limit'],
+					$data['domain_disk_limit'], $data['domain_php'], $data['domain_cgi'],
+					$data['allowbackup'], $data['domain_dns'],
+					$data['domain_software_allowed'], $phpEditor->getClPermVal('phpiniSystem'),
+					$phpEditor->getClPermVal('phpiniAllowUrlFopen'),
+					$phpEditor->getClPermVal('phpiniDisplayErrors'),
+					$phpEditor->getClPermVal('phpiniDisableFunctions'),
+					$data['domain_external_mail'],
+					$domainId
+				)
+			);
 
 			iMSCP_Events_Manager::getInstance()->dispatch(
 				iMSCP_Events::onAfterEditDomain, array('domainId' => $domainId)

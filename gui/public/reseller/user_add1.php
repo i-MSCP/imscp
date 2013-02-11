@@ -200,29 +200,38 @@ function get_hp_data_list($tpl, $reseller_id)
 			$tpl->assign('ADD_CUSTOMER_BLOCK', '');
 		}
 	} else {
-		$query = "
-			SELECT `id`, `name`, `props`, `status` FROM `hosting_plans` WHERE `reseller_id` = ? ORDER BY `name`";
-			$stmt = exec_query($query, $reseller_id);
+		$query = "SELECT `id`, `name`, `props`, `status` FROM `hosting_plans` WHERE `reseller_id` = ? ORDER BY `name`";
+		$stmt = exec_query($query, $reseller_id);
 	}
 
 	if ($stmt->rowCount()) {
-		while (($data = $stmt->fetchRow())) {
-			list(, , , , , , , , , , , , $hp_allowsoftware) = explode(';', $data['props']);
+		$hasHostingPlan = false;
 
-			if ($hp_allowsoftware == '_no_' || $hp_allowsoftware == '' || $hp_allowsoftware == '_yes_' &&
-				get_reseller_sw_installer($reseller_id) == 'yes'
+		while (($data = $stmt->fetchRow())) {
+			list(,,,,,,,,,,,,$hp_allowsoftware) = explode(';', $data['props']);
+
+			if (
+				$hp_allowsoftware == '_no_' || $hp_allowsoftware == '' ||
+				($hp_allowsoftware == '_yes_' && get_reseller_sw_installer($reseller_id) == 'yes')
 			) {
+				$hasHostingPlan = true;
 				$dmn_chp = isset($dmn_chp) ? $dmn_chp : $data['id'];
 				$tpl->assign(
 					array(
 						'HP_NAME' => tohtml($data['name']),
 						'CHN' => $data['id'],
-						'CH' . $data['id'] => ($data['id'] == $dmn_chp) ? $cfg->HTML_SELECTED : ''));
+						'CH' . $data['id'] => ($data['id'] == $dmn_chp) ? $cfg->HTML_SELECTED : '')
+				);
 
 				$tpl->parse('HOSTING_PLAN_ENTRY_BLOCK', '.hosting_plan_entry_block');
 			}
 		}
-	} else {
+
+		if(! $hasHostingPlan) {
+			set_page_message(tr('No hosting plan available for purchasing. Please contact your system administrator.'), 'error');
+			$tpl->assign('ADD_CUSTOMER_BLOCK', '');
+		}
+ 	} else {
 		$tpl->assign('HOSTING_PLAN_ENTRIES_BLOCK', '');
 	}
 }
@@ -267,7 +276,9 @@ $tpl->assign(
 		'TR_YES' => tr('yes'),
 		'TR_NO' => tr('no'),
 		'TR_NEXT_STEP' => tr('Next step'),
-		'TR_DMN_HELP' => tr("You do not need 'www.' i-MSCP will add it automatically.")));
+		'TR_DMN_HELP' => tr("You do not need 'www.' i-MSCP will add it automatically.")
+	)
+);
 
 generateNavigation($tpl);
 

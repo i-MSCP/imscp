@@ -17,6 +17,12 @@ ENGINE:
 	- Fixed SPF record syntax
 
 GUI:
+	- Added option allowing to disconnect an user without removing its session (admin/session_manage.php)
+	- Enhancement: Improved layout (admin/settings.php page)
+	- Fixed: External mail server option not implemented in admin/domain_edit.page
+	- Fixed: i18n issues in reseller_add.php and reseller_edit.php pages
+	- Fixed: Sessions not killed (admin/session_manage.php)
+	- Fixed: Unable to display the domain_edit.php/reseller_edit.php pages in some context (SQL queries too big)
 	- Updated iMSCP jQuery tooltip plugin according jQuery library changes
 
 SETUP:

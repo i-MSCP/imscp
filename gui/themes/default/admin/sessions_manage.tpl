@@ -9,7 +9,10 @@
 				<tr>
 					<td>{ADMIN_USERNAME}</td>
 					<td>{LOGIN_TIME}</td>
-					<td><a href="{KILL_LINK}" class="icon i_delete">{TR_DELETE}</a></td>
+					<td>
+						<a href="{DISCONNECT_LINK}" class="icon i_delete">{TR_DISCONNECT}</a>
+						<a href="{KILL_LINK}" class="icon i_delete">{TR_KILL}</a>
+					</td>
 				</tr>
 				<!-- EDP: user_session -->
 			</table>

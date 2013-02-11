@@ -76,6 +76,8 @@ h2 span, h3 span {border-bottom-color: rgb(204, 204, 204);}
 
 /* Tables */
 tr:nth-child(odd) {background-color: rgb(237, 237, 237);}
+
+.even {background:rgb(255,255,255);}
 .odd {background-color: rgb(237, 237, 237);}
 
 td {

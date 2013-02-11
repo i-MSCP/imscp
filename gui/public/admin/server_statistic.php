@@ -176,7 +176,7 @@ if (isset($_GET['month']) && isset($_GET['year'])) {
 	$year = date('y');
 }
 
-// Retrieve small timestamp to define max number of years to show in select element
+// Retrieve smaller timestamp to define max number of years to show in select element
 $stmt = exec_query('SELECT `traff_time` FROM `server_traffic`  ORDER BY `traff_time` ASC LIMIT 1');
 
 if($stmt->recordCount()) {

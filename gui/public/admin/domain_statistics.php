@@ -180,7 +180,7 @@ if (isset($_POST['month']) && isset($_POST['year'])) {
 	$year = date('y');
 }
 
-// Retrieve small timestamp to define max number of years to show in select element
+// Retrieve smaller timestamp to define max number of years to show in select element
 $stmt = exec_query(
 	'SELECT `dtraff_time` FROM `domain_traffic` WHERE `domain_id` = ? ORDER BY `dtraff_time` ASC LIMIT 1', $domainId
 );

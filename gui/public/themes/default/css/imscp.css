@@ -364,6 +364,8 @@ p { margin: 0.5em 0;}
 .bold, strong, b {font-weight: bold;}
 .italic, i {font-style: italic;}
 
+small {font-size:smaller;}
+
 /** Flash messages */
 .warning, .success, .error, .info {
 	margin: 0.5em 0 1.5em 0;
@@ -866,9 +868,40 @@ textarea {
 }
 #box a:hover {text-decoration: underline;}
 
-/* ftp choose directory page*/
+/* ftp choose directory page */
 .ftp_choose_dir {min-width: 0;}
 .ftp_choose_dir #messageContainer {
 	margin-top: 0.5em;
 	height: auto;
 }
+
+/* Accordion */
+
+/*
+#package_details {
+    width:550px;
+}
+
+.accordion tr {
+    background: transparent;
+    border: none;
+    padding: 0;
+}
+
+.accordion tr td {
+    border: none;
+    margin: 0;
+    padding: 0;
+}
+*/
+
+.accordion .left {
+    width: 35%;
+    position: relative;
+    display:inline-block;
+    vertical-align:middle;
+    margin:10px 13px;
+}
+
+.accordion .right {display:inline-block; vertical-align:middle;}
+.accordion .even, .accordion .odd { width:100%;}

@@ -549,7 +549,7 @@ switch ($cfg->LOG_LEVEL) {
 $tpl->assign(
 	array(
 		 'THEME_CHARSET' => tr('encoding'),
-		 'TR_PAGE_TITLE' => tr('i-MSCP - Admin/Settings'),
+		 'TR_PAGE_TITLE' => tr('i-MSCP - Admin / Settings'),
 		 'ISP_LOGO' => layout_getUserLogo(),
 		 'TR_UPDATES' => tr('Updates'),
 		 'LOSTPASSWORD_TIMEOUT_VALUE' => $cfg->LOSTPASSWORD_TIMEOUT,
@@ -574,15 +574,15 @@ $tpl->assign(
 		 'TR_SETTINGS' => tr('Settings'),
 		 'TR_MESSAGE' => tr('Message'),
 		 'TR_LOSTPASSWORD' => tr('Lost password'),
-		 'TR_LOSTPASSWORD_TIMEOUT' => tr('Activation link expire time (minutes)'),
+		 'TR_LOSTPASSWORD_TIMEOUT' => tr('Activation link expire time <small>(In minutes)</small>'),
 		 'TR_PASSWORD_SETTINGS' => tr('Password settings'),
 		 'TR_PASSWD_STRONG' => tr('Use strong Passwords'),
 		 'TR_PASSWD_CHARS' => tr('Password length'),
 		 'TR_BRUTEFORCE' => tr('Bruteforce detection'),
 		 'TR_BRUTEFORCE_BETWEEN' => tr('Blocking time between logins and captcha attempts'),
 		 'TR_BRUTEFORCE_MAX_LOGIN' => tr('Max number of login attempts'),
-		 'TR_BRUTEFORCE_BLOCK_TIME' => tr('Blocktime (minutes)'),
-		 'TR_BRUTEFORCE_BETWEEN_TIME' => tr('Blocking time between login/captcha attempts (seconds)'),
+		 'TR_BRUTEFORCE_BLOCK_TIME' => tr('Blocktime <small>(in minutes)</small>'),
+		 'TR_BRUTEFORCE_BETWEEN_TIME' => tr('Blocking time between login/captcha attempts <small>(In seconds)</small>'),
 		 'TR_BRUTEFORCE_MAX_CAPTCHA' => tr('Maximum number of captcha validation attempts'),
 		 'TR_BRUTEFORCE_MAX_ATTEMPTS_BEFORE_WAIT' => tr('Maximum number of validation attempts before waiting restriction intervenes'),
 		 'TR_OTHER_SETTINGS' => tr('Other settings'),
@@ -619,7 +619,7 @@ $tpl->assign(
 		 'TR_TLD_STRICT_VALIDATION_HELP' => tr('Only Top Level Domains (TLD) listed in IANA root zone database can be used.'),
 		 'TR_SLD_STRICT_VALIDATION' => tr('Second Level Domain name strict validation'),
 		 'TR_SLD_STRICT_VALIDATION_HELP' => tr('Single letter Second Level Domains (SLD) are not allowed under the most Top Level Domains (TLD). There is a small list of exceptions, e.g. the TLD .de.'),
-		 'TR_MAX_DNAMES_LABELS' => tr('Maximal number of labels for domain names<br />(<small>Excluding SLD & TLD</small>)'),
+		 'TR_MAX_DNAMES_LABELS' => tr('Maximal number of labels for domain names (<small>Excluding SLD & TLD</small>)'),
 		 'TR_MAX_SUBDNAMES_LABELS' => tr('Maximum number of labels for subdomains'),
 		 'TR_PHPINI_BASE_SETTINGS' => tr('PHP Settings (system default)'),
 		 'TR_PHPINI_ALLOW_URL_FOPEN' => tr('Value for the %s directive', true, '<b>allow_url_fopen</b>'),
@@ -638,9 +638,11 @@ $tpl->assign(
 		 'TR_PHPINI_OPEN_BASEDIR_TOOLTIP' => json_encode(tr('Paths are appended to the default PHP open_basedir directive of customers. Each of them must be separated by PATH_SEPARATOR. See the PHP documentation for more information.')),
 		 'TR_PHPINI_DISABLE_FUNCTIONS' => tr('Value for the %s directive', true, '<b>disable_functions</b>'),
 		 'TR_ORDERS_SETTINGS' => tr('Orders settings'),
-		 'TR_ORDERS_EXPIRE_TIME' => tr('Expire time for unconfirmed orders<br /><small>(In days)</small>', true),
+		 'TR_ORDERS_EXPIRE_TIME' => tr('Expire time for unconfirmed orders <small>(In days)</small>', true),
 		 'TR_MIB' => tr('MiB'),
-		 'TR_SEC' => tr('Sec.')));
+		 'TR_SEC' => tr('Sec.')
+	)
+);
 
 generateNavigation($tpl);
 gen_def_language($tpl, $cfg->USER_INITIAL_LANG);

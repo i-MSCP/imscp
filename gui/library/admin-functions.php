@@ -44,124 +44,123 @@ function get_sql_user_count()
 }
 
 /**
- * Returns reseller user's properties.
+ * Returns the total number of consumed and assigned items for the given reseller.
  *
- * @param  int $reseller_id Reseller unique indentifier
+ * @param  int $resellerId Reseller unique indentifier
  * @return array
  */
-function generate_reseller_users_props($reseller_id)
+function generate_reseller_users_props($resellerId)
 {
-    $rdmn_current = $rdmn_max = $rsub_current = $rsub_max = $rals_current =
-    $rals_max = $rmail_current = $rmail_max = $rftp_current = $rftp_max =
-    $rsql_db_current = $rsql_db_max = $rsql_user_current = $rsql_user_max =
-    $rtraff_current = $rtraff_max = $rdisk_current = $rdisk_max = 0;
-
-    $rdmn_uf = $rsub_uf = $rals_uf = $rmail_uf = $rftp_uf = $rsql_db_uf =
-    $rsql_user_uf = $rtraff_uf = $rdisk_uf = '_off_';
+    $rdmnConsumed = $rdmnAssigned = $rsubConsumed = $rsubAssigned = $ralsConsumed = $ralsAssigned = $rmailConsumed =
+	$rmailAssigned = $rftpConsumed = $rftpAssigned = $rsqlDbConsumed = $rsqlDbAssigned = $rsqlUserConsumed =
+	$rsqlUserAssigned = $rtraffConsumed = $rtraffAssigned = $rdiskConsumed = $rdiskAssigned = 0;
 
     $query = "SELECT `admin_id` FROM `admin` WHERE `created_by` = ?";
-    $rs = exec_query($query, $reseller_id);
+    $stmt = exec_query($query, $resellerId);
 
-    if ($rs->rowCount() == 0) {
+	$rdmnUnlimited = $rsubUnlimited = $ralsUnlimited = $rmailUnlimited = $rftpUnlimited = $rsqlDbUnlimited =
+	$rsqlUserUnlimited = $rtraffUnlimited = $rdiskUnlimited = false;
+
+
+    if (!$stmt->rowCount()) { // Case in reseller has not customer yet
         return array(
-            $rdmn_current, $rdmn_max, $rdmn_uf, $rsub_current, $rsub_max, $rsub_uf,
-            $rals_current, $rals_max, $rals_uf, $rmail_current, $rmail_max, $rmail_uf,
-            $rftp_current, $rftp_max, $rftp_uf, $rsql_db_current, $rsql_db_max,
-            $rsql_db_uf, $rsql_user_current, $rsql_user_max, $rsql_user_uf,
-            $rtraff_current, $rtraff_max, $rtraff_uf, $rdisk_current, $rdisk_max,
-            $rdisk_uf);
+            $rdmnConsumed, $rdmnAssigned, $rdmnUnlimited,
+			$rsubConsumed, $rsubAssigned, $rsubUnlimited,
+			$ralsConsumed, $ralsAssigned, $ralsUnlimited,
+			$rmailConsumed, $rmailAssigned, $rmailUnlimited,
+			$rftpConsumed, $rftpAssigned, $rftpUnlimited,
+			$rsqlDbConsumed, $rsqlDbAssigned, $rsqlDbUnlimited,
+			$rsqlUserConsumed, $rsqlUserAssigned, $rsqlUserUnlimited,
+			$rtraffConsumed, $rtraffAssigned, $rtraffUnlimited,
+			$rdiskConsumed, $rdiskAssigned, $rdiskUnlimited
+        );
     }
 
-    while (!$rs->EOF) {
-        $admin_id = $rs->fields['admin_id'];
+    while (!$stmt->EOF) {
+        $stmt2 = exec_query("SELECT `domain_id` FROM `domain` WHERE `domain_admin_id` = ?", $stmt->fields['admin_id']);
+        $userId = $stmt2->fields['domain_id'];
 
-        $query = "SELECT `domain_id` FROM `domain` WHERE `domain_admin_id` = ?";
+        list(
+			$subConsumed, $subAssigned, $alsConsumed, $alsAssigned, $mailConsumed, $mailAssigned, $ftpConsumed,
+			$ftpAssigned, $sqlDbConsumed, $sqlDbAssigned, $sqlUserConsumed, $sqlUserAssigned, $traffAssigned, $diskAssigned
+        ) = generate_user_props($userId);
 
-        $dres = exec_query($query, $admin_id);
-        $user_id = $dres->fields['domain_id'];
+        list(, , , , , , $traffConsumed, $diskConsumed) = generate_user_traffic($userId);
 
-        list($sub_current, $sub_max, $als_current, $als_max, $mail_current,
-            $mail_max, $ftp_current, $ftp_max, $sql_db_current, $sql_db_max,
-            $sql_user_current, $sql_user_max, $traff_max, $disk_max
-            ) = generate_user_props($user_id);
+        $rdmnConsumed += 1;
 
-        list(, , , , , , $traff_current, $disk_current) = generate_user_traffic($user_id);
+		// Compute subdomains
+        if ($subAssigned != -1) {
+            $rsubConsumed += $subConsumed;
+			$rsubAssigned += $subAssigned;
 
-        $rdmn_current += 1;
-
-        if ($sub_max != -1) {
-            if ($sub_max == 0) {
-                $rsub_uf = '_on_';
-            }
-
-            $rsub_current += $sub_current;
-            $rsub_max += ($sub_max > 0) ? $sub_max : 0;
+			if(!$subAssigned) $rsubUnlimited = true;
         }
 
-        if ($als_max != -1) {
-            if ($als_max == 0) {
-                $rals_uf = '_on_';
-            }
+		// Compute domain aliases
+        if ($alsAssigned != -1) {
+            $ralsConsumed += $alsConsumed;
+			$ralsAssigned += $alsAssigned;
 
-            $rals_current += $als_current;
-            $rals_max += ($als_max > 0) ? $als_max : 0;
+			if(!$alsAssigned) $ralsUnlimited = true;
         }
 
-        if ($mail_max == 0) {
-            $rmail_uf = '_on_';
+		// Compute mail accounts
+		if ($sqlDbAssigned != -1) {
+        	$rmailConsumed += $mailConsumed;
+			$rmailAssigned += $mailAssigned;
+
+			if(!$mailAssigned) $rmailUnlimited = true;
+		}
+
+		// Compute Ftp account
+		if ($ftpAssigned != -1) {
+        	$rftpConsumed += $ftpConsumed;
+			$rftpAssigned += $ftpAssigned;
+
+			if(!$ftpAssigned) $rftpUnlimited = true;
+		}
+
+		// Compute Sql databases
+        if ($sqlDbAssigned != -1) {
+            $rsqlDbConsumed += $sqlDbConsumed;
+			$rsqlDbAssigned += $sqlDbAssigned;
+
+			if(!$sqlDbAssigned) $rsqlDbUnlimited = true;
         }
 
-        $rmail_current += $mail_current;
-        $rmail_max += ($mail_max > 0) ? $mail_max : 0;
+		// Compute Sql users
+        if ($sqlUserAssigned != -1) {
+            $rsqlUserConsumed += $sqlUserConsumed;
+			$rsqlUserAssigned += $sqlUserAssigned;
 
-        if ($ftp_max == 0) {
-            $rftp_uf = '_on_';
+			if(!$sqlUserAssigned) $rsqlUserUnlimited = true;
         }
 
-        $rftp_current += $ftp_current;
-        $rftp_max += ($ftp_max > 0) ? $ftp_max : 0;
+		// Compute Monthly traffic volume
+        $rtraffConsumed += $traffConsumed;
+        $rtraffAssigned += $traffAssigned;
+		if(!$rtraffAssigned) $rtraffUnlimited = true;
 
-        if ($sql_db_max != -1) {
-            if ($sql_db_max == 0) {
-                $rsql_db_uf = '_on_';
-            }
+		// Compute diskpace
+        $rdiskConsumed += $diskConsumed;
+        $rdiskAssigned += $diskAssigned;
+		if(!$rdiskAssigned) $rdiskUnlimited = true;
 
-            $rsql_db_current += $sql_db_current;
-            $rsql_db_max += ($sql_db_max > 0) ? $sql_db_max : 0;
-        }
-
-        if ($sql_user_max != -1) {
-            if ($sql_user_max == 0) {
-                $rsql_user_uf = '_on_';
-            }
-
-            $rsql_user_current += $sql_user_current;
-            $rsql_user_max += ($sql_user_max > 0) ? $sql_user_max : 0;
-        }
-
-        if ($traff_max == 0) {
-            $rtraff_uf = '_on_';
-        }
-
-        $rtraff_current += $traff_current;
-        $rtraff_max += $traff_max;
-
-        if ($disk_max == 0) {
-            $rdisk_uf = '_on_';
-        }
-
-        $rdisk_current += $disk_current;
-        $rdisk_max += $disk_max;
-        $rs->moveNext();
+        $stmt->moveNext();
     }
 
     return array(
-        $rdmn_current, $rdmn_max, $rdmn_uf, $rsub_current, $rsub_max, $rsub_uf,
-        $rals_current, $rals_max, $rals_uf, $rmail_current, $rmail_max, $rmail_uf,
-        $rftp_current, $rftp_max, $rftp_uf, $rsql_db_current, $rsql_db_max,
-        $rsql_db_uf, $rsql_user_current, $rsql_user_max, $rsql_user_uf,
-        $rtraff_current, $rtraff_max, $rtraff_uf, $rdisk_current, $rdisk_max,
-        $rdisk_uf);
+		$rdmnConsumed, $rdmnAssigned, $rdmnUnlimited,
+		$rsubConsumed, $rsubAssigned, $rsubUnlimited,
+		$ralsConsumed, $ralsAssigned, $ralsUnlimited,
+		$rmailConsumed, $rmailAssigned, $rmailUnlimited,
+		$rftpConsumed, $rftpAssigned, $rftpUnlimited,
+		$rsqlDbConsumed, $rsqlDbAssigned, $rsqlDbUnlimited,
+		$rsqlUserConsumed, $rsqlUserAssigned, $rsqlUserUnlimited,
+		$rtraffConsumed, $rtraffAssigned, $rtraffUnlimited,
+		$rdiskConsumed, $rdiskAssigned, $rdiskUnlimited
+	);
 }
 
 /**

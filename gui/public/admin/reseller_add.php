@@ -689,7 +689,7 @@ $tpl->assign(
 		 'ISP_LOGO' => layout_getUserLogo(),
 		 'TR_ADD_RESELLER' => tr('Add reseller'),
 		 'TR_NOTICE' => tr('i-MSCP Notice'),
-		 'TR_EVENT_NOTICE' => tr('The `Enter` key is disabled for performance reasons.'),
+		 'TR_EVENT_NOTICE' => tojs(tr('The `Enter` key is disabled for performance reasons.', true)),
 		 'TR_CREATE' => tr('Create'),
 		 'TR_CANCEL' => tr('Cancel'),
 		 'ERR_FIELDS_STACK' => (iMSCP_Registry::isRegistered('errFieldsStack')) ? json_encode(iMSCP_Registry::get('errFieldsStack')) : '[]'));

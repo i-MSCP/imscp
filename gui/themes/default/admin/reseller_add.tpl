@@ -59,7 +59,7 @@
 			});
 
 			// Re-add the PHP Editor container to the form
-			$('#php_editor_dialog').parent().appendTo($('#dialogContainer'));
+            $('form').submit(function(){$('#php_editor_dialog').parent().appendTo($('#dialogContainer'));});
 
 			// PHP Editor settings button
 			$('#php_editor_dialog_open').button({icons:{primary:'ui-icon-gear'}}).click(function(e){
