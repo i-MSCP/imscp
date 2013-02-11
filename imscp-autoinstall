@@ -183,8 +183,8 @@ my @steps = (
 	[\&postBuild,						'Processing postBuild tasks']
 );
 
-# Remove the installPackages step in case the skippackages option is set to true
-splice(@steps, 2, 1) if $main::skippackages;
+# Remove the uninstall/install packages steps in case the --skippackages option is set to true
+splice(@steps, 2, 2) if $main::skippackages;
 
 iMSCP::HooksManager->getInstance()->trigger('beforeBuild', \@steps);
 
