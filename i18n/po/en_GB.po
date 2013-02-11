@@ -14,8 +14,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2013-01-21 21:39+0100\n"
-"PO-Revision-Date: 2013-01-21 20:40+0000\n"
+"POT-Creation-Date: 2013-02-11 11:47+0100\n"
+"PO-Revision-Date: 2013-02-11 10:48+0000\n"
 "Last-Translator: Torsten Widmann <info@goover.de>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -338,6 +338,31 @@ msgstr "%s page"
 msgid "%s record"
 msgstr "%s record"
 
+#, php-format
+msgid ""
+"%s: The clients consumption (%s) for this reseller is greater than the new "
+"limit."
+msgstr ""
+
+#, php-format
+msgid ""
+"%s: The total of items (%s) already assigned by the reseller is greater than"
+" the new limit."
+msgstr ""
+
+#, php-format
+msgid "%s: This reseller has customer(s) with unlimited items."
+msgstr ""
+
+#, php-format
+msgid ""
+"%s: You cannot disable a service already consumed by reseller's customers"
+msgstr ""
+
+#, php-format
+msgid "%s: You cannot disable a service already sold to reseller's customers."
+msgstr ""
+
 msgid ""
 "'%hostname%' does not appear to have a valid MX record for the email address"
 " '%value%'"
@@ -532,12 +557,6 @@ msgstr "Access your mail through the web interface."
 msgid "Account data"
 msgstr "Account data"
 
-msgid ""
-"Account data were modified by another person before your changes. The update"
-" process was successfully done but in recovery mode. We recommend you to "
-"check the result of it."
-msgstr "Account data were modified by another person before your changes. The update process was successfully done but in recovery mode. We recommend you to check the result of it."
-
 msgid "Account limits"
 msgstr "Account limits"
 
@@ -580,8 +599,8 @@ msgstr "Activation E-Mail"
 msgid "Activation Link"
 msgstr "Activation Link"
 
-msgid "Activation link expire time (minutes)"
-msgstr "Activation link expire time (minutes)"
+msgid "Activation link expire time <small>(In minutes)</small>"
+msgstr ""
 
 msgid "Add"
 msgstr "Add"
@@ -1084,14 +1103,15 @@ msgstr "Being suspended"
 msgid "Billing Settings"
 msgstr "Billing Settings"
 
-msgid "Blocking time between login/captcha attempts (seconds)"
-msgstr "Blocking time between login/captcha attempts (seconds)"
+msgid ""
+"Blocking time between login/captcha attempts <small>(In seconds)</small>"
+msgstr ""
 
 msgid "Blocking time between logins and captcha attempts"
 msgstr "Blocking time between logins and captcha attempts"
 
-msgid "Blocktime (minutes)"
-msgstr "Blocktime (minutes)"
+msgid "Blocktime <small>(in minutes)</small>"
+msgstr ""
 
 msgid "Both source and destination are identical."
 msgstr "Both source and destination are identical."
@@ -1672,20 +1692,20 @@ msgstr "Disabled"
 msgid "Disallowed"
 msgstr "Disallowed"
 
+msgid "Disconnect"
+msgstr ""
+
 msgid "Disk"
 msgstr "Disk"
 
 msgid "Disk limit"
 msgstr "Disk limit"
 
-msgid "Disk limit [MiB]<br/><span class=\"italic\">(0 unlimited)</span>"
-msgstr "Disk limit [MiB]<br/><span class=\"italic\">(0 unlimited)</span>"
-
-msgid "Disk limit [MiB]<br/><span class=\\\"italic\\\">(0 unlimited)</span>"
+msgid "Disk limit [MiB]<br/><i>(0 unlimited)</i>"
 msgstr ""
 
-msgid "Disk limit [MiB]<br><i>(0 unlimited)</i>"
-msgstr "Disk limit [MiB]<br><i>(0 unlimited)</i>"
+msgid "Disk limit [MiB]<br/><i>(0 unlimited)</span>"
+msgstr ""
 
 msgid "Disk usage"
 msgstr "Disk usage"
@@ -1793,23 +1813,23 @@ msgid "Domain alias successfully scheduled for deletion."
 msgstr "Domain alias successfully scheduled for deletion."
 
 msgid ""
-"Domain alias you are trying to remove has FTP accounts.<br>First remove "
+"Domain alias you are trying to remove has FTP accounts.<br/>First remove "
 "them."
-msgstr "Domain alias you are trying to remove has FTP accounts.<br>First remove them."
+msgstr ""
 
 msgid ""
-"Domain alias you are trying to remove has custom DNS records!<br>First "
+"Domain alias you are trying to remove has custom DNS records!<br/>First "
 "remove them!"
-msgstr "Domain alias you are trying to remove has custom DNS records!<br>First remove them!"
+msgstr ""
 
 msgid ""
-"Domain alias you are trying to remove has email accounts.<br>First remove "
+"Domain alias you are trying to remove has email accounts.<br/>First remove "
 "them."
-msgstr "Domain alias you are trying to remove has email accounts.<br>First remove them."
+msgstr ""
 
 msgid ""
-"Domain alias you are trying to remove has subdomains!<br>First remove them!"
-msgstr "Domain alias you are trying to remove has subdomains!<br>First remove them!"
+"Domain alias you are trying to remove has subdomains!<br/>First remove them!"
+msgstr ""
 
 msgid "Domain aliases"
 msgstr "Domain aliases"
@@ -1817,10 +1837,8 @@ msgstr "Domain aliases"
 msgid "Domain aliases limit reached."
 msgstr "Domain aliases limit reached."
 
-msgid ""
-"Domain aliases limit<br/><span class=\"italic\">(-1 disabled, 0 "
-"unlimited)</span>"
-msgstr "Domain aliases limit<br/><span class=\"italic\">(-1 disabled, 0 unlimited)</span>"
+msgid "Domain aliases limit<br/><i>(-1 disabled, 0 unlimited)</i>"
+msgstr ""
 
 msgid "Domain already assigned to another IP address."
 msgstr "Domain already assigned to another IP address."
@@ -1856,7 +1874,7 @@ msgid "Domain errors"
 msgstr "Domain errors"
 
 msgid "Domain expiration date"
-msgstr ""
+msgstr "Domain expiration date"
 
 msgid "Domain expiration date must be filled."
 msgstr "Domain expiration date must be filled."
@@ -1874,7 +1892,7 @@ msgid "Domain names validation"
 msgstr "Domain names validation"
 
 msgid "Domain new expiration date"
-msgstr ""
+msgstr "Domain new expiration date"
 
 msgid "Domain not found."
 msgstr "Domain not found."
@@ -1914,8 +1932,8 @@ msgstr "Domain: Setup an MX record to relay mail of your entire domain (includin
 msgid "Domains"
 msgstr "Domains"
 
-msgid "Domains limit<br/><span class=\"italic\">(0 unlimited)</span>"
-msgstr "Domains limit<br/><span class=\"italic\">(0 unlimited)</span>"
+msgid "Domains limit<br/><i>(0 unlimited)</i>"
+msgstr ""
 
 msgid "Domains per page"
 msgstr "Domains per page"
@@ -2147,8 +2165,8 @@ msgstr "Execute requests"
 msgid "Expire date"
 msgstr "Expire date"
 
-msgid "Expire time for unconfirmed orders<br /><small>(In days)</small>"
-msgstr "Expire time for unconfirmed orders<br /><small>(In days)</small>"
+msgid "Expire time for unconfirmed orders <small>(In days)</small>"
+msgstr ""
 
 msgid "External Mail Host"
 msgstr "External Mail Host"
@@ -2192,21 +2210,14 @@ msgstr "FTP account successfully updated."
 msgid "FTP accounts"
 msgstr "FTP accounts"
 
-msgid ""
-"FTP accounts limit <br /><span class=\"italic\">(-1 disabled, 0 "
-"unlimited)</span>"
-msgstr "FTP accounts limit <br /><span class=\"italic\">(-1 disabled, 0 unlimited)</span>"
+msgid "FTP accounts limit <br /><i>(-1 disabled, 0 unlimited)</i>"
+msgstr ""
 
 msgid "FTP accounts limit reached!"
 msgstr "FTP accounts limit reached!"
 
-msgid ""
-"FTP accounts limit<br/><span class=\"italic\">(-1 disabled, 0 "
-"unlimited)</span>"
-msgstr "FTP accounts limit<br/><span class=\"italic\">(-1 disabled, 0 unlimited)</span>"
-
-msgid "FTP accounts limit<br><i>(-1 disabled, 0 unlimited)</i>"
-msgstr "FTP accounts limit<br><i>(-1 disabled, 0 unlimited)</i>"
+msgid "FTP accounts limit<br/><i>(-1 disabled, 0 unlimited)</i>"
+msgstr ""
 
 msgid "FTP traffic"
 msgstr "FTP traffic"
@@ -2433,7 +2444,7 @@ msgid "Hosting plans"
 msgstr "Hosting plans"
 
 msgid "Hosting plans are not found."
-msgstr ""
+msgstr "Hosting plans are not found."
 
 msgid "Hosting plans available for"
 msgstr "Hosting plans available for"
@@ -2539,7 +2550,7 @@ msgstr "Import in local repository"
 msgid ""
 "In case domain expiration date is 'N/A', the expiration date will be set "
 "from today."
-msgstr ""
+msgstr "In case domain expiration date is 'N/A', the expiration date will be set from today."
 
 msgid "In front the name"
 msgstr "In front the name"
@@ -2640,7 +2651,7 @@ msgid "Installed on"
 msgstr "Installed on"
 
 msgid "Installing your uploaded package. Please refresh this page."
-msgstr ""
+msgstr "Installing your uploaded package. Please refresh this page."
 
 msgid "Instructions to download today's backup"
 msgstr "Instructions to download today's backup"
@@ -2810,7 +2821,7 @@ msgid "Login data successfully sent to %s."
 msgstr "Login data successfully sent to %s."
 
 msgid "Login into phpMyAdmin"
-msgstr ""
+msgstr "Login into phpMyAdmin"
 
 msgid "Login into the filemanager"
 msgstr "Login into the filemanager"
@@ -2849,7 +2860,7 @@ msgid "Lost password e-mail"
 msgstr "Lost password e-mail"
 
 msgid "Lost password email"
-msgstr ""
+msgstr "Lost password email"
 
 msgid "Lost password email setup"
 msgstr "Lost password email setup"
@@ -2908,13 +2919,13 @@ msgstr "Mail accounts"
 msgid "Mail accounts limit reached."
 msgstr "Mail accounts limit reached."
 
+msgid "Mail accounts limit<br/><i>(-1 disabled, 0 unlimited)</i>"
+msgstr ""
+
 msgid ""
 "Mail accounts limit<br/><span class=\"italic\">(-1 disabled, 0 "
-"unlimited)</span>"
-msgstr "Mail accounts limit<br/><span class=\"italic\">(-1 disabled, 0 unlimited)</span>"
-
-msgid "Mail accounts limit<br><i>(-1 disabled, 0 unlimited)</i>"
-msgstr "Mail accounts limit<br><i>(-1 disabled, 0 unlimited)</i>"
+"unlimited)</i>"
+msgstr ""
 
 msgid "Mail accounts list"
 msgstr "Mail accounts list"
@@ -3026,17 +3037,17 @@ msgstr "Mark all"
 msgid "Master domain cannot be used."
 msgstr "Master domain cannot be used."
 
-msgid "Max aliases<br><i>(-1 disabled, 0 unlimited)</i>"
-msgstr "Max aliases<br><i>(-1 disabled, 0 unlimited)</i>"
+msgid "Max aliases<br/><i>(-1 disabled, 0 unlimited)</i>"
+msgstr ""
 
-msgid "Max domains<br><i>(-1 disabled, 0 unlimited)</i>"
-msgstr "Max domains<br><i>(-1 disabled, 0 unlimited)</i>"
+msgid "Max domains<br/><i>(-1 disabled, 0 unlimited)</i>"
+msgstr ""
 
 msgid "Max number of login attempts"
 msgstr "Max number of login attempts"
 
-msgid "Max subdomains<br><i>(-1 disabled, 0 unlimited)</i>"
-msgstr "Max subdomains<br><i>(-1 disabled, 0 unlimited)</i>"
+msgid "Max subdomains<br/><i>(-1 disabled, 0 unlimited)</i>"
+msgstr ""
 
 msgid "Max traffic"
 msgstr "Max traffic"
@@ -3050,9 +3061,9 @@ msgid "Max. remote filesize (%1$d MB) is reached. Your remote file is %2$d MB"
 msgstr "Max. remote filesize (%1$d MB) is reached. Your remote file is %2$d MB"
 
 msgid ""
-"Maximal number of labels for domain names<br />(<small>Excluding SLD & "
+"Maximal number of labels for domain names (<small>Excluding SLD & "
 "TLD</small>)"
-msgstr "Maximal number of labels for domain names<br />(<small>Excluding SLD & TLD</small>)"
+msgstr ""
 
 msgid "Maximum number of captcha validation attempts"
 msgstr "Maximum number of captcha validation attempts"
@@ -3303,9 +3314,6 @@ msgstr "No such update order found."
 msgid "No unassigned users was found in database."
 msgstr "No unassigned users was found in database."
 
-msgid "No update for the websoftware depot list available"
-msgstr "No update for the websoftware depot list available"
-
 msgid "No user found."
 msgstr "No user found."
 
@@ -3353,6 +3361,9 @@ msgstr "Nothing has been changed."
 
 msgid "Nothing has been scheduled for deletion."
 msgstr "Nothing has been scheduled for deletion."
+
+msgid "Nothing to do. Daemon request has been canceled."
+msgstr ""
 
 msgid "Notices, Warnings and Errors"
 msgstr "Notices, Warnings and Errors"
@@ -4150,10 +4161,8 @@ msgstr "SQL database successfully deleted."
 msgid "SQL databases"
 msgstr "SQL databases"
 
-msgid ""
-"SQL databases limit <br /><span class=\"italic\">(-1 disabled, 0 "
-"unlimited)</span>"
-msgstr "SQL databases limit <br /><span class=\"italic\">(-1 disabled, 0 unlimited)</span>"
+msgid "SQL databases limit <br /><i>(-1 disabled, 0 unlimited)</i>"
+msgstr ""
 
 msgid "SQL databases limit is <i>disabled</i>."
 msgstr "SQL databases limit is <i>disabled</i>."
@@ -4164,13 +4173,8 @@ msgstr "SQL databases limit is disabled but SQL users limit is not."
 msgid "SQL databases limit is not <i>disabled</i>."
 msgstr "SQL databases limit is not <i>disabled</i>."
 
-msgid ""
-"SQL databases limit<br/><span class=\"italic\">(-1 disabled, 0 "
-"unlimited)</span>"
-msgstr "SQL databases limit<br/><span class=\"italic\">(-1 disabled, 0 unlimited)</span>"
-
-msgid "SQL databases limit<br><i>(-1 disabled, 0 unlimited)</i>"
-msgstr "SQL databases limit<br><i>(-1 disabled, 0 unlimited)</i>"
+msgid "SQL databases limit<br/><i>(-1 disabled, 0 unlimited)</i>"
+msgstr ""
 
 msgid "SQL support"
 msgstr "SQL support"
@@ -4190,10 +4194,8 @@ msgstr "SQL user successfully deleted."
 msgid "SQL users"
 msgstr "SQL users"
 
-msgid ""
-"SQL users limit <br /><span class=\"italic\">(-1 disabled, 0 "
-"unlimited)</span>"
-msgstr "SQL users limit <br /><span class=\"italic\">(-1 disabled, 0 unlimited)</span>"
+msgid "SQL users limit <br /><i>(-1 disabled, 0 unlimited)</i>"
+msgstr ""
 
 msgid "SQL users limit is <i>disabled</i>."
 msgstr "SQL users limit is <i>disabled</i>."
@@ -4207,12 +4209,8 @@ msgstr "SQL users limit is disabled but SQL databases limit not."
 msgid "SQL users limit reached."
 msgstr "SQL users limit reached."
 
-msgid ""
-"SQL users limit<br/><span class=\"italic\">(-1 disabled, 0 unlimited)</span>"
-msgstr "SQL users limit<br/><span class=\"italic\">(-1 disabled, 0 unlimited)</span>"
-
-msgid "SQL users limit<br><i>(-1 disabled, 0 unlimited)</i>"
-msgstr "SQL users limit<br><i>(-1 disabled, 0 unlimited)</i>"
+msgid "SQL users limit<br/><i>(-1 disabled, 0 unlimited)</i>"
+msgstr ""
 
 msgid "SQL-User"
 msgstr "SQL-User"
@@ -4342,9 +4340,6 @@ msgstr "Service protocol"
 
 msgid "Services status"
 msgstr "Services status"
-
-msgid "Session not found in login table."
-msgstr "Session not found in login table."
 
 msgid "Sessions"
 msgstr "Sessions"
@@ -4617,16 +4612,15 @@ msgid "Subdomain successfully scheduled for addition."
 msgstr "Subdomain successfully scheduled for addition."
 
 msgid ""
-"Subdomain you are trying to remove has email accounts.<br>First remove them."
-msgstr "Subdomain you are trying to remove has email accounts.<br>First remove them."
+"Subdomain you are trying to remove has email accounts.<br/>First remove "
+"them."
+msgstr ""
 
 msgid "Subdomains"
 msgstr "Subdomains"
 
-msgid ""
-"Subdomains limit<br /><span class=\"italic\">(-1 disabled, 0 "
-"unlimited)</span>"
-msgstr "Subdomains limit<br /><span class=\"italic\">(-1 disabled, 0 unlimited)</span>"
+msgid "Subdomains limit<br /><i>(-1 disabled, 0 unlimited)</i>"
+msgstr ""
 
 msgid "Subject"
 msgstr "Subject"
@@ -4902,8 +4896,8 @@ msgid ""
 "The remote filesize (%1$d B) is lower than 1 Byte. Please check the URL."
 msgstr "The remote filesize (%1$d B) is lower than 1 Byte. Please check the URL."
 
-msgid "The reseller account you trying to edit doesn't exist."
-msgstr "The reseller account you trying to edit doesn't exist."
+msgid "The reseller account that you are trying to edit has not been found."
+msgstr ""
 
 msgid "The softwares installer needs PHP."
 msgstr "The softwares installer needs PHP."
@@ -5005,27 +4999,10 @@ msgstr "This package is not installed"
 msgid "This package is not installed yet"
 msgstr "This package is not installed yet"
 
-#, php-format
-msgid ""
-"This reseller has %s customer(s) with unlimited rights for the %s service."
-msgstr "This reseller has %s customer(s) with unlimited rights for the %s service."
-
-#, php-format
-msgid ""
-"This reseller has already assigned more/higher %s accounts/limits than the "
-"new limit you entered."
-msgstr "This reseller has already assigned more/higher %s accounts/limits than the new limit you entered."
-
 msgid ""
 "This reseller has one or more customers accounts.<br /> To remove this "
 "reseller, please first remove these customers accounts."
 msgstr "This reseller has one or more customers accounts.<br /> To remove this reseller, please first remove these customers accounts."
-
-#, php-format
-msgid ""
-"This reseller's customers are using/have more/higher %s accounts/limits than"
-" the new limit you entered."
-msgstr "This reseller's customers are using/have more/higher %s accounts/limits than the new limit you entered."
 
 msgid "This software is installed on following domain(s):"
 msgstr "This software is installed on following domain(s):"
@@ -5034,8 +5011,8 @@ msgid "This type of account does not have quota."
 msgstr "This type of account does not have quota."
 
 msgid ""
-"This user has domain record.<br>First remove the domain from the system."
-msgstr "This user has domain record.<br>First remove the domain from the system."
+"This user has domain record.<br/>First remove the domain from the system."
+msgstr ""
 
 msgid "This user name already exist."
 msgstr "This user name already exist."
@@ -5138,11 +5115,8 @@ msgstr "Traffic"
 msgid "Traffic limit"
 msgstr "Traffic limit"
 
-msgid "Traffic limit [MiB]<br/><span class=\"italic\">(0 unlimited)</span>"
-msgstr "Traffic limit [MiB]<br/><span class=\"italic\">(0 unlimited)</span>"
-
-msgid "Traffic limit [MiB]<br><i>(0 unlimited)</i>"
-msgstr "Traffic limit [MiB]<br><i>(0 unlimited)</i>"
+msgid "Traffic limit [MiB]<br/><i>(0 unlimited)</i>"
+msgstr ""
 
 msgid "Traffic limit must be a digit."
 msgstr "Traffic limit must be a digit."
@@ -5411,11 +5385,14 @@ msgstr "User scheduled for deletion."
 msgid "User session successfully killed for password change."
 msgstr "User session successfully killed for password change."
 
-msgid "User session was killed."
-msgstr "User session was killed."
+msgid "User session successfuly destroyed"
+msgstr ""
 
 msgid "User session was successfully killed for password change"
 msgstr "User session was successfully killed for password change"
+
+msgid "User successfuly disconnected."
+msgstr ""
 
 msgid "User type"
 msgstr "User type"
@@ -5528,6 +5505,12 @@ msgstr "Web out"
 msgid "Web software depot packages total"
 msgstr "Web software depot packages total"
 
+msgid "Web softwares repositories list has been updated"
+msgstr ""
+
+msgid "Web softwares repositories list is already up to date"
+msgstr ""
+
 msgid "Web softwares repository"
 msgstr "Web softwares repository"
 
@@ -5542,9 +5525,6 @@ msgstr "Web traffic"
 
 msgid "Webmail"
 msgstr "Webmail"
-
-msgid "Websoftware depot list was updated"
-msgstr "Websoftware depot list was updated"
 
 msgid "Webspace"
 msgstr "Webspace"
@@ -5743,6 +5723,9 @@ msgstr "You are exceeding your subdomains limit."
 msgid "You are exceeding your traffic limit."
 msgstr "You are exceeding your traffic limit."
 
+msgid "You are not allowed to act on your own session."
+msgstr ""
+
 msgid "You are not allowed to edit this DNS record."
 msgstr "You are not allowed to edit this DNS record."
 
@@ -5762,9 +5745,6 @@ msgid ""
 "You can't delete a reseller that has domain accounts. Please, remove them "
 "before."
 msgstr "You can't delete a reseller that has domain accounts. Please, remove them before."
-
-msgid "You can't remove your own session."
-msgstr "You can't remove your own session."
 
 msgid "You cannot delete the last active IP address."
 msgstr "You cannot delete the last active IP address."
@@ -6264,6 +6244,9 @@ msgstr "i-MSCP - Admin / Reseller customer statistics"
 msgid "i-MSCP - Admin / Reseller statistics"
 msgstr "i-MSCP - Admin / Reseller statistics"
 
+msgid "i-MSCP - Admin / Settings"
+msgstr ""
+
 msgid "i-MSCP - Admin / Settings / Plugin management"
 msgstr "i-MSCP - Admin / Settings / Plugin management"
 
@@ -6326,9 +6309,6 @@ msgstr "i-MSCP - Admin/Manage users/Email setup"
 
 msgid "i-MSCP - Admin/Manage users/Reseller assignment"
 msgstr "i-MSCP - Admin/Manage users/Reseller assignment"
-
-msgid "i-MSCP - Admin/Settings"
-msgstr "i-MSCP - Admin/Settings"
 
 msgid "i-MSCP - Administrator / Hosting Plans Management"
 msgstr "i-MSCP - Administrator / Hosting Plans Management"
@@ -6550,7 +6530,7 @@ msgid "i-MSCP - Reseller/IP Usage"
 msgstr "i-MSCP - Reseller/IP Usage"
 
 msgid "i-MSCP - Reseller/Lost password email setup"
-msgstr ""
+msgstr "i-MSCP - Reseller/Lost password email setup"
 
 msgid "i-MSCP - Reseller/Manage users/Email setup"
 msgstr "i-MSCP - Reseller/Manage users/Email setup"

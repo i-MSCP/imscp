@@ -11,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2013-01-21 21:39+0100\n"
-"PO-Revision-Date: 2013-01-21 20:40+0000\n"
+"POT-Creation-Date: 2013-02-11 11:47+0100\n"
+"PO-Revision-Date: 2013-02-11 10:48+0000\n"
 "Last-Translator: Torsten Widmann <info@goover.de>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -335,6 +335,31 @@ msgstr "%s"
 msgid "%s record"
 msgstr "%s rekord"
 
+#, php-format
+msgid ""
+"%s: The clients consumption (%s) for this reseller is greater than the new "
+"limit."
+msgstr ""
+
+#, php-format
+msgid ""
+"%s: The total of items (%s) already assigned by the reseller is greater than"
+" the new limit."
+msgstr ""
+
+#, php-format
+msgid "%s: This reseller has customer(s) with unlimited items."
+msgstr ""
+
+#, php-format
+msgid ""
+"%s: You cannot disable a service already consumed by reseller's customers"
+msgstr ""
+
+#, php-format
+msgid "%s: You cannot disable a service already sold to reseller's customers."
+msgstr ""
+
 msgid ""
 "'%hostname%' does not appear to have a valid MX record for the email address"
 " '%value%'"
@@ -529,12 +554,6 @@ msgstr "Webes levelezés"
 msgid "Account data"
 msgstr "Alapadatok (szükséges)"
 
-msgid ""
-"Account data were modified by another person before your changes. The update"
-" process was successfully done but in recovery mode. We recommend you to "
-"check the result of it."
-msgstr "Domain név adatait egy másik személy módosította. A frissítési folyamat sikeresen lefutott, de helyreállító módban. Javasoljuk ellenőrizze az eredményt."
-
 msgid "Account limits"
 msgstr "Korlátok beállítása"
 
@@ -577,8 +596,8 @@ msgstr "Aktivációs email"
 msgid "Activation Link"
 msgstr "Aktiválási hivatkozás"
 
-msgid "Activation link expire time (minutes)"
-msgstr "Aktiválási hivatkozás elévülési ideje (percben)"
+msgid "Activation link expire time <small>(In minutes)</small>"
+msgstr ""
 
 msgid "Add"
 msgstr "Létrehozás"
@@ -1081,14 +1100,15 @@ msgstr "Felfüggeszteni"
 msgid "Billing Settings"
 msgstr "Számlázási beállítások"
 
-msgid "Blocking time between login/captcha attempts (seconds)"
-msgstr "Zárolási idő sikertelen bejelentkezések között (másodpercben)"
+msgid ""
+"Blocking time between login/captcha attempts <small>(In seconds)</small>"
+msgstr ""
 
 msgid "Blocking time between logins and captcha attempts"
 msgstr "Zárolási idő sikertelen bejelentkezések között"
 
-msgid "Blocktime (minutes)"
-msgstr "Zárolási idő (percben)"
+msgid "Blocktime <small>(in minutes)</small>"
+msgstr ""
 
 msgid "Both source and destination are identical."
 msgstr "Megegyezik a forrás és a cél"
@@ -1669,20 +1689,20 @@ msgstr "Letiltva"
 msgid "Disallowed"
 msgstr "Nem engedélyezett"
 
+msgid "Disconnect"
+msgstr ""
+
 msgid "Disk"
 msgstr "Tárhely"
 
 msgid "Disk limit"
 msgstr "Tárhely korlát"
 
-msgid "Disk limit [MiB]<br/><span class=\"italic\">(0 unlimited)</span>"
-msgstr "Tárhely korlát [MB]<br/><span class=\"italic\">(0 korlátlan)</span>"
-
-msgid "Disk limit [MiB]<br/><span class=\\\"italic\\\">(0 unlimited)</span>"
+msgid "Disk limit [MiB]<br/><i>(0 unlimited)</i>"
 msgstr ""
 
-msgid "Disk limit [MiB]<br><i>(0 unlimited)</i>"
-msgstr "Tárhely korlát [MB] <br><i>(0 korlátlan)</i>"
+msgid "Disk limit [MiB]<br/><i>(0 unlimited)</span>"
+msgstr ""
 
 msgid "Disk usage"
 msgstr "Tárhelyhasználat"
@@ -1790,23 +1810,23 @@ msgid "Domain alias successfully scheduled for deletion."
 msgstr "Domain álnév beütemezve megszüntetésre"
 
 msgid ""
-"Domain alias you are trying to remove has FTP accounts.<br>First remove "
+"Domain alias you are trying to remove has FTP accounts.<br/>First remove "
 "them."
-msgstr "A törölni kívánt domain álnévhez FTP hozzáférés tartozik!<br />Előbb azt kell törölni!"
+msgstr ""
 
 msgid ""
-"Domain alias you are trying to remove has custom DNS records!<br>First "
+"Domain alias you are trying to remove has custom DNS records!<br/>First "
 "remove them!"
-msgstr "Az eltávolítani próbált domain álnév rendelkezik egyéni DNS-bejegyzésekkel!<br>Először azt kell törölni!"
+msgstr ""
 
 msgid ""
-"Domain alias you are trying to remove has email accounts.<br>First remove "
+"Domain alias you are trying to remove has email accounts.<br/>First remove "
 "them."
-msgstr "A törölni kívánt domain álnévhez email fiók tartozik!<br />Előbb azt kell törölni!"
+msgstr ""
 
 msgid ""
-"Domain alias you are trying to remove has subdomains!<br>First remove them!"
-msgstr "A törölni kívánt domain álnévhez aldomain tartozik!<br />Előbb azt kell törölni!"
+"Domain alias you are trying to remove has subdomains!<br/>First remove them!"
+msgstr ""
 
 msgid "Domain aliases"
 msgstr "Domain álnevek"
@@ -1814,10 +1834,8 @@ msgstr "Domain álnevek"
 msgid "Domain aliases limit reached."
 msgstr "Több domain álnév nem hozható létre, elérte a korlátot"
 
-msgid ""
-"Domain aliases limit<br/><span class=\"italic\">(-1 disabled, 0 "
-"unlimited)</span>"
-msgstr "Domain álnevek száma <br/><span class=\"italic\">(-1 tiltva, 0 korlátlan)</span>"
+msgid "Domain aliases limit<br/><i>(-1 disabled, 0 unlimited)</i>"
+msgstr ""
 
 msgid "Domain already assigned to another IP address."
 msgstr "Domain név már hozzá van rendelve egy másik IP-címhez"
@@ -1853,7 +1871,7 @@ msgid "Domain errors"
 msgstr "Domain hibák"
 
 msgid "Domain expiration date"
-msgstr ""
+msgstr "Domain lejárati dátuma"
 
 msgid "Domain expiration date must be filled."
 msgstr "Domain lejáratának dátuma nincs megadva"
@@ -1871,7 +1889,7 @@ msgid "Domain names validation"
 msgstr "Domain nevek érvényesítés"
 
 msgid "Domain new expiration date"
-msgstr ""
+msgstr "Domain új lejárati dátuma"
 
 msgid "Domain not found."
 msgstr "Domain nem található"
@@ -1911,8 +1929,8 @@ msgstr "Domain: MX-rekord létrehozása a teljes domainre vonatkozik (beleértve
 msgid "Domains"
 msgstr "Domainek"
 
-msgid "Domains limit<br/><span class=\"italic\">(0 unlimited)</span>"
-msgstr "Domainek száma <br/><span class=\"italic\">(0 korlátlan)</span>"
+msgid "Domains limit<br/><i>(0 unlimited)</i>"
+msgstr ""
 
 msgid "Domains per page"
 msgstr "Domainek száma oldalanként"
@@ -2144,8 +2162,8 @@ msgstr "Futtatási kérelem"
 msgid "Expire date"
 msgstr "Lejárati dátum"
 
-msgid "Expire time for unconfirmed orders<br /><small>(In days)</small>"
-msgstr "Rendelések megerősítésének határideje<br /><small>(napokban)</small>"
+msgid "Expire time for unconfirmed orders <small>(In days)</small>"
+msgstr ""
 
 msgid "External Mail Host"
 msgstr "Külső levelező kiszolgáló"
@@ -2189,21 +2207,14 @@ msgstr "FTP azonosító sikeresen módosítva"
 msgid "FTP accounts"
 msgstr "FTP azonosítók"
 
-msgid ""
-"FTP accounts limit <br /><span class=\"italic\">(-1 disabled, 0 "
-"unlimited)</span>"
-msgstr "FTP azonosítók száma <br /><span class=\"italic\">(-1 disabled, 0 unlimited)</span>"
+msgid "FTP accounts limit <br /><i>(-1 disabled, 0 unlimited)</i>"
+msgstr ""
 
 msgid "FTP accounts limit reached!"
 msgstr "FTP azonosítók maximális száma elérve!"
 
-msgid ""
-"FTP accounts limit<br/><span class=\"italic\">(-1 disabled, 0 "
-"unlimited)</span>"
-msgstr "FTP azonosítók száma <br/><span class=\"italic\">(-1 disabled, 0 unlimited)</span>"
-
-msgid "FTP accounts limit<br><i>(-1 disabled, 0 unlimited)</i>"
-msgstr "Létrehozható FTP azonosítók száma<br /><em>(-1 letiltás, 0 korlátlan)</em>"
+msgid "FTP accounts limit<br/><i>(-1 disabled, 0 unlimited)</i>"
+msgstr ""
 
 msgid "FTP traffic"
 msgstr "FTP"
@@ -2379,7 +2390,7 @@ msgid "Help"
 msgstr "Segítség"
 
 msgid "Hide aliases"
-msgstr ""
+msgstr "Álnevek elrejtése"
 
 msgid "Hide default E-Mail Addresses"
 msgstr "Alternatív email címek elrejtése"
@@ -2807,7 +2818,7 @@ msgid "Login data successfully sent to %s."
 msgstr "Bejelentkezési adatokat sikerült %s -nek elküldeni"
 
 msgid "Login into phpMyAdmin"
-msgstr ""
+msgstr "Belépés az adatbáziskezelőbe"
 
 msgid "Login into the filemanager"
 msgstr "Belépés a fájlkezelőbe"
@@ -2905,13 +2916,13 @@ msgstr "Email fiókok"
 msgid "Mail accounts limit reached."
 msgstr "Elérte az email fiókok maximális számát"
 
+msgid "Mail accounts limit<br/><i>(-1 disabled, 0 unlimited)</i>"
+msgstr ""
+
 msgid ""
 "Mail accounts limit<br/><span class=\"italic\">(-1 disabled, 0 "
-"unlimited)</span>"
-msgstr "Email fiókok száma <br/><span class=\"italic\">(-1 tiltva, 0 korlátlan)</span>"
-
-msgid "Mail accounts limit<br><i>(-1 disabled, 0 unlimited)</i>"
-msgstr "Létrehozható email fiókok száma<br /><em>(-1 letiltás, 0 korlátlan)</em>"
+"unlimited)</i>"
+msgstr ""
 
 msgid "Mail accounts list"
 msgstr "Email fiókok listája"
@@ -3023,17 +3034,17 @@ msgstr "Összes kijelölése"
 msgid "Master domain cannot be used."
 msgstr "Fődomain nem használható"
 
-msgid "Max aliases<br><i>(-1 disabled, 0 unlimited)</i>"
-msgstr "Létrehozható álnevek száma<br /><em>(-1 letiltás, 0 korlátlan)</em>"
+msgid "Max aliases<br/><i>(-1 disabled, 0 unlimited)</i>"
+msgstr ""
 
-msgid "Max domains<br><i>(-1 disabled, 0 unlimited)</i>"
-msgstr "Max. domainek<br /><em>(-1 tiltva, 0 korlátlan)</em>"
+msgid "Max domains<br/><i>(-1 disabled, 0 unlimited)</i>"
+msgstr ""
 
 msgid "Max number of login attempts"
 msgstr "Belépési kísérletek száma"
 
-msgid "Max subdomains<br><i>(-1 disabled, 0 unlimited)</i>"
-msgstr "Létrehozható aldomainek száma<br /><em>(-1 letiltás, 0 korlátlan)</em>"
+msgid "Max subdomains<br/><i>(-1 disabled, 0 unlimited)</i>"
+msgstr ""
 
 msgid "Max traffic"
 msgstr "Maximális adatforgalmi korlát [MB]"
@@ -3047,9 +3058,9 @@ msgid "Max. remote filesize (%1$d MB) is reached. Your remote file is %2$d MB"
 msgstr "A letöltendő fájl mérete (%2$d MB) nagyobb, mint a megengedett (%1$d MB)"
 
 msgid ""
-"Maximal number of labels for domain names<br />(<small>Excluding SLD & "
+"Maximal number of labels for domain names (<small>Excluding SLD & "
 "TLD</small>)"
-msgstr "Domainekhez társítható címkék maximális száma<br />(<small>Kivéve SLD és TLD</small>)"
+msgstr ""
 
 msgid "Maximum number of captcha validation attempts"
 msgstr "Maximális CAPTCHA-ellenőrzési kísérletek száma"
@@ -3300,9 +3311,6 @@ msgstr "Nincs friss megrendelés"
 msgid "No unassigned users was found in database."
 msgstr "Nem azonosított felhasználók nem találhatók az adatbázisban"
 
-msgid "No update for the websoftware depot list available"
-msgstr "Nincs frissíthető webes program lista"
-
 msgid "No user found."
 msgstr "Nem található felhasználó"
 
@@ -3350,6 +3358,9 @@ msgstr "Semmi sem változott."
 
 msgid "Nothing has been scheduled for deletion."
 msgstr "Semmi nem lett ütemezve törlésre "
+
+msgid "Nothing to do. Daemon request has been canceled."
+msgstr ""
 
 msgid "Notices, Warnings and Errors"
 msgstr "Értesítések, Figyelmeztetések és Hibák"
@@ -4147,10 +4158,8 @@ msgstr "SQL adatbázis sikeresen törölve"
 msgid "SQL databases"
 msgstr "SQL adatbázisok"
 
-msgid ""
-"SQL databases limit <br /><span class=\"italic\">(-1 disabled, 0 "
-"unlimited)</span>"
-msgstr "SQL adatbázisok száma <br /><span class=\"italic\">(-1 tiltva, 0 korlátlan)</span>"
+msgid "SQL databases limit <br /><i>(-1 disabled, 0 unlimited)</i>"
+msgstr ""
 
 msgid "SQL databases limit is <i>disabled</i>."
 msgstr "SQL adatbázis létrehozási korlát <em>kikapcsolva</em>"
@@ -4161,13 +4170,8 @@ msgstr "SQL-adatbázisok korlátozása le van tiltva, de az SQL felhasználóké
 msgid "SQL databases limit is not <i>disabled</i>."
 msgstr "Létrehozható SQL adatbázisok számánának korlátozása nincs <em>kikapcsolva</em>"
 
-msgid ""
-"SQL databases limit<br/><span class=\"italic\">(-1 disabled, 0 "
-"unlimited)</span>"
-msgstr "SQL adatbázisok száma <br/><span class=\"italic\">(-1 tiltva, 0 korlátlan)</span>"
-
-msgid "SQL databases limit<br><i>(-1 disabled, 0 unlimited)</i>"
-msgstr "Létrehozható SQL adatbázisok száma<br /><em>(-1 letiltás, 0 korlátlan)</em>"
+msgid "SQL databases limit<br/><i>(-1 disabled, 0 unlimited)</i>"
+msgstr ""
 
 msgid "SQL support"
 msgstr "SQL használat"
@@ -4187,10 +4191,8 @@ msgstr "SQL felhasználó sikeresen törölve"
 msgid "SQL users"
 msgstr "SQL felhasználók"
 
-msgid ""
-"SQL users limit <br /><span class=\"italic\">(-1 disabled, 0 "
-"unlimited)</span>"
-msgstr "SQL felhasználók száma <br /><span class=\"italic\">(-1 tiltva, 0 korlátlan)</span>"
+msgid "SQL users limit <br /><i>(-1 disabled, 0 unlimited)</i>"
+msgstr ""
 
 msgid "SQL users limit is <i>disabled</i>."
 msgstr "SQL felhasználó létrehozási korlát <em>kikapcsolva</em>"
@@ -4204,12 +4206,8 @@ msgstr "SQL-felhasználók korlátozása le van tiltva, de az SQL adatbázisoké
 msgid "SQL users limit reached."
 msgstr "SQL felhasználó limit túllépve"
 
-msgid ""
-"SQL users limit<br/><span class=\"italic\">(-1 disabled, 0 unlimited)</span>"
-msgstr "SQL felhasználók száma <br/><span class=\"italic\">(-1 tiltva, 0 korlátlan)</span>"
-
-msgid "SQL users limit<br><i>(-1 disabled, 0 unlimited)</i>"
-msgstr "Létrehozható SQL felhasználók száma<br /><em>(-1 letiltás, 0 korlátlan)</em>"
+msgid "SQL users limit<br/><i>(-1 disabled, 0 unlimited)</i>"
+msgstr ""
 
 msgid "SQL-User"
 msgstr "SQL felhasználó"
@@ -4339,9 +4337,6 @@ msgstr "Protokoll"
 
 msgid "Services status"
 msgstr "Szolgáltatások állapotai"
-
-msgid "Session not found in login table."
-msgstr "Munkafolyamat (session) nem található a belépéseket (login) tartalmazó táblában."
 
 msgid "Sessions"
 msgstr "Felhasználói munkafolyamatok"
@@ -4614,16 +4609,15 @@ msgid "Subdomain successfully scheduled for addition."
 msgstr "Aldomain létrehozása beütemezve"
 
 msgid ""
-"Subdomain you are trying to remove has email accounts.<br>First remove them."
-msgstr "Törölni kívánt aldomain névhez email fiók tartozik!<br>Előbb azt kell törölni"
+"Subdomain you are trying to remove has email accounts.<br/>First remove "
+"them."
+msgstr ""
 
 msgid "Subdomains"
 msgstr "Aldomainek"
 
-msgid ""
-"Subdomains limit<br /><span class=\"italic\">(-1 disabled, 0 "
-"unlimited)</span>"
-msgstr "Aldomain nevek száma <br /><span class=\"italic\">(-1 tiltva, 0 korlátlan)</span>"
+msgid "Subdomains limit<br /><i>(-1 disabled, 0 unlimited)</i>"
+msgstr ""
 
 msgid "Subject"
 msgstr "Tárgy"
@@ -4899,8 +4893,8 @@ msgid ""
 "The remote filesize (%1$d B) is lower than 1 Byte. Please check the URL."
 msgstr "A távoli fájlméret (%1$d B) kevesebb, mint 1 bájt. Kérjük ellenőrizze a webcímet!"
 
-msgid "The reseller account you trying to edit doesn't exist."
-msgstr "A módosítani kívánt viszonteladó nem létezik"
+msgid "The reseller account that you are trying to edit has not been found."
+msgstr ""
 
 msgid "The softwares installer needs PHP."
 msgstr "Programtelepítőnek szüksége van a PHP szolgáltatásokra"
@@ -5002,27 +4996,10 @@ msgstr "Ez a programcsomag nincs telepítve"
 msgid "This package is not installed yet"
 msgstr "Ez a programcsomag nincs telepítve még"
 
-#, php-format
-msgid ""
-"This reseller has %s customer(s) with unlimited rights for the %s service."
-msgstr "Viszonteladó %s ügyfelének korlátlan joga van a %s szolgáltatáshoz"
-
-#, php-format
-msgid ""
-"This reseller has already assigned more/higher %s accounts/limits than the "
-"new limit you entered."
-msgstr "Ennek a viszonteladónak a (<b>%s</b>) korlátai magasabbak a most megadott értéknél"
-
 msgid ""
 "This reseller has one or more customers accounts.<br /> To remove this "
 "reseller, please first remove these customers accounts."
 msgstr "Ennek a viszonteladónak egy vagy több ügyfele van, ezért a viszonteladó eltávolításához először azokat kell törölni"
-
-#, php-format
-msgid ""
-"This reseller's customers are using/have more/higher %s accounts/limits than"
-" the new limit you entered."
-msgstr "Ennek a viszonteladónak vannak ügyfelei, akiknek a (<b>%s</b>) korlátai magasabbak a most megadott értéknél"
 
 msgid "This software is installed on following domain(s):"
 msgstr "Ez a program telepítve van a következő domain(ek)hez:"
@@ -5031,8 +5008,8 @@ msgid "This type of account does not have quota."
 msgstr "Ez a fiók típus nem rendelkezik kvótával"
 
 msgid ""
-"This user has domain record.<br>First remove the domain from the system."
-msgstr "Felhasználónak van domainje!<br>Először törölnie kell a domaint!"
+"This user has domain record.<br/>First remove the domain from the system."
+msgstr ""
 
 msgid "This user name already exist."
 msgstr "Ez a felhasználónév már létezik"
@@ -5135,11 +5112,8 @@ msgstr "Forgalom"
 msgid "Traffic limit"
 msgstr "Adatforgalmi korlát"
 
-msgid "Traffic limit [MiB]<br/><span class=\"italic\">(0 unlimited)</span>"
-msgstr "Adatforgalmi korlát [MB] <br/><span class=\"italic\">(0 korlátlan)</span>"
-
-msgid "Traffic limit [MiB]<br><i>(0 unlimited)</i>"
-msgstr "Adatforgalmi korlát [MB] <br /><i>(0 korlátlan)</i>"
+msgid "Traffic limit [MiB]<br/><i>(0 unlimited)</i>"
+msgstr ""
 
 msgid "Traffic limit must be a digit."
 msgstr "Adatforgalmi korlát csak számjegy lehet"
@@ -5408,11 +5382,14 @@ msgstr "Felhasználó törlése beütemezve"
 msgid "User session successfully killed for password change."
 msgstr "Felhasználó jelszavának megváltoztatása nem sikerült"
 
-msgid "User session was killed."
-msgstr "Felhasználó munkafolyamata (session) megszakítva"
+msgid "User session successfuly destroyed"
+msgstr ""
 
 msgid "User session was successfully killed for password change"
 msgstr "Felhasználó jelszavának módosítása sikeres megakadályozva"
+
+msgid "User successfuly disconnected."
+msgstr ""
 
 msgid "User type"
 msgstr "Felhasználói szint"
@@ -5525,6 +5502,12 @@ msgstr "Web (kimenő)"
 msgid "Web software depot packages total"
 msgstr "Webes programtárolóban összesen"
 
+msgid "Web softwares repositories list has been updated"
+msgstr ""
+
+msgid "Web softwares repositories list is already up to date"
+msgstr ""
+
 msgid "Web softwares repository"
 msgstr "Webes programtároló"
 
@@ -5539,9 +5522,6 @@ msgstr "Adatforgalom"
 
 msgid "Webmail"
 msgstr "Webmail"
-
-msgid "Websoftware depot list was updated"
-msgstr "Szoftverraktár listája frissítve"
 
 msgid "Webspace"
 msgstr "Webtárhely"
@@ -5740,6 +5720,9 @@ msgstr "Túllépte a létrehozható aldomainek számát"
 msgid "You are exceeding your traffic limit."
 msgstr "Túllépte az adatforgalmi korlátot"
 
+msgid "You are not allowed to act on your own session."
+msgstr ""
+
 msgid "You are not allowed to edit this DNS record."
 msgstr "Nem engedélyezett a DNS rekord szerkesztése"
 
@@ -5759,9 +5742,6 @@ msgid ""
 "You can't delete a reseller that has domain accounts. Please, remove them "
 "before."
 msgstr "Nem lehet törölni"
-
-msgid "You can't remove your own session."
-msgstr "Saját munkafolyamatot (session) nem lehet eltávolítani"
 
 msgid "You cannot delete the last active IP address."
 msgstr "Nem törölhető az utolsó aktív IP-cím"
@@ -6261,6 +6241,9 @@ msgstr "i-MSCP - Adminisztrátor / Viszonteladó felhasználóinak statisztikáj
 msgid "i-MSCP - Admin / Reseller statistics"
 msgstr "i-MSCP - Adminisztrátor / Viszonteladó statisztikája"
 
+msgid "i-MSCP - Admin / Settings"
+msgstr ""
+
 msgid "i-MSCP - Admin / Settings / Plugin management"
 msgstr "i-MSCP - Adminisztrátor / Beállítások / Bővítőmodulok kezelése"
 
@@ -6323,9 +6306,6 @@ msgstr "i-MSCP - Adminisztrátor / Felhasználók kezelése / Üzenetsablon beá
 
 msgid "i-MSCP - Admin/Manage users/Reseller assignment"
 msgstr "i-MSCP - Adminisztrátor / Felhasználók kezelése / Viszonteladó átadása"
-
-msgid "i-MSCP - Admin/Settings"
-msgstr "i-MSCP - Adminisztrátor / Beállítások"
 
 msgid "i-MSCP - Administrator / Hosting Plans Management"
 msgstr "i-MSCP - Adminisztrátor / Tárhely csomagok kezelése"

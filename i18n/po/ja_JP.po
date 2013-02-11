@@ -3,13 +3,14 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
+#  <kazu.nito@gmail.com>, 2013.
 #   <kazu.nito@gmail.com>, 2011-2013.
 msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2013-01-21 21:39+0100\n"
-"PO-Revision-Date: 2013-01-21 20:40+0000\n"
+"POT-Creation-Date: 2013-02-11 11:47+0100\n"
+"PO-Revision-Date: 2013-02-11 10:48+0000\n"
 "Last-Translator: Torsten Widmann <info@goover.de>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -332,6 +333,31 @@ msgstr "%s ページ"
 msgid "%s record"
 msgstr "%s レコード"
 
+#, php-format
+msgid ""
+"%s: The clients consumption (%s) for this reseller is greater than the new "
+"limit."
+msgstr ""
+
+#, php-format
+msgid ""
+"%s: The total of items (%s) already assigned by the reseller is greater than"
+" the new limit."
+msgstr ""
+
+#, php-format
+msgid "%s: This reseller has customer(s) with unlimited items."
+msgstr ""
+
+#, php-format
+msgid ""
+"%s: You cannot disable a service already consumed by reseller's customers"
+msgstr ""
+
+#, php-format
+msgid "%s: You cannot disable a service already sold to reseller's customers."
+msgstr ""
+
 msgid ""
 "'%hostname%' does not appear to have a valid MX record for the email address"
 " '%value%'"
@@ -497,7 +523,7 @@ msgstr "<b>%s</b>が持っているＩＰアドレスは、目的の代理店で
 msgid ""
 "<b>Optional:</b> Leave this field empty if you do not want terms of service "
 "for this hosting plan."
-msgstr ""
+msgstr "<b>オプション：</b>このホスティングプランの利用規約を望まない場合は、このフィールドは空のままにします。"
 
 msgid ""
 "<strong>Thank you for purchasing.</strong><br /><br />An email has been sent"
@@ -525,12 +551,6 @@ msgstr "Webインタフェース経由でメールにアクセス。"
 
 msgid "Account data"
 msgstr "アカウントデータ"
-
-msgid ""
-"Account data were modified by another person before your changes. The update"
-" process was successfully done but in recovery mode. We recommend you to "
-"check the result of it."
-msgstr "アカウントデータはあなたの変更の前にもう一人の人によって修正されました。リカバリモードの中で、更新処理は行われました。更新結果をチェックしてください。"
 
 msgid "Account limits"
 msgstr "アカウント制限"
@@ -574,8 +594,8 @@ msgstr "アクティベーションEメール"
 msgid "Activation Link"
 msgstr "アクティベーションリンク"
 
-msgid "Activation link expire time (minutes)"
-msgstr "アクティベーションリンク有効期限 (分)"
+msgid "Activation link expire time <small>(In minutes)</small>"
+msgstr ""
 
 msgid "Add"
 msgstr "追加"
@@ -1078,14 +1098,15 @@ msgstr "中断されている"
 msgid "Billing Settings"
 msgstr "課金設定"
 
-msgid "Blocking time between login/captcha attempts (seconds)"
-msgstr "ログイン/キャプチャの試行の間のブロック時間(秒)"
+msgid ""
+"Blocking time between login/captcha attempts <small>(In seconds)</small>"
+msgstr ""
 
 msgid "Blocking time between logins and captcha attempts"
 msgstr "ログインとキャプチャ試行の間のブロック時間"
 
-msgid "Blocktime (minutes)"
-msgstr "ログイン拒否時間(分)"
+msgid "Blocktime <small>(in minutes)</small>"
+msgstr ""
 
 msgid "Both source and destination are identical."
 msgstr "送信元と宛先の両方は同じです。"
@@ -1666,20 +1687,20 @@ msgstr "無効"
 msgid "Disallowed"
 msgstr "許可されていない"
 
+msgid "Disconnect"
+msgstr ""
+
 msgid "Disk"
 msgstr "ディスク"
 
 msgid "Disk limit"
 msgstr "ディスク容量制限"
 
-msgid "Disk limit [MiB]<br/><span class=\"italic\">(0 unlimited)</span>"
-msgstr "ディスク容量制限 [MiB]<br/><span class=\"italic\">(0 無制限)</span>"
-
-msgid "Disk limit [MiB]<br/><span class=\\\"italic\\\">(0 unlimited)</span>"
+msgid "Disk limit [MiB]<br/><i>(0 unlimited)</i>"
 msgstr ""
 
-msgid "Disk limit [MiB]<br><i>(0 unlimited)</i>"
-msgstr "ディスク容量制限 [MiB]<br><i>(0 無制限)</i>"
+msgid "Disk limit [MiB]<br/><i>(0 unlimited)</span>"
+msgstr ""
 
 msgid "Disk usage"
 msgstr "ディスク使用量"
@@ -1787,23 +1808,23 @@ msgid "Domain alias successfully scheduled for deletion."
 msgstr "ドメインエイリアスは予定通り削除されました。"
 
 msgid ""
-"Domain alias you are trying to remove has FTP accounts.<br>First remove "
+"Domain alias you are trying to remove has FTP accounts.<br/>First remove "
 "them."
-msgstr "削除しようとしているドメインエイリアスは、FTPアカウントがあります。<br>最初に削除をしてください。"
+msgstr ""
 
 msgid ""
-"Domain alias you are trying to remove has custom DNS records!<br>First "
+"Domain alias you are trying to remove has custom DNS records!<br/>First "
 "remove them!"
-msgstr "削除しようとしたドメインエイリアスには、カスタムDNSレコードを持っています！<br>最初にそれを削除してください！"
+msgstr ""
 
 msgid ""
-"Domain alias you are trying to remove has email accounts.<br>First remove "
+"Domain alias you are trying to remove has email accounts.<br/>First remove "
 "them."
-msgstr "削除しようとしているドメインエイリアスは、Eメールアカウントがあります。<br>最初に削除してください。"
+msgstr ""
 
 msgid ""
-"Domain alias you are trying to remove has subdomains!<br>First remove them!"
-msgstr "削除しようとしたドメインエイリアスにはサブドメインがあります！ <br>先に削除してください！"
+"Domain alias you are trying to remove has subdomains!<br/>First remove them!"
+msgstr ""
 
 msgid "Domain aliases"
 msgstr "ドメインエイリアス"
@@ -1811,10 +1832,8 @@ msgstr "ドメインエイリアス"
 msgid "Domain aliases limit reached."
 msgstr "ドメインエイリアスが制限に達しています。"
 
-msgid ""
-"Domain aliases limit<br/><span class=\"italic\">(-1 disabled, 0 "
-"unlimited)</span>"
-msgstr "ドメインエイリアス制限<br/><span class=\"italic\">(-1 無効, 0 無制限)</span>"
+msgid "Domain aliases limit<br/><i>(-1 disabled, 0 unlimited)</i>"
+msgstr ""
 
 msgid "Domain already assigned to another IP address."
 msgstr "ドメインが既に別のIPアドレスに割り当てられます。"
@@ -1850,7 +1869,7 @@ msgid "Domain errors"
 msgstr "ドメインエラー"
 
 msgid "Domain expiration date"
-msgstr ""
+msgstr "ドメインの有効期限"
 
 msgid "Domain expiration date must be filled."
 msgstr "ドメイン有効期限を入力する必要があります。"
@@ -1868,7 +1887,7 @@ msgid "Domain names validation"
 msgstr "ドメイン名の確認"
 
 msgid "Domain new expiration date"
-msgstr ""
+msgstr "ドメインの新しい有効期限"
 
 msgid "Domain not found."
 msgstr "ドメインが見つかりません。"
@@ -1908,8 +1927,8 @@ msgstr "ドメイン：外部メールサーバにドメイン全体（サブド
 msgid "Domains"
 msgstr "ドメイン"
 
-msgid "Domains limit<br/><span class=\"italic\">(0 unlimited)</span>"
-msgstr "ドメイン制限<br/><span class=\"italic\">(0 無制限)</span>"
+msgid "Domains limit<br/><i>(0 unlimited)</i>"
+msgstr ""
 
 msgid "Domains per page"
 msgstr "1ページあたりのドメイン数"
@@ -2141,8 +2160,8 @@ msgstr "リクエスト実行"
 msgid "Expire date"
 msgstr "失効日"
 
-msgid "Expire time for unconfirmed orders<br /><small>(In days)</small>"
-msgstr "未確認オーダーの有効期限<br /><small>(営業日)</small>"
+msgid "Expire time for unconfirmed orders <small>(In days)</small>"
+msgstr ""
 
 msgid "External Mail Host"
 msgstr "外部メールホスト"
@@ -2186,21 +2205,14 @@ msgstr "FTPアカウントを更新しました。"
 msgid "FTP accounts"
 msgstr "FTPアカウント"
 
-msgid ""
-"FTP accounts limit <br /><span class=\"italic\">(-1 disabled, 0 "
-"unlimited)</span>"
-msgstr "FTP アカウント制限 <br /><span class=\"italic\">(-1 無効, 0 無制限)</span>"
+msgid "FTP accounts limit <br /><i>(-1 disabled, 0 unlimited)</i>"
+msgstr ""
 
 msgid "FTP accounts limit reached!"
 msgstr "FTPアカウントが限界です！"
 
-msgid ""
-"FTP accounts limit<br/><span class=\"italic\">(-1 disabled, 0 "
-"unlimited)</span>"
-msgstr "FTP アカウント制限<br/><span class=\"italic\">(-1 無効, 0 無制限)</span>"
-
-msgid "FTP accounts limit<br><i>(-1 disabled, 0 unlimited)</i>"
-msgstr "FTPアカウントの制限<br><i>(-1:無効, 0:無制限)</i>"
+msgid "FTP accounts limit<br/><i>(-1 disabled, 0 unlimited)</i>"
+msgstr ""
 
 msgid "FTP traffic"
 msgstr "FTPトラフィック"
@@ -2231,7 +2243,7 @@ msgstr "女性"
 
 #, php-format
 msgid "File %s doesn't exists or cannot be reached!"
-msgstr ""
+msgstr "ファイル%sは存在しないか、到達することはできません！"
 
 #, php-format
 msgid "File does not exist. %1$s.tar.gz"
@@ -2376,7 +2388,7 @@ msgid "Help"
 msgstr "ヘルプ"
 
 msgid "Hide aliases"
-msgstr ""
+msgstr "エイリアスを非表示にする"
 
 msgid "Hide default E-Mail Addresses"
 msgstr "既定のEメールアドレスを隠す"
@@ -2427,7 +2439,7 @@ msgid "Hosting plans"
 msgstr "ホスティングプラン"
 
 msgid "Hosting plans are not found."
-msgstr ""
+msgstr "ホスティングプランが見つかりません。"
 
 msgid "Hosting plans available for"
 msgstr "ホスティングプランを使えるユーザー"
@@ -2468,7 +2480,7 @@ msgid "Http traffic"
 msgstr "Http トラフィック"
 
 msgid "I Accept The Terms of Service"
-msgstr ""
+msgstr "私は利用規約に同意します"
 
 msgid "I understand the warnings - Purchase!"
 msgstr "私は警告に関して知っています - 購入！"
@@ -2533,7 +2545,7 @@ msgstr "ローカルリポジトリのインポート"
 msgid ""
 "In case domain expiration date is 'N/A', the expiration date will be set "
 "from today."
-msgstr ""
+msgstr "ドメインの有効期限が'N/A'である場合には、有効期限が今日から設定されます。"
 
 msgid "In front the name"
 msgstr "名前の前に付加"
@@ -2634,7 +2646,7 @@ msgid "Installed on"
 msgstr "インストールされました"
 
 msgid "Installing your uploaded package. Please refresh this page."
-msgstr ""
+msgstr "アップロードされたパッケージをインストールします。このページを更新してください。"
 
 msgid "Instructions to download today's backup"
 msgstr "今日のバックアップをダウンロードする指示"
@@ -2804,7 +2816,7 @@ msgid "Login data successfully sent to %s."
 msgstr "ログインデータを %s に送りました。"
 
 msgid "Login into phpMyAdmin"
-msgstr ""
+msgstr "phpMyAdminにログイン"
 
 msgid "Login into the filemanager"
 msgstr "ファイルマネージャーにログイン"
@@ -2843,10 +2855,10 @@ msgid "Lost password e-mail"
 msgstr "パスワード忘れEメール"
 
 msgid "Lost password email"
-msgstr ""
+msgstr "失われたパスワードのEメール"
 
 msgid "Lost password email setup"
-msgstr ""
+msgstr "失われたパスワードのEメール設定"
 
 msgid "Lost password link"
 msgstr "パスワード忘れリンク"
@@ -2902,13 +2914,13 @@ msgstr "メールアカウント"
 msgid "Mail accounts limit reached."
 msgstr "メールアカウントが制限に達しています。"
 
+msgid "Mail accounts limit<br/><i>(-1 disabled, 0 unlimited)</i>"
+msgstr ""
+
 msgid ""
 "Mail accounts limit<br/><span class=\"italic\">(-1 disabled, 0 "
-"unlimited)</span>"
-msgstr "メールアカウント制限<br/><span class=\"italic\">(-1 無効, 0 無制限)</span>"
-
-msgid "Mail accounts limit<br><i>(-1 disabled, 0 unlimited)</i>"
-msgstr "メールアカウントの制限<br><i>(-1:無効, 0:無制限)</i>"
+"unlimited)</i>"
+msgstr ""
 
 msgid "Mail accounts list"
 msgstr "メールアカウント一覧"
@@ -3020,17 +3032,17 @@ msgstr "全てのマークを付ける"
 msgid "Master domain cannot be used."
 msgstr "マスタードメインは使用できません。"
 
-msgid "Max aliases<br><i>(-1 disabled, 0 unlimited)</i>"
-msgstr "エイリアスの上限<br><i>(-1:無効, 0:無制限)</i>"
+msgid "Max aliases<br/><i>(-1 disabled, 0 unlimited)</i>"
+msgstr ""
 
-msgid "Max domains<br><i>(-1 disabled, 0 unlimited)</i>"
-msgstr "最大ドメイン数<br><i>(-1:無効, 0:無制限)</i>"
+msgid "Max domains<br/><i>(-1 disabled, 0 unlimited)</i>"
+msgstr ""
 
 msgid "Max number of login attempts"
 msgstr "最大数のログインの試み"
 
-msgid "Max subdomains<br><i>(-1 disabled, 0 unlimited)</i>"
-msgstr "サブドメインの上限<br><i>(-1:無効, 0:無制限)</i>"
+msgid "Max subdomains<br/><i>(-1 disabled, 0 unlimited)</i>"
+msgstr ""
 
 msgid "Max traffic"
 msgstr "最大トラフィック"
@@ -3044,9 +3056,9 @@ msgid "Max. remote filesize (%1$d MB) is reached. Your remote file is %2$d MB"
 msgstr "最大。リモートファイルサイズ (%1$d MB) に達しました。あなたのリモートファイルは、%2$d MBです"
 
 msgid ""
-"Maximal number of labels for domain names<br />(<small>Excluding SLD & "
+"Maximal number of labels for domain names (<small>Excluding SLD & "
 "TLD</small>)"
-msgstr "ドメイン名のラベルの最大数<br />（<small>SLD＆TLDを除く</small>）"
+msgstr ""
 
 msgid "Maximum number of captcha validation attempts"
 msgstr "キャプチャのバリテーションの最大試行回数"
@@ -3179,7 +3191,7 @@ msgid "No IP address found."
 msgstr "IPアドレスが見つかりませんでした。"
 
 msgid "No IP statistics to be shown."
-msgstr ""
+msgstr "No IP 統計は表示されません。"
 
 msgid "No Reseller available to add the permissions"
 msgstr "権限を追加できる代理店ではありません"
@@ -3265,7 +3277,7 @@ msgid "No reseller accounts found."
 msgstr "代理店アカウントが見つかりません。"
 
 msgid "No reseller statistics to display."
-msgstr ""
+msgstr "代理店の統計は表示しないようにする。"
 
 msgid "No reseller with activated software installer found!"
 msgstr "有効なソフトウェアインストーラーを持った代理店は見つけられませんでした!"
@@ -3296,9 +3308,6 @@ msgstr "このような更新のオーダーは見つかりませんでした。
 
 msgid "No unassigned users was found in database."
 msgstr "割り当てられていないユーザーがデータベースに見つかりませんでした。"
-
-msgid "No update for the websoftware depot list available"
-msgstr "利用可能なWebソフトウェアデポットリストは更新されていません"
 
 msgid "No user found."
 msgstr "ユーザーが見つかりませんでした。"
@@ -3347,6 +3356,9 @@ msgstr "何も変更されていません。"
 
 msgid "Nothing has been scheduled for deletion."
 msgstr "何も削除が予定されていません。"
+
+msgid "Nothing to do. Daemon request has been canceled."
+msgstr ""
 
 msgid "Notices, Warnings and Errors"
 msgstr "通知, 警告とエラー"
@@ -3638,7 +3650,7 @@ msgid ""
 "Paths are appended to the default PHP open_basedir directive of customers. "
 "Each of them must be separated by PATH_SEPARATOR. See the PHP documentation "
 "for more information."
-msgstr ""
+msgstr "パスは顧客のデフォルトのPHP open_basedirのディレクティブに追加されます。それらの各々は、PATH_SEPARATORで区切らなければなりません。詳細については、PHPマニュアルを参照してください。"
 
 msgid "Payment period"
 msgstr "課金期間"
@@ -4144,10 +4156,8 @@ msgstr "SQLデータベースを削除しました。"
 msgid "SQL databases"
 msgstr "SQLデータベース"
 
-msgid ""
-"SQL databases limit <br /><span class=\"italic\">(-1 disabled, 0 "
-"unlimited)</span>"
-msgstr "SQL データベース制限 <br /><span class=\"italic\">(-1 無効, 0 無制限)</span>"
+msgid "SQL databases limit <br /><i>(-1 disabled, 0 unlimited)</i>"
+msgstr ""
 
 msgid "SQL databases limit is <i>disabled</i>."
 msgstr "SQLデータベース制限が無効です。"
@@ -4158,13 +4168,8 @@ msgstr "SQLデータベース制限は無効になりますが、SQLユーザー
 msgid "SQL databases limit is not <i>disabled</i>."
 msgstr "SQLデータベース制限が<i>無効</i>にされていない。"
 
-msgid ""
-"SQL databases limit<br/><span class=\"italic\">(-1 disabled, 0 "
-"unlimited)</span>"
-msgstr "SQL データベース制限<br/><span class=\"italic\">(-1 無効, 0 無制限)</span>"
-
-msgid "SQL databases limit<br><i>(-1 disabled, 0 unlimited)</i>"
-msgstr "SQLデータベース制限<br><i>(-1:無効, 0:無制限)</i>"
+msgid "SQL databases limit<br/><i>(-1 disabled, 0 unlimited)</i>"
+msgstr ""
 
 msgid "SQL support"
 msgstr "SQLサポート"
@@ -4184,10 +4189,8 @@ msgstr "SQLユーザーを削除しました。"
 msgid "SQL users"
 msgstr "SQLユーザー"
 
-msgid ""
-"SQL users limit <br /><span class=\"italic\">(-1 disabled, 0 "
-"unlimited)</span>"
-msgstr "SQL ユーザー制限 <br /><span class=\"italic\">(-1 無効, 0 無制限)</span>"
+msgid "SQL users limit <br /><i>(-1 disabled, 0 unlimited)</i>"
+msgstr ""
 
 msgid "SQL users limit is <i>disabled</i>."
 msgstr "SQLユーザー制限が<i>無効</i>です。"
@@ -4201,12 +4204,8 @@ msgstr "SQLユーザー制限は無効になりますが、SQLデータベース
 msgid "SQL users limit reached."
 msgstr "SQLユーザーの制限に達しました。"
 
-msgid ""
-"SQL users limit<br/><span class=\"italic\">(-1 disabled, 0 unlimited)</span>"
-msgstr "SQL ユーザー制限<br/><span class=\"italic\">(-1 無効, 0 無制限)</span>"
-
-msgid "SQL users limit<br><i>(-1 disabled, 0 unlimited)</i>"
-msgstr "SQLユーザー最大数<br><i>(-1:無効, 0:無制限)"
+msgid "SQL users limit<br/><i>(-1 disabled, 0 unlimited)</i>"
+msgstr ""
 
 msgid "SQL-User"
 msgstr "SQL-ユーザー"
@@ -4336,9 +4335,6 @@ msgstr "サービスプロトコル"
 
 msgid "Services status"
 msgstr "サービスステータス"
-
-msgid "Session not found in login table."
-msgstr "セッションはログインテーブルで見つかりませんでした。"
 
 msgid "Sessions"
 msgstr "セッション"
@@ -4611,16 +4607,15 @@ msgid "Subdomain successfully scheduled for addition."
 msgstr "サブドメインの追加がスケジュールされました。"
 
 msgid ""
-"Subdomain you are trying to remove has email accounts.<br>First remove them."
-msgstr "削除しようとしているサブドメインはメールアカウントを持っています。<br>まず削除してください。"
+"Subdomain you are trying to remove has email accounts.<br/>First remove "
+"them."
+msgstr ""
 
 msgid "Subdomains"
 msgstr "サブドメイン"
 
-msgid ""
-"Subdomains limit<br /><span class=\"italic\">(-1 disabled, 0 "
-"unlimited)</span>"
-msgstr "サブドメイン制限<br /><span class=\"italic\">(-1 無効, 0 無制限)</span>"
+msgid "Subdomains limit<br /><i>(-1 disabled, 0 unlimited)</i>"
+msgstr ""
 
 msgid "Subject"
 msgstr "タイトル"
@@ -4735,7 +4730,7 @@ msgid "Temporary folder not found."
 msgstr "一時フォルダが見つかりません。"
 
 msgid "Terms of Service"
-msgstr ""
+msgstr "利用規約"
 
 msgid "Text"
 msgstr "テキスト"
@@ -4896,8 +4891,8 @@ msgid ""
 "The remote filesize (%1$d B) is lower than 1 Byte. Please check the URL."
 msgstr "リモートファイルサイズ(%1$d B) が1バイト未満です。 URLを確認してください。"
 
-msgid "The reseller account you trying to edit doesn't exist."
-msgstr "編集しようしている代理店アカウントは存在しません。"
+msgid "The reseller account that you are trying to edit has not been found."
+msgstr ""
 
 msgid "The softwares installer needs PHP."
 msgstr "ソフトウェアインストーラは、PHPが必要です。"
@@ -4999,27 +4994,10 @@ msgstr "このパッケージはインストールされていません"
 msgid "This package is not installed yet"
 msgstr "このパッケージはまだインストールされていません"
 
-#, php-format
-msgid ""
-"This reseller has %s customer(s) with unlimited rights for the %s service."
-msgstr "この代理店は %s サービスのために無制限の権限で %s の顧客を持っています。"
-
-#, php-format
-msgid ""
-"This reseller has already assigned more/higher %s accounts/limits than the "
-"new limit you entered."
-msgstr "この代理店は既にあなたが入れた新しい限界よりさらに多いか高い %s アカウント/限界を割り当てました。"
-
 msgid ""
 "This reseller has one or more customers accounts.<br /> To remove this "
 "reseller, please first remove these customers accounts."
 msgstr "この代理店は、1つまたは複数の顧客アカウントを持っています。<br/>代理店を削除するには、最初に顧客アカウントを削除してください。"
-
-#, php-format
-msgid ""
-"This reseller's customers are using/have more/higher %s accounts/limits than"
-" the new limit you entered."
-msgstr "この代理店の顧客は入れた新しい限界より多くの高い %s アカウント/限界を持ってください。"
 
 msgid "This software is installed on following domain(s):"
 msgstr "このソフトウェアは、次のドメインにインストールされています："
@@ -5028,8 +5006,8 @@ msgid "This type of account does not have quota."
 msgstr "この種類のアカウントは容量制限を持っていません。"
 
 msgid ""
-"This user has domain record.<br>First remove the domain from the system."
-msgstr "このユーザーは、ドメインのレコードを持っています。<br>最初にシステムからドメインを削除する。"
+"This user has domain record.<br/>First remove the domain from the system."
+msgstr ""
 
 msgid "This user name already exist."
 msgstr "このユーザー名は既に存在している。"
@@ -5132,11 +5110,8 @@ msgstr "トラフィック"
 msgid "Traffic limit"
 msgstr "トラフィック制限"
 
-msgid "Traffic limit [MiB]<br/><span class=\"italic\">(0 unlimited)</span>"
-msgstr "トラフィック制限 [MB]<br/><span class=\"italic\">(0 無制限)</span>"
-
-msgid "Traffic limit [MiB]<br><i>(0 unlimited)</i>"
-msgstr "トラフィック制限 [MB]<br><i>(0 無制限)</i>"
+msgid "Traffic limit [MiB]<br/><i>(0 unlimited)</i>"
+msgstr ""
 
 msgid "Traffic limit must be a digit."
 msgstr "トラフィック制限は数字でなければなりません。"
@@ -5167,7 +5142,7 @@ msgstr "管理パネルへのURL"
 
 #, php-format
 msgid "Unable to close the ticket with Id '%s'."
-msgstr ""
+msgstr "ID '%s'のチケットをクローズできません。"
 
 #, php-format
 msgid "Unable to create '%s' directory for language file."
@@ -5405,11 +5380,14 @@ msgstr "ユーザーの削除が予定されました。"
 msgid "User session successfully killed for password change."
 msgstr "ユーザーセッションは、パスワード変更のため切断されました。"
 
-msgid "User session was killed."
-msgstr "ユーザーセッションは強制終了されました。"
+msgid "User session successfuly destroyed"
+msgstr ""
 
 msgid "User session was successfully killed for password change"
 msgstr "ユーザーセッションはパスワード変更に伴い切断されました。"
+
+msgid "User successfuly disconnected."
+msgstr ""
 
 msgid "User type"
 msgstr "ユーザータイプ"
@@ -5503,7 +5481,7 @@ msgstr "警告とエラー"
 msgid ""
 "We are sorry but you have reached the maximum number of domain aliases "
 "allowed by your subscription. Contact to your reseller for more information."
-msgstr ""
+msgstr "申し訳ありませんが、あなたのサブスクリプションで許可されているドメインエイリアスの最大数に達しました。詳細については、代理店にお問い合わせください。"
 
 msgid ""
 "We are sorry, but the system is currently under maintenance.\n"
@@ -5522,6 +5500,12 @@ msgstr "Web out"
 msgid "Web software depot packages total"
 msgstr "Webソフトウェアデポットのパッケージ合計"
 
+msgid "Web softwares repositories list has been updated"
+msgstr ""
+
+msgid "Web softwares repositories list is already up to date"
+msgstr ""
+
 msgid "Web softwares repository"
 msgstr "Webソフトウェアリポジトリ"
 
@@ -5536,9 +5520,6 @@ msgstr "Webトラフィック"
 
 msgid "Webmail"
 msgstr "Webメール"
-
-msgid "Websoftware depot list was updated"
-msgstr "Webソフトウェアデポットのリストを更新しました"
 
 msgid "Webspace"
 msgstr "Webスペース"
@@ -5737,6 +5718,9 @@ msgstr "サブドメイン数の制限を超えています。"
 msgid "You are exceeding your traffic limit."
 msgstr "あなたのトラフィックの制限を超えています。"
 
+msgid "You are not allowed to act on your own session."
+msgstr ""
+
 msgid "You are not allowed to edit this DNS record."
 msgstr "このDNSレコードを編集することが許可されていません。"
 
@@ -5756,9 +5740,6 @@ msgid ""
 "You can't delete a reseller that has domain accounts. Please, remove them "
 "before."
 msgstr "ドメインアカウントを持っている代理店を削除することはできません。 それらを前に削除してください。"
-
-msgid "You can't remove your own session."
-msgstr "自身のセッションを削除することはできません。"
 
 msgid "You cannot delete the last active IP address."
 msgstr "あなたは最後のアクティブなIPアドレスを削除することはできません。"
@@ -5948,7 +5929,7 @@ msgid "You have more disk space in use than the new hosting plan limits."
 msgstr "あなたは、新しいホスティングプランのディスク容量制限よりも、多くのディスク容量を使用しています。"
 
 msgid "You have more domain aliases in use than the new hosting plan limits."
-msgstr ""
+msgstr "あなたは、新しいホスティングプランの制限よりも、多くのドメインエイリアスを持っている。"
 
 msgid ""
 "You have more e-mail addresses in use than the new hosting plan limits."
@@ -5986,7 +5967,7 @@ msgid ""
 msgstr "ソフトウェアのインストーラーが有効ですが、新しいホスティングプランは、この機能を提供していません。"
 
 msgid "You have to accept the Terms of Service."
-msgstr ""
+msgstr "あなたは、利用規約に同意する必要があります。"
 
 msgid "You have to choose between file-upload and wget-function."
 msgstr "ファイルアップロードとwget-機能を選ばなければなりません。"
@@ -6258,6 +6239,9 @@ msgstr "i-MSCP - 管理者 / 代理店顧客統計"
 msgid "i-MSCP - Admin / Reseller statistics"
 msgstr "i-MSCP - 管理者 / 代理店統計"
 
+msgid "i-MSCP - Admin / Settings"
+msgstr ""
+
 msgid "i-MSCP - Admin / Settings / Plugin management"
 msgstr "i-MSCP - 管理者 / 設定 / プラグイン管理"
 
@@ -6298,7 +6282,7 @@ msgid "i-MSCP - Admin/IP Usage"
 msgstr "i-MSCP - 管理者/IPアドレス管理"
 
 msgid "i-MSCP - Admin/Lost password email setup"
-msgstr ""
+msgstr "i-MSCP - 管理者/失われたパスワードのEメール設定"
 
 msgid "i-MSCP - Admin/Maintenance mode"
 msgstr "i-MSCP - 管理者/メンテナンスモード"
@@ -6320,9 +6304,6 @@ msgstr "i-MSCP - 管理者/ユーザー管理/Eメール設定"
 
 msgid "i-MSCP - Admin/Manage users/Reseller assignment"
 msgstr "i-MSCP - 管理者/ユーザー管理/代理店の割り当て"
-
-msgid "i-MSCP - Admin/Settings"
-msgstr "i-MSCP - 管理者/設定"
 
 msgid "i-MSCP - Administrator / Hosting Plans Management"
 msgstr "i-MSCP - 管理者 / ホスティングプラン管理"
@@ -6544,7 +6525,7 @@ msgid "i-MSCP - Reseller/IP Usage"
 msgstr "i-MSCP - 代理店/IPアドレス管理"
 
 msgid "i-MSCP - Reseller/Lost password email setup"
-msgstr ""
+msgstr "i-MSCP - 代理店/失われたパスワードのEメール設定"
 
 msgid "i-MSCP - Reseller/Manage users/Email setup"
 msgstr "i-MSCP - 代理店/ユーザー管理/Eメール設定"

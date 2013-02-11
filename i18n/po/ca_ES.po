@@ -15,8 +15,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2013-01-21 21:39+0100\n"
-"PO-Revision-Date: 2013-01-21 20:40+0000\n"
+"POT-Creation-Date: 2013-02-11 11:47+0100\n"
+"PO-Revision-Date: 2013-02-11 10:48+0000\n"
 "Last-Translator: Torsten Widmann <info@goover.de>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -339,6 +339,31 @@ msgstr "%s pàgina"
 msgid "%s record"
 msgstr "entrada %s"
 
+#, php-format
+msgid ""
+"%s: The clients consumption (%s) for this reseller is greater than the new "
+"limit."
+msgstr ""
+
+#, php-format
+msgid ""
+"%s: The total of items (%s) already assigned by the reseller is greater than"
+" the new limit."
+msgstr ""
+
+#, php-format
+msgid "%s: This reseller has customer(s) with unlimited items."
+msgstr ""
+
+#, php-format
+msgid ""
+"%s: You cannot disable a service already consumed by reseller's customers"
+msgstr ""
+
+#, php-format
+msgid "%s: You cannot disable a service already sold to reseller's customers."
+msgstr ""
+
 msgid ""
 "'%hostname%' does not appear to have a valid MX record for the email address"
 " '%value%'"
@@ -533,12 +558,6 @@ msgstr "Accedir al webmail."
 msgid "Account data"
 msgstr "Dades del compte"
 
-msgid ""
-"Account data were modified by another person before your changes. The update"
-" process was successfully done but in recovery mode. We recommend you to "
-"check the result of it."
-msgstr "Les dades d'aquest compte han estat modificades mentre les canviaveu. El procés d'actualització ha intentat integrar ambdós canvis, però recomaneu que en reviseu els resultats."
-
 msgid "Account limits"
 msgstr "Límits del compte"
 
@@ -581,8 +600,8 @@ msgstr "Activació de correu"
 msgid "Activation Link"
 msgstr "Link per l'activació"
 
-msgid "Activation link expire time (minutes)"
-msgstr "Temps d'expiració del link d'activació (minuts)"
+msgid "Activation link expire time <small>(In minutes)</small>"
+msgstr ""
 
 msgid "Add"
 msgstr "Afegir"
@@ -1085,14 +1104,15 @@ msgstr "Estar suspès"
 msgid "Billing Settings"
 msgstr "Configuració de facturació"
 
-msgid "Blocking time between login/captcha attempts (seconds)"
-msgstr "Temps de bloqueig entre temptatives de inici de sessió/captcha (segons)"
+msgid ""
+"Blocking time between login/captcha attempts <small>(In seconds)</small>"
+msgstr ""
 
 msgid "Blocking time between logins and captcha attempts"
 msgstr "Temps de bloqueig entre temptatives de inici de sessió i captcha."
 
-msgid "Blocktime (minutes)"
-msgstr "Temps de bloqueig (minuts)"
+msgid "Blocktime <small>(in minutes)</small>"
+msgstr ""
 
 msgid "Both source and destination are identical."
 msgstr "Ambdós, origen i destí, són idèntics."
@@ -1673,20 +1693,20 @@ msgstr "Desactivat"
 msgid "Disallowed"
 msgstr "No permès"
 
+msgid "Disconnect"
+msgstr ""
+
 msgid "Disk"
 msgstr "Disc"
 
 msgid "Disk limit"
 msgstr "Límit disc"
 
-msgid "Disk limit [MiB]<br/><span class=\"italic\">(0 unlimited)</span>"
-msgstr "Quota de disc [MIB]<br><span class=\"italic\">(0 il·limitat)</span>"
-
-msgid "Disk limit [MiB]<br/><span class=\\\"italic\\\">(0 unlimited)</span>"
+msgid "Disk limit [MiB]<br/><i>(0 unlimited)</i>"
 msgstr ""
 
-msgid "Disk limit [MiB]<br><i>(0 unlimited)</i>"
-msgstr "Quota de disc [MIB]<br><span class=\"italic\">(0 il·limitat)</span>"
+msgid "Disk limit [MiB]<br/><i>(0 unlimited)</span>"
+msgstr ""
 
 msgid "Disk usage"
 msgstr "Ús de disc"
@@ -1794,23 +1814,23 @@ msgid "Domain alias successfully scheduled for deletion."
 msgstr "Àlies de domini programat per eliminar."
 
 msgid ""
-"Domain alias you are trying to remove has FTP accounts.<br>First remove "
+"Domain alias you are trying to remove has FTP accounts.<br/>First remove "
 "them."
-msgstr "L'àlies de domini que voleu eliminar disposa de comptes FTP.<br>Elimineu-los primer i torneu a intentar d'eliminar l'àlies."
+msgstr ""
 
 msgid ""
-"Domain alias you are trying to remove has custom DNS records!<br>First "
+"Domain alias you are trying to remove has custom DNS records!<br/>First "
 "remove them!"
-msgstr "L'alies de domini que voleu esborrar té entrades personalitzades de DNS!<br> Primeu les heu d'esborrar!"
+msgstr ""
 
 msgid ""
-"Domain alias you are trying to remove has email accounts.<br>First remove "
+"Domain alias you are trying to remove has email accounts.<br/>First remove "
 "them."
-msgstr "L'àlies de domini que voleu eliminar disposa d'adreces de correu.<br>Elimineu les adreces primer i torneu a intentar d'eliminar l'àlies."
+msgstr ""
 
 msgid ""
-"Domain alias you are trying to remove has subdomains!<br>First remove them!"
-msgstr "L'àlies de domini que esteu intentant eliminar té subdominis!<br> Elimineu-los primer!"
+"Domain alias you are trying to remove has subdomains!<br/>First remove them!"
+msgstr ""
 
 msgid "Domain aliases"
 msgstr "Àlies de domini"
@@ -1818,10 +1838,8 @@ msgstr "Àlies de domini"
 msgid "Domain aliases limit reached."
 msgstr "S'ha assolit el límit d'àlies de domini."
 
-msgid ""
-"Domain aliases limit<br/><span class=\"italic\">(-1 disabled, 0 "
-"unlimited)</span>"
-msgstr "Límit d'àlies de domini<br/><span class=\"italic\">(-1 desactivat, 0 il·limitat)</span>"
+msgid "Domain aliases limit<br/><i>(-1 disabled, 0 unlimited)</i>"
+msgstr ""
 
 msgid "Domain already assigned to another IP address."
 msgstr "Aquest domini ja està assignat a unaltra adreça IP."
@@ -1915,8 +1933,8 @@ msgstr ""
 msgid "Domains"
 msgstr "Dominis"
 
-msgid "Domains limit<br/><span class=\"italic\">(0 unlimited)</span>"
-msgstr "Limit de dominis<br/><span class=\"italic\">(0 il.limitats)</span>"
+msgid "Domains limit<br/><i>(0 unlimited)</i>"
+msgstr ""
 
 msgid "Domains per page"
 msgstr "Dominis per pàgina"
@@ -2148,8 +2166,8 @@ msgstr "Executar consultes"
 msgid "Expire date"
 msgstr "Data de caducitat"
 
-msgid "Expire time for unconfirmed orders<br /><small>(In days)</small>"
-msgstr "Temps d'expiració per les comandes no confirmades<br><small>(en dies)</small>"
+msgid "Expire time for unconfirmed orders <small>(In days)</small>"
+msgstr ""
 
 msgid "External Mail Host"
 msgstr ""
@@ -2193,21 +2211,14 @@ msgstr "El compte FTP ha estat actualizat."
 msgid "FTP accounts"
 msgstr "Comptes de FTP"
 
-msgid ""
-"FTP accounts limit <br /><span class=\"italic\">(-1 disabled, 0 "
-"unlimited)</span>"
-msgstr "Limit de comptes FTP<br/><span class=\"italic\">(-1 desactivat, 0 il.limitat)</span>"
+msgid "FTP accounts limit <br /><i>(-1 disabled, 0 unlimited)</i>"
+msgstr ""
 
 msgid "FTP accounts limit reached!"
 msgstr "S'ha assolit el límit de comptes FTP!"
 
-msgid ""
-"FTP accounts limit<br/><span class=\"italic\">(-1 disabled, 0 "
-"unlimited)</span>"
-msgstr "Limit de comptes FTP<br/><span class=\"italic\">(-1 desactivat, 0 il.limitat)</span>"
-
-msgid "FTP accounts limit<br><i>(-1 disabled, 0 unlimited)</i>"
-msgstr "Límit de comptes d'FTP<br><i>(-1 deshabilitat, 0 il·limitat)</i>"
+msgid "FTP accounts limit<br/><i>(-1 disabled, 0 unlimited)</i>"
+msgstr ""
 
 msgid "FTP traffic"
 msgstr "Trànsit FTP"
@@ -2909,13 +2920,13 @@ msgstr "Comptes de correu"
 msgid "Mail accounts limit reached."
 msgstr "S'ha superat el límit de comptes d'email."
 
+msgid "Mail accounts limit<br/><i>(-1 disabled, 0 unlimited)</i>"
+msgstr ""
+
 msgid ""
 "Mail accounts limit<br/><span class=\"italic\">(-1 disabled, 0 "
-"unlimited)</span>"
-msgstr "Límit de comptes de correu <br/><span class=\"italic\">(-1 disabled, 0 unlimited)</span>"
-
-msgid "Mail accounts limit<br><i>(-1 disabled, 0 unlimited)</i>"
-msgstr "Límit de bústies de correu<br><i>(-1 deshabilitat, 0 il·limitat)</i>"
+"unlimited)</i>"
+msgstr ""
 
 msgid "Mail accounts list"
 msgstr "Llista de comptes de correu"
@@ -3027,17 +3038,17 @@ msgstr "Marcar tots"
 msgid "Master domain cannot be used."
 msgstr "No podeu utilitzar el domini principal del panell."
 
-msgid "Max aliases<br><i>(-1 disabled, 0 unlimited)</i>"
-msgstr "Àlies màxims<br><i>(-1 deshabilitat, 0 il·limitat)</i>"
+msgid "Max aliases<br/><i>(-1 disabled, 0 unlimited)</i>"
+msgstr ""
 
-msgid "Max domains<br><i>(-1 disabled, 0 unlimited)</i>"
-msgstr "Max dominis<br><i>(-1 desactivat, 0 il·limitat)</i>"
+msgid "Max domains<br/><i>(-1 disabled, 0 unlimited)</i>"
+msgstr ""
 
 msgid "Max number of login attempts"
 msgstr "Número màxim d'intents d'accés"
 
-msgid "Max subdomains<br><i>(-1 disabled, 0 unlimited)</i>"
-msgstr "Subdominis màxims<br><i>(-1 deshabilitat, 0 il·limitat)</i>"
+msgid "Max subdomains<br/><i>(-1 disabled, 0 unlimited)</i>"
+msgstr ""
 
 msgid "Max traffic"
 msgstr "Màxim tràfic"
@@ -3051,9 +3062,9 @@ msgid "Max. remote filesize (%1$d MB) is reached. Your remote file is %2$d MB"
 msgstr "S'ha arribat a la mida màxima del fitxer remot (%1$d MB). El vostre fitxewr remot és de  %2$d MB"
 
 msgid ""
-"Maximal number of labels for domain names<br />(<small>Excluding SLD & "
+"Maximal number of labels for domain names (<small>Excluding SLD & "
 "TLD</small>)"
-msgstr "Nivell màxim de subdomini permès per als dominis principals <br/><small>(0 indica que només es permeten dominis de primer nivell com \"domini.tdl\")</small>"
+msgstr ""
 
 msgid "Maximum number of captcha validation attempts"
 msgstr "Nombre màxim de temptatives de validació de captcha"
@@ -3304,9 +3315,6 @@ msgstr "No s'ha trobat l'ordre d'actualització."
 msgid "No unassigned users was found in database."
 msgstr "No s'han trobat usuaris sense assignar a la Base de Dades."
 
-msgid "No update for the websoftware depot list available"
-msgstr "No hi ha cap actualització disponible per la llista del magatzem de programari web"
-
 msgid "No user found."
 msgstr "Usuari no trobat"
 
@@ -3353,6 +3361,9 @@ msgid "Nothing has been changed."
 msgstr "No s'ha modificat res."
 
 msgid "Nothing has been scheduled for deletion."
+msgstr ""
+
+msgid "Nothing to do. Daemon request has been canceled."
 msgstr ""
 
 msgid "Notices, Warnings and Errors"
@@ -4151,10 +4162,8 @@ msgstr "Base de dades SQL esborrada correctament."
 msgid "SQL databases"
 msgstr "Bases de dades SQL"
 
-msgid ""
-"SQL databases limit <br /><span class=\"italic\">(-1 disabled, 0 "
-"unlimited)</span>"
-msgstr "Límit de bases de dades SQL <br/><span class=\"italic\">(-1 desactivat, 0 il·limitat)</span>"
+msgid "SQL databases limit <br /><i>(-1 disabled, 0 unlimited)</i>"
+msgstr ""
 
 msgid "SQL databases limit is <i>disabled</i>."
 msgstr "Límit de bases de dades SQL <i>desactivat</i>"
@@ -4165,13 +4174,8 @@ msgstr "Les bases de dades estàn desactivades però els usuaris SQL no."
 msgid "SQL databases limit is not <i>disabled</i>."
 msgstr "El límit de bases de dades SQL no està <i>desactivat</i>."
 
-msgid ""
-"SQL databases limit<br/><span class=\"italic\">(-1 disabled, 0 "
-"unlimited)</span>"
-msgstr "Límit de bases de dades SQL <br/><span class=\"italic\">(-1 desactivat, 0 il·limitat)</span>"
-
-msgid "SQL databases limit<br><i>(-1 disabled, 0 unlimited)</i>"
-msgstr "Límit de bases de dades SQL<br><i>(-1 deshabilitat, 0 il·limitat)</i>"
+msgid "SQL databases limit<br/><i>(-1 disabled, 0 unlimited)</i>"
+msgstr ""
 
 msgid "SQL support"
 msgstr "Suport SQL"
@@ -4191,10 +4195,8 @@ msgstr "Usuari SQL esborrat correctament."
 msgid "SQL users"
 msgstr "Usuaris SQL"
 
-msgid ""
-"SQL users limit <br /><span class=\"italic\">(-1 disabled, 0 "
-"unlimited)</span>"
-msgstr "Límit d'usuaris SQL <br/><span class=\"italic\">(-1 desactivat, 0 il·limitat)</span>"
+msgid "SQL users limit <br /><i>(-1 disabled, 0 unlimited)</i>"
+msgstr ""
 
 msgid "SQL users limit is <i>disabled</i>."
 msgstr "Límit d'usuaris SQL <i>desactivat</i>"
@@ -4208,12 +4210,8 @@ msgstr "Els usuaris SQL estan desactivats però no les bases de dades."
 msgid "SQL users limit reached."
 msgstr "S'ha superat el límit d'usuaris SQL."
 
-msgid ""
-"SQL users limit<br/><span class=\"italic\">(-1 disabled, 0 unlimited)</span>"
-msgstr "Límit d'usuaris SQL <br/><span class=\"italic\">(-1 desactivat, 0 il·limitat)</span>"
-
-msgid "SQL users limit<br><i>(-1 disabled, 0 unlimited)</i>"
-msgstr "Límit d'usuaris SQL<br><i>(-1 deshabilitat, 0 il·limitat)</i>"
+msgid "SQL users limit<br/><i>(-1 disabled, 0 unlimited)</i>"
+msgstr ""
 
 msgid "SQL-User"
 msgstr "Usuari SQL"
@@ -4343,9 +4341,6 @@ msgstr "Protocol del servei"
 
 msgid "Services status"
 msgstr "Estat dels serveis"
-
-msgid "Session not found in login table."
-msgstr "No s'ha trobat la sessió en la taula \"login\"."
 
 msgid "Sessions"
 msgstr "Sessions"
@@ -4618,16 +4613,15 @@ msgid "Subdomain successfully scheduled for addition."
 msgstr "El subdomini ha estat programat per a ésser afegit."
 
 msgid ""
-"Subdomain you are trying to remove has email accounts.<br>First remove them."
-msgstr "El subdomini que proveu d'eliminar té comptes de correu.<br/> Heu d'eliminar tots els comptes de correu abans d'eliminar el subdomini."
+"Subdomain you are trying to remove has email accounts.<br/>First remove "
+"them."
+msgstr ""
 
 msgid "Subdomains"
 msgstr "Subdominis"
 
-msgid ""
-"Subdomains limit<br /><span class=\"italic\">(-1 disabled, 0 "
-"unlimited)</span>"
-msgstr "Límit de subdominis <br/><span class=\"italic\">(-1 desactivat, 0 il·limitat)</span>"
+msgid "Subdomains limit<br /><i>(-1 disabled, 0 unlimited)</i>"
+msgstr ""
 
 msgid "Subject"
 msgstr "Assumpte"
@@ -4903,8 +4897,8 @@ msgid ""
 "The remote filesize (%1$d B) is lower than 1 Byte. Please check the URL."
 msgstr "La mida del fitxer remot (%1$d B) és menor que 1 Byte. Comproveu l'adreça URL"
 
-msgid "The reseller account you trying to edit doesn't exist."
-msgstr "El compte de distribuidor que esàs intentant editar no existeix."
+msgid "The reseller account that you are trying to edit has not been found."
+msgstr ""
 
 msgid "The softwares installer needs PHP."
 msgstr "L'instal.lador de programari necessita PHP."
@@ -5006,27 +5000,10 @@ msgstr "Aquest paquet no està instal.lat"
 msgid "This package is not installed yet"
 msgstr "Aquest paquet encara no està instal.lat"
 
-#, php-format
-msgid ""
-"This reseller has %s customer(s) with unlimited rights for the %s service."
-msgstr "Aquest distribuidor té %s client(s) amb drets il.limitats per el servei %s."
-
-#, php-format
-msgid ""
-"This reseller has already assigned more/higher %s accounts/limits than the "
-"new limit you entered."
-msgstr "Aquest distribuidor ja té assignats més/superiors comptes/limits de %s que el nou limit que has introduït."
-
 msgid ""
 "This reseller has one or more customers accounts.<br /> To remove this "
 "reseller, please first remove these customers accounts."
 msgstr "Aquest distribuïdor té un o més comptes de client.<br /> Per esborrar aquest distribuïdor, primer esborreu els comptes de clients."
-
-#, php-format
-msgid ""
-"This reseller's customers are using/have more/higher %s accounts/limits than"
-" the new limit you entered."
-msgstr "Els clients d'aquest distribuidor fan servir/tenen més/superior comptes/limits de %s que el nou limit que has introduït."
 
 msgid "This software is installed on following domain(s):"
 msgstr "Aquest programari està instal.lat en el(s) següent(s) domini(s):"
@@ -5035,8 +5012,8 @@ msgid "This type of account does not have quota."
 msgstr "Aquest tipus de compte no te quota."
 
 msgid ""
-"This user has domain record.<br>First remove the domain from the system."
-msgstr "Aquest usuari té dominis donats d'alta.<br/> Heu d'eliminar els seus dominis abans d'eliminar l'usuari."
+"This user has domain record.<br/>First remove the domain from the system."
+msgstr ""
 
 msgid "This user name already exist."
 msgstr "Aquest nom d'usuari ja existeix."
@@ -5139,11 +5116,8 @@ msgstr "Trànsit"
 msgid "Traffic limit"
 msgstr "Límit trànsit"
 
-msgid "Traffic limit [MiB]<br/><span class=\"italic\">(0 unlimited)</span>"
-msgstr "Límit de trànsit [MiB]<br/><span class=\"italic\">(0 il·limitat)</span>"
-
-msgid "Traffic limit [MiB]<br><i>(0 unlimited)</i>"
-msgstr "Límit de trànsit [MiB]<br><i>(0 il·limitat)</i>"
+msgid "Traffic limit [MiB]<br/><i>(0 unlimited)</i>"
+msgstr ""
 
 msgid "Traffic limit must be a digit."
 msgstr "El limit de tràfic ha d'ésser un número."
@@ -5412,11 +5386,14 @@ msgstr "Usuari programat per ésser eliminat."
 msgid "User session successfully killed for password change."
 msgstr "La sessió d'usuari ha estat eliminada pel canvi de contrasenya."
 
-msgid "User session was killed."
-msgstr "S'ha eliminat la sessió d'usuari seleccionada."
+msgid "User session successfuly destroyed"
+msgstr ""
 
 msgid "User session was successfully killed for password change"
 msgstr "S'ha tancat la sessió de l'usuari degut a un canvi de contrasenya."
+
+msgid "User successfuly disconnected."
+msgstr ""
 
 msgid "User type"
 msgstr "Tipus d'usuari"
@@ -5529,6 +5506,12 @@ msgstr "Web sortida"
 msgid "Web software depot packages total"
 msgstr "Total d'aplicacions al repositori"
 
+msgid "Web softwares repositories list has been updated"
+msgstr ""
+
+msgid "Web softwares repositories list is already up to date"
+msgstr ""
+
 msgid "Web softwares repository"
 msgstr "Web repositori de programari"
 
@@ -5543,9 +5526,6 @@ msgstr "Trànsit web"
 
 msgid "Webmail"
 msgstr "Correu web"
-
-msgid "Websoftware depot list was updated"
-msgstr "La llista del repositori de programari web ha estat actualitzada"
 
 msgid "Webspace"
 msgstr "Espai Web"
@@ -5744,6 +5724,9 @@ msgstr "Estàs excedint el teu límit de subdominis."
 msgid "You are exceeding your traffic limit."
 msgstr "Esteu excedint el vostre límit de transit."
 
+msgid "You are not allowed to act on your own session."
+msgstr ""
+
 msgid "You are not allowed to edit this DNS record."
 msgstr "No teniu permisos per modificar aquest registre DNS."
 
@@ -5763,9 +5746,6 @@ msgid ""
 "You can't delete a reseller that has domain accounts. Please, remove them "
 "before."
 msgstr "No podeu eliminar un distribuïdor que té comptes de domini associats. Elimineu els usuaris abans."
-
-msgid "You can't remove your own session."
-msgstr "No pots eliminar la teva pròpia sessió"
 
 msgid "You cannot delete the last active IP address."
 msgstr "No podeu esborrar la última adreça IP activa."
@@ -6265,6 +6245,9 @@ msgstr "i-MSCP - Admin / Estadístiques Client Distribuidor"
 msgid "i-MSCP - Admin / Reseller statistics"
 msgstr "i-MSCP - Admin / Estadístiques distribuidor"
 
+msgid "i-MSCP - Admin / Settings"
+msgstr ""
+
 msgid "i-MSCP - Admin / Settings / Plugin management"
 msgstr "i-MSCP - Admin / Configuració / Administració de plugins"
 
@@ -6327,9 +6310,6 @@ msgstr "i-MSCP - Admin/Administrar Usuaris/Configurar Email"
 
 msgid "i-MSCP - Admin/Manage users/Reseller assignment"
 msgstr "i-MSCP - Admin/Administrar usuaris/Assignació distribuïdors"
-
-msgid "i-MSCP - Admin/Settings"
-msgstr "i-MSCP - Admin/Paràmetres"
 
 msgid "i-MSCP - Administrator / Hosting Plans Management"
 msgstr "i-MSCP - Administrator / Administració de Plans d'Allotjament"

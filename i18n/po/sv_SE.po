@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2013-01-21 21:39+0100\n"
-"PO-Revision-Date: 2013-01-21 20:40+0000\n"
+"POT-Creation-Date: 2013-02-11 11:47+0100\n"
+"PO-Revision-Date: 2013-02-11 10:48+0000\n"
 "Last-Translator: Torsten Widmann <info@goover.de>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -333,6 +333,31 @@ msgstr "%s sida"
 msgid "%s record"
 msgstr "%s post"
 
+#, php-format
+msgid ""
+"%s: The clients consumption (%s) for this reseller is greater than the new "
+"limit."
+msgstr ""
+
+#, php-format
+msgid ""
+"%s: The total of items (%s) already assigned by the reseller is greater than"
+" the new limit."
+msgstr ""
+
+#, php-format
+msgid "%s: This reseller has customer(s) with unlimited items."
+msgstr ""
+
+#, php-format
+msgid ""
+"%s: You cannot disable a service already consumed by reseller's customers"
+msgstr ""
+
+#, php-format
+msgid "%s: You cannot disable a service already sold to reseller's customers."
+msgstr ""
+
 msgid ""
 "'%hostname%' does not appear to have a valid MX record for the email address"
 " '%value%'"
@@ -527,12 +552,6 @@ msgstr "Få åtkomst till din post via webbgränssnittet."
 msgid "Account data"
 msgstr "Konto data"
 
-msgid ""
-"Account data were modified by another person before your changes. The update"
-" process was successfully done but in recovery mode. We recommend you to "
-"check the result of it."
-msgstr "Account data were modified by another person before your changes. The update process was successfully done but in recovery mode. We recommend you to check the result of it."
-
 msgid "Account limits"
 msgstr "Konto limitationer"
 
@@ -575,8 +594,8 @@ msgstr "Aktiveringsmeddelande"
 msgid "Activation Link"
 msgstr "Aktivera länk"
 
-msgid "Activation link expire time (minutes)"
-msgstr "Tid innan aktiveringslänken slutar gälla (i minuter)"
+msgid "Activation link expire time <small>(In minutes)</small>"
+msgstr ""
 
 msgid "Add"
 msgstr "Lägg till"
@@ -1079,14 +1098,15 @@ msgstr "Being suspended"
 msgid "Billing Settings"
 msgstr "Fakturainställningar"
 
-msgid "Blocking time between login/captcha attempts (seconds)"
-msgstr "Blocking time between login/captcha attempts (seconds)"
+msgid ""
+"Blocking time between login/captcha attempts <small>(In seconds)</small>"
+msgstr ""
 
 msgid "Blocking time between logins and captcha attempts"
 msgstr "Blocking time between logins and captcha attempts"
 
-msgid "Blocktime (minutes)"
-msgstr "Blockeringstid (i minuter)"
+msgid "Blocktime <small>(in minutes)</small>"
+msgstr ""
 
 msgid "Both source and destination are identical."
 msgstr "Both source and destination are identical."
@@ -1667,20 +1687,20 @@ msgstr "Inaktiv"
 msgid "Disallowed"
 msgstr "Inte tillåten"
 
+msgid "Disconnect"
+msgstr ""
+
 msgid "Disk"
 msgstr "Diskutrymme"
 
 msgid "Disk limit"
 msgstr "Diskutrymmesgräns"
 
-msgid "Disk limit [MiB]<br/><span class=\"italic\">(0 unlimited)</span>"
-msgstr "Disk limit [MiB]<br/><span class=\"italic\">(0 unlimited)</span>"
-
-msgid "Disk limit [MiB]<br/><span class=\\\"italic\\\">(0 unlimited)</span>"
+msgid "Disk limit [MiB]<br/><i>(0 unlimited)</i>"
 msgstr ""
 
-msgid "Disk limit [MiB]<br><i>(0 unlimited)</i>"
-msgstr "Disk limit [MiB]<br><i>(0 unlimited)</i>"
+msgid "Disk limit [MiB]<br/><i>(0 unlimited)</span>"
+msgstr ""
 
 msgid "Disk usage"
 msgstr "Diskanvändning"
@@ -1788,23 +1808,23 @@ msgid "Domain alias successfully scheduled for deletion."
 msgstr "Domänalias planerad framgångsrikt för radering."
 
 msgid ""
-"Domain alias you are trying to remove has FTP accounts.<br>First remove "
+"Domain alias you are trying to remove has FTP accounts.<br/>First remove "
 "them."
-msgstr "Domänalias du försöker ta bort har FTP-konton. <br> Först ta bort dem."
+msgstr ""
 
 msgid ""
-"Domain alias you are trying to remove has custom DNS records!<br>First "
+"Domain alias you are trying to remove has custom DNS records!<br/>First "
 "remove them!"
-msgstr "Domän alias du försöker ta bort har egna DNS-poster! Först ta bort dem!"
+msgstr ""
 
 msgid ""
-"Domain alias you are trying to remove has email accounts.<br>First remove "
+"Domain alias you are trying to remove has email accounts.<br/>First remove "
 "them."
-msgstr "Domänalias du försöker ta bort har e-postkonton. <br> Först ta bort dem."
+msgstr ""
 
 msgid ""
-"Domain alias you are trying to remove has subdomains!<br>First remove them!"
-msgstr "Domänaliaset du försöker ta bort har subdomäner!<br>Vänligen ta bort dem först!"
+"Domain alias you are trying to remove has subdomains!<br/>First remove them!"
+msgstr ""
 
 msgid "Domain aliases"
 msgstr "Domänalias"
@@ -1812,10 +1832,8 @@ msgstr "Domänalias"
 msgid "Domain aliases limit reached."
 msgstr "Domänalias övre gräns nådd."
 
-msgid ""
-"Domain aliases limit<br/><span class=\"italic\">(-1 disabled, 0 "
-"unlimited)</span>"
-msgstr "Domain aliases limit<br/><span class=\"italic\">(-1 disabled, 0 unlimited)</span>"
+msgid "Domain aliases limit<br/><i>(-1 disabled, 0 unlimited)</i>"
+msgstr ""
 
 msgid "Domain already assigned to another IP address."
 msgstr "Domain already assigned to another IP address."
@@ -1851,7 +1869,7 @@ msgid "Domain errors"
 msgstr "Domänfel"
 
 msgid "Domain expiration date"
-msgstr ""
+msgstr "Domän utgångsdatum"
 
 msgid "Domain expiration date must be filled."
 msgstr "Domain utgångsdatum måste fyllas i."
@@ -1869,7 +1887,7 @@ msgid "Domain names validation"
 msgstr "Domännamnsvalidering"
 
 msgid "Domain new expiration date"
-msgstr ""
+msgstr "Domän nytt utgångsdatum"
 
 msgid "Domain not found."
 msgstr "Domain hittades inte."
@@ -1909,8 +1927,8 @@ msgstr "Domän: Setup en MX-post till reläet post för hela din domän (inklusi
 msgid "Domains"
 msgstr "Domäner"
 
-msgid "Domains limit<br/><span class=\"italic\">(0 unlimited)</span>"
-msgstr "Domains limit<br/><span class=\"italic\">(0 unlimited)</span>"
+msgid "Domains limit<br/><i>(0 unlimited)</i>"
+msgstr ""
 
 msgid "Domains per page"
 msgstr "Domäner per sida"
@@ -2142,8 +2160,8 @@ msgstr "systemfrågor att utföra"
 msgid "Expire date"
 msgstr "Upphör"
 
-msgid "Expire time for unconfirmed orders<br /><small>(In days)</small>"
-msgstr "Upphör tid för obekräftade order <br /> <small>(I dagar)</small>"
+msgid "Expire time for unconfirmed orders <small>(In days)</small>"
+msgstr ""
 
 msgid "External Mail Host"
 msgstr "Extern post värd"
@@ -2187,21 +2205,14 @@ msgstr "FTP konto uppdaterades."
 msgid "FTP accounts"
 msgstr "FTP-konton"
 
-msgid ""
-"FTP accounts limit <br /><span class=\"italic\">(-1 disabled, 0 "
-"unlimited)</span>"
-msgstr "FTP konto limit <br /><span class=\"italic\">(-1 disabled, 0 unlimited)</span>"
+msgid "FTP accounts limit <br /><i>(-1 disabled, 0 unlimited)</i>"
+msgstr ""
 
 msgid "FTP accounts limit reached!"
 msgstr "Gränsen över antalet FTP-konton är nådd!"
 
-msgid ""
-"FTP accounts limit<br/><span class=\"italic\">(-1 disabled, 0 "
-"unlimited)</span>"
-msgstr "FTP konto limit<br/><span class=\"italic\">(-1 disabled, 0 unlimited)</span>"
-
-msgid "FTP accounts limit<br><i>(-1 disabled, 0 unlimited)</i>"
-msgstr "FTP-kontogräns <br><i>(-1 inaktiv, 0 obegränsat)</i>"
+msgid "FTP accounts limit<br/><i>(-1 disabled, 0 unlimited)</i>"
+msgstr ""
 
 msgid "FTP traffic"
 msgstr "FTP trafik"
@@ -2428,7 +2439,7 @@ msgid "Hosting plans"
 msgstr "Webbhotellsplaner"
 
 msgid "Hosting plans are not found."
-msgstr ""
+msgstr "Det finns inga webbhotellsplaner."
 
 msgid "Hosting plans available for"
 msgstr "Webbhotellsplaner finns tillgängliga för"
@@ -2534,7 +2545,7 @@ msgstr "Importera i lokala arkiv"
 msgid ""
 "In case domain expiration date is 'N/A', the expiration date will be set "
 "from today."
-msgstr ""
+msgstr "När det gäller domän utgångsdatumet är \"N/A\" utgångsdatum kommer då blir dagens datum."
 
 msgid "In front the name"
 msgstr "Framför namnet"
@@ -2635,7 +2646,7 @@ msgid "Installed on"
 msgstr "Installerad på"
 
 msgid "Installing your uploaded package. Please refresh this page."
-msgstr ""
+msgstr "Installera din överförda paket. Uppdatera den här sidan sen."
 
 msgid "Instructions to download today's backup"
 msgstr "Instruktioner för att hämta dagens backup"
@@ -2805,7 +2816,7 @@ msgid "Login data successfully sent to %s."
 msgstr "Inloggningsdata har skickats till %s."
 
 msgid "Login into phpMyAdmin"
-msgstr ""
+msgstr "Logga in till PhpMyAdmin"
 
 msgid "Login into the filemanager"
 msgstr "Login into the filemanager"
@@ -2844,7 +2855,7 @@ msgid "Lost password e-mail"
 msgstr "E-postmeddelande för förlorat lösenord"
 
 msgid "Lost password email"
-msgstr ""
+msgstr "Förlorat lösenord email"
 
 msgid "Lost password email setup"
 msgstr "Förlorat lösenord e-postkonfiguration"
@@ -2903,13 +2914,13 @@ msgstr "E-postkonton"
 msgid "Mail accounts limit reached."
 msgstr "Postkonton max. antal nådd."
 
+msgid "Mail accounts limit<br/><i>(-1 disabled, 0 unlimited)</i>"
+msgstr ""
+
 msgid ""
 "Mail accounts limit<br/><span class=\"italic\">(-1 disabled, 0 "
-"unlimited)</span>"
-msgstr "Mail accounts limit<br/><span class=\"italic\">(-1 disabled, 0 unlimited)</span>"
-
-msgid "Mail accounts limit<br><i>(-1 disabled, 0 unlimited)</i>"
-msgstr "Mail-konton gräns <br> <i>(-1 inaktiv, 0 obegränsad)</i>"
+"unlimited)</i>"
+msgstr ""
 
 msgid "Mail accounts list"
 msgstr "E-postkontolista"
@@ -3021,17 +3032,17 @@ msgstr "Markera alla"
 msgid "Master domain cannot be used."
 msgstr "Master domän kan inte användas."
 
-msgid "Max aliases<br><i>(-1 disabled, 0 unlimited)</i>"
-msgstr "Max alias <br><i>(-1 inaktiv, 0 obegränsat)</i>"
+msgid "Max aliases<br/><i>(-1 disabled, 0 unlimited)</i>"
+msgstr ""
 
-msgid "Max domains<br><i>(-1 disabled, 0 unlimited)</i>"
-msgstr "Max domäner<br><i>(-1 inaktiverad, 0 obegränsat)</i>"
+msgid "Max domains<br/><i>(-1 disabled, 0 unlimited)</i>"
+msgstr ""
 
 msgid "Max number of login attempts"
 msgstr "Max antal inloggningförsök"
 
-msgid "Max subdomains<br><i>(-1 disabled, 0 unlimited)</i>"
-msgstr "Max subdomäner <br><i>(-1 inaktiv, 0 obegränsat)</i>"
+msgid "Max subdomains<br/><i>(-1 disabled, 0 unlimited)</i>"
+msgstr ""
 
 msgid "Max traffic"
 msgstr "Max traffic"
@@ -3045,9 +3056,9 @@ msgid "Max. remote filesize (%1$d MB) is reached. Your remote file is %2$d MB"
 msgstr "Max. fjärr filstorlek (%1$d MB) är nådd. Fjärrfilen%2$d MB"
 
 msgid ""
-"Maximal number of labels for domain names<br />(<small>Excluding SLD & "
+"Maximal number of labels for domain names (<small>Excluding SLD & "
 "TLD</small>)"
-msgstr "Maximalt antal etiketter för domännamn <br /> <small>(Exklusive SLD &amp; TLD)</small>"
+msgstr ""
 
 msgid "Maximum number of captcha validation attempts"
 msgstr "Maximum number of captcha validation attempts"
@@ -3298,9 +3309,6 @@ msgstr "Ingen sådan uppdatering hittades."
 msgid "No unassigned users was found in database."
 msgstr "Inget ledigt användare hittades i databasen."
 
-msgid "No update for the websoftware depot list available"
-msgstr "Ingen uppdatering för websoftware depå förteckning är tillgängliga"
-
 msgid "No user found."
 msgstr "Ingen användare hittades."
 
@@ -3348,6 +3356,9 @@ msgstr "Ingenting har ändrats."
 
 msgid "Nothing has been scheduled for deletion."
 msgstr "Inget har planerats för radering."
+
+msgid "Nothing to do. Daemon request has been canceled."
+msgstr ""
 
 msgid "Notices, Warnings and Errors"
 msgstr "Notiser, varningar och fel"
@@ -4145,10 +4156,8 @@ msgstr "SQL databasen raderades."
 msgid "SQL databases"
 msgstr "SQL-databaser"
 
-msgid ""
-"SQL databases limit <br /><span class=\"italic\">(-1 disabled, 0 "
-"unlimited)</span>"
-msgstr "SQL databases limit <br /><span class=\"italic\">(-1 disabled, 0 unlimited)</span>"
+msgid "SQL databases limit <br /><i>(-1 disabled, 0 unlimited)</i>"
+msgstr ""
 
 msgid "SQL databases limit is <i>disabled</i>."
 msgstr "SQL-databaser gränsen är <i>inaktiverad.</i>"
@@ -4159,13 +4168,8 @@ msgstr "SQL databases limit is disabled but SQL users limit is not."
 msgid "SQL databases limit is not <i>disabled</i>."
 msgstr "SQL-databaser gränsen inte är <i>inaktiverad.</i>"
 
-msgid ""
-"SQL databases limit<br/><span class=\"italic\">(-1 disabled, 0 "
-"unlimited)</span>"
-msgstr "SQL databases limit<br/><span class=\"italic\">(-1 disabled, 0 unlimited)</span>"
-
-msgid "SQL databases limit<br><i>(-1 disabled, 0 unlimited)</i>"
-msgstr "SQL-databasgräns <br><i>(-1 inaktiv, 0 obegränsat)</i>"
+msgid "SQL databases limit<br/><i>(-1 disabled, 0 unlimited)</i>"
+msgstr ""
 
 msgid "SQL support"
 msgstr "SQL-stöd"
@@ -4185,10 +4189,8 @@ msgstr "SQL användare raderades."
 msgid "SQL users"
 msgstr "SQL-användare"
 
-msgid ""
-"SQL users limit <br /><span class=\"italic\">(-1 disabled, 0 "
-"unlimited)</span>"
-msgstr "SQL users limit <br /><span class=\"italic\">(-1 disabled, 0 unlimited)</span>"
+msgid "SQL users limit <br /><i>(-1 disabled, 0 unlimited)</i>"
+msgstr ""
 
 msgid "SQL users limit is <i>disabled</i>."
 msgstr "SQL-användare gräns är <i>inaktiverad.</i>"
@@ -4202,12 +4204,8 @@ msgstr "SQL users limit is disabled but SQL databases limit not."
 msgid "SQL users limit reached."
 msgstr "SQL-användare max. nådd."
 
-msgid ""
-"SQL users limit<br/><span class=\"italic\">(-1 disabled, 0 unlimited)</span>"
-msgstr "SQL users limit<br/><span class=\"italic\">(-1 disabled, 0 unlimited)</span>"
-
-msgid "SQL users limit<br><i>(-1 disabled, 0 unlimited)</i>"
-msgstr "SQL-användargräns <br><i>(-1 inaktiv, 0 obegränsat)</i>"
+msgid "SQL users limit<br/><i>(-1 disabled, 0 unlimited)</i>"
+msgstr ""
 
 msgid "SQL-User"
 msgstr "SQL-User"
@@ -4337,9 +4335,6 @@ msgstr "Tjänstprotokoll"
 
 msgid "Services status"
 msgstr "Tjänster status"
-
-msgid "Session not found in login table."
-msgstr "Session finns inte i login tabellen."
 
 msgid "Sessions"
 msgstr "Sessions"
@@ -4612,16 +4607,15 @@ msgid "Subdomain successfully scheduled for addition."
 msgstr "Subdomain planerad för tillägg."
 
 msgid ""
-"Subdomain you are trying to remove has email accounts.<br>First remove them."
-msgstr "Underdomän du försöker ta bort har e-postkonton. <br> Först ta bort dem."
+"Subdomain you are trying to remove has email accounts.<br/>First remove "
+"them."
+msgstr ""
 
 msgid "Subdomains"
 msgstr "Subdomäner"
 
-msgid ""
-"Subdomains limit<br /><span class=\"italic\">(-1 disabled, 0 "
-"unlimited)</span>"
-msgstr "Subdomains limit<br /><span class=\"italic\">(-1 disabled, 0 unlimited)</span>"
+msgid "Subdomains limit<br /><i>(-1 disabled, 0 unlimited)</i>"
+msgstr ""
 
 msgid "Subject"
 msgstr "Ämne"
@@ -4897,8 +4891,8 @@ msgid ""
 "The remote filesize (%1$d B) is lower than 1 Byte. Please check the URL."
 msgstr "fjärr filstorlek (%1$d B) är lägre än 1 byte. Kontrollera webbadressen."
 
-msgid "The reseller account you trying to edit doesn't exist."
-msgstr "The reseller account you trying to edit doesn't exist."
+msgid "The reseller account that you are trying to edit has not been found."
+msgstr ""
 
 msgid "The softwares installer needs PHP."
 msgstr "De mjukvaror installationsprogram behöver PHP."
@@ -5000,27 +4994,10 @@ msgstr "Detta paket är inte installerad"
 msgid "This package is not installed yet"
 msgstr "Detta paket är ännu inte installerad"
 
-#, php-format
-msgid ""
-"This reseller has %s customer(s) with unlimited rights for the %s service."
-msgstr "This reseller has %s customer(s) with unlimited rights for the %s service."
-
-#, php-format
-msgid ""
-"This reseller has already assigned more/higher %s accounts/limits than the "
-"new limit you entered."
-msgstr "This reseller has already assigned more/higher %s accounts/limits than the new limit you entered."
-
 msgid ""
 "This reseller has one or more customers accounts.<br /> To remove this "
 "reseller, please first remove these customers accounts."
 msgstr "Denna återförsäljare har en eller flera kundkonton. <br /> För att ta bort denna återförsäljare, vänligen ta först bort dessa kundkonton."
-
-#, php-format
-msgid ""
-"This reseller's customers are using/have more/higher %s accounts/limits than"
-" the new limit you entered."
-msgstr "This reseller's customers are using/have more/higher %s accounts/limits than the new limit you entered."
 
 msgid "This software is installed on following domain(s):"
 msgstr "Denna mjukvara finnas installerat på följande domän(s):"
@@ -5029,8 +5006,8 @@ msgid "This type of account does not have quota."
 msgstr "Denna typ av konto har inte kvot."
 
 msgid ""
-"This user has domain record.<br>First remove the domain from the system."
-msgstr "Denna användare har domänen post. <br> Först ta bort domänen från systemet."
+"This user has domain record.<br/>First remove the domain from the system."
+msgstr ""
 
 msgid "This user name already exist."
 msgstr "Detta användarnamn finns redan."
@@ -5133,11 +5110,8 @@ msgstr "Trafik"
 msgid "Traffic limit"
 msgstr "Trafikgräns"
 
-msgid "Traffic limit [MiB]<br/><span class=\"italic\">(0 unlimited)</span>"
-msgstr "Traffic limit [MiB]<br/><span class=\"italic\">(0 unlimited)</span>"
-
-msgid "Traffic limit [MiB]<br><i>(0 unlimited)</i>"
-msgstr "Traffic limit [MiB]<br><i>(0 unlimited)</i>"
+msgid "Traffic limit [MiB]<br/><i>(0 unlimited)</i>"
+msgstr ""
 
 msgid "Traffic limit must be a digit."
 msgstr "Trafikgränsen måste vara en siffra."
@@ -5406,11 +5380,14 @@ msgstr "Användare schemalagd för radering."
 msgid "User session successfully killed for password change."
 msgstr "Användare sessionen avlivas för ändring av lösenord."
 
-msgid "User session was killed."
-msgstr "Användarsession dödades."
+msgid "User session successfuly destroyed"
+msgstr ""
 
 msgid "User session was successfully killed for password change"
 msgstr "Användarsession framgångsrikt dödades för ändring av lösenord"
+
+msgid "User successfuly disconnected."
+msgstr ""
 
 msgid "User type"
 msgstr "Användartyp"
@@ -5523,6 +5500,12 @@ msgstr "Webb utåt"
 msgid "Web software depot packages total"
 msgstr "Web depå paket totalt"
 
+msgid "Web softwares repositories list has been updated"
+msgstr ""
+
+msgid "Web softwares repositories list is already up to date"
+msgstr ""
+
 msgid "Web softwares repository"
 msgstr "Web softwares repository"
 
@@ -5537,9 +5520,6 @@ msgstr "Webbtrafik"
 
 msgid "Webmail"
 msgstr "Webbmail"
-
-msgid "Websoftware depot list was updated"
-msgstr "Websoftware Systems depå förteckning uppdaterades"
 
 msgid "Webspace"
 msgstr "Webbutrymme"
@@ -5738,6 +5718,9 @@ msgstr "You are exceeding your subdomains limit."
 msgid "You are exceeding your traffic limit."
 msgstr "Du överskrider din trafik gräns."
 
+msgid "You are not allowed to act on your own session."
+msgstr ""
+
 msgid "You are not allowed to edit this DNS record."
 msgstr "Du får inte redigera den här DNS-posten."
 
@@ -5757,9 +5740,6 @@ msgid ""
 "You can't delete a reseller that has domain accounts. Please, remove them "
 "before."
 msgstr "Du kan inte radera en återförsäljare som har domänen konton. Snälla, ta bort dem innan."
-
-msgid "You can't remove your own session."
-msgstr "Du kan inte ta bort din egen session."
 
 msgid "You cannot delete the last active IP address."
 msgstr "Du kan inte ta bort den sista aktiva IP-adress."
@@ -6259,6 +6239,9 @@ msgstr "i-MSCP - Admin / Reseller customer statistics"
 msgid "i-MSCP - Admin / Reseller statistics"
 msgstr "i-MSCP - Admin / Reseller statistics"
 
+msgid "i-MSCP - Admin / Settings"
+msgstr ""
+
 msgid "i-MSCP - Admin / Settings / Plugin management"
 msgstr "i-MSCP - Admin / Settings / Plugin management"
 
@@ -6321,9 +6304,6 @@ msgstr "i-MSCP - Administratör/Hantera användare/E-postinställningar"
 
 msgid "i-MSCP - Admin/Manage users/Reseller assignment"
 msgstr "i-MSCP - Administratör/Hantera användare/Överlåtelse av återförsäljare"
-
-msgid "i-MSCP - Admin/Settings"
-msgstr "i-MSCP - Administratör/Inställningar"
 
 msgid "i-MSCP - Administrator / Hosting Plans Management"
 msgstr "i-MSCP - Administrator / Hosting Plans Management"
@@ -6545,7 +6525,7 @@ msgid "i-MSCP - Reseller/IP Usage"
 msgstr "i-MSCP - Återförsäljare / IP-användning"
 
 msgid "i-MSCP - Reseller/Lost password email setup"
-msgstr ""
+msgstr "i-MSCP - Återförsäljare/E-postinställningar för förlorat lösenord"
 
 msgid "i-MSCP - Reseller/Manage users/Email setup"
 msgstr "i-MSCP - Återförsäljare/Hantera användare/E-postinställningar"
