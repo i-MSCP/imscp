@@ -391,17 +391,13 @@ sub delDmn
 		"$self::apacheConfig{'APACHE_CUSTOM_SITES_CONFIG_DIR'}/$data->{'DMN_NAME'}.conf",
 		"$self->{apacheWrkDir}/$data->{'DMN_NAME'}.conf",
 		"$self->{apacheWrkDir}/$data->{'DMN_NAME'}_ssl.conf",
+		"$self::phpfpmConfig{'PHP_FPM_POOLS_CONF_DIR'}/$data->{'DMN_NAME'}.conf"
 	) {
 		$rs |= iMSCP::File->new('filename' => $_)->delFile() if -f $_;
 	}
 
 	# Remove home dir
 	$rs |= iMSCP::Dir->new('dirname' => $data->{'HOME_DIR'})->remove() if -d $data->{'HOME_DIR'};
-
-	# Remove pool file
-	$rs |= iMSCP::File->new(
-		'filename' => "$self::phpfpmConfig{'PHP_FPM_POOLS_CONF_DIR'}/$data->{'DMN_NAME'}"
-	)->delFile() if -f "$self::phpfpmConfig{'PHP_FPM_POOLS_CONF_DIR'}/$data->{'DMN_NAME'}";
 
 	$self->{'restartPhpFpm'} = 'yes';
 	$self->{'restartApache'} = 'yes';
