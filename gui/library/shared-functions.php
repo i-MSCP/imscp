@@ -1481,7 +1481,7 @@ function check_package_is_installed($package_installtype, $package_name, $packag
 			AND
 				`software_name` = '" . $package_name . "'
 			AND
-				`software_version`,= '" . $package_version . "'
+				`software_version`= '" . $package_version . "'
 			AND
 				`software_language` = '" . $package_language . "'
 			AND
