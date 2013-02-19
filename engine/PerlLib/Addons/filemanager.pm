@@ -2,7 +2,7 @@
 
 =head1 NAME
 
-Addons::ajaxplorer - i-MSCP AjaxPlorer addon
+Addons::filemanager - i-MSCP filemanager addon
 
 =cut
 
@@ -29,7 +29,7 @@ Addons::ajaxplorer - i-MSCP AjaxPlorer addon
 # @link			http://i-mscp.net i-MSCP Home Site
 # @license		http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
-package Addons::ajaxplorer;
+package Addons::filemanager;
 
 use strict;
 use warnings;
@@ -38,12 +38,9 @@ use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
 
- AjaxPlorer addon for i-MSCP.
+ Filemanager addon for i-MSCP.
 
- AjaXplorer is a software that can turn any web server into a powerfull file management system and an alternative to
-mainstream cloud storage providers.
-
- Project homepage: http://ajaxplorer.info/
+ This addon provide Web Ftp client for i-MSCP. For now only Ajaxplorer and Net2Ftp are available.
 
 =head1 CLASS METHODS
 
@@ -53,13 +50,13 @@ mainstream cloud storage providers.
 
  Implement singleton design pattern. Return instance of this class.
 
- Return Addons::ajaxplorer
+ Return Addons::filemanager
 
 =cut
 
 sub factory
 {
-	Addons::ajaxplorer->new();
+	Addons::filemanager->new();
 }
 
 =back
@@ -68,9 +65,27 @@ sub factory
 
 =over 4
 
+=item registerSetupHooks($hooksManager)
+
+ Register setup hook functions.
+
+ Param iMSCP::HooksManager instance
+ Return int - 0 on success, 1 on failure
+
+=cut
+
+sub registerSetupHooks
+{
+	my $self = shift;
+	my $hooksManager = shift;
+
+	require Addons::filemanager::installer;
+	Addons::filemanager::installer->new()->registerSetupHooks($hooksManager);
+}
+
 =item preinstall()
 
- Run the preinstall method on the AjaxPlorer addon installer.
+ Run the preinstall method on the filemanager addon installer.
 
  Return int 0 on success, other on failure
 
@@ -80,13 +95,13 @@ sub preinstall
 {
 	my $self = shift;
 
-	require Addons::ajaxplorer::installer;
-	Addons::ajaxplorer::installer->new()->preinstall();
+	require Addons::filemanager::installer;
+	Addons::filemanager::installer->new()->preinstall();
 }
 
 =item install()
 
- Run the install method on the AjaxPlorer addon installer.
+ Run the install method on the filemanager addon installer.
 
  Return int 0 on success, 1 on failure
 
@@ -96,13 +111,13 @@ sub install
 {
 	my $self = shift;
 
-	require Addons::ajaxplorer::installer;
-	Addons::ajaxplorer::installer->new()->install();
+	require Addons::filemanager::installer;
+	Addons::filemanager::installer->new()->install();
 }
 
 =item setGuiPermissions()
 
- Set AjaxPlorer files permissions.
+ Set filemanager files permissions.
 
  Return int 0 on success, other on failure
 
@@ -112,8 +127,8 @@ sub setGuiPermissions
 {
 	my $self = shift;
 
-	require Addons::ajaxplorer::installer;
-	Addons::ajaxplorer::installer->new()->setGuiPermissions();
+	require Addons::filemanager::installer;
+	Addons::filemanager::installer->new()->setGuiPermissions();
 }
 
 =back

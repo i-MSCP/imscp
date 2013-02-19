@@ -2,7 +2,7 @@
 
 =head1 NAME
 
-Addons::ajaxplorer::installer - i-MSCP AjaxPlorer addon installer
+Addons::filemanager::ajaxplorer::installer - i-MSCP AjaxPlorer addon installer
 
 =cut
 
@@ -29,21 +29,21 @@ Addons::ajaxplorer::installer - i-MSCP AjaxPlorer addon installer
 # @link			http://i-mscp.net i-MSCP Home Site
 # @license		http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
-package Addons::ajaxplorer::installer;
+package Addons::filemanager::ajaxplorer::installer;
 
 use strict;
 use warnings;
 use iMSCP::Debug;
-use iMSCP::Addons::ComposerInstaller;
-use iMSCP::Rights;
-use iMSCP::Execute;
 use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
 
  This is the installer for the i-MSCP AjaxPlorer addon.
 
- See Addons::ajaxplorer for more information.
+ AjaXplorer is a software that can turn any web server into a powerfull file management system and an alternative to
+mainstream cloud storage providers.
+
+ Project homepage: http://ajaxplorer.info/
 
 =head1 PUBLIC METHODS
 
@@ -61,6 +61,7 @@ sub preinstall
 {
 	my $self = shift;
 
+	require iMSCP::Addons::ComposerInstaller;
 	iMSCP::Addons::ComposerInstaller->getInstance()->registerPackage('imscp/ajaxplorer');
 }
 
@@ -76,14 +77,6 @@ sub install
 {
 	my $self = shift;
 	my $rs = 0;
-
-	$self->{'httpd'} = Servers::httpd->factory();
-
-	$self->{'user'} = $self->{'httpd'}->can('getRunningUser')
-		? $self->{'httpd'}->getRunningUser() : $main::imscpConfig{'ROOT_USER'};
-
-	$self->{'group'} = $self->{'httpd'}->can('getRunningGroup')
-		? $self->{'httpd'}->getRunningGroup() : $main::imscpConfig{'ROOT_GROUP'};
 
 	$rs |= $self->_installFiles();		# Install ajaxplorer files from local addon packages repository
 	$rs |= $self->setGuiPermissions();	# Set ajaxplorer permissions
@@ -105,8 +98,14 @@ sub setGuiPermissions
 	my $panelUName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} . $main::imscpConfig{'SYSTEM_USER_MIN_UID'};
 	my $panelGName = $panelUName;
 	my $rootDir = $main::imscpConfig{'ROOT_DIR'};
-	my $apacheGName = $self->{'group'};
 	my $rs = 0;
+
+	require Servers::httpd;
+	my $http = Servers::httpd->factory();
+	my $apacheGName = $http->can('getRunningGroup') ? $http->getRunningGroup() : $main::imscpConfig{'ROOT_GROUP'};
+
+	require iMSCP::Rights;
+	iMSCP::Rights->import();
 
 	$rs |= setRights(
 		"$rootDir/gui/public/tools/filemanager",
@@ -143,6 +142,10 @@ sub _installFiles
 	my $rs = 0;
 
 	if(-d "$repoDir/vendor/imscp/ajaxplorer") {
+
+		require iMSCP::Execute;
+		iMSCP::Execute->import();
+
 		$rs = execute(
 			"$main::imscpConfig{CMD_CP} -rTf $repoDir/vendor/imscp/ajaxplorer $main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/filemanager",
 			\$stdout,

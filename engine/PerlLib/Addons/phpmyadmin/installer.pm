@@ -35,9 +35,6 @@ use strict;
 use warnings;
 use iMSCP::Debug;
 use iMSCP::HooksManager;
-use iMSCP::Addons::ComposerInstaller;
-use iMSCP::Rights;
-use iMSCP::Execute;
 use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
@@ -82,6 +79,7 @@ sub preinstall
 {
 	my $self = shift;
 
+	require iMSCP::Addons::ComposerInstaller;
 	iMSCP::Addons::ComposerInstaller->getInstance()->registerPackage('imscp/phpmyadmin');
 }
 
@@ -97,14 +95,6 @@ sub install
 {
 	my $self = shift;
 	my $rs	= 0;
-
-	$self->{'httpd'} = Servers::httpd->factory();
-
-	$self->{'user'} = $self->{'httpd'}->can('getRunningUser')
-		? $self->{'httpd'}->getRunningUser() : $main::imscpConfig{'ROOT_USER'};
-
-	$self->{'group'} = $self->{'httpd'}->can('getRunningGroup')
-		? $self->{'httpd'}->getRunningGroup() : $main::imscpConfig{'ROOT_GROUP'};
 
 	# Backup current configuration file if it exists (only relevant when running imscp-setup)
 	$rs |= $self->_backupConfigFile(
@@ -217,8 +207,14 @@ sub setGuiPermissions
 	my $self = shift;
 	my $panelUName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} . $main::imscpConfig{'SYSTEM_USER_MIN_UID'};
 	my $rootDir = $main::imscpConfig{'ROOT_DIR'};
-	my $apacheGName = $self->{'group'};
 	my $rs = 0;
+
+	require Servers::httpd;
+	my $http = Servers::httpd->factory();
+	my $apacheGName = $http->can('getRunningGroup') ? $http->getRunningGroup() : $main::imscpConfig{'ROOT_GROUP'};
+
+	require iMSCP::Rights;
+	iMSCP::Rights->import();
 
 	$rs |= setRights(
 		"$rootDir/gui/public/tools/pma",
@@ -277,11 +273,14 @@ sub _backupConfigFile
 	my $cfgFile = shift;
 	my $timestamp = time;
 
-	use File::Basename;
+	require File::Basename;
+	File::Basename->import();
 
 	my ($name, $path, $suffix) = fileparse($cfgFile);
 
 	if(-f $cfgFile) {
+		require iMSCP::File;
+
 		my $file = iMSCP::File->new(filename => $cfgFile);
 		$file->copyFile("$self->{'bkpDir'}/$name$suffix.$timestamp") and return 1;
 	}
@@ -305,6 +304,10 @@ sub _installFiles
 	my $rs = 0;
 
 	if(-d "$repoDir/vendor/imscp/phpmyadmin") {
+
+		require iMSCP::Execute;
+		iMSCP::Execute->import();
+
 		$rs = execute(
 			"$main::imscpConfig{'CMD_CP'} -rTf $repoDir/vendor/imscp/phpmyadmin $main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/pma",
 			\$stdout,
@@ -343,7 +346,7 @@ sub _saveConfig
 	my $rootGrp = $main::imscpConfig{'ROOT_GROUP'};
 	my $rs = 0;
 
-	use iMSCP::File;
+	require iMSCP::File;
 
 	my $file = iMSCP::File->new(filename => "$self->{'cfgDir'}/phpmyadmin.data");
 	my $cfg = $file->get();
@@ -509,9 +512,13 @@ sub _buildConfig
 		BLOWFISH => $self::phpmyadminConfig{'BLOWFISH_SECRET'},
 	};
 
+	require iMSCP::File;
+
 	my $file = iMSCP::File->new(filename => "$confDir/imscp.config.inc.php");
 	my $cfgTpl = $file->get();
 	return 1 if ! $cfgTpl;
+
+	require iMSCP::Templator;
 
 	$cfgTpl = iMSCP::Templator::process($cfg, $cfgTpl);
 	return 1 if ! $cfgTpl;

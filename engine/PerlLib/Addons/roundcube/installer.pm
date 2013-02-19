@@ -35,12 +35,8 @@ use strict;
 use warnings;
 use iMSCP::Debug;
 use iMSCP::HooksManager;
-use iMSCP::Addons::ComposerInstaller;
-use iMSCP::Rights;
-use iMSCP::Execute;
 use iMSCP::File;
 use File::Basename;
-use JSON;
 use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
@@ -85,6 +81,7 @@ sub preinstall
 {
 	my $self = shift;
 
+	require iMSCP::Addons::ComposerInstaller;
 	iMSCP::Addons::ComposerInstaller->getInstance()->registerPackage('imscp/roundcube');
 }
 
@@ -100,14 +97,6 @@ sub install
 {
 	my $self = shift;
 	my $rs	= 0;
-
-	$self->{'httpd'} = Servers::httpd->factory();
-
-	$self->{'user'} = $self->{'httpd'}->can('getRunningUser')
-		? $self->{'httpd'}->getRunningUser() : $main::imscpConfig{'ROOT_USER'};
-
-	$self->{'group'} = $self->{'httpd'}->can('getRunningGroup')
-		? $self->{'httpd'}->getRunningGroup() : $main::imscpConfig{'ROOT_GROUP'};
 
 	# Backup current configuration files if they exists (only relevant when running imscp-setup)
 	for (
@@ -227,8 +216,14 @@ sub setGuiPermissions
 	my $panelUName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} . $main::imscpConfig{'SYSTEM_USER_MIN_UID'};
 	my $panelGName = $panelUName;
 	my $rootDir = $main::imscpConfig{'ROOT_DIR'};
-	my $apacheGName = $self->{'group'};
 	my $rs = 0;
+
+	require Servers::httpd;
+	my $http = Servers::httpd->factory();
+	my $apacheGName = $http->can('getRunningGroup') ? $http->getRunningGroup() : $main::imscpConfig{'ROOT_GROUP'};
+
+	require iMSCP::Rights;
+	iMSCP::Rights->import();
 
 	$rs |= setRights(
 		"$rootDir/gui/public/tools/webmail",
@@ -319,6 +314,10 @@ sub _installFiles
 	my $rs = 0;
 
 	if(-d "$repoDir/vendor/imscp/roundcube") {
+
+		require iMSCP::Execute;
+		iMSCP::Execute->import();
+
 		$rs = execute(
 			"$main::imscpConfig{'CMD_CP'} -rTf $repoDir/vendor/imscp/roundcube $main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/webmail",
 			\$stdout,
@@ -482,6 +481,10 @@ sub _createDatabase
 sub _setVersion
 {
 	my $self = shift;
+
+	require iMSCP::File;
+	require JSON;
+	JSON->import();
 
 	my $json = iMSCP::File->new('filename' => "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/webmail/composer.json")->get();
 

@@ -2,7 +2,7 @@
 
 # i-MSCP preseed.pl template file for installer preseeding
 # See documentation at http://wiki.i-mscp.net/doku.php?id=start:preseeding
-# Last update on 2013.02.07
+# Last update on 2013.02.19
 # Status (Experimental)
 
 ## Autoinstall questions
@@ -125,6 +125,9 @@ $main::preseed{'AWSTATS_MODE'} = ''; # (empty value if the AWSTATS_ACTIVE questi
 
 # Policyd Weight addon
 $main::preseed{'DNSBL_CHECKS_ONLY'} = 'no'; # (yes|no)
+
+# Ftp Web file manager
+$main::preseed{'FILEMANAGER_ADDON'} = 'AjaxPlorer'; # (AjaxPlorer|Net2ftp)
 
 # Phpmyadmin addon
 $main::preseed{'PHPMYADMIN_SQL_USER'} = 'pma';
