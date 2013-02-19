@@ -42,10 +42,7 @@ iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptStart)
 
 check_login('user');
 
-// If the feature is disabled, redirects in silent way
-if (!customerHasFeature('domain_aliases')) {
-    redirectTo('index.php');
-}
+customerHasFeature('domain_aliases') or showBadRequestErrorPage();
 
 if (isset($_GET['id']) && $_GET['id'] !== '') {
 	$sub_id = $_GET['id'];

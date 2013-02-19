@@ -47,6 +47,5 @@ if (isset($_SESSION['logged_from']) && isset($_SESSION['logged_from_id']) && iss
 ) {
 	change_user_interface($_SESSION['user_id'], $_SESSION['logged_from_id']);
 } else {
-	set_page_message(tr('Wrong request.'), 'error');
-	redirectTo('index.php');
+	showBadRequestErrorPage();
 }

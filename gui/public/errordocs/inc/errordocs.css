@@ -2,8 +2,7 @@
  * i-MSCP - internet Multi Server Control Panel
  *
  * @copyright 	2006-2010 by ispCP | http://isp-control.net
- * @copyright 	2010 by i-MSCP | http://i-mscp.net
- * @version 	SVN: $Id$
+ * @copyright 	2010-2013 by i-MSCP | http://i-mscp.net
  * @link 		http://i-mscp.net
  * @author 		ispCP Team
  * @author 		i-MSCP Team
@@ -31,48 +30,54 @@
  */
 
 body {
-	font-family:		Geneva, Arial, Helvetica, sans-serif;
-	margin:				0;
+    font-family: Geneva, Arial, Helvetica, sans-serif;
+    margin: 0;
 }
 
-h2 {
-	color:				#f00;
-	margin:				0;
-	padding:			0;
+h1 {
+    color: rgb(255,0,0);
+    margin: 0;
+    padding: 0;
 }
 
-h3 {
-	font-size:			16px;
-	letter-spacing:		7px;
-	padding-top:		10px;
+p {
+    font-size: 16px;
+    letter-spacing: 7px;
 }
 
 .main {
-	height:				1px;
-	left:				0;
-	overflow:			visible;
-	position:			absolute;
-	text-align:			center;
-	top:				40%;
-	width:				100%;
+    height: 1px;
+    left: 0;
+    overflow: visible;
+    position: absolute;
+    text-align: center;
+    top: 40%;
+    width: 100%;
 }
 
 .mainContent {
-	background-image:	url(/errors/inc/error_top.jpg);
-	background-repeat:	no-repeat;
-	border:				1px solid #ccc;
-	height:				auto;
-	left:				50%;
-	margin-left:		-227px;
-	padding-bottom:		12px;
-	padding-top:		90px;
-	position:			absolute;
-	text-align:			center;
-	top:				-94px;
-	width:				453px;
+    background: url(/errors/inc/error_top.jpg) no-repeat;
+    border: 1px solid rgb(204,204,204);
+    height: auto;
+    left: 50%;
+    margin-left: -227px;
+    padding-bottom: 12px;
+    padding-top: 90px;
+    position: absolute;
+    text-align: center;
+    top: -94px;
+    width: 453px;
 }
 
-.path {
-	font-weight:		bold;
-	color:				#666;
+.path, a {
+    font-weight: bold;
+    color: rgb(102,102,102);
+    text-decoration: none;
+    font-size: 14px;
+    letter-spacing: normal;
+}
+
+#backlink {
+    text-align: right;
+    padding: 0 10px;
 }

@@ -256,9 +256,9 @@ function _admin_generateLimitsForm($tpl, &$data)
 			'MAX_SQL_DB_CNT' => tohtml($data['max_sql_db_cnt']),
 			'TR_MAX_SQL_USER_CNT' => tr('SQL users limit<br/><i>(-1 disabled, 0 unlimited)</i>', true),
 			'MAX_SQL_USER_CNT' => tohtml($data['max_sql_user_cnt']),
-			'TR_MAX_TRAFF_AMNT' => tr('Traffic limit [MiB]<br/><i>(0 unlimited)</i>', true),
+			'TR_MAX_TRAFF_AMNT' => tr('Monthly traffic limit [MiB]<br/><i>(0 unlimited)</i>', true),
 			'MAX_TRAFF_AMNT' => tohtml($data['max_traff_amnt']),
-			'TR_MAX_DISK_AMNT' => tr('Disk limit [MiB]<br/><i>(0 unlimited)</i>', true),
+			'TR_MAX_DISK_AMNT' => tr('Disk space limit [MiB]<br/><i>(0 unlimited)</i>', true),
 			'MAX_DISK_AMNT' => tohtml($data['max_disk_amnt'])
 		)
 	);
@@ -321,15 +321,15 @@ function _admin_generateFeaturesForm($tpl, &$data)
 			'TR_PHP_INI_MAX_MAX_INPUT_TIME' => tr('Max value for the %s PHP directive', true, '<b>max_input_time</b>'),
 			'PHP_INI_MAX_MAX_INPUT_TIME' => tohtml($data['php_ini_max_max_input_time']),
 
-			'TR_SOFTWARES_INSTALLER' => tr('Softwares installer'),
+			'TR_SOFTWARES_INSTALLER' => tr('Software installer'),
 			'SOFTWARES_INSTALLER_YES' => ($data['software_allowed'] == 'yes') ? $htmlChecked : '',
 			'SOFTWARES_INSTALLER_NO' => ($data['software_allowed'] != 'yes') ? $htmlChecked : '',
 
-			'TR_SOFTWARES_REPOSITORY' => tr('Softwares repository'),
+			'TR_SOFTWARES_REPOSITORY' => tr('Software repository'),
 			'SOFTWARES_REPOSITORY_YES' => ($data['softwaredepot_allowed'] == 'yes') ? $htmlChecked : '',
 			'SOFTWARES_REPOSITORY_NO' => ($data['softwaredepot_allowed'] != 'yes') ? $htmlChecked : '',
 
-			'TR_WEB_SOFTWARES_REPOSITORY' => tr('Web softwares repository'),
+			'TR_WEB_SOFTWARES_REPOSITORY' => tr('Web software repository'),
 			'WEB_SOFTWARES_REPOSITORY_YES' => ($data['websoftwaredepot_allowed'] == 'yes') ? $htmlChecked : '',
 			'WEB_SOFTWARES_REPOSITORY_NO' => ($data['websoftwaredepot_allowed'] != 'yes') ? $htmlChecked : '',
 
@@ -594,7 +594,7 @@ function admin_checkAndUpdateData($resellerId)
 
 		if (!$rs) $errFieldsStack[] = 'max_sql_user_cnt';
 
-		// Check for max traffic limit
+		// Check for max monthly traffic limit
 
 		if (imscp_limit_check($data['max_traff_amnt'], null)) {
 			$rs = admin_checkResellerLimit(
@@ -853,8 +853,7 @@ check_login('admin');
 
 // Dispatches the request
 if (!isset($_GET['edit_id'])) {
-	set_page_message(tr('wrong request.'));
-	redirectTo('manage_users.php');
+	showBadRequestErrorPage();
 } elseif (is_xhr()) { // Passsword generation (AJAX request)
 	header('Content-Type: text/plain; charset=utf-8');
 	header('Cache-Control: no-cache, private');

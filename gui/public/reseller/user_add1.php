@@ -113,7 +113,7 @@ function check_user_data()
 
 			redirectTo('user_add3.php');
 		} else {
-			set_page_message(tr('Hosting plan values exceed reseller maximum values.'), 'error');
+			set_page_message(tr('Hosting plan limits exceed reseller limits.'), 'error');
 			return false;
 		}
 	}

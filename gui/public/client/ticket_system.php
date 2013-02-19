@@ -51,7 +51,7 @@ $cfg = iMSCP_Registry::get('config');
 
 // If the feature is disabled, redirects in silent way
 if (!customerHasFeature('support')) {
-    redirectTo('index.php');
+    showBadRequestErrorPage();
 } elseif (isset($_GET['ticket_id']) && !empty($_GET['ticket_id'])) {
     closeTicket((int)$_GET['ticket_id']);
 }

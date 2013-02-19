@@ -46,10 +46,7 @@ iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptStart)
 
 check_login('user');
 
-// If the feature is disabled, redirects in silent way
-if (!customerHasFeature('support')) {
-	redirectTo('index.php');
-}
+customerHasFeature('support') or showBadRequestErrorPage();
 
 $userId = $_SESSION['user_id'];
 $previousPage = 'ticket_system';

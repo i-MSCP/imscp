@@ -42,10 +42,7 @@ iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptStart)
 
 check_login('user');
 
-// If the feature is disabled, redirects in silent way
-if (!customerHasFeature('domain_aliases')) {
-    redirectTo('index.php');
-}
+customerHasFeature('domain_aliases') or showBadRequestErrorPage();
 
 /** @var $cfg iMSCP_Config_Handler_File */
 $cfg = iMSCP_Registry::get('config');
@@ -90,8 +87,7 @@ if (isset($_POST['uaction']) && ($_POST['uaction'] == 'modify')) {
 		unset($_SESSION['edit_ID']);
 
 		//$_SESSION['aledit'] = '_no_';
-		set_page_message(tr('Wrong request.'), 'error');
-		redirectTo('domains_manage.php');
+		showBadRequestErrorPage();
 	}
 
 	// Save data to db

@@ -24,9 +24,9 @@
  * Portions created by the i-MSCP Team are Copyright (C) 2010-2013 by
  * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
  *
- * @category	i-MSCP
- * @package		iMSCP_Core
- * @subpackage	Orderpanel
+ * @category    i-MSCP
+ * @package        iMSCP_Core
+ * @subpackage    Orderpanel
  * @copyright   2001-2006 by moleSoftware GmbH
  * @copyright   2006-2010 by ispCP | http://isp-control.net
  * @copyright   2010-2013 by i-MSCP | http://i-mscp.net
@@ -40,57 +40,93 @@
  */
 
 /**
+ * Translate payment period
+ *
+ * @param string $paymentPeriod
+ * @return string
+ */
+function translatePaymentPeriod($paymentPeriod)
+{
+	switch ($paymentPeriod) {
+		case 'monthly':
+			return tr('Monthly');
+			break;
+		case 'annually':
+			return tr('Annually');
+			break;
+		case 'biennially':
+			return tr('Biennially');
+			break;
+		case 'triennially';
+			return tr('Triennially');
+			break;
+		default:
+			return tr('Unknown');
+	}
+}
+
+/**
  * Generates chart.
  *
  * @param iMSCP_pTemplate $tpl Template engine
- * @param int $user_id User unique identifier
- * @param int $plan_id Plan unique identifier
+ * @param int $userId User unique identifier
+ * @param int $planId Plan unique identifier
  * @return void
  */
-function generateChart($tpl, $user_id, $plan_id)
+function generateChart($tpl, $userId, $planId)
 {
 	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
 
 	if (isset($cfg->HOSTING_PLANS_LEVEL) && $cfg->HOSTING_PLANS_LEVEL == 'admin') {
 		$query = "SELECT * FROM `hosting_plans` WHERE `id` = ?";
-		$stmt = exec_query($query, $plan_id);
+		$stmt = exec_query($query, $planId);
 	} else {
 		$query = "SELECT * FROM `hosting_plans` WHERE `reseller_id` = ? AND `id` = ?";
-		$stmt = exec_query($query, array($user_id, $plan_id));
+		$stmt = exec_query($query, array($userId, $planId));
 	}
 
-	if ($stmt->recordCount() == 0) {
+	if (!$stmt->recordCount()) {
 		redirectTo('index.php');
 	} else {
 		$price = $stmt->fields['price'];
-		$setup_fee = $stmt->fields['setup_fee'];
-		$total = $price + $setup_fee;
+		$setupFee = $stmt->fields['setup_fee'];
+		$currency = $stmt->fields['value'];
+		$vat = $stmt->fields['vat'];
+		$subtotal = 0;
+		$totalRecurring = 0;
 
 		if ($price == 0 || $price == '') {
-			$price = tr('free of charge');
+			$price = tr('Free of charge');
+			$paymenPeriod = 'Free of charge';
 		} else {
-			$price .= ' ' . tohtml($stmt->fields['value']) . ' ' .
-				tohtml($stmt->fields['payment']);
+			$subtotal += $price;
+			$totalRecurring = sprintf('%.02f', round($subtotal * (1 + $vat / 100), 2));
+			$price .= ' ' . $currency . ' (<small>' . tr('Excl. tax') . '</small>)';
+			$paymenPeriod = tohtml(translatePaymentPeriod($stmt->fields['payment']));
 		}
 
-		if ($setup_fee == 0 || $setup_fee == '') {
-			$setup_fee = tr('free of charge');
+		if ($setupFee == 0 || $setupFee == '') {
+			$setupFee = tr('Free of charge');
 		} else {
-			$setup_fee .= ' ' . tohtml($stmt->fields['value']);
+			$subtotal += $setupFee;
+			$setupFee .= $currency . ' (<small>' . tr('Excl. tax') . '</small>)';
+			;
 		}
 
-		if ($total == 0) {
-			$total = tr('free of charge');
-		} else {
-			$total .= ' ' . tohtml($stmt->fields['value']);
-		}
+		$totalVat = sprintf('%.02f', round(round($subtotal * (1 + $vat / 100), 2) - $subtotal, 2));
+		$totalDueToday = sprintf('%.02f', round($subtotal + $totalVat, 2));
 
 		$tpl->assign(
 			array(
 				'PRICE' => $price,
-				'SETUP' => $setup_fee,
-				'TOTAL' => $total,
+				'SETUP_FEE' => $setupFee,
+				'SUBTOTAL' => sprintf('%.02f', $subtotal) . ' ' . $currency,
+				'VAT' => $vat,
+				'TOTAL_VAT' => $totalVat . ' ' . $currency,
+				'TOTAL_DUE_TODAY' => $totalDueToday . ' ' . $currency,
+				'TOTAL_RECURRING' => $totalRecurring . ' ' . $currency,
+				'PAYMENT_PERIOD' => $paymenPeriod,
 				'TR_PACKAGE_NAME' => tohtml($stmt->fields['name'])));
 
 		if ($stmt->fields['tos'] != '') {
@@ -117,10 +153,10 @@ function generateChart($tpl, $user_id, $plan_id)
  */
 function generateUserPersonalData($tpl)
 {
-	$first_name = (isset($_SESSION['order_panel_fname'])) ? $_SESSION['order_panel_fname'] : '';
-	$last_name = (isset($_SESSION['order_panel_lname'])) ? $_SESSION['order_panel_lname'] : '';
+	$firstname = (isset($_SESSION['order_panel_fname'])) ? $_SESSION['order_panel_fname'] : '';
+	$lastname = (isset($_SESSION['order_panel_lname'])) ? $_SESSION['order_panel_lname'] : '';
 	$company = (isset($_SESSION['order_panel_firm'])) ? $_SESSION['order_panel_firm'] : '';
-	$postal_code = (isset($_SESSION['order_panel_zip'])) ? $_SESSION['order_panel_zip'] : '';
+	$zip = (isset($_SESSION['order_panel_zip'])) ? $_SESSION['order_panel_zip'] : '';
 	$city = (isset($_SESSION['order_panel_city'])) ? $_SESSION['order_panel_city'] : '';
 	$state = (isset($_SESSION['order_panel_state'])) ? $_SESSION['order_panel_state'] : '';
 	$country = (isset($_SESSION['order_panel_country'])) ? $_SESSION['order_panel_country'] : '';
@@ -134,10 +170,10 @@ function generateUserPersonalData($tpl)
 
 	$tpl->assign(
 		array(
-			'VL_USR_NAME' => tohtml($first_name),
-			'VL_LAST_USRNAME' => tohtml($last_name),
+			'VL_USR_NAME' => tohtml($firstname),
+			'VL_LAST_USRNAME' => tohtml($lastname),
 			'VL_USR_FIRM' => tohtml($company),
-			'VL_USR_POSTCODE' => tohtml($postal_code),
+			'VL_USR_POSTCODE' => tohtml($zip),
 			'VL_USR_GENDER' => tohtml($gender),
 			'VL_USRCITY' => tohtml($city),
 			'VL_USRSTATE' => tohtml($state),
@@ -146,7 +182,9 @@ function generateUserPersonalData($tpl)
 			'VL_STREET2' => tohtml($street2),
 			'VL_PHONE' => tohtml($phone),
 			'VL_FAX' => tohtml($fax),
-			'VL_EMAIL' => tohtml($email)));
+			'VL_EMAIL' => tohtml($email)
+		)
+	);
 }
 
 /************************************************************************************
@@ -165,7 +203,7 @@ if (isset($_SESSION['order_panel_user_id']) && isset($_SESSION['order_panel_plan
 	$userId = $_SESSION['order_panel_user_id'];
 	$hostingPlanId = $_SESSION['order_panel_plan_id'];
 } else {
-	throw new iMSCP_Exception_Production(tr('You do not have permission to access this interface.'));
+	showBadRequestErrorPage();
 }
 
 $tpl = new iMSCP_pTemplate();
@@ -174,17 +212,24 @@ $tpl->define_no_file('layout', implode('', gen_purchase_haf($userId)));
 $tpl->define_dynamic(
 	array(
 		'page' => 'orderpanel/chart.tpl',
-		'page_message' => 'page', // Must be in page here
-		'tos_field' => 'page'));
+		'page_message' => 'page',
+		'tos_field' => 'page'
+	)
+);
 
 $tpl->assign(
 	array(
+		'THEME_CHARSET' => tr('encoding'),
 		'TR_PAGE_TITLE' => tr('Order Panel / Chart'),
 		'YOUR_CHART' => tr('Your Chart'),
 		'TR_COSTS' => tr('Costs'),
-		'TR_PACKAGE_PRICE' => tr('Price'),
-		'TR_PACKAGE_SETUPFEE' => tr('Setup fee'),
-		'TR_TOTAL' => tr('Total'),
+		'TR_PRICE' => tr('Price'),
+		'TR_SETUP_FEE' => tr('Setup Fee'),
+		'TR_SUBTOTAL' => tr('Subtotal'),
+		'TR_VAT' => tr('Vat'),
+		'TR_TOTAL_DUE_TODAY' => tr('Total Due Today'),
+		'TR_TOTAL_RECURRING' => tr('Total Recurring'),
+		'TR_CANCEL' => tr('Cancel'),
 		'TR_CONTINUE' => tr('Purchase'),
 		'TR_CHANGE' => tr('Change'),
 		'TR_FIRSTNAME' => tr('First name'),
@@ -206,7 +251,9 @@ $tpl->assign(
 		'TR_IMGCAPCODE' => '<img src="/imagecode.php" width="' .
 			$cfg->LOSTPASSWORD_CAPTCHA_WIDTH . '" height="' .
 			$cfg->LOSTPASSWORD_CAPTCHA_HEIGHT . '" border="0" alt="captcha image" />',
-		'THEME_CHARSET' => tr('encoding')));
+		'CANCEL_URI' => $_SESSION['order_panel_cancel_uri'],
+	)
+);
 
 generateChart($tpl, $userId, $hostingPlanId);
 generateUserPersonalData($tpl);

@@ -136,10 +136,7 @@ iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptStart)
 
 check_login('user');
 
-// If the feature is disabled, redirects in silent way
-if (!customerHasFeature('sql')) {
-    redirectTo('index.php');
-}
+customerHasFeature('sql') or showBadRequestErrorPage();
 
 $domainProperties = get_domain_default_props($_SESSION['user_id']);
 

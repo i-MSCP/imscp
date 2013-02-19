@@ -1116,7 +1116,7 @@ function get_avail_software_reseller($tpl, $user_id)
 
 		if ($rs->recordCount() > 0) {
 			while (!$rs->EOF) {
-				if ($rs->fields['swstatus'] == "ok" || $rs->fields['swstatus'] == "ready") {
+				if ($rs->fields['swstatus'] == 'ok' || $rs->fields['swstatus'] == 'ready') {
 					if ($rs->fields['swstatus'] == "ready") {
 						$updatequery = "
 							UPDATE
@@ -1187,8 +1187,8 @@ function get_avail_software_reseller($tpl, $user_id)
 						$tpl->assign('SW_STATUS', tr('activated'));
 					}
 				} else {
-					if ($rs->fields['swstatus'] == "toadd") {
-						$url = "software_delete.php?id=" . $rs->fields['id'];
+					if ($rs->fields['swstatus'] == 'toadd') {
+						$url = 'software_delete.php?id=' . $rs->fields['id'];
 						$tpl->assign(array(
 										  'SW_NAME' => tr('Installing your uploaded package. Please refresh this page.'),
 										  'LINK_COLOR' => '#FF0000',
@@ -1201,7 +1201,7 @@ function get_avail_software_reseller($tpl, $user_id)
 										  'SW_STATUS' => tr('installing'),
 										  'SOFTWARE_ICON' => 'disabled'));
 					} else {
-						if ($rs->fields['swstatus'] == "delete") {
+						if ($rs->fields['swstatus'] == 'delete') {
 							$tpl->assign(array(
 											  'SW_NAME' => tr('Failure in the package. Deleting!'),
 											  'LINK_COLOR' => '#FF0000',
@@ -1217,7 +1217,7 @@ function get_avail_software_reseller($tpl, $user_id)
 							set_page_message(tr('The package is corrupt. Please correct it.'), 'error');
 						} elseif (preg_match("/double_depot_/i", $rs->fields['swstatus'])) {
 							$tpl->assign(array(
-											  'SW_NAME' => tr('Package already exist in the software depot!'),
+											  'SW_NAME' => tr('Package already exist in the software repository!'),
 											  'LINK_COLOR' => '#FF0000',
 											  'SW_VERSION' => '',
 											  'SW_LANGUAGE' => '',
@@ -1227,10 +1227,10 @@ function get_avail_software_reseller($tpl, $user_id)
 											  'TR_DELETE' => '',
 											  'SW_STATUS' => tr('deleting'),
 											  'SOFTWARE_ICON' => 'disabled'));
-							set_page_message(tr('This package already exist in the administrator software depot.'), 'error');
+							set_page_message(tr('This package already exist in the administrator software repository.'), 'error');
 						} elseif (preg_match("/double_res_/i", $rs->fields['swstatus'])) {
 							$tpl->assign(array(
-											  'SW_NAME' => tr('Package already exist in your software depot!'),
+											  'SW_NAME' => tr('Package already exist in your software repository!'),
 											  'LINK_COLOR' => '#FF0000',
 											  'SW_VERSION' => '',
 											  'SW_LANGUAGE' => '',
@@ -1241,7 +1241,7 @@ function get_avail_software_reseller($tpl, $user_id)
 											  'SW_STATUS' => tr('deleting'),
 											  'SOFTWARE_ICON' => 'disabled'));
 
-							set_page_message(tr('This package already exist in your software depot.'), 'error');
+							set_page_message(tr('This package already exist in your software repository.'), 'error');
 						}
 
 						$del_path = $cfg->GUI_SOFTWARE_DIR . "/" . $rs->fields['resellerid'] . "/" . $rs->fields['filename'] . "-" . $rs->fields['id'] . ".tar.gz";

@@ -196,7 +196,7 @@ function admin_isValidMenu($menuName, $menuLink, $menuTarget, $menuLevel, $menuO
 	}
 
 	if(!in_array($menuLevel, array('A', 'R', 'C', 'AR', 'AC', 'RC', 'ARC'))) {
-		set_page_message(tr('Wrong request.'), 'error');
+		showBadRequestErrorPage();
 	}
 
 	if(!empty($menuOrder) && !is_numeric($menuOrder)) {
@@ -314,7 +314,7 @@ if(isset($_POST['uaction'])) {
 			redirectTo('custom_menus.php');
 		}
 	} else {
-		set_page_message(tr('Wrong request.'), 'error');
+		showBadRequestErrorPage();
 	}
 } elseif(isset($_GET['delete_id'])) {
 	admin_deleteMenu($_GET['delete_id']);

@@ -56,9 +56,8 @@ if (strtolower($cfg->HOSTING_PLANS_LEVEL) != 'admin') {
 if (isset($_GET['hpid'])) {
 	$hostingPlanId = intval($_GET['hpid']);
 } else {
-	set_page_message(tr('Wrong request.'), 'error');
-	redirectTo('hosting_plan.php');
-	exit; // Useless but avoid IDE warning about possible undefined variable
+	showBadRequestErrorPage();
+	exit;
 }
 
 // Check if there is no order for this plan

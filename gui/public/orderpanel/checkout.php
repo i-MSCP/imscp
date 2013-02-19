@@ -24,9 +24,9 @@
  * Portions created by the i-MSCP Team are Copyright (C) 2010-2013 by
  * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
  *
- * @category	i-MSCP
- * @package		iMSCP_Core
- * @subpackage	Orderpanel
+ * @category    i-MSCP
+ * @package        iMSCP_Core
+ * @subpackage    Orderpanel
  * @copyright   2001-2006 by moleSoftware GmbH
  * @copyright   2006-2010 by ispCP | http://isp-control.net
  * @copyright   2010-2013 by i-MSCP | http://i-mscp.net
@@ -43,11 +43,11 @@
 /**
  * Generates checkout.
  *
- * @param  int $user_id User unique identifier
- * @param int $plan_id Plan unique identifier
+ * @param  int $userId User unique identifier
+ * @param int $planId Plan unique identifier
  * @return void
  */
-function generateCheckout($user_id, $plan_id)
+function generateCheckout($userId, $planId)
 {
 	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
@@ -70,30 +70,33 @@ function generateCheckout($user_id, $plan_id)
 
 	$query = "
 		INSERT INTO `orders` (
-            `user_id`, `plan_id`, `date`, `domain_name`, `fname`, `lname`, `gender`,
-            `firm`,`zip`, `city`, `state`, `country`, `email`, `phone`, `fax`,
-            `street1`, `street2`, `status`
+            `user_id`, `plan_id`, `date`, `domain_name`, `fname`, `lname`, `gender`, `firm`,`zip`, `city`, `state`,
+            `country`, `email`, `phone`, `fax`, `street1`, `street2`, `status`
         ) VALUES (
             ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
         )
 	";
-	exec_query($query, array($user_id, $plan_id, $date, $domain_name, $fname, $lname,
-		$gender, $firm, $zip, $city, $state, $country, $email,
-		$phone, $fax, $street1, $street2,
-		$cfg->ITEM_ORDER_UNCONFIRMED_STATUS));
+	exec_query(
+		$query,
+		array(
+			$userId, $planId, $date, $domain_name, $fname, $lname, $gender, $firm, $zip, $city, $state, $country, $email,
+			$phone, $fax, $street1, $street2, $cfg->ITEM_ORDER_UNCONFIRMED_STATUS
+		)
+	);
 
 	/** @var $db iMSCP_Database */
 	$db = iMSCP_Registry::get('db');
-	send_order_emails($user_id, $domain_name, $fname, $lname, $email, $db->insertId());
+	send_order_emails($userId, $domain_name, $fname, $lname, $email, $db->insertId());
 
 	// Remove useless data
 	unset(
-	$_SESSION['order_panel_details'], $_SESSION['order_panel_domainname'], $_SESSION['order_panel_fname'],
-	$_SESSION['order_panel_lname'], $_SESSION['order_panel_gender'], $_SESSION['order_panel_email'],
-	$_SESSION['order_panel_firm'], $_SESSION['order_panel_zip'], $_SESSION['order_panel_city'],
-	$_SESSION['order_panel_state'], $_SESSION['order_panel_country'], $_SESSION['order_panel_street1'],
-	$_SESSION['order_panel_street2'], $_SESSION['order_panel_phone'], $_SESSION['order_panel_fax'],
-	$_SESSION['order_panel_plan_id'], $_SESSION['order_panel_image'], $_SESSION['order_panel_tos']);
+		$_SESSION['order_panel_details'], $_SESSION['order_panel_domainname'], $_SESSION['order_panel_fname'],
+		$_SESSION['order_panel_lname'], $_SESSION['order_panel_gender'], $_SESSION['order_panel_email'],
+		$_SESSION['order_panel_firm'], $_SESSION['order_panel_zip'], $_SESSION['order_panel_city'],
+		$_SESSION['order_panel_state'], $_SESSION['order_panel_country'], $_SESSION['order_panel_street1'],
+		$_SESSION['order_panel_street2'], $_SESSION['order_panel_phone'], $_SESSION['order_panel_fax'],
+		$_SESSION['order_panel_plan_id'], $_SESSION['order_panel_image'], $_SESSION['order_panel_tos']
+	);
 }
 
 /************************************************************************************
@@ -110,10 +113,10 @@ iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onOrderPanelScriptSt
 $cfg = iMSCP_Registry::get('config');
 
 if (isset($_SESSION['order_panel_user_id']) && isset($_SESSION['order_panel_plan_id'])) {
-	$user_id = $_SESSION['order_panel_user_id'];
-	$plan_id = $_SESSION['order_panel_plan_id'];
+	$userId = $_SESSION['order_panel_user_id'];
+	$planId = $_SESSION['order_panel_plan_id'];
 } else {
-	throw new iMSCP_Exception_Production(tr('You do not have permission to access this interface.'));
+	showBadRequestErrorPage();
 }
 
 if (!isset($_POST['capcode']) || $_POST['capcode'] != $_SESSION['image']) {
@@ -129,22 +132,23 @@ if (isset($_SESSION['order_panel_tos']) && $_SESSION['order_panel_tos'] == true)
 	}
 }
 
-if ((isset($_SESSION['order_panel_fname']) && $_SESSION['order_panel_fname'] != '')
-	&& (isset($_SESSION['order_panel_lname']) && $_SESSION['order_panel_lname'] != '')
-	&& (isset($_SESSION['order_panel_email']) && $_SESSION['order_panel_email'] != '')
-	&& (isset($_SESSION['order_panel_zip']) && $_SESSION['order_panel_zip'] != '')
-	&& (isset($_SESSION['order_panel_city']) && $_SESSION['order_panel_city'] != '')
-	&& (isset($_SESSION['order_panel_country']) && $_SESSION['order_panel_country'] != '')
-	&& (isset($_SESSION['order_panel_street1']) && $_SESSION['order_panel_street1'] != '')
-	&& (isset($_SESSION['order_panel_phone']) && $_SESSION['order_panel_phone'] != '')
+if (
+	(isset($_SESSION['order_panel_fname']) && $_SESSION['order_panel_fname'] != '') &&
+	(isset($_SESSION['order_panel_lname']) && $_SESSION['order_panel_lname'] != '') &&
+	(isset($_SESSION['order_panel_email']) && $_SESSION['order_panel_email'] != '') &&
+	(isset($_SESSION['order_panel_zip']) && $_SESSION['order_panel_zip'] != '') &&
+	(isset($_SESSION['order_panel_city']) && $_SESSION['order_panel_city'] != '') &&
+	(isset($_SESSION['order_panel_country']) && $_SESSION['order_panel_country'] != '') &&
+	(isset($_SESSION['order_panel_street1']) && $_SESSION['order_panel_street1'] != '') &&
+	(isset($_SESSION['order_panel_phone']) && $_SESSION['order_panel_phone'] != '')
 ) {
-	generateCheckout($user_id, $plan_id);
+	generateCheckout($userId, $planId);
 } else {
-	redirectTo('index.php?user_id=' . $user_id);
+	redirectTo('index.php?user_id=' . $userId);
 }
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_no_file('layout', implode('', gen_purchase_haf($user_id)));
+$tpl->define_no_file('layout', implode('', gen_purchase_haf($userId)));
 $tpl->define_dynamic(
 	array(
 		'page' => 'orderpanel/checkout.tpl',

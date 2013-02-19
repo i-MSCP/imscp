@@ -185,5 +185,5 @@ if (customerHasFeature(array('mail', 'external_mail'))) {
     $tpl->prnt();
     unsetMessages();
 } else {
-    redirectTo('index.php');
+    showBadRequestErrorPage();
 }

@@ -42,10 +42,7 @@ iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptStart)
 
 check_login('user');
 
-// If the feature is disabled, redirects in silent way
-if (!customerHasFeature('custom_dns_records')) {
-    redirectTo('index.php');
-}
+customerHasFeature('custom_dns_records') or showBadRequestErrorPage();
 
 if (isset($_GET['edit_id']) && $_GET['edit_id'] !== '') {
 

@@ -200,13 +200,13 @@ function reseller_generatePageData($tpl, $resellerId, $resellerName)
 	reseller_generateDiskUsageBar($tpl, $udiskCurrent, $rdiskMax);
 
 	if ($rtraffMax > 0 && $utraffCurrent > $rtraffMax) {
-		$tpl->assign('TR_TRAFFIC_WARNING', tr('You are exceeding your traffic limit.'));
+		$tpl->assign('TR_TRAFFIC_WARNING', tr('You are exceeding your monthly traffic limit.'));
 	} else {
 		$tpl->assign('TRAFFIC_WARNING_MESSAGE', '');
 	}
 
 	if ($rdiskMax > 0 && $udiskCurrent > $rdiskMax) {
-		$tpl->assign('TR_DISK_WARNING', tr('You are exceeding your disk limit.'));
+		$tpl->assign('TR_DISK_WARNING', tr('You are exceeding your disk space limit.'));
 	} else {
 		$tpl->assign('DISK_WARNING_MESSAGE', '');
 	}
@@ -263,7 +263,7 @@ function reseller_generatePageData($tpl, $resellerId, $resellerName)
 			 'PHP_EDITOR_STATUS' => ($resellerProperties['php_ini_system'] == 'yes')
 				 ? '<span style="color:green;">' . tr('Enabled') . '</span>'
 				 : '<span style="color:red;">' . tr('Disabled') . '</span>',
-			 'TR_APS' => tr('Softwares installer'),
+			 'TR_APS' => tr('Software installer'),
 			 'APS_STATUS' => ($resellerProperties['software_allowed'] == 'yes')
 				 ? '<span style="color:green;">' . tr('Enabled') . '</span>'
 				 : '<span style="color:red;">' . tr('Disabled') . '</span>'));

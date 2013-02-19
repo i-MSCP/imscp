@@ -56,8 +56,7 @@ $query = "SELECT `id` FROM `orders` WHERE `id` = ? AND `user_id` = ?";
 $stmt = exec_query($query, array($orderId, $resellerId));
 
 if (!$stmt->rowCount()) {
-	set_page_message(tr('Wrong request.'), 'error');
-	redirectTo('orders.php');
+	showBadRequestErrorPage();
 }
 
 // delete all FTP Accounts

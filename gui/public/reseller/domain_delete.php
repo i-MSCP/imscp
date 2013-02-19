@@ -66,8 +66,7 @@ function reseller_generateDomainAcountDeletionValidationPage($domainId)
     $stmt = exec_query($query, array($domainId, $_SESSION['user_id']));
 
     if (!$stmt->rowCount()) {
-        set_page_message(tr('Wrong request.'), 'error');
-        redirectTo('users.php');
+		showBadRequestErrorPage();
     }
 
     $domainName = tohtml(decode_idna($stmt->fields['domain_name']));

@@ -19,6 +19,7 @@
 					</tr>
 				</table>
 				<div class="buttons" style="width:550px;">
+                    <input type="button" onclick="window.location='{CANCEL_URI}'" value="{TR_CANCEL}">
 					<input name="submit" type="submit" value="{TR_CONTINUE}" />
 				</div>
 			</form>

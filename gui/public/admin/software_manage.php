@@ -64,8 +64,8 @@ if($use_webdepot) {
     if (isset($_POST['uaction']) && $_POST['uaction'] == "updatewebdepot") {
         //$xml_file =  @file_get_contents(encode_idna(strtolower(clean_input($_POST['webdepot_xml_url']))));
         $xml_file = @file_get_contents($webdepot_xml_url);
-        if (!strpos($xml_file, 'i-MSCP web software repositories list')) {
-            set_page_message(tr("Unable to read xml file for web softwares."), 'error');
+        if (!strpos($xml_file, 'i-MSCP Web software repositories list')) {
+            set_page_message(tr("Unable to read xml file for Web softwares."), 'error');
             $error = 1;
         }
         if(!$error) {
@@ -76,7 +76,7 @@ if($use_webdepot) {
 
 	$tpl->assign(
 		array(
-			'TR_WEBDEPOT' => tr('i-MSCP application installer Web softwares repository'),
+			'TR_WEBDEPOT' => tr('i-MSCP Web softwares repository'),
 			'TR_APPLY_CHANGES' => tr('Update from Web software repository'),
 			'TR_PACKAGE_TITLE' => tr('Package name'),
 			'TR_PACKAGE_INSTALL_TYPE' => tr('Package install type'),
@@ -85,7 +85,7 @@ if($use_webdepot) {
 			'TR_PACKAGE_TYPE' => tr('Package type'),
 			'TR_PACKAGE_VENDOR_HP' => tr('Package vendor HP'),
 			'TR_PACKAGE_ACTION' => tr('Package actions'),
-			'TR_WEBDEPOTSOFTWARE_COUNT' => tr('Total packages in Web softwares repository'),
+			'TR_WEBDEPOTSOFTWARE_COUNT' => tr('Total packages in Web software repository'),
 			'TR_WEBDEPOTSOFTWARE_ACT_NUM' => $packages_cnt));
 
     $tpl->parse('WEBDEPOT_LIST', '.webdepot_list');

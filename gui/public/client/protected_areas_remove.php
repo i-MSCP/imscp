@@ -42,10 +42,7 @@ iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptStart)
 
 check_login('user');
 
-// If the feature is disabled, redirects in silent way
-if (!customerHasFeature('protected_areas')) {
-    redirectTo('index.php');
-}
+customerHasFeature('protected_areas') or showBadRequestErrorPage();
 
 /** @var $cfg iMSCP_Config_Handler_File */
 $cfg = iMSCP_Registry::get('config');
@@ -54,7 +51,7 @@ $cfg = iMSCP_Registry::get('config');
  * @todo Do we have a proper cdir?
  */
 if (!isset($_GET['cdir'])) {
-	redirectTo('protected_areas.php');
+	showBadRequestErrorPage();
 }
 
 $domain_name = $_SESSION['user_logged'];

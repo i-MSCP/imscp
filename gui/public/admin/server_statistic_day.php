@@ -155,8 +155,7 @@ if (isset($_GET['month']) && isset($_GET['year']) && isset($_GET['day'])) {
 	$month = intval($_GET['month']);
 	$day = intval($_GET['day']);
 } else {
-	set_page_message(tr('Wrong request.'), 'error');
-	redirectTo('server_statistic.php');
+	showBadRequestErrorPage();
 }
 
 $tpl->assign(

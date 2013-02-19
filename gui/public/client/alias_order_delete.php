@@ -42,10 +42,7 @@ iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptStart)
 
 check_login('user');
 
-// If the feature is disabled, redirects in silent way
-if (!customerHasFeature('domain_aliases')) {
-    redirectTo('index.php');
-}
+customerHasFeature('domain_aliases') or showBadRequestErrorPage();
 
 /** @var $cfg iMSCP_Config_Handler_File */
 $cfg = iMSCP_Registry::get('config');
@@ -53,8 +50,7 @@ $cfg = iMSCP_Registry::get('config');
 if (isset($_GET['del_id']) && !empty($_GET['del_id'])) {
 	$domainAliasId = (int)$_GET['del_id'];
 } else {
-	set_page_message(tr('Wrong request.'), 'error');
-	redirectTo('domains_manage.php');
+	showBadRequestErrorPage();
 }
 
 $domainId = get_user_domain_id($_SESSION['user_id']);

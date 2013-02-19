@@ -142,7 +142,7 @@ function generate_reseller_users_props($resellerId)
         $rtraffAssigned += $traffAssigned;
 		if(!$rtraffAssigned) $rtraffUnlimited = true;
 
-		// Compute diskpace
+		// Compute diskspace
         $rdiskConsumed += $diskConsumed;
         $rdiskAssigned += $diskAssigned;
 		if(!$rdiskAssigned) $rdiskUnlimited = true;

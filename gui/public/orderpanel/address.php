@@ -24,9 +24,9 @@
  * Portions created by the i-MSCP Team are Copyright (C) 2010-2013 by
  * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
  *
- * @category	i-MSCP
- * @package		iMSCP_Core
- * @subpackage	Orderpanel
+ * @category    i-MSCP
+ * @package        iMSCP_Core
+ * @subpackage    Orderpanel
  * @copyright   2001-2006 by moleSoftware GmbH
  * @copyright   2006-2010 by ispCP | http://isp-control.net
  * @copyright   2010-2013 by i-MSCP | http://i-mscp.net
@@ -51,19 +51,19 @@ function generateUserPersonalData($tpl)
 	$cfg = iMSCP_Registry::get('config');
 
 	if (isset($_POST['fname'])) {
-		$first_name = clean_input($_POST['fname']);
+		$firstname = clean_input($_POST['fname']);
 	} else if (isset($_SESSION['order_panel_fname'])) {
-		$first_name = $_SESSION['order_panel_fname'];
+		$firstname = $_SESSION['order_panel_fname'];
 	} else {
-		$first_name = '';
+		$firstname = '';
 	}
 
 	if (isset($_POST['lname'])) {
-		$last_name = clean_input($_POST['lname']);
+		$lastname = clean_input($_POST['lname']);
 	} else if (isset($_SESSION['order_panel_lname'])) {
-		$last_name = $_SESSION['order_panel_lname'];
+		$lastname = $_SESSION['order_panel_lname'];
 	} else {
-		$last_name = '';
+		$lastname = '';
 	}
 
 	if (isset($_POST['email'])) {
@@ -91,11 +91,11 @@ function generateUserPersonalData($tpl)
 	}
 
 	if (isset($_POST['zip'])) {
-		$postal_code = clean_input($_POST['zip']);
+		$zip = clean_input($_POST['zip']);
 	} else if (isset($_SESSION['order_panel_zip'])) {
-		$postal_code = $_SESSION['order_panel_zip'];
+		$zip = $_SESSION['order_panel_zip'];
 	} else {
-		$postal_code = '';
+		$zip = '';
 	}
 
 	if (isset($_POST['city'])) {
@@ -156,11 +156,11 @@ function generateUserPersonalData($tpl)
 
 	$tpl->assign(
 		array(
-			'VL_USR_NAME' => tohtml($first_name),
-			'VL_LAST_USRNAME' => tohtml($last_name),
+			'VL_USR_NAME' => tohtml($firstname),
+			'VL_LAST_USRNAME' => tohtml($lastname),
 			'VL_EMAIL' => tohtml($email),
 			'VL_USR_FIRM' => tohtml($company),
-			'VL_USR_POSTCODE' => tohtml($postal_code),
+			'VL_USR_POSTCODE' => tohtml($zip),
 			'VL_USRCITY' => tohtml($city),
 			'VL_USRSTATE' => tohtml($state),
 			'VL_COUNTRY' => tohtml($country),
@@ -170,7 +170,9 @@ function generateUserPersonalData($tpl)
 			'VL_FAX' => tohtml($fax),
 			'VL_MALE' => (($gender === 'M') ? $cfg->HTML_SELECTED : ''),
 			'VL_FEMALE' => (($gender === 'F') ? $cfg->HTML_SELECTED : ''),
-			'VL_UNKNOWN' => (($gender == 'U') ? $cfg->HTML_SELECTED : '')));
+			'VL_UNKNOWN' => (($gender == 'U') ? $cfg->HTML_SELECTED : '')
+		)
+	);
 }
 
 /**
@@ -182,11 +184,16 @@ function checkUserPersonalData()
 {
 	unset($_GET['edit']);
 
-	if ((isset($_POST['fname']) && $_POST['fname'] != '')
-		&& (isset($_POST['email']) && $_POST['email'] != '') && chk_email($_POST['email'])
-		&& (isset($_POST['lname']) && $_POST['lname'] != '') && (isset($_POST['zip']) && $_POST['zip'] != '')
-		&& (isset($_POST['city']) && $_POST['city'] != '') && (isset($_POST['country']) && $_POST['country'] != '')
-		&& (isset($_POST['street1']) && $_POST['street1'] != '') && (isset($_POST['phone']) && $_POST['phone'] != '')
+	if (
+		(isset($_POST['fname']) && $_POST['fname'] != '') &&
+		(isset($_POST['email']) && $_POST['email'] != '') &&
+		chk_email($_POST['email']) &&
+		(isset($_POST['lname']) && $_POST['lname'] != '') &&
+		(isset($_POST['zip']) && $_POST['zip'] != '') &&
+		(isset($_POST['city']) && $_POST['city'] != '') &&
+		(isset($_POST['country']) && $_POST['country'] != '') &&
+		(isset($_POST['street1']) && $_POST['street1'] != '') &&
+		(isset($_POST['phone']) && $_POST['phone'] != '')
 	) {
 		$_SESSION['order_panel_fname'] = clean_input($_POST['fname']);
 		$_SESSION['order_panel_lname'] = clean_input($_POST['lname']);
@@ -202,9 +209,7 @@ function checkUserPersonalData()
 			$_SESSION['order_panel_firm'] = clean_input($_POST['firm']);
 		}
 
-		if (isset($_POST['gender'])
-			&& get_gender_by_code($_POST['gender'], true) !== null
-		) {
+		if (isset($_POST['gender']) && get_gender_by_code($_POST['gender'], true) !== null) {
 			$_SESSION['order_panel_gender'] = $_POST['gender'];
 		} else {
 			$_SESSION['order_panel_gender'] = '';
@@ -221,7 +226,7 @@ function checkUserPersonalData()
 		redirectTo('chart.php');
 	} else {
 		set_page_message(tr('You must fill out all required fields.'), 'error');
-		$_GET['edit'] = "yes";
+		$_GET['edit'] = 'yes';
 	}
 }
 
@@ -241,22 +246,23 @@ if (isset($_SESSION['order_panel_user_id']) && isset($_SESSION['order_panel_plan
 	$userId = $_SESSION['order_panel_user_id'];
 	$hostingPlanId = $_SESSION['order_panel_plan_id'];
 } else {
-	throw new iMSCP_Exception_Production(tr('You do not have permission to access this interface.'));
+	showBadRequestErrorPage();
 }
 
-if (isset($_POST['uaction']) && $_POST['uaction'] == 'address')
+if (!empty($_POST)) {
 	checkUserPersonalData();
+}
 
-if ((isset($_SESSION['order_panel_fname']) && $_SESSION['order_panel_fname'] != '')
-	&& (isset($_SESSION['order_panel_email']) && $_SESSION['order_panel_email'] != '')
-	&& (isset($_SESSION['order_panel_lname']) && $_SESSION['order_panel_lname'] != '')
-	&& (isset($_SESSION['order_panel_zip']) && $_SESSION['order_panel_zip'] != '')
-	&& (isset($_SESSION['order_panel_city']) && $_SESSION['order_panel_city'] != '')
-	&& (isset($_SESSION['order_panel_state']) && $_SESSION['order_panel_state'] != '')
-	&& (isset($_SESSION['order_panel_country']) && $_SESSION['order_panel_country'] != '')
-	&& (isset($_SESSION['order_panel_street1']) && $_SESSION['order_panel_street1'] != '')
-	&& (isset($_SESSION['order_panel_phone']) && $_SESSION['order_panel_phone'] != '')
-	&& !isset($_GET['edit'])
+if (
+	!isset($_GET['edit']) &&
+	(isset($_SESSION['order_panel_fname']) && $_SESSION['order_panel_fname'] != '') &&
+	(isset($_SESSION['order_panel_email']) && $_SESSION['order_panel_email'] != '') &&
+	(isset($_SESSION['order_panel_lname']) && $_SESSION['order_panel_lname'] != '') &&
+	(isset($_SESSION['order_panel_zip']) && $_SESSION['order_panel_zip'] != '') &&
+	(isset($_SESSION['order_panel_city']) && $_SESSION['order_panel_city'] != '') &&
+	(isset($_SESSION['order_panel_country']) && $_SESSION['order_panel_country'] != '') &&
+	(isset($_SESSION['order_panel_street1']) && $_SESSION['order_panel_street1'] != '') &&
+	(isset($_SESSION['order_panel_phone']) && $_SESSION['order_panel_phone'] != '')
 ) {
 	redirectTo('chart.php');
 }
@@ -266,7 +272,7 @@ $tpl->define_no_file('layout', implode('', gen_purchase_haf($userId)));
 $tpl->define_dynamic(
 	array(
 		'page' => 'orderpanel/address.tpl',
-		'page_message' => 'page' // Must be in page here
+		'page_message' => 'page'
 	)
 );
 
@@ -291,8 +297,12 @@ $tpl->assign(
 		'TR_UNKNOWN' => tr('Unknown'),
 		'TR_FAX' => tr('Fax'),
 		'TR_CONTINUE' => tr('Continue'),
+		'TR_CANCEL' => tr('Cancel'),
+		'CANCEL_URI' => $_SESSION['order_panel_cancel_uri'],
 		'NEED_FILLED' => tr('* denotes mandatory field.'),
-		'THEME_CHARSET' => tr('encoding')));
+		'THEME_CHARSET' => tr('encoding')
+	)
+);
 
 generateUserPersonalData($tpl);
 generatePageMessage($tpl);

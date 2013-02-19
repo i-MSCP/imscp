@@ -165,8 +165,7 @@ if (isset($_POST['domain_id'])) {
 } elseif (isset($_GET['domain_id'])) {
 	$domainId = $_GET['domain_id'];
 } else {
-	set_page_message(tr('Wrong request.'), 'error');
-	redirectTo('reseller_statistics.php');
+	showBadRequestErrorPage();
 }
 
 if (isset($_POST['month']) && isset($_POST['year'])) {

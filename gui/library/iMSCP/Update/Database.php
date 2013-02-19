@@ -17,14 +17,14 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
- * @category	iMSCP
- * @package		iMSCP_Update
- * @subpackage	Database
- * @copyright	2010-2013 by i-MSCP team
- * @author		Daniel Andreca <sci2tech@gmail.com>
- * @author		Laurent Declercq <l.declercq@nuxwin.com>
- * @link		http://www.i-mscp.net i-MSCP Home Site
- * @license		http://www.gnu.org/licenses/gpl-2.0.txt GPL v2
+ * @category    iMSCP
+ * @package     iMSCP_Update
+ * @subpackage  Database
+ * @copyright   2010-2013 by i-MSCP team
+ * @author      Daniel Andreca <sci2tech@gmail.com>
+ * @author      Laurent Declercq <l.declercq@nuxwin.com>
+ * @link        http://www.i-mscp.net i-MSCP Home Site
+ * @license     http://www.gnu.org/licenses/gpl-2.0.txt GPL v2
  */
 
 /** @see iMSCP_Update */
@@ -35,12 +35,12 @@ require_once 'iMSCP/Update.php';
  *
  * Class to handled database updates for i-MSCP.
  *
- * @category	iMSCP
- * @package		iMSCP_Update
- * @subpackage	Database
- * @author		Daniel Andreca <sci2tech@gmail.com>
- * @author		Laurent Declercq <l.declercq@nuxwin.com>
- * @version		0.0.3
+ * @category    iMSCP
+ * @package     iMSCP_Update
+ * @subpackage  Database
+ * @author      Daniel Andreca <sci2tech@gmail.com>
+ * @author      Laurent Declercq <l.declercq@nuxwin.com>
+ * @version     0.0.3
  */
 class iMSCP_Update_Database extends iMSCP_Update
 {
@@ -169,7 +169,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 					// Extended error message
 					$errorMessage .=
 						'<br /><br /><strong>Exception message was:</strong><br />' .
-						$e->getMessage() . (isset($query)
+							$e->getMessage() . (isset($query)
 							? "<br /><strong>Query was:</strong><br />$query" : '');
 
 					if (PHP_SAPI == 'cli') {
@@ -315,8 +315,8 @@ class iMSCP_Update_Database extends iMSCP_Update
 	 * @param string $table Database table name to operate on
 	 * @param string $column Column to be added in the database table
 	 * @param string $columnDefinition Column definition including the optional
-	 *									(but recommended) positional statement
-	 *									([FIRST | AFTER col_name ]
+	 *                                    (but recommended) positional statement
+	 *                                    ([FIRST | AFTER col_name ]
 	 * @return string Query to be executed
 	 */
 	protected function _addColumn($table, $column, $columnDefinition)
@@ -385,7 +385,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	 */
 	protected function _dropIndex($table, $indexName = 'PRIMARY', $columnName = null)
 	{
-		if(is_null($columnName)){
+		if (is_null($columnName)) {
 			$columnName = $indexName;
 		}
 
@@ -417,9 +417,10 @@ class iMSCP_Update_Database extends iMSCP_Update
 	 * @return string Query to be executed
 	 */
 	protected function _addIndex($table, $columnName, $indexType = 'PRIMARY KEY',
-		$indexName = null
-	){
-		if(is_null($indexName)){
+								 $indexName = null
+	)
+	{
+		if (is_null($indexName)) {
 			$indexName = $indexType == 'PRIMARY KEY' ? 'PRIMARY' : $columnName;
 		}
 
@@ -440,7 +441,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 				ALTER IGNORE TABLE
 					`$this->_databaseName`.`$table`
 				ADD
-					$indexType ".($indexType == 'PRIMARY KEY' ? '' : $indexName)." (`$columnName`)
+					$indexType " . ($indexType == 'PRIMARY KEY' ? '' : $indexName) . " (`$columnName`)
 				";
 		}
 	}
@@ -448,7 +449,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * Catch any database updates that were removed.
 	 *
-     * @throws iMSCP_Update_Exception
+	 * @throws iMSCP_Update_Exception
 	 * @param  string $updateMethod Database update method name
 	 * @param  array $param
 	 * @return void
@@ -1227,20 +1228,20 @@ class iMSCP_Update_Database extends iMSCP_Update
 
 		// Reset reseller permissions
 		foreach (array(
-			'php_ini_system', 'php_ini_al_disable_functions', 'php_ini_al_allow_url_fopen',
-			'php_ini_al_register_globals', 'php_ini_al_display_errors') as $permission
+					 'php_ini_system', 'php_ini_al_disable_functions', 'php_ini_al_allow_url_fopen',
+					 'php_ini_al_register_globals', 'php_ini_al_display_errors') as $permission
 		) {
 			$sqlUpd[] = "UPDATE `reseller_props` SET `$permission` = 'no'";
 		}
 
 		// Reset reseller default values for PHP directives (To default system wide value)
 		foreach (array(
-			'post_max_size' => '8',
-			'upload_max_filesize' => '2',
-			'max_execution_time' => '30',
-			'max_input_time' => '60',
-			'memory_limit' => '128'
-		) as $directive => $defaultValue) {
+					 'post_max_size' => '8',
+					 'upload_max_filesize' => '2',
+					 'max_execution_time' => '30',
+					 'max_input_time' => '60',
+					 'memory_limit' => '128'
+				 ) as $directive => $defaultValue) {
 			$sqlUpd[] = "UPDATE `reseller_props` SET `php_ini_max_{$directive}` = '$defaultValue'";
 		}
 
@@ -1305,7 +1306,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	 */
 	protected function _databaseUpdate_95()
 	{
-		return  array(
+		return array(
 			$this->_addIndex('domain', 'domain_id'),
 			$this->_dropIndex('domain', 'domain_id'),
 
@@ -1363,7 +1364,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	{
 		$dbConfig = iMSCP_Registry::get('dbConfig');
 
-		if(isset($dbConfig->PORT_SSH)) {
+		if (isset($dbConfig->PORT_SSH)) {
 			$dbConfig->PORT_SSH = '22;tcp;SSH;1;1;';
 		}
 	}
@@ -1390,7 +1391,8 @@ class iMSCP_Update_Database extends iMSCP_Update
 	 * @author Daniel Andreca<sci2tech@gmail.com>
 	 * @return string SQL Statement
 	 */
-	protected function _databaseUpdate_100(){
+	protected function _databaseUpdate_100()
+	{
 		return
 			"CREATE TABLE IF NOT EXISTS `ssl_certs` (
 				`cert_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
@@ -1482,7 +1484,8 @@ class iMSCP_Update_Database extends iMSCP_Update
 	 * @author Daniel Andreca <sci2tech@gmail.com>
 	 * @return array Stack of SQL statements to be executed
 	 */
-	protected function _databaseUpdate_106(){
+	protected function _databaseUpdate_106()
+	{
 		return array(
 			$this->_addIndex('admin', 'created_by', '', 'INDEX'),
 			$this->_addIndex('domain_aliasses', 'domain_id', '', 'INDEX'),
@@ -1534,7 +1537,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	 * @return array Stack of SQL statements to be executed
 	 */
 	protected function _databaseUpdate_110()
-    {
+	{
 		return array(
 			$this->_dropColumn('domain', 'external_mail_status'),
 			$this->_dropColumn('domain_aliasses', 'external_mail_status'),
@@ -1548,7 +1551,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	 * @return array Stack of SQL statements to be executed
 	 */
 	protected function _databaseUpdate_111()
-    {
+	{
 		return "
 			ALTER TABLE `mail_users` CHANGE `quota` `quota` INT( 10 ) NULL DEFAULT '104857600'
 		";
@@ -1562,20 +1565,21 @@ class iMSCP_Update_Database extends iMSCP_Update
 	 * @return array Stack of SQL statements to be executed
 	 */
 	protected function _databaseUpdate_112()
-    {
+	{
 		return array(
 			'ALTER TABLE `quotalimits` CHANGE `name` `name` VARCHAR( 255 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT \'\'',
 			'ALTER TABLE `quotatallies` CHANGE `name` `name` VARCHAR( 255 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT \'\''
 		);
 	}
-	
+
 	/**
 	 * #433: Defect - register_globals does not exist in php 5.4.0 and above
 	 *
 	 * @author Sascha Bay <worst.case@gmx.de>
 	 * @return array Stack of SQL statements to be executed
 	 */
-	protected function _databaseUpdate_113(){
+	protected function _databaseUpdate_113()
+	{
 		return array(
 			"DELETE FROM `config` WHERE `name` = 'PHPINI_REGISTER_GLOBALS'",
 			$this->_dropColumn('domain', 'phpini_perm_register_globals'),
@@ -1585,24 +1589,24 @@ class iMSCP_Update_Database extends iMSCP_Update
 		);
 	}
 
-    /**
-     * #447: External mail server feature is broken
-     *
-     * @author Laurent Declercq <l.declercq@nuxwin.com>
-     * @return array Stack of SQL statements to be executed
-     */
-    protected function _databaseUpdate_114()
-    {
-        return array(
-            // domain_dns.domain_id field should never be set to zero
-            "UPDATE
+	/**
+	 * #447: External mail server feature is broken
+	 *
+	 * @author Laurent Declercq <l.declercq@nuxwin.com>
+	 * @return array Stack of SQL statements to be executed
+	 */
+	protected function _databaseUpdate_114()
+	{
+		return array(
+			// domain_dns.domain_id field should never be set to zero
+			"UPDATE
               `domain_dns` AS `t1`
              SET
               `t1`.`domain_id` = (SELECT `t2`.`domain_id` FROM `domain_aliasses` AS `t2` WHERE `t1`.`alias_id` = `t2`.`alias_id`)
              WHERE
               `t1`.`domain_id` = 0",
-            // domain_dns.domain_dns field should not be empty (domain related entries)
-            "UPDATE
+			// domain_dns.domain_dns field should not be empty (domain related entries)
+			"UPDATE
                 `domain_dns` AS `t1`
              SET
                 `t1`.`domain_dns` = CONCAT((SELECT `t2`.`domain_name` FROM `domain` AS `t2` WHERE `t1`.`domain_id` = `t2`.`domain_id`), '.')
@@ -1610,8 +1614,8 @@ class iMSCP_Update_Database extends iMSCP_Update
                 `t1`.`domain_dns` = ''
              AND
                 `t1`.`protected` = 'yes'",
-            // domain_dns.domain_dns field should not be empty (domain aliases related entries)
-            "UPDATE
+			// domain_dns.domain_dns field should not be empty (domain aliases related entries)
+			"UPDATE
                 `domain_dns` AS `t1`
              SET
                 `t1`.`domain_dns` = CONCAT((SELECT `t2`.`alias_name` FROM `domain_aliasses` AS `t2` WHERE `t1`.`alias_id` = `t2`.`alias_id`), '.')
@@ -1619,8 +1623,8 @@ class iMSCP_Update_Database extends iMSCP_Update
                 `t1`.`domain_dns` = ''
              AND
                 `t1`.`protected` = 'yes'",
-            // domain_dns.domain_dns with value * must be completed with the domain name (domain related entries)
-            "UPDATE
+			// domain_dns.domain_dns with value * must be completed with the domain name (domain related entries)
+			"UPDATE
               `domain_dns` AS `t1`
              SET
               `t1`.`domain_dns` = CONCAT('*.', (SELECT `t2`.`domain_name` FROM `domain` AS `t2` WHERE `t1`.`domain_id` = `t2`.`domain_id`), '.')
@@ -1630,8 +1634,8 @@ class iMSCP_Update_Database extends iMSCP_Update
               `t1`.`domain_dns` = '*'
              AND
               `t1`.`protected` = 'yes'",
-            // domain_dns.domain_dns with value * must be completed with the domain name (domain aliases related entries)
-            "UPDATE
+			// domain_dns.domain_dns with value * must be completed with the domain name (domain aliases related entries)
+			"UPDATE
               `domain_dns` AS `t1`
              SET
               `t1`.`domain_dns` = CONCAT('*.', (SELECT `t2`.`alias_name` FROM `domain_aliasses` AS `t2` WHERE `t1`.`alias_id` = `t2`.`alias_id`), '.')
@@ -1641,8 +1645,8 @@ class iMSCP_Update_Database extends iMSCP_Update
               `t1`.`domain_dns` = '*'
              AND
               `t1`.`protected` = 'yes'",
-            // If a domain has only wildcard MX entries for external servers, update the domain.external_mail field to 'wildcard'
-            "UPDATE
+			// If a domain has only wildcard MX entries for external servers, update the domain.external_mail field to 'wildcard'
+			"UPDATE
               `domain` AS `t1`
              SET
               `t1`.`external_mail` = 'wildcard'
@@ -1650,8 +1654,8 @@ class iMSCP_Update_Database extends iMSCP_Update
               0 = (SELECT COUNT(`t2`.`domain_dns_id`) FROM `domain_dns` AS `t2` WHERE `t2`.`domain_id` = `t1`.`domain_id` AND `t2`.`alias_id` = 0 AND `t2`.`domain_dns` NOT LIKE '*.%')
              AND
               `t1`.external_mail = 'on'",
-            // If a domain alias has only wildcard MX entries for external servers, update the domain.external_mail field to 'wildcard'
-            "UPDATE
+			// If a domain alias has only wildcard MX entries for external servers, update the domain.external_mail field to 'wildcard'
+			"UPDATE
               `domain_aliasses` AS `t1`
              SET
               `t1`.`external_mail` = 'wildcard'
@@ -1661,120 +1665,120 @@ class iMSCP_Update_Database extends iMSCP_Update
               0 = (SELECT COUNT(`t2`.`domain_dns_id`) FROM `domain_dns` AS `t2` WHERE `t2`.`alias_id` = `t1`.`alias_id` AND `t2`.`domain_dns` NOT LIKE '*.%')
              AND
               `t1`.`external_mail` = 'on'",
-            // Custom DNS CNAME record set via external mail feature are no longer allowed (User will have to re-add them)
-            // via the custom DNS interface (easy update way)
-            "DELETE FROM `domain_dns` WHERE `domain_type` = 'CNAME' AND `protected` = 'yes'"
-        );
-    }
+			// Custom DNS CNAME record set via external mail feature are no longer allowed (User will have to re-add them)
+			// via the custom DNS interface (easy update way)
+			"DELETE FROM `domain_dns` WHERE `domain_type` = 'CNAME' AND `protected` = 'yes'"
+		);
+	}
 
-    /**
-     * #145: Deletes possible orphan items in many tables
-     *
-     * Moved from database update 70 due to duplicate key in foreign keys map.
-     *
-     * @author Laurent Declercq <l.declercq@nuxwin.com>
-     * @return array Stack of SQL statements to be executed
-     */
-    protected function _databaseUpdate_115()
-    {
-        $sqlUpd = array();
+	/**
+	 * #145: Deletes possible orphan items in many tables
+	 *
+	 * Moved from database update 70 due to duplicate key in foreign keys map.
+	 *
+	 * @author Laurent Declercq <l.declercq@nuxwin.com>
+	 * @return array Stack of SQL statements to be executed
+	 */
+	protected function _databaseUpdate_115()
+	{
+		$sqlUpd = array();
 
-        $tablesToForeignKey = array(
-            'email_tpls' => 'owner_id',
-            'hosting_plans' => 'reseller_id',
-            'orders' => 'user_id',
-            'orders_settings' => 'user_id',
-            'reseller_props' => 'reseller_id',
-            'tickets' => array('ticket_to', 'ticket_from'),
-            'user_gui_props' => 'user_id',
-            'web_software' => 'reseller_id'
-        );
+		$tablesToForeignKey = array(
+			'email_tpls' => 'owner_id',
+			'hosting_plans' => 'reseller_id',
+			'orders' => 'user_id',
+			'orders_settings' => 'user_id',
+			'reseller_props' => 'reseller_id',
+			'tickets' => array('ticket_to', 'ticket_from'),
+			'user_gui_props' => 'user_id',
+			'web_software' => 'reseller_id'
+		);
 
-        $stmt = execute_query('SELECT `admin_id` FROM `admin`');
-        $usersIds = implode(',', $stmt->fetchall(PDO::FETCH_COLUMN));
+		$stmt = execute_query('SELECT `admin_id` FROM `admin`');
+		$usersIds = implode(',', $stmt->fetchall(PDO::FETCH_COLUMN));
 
-        foreach ($tablesToForeignKey as $table => $foreignKey) {
-            if (is_array($foreignKey)) {
-                foreach ($foreignKey as $key) {
-                    $sqlUpd[] = "DELETE FROM `$table` WHERE `$key` NOT IN ($usersIds)";
-                }
-            } else {
-                $sqlUpd[] = "DELETE FROM `$table` WHERE `$foreignKey` NOT IN ($usersIds)";
-            }
-        }
+		foreach ($tablesToForeignKey as $table => $foreignKey) {
+			if (is_array($foreignKey)) {
+				foreach ($foreignKey as $key) {
+					$sqlUpd[] = "DELETE FROM `$table` WHERE `$key` NOT IN ($usersIds)";
+				}
+			} else {
+				$sqlUpd[] = "DELETE FROM `$table` WHERE `$foreignKey` NOT IN ($usersIds)";
+			}
+		}
 
-        return $sqlUpd;
-    }
+		return $sqlUpd;
+	}
 
-    /**
-     * Disk detail integration
-     *
-     * @author Laurent Declercq <l.declercq@nuxwin.com>
-     * @return array Stack of SQL statements to be executed
-     */
-    protected function _databaseUpdate_116()
-    {
-        return array(
-            $this->_addColumn('domain', 'domain_disk_file', 'bigint(20) unsigned default NULL AFTER `domain_disk_usage`'),
-            $this->_addColumn('domain', 'domain_disk_mail', 'bigint(20) unsigned default NULL AFTER `domain_disk_file`'),
-            $this->_addColumn('domain', 'domain_disk_sql', 'bigint(20) unsigned default NULL AFTER `domain_disk_mail`')
-        );
-    }
+	/**
+	 * Disk detail integration
+	 *
+	 * @author Laurent Declercq <l.declercq@nuxwin.com>
+	 * @return array Stack of SQL statements to be executed
+	 */
+	protected function _databaseUpdate_116()
+	{
+		return array(
+			$this->_addColumn('domain', 'domain_disk_file', 'bigint(20) unsigned default NULL AFTER `domain_disk_usage`'),
+			$this->_addColumn('domain', 'domain_disk_mail', 'bigint(20) unsigned default NULL AFTER `domain_disk_file`'),
+			$this->_addColumn('domain', 'domain_disk_sql', 'bigint(20) unsigned default NULL AFTER `domain_disk_mail`')
+		);
+	}
 
-    /**
-     * Deletion of useless tables
-     *
-     * @author Laurent Declercq <l.declercq@nuxwin.com>
-     * @return array Stack of SQL statements to be executed
-     */
-    protected function _databaseUpdate_117()
-    {
-        return array(
-        	'DROP TABLE IF EXISTS
+	/**
+	 * Deletion of useless tables
+	 *
+	 * @author Laurent Declercq <l.declercq@nuxwin.com>
+	 * @return array Stack of SQL statements to be executed
+	 */
+	protected function _databaseUpdate_117()
+	{
+		return array(
+			'DROP TABLE IF EXISTS
                 `roundcube_session`, `roundcube_searches`, `roundcube_identities`, `roundcube_dictionary`,
                 `roundcube_contactgroupmembers`, `roundcube_contacts`, `roundcube_contactgroups`,
                 `roundcube_cache_thread`, `roundcube_cache_messages`, `roundcube_cache_index`, `roundcube_cache`,
                 `roundcube_users`
             '
-        );
-    }
+		);
+	}
 
-    /**
-     * Fix Arabic locale name
-     *
-     * @author Laurent Declercq <l.declercq@nuxwin.com>
-     * @return string SQL statement to be executed
-     */
-    protected function _databaseUpdate_118()
-    {
-        return "UPDATE `user_gui_props` SET `lang` = 'ar' WHERE `lang` = 'ar_AE'";
-    }
+	/**
+	 * Fix Arabic locale name
+	 *
+	 * @author Laurent Declercq <l.declercq@nuxwin.com>
+	 * @return string SQL statement to be executed
+	 */
+	protected function _databaseUpdate_118()
+	{
+		return "UPDATE `user_gui_props` SET `lang` = 'ar' WHERE `lang` = 'ar_AE'";
+	}
 
-   /**
-    * Lowercase PHP INI boolean
-    *
-    * @author Laurent Declercq <l.declercq@nuxwin.com>
-    * @return array Stack of SQL statements to be executed
-    */
-    protected function _databaseUpdate_119()
-    {
-        return array(
-            // System wide PHP directives values
-            "REPLACE INTO `config` (`name`, `value`) VALUES ('PHPINI_ALLOW_URL_FOPEN', 'off')",
-            "REPLACE INTO `config` (`name`, `value`) VALUES ('PHPINI_DISPLAY_ERRORS', 'off')",
-            "UPDATE `php_ini` SET `allow_url_fopen` = 'on' WHERE `allow_url_fopen` = 'On'",
-            "UPDATE `php_ini` SET `allow_url_fopen` = 'off' WHERE `allow_url_fopen` = 'Off'",
-            "UPDATE `php_ini` SET `display_errors` = 'on' WHERE `display_errors` = 'On'",
-            "UPDATE `php_ini` SET `display_errors` = 'off' WHERE `display_errors` = 'Off'"
-        );
-    }
+	/**
+	 * Lowercase PHP INI boolean
+	 *
+	 * @author Laurent Declercq <l.declercq@nuxwin.com>
+	 * @return array Stack of SQL statements to be executed
+	 */
+	protected function _databaseUpdate_119()
+	{
+		return array(
+			// System wide PHP directives values
+			"REPLACE INTO `config` (`name`, `value`) VALUES ('PHPINI_ALLOW_URL_FOPEN', 'off')",
+			"REPLACE INTO `config` (`name`, `value`) VALUES ('PHPINI_DISPLAY_ERRORS', 'off')",
+			"UPDATE `php_ini` SET `allow_url_fopen` = 'on' WHERE `allow_url_fopen` = 'On'",
+			"UPDATE `php_ini` SET `allow_url_fopen` = 'off' WHERE `allow_url_fopen` = 'Off'",
+			"UPDATE `php_ini` SET `display_errors` = 'on' WHERE `display_errors` = 'On'",
+			"UPDATE `php_ini` SET `display_errors` = 'off' WHERE `display_errors` = 'Off'"
+		);
+	}
 
- /**
-  * #552: Bug - PHP constants are not recognized outside of PHP (such as in Apache vhost files)
-  *
-  * @author Laurent Declercq <l.declercq@nuxwin.com>
-  * @return array Stack of SQL statements to be executed
-  */
+	/**
+	 * #552: Bug - PHP constants are not recognized outside of PHP (such as in Apache vhost files)
+	 *
+	 * @author Laurent Declercq <l.declercq@nuxwin.com>
+	 * @return array Stack of SQL statements to be executed
+	 */
 	protected function _databaseUpdate_120()
 	{
 		$sqlQueries = array();
@@ -1786,11 +1790,26 @@ class iMSCP_Update_Database extends iMSCP_Update
 			'E_ALL | E_STRICT' => '32767' // Development
 		);
 
-		foreach($constantToInteger as $c => $i) {
+		foreach ($constantToInteger as $c => $i) {
 			$sqlQueries[] = "UPDATE `config` SET `value` = '$i' WHERE `name` = 'PHPINI_ERROR_REPORTING' AND `value` ='$c'";
 			$sqlQueries[] = "UPDATE `php_ini` SET `error_reporting` = '$i' WHERE `error_reporting` = '$c'";
 		}
 
 		return $sqlQueries;
+	}
+
+	/**
+	 * Update for the hosting_plan table structure
+	 *
+	 * @author Laurent Declercq <l.declercq@nuxwin.com>
+	 * @return array SQL Queries to execute
+	 */
+	protected function _databaseUpdate_121()
+	{
+		return array(
+			$this->_addColumn('hosting_plans', 'vat', "DECIMAL(10,2) NOT NULL DEFAULT '0.00' AFTER `setup_fee`"),
+			"ALTER TABLE  `hosting_plans` CHANGE  `payment`  `payment` VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT 'monthly'",
+			"UPDATE `hosting_plans` SET `payment`='monthly' WHERE `payment` NOT IN('monthly','annually','biennially', 'triennially')"
+		);
 	}
 }

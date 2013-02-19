@@ -213,8 +213,7 @@ if (isset($_POST['month']) && isset($_POST['year'])) {
 }
 
 if (!isset($domainId)) {
-	set_page_message(tr('Wrong request.'), 'error');
-	redirectTo('user_statistics.php');
+	showBadRequestErrorPage();
 }
 
 // Retrieve smaller timestamp to define max number of years to show in select element

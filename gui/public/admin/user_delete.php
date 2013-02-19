@@ -205,7 +205,7 @@ function _admin_deleteResellerSwPackages($userId, array $swPackages)
     $resellerSwDirectory = $cfg->GUI_SOFTWARE_DIR . '/' . $userId;
 
     if (is_dir($resellerSwDirectory) && @rmdir($resellerSwDirectory) == false) {
-        write_log('Unable to remove reseller softwares directory: ' .
+        write_log('Unable to remove reseller software directory: ' .
                   $resellerSwDirectory, E_USER_ERROR);
     }
 }

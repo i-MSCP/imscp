@@ -46,10 +46,7 @@ iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptStart)
 
 check_login('user');
 
-// If the feature is disabled, redirects in silent way
-if (!customerHasFeature('sql')) {
-	redirectTo('index.php');
-} elseif (isset($_GET['id'])) {
+if (customerHasFeature('sql') && isset($_GET['id'])) {
 	$databaseId = intval($_GET['id']);
 
 	try {
@@ -70,6 +67,8 @@ if (!customerHasFeature('sql')) {
 		set_page_message(tr('System was unable to remove the SQL database.'), 'error');
 		write_log(sprintf("System was unable to delete SQL database with ID %d. Message was: %s", $databaseId, $e->getMessage()), E_USER_ERROR);
 	}
+
+	redirectTo('sql_manage.php');
 }
 
-redirectTo('sql_manage.php');
+showBadRequestErrorPage();

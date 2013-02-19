@@ -496,10 +496,7 @@ iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptStart)
 
 check_login('user');
 
-// If the feature is disabled, redirects in silent way
-if (!customerHasFeature('subdomains')) {
-	redirectTo('index.php');
-}
+customerHasFeature('subdomains') or showBadRequestErrorPage();
 
 /** @var $cfg iMSCP_Config_Handler_File */
 $cfg = iMSCP_Registry::get('config');
@@ -569,8 +566,7 @@ if ($domainProperties['domain_subd_limit'] != 0 && $subdomainsUsage >= $domainPr
 		client_generatePage($tpl, $_SESSION['user_id']);
 		client_checkSubdomain($_SESSION['user_id'], $domainProperties['domain_name']);
 	} else {
-		set_page_message(tr('Wrong request.'), 'error');
-		redirectTo('domains_manage.php');
+		showBadRequestErrorPage();
 	}
 } else {
 	client_generatePage($tpl, $_SESSION['user_id']);

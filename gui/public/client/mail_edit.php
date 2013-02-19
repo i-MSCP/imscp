@@ -289,10 +289,7 @@ iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptStart)
 
 check_login('user');
 
-// If the feature is disabled, redirects the client in silent way
-if (!customerHasFeature('mail')) {
-    redirectTo('index.php');
-}
+customerHasFeature('mail') or showBadRequestErrorPage();
 
 /** @var $cfg iMSCP_Config_Handler_File */
 $cfg = iMSCP_Registry::get('config');
@@ -300,8 +297,7 @@ $cfg = iMSCP_Registry::get('config');
 if(isset($_GET['id'])) {
 	$mailAccountData = client_getMailAccountData((int) $_GET['id']);
 } else {
-	set_page_message(tr('Wrong request.'), 'error');
-	redirectTo('mail_account.php');
+	showBadRequestErrorPage();
 }
 
 if(!empty($_POST) && client_updateMailAccount($mailAccountData)) {

@@ -125,7 +125,7 @@ if (isset($_GET['id']) AND is_numeric($_GET['id'])) {
 			$sw_id, $rs->fields['reseller_id'], $rs->fields['software_id']
 		);
 		
-		set_page_message(tr('Software was imported successfully.'), 'success');
+		set_page_message(tr('Software has been successfully imported.'), 'success');
 		redirectTo('software_manage.php');
 	}
 } else {

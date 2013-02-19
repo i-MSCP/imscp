@@ -72,27 +72,35 @@
 						<th colspan="2"><strong>{TR_COSTS}</strong></th>
 					</tr>
 					<tr>
-						<td style="width:200px;">
-							<strong>{TR_PACKAGE_NAME}</strong>
-						</td>
-						<td>
-							<a href="index.php" class="link">{TR_CHANGE}</a>
-						</td>
-					</tr>
+                    	<td style="width:200px;"><strong>{TR_PACKAGE_NAME}</strong></td>
+                    	<td><a href="index.php" class="link">{TR_CHANGE}</a></td>
+                    </tr>
 					<tr>
-						<td>{TR_PACKAGE_PRICE}</td>
+						<td>{TR_PRICE}</td>
 						<td>{PRICE}</td>
 					</tr>
 					<tr>
-						<td>{TR_PACKAGE_SETUPFEE}</td>
-						<td>{SETUP}</td>
+						<td>{TR_SETUP_FEE}</td>
+						<td>{SETUP_FEE}</td>
+					</tr>
+					<tr>
+						<td style="background: rgb(0, 0, 0);color: rgb(255,255,255)"><strong>{TR_SUBTOTAL}</strong></td>
+						<td style="background: rgb(0, 0, 0);color: rgb(255,255,255)"><strong>{SUBTOTAL}</strong></td>
+					</tr>
+					<tr>
+						<td>{TR_VAT} @ {VAT}%</td>
+						<td>{TOTAL_VAT}</td>
+					</tr>
+					<tr>
+						<td>{TR_TOTAL_DUE_TODAY}</td>
+						<td>{TOTAL_DUE_TODAY}</td>
 					</tr>
 				</table>
 
 				<table style="width:550px;">
 					<tr>
-						<td><strong>{TR_TOTAL}</strong></td>
-						<td align="right"><strong>{TOTAL}</strong></td>
+						<td><strong>{TR_TOTAL_RECURRING}</strong></td>
+						<td align="right"><strong>{TOTAL_RECURRING} ({PAYMENT_PERIOD})</strong></td>
 					</tr>
 				</table>
 
@@ -138,6 +146,7 @@
 					</tr>
 				</table>
 				<div class="buttons" style="width:550px;">
+                    <input type="button" onclick="window.location='{CANCEL_URI}'" value="{TR_CANCEL}">
 					<input name="submit" type="submit" value="{TR_CONTINUE}"/>
 				</div>
 			</form>

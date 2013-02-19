@@ -45,8 +45,7 @@ check_login('reseller');
 if (isset($_GET['hpid']) && is_numeric($_GET['hpid']))
 	$hpid = $_GET['hpid'];
 else {
-	$_SESSION['hp_deleted'] = '_no_';
-	redirectTo('hosting_plan.php');
+	showBadRequestErrorPage();
     exit;
 }
 
@@ -55,7 +54,7 @@ $res = exec_query("SELECT COUNT(`id`) FROM `orders` WHERE `plan_id` = ?", $hpid)
 $data = $res->fetchRow();
 
 if ($data['0'] > 0) {
-	$_SESSION['hp_deleted_ordererror'] = '_yes_';
+	set_page_message(tr("This hosting plan can't be deleted, there are some orders linked to it."), 'error');
 	redirectTo('hosting_plan.php');
 }
 
@@ -63,6 +62,5 @@ if ($data['0'] > 0) {
 $query = "DELETE FROM `hosting_plans` WHERE `id` = ? AND `reseller_id` = ?";
 $res = exec_query($query, array($hpid, $_SESSION['user_id']));
 
-$_SESSION['hp_deleted'] = '_yes_';
-
+set_page_message(tr('Hosting plan successfully deleted.'), 'success');
 redirectTo('hosting_plan.php');

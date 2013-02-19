@@ -356,7 +356,7 @@ function _reseller_generateLimitsForm($tpl, &$data)
 	}
 
 	// Traffic limit
-	$tplVars['TR_TRAFFIC_LIMIT'] = tr('Traffic limit [MiB]<br/><i>(0 unlimited)</i>', true);
+	$tplVars['TR_TRAFFIC_LIMIT'] = tr('Monthly traffic limit [MiB]<br/><i>(0 unlimited)</i>', true);
 	$tplVars['TRAFFIC_LIMIT'] = tohtml($data['domain_traffic_limit']);
 
 	$tplVars['TR_CUSTOMER_TRAFFIC_COMSUPTION'] = tohtml(bytesHuman($data['domainTraffic'], 'MiB')) . ' / ' .
@@ -366,7 +366,7 @@ function _reseller_generateLimitsForm($tpl, &$data)
 												 (($data['max_traff_amnt'] != 0) ? tohtml(bytesHuman($data['max_traff_amnt'] * 1048576)) : tr('Unlimited'));
 
 	// Disk space limit
-	$tplVars['TR_DISK_LIMIT'] = tr('Disk limit [MiB]<br/><i>(0 unlimited)</span>', true);
+	$tplVars['TR_DISK_LIMIT'] = tr('Disk space limit [MiB]<br/><i>(0 unlimited)</span>', true);
 	$tplVars['DISK_LIMIT'] = tohtml($data['domain_disk_limit']);
 
 	$tplVars['TR_CUSTOMER_DISKPACE_COMSUPTION'] = tohtml(bytesHuman($data['domain_disk_usage'], 'MiB')) . ' / ' .
@@ -663,7 +663,7 @@ function reseller_checkAndUpdateData($domainId, $recoveryMode = false)
 			}
 		}
 
-		// Check for the traffic limit
+		// Check for the monthly traffic limit
 		if (!imscp_limit_check($data['domain_traffic_limit'], null)) {
 			set_page_message(tr('Wrong syntax for the %s limit.', tr('traffic')), 'error');
 			$errFieldsStack[] = 'domain_traffic_limit';
@@ -707,10 +707,6 @@ function reseller_checkAndUpdateData($domainId, $recoveryMode = false)
 
 				if ($phpEditor->checkRePerm('phpiniDisplayErrors') && isset($_POST['phpini_perm_display_errors'])) {
 					$phpEditor->setClPerm('phpiniDisplayErrors', clean_input($_POST['phpini_perm_display_errors']));
-				}
-
-				if ($phpEditor->checkRePerm('phpiniDisplayErrors') && isset($_POST['phpini_al_error_reporting'])) {
-					$phpEditor->setClPerm('phpiniErrorReporting', clean_input($_POST['phpini_al_error_reporting']));
 				}
 
 				if(PHP_SAPI != 'apache2handler') {
@@ -1015,8 +1011,7 @@ if (isset($cfg->HOSTING_PLANS_LEVEL) && $cfg->HOSTING_PLANS_LEVEL != 'reseller')
 
 // Dispatches the request
 if(!isset($_GET['edit_id'])) {
-	set_page_message(tr('wrong request.'));
-	redirectTo('users.php');
+	showBadRequestErrorPage();
 } else {
 	$domainId = (int) $_GET['edit_id'];
 

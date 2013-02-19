@@ -214,7 +214,7 @@ $tpl->assign(
 		'TR_SUBDOM_ACCOUNTS' => tr('Subdomains'),
 		'TR_DOMALIAS_ACCOUNTS' => tr('Domain aliases'),
 		'TR_UPDATE_DATA' => tr('Submit changes'),
-		'TR_SOFTWARE_SUPP' => tr('Softwares installer'),
+		'TR_SOFTWARE_SUPP' => tr('Software installer'),
 		'TR_BACK' => tr('Back')));
 
 generateNavigation($tpl);

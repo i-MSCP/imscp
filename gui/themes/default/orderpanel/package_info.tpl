@@ -1,142 +1,194 @@
-
 			<!-- BDP: page_message -->
 			<div class="{MESSAGE_CLS}" style="width:550px;">{MESSAGE}</div>
 			<!-- EDP: page_message -->
 
-			<table style="width:550px;">
-				<tr>
-					<th>{PACK_NAME}</th>
-					<th style="text-align:right;">
-						<a href="index.php?coid={CUSTOM_ORDERPANEL_ID}&amp;user_id={USER_ID}">{TR_BACK}</a>
-					</th>
-				</tr>
-				<tr>
-					<td>{DESCRIPTION}</td>
-				</tr>
-				<tr>
-					<td colspan="2"><strong>{TR_DOMAINS}</strong></td>
-				</tr>
-				<tr>
-					<td colspan="2"><strong>{TR_OWN_DOMAIN}</strong></td>
-				</tr>
-				<tr>
-					<td>{TR_DOMAIN_ALIAS}</td>
-					<td>{ALIAS}</td>
-				</tr>
-				<tr>
-					<td>{TR_SUBDOMAINS}</td>
-					<td>{SUBDOMAIN}</td>
-				</tr>
-				<tr>
-					<td colspan="2"><strong>{TR_WEBSPACE}</strong></td>
-				</tr>
-				<tr>
-					<td>{TR_HDD}</td>
-					<td>{HDD}</td>
-				</tr>
-				<tr>
-					<td>{TR_TRAFFIC}</td>
-					<td>{TRAFFIC}</td>
-				</tr>
-				<tr>
-					<td colspan="2">
-						<span><strong>{TR_FEATURES}</strong></span>
-					</td>
-				</tr>
-				<tr>
-					<td>{TR_PHP_SUPPORT}</td>
-					<td>{PHP}</td>
-				</tr>
-				<!-- BDP: t_software_support -->
-				<tr>
-					<td>{TR_SOFTWARE_SUPPORT}</td>
-					<td>{SOFTWARE}</td>
-				</tr>
-				<!-- EDP: t_software_support -->
-				<tr>
-					<td>{TR_CGI_SUPPORT}</td>
-					<td>{CGI}</td>
-				</tr>
-				<tr>
-					<td>{TR_DNS_SUPPORT}</td>
-					<td>{DNS}</td>
-				</tr>
-				<tr>
-					<td>{TR_MAIL_ACCOUNTS}</td>
-					<td>{MAIL}</td>
-				</tr>
-				<tr>
-					<td>{TR_FTP_ACCOUNTS}</td>
-					<td>{FTP}</td>
-				</tr>
-				<tr>
-					<td>{TR_SQL_DATABASES}</td>
-					<td>{SQL_DB}</td>
-				</tr>
-				<tr>
-					<td>{TR_SQL_USERS}</td>
-					<td>{SQL_USR}</td>
-				</tr>
-				<tr>
-					<td colspan="2">
-						<strong>{TR_STANDARD_FEATURES}</strong>
-					</td>
-				</tr>
-				<tr>
-					<td>{TR_IMSCP}</td>
-					<td>{YES}</td>
-				</tr>
-				<tr>
-					<td>{TR_WEBMAIL}</td>
-					<td>{YES}</td>
-				</tr>
-				<tr>
-					<td>{TR_FILEMANAGER}</td>
-					<td>{YES}</td>
-				</tr>
-				<tr>
-					<td>{TR_BACKUP}</td>
-					<td>{YES}</td>
-				</tr>
-				<tr>
-					<td>{TR_STATISTICS}</td>
-					<td>{YES}</td>
-				</tr>
-				<tr>
-					<td>{TR_ERROR_PAGES}</td>
-					<td>{YES}</td>
-				</tr>
-				<tr>
-					<td>{TR_HTACCESS}</td>
-					<td>{YES}</td>
-				</tr>
-				<tr>
-					<td>{TR_CUSTOM_LOGS}</td>
-					<td>{YES}</td>
-				</tr>
-				<tr>
-					<td colspan="2"><strong>{TR_PERFORMANCE}</strong></td>
-				</tr>
-				<tr>
-					<td>{TR_ONLINE_SUPPORT}</td>
-					<td>{YES}</td>
-				</tr>
-				<tr>
-					<td>{TR_UPDATES}</td>
-					<td>{YES}</td>
-				</tr>
-				<tr>
-					<td colspan="2"><strong>{TR_PRICE}</strong></td>
-				</tr>
-				<tr>
-					<td>{TRR_PRICE}</td>
-					<td>{PRICE}</td>
-				</tr>
-				<tr>
-					<td>{TR_SETUP_FEE}</td>
-					<td>{SETUP}</td>
-				</tr>
-			</table>
-			<div style="width:550px;text-align:right;">
-				<a href="addon.php?coid={CUSTOM_ORDERPANEL_ID}&amp;id={PACK_ID}&amp;user_id={USER_ID}"><strong>{TR_PURCHASE}</strong></a>
+            <div id="package_details" class="accordion">
+                <h1><strong>{TR_DESCRIPTION}</strong></h1>
+
+                <div>
+                    <div class="even">
+                        <div class="left" style="width: auto">{DESCRIPTION}</div>
+                    </div>
+                </div>
+                <h1><strong>{TR_DOMAINS}</strong></h1>
+
+                <div>
+                    <div class="even">
+                        <div class="left"><strong>{TR_DOMAINS}</strong></div>
+                        <div class="right">1</div>
+                    </div>
+                    <div class="odd">
+                        <div class="left"><strong>{TR_DOMAIN_ALIAS}</strong></div>
+                        <div class="right">{ALIAS}</div>
+                    </div>
+                    <div class="even">
+                        <div class="left"><strong>{TR_SUBDOMAINS}</strong></div>
+                        <div class="right">{SUBDOMAIN}</div>
+                    </div>
+                </div>
+
+                <h1><strong>{TR_WEBSPACE}</strong></h1>
+
+                <div>
+                    <div class="even">
+                        <div class="left"><strong>{TR_HDD}</strong></div>
+                        <div class="right">{HDD}</div>
+                    </div>
+                    <div class="odd">
+                        <div class="left"><strong>{TR_TRAFFIC}</strong></div>
+                        <div class="right">{TRAFFIC}</div>
+                    </div>
+                </div>
+                <h1><strong>{TR_WEBSPACE_FEATURES}</strong></h1>
+
+                <div>
+                    <div class="even">
+                        <div class="left"><strong>{TR_FTP_ACCOUNTS}</strong></div>
+                        <div class="right">{FTP}</div>
+                    </div>
+                    <div class="odd">
+                        <div class="left"><strong>{TR_SQL_DATABASES}</strong></div>
+                        <div class="right">{SQL_DATABASES}</div>
+                    </div>
+                    <div class="even">
+                        <div class="left"><strong>{TR_SQL_USERS}</strong></div>
+                        <div class="right">{SQL_USERS}</div>
+                    </div>
+                    <div class="odd">
+                        <div class="left"><strong>{TR_PROGRAMMING}</strong></div>
+                        <div class="right">{PROGRAMMING}</div>
+                    </div>
+                    <div class="even">
+                        <div class="left"><strong>{TR_PHP_EDITOR}</strong></div>
+                        <div class="right">{PHP_EDITOR}</div>
+                    </div>
+                    <div class="odd">
+                        <div class="left"><strong>{TR_DNS_SUPPORT}</strong></div>
+                        <div class="right">{DNS}</div>
+                    </div>
+                    <div class="even">
+                        <div class="left"><strong>{TR_SOFTWARE_SUPPORT}</strong></div>
+                        <div class="right">{SOFTWARE}</div>
+                    </div>
+                </div>
+                <h1><strong>{TR_EMAIL_FEATURES}</strong></h1>
+
+                <div>
+                    <div class="even">
+                        <div class="left"><strong>{TR_IMAP_POP3_EMAIL_ACCOUNTS}</strong></div>
+                        <div class="right">{MAIL}</div>
+                    </div>
+                    <div class="odd">
+                        <div class="left"><strong>{TR_EMAIL_ALIASES}</strong></div>
+                        <div class="right">{YES}</div>
+                    </div>
+                    <div class="even">
+                        <div class="left"><strong>{TR_EMAIL_FORWARDING}</strong></div>
+                        <div class="right">{YES}</div>
+                    </div>
+                    <div class="odd">
+                        <div class="left"><strong>{TR_AUTORESPONDERS}</strong></div>
+                        <div class="right">{YES}</div>
+                    </div>
+                    <div class="even">
+                        <div class="left"><strong>{TR_CATCH_ALL_EMAIL_ADDRESSES}</strong></div>
+                        <div class="right">{YES}</div>
+                    </div>
+                    <div class="odd">
+                        <div class="left"><strong>{TR_EXTERNAL_MAIL_SERVER}</strong></div>
+                        <div class="right">{EXT_MAIL_SERVER}</div>
+                    </div>
+                    <div class="even">
+                        <div class="left"><strong>{TR_WEBMAIL}</strong></div>
+                        <div class="right">{YES}</div>
+                    </div>
+                </div>
+                <h1><strong>{TR_STANDARD_FEATURES}</strong></h1>
+
+                <div>
+                    <div class="even">
+                        <div class="left"><strong>{TR_FILEMANAGER}</strong></div>
+                        <div class="right">{YES}</div>
+                    </div>
+                    <div class="odd">
+                        <div class="left"><strong>{TR_SQL_MANAGER}</strong></div>
+                        <div class="right">{YES}</div>
+                    </div>
+                    <div class="even">
+                        <div class="left"><strong>{TR_IMSCP}</strong></div>
+                        <div class="right">{YES}</div>
+                    </div>
+                    <div class="even">
+                        <div class="left"><strong>{TR_STATISTICS}</strong></div>
+                        <div class="right">{YES}</div>
+                    </div>
+                    <div class="odd">
+                        <div class="left"><strong>{TR_HTTP_REDIRECTIONS}</strong></div>
+                        <div class="right">{YES}</div>
+                    </div>
+                    <div class="even">
+                        <div class="left"><strong>{TR_HTACCESS}</strong></div>
+                        <div class="right">{YES}</div>
+                    </div>
+                    <div class="odd">
+                        <div class="left"><strong>{TR_ERROR_PAGES}</strong></div>
+                        <div class="right">{YES}</div>
+                    </div>
+                    <div class="even">
+                        <div class="left"><strong>{TR_CUSTOM_LOGS}</strong></div>
+                        <div class="right">{YES}</div>
+                    </div>
+                    <div class="odd">
+                        <div class="left"><strong>{TR_BACKUP}</strong></div>
+                        <div class="right">{YES}</div>
+                    </div>
+                </div>
+                <h1><strong>{TR_PERFORMANCE}</strong></h1>
+
+                <div>
+                    <div class="even">
+                        <div class="left"><strong>{TR_ONLINE_SUPPORT}</strong></div>
+                        <div class="right">{YES}</div>
+                    </div>
+                    <div class="odd">
+                        <div class="left"><strong>{TR_UPDATES}</strong></div>
+                        <div class="right">{YES}</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion" style="width: 550px; text-align: left;">
+                <h1><strong>{TR_PRICE}</strong></h1>
+
+                <div style="padding: 0">
+                    <div class="even">
+                        <div class="left">{TR_PRICE}</div>
+                        <div class="right">{PRICE}</div>
+                    </div>
+                    <div class="odd">
+                        <div class="left">{TR_SETUP_FEE}</div>
+                        <div class="right">{SETUP_FEE}</div>
+                    </div>
+                    <div class="even" style="background: rgb(0, 0, 0);color: rgb(255,255,255)">
+                        <div class="left"><strong>{TR_SUBTOTAL}</strong></div>
+                        <div class="right"><strong>{SUBTOTAL}</strong></div>
+                    </div>
+                    <div class="odd">
+                        <div class="left">{TR_VAT} @ {VAT}%</div>
+                        <div class="right">{TOTAL_VAT}</div>
+                    </div>
+                    <div class="even">
+                        <div class="left">{TR_TOTAL_DUE_TODAY}</div>
+                        <div class="right">{TOTAL_DUE_TODAY}</div>
+                    </div>
+                    <div class="odd" style="background: rgb(0, 0, 0);color: rgb(255,255,255)">
+                        <div class="left"><strong>{TR_TOTAL_RECURRING}</strong></div>
+                        <div class="right"><strong>{TOTAL_RECURRING} ({PAYMENT_PERIOD})</strong></div>
+                    </div>
+                </div>
+			</div>
+
+            <div style="width:550px;text-align:right;margin-top: 10px;">
+                <input type="button" onclick="window.location='index.php?coid={CUSTOM_ORDERPANEL_ID}&amp;user_id={USER_ID}'" value="{TR_BACK}">
+                <input type="button" onclick="window.location='addon.php?coid={CUSTOM_ORDERPANEL_ID}&amp;id={PACK_ID}&amp;user_id={USER_ID}'" value="{TR_PURCHASE}">
 			</div>

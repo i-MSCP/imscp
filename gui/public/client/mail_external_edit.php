@@ -111,8 +111,7 @@ function _client_getVerifiedData($itemId, $itemType)
             redirectTo('mail_external.php');
         }
     } else {
-        set_page_message(tr('Wrong request.'), 'error');
-        redirectTo('mail_external.php');
+		showBadRequestErrorPage();
         exit;
     }
 
@@ -164,8 +163,7 @@ function client_editExternalMailServerEntries($item)
                     $error = true;
                 }
             } else { // Not all expected data were received
-                set_page_message(tr('Wrong request.'), 'error');
-                redirectTo('mail_external.php');
+				showBadRequestErrorPage();
             }
         }
 
@@ -470,11 +468,9 @@ if (customerHasFeature(array('mail', 'external_mail'))) {
         iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, array('templateEngine' => $tpl));
         $tpl->prnt();
         unsetMessages();
-
     } else {
-        set_page_message(tr('Wrong request.'), 'error');
-        redirectTo('mail_external.php');
+		showBadRequestErrorPage();
     }
 } else {
-    redirectTo('index.php');
+    showBadRequestErrorPage();
 }

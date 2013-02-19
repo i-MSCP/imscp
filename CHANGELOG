@@ -55,6 +55,7 @@ Tickets:
 	- Fixed #604: Bug - insserv - Script imscp_network is broken: incomplete LSB comment
 	- Fixed #607: Bug - History of customer stats is limited to 3 years
 	- Fixed #609: Bug - PHP FPM - Internal Server Error after deleting any domain
+	- Fixed #610: Cosmetics - i18n issue - Typo
 -------------------------------------------------------------------------------------
 i-MSCP 1.1.0-rc1.4
 -------------------------------------------------------------------------------------

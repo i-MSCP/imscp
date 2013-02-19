@@ -45,6 +45,5 @@ check_login('admin');
 if (isset($_SESSION['user_id']) && isset($_GET['to_id'])) {
 	change_user_interface($_SESSION['user_id'], intval($_GET['to_id']));
 } else {
-	set_page_message(tr('Wrong request.'), 'error');
-	redirectTo('manage_users.php');
+	showBadRequestErrorPage();;
 }

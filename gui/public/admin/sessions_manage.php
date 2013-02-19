@@ -63,12 +63,12 @@ function kill_session()
 		if(isset($_GET['logout_only'])) {
 			iMSCP_Authentication::getInstance()->unsetIdentity();
 			session_write_close();
-			$message = tr('User successfuly disconnected.');
+			$message = tr('User successfully disconnected.');
 
 		} else {
 			iMSCP_Authentication::getInstance()->unsetIdentity();
 			session_destroy();
-			$message = tr('User session successfuly destroyed');
+			$message = tr('User session successfully destroyed.');
 		}
 
 		// Restore session

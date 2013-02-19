@@ -206,7 +206,7 @@ function admin_generateServerTrafficInfo($tpl)
 			// In any case, display a warning if traffic limit is reached
 			($trafficLimitBytes &&  $trafficUsageBytes > $trafficLimitBytes)
 		) {
-			set_page_message( tr('You are exceeding the server traffic limit.'), 'warning');
+			set_page_message( tr('You are exceeding the monthly server traffic limit.'), 'warning');
 		}
 	}
 

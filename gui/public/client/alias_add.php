@@ -352,10 +352,7 @@ iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptStart)
 
 check_login('user');
 
-// If the feature is disabled, redirects in silent way
-if (!customerHasFeature('domain_aliases')) {
-	redirectTo('index.php');
-}
+customerHasFeature('domain_aliases') or showBadRequestErrorPage();
 
 /** @var $cfg iMSCP_Config_Handler_File */
 $cfg = iMSCP_Registry::get('config');
@@ -408,8 +405,7 @@ $currentNumberDomainAliases = get_domain_running_als_cnt($domainProperties['doma
  */
 if ($currentNumberDomainAliases != 0 && $currentNumberDomainAliases == $domainProperties['domain_alias_limit']) {
 	if (is_xhr()) {
-		set_page_message(tr('Wrong request.'));
-		redirectTo('domains_manage.php');
+		showBadRequestErrorPage();
 	}
 
 	set_page_message(tr('We are sorry but you have reached the maximum number of domain aliases allowed by your subscription. Contact to your reseller for more information.'), 'warning');
@@ -434,8 +430,7 @@ if ($currentNumberDomainAliases != 0 && $currentNumberDomainAliases == $domainPr
 	} elseif ($_POST['uaction'] == 'add_alias') {
 		add_domain_alias();
 	} else {
-		set_page_message(tr('Wrong request.'), 'error');
-		redirectTo('domains_manage.php');
+		showBadRequestErrorPage();
 	}
 } else { // Default view
 	init_empty_data();

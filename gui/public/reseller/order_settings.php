@@ -124,14 +124,18 @@ $tpl->assign(
 		'TR_PAGE_TITLE' => tr('i-MSCP - Reseller/Order settings'),
 		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => layout_getUserLogo(),
-		'TR_ORDER_TEMPLATE' => tr('Order template'),
-		'TR_IMPLEMENT_INFO' => tr('Implementation URL'),
+		'TR_CLOSE' => tr('Close'),
+		'TR_ORDER_TEMPLATE' => tr('Order Panel Template'),
+		'TR_IMPLEMENT_INFO' => tr('Order Panel Access URL'),
 		'TR_HEADER' => tr('Header'),
 		'TR_IMPLEMENT_URL' => $url,
 		'TR_FOOTER' => tr('Footer'),
+		'TR_ORDER_PANEL_PREVIEW' => tr('Order Panel Preview'),
 		'TR_PREVIEW' => tr('Preview'),
 		'TR_UPDATE' => tr('Update'),
-		'TR_RESET' => tr('Reset')));
+		'TR_RESET' => tr('Reset')
+	)
+);
 
 list($header, $footer) = gen_purchase_haf($_SESSION['user_id'], true);
 

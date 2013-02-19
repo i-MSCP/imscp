@@ -58,7 +58,7 @@ if(isset($_POST['uaction']) && $_POST['uaction'] == 'apply') {
     if(strlen($webdepot_xml_url) > 0 && $use_webdepot === '1') {
         $xml_file = @file_get_contents($webdepot_xml_url);
         if (!strpos($xml_file, 'i-MSCP web software repositories list')) {
-            set_page_message(tr("Unable to read xml file for web softwares."), 'error');
+            set_page_message(tr("Unable to read xml file for Web softwares."), 'error');
             $error = 1;
         }
     }
@@ -71,7 +71,7 @@ if(isset($_POST['uaction']) && $_POST['uaction'] == 'apply') {
                 `webdepot_xml_url` = '".$webdepot_xml_url."'
         ";
         execute_query($query);
-        set_page_message(tr("Software installer options successfully updated."), 'info');
+        set_page_message(tr("Software installer options successfully updated."), 'success');
     }
 }
 

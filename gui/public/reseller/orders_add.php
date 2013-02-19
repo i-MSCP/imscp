@@ -107,7 +107,7 @@ if (isset($cfg->HOSTING_PLANS_LEVEL) && $cfg->HOSTING_PLANS_LEVEL === 'admin') {
 $data = $res->fetchRow();
 $props = $data['props'];
 
-$_SESSION["ch_hpprops"] = $props;
+$_SESSION['ch_hpprops'] = $props;
 
 if (!reseller_limits_check($reseller_id, $hpid)) {
 	set_page_message(tr('Order Canceled: resellers limit(s) exceeded.'), 'error');
@@ -115,7 +115,7 @@ if (!reseller_limits_check($reseller_id, $hpid)) {
 	redirectTo('orders.php');
 }
 
-unset($_SESSION["ch_hpprops"]);
+unset($_SESSION['ch_hpprops']);
 
 list(
 	$php, $cgi, $sub, $als, $mail, $ftp, $sql_db, $sql_user, $traff, $disk, $backup,

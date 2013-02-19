@@ -58,13 +58,11 @@ if (isset($_SESSION['logged_from']) && isset($_SESSION['logged_from_id']) && iss
 		$fromUserId = $_SESSION['user_id'];
 
 		if (who_owns_this($toUserId, 'client') != $fromUserId) {
-			set_page_message(tr('Wrong request.'), 'error');
-			redirectTo('users.php');
+			showBadRequestErrorPage();
 		}
 	}
 
 	change_user_interface($fromUserId, $toUserId);
 } else {
-	set_page_message(tr('Wrong request.'), 'error');
-	redirectTo('index.php');
+	showBadRequestErrorPage();
 }

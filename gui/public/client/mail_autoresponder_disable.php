@@ -137,10 +137,8 @@ if (customerHasFeature('mail') && isset($_REQUEST['mail_account_id']) && is_nume
 		client_deactivateAutoresponder($mailAccountId);
 		redirectTo('mail_accounts.php');
 	} else {
-		set_page_message(tr('Wrong request.'), 'error');
-		redirectTo('index.php');
+		showBadRequestErrorPage();
 	}
 } else {
-	set_page_message(tr('Wrong request.'), 'error');
-	redirectTo('index.php');
+	showBadRequestErrorPage();
 }

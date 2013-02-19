@@ -142,7 +142,7 @@ if (isset($_GET['id']) || isset($_POST['id'])) {
 						`software_id` = ?
 				";
 				$res = exec_query($delete, $rs->fields['software_id']);
-				set_page_message(tr('Software was deleted.'), 'success');
+				set_page_message(tr('Software has been deleted.'), 'success');
 				redirectTo('software_manage.php');
 			} else {
 				set_page_message(tr('Fill out a message text.'), 'error');
@@ -151,7 +151,7 @@ if (isset($_GET['id']) || isset($_POST['id'])) {
 
 		$tpl->assign(
 			array(
-				'TR_MANAGE_SOFTWARE_PAGE_TITLE' => tr('i-MSCP - Application Management'),
+				'TR_MANAGE_SOFTWARE_PAGE_TITLE' => tr('i-MSCP - Softwares Management'),
 				'THEME_CHARSET' => tr('encoding'),
 				'ISP_LOGO' => layout_getUserLogo(),
 				'TR_DELETE_SEND_TO' => tr('Send message to'),

@@ -144,11 +144,11 @@ if (!imscp_limit_check($sql_user, -1)) {
 }
 
 if (!imscp_limit_check($traff, null)) {
-	set_page_message(tr('Incorrect traffic limit.'), 'error');
+	set_page_message(tr('Incorrect monthly traffic limit.'), 'error');
 }
 
 if (!imscp_limit_check($disk, null)) {
-	set_page_message(tr('Incorrect disk quota limit.'), 'error');
+	set_page_message(tr('Incorrect disk space limit.'), 'error');
 }
 
 list(

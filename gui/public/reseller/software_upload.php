@@ -33,6 +33,8 @@ iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onResellerScriptStar
 
 check_login('reseller');
 
+resellerHasFeature('aps') or showBadRequestErrorPage();
+
 /**
  * @var $cfg iMSCP_Config_Handler_File
  */
@@ -79,7 +81,7 @@ if (ask_reseller_is_allowed_web_depot($_SESSION['user_id']) == "yes") {
 
 		$tpl->assign(
 			array(
-				 'TR_WEBDEPOT' => tr('i-MSCP application installer web software depot'),
+				 'TR_WEBDEPOT' => tr('i-MSCP Software installer / Web software repository'),
 				 'TR_APPLY_CHANGES' => tr('Update from web depot'),
 				 'TR_PACKAGE_TITLE' => tr('Package title'),
 				 'TR_PACKAGE_INSTALL_TYPE' => tr('Package install type'),
@@ -104,21 +106,21 @@ if (isset($_POST['upload']) && $_SESSION['software_upload_token'] == $_POST['sen
 	unset($_SESSION['software_upload_token']);
 
 	if ($_FILES['sw_file']['name'] != '' AND !empty($_POST['sw_wget'])) {
-		set_page_message(tr('You have to choose between file-upload and wget-function.'), 'error');
+		set_page_message(tr('You must choose between local and remote upload.'), 'error');
 		$success = 0;
 	} elseif ($_FILES['sw_file']['name'] == '' AND empty($_POST['sw_wget'])) {
-		set_page_message(tr('You must select a file to upload/download.'), 'error');
+		set_page_message(tr('You must select a file to upload.'), 'error');
 		$success = 0;
 	} else {
-		if ($_FILES['sw_file']['name'] && $_FILES['sw_file']['name'] != "none") {
+		if ($_FILES['sw_file']['name'] && $_FILES['sw_file']['name'] != 'none') {
 			if (substr($_FILES['sw_file']['name'], -7) != '.tar.gz') {
-				set_page_message(tr("File needs to be a 'tar.gz' archive."), 'error');
+				set_page_message(tr("Only 'tar.gz' archives are accepted."), 'error');
 				$success = 0;
 			}
 			$file = 0;
 		} else {
 			if (substr($_POST['sw_wget'], -7) != '.tar.gz') {
-				set_page_message(tr("File needs to be a 'tar.gz' archive."), 'error');
+				set_page_message(tr("Only 'tar.gz' archives are accepted."), 'error');
 				$success = 0;
 			}
 			$file = 1;
@@ -130,12 +132,13 @@ if (isset($_POST['upload']) && $_SESSION['software_upload_token'] == $_POST['sen
 
 		if ($file == 0) {
 			$fname = $_FILES['sw_file']['name'];
-		} elseif ($file == 1) {
+		} else {
 			$fname = substr($_POST['sw_wget'], (strrpos($_POST['sw_wget'], '/') + 1));
 		}
 
 		$filename = substr($fname, 0, -7);
 		$extension = substr($fname, -7);
+
 		$query = "
 				INSERT INTO
 					`web_software`
@@ -161,17 +164,17 @@ if (isset($_POST['upload']) && $_SESSION['software_upload_token'] == $_POST['sen
 			";
 		$rs = exec_query($query, array(
 									  $user_id,
-									  "waiting_for_input",
-									  "waiting_for_input",
-									  "waiting_for_input",
-									  "waiting_for_input",
-									  "0",
+									  'waiting_for_input',
+									  'waiting_for_input',
+									  'waiting_for_input',
+									  'waiting_for_input',
+									  '0',
 									  $filename,
-									  "waiting_for_input",
-									  "waiting_for_input",
-									  "waiting_for_input",
-									  "waiting_for_input",
-									  "toadd"
+									  'waiting_for_input',
+									  'waiting_for_input',
+									  'waiting_for_input',
+									  'waiting_for_input',
+									  'toadd'
 								 )
 		);
 		/** @var $db iMSCP_Database */
@@ -195,18 +198,21 @@ if (isset($_POST['upload']) && $_SESSION['software_upload_token'] == $_POST['sen
 				";
 				exec_query($query, $sw_id);
 				$sw_wget = "";
-				set_page_message(tr('Could not upload the file. Max. upload filesize (%1$d MB) seem to be reached.', ini_get('upload_max_filesize')), 'error');
+				set_page_message(tr('Could not upload the file. Max. upload filesize (%1$d MB) has been reached.', ini_get('upload_max_filesize')), 'error');
 				$upload = 0;
 			}
 		}
 		if ($file == 1) {
 			$sw_wget = $_POST['sw_wget'];
 			$dest_dir = $cfg->GUI_SOFTWARE_DIR . '/' . $user_id . '/' . $filename . '-' . $sw_id . $extension;
+
 			// Reading Filesize
 			$parts = parse_url($sw_wget);
 			$connection = fsockopen($parts['host'], 80, $errno, $errstr, 30);
+
 			if ($connection) {
 				fputs($connection, "GET " . $sw_wget . " HTTP/1.1\r\nHost: " . $parts['host'] . "\r\n\r\n");
+
 				$size = 0;
 				while (!isset($length) || ($size <= 500 && !feof($connection))) {
 					$tstr = fgets($connection, 128);
@@ -247,7 +253,7 @@ if (isset($_POST['upload']) && $_SESSION['software_upload_token'] == $_POST['sen
 					exec_query($query, $sw_id);
 
 					$show_max_remote_filesize = formatFilesize($cfg->MAX_REMOTE_FILESIZE);
-					set_page_message(tr('Max. remote filesize (%1$d MB) is reached. Your remote file is %2$d MB', $show_max_remote_filesize, $show_remote_file_size), 'error');
+					set_page_message(tr('Max. remote filesize (%1$d MB) has been reached. Your remote file is %2$d MB', $show_max_remote_filesize, $show_remote_file_size), 'error');
 					$upload = 0;
 				} else {
 					$remote_file = @file_get_contents($sw_wget);
@@ -265,7 +271,7 @@ if (isset($_POST['upload']) && $_SESSION['software_upload_token'] == $_POST['sen
 								`software_id` = ?
 						";
 						exec_query($query, $sw_id);
-						set_page_message(tr('Remote File not found.'), 'error');
+						set_page_message(tr('Remote file not found.'), 'error');
 						$upload = 0;
 					}
 				}
@@ -305,7 +311,7 @@ if (isset($_POST['upload']) && $_SESSION['software_upload_token'] == $_POST['sen
 
 $tpl->assign(
 	array(
-		 'TR_PAGE_TITLE' => tr('i-MSCP - Application Management'),
+		 'TR_PAGE_TITLE' => tr('i-MSCP - Software Management'),
 		 'THEME_CHARSET' => tr('encoding'),
 		 'ISP_LOGO' => layout_getUserLogo()));
 
@@ -313,7 +319,7 @@ $sw_cnt = get_avail_software_reseller($tpl, $_SESSION['user_id']);
 
 $tpl->assign(
 	array(
-		 "GENERAL_INFO" => tr("General information"),
+		 'GENERAL_INFO' => tr('General information'),
 		 'TR_UPLOADED_SOFTWARE' => tr('Software available'),
 		 'TR_SOFTWARE_NAME' => tr('Software-Synonym'),
 		 'TR_SOFTWARE_VERSION' => tr('Software-Version'),
@@ -332,7 +338,7 @@ $tpl->assign(
 		 'TR_SOFTWARE_FILE' => tr('Choose file (Max: %1$d MB)', ini_get('upload_max_filesize')),
 		 'TR_SOFTWARE_URL' => tr('or remote file (Max: %1$d MB)', formatFilesize($cfg->MAX_REMOTE_FILESIZE)),
 		 'TR_UPLOAD_SOFTWARE_BUTTON' => tr('Upload now'),
-		 'TR_UPLOAD_SOFTWARE_PAGE_TITLE' => tr('i-MSCP - Application Management'),
+		 'TR_UPLOAD_SOFTWARE_PAGE_TITLE' => tr('i-MSCP - Sofware Management'),
 		 'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete this package?', true),
 		 'TR_MESSAGE_INSTALL' => tr('Are you sure to install this package from the webdepot?', true),
 		 'TR_SOFTWARE_NAME_ASC' => 'software_upload.php?sortby=name&order=asc',

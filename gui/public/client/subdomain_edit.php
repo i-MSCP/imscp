@@ -159,8 +159,7 @@ function client_subdomainEditAction()
 	if(!isset($_GET['id']) || !isset($_GET['type']) || ($_GET['type'] != 'dmn' &&
 	   $_GET['type'] != 'als')
 	) {
-		set_page_message('Wrong request.', 'error');
-		redirectTo('domains_manage.php');
+		showBadRequestErrorPage();
 		exit; // Useless but avoid IDE warning - See http://youtrack.jetbrains.net/issue/WI-7462
 	} else {
 		$subdomainId = clean_input($_GET['id']);
@@ -417,10 +416,7 @@ iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptStart)
 
 check_login('user');
 
-// If the feature is disabled, redirects in silent way
-if (!customerHasFeature('subdomains')) {
-    redirectTo('index.php');
-}
+customerHasFeature('subdomains') or showBadRequestErrorPage();
 
 client_subdomainEditAction();
 

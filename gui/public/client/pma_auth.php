@@ -170,8 +170,8 @@ check_login('user');
 /**
  *  Dispatches the request
  */
-if (!customerHasFeature('sql')) {
-	redirectTo('index.php');
-} elseif (!isset($_GET['id']) || !client_pmaAuth((int)$_GET['id'])) {
+if (!customerHasFeature('sql') || !isset($_GET['id'])) {
+	showBadRequestErrorPage();
+} elseif(!client_pmaAuth((int)$_GET['id'])) {
 	redirectTo('sql_manage.php');
 }

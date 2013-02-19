@@ -76,7 +76,6 @@ $tpl->assign(
 		'TR_TITLE_BACK' => tr('Return to previous menu'),
 		'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete %s?', true, '%s')));
 
-gen_hp_message($tpl);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
@@ -86,36 +85,6 @@ iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onResellerScriptEnd,
 $tpl->prnt();
 
 // BEGIN FUNCTION DECLARE PATH
-
-/**
- * @param $tpl
- */
-function gen_hp_message($tpl) {
-	// global $externel_event, $hp_added, $hp_deleted, $hp_updated;
-	global $external_event;
-
-	if (isset($_SESSION["hp_added"]) && $_SESSION["hp_added"] == '_yes_') {
-		$external_event = '_on_';
-		set_page_message(tr('Hosting plan successfully added.'), 'success');
-		unset($_SESSION["hp_added"]);
-		unset($GLOBALS['hp_added']);
-	} else if (isset($_SESSION["hp_deleted"]) && $_SESSION["hp_deleted"] == '_yes_') {
-		$external_event = '_on_';
-		set_page_message(tr('Hosting plan successfully deleted.'), 'success');
-		unset($_SESSION["hp_deleted"]);
-		unset($GLOBALS['hp_deleted']);
-	} else if (isset($_SESSION["hp_updated"]) && $_SESSION["hp_updated"] == '_yes_') {
-		$external_event = '_on_';
-		set_page_message(tr('Hosting plan sucessfully updated.'), 'success');
-		unset($_SESSION["hp_updated"]);
-		unset($GLOBALS['hp_updated']);
-	} else if (isset($_SESSION["hp_deleted_ordererror"]) && $_SESSION["hp_deleted_ordererror"] == '_yes_') {
-		//$external_event = '_on_';
-		set_page_message(tr("This hosting plan can't be deleted, there are some orders linked to it."), 'error');
-		unset($_SESSION["hp_deleted_ordererror"]);
-	}
-
-} // End of gen_hp_message()
 
 /**
  * Extract and show data for hosting plans.

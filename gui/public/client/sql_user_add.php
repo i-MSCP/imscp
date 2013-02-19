@@ -42,10 +42,7 @@ iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptStart)
 
 check_login('user');
 
-// If the feature is disabled, redirects in silent way
-if (!customerHasFeature('sql')) {
-    redirectTo('index.php');
-}
+customerHasFeature('sql') or showBadRequestErrorPage();
 
 /** @var $cfg iMSCP_Config_Handler_File */
 $cfg = iMSCP_Registry::get('config');
@@ -110,8 +107,7 @@ function check_sql_permissions($tpl, $customerId, $databaseId, $sqlUserList)
 	$stmt = exec_query($query, array($domainProperties['domain_id'], $databaseId));
 
 	if (!$stmt->rowCount()) {
-		set_page_message(tr('Wrong request.'), 'error');
-		redirectTo('sql_manage.php');
+		showBadRequestErrorPage();
 	}
 }
 

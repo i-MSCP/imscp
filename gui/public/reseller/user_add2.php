@@ -326,10 +326,6 @@ function check_user_data($phpini)
 			$phpini->setClPerm('phpiniDisplayErrors', clean_input($_POST['phpini_perm_display_errors']));
 		}
 
-		if ($phpini->checkRePerm('phpiniDisplayErrors') && isset($_POST['phpini_al_error_reporting'])) {
-			$phpini->setClPerm('phpiniErrorReporting', clean_input($_POST['phpini_al_error_reporting']));
-		}
-
 		if (PHP_SAPI != 'apache2handler' && $phpini->checkRePerm('phpiniDisableFunctions') &&
 			isset($_POST['phpini_perm_disable_functions'])
 		) {
@@ -364,7 +360,7 @@ function check_user_data($phpini)
 
 	list(
 		$rsub_max, $rals_max, $rmail_max, $rftp_max, $rsql_db_max, $rsql_user_max
-		) = check_reseller_permissions($_SESSION['user_id'], 'all_permissions');
+	) = check_reseller_permissions($_SESSION['user_id'], 'all_permissions');
 
 	if ($rsub_max == '-1') {
 		$hp_sub = '-1';
@@ -408,11 +404,11 @@ function check_user_data($phpini)
 	}
 
 	if (!imscp_limit_check($hp_traff, null)) {
-		set_page_message(tr('Incorrect traffic limit.'), 'error');
+		set_page_message(tr('Incorrect monthly traffic limit.'), 'error');
 	}
 
 	if (!imscp_limit_check($hp_disk, null)) {
-		set_page_message(tr('Incorrect disk quota limit.'), 'error');
+		set_page_message(tr('Incorrect diskspace limit.'), 'error');
 	}
 
     if ($hp_mail == '-1' && $hp_ext_mail == '_yes_') {
@@ -420,7 +416,7 @@ function check_user_data($phpini)
     }
 
 	if ($hp_php == '_no_' && $hp_allowsoftware == '_yes_') {
-		set_page_message(tr('The softwares installer needs PHP.'), 'error');
+		set_page_message(tr('The software installer require PHP.'), 'error');
 	}
 
 	if (!Zend_Session::namespaceIsset('pageMessages')) {
@@ -508,8 +504,8 @@ $tpl->assign(
 		 'TR_MAX_FTP' => tr('FTP accounts limit<br/><i>(-1 disabled, 0 unlimited)</i>'),
 		 'TR_MAX_SQL_DB' => tr('SQL databases limit<br/><i>(-1 disabled, 0 unlimited)</i>'),
 		 'TR_MAX_SQL_USERS' => tr('SQL users limit<br/><i>(-1 disabled, 0 unlimited)</i>'),
-		 'TR_MAX_TRAFFIC' => tr('Traffic limit [MiB]<br/><i>(0 unlimited)</i>'),
-		 'TR_MAX_DISK_USAGE' => tr('Disk limit [MiB]<br/><i>(0 unlimited)</i>'),
+		 'TR_MAX_TRAFFIC' => tr('Monthly traffic limit [MiB]<br/><i>(0 unlimited)</i>'),
+		 'TR_MAX_DISK_USAGE' => tr('Disk space limit [MiB]<br/><i>(0 unlimited)</i>'),
          'TR_EXTMAIL' => tr('External mail server'),
 		 'TR_PHP' => tr('PHP'),
 		 'TR_CGI' => tr('CGI'),
@@ -524,7 +520,7 @@ $tpl->assign(
 		 'TR_NEXT_STEP' => tr('Next step'),
 		 'TR_FEATURES' => tr('Features'),
 		 'TR_LIMITS' => tr('Limits'),
-		 'TR_SOFTWARE_SUPP' => tr('Softwares installer')));
+		 'TR_SOFTWARE_SUPP' => tr('Software installer')));
 
 generateNavigation($tpl);
 
@@ -554,8 +550,7 @@ if (isset($_POST['uaction']) && ('user_add2_nxt' == $_POST['uaction']) &&
                                   $hp_ext_mail;
 
 
-		if (reseller_limits_check($_SESSION['user_id'], 0, $_SESSION['ch_hpprops'])
-		) {
+		if (reseller_limits_check($_SESSION['user_id'], $_SESSION['ch_hpprops'])) {
 			redirectTo('user_add3.php');
 		}
 	}

@@ -405,10 +405,7 @@ iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onResellerScriptStar
 
 check_login('reseller');
 
-// If the feature is disabled, redirects in silent way
-if(!resellerHasFeature('domain_aliases')) {
-	return 'index.php';
-}
+resellerHasFeature('domain_aliases') or showBadRequestErrorPage();
 
 /** @var $cfg iMSCP_Config_Handler_File */
 $cfg = iMSCP_Registry::get('config');

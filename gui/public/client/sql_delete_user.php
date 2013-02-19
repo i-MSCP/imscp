@@ -43,9 +43,7 @@ iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptStart)
 check_login('user');
 
 // If the feature is disabled, redirects in silent way
-if (!customerHasFeature('sql')) {
-	redirectTo('index.php');
-} elseif (isset($_GET['id'])) {
+if (customerHasFeature('sql') && isset($_GET['id'])) {
 	$sqlUserId = intval($_GET['id']);
 
 	try {
@@ -65,6 +63,8 @@ if (!customerHasFeature('sql')) {
 		set_page_message(tr('System was unable to remove the SQL user.'), 'error');
 		write_log(sprintf("System was unable to delete SQL user with ID %d. Message was: %s", $sqlUserId, $e->getMessage()), E_USER_ERROR);
 	}
+
+	redirectTo('sql_manage.php');
 }
 
-redirectTo('sql_manage.php');
+showBadRequestErrorPage();

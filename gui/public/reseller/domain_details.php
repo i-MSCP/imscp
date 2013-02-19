@@ -54,8 +54,7 @@ function admin_generatePage($tpl, $domainId)
 	$stmt = exec_query($query, array($domainId, $_SESSION['user_id']));
 
 	if (!$stmt->rowCount()) {
-		set_page_message(tr('Wrong request.'));
-		redirectTo('users.php.php');
+		showBadRequestErrorPage();
 	}
 
 	$domainProperties = get_domain_default_props($stmt->fields['domain_admin_id']);
@@ -214,7 +213,7 @@ $tpl->assign(
 		'TR_SUBDOM_ACCOUNTS' => tr('Subdomains'),
 		'TR_DOMALIAS_ACCOUNTS' => tr('Domain aliases'),
 		'TR_UPDATE_DATA' => tr('Submit changes'),
-		'TR_SOFTWARE_SUPP' => tr('Softwares installer'),
+		'TR_SOFTWARE_SUPP' => tr('Software installer'),
 		'TR_EDIT' => tr('Edit'),
 		'TR_BACK' => tr('Back')
 	)

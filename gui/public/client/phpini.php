@@ -33,10 +33,7 @@ iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptStart)
 
 check_login('user');
 
-// If the feature is disabled, redirects in silent way
-if (!customerHasFeature('php_editor')) {
-    redirectTo('index.php');
-}
+customerHasFeature('php_editor') or showBadRequestErrorPage();
 
 /** @var $cfg iMSCP_Config_Handler_File */
 $cfg = iMSCP_Registry::get('config');
@@ -178,7 +175,6 @@ if ($phpini->getClPermVal('phpiniDisplayErrors') == 'no') {
 	$tplVars['ERROR_REPORTING_BLOCK'] = '';
 } else {
 	$errorReportingValue = $phpini->errorReportingToLitteral($phpini->getDataVal('phpiniErrorReporting'));
-	#echo $errorReportingValue; exit;
 
 	$tplVars['TR_ERROR_REPORTING'] = 'error_reporting';
 	$tplVars['TR_ERROR_REPORTING_DEFAULT'] = tr('Show all errors, except for notices and coding standards warnings (Default)');

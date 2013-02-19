@@ -102,8 +102,7 @@ function _client_getVerifiedData($itemId, $itemType)
             redirectTo('mail_external.php');
         }
     } else {
-        set_page_message(tr('Wrong request.'), 'error');
-        redirectTo('mail_external.php');
+		showBadRequestErrorPage();
         exit; // Only to make some IDE happy
     }
 
@@ -155,8 +154,7 @@ function client_addExternalMailServerEntries($item)
                     $wildcardMxOnly = false;
                 }
             } else { // Not all expected data were received
-                set_page_message(tr('Wrong request: all expected data were not received.'), 'error');
-                redirectTo('mail_external.php');
+				showBadRequestErrorPage();
             }
         }
 
@@ -382,9 +380,8 @@ if (customerHasFeature(array('mail', 'external_mail'))) {
         $tpl->prnt();
         unsetMessages();
     } else {
-        set_page_message(tr('Wrong request.'), 'error');
-        redirectTo('mail_external.php');
+		showBadRequestErrorPage();
     }
 } else {
-    redirectTo('index.php');
+    showBadRequestErrorPage();
 }

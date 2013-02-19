@@ -24,9 +24,9 @@
  * Portions created by the i-MSCP Team are Copyright (C) 2010-2013 by
  * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
  *
- * @category	i-MSCP
- * @package		iMSCP_Core
- * @subpackage	Orderpanel
+ * @category    i-MSCP
+ * @package        iMSCP_Core
+ * @subpackage    Orderpanel
  * @copyright   2001-2006 by moleSoftware GmbH
  * @copyright   2006-2010 by ispCP | http://isp-control.net
  * @copyright   2010-2013 by i-MSCP | http://i-mscp.net
@@ -57,10 +57,10 @@ function validateOrderKey($orderId, $key)
 	$stmt = exec_query($query, array($orderId, $cfg->ITEM_ORDER_UNCONFIRMED_STATUS));
 
 	if ($stmt->recordCount() == 1) {
-		$domain_name = $stmt->fields['domain_name'];
-		$admin_id = $stmt->fields['user_id'];
+		$domainName = $stmt->fields['domain_name'];
+		$adminId = $stmt->fields['user_id'];
 		$coid = isset($cfg->CUSTOM_ORDERPANEL_ID) ? $cfg->CUSTOM_ORDERPANEL_ID : '';
-		$ckey = sha1($orderId . '-' . $domain_name . '-' . $admin_id . '-' . $coid);
+		$ckey = sha1($orderId . '-' . $domainName . '-' . $adminId . '-' . $coid);
 
 		if ($ckey == $key) {
 			$result = true;

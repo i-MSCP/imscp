@@ -113,7 +113,7 @@ function client_generateTrafficUsageBar($tpl, $usage, $maxUsage, $barMax)
 			 'TRAFFIC_PERCENT' => $percent > 100 ? 100 : $percent));
 
 	if ($maxUsage != 0 && $usage > $maxUsage) {
-		$tpl->assign('TR_TRAFFIC_WARNING', tr('You are exceeding your traffic limit.'));
+		$tpl->assign('TR_TRAFFIC_WARNING', tr('You are exceeding your monthly traffic limit.'));
 	} else {
 		$tpl->assign('TRAFFIC_WARNING', '');
 	}
@@ -403,7 +403,7 @@ $tpl->assign(
 		 'TR_CGI_SUPPORT_FEATURE' => tr('CGI'),
 		 'TR_CUSTOM_DNS_RECORDS_FEATURE' => tr('Custom DNS records'),
          'TR_EXTERNAL_MAIL_SERVER_FEATURE' => tr('External mail servers'),
-		 'TR_APP_INSTALLER_FEATURE' => tr('Softwares installer'),
+		 'TR_APP_INSTALLER_FEATURE' => tr('Software installer'),
 		 'TR_BACKUP_FEATURE' => tr('Backup'),
 		 'TR_AWSTATS_FEATURE' => tr('Web statistics (AWStats)'),
 		 'TR_TRAFFIC_USAGE' => tr('Traffic usage'),

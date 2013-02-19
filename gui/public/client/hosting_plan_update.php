@@ -218,7 +218,7 @@ function client_generateHostingPlanEntries($tpl, $customerId)
 				$warningMessages[] = tr('You did have more traffic than the new hosting plan limits.');
 			}
 
-			$traffic_usage = tr('Traffic limit') . ': ' . translate_limit_value($hpBandwich, true);
+			$traffic_usage = tr('Monthly traffic limit') . ': ' . translate_limit_value($hpBandwich, true);
 			$currentValue = get_domain_running_als_cnt($domainProperties['domain_id']);
 
 			if (!client_checkHpLimit($currentValue, $hpAliases)) {

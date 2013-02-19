@@ -37,7 +37,7 @@
  *
  * @param iMSCP_pTemplate $tpl Template engine
  * @param int $domain_id Domain unique identifier
- * @return
+ * @return void
  */
 function gen_domain_details($tpl, $domain_id)
 {
@@ -237,6 +237,10 @@ function gen_purchase_haf($userId, $encode = false)
 			setTimeout(function(){\$('.error').fadeOut(1000);},3000);
 			$('.body a, .body span, .body input').imscpTooltip();
 			$("input:submit, input:button, button").button();
+
+			$(".accordion").accordion({
+				heightStyle:"content"
+			});
 		});
 	/*]]>*/
 	</script>
@@ -314,7 +318,9 @@ function generateNavigation($tpl)
 	$tpl->assign(
 		array(
 			'SUPPORT_SYSTEM_PATH' => $cfg->IMSCP_SUPPORT_SYSTEM_PATH,
-			'SUPPORT_SYSTEM_TARGET' => $cfg->IMSCP_SUPPORT_SYSTEM_TARGET));
+			'SUPPORT_SYSTEM_TARGET' => $cfg->IMSCP_SUPPORT_SYSTEM_TARGET
+		)
+	);
 
 	/** @var $navigation Zend_Navigation */
 	$navigation = iMSCP_Registry::get('navigation');
@@ -361,11 +367,26 @@ function generateNavigation($tpl)
 
 	/** @var $page Zend_Navigation_Page */
 	foreach ($navigation as $page) {
-		if (null !== ($callback = $page->get('privilege_callback')) &&
-			!call_user_func($callback['name'], $callback['param'])
-		) {
-			continue;
-		} elseif ($page->isVisible()) {
+
+		if(null !== ($callback = $page->get('privilege_callback'))) {
+			if(is_callable($callback['name'])) {
+				if(!call_user_func($callback['name'], $callback['param'])) {
+					//showBadRequestErrorPage();
+					continue;
+				}
+			} else {
+				throw new iMSCP_Exception_Production(
+					"Privileges callback function '{$callback['name']}' is not callable"
+				);
+			}
+		}
+
+		//if (null !== ($callback = $page->get('privilege_callback')) &&
+		//	!call_user_func($callback['name'], $callback['param'])
+		//) {
+		//	continue;
+		//} else
+		if ($page->isVisible()) {
 			$tpl->assign(
 				array(
 					'HREF' => $page->getHref(),

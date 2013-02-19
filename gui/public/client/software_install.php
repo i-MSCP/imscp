@@ -40,8 +40,7 @@
 function client_generatePage($tpl, $customerId)
 {
 	if (!isset($_GET['id']) || $_GET['id'] == '' || !is_numeric($_GET['id'])) {
-		set_page_message(tr('Wrong request.'), 'error');
-		redirectTo('software.php');
+		showBadRequestErrorPage();
 		exit; // Uselesss but avoid IDE warning about possible undefined variable
 	} else {
 		$softwareId = intval($_GET['id']);
@@ -67,10 +66,7 @@ iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptStart)
 
 check_login('user');
 
-// If the feature is disabled, redirects in silent way
-if (!customerHasFeature('aps')) {
-    redirectTo('index.php');
-}
+customerHasFeature('aps') or showBadRequestErrorPage();
 
 /** @var $cfg iMSCP_Config_Handler_File */
 $cfg = iMSCP_Registry::get('config');

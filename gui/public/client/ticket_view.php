@@ -51,10 +51,7 @@ $cfg = iMSCP_Registry::get('config');
 
 $userId = $_SESSION['user_id'];
 
-// If the feature is disabled, redirects in silent way
-if (!customerHasFeature('support')) {
-	redirectTo('index.php');
-}
+customerHasFeature('support') or showBadRequestErrorPage();
 
 if (isset($_GET['ticket_id']) && !empty($_GET['ticket_id'])) {
     $userId = $_SESSION['user_id'];

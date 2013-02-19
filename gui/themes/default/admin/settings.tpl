@@ -171,8 +171,7 @@
 
             <div style="padding: 0">
                 <div class="even">
-                    <div class="left"><label
-                            for="create_default_email_addresses">{TR_CREATE_DEFAULT_EMAIL_ADDRESSES}</label></div>
+                    <div class="left"><label for="create_default_email_addresses">{TR_CREATE_DEFAULT_EMAIL_ADDRESSES}</label></div>
                     <div class="right">
                         <select name="create_default_email_addresses" id="create_default_email_addresses">
                             <option value="0" {CREATE_DEFAULT_EMAIL_ADDRESSES_OFF}>{TR_DISABLED}</option>
@@ -181,8 +180,7 @@
                     </div>
                 </div>
                 <div class="odd">
-                    <div class="left"><label
-                            for="count_default_email_addresses">{TR_COUNT_DEFAULT_EMAIL_ADDRESSES}</label></div>
+                    <div class="left"><label for="count_default_email_addresses">{TR_COUNT_DEFAULT_EMAIL_ADDRESSES}</label></div>
                     <div class="right">
                         <select name="count_default_email_addresses" id="count_default_email_addresses">
                             <option value="0" {COUNT_DEFAULT_EMAIL_ADDRESSES_OFF}>{TR_DISABLED}</option>

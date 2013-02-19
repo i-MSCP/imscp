@@ -183,9 +183,7 @@ $cfg = iMSCP_Registry::get('config');
 if (isset($_GET['edit_id'])) {
 	$userId = intval($_GET['edit_id']);
 } else {
-	set_page_message(tr('Wrong request.', 'error'));
-	redirectTo('manage_users.php');
-	exit; // Useless but avoid IDE warning about possible undefined variable
+	showBadRequestErrorPage();
 }
 
 if(!empty($_POST) && !isset($_POST['genpass']) && admin_isValidData()) {

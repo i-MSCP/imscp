@@ -98,8 +98,7 @@ function client_generatePage($tpl, $id, $type) {
 	list($name, $owner) = client_getFullName($type, $id);
 
 	if ($owner !== $_SESSION['user_id']) {
-		set_page_message(tr('Wrong request.'), 'error');
-		redirectTo('domains_manage.php');
+		showBadRequestErrorPage();
 	}
 
 	if (isset($_POST['send']) && $cfg->ENABLE_SSL) {
@@ -221,8 +220,7 @@ $tpl->define_dynamic(
 );
 
 if (!isset($_GET['id']) || !isset($_GET['type']) || !in_array($_GET['type'], array('dmn', 'als', 'sub', 'alssub'))) {
-	set_page_message(tr('Wrong request.'), 'error');
-	redirectTo('domains_manage.php');
+	showBadRequestErrorPage();
 } else {
 	$id = intval($_GET['id']);
 	$type = $_GET['type'];

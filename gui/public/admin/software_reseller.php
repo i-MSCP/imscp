@@ -93,7 +93,7 @@ $tpl->assign(
 		'TR_RESELLER_COUNT_WAITING' => tr('Awaiting activation'),
 		'TR_RESELLER_COUNT_ACTIVATED' => tr('Activated softwares'),
 		'TR_RESELLER_SOFTWARE_IN_USE' => tr('Total installations'),
-		'TR_ADMIN_SOFTWARE_PAGE_TITLE' => tr('i-MSCP - Software Installer Management')));
+		'TR_ADMIN_SOFTWARE_PAGE_TITLE' => tr('i-MSCP - Software Installer / Management')));
 
 generateNavigation($tpl);
 generatePageMessage($tpl);

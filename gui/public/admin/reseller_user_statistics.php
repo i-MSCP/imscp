@@ -140,8 +140,7 @@ iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAdminScriptStart);
 check_login('admin');
 
 if (!isset($_GET['rid'])) {
-	set_page_message(tr('Wrong request.'), 'error');
-	redirectTo('reseller_statistics.php');
+	showBadRequestErrorPage();
 	exit; // Useless but avoid IDE warning about possible undefined variable
 } else {
 	$resellerId = intval($_GET['rid']);

@@ -1337,35 +1337,37 @@ function send_add_user_auto_msg($admin_id, $uname, $upass, $uemail, $ufname, $ul
 }
 
 /************************************************************************************
- * Software installer related functions
+ * Softwares installer functions
  */
 
 /**
- * Returns client software permissions.
+ * Returns client software permissions
  *
+ * @throws iMSCP_Exception in case softwares installer permissions of the given user cannot be retrieved
  * @param  iMSCP_pTemplate $tpl Template engine
- * @param  int $user_id User unique identifier
+ * @param  int $userId User unique identifier
  * @return void
  */
-function get_client_software_permission($tpl, $user_id)
+function get_client_software_permission($tpl, $userId)
 {
 	$query = "SELECT `domain_software_allowed`, `domain_ftpacc_limit` FROM `domain` WHERE `domain_admin_id` = ?";
-	$rs = exec_query($query, array($user_id));
+	$stmt = exec_query($query, array($userId));
 
-	if ($rs->fields('domain_software_allowed') == 'yes' && $rs->fields('domain_ftpacc_limit') != "-1") {
+	if($stmt->recordCount()) {
+	if ($stmt->fields('domain_software_allowed') == 'yes' && $stmt->fields('domain_ftpacc_limit') != '1') {
 		$tpl->assign(
 			array(
 				'SOFTWARE_SUPPORT' => tr('yes'),
-				'TR_SOFTWARE_MENU' => tr('Application installer'),
+				'TR_SOFTWARE_MENU' => tr('Software installer'),
 				'SOFTWARE_MENU' => tr('yes'),
 				'TR_INSTALLATION' => tr('Installation details'),
-				'TR_INSTALLATION_INFORMATION' => tr('Please set now the Username and Password for the later Login in the Application. (Required fiels!)'),
+				'TR_INSTALLATION_INFORMATION' => tr('Please set now the username and password for the later login in the software. (Required fiels)'),
 				'TR_INSTALL_USER' => tr('Login username'),
 				'TR_INSTALL_PWD' => tr('Login password'),
 				'TR_INSTALL_EMAIL' => tr('Email address'),
 				'SW_MSG' => tr('Enabled'),
-				'SW_ALLOWED' => tr('Application installer'),
-				'TR_SOFTWARE_DESCRIPTION' => tr('Application Description')
+				'SW_ALLOWED' => tr('Software installer'),
+				'TR_SOFTWARE_DESCRIPTION' => tr('Software Description')
 			)
 		);
 
@@ -1376,152 +1378,166 @@ function get_client_software_permission($tpl, $user_id)
 				'T_SOFTWARE_SUPPORT' => '',
 				'T_SOFTWARE_MENU' => '',
 				'SOFTWARE_ITEM' => '',
-				'TR_INSTALLATION' => tr('You do not have permissions to install application yet'),
-				'TR_SOFTWARE_DESCRIPTION' => tr('You do not have permissions to install application yet'),
+				'TR_INSTALLATION' => tr('You do not have permissions to install software yet'),
+				'TR_SOFTWARE_DESCRIPTION' => tr('You do not have permissions to install softwares yet'),
 				'SW_MSG' => tr('Disabled'),
-				'SW_ALLOWED' => tr('Application installer')
+				'SW_ALLOWED' => tr('Softwares installer')
 			)
 		);
+	}
+	} else {
+		throw new iMSCP_Exception('Unable to retrieve software installer permissions for the given user');
 	}
 }
 
 /**
- * Returns reseller software permissions.
+ * Whether or not the given reseller is allowed to use the software installer
  *
+ * @throws iMSCP_Exception in case properties for the given reseller are not found
  * @param  iMSCP_pTemplate $tpl Template engine
- * @param  int $reseller_id Reseller unique identifier
+ * @param  int $resellerId Reseller unique identifier
  * @return void
  */
-function get_reseller_software_permission($tpl, $reseller_id)
+function get_reseller_software_permission($tpl, $resellerId)
 {
 	$query = "SELECT `software_allowed` FROM `reseller_props` WHERE `reseller_id` = ?";
-	$rs = exec_query($query, array($reseller_id));
+	$stmt = exec_query($query, array($resellerId));
 
-	if ($rs->fields('software_allowed') == 'yes') {
-		$tpl->assign(
-			array(
-				'SOFTWARE_SUPPORT' => tr('yes'),
-				'SW_ALLOWED' => tr('Software installer'),
-				'SW_MSG' => tr('enabled')
-			)
-		);
-		$tpl->parse('T_SOFTWARE_SUPPORT', 't_software_support');
+	if($stmt->recordCount()) {
+		if ($stmt->fields('software_allowed') == 'yes') {
+			$tpl->assign(
+				array(
+					'SOFTWARE_SUPPORT' => tr('yes'),
+					'SW_ALLOWED' => tr('Softwares installer'),
+					'SW_MSG' => tr('enabled')
+				)
+			);
+			$tpl->parse('T_SOFTWARE_SUPPORT', 't_software_support');
+		} else {
+			$tpl->assign(
+				array(
+					'SOFTWARE_SUPPORT' => tr('no'),
+					'SW_ALLOWED' => tr('Software installer'),
+					'SW_MSG' => tr('disabled'),
+					'T_SOFTWARE_SUPPORT' => ''
+				)
+			);
+		}
 	} else {
-		$tpl->assign(
-			array(
-				'SOFTWARE_SUPPORT' => tr('no'),
-				'SW_ALLOWED' => tr('Software installer'),
-				'SW_MSG' => tr('disabled'),
-				'T_SOFTWARE_SUPPORT' => ''
-			)
-		);
+		throw new iMSCP_Exception('Unable to found properties of the given reseller');
 	}
 }
 
 /**
- * Get all config data from i-MSCP application installer
+ * Get all softwares installer options
  *
- * @since 1.0.0
  * @author Sascha Bay (TheCry) <sascha.bay@i-mscp.net>
- * @return array
+ * @throws iMSCP_Exception in case software installer options cannot be retrieved
+ * @return array An array containing softwares installer options
  */
 function get_application_installer_conf()
 {
 	$query = "SELECT * FROM `web_software_options`";
-	$rs = execute_query($query);
+	$stmt = execute_query($query);
 
-	return array(
-		$rs->fields['use_webdepot'], $rs->fields['webdepot_xml_url'],
-		$rs->fields['webdepot_last_update']
-	);
+	if($stmt->recordCount()) {
+		return array(
+			$stmt->fields['use_webdepot'], $stmt->fields['webdepot_xml_url'], $stmt->fields['webdepot_last_update']
+		);
+	} else {
+		throw new iMSCP_Exception('Unable to retrieve software installer options in database');
+	}
 }
 
 /**
  * Check wheter the package is still installed this system
  *
- * @since 1.0.0
- * @author Sascha Bay (TheCry) <sascha.bay@i-mscp.net>
- * @param string $package_installtype
- * @param string $package_name
- * @param string $package_version
- * @param string $package_language
- * @param int $user_id
+ * @throws iMSCP_Exception in case the given user cannot be retrieved in database
+ * @param string $packageInstallType Package install type
+ * @param string $packageName Package name
+ * @param string $packageVersion Package version
+ * @param string $packageLanguage Package language
+ * @param int $userId User unique identifier
  * @return array
  */
-function check_package_is_installed($package_installtype, $package_name, $package_version, $package_language, $user_id)
+function check_package_is_installed($packageInstallType, $packageName, $packageVersion, $packageLanguage, $userId)
 {
-	$query = "SELECT `admin_type`, `admin_name` FROM `admin` WHERE `admin_id` = ?";
-	$rs_admin_type = exec_query($query, $user_id);
+	$query = "SELECT `admin_type` FROM `admin` WHERE `admin_id` = ?";
+	$stmt = exec_query($query, $userId);
 
-	if ($rs_admin_type->fields['admin_type'] == "admin") {
-		$query = "
-			SELECT
-				`software_id`
-			FROM
-				`web_software`
-			WHERE
-				`software_installtype`  = '" . $package_installtype . "'
-			AND
-				`software_name` = '" . $package_name . "'
-			AND
-				`software_version` = '" . $package_version . "'
-			AND
-				`software_language` = '" . $package_language . "'
-			AND
-				`software_depot` = 'no'
-		";
-	} else {
-		$query = "
-			SELECT
-				`software_id`
-			FROM
-				`web_software`
-			WHERE
-				`software_installtype` = '" . $package_installtype . "'
-			AND
-				`software_name` = '" . $package_name . "'
-			AND
-				`software_version`= '" . $package_version . "'
-			AND
-				`software_language` = '" . $package_language . "'
-			AND
-				`reseller_id` = '" . $user_id . "'
-			AND
-				`software_depot` = 'no'
-		";
-	}
-	$rs = execute_query($query);
-	$sw_count_res = $rs->recordCount();
-
-	$query = "
-		SELECT
-			`software_id`
-		FROM
-			`web_software`
-		WHERE
-			`software_installtype`  = '" . $package_installtype . "'
-		AND
-			`software_name` = '" . $package_name . "'
-		AND
-			`software_version` = '" . $package_version . "'
-		AND
-			`software_language` = '" . $package_language . "'
-		AND
-			`software_master_id` = '0'
-		AND
-			`software_depot` = 'yes'
-	";
-	$rs = execute_query($query);
-	$sw_count_swdepot = $rs->recordCount();
-
-	if ($sw_count_res > 0 || $sw_count_swdepot > 0) {
-		if ($sw_count_res > 0) {
-			return array(true, 'reseller');
+	if ($stmt->recordCount()) {
+		if ($stmt->fields['admin_type'] == 'admin') {
+			$query = "
+				SELECT
+					`software_id`
+				FROM
+					`web_software`
+				WHERE
+					`software_installtype`  = ?
+				AND
+					`software_name` = ?
+				AND
+					`software_version` = ?
+				AND
+					`software_language` = ?
+				AND
+					`software_depot` = 'no'
+			";
 		} else {
-			return array(true, 'sw_depot');
+			$query = "
+				SELECT
+					`software_id`
+				FROM
+					`web_software`
+				WHERE
+					`software_installtype` = ?
+				AND
+					`software_name` = ?
+				AND
+					`software_version`= ?
+				AND
+					`software_language` = ?
+				AND
+					`reseller_id` = '" . $userId . "'
+				AND
+					`software_depot` = 'no'
+			";
+		}
+		$stmt = exec_query($query, array($packageInstallType, $packageName, $packageVersion, $packageLanguage ));
+		$softwaresCount = $stmt->recordCount();
+
+		$query = "
+			SELECT
+				`software_id`
+			FROM
+				`web_software`
+			WHERE
+				`software_installtype`  = ?
+			AND
+				`software_name` = ?
+			AND
+				`software_version` = ?
+			AND
+				`software_language` = ?
+			AND
+				`software_master_id` = '0'
+			AND
+				`software_depot` = 'yes'
+		";
+		$stmt = exec_query($query, array($packageInstallType, $packageName, $packageVersion, $packageLanguage));
+		$softwaresCountDepot = $stmt->recordCount();
+
+		if ($softwaresCount > 0 || $softwaresCountDepot > 0) {
+			if ($softwaresCount > 0) {
+				return array(true, 'reseller');
+			} else {
+				return array(true, 'sw_depot');
+			}
+		} else {
+			return array(false, 'not_installed');
 		}
 	} else {
-		return array(false, 'not_installed');
+		throw new iMSCP_Exception('Unable to found the given user in database');
 	}
 }
 
@@ -1531,42 +1547,42 @@ function check_package_is_installed($package_installtype, $package_name, $packag
  *
  * @author Sascha Bay (TheCry) <sascha.bay@i-mscp.net>
  * @param iMSCP_pTemplate $tpl Template engine
- * @param int $user_id User unique identifier
+ * @param int $userId User unique identifier
  * @return int
  */
-function get_webdepot_software_list($tpl, $user_id)
+function get_webdepot_software_list($tpl, $userId)
 {
 	$query = "SELECT * FROM `web_software_depot` ORDER BY `package_install_type` ASC, `package_title` ASC";
-	$rs = execute_query($query);
+	$stmt = execute_query($query);
 
-	if ($rs->recordCount() > 0) {
-		while (!$rs->EOF) {
+	if ($stmt->recordCount()) {
+		while (!$stmt->EOF) {
 			$tpl->assign(
 				array(
-					'TR_PACKAGE_NAME' => $rs->fields['package_title'],
-					'TR_PACKAGE_TOOLTIP' => $rs->fields['package_description'],
-					'TR_PACKAGE_INSTALL_TYPE' => $rs->fields['package_install_type'],
-					'TR_PACKAGE_VERSION' => $rs->fields['package_version'],
-					'TR_PACKAGE_LANGUAGE' => $rs->fields['package_language'],
-					'TR_PACKAGE_TYPE' => $rs->fields['package_type'],
-					'TR_PACKAGE_VENDOR_HP' => ($rs->fields['package_vendor_hp'] == '')
+					'TR_PACKAGE_NAME' => $stmt->fields['package_title'],
+					'TR_PACKAGE_TOOLTIP' => $stmt->fields['package_description'],
+					'TR_PACKAGE_INSTALL_TYPE' => $stmt->fields['package_install_type'],
+					'TR_PACKAGE_VERSION' => $stmt->fields['package_version'],
+					'TR_PACKAGE_LANGUAGE' => $stmt->fields['package_language'],
+					'TR_PACKAGE_TYPE' => $stmt->fields['package_type'],
+					'TR_PACKAGE_VENDOR_HP' => ($stmt->fields['package_vendor_hp'] == '')
 						? tr('N/A')
-						: '<a href="' . $rs->fields['package_vendor_hp'] . '" target="_blank">' . tr('Vendor hompage') . '</a>'
+						: '<a href="' . $stmt->fields['package_vendor_hp'] . '" target="_blank">' . tr('Vendor hompage') . '</a>'
 				)
 			);
 
-			list($is_installed, $installed_on) = check_package_is_installed(
-				$rs->fields['package_install_type'], $rs->fields['package_title'], $rs->fields['package_version'],
-				$rs->fields['package_language'], $user_id
+			list($isInstalled, $installedOn) = check_package_is_installed(
+				$stmt->fields['package_install_type'], $stmt->fields['package_title'], $stmt->fields['package_version'],
+				$stmt->fields['package_language'], $userId
 			);
 
-			if ($is_installed) {
+			if ($isInstalled) {
 				$tpl->assign(
 					array(
 						'PACKAGE_HTTP_URL' => '',
-						'TR_PACKAGE_INSTALL' => ($installed_on == "sw_depot")
-							? tr('Installed in software depot')
-							: tr('Installed in reseller depot'),
+						'TR_PACKAGE_INSTALL' => ($installedOn == "sw_depot")
+							? tr('Installed in software repository')
+							: tr('Installed in reseller repository'),
 						'TR_MESSAGE_INSTALL' => ''
 					)
 				);
@@ -1576,9 +1592,9 @@ function get_webdepot_software_list($tpl, $user_id)
 			} else {
 				$tpl->assign(
 					array(
-						'PACKAGE_HTTP_URL' => $rs->fields['package_download_link'],
+						'PACKAGE_HTTP_URL' => $stmt->fields['package_download_link'],
 						'TR_PACKAGE_INSTALL' => tr('Start installation'),
-						'TR_MESSAGE_INSTALL' => tr('Are you sure to install this package from the webdepot?', true)
+						'TR_MESSAGE_INSTALL' => tr('Are you sure you want to install this package from the Web software repository?', true)
 					)
 				);
 
@@ -1587,45 +1603,46 @@ function get_webdepot_software_list($tpl, $user_id)
 			}
 
 			$tpl->parse('LIST_WEBDEPOTSOFTWARE', '.list_webdepotsoftware');
-			$rs->moveNext();
+			$stmt->moveNext();
 		}
 		$tpl->assign('NO_WEBDEPOTSOFTWARE_LIST', '');
 	} else {
-		$tpl->assign('NO_WEBDEPOTSOFTWARE_AVAILABLE', tr('No software in webdepot found!'));
+		$tpl->assign('NO_WEBDEPOTSOFTWARE_AVAILABLE', tr('No software in Web repository found!'));
 		$tpl->parse('NO_WEBDEPOTSOFTWARE_LIST', '.no_webdepotsoftware_list');
 		$tpl->assign('LIST_WEBDEPOTSOFTWARE', '');
 	}
 
-	return $rs->recordCount();
+	return $stmt->recordCount();
 }
 
 /**
- * Update database from the websoftware depot xml file list.
+ * Update repository index
  *
- * @author Sascha Bay (TheCry) <sascha.bay@i-mscp.net>
- * @param string $XML_URL
- * @param string $webdepot_last_update
+ * @param string $repositoryIndexFile Repository index file URI
+ * @param string $webRepositoryLastUpdate Web repository last update
  */
-function update_webdepot_software_list($XML_URL, $webdepot_last_update)
+function update_webdepot_software_list($repositoryIndexFile, $webRepositoryLastUpdate)
 {
-	$opts = array('http' => array('user_agent' => 'PHP libxml agent'));
-	$context = stream_context_create($opts);
+	$options = array('http' => array('user_agent' => 'PHP libxml agent'));
+	$context = stream_context_create($options);
 	libxml_set_streams_context($context);
 
-	$webdepot_xml_file = new DOMDocument('1.0', 'UTF-8');
-	$webdepot_xml_file->load($XML_URL);
-	$XML_FILE = simplexml_import_dom($webdepot_xml_file);
+	$webRepositoryIndexFile = new DOMDocument('1.0', 'UTF-8');
+	$webRepositoryIndexFile->load($repositoryIndexFile);
+	$webRepositoryIndexFile = simplexml_import_dom($webRepositoryIndexFile);
 
-	if (utf8_decode($XML_FILE->LAST_UPDATE->DATE) != $webdepot_last_update) {
-		$truncatequery = "TRUNCATE TABLE `web_software_depot`";
+	if (utf8_decode($webRepositoryIndexFile->LAST_UPDATE->DATE) != $webRepositoryLastUpdate) {
+		$truncatequery = 'TRUNCATE TABLE `web_software_depot`';
 		exec_query($truncatequery);
 
-		foreach ($XML_FILE->PACKAGE as $output) {
-			if (!empty($output->INSTALL_TYPE) && !empty($output->INSTALL_TYPE) && !empty($output->INSTALL_TYPE) &&
-				!empty($output->INSTALL_TYPE) && !empty($output->INSTALL_TYPE) && !empty($output->INSTALL_TYPE) &&
-				!empty($output->INSTALL_TYPE) && !empty($output->INSTALL_TYPE) && !empty($output->INSTALL_TYPE)
+		$badSoftwarePackageDefinition = 0;
+
+		foreach ($webRepositoryIndexFile->PACKAGE as $package) {
+			if (!empty($package->INSTALL_TYPE) && !empty($package->TITLE) && !empty($package->VERSION) &&
+				!empty($package->LANGUAGE) && !empty($package->TYPE) && !empty($package->DESCRIPTION) &&
+				!empty($package->VENDOR_HP) && !empty($package->DOWNLOAD_LINK) && !empty($package->SIGNATURE_LINK)
 			) {
-				$query = "
+				$query = '
 					INSERT INTO
 						`web_software_depot` (
 							`package_install_type`, `package_title`, `package_version`, `package_language`,
@@ -1634,36 +1651,40 @@ function update_webdepot_software_list($XML_URL, $webdepot_last_update)
 						) VALUES (
 							?, ?, ?, ?, ?, ?, ?, ?, ?
 						)
-				";
+				';
 				exec_query(
 					$query,
 					array(
-						clean_input($output->INSTALL_TYPE),
-						clean_input($output->TITLE),
-						clean_input($output->VERSION),
-						clean_input($output->LANGUAGE),
-						clean_input($output->TYPE),
-						clean_input($output->DESCRIPTION),
-						encode_idna(strtolower(clean_input($output->VENDOR_HP))),
-						encode_idna(strtolower(clean_input($output->DOWNLOAD_LINK))),
-						encode_idna(strtolower(clean_input($output->SIGNATURE_LINK)))
+						clean_input($package->INSTALL_TYPE), clean_input($package->TITLE), clean_input($package->VERSION),
+						clean_input($package->LANGUAGE), clean_input($package->TYPE), clean_input($package->DESCRIPTION),
+						encode_idna(strtolower(clean_input($package->VENDOR_HP))),
+						encode_idna(strtolower(clean_input($package->DOWNLOAD_LINK))),
+						encode_idna(strtolower(clean_input($package->SIGNATURE_LINK)))
 					)
 				);
+			} else {
+				$badSoftwarePackageDefinition++;
+				break;
 			}
 		}
-		exec_query("UPDATE `web_software_options` SET `webdepot_last_update` = ?", array($XML_FILE->LAST_UPDATE->DATE));
-
-		set_page_message(tr("Web softwares repositories list has been updated"), 'info');
+		if(!$badSoftwarePackageDefinition) {
+			exec_query(
+				'UPDATE `web_software_options` SET `webdepot_last_update` = ?',
+				array($webRepositoryIndexFile->LAST_UPDATE->DATE)
+			);
+			set_page_message(tr('Web software repository index been successfully updated.'), 'success');
+		} else {
+			set_page_message(tr('Update of Web software repository index has been aborted. Missing or empty fields.'), 'error');
+		}
 	} else {
-		set_page_message(tr("Web softwares repositories list is already up to date"), 'info');
+		set_page_message(tr('Web software repository index is already up to date.'), 'info');
 	}
 }
 
 /**
- * Returns token.
+ * Returns token
  *
  * @return string
- * @todo must be generic.
  */
 function generate_software_upload_token()
 {
@@ -1674,14 +1695,14 @@ function generate_software_upload_token()
 }
 
 /**
- * Tells whether or not the software installer is available for a reseller.
+ * Tells whether or not the software installer is available for the given reseller
  *
- * @param  int $reseller_id Reseller unique identifier
+ * @param  int $resellerId Reseller unique identifier
  * @return string 'yes' if software installer is available, 'no' otherwise
  */
-function get_reseller_sw_installer($reseller_id)
+function get_reseller_sw_installer($resellerId)
 {
-	$stmt = exec_query("SELECT `software_allowed` FROM `reseller_props` WHERE `reseller_id` = ?", $reseller_id);
+	$stmt = exec_query('SELECT `software_allowed` FROM `reseller_props` WHERE `reseller_id` = ?', $resellerId);
 	return $stmt->fields['software_allowed'];
 }
 
@@ -1961,7 +1982,6 @@ function unsetMessages()
 	$glToUnset[] = 'user_added';
 	$glToUnset[] = 'aladd';
 	$glToUnset[] = 'edit_ID';
-	$glToUnset[] = 'hp_added';
 	$glToUnset[] = 'aldel';
 	$glToUnset[] = 'hpid';
 	$glToUnset[] = 'user_deleted';
@@ -1994,7 +2014,6 @@ function unsetMessages()
 	$sessToUnset[] = 'user_added';
 	$sessToUnset[] = 'aladd';
 	$sessToUnset[] = 'edit_ID';
-	$sessToUnset[] = 'hp_added';
 	$sessToUnset[] = 'aldel';
 	$sessToUnset[] = 'hpid';
 	$sessToUnset[] = 'user_deleted';
@@ -2138,4 +2157,27 @@ function getDataTablesPluginTranslations()
 			)
 		)
 	);
+}
+
+/**
+ * Show 400 error page
+ *
+ * @author Laurent Declercq <l.declercq@nuxwin.com>
+ * @throws iMSCP_Exception_Production in case the error page is not found
+ * @return void
+ */
+function showBadRequestErrorPage()
+{
+	/** @var $cfg iMSCP_Config_Handler_File */
+	$cfg = iMSCP_Registry::get('config');
+
+	$filePath = $cfg->GUI_ROOT_DIR . '/public/errordocs/400.html';
+
+	if(file_exists($filePath)) {
+		header("Status: 400 Bad Request");
+		include $filePath;
+		exit();
+	} else {
+		throw new iMSCP_Exception_Production('Bad Request');
+	}
 }

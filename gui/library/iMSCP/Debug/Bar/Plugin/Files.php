@@ -122,8 +122,8 @@ class iMSCP_Debug_Bar_Plugin_Files extends iMSCP_Debug_Bar_Plugin implements iMS
 		$size = bytesHuman(array_sum(array_map('filesize', array_merge($includedPhpFiles, $loadedTemplateFiles))));
 		$xhtml .= "\tTotal Size: $size</pre>";
 
-		$xhtml .= "<h4>PHP Files</h4><pre>\t" . implode(PHP_EOL . "\t", $includedPhpFiles) . '</<pre>';
-		$xhtml .= "<h4>Templates Files</h4><pre>\t" . implode(PHP_EOL . "\t", $loadedTemplateFiles) . '</<pre>';
+		$xhtml .= "<h4>PHP Files</h4><pre>\t" . implode(PHP_EOL . "\t", $includedPhpFiles) . '</pre>';
+		$xhtml .= "<h4>Templates Files</h4><pre>\t" . implode(PHP_EOL . "\t", $loadedTemplateFiles) . '</pre>';
 
 		return $xhtml;
 	}

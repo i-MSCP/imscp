@@ -121,7 +121,7 @@ check_login('user');
 
 // If the feature is disabled, redirects in silent way
 if (!customerHasFeature('ftp') && !customerHasFeature('protected_areas')) {
-	redirectTo('index.php');
+	showBadRequestErrorPage();
 }
 
 /** @var $cfg iMSCP_Config_Handler_File */

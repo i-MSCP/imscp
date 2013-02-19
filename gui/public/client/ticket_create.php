@@ -49,10 +49,7 @@ check_login('user');
 /** @var $cfg iMSCP_Config_Handler_File */
 $cfg = iMSCP_Registry::get('config');
 
-// If the feature is disabled, redirects in silent way
-if (!customerHasFeature('support')) {
-	redirectTo('index.php');
-}
+customerHasFeature('support') or showBadRequestErrorPage();
 
 if (isset($_POST['uaction'])) {
 	if (empty($_POST['subject'])) {

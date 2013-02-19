@@ -584,38 +584,41 @@ function gen_manage_domain_query(&$search_query, &$count_query, $reseller_id,
 }
 
 /**
- * Must be documented.
+ * Check that reseller limits are not smaller than those defined by the given hosting plan
  *
- * @param  $err_msg
- * @param  int $reseller_id
- * @param  int $hpid
- * @param string $newprops
+ * @throws iMSCP_Exception
+ * @param int $resellerId Reseller unique identifier
+ * @param int|string $hp Hosting plan unique identifier or string representing hosting plan properties to check against
  * @return bool
  */
-function reseller_limits_check($reseller_id, $hpid, $newprops = '')
+function reseller_limits_check($resellerId, $hp)
 {
-    if (empty($newprops)) {
+    if (is_number($hp)) {
         // this hosting plan exists
-        if (isset($_SESSION["ch_hpprops"])) {
-            $props = $_SESSION["ch_hpprops"];
+        if (isset($_SESSION['ch_hpprops'])) {
+			$hostingPlanProperties = $_SESSION['ch_hpprops'];
         } else {
             $query = "SELECT `props` FROM `hosting_plans` WHERE `id` = ?";
-            $stmt = exec_query($query, $hpid);
-            $data = $stmt->fetchRow();
-            $props = $data['props'];
+            $stmt = exec_query($query, $hp);
+
+			if($stmt->recordCount()) {
+            	$data = $stmt->fetchRow();
+				$hostingPlanProperties = $data['props'];
+			} else {
+				throw new iMSCP_Exception('Hosting plan not found');
+			}
         }
     } else {
-        $props = $newprops;
-    }
+		$hostingPlanProperties = $hp;
+	}
 
     list(
-        , , $sub_new, $als_new, $mail_new, $ftp_new, $sql_db_new, $sql_user_new,
-        $traff_new, $disk_new
-        ) = explode(';', $props);
+		, , $sub_new, $als_new, $mail_new, $ftp_new, $sql_db_new, $sql_user_new, $traff_new, $disk_new
+    ) = explode(';', $hostingPlanProperties);
 
     $query = "SELECT * FROM `reseller_props` WHERE `reseller_id` = ?";
 
-    $res = exec_query($query, $reseller_id);
+    $res = exec_query($query, $resellerId);
     $data = $res->fetchRow();
     $dmn_current = $data['current_dmn_cnt'];
     $dmn_max = $data['max_dmn_cnt'];
@@ -655,9 +658,9 @@ function reseller_limits_check($reseller_id, $hpid, $newprops = '')
     if ($als_max != 0) {
         if ($als_new != -1) {
             if ($als_new == 0) {
-                set_page_message(tr('You have an aliases limit.<br />You cannot add an user with unlimited aliases.'), 'error');
+                set_page_message(tr('You have a domain aliases limit.<br />You cannot add an user with unlimited domain aliases.'), 'error');
             } else if ($als_current + $als_new > $als_max) {
-                set_page_message(tr('You Are Exceeding Your Alias Limit.'));
+                set_page_message(tr('You are exceeding you domain aliases Limit.'));
             }
         }
     }
@@ -683,7 +686,7 @@ function reseller_limits_check($reseller_id, $hpid, $newprops = '')
             if ($sql_db_new == 0) {
                 set_page_message(tr('You have a SQL databases limit.<br />You cannot add an user with unlimited SQL databases.'), 'error');
             } else if ($sql_db_current + $sql_db_new > $sql_db_max) {
-                set_page_message(tr('You are exceeding your SQL database limit.'), 'error');
+                set_page_message(tr('You are exceeding your SQL databases limit.'), 'error');
             }
         }
     }
@@ -695,24 +698,24 @@ function reseller_limits_check($reseller_id, $hpid, $newprops = '')
             } else if ($sql_db_new == -1) {
                 set_page_message(tr('You have disabled SQL databases for this user.<br />You cannot have SQL users here.'), 'error');
             } else if ($sql_user_current + $sql_user_new > $sql_user_max) {
-                set_page_message(tr('You are exceeding your SQL database limit.'), 'error');
+                set_page_message(tr('You are exceeding your SQL users limit.'), 'error');
             }
         }
     }
 
     if ($traff_max != 0) {
         if ($traff_new == 0) {
-            set_page_message(tr('You have a traffic limit.<br />You cannot add an user with unlimited traffic.'), 'error');
+            set_page_message(tr('You have a monthly traffic limit.<br />You cannot add an user with unlimited monthly traffic.'), 'error');
         } else if ($traff_current + $traff_new > $traff_max) {
-            set_page_message(tr('You are exceeding your traffic limit.'), 'error');
+            set_page_message(tr('You are exceeding your monthly traffic limit.'), 'error');
         }
     }
 
     if ($disk_max != 0) {
         if ($disk_new == 0) {
-            set_page_message(tr('You have a disk limit.<br />You cannot add an user with unlimited disk.'), 'error');
+            set_page_message(tr('You have a disk space limit.<br />You cannot add an user with unlimited disk space.'), 'error');
         } else if ($disk_current + $disk_new > $disk_max) {
-            set_page_message(tr('You are exceeding your disk limit.'), 'error');
+            set_page_message(tr('You are exceeding your disk space limit.'), 'error');
         }
     }
 

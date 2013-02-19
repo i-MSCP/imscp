@@ -95,7 +95,7 @@ $tpl->assign(
 		'TR_ADDED_BY' => tr('Added by'),
 		'TR_ADD_RIGHTS_BUTTON' => tr('Add permissions'),
 		'TR_SOFTWARE_RIGHTS' => tr('Software permissions'),
-		'TR_ADMIN_SOFTWARE_PAGE_TITLE' => tr('i-MSCP - Application Management (Permissions)')));
+		'TR_ADMIN_SOFTWARE_PAGE_TITLE' => tr('i-MSCP - Software Management (Permissions)')));
 
 generateNavigation($tpl);
 generatePageMessage($tpl);

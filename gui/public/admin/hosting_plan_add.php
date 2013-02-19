@@ -24,15 +24,463 @@
  * Portions created by the i-MSCP Team are Copyright (C) 2010-2013 by
  * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
  *
- * @category	i-MSCP
- * @package		iMSCP_Core
- * @subpackage	Admin
- * @copyright	2001-2006 by moleSoftware GmbH
- * @copyright	2006-2010 by ispCP | http://isp-control.net
- * @copyright	2010-2013 by i-MSCP | http://i-mscp.net
- * @author		ispCP Team
- * @author		i-MSCP Team
- * @link		http://i-mscp.net
+ * @category    i-MSCP
+ * @package     iMSCP_Core
+ * @subpackage  Reseller
+ * @copyright   2001-2006 by moleSoftware GmbH
+ * @copyright   2006-2010 by ispCP | http://isp-control.net
+ * @copyright   2010-2013 by i-MSCP | http://i-mscp.net
+ * @author      ispCP Team
+ * @author      i-MSCP Team
+ * @link        http://i-mscp.net
+ */
+
+/***********************************************************************************************************************
+ * Functions
+ */
+
+/**
+ * Generate PHP editor block
+ *
+ * @param iMSCP_pTemplate $tpl
+ * @param iMSCP_PHPini $phpini
+ * @return void
+ */
+function _generatePhpBlock($tpl, $phpini)
+{
+	/** @var $cfg iMSCP_Config_Handler_File */
+	$cfg = iMSCP_Registry::get('config');
+	$htmlChecked = $cfg->HTML_CHECKED;
+
+	$tplVars = array();
+
+	$tplVars['PHP_EDITOR_YES'] = ($phpini->getClPermVal('phpiniSystem') == 'yes') ? $htmlChecked : '';
+	$tplVars['PHP_EDITOR_NO'] = ($phpini->getClPermVal('phpiniSystem') != 'yes') ? $htmlChecked : '';
+	$tplVars['TR_PHP_EDITOR'] = tr('PHP Editor');
+	$tplVars['TR_PHP_EDITOR_SETTINGS'] = tr('PHP Editor Settings');
+	$tplVars['TR_SETTINGS'] = tr('Settings');
+	$tplVars['TR_DIRECTIVES_VALUES'] = tr('Directive values');
+	$tplVars['TR_FIELDS_OK'] = tr('All fields seem to be valid.');
+	$tplVars['TR_VALUE_ERROR'] = tr('Value for the PHP <strong>%%s</strong> directive must be between %%d and %%d.', true);
+	$tplVars['TR_CLOSE'] = tr('Close');
+	$tplVars['TR_PHP_POST_MAX_SIZE_DIRECTIVE'] = tr('PHP %s directive', true, '<b>post_max_size</b>');
+	$tplVars['PHP_UPLOAD_MAX_FILESIZE_DIRECTIVE'] = tr('PHP %s directive', true, '<b>upload_max_filezize</b>');
+	$tplVars['TR_PHP_MAX_EXECUTION_TIME_DIRECTIVE'] = tr('PHP %s directive', true, '<b>max_execution_time</b>');
+	$tplVars['TR_PHP_MAX_INPUT_TIME_DIRECTIVE'] = tr('PHP %s directive', true, '<b>max_input_time</b>');
+	$tplVars['TR_PHP_MEMORY_LIMIT_DIRECTIVE'] = tr('PHP %s directive', true, '<b>memory_limit</b>');
+	$tplVars['TR_MIB'] = tr('MiB');
+	$tplVars['TR_SEC'] = tr('Sec.');
+	$tplVars['TR_CAN_EDIT_ALLOW_URL_FOPEN'] = tr('Can edit the PHP %s directive', true, '<b>allow_url_fopen</b>');
+	$tplVars['ALLOW_URL_FOPEN_YES'] = ($phpini->getClPermVal('phpiniAllowUrlFopen') == 'yes') ? $htmlChecked : '';
+	$tplVars['ALLOW_URL_FOPEN_NO'] = ($phpini->getClPermVal('phpiniAllowUrlFopen') == 'no') ? $htmlChecked : '';
+	$tplVars['TR_CAN_EDIT_DISPLAY_ERRORS'] = tr('Can edit the PHP %s directive', true, '<b>display_errors</b>');
+	$tplVars['DISPLAY_ERRORS_YES'] = ($phpini->getClPermVal('phpiniDisplayErrors') == 'yes') ? $htmlChecked : '';
+	$tplVars['DISPLAY_ERRORS_NO'] = ($phpini->getClPermVal('phpiniDisplayErrors') == 'no') ? $htmlChecked : '';
+
+	if (PHP_SAPI == 'apache2handler') {
+		$tplVars['PHP_EDITOR_DISABLE_FUNCTIONS_BLOCK'] = '';
+	} else {
+		$tplVars['TR_CAN_EDIT_DISABLE_FUNCTIONS'] = tr('Can edit the PHP %s directive', true, '<b>disable_functions</b>');
+		$tplVars['DISABLE_FUNCTIONS_YES'] = ($phpini->getClPermVal('phpiniDisableFunctions') == 'yes') ? $htmlChecked : '';
+		$tplVars['DISABLE_FUNCTIONS_NO'] = ($phpini->getClPermVal('phpiniDisableFunctions') == 'no') ? $htmlChecked : '';
+		$tplVars['TR_ONLY_EXEC'] = tr('Only exec');
+		$tplVars['DISABLE_FUNCTIONS_EXEC'] = ($phpini->getClPermVal('phpiniDisableFunctions') == 'exec') ? $htmlChecked : '';
+	}
+
+	$tplVars['TR_PERMISSIONS'] = tr('Permissions');
+	$tplVars['TR_ONLY_EXEC'] = tr('Only exec');
+	$tplVars['POST_MAX_SIZE'] = $phpini->getDataVal('phpiniPostMaxSize');
+	$tplVars['UPLOAD_MAX_FILESIZE'] = $phpini->getDataVal('phpiniUploadMaxFileSize');
+	$tplVars['MAX_EXECUTION_TIME'] = $phpini->getDataVal('phpiniMaxExecutionTime');
+	$tplVars['MAX_INPUT_TIME'] = $phpini->getDataVal('phpiniMaxInputTime');
+	$tplVars['MEMORY_LIMIT'] = $phpini->getDataVal('phpiniMemoryLimit');
+
+	$tplVars['PHP_DIRECTIVES_MAX_VALUES'] = json_encode(
+		array(
+			'post_max_size' => 10000,
+			'upload_max_filesize' => 10000,
+			'max_execution_time' => 10000,
+			'max_input_time' => 10000,
+			'memory_limit' => 10000
+		)
+	);
+
+	$tpl->assign($tplVars);
+}
+
+/**
+ * Generate form
+ *
+ * @param iMSCP_pTemplate $tpl
+ * @param iMSCP_PHPini $phpini
+ * @return void
+ */
+function generateForm($tpl, $phpini)
+{
+	/** @var $cfg iMSCP_Config_Handler_File */
+	$cfg = iMSCP_Registry::get('config');
+	$htmlChecked = $cfg->HTML_CHECKED;
+
+	$tpl->assign(
+		array(
+			'HP_NAME_VALUE' => '',
+			'HP_DESCRIPTION_VALUE' => '',
+
+			'TR_MAX_SUB_LIMITS' => '0',
+			'TR_MAX_ALS_VALUES' => '0',
+			'HP_MAIL_VALUE' => '0',
+			'HP_FTP_VALUE' => '0',
+			'HP_SQL_DB_VALUE' => '0',
+			'HP_SQL_USER_VALUE' => '0',
+			'HP_TRAFF_VALUE' => '0',
+			'HP_DISK_VALUE' => '0',
+
+			'TR_PHP_YES' => '',
+			'TR_PHP_NO' => $htmlChecked,
+			'TR_CGI_YES' => '',
+			'TR_CGI_NO' => $htmlChecked,
+			'TR_DNS_YES' => '',
+			'TR_DNS_NO' => $htmlChecked,
+			'VL_BACKUPD' => '',
+			'VL_BACKUPS' => '',
+			'VL_BACKUPF' => '',
+			'VL_BACKUPN' => $htmlChecked,
+			'TR_SOFTWARE_YES' => '',
+			'TR_SOFTWARE_NO' => $htmlChecked,
+			'TR_EXTMAIL_YES' => '',
+			'TR_EXTMAIL_NO' => $htmlChecked,
+
+			'HP_PRICE' => '0.00',
+			'HP_SETUP_FEE' => '0.00',
+			'HP_VAT' => '0.00',
+			'HP_CURRENCY' => '',
+			'TR_STATUS_YES' => $htmlChecked,
+			'TR_STATUS_NO' => '',
+
+			'HP_TOS_VALUE' => ''
+		)
+	);
+
+	_generatePhpBlock($tpl, $phpini);
+
+	$tpl->assign('HP_PAYMENT_DISABLED', '');
+
+	foreach (
+		array(
+			'monthly' => tr('Monthly'), 'annually' => tr('Annually'), 'biennially' => tr('Biennially'),
+			'triennially' => tr('Triennially')
+		) as $period => $trPeriod
+	) {
+		$tpl->assign(
+			array(
+				'HP_PAYMENT_VALUE' => $period,
+				'TR_HP_PAYMENT_VALUE' => $trPeriod,
+				'HP_PAYMENT_SELECTED' => ($period == 'monthly') ? $cfg->HTML_SELECTED : ''
+			)
+		);
+
+		$tpl->parse('HP_PAYMENT_OPTION', '.hp_payment_option');
+	}
+}
+
+/**
+ * Generate error form
+ *
+ * @param iMSCP_pTemplate $tpl
+ * @param iMSCP_PHPini $phpini
+ * @return void
+ */
+function generateErrorForm($tpl, $phpini)
+{
+	global $hpName, $description, $hpSub, $hpAls, $hpMail, $hpFtp, $hpSqlDb, $hpSqlUsers, $hpTraffic, $hpDiskspace,
+		   $hpPhp, $hpCgi, $hpBackup, $hpDns, $hpSoftwaresInstaller, $hpExtMail, $price, $setupFee, $vat, $currency,
+		   $payment, $status,  $tos;
+
+	/** @var $cfg iMSCP_Config_Handler_File */
+	$cfg = iMSCP_Registry::get('config');
+	$htmlChecked = $cfg->HTML_CHECKED;
+
+	$tpl->assign(
+		array(
+			'HP_NAME_VALUE' => tohtml($hpName),
+			'HP_DESCRIPTION_VALUE' => tohtml($description),
+
+			'TR_MAX_SUB_LIMITS' => tohtml($hpSub),
+			'TR_MAX_ALS_VALUES' => tohtml($hpAls),
+			'HP_MAIL_VALUE' => tohtml($hpMail),
+			'HP_FTP_VALUE' => tohtml($hpFtp),
+			'HP_SQL_DB_VALUE' => tohtml($hpSqlDb),
+			'HP_SQL_USER_VALUE' => tohtml($hpSqlUsers),
+			'HP_TRAFF_VALUE' => tohtml($hpTraffic),
+			'HP_DISK_VALUE' => tohtml($hpDiskspace),
+
+			'TR_PHP_YES' => ($hpPhp == '_yes_') ? $htmlChecked : '',
+			'TR_PHP_NO' => ($hpPhp == '_no_') ? $cfg->HTML_CHECKED : '',
+			'TR_CGI_YES' => ($hpCgi == '_yes_') ? $htmlChecked : '',
+			'TR_CGI_NO' => ($hpCgi == '_no_') ? $htmlChecked : '',
+			'TR_DNS_YES' => ($hpDns == '_yes_') ? $htmlChecked : '',
+			'TR_DNS_NO' => ($hpDns == '_no_') ? $htmlChecked : '',
+			'VL_BACKUPD' => ($hpBackup == '_dmn_') ? $htmlChecked : '',
+			'VL_BACKUPS' => ($hpBackup == '_sql_') ? $htmlChecked : '',
+			'VL_BACKUPF' => ($hpBackup == '_full_') ? $htmlChecked : '',
+			'VL_BACKUPN' => ($hpBackup == '_no_') ? $htmlChecked : '',
+			'TR_SOFTWARE_YES' => ($hpSoftwaresInstaller == '_yes_') ? $htmlChecked : '',
+			'TR_SOFTWARE_NO' => ($hpSoftwaresInstaller == '_no_') ? $htmlChecked : '',
+			'TR_EXTMAIL_YES' => ($hpExtMail == '_yes_') ? $htmlChecked : '',
+			'TR_EXTMAIL_NO' => ($hpExtMail == '_no_') ? $htmlChecked : '',
+
+			'HP_PRICE' => tohtml($price),
+			'HP_SETUP_FEE' => tohtml($setupFee),
+			'HP_CURRENCY' => tohtml($currency),
+			'HP_VAT' => tohtml($vat),
+
+			'HP_TOS_VALUE' => tohtml($tos),
+
+			'TR_STATUS_YES' => ($status) ? $htmlChecked : '',
+			'TR_STATUS_NO' => (!$status) ? $htmlChecked : ''
+		)
+	);
+
+	_generatePhpBlock($tpl, $phpini);
+
+	$tpl->assign('HP_PAYMENT_DISABLED', '');
+
+	foreach (
+		array(
+			'monthly' => tr('Monthly'), 'annually' => tr('Annually'), 'biennially' => tr('Biennially'),
+			'triennially' => tr('Triennially')
+		) as $period => $trPeriod
+	) {
+		$tpl->assign(
+			array(
+				'HP_PAYMENT_VALUE' => $period,
+				'TR_HP_PAYMENT_VALUE' => $trPeriod,
+				'HP_PAYMENT_SELECTED' => ($period == $payment) ? $cfg->HTML_SELECTED : ''
+			)
+		);
+
+		$tpl->parse('HP_PAYMENT_OPTION', '.hp_payment_option');
+	}
+}
+
+/**
+ * Check input data
+ *
+ * @param iMSCP_PHPini $phpini
+ * @return bool TRUE if data are valid, FALSE otherwise
+ */
+function checkInputData($phpini)
+{
+	global $hpName, $description, $hpSub, $hpAls, $hpMail, $hpFtp, $hpSqlDb, $hpSqlUsers, $hpTraffic, $hpDiskspace,
+		   $hpPhp, $hpCgi, $hpDns, $hpBackup, $hpSoftwaresInstaller, $hpExtMail, $price, $setupFee, $vat, $currency,
+		   $payment, $status, $tos;
+
+	$hpName = isset($_POST['hp_name']) ? clean_input($_POST['hp_name']) : '';
+	$description = isset($_POST['hp_description']) ? clean_input($_POST['hp_description']) : '';
+
+	$hpSub = isset($_POST['hp_sub']) ? clean_input($_POST['hp_sub']) : '-1';
+	$hpAls = isset($_POST['hp_als']) ? clean_input($_POST['hp_als']) : '-1';
+	$hpMail = isset($_POST['hp_mail']) ? clean_input($_POST['hp_mail']) : '-1';
+	$hpFtp = isset($_POST['hp_ftp']) ? clean_input($_POST['hp_ftp']) : '-1';
+	$hpSqlDb = isset($_POST['hp_sql_db']) ? clean_input($_POST['hp_sql_db']) : '-1';
+	$hpSqlUsers = isset($_POST['hp_sql_user']) ? clean_input($_POST['hp_sql_user']) : '-1';
+	$hpTraffic = isset($_POST['hp_traff']) ? clean_input($_POST['hp_traff']) : '';
+	$hpDiskspace = isset($_POST['hp_disk']) ? clean_input($_POST['hp_disk']) : '';
+
+	$hpPhp = isset($_POST['hp_php']) ? clean_input($_POST['hp_php']) : '_no_';
+	$hpCgi = isset($_POST['hp_cgi']) ? clean_input($_POST['hp_cgi']) : '_no_';
+	$hpDns = isset($_POST['hp_dns']) ? clean_input($_POST['hp_dns']) : '_no_';
+	$hpBackup = isset($_POST['hp_backup']) ? clean_input($_POST['hp_backup']) : '_no_';
+	$hpSoftwaresInstaller = isset($_POST['hp_softwares_installer']) ? clean_input($_POST['hp_softwares_installer']) : '_no_';
+	$hpExtMail = isset($_POST['hp_external_mail']) ? clean_input($_POST['hp_external_mail']) : '_no_';
+
+	$price = isset($_POST['hp_price']) ? clean_input($_POST['hp_price']) : '0';
+	$setupFee = isset($_POST['hp_setup_fee']) ? clean_input($_POST['hp_setup_fee']) : '0';
+	$vat = isset($_POST['hp_vat']) ? clean_input($_POST['hp_vat']) : '0';
+	$currency = isset($_POST['hp_currency']) ? clean_input($_POST['hp_currency']) : '';
+	$payment = isset($_POST['hp_payment']) ? clean_input($_POST['hp_payment']) : 'monthly';
+
+	$status = isset($_POST['hp_status']) ? clean_input($_POST['hp_status']) : '0';
+	$tos = isset($_POST['hp_tos']) ? clean_input($_POST['hp_tos']) : '';
+
+	if (!in_array($payment, array('monthly', 'annually', 'biennially', 'triennially'))) $payment = 'monthly';
+
+	$hpPhp = ($hpPhp == '_yes_') ? '_yes_' : '_no_';
+	$hpCgi = ($hpCgi == '_yes_') ? '_yes_' : '_no_';
+	$hpDns = ($hpDns == '_yes_') ? '_yes_' : '_no_';
+	$hpBackup = (in_array($hpBackup, array('_full_', '_dmn_', '_sql_'))) ? $hpBackup : '_no_';
+	$hpSoftwaresInstaller = ($hpSoftwaresInstaller == '_yes_') ? '_yes_' : '_no_';
+	$hpExtMail = ($hpExtMail == '_yes_') ? '_yes_' : '_no_';
+
+	if ($hpName == '') set_page_message(tr('Name cannot be empty.'), 'error');
+	if ($description == '') set_page_message(tr('Description cannot be empty.'), 'error');
+
+	if (!imscp_limit_check($hpSub, -1)) {
+		set_page_message(tr('Incorrect subdomains limit.'), 'error');
+	}
+
+	if (!imscp_limit_check($hpAls, -1)) {
+		set_page_message(tr('Incorrect domain aliases limit.'), 'error');
+	}
+
+	if (!imscp_limit_check($hpMail, -1)) {
+		set_page_message(tr('Incorrect mail accounts limit.'), 'error');
+	}
+
+	if (!imscp_limit_check($hpFtp, -1)) {
+		set_page_message(tr('Incorrect FTP accounts limit.'), 'error');
+	}
+
+	if (!imscp_limit_check($hpSqlDb, -1)) {
+		set_page_message(tr('Incorrect SQL users limit.'), 'error');
+	} else if ($hpSqlUsers != -1 && $hpSqlDb == -1) {
+		set_page_message(tr('SQL users limit is <i>disabled</i>.'), 'error');
+	}
+
+	if (!imscp_limit_check($hpSqlUsers, -1)) {
+		set_page_message(tr('Incorrect SQL databases limit.'), 'error');
+	} else if ($hpSqlUsers == -1 && $hpSqlDb != -1) {
+		set_page_message(tr('SQL databases limit is not <i>disabled</i>.'), 'error');
+	}
+
+	if (!imscp_limit_check($hpTraffic, null)) {
+		set_page_message(tr('Incorrect monthly traffic limit.'), 'error');
+	}
+
+	if (!imscp_limit_check($hpDiskspace, null)) {
+		set_page_message(tr('Incorrect disk space limit.'), 'error');
+	}
+
+	if (isset($_POST['phpiniSystem'])) {
+		$phpini->setClPerm('phpiniSystem', clean_input($_POST['phpiniSystem']));
+
+		if (isset($_POST['phpini_perm_allow_url_fopen'])) {
+			$phpini->setClPerm('phpiniAllowUrlFopen', clean_input($_POST['phpini_perm_allow_url_fopen']));
+		}
+
+		if (isset($_POST['phpini_perm_display_errors'])) {
+			$phpini->setClPerm('phpiniDisplayErrors', clean_input($_POST['phpini_perm_display_errors']));
+		}
+
+		if (PHP_SAPI != 'apache2handler' && isset($_POST['phpini_perm_disable_functions'])) {
+			$phpini->setClPerm('phpiniDisableFunctions', clean_input($_POST['phpini_perm_disable_functions']));
+		}
+
+		if (
+			isset($_POST['post_max_size']) &&
+			! $phpini->setData('phpiniPostMaxSize', clean_input($_POST['post_max_size']))
+		) {
+			set_page_message(tr('Value for the PHP %s directive is out of range.', 'post_max_size'), 'error');
+		}
+
+		if (
+			isset($_POST['upload_max_filesize']) &&
+			! $phpini->setData('phpiniUploadMaxFileSize', clean_input($_POST['upload_max_filesize']))
+		) {
+			set_page_message(tr('Value for the PHP %s directive is out of range.', 'upload_max_filesize'), 'error');
+		}
+
+		if (
+			isset($_POST['max_execution_time']) &&
+			! $phpini->setData('phpiniMaxExecutionTime', clean_input($_POST['max_execution_time']))
+		) {
+			set_page_message(tr('Value for the PHP %s directive is out of range.', 'max_execution_time'), 'error');
+		}
+
+		if (
+			isset($_POST['max_input_time']) &&
+			! $phpini->setData('phpiniMaxInputTime', clean_input($_POST['max_input_time']))
+		) {
+			set_page_message(tr('Value for the PHP %s directive is out of range.', 'max_input_time'), 'error');
+		}
+
+		if (
+			isset($_POST['memory_limit']) &&
+			! $phpini->setData('phpiniMemoryLimit', clean_input($_POST['memory_limit']))
+		) {
+			set_page_message(tr('Value for the PHP %s directive is out of range.', 'memory_limit'), 'error');
+		}
+	}
+
+	if ($hpPhp == '_no_' && $hpSoftwaresInstaller == '_yes_') {
+		set_page_message(tr('The software installer require the PHP support.'), 'error');
+	}
+
+	if (!is_numeric($price)) {
+		set_page_message(tr('Price must be a number.'), 'error');
+	}
+
+	if (!is_numeric($setupFee)) {
+		set_page_message(tr('Setup fee must be a number.'), 'error');
+	}
+
+	if (!is_numeric($vat)) {
+		set_page_message(tr('Vat must be a number.'), 'error');
+	}
+
+	if (!Zend_Session::namespaceIsset('pageMessages')) {
+		return true;
+	} else {
+		return false;
+	}
+}
+
+/**
+ * Save new hosting plan
+ *
+ * @param int $adminId Admin unique identifier
+ * @param iMSCP_PHPini $phpini
+ * @return bool TRUE on success, FALSE otherwise
+ */
+function saveData($adminId, $phpini)
+{
+	global $hpName, $description, $hpSub, $hpAls, $hpMail, $hpFtp, $hpSqlDb, $hpSqlUsers, $hpTraffic, $hpDiskspace,
+		   $hpPhp, $hpCgi, $hpDns, $hpBackup, $hpSoftwaresInstaller, $hpExtMail, $price, $setupFee, $currency, $vat,
+		   $payment, $status, $tos;
+
+	$query = "
+		SELECT
+			`id`
+		FROM
+			`hosting_plans`
+		WHERE
+			`name` = ?
+		AND
+			`reseller_id` IN(SELECT `admin_id` FROM `admin` WHERE `admin_type` = 'admin')
+		LIMIT 1
+	";
+	$stmt = exec_query($query, array($hpName));
+
+	if ($stmt->rowCount()) {
+		set_page_message(tr('An hosting plan with same name already exists.'), 'error');
+		return false;
+	}
+
+	$hpProps = "$hpPhp;$hpCgi;$hpSub;$hpAls;$hpMail;$hpFtp;$hpSqlDb;$hpSqlUsers;$hpTraffic;$hpDiskspace;$hpBackup;";
+	$hpProps .= "$hpDns;$hpSoftwaresInstaller";
+	$hpProps .= ';' . $phpini->getClPermVal('phpiniSystem') . ';' . $phpini->getClPermVal('phpiniAllowUrlFopen');
+	$hpProps .= ';' . $phpini->getClPermVal('phpiniDisplayErrors') . ';' . $phpini->getClPermVal('phpiniDisableFunctions');
+	$hpProps .= ';' . $phpini->getDataVal('phpiniPostMaxSize') . ';' . $phpini->getDataVal('phpiniUploadMaxFileSize');
+	$hpProps .= ';' . $phpini->getDataVal('phpiniMaxExecutionTime') . ';' . $phpini->getDataVal('phpiniMaxInputTime');
+	$hpProps .= ';' . $phpini->getDataVal('phpiniMemoryLimit') . ';' . $hpExtMail;
+
+	$query = "
+		INSERT INTO
+			`hosting_plans`(
+				`reseller_id`, `name`, `description`, `props`, `price`, `setup_fee`, `value`, `vat`, `payment`,
+					`status`, `tos`
+			) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+	";
+	exec_query(
+		$query,
+		array($adminId, $hpName, $description, $hpProps, $price, $setupFee, $currency, $vat, $payment, $status, $tos)
+	);
+
+	return true;
+}
+
+/***********************************************************************************************************************
+ * Functions
  */
 
 // Include core library
@@ -45,88 +493,102 @@ check_login('admin');
 /** @var $cfg iMSCP_Config_Handler_File */
 $cfg = iMSCP_Registry::get('config');
 
-/* @var $phpini iMSCP_PHPini */
-$phpini = iMSCP_PHPini::getInstance();
-
-if (isset($cfg->HOSTING_PLANS_LEVEL) && $cfg->HOSTING_PLANS_LEVEL !== 'admin') {
-	redirectTo('index.php');
+if (isset($cfg->HOSTING_PLANS_LEVEL) && $cfg->HOSTING_PLANS_LEVEL != 'admin') {
+	showBadRequestErrorPage();
 }
 
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic(
 	array(
 		'layout' => 'shared/layouts/ui.tpl',
-		'page' => 'admin/hosting_plan_add.tpl',
-		'page_message' => 'layout'));
-		
+		'page' => 'shared/partials/forms/hosting_plan_add.tpl',
+		'page_message' => 'layout',
+		'subdomain_add' => 'page',
+		'alias_add' => 'page',
+		'mail_add' => 'page',
+		'ftp_add' => 'page',
+		'sql_db_add' => 'page',
+		'sql_user_add' => 'page',
+		'backup_support' => 'page',
+		'php_editor_js' => 'page',
+		'php_editor_block' => 'page',
+		'php_editor_permissions_block' => 'php_editor_block',
+		'php_editor_allow_url_fopen_block' => 'php_editor_permissions_block',
+		'php_editor_display_errors_block' => 'php_editor_permissions_block',
+		'php_editor_disable_functions_block' => 'php_editor_permissions_block',
+		'php_editor_default_values_block' => 'php_editor_block',
+		't_software_support' => 'page',
+		'hp_payment_option' => 'page',
+	)
+);
+
+/* @var $phpini iMSCP_PHPini */
+$phpini = iMSCP_PHPini::getInstance();
+
+if (!empty($_POST)) {
+	if (checkInputData($phpini) && saveData($_SESSION['user_id'], $phpini)) {
+		set_page_message(tr('Hosting plan successfully created.'), 'success');
+		redirectTo('hosting_plan.php');
+	} else {
+		generateErrorForm($tpl, $phpini);
+	}
+} else {
+	generateForm($tpl, $phpini);
+}
+
 generateNavigation($tpl);
-		 
+
 $tpl->assign(
 	array(
-		 'TR_PAGE_TITLE' => tr('i-MSCP - Admin / Add hosting plan'),
-		 'THEME_CHARSET' => tr('encoding'),
-		 'ISP_LOGO' => layout_getUserLogo(),
-		 'TR_ADD_HOSTING_PLAN' => tr('Add hosting plan'),
-		 'TR_HOSTING_PLAN_PROPS' => tr('Hosting plan properties'),
-		 'TR_TEMPLATE_NAME' => tr('Template name'),
-		 'TR_MAX_SUBDOMAINS' => tr('Max subdomains<br/><i>(-1 disabled, 0 unlimited)</i>'),
-		 'TR_MAX_ALIASES' => tr('Max aliases<br/><i>(-1 disabled, 0 unlimited)</i>'),
-		 'TR_MAX_MAILACCOUNTS' => tr('Mail accounts limit<br/><i>(-1 disabled, 0 unlimited)</i>'),
-		 'TR_MAX_FTP' => tr('FTP accounts limit<br/><i>(-1 disabled, 0 unlimited)</i>'),
-		 'TR_MAX_SQL' => tr('SQL databases limit<br/><i>(-1 disabled, 0 unlimited)</i>'),
-		 'TR_MAX_SQL_USERS' => tr('SQL users limit<br/><i>(-1 disabled, 0 unlimited)</i>'),
-		 'TR_MAX_TRAFFIC' => tr('Traffic limit [MiB]<br/><i>(0 unlimited)</i>'),
-		 'TR_DISK_LIMIT' => tr('Disk limit [MiB]<br/><i>(0 unlimited)</i>'),
-         'TR_EXTMAIL' => tr('External mail server'),
-		 'TR_PHP' => tr('PHP'),
-		 'TR_SOFTWARE_SUPP' => tr('Softwares installer'),
-		 'TR_CGI' => tr('CGI'),
-		 'TR_DNS' => tr('Custom DNS records'),
-		 'TR_BACKUP' => tr('Backup'),
-		 'TR_BACKUP_DOMAIN' => tr('Domain'),
-		 'TR_BACKUP_SQL' => tr('SQL'),
-		 'TR_BACKUP_FULL' => tr('Full'),
-		 'TR_BACKUP_NO' => tr('No'),
-		 'TR_APACHE_LOGS' => tr('Apache logfiles'),
-		 'TR_AWSTATS' => tr('AwStats'),
-		 'TR_YES' => tr('yes'),
-		 'TR_NO' => tr('no'),
-		 'TR_BILLING_PROPS' => tr('Billing Settings'),
-		 'TR_PRICE' => tr('Price'),
-		 'TR_SETUP_FEE' => tr('Setup fee'),
-		 'TR_VALUE' => tr('Currency'),
-		 'TR_PAYMENT' => tr('Payment period'),
-		 'TR_STATUS' => tr('Available for purchasing'),
-		 'TR_TEMPLATE_DESCRIPTON' => tr('Description'),
-		 'TR_EXAMPLE' => tr('(e.g. EUR)'),
-		 // BEGIN TOS
-		 'TR_TOS_PROPS' => tr('Terms of Service'),
-		 'TR_TOS_NOTE' => tr('<b>Optional:</b> Leave this field empty if you do not want terms of service for this hosting plan.'),
-		 'TR_TOS_DESCRIPTION' => tr('Text Only'),
-		 // END TOS
-		 'TR_PHPINI_SYSTEM' => tr('PHP Editor'),
-		 'TR_USER_EDITABLE_EXEC' => tr('Only exec'),
-		 'TR_PHPINI_AL_ALLOW_URL_FOPEN' => tr('Can edit the PHP %s directive', true, '<b>allow_url_fopen</b>'),
-		 'TR_PHPINI_AL_DISPLAY_ERRORS' => tr('Can edit the PHP %s directive', true, '<b>display_errors</b>'),
-		 'TR_PHPINI_AL_DISABLE_FUNCTIONS' => tr('Can edit the PHP %s directive', true, '<b>disable_functions</b>'),
-		 'TR_PHPINI_POST_MAX_SIZE' => tr('PHP %s directive', true, '<b>post_max_size</b>'),
-		 'TR_PHPINI_UPLOAD_MAX_FILESIZE' => tr('PHP %s directive', true, '<b>upload_max_filezize</b>'),
-		 'TR_PHPINI_MAX_EXECUTION_TIME' => tr('PHP %s directive', true, '<b>max_execution_time</b>'),
-		 'TR_PHPINI_MAX_INPUT_TIME' => tr('PHP %s directive', true, '<b>max_input_time</b>'),
-		 'TR_PHPINI_MEMORY_LIMIT' => tr('PHP %s directive', true, '<b>memory_limit</b>'),
-		 'TR_MIB' => tr('MiB'),
-		 'TR_SEC' => tr('Sec.'),
-		 'TR_ADD_PLAN' => tr('Add plan')));
+		'TR_PAGE_TITLE' => tr('i-MSCP - Admin / Add hosting plan'),
+		'THEME_CHARSET' => tr('encoding'),
+		'ISP_LOGO' => layout_getUserLogo(),
 
-if (isset($_POST['uaction']) && ('add_plan' === $_POST['uaction'])) {
-	// Process data
-	if (check_data_correction($phpini)) {
-		save_data_to_db($_SESSION['user_id'], $phpini);
-	}
-	gen_data_ahp_page($tpl, $phpini);
-} else {
-	gen_empty_ahp_page($tpl, $phpini);
-}
+		'TR_ADD_HOSTING_PLAN' => tr('Add hosting plan'),
+		'TR_HOSTING_PLAN_PROPS' => tr('Hosting plan properties'),
+
+		'TR_NAME' => tr('Name'),
+		'TR_DESCRIPTON' => tr('Description'),
+
+		'TR_MAX_SUBDOMAINS' => tr('Max subdomains<br/><i>(-1 disabled, 0 unlimited)</i>'),
+		'TR_MAX_ALIASES' => tr('Max aliases<br/><i>(-1 disabled, 0 unlimited)</i>'),
+		'TR_MAX_MAILACCOUNTS' => tr('Mail accounts limit<br/><i>(-1 disabled, 0 unlimited)</i>'),
+		'TR_MAX_FTP' => tr('FTP accounts limit<br/><i>(-1 disabled, 0 unlimited)</i>'),
+		'TR_MAX_SQL' => tr('SQL databases limit<br/><i>(-1 disabled, 0 unlimited)</i>'),
+		'TR_MAX_SQL_USERS' => tr('SQL users limit<br/><i>(-1 disabled, 0 unlimited)</i>'),
+		'TR_MAX_TRAFFIC' => tr('Monthly traffic limit [MiB]<br/><i>(0 unlimited)</i>'),
+		'TR_DISK_LIMIT' => tr('Disk space limit [MiB]<br/><i>(0 unlimited)</i>'),
+
+		'TR_PHP' => tr('PHP'),
+		'TR_CGI' => tr('CGI'),
+		'TR_DNS' => tr('Custom DNS records'),
+		'TR_BACKUP' => tr('Backup'),
+		'TR_BACKUP_DOMAIN' => tr('Domain'),
+		'TR_BACKUP_SQL' => tr('Sql'),
+		'TR_BACKUP_FULL' => tr('Full'),
+		'TR_BACKUP_NO' => tr('No'),
+		'TR_SOFTWARE_SUPP' => tr('Software installer'),
+		'TR_EXTMAIL' => tr('External mail server'),
+
+		'TR_BILLING_PROPS' => tr('Billing Settings'),
+		'TR_VAT' => tr('Vat'),
+		'TR_PRICE' => tr('Price'),
+		'TR_SETUP_FEE' => tr('Setup fee'),
+		'TR_CURRENCY' => tr('Currency'),
+		'TR_PAYMENT' => tr('Billing cycle'),
+		'TR_STATUS' => tr('Available for purchasing'),
+		'TR_TAX_FREE' => tr('Excl. tax'),
+		'TR_EXAMPLE' => tr('(e.g. EUR)'),
+
+		'TR_TOS_PROPS' => tr('Terms of Service'),
+		'TR_TOS_NOTE' => tr('<b>Optional:</b> Leave this field empty if you do not want terms of service for this hosting plan.'),
+		'TR_TOS_DESCRIPTION' => tr('Text Only'),
+
+		'TR_YES' => tr('yes'),
+		'TR_NO' => tr('no'),
+		'TR_ADD_PLAN' => tr('Add')
+	)
+);
 
 generatePageMessage($tpl);
 
@@ -135,340 +597,3 @@ $tpl->parse('LAYOUT_CONTENT', 'page');
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAdminScriptEnd, array('templateEngine' => $tpl));
 
 $tpl->prnt();
-
-/**
- * Generate empty form
- *
- * @param iMSCP_pTemplate $tpl
- * @param iMSCP_PHPini $phpini
- */
-function gen_empty_ahp_page($tpl, $phpini)
-{
-	$cfg = iMSCP_Registry::get('config');
-	$checked = $cfg->HTML_CHECKED;
-
-	$tpl->assign(
-		array(
-			 'HP_NAME_VALUE' => '',
-			 'TR_MAX_SUB_LIMITS' => '',
-			 'TR_MAX_ALS_VALUES' => '',
-			 'HP_MAIL_VALUE' => '',
-			 'HP_FTP_VALUE' => '',
-			 'HP_SQL_DB_VALUE' => '',
-			 'HP_SQL_USER_VALUE' => '',
-			 'HP_TRAFF_VALUE' => '',
-			 'HP_PRICE' => '',
-			 'HP_SETUPFEE' => '',
-			 'HP_VELUE' => '',
-			 'HP_PAYMENT' => '',
-			 'HP_DESCRIPTION_VALUE' => '',
-             'TR_EXTMAIL_YES' => '',
-             'TR_EXTMAIL_NO' => $checked,
-			 'TR_PHP_YES' => '',
-			 'TR_PHP_NO' => $checked,
-			 'VL_SOFTWAREY' => '',
-			 'VL_SOFTWAREN' => $checked,
-			 'TR_CGI_YES' => '',
-			 'TR_CGI_NO' => $checked,
-			 'VL_BACKUPD' => '',
-			 'VL_BACKUPS' => '',
-			 'VL_BACKUPF' => '',
-			 'VL_BACKUPN' => $checked,
-			 'TR_DNS_YES' => '',
-			 'TR_DNS_NO' => $checked,
-			 'HP_DISK_VALUE' => '',
-			 'TR_STATUS_YES' => $checked,
-			 'TR_STATUS_NO' => '',
-			 'HP_TOS_VALUE' => '',
-			 'PHPINI_SYSTEM_YES' => $checked,
-			 'PHPINI_SYSTEM_NO' => '',
-			 'PHPINI_AL_ALLOW_URL_FOPEN_YES' => $checked,
-			 'PHPINI_AL_ALLOW_URL_FOPEN_NO' => '',
-			 'PHPINI_AL_DISPLAY_ERRORS_YES' => $checked,
-			 'PHPINI_AL_DISPLAY_ERRORS_NO' => '',
-			 'PHPINI_AL_DISABLE_FUNCTIONS_YES' => '',
-			 'PHPINI_AL_DISABLE_FUNCTIONS_NO' => '',
-			 'PHPINI_AL_DISABLE_FUNCTIONS_EXEC' => $checked,
-			 'PHPINI_POST_MAX_SIZE' => $phpini->getDataVal('phpiniPostMaxSize'), //Fill with default php.ini values
-			 'PHPINI_UPLOAD_MAX_FILESIZE' => $phpini->getDataVal('phpiniUploadMaxFileSize'),
-			 'PHPINI_MAX_EXECUTION_TIME' => $phpini->getDataVal('phpiniMaxExecutionTime'),
-			 'PHPINI_MAX_INPUT_TIME' => $phpini->getDataVal('phpiniMaxInputTime'),
-			 'PHPINI_MEMORY_LIMIT' => $phpini->getDataVal('phpiniMemoryLimit'),
-
-		)
-	);
-}
-
-/**
- * Show last entered data for new hp
- *
- * @param iMSCP_pTemplate $tpl
- * @param iMSCP_PHPini $phpini
- */
-function gen_data_ahp_page($tpl, $phpini)
-{
-	global $hp_name, $description, $hp_php, $hp_cgi, $hp_sub, $hp_als, $hp_mail, $hp_ftp, $hp_sql_db, $hp_sql_user,
-		   $hp_traff, $hp_disk, $price, $setup_fee, $value, $payment, $status, $hp_backup, $hp_dns, $hp_allowsoftware,
-		   $hp_ext_mail, $tos;
-
-	/** @var $cfg iMSCP_Config_Handler_File */
-	$cfg = iMSCP_Registry::get('config');
-
-	$tpl->assign(
-		array(
-			 'HP_NAME_VALUE' => tohtml($hp_name),
-			 'TR_MAX_SUB_LIMITS' => tohtml($hp_sub),
-			 'TR_MAX_ALS_VALUES' => tohtml($hp_als),
-			 'HP_MAIL_VALUE' => tohtml($hp_mail),
-			 'HP_FTP_VALUE' => tohtml($hp_ftp),
-			 'HP_SQL_DB_VALUE' => tohtml($hp_sql_db),
-			 'HP_SQL_USER_VALUE' => tohtml($hp_sql_user),
-			 'HP_TRAFF_VALUE' => tohtml($hp_traff),
-			 'HP_DISK_VALUE' => tohtml($hp_disk),
-			 'HP_DESCRIPTION_VALUE' => tohtml($description),
-			 'HP_PRICE' => tohtml($price),
-			 'HP_SETUPFEE' => tohtml($setup_fee),
-			 'HP_VELUE' => tohtml($value),
-			 'HP_PAYMENT' => tohtml($payment),
-			 'HP_TOS_VALUE' => tohtml($tos)
-		)
-	);
-
-	$checked = $cfg->HTML_CHECKED;
-
-	$tpl->assign(
-		array(
-             'TR_EXTMAIL_YES' => ($hp_ext_mail == '_yes_') ? $checked : '',
-             'TR_EXTMAIL_NO' => ($hp_ext_mail == '_no_') ? $checked : '',
-			 'TR_PHP_YES' => ($hp_php == '_yes_') ? $checked : '',
-			 'TR_PHP_NO' => ($hp_php == '_no_') ? $checked : '',
-			 'VL_SOFTWAREY' => ($hp_allowsoftware == '_yes_') ? $checked : '',
-			 'VL_SOFTWAREN' => ($hp_allowsoftware == '_no_') ? $checked : '',
-			 'TR_CGI_YES' => ($hp_cgi == '_yes_') ? $checked : '',
-			 'TR_CGI_NO' => ($hp_cgi == '_no_') ? $checked : '',
-			 'VL_BACKUPD' => ($hp_backup == '_dmn_') ? $checked : '',
-			 'VL_BACKUPS' => ($hp_backup == '_sql_') ? $checked : '',
-			 'VL_BACKUPF' => ($hp_backup == '_full_') ? $checked : '',
-			 'VL_BACKUPN' => ($hp_backup == '_no_') ? $checked : '',
-			 'TR_DNS_YES' => ($hp_dns == '_yes_') ? $checked : '',
-			 'TR_DNS_NO' => ($hp_dns == '_no_') ? $checked : '',
-			 'TR_STATUS_YES' => ($status) ? $checked : '',
-			 'TR_STATUS_NO' => (!$status) ? $checked : '',
-			 'PHPINI_SYSTEM_YES' => ($phpini->getClPermVal('phpiniSystem') == 'yes') ? $checked : '',
-			 'PHPINI_SYSTEM_NO' => ($phpini->getClPermVal('phpiniSystem') != 'yes') ? $checked : '',
-			 'PHPINI_AL_ALLOW_URL_FOPEN_YES' => ($phpini->getClPermVal('phpiniAllowUrlFopen') == 'yes') ? $checked : '',
-			 'PHPINI_AL_ALLOW_URL_FOPEN_NO' => ($phpini->getClPermVal('phpiniAllowUrlFopen') != 'yes') ? $checked : '',
-			 'PHPINI_AL_DISPLAY_ERRORS_YES' => ($phpini->getClPermVal('phpiniDisplayErrors') == 'yes') ? $checked : '',
-			 'PHPINI_AL_DISPLAY_ERRORS_NO' => ($phpini->getClPermVal('phpiniDisplayErrors') != 'yes') ? $checked : '',
-			 'PHPINI_AL_DISABLE_FUNCTIONS_YES' => ($phpini->getClPermVal('phpiniDisableFunctions') == 'yes') ? $checked : '',
-			 'PHPINI_AL_DISABLE_FUNCTIONS_NO' => ($phpini->getClPermVal('phpiniDisableFunctions') == 'no') ? $checked : '',
-			 'PHPINI_AL_DISABLE_FUNCTIONS_EXEC' => ($phpini->getClPermVal('phpiniDisableFunctions') == 'exec') ? $checked : '',
-			 'PHPINI_POST_MAX_SIZE' => $phpini->getDataVal('phpiniPostMaxSize'),
-			 'PHPINI_UPLOAD_MAX_FILESIZE' => $phpini->getDataVal('phpiniUploadMaxFileSize'),
-			 'PHPINI_MAX_EXECUTION_TIME' => $phpini->getDataVal('phpiniMaxExecutionTime'),
-			 'PHPINI_MAX_INPUT_TIME' => $phpini->getDataVal('phpiniMaxInputTime'),
-			 'PHPINI_MEMORY_LIMIT' => $phpini->getDataVal('phpiniMemoryLimit')
-		)
-	);
-
-}
-
-/**
- * Check correction of input data
- *
- * @param iMSCP_PHPini $phpini
- * @return bool
- */
-function check_data_correction($phpini)
-{
-	global $hp_name, $description, $hp_php, $hp_cgi, $hp_sub, $hp_als, $hp_mail, $hp_ftp, $hp_sql_db, $hp_sql_user,
-		   $hp_traff, $hp_disk, $price, $setup_fee, $value, $payment, $status, $hp_backup, $hp_dns, $hp_allowsoftware,
-		   $hp_ext_mail, $tos;
-
-	$hp_name = clean_input($_POST['hp_name']);
-	$hp_sub = clean_input($_POST['hp_sub']);
-	$hp_als = clean_input($_POST['hp_als']);
-	$hp_mail = clean_input($_POST['hp_mail']);
-	$hp_ftp = clean_input($_POST['hp_ftp']);
-	$hp_sql_db = clean_input($_POST['hp_sql_db']);
-	$hp_sql_user = clean_input($_POST['hp_sql_user']);
-	$hp_traff = clean_input($_POST['hp_traff']);
-	$hp_disk = clean_input($_POST['hp_disk']);
-	$value = clean_input($_POST['hp_value']);
-	$payment = clean_input($_POST['hp_payment']);
-	$status = $_POST['status'];
-	$description = clean_input($_POST['hp_description']);
-	$tos = clean_input($_POST['hp_tos']);
-
-	$phpini->setClPerm('phpiniSystem', clean_input($_POST['phpini_system']));
-	$phpini->setClPerm('phpiniAllowUrlFopen', clean_input($_POST['phpini_al_allow_url_fopen']));
-	$phpini->setClPerm('phpiniDisplayErrors', clean_input($_POST['phpini_al_display_errors']));
-	$phpini->setClPerm('phpiniErrorReporting', clean_input($_POST['phpini_al_error_reporting']));
-	$phpini->setClPerm('phpiniDisableFunctions', clean_input($_POST['phpini_al_disable_functions']));
-
-	if ($_POST['phpini_post_max_size'] > $phpini->getDataVal('phpiniPostMaxSize')) {
-		set_page_message(tr('post_max_size out of range.'), 'error');
-	}
-
-	if ($_POST['phpini_upload_max_filesize'] > $phpini->getDataVal('phpiniUploadMaxFileSize')) {
-		set_page_message(tr('upload_max_filesize out of range.'), 'error');
-	}
-
-	if ($_POST['phpini_max_execution_time'] > $phpini->getDataVal('phpiniMaxExecutionTime')) {
-		set_page_message(tr('max_execution_time out of range.'), 'error');
-	}
-
-	if ($_POST['phpini_max_input_time'] > $phpini->getDataVal('phpiniMaxInputTime')) {
-		set_page_message(tr('max_input_time out of range.'), 'error');
-	}
-
-	if ($_POST['phpini_memory_limit'] > $phpini->getDataVal('phpiniMemoryLimit')) {
-		set_page_message(tr('memory_limit out of range.'), 'error');
-	}
-
-	if (empty($_POST['hp_price'])) {
-		$price = 0;
-	} else {
-		$price = clean_input($_POST['hp_price']);
-	}
-
-	if (empty($_POST['hp_setupfee'])) {
-		$setup_fee = 0;
-	} else {
-		$setup_fee = clean_input($_POST['hp_setupfee']);
-	}
-
-    if (isset($_POST['external_mail'])) {
-        $hp_ext_mail = $_POST['external_mail'];
-    }
-
-	if (isset($_POST['php'])) {
-		$hp_php = $_POST['php'];
-	}
-
-	if (isset($_POST['cgi'])) {
-		$hp_cgi = $_POST['cgi'];
-	}
-
-	if (isset($_POST['dns'])) {
-		$hp_dns = $_POST['dns'];
-	}
-
-	if (isset($_POST['backup'])) {
-		$hp_backup = $_POST['backup'];
-	}
-
-	(isset($_POST['software_allowed']))
-		? $hp_allowsoftware = $_POST['software_allowed']
-		: $hp_allowsoftware = "_no_";
-	if ($hp_php == "_no_" && $hp_allowsoftware == '_yes_') {
-		set_page_message(tr('The i-MSCP application installer needs PHP to enable it.'), 'error');
-	}
-
-	if ($hp_name == '') {
-		set_page_message(tr('Incorrect template name length.'), 'error');
-	}
-
-	if ($description == '') {
-		set_page_message(tr('Incorrect template description length.'), 'error');
-	}
-
-	if (!is_numeric($price)) {
-		set_page_message(tr('Price must be a number.'), 'error');
-	}
-
-	if (!is_numeric($setup_fee)) {
-		set_page_message(tr('Setup fee must be a number.'), 'error');
-	}
-
-	if (!imscp_limit_check($hp_sub, -1)) {
-		set_page_message(tr('Incorrect subdomains limit.'), 'error');
-	}
-
-	if (!imscp_limit_check($hp_als, -1)) {
-		set_page_message(tr('Incorrect aliases limit.'), 'error');
-	}
-
-	if (!imscp_limit_check($hp_mail, -1)) {
-		set_page_message(tr('Incorrect mail accounts limit.'), 'error');
-	}
-
-	if (!imscp_limit_check($hp_ftp, -1)) {
-		set_page_message(tr('Incorrect FTP accounts limit.'), 'error');
-	}
-
-	if (!imscp_limit_check($hp_sql_db, -1)) {
-		set_page_message(tr('Incorrect SQL users limit.'), 'error');
-	} else if ($hp_sql_user != -1 && $hp_sql_db == -1) {
-		set_page_message(tr('SQL users limit is <i>disabled</i>.'), 'error');
-	}
-
-	if (!imscp_limit_check($hp_sql_user, -1)) {
-		set_page_message(tr('Incorrect SQL databases limit.'), 'error');
-	} else if ($hp_sql_user == -1 && $hp_sql_db != -1) {
-		set_page_message(tr('SQL databases limit is not <i>disabled</i>.'), 'error');
-	}
-
-	if (!imscp_limit_check($hp_traff, null)) {
-		set_page_message(tr('Incorrect traffic limit.'), 'error');
-	}
-	if (!imscp_limit_check($hp_disk, null)) {
-		set_page_message(tr('Incorrect disk quota limit.'), 'error');
-	}
-
-	if (!Zend_Session::namespaceIsset('pageMessages')) {
-		return true;
-	} else {
-		return false;
-	}
-}
-
-/**
- * Add new host plan to DB
- *
- * @param int $admin_id
- * @param iMSCP_PHPini $phpini
- * @return bool
- */
-function save_data_to_db($admin_id, $phpini)
-{
-	global $hp_name, $description, $hp_php, $hp_cgi, $hp_sub, $hp_als, $hp_mail, $hp_ftp, $hp_sql_db, $hp_sql_user,
-		   $hp_traff, $hp_disk, $price, $setup_fee, $value, $payment, $status, $hp_backup, $hp_dns, $hp_allowsoftware,
-		   $hp_ext_mail, $tos;
-
-	$query = "SELECT `id` FROM `hosting_plans` WHERE `name` = ? AND `reseller_id` = ?";
-	$res = exec_query($query, array($hp_name, $admin_id));
-
-	if ($res->rowCount() == 1) {
-		set_page_message(tr('Hosting plan with same name already exists.'), 'error');
-		return false;
-	} else {
-		$hp_props = "$hp_php;$hp_cgi;$hp_sub;$hp_als;$hp_mail;$hp_ftp;$hp_sql_db;$hp_sql_user;$hp_traff;$hp_disk;$hp_backup;$hp_dns;$hp_allowsoftware";
-		$hp_props .= ";" . $phpini->getClPermVal('phpiniSystem') . ';' . $phpini->getClPermVal('phpiniAllowUrlFopen');
-		$hp_props .= ";" . $phpini->getClPermVal('phpiniDisplayErrors') . ';' . $phpini->getClPermVal('phpiniDisableFunctions');
-		$hp_props .= ";" . $phpini->getDataVal('phpiniPostMaxSize') . ';' . $phpini->getDataVal('phpiniUploadMaxFileSize') . ';' . $phpini->getDataVal('phpiniMaxExecutionTime');
-		$hp_props .= ";" . $phpini->getDataVal('phpiniMaxInputTime') . ';' . $phpini->getDataVal('phpiniMemoryLimit') . ';' . $hp_ext_mail;
-
-		// this id is just for fake and is not used in reseller_limits_check.
-		$hpid = 0;
-
-		$query = "
-			INSERT INTO `hosting_plans` (
-				`reseller_id`, `name`, `description`, `props`, `price`, `setup_fee`, `value`, `payment`, `status`, `tos`
-			) VALUES (
-				?, ?, ?, ?, ?, ?, ?, ?, ?, ?
-			)
-		";
-		exec_query(
-				$query,
-				array(
-						$admin_id, $hp_name, $description, $hp_props, $price, $setup_fee, $value, $payment, $status,
-						$tos
-				)
-		);
-
-		$_SESSION['hp_added'] = '_yes_';
-		redirectTo('hosting_plan.php');
-		exit; // // Useless but avoid stupid IDE warning about missing return statement
-	}
-}

@@ -81,7 +81,7 @@ INSERT IGNORE INTO `config` (`name`, `value`) VALUES
 ('PREVENT_EXTERNAL_LOGIN_ADMIN', '1'),
 ('PREVENT_EXTERNAL_LOGIN_RESELLER', '1'),
 ('PREVENT_EXTERNAL_LOGIN_CLIENT', '1'),
-('DATABASE_REVISION', '120'),
+('DATABASE_REVISION', '121'),
 ('PHPINI_ALLOW_URL_FOPEN', 'off'),
 ('PHPINI_DISPLAY_ERRORS', 'off'),
 ('PHPINI_UPLOAD_MAX_FILESIZE', '10'),
@@ -290,7 +290,8 @@ CREATE TABLE IF NOT EXISTS `hosting_plans` (
   `price` decimal(10,2) NOT NULL default '0.00',
   `setup_fee` decimal(10,2) NOT NULL default '0.00',
   `value` varchar(255) collate utf8_unicode_ci default NULL,
-  `payment` varchar(255) collate utf8_unicode_ci default NULL,
+  `vat` decimal(10,2) NOT NULL DEFAULT '0.00',
+  `payment` varchar(255) COLLATE utf8_unicode_ci DEFAULT 'monthly',
   `status` int(10) unsigned NOT NULL default '0',
   `tos`	BLOB NOT NULL,
   PRIMARY KEY `id` (`id`)
