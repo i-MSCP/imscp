@@ -24,9 +24,9 @@
  * Portions created by the i-MSCP Team are Copyright (C) 2010-2013 by
  * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
  *
- * @category	i-MSCP
- * @package		iMSCP_Core
- * @subpackage	Client
+ * @category    i-MSCP
+ * @package        iMSCP_Core
+ * @subpackage    Client
  * @copyright   2001-2006 by moleSoftware GmbH
  * @copyright   2006-2010 by ispCP | http://isp-control.net
  * @copyright   2010-2013 by i-MSCP | http://i-mscp.net
@@ -47,17 +47,10 @@
  */
 function gen_page_ftp_list($tpl)
 {
-    $domainProps = get_domain_default_props($_SESSION['user_id']);
-    $dmn_name = $domainProps['domain_name'];
+	$domainProps = get_domain_default_props($_SESSION['user_id']);
+	$dmn_name = $domainProps['domain_name'];
 
-	$query = "
-		SELECT
-			`gid`, `members`
-		FROM
-			`ftp_group`
-		WHERE
-			`groupname` = ?
-	";
+	$query = "SELECT `gid`, `members` FROM `ftp_group` WHERE `groupname` = ?";
 	$stmt = exec_query($query, $dmn_name);
 
 	if ($stmt->rowCount() == 0) {
@@ -68,15 +61,22 @@ function gen_page_ftp_list($tpl)
 		sort($ftp_accs);
 		reset($ftp_accs);
 
+		customerHasFeature('ftp_easy_login') or $tpl->assign('FTP_EASY_LOGIN', '');
+
 		for ($i = 0, $cnt_ftp_accs = count($ftp_accs); $i < $cnt_ftp_accs; $i++) {
 			$ftp_accs_encode[$i] = decode_idna($ftp_accs[$i]);
 
-			$tpl->assign(array(
-							  'FTP_ACCOUNT' => tohtml($ftp_accs_encode[$i]),
-							  'UID' => urlencode($ftp_accs[$i])));
+			$tpl->assign(
+				array(
+					'FTP_ACCOUNT' => tohtml($ftp_accs_encode[$i]),
+					'UID' => urlencode($ftp_accs[$i])
+				)
+			);
 
 			$tpl->parse('FTP_ITEM', '.ftp_item');
 		}
+
+
 
 		$tpl->assign('TOTAL_FTP_ACCOUNTS', count($ftp_accs));
 	}
@@ -102,26 +102,31 @@ $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic('layout', 'shared/layouts/ui.tpl');
 $tpl->define_dynamic(
 	array(
-		 'page' => 'client/ftp_accounts.tpl',
-		 'page_message' => 'layout',
-		 'ftp_message' => 'page',
-		 'ftp_accounts' => 'page',
-		 'ftp_item' => 'ftp_accounts'));
+		'page' => 'client/ftp_accounts.tpl',
+		'page_message' => 'layout',
+		'ftp_message' => 'page',
+		'ftp_accounts' => 'page',
+		'ftp_item' => 'ftp_accounts',
+		'ftp_easy_login' => 'ftp_item'
+	)
+);
 
 $tpl->assign(
 	array(
-		 'TR_PAGE_TITLE' => tr('i-MSCP - Client/Manage Users'),
-		 'THEME_CHARSET' => tr('encoding'),
-		 'ISP_LOGO' => layout_getUserLogo(),
-		 'TR_TOTAL_FTP_ACCOUNTS' => tr('FTPs total'),
-		 'TR_FTP_USERS' => tr('FTP Users'),
-		 'TR_FTP_ACCOUNT' => tr('FTP account'),
-		 'TR_FTP_ACTION' => tr('Actions'),
-		 'TR_LOGINAS' => tr('Login As'),
-		 'TR_EDIT' => tr('Edit'),
-		 'TR_DELETE' => tr('Delete'),
-		 'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete the %s FTP user?', true, '%s'),
-		 'FILEMANAGER_TARGET' => $cfg->FILEMANAGER_TARGET));
+		'TR_PAGE_TITLE' => tr('i-MSCP - Client/Manage Users'),
+		'THEME_CHARSET' => tr('encoding'),
+		'ISP_LOGO' => layout_getUserLogo(),
+		'TR_TOTAL_FTP_ACCOUNTS' => tr('FTPs total'),
+		'TR_FTP_USERS' => tr('FTP Users'),
+		'TR_FTP_ACCOUNT' => tr('FTP account'),
+		'TR_FTP_ACTION' => tr('Actions'),
+		'TR_LOGINAS' => tr('Login As'),
+		'TR_EDIT' => tr('Edit'),
+		'TR_DELETE' => tr('Delete'),
+		'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete the %s FTP user?', true, '%s'),
+		'FILEMANAGER_TARGET' => $cfg->FILEMANAGER_TARGET
+	)
+);
 
 generateNavigation($tpl);
 gen_page_ftp_list($tpl);

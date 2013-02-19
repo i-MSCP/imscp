@@ -191,7 +191,7 @@ iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptStart)
 // Check login
 check_login('user');
 
-customerHasFeature('ftp') or showBadRequestErrorPage();
+customerHasFeature(array('ftp', 'ftp_easy_login')) or showBadRequestErrorPage();
 
 /**
  *  Dispatches the request

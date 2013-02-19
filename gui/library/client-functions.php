@@ -741,6 +741,7 @@ function customerHasFeature($featureNames, $forceReload = false)
 							  || in_array($dmnProps['phpini_perm_disable_functions'], array('yes', 'exec')))) ? true : false,
 			'cgi' => ($dmnProps['domain_cgi'] == 'yes') ? true : false,
 			'ftp' => ($dmnProps['domain_ftpacc_limit'] != '-1') ? true : false,
+			'ftp_easy_login' => (isset($cfg->FILEMANAGER_ADDON) && $cfg->FILEMANAGER_ADDON == 'AjaxPlorer') ? true : false,
 			'sql' => ($dmnProps['domain_sqld_limit'] != '-1') ? true : false,
 			'mail' => ($dmnProps['domain_mailacc_limit'] != '-1') ? true : false,
 			'subdomains' => ($dmnProps['domain_subd_limit'] != '-1') ? true : false,
