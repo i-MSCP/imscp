@@ -17,8 +17,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2013-02-11 11:47+0100\n"
-"PO-Revision-Date: 2013-02-11 10:47+0000\n"
+"POT-Creation-Date: 2013-02-19 14:54+0100\n"
+"PO-Revision-Date: 2013-02-19 13:54+0000\n"
 "Last-Translator: Torsten Widmann <info@goover.de>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -707,9 +707,6 @@ msgstr "Ajouter des permissions"
 msgid "Add permissions for reseller to software:"
 msgstr "Ajouter des permissions au revendeur pour le logiciel:"
 
-msgid "Add plan"
-msgstr "Ajouter un plan"
-
 msgid "Add protected area"
 msgstr "Ajouter une zone protégée"
 
@@ -892,6 +889,9 @@ msgstr ""
 msgid "An error occurred while the authentication attempt."
 msgstr "Une erreur s'est produite lors de la tentative d'authentification."
 
+msgid "An hosting plan with same name already exists."
+msgstr ""
+
 msgid "An unexpected error occured, please contact your reseller."
 msgstr ""
 
@@ -899,14 +899,11 @@ msgstr ""
 msgid "An unknown error occured during file upload: %s"
 msgstr ""
 
+msgid "Annually"
+msgstr ""
+
 msgid "Anti-Rootkits Tools Log Checker"
 msgstr "Outils Anti-Rootkits d'analyse de journaux"
-
-msgid "Apache logfiles"
-msgstr "Journaux du serveur Apache"
-
-msgid "Application Description"
-msgstr ""
 
 msgid "Application installer"
 msgstr "Installateur d'applications"
@@ -1043,8 +1040,11 @@ msgstr ""
 msgid "Auto-responder successfully scheduled for update."
 msgstr ""
 
-msgid "Automatic updates"
-msgstr "Mise à jours automatiques"
+msgid "Automatic Updates"
+msgstr ""
+
+msgid "Autoresponders"
+msgstr ""
 
 msgid "Available for purchasing"
 msgstr "Disponible à l'achat"
@@ -1054,9 +1054,6 @@ msgstr "Mises à jour i-MSCP disponibles"
 
 msgid "Available softwares"
 msgstr "Logiciels disponibles"
-
-msgid "AwStats"
-msgstr "AwStats"
 
 msgid "Awaiting activation"
 msgstr "En attente d'activation"
@@ -1103,8 +1100,14 @@ msgstr ""
 msgid "Being suspended"
 msgstr ""
 
+msgid "Biennially"
+msgstr ""
+
 msgid "Billing Settings"
 msgstr "Paramètres de facturation"
+
+msgid "Billing cycle"
+msgstr ""
 
 msgid ""
 "Blocking time between login/captcha attempts <small>(In seconds)</small>"
@@ -1183,6 +1186,9 @@ msgstr "Prendre toutes les tâches prévues pour la création."
 
 msgid "Catch all account scheduled for deletion."
 msgstr "Prendre toutes les tâches prévues pour la suppression."
+
+msgid "Catch-All E-Mail Addresses"
+msgstr ""
 
 msgid "Catchall"
 msgstr "Email collecteur"
@@ -1321,6 +1327,9 @@ msgstr "Confirmation pour la protection du plugin"
 msgid "Continue"
 msgstr "Continuer"
 
+msgid "Control Panel"
+msgstr ""
+
 msgid "Core data"
 msgstr "Données principales"
 
@@ -1335,9 +1344,8 @@ msgstr "Ne peut pas envoyer le fichier. Fichier non trouvé."
 
 #, php-format
 msgid ""
-"Could not upload the file. Max. upload filesize (%1$d MB) seem to be "
-"reached."
-msgstr "Impossible de charger le fichier. La taille du fichier maximale (%1$d MB) semble être atteinte."
+"Could not upload the file. Max. upload filesize (%1$d MB) has been reached."
+msgstr ""
 
 msgid "Couldn't check for updates. Website not reachable."
 msgstr "Impossible de vérifier si une mise à jour est disponible. Le serveur ne peut être join."
@@ -1375,6 +1383,9 @@ msgstr "Devise"
 msgid "Current password"
 msgstr "Mot de passe actuel"
 
+msgid "Custom DNS Records"
+msgstr ""
+
 msgid "Custom DNS record"
 msgstr "Enrengistrement DNS personnalisé"
 
@@ -1392,6 +1403,9 @@ msgstr "L'enrengistrement DNS personnalisé va être mis à jour."
 
 msgid "Custom DNS records"
 msgstr "Enrengistrements DNS personnalisés"
+
+msgid "Custom Error Pages"
+msgstr ""
 
 msgid "Custom apache logs"
 msgstr "Journaux apache personnalisés"
@@ -1665,6 +1679,9 @@ msgstr ""
 msgid "Description"
 msgstr "Description"
 
+msgid "Description cannot be empty."
+msgstr ""
+
 msgid "Details"
 msgstr "Détails"
 
@@ -1704,10 +1721,16 @@ msgstr "Espace disque"
 msgid "Disk limit"
 msgstr "Espace limite de stockage [Mo]"
 
-msgid "Disk limit [MiB]<br/><i>(0 unlimited)</i>"
+msgid "Disk space"
 msgstr ""
 
-msgid "Disk limit [MiB]<br/><i>(0 unlimited)</span>"
+msgid "Disk space limit"
+msgstr ""
+
+msgid "Disk space limit [MiB]<br/><i>(0 unlimited)</i>"
+msgstr ""
+
+msgid "Disk space limit [MiB]<br/><i>(0 unlimited)</span>"
 msgstr ""
 
 msgid "Disk usage"
@@ -1953,6 +1976,15 @@ msgstr "Télécharger"
 msgid "Download the files stored in this directory"
 msgstr "Téléchargez la/les archive(s) stocké(s) dans ce répertoire"
 
+msgid "E-Mail Aliases"
+msgstr ""
+
+msgid "E-Mail Features"
+msgstr ""
+
+msgid "E-Mail Forwarding"
+msgstr ""
+
 msgid "E-Mail accounts are hard suspended"
 msgstr "Les comptes de messagerie sont suspendus"
 
@@ -2162,6 +2194,9 @@ msgstr "Erreur: Valeur incorrecte."
 msgid "Errors"
 msgstr "Erreurs"
 
+msgid "Excl. tax"
+msgstr ""
+
 msgid "Execute requests"
 msgstr "Exécuter une requête"
 
@@ -2172,6 +2207,9 @@ msgid "Expire time for unconfirmed orders <small>(In days)</small>"
 msgstr ""
 
 msgid "External Mail Host"
+msgstr ""
+
+msgid "External Mail Server"
 msgstr ""
 
 msgid "External mail server"
@@ -2191,6 +2229,9 @@ msgstr ""
 
 msgid "FTP"
 msgstr "FTP"
+
+msgid "FTP Accounts"
+msgstr ""
 
 msgid "FTP Users"
 msgstr "Utilisateurs FTP"
@@ -2413,6 +2454,9 @@ msgstr "Machine"
 msgid "Host must be filled."
 msgstr "Le nom d'hôte doit être fournit."
 
+msgid "Hosting Plan"
+msgstr ""
+
 msgid "Hosting details"
 msgstr "Détails de l'offre d'hébergement"
 
@@ -2422,17 +2466,20 @@ msgstr "Plan d'hébergement"
 msgid "Hosting plan can't be deleted, there are active orders."
 msgstr "Le plan d'hébergement ne peut pas être supprimé car des commandes sont en cours."
 
+msgid "Hosting plan limits exceed reseller limits."
+msgstr ""
+
 msgid "Hosting plan properties"
 msgstr "Propriétés du plan d'hébergement"
 
-msgid "Hosting plan successfully added."
-msgstr "Plan d'hébergement ajouté."
+msgid "Hosting plan successfully created."
+msgstr ""
 
 msgid "Hosting plan successfully deleted."
 msgstr "Plan d'hébergement supprimé."
 
-msgid "Hosting plan sucessfully updated."
-msgstr "Plan d'hébergement mise à jour."
+msgid "Hosting plan successfully updated."
+msgstr ""
 
 msgid "Hosting plan update"
 msgstr "Mise à jour du plan d'hébergement"
@@ -2440,8 +2487,8 @@ msgstr "Mise à jour du plan d'hébergement"
 msgid "Hosting plan values exceed reseller maximum values."
 msgstr "La valeur du plan d'hébergement dépasse la limite fixé pour le revendeur."
 
-msgid "Hosting plan with same name already exists."
-msgstr "Ce plan d'hébergement existe déjà."
+msgid "Hosting plan values exceed your own limits."
+msgstr ""
 
 msgid "Hosting plans"
 msgstr "Plans d'hébergement"
@@ -2484,6 +2531,9 @@ msgstr "Utilisateur htaccess supprimé du groupe %s"
 msgid "Htaccess user successfully scheduled for addition."
 msgstr "Utilisateur htaccess programmé pour suppression."
 
+msgid "Http Redirections"
+msgstr ""
+
 msgid "Http traffic"
 msgstr "Traffique HTTP"
 
@@ -2495,6 +2545,9 @@ msgstr "Continuer sans tenir compte de l'avertissement!"
 
 msgid "ID"
 msgstr "ID"
+
+msgid "IMAP/POP3 E-Mail Accounts"
+msgstr ""
 
 msgid "IP"
 msgstr "IP"
@@ -2541,9 +2594,6 @@ msgstr "Si vous désirez limiter le revendeur, vous devez commencer par limité 
 msgid "Images have to be smaller than 500 x 90 pixels."
 msgstr ""
 
-msgid "Implementation URL"
-msgstr "URL d'accès"
-
 msgid "Import"
 msgstr "Importer"
 
@@ -2577,8 +2627,14 @@ msgstr "Limite de compte SQL incorrecte."
 msgid "Incorrect aliases limit."
 msgstr "Limite d'aliasses incorrecte."
 
-msgid "Incorrect disk quota limit."
-msgstr "Limite de quota disque incorrecte."
+msgid "Incorrect disk space limit."
+msgstr ""
+
+msgid "Incorrect diskspace limit."
+msgstr ""
+
+msgid "Incorrect domain aliases limit."
+msgstr ""
 
 msgid "Incorrect email length or syntax."
 msgstr "Taille ou syntaxe de l'émail incorrecte."
@@ -2589,6 +2645,9 @@ msgstr "Seuil incorrect pour %s."
 
 msgid "Incorrect mail accounts limit."
 msgstr "Limite de compte mail incorrecte."
+
+msgid "Incorrect monthly traffic limit."
+msgstr ""
 
 msgid "Incorrect mount point length or syntax."
 msgstr "Longueur de point de montage ou syntaxe incorrect."
@@ -2607,15 +2666,6 @@ msgstr "Limite de sous-domaine incorrecte."
 
 msgid "Incorrect syntax for email address."
 msgstr "Syntaxe de l'adresse mail incorrect."
-
-msgid "Incorrect template description length."
-msgstr "Longueur de la description du template incorrecte."
-
-msgid "Incorrect template name length."
-msgstr "Longueur du nom de template incorrecte."
-
-msgid "Incorrect traffic limit."
-msgstr "Limite de trafic incorrecte."
 
 msgid "Incorrect username length or syntax."
 msgstr "Taille ou syntaxe du nom d'utilisateur incorrecte"
@@ -2644,10 +2694,10 @@ msgstr ""
 msgid "Installed Package which was deleted by your reseller."
 msgstr ""
 
-msgid "Installed in reseller depot"
+msgid "Installed in reseller repository"
 msgstr ""
 
-msgid "Installed in software depot"
+msgid "Installed in software repository"
 msgstr ""
 
 msgid "Installed on"
@@ -3060,6 +3110,11 @@ msgid "Max value for the %s PHP directive"
 msgstr "Valeur max pour la valeur PHP %s"
 
 #, php-format
+msgid ""
+"Max. remote filesize (%1$d MB) has been reached. Your remote file is %2$d MB"
+msgstr ""
+
+#, php-format
 msgid "Max. remote filesize (%1$d MB) is reached. Your remote file is %2$d MB"
 msgstr "La taille maximum (%1$d Mo) du fichier distant est atteinte. La taille de votre fichier distant est %2$d Mo"
 
@@ -3123,11 +3178,35 @@ msgstr ""
 msgid "Modify"
 msgstr "Modifier"
 
+msgid "Monhtly traffic warning cannot be bigger than monthly traffic limit."
+msgstr ""
+
 msgid "Month"
 msgstr "Mois"
 
+msgid "Monthly"
+msgstr ""
+
+msgid "Monthly Traffic limit"
+msgstr ""
+
+msgid "Monthly traffic limit"
+msgstr ""
+
+msgid "Monthly traffic limit [MiB]<br/><i>(0 unlimited)</i>"
+msgstr ""
+
+msgid "Monthly traffic limit must be a digit."
+msgstr ""
+
+msgid "Monthly traffic warning must be a digit."
+msgstr ""
+
 msgid "More Details"
 msgstr "Plus de détails"
+
+msgid "More details"
+msgstr ""
 
 msgid "Mount"
 msgstr "Montage"
@@ -3152,6 +3231,9 @@ msgstr "N/D"
 
 msgid "Name"
 msgstr "Nom"
+
+msgid "Name cannot be empty."
+msgstr ""
 
 msgid "Name must be filled."
 msgstr "Le nom doit être fournit."
@@ -3215,9 +3297,6 @@ msgstr "Aucun comptes Administrateurs ont été trouvés."
 
 msgid "No alias subdomain system errors"
 msgstr "Aucune erreur système liée aux sous-domaines"
-
-msgid "No available hosting packages."
-msgstr "Plan d'hébergements non disponibles."
 
 msgid "No certificate found."
 msgstr "Aucun certificat trouvé."
@@ -3296,10 +3375,10 @@ msgstr "Non renseigné."
 msgid "No software available"
 msgstr ""
 
-msgid "No software in software depot available!"
+msgid "No software in Web repository found!"
 msgstr ""
 
-msgid "No software in webdepot found!"
+msgid "No software in software depot available!"
 msgstr ""
 
 msgid "No software is waiting for activation"
@@ -3389,6 +3468,9 @@ msgstr "Ok"
 msgid "One or more database updates are now available. See the details below."
 msgstr "Une ou plusieurs mise à jour de base de données sont disponibles. Voir le détail ci-dessous."
 
+msgid "Only 'tar.gz' archives are accepted."
+msgstr ""
+
 msgid ""
 "Only Top Level Domains (TLD) listed in IANA root zone database can be used."
 msgstr "Seuls les domaines de premier niveau (TLD) listés dans la base de données IANA sont autorisés."
@@ -3435,14 +3517,23 @@ msgstr "Panneau de commande / Vérification"
 msgid "Order Panel / Choose hosting plan"
 msgstr ""
 
-msgid "Order Panel / Choosing a domain name"
-msgstr "Panneau des commandes / Choix du nom de domaine"
+msgid "Order Panel / Domain name"
+msgstr ""
 
 msgid "Order Panel / Order confirmation"
 msgstr "Panneau des commandes / Confirmation"
 
 msgid "Order Panel / Personal Data"
 msgstr "Panneau des commande - Informations personnelles"
+
+msgid "Order Panel Access URL"
+msgstr ""
+
+msgid "Order Panel Preview"
+msgstr ""
+
+msgid "Order Panel Template"
+msgstr ""
 
 msgid "Order confirmation"
 msgstr "Confirmation de la commande"
@@ -3473,9 +3564,6 @@ msgstr "Configuration de l'interface des commandes"
 
 msgid "Order successfully updated."
 msgstr "Commande mise à jour."
-
-msgid "Order template"
-msgstr "Modèle de commande"
 
 msgid "Orders"
 msgstr "Commandes"
@@ -3559,11 +3647,11 @@ msgstr ""
 msgid "Package already exist in the software depot!"
 msgstr ""
 
-msgid "Package already exist in your software depot!"
+msgid "Package already exist in the software repository!"
 msgstr ""
 
-msgid "Package features"
-msgstr "Caractéristiques du paquet"
+msgid "Package already exist in your software repository!"
+msgstr ""
 
 msgid "Package install type"
 msgstr "Type d'installation"
@@ -3579,9 +3667,6 @@ msgstr "Langue du paquet"
 
 msgid "Package name"
 msgstr "Nom du paquet"
-
-msgid "Package price"
-msgstr "Prix du paquet"
 
 msgid "Package title"
 msgstr "Nom du paquet"
@@ -3659,9 +3744,6 @@ msgid ""
 "Each of them must be separated by PATH_SEPARATOR. See the PHP documentation "
 "for more information."
 msgstr ""
-
-msgid "Payment period"
-msgstr "Période de paiement"
 
 msgid "Percent"
 msgstr "Pourcentage"
@@ -3756,8 +3838,8 @@ msgid "Please select at least one mail type."
 msgstr "Veuillez selectionner au moins un type de compte mail"
 
 msgid ""
-"Please set now the Username and Password for the later Login in the "
-"Application. (Required fiels!)"
+"Please set now the username and password for the later login in the "
+"software. (Required fiels)"
 msgstr ""
 
 msgid "Please specify a message content."
@@ -3898,6 +3980,9 @@ msgstr "Lancer les mises à jour"
 msgid "Profile"
 msgstr "Profile"
 
+msgid "Programming"
+msgstr ""
+
 msgid "Properties"
 msgstr "Propriétés"
 
@@ -3916,6 +4001,9 @@ msgstr "Protéger ce plugin"
 
 msgid "Protected"
 msgstr "Protégé"
+
+msgid "Protected Areas"
+msgstr ""
 
 msgid "Protected area status should be 'OK' if you want to delete it."
 msgstr "La zone protégée peut-être supprimée."
@@ -3993,11 +4081,11 @@ msgstr "Le poids relatif doit être un nombre!"
 msgid "Reload"
 msgstr "Rechargement"
 
-msgid "Remote File not found."
-msgstr "Fichier distant non trouvé."
-
 msgid "Remote Web software repository"
 msgstr "Dépôt distant de logiciel Web"
+
+msgid "Remote file not found."
+msgstr ""
 
 msgid "Remove"
 msgstr "Retirer"
@@ -4146,6 +4234,9 @@ msgstr "Base de données SQL"
 msgid "SQL Databases"
 msgstr "Bases de données SQL"
 
+msgid "SQL Support"
+msgstr ""
+
 msgid "SQL User"
 msgstr "Utilisateur SQL"
 
@@ -4167,9 +4258,6 @@ msgstr "Bases de données SQL"
 msgid "SQL databases limit <br /><i>(-1 disabled, 0 unlimited)</i>"
 msgstr ""
 
-msgid "SQL databases limit is <i>disabled</i>."
-msgstr "La limite de base de donné SQL est <i>désactivé</i>"
-
 msgid "SQL databases limit is disabled but SQL users limit is not."
 msgstr ""
 
@@ -4178,9 +4266,6 @@ msgstr "La limit pour les bases de données SQL n'est pas <i>désactivé</b>."
 
 msgid "SQL databases limit<br/><i>(-1 disabled, 0 unlimited)</i>"
 msgstr ""
-
-msgid "SQL support"
-msgstr "Support SQL"
 
 msgid "SQL user name"
 msgstr "Nom d'utilisateur SQL"
@@ -4356,6 +4441,9 @@ msgstr "Paramètres"
 msgid "Settings saved."
 msgstr "Paramètres sauvegardés."
 
+msgid "Setup Fee"
+msgstr ""
+
 msgid "Setup fee"
 msgstr "Frais d'installation"
 
@@ -4417,6 +4505,9 @@ msgstr "Taille"
 msgid "Software"
 msgstr "Logiciel"
 
+msgid "Software Description"
+msgstr ""
+
 msgid "Software available"
 msgstr "Logiciel disponible"
 
@@ -4428,6 +4519,12 @@ msgstr "Dépôt de logiciels téléchargés"
 
 msgid "Software details"
 msgstr "Détail du logiciel"
+
+msgid "Software has been deleted."
+msgstr ""
+
+msgid "Software has been successfully imported."
+msgstr ""
 
 msgid "Software in repository"
 msgstr "Logiciel dans le dépôt"
@@ -4486,9 +4583,6 @@ msgstr "Le logiciel a été activé."
 msgid "Software was deleted."
 msgstr "Le logiciel a été supprimé."
 
-msgid "Software was imported successfully."
-msgstr "Le logiciel a été importé."
-
 msgid "Software-Synonym"
 msgstr "Synonyme du logiciel"
 
@@ -4513,9 +4607,6 @@ msgstr "Gestion des logiciels"
 msgid "Softwares permissions"
 msgstr "Permissions des logiciels"
 
-msgid "Softwares repository"
-msgstr "Miroir des logiciels"
-
 msgid "Specified SQL username name already exists."
 msgstr "Le nom d'utilisateur SQL spécifié est déjà pris."
 
@@ -4529,6 +4620,9 @@ msgstr "Le nombre spécifié est plus petit que <em>%s</em>, le nombre d'enregis
 
 msgid "Sql"
 msgstr "SQL"
+
+msgid "Sql Manager"
+msgstr ""
 
 msgid "Sql Users"
 msgstr "Utilisateurs SQL"
@@ -4544,6 +4638,9 @@ msgstr "Utilisateur SQL"
 
 msgid "Sql users"
 msgstr "Utilisateurs SQL"
+
+msgid "Standard Features"
+msgstr ""
 
 msgid "Start installation"
 msgstr ""
@@ -4630,6 +4727,9 @@ msgstr "Sujet"
 
 msgid "Submit changes"
 msgstr "Appliquer les changements"
+
+msgid "Subtotal"
+msgstr ""
 
 msgid "Support"
 msgstr "Support"
@@ -4725,9 +4825,6 @@ msgstr ""
 msgid "Template for Auto email successfully updated."
 msgstr "Modèle d'e-mail automatique mis à jour avec succès."
 
-msgid "Template name"
-msgstr "Nom du plan"
-
 msgid "Template successfully reseted."
 msgstr "Modèle remis à zéro avec succès."
 
@@ -4739,9 +4836,6 @@ msgstr ""
 
 msgid "Terms of Service"
 msgstr ""
-
-msgid "Text"
-msgstr "Texte"
 
 msgid "Text Only"
 msgstr "Texte seulement"
@@ -4860,9 +4954,6 @@ msgstr ""
 msgid "The external mail feature needs min. 1 email account."
 msgstr ""
 
-msgid "The i-MSCP application installer needs PHP to enable it."
-msgstr "PHP doit être installé pour activer le systeme d'installation d'application i-MSCP"
-
 msgid ""
 "The mail host must not be equal to the domain name for which you add it."
 msgstr ""
@@ -4902,8 +4993,11 @@ msgstr "Le taille du fichier distant (%1$d octet) est plus petite qu'un octet."
 msgid "The reseller account that you are trying to edit has not been found."
 msgstr ""
 
-msgid "The softwares installer needs PHP."
-msgstr "PHP est requis."
+msgid "The software installer require PHP."
+msgstr ""
+
+msgid "The software installer require the PHP support."
+msgstr ""
 
 msgid "The uploaded file was only partially uploaded."
 msgstr ""
@@ -4968,9 +5062,6 @@ msgid ""
 "This hosting plan can't be deleted, there are some orders linked to it."
 msgstr "Le plan d'hébergement ne peut pas être supprimé. Certaines commandes y font référence."
 
-msgid "This hosting plan is not available for purchase."
-msgstr "Ce plan d'hébergement n'est pas disponible à la vente."
-
 msgid "This htaccess group already exists."
 msgstr "Ce nom de group htaccess n'est pas disponible."
 
@@ -4980,7 +5071,7 @@ msgstr "Ce nom d'utilisateur htaccess n'est pas disponible."
 msgid "This mount point is not allowed."
 msgstr ""
 
-msgid "This package already exist in the administrator software depot."
+msgid "This package already exist in the administrator software repository."
 msgstr ""
 
 #, php-format
@@ -4990,7 +5081,7 @@ msgstr ""
 msgid "This package already exist in the software depot!"
 msgstr ""
 
-msgid "This package already exist in your software depot."
+msgid "This package already exist in your software repository."
 msgstr ""
 
 msgid "This package is installed on following domain(s):"
@@ -5094,6 +5185,12 @@ msgstr "Total"
 msgid "Total Domains"
 msgstr "Nombre total de domaines"
 
+msgid "Total Due Today"
+msgstr ""
+
+msgid "Total Recurring"
+msgstr ""
+
 msgid "Total Softwares"
 msgstr "Nombre total de logiciels"
 
@@ -5103,8 +5200,8 @@ msgstr "Nombre total de logiciels Web dans le dépôt"
 msgid "Total installations"
 msgstr "Nombre total d'installation"
 
-msgid "Total packages in Web softwares repository"
-msgstr "Nombre total de paquets dans le dépôts le dépôt des logiciels."
+msgid "Total packages in Web software repository"
+msgstr ""
 
 msgid "Total reseller"
 msgstr "Nombre total de revendeurs"
@@ -5115,26 +5212,14 @@ msgstr "Nombre total de logiciels"
 msgid "Traffic"
 msgstr "Trafic"
 
-msgid "Traffic limit"
-msgstr "Volume limite du trafic [Mo]"
-
-msgid "Traffic limit [MiB]<br/><i>(0 unlimited)</i>"
-msgstr ""
-
-msgid "Traffic limit must be a digit."
-msgstr ""
-
 msgid "Traffic usage"
 msgstr "Utilisation du trafic"
 
-msgid "Traffic warning cannot be bigger than traffic limit."
-msgstr ""
-
-msgid "Traffic warning must be a digit."
-msgstr ""
-
 msgid "Translated strings"
 msgstr "Chaînes traduites"
+
+msgid "Triennially"
+msgstr ""
 
 msgid "Type"
 msgstr "Type"
@@ -5183,6 +5268,9 @@ msgstr "Impossible de retrouver la liste des IP. Merci de corriger le problème.
 msgid "Unable to move file."
 msgstr "Impossible de déplacer le fichier."
 
+msgid "Unable to read xml file for Web softwares."
+msgstr ""
+
 msgid "Unable to read xml file for web softwares."
 msgstr "Impossible de lire le fichier xml pour les logiciels Web."
 
@@ -5198,9 +5286,6 @@ msgstr "Impossible de retrouver la liste des répertoires de votre domaine. Merc
 #, php-format
 msgid "Unbale not upload file. Max. upload filesize (%1$d MB) reached?"
 msgstr "Impossible d'envoyer le fichier. Taille maximum (%1$d MO) atteinte ?"
-
-msgid "Undefined reference to data."
-msgstr "Référence non définie"
 
 msgid "Under maintenance mode, only administrators can login."
 msgstr "En maintenance, uniquement les administrateurs peuvent se connecter."
@@ -5285,11 +5370,13 @@ msgstr "Mettre à jour à partir du dépôt Web"
 msgid "Update hosting plan"
 msgstr "Mise à jour du plan d'hébergement"
 
+msgid ""
+"Update of Web software repository index has been aborted. Missing or empty "
+"fields."
+msgstr ""
+
 msgid "Update order"
 msgstr "Mettre la commande à jour"
-
-msgid "Update plan"
-msgstr "Mettre le plan à jour"
 
 msgid "Update plugin list"
 msgstr "Mettre à jour"
@@ -5385,16 +5472,16 @@ msgstr "Nom réel de l'utilisateur (nom et prénom)"
 msgid "User scheduled for deletion."
 msgstr "La suppression de l'utilisateur a été plannifiée."
 
-msgid "User session successfully killed for password change."
+msgid "User session successfully destroyed."
 msgstr ""
 
-msgid "User session successfuly destroyed"
+msgid "User session successfully killed for password change."
 msgstr ""
 
 msgid "User session was successfully killed for password change"
 msgstr "La session de l'utilisateur a été supprimé pour modification du mot de passe."
 
-msgid "User successfuly disconnected."
+msgid "User successfully disconnected."
 msgstr ""
 
 msgid "User type"
@@ -5437,6 +5524,12 @@ msgstr ""
 
 msgid "Values"
 msgstr "Valeur"
+
+msgid "Vat"
+msgstr ""
+
+msgid "Vat must be a number."
+msgstr ""
 
 msgid "Vendor hompage"
 msgstr ""
@@ -5499,6 +5592,12 @@ msgstr "Nous sommes désolés, mais le système est en cours de maintenance.\nMe
 msgid "Web & E-Mail Support"
 msgstr "Support Web & Email"
 
+msgid "Web Software Installer"
+msgstr ""
+
+msgid "Web Statistics"
+msgstr ""
+
 msgid "Web in"
 msgstr "Web<br />entrant"
 
@@ -5508,14 +5607,14 @@ msgstr "Web<br />sortant"
 msgid "Web software depot packages total"
 msgstr "Total de paquets dans le dépot des paquets"
 
-msgid "Web softwares repositories list has been updated"
+msgid "Web software repository"
 msgstr ""
 
-msgid "Web softwares repositories list is already up to date"
+msgid "Web software repository index been successfully updated."
 msgstr ""
 
-msgid "Web softwares repository"
-msgstr "Dépôt de logiciels Web"
+msgid "Web software repository index is already up to date."
+msgstr ""
 
 msgid "Web statistics"
 msgstr "Statistiques Web"
@@ -5526,11 +5625,14 @@ msgstr "Statistiques Web (AWStats)"
 msgid "Web traffic"
 msgstr "Trafic<br />web"
 
+msgid "WebSpace"
+msgstr ""
+
+msgid "WebSpace Features"
+msgstr ""
+
 msgid "Webmail"
 msgstr "Webmail"
-
-msgid "Webspace"
-msgstr "Espace web"
 
 msgid "Webtools"
 msgstr "Outils Internet"
@@ -5636,9 +5738,6 @@ msgstr "Mauvaise URL de redirection/"
 msgid "Wrong request."
 msgstr "Requête erronée. "
 
-msgid "Wrong request: all expected data were not received."
-msgstr ""
-
 msgid "Wrong reseller id."
 msgstr "Identifiant du reseller incorrecte"
 
@@ -5695,24 +5794,24 @@ msgstr "Oui, supprimer définitivement le domaine."
 msgid "YiB"
 msgstr ""
 
-msgid "You Are Exceeding Your Alias Limit."
-msgstr ""
-
 #, php-format
 msgid "You are exceeding reseller limits for the <em>%s</em> service."
 msgstr "Vous dépassez les limits du revendeur pour le service <em>%s</em>."
 
-msgid "You are exceeding the server traffic limit."
+msgid "You are exceeding the monthly server traffic limit."
+msgstr ""
+
+msgid "You are exceeding you domain aliases Limit."
 msgstr ""
 
 msgid "You are exceeding your FTP accounts limit."
 msgstr ""
 
-msgid "You are exceeding your SQL database limit."
+msgid "You are exceeding your SQL databases limit."
 msgstr ""
 
-msgid "You are exceeding your disk limit."
-msgstr "Vous avez dépassé votre limite d'espace disque."
+msgid "You are exceeding your SQL users limit."
+msgstr ""
 
 msgid "You are exceeding your disk space limit."
 msgstr "Vous avez dépassé votre limite d'espace de stockage."
@@ -5720,11 +5819,11 @@ msgstr "Vous avez dépassé votre limite d'espace de stockage."
 msgid "You are exceeding your mail accounts limit."
 msgstr "Vous avez atteints le nombre de compte mail maximum."
 
-msgid "You are exceeding your subdomains limit."
+msgid "You are exceeding your monthly traffic limit."
 msgstr ""
 
-msgid "You are exceeding your traffic limit."
-msgstr "Vous avez dépasser votre limite de traffic."
+msgid "You are exceeding your subdomains limit."
+msgstr ""
 
 msgid "You are not allowed to act on your own session."
 msgstr ""
@@ -5820,7 +5919,10 @@ msgstr "Vous n'avez pas de nouvelles commandes d'alias de domaine."
 msgid "You do not have permission to access this interface."
 msgstr "Vous n'avez pas la permission d'accéder à cette interface."
 
-msgid "You do not have permissions to install application yet"
+msgid "You do not have permissions to install software yet"
+msgstr ""
+
+msgid "You do not have permissions to install softwares yet"
 msgstr ""
 
 msgid "You do not have permissions to upload software"
@@ -5865,7 +5967,13 @@ msgid ""
 msgstr ""
 
 msgid ""
-"You have a disk limit.<br />You cannot add an user with unlimited disk."
+"You have a disk space limit.<br />You cannot add an user with unlimited disk"
+" space."
+msgstr ""
+
+msgid ""
+"You have a domain aliases limit.<br />You cannot add an user with unlimited "
+"domain aliases."
 msgstr ""
 
 msgid ""
@@ -5874,23 +5982,18 @@ msgid ""
 msgstr ""
 
 msgid ""
+"You have a monthly traffic limit.<br />You cannot add an user with unlimited"
+" monthly traffic."
+msgstr ""
+
+msgid ""
 "You have a subdomains limit.<br />You cannot add an user with unlimited "
 "subdomains."
 msgstr ""
 
 msgid ""
-"You have a traffic limit.<br />You cannot add an user with unlimited "
-"traffic."
-msgstr ""
-
-msgid ""
 "You have an SQL users limit.<br />You cannot add an user with unlimited SQL "
 "users."
-msgstr ""
-
-msgid ""
-"You have an aliases limit.<br />You cannot add an user with unlimited "
-"aliases."
 msgstr ""
 
 #, php-format
@@ -5983,6 +6086,9 @@ msgstr "Vous devez choisir entre l'option file-upload and wget-function"
 msgid "You must assign at least one IP per reseller."
 msgstr "Vous devez assigner au moins une adresse IP par revendeur."
 
+msgid "You must choose between local and remote upload."
+msgstr ""
+
 msgid "You must confirm domain deletion."
 msgstr "Vous devez confirmer la suppression du domaine."
 
@@ -6000,6 +6106,9 @@ msgstr "Vous devez d'abord mettre à jour le thème pour visualiser vos changeme
 
 msgid "You must provide a password."
 msgstr "Vous devez fournir un mot de passe."
+
+msgid "You must select a file to upload."
+msgstr ""
 
 msgid "You must select a file to upload/download."
 msgstr "Vous devez selectionner un fichier à envoyer/télécharger."
@@ -6073,9 +6182,6 @@ msgstr "Votre commande à été confirmer et est en cours de traitement... Vous 
 msgid ""
 "Your order has not been found in our database. Perhaps already confirmed?"
 msgstr "Votre commande n'a pas été trouvée dans notre base de données. Elle a peut-être déjà été confirmée ?"
-
-msgid "Your own domain"
-msgstr "Votre propre domaine"
 
 msgid "Your package is corrupt. Please correct it!"
 msgstr ""
@@ -6177,9 +6283,6 @@ msgstr "UTF-8"
 
 msgid "everything"
 msgstr "tout"
-
-msgid "free of charge"
-msgstr "Gratuit"
 
 msgid "from other browser"
 msgstr "a partir d'un autre navigateur"
@@ -6550,13 +6653,25 @@ msgstr "i-MSCP - Revendeur/Paramétrage des commandes"
 msgid "i-MSCP - Service Mailer - You have a new order"
 msgstr "i-MSCP  Service Mailer - Vous avez une nouvelle commande"
 
-msgid "i-MSCP - Software Installer Management"
-msgstr "i-MSCP - Gestion des installations de logiciels"
+msgid "i-MSCP - Software Installer / Management"
+msgstr ""
+
+msgid "i-MSCP - Software Management"
+msgstr ""
+
+msgid "i-MSCP - Software Management (Permissions)"
+msgstr ""
 
 msgid "i-MSCP - Software details"
 msgstr "i-MSCP - Détails logiciel"
 
 msgid "i-MSCP - Software installer options"
+msgstr ""
+
+msgid "i-MSCP - Softwares Management"
+msgstr ""
+
+msgid "i-MSCP - Sofware Management"
 msgstr ""
 
 msgid "i-MSCP - User/Add domain account - step 2"
@@ -6607,9 +6722,6 @@ msgstr ""
 msgid "i-MSCP Client : Add Alias"
 msgstr "i-MSCP Client: Ajouter un alias"
 
-msgid "i-MSCP Control Panel"
-msgstr "Panneau de configuration d'i-MSCP"
-
 msgid "i-MSCP Daemon tools"
 msgstr "Outils du démon i-MSCP"
 
@@ -6625,11 +6737,11 @@ msgstr ""
 msgid "i-MSCP Reseller/Circular"
 msgstr ""
 
-msgid "i-MSCP application installer Web softwares repository"
-msgstr "Dépôt i-MSCP des logiciels."
+msgid "i-MSCP Software installer / Web software repository"
+msgstr ""
 
-msgid "i-MSCP application installer web software depot"
-msgstr "Dépôt de logiciel Web"
+msgid "i-MSCP Web softwares repository"
+msgstr ""
 
 msgid "i-MSCP debugger"
 msgstr "i-MSCP débogueur"
@@ -6666,15 +6778,6 @@ msgstr "compte email"
 
 msgid "mail accounts"
 msgstr "comptes mail"
-
-msgid "max_execution_time out of range."
-msgstr "Limite incorrecte pour la directive max_execution_time."
-
-msgid "max_input_time out of range."
-msgstr "Limite incorrecte pour la directive max_input_time."
-
-msgid "memory_limit out of range."
-msgstr "Limite incorrect pour la directive memory_limit."
 
 msgid "missing alias"
 msgstr "alias manquant"
@@ -6728,9 +6831,6 @@ msgstr "par"
 msgid "phpMyAdmin"
 msgstr "phpMyAdmin"
 
-msgid "post_max_size out of range."
-msgstr "Limite incorrecte pour la directive post_max_size."
-
 msgid "protect"
 msgstr "proctection"
 
@@ -6761,17 +6861,11 @@ msgstr "UDP"
 msgid "unlimited"
 msgstr "illimité"
 
-msgid "upload_max_filesize out of range."
-msgstr "Limite incorrecte pour la directive upload_max_filezize."
-
 msgid "view aliases"
 msgstr "Afficher les alias"
 
 msgid "waiting for activation"
 msgstr ""
-
-msgid "wrong request."
-msgstr "Requête incorrect."
 
 msgid "yes"
 msgstr "oui"

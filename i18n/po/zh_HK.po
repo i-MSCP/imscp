@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2013-02-11 11:47+0100\n"
-"PO-Revision-Date: 2013-02-11 10:47+0000\n"
+"POT-Creation-Date: 2013-02-19 14:54+0100\n"
+"PO-Revision-Date: 2013-02-19 13:54+0000\n"
 "Last-Translator: Torsten Widmann <info@goover.de>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -697,9 +697,6 @@ msgstr ""
 msgid "Add permissions for reseller to software:"
 msgstr ""
 
-msgid "Add plan"
-msgstr "增加計劃"
-
 msgid "Add protected area"
 msgstr ""
 
@@ -882,6 +879,9 @@ msgstr ""
 msgid "An error occurred while the authentication attempt."
 msgstr ""
 
+msgid "An hosting plan with same name already exists."
+msgstr ""
+
 msgid "An unexpected error occured, please contact your reseller."
 msgstr ""
 
@@ -889,14 +889,11 @@ msgstr ""
 msgid "An unknown error occured during file upload: %s"
 msgstr ""
 
+msgid "Annually"
+msgstr ""
+
 msgid "Anti-Rootkits Tools Log Checker"
 msgstr "反Rootkits工具日誌檢查器"
-
-msgid "Apache logfiles"
-msgstr "Apache 日誌檔"
-
-msgid "Application Description"
-msgstr ""
 
 msgid "Application installer"
 msgstr ""
@@ -1033,7 +1030,10 @@ msgstr ""
 msgid "Auto-responder successfully scheduled for update."
 msgstr ""
 
-msgid "Automatic updates"
+msgid "Automatic Updates"
+msgstr ""
+
+msgid "Autoresponders"
 msgstr ""
 
 msgid "Available for purchasing"
@@ -1044,9 +1044,6 @@ msgstr "可用 i-MSCP 更新"
 
 msgid "Available softwares"
 msgstr ""
-
-msgid "AwStats"
-msgstr "AwStats"
 
 msgid "Awaiting activation"
 msgstr ""
@@ -1093,8 +1090,14 @@ msgstr ""
 msgid "Being suspended"
 msgstr ""
 
+msgid "Biennially"
+msgstr ""
+
 msgid "Billing Settings"
 msgstr "帳單設定"
+
+msgid "Billing cycle"
+msgstr ""
 
 msgid ""
 "Blocking time between login/captcha attempts <small>(In seconds)</small>"
@@ -1172,6 +1175,9 @@ msgid "Catch all account scheduled for creation."
 msgstr ""
 
 msgid "Catch all account scheduled for deletion."
+msgstr ""
+
+msgid "Catch-All E-Mail Addresses"
 msgstr ""
 
 msgid "Catchall"
@@ -1311,6 +1317,9 @@ msgstr ""
 msgid "Continue"
 msgstr "下一步"
 
+msgid "Control Panel"
+msgstr ""
+
 msgid "Core data"
 msgstr "核心資料"
 
@@ -1325,8 +1334,7 @@ msgstr ""
 
 #, php-format
 msgid ""
-"Could not upload the file. Max. upload filesize (%1$d MB) seem to be "
-"reached."
+"Could not upload the file. Max. upload filesize (%1$d MB) has been reached."
 msgstr ""
 
 msgid "Couldn't check for updates. Website not reachable."
@@ -1365,6 +1373,9 @@ msgstr "貨幣"
 msgid "Current password"
 msgstr "目前密碼"
 
+msgid "Custom DNS Records"
+msgstr ""
+
 msgid "Custom DNS record"
 msgstr ""
 
@@ -1381,6 +1392,9 @@ msgid "Custom DNS record scheduled for update."
 msgstr ""
 
 msgid "Custom DNS records"
+msgstr ""
+
+msgid "Custom Error Pages"
 msgstr ""
 
 msgid "Custom apache logs"
@@ -1655,6 +1669,9 @@ msgstr ""
 msgid "Description"
 msgstr "描述"
 
+msgid "Description cannot be empty."
+msgstr ""
+
 msgid "Details"
 msgstr "詳細"
 
@@ -1694,10 +1711,16 @@ msgstr "磁碟空間"
 msgid "Disk limit"
 msgstr "磁碟空間限制"
 
-msgid "Disk limit [MiB]<br/><i>(0 unlimited)</i>"
+msgid "Disk space"
 msgstr ""
 
-msgid "Disk limit [MiB]<br/><i>(0 unlimited)</span>"
+msgid "Disk space limit"
+msgstr ""
+
+msgid "Disk space limit [MiB]<br/><i>(0 unlimited)</i>"
+msgstr ""
+
+msgid "Disk space limit [MiB]<br/><i>(0 unlimited)</span>"
 msgstr ""
 
 msgid "Disk usage"
@@ -1943,6 +1966,15 @@ msgstr ""
 msgid "Download the files stored in this directory"
 msgstr "下載檔並存儲到此目錄"
 
+msgid "E-Mail Aliases"
+msgstr ""
+
+msgid "E-Mail Features"
+msgstr ""
+
+msgid "E-Mail Forwarding"
+msgstr ""
+
 msgid "E-Mail accounts are hard suspended"
 msgstr "E-Mail 帳號強制暫停"
 
@@ -2152,6 +2184,9 @@ msgstr ""
 msgid "Errors"
 msgstr "錯誤"
 
+msgid "Excl. tax"
+msgstr ""
+
 msgid "Execute requests"
 msgstr "執行請求"
 
@@ -2162,6 +2197,9 @@ msgid "Expire time for unconfirmed orders <small>(In days)</small>"
 msgstr ""
 
 msgid "External Mail Host"
+msgstr ""
+
+msgid "External Mail Server"
 msgstr ""
 
 msgid "External mail server"
@@ -2181,6 +2219,9 @@ msgstr ""
 
 msgid "FTP"
 msgstr "FTP"
+
+msgid "FTP Accounts"
+msgstr ""
 
 msgid "FTP Users"
 msgstr ""
@@ -2403,6 +2444,9 @@ msgstr "主機"
 msgid "Host must be filled."
 msgstr ""
 
+msgid "Hosting Plan"
+msgstr ""
+
 msgid "Hosting details"
 msgstr "託管詳細資料"
 
@@ -2412,16 +2456,19 @@ msgstr "託管計劃"
 msgid "Hosting plan can't be deleted, there are active orders."
 msgstr ""
 
+msgid "Hosting plan limits exceed reseller limits."
+msgstr ""
+
 msgid "Hosting plan properties"
 msgstr "託管計劃屬性"
 
-msgid "Hosting plan successfully added."
+msgid "Hosting plan successfully created."
 msgstr ""
 
 msgid "Hosting plan successfully deleted."
 msgstr ""
 
-msgid "Hosting plan sucessfully updated."
+msgid "Hosting plan successfully updated."
 msgstr ""
 
 msgid "Hosting plan update"
@@ -2430,7 +2477,7 @@ msgstr ""
 msgid "Hosting plan values exceed reseller maximum values."
 msgstr ""
 
-msgid "Hosting plan with same name already exists."
+msgid "Hosting plan values exceed your own limits."
 msgstr ""
 
 msgid "Hosting plans"
@@ -2474,6 +2521,9 @@ msgstr ""
 msgid "Htaccess user successfully scheduled for addition."
 msgstr ""
 
+msgid "Http Redirections"
+msgstr ""
+
 msgid "Http traffic"
 msgstr ""
 
@@ -2485,6 +2535,9 @@ msgstr ""
 
 msgid "ID"
 msgstr "ID"
+
+msgid "IMAP/POP3 E-Mail Accounts"
+msgstr ""
 
 msgid "IP"
 msgstr "IP"
@@ -2531,9 +2584,6 @@ msgstr ""
 msgid "Images have to be smaller than 500 x 90 pixels."
 msgstr ""
 
-msgid "Implementation URL"
-msgstr "提交 URL"
-
 msgid "Import"
 msgstr ""
 
@@ -2567,7 +2617,13 @@ msgstr ""
 msgid "Incorrect aliases limit."
 msgstr ""
 
-msgid "Incorrect disk quota limit."
+msgid "Incorrect disk space limit."
+msgstr ""
+
+msgid "Incorrect diskspace limit."
+msgstr ""
+
+msgid "Incorrect domain aliases limit."
 msgstr ""
 
 msgid "Incorrect email length or syntax."
@@ -2578,6 +2634,9 @@ msgid "Incorrect limit for %s."
 msgstr ""
 
 msgid "Incorrect mail accounts limit."
+msgstr ""
+
+msgid "Incorrect monthly traffic limit."
 msgstr ""
 
 msgid "Incorrect mount point length or syntax."
@@ -2596,15 +2655,6 @@ msgid "Incorrect subdomains limit."
 msgstr ""
 
 msgid "Incorrect syntax for email address."
-msgstr ""
-
-msgid "Incorrect template description length."
-msgstr ""
-
-msgid "Incorrect template name length."
-msgstr ""
-
-msgid "Incorrect traffic limit."
 msgstr ""
 
 msgid "Incorrect username length or syntax."
@@ -2634,10 +2684,10 @@ msgstr ""
 msgid "Installed Package which was deleted by your reseller."
 msgstr ""
 
-msgid "Installed in reseller depot"
+msgid "Installed in reseller repository"
 msgstr ""
 
-msgid "Installed in software depot"
+msgid "Installed in software repository"
 msgstr ""
 
 msgid "Installed on"
@@ -3050,6 +3100,11 @@ msgid "Max value for the %s PHP directive"
 msgstr ""
 
 #, php-format
+msgid ""
+"Max. remote filesize (%1$d MB) has been reached. Your remote file is %2$d MB"
+msgstr ""
+
+#, php-format
 msgid "Max. remote filesize (%1$d MB) is reached. Your remote file is %2$d MB"
 msgstr ""
 
@@ -3113,10 +3168,34 @@ msgstr ""
 msgid "Modify"
 msgstr "更改"
 
+msgid "Monhtly traffic warning cannot be bigger than monthly traffic limit."
+msgstr ""
+
 msgid "Month"
 msgstr "月"
 
+msgid "Monthly"
+msgstr ""
+
+msgid "Monthly Traffic limit"
+msgstr ""
+
+msgid "Monthly traffic limit"
+msgstr ""
+
+msgid "Monthly traffic limit [MiB]<br/><i>(0 unlimited)</i>"
+msgstr ""
+
+msgid "Monthly traffic limit must be a digit."
+msgstr ""
+
+msgid "Monthly traffic warning must be a digit."
+msgstr ""
+
 msgid "More Details"
+msgstr ""
+
+msgid "More details"
 msgstr ""
 
 msgid "Mount"
@@ -3142,6 +3221,9 @@ msgstr "空"
 
 msgid "Name"
 msgstr "名稱"
+
+msgid "Name cannot be empty."
+msgstr ""
 
 msgid "Name must be filled."
 msgstr ""
@@ -3204,9 +3286,6 @@ msgid "No administrator accounts found."
 msgstr ""
 
 msgid "No alias subdomain system errors"
-msgstr ""
-
-msgid "No available hosting packages."
 msgstr ""
 
 msgid "No certificate found."
@@ -3286,10 +3365,10 @@ msgstr ""
 msgid "No software available"
 msgstr ""
 
-msgid "No software in software depot available!"
+msgid "No software in Web repository found!"
 msgstr ""
 
-msgid "No software in webdepot found!"
+msgid "No software in software depot available!"
 msgstr ""
 
 msgid "No software is waiting for activation"
@@ -3379,6 +3458,9 @@ msgstr ""
 msgid "One or more database updates are now available. See the details below."
 msgstr ""
 
+msgid "Only 'tar.gz' archives are accepted."
+msgstr ""
+
 msgid ""
 "Only Top Level Domains (TLD) listed in IANA root zone database can be used."
 msgstr ""
@@ -3425,13 +3507,22 @@ msgstr ""
 msgid "Order Panel / Choose hosting plan"
 msgstr ""
 
-msgid "Order Panel / Choosing a domain name"
+msgid "Order Panel / Domain name"
 msgstr ""
 
 msgid "Order Panel / Order confirmation"
 msgstr ""
 
 msgid "Order Panel / Personal Data"
+msgstr ""
+
+msgid "Order Panel Access URL"
+msgstr ""
+
+msgid "Order Panel Preview"
+msgstr ""
+
+msgid "Order Panel Template"
 msgstr ""
 
 msgid "Order confirmation"
@@ -3462,9 +3553,6 @@ msgid "Order settings"
 msgstr "訂單設定"
 
 msgid "Order successfully updated."
-msgstr ""
-
-msgid "Order template"
 msgstr ""
 
 msgid "Orders"
@@ -3549,10 +3637,10 @@ msgstr ""
 msgid "Package already exist in the software depot!"
 msgstr ""
 
-msgid "Package already exist in your software depot!"
+msgid "Package already exist in the software repository!"
 msgstr ""
 
-msgid "Package features"
+msgid "Package already exist in your software repository!"
 msgstr ""
 
 msgid "Package install type"
@@ -3568,9 +3656,6 @@ msgid "Package language"
 msgstr ""
 
 msgid "Package name"
-msgstr ""
-
-msgid "Package price"
 msgstr ""
 
 msgid "Package title"
@@ -3649,9 +3734,6 @@ msgid ""
 "Each of them must be separated by PATH_SEPARATOR. See the PHP documentation "
 "for more information."
 msgstr ""
-
-msgid "Payment period"
-msgstr "付款期限"
 
 msgid "Percent"
 msgstr "已用百分比"
@@ -3746,8 +3828,8 @@ msgid "Please select at least one mail type."
 msgstr ""
 
 msgid ""
-"Please set now the Username and Password for the later Login in the "
-"Application. (Required fiels!)"
+"Please set now the username and password for the later login in the "
+"software. (Required fiels)"
 msgstr ""
 
 msgid "Please specify a message content."
@@ -3888,6 +3970,9 @@ msgstr ""
 msgid "Profile"
 msgstr ""
 
+msgid "Programming"
+msgstr ""
+
 msgid "Properties"
 msgstr ""
 
@@ -3905,6 +3990,9 @@ msgid "Protect this plugin"
 msgstr ""
 
 msgid "Protected"
+msgstr ""
+
+msgid "Protected Areas"
 msgstr ""
 
 msgid "Protected area status should be 'OK' if you want to delete it."
@@ -3983,10 +4071,10 @@ msgstr ""
 msgid "Reload"
 msgstr ""
 
-msgid "Remote File not found."
+msgid "Remote Web software repository"
 msgstr ""
 
-msgid "Remote Web software repository"
+msgid "Remote file not found."
 msgstr ""
 
 msgid "Remove"
@@ -4136,6 +4224,9 @@ msgstr "SQL 資料庫"
 msgid "SQL Databases"
 msgstr "SQL 資料庫"
 
+msgid "SQL Support"
+msgstr ""
+
 msgid "SQL User"
 msgstr "SQL 使用者"
 
@@ -4157,9 +4248,6 @@ msgstr "SQL 資料庫"
 msgid "SQL databases limit <br /><i>(-1 disabled, 0 unlimited)</i>"
 msgstr ""
 
-msgid "SQL databases limit is <i>disabled</i>."
-msgstr ""
-
 msgid "SQL databases limit is disabled but SQL users limit is not."
 msgstr ""
 
@@ -4168,9 +4256,6 @@ msgstr ""
 
 msgid "SQL databases limit<br/><i>(-1 disabled, 0 unlimited)</i>"
 msgstr ""
-
-msgid "SQL support"
-msgstr "SQL 支援"
 
 msgid "SQL user name"
 msgstr "SQL 使用者名稱"
@@ -4346,6 +4431,9 @@ msgstr "設定"
 msgid "Settings saved."
 msgstr ""
 
+msgid "Setup Fee"
+msgstr ""
+
 msgid "Setup fee"
 msgstr "安裝費用"
 
@@ -4407,6 +4495,9 @@ msgstr "總共空間"
 msgid "Software"
 msgstr ""
 
+msgid "Software Description"
+msgstr ""
+
 msgid "Software available"
 msgstr ""
 
@@ -4417,6 +4508,12 @@ msgid "Software depot upload"
 msgstr ""
 
 msgid "Software details"
+msgstr ""
+
+msgid "Software has been deleted."
+msgstr ""
+
+msgid "Software has been successfully imported."
 msgstr ""
 
 msgid "Software in repository"
@@ -4476,9 +4573,6 @@ msgstr ""
 msgid "Software was deleted."
 msgstr ""
 
-msgid "Software was imported successfully."
-msgstr ""
-
 msgid "Software-Synonym"
 msgstr ""
 
@@ -4503,9 +4597,6 @@ msgstr ""
 msgid "Softwares permissions"
 msgstr ""
 
-msgid "Softwares repository"
-msgstr ""
-
 msgid "Specified SQL username name already exists."
 msgstr ""
 
@@ -4518,6 +4609,9 @@ msgid ""
 msgstr ""
 
 msgid "Sql"
+msgstr ""
+
+msgid "Sql Manager"
 msgstr ""
 
 msgid "Sql Users"
@@ -4533,6 +4627,9 @@ msgid "Sql user"
 msgstr ""
 
 msgid "Sql users"
+msgstr ""
+
+msgid "Standard Features"
 msgstr ""
 
 msgid "Start installation"
@@ -4620,6 +4717,9 @@ msgstr "主題"
 
 msgid "Submit changes"
 msgstr "提交更改"
+
+msgid "Subtotal"
+msgstr ""
 
 msgid "Support"
 msgstr ""
@@ -4715,9 +4815,6 @@ msgstr ""
 msgid "Template for Auto email successfully updated."
 msgstr ""
 
-msgid "Template name"
-msgstr "範本名稱"
-
 msgid "Template successfully reseted."
 msgstr ""
 
@@ -4728,9 +4825,6 @@ msgid "Temporary folder not found."
 msgstr ""
 
 msgid "Terms of Service"
-msgstr ""
-
-msgid "Text"
 msgstr ""
 
 msgid "Text Only"
@@ -4850,9 +4944,6 @@ msgstr ""
 msgid "The external mail feature needs min. 1 email account."
 msgstr ""
 
-msgid "The i-MSCP application installer needs PHP to enable it."
-msgstr ""
-
 msgid ""
 "The mail host must not be equal to the domain name for which you add it."
 msgstr ""
@@ -4892,7 +4983,10 @@ msgstr ""
 msgid "The reseller account that you are trying to edit has not been found."
 msgstr ""
 
-msgid "The softwares installer needs PHP."
+msgid "The software installer require PHP."
+msgstr ""
+
+msgid "The software installer require the PHP support."
 msgstr ""
 
 msgid "The uploaded file was only partially uploaded."
@@ -4958,9 +5052,6 @@ msgid ""
 "This hosting plan can't be deleted, there are some orders linked to it."
 msgstr ""
 
-msgid "This hosting plan is not available for purchase."
-msgstr ""
-
 msgid "This htaccess group already exists."
 msgstr ""
 
@@ -4970,7 +5061,7 @@ msgstr ""
 msgid "This mount point is not allowed."
 msgstr ""
 
-msgid "This package already exist in the administrator software depot."
+msgid "This package already exist in the administrator software repository."
 msgstr ""
 
 #, php-format
@@ -4980,7 +5071,7 @@ msgstr ""
 msgid "This package already exist in the software depot!"
 msgstr ""
 
-msgid "This package already exist in your software depot."
+msgid "This package already exist in your software repository."
 msgstr ""
 
 msgid "This package is installed on following domain(s):"
@@ -5084,6 +5175,12 @@ msgstr "總計"
 msgid "Total Domains"
 msgstr ""
 
+msgid "Total Due Today"
+msgstr ""
+
+msgid "Total Recurring"
+msgstr ""
+
 msgid "Total Softwares"
 msgstr ""
 
@@ -5093,7 +5190,7 @@ msgstr ""
 msgid "Total installations"
 msgstr ""
 
-msgid "Total packages in Web softwares repository"
+msgid "Total packages in Web software repository"
 msgstr ""
 
 msgid "Total reseller"
@@ -5105,25 +5202,13 @@ msgstr ""
 msgid "Traffic"
 msgstr "流量"
 
-msgid "Traffic limit"
-msgstr "流量限制"
-
-msgid "Traffic limit [MiB]<br/><i>(0 unlimited)</i>"
-msgstr ""
-
-msgid "Traffic limit must be a digit."
-msgstr ""
-
 msgid "Traffic usage"
 msgstr "流量使用量"
 
-msgid "Traffic warning cannot be bigger than traffic limit."
-msgstr ""
-
-msgid "Traffic warning must be a digit."
-msgstr ""
-
 msgid "Translated strings"
+msgstr ""
+
+msgid "Triennially"
 msgstr ""
 
 msgid "Type"
@@ -5173,6 +5258,9 @@ msgstr ""
 msgid "Unable to move file."
 msgstr ""
 
+msgid "Unable to read xml file for Web softwares."
+msgstr ""
+
 msgid "Unable to read xml file for web softwares."
 msgstr ""
 
@@ -5187,9 +5275,6 @@ msgstr ""
 
 #, php-format
 msgid "Unbale not upload file. Max. upload filesize (%1$d MB) reached?"
-msgstr ""
-
-msgid "Undefined reference to data."
 msgstr ""
 
 msgid "Under maintenance mode, only administrators can login."
@@ -5275,11 +5360,13 @@ msgstr ""
 msgid "Update hosting plan"
 msgstr ""
 
+msgid ""
+"Update of Web software repository index has been aborted. Missing or empty "
+"fields."
+msgstr ""
+
 msgid "Update order"
 msgstr "更新訂單"
-
-msgid "Update plan"
-msgstr "更新項目"
 
 msgid "Update plugin list"
 msgstr ""
@@ -5375,16 +5462,16 @@ msgstr "使用者實名（姓氏和名字）"
 msgid "User scheduled for deletion."
 msgstr ""
 
-msgid "User session successfully killed for password change."
+msgid "User session successfully destroyed."
 msgstr ""
 
-msgid "User session successfuly destroyed"
+msgid "User session successfully killed for password change."
 msgstr ""
 
 msgid "User session was successfully killed for password change"
 msgstr ""
 
-msgid "User successfuly disconnected."
+msgid "User successfully disconnected."
 msgstr ""
 
 msgid "User type"
@@ -5426,6 +5513,12 @@ msgid ""
 msgstr ""
 
 msgid "Values"
+msgstr ""
+
+msgid "Vat"
+msgstr ""
+
+msgid "Vat must be a number."
 msgstr ""
 
 msgid "Vendor hompage"
@@ -5489,6 +5582,12 @@ msgstr ""
 msgid "Web & E-Mail Support"
 msgstr "Web 和 E-Mail 支援"
 
+msgid "Web Software Installer"
+msgstr ""
+
+msgid "Web Statistics"
+msgstr ""
+
 msgid "Web in"
 msgstr "Web 接收"
 
@@ -5498,13 +5597,13 @@ msgstr "Web 發送"
 msgid "Web software depot packages total"
 msgstr ""
 
-msgid "Web softwares repositories list has been updated"
+msgid "Web software repository"
 msgstr ""
 
-msgid "Web softwares repositories list is already up to date"
+msgid "Web software repository index been successfully updated."
 msgstr ""
 
-msgid "Web softwares repository"
+msgid "Web software repository index is already up to date."
 msgstr ""
 
 msgid "Web statistics"
@@ -5516,11 +5615,14 @@ msgstr ""
 msgid "Web traffic"
 msgstr "Web 流量"
 
+msgid "WebSpace"
+msgstr ""
+
+msgid "WebSpace Features"
+msgstr ""
+
 msgid "Webmail"
 msgstr "網頁郵件"
-
-msgid "Webspace"
-msgstr "網頁空間"
 
 msgid "Webtools"
 msgstr "Web工具"
@@ -5626,9 +5728,6 @@ msgstr ""
 msgid "Wrong request."
 msgstr ""
 
-msgid "Wrong request: all expected data were not received."
-msgstr ""
-
 msgid "Wrong reseller id."
 msgstr ""
 
@@ -5685,23 +5784,23 @@ msgstr ""
 msgid "YiB"
 msgstr ""
 
-msgid "You Are Exceeding Your Alias Limit."
-msgstr ""
-
 #, php-format
 msgid "You are exceeding reseller limits for the <em>%s</em> service."
 msgstr ""
 
-msgid "You are exceeding the server traffic limit."
+msgid "You are exceeding the monthly server traffic limit."
+msgstr ""
+
+msgid "You are exceeding you domain aliases Limit."
 msgstr ""
 
 msgid "You are exceeding your FTP accounts limit."
 msgstr ""
 
-msgid "You are exceeding your SQL database limit."
+msgid "You are exceeding your SQL databases limit."
 msgstr ""
 
-msgid "You are exceeding your disk limit."
+msgid "You are exceeding your SQL users limit."
 msgstr ""
 
 msgid "You are exceeding your disk space limit."
@@ -5710,10 +5809,10 @@ msgstr ""
 msgid "You are exceeding your mail accounts limit."
 msgstr ""
 
-msgid "You are exceeding your subdomains limit."
+msgid "You are exceeding your monthly traffic limit."
 msgstr ""
 
-msgid "You are exceeding your traffic limit."
+msgid "You are exceeding your subdomains limit."
 msgstr ""
 
 msgid "You are not allowed to act on your own session."
@@ -5810,7 +5909,10 @@ msgstr ""
 msgid "You do not have permission to access this interface."
 msgstr ""
 
-msgid "You do not have permissions to install application yet"
+msgid "You do not have permissions to install software yet"
+msgstr ""
+
+msgid "You do not have permissions to install softwares yet"
 msgstr ""
 
 msgid "You do not have permissions to upload software"
@@ -5855,7 +5957,13 @@ msgid ""
 msgstr ""
 
 msgid ""
-"You have a disk limit.<br />You cannot add an user with unlimited disk."
+"You have a disk space limit.<br />You cannot add an user with unlimited disk"
+" space."
+msgstr ""
+
+msgid ""
+"You have a domain aliases limit.<br />You cannot add an user with unlimited "
+"domain aliases."
 msgstr ""
 
 msgid ""
@@ -5864,23 +5972,18 @@ msgid ""
 msgstr ""
 
 msgid ""
+"You have a monthly traffic limit.<br />You cannot add an user with unlimited"
+" monthly traffic."
+msgstr ""
+
+msgid ""
 "You have a subdomains limit.<br />You cannot add an user with unlimited "
 "subdomains."
 msgstr ""
 
 msgid ""
-"You have a traffic limit.<br />You cannot add an user with unlimited "
-"traffic."
-msgstr ""
-
-msgid ""
 "You have an SQL users limit.<br />You cannot add an user with unlimited SQL "
 "users."
-msgstr ""
-
-msgid ""
-"You have an aliases limit.<br />You cannot add an user with unlimited "
-"aliases."
 msgstr ""
 
 #, php-format
@@ -5973,6 +6076,9 @@ msgstr ""
 msgid "You must assign at least one IP per reseller."
 msgstr ""
 
+msgid "You must choose between local and remote upload."
+msgstr ""
+
 msgid "You must confirm domain deletion."
 msgstr ""
 
@@ -5989,6 +6095,9 @@ msgid "You must first update the template to preview your changes."
 msgstr ""
 
 msgid "You must provide a password."
+msgstr ""
+
+msgid "You must select a file to upload."
 msgstr ""
 
 msgid "You must select a file to upload/download."
@@ -6062,9 +6171,6 @@ msgstr ""
 
 msgid ""
 "Your order has not been found in our database. Perhaps already confirmed?"
-msgstr ""
-
-msgid "Your own domain"
 msgstr ""
 
 msgid "Your package is corrupt. Please correct it!"
@@ -6167,9 +6273,6 @@ msgstr "UTF-8"
 
 msgid "everything"
 msgstr "全部"
-
-msgid "free of charge"
-msgstr "免費更改"
 
 msgid "from other browser"
 msgstr ""
@@ -6540,13 +6643,25 @@ msgstr "i-MSCP - 代理商/訂單設定"
 msgid "i-MSCP - Service Mailer - You have a new order"
 msgstr ""
 
-msgid "i-MSCP - Software Installer Management"
+msgid "i-MSCP - Software Installer / Management"
+msgstr ""
+
+msgid "i-MSCP - Software Management"
+msgstr ""
+
+msgid "i-MSCP - Software Management (Permissions)"
 msgstr ""
 
 msgid "i-MSCP - Software details"
 msgstr ""
 
 msgid "i-MSCP - Software installer options"
+msgstr ""
+
+msgid "i-MSCP - Softwares Management"
+msgstr ""
+
+msgid "i-MSCP - Sofware Management"
 msgstr ""
 
 msgid "i-MSCP - User/Add domain account - step 2"
@@ -6597,9 +6712,6 @@ msgstr ""
 msgid "i-MSCP Client : Add Alias"
 msgstr "i-MSCP 客戶 : 增加別名"
 
-msgid "i-MSCP Control Panel"
-msgstr "i-MSCP 控制面板"
-
 msgid "i-MSCP Daemon tools"
 msgstr "i-MSCP 後台工具"
 
@@ -6615,10 +6727,10 @@ msgstr ""
 msgid "i-MSCP Reseller/Circular"
 msgstr ""
 
-msgid "i-MSCP application installer Web softwares repository"
+msgid "i-MSCP Software installer / Web software repository"
 msgstr ""
 
-msgid "i-MSCP application installer web software depot"
+msgid "i-MSCP Web softwares repository"
 msgstr ""
 
 msgid "i-MSCP debugger"
@@ -6655,15 +6767,6 @@ msgid "mail account"
 msgstr ""
 
 msgid "mail accounts"
-msgstr ""
-
-msgid "max_execution_time out of range."
-msgstr ""
-
-msgid "max_input_time out of range."
-msgstr ""
-
-msgid "memory_limit out of range."
 msgstr ""
 
 msgid "missing alias"
@@ -6718,9 +6821,6 @@ msgstr ""
 msgid "phpMyAdmin"
 msgstr ""
 
-msgid "post_max_size out of range."
-msgstr ""
-
 msgid "protect"
 msgstr ""
 
@@ -6751,16 +6851,10 @@ msgstr "udp"
 msgid "unlimited"
 msgstr "無限制"
 
-msgid "upload_max_filesize out of range."
-msgstr ""
-
 msgid "view aliases"
 msgstr "查看別名"
 
 msgid "waiting for activation"
-msgstr ""
-
-msgid "wrong request."
 msgstr ""
 
 msgid "yes"
