@@ -274,6 +274,7 @@ RIC;
  *
  * @author Laurent Declercq <l.declercq@nuxwin.com>
  * @since iMSCP 1.0.1.6
+ * @throws iMSCP_Exception_Production
  * @param iMSCP_pTemplate $tpl iMSCP_pTemplate instance
  * @return void
  * @todo review all this... Using view helper sound really better.
@@ -371,7 +372,6 @@ function generateNavigation($tpl)
 		if(null !== ($callback = $page->get('privilege_callback'))) {
 			if(is_callable($callback['name'])) {
 				if(!call_user_func($callback['name'], $callback['param'])) {
-					//showBadRequestErrorPage();
 					continue;
 				}
 			} else {
@@ -381,11 +381,6 @@ function generateNavigation($tpl)
 			}
 		}
 
-		//if (null !== ($callback = $page->get('privilege_callback')) &&
-		//	!call_user_func($callback['name'], $callback['param'])
-		//) {
-		//	continue;
-		//} else
 		if ($page->isVisible()) {
 			$tpl->assign(
 				array(
@@ -414,40 +409,51 @@ function generateNavigation($tpl)
 
 					/** @var $subpage Zend_Navigation_Page_Uri */
 					foreach ($iterator as $subpage) {
-						if (null !== ($callback = $subpage->get('privilege_callback')) &&
-							!call_user_func($callback['name'], $callback['param'])
-						) {
-							continue;
-						} else {
+
+						if(null !== ($callback = $subpage->get('privilege_callback'))) {
+							if(is_callable($callback['name'])) {
+								if(!call_user_func($callback['name'], $callback['param'])) {
+									continue;
+								}
+							} else {
+								throw new iMSCP_Exception_Production(
+									"Privileges callback function '{$callback['name']}' is not callable"
+								);
+							}
+						}
+
+						$tpl->assign(
+							array(
+								'HREF' => $subpage->getHref(),
+								'IS_ACTIVE_CLASS' => ($subpage->isActive(true)) ? 'active' : 'dummy',
+								'LABEL' => tr($subpage->getLabel()),
+								'TARGET' => ($subpage->getTarget()) ? $subpage->getTarget() : '_self'
+							)
+						);
+
+						if ($subpage->isVisible()) {
+							// Add subpage to left menu
+							$tpl->parse('LEFT_MENU_BLOCK', '.left_menu_block');
+						}
+
+						if ($subpage->isActive(true)) {
 							$tpl->assign(
 								array(
-									'HREF' => $subpage->getHref(),
-									'IS_ACTIVE_CLASS' => ($subpage->isActive(true)) ? 'active' : 'dummy',
-									'LABEL' => tr($subpage->getLabel()),
-									'TARGET' => ($subpage->getTarget()) ? $subpage->getTarget() : '_self'));
+									'TR_TITLE' => ($subpage->get('dynamic_title')) ? $subpage->get('dynamic_title') : tr($subpage->getLabel()),
+									'TITLE_CLASS' => $subpage->get('title_class')
+								)
+							);
 
-							if ($subpage->isVisible()) {
-								// Add subpage to left menu
-								$tpl->parse('LEFT_MENU_BLOCK', '.left_menu_block');
+							if (!$subpage->hasPages()) {
+								$tpl->assign('HREF', $subpage->getHref() . "?$query");
 							}
 
-							if ($subpage->isActive(true)) {
-								$tpl->assign(
-									array(
-										'TR_TITLE' => ($subpage->get('dynamic_title')) ? $subpage->get('dynamic_title') : tr($subpage->getLabel()),
-										'TITLE_CLASS' => $subpage->get('title_class')));
-
-								if (!$subpage->hasPages()) {
-									$tpl->assign('HREF', $subpage->getHref() . "?$query");
-								}
-
-								// ad subpage to breadcrumbs
-								if (null != ($label = $subpage->get('dynamic_title'))) {
-									$tpl->assign('LABEL', $label);
-								}
-
-								$tpl->parse('BREADCRUMB_BLOCK', '.breadcrumb_block');
+							// ad subpage to breadcrumbs
+							if (null != ($label = $subpage->get('dynamic_title'))) {
+								$tpl->assign('LABEL', $label);
 							}
+
+							$tpl->parse('BREADCRUMB_BLOCK', '.breadcrumb_block');
 						}
 					}
 
@@ -483,6 +489,7 @@ function generateNavigation($tpl)
  *
  * @author Laurent Declercq <l.declercq@nuxwin.com>
  * @since iMSCP 1.0.1.6
+ * @throws iMSCP_Exception
  * @param string $userLevel User type (admin, reseller or user)
  * @return null|array Array that contain custom menus description or NULL
  */

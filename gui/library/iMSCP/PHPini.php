@@ -104,13 +104,11 @@ class iMSCP_PHPini
 
 		// Populate $_phpiniData with default data.
 		// Default data are those set by admin via the admin/settings.php page
-		//$this->loadDefaultData();
+		$this->loadDefaultData();
 
 		// Populate $_phpiniRePerm with default reseller permissions, including
 		// its max values for the PHP directives. Max values are those set by admin via the admin/settings.php page
 		$this->loadReDefaultPerm();
-
-		$this->loadDefaultData();
 
 		// Populate $_phpiniClPerm with default customer permissions
 		$this->loadClDefaultPerm();
