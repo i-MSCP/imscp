@@ -55,24 +55,25 @@ $tpl->define_dynamic(
 		'package_info_link' => 'page'));
 
 list(
-    $use_webdepot, $webdepot_xml_url, $webdepot_last_update
-) = get_application_installer_conf();
+	$use_webdepot, $webdepot_xml_url, $webdepot_last_update
+	) = get_application_installer_conf();
 
-if($use_webdepot) {
-    $error = '';
+if ($use_webdepot) {
+	$error = '';
 
-    if (isset($_POST['uaction']) && $_POST['uaction'] == "updatewebdepot") {
-        //$xml_file =  @file_get_contents(encode_idna(strtolower(clean_input($_POST['webdepot_xml_url']))));
-        $xml_file = @file_get_contents($webdepot_xml_url);
-        if (!strpos($xml_file, 'i-MSCP Web software repositories list')) {
-            set_page_message(tr("Unable to read xml file for Web softwares."), 'error');
-            $error = 1;
-        }
-        if(!$error) {
-            update_webdepot_software_list($webdepot_xml_url,$webdepot_last_update);
-        }
-    }
-    $packages_cnt = get_webdepot_software_list($tpl,$_SESSION['user_id']);
+	if (isset($_POST['uaction']) && $_POST['uaction'] == "updatewebdepot") {
+		//$xml_file =  @file_get_contents(encode_idna(strtolower(clean_input($_POST['webdepot_xml_url']))));
+		$xml_file = @file_get_contents($webdepot_xml_url);
+		if ($xml_file === false) {
+			set_page_message(tr("Unable to read Web software repository index file."), 'error');
+			$error = 1;
+		}
+		if (!$error) {
+			update_webdepot_software_list($webdepot_xml_url, $webdepot_last_update);
+		}
+	}
+
+	$packages_cnt = get_webdepot_software_list($tpl, $_SESSION['user_id']);
 
 	$tpl->assign(
 		array(
@@ -88,9 +89,9 @@ if($use_webdepot) {
 			'TR_WEBDEPOTSOFTWARE_COUNT' => tr('Total packages in Web software repository'),
 			'TR_WEBDEPOTSOFTWARE_ACT_NUM' => $packages_cnt));
 
-    $tpl->parse('WEBDEPOT_LIST', '.webdepot_list');
+	$tpl->parse('WEBDEPOT_LIST', '.webdepot_list');
 } else {
-    $tpl->assign('WEBDEPOT_LIST', '');
+	$tpl->assign('WEBDEPOT_LIST', '');
 }
 
 
@@ -125,16 +126,16 @@ if (isset($_POST['upload']) && $_SESSION['software_upload_token'] == $_POST['sen
 		$user_id = $_SESSION['user_id'];
 		$upload = 1;
 
-		if($file == 0) {
+		if ($file == 0) {
 			$fname = $_FILES['sw_file']['name'];
-		} elseif($file == 1) {
-			$fname = substr($_POST['sw_wget'], (strrpos($_POST['sw_wget'], '/') +1));
+		} elseif ($file == 1) {
+			$fname = substr($_POST['sw_wget'], (strrpos($_POST['sw_wget'], '/') + 1));
 		}
 
 		$filename = substr($fname, 0, -7);
 		$extension = substr($fname, -7);
 
-		$query="
+		$query = "
 			INSERT INTO
 				`web_software`
 					(
@@ -149,22 +150,22 @@ if (isset($_POST['upload']) && $_SESSION['software_upload_token'] == $_POST['sen
 
 		$rs = exec_query(
 			$query,
-				array(
-					$user_id, 'waiting_for_input', 'waiting_for_input', 'waiting_for_input',  'waiting_for_input', 0,
-					$filename, 'waiting_for_input', 'waiting_for_input', 'waiting_for_input', 'waiting_for_input', 1,
-					'toadd', 'yes'
-				)
+			array(
+				$user_id, 'waiting_for_input', 'waiting_for_input', 'waiting_for_input', 'waiting_for_input', 0,
+				$filename, 'waiting_for_input', 'waiting_for_input', 'waiting_for_input', 'waiting_for_input', 1,
+				$cfg->ITEM_ADD_STATUS, 'yes'
+			)
 		);
 
-        /** @var $db iMSCP_Database */
-        $db = iMSCP_Registry::get('db');
+		/** @var $db iMSCP_Database */
+		$db = iMSCP_Registry::get('db');
 		$sw_id = $db->insertId();
 
 		if ($file == 0) {
-			$dest_dir = $cfg->GUI_SOFTWARE_DEPOT_DIR . '/' . $filename . '-' . $sw_id.$extension;
+			$dest_dir = $cfg->GUI_SOFTWARE_DEPOT_DIR . '/' . $filename . '-' . $sw_id . $extension;
 
 			if (!is_dir($cfg->GUI_SOFTWARE_DEPOT_DIR)) {
-				@mkdir($cfg->GUI_SOFTWARE_DEPOT_DIR,0755,true);
+				@mkdir($cfg->GUI_SOFTWARE_DEPOT_DIR, 0755, true);
 			}
 
 			if (!move_uploaded_file($_FILES['sw_file']['tmp_name'], $dest_dir)) {
@@ -188,28 +189,28 @@ if (isset($_POST['upload']) && $_SESSION['software_upload_token'] == $_POST['sen
 
 		if ($file == 1) {
 			$sw_wget = $_POST['sw_wget'];
-			$dest_dir = $cfg->GUI_SOFTWARE_DEPOT_DIR . '/' . $filename . '-' . $sw_id.$extension;
+			$dest_dir = $cfg->GUI_SOFTWARE_DEPOT_DIR . '/' . $filename . '-' . $sw_id . $extension;
 
 			// Reading filesize
-   			$parts = parse_url($sw_wget);
-   			$connection = @fsockopen($parts['host'], 80, $errno, $errstr, 30);
+			$parts = parse_url($sw_wget);
+			$connection = @fsockopen($parts['host'], 80, $errno, $errstr, 30);
 
-   			if($connection) {
-   				fputs($connection, 'GET ' . $sw_wget . " HTTP/1.1\r\nHost: " . $parts['host'] . "\r\n\r\n");
-   				$size = 0;
+			if ($connection) {
+				fputs($connection, 'GET ' . $sw_wget . " HTTP/1.1\r\nHost: " . $parts['host'] . "\r\n\r\n");
+				$size = 0;
 				$length = null;
-				while(is_null($length) || ($size <= 500 && !feof($connection))) {
-   					$tstr = fgets($connection, 128);
-   					$size += strlen($tstr);
+				while (is_null($length) || ($size <= 500 && !feof($connection))) {
+					$tstr = fgets($connection, 128);
+					$size += strlen($tstr);
 
-   					if(substr($tstr, 0, 14) == 'Content-Length') {
-   						$length = substr($tstr, 15);
-   					}
-   				}
-   				($length) ? $remote_file_size = $length : $remote_file_size = 0;
+					if (substr($tstr, 0, 14) == 'Content-Length') {
+						$length = substr($tstr, 15);
+					}
+				}
+				($length) ? $remote_file_size = $length : $remote_file_size = 0;
 				$show_remote_file_size = formatFilesize($remote_file_size);
 
-				if($remote_file_size < 1){
+				if ($remote_file_size < 1) {
 					// Delete software entry
 					$query = "DELETE FROM `web_software` WHERE `software_id` = ?";
 					exec_query($query, $sw_id);
@@ -223,21 +224,21 @@ if (isset($_POST['upload']) && $_SESSION['software_upload_token'] == $_POST['sen
 					);
 
 					$upload = 0;
-				} elseif($remote_file_size > $cfg->MAX_REMOTE_FILESIZE) {
+				} elseif ($remote_file_size > $cfg->MAX_REMOTE_FILESIZE) {
 					// Delete software entry
 					$query = "DELETE FROM `web_software` WHERE `software_id` = ?";
 					exec_query($query, $sw_id);
 					$show_max_remote_filesize = formatFilesize($cfg->MAX_REMOTE_FILESIZE);
 					set_page_message(
 						tr('Max. remote filesize (%1$d MB) is reached. Your remote file is %2$d MB',
-							$show_max_remote_filesize, $show_remote_file_size),'error');
+							$show_max_remote_filesize, $show_remote_file_size), 'error');
 
 					$upload = 0;
 				} else {
 					$remote_file = @file_get_contents($sw_wget);
-					if($remote_file) {
+					if ($remote_file) {
 						$output_file = @fopen($dest_dir, 'w+');
-						fwrite($output_file,$remote_file);
+						fwrite($output_file, $remote_file);
 						fclose($output_file);
 					} else {
 						// Delete software entry
@@ -247,11 +248,11 @@ if (isset($_POST['upload']) && $_SESSION['software_upload_token'] == $_POST['sen
 						$upload = 0;
 					}
 				}
-   			} else {
+			} else {
 				// Delete software entry
 				$query = "DELETE FROM `web_software` WHERE `software_id` = ?";
 				exec_query($query, $sw_id);
-				set_page_message(tr('Could not upload the file. File not found.'), 'error');
+				set_page_message(tr('Could not upload file. File not found.'), 'error');
 				$upload = 0;
 			}
 		}
@@ -259,7 +260,7 @@ if (isset($_POST['upload']) && $_SESSION['software_upload_token'] == $_POST['sen
 		if ($upload == 1) {
 			$tpl->assign(array('VAL_WGET' => ''));
 			send_request();
-			set_page_message(tr('File was successfully uploaded.'), 'success');	
+			set_page_message(tr('File has been successfully uploaded.'), 'success');
 		} else {
 			$tpl->assign(array('VAL_WGET' => $sw_wget));
 		}
@@ -287,7 +288,7 @@ $tpl->assign(
 		'SOFTWARE_UPLOAD_TOKEN' => generate_software_upload_token(),
 		'TR_SOFTWARE_ADMIN' => tr('Admin'),
 		'TR_SOFTWARE_RIGHTS' => tr('Permissions'),
-		'TR_SOFTWAREDEPOT_COUNT' => tr('Total Web softwares repositories'),
+		'TR_SOFTWAREDEPOT_COUNT' => tr('Total Web software repositories'),
 		'TR_SOFTWAREDEPOT_NUM' => $swdepot_cnt,
 		'TR_UPLOAD_SOFTWARE' => tr('Software depot upload'),
 		'TR_SOFTWARE_FILE' => tr('Choose file (Max: %1$d MB)', ini_get('upload_max_filesize')),
