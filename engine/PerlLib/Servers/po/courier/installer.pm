@@ -93,8 +93,8 @@ sub registerSetupHooks
 
 	$hooksManager->trigger('beforePoRegisterSetupHooks', $hooksManager, 'courier') and return 1;
 
-	$hooksManager->register('afterMtaBuildMasterCfFile', sub { $self->buildMtaConf(@_); }) and return 1;
 	$hooksManager->register('afterMtaBuildMainCfFile', sub { $self->buildMtaConf(@_); }) and return 1;
+	$hooksManager->register('afterMtaBuildMasterCfFile', sub { $self->buildMtaConf(@_); }) and return 1;
 
 	$hooksManager->trigger('afterPoRegisterSetupHooks', $hooksManager, 'courier');
 }
@@ -185,14 +185,14 @@ sub buildAuthdaemonrcFile
 		return 1;
 	}
 
-	iMSCP::HooksManager->getInstance()->trigger('beforePoBuildAuthDaemonFile', \$rdata, 'authdaemonrc') and return 1;
+	iMSCP::HooksManager->getInstance()->trigger('beforePoBuildAuthdaemonrcFile', \$rdata, 'authdaemonrc') and return 1;
 
 	# Building the new file (Adding the authuserdb module if needed)
 	if($rdata !~ /^\s*authmodulelist="(?:.*)?authuserdb.*"$/gm) {
 		$rdata =~ s/(authmodulelist=")/$1authuserdb /gm;
 	}
 
-	iMSCP::HooksManager->getInstance()->trigger('afterPoBuildAuthDaemonFile', \$rdata, 'authdaemonrc') and return 1;
+	iMSCP::HooksManager->getInstance()->trigger('afterPoBuildAuthdaemonrcFile', \$rdata, 'authdaemonrc') and return 1;
 
 	# Storing the new file in the working directory
 	$file = iMSCP::File->new(filename => "$self->{wrkDir}/authdaemonrc");
@@ -284,13 +284,15 @@ sub buildSslConfFiles
 		# Installing the new file in the production directory
 		$rs |= $file->copyFile("$self::courierConfig{'AUTHLIB_CONF_DIR'}");
 
-		$rs |= iMSCP::HooksManager->getInstance()->trigger('beforePoBuildSslConfFiles', $_);
+		$rs |= iMSCP::HooksManager->getInstance()->trigger('afterPoBuildSslConfFiles', $_);
 	}
 
 	$rs;
 }
 
-# Hook function acting on the afterMtaBuildConf hook
+# Hook function acting on the following hooks
+# - afterMtaBuildMainCfFile
+# - afterMtaBuildMasterCfFile
 sub buildMtaConf
 {
 	my $self = shift;
@@ -315,11 +317,12 @@ sub buildMtaConf
 	);
 
 	# self register again and wait for next configuration file
-	iMSCP::HooksManager->getInstance()->register(
-		'afterMtaBuildMasterCfFile', sub { $self->buildMtaConf(@_); }
-	) and return 1;
+	#iMSCP::HooksManager->getInstance()->register(
+	#	'afterMtaBuildMasterCfFile', sub { $self->buildMtaConf(@_); }
+	#) and return 1;
 
-	iMSCP::HooksManager->getInstance()->register('afterMtaBuildMainCfFile', sub { $self->buildMtaConf(@_); });
+	#iMSCP::HooksManager->getInstance()->register('afterMtaBuildMainCfFile', sub { $self->buildMtaConf(@_); });
+	0;
 }
 
 1;

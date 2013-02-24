@@ -530,6 +530,7 @@ sub _parseVersion($ $)
 sub _setupDatabase
 {
 	my $self = shift;
+
 	my $dbUser = $self::roundcubeConfig{'DATABASE_USER'};
 	my $dbOldUser = $self::roundcubeOldConfig{'DATABASE_USER'} || '';
 	my $dbPass = $self::roundcubeConfig{'DATABASE_PASSWORD'};
@@ -545,7 +546,7 @@ sub _setupDatabase
 		return 1 if $rs;
 	}
 
-	# Ensure new roundcube user do not already exists by removing it
+	# Ensure new roundcube restricted SQL user do not already exists by removing it
 	$rs = main::setupDeleteSqlUser($dbUser, $dbUserHost);
 	error("Unable to delete the roundcube '$dbUser' restricted SQL user: $rs") if $rs;
 	return 1 if $rs;

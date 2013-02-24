@@ -123,8 +123,7 @@ sub genKey
 
 	if ($db_pass_key eq '{KEY}' || $db_pass_iv eq '{IV}') {
 
-		print STDOUT "\tGenerating database keys, it may take some time, please  wait...\n";
-		print STDOUT "\tIf it takes to long, please check:  http://i-mscp.net/dokuwiki/doku.php?id=keyrpl\n";
+		debug('Generating database keys...');
 
 		if(-d $main::imscpConfig{'CONF_DIR'}) {
 			use Data::Dumper;

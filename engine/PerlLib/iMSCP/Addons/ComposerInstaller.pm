@@ -116,7 +116,7 @@ sub _init
 
 	# Schedule package installation (done after addons preinstallation)
 	iMSCP::HooksManager->getInstance()->register(
-		'afterSetupPreInstallAddons', sub { iMSCP::Dialog->factory()->endGauge(); $self->_installPackages(@_) }
+		'afterSetupPreInstallAddons', sub { iMSCP::Dialog->factory()->endGauge(); $self->_installPackages() }
 	);
 
 	$self;

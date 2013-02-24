@@ -1788,10 +1788,10 @@ sub _addFiles
 	my $newHtdocs = -d "$homeDir/htdocs";
 	my ($rs, $stdout, $stderr);
 
-	for ($self->_dmnFolders($data)){
-		$rs |= iMSCP::Dir->new( dirname => $_->[0])->make(
-			{ user => $_->[1], group => $_->[2], mode => $_->[3] }
-		);
+	for ($self->_dmnFolders($data)) {
+		$rs |= iMSCP::Dir->new(
+			'dirname' => $_->[0]
+		)->make({ 'user' => $_->[1], 'group' => $_->[2], 'mode' => $_->[3] });
 	}
 
 	unless ($newHtdocs) {

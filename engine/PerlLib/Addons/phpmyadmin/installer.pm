@@ -375,7 +375,7 @@ sub _saveConfig
 sub _setupSqlUser
 {
 	my $self = shift;
-	my $dbHost = $main::imscpConfig{'DATABASE_HOST'};
+
 	my $dbUser = $self::phpmyadminConfig{'DATABASE_USER'};
 	my $dbOldUser = $self::phpmyadminOldConfig{'DATABASE_USER'} || '';
 	my $dbPass = $self::phpmyadminConfig{'DATABASE_PASSWORD'};
@@ -391,8 +391,8 @@ sub _setupSqlUser
 		return 1 if $rs;
 	}
 
-	# Ensure new phpmyadmin user do not already exists by removing it
-	$rs = main::setupDeleteSqlUser($dbUserHost);
+	# Ensure new phpmyadmin restricted SQL user do not already exists by removing it
+	$rs = main::setupDeleteSqlUser($dbUser, $dbUserHost);
 	error("Unable to delete the phpmyadmin '$dbUser' restricted SQL user: $rs") if $rs;
 	return 1 if $rs;
 

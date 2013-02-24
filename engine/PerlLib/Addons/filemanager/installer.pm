@@ -150,9 +150,9 @@ sub setGuiPermissions
 
 =item askFilemanager()
 
- Show file manager addon questions.
+ Show file manager addon question.
 
- Hook function responsible to show filemanager installer questions.
+ Hook function responsible to show filemanager installer question.
 
  Param iMSCP::Dialog
  Return int 0 or 30
@@ -163,9 +163,9 @@ sub askFilemanager
 {
 	my ($self, $dialog, $rs) = (shift, shift, 0);
 
-	my $fileManagerAddon =  main::setupGetQuestion('FILEMANAGER_ADDON');
+	my $fileManagerAddon = main::setupGetQuestion('FILEMANAGER_ADDON');
 
-	if($main::reconfigure ~~ ['filemanager', 'ftp', 'all', 'forced'] || $fileManagerAddon !~ /^AjaxPlorer|Net2ftp/) {
+	if($main::reconfigure ~~ ['filemanager', 'ftp', 'all', 'forced'] || $fileManagerAddon !~ /^AjaxPlorer|Net2ftp$/) {
 		($rs, $fileManagerAddon) = $dialog->radiolist(
 			"\nPlease, select the Ftp Web file manager addon you want use:",
 			['AjaxPlorer', 'Net2ftp'],
@@ -173,9 +173,7 @@ sub askFilemanager
 		);
 	}
 
-	if($rs != 30) {
-		$main::questions{'FILEMANAGER_ADDON'} = $fileManagerAddon;
-	}
+	$main::questions{'FILEMANAGER_ADDON'} = $fileManagerAddon if $rs != 30;
 
 	$rs;
 }

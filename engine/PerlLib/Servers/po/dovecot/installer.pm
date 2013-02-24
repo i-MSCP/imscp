@@ -70,8 +70,8 @@ sub registerSetupHooks
 		sub { my $dialogStack = shift; push(@$dialogStack, sub { $self->askDovecot(@_) }); 0; }
 	) and return 1;
 
-	$hooksManager->register('afterMtaBuildMasterCfFile', sub { $self->buildMtaConf(@_); }) and return 1;
 	$hooksManager->register('afterMtaBuildMainCfFile', sub { $self->buildMtaConf(@_); }) and return 1;
+	$hooksManager->register('afterMtaBuildMasterCfFile', sub { $self->buildMtaConf(@_); }) and return 1;
 
 	$hooksManager->trigger('afterPoRegisterSetupHooks', $hooksManager, 'dovecot');
 }
@@ -330,63 +330,68 @@ sub setupDb
 	my $dbUser = $self::dovecotConfig{'DATABASE_USER'};
 	my $dbOldUser = $self::dovecotOldConfig{'DATABASE_USER'} || '';
 	my $dbPass = $self::dovecotConfig{'DATABASE_PASSWORD'};
-	my $dbOldPass = $self::dovecotOldConfig{'DATABASE_PASSWORD'} || '';
+	my $dbUserHost = $main::imscpConfig{'SQL_SERVER'} ne 'remote_server'
+		? $main::imscpConfig{'DATABASE_HOST'} : $main::imscpConfig{'BASE_SERVER_IP'};
 	my $rs = 0;
 
 	iMSCP::HooksManager->getInstance()->trigger(
-		'beforePoSetupDb', $dbUser, $dbOldUser, $dbPass, $dbOldPass
+		'beforePoSetupDb', $dbUser, $dbOldUser, $dbPass, $dbUserHost
 	) and return 1;
 
-	if($dbUser ne $dbOldUser || $dbPass ne $dbOldPass) {
-
-		# Remove old dovecot restricted SQL user and all it privileges (if any)
-		$rs = main::setupDeleteSqlUser($dbOldUser);
+	# Remove old dovecot restricted SQL user and all it privileges (if any)
+	for($main::imscpOldConfig{'DATABASE_HOST'} || '', $main::imscpOldConfig{'BASE_SERVER_IP'} || '') {
+		next if $_ eq '' || $dbOldUser eq '';
+		$rs = main::setupDeleteSqlUser($dbOldUser, $_);
 		error("Unable to remove the old dovecot '$dbOldUser' restricted SQL user: $rs") if $rs;
 		return 1 if $rs;
+	}
 
-		# Ensure new dovecot user do not already exists by removing it
-		$rs = main::setupDeleteSqlUser($dbUser);
-		error("Unable to delete the dovecot '$dbUser' restricted SQL user: $rs") if $rs;
-		return 1 if $rs;
+	# Ensure new dovecot restricted SQL user do not already exists by removing it
+	$rs = main::setupDeleteSqlUser($dbUserHost, $dbUser);
+	error("Unable to delete the dovecot '$dbUser' restricted SQL user: $rs") if $rs;
+	return 1 if $rs;
 
-		# Get SQL connection with full privileges
-		my $database = main::setupGetSqlConnect();
+	# Get SQL connection with full privileges
+	my ($database, $errStr) = main::setupGetSqlConnect();
+	fatal('Unable to connect to SQL Server: $errStr') if ! $database;
 
-		# Add new dovecot restricted SQL user with needed privilegess
-		$rs = $database->doQuery(
-			'dummy',
-			"GRANT SELECT ON `$main::imscpConfig{'DATABASE_NAME'}`.* TO ?@? IDENTIFIED BY ?",
-			$dbUser,
-			$main::imscpConfig{'DATABASE_HOST'},
-			$dbPass
+	# Add new dovecot restricted SQL user with needed privileges
+
+	$rs = $database->doQuery(
+		'dummy',
+		"GRANT SELECT ON `$main::imscpConfig{'DATABASE_NAME'}`.* TO ?@? IDENTIFIED BY ?",
+		$dbUser,
+		$dbUserHost,
+		$dbPass
+	);
+	if(ref $rs ne 'HASH') {
+		error(
+			"Unable to add privileges on the '$main::imscpConfig{'DATABASE_NAME'}' tables for the '$dbUser'" .
+			" SQL user: $rs"
 		);
-		if(ref $rs ne 'HASH') {
-        	error(
-        		"Unable to add privileges on the '$main::imscpConfig{'DATABASE_NAME'}' tables for the '$dbUser'" .
-        		" SQL user: $rs"
-        	);
-        	return 1;
-        }
+		return 1;
+	}
 
-		$rs = $database->doQuery(
-			'dummy',
-			"GRANT SELECT, INSERT, UPDATE, DELETE ON `$main::imscpConfig{'DATABASE_NAME'}`.`quota_dovecot` TO ?@?",
-			$dbUser,
-			$main::imscpConfig{'DATABASE_HOST'}
+	$rs = $database->doQuery(
+		'dummy',
+		"GRANT SELECT, INSERT, UPDATE, DELETE ON `$main::imscpConfig{'DATABASE_NAME'}`.`quota_dovecot` TO ?@?",
+		$dbUser,
+		$dbUserHost
+	);
+	if(ref $rs ne 'HASH') {
+		error(
+			"Unable to add privileges on the '$main::imscpConfig{'DATABASE_NAME'}.quota_dovecot' table for the " .
+			" '$dbUser' SQL user: $rs"
 		);
-		if(ref $rs ne 'HASH') {
-        	error(
-        		"Unable to add privileges on the '$main::imscpConfig{'DATABASE_NAME'}.quota_dovecot' table for the " .
-        		" '$dbUser' SQL user: $rs"
-        	);
-        	return 1;
-        }
+		return 1;
 	}
 
 	iMSCP::HooksManager->getInstance()->trigger('afterPoSetupDb');
 }
 
-# Hook function acting on the afterMtaBuildConf hook
+# Hook function acting on the following hooks
+# - afterMtaBuildMainCfFile
+# - afterMtaBuildMasterCfFile
 sub buildMtaConf
 {
 	my $self = shift;
@@ -415,11 +420,12 @@ sub buildMtaConf
 	);
 
 	# self register again and wait for next configuration file
-	iMSCP::HooksManager->getInstance()->register(
-		'afterMtaBuildMasterCfFile', sub { $self->buildMtaConf(@_); }
-	) and return 1;
+	#iMSCP::HooksManager->getInstance()->register(
+	#	'afterMtaBuildMasterCfFile', sub { $self->buildMtaConf(@_); }
+	#) and return 1;
 
-	iMSCP::HooksManager->getInstance()->register('afterMtaBuildMainCfFile', sub { $self->buildMtaConf(@_); });
+	#iMSCP::HooksManager->getInstance()->register('afterMtaBuildMainCfFile', sub { $self->buildMtaConf(@_); });
+	0;
 }
 
 1;

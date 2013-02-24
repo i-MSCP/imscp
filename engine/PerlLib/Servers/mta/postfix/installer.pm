@@ -398,12 +398,12 @@ sub buildConf
 	my $self = shift;
 	my $rs = 0;
 
-	iMSCP::HooksManager->getInstance()->trigger('beforeMtabuildConf') and return 1;
+	iMSCP::HooksManager->getInstance()->trigger('beforeMtaBuildConf') and return 1;
 
 	$rs |= $self->buildMainCfFile();
 	$rs |= $self->buildMasterCfFile();
 
-	$rs |=  iMSCP::HooksManager->getInstance()->trigger('afterMtabuildConf');
+	$rs |=  iMSCP::HooksManager->getInstance()->trigger('afterMtaBuildConf');
 
 	$rs;
 }

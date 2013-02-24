@@ -34,7 +34,6 @@ package iMSCP::HooksManager;
 use strict;
 use warnings;
 use iMSCP::Debug;
-use Data::Dumper;
 use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
@@ -133,6 +132,8 @@ sub trigger($$)
 		for(@hookFunctions) {
 			if($rs = $_->(@_)) {
 				my $caller = (caller(1))[3] ? (caller(1))[3] : 'main';
+				require Data::Dumper;
+				Data::Dumper->import();
 				local $Data::Dumper::Terse = 1;
 				local $Data::Dumper::Deparse = 1;
 				error(
