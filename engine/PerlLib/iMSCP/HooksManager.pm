@@ -43,7 +43,7 @@ use parent 'Common::SingletonClass';
  The hook functions are registered on the manager and hooks are triggered through the manager.
 
  The hook functions are references to subroutines that hooks into the i-MSCP engine hooks. They can receive parameters
-that in most cases, are passed by reference to allow them to act as filters.
+that in most cases, are passed by reference to the hook function to act as filter.
 
  The i-MSCP hooks are triggered once. That mean that if you want trigger them again, the hook functions must re-register
 by itself on the manager. Any hook function must return 0 on success and 1 on failure.
@@ -62,7 +62,7 @@ by itself on the manager. Any hook function must return 0 on success and 1 on fa
 
 sub getInstance
 {
-	return iMSCP::HooksManager->new();
+	iMSCP::HooksManager->new();
 }
 
 =item register(hook, hookFunction)
@@ -112,7 +112,7 @@ sub unregisterHook($$)
 
  Trigger the given hook.
 
- Return int - 0 on success, 1 on failure
+ Return int - 0 on success, other on failure
 
 =cut
 

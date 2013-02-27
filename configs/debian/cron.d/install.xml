@@ -23,9 +23,9 @@ program. If not, see <http://www.gnu.org/licenses/>
 -->
 
 <install>
-	<folders>${SYSTEM_CONF}/cron.d</folders>
-	<folders>${SYSTEM_CONF}/cron.d/backup</folders>
-	<folders>${SYSTEM_CONF}/cron.d/working</folders>
-	<copy_config>${SYSTEM_CONF}/cron.d/imscp</copy_config>
-	<copy_config>${SYSTEM_CONF}/cron.d/parts</copy_config>
+    <folders>${SYSTEM_CONF}/cron.d</folders>
+    <folders>${SYSTEM_CONF}/cron.d/backup</folders>
+    <folders>${SYSTEM_CONF}/cron.d/working</folders>
+    <copy_config>${SYSTEM_CONF}/cron.d/imscp</copy_config>
+    <copy_config>${SYSTEM_CONF}/cron.d/parts</copy_config>
 </install>

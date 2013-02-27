@@ -55,13 +55,7 @@ function client_updateHtaccessUser(&$dmn_id, &$uuser_id)
 	if (isset($_POST['uaction']) && $_POST['uaction'] == 'modify_user') {
 		// we have to add the user
 		if (isset($_POST['pass']) && isset($_POST['pass_rep'])) {
-			if (!chk_password($_POST['pass'])) {
-				if ($cfg->PASSWD_STRONG) {
-					set_page_message(sprintf(tr('The password must be at least %s long and contain letters and numbers to be valid.'), $cfg->PASSWD_CHARS), 'error');
-				} else {
-					set_page_message(sprintf(tr('Password data is shorter than %s signs or includes not permitted signs.'), $cfg->PASSWD_CHARS), 'error');
-				}
-
+			if (!checkPasswordSyntax($_POST['pass'])) {
 				return;
 			}
 
@@ -70,7 +64,7 @@ function client_updateHtaccessUser(&$dmn_id, &$uuser_id)
 				return;
 			}
 
-			$nadmin_password = crypt_user_pass_with_salt($_POST['pass']);
+			$nadmin_password = cryptPasswordWithSalt($_POST['pass']);
 
 			$change_status = $cfg->ITEM_CHANGE_STATUS;
 

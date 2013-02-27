@@ -23,17 +23,8 @@ program. If not, see <http://www.gnu.org/licenses/>
 -->
 
 <install>
-	<folders export="MAIL_LOG_CONVERT_PATH">${INST_PREF}/usr/sbin</folders>
-
-	<copy_config />
-
-	<copy mode="0700" owner="root" group="root">${MAIL_LOG_CONVERT_PATH}/maillogconvert.pl</copy>
-	<copy mode="0700" owner="root" group="root">${SYSTEM_ENGINE_ROOT}/traffic/imscp-srv-traff</copy>
-	<copy mode="0700" owner="root" group="root">${SYSTEM_ENGINE_ROOT}/traffic/imscp-vrl-traff</copy>
-
-	<create_file />
-
-	<chown_file />
-
-	<chmod_file />
+    <folders export="MAIL_LOG_CONVERT_PATH">${INST_PREF}/usr/sbin</folders>
+    <copy mode="0700" owner="${ROOT_USER}" group="${ROOT_GROUP}">${MAIL_LOG_CONVERT_PATH}/maillogconvert.pl</copy>
+    <copy mode="0700" owner="${ROOT_USER}" group="${ROOT_GROUP}">${SYSTEM_ENGINE_ROOT}/traffic/imscp-srv-traff</copy>
+    <copy mode="0700" owner="${ROOT_USER}" group="${ROOT_GROUP}">${SYSTEM_ENGINE_ROOT}/traffic/imscp-vrl-traff</copy>
 </install>

@@ -23,5 +23,5 @@ program. If not, see <http://www.gnu.org/licenses/>
 -->
 
 <install>
-	<copy_config>${SYSTEM_CONF}/imscp.conf</copy_config>
+    <copy_config>${SYSTEM_CONF}/imscp.conf</copy_config>
 </install>

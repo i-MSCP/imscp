@@ -94,7 +94,7 @@ function admin_updateUserPersonalData($userId)
 		exec_query(
 			$query,
 			array(
-				crypt_user_pass($_POST['pass']), $fname, $lname, $firm, $zip, $city, $state, $country, $email,
+				cryptPasswordWithSalt($_POST['pass']), $fname, $lname, $firm, $zip, $city, $state, $country, $email,
 				$phone, $fax, $street1, $street2, $gender, $userId
 			)
 		);
@@ -150,13 +150,10 @@ function admin_isValidData()
 	if(!empty($_POST['pass']) && !empty($_POST['pass_rep'])) {
 		if ($_POST['pass'] != $_POST['pass_rep']) {
 			set_page_message(tr("Passwords doesn't match."), 'error');
-		} elseif(!chk_password($_POST['pass'])) {
-			if ($cfg->PASSWD_STRONG) {
-				set_page_message(sprintf(tr('The password must be at least %s long and contain letters and numbers to be valid.'), $cfg->PASSWD_CHARS), 'error');
-			} else {
-				set_page_message(sprintf(tr('Password data is shorter than %s signs or includes not permitted signs.'), $cfg->PASSWD_CHARS), 'error');
-			}
 		}
+
+		checkPasswordSyntax($_POST['pass']);
+
 	}
 
 	if(Zend_Session::namespaceIsset('pageMessages')) {

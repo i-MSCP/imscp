@@ -272,7 +272,7 @@
 				</personal_data>
 				<passsword>
 					<label>Password</label>
-					<uri>/reseller/password_change.php</uri>
+					<uri>/reseller/password_update.php</uri>
 					<title_class>profile</title_class>
 				</passsword>
 				<language>

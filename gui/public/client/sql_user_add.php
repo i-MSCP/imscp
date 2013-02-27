@@ -262,12 +262,7 @@ function add_sql_user($user_id, $databaseId)
 		return;
 	}
 
-	if (isset($_POST['pass']) && !chk_password($_POST['pass']) && !isset($_POST['Add_Exist'])) {
-		if ($cfg->PASSWD_STRONG) {
-			set_page_message(sprintf(tr('The password must be at least %s long and contain letters and numbers to be valid.'), $cfg->PASSWD_CHARS), 'error');
-		} else {
-			set_page_message(sprintf(tr('Password data is shorter than %s signs or includes not permitted signs.'), $cfg->PASSWD_CHARS), 'error');
-		}
+	if (isset($_POST['pass']) && !checkPasswordSyntax($_POST['pass']) && !isset($_POST['Add_Exist'])) {
 		return;
 	}
 

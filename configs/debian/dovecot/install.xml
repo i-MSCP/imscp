@@ -23,13 +23,13 @@ program. If not, see <http://www.gnu.org/licenses/>
 -->
 
 <install>
-	<folders>${ROOT_CONF}/dovecot</folders>
-	<folders>${SYSTEM_CONF}/dovecot</folders>
-	<folders>${SYSTEM_CONF}/dovecot/backup</folders>
-	<folders>${SYSTEM_CONF}/dovecot/working</folders>
-	<copy_config mode = "0640" user="root" group="root">${SYSTEM_CONF}/dovecot/dovecot.data</copy_config>
-	<copy_config mode = "0640" user="root" group="root">${SYSTEM_CONF}/dovecot/dovecot.conf.1</copy_config>
-	<copy_config mode = "0640" user="root" group="root">${SYSTEM_CONF}/dovecot/dovecot.conf.2</copy_config>
-	<copy_config mode = "0640" user="root" group="root">${SYSTEM_CONF}/dovecot/dovecot-dict-sql.conf</copy_config>
-	<copy_config mode = "0640" user="root" group="root">${SYSTEM_CONF}/dovecot/dovecot-sql.conf</copy_config>
+    <folders>${ROOT_CONF}/dovecot</folders>
+    <folders>${SYSTEM_CONF}/dovecot</folders>
+    <folders>${SYSTEM_CONF}/dovecot/backup</folders>
+    <folders>${SYSTEM_CONF}/dovecot/working</folders>
+    <copy_config mode="0640" user="${ROOT_USER}" group="${ROOT_GROUP}">${SYSTEM_CONF}/dovecot/dovecot.data</copy_config>
+    <copy_config mode="0640" user="${ROOT_USER}" group="${ROOT_GROUP}">${SYSTEM_CONF}/dovecot/dovecot.conf.1</copy_config>
+    <copy_config mode="0640" user="${ROOT_USER}" group="${ROOT_GROUP}">${SYSTEM_CONF}/dovecot/dovecot.conf.2</copy_config>
+    <copy_config mode="0640" user="${ROOT_USER}" group="${ROOT_GROUP}">${SYSTEM_CONF}/dovecot/dovecot-dict-sql.conf</copy_config>
+    <copy_config mode="0640" user="${ROOT_USER}" group="${ROOT_GROUP}">${SYSTEM_CONF}/dovecot/dovecot-sql.conf</copy_config>
 </install>

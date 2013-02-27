@@ -23,8 +23,8 @@ program. If not, see <http://www.gnu.org/licenses/>
 -->
 
 <install>
-	<folders>${SYSTEM_CONF}/roundcube</folders>
-	<folders>${SYSTEM_CONF}/roundcube/backup</folders>
-	<folders>${SYSTEM_CONF}/roundcube/working</folders>
-	<copy_config>${SYSTEM_CONF}/roundcube/roundcube.data</copy_config>
+    <folders>${SYSTEM_CONF}/roundcube</folders>
+    <folders>${SYSTEM_CONF}/roundcube/backup</folders>
+    <folders>${SYSTEM_CONF}/roundcube/working</folders>
+    <copy_config>${SYSTEM_CONF}/roundcube/roundcube.data</copy_config>
 </install>

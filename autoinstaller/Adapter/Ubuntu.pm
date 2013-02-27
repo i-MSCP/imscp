@@ -61,7 +61,7 @@ sub _init
 	my $self = shift;
 
 	$self->{'repositorySections'} = ['main', 'universe', 'multiverse'];
-	$self->{'preRequiredPackages'} = ['dialog', 'liblist-moreutils-perl', 'libxml-simple-perl', 'wget'];
+	$self->{'preRequiredPackages'} = ['aptitude', 'dialog', 'liblist-moreutils-perl', 'libxml-simple-perl', 'wget'];
 
 	if(iMSCP::LsbRelease->new()->getRelease(1) < 12.10) {
 		push @{$self->{'preRequiredPackages'}}, 'python-software-properties';
@@ -69,6 +69,7 @@ sub _init
 		push @{$self->{'preRequiredPackages'}}, 'software-properties-common';
 	}
 
+	$self->{'externalRepositoriesToRemove'} = [];
 	$self->{'externalRepositories'} = [];
 	$self->{'aptPreferences'} = [];
 	$self->{'packagesToInstall'} = [];
@@ -83,6 +84,8 @@ sub _init
 
  Add external repositories to the sources.list file and their gpg keys.
 
+ Note: Also removes repositories that are no longer needed.
+
  Return int 0 on success, other on failure.
 
 =cut
@@ -91,14 +94,55 @@ sub _addExternalRepositories
 {
 	my $self = shift;
 
-	if(@{$self->{'externalRepositories'}}) {
+	if(@{$self->{'externalRepositoriesToRemove'}} || @{$self->{'externalRepositories'}}) {
 
-		my $file = iMSCP::File->new(filename => '/etc/apt/sources.list');
+		my $file = iMSCP::File->new('filename' => '/etc/apt/sources.list');
 
 		$file->copyFile('/etc/apt/sources.list.bkp') unless -f '/etc/apt/sources.list.bkp';
 
+		for(@{$self->{'externalRepositories'}}) {
+			my $repository = $_->{'repository'};
+
+			for(@{$self->{'externalRepositoriesToRemove'}}) {
+				if($repository eq $_->{'repository'}) {
+					my $index = 0;
+					$index++ until @{$self->{'externalRepositoriesToRemove'}}[$index] eq $_;
+					splice(@{$self->{'externalRepositoriesToRemove'}}, $index, 1);
+				}
+			}
+		}
+
 		my ($rs, $cmd, $stdout, $stderr);
 
+		for(@{$self->{'externalRepositoriesToRemove'}}) {
+			# Retrieve any packages installed from the repository to remove
+			# TODO This command is too slow. Try to find a replacement for it
+			$rs = execute(
+				"aptitude search '?installed?origin($_->{'repository_origin'})' | cut -b 5- | cut -d ' ' -f 1",
+				\$stdout, \$stderr
+			);
+			debug($stdout) if $stdout;
+			error($stderr) if $stderr && $rs;
+			return $rs if $rs;
+
+			# Schedule packages for deletion
+			if($stdout) {
+				@{$self->{'packagesToUninstall'}} = (@{$self->{'packagesToUninstall'}}, split("\n", $stdout));
+			}
+
+			# Remove the repository from the sources.list file
+			$rs = execute("add-apt-repository -y -r $_", \$stdout, \$stderr);
+			debug($stdout) if $stdout;
+			error($stderr) if $stderr && $rs;
+		}
+
+		eval "use List::MoreUtils qw(uniq); 1";
+		fatal('Unable to load the List::MoreUtils perl module') if($@);
+
+		# Remove any duplicate entries
+		@{$self->{'packagesToUninstall'}} = uniq(@{$self->{'packagesToUninstall'}});
+
+		# Add needed external repositories
 		for(@{$self->{'externalRepositories'}}) {
 			if($_->{'repository'} =~ /^ppa:/) { # PPA repository
 				if($_->{'repository_key_srv'}) {

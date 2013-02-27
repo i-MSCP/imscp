@@ -63,7 +63,7 @@
 							</select>
 							<!-- EDP: select_installdb -->
 							<!-- BDP: create_db -->
-							<input name="Submit3" type="submit" class="button" onClick="MM_goToURL('parent','{ADD_DB_LINK}');return document.MM_returnValue" value="{BUTTON_ADD_DB}"/>
+							<input name="Submit3" type="button" onClick="MM_goToURL('parent','{ADD_DB_LINK}');return document.MM_returnValue" value="{BUTTON_ADD_DB}"/>
 							<!-- EDP: create_db -->
 						</td>
 					</tr>
@@ -77,7 +77,6 @@
 								<!-- EDP: installdbuser_item -->
 							</select>
 							<!-- EDP: select_installdbuser -->
-
 							<!-- BDP: create_message_db -->
 							<span style="color:#ff0000">{ADD_DATABASE_MESSAGE}</span>
 							<!-- EDP: create_message_db -->
@@ -88,7 +87,6 @@
 					</tr>
 				</table>
 				<!-- EDP: require_installdb -->
-
 				<table class="firstColFixed">
 					<tr>
 						<th colspan="2">{TR_INSTALLATION_INFORMATION}</th>
@@ -108,9 +106,9 @@
 					<!-- EDP: software_item -->
 				</table>
 				<div class="buttons">
-					<input name="Submit" type="submit" class="button" onClick="MM_goToURL('parent','software.php');return document.MM_returnValue" value="{TR_BACK}"/>
+					<input type="button" onClick="MM_goToURL('parent','software.php');return document.MM_returnValue" value="{TR_BACK}"/>
 					<!-- BDP: software_install -->
-					<input name="Submit2" type="submit" class="button" value="{TR_INSTALL}"/>
+					<input name="submit" type="submit" value="{TR_INSTALL}"/>
 					<!-- EDP: software_install -->
 				</div>
 			</form>

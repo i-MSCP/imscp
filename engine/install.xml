@@ -23,22 +23,17 @@ program. If not, see <http://www.gnu.org/licenses/>
 -->
 
 <install>
-	<folders mode="0755" owner="root" group="root" export="SYSTEM_ENGINE_ROOT">${SYSTEM_ROOT}/engine</folders>
-	<folders mode="0700">${SYSTEM_ENGINE_ROOT}/awstats</folders>
-	<folders mode="0700">${SYSTEM_ENGINE_ROOT}/backup</folders>
-	<folders mode="0700">${SYSTEM_ENGINE_ROOT}/quota</folders>
-	<folders mode="0700">${SYSTEM_ENGINE_ROOT}/traffic</folders>
-	<folders mode="0700">${SYSTEM_ENGINE_ROOT}/messenger</folders>
-	<folders mode="0700">${SYSTEM_ENGINE_ROOT}/setup</folders>
-	<folders mode="0700">${SYSTEM_ENGINE_ROOT}/tools</folders>
-	<folders mode="0700">${SYSTEM_ENGINE_ROOT}/traffic</folders>
-
-	<copy>${SYSTEM_ENGINE_ROOT}/imscp*</copy>
-	<copy>${SYSTEM_ENGINE_ROOT}/PerlLib</copy>
-	<copy>${SYSTEM_ENGINE_ROOT}/PerlVendor</copy>
-
-	<create_file />
-	<chown_file />
-
-	<chmod_file mode="0700">${SYSTEM_ENGINE_ROOT}/imscp-*</chmod_file>
+    <folders mode="0755" owner="${ROOT_USER}" group="${ROOT_GROUP}" export="SYSTEM_ENGINE_ROOT">${SYSTEM_ROOT}/engine</folders>
+    <folders mode="0700">${SYSTEM_ENGINE_ROOT}/awstats</folders>
+    <folders mode="0700">${SYSTEM_ENGINE_ROOT}/backup</folders>
+    <folders mode="0700">${SYSTEM_ENGINE_ROOT}/quota</folders>
+    <folders mode="0700">${SYSTEM_ENGINE_ROOT}/traffic</folders>
+    <folders mode="0700">${SYSTEM_ENGINE_ROOT}/messenger</folders>
+    <folders mode="0700">${SYSTEM_ENGINE_ROOT}/setup</folders>
+    <folders mode="0700">${SYSTEM_ENGINE_ROOT}/tools</folders>
+    <folders mode="0700">${SYSTEM_ENGINE_ROOT}/traffic</folders>
+    <copy>${SYSTEM_ENGINE_ROOT}/imscp*</copy>
+    <copy>${SYSTEM_ENGINE_ROOT}/PerlLib</copy>
+    <copy>${SYSTEM_ENGINE_ROOT}/PerlVendor</copy>
+    <chmod_file mode="0700">${SYSTEM_ENGINE_ROOT}/imscp-*</chmod_file>
 </install>

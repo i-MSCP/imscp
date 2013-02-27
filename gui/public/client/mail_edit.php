@@ -149,19 +149,12 @@ function client_UpdateMailAccount($mailAccountData)
 	$passwordUpdate = $forwardAddressesUpdate = false;
 
 	// Password validation
-	if($mailAccountData['mail_pass'] != '_no_' &&
-		(!empty($_POST['password']) || !empty($_POST['passwordConfirmation']))
-	) {
-		if($mailAccountData['mail_pass'] !== $mailAccountData['mail_pass_confirmation']){
+	if($mailAccountData['mail_pass'] != '_no_' && (!empty($_POST['password']) || !empty($_POST['passwordConfirmation']))) {
+		if($mailAccountData['mail_pass'] !== $mailAccountData['mail_pass_confirmation']) {
 			set_page_message(tr("Passwords doesn't match."), 'error');
-		} elseif(!chk_password($mailAccountData['mail_pass'], 50, "/[`\xb4'\"\\\\\x01-\x1f\015\012|<>^$]/i")) {
-			if ($cfg->PASSWD_STRONG) {
-				set_page_message(tr('The password must be at least %s long and contain letters and numbers to be valid.', $cfg->PASSWD_CHARS), 'error');
-			} else {
-				set_page_message(tr('Password data is shorter than %s signs or includes not permitted signs.', $cfg->PASSWD_CHARS), 'error');
-			}
 		}
 
+		checkPasswordSyntax($mailAccountData['mail_pass'], "/[`\xb4'\"\\\\\x01-\x1f\015\012|<>^$]/i");
 		$passwordUpdate = true;
 	}
 

@@ -352,7 +352,7 @@
 				</personal_change>
 				<passsword_change>
 					<label>Password</label>
-					<uri>/admin/password_change.php</uri>
+					<uri>/admin/password_update.php</uri>
 					<title_class>profile</title_class>
 				</passsword_change>
 				<language>

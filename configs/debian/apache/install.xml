@@ -23,24 +23,24 @@ program. If not, see <http://www.gnu.org/licenses/>
 -->
 
 <install>
-	<folders export="ROOT_APACHE_CONF">${ROOT_CONF}/apache2</folders>
-	<folders>${INST_PREF}/var/log/apache2/backup</folders>
-	<folders>${SYSTEM_CONF}/apache</folders>
-	<folders>${SYSTEM_CONF}/apache/backup</folders>
-	<folders>${SYSTEM_CONF}/apache/working</folders>
-	<folders>${ROOT_APACHE_CONF}</folders>
-	<folders>${ROOT_APACHE_CONF}/sites-available</folders>
-	<folders>${ROOT_APACHE_CONF}/mods-available</folders>
-	<folders>${ROOT_APACHE_CONF}/imscp</folders>
-	<folders>${INST_PREF}/var/www/scoreboards</folders>
+    <folders export="ROOT_APACHE_CONF">${ROOT_CONF}/apache2</folders>
+    <folders>${INST_PREF}/var/log/apache2/backup</folders>
+    <folders>${SYSTEM_CONF}/apache</folders>
+    <folders>${SYSTEM_CONF}/apache/backup</folders>
+    <folders>${SYSTEM_CONF}/apache/working</folders>
+    <folders>${ROOT_APACHE_CONF}</folders>
+    <folders>${ROOT_APACHE_CONF}/sites-available</folders>
+    <folders>${ROOT_APACHE_CONF}/mods-available</folders>
+    <folders>${ROOT_APACHE_CONF}/imscp</folders>
+    <folders>${INST_PREF}/var/www/scoreboards</folders>
     <copy_config>${SYSTEM_CONF}/apache/parts</copy_config>
-	<copy_config>${SYSTEM_CONF}/apache/00_master.conf</copy_config>
-	<copy_config>${SYSTEM_CONF}/apache/00_master_ssl.conf</copy_config>
-	<copy_config>${SYSTEM_CONF}/apache/00_modcband.conf</copy_config>
-	<copy_config>${SYSTEM_CONF}/apache/00_nameserver.conf</copy_config>
-	<copy_config>${SYSTEM_CONF}/apache/01_awstats.conf</copy_config>
-	<copy_config>${SYSTEM_CONF}/apache/apache.data</copy_config>
-	<copy_config>${SYSTEM_CONF}/apache/fastcgi_imscp.conf</copy_config>
-	<copy_config>${SYSTEM_CONF}/apache/fcgid_imscp.conf</copy_config>
-	<copy_config>${SYSTEM_CONF}/apache/logrotate.conf</copy_config>
+    <copy_config>${SYSTEM_CONF}/apache/00_master.conf</copy_config>
+    <copy_config>${SYSTEM_CONF}/apache/00_master_ssl.conf</copy_config>
+    <copy_config>${SYSTEM_CONF}/apache/00_modcband.conf</copy_config>
+    <copy_config>${SYSTEM_CONF}/apache/00_nameserver.conf</copy_config>
+    <copy_config>${SYSTEM_CONF}/apache/01_awstats.conf</copy_config>
+    <copy_config>${SYSTEM_CONF}/apache/apache.data</copy_config>
+    <copy_config>${SYSTEM_CONF}/apache/fastcgi_imscp.conf</copy_config>
+    <copy_config>${SYSTEM_CONF}/apache/fcgid_imscp.conf</copy_config>
+    <copy_config>${SYSTEM_CONF}/apache/logrotate.conf</copy_config>
 </install>

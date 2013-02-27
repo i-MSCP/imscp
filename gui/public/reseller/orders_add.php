@@ -127,7 +127,7 @@ $dns = preg_replace("/\_/", "", $dns);
 $backup = preg_replace("/\_/", "", $backup);
 
 $password = passgen();
-$inpass = crypt_user_pass($password, true);
+$inpass = cryptPasswordWithSalt($password);
 
 // Should be performed after domain name validation now
 $dmn_user_name = decode_idna($dmn_user_name);
@@ -222,7 +222,7 @@ $query = "
 		(?, ?, ?, ?)
 ";
 $rs = exec_query($query, array($dmn_id, $dmn_user_name,
-	 	crypt_user_pass_with_salt($password), $status));
+	 	cryptPasswordWithSalt($password), $status));
 
 $user_id = $db->insertId();
 

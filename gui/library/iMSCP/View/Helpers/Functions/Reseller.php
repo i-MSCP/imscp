@@ -311,21 +311,16 @@ function check_ruser_data($tpl, $noPass)
     } else {
         $gender = '';
     }
-    //if (isset($_SESSION['local_data']))
-    //	list($dmn_name, $hpid, $dmn_user_name) = explode(";", $_SESSION['local_data']);
+
     // Begin checking...
     if ('_no_' == $noPass) {
         if (('' === $inpass_re) || ('' === $inpass)) {
             set_page_message(tr('Please fill up both data fields for password.'), 'error');
         } else if ($inpass_re !== $inpass) {
             set_page_message(tr("Passwords doesn't match."), 'error');
-        } else if (!chk_password($inpass)) {
-            if ($cfg->PASSWD_STRONG) {
-                set_page_message(sprintf(tr('The password must be at least %s long and contain letters and numbers to be valid.'), $cfg->PASSWD_CHARS), 'error');
-            } else {
-                set_page_message(sprintf(tr('Password data is shorter than %s signs or includes not permitted signs.'), $cfg->PASSWD_CHARS), 'error');
-            }
         }
+
+		checkPasswordSyntax($inpass);
     }
 
     if ($user_email == NULL) {

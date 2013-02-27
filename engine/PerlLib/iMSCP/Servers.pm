@@ -39,7 +39,7 @@ sub load
 
 	return 1 if $servers->get();
 
-	@{$self->{'servers'}}	= $servers->getFiles();
+	@{$self->{'servers'}} = $servers->getFiles();
 
 	debug("Returning: @{$self->{servers}}");
 

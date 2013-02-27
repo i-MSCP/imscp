@@ -418,12 +418,7 @@ function admin_checkAndCreateResellerAccount()
 			set_page_message(tr("Passwords doesn't match."), 'error');
 			$errFieldsStack[] = 'password';
 			$errFieldsStack[] = 'password_confirmation';
-		} elseif(!chk_password($data['password'])) {
-			if ($cfg->PASSWD_STRONG) {
-				set_page_message(tr('The password must be at least %s long and contain letters and numbers to be valid.', $cfg->PASSWD_CHARS), 'error');
-			} else {
-				set_page_message(tr('Password data is shorter than %s signs or includes not permitted signs.', $cfg->PASSWD_CHARS), 'error');
-			}
+		} elseif(!checkPasswordSyntax($data['password'])) {
 			$errFieldsStack[] = 'password';
 			$errFieldsStack[] = 'password_confirmation';
 		}
@@ -565,7 +560,7 @@ function admin_checkAndCreateResellerAccount()
 				)
 			";
 			exec_query($query, array(
-									$data['admin_name'], crypt_user_pass($data['password']), 'reseller', time(),
+									$data['admin_name'], cryptPasswordWithSalt($data['password']), 'reseller', time(),
 									$_SESSION['user_id'], $data['fname'], $data['lname'], $data['firm'],
 									$data['zip'], $data['city'], $data['state'], $data['country'], $data['email'],
 									$data['phone'], $data['fax'], $data['street1'], $data['street2'], $data['gender']));

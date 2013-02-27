@@ -59,9 +59,9 @@ $tpl->define_dynamic('to_subdomain', 'page');
 $tpl->define_dynamic('to_alias_subdomain', 'page');
 
 /**
- * @param $tpl
- * @param $dmn_name
- * @param $post_check
+ * @param iMSCP_pTemplate $tpl
+ * @param string $dmn_name
+ * @param string $post_check
  * @return void
  */
 function gen_page_form_data($tpl, $dmn_name, $post_check) {
@@ -107,9 +107,9 @@ function gen_page_form_data($tpl, $dmn_name, $post_check) {
 }
 
 /**
- * @param $tpl
- * @param $dmn_id
- * @param $post_check
+ * @param iMSCP_pTemplate $tpl
+ * @param int $dmn_id
+ * @param string $post_check
  * @return void
  */
 function gen_dmn_als_list($tpl, $dmn_id, $post_check) {
@@ -182,10 +182,10 @@ function gen_dmn_als_list($tpl, $dmn_id, $post_check) {
 }
 
 /**
- * @param $tpl
- * @param $dmn_id
- * @param $dmn_name
- * @param $post_check
+ * @param iMSCP_pTemplate $tpl
+ * @param int $dmn_id
+ * @param string $dmn_name
+ * @param string $post_check
  * @return void
  */
 function gen_dmn_sub_list($tpl, $dmn_id, $dmn_name, $post_check) {
@@ -262,9 +262,9 @@ function gen_dmn_sub_list($tpl, $dmn_id, $dmn_name, $post_check) {
 }
 
 /**
- * @param $tpl
- * @param $dmn_id
- * @param $post_check
+ * @param iMSCP_pTemplate $tpl
+ * @param int $dmn_id
+ * @param string $post_check
  * @return void
  */
 function gen_dmn_als_sub_list($tpl, $dmn_id, $post_check) {
@@ -342,9 +342,9 @@ function gen_dmn_als_sub_list($tpl, $dmn_id, $post_check) {
 }
 
 /**
- * @param $domain_id
- * @param $dmn_name
- * @param $mail_acc
+ * @param int $domain_id
+ * @param string $dmn_name
+ * @param string $mail_acc
  * @return bool
  */
 function schedule_mail_account($domain_id, $dmn_name, $mail_acc) {
@@ -530,13 +530,7 @@ function check_mail_acc_data($dmn_id, $dmn_name) {
 		} else if ($pass !== $pass_rep) {
 			set_page_message(tr("Passwords doesn't match."), 'error');
 			return false;
-		} else if (!chk_password($pass, 50, "/[`\xb4'\"\\\\\x01-\x1f\015\012|<>^$]/i")) {
-			// Not permitted chars
-			if ($cfg->PASSWD_STRONG) {
-				set_page_message(sprintf(tr('The password must be at least %s long and contain letters and numbers to be valid.'), $cfg->PASSWD_CHARS), 'error');
-			} else {
-				set_page_message(sprintf(tr('Password data is shorter than %s signs or includes not permitted signs.'), $cfg->PASSWD_CHARS), 'error');
-			}
+		} else if (!checkPasswordSyntax($pass, "/[`\xb4'\"\\\\\x01-\x1f\015\012|<>^$]/i")) {
 			return false;
 		}
 	}

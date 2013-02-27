@@ -525,7 +525,6 @@ The IP address '$serverIpsToDelete{$_}' is already in use. Please, choose an IP 
 		$main::questions{'SERVER_IPS'} = [@serverIpsToAdd];
 		$main::questions{'SERVER_IPS_TO_REPLACE'} = {%serverIpsReplMap};
 		$main::questions{'SERVER_IPS_TO_DELETE'} = [values %serverIpsToDelete];
-		debug("nuxwin: ips to delete: @{$main::questions{'SERVER_IPS_TO_DELETE'}}");
 	}
 
 	$rs;
@@ -2220,7 +2219,7 @@ sub setupAdditionalTasks
 ## Low level subroutines
 #
 
-# Retrieve question answer by searching it in the given source or all source
+# Retrieve question answer by searching it in the given source or all sources
 sub setupGetQuestion
 {
 	my $question = shift;

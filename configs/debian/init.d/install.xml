@@ -23,8 +23,8 @@ program. If not, see <http://www.gnu.org/licenses/>
 -->
 
 <install>
-	<folders>${ROOT_CONF}/init.d</folders>
-	<folders>${ROOT_CONF}/default</folders>
-	<copy_config mode = "0755" user="root" group="root">${ROOT_CONF}/init.d/imscp_daemon</copy_config>
-	<copy_config mode = "0755" user="root" group="root">${ROOT_CONF}/init.d/imscp_network</copy_config>
+    <folders>${ROOT_CONF}/init.d</folders>
+    <folders>${ROOT_CONF}/default</folders>
+    <copy_config mode="0755" user="${ROOT_USER}" group="${ROOT_GROUP}">${ROOT_CONF}/init.d/imscp_daemon</copy_config>
+    <copy_config mode="0755" user="${ROOT_USER}" group="${ROOT_GROUP}">${ROOT_CONF}/init.d/imscp_network</copy_config>
 </install>
