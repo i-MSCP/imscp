@@ -20,6 +20,7 @@
 # @category		i-MSCP
 # @copyright	2010-2013 by i-MSCP | http://i-mscp.net
 # @author		Daniel Andreca <sci2tech@gmail.com>
+# @author		Laurent Declercq <l;declercq@nuxwin.com>
 # @link			http://i-mscp.net i-MSCP Home Site
 # @license		http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
@@ -27,8 +28,12 @@ package Servers::ftpd::proftpd;
 
 use strict;
 use warnings;
+
 use iMSCP::Debug;
 use iMSCP::HooksManager;
+use iMSCP::Execute;
+use iMSCP::File;
+use iMSCP::Templator;
 use parent 'Common::SingletonClass';
 
 sub _init
@@ -38,13 +43,13 @@ sub _init
 	iMSCP::HooksManager->getInstance()->trigger('beforeFtpdInit', $self, 'proftpd');
 
 	$self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/proftpd";
-	$self->{'bkpDir'} = "$self->{cfgDir}/backup";
-	$self->{'wrkDir'} = "$self->{cfgDir}/working";
-	$self->{'tplDir'} = "$self->{cfgDir}/parts";
+	$self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
+	$self->{'wrkDir'} = "$self->{'cfgDir'}/working";
+	$self->{'tplDir'} = "$self->{'cfgDir'}/parts";
 
 	$self->{'commentChar'} = '#';
 
-	tie %self::proftpdConfig, 'iMSCP::Config','fileName' => "$self->{cfgDir}/proftpd.data";
+	tie %self::proftpdConfig, 'iMSCP::Config','fileName' => "$self->{'cfgDir'}/proftpd.data";
 	$self->{$_} = $self::proftpdConfig{$_} for keys %self::proftpdConfig;
 
 	iMSCP::HooksManager->getInstance()->trigger('afterFtpdInit', $self, 'proftpd');
@@ -56,34 +61,31 @@ sub registerSetupHooks
 {
 	my $self = shift;
 	my $hooksManager = shift;
+	my $rs = 0;
 
-	use Servers::ftpd::proftpd::installer;
-	Servers::ftpd::proftpd::installer->new()->registerSetupHooks($hooksManager);
+	$rs = $hooksManager->trigger('beforeFtpdRegisterSetupHooks', $hooksManager, 'proftpd');
+
+	require Servers::ftpd::proftpd::installer;
+
+	$rs |= Servers::ftpd::proftpd::installer->new()->registerSetupHooks($hooksManager);
+
+	$rs |= $hooksManager->trigger('afterFtpdRegisterSetupHooks', $hooksManager, 'proftpd');
+
+	$rs;
 }
 
 sub install
 {
 	my $self = shift;
-
-	use Servers::ftpd::proftpd::installer;
-
-	Servers::ftpd::proftpd::installer->new()->install();
-}
-
-sub uninstall
-{
-	my $self = shift;
 	my $rs = 0;
 
-	iMSCP::HooksManager->getInstance()->trigger('beforeFtpdUninstall', 'proftpd') and return 1;
+	$rs = iMSCP::HooksManager->getInstance()->trigger('beforeFtpdInstall', 'proftpd');
 
-	use Servers::ftpd::proftpd::uninstaller;
+	require Servers::ftpd::proftpd::installer;
 
-	$rs |= Servers::ftpd::proftpd::uninstaller->new()->uninstall();
+	$rs |= Servers::ftpd::proftpd::installer->new()->install();
 
-	iMSCP::HooksManager->getInstance()->trigger('afterFtpdUninstall', 'proftpd') and return 1;
-
-	$rs |= $self->restart();
+	$rs |= iMSCP::HooksManager->getInstance()->trigger('afterFtpdInstall', 'proftpd');
 
 	$rs;
 }
@@ -97,23 +99,39 @@ sub postinstall
 	0;
 }
 
+sub uninstall
+{
+	my $self = shift;
+	my $rs = 0;
+
+	$rs = iMSCP::HooksManager->getInstance()->trigger('beforeFtpdUninstall', 'proftpd');
+
+	require Servers::ftpd::proftpd::uninstaller;
+
+	$rs |= Servers::ftpd::proftpd::uninstaller->new()->uninstall();
+
+	$rs |= iMSCP::HooksManager->getInstance()->trigger('afterFtpdUninstall', 'proftpd');
+
+	$rs |= $self->restart();
+
+	$rs;
+}
+
 sub restart
 {
 	my $self = shift;
-	my ($rs, $stdout, $stderr);
+	my $rs = 0;
+	$rs = iMSCP::HooksManager->getInstance()->trigger('beforeFtpdRestart');
 
-	use iMSCP::Execute;
+	my ($stdout, $stderr);
+	$rs |= execute("$self->{'CMD_FTPD'} restart", \$stdout, \$stderr);
+	debug($stdout) if $stdout;
+	debug($stderr) if $stderr && !$rs;
+	error($stderr) if $stderr && $rs;
 
-	iMSCP::HooksManager->getInstance()->trigger('beforeFtpdRestart') and return 1;
+	$rs |= iMSCP::HooksManager->getInstance()->trigger('afterFtpdRestart');
 
-	# Reload config
-	$rs = execute("$self->{'CMD_FTPD'} restart", \$stdout, \$stderr);
-	debug("$stdout") if $stdout;
-	debug("$stderr") if $stderr && !$rs;
-	error("$stderr") if $stderr && $rs;
-	return $rs if $rs;
-
-	iMSCP::HooksManager->getInstance()->trigger('afterFtpdRestart');
+	$rs;
 }
 
 sub addDmn
@@ -121,9 +139,6 @@ sub addDmn
 	my $self = shift;
 	my $data = shift;
 	my $rs = 0;
-
-	use iMSCP::File;
-	use iMSCP::Templator;
 
 	my $errmsg = {
 		'FILE_NAME'	=> 'You must supply a file name!',
@@ -136,23 +151,23 @@ sub addDmn
 	}
 
 	iMSCP::File->new(
-		filename => "$self::proftpdConfig{FTPD_CONF_DIR}/$data->{FILE_NAME}"
-	)->copyFile("$self->{bkpDir}/$data->{FILE_NAME}." . time) and $rs = 1
-	if -f "$self::proftpdConfig{FTPD_CONF_DIR}/$data->{FILE_NAME}";
+		'filename' => "$self::proftpdConfig{'FTPD_CONF_DIR'}/$data->{'FILE_NAME'}"
+	)->copyFile("$self->{'bkpDir'}/$data->{'FILE_NAME'}." . time) and $rs = 1
+	if -f "$self::proftpdConfig{'FTPD_CONF_DIR'}/$data->{'FILE_NAME'}";
 
 	my $template = ($data->{'ROOT_DOMAIN'} eq 'true') ? 'proftpd_root.conf.tpl' : 'proftpd.conf.tpl';
-	my $file = iMSCP::File->new( filename => "$self->{tplDir}/$template");
+	my $file = iMSCP::File->new('filename' => "$self->{'tplDir'}/$template");
 	my $content	= $file->get();
 
 	if(! $content) {
-		error("Cannot read $self->{tplDir}/$template");
+		error("Cannot read $self->{'tplDir'}/$template");
 		return 1;
 	}
 
 	iMSCP::HooksManager->getInstance()->trigger('beforeFtpdAddDmn', $data) and return 1;
 
-	$content = process({PATH => $data->{'PATH'}}, $content);
-	$file = iMSCP::File->new( filename => "$self->{wrkDir}/$data->{FILE_NAME}");
+	$content = process({ 'PATH' => $data->{'PATH'} }, $content);
+	$file = iMSCP::File->new('filename' => "$self->{'wrkDir'}/$data->{'FILE_NAME'}");
 
 	iMSCP::HooksManager->getInstance()->trigger('afterFtpdAddDmn', $data) and return 1;
 
@@ -161,7 +176,7 @@ sub addDmn
 	$rs |= $file->save();
 	$rs |= $file->mode(0644);
 	$rs |= $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
-	$rs |= $file->copyFile("$self::proftpdConfig{FTPD_CONF_DIR}/$data->{FILE_NAME}");
+	$rs |= $file->copyFile("$self::proftpdConfig{'FTPD_CONF_DIR'}/$data->{'FILE_NAME'}");
 
 	$self->{'restart'} = 'yes';
 
@@ -174,9 +189,6 @@ sub delDmn
 	my $data = shift;
 	my $rs = 0 ;
 
-	use iMSCP::File;
-	use iMSCP::Templator;
-
 	my $errmsg = { 'FILE_NAME'	=> 'You must supply a file name!' };
 
 	for(keys %{$errmsg}) {
@@ -186,7 +198,7 @@ sub delDmn
 
 	iMSCP::HooksManager->getInstance()->trigger('beforeFtpdDelDmn', $data) and return 1;
 
-	iMSCP::File->new(filename => "$self::proftpdConfig{FTPD_CONF_DIR}/$data->{FILE_NAME}")->delFile() and  return 1;
+	iMSCP::File->new('filename' => "$self::proftpdConfig{'FTPD_CONF_DIR'}/$data->{'FILE_NAME'}")->delFile() and  return 1;
 
 	$self->{'restart'} = 'yes';
 
@@ -211,24 +223,22 @@ sub getTraffic
 {
 	my $self = shift;
 	my $who = shift;
-	my $trfFile	= "$main::imscpConfig{TRAFF_LOG_DIR}/$self::proftpdConfig{FTP_TRAFF_LOG}";
+	my $trfFile	= "$main::imscpConfig{'TRAFF_LOG_DIR'}/$self::proftpdConfig{'FTP_TRAFF_LOG'}";
 
-	use iMSCP::File;
+	unless(exists $self->{'logDb'}) {
 
-	unless(exists $self->{logDb}) {
-
-		$self->{logDb} = {};
-		my $rs = iMSCP::File->new(filename => $trfFile)->moveFile("$trfFile.old") if -f $trfFile;
+		$self->{'logDb'} = {};
+		my $rs = iMSCP::File->new('filename' => $trfFile)->moveFile("$trfFile.old") if -f $trfFile;
 
 		if($rs) {
-			delete $self->{logDb};
+			delete $self->{'logDb'};
 			return 0;
 		}
 
 		if(-f "$trfFile.old") {
-			my $content = iMSCP::File->new(filename => "$trfFile.old")->get();
+			my $content = iMSCP::File->new('filename' => "$trfFile.old")->get();
 			while($content =~ /^(\d+)\s[^\@]+\@(.*)$/mg){
-				$self->{logDb}->{$2} += $1 if (defined $2 && defined $1);
+				$self->{'logDb'}->{$2} += $1 if (defined $2 && defined $1);
 			}
 		}
 	}
@@ -237,15 +247,13 @@ sub getTraffic
 }
 
 END {
-	use iMSCP::File;
-
 	my $endCode	= $?;
 	my $self = Servers::ftpd::proftpd->new();
 	my $rs = 0;
-	my $trfFile	= "$main::imscpConfig{TRAFF_LOG_DIR}/$self::proftpdConfig{FTP_TRAFF_LOG}";
+	my $trfFile	= "$main::imscpConfig{'TRAFF_LOG_DIR'}/$self::proftpdConfig{'FTP_TRAFF_LOG'}";
 
 	$rs = $self->restart() if $self->{'restart'} && $self->{'restart'} eq 'yes';
-	$rs |= iMSCP::File->new(filename => "$trfFile.old")->delFile() if -f "$trfFile.old";
+	$rs |= iMSCP::File->new('filename' => "$trfFile.old")->delFile() if -f "$trfFile.old";
 
 	$? = $endCode || $rs;
 }

@@ -20,6 +20,7 @@
 # @category		i-MSCP
 # @copyright	2010-2013 by i-MSCP | http://i-mscp.net
 # @author		Daniel Andreca <sci2tech@gmail.com>
+# @author		Laurent Declercq <l.declercq@nuxwin.com>
 # @link			http://i-mscp.net i-MSCP Home Site
 # @license		http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
@@ -27,10 +28,13 @@ package Servers::po::courier::installer;
 
 use strict;
 use warnings;
+
 use iMSCP::Debug;
+use iMSCP::Config;
 use iMSCP::File;
 use iMSCP::Execute;
 use iMSCP::HooksManager;
+use iMSCP::Templator;
 use parent 'Common::SingletonClass';
 
 sub _init
@@ -40,11 +44,11 @@ sub _init
 	iMSCP::HooksManager->getInstance()->trigger('beforePodInitInstaller', $self, 'courier');
 
 	$self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/courier";
-	$self->{'bkpDir'} = "$self->{cfgDir}/backup";
-	$self->{'wrkDir'} = "$self->{cfgDir}/working";
+	$self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
+	$self->{'wrkDir'} = "$self->{'cfgDir'}/working";
 
-	my $conf = "$self->{cfgDir}/courier.data";
-	my $oldConf = "$self->{cfgDir}/courier.old.data";
+	my $conf = "$self->{'cfgDir'}/courier.data";
+	my $oldConf = "$self->{'cfgDir'}/courier.old.data";
 
 	tie %self::courierConfig, 'iMSCP::Config','fileName' => $conf, noerrors => 1;
 
@@ -64,12 +68,8 @@ sub migrateMailboxes
 
 	iMSCP::HooksManager->getInstance()->trigger('beforePoMigrateMailboxes') and return 1;
 
-	if($main::imscpOldConfig{'PO_SERVER'} && $main::imscpOldConfig{'PO_SERVER'} eq 'dovecot' &&
-		$main::imscpConfig{'PO_SERVER'}  eq 'courier'
-	){
-		use iMSCP::Execute;
-		use FindBin;
-		use Servers::mta;
+	if(defined $main::imscpOldConfig{'PO_SERVER'} && $main::imscpOldConfig{'PO_SERVER'} ne 'courier') {
+		require Servers::mta;
 
 		my $mta	= Servers::mta->factory($main::imscpConfig{'MTA_SERVER'});
 		my ($rs, $stdout, $stderr);
@@ -77,10 +77,10 @@ sub migrateMailboxes
 		my $mailPath = "$mta->{'MTA_VIRTUAL_MAIL_DIR'}";
 
 		$rs = execute("$binPath --to-courier --convert --recursive $mailPath", \$stdout, \$stderr);
-		debug("$stdout...") if $stdout;
-		warning("$stderr") if $stderr && !$rs;
-		error("$stderr") if $stderr && $rs;
-		error("Error while converting mails") if !$stderr && $rs;
+		debug($stdout) if $stdout;
+		warning($stderr) if $stderr && ! $rs;
+		error($stderr) if $stderr && $rs;
+		error('Error while converting mails') if ! $stderr && $rs;
 	}
 
 	iMSCP::HooksManager->getInstance()->trigger('afterPoMigrateMailboxes');
@@ -90,13 +90,12 @@ sub registerSetupHooks
 {
 	my $self = shift;
 	my $hooksManager = shift;
+	my $rs = 0;
 
-	$hooksManager->trigger('beforePoRegisterSetupHooks', $hooksManager, 'courier') and return 1;
+	$rs = $hooksManager->register('afterMtaBuildMainCfFile', sub { $self->buildMtaConf(@_); });
+	$rs |= $hooksManager->register('afterMtaBuildMasterCfFile', sub { $self->buildMtaConf(@_); });
 
-	$hooksManager->register('afterMtaBuildMainCfFile', sub { $self->buildMtaConf(@_); }) and return 1;
-	$hooksManager->register('afterMtaBuildMasterCfFile', sub { $self->buildMtaConf(@_); }) and return 1;
-
-	$hooksManager->trigger('afterPoRegisterSetupHooks', $hooksManager, 'courier');
+	$rs;
 }
 
 sub install
@@ -104,15 +103,8 @@ sub install
 	my $self = shift;
 	my $rs = 0;
 
-	iMSCP::HooksManager->getInstance()->trigger('beforePoInstall', 'courier') and return 1;
-
 	# Saving all system configuration files if they exists
-	for (
-		'authdaemonrc',
-		'userdb',
-		$self::courierConfig{'COURIER_IMAP_SSL'},
-		$self::courierConfig{'COURIER_POP_SSL'}
-	) {
+	for ('authdaemonrc', 'userdb', $self::courierConfig{'COURIER_IMAP_SSL'}, $self::courierConfig{'COURIER_POP_SSL'}) {
 		$rs |= $self->bkpConfFile($_);
 	}
 
@@ -122,8 +114,6 @@ sub install
 	$rs |= $self->saveConf();
 	$rs |= $self->migrateMailboxes();
 
-	$rs |= iMSCP::HooksManager->getInstance()->trigger('afterPoInstall', 'courier');
-
 	$rs;
 }
 
@@ -132,14 +122,12 @@ sub saveConf
 	my $self = shift;
 	my $rs = 0;
 
-	use iMSCP::File;
-
-	my$file = iMSCP::File->new(filename => "$self->{cfgDir}/courier.data");
+	my$file = iMSCP::File->new('filename' => "$self->{'cfgDir'}/courier.data");
 	my $cfg = $file->get() or return 1;
 
 	iMSCP::HooksManager->getInstance()->trigger('beforePoSaveConf', \$cfg, 'courier.old.data') and return 1;
 
-	$file = iMSCP::File->new(filename => "$self->{cfgDir}/courier.old.data");
+	$file = iMSCP::File->new('filename' => "$self->{'cfgDir'}/courier.old.data");
 	$rs |= $file->set($cfg);
 	$rs |= $file->save();
 	$rs |= $file->mode(0640);
@@ -159,12 +147,12 @@ sub bkpConfFile
 	iMSCP::HooksManager->getInstance()->trigger('beforePoBkpConfFile', $cfgFile) and return 1;
 
 	if(-f "$self::courierConfig{'AUTHLIB_CONF_DIR'}/$cfgFile"){
-		my $file = iMSCP::File->new(filename => "$self::courierConfig{'AUTHLIB_CONF_DIR'}/$cfgFile");
+		my $file = iMSCP::File->new('filename' => "$self::courierConfig{'AUTHLIB_CONF_DIR'}/$cfgFile");
 
-		if(!-f "$self->{bkpDir}/$cfgFile.system") {
-			$file->copyFile("$self->{bkpDir}/$cfgFile.system") and return 1;
+		if(!-f "$self->{'bkpDir'}/$cfgFile.system") {
+			$file->copyFile("$self->{'bkpDir'}/$cfgFile.system") and return 1;
 		} else {
-			$file->copyFile("$self->{bkpDir}/$cfgFile.$timestamp") and return 1;
+			$file->copyFile("$self->{'bkpDir'}/$cfgFile.$timestamp") and return 1;
 		}
 	}
 
@@ -177,11 +165,11 @@ sub buildAuthdaemonrcFile
 	my ($rdata, $file);
 
 	# Loading the system file from /etc/imscp/backup
-	$file = iMSCP::File->new(filename => "$self->{bkpDir}/authdaemonrc.system");
+	$file = iMSCP::File->new('filename' => "$self->{'bkpDir'}/authdaemonrc.system");
 	$rdata = $file->get();
 
 	if (! $rdata){
-		error("Error while reading $self->{bkpDir}/authdaemonrc.system");
+		error("Error while reading $self->{'bkpDir'}/authdaemonrc.system");
 		return 1;
 	}
 
@@ -195,7 +183,7 @@ sub buildAuthdaemonrcFile
 	iMSCP::HooksManager->getInstance()->trigger('afterPoBuildAuthdaemonrcFile', \$rdata, 'authdaemonrc') and return 1;
 
 	# Storing the new file in the working directory
-	$file = iMSCP::File->new(filename => "$self->{wrkDir}/authdaemonrc");
+	$file = iMSCP::File->new('filename' => "$self->{'wrkDir'}/authdaemonrc");
 	$file->set($rdata) and return 1;
 	$file->save() and return 1;
 	$file->mode(0660) and return 1;
@@ -214,29 +202,29 @@ sub buildUserdbFile
 	iMSCP::HooksManager->getInstance()->trigger('beforePoBuildUserdbFile', 'userdb') and return 1;
 
 	# Storing the new file in the working directory
-	iMSCP::File->new(filename => "$self->{cfgDir}/userdb")->copyFile("$self->{wrkDir}") and return 1;
+	iMSCP::File->new('filename' => "$self->{'cfgDir'}/userdb")->copyFile("$self->{'wrkDir'}") and return 1;
 
 	# After build this file is world readable which is is bad
 	# Permissions are inherited by production file
-	my $file = iMSCP::File->new(filename => "$self->{wrkDir}/userdb");
+	my $file = iMSCP::File->new('filename' => "$self->{'wrkDir'}/userdb");
 	$file->mode(0600) and return 1;
 	$file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'}) and return 1;
 
 	# Installing the new file in the production directory
 	$file->copyFile("$self::courierConfig{'AUTHLIB_CONF_DIR'}") and return 1;
 
-	$file = iMSCP::File->new(filename => "$self::courierConfig{'AUTHLIB_CONF_DIR'}/userdb");
+	$file = iMSCP::File->new('filename' => "$self::courierConfig{'AUTHLIB_CONF_DIR'}/userdb");
 	$file->mode(0600) and return 1;
 	$file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'}) and return 1;
 
 	# Creating/Updating userdb.dat file from the contents of the userdb file
 	my ($rs, $stdout, $stderr);
 	$rs = execute($self::courierConfig{'CMD_MAKEUSERDB'}, \$stdout, \$stderr);
-	debug("$stdout") if ($stdout);
+	debug($stdout) if $stdout;
 
 	if($rs) {
-		error("$stderr") if $stderr;
-		error("Error while executing $self::courierConfig{CMD_MAKEUSERDB} returned status $rs") unless $stderr;
+		error($stderr) if $stderr;
+		error("Error while executing $self::courierConfig{'CMD_MAKEUSERDB'} returned status $rs") unless $stderr;
 		return $rs;
 	}
 
@@ -257,7 +245,7 @@ sub buildSslConfFiles
 		# if ssl is not enabled
 		last if lc($main::imscpConfig{'SSL_ENABLED'}) ne 'yes';
 
-		$file = iMSCP::File->new(filename => "$self::courierConfig{'AUTHLIB_CONF_DIR'}/$_");
+		$file = iMSCP::File->new('filename' => "$self::courierConfig{'AUTHLIB_CONF_DIR'}/$_");
 
 		# read file exit if can not read
 		$rdata = $file->get();
@@ -275,7 +263,7 @@ sub buildSslConfFiles
 			$rdata .= "TLS_CERTFILE=$main::imscpConfig{'GUI_CERT_DIR'}/$main::imscpConfig{'SERVER_HOSTNAME'}.pem";
 		}
 
-		$file = iMSCP::File->new(filename => "$self->{wrkDir}/$_");
+		$file = iMSCP::File->new('filename' => "$self->{'wrkDir'}/$_");
 		$rs |= $file->set($rdata);
 		$rs |= $file->save();
 		$rs |= $file->mode(0644);
@@ -298,8 +286,7 @@ sub buildMtaConf
 	my $self = shift;
 	my $content	= shift || '';
 
-	use iMSCP::Templator;
-
+	require Servers::mta;
 	my $mta	= Servers::mta->factory($main::imscpConfig{'MTA_SERVER'});
 
 	my $poBloc = getBloc(
@@ -316,12 +303,6 @@ sub buildMtaConf
 		undef
 	);
 
-	# self register again and wait for next configuration file
-	#iMSCP::HooksManager->getInstance()->register(
-	#	'afterMtaBuildMasterCfFile', sub { $self->buildMtaConf(@_); }
-	#) and return 1;
-
-	#iMSCP::HooksManager->getInstance()->register('afterMtaBuildMainCfFile', sub { $self->buildMtaConf(@_); });
 	0;
 }
 

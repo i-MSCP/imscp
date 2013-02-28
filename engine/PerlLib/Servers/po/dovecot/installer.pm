@@ -20,6 +20,7 @@
 # @category		i-MSCP
 # @copyright	2010-2013 by i-MSCP | http://i-mscp.net
 # @author		Daniel Andreca <sci2tech@gmail.com>
+# @author		Laurent Declercq <l;declercq@nuxwin.com>
 # @link			http://i-mscp.net i-MSCP Home Site
 # @license		http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
@@ -27,11 +28,14 @@ package Servers::po::dovecot::installer;
 
 use strict;
 use warnings;
+
 use iMSCP::Debug;
+use iMSCP::Config;
 use iMSCP::File;
 use iMSCP::Execute;
-use Data::Dumper;
 use iMSCP::HooksManager;
+use iMSCP::Templator;
+use version;
 use parent 'Common::SingletonClass';
 
 sub _init
@@ -39,11 +43,11 @@ sub _init
 	my $self = shift;
 
 	$self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/dovecot";
-	$self->{'bkpDir'} = "$self->{cfgDir}/backup";
-	$self->{'wrkDir'} = "$self->{cfgDir}/working";
+	$self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
+	$self->{'wrkDir'} = "$self->{'cfgDir'}/working";
 
-	my $conf = "$self->{cfgDir}/dovecot.data";
-	my $oldConf = "$self->{cfgDir}/dovecot.old.data";
+	my $conf = "$self->{'cfgDir'}/dovecot.data";
+	my $oldConf = "$self->{'cfgDir'}/dovecot.old.data";
 
 	tie %self::dovecotConfig, 'iMSCP::Config','fileName' => $conf, noerrors => 1;
 
@@ -61,19 +65,16 @@ sub registerSetupHooks
 {
 	my $self = shift;
 	my $hooksManager = shift;
-
-	$hooksManager->trigger('beforePoRegisterSetupHooks', $hooksManager, 'dovecot') and return 1;
+	my $rs = 0;
 
 	# Add installer dialog in setup dialog stack
-	$hooksManager->register(
-		'beforeSetupDialog',
-		sub { my $dialogStack = shift; push(@$dialogStack, sub { $self->askDovecot(@_) }); 0; }
-	) and return 1;
+	$rs = $hooksManager->register(
+		'beforeSetupDialog', sub { my $dialogStack = shift; push(@$dialogStack, sub { $self->askDovecot(@_) }); 0; }
+	);
+	$rs |= $hooksManager->register('afterMtaBuildMainCfFile', sub { $self->buildMtaConf(@_); });
+	$rs |= $hooksManager->register('afterMtaBuildMasterCfFile', sub { $self->buildMtaConf(@_); });
 
-	$hooksManager->register('afterMtaBuildMainCfFile', sub { $self->buildMtaConf(@_); }) and return 1;
-	$hooksManager->register('afterMtaBuildMasterCfFile', sub { $self->buildMtaConf(@_); }) and return 1;
-
-	$hooksManager->trigger('afterPoRegisterSetupHooks', $hooksManager, 'dovecot');
+	$rs;
 }
 
 sub askDovecot
@@ -144,17 +145,13 @@ sub install
 	my $self = shift;
 	my $rs = 0;
 
-	iMSCP::HooksManager->getInstance()->trigger('beforePoInstall', 'dovecot') and return 1;
-
 	# Save all system configuration files if they exists
-	$rs |= $self->bkpConfFile($_) for ('dovecot.conf', 'dovecot-sql.conf');
+	$rs = $self->bkpConfFile($_) for ('dovecot.conf', 'dovecot-sql.conf');
 
 	$rs |= $self->setupDb();
 	$rs |= $self->buildConf();
 	$rs |= $self->saveConf();
 	$rs |= $self->migrateMailboxes();
-
-	$rs |= iMSCP::HooksManager->getInstance()->trigger('afterPoInstall', 'dovecot');
 
 	$rs;
 }
@@ -165,12 +162,8 @@ sub migrateMailboxes
 
 	iMSCP::HooksManager->getInstance()->trigger('beforePoMigrateMailboxes') and return 1;
 
-	if($main::imscpOldConfig{'PO_SERVER'} && $main::imscpOldConfig{'PO_SERVER'} eq 'courier' &&
-		$main::imscpConfig{'PO_SERVER'} eq 'dovecot'
-	) {
-		use iMSCP::Execute;
-		use FindBin;
-		use Servers::mta;
+	if(defined $main::imscpOldConfig{'PO_SERVER'} && $main::imscpOldConfig{'PO_SERVER'} ne 'dovecot') {
+		require Servers::mta;
 
 		my $mta	= Servers::mta->factory();
 		my ($rs, $stdout, $stderr);
@@ -178,10 +171,10 @@ sub migrateMailboxes
 		my $mailPath = "$mta->{'MTA_VIRTUAL_MAIL_DIR'}";
 
 		$rs = execute("$binPath --to-dovecot --convert --recursive $mailPath", \$stdout, \$stderr);
-		debug("$stdout...") if $stdout;
-		warning("$stderr") if $stderr && !$rs;
-		error("$stderr") if $stderr && $rs;
-		error("Error while converting mails") if !$stderr && $rs;
+		debug($stdout) if $stdout;
+		warning($stderr) if $stderr && ! $rs;
+		error($stderr) if $stderr && $rs;
+		error('Error while converting mails') if ! $stderr && $rs;
 	}
 
 	iMSCP::HooksManager->getInstance()->trigger('afterPoMigrateMailboxes');
@@ -195,9 +188,9 @@ sub getVersion
 	iMSCP::HooksManager->getInstance()->trigger('beforePoGetVersion');
 
 	$rs = execute('dovecot --version', \$stdout, \$stderr);
-	debug("$stdout") if $stdout;
-	error("$stderr") if $stderr;
-	error("Can't get dovecot version") if !$stderr and $rs;
+	debug($stdout) if $stdout;
+	error($stderr) if $stderr;
+	error("Cannot get dovecot version") if !$stderr and $rs;
 	return $rs if $rs;
 
 	chomp($stdout);
@@ -217,9 +210,7 @@ sub saveConf
 {
 	my $self = shift;
 
-	use iMSCP::File;
-
-	my $file = iMSCP::File->new(filename => "$self->{cfgDir}/dovecot.data");
+	my $file = iMSCP::File->new('filename' => "$self->{'cfgDir'}/dovecot.data");
 
 	my $cfg = $file->get() or return 1;
 
@@ -228,7 +219,7 @@ sub saveConf
 	$file->mode(0640) and return 1;
 	$file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'}) and return 1;
 
-	$file = iMSCP::File->new(filename => "$self->{cfgDir}/dovecot.old.data");
+	$file = iMSCP::File->new('filename' => "$self->{'cfgDir'}/dovecot.old.data");
 	$file->set($cfg) and return 1;
 	$file->save and return 1;
 	$file->mode(0640) and return 1;
@@ -247,12 +238,12 @@ sub bkpConfFile
 	iMSCP::HooksManager->getInstance()->trigger('beforePoBkpConfFile', $cfgFile) and return 1;
 
 	if(-f "$self::dovecotConfig{'DOVECOT_CONF_DIR'}/$cfgFile"){
-		my $file = iMSCP::File->new(filename => "$self::dovecotConfig{'DOVECOT_CONF_DIR'}/$cfgFile");
+		my $file = iMSCP::File->new('filename' => "$self::dovecotConfig{'DOVECOT_CONF_DIR'}/$cfgFile");
 
-		if(!-f "$self->{bkpDir}/$cfgFile.system") {
-			$file->copyFile("$self->{bkpDir}/$cfgFile.system") and return 1;
+		if(!-f "$self->{'bkpDir'}/$cfgFile.system") {
+			$file->copyFile("$self->{'bkpDir'}/$cfgFile.system") and return 1;
 		} else {
-			$file->copyFile("$self->{bkpDir}/$cfgFile.$timestamp") and return 1;
+			$file->copyFile("$self->{'bkpDir'}/$cfgFile.$timestamp") and return 1;
 		}
 	}
 
@@ -263,7 +254,7 @@ sub buildConf
 {
 	my $self = shift;
 
-	use Servers::mta;
+	require Servers::mta;
 
 	my $mta	= Servers::mta->factory($main::imscpConfig{'MTA_SERVER'});
 
@@ -271,7 +262,7 @@ sub buildConf
 		DATABASE_TYPE => $main::imscpConfig{'DATABASE_TYPE'},
 		DATABASE_HOST => (
 			$main::imscpConfig{'DATABASE_PORT'}
-				? "$main::imscpConfig{DATABASE_HOST} port=$main::imscpConfig{DATABASE_PORT}"
+				? "$main::imscpConfig{'DATABASE_HOST'} port=$main::imscpConfig{'DATABASE_PORT'}"
 				: $main::imscpConfig{'DATABASE_HOST'}
 		),
 		DATABASE_USER => $self::dovecotConfig{'DATABASE_USER'},
@@ -288,7 +279,6 @@ sub buildConf
 		DOVECOT_CONF_DIR => $self::dovecotConfig{'DOVECOT_CONF_DIR'}
 	};
 
-	use version;
 	my $cfgFiles = {
 		'dovecot.conf' =>(
 			version->new($self->{'version'}) < version->new('2.0.0') ? 'dovecot.conf.1' : 'dovecot.conf.2'
@@ -298,7 +288,7 @@ sub buildConf
 	};
 
 	for (keys %{$cfgFiles}) {
-		my $file = iMSCP::File->new(filename => "$self->{cfgDir}/$cfgFiles->{$_}");
+		my $file = iMSCP::File->new('filename' => "$self->{'cfgDir'}/$cfgFiles->{$_}");
 		my $cfgTpl = $file->get();
 		return 1 if ! $cfgTpl;
 
@@ -309,7 +299,7 @@ sub buildConf
 
 		iMSCP::HooksManager->getInstance()->trigger('afterPoBuildConf', \$cfgTpl, $_) and return 1;
 
-		$file = iMSCP::File->new(filename => "$self->{wrkDir}/$_");
+		$file = iMSCP::File->new('filename' => "$self->{'wrkDir'}/$_");
 		$file->set($cfgTpl) and return 1;
 		$file->save() and return 1;
 		$file->mode(0640) and return 1;
@@ -317,7 +307,7 @@ sub buildConf
 		$file->copyFile($self::dovecotConfig{'DOVECOT_CONF_DIR'}) and return 1;
 	}
 
-	my $file = iMSCP::File->new(filename => "$self::dovecotConfig{'DOVECOT_CONF_DIR'}/dovecot.conf");
+	my $file = iMSCP::File->new('filename' => "$self::dovecotConfig{'DOVECOT_CONF_DIR'}/dovecot.conf");
 	$file->mode(0644) and return 1;
 
 	0;
@@ -397,8 +387,7 @@ sub buildMtaConf
 	my $self = shift;
 	my $content	= shift || '';
 
-	use iMSCP::Templator;
-
+	require Servers::mta;
 	my $mta	= Servers::mta->factory($main::imscpConfig{'MTA_SERVER'});
 
 	my $poBloc = getBloc(
@@ -419,12 +408,6 @@ sub buildMtaConf
 		undef
 	);
 
-	# self register again and wait for next configuration file
-	#iMSCP::HooksManager->getInstance()->register(
-	#	'afterMtaBuildMasterCfFile', sub { $self->buildMtaConf(@_); }
-	#) and return 1;
-
-	#iMSCP::HooksManager->getInstance()->register('afterMtaBuildMainCfFile', sub { $self->buildMtaConf(@_); });
 	0;
 }
 

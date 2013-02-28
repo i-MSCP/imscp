@@ -27,6 +27,7 @@ package Servers::noserver;
 
 use strict;
 use warnings;
+
 use iMSCP::Debug;
 use vars qw/$AUTOLOAD/;
 use parent 'Common::SingletonClass';

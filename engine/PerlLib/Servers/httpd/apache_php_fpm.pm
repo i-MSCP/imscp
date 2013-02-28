@@ -35,6 +35,7 @@ use strict;
 use warnings;
 
 use iMSCP::Debug;
+use iMSCP::Config;
 use iMSCP::HooksManager;
 use iMSCP::File;
 use iMSCP::Execute;
@@ -68,9 +69,17 @@ sub registerSetupHooks
 {
 	my $self = shift;
 	my $hooksManager = shift;
+	my $rs = 0;
+
+	$rs = $hooksManager->trigger('beforeHttpdRegisterSetupHooks', $hooksManager, 'apache_php_fpm');
 
 	require Servers::httpd::apache_php_fpm::installer;
-	Servers::httpd::apache_php_fpm::installer->new()->registerSetupHooks($hooksManager);
+
+	$rs |= Servers::httpd::apache_php_fpm::installer->new()->registerSetupHooks($hooksManager);
+
+	$rs |= $hooksManager->trigger('afterHttpdRegisterSetupHooks', $hooksManager, 'apache_php_fpm');
+
+	$rs;
 }
 
 =item preinstall()
@@ -84,13 +93,16 @@ sub registerSetupHooks
 sub preinstall
 {
 	my $self = shift;
+	my $rs = 0;
 
-	$self->{'hooksManager'}->trigger('beforeHttpdPreInstall', 'apache_php_fpm') and return 1;
+	$rs = $self->{'hooksManager'}->trigger('beforeHttpdPreInstall', 'apache_php_fpm');
 
-	$self->stopPhpFpm() and return 1;
-	$self->stopApache() and return 1;
+	$rs |= $self->stopPhpFpm();
+	$rs |= $self->stopApache();
 
-	$self->{'hooksManager'}->trigger('afterHttpdPreInstall', 'apache_php_fpm');
+	$rs |= $self->{'hooksManager'}->trigger('afterHttpdPreInstall', 'apache_php_fpm');
+
+	$rs;
 }
 
 =item install()
@@ -104,9 +116,17 @@ sub preinstall
 sub install
 {
 	my $self = shift;
+	my $rs = 0;
+
+	$rs = $self->{'hooksManager'}->trigger('beforeHttpdInstall', 'apache_php_fpm');
 
 	require Servers::httpd::apache_php_fpm::installer;
-	Servers::httpd::apache_php_fpm::installer->new()->install();
+
+	$rs |= Servers::httpd::apache_php_fpm::installer->new()->install();
+
+	$rs |= $self->{'hooksManager'}->trigger('afterHttpdInstall', 'apache_php_fpm');
+
+	$rs;
 }
 
 =item postinstall()
@@ -120,13 +140,16 @@ sub install
 sub postinstall
 {
 	my $self = shift;
+	my $rs = 0;
 
-	$self->{'hooksManager'}->trigger('beforeHttpdPostInstall', 'apache_php_fpm') and return 1;
+	$rs = $self->{'hooksManager'}->trigger('beforeHttpdPostInstall', 'apache_php_fpm');
 
 	$self->{'startPhpFpm'} = 'yes';
 	$self->{'startApache'} = 'yes';
 
-	$self->{'hooksManager'}->trigger('afterHttpdPostInstall', 'apache_php_fpm');
+	$rs |= $self->{'hooksManager'}->trigger('afterHttpdPostInstall', 'apache_php_fpm');
+
+	$rs;
 }
 
 =item uninstall()
@@ -140,19 +163,23 @@ sub postinstall
 sub uninstall
 {
 	my $self = shift;
+	my $rs = 0;
 
-	$self->{'hooksManager'}->trigger('beforeHttpdUninstall', 'apache_php_fpm') and return 1;
+	$rs = $self->{'hooksManager'}->trigger('beforeHttpdUninstall', 'apache_php_fpm');
 
-	$self->stopPhpFpm() and return 1;
-	$self->stopApache() and return 1;
+	$rs |= $self->stopPhpFpm();
+	$rs |= $self->stopApache();
 
 	require Servers::httpd::apache_php_fpm::uninstaller;
-	Servers::httpd::apache_php_fpm::uninstaller->new()->uninstall() and return 1;
 
-	$self->startPhpFpm() and return 1;
-	$self->startApache() and return 1;
+	$rs |= Servers::httpd::apache_php_fpm::uninstaller->new()->uninstall();
 
-	$self->{'hooksManager'}->trigger('afterHttpdUninstall', 'apache_php_fpm') and return 1;
+	$rs |= $self->startPhpFpm();
+	$rs |= $self->startApache();
+
+	$rs |= $self->{'hooksManager'}->trigger('afterHttpdUninstall', 'apache_php_fpm');
+
+	$rs;
 }
 
 =item addUser(\%data)
@@ -168,27 +195,30 @@ sub addUser
 {
 	my $self = shift;
 	my $data = shift;
+	my $rs = 0;
 
-	$self->{'hooksManager'}->trigger('beforeHttpdAddUser') and return 1;
+	$rs = $self->{'hooksManager'}->trigger('beforeHttpdAddUser');
+	return $rs if $rs;
 
 	my $homeDir = $data->{'HOME_DIR'};
 	my $rootUser = $main::imscpConfig{'ROOT_USER'};
 	my $rootGroup = $main::imscpConfig{'ROOT_GROUP'};
 	my $apacheGroup = $self::apacheConfig{'APACHE_GROUP'};
-	my ($rs, $stdout, $stderr);
+	my ($stdout, $stderr);
 
 	$self->{'data'} = $data;
 
 	# mod_cband - begin
 
-	$self->apacheBkpConfFile("$self->{'apacheWrkDir'}/00_modcband.conf") and return 1;
+	$rs = $self->apacheBkpConfFile("$self->{'apacheWrkDir'}/00_modcband.conf");
+	return $rs if $rs;
 
 	my $filename = (
 		-f "$self->{'apacheWrkDir'}/00_modcband.conf"
 			? "$self->{'apacheWrkDir'}/00_modcband.conf" : "$self->{'apacheCfgDir'}/00_modcband.conf"
 	);
 
-	my $file = iMSCP::File->new(filename => $filename);
+	my $file = iMSCP::File->new('filename' => $filename);
 	my $content	= $file->get();
 
 	unless($content) {
@@ -212,7 +242,7 @@ sub addUser
 		$entry = $self->buildConf($bTag . $entry . $eTag);
 		$content = replaceBloc($bTag, $eTag, $entry, $content, 'yes');
 
-		$file = iMSCP::File->new(filename => "$self->{'apacheWrkDir'}/00_modcband.conf");
+		$file = iMSCP::File->new('filename' => "$self->{'apacheWrkDir'}/00_modcband.conf");
 		$file->set($content);
 		$rs = 1 if $file->save();
 
@@ -256,6 +286,7 @@ sub addUser
 		my $fileH =	iMSCP::File->new('filename' => $_);
 		$rs |= $fileH->save() unless -f $_;
 		$rs |= $fileH->mode(0640);
+		last if $rs;
 	}
 
 	# Common web files - End
@@ -280,11 +311,12 @@ sub delUser
 {
 	my $self = shift;
 	my $data = shift;
+	my $rs = 0;
 
-	$self->{'hooksManager'}->trigger('beforeHttpdDelUser') and return 1;
+	$rs = $self->{'hooksManager'}->trigger('beforeHttpdDelUser');
+	return $rs if $rs;
 
 	my $homeDir = $data->{'HOME_DIR'};
-	my $rs = 0;
 
 	$self->{'data'} = $data;
 
@@ -309,7 +341,7 @@ sub delUser
 
 		$content = replaceBloc($bUTag, $eUTag, '', $content, undef);
 
-		$file = iMSCP::File->new(filename => "$self->{'apacheWrkDir'}/00_modcband.conf");
+		$file = iMSCP::File->new('filename' => "$self->{'apacheWrkDir'}/00_modcband.conf");
 		$file->set($content);
 
 		$rs |= $file->save();
@@ -342,14 +374,15 @@ sub addDmn
 {
 	my $self = shift;
 	my $data = shift;
+	my $rs = 0;
 
 	$self->{'mode'} = 'dmn';
 
-	$self->{'hooksManager'}->trigger('beforeHttpdAddDmn') and return 1;
+	$rs = $self->{'hooksManager'}->trigger('beforeHttpdAddDmn');
 
 	$self->{'data'} = $data;
 
-	my $rs = $self->_addCfg($data);
+	$rs |= $self->_addCfg($data);
 	$rs |= $self->_addFiles($data) if $data->{'FORWARD'} eq 'no';
 
 	$self->{'restartPhpFpm'} = 'yes';
@@ -375,28 +408,27 @@ sub delDmn
 {
 	my $self = shift;
 	my $data = shift;
-
-	$self->{'hooksManager'}->trigger('beforeHttpdDelDmn') and return 1;
-
 	my $rs = 0;
+
+	$rs = $self->{'hooksManager'}->trigger('beforeHttpdDelDmn');
+	return $rs if $rs;
 
 	for("$data->{'DMN_NAME'}.conf", "$data->{'DMN_NAME'}_ssl.conf") {
 		$rs |= $self->disableSite($_) if -f "$self::apacheConfig{'APACHE_SITES_DIR'}/$_";
-		$self->apacheBkpConfFile("$self->{'apacheWrkDir'}/$_") and return 1;
+		$rs |= $self->apacheBkpConfFile("$self->{'apacheWrkDir'}/$_");
 	}
 
 	for(
 		"$self::apacheConfig{'APACHE_SITES_DIR'}/$data->{'DMN_NAME'}.conf",
 		"$self::apacheConfig{'APACHE_SITES_DIR'}/$data->{'DMN_NAME'}_ssl.conf",
 		"$self::apacheConfig{'APACHE_CUSTOM_SITES_CONFIG_DIR'}/$data->{'DMN_NAME'}.conf",
-		"$self->{apacheWrkDir}/$data->{'DMN_NAME'}.conf",
-		"$self->{apacheWrkDir}/$data->{'DMN_NAME'}_ssl.conf",
+		"$self->{'apacheWrkDir'}/$data->{'DMN_NAME'}.conf",
+		"$self->{'apacheWrkDir'}/$data->{'DMN_NAME'}_ssl.conf",
 		"$self::phpfpmConfig{'PHP_FPM_POOLS_CONF_DIR'}/$data->{'DMN_NAME'}.conf"
 	) {
 		$rs |= iMSCP::File->new('filename' => $_)->delFile() if -f $_;
 	}
 
-	# Remove home dir
 	$rs |= iMSCP::Dir->new('dirname' => $data->{'HOME_DIR'})->remove() if -d $data->{'HOME_DIR'};
 
 	$self->{'restartPhpFpm'} = 'yes';
@@ -424,11 +456,11 @@ sub disableDmn
 	my $data = shift;
 	my $rs = 0;
 
-	$self->{'hooksManager'}->trigger('beforeHttpdDisableDmn') and return 1;
+	$rs = $self->{'hooksManager'}->trigger('beforeHttpdDisableDmn');
 
 	$self->{'data'} = $data;
 
-	$self->apacheBkpConfFile("$self->{'apacheWrkDir'}/$data->{'DMN_NAME'}.conf") and return 1;
+	$rs |= $self->apacheBkpConfFile("$self->{'apacheWrkDir'}/$data->{'DMN_NAME'}.conf");
 
 	$rs |= $self->buildConfFile(
 		"$self->{'apacheTplDir'}/domain_disabled.tpl",
@@ -436,18 +468,16 @@ sub disableDmn
 	);
 
 	$rs |= $self->installConfFile("$data->{'DMN_NAME'}.conf");
-
 	$rs |= $self->enableSite("$data->{'DMN_NAME'}.conf");
-	return $rs if $rs;
 
 	$self->{'restartPhpFpm'} = 'yes';
 	$self->{'restartApache'} = 'yes';
 
 	delete $self->{'data'};
 
-	$self->{'hooksManager'}->trigger('afterHttpdDisableDmn');
+	$rs |= $self->{'hooksManager'}->trigger('afterHttpdDisableDmn');
 
-	0;
+	$rs;
 }
 
 =item addSub(\%data)
@@ -463,14 +493,15 @@ sub addSub
 {
 	my $self = shift;
 	my $data = shift;
+	my $rs = 0;
 
 	$self->{'mode'}	= 'sub';
 
-	$self->{'hooksManager'}->trigger('beforeHttpdAddSub') and return 1;
+	$rs = $self->{'hooksManager'}->trigger('beforeHttpdAddSub');
 
 	$self->{'data'} = $data;
 
-	my $rs = $self->_addCfg($data);
+	$rs |= $self->_addCfg($data);
 	$rs |= $self->_addFiles($data) if $data->{'FORWARD'} eq 'no';
 
 	$self->{'restartPhpFpm'} = 'yes';
@@ -496,10 +527,11 @@ sub delSub
 {
 	my $self = shift;
 	my $data = shift;
+	my $rs = 0;
 
-	$self->{'hooksManager'}->trigger('beforeHttpdDelSub') and return 1;
+	$rs = $self->{'hooksManager'}->trigger('beforeHttpdDelSub');
 
-	my $rs = $self->delDmn($data);
+	$rs |= $self->delDmn($data);
 
 	$rs |= $self->{'hooksManager'}->trigger('afterHttpdDelSub');
 
@@ -519,10 +551,11 @@ sub disableSub
 {
 	my $self = shift;
 	my $data = shift;
+	my $rs = 0;
 
-	$self->{'hooksManager'}->trigger('beforeHttpdDisableSub') and return 1;
+	$rs = $self->{'hooksManager'}->trigger('beforeHttpdDisableSub');
 
-	my $rs = $self->disableDmn($data);
+	$rs |= $self->disableDmn($data);
 
 	$rs |= $self->{'hooksManager'}->trigger('beforeHttpdDisableSub');
 
@@ -542,10 +575,10 @@ sub addHtuser
 {
 	my $self = shift;
 	my $data = shift;
-
-	$self->{'hooksManager'}->trigger('beforeHttpdAddHtuser') and return 1;
-
 	my $rs = 0;
+
+	$rs = $self->{'hooksManager'}->trigger('beforeHttpdAddHtuser');
+
 	my $fileName = $self::apacheConfig{'HTACCESS_USERS_FILE_NAME'};
 	my $filePath = "$main::imscpConfig{'USER_HOME_DIR'}/$data->{'HTUSER_DMN'}/$fileName";
 	my $fileH = iMSCP::File->new('filename' => $filePath);
@@ -578,10 +611,10 @@ sub delHtuser
 {
 	my $self = shift;
 	my $data = shift;
-
-	$self->{'hooksManager'}->trigger('beforeHttpdDelHtuser') and return 1;
-
 	my $rs = 0;
+
+	$rs = $self->{'hooksManager'}->trigger('beforeHttpdDelHtuser');
+
 	my $fileName = $self::apacheConfig{'HTACCESS_USERS_FILE_NAME'};
 	my $filePath = "$main::imscpConfig{'USER_HOME_DIR'}/$data->{'HTUSER_DMN'}/$fileName";
 	my $fileH = iMSCP::File->new('filename' => $filePath);
@@ -613,13 +646,13 @@ sub addHtgroup
 {
 	my $self = shift;
 	my $data = shift;
-
-	$self->{'hooksManager'}->trigger('beforeHttpdAddHtgroup') and return 1;
-
 	my $rs = 0;
+
+	$rs = $self->{'hooksManager'}->trigger('beforeHttpdAddHtgroup');
+
 	my $fileName = $self::apacheConfig{'HTACCESS_GROUPS_FILE_NAME'};
 	my $filePath = "$main::imscpConfig{'USER_HOME_DIR'}/$data->{'HTGROUP_DMN'}/$fileName";
-	my $fileH = iMSCP::File->new(filename => $filePath);
+	my $fileH = iMSCP::File->new('filename' => $filePath);
 
 	my $fileContent = $fileH->get() if -f $filePath;
 	$fileContent = '' if ! $fileContent;
@@ -649,10 +682,10 @@ sub delHtgroup
 {
 	my $self = shift;
 	my $data = shift;
-
-	$self->{'hooksManager'}->trigger('beforeHttpdDelHtgroup') and return 1;
-
 	my $rs = 0;
+
+	$rs = $self->{'hooksManager'}->trigger('beforeHttpdDelHtgroup');
+
 	my $fileName = $self::apacheConfig{'HTACCESS_GROUPS_FILE_NAME'};
 	my $filePath = "$main::imscpConfig{'USER_HOME_DIR'}/$data->{'HTGROUP_DMN'}/$fileName";
 	my $fileH = iMSCP::File->new('filename' => $filePath);
@@ -684,14 +717,14 @@ sub addHtaccess
 {
 	my $self = shift;
 	my $data = shift;
-
-	$self->{'hooksManager'}->trigger('beforeHttpdAddHtaccess') and return 1;
-
 	my $rs = 0;
+
+	$rs = $self->{'hooksManager'}->trigger('beforeHttpdAddHtaccess');
+
 	my $fileUser = "$data->{'HOME_PATH'}/$self::apacheConfig{'HTACCESS_USERS_FILE_NAME'}";
 	my $fileGroup = "$data->{'HOME_PATH'}/$self::apacheConfig{'HTACCESS_GROUPS_FILE_NAME'}";
 	my $filePath = "$data->{'AUTH_PATH'}/.htaccess";
-	my $fileH = iMSCP::File->new(filename => $filePath);
+	my $fileH = iMSCP::File->new('filename' => $filePath);
 
 	my $fileContent = $fileH->get() if -f $filePath;
 	$fileContent = '' if !$fileContent;
@@ -701,9 +734,9 @@ sub addHtaccess
 	my $tag	 = "\t\tAuthType $data->{'AUTH_TYPE'}\n\t\tAuthName \"$data->{'AUTH_NAME'}\"\n\t\tAuthUserFile $fileUser\n";
 
 	if($data->{'HTUSERS'} eq '') {
-		$tag .=	"\t\tAuthGroupFile $fileGroup\n\t\tRequire group $data->{HTGROUPS}\n";
+		$tag .=	"\t\tAuthGroupFile $fileGroup\n\t\tRequire group $data->{'HTGROUPS'}\n";
 	} else {
-		$tag .=	"\t\tRequire user $data->{HTUSERS}\n";
+		$tag .=	"\t\tRequire user $data->{'HTUSERS'}\n";
 	}
 
 	$fileContent = replaceBloc($bTag, $eTag, '', $fileContent, undef);
@@ -732,10 +765,10 @@ sub delHtaccess
 {
 	my $self = shift;
 	my $data = shift;
-
-	$self->{'hooksManager'}->trigger('beforeHttpdDelHtaccess') and return 1;
-
 	my $rs = 0;
+
+	$rs = $self->{'hooksManager'}->trigger('beforeHttpdDelHtaccess');
+
 	my $fileUser = "$data->{'HOME_PATH'}/$self::apacheConfig{'HTACCESS_USERS_FILE_NAME'}";
 	my $fileGroup = "$data->{'HOME_PATH'}/$self::apacheConfig{'HTACCESS_GROUPS_FILE_NAME'}";
 	my $filePath = "$data->{'AUTH_PATH'}/.htaccess";
@@ -776,16 +809,16 @@ sub addIps
 {
 	my $self = shift;
 	my $data = shift;
-
-	$self->{'hooksManager'}->trigger('beforeHttpdAddIps') and return 1;
-
 	my $rs = 0;
 
-	$self->apacheBkpConfFile("$self->{'apacheWrkDir'}/00_nameserver.conf") and return 1;
+	$rs = $self->{'hooksManager'}->trigger('beforeHttpdAddIps');
+
+	$rs |= $self->apacheBkpConfFile("$self->{'apacheWrkDir'}/00_nameserver.conf");
 
 	my $filename = (
-		-f "$self->{'apacheWrkDir'}/00_nameserver.conf" ?
-			"$self->{'apacheWrkDir'}/00_nameserver.conf" : "$self->{'apacheCfgDir'}/00_nameserver.conf"
+		-f "$self->{'apacheWrkDir'}/00_nameserver.conf"
+			? "$self->{'apacheWrkDir'}/00_nameserver.conf"
+			: "$self->{'apacheCfgDir'}/00_nameserver.conf"
 	);
 
 	my $file = iMSCP::File->new('filename' => $filename);
@@ -795,13 +828,11 @@ sub addIps
 	$content .= "NameVirtualHost $_:443\n" for @{$data->{'SSLIPS'}};
 	$content .= "NameVirtualHost $_:80\n" for @{$data->{'IPS'}};
 
-	$file = iMSCP::File->new(filename => "$self->{'apacheWrkDir'}/00_nameserver.conf");
+	$file = iMSCP::File->new('filename' => "$self->{'apacheWrkDir'}/00_nameserver.conf");
 	$file->set($content);
 	$file->save() and return 1;
 
-	$rs = $self->installConfFile('00_nameserver.conf');
-	return $rs if $rs;
-
+	$rs |= $self->installConfFile('00_nameserver.conf');
 	$rs |= $self->enableSite('00_nameserver.conf');
 
 	$self->{'restartApache'} = 'yes';
@@ -826,6 +857,7 @@ sub setGuiPermissions
 	my $self = shift;
 
 	require Servers::httpd::apache_php_fpm::installer;
+
 	Servers::httpd::apache_php_fpm::installer->new()->setGuiPermissions();
 }
 
@@ -876,6 +908,7 @@ sub buildConfFile
 	my $self = shift;
 	my $file = shift;
 	my $options = shift;
+	my $rs = 0;
 
 	$options = {} if ref $options ne 'HASH';
 
@@ -883,32 +916,33 @@ sub buildConfFile
 
 	$file = "$self->{'apacheCfgDir'}/$file" unless -d $directories && $directories ne './';
 
-	my $fileH = iMSCP::File->new(filename => $file);
+	my $fileH = iMSCP::File->new('filename' => $file);
 	my $cfgTpl = $fileH->get();
 	error("Empty configuration template $file...") unless $cfgTpl;
 	return 1 unless $cfgTpl;
 
-	$self->{'hooksManager'}->trigger('beforeHttpdBuildConfFile', \$cfgTpl, "$filename$suffix") and return 1;
+	$rs = $self->{'hooksManager'}->trigger('beforeHttpdBuildConfFile', \$cfgTpl, "$filename$suffix");
 
 	$cfgTpl = $self->buildConf($cfgTpl, "$filename$suffix");
-	return 1 if (! $cfgTpl);
+	return 1 if ! $cfgTpl;
 
 	$cfgTpl =~ s/\n{2,}/\n\n/g; # Remove duplicate blank lines
 
-	$self->{'hooksManager'}->trigger('afterHttpdBuildConfFile', \$cfgTpl, "$filename$suffix") and return 1;
+	$rs |= $self->{'hooksManager'}->trigger('afterHttpdBuildConfFile', \$cfgTpl, "$filename$suffix");
 
 	$fileH = iMSCP::File->new(
-		filename => ($options->{'destination'} ? $options->{'destination'} : "$self->{'apacheWrkDir'}/$filename$suffix")
+		'filename' => ($options->{'destination'}
+			? $options->{'destination'} : "$self->{'apacheWrkDir'}/$filename$suffix")
 	);
-	$fileH->set($cfgTpl) and return 1;
-	$fileH->save() and return 1;
-	$fileH->mode($options->{'mode'} ? $options->{'mode'} : 0644) and return 1;
-	$fileH->owner(
+	$fileH->set($cfgTpl);
+	$rs|} $fileH->save();
+	$rs |= $fileH->mode($options->{'mode'} ? $options->{'mode'} : 0644);
+	$rs |= $fileH->owner(
 		$options->{'user'} ? $options->{'user'} : $main::imscpConfig{'ROOT_USER'},
 		$options->{'group'} ? $options->{'group'} : $main::imscpConfig{'ROOT_GROUP'}
-	) and return 1;
+	);
 
-	0;
+	$rs;
 }
 
 =item installConfFile($file, \%options)
@@ -926,28 +960,31 @@ sub installConfFile
 	my $self = shift;
 	my $file = shift;
 	my $options = shift;
+	my $rs = 0;
 
 	$options = {} if ref $options ne 'HASH';
 
 	my ($filename, $directories, $suffix) = fileparse($file);
 
-	$self->{'hooksManager'}->trigger('beforeHttpdInstallConfFile', "$filename$suffix") and return 1;
+	$rs = $self->{'hooksManager'}->trigger('beforeHttpdInstallConfFile', "$filename$suffix");
 
 	$file = "$self->{'apacheWrkDir'}/$file" unless -d $directories && $directories ne './';
 
-	my $fileH = iMSCP::File->new(filename => $file);
+	my $fileH = iMSCP::File->new('filename' => $file);
 
-	$fileH->mode($options->{'mode'} ? $options->{'mode'} : 0644) and return 1;
-	$fileH->owner(
+	$rs |= $fileH->mode($options->{'mode'} ? $options->{'mode'} : 0644);
+	$rs |= $fileH->owner(
 		$options->{'user'} ? $options->{'user'} : $main::imscpConfig{'ROOT_USER'},
 		$options->{'group'} ? $options->{'group'} : $main::imscpConfig{'ROOT_GROUP'}
-	) and return 1;
+	);
 
-	$fileH->copyFile(
+	$rs |= $fileH->copyFile(
 		$options->{'destination'} ? $options->{'destination'} : "$self::apacheConfig{'APACHE_SITES_DIR'}/$filename$suffix"
-	) and return 1;
+	);
 
-	$self->{'hooksManager'}->trigger('afterHttpdInstallConfFile', "$filename$suffix");
+	$rs |= $self->{'hooksManager'}->trigger('afterHttpdInstallConfFile', "$filename$suffix");
+
+	$rs;
 }
 
 =item setData(\%data)
@@ -963,13 +1000,16 @@ sub setData
 {
 	my $self = shift;
 	my $data = shift;
+	my $rs = 0;
 
-	$self->{'hooksManager'}->trigger('beforeHttpdSetData', $data) and return 1;
+	$rs = $self->{'hooksManager'}->trigger('beforeHttpdSetData', $data);
 
 	$data = {} if ref $data ne 'HASH';
 	$self->{'data'} = $data;
 
-	$self->{'hooksManager'}->trigger('afterHttpdSetData');
+	$rs |= $self->{'hooksManager'}->trigger('afterHttpdSetData');
+
+	$rs;
 }
 
 =item removeSection($sectionName, \$cfgTpl)
@@ -987,8 +1027,9 @@ sub removeSection
 	my $self = shift;
 	my $sectionName = shift;
 	my $cfgTpl = shift;
+	my $rs = 0;
 
-	$self->{'hooksManager'}->trigger('beforeHttpdRemoveSection', $sectionName, $cfgTpl);
+	$rs = $self->{'hooksManager'}->trigger('beforeHttpdRemoveSection', $sectionName, $cfgTpl);
 
 	my $bTag = "# SECTION $sectionName BEGIN.\n";
 	my $eTag = "# SECTION $sectionName END.\n";
@@ -997,9 +1038,9 @@ sub removeSection
 
 	$$cfgTpl = replaceBloc($bTag, $eTag, '', $$cfgTpl, undef);
 
-	$self->{'hooksManager'}->trigger('afterHttpdRemoveSection', $sectionName, $cfgTpl);
+	$rs |= $self->{'hooksManager'}->trigger('afterHttpdRemoveSection', $sectionName, $cfgTpl);
 
-	0;
+	$rs;
 }
 
 =item
@@ -1015,7 +1056,7 @@ sub getTraffic
 	my $self = shift;
 	my $who = shift;
 
-	$self->{'hooksManager'}->trigger('beforeHttpdGetTraffic');
+	$self->{'hooksManager'}->trigger('beforeHttpdGetTraffic') and return 0;
 
 	my $traff = 0;
 	my $trfDir = "$self::apacheConfig{'APACHE_LOG_DIR'}/traff";
@@ -1056,7 +1097,7 @@ sub getTraffic
 		}
 	}
 
-	$self->{'hooksManager'}->trigger('afterHttpdGetTraffic');
+	$self->{'hooksManager'}->trigger('afterHttpdGetTraffic') and return 0;
 
 	$traff;
 }
@@ -1072,10 +1113,10 @@ sub getTraffic
 sub delOldLogs
 {
 	my $self = shift;
-
-	$self->{'hooksManager'}->trigger('beforeHttpdDelOldLogs') and return 1;
-
 	my $rs = 0;
+
+	$rs = $self->{'hooksManager'}->trigger('beforeHttpdDelOldLogs');
+
 	my $logDir = $self::apacheConfig{'APACHE_LOG_DIR'};
 	my $bLogDir = $self::apacheConfig{'APACHE_BACKUP_LOG_DIR'};
 	my $uLogDir = $self::apacheConfig{'APACHE_USERS_LOG_DIR'};
@@ -1105,10 +1146,10 @@ sub delOldLogs
 sub delTmp
 {
 	my $self = shift;
-
-	$self->{'hooksManager'}->trigger('beforeHttpdDelTmp') and return 1;
-
 	my $rs = 0;
+
+	$rs = $self->{'hooksManager'}->trigger('beforeHttpdDelTmp');
+
 
 	# Get session.gc_maxlifetime value from global PHP FPM php.ini file
 	my $max = 1440;
@@ -1136,14 +1177,14 @@ sub delTmp
 
 	# panel sessions gc (Only for security since Zend_Session normaly take care of this)
 	$cmd = "[ -d /var/www/imscp/gui/data/sessions ] && find /var/www/imscp/gui/data/sessions/ -type f -cmin +$max -exec rm -v {} \\;";
-	$rs = execute($cmd, \$stdout, \$stderr);
+	$rs |= execute($cmd, \$stdout, \$stderr);
 	debug($stdout) if $stdout;
 	error($stderr) if $stderr && $rs;
 	error("Error while executing $cmd.\nReturned value is $rs") if ! $stderr && $rs;
 
 	# customers sessions gc (TODO should we check for any maxlifetime overriden in pools configuration file ?)
 	$cmd = "nice -n 19 find $main::imscpConfig{'USER_HOME_DIR'} -type f -path '*/phptmp/sess_*' -cmin +$max -exec rm -v {} \\;";
-	$rs = execute($cmd, \$stdout, \$stderr);
+	$rs |= execute($cmd, \$stdout, \$stderr);
 	debug($stdout) if $stdout;
 	error($stderr) if $stderr && $rs;
 	error("Error while executing $cmd.\nReturned value is $rs") if ! $stderr && $rs;
@@ -1192,14 +1233,15 @@ sub enableSite
 {
 	my $self = shift;
 	my $sites = shift;
+	my $rs = 0;
 
-	$self->{'hooksManager'}->trigger('beforeHttpdEnableSite', \$sites) and return 1;
+	$rs = $self->{'hooksManager'}->trigger('beforeHttpdEnableSite', \$sites);
 
-	my ($rs, $stdout, $stderr);
+	my ($stdout, $stderr);
 
 	for(split ' ', $sites) {
 		if(-f "$self::apacheConfig{'APACHE_SITES_DIR'}/$_"){
-			$rs = execute("a2ensite $_", \$stdout, \$stderr);
+			$rs |= execute("a2ensite $_", \$stdout, \$stderr);
 			debug($stdout) if $stdout;
 			warning($stderr) if $stderr && ! $rs;
 			error($stderr) if $stderr && $rs;
@@ -1209,7 +1251,9 @@ sub enableSite
 		}
 	}
 
-	$self->{'hooksManager'}->trigger('afterHttpdEnableSite', $sites);
+	$rs |= $self->{'hooksManager'}->trigger('afterHttpdEnableSite', $sites);
+
+	$rs;
 }
 
 =item disableSite($sites)
@@ -1225,14 +1269,15 @@ sub disableSite
 {
 	my $self = shift;
 	my $sites = shift;
+	my $rs = 0;
 
-	$self->{'hooksManager'}->trigger('beforeHttpdDisableSite', \$sites) and return 1;
+	$rs = $self->{'hooksManager'}->trigger('beforeHttpdDisableSite', \$sites);
 
-	my ($rs, $stdout, $stderr);
+	my ($stdout, $stderr);
 
 	for(split ' ', $sites) {
-		if(-f "$self::apacheConfig{APACHE_SITES_DIR}/$_"){
-			$rs = execute("a2dissite $_", \$stdout, \$stderr);
+		if(-f "$self::apacheConfig{'APACHE_SITES_DIR'}/$_"){
+			$rs |= execute("a2dissite $_", \$stdout, \$stderr);
 			debug($stdout) if $stdout;
 			warning($stderr) if $stderr && ! $rs;
 			error($stderr) if $stderr && $rs;
@@ -1242,7 +1287,9 @@ sub disableSite
 		}
 	}
 
-	$self->{'hooksManager'}->trigger('afterHttpdDisableSite', $sites);
+	$rs = $self->{'hooksManager'}->trigger('afterHttpdDisableSite', $sites);
+
+	$rs;
 }
 
 =item enableMod($mods)
@@ -1258,18 +1305,20 @@ sub enableMod
 {
 	my $self = shift;
 	my $mods = shift;
+	my $rs = 0;
 
-	$self->{'hooksManager'}->trigger('beforeHttpdEnableMod', \$mods) and return 1;
+	$rs = $self->{'hooksManager'}->trigger('beforeHttpdEnableMod', \$mods);
 
 	my ($stdout, $stderr);
 
-	my $rs = execute("a2enmod $mods", \$stdout, \$stderr);
+	$rs |= execute("a2enmod $mods", \$stdout, \$stderr);
 	debug($stdout) if $stdout;
 	warning($stderr) if $stderr && ! $rs;
 	error($stderr) if $stderr && $rs;
-	return $rs if $rs;
 
-	$self->{'hooksManager'}->trigger('afterHttpdEnableMod', $mods);
+	$rs |= $self->{'hooksManager'}->trigger('afterHttpdEnableMod', $mods);
+
+	$rs;
 }
 
 =item disableMod($mods)
@@ -1285,18 +1334,20 @@ sub disableMod
 {
 	my $self = shift;
 	my $mods = shift;
+	my $rs = 0;
 
-	$self->{'hooksManager'}->trigger('beforeHttpdDisableMod', \$mods) and return 1;
+	$rs = $self->{'hooksManager'}->trigger('beforeHttpdDisableMod', \$mods);
 
 	my ($stdout, $stderr);
 
-	my $rs = execute("a2dismod $mods", \$stdout, \$stderr);
+	$rs |= execute("a2dismod $mods", \$stdout, \$stderr);
 	debug($stdout) if $stdout;
 	warning($stderr) if $stderr && ! $rs;
 	error($stderr) if $stderr && $rs;
-	return $rs if $rs;
 
-	$self->{'hooksManager'}->trigger('afterHttpdDisableMod', $mods);
+	$rs |= $self->{'hooksManager'}->trigger('afterHttpdDisableMod', $mods);
+
+	$rs;
 }
 
 =item forceRestartPhpFpm()
@@ -1327,11 +1378,12 @@ sub forceRestartPhpFpm
 sub startPhpFpm
 {
 	my $self = shift;
+	my $rs = 0;
 
-	$self->{'hooksManager'}->trigger('beforeHttpdStartPhpFpm') and return 1;
+	$rs = $self->{'hooksManager'}->trigger('beforeHttpdStartPhpFpm');
 
-	my ($rs, $stdout, $stderr);
-	$rs = execute("$self::phpfpmConfig{'CMD_PHP_FPM'} start", \$stdout, \$stderr);
+	my ($stdout, $stderr);
+	$rs |= execute("$self::phpfpmConfig{'CMD_PHP_FPM'} start", \$stdout, \$stderr);
 	debug($stdout) if $stdout;
 	warning($stderr) if $stderr && ! $rs;
 	error($stderr) if $stderr && $rs;
@@ -1352,18 +1404,20 @@ sub startPhpFpm
 sub stopPhpFpm
 {
 	my $self = shift;
+	my $rs = 0;
 
-	$self->{'hooksManager'}->trigger('beforeHttpdStopPhpFpm') and return 1;
+	$rs = $self->{'hooksManager'}->trigger('beforeHttpdStopPhpFpm');
 
-	my ($rs, $stdout, $stderr);
-	$rs = execute("$self::phpfpmConfig{'CMD_PHP_FPM'} stop", \$stdout, \$stderr);
+	my ($stdout, $stderr);
+	$rs |= execute("$self::phpfpmConfig{'CMD_PHP_FPM'} stop", \$stdout, \$stderr);
 	debug($stdout) if $stdout;
 	warning($stderr) if $stderr && ! $rs;
 	error($stderr) if $stderr && $rs;
 	error('Error while stopping PHP FPM') if $rs && ! $stderr;
-	return $rs if $rs;
 
-	$self->{'hooksManager'}->trigger('afterHttpdStopPhpFpm');
+	$rs |= $self->{'hooksManager'}->trigger('afterHttpdStopPhpFpm');
+
+	$rs;
 }
 
 =item restartPhpFpm()
@@ -1377,20 +1431,22 @@ sub stopPhpFpm
 sub restartPhpFpm
 {
 	my $self = shift;
+	my $rs = 0;
 
-	$self->{'hooksManager'}->trigger('beforeHttpdRestartPhpFpm') and return 1;
+	$rs = $self->{'hooksManager'}->trigger('beforeHttpdRestartPhpFpm');
 
-	my ($rs, $stdout, $stderr);
-	$rs = execute(
+	my ($stdout, $stderr);
+	$rs |= execute(
 		"$self::phpfpmConfig{'CMD_PHP_FPM'} " . ($self->{'forceRestart'} ? 'restart' : 'reload'), \$stdout, \$stderr
 	);
 	debug($stdout) if $stdout;
 	warning($stderr) if $stderr && ! $rs;
 	error($stderr) if $stderr && $rs;
 	error('Error while restarting PHP FPM') if $rs && ! $stderr;
-	return $rs if $rs;
 
-	$self->{'hooksManager'}->trigger('afterHttpdRestartPhpFpm');
+	$rs |= $self->{'hooksManager'}->trigger('afterHttpdRestartPhpFpm');
+
+	$rs;
 }
 
 =item forceRestartApache()
@@ -1421,18 +1477,20 @@ sub forceRestartApache
 sub startApache
 {
 	my $self = shift;
+	my $rs = 0;
 
-	$self->{'hooksManager'}->trigger('beforeHttpdStart') and return 1;
+	$rs = $self->{'hooksManager'}->trigger('beforeHttpdStart');
 
-	my ($rs, $stdout, $stderr);
-	$rs = execute("$self::apacheConfig{'CMD_HTTPD'} start", \$stdout, \$stderr);
+	my ($stdout, $stderr);
+	$rs |= execute("$self::apacheConfig{'CMD_HTTPD'} start", \$stdout, \$stderr);
 	debug($stdout) if $stdout;
 	warning($stderr) if $stderr && ! $rs;
 	error($stderr) if $stderr && $rs;
 	error('Error while starting Apache') if $rs && ! $stderr;
-	return $rs if $rs;
 
-	$self->{'hooksManager'}->trigger('afterHttpdStart');
+	$rs |= $self->{'hooksManager'}->trigger('afterHttpdStart');
+
+	$rs;
 }
 
 =item stopApache()
@@ -1446,18 +1504,20 @@ sub startApache
 sub stopApache
 {
 	my $self = shift;
+	my $rs = 0;
 
-	$self->{'hooksManager'}->trigger('beforeHttpdStop') and return 1;
+	$rs = $self->{'hooksManager'}->trigger('beforeHttpdStop');
 
-	my ($rs, $stdout, $stderr);
-	$rs = execute("$self::apacheConfig{'CMD_HTTPD'} stop", \$stdout, \$stderr);
+	my ($stdout, $stderr);
+	$rs |= execute("$self::apacheConfig{'CMD_HTTPD'} stop", \$stdout, \$stderr);
 	debug($stdout) if $stdout;
 	warning($stderr) if $stderr && ! $rs;
 	error($stderr) if $stderr && $rs;
 	error('Error while stopping Apache') if $rs && ! $stderr;
-	return $rs if $rs;
 
-	$self->{'hooksManager'}->trigger('afterHttpdStop');
+	$rs |= $self->{'hooksManager'}->trigger('afterHttpdStop');
+
+	$rs;
 }
 
 =item restartApache()
@@ -1471,20 +1531,22 @@ sub stopApache
 sub restartApache
 {
 	my $self = shift;
+	my $rs = 0;
 
-	$self->{'hooksManager'}->trigger('beforeHttpdRestart') and return 1;
+	$rs = $self->{'hooksManager'}->trigger('beforeHttpdRestart');
 
-	my ($rs, $stdout, $stderr);
-	$rs = execute(
+	my ($stdout, $stderr);
+	$rs |= execute(
 		"$self::apacheConfig{'CMD_HTTPD'} " . ($self->{'forceRestart'} ? 'restart' : 'reload'), \$stdout, \$stderr
 	);
 	debug($stdout) if $stdout;
 	warning($stderr) if $stderr && ! $rs;
 	error($stderr) if $stderr && $rs;
 	error('Error while restating Apache') if $rs && ! $stderr;
-	return $rs if $rs;
 
-	$self->{'hooksManager'}->trigger('afterHttpdRestart');
+	$rs |= $self->{'hooksManager'}->trigger('afterHttpdRestart');
+
+	$rs;
 }
 
 =item apacheBkpConfFile($filepath)
@@ -1504,21 +1566,24 @@ sub apacheBkpConfFile
 	my $filepath = shift;
 	my $prefix = shift || '';
 	my $system = shift || 0;
+	my $rs = 0;
 
-	$self->{'hooksManager'}->trigger('beforeHttpdBkpConfFile', $filepath) and return 1;
+	$rs = $self->{'hooksManager'}->trigger('beforeHttpdBkpConfFile', $filepath);
 
-	if(-f $filepath) {
+	if(! $rs && -f $filepath) {
 		my $file = iMSCP::File->new('filename' => $filepath);
 		my ($name, $path, $suffix) = fileparse($filepath);
 
 		if($system && ! -f "$self->{'apacheBkpDir'}/$prefix$name$suffix$system") {
-			$file->copyFile("$self->{'apacheBkpDir'}/$prefix$name$suffix$system") and return 1;
+			$rs |= $file->copyFile("$self->{'apacheBkpDir'}/$prefix$name$suffix$system");
 		} else {
-			$file->copyFile("$self->{'apacheBkpDir'}/$prefix$name$suffix." . time) and return 1;
+			$rs |= $file->copyFile("$self->{'apacheBkpDir'}/$prefix$name$suffix." . time);
 		}
 	}
 
-	$self->{'hooksManager'}->trigger('afterHttpdBkpConfFile', $filepath);
+	$rs |= $self->{'hooksManager'}->trigger('afterHttpdBkpConfFile', $filepath);
+
+	$rs;
 }
 
 =item phpfpmBkpConfFile($filepath)
@@ -1538,21 +1603,24 @@ sub phpfpmBkpConfFile
 	my $filepath = shift;
 	my $prefix = shift || '';
 	my $system = shift || 0;
+	my $rs = 0;
 
-	$self->{'hooksManager'}->trigger('beforeHttpdBkpConfFile', $filepath) and return 1;
+	$rs |= $self->{'hooksManager'}->trigger('beforeHttpdBkpConfFile', $filepath);
 
-	if(-f $filepath) {
+	if(!$rs && -f $filepath) {
 		my $file = iMSCP::File->new('filename' => $filepath);
 		my ($name, $path, $suffix) = fileparse($filepath);
 
 		if($system && ! -f "$self->{'phpfpmBkpDir'}/$prefix$name$suffix.system") {
-			$file->copyFile("$self->{'phpfpmBkpDir'}/$prefix$name$suffix.system") and return 1;
+			$rs |= $file->copyFile("$self->{'phpfpmBkpDir'}/$prefix$name$suffix.system");
 		} else {
-			$file->copyFile("$self->{'phpfpmBkpDir'}/$prefix$name$suffix." . time) and return 1;
+			$rs |= $file->copyFile("$self->{'phpfpmBkpDir'}/$prefix$name$suffix." . time);
 		}
 	}
 
-	$self->{'hooksManager'}->trigger('afterHttpdBkpConfFile', $filepath);
+	$rs |= $self->{'hooksManager'}->trigger('afterHttpdBkpConfFile', $filepath);
+
+	$rs;
 }
 
 =back
@@ -1619,10 +1687,10 @@ sub _addCfg
 {
 	my $self = shift;
 	my $data = shift;
-
-	$self->{'hooksManager'}->trigger('beforeHttpdAddCfg') and return 1;
-
 	my $rs = 0;
+
+	$rs = $self->{'hooksManager'}->trigger('beforeHttpdAddCfg');
+
 	my $poolLevel = $self::phpfpmConfig{'PHP_FPM_POOLS_LEVEL'};
 	my $certPath = "$main::imscpConfig{'GUI_ROOT_DIR'}/data/certs";
 	my $certFile = "$certPath/$data->{'DMN_NAME'}.pem";
@@ -1642,7 +1710,7 @@ sub _addCfg
 		"$self->{'apacheWrkDir'}/$data->{'DMN_NAME'}.conf",
 		"$self->{'apacheWrkDir'}/$data->{'DMN_NAME'}_ssl.conf"
 	) {
-		$rs |= iMSCP::File->new(filename => $_)->delFile() if -f $_;
+		$rs |= iMSCP::File->new('filename' => $_)->delFile() if -f $_;
 	}
 
 	# Build Apache vhost files - Begin
@@ -1700,7 +1768,6 @@ sub _addCfg
 			$self->{'hooksManager'}->register(
 				'beforeHttpdBuildConfFile', sub { $self->removeSection('itk', @_) }
 			) and return 1;
-
 		}
 
 		$rs |= $self->buildConfFile(
@@ -1778,20 +1845,23 @@ sub _addFiles
 {
 	my $self = shift;
 	my $data = shift;
+	my $rs = 0;
 
-	$self->{'hooksManager'}->trigger('beforeHttpdAddFiles') and return 1;
+	$rs = $self->{'hooksManager'}->trigger('beforeHttpdAddFiles');
 
 	my $homeDir = $data->{'HOME_DIR'};
 	my $rootUser = $main::imscpConfig{'ROOT_USER'};
 	my $rootGroup = $main::imscpConfig{'ROOT_GROUP'};
 	my $apacheGroup = $self::apacheConfig{'APACHE_GROUP'};
 	my $newHtdocs = -d "$homeDir/htdocs";
-	my ($rs, $stdout, $stderr);
+	my ($stdout, $stderr);
 
 	for ($self->_dmnFolders($data)) {
 		$rs |= iMSCP::Dir->new(
 			'dirname' => $_->[0]
-		)->make({ 'user' => $_->[1], 'group' => $_->[2], 'mode' => $_->[3] });
+		)->make(
+			{ 'user' => $_->[1], 'group' => $_->[2], 'mode' => $_->[3] }
+		);
 	}
 
 	unless ($newHtdocs) {
@@ -1801,8 +1871,8 @@ sub _addFiles
 		my $destFile = "$homeDir/htdocs/index.html";
 
 		$rs |= execute("$main::imscpConfig{'CMD_CP'} -vnRT $sourceDir $dstDir", \$stdout, \$stderr);
-		debug("$stdout") if $stdout;
-		error("$stderr") if $stderr;
+		debug($stdout) if $stdout;
+		error($stderr) if $stderr;
 
 		$rs |= $self->buildConfFile($fileSource, { 'destination' => $destFile });
 		$rs |= setRights(
@@ -1823,8 +1893,8 @@ sub _addFiles
 	my $destFile = "$homeDir/domain_disable_page/index.html";
 
 	$rs |= execute("$main::imscpConfig{'CMD_CP'} -vnRT $sourceDir $dstDir", \$stdout, \$stderr);
-	debug("$stdout") if $stdout;
-	error("$stderr") if $stderr;
+	debug($stdout) if $stdout;
+	error($stderr) if $stderr;
 
 	$rs |= $self->buildConfFile($fileSource, { 'destination' => $destFile });
 
@@ -1899,11 +1969,11 @@ sub _dmnFolders
 
 END
 {
-	my $exitCode = $?;
-	my $rs = 0;
-	my $trfDir = "$self::apacheConfig{'APACHE_LOG_DIR'}/traff";
-	
 	my $self = Servers::httpd::apache_php_fpm->new();
+
+	my $exitCode = $?;
+	my $trfDir = "$self::apacheConfig{'APACHE_LOG_DIR'}/traff";
+	my $rs = 0;
 
 	if($self->{'startPhpFpm'} && $self->{'startPhpFpm'} eq 'yes'){
 		$rs = $self->startPhpFpm();
@@ -1911,13 +1981,13 @@ END
 		$rs = $self->restartPhpFpm();
 	}
 	
-	if($self->{'startApache'} && $self->{'startApache'} eq 'yes'){
+	if(! $rs && $self->{'startApache'} && $self->{'startApache'} eq 'yes'){
 		$rs = $self->startApache();
 	} elsif($self->{'restartApache'} && $self->{'restartApache'} eq 'yes') {
 		$rs = $self->restartApache();
 	}
 
-	$rs |= iMSCP::Dir->new(dirname => "$trfDir.old")->remove() if -d "$trfDir.old";
+	$rs |= iMSCP::Dir->new('dirname' => "$trfDir.old")->remove() if -d "$trfDir.old";
 
 	$? = $exitCode || $rs;
 }

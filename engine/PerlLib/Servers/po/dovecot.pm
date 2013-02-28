@@ -20,6 +20,7 @@
 # @category		i-MSCP
 # @copyright	2010-2013 by i-MSCP | http://i-mscp.net
 # @author		Daniel Andreca <sci2tech@gmail.com>
+# @author		Laurent Declercq <l.declercq@nuxwin.com>
 # @link			http://i-mscp.net i-MSCP Home Site
 # @license		http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
@@ -27,8 +28,13 @@ package Servers::po::dovecot;
 
 use strict;
 use warnings;
+
 use iMSCP::Debug;
 use iMSCP::HooksManager;
+use iMSCP::Config;
+use iMSCP::Execute;
+use iMSCP::File;
+use Tie::File;
 use parent 'Common::SingletonClass';
 
 sub _init
@@ -38,10 +44,10 @@ sub _init
 	iMSCP::HooksManager->getInstance()->trigger('beforePoInit', $self, 'dovecot');
 
 	$self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/dovecot";
-	$self->{'bkpDir'} = "$self->{cfgDir}/backup";
-	$self->{'wrkDir'} = "$self->{cfgDir}/working";
+	$self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
+	$self->{'wrkDir'} = "$self->{'cfgDir'}/working";
 
-	my $conf = "$self->{cfgDir}/dovecot.data";
+	my $conf = "$self->{'cfgDir'}/dovecot.data";
 
 	tie %self::dovecotConfig, 'iMSCP::Config','fileName' => $conf;
 
@@ -54,30 +60,48 @@ sub registerSetupHooks
 {
 	my $self = shift;
 	my $hooksManager = shift;
+	my $rs = 0;
 
-	use Servers::po::dovecot::installer;
-	Servers::po::dovecot::installer->new()->registerSetupHooks($hooksManager);
+	$rs = $hooksManager->trigger('beforePoRegisterSetupHooks', $hooksManager, 'dovecot');
+
+	require Servers::po::dovecot::installer;
+
+	$rs |= Servers::po::dovecot::installer->new()->registerSetupHooks($hooksManager);
+
+	$rs |= $hooksManager->trigger('afterPoRegisterSetupHooks', $hooksManager, 'dovecot');
+
+	$rs;
 }
 
 sub install
 {
 	my $self = shift;
+	my $rs = 0;
 
-	use Servers::po::dovecot::installer;
-	Servers::po::dovecot::installer->new()->install();
+	$rs = iMSCP::HooksManager->getInstance()->trigger('beforePoInstall', 'dovecot');
+
+	require Servers::po::dovecot::installer;
+
+	$rs |= Servers::po::dovecot::installer->new()->install();
+
+	$rs |= iMSCP::HooksManager->getInstance()->trigger('afterPoInstall', 'dovecot');
+
+	$rs;
 }
 
 sub uninstall
 {
 	my $self = shift;
+	my $rs = 0;
 
-	iMSCP::HooksManager->getInstance()->trigger('beforePoUninstall', 'dovecot');
+	$rs = iMSCP::HooksManager->getInstance()->trigger('beforePoUninstall', 'dovecot');
 
-	use Servers::po::dovecot::uninstaller;
-	my $rs = Servers::po::dovecot::uninstaller->new()->uninstall();
+	require Servers::po::dovecot::uninstaller;
+
+	$rs |= Servers::po::dovecot::uninstaller->new()->uninstall();
 	$rs |= $self->restart();
 
-	iMSCP::HooksManager->getInstance()->trigger('afterPoUninstall', 'dovecot');
+	$rs |= iMSCP::HooksManager->getInstance()->trigger('afterPoUninstall', 'dovecot');
 
 	$rs;
 }
@@ -85,63 +109,58 @@ sub uninstall
 sub postinstall
 {
 	my $self = shift;
+	my $rs = 0;
 
-	iMSCP::HooksManager->getInstance()->trigger('beforePoPostinstall', 'dovecot');
+	$rs = iMSCP::HooksManager->getInstance()->trigger('beforePoPostinstall', 'dovecot');
 
 	$self->{'restart'} = 'yes';
 
-	iMSCP::HooksManager->getInstance()->trigger('afterPoPostinstall', 'dovecot');
+	$rs |= iMSCP::HooksManager->getInstance()->trigger('afterPoPostinstall', 'dovecot');
 
-	0;
+	$rs;
 }
 
 sub restart
 {
 	my $self = shift;
-	my ($rs, $stdout, $stderr);
+	my $rs = 0;
 
-	iMSCP::HooksManager->getInstance()->trigger('beforePoRestart') and return 1;
+	$rs = iMSCP::HooksManager->getInstance()->trigger('beforePoRestart');
 
-	use iMSCP::Execute;
+	my ($stdout, $stderr);
+	$rs |= execute("$self::dovecotConfig{'CMD_DOVECOT'} restart", \$stdout, \$stderr);
+	debug($stdout) if $stdout;
+	debug($stderr) if $stderr && !$rs;
+	error($stderr) if $stderr && $rs;
 
-	# Reload config
-	$rs = execute("$self::dovecotConfig{'CMD_DOVECOT'} restart", \$stdout, \$stderr);
-	debug("$stdout") if $stdout;
-	debug("$stderr") if $stderr && !$rs;
-	error("$stderr") if $stderr && $rs;
-	return $rs if $rs;
+	$rs |= iMSCP::HooksManager->getInstance()->trigger('afterPoRestart');
 
-	iMSCP::HooksManager->getInstance()->trigger('afterPoRestart');
+	$rs;
 }
 
 sub getTraffic
 {
 	my $self = shift;
 	my $who = shift;
-	my $dbName = "$self->{wrkDir}/log.db";
-	my $logFile = "$main::imscpConfig{TRAFF_LOG_DIR}/mail.log";
-	my $wrkLogFile = "$main::imscpConfig{LOG_DIR}/mail.po.log";
+	my $dbName = "$self->{'wrkDir'}/log.db";
+	my $logFile = "$main::imscpConfig{'TRAFF_LOG_DIR'}/mail.log";
+	my $wrkLogFile = "$main::imscpConfig{'LOG_DIR'}/mail.po.log";
 	my ($rv, $rs, $stdout, $stderr);
-
-	use iMSCP::Execute;
-	use iMSCP::File;
-	use iMSCP::Config;
-	use Tie::File;
 
 	iMSCP::HooksManager->getInstance()->trigger('beforePoGetTraffic');
 
-	## only if files was not already parsed this session
+	# only if files was not already parsed this session
 	unless($self->{'logDb'}){
 		# use a small conf file to memorize last line readed and his content
 		tie %{$self->{'logDb'}}, 'iMSCP::Config','fileName' => $dbName, noerrors => 1;
 
-		## first use? we zero line and content
+		# first use? we zero line and content
 		$self->{'logDb'}->{'line'} = 0 unless $self->{'logDb'}->{'line'};
 		$self->{'logDb'}->{'content'} = '' unless $self->{'logDb'}->{'content'};
 		my $lastLineNo = $self->{'logDb'}->{'line'};
 		my $lastLine = $self->{'logDb'}->{'content'};
 
-		## copy log file
+		# copy log file
 		$rs = iMSCP::File->new(filename => $logFile)->copyFile($wrkLogFile) if -f $logFile;
 		# return 0 traffic if we fail
 		return 0 if $rs;
@@ -165,23 +184,23 @@ sub getTraffic
 		my $content = iMSCP::File->new(filename => $wrkLogFile)->get() || '';
 
 		# IMAP
-		#Oct 15 13:50:31 daniel dovecot: imap(ndmn@test1.eu.bogus): Disconnected: Logged out bytes=235/1032
+		# Oct 15 13:50:31 daniel dovecot: imap(ndmn@test1.eu.bogus): Disconnected: Logged out bytes=235/1032
 		# 1   2     3      4      5                6                      7          8    9      10
 		while($content =~ m/^.*imap\([^\@]+\@([^\)]+).*Logged out bytes=(\d+)\/(\d+)$/mg){
 					# date time   mailfrom @ domain                    size / size
 					#                           1                       2       3
-			$self->{traff}->{$1} += $2 + $3 if $1 && defined $2 && defined $3 && ($2+$3);
-			debug("Traffic for $1 is $self->{traff}->{$1} (added IMAP traffic: ". ($2 + $3).")") if $1 && defined $2 && defined $3 && ($2+$3);
+			$self->{'traff'}->{$1} += $2 + $3 if $1 && defined $2 && defined $3 && ($2+$3);
+			debug("Traffic for $1 is $self->{'traff'}->{$1} (added IMAP traffic: ". ($2 + $3).")") if $1 && defined $2 && defined $3 && ($2+$3);
 		}
 
 		# POP
-		#Oct 15 14:23:39 daniel dovecot: pop3(ndmn@test1.eu.bogus): Disconnected: Logged out top=0/0, retr=1/533, del=0/1, size=517
+		# Oct 15 14:23:39 daniel dovecot: pop3(ndmn@test1.eu.bogus): Disconnected: Logged out top=0/0, retr=1/533, del=0/1, size=517
 		# 1   2     3      4      5                6                      7          8    9      10       11        12       13
 		while($content =~ m/^.*pop3\([^\@]+\@([^\)]+).*Logged out .* retr=(\d+)\/(\d+).*$/mg){
 					# date time   mailfrom @ domain                    size / size
 					#                           1                       2       3
-			$self->{traff}->{$1} += $2 + $3 if $1 && defined $2 && defined $3 && ($2+$3);
-			debug("Traffic for $1 is $self->{traff}->{$1} (added POP traffic: ". ($2 + $3).")") if $1 && defined $2 && defined $3 && ($2+$3);
+			$self->{'traff'}->{$1} += $2 + $3 if $1 && defined $2 && defined $3 && ($2+$3);
+			debug("Traffic for $1 is $self->{'traff'}->{$1} (added POP traffic: ". ($2 + $3).")") if $1 && defined $2 && defined $3 && ($2+$3);
 		}
 	}
 
@@ -194,7 +213,7 @@ END
 {
 	my $endCode	= $?;
 	my $self = Servers::po::dovecot->new();
-	my $wrkLogFile = "$main::imscpConfig{LOG_DIR}/mail.po.log";
+	my $wrkLogFile = "$main::imscpConfig{'LOG_DIR'}/mail.po.log";
 	my $rs = 0;
 
 	$rs |= $self->restart() if $self->{'restart'} && $self->{'restart'} eq 'yes';

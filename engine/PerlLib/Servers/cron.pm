@@ -27,7 +27,10 @@ package Servers::cron;
 
 use strict;
 use warnings;
+
 use iMSCP::Debug;
+use iMSCP::File;
+use iMSCP::Templator;
 use parent 'Common::SingletonClass';
 
 sub _init
@@ -37,9 +40,9 @@ sub _init
 	iMSCP::HooksManager->getInstance()->trigger('beforeCronInit', $self, 'cron');
 
 	$self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/cron.d";
-	$self->{'bkpDir'} = "$self->{cfgDir}/backup";
-	$self->{'wrkDir'} = "$self->{cfgDir}/working";
-	$self->{'tplDir'} = "$self->{cfgDir}/parts";
+	$self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
+	$self->{'wrkDir'} = "$self->{'cfgDir'}/working";
+	$self->{'tplDir'} = "$self->{'cfgDir'}/parts";
 
 	iMSCP::HooksManager->getInstance()->trigger('afterCronInit', $self, 'cron');
 
@@ -56,9 +59,6 @@ sub addTask
 	my $self = shift;
 	my $data = shift;
 	my $rs = 0;
-
-	use iMSCP::File;
-	use iMSCP::Templator;
 
 	$data = {} if (ref $data ne 'HASH');
 
@@ -82,37 +82,37 @@ sub addTask
 
 	# Backup production file
 	$rs |=	iMSCP::File->new(
-		filename => "$main::imscpConfig{CRON_D_DIR}/imscp"
+		'filename' => "$main::imscpConfig{'CRON_D_DIR'}/imscp"
 	)->copyFile(
-		"$self->{bkpDir}/imscp." . time
-	) if(-f "$main::imscpConfig{CRON_D_DIR}/imscp");
+		"$self->{'bkpDir'}/imscp." . time
+	) if -f "$main::imscpConfig{'CRON_D_DIR'}/imscp";
 
-	my $file = iMSCP::File->new(filename => "$self->{wrkDir}/imscp");
+	my $file = iMSCP::File->new('filename' => "$self->{wrkDir}/imscp");
 	my $wrkFileContent = $file->get();
 
 	unless($wrkFileContent){
-		error("Can not read $self->{wrkDir}/imscp");
+		error("Cannot read $self->{'wrkDir'}/imscp");
 		$rs = 1;
 	} else {
-		my $cleanBTag = iMSCP::File->new(filename => "$self->{tplDir}/task_b.tpl")->get();
-		my $cleanTag = iMSCP::File->new(filename => "$self->{tplDir}/task_entry.tpl")->get();
-		my $cleanETag = iMSCP::File->new(filename => "$self->{tplDir}/task_e.tpl")->get();
-		my $bTag = process({TASKID => $data->{'TASKID'}}, $cleanBTag);
-		my $eTag = process({TASKID => $data->{'TASKID'}}, $cleanETag);
+		my $cleanBTag = iMSCP::File->new(filename => "$self->{'tplDir'}/task_b.tpl")->get();
+		my $cleanTag = iMSCP::File->new(filename => "$self->{'tplDir'}/task_entry.tpl")->get();
+		my $cleanETag = iMSCP::File->new(filename => "$self->{'tplDir'}/task_e.tpl")->get();
+		my $bTag = process({ TASKID => $data->{'TASKID'} }, $cleanBTag);
+		my $eTag = process({ TASKID => $data->{'TASKID'} }, $cleanETag);
 		my $tag = process($data, $cleanTag);
 
 		$wrkFileContent = replaceBloc($bTag, $eTag, '', $wrkFileContent, undef);
 		$wrkFileContent = replaceBloc($cleanBTag, $cleanETag, "$bTag$tag$eTag", $wrkFileContent, 'keep');
 
 		# Store the file in the working directory
-		my $file = iMSCP::File->new(filename =>"$self->{wrkDir}/imscp");
+		my $file = iMSCP::File->new('filename' =>"$self->{'wrkDir'}/imscp");
 		$rs |= $file->set($wrkFileContent);
 		$rs |= $file->save();
 		$rs |= $file->mode(0644);
 		$rs |= $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
 
 		# Install the file in the production directory
-		$rs |= $file->copyFile("$main::imscpConfig{CRON_D_DIR}/imscp");
+		$rs |= $file->copyFile("$main::imscpConfig{'CRON_D_DIR'}/imscp");
 	}
 
 	$rs;
@@ -123,9 +123,6 @@ sub delTask
 	my $self = shift;
 	my $data = shift;
 	my $rs;
-
-	use iMSCP::File;
-	use iMSCP::Templator;
 
 	$data = {} if (ref $data ne 'HASH');
 
@@ -140,27 +137,27 @@ sub delTask
 
 	# BACKUP PRODUCTION FILE
 	$rs |= iMSCP::File->new(
-		filename => "$main::imscpConfig{CRON_D_DIR}/imscp"
+		filename => "$main::imscpConfig{'CRON_D_DIR'}/imscp"
 	)->copyFile(
-		"$self->{bkpDir}/imscp." . time
-	) if(-f "$main::imscpConfig{CRON_D_DIR}/imscp");
+		"$self->{'bkpDir'}/imscp." . time
+	) if(-f "$main::imscpConfig{'CRON_D_DIR'}/imscp");
 
-	my $file = iMSCP::File->new(filename => "$self->{wrkDir}/imscp");
+	my $file = iMSCP::File->new('filename' => "$self->{'wrkDir'}/imscp");
 	my $wrkFileContent = $file->get();
 
 	unless($wrkFileContent){
-		error("Can not read $self->{wrkDir}/imscp");
+		error("Cannot read $self->{'wrkDir'}/imscp");
 		$rs = 1;
 	} else {
-		my $cleanBTag = iMSCP::File->new(filename => "$self->{tplDir}/task_b.tpl")->get();
-		my $cleanETag = iMSCP::File->new(filename => "$self->{tplDir}/task_e.tpl")->get();
+		my $cleanBTag = iMSCP::File->new(filename => "$self->{'tplDir'}/task_b.tpl")->get();
+		my $cleanETag = iMSCP::File->new(filename => "$self->{'tplDir'}/task_e.tpl")->get();
 		my $bTag = process({TASKID => $data->{'TASKID'}}, $cleanBTag);
 		my $eTag = process({TASKID => $data->{'TASKID'}}, $cleanETag);
 
 		$wrkFileContent = replaceBloc($bTag, $eTag, '', $wrkFileContent, undef);
 
 		# Store the file in the working directory
-		my $file = iMSCP::File->new(filename =>"$self->{wrkDir}/imscp");
+		my $file = iMSCP::File->new('filename' =>"$self->{'wrkDir'}/imscp");
 		$rs |= $file->set($wrkFileContent);
 		$rs |= $file->save();
 		$rs |= $file->mode(0644);

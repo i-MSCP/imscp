@@ -40,16 +40,12 @@ use iMSCP::Execute;
 use iMSCP::Rights;
 use iMSCP::Dir;
 use iMSCP::File;
-
 use Modules::SystemGroup;
 use Modules::SystemUser;
-
 use Servers::httpd::apache_php_fpm;
 use Net::LibIDN qw/idn_to_ascii/;
-
 use File::Basename;
 use version;
-
 use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
@@ -68,19 +64,18 @@ sub registerSetupHooks
 {
 	my $self = shift;
 	my $hooksManager = shift;
-
-	$hooksManager->trigger('beforeHttpdRegisterSetupHooks', $hooksManager, 'apache_php_fpm') and return 1;
+	my $rs = 0;
 
 	# Add installer dialog in setup dialog stack
-	$hooksManager->register(
+	$rs = $hooksManager->register(
 		'beforeSetupDialog',
 		sub { my $dialogStack = shift; push(@$dialogStack, sub { $self->askForPhpFpmPoolsLevel(@_) }); 0; }
-	) and return 1;
+	);
 
 	# Fix error_reporting values into the database
-	$hooksManager->register('afterSetupCreateDatabase', sub { $self->_fixPhpErrorReportingValues(@_) }) and return 1;
+	$rs |= $hooksManager->register('afterSetupCreateDatabase', sub { $self->_fixPhpErrorReportingValues(@_) });
 
-	$hooksManager->trigger('afterHttpdRegisterSetupHooks', $hooksManager, 'apache_php_fpm');
+	$rs;
 }
 
 =item askForPhpFpmPoolsLevel($dialog)
@@ -143,8 +138,6 @@ sub install
 {
 	my $self = shift;
 
-	$self->{'hooksManager'}->trigger('beforeHttpdInstall', 'apache_php_fpm') and return 1;
-
 	my $rs =0;
 
 	# Apache (main config)
@@ -167,7 +160,7 @@ sub install
 	# Save both the apache.data and the phpfpm.data configuration files
 	$rs |= $self->saveConf();
 
-	$self->{'hooksManager'}->trigger('afterHttpdInstall', 'apache_php_fpm');
+	$rs;
 }
 
 =item setGuiPermissions
@@ -401,7 +394,7 @@ sub _buildApacheConfFiles
 		$self->{'httpd'}->apacheBkpConfFile("$self::apacheConfig{'APACHE_CONF_DIR'}/ports.conf", '', 1) and return 1;
 
 		# Loading the file
-		my $file = iMSCP::File->new(filename => "$self::apacheConfig{'APACHE_CONF_DIR'}/ports.conf");
+		my $file = iMSCP::File->new('filename' => "$self::apacheConfig{'APACHE_CONF_DIR'}/ports.conf");
 		my $rdata = $file->get();
 		return $rdata if ! $rdata;
 
@@ -800,12 +793,12 @@ sub saveConf
 
 	for(keys %filesToDir) {
 
-		my $file = iMSCP::File->new(filename => "$filesToDir{$_}/$_.data");
+		my $file = iMSCP::File->new('filename' => "$filesToDir{$_}/$_.data");
 		my $cfg = $file->get() or return 1;
 
 		$self->{'hooksManager'}->trigger('beforeHttpdBkpConfFile', \$cfg, "$filesToDir{$_}/$_.data") and return 1;
 
-		$file = iMSCP::File->new(filename => "$filesToDir{$_}/$_.old.data");
+		$file = iMSCP::File->new('filename' => "$filesToDir{$_}/$_.old.data");
 		$file->set($cfg) and return 1;
 		$file->save() and return 1;
 		$file->mode(0640) and return 1;
@@ -904,7 +897,7 @@ sub oldEngineCompatibility
 
 		$self->{'httpd'}->disableSite('imscp.conf') and return 1;
 
-		iMSCP::File->new(filename => "$self::apacheConfig{'APACHE_SITES_DIR'}/imscp.conf")->delFile() and return 1;
+		iMSCP::File->new('filename' => "$self::apacheConfig{'APACHE_SITES_DIR'}/imscp.conf")->delFile() and return 1;
 	}
 
 	$self->{'hooksManager'}->trigger('afterHttpdOldEngineCompatibility');

@@ -27,6 +27,7 @@ package Servers::named;
 
 use strict;
 use warnings;
+
 use iMSCP::Debug;
 use parent 'Common::SimpleClass';
 
