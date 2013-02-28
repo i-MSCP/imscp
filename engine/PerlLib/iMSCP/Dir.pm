@@ -192,7 +192,7 @@ sub make
 			}
 		}
 	} else {
-		debug("'$self->{dirname}' already existsSetting its permissions...");
+		debug("'$self->{dirname}' already exists. Setting its permissions...");
 
 		if($option->{'mode'}){
 			return 1 if $self->mode( $option->{'mode'}, $self->{'dirname'});

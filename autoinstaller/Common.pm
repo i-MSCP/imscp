@@ -296,7 +296,7 @@ sub processConfFile
 	fatal('Unable to load the XML::Simple perl module') if $@;
 
 	# Creating XML object
-	my $xml = XML::Simple->new( 'ForceArray' => 1, 'ForceContent' => 1);
+	my $xml = XML::Simple->new('ForceArray' => 1, 'ForceContent' => 1);
 
 	# Reading XML file
 	my $data = eval { $xml->XMLin($conffile, 'VarAttr' => 'export') };

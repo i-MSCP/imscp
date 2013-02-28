@@ -206,8 +206,9 @@ function translate_limit_value($value, $autosize = false, $to = 'MiB')
 /**
  * Generates a random salt for password using the best available algorithm.
  *
- * Note: Only algorithms present in the mainline glibc >= 2.7 (Debian) are supported (SHA256, SHA512, MD5 and DES)
+ * Note: Only algorithms present in the mainline glibc >= 2.7 (Debian) are supported (SHA512, SHA256, MD5 and DES)
  *
+ * @author Laurent Declercq <l.declercq@nuxwin.com>
  * @return string Random salt
  */
 function generateRandomSalt()

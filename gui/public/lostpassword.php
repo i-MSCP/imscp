@@ -117,7 +117,7 @@ if (isset($_GET['key']) && $_GET['key'] != '') {
 		} elseif (!requestPassword($_POST['uname'])) {
 			set_page_message(tr('Wrong username.'), 'error');
 		} else {
-			set_page_message(tr('Your request for new password was registered. You will receive an email with instructions to complete the process.'), 'success');
+			set_page_message(tr('Your request for new password has been registered. You will receive an email with instructions to complete the process.'), 'success');
 		}
 	} else {
 		set_page_message(tr('All fields are required.'), 'error');
