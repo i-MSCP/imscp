@@ -27,10 +27,10 @@
             <courier>
                 <package>courier-imap</package>
                 <package>courier-imap-ssl</package>
-                <package>courier-maildrop</package>
                 <package>courier-pop</package>
                 <package>courier-pop-ssl</package>
                 <package>libgamin0</package>
+                <package>maildrop</package>
             </courier>
             <dovecot>
                 <package>dovecot-imapd</package>
