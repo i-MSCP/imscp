@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2013-02-19 14:54+0100\n"
-"PO-Revision-Date: 2013-02-19 13:54+0000\n"
+"POT-Creation-Date: 2013-03-01 04:50+0100\n"
+"PO-Revision-Date: 2013-03-01 03:51+0000\n"
 "Last-Translator: Torsten Widmann <info@goover.de>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -885,7 +885,7 @@ msgid "An error occurred while the authentication attempt."
 msgstr "При попытке аутентификации обнаружена ошибка."
 
 msgid "An hosting plan with same name already exists."
-msgstr ""
+msgstr "Хостинг-план с таким названием уже существует."
 
 msgid "An unexpected error occured, please contact your reseller."
 msgstr "Произошла неизвестная ошибка, пожалуйста, свяжитесь с Вашим реселлером."
@@ -895,7 +895,7 @@ msgid "An unknown error occured during file upload: %s"
 msgstr "Неизвесная ошибка при загрузке файла: %s"
 
 msgid "Annually"
-msgstr ""
+msgstr "Ежегодно"
 
 msgid "Anti-Rootkits Tools Log Checker"
 msgstr "Проверка лога инструментов борьбы с руткитами"
@@ -1036,10 +1036,10 @@ msgid "Auto-responder successfully scheduled for update."
 msgstr "Автоответчик успешно помечен для обновления."
 
 msgid "Automatic Updates"
-msgstr ""
+msgstr "Автоматические обновления"
 
 msgid "Autoresponders"
-msgstr ""
+msgstr "Автоответчики"
 
 msgid "Available for purchasing"
 msgstr "Доступно для заказа"
@@ -1096,13 +1096,13 @@ msgid "Being suspended"
 msgstr "Приостановлено"
 
 msgid "Biennially"
-msgstr ""
+msgstr "Раз в два года"
 
 msgid "Billing Settings"
 msgstr "Настройки биллинга"
 
 msgid "Billing cycle"
-msgstr ""
+msgstr "Период платежа"
 
 msgid ""
 "Blocking time between login/captcha attempts <small>(In seconds)</small>"
@@ -1183,7 +1183,7 @@ msgid "Catch all account scheduled for deletion."
 msgstr "Отобразить все учетные записи, отмеченные для удаления."
 
 msgid "Catch-All E-Mail Addresses"
-msgstr ""
+msgstr "Почтовые адреса пересылки"
 
 msgid "Catchall"
 msgstr "Перенаправление"
@@ -1323,7 +1323,7 @@ msgid "Continue"
 msgstr "Продолжить"
 
 msgid "Control Panel"
-msgstr ""
+msgstr "Панель управления"
 
 msgid "Core data"
 msgstr "Основные данные"
@@ -1334,13 +1334,13 @@ msgstr "Стоимость"
 msgid "Could not upload file."
 msgstr "Не могу загрузить файл."
 
-msgid "Could not upload the file. File not found."
-msgstr "Не могу загрузить файл. Файл не найден."
+msgid "Could not upload file. File not found."
+msgstr ""
 
 #, php-format
 msgid ""
 "Could not upload the file. Max. upload filesize (%1$d MB) has been reached."
-msgstr ""
+msgstr "Невозможно загрузить файл. Максимальный размер файла (%1$d MB) превышен."
 
 msgid "Couldn't check for updates. Website not reachable."
 msgstr "Не удалось проверить наличие обновлений. Сайт недоступен."
@@ -1379,7 +1379,7 @@ msgid "Current password"
 msgstr "Текущий пароль"
 
 msgid "Custom DNS Records"
-msgstr ""
+msgstr "Пользовательские DNS-записи"
 
 msgid "Custom DNS record"
 msgstr "Пользовательские DNS"
@@ -1400,7 +1400,7 @@ msgid "Custom DNS records"
 msgstr "Пользовательские DNS"
 
 msgid "Custom Error Pages"
-msgstr ""
+msgstr "Пользовательские страницы ошибок"
 
 msgid "Custom apache logs"
 msgstr "Логи Apache"
@@ -1675,7 +1675,7 @@ msgid "Description"
 msgstr "Описание"
 
 msgid "Description cannot be empty."
-msgstr ""
+msgstr "Описание не может быть пусто."
 
 msgid "Details"
 msgstr "Детали"
@@ -1717,16 +1717,16 @@ msgid "Disk limit"
 msgstr "Ограничение дискового пространства"
 
 msgid "Disk space"
-msgstr ""
+msgstr "Дисковое пространство"
 
 msgid "Disk space limit"
-msgstr ""
+msgstr "Дисковое пространство"
 
 msgid "Disk space limit [MiB]<br/><i>(0 unlimited)</i>"
-msgstr ""
+msgstr "Дисковое пространство [MiB]<br/><i>(0 не ограничено)</i>"
 
 msgid "Disk space limit [MiB]<br/><i>(0 unlimited)</span>"
-msgstr ""
+msgstr "Дисковое пространство [MiB]<br/><i>(0 не ограничено)</span>"
 
 msgid "Disk usage"
 msgstr "Использование диска"
@@ -1972,13 +1972,13 @@ msgid "Download the files stored in this directory"
 msgstr "Загрузить файлы находящиеся в этом каталоге"
 
 msgid "E-Mail Aliases"
-msgstr ""
+msgstr "Почтовые алиасы"
 
 msgid "E-Mail Features"
-msgstr ""
+msgstr "Возможности почты"
 
 msgid "E-Mail Forwarding"
-msgstr ""
+msgstr "Перенаправление почты"
 
 msgid "E-Mail accounts are hard suspended"
 msgstr "Email аккаунты приостановлены"
@@ -2190,7 +2190,7 @@ msgid "Errors"
 msgstr "Ошибки"
 
 msgid "Excl. tax"
-msgstr ""
+msgstr "Без налогов"
 
 msgid "Execute requests"
 msgstr "Выполнить запросы"
@@ -2205,7 +2205,7 @@ msgid "External Mail Host"
 msgstr "Внешний почтовый узел"
 
 msgid "External Mail Server"
-msgstr ""
+msgstr "Внешний почтовый сервер"
 
 msgid "External mail server"
 msgstr "Внешний почтовый сервер"
@@ -2226,7 +2226,7 @@ msgid "FTP"
 msgstr "FTP"
 
 msgid "FTP Accounts"
-msgstr ""
+msgstr "Учетные записи FTP"
 
 msgid "FTP Users"
 msgstr "FTP Пользователи"
@@ -2296,6 +2296,9 @@ msgstr "Файл не существует. %1$s.tar.gz"
 msgid "File exceeds the size limit."
 msgstr "Размер файла превышает лимит."
 
+msgid "File has been successfully uploaded."
+msgstr ""
+
 msgid "File is not readable."
 msgstr "Нечитаемый файл."
 
@@ -2307,9 +2310,6 @@ msgstr "Файл успешно загружен."
 
 msgid "File usage"
 msgstr "Использование файлов"
-
-msgid "File was successfully uploaded."
-msgstr "Файл успешно загружен."
 
 msgid "FileManager"
 msgstr "Файловый менеджер"
@@ -2450,7 +2450,7 @@ msgid "Host must be filled."
 msgstr "Хост должен быть заполнен."
 
 msgid "Hosting Plan"
-msgstr ""
+msgstr "Хостинг-план"
 
 msgid "Hosting details"
 msgstr "Детали хостинга"
@@ -2462,19 +2462,19 @@ msgid "Hosting plan can't be deleted, there are active orders."
 msgstr "Хостинг-план не может быть удален, пока имеет активные заказы."
 
 msgid "Hosting plan limits exceed reseller limits."
-msgstr ""
+msgstr "Хостинг-план превышает ограничения реселлера."
 
 msgid "Hosting plan properties"
 msgstr "Свойства хостинг-плана"
 
 msgid "Hosting plan successfully created."
-msgstr ""
+msgstr "Хостинг-план успешно создан."
 
 msgid "Hosting plan successfully deleted."
 msgstr "Хостинг-план успешно удален."
 
 msgid "Hosting plan successfully updated."
-msgstr ""
+msgstr "Хостинг-план успешно обновлен."
 
 msgid "Hosting plan update"
 msgstr "Обновление хостинг-планов"
@@ -2483,7 +2483,7 @@ msgid "Hosting plan values exceed reseller maximum values."
 msgstr "Настройки хостинг-плана превышают ограничения реселлера."
 
 msgid "Hosting plan values exceed your own limits."
-msgstr ""
+msgstr "Хостинг-план превышает Ваши ограничения."
 
 msgid "Hosting plans"
 msgstr "Хостинг-планы"
@@ -2527,7 +2527,7 @@ msgid "Htaccess user successfully scheduled for addition."
 msgstr "Пользователь Htaccess успешно помечен для добавления."
 
 msgid "Http Redirections"
-msgstr ""
+msgstr "Перенаправление HTTP"
 
 msgid "Http traffic"
 msgstr "HTTP трафик"
@@ -2542,7 +2542,7 @@ msgid "ID"
 msgstr "ID"
 
 msgid "IMAP/POP3 E-Mail Accounts"
-msgstr ""
+msgstr "IMAP/POP3 почтовые ящики"
 
 msgid "IP"
 msgstr "IP адрес"
@@ -2623,13 +2623,13 @@ msgid "Incorrect aliases limit."
 msgstr "Неверное ограничение алиасов."
 
 msgid "Incorrect disk space limit."
-msgstr ""
+msgstr "Неверное ограничение дискового пространства."
 
 msgid "Incorrect diskspace limit."
-msgstr ""
+msgstr "Неверное ограничение дискового пространства."
 
 msgid "Incorrect domain aliases limit."
-msgstr ""
+msgstr "Неверное ограничение алиасов."
 
 msgid "Incorrect email length or syntax."
 msgstr "Неверная длина или синтаксис почтового ящика."
@@ -2642,7 +2642,7 @@ msgid "Incorrect mail accounts limit."
 msgstr "Неверное ограничение учетных записей почты."
 
 msgid "Incorrect monthly traffic limit."
-msgstr ""
+msgstr "Неверный порог трафика"
 
 msgid "Incorrect mount point length or syntax."
 msgstr "Неверная длина точки монтирования или синтаксис."
@@ -2690,10 +2690,10 @@ msgid "Installed Package which was deleted by your reseller."
 msgstr "Установленный пакет, который был удален Вашим реселлером."
 
 msgid "Installed in reseller repository"
-msgstr ""
+msgstr "Установлено в репозитроии реселлера"
 
 msgid "Installed in software repository"
-msgstr ""
+msgstr "Установлено в репозитроии ПО"
 
 msgid "Installed on"
 msgstr "Установлен на"
@@ -3107,7 +3107,7 @@ msgstr "Максимальное значение для %s PHP директив
 #, php-format
 msgid ""
 "Max. remote filesize (%1$d MB) has been reached. Your remote file is %2$d MB"
-msgstr ""
+msgstr "Максимальный размер удаленного файла (%1$d МБ) был достигнут. Ваш файл имеет размер %2$d Мб"
 
 #, php-format
 msgid "Max. remote filesize (%1$d MB) is reached. Your remote file is %2$d MB"
@@ -3174,34 +3174,34 @@ msgid "Modify"
 msgstr "Изменить"
 
 msgid "Monhtly traffic warning cannot be bigger than monthly traffic limit."
-msgstr ""
+msgstr "Предопреждение о пороге трафика не может быть больше ежемесячного порога трафика."
 
 msgid "Month"
 msgstr "Месяц"
 
 msgid "Monthly"
-msgstr ""
+msgstr "Ежемесячно"
 
 msgid "Monthly Traffic limit"
-msgstr ""
+msgstr "Месячный порог трафика"
 
 msgid "Monthly traffic limit"
-msgstr ""
+msgstr "Месячный порог трафика"
 
 msgid "Monthly traffic limit [MiB]<br/><i>(0 unlimited)</i>"
-msgstr ""
+msgstr "Месячный порог трафика [MiB]<br/><i>(0 не ограничено)</i>"
 
 msgid "Monthly traffic limit must be a digit."
-msgstr ""
+msgstr "Месячный порог трафика должен быть числом."
 
 msgid "Monthly traffic warning must be a digit."
-msgstr ""
+msgstr "Предупреждение о трафике должно быть числом."
 
 msgid "More Details"
 msgstr "Больше данных"
 
 msgid "More details"
-msgstr ""
+msgstr "Подробнее"
 
 msgid "Mount"
 msgstr "Точка монтирования"
@@ -3228,7 +3228,7 @@ msgid "Name"
 msgstr "Имя"
 
 msgid "Name cannot be empty."
-msgstr ""
+msgstr "Имя не может пустовать"
 
 msgid "Name must be filled."
 msgstr "Имя должно быть заполнено."
@@ -3371,7 +3371,7 @@ msgid "No software available"
 msgstr "Нет доступоного ПО"
 
 msgid "No software in Web repository found!"
-msgstr ""
+msgstr "Не найдено ПО в Web-репозитории!"
 
 msgid "No software in software depot available!"
 msgstr "В репозитории нет доступного ПО !"
@@ -3464,7 +3464,7 @@ msgid "One or more database updates are now available. See the details below."
 msgstr "Одно или более обновление базы данных было найдено. Смотрите детали ниже."
 
 msgid "Only 'tar.gz' archives are accepted."
-msgstr ""
+msgstr "Поддерживаются только 'tar.gz' архивы."
 
 msgid ""
 "Only Top Level Domains (TLD) listed in IANA root zone database can be used."
@@ -3513,7 +3513,7 @@ msgid "Order Panel / Choose hosting plan"
 msgstr "Панель заказов / Выберите хостинг-план"
 
 msgid "Order Panel / Domain name"
-msgstr ""
+msgstr "Панель заказов / Доменное имя"
 
 msgid "Order Panel / Order confirmation"
 msgstr "Панель заказов / Подтверждение заказа"
@@ -3522,13 +3522,13 @@ msgid "Order Panel / Personal Data"
 msgstr "Панель заказов / Персональные данные"
 
 msgid "Order Panel Access URL"
-msgstr ""
+msgstr "URL доступа в панель заказов"
 
 msgid "Order Panel Preview"
-msgstr ""
+msgstr "Предпросмотр панели заказов"
 
 msgid "Order Panel Template"
-msgstr ""
+msgstr "Шаблон панели заказов"
 
 msgid "Order confirmation"
 msgstr "Подтверждение заказа"
@@ -3643,10 +3643,10 @@ msgid "Package already exist in the software depot!"
 msgstr "Пакет уже существует в репозитории!"
 
 msgid "Package already exist in the software repository!"
-msgstr ""
+msgstr "Пакет уже существует в репозитории ПО!"
 
 msgid "Package already exist in your software repository!"
-msgstr ""
+msgstr "Пакет уже существует в Вашем репозитории ПО!"
 
 msgid "Package install type"
 msgstr "Тип установки"
@@ -3835,7 +3835,7 @@ msgstr "Пожалуйста, укажите хотябы один тип пис
 msgid ""
 "Please set now the username and password for the later login in the "
 "software. (Required fiels)"
-msgstr ""
+msgstr "Пожалуйста, введите логин и пароль для последующего входа в приложение. (Необходимые поля)"
 
 msgid "Please specify a message content."
 msgstr "Пожалуйста, напишите содержимое сообщения. "
@@ -3976,7 +3976,7 @@ msgid "Profile"
 msgstr "Профиль"
 
 msgid "Programming"
-msgstr ""
+msgstr "Программирование"
 
 msgid "Properties"
 msgstr "Свойства"
@@ -3998,7 +3998,7 @@ msgid "Protected"
 msgstr "Защищено"
 
 msgid "Protected Areas"
-msgstr ""
+msgstr "Защищенные зоны"
 
 msgid "Protected area status should be 'OK' if you want to delete it."
 msgstr "Статус защищенной зоны должен быть 'OK' если вы хотите удалить её."
@@ -4080,7 +4080,7 @@ msgid "Remote Web software repository"
 msgstr "Внешний Web-репозиторий"
 
 msgid "Remote file not found."
-msgstr ""
+msgstr "Удаленный файл не найден."
 
 msgid "Remove"
 msgstr "Удалить"
@@ -4230,7 +4230,7 @@ msgid "SQL Databases"
 msgstr "Базы данных SQL"
 
 msgid "SQL Support"
-msgstr ""
+msgstr "Поддержка SQL"
 
 msgid "SQL User"
 msgstr "Пользователь SQL"
@@ -4437,7 +4437,7 @@ msgid "Settings saved."
 msgstr "Настройки сохранены"
 
 msgid "Setup Fee"
-msgstr ""
+msgstr "Плата за установку"
 
 msgid "Setup fee"
 msgstr "Стоимость подключения"
@@ -4501,7 +4501,7 @@ msgid "Software"
 msgstr "Програмное обеспечение"
 
 msgid "Software Description"
-msgstr ""
+msgstr "Описание пакета"
 
 msgid "Software available"
 msgstr "Програмное обеспечение доступно"
@@ -4516,10 +4516,10 @@ msgid "Software details"
 msgstr "Програмное обеспечение - детали"
 
 msgid "Software has been deleted."
-msgstr ""
+msgstr "Программное обеспечение было удалено."
 
 msgid "Software has been successfully imported."
-msgstr ""
+msgstr "Программное обеспечение было успешно импортировано."
 
 msgid "Software in repository"
 msgstr "Програмное обеспечение в репозитории"
@@ -4617,7 +4617,7 @@ msgid "Sql"
 msgstr "SQL"
 
 msgid "Sql Manager"
-msgstr ""
+msgstr "Менеджер баз данных"
 
 msgid "Sql Users"
 msgstr "Пользователи SQL"
@@ -4635,7 +4635,7 @@ msgid "Sql users"
 msgstr "Пользователей SQL"
 
 msgid "Standard Features"
-msgstr ""
+msgstr "Стандартные настройки"
 
 msgid "Start installation"
 msgstr "Добавить в репозиторий"
@@ -4724,7 +4724,7 @@ msgid "Submit changes"
 msgstr "Применить изменения"
 
 msgid "Subtotal"
-msgstr ""
+msgstr "Промежуточный итог"
 
 msgid "Support"
 msgstr "Поддержка"
@@ -4989,10 +4989,10 @@ msgid "The reseller account that you are trying to edit has not been found."
 msgstr "Учетная запись реселлера, которыю Вы пытаетесь отредактировать не была найдена."
 
 msgid "The software installer require PHP."
-msgstr ""
+msgstr "Установщику ПО требуется поддержка PHP."
 
 msgid "The software installer require the PHP support."
-msgstr ""
+msgstr "Установщику ПО требуется поддержка PHP."
 
 msgid "The uploaded file was only partially uploaded."
 msgstr "Загружаемый файл был загружен частично."
@@ -5067,7 +5067,7 @@ msgid "This mount point is not allowed."
 msgstr "Эта точка монтирования не допустима."
 
 msgid "This package already exist in the administrator software repository."
-msgstr ""
+msgstr "Этот пакет уже существует в репозитории администратора."
 
 #, php-format
 msgid "This package already exist in the depot of the reseller \"%1$s\"!"
@@ -5077,7 +5077,7 @@ msgid "This package already exist in the software depot!"
 msgstr "Пакет уже существует в репозитории!"
 
 msgid "This package already exist in your software repository."
-msgstr ""
+msgstr "Этот пакет уже существует в Вашем репозитории."
 
 msgid "This package is installed on following domain(s):"
 msgstr "Пакет установлен для следующих доменов:"
@@ -5181,22 +5181,22 @@ msgid "Total Domains"
 msgstr "Всего доменов"
 
 msgid "Total Due Today"
-msgstr ""
+msgstr "Всего за сегодня"
 
 msgid "Total Recurring"
-msgstr ""
+msgstr "Всего Повторяющиеся"
 
 msgid "Total Softwares"
 msgstr "Всего ПО"
 
-msgid "Total Web softwares repositories"
-msgstr "Всего Web-репозиториев"
+msgid "Total Web software repositories"
+msgstr ""
 
 msgid "Total installations"
 msgstr "Всего установок"
 
 msgid "Total packages in Web software repository"
-msgstr ""
+msgstr "Всего пакетов в Web-репозитории"
 
 msgid "Total reseller"
 msgstr "Всего реселлеров"
@@ -5214,7 +5214,7 @@ msgid "Translated strings"
 msgstr "Переведенные строки"
 
 msgid "Triennially"
-msgstr ""
+msgstr "Трижды в год"
 
 msgid "Type"
 msgstr "Тип"
@@ -5263,8 +5263,11 @@ msgstr "Невозможно создать список IP адресов. По
 msgid "Unable to move file."
 msgstr "Не удалось переместить файл."
 
-msgid "Unable to read xml file for Web softwares."
+msgid "Unable to read Web software repository index file."
 msgstr ""
+
+msgid "Unable to read xml file for Web softwares."
+msgstr "Невозможно прочитать XML удаленного репозитория."
 
 msgid "Unable to read xml file for web softwares."
 msgstr "Невозможно прочесть xml файл Web-репозитория"
@@ -5368,7 +5371,7 @@ msgstr "Обновить хостинг-план"
 msgid ""
 "Update of Web software repository index has been aborted. Missing or empty "
 "fields."
-msgstr ""
+msgstr "Обновление индекса Web-репозитория было отменено. Необходимые поля отсутствуют или пусты."
 
 msgid "Update order"
 msgstr "Обновить заказ"
@@ -5468,7 +5471,7 @@ msgid "User scheduled for deletion."
 msgstr "Пользователь помечен для удаления."
 
 msgid "User session successfully destroyed."
-msgstr ""
+msgstr "Сессия пользователя успешно уничтожена."
 
 msgid "User session successfully killed for password change."
 msgstr "Сессия пользователя успешно завершена для смены пароля."
@@ -5477,7 +5480,7 @@ msgid "User session was successfully killed for password change"
 msgstr "Сессия пользователя была успешно завершена, в связи со сменой пароля."
 
 msgid "User successfully disconnected."
-msgstr ""
+msgstr "Пользователь успешно отсоединен."
 
 msgid "User type"
 msgstr "Тип пользователя"
@@ -5521,10 +5524,10 @@ msgid "Values"
 msgstr "Значения"
 
 msgid "Vat"
-msgstr ""
+msgstr "НДС"
 
 msgid "Vat must be a number."
-msgstr ""
+msgstr "НДС должен быть числом"
 
 msgid "Vendor hompage"
 msgstr "Перейти на сайт"
@@ -5588,10 +5591,10 @@ msgid "Web & E-Mail Support"
 msgstr "Техподдержка по Web и EMail"
 
 msgid "Web Software Installer"
-msgstr ""
+msgstr "Удаленный установщик ПО"
 
 msgid "Web Statistics"
-msgstr ""
+msgstr "Web-статистика"
 
 msgid "Web in"
 msgstr "WEB вх"
@@ -5603,13 +5606,13 @@ msgid "Web software depot packages total"
 msgstr "Всего пакетов в Web-репозитории"
 
 msgid "Web software repository"
-msgstr ""
+msgstr "Web-репозиторий"
 
 msgid "Web software repository index been successfully updated."
-msgstr ""
+msgstr "Индекс Web-репозитория был успешно обновлен."
 
 msgid "Web software repository index is already up to date."
-msgstr ""
+msgstr "Индекс Web-репозитория имеет последнюю версию."
 
 msgid "Web statistics"
 msgstr "Web-статистика"
@@ -5621,10 +5624,10 @@ msgid "Web traffic"
 msgstr "WEB трафик"
 
 msgid "WebSpace"
-msgstr ""
+msgstr "Web-пространство"
 
 msgid "WebSpace Features"
-msgstr ""
+msgstr "Возможности Web-пространства"
 
 msgid "Webmail"
 msgstr "Почтовый веб-интерфейс"
@@ -5794,19 +5797,19 @@ msgid "You are exceeding reseller limits for the <em>%s</em> service."
 msgstr "Вы достигли лимита реселлера для службы <em>%s</em>."
 
 msgid "You are exceeding the monthly server traffic limit."
-msgstr ""
+msgstr "Вы превышаете месячный порог трафика сервера."
 
 msgid "You are exceeding you domain aliases Limit."
-msgstr ""
+msgstr "Вы превышаете ограничение алиасов домена."
 
 msgid "You are exceeding your FTP accounts limit."
 msgstr "Вы превысили лимит FTP-аккаунтов."
 
 msgid "You are exceeding your SQL databases limit."
-msgstr ""
+msgstr "Вы превышаете ограничение баз данных."
 
 msgid "You are exceeding your SQL users limit."
-msgstr ""
+msgstr "Вы превышаете ограничение пользователей баз данных."
 
 msgid "You are exceeding your disk space limit."
 msgstr "Вы исчерпали выделенное Вам место на жестком диске."
@@ -5815,7 +5818,7 @@ msgid "You are exceeding your mail accounts limit."
 msgstr "Вы превысили лимит почтовых ящиков."
 
 msgid "You are exceeding your monthly traffic limit."
-msgstr ""
+msgstr "Вы превышаете Ваш месячный порог трафика."
 
 msgid "You are exceeding your subdomains limit."
 msgstr "Вы превысили лимит поддоменов."
@@ -5915,10 +5918,10 @@ msgid "You do not have permission to access this interface."
 msgstr "У Вас нет прав для доступа к этому интерфейсу."
 
 msgid "You do not have permissions to install software yet"
-msgstr ""
+msgstr "У Вас ещё нет доступа к установке ПО."
 
 msgid "You do not have permissions to install softwares yet"
-msgstr ""
+msgstr "У Вас ещё нет доступа к установке ПО."
 
 msgid "You do not have permissions to upload software"
 msgstr "У Вас нет прав для загрузки ПО"
@@ -5964,12 +5967,12 @@ msgstr "У вас есть лимит баз данных.<br />Вы не мож
 msgid ""
 "You have a disk space limit.<br />You cannot add an user with unlimited disk"
 " space."
-msgstr ""
+msgstr "У вас ограничено дисковое пространство.<br />Вы не можете добавлять пользователей с неограниченным дисковым пространством."
 
 msgid ""
 "You have a domain aliases limit.<br />You cannot add an user with unlimited "
 "domain aliases."
-msgstr ""
+msgstr "У вас ограничены алиасы доменов.<br />Вы не можете добавлять пользователей с неограниченными алиасами доменов."
 
 msgid ""
 "You have a mail accounts limit.<br />You cannot add an user with unlimited "
@@ -5979,7 +5982,7 @@ msgstr "У вас есть лимит почтовых ящиков.<br />Вы �
 msgid ""
 "You have a monthly traffic limit.<br />You cannot add an user with unlimited"
 " monthly traffic."
-msgstr ""
+msgstr "У вас есть порог трафика.<br />Вы не можете добавлять пользователей с неограниченным порогом трафика."
 
 msgid ""
 "You have a subdomains limit.<br />You cannot add an user with unlimited "
@@ -6082,7 +6085,7 @@ msgid "You must assign at least one IP per reseller."
 msgstr "Вы должны закрепить за реселлером как минимум один IP адрес."
 
 msgid "You must choose between local and remote upload."
-msgstr ""
+msgstr "Вы должны выбрать между локальной и удаленной загрузкой."
 
 msgid "You must confirm domain deletion."
 msgstr "Вы должны подтвердить удаление домена."
@@ -6103,7 +6106,7 @@ msgid "You must provide a password."
 msgstr "Вы должны указать пароль."
 
 msgid "You must select a file to upload."
-msgstr ""
+msgstr "Вы должны выбрать файл для загрузки"
 
 msgid "You must select a file to upload/download."
 msgstr "Вы должны Выбрать файл для загрузки/скачивания"
@@ -6649,13 +6652,13 @@ msgid "i-MSCP - Service Mailer - You have a new order"
 msgstr "i-MSCP - Служба рассылки - У Вас новый заказ"
 
 msgid "i-MSCP - Software Installer / Management"
-msgstr ""
+msgstr "i-MSCP - Установщик ПО / Управление"
 
 msgid "i-MSCP - Software Management"
-msgstr ""
+msgstr "i-MSCP - Управление ПО"
 
 msgid "i-MSCP - Software Management (Permissions)"
-msgstr ""
+msgstr "i-MSCP - Управление ПО (доступ)"
 
 msgid "i-MSCP - Software details"
 msgstr "i-MSCP - Обзор программного обеспечения"
@@ -6664,10 +6667,10 @@ msgid "i-MSCP - Software installer options"
 msgstr "i-MSCP - Настройки установщика программного убеспечения"
 
 msgid "i-MSCP - Softwares Management"
-msgstr ""
+msgstr "i-MSCP - Управление ПО"
 
 msgid "i-MSCP - Sofware Management"
-msgstr ""
+msgstr "i-MSCP - Управление ПО"
 
 msgid "i-MSCP - User/Add domain account - step 2"
 msgstr "i-MSCP - Пользователь / Добавить учетную запись домена - шаг 2"
@@ -6733,10 +6736,10 @@ msgid "i-MSCP Reseller/Circular"
 msgstr "i-MSCP - Реселлер / Реклама"
 
 msgid "i-MSCP Software installer / Web software repository"
-msgstr ""
+msgstr "i-MSCP - Установка ПО / Web-репозиторий"
 
 msgid "i-MSCP Web softwares repository"
-msgstr ""
+msgstr "i-MSCP - Web-репозиторий"
 
 msgid "i-MSCP debugger"
 msgstr "Отладчик i-MSCP"

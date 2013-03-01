@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2013-02-19 14:54+0100\n"
-"PO-Revision-Date: 2013-02-19 13:55+0000\n"
+"POT-Creation-Date: 2013-03-01 04:50+0100\n"
+"PO-Revision-Date: 2013-03-01 03:51+0000\n"
 "Last-Translator: Torsten Widmann <info@goover.de>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -882,7 +882,7 @@ msgid "An error occurred while the authentication attempt."
 msgstr "An error occurred while the authentication attempt."
 
 msgid "An hosting plan with same name already exists."
-msgstr ""
+msgstr "Ett webbkonto-plan med samma namn finns redan"
 
 msgid "An unexpected error occured, please contact your reseller."
 msgstr "Ett oväntat fel uppstod, vänligen kontakta din återförsäljare."
@@ -892,7 +892,7 @@ msgid "An unknown error occured during file upload: %s"
 msgstr "An unknown error occured during file upload: %s"
 
 msgid "Annually"
-msgstr ""
+msgstr "Årsvis"
 
 msgid "Anti-Rootkits Tools Log Checker"
 msgstr "Loggvisare för anti-rootkitverktyg"
@@ -1033,10 +1033,10 @@ msgid "Auto-responder successfully scheduled for update."
 msgstr "Auto-responder schemalagt för uppdatering."
 
 msgid "Automatic Updates"
-msgstr ""
+msgstr "Automatiska uppdateringar"
 
 msgid "Autoresponders"
-msgstr ""
+msgstr "Autoresponders"
 
 msgid "Available for purchasing"
 msgstr "Tillgängligt för köp"
@@ -1093,13 +1093,13 @@ msgid "Being suspended"
 msgstr "Being suspended"
 
 msgid "Biennially"
-msgstr ""
+msgstr "Vartannat år "
 
 msgid "Billing Settings"
 msgstr "Fakturainställningar"
 
 msgid "Billing cycle"
-msgstr ""
+msgstr "Faktureringscykel"
 
 msgid ""
 "Blocking time between login/captcha attempts <small>(In seconds)</small>"
@@ -1180,7 +1180,7 @@ msgid "Catch all account scheduled for deletion."
 msgstr "Fånga alla konto planerad för radering."
 
 msgid "Catch-All E-Mail Addresses"
-msgstr ""
+msgstr "Catch-All E-postadresser"
 
 msgid "Catchall"
 msgstr "Catchall"
@@ -1320,7 +1320,7 @@ msgid "Continue"
 msgstr "Fortsätt"
 
 msgid "Control Panel"
-msgstr ""
+msgstr "Kontrollpanel"
 
 msgid "Core data"
 msgstr "Kärndata"
@@ -1331,13 +1331,13 @@ msgstr "Kostnader"
 msgid "Could not upload file."
 msgstr "Kunde inte ladda upp filen."
 
-msgid "Could not upload the file. File not found."
-msgstr "Kunde inte ladda upp filen. Filen kunde inte hittas."
+msgid "Could not upload file. File not found."
+msgstr ""
 
 #, php-format
 msgid ""
 "Could not upload the file. Max. upload filesize (%1$d MB) has been reached."
-msgstr ""
+msgstr "Kunde inte ladda upp filen. Max upload filesize (%1$d MB) har nåtts."
 
 msgid "Couldn't check for updates. Website not reachable."
 msgstr "Kan inte kolla efter uppgraderingar. Websidan är inte tillgängligt."
@@ -1376,7 +1376,7 @@ msgid "Current password"
 msgstr "Nuvarande lösenord"
 
 msgid "Custom DNS Records"
-msgstr ""
+msgstr "Egna DNS-Records"
 
 msgid "Custom DNS record"
 msgstr "Custom DNS-post"
@@ -1397,7 +1397,7 @@ msgid "Custom DNS records"
 msgstr "Custom DNS-poster"
 
 msgid "Custom Error Pages"
-msgstr ""
+msgstr "Egna felsidor"
 
 msgid "Custom apache logs"
 msgstr "Custom apache logs"
@@ -1672,7 +1672,7 @@ msgid "Description"
 msgstr "Beskrivning"
 
 msgid "Description cannot be empty."
-msgstr ""
+msgstr "Beskrivningen får inte vara tom."
 
 msgid "Details"
 msgstr "Detaljer"
@@ -1714,16 +1714,16 @@ msgid "Disk limit"
 msgstr "Diskutrymmesgräns"
 
 msgid "Disk space"
-msgstr ""
+msgstr "Diskutrymme"
 
 msgid "Disk space limit"
-msgstr ""
+msgstr "Diskplats gränsen"
 
 msgid "Disk space limit [MiB]<br/><i>(0 unlimited)</i>"
-msgstr ""
+msgstr "Diskplats gränsen [MiB]<br /><i>(0 unlimited)</i>"
 
 msgid "Disk space limit [MiB]<br/><i>(0 unlimited)</span>"
-msgstr ""
+msgstr "Diskplats gränsen [MiB]<br /><i>(0 unlimited)</span>"
 
 msgid "Disk usage"
 msgstr "Diskanvändning"
@@ -1969,13 +1969,13 @@ msgid "Download the files stored in this directory"
 msgstr "Hämta de filer som finns i den här katalogen"
 
 msgid "E-Mail Aliases"
-msgstr ""
+msgstr "E-post alias"
 
 msgid "E-Mail Features"
-msgstr ""
+msgstr "E-post funktioner"
 
 msgid "E-Mail Forwarding"
-msgstr ""
+msgstr "E-post som eftersändar"
 
 msgid "E-Mail accounts are hard suspended"
 msgstr "E-postkonton är hårdavstängda"
@@ -2187,7 +2187,7 @@ msgid "Errors"
 msgstr "Fel"
 
 msgid "Excl. tax"
-msgstr ""
+msgstr "Exkl. moms"
 
 msgid "Execute requests"
 msgstr "systemfrågor att utföra"
@@ -2202,7 +2202,7 @@ msgid "External Mail Host"
 msgstr "Extern post värd"
 
 msgid "External Mail Server"
-msgstr ""
+msgstr "Extern e-postserver"
 
 msgid "External mail server"
 msgstr "Extern e-postserver"
@@ -2223,7 +2223,7 @@ msgid "FTP"
 msgstr "FTP"
 
 msgid "FTP Accounts"
-msgstr ""
+msgstr "FTP-konton"
 
 msgid "FTP Users"
 msgstr "FTP-användare"
@@ -2293,6 +2293,9 @@ msgstr "Fil finns inte. %1$s.tar.gz"
 msgid "File exceeds the size limit."
 msgstr "Filen överskrider storleksgränsen."
 
+msgid "File has been successfully uploaded."
+msgstr ""
+
 msgid "File is not readable."
 msgstr "Filen är inte läsbar."
 
@@ -2304,9 +2307,6 @@ msgstr "Filen har laddats upp."
 
 msgid "File usage"
 msgstr "File usage"
-
-msgid "File was successfully uploaded."
-msgstr "Fil har laddats upp."
 
 msgid "FileManager"
 msgstr "FileManager"
@@ -2447,7 +2447,7 @@ msgid "Host must be filled."
 msgstr "Värd måste fyllas i."
 
 msgid "Hosting Plan"
-msgstr ""
+msgstr "Webbhotell"
 
 msgid "Hosting details"
 msgstr "Webbhotellsdetaljer"
@@ -2459,19 +2459,19 @@ msgid "Hosting plan can't be deleted, there are active orders."
 msgstr "Denna webbhotells plan kan inte raderas p g a av aktiva order."
 
 msgid "Hosting plan limits exceed reseller limits."
-msgstr ""
+msgstr "Webbkonto gränser överskrida återförsäljarens gränser."
 
 msgid "Hosting plan properties"
 msgstr "Egenskaper för webbhotellsplan"
 
 msgid "Hosting plan successfully created."
-msgstr ""
+msgstr "Webbkonto har skapats."
 
 msgid "Hosting plan successfully deleted."
 msgstr "Hosting plan tagits bort."
 
 msgid "Hosting plan successfully updated."
-msgstr ""
+msgstr "Webbkonto har uppdaterats."
 
 msgid "Hosting plan update"
 msgstr "Hosting plan update"
@@ -2480,7 +2480,7 @@ msgid "Hosting plan values exceed reseller maximum values."
 msgstr "Hosting plan värden överstiger återförsäljarens maximala värden."
 
 msgid "Hosting plan values exceed your own limits."
-msgstr ""
+msgstr "Webbkontos värden som överstiger dina egna begränsningar."
 
 msgid "Hosting plans"
 msgstr "Webbhotellsplaner"
@@ -2524,7 +2524,7 @@ msgid "Htaccess user successfully scheduled for addition."
 msgstr "Htaccess user successfully scheduled for addition."
 
 msgid "Http Redirections"
-msgstr ""
+msgstr "Http-omdirigeringar"
 
 msgid "Http traffic"
 msgstr "Http traffic"
@@ -2539,7 +2539,7 @@ msgid "ID"
 msgstr "ID"
 
 msgid "IMAP/POP3 E-Mail Accounts"
-msgstr ""
+msgstr "IMAP/POP3 E-postkonton"
 
 msgid "IP"
 msgstr "IP-adress"
@@ -2620,13 +2620,13 @@ msgid "Incorrect aliases limit."
 msgstr "Felaktigt alias gränsen."
 
 msgid "Incorrect disk space limit."
-msgstr ""
+msgstr "Felaktig diskplats gränsen."
 
 msgid "Incorrect diskspace limit."
-msgstr ""
+msgstr "Felaktig diskplats gränsen."
 
 msgid "Incorrect domain aliases limit."
-msgstr ""
+msgstr "Felaktig domän alias gräns."
 
 msgid "Incorrect email length or syntax."
 msgstr "Felaktig e-längd eller syntax."
@@ -2639,7 +2639,7 @@ msgid "Incorrect mail accounts limit."
 msgstr "Felaktig postkonton gräns."
 
 msgid "Incorrect monthly traffic limit."
-msgstr ""
+msgstr "Felaktig månadsvis trafikgränsen."
 
 msgid "Incorrect mount point length or syntax."
 msgstr "Felaktig monteringspunkten längd eller syntax."
@@ -2687,10 +2687,10 @@ msgid "Installed Package which was deleted by your reseller."
 msgstr "Installerade paket som tagits bort från din återförsäljare."
 
 msgid "Installed in reseller repository"
-msgstr ""
+msgstr "Installerade i återförsäljarens filarkiv"
 
 msgid "Installed in software repository"
-msgstr ""
+msgstr "Installerade i programvaruförråd"
 
 msgid "Installed on"
 msgstr "Installerad på"
@@ -3104,7 +3104,7 @@ msgstr "Max value for the %s PHP directive"
 #, php-format
 msgid ""
 "Max. remote filesize (%1$d MB) has been reached. Your remote file is %2$d MB"
-msgstr ""
+msgstr "Max. avlägsna filesize (%1$d MB) har nåtts. Din avlägsna filen %2$d MB"
 
 #, php-format
 msgid "Max. remote filesize (%1$d MB) is reached. Your remote file is %2$d MB"
@@ -3171,34 +3171,34 @@ msgid "Modify"
 msgstr "Ändra"
 
 msgid "Monhtly traffic warning cannot be bigger than monthly traffic limit."
-msgstr ""
+msgstr "Månads trafik varning kan inte vara större än månadsvis trafikgränsen."
 
 msgid "Month"
 msgstr "Månad"
 
 msgid "Monthly"
-msgstr ""
+msgstr "Månadsvis"
 
 msgid "Monthly Traffic limit"
-msgstr ""
+msgstr "Månadsvis trafikgränsen"
 
 msgid "Monthly traffic limit"
-msgstr ""
+msgstr "Månadsvis trafikgränsen"
 
 msgid "Monthly traffic limit [MiB]<br/><i>(0 unlimited)</i>"
-msgstr ""
+msgstr "Månadsvis trafikgränsen [MiB] <br /><i>(0 unlimited)</i>"
 
 msgid "Monthly traffic limit must be a digit."
-msgstr ""
+msgstr "Månadsvis trafikgränsen måste vara en siffra."
 
 msgid "Monthly traffic warning must be a digit."
-msgstr ""
+msgstr "Månatlig trafik varning måste vara en siffra."
 
 msgid "More Details"
 msgstr "Mer information"
 
 msgid "More details"
-msgstr ""
+msgstr "Mer information"
 
 msgid "Mount"
 msgstr "Montera"
@@ -3225,7 +3225,7 @@ msgid "Name"
 msgstr "Namn"
 
 msgid "Name cannot be empty."
-msgstr ""
+msgstr "Namnet får inte vara tomt."
 
 msgid "Name must be filled."
 msgstr "Namnet måste fyllas i."
@@ -3368,7 +3368,7 @@ msgid "No software available"
 msgstr "No software available"
 
 msgid "No software in Web repository found!"
-msgstr ""
+msgstr "Ingen programvara i Web-repository hittades!"
 
 msgid "No software in software depot available!"
 msgstr "No software in software depot available!"
@@ -3461,7 +3461,7 @@ msgid "One or more database updates are now available. See the details below."
 msgstr "En eller flera uppdateringar av databasen finns nu tillgängliga. Se information nedan."
 
 msgid "Only 'tar.gz' archives are accepted."
-msgstr ""
+msgstr "Endast 'tar.gz-arkiv är tillåten."
 
 msgid ""
 "Only Top Level Domains (TLD) listed in IANA root zone database can be used."
@@ -3510,7 +3510,7 @@ msgid "Order Panel / Choose hosting plan"
 msgstr "Order Panel / Choose hosting plan"
 
 msgid "Order Panel / Domain name"
-msgstr ""
+msgstr "Order Panel / Domain namn"
 
 msgid "Order Panel / Order confirmation"
 msgstr "Beställ Panel / Orderbekräftelse"
@@ -3519,13 +3519,13 @@ msgid "Order Panel / Personal Data"
 msgstr "Order Panel / Personuppgifter"
 
 msgid "Order Panel Access URL"
-msgstr ""
+msgstr "Order Panel Access URL"
 
 msgid "Order Panel Preview"
-msgstr ""
+msgstr "Order Panel Preview"
 
 msgid "Order Panel Template"
-msgstr ""
+msgstr "Order Panel Template"
 
 msgid "Order confirmation"
 msgstr "Orderbekräftelse"
@@ -3640,10 +3640,10 @@ msgid "Package already exist in the software depot!"
 msgstr "Paketet finns redan i programvaran depå!"
 
 msgid "Package already exist in the software repository!"
-msgstr ""
+msgstr "Paketet finns redan i programvaruförråd!"
 
 msgid "Package already exist in your software repository!"
-msgstr ""
+msgstr "Paketet finns redan i din programvaruförråd!"
 
 msgid "Package install type"
 msgstr "Paket installera typ"
@@ -3832,7 +3832,7 @@ msgstr "Välj minst ett mail typ."
 msgid ""
 "Please set now the username and password for the later login in the "
 "software. (Required fiels)"
-msgstr ""
+msgstr "Ange nu ditt användarnamn och lösenord för att senare logga in i programmet. (Obligatoriskt fält)"
 
 msgid "Please specify a message content."
 msgstr "Vänligen ange ett meddelande innehåll."
@@ -3973,7 +3973,7 @@ msgid "Profile"
 msgstr "Profile"
 
 msgid "Programming"
-msgstr ""
+msgstr "Programmering"
 
 msgid "Properties"
 msgstr "Egenskaper"
@@ -3995,7 +3995,7 @@ msgid "Protected"
 msgstr "Protected"
 
 msgid "Protected Areas"
-msgstr ""
+msgstr "Skyddade områden"
 
 msgid "Protected area status should be 'OK' if you want to delete it."
 msgstr "Skyddat område status bör vara \"OK\" om du vill ta bort den."
@@ -4077,7 +4077,7 @@ msgid "Remote Web software repository"
 msgstr "Remote Web software repository"
 
 msgid "Remote file not found."
-msgstr ""
+msgstr "Avlägsna filen hittades inte."
 
 msgid "Remove"
 msgstr "Ta bort"
@@ -4227,7 +4227,7 @@ msgid "SQL Databases"
 msgstr "SQL-databaser"
 
 msgid "SQL Support"
-msgstr ""
+msgstr "SQL-stöd"
 
 msgid "SQL User"
 msgstr "SQL-användare"
@@ -4434,7 +4434,7 @@ msgid "Settings saved."
 msgstr "Settings saved."
 
 msgid "Setup Fee"
-msgstr ""
+msgstr "Aktiveringsavgift"
 
 msgid "Setup fee"
 msgstr "Startavgift"
@@ -4498,7 +4498,7 @@ msgid "Software"
 msgstr "Programvara"
 
 msgid "Software Description"
-msgstr ""
+msgstr "Programvara beskrivning"
 
 msgid "Software available"
 msgstr "Programvaran tillgänglig"
@@ -4513,10 +4513,10 @@ msgid "Software details"
 msgstr "Programvara detaljer"
 
 msgid "Software has been deleted."
-msgstr ""
+msgstr "Programvaran har tagits bort."
 
 msgid "Software has been successfully imported."
-msgstr ""
+msgstr "Mjukvara har importerats."
 
 msgid "Software in repository"
 msgstr "Programvara i förvar"
@@ -4614,7 +4614,7 @@ msgid "Sql"
 msgstr "Sql"
 
 msgid "Sql Manager"
-msgstr ""
+msgstr "Sql Manager"
 
 msgid "Sql Users"
 msgstr "Sql Users"
@@ -4632,7 +4632,7 @@ msgid "Sql users"
 msgstr "Sql users"
 
 msgid "Standard Features"
-msgstr ""
+msgstr "Standardfunktioner"
 
 msgid "Start installation"
 msgstr "Starta installationen"
@@ -4721,7 +4721,7 @@ msgid "Submit changes"
 msgstr "Aktivera ändringar"
 
 msgid "Subtotal"
-msgstr ""
+msgstr "Subtotal"
 
 msgid "Support"
 msgstr "Support"
@@ -4986,10 +4986,10 @@ msgid "The reseller account that you are trying to edit has not been found."
 msgstr "Återförsäljarens konto som du försöker redigera har inte hittats."
 
 msgid "The software installer require PHP."
-msgstr ""
+msgstr "Installationsprogrammet kräver PHP."
 
 msgid "The software installer require the PHP support."
-msgstr ""
+msgstr "Installationsprogrammet kräver PHP-stöd."
 
 msgid "The uploaded file was only partially uploaded."
 msgstr "Den överförda filen var bara delvis överförd."
@@ -5064,7 +5064,7 @@ msgid "This mount point is not allowed."
 msgstr "Denna monteringspunkt är inte tillåtet."
 
 msgid "This package already exist in the administrator software repository."
-msgstr ""
+msgstr "Detta paket finns redan i administrators programvaruförråd."
 
 #, php-format
 msgid "This package already exist in the depot of the reseller \"%1$s\"!"
@@ -5074,7 +5074,7 @@ msgid "This package already exist in the software depot!"
 msgstr "Detta paket finns redan i programvaran depå!"
 
 msgid "This package already exist in your software repository."
-msgstr ""
+msgstr "Detta paket finns redan i din programvaruförråd."
 
 msgid "This package is installed on following domain(s):"
 msgstr "This package is installed on following domain(s):"
@@ -5178,22 +5178,22 @@ msgid "Total Domains"
 msgstr "Totalt Domäner"
 
 msgid "Total Due Today"
-msgstr ""
+msgstr "Totalt förfallet i dag"
 
 msgid "Total Recurring"
-msgstr ""
+msgstr "Totalt återkommande"
 
 msgid "Total Softwares"
 msgstr "Totalt Softwares"
 
-msgid "Total Web softwares repositories"
-msgstr "Totalt Web mjukvaror förråd"
+msgid "Total Web software repositories"
+msgstr ""
 
 msgid "Total installations"
 msgstr "Totalt installationer"
 
 msgid "Total packages in Web software repository"
-msgstr ""
+msgstr "Antal paket i Web programvaruförråd"
 
 msgid "Total reseller"
 msgstr "Totalt återförsäljare"
@@ -5211,7 +5211,7 @@ msgid "Translated strings"
 msgstr "Översatta strängar"
 
 msgid "Triennially"
-msgstr ""
+msgstr "Vart tredje år "
 
 msgid "Type"
 msgstr "Typ"
@@ -5260,8 +5260,11 @@ msgstr "Det gick inte att hämta IP-adresser. Var vänlig och åtgärda detta pr
 msgid "Unable to move file."
 msgstr "Det gick inte att flytta filen."
 
-msgid "Unable to read xml file for Web softwares."
+msgid "Unable to read Web software repository index file."
 msgstr ""
+
+msgid "Unable to read xml file for Web softwares."
+msgstr "Kan inte läsa xml-fil för web-mjukvaror."
 
 msgid "Unable to read xml file for web softwares."
 msgstr "Det går inte att läsa XML-fil för webben mjukvaror."
@@ -5365,7 +5368,7 @@ msgstr "Uppdatera hosting plan"
 msgid ""
 "Update of Web software repository index has been aborted. Missing or empty "
 "fields."
-msgstr ""
+msgstr "Uppdatering av webben programvaruförråd index har avbrutits. Saknas eller tomma fält."
 
 msgid "Update order"
 msgstr "Uppdatera beställning"
@@ -5465,7 +5468,7 @@ msgid "User scheduled for deletion."
 msgstr "Användare schemalagd för radering."
 
 msgid "User session successfully destroyed."
-msgstr ""
+msgstr "Användarsessionen har förstörts."
 
 msgid "User session successfully killed for password change."
 msgstr "Användare sessionen avlivas för ändring av lösenord."
@@ -5474,7 +5477,7 @@ msgid "User session was successfully killed for password change"
 msgstr "Användarsession framgångsrikt dödades för ändring av lösenord"
 
 msgid "User successfully disconnected."
-msgstr ""
+msgstr "Användaren frånkopplad."
 
 msgid "User type"
 msgstr "Användartyp"
@@ -5518,10 +5521,10 @@ msgid "Values"
 msgstr "Värden"
 
 msgid "Vat"
-msgstr ""
+msgstr "Moms"
 
 msgid "Vat must be a number."
-msgstr ""
+msgstr "Moms måste vara ett nummer."
 
 msgid "Vendor hompage"
 msgstr "Säljarens hompage"
@@ -5585,10 +5588,10 @@ msgid "Web & E-Mail Support"
 msgstr "Webb & e-postsupport"
 
 msgid "Web Software Installer"
-msgstr ""
+msgstr "Web-installationsprogrammet"
 
 msgid "Web Statistics"
-msgstr ""
+msgstr "Web statistik"
 
 msgid "Web in"
 msgstr "Webb inåt"
@@ -5600,13 +5603,13 @@ msgid "Web software depot packages total"
 msgstr "Web depå paket totalt"
 
 msgid "Web software repository"
-msgstr ""
+msgstr "Web programvaruförråd"
 
 msgid "Web software repository index been successfully updated."
-msgstr ""
+msgstr "Web programvaruförråd index uppdaterats."
 
 msgid "Web software repository index is already up to date."
-msgstr ""
+msgstr "Web programvaruförråd index är redan uppdaterad."
 
 msgid "Web statistics"
 msgstr "Webbstatistik"
@@ -5618,10 +5621,10 @@ msgid "Web traffic"
 msgstr "Webbtrafik"
 
 msgid "WebSpace"
-msgstr ""
+msgstr "WebSpace"
 
 msgid "WebSpace Features"
-msgstr ""
+msgstr "WebSpace funktioner"
 
 msgid "Webmail"
 msgstr "Webbmail"
@@ -5791,19 +5794,19 @@ msgid "You are exceeding reseller limits for the <em>%s</em> service."
 msgstr "Du överskrider återförsäljare gränser <em>för%s-tjänsten.</em>"
 
 msgid "You are exceeding the monthly server traffic limit."
-msgstr ""
+msgstr "Du kringgår serverns månadsvis trafikgränsen."
 
 msgid "You are exceeding you domain aliases Limit."
-msgstr ""
+msgstr "Du överstiger din domänen alias gräns."
 
 msgid "You are exceeding your FTP accounts limit."
 msgstr "You are exceeding your FTP accounts limit."
 
 msgid "You are exceeding your SQL databases limit."
-msgstr ""
+msgstr "Du överstiger dina SQL-databaser."
 
 msgid "You are exceeding your SQL users limit."
-msgstr ""
+msgstr "Du överstiger dina SQL-användare."
 
 msgid "You are exceeding your disk space limit."
 msgstr "Du överskrider din hårddisk limit."
@@ -5812,7 +5815,7 @@ msgid "You are exceeding your mail accounts limit."
 msgstr "You are exceeding your mail accounts limit."
 
 msgid "You are exceeding your monthly traffic limit."
-msgstr ""
+msgstr "Du överstiger din månadsvis trafikgränsen."
 
 msgid "You are exceeding your subdomains limit."
 msgstr "You are exceeding your subdomains limit."
@@ -5912,10 +5915,10 @@ msgid "You do not have permission to access this interface."
 msgstr "Du har inte behörighet att komma åt detta gränssnitt."
 
 msgid "You do not have permissions to install software yet"
-msgstr ""
+msgstr "Du har inte behörighet att installera programvara ännu"
 
 msgid "You do not have permissions to install softwares yet"
-msgstr ""
+msgstr "Du har inte behörighet att installera mjukvaror ännu"
 
 msgid "You do not have permissions to upload software"
 msgstr "Du har inte behörighet att överföra programvara"
@@ -5961,12 +5964,12 @@ msgstr "You have a SQL databases limit.<br />You cannot add an user with unlimit
 msgid ""
 "You have a disk space limit.<br />You cannot add an user with unlimited disk"
 " space."
-msgstr ""
+msgstr "Du har en diskplats gräns.<br />Du kan inte lägga till en användare med unlimited diskplats."
 
 msgid ""
 "You have a domain aliases limit.<br />You cannot add an user with unlimited "
 "domain aliases."
-msgstr ""
+msgstr "Du har en domän alias gräns.<br />Du kan inte lägga till en användare med unlimited domänen alias."
 
 msgid ""
 "You have a mail accounts limit.<br />You cannot add an user with unlimited "
@@ -5976,7 +5979,7 @@ msgstr "You have a mail accounts limit.<br />You cannot add an user with unlimit
 msgid ""
 "You have a monthly traffic limit.<br />You cannot add an user with unlimited"
 " monthly traffic."
-msgstr ""
+msgstr "Du har en månadsvis trafikgräns.<br />Du kan inte lägga till en användare med unlimited månadsvis trafik."
 
 msgid ""
 "You have a subdomains limit.<br />You cannot add an user with unlimited "
@@ -6079,7 +6082,7 @@ msgid "You must assign at least one IP per reseller."
 msgstr "Du måste tilldela minst en IP per återförsäljare."
 
 msgid "You must choose between local and remote upload."
-msgstr ""
+msgstr "Du måste välja mellan lokal och fjärröverföring."
 
 msgid "You must confirm domain deletion."
 msgstr "Du måste bekräfta domän raderingen."
@@ -6100,7 +6103,7 @@ msgid "You must provide a password."
 msgstr "Du måste ange ett lösenord."
 
 msgid "You must select a file to upload."
-msgstr ""
+msgstr "Du måste välja en fil att ladda upp."
 
 msgid "You must select a file to upload/download."
 msgstr "Du måste välja en fil att ladda upp / ladda ner."
@@ -6646,13 +6649,13 @@ msgid "i-MSCP - Service Mailer - You have a new order"
 msgstr "i-MSCP - Service Mailer - Du har en ny order"
 
 msgid "i-MSCP - Software Installer / Management"
-msgstr ""
+msgstr "i-MSCP - Software Installer / Management"
 
 msgid "i-MSCP - Software Management"
-msgstr ""
+msgstr "i-MSCP - Software Management"
 
 msgid "i-MSCP - Software Management (Permissions)"
-msgstr ""
+msgstr "i-MSCP - Software Management (Permissions)"
 
 msgid "i-MSCP - Software details"
 msgstr "i-MSCP - Mjukvara detaljer"
@@ -6661,10 +6664,10 @@ msgid "i-MSCP - Software installer options"
 msgstr "i-MSCP - Software installer options"
 
 msgid "i-MSCP - Softwares Management"
-msgstr ""
+msgstr "i-MSCP - Softwares Management"
 
 msgid "i-MSCP - Sofware Management"
-msgstr ""
+msgstr "i-MSCP - Sofware Management"
 
 msgid "i-MSCP - User/Add domain account - step 2"
 msgstr "i-MSCP - Användare / Lägg domänkonto - steg 2"
@@ -6730,10 +6733,10 @@ msgid "i-MSCP Reseller/Circular"
 msgstr "i-MSCP Reseller/Circular"
 
 msgid "i-MSCP Software installer / Web software repository"
-msgstr ""
+msgstr "i-MSCP Software installer / Web software repository"
 
 msgid "i-MSCP Web softwares repository"
-msgstr ""
+msgstr "i-MSCP Web softwares repository"
 
 msgid "i-MSCP debugger"
 msgstr "i-MSCP debugger"

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.0.1.6\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2013-02-19 14:54+0100\n"
+"POT-Creation-Date: 2013-03-01 04:50+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1328,7 +1328,7 @@ msgstr ""
 msgid "Could not upload file."
 msgstr ""
 
-msgid "Could not upload the file. File not found."
+msgid "Could not upload file. File not found."
 msgstr ""
 
 #, php-format
@@ -2290,6 +2290,9 @@ msgstr ""
 msgid "File exceeds the size limit."
 msgstr ""
 
+msgid "File has been successfully uploaded."
+msgstr ""
+
 msgid "File is not readable."
 msgstr ""
 
@@ -2300,9 +2303,6 @@ msgid "File successfully uploaded."
 msgstr ""
 
 msgid "File usage"
-msgstr ""
-
-msgid "File was successfully uploaded."
 msgstr ""
 
 msgid "FileManager"
@@ -5179,7 +5179,7 @@ msgstr ""
 msgid "Total Softwares"
 msgstr ""
 
-msgid "Total Web softwares repositories"
+msgid "Total Web software repositories"
 msgstr ""
 
 msgid "Total installations"
@@ -5251,6 +5251,9 @@ msgid "Unable to get the IP addresses list. Please fix this problem."
 msgstr ""
 
 msgid "Unable to move file."
+msgstr ""
+
+msgid "Unable to read Web software repository index file."
 msgstr ""
 
 msgid "Unable to read xml file for Web softwares."

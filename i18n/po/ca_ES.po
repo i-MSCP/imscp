@@ -15,8 +15,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2013-02-19 14:54+0100\n"
-"PO-Revision-Date: 2013-02-19 13:55+0000\n"
+"POT-Creation-Date: 2013-03-01 04:50+0100\n"
+"PO-Revision-Date: 2013-03-01 03:51+0000\n"
 "Last-Translator: Torsten Widmann <info@goover.de>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -1337,8 +1337,8 @@ msgstr "Costos"
 msgid "Could not upload file."
 msgstr "No s'ha pogut pujar el fitxer."
 
-msgid "Could not upload the file. File not found."
-msgstr "Pujada d'arxiu fallida: no s'ha trobat l'arxiu al servidor."
+msgid "Could not upload file. File not found."
+msgstr ""
 
 #, php-format
 msgid ""
@@ -2299,6 +2299,9 @@ msgstr "L'arxiu no existeix. %1$s.tar.gz"
 msgid "File exceeds the size limit."
 msgstr "L'arxiu excedeix el limit de mida."
 
+msgid "File has been successfully uploaded."
+msgstr ""
+
 msgid "File is not readable."
 msgstr "El fitxers no es pot llegir."
 
@@ -2310,9 +2313,6 @@ msgstr "Arxiu pujat correctament."
 
 msgid "File usage"
 msgstr ""
-
-msgid "File was successfully uploaded."
-msgstr "L'arxiu s'ha pujat correctament"
 
 msgid "FileManager"
 msgstr "Gestor de fitxers"
@@ -5192,8 +5192,8 @@ msgstr ""
 msgid "Total Softwares"
 msgstr "Total de progames"
 
-msgid "Total Web softwares repositories"
-msgstr "Total de programes al repositori"
+msgid "Total Web software repositories"
+msgstr ""
 
 msgid "Total installations"
 msgstr "Total d'instal·lacions"
@@ -5265,6 +5265,9 @@ msgstr "Impossible obtenir la llista d'adreces IP. Si us plau arregleu el proble
 
 msgid "Unable to move file."
 msgstr "No s'ha pogut moure l'arxiu."
+
+msgid "Unable to read Web software repository index file."
+msgstr ""
 
 msgid "Unable to read xml file for Web softwares."
 msgstr ""

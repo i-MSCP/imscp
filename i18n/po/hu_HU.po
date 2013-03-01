@@ -11,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2013-02-19 14:54+0100\n"
-"PO-Revision-Date: 2013-02-19 13:55+0000\n"
+"POT-Creation-Date: 2013-03-01 04:50+0100\n"
+"PO-Revision-Date: 2013-03-01 03:51+0000\n"
 "Last-Translator: Torsten Widmann <info@goover.de>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -1333,8 +1333,8 @@ msgstr "Ár"
 msgid "Could not upload file."
 msgstr "Nem lehet feltölteni a fájlt"
 
-msgid "Could not upload the file. File not found."
-msgstr "Nem lehet feltölteni a fájlt, mert a feltöltendő fájl nem található"
+msgid "Could not upload file. File not found."
+msgstr ""
 
 #, php-format
 msgid ""
@@ -2295,6 +2295,9 @@ msgstr "A fájl nem létezik: %1$s.tar.gz"
 msgid "File exceeds the size limit."
 msgstr "Fájl mérete meghaladja a korlátot"
 
+msgid "File has been successfully uploaded."
+msgstr ""
+
 msgid "File is not readable."
 msgstr "A fájl nem olvasható"
 
@@ -2306,9 +2309,6 @@ msgstr "Fájl sikeresen feltöltve"
 
 msgid "File usage"
 msgstr "Fájlok tárhely foglaltsága"
-
-msgid "File was successfully uploaded."
-msgstr "Fájl sikeresen feltöltve"
 
 msgid "FileManager"
 msgstr "Fájlkezelő"
@@ -5188,8 +5188,8 @@ msgstr ""
 msgid "Total Softwares"
 msgstr "Összes program"
 
-msgid "Total Web softwares repositories"
-msgstr "Webes programtárolóban összesen"
+msgid "Total Web software repositories"
+msgstr ""
 
 msgid "Total installations"
 msgstr "Összes telepítés"
@@ -5261,6 +5261,9 @@ msgstr "Nem található IP-cím lista. Kérem javítsa a problémát!"
 
 msgid "Unable to move file."
 msgstr "Nem lehet áthelyezni a fájlt"
+
+msgid "Unable to read Web software repository index file."
+msgstr ""
 
 msgid "Unable to read xml file for Web softwares."
 msgstr ""

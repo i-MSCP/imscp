@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2013-02-19 14:54+0100\n"
-"PO-Revision-Date: 2013-02-19 13:54+0000\n"
+"POT-Creation-Date: 2013-03-01 04:50+0100\n"
+"PO-Revision-Date: 2013-03-01 03:51+0000\n"
 "Last-Translator: Torsten Widmann <info@goover.de>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -1334,8 +1334,8 @@ msgstr "Стоимость"
 msgid "Could not upload file."
 msgstr "Не могу загрузить файл."
 
-msgid "Could not upload the file. File not found."
-msgstr "Не могу загрузить файл. Файл не найден."
+msgid "Could not upload file. File not found."
+msgstr ""
 
 #, php-format
 msgid ""
@@ -2296,6 +2296,9 @@ msgstr "Файл не существует. %1$s.tar.gz"
 msgid "File exceeds the size limit."
 msgstr "Размер файла превышает лимит."
 
+msgid "File has been successfully uploaded."
+msgstr ""
+
 msgid "File is not readable."
 msgstr "Нечитаемый файл."
 
@@ -2307,9 +2310,6 @@ msgstr "Файл успешно загружен."
 
 msgid "File usage"
 msgstr "Использование файлов"
-
-msgid "File was successfully uploaded."
-msgstr "Файл успешно загружен."
 
 msgid "FileManager"
 msgstr "Файловий менеджер"
@@ -5189,8 +5189,8 @@ msgstr ""
 msgid "Total Softwares"
 msgstr "Всего ПО"
 
-msgid "Total Web softwares repositories"
-msgstr "Всего Web-репозиториев"
+msgid "Total Web software repositories"
+msgstr ""
 
 msgid "Total installations"
 msgstr "Всего установок"
@@ -5262,6 +5262,9 @@ msgstr "Невозможно создать список IP адресов. По
 
 msgid "Unable to move file."
 msgstr "Не удалось переместить файл."
+
+msgid "Unable to read Web software repository index file."
+msgstr ""
 
 msgid "Unable to read xml file for Web softwares."
 msgstr ""
