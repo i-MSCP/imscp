@@ -2,7 +2,7 @@
 
 =head1 NAME
 
- Servers::po::dovecot - i-MSCP Courier IMAP/POP3 Server implementation
+ Servers::po::courier - i-MSCP Courier IMAP/POP3 Server implementation
 
 =cut
 

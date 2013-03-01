@@ -182,7 +182,7 @@ sub install
 
 =item buildPostfixConf()
 
- buildMtaConf filter hook function.
+ Build Dovecot SASL and LDA parameters for Postfix.
 
  Filter hook function acting on the following hooks
   - beforeMtaBuildMainCfFile

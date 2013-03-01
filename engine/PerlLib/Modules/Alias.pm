@@ -282,7 +282,7 @@ sub buildHTTPDData{
 		have_cert					=> $haveCert,
 		BWLIMIT						=> $self->{domain_traffic_limit},
 		ALIAS						=> $userName.'als'.$self->{alias_id},
-		FORWARD						=> $self->{url_forward},
+		FORWARD						=> (defined $self->{url_forward} && $self->{url_forward} ne '') ? $self->{url_forward} : 'no',
 		DISABLE_FUNCTIONS			=> (exists $phpiniData->{$self->{domain_id}} ? $phpiniData->{$self->{domain_id}}->{disable_functions} : $rdata->{PHPINI_DISABLE_FUNCTIONS}->{value}),
 		MAX_EXECUTION_TIME			=> (exists $phpiniData->{$self->{domain_id}} ? $phpiniData->{$self->{domain_id}}->{max_execution_time} : $rdata->{PHPINI_MAX_EXECUTION_TIME}->{value}),
 		MAX_INPUT_TIME				=> (exists $phpiniData->{$self->{domain_id}} ? $phpiniData->{$self->{domain_id}}->{max_input_time} : $rdata->{PHPINI_MAX_INPUT_TIME}->{value}),

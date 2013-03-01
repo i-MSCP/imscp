@@ -1812,4 +1812,22 @@ class iMSCP_Update_Database extends iMSCP_Update
 			"UPDATE `hosting_plans` SET `payment`='monthly' WHERE `payment` NOT IN('monthly','annually','biennially', 'triennially')"
 		);
 	}
+
+	/**
+	 * Update for url forward fields
+	 *
+	 * @author Laurent Declercq <l.declercq@nuxwin.com>
+	 * @return array SQL Queries to execute
+	 */
+	protected function _databaseUpdate_122()
+	{
+		return array(
+			"ALTER TABLE `domain_aliasses` CHANGE `url_forward` `url_forward` VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT 'no'",
+			"ALTER TABLE `subdomain` CHANGE `subdomain_url_forward` `subdomain_url_forward` VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT 'no'",
+			"ALTER TABLE `subdomain_alias` CHANGE `subdomain_alias_url_forward` `subdomain_alias_url_forward` VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT 'no'",
+			"UPDATE `domain_aliasses` SET `url_forward` = 'no' WHERE `url_forward` IS NULL OR `url_forward` = ''",
+			"UPDATE `subdomain` SET `subdomain_url_forward` = 'no' WHERE `subdomain_url_forward` IS NULL OR `subdomain_url_forward` = ''",
+			"UPDATE `subdomain_alias` SET `subdomain_alias_url_forward` = 'no' WHERE `subdomain_alias_url_forward` IS NULL OR `subdomain_alias_url_forward` = ''"
+		);
+	}
 }
