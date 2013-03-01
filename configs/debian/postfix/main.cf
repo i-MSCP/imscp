@@ -1,82 +1,82 @@
 # Postfix directory settings; These are critical for normal Postfix MTA functionallity
-command_directory            = /usr/sbin
-daemon_directory             = /usr/lib/postfix
+command_directory = /usr/sbin
+daemon_directory = /usr/lib/postfix
 
 # Some common configuration parameters
-inet_protocols               = ipv4, ipv6
-inet_interfaces              = all
-mynetworks_style             = host
+inet_protocols = ipv4, ipv6
+inet_interfaces = all
+mynetworks_style = host
 
-myhostname                   = {MTA_HOSTNAME}
-mydomain                     = {MTA_LOCAL_DOMAIN}
-myorigin                     = $myhostname
+myhostname = {MTA_HOSTNAME}
+mydomain = {MTA_LOCAL_DOMAIN}
+myorigin = $myhostname
 
-smtpd_banner                 = $myhostname ESMTP i-MSCP {MTA_VERSION} Managed
-setgid_group                 = postdrop
+smtpd_banner = $myhostname ESMTP i-MSCP {MTA_VERSION} Managed
+setgid_group = postdrop
 
 # Receiving messages parameters
-mydestination                = $myhostname, $mydomain
-append_dot_mydomain          = no
-append_at_myorigin           = yes
-local_transport              = local
-transport_maps               = hash:{MTA_TRANSPORT_HASH}
-relay_domains                = hash:{MTA_RELAY_HASH}
-alias_maps                   = hash:{MTA_LOCAL_ALIAS_HASH}
-alias_database               = hash:{MTA_LOCAL_ALIAS_HASH}
+mydestination = $myhostname, $mydomain
+append_dot_mydomain = no
+append_at_myorigin = yes
+local_transport = local
+transport_maps = hash:{MTA_TRANSPORT_HASH}
+relay_domains = hash:{MTA_RELAY_HASH}
+alias_maps = hash:{MTA_LOCAL_ALIAS_HASH}
+alias_database = hash:{MTA_LOCAL_ALIAS_HASH}
 
 # Delivering local messages parameters
-mail_spool_directory         = {MTA_LOCAL_MAIL_DIR}
+mail_spool_directory = {MTA_LOCAL_MAIL_DIR}
 
 # Mailboxquota
 # => 0 for unlimited
 # => 104857600 for 100 MB
-mailbox_size_limit           = 0
-mailbox_command              = procmail -a "$EXTENSION"
+mailbox_size_limit = 0
+mailbox_command = procmail -a "$EXTENSION"
 
 # Message size limit
 # => 0 for unlimited
 # => 104857600 for 100 MB
-message_size_limit           = 0
+message_size_limit = 0
 
-biff                         = no
-recipient_delimiter          = +
+biff = no
+recipient_delimiter = +
 
 local_destination_recipient_limit = 1
-local_recipient_maps         = unix:passwd.byname $alias_database
+local_recipient_maps = unix:passwd.byname $alias_database
 
 # i-MSCP Autoresponder parameters
 imscp-arpl_destination_recipient_limit = 1
 
 # Delivering virtual messages parameters
-virtual_mailbox_base         = {MTA_VIRTUAL_MAIL_DIR}
-virtual_mailbox_limit        = 0
+virtual_mailbox_base = {MTA_VIRTUAL_MAIL_DIR}
+virtual_mailbox_limit = 0
 
-virtual_mailbox_domains      = hash:{MTA_VIRTUAL_DMN_HASH}
-virtual_mailbox_maps         = hash:{MTA_VIRTUAL_MAILBOX_HASH}
+virtual_mailbox_domains = hash:{MTA_VIRTUAL_DMN_HASH}
+virtual_mailbox_maps = hash:{MTA_VIRTUAL_MAILBOX_HASH}
 
-virtual_alias_maps           = hash:{MTA_VIRTUAL_ALIAS_HASH}
+virtual_alias_maps = hash:{MTA_VIRTUAL_ALIAS_HASH}
 
-virtual_minimum_uid          = {MTA_MAILBOX_MIN_UID}
-virtual_uid_maps             = static:{MTA_MAILBOX_UID}
-virtual_gid_maps             = static:{MTA_MAILBOX_GID}
+virtual_minimum_uid = {MTA_MAILBOX_MIN_UID}
+virtual_uid_maps = static:{MTA_MAILBOX_UID}
+virtual_gid_maps = static:{MTA_MAILBOX_GID}
 
 # SASL parameters
-smtpd_sasl_auth_enable       = yes
-smtpd_sasl_security_options  = noanonymous
-broken_sasl_auth_clients     = yes
+smtpd_sasl_auth_enable = yes
+smtpd_sasl_security_options = noanonymous
+broken_sasl_auth_clients = yes
 smtpd_sasl_authenticated_header = yes
 
-smtpd_helo_required          = yes
+smtpd_helo_required = yes
 
-smtpd_helo_restrictions      = permit_mynetworks,
-                               permit_sasl_authenticated,
-                               reject_invalid_helo_hostname,
-                               reject_non_fqdn_helo_hostname
+smtpd_helo_restrictions = permit_mynetworks,
+                          permit_sasl_authenticated,
+                          reject_invalid_helo_hostname,
+                          reject_non_fqdn_helo_hostname
 
-smtpd_sender_restrictions    = reject_non_fqdn_sender,
-                               reject_unknown_sender_domain,
-                               permit_mynetworks,
-                               permit_sasl_authenticated
+smtpd_sender_restrictions = reject_non_fqdn_sender,
+                            reject_unknown_sender_domain,
+                            permit_mynetworks,
+                            permit_sasl_authenticated
 
 smtpd_recipient_restrictions = reject_non_fqdn_recipient,
                                reject_unknown_recipient_domain,
@@ -88,42 +88,24 @@ smtpd_recipient_restrictions = reject_non_fqdn_recipient,
                                check_policy_service inet:127.0.0.1:{PORT_POSTGREY},
                                permit
 
-smtpd_data_restrictions      = reject_multi_recipient_bounce,
-                               reject_unauth_pipelining
+smtpd_data_restrictions = reject_multi_recipient_bounce,
+                          reject_unauth_pipelining
 
 # TLS parameters
-{SSL}smtpd_tls_security_level    = may
-{SSL}smtpd_tls_loglevel          = 2
-{SSL}smtpd_tls_cert_file         = {GUI_CERT_DIR}/{MTA_HOSTNAME}.pem
-{SSL}smtpd_tls_key_file          = {GUI_CERT_DIR}/{MTA_HOSTNAME}.pem
-{SSL}smtpd_tls_auth_only         = no
-{SSL}smtpd_tls_received_header   = yes
+{SSL}smtpd_tls_security_level = may
+{SSL}smtpd_tls_loglevel = 2
+{SSL}smtpd_tls_cert_file = {GUI_CERT_DIR}/{MTA_HOSTNAME}.pem
+{SSL}smtpd_tls_key_file = {GUI_CERT_DIR}/{MTA_HOSTNAME}.pem
+{SSL}smtpd_tls_auth_only = no
+{SSL}smtpd_tls_received_header = yes
 
 # AMaViS parameters; activate, if available/used
-#content_filter               = amavis:[127.0.0.1]:10024
+#content_filter = amavis:[127.0.0.1]:10024
 
 # Quota support; activate, if available/used
-#virtual_create_maildirsize     = yes
-#virtual_mailbox_extended       = yes
-#virtual_mailbox_limit_maps     = mysql:/etc/postfix/mysql_virtual_mailbox_limit_maps.cf
+#virtual_create_maildirsize = yes
+#virtual_mailbox_extended = yes
+#virtual_mailbox_limit_maps = mysql:/etc/postfix/mysql_virtual_mailbox_limit_maps.cf
 #virtual_mailbox_limit_override = yes
-#virtual_maildir_limit_message  = "The user you're trying to reach is over mailbox quota."
-#virtual_overquota_bounce       = yes
-
-# po setup begin
-
-# dovecot begin
-
-smtpd_sasl_type = dovecot
-smtpd_sasl_path = private/auth
-virtual_transport = dovecot
-dovecot_destination_recipient_limit = 1
-
-# dovecot end
-
-# courier begin
-smtpd_sasl_local_domain      =
-virtual_transport            = virtual
-# courier end
-
-# po setup end
+#virtual_maildir_limit_message = "The user you're trying to reach is over mailbox quota."
+#virtual_overquota_bounce = yes

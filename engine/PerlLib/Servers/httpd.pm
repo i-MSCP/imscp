@@ -28,8 +28,6 @@ package Servers::httpd;
 use strict;
 use warnings;
 
-use iMSCP::Debug;
-use FindBin;
 use parent 'Common::SimpleClass';
 
 sub factory

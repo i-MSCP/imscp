@@ -28,7 +28,6 @@ package Servers::po;
 use strict;
 use warnings;
 
-use iMSCP::Debug;
 use parent 'Common::SimpleClass';
 
 sub factory

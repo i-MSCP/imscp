@@ -30,6 +30,7 @@ use strict;
 use warnings;
 
 use iMSCP::Debug;
+use iMSCP::HooksManager;
 use iMSCP::Config;
 use iMSCP::IP;
 use iMSCP::File;
@@ -40,7 +41,9 @@ sub _init
 {
 	my $self = shift;
 
-	iMSCP::HooksManager->getInstance()->trigger('beforeNamedInitInstaller', $self, 'bind');
+	$self->{'hooksManager'} = iMSCP::HooksManager->getInstance();
+
+	$self->{'hooksManager'}->trigger('beforeNamedInitInstaller', $self, 'bind');
 
 	$self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/bind";
 	$self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
@@ -56,7 +59,7 @@ sub _init
 		%self::bindConfig = (%self::bindConfig, %self::bindOldConfig);
 	}
 
-	iMSCP::HooksManager->getInstance()->trigger('afterNamedInitInstaller', $self, 'bind');
+	$self->{'hooksManager'}->trigger('afterNamedInitInstaller', $self, 'bind');
 
 	0;
 }
@@ -219,7 +222,7 @@ sub bkpConfFile
 	my $cfgFile = shift;
 	my $timestamp = time;
 
-	iMSCP::HooksManager->getInstance()->trigger('beforeNamedBkpConfFile', $cfgFile) and return 1;
+	$self->{'hooksManager'}->trigger('beforeNamedBkpConfFile', $cfgFile) and return 1;
 
 	if(-f $cfgFile){
 		my $file = iMSCP::File->new('filename' => $cfgFile );
@@ -232,7 +235,7 @@ sub bkpConfFile
 		}
 	}
 
-	iMSCP::HooksManager->getInstance()->trigger('afterNamedBkpConfFile', $cfgFile);
+	$self->{'hooksManager'}->trigger('afterNamedBkpConfFile', $cfgFile);
 }
 
 sub buildConf
@@ -259,12 +262,12 @@ sub buildConf
 	$cfgTpl = iMSCP::File->new('filename' => "$self->{'cfgDir'}/named.conf")->get();
 	return 1 if(!$cfgTpl);
 
-	iMSCP::HooksManager->getInstance()->trigger('beforeNamedBuildConf', \$cfgTpl, 'named.conf') and return 1;
+	$self->{'hooksManager'}->trigger('beforeNamedBuildConf', \$cfgTpl, 'named.conf') and return 1;
 
 	# Building new file
 	$cfg .= $cfgTpl;
 
-	iMSCP::HooksManager->getInstance()->trigger('afterNamedBuildConf', \$cfg, 'named.conf') and return 1;
+	$self->{'hooksManager'}->trigger('afterNamedBuildConf', \$cfg, 'named.conf') and return 1;
 
 	## Storage and installation of new file
 
@@ -289,7 +292,7 @@ sub addMasterZone
 
 	my $named = Servers::named->factory();
 
-	iMSCP::HooksManager->getInstance()->trigger('beforeNamedAddMasterZone') and return 1;
+	$self->{'hooksManager'}->trigger('beforeNamedAddMasterZone') and return 1;
 
 	my $rs = $named->addDmn(
 		{
@@ -300,7 +303,7 @@ sub addMasterZone
 	);
 	return $rs if $rs;
 
-	iMSCP::HooksManager->getInstance()->trigger('afterNamedAddMasterZone');
+	$self->{'hooksManager'}->trigger('afterNamedAddMasterZone');
 }
 
 sub saveConf
@@ -321,7 +324,7 @@ sub saveConf
 
 	my $cfg = $file->get() or return 1;
 
-	iMSCP::HooksManager->getInstance()->trigger('beforeNamedSaveConf', \$cfg, 'bind.old.data') and return 1;
+	$self->{'hooksManager'}->trigger('beforeNamedSaveConf', \$cfg, 'bind.old.data') and return 1;
 
 	$rs |= $file->mode(0644);
 	$rs |= $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
@@ -332,7 +335,7 @@ sub saveConf
 	$rs |= $file->mode(0644);
 	$rs |= $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
 
-	$rs |= iMSCP::HooksManager->getInstance()->trigger('afterNamedSaveConf', 'bind.old.data');
+	$rs |= $self->{'hooksManager'}->trigger('afterNamedSaveConf', 'bind.old.data');
 
 	$rs;
 }

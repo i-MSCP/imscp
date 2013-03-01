@@ -2,7 +2,7 @@
 
 =head1 NAME
 
- Servers::httpd::apache_php_fpm::installer - i-MSCP Apache PHP-FPM Server installer
+ Servers::httpd::apache_php_fpm::installer - i-MSCP Apache PHP-FPM Server installer implementation
 
 =cut
 
@@ -35,6 +35,7 @@ use strict;
 use warnings;
 
 use iMSCP::Debug;
+use iMSCP::Config;
 use iMSCP::HooksManager;
 use iMSCP::Execute;
 use iMSCP::Rights;
@@ -50,7 +51,7 @@ use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
 
- i-MSCP Apache PHP-FPM Server installer.
+ i-MSCP Apache PHP-FPM Server installer implementation.
 
 =head1 PUBLIC METHODS
 
@@ -247,6 +248,7 @@ sub _init
 	my $self = shift;
 
 	$self->{'hooksManager'} = iMSCP::HooksManager->getInstance();
+
 	$self->{'httpd'} = Servers::httpd::apache_php_fpm->new();
 
 	$self->{'hooksManager'}->trigger(
@@ -453,7 +455,7 @@ sub _installApacheLogrotateFile
 {
 	my $self = shift;
 
-	iMSCP::HooksManager->getInstance()->trigger('beforeHttpdInstallLogrotate', 'apache2') and return 1;
+	$self->{'hooksManager'}->trigger('beforeHttpdInstallLogrotate', 'apache2') and return 1;
 
 	$self->{'httpd'}->apacheBkpConfFile("$main::imscpConfig{'LOGROTATE_CONF_DIR'}/apache2", '', 1) and return 1;
 
@@ -464,7 +466,7 @@ sub _installApacheLogrotateFile
 		{ 'destination' => "$main::imscpConfig{'LOGROTATE_CONF_DIR'}/apache2" }
 	) and return 1;
 
-	iMSCP::HooksManager->getInstance()->trigger('afterHttpdInstallLogrotate', 'apache2');
+	$self->{'hooksManager'}->trigger('afterHttpdInstallLogrotate', 'apache2');
 }
 
 =item

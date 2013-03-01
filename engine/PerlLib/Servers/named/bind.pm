@@ -43,7 +43,9 @@ sub _init
 {
 	my $self = shift;
 
-	iMSCP::HooksManager->getInstance()->trigger('beforeNamedInit', $self, 'bind');
+	$self->{'hooksManager'} = iMSCP::HooksManager->getInstance();
+
+	$self->{'hooksManager'}->trigger('beforeNamedInit', $self, 'bind');
 
 	$self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/bind";
 	$self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
@@ -55,7 +57,7 @@ sub _init
 	tie %self::bindConfig, 'iMSCP::Config','fileName' => "$self->{'cfgDir'}/bind.data", noerrors => 1;
 	$self->{$_} = $self::bindConfig{$_} for keys %self::bindConfig;
 
-	iMSCP::HooksManager->getInstance()->trigger('afterNamedInit', $self, 'bind');
+	$self->{'hooksManager'}->trigger('afterNamedInit', $self, 'bind');
 
 	$self;
 }
@@ -81,13 +83,13 @@ sub install
 	my $self = shift;
 	my $rs = 0;
 
-	$rs = iMSCP::HooksManager->getInstance()->trigger('beforeNamedInstall', 'bind');
+	$rs = $self->{'hooksManager'}->trigger('beforeNamedInstall', 'bind');
 
 	require Servers::named::bind::installer;
 
 	$rs |= Servers::named::bind::installer->new()->install();
 
-	$rs |= iMSCP::HooksManager->getInstance()->trigger('afterNamedInstall', 'bind');
+	$rs |= $self->{'hooksManager'}->trigger('afterNamedInstall', 'bind');
 
 	$rs;
 }
@@ -97,7 +99,7 @@ sub uninstall
 	my $self = shift;
 	my $rs = 0;
 
-	$rs = iMSCP::HooksManager->getInstance()->trigger('beforeNamedUninstall', 'bind');
+	$rs = $self->{'hooksManager'}->trigger('beforeNamedUninstall', 'bind');
 
 	require Servers::named::bind::uninstaller;
 
@@ -105,7 +107,7 @@ sub uninstall
 
 	$rs |= $self->restart();
 
-	$rs |= iMSCP::HooksManager->getInstance()->trigger('afterNamedUninstall', 'bind');
+	$rs |= $self->{'hooksManager'}->trigger('afterNamedUninstall', 'bind');
 
 	$rs;
 }
@@ -115,11 +117,11 @@ sub postinstall
 	my $self = shift;
 	my $rs = 0;
 
-	$rs = iMSCP::HooksManager->getInstance()->trigger('beforeNamedPostinstall');
+	$rs = $self->{'hooksManager'}->trigger('beforeNamedPostinstall');
 
 	$self->{'restart'} = 'yes';
 
-	$rs |= iMSCP::HooksManager->getInstance()->trigger('afterNamedPostinstall')
+	$rs |= $self->{'hooksManager'}->trigger('afterNamedPostinstall');
 
 	$rs;
 }
@@ -129,14 +131,14 @@ sub restart
 	my $self = shift;
 	my ($rs, $stdout, $stderr);
 
-	iMSCP::HooksManager->getInstance()->trigger('beforeNamedRestart') and return 1;
+	$self->{'hooksManager'}->trigger('beforeNamedRestart') and return 1;
 
 	$rs = execute("$self->{'CMD_NAMED'} restart", \$stdout, \$stderr);
-	debug("$stdout") if $stdout;
-	error("$stderr") if $stderr;
+	debug($stdout) if $stdout;
+	error($stderr) if $stderr && $rs;
 	return $rs if $rs;
 
-	iMSCP::HooksManager->getInstance()->trigger('afterNamedRestart');
+	$self->{'hooksManager'}->trigger('afterNamedRestart');
 }
 
 sub incTimeStamp
@@ -146,7 +148,7 @@ sub incTimeStamp
 	my $dmnName = shift;
 	my $newZoneFile	= shift || $oldZoneFile;
 
-	iMSCP::HooksManager->getInstance()->trigger('beforeNamedIncTimeStamp');
+	$self->{'hooksManager'}->trigger('beforeNamedIncTimeStamp');
 
 	# Create or Update serial number according RFC 1912
 
@@ -190,7 +192,7 @@ sub incTimeStamp
 
 	$newZoneFile = replaceBloc($bTag, $eTag, "$bTag$timeStampBlock$eTag", $newZoneFile, undef);
 
-	iMSCP::HooksManager->getInstance()->trigger('afterNamedIncTimeStamp');
+	$self->{'hooksManager'}->trigger('afterNamedIncTimeStamp');
 
 	$newZoneFile;
 }
@@ -201,7 +203,7 @@ sub addDmnDb
 	my $option = shift;
 	my $zoneFile = "$self::bindConfig{'BIND_DB_DIR'}/$option->{'DMN_NAME'}.db";
 
-	iMSCP::HooksManager->getInstance()->trigger('beforeNamedAddDmnDb') and return 1;
+	$self->{'hooksManager'}->trigger('beforeNamedAddDmnDb') and return 1;
 
 	my $ipH = iMSCP::IP->new();
 
@@ -379,7 +381,7 @@ sub addDmnDb
 	# Install the file in the production directory
 	$file->copyFile($self::bindConfig{'BIND_DB_DIR'}) and return 1;
 
-	iMSCP::HooksManager->getInstance()->trigger('afterNamedAddDmnDb');
+	$self->{'hooksManager'}->trigger('afterNamedAddDmnDb');
 }
 
 sub addDmnConfig
@@ -389,7 +391,7 @@ sub addDmnConfig
 	my $rs = 0;
 	my ($rdata, $cfg, $file);
 
-	iMSCP::HooksManager->getInstance()->trigger('beforeNamedAddDmnConfig') and return 1;
+	$self->{'hooksManager'}->trigger('beforeNamedAddDmnConfig') and return 1;
 
 	# backup config file
 	my $timestamp = time();
@@ -451,7 +453,7 @@ sub addDmnConfig
 	# Install the new file in the production directory
 	$rs |= $file->copyFile($self::bindConfig{'BIND_CONF_FILE'});
 
-	$rs |= iMSCP::HooksManager->getInstance()->trigger('afterNamedAddDmnConfig');
+	$rs |= $self->{'hooksManager'}->trigger('afterNamedAddDmnConfig');
 
 	$rs;
 }
@@ -473,16 +475,16 @@ sub addDmn
 		return 1 unless $option->{$_};
 	}
 
-	iMSCP::HooksManager->getInstance()->trigger('beforeNamedAddDmn', $option) and return 1;
+	$self->{'hooksManager'}->trigger('beforeNamedAddDmn', $option) and return 1;
 
 	$self->addDmnConfig($option) and return 1;
 	$self->addDmnDb($option) and return 1 if $self::bindConfig{'BIND_MODE'} =~ /^master$/i;
 
-	iMSCP::HooksManager->getInstance()->trigger('afterNamedAddDmn', $option) and return 1;
+	$self->{'hooksManager'}->trigger('afterNamedAddDmn', $option) and return 1;
 
 	$self->{'restart'} = 'yes';
 
-	iMSCP::HooksManager->getInstance()->trigger('afterNamedAddDmn');
+	$self->{'hooksManager'}->trigger('afterNamedAddDmn');
 }
 
 sub postaddDmn
@@ -491,7 +493,7 @@ sub postaddDmn
 	my $option = shift;
 	my $rs = 0;
 
-	iMSCP::HooksManager->getInstance()->trigger('beforeNamedPostAddDmn', $option) and return 1;
+	$self->{'hooksManager'}->trigger('beforeNamedPostAddDmn', $option) and return 1;
 
 	my $ipH = iMSCP::IP->new();
 
@@ -507,7 +509,7 @@ sub postaddDmn
 		return 1 unless $option->{$_};
 	}
 
-	iMSCP::HooksManager->getInstance()->trigger('beforeNamedPostAddDmn', $option);
+	$self->{'hooksManager'}->trigger('beforeNamedPostAddDmn', $option);
 
 	$rs |= $self->addDmn(
 		{
@@ -523,12 +525,12 @@ sub postaddDmn
 		}
 	);
 
-	iMSCP::HooksManager->getInstance()->trigger('afterNamedPostAddDmn', $option);
+	$self->{'hooksManager'}->trigger('afterNamedPostAddDmn', $option);
 
 	$self->{'restart'} = 'yes';
 	delete $self->{'data'};
 
-	$rs |= iMSCP::HooksManager->getInstance()->trigger('afterNamedPostAddDmn');
+	$rs |= $self->{'hooksManager'}->trigger('afterNamedPostAddDmn');
 
 	$rs;
 }
@@ -540,7 +542,7 @@ sub delDmnConfig
 	my ($rdata, $cfg, $file);
 	my $rs = 0;
 
-	iMSCP::HooksManager->getInstance()->trigger('beforeNamedDelDmnConfig') and return 1;
+	$self->{'hooksManager'}->trigger('beforeNamedDelDmnConfig') and return 1;
 
 	# backup config file
 	if(-f "$self->{'wrkDir'}/named.conf") {
@@ -581,7 +583,7 @@ sub delDmnConfig
 	# Install the new file in the production directory
 	$rs |= $file->copyFile($self::bindConfig{'BIND_CONF_FILE'});
 
-	$rs |= iMSCP::HooksManager->getInstance()->trigger('afterNamedDelDmnConfig');
+	$rs |= $self->{'hooksManager'}->trigger('afterNamedDelDmnConfig');
 
 	$rs;
 }
@@ -597,7 +599,7 @@ sub delDmn
 	error('You must supply domain name!') unless $option->{'DMN_NAME'};
 	return 1 unless $option->{'DMN_NAME'};
 
-	iMSCP::HooksManager->getInstance()->trigger('beforeNamedDelDmn', $option) and return 1;
+	$self->{'hooksManager'}->trigger('beforeNamedDelDmn', $option) and return 1;
 
 	$rs |= $self->delDmnConfig($option);
 
@@ -636,7 +638,7 @@ sub delDmn
 	# Install the new file in the production directory
 	$rs |= $file->copyFile($self::bindConfig{'BIND_DB_DIR'});
 
-	$rs |= iMSCP::HooksManager->getInstance()->trigger('afterNamedDelDmn', $option);
+	$rs |= $self->{'hooksManager'}->trigger('afterNamedDelDmn', $option);
 
 	$rs;
 }
@@ -647,7 +649,7 @@ sub postdelDmn
 	my $data = shift;
 	my $rs = 0;
 
-	$rs = iMSCP::HooksManager->getInstance()->trigger('beforeNamedPostDelDmn', $data);
+	$rs = $self->{'hooksManager'}->trigger('beforeNamedPostDelDmn', $data);
 
 	$rs |= $self->addDmn(
 		{
@@ -660,7 +662,7 @@ sub postdelDmn
 		}
 	);
 
-	$rs |= iMSCP::HooksManager->getInstance()->trigger('afterNamedPostDelDmn', \$data);
+	$rs |= $self->{'hooksManager'}->trigger('afterNamedPostDelDmn', \$data);
 
 	$self->{'restart'} = 'yes';
 	delete $self->{'data'};
@@ -684,7 +686,7 @@ sub addSub
 		return 1 unless $data->{$_};
 	}
 
-	iMSCP::HooksManager->getInstance()->trigger('beforeNamedAddSub', $data) and return 1;
+	$self->{'hooksManager'}->trigger('beforeNamedAddSub', $data) and return 1;
 
 	my $zoneFile = "$self::bindConfig{'BIND_DB_DIR'}/$data->{'PARENT_DMN_NAME'}.db";
 
@@ -756,7 +758,7 @@ sub addSub
 	# Install the file in the production directory
 	$rs |= $file->copyFile($self::bindConfig{'BIND_DB_DIR'});
 
-	$rs |= iMSCP::HooksManager->getInstance()->trigger('afterNamedAddSub', $data);
+	$rs |= $self->{'hooksManager'}->trigger('afterNamedAddSub', $data);
 
 	$rs;
 }
@@ -769,7 +771,7 @@ sub postaddSub
 
 	my $ipH = iMSCP::IP->new();
 
-	iMSCP::HooksManager->getInstance()->trigger('beforeNamedPostAddSub', $data) and return 1;
+	$self->{'hooksManager'}->trigger('beforeNamedPostAddSub', $data) and return 1;
 
 	$rs |= $self->addDmn(
 		{
@@ -785,7 +787,7 @@ sub postaddSub
 		}
 	);
 
-	$rs |= iMSCP::HooksManager->getInstance()->trigger('afterNamedPostAddSub', $data);
+	$rs |= $self->{'hooksManager'}->trigger('afterNamedPostAddSub', $data);
 
 	$self->{'restart'} = 'yes';
 	delete $self->{'data'};
@@ -810,7 +812,7 @@ sub delSub
 		return 1 unless $data->{$_};
 	}
 
-	iMSCP::HooksManager->getInstance()->trigger('beforeNamedDelSub', $data) and return 1;
+	$self->{'hooksManager'}->trigger('beforeNamedDelSub', $data) and return 1;
 
 	my $zoneFile = "$self::bindConfig{'BIND_DB_DIR'}/$data->{'PARENT_DMN_NAME'}.db";
 
@@ -857,7 +859,7 @@ sub delSub
 	# Install the file in the production directory
 	$rs |= $file->copyFile($self::bindConfig{'BIND_DB_DIR'});
 
-	$rs |= iMSCP::HooksManager->getInstance()->trigger('afterNamedDelSub', $data);
+	$rs |= $self->{'hooksManager'}->trigger('afterNamedDelSub', $data);
 
 	$rs;
 }
@@ -868,7 +870,7 @@ sub postdelSub
 	my $data = shift;
 	my $rs = 0;
 
-	iMSCP::HooksManager->getInstance()->trigger('beforeNamedPostDelSub', $data) and return 1;
+	$self->{'hooksManager'}->trigger('beforeNamedPostDelSub', $data) and return 1;
 
 	$rs |= $self->addDmn(
 		{
@@ -881,7 +883,7 @@ sub postdelSub
 		}
 	);
 
-	$rs |= iMSCP::HooksManager->getInstance()->trigger('afterNamedPostDelSub', $data);
+	$rs |= $self->{'hooksManager'}->trigger('afterNamedPostDelSub', $data);
 
 	$self->{'restart'} = 'yes';
 	delete $self->{'data'};

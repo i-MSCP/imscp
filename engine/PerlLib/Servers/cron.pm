@@ -37,14 +37,16 @@ sub _init
 {
 	my $self = shift;
 
-	iMSCP::HooksManager->getInstance()->trigger('beforeCronInit', $self, 'cron');
+	$self->{'hooksManager'} = iMSCP::HooksManager->getInstance();
+
+	$self->{'hooksManager'}->trigger('beforeCronInit', $self, 'cron');
 
 	$self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/cron.d";
 	$self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
 	$self->{'wrkDir'} = "$self->{'cfgDir'}/working";
 	$self->{'tplDir'} = "$self->{'cfgDir'}/parts";
 
-	iMSCP::HooksManager->getInstance()->trigger('afterCronInit', $self, 'cron');
+	$self->{'hooksManager'}->trigger('afterCronInit', $self, 'cron');
 
 	$self;
 }
@@ -157,7 +159,7 @@ sub delTask
 		$wrkFileContent = replaceBloc($bTag, $eTag, '', $wrkFileContent, undef);
 
 		# Store the file in the working directory
-		my $file = iMSCP::File->new('filename' =>"$self->{'wrkDir'}/imscp");
+		my $file = iMSCP::File->new('filename' => "$self->{'wrkDir'}/imscp");
 		$rs |= $file->set($wrkFileContent);
 		$rs |= $file->save();
 		$rs |= $file->mode(0644);

@@ -1,5 +1,11 @@
 #!/usr/bin/perl
 
+=head1 NAME
+
+ Servers::po::dovecot - i-MSCP Dovecot IMAP/POP3 Server implementation
+
+=cut
+
 # i-MSCP - internet Multi Server Control Panel
 # Copyright (C) 2010-2013 by internet Multi Server Control Panel
 #
@@ -37,24 +43,22 @@ use iMSCP::File;
 use Tie::File;
 use parent 'Common::SingletonClass';
 
-sub _init
-{
-	my $self = shift;
+=head1 DESCRIPTION
 
-	iMSCP::HooksManager->getInstance()->trigger('beforePoInit', $self, 'dovecot');
+ i-MSCP Dovecot IMAP/POP3 Server implementation.
 
-	$self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/dovecot";
-	$self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
-	$self->{'wrkDir'} = "$self->{'cfgDir'}/working";
+=head1 PUBLIC METHODS
 
-	my $conf = "$self->{'cfgDir'}/dovecot.data";
+=over 4
 
-	tie %self::dovecotConfig, 'iMSCP::Config','fileName' => $conf;
+=item registerSetupHooks($hooksManager)
 
-	iMSCP::HooksManager->getInstance()->trigger('afterPoInit', $self, 'dovecot');
+ Register setup hooks.
 
-	$self;
-}
+ Param iMSCP::HooksManager $hooksManager Hooks manager instance
+ Return int 0 on success, other on failure
+
+=cut
 
 sub registerSetupHooks
 {
@@ -73,70 +77,110 @@ sub registerSetupHooks
 	$rs;
 }
 
+=item install()
+
+ Process install tasks.
+
+ Return int 0 on success, other on failure
+
+=cut
+
 sub install
 {
 	my $self = shift;
 	my $rs = 0;
 
-	$rs = iMSCP::HooksManager->getInstance()->trigger('beforePoInstall', 'dovecot');
+	$rs = $self->{'hooksManager'}->trigger('beforePoInstall', 'dovecot');
 
 	require Servers::po::dovecot::installer;
 
 	$rs |= Servers::po::dovecot::installer->new()->install();
 
-	$rs |= iMSCP::HooksManager->getInstance()->trigger('afterPoInstall', 'dovecot');
+	$rs |= $self->{'hooksManager'}->trigger('afterPoInstall', 'dovecot');
 
 	$rs;
 }
 
-sub uninstall
-{
-	my $self = shift;
-	my $rs = 0;
+=item postinstall()
 
-	$rs = iMSCP::HooksManager->getInstance()->trigger('beforePoUninstall', 'dovecot');
+ Process postinstall tasks.
 
-	require Servers::po::dovecot::uninstaller;
+ Return int 0 on success, other on failure
 
-	$rs |= Servers::po::dovecot::uninstaller->new()->uninstall();
-	$rs |= $self->restart();
-
-	$rs |= iMSCP::HooksManager->getInstance()->trigger('afterPoUninstall', 'dovecot');
-
-	$rs;
-}
+=cut
 
 sub postinstall
 {
 	my $self = shift;
 	my $rs = 0;
 
-	$rs = iMSCP::HooksManager->getInstance()->trigger('beforePoPostinstall', 'dovecot');
+	$rs = $self->{'hooksManager'}->trigger('beforePoPostinstall', 'dovecot');
 
 	$self->{'restart'} = 'yes';
 
-	$rs |= iMSCP::HooksManager->getInstance()->trigger('afterPoPostinstall', 'dovecot');
+	$rs |= $self->{'hooksManager'}->trigger('afterPoPostinstall', 'dovecot');
 
 	$rs;
 }
+
+=item uninstall()
+
+ Process uninstall tasks.
+
+ Return int 0 on success, other on failure
+
+=cut
+
+sub uninstall
+{
+	my $self = shift;
+	my $rs = 0;
+
+	$rs = $self->{'hooksManager'}->trigger('beforePoUninstall', 'dovecot');
+
+	require Servers::po::dovecot::uninstaller;
+
+	$rs |= Servers::po::dovecot::uninstaller->new()->uninstall();
+	$rs |= $self->restart();
+
+	$rs |= i$self->{'hooksManager'}->trigger('afterPoUninstall', 'dovecot');
+
+	$rs;
+}
+
+=item restart()
+
+ Restart the server.
+
+ Return int 0, other on failure
+
+=cut
 
 sub restart
 {
 	my $self = shift;
 	my $rs = 0;
 
-	$rs = iMSCP::HooksManager->getInstance()->trigger('beforePoRestart');
+	$rs = $self->{'hooksManager'}->trigger('beforePoRestart');
 
 	my ($stdout, $stderr);
 	$rs |= execute("$self::dovecotConfig{'CMD_DOVECOT'} restart", \$stdout, \$stderr);
 	debug($stdout) if $stdout;
-	debug($stderr) if $stderr && !$rs;
 	error($stderr) if $stderr && $rs;
 
-	$rs |= iMSCP::HooksManager->getInstance()->trigger('afterPoRestart');
+	$rs |= $self->{'hooksManager'}->trigger('afterPoRestart');
 
 	$rs;
 }
+
+
+=item getTraffic()
+
+ Get server traffic.
+
+ Return int Traffic amount, 0 on failure
+
+=cut
 
 sub getTraffic
 {
@@ -147,7 +191,7 @@ sub getTraffic
 	my $wrkLogFile = "$main::imscpConfig{'LOG_DIR'}/mail.po.log";
 	my ($rv, $rs, $stdout, $stderr);
 
-	iMSCP::HooksManager->getInstance()->trigger('beforePoGetTraffic');
+	$self->{'hooksManager'}->trigger('beforePoGetTraffic') and return 0;
 
 	# only if files was not already parsed this session
 	unless($self->{'logDb'}){
@@ -204,10 +248,56 @@ sub getTraffic
 		}
 	}
 
-	iMSCP::HooksManager->getInstance()->trigger('afterPoGetTraffic');
+	$self->{'hooksManager'}->trigger('afterPoGetTraffic') and return 0;
 
 	$self->{'traff'}->{$who} ? $self->{'traff'}->{$who} : 0;
 }
+
+=back
+
+=head1 PRIVATE METHODS
+
+=over 4
+
+=item
+
+ Called by new(). Initialize instance.
+
+ Return Servers::po::dovecot
+
+=cut
+
+sub _init
+{
+	my $self = shift;
+
+	$self->{'hooksManager'} = iMSCP::HooksManager->getInstance();
+
+	$self->{'hooksManager'}->trigger('beforePoInit', $self, 'dovecot');
+
+	$self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/dovecot";
+	$self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
+	$self->{'wrkDir'} = "$self->{'cfgDir'}/working";
+
+	my $conf = "$self->{'cfgDir'}/dovecot.data";
+
+	tie %self::dovecotConfig, 'iMSCP::Config','fileName' => $conf;
+
+	$self->{'hooksManager'}->trigger('afterPoInit', $self, 'dovecot');
+
+	$self;
+}
+
+=item END
+
+ Code triggered at the very end of script execution.
+
+-  Restart server if needed
+ - Remove old traffic logs file if exists
+
+ Return int Exit code
+
+=cut
 
 END
 {
@@ -221,5 +311,14 @@ END
 
 	$? = $endCode || $rs;
 }
+
+=back
+
+=head1 AUTHORS
+
+ Daniel Andreca <sci2tech@gmail.com>
+ Laurent Declercq <l.declercq@nuxwin.com>
+
+=cut
 
 1;

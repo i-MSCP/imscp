@@ -2,7 +2,7 @@
 
 =head1 NAME
 
- Servers::httpd::apache_php_fpm - i-MSCP Apache PHP-FPM Server
+ Servers::httpd::apache_php_fpm - i-MSCP Apache PHP-FPM Server implementation
 
 =cut
 
@@ -42,15 +42,13 @@ use iMSCP::Execute;
 use iMSCP::Templator;
 use iMSCP::Dir;
 use iMSCP::Rights;
-
 use File::Basename;
 use POSIX;
-
 use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
 
- i-MSCP Apache PHP FPM Server.
+ i-MSCP Apache PHP FPM Server implementation.
 
 =head1 PUBLIC METHODS
 
@@ -935,7 +933,7 @@ sub buildConfFile
 			? $options->{'destination'} : "$self->{'apacheWrkDir'}/$filename$suffix")
 	);
 	$fileH->set($cfgTpl);
-	$rs|} $fileH->save();
+	$rs |= $fileH->save();
 	$rs |= $fileH->mode($options->{'mode'} ? $options->{'mode'} : 0644);
 	$rs |= $fileH->owner(
 		$options->{'user'} ? $options->{'user'} : $main::imscpConfig{'ROOT_USER'},

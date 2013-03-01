@@ -40,7 +40,9 @@ sub _init
 {
 	my $self = shift;
 
-	iMSCP::HooksManager->getInstance()->trigger('beforeFtpdInit', $self, 'proftpd');
+	$self->{'hooksManager'} = iMSCP::HooksManager->getInstance();
+
+	$self->{'hooksManager'}->trigger('beforeFtpdInit', $self, 'proftpd');
 
 	$self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/proftpd";
 	$self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
@@ -52,7 +54,7 @@ sub _init
 	tie %self::proftpdConfig, 'iMSCP::Config','fileName' => "$self->{'cfgDir'}/proftpd.data";
 	$self->{$_} = $self::proftpdConfig{$_} for keys %self::proftpdConfig;
 
-	iMSCP::HooksManager->getInstance()->trigger('afterFtpdInit', $self, 'proftpd');
+	$self->{'hooksManager'}->trigger('afterFtpdInit', $self, 'proftpd');
 
 	$self;
 }
@@ -79,13 +81,13 @@ sub install
 	my $self = shift;
 	my $rs = 0;
 
-	$rs = iMSCP::HooksManager->getInstance()->trigger('beforeFtpdInstall', 'proftpd');
+	$rs = $self->{'hooksManager'}->trigger('beforeFtpdInstall', 'proftpd');
 
 	require Servers::ftpd::proftpd::installer;
 
 	$rs |= Servers::ftpd::proftpd::installer->new()->install();
 
-	$rs |= iMSCP::HooksManager->getInstance()->trigger('afterFtpdInstall', 'proftpd');
+	$rs |= $self->{'hooksManager'}->trigger('afterFtpdInstall', 'proftpd');
 
 	$rs;
 }
@@ -104,13 +106,13 @@ sub uninstall
 	my $self = shift;
 	my $rs = 0;
 
-	$rs = iMSCP::HooksManager->getInstance()->trigger('beforeFtpdUninstall', 'proftpd');
+	$rs = $self->{'hooksManager'}->trigger('beforeFtpdUninstall', 'proftpd');
 
 	require Servers::ftpd::proftpd::uninstaller;
 
 	$rs |= Servers::ftpd::proftpd::uninstaller->new()->uninstall();
 
-	$rs |= iMSCP::HooksManager->getInstance()->trigger('afterFtpdUninstall', 'proftpd');
+	$rs |= $self->{'hooksManager'}->trigger('afterFtpdUninstall', 'proftpd');
 
 	$rs |= $self->restart();
 
@@ -121,7 +123,7 @@ sub restart
 {
 	my $self = shift;
 	my $rs = 0;
-	$rs = iMSCP::HooksManager->getInstance()->trigger('beforeFtpdRestart');
+	$rs = $self->{'hooksManager'}->trigger('beforeFtpdRestart');
 
 	my ($stdout, $stderr);
 	$rs |= execute("$self->{'CMD_FTPD'} restart", \$stdout, \$stderr);
@@ -129,7 +131,7 @@ sub restart
 	debug($stderr) if $stderr && !$rs;
 	error($stderr) if $stderr && $rs;
 
-	$rs |= iMSCP::HooksManager->getInstance()->trigger('afterFtpdRestart');
+	$rs |= $self->{'hooksManager'}->trigger('afterFtpdRestart');
 
 	$rs;
 }
@@ -164,12 +166,12 @@ sub addDmn
 		return 1;
 	}
 
-	iMSCP::HooksManager->getInstance()->trigger('beforeFtpdAddDmn', $data) and return 1;
+	$self->{'hooksManager'}->trigger('beforeFtpdAddDmn', $data) and return 1;
 
 	$content = process({ 'PATH' => $data->{'PATH'} }, $content);
 	$file = iMSCP::File->new('filename' => "$self->{'wrkDir'}/$data->{'FILE_NAME'}");
 
-	iMSCP::HooksManager->getInstance()->trigger('afterFtpdAddDmn', $data) and return 1;
+	$self->{'hooksManager'}->trigger('afterFtpdAddDmn', $data) and return 1;
 
 	$file->set($content);
 
@@ -196,13 +198,13 @@ sub delDmn
 		return 1 unless $data->{$_};
 	}
 
-	iMSCP::HooksManager->getInstance()->trigger('beforeFtpdDelDmn', $data) and return 1;
+	$self->{'hooksManager'}->trigger('beforeFtpdDelDmn', $data) and return 1;
 
 	iMSCP::File->new('filename' => "$self::proftpdConfig{'FTPD_CONF_DIR'}/$data->{'FILE_NAME'}")->delFile() and  return 1;
 
 	$self->{'restart'} = 'yes';
 
-	iMSCP::HooksManager->getInstance()->trigger('afterFtpdDelDmn', $data);
+	$self->{'hooksManager'}->trigger('afterFtpdDelDmn', $data);
 }
 
 sub addSub

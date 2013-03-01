@@ -31,11 +31,11 @@ use warnings;
 
 use iMSCP::Debug;
 use iMSCP::HooksManager;
+use iMSCP::Config;
 use iMSCP::Execute;
 use iMSCP::File;
 use iMSCP::Dir;
 use File::Basename;
-use iMSCP::Config;
 use Tie::File;
 use parent 'Common::SingletonClass';
 
@@ -43,7 +43,9 @@ sub _init
 {
 	my $self = shift;
 
-	iMSCP::HooksManager->getInstance()->trigger('beforeMtaInit', $self, 'postfix');
+	$self->{'hooksManager'} = iMSCP::HooksManager->getInstance();
+
+	$self->{'hooksManager'}->trigger('beforeMtaInit', $self, 'postfix');
 
 	$self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/postfix";
 	$self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
@@ -54,7 +56,7 @@ sub _init
 	tie %self::postfixConfig, 'iMSCP::Config','fileName' => "$self->{'cfgDir'}/postfix.data";
 	$self->{$_} = $self::postfixConfig{$_} for keys %self::postfixConfig;
 
-	iMSCP::HooksManager->getInstance()->trigger('afterMtaInit', $self, 'postfix');
+	$self->{'hooksManager'}->trigger('afterMtaInit', $self, 'postfix');
 
 	$self;
 }
@@ -65,11 +67,7 @@ sub registerSetupHooks
 	my $hooksManager = shift;
 	my $rs = 0;
 
-	$rs = $hooksManager->trigger('beforeMtaRegisterSetupHooks', $hooksManager, 'postfix') and return 1;
-
-	require Servers::mta::postfix::installer;
-
-	$rs |= Servers::mta::postfix::installer->new()->registerSetupHooks($hooksManager);
+	$rs = $hooksManager->trigger('beforeMtaRegisterSetupHooks', $hooksManager, 'postfix');
 
 	$rs |= $hooksManager->trigger('afterMtaRegisterSetupHooks', $hooksManager, 'postfix');
 
@@ -81,13 +79,15 @@ sub preinstall
 	my $self = shift;
 	my $rs = 0;
 
-	$rs = iMSCP::HooksManager->getInstance()->trigger('beforeMtaPreInstall', 'postfix');
+	$rs = $self->{'hooksManager'}->trigger('beforeMtaPreInstall', 'postfix');
 
 	require Servers::mta::postfix::installer;
 
-	Servers::mta::postfix::installer->preinstall();
+	$rs |= Servers::mta::postfix::installer->new()->preinstall();
 
-	$rs |= iMSCP::HooksManager->getInstance()->trigger('afterMtaPreInstall', 'postfix');
+	$rs |= $self->{'hooksManager'}->trigger('afterMtaPreInstall', 'postfix');
+
+	$rs;
 }
 
 sub install
@@ -95,13 +95,13 @@ sub install
 	my $self = shift;
 	my $rs = 0;
 
-	$rs = iMSCP::HooksManager->getInstance()->trigger('beforeMtaInstall', 'postfix');
+	$rs = $self->{'hooksManager'}->trigger('beforeMtaInstall', 'postfix');
 
 	require Servers::mta::postfix::installer;
 
 	$rs |= Servers::mta::postfix::installer->new()->install();
 
-	$rs |= iMSCP::HooksManager->getInstance()->trigger('afterMtaInstall', 'postfix');
+	$rs |= $self->{'hooksManager'}->trigger('afterMtaInstall', 'postfix');
 
 	$rs;
 }
@@ -111,15 +111,15 @@ sub uninstall
 	my $self = shift;
 	my $rs = 0;
 
-	require Servers::mta::postfix::uninstaller;
+	$rs = $self->{'hooksManager'}->trigger('beforeMtaUninstall', 'postfix');
 
-	$rs = iMSCP::HooksManager->getInstance()->trigger('beforeMtaUninstall', 'postfix');
+	require Servers::mta::postfix::uninstaller;
 
 	$rs |= Servers::mta::postfix::uninstaller->new()->uninstall();
 
 	$rs |= $self->restart();
 
-	$rs |= iMSCP::HooksManager->getInstance()->trigger('afterMtaUninstall', 'postfix');
+	$rs |= $self->{'hooksManager'}->trigger('afterMtaUninstall', 'postfix');
 
 	$rs;
 }
@@ -129,11 +129,11 @@ sub postinstall
 	my $self = shift;
 	my $rs = 0;
 
-	$rs = iMSCP::HooksManager->getInstance()->trigger('beforeMtaPostinstall', 'postfix');
+	$rs = $self->{'hooksManager'}->trigger('beforeMtaPostinstall', 'postfix');
 
 	$self->{'restart'} = 'yes';
 
-	$rs = iMSCP::HooksManager->getInstance()->trigger('afterMtaPostinstall', 'postfix');
+	$rs = $self->{'hooksManager'}->trigger('afterMtaPostinstall', 'postfix');
 
 	$rs;
 }
@@ -143,6 +143,7 @@ sub setEnginePermissions
 	my $self= shift;
 
 	require Servers::mta::postfix::installer;
+
 	Servers::mta::postfix::installer->new()->setEnginePermissions();
 }
 
@@ -151,15 +152,15 @@ sub restart
 	my $self = shift;
 	my $rs = 0;
 
-	$rs = iMSCP::HooksManager->getInstance()->trigger('beforeMtaRestart');
+	$rs = $self->{'hooksManager'}->trigger('beforeMtaRestart');
 
 	# Reload config
 	my ($stdout, $stderr);
 	$rs |= execute("$self->{'CMD_MTA'} restart", \$stdout, \$stderr);
 	debug($stdout) if $stdout;
-	error($stderr) if $stderr;
+	error($stderr) if $stderr && $rs;
 
-	$rs |= iMSCP::HooksManager->getInstance()->trigger('afterMtaRestart');
+	$rs |= $self->{'hooksManager'}->trigger('afterMtaRestart');
 
 	$rs;
 }
@@ -170,15 +171,15 @@ sub postmap
 	my $postmap	= shift;
 	my $rs = 0;
 
-	$rs = iMSCP::HooksManager->getInstance()->trigger('beforeMtaPostmap', \$postmap);
+	$rs = $self->{'hooksManager'}->trigger('beforeMtaPostmap', \$postmap);
 
 	# Reload config
 	my ($stdout, $stderr);
 	$rs |= execute("$self->{'CMD_POSTMAP'} $postmap", \$stdout, \$stderr);
 	debug($stdout) if $stdout;
-	error($stderr) if $stderr;
+	error($stderr) if $stderr && $rs;
 
-	$rs |= iMSCP::HooksManager->getInstance()->trigger('afterMtaPostmap', $postmap);
+	$rs |= $self->{'hooksManager'}->trigger('afterMtaPostmap', $postmap);
 
 	$rs;
 }
@@ -192,7 +193,8 @@ sub addDmn
 	error('You must supply domain name!') unless $data->{'DMN_NAME'};
 	return 1 unless $data->{'DMN_NAME'};
 
-	iMSCP::HooksManager->getInstance()->trigger('beforeMtaAddDmn', $data) and return 1;
+	$rs = $self->{'hooksManager'}->trigger('beforeMtaAddDmn', $data);
+	return $rs if $rs;
 
 	if($data->{'EXTERNAL_MAIL'} eq 'on') { # Mail for both domain and subdomains is managed by external server
 		# Remove entry from the Postfix virtual_mailbox_domains map
@@ -225,7 +227,7 @@ sub addDmn
 		}
 	}
 
-	$rs |= iMSCP::HooksManager->getInstance()->trigger('afterMtaAddDmn', $data);
+	$rs |= $self->{'hooksManager'}->trigger('afterMtaAddDmn', $data);
 
 	$rs;
 }
@@ -236,7 +238,8 @@ sub addToRelayHash
 	my $data = shift;
 	my $rs = 0;
 
-	iMSCP::HooksManager->getInstance()->trigger('beforeMtaAddToRelayHash', $data) and return 1;
+	$rs = $self->{'hooksManager'}->trigger('beforeMtaAddToRelayHash', $data);
+	return $rs if $rs;
 
 	my $entry = "$data->{'DMN_NAME'}\t\t\tOK\n";
 
@@ -263,7 +266,7 @@ sub addToRelayHash
 	$rs |= $file->copyFile( $self->{'MTA_RELAY_HASH'} );
 	$self->{'postmap'}->{$self->{'MTA_RELAY_HASH'}} = $data->{'DMN_NAME'};
 
-	$rs |= iMSCP::HooksManager->getInstance()->trigger('afterMtaAddToRelayHash', $data);
+	$rs |= $self->{'hooksManager'}->trigger('afterMtaAddToRelayHash', $data);
 
 	$rs;
 }
@@ -274,7 +277,8 @@ sub delFromRelayHash
 	my $data = shift;
 	my $rs = 0;
 
-	iMSCP::HooksManager->getInstance()->trigger('beforeMtaDelFromRelayHash', $data) and return 1;
+	$rs = $self->{'hooksManager'}->trigger('beforeMtaDelFromRelayHash', $data);
+	return $rs if $rs;
 
 	my $entry = "\.?$data->{'DMN_NAME'}\t\t\tOK\n"; # Match both "domain.tld" and ".domain.tld" entries
 
@@ -301,7 +305,7 @@ sub delFromRelayHash
 	$rs |= $file->copyFile( $self->{'MTA_RELAY_HASH'} );
 	$self->{'postmap'}->{$self->{'MTA_RELAY_HASH'}} = $data->{'DMN_NAME'};
 
-	$rs |= iMSCP::HooksManager->getInstance()->trigger('afterMtaDelFromRelayHash', $data);
+	$rs |= $self->{'hooksManager'}->trigger('afterMtaDelFromRelayHash', $data);
 
 	$rs;
 }
@@ -312,7 +316,8 @@ sub addToDomainHash
 	my $data = shift;
 	my $rs = 0;
 
-	iMSCP::HooksManager->getInstance()->trigger('beforeMtaAddToDomainHash', $data) and return 1;
+	$rs = $self->{'hooksManager'}->trigger('beforeMtaAddToDomainHash', $data);
+	return $rs if $rs;
 
 	my $entry = "$data->{'DMN_NAME'}\t\t\t$data->{'TYPE'}\n";
 
@@ -345,7 +350,7 @@ sub addToDomainHash
 		{ 'user' => $self->{'MTA_MAILBOX_UID_NAME'}, 'group' => $self->{'MTA_MAILBOX_GID_NAME'}, 'mode' => 0700 }
 	);
 
-	$rs |= iMSCP::HooksManager->getInstance()->trigger('afterMtaAddToDomainHash', $data);
+	$rs |= $self->{'hooksManager'}->trigger('afterMtaAddToDomainHash', $data);
 
 	$rs;
 }
@@ -359,12 +364,12 @@ sub delDmn
 	error('You must supply domain name!') unless $data->{'DMN_NAME'};
 	return 1 unless $data->{'DMN_NAME'};
 
-	iMSCP::HooksManager->getInstance()->trigger('beforeMtaDelDmn', $data) and return 1;
+	$rs = $self->{'hooksManager'}->trigger('beforeMtaDelDmn', $data);
 
 	$rs |= $self->disableDmn($data);
 	$rs |= iMSCP::Dir->new('dirname' => "$self->{'MTA_VIRTUAL_MAIL_DIR'}/$data->{'DMN_NAME'}")->remove();
 
-	$rs |= iMSCP::HooksManager->getInstance()->trigger('afterMtaDelDmn', $data);
+	$rs |= $self->{'hooksManager'}->trigger('afterMtaDelDmn', $data);
 
 	$rs;
 }
@@ -378,7 +383,8 @@ sub disableDmn
 	error('You must supply domain name!') unless $data->{'DMN_NAME'};
 	return 1 unless $data->{'DMN_NAME'};
 
-	iMSCP::HooksManager->getInstance()->trigger('beforeMtaDisableDmn', $data) and return 1;
+	$self->{'hooksManager'}->trigger('beforeMtaDisableDmn', $data);
+	return $rs if $rs;
 
 	my $entry = "$data->{'DMN_NAME'}\t\t\t$data->{'TYPE'}\n";
 
@@ -408,7 +414,7 @@ sub disableDmn
 		$rs |= $self->delFromRelayHash($data);
 	}
 
-	$rs |= iMSCP::HooksManager->getInstance()->trigger('afterMtaDisableDmn', $data);
+	$rs |= $self->{'hooksManager'}->trigger('afterMtaDisableDmn', $data);
 
 	$rs;
 }
@@ -416,12 +422,13 @@ sub disableDmn
 sub addSub
 {
 	my $self = shift;
+	my $rs = 0;
 
-	iMSCP::HooksManager->getInstance()->trigger('beforeMtaAddSub') and return 1;
+	$rs = $self->{'hooksManager'}->trigger('beforeMtaAddSub');
 
-	my $rs = $self->addDmn(@_);
+	$rs |= $self->addDmn(@_);
 
-	$rs |= iMSCP::HooksManager->getInstance()->trigger('afterMtaAddSub');
+	$rs |= $self->{'hooksManager'}->trigger('afterMtaAddSub');
 
 	$rs;
 }
@@ -429,12 +436,13 @@ sub addSub
 sub delSub
 {
 	my $self = shift;
+	my $rs = 0;
 
-	iMSCP::HooksManager->getInstance()->trigger('beforeMtaDelSub') and return 1;
+	$rs = $self->{'hooksManager'}->trigger('beforeMtaDelSub');
 
-	my $rs = $self->delDmn(@_);
+	$rs |= $self->delDmn(@_);
 
-	$rs |= iMSCP::HooksManager->getInstance()->trigger('afterMtaDelSub');
+	$rs |= $self->{'hooksManager'}->trigger('afterMtaDelSub');
 
 	$rs;
 }
@@ -442,12 +450,13 @@ sub delSub
 sub disableSub
 {
 	my $self = shift;
+	my $rs = 0;
 
-	iMSCP::HooksManager->getInstance()->trigger('beforeMtaDisableSub') and return 1;
+	$rs = $self->{'hooksManager'}->trigger('beforeMtaDisableSub');
 
-	my $rs = $self->disableDmn(@_);
+	$rs |= $self->disableDmn(@_);
 
-	$rs |= iMSCP::HooksManager->getInstance()->trigger('afterMtaDisableSub');
+	$rs |= $self->{'hooksManager'}->trigger('afterMtaDisableSub');
 
 	$rs;
 }
@@ -468,7 +477,8 @@ sub addMail
 		return 1 unless $data->{$_};
 	}
 
-	iMSCP::HooksManager->getInstance()->trigger('beforeMtaAddMail', $data) and return 1;
+	$rs = $self->{'hooksManager'}->trigger('beforeMtaAddMail', $data);
+	return $rs if $rs;
 
 	for($self->{'MTA_VIRTUAL_MAILBOX_HASH'}, $self->{'MTA_VIRTUAL_ALIAS_HASH'}, $self->{'MTA_TRANSPORT_HASH'}) {
 		if(-f $_) {
@@ -498,7 +508,7 @@ sub addMail
 	$rs |= $self->addCatchAll($data) if $data->{'MAIL_HAS_CATCH_ALL'} eq 'yes';
 	$rs |= $self->delCatchAll($data) if $data->{'MAIL_HAS_CATCH_ALL'} eq 'no';
 
-	$rs |= iMSCP::HooksManager->getInstance()->trigger('afterMtaAddMail', $data);
+	$rs |= $self->{'hooksManager'}->trigger('afterMtaAddMail', $data);
 
 	$rs;
 }
@@ -519,7 +529,8 @@ sub delMail
 		return 1 unless $data->{$_};
 	}
 
-	iMSCP::HooksManager->getInstance()->trigger('beforeMtaDelMail', $data) and return 1;
+	$rs = $self->{'hooksManager'}->trigger('beforeMtaDelMail', $data);
+	return $rs if $rs;
 
 	for($self->{'MTA_VIRTUAL_MAILBOX_HASH'}, $self->{'MTA_VIRTUAL_ALIAS_HASH'}, $self->{'MTA_TRANSPORT_HASH'}) {
 		if(-f $_) {
@@ -539,7 +550,7 @@ sub delMail
 	$rs |= $self->delAutoRspnd($data);
 	$rs |= $self->delCatchAll($data);
 
-	$rs |= iMSCP::HooksManager->getInstance()->trigger('afterMtaDelMail', $data);
+	$rs |= $self->{'hooksManager'}->trigger('afterMtaDelMail', $data);
 
 	$rs;
 }
@@ -560,7 +571,8 @@ sub disableMail
 		return 1 unless $data->{$_};
 	}
 
-	iMSCP::HooksManager->getInstance()->trigger('beforeMtaDisableMail', $data) and return 1;
+	$rs = $self->{'hooksManager'}->trigger('beforeMtaDisableMail', $data);
+	return $rs if $rs;
 
 	for($self->{'MTA_VIRTUAL_MAILBOX_HASH'}, $self->{'MTA_VIRTUAL_ALIAS_HASH'}, $self->{'MTA_TRANSPORT_HASH'}){
 		if(-f $_) {
@@ -580,7 +592,7 @@ sub disableMail
 	$rs |= $self->delAutoRspnd($data);
 	$rs |= $self->delCatchAll($data);
 
-	$rs |= iMSCP::HooksManager->getInstance()->trigger('afterMtaDisableMail', $data);
+	$rs |= $self->{'hooksManager'}->trigger('afterMtaDisableMail', $data);
 
 	$rs;
 }
@@ -591,7 +603,8 @@ sub delSaslData
 	my $data = shift;
 	my $rs = 0;
 
-	iMSCP::HooksManager->getInstance()->trigger('beforeMtaDelSaslData', $data) and return 1;
+	$rs = $self->{'hooksManager'}->trigger('beforeMtaDelSaslData', $data);
+	return $rs if $rs;
 
 	my ($stdout, $stderr);
 
@@ -619,7 +632,7 @@ sub delSaslData
 		}
 	}
 
-	$rs |= iMSCP::HooksManager->getInstance()->trigger('afterMtaDelSaslData', $data);
+	$rs |= $self->{'hooksManager'}->trigger('afterMtaDelSaslData', $data);
 
 	$rs;
 }
@@ -630,7 +643,8 @@ sub addSaslData
 	my $data = shift;
 	my $rs = 0;
 
-	iMSCP::HooksManager->getInstance()->trigger('beforeMtaAddSaslData', $data) and return 1;
+	$rs = $self->{'hooksManager'}->trigger('beforeMtaAddSaslData', $data);
+	return $rs if $rs;
 
 	my ($stdout, $stderr);
 
@@ -663,7 +677,7 @@ sub addSaslData
 		error($stderr) if $stderr;
 	}
 
-	$rs |= iMSCP::HooksManager->getInstance()->trigger('afterMtaAddSaslData', $data);
+	$rs |= $self->{'hooksManager'}->trigger('afterMtaAddSaslData', $data);
 
 	$rs;
 }
@@ -674,7 +688,8 @@ sub delAutoRspnd
 	my $data = shift;
 	my $rs = 0;
 
-	iMSCP::HooksManager->getInstance()->trigger('beforeMtaDelAutoRspnd', $data) and return 1;
+	$rs = $self->{'hooksManager'}->trigger('beforeMtaDelAutoRspnd', $data);
+	return $rs if $rs;
 
 	my $mTrsptHshFile = $self->{'MTA_TRANSPORT_HASH'};
 	my ($filename, $directories, $suffix) = fileparse($mTrsptHshFile);
@@ -695,7 +710,7 @@ sub delAutoRspnd
 
 	$self->{'postmap'}->{$self->{'MTA_TRANSPORT_HASH'}} = $data->{'MAIL_ADDR'};
 
-	$rs |= iMSCP::HooksManager->getInstance()->trigger('afterMtaDelAutoRspnd', $data);
+	$rs |= $self->{'hooksManager'}->trigger('afterMtaDelAutoRspnd', $data);
 
 	$rs;
 }
@@ -706,7 +721,8 @@ sub addAutoRspnd
 	my $data = shift;
 	my $rs = 0;
 
-	iMSCP::HooksManager->getInstance()->trigger('beforeMtaAddAutoRspnd', $data) and return 1;
+	$rs = $self->{'hooksManager'}->trigger('beforeMtaAddAutoRspnd', $data);
+	return $rs if $rs;
 
 	my $mTrsptHshFile = $self->{'MTA_TRANSPORT_HASH'};
 	my ($filename, $directories, $suffix) = fileparse($mTrsptHshFile);
@@ -728,7 +744,7 @@ sub addAutoRspnd
 
 	$self->{'postmap'}->{$self->{'MTA_TRANSPORT_HASH'}} = $data->{'MAIL_ADDR'};
 
-	$rs |= iMSCP::HooksManager->getInstance()->trigger('afterMtaAddAutoRspnd', $data);
+	$rs |= $self->{'hooksManager'}->trigger('afterMtaAddAutoRspnd', $data);
 
 	$rs;
 }
@@ -739,7 +755,8 @@ sub delMailForward
 	my $data = shift;
 	my $rs = 0;
 
-	iMSCP::HooksManager->getInstance()->trigger('beforeMtaDelMailForward', $data) and return 1;
+	$rs = $self->{'hooksManager'}->trigger('beforeMtaDelMailForward', $data);
+	return $rs if $rs;
 
 	my $mFWDHshFile	= $self->{'MTA_VIRTUAL_ALIAS_HASH'};
 	my ($filename, $directories, $suffix) = fileparse($mFWDHshFile);
@@ -775,7 +792,7 @@ sub delMailForward
 
 	$self->{'postmap'}->{$self->{'MTA_VIRTUAL_ALIAS_HASH'}} = $data->{'MAIL_ADDR'};
 
-	$rs |= iMSCP::HooksManager->getInstance()->trigger('afterMtaDelMailForward', $data);
+	$rs |= $self->{'hooksManager'}->trigger('afterMtaDelMailForward', $data);
 
 	$rs;
 }
@@ -786,7 +803,8 @@ sub addMailForward
 	my $data = shift;
 	my $rs = 0;
 
-	iMSCP::HooksManager->getInstance()->trigger('beforeMtaAddMailForward', $data) and return 1;
+	$rs = $self->{'hooksManager'}->trigger('beforeMtaAddMailForward', $data);
+	return $rs if $rs;
 
 	my $mFWDHshFile = $self->{'MTA_VIRTUAL_ALIAS_HASH'};
 	my ($filename, $directories, $suffix) = fileparse($mFWDHshFile);
@@ -821,7 +839,7 @@ sub addMailForward
 
 	$self->{'postmap'}->{$self->{'MTA_VIRTUAL_ALIAS_HASH'}} = $data->{'MAIL_ADDR'};
 
-	$rs |= iMSCP::HooksManager->getInstance()->trigger('afterMtaAddMailForward', $data);
+	$rs |= $self->{'hooksManager'}->trigger('afterMtaAddMailForward', $data);
 
 	$rs;
 }
@@ -832,7 +850,8 @@ sub delMailBox
 	my $data = shift;
 	my $rs = 0;
 
-	iMSCP::HooksManager->getInstance()->trigger('beforeMtaDelMailbox', $data) and return 1;
+	$rs = $self->{'hooksManager'}->trigger('beforeMtaDelMailbox', $data);
+	return $rs if $rs;
 
 	$rs |= $self->disableMailBox($data);
 
@@ -842,7 +861,7 @@ sub delMailBox
 
 	$rs |=	iMSCP::Dir->new('dirname' => $mailDir)->remove();
 
-	$rs |= iMSCP::HooksManager->getInstance()->trigger('afterMtaDelMailbox', $data);
+	$rs |= $self->{'hooksManager'}->trigger('afterMtaDelMailbox', $data);
 
 	$rs;
 }
@@ -853,7 +872,8 @@ sub disableMailBox
 	my $data = shift;
 	my $rs = 0;
 
-	iMSCP::HooksManager->getInstance()->trigger('beforeMtaDisableMailbox', $data) and return 1;
+	$rs = $self->{'hooksManager'}->trigger('beforeMtaDisableMailbox', $data);
+	return $rs if $rs;
 
 	my $mBoxHashFile = $self->{'MTA_VIRTUAL_MAILBOX_HASH'};
 	my ($filename, $directories, $suffix) = fileparse($mBoxHashFile);
@@ -873,7 +893,7 @@ sub disableMailBox
 
 	$self->{'postmap'}->{$self->{'MTA_VIRTUAL_MAILBOX_HASH'}} = $data->{'MAIL_ADDR'};
 
-	$rs |= iMSCP::HooksManager->getInstance()->trigger('afterMtaDisableMailbox', $data);
+	$rs |= $self->{'hooksManager'}->trigger('afterMtaDisableMailbox', $data);
 
 	$rs;
 }
@@ -884,7 +904,8 @@ sub addMailBox
 	my $data = shift;
 	my $rs = 0;
 
-	iMSCP::HooksManager->getInstance()->trigger('beforeMtaAddMailbox', $data) and return 1;
+	$rs = $self->{'hooksManager'}->trigger('beforeMtaAddMailbox', $data);
+	return $rs if $rs;
 
 	my $mBoxHashFile = $self->{'MTA_VIRTUAL_MAILBOX_HASH'};
 	my ($filename, $directories, $suffix) = fileparse($mBoxHashFile);
@@ -955,7 +976,7 @@ sub addMailBox
 	$rs |= $subscriptionsFile->mode(0600);
 	$rs |= $subscriptionsFile->owner($self->{'MTA_MAILBOX_UID_NAME'}, $self->{'MTA_MAILBOX_GID_NAME'});
 
-	$rs |= iMSCP::HooksManager->getInstance()->trigger('afterMtaAddMailbox', $data);
+	$rs |= $self->{'hooksManager'}->trigger('afterMtaAddMailbox', $data);
 
 	$rs;
 }
@@ -966,7 +987,8 @@ sub addCatchAll
 	my $data = shift;
 	my $rs = 0;
 
-	iMSCP::HooksManager->getInstance()->trigger('beforeMtaAddCatchAll', $data) and return 1;
+	$rs = $self->{'hooksManager'}->trigger('beforeMtaAddCatchAll', $data);
+	return $rs if $rs;
 
 	my $mFWDHshFile = $self->{'MTA_VIRTUAL_ALIAS_HASH'};
 	my ($filename, $directories, $suffix) = fileparse($mFWDHshFile);
@@ -998,7 +1020,7 @@ sub addCatchAll
 
 	$self->{'postmap'}->{$self->{'MTA_VIRTUAL_ALIAS_HASH'}} = $data->{'MAIL_ADDR'};
 
-	$rs |= iMSCP::HooksManager->getInstance()->trigger('afterMtaAddCatchAll', $data);
+	$rs |= $self->{'hooksManager'}->trigger('afterMtaAddCatchAll', $data);
 
 	$rs;
 }
@@ -1009,7 +1031,8 @@ sub delCatchAll
 	my $data = shift;
 	my $rs = 0;
 
-	iMSCP::HooksManager->getInstance()->trigger('beforeMtaDelCatchAll', $data) and return 1;
+	$rs = $self->{'hooksManager'}->trigger('beforeMtaDelCatchAll', $data);
+	return $rs if $rs;
 
 	my $mFWDHshFile	= $self->{'MTA_VIRTUAL_ALIAS_HASH'};
 	my ($filename, $directories, $suffix) = fileparse($mFWDHshFile);
@@ -1036,7 +1059,7 @@ sub delCatchAll
 
 	$self->{'postmap'}->{$self->{'MTA_VIRTUAL_ALIAS_HASH'}} = $data->{'MAIL_ADDR'};
 
-	$rs |= iMSCP::HooksManager->getInstance()->trigger('afterMtaDelCatchAll', $data);
+	$rs |= $self->{'hooksManager'}->trigger('afterMtaDelCatchAll', $data);
 
 	$rs;
 }
@@ -1050,7 +1073,7 @@ sub getTraffic
 	my $wrkLogFile = "$main::imscpConfig{'LOG_DIR'}/mail.smtp.log";
 	my ($rv, $rs, $stdout, $stderr);
 
-	iMSCP::HooksManager->getInstance()->trigger('beforeMtaGetTraffic') and return 0;
+	$self->{'hooksManager'}->trigger('beforeMtaGetTraffic') and return 0;
 
 	# Only if files was not aleady parsed this session
 	unless($self->{'logDb'}){
@@ -1102,7 +1125,7 @@ sub getTraffic
 		}
 	}
 
-	iMSCP::HooksManager->getInstance()->trigger('afterMtaGetTraffic') and return 0;
+	$self->{'hooksManager'}->trigger('afterMtaGetTraffic') and return 0;
 
 	$self->{'traff'}->{$who} ? $self->{'traff'}->{$who} : 0;
 }

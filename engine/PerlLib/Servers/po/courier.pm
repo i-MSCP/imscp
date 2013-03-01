@@ -1,5 +1,11 @@
 #!/usr/bin/perl
 
+=head1 NAME
+
+ Servers::po::dovecot - i-MSCP Courier IMAP/POP3 Server implementation
+
+=cut
+
 # i-MSCP - internet Multi Server Control Panel
 # Copyright (C) 2010-2013 by internet Multi Server Control Panel
 #
@@ -36,25 +42,22 @@ use iMSCP::File;
 use iMSCP::Execute;
 use parent 'Common::SingletonClass';
 
-sub _init
-{
-	my $self = shift;
+=head1 DESCRIPTION
 
-	iMSCP::HooksManager->getInstance()->trigger('beforePoInit', $self, 'courier');
+ i-MSCP Courier IMAP/POP3 Server implementation.
 
-	$self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/courier";
-	$self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
-	$self->{'wrkDir'} = "$self->{'cfgDir'}/working";
+=head1 PUBLIC METHODS
 
-	my $conf = "$self->{'cfgDir'}/courier.data";
-	tie %self::courierConfig, 'iMSCP::Config', 'fileName' => $conf;
+=over 4
 
-	$self->{$_} = $self::courierConfig{$_} for keys %self::courierConfig;
+=item registerSetupHooks($hooksManager)
 
-	iMSCP::HooksManager->getInstance()->trigger('afterPoInit', $self, 'courier');
+ Register setup hooks.
 
-	$self;
-}
+ Param iMSCP::HooksManager $hooksManager Hooks manager instance
+ Return int 0 on success, other on failure
+
+=cut
 
 sub registerSetupHooks
 {
@@ -64,138 +67,111 @@ sub registerSetupHooks
 
 	$rs = $hooksManager->trigger('beforePoRegisterSetupHooks', $hooksManager, 'courier');
 
-	require Servers::po::courier::installer;
-
-	$rs |= Servers::po::courier::installer->new()->registerSetupHooks($hooksManager);
-
 	$rs |= $hooksManager->trigger('afterPoRegisterSetupHooks', $hooksManager, 'courier');
 
 	$rs;
 }
+
+=item preinstall()
+
+ Process preinstall tasks.
+
+ Return int 0 on success, other on failure
+
+=cut
 
 sub preinstall
 {
 	my $self = shift;
 	my $rs = 0;
 
-	$rs = iMSCP::HooksManager->getInstance()->trigger('beforePoPreinstall', 'courier');
+	$rs = $self->{'hooksManager'}->trigger('beforePoPreinstall', 'courier');
 
 	$rs |= $self->stop();
 
-	$rs |= iMSCP::HooksManager->getInstance()->trigger('afterPoPreinstall', 'courier');
+	$rs |= $self->{'hooksManager'}->trigger('afterPoPreinstall', 'courier');
 
 	$rs;
 }
+
+=item install()
+
+ Process install tasks.
+
+ Return int 0 on success, other on failure
+
+=cut
 
 sub install
 {
 	my $self = shift;
 	my $rs = 0;
 
-	$rs |= iMSCP::HooksManager->getInstance()->trigger('beforePoInstall', 'courier');
+	$rs |= $self->{'hooksManager'}->trigger('beforePoInstall', 'courier');
 
 	require Servers::po::courier::installer;
 
 	$rs |= Servers::po::courier::installer->new()->install();
 
-	$rs |= iMSCP::HooksManager->getInstance()->trigger('afterPoInstall', 'courier');
+	$rs |= $self->{'hooksManager'}->trigger('afterPoInstall', 'courier');
 
 	$rs;
 }
 
-sub uninstall
-{
-	my $self = shift;
-	my $rs = 0;
+=item postinstall()
 
-	$rs |= iMSCP::HooksManager->getInstance()->trigger('beforePoUninstall', 'courier');
+ Process postinstall tasks.
 
-	require Servers::po::courier::uninstaller;
+ Return int 0 on success, other on failure
 
-	$rs |= Servers::po::courier::uninstaller->new()->uninstall();
-	$rs |= $self->restart();
-
-	$rs |= iMSCP::HooksManager->getInstance()->trigger('afterPoUninstall', 'courier');
-
-	$rs;
-}
+=cut
 
 sub postinstall
 {
 	my $self = shift;
 	my $rs = 0;
 
-	$rs = iMSCP::HooksManager->getInstance()->trigger('beforePoPostinstall', 'courier');
+	$rs = $self->{'hooksManager'}->trigger('beforePoPostinstall', 'courier');
 
 	$rs |= $self->start();
 
-	$rs |= iMSCP::HooksManager->getInstance()->trigger('afterPoPostinstall', 'courier');
+	$rs |= $self->{'hooksManager'}->trigger('afterPoPostinstall', 'courier');
 
 	$rs;
 }
 
-sub start
+=item uninstall()
+
+ Process uninstall tasks.
+
+ Return int 0 on success, other on failure
+
+=cut
+
+sub uninstall
 {
 	my $self = shift;
 	my $rs = 0;
 
-	$rs = iMSCP::HooksManager->getInstance()->trigger('beforePoStart');
+	$rs |= $self->{'hooksManager'}->trigger('beforePoUninstall', 'courier');
 
-	my ($stdout, $stderr);
+	require Servers::po::courier::uninstaller;
 
-	for('CMD_AUTHD', 'CMD_POP', 'CMD_IMAP', 'CMD_POP_SSL', 'CMD_IMAP_SSL') {
-		$rs |= execute("$self::courierConfig{$_} start", \$stdout, \$stderr);
-		debug($stdout) if $stdout;
-		error($stderr) if $stderr;
-		last if $rs;
-	}
+	$rs |= Servers::po::courier::uninstaller->new()->uninstall();
+	$rs |= $self->restart();
 
-	$rs |= iMSCP::HooksManager->getInstance()->trigger('afterPoStart');
+	$rs |= $self->{'hooksManager'}->trigger('afterPoUninstall', 'courier');
 
 	$rs;
 }
 
-sub stop
-{
-	my $self = shift;
-	my $rs = 0;
+=item addMail()
 
-	$rs = iMSCP::HooksManager->getInstance()->trigger('beforePoStop');
+ Add mail account.
 
-	my ($stdout, $stderr);
+ Return int 0 on success, other on failure
 
-	for('CMD_AUTHD', 'CMD_POP', 'CMD_IMAP', 'CMD_POP_SSL', 'CMD_IMAP_SSL') {
-		$rs |= execute("$self::courierConfig{$_} stop", \$stdout, \$stderr);
-		debug($stdout) if $stdout;
-		error($stderr) if $stderr;
-		last if $rs;
-	}
-
-	$rs |= iMSCP::HooksManager->getInstance()->trigger('afterPoStop');
-
-	$rs;
-}
-
-sub restart
-{
-	my $self = shift;
-	my $rs = 0;
-
-	$rs = iMSCP::HooksManager->getInstance()->trigger('beforePoRestart');
-
-	my ($stdout, $stderr);
-
-	for('CMD_AUTHD', 'CMD_POP', 'CMD_IMAP', 'CMD_POP_SSL', 'CMD_IMAP_SSL') {
-		$rs |= execute("$self::courierConfig{$_} restart", \$stdout, \$stderr);
-		debug($stdout) if $stdout;
-		error($stderr) if $stderr;
-		last if $rs;
-	}
-
-	$rs |= iMSCP::HooksManager->getInstance()->trigger('afterPoRestart');
-
-	$rs;
-}
+=cut
 
 sub addMail
 {
@@ -215,7 +191,8 @@ sub addMail
 
 	if($data->{'MAIL_TYPE'} =~ /_mail/) {
 
-		$rs = iMSCP::HooksManager->getInstance()->trigger('beforePoAddMail');
+		$rs = $self->{'hooksManager'}->trigger('beforePoAddMail');
+		return $rs if $rs;
 
 		# Backup current working file if any
 		if(-f "$self->{'wrkDir'}/userdb"){
@@ -274,13 +251,21 @@ sub addMail
 		my ($stdout, $stderr);
 		$rs |= execute($self->{'CMD_MAKEUSERDB'}, \$stdout, \$stderr);
 		debug($stdout) if $stdout;
-		error($stderr) if $stderr;
+		error($stderr) if $stderr && $rs;
 
-		$rs |= iMSCP::HooksManager->getInstance()->trigger('afterPoAddMail');
+		$rs |= $self->{'hooksManager'}->trigger('afterPoAddMail');
 	}
 
 	$rs;
 }
+
+=item delMail()
+
+ Delete mail account.
+
+ Return int 0 on success, other on failure
+
+=cut
 
 sub delMail
 {
@@ -300,7 +285,7 @@ sub delMail
 
 	if($data->{'MAIL_TYPE'} =~ /_mail/) {
 
-		$rs = iMSCP::HooksManager->getInstance()->trigger('beforePoDelMail');
+		$rs = $self->{'hooksManager'}->trigger('beforePoDelMail');
 		return $rs if $rs;
 
 		if(-f "$self->{'wrkDir'}/userdb"){
@@ -339,13 +324,108 @@ sub delMail
 		my ($stdout, $stderr);
 		$rs |= execute($self->{'CMD_MAKEUSERDB'}, \$stdout, \$stderr);
 		debug($stdout) if $stdout;
-		error($stderr) if $stderr;
+		error($stderr) if $stderr && $rs;
 
-		$rs |= iMSCP::HooksManager->getInstance()->trigger('afterPoDelMail');
+		$rs |= $self->{'hooksManager'}->trigger('afterPoDelMail');
 	}
 
 	$rs;
 }
+
+=item start()
+
+ Start courier servers.
+
+ Return int 0 on success, other on failure
+
+=cut
+
+sub start
+{
+	my $self = shift;
+	my $rs = 0;
+
+	$rs = $self->{'hooksManager'}->trigger('beforePoStart');
+
+	my ($stdout, $stderr);
+
+	for('CMD_AUTHD', 'CMD_POP', 'CMD_IMAP', 'CMD_POP_SSL', 'CMD_IMAP_SSL') {
+		$rs |= execute("$self::courierConfig{$_} start", \$stdout, \$stderr);
+		debug($stdout) if $stdout;
+		error($stderr) if $stderr && $rs;
+		last if $rs;
+	}
+
+	$rs |= $self->{'hooksManager'}->trigger('afterPoStart');
+
+	$rs;
+}
+
+=item stop()
+
+ Stop courier servers.
+
+ Return int 0 on success, other on failure
+
+=cut
+
+sub stop
+{
+	my $self = shift;
+	my $rs = 0;
+
+	$rs = $self->{'hooksManager'}->trigger('beforePoStop');
+
+	my ($stdout, $stderr);
+
+	for('CMD_AUTHD', 'CMD_POP', 'CMD_IMAP', 'CMD_POP_SSL', 'CMD_IMAP_SSL') {
+		$rs |= execute("$self::courierConfig{$_} stop", \$stdout, \$stderr);
+		debug($stdout) if $stdout;
+		error($stderr) if $stderr && $rs;
+		last if $rs;
+	}
+
+	$rs |= $self->{'hooksManager'}->trigger('afterPoStop');
+
+	$rs;
+}
+
+=item restart()
+
+ Restart courier servers.
+
+ Return int 0 on success, other on failure
+
+=cut
+
+sub restart
+{
+	my $self = shift;
+	my $rs = 0;
+
+	$rs = $self->{'hooksManager'}->trigger('beforePoRestart');
+
+	my ($stdout, $stderr);
+
+	for('CMD_AUTHD', 'CMD_POP', 'CMD_IMAP', 'CMD_POP_SSL', 'CMD_IMAP_SSL') {
+		$rs |= execute("$self::courierConfig{$_} restart", \$stdout, \$stderr);
+		debug($stdout) if $stdout;
+		error($stderr) if $stderr && $rs;
+		last if $rs;
+	}
+
+	$rs |= $self->{'hooksManager'}->trigger('afterPoRestart');
+
+	$rs;
+}
+
+=item getTraffic()
+
+ Get server traffic.
+
+ Return int Server traffic, 0 on failure
+
+=cut
 
 sub getTraffic
 {
@@ -356,7 +436,7 @@ sub getTraffic
 	my $wrkLogFile = "$main::imscpConfig{'LOG_DIR'}/mail.po.log";
 	my ($rv, $rs, $stdout, $stderr);
 
-	iMSCP::HooksManager->getInstance()->trigger('beforePoGetTraffic') and return 0;
+	$self->{'hooksManager'}->trigger('beforePoGetTraffic') and return 0;
 
 	# only if files was not aleady parsed this session
 	unless($self->{'logDb'}) {
@@ -428,10 +508,57 @@ sub getTraffic
 		}
 	}
 
-	iMSCP::HooksManager->getInstance()->trigger('afterPoGetTraffic') and return 0;
+	$self->{'hooksManager'}->trigger('afterPoGetTraffic') and return 0;
 
 	$self->{'traff'}->{$who} ? $self->{'traff'}->{$who} : 0;
 }
+
+=back
+
+=head1 PRIVATE METHODS
+
+=over 4
+
+=item
+
+ Called by new(). Initialize instance.
+
+ Return Servers::po::courier
+
+=cut
+
+sub _init
+{
+	my $self = shift;
+
+	$self->{'hooksManager'} = iMSCP::HooksManager->getInstance();
+
+	$self->{'hooksManager'}->trigger('beforePoInit', $self, 'courier');
+
+	$self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/courier";
+	$self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
+	$self->{'wrkDir'} = "$self->{'cfgDir'}/working";
+
+	my $conf = "$self->{'cfgDir'}/courier.data";
+	tie %self::courierConfig, 'iMSCP::Config', 'fileName' => $conf;
+
+	$self->{$_} = $self::courierConfig{$_} for keys %self::courierConfig;
+
+	$self->{'hooksManager'}->trigger('afterPoInit', $self, 'courier');
+
+	$self;
+}
+
+=item END
+
+ Code triggered at the very end of script execution.
+
+-  Start or restart server if needed
+ - Remove old traffic logs file if exists
+
+ Return int Exit code
+
+=cut
 
 END
 {
@@ -444,5 +571,14 @@ END
 	$rs |= iMSCP::File->new('filename' => $wrkLogFile)->delFile() if -f $wrkLogFile;
 	$? = $endCode || $rs;
 }
+
+=back
+
+=head1 AUTHORS
+
+ Daniel Andreca <sci2tech@gmail.com>
+ Laurent Declercq <l.declercq@nuxwin.com>
+
+=cut
 
 1;
