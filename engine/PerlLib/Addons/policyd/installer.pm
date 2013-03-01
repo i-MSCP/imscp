@@ -112,7 +112,7 @@ sub askRBL
 
 	$dnsblCheckOnly = lc($dnsblCheckOnly);
 
-	if($main::reconfigure ~~ ['policyd', 'all', 'forced'] || $dnsblCheckOnly !~ /^yes|no$/i) {
+	if($main::reconfigure ~~ ['mailfilters', 'all', 'forced'] || $dnsblCheckOnly !~ /^yes|no$/i) {
 		($rs, $dnsblCheckOnly) = $dialog->radiolist(
 			"
 			\\Z4\\Zb\\Zui-MSCP Policyd Weight Addon\\Zn

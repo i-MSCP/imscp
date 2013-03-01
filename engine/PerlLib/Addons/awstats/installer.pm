@@ -180,7 +180,7 @@ sub askAwstats
 	$awstatsActive = lc($awstatsActive);
 
 	if(
-		$main::reconfigure ~~ ['awstats', 'all', 'forced'] || $awstatsActive !~ /^yes|no$/ ||
+		$main::reconfigure ~~ ['webstats', 'all', 'forced'] || $awstatsActive !~ /^yes|no$/ ||
 		($awstatsActive eq 'yes' && $awstatsMode !~ /^0|1$/) || ($awstatsActive eq 'no' && $awstatsMode ne '')
 	) {
 		($rs, $awstatsActive)  = $dialog->radiolist(

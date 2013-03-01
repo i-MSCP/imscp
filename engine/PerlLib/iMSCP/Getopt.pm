@@ -121,8 +121,8 @@ EOF
 }
 
 our $reconfigureItems = [
-	'all', 'servers', 'httpd', 'po', 'mta', 'ftpd', 'named', 'sql', 'hostname', 'resolver', 'ips', 'admin', 'php',
-	'ssl', 'backup', 'awstats', 'phpmyadmin', 'policyd', 'roundcube', 'filemanager'
+	'all', 'servers', 'httpd', 'mta', 'mailfilters', 'po', 'ftpd', 'named', 'sql', 'hostname', 'resolver', 'ips',
+	'admin', 'php', 'ssl', 'backup', 'webstats', 'sqlmanager', 'webmail', 'filemanager'
 ];
 
 =item reconfigure()

@@ -155,7 +155,7 @@ sub askRoundcube
 	my ($rs, $msg) = (0, '');
 
 	if(
-		$main::reconfigure ~~ ['roundcube', 'all', 'forced'] ||
+		$main::reconfigure ~~ ['webmail', 'all', 'forced'] ||
 		(
 			! $main::preseed{'ROUNDCUBE_SQL_USER'} &&
 			main::setupCheckSqlConnect($dbType, '', $dbHost, $dbPort, $dbUser, $dbPass)

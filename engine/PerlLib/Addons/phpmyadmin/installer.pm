@@ -147,7 +147,7 @@ sub askPhpmyadmin
 	my ($rs, $msg) = (0, '');
 
 	if(
-		$main::reconfigure ~~ ['phpmyadmin', 'all', 'forced'] ||
+		$main::reconfigure ~~ ['sqlmanager', 'all', 'forced'] ||
 		(
 			! $main::preseed{'PHPMYADMIN_SQL_USER'} &&
 			main::setupCheckSqlConnect($dbType, '', $dbHost, $dbPort, $dbUser, $dbPass)
