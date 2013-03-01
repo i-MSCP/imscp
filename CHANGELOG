@@ -58,6 +58,7 @@ Tickets:
 	- Fixed #609: Bug - PHP FPM - Internal Server Error after deleting any domain
 	- Fixed #610: Cosmetics - i18n issue - Typo
 	- Fixed #619: Bug - HTTP Redirection - Null field - Update errors
+
 -------------------------------------------------------------------------------------
 i-MSCP 1.1.0-rc1.4
 -------------------------------------------------------------------------------------

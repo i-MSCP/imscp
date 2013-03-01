@@ -106,7 +106,7 @@ EOF
 
 	eval {
 		Getopt::Long::GetOptions(
-			'reconfigure|r=s', sub { shift, $class->reconfigure(shift) },
+			'reconfigure|r:s', sub { shift, $class->reconfigure(shift) },
 			'noprompt|n', sub { $options->{'noprompt'} = 'true' },
 			'preseed|p=s', sub { shift; $class->preseed(shift) },
 			'hook-file|h=s', sub { shift; $class->hookFile(shift) },
@@ -142,12 +142,14 @@ sub reconfigure
 			$optionHelp .= "The --reconfigure option allows to reconfigure a specific item.\n";
 			$optionHelp .= " Available items:\n\n ";
 			$optionHelp .=  (join '|', @{$reconfigureItems});
+			$optionHelp .= "\n\n Without any argument, all is reconfigured.";
 			$optionHelp .= "\n\n";
 			die();
+		} elsif($value eq '') {
+			$options->{'reconfigure'} = 'all';
 		}
 
-		die("Error: '$value' is not a valid value for the --reconfigure option.")
-			if not $value ~~ $reconfigureItems;
+		$value ~~ $reconfigureItems or die("Error: '$value' is not a valid item for the --reconfigure option.");
 
 		$options->{'reconfigure'} = $value;
 	}
