@@ -88,9 +88,11 @@ $tpl->define_dynamic(
 		'installdbuser_item' => 'page',
 		'softwaredbuser_message' => 'page',
 		'create_db' => 'page',
-		'create_message_db' => 'page'));
+		'create_message_db' => 'page'
+	)
+);
 
-if (isset($_POST['Submit2'])) {
+if (!empty($_POST)) {
 	$id = intval($_GET['id']);
 	$domain_path = '';
 	$other_dir = clean_input($_POST['other_dir'], true);
@@ -110,7 +112,7 @@ if (isset($_POST['Submit2'])) {
 	$install_password = clean_input($_POST['install_password'], true);
 	$install_email = clean_input($_POST['install_email'], true);
 
-	if(isset($_POST['createdir']) && $_POST['createdir'] == '1') {
+	if (isset($_POST['createdir']) && $_POST['createdir'] == '1') {
 		$createdir = clean_input($_POST['createdir'], true);
 		set_page_message(tr('The directory %s was created.', $other_dir), 'success');
 	} else {
@@ -118,33 +120,33 @@ if (isset($_POST['Submit2'])) {
 	}
 
 	// Check dir exists
-    $domain = $_SESSION['user_logged'];
-    $vfs = new iMSCP_VirtualFileSystem($domain);
-    $list = $vfs->ls($other_dir);
+	$domain = $_SESSION['user_logged'];
+	$vfs = new iMSCP_VirtualFileSystem($domain);
+	$list = $vfs->ls($other_dir);
 
-    // Check dir exists
+	// Check dir exists
 
-    $domainProps = get_domain_default_props($_SESSION['user_id']);
-    $dmn_id = $domainProps['domain_id'];
-    $dmn_name = $domainProps['domain_name'];
-    $dmn_gid = $domainProps['domain_gid'];
-    $dmn_uid = $domainProps['domain_uid'];
-    $dmn_created_id = $domainProps['domain_created_id'];
-    $dmn_created = $domainProps['domain_created'];
-    $dmn_last_modified = $domainProps['domain_last_modified'];
-    $dmn_mailacc_limit = $domainProps['domain_mailacc_limit'];
-  	$dmn_ftpacc_limit = $domainProps['domain_ftpacc_limit'];
-    $dmn_traff_limit = $domainProps['domain_traffic_limit'];
-    $dmn_sqld_limit = $domainProps['domain_sqld_limit'];
-    $dmn_sqlu_limit = $domainProps['domain_sqlu_limit'];
-    $dmn_status = $domainProps['domain_status'];
-    $dmn_als_limit = $domainProps['domain_alias_limit'];
-  	$dmn_subd_limit = $domainProps['domain_subd_limit'];
-    $dmn_ip_id = $domainProps['domain_ip_id'];
-    $dmn_disk_limit = $domainProps['domain_disk_limit'];
-    $dmn_disk_usage = $domainProps['domain_disk_usage'];
-    $dmn_php = $domainProps['domain_php'];
-    $dmn_cgi = $domainProps['domain_cgi'];
+	$domainProps = get_domain_default_props($_SESSION['user_id']);
+	$dmn_id = $domainProps['domain_id'];
+	$dmn_name = $domainProps['domain_name'];
+	$dmn_gid = $domainProps['domain_gid'];
+	$dmn_uid = $domainProps['domain_uid'];
+	$dmn_created_id = $domainProps['domain_created_id'];
+	$dmn_created = $domainProps['domain_created'];
+	$dmn_last_modified = $domainProps['domain_last_modified'];
+	$dmn_mailacc_limit = $domainProps['domain_mailacc_limit'];
+	$dmn_ftpacc_limit = $domainProps['domain_ftpacc_limit'];
+	$dmn_traff_limit = $domainProps['domain_traffic_limit'];
+	$dmn_sqld_limit = $domainProps['domain_sqld_limit'];
+	$dmn_sqlu_limit = $domainProps['domain_sqlu_limit'];
+	$dmn_status = $domainProps['domain_status'];
+	$dmn_als_limit = $domainProps['domain_alias_limit'];
+	$dmn_subd_limit = $domainProps['domain_subd_limit'];
+	$dmn_ip_id = $domainProps['domain_ip_id'];
+	$dmn_disk_limit = $domainProps['domain_disk_limit'];
+	$dmn_disk_usage = $domainProps['domain_disk_usage'];
+	$dmn_php = $domainProps['domain_php'];
+	$dmn_cgi = $domainProps['domain_cgi'];
 
 
 	$query = "
@@ -163,20 +165,20 @@ if (isset($_POST['Submit2'])) {
 		$posted_domain_id, $posted_aliasdomain_id, $posted_subdomain_id, $posted_aliassubdomain_id, $posted_mountpath
 	) = explode(';', $_POST['selected_domain']);
 
-	if(($posted_aliasdomain_id + $posted_subdomain_id + $posted_aliassubdomain_id) > 0){
-		if($posted_aliasdomain_id > 0){
+	if (($posted_aliasdomain_id + $posted_subdomain_id + $posted_aliassubdomain_id) > 0) {
+		if ($posted_aliasdomain_id > 0) {
 			$query = "SELECT `alias_mount` `domainpath` FROM `domain_aliasses` WHERE `alias_id` = ?";
 			$rsdomainpath = exec_query($query, $posted_aliasdomain_id);
 
 			$domain_path = $rsdomainpath->fields['domainpath'];
 			$domain_path = str_replace("/", "\/", $domain_path);
-		} elseif($posted_subdomain_id > 0){
+		} elseif ($posted_subdomain_id > 0) {
 			$query = "SELECT `subdomain_mount` `domainpath` FROM `subdomain` WHERE `subdomain_id` = ?";
 			$rsdomainpath = exec_query($query, $posted_subdomain_id);
 
 			$domain_path = $rsdomainpath->fields['domainpath'];
 			$domain_path = str_replace("/", "\/", $domain_path);
-		} elseif($posted_aliassubdomain_id > 0){
+		} elseif ($posted_aliassubdomain_id > 0) {
 			$query = "SELECT `subdomain_alias_mount` `domainpath` FROM `subdomain_alias` WHERE `subdomain_alias_id` = ?";
 			$rsdomainpath = exec_query($query, $posted_aliassubdomain_id);
 
@@ -189,7 +191,7 @@ if (isset($_POST['Submit2'])) {
 		$domain_path = $posted_mountpath;
 	}
 
-	if($stmt->fields['software_db'] == "1") {
+	if ($stmt->fields['software_db'] == "1") {
 		$selected_db = clean_input($_POST['selected_db'], true);
 		$sql_user = clean_input($_POST['sql_user'], true);
 		$query = "SELECT `sqlu_pass` FROM `sql_user` WHERE `sqlu_name` = ?";
@@ -199,25 +201,19 @@ if (isset($_POST['Submit2'])) {
 		$sql_pass = $rsdatabase->fields['sqlu_pass'];
 	}
 
-	if($stmt->fields['software_db'] == '1' && !$db_connection_ok) {
+	if ($stmt->fields['software_db'] == '1' && !$db_connection_ok) {
 		set_page_message(tr('Please select a valid  SQL user for the database.'), 'error');
-	} elseif(empty($install_username) || empty($install_password) || empty($install_email)) {
+	} elseif (empty($install_username) || empty($install_password) || empty($install_email)) {
 		set_page_message(tr('All fields are required.'), 'error');
-	} elseif (!chk_password($install_password)){
-		if ($cfg->PASSWD_STRONG) {
-			set_page_message(sprintf(tr('The password must be at least %s long and contain letters and numbers to be valid.'), $cfg->PASSWD_CHARS), 'error');
-		} else {
-			set_page_message(sprintf(tr('Password data is shorter than %s signs or includes not permitted signs.'), $cfg->PASSWD_CHARS), 'error');
-		}
-	} elseif(!preg_match("/htdocs/", $other_dir)){
+	} elseif (!preg_match('/htdocs/', $other_dir)) {
 		set_page_message(tr("You cant't install the software outside the htdocs directory."), 'error');
-	} elseif(($posted_aliasdomain_id + $posted_subdomain_id + $posted_aliassubdomain_id) > 0 && !preg_match("/".$domain_path."/",$other_dir)){
+	} elseif (($posted_aliasdomain_id + $posted_subdomain_id + $posted_aliassubdomain_id) > 0 && !preg_match("/" . $domain_path . "/", $other_dir)) {
 		set_page_message(tr("You have chosen a directory which doesn't matches the domain directory."), 'error');
-	} elseif(!$list && $createdir == '0'){
+	} elseif (!$list && $createdir == '0') {
 		set_page_message(tr("The directory %s doesn't exist. Please create it first.", $other_dir), 'error');
 	} elseif ($rspath->recordCount() > 0) {
 		set_page_message(tr('Please select another directory. %s (%s) is installed there.', $rspath->fields['swname'], $rspath->fields['swversion']), 'error');
-	} else {
+	} elseif (checkPasswordSyntax($install_password)) {
 		$sw_db_required = $stmt->fields['software_db'];
 		$sw_software_name = $stmt->fields['software_name'];
 		$sw_software_version = $stmt->fields['software_version'];
@@ -230,8 +226,8 @@ if (isset($_POST['Submit2'])) {
 
 		$prefix = $stmt->fields['software_prefix'];
 
-		if($sw_db_required == '1') {
-			$query="
+		if ($sw_db_required == '1') {
+			$query = "
 				INSERT INTO `web_software_inst` (
                     `domain_id`, `alias_id`, `subdomain_id`, `subdomain_alias_id`,
                     `software_id`, `software_master_id`, `software_name`,
@@ -250,7 +246,7 @@ if (isset($_POST['Submit2'])) {
 					$other_dir, $prefix, $selected_db, $sql_user, $sql_pass, $install_username, $install_password,
 					$install_email, $cfg->ITEM_ADD_STATUS, $software_depot));
 		} else {
-			$query="
+			$query = "
 				INSERT INTO `web_software_inst` (
                     `domain_id`, `alias_id`, `subdomain_id`, `subdomain_alias_id`, `software_id`, `software_master_id`,
                     `software_name`, `software_version`, `software_language`, `path`, `software_prefix`, `db`,
@@ -273,31 +269,37 @@ if (isset($_POST['Submit2'])) {
 		redirectTo('software.php');
 	}
 
-	if($stmt->fields['software_db'] == '1') {
+	if ($stmt->fields['software_db'] == '1') {
 		$tpl->assign(
 			array(
-				 'VAL_OTHER_DIR' => $other_dir,
-				 'CHECKED_CREATEDIR' => ($createdir == '1') ? $cfg->HTML_CHECKED : '',
-				 'VAL_INSTALL_USERNAME' => $install_username,
-				 'VAL_INSTALL_PASSWORD' => $install_password,
-				 'VAL_INSTALL_EMAIL' => $install_email));
+				'VAL_OTHER_DIR' => $other_dir,
+				'CHECKED_CREATEDIR' => ($createdir == '1') ? $cfg->HTML_CHECKED : '',
+				'VAL_INSTALL_USERNAME' => $install_username,
+				'VAL_INSTALL_PASSWORD' => $install_password,
+				'VAL_INSTALL_EMAIL' => $install_email
+			)
+		);
 	} else {
 		$tpl->assign(
 			array(
-				 'VAL_OTHER_DIR' => $other_dir,
-				 'CHECKED_CREATEDIR' => ($createdir == '1') ? $cfg->HTML_CHECKED : '',
-				 'VAL_INSTALL_USERNAME' => $install_username,
-				 'VAL_INSTALL_PASSWORD' => $install_password,
-				 'VAL_INSTALL_EMAIL' => $install_email));
+				'VAL_OTHER_DIR' => $other_dir,
+				'CHECKED_CREATEDIR' => ($createdir == '1') ? $cfg->HTML_CHECKED : '',
+				'VAL_INSTALL_USERNAME' => $install_username,
+				'VAL_INSTALL_PASSWORD' => $install_password,
+				'VAL_INSTALL_EMAIL' => $install_email
+			)
+		);
 	}
 } else {
 	$tpl->assign(
 		array(
-			 'VAL_OTHER_DIR' => '/htdocs',
-			 'CHECKED_CREATEDIR' => '',
-			 'VAL_INSTALL_USERNAME' => '',
-			 'VAL_INSTALL_PASSWORD' => '',
-			 'VAL_INSTALL_EMAIL' => ''));
+			'VAL_OTHER_DIR' => '/htdocs',
+			'CHECKED_CREATEDIR' => '',
+			'VAL_INSTALL_USERNAME' => '',
+			'VAL_INSTALL_PASSWORD' => '',
+			'VAL_INSTALL_EMAIL' => ''
+		)
+	);
 }
 
 $tpl->assign(

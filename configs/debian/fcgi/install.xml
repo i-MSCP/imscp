@@ -23,9 +23,9 @@ program. If not, see <http://www.gnu.org/licenses/>
 -->
 
 <install>
-	<folders>${INST_PREF}/var/www/fcgi</folders>
-	<folders>${SYSTEM_CONF}/fcgi</folders>
-	<folders>${SYSTEM_CONF}/fcgi/backup</folders>
-	<folders>${SYSTEM_CONF}/fcgi/working</folders>
-	<copy_config>${SYSTEM_CONF}/fcgi/parts</copy_config>
+    <folders>${INST_PREF}/var/www/fcgi</folders>
+    <folders>${SYSTEM_CONF}/fcgi</folders>
+    <folders>${SYSTEM_CONF}/fcgi/backup</folders>
+    <folders>${SYSTEM_CONF}/fcgi/working</folders>
+    <copy_config>${SYSTEM_CONF}/fcgi/parts</copy_config>
 </install>

@@ -90,7 +90,7 @@ if($hookFile) {
 # handle the noprompt option
 $main::noprompt = iMSCP::Getopt->noprompt;
 # In noninteractive mode (nonprompt option), we bypass the default
-# exit handler (as provided by the iMSCP::Debug package) to  raise
+# exit handler (as provided by the iMSCP::Debug package) to raise
 # a specific error in case  an answer is wrong. An answer can be a
 # wrong entry from an i-MSCP conffile, or from a preseed file in
 # case the preseed option is involved.
@@ -117,18 +117,20 @@ print STDOUT "Installation in progress... Please wait.\n" if $main::noprompt;
 
 newDebug('imscp-build.log');
 
+# Entering in silent mode
+silent(1);
+
 # Ensure the script is run as root
 iMSCP::Requirements->new()->user();
 
-iMSCP::HooksManager->getInstance()->trigger('beforeInstallPreRequiredPackages') if ! $main::skippackages;
+# Load config
+loadConfig() and fatal('Unable to load i-MSCP main configuration file');
 
-# Install pre-required package
+iMSCP::HooksManager->getInstance()->trigger('beforeInstallPreRequiredPackages') and exit 1 if ! $main::skippackages;
+
 installPreRequiredPackages() and exit 1 if ! $main::skippackages;
 
 iMSCP::HooksManager->getInstance()->trigger('afterInstallPreRequiredPackages') if ! $main::skippackages;
-
-# Entering in silent mode
-silent(1);
 
 if(! $main::buildonly && ! $main::noprompt) {
 
@@ -169,7 +171,6 @@ my $distribution = iMSCP::LsbRelease->new()->getId(1);
 
 # Process build steps
 my @steps = (
-	[\&loadConfig,						'Loading i-MSCP configuration'],
 	[\&preBuild,						'Processing preBuild tasks'],
 	[\&uninstallPackages,				"Uninstalling $distribution packages not longer needed by i-MSCP"],
 	[\&installPackages,					"Installing all $distribution packages for i-MSCP"],
@@ -184,9 +185,9 @@ my @steps = (
 );
 
 # Remove the uninstall/install packages steps in case the --skippackages option is set to true
-splice(@steps, 2, 2) if $main::skippackages;
+splice(@steps, 1, 2,) if $main::skippackages;
 
-iMSCP::HooksManager->getInstance()->trigger('beforeBuild', \@steps);
+iMSCP::HooksManager->getInstance()->trigger('beforeBuildSteps', \@steps) and exit 1;
 
 my $rs = 0;
 my $step = 1;
@@ -198,7 +199,7 @@ for (@steps) {
 	$step++;
 }
 
-iMSCP::HooksManager->getInstance()->trigger('afterBuild');
+iMSCP::HooksManager->getInstance()->trigger('afterBuildSteps') and exit 1;
 
 iMSCP::Dialog->factory()->endGauge() if iMSCP::Dialog->factory()->needGauge();
 
@@ -217,7 +218,6 @@ if (@errors > 0  || @warnings > 0) {
 }
 
 if(! $main::buildonly) {
-
 	## Setup steps
 
 	require "$FindBin::Bin/engine/setup/imscp-setup-methods.pl";
@@ -232,7 +232,7 @@ if(! $main::buildonly) {
 		[\&setupTasks,				'Processing i-MSCP setup tasks'],
 	);
 
-	iMSCP::HooksManager->getInstance()->trigger('beforeAutoInstallSetup', \@steps);
+	iMSCP::HooksManager->getInstance()->trigger('beforeInstall', \@steps) and exit 1;
 
 	$step = 1;
 	$nbSteps = scalar @steps;
@@ -243,7 +243,7 @@ if(! $main::buildonly) {
 		$step++;
 	}
 
-	iMSCP::HooksManager->getInstance()->trigger('afterAutoInstallSetup');
+	iMSCP::HooksManager->getInstance()->trigger('afterInstall') and exit 1;
 
 	iMSCP::Dialog->factory()->endGauge() if iMSCP::Dialog->factory()->needGauge();
 
@@ -252,6 +252,11 @@ if(! $main::buildonly) {
 \\Z1Congratulations!!!\\Zn
 
 i-MSCP '$main::imscpConfig{'Version'}' has been successfully installed/updated.
+
+Please go to $main::imscpConfig{'BASE_SERVER_VHOST_PREFIX'}$main::imscpConfig{'BASE_SERVER_VHOST'} and log in with your administrator account.
+
+
+Thanks for using i-MSCP.
 "
 	);
 
@@ -270,22 +275,22 @@ To finish the i-MSCP install process, run the following commands from your conso
 \\ZbI. If you want migrate from ispCP\\Zn
 
 	# cp -R /tmp/imscp/* /
-	# cd $main::imscpConfig{ROOT_DIR}/engine/setup
+	# cd $main::imscpConfig{'ROOT_DIR'}/engine/setup
 	# perl imscp-migrate-from-ispcp
 	# perl imscp-setup
 
 \\ZbII. If you want install or update iMSCP\\Zn
 
-	# rm -Rf $main::imscpConfig{GUI_ROOT_DIR}/data/sessions
-	# rm -Rf $main::imscpConfig{GUI_ROOT_DIR}/data/cache
-	# cp -Rfv $main::imscpConfig{GUI_ROOT_DIR}/data /tmp/imscp/var/www/imscp/gui
-	# cp -Rfv $main::imscpConfig{GUI_ROOT_DIR}/public/tools/webmail/data \\\\
-	/tmp/imscp/var/www/imscp/gui/public/tools/webmail
-	# cp -Rfv $main::imscpConfig{GUI_ROOT_DIR}/plugins /tmp/imscp/var/www/imscp/gui
-	# rm -Rf $main::imscpConfig{ROOT_DIR}/{daemon,engine,gui}
-	# cp -R /tmp/imscp/* /
-	# rm -R /tmp/imscp
-	# cd $main::imscpConfig{ROOT_DIR}/engine/setup
+	# rm -Rf $main::imscpConfig{'GUI_ROOT_DIR'}/data/sessions
+	# rm -Rf $main::imscpConfig{'GUI_ROOT_DIR'}/data/cache
+	# cp -Rf $main::imscpConfig{'GUI_ROOT_DIR'}/data $main::{'INST_PREF'}/var/www/imscp/gui
+	# cp -Rf $main::imscpConfig{'GUI_ROOT_DIR'}/public/tools/webmail/data \\\\
+	$main::{'INST_PREF'}/var/www/imscp/gui/public/tools/webmail
+	# cp -Rf $main::imscpConfig{'GUI_ROOT_DIR'}/plugins $main::{'INST_PREF'}/var/www/imscp/gui
+	# rm -Rf $main::imscpConfig{'ROOT_DIR'}/{daemon,engine,gui}
+	# cp -R $main::{'INST_PREF'}/imscp/* /
+	# rm -R $main::{'INST_PREF'}/imscp
+	# cd $main::imscpConfig{'ROOT_DIR'}/engine/setup
 	# perl imscp-setup
 
 If you get no error, all went good; if you get one, look at http://forum.i-mscp.net to solve the problem.

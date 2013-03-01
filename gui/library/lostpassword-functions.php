@@ -180,13 +180,13 @@ function setUniqKey($adminName, $uniqueKey){
  * @param  $userPassword
  * @return void
  */
-function setPassword($uniqueKey, $userPassword){
+function setPassword($uniqueKey, $userPassword) {
 	if ($uniqueKey == '') {
 		exit;
 	}
 
 	$query = 'UPDATE `admin` SET `admin_pass` = ? WHERE `uniqkey` = ?';
-	exec_query($query, array(crypt_user_pass($userPassword), $uniqueKey));
+	exec_query($query, array(cryptPasswordWithSalt($userPassword), $uniqueKey));
 }
 
 /**

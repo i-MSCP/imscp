@@ -169,6 +169,17 @@ class iMSCP_Authentication
 						iMSCP_Authentication_Result::FAILURE_CREDENTIAL_INVALID, null, tr('Bad password.')
 					);
 				} else {
+					if(strpos($dbPassword, '$') !== 0) { # Not a password encrypted with crypt(), then re-encrypt it
+						exec_query(
+							'UPDATE `admin` SET `admin_pass` = ? WHERE `admin_id` = ?',
+							array(cryptPasswordWithSalt($password), $identity->admin_id)
+						);
+						write_log(
+							"Security: Password for user <b>'$identity->admin_name'</b> has been re-encrypted using better algorithm available",
+							E_USER_NOTICE
+						);
+					}
+
 					$result = new iMSCP_Authentication_Result(iMSCP_Authentication_Result::SUCCESS, $identity);
 				}
 			}

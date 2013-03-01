@@ -38,22 +38,22 @@
  */
 function calc_bars($crnt, $max, $bars_max)
 {
-    if ($max != 0) {
-        $percent_usage = (100 * $crnt) / $max;
-    } else {
-        $percent_usage = 0;
-    }
+	if ($max != 0) {
+		$percent_usage = (100 * $crnt) / $max;
+	} else {
+		$percent_usage = 0;
+	}
 
-    $bars = ($percent_usage * $bars_max) / 100;
+	$bars = ($percent_usage * $bars_max) / 100;
 
-    if ($bars > $bars_max) {
-        $bars = $bars_max;
-    }
+	if ($bars > $bars_max) {
+		$bars = $bars_max;
+	}
 
-    return array(
-        sprintf("%.2f", $percent_usage),
-        sprintf("%d", $bars)
-    );
+	return array(
+		sprintf("%.2f", $percent_usage),
+		sprintf("%d", $bars)
+	);
 }
 
 /**
@@ -86,10 +86,10 @@ function bytesHuman($bytes, $unit = null, $decimals = 2, $power = 1024)
 {
 	if ($power == 1000) {
 		$units = array('B' => 0, 'kB' => 1, 'MB' => 2, 'GB' => 3, 'TB' => 4,
-					   'PB' => 5, 'EB' => 6, 'ZB' => 7, 'YB' => 8);
+			'PB' => 5, 'EB' => 6, 'ZB' => 7, 'YB' => 8);
 	} elseif ($power == 1024) {
 		$units = array('B' => 0, 'kiB' => 1, 'MiB' => 2, 'GiB' => 3, 'TiB' => 4,
-					   'PiB' => 5, 'EiB' => 6, 'ZiB' => 7, 'YiB' => 8);
+			'PiB' => 5, 'EiB' => 6, 'ZiB' => 7, 'YiB' => 8);
 	} else {
 		throw new iMSCP_Exception('Wrong value given for $base.');
 	}
@@ -193,81 +193,74 @@ function mebibyteHuman($value, $unit = null)
  */
 function translate_limit_value($value, $autosize = false, $to = 'MiB')
 {
-    switch ($value) {
-        case '-1':
-            return tr('disabled');
-        case  '0':
-            return tr('unlimited');
-        default:
-            return (!$autosize) ? $value : mebibyteHuman($value, $to);
-    }
+	switch ($value) {
+		case '-1':
+			return tr('disabled');
+		case  '0':
+			return tr('unlimited');
+		default:
+			return (!$autosize) ? $value : mebibyteHuman($value, $to);
+	}
 }
 
-//
-// some password management.
-//
-
 /**
- * Generates a random salt for passwords.
+ * Generates a random salt for password using the best available algorithm.
  *
- * @param int $min minimum ASCII char
- * @param int $max maximum ASCII char
- * @return string Salt for password
+ * Note: Only algorithms present in the mainline glibc >= 2.7 (Debian) are supported (SHA512, SHA256, MD5 and DES)
+ *
+ * @author Laurent Declercq <l.declercq@nuxwin.com>
+ * @return string Random salt
  */
-function generate_rand_salt($min = 46, $max = 126)
+function generateRandomSalt()
 {
-    if (CRYPT_BLOWFISH == 2) { // WTF ? Will never match since value can be 0 or 1
-        $length = 13;
-        $pre = '$2$';
-    } elseif (CRYPT_MD5 == 1) {
-        $length = 9;
-        $pre = '$1$';
-    } elseif (CRYPT_EXT_DES == 1) {
-        $length = 9;
-        $pre = '';
-    } elseif (CRYPT_STD_DES == 1) {
-        $length = 2;
-        $pre = '';
-    }
+	/*if(defined('CRYPT_BLOWFISH') && CRYPT_BLOWFISH) {
+		$saltLength = 21;
+		if(version_compare(PHP_VERSION, '3.5.7') == -1) {
+			$salt = '$2a$07$';
+		} else {
+			$salt = array_rand(array('$2x$07$' =>'', '$2y$07$' => ''));
+		}
+	} else*/
+	if (defined('CRYPT_SHA512') && CRYPT_SHA512) {
+		$saltLength = 16;
+		$salt = '$6$rounds=' . mt_rand(1500, 5000) . '$';
+	} elseif (defined('CRYPT_SHA256') && CRYPT_SHA256) {
+		$saltLength = 16;
+		$salt = '$5$rounds=' . mt_rand(1500, 5000) . '$';
+	} elseif (defined('CRYPT_MD5') && CRYPT_MD5) {
+		$saltLength = 8;
+		$salt = '$1$';
+	} elseif (defined('CRYPT_STD_DES') && CRYPT_STD_DES) {
+		$saltLength = 2;
+		$salt = '';
+	} else {
+		throw new iMSCP_Exception('No encryption algorithm available.');
+	}
 
-    $salt = $pre;
+	#if ($saltLength > 2  && $saltLength < 21) {
+	if ($saltLength > 2) {
+		$chars = array_merge(range(0x21, 0x7e));
+	} else {
+		$chars = array_merge(range(0x2E, 0x2F), range(0x30, 0x39), range(0x41, 0x5a), range(0x61, 0x7a));
+	}
 
-    for ($i = 0; $i < $length; $i++) {
-        $salt .= chr(mt_rand($min, $max));
-    }
+	for ($i = 0; $i < $saltLength; $i++) {
+		$salt .= chr($chars[array_rand($chars)]);
+	}
 
-    return $salt;
+	return $salt;
 }
 
 /**
+ * Encrypts the given password with salt.
  *
- * @param  $data
- * @return string
- */
-function get_salt_from($data)
-{
-    return substr($data, 0, 2);
-}
-
-/**
- *
- * @param  $data
- * @return string
- */
-function crypt_user_pass($data)
-{
-    return md5($data);
-}
-
-/**
- * Encrypts the FTP user password.
- *
- * @param string $data the password in clear text
+ * @param string $password the password in clear text
+ * @param string $salt OPTIONAL Salt to use
  * @return string the password encrypted with salt
  */
-function crypt_user_pass_with_salt($data)
+function cryptPasswordWithSalt($password, $salt = '')
 {
-    return crypt($data, generate_rand_salt());
+	return crypt($password, ($salt) ? $salt : generateRandomSalt());
 }
 
 /**
@@ -277,34 +270,36 @@ function crypt_user_pass_with_salt($data)
  */
 function _passgen()
 {
-    /** @var $cfg iMSCP_Config_Handler_File */
-    $cfg = iMSCP_Registry::get('config');
-    $pw = '';
+	/** @var $cfg iMSCP_Config_Handler_File */
+	$cfg = iMSCP_Registry::get('config');
+	$passwordLength = $cfg->PASSWD_CHARS;
+	$password = '';
 
-    for ($i = 0, $passwd_chars = $cfg->PASSWD_CHARS; $i <= $passwd_chars; $i++) {
-        do {
-            $z = mt_rand(42, 123);
-        } while ($z >= 91 && $z <= 96);
-        $pw .= chr($z);
-    }
-    return $pw;
+	for ($i = 0; $i <= $passwordLength; $i++) {
+		do {
+			$z = mt_rand(42, 123);
+		} while ($z >= 91 && $z <= 96);
+		$password .= chr($z);
+	}
+
+	return $password;
 }
 
 /**
- * Generates random password matching the chk_password criteria.
+ * Generates random password matching the checkPasswordSyntax() criteria.
  *
  * @see _passgen()
  * @return String password
  */
 function passgen()
 {
-    $pw = null;
+	$password = null;
 
-    while ($pw == null || !chk_password($pw, 50, "/[<>]/")) {
-        $pw = _passgen();
-    }
+	while ($password == null || !checkPasswordSyntax($password, '/[<>]/')) {
+		$password = _passgen();
+	}
 
-    return $pw;
+	return $password;
 }
 
 
@@ -317,8 +312,8 @@ function passgen()
  */
 function getFirstDayOfMonth($month = null, $year = null)
 {
-	$month = $month ?: date('m');
-	$year = $year ?: date('y');
+	$month = $month ? : date('m');
+	$year = $year ? : date('y');
 
 	return mktime(0, 0, 0, $month, 1, $year);
 
@@ -333,8 +328,8 @@ function getFirstDayOfMonth($month = null, $year = null)
  */
 function getLastDayOfMonth($month = null, $year = null)
 {
-	$month = $month ?: date('m');
-	$year = $year ?: date('y');
+	$month = $month ? : date('m');
+	$year = $year ? : date('y');
 
 	return mktime(1, 0, 0, $month + 1, 0, $year);
 }

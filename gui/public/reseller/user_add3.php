@@ -187,7 +187,7 @@ function add_user_data($reseller_id)
 	$software_allowed = preg_replace("/\_/", '', $software_allowed);
     $external_mail = preg_replace("/\_/", '', $external_mail);
 	$pure_user_pass = $inpass;
-	$inpass = crypt_user_pass($inpass);
+	$inpass = cryptPasswordWithSalt($inpass);
 	$first_name = clean_input($first_name);
 	$last_name = clean_input($last_name);
 	$firm = clean_input($firm);
@@ -303,7 +303,7 @@ function add_user_data($reseller_id)
 	";
 
 	exec_query($query, array($dmn_id, $dmn_name,
-							crypt_user_pass_with_salt($pure_user_pass),
+							cryptPasswordWithSalt($pure_user_pass),
 							$cfg->ITEM_ADD_STATUS));
 
 	$user_id = $db->insertId();

@@ -27,13 +27,13 @@ package Servers::ftpd;
 
 use strict;
 use warnings;
-use iMSCP::Debug;
+
 use parent 'Common::SimpleClass';
 
 sub factory
 {
 	my $self = shift;
-	my $server = shift || $main::imscpConfig{FTPD_SERVER};
+	my $server = shift || $main::imscpConfig{'FTPD_SERVER'};
 	my ($file, $class);
 
 	if(lc($server) eq 'no') {

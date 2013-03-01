@@ -23,15 +23,7 @@ program. If not, see <http://www.gnu.org/licenses/>
 -->
 
 <install>
-	<folders />
-
-	<copy_config />
-
-	<copy>${SYSTEM_ENGINE_ROOT}/quota/imscp-*</copy>
-
-	<create_file />
-
-	<chown_file owner="root" group="root">${SYSTEM_ENGINE_ROOT}/quota/imscp-*</chown_file>
-
-	<chmod_file mode="0700">${SYSTEM_ENGINE_ROOT}/quota/imscp-*</chmod_file>
+    <copy>${SYSTEM_ENGINE_ROOT}/quota/imscp-*</copy>
+    <chown_file owner="${ROOT_USER}" group="${ROOT_GROUP}">${SYSTEM_ENGINE_ROOT}/quota/imscp-*</chown_file>
+    <chmod_file mode="0700">${SYSTEM_ENGINE_ROOT}/quota/imscp-*</chmod_file>
 </install>

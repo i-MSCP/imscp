@@ -365,7 +365,7 @@ class iMSCP_VirtualFileSystem
         // Generate a random userid and password
         $user = uniqid('tmp_') . '@' . $this->_domain;
         $this->_passwd = uniqid('tmp_', true);
-        $password = crypt_user_pass_with_salt($this->_passwd);
+        $password = cryptPasswordWithSalt($this->_passwd);
 
         // Create the temporary user
         $query = "

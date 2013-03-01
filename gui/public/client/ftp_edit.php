@@ -120,16 +120,12 @@ function update_ftp_account($ftp_acc, $dmn_name) {
 				set_page_message(tr("Entered passwords doesn't match."), 'error');
 				return;
 			}
-			if (!chk_password($_POST['pass'])) {
-				if ($cfg->PASSWD_STRONG) {
-					set_page_message(sprintf(tr('The password must be at least %s long and contain letters and numbers to be valid.'), $cfg->PASSWD_CHARS), 'error');
-				} else {
-					set_page_message(sprintf(tr('Password data is shorter than %s signs or includes not permitted signs.'), $cfg->PASSWD_CHARS), 'error');
-				}
+
+			if (!checkPasswordSyntax($_POST['pass'])) {
 				return;
 			}
 
-			$pass = crypt_user_pass_with_salt($_POST['pass']);
+			$pass = cryptPasswordWithSalt($_POST['pass']);
 			$rawpass = $_POST['pass'];
 			if (isset($_POST['use_other_dir']) && $_POST['use_other_dir'] === 'on') {
 

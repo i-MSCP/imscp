@@ -87,7 +87,7 @@ sub get
 	my $self = shift;
 
 	if(! $self->{'dirContent'}) {
-		debug("open directory $self->{dirname}");
+		debug("Open directory $self->{dirname}");
 
 		$self->{'dirContent'} = ();
 
@@ -109,7 +109,7 @@ sub mode
 	my $mode = shift;
 	my $dir = shift;
 
-	debug( sprintf "Change mode mode: %o for '" . ( $dir || $self->{'dirname'}) ."'", $mode);
+	debug( sprintf "Change mode: %o for '" . ( $dir || $self->{'dirname'}) ."'", $mode);
 
 	unless (chmod($mode, $dir || $self->{'dirname'})){
 		error("Cannot change permissions of file '".( $dir || $self->{'dirname'}) ."': $!");
@@ -149,16 +149,16 @@ sub make
 	$option = {} if (ref $option ne 'HASH');
 
 	if (-e  $self->{'dirname'} && ! -d  $self->{'dirname'}) {
-		warning("' $self->{dirname}' exists as file ! removing file first...");
+		warning("'$self->{dirname}' exists as file. Removing file first...");
 
 		if(! unlink  $self->{'dirname'}){
-			error("Could not unlink $self->{dirname}: $!");
+			error("Cannot unlink $self->{dirname}: $!");
 			return 1;
 		 }
 	}
 
 	if (!(-e  $self->{'dirname'} && -d  $self->{'dirname'})) {
-		debug("'$self->{dirname}' doesn't exists as directory! creating...");
+		debug("'$self->{dirname}' doesn't exists as directory. Creating...");
 		my $err;
 
 		use File::Path;
@@ -192,7 +192,7 @@ sub make
 			}
 		}
 	} else {
-		debug("'$self->{dirname}' exists ! Setting its permissions...");
+		debug("'$self->{dirname}' already exists. Setting its permissions...");
 
 		if($option->{'mode'}){
 			return 1 if $self->mode( $option->{'mode'}, $self->{'dirname'});
@@ -305,7 +305,7 @@ sub moveDir
 	my $dest = shift;
 
 	if(!$self->{'dirname'} || ! -d $self->{'dirname'}) {
-		error("" . ($self->{'filename'} ? "Directory $self->{dirname} do not exits" : "Directory name not set!"));
+		error("" . ($self->{'filename'} ? "Directory $self->{dirname} doesn't exits" : "Directory name not set!"));
 		return 1;
 	}
 

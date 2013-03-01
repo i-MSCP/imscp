@@ -23,6 +23,6 @@ program. If not, see <http://www.gnu.org/licenses/>
 -->
 
 <install>
-	<folders>${ROOT_CONF}/logrotate.d</folders>
-	<copy_config>${ROOT_CONF}/logrotate.d/imscp</copy_config>
+    <folders>${ROOT_CONF}/logrotate.d</folders>
+    <copy_config>${ROOT_CONF}/logrotate.d/imscp</copy_config>
 </install>

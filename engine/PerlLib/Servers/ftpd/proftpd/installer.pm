@@ -20,6 +20,7 @@
 # @category		i-MSCP
 # @copyright	2010-2013 by i-MSCP | http://i-mscp.net
 # @author		Daniel Andreca <sci2tech@gmail.com>
+# @author		Laurent Declercq <l.declercq@nuxwin.com>
 # @link			http://i-mscp.net i-MSCP Home Site
 # @license		http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
@@ -28,24 +29,28 @@ package Servers::ftpd::proftpd::installer;
 use strict;
 use warnings;
 use iMSCP::Debug;
+use iMSCP::Config;
 use iMSCP::Execute;
 use iMSCP::File;
 use iMSCP::Templator;
 use iMSCP::HooksManager;
+use File::Basename;
 use parent 'Common::SingletonClass';
 
 sub _init
 {
 	my $self = shift;
 
-	iMSCP::HooksManager->getInstance()->trigger('beforeFtpdInitInstaller', $self, 'proftpd');
+	$self->{'hooksManager'} = iMSCP::HooksManager->getInstance();
+
+	$self->{'hooksManager'}->trigger('beforeFtpdInitInstaller', $self, 'proftpd');
 
 	$self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/proftpd";
-	$self->{'bkpDir'} = "$self->{cfgDir}/backup";
-	$self->{'wrkDir'} = "$self->{cfgDir}/working";
+	$self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
+	$self->{'wrkDir'} = "$self->{'cfgDir'}/working";
 
-	my $conf = "$self->{cfgDir}/proftpd.data";
-	my $oldConf = "$self->{cfgDir}/proftpd.old.data";
+	my $conf = "$self->{'cfgDir'}/proftpd.data";
+	my $oldConf = "$self->{'cfgDir'}/proftpd.old.data";
 
 	tie %self::proftpdConfig, 'iMSCP::Config','fileName' => $conf, noerrors => 1;
 
@@ -54,7 +59,7 @@ sub _init
 		%self::proftpdConfig = (%self::proftpdConfig, %self::proftpdOldConfig);
 	}
 
-	iMSCP::HooksManager->getInstance()->trigger('afterFtpdInitInstaller', $self, 'proftpd');
+	$self->{'hooksManager'}->trigger('afterFtpdInitInstaller', $self, 'proftpd');
 
 	$self;
 }
@@ -63,17 +68,11 @@ sub registerSetupHooks
 {
 	my $self = shift;
 	my $hooksManager = shift;
-	my $rs = 0;
-
-	$hooksManager->trigger('beforeFtpdRegisterSetupHooks', $hooksManager, 'proftpd') and return 1;
 
 	# Add proftpd installer dialog in setup dialog stack
 	$hooksManager->register(
-		'beforeSetupDialog',
-		sub { my $dialogStack = shift; push(@$dialogStack, sub { $self->askProftpd(@_) }); 0; }
-	) and return 1;
-
-	$hooksManager->trigger('afterFtpdRegisterSetupHooks', $hooksManager, 'proftpd');
+		'beforeSetupDialog', sub { my $dialogStack = shift; push(@$dialogStack, sub { $self->askProftpd(@_) }); 0; }
+	);
 }
 
 sub askProftpd
@@ -147,16 +146,12 @@ sub install
 	my $self = shift;
 	my $rs = 0;
 
-	$rs = iMSCP::HooksManager->getInstance()->trigger('beforeFtpdInstall', 'proftpd');
-
 	$rs |= $self->bkpConfFile($self::proftpdConfig{'FTPD_CONF_FILE'});
 	$rs |= $self->setupDB();
 	$rs |= $self->buildConf();
 	$rs |= $self->saveConf();
 	$rs |= $self->createLogFiles();
 	$rs |= $self->removeOldFiles();
-
-	$rs |= iMSCP::HooksManager->getInstance()->trigger('afterFtpdInstall', 'proftpd');
 
 	$rs;
 }
@@ -167,41 +162,37 @@ sub removeOldFiles
 	my ($stdout, $stderr);
 	my $rs = 0;
 
-	$rs = iMSCP::HooksManager->getInstance()->trigger('beforeFtpdRemoveOldFiles');
-
-	use iMSCP::Execute;
+	$rs = $self->{'hooksManager'}->trigger('beforeFtpdRemoveOldFiles');
 
 	$rs |= execute("$main::imscpConfig{'CMD_RM'} -f $self::proftpdConfig{'FTPD_CONF_DIR'}/*", \$stdout, \$stderr);
 	debug("$stdout") if $stdout;
 
-	$rs |= iMSCP::HooksManager->getInstance()->trigger('afterFtpdRemoveOldFiles');
+	$rs |= $self->{'hooksManager'}->trigger('afterFtpdRemoveOldFiles');
 
 	$rs;
 }
 
 sub saveConf
 {
-	use iMSCP::File;
-
 	my $self = shift;
 	my $rs = 0;
 
-	my $file = iMSCP::File->new(filename => "$self->{cfgDir}/proftpd.data");
+	my $file = iMSCP::File->new('filename' => "$self->{'cfgDir'}/proftpd.data");
 	my $cfg = $file->get() or return 1;
 
-	$rs |= iMSCP::HooksManager->getInstance()->trigger('beforeFtpdSaveConf', \$cfg, 'proftpd.old.data');
+	$rs |= $self->{'hooksManager'}->trigger('beforeFtpdSaveConf', \$cfg, 'proftpd.old.data');
 
 	$rs |= $file->mode(0640);
 	$rs |= $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
 
-	$file = iMSCP::File->new(filename => "$self->{cfgDir}/proftpd.old.data");
+	$file = iMSCP::File->new('filename' => "$self->{'cfgDir'}/proftpd.old.data");
 
 	$rs |= $file->set($cfg);
 	$rs |= $file->save();
 	$rs |= $file->mode(0640);
 	$rs |= $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
 
-	$rs |= iMSCP::HooksManager->getInstance()->trigger('afterFtpdSaveConf', 'proftpd.old.data');
+	$rs |= $self->{'hooksManager'}->trigger('afterFtpdSaveConf', 'proftpd.old.data');
 
 	$rs;
 }
@@ -211,7 +202,7 @@ sub createLogFiles
 	my $self = shift;
 	my $rs = 0;
 
-	$rs = iMSCP::HooksManager->getInstance()->trigger('beforeFtpdCreateLogFiles');
+	$rs = $self->{'hooksManager'}->trigger('beforeFtpdCreateLogFiles');
 
 	## To fill ftp_traff.log file with something
 	if (! -d "$main::imscpConfig{'TRAFF_LOG_DIR'}/proftpd") {
@@ -219,12 +210,12 @@ sub createLogFiles
 
 		$rs |= iMSCP::Dir->new(
 			dirname => "$main::imscpConfig{'TRAFF_LOG_DIR'}/proftpd"
-		)->make({ user => $main::imscpConfig{'ROOT_USER'}, group => $main::imscpConfig{'ROOT_GROUP'}, mode => 0755 });
+		)->make({ 'user' => $main::imscpConfig{'ROOT_USER'}, 'group' => $main::imscpConfig{'ROOT_GROUP'}, 'mode' => 0755 });
 	}
 
 	if(! -f "$main::imscpConfig{'TRAFF_LOG_DIR'}$self::proftpdConfig{'FTP_TRAFF_LOG'}") {
 		my $file = iMSCP::File->new(
-			filename => "$main::imscpConfig{'TRAFF_LOG_DIR'}$self::proftpdConfig{'FTP_TRAFF_LOG'}"
+			'filename' => "$main::imscpConfig{'TRAFF_LOG_DIR'}$self::proftpdConfig{'FTP_TRAFF_LOG'}"
 		);
 
 		$rs |= $file->save();
@@ -232,7 +223,7 @@ sub createLogFiles
 		$rs |= $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
 	}
 
-	$rs |= iMSCP::HooksManager->getInstance()->trigger('afterFtpdCreateLogFiles');
+	$rs |= $self->{'hooksManager'}->trigger('afterFtpdCreateLogFiles');
 
 	$rs;
 }
@@ -255,18 +246,18 @@ sub buildConf
 		SSL => ($main::imscpConfig{'SSL_ENABLED'} eq 'yes' ? '' : '#')
 	};
 
-	my $file = iMSCP::File->new(filename => "$self->{cfgDir}/proftpd.conf");
+	my $file = iMSCP::File->new('filename' => "$self->{'cfgDir'}/proftpd.conf");
 	my $cfgTpl = $file->get();
 	return 1 if  ! $cfgTpl;
 
-	$rs = iMSCP::HooksManager->getInstance()->trigger('beforeFtpdBuildConf', \$cfgTpl, 'proftpd.conf');
+	$rs = $self->{'hooksManager'}->trigger('beforeFtpdBuildConf', \$cfgTpl, 'proftpd.conf');
 
 	$cfgTpl = iMSCP::Templator::process($cfg, $cfgTpl);
 	return 1 if ! $cfgTpl;
 
-	$rs |= iMSCP::HooksManager->getInstance()->trigger('afterFtpdBuildConf', \$cfgTpl, 'proftpd.conf');
+	$rs |= $self->{'hooksManager'}->trigger('afterFtpdBuildConf', \$cfgTpl, 'proftpd.conf');
 
-	$file = iMSCP::File->new(filename => "$self->{wrkDir}/proftpd.conf");
+	$file = iMSCP::File->new('filename' => "$self->{'wrkDir'}/proftpd.conf");
 
 	$rs |= $file->set($cfgTpl);
 	$rs |= $file->save();
@@ -288,19 +279,19 @@ sub setupDB
 		? $main::imscpConfig{'DATABASE_HOST'} : $main::imscpConfig{'BASE_SERVER_IP'};
 	my $rs = 0;
 
-	iMSCP::HooksManager->getInstance()->trigger('beforeFtpdSetupDb', $dbUser, $dbPass,  $dbOldUser,) and return 1;
+	$self->{'hooksManager'}->trigger('beforeFtpdSetupDb', $dbUser, $dbPass,  $dbOldUser,) and return 1;
 
 	# Remove old proftpd restricted SQL user and all it privileges (if any)
 	for($main::imscpOldConfig{'DATABASE_HOST'} || '', $main::imscpOldConfig{'BASE_SERVER_IP'} || '') {
 		next if $_ eq '' || $dbOldUser eq '';
 		$rs = main::setupDeleteSqlUser($dbOldUser, $_);
-		error("Unable to remove the old proftpd '$dbOldUser' restricted SQL user: $rs") if $rs;
+		error("Unable to remove the old proftpd '$dbOldUser' restricted SQL user") if $rs;
 		return 1 if $rs;
 	}
 
 	# Ensure new proftpd user do not already exists by removing it
 	$rs = main::setupDeleteSqlUser($dbUser, $_);
-	error("Unable to delete the proftpd '$dbUser' restricted SQL user: $rs") if $rs;
+	error("Unable to delete the proftpd '$dbUser' restricted SQL user") if $rs;
 	return 1 if $rs;
 
 	# Get SQL connection with full privileges
@@ -327,31 +318,32 @@ sub setupDB
 		}
 	}
 
-	iMSCP::HooksManager->getInstance()->trigger('afterFtpSetupDb', $dbUser, $dbPass,  $dbOldUser,);
+	$self->{'hooksManager'}->trigger('afterFtpSetupDb', $dbUser, $dbPass,  $dbOldUser,);
 }
 
 sub bkpConfFile
 {
-	use File::Basename;
-
 	my $self = shift;
 	my $cfgFile = shift;
 	my $timestamp = time;
+	my $rs = 0;
 
-	iMSCP::HooksManager->getInstance()->trigger('beforeFtpdBkpConfFile', $cfgFile);
+	$rs = $self->{'hooksManager'}->trigger('beforeFtpdBkpConfFile', $cfgFile);
 
-	if(-f $cfgFile){
-		my $file = iMSCP::File->new( filename => $cfgFile );
+	if(! $rs && -f $cfgFile){
+		my $file = iMSCP::File->new('filename' => $cfgFile );
 		my ($filename, $directories, $suffix) = fileparse($cfgFile);
 
-		if(! -f "$self->{bkpDir}/$filename$suffix.system") {
-			$file->copyFile("$self->{bkpDir}/$filename$suffix.system") and return 1;
+		if(! -f "$self->{'bkpDir'}/$filename$suffix.system") {
+			$file->copyFile("$self->{'bkpDir'}/$filename$suffix.system") and return 1;
 		} else {
-			$file->copyFile("$self->{bkpDir}/$filename$suffix.$timestamp") and return 1;
+			$file->copyFile("$self->{'bkpDir'}/$filename$suffix.$timestamp") and return 1;
 		}
 	}
 
-	iMSCP::HooksManager->getInstance()->trigger('afterFtpdBkpConfFile', $cfgFile);
+	$rs |= $self->{'hooksManager'}->trigger('afterFtpdBkpConfFile', $cfgFile);
+
+	$rs;
 }
 
 1;

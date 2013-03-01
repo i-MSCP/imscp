@@ -457,13 +457,9 @@ function admin_checkAndUpdateData($resellerId)
 		if (!empty($data['password']) || !empty($data['pasword_confirmation'])) {
 			if ($data['password'] != $data['password_confirmation']) {
 				set_page_message(tr("Passwords doesn't match."), 'error');
-			} elseif (!chk_password($data['password'])) {
-				if ($cfg->PASSWD_STRONG) {
-					set_page_message(tr('The password must be at least %s long and contain letters and numbers to be valid.', $cfg->PASSWD_CHARS), 'error');
-				} else {
-					set_page_message(tr('Password data is shorter than %s signs or includes not permitted signs.', $cfg->PASSWD_CHARS), 'error');
-				}
 			}
+
+			checkPasswordSyntax($data['password']);
 
 			if (Zend_Session::namespaceIsset('pageMessages')) {
 				$errFieldsStack[] = 'password';
@@ -685,7 +681,7 @@ function admin_checkAndUpdateData($resellerId)
 
 			if ($data['password'] != '') {
 				$setPassword = '`admin_pass` = ?,';
-				array_unshift($bindParams, crypt_user_pass($data['password']));
+				array_unshift($bindParams, cryptPasswordWithSalt($data['password']));
 			} else {
 				$setPassword = '';
 			}

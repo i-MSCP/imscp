@@ -97,12 +97,7 @@ function change_sql_user_pass($db_user_id, $db_user_name)
 		return;
 	}
 
-	if (!chk_password($_POST['pass'])) {
-		if ($cfg->PASSWD_STRONG) {
-			set_page_message(sprintf(tr('The password must be at least %s long and contain letters and numbers to be valid.'), $cfg->PASSWD_CHARS), 'error');
-		} else {
-			set_page_message(sprintf(tr('Password data is shorter than %s signs or includes not permitted signs.'), $cfg->PASSWD_CHARS), 'error');
-		}
+	if (!checkPasswordSyntax($_POST['pass'])) {
 		return;
 	}
 

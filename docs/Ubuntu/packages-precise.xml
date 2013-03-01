@@ -79,6 +79,7 @@
                     pinning_pin="origin mirror2.hs-esslingen.de"
                     pinning_pin_priority="1001"
                     repository="http://mirror2.hs-esslingen.de/mariadb/repo/5.5/ubuntu"
+                    repository_origin="MariaDB"
                     repository_key_srv="keyserver.ubuntu.com"
                     repository_key_id="0xcbcb082a1bb943db"
                     >
@@ -86,7 +87,9 @@
                 <package>mariadb-server</package>
                 <package>mysql-common</package>
             </mariadb_5.5>
-            <remote_server/>
+            <remote_server>
+                <package>mysql-client</package>
+            </remote_server>
         </alternative>
     </sql>
     <php>

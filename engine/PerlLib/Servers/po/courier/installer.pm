@@ -1,5 +1,11 @@
 #!/usr/bin/perl
 
+=head1 NAME
+
+ Servers::po::courier::installer - i-MSCP Courier IMAP/POP3 Server installer implementation
+
+=cut
+
 # i-MSCP - internet Multi Server Control Panel
 # Copyright (C) 2010-2013 by internet Multi Server Control Panel
 #
@@ -20,6 +26,7 @@
 # @category		i-MSCP
 # @copyright	2010-2013 by i-MSCP | http://i-mscp.net
 # @author		Daniel Andreca <sci2tech@gmail.com>
+# @author		Laurent Declercq <l.declercq@nuxwin.com>
 # @link			http://i-mscp.net i-MSCP Home Site
 # @license		http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
@@ -27,255 +34,250 @@ package Servers::po::courier::installer;
 
 use strict;
 use warnings;
+
 use iMSCP::Debug;
+use iMSCP::HooksManager;
+use iMSCP::Config;
 use iMSCP::File;
 use iMSCP::Execute;
-use iMSCP::HooksManager;
+use iMSCP::Templator;
 use parent 'Common::SingletonClass';
 
-sub _init
-{
-	my $self = shift;
+=head1 DESCRIPTION
 
-	iMSCP::HooksManager->getInstance()->trigger('beforePodInitInstaller', $self, 'courier');
+ i-MSCP Courier IMAP/POP3 Server installer implementation.
 
-	$self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/courier";
-	$self->{'bkpDir'} = "$self->{cfgDir}/backup";
-	$self->{'wrkDir'} = "$self->{cfgDir}/working";
+=head1 PUBLIC METHODS
 
-	my $conf = "$self->{cfgDir}/courier.data";
-	my $oldConf = "$self->{cfgDir}/courier.old.data";
+=over 4
 
-	tie %self::courierConfig, 'iMSCP::Config','fileName' => $conf, noerrors => 1;
+=item install()
 
-	if(-f $oldConf) {
-		tie %self::courierOldConfig, 'iMSCP::Config','fileName' => $oldConf, noerrors => 1;
-		%self::courierConfig = (%self::courierConfig, %self::courierOldConfig);
-	}
+ Process installation.
 
-	iMSCP::HooksManager->getInstance()->trigger('afterPodInitInstaller', $self, 'courier');
+ Return int 0 on success, other on failure
 
-	$self;
-}
-
-sub migrateMailboxes
-{
-	my $self = shift;
-
-	iMSCP::HooksManager->getInstance()->trigger('beforePoMigrateMailboxes') and return 1;
-
-	if($main::imscpOldConfig{'PO_SERVER'} && $main::imscpOldConfig{'PO_SERVER'} eq 'dovecot' &&
-		$main::imscpConfig{'PO_SERVER'}  eq 'courier'
-	){
-		use iMSCP::Execute;
-		use FindBin;
-		use Servers::mta;
-
-		my $mta	= Servers::mta->factory($main::imscpConfig{'MTA_SERVER'});
-		my ($rs, $stdout, $stderr);
-		my $binPath = "perl $main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlVendor/courier-dovecot-migrate.pl";
-		my $mailPath = "$mta->{'MTA_VIRTUAL_MAIL_DIR'}";
-
-		$rs = execute("$binPath --to-courier --convert --recursive $mailPath", \$stdout, \$stderr);
-		debug("$stdout...") if $stdout;
-		warning("$stderr") if $stderr && !$rs;
-		error("$stderr") if $stderr && $rs;
-		error("Error while converting mails") if !$stderr && $rs;
-	}
-
-	iMSCP::HooksManager->getInstance()->trigger('afterPoMigrateMailboxes');
-}
-
-sub registerSetupHooks
-{
-	my $self = shift;
-	my $hooksManager = shift;
-
-	$hooksManager->trigger('beforePoRegisterSetupHooks', $hooksManager, 'courier') and return 1;
-
-	$hooksManager->register('afterMtaBuildMainCfFile', sub { $self->buildMtaConf(@_); }) and return 1;
-	$hooksManager->register('afterMtaBuildMasterCfFile', sub { $self->buildMtaConf(@_); }) and return 1;
-
-	$hooksManager->trigger('afterPoRegisterSetupHooks', $hooksManager, 'courier');
-}
+=cut
 
 sub install
 {
 	my $self = shift;
 	my $rs = 0;
 
-	iMSCP::HooksManager->getInstance()->trigger('beforePoInstall', 'courier') and return 1;
+	$rs |= $self->_bkpConfFile($_) for (
+		'authdaemonrc', 'userdb', $self::courierConfig{'COURIER_IMAP_SSL'}, $self::courierConfig{'COURIER_POP_SSL'}
+	);
 
-	# Saving all system configuration files if they exists
-	for (
-		'authdaemonrc',
-		'userdb',
-		$self::courierConfig{'COURIER_IMAP_SSL'},
-		$self::courierConfig{'COURIER_POP_SSL'}
-	) {
-		$rs |= $self->bkpConfFile($_);
-	}
-
-	$rs |= $self->buildAuthdaemonrcFile();
-	$rs |= $self->buildUserdbFile();
-	$rs |= $self->buildSslConfFiles();
-	$rs |= $self->saveConf();
-	$rs |= $self->migrateMailboxes();
-
-	$rs |= iMSCP::HooksManager->getInstance()->trigger('afterPoInstall', 'courier');
+	$rs |= $self->_buildAuthdaemonrcFile();
+	$rs |= $self->_buildUserdbFile();
+	$rs |= $self->_buildSslConfFiles();
+	$rs |= $self->_saveConf();
+	$rs |= $self->_migrateMailboxes();
 
 	$rs;
 }
 
-sub saveConf
+=back
+
+=head1 PRIVATE METHODS
+
+=over 4
+
+=item _init()
+
+ Called by new(). Initialize instance.
+
+ Return Servers::po::courier::installer
+
+=cut
+
+sub _init
 {
 	my $self = shift;
-	my $rs = 0;
 
-	use iMSCP::File;
+	$self->{'hooksManager'} = iMSCP::HooksManager->getInstance();
 
-	my$file = iMSCP::File->new(filename => "$self->{cfgDir}/courier.data");
-	my $cfg = $file->get() or return 1;
+	$self->{'hooksManager'}->trigger('beforePodInitInstaller', $self, 'courier');
 
-	iMSCP::HooksManager->getInstance()->trigger('beforePoSaveConf', \$cfg, 'courier.old.data') and return 1;
+	$self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/courier";
+	$self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
+	$self->{'wrkDir'} = "$self->{'cfgDir'}/working";
 
-	$file = iMSCP::File->new(filename => "$self->{cfgDir}/courier.old.data");
-	$rs |= $file->set($cfg);
-	$rs |= $file->save();
-	$rs |= $file->mode(0640);
-	$rs |= $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
+	my $conf = "$self->{'cfgDir'}/courier.data";
+	my $oldConf = "$self->{'cfgDir'}/courier.old.data";
 
-	$rs |= iMSCP::HooksManager->getInstance()->trigger('afterPoSaveConf', 'courier.old.data');
+	tie %self::courierConfig, 'iMSCP::Config','fileName' => $conf, 'noerrors' => 1;
 
-	$rs;
+	if(-f $oldConf) {
+		tie %self::courierOldConfig, 'iMSCP::Config','fileName' => $oldConf, 'noerrors' => 1;
+		%self::courierConfig = (%self::courierConfig, %self::courierOldConfig);
+	}
+
+	$self->{'hooksManager'}->trigger('afterPodInitInstaller', $self, 'courier');
+
+	$self;
 }
 
-sub bkpConfFile
+=item _bkpConfFile()
+
+ Backup the given file.
+
+ Return int 0 on success, other on failure
+
+=cut
+
+sub _bkpConfFile
 {
 	my $self = shift;
 	my $cfgFile = shift;
-	my $timestamp = time;
+	my $rs = 0;
 
-	iMSCP::HooksManager->getInstance()->trigger('beforePoBkpConfFile', $cfgFile) and return 1;
+	$rs = $self->{'hooksManager'}->trigger('beforePoBkpConfFile', $cfgFile);
 
-	if(-f "$self::courierConfig{'AUTHLIB_CONF_DIR'}/$cfgFile"){
-		my $file = iMSCP::File->new(filename => "$self::courierConfig{'AUTHLIB_CONF_DIR'}/$cfgFile");
+	if(! $rs && -f "$self::courierConfig{'AUTHLIB_CONF_DIR'}/$cfgFile") {
+		my $file = iMSCP::File->new('filename' => "$self::courierConfig{'AUTHLIB_CONF_DIR'}/$cfgFile");
 
-		if(!-f "$self->{bkpDir}/$cfgFile.system") {
-			$file->copyFile("$self->{bkpDir}/$cfgFile.system") and return 1;
+		if(!-f "$self->{'bkpDir'}/$cfgFile.system") {
+			$rs = $file->copyFile("$self->{'bkpDir'}/$cfgFile.system");
 		} else {
-			$file->copyFile("$self->{bkpDir}/$cfgFile.$timestamp") and return 1;
+			my $timestamp = time;
+			$rs = $file->copyFile("$self->{'bkpDir'}/$cfgFile.$timestamp");
 		}
 	}
 
-	iMSCP::HooksManager->getInstance()->trigger('afterPoBkpConfFile', $cfgFile);
+	$rs |= $self->{'hooksManager'}->trigger('afterPoBkpConfFile', $cfgFile);
+
+	$rs;
 }
 
-sub buildAuthdaemonrcFile
+=item _buildAuthdaemonrcFile()
+
+ Build the authdaemonrc file.
+
+ Return int 0 on success, other on failure
+
+=cut
+
+sub _buildAuthdaemonrcFile
 {
 	my $self = shift;
 	my ($rdata, $file);
+	my $rs = 0;
 
 	# Loading the system file from /etc/imscp/backup
-	$file = iMSCP::File->new(filename => "$self->{bkpDir}/authdaemonrc.system");
+	$file = iMSCP::File->new('filename' => "$self->{'bkpDir'}/authdaemonrc.system");
 	$rdata = $file->get();
 
-	if (! $rdata){
-		error("Error while reading $self->{bkpDir}/authdaemonrc.system");
+	if (! $rdata) {
+		error("Error while reading $self->{'bkpDir'}/authdaemonrc.system file");
 		return 1;
 	}
 
-	iMSCP::HooksManager->getInstance()->trigger('beforePoBuildAuthdaemonrcFile', \$rdata, 'authdaemonrc') and return 1;
+	$rs = $self->{'hooksManager'}->trigger('beforePoBuildAuthdaemonrcFile', \$rdata, 'authdaemonrc');
 
 	# Building the new file (Adding the authuserdb module if needed)
-	if($rdata !~ /^\s*authmodulelist="(?:.*)?authuserdb.*"$/gm) {
+	if(! $rs && $rdata !~ /^\s*authmodulelist="(?:.*)?authuserdb.*"$/gm) {
 		$rdata =~ s/(authmodulelist=")/$1authuserdb /gm;
 	}
 
-	iMSCP::HooksManager->getInstance()->trigger('afterPoBuildAuthdaemonrcFile', \$rdata, 'authdaemonrc') and return 1;
+	$rs |= $self->{'hooksManager'}->trigger('afterPoBuildAuthdaemonrcFile', \$rdata, 'authdaemonrc');
 
 	# Storing the new file in the working directory
-	$file = iMSCP::File->new(filename => "$self->{wrkDir}/authdaemonrc");
-	$file->set($rdata) and return 1;
-	$file->save() and return 1;
-	$file->mode(0660) and return 1;
-	$file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'}) and return 1;
+	$file = iMSCP::File->new('filename' => "$self->{'wrkDir'}/authdaemonrc") if ! $rs;
+	$rs |= $file->set($rdata);
+	$rs |= $file->save();
+	$rs |= $file->mode(0660);
+	$rs |= $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
 
 	# Installing the new file in the production directory
-	$file->copyFile("$self::courierConfig{'AUTHLIB_CONF_DIR'}") and return 1;
+	$rs |= $file->copyFile("$self::courierConfig{'AUTHLIB_CONF_DIR'}");
 
-	0;
+	$rs;
 }
 
-sub buildUserdbFile
-{
-	my $self = shift;
+=item _buildUserdbFile()
 
-	iMSCP::HooksManager->getInstance()->trigger('beforePoBuildUserdbFile', 'userdb') and return 1;
+ Build the userdb file.
 
-	# Storing the new file in the working directory
-	iMSCP::File->new(filename => "$self->{cfgDir}/userdb")->copyFile("$self->{wrkDir}") and return 1;
+ Return int 0 on success, other on failure
 
-	# After build this file is world readable which is is bad
-	# Permissions are inherited by production file
-	my $file = iMSCP::File->new(filename => "$self->{wrkDir}/userdb");
-	$file->mode(0600) and return 1;
-	$file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'}) and return 1;
+=cut
 
-	# Installing the new file in the production directory
-	$file->copyFile("$self::courierConfig{'AUTHLIB_CONF_DIR'}") and return 1;
-
-	$file = iMSCP::File->new(filename => "$self::courierConfig{'AUTHLIB_CONF_DIR'}/userdb");
-	$file->mode(0600) and return 1;
-	$file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'}) and return 1;
-
-	# Creating/Updating userdb.dat file from the contents of the userdb file
-	my ($rs, $stdout, $stderr);
-	$rs = execute($self::courierConfig{'CMD_MAKEUSERDB'}, \$stdout, \$stderr);
-	debug("$stdout") if ($stdout);
-
-	if($rs) {
-		error("$stderr") if $stderr;
-		error("Error while executing $self::courierConfig{CMD_MAKEUSERDB} returned status $rs") unless $stderr;
-		return $rs;
-	}
-
-	iMSCP::HooksManager->getInstance()->trigger('afterPoBuildUserdbFile', 'userdb');
-}
-
-#
-sub buildSslConfFiles
+sub _buildUserdbFile
 {
 	my $self = shift;
 	my $rs = 0;
+
+	$rs = $self->{'hooksManager'}->trigger('beforePoBuildUserdbFile', 'userdb');
+
+	# Storing the new file in the working directory
+	$rs |= iMSCP::File->new('filename' => "$self->{'cfgDir'}/userdb")->copyFile("$self->{'wrkDir'}");
+
+	# After build this file is world readable which is is bad
+	# Permissions are inherited by production file
+	my $file = iMSCP::File->new('filename' => "$self->{'wrkDir'}/userdb") if ! $rs;
+	$rs |= $file->mode(0600);
+	$rs |= $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
+
+	# Installing the new file in the production directory
+	$rs |= $file->copyFile("$self::courierConfig{'AUTHLIB_CONF_DIR'}");
+
+	$file = iMSCP::File->new('filename' => "$self::courierConfig{'AUTHLIB_CONF_DIR'}/userdb") if ! $rs;
+	$rs |= $file->mode(0600);
+	$rs |= $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
+
+	# Creating/Updating userdb.dat file from the contents of the userdb file
+	my ($stdout, $stderr);
+	$rs |= execute($self::courierConfig{'CMD_MAKEUSERDB'}, \$stdout, \$stderr);
+	debug($stdout) if $stdout;
+	error($stderr) if $stderr && $rs;
+	error("Error while executing $self::courierConfig{'CMD_MAKEUSERDB'} returned status $rs") if $rs && ! $stderr;
+
+	$rs |= $self->{'hooksManager'}->trigger('afterPoBuildUserdbFile', 'userdb');
+
+	$rs;
+}
+
+=item _buildSslConfFiles()
+
+ Build ssl configuration file.
+
+ Return int 0 on success, other on failure
+
+=cut
+
+sub _buildSslConfFiles
+{
+	my $self = shift;
 	my ($rdata, $file);
+	my $rs = 0;
 
 	for ($self::courierConfig{'COURIER_IMAP_SSL'}, $self::courierConfig{'COURIER_POP_SSL'}) {
 
-		iMSCP::HooksManager->getInstance()->trigger('beforePoBuildSslConfFiles', $_) and return 1;
+		# If ssl is not enabled
+        last if lc($main::imscpConfig{'SSL_ENABLED'}) ne 'yes';
 
-		# if ssl is not enabled
-		last if lc($main::imscpConfig{'SSL_ENABLED'}) ne 'yes';
+		$rs = $self->{'hooksManager'}->trigger('beforePoBuildSslConfFiles', $_);
 
-		$file = iMSCP::File->new(filename => "$self::courierConfig{'AUTHLIB_CONF_DIR'}/$_");
+		$file = iMSCP::File->new('filename' => "$self::courierConfig{'AUTHLIB_CONF_DIR'}/$_") if ! $rs;
 
 		# read file exit if can not read
-		$rdata = $file->get();
+		$rdata = $file->get() if ! $rs;
 
-		if (! $rdata){
+		if (! $rs && ! $rdata){
 			$rs |= 1;
 			error("Error while reading $self::courierConfig{'AUTHLIB_CONF_DIR'}/$_");
-			next;
+			last;
 		}
 
-		# if ssl conf not in place we add if
+		# If ssl conf not in place we add if
 		if($rdata =~ m/^TLS_CERTFILE=/msg){
 			$rdata =~ s!^TLS_CERTFILE=.*$!TLS_CERTFILE=$main::imscpConfig{'GUI_CERT_DIR'}/$main::imscpConfig{'SERVER_HOSTNAME'}.pem!mg;
 		} else {
 			$rdata .= "TLS_CERTFILE=$main::imscpConfig{'GUI_CERT_DIR'}/$main::imscpConfig{'SERVER_HOSTNAME'}.pem";
 		}
 
-		$file = iMSCP::File->new(filename => "$self->{wrkDir}/$_");
+		$file = iMSCP::File->new('filename' => "$self->{'wrkDir'}/$_");
 		$rs |= $file->set($rdata);
 		$rs |= $file->save();
 		$rs |= $file->mode(0644);
@@ -284,45 +286,83 @@ sub buildSslConfFiles
 		# Installing the new file in the production directory
 		$rs |= $file->copyFile("$self::courierConfig{'AUTHLIB_CONF_DIR'}");
 
-		$rs |= iMSCP::HooksManager->getInstance()->trigger('afterPoBuildSslConfFiles', $_);
+		$rs |= $self->{'hooksManager'}->trigger('afterPoBuildSslConfFiles', $_);
 	}
 
 	$rs;
 }
 
-# Hook function acting on the following hooks
-# - afterMtaBuildMainCfFile
-# - afterMtaBuildMasterCfFile
-sub buildMtaConf
+=item _saveConf()
+
+ Save Courier configuration.
+
+ Return int 0 on success, other on failure
+
+=cut
+
+sub _saveConf
 {
 	my $self = shift;
-	my $content	= shift || '';
+	my $rs = 0;
 
-	use iMSCP::Templator;
+	my $file = iMSCP::File->new('filename' => "$self->{'cfgDir'}/courier.data");
+	my $cfg = $file->get() or return 1;
 
-	my $mta	= Servers::mta->factory($main::imscpConfig{'MTA_SERVER'});
+	$rs = $self->{'hooksManager'}->trigger('beforePoSaveConf', \$cfg, 'courier.old.data');
 
-	my $poBloc = getBloc(
-		"$mta->{'commentChar'} courier begin",
-		"$mta->{'commentChar'} courier end",
-		$$content
-	);
+	$file = iMSCP::File->new('filename' => "$self->{'cfgDir'}/courier.old.data") if ! $rs;
+	$rs |= $file->set($cfg);
+	$rs |= $file->save();
+	$rs |= $file->mode(0640);
+	$rs |= $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
 
-	$$content = replaceBloc(
-		"$mta->{'commentChar'} po setup begin",
-		"$mta->{'commentChar'} po setup end",
-		$poBloc,
-		$$content,
-		undef
-	);
+	$rs |= $self->{'hooksManager'}->trigger('afterPoSaveConf', 'courier.old.data');
 
-	# self register again and wait for next configuration file
-	#iMSCP::HooksManager->getInstance()->register(
-	#	'afterMtaBuildMasterCfFile', sub { $self->buildMtaConf(@_); }
-	#) and return 1;
-
-	#iMSCP::HooksManager->getInstance()->register('afterMtaBuildMainCfFile', sub { $self->buildMtaConf(@_); });
-	0;
+	$rs;
 }
+
+=item _migrateMailboxes()
+
+ Migrate mailboxes.
+
+ Return int 0 on success, other on failure
+
+=cut
+
+sub _migrateMailboxes
+{
+	my $self = shift;
+	my $rs = 0;
+
+	$rs = $self->{'hooksManager'}->trigger('beforePoMigrateMailboxes');
+
+	if(! $rs && defined $main::imscpOldConfig{'PO_SERVER'} && $main::imscpOldConfig{'PO_SERVER'} ne 'courier') {
+		require Servers::mta;
+
+		my $mta	= Servers::mta->factory($main::imscpConfig{'MTA_SERVER'});
+		my ($stdout, $stderr);
+		my $binPath = "perl $main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlVendor/courier-dovecot-migrate.pl";
+		my $mailPath = "$mta->{'MTA_VIRTUAL_MAIL_DIR'}";
+
+		$rs = execute("$binPath --to-courier --convert --recursive $mailPath", \$stdout, \$stderr);
+		debug($stdout) if $stdout;
+		warning($stderr) if $stderr && ! $rs;
+		error($stderr) if $stderr && $rs;
+		error('Error while converting mails') if ! $stderr && $rs;
+	}
+
+	$rs |= $self->{'hooksManager'}->trigger('afterPoMigrateMailboxes');
+
+	$rs;
+}
+
+=back
+
+=head1 AUTHORS
+
+ Daniel Andreca <sci2tech@gmail.com>
+ Laurent Declercq <l.declercq@nuxwin.com>
+
+=cut
 
 1;

@@ -23,10 +23,10 @@ program. If not, see <http://www.gnu.org/licenses/>
 -->
 
 <install>
-	<folders>${SYSTEM_CONF}/bind</folders>
-	<folders>${SYSTEM_CONF}/bind/backup</folders>
-	<folders>${SYSTEM_CONF}/bind/working</folders>
-	<copy_config>${SYSTEM_CONF}/bind/bind.data</copy_config>
-	<copy_config>${SYSTEM_CONF}/bind/named.conf</copy_config>
-	<copy_config>${SYSTEM_CONF}/bind/parts</copy_config>
+    <folders>${SYSTEM_CONF}/bind</folders>
+    <folders>${SYSTEM_CONF}/bind/backup</folders>
+    <folders>${SYSTEM_CONF}/bind/working</folders>
+    <copy_config>${SYSTEM_CONF}/bind/bind.data</copy_config>
+    <copy_config>${SYSTEM_CONF}/bind/named.conf</copy_config>
+    <copy_config>${SYSTEM_CONF}/bind/parts</copy_config>
 </install>

@@ -23,9 +23,9 @@ program. If not, see <http://www.gnu.org/licenses/>
 -->
 
 <install>
-	<folders>${ROOT_CONF}/policyd</folders>
-	<folders>${SYSTEM_CONF}/policyd</folders>
-	<folders>${SYSTEM_CONF}/policyd/backup</folders>
-	<folders>${SYSTEM_CONF}/policyd/working</folders>
-	<copy_config>${SYSTEM_CONF}/policyd/policyd.data</copy_config>
+    <folders>${ROOT_CONF}/policyd</folders>
+    <folders>${SYSTEM_CONF}/policyd</folders>
+    <folders>${SYSTEM_CONF}/policyd/backup</folders>
+    <folders>${SYSTEM_CONF}/policyd/working</folders>
+    <copy_config>${SYSTEM_CONF}/policyd/policyd.data</copy_config>
 </install>

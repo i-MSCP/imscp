@@ -542,13 +542,13 @@ sub _setupDatabase
 	for($main::imscpOldConfig{'DATABASE_HOST'} || '', $main::imscpOldConfig{'BASE_SERVER_IP'} || '') {
 		next if $_ eq '' || $dbOldUser eq '';
 		$rs = main::setupDeleteSqlUser($dbOldUser, $_);
-		error("Unable to remove the old roundcube '$dbOldUser' restricted SQL user: $rs") if $rs;
+		error("Unable to remove the old roundcube '$dbOldUser' restricted SQL user") if $rs;
 		return 1 if $rs;
 	}
 
 	# Ensure new roundcube restricted SQL user do not already exists by removing it
 	$rs = main::setupDeleteSqlUser($dbUser, $dbUserHost);
-	error("Unable to delete the roundcube '$dbUser' restricted SQL user: $rs") if $rs;
+	error("Unable to delete the roundcube '$dbUser' restricted SQL user") if $rs;
 	return 1 if $rs;
 
 	# Get SQL connection with full privileges

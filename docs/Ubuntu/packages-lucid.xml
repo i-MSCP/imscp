@@ -14,7 +14,7 @@
                 <package>apache2-mpm-itk</package>
                 <package>libapache2-mod-php5</package>
             </apache_itk>
-            <apache_php_fpm repository="ppa:brianmercer/php5">
+            <apache_php_fpm repository="ppa:brianmercer/php5" repository_origin="LP-PPA-brianmercer-php5">
                 <package>apache2</package>
                 <package>apache2-mpm-worker</package>
                 <package>libapache2-mod-fastcgi</package>
@@ -79,6 +79,7 @@
                     pinning_pin="origin mirror2.hs-esslingen.de"
                     pinning_pin_priority="1001"
                     repository="http://mirror2.hs-esslingen.de/mariadb/repo/5.3/ubuntu"
+                    repository_origin="MariaDB"
                     repository_key_srv="keyserver.ubuntu.com"
                     repository_key_id="0xcbcb082a1bb943db"
                     >
@@ -91,6 +92,7 @@
                     pinning_pin="origin mirror.netcologne.de"
                     pinning_pin_priority="1001"
                     repository="http://mirror.netcologne.de/mariadb/repo/5.5/ubuntu"
+                    repository_origin="MariaDB"
                     repository_key_srv="keyserver.ubuntu.com"
                     repository_key_id="0xcbcb082a1bb943db"
                     >
@@ -98,7 +100,9 @@
                 <package>mariadb-server</package>
                 <package>mysql-common</package>
             </mariadb_5.5>
-            <remote_server/>
+            <remote_server>
+                <package>mysql-client</package>
+            </remote_server>
         </alternative>
     </sql>
     <php>

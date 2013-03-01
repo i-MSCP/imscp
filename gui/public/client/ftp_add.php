@@ -73,9 +73,9 @@ function get_alias_mount_point($alias_name) {
 }
 
 /**
- * @param $tpl
- * @param $dmn_name
- * @param $post_check
+ * @param iMSCP_pTemplate $tpl
+ * @param string $dmn_name
+ * @param string $post_check
  * @return void
  */
 function gen_page_form_data($tpl, $dmn_name, $post_check) {
@@ -111,9 +111,9 @@ function gen_page_form_data($tpl, $dmn_name, $post_check) {
 }
 
 /**
- * @param $tpl
- * @param $dmn_id
- * @param $post_check
+ * @param iMSCP_pTemplate $tpl
+ * @param int $dmn_id
+ * @param string $post_check
  * @return void
  */
 function gen_dmn_als_list($tpl, $dmn_id, $post_check) {
@@ -176,10 +176,10 @@ function gen_dmn_als_list($tpl, $dmn_id, $post_check) {
 }
 
 /**
- * @param $tpl
- * @param $dmn_id
- * @param $dmn_name
- * @param $post_check
+ * @param iMSCP_pTemplate $tpl
+ * @param int $dmn_id
+ * @param string $dmn_name
+ * @param string $post_check
  * @return void
  */
 function gen_dmn_sub_list($tpl, $dmn_id, $dmn_name, $post_check) {
@@ -424,7 +424,7 @@ function add_ftp_user($dmn_name)
 	if ($ftp_uid == -1) return;
 
 	$ftp_shell = $cfg->CMD_SHELL;
-	$ftp_passwd = crypt_user_pass_with_salt($_POST['pass']);
+	$ftp_passwd = cryptPasswordWithSalt($_POST['pass']);
 	$ftp_rawpasswd = $_POST['pass'];
 
 	$query = "
@@ -473,12 +473,7 @@ function check_ftp_acc_data($tpl, $dmn_id, $dmn_name) {
 		return;
 	}
 
-	if (!chk_password($_POST['pass'])) {
-		if ($cfg->PASSWD_STRONG) {
-			set_page_message(sprintf(tr('The password must be at least %s long and contain letters and numbers to be valid.'), $cfg->PASSWD_CHARS), 'error');
-		} else {
-			set_page_message(sprintf(tr('Password data is shorter than %s signs or includes not permitted signs.'), $cfg->PASSWD_CHARS), 'error');
-		}
+	if (!checkPasswordSyntax($_POST['pass'])) {
 		return;
 	}
 
@@ -532,7 +527,7 @@ function gen_page_ftp_acc_props($tpl, $user_id) {
 }
 
 /**
- * @param $tpl
+ * @param iMSCP_pTemplate $tpl
  * @return void
  */
 function gen_page_js($tpl) {

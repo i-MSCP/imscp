@@ -72,7 +72,7 @@ function add_user($tpl)
 		iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onBeforeAddUser);
 
         if (check_user_data()) {
-            $upass = crypt_user_pass($_POST['pass']);
+			$upass = cryptPasswordWithSalt($_POST['pass']);
 
             $user_id = $_SESSION['user_id'];
 
@@ -204,33 +204,20 @@ function check_user_data()
 
     if (!validates_username($_POST['username'])) {
         set_page_message(tr('Incorrect username length or syntax.'), 'error');
-
         return false;
     }
 
-    if (!chk_password($_POST['pass'])) {
-        if ($cfg->PASSWD_STRONG) {
-            set_page_message(
-                sprintf(tr('The password must be at least %s long and contain letters and numbers to be valid.'),
-                        $cfg->PASSWD_CHARS), 'error');
-        } else {
-            set_page_message(
-                tr('Password data is shorter than %s signs or includes not permitted signs.',
-                   $cfg->PASSWD_CHARS), 'error');
-        }
-
+    if (!checkPasswordSyntax($_POST['pass'])) {
         return false;
     }
 
     if ($_POST['pass'] != $_POST['pass_rep']) {
         set_page_message(tr("Passwords doesn't match."), 'error');
-
         return false;
     }
 
     if (!chk_email($_POST['email'])) {
         set_page_message(tr("Incorrect email length or syntax."), 'error');
-
         return false;
     }
 

@@ -331,17 +331,7 @@ function update_data_in_db($hpid)
 		);
 	} else {
 		// Change password
-		if (!chk_password($_POST['userpassword'])) {
-			if (isset($cfg->PASSWD_STRONG)) {
-				set_page_message(
-					sprintf(
-						tr('The password must be at least %s long and contain letters and numbers to be valid.'), $cfg->PASSWD_CHARS
-					), 'error'
-				);
-			} else {
-				set_page_message(sprintf(tr('Password data is shorter than %s signs or includes not permitted signs.'), $cfg->PASSWD_CHARS), 'error');
-			}
-
+		if (!checkPasswordSyntax($_POST['userpassword'])) {
 			redirectTo('user_edit.php?edit_id=' . $hpid);
             exit;
 		}
@@ -355,7 +345,7 @@ function update_data_in_db($hpid)
 		}
 		$pure_user_pass = $inpass;
 
-		$inpass = crypt_user_pass($inpass);
+		$inpass = cryptPasswordWithSalt($inpass);
 
 		$query = "
 			UPDATE
