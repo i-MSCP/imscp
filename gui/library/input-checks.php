@@ -1060,7 +1060,14 @@ function checkMimeType($pathFile, $mimeTypes)
 	static $finfo = null;
 
 	if (null == $finfo) {
-		if (!is_readable(LIBRARY_PATH . '/resources/magic.mgc')) {
+
+		if(version_compare(PHP_VERSION, '5.3.11', '>=') || version_compare(PHP_VERSION, '5.4.1', '>=')) {
+			$magicFilePath = LIBRARY_PATH . '/resources/magic-2.mgc';
+		} else {
+			$magicFilePath = LIBRARY_PATH . '/resources/magic-1.mgc';
+		}
+
+		if (!is_readable($magicFilePath)) {
 			require_once 'iMSCP/Exception.php';
 			throw new iMSCP_Exception('Unable to found a magicfile to use.');
 		} elseif (!(class_exists('finfo', false))) {
@@ -1069,7 +1076,7 @@ function checkMimeType($pathFile, $mimeTypes)
 		}
 
 		$const = defined('FILEINFO_MIME_TYPE') ? FILEINFO_MIME_TYPE : FILEINFO_MIME;
-		$finfo = @finfo_open($const, LIBRARY_PATH . '/resources/magic.mgc');
+		$finfo = @finfo_open($const, $magicFilePath);
 
 		if (empty($finfo)) {
 			require_once 'iMSCP/Exception.php';

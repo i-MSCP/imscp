@@ -43,6 +43,7 @@ VENDOR:
 Tickets:
 	- Fixed #64:  Nice to have - PHP FPM
 	- Fixed #543: Bug - Dovecot not stopped when switching to courier
+	- Fixed #544: Bug - An exception have been thrown - magicfile
 	- Fixed #566: Cosmetics - i18n issues
 	- Fixed #581: Task - Add support for MariaDB
 	- Fixed #583: Bug - Disabling PHP will not prevent user to use it
