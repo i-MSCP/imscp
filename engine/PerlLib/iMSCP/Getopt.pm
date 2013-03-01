@@ -149,7 +149,7 @@ sub reconfigure
 			$options->{'reconfigure'} = 'all';
 		}
 
-		$value ~~ $reconfigureItems or die("Error: '$value' is not a valid item for the --reconfigure option.");
+		$value ~~ $reconfigureItems or die("Error: '$value' is not a valid argument for the --reconfigure option.");
 
 		$options->{'reconfigure'} = $value;
 	}
