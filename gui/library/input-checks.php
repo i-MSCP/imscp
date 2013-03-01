@@ -1060,8 +1060,10 @@ function checkMimeType($pathFile, $mimeTypes)
 	static $finfo = null;
 
 	if (null == $finfo) {
-
-		if(version_compare(PHP_VERSION, '5.3.11', '>=') || version_compare(PHP_VERSION, '5.4.1', '>=')) {
+		if(
+			(PHP_MINOR_VERSION == 3 && version_compare(PHP_VERSION, '5.3.11', '>=')) ||
+			(PHP_MINOR_VERSION >= 4 && version_compare(PHP_VERSION, '5.4.1', '>='))
+		) {
 			$magicFilePath = LIBRARY_PATH . '/resources/magic-2.mgc';
 		} else {
 			$magicFilePath = LIBRARY_PATH . '/resources/magic-1.mgc';
