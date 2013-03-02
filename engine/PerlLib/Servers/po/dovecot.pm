@@ -148,7 +148,7 @@ sub postaddMail
 		my $mailUidName =  $mta->{'MTA_MAILBOX_UID_NAME'};
 		my $mailGidName = $mta->{'MTA_MAILBOX_GID_NAME'};
 
-		for ("$mailDir/.Drafts", "$mailDir/.Sent", "$mailDir/.Junk", "$mailDir/.Trash") {
+		for ("$mailDir/.Drafts", "$mailDir/.Junk", "$mailDir/.Sent", "$mailDir/.Trash") {
 
 			# Creating maildir directory or only set its permissions if already exists
 			$rs |= iMSCP::Dir->new('dirname' => $_)->make(

@@ -927,25 +927,22 @@ sub addMailBox
 	$self->{'postmap'}->{$self->{'MTA_VIRTUAL_MAILBOX_HASH'}} = $data->{'MAIL_ADDR'};
 
 	my $mailDir = "$self->{'MTA_VIRTUAL_MAIL_DIR'}/$data->{'DMN_NAME'}/$data->{'MAIL_ACC'}";
+	my $mailUidName =  $self->{'MTA_MAILBOX_UID_NAME'};
+    my $mailGidName = $self->{'MTA_MAILBOX_GID_NAME'};
 
+	# Creating maildir directory or only set its permissions if already exists
 	$rs |=	iMSCP::Dir->new('dirname' => $mailDir)->make(
 		{ 'user' => $self->{'MTA_MAILBOX_UID_NAME'}, 'group' => $self->{'MTA_MAILBOX_GID_NAME'}, 'mode' => 0700 }
 	);
 
-	# Creating cur directory
-	$rs |= iMSCP::Dir->new('dirname' => "$_/cur")->make(
-		{ 'user' => $self->{'MTA_MAILBOX_UID_NAME'}, 'group' => $self->{'MTA_MAILBOX_GID_NAME'}, 'mode' => 0700 }
-	);
+	# Creating maildir sub folders (cur, new, tmp) or only set there permissions if they already exists
+	for('cur', 'new', 'tmp') {
+    	$rs |= iMSCP::Dir->new('dirname' => "$mailDir/$_")->make(
+    		{ 'user' => $mailUidName, 'group' => $mailGidName, 'mode' => 0700 }
+    	);
 
-	# Creating new directory
-	$rs |= iMSCP::Dir->new('dirname' => "$_/new")->make(
-		{ 'user' => $self->{'MTA_MAILBOX_UID_NAME'}, 'group' => $self->{'MTA_MAILBOX_GID_NAME'}, 'mode' => 0700 }
-	);
-
-	# Creating tmp directory
-	$rs |= iMSCP::Dir->new('dirname' => "$_/tmp")->make(
-		{ 'user' => $self->{'MTA_MAILBOX_UID_NAME'}, 'group' => $self->{'MTA_MAILBOX_GID_NAME'}, 'mode' => 0700 }
-	);
+    	last if $rs;
+	}
 
 	$rs |= $self->{'hooksManager'}->trigger('afterMtaAddMailbox', $data);
 
