@@ -183,7 +183,7 @@ sub postaddMail
 			if($subscriptionsFileContent ne '') {
 				@subscribedFolders = (@subscribedFolders, split("\n", $subscriptionsFileContent));
 				require List::MoreUtils;
-            	@subscribedFolders = sort(List::MoreUtils::uniq(@subscribedFolders));
+				@subscribedFolders = sort(List::MoreUtils::uniq(@subscribedFolders));
 			}
 		}
 

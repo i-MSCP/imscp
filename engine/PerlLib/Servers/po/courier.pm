@@ -276,8 +276,6 @@ sub postaddMail
 
 	if($data->{'MAIL_TYPE'} =~ /_mail/) {
 
-		require Servers::mta;
-
 		# Getting i-MSCP MTA server implementation instance
 		require Servers::mta;
 		my $mta = Servers::mta->factory();
@@ -321,7 +319,7 @@ sub postaddMail
 			if($courierimapsubscribedFileContent ne '') {
 				@subscribedFolders = (@subscribedFolders, split("\n", $courierimapsubscribedFileContent));
 				require List::MoreUtils;
-            	@subscribedFolders = sort(List::MoreUtils::uniq(@subscribedFolders));
+				@subscribedFolders = sort(List::MoreUtils::uniq(@subscribedFolders));
 			}
 		}
 
