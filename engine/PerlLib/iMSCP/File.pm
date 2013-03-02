@@ -70,7 +70,7 @@ sub mode
 		return 1;
 	}
 
-	debug(sprintf ": Change mode mode: %o for '$self->{filename}'", $fileMode);
+	debug(sprintf "Change mode mode: %o for '$self->{filename}'", $fileMode);
 
 	unless (chmod($fileMode, $self->{'filename'})) {
 		error("Cannot change permissions of file '$self->{filename}': $!");

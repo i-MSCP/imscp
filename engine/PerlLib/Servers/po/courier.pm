@@ -39,6 +39,7 @@ use iMSCP::Debug;
 use iMSCP::HooksManager;
 use iMSCP::Config;
 use iMSCP::File;
+use iMSCP::Dir;
 use iMSCP::Execute;
 use parent 'Common::SingletonClass';
 
@@ -254,6 +255,80 @@ sub addMail
 		error($stderr) if $stderr && $rs;
 
 		$rs |= $self->{'hooksManager'}->trigger('afterPoAddMail');
+	}
+
+	$rs;
+}
+
+=item postaddMail()
+
+ Create maildir folders and subscription file.
+
+ Return int 0 on success, other on failure
+
+=cut
+
+sub postaddMail
+{
+	my $self = shift;
+	my $data = shift;
+	my $rs = 0;
+
+	if($data->{'MAIL_TYPE'} =~ /_mail/) {
+
+		require Servers::mta;
+
+		# Getting i-MSCP MTA server implementation instance
+		require Servers::mta;
+		my $mta = Servers::mta->factory();
+
+		my $mailDir = "$mta->{'MTA_VIRTUAL_MAIL_DIR'}/$data->{'DMN_NAME'}/$data->{'MAIL_ACC'}";
+		my $mailUidName =  $mta->{'MTA_MAILBOX_UID_NAME'};
+		my $mailGidName = $mta->{'MTA_MAILBOX_GID_NAME'};
+
+		for ("$mailDir/.Drafts", "$mailDir/.Sent", "$mailDir/.Junk", "$mailDir/.Trash") {
+
+			# Creating maildir directory or only set its permissions if already exists
+			$rs |= iMSCP::Dir->new('dirname' => $_)->make(
+				{ 'user' => $mailUidName, 'group' => $mailGidName , 'mode' => 0700 }
+			);
+
+			last if $rs;
+
+			# Creating maildir sub folders (cur, new, tmp) or only set there permissions if they already exists
+			for my $subdir ('cur', 'new', 'tmp') {
+				$rs |= iMSCP::Dir->new('dirname' => "$_/$subdir")->make(
+					{ 'user' => $mailUidName, 'group' => $mailGidName, 'mode' => 0700 }
+				);
+
+				last if $rs;
+			}
+		}
+
+		# Creating/updating courierimapsubscribed file
+
+		my @subscribedFolders = ('INBOX.Drafts', 'INBOX.Junk', 'INBOX.Sent', 'INBOX.Trash');
+		my $courierimapsubscribedFile = iMSCP::File->new('filename' => "$mailDir/courierimapsubscribed");
+
+		if(-f "$mailDir/courierimapsubscribed") {
+
+			my $courierimapsubscribedFileContent = $courierimapsubscribedFile->get();
+			if(! defined $courierimapsubscribedFileContent) {
+				error('Unable to read courier courierimapsubscribed file');
+				return 1;
+			}
+
+			if($courierimapsubscribedFileContent ne '') {
+				@subscribedFolders = (@subscribedFolders, split("\n", $courierimapsubscribedFileContent));
+				require List::MoreUtils;
+            	@subscribedFolders = sort(List::MoreUtils::uniq(@subscribedFolders));
+			}
+		}
+
+		$rs |= $courierimapsubscribedFile->set(join "\n", @subscribedFolders);
+		$rs |= $courierimapsubscribedFile->save();
+		$rs |= $courierimapsubscribedFile->mode(0600);
+		$rs |= $courierimapsubscribedFile->owner($mailUidName, $mailGidName);
 	}
 
 	$rs;

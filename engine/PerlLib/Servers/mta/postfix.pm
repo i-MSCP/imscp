@@ -932,49 +932,20 @@ sub addMailBox
 		{ 'user' => $self->{'MTA_MAILBOX_UID_NAME'}, 'group' => $self->{'MTA_MAILBOX_GID_NAME'}, 'mode' => 0700 }
 	);
 
-	for ("$mailDir", "$mailDir/.Drafts", "$mailDir/.Sent", "$mailDir/.Junk", "$mailDir/.Trash") {
-		# Creating bal directory
-		if(! -d $_) {
-			$rs |= iMSCP::Dir->new('dirname' => $_)->make(
-				{ 'user' => $self->{'MTA_MAILBOX_UID_NAME'}, 'group' => $self->{'MTA_MAILBOX_GID_NAME'}, 'mode' => 0700 }
-			);
-		}
+	# Creating cur directory
+	$rs |= iMSCP::Dir->new('dirname' => "$_/cur")->make(
+		{ 'user' => $self->{'MTA_MAILBOX_UID_NAME'}, 'group' => $self->{'MTA_MAILBOX_GID_NAME'}, 'mode' => 0700 }
+	);
 
-		# Creating cur directory
-		$rs |= iMSCP::Dir->new('dirname' => "$_/cur")->make(
-			{ 'user' => $self->{'MTA_MAILBOX_UID_NAME'}, group => $self->{'MTA_MAILBOX_GID_NAME'}, 'mode' => 0700 }
-		);
+	# Creating new directory
+	$rs |= iMSCP::Dir->new('dirname' => "$_/new")->make(
+		{ 'user' => $self->{'MTA_MAILBOX_UID_NAME'}, 'group' => $self->{'MTA_MAILBOX_GID_NAME'}, 'mode' => 0700 }
+	);
 
-		# Creating new directory
-		$rs |= iMSCP::Dir->new('dirname' => "$_/new")->make(
-			{ 'user' => $self->{'MTA_MAILBOX_UID_NAME'}, 'group' => $self->{'MTA_MAILBOX_GID_NAME'}, 'mode' => 0700 }
-		);
-
-		# Creating tmp directory
-		$rs |= iMSCP::Dir->new(dirname => "$_/tmp")->make(
-			{ 'user' => $self->{'MTA_MAILBOX_UID_NAME'}, 'group' => $self->{'MTA_MAILBOX_GID_NAME'}, 'mode' => 0700 }
-		);
-	}
-
-	# Creating subscriptions file
-
-	my $subscriptionsFile;
-	my $subscriptionsFileContent;
-
-	if($main::imscpConfig{'PO_SERVER'} eq 'dovecot'){
-		$subscriptionsFile = "$mailDir/subscriptions";
-		$subscriptionsFileContent = "Drafts\nSent\nJunk\nTrash\n";
-	} else {
-		$subscriptionsFile = "$mailDir/courierimapsubscribed";
-		$subscriptionsFileContent = "INBOX.Drafts\nINBOX.Sent\nINBOX.Junk\nINBOX.Trash\n";
-	}
-
-	$subscriptionsFile = iMSCP::File->new('filename' => $subscriptionsFile);
-	$subscriptionsFile->set($subscriptionsFileContent) and return 1;
-	$subscriptionsFile->save() and return 1;
-
-	$rs |= $subscriptionsFile->mode(0600);
-	$rs |= $subscriptionsFile->owner($self->{'MTA_MAILBOX_UID_NAME'}, $self->{'MTA_MAILBOX_GID_NAME'});
+	# Creating tmp directory
+	$rs |= iMSCP::Dir->new('dirname' => "$_/tmp")->make(
+		{ 'user' => $self->{'MTA_MAILBOX_UID_NAME'}, 'group' => $self->{'MTA_MAILBOX_GID_NAME'}, 'mode' => 0700 }
+	);
 
 	$rs |= $self->{'hooksManager'}->trigger('afterMtaAddMailbox', $data);
 

@@ -1,4 +1,4 @@
-DOVECOT_CONF_DIR	= /etc/dovecot
+DOVECOT_CONF_DIR = /etc/dovecot
 
 CMD_DOVECOT	= /etc/init.d/dovecot
 

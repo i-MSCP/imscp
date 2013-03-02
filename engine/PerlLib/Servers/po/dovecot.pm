@@ -40,6 +40,7 @@ use iMSCP::HooksManager;
 use iMSCP::Config;
 use iMSCP::Execute;
 use iMSCP::File;
+use iMSCP::Dir;
 use Tie::File;
 use parent 'Common::SingletonClass';
 
@@ -119,6 +120,78 @@ sub postinstall
 	$self->{'restart'} = 'yes';
 
 	$rs |= $self->{'hooksManager'}->trigger('afterPoPostinstall', 'dovecot');
+
+	$rs;
+}
+
+=item postaddMail()
+
+ Create maildir folders and subscription file.
+
+ Return int 0 on success, other on failure
+
+=cut
+
+sub postaddMail
+{
+	my $self = shift;
+	my $data = shift;
+	my $rs = 0;
+
+	if($data->{'MAIL_TYPE'} =~ /_mail/) {
+
+		# Getting i-MSCP MTA server implementation instance
+		require Servers::mta;
+		my $mta = Servers::mta->factory();
+
+		my $mailDir = "$mta->{'MTA_VIRTUAL_MAIL_DIR'}/$data->{'DMN_NAME'}/$data->{'MAIL_ACC'}";
+		my $mailUidName =  $mta->{'MTA_MAILBOX_UID_NAME'};
+		my $mailGidName = $mta->{'MTA_MAILBOX_GID_NAME'};
+
+		for ("$mailDir/.Drafts", "$mailDir/.Sent", "$mailDir/.Junk", "$mailDir/.Trash") {
+
+			# Creating maildir directory or only set its permissions if already exists
+			$rs |= iMSCP::Dir->new('dirname' => $_)->make(
+				{ 'user' => $mailUidName, 'group' => $mailGidName , 'mode' => 0700 }
+			);
+
+			last if $rs;
+
+			# Creating maildir sub folders (cur, new, tmp) or only set there permissions if they already exists
+			for my $subdir ('cur', 'new', 'tmp') {
+				$rs |= iMSCP::Dir->new('dirname' => "$_/$subdir")->make(
+					{ 'user' => $mailUidName, 'group' => $mailGidName, 'mode' => 0700 }
+				);
+
+				last if $rs;
+			}
+		}
+
+		# Creating/updating subscriptions file
+
+		my @subscribedFolders = ('Drafts', 'Junk', 'Sent', 'Trash');
+		my $subscriptionsFile = iMSCP::File->new('filename' => "$mailDir/subscriptions");
+
+		if(-f "$mailDir/subscriptions") {
+
+			my $subscriptionsFileContent = $subscriptionsFile->get();
+			if(! defined $subscriptionsFileContent) {
+				error('Unable to read dovecot subscriptions file');
+				return 1;
+			}
+
+			if($subscriptionsFileContent ne '') {
+				@subscribedFolders = (@subscribedFolders, split("\n", $subscriptionsFileContent));
+				require List::MoreUtils;
+            	@subscribedFolders = sort(List::MoreUtils::uniq(@subscribedFolders));
+			}
+		}
+
+		$rs |= $subscriptionsFile->set(join "\n", @subscribedFolders);
+		$rs |= $subscriptionsFile->save();
+		$rs |= $subscriptionsFile->mode(0600);
+		$rs |= $subscriptionsFile->owner($mailUidName, $mailGidName);
+	}
 
 	$rs;
 }

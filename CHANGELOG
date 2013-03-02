@@ -58,6 +58,7 @@ Tickets:
 	- Fixed #607: Bug - History of customer stats is limited to 3 years
 	- Fixed #609: Bug - PHP FPM - Internal Server Error after deleting any domain
 	- Fixed #610: Cosmetics - i18n issue - Typo
+	- Fixed #618: Defect - IMAP - Subscribed folders are not re-added to the subscription file
 	- Fixed #619: Bug - HTTP Redirection - Null field - Update errors
 
 -------------------------------------------------------------------------------------

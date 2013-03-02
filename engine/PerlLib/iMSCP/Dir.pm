@@ -69,17 +69,17 @@ sub getDirs
 	my $self = shift;
 
 	if(! $self->{'dirs'}) {
-		$self->{'dirs'} = ();
+		$self->{'dirs'} = [];
 
 		for (@{$self->{'dirContent'}}){
-			next if($_ eq '.' || $_ eq '..');
-			push(@{$self->{dirs}}, $_) if( -d "$self->{dirname}/$_");
+			next if $_ eq '.' || $_ eq '..';
+			push(@{$self->{'dirs'}}, $_) if -d "$self->{dirname}/$_";
 		}
 	}
 
-	debug("Return ".join(' ', @{$self->{'dirs'}}));
+	debug("Return @{$self->{'dirs'}}");
 
-	return (wantarray ? @{$self->{dirs}} : join(' ', @{$self->{'dirs'}}));
+	return (wantarray ? @{$self->{'dirs'}} : join(' ', @{$self->{'dirs'}}));
 }
 
 sub get

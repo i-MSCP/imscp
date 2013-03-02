@@ -9,10 +9,10 @@ disable_plaintext_auth = no
 mail_location = maildir:%h
 mail_privileged_group = mail
 
-namespace {
-	inbox = yes
-	location =
+namespace inbox {
+	separator = .
 	prefix = INBOX.
+	inbox = yes
 	type = private
 }
 

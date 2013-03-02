@@ -39,6 +39,7 @@ use iMSCP::Debug;
 use iMSCP::HooksManager;
 use iMSCP::Config;
 use iMSCP::File;
+use iMSCP::Dir;
 use iMSCP::Execute;
 use iMSCP::Templator;
 use parent 'Common::SingletonClass';
@@ -72,7 +73,11 @@ sub install
 	$rs |= $self->_buildUserdbFile();
 	$rs |= $self->_buildSslConfFiles();
 	$rs |= $self->_saveConf();
-	$rs |= $self->_migrateMailboxes();
+
+	# Migrate from dovecot if needed
+    if(defined $main::imscpOldConfig{'PO_SERVER'} && $main::imscpOldConfig{'PO_SERVER'} eq 'dovecot') {
+    	$rs |= $self->_migrateFromDovecot();
+    }
 
 	$rs;
 }
@@ -321,37 +326,86 @@ sub _saveConf
 	$rs;
 }
 
-=item _migrateMailboxes()
+=item _migrateFromDovecot()
 
- Migrate mailboxes.
+ Migrate mailboxes from Dovecot.
 
  Return int 0 on success, other on failure
 
 =cut
 
-sub _migrateMailboxes
+sub _migrateFromDovecot
 {
 	my $self = shift;
 	my $rs = 0;
 
-	$rs = $self->{'hooksManager'}->trigger('beforePoMigrateMailboxes');
+	$rs = $self->{'hooksManager'}->trigger('beforePoMigrateFromDovecot');
 
-	if(! $rs && defined $main::imscpOldConfig{'PO_SERVER'} && $main::imscpOldConfig{'PO_SERVER'} ne 'courier') {
-		require Servers::mta;
+	# Getting i-MSCP MTA server implementation instance
+	require Servers::mta;
+	my $mta	= Servers::mta->factory();
 
-		my $mta	= Servers::mta->factory($main::imscpConfig{'MTA_SERVER'});
-		my ($stdout, $stderr);
-		my $binPath = "perl $main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlVendor/courier-dovecot-migrate.pl";
-		my $mailPath = "$mta->{'MTA_VIRTUAL_MAIL_DIR'}";
+	my $binPath = "perl $main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlVendor/courier-dovecot-migrate.pl";
+	my $mailPath = "$mta->{'MTA_VIRTUAL_MAIL_DIR'}";
 
-		$rs = execute("$binPath --to-courier --convert --recursive $mailPath", \$stdout, \$stderr);
-		debug($stdout) if $stdout;
-		warning($stderr) if $stderr && ! $rs;
-		error($stderr) if $stderr && $rs;
-		error('Error while converting mails') if ! $stderr && $rs;
+	# Converting all mailboxes to courier format
+
+	my ($stdout, $stderr);
+	$rs = execute("$binPath --to-courier --convert --recursive $mailPath", \$stdout, \$stderr);
+	debug($stdout) if $stdout;
+	warning($stderr) if $stderr && ! $rs;
+	error($stderr) if $stderr && $rs;
+	error('Error while converting mails') if ! $stderr && $rs;
+	return $rs if $rs;
+
+	# Converting dovecot subscriptions files to courier format
+
+	my $domainDirs = iMSCP::Dir->new('dirname' => $mailPath);
+	$rs = $domainDirs->get();
+	return $rs if $rs;
+
+	for($domainDirs->getDirs()) {
+
+		my $mailboxesDirs = iMSCP::Dir->new('dirname' => "$mailPath/$_");
+		$rs = $mailboxesDirs->get();
+		return $rs if $rs;
+
+		for my $mailDir($mailboxesDirs->getDirs()) {
+
+			if(-f "$mailPath/$_/$mailDir/subscriptions") {
+
+				my $subscriptionsFile = iMSCP::File->new('filename' => "$mailPath/$_/$mailDir/subscriptions");
+
+				$rs = $subscriptionsFile->copyFile("$mailPath/$_/$mailDir/courierimapsubscribed");
+				return $rs if $rs;
+
+				my $courierimapsubscribedFile = iMSCP::File->new(
+					'filename' => "$mailPath/$_/$mailDir/courierimapsubscribed"
+				);
+
+				my $courierimapsubscribedFileContent = $courierimapsubscribedFile->get();
+
+				if(!defined $courierimapsubscribedFileContent) {
+					error('Unable to read courier courierimapsubscribed file newly created');
+					return 1;
+				}
+
+				# Converting any subscription entry to courier format
+				$courierimapsubscribedFileContent =~ s/^(.*)/INBOX.$1/gm;
+
+				# Writing new courier courierimapsubscribed file
+				$rs = $courierimapsubscribedFile->set($courierimapsubscribedFileContent);
+				$rs |= $courierimapsubscribedFile->save();
+
+				# Removing no longer needed file
+				$rs |= $subscriptionsFile->delFile();
+			}
+
+			last if $rs;
+		}
 	}
 
-	$rs |= $self->{'hooksManager'}->trigger('afterPoMigrateMailboxes');
+	$rs |= $self->{'hooksManager'}->trigger('afterPoMigrateFromDovecot');
 
 	$rs;
 }
