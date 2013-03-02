@@ -65,14 +65,19 @@
 	/*<![CDATA[*/
 		$(document).ready(function() {
 			$.fx.speeds._default = 500;
-			setTimeout(function(){$('.timeout').fadeOut(1000);},3000);
+			setTimeout(function(){ $('.timeout').fadeOut(1000); },3000);
 			$('.main_menu a').imscpTooltip();
 			$('.body a, .body span, .body input').imscpTooltip({extraClass:"tooltip_icon tooltip_notice"});
 
 			// Setup buttons
 			$("input:submit, input:button, button").button();
 			$(".radio, .checkbox").buttonset();
-			$(":radio, :checkbox").change(function(){$(this).blur();});
+			$(":radio, :checkbox").change(function(){ $(this).blur();});
+
+			$("input:password").attr("autocomplete", "off");
+			$(document).on('focus', 'input:password', function() {
+				$(this).attr('autocomplete', 'off');
+			});
 		});
 	/*]]>*/
 	</script>
