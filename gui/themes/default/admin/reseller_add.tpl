@@ -128,7 +128,7 @@
 				</tr>
 				<tr>
 					<td><label for="password_confirmation">{TR_PASSWORD_CONFIRMATION}</label></td>
-					<td colspan="2"><input type="password" name="password_confirmation" id="password_confirmation" value="{PASSWORD_CONFIRMATION}" /></td>
+					<td colspan="2"><input type="password" name="password_confirmation" id="password_confirmation" value="{PASSWORD_CONFIRMATION}" autocomplete="off"/></td>
 				</tr>
 				<tr>
 					<td><label for="email">{TR_EMAIL}</label></td>
