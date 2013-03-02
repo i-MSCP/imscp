@@ -56,7 +56,9 @@ $tpl->assign(
 	array(
 		'TR_PAGE_TITLE' => tr('i-MSCP - Admin/Manage users/Add User'),
 		'THEME_CHARSET' => tr('encoding'),
-		'ISP_LOGO' => layout_getUserLogo()));
+		'ISP_LOGO' => layout_getUserLogo()
+	)
+);
 
 /**
  * @param  $tpl iMSCP_pTemplate
@@ -67,12 +69,20 @@ function add_user($tpl)
     /** @var $cfg iMSCP_Config_Handler_File */
     $cfg = iMSCP_Registry::get('config');
 
-    if (isset($_POST['uaction']) && $_POST['uaction'] === 'add_user') {
+	// Dispatches the request
+	if (is_xhr()) { // Passsword generation (AJAX request)
+		header('Content-Type: text/plain; charset=utf-8');
+		header('Cache-Control: no-cache, private');
+		header('Pragma: no-cache');
+		header("HTTP/1.0 200 Ok");
+		echo passgen();
+		exit;
+	} elseif (isset($_POST['uaction']) && $_POST['uaction'] === 'add_user') {
 
 		iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onBeforeAddUser);
 
         if (check_user_data()) {
-			$upass = cryptPasswordWithSalt($_POST['pass']);
+			$upass = cryptPasswordWithSalt(clean_input($_POST['password']));
 
             $user_id = $_SESSION['user_id'];
 
@@ -136,7 +146,7 @@ function add_user($tpl)
 			iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAfterAddUser);
 
             send_add_user_auto_msg($user_id, clean_input($_POST['username']),
-                                   clean_input($_POST['pass']),
+                                   clean_input($_POST['password']),
                                    clean_input($_POST['email']),
                                    clean_input($_POST['fname']),
                                    clean_input($_POST['lname']),
@@ -170,7 +180,9 @@ function add_user($tpl)
 						? $cfg->HTML_SELECTED
 						: ''),
 					'VL_UNKNOWN' => ((($_POST['gender'] == 'U') || (empty($_POST['gender'])))
-						? $cfg->HTML_SELECTED : '')));
+						? $cfg->HTML_SELECTED : '')
+				)
+			);
         }
     } else {
         $tpl->assign(
@@ -199,20 +211,17 @@ function add_user($tpl)
  */
 function check_user_data()
 {
-    /** @var $cfg iMSCP_Config_Handler_File */
-    $cfg = iMSCP_Registry::get('config');
-
     if (!validates_username($_POST['username'])) {
         set_page_message(tr('Incorrect username length or syntax.'), 'error');
         return false;
     }
 
-    if (!checkPasswordSyntax($_POST['pass'])) {
-        return false;
-    }
+	if ($_POST['password'] != $_POST['password_confirmation']) {
+		set_page_message(tr("Passwords doesn't match."), 'error');
+		return false;
+	}
 
-    if ($_POST['pass'] != $_POST['pass_rep']) {
-        set_page_message(tr("Passwords doesn't match."), 'error');
+    if (!checkPasswordSyntax($_POST['password'])) {
         return false;
     }
 
@@ -246,7 +255,7 @@ $tpl->assign(
 		'TR_CORE_DATA' => tr('Core data'),
 		'TR_USERNAME' => tr('Username'),
 		'TR_PASSWORD' => tr('Password'),
-		'TR_PASSWORD_REPEAT' => tr('Repeat password'),
+		'TR_PASSWORD_REPEAT' =>  tr('Password confirmation'),
 		'TR_EMAIL' => tr('Email'),
 		'TR_ADDITIONAL_DATA' => tr('Additional data'),
 		'TR_FIRST_NAME' => tr('First name'),
@@ -265,7 +274,13 @@ $tpl->assign(
 		'TR_PHONE' => tr('Phone'),
 		'TR_FAX' => tr('Fax'),
 		'TR_ADD' => tr('Add'),
-		'GENPAS' => passgen()));
+		'TR_GENERATE' => tr('Generate'),
+		'TR_SHOW' => tr('Show'),
+		'TR_PASSWORD_GENERATION_NEEDED' => tr('You must first generate a password'),
+		'TR_NEW_PASSWORD_IS' => tr('New password is'),
+		'TR_RESET' => tr('Reset')
+	)
+);
 
 generatePageMessage($tpl);
 

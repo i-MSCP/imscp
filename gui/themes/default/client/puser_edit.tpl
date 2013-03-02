@@ -10,11 +10,11 @@
 					</tr>
 					<tr>
 						<td><label for="pass">{TR_PASSWORD}</label></td>
-						<td><input type="password" id="pass" name="pass" value=""/></td>
+						<td><input type="password" id="pass" name="pass" value="" autocomplete="off" /></td>
 					</tr>
 					<tr>
 						<td><label for="pass_rep">{TR_PASSWORD_REPEAT}</label></td>
-						<td><input type="password" id="pass_rep" name="pass_rep" value=""/></td>
+						<td><input type="password" id="pass_rep" name="pass_rep" value="" autocomplete="off" /></td>
 					</tr>
 				</table>
 				<div class="buttons">

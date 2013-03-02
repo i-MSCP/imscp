@@ -14,11 +14,11 @@
 				</tr>
 				<tr>
 					<td><label for="pass">{TR_PASSWORD}</label></td>
-					<td><input id="pass" type="password" name="pass" value=""/></td>
+					<td><input id="pass" type="password" name="pass" value="" autocomplete="off"/></td>
 				</tr>
 				<tr>
 					<td><label for="pass_rep">{TR_PASSWORD_REPEAT}</label></td>
-					<td><input id="pass_rep" type="password" name="pass_rep" value=""/></td>
+					<td><input id="pass_rep" type="password" name="pass_rep" value="" autocomplete="off"/></td>
 				</tr>
 				<tr>
 					<td><input id="use_other_dir" type="checkbox" name="use_other_dir" {USE_OTHER_DIR_CHECKED} />

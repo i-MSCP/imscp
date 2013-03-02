@@ -4,9 +4,6 @@
 		$(document).ready(function() {
 			errFieldsStack = {ERR_FIELDS_STACK};
 			$.each(errFieldsStack, function(){$('#' + this).css('border-color', '#ca1d11');});
-			$('.ui-buttonset').buttonset();
-			$('#generate_password, #show_password, #reset_password, .frm-button').button();
-			$('<img>').attr({src:'{THEME_COLOR_PATH}/images/ajax/small-spinner.gif'}).addClass('small-spinner').insertAfter($('#password, #password_confirmation'));
 
 			$.ajaxSetup({
 				url: $(location).attr('pathname'),
@@ -17,11 +14,8 @@
 				error:iMSCPajxError
 			});
 
-			$('#password ~ img, #password_confirmation ~ img').ajaxStart(function(){$(this).show()});
-			$('#password ~ img, #password_confirmation ~ img').ajaxStop(function(){$(this).hide()});
-			$('#generate_password').click(function(){$.ajax();});
-			$('#reset_password').click(function(){$('#password, #password_confirmation').val('');});
-			//$('#reset_password').trigger('click');
+			$('#generate_password').click(function(){ $.ajax(); });
+			$('#reset_password').click(function(){ $('#password, #password_confirmation').val(''); });
 
 			// Create dialog box for some messages (password and notices)
 			$('#dialog_box').dialog({
@@ -41,15 +35,6 @@
 				$('#dialog_box').dialog('open');
 			});
 
-			// Disable enter key for form submission (really needed ?)
-			$(':input').on('keypress', function(e){
-				if(e.keyCode==13){
-					e.preventDefault();
-					$('#dialog_box').dialog("option", "title", '{TR_NOTICE}').html('<br />{TR_EVENT_NOTICE}');
-					$('#dialog_box').dialog("open");
-				}
-			});
-
 			// PHP Editor settings dialog
 			$('#php_editor_dialog').dialog({
 				hide:'blind', show:'slide', focus:false, autoOpen:false, width:'auto', modal:true, dialogClass:'body',
@@ -59,7 +44,7 @@
 			});
 
 			// Re-add the PHP Editor container to the form
-            $('form').submit(function(){$('#php_editor_dialog').parent().appendTo($('#dialogContainer'));});
+            $('form').submit(function(){ $('#php_editor_dialog').parent().appendTo($('#dialogContainer')); });
 
 			// PHP Editor settings button
 			$('#php_editor_dialog_open').button({icons:{primary:'ui-icon-gear'}}).click(function(e){
@@ -72,7 +57,7 @@
 				$('#php_editor_dialog_open').hide();
 			}
 
-			$('input[name="php_ini_system"]').change(function(){$('#php_editor_dialog_open').fadeToggle();});
+			$('input[name="php_ini_system"]').change(function(){ $('#php_editor_dialog_open').fadeToggle(); });
 
 			// PHP Editor error message
 			errorMessages = $('.php_editor_error');
@@ -133,7 +118,7 @@
 				<tr>
 					<td><label for="password">{TR_PASSWORD}</label></td>
 					<td style="width: 235px;">
-						<input type="password" name="password" id="password" value="{PASSWORD}" />
+						<input type="password" name="password" id="password" value="{PASSWORD}" autocomplete="off"/>
 					</td>
 					<td>
 						<button type="button" id="generate_password">{TR_GENERATE}</button>

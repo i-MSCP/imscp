@@ -139,7 +139,7 @@
 				<tr>
 					<td><label for="password">{TR_PASSWORD}</label></td>
 					<td style="width: 235px;">
-						<input type="password" name="password" id="password" value="{PASSWORD}" />
+						<input type="password" name="password" id="password" value="{PASSWORD}" autocomplete="off" />
 					</td>
 					<td>
 						<input type="button" id="generate_password" value="{TR_GENERATE}" />
@@ -149,7 +149,7 @@
 				</tr>
 				<tr>
 					<td><label for="password_confirmation">{TR_PASSWORD_CONFIRMATION}</label></td>
-					<td colspan="2"><input type="password" name="password_confirmation" id="password_confirmation" value="{PASSWORD_CONFIRMATION}" /></td>
+					<td colspan="2"><input type="password" name="password_confirmation" id="password_confirmation" value="{PASSWORD_CONFIRMATION}" autocomplete="off" /></td>
 				</tr>
 				<tr>
 					<td><label for="email">{TR_EMAIL}</label></td>

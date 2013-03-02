@@ -26,12 +26,12 @@
 				<!-- BDP: password_frm -->
 				<tr>
 					<td><label for="password">{TR_PASSWORD}</label></td>
-					<td><input name="password" id="password" type="password" value=""/></td>
+					<td><input name="password" id="password" type="password" value="" autocomplete="off" /></td>
 				</tr>
 				<tr>
 					<td><label for="passwordConfirmation">{TR_PASSWORD_CONFIRMATION}</label></td>
 					<td>
-						<input name="passwordConfirmation" id="passwordConfirmation" type="password" value=""/>
+						<input name="passwordConfirmation" id="passwordConfirmation" type="password" value="" autocomplete="off" />
 					</td>
 				</tr>
 				<tr>

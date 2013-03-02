@@ -186,7 +186,7 @@ function checkPasswordSyntax($password, $unallowedChars = '')
 	}
 
 	if ($passwordLength < $cfg->PASSWD_CHARS) {
-		set_page_message(sprintf(tr('Password is shorter than %s characters.'), $cfg->PASSWD_CHARS), 'error');
+		set_page_message(tr('Password is shorter than %s characters.', $cfg->PASSWD_CHARS), 'error');
 		$ret = false;
 	} elseif($passwordLength > 30) {
 		set_page_message(tr('Password cannot be greater than 30 characters.'), 'error');
@@ -194,12 +194,12 @@ function checkPasswordSyntax($password, $unallowedChars = '')
 	}
 
 	if (!empty($unallowedChars) && preg_match($unallowedChars, $password)) {
-		set_page_message(sprintf(tr('Password includes not permitted signs.'), $cfg->PASSWD_CHARS), 'error');
+		set_page_message(tr('Password includes not permitted signs.', $cfg->PASSWD_CHARS), 'error');
 		$ret = false;
 	}
 
 	if ($cfg->PASSWD_STRONG && ! (preg_match('/[0-9]/', $password) && preg_match('/[a-zA-Z]/', $password))) {
-		set_page_message(sprintf(tr('Password must be at least %s character long and contain letters and numbers to be valid.'), $cfg->PASSWD_CHARS), 'error');
+		set_page_message(tr('Password must be at least %s character long and contain letters and numbers to be valid.', $cfg->PASSWD_CHARS), 'error');
 		$ret = false;
 
 	}

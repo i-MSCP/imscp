@@ -60,13 +60,13 @@
 					</tr>
 					<tr>
 						<td><label for="pass">{TR_PASS}</label></td>
-						<td><input id="pass" type="password" name="pass" value="" />
+						<td><input id="pass" type="password" name="pass" value="" autocomplete="off" />
 						</td>
 					</tr>
 					<tr>
 						<td><label for="pass_rep">{TR_PASS_REP}</label></td>
 						<td>
-							<input id="pass_rep" type="password" name="pass_rep" value="" />
+							<input id="pass_rep" type="password" name="pass_rep" value="" autocomplete="off" />
 						</td>
 					</tr>
 				</table>

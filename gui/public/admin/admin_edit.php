@@ -64,7 +64,7 @@ function admin_updateUserPersonalData($userId)
 	$street2 = isset($_POST['street2']) ? clean_input($_POST['street2']) : '';
 	$userName = get_user_name($userId);
 
-	if(empty($_POST['pass'])) {
+	if(empty($_POST['password'])) {
 		$query = "
 			UPDATE
 				`admin`
@@ -94,7 +94,7 @@ function admin_updateUserPersonalData($userId)
 		exec_query(
 			$query,
 			array(
-				cryptPasswordWithSalt($_POST['pass']), $fname, $lname, $firm, $zip, $city, $state, $country, $email,
+				cryptPasswordWithSalt($_POST['password']), $fname, $lname, $firm, $zip, $city, $state, $country, $email,
 				$phone, $fax, $street1, $street2, $gender, $userId
 			)
 		);
@@ -109,7 +109,7 @@ function admin_updateUserPersonalData($userId)
 
 	iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAfterEditUser, array('userId' => $userId));
 
-	if (isset($_POST['send_data']) && !empty($_POST['pass'])) {
+	if (isset($_POST['send_data']) && !empty($_POST['password'])) {
 		$query = 'SELECT `admin_type` FROM `admin` WHERE `admin_id` = ?';
 		$stmt = exec_query($query, $userId);
 
@@ -122,7 +122,7 @@ function admin_updateUserPersonalData($userId)
 		}
 
 		send_add_user_auto_msg(
-			$userId, $userName, $_POST['pass'], $_POST['email'], $_POST['fname'], $_POST['lname'], tr($admin_type),
+			$userId, $userName, $_POST['password'], $_POST['email'], $_POST['fname'], $_POST['lname'], tr($admin_type),
 			$gender
 		);
 
@@ -147,12 +147,12 @@ function admin_isValidData()
 		set_page_message(tr("Incorrect email length or syntax."), 'error');
 	}
 
-	if(!empty($_POST['pass']) && !empty($_POST['pass_rep'])) {
-		if ($_POST['pass'] != $_POST['pass_rep']) {
+	if(!empty($_POST['password']) && !empty($_POST['password_confirmation'])) {
+		if ($_POST['password'] != $_POST['password_confirmation']) {
 			set_page_message(tr("Passwords doesn't match."), 'error');
 		}
 
-		checkPasswordSyntax($_POST['pass']);
+		checkPasswordSyntax($_POST['password']);
 
 	}
 
@@ -177,13 +177,24 @@ check_login('admin');
 /** @var $cfg iMSCP_Config_Handler_File */
 $cfg = iMSCP_Registry::get('config');
 
+
+// Dispatches the request
+if (is_xhr()) { // Passsword generation (AJAX request)
+	header('Content-Type: text/plain; charset=utf-8');
+	header('Cache-Control: no-cache, private');
+	header('Pragma: no-cache');
+	header("HTTP/1.0 200 Ok");
+	echo passgen();
+	exit;
+}
+
 if (isset($_GET['edit_id'])) {
 	$userId = intval($_GET['edit_id']);
 } else {
 	showBadRequestErrorPage();
 }
 
-if(!empty($_POST) && !isset($_POST['genpass']) && admin_isValidData()) {
+if(!empty($_POST) && admin_isValidData()) {
 	admin_updateUserPersonalData($userId);
 	set_page_message(tr('User personal data successfully updated.'), 'success');
 	redirectTo('manage_users.php');
@@ -195,7 +206,9 @@ $tpl->define_dynamic(
 		'layout' => 'shared/layouts/ui.tpl',
 		'page' => 'admin/admin_edit.tpl',
 		'page_message' => 'layout',
-		'hosting_plans' => 'page'));
+		'hosting_plans' => 'page'
+	)
+);
 
 // For admin, we redirect to it own personal change page.
 if ($userId == $_SESSION['user_id']) {
@@ -228,7 +241,11 @@ $tpl->assign(
 		'TR_CORE_DATA' => tr('Core data'),
 		'TR_USERNAME' => tr('Username'),
 		'TR_PASSWORD' => tr('Password'),
-		'VAL_PASSWORD' => isset($_POST['genpass']) ? passgen() :  '',
+		'TR_GENERATE' => tr('Generate'),
+		'TR_SHOW' => tr('Show'),
+		'TR_PASSWORD_GENERATION_NEEDED' => tr('You must first generate a password'),
+		'TR_NEW_PASSWORD_IS' => tr('New password is'),
+		'TR_RESET' => tr('Reset'),
 		'TR_PASSWORD_REPEAT' => tr('Password confirmation'),
 		'TR_EMAIL' => tr('Email'),
 		'TR_ADDITIONAL_DATA' => tr('Additional data'),
@@ -249,7 +266,6 @@ $tpl->assign(
 		'TR_UNKNOWN' => tr('Unknown'),
 		'TR_UPDATE' => tr('Update'),
 		'TR_SEND_DATA' => tr('Send new login data'),
-		'TR_PASSWORD_GENERATE' => tr('Generate password'),
 		'FIRST_NAME' => isset($_POST['fname']) ? tohtml($_POST['fname']) : tohtml($stmt->fields['fname']),
 		'LAST_NAME' => isset($_POST['lname']) ? tohtml($_POST['lname']) : tohtml($stmt->fields['lname']),
 		'FIRM' => isset($_POST['firm']) ? tohtml($_POST['firm']) : tohtml($stmt->fields['firm']),
@@ -267,7 +283,9 @@ $tpl->assign(
 		'VL_FEMALE' => (isset($_POST['gender']) && $_POST['gender'] == 'F' || $stmt->fields['gender'] == 'F') ? $cfg->HTML_SELECTED : '',
 		'VL_UNKNOWN' => (isset($_POST['gender']) && $_POST['gender'] == 'U' || (!isset($_POST['gender']) && ($stmt->fields['gender'] == 'U' || empty($stmt->fields['gender'])))) ? $cfg->HTML_SELECTED : '',
 		'SEND_DATA_CHECKED' => (isset($_POST['send_data'])) ? $cfg->HTML_CHECKED : '',
-		'EDIT_ID' => $userId));
+		'EDIT_ID' => $userId
+	)
+);
 
 generatePageMessage($tpl);
 

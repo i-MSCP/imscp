@@ -10,8 +10,8 @@
                         <tr>
                             <td><label for="userpassword">{TR_PASSWORD}</label></td>
                             <td>
-                                <input type="password" name="userpassword" id="userpassword" value="{VAL_PASSWORD}" />
-                                <input name="genpass" type="submit" value=" {TR_PASSWORD_GENERATE} " />
+                                <input type="password" name="userpassword" id="userpassword" value="{VAL_PASSWORD}" autocomplete="off" />
+                                <input name="genpass" type="submit" value=" {TR_PASSWORD_GENERATE} " autocomplete="off" />
                             </td>
                         </tr>
                         <tr>

@@ -37,7 +37,14 @@
  */
 function reseller_updatePassword()
 {
-	if (!empty($_POST)) {
+	if (is_xhr()) { // Passsword generation (AJAX request)
+		header('Content-Type: text/plain; charset=utf-8');
+		header('Cache-Control: no-cache, private');
+		header('Pragma: no-cache');
+		header("HTTP/1.0 200 Ok");
+		echo passgen();
+		exit;
+	} elseif(!empty($_POST)) {
 		$userId = $_SESSION['user_id'];
 
 		iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onBeforeEditUser, array('userId' => $userId));
@@ -115,7 +122,12 @@ $tpl->assign(
 		'TR_CURRENT_PASSWORD' => tr('Current password'),
 		'TR_PASSWORD' => tr('Password'),
 		'TR_PASSWORD_CONFIRMATION' => tr('Password confirmation'),
-		'TR_UPDATE' => tr('Update')
+		'TR_UPDATE' => tr('Update'),
+		'TR_GENERATE' => tr('Generate'),
+		'TR_SHOW' => tr('Show'),
+		'TR_PASSWORD_GENERATION_NEEDED' => tr('You must first generate a password'),
+		'TR_NEW_PASSWORD_IS' => tr('New password is'),
+		'TR_RESET' => tr('Reset')
 	)
 );
 

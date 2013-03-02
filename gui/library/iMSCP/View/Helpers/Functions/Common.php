@@ -361,7 +361,7 @@ function generateNavigation($tpl)
 	}
 
 	if (!empty($_GET)) {
-		$query = http_build_query($_GET);
+		$query = '?' . http_build_query($_GET);
 	} else {
 		$query = '';
 	}
@@ -445,7 +445,7 @@ function generateNavigation($tpl)
 							);
 
 							if (!$subpage->hasPages()) {
-								$tpl->assign('HREF', $subpage->getHref() . "?$query");
+								$tpl->assign('HREF', $subpage->getHref() . "$query");
 							}
 
 							// ad subpage to breadcrumbs

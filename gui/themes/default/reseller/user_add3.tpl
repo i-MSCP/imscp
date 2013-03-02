@@ -11,11 +11,11 @@
 					</tr>
 					<tr>
 						<td><label for="password">{TR_PASSWORD}</label></td>
-						<td><input type="password" name="userpassword" id="password" value="{VL_USR_PASS}"/></td>
+						<td><input type="password" name="userpassword" id="password" value="{VL_USR_PASS}" autocomplete="off" /></td>
 					</tr>
 					<tr>
 						<td><label for="pass_rep">{TR_REP_PASSWORD}</label></td>
-						<td><input type="password" name="userpassword_repeat" id="pass_rep" value="{VL_USR_PASS}"/></td>
+						<td><input type="password" name="userpassword_repeat" id="pass_rep" value="{VL_USR_PASS}" autocomplete="off" /></td>
 					</tr>
 					<tr>
 						<td><label for="domain_ip">{TR_DMN_IP}</label></td>

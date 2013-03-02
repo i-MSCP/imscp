@@ -295,7 +295,7 @@ function passgen()
 {
 	$password = null;
 
-	while ($password == null || !checkPasswordSyntax($password, '/[<>]/')) {
+	while ($password == null || ! checkPasswordSyntax($password)) {
 		$password = _passgen();
 	}
 

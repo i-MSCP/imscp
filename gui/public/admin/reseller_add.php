@@ -675,7 +675,8 @@ $tpl->define_dynamic(
 		'ips_block' => 'page',
 		'ip_block' => 'ips_block',
 		'php_editor_disable_functions_block' => 'page'
-	));
+	)
+);
 
 $tpl->assign(
 	array(

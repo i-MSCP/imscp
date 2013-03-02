@@ -1,27 +1,72 @@
+		<script type="text/javascript">
+            /*<![CDATA[*/
+            $(document).ready(function () {
+                $.ajaxSetup({
+                    url:$(location).attr('pathname'),
+                    type:'GET',
+                    datatype:'text',
+                    beforeSend:function (xhr){xhr.setRequestHeader('Accept','text/plain');},
+                    success:function (r) {
+                        $('#password, #password_confirmation').val(r);
+                    },
+                    error:iMSCPajxError
+                });
 
+                $('#generate_password').click(function () {
+                    $.ajax();
+                });
+                $('#reset_password').click(function () {
+                    $('#password, #password_confirmation').val('');
+                });
+
+                // Create dialog box for some messages (password and notices)
+                $('#dialog_box').dialog({
+                    modal:true, autoOpen:false, hide:'blind', show:'blind',
+                    buttons: {Ok: function(){$(this).dialog('close');}}
+                });
+
+                // Show generated password in specific dialog box
+                $('#show_password').click(function () {
+                    var password = $('#password').val();
+                    if (password == '') {
+                        password = '<br/>{TR_PASSWORD_GENERATION_NEEDED}';
+                    } else {
+                        password = '<br/>{TR_NEW_PASSWORD_IS}: <strong>' + $('#password').val() + '</strong>';
+                    }
+                    $('#dialog_box').dialog("option", "title", '{TR_PASSWORD}').html(password);
+                    $('#dialog_box').dialog('open');
+                });
+            });
+            /*]]>*/
+		</script>
+			<div id="dialog_box"></div>
 			<form name="editCustomerFrm" method="post" action="admin_edit.php?edit_id={EDIT_ID}">
 				<table class="firstColFixed">
 					<tr>
-						<th colspan="2">{TR_CORE_DATA}</th>
+						<th colspan="3">{TR_CORE_DATA}</th>
 					</tr>
 					<tr>
-						<td><label for="username">{TR_USERNAME}</label></td>
-						<td class="content" id="username">{USERNAME}</td>
+						<td>{TR_USERNAME}</td>
+						<td colspan="2">{USERNAME}</td>
 					</tr>
 					<tr>
-						<td><label for="pass">{TR_PASSWORD}</label></td>
-						<td>
-							<input type="password" name="pass" id="pass" value="{VAL_PASSWORD}"/>
-							<input name="genpass" type="submit" class="button" value="{TR_PASSWORD_GENERATE}"/>
+						<td><label for="password">{TR_PASSWORD}</label></td>
+						<td style="width: 235px;">
+							<input type="password" name="password" id="password" value="" autocomplete="off"/>
 						</td>
+                        <td>
+                            <button type="button" id="generate_password">{TR_GENERATE}</button>
+                            <button type="button" id="show_password">{TR_SHOW}</button>
+                            <button type="button" id="reset_password">{TR_RESET}</button>
+                        </td>
 					</tr>
 					<tr>
-						<td><label for="pass_rep">{TR_PASSWORD_REPEAT}</label></td>
-						<td><input type="password" name="pass_rep" id="pass_rep" value="{VAL_PASSWORD}"/></td>
+						<td><label for="password_confirmation">{TR_PASSWORD_REPEAT}</label></td>
+						<td colspan="2"><input type="password" name="password_confirmation" id="password_confirmation" value="" autocomplete="off"/></td>
 					</tr>
 					<tr>
 						<td><label for="email">{TR_EMAIL}</label></td>
-						<td><input type="text" name="email" id="email" value="{EMAIL}"/></td>
+						<td colspan="2"><input type="text" name="email" id="email" value="{EMAIL}"/></td>
 					</tr>
 				</table>
 				<table class="firstColFixed">
