@@ -131,7 +131,7 @@ sub _addExternalRepositories
 			}
 
 			# Remove the repository from the sources.list file
-			$rs = execute("add-apt-repository -y -r $_", \$stdout, \$stderr);
+			$rs = execute("add-apt-repository -y -r $_->{'repository'}", \$stdout, \$stderr);
 			debug($stdout) if $stdout;
 			error($stderr) if $stderr && $rs;
 		}
