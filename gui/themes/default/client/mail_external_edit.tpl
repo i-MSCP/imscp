@@ -50,7 +50,15 @@
         );
         $('.trigger_remove').click(function () {
             if (i > 1) {
-                $("tbody tr:last").remove();
+                var item = $("tbody tr:last");
+
+                if(item.find(":checkbox").is(":disabled")) {
+                    $(item).remove();
+                } else {
+                    $(item).find(':checkbox').prop('checked', true);
+                    $(item).hide();
+                }
+
                 i--;
             } else {
                 alert('{TR_TRIGGER_REMOVE_ALERT}');

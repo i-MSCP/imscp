@@ -111,7 +111,7 @@ function _client_getVerifiedData($itemId, $itemType)
             redirectTo('mail_external.php');
         }
     } else {
-		showBadRequestErrorPage();
+        showBadRequestErrorPage();
         exit;
     }
 
@@ -163,7 +163,7 @@ function client_editExternalMailServerEntries($item)
                     $error = true;
                 }
             } else { // Not all expected data were received
-				showBadRequestErrorPage();
+                showBadRequestErrorPage();
             }
         }
 
@@ -171,7 +171,7 @@ function client_editExternalMailServerEntries($item)
         if (!$error) {
             /** @var $db iMSCP_Database */
             $db = iMSCP_Registry::get('db');
-            $db->beginTransaction(); // All successfully inserted or nothing
+            $db->beginTransaction(); // All successfully updated or nothing
 
             try {
                 $dnsEntriesIds = '';
@@ -185,7 +185,7 @@ function client_editExternalMailServerEntries($item)
                         $query = 'DELETE FROM `domain_dns` WHERE `domain_dns_id` = ?';
                         exec_query($query, $data['to_delete'][$index]);
 
-                        //  Entry to update
+                    //  Entry to update
                     } elseif (!empty($data['to_update'][$index]) &&
                         in_array($data['to_update'][$index], $verifiedData['external_mail_dns_ids'])
                     ) {
@@ -205,7 +205,7 @@ function client_editExternalMailServerEntries($item)
 
                         $dnsEntriesIds .= ',' . $data['to_update'][$index];
 
-                        // Entry to add
+                    // Entry to add
                     } else {
                         if(strpos($data['name'][$index], '*') === false) {
                             $wildcardMxOnly = false;
