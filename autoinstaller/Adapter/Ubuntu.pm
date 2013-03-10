@@ -95,12 +95,16 @@ sub _init
 sub _addExternalRepositories
 {
 	my $self = shift;
+	my $rs = 0;
 
 	if(@{$self->{'externalRepositoriesToRemove'}} || @{$self->{'externalRepositories'}}) {
 
 		my $file = iMSCP::File->new('filename' => '/etc/apt/sources.list');
 
-		$file->copyFile('/etc/apt/sources.list.bkp') unless -f '/etc/apt/sources.list.bkp';
+		unless(-f '/etc/apt/sources.list.bkp') {
+			$rs = $file->copyFile('/etc/apt/sources.list.bkp');
+			return $rs if $rs;
+		}
 
 		for(@{$self->{'externalRepositories'}}) {
 			my $repository = $_->{'repository'};
@@ -114,7 +118,7 @@ sub _addExternalRepositories
 			}
 		}
 
-		my ($rs, $cmd, $stdout, $stderr);
+		my ($cmd, $stdout, $stderr);
 
 		for(@{$self->{'externalRepositoriesToRemove'}}) {
 			# Retrieve any packages installed from the repository to remove

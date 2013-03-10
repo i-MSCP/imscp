@@ -298,7 +298,6 @@ sub _preparePackagesList
 					iMSCP::Dialog->factory->set('no-cancel', '');
 
 					do {
-
 						$server = iMSCP::Dialog->factory()->radiolist(
 "
 \\Z4\\Zu" . uc($_) . " service\\Zn
@@ -447,13 +446,14 @@ Do you agree?
 sub _updateAptSourceList
 {
 	my $self = shift;
+	my $rs = 0;
 
 	my $file = iMSCP::File->new(filename => '/etc/apt/sources.list');
 
 	$file->copyFile('/etc/apt/sources.list.bkp') unless -f '/etc/apt/sources.list.bkp';
 	my $content = $file->get();
 
-	unless ($content) {
+	unless (defined $content) {
 		error('Unable to read /etc/apt/sources.list file');
 		return 1;
 	}
@@ -474,7 +474,7 @@ sub _updateAptSourceList
 				my $uri = "$repository{'uri'}/dists/$repository{'distrib'}/$section/";
 				$rs = execute("wget --spider $uri", \$stdout, \$stderr);
 				debug($stdout) if $stdout;
-				debug($stderr) if $stderr;
+				debug($stderr) if $rs && $stderr;
 
 				unless ($rs) {
 					$foundSection = 1;
@@ -497,9 +497,14 @@ sub _updateAptSourceList
 	}
 
 	if($needUpdate) {
-		$file->set($content);
-		$file->save() and return 1;
-		$self->_updatePackagesIndex() and return 1;
+		$rs = $file->set($content);
+		return $rs if $rs;
+
+		$rs = $file->save();
+		return $rs if $rs;
+
+		$rs = $self->_updatePackagesIndex();
+		return $rs if $rs;
 	}
 
 	0;
@@ -518,15 +523,20 @@ sub _updateAptSourceList
 sub _addExternalRepositories
 {
 	my $self = shift;
+	my $rs = 0;
 
 	if(@{$self->{'externalRepositoriesToRemove'}} || @{$self->{'externalRepositories'}}) {
 
 		my $file = iMSCP::File->new('filename' => '/etc/apt/sources.list');
 
-		$file->copyFile('/etc/apt/sources.list.bkp') unless -f '/etc/apt/sources.list.bkp';
+		unless (-f '/etc/apt/sources.list.bkp') {
+			$rs = $file->copyFile('/etc/apt/sources.list.bkp');;
+			return $rs if $rs;
+		}
+
 		my $content = $file->get();
 
-		unless ($content) {
+		unless (defined $content) {
 			error('Unable to read /etc/apt/sources.list file');
 			return 1;
 		}
@@ -543,7 +553,7 @@ sub _addExternalRepositories
 			}
 		}
 
-		my ($rs, $cmd, $stdout, $stderr, $needUpdate);
+		my ($cmd, $stdout, $stderr, $needUpdate);
 
 		for(@{$self->{'externalRepositoriesToRemove'}}) {
 			# Retrieve any packages installed from the repository to remove
@@ -599,8 +609,11 @@ sub _addExternalRepositories
 		}
 
 		if($needUpdate) {
-			$file->set($content);
-			$file->save() and return 1;
+			$rs = $file->set($content);
+			return $rs if $rs;
+
+			$file->save();
+			return $rs if $rs;
 		}
 	}
 
@@ -619,9 +632,10 @@ sub _addAptPreferencesFile
 {
 	my $self = shift;
 	my $fileContent = '';
+	my $rs = 0;
 
 	for(@{$self->{'aptPreferences'}}) {
-		if(! $_->{'pinning_pin'} || ! $_->{'pinning_pin_priority'}) {
+		if(! exists $_->{'pinning_pin'} || ! exists $_->{'pinning_pin_priority'}) {
 			error('One of these attributes is missing: pinning_pin or pinning_pin_priority');
 			return 1;
 		}
@@ -633,11 +647,15 @@ sub _addAptPreferencesFile
 
 	my $file = iMSCP::File->new('filename' => '/etc/apt/preferences.d/imscp');
 
-	if($fileContent) {
-		$file->set($fileContent) and return 1;
-		$file->save() and return 1;
-	} else {
-		$file->delFile() and return 1;
+	if($fileContent ne '') {
+		$rs = $file->set($fileContent);
+		return $rs if $rs;
+
+		$rs = $file->save();
+		return $rs if $rs;
+	} elsif(-f '/etc/apt/preferences.d/imscp') {
+		$rs = $file->delFile();
+		return $rs if $rs;
 	}
 
 	0;
