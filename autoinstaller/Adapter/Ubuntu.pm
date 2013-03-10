@@ -50,7 +50,7 @@ use parent 'autoinstaller::Adapter::Debian';
 
 =item _init()
 
- Called by new(). Initialize instance.
+ Called by getInstance(). Initialize instance.
 
  Return autoinstaller::Adapter::Ubuntu
 
@@ -60,10 +60,12 @@ sub _init
 {
 	my $self = shift;
 
+	delete $ENV{'DEBCONF_FORCE_DIALOG'};
+
 	$self->{'repositorySections'} = ['main', 'universe', 'multiverse'];
 	$self->{'preRequiredPackages'} = ['aptitude', 'dialog', 'liblist-moreutils-perl', 'libxml-simple-perl', 'wget'];
 
-	if(iMSCP::LsbRelease->new()->getRelease(1) < 12.10) {
+	if(iMSCP::LsbRelease->getInstance()->getRelease(1) < 12.10) {
 		push @{$self->{'preRequiredPackages'}}, 'python-software-properties';
 	} else {
 		push @{$self->{'preRequiredPackages'}}, 'software-properties-common';

@@ -55,9 +55,9 @@ sub addSystemGroup
 			"\"$groupName\""						# group name
 		);
 		$rs = execute("@cmd", \$stdout, \$stderr);
-		debug("$stdout") if $stdout;
-		error("$stderr") if ($stderr && $rs);
-		warning("$stderr") if ($stderr && !$rs);
+		debug($stdout) if $stdout;
+		error($stderr) if $stderr && $rs;
+		warning($stderr) if $stderr && ! $rs;
 
 		return $rs if $rs;
 	}
@@ -86,9 +86,9 @@ sub delSystemGroup
 			"\"$groupName\""
 		);
 		$rs = execute("@cmd", \$stdout, \$stderr);
-		debug("$stdout") if $stdout;
-		error("$stderr") if ($stderr && $rs);
-		warning("$stderr") if ($stderr && !$rs);
+		debug($stdout) if $stdout;
+		error($stderr) if $stderr && $rs;
+		warning($stderr) if $stderr && ! $rs;
 
 		return $rs if $rs;
 	}

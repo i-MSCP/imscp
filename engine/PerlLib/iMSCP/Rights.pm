@@ -27,7 +27,9 @@ package iMSCP::Rights;
 
 use strict;
 use warnings;
+
 use iMSCP::Debug;
+use iMSCP::Execute;
 use parent 'Common::SingletonClass', 'Exporter';
 
 use vars qw/@EXPORT/;
@@ -44,7 +46,7 @@ sub setRights
 		"find $file -type d -print0 | xargs",
 		($^O !~ /bsd$/ ? '-r' : ''),
 		'-0 chmod',
-		($main::imscpConfig{'DEBUG'} ? '-v' : ''),
+		#($main::imscpConfig{'DEBUG'} ? '-v' : ''),
 		$option->{'dirmode'}
 	) if $option->{'dirmode'};
 
@@ -52,13 +54,13 @@ sub setRights
 		"find $file -type f -print0 | xargs",
 		($^O !~ /bsd$/ ? '-r' : ''),
 		'-0 chmod',
-		($main::imscpConfig{'DEBUG'} ? '-v' : ''),
+		#($main::imscpConfig{'DEBUG'} ? '-v' : ''),
 		$option->{'filemode'}
 	) if $option->{'filemode'};
 
 	my  @chmod = (
 		'chmod',
-		($main::imscpConfig{'DEBUG'} ? '-v' : ''),
+		#($main::imscpConfig{'DEBUG'} ? '-v' : ''),
 		($option->{'recursive'} ? '-R' : ''),
 		$option->{'mode'},
 		$file
@@ -66,29 +68,34 @@ sub setRights
 
 	my  @chown = (
 		"chown",
-		($main::imscpConfig{'DEBUG'} ? '-v' : ''),
+		#($main::imscpConfig{'DEBUG'} ? '-v' : ''),
 		($option->{'recursive'} ? '-R' : ''),
 		"$option->{user}:$option->{group} $file"
 	) if $option->{'user'} && $option->{'group'};
 
-	$rs |= _set(@chmod) if $option->{'mode'};
-	$rs |= _set(@dchmod) if $option->{'dirmode'} && $option->{'recursive'};
-	$rs |= _set(@fchmod) if $option->{'filemode'} && $option->{'recursive'};
-	$rs |= _set(@chown) if $option->{'user'} && $option->{'group'};
+	$rs = _set(@chmod) if $option->{'mode'};
+	return $rs if $rs;
+
+	$rs = _set(@dchmod) if $option->{'dirmode'} && $option->{'recursive'};
+	return $rs if $rs;
+
+	$rs = _set(@fchmod) if $option->{'filemode'} && $option->{'recursive'};
+	return $rs if $rs;
+
+	$rs = _set(@chown) if $option->{'user'} && $option->{'group'};
+	return $rs if $rs;
 
 	$rs;
 }
 
 sub _set
 {
-	my ($rs, $stdout, $stderr);
+	my ($stdout, $stderr);
 
-	use iMSCP::Execute;
-
-	$rs = execute("@_", \$stdout, \$stderr);
-	debug("$stdout") if $stdout;
-	error("$stderr") if $stderr;
-	error("Error while executing @_") if ! $stderr && $rs;
+	my $rs = execute("@_", \$stdout, \$stderr);
+	debug($stdout) if $stdout;
+	error($stderr) if $stderr && $rs;
+	error("Error while executing @_") if $rs && ! $stderr;
 
 	$rs;
 }

@@ -166,7 +166,6 @@ if (customerHasFeature(array('mail', 'external_mail'))) {
         $postRequest = false;
     } else {
 		showBadRequestErrorPage();
-        exit; // Only to make some IDE happy
     }
 
     client_deleteExternalMailServers($items, $postRequest);

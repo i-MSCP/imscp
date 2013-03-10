@@ -27,8 +27,7 @@ package iMSCP::Database;
 
 use strict;
 use warnings;
-use iMSCP::Debug;
-use FindBin;
+
 use parent 'Common::SimpleClass';
 
 sub factory
@@ -41,7 +40,7 @@ sub factory
 
 	require $file;
 
-	$class->new();
+	$class->getInstance();
 }
 
 1;

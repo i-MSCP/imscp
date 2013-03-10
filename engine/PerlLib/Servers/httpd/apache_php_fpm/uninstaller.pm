@@ -60,9 +60,14 @@ use parent 'Common::SingletonClass';
 sub uninstall
 {
 	my $self = shift;
+	my $rs = 0;
 
-	$self->_removeUserAndGroup() and return 1;
-	$self->_restoreApacheConfig() and return 1;
+	$rs = $self->_removeUserAndGroup();
+	return $rs if $rs;
+
+	$rs = $self->_restoreApacheConfig();
+	return $rs if $rs;
+
 	$self->_restorePhpfpmConfig();
 }
 
@@ -74,7 +79,7 @@ sub uninstall
 
 =item _init()
 
- Called by new(). Initialize instance.
+ Called by getInstance(). Initialize instance.
 
  Return Servers::httpd::apache_php_fpm::uninstaller
 
@@ -84,7 +89,7 @@ sub _init
 {
 	my $self = shift;
 
-	$self->{'httpd'} = Servers::httpd::apache_php_fpm->new();
+	$self->{'httpd'} = Servers::httpd::apache_php_fpm->getInstance();
 
 	$self->{'apacheCfgDir'} = "$main::imscpConfig{'CONF_DIR'}/apache";
 	$self->{'apacheBkpDir'} = "$self->{'apacheCfgDir'}/backup";
@@ -111,21 +116,21 @@ sub _init
 sub _removeUserAndGroup
 {
 	my $self = shift;
+	my $rs = 0;
 
 	# Remove panel user
 	my $panelUName = Modules::SystemUser->new();
 	$panelUName->{'force'} = 'yes';
-	$panelUName->delSystemUser(
+	$rs = $panelUName->delSystemUser(
 		$main::imscpConfig{'SYSTEM_USER_PREFIX'} . $main::imscpConfig{'SYSTEM_USER_MIN_UID'}
-	) and return 1;
+	);
+	return $rs if $rs;
 
 	# Remove panel group
 	my $panelGName = Modules::SystemGroup->new();
 	$panelGName->delSystemGroup(
 		$main::imscpConfig{'SYSTEM_USER_PREFIX'} . $main::imscpConfig{'SYSTEM_USER_MIN_UID'}
-	) and return 1;
-
-	0;
+	);
 }
 
 =item _restoreApacheConfig()
@@ -139,20 +144,25 @@ sub _removeUserAndGroup
 sub _restoreApacheConfig
 {
 	my $self = shift;
+	my $rs = 0;
 
-	$self->{'httpd'}->disableMod('php_fpm_imscp') and return 1
-		if -e "$self::apacheConfig{'APACHE_MODS_DIR'}/php_fpm_imscp.load";
+	$rs = $self->{'httpd'}->disableMod('php_fpm_imscp') if -e "$self::apacheConfig{'APACHE_MODS_DIR'}/php_fpm_imscp.load";
+	return $rs if $rs;
 
 	for ('php_fpm_imscp.conf', 'php_fpm_imscp.load') {
-		iMSCP::File->new(
+		$rs = iMSCP::File->new(
 			'filename' => "$self::apacheConfig{'APACHE_MODS_DIR'}/$_"
-		)->delFile() and return 1 if -e "$self::apacheConfig{'APACHE_MODS_DIR'}/$_";
+		)->delFile() if -f "$self::apacheConfig{'APACHE_MODS_DIR'}/$_";
+		return $rs if $rs;
 	}
 
 	for('00_nameserver.conf', '00_master_ssl.conf', '00_master.conf', '00_modcband.conf', '01_awstats.conf') {
-		if( -e "$self::apacheConfig{'APACHE_SITES_DIR'}/$_") {
-			$self->{'httpd'}->disableSite($_) and return 1;
-			iMSCP::File->new('filename' => "$self::apacheConfig{'APACHE_SITES_DIR'}/$_")->delFile() and return 1;
+		if(-f "$self::apacheConfig{'APACHE_SITES_DIR'}/$_") {
+			$rs = $self->{'httpd'}->disableSite($_);
+			return $rs if $rs;
+
+			$rs = iMSCP::File->new('filename' => "$self::apacheConfig{'APACHE_SITES_DIR'}/$_")->delFile();
+			return $rs if $rs;
 		}
 	}
 
@@ -162,21 +172,23 @@ sub _restoreApacheConfig
 	) {
 		my ($filename, $directories, $suffix) = fileparse($_);
 
-		iMSCP::File->new(
-			filename => "$self->{'apacheBkpDir'}/$filename$suffix.system"
-		)->copyFile($_) and return 1 if -e "$self->{'apacheBkpDir'}/$filename$suffix.system";
+		$rs = iMSCP::File->new(
+			'filename' => "$self->{'apacheBkpDir'}/$filename$suffix.system"
+		)->copyFile($_) if -f "$self->{'apacheBkpDir'}/$filename$suffix.system";
+		return $rs if $rs;
 	}
 
 	for (
 		$self::apacheConfig{'APACHE_USERS_LOG_DIR'}, $self::apacheConfig{'APACHE_BACKUP_LOG_DIR'},
 		$self::apacheConfig{'APACHE_CUSTOM_SITES_CONFIG_DIR'}
 	) {
-		iMSCP::Dir->new(dirname => $_)->remove() and return 1 if -d $_;
+		$rs = iMSCP::Dir->new('dirname' => $_)->remove() if -d $_;
+		return $rs if $rs;
 	}
 
-	$self->{'httpd'}->enableSite('default') and return 1 if -e "$self::apacheConfig{'APACHE_SITES_DIR'}/default";
+	$rs = $self->{'httpd'}->enableSite('default') if -f "$self::apacheConfig{'APACHE_SITES_DIR'}/default";
 
-	0;
+	$rs;
 }
 
 =item restorePhpfpmConfig()
@@ -190,45 +202,48 @@ sub _restoreApacheConfig
 sub _restorePhpfpmConfig
 {
 	my $self = shift;
+	my $rs = 0;
 
-	iMSCP::File->new(
+	$rs = iMSCP::File->new(
 		'filename' => "$self::phpfpmConfig{'PHP_FPM_POOLS_CONF_DIR'}/master.conf"
-	)->delFile() and return 1 if -e "$self::phpfpmConfig{'PHP_FPM_POOLS_CONF_DIR'}/master.conf";
+	)->delFile() if -f "$self::phpfpmConfig{'PHP_FPM_POOLS_CONF_DIR'}/master.conf";
+	return $rs if $rs;
 
 	my ($filename, $directories, $suffix) = fileparse("$main::imscpConfig{'LOGROTATE_CONF_DIR'}/php5-fpm");
 
 	if("$self->{'apacheBkpDir'}/logrotate.$filename$suffix.system") {
-		iMSCP::File->new(
+		$rs = iMSCP::File->new(
     		'filename' => "$self->{'apacheBkpDir'}/logrotate.$filename$suffix.system"
-    	)->copyFile("$main::imscpConfig{'LOGROTATE_CONF_DIR'}/$filename$suffix") and return 1
+    	)->copyFile("$main::imscpConfig{'LOGROTATE_CONF_DIR'}/$filename$suffix");
+    	return $rs if $rs;
 	}
 
 	($filename, $directories, $suffix) = fileparse($self::phpfpmConfig{'CMD_PHP_FPM'});
 
 	if("$self->{'apacheBkpDir'}/init.$filename$suffix.system") {
-		iMSCP::File->new(
+		$rs = iMSCP::File->new(
     		'filename' => "$self->{'phpfpmBkpDir'}/init.$filename$suffix.system"
-    	)->copyFile($self::phpfpmConfig{'CMD_PHP_FPM'}) and return 1
+    	)->copyFile($self::phpfpmConfig{'CMD_PHP_FPM'});
+    	return $rs if $rs;
 	}
 
-	for (
-		"$self::phpfpmConfig{'PHP_FPM_CONF_DIR'}/php-fpm.conf"
-		"$self::phpfpmConfig{'PHP_FPM_CONF_DIR'}/php.ini"
-	) {
+	for ("$self::phpfpmConfig{'PHP_FPM_CONF_DIR'}/php-fpm.conf" "$self::phpfpmConfig{'PHP_FPM_CONF_DIR'}/php.ini") {
 		($filename, $directories, $suffix) = fileparse($_);
 
-		iMSCP::File->new(
+		$rs = iMSCP::File->new(
 			'filename' => "$self->{'phpfpmBkpDir'}/$filename$suffix.system"
-		)->copyFile($_) and return 1 if -e "$self->{'phpfpmBkpDir'}/$filename$suffix.system";
+		)->copyFile($_) if -f "$self->{'phpfpmBkpDir'}/$filename$suffix.system";
+		return $rs if $rs;
 	}
 
-	iMSCP::File->new(
+	$rs = iMSCP::File->new(
 		'filename' => "$self::phpfpmConfig{'PHP_FPM_POOLS_CONF_DIR'}/www.conf.disabled"
 	)->moveFile(
 		"$self::phpfpmConfig{'PHP_FPM_POOLS_CONF_DIR'}/www.conf"
-	) if -e "$self::phpfpmConfig{'PHP_FPM_POOLS_CONF_DIR'}/www.conf.disabled";
+	) if -f "$self::phpfpmConfig{'PHP_FPM_POOLS_CONF_DIR'}/www.conf.disabled";
+	return $rs if $rs;
 
-	0;
+	$rs;
 }
 
 =back

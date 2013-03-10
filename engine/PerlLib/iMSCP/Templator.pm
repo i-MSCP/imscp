@@ -50,7 +50,7 @@ sub set($ $)
 {
 	my $prop = shift;
 	my $value = shift;
-	my $self = iMSCP::Templator->new();
+	my $self = iMSCP::Templator->getInstance();
 	debug("Setting $prop as $value");
 
 	$self->{$prop} = $value if exists $self->{$prop};
@@ -58,7 +58,7 @@ sub set($ $)
 
 sub process($ $)
 {
-	my $self = iMSCP::Templator->new();
+	my $self = iMSCP::Templator->getInstance();
 	$self->{'vars'} = shift || ref {};
 	$self->{'tContent'} = shift || '';
 
@@ -86,7 +86,7 @@ sub _replaceStatic
 
 sub replaceBloc($ $ $ $ $)
 {
-	my $self = iMSCP::Templator->new();
+	my $self = iMSCP::Templator->getInstance();
 	my $startTag = shift;
 	my $endTag = shift;
 	my $replacement = shift;
@@ -106,7 +106,7 @@ sub replaceBloc($ $ $ $ $)
 
 sub getBloc($ $ $)
 {
-	my $self = iMSCP::Templator->new();
+	my $self = iMSCP::Templator->getInstance();
 	my $startTag = shift;
 	my $endTag = shift;
 	my $content = shift;

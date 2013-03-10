@@ -20,6 +20,7 @@
 # @category		i-MSCP
 # @copyright	2010-2013 by i-MSCP | http://i-mscp.net
 # @author		Daniel Andreca <sci2tech@gmail.com>
+# @author		Laurent <l.declercq@nuxwin.com>
 # @link			http://i-mscp.net i-MSCP Home Site
 # @license      http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
@@ -27,24 +28,28 @@ package iMSCP::Database::mysql::mysql;
 
 use strict;
 use warnings;
-use DBI;
+
 use iMSCP::Debug;
+use DBI;
 use iMSCP::Database::mysql::Result;
+use iMSCP::Execute;
 use parent 'Common::SingletonClass';
 
 sub _init
 {
 	my $self = shift;
 
-	$self->{db}->{DATABASE_NAME} = '';
-	$self->{db}->{DATABASE_HOST} = '';
-	$self->{db}->{DATABASE_PORT} = '';
-	$self->{db}->{DATABASE_USER} = '';
-	$self->{db}->{DATABASE_PASSWORD} = '';
-	$self->{db}->{DATABASE_SETTINGS} = { PrintError => 0 };
+	$self->{'db'}->{'DATABASE_NAME'} = '';
+	$self->{'db'}->{'DATABASE_HOST'} = '';
+	$self->{'db'}->{'DATABASE_PORT'} = '';
+	$self->{'db'}->{'DATABASE_USER'} = '';
+	$self->{'db'}->{'DATABASE_PASSWORD'} = '';
+	$self->{'db'}->{'DATABASE_SETTINGS'} = { 'PrintError' => 0 };
 
 	# for internal use only
-	$self->{dns} = '';
+	$self->{'dsn'} = '';
+
+	$self;
 }
 
 # Set database properties (eg DSN propertie)
@@ -54,7 +59,7 @@ sub set
 	my $prop = shift;
 	my $value = shift;
 	debug("Setting $prop as ".($value ? $value : 'undef'));
-	$self->{db}->{$prop} = $value if(exists $self->{db}->{$prop});
+	$self->{'db'}->{$prop} = $value if exists $self->{'db'}->{$prop};
 }
 
 # Try to connect to the MySQL server with the current DSN (as set via the set() method)
@@ -63,32 +68,28 @@ sub connect
 {
 	my $self = shift;
 
-	my $data_source	=
+	my $dsn =
 		'dbi:mysql:'.
-		'database=' . $self->{db}->{DATABASE_NAME} .
-		($self->{db}->{DATABASE_HOST} ? ';host=' . $self->{db}->{DATABASE_HOST} : '').
-		($self->{db}->{DATABASE_PORT} ? ';port=' . $self->{db}->{DATABASE_PORT} : '');
+		'database=' . $self->{'db'}->{'DATABASE_NAME'} .
+		($self->{'db'}->{'DATABASE_HOST'} ? ';host=' . $self->{'db'}->{'DATABASE_HOST'} : '').
+		($self->{'db'}->{'DATABASE_PORT'} ? ';port=' . $self->{'db'}->{'DATABASE_PORT'} : '');
 
-	if($self->{dns} ne $data_source) { # Avoid to disconnect and reconnect when using same DSN
-		debug("Connect with $data_source");
+	if($self->{'dsn'} ne $dsn) { # Avoid to disconnect and reconnect when using same DSN
+		debug("Connect with $dsn");
 
-		if($self->{connection}){
-			$self->{connection}->disconnect();
-		}
+		$self->{'connection'}->disconnect() if $self->{'connection'};
 
-		if(! ($self->{connection} = DBI->connect(
-			$data_source,
-			$self->{db}->{DATABASE_USER},
-			$self->{db}->{DATABASE_PASSWORD},
+		if(! ($self->{'connection'} = DBI->connect(
+			$dsn, $self->{'db'}->{'DATABASE_USER'}, $self->{'db'}->{'DATABASE_PASSWORD'},
 			(
-				defined($self->{db}->{DATABASE_SETTINGS}) &&
-				ref($self->{db}->{DATABASE_SETTINGS}) eq 'HASH' ? $self->{db}->{DATABASE_SETTINGS} : ()
+				defined($self->{'db'}->{'DATABASE_SETTINGS'}) &&
+				ref($self->{'db'}->{'DATABASE_SETTINGS'}) eq 'HASH' ? $self->{'db'}->{'DATABASE_SETTINGS'} : ()
 			)
-		))){
+		))) {
 			return $DBI::errstr;
 		}
 
-		$self->{dsn} = $data_source;
+		$self->{'dsn'} = $dsn;
 	}
 
 	0;
@@ -103,45 +104,51 @@ sub doQuery
 {
 	my $self = shift;
 	my $key = shift;
-	my $query = shift || error("No query provided");
+	my $query = shift || error('No query provided');
 	my @subs = @_;
 
 	debug("$query with @subs");
 
-	$self->{sth} = $self->{connection}->prepare($query) || return("Error while preparing query: $DBI::errstr $key|$query");
+	$self->{'sth'} = $self->{'connection'}->prepare($query) || return "Error while preparing query: $DBI::errstr $key|$query";
 
-	if(@subs){
+	if(@subs) {
 		return "Error while executing query: $DBI::errstr" unless $self->{'sth'}->execute(@subs);
 	} else {
 		return "Error while executing query: $DBI::errstr" unless $self->{'sth'}->execute();
 	}
 
-	my $href = $self->{sth}->fetchall_hashref( eval "[ qw/$key/ ]" );
+	my $href = $self->{'sth'}->fetchall_hashref(eval "[ qw/$key/ ]");
 
-	tie my %href , 'iMSCP::Database::mysql::Result', result => $href;
+	tie my %href , 'iMSCP::Database::mysql::Result', 'result' => $href;
 
-	return \%href;
+	\%href;
 }
 
 # Return tables for the current database (see DATABASE_NAME attribute)
 #
 # Return ARRAY REFERENCCE on success, error string on failure
-sub getDBTables{
-
+sub getDBTables
+{
 	my $self = shift;
 
-	$self->{sth} = $self->{connection}->prepare(
-		"SELECT `TABLE_NAME` FROM `INFORMATION_SCHEMA`.`COLUMNS` WHERE `TABLE_SCHEMA` = '$self->{db}->{DATABASE_NAME}';"
+	$self->{'sth'} = $self->{'connection'}->prepare(
+		"
+			SELECT
+				`TABLE_NAME`
+			FROM
+				`INFORMATION_SCHEMA`.`COLUMNS`
+			WHERE
+				`TABLE_SCHEMA` = '$self->{'db'}->{'DATABASE_NAME'}'
+		"
 	);
 
 	return "Error while executing query: $DBI::errstr" unless $self->{'sth'}->execute();
 
-	my $href = $self->{sth}->fetchall_hashref('TABLE_NAME');
+	my $href = $self->{'sth'}->fetchall_hashref('TABLE_NAME');
 
 	my @tables = keys %$href;
 
-	return  \@tables;
-
+	\@tables;
 }
 
 # Return columns for the given table of the current database (see DATABASE_NAME attribute)
@@ -152,22 +159,22 @@ sub getTableColumns($ $)
 	my $self = shift;
 	my $tableName = shift;
 
-	$self->{sth} = $self->{connection}->prepare(
+	$self->{'sth'} = $self->{'connection'}->prepare(
 		"
 			SELECT
 				`COLUMN_NAME`
 			FROM
 				`INFORMATION_SCHEMA`.`COLUMNS`
 			WHERE
-				`TABLE_SCHEMA` = '$self->{db}->{DATABASE_NAME}';
+				`TABLE_SCHEMA` = '$self->{'db'}->{'DATABASE_NAME'}'
 			AND
-				`TABLE_NAME` = '$tableName';
-			"
+				`TABLE_NAME` = '$tableName'
+		"
 	);
 
 	return "Error while executing query: $DBI::errstr" unless $self->{'sth'}->execute();
 
-	my $href = $self->{sth}->fetchall_hashref('COLUMN_NAME');
+	my $href = $self->{'sth'}->fetchall_hashref('COLUMN_NAME');
 
 	my @columns = keys %$href;
 
@@ -179,72 +186,65 @@ sub getTableColumns($ $)
 # Param string Database name
 # Param string Path of filename where the database should be dumped
 # Return int 0 on success 1 on failure
-sub dumpdb{
-
+sub dumpdb
+{
 	my $self = shift;
-	my $db = shift;
+	my $dbName = shift || $self->{'db'}->{'DATABASE_NAME'};
 	my $filename = shift;
 
-	unless($self->{connection}){
+	unless($self->{'connection'}) {
 		error('Not connected');
 		return 1;
 	}
 
-	unless($self ne __PACKAGE__){
-		error('Not an instance instances');
+	unless($self ne __PACKAGE__) {
+		error('Not an instance');
 		return 1;
 	}
 
-	unless($filename){
+	unless($filename) {
 		error('No filename provided');
 		return 1;
 	}
 
-	debug("Dumping $db as $filename");
-
-	$db = $self->{db}->{DATABASE_NAME} unless $db;
-
-	use iMSCP::Execute;
+	debug("Dumping $dbName into $filename");
 
 	my ($rs, $stdout, $stderr);
 	$rs = execute('which mysqldump', \$stdout, \$stderr);
-	#chomp($stdout);
-	debug("$stdout") if $stdout;
-	error("$stderr") if $stderr;
-	error("Can find mysqldump") if (!$stderr && $rs);
+	debug($stdout) if $stdout;
+	error($stderr) if $stderr && $rs;
+	error('Unable to find mysqldump programm') if $rs && ! $stderr;
 	return $rs if $rs;
 
-	my $dbName = $db;
-	my $dbHost = $self->{db}->{DATABASE_HOST};
-	my $dbPort = $self->{db}->{DATABASE_PORT};
-	my $dbUser = $self->{db}->{DATABASE_USER};
-	my $dbPass = $self->{db}->{DATABASE_PASSWORD};
+	$dbName = escapeShell($dbName);
+	my $dbHost = escapeShell($self->{'db'}->{'DATABASE_HOST'});
+	my $dbPort = escapeShell($self->{'db'}->{'DATABASE_PORT'});
+	my $dbUser = escapeShell($self->{'db'}->{'DATABASE_USER'});
+	my $dbPass = escapeShell($self->{'db'}->{'DATABASE_PASSWORD'});
 
-	eval "\$$_ =~ s/\'/\\'/g" for (qw/dbHost dbPort dbName dbUser dbPass/);
-
-	my $bkpCmd	=	"$stdout ".
-					"--add-drop-database ".
-					"--add-drop-table ".
-					"--add-drop-database ".
-					"--allow-keywords ".
-					"--compress ".
-					"--create-options ".
-					"--default-character-set=utf8 ".
-					"--extended-insert ".
-					"--lock-tables ".
-					"--quote-names ".
-					"-h '$dbHost' ".
-					"-P '$dbPort' ".
-					"-u '$dbUser' ".
-					"-p'$dbPass' ".
-					"'$db' > '$filename'";
+	my $bkpCmd = "$stdout " .
+			 	 "--add-drop-database " .
+				 "--add-drop-table " .
+				 "--add-drop-database " .
+				 "--allow-keywords " .
+				 "--compress " .
+				 "--create-options " .
+				 "--default-character-set=utf8 " .
+				 "--extended-insert " .
+				 "--lock-tables " .
+				 "--quote-names " .
+				 "-h $dbHost " .
+				 "-P $dbPort " .
+				 "-u $dbUser " .
+				 "-p$dbPass " .
+				 "$dbName > $filename";
 
 	$rs = execute($bkpCmd, \$stdout, \$stderr);
-	debug("$stdout") if $stdout;
-	error("$stderr") if $stderr;
-	error("Can not dump $dbName") if (!$stderr && $rs);
-	return $rs if $rs;
-	0;
+	debug($stdout) if $stdout;
+	error($stderr) if $stderr && $rs;
+	error("Unable to dump $dbName") if $rs && ! $stderr;
+
+	$rs;
 }
 
 # Quote the given identifier (database name, table name or column name)
@@ -254,12 +254,12 @@ sub quoteIdentifier
 {
 	my ($self, $identifier)	= (@_);
 
-	$identifier = join(', ', $identifier) if( ref $identifier eq 'ARRAY');
+	$identifier = join(', ', $identifier) if ref $identifier eq 'ARRAY';
 
-	my $rv = $self->{connection}->quote_identifier($identifier);
-	debug("Quote identifier: |$rv|");
+	my $rs = $self->{'connection'}->quote_identifier($identifier);
+	debug("Quote identifier: |$rs|");
 
-	return $rv;
+	return $rs;
 }
 
 sub quote
@@ -270,4 +270,3 @@ sub quote
 }
 
 1;
-

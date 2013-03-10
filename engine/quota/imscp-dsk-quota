@@ -35,38 +35,36 @@ use iMSCP::Boot;
 use iMSCP::Execute;
 use iMSCP::Mail;
 use Servers::mta;
-use Data::Dumper;
 
 newDebug('imscp-dsk-quota.log');
 
-sub quota_start_up {
-
+sub quota_start_up
+{
 	umask(027);
-	iMSCP::Boot->new()->init({nolock => 'yes'});
+
+	iMSCP::Boot->getInstance({ 'nolock' => 'yes' })->boot();
 
 	0;
 }
 
-sub quota_files {
-
+sub quota_files
+{
 	my ($rs, $rdata) = (0, undef);
-
 
 	my $sql = "SELECT `domain_id`, `domain_name` FROM `domain` WHERE `domain_status` = ?";
 	$rdata = iMSCP::Database->new()->factory()->doQuery('domain_id', $sql, 'ok');
 
 	if (ref $rdata ne 'HASH'){
-		error("$rdata");
+		error($rdata);
 		iMSCP::Mail->new()->errmsg($rdata);
 		$rs = 1;
 	} else {
-
 		my $mta	= Servers::mta->factory();
 
-		foreach (keys %$rdata) {
+		for (keys %$rdata) {
 
 			my $domain_name	= $rdata->{$_}->{domain_name};
-			my $domain_id	= $rdata->{$_}->{domain_id};
+			my $domain_id = $rdata->{$_}->{domain_id};
 			my $size = 0;
 			my $file_size = 0;
 			my $mail_size = 0;
@@ -84,12 +82,15 @@ sub quota_files {
 				);
 			}
 
-			foreach(@cmd){
+			for(@cmd) {
 				my ($stdout, $stderr);
-				$rs |= execute($_, \$stdout, \$stderr);
-				error("$stderr") if $stderr;
-				if($stdout){
-					debug("$stdout");
+				$rs = execute($_, \$stdout, \$stderr);
+				error($stderr) if $stderr && $rs;
+				return $rs if $rs;
+
+				if(defined $stdout) {
+					debug($stdout);
+
 					if(/$main::imscpConfig{USER_HOME_DIR}/) {
 						$stdout =~ /^(\d+)/;
 						$file_size = ($^O =~ /bsd$/) ? $1*1024 : $1 if $1;
@@ -105,14 +106,16 @@ sub quota_files {
 			if ($size > 0) {
 				$sql = "UPDATE `domain` SET `domain_disk_usage` = ?, `domain_disk_file` = ?, `domain_disk_mail` = ? WHERE `domain_id` = ?";
 				my $rsdata = iMSCP::Database->new()->factory()->doQuery('update', $sql, $size, $file_size, $mail_size, $domain_id);
+
 				if (ref $rsdata ne 'HASH'){
-					error("$rsdata");
+					error($rsdata);
 					iMSCP::Mail->new()->errmsg($rsdata);
 					$rs = 1;
 				}
 
 				$sql = "UPDATE `quotatallies` SET `bytes_in_used` = ? WHERE `name` = ?";
 				$rsdata = iMSCP::Database->new()->factory()->doQuery('cnt', $sql, $size, $domain_name);
+
 				if (ref $rsdata ne 'HASH'){
 					error("$rsdata");
 					iMSCP::Mail->new()->errmsg($rsdata);
@@ -125,11 +128,11 @@ sub quota_files {
 	$rs;
 }
 
-sub quota_mysql {
-
+sub quota_mysql
+{
 	my $rs = 0;
 
-	my $sql = "SHOW DATABASES";
+	my $sql = 'SHOW DATABASES';
 	my $databases = iMSCP::Database->new()->factory()->doQuery('Database', $sql);
 
 	if (ref $databases ne 'HASH'){
@@ -147,15 +150,15 @@ sub quota_mysql {
 		$rs = 1;
 	} else {
 
-		foreach (keys %$rdata) {
+		for (keys %$rdata) {
 
-			my $domain_id	= $rdata->{$_}->{domain_id};
-			my $domain_name	= $rdata->{$_}->{domain_name};
-			my $disk_usage	= $rdata->{$_}->{domain_disk_usage};
-			$sql			= "SELECT `sqld_id`, `sqld_name` FROM `sql_database` WHERE `domain_id` = ?";
-			my $userDBs		= iMSCP::Database->new()->factory()->doQuery('sqld_id', $sql, $domain_id);
-			my $size		= 0;
-			my $sql_size	= 0;
+			my $domain_id = $rdata->{$_}->{domain_id};
+			my $domain_name = $rdata->{$_}->{domain_name};
+			my $disk_usage = $rdata->{$_}->{domain_disk_usage};
+			$sql = "SELECT `sqld_id`, `sqld_name` FROM `sql_database` WHERE `domain_id` = ?";
+			my $userDBs = iMSCP::Database->new()->factory()->doQuery('sqld_id', $sql, $domain_id);
+			my $size = 0;
+			my $sql_size = 0;
 
 			if (ref $userDBs ne 'HASH'){
 				error("$userDBs");
@@ -163,7 +166,7 @@ sub quota_mysql {
 				$rs = 1;
 			}
 
-			foreach (keys %$userDBs) {
+			for (keys %$userDBs) {
 
 				my $sqldb_id     = $userDBs->{$_}->{sqld_id};
 				my $sqldb_name   = $userDBs->{$_}->{sqld_name};
@@ -180,13 +183,12 @@ sub quota_mysql {
 					}
 					foreach(keys %$tables) {
 						$size +=
-								($tables->{$_}->{Data_length} =~ /^\d+$/ ? $tables->{$_}->{Data_length} : 0)
-								+
-								($tables->{$_}->{Index_length} =~ /^\d+$/ ? $tables->{$_}->{Index_length} : 0);
+							($tables->{$_}->{Data_length} =~ /^\d+$/ ? $tables->{$_}->{Data_length} : 0) +
+							($tables->{$_}->{Index_length} =~ /^\d+$/ ? $tables->{$_}->{Index_length} : 0);
 					}
 				} else {
-					error("Database '$sqldb_name' exists only in table 'sql_database'!!!");
-					iMSCP::Mail->new()->errmsg("Database '$sqldb_name' exists only in table 'sql_database'!!!");
+					error("Database '$sqldb_name' exists only in table 'sql_database'");
+					iMSCP::Mail->new()->errmsg("Database '$sqldb_name' exists only in table 'sql_database'");
 				}
 			}
 
@@ -197,16 +199,18 @@ sub quota_mysql {
 
 				$sql = "UPDATE `domain` SET `domain_disk_usage` = ?, `domain_disk_sql` = ? WHERE `domain_id` = ?";
 				my $quota = iMSCP::Database->new()->factory()->doQuery('update ', $sql, $size, $sql_size, $domain_id);
+
 				if (ref $quota ne 'HASH'){
-					error("$quota");
+					error($quota);
 					iMSCP::Mail->new()->errmsg($quota);
 					$rs = 1;
 				}
 
 				$sql = "UPDATE `quotatallies` SET `bytes_in_used` = ? WHERE `name` = ?";
 				$quota = iMSCP::Database->new()->factory()->doQuery('cnt', $sql, $size, $domain_name);
+
 				if (ref $quota ne 'HASH'){
-					error("$quota");
+					error($quota);
 					iMSCP::Mail->new()->errmsg($quota);
 					$rs = 1;
 				}
@@ -221,7 +225,8 @@ my $rs = 0;
 
 exit 1 if quota_start_up();
 
-$rs |= quota_files();
-$rs |= quota_mysql();
+$rs = quota_files();
+
+$rs = quota_mysql();
 
 exit $rs;

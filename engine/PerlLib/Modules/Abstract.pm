@@ -26,6 +26,7 @@
 # @category		i-MSCP
 # @copyright	2010-2013 by i-MSCP | http://i-mscp.net
 # @author		Daniel Andreca <sci2tech@gmail.com>
+# @author		Laurent Declercq <l.declercq@nuxwin.com>
 # @link			http://i-mscp.net i-MSCP Home Site
 # @license		http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
@@ -33,6 +34,7 @@ package Modules::Abstract;
 
 use strict;
 use warnings;
+
 use iMSCP::Debug;
 use iMSCP::Servers;
 use iMSCP::Addons;
@@ -54,7 +56,9 @@ use parent 'Common::SimpleClass';
 
 sub _init
 {
-	fatal('Developer must define own function for module');
+	my $self = shift;
+
+	fatal(ref($self) . ' module must implement the _init() method');
 }
 
 =item loadData()
@@ -67,7 +71,9 @@ sub _init
 
 sub loadData
 {
-	fatal('Developer must define own function for module');
+	my $self = shift;
+
+	fatal(ref($self) . ' module must implement the loadData() method');
 }
 
 =item process()
@@ -80,7 +86,9 @@ sub loadData
 
 sub process
 {
-	fatal('Developer must define own function for module');
+	my $self = shift;
+
+	fatal(ref($self) . ' module must implement the process() method');
 }
 
 =item add()
@@ -165,34 +173,25 @@ sub runAllActions
 	my $self = shift;
 	my $rs = 0;
 
-	@{$self->{'Addons'}} = iMSCP::Addons->new()->get();
-	unless(scalar @{$self->{'Addons'}}){
-		error('Cannot get addons list');
-		return 1;
-	}
-
-	@{$self->{'Servers'}} = iMSCP::Servers->new()->get();
-	unless(scalar @{$self->{'Servers'}}){
-		error('Cannot get servers list');
-		return 1;
-	}
+	@{$self->{'Addons'}} = iMSCP::Addons->getInstance()->get();
+	@{$self->{'Servers'}} = iMSCP::Servers->getInstance()->get();
 
 	# Build service/addon data if provided by the module
-	for(@{$self->{'Servers'}}, 'Addon'){
+	for(@{$self->{'Servers'}}, 'Addon') {
 		next if $_ eq 'noserver.pm';
 		my $fname = 'build' . uc($_) . 'Data';
 		$fname =~ s/\.pm//i;
-		$rs = eval "\$self->$fname();";
-		error("$@") if($@);
-		return 1 if($@)
+		$rs = $self->$fname();
+		return $rs if $rs;
 	}
 
-	$rs |= $self->runAction("pre$self->{action}$self->{type}",	'Servers');
-	$rs |= $self->runAction("pre$self->{action}$self->{type}",	'Addons');
-	$rs |= $self->runAction("$self->{action}$self->{type}",		'Servers');
-	$rs |= $self->runAction("$self->{action}$self->{type}",		'Addons');
-	$rs |= $self->runAction("post$self->{action}$self->{type}",	'Servers');
-	$rs |= $self->runAction("post$self->{action}$self->{type}",	'Addons');
+	for('pre', '', 'post') {
+		$rs = $self->runAction("$_$self->{'action'}$self->{'type'}", 'Servers');
+    	return $rs if $rs;
+
+    	$rs = $self->runAction("$_$self->{'action'}$self->{'type'}", 'Addons');
+        return $rs if $rs;
+	}
 
 	$rs;
 }
@@ -208,7 +207,7 @@ sub runAllActions
 sub runAction
 {
 	my $self = shift;
-	my $func = shift;
+	my $action = shift;
 	my $type = shift;
 	my $rs = 0;
 
@@ -222,12 +221,12 @@ sub runAction
 			$file = "$type/$_.pm";
 			$class = "${type}::$_";
 			require $file;
-			$instance = $class->factory();
+			$instance = $type ne 'Addons' ? $class->factory() : $class->getInstance();
 
-			if ($instance->can($func)) {
-				debug("Calling function $func from ${type}::$_");
-				$rs = $instance->$func($self->{$paramName});
-				last if $rs;
+			if ($instance->can($action)) {
+				debug("Calling action $action from ${type}::$_");
+				$rs = $instance->$action($self->{$paramName});
+				return $rs if $rs;
 			}
 		}
 	}
@@ -352,6 +351,7 @@ sub buildADDONData
 =head1 AUTHOR
 
  Daniel Andreca <sci2tech@gmail.com>
+ Laurent Declercq <l.declercq@nuxwin.com>
 
 =cut
 

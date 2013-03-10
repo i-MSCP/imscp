@@ -66,14 +66,14 @@ sub registerSetupHooks
 	my $rs = 0;
 
 	$rs = $hooksManager->trigger('beforeFtpdRegisterSetupHooks', $hooksManager, 'proftpd');
+	return $rs if $rs;
 
 	require Servers::ftpd::proftpd::installer;
 
-	$rs |= Servers::ftpd::proftpd::installer->new()->registerSetupHooks($hooksManager);
+	$rs = Servers::ftpd::proftpd::installer->getInstance()->registerSetupHooks($hooksManager);
+	return $rs if $rs;
 
-	$rs |= $hooksManager->trigger('afterFtpdRegisterSetupHooks', $hooksManager, 'proftpd');
-
-	$rs;
+	$hooksManager->trigger('afterFtpdRegisterSetupHooks', $hooksManager, 'proftpd');
 }
 
 sub install
@@ -82,14 +82,14 @@ sub install
 	my $rs = 0;
 
 	$rs = $self->{'hooksManager'}->trigger('beforeFtpdInstall', 'proftpd');
+	return $rs if $rs;
 
 	require Servers::ftpd::proftpd::installer;
 
-	$rs |= Servers::ftpd::proftpd::installer->new()->install();
+	$rs = Servers::ftpd::proftpd::installer->getInstance()->install();
+	return $rs if $rs;
 
-	$rs |= $self->{'hooksManager'}->trigger('afterFtpdInstall', 'proftpd');
-
-	$rs;
+	$self->{'hooksManager'}->trigger('afterFtpdInstall', 'proftpd');
 }
 
 sub postinstall
@@ -107,33 +107,36 @@ sub uninstall
 	my $rs = 0;
 
 	$rs = $self->{'hooksManager'}->trigger('beforeFtpdUninstall', 'proftpd');
+	return $rs if $rs;
 
 	require Servers::ftpd::proftpd::uninstaller;
 
-	$rs |= Servers::ftpd::proftpd::uninstaller->new()->uninstall();
+	$rs = Servers::ftpd::proftpd::uninstaller->getInstance()->uninstall();
+	return $rs if $rs;
 
-	$rs |= $self->{'hooksManager'}->trigger('afterFtpdUninstall', 'proftpd');
+	$rs = $self->{'hooksManager'}->trigger('afterFtpdUninstall', 'proftpd');
+	return $rs if $rs;
 
-	$rs |= $self->restart();
-
-	$rs;
+	$self->restart();
 }
 
 sub restart
 {
 	my $self = shift;
 	my $rs = 0;
+
 	$rs = $self->{'hooksManager'}->trigger('beforeFtpdRestart');
+	return $rs if $rs;
 
 	my ($stdout, $stderr);
 	$rs |= execute("$self->{'CMD_FTPD'} restart", \$stdout, \$stderr);
 	debug($stdout) if $stdout;
-	debug($stderr) if $stderr && !$rs;
+	# Debug target is expected below
+	debug($stderr) if $stderr && ! $rs;
 	error($stderr) if $stderr && $rs;
+	return $rs if $rs;
 
-	$rs |= $self->{'hooksManager'}->trigger('afterFtpdRestart');
-
-	$rs;
+	$self->{'hooksManager'}->trigger('afterFtpdRestart');
 }
 
 sub addDmn
@@ -152,37 +155,46 @@ sub addDmn
 		return 1 unless $data->{$_};
 	}
 
-	iMSCP::File->new(
+	$rs = iMSCP::File->new(
 		'filename' => "$self::proftpdConfig{'FTPD_CONF_DIR'}/$data->{'FILE_NAME'}"
-	)->copyFile("$self->{'bkpDir'}/$data->{'FILE_NAME'}." . time) and $rs = 1
-	if -f "$self::proftpdConfig{'FTPD_CONF_DIR'}/$data->{'FILE_NAME'}";
+	)->copyFile("$self->{'bkpDir'}/$data->{'FILE_NAME'}." . time) if -f "$self::proftpdConfig{'FTPD_CONF_DIR'}/$data->{'FILE_NAME'}";
+	return $rs if $rs;
 
 	my $template = ($data->{'ROOT_DOMAIN'} eq 'true') ? 'proftpd_root.conf.tpl' : 'proftpd.conf.tpl';
 	my $file = iMSCP::File->new('filename' => "$self->{'tplDir'}/$template");
 	my $content	= $file->get();
 
-	if(! $content) {
-		error("Cannot read $self->{'tplDir'}/$template");
+	if(! defined $content) {
+		error("Unable to read $self->{'tplDir'}/$template");
 		return 1;
 	}
 
-	$self->{'hooksManager'}->trigger('beforeFtpdAddDmn', $data) and return 1;
+	$rs = $self->{'hooksManager'}->trigger('beforeFtpdAddDmn', $data);
+	return $rs if $rs;
 
 	$content = process({ 'PATH' => $data->{'PATH'} }, $content);
 	$file = iMSCP::File->new('filename' => "$self->{'wrkDir'}/$data->{'FILE_NAME'}");
 
-	$self->{'hooksManager'}->trigger('afterFtpdAddDmn', $data) and return 1;
+	$rs = $self->{'hooksManager'}->trigger('afterFtpdAddDmn', $data);
+	return $rs if $rs;
 
 	$file->set($content);
 
-	$rs |= $file->save();
-	$rs |= $file->mode(0644);
-	$rs |= $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
-	$rs |= $file->copyFile("$self::proftpdConfig{'FTPD_CONF_DIR'}/$data->{'FILE_NAME'}");
+	$rs = $file->save();
+	return $rs if $rs;
+
+	$rs = $file->mode(0644);
+	return $rs if $rs;
+
+	$rs = $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
+	return $rs if $rs;
+
+	$rs = $file->copyFile("$self::proftpdConfig{'FTPD_CONF_DIR'}/$data->{'FILE_NAME'}");
+	return $rs if $rs;
 
 	$self->{'restart'} = 'yes';
 
-	$rs;
+	0;
 }
 
 sub delDmn
@@ -198,9 +210,11 @@ sub delDmn
 		return 1 unless $data->{$_};
 	}
 
-	$self->{'hooksManager'}->trigger('beforeFtpdDelDmn', $data) and return 1;
+	$rs = $self->{'hooksManager'}->trigger('beforeFtpdDelDmn', $data);
+	return $rs if $rs;
 
-	iMSCP::File->new('filename' => "$self::proftpdConfig{'FTPD_CONF_DIR'}/$data->{'FILE_NAME'}")->delFile() and  return 1;
+	$rs = iMSCP::File->new('filename' => "$self::proftpdConfig{'FTPD_CONF_DIR'}/$data->{'FILE_NAME'}")->delFile();
+	return $rs if $rs;
 
 	$self->{'restart'} = 'yes';
 
@@ -249,15 +263,15 @@ sub getTraffic
 }
 
 END {
-	my $endCode	= $?;
-	my $self = Servers::ftpd::proftpd->new();
+	my $exitCode = $?;
+	my $self = Servers::ftpd::proftpd->getInstance();
 	my $rs = 0;
 	my $trfFile	= "$main::imscpConfig{'TRAFF_LOG_DIR'}/$self::proftpdConfig{'FTP_TRAFF_LOG'}";
 
 	$rs = $self->restart() if $self->{'restart'} && $self->{'restart'} eq 'yes';
-	$rs |= iMSCP::File->new('filename' => "$trfFile.old")->delFile() if -f "$trfFile.old";
+	$rs = iMSCP::File->new('filename' => "$trfFile.old")->delFile() if -f "$trfFile.old" && ! $rs;
 
-	$? = $endCode || $rs;
+	$? = $exitCode || $rs;
 }
 
 1;

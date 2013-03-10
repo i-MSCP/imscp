@@ -163,7 +163,7 @@ sub startGauge{
 	debug("$command");
 
 	$self->{'gauge'}->{'FH'} = new FileHandle;
-	$self->{'gauge'}->{'FH'}->open("| $command") || error("Can`t start gauge!");
+	$self->{'gauge'}->{'FH'}->open("| $command") || error("Unable to start gauge!");
 	$SIG{PIPE} = \&endGauge;
 	my $rv = $? >> 8;
 	$self->{'gauge'}->{'FH'}->autoflush(1);
@@ -171,12 +171,11 @@ sub startGauge{
 	$rv;
 }
 
-sub needGauge{
+sub hasGauge{
 
-	my $self	= shift;
+	my $self = shift;
 
-	return 0 if $self->{'gauge'}->{'FH'};
-	1;
+	(exists $self->{'gauge'}->{'FH'}) ? 1 : 0;
 }
 
 sub setGauge{

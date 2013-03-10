@@ -80,10 +80,10 @@ sub preinstall
 
 	if($fileManagerAddon eq 'AjaxPlorer') {
 		require Addons::filemanager::ajaxplorer::installer;
-		Addons::filemanager::ajaxplorer::installer->new()->preinstall();
+		Addons::filemanager::ajaxplorer::installer->getInstance()->preinstall();
 	} elsif($fileManagerAddon eq 'Net2ftp') {
 		require Addons::filemanager::net2ftp::installer;
-		Addons::filemanager::net2ftp::installer->new()->preinstall();
+		Addons::filemanager::net2ftp::installer->getInstance()->preinstall();
 	} else {
 		error("Unknown Web Ftp file manager addon: $fileManagerAddon");
 		return 1;
@@ -106,10 +106,10 @@ sub install
 
 	if($fileManagerAddon eq 'AjaxPlorer') {
 		require Addons::filemanager::ajaxplorer::installer;
-		Addons::filemanager::ajaxplorer::installer->new()->install();
+		Addons::filemanager::ajaxplorer::installer->getInstance()->install();
 	} elsif($fileManagerAddon eq 'Net2ftp') {
 		require Addons::filemanager::net2ftp::installer;
-		Addons::filemanager::net2ftp::installer->new()->install();
+		Addons::filemanager::net2ftp::installer->getInstance()->install();
 	} else {
 		error("Unknown Web Ftp file manager addon: $fileManagerAddon");
 		return 1;
@@ -132,10 +132,10 @@ sub setGuiPermissions
 
 	if($fileManagerAddon eq 'AjaxPlorer') {
 		require Addons::filemanager::ajaxplorer::installer;
-		Addons::filemanager::ajaxplorer::installer->new()->setGuiPermissions();
+		Addons::filemanager::ajaxplorer::installer->getInstance()->setGuiPermissions();
 	} elsif($fileManagerAddon eq 'Net2ftp') {
 		require Addons::filemanager::net2ftp::installer;
-		Addons::filemanager::net2ftp::installer->new()->setGuiPermissions();
+		Addons::filemanager::net2ftp::installer->getInstance()->setGuiPermissions();
 	} else {
 		error("Unknown Web Ftp file manager addon: $fileManagerAddon");
 		return 1;

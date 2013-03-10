@@ -27,25 +27,26 @@ package Modules::Alias;
 
 use strict;
 use warnings;
+
 use iMSCP::Debug;
-use Data::Dumper;
+use File::Temp;
+use iMSCP::Database;
+use iMSCP::Servers;
+use iMSCP::Addons;
+use iMSCP::Execute;
+use iMSCP::Dir;
+use Servers::httpd;
+use iMSCP::Database;
 use parent 'Modules::Domain';
 
-sub loadData{
-
+sub loadData
+{
 	my $self = shift;
 
 	my $sql = "
 		SELECT
-			`alias`.*,
-			`domain_name` AS `user_home`,
-			`domain_admin_id`,
-			`domain_php`,
-			`domain_cgi`,
-			`domain_traffic_limit`,
-			`domain_mailacc_limit`,
-			`domain_dns`,
-			`ips`.`ip_number`,
+			`alias`.*, `domain_name` AS `user_home`, `domain_admin_id`, `domain_php`, `domain_cgi`,
+			`domain_traffic_limit`, `domain_mailacc_limit`, `domain_dns`, `ips`.`ip_number`,
 			`mail_count`.`mail_on_domain`
 		FROM
 			`domain_aliasses` AS `alias`
@@ -58,96 +59,105 @@ sub loadData{
 		ON
 			`alias`.`alias_ip_id` = `ips`.`ip_id`
 		LEFT JOIN
-			(SELECT `sub_id` AS `id`, COUNT( `sub_id` ) AS `mail_on_domain` FROM `mail_users` WHERE `sub_id`= ? AND `mail_type` IN ('alias_forward', 'alias_mail', 'alias_mail,alias_forward', 'alias_catchall') GROUP BY `sub_id`) AS `mail_count`
+			(
+				SELECT
+					`sub_id` AS `id`, COUNT( `sub_id` ) AS `mail_on_domain`
+				FROM
+					`mail_users`
+				WHERE
+					`sub_id`= ?
+				AND
+					`mail_type` IN ('alias_forward', 'alias_mail', 'alias_mail,alias_forward', 'alias_catchall')
+				GROUP BY
+					`sub_id`
+			) AS `mail_count`
 		ON
 			`alias`.`alias_id` = `mail_count`.`id`
 		WHERE
 		`alias`.`alias_id` = ?
 	";
 
-	my $rdata = iMSCP::Database->factory()->doQuery('alias_id', $sql, $self->{alsId}, $self->{alsId});
+	my $rdata = iMSCP::Database->factory()->doQuery('alias_id', $sql, $self->{alsId}, $self->{'alsId'});
+	if(ref $rdata ne 'HASH') {
+		error($rdata);
+		return 1;
+	}
 
-	error("$rdata") and return 1 if(ref $rdata ne 'HASH');
-	error("No alias has id = $self->{alsId}") and return 1 unless(exists $rdata->{$self->{alsId}});
+	unless(exists $rdata->{$self->{'alsId'}}) {
+		error("No alias has id = $self->{'alsId'}");
+		return 1;
+	}
 
-	$self->{$_} = $rdata->{$self->{alsId}}->{$_} for keys %{$rdata->{$self->{alsId}}};
+	$self->{$_} = $rdata->{$self->{'alsId'}}->{$_} for keys %{$rdata->{$self->{'alsId'}}};
 
 	0;
 }
 
-sub process{
-
-	my $self		= shift;
-	$self->{alsId}	= shift;
+sub process
+{
+	my $self = shift;
+	$self->{'alsId'} = shift;
 
 	my $rs = $self->loadData();
 	return $rs if $rs;
 
 	my @sql;
 
-	if($self->{alias_status} =~ /^toadd|change|toenable|dnschange$/){
+	if($self->{'alias_status'} =~ /^toadd|change|toenable|dnschange$/) {
 		$rs = $self->add();
 		@sql = (
 			"UPDATE `domain_aliasses` SET `alias_status` = ? WHERE `alias_id` = ?",
-			($rs ? scalar getMessageByType('ERROR') : 'ok'),
-			$self->{alias_id}
+			($rs ? scalar getMessageByType('error') : 'ok'),
+			$self->{'alias_id'}
 		);
-	}elsif($self->{alias_status} =~ /^delete$/){
+	} elsif($self->{'alias_status'} =~ /^delete$/){
 		$rs = $self->delete();
-		if($rs){
+		if($rs) {
 			@sql = (
 				"UPDATE `domain_aliasses` SET `alias_status` = ? WHERE `alias_id` = ?",
-				scalar getMessageByType('ERROR'),
-				$self->{alias_id}
+				scalar getMessageByType('error'),
+				$self->{'alias_id'}
 			);
 		}else {
-			@sql = ("DELETE FROM `domain_aliasses` WHERE `alias_id` = ?", $self->{alias_id});
+			@sql = ("DELETE FROM `domain_aliasses` WHERE `alias_id` = ?", $self->{'alias_id'});
 		}
-	}elsif($self->{alias_status} =~ /^todisable$/){
+	} elsif($self->{'alias_status'} =~ /^todisable$/){
 		$rs = $self->disable();
 		@sql = (
 			"UPDATE `domain_aliasses` SET `alias_status` = ? WHERE `alias_id` = ?",
-			($rs ? scalar getMessageByType('ERROR') : 'disabled'),
-			$self->{alias_id}
+			($rs ? scalar getMessageByType('error') : 'disabled'),
+			$self->{'alias_id'}
 		);
-	}elsif($self->{alias_status} =~ /^restore$/){
+	} elsif($self->{'alias_status'} =~ /^restore$/){
 		$rs = $self->restore();
 		@sql = (
 			"UPDATE `domain_aliasses` SET `alias_status` = ? WHERE `alias_id` = ?",
-			($rs ? scalar getMessageByType('ERROR') : 'ok'),
-			$self->{alias_id}
+			($rs ? scalar getMessageByType('error') : 'ok'),
+			$self->{'alias_id'}
 		);
 	}
 
 	my $rdata = iMSCP::Database->factory()->doQuery('dummy', @sql);
-	error("$rdata") and return 1 if(ref $rdata ne 'HASH');
+	if(ref $rdata ne 'HASH') {
+		error($rdata);
+		return 1;
+	}
 
 	$rs;
 }
 
-sub delete{
+sub delete
+{
+	my $self = shift;
+	my $rs = 0;
+	my $userName =
+	my $groupName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} .
+		($main::imscpConfig{'SYSTEM_USER_MIN_UID'} + $self->{'domain_admin_id'});
 
-	use File::Temp;
-	use iMSCP::Database;
-	use iMSCP::Servers;
-	use iMSCP::Addons;
-	use iMSCP::Execute;
-	use iMSCP::Dir;
-	use Servers::httpd;
+	my $httpdGroup = (
+		Servers::httpd->factory()->can('getRunningGroup') ? Servers::httpd->factory()->getRunningGroup() : $groupName
+	);
 
-	my $self		= shift;
-	my $rs			= 0;
-	my $userName	=
-	my $groupName	=
-			$main::imscpConfig{SYSTEM_USER_PREFIX}.
-			($main::imscpConfig{SYSTEM_USER_MIN_UID} + $self->{domain_admin_id});
-	my $httpdGroup	= (
-			Servers::httpd->factory()->can('getRunningGroup')
-			?
-			Servers::httpd->factory()->getRunningGroup()
-			:
-			$groupName
-		);
 	my ($stdout, $stderr);
 
 	my @sql = ("
@@ -169,23 +179,28 @@ sub delete{
 		AND `subdomain_alias_status` != 'delete'
 		AND `alias_id` IN (SELECT `alias_id` FROM `domain_aliasses` WHERE `domain_id` = ?)
 		",
-		$self->{domain_id},
-		$self->{domain_id},
-		$self->{domain_id}
+		$self->{'domain_id'},
+		$self->{'domain_id'},
+		$self->{'domain_id'}
 	);
 
 	my $rdata = iMSCP::Database->factory()->doQuery('id', @sql);
-	error("$rdata") and return 1 if(ref $rdata ne 'HASH');
+	if(ref $rdata ne 'HASH') {
+		error($rdata);
+		return 1;
+	}
 
 	my %mountPoints;
-	unless($self->{alias_mount} eq '/'){
+
+	unless($self->{'alias_mount'} eq '/'){
 		my %toSaveMountPoints;
-		%mountPoints = map{$_ => $rdata->{$_}->{mount_point}} keys%{$rdata};
+		%mountPoints = map{$_ => $rdata->{$_}->{'mount_point'}} keys%{$rdata};
 
 		for(keys %mountPoints){
-			my $mp = $rdata->{$_}->{mount_point};
+			my $mp = $rdata->{$_}->{'mount_point'};
 			my $id = $_;
-			if(grep $mp =~ m/^$rdata->{$_}->{mount_point}/ && $id ne $_, keys %mountPoints){
+
+			if(grep $mp =~ m/^$rdata->{$_}->{'mount_point'}/ && $id ne $_, keys %mountPoints) {
 				delete $mountPoints{$id};
 			}
 		}
@@ -193,141 +208,182 @@ sub delete{
 		$mountPoints{'1'} = '/';
 	}
 
-
-	my $dir = File::Temp->newdir(CLEANUP => 1);
+	my $dir = File::Temp->newdir('CLEANUP' => 1);
 	my @savedDirs;
 
 	for(keys %mountPoints){
-		my $sourceDir 	= "$main::imscpConfig{'USER_HOME_DIR'}/$self->{user_home}/".$mountPoints{$_};
-		$sourceDir		=~ s~/+~/~g;
-		my $destDir 	= "$dir/".$mountPoints{$_};
-		$destDir		=~ s~/+~/~g;
-		$rs |= iMSCP::Dir->new(dirname => "$destDir")->make({user => $userName, group => $httpdGroup, mode => 0710});
-		$rs |= execute("cp -pTRfv $sourceDir $destDir", \$stdout, \$stderr);
-		debug("$stdout") if $stdout;
-		error("$stderr") if $stderr;
+		my $sourceDir = "$main::imscpConfig{'USER_HOME_DIR'}/$self->{user_home}/" . $mountPoints{$_};
+		$sourceDir =~ s~/+~/~g;
+
+		my $destDir = "$dir/" . $mountPoints{$_};
+		$destDir =~ s~/+~/~g;
+
+		$rs = iMSCP::Dir->new('dirname' => "$destDir")->make(
+			{ 'user' => $userName, 'group' => $httpdGroup, 'mode' => 0710 }
+		);
 		return $rs if $rs;
-		$rs |= execute("rm -fRv $sourceDir", \$stdout, \$stderr);
-		debug("$stdout") if $stdout;
-		error("$stderr") if $stderr;
+
+		$rs = execute("$main::imscpConfig{'CMD_CP'} -pTRf $sourceDir $destDir", \$stdout, \$stderr);
+		debug($stdout) if $stdout;
+		error($stderr) if $stderr && $rs;
 		return $rs if $rs;
+
+		$rs = execute("$main::imscpConfig{'CMD_RM'} -fR $sourceDir", \$stdout, \$stderr);
+		debug($stdout) if $stdout;
+		error($stderr) if $stderr && $rs;
+		return $rs if $rs;
+
 		push(@savedDirs, $mountPoints{$_});
 	}
 
 	$rs = $self->SUPER::delete();
+	return $rs if $rs;
 
-	for (@savedDirs){
-		my $destDir 	= "$main::imscpConfig{'USER_HOME_DIR'}/$self->{user_home}/$_";
-		$destDir		=~ s~/+~/~g;
-		my $sourceDir	= "$dir/$_";
-		$sourceDir		=~ s~/+~/~g;
-		$rs |= iMSCP::Dir->new(dirname => "$destDir")->make({user => $userName, group => $httpdGroup, mode => 0710});
-		$rs |= execute("cp -pTRfv $sourceDir $destDir ", \$stdout, \$stderr);
-		debug("$stdout") if $stdout;
-		error("$stderr") if $stderr;
+	for (@savedDirs) {
+		my $destDir = "$main::imscpConfig{'USER_HOME_DIR'}/$self->{'user_home'}/$_";
+		$destDir =~ s~/+~/~g;
+
+		my $sourceDir = "$dir/$_";
+		$sourceDir =~ s~/+~/~g;
+
+		$rs = iMSCP::Dir->new(dirname => "$destDir")->make(
+			{ 'user' => $userName, 'group' => $httpdGroup, 'mode' => 0710 }
+		);
 		return $rs if $rs;
-		$rs |= execute("rm -fRv $sourceDir ", \$stdout, \$stderr);
-		debug("$stdout") if $stdout;
-		error("$stderr") if $stderr;
+
+		$rs = execute("$main::imscpConfig{'CMD_CP'} -pTRf $sourceDir $destDir ", \$stdout, \$stderr);
+		debug($stdout) if $stdout;
+		error($stderr) if $stderr && $rs;
+		return $rs if $rs;
+
+		$rs = execute("$main::imscpConfig{'CMD_RM'} -fR $sourceDir ", \$stdout, \$stderr);
+		debug($stdout) if $stdout;
+		error($stderr) if $stderr && $rs;
+		return $rs if $rs;
 	}
 
 	$rs;
 }
 
-sub buildHTTPDData{
+sub buildHTTPDData
+{
+	my $self = shift;
+	my $groupName =
+	my $userName =
+		$main::imscpConfig{'SYSTEM_USER_PREFIX'} .
+			($main::imscpConfig{'SYSTEM_USER_MIN_UID'} + $self->{'domain_admin_id'});
+	my $hDir = "$main::imscpConfig{'USER_HOME_DIR'}/$self->{'user_home'}/$self->{'alias_mount'}";
+	$hDir =~ s~/+~/~g;
 
-	my $self	= shift;
-	my $groupName	=
-	my $userName	=
-			$main::imscpConfig{SYSTEM_USER_PREFIX}.
-			($main::imscpConfig{SYSTEM_USER_MIN_UID} + $self->{domain_admin_id});
-	my $hDir 		= "$main::imscpConfig{'USER_HOME_DIR'}/$self->{user_home}/$self->{alias_mount}";
-	$hDir			=~ s~/+~/~g;
-
-	my $pDir 		= "$main::imscpConfig{'USER_HOME_DIR'}/$self->{user_home}";
-	$pDir			=~ s~/+~/~g;
+	my $pDir = "$main::imscpConfig{'USER_HOME_DIR'}/$self->{'user_home'}";
+	$pDir =~ s~/+~/~g;
 
 	my $sql = "SELECT * FROM `config` WHERE `name` LIKE 'PHPINI%'";
 	my $rdata = iMSCP::Database->factory()->doQuery('name', $sql);
-	error("$rdata") and return 1 if(ref $rdata ne 'HASH');
+	if (ref $rdata ne 'HASH') {
+		error($rdata);
+		return 1;
+	}
 
-	$sql			= "SELECT * FROM `php_ini` WHERE `domain_id` = ?";
-	my $phpiniData	= iMSCP::Database->factory()->doQuery('domain_id', $sql, $self->{domain_id});
-	error("$phpiniData") and return 1 if(ref $phpiniData ne 'HASH');
+	$sql = "SELECT * FROM `php_ini` WHERE `domain_id` = ?";
+	my $phpiniData = iMSCP::Database->factory()->doQuery('domain_id', $sql, $self->{'domain_id'});
+	if (ref $phpiniData ne 'HASH') {
+    	error($phpiniData);
+    	return 1;
+    }
 
-	$sql			= "SELECT * FROM `ssl_certs` WHERE `id` = ? AND `type` = ? AND `status` = ?";
-	my $certData	= iMSCP::Database->factory()->doQuery('id', $sql, $self->{alias_id}, 'als', 'ok');
-	error("$certData") and return 1 if(ref $certData ne 'HASH');
+	$sql = "SELECT * FROM `ssl_certs` WHERE `id` = ? AND `type` = ? AND `status` = ?";
+	my $certData = iMSCP::Database->factory()->doQuery('id', $sql, $self->{'alias_id'}, 'als', 'ok');
+	if (ref $certData ne 'HASH') {
+        error($certData);
+        return 1;
+       }
 
-	my $haveCert = exists $certData->{$self->{alias_id}} && !$self->testCert($self->{alias_name});
+	my $haveCert = exists $certData->{$self->{'alias_id'}} && !$self->testCert($self->{'alias_name'});
 
-	$self->{httpd} = {
-		DMN_NAME					=> $self->{alias_name},
-		DOMAIN_NAME					=> $self->{alias_name},
-		ROOT_DMN_NAME				=> $self->{user_home},
-		PARENT_DMN_NAME				=> $self->{user_home},
-		DMN_IP						=> $self->{ip_number},
-		WWW_DIR						=> $main::imscpConfig{USER_HOME_DIR},
-		HOME_DIR					=> $hDir,
-		PARENT_DIR					=> $pDir,
-		PEAR_DIR					=> $main::imscpConfig{PEAR_DIR},
-		PHP_TIMEZONE				=> $main::imscpConfig{PHP_TIMEZONE},
-		PHP_VERSION					=> $main::imscpConfig{PHP_VERSION},
-		BASE_SERVER_VHOST_PREFIX	=> $main::imscpConfig{BASE_SERVER_VHOST_PREFIX},
-		BASE_SERVER_VHOST			=> $main::imscpConfig{BASE_SERVER_VHOST},
-		USER						=> $userName,
-		GROUP						=> $groupName,
-		have_php					=> $self->{domain_php},
-		have_cgi					=> $self->{domain_cgi},
-		have_cert					=> $haveCert,
-		BWLIMIT						=> $self->{domain_traffic_limit},
-		ALIAS						=> $userName.'als'.$self->{alias_id},
-		FORWARD						=> (defined $self->{url_forward} && $self->{url_forward} ne '') ? $self->{url_forward} : 'no',
-		DISABLE_FUNCTIONS			=> (exists $phpiniData->{$self->{domain_id}} ? $phpiniData->{$self->{domain_id}}->{disable_functions} : $rdata->{PHPINI_DISABLE_FUNCTIONS}->{value}),
-		MAX_EXECUTION_TIME			=> (exists $phpiniData->{$self->{domain_id}} ? $phpiniData->{$self->{domain_id}}->{max_execution_time} : $rdata->{PHPINI_MAX_EXECUTION_TIME}->{value}),
-		MAX_INPUT_TIME				=> (exists $phpiniData->{$self->{domain_id}} ? $phpiniData->{$self->{domain_id}}->{max_input_time} : $rdata->{PHPINI_MAX_INPUT_TIME}->{value}),
-		MEMORY_LIMIT				=> (exists $phpiniData->{$self->{domain_id}} ? $phpiniData->{$self->{domain_id}}->{memory_limit} : $rdata->{PHPINI_MEMORY_LIMIT}->{value}),
-		ERROR_REPORTING				=> (exists $phpiniData->{$self->{domain_id}} ? $phpiniData->{$self->{domain_id}}->{error_reporting} : $rdata->{PHPINI_ERROR_REPORTING}->{value}),
-		DISPLAY_ERRORS				=> (exists $phpiniData->{$self->{domain_id}} ? $phpiniData->{$self->{domain_id}}->{display_errors} : $rdata->{PHPINI_DISPLAY_ERRORS}->{value}),
-		POST_MAX_SIZE				=> (exists $phpiniData->{$self->{domain_id}} ? $phpiniData->{$self->{domain_id}}->{post_max_size} : $rdata->{PHPINI_POST_MAX_SIZE}->{value}),
-		UPLOAD_MAX_FILESIZE			=> (exists $phpiniData->{$self->{domain_id}} ? $phpiniData->{$self->{domain_id}}->{upload_max_filesize} : $rdata->{PHPINI_UPLOAD_MAX_FILESIZE}->{value}),
-		ALLOW_URL_FOPEN				=> (exists $phpiniData->{$self->{domain_id}} ? $phpiniData->{$self->{domain_id}}->{allow_url_fopen} : $rdata->{PHPINI_ALLOW_URL_FOPEN}->{value}),
-		PHPINI_OPEN_BASEDIR			=> (exists $phpiniData->{$self->{domain_id}}->{PHPINI_OPEN_BASEDIR} ? ':'.$phpiniData->{$self->{domain_id}}->{PHPINI_OPEN_BASEDIR} : $rdata->{PHPINI_OPEN_BASEDIR}->{value} ? ':'.$rdata->{PHPINI_OPEN_BASEDIR}->{value} : '')
+	$self->{'httpd'} = {
+		DMN_NAME => $self->{'alias_name'},
+		DOMAIN_NAME => $self->{'alias_name'},
+		ROOT_DMN_NAME => $self->{'user_home'},
+		PARENT_DMN_NAME => $self->{'user_home'},
+		DMN_IP => $self->{'ip_number'},
+		WWW_DIR => $main::imscpConfig{'USER_HOME_DIR'},
+		HOME_DIR => $hDir,
+		PARENT_DIR => $pDir,
+		PEAR_DIR => $main::imscpConfig{'PEAR_DIR'},
+		PHP_TIMEZONE => $main::imscpConfig{'PHP_TIMEZONE'},
+		PHP_VERSION => $main::imscpConfig{'PHP_VERSION'},
+		BASE_SERVER_VHOST_PREFIX => $main::imscpConfig{'BASE_SERVER_VHOST_PREFIX'},
+		BASE_SERVER_VHOST => $main::imscpConfig{'BASE_SERVER_VHOST'},
+		USER => $userName,
+		GROUP => $groupName,
+		have_php => $self->{'domain_php'},
+		have_cgi => $self->{'domain_cgi'},
+		have_cert => $haveCert,
+		BWLIMIT => $self->{'domain_traffic_limit'},
+		ALIAS => $userName.'als' . $self->{'alias_id'},
+		FORWARD => (defined $self->{'url_forward'} && $self->{'url_forward'} ne '') ? $self->{'url_forward'} : 'no',
+
+		DISABLE_FUNCTIONS => (exists $phpiniData->{$self->{'domain_id'}})
+			? $phpiniData->{$self->{'domain_id'}}->{'disable_functions'} : $rdata->{'PHPINI_DISABLE_FUNCTIONS'}->{'value'},
+
+		MAX_EXECUTION_TIME => (exists $phpiniData->{$self->{'domain_id'}})
+			? $phpiniData->{$self->{'domain_id'}}->{'max_execution_time'} : $rdata->{'PHPINI_MAX_EXECUTION_TIME'}->{'value'},
+
+		MAX_INPUT_TIME => (exists $phpiniData->{$self->{'domain_id'}})
+			? $phpiniData->{$self->{'domain_id'}}->{'max_input_time'} : $rdata->{'PHPINI_MAX_INPUT_TIME'}->{'value'},
+
+		MEMORY_LIMIT => (exists $phpiniData->{$self->{'domain_id'}})
+			? $phpiniData->{$self->{'domain_id'}}->{'memory_limit'} : $rdata->{'PHPINI_MEMORY_LIMIT'}->{'value'},
+
+		ERROR_REPORTING => (exists $phpiniData->{$self->{'domain_id'}})
+			? $phpiniData->{$self->{'domain_id'}}->{'error_reporting'} : $rdata->{'PHPINI_ERROR_REPORTING'}->{'value'},
+
+		DISPLAY_ERRORS => (exists $phpiniData->{$self->{'domain_id'}})
+			? $phpiniData->{$self->{'domain_id'}}->{'display_errors'} : $rdata->{'PHPINI_DISPLAY_ERRORS'}->{'value'},
+
+		POST_MAX_SIZE => (exists $phpiniData->{$self->{'domain_id'}})
+			? $phpiniData->{$self->{'domain_id'}}->{'post_max_size'} : $rdata->{'PHPINI_POST_MAX_SIZE'}->{'value'},
+
+		UPLOAD_MAX_FILESIZE => (exists $phpiniData->{$self->{'domain_id'}})
+			? $phpiniData->{$self->{'domain_id'}}->{'upload_max_filesize'} : $rdata->{'PHPINI_UPLOAD_MAX_FILESIZE'}->{'value'},
+
+		ALLOW_URL_FOPEN => (exists $phpiniData->{$self->{'domain_id'}})
+			? $phpiniData->{$self->{'domain_id'}}->{'allow_url_fopen'} : $rdata->{'PHPINI_ALLOW_URL_FOPEN'}->{'value'},
+
+		PHPINI_OPEN_BASEDIR => (exists $phpiniData->{$self->{'domain_id'}}->{'PHPINI_OPEN_BASEDIR'})
+			? ':'.$phpiniData->{$self->{'domain_id'}}->{'PHPINI_OPEN_BASEDIR'}
+			: $rdata->{'PHPINI_OPEN_BASEDIR'}->{'value'} ? ':' . $rdata->{'PHPINI_OPEN_BASEDIR'}->{'value'} : ''
 	};
 
 	0;
 }
 
-sub buildMTAData{
-
-	my $self	= shift;
+sub buildMTAData
+{
+	my $self = shift;
 
 	if(
-		$self->{'action'} ne 'add'
-		||
-		defined $self->{mail_on_domain} && $self->{mail_on_domain} > 0
-		||
-		defined $self->{domain_mailacc_limit} && $self->{domain_mailacc_limit} >=0
-	){
-		$self->{mta} = {
-			DMN_NAME		=> $self->{alias_name},
-			DMN_TYPE		=> $self->{type},
-			TYPE			=> 'vals_entry',
-			EXTERNAL_MAIL	=> $self->{external_mail}
+		$self->{'action'} ne 'add' || defined $self->{'mail_on_domain'} && $self->{'mail_on_domain'} > 0 ||
+		defined $self->{'domain_mailacc_limit'} && $self->{'domain_mailacc_limit'} >= 0
+	) {
+		$self->{'mta'} = {
+			DMN_NAME => $self->{'alias_name'},
+			DMN_TYPE => $self->{'type'},
+			TYPE => 'vals_entry',
+			EXTERNAL_MAIL => $self->{'external_mail'}
 		};
 	}
 
 	0;
 }
 
-sub buildNAMEDData{
-
-	use iMSCP::Database;
-
-	my $self	= shift;
+sub buildNAMEDData
+{
+	my $self = shift;
 
 	# Both features custom dns and external mail share the same table but are independent
-	if($self->{'action'} eq 'add' && ($self->{domain_dns} eq 'yes' || $self->{external_mail} eq 'on')){
+	if($self->{'action'} eq 'add' && ($self->{'domain_dns'} eq 'yes' || $self->{'external_mail'} eq 'on')) {
 		my $sql = "
 			SELECT
 				*
@@ -340,10 +396,13 @@ sub buildNAMEDData{
 		";
 
 		my $database = iMSCP::Database->factory();
-		my $rdata = $database->doQuery('domain_dns_id', $sql, $self->{domain_id}, $self->{alias_id});
-		error("$rdata") and return 1 if(ref $rdata ne 'HASH');
+		my $rdata = $database->doQuery('domain_dns_id', $sql, $self->{'domain_id'}, $self->{'alias_id'});
+		if(ref $rdata ne 'HASH') {
+			error($rdata);
+			return 1;
+		}
 
-		$self->{named}->{DMN_CUSTOM}->{$_} = $rdata->{$_} for keys %$rdata;
+		$self->{'named'}->{'DMN_CUSTOM'}->{$_} = $rdata->{$_} for keys %$rdata;
 
 		# We must trigger the module subalias whatever the number of entries
 		# found in the 'domain_dns' table to ensure that sub alias DNS entries will
@@ -360,64 +419,68 @@ sub buildNAMEDData{
 					`alias_id` = ?
 			";
 
-			my $rdata = iMSCP::Database->factory()->doQuery('update', $sql, 'change', 'ok', $self->{alias_id});
-			error("$rdata") and return 1 if(ref $rdata ne 'HASH');
+			my $rdata = iMSCP::Database->factory()->doQuery('update', $sql, 'change', 'ok', $self->{'alias_id'});
+			if(ref $rdata ne 'HASH') {
+				error($rdata);
+				return 1;
+			}
 		#}
 	}
 
-	#my $groupName	=
-	my $userName	=
-			$main::imscpConfig{SYSTEM_USER_PREFIX}.
-			($main::imscpConfig{SYSTEM_USER_MIN_UID} + $self->{domain_admin_id});
+	my $userName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} .
+		($main::imscpConfig{'SYSTEM_USER_MIN_UID'} + $self->{'domain_admin_id'});
 
-	$self->{named}->{DMN_NAME}	= $self->{alias_name};
-	$self->{named}->{DMN_IP}	= $self->{ip_number};
-	$self->{named}->{USER_NAME}	= $userName.'als'.$self->{alias_id};
-	$self->{named}->{MX}		= (($self->{mail_on_domain} || $self->{domain_mailacc_limit} >= 0) && ($self->{external_mail} ne 'on') ? '' : ';');
+	$self->{'named'}->{'DMN_NAME'} = $self->{'alias_name'};
+	$self->{'named'}->{'DMN_IP'} = $self->{'ip_number'};
+	$self->{'named'}->{'USER_NAME'} = $userName . 'als' . $self->{'alias_id'};
+	$self->{'named'}->{'MX'} = (
+		($self->{'mail_on_domain'} || $self->{'domain_mailacc_limit'} >= 0) && ($self->{'external_mail'} ne 'on')
+		? '' : ';'
+	);
 
 	0;
 }
 
-sub buildFTPDData{
+sub buildFTPDData
+{
+	my $self = shift;
+	my $rs = 0;
 
-	my $self	= shift;
-	my $rs 		= 0;
-	my ($stdout, $stderr);
-	return 0 if($self->{alias_mount} eq '/');
-	my $hDir 		= "$main::imscpConfig{'USER_HOME_DIR'}/$self->{user_home}/$self->{alias_mount}";
-	my $file_name	= "$self->{user_home}/$self->{alias_mount}";
-	$file_name		=~ s~/+~\.~g;
-	$file_name		=~ s~\.$~~g;
-	$hDir			=~ s~/+~/~g;
-	$hDir			=~ s~/$~~g;
+	return 0 if($self->{'alias_mount'} eq '/');
 
-	$self->{ftpd} = {
-		FILE_NAME	=> $file_name,
-		PATH		=> $hDir,
+	my $hDir = "$main::imscpConfig{'USER_HOME_DIR'}/$self->{'user_home'}/$self->{'alias_mount'}";
+	my $fileName = "$self->{user_home}/$self->{alias_mount}";
+	$fileName =~ s~/+~\.~g;
+	$fileName =~ s~\.$~~g;
+	$hDir =~ s~/+~/~g;
+	$hDir =~ s~/$~~g;
+
+	$self->{'ftpd'} = {
+		FILE_NAME => $fileName,
+		PATH => $hDir,
 		ROOT_DOMAIN	=> 'false'
 	};
 
 	0;
 }
 
-sub buildADDONData{
+sub buildADDONData
+{
+	my $self = shift;
 
-	my $self	= shift;
+	my $groupName =
+	my $userName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} .
+		($main::imscpConfig{'SYSTEM_USER_MIN_UID'} + $self->{'domain_admin_id'});
 
-	my $groupName	=
-	my $userName	=
-						$main::imscpConfig{SYSTEM_USER_PREFIX}.
-						($main::imscpConfig{SYSTEM_USER_MIN_UID} + $self->{domain_admin_id});
-
-	my $hDir 		= "$main::imscpConfig{'USER_HOME_DIR'}/$self->{user_home}";
-	$hDir			=~ s~/+~/~g;
+	my $hDir = "$main::imscpConfig{'USER_HOME_DIR'}/$self->{'user_home'}";
+	$hDir =~ s~/+~/~g;
 
 
-	$self->{AddonsData} = {
-		DMN_NAME	=> $self->{alias_name},
-		USER		=> $userName,
-		GROUP		=> $groupName,
-		HOME_DIR	=> $hDir
+	$self->{'AddonsData'} = {
+		DMN_NAME => $self->{'alias_name'},
+		USER => $userName,
+		GROUP => $groupName,
+		HOME_DIR => $hDir
 	};
 
 	0;

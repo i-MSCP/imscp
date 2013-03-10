@@ -27,8 +27,8 @@ package Servers::httpd::apache_fcgi::uninstaller;
 
 use strict;
 use warnings;
+
 use iMSCP::Debug;
-use Data::Dumper;
 use parent 'Common::SingletonClass';
 
 sub _init
@@ -36,10 +36,10 @@ sub _init
 	my $self = shift;
 
 	$self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/apache";
-	$self->{'bkpDir'} = "$self->{cfgDir}/backup";
-	$self->{'wrkDir'} = "$self->{cfgDir}/working";
+	$self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
+	$self->{'wrkDir'} = "$self->{'cfgDir'}/working";
 
-	my $conf = "$self->{cfgDir}/apache.data";
+	my $conf = "$self->{'cfgDir'}/apache.data";
 
 	tie %self::apacheConfig, 'iMSCP::Config','fileName' => $conf;
 
@@ -51,13 +51,19 @@ sub uninstall
 	my $self = shift;
 	my $rs = 0;
 
-	$rs |= $self->removeUsers();
-	$rs |= $self->removeDirs();
-	$rs |= $self->fastcgiConf();
-	$rs |= $self->vHostConf();
-	$rs |= $self->restoreConf();
+	$rs = $self->removeUsers();
+	return $rs if $rs;
 
-	$rs;
+	$rs = $self->removeDirs();
+	return $rs if $rs;
+
+	$rs = $self->fastcgiConf();
+	return $rs if $rs;
+
+	$rs = $self->vHostConf();
+	return $rs if $rs;
+
+	$self->restoreConf();
 }
 
 sub removeUsers
@@ -72,19 +78,18 @@ sub removeUsers
 	$panelUName = Modules::SystemUser->new();
 	$panelUName->{'force'} = 'yes';
 
-	$rs |= $panelUName->delSystemUser(
+	$rs = $panelUName->delSystemUser(
 		$main::imscpConfig{'SYSTEM_USER_PREFIX'} . $main::imscpConfig{'SYSTEM_USER_MIN_UID'}
 	);
+	return $rs if $rs;
 
 	# Panel group
 	use Modules::SystemGroup;
 	$panelGName = Modules::SystemGroup->new();
 
-	$rs |= $panelGName->delSystemGroup(
+	$panelGName->delSystemGroup(
 		$main::imscpConfig{'SYSTEM_USER_PREFIX'} . $main::imscpConfig{'SYSTEM_USER_MIN_UID'}
 	);
-
-	$rs;
 }
 
 sub removeDirs
@@ -98,10 +103,11 @@ sub removeDirs
 		$self::apacheConfig{'APACHE_USERS_LOG_DIR'}, $self::apacheConfig{'APACHE_BACKUP_LOG_DIR'},
 		$self::apacheConfig{'APACHE_CUSTOM_SITES_CONFIG_DIR'}, $self::apacheConfig{'PHP_STARTER_DIR'}
 	) {
-		$rs |= iMSCP::Dir->new(dirname => $_)->remove() if -d $_;
+		$rs = iMSCP::Dir->new(dirname => $_)->remove() if -d $_;
+		return $rs if $rs;
 	}
 
-	$rs;
+	0;
 }
 
 sub restoreConf
@@ -111,17 +117,18 @@ sub restoreConf
 
 	use File::Basename;
 
-	for ((
+	for (
 		"$main::imscpConfig{LOGROTATE_CONF_DIR}/apache2", "$main::imscpConfig{LOGROTATE_CONF_DIR}/apache",
 		"$self::apacheConfig{APACHE_CONF_DIR}/ports.conf"
-	)) {
+	) {
 		my ($filename, $directories, $suffix) = fileparse($_);
 		$rs	= iMSCP::File->new(
-			filename => "$self->{bkpDir}/$filename$suffix.system"
+			'filename' => "$self->{bkpDir}/$filename$suffix.system"
 		)->copyFile($_) if(-f "$self->{bkpDir}/$filename$suffix.system");
+		return $rs if $rs;
 	}
 
-	$rs;
+	0;
 }
 
 sub fastcgiConf
@@ -131,16 +138,18 @@ sub fastcgiConf
 	use iMSCP::File;
 	use Servers::httpd::apache_fcgi;
 
-	my $httpd = Servers::httpd::apache_fcgi->new();
+	my $httpd = Servers::httpd::apache_fcgi->getInstance();
 	my $rs = 0;
 
-	$rs |= $httpd->disableMod("fastcgi_imscp fcgid_imscp");
+	$rs = $httpd->disableMod('fastcgi_imscp fcgid_imscp');
+	return $rs if $rs;
 
-	for (qw/fastcgi_imscp.conf fastcgi_imscp.load fcgid_imscp.conf fcgid_imscp.load/) {
-		$rs |= iMSCP::File->new(filename => "$self::apacheConfig{'APACHE_MODS_DIR'}/$_")->delFile();
+	for ('fastcgi_imscp.conf', 'fastcgi_imscp.load', 'fcgid_imscp.conf', 'fcgid_imscp.load') {
+		$rs = iMSCP::File->new('filename' => "$self::apacheConfig{'APACHE_MODS_DIR'}/$_")->delFile();
+		return $rs if $rs;
 	}
 
-	$rs;
+	0;
 }
 
 sub vHostConf
@@ -150,23 +159,23 @@ sub vHostConf
 	use iMSCP::File;
 	use Servers::httpd::apache_fcgi;
 
-	my $httpd = Servers::httpd::apache_fcgi->new();
+	my $httpd = Servers::httpd::apache_fcgi->getInstance();
 	my $rs = 0;
 
 	for('00_nameserver.conf', '00_master_ssl.conf', '00_master.conf', '00_modcband.conf', '01_awstats.conf') {
 
-		$rs |= $httpd->disableSite($_);
+		$rs = $httpd->disableSite($_);
+		return $rs if $rs;
 
 		if(-f "$self::apacheConfig{'APACHE_SITES_DIR'}/$_") {
-			$rs |= iMSCP::File->new(
-				filename => "$self::apacheConfig{'APACHE_SITES_DIR'}/$_"
+			$rs = iMSCP::File->new(
+				'filename' => "$self::apacheConfig{'APACHE_SITES_DIR'}/$_"
 			)->delFile();
+			return $rs if $rs;
 		}
 	}
 
-	$rs |= $httpd->enableSite('default');
-
-	$rs;
+	$$httpd->enableSite('default');
 }
 
 1;

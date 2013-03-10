@@ -36,13 +36,16 @@ use iMSCP::Dialog;
 use iMSCP::HooksManager;
 use iMSCP::Getopt;
 
+newDebug('imscp-setup.log');
+
+silent(1);
+
 iMSCP::Getopt->parse('Usage: perl imscp-setup [options]');
 
 # Get reconfigure option
 $main::reconfigure = iMSCP::Getopt->reconfigure;
 
 # Handle preseed option
-%main::preseed = ();
 my $preseedFile = iMSCP::Getopt->preseed;
 if($preseedFile) {
 	require $preseedFile;
@@ -51,6 +54,8 @@ if($preseedFile) {
 	$main::reconfigure = 'none';
 	undef $preseedFile;
 }
+
+%main::preseed = () if ! defined %main::preseed;
 
 # Handle the hook-file option
 my $hookFile = iMSCP::Getopt->hookFile;
@@ -89,8 +94,6 @@ iMSCP::HooksManager->getInstance->register(
 
 print STDOUT "Installation in progress... Please wait.\n" if $main::noprompt;
 
-newDebug('imscp-setup.log');
-
 require "$FindBin::Bin/imscp-setup-methods.pl";
 
 # Start setup
@@ -105,9 +108,6 @@ sub setupStart
 	# Allow any server/addon to register its setup hook functions on the hooks manager before any other tasks
 	setupRegisterHooks() and return 1;
 
-	# Entering in silent mode
-	silent(1);
-
 	0;
 }
 
@@ -118,7 +118,7 @@ sub setupEngine
 
 	if(! $main::noprompt) {
 
-	my $distribution = ucfirst(lc(iMSCP::LsbRelease->new()->getId(1)));
+	my $distribution = ucfirst(lc(iMSCP::LsbRelease->getInstance()->getId(1)));
 	my $dialog = iMSCP::Dialog->factory();
 
 	$dialog->set('yes-label', 'Continue');
@@ -145,12 +145,11 @@ This program will install/update i-MSCP on your system. This dialog is your last
 	}
 
 	# Process setup dialog
-	$rs |= setupDialog();
+	$rs = setupDialog();
+	return $rs if $rs;
 
 	# Process setup tasks
-	$rs |= setupTasks();
-
-	$rs;
+	setupTasks();
 }
 
 

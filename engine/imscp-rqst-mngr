@@ -37,68 +37,73 @@ use iMSCP::Execute;
 use Data::Dumper;
 use MIME::Base64;
 
+# Mode in which the request dispatcher is triggered
+# For now, this variable is only used by i-MSCP installer/setup scripts
+$main::execmode = shift || '';
+
 newDebug('imscp-rqst-mngr.log');
 
-sub start_up {
+silent(1);
 
+sub start_up
+{
 	umask(027);
 
-	iMSCP::Boot->new()->init();
+	iMSCP::Boot->getInstance()->boot();
 
 	0;
 }
 
-sub mngr_engine_process{
-
+sub mngr_engine_process
+{
 	my ($type, $sql, $ipMods) = @_;
 	my $rs = 0;
 
-	debug("=======================");
 	debug("Processing type $type.");
 
-	print("=======================\n");
-	print("Processing type $type.\n");
+	if ($main::execmode ne 'setup') {
+		print("=======================\n");
+		print("Processing type $type.\n");
+	}
 
 	my $database = iMSCP::Database->factory();
 	my $rdata = $database->doQuery('id', $sql);
-	if(ref $rdata ne 'HASH'){
-		error("$rdata");
+
+	if(ref $rdata ne 'HASH') {
+		error($rdata);
 		return 1;
 	}
 
 	my $i = 1;
 	my $total = scalar keys %$rdata;
-	$$ipMods += $total if(ref $ipMods);
+	$$ipMods += $total if ref $ipMods;
 
-	foreach (keys %$rdata) {
-		my $id		= $rdata->{$_}->{id};
-		my $name	= $rdata->{$_}->{name};
-		my $status	= $rdata->{$_}->{status};
+	for (keys %$rdata) {
+		my $id = $rdata->{$_}->{'id'};
+		my $name = $rdata->{$_}->{'name'};
+		my $status = $rdata->{$_}->{'status'};
 
-		debug("processing $id, $name, $status.");
-		print("processing $id, $name, $status. ($i of $total: remaining ".($total -$i).")\n");
+		debug("Processing $id, $name, $status.");
+		print("Processing $id, $name, $status. ($i of $total: remaining ".($total -$i).")\n") if $main::execmode ne 'setup';
+		print STDOUT ("$type\t$status\t$name\t$id\t$total\t$i\n") if $main::execmode eq 'setup';
 		$i++;
 
 		newDebug("${type}_mngr_$name.log");
 
-		my $file	= "Modules/${type}.pm";
-		my $class	= "Modules::$type";
+		my $file = "Modules/${type}.pm";
+		my $class = "Modules::$type";
 
-		eval {require $file};
-		if($@){
-			error("Error while processing $id, $name, $status: $@");
-			$rs = 1;
-		} else {
-			$rs |=  $class->new()->process($id);
-		}
+		require $file;
+		$rs = $class->new()->process($id);
+		error("Error while processing $id, $name, $status.") if $rs;
+		error("See ${type}_mngr_$name.log for details.") if $rs;
 
 		endDebug();
 
-		error("Error while processing $id, $name, $status.") if $rs;
-		error("See ${type}_mngr_$name.log for details.") if $rs;
+		return $rs if $rs;
 	}
 
-	$rs;
+	0;
 }
 
 sub engine {
@@ -106,239 +111,178 @@ sub engine {
 	my $rs = 0;
 	my $sql;
 
-	## First we add / delete certificates
-	## First we add / alter main domain
-	## Then we add / alter subdomain for main domain
-	## Next we add / alter alias for main domain
-	## Next we add / alter subdomain for alias
-	## Next we process mailboxes
-	## Next we process .htaccess related data
-	## Now we can delete in order alias subdomains
-	## Subdomains
-	## Alias
-	## Main domain
+	# First we add / delete ssl certificates
+	# Next we add / alter main domain
+	# Next we add / alter subdomain for main domain
+	# Next we add / alter alias for main domain
+	# Next we add / alter subdomain for alias
+	# Next we process mailboxes
+	# Next we process .htaccess related data
+	# Next we can delete in order:
+	# alias subdomains
+	# Subdomains
+	# Alias
+	# Main domain
 
 	$sql = "
 		SELECT
-			`cert_id` AS 'id',
-			`type` AS 'name',
-			`status` AS 'status'
+			`cert_id` AS 'id', `type` AS 'name', `status` AS 'status'
 		FROM
 			`ssl_certs`
 		WHERE
 			`status`
-		IN (
-			'toadd',
-			'change',
-			'delete'
-		)
+		IN ('toadd', 'change', 'delete')
 	";
 
-	$rs |= mngr_engine_process('Certificates', $sql);
+	$rs = mngr_engine_process('Certificates', $sql);
+	return $rs if $rs;
 
 	my $ipsMod = 0;
 
 	$sql = "
 		SELECT
-			`domain_id` AS 'id',
-			`domain_name` AS 'name',
-			`domain_status` AS 'status'
+			`domain_id` AS 'id', `domain_name` AS 'name', `domain_status` AS 'status'
 		FROM
 			`domain`
 		WHERE
 			`domain_status`
-		IN (
-			'toadd',
-			'change',
-			'dnschange',
-			'restore',
-			'toenable',
-			'todisable'
-		)
+		IN ('toadd', 'change', 'dnschange', 'restore', 'toenable', 'todisable')
 	";
 
-	$rs |= mngr_engine_process('Domain', $sql, \$ipsMod);
+	$rs = mngr_engine_process('Domain', $sql, \$ipsMod);
+	return $rs if $rs;
 
 	$sql = "
 		SELECT
-			`subdomain_id` AS 'id',
-			`subdomain_name` AS 'name',
-			`subdomain_status` AS 'status'
+			`subdomain_id` AS 'id', `subdomain_name` AS 'name', `subdomain_status` AS 'status'
 		FROM
 			`subdomain`
 		WHERE
 			`subdomain_status`
-		IN (
-			'toadd',
-			'change',
-			'toenable',
-			'todisable'
-		)
+		IN ('toadd', 'change', 'toenable', 'todisable')
 	";
 
-	$rs |= mngr_engine_process('Subdomain', $sql, \$ipsMod);
+	$rs = mngr_engine_process('Subdomain', $sql, \$ipsMod);
+	return $rs if $rs;
 
 	$sql = "
 		SELECT
-			`alias_id` AS 'id',
-			`alias_name` AS 'name',
-			`alias_status` AS 'status'
+			`alias_id` AS 'id', `alias_name` AS 'name', `alias_status` AS 'status'
 		FROM
 			`domain_aliasses`
 		WHERE
 			`alias_status`
-		IN (
-			'toadd',
-			'change',
-			'dnschange',
-			'toenable',
-			'todisable'
-		)
+		IN ('toadd', 'change', 'dnschange', 'toenable', 'todisable')
 	";
 
-	$rs |= mngr_engine_process('Alias', $sql, \$ipsMod);
+	$rs = mngr_engine_process('Alias', $sql, \$ipsMod);
+	return $rs if $rs;
 
 	$sql = "
 		SELECT
-			`subdomain_alias_id` AS 'id',
-			`subdomain_alias_name` AS 'name',
-			`subdomain_alias_status` AS 'status'
+			`subdomain_alias_id` AS 'id', `subdomain_alias_name` AS 'name', `subdomain_alias_status` AS 'status'
 		FROM
 			`subdomain_alias`
 		WHERE
 			`subdomain_alias_status`
-		IN (
-			'toadd',
-			'change',
-			'toenable',
-			'todisable'
-		)
+		IN ('toadd', 'change', 'toenable', 'todisable')
 	";
 
-	$rs |= mngr_engine_process('SubAlias', $sql, \$ipsMod);
+	$rs = mngr_engine_process('SubAlias', $sql, \$ipsMod);
+	return $rs if $rs;
 
 	$sql = "
 		SELECT
-			`mail_id` AS 'id',
-			`mail_addr` AS 'name',
-			`status` as 'status'
+			`mail_id` AS 'id', `mail_addr` AS 'name', `status` as 'status'
 		FROM
 			`mail_users`
 		WHERE
 			`status`
-		IN (
-			'toadd',
-			'change',
-			'toenable',
-			'delete',
-			'todisable'
-		)
+		IN ('toadd', 'change', 'toenable', 'delete', 'todisable')
 	";
 
-	$rs |= mngr_engine_process('Mail', $sql);
+	$rs = mngr_engine_process('Mail', $sql);
+	return $rs if $rs;
 
 	$sql = "
 		SELECT
-			`id`,
-			`uname` as 'name',
-			`status`
+			`id`, `uname` as 'name', `status`
 		FROM
 			`htaccess_users`
 		WHERE
 			`status`
-		IN (
-			'toadd',
-			'change',
-			'delete'
-		)
+		IN ('toadd', 'change', 'delete')
 	";
-	$rs |= mngr_engine_process('Htusers', $sql);
+	$rs = mngr_engine_process('Htusers', $sql);
+	return $rs if $rs;
 
 	$sql = "
 		SELECT
-			`id` AS 'id',
-			CONCAT(`ugroup`,':',`id`) AS 'name',
-			`status`
+			`id` AS 'id', CONCAT(`ugroup`,':',`id`) AS 'name', `status`
 		FROM
 			`htaccess_groups`
 		WHERE
 			`status`
-		IN (
-			'toadd',
-			'change',
-			'delete'
-		)
+		IN ('toadd', 'change', 'delete')
 	";
-	$rs |= mngr_engine_process('Htgroup', $sql);
+	$rs = mngr_engine_process('Htgroup', $sql);
+	return $rs if $rs;
 
 	$sql = "
 		SELECT
-			`id`,
-			`auth_name` AS 'name',
-			`status`
+			`id`, `auth_name` AS 'name', `status`
 		FROM
 			`htaccess`
 		WHERE
 			`status`
-		IN (
-			'toadd',
-			'change',
-			'delete'
-		)
+		IN ('toadd', 'change', 'delete')
 	";
-	$rs |= mngr_engine_process('Htaccess', $sql);
+	$rs = mngr_engine_process('Htaccess', $sql);
+	return $rs if $rs;
 
 	$sql = "
 		SELECT
-			`subdomain_alias_id` AS 'id',
-			`subdomain_alias_name` AS 'name',
-			`subdomain_alias_status` AS 'status'
+			`subdomain_alias_id` AS 'id', `subdomain_alias_name` AS 'name', `subdomain_alias_status` AS 'status'
 		FROM
 			`subdomain_alias`
 		WHERE
 			`subdomain_alias_status` = 'delete'
 	";
-
-	$rs |= mngr_engine_process('SubAlias', $sql, \$ipsMod);
+	$rs = mngr_engine_process('SubAlias', $sql, \$ipsMod);
+	return $rs if $rs;
 
 	$sql = "
 		SELECT
-			`subdomain_id` AS 'id',
-			`subdomain_name` AS 'name',
-			`subdomain_status` AS 'status'
+			`subdomain_id` AS 'id', `subdomain_name` AS 'name', `subdomain_status` AS 'status'
 		FROM
 			`subdomain`
 		WHERE
 			`subdomain_status` = 'delete'
 	";
-
-	$rs |= mngr_engine_process('Subdomain', $sql, \$ipsMod);
+	$rs = mngr_engine_process('Subdomain', $sql, \$ipsMod);
+	return $rs if $rs;
 
 	$sql = "
 		SELECT
-			`alias_id` AS 'id',
-			`alias_name` AS 'name',
-			`alias_status` AS 'status'
+			`alias_id` AS 'id', `alias_name` AS 'name', `alias_status` AS 'status'
 		FROM
 			`domain_aliasses`
 		WHERE
 			`alias_status` = 'delete'
 	";
-
-	$rs |= mngr_engine_process('Alias', $sql, \$ipsMod);
+	$rs = mngr_engine_process('Alias', $sql, \$ipsMod);
+	return $rs if $rs;
 
 	$sql = "
 		SELECT
-			`domain_id` AS 'id',
-			`domain_name` AS 'name',
-			`domain_status` AS 'status'
+			`domain_id` AS 'id', `domain_name` AS 'name', `domain_status` AS 'status'
 		FROM
 			`domain`
 		WHERE
 			`domain_status` = 'delete'
 	";
-
-	$rs |= mngr_engine_process('Domain', $sql, \$ipsMod);
+	$rs = mngr_engine_process('Domain', $sql, \$ipsMod);
+	return $rs if $rs;
 
 	#
 	# Network card management BEGIN.
@@ -346,25 +290,24 @@ sub engine {
 
 	$sql = "
 		SELECT
-			`ip_id` AS 'id',
-			`ip_status` AS 'name',
-			`ip_status` AS 'status'
+			`ip_id` AS 'id', `ip_status` AS 'name', `ip_status` AS 'status'
 		FROM
 			`server_ips`
 		WHERE
 			`ip_status` != 'ok'
 	";
-	$rs |= mngr_engine_process('NetCard', $sql);
+	$rs = mngr_engine_process('NetCard', $sql);
+	return $rs if $rs;
 
 	#
 	# IP management BEGIN.
 	#
 
-	if($ipsMod != 0){
-		use Modules::Ips;
-		$rs |= Modules::Ips->new()->process();
+	if($ipsMod != 0) {
+		require Modules::Ips;
+		$rs = Modules::Ips->new()->process();
+		return $rs if $rs;
 	}
-
 
 	#
 	# software installation BEGIN
@@ -372,103 +315,69 @@ sub engine {
 
 	$sql = "
 		SELECT
-			`domain_id`,
-			`alias_id`,
-			`subdomain_id`,
-			`subdomain_alias_id`,
-			`software_id`,
-			`path`,
-			`software_prefix`,
-			`db`,
-			`database_user`,
-			`database_tmp_pwd`,
-			`install_username`,
-			`install_password`,
-			`install_email`,
-			`software_status`,
-			`software_depot`,
-			`software_master_id`
+			`domain_id`, `alias_id`, `subdomain_id`, `subdomain_alias_id`, `software_id`, `path`, `software_prefix`,
+			`db`, `database_user`, `database_tmp_pwd`, `install_username`, `install_password`, `install_email`,
+			`software_status`, `software_depot`, `software_master_id`
 		FROM
 			`web_software_inst`
 		WHERE
 			`software_status`
-		IN (
-			'toadd',
-			'delete'
-		)
+		IN ('toadd', 'delete')
 		ORDER BY
 			`domain_id`
 	";
 
 	my $rdata = iMSCP::Database->factory()->doQuery('software_id', $sql);
+
 	if(ref $rdata ne 'HASH'){
-		error("$rdata");
-		$rdata = {};
-		$rs = 1;
+		error($rdata);
+		return 1;
 	}
+
 	my $count =  scalar keys %$rdata;
 
 	newDebug('imscp_sw_mngr_engine') if $count;
-	foreach (keys %$rdata) {
-		my ($stdout, $stderr);
+
+	for (keys %$rdata) {
 		my (
-			$sw_domain_id,
-			$sw_aliasdomain_id,
-			$sw_subdomain_id,
-			$sw_aliassubdomain_id,
-			$sw_software_id,
-			$sw_path,
-			$sw_software_prefix,
-			$sw_database,
-			$sw_database_user,
-			$sw_database_tmp_pwd,
-			$sw_install_username,
-			$sw_install_password,
-			$sw_install_email,
-			$sw_software_status,
-			$sw_software_depot,
-			$sw_software_master_id
+			$sw_domain_id, $sw_aliasdomain_id, $sw_subdomain_id, $sw_aliassubdomain_id, $sw_software_id, $sw_path,
+			$sw_software_prefix, $sw_database, $sw_database_user, $sw_database_tmp_pwd, $sw_install_username,
+			$sw_install_password, $sw_install_email, $sw_software_status, $sw_software_depot, $sw_software_master_id
 		) = (
-			$rdata->{$_}->{domain_id},
-			$rdata->{$_}->{alias_id},
-			$rdata->{$_}->{subdomain_id},
-			$rdata->{$_}->{subdomain_alias_id},
-			$rdata->{$_}->{software_id},
-			$rdata->{$_}->{path},
-			$rdata->{$_}->{software_prefix},
-			$rdata->{$_}->{db},
-			$rdata->{$_}->{database_user},
-			$rdata->{$_}->{database_tmp_pwd},
-			$rdata->{$_}->{install_username},
-			$rdata->{$_}->{install_password},
-			$rdata->{$_}->{install_email},
-			$rdata->{$_}->{software_status},
-			$rdata->{$_}->{software_depot},
+			$rdata->{$_}->{domain_id}, $rdata->{$_}->{alias_id}, $rdata->{$_}->{subdomain_id},
+			$rdata->{$_}->{subdomain_alias_id}, $rdata->{$_}->{software_id}, $rdata->{$_}->{path},
+			$rdata->{$_}->{software_prefix}, $rdata->{$_}->{db}, $rdata->{$_}->{database_user},
+			$rdata->{$_}->{database_tmp_pwd}, $rdata->{$_}->{install_username}, $rdata->{$_}->{install_password},
+			$rdata->{$_}->{install_email}, $rdata->{$_}->{software_status}, $rdata->{$_}->{software_depot},
 			$rdata->{$_}->{software_master_id}
 		);
 
-		#Encoding data to push to another script
-		my $imscp_sw_mngr_pushstring = encode_base64("$sw_domain_id,$sw_software_id,$sw_path,$sw_software_prefix,$sw_database,$sw_database_user,$sw_database_tmp_pwd,$sw_install_username,$sw_install_password,$sw_install_email,$sw_software_status,$sw_software_depot,$sw_software_master_id,$sw_aliasdomain_id,$sw_subdomain_id,$sw_aliassubdomain_id");
+		# Encoding data to push to another script
+		my $imscp_sw_mngr_pushstring = encode_base64(
+			"$sw_domain_id,$sw_software_id,$sw_path,$sw_software_prefix,$sw_database,$sw_database_user,$sw_database_tmp_pwd,$sw_install_username,$sw_install_password,$sw_install_email,$sw_software_status,$sw_software_depot,$sw_software_master_id,$sw_aliasdomain_id,$sw_subdomain_id,$sw_aliassubdomain_id"
+		);
 
-		debug("processing encoded pushtring: $imscp_sw_mngr_pushstring.");
-		$rs |= execute("perl $main::imscpConfig{ENGINE_ROOT_DIR}/imscp-sw-mngr \"$imscp_sw_mngr_pushstring\"", \$stdout, \$stderr);
-		debug("$stdout") if $stdout;
-		error("$stderr") if $stderr;
+		debug("Processing encoded pushtring: $imscp_sw_mngr_pushstring.");
 
-		$rs |= execute("$main::imscpConfig{CMD_RM} -rf /tmp/sw-$sw_domain_id-$sw_software_id", \$stdout, \$stderr);
-		debug("$stdout") if $stdout;
-		error("$stderr") if $stderr;
+		my ($stdout, $stderr);
+		$rs = execute("perl $main::imscpConfig{ENGINE_ROOT_DIR}/imscp-sw-mngr \"$imscp_sw_mngr_pushstring\"", \$stdout, \$stderr);
+		debug($stdout) if $stdout;
+		error($stderr) if $stderr && $rs;
+		last if $rs;
+
+		$rs = execute("$main::imscpConfig{CMD_RM} -rf /tmp/sw-$sw_domain_id-$sw_software_id", \$stdout, \$stderr);
+		debug($stdout) if $stdout;
+		error($stderr) if $stderr && $rs;
+		last if $rs;
 	}
+
 	endDebug() if $count;
+	return $rs if $rs;
 
 
 	$sql = "
 		SELECT
-			`software_id`,
-			`reseller_id`,
-			`software_archive`,
-			`software_status`,
-			`software_depot`
+			`software_id`, `reseller_id`, `software_archive`, `software_status`, `software_depot`
 		FROM
 			`web_software`
 		WHERE
@@ -478,48 +387,50 @@ sub engine {
 	";
 	$rdata = iMSCP::Database->factory()->doQuery('software_id', $sql);
 	if(ref $rdata ne 'HASH'){
-		error("$rdata");
+		error($rdata);
 		return 1;
 	}
 
-	my $count =  scalar keys %$rdata;
+	my $count = scalar keys %$rdata;
+
 	newDebug('imscp_pkt_mngr_engine.log') if $count;
 
 	foreach (keys %$rdata) {
-		my ($stdout, $stderr);
+
 		my (
-			$sw_software_id,
-			$sw_reseller_id,
-			$sw_software_archive,
-			$sw_software_status,
-			$sw_software_depot
+			$sw_software_id, $sw_reseller_id, $sw_software_archive, $sw_software_status, $sw_software_depot
 		) = (
-			$rdata->{$_}->{software_id},
-			$rdata->{$_}->{reseller_id},
-			$rdata->{$_}->{software_archive},
-			$rdata->{$_}->{software_status},
-			$rdata->{$_}->{software_depot}
+			$rdata->{$_}->{software_id}, $rdata->{$_}->{reseller_id}, $rdata->{$_}->{software_archive},
+			$rdata->{$_}->{software_status}, $rdata->{$_}->{software_depot}
 		);
 
-		#Encoding data to push to another script
+		# Encoding data to push to another script
 		debug("$sw_software_id,$sw_reseller_id,$sw_software_archive,$sw_software_status,$sw_software_depot");
-		my $imscp_pkt_mngr_pushstring = encode_base64("$sw_software_id,$sw_reseller_id,$sw_software_archive,$sw_software_status,$sw_software_depot");
+		my $imscp_pkt_mngr_pushstring = encode_base64(
+			"$sw_software_id,$sw_reseller_id,$sw_software_archive,$sw_software_status,$sw_software_depot"
+		);
 
-		debug("processing encoded pushtring: $imscp_pkt_mngr_pushstring");
-		$rs |= execute("perl $main::imscpConfig{ENGINE_ROOT_DIR}/imscp-pkt-mngr \"$imscp_pkt_mngr_pushstring\"", \$stdout, \$stderr);
-		debug("$stdout") if $stdout;
-		error("$stderr") if $stderr;
+		debug("Processing encoded pushtring: $imscp_pkt_mngr_pushstring");
 
-		$rs |= execute("$main::imscpConfig{CMD_RM} -rf /tmp/sw-$sw_software_archive-$sw_software_id", \$stdout, \$stderr);
-		debug("$stdout") if $stdout;
-		error("$stderr") if $stderr;
+		my ($stdout, $stderr);
+		$rs = execute("perl $main::imscpConfig{ENGINE_ROOT_DIR}/imscp-pkt-mngr \"$imscp_pkt_mngr_pushstring\"", \$stdout, \$stderr);
+		debug($stdout) if $stdout;
+		error($stderr) if $stderr && $rs;
+		last if $rs;
+
+		$rs = execute("$main::imscpConfig{CMD_RM} -rf /tmp/sw-$sw_software_archive-$sw_software_id", \$stdout, \$stderr);
+		debug($stdout) if $stdout;
+		error($stderr) if $stderr && $rs;
+		last if $rs
 	}
 	endDebug() if $count;
 
 	$rs;
 }
 
-start_up() and exit 1;
-engine() and exit 1;
 
-exit 0;
+my $rs = 0;
+$rs = start_up();
+$rs = engine() unless $rs;
+
+exit $rs;

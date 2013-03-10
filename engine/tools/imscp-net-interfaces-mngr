@@ -33,8 +33,14 @@ use lib "$FindBin::Bin/../PerlVendor";
 
 use iMSCP::Debug;
 use iMSCP::Boot;
+use iMSCP::IP;
+use iMSCP::Mail;
+use iMSCP::Database;
+use iMSCP::Execute;
 
 newDebug('imscp-net-interfaces-mngr.log');
+
+silent(1);
 
 my $rs = undef;
 our $proceed = $ARGV[0];
@@ -42,42 +48,29 @@ our $proceed = $ARGV[0];
 sub net_interfaces_mngr_start_up {
 
 	umask(027);
-	iMSCP::Boot->new()->init({nolock => 'yes'});
+
+	iMSCP::Boot->getInstance({ 'nolock' => 'yes' })->boot();
 
 	0;
 }
 
-sub virtual_netcard_add{
-
-	use iMSCP::IP;
-	use iMSCP::Mail;
-	use iMSCP::Database;
-	use iMSCP::Execute;
-
+sub virtual_netcard_add
+{
 	my ($rs, $stdout, $stderr);
 	my $database = iMSCP::Database->new()->factory();
 
 	my $ips = iMSCP::IP->new();
 
-	$rs = $database->doQuery(
-		'ip_id',
-		'SELECT
-			`ip_id`,
-			`ip_number`,
-			`ip_card`
-		FROM
-			`server_ips`
-		'
-	);
-	if (ref $rs ne 'HASH'){
-		error("$rs");
+	$rs = $database->doQuery('ip_id', 'SELECT `ip_id`, `ip_number`, `ip_card` FROM `server_ips`');
+	if (ref $rs ne 'HASH') {
+		error($rs);
 		iMSCP::Mail->new()->errmsg($rs);
 	} else {
-		foreach(values %$rs){
+		for(values %$rs){
 			#if ip is attached to a network card?
-			if($ips->getCardByIP($_->{ip_number})){
+			if($ips->getCardByIP($_->{ip_number})) {
 				#if is a virtual interface?
-				my $vcard = $ips->addedToVCard($_->{ip_number});
+				my $vcard = $ips->addedToVCard($_->{'ip_number'});
 				#if( $vcard ){
 					#my $msg =
 						#"$_->{ip_number} is already attached to $vcard\n".
@@ -90,44 +83,41 @@ sub virtual_netcard_add{
 			} else {
 				#ip is not attached so we will attached to virtual card
 				#check if phisical card exits
-				if($ips->existsNetCard($_->{ip_card})){
-					$rs = $ips->attachIpToNetCard($_->{ip_card}, $_->{ip_number});
-					error("Can not add $_->{ip_number} to $_->{ip_card}") if $rs;
+				if($ips->existsNetCard($_->{'ip_card'})) {
+					$rs = $ips->attachIpToNetCard($_->{'ip_card'}, $_->{'ip_number'});
+					error("Unable to add $_->{'ip_number'} to $_->{'ip_card'}") if $rs;
 					#iMSCP::Mail->new()->errmsg($stderr)if $stderr;
 				} else {
 					my $msg =
-						"Card $_->{ip_card} do not exists. Please fix this in ".
+						"Card $_->{'ip_card'} doesn't exists. Please fix this in ".
 						"$main::imscpConfig{BASE_SERVER_VHOST_PREFIX}".
 						"$main::imscpConfig{BASE_SERVER_VHOST}/admin/ip_manage.php"
 					;
-					error("$msg");
+					error($msg);
 					iMSCP::Mail->new()->errmsg($msg);
 				}
 			}
 		}
 
 		my @cards = $ips->getNetCards();
-		foreach(@cards){
-			if(!$ips->isCardUp($_)){
-				#net card is not up so we try put that up
+
+		for(@cards) {
+			if(!$ips->isCardUp($_)) {
+				# netcard is not up so we try put that up
 				$rs = execute("ifconfig $_ up", \$stdout, \$stderr);
-				debug("$stdout")if $stdout;
-				error("$stderr")if $stderr;
-				iMSCP::Mail->new()->errmsg($stderr)if $stderr;
+				debug($stdout) if $stdout;
+				error($stderr) if $stderr && $rs;
+				iMSCP::Mail->new()->errmsg($stderr) if $stderr && $rs;
 			}
 		}
 	}
+
 	0;
 }
 
-sub virtual_netcard_remove{
-
+sub virtual_netcard_remove
+{
 	my $ref = undef;
-
-	use iMSCP::IP;
-	use iMSCP::Mail;
-	use iMSCP::Database;
-	use iMSCP::Execute;
 
 	my ($rs, $stdout, $stderr);
 	my $database = iMSCP::Database->new()->factory();
@@ -137,26 +127,26 @@ sub virtual_netcard_remove{
 
 	$rs = $database->doQuery(
 		'ip_id',
-		"SELECT
-			`ip_id`,
-			`ip_number`,
-			`ip_card`
+		"
+		SELECT
+			`ip_id`, `ip_number`, `ip_card`
 		FROM
 			`server_ips`
 		WHERE
 			`ip_number` != '$main::imscpConfig{'BASE_SERVER_IP'}'
 		"
 	);
-	if (ref $rs ne 'HASH'){
-		error("$rs");
+	if (ref $rs ne 'HASH') {
+		error($rs);
 		iMSCP::Mail->new()->errmsg($rs);
 	} else {
-		foreach(values %$rs){
-			my $vcard = $ips->addedToVCard($_->{ip_number});
-			if($vcard){
-				#We bring down only virtual network cards
-				$rs = $ips->detachIpFromNetCard($_->{ip_number});
-				error("Can not detach $_->{ip_number}") if $rs;
+		for(values %$rs) {
+			my $vcard = $ips->addedToVCard($_->{'ip_number'});
+
+			if($vcard) {
+				# We bring down only virtual network cards
+				$rs = $ips->detachIpFromNetCard($_->{'ip_number'});
+				error("Unable to detach $_->{ip_number}") if $rs;
 				#iMSCP::Mail->new()->errmsg($stderr)if $stderr;
 			}
 		}
@@ -165,9 +155,9 @@ sub virtual_netcard_remove{
 	0;
 }
 
-sub net_interfaces_mngr_engine {
-
-	my $rs;
+sub net_interfaces_mngr_engine
+{
+	my $rs = 0;;
 
 	if ($proceed && $proceed eq 'start') {
 		$rs = virtual_netcard_add();
@@ -182,45 +172,27 @@ sub net_interfaces_mngr_engine {
 		return $rs if $rs;
 	} else {
 		my $msg = "Must be called with 'Start', 'Restart' or 'Stop' argument";
-		error("$msg");
+		error($msg);
 		iMSCP::Mail->new()->errmsg($msg);
 		exit 1;
 	}
 
-	my $database = iMSCP::Database->new(db => $main::imscpConfig{'DATABASE_TYPE'})->factory();
-	$rs = $database->doQuery(
-		'dummy',
-		"
-		DELETE FROM
-			`server_ips`
-		WHERE
-			`ip_status` = 'delete'
-		"
-	);
-	if (ref $rs ne 'HASH'){
-		error("$rs")if $rs;
+	my $database = iMSCP::Database->new('db' => $main::imscpConfig{'DATABASE_TYPE'})->factory();
+	$rs = $database->doQuery('dummy', "DELETE FROM `server_ips` WHERE `ip_status` = 'delete'");
+	if (ref $rs ne 'HASH') {
+		error($rs) if $rs;
 		iMSCP::Mail->new()->errmsg($rs)if $rs;
 	}
 
-	$rs = $database->doQuery(
-		'dummy',
-		"
-		UPDATE
-			`server_ips`
-		SET
-			`ip_status` = 'ok'
-		"
-	);
-	if (ref $rs ne 'HASH'){
-		error("$rs")if $rs;
-		iMSCP::Mail->new()->errmsg($rs)if $rs;
+	$rs = $database->doQuery('dummy', "UPDATE `server_ips` SET `ip_status` = 'ok'");
+	if (ref $rs ne 'HASH') {
+		error($rs) if $rs;
+		iMSCP::Mail->new()->errmsg($rs) if $rs;
 	}
 
 	0;
 }
 
 exit 1 if net_interfaces_mngr_start_up();
-
 exit 1 if net_interfaces_mngr_engine();
-
 exit 0;

@@ -82,7 +82,7 @@ sub process{
 		$rs = $self->add();
 		@sql = (
 			"UPDATE `mail_users` SET `status` = ? WHERE `mail_id` = ?",
-			($rs ? scalar getMessageByType('ERROR') : 'ok'),
+			($rs ? scalar getMessageByType('error') : 'ok'),
 			$self->{mail_id}
 		);
 	}elsif($self->{status} =~ /^delete$/){
@@ -90,7 +90,7 @@ sub process{
 		if($rs){
 			@sql = (
 				"UPDATE `mail_users` SET `status` = ? WHERE `mail_id` = ?",
-				scalar getMessageByType('ERROR'),
+				scalar getMessageByType('error'),
 				$self->{mail_id}
 			);
 		}else {
@@ -100,7 +100,7 @@ sub process{
 		$rs = $self->disable();
 		@sql = (
 			"UPDATE `mail_users` SET `status` = ? WHERE `mail_id` = ?",
-			($rs ? scalar getMessageByType('ERROR') : 'disabled'),
+			($rs ? scalar getMessageByType('error') : 'disabled'),
 			$self->{mail_id}
 		);
 	}

@@ -69,14 +69,13 @@ sub registerSetupHooks
 	my $rs = 0;
 
 	# Register add awstats dialog in setup dialog stack to show awstats addon questions on install
-	$rs |= $hooksManager->register(
+	$rs = $hooksManager->register(
 		'beforeSetupDialog', sub { my $dialogStack = shift; push(@$dialogStack, sub { $self->askAwstats(@_) }); 0; }
 	);
+	return $rs if $rs;
 
 	# Register installLogrotate filter hook function to process logrotate awstats section on install
-	$rs |= $hooksManager->register('beforeHttpdBuildConf', sub { $self->installLogrotate(@_); });
-
-	$rs;
+	$hooksManager->register('beforeHttpdBuildConf', sub { $self->installLogrotate(@_); });
 }
 
 =item install()
@@ -90,6 +89,7 @@ sub registerSetupHooks
 sub install
 {
 	my $self = shift;
+	my $rs = 0;
 
 	$self->{'httpd'} = Servers::httpd->factory() unless $self->{'httpd'} ;
 
@@ -100,14 +100,17 @@ sub install
 		$self->{'httpd'}->getRunningGroup() : $main::imscpConfig{'ROOT_GROUP'};
 
 	if (main::setupGetQuestion('AWSTATS_ACTIVE') =~ /^yes$/i) {
-		$self->_makeCacheDir() and return 1;
-		$self->_createVhost() and return 1;
+		$rs = $self->_makeCacheDir();
+		return $rs if $rs;
+
+		$rs = $self->_createVhost();
+		return $rs if $rs;
 	}
 
-	$self->_disableDefaultConfig() and return 1;
-	$self->_disableDefaultCronTask() and return 1;
+	$rs = $self->_disableDefaultConfig();
+	return $rs if $rs;
 
-	0;
+	$self->_disableDefaultCronTask();
 }
 
 =back
@@ -153,9 +156,8 @@ sub installLogrotate
 			undef
 		);
 	} else {
-		iMSCP::HooksManager->getInstance()->register(
-			'beforeHttpdBuildConf', sub { return $self->installLogrotate(@_); }
-		) and return 1;
+		my $rs = iMSCP::HooksManager->getInstance()->register('beforeHttpdBuildConf', sub { return $self->installLogrotate(@_); });
+		return $rs if $rs;
 	}
 
 	0;
@@ -234,15 +236,12 @@ sub _makeCacheDir
 {
 	my $self = shift;
 
-	iMSCP::Dir->new(
-		dirname => $main::imscpConfig{'AWSTATS_CACHE_DIR'}
-	)->make({
-		user => $self->{'user'},
-		group => $self->{'group'},
-		mode => 0755
-	}) and return 1;
 
-	0;
+	iMSCP::Dir->new(
+		'dirname' => $main::imscpConfig{'AWSTATS_CACHE_DIR'}
+	)->make(
+		{ 'user' => $self->{'user'},'group' => $self->{'group'}, 'mode' => 0755 }
+	);
 }
 
 =item _createVhost()
@@ -296,13 +295,15 @@ sub _createVhost {
 sub _disableDefaultConfig
 {
 	my $self = shift;
+	my $rs = 0;
 
 	if(-f "$main::imscpConfig{'AWSTATS_CONFIG_DIR'}/awstats.conf") {
-		iMSCP::File->new(
-			filename => "$main::imscpConfig{'AWSTATS_CONFIG_DIR'}/awstats.conf"
+		$rs = iMSCP::File->new(
+			'filename' => "$main::imscpConfig{'AWSTATS_CONFIG_DIR'}/awstats.conf"
 		)->moveFile(
 			"$main::imscpConfig{'AWSTATS_CONFIG_DIR'}/awstats.conf.disabled"
-		) and return 1;
+		);
+		return $rs if $rs;
 	}
 
 	0;
@@ -319,13 +320,15 @@ sub _disableDefaultConfig
 sub _disableDefaultCronTask
 {
 	my $self = shift;
+	my $rs = 0;
 
 	if(-f "$main::imscpConfig{'CRON_D_DIR'}/awstats") {
 		iMSCP::File->new(
-			filename => "$main::imscpConfig{'CRON_D_DIR'}/awstats"
+			'filename' => "$main::imscpConfig{'CRON_D_DIR'}/awstats"
 		)->moveFile(
 			"$main::imscpConfig{'CONF_DIR'}/cron.d/backup/awstats.system"
-		) and return 1;
+		);
+		return $rs if $rs;
 	}
 
 	0;

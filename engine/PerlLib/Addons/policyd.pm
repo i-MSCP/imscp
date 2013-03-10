@@ -26,6 +26,7 @@ Addons::policyd - i-MSCP Policyd Weight configurator addon
 # @category		i-MSCP
 # @copyright	2010-2013 by i-MSCP | http://i-mscp.net
 # @author		Daniel Andreca <sci2tech@gmail.com>
+# @author		Laurent Declercq <l.declercq@nuxwin.com>
 # @link			http://i-mscp.net i-MSCP Home Site
 # @license		http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
@@ -48,22 +49,8 @@ improved blocking of spam and virus mails. policyd-weight caches the most freque
 
  Project homepage: http://www.policyd-weight.org/
 
-=head1 CLASS METHODS
+=head1 PUBLIC METHODS
 
-=over 4
-
-=item factory()
-
- Implement singleton design pattern. Return instance of this class.
-
- Return Addons::policyd - Instance of the Addons::policyd class
-
-=cut
-
-sub factory
-{
-	Addons::policyd->new();
-}
 
 =item registerSetupHooks($hooksManager)
 
@@ -80,7 +67,8 @@ sub registerSetupHooks
 	my $hooksManager = shift;
 
 	require Addons::policyd::installer;
-    Addons::policyd::installer->new()->registerSetupHooks($hooksManager);
+
+    Addons::policyd::installer->getInstance()->registerSetupHooks($hooksManager);
 }
 
 =item install()
@@ -96,7 +84,8 @@ sub install
 	my $self = shift;
 
 	require Addons::policyd::installer;
-	Addons::policyd::installer->new()->install();
+
+	Addons::policyd::installer->getInstance()->install();
 }
 
 =back
@@ -104,6 +93,7 @@ sub install
 =head1 AUTHORS
 
  - Daniel Andreca <sci2tech@gmail.com>
+ - Laurent Declercq <l.declercq@nuxwin.com>
 
 =cut
 

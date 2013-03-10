@@ -35,13 +35,15 @@ use Modules::SystemGroup;
 use Modules::SystemUser;
 use iMSCP::Rights;
 use Servers::httpd;
-
 use parent 'Modules::Abstract';
 
 sub _init
 {
 	my $self = shift;
+
 	$self->{'type'} = 'User';
+
+	$self;
 }
 
 sub loadData
@@ -56,18 +58,21 @@ sub loadData
 				*
 			FROM
 				`domain`
-			LEFT JOIN
-				`admin`
-			ON
-				`domain_admin_id` = `admin_id`
+			LEFT JOIN `admin` ON `domain_admin_id` = `admin_id`
 			WHERE
 				`domain_admin_id` = ?
 		",
 		$self->{'userId'}
 	);
+	if(ref $rdata ne 'HASH') {
+		error($rdata);
+		return 1;
+	}
 
-	error($rdata) and return 1 if ref $rdata ne 'HASH';
-	error("No such user $self->{'userId'}") and return 1 unless exists $rdata->{$self->{'userId'}};
+	unless($rdata->{$self->{'userId'}}) {
+		error("No such user $self->{'userId'}");
+		return 1
+	}
 
 	$self->{$_} = $rdata->{$self->{'userId'}}->{$_} for keys %{$rdata->{$self->{'userId'}}};
 
@@ -89,13 +94,13 @@ sub process
 		$rs = $self->add();
 		@sql = (
 			"UPDATE `domain` SET `domain_status` = ? WHERE `domain_id` = ?",
-			scalar getMessageByType('ERROR'), $self->{'domain_id'}
+			scalar getMessageByType('error'), $self->{'domain_id'}
 		) if $rs;
 	} elsif($self->{'domain_status'} =~ /^delete$/){
 		$rs = $self->delete();
 		@sql = (
 			"UPDATE `domain` SET `domain_status` = ? WHERE `domain_id` = ?",
-			scalar getMessageByType('ERROR'), $self->{'domain_id'}
+			scalar getMessageByType('error'), $self->{'domain_id'}
 		) if $rs;
 	}
 
@@ -111,8 +116,8 @@ sub add
 {
 	my $self = shift;
 
-	#error('Data not defined') if ! $self->{'domain_admin_id'};
-	#return 1  if ! $self->{'domain_admin_id'};
+	error('Data not defined') if ! $self->{'domain_admin_id'};
+	return 1 if ! $self->{'domain_admin_id'};
 
 	my $rs = 0;
 
@@ -135,32 +140,35 @@ sub add
 	my $httpdGroup = (
 		Servers::httpd->factory()->can('getRunningGroup') ? Servers::httpd->factory()->getRunningGroup() : '-1'
 	);
+
 	my $rootUser = $main::imscpConfig{'ROOT_USER'};
 	my $rootGroup = $main::imscpConfig{'ROOT_GROUP'};
 
-	$rs |= iMSCP::Dir->new(
+	$rs = iMSCP::Dir->new(
 		'dirname' => "$main::imscpConfig{'USER_HOME_DIR'}/$self->{'domain_name'}"
 	)->make(
 		{ 'mode' => 0750, 'user' => $userName, 'group' => $httpdGroup }
 	);
+	return $rs if $rs;
 
-	$rs |= $self->oldEngineCompatibility();
+	$rs = $self->oldEngineCompatibility();
+	return $rs if $rs;
 
-	$rs |= iMSCP::Dir->new(
+	$rs = iMSCP::Dir->new(
 		'dirname' => "$main::imscpConfig{'USER_HOME_DIR'}/$self->{'domain_name'}/logs"
 	)->make(
 		{ 'mode' => 0750, 'user' => $userName, 'group' => $groupName }
 	);
+	return $rs if $rs;
 
-	$rs |= iMSCP::Dir->new(
+	$rs = iMSCP::Dir->new(
 		'dirname' => "$main::imscpConfig{'USER_HOME_DIR'}/$self->{'domain_name'}/backups"
 	)->make(
 		{ 'mode' => 0755, 'user' => $rootUser, 'group' => $rootGroup }
 	);
+	return $rs if $rs;
 
-	$rs |= $self->SUPER::add();
-
-	$rs;
+	$self->SUPER::add();
 }
 
 sub delete
@@ -172,6 +180,7 @@ sub delete
 	return 1 if ! $self->{'domain_admin_id'};
 
 	$rs = $self->SUPER::delete();
+	return $rs if $rs;
 
 	my $userName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} .
 		($main::imscpConfig{'SYSTEM_USER_MIN_UID'} + $self->{'domain_admin_id'});
@@ -179,9 +188,7 @@ sub delete
 	my $user = Modules::SystemUser->new();
 	$user->{'force'} = 'yes';
 
-	$rs |= $user->delSystemUser($userName);
-
-	$rs;
+	$user->delSystemUser($userName);
 }
 
 sub oldEngineCompatibility
@@ -200,7 +207,10 @@ sub oldEngineCompatibility
 		$uid, $gid, $self->{'domain_name'}
 	);
 	my $rdata = iMSCP::Database->factory()->doQuery('update', @sql);
-	error($rdata) if ref $rdata ne 'HASH';
+	if(ref $rdata ne 'HASH') {
+		error($rdata);
+		return 1;
+	}
 
 	@sql = (
 		"UPDATE
@@ -215,11 +225,17 @@ sub oldEngineCompatibility
 		$uid, $gid
 	);
 	$rdata = iMSCP::Database->factory()->doQuery('update', @sql);
-	error("$rdata") if ref $rdata ne 'HASH';
+	if(ref $rdata ne 'HASH') {
+		error($rdata);
+		return 1;
+	}
 
 	@sql = ('UPDATE `ftp_group` SET `gid` = ? WHERE `groupname` = ?', $uid, $self->{'domain_name'});
 	$rdata = iMSCP::Database->factory()->doQuery('update', @sql);
-	error($rdata) if ref $rdata ne 'HASH';
+	if(ref $rdata ne 'HASH') {
+		error($rdata);
+		return 1;
+	}
 
 	my $httpdGroup = (
 		Servers::httpd->factory()->can('getRunningGroup') ? Servers::httpd->factory()->getRunningGroup() : $groupName
@@ -229,11 +245,12 @@ sub oldEngineCompatibility
 	my ($stdout, $stderr);
 
 	my $cmd = "$main::imscpConfig{'CMD_CHOWN'} -R $userName:$httpdGroup $hDir";
-	$rs |= execute($cmd, \$stdout, \$stderr);
+	$rs = execute($cmd, \$stdout, \$stderr);
 	debug($stdout) if $stdout;
 	error($stderr) if $stderr && $rs;
+	return $rs if $rs;
 
-	$rs |= setRights(
+	$rs = setRights(
 		"$hDir/domain_disable_page",
 		{
 			'user' => $main::imscpConfig{'ROOT_USER'},
@@ -243,8 +260,9 @@ sub oldEngineCompatibility
 			'recursive' => 'yes'
 		}
 	) if -d "$hDir/domain_disable_page";
+	return $rs if $rs;
 
-	$rs |= setRights(
+	$rs = setRights(
 		"$hDir/backups",
 		{
 			'user' => $main::imscpConfig{'ROOT_USER'},
@@ -254,6 +272,7 @@ sub oldEngineCompatibility
 			'recursive' => 'yes'
 		}
 	) if -d "$hDir/backups";
+	return $rs if $rs;
 
 	0;
 }
@@ -273,7 +292,10 @@ sub buildHTTPDData
 	my $phpiniData = iMSCP::Database->factory()->doQuery(
 		'domain_id', 'SELECT * FROM `php_ini` WHERE `domain_id` = ?', $self->{'domain_id'}
 	);
-	error("$phpiniData") and return 1 if ref $phpiniData ne 'HASH';
+	if(ref $phpiniData ne 'HASH') {
+		error($phpiniData);
+		return 1;
+	}
 
 	$self->{'httpd'} = {
 		DMN_NAME => $self->{'domain_name'},

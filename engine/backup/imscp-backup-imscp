@@ -31,72 +31,73 @@ use lib "$FindBin::Bin/..";
 use lib "$FindBin::Bin/../PerlLib";
 use lib "$FindBin::Bin/../PerlVendor";
 
+use POSIX;
 use iMSCP::Debug;
 use iMSCP::Boot;
+use iMSCP::Mail;
+use iMSCP::Execute;
+use iMSCP::File;
+use iMSCP::Dir;
 use iMSCP::Dialog;
 
 newDebug('imscp-backup-imscp.log');
 
 our $command = {
-				pbzip2	=> {extension => 'bz2',		command => 'CMD_PBZIP'},
-				bzip2	=> {extension => 'bz2',		command => 'CMD_BZIP'},
-				gzip	=> {extension => 'gz',		command => 'CMD_GZIP'},
-				lzma	=> {extension => 'lzma',	command => 'CMD_LZMA'}
-			};
+	'pbzip2' => { 'extension' => 'bz2', 'command' => 'CMD_PBZIP'},
+	'bzip2' => { 'extension' => 'bz2', 'command' => 'CMD_BZIP'},
+	'gzip' => { 'extension' => 'gz', 'command' => 'CMD_GZIP'},
+	'lzma' => { 'extension' => 'lzma', 'command' => 'CMD_LZMA'}
+};
 
 sub backup_imscp_start_up {
 
 	umask(027);
 
-	iMSCP::Boot->new()->init({nolock => 'yes'});
-
-	iMSCP::Boot->new()->lock('/tmp/imscp-backup-imscp.lock');
+	iMSCP::Boot->getInstance({ 'nolock' => 'yes' })->boot()->lock('/tmp/imscp-backup-imscp.lock');
 
 	0;
 }
 
-sub backup_imscp_shut_down {
+sub backup_imscp_shut_down
+{
+	my @warnings = getMessageByType('warning');
+	my @errors = getMessageByType('error');
 
-	use iMSCP::Mail;
-
-	my @warnings	= getMessageByType('WARNING');
-	my @errors		= getMessageByType('ERROR');
-
-	my $msg	 = "\nWARNINGS:\n"		. join("\n", @warnings)	. "\n" if @warnings > 0;
-	$msg	.= "\nERRORS:\n"		. join("\n", @errors)	. "\n" if @errors > 0;
-	iMSCP::Mail->new()->errmsg($msg) if ($msg);
+	my $msg = "\nWARNINGS:\n" . join("\n", @warnings) . "\n" if @warnings > 0;
+	$msg .= "\nERRORS:\n" . join("\n", @errors) . "\n" if @errors > 0;
+	iMSCP::Mail->new()->errmsg($msg) if $msg;
 
 	0;
 }
 
-sub backup_imscp_database {
+sub backup_imscp_database
+{
+	my $date = strftime "%Y.%m.%d-%H-%M", localtime;
+	my $zip = $main::imscpConfig{'ZIP'};
+	my $sqlFName = "$main::imscpConfig{'BACKUP_FILE_DIR'}/$main::imscpConfig{'DATABASE_NAME'}-$date.sql";
 
-	use POSIX;
-	use iMSCP::Execute;
-	use iMSCP::File;
+	my $compressCmd = "$main::imscpConfig{$command->{$zip}->{'command'}} --force " . escapeShell($sqlFName);
 
-	my $date		= strftime "%Y.%m.%d-%H-%M", localtime;
-	my $zip			= $main::imscpConfig{'ZIP'};
-	my $sqlFName	= "$main::imscpConfig{'BACKUP_FILE_DIR'}/$main::imscpConfig{DATABASE_NAME}-$date.sql";
-	my $compressCmd = $main::imscpConfig{$command->{$zip}->{command}}." --force \'$sqlFName\'";
+	my $database = iMSCP::Database->new('db' => $main::imscpConfig{'DATABASE_TYPE'})->factory();
 
-	my $database = iMSCP::Database->new(db => $main::imscpConfig{DATABASE_TYPE})->factory();
-
-	if($database->can('dumpdb')){
+	if($database->can('dumpdb')) {
 
 		my ($rs, $stdout, $stderr);
 
-		$rs = $database->dumpdb($main::imscpConfig{DATABASE_NAME}, $sqlFName);
+		$rs = $database->dumpdb($main::imscpConfig{'DATABASE_NAME'}, $sqlFName);
 		return $rs if $rs;
 
-		my $file = iMSCP::File->new(filename => $sqlFName);
-		$file->mode(0640) and return 1;
-		$file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'}) and return 1;
+		my $file = iMSCP::File->new('filename' => $sqlFName);
+		$rs = $file->mode(0640);
+		return $rs if $rs;
+
+		$rs = $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
+		return $rs if $rs;
 
 		$rs = execute($compressCmd, \$stdout, \$stderr);
-		debug("$stdout") if $stdout;
-		error("$stderr") if $stderr;
-		error("Can not dump $main::imscpConfig{DATABASE_NAME}") if (!$stderr && $rs);
+		debug($stdout) if $stdout;
+		error($stderr) if $stderr && $rs;
+		error("Unable to dump $main::imscpConfig{'DATABASE_NAME'}") if $rs && ! $stderr;
 		return $rs if $rs;
 
 		#$file = iMSCP::File->new(filename => $fName);
@@ -104,88 +105,84 @@ sub backup_imscp_database {
 		#$file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'}) and return 1;
 
 	} else {
-		warning("Driver for $main::imscpConfig{DATABASE_TYPE} does not support dump");
+		warning("$main::imscpConfig{'DATABASE_TYPE'} database driver doesn't support dump");
 	}
 
 	0;
 }
 
-sub backup_imscp_engine {
-
-	if ($main::imscpConfig{'BACKUP_IMSCP'} ne 'yes') {
-		return 0;
-	}
+sub backup_imscp_engine
+{
+	return 0 if $main::imscpConfig{'BACKUP_IMSCP'} ne 'yes';
 
 	unless(
-		exists $command->{$main::imscpConfig{'ZIP'}}
-		&&
-		exists $command->{$main::imscpConfig{'ZIP'}}->{extension}
-		&&
-		exists $command->{$main::imscpConfig{'ZIP'}}->{command}
-	){
+		exists $command->{$main::imscpConfig{'ZIP'}} &&
+		exists $command->{$main::imscpConfig{'ZIP'}}->{'extension'} &&
+		exists $command->{$main::imscpConfig{'ZIP'}}->{'command'}
+	) {
 		error("Backup algorithm not supported: $main::imscpConfig{'ZIP'}");
 		return 1;
 	}
 
-	use iMSCP::Dir;
-	my $dir = iMSCP::Dir->new(dirname => $main::imscpConfig{'BACKUP_FILE_DIR'});
-	$dir->make({
-		mode	=> 0750,
-		user	=> $main::imscpConfig{'ROOT_USER'},
-		group	=> $main::imscpConfig{'ROOT_GROUP'}
-	}) and return 1;
+	my $dir = iMSCP::Dir->new('dirname' => $main::imscpConfig{'BACKUP_FILE_DIR'});
+	my $rs = $dir->make(
+		{ 'mode' => 0750, 'user' => $main::imscpConfig{'ROOT_USER'}, 'group' => $main::imscpConfig{'ROOT_GROUP'} }
+	);
+	return $rs if $rs;
 
 	# DB backup
-	my $rs = backup_imscp_database();
+	$rs = backup_imscp_database();
 	return $rs if $rs;
 
 	$rs = backup_imscp_configs();
 	return $rs if $rs;
 
-	#remove old backups: >14 days old
+	# remove old backups: > 7 days old
 	my ($stdout, $stderr);
-	$rs = execute("find $main::imscpConfig{BACKUP_FILE_DIR}/* -maxdepth 0 -type f -mtime +14 -print | xargs -r /bin/rm -v", \$stdout, \$stderr);
-	debug("$stdout") if $stdout;
-	error("$stderr") if $stderr;
-	error("Can not remove old backups backup") if (!$stderr && $rs);
+	$rs = execute(
+		"find $main::imscpConfig{'BACKUP_FILE_DIR'}/* -maxdepth 0 -type f -mtime +7 -print | xargs -r /bin/rm -v",
+		\$stdout, \$stderr
+	);
+	debug($stdout) if $stdout;
+	error($stderr) if $stderr && $rs;
+	error('Unable to remove old i-MSCP backups') if $rs && ! $stderr;
 	return $rs if $rs;
 
-	return 0;
+	0;
 }
 
-sub backup_imscp_configs{
+sub backup_imscp_configs
+{
 
-	my $date		= strftime "%Y.%m.%d-%H-%M", localtime;
-	my $tarName	= "$main::imscpConfig{BACKUP_FILE_DIR}/config-backup-$date.tar";
-	my $fName	= "$tarName.$command->{$main::imscpConfig{ZIP}}->{extension}";
-	my $bkpCmd	= "$main::imscpConfig{CMD_TAR} ".
-					"--create ".
-					"-C $main::imscpConfig{CONF_DIR} ".
-					"--use-compress-program=" . lc($main::imscpConfig{ZIP}) . ' ' .
-					"--exclude=?*[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9] ".
-					"-p ".
-					"--file=$fName .";
+	my $date = strftime "%Y.%m.%d-%H-%M", localtime;
+	my $tarName = "$main::imscpConfig{'BACKUP_FILE_DIR'}/config-backup-$date.tar";
+	my $fName = "$tarName.$command->{$main::imscpConfig{'ZIP'}}->{'extension'}";
+	my $bkpCmd = "$main::imscpConfig{'CMD_TAR'} ".
+				 "--create ".
+				 "-C $main::imscpConfig{'CONF_DIR'} ".
+				 "--use-compress-program=" . lc($main::imscpConfig{'ZIP'}) . ' ' .
+				 "--exclude=?*[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9] ".
+				 "-p ".
+				 "--file=$fName .";
 
 	my ($rs, $stdout, $stderr);
 	$rs = execute($bkpCmd, \$stdout, \$stderr);
-	debug("$stdout") if $stdout;
-	error("$stderr") if $stderr;
-	error("Can not create backup") if (!$stderr && $rs);
+	debug($stdout) if $stdout;
+	error($stderr) if $stderr && $rs;
+	error("Unable to create i-MSCP backup") if $rs && ! $stderr;
 	return $rs if $rs;
 
-	my $file = iMSCP::File->new(filename => $fName);
-	$file->mode(0640) and return 1;
-	$file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'}) and return 1;
+	my $file = iMSCP::File->new('filename' => $fName);
+	$rs = $file->mode(0640);
+	return $rs if $rs;
 
-	return 0;
+	$file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
 }
 
 my $rs;
 
 exit 1 if backup_imscp_start_up();
-
 exit 1 if backup_imscp_engine();
-
 exit 1 if backup_imscp_shut_down();
 
 exit 0;

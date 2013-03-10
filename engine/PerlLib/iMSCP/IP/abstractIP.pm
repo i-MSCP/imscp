@@ -29,58 +29,92 @@ use strict;
 use warnings;
 
 use iMSCP::Debug;
+use parent 'Common::SingletonClass';
 
-use vars qw/@ISA/;
+sub normalize
+{
+	shift;
+	shift;
+}
 
-@ISA = ('Common::SingletonClass');
-use Common::SingletonClass;
-
-sub parseIPs{ fatal('Must be implemmented in class'); }
-
-sub parseNetCards{ fatal('Must be implemmented in class'); }
-
-sub normalize{shift; shift;}
-
-
-sub getIPs{
+sub getIPs
+{
 	my $self = shift;
 
-	debug("Ip`s: ". join( ' ', keys %{$self->{ips}} ));
+	debug("Ip`s: ". join( ' ', keys %{$self->{'ips'}}));
 
-	return (wantarray ? keys %{$self->{ips}} : join( ' ', keys %{$self->{ips}} ));
+	(wantarray ? keys %{$self->{'ips'}} : join( ' ', keys %{$self->{'ips'}}));
 }
 
-sub getNetCards{
+sub getNetCards
+{
 	my $self = shift;
 
-	debug("Network cards`s: ". join( ' ', keys %{$self->{cards}} ));
+	debug("Network cards`s: ". join( ' ', keys %{$self->{'cards'}} ));
 
-	return (wantarray ? keys %{$self->{cards}} : join( ' ', keys %{$self->{cards}} ));
+	(wantarray ? keys %{$self->{'cards'}} : join( ' ', keys %{$self->{'cards'}}));
 }
 
-sub getCardByIP{ fatal('Must be implemmented in class'); }
+sub existsNetCard
+{
+	my $self = shift;
+	my $card = shift;
 
-sub existsNetCard{
-	my $self	= shift;
-	my $card	= shift;
+	debug("Network card $card exists? ". (exists $self->{'cards'}->{$card} ? 'yes' : 'no'));
 
-	debug("Network card $card exists? ". (exists $self->{cards}->{$card} ? 'yes' : 'no'));
-
-	return (exists $self->{cards}->{$card});
+	(exists $self->{'cards'}->{$card});
 }
 
-sub isCardUp{
-	my $self	= shift;
-	my $card	= shift;
+sub isCardUp
+{
+	my $self = shift;
+	my $card = shift;
 
-	debug("Network card $card is up? ". (exists $self->{cards}->{$card}->{up} ? 'yes' : 'no'));
-	return (exists $self->{cards}->{$card}->{up});
+	debug("Network card $card is up? ". (exists $self->{'cards'}->{$card}->{'up'} ? 'yes' : 'no'));
+
+	(exists $self->{cards}->{$card}->{'up'});
 }
 
-sub isValidIp{ fatal('Must be implemmented in class'); }
+sub parseIPs
+{
+	my $self = shift;
 
-sub attachIpToNetCard{ fatal('Must be implemmented in class'); }
+	fatal(ref($self) . ' class must implement the parseIPs() method');
+}
 
-sub detachIpFromNetCard{ fatal('Must be implemmented in class'); }
+sub parseNetCards
+{
+	my $self = shift;
+
+	fatal(ref($self) . ' class must implement the parseNetCards() method');
+}
+
+sub getCardByIP
+{
+	my $self = shift;
+
+	fatal(ref($self) . ' class must implement the getCardByIP() method');
+}
+
+sub isValidIp
+{
+	my $self = shift;
+
+	fatal(ref($self) . ' class must implement the isValidIp() method');
+}
+
+sub attachIpToNetCard
+{
+	my $self = shift;
+
+	fatal(ref($self) . ' class must implement the attachIpToNetCard() method');
+}
+
+sub detachIpFromNetCard
+{
+	my $self = shift;
+
+	fatal(ref($self) . ' class must implement the detachIpFromNetCard() method');
+}
 
 1;

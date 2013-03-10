@@ -32,69 +32,50 @@ use lib "$FindBin::Bin/../PerlLib";
 
 use iMSCP::Debug;
 use iMSCP::Boot;
-use iMSCP::Execute;
-use iMSCP::Mail;
 use iMSCP::Servers;
 use iMSCP::Addons;
-use Data::Dumper;
 
 newDebug('imscp-del-tmp.log');
 
-sub logs_start_up {
+silent(1);
 
+sub logs_start_up
+{
 	umask(027);
-	iMSCP::Boot->new()->init({nolock => 'yes'});
+
+	iMSCP::Boot->getInstance({ 'nolock' => 'yes' })->boot();
 
 	0;
 }
 
-sub del_tmp{
-
+sub del_tmp
+{
 	my $rs = 0;
 
-	my @servers	= iMSCP::Servers->new()->get();
-	unless(scalar @servers){
-		error("Can not get servers list");
-		return 1;
-	}
-
-	for(@servers){
+	for(iMSCP::Servers->getInstance()->get()) {
 		s/\.pm//;
 		next if $_ eq 'noserver';
-		my $file	= "Servers/$_.pm";
-		my $class	= "Servers::$_";
+		my $file = "Servers/$_.pm";
+		my $class = "Servers::$_";
 		require $file;
-		my $instance	= $class->factory();
-		if($instance->can('delTmp')){
-			$rs |= $instance->delTmp();
-		}
+		my $instance = $class->factory();
+		$rs = $instance->delTmp() if $instance->can('delTmp');
+		return $rs if $rs;
 	}
 
-	my @addons	= iMSCP::Addons->new()->get();
-	unless(scalar @addons){
-		error("Can not get addons list");
-		return 1;
-	}
-
-	for(@addons){
+	for(iMSCP::Addons->getInstance()->get()) {
 		s/\.pm//;
 		next if $_ eq 'noserver';
-		my $file	= "Addons/$_.pm";
-		my $class	= "Addons::$_";
+		my $file = "Addons/$_.pm";
+		my $class = "Addons::$_";
 		require $file;
-		my $instance	= $class->factory();
-		if($instance->can('delTmp')){
-			$rs |= $instance->delTmp();
-		}
+		my $instance = $class->factory();
+		$rs = $instance->delTmp() if $instance->can('delTmp');
+		return $rs if $rs;
 	}
 
-	$rs;
+	0;
 }
 
-my $rs = 0;
-
 exit 1 if logs_start_up();
-
-$rs |= del_tmp();
-
-exit $rs;
+exit del_tmp();

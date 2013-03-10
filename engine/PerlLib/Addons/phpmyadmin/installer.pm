@@ -80,6 +80,7 @@ sub preinstall
 	my $self = shift;
 
 	require iMSCP::Addons::ComposerInstaller;
+
 	iMSCP::Addons::ComposerInstaller->getInstance()->registerPackage('imscp/phpmyadmin');
 }
 
@@ -97,18 +98,27 @@ sub install
 	my $rs	= 0;
 
 	# Backup current configuration file if it exists (only relevant when running imscp-setup)
-	$rs |= $self->_backupConfigFile(
+	$rs = $self->_backupConfigFile(
 		"$main::imscpConfig{'GUI_PUBLIC_DIR'}/$self::phpmyadminConfig{'PHPMYADMIN_CONF_DIR'}/config.inc.php"
 	);
+	return $rs if $rs;
 
-	$rs |= $self->_installFiles();				# Install phpmyadmin files from local addon packages repository
-	$rs |= $self->setGuiPermissions();			# Set phpmyadmin permissions
-	$rs |= $self->_setupSqlUser();				# Setup phpmyadmin restricted SQL user
-	$rs |= $self->_generateBlowfishSecret();	# Generate Blowfish secret
-	$rs |= $self->_buildConfig();				# Build new configuration files
-	$rs |= $self->_saveConfig();				# Save configuration
+	$rs = $self->_installFiles();				# Install phpmyadmin files from local addon packages repository
+	return $rs if $rs;
 
-	$rs;
+	$rs = $self->setGuiPermissions();			# Set phpmyadmin permissions
+	return $rs if $rs;
+
+	$rs = $self->_setupSqlUser();				# Setup phpmyadmin restricted SQL user
+	return $rs if $rs;
+
+	$rs = $self->_generateBlowfishSecret();	# Generate Blowfish secret
+	return $rs if $rs;
+
+	$rs = $self->_buildConfig();				# Build new configuration files
+	return $rs if $rs;
+
+	$self->_saveConfig();						# Save configuration
 }
 
 =back
@@ -207,7 +217,6 @@ sub setGuiPermissions
 	my $self = shift;
 	my $panelUName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} . $main::imscpConfig{'SYSTEM_USER_MIN_UID'};
 	my $rootDir = $main::imscpConfig{'ROOT_DIR'};
-	my $rs = 0;
 
 	require Servers::httpd;
 	my $http = Servers::httpd->factory();
@@ -216,12 +225,10 @@ sub setGuiPermissions
 	require iMSCP::Rights;
 	iMSCP::Rights->import();
 
-	$rs |= setRights(
+	setRights(
 		"$rootDir/gui/public/tools/pma",
 		{ 'user' => $panelUName, 'group' => $apacheGName, 'dirmode' => '0550', 'filemode' => '0440', 'recursive' => 'yes' }
 	);
-
-	$rs;
 }
 
 =back
@@ -232,7 +239,7 @@ sub setGuiPermissions
 
 =item _init()
 
- Called by new(). Initialize PhpMyAdmin addon installer instance.
+ Called by getInstance(). Initialize PhpMyAdmin addon installer instance.
 
  Return Addons::phpmyadmin::installer
 
@@ -272,6 +279,7 @@ sub _backupConfigFile
 	my $self = shift;
 	my $cfgFile = shift;
 	my $timestamp = time;
+	my $rs = 0;
 
 	require File::Basename;
 	File::Basename->import();
@@ -282,7 +290,8 @@ sub _backupConfigFile
 		require iMSCP::File;
 
 		my $file = iMSCP::File->new(filename => $cfgFile);
-		$file->copyFile("$self->{'bkpDir'}/$name$suffix.$timestamp") and return 1;
+		$rs = $file->copyFile("$self->{'bkpDir'}/$name$suffix.$timestamp");
+		return $rs if $rs;
 	}
 
 	0;
@@ -315,14 +324,16 @@ sub _installFiles
 		);
 		debug($stdout) if $stdout;
 		error($stderr) if $rs && $stderr;
+		return $rs if $rs;
 
-		$rs |= execute(
+		$rs = execute(
 			"$main::imscpConfig{'CMD_RM'} -rf $main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/pma/.git",
 			\$stdout,
 			\$stderr
 		);
 		debug($stdout) if $stdout;
 		error($stderr) if $rs && $stderr;
+		return $rs if $rs;
 	} else {
 		error("Couldn't find the imscp/phpmyadmin package into the local repository");
 		$rs = 1;
@@ -352,16 +363,23 @@ sub _saveConfig
 	my $cfg = $file->get();
 	return 1 unless $cfg;
 
-	$rs |= $file->mode(0640);
-	$rs |= $file->owner($rootUsr, $rootGrp);
+	$rs = $file->mode(0640);
+	return $rs if $rs;
+
+	$rs = $file->owner($rootUsr, $rootGrp);
+	return $rs if $rs;
 
 	$file = iMSCP::File->new(filename => "$self->{'cfgDir'}/phpmyadmin.old.data");
-	$rs |= $file->set($cfg);
-	$rs |= $file->save();
-	$rs |= $file->mode(0640);
-	$rs |= $file->owner($rootUsr, $rootGrp);
+	$rs = $file->set($cfg);
+	return $rs if $rs;
 
-	$rs;
+	$rs = $file->save();
+	return $rs if $rs;
+
+	$rs = $file->mode(0640);
+	return $rs if $rs;
+
+	$file->owner($rootUsr, $rootGrp);
 }
 
 =item _setupSqlUser()
@@ -516,7 +534,7 @@ sub _buildConfig
 
 	my $file = iMSCP::File->new(filename => "$confDir/imscp.config.inc.php");
 	my $cfgTpl = $file->get();
-	return 1 if ! $cfgTpl;
+	return 1 if ! defined $cfgTpl;
 
 	require iMSCP::Templator;
 
@@ -526,14 +544,19 @@ sub _buildConfig
 	# store file in working directory
 	$file = iMSCP::File->new(filename => "$self->{'wrkDir'}/$_");
 	$rs = $file->set($cfgTpl);
-	$rs |= $file->save();
-	$rs |= $file->mode(0640);
-	$rs |= $file->owner($panelUName, $panelGName);
+	return $rs if $rs;
+
+	$rs = $file->save();
+	return $rs if $rs;
+
+	$rs = $file->mode(0640);
+	return $rs if $rs;
+
+	$rs = $file->owner($panelUName, $panelGName);
+	return $rs if $rs;
 
 	# Install new file in production directory
-	$rs |= $file->copyFile("$confDir/config.inc.php");
-
-	0;
+	$file->copyFile("$confDir/config.inc.php");
 }
 
 =back

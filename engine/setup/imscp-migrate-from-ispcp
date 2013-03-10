@@ -41,7 +41,9 @@ umask(027);
 
 newDebug('imscp-migrate-from-ispcp.log');
 
-iMSCP::Boot->new(mode => 'all')->init({nodatabase => 'yes'});
+silent(1);
+
+iMSCP::Boot->getInstance(mode => 'setup', 'nodatabase' => 'yes' })->boot();
 
 loadConfigs();
 
@@ -72,7 +74,8 @@ sub setup_engine {
 		exit 1 if step($_->[0], $_->[1], scalar @steps, $step);
 		$step++;
 	}
-	iMSCP::Dialog->factory()->endGauge()  if iMSCP::Dialog->factory()->needGauge();
+
+	iMSCP::Dialog->factory()->endGauge() if iMSCP::Dialog->factory()->hasGauge();
 
 	systemSetup();
 
@@ -198,7 +201,7 @@ sub connectispCPDb{
 
 	use iMSCP::Crypt;
 
-	my $crypt = iMSCP::Crypt->new();
+	my $crypt = iMSCP::Crypt->getInstance();
 	$crypt->set('key', $main::ispcpDBKey);
 	$crypt->set('iv', $main::ispcpDBiv);
 	my $pass = $crypt->decrypt_db_password($main::ispcpConfig{'DATABASE_PASSWORD'});
@@ -308,7 +311,7 @@ sub databaseIntegrityTest{
 		if (keys %{$result}){
 			for my $row (values %{$result}){
 				$database->set('DATABASE_USER', $row->{sqlu_name});
-				my $crypt = iMSCP::Crypt->new();
+				my $crypt = iMSCP::Crypt->getInstance();
 				$crypt->set('key', $main::ispcpDBKey);
 				$crypt->set('iv', $main::ispcpDBiv);
 				$database->set('DATABASE_PASSWORD', $crypt->decrypt_db_password($row->{sqlu_pass}));
@@ -394,18 +397,18 @@ sub systemConfigTest{
 	use iMSCP::Database;
 
 	my ($stdout, $stderr, @errors);
-	my $rv		= execute("find $main::ispcpConfig{'CONF_DIR'} -type f -name '*.system'", \$stdout, \$stderr);
-	debug("$stdout") if $stdout;
-	push (@errors, $stderr) if $rv;
+	my $rv = execute("find $main::ispcpConfig{'CONF_DIR'} -type f -name '*.system'", \$stdout, \$stderr);
+	debug($stdout) if $stdout;
+	push (@errors, $stderr) if $stderr && $rv;
 
 	my @files	= split("\n", $stdout);
 
 	for my $file (@files){
 		my $destination = $file;
 		$destination =~ s/$main::ispcpConfig{'CONF_DIR'}/$main::imscpConfig{'CONF_DIR'}/g;
-		$rv = execute("cp -fv $file $destination", \$stdout, \$stderr);
-		debug("$stdout") if $stdout;
-		push (@errors, $stderr) if $rv;
+		$rv = execute("$main::imscpConfig{'CMD_CP'} -f $file $destination", \$stdout, \$stderr);
+		debug($stdout) if $stdout;
+		push (@errors, $stderr) if $stderr && $rv;
 	}
 
 	my $database = iMSCP::Database->new(db => 'mysql')->factory();
@@ -422,9 +425,9 @@ sub systemConfigTest{
 			local $Data::Dumper::Terse = 1;
 			for my $row (values %{$result}){
 				if (-f "$main::ispcpConfig{'BIND_DB_DIR'}/$row->{name}.db"){
-					$rv = execute("cp -fv $main::ispcpConfig{'BIND_DB_DIR'}/$row->{name}.db $main::imscpConfig{'CONF_DIR'}/bind/working/", \$stdout, \$stderr);
-					debug("$stdout") if $stdout;
-					push (@errors, $stderr) if $rv;
+					$rv = execute("$main::imscpConfig{'CMD_CP'} -f $main::ispcpConfig{'BIND_DB_DIR'}/$row->{name}.db $main::imscpConfig{'CONF_DIR'}/bind/working/", \$stdout, \$stderr);
+					debug($stdout) if $stdout;
+					push (@errors, $stderr) if $stderr && $rv;
 				}
 			}
 		}
@@ -450,7 +453,7 @@ sub confSave{
 	use iMSCP::Crypt;
 	use iMSCP::Boot;
 
-	my $crypt = iMSCP::Crypt->new();
+	my $crypt = iMSCP::Crypt->getInstance();
 	my $pass = $crypt->decrypt_db_password($main::ispcpConfig{'DATABASE_PASSWORD'});
 
 	$crypt->set('key',	$main::imscpDBKey);
@@ -485,7 +488,7 @@ sub savePass {
 	my $errors		= shift;
 
 	#switch key
-	my $crypt = iMSCP::Crypt->new();
+	my $crypt = iMSCP::Crypt->getInstance();
 	$crypt->set('key',	$main::ispcpDBKey);
 	$crypt->set('iv',	 $main::ispcpDBiv);
 
@@ -599,8 +602,8 @@ sub otherMessCleanup{
 	#fcgi / fastcgi cleanup
 	if(! -e '/etc/SuSE-release' && -e '/usr/sbin/a2enmod') {
 		$rs = execute("/usr/sbin/a2dismod fastcgi_ispcp fcgid_ispcp", \$stdout, \$stderr);
-		debug("$stdout") if $stdout;
-		push(@errors, $stderr) if $stderr;
+		debug($stdout) if $stdout;
+		push(@errors, $stderr) if $stderr && $rs;
 	}
 	for (qw/fastcgi_ispcp.conf fastcgi_ispcp.load fcgid_ispcp.conf fcgid_ispcp.load/) {
 		if(-e "$main::ispcpConfig{'APACHE_MODS_DIR'}/$_") {
@@ -611,8 +614,8 @@ sub otherMessCleanup{
 	#apache ispcp.conf
 	if(! -e '/etc/SuSE-release' && -e '/usr/sbin/a2dissite') {
 		$rs = execute("/usr/sbin/a2dissite ispcp.conf", \$stdout, \$stderr);
-		debug("$stdout") if $stdout;
-		push(@errors, $stderr) if $stderr;
+		debug($stdout) if $stdout;
+		push(@errors, $stderr) if $stderr && $rs;
 	}
 	if(-e "$main::ispcpConfig{'APACHE_SITES_DIR'}/ispcp.conf") {
 		unlink "$main::ispcpConfig{'APACHE_SITES_DIR'}/ispcp.conf" or push(@errors, ": Delete $main::ispcpConfig{'APACHE_SITES_DIR'}/ispcp.conf failed: $!");
@@ -669,21 +672,21 @@ sub daemonRemove{
 
 	for ($main::ispcpConfig{'CMD_ISPCPD'}, $main::ispcpConfig{'CMD_ISPCPN'}) {
 		$rs = execute("$_ stop", \$stdout, \$stderr);
-		debug("$stdout") if $stdout;
-		push(@errors, $stderr) if $stderr;
+		debug($stdout) if $stdout;
+		push(@errors, $stderr) if $stderr && $rs;
 		if($rs && $_ eq $main::ispcpConfig{'CMD_ISPCPD'}){
 			$rs = execute("kill -9 `pidof ispcp_daemon`", \$stdout, \$stderr);
-			debug("$stdout") if $stdout;
-			push(@errors, $stderr) if $stderr;
+			debug($stdout) if $stdout;
+			push(@errors, $stderr) if $stderr && $rs;
 		}
 		if(-x '/usr/sbin/update-rc.d') {
 			$rs = execute("/usr/sbin/update-rc.d -f $_ remove", \$stdout, \$stderr);
-			debug("$stdout") if $stdout;
-			push(@errors, $stderr) if $stderr;
+			debug($stdout) if $stdout;
+			push(@errors, $stderr) if $stderr && $rs;
 		} elsif(-x '/usr/lib/lsb/install_initd') {
 			$rs = execute("/usr/lib/lsb/remove_initd $_", \$stdout, \$stderr);
-			debug("$stdout") if $stdout;
-			push(@errors, $stderr) if $stderr;
+			debug($stdout) if $stdout;
+			push(@errors, $stderr) if $stderr && $rs;
 		}
 		if(-e $_) {
 			unlink $_ or push(@errors, ": Delete $_ failed: $!");

@@ -21,7 +21,6 @@
  * @subpackage  Client
  * @copyright   2010-2013 by i-MSCP team
  * @author      Laurent Declercq <l.declercq@nuxwin.com>
- * @author      Sascha Bay <worst.case@gmx.de>
  * @author      iMSCP Team
  * @link        http://www.i-mscp.net i-MSCP Home Site
  * @license     http://www.gnu.org/licenses/gpl-2.0.txt GPL v2
@@ -66,6 +65,7 @@ function _client_generateItem($tpl, $externalMail, $domainId, $domainName, $stat
                 'DEACTIVATE_LINK' => ''
             )
         );
+
         $tpl->parse('ACTIVATE_LINK', 'activate_link');
     } elseif($externalMail == 'on' || $externalMail == 'wildcard') {
         $tpl->assign(
@@ -83,6 +83,7 @@ function _client_generateItem($tpl, $externalMail, $domainId, $domainName, $stat
                 'DEACTIVATE_URL' => ($status == $statusOk) ? "mail_external_delete.php?item=$queryParam" : '#'
             )
         );
+
         $tpl->parse('EDIT_LINK', 'edit_link');
         $tpl->parse('DEACTIVATE_LINK', 'deactivate_link');
     }
@@ -161,6 +162,7 @@ function client_generateView()
 require_once 'imscp-lib.php';
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
+
 check_login('user');
 
 if (customerHasFeature(array('mail', 'external_mail'))) {

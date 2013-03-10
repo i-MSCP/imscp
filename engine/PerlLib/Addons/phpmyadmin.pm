@@ -44,25 +44,6 @@ use parent 'Common::SingletonClass';
 
  Project homepage: : http://www.phpmyadmin.net/
 
-=head1 CLASS METHODS
-
-=over 4
-
-=item factory()
-
- Implement singleton design pattern. Return instance of this class.
-
- Return Addons::phpmyadmin
-
-=cut
-
-sub factory
-{
-	Addons::phpmyadmin->new();
-}
-
-=back
-
 =head1 PUBLIC METHODS
 
 =over 4
@@ -82,7 +63,8 @@ sub registerSetupHooks
 	my $hooksManager = shift;
 
 	require Addons::phpmyadmin::installer;
-	Addons::phpmyadmin::installer->new()->registerSetupHooks($hooksManager);
+
+	Addons::phpmyadmin::installer->getInstance()->registerSetupHooks($hooksManager);
 }
 
 =item preinstall()
@@ -96,7 +78,8 @@ sub preinstall
 	my $self = shift;
 
 	require Addons::phpmyadmin::installer;
-	Addons::phpmyadmin::installer->new()->preinstall();
+
+	Addons::phpmyadmin::installer->getInstance()->preinstall();
 }
 
 =item install()
@@ -112,7 +95,8 @@ sub install
 	my $self = shift;
 
 	require Addons::phpmyadmin::installer;
-	Addons::phpmyadmin::installer->new()->install();
+
+	Addons::phpmyadmin::installer->getInstance()->install();
 }
 
 =item setGuiPermissions()
@@ -128,7 +112,8 @@ sub setGuiPermissions
 	my $self = shift;
 
 	require Addons::phpmyadmin::installer;
-	Addons::phpmyadmin::installer->new()->setGuiPermissions();
+
+	Addons::phpmyadmin::installer->getInstance()->setGuiPermissions();
 }
 
 =back

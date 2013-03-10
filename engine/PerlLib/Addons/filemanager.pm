@@ -42,25 +42,6 @@ use parent 'Common::SingletonClass';
 
  This addon provide Web Ftp client for i-MSCP. For now only Ajaxplorer and Net2Ftp are available.
 
-=head1 CLASS METHODS
-
-=over 4
-
-=item factory()
-
- Implement singleton design pattern. Return instance of this class.
-
- Return Addons::filemanager
-
-=cut
-
-sub factory
-{
-	Addons::filemanager->new();
-}
-
-=back
-
 =head1 PUBLIC METHODS
 
 =over 4
@@ -80,7 +61,8 @@ sub registerSetupHooks
 	my $hooksManager = shift;
 
 	require Addons::filemanager::installer;
-	Addons::filemanager::installer->new()->registerSetupHooks($hooksManager);
+
+	Addons::filemanager::installer->getInstance()->registerSetupHooks($hooksManager);
 }
 
 =item preinstall()
@@ -96,7 +78,8 @@ sub preinstall
 	my $self = shift;
 
 	require Addons::filemanager::installer;
-	Addons::filemanager::installer->new()->preinstall();
+
+	Addons::filemanager::installer->getInstance()->preinstall();
 }
 
 =item install()
@@ -112,7 +95,8 @@ sub install
 	my $self = shift;
 
 	require Addons::filemanager::installer;
-	Addons::filemanager::installer->new()->install();
+
+	Addons::filemanager::installer->getInstance()->install();
 }
 
 =item setGuiPermissions()
@@ -128,7 +112,8 @@ sub setGuiPermissions
 	my $self = shift;
 
 	require Addons::filemanager::installer;
-	Addons::filemanager::installer->new()->setGuiPermissions();
+
+	Addons::filemanager::installer->getInstance()->setGuiPermissions();
 }
 
 =back

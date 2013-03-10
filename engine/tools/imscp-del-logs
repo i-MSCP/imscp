@@ -32,36 +32,31 @@ use lib "$FindBin::Bin/../PerlLib";
 
 use iMSCP::Debug;
 use iMSCP::Boot;
-use iMSCP::Execute;
-use iMSCP::Mail;
 use Servers::httpd;
-use Data::Dumper;
 
 newDebug('imscp-del-logs.log');
+
+silent(1);
 
 sub logs_start_up
 {
 	umask(027);
 
-	iMSCP::Boot->new()->init({nolock => 'yes'});
+	iMSCP::Boot->getInstance(({ 'nolock' => 'yes' })->boot();
 
 	0;
 }
 
 sub del_logs
 {
-	my $rs = 0;
 	my $httpd = Servers::httpd->factory();
-	$rs = $httpd->delOldLogs() if $httpd->can('delOldLogs');
+	my $rs = 0;
+
+	$httpd->delOldLogs() if $httpd->can('delOldLogs');
+	return $rs if $rs;
 
 	$rs;
 }
 
-my $rs = 0;
-
 exit 1 if logs_start_up();
-
-$rs |= del_logs();
-
-exit $rs;
-
+exit del_logs();

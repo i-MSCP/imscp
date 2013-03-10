@@ -27,15 +27,16 @@ package iMSCP::Dialog;
 
 use strict;
 use warnings;
+
 use iMSCP::Debug;
-use iMSCP::Execute 'execute';
+use iMSCP::Execute;
 use parent 'Common::SingletonClass';
 
 sub factory
 {
-	my $self = iMSCP::Dialog->new();
+	my $self = iMSCP::Dialog->getInstance();
 
-	unless($self->{instance}) {
+	unless($self->{'instance'}) {
 		#my ($dialog, $whiptail, $rs, $stdout, $stderr, $file, $class);
 		my ($dialog, $stdout, $stderr, $file, $class);
 
@@ -43,13 +44,13 @@ sub factory
 			$file = "iMSCP/Dialog/Dialog.pm";
 			$class = "iMSCP::Dialog::Dialog";
 			require $file;
-			$self->{instance} = $class->new();
+			$self->{'instance'} = $class->getInstance();
 		# Commented out since whiptail implementation is not ready
 		#} elsif(!execute('which whiptail', \$stdout, \$stderr)) {
 		#	$file = "iMSCP/Dialog/Whiptail.pm";
 		#	$class = "iMSCP::Dialog::Whiptail";
 		#	require $file;
-		#	$self->{instance} = $class->new();
+		#	$self->{instance} = $class->getInstance();
 		#} else {
 		#	fatal('Can not find whiptail or dialog. Please reinstall...');
 		#}
@@ -61,12 +62,12 @@ sub factory
 		$self->{'instance'}->set('backtitle', 'i-MSCP - internet Multi Server Control Panel');
 	}
 
-	$self->{instance};
+	$self->{'instance'};
 }
 
 sub reset
 {
-	my $self = iMSCP::Dialog->new();
+	my $self = iMSCP::Dialog->getInstance();
 
 	$self->{'instance'} = undef;
 

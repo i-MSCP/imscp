@@ -26,12 +26,15 @@
 
 use strict;
 use warnings;
+
 use FindBin;
 use iMSCP::HooksManager;
 use DateTime;
 use DateTime::TimeZone;
 use Net::LibIDN qw/idn_to_ascii idn_to_unicode/;
 use Data::Validate::Domain qw/is_domain/;
+use IPC::Open3;
+use Symbol qw/gensym/;
 use iMSCP::LsbRelease;
 use iMSCP::Debug;
 use iMSCP::IP;
@@ -61,7 +64,7 @@ use iMSCP::Getopt;
 sub setupBoot
 {
 	# We do not try to establish connection to database since needed data can be unavailable
-	iMSCP::Boot->new(mode => 'setup')->init({ nodatabase => 'yes' });
+	iMSCP::Boot->getInstance({ 'mode' => 'setup', 'nodatabase' => 'yes' })->boot();
 
 	0;
 }
@@ -72,7 +75,7 @@ sub setupLoadOldConfig
 	my $oldConfig = "$main::imscpConfig{'CONF_DIR'}/imscp.old.conf";
 	$main::imscpOldConfig = {};
 
-	tie %main::imscpOldConfig, 'iMSCP::Config', 'fileName' => $oldConfig, readonly => 1 if (-f $oldConfig);
+	tie %main::imscpOldConfig, 'iMSCP::Config', 'fileName' => $oldConfig, 'readonly' => 1 if -f $oldConfig;
 
 	0;
 }
@@ -80,48 +83,34 @@ sub setupLoadOldConfig
 # Allow any server/addon to register its setup hook functions on the hooks manager before any other tasks
 sub setupRegisterHooks()
 {
-	my ($rs, $file, $class, $item);
+	my $rs = 0;
+	my ($file, $class, $instance);
 	my $hooksManager = iMSCP::HooksManager->getInstance();
 
-	my @servers = iMSCP::Servers::get();
-
-	unless(scalar @servers){
-		error('Cannot get servers list');
-		return 1;
-	}
-
-	for(@servers) {
+	for(iMSCP::Servers->getInstance()->get()) {
 		s/\.pm//;
 		$file = "Servers/$_.pm";
 		$class = "Servers::$_";
 		require $file;
-		$item = $class->factory();
-		$rs |= $item->registerSetupHooks($hooksManager) if $item->can('registerSetupHooks');
-
-		last if $rs;
+		$instance = $class->factory();
+		$rs = $instance->registerSetupHooks($hooksManager) if $instance->can('registerSetupHooks');
+		return $rs if $rs;
 	}
 
-	my @addons = iMSCP::Addons::get();
-	unless(scalar @addons){
-		error('Cannot get addons list');
-		return 1;
-	}
-
-	for(@addons) {
+	for(iMSCP::Addons->getInstance()->get()) {
 		s/\.pm//;
 		$file = "Addons/$_.pm";
 		$class = "Addons::$_";
 		require $file;
-		$item = $class->new();
-		$rs |= $item->registerSetupHooks($hooksManager) if $item->can('registerSetupHooks');
-		last if $rs;
+		$instance = $class->getInstance();
+		$rs = $instance->registerSetupHooks($hooksManager) if $instance->can('registerSetupHooks');
+		return $rs if $rs;
 	}
 
 	$rs;
 }
 
 # Trigger all dialog subroutines
-#
 sub setupDialog
 {
 	my $dialogStack = [];
@@ -158,14 +147,14 @@ sub setupDialog
 
 	# Implements a simple state machine (backup capability)
 	# Any dialog subroutine *should* allow user to step back by returning 30 when 'back' button is pushed
-	my ($state, $nbDialog, $ret) = (0, scalar @$dialogStack, 0);
+	my ($state, $nbDialog, $rs) = (0, scalar @$dialogStack, 0);
 
 	while($state != $nbDialog) {
-		$ret = $$dialogStack[$state]->($dialog);
-		return $ret if $ret && $ret != 30;
+		$rs = $$dialogStack[$state]->($dialog);
+		return $rs if $rs && $rs != 30;
 
 		# User asked for step back?
-		if($ret == 30) {
+		if($rs == 30) {
 			$state != 0 ? $state-- : 0; # We don't allow to step back before first question
 			$main::reconfigure = 'forced' if $main::reconfigure eq 'none';
 		} else {
@@ -174,9 +163,7 @@ sub setupDialog
 		}
 	}
 
-	iMSCP::HooksManager->getInstance()->trigger('afterSetupDialog') and return 1;
-
-	$ret;
+	iMSCP::HooksManager->getInstance()->trigger('afterSetupDialog');
 }
 
 # Process setup tasks
@@ -216,15 +203,13 @@ sub setupTasks
 
 	for (@steps) {
 		$rs = step($_->[0], $_->[1], $nbSteps, $step);
-		last if $rs;
+		return $rs if $rs;
 		$step++;
 	}
 
-	iMSCP::Dialog->factory()->endGauge() if iMSCP::Dialog->factory()->needGauge();
+	iMSCP::Dialog->factory()->endGauge() if iMSCP::Dialog->factory()->hasGauge();
 
-	iMSCP::HooksManager->getInstance()->trigger('afterSetupTasks') and return 1;
-
-	$rs;
+	iMSCP::HooksManager->getInstance()->trigger('afterSetupTasks');
 }
 
 #
@@ -545,16 +530,18 @@ sub setupAskSqlDsn
 		$dbPass = setupGetQuestion('DATABASE_PASSWORD', 'preseed');
 	} else {
 		$dbPass = setupGetQuestion('DATABASE_PASSWORD')
-			? iMSCP::Crypt->new()->decrypt_db_password(setupGetQuestion('DATABASE_PASSWORD')) : '';
+			? iMSCP::Crypt->getInstance()->decrypt_db_password(setupGetQuestion('DATABASE_PASSWORD')) : '';
 	}
 
 	my $rs = 0;
 
 	my %options = ($main::imscpConfig{'DEBUG'} || iMSCP::Getopt->debug)
-		? (domain_private_tld => qr /^(?:bogus|test)$/)
-		: ();
+		? (domain_private_tld => qr /^(?:bogus|test)$/) : ();
 
-	if($main::reconfigure ~~ ['sql', 'servers', 'all', 'forced'] || ! ($dbPass ne '' && ! setupCheckSqlConnect($dbType, '', $dbHost, $dbPort, $dbUser, $dbPass))) {
+	if(
+		$main::reconfigure ~~ ['sql', 'servers', 'all', 'forced'] ||
+		! ($dbPass ne '' && ! setupCheckSqlConnect($dbType, '', $dbHost, $dbPort, $dbUser, $dbPass))
+	) {
 		my $msg = '';
 
 		do {
@@ -629,7 +616,7 @@ Please, try again.
 		$main::questions{'DATABASE_HOST'} = $dbHost;
 		$main::questions{'DATABASE_PORT'} = $dbPort;
 		$main::questions{'DATABASE_USER'} = $dbUser;
-		$main::questions{'DATABASE_PASSWORD'} = iMSCP::Crypt->new()->encrypt_db_password($dbPass);
+		$main::questions{'DATABASE_PASSWORD'} = iMSCP::Crypt->getInstance()->encrypt_db_password($dbPass);
 	}
 
 	$rs;
@@ -872,7 +859,7 @@ sub setupAskPhpTimezone
 # Ask for i-MSCP ssl support
 sub setupAskSsl
 {
-	my($dialog, $rs) = (shift, undef);
+	my($dialog) = shift;
 	my $sslEnabled = setupGetQuestion('SSL_ENABLED');
 	my $hostname = setupGetQuestion('SERVER_HOSTNAME');
 	my $guiCertDir = $main::imscpConfig{'GUI_CERT_DIR'};
@@ -880,43 +867,41 @@ sub setupAskSsl
 	my $rs = 0;
 
 	if($main::reconfigure ~~ ['ssl', 'all', 'forced'] || $sslEnabled !~ /^yes|no$/i) {
-		Modules::openssl->new()->{'openssl_path'} = $cmdOpenSsl;
+		Modules::openssl->getInstance()->{'openssl_path'} = $cmdOpenSsl;
 		$rs = setupSslDialog($dialog);
 		return $rs if $rs;
 	} elsif(setupGetQuestion('SSL_ENABLED', 'preseed') eq 'yes') { # We are in preseed mode
 		$main::questions{'SSL_ENABLED'} = $sslEnabled;
-		Modules::openssl->new()->{'openssl_path'} = $cmdOpenSsl;
-		Modules::openssl->new()->{'new_cert_path'} = $main::imscpConfig{'GUI_CERT_DIR'};
-		Modules::openssl->new()->{'new_cert_name'} = setupGetQuestion('SERVER_HOSTNAME');
-		Modules::openssl->new()->{'cert_selfsigned'} = setupGetQuestion('SELFSIGNED_CERTIFICATE');
+		Modules::openssl->getInstance()->{'openssl_path'} = $cmdOpenSsl;
+		Modules::openssl->getInstance()->{'new_cert_path'} = $main::imscpConfig{'GUI_CERT_DIR'};
+		Modules::openssl->getInstance()->{'new_cert_name'} = setupGetQuestion('SERVER_HOSTNAME');
+		Modules::openssl->getInstance()->{'cert_selfsigned'} = setupGetQuestion('SELFSIGNED_CERTIFICATE');
 
-		if(! Modules::openssl->new()->{'cert_selfsigned'}) {
-			Modules::openssl->new()->{'key_path'} = setupGetQuestion('CERTIFICATE_KEY_PATH');
-			Modules::openssl->new()->{'key_pass'} = setupGetQuestion('CERTIFICATE_KEY_PASSWORD');
-			Modules::openssl->new()->{'intermediate_cert_path'} = setupGetQuestion('INTERMEDIATE_CERTIFICATE_PATH');
-			Modules::openssl->new()->{'cert_path'} = setupGetQuestion('CERTIFICATE_PATH');
+		if(! Modules::openssl->getInstance()->{'cert_selfsigned'}) {
+			Modules::openssl->getInstance()->{'key_path'} = setupGetQuestion('CERTIFICATE_KEY_PATH');
+			Modules::openssl->getInstance()->{'key_pass'} = setupGetQuestion('CERTIFICATE_KEY_PASSWORD');
+			Modules::openssl->getInstance()->{'intermediate_cert_path'} = setupGetQuestion('INTERMEDIATE_CERTIFICATE_PATH');
+			Modules::openssl->getInstance()->{'cert_path'} = setupGetQuestion('CERTIFICATE_PATH');
 
-			$rs |= Modules::openssl->new()->ssl_check_all();
-			#$rs |= Modules::openssl->new()->ssl_check_intermediate_cert();
-			#$rs |= Modules::openssl->new()->ssl_check_cert()
+			$rs = Modules::openssl->getInstance()->ssl_check_all();
 		} else {
-			Modules::openssl->new()->{'vhost_cert_name'} = setupGetQuestion('SERVER_HOSTNAME')
+			Modules::openssl->getInstance()->{'vhost_cert_name'} = setupGetQuestion('SERVER_HOSTNAME')
 		}
 
 		if($rs) { # In preseed mode, will cause fatal error and it's expected
 			$rs = setupSslDialog($dialog);
         	return $rs if $rs;
         } else {
-        	$rs = Modules::openssl->new()->ssl_export_all();
+        	$rs = Modules::openssl->getInstance()->ssl_export_all();
         	return $rs if $rs;
         }
 	} elsif($sslEnabled eq 'yes') {
-		Modules::openssl->new()->{'openssl_path'} = $cmdOpenSsl;
-		Modules::openssl->new()->{'cert_path'} = "$guiCertDir/$hostname.pem";
-		Modules::openssl->new()->{'intermediate_cert_path'} = "$guiCertDir/$hostname.pem";
-		Modules::openssl->new()->{'key_path'} = "$guiCertDir/$hostname.pem";
+		Modules::openssl->getInstance()->{'openssl_path'} = $cmdOpenSsl;
+		Modules::openssl->getInstance()->{'cert_path'} = "$guiCertDir/$hostname.pem";
+		Modules::openssl->getInstance()->{'intermediate_cert_path'} = "$guiCertDir/$hostname.pem";
+		Modules::openssl->getInstance()->{'key_path'} = "$guiCertDir/$hostname.pem";
 
-		if(Modules::openssl->new()->ssl_check_all()){
+		if(Modules::openssl->getInstance()->ssl_check_all()){
 			iMSCP::Dialog->factory()->msgbox("Certificate is missing or corrupted. Starting recover");
 			$rs = setupSslDialog($dialog);
 			return $rs if $rs;
@@ -943,8 +928,8 @@ sub setupSslDialog
 		$main::questions{'SSL_ENABLED'} = $sslEnabled;
 
 		if($sslEnabled eq 'yes') {
-			Modules::openssl->new()->{'new_cert_path'} = $main::imscpConfig{'GUI_CERT_DIR'};
-			Modules::openssl->new()->{'new_cert_name'} = setupGetQuestion('SERVER_HOSTNAME');
+			Modules::openssl->getInstance()->{'new_cert_path'} = $main::imscpConfig{'GUI_CERT_DIR'};
+			Modules::openssl->getInstance()->{'new_cert_name'} = setupGetQuestion('SERVER_HOSTNAME');
 
 			# TODO determine default value here
 			($rs, $ret) = $dialog->radiolist( "\nDo you have an SSL certificate?", ['yes', 'no'], 'no');
@@ -952,18 +937,17 @@ sub setupSslDialog
 			if($rs != 30) {
 				$ret = $ret eq 'yes' ? 1 : 0;
 
-				Modules::openssl->new()->{'cert_selfsigned'} = 1 if ! $ret;
-				Modules::openssl->new()->{'vhost_cert_name'} = setupGetQuestion('SERVER_HOSTNAME') if ! $ret;
+				Modules::openssl->getInstance()->{'cert_selfsigned'} = 1 if ! $ret;
+				Modules::openssl->getInstance()->{'vhost_cert_name'} = setupGetQuestion('SERVER_HOSTNAME') if ! $ret;
 
-				if(! Modules::openssl->new()->{'cert_selfsigned'}) {
-					#Modules::openssl->new()->{'intermediate_cert_path'} = '';
+				if(! Modules::openssl->getInstance()->{'cert_selfsigned'}) {
 					$rs = setupAskCertificateKeyPath($dialog);
 					$rs = setupAskIntermediateCertificatePath($dialog) if $rs != 30;
 					$rs = setupAskCertificatePath($dialog) if $rs != 30;
 				}
 
 				if($rs != 30) {
-					$rs = Modules::openssl->new()->ssl_export_all();
+					$rs = Modules::openssl->getInstance()->ssl_export_all();
 					return $rs if $rs;
 				}
 			}
@@ -996,18 +980,18 @@ sub setupAskCertificateKeyPath
 
 		if($rs != 30) {
 			$ret =~ s/(["\$`\\])/\\$1/g;
-			Modules::openssl->new()->{'key_pass'} = $ret;
+			Modules::openssl->getInstance()->{'key_pass'} = $ret;
 
 			do {
 				($rs, $ret) = $dialog->fselect($key);
 			} while($rs != 30 && ! ($ret && -f $ret));
 
 			if($rs != 30) {
-				Modules::openssl->new()->{'key_path'} = $ret;
+				Modules::openssl->getInstance()->{'key_path'} = $ret;
 				$key = $ret;
 			}
 		}
-	} while($rs != 30 && Modules::openssl->new()->ssl_check_key());
+	} while($rs != 30 && Modules::openssl->getInstance()->ssl_check_key());
 
 	$rs;
 }
@@ -1023,7 +1007,7 @@ sub setupAskIntermediateCertificatePath
 		($rs, $ret) = $dialog->fselect($cert);
 	} while($rs != 30 && ! ($ret && -f $ret));
 
-	Modules::openssl->new()->{'intermediate_cert_path'} = $ret if $rs != 30;
+	Modules::openssl->getInstance()->{'intermediate_cert_path'} = $ret if $rs != 30;
 
 	$rs;
 }
@@ -1041,10 +1025,10 @@ sub setupAskCertificatePath
 		} while($rs != 30 && ! ($ret && -f $ret));
 
 		if($rs != 30) {
-			Modules::openssl->new()->{'cert_path'} = $ret;
+			Modules::openssl->getInstance()->{'cert_path'} = $ret;
 			$cert = $ret;
 		}
-	} while($rs != 30 && Modules::openssl->new()->ssl_check_cert());
+	} while($rs != 30 && Modules::openssl->getInstance()->ssl_check_cert());
 
 	$rs;
 }
@@ -1118,24 +1102,37 @@ This feature allows resellers to propose backup options to their customers such 
 #
 sub setupSaveOldConfig
 {
-	iMSCP::HooksManager->getInstance()->trigger('beforeSetupSaveOldConfig') and return 1;
+	my $rs = 0;
 
-	my $file = iMSCP::File->new(filename => "$main::imscpConfig{'CONF_DIR'}/imscp.conf");
-	my $cfg = $file->get() or return 1;
+	$rs = iMSCP::HooksManager->getInstance()->trigger('beforeSetupSaveOldConfig');
+	return $rs if $rs;
 
-	$file = iMSCP::File->new(filename => "$main::imscpConfig{'CONF_DIR'}/imscp.old.conf");
-	$file->set($cfg) and return 1;
-	$file->save and return 1;
+	my $file = iMSCP::File->new('filename' => "$main::imscpConfig{'CONF_DIR'}/imscp.conf");
 
-	iMSCP::HooksManager->getInstance()->trigger('afterSetupSaveOldConfig') and return 1;
+	my $cfg = $file->get();
+	unless(defined $cfg) {
+		error("$main::imscpConfig{'CONF_DIR'}/imscp.conf");
+		return 1;
+	}
 
-	0;
+	$file = iMSCP::File->new('filename' => "$main::imscpConfig{'CONF_DIR'}/imscp.old.conf");
+
+	$rs = $file->set($cfg);
+	return $rs if $rs;
+
+	$rs = $file->save();
+	return $rs if $rs;
+
+	iMSCP::HooksManager->getInstance()->trigger('afterSetupSaveOldConfig');
 }
 
 # Write question answers into imscp.conf file
 sub setupWriteNewConfig
 {
-	iMSCP::HooksManager->getInstance()->trigger('beforeSetupWriteNewConfig') and return 1;
+	my $rs = 0;
+
+	$rs = iMSCP::HooksManager->getInstance()->trigger('beforeSetupWriteNewConfig');
+	return $rs if $rs;
 
 	for(keys %main::questions) {
 		if(exists $main::imscpConfig{$_}) {
@@ -1143,27 +1140,30 @@ sub setupWriteNewConfig
 		}
    	}
 
-   	iMSCP::HooksManager->getInstance()->trigger('afterSetupWriteNewConfig') and return 1;
+   	iMSCP::HooksManager->getInstance()->trigger('afterSetupWriteNewConfig');
 }
 
 # Create system master group for imscp
 sub setupCreateMasterGroup
 {
-	iMSCP::HooksManager->getInstance()->trigger('beforeSetupCreateMasterGroup') and return 1;
+	my $rs = 0;
+
+	$rs = iMSCP::HooksManager->getInstance()->trigger('beforeSetupCreateMasterGroup');
+	return $rs if $rs;
 
 	my $group = Modules::SystemGroup->new();
 
 	$group->{'system'} = 'yes';
-	$group->addSystemGroup($main::imscpConfig{'MASTER_GROUP'}) and return 1;
+	$rs = $group->addSystemGroup($main::imscpConfig{'MASTER_GROUP'});
+	return $rs if $rs;
 
-	iMSCP::HooksManager->getInstance()->trigger('afterSetupCreateMasterGroup') and return 1;
-
-	0;
+	iMSCP::HooksManager->getInstance()->trigger('afterSetupCreateMasterGroup');
 }
 
 # Create default directories needed by i-MSCP
 sub setupCreateSystemDirectories
 {
+	my $rs = 0;
 	my $rootUName = $main::imscpConfig{'ROOT_USER'};
 	my $rootGName = $main::imscpConfig{'ROOT_GROUP'};
 
@@ -1173,15 +1173,15 @@ sub setupCreateSystemDirectories
 		[$main::imscpConfig{'BACKUP_FILE_DIR'}, $rootUName, $rootGName, 0750]
 	);
 
-	iMSCP::HooksManager->getInstance()->trigger('beforeSetupCreateSystemDirectories', \@systemDirectories) and return 1;
+	$rs = iMSCP::HooksManager->getInstance()->trigger('beforeSetupCreateSystemDirectories', \@systemDirectories);
+	return $rs if $rs;
 
 	for (@systemDirectories) {
-		iMSCP::Dir->new(dirname => $_->[0])->make({ user => $_->[1], group => $_->[2], mode => $_->[3]}) and return 1;
+		$rs = iMSCP::Dir->new('dirname' => $_->[0])->make({ user => $_->[1], group => $_->[2], mode => $_->[3]});
+		return $rs if $rs;
 	}
 
-	iMSCP::HooksManager->getInstance()->trigger('afterSetupCreateSystemDirectories') and return 1;
-
-	0;
+	iMSCP::HooksManager->getInstance()->trigger('afterSetupCreateSystemDirectories');
 }
 
 # Setup server hostname
@@ -1191,14 +1191,16 @@ sub setupServerHostname
 	my $baseServerIp = setupGetQuestion('BASE_SERVER_IP');
 	my $rs = 0;
 
-	iMSCP::HooksManager->getInstance()->trigger('beforeSetupServerHostname', \$hostname, \$baseServerIp) and return 1;
+	$rs = iMSCP::HooksManager->getInstance()->trigger('beforeSetupServerHostname', \$hostname, \$baseServerIp);
+	return $rs if $rs;
 
 	my @labels = split /\./, $hostname;
 	my $host = shift(@labels);
 	my $hostnameLocal = "$hostname.local";
 
-	my $file = iMSCP::File->new(filename => '/etc/hosts');
-	$rs |= $file->copyFile('/etc/hosts.bkp') if !-f '/etc/hosts.bkp';
+	my $file = iMSCP::File->new('filename' => '/etc/hosts');
+	$rs = $file->copyFile('/etc/hosts.bkp') if ! -f '/etc/hosts.bkp';
+	return $rs if $rs;
 
 	my $content = "# 'hosts' file configuration.\n\n";
 
@@ -1213,34 +1215,52 @@ sub setupServerHostname
 	$content .= "ff02::2\tip6-allrouters\n";
 	$content .= "ff02::3\tip6-allhosts\n";
 
-	$rs |= $file->set($content);
-	$rs |= $file->save();
-	$rs |= $file->mode(0644);
-	$rs |= $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
+	$rs = $file->set($content);
+	return $rs if $rs;
 
-	$file = iMSCP::File->new(filename => '/etc/hostname');
-	$rs |= $file->copyFile('/etc/hostname.bkp') if ! -f '/etc/hostname.bkp';
+	$rs = $file->save();
+	return $rs if $rs;
+
+	$rs = $file->mode(0644);
+	return $rs if $rs;
+
+	$rs = $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
+	return $rs if $rs;
+
+	$file = iMSCP::File->new('filename' => '/etc/hostname');
+
+	$rs = $file->copyFile('/etc/hostname.bkp') if ! -f '/etc/hostname.bkp';
+	return $rs if $rs;
+
 	$content = $host;
-	$rs |= $file->set($content);
-	$rs |= $file->save();
-	$rs |= $file->mode(0644);
-	$rs |= $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
+
+	$rs = $file->set($content);
+	return $rs if $rs;
+
+	$rs = $file->save();
+	return $rs if $rs;
+
+	$rs = $file->mode(0644);
+	return $rs if $rs;
+
+	$rs = $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
+	return $rs if $rs;
 
 	my ($stdout, $stderr);
-	$rs |= execute("$main::imscpConfig{'CMD_HOSTNAME'} $host", \$stdout, \$stderr);
-	debug("$stdout") if $stdout;
-	warning("$stderr") if !$rs && $stderr;
-	error("$stderr") if $rs && $stderr;
-	error("Unable to set server hostname") if $rs && !$stderr;
+	$rs = execute("$main::imscpConfig{'CMD_HOSTNAME'} $host", \$stdout, \$stderr);
+	debug($stdout) if $stdout;
+	warning($stderr) if ! $rs && $stderr;
+	error($stderr) if $rs && $stderr;
+	error('Unable to set server hostname') if $rs && ! $stderr;
+	return $rs if $rs;
 
-	iMSCP::HooksManager->getInstance()->trigger('afterSetupServerHostname') and return 1;
-
-	$rs;
+	iMSCP::HooksManager->getInstance()->trigger('afterSetupServerHostname');
 }
 
 # Setup server ips
 sub setupServerIps
 {
+	my $rs = 0;
 	my $baseServerIp = setupGetQuestion('BASE_SERVER_IP');
 	my $serverIpsToReplace = setupGetQuestion('SERVER_IPS_TO_REPLACE') || {};
 	my $serverIpsToDelete = setupGetQuestion('SERVER_IPS_TO_DELETE') || [];
@@ -1252,12 +1272,16 @@ sub setupServerIps
 		$main::questions{'SERVER_IPS'} ? @{$main::questions{'SERVER_IPS'}} : ()
 	);
 
-	iMSCP::HooksManager->getInstance()->trigger(
+	$rs = iMSCP::HooksManager->getInstance()->trigger(
 		'beforeSetupServerIps', \$baseServerIp, \@serverIps, $serverIpsToReplace
-	) and return 1;
+	);
+	return $rs if $rs;
 
 	my ($database, $errstr) = setupGetSqlConnect(setupGetQuestion('DATABASE_NAME'));
-    fatal("Unable to connect to the SQL database: $errstr") if ! $database;
+	if(! $database) {
+		error("Unable to connect to the SQL database: $errstr");;
+		return 1;
+	}
 
 	# Get IDs of IP addresses to replace
 	if(%{$serverIpsToReplace}) {
@@ -1266,13 +1290,13 @@ sub setupServerIps
 			'ip_number', 'SELECT `ip_id`, `ip_number` FROM `server_ips` WHERE `ip_number` IN ('. $ipsToReplace .')'
 		);
 		if(ref $oldIptoIdMap ne 'HASH') {
-			error("Cannot get IDs of server IPs to replace: $oldIptoIdMap");
+			error("Unable to get IDs of server IPs to replace: $oldIptoIdMap");
 			return 1;
 		}
 	}
 
 	my $ips = iMSCP::IP->new();
-	my $rs = $ips->loadIPs();
+	$rs = $ips->loadIPs();
 	return $rs if $rs;
 
 	# Process server IP addresses addition
@@ -1296,11 +1320,11 @@ sub setupServerIps
 				$_, $netCard, 'toadd', $_
 			);
 			if (ref $rs ne 'HASH') {
-				error("Cannot add/update server address IP '$_': $rs");
+				error("Unable to add/update server address IP '$_': $rs");
 				return 1;
 			}
 		} else {
-			error("Cannot add the '$_' IP into database");
+			error("Unable to add the '$_' IP into database");
 			return 1;
 		}
 	}
@@ -1310,19 +1334,15 @@ sub setupServerIps
 	my ($alias) =  split /\./, $serverHostname;
 
 	$rs = $database->doQuery(
-		'dummy',
-		'UPDATE `server_ips` SET `ip_domain` = ?, `ip_alias` = ? WHERE `ip_number` = ?',
-		$serverHostname,
-		$alias,
-		$baseServerIp
+		'dummy', 'UPDATE `server_ips` SET `ip_domain` = ?, `ip_alias` = ? WHERE `ip_number` = ?',
+		$serverHostname, $alias, $baseServerIp
 	);
 	return $rs if ref $rs ne 'HASH';
 
 	$rs = $database->doQuery(
 		'dummy',
 		'UPDATE `server_ips` SET `ip_domain` = NULL, `ip_alias` = NULL WHERE `ip_number` <> ?  AND `ip_domain` = ?',
-		$baseServerIp,
-		$serverHostname
+		$baseServerIp, $serverHostname
 	);
 	return $rs if ref $rs ne 'HASH';
 
@@ -1350,7 +1370,7 @@ sub setupServerIps
 				'ip_number', 'SELECT `ip_id`, `ip_number` FROM `server_ips` WHERE `ip_number` = ?', $newIp
 			);
 			if(ref $newIpId ne 'HASH') {
-				error("Cannot get ID of the '$newIp' address IP:$newIpId");
+				error("Unable to get ID of the '$newIp' address IP:$newIpId");
 				return 1;
 			}
 
@@ -1383,20 +1403,21 @@ sub setupServerIps
 			$baseServerIp
 		);
 		if (ref $rs ne 'HASH') {
-			error("Cannot schedule server IPs deletion: $rs");
+			error("Unable to schedule server IPs deletion: $rs");
 			return 1;
 		}
 	}
 
-	iMSCP::HooksManager->getInstance()->trigger('afterSetupServerIps') and return 1;
-
-	0;
+	iMSCP::HooksManager->getInstance()->trigger('afterSetupServerIps');
 }
 
 # Setup local resolver
 sub setupLocalResolver
 {
-	iMSCP::HooksManager->getInstance()->trigger('beforeSetupLocalResolver') and return 1;
+	my $rs = 0;
+
+	$rs = iMSCP::HooksManager->getInstance()->trigger('beforeSetupLocalResolver');
+	return $rs if $rs;
 
 	my ($err, $file, $content, $out);
 
@@ -1404,9 +1425,9 @@ sub setupLocalResolver
 		$file = iMSCP::File->new(filename => $main::imscpConfig{'RESOLVER_CONF_FILE'});
 		$content = $file->get();
 
-		if (! $content){
-			$err = "Can't read $main::imscpConfig{'RESOLVER_CONF_FILE'}";
-			error("$err");
+		unless (defined $content){
+			$err = "Unable to read $main::imscpConfig{'RESOLVER_CONF_FILE'}";
+			error($err);
 			return 1;
 		}
 
@@ -1422,37 +1443,51 @@ sub setupLocalResolver
 
 		# Saving the old file if needed
 		if(! -f "$main::imscpConfig{'RESOLVER_CONF_FILE'}.bkp") {
-			$file->copyFile("$main::imscpConfig{'RESOLVER_CONF_FILE'}.bkp") and return 1;
+			$rs = $file->copyFile("$main::imscpConfig{'RESOLVER_CONF_FILE'}.bkp");
+			return $rs if $rs;
 		}
 
 		# Storing the new file
-		$file->set($content) and return 1;
-		$file->save() and return 1;
-		$file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'}) and return 1;
-		$file->mode(0644) and return 1;
+		$rs = $file->set($content);
+		return $rs if $rs;
+
+		$rs = $file->save() ;
+		return $rs if $rs;
+
+		$rs = $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
+		return $rs if $rs;
+
+		$rs = $file->mode(0644);
+		return $rs if $rs;
 	} else {
 		warning("Unable to found the resolv.conf file on your system");
 	}
 
-	iMSCP::HooksManager->getInstance()->trigger('afterSetupLocalResolver') and return 1;
-
-	0;
+	iMSCP::HooksManager->getInstance()->trigger('afterSetupLocalResolver');
 }
 
 # Create iMSCP database
 sub setupCreateDatabase
 {
+	my $rs = 0;
 	my $dbName = setupGetQuestion('DATABASE_NAME');
 
-	iMSCP::HooksManager->getInstance()->trigger('beforeSetupCreateDatabase', \$dbName) and return 1;
+	$rs = iMSCP::HooksManager->getInstance()->trigger('beforeSetupCreateDatabase', \$dbName);
+	return $rs if $rs;
 
 	if(! setupIsImscpDb($dbName)) {
 		my ($database, $errStr) = setupGetSqlConnect();
-		fatal("Unable to connect to SQL Server: $errStr") if ! $database;
+		if(! $database) {
+			error("Unable to connect to SQL server: $errStr");
+			return 1;
+		}
 
 		my $qdbName = $database->quoteIdentifier($dbName);
 		my $rs = $database->doQuery('dummy', "CREATE DATABASE $qdbName CHARACTER SET utf8 COLLATE utf8_unicode_ci;");
-		fatal("Unable to create the '$dbName' SQL database: $rs") if ref $rs ne 'HASH';
+		if(ref $rs ne 'HASH') {
+			error("Unable to create the '$dbName' SQL database: $rs");
+			return 1;
+		}
 
 		$database->set('DATABASE_NAME', $dbName);
 		$rs = $database->connect();
@@ -1463,23 +1498,28 @@ sub setupCreateDatabase
 	}
 
 	# In any case, we ensure we have last db schema by triggering db update
-	setupUpdateDatabase() and return 1;
+	$rs = setupUpdateDatabase();
+	return $rs if $rs;
 
-	iMSCP::HooksManager->getInstance()->trigger('afterSetupCreateDatabase') and return 1;
-
-	0;
+	iMSCP::HooksManager->getInstance()->trigger('afterSetupCreateDatabase');
 }
 
 # Convenience method allowing to create or update a database schema
 sub setupImportSqlSchema
 {
+	my $rs = 0;
 	my $database = shift;
 	my $file = shift;
 
-	iMSCP::HooksManager->getInstance()->trigger('beforeSetupImportSqlSchema', \$file) and return 1;
+	$rs = iMSCP::HooksManager->getInstance()->trigger('beforeSetupImportSqlSchema', \$file);
 
-	my $content = iMSCP::File->new(filename => $file)->get();
-	$content =~ s/^(--[^\n]{0,})?\n//mg;
+	my $content = iMSCP::File->new('filename' => $file)->get();
+	unless(defined $content) {
+		error("Unable to read $file");
+		return 1;
+	}
+
+	$content =~ s/^(--[^\n]{0,})?\n//gm;
 	my @queries = (split /;\n/, $content);
 
 	my $title = "Executing " . @queries . " queries:";
@@ -1488,9 +1528,12 @@ sub setupImportSqlSchema
 
 	my $step = 1;
 
-	for (@queries) { # TODO Must be fixed: first query is never show here
+	for (@queries) {
 		my $rs = $database->doQuery('dummy', $_);
-		return $rs if (ref $rs ne 'HASH');
+		if(ref $rs ne 'HASH') {
+			error("Unable to execute SQL query: $rs");
+			return 1;
+		}
 
 		my $msg = $queries[$step] ? "$title\n$queries[$step]" : $title;
 		step('', $msg, scalar @queries, $step);
@@ -1499,39 +1542,42 @@ sub setupImportSqlSchema
 
 	endDetail();
 
-	iMSCP::HooksManager->getInstance()->trigger('afterSetupImportSqlSchema') and return 1;
-
-	0;
+	iMSCP::HooksManager->getInstance()->trigger('afterSetupImportSqlSchema');
 }
 
 # Update i-MSCP database schema
 sub setupUpdateDatabase
 {
-	iMSCP::HooksManager->getInstance()->trigger('beforeSetupUpdateDatabase') and return 1;
+	my $rs = 0;
 
-	my ($rs, $stdout, $stderr);
-	my $file = iMSCP::File->new(filename => "$main::imscpConfig{'ROOT_DIR'}/engine/setup/updDB.php");
+	$rs = iMSCP::HooksManager->getInstance()->trigger('beforeSetupUpdateDatabase');
+	return $rs if $rs;
+
+	my $file = iMSCP::File->new('filename' => "$main::imscpConfig{'ROOT_DIR'}/engine/setup/updDB.php");
 
 	my $content	= $file->get();
-	return 1 if(!$content);
+	unless(defined $content) {
+		error("Unable to read $main::imscpConfig{'ROOT_DIR'}/engine/setup/updDB.php");
+		return 1;
+	}
 
 	if($content =~ s/{GUI_ROOT_DIR}/$main::imscpConfig{'GUI_ROOT_DIR'}/) {
 		$rs = $file->set($content);
-		return 1 if($rs != 0);
+		return $rs if $rs;
 
 		$rs = $file->save();
-		return 1 if($rs != 0);
+		return $rs if $rs;
 	}
 
+	my ($stdout, $stderr);
 	$rs = execute(
 		"$main::imscpConfig{'CMD_PHP'} $main::imscpConfig{'ROOT_DIR'}/engine/setup/updDB.php", \$stdout, \$stderr
 	);
-	error("$stdout $stderr") if $rs;
-	return ($stdout ? "$stdout " : '' ) . $stderr . " exitcode: $rs" if $rs;
+	debug($stdout) if $stdout;
+	error($stderr) if $rs && $stderr;
+	return $rs if $rs;
 
-	iMSCP::HooksManager->getInstance()->trigger('afterSetupUpdateDatabase') and return 1;
-
-	0;
+	iMSCP::HooksManager->getInstance()->trigger('afterSetupUpdateDatabase');
 }
 
 # Secure any SQL account by removing those without password
@@ -1543,13 +1589,19 @@ sub setupUpdateDatabase
 # - Reload privileges tables
 sub setupSecureSqlInstallation
 {
-	iMSCP::HooksManager->getInstance()->trigger('beforeSetupSecureSqlInstallation') and return 1;
+	my $rs = 0;
+
+	$rs = iMSCP::HooksManager->getInstance()->trigger('beforeSetupSecureSqlInstallation');
+	return $rs if $rs;
 
 	my ($database, $errStr) = setupGetSqlConnect();
-	fatal("Unable to connect to the SQL Server: $errStr") if ! $database;
+	if(! $database) {
+		error("Unable to connect to SQL server: $errStr");
+		return 1;
+	}
 
 	# Remove anonymous users
-	my $errStr = $database->doQuery('dummy', "DELETE FROM `mysql`.`user` WHERE `User` = '';");
+	$errStr = $database->doQuery('dummy', "DELETE FROM `mysql`.`user` WHERE `User` = '';");
 	if(ref $errStr ne 'HASH') {
 		error("Unable to delete anonymous users: $errStr");
 		return 1;
@@ -1560,7 +1612,10 @@ sub setupSecureSqlInstallation
 
 	for (keys %{$rdata}) {
 		$errStr = $database->doQuery('dummy', "DROP USER ?@?", $_, $rdata->{$_}->{'Host'});
-		error("Unable to remove SQL user $_\\@$rdata->{$_}->{'Host'}: $errStr") if ref $errStr ne 'HASH';
+		if(ref $errStr ne 'HASH') {
+			error("Unable to remove SQL user $_\\@$rdata->{$_}->{'Host'}: $errStr");
+			return 1;
+		}
 	}
 
     # Remove test database if any
@@ -1589,44 +1644,45 @@ sub setupSecureSqlInstallation
 
 	# Reload privilege tables
     $errStr = $database->doQuery('dummy', 'FLUSH PRIVILEGES;');
-   	if(ref $errStr ne 'HASH'){
+   	if(ref $errStr ne 'HASH') {
     	debug("Unable to reload privileges tables: $errStr");
     	return 1;
     }
 
-	iMSCP::HooksManager->getInstance()->trigger('afterSetupSecureSqlInstallation') and return 1;
-
-	0;
+	iMSCP::HooksManager->getInstance()->trigger('afterSetupSecureSqlInstallation');
 }
 
 # Setup default admin
 sub setupDefaultAdmin
 {
+	my $rs = 0;
 	my $adminLoginName = setupGetQuestion('ADMIN_LOGIN_NAME');
 	my $adminOldLoginName = setupGetQuestion('ADMIN_OLD_LOGIN_NAME');
 	my $adminPassword= setupGetQuestion('ADMIN_PASSWORD');
 	my $adminEmail= setupGetQuestion('DEFAULT_ADMIN_ADDRESS');
 
-	iMSCP::HooksManager->getInstance()->trigger(
+	$rs = iMSCP::HooksManager->getInstance()->trigger(
 		'beforeSetupDefaultAdmin', \$adminLoginName, \$adminPassword, \$adminEmail
-	) and return 1;
+	);
+	return $rs if $rs;
 
 	if($adminLoginName && $adminPassword) {
 
-		$adminPassword = iMSCP::Crypt->new()->crypt_md5_data($adminPassword);
+		$adminPassword = iMSCP::Crypt->getInstance()->crypt_md5_data($adminPassword);
 
 		my ($database, $errStr) = setupGetSqlConnect(setupGetQuestion('DATABASE_NAME'));
-		fatal("Unable to connect to SQL Server: $errStr") if ! $database;
+		if(! $database) {
+			error("Unable to connect to SQL server: $errStr");
+			return 1;
+		}
 
 		my $rs = $database->doQuery(
-			'dummy',
-			'DELETE FROM `admin` WHERE `admin_name` = ? OR `admin_name` = ?',
-			$adminLoginName,
-			$adminOldLoginName
+			'dummy', 'DELETE FROM `admin` WHERE `admin_name` = ? OR `admin_name` = ?',
+			$adminLoginName, $adminOldLoginName
 		);
 		return $rs if ref $rs ne 'HASH';
 
-		my $rs = $database->doQuery(
+		$rs = $database->doQuery(
 			'dummy',
 			'
 				INSERT INTO `admin` (
@@ -1678,18 +1734,19 @@ sub setupDefaultAdmin
 		return $rs if ref $rs ne 'HASH';
 	}
 
-	iMSCP::HooksManager->getInstance()->trigger('afterSetupDefaultAdmin') and return 1;
-
-	0;
+	iMSCP::HooksManager->getInstance()->trigger('afterSetupDefaultAdmin');
 }
 
 # Setup crontab
 # TODO: awstats part should be done via awstats installer
 sub setupCron
 {
-	iMSCP::HooksManager->getInstance()->trigger('beforeSetupCron') and return 1;
+	my $rs = 0;
 
-	my ($rs, $cfgTpl, $err);
+	$rs = iMSCP::HooksManager->getInstance()->trigger('beforeSetupCron');
+	return $rs if $rs;
+
+	my ($cfgTpl, $err);
 
 	my $awstats = '';
 	my ($rkhunter, $chkrootkit);
@@ -1704,14 +1761,18 @@ sub setupCron
 
 	# Saving the current production file if it exists
 	if(-f "$prodDir/imscp") {
-		iMSCP::File->new(filename => "$prodDir/imscp")->copyFile("$bkpDir/imscp." . time) and return 1;
+		$rs = iMSCP::File->new('filename' => "$prodDir/imscp")->copyFile("$bkpDir/imscp." . time);
+		return $rs if $rs;
 	}
 
 	## Building new configuration file
 
 	# Loading the template from /etc/imscp/cron.d/imscp
-	$cfgTpl = iMSCP::File->new(filename => "$cfgDir/imscp")->get();
-	return 1 if (!$cfgTpl);
+	$cfgTpl = iMSCP::File->new('filename' => "$cfgDir/imscp")->get();
+	unless(defined $cfgTpl) {
+		error("Unable to read $cfgDir/imscp");
+		return 1;
+	}
 
 	# Awstats cron task preparation (On|Off) according status in imscp.conf
 	if ($main::imscpConfig{'AWSTATS_ACTIVE'} !~ /^yes/i || $main::imscpConfig{'AWSTATS_MODE'} eq '1') {
@@ -1726,47 +1787,60 @@ sub setupCron
 	# Building the new file
 	$cfgTpl = iMSCP::Templator::process(
 		{
-			LOG_DIR				=> $main::imscpConfig{'LOG_DIR'},
-			CONF_DIR			=> $main::imscpConfig{'CONF_DIR'},
-			QUOTA_ROOT_DIR		=> $main::imscpConfig{'QUOTA_ROOT_DIR'},
-			TRAFF_ROOT_DIR		=> $main::imscpConfig{'TRAFF_ROOT_DIR'},
-			TOOLS_ROOT_DIR		=> $main::imscpConfig{'TOOLS_ROOT_DIR'},
-			BACKUP_ROOT_DIR		=> $main::imscpConfig{'BACKUP_ROOT_DIR'},
-			RKHUNTER_LOG		=> $main::imscpConfig{'RKHUNTER_LOG'},
-			CHKROOTKIT_LOG		=> $main::imscpConfig{'CHKROOTKIT_LOG'},
-			AWSTATS_ROOT_DIR	=> $main::imscpConfig{'AWSTATS_ROOT_DIR'},
-			AWSTATS_ENGINE_DIR	=> $main::imscpConfig{'AWSTATS_ENGINE_DIR'},
-			'AW-ENABLED'		=> $awstats,
-			'RK-ENABLED'		=> !length($rkhunter) ? '#' : '',
-			RKHUNTER			=> $rkhunter,
-			'CR-ENABLED'		=> !length($chkrootkit) ? '#' : '',
-			CHKROOTKIT			=> $chkrootkit
+			'LOG_DIR' => $main::imscpConfig{'LOG_DIR'},
+			'CONF_DIR' => $main::imscpConfig{'CONF_DIR'},
+			'QUOTA_ROOT_DIR' => $main::imscpConfig{'QUOTA_ROOT_DIR'},
+			'TRAFF_ROOT_DIR' => $main::imscpConfig{'TRAFF_ROOT_DIR'},
+			'TOOLS_ROOT_DIR' => $main::imscpConfig{'TOOLS_ROOT_DIR'},
+			'BACKUP_ROOT_DIR' => $main::imscpConfig{'BACKUP_ROOT_DIR'},
+			'RKHUNTER_LOG' => $main::imscpConfig{'RKHUNTER_LOG'},
+			'CHKROOTKIT_LOG' => $main::imscpConfig{'CHKROOTKIT_LOG'},
+			'AWSTATS_ROOT_DIR' => $main::imscpConfig{'AWSTATS_ROOT_DIR'},
+			'AWSTATS_ENGINE_DIR' => $main::imscpConfig{'AWSTATS_ENGINE_DIR'},
+			'AW-ENABLED' => $awstats,
+			'RK-ENABLED' => ! length($rkhunter) ? '#' : '',
+			'RKHUNTER' => $rkhunter,
+			'CR-ENABLED' => ! length($chkrootkit) ? '#' : '',
+			'CHKROOTKIT' => $chkrootkit
 		},
 		$cfgTpl
 	);
-	return 1 if ! $cfgTpl;
+	return 1 if ! defined $cfgTpl;
 
 	# Store new file in working directory
-	my $file = iMSCP::File->new(filename => "$wrkDir/imscp");
-	$file->set($cfgTpl);
-	$file->save() and return 1;
-	$file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'}) and return 1;
-	$file->mode(0644) and return 1;
+	my $file = iMSCP::File->new('filename' => "$wrkDir/imscp");
+
+	$rs = $file->set($cfgTpl);
+	return $rs if $rs;
+
+	$rs = $file->save();
+	return $rs if $rs;
+
+	$rs = $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
+	return $rs if $rs;
+
+	$rs = $file->mode(0644);
+	return $rs if $rs;
 
 	# Install new file in production directory
-	$file->copyFile("$prodDir/") and return 1;
+	$rs = $file->copyFile("$prodDir/");
+	return $rs if $rs;
 
-	iMSCP::HooksManager->getInstance()->trigger('afterSetupCron') and return 1;
+	iMSCP::HooksManager->getInstance()->trigger('afterSetupCron');
 
 	0;
 }
 
 # Setup i-MSCP init scripts
+# TODO review
 sub setupInitScripts
 {
-	iMSCP::HooksManager->getInstance()->trigger('beforeSetupInitScripts') and return 1;
+	my $rs = 0;
 
-	my ($rs, $rdata, $fileName, $stdout, $stderr);
+	$rs = iMSCP::HooksManager->getInstance()->trigger('beforeSetupInitScripts');
+	return $rs if $rs;
+
+	my ($rdata, $fileName, $stdout, $stderr);
 
 	# Odering is important here.
 	# Service imscp_network has to be enabled to start service imscp_daemon. It's a
@@ -1779,32 +1853,39 @@ sub setupInitScripts
 
 		($fileName) = /.*\/([^\/]*)$/;
 
-		my $file = iMSCP::File->new(filename => $_);
-		$file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'}) and return 1;
-		$file->mode(0755) and return 1;
+		my $file = iMSCP::File->new('filename' => $_);
+
+		$rs = $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
+		return $rs if $rs;
+
+		$rs = $file->mode(0755);
+		return $rs if $rs;
 
 		# Services installation / update (Debian, Ubuntu)
 		$rs = execute("/usr/sbin/update-rc.d -f $fileName remove", \$stdout, \$stderr);
-		debug("$stdout") if $stdout;
-		error("$stderr") if $rs;
+		debug($stdout) if $stdout;
+		error($stderr) if $stderr && $rs;
+		return $rs if $rs;
 
 		# Fix for #119: Defect - Error when adding IP's
 		# We are now using dependency based boot sequencing (insserv)
 		# See http://wiki.debian.org/LSBInitScripts ; Must be read carrefully
 		$rs = execute("/usr/sbin/update-rc.d $fileName defaults", \$stdout, \$stderr);
-		debug("$stdout") if $stdout;
-		error("$stderr") if $rs;
+		debug($stdout) if $stdout;
+		error($stderr) if $stderr && $rs;
+		return $rs if $rs;
 	}
 
-	iMSCP::HooksManager->getInstance()->trigger('afterSetupInitScripts') and return 1;
-
-	0;
+	iMSCP::HooksManager->getInstance()->trigger('afterSetupInitScripts');
 }
 
 # Setup i-MSCP base permissions
 sub setupBasePermissions
 {
-	iMSCP::HooksManager->getInstance()->trigger('beforeSetupBasePermissions') and return 1;
+	my $rs = 0;
+
+	$rs = iMSCP::HooksManager->getInstance()->trigger('beforeSetupBasePermissions');
+	return $rs if $rs;
 
 	my $rootUName = $main::imscpConfig{'ROOT_USER'};
 	my $rootGName = $main::imscpConfig{'ROOT_GROUP'};
@@ -1812,88 +1893,123 @@ sub setupBasePermissions
 	my $CONF_DIR = $main::imscpConfig{'CONF_DIR'};
 	my $ROOT_DIR = $main::imscpConfig{'ROOT_DIR'};
 	my $LOG_DIR = $main::imscpConfig{'LOG_DIR'};
-	my $rs = 0;
 
-	$rs |= setRights("$CONF_DIR", { user => $rootUName, group => $masterUName, mode => '0770' });
-	$rs |= setRights("$CONF_DIR/imscp.conf", { user => $rootUName, group => $masterUName, mode => '0660' });
-	$rs |= setRights("$CONF_DIR/imscp.old.conf", { user => $rootUName, group => $masterUName, mode => '0660' });
-	$rs |= setRights("$CONF_DIR/imscp-db-keys", { user => $rootUName, group => $masterUName, mode => '0640' });
-	$rs |= setRights("$ROOT_DIR/engine", { user => $rootUName, group => $masterUName, mode => '0755', recursive => 'yes' });
-	$rs |= setRights($LOG_DIR, { user => $rootUName, group => $masterUName, mode => '0750' });
+	$rs = setRights("$CONF_DIR", { 'user' => $rootUName, 'group' => $masterUName, 'mode' => '0770' });
+	return $rs if $rs;
 
-	iMSCP::HooksManager->getInstance()->trigger('afterSetupBasePermissions') and return 1;
+	$rs = setRights("$CONF_DIR/imscp.conf", { 'user' => $rootUName, 'group' => $masterUName, 'mode' => '0660' });
+	return $rs if $rs;
 
-	0;
+	$rs = setRights("$CONF_DIR/imscp.old.conf", { 'user' => $rootUName, 'group' => $masterUName, 'mode' => '0660' });
+	return $rs if $rs;
+
+	$rs = setRights("$CONF_DIR/imscp-db-keys", { 'user' => $rootUName, 'group' => $masterUName, 'mode' => '0640' });
+	return $rs if $rs;
+
+	$rs = setRights("$ROOT_DIR/engine", { 'user' => $rootUName, 'group' => $masterUName, 'mode' => '0755', 'recursive' => 'yes' });
+	return $rs if $rs;
+
+	$rs = setRights($LOG_DIR, { 'user' => $rootUName, 'group' => $masterUName, 'mode' => '0750' });
+	return $rs if $rs;
+
+	iMSCP::HooksManager->getInstance()->trigger('afterSetupBasePermissions');
 }
 
 sub setupRkhunter
 {
-	iMSCP::HooksManager->getInstance()->trigger('beforeSetupRkhunter') and return 1;
+	my $rs = 0;
 
-	my ($rs, $rdata);
+	$rs = iMSCP::HooksManager->getInstance()->trigger('beforeSetupRkhunter');
+	return $rs if $rs;
+
+	my $rdata;
 
 	# Deleting any existent log files
-	my $file = iMSCP::File->new (filename => $main::imscpConfig{'RKHUNTER_LOG'});
-	$file->set();
-	$file->save() and return 1;
-	$file->owner('root', 'adm');
-	$file->mode(0644);
+	my $file = iMSCP::File->new ('filename' => $main::imscpConfig{'RKHUNTER_LOG'});
+
+	$rs = $file->set('');
+	return $rs if $rs;
+
+	$rs = $file->save();
+	return $rs if $rs;
+
+	$rs = $file->owner('root', 'adm');
+	return $rs if $rs;
+
+	$rs = $file->mode(0644);
+	return $rs if $rs;
 
 	# Updates the rkhunter configuration provided by Debian like distributions
 	# to disable the default cron task (i-MSCP provides its own cron job for rkhunter)
-	if(-e '/etc/default/rkhunter') {
+	if(-f '/etc/default/rkhunter') {
 		# Get the file as a string
-		$file = iMSCP::File->new (filename => '/etc/default/rkhunter');
+		$file = iMSCP::File->new ('filename' => '/etc/default/rkhunter');
 		$rdata = $file->get();
-		return 1 if(!$rdata);
+		unless(defined $rdata) {
+			error("Unable to read /etc/default/rkhunter");
+			return 1;
+		}
 
 		# Disable default cron task
 		$rdata =~ s/CRON_DAILY_RUN="(yes)?"/CRON_DAILY_RUN="no"/gmi;
 
-		# Saving the modified file
-		$file->set($rdata) and return 1;
-		$file->save() and return 1;
+		$rs = $file->set($rdata);
+		return $rs if $rs;
+
+		$rs = $file->save();
+		return $rs if $rs;
 	}
 
 	# Updates the logrotate configuration provided by Debian like distributions to modify rights
-	if(-e '/etc/logrotate.d/rkhunter') {
+	if(-f '/etc/logrotate.d/rkhunter') {
 		# Get the file as a string
-		$file = iMSCP::File->new (filename => '/etc/logrotate.d/rkhunter');
+		$file = iMSCP::File->new ('filename' => '/etc/logrotate.d/rkhunter');
 		$rdata = $file->get();
-		return 1 if(!$rdata);
+		unless(defined $rdata) {
+			error("Unable to read /etc/logrotate.d/rkhunter");
+			return 1;
+		}
 
 		# Disable cron task default
 		$rdata =~ s/create 640 root adm/create 644 root adm/gmi;
 
-		# Saving the modified file
-		$file->set($rdata) and return 1;
-		$file->save() and return 1;
+		$rs = $file->set($rdata);
+		return $rs if $rs;
+
+		$rs = $file->save();
+		return $rs if $rs;
 	}
 
 	# Update weekly cron task provided by Debian like distributions to avoid creation of unreadable log file
-	if(-e '/etc/cron.weekly/rkhunter') {
+	if(-f '/etc/cron.weekly/rkhunter') {
 		# Get the rkhunter file content
-		$file = iMSCP::File->new (filename => '/etc/cron.weekly/rkhunter');
+		$file = iMSCP::File->new('filename' => '/etc/cron.weekly/rkhunter');
 		$rdata = $file->get();
-		return 1 if(!$rdata);
+		unless(defined $rdata) {
+			error("Unable to read /etc/cron.weekly/rkhunter");
+			return 1;
+		}
 
 		# Adds `--nolog`option to avoid unreadable log file
 		$rdata =~ s/(--versioncheck\s+|--update\s+)(?!--nolog)/$1--nolog /g;
 
-		# Saving the modified file
-		$file->set($rdata) and return 1;
-		$file->save() and return 1;
+		$rs = $file->set($rdata);
+		return $rs if $rs;
+
+		$rs = $file->save();
+		return $rs if $rs;
 	}
 
-	iMSCP::HooksManager->getInstance()->trigger('afterSetupRkhunter') and return 1;
-
-	0;
+	iMSCP::HooksManager->getInstance()->trigger('afterSetupRkhunter');
 }
 
 # Rebuild all customers's configuration files
 sub setupRebuildCustomerFiles
 {
-	iMSCP::HooksManager->getInstance()->trigger('beforeSetupRebuildCustomersFiles') and return 1;
+	my $rs = 0;
+
+	$rs = iMSCP::HooksManager->getInstance()->trigger('beforeSetupRebuildCustomersFiles');
+	return $rs if $rs;
 
 	my $tables = {
 		ssl_certs => 'status',
@@ -1908,266 +2024,321 @@ sub setupRebuildCustomerFiles
 	};
 
 	# Set status as 'change'
-
-	my $rs = 0;
 	my ($database, $errStr) = setupGetSqlConnect(setupGetQuestion('DATABASE_NAME'));
-	fatal("Unable to connect to the SQL Server: $errStr") if ! $database;
-
-	while (my ($table, $field) = each %$tables) {
-		$rs = $database->doQuery('dummy', "UPDATE `$table` SET `$field` = 'change' WHERE `$field` <> 'disabled'");
-		return $rs if (ref $rs ne 'HASH');
+	if(! $database) {
+		error("Unable to connect to SQL server: $errStr");
+		return 1;
 	}
 
-	iMSCP::Boot->new()->unlock();
+	while (my ($table, $field) = each %$tables) {
+		# Matching only on 'ok' status is not sufficient since if setup fail for any reason, next execution
+		# will not change error status to 'change'
+		$rs = $database->doQuery(
+			'dummy',
+			"
+			UPDATE
+				`$table`
+			SET
+				`$field` = 'change'
+			WHERE
+				`$field` NOT IN('toadd', 'todelete', 'disabled', 'ordered')
+			"
+		);
+		if(ref $rs ne 'HASH') {
+			error("Unable to execute SQL query: $rs");
+			return 1;
+		}
+	}
 
-	my ($stdout, $stderr);
+	iMSCP::Boot->getInstance()->unlock();
+
 	my $debug = $main::imscpConfig{'DEBUG'} || 0;
 	$main::imscpConfig{'DEBUG'} = (iMSCP::Getopt->debug) ? 1 : 0;
-	$rs = execute("perl $main::imscpConfig{'ENGINE_ROOT_DIR'}/imscp-rqst-mngr", \$stdout, \$stderr);
-	$main::imscpConfig{'DEBUG'} = $debug;
-	debug("$stdout") if $stdout;
-	error("$stderr") if $stderr;
-	error("Error while rebuilding customers files") if(!$stderr && $rs);
 
-	iMSCP::Boot->new()->lock();
+	startDetail();
+
+	my $pid = open3(gensym, \*CATCHOUT, \*CATCHERR, "perl $main::imscpConfig{'ENGINE_ROOT_DIR'}/imscp-rqst-mngr setup");
+
+	while(<CATCHOUT>) {
+		# "$type\t$status\t$name\t$id\t$total\t$i\n"
+		chomp;
+		step(undef, "Processing $1 ($2) tasks: $3 (ID $4)", $5, $6) if /^(.*)\t(.*)\t(.*)\t(.*)\t(.*)\t(.*)$/;
+	}
+
+	my $stderr = do { local $/; <CATCHERR> };
+
+	waitpid($pid, 0) if $pid;
+
+	$rs = getExitCode($?);
+
+	endDetail();
+
+	$main::imscpConfig{'DEBUG'} = $debug;
+	error($stderr) if $stderr && $rs;
+	error("Error while rebuilding customers files") if $rs && ! $stderr;
+
+	iMSCP::Boot->getInstance()->lock();
+
 	return $rs if $rs;
 
-	iMSCP::HooksManager->getInstance()->trigger('afterSetupRebuildCustomersFiles') and return 1;
-
-	0;
+	iMSCP::HooksManager->getInstance()->trigger('afterSetupRebuildCustomersFiles');
 }
 
 # Call preinstall method on all i-MSCP server packages
 sub setupPreInstallServers
 {
-	iMSCP::HooksManager->getInstance()->trigger('beforeSetupPreInstallServers') and return 1;
+	my $rs = 0;
 
-	my ($rs, $file, $class, $server, $msg);
-	my @servers = iMSCP::Servers::get();
+	$rs = iMSCP::HooksManager->getInstance()->trigger('beforeSetupPreInstallServers');
+	return $rs if $rs;
 
-	unless(scalar @servers){
-		error('Cannot get servers list');
-		return 1;
-	}
+	my ($file, $class, $server, $msg);
+	my @servers = iMSCP::Servers->getInstance()->get();
 
 	my $step = 1;
 	startDetail();
 
-	for(@servers){
+	for(@servers) {
 		s/\.pm//;
-		$file	= "Servers/$_.pm";
-		$class	= "Servers::$_";
+		$file = "Servers/$_.pm";
+		$class = "Servers::$_";
 		require $file;
 		$server	= $class->factory();
-		$msg = "Performing preinstall tasks for " . uc($_) . " server" .
-			($main::imscpConfig{uc($_)."_SERVER"} ? ": " . $main::imscpConfig{uc($_) . "_SERVER"} : '');
-		$rs |= step(sub{ $server->preinstall() }, $msg, scalar @servers, $step) if $server->can('preinstall');
+
+		if($server->can('preinstall')) {
+			$msg = "Performing preinstall tasks for $_ server" .
+				($main::imscpConfig{uc($_)."_SERVER"} ? ": " . $main::imscpConfig{uc($_) . "_SERVER"} : '');
+			$rs = step(sub{ $server->preinstall() }, $msg, scalar @servers, $step);
+			last if $rs;
+		}
+
 		$step++;
 	}
 
 	endDetail();
 
-	iMSCP::HooksManager->getInstance()->trigger('afterSetupPreInstallServers') and return 1;
+	return $rs if $rs;
 
-	$rs;
+	iMSCP::HooksManager->getInstance()->trigger('afterSetupPreInstallServers');
 }
 
 # Call preinstall method on all i-MSCP addon packages
 sub setupPreInstallAddons
 {
-	iMSCP::HooksManager->getInstance()->trigger('beforeSetupPreInstallAddons') and return 1;
+	my $rs = 0;
 
-	my ($rs, $file, $class, $addons, $msg);
-	my @addons = iMSCP::Addons::get();
+	$rs = iMSCP::HooksManager->getInstance()->trigger('beforeSetupPreInstallAddons');
+	return $rs if $rs;
 
-	unless(scalar @addons){
-		error('Cannot get addons list');
-		return 1;
-	}
+	my ($file, $class, $addons, $msg);
+	my @addons = iMSCP::Addons->getInstance()->get();
 
 	my $step = 1;
 	startDetail();
 
-	for(@addons){
+	for(@addons) {
 		s/\.pm//;
-		$file	= "Addons/$_.pm";
-		$class	= "Addons::$_";
+		$file = "Addons/$_.pm";
+		$class = "Addons::$_";
 		require $file;
-		$addons	= $class->new();
-		$msg = "Performing preinstall tasks for " . uc($_);
-		$rs |= step(sub{ $addons->preinstall() }, $msg, scalar @addons, $step) if $addons->can('preinstall');
+		$addons = $class->getInstance();
+
+		if($addons->can('preinstall')) {
+			$msg = "Performing preinstall tasks for $_ addon";
+			$rs = step(sub{ $addons->preinstall() }, $msg, scalar @addons, $step);
+			last if $rs;
+		}
+
 		$step++;
 	}
 
 	endDetail();
 
-	iMSCP::HooksManager->getInstance()->trigger('afterSetupPreInstallAddons') and return 1;
+	return $rs if $rs;
 
-	$rs;
+	iMSCP::HooksManager->getInstance()->trigger('afterSetupPreInstallAddons');
 }
 
 # Call install method on all i-MSCP server packages
 sub setupInstallServers
 {
-	iMSCP::HooksManager->getInstance()->trigger('beforeSetupInstallServers') and return 1;
+	my $rs = 0;
 
-	my ($rs, $file, $class, $server, $msg);
-	my @servers = iMSCP::Servers::get();
+	$rs = iMSCP::HooksManager->getInstance()->trigger('beforeSetupInstallServers');
+	return $rs if $rs;
 
-	unless(scalar @servers){
-		error('Cannot get servers list');
-		return 1;
-	}
+	my ($file, $class, $server, $msg);
+	my @servers = iMSCP::Servers->getInstance()->get();
 
 	my $step = 1;
 	startDetail();
 
-	for(@servers){
+	for(@servers) {
 		s/\.pm//;
-		$file	= "Servers/$_.pm";
-		$class	= "Servers::$_";
+		$file = "Servers/$_.pm";
+		$class = "Servers::$_";
 		require $file;
-		$server	= $class->factory();
-		$msg = "Performing install tasks for " . uc($_) . " server" .
-			($main::imscpConfig{uc($_) . "_SERVER"} ? ": " . $main::imscpConfig{uc($_) . "_SERVER"} : '');
-		$rs |= step(sub{ $server->install() }, $msg, scalar @servers, $step) if $server->can('install');
+		$server = $class->factory();
+
+		if($server->can('install')) {
+			$msg = "Performing install tasks for $_ server" .
+				($main::imscpConfig{uc($_) . "_SERVER"} ? ": " . $main::imscpConfig{uc($_) . "_SERVER"} : '');
+			$rs = step(sub{ $server->install() }, $msg, scalar @servers, $step);
+			last if $rs;
+		}
+
 		$step++;
 	}
 
 	endDetail();
 
-	iMSCP::HooksManager->getInstance()->trigger('afterSetupInstallServers') and return 1;
+	return $rs if $rs;
 
-	$rs;
+	iMSCP::HooksManager->getInstance()->trigger('afterSetupInstallServers');
 }
 
 # Call install method on all i-MSCP addong packages
 sub setupInstallAddons
 {
-	iMSCP::HooksManager->getInstance()->trigger('beforeSetupInstallAddons') and return 1;
+	my $rs = 0;
 
-	my ($rs, $file, $class, $addons, $msg);
-	my @addons = iMSCP::Addons::get();
+	$rs = iMSCP::HooksManager->getInstance()->trigger('beforeSetupInstallAddons');
+	return $rs if $rs;
 
-	unless(scalar @addons){
-		error('Cannot get addons list');
-		return 1;
-	}
+	my ($file, $class, $addons, $msg);
+	my @addons = iMSCP::Addons->getInstance()->get();
 
 	my $step = 1;
 	startDetail();
 
-	for(@addons){
+	for(@addons) {
 		s/\.pm//;
-		$file	= "Addons/$_.pm";
-		$class	= "Addons::$_";
+		$file = "Addons/$_.pm";
+		$class = "Addons::$_";
 		require $file;
-		$addons	= $class->new();
-		$msg = "Performing install tasks for ".uc($_);
-		$rs |= step(sub{ $addons->install() }, $msg, scalar @addons, $step) if $addons->can('install');
+		$addons = $class->getInstance();
+
+		if($addons->can('install')) {
+			$msg = "Performing install tasks for $_ addon";
+			$rs =step(sub{ $addons->install() }, $msg, scalar @addons, $step);
+			last if $rs;
+		}
+
 		$step++;
 	}
 
 	endDetail();
 
-	iMSCP::HooksManager->getInstance()->trigger('afterSetupInstallAddons') and return 1;
+	return $rs if $rs;
 
-	$rs;
+	iMSCP::HooksManager->getInstance()->trigger('afterSetupInstallAddons');
 }
 
 # Call postinstall method on all i-MSCP server packages
 sub setupPostInstallServers
 {
-	iMSCP::HooksManager->getInstance()->trigger('beforeSetupPostInstallServers') and return 1;
+	my $rs = 0;
 
-	my ($rs, $file, $class, $server, $msg);
-	my @servers = iMSCP::Servers::get();
+	$rs = iMSCP::HooksManager->getInstance()->trigger('beforeSetupPostInstallServers');
+	return $rs if $rs;
 
-	unless(scalar @servers){
-		error('Cannot get servers list');
-		return 1;
-	}
+	my ($file, $class, $server, $msg);
+	my @servers = iMSCP::Servers->getInstance()->get();
 
 	my $step = 1;
 	startDetail();
 
-	for(@servers){
+	for(@servers) {
 		s/\.pm//;
-		$file	= "Servers/$_.pm";
-		$class	= "Servers::$_";
+		$file = "Servers/$_.pm";
+		$class = "Servers::$_";
 		require $file;
-		$server	= $class->factory();
-		$msg = "Performing postinstall tasks for " . uc($_) . " server" .
-			($main::imscpConfig{uc($_)."_SERVER"} ? ": " . $main::imscpConfig{uc($_) . "_SERVER"} : '');
-		$rs |= step(sub{ $server->postinstall() }, $msg, scalar @servers, $step) if $server->can('postinstall');
+		$server = $class->factory();
+
+		if($server->can('postinstall')) {
+			$msg = "Performing postinstall tasks for $_ server" .
+				($main::imscpConfig{uc($_)."_SERVER"} ? ": " . $main::imscpConfig{uc($_) . "_SERVER"} : '');
+			$rs = step(sub{ $server->postinstall() }, $msg, scalar @servers, $step);
+			last if $rs;
+		}
+
 		$step++;
 	}
 
 	endDetail();
 
-	iMSCP::HooksManager->getInstance()->trigger('afterSetupPostInstallServers') and return 1;
+	return $rs if $rs;
 
-	$rs;
+	iMSCP::HooksManager->getInstance()->trigger('afterSetupPostInstallServers');
 }
 
 # Call postinstall method on all i-MSCP addon packages
 sub setupPostInstallAddons
 {
-	iMSCP::HooksManager->getInstance()->trigger('beforeSetupPostInstallAddons') and return 1;
+	my $rs = 0;
 
-	my ($rs, $file, $class, $addons, $msg);
-	my @addons = iMSCP::Addons::get();
+	$rs = iMSCP::HooksManager->getInstance()->trigger('beforeSetupPostInstallAddons');
+	return $rs if $rs;
 
-	unless(scalar @addons){
-		error('Cannot get addons list');
-		return 1;
-	}
+	my ($file, $class, $addons, $msg);
+	my @addons = iMSCP::Addons->getInstance()->get();
 
 	my $step = 1;
 	startDetail();
 
-	for(@addons){
+	for(@addons) {
 		s/\.pm//;
-		$file	= "Addons/$_.pm";
-		$class	= "Addons::$_";
+		$file = "Addons/$_.pm";
+		$class = "Addons::$_";
 		require $file;
-		$addons	= $class->new();
-		$msg = "Performing postinstall tasks for " . uc($_);
-		$rs |= step(sub{ $addons->postinstall() }, $msg, scalar @addons, $step) if $addons->can('postinstall');
+		$addons = $class->getInstance();
+
+		if($addons->can('postinstall')) {
+			$msg = "Performing postinstall tasks for $_ addon";
+			$rs = step(sub{ $addons->postinstall() }, $msg, scalar @addons, $step);
+			last if $rs;
+		}
+
 		$step++;
 	}
 
 	endDetail();
 
-	iMSCP::HooksManager->getInstance()->trigger('afterSetupPostInstallAddons') and return 1;
+	return $rs if $rs;
 
-	$rs;
+	iMSCP::HooksManager->getInstance()->trigger('afterSetupPostInstallAddons');
 }
 
 # Restart all services needed by i-MSCP
 sub setupRestartServices
 {
-	iMSCP::HooksManager->getInstance()->trigger('beforeSetupRestartServices') and return 1;
+	my $rs = 0;
+
+	$rs = iMSCP::HooksManager->getInstance()->trigger('beforeSetupRestartServices');
+	return $rs if $rs;
 
 	startDetail();
 
 	my @services = (
 		#['Variable holding command', 'command to execute', 'ignore error if 0 exit on error if 1']
-		['CMD_IMSCPN',			'restart',	1],
-		['CMD_IMSCPD',			'restart',	1],
-		['CMD_CLAMD',			'reload',	1],
-		['CMD_POSTGREY',		'restart',	1],
-		['CMD_POLICYD_WEIGHT',	'reload',	0],
-		['CMD_AMAVIS',			'reload',	1]
+		['CMD_IMSCPN', 'restart', 1],
+		['CMD_IMSCPD', 'restart', 1],
+		['CMD_CLAMD', 'reload', 1],
+		['CMD_POSTGREY', 'restart', 1],
+		['CMD_POLICYD_WEIGHT', 'reload', 0],
+		['CMD_AMAVIS', 'reload', 1]
 	);
 
-	my ($rs, $stdout, $stderr);
+	my ($stdout, $stderr);
 	my $count = 1;
 
 	for (@services) {
-		if($main::imscpConfig{$_->[0]} && ($main::imscpConfig{$_->[0]} !~ /^no$/i) && -f $main::imscpConfig{$_->[0]}) {
-
-			iMSCP::HooksManager->getInstance()->trigger('beforeSetupRestartService', $_->[0]);
+		if(
+			exists $main::imscpConfig{$_->[0]} &&
+			lc($main::imscpConfig{$_->[0]}) ne 'no' && -f $main::imscpConfig{$_->[0]}
+		) {
+			$rs = iMSCP::HooksManager->getInstance()->trigger('beforeSetupRestartService', $_->[0]);
+			return $rs if $rs;
 
 			$rs = step(
 				sub { execute("$main::imscpConfig{$_->[0]} $_->[1]", \$stdout, \$stderr)},
@@ -2176,10 +2347,12 @@ sub setupRestartServices
 				$count
 			);
 			debug("$main::imscpConfig{$_->[0]} $stdout") if $stdout;
-			error("$main::imscpConfig{$_->[0]} $stderr $rs") if ($rs && $_->[2]);
-			return $rs if ($rs && $_->[2]);
+			error("$main::imscpConfig{$_->[0]} $stderr $rs") if $rs && $_->[2];
+			$rs = 0 unless $rs && $_->[2];
+			return $rs if $rs;
 
-			iMSCP::HooksManager->getInstance()->trigger('afterSetupRestartService', $_->[0]);
+			$rs = iMSCP::HooksManager->getInstance()->trigger('afterSetupRestartService', $_->[0]);
+			return $rs if $rs;
 		}
 
 		$count++;
@@ -2187,32 +2360,34 @@ sub setupRestartServices
 
 	endDetail();
 
-	iMSCP::HooksManager->getInstance()->trigger('afterRestartServices') and return 1;
-
-	0;
+	iMSCP::HooksManager->getInstance()->trigger('afterRestartServices');
 }
 
 # Run all update additional task such as rkhunter configuration
 sub setupAdditionalTasks
 {
-	iMSCP::HooksManager->getInstance()->trigger('beforeSetupAdditionalTasks') and return 1;
+	my $rs = 0;
+
+	$rs = iMSCP::HooksManager->getInstance()->trigger('beforeSetupAdditionalTasks');
+	return $rs if $rs;
 
 	startDetail();
 
 	my @steps = (
 		[\&setupRkhunter, 'i-MSCP Rkhunter configuration:']
 	);
+
 	my $step = 1;
-	for (@steps){
-		step($_->[0], $_->[1], scalar @steps, $step);
+
+	for (@steps) {
+		$rs = step($_->[0], $_->[1], scalar @steps, $step);
+		return $rs if $rs;
 		$step++;
 	}
 
 	endDetail();
 
-	iMSCP::HooksManager->getInstance()->trigger('afterSetupAdditionalTasks') and return 1;
-
-	0;
+	iMSCP::HooksManager->getInstance()->trigger('afterSetupAdditionalTasks');
 }
 
 #
@@ -2245,7 +2420,7 @@ sub setupGetQuestion
 sub setupCheckSqlConnect
 {
 	my ($dbType, $dbName, $dbHost, $dbPort, $dbUser, $dbPass) = (@_);
-	my $database = iMSCP::Database->new(db => $dbType)->factory();
+	my $database = iMSCP::Database->new('db' => $dbType)->factory();
 
 	$database->set('DATABASE_NAME', $dbName);
 	$database->set('DATABASE_HOST', $dbHost);
@@ -2263,7 +2438,7 @@ sub setupCheckSqlConnect
 sub setupGetSqlConnect
 {
 	my $dbName = shift || '';
-	my $database = iMSCP::Database->new(db => setupGetQuestion('DATABASE_TYPE'))->factory();
+	my $database = iMSCP::Database->new('db' => setupGetQuestion('DATABASE_TYPE'))->factory();
 
 	$database->set('DATABASE_NAME', $dbName);
 	$database->set('DATABASE_HOST', setupGetQuestion('DATABASE_HOST') || '');
@@ -2272,7 +2447,7 @@ sub setupGetSqlConnect
 	$database->set(
 		'DATABASE_PASSWORD',
 		setupGetQuestion('DATABASE_PASSWORD')
-			? iMSCP::Crypt->new()->decrypt_db_password(setupGetQuestion('DATABASE_PASSWORD'))
+			? iMSCP::Crypt->getInstance()->decrypt_db_password(setupGetQuestion('DATABASE_PASSWORD'))
 			: ''
 	);
 

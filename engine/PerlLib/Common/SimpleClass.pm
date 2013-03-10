@@ -38,9 +38,14 @@ sub new
 	};
 
 	bless($self, $class);
-	$self->_init() if $self->can('_init');
+	$self->_init();
 
-	return($self);
+	$self;
+}
+
+sub _init
+{
+	shift;
 }
 
 1;

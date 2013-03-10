@@ -132,7 +132,7 @@ sub process{
 		$rs = $self->add();
 		@sql = (
 			"UPDATE `htaccess` SET `status` = ? WHERE `id` = ?",
-			($rs ? scalar getMessageByType('ERROR') : 'ok'),
+			($rs ? scalar getMessageByType('error') : 'ok'),
 			$self->{id}
 		);
 	}elsif($self->{status} =~ /^delete$/){
@@ -140,7 +140,7 @@ sub process{
 		if($rs){
 			@sql = (
 				"UPDATE `htaccess` SET `status` = ? WHERE `id` = ?",
-				scalar getMessageByType('ERROR'),
+				scalar getMessageByType('error'),
 				$self->{id}
 			);
 		}else {

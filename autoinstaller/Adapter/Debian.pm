@@ -76,7 +76,8 @@ sub installPreRequiredPackages
 		(%main::preseed || $main::noprompt) ? \$stdout : undef, \$stderr
 	);
 	debug($stdout) if $stdout;
-	error("Unable to install pre-required packages: $stderr") if $rs;
+	error($stderr) if $stderr && $rs;
+	error('Unable to install pre-required packages') if $rs && ! $stderr;
 
 	$rs;
 }
@@ -133,6 +134,7 @@ sub preBuild
 sub uninstallPackages
 {
 	my $self = shift;
+	my $rs = 0;
 
 	if(@{$self->{'packagesToUninstall'}}) {
 		my ($stdout, $stderr);
@@ -140,7 +142,7 @@ sub uninstallPackages
 
 		iMSCP::Dialog->factory()->endGauge();
 
-		if(! %main::preseed&& ! $main::noprompt && ! checkCommandAvailability('debconf-apt-progress')) {
+		if(! %main::preseed && ! $main::noprompt && ! checkCommandAvailability('debconf-apt-progress')) {
 			$command = 'debconf-apt-progress --logstderr -- ' . $command;
 		}
 
@@ -149,14 +151,12 @@ sub uninstallPackages
 			(%main::preseed || $main::noprompt) ? \$stdout : undef, \$stderr
 		);
 		debug($stdout) if $stdout;
-
-		if($rs) {
-			error("Unable to uninstall packages: $stderr");
-			return $rs;
-		}
+		error($stderr) if $stderr && $rs;
+		error('Unable to uninstall packages') if $rs && ! $stderr;
+		return $rs if $rs;
 	}
 
-	0;
+	$rs;
 }
 
 =item installPackages()
@@ -185,13 +185,10 @@ sub installPackages
 		(%main::preseed || $main::noprompt) ? \$stdout : undef, \$stderr
 	);
 	debug($stdout) if $stdout;
+	error($stderr) if $stderr && $rs;
+	error('Unable to install packages') if $rs && ! $stderr;
 
-	if($rs) {
-		error("Unable to install packages: $stderr");
-		return $rs;
-	}
-
-	0;
+	$rs;
 }
 
 =item postBuild()
@@ -220,7 +217,7 @@ sub postBuild
 
 =item _init()
 
- Called by new(). Initialize instance.
+ Called by getInstance(). Initialize instance.
 
  Return autoinstaller::Adapter::Debian
 
@@ -229,6 +226,8 @@ sub postBuild
 sub _init
 {
 	my $self = shift;
+
+	delete $ENV{'DEBCONF_FORCE_DIALOG'};
 
 	$self->{'repositorySections'} = ['main', 'non-free'];
 	$self->{'preRequiredPackages'} = ['aptitude', 'dialog', 'liblist-moreutils-perl', 'libxml-simple-perl', 'wget'];
@@ -254,7 +253,7 @@ sub _init
 sub _preparePackagesList
 {
 	my $self = shift;
-	my $lsbRelease = iMSCP::LsbRelease->new();
+	my $lsbRelease = iMSCP::LsbRelease->getInstance();
 	my $distribution = lc($lsbRelease->getId(1));
 	my $codename = lc($lsbRelease->getCodename(1));
 	my $packagesFile = "$FindBin::Bin/docs/" . ucfirst($distribution) . "/packages-$codename.xml";
@@ -655,8 +654,9 @@ sub _addAptPreferencesFile
 sub _updatePackagesIndex
 {
 	my $self = shift;
-	my ($rs, $stdout, $stderr);
+	my $rs = 0;
 	my $command = 'apt-get';
+	my ($stdout, $stderr);
 
 	if(! %main::preseed && ! $main::noprompt &&  ! checkCommandAvailability('debconf-apt-progress')) {
 		$command = 'debconf-apt-progress --logstderr -- ' . $command;
@@ -664,13 +664,10 @@ sub _updatePackagesIndex
 
 	$rs = execute("$command -y update", (%main::preseed || $main::noprompt) ? \$stdout : undef, \$stderr);
 	debug($stdout) if $stdout;
+	error($stderr) if $stderr && $rs;
+	error('Unable to update package index from remote repository') if $rs && ! $stderr;
 
-	if($rs) {
-		error('Unable to update package index from remote repository: $stderr');
-		return $rs;
-	}
-
-	0;
+	$rs
 }
 
 =item _parseHash(\%hash, $target)

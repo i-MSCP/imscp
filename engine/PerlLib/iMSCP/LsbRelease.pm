@@ -33,6 +33,7 @@ package iMSCP::LsbRelease;
 
 use strict;
 use warnings;
+
 use iMSCP::Debug;
 use iMSCP::Execute;
 use iMSCP::File;
@@ -185,7 +186,7 @@ sub getDistroInformation
 {
 	my $self = shift;
 
-	if(!$self->{'lsbInfo'}) {
+	if(! $self->{'lsbInfo'}) {
 		# Try to retrieve information from /etc/lsb-release first
 		$self->{'lsbInfo'} = $self->_getLsbInformation();
 
@@ -205,12 +206,17 @@ sub getDistroInformation
 
  Reset instance. Allow to force reload of distribution-specific information.
 
+ Return iMSCP::LsbRelease
+
 =cut
 
 sub reset
 {
 	my $self = shift;
-	my $self->{'lsbInfo'} = undef;
+
+	$self->{'lsbInfo'} = undef;
+
+	$self;
 }
 
 =back
@@ -221,15 +227,19 @@ sub reset
 
 =item _init()
 
- Called by new(). Initialize instance.
+ Called by getInstance(). Initialize instance.
+
+ Return iMSCP::LsbRelease
 
 =cut
 
-sub _init()
+sub _init
 {
 	my $self = shift;
 
 	$self->{'lsbInfo'} = undef;
+
+	$self;
 }
 
 =item _lookupCodename($release, $unknown = undef)
@@ -318,8 +328,9 @@ sub _parseAptPolicy
 
 	my ($rs, $stdout, $stderr);
 	$rs = execute('LANG=C apt-cache policy', \$stdout, \$stderr);
-	error("Unable to execute apt-cache policy: $stderr") if $rs;
 	debug($stdout) if $stdout;
+	error($stderr) if $stderr && $rs;
+	error('Unable to execute apt-cache policy') if $rs && ! $stderr;
 
 	return [] if $rs;
 
@@ -329,7 +340,7 @@ sub _parseAptPolicy
 
 		if(/^release/) {
 			my @bits = split ' ', $_ , 2;
-			push @$data, [$priority, $self->_parsePolicyLine(@bits[1])] if @bits > 1;
+			push @$data, [$priority, $self->_parsePolicyLine($bits[1])] if @bits > 1;
 		}
 	}
 
@@ -387,10 +398,11 @@ sub _guessDebianRelease
 {
 	my $self = shift;
 	my $distinfo = {'ID' => 'Debian'};
-
 	my ($rs, $stdout, $stderr, $release, $codename);
-	my $rs = execute('uname', \$stdout, \$stderr); # We are safe here
-	error($stderr) if $stderr;
+
+	$rs = execute('uname', \$stdout, \$stderr); # We are safe here
+	debug($stdout) if $stdout;
+	error($stderr) if $stderr && $rs;
 
 	$stdout =~ s/^\s+|\s+$//g;
 
@@ -399,19 +411,22 @@ sub _guessDebianRelease
 	} elsif($stdout eq 'FreeBSD') {
 		$$distinfo{'OS'} = "GNU/k$stdout";
 	} else {
-		$$distinfo{'OS'} = "GNU";
+		$$distinfo{'OS'} = 'GNU';
 	}
 
 	$distinfo->{'DESCRIPTION'} = sprintf('%s %s', $$distinfo{'ID'}, $$distinfo{'OS'});
 
-	if(-e '/etc/debian_version') {
-		$release = iMSCP::File->new(filename => '/etc/debian_version')->get();
-		unless($release) {
+	if(-f '/etc/debian_version') {
+		$release = iMSCP::File->new('filename' => '/etc/debian_version')->get();
+
+		unless(defined $release) {
 			error('Unable to open /etc/debian_version');
 			$release = 'unknown';
 		}
 
 		$release =~ s/^\s+|\s+$//g;
+
+		debug($release);
 
 		if($release =~ /^[0-9]/) {
 			# /etc/debian_version should be numeric
@@ -427,7 +442,7 @@ sub _guessDebianRelease
 
 	# Only use apt information if we did not get the proper information
 	# from /etc/debian_version or if we don't have a codename
-	# (which will happen if /etc/debian_version does not contain a
+	# (which will happen if /etc/debian_version doesn't contain a
 	# number but some text like 'testing/unstable' or 'lenny/sid')
 	#
 	# This is slightly faster and less error prone in case the user
@@ -477,9 +492,9 @@ sub _getLsbInformation
 
 	if(-f '/etc/lsb-release') {
 
-		my $lsbReleaseFile = iMSCP::File->new(filename => '/etc/lsb-release')->get();
+		my $lsbReleaseFile = iMSCP::File->new('filename' => '/etc/lsb-release')->get();
 
-		unless($lsbReleaseFile) {
+		unless(defined $lsbReleaseFile) {
 			error('Unable to open /etc/lsb-release')
 		} else {
 			debug($lsbReleaseFile);
@@ -509,8 +524,8 @@ sub _getLsbInformation
  This is a re-implementation for i-MSCP of the lsb_release command as provided by the lsb-release Debian package.
 
  Detection of systems using a mix of packages from various distributions or releases is something of a black art; the
-current heuristic tends to  assume that  the installation is of the earliest distribution which is still being used by
-apt but that heuristic is subject to error.
+current heuristic tends to assume that the installation is of the earliest distribution which is still being used by apt
+but that heuristic is subject to error.
 
 =head1 AUTHOR
 

@@ -28,8 +28,6 @@ package Servers::named;
 use strict;
 use warnings;
 
-use parent 'Common::SimpleClass';
-
 sub factory
 {
 	my $self = shift;
@@ -45,7 +43,7 @@ sub factory
 	}
 
 	require $file;
-	$class->new();
+	$class->getInstance();
 }
 
 1;

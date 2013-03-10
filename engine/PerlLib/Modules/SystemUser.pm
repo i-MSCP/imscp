@@ -89,9 +89,9 @@ sub addSystemUser
 	}
 
 	$rs = execute("@cmd", \$stdout, \$stderr);
-	debug("$stdout") if $stdout;
-	error("$stderr") if ($stderr && $rs);
-	debug("$stderr") if ($stderr && !$rs);
+	debug($stdout) if $stdout;
+	error($stderr) if $stderr && $rs;
+	debug($stderr) if $stderr && ! $rs;
 	return $rs if $rs;
 
 	0;
@@ -121,11 +121,11 @@ sub delSystemUser
 			($^O !~ /bsd$/ ? "\"$userName\"" : '')
 		);
 		$rs = execute("@cmd", \$stdout, \$stderr);
-		debug("$stdout") if $stdout;
-		error("$stderr") if ($stderr && $rs && $rs != 12);
-		warning("$stderr") if ($stderr && ! $rs);
+		debug($stdout) if $stdout;
+		error($stderr) if $stderr && $rs && $rs != 12;
+		warning($stderr) if $stderr && ! $rs;
 
-		return $rs if ($rs && $rs != 12);
+		return $rs if $rs && $rs != 12;
 	}
 
 	0;
@@ -167,9 +167,9 @@ sub addToGroup
 				($^O !~ /bsd$/ ? "\"$userName\"" : ''),	#linux way
 			);
 			$rs = execute("@cmd", \$stdout, \$stderr);
-			debug("$stdout") if $stdout;
-			error("$stderr") if ($stderr && $rs);
-			warning("$stderr") if ($stderr && !$rs);
+			debug($stdout) if $stdout;
+			error($stderr) if $stderr && $rs;
+			warning($stderr) if $stderr && ! $rs;
 
 			return $rs if $rs;
 		}
@@ -190,9 +190,9 @@ sub getUserGroups
 	my ($rs, $stdout, $stderr);
 
 	$rs = execute("id -nG $userName", \$stdout, \$stderr);
-	debug("$stdout") if $stdout;
-	error("$stderr") if ($stderr && $rs);
-	warning("$stderr") if ($stderr && !$rs);
+	debug($stdout) if $stdout;
+	error($stderr) if $stderr && $rs;
+	warning($stderr) if $stderr && ! $rs;
 	return $rs if $rs;
 
 	%{$self->{'userGroups'}} = map { $_ => 1 } split ' ', $stdout;
@@ -237,9 +237,9 @@ sub removeFromGroup
 			($^O !~ /bsd$/ ? "\"$userName\"" : ''),	#linux way
 		);
 		$rs = execute("@cmd", \$stdout, \$stderr);
-		debug("$stdout") if $stdout;
-		error("$stderr") if ($stderr && $rs);
-		warning("$stderr") if ($stderr && !$rs);
+		debug($stdout) if $stdout;
+		error($stderr) if $stderr && $rs;
+		warning($stderr) if $stderr && ! $rs;
 
 		return $rs if $rs;
 	}

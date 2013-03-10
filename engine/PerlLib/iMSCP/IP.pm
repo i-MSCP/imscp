@@ -27,9 +27,9 @@ package iMSCP::IP;
 
 use strict;
 use warnings;
+
 use iMSCP::Debug;
 use iMSCP::Execute;
-use Data::Dumper;
 use parent 'Common::SimpleClass';
 
 sub loadIPs
@@ -39,23 +39,23 @@ sub loadIPs
 
 	my ($netCardUp, $configuredIPs, $stderr);
 
-	unless ($self->{'_loaded'}){
+	unless ($self->{'_loaded'}) {
 		$rs = execute("$main::imscpConfig{'CMD_IFCONFIG'}", \$netCardUp, \$stderr);
-		debug("$netCardUp") if ($netCardUp);
-		error("$stderr") if ($stderr);
+		debug($netCardUp) if $netCardUp;
+		error($stderr) if $stderr && $rs;
 		return $rs if $rs;
 
 		$rs = execute("$main::imscpConfig{'CMD_IFCONFIG'} -a", \$configuredIPs, \$stderr);
-		debug("$configuredIPs") if ($configuredIPs);
-		error("$stderr") if ($stderr);
+		debug($configuredIPs) if $configuredIPs;
+		error($stderr) if $stderr && $rs;
 		return $rs if $rs;
 
-		for('IPv4', 'IPv6'){
+		for('IPv4', 'IPv6') {
 			my $file = "iMSCP/IP/$_.pm";
 			my $class = "iMSCP::IP::$_";
 			require $file;
 
-			$self->{$_} = $class->new();
+			$self->{$_} = $class->getInstance();
 			$rs |= $self->{$_}->parseNetCards($netCardUp);
 			$rs |= $self->{$_}->parseIPs($configuredIPs);
 		}
@@ -79,7 +79,7 @@ sub getIPs
 
 	debug("Ip`s: ". join( ' ', @ips ));
 
-	return (wantarray ? @ips : join( ' ', @ips ));
+	(wantarray ? @ips : join( ' ', @ips ));
 }
 
 sub getNetCards
@@ -95,7 +95,7 @@ sub getNetCards
 
 	debug("Network cards`s: ". join(' ', keys %cards));
 
-	return (wantarray ? keys %cards : join(' ', keys %cards));
+	(wantarray ? keys %cards : join(' ', keys %cards));
 }
 
 sub getCardByIP
@@ -115,7 +115,7 @@ sub getCardByIP
 
 	debug("Network card having ip $ip: ". ($card ? $card : 'not exists'));
 
-	return ($card ? $card : '');
+	$card ? $card : '';
 }
 
 sub addedToVCard
@@ -204,6 +204,7 @@ sub getIpType
 	return (wantarray ? () : undef) if $rs;
 
 	debug("Ip $ip is ".($self->{IPv4}->isValidIp($ip) ? 'ipv4' : 'ipv6'));
+
 	$self->{'IPv4'}->isValidIp($ip) ? 'ipv4' : 'ipv6';
 }
 
@@ -223,7 +224,7 @@ sub attachIpToNetCard
 	my $ip = shift;
 	my $rs = 0;
 
-	for('IPv4', 'IPv6'){
+	for('IPv4', 'IPv6') {
 		$rs = $self->{$_}->attachIpToNetCard($card, $ip);
 		last unless $rs;
 	}
@@ -237,13 +238,13 @@ sub detachIpFromNetCard
 	my $ip = shift;
 	my $rs = 0;
 
-	for('IPv4', 'IPv6'){
+	for('IPv4', 'IPv6') {
 		$rs = $self->{$_}->detachIpFromNetCard($ip);
 		last unless $rs;
 	}
 
 	debug("Succesfully detached $ip ") unless $rs;
-	error("Can not detach $ip") if $rs;
+	error("Unable to detach $ip") if $rs;
 
 	$rs;
 }
@@ -252,9 +253,7 @@ sub reset
 {
 	my $self = shift;
 
-	for('IPv4', 'IPv6'){
-		$self->{$_}->reset();
-	}
+	$self->{$_}->reset() for('IPv4', 'IPv6');
 
 	delete $self->{'_loaded'};
 

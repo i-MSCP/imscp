@@ -27,6 +27,7 @@ package Servers::po::dovecot::uninstaller;
 
 use strict;
 use warnings;
+
 use iMSCP::Debug;
 use iMSCP::File;
 use iMSCP::Execute;
@@ -37,10 +38,10 @@ sub _init
 	my $self = shift;
 
 	$self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/dovecot";
-	$self->{'bkpDir'} = "$self->{cfgDir}/backup";
-	$self->{'wrkDir'} = "$self->{cfgDir}/working";
+	$self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
+	$self->{'wrkDir'} = "$self->{'cfgDir'}/working";
 
-	my $conf = "$self->{cfgDir}/dovecot.data";
+	my $conf = "$self->{'cfgDir'}/dovecot.data";
 
 	tie %self::dovecotConfig, 'iMSCP::Config','fileName' => $conf;
 
@@ -52,10 +53,10 @@ sub uninstall
 	my $self = shift;
 	my $rs = 0;
 
-	$rs |= $self->restoreConfFile();
-	$rs |= $self->removeSQL();
+	$rs = $self->restoreConfFile();
+	return $rs if $rs;
 
-	$rs;
+	$self->removeSQL();
 }
 
 sub restoreConfFile
@@ -64,27 +65,31 @@ sub restoreConfFile
 	my $rs = 0;
 	my $file;
 
-	for (('dovecot.conf', 'dovecot-sql.conf')) {
-		$rs	|=	iMSCP::File->new(
-			filename => "$self->{bkpDir}/$_.system"
+	for ('dovecot.conf', 'dovecot-sql.conf') {
+		$rs	= iMSCP::File->new(
+			'filename' => "$self->{bkpDir}/$_.system"
 		)->copyFile(
 			"$self::dovecotConfig{'DOVECOT_CONF_DIR'}/$_"
 		) if -f "$self->{bkpDir}/$_.system";
+		return $rs if $rs;
 	}
 
 	use Servers::mta;
 	my $mta	= Servers::mta->factory();
 
 	for ('dovecot-sql.conf', 'dovecot-dict-sql.conf') {
-		$file = iMSCP::File->new(filename => "$self::dovecotConfig{'DOVECOT_CONF_DIR'}/$_");
-		$rs |= $file->mode(0640);
-		$rs |= $file->owner($main::imscpConfig{'ROOT_USER'}, $mta->{'MTA_MAILBOX_GID_NAME'});
+		$file = iMSCP::File->new('filename' => "$self::dovecotConfig{'DOVECOT_CONF_DIR'}/$_");
+
+		$rs = $file->mode(0640);
+		return $rs if $rs;
+
+		$rs = $file->owner($main::imscpConfig{'ROOT_USER'}, $mta->{'MTA_MAILBOX_GID_NAME'});
+		return $rs if $rs;
 	}
 
-	$file	= iMSCP::File->new(filename => "$self::dovecotConfig{'DOVECOT_CONF_DIR'}/dovecot.conf");
-	$rs |= $file->mode(0644);
+	$file= iMSCP::File->new('filename' => "$self::dovecotConfig{'DOVECOT_CONF_DIR'}/dovecot.conf");
 
-	$rs;
+	$file->mode(0644);
 }
 
 sub removeSQL

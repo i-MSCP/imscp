@@ -1,5 +1,11 @@
 #!/usr/bin/perl
 
+=head1 NAME
+
+ iMSCP::Boot - Boot i-MSCP
+
+=cut
+
 # i-MSCP - internet Multi Server Control Panel
 # Copyright (C) 2010-2013 by internet Multi Server Control Panel
 #
@@ -20,6 +26,7 @@
 # @category		i-MSCP
 # @copyright	2010-2013 by i-MSCP | http://i-mscp.net
 # @author		Daniel Andreca <sci2tech@gmail.com>
+# @author		Laurent Declercq <l.declercq@nuxwin.com>
 # @link			http://i-mscp.net i-MSCP Home Site
 # @license		http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
@@ -27,129 +34,194 @@ package iMSCP::Boot;
 
 use strict;
 use warnings;
+
 use iMSCP::Debug;
 use iMSCP::Crypt;
 use iMSCP::Config;
 use iMSCP::Requirements;
+use iMSCP::File;
 use iMSCP::Getopt;
+use iMSCP::Database;
+use Fcntl ":flock";
 use parent 'Common::SingletonClass';
 
-sub init
+=head1 DESCRIPTION
+
+ Bootstrap class for i-MSCP.
+
+=head1 PUBLIC METHODS
+
+=over 4
+
+=item boot()
+
+ Boot i-MSCP.
+
+ Return iMSCP::Boot
+
+=cut
+
+sub boot
 {
 	my $self = shift;
-	my $option = shift;
 
-	$option = {} if ref $option ne 'HASH';
+	debug('Booting...');
 
-	unless($self->{'loaded'}) {
+	unless ($self->{'nodatabase'} && $self->{'nodatabase'} eq 'yes') {
 
-		debug('Booting...');
+		my $crypt = iMSCP::Crypt->getInstance();
+		my $database = iMSCP::Database->new('db' => $main::imscpConfig{'DATABASE_TYPE'})->factory();
 
-		tie
-			%main::imscpConfig,
-			'iMSCP::Config',
-			'fileName' => (($^O =~ /bsd$/ ? '/usr/local/etc/' : '/etc/') . 'imscp/imscp.conf'),
-			nocreate => 1, # Do not create file if it doesn't exists (raise error instead)
-			noerrors => 1; # Do not raise error when attempting to access to an inexistent configuration parameter
+		$database->set('DATABASE_HOST', $main::imscpConfig{'DATABASE_HOST'});
+		$database->set('DATABASE_PORT', $main::imscpConfig{'DATABASE_PORT'});
+		$database->set('DATABASE_NAME', $main::imscpConfig{'DATABASE_NAME'});
+		$database->set('DATABASE_USER', $main::imscpConfig{'DATABASE_USER'});
+		$database->set('DATABASE_PASSWORD', $crypt->decrypt_db_password($main::imscpConfig{'DATABASE_PASSWORD'}));
+		my $rs = $database->connect();
 
-
-		# Set verbose mode
-		verbose(iMSCP::Getopt->debug || $main::imscpConfig{'DEBUG'} || 0);
-
-		iMSCP::Requirements->new()->test(
-			$self->{'args'}->{'mode'} && $self->{'args'}->{'mode'} eq 'setup' ? 'all' : 'user'
-		) unless($option->{'norequirements'} && $option->{'norequirements'} eq 'yes');
-
-		$self->lock($main::imscpConfig{'MR_LOCK_FILE'}) unless($option->{'nolock'} && $option->{'nolock'} eq 'yes');
-
-		# Generate encryption key and vector
-		$self->genKey();
-
-		unless ($option->{'nodatabase'} && $option->{'nodatabase'} eq 'yes') {
-			use iMSCP::Database;
-
-			my $crypt = iMSCP::Crypt->new();
-			my $database = iMSCP::Database->new(db => $main::imscpConfig{'DATABASE_TYPE'})->factory();
-
-			$database->set('DATABASE_HOST', $main::imscpConfig{'DATABASE_HOST'});
-			$database->set('DATABASE_PORT', $main::imscpConfig{'DATABASE_PORT'});
-			$database->set('DATABASE_NAME', $main::imscpConfig{'DATABASE_NAME'});
-			$database->set('DATABASE_USER', $main::imscpConfig{'DATABASE_USER'});
-			$database->set('DATABASE_PASSWORD', $crypt->decrypt_db_password($main::imscpConfig{'DATABASE_PASSWORD'}));
-			my $rs = $database->connect();
-			fatal("Unable to connect to the SQL server: $rs") if $rs;
-		}
-
-		$self->{'loaded'} = 1;
+		fatal("Unable to connect to the SQL server: $rs") if $rs;
 	}
 
-	0;
+	$self;
 }
+
+=item lock([$lockFile])
+
+ Lock the given file or the engine lock file.
+
+ Return iMSCP::Boot
+
+=cut
 
 sub lock
 {
 	my $self = shift;
-	my $lock = shift || $main::imscpConfig{'MR_LOCK_FILE'};
+	my $lockFile = shift || $main::imscpConfig{'MR_LOCK_FILE'};
 
-	fatal('Unable to open lock file') if(! open($self->{'lock'}, '>', $lock));
+	unless(defined $self->{'locks'}->{$lockFile}) {
+		fatal('Unable to open lock file') if ! open($self->{'locks'}->{$lockFile}, '>', $lockFile);
+		fatal('Unable to acquire global lock') if ! flock($self->{'locks'}->{$lockFile}, LOCK_EX);
+	}
 
-	use Fcntl ':flock';
-	fatal('Unable to acquire global lock') if(!flock($self->{'lock'}, LOCK_EX));
-
-	0;
+	$self;
 }
+
+=item unlock([$lockFile])
+
+ Unlock the given lock file or the engine lock file.
+
+ Return iMSCP::Boot
+
+=cut
 
 sub unlock
 {
 	my $self = shift;
-	my $lock = shift;
+	my $lockFile = shift || $main::imscpConfig{'MR_LOCK_FILE'};
 
-	use Fcntl ":flock";
-	fatal('Unable to release global lock') if(! flock($self->{'lock'}, LOCK_UN));
+	if(defined $self->{'locks'}->{$lockFile}) {
+		fatal('Unable to release global lock') if ! flock($self->{'locks'}->{$lockFile}, LOCK_UN);
+	}
 
-	0;
+	$self;
 }
 
-# Generate database encryption key
-sub genKey
-{
-	use iMSCP::File;
+=back
 
-	my $key_file = "$main::imscpConfig{'CONF_DIR'}/imscp-db-keys";
+=head1 PRIVATE METHODS
+
+=over 4
+
+=item _init()
+
+ Called by getInstance(). Initialize instance
+
+ Return iMSCP::Boot
+
+=cut
+
+sub _init
+{
+	my $self = shift;
+
+	tie
+		%main::imscpConfig,
+		'iMSCP::Config',
+		'fileName' => (($^O =~ /bsd$/ ? '/usr/local/etc/' : '/etc/') . 'imscp/imscp.conf'),
+		'nocreate' => 1, # Do not create file if it doesn't exists (raise error instead)
+		'noerrors' => 1; # Do not raise error when attempting to access to an inexistent configuration parameter
+
+	# Set verbose mode
+	verbose(iMSCP::Getopt->debug || $main::imscpConfig{'DEBUG'} || 0);
+
+	iMSCP::Requirements->new()->test(
+		$self->{'mode'} && $self->{'mode'} eq 'setup' ? 'all' : 'user'
+	) unless($self->{'norequirements'} && $self->{'norequirements'} eq 'yes');
+
+	$self->lock() unless($self->{'nolock'} && $self->{'nolock'} eq 'yes');
+
+	$self->_genKey();
+
+	$self;
+}
+
+=item _genKey()
+
+ Generates encryption key and vector.
+
+ Return undef
+
+=cut
+
+sub _genKey
+{
+	my $self = shift;
+
+	my $keyFile = "$main::imscpConfig{'CONF_DIR'}/imscp-db-keys";
 	our $db_pass_key = '{KEY}';
 	our $db_pass_iv = '{IV}';
 
-	require "$key_file" if -f $key_file;
+	require "$keyFile" if -f $keyFile;
 
 	if ($db_pass_key eq '{KEY}' || $db_pass_iv eq '{IV}') {
 
 		debug('Generating database keys...');
 
 		if(-d $main::imscpConfig{'CONF_DIR'}) {
-			use Data::Dumper;
+			require Data::Dumper;
+			Data::Dumper->import();
 
-			open(FH, '>:utf8', "$main::imscpConfig{'CONF_DIR'}/imscp-db-keys")
-				or fatal("Error: Can't open file '$main::imscpConfig{'CONF_DIR'}/imscp-db-keys' for writing: $!");
-			print FH Data::Dumper->Dump(
+			open(KEYFILE, '>:utf8', "$main::imscpConfig{'CONF_DIR'}/imscp-db-keys")
+				or fatal("Error: Unable to open file '$main::imscpConfig{'CONF_DIR'}/imscp-db-keys' for writing: $!");
+
+			print KEYFILE Data::Dumper->Dump(
 				[iMSCP::Crypt::randomString(32), iMSCP::Crypt::randomString(8)], [qw(db_pass_key db_pass_iv)]
 			);
-			close FH;
+
+			close KEYFILE;
 		} else {
-			fatal("Error: Destination path $main::imscpConfig{'CONF_DIR'} don't exists or is not a directory");
+			fatal("Destination path $main::imscpConfig{'CONF_DIR'} doesn't exists or is not a directory");
 		}
 
-		require "$key_file";
+		require "$keyFile";
 	}
 
 	$main::imscpDBKey = $db_pass_key;
 	$main::imscpDBiv = $db_pass_iv;
 
-	iMSCP::Crypt->new()->set('key', $main::imscpDBKey);
-	iMSCP::Crypt->new()->set('iv', $main::imscpDBiv);
+	iMSCP::Crypt->getInstance()->set('key', $main::imscpDBKey);
+	iMSCP::Crypt->getInstance()->set('iv', $main::imscpDBiv);
 
 	debug("Key: |$main::imscpDBKey|, iv:|$main::imscpDBiv|");
+
+	undef;
 }
 
-1;
+=head1 AUTHORS
 
-__END__
+ Daniel Andreca <sci2tech@gmail.com>
+ Laurent Declercq <l.declercq@nuxwin.com>
+
+=cut
+
+1;

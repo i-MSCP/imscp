@@ -45,7 +45,8 @@ newDebug('imscp-arpl-msgr/imscp-arpl-msgr.log');
 sub arpl_start_up {
 
 	umask(027);
-	iMSCP::Boot->new()->init({nolock => 'yes', norequirements => 'yes'});
+
+	iMSCP::Boot->getInstance({ 'nolock' => 'yes', 'norequirements' => 'yes'})->boot();
 
 	0;
 }

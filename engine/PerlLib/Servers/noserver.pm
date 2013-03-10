@@ -31,14 +31,15 @@ use warnings;
 use vars qw/$AUTOLOAD/;
 use parent 'Common::SingletonClass';
 
+sub factory
+{
+
+	__PACKAGE__->getInstance();
+}
+
 sub AUTOLOAD
 {
 	0;
-}
-
-sub factory
-{
-	Servers::noserver->new();
 }
 
 1;

@@ -178,7 +178,7 @@ sub CustomLoghandler
 	while (<STDIN>) {
 		my ($vhost, $inBytes, $outBytes) = /^(\S+|\s) .* (\d+) (\d+)$/;
 
-		# Normalize the virtual host name to all lowercase. If it's blank, the
+		# Normalize the virtual host name to lowercase. If it's blank, the
 		# request was handled by the default server, so supply a default name.
 		# This shouldn't happen, but caution rocks.
 		$vhost = lc ($vhost) || 'default';
@@ -227,7 +227,7 @@ sub eventLog
 			*STDERR = cacheout '>>', "$opt{'logDir'}/imscp-apache-logger.stderr";
 			STDERR->autoflush(1);
 			print STDERR "[$date] [$priority] $message\n";
-		} elsif($priority eq 'debug' && !$main::cfg{'DEBUG'}) {
+		} elsif($priority eq 'debug' && ! $main::cfg{'DEBUG'}) {
 			return 0;
 		} else {
 			*STDOUT = cacheout '>>', "$opt{'logDir'}/imscp-apache-logger.stdout";
@@ -280,11 +280,11 @@ if(getConf() != 0) {
 	mkdir $main::cfg{'APACHE_USERS_LOG_DIR'} unless -d $main::cfg{'APACHE_USERS_LOG_DIR'};
 
 	if (! -d $main::cfg{'APACHE_LOG_DIR'}) {
-		eventLog('err', "Apache $main::cfg{'APACHE_LOG_DIR'} directory does not exist.");
+		eventLog('err', "Apache $main::cfg{'APACHE_LOG_DIR'} directory doesn't exist.");
 	} elsif (!-d "$main::cfg{'APACHE_LOG_DIR'}/traff") {
-		eventLog('err', "Apache $main::cfg{'APACHE_LOG_DIR'}/traff directory does not exist!");
+		eventLog('err', "Apache $main::cfg{'APACHE_LOG_DIR'}/traff directory doesn't exist!");
 	} elsif (!-d $main::cfg{'APACHE_USERS_LOG_DIR'}) {
-		eventLog('err', "Apache $main::cfg{'APACHE_USERS_LOG_DIR'} directory does not exist.");
+		eventLog('err', "Apache $main::cfg{'APACHE_USERS_LOG_DIR'} directory doesn't exist.");
 	} elsif ($opt{'loggingType'} eq 'access') {
 		# Stating Apache access log processing
 		CustomLoghandler();

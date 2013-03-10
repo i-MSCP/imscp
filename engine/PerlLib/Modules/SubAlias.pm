@@ -29,10 +29,17 @@ use strict;
 use warnings;
 use iMSCP::Debug;
 use Data::Dumper;
+use File::Temp;
+use iMSCP::Database;
+use iMSCP::Servers;
+use iMSCP::Addons;
+use iMSCP::Execute;
+use iMSCP::Dir;
+use Servers::httpd;
 use parent 'Modules::Subdomain';
 
-sub loadData{
-
+sub loadData
+{
 	my $self = shift;
 
 	my $sql = "
@@ -73,17 +80,23 @@ sub loadData{
 	";
 
 	my $rdata = iMSCP::Database->factory()->doQuery('subdomain_alias_id', $sql, $self->{subId}, $self->{subId});
+	if(ref $rdata ne 'HASH') {
+		error($rdata);
+		return 1;
+	}
 
-	error("$rdata") and return 1 if(ref $rdata ne 'HASH');
-	error("No alias subdomain has id = $self->{subId}") and return 1 unless(exists $rdata->{$self->{subId}});
+	unless(exists $rdata->{$self->{subId}}) {
+		error("No alias subdomain has id = $self->{subId}");
+		return 1;
+	}
 
 	$self->{$_} = $rdata->{$self->{subId}}->{$_} for keys %{$rdata->{$self->{subId}}};
 
 	0;
 }
 
-sub process{
-
+sub process
+{
 	my $self		= shift;
 	$self->{subId}	= shift;
 
@@ -96,52 +109,47 @@ sub process{
 		$rs = $self->add();
 		@sql = (
 			"UPDATE `subdomain_alias` SET `subdomain_alias_status` = ? WHERE `subdomain_alias_id` = ?",
-			($rs ? scalar getMessageByType('ERROR') : 'ok'),
+			($rs ? scalar getMessageByType('error') : 'ok'),
 			$self->{subdomain_alias_id}
 		);
-	}elsif($self->{subdomain_alias_status} =~ /^delete$/){
+	} elsif($self->{subdomain_alias_status} =~ /^delete$/){
 		$rs = $self->delete();
 		if($rs){
 			@sql = (
 				"UPDATE `subdomain_alias` SET `subdomain_alias_status` = ? WHERE `subdomain_alias_id` = ?",
-				scalar getMessageByType('ERROR'),
+				scalar getMessageByType('error'),
 				$self->{subdomain_alias_id}
 			);
 		}else {
 			@sql = ("DELETE FROM `subdomain_alias` WHERE `subdomain_alias_id` = ?", $self->{subdomain_alias_id});
 		}
-	}elsif($self->{subdomain_alias_status} =~ /^todisable$/){
+	} elsif($self->{subdomain_alias_status} =~ /^todisable$/){
 		$rs = $self->disable();
 		@sql = (
 			"UPDATE `subdomain_alias` SET `subdomain_alias_status` = ? WHERE `subdomain_alias_id` = ?",
-			($rs ? scalar getMessageByType('ERROR') : 'disabled'),
+			($rs ? scalar getMessageByType('error') : 'disabled'),
 			$self->{subdomain_alias_id}
 		);
-	}elsif($self->{subdomain_alias_status} =~ /^restore$/){
+	} elsif($self->{subdomain_alias_status} =~ /^restore$/){
 		$rs = $self->restore();
 		@sql = (
 			"UPDATE `subdomain_alias` SET `subdomain_alias_status` = ? WHERE `subdomain_alias_id` = ?",
-			($rs ? scalar getMessageByType('ERROR') : 'ok'),
+			($rs ? scalar getMessageByType('error') : 'ok'),
 			$self->{subdomain_alias_id}
 		);
 	}
 
 	my $rdata = iMSCP::Database->factory()->doQuery('dummy', @sql);
-	error("$rdata") and return 1 if(ref $rdata ne 'HASH');
+	if(ref $rdata ne 'HASH') {
+		error($rdata);
+		return 1;
+	}
 
 	$rs;
 }
 
-sub delete{
-
-	use File::Temp;
-	use iMSCP::Database;
-	use iMSCP::Servers;
-	use iMSCP::Addons;
-	use iMSCP::Execute;
-	use iMSCP::Dir;
-	use Servers::httpd;
-
+sub delete
+{
 	my $self		= shift;
 	my $rs			= 0;
 	my $userName	=
@@ -182,7 +190,10 @@ sub delete{
 	);
 
 	my $rdata = iMSCP::Database->factory()->doQuery('id', @sql);
-	error("$rdata") and return 1 if(ref $rdata ne 'HASH');
+	if(ref $rdata ne 'HASH') {
+		error($rdata);
+		return 1;
+	}
 
 	my %mountPoints;
 	unless($self->{subdomain_alias_mount} eq '/'){
@@ -201,48 +212,61 @@ sub delete{
 	}
 
 
-	my $dir = File::Temp->newdir(CLEANUP => 1);
+	my $dir = File::Temp->newdir('CLEANUP' => 1);
 	my @savedDirs;
 
 	for(keys %mountPoints){
 		my $sourceDir 	= "$main::imscpConfig{'USER_HOME_DIR'}/$self->{user_home}/".$mountPoints{$_};
 		$sourceDir		=~ s~/+~/~g;
+
 		my $destDir 	= "$dir/".$mountPoints{$_};
 		$destDir		=~ s~/+~/~g;
-		$rs |= iMSCP::Dir->new(dirname => "$destDir")->make({user => $userName, group => $httpdGroup, mode => 0710});
-		$rs |= execute("cp -pRTfv $sourceDir $destDir", \$stdout, \$stderr);
-		debug("$stdout") if $stdout;
-		error("$stderr") if $stderr;
+
+		$rs = iMSCP::Dir->new(dirname => "$destDir")->make({user => $userName, group => $httpdGroup, mode => 0710});
 		return $rs if $rs;
-		$rs |= execute("rm -fRv $sourceDir ", \$stdout, \$stderr);
-		debug("$stdout") if $stdout;
-		error("$stderr") if $stderr;
+
+		$rs = execute("$main::imscpConfig{'CMD_CP'} -pRTf $sourceDir $destDir", \$stdout, \$stderr);
+		debug($stdout) if $stdout;
+		error($stderr) if $stderr && $rs;
 		return $rs if $rs;
+
+		$rs = execute("$main::imscpConfig{'CMD_RM'} -fR $sourceDir ", \$stdout, \$stderr);
+		debug($stdout) if $stdout;
+		error($stderr) if $stderr && $rs;
+		return $rs if $rs;
+
 		push(@savedDirs, $mountPoints{$_});
 	}
 
 	$rs = $self->SUPER::delete();
+	return $rs if $rs;
 
 	for (@savedDirs){
 		my $destDir 	= "$main::imscpConfig{'USER_HOME_DIR'}/$self->{user_home}/$_";
 		$destDir		=~ s~/+~/~g;
+
 		my $sourceDir	= "$dir/$_";
 		$sourceDir		=~ s~/+~/~g;
-		$rs |= iMSCP::Dir->new(dirname => "$destDir")->make({user => $userName, group => $httpdGroup, mode => 0710});
-		$rs |= execute("cp -pRTfv $sourceDir $destDir ", \$stdout, \$stderr);
-		debug("$stdout") if $stdout;
-		error("$stderr") if $stderr;
+
+		$rs = iMSCP::Dir->new(dirname => "$destDir")->make({user => $userName, group => $httpdGroup, mode => 0710});
 		return $rs if $rs;
-		$rs |= execute("rm -fRv $sourceDir ", \$stdout, \$stderr);
-		debug("$stdout") if $stdout;
-		error("$stderr") if $stderr;
+
+		$rs = execute("$main::imscpConfig{'CMD_CP'} -pRTf $sourceDir $destDir ", \$stdout, \$stderr);
+		debug($stdout) if $stdout;
+		error($stderr) if $stderr && $rs;
+		return $rs if $rs;
+
+		$rs |= execute("$main::imscpConfig{'CMD_RM'} -fR $sourceDir ", \$stdout, \$stderr);
+		debug($stdout) if $stdout;
+		error($stderr) if $stderr && $rs;
+		return $rs if $rs;
 	}
 
 	$rs;
 }
 
-sub buildHTTPDData{
-
+sub buildHTTPDData
+{
 	my $self	= shift;
 	my $groupName	=
 	my $userName	=
@@ -253,15 +277,24 @@ sub buildHTTPDData{
 
 	my $sql = "SELECT * FROM `config` WHERE `name` LIKE 'PHPINI%'";
 	my $rdata = iMSCP::Database->factory()->doQuery('name', $sql);
-	error("$rdata") and return 1 if(ref $rdata ne 'HASH');
+	if(ref $rdata ne 'HASH') {
+		error($rdata);
+		return 1;
+	}
 
 	$sql			= "SELECT * FROM `php_ini` WHERE `domain_id` = ?";
 	my $phpiniData	= iMSCP::Database->factory()->doQuery('domain_id', $sql, $self->{domain_id});
-	error("$phpiniData") and return 1 if(ref $phpiniData ne 'HASH');
+	if(ref $phpiniData ne 'HASH') {
+		error($phpiniData);
+		return 1;
+	}
 
 	$sql			= "SELECT * FROM `ssl_certs` WHERE `id` = ? AND `type` = ? AND `status` = ?";
 	my $certData	= iMSCP::Database->factory()->doQuery('id', $sql, $self->{subdomain_alias_id}, 'alssub', 'ok');
-	error("$certData") and return 1 if(ref $certData ne 'HASH');
+	if(ref $certData ne 'HASH') {
+		error($certData);
+		return 1;
+	}
 
 	my $haveCert = exists $certData->{$self->{subdomain_alias_id}} && !$self->testCert($self->{subdomain_alias_name}.'.'.$self->{alias_name});
 
@@ -301,17 +334,14 @@ sub buildHTTPDData{
 	0;
 }
 
-sub buildMTAData{
-
+sub buildMTAData
+{
 	my $self	= shift;
 
 	if(
-		$self->{'action'} ne 'add'
-		||
-		defined $self->{mail_on_domain} && $self->{mail_on_domain} > 0
-		||
-		defined $self->{domain_mailacc_limit} && $self->{domain_mailacc_limit} >=0
-	){
+		$self->{'action'} ne 'add' || defined $self->{mail_on_domain} && $self->{mail_on_domain} > 0 ||
+		defined $self->{domain_mailacc_limit} && $self->{domain_mailacc_limit} >= 0
+	) {
 		$self->{mta} = {
 			DMN_NAME		=> $self->{subdomain_alias_name}.'.'.$self->{alias_name},
 			DMN_TYPE		=> $self->{type},
@@ -323,11 +353,10 @@ sub buildMTAData{
 	0;
 }
 
-sub buildNAMEDData{
-
+sub buildNAMEDData
+{
 	my $self	= shift;
 
-	#my $groupName	=
 	my $userName	=
 			$main::imscpConfig{SYSTEM_USER_PREFIX}.
 			($main::imscpConfig{SYSTEM_USER_MIN_UID} + $self->{domain_admin_id});
@@ -340,7 +369,7 @@ sub buildNAMEDData{
 	};
 
 	# only no wildcard MX (NOT LIKE '*.%') must be add to existent subdomains
-	if($self->{external_mail} eq 'on'){
+	if($self->{external_mail} eq 'on') {
 
 		my $sql = "
 			SELECT
@@ -358,9 +387,11 @@ sub buildNAMEDData{
 			AND
 				`domain_dns`.`protected` = ?
 		";
-
 		my $rdata = iMSCP::Database->factory()->doQuery('domain_dns_id', $sql, $self->{domain_id}, $self->{alias_id}, 'MX', 'yes');
-		error("$rdata") and return 1 if(ref $rdata ne 'HASH');
+		if(ref $rdata ne 'HASH') {
+			error($rdata);
+			return 1;
+		}
 
 		($self->{named}->{MX}->{$_}->{domain_text}) = ($rdata->{$_}->{domain_text} =~ /(.*)\.$/) for(keys %$rdata);
 
@@ -373,8 +404,8 @@ sub buildNAMEDData{
 	0;
 }
 
-sub buildFTPDData{
-
+sub buildFTPDData
+{
 	my $self	= shift;
 	my $rs 		= 0;
 	my ($stdout, $stderr);
@@ -395,12 +426,13 @@ sub buildFTPDData{
 	0;
 }
 
-sub buildADDONData{
-
+sub buildADDONData
+{
 	my $self	= shift;
 
 	$self->{AddonsData} = {};
 
 	0;
 }
+
 1;

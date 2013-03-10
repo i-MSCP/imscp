@@ -27,6 +27,7 @@ package iMSCP::Stepper;
 
 use strict;
 use warnings;
+
 use iMSCP::Dialog;
 use iMSCP::Debug;
 use parent 'Common::SingletonClass', 'Exporter';
@@ -37,7 +38,7 @@ use vars qw/@EXPORT_OK @EXPORT %EXPORT_TAGS/;
 
 sub _init
 {
-	my $self = iMSCP::Stepper->new();
+	my $self = shift;
 
 	$self->{'title'} = "\n\\ZbPerforming step %s from total of %s\\Zn\n\n%s";
 	$self->{'all'} = [];
@@ -48,54 +49,56 @@ sub _init
 
 sub startDetail
 {
-	my $self = iMSCP::Stepper->new();
+	my $self = iMSCP::Stepper->getInstance();
 
-	push (@{$self->{all}}, $self->{'last'});
+	push (@{$self->{'all'}}, $self->{'last'});
 
 	0;
 }
 
 sub endDetail
 {
-	my $self = iMSCP::Stepper->new();
+	my $self = iMSCP::Stepper->getInstance();
 
-	$self->{'last'} = pop (@{$self->{'all'}});
+	$self->{'last'} = pop(@{$self->{'all'}});
 
 	0;
 }
 
 sub step($ $ $ $)
 {
-	my $self = iMSCP::Stepper->new();
+	my $self = iMSCP::Stepper->getInstance();
 
-	my ($code, $text, $steps, $index, $exit) = (@_);
+	my ($code, $text, $steps, $index) = (@_);
 
-	$self->{last} = sprintf ($self->{'title'}, $index, $steps, $text);
+	$self->{'last'} = sprintf($self->{'title'}, $index, $steps, $text);
 
-	my $msg = join ("\n", @{$self->{'all'}}) . "\n" . $self->{'last'};
+	my $msg = '';
+	$msg = join("\n", @{$self->{'all'}}) . "\n" if @{$self->{'all'}};
+	$msg .= $self->{'last'};
 
-	iMSCP::Dialog->factory()->startGauge($msg, int($index * 100 / $steps)) if iMSCP::Dialog->factory()->needGauge();
+	iMSCP::Dialog->factory()->startGauge($msg, int($index * 100 / $steps)) if ! iMSCP::Dialog->factory()->hasGauge();
 	iMSCP::Dialog->factory()->setGauge(int($index * 100 / $steps), $msg);
 
-	my $rs = &{$code}() if (ref $code eq 'CODE');
+	my $rs = &{$code}() if ref $code eq 'CODE';
 
 	if($rs) {
-		iMSCP::Dialog->factory()->endGauge() if iMSCP::Dialog->factory()->needGauge();
+		iMSCP::Dialog->factory()->endGauge() if iMSCP::Dialog->factory()->hasGauge();
 		iMSCP::Dialog->factory()->msgbox(
-			"\n
-				\\Z1[ERROR]\\Zn
+"
+\\Z1[ERROR]\\Zn
 
-				Error while performing step:
+Error while performing step:
 
-				$text
+$text
 
-				Error was:
+Error was:
 
-				\\Z1".($rs =~ /^-?\d+$/ ? getLastError() : $rs)."\\Zn\n
+\\Z1" . ($rs =~ /^-?\d+$/ ? getLastError() : $rs) . "\\Zn\n
 
-				To obtain help please use http://i-mscp.net/forum/
+To obtain help please use http://i-mscp.net/forum/
 
-			"
+"
 		);
 
 		return $rs;

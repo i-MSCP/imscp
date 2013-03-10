@@ -34,7 +34,8 @@ package iMSCP::Requirements;
 use strict;
 use warnings;
 use iMSCP::Debug;
-use iMSCP::Execute qw/execute/;
+use version;
+use iMSCP::Execute;
 use parent 'Common::SimpleClass';
 
 # Initializer.
@@ -49,7 +50,7 @@ sub _init
 	# Initialize the 'needed' attribute that is a hash where each pair is a Perl
 	# module name and the value, an script that contains the method(s)/subroutine(s)
 	# that must be available.
-	$self->{needed} = {
+	$self->{'needed'} = {
 		#'IO::Socket' => '',
 		'DBI' => '',
 		#'DBD::mysql' => '',
@@ -75,9 +76,9 @@ sub _init
 		'Email::Valid' => '',
 	};
 
-	$self->{programs} = {
-		'php' => { version => 'php -v', regexp	=> 'PHP ([\d.]+)', minversion => '5.3.2' },
-		'perl' => { version => 'perl -v', regexp => 'v([\d.]+)', minversion => '5.10.1' }
+	$self->{'programs'} = {
+		'php' => { 'version' => 'php -v', 'regexp' => 'PHP ([\d.]+)', 'minversion' => '5.3.2' },
+		'perl' => { 'version' => 'perl -v', 'regexp' => 'v([\d.]+)', 'minversion' => '5.10.1' }
 	};
 }
 
@@ -129,17 +130,17 @@ sub user
 sub _modules
 {
 	my $self = shift;
-	my ($mod, @mod_missing) = (undef, ());
+	my @mod_missing = ();
 
-	for $mod (keys %{$self->{needed}}) {
+	for my $mod (keys %{$self->{'needed'}}) {
 		if (eval "require $mod") {
-			eval "use $mod $self->{needed}->{$mod}";
+			eval "use $mod $self->{'needed'}->{$mod}";
 		} else {
 			push(@mod_missing, $mod);
 		}
 	}
 
-	fatal("Modules [@mod_missing] was not found on your system.") if scalar @mod_missing;
+	fatal("Modules [@mod_missing] were not found on your system.") if @mod_missing;
 }
 
 # Checks for external program availability and their versions.
@@ -151,19 +152,19 @@ sub _modules
 sub _externalProgram
 {
 	my $self = shift;
-	my ($rv, $output, $error);
+	my ($rs, $stdout);
 
-	fatal("Unable to find the 'which' program.") if(execute('which which', \$output, \$error));
+	fatal("Unable to find the 'which' program.") if(execute('which which', \$stdout, undef));
 
 	for my $program (keys %{$self->{'programs'}}){
-		$rv = execute("which $program", \$output, \$error);
-		fatal("Unable to find the '$program' program.") if $rv;
+		$rs = execute("which $program", \$stdout, undef);
+		fatal("Unable to find the '$program' program.") if $rs;
 
-		if($self->{'programs'}->{$program}->{'version'}){
+		if($self->{'programs'}->{$program}->{'version'}) {
 			my $result = $self->_programVersions(
-				$self->{programs}->{$program}->{'version'},
-				$self->{programs}->{$program}->{'regexp'},
-				$self->{programs}->{$program}->{'minversion'}
+				$self->{'programs'}->{$program}->{'version'},
+				$self->{'programs'}->{$program}->{'regexp'},
+				$self->{'programs'}->{$program}->{'minversion'}
 			);
 
 			fatal "$program $result" if $result;
@@ -183,16 +184,16 @@ sub _externalProgram
 sub _programVersions
 {
 	my ($self, $program, $regexp, $minversion) = @_;
-	my ($rv, $output, $error);
+	my $stdout;
 
-	execute("$program", \$output, \$error) && fatal("Unable to find the $program program.");
+	execute($program, \$stdout, undef) && fatal("Unable to find the $program program.");
 
 	if($regexp) {
-		$output =~ m!$regexp!;
-		$output = $1;
+		$stdout =~ m!$regexp!;
+		$stdout = $1;
 	}
 
-	my $result = $self->checkVersion($output, $minversion);
+	my $result = $self->checkVersion($stdout, $minversion);
 
 	$result;
 }
@@ -210,8 +211,6 @@ sub checkVersion
 	my $version = shift;
 	my $minversion = shift;
 	my $maxversion = shift || '';
-
-	use version;
 
 	if(version->new($version) < version->new($minversion)) {
 		return "$version is older then required version $minversion";

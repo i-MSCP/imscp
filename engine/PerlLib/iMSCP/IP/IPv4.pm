@@ -30,166 +30,160 @@ use warnings;
 
 use iMSCP::Debug;
 use iMSCP::Execute;
-use Data::Dumper;
+use Data::Validate::IP qw/is_ipv4/;
+use parent 'iMSCP::IP::abstractIP';
 
-use vars qw/@ISA/;
-
-@ISA = ('iMSCP::IP::abstractIP');
-use iMSCP::IP::abstractIP;
-
-sub parseIPs{
+sub parseIPs
+{
 	my $self = shift;
 	my $data = shift;
 
-	unless($self->{_loadedIPs}){
-		$self->{ips} = {};
+	unless($self->{'_loadedIPs'}) {
+		$self->{'ips'} = {};
 
-		while($data =~ m/^([^\s]+)\s{1,}[^\n]*\n(?:(?:\s[^\d]+:)?(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})[^\n]*\n)?/mgi){
-			my $_card	= $1;
-			my $_ip		= $2;
+		while($data =~ m/^([^\s]+)\s{1,}[^\n]*\n(?:(?:\s[^\d]+:)?(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})[^\n]*\n)?/gim) {
+			my $_card = $1;
+			my $_ip = $2;
+
 			if($_card ne 'lo'){
-				#my @cards = split(':', $_card);
-				#my $card = shift(@cards);
-				#my $slot = shift(@cards) || 0;
-				#$slot = 0 if $slot !~ /^\d*$/;
 				my ($card, $slot) = split ':', $_card, 2;
-                $slot = 0 if ! defined $slot || $slot !~ /^\d*$/;
+				$slot = 0 if ! defined $slot || $slot !~ /^\d*$/;
 
-				$self->{cards}->{$card}->{'1Slot'} = $slot + 1
-					if (!$self->{cards}->{$card}->{'1Slot'} || $self->{cards}->{$card}->{'1Slot'} <= $slot);
+				$self->{'cards'}->{$card}->{'1Slot'} = $slot + 1
+					if (!$self->{'cards'}->{$card}->{'1Slot'} || $self->{'cards'}->{$card}->{'1Slot'} <= $slot);
 
-				if($_ip){
-					$self->{ips}->{$_ip} = {} unless $self->{ips}->{$_ip} || $_ip;
-					$self->{ips}->{$_ip}->{card} = $card;
-					$self->{ips}->{$_ip}->{vcard} = $_card if $_card ne $card;
+				if($_ip) {
+					$self->{'ips'}->{$_ip} = {} unless $self->{ips}->{$_ip} || $_ip;
+					$self->{'ips'}->{$_ip}->{'card'} = $card;
+					$self->{'ips'}->{$_ip}->{'vcard'} = $_card if $_card ne $card;
 				}
 			}
 		}
 
-		$self->{_loadedIPs} = 1;
+		$self->{'_loadedIPs'} = 1;
 	}
 
 	0;
 }
 
-sub parseNetCards{
+sub parseNetCards
+{
 	my $self = shift;
 	my $data = shift;
 
-	unless($self->{_loadedCards}){
-		$self->{cards} = {};
+	unless($self->{'_loadedCards'}) {
+		$self->{'cards'} = {};
 
-		while($data =~ m/^([^\s]+)\s{1,}[^\n]*\n/mgi){
-			debug("$1") if $1;
+		while($data =~ m/^([^\s]+)\s{1,}[^\n]*\n/gim) {
+			debug($1) if $1;
+
 			if($1 ne 'lo'){
 				my @cards =split(':', $1);
 				my $card = shift(@cards);
-				$self->{cards}->{$card}->{up} = 'yes';
+				$self->{'cards'}->{$card}->{'up'} = 'yes';
 			}
 		}
 
-		$self->{_loadedCards} = 1;
+		$self->{'_loadedCards'} = 1;
 	}
 	0;
 }
 
-sub getCardByIP{
-	my $self	= shift;
-	my $ip		= shift;
+sub getCardByIP
+{
+	my $self = shift;
+	my $ip = shift;
 
-	debug("Network card having ip $ip: ". (exists $self->{ips}->{$ip}->{card} ? $self->{ips}->{$ip}->{card} : 'not exists'));
+	debug("Network card having ip $ip: ". (exists $self->{'ips'}->{$ip}->{'card'} ? $self->{'ips'}->{$ip}->{'card'} : 'not exists'));
 
-	return (exists $self->{ips}->{$ip}->{card} ? $self->{ips}->{$ip}->{card} : 0);
+	(exists $self->{'ips'}->{$ip}->{'card'} ? $self->{'ips'}->{$ip}->{'card'} : 0);
 }
 
-sub addedToVCard{
-	my $self	= shift;
-	my $ip		= shift;
+sub addedToVCard
+{
+	my $self = shift;
+	my $ip = shift;
 
-	debug("Virtual network card having ip $ip: ". (exists $self->{ips}->{$ip}->{vcard} ? $self->{ips}->{$ip}->{vcard} : 'not exists'));
+	debug("Virtual network card having ip $ip: ". (exists $self->{'ips'}->{$ip}->{'vcard'} ? $self->{'ips'}->{$ip}->{'vcard'} : 'not exists'));
 
-	return (exists $self->{ips}->{$ip}->{vcard} ? $self->{ips}->{$ip}->{vcard} : 0);
+	(exists $self->{'ips'}->{$ip}->{'vcard'} ? $self->{'ips'}->{$ip}->{'vcard'} : 0);
 }
 
-sub isValidIp{
-	my $self	= shift;
-	my $ip		= shift;
-
-	use Data::Validate::IP qw/is_ipv4/;
+sub isValidIp
+{
+	my $self = shift;
+	my $ip = shift;
 
 	debug("Ip is ipv4? ". (is_ipv4($ip) ? 'yes' : 'no'));
-	return (is_ipv4($ip) ? 1 : 0);
+
+	(is_ipv4($ip) ? 1 : 0);
 }
 
-sub _getFirstFreeSlotOnCard{
+sub _getFirstFreeSlotOnCard
+{
 
-	my $self	= shift;
-	my $card	= shift;
+	my $self = shift;
+	my $card = shift;
 	my $reserve	= shift || 0;
 
-	my $slot = $self->{cards}->{$card}->{'1Slot'};
+	my $slot = $self->{'cards'}->{$card}->{'1Slot'};
 
-	$self->{cards}->{$card}->{'1Slot'}++ if $reserve;
+	$self->{'cards'}->{$card}->{'1Slot'}++ if $reserve;
 
 	debug("First slot on network card $card is $slot");
 
 	$slot;
 }
 
-sub attachIpToNetCard{
-	my $self	= shift;
-	my $card	= shift;
-	my $ip		= shift;
+sub attachIpToNetCard
+{
+	my $self = shift;
+	my $card = shift;
+	my $ip = shift;
 
 	my $fCard = $self->getCardByIP($ip);
 
-	return 0 if($fCard eq $card);
-	return 1 if($fCard && $fCard ne $card);
-	return 1 unless($self->existsNetCard($card));
-	return 1 unless($self->isValidIp($ip));
+	return 0 if $fCard eq $card;
+	return 1 if $fCard && $fCard ne $card;
+	return 1 unless $self->existsNetCard($card);
+	return 1 unless $self->isValidIp($ip);
 
 	my ($stdout, $stderr);
 
 	my $slot = $self->_getFirstFreeSlotOnCard($card, 'reserve');
 
-	my $rs = execute(
-		"ifconfig ".
-		"$card:$slot ".
-		"$ip ".
-		"netmask 255.255.255.255 ".
-		"up",
-		\$stdout,
-		\$stderr
-	);
-	debug("$stdout")if $stdout;
-	error("$stderr")if $stderr;
+	my $rs = execute("ifconfig $card:$slot $ip netmask 255.255.255.255 up", \$stdout, \$stderr);
+	debug($stdout) if $stdout;
+	error($stderr) if $stderr && $rs;
 
 	$rs;
 }
 
-sub detachIpFromNetCard{
-	my $self	= shift;
-	my $ip		= shift;
+sub detachIpFromNetCard
+{
+	my $self = shift;
+	my $ip = shift;
 	my $card;
 
-	return 1 unless($self->getCardByIP($ip));
-	return 1 unless($card = $self->addedToVCard($ip));
-	return 1 unless($self->isValidIp($ip));
+	return 1 unless $self->getCardByIP($ip);
+	return 1 unless $card = $self->addedToVCard($ip);
+	return 1 unless $self->isValidIp($ip);
 
 	my ($stdout, $stderr);
 
 	my $rs = execute("ifconfig $card down", \$stdout, \$stderr);
-	debug("$stdout")if $stdout;
-	error("$stderr")if $stderr;
+	debug($stdout) if $stdout;
+	error($stderr) if $stderr && $rs;
 
 	$rs;
 }
 
-sub reset{
-	my $self	= shift;
+sub reset
+{
+	my $self = shift;
 
-	delete $self->{_loadedIPs};
-	delete $self->{_loadedCards};
+	delete $self->{'_loadedIPs'};
+	delete $self->{'_loadedCards'};
 }
 
 1;

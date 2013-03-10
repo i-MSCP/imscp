@@ -52,19 +52,6 @@ by itself on the manager. Any hook function must return 0 on success and 1 on fa
 
 =over 4
 
-=item getInstance()
-
- Implements Singleton Design Pattern - Returns instance of this class.
-
- Return iMSCP::HooksManager
-
-=cut
-
-sub getInstance
-{
-	iMSCP::HooksManager->new();
-}
-
 =item register(hook, hookFunction)
 
  Register the given hook function on the manager for the given hook.
@@ -156,7 +143,7 @@ sub trigger($$)
 
 =item _init()
 
- This is called by new(). Initialize instance.
+ This is called by getInstance(). Initialize instance.
 
  Return iMSCP::HooksManager
 

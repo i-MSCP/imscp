@@ -67,10 +67,9 @@ sub registerSetupHooks
 	my $rs = 0;
 
 	$rs = $hooksManager->trigger('beforePoRegisterSetupHooks', $hooksManager, 'courier');
+	return $rs if $rs;
 
-	$rs |= $hooksManager->trigger('afterPoRegisterSetupHooks', $hooksManager, 'courier');
-
-	$rs;
+	$hooksManager->trigger('afterPoRegisterSetupHooks', $hooksManager, 'courier');
 }
 
 =item preinstall()
@@ -87,12 +86,12 @@ sub preinstall
 	my $rs = 0;
 
 	$rs = $self->{'hooksManager'}->trigger('beforePoPreinstall', 'courier');
+	return $rs if $rs;
 
-	$rs |= $self->stop();
+	$rs = $self->stop();
+	return $rs if $rs;
 
-	$rs |= $self->{'hooksManager'}->trigger('afterPoPreinstall', 'courier');
-
-	$rs;
+	$self->{'hooksManager'}->trigger('afterPoPreinstall', 'courier');
 }
 
 =item install()
@@ -108,15 +107,15 @@ sub install
 	my $self = shift;
 	my $rs = 0;
 
-	$rs |= $self->{'hooksManager'}->trigger('beforePoInstall', 'courier');
+	$rs = $self->{'hooksManager'}->trigger('beforePoInstall', 'courier');
+	return $rs if $rs;
 
 	require Servers::po::courier::installer;
 
-	$rs |= Servers::po::courier::installer->new()->install();
+	$rs = Servers::po::courier::installer->getInstance()->install();
+	return $rs if $rs;
 
-	$rs |= $self->{'hooksManager'}->trigger('afterPoInstall', 'courier');
-
-	$rs;
+	$self->{'hooksManager'}->trigger('afterPoInstall', 'courier');
 }
 
 =item postinstall()
@@ -133,12 +132,12 @@ sub postinstall
 	my $rs = 0;
 
 	$rs = $self->{'hooksManager'}->trigger('beforePoPostinstall', 'courier');
+	return $rs if $rs;
 
-	$rs |= $self->start();
+	$rs = $self->start();
+	return $rs if $rs;
 
-	$rs |= $self->{'hooksManager'}->trigger('afterPoPostinstall', 'courier');
-
-	$rs;
+	$self->{'hooksManager'}->trigger('afterPoPostinstall', 'courier');
 }
 
 =item uninstall()
@@ -154,16 +153,18 @@ sub uninstall
 	my $self = shift;
 	my $rs = 0;
 
-	$rs |= $self->{'hooksManager'}->trigger('beforePoUninstall', 'courier');
+	$rs = $self->{'hooksManager'}->trigger('beforePoUninstall', 'courier');
+	return $rs if $rs;
 
 	require Servers::po::courier::uninstaller;
 
-	$rs |= Servers::po::courier::uninstaller->new()->uninstall();
-	$rs |= $self->restart();
+	$rs = Servers::po::courier::uninstaller->getInstance()->uninstall();
+	return $rs if $rs;
 
-	$rs |= $self->{'hooksManager'}->trigger('afterPoUninstall', 'courier');
+	$rs = $self->restart();
+	return $rs if $rs;
 
-	$rs;
+	$self->{'hooksManager'}->trigger('afterPoUninstall', 'courier');
 }
 
 =item addMail()
@@ -197,17 +198,18 @@ sub addMail
 
 		# Backup current working file if any
 		if(-f "$self->{'wrkDir'}/userdb"){
-			$rs |= iMSCP::File->new(
+			$rs = iMSCP::File->new(
 				'filename' => "$self->{'wrkDir'}/userdb"
 			)->copyFile(
 				"$self->{'bkpDir'}/userdb." . time
 			);
+			return $rs if $rs;
 		}
 
 		my $userdbWrkFile = -f "$self->{'wrkDir'}/userdb" ? "$self->{'wrkDir'}/userdb" : "$self->{'cfgDir'}/userdb";
 
 		# Getting userdb working file content
-		my $userdbWrkFile = iMSCP::File->new('filename' => $userdbWrkFile);
+		$userdbWrkFile = iMSCP::File->new('filename' => $userdbWrkFile);
 		my $userdbWrkFileContent = $userdbWrkFile->get();
 		return 1 unless defined $userdbWrkFileContent;
 
@@ -238,26 +240,34 @@ sub addMail
 
 		# Writing the new userdb working file
 		$userdbWrkFile->{'filename'} = "$self->{'wrkDir'}/userdb";
-		$userdbWrkFile->set($userdbWrkFileContent);
-		$rs |= $userdbWrkFile->save();
+
+		$rs = $userdbWrkFile->set($userdbWrkFileContent);
+		return $rs if $rs;
+
+		$rs = $userdbWrkFile->save();
+		return $rs if $rs;
 
 		# Setting permissions on userdb working file
-		$rs |= $userdbWrkFile->mode(0600);
-		$rs |= $userdbWrkFile->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
+		$rs = $userdbWrkFile->mode(0600);
+		return $rs if $rs;
+
+		$rs = $userdbWrkFile->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
+		return $rs if $rs;
 
 		# Copying new file in production directory (permissions are preserved)
-		$rs |= $userdbWrkFile->copyFile("$self->{'AUTHLIB_CONF_DIR'}/userdb");
+		$rs = $userdbWrkFile->copyFile("$self->{'AUTHLIB_CONF_DIR'}/userdb");
+		return $rs if $rs;
 
 		# Updating userdb.dat file from the contents of the new userdb file
 		my ($stdout, $stderr);
-		$rs |= execute($self->{'CMD_MAKEUSERDB'}, \$stdout, \$stderr);
+		$rs = execute($self->{'CMD_MAKEUSERDB'}, \$stdout, \$stderr);
 		debug($stdout) if $stdout;
 		error($stderr) if $stderr && $rs;
+		return $rs if $rs;
 
-		$rs |= $self->{'hooksManager'}->trigger('afterPoAddMail');
+		$rs = $self->{'hooksManager'}->trigger('afterPoAddMail');
+		return $rs if $rs;
 	}
-
-	$rs;
 }
 
 =item postaddMail()
@@ -287,19 +297,17 @@ sub postaddMail
 		for ("$mailDir/.Drafts", "$mailDir/.Junk", "$mailDir/.Sent", "$mailDir/.Trash") {
 
 			# Creating maildir directory or only set its permissions if already exists
-			$rs |= iMSCP::Dir->new('dirname' => $_)->make(
+			$rs = iMSCP::Dir->new('dirname' => $_)->make(
 				{ 'user' => $mailUidName, 'group' => $mailGidName , 'mode' => 0700 }
 			);
-
-			last if $rs;
+			return $rs if $rs;
 
 			# Creating maildir sub folders (cur, new, tmp) or only set there permissions if they already exists
 			for my $subdir ('cur', 'new', 'tmp') {
 				$rs |= iMSCP::Dir->new('dirname' => "$_/$subdir")->make(
 					{ 'user' => $mailUidName, 'group' => $mailGidName, 'mode' => 0700 }
 				);
-
-				last if $rs;
+				return $rs if $rs;
 			}
 		}
 
@@ -311,6 +319,7 @@ sub postaddMail
 		if(-f "$mailDir/courierimapsubscribed") {
 
 			my $courierimapsubscribedFileContent = $courierimapsubscribedFile->get();
+
 			if(! defined $courierimapsubscribedFileContent) {
 				error('Unable to read courier courierimapsubscribed file');
 				return 1;
@@ -323,13 +332,20 @@ sub postaddMail
 			}
 		}
 
-		$rs |= $courierimapsubscribedFile->set(join "\n", @subscribedFolders);
-		$rs |= $courierimapsubscribedFile->save();
-		$rs |= $courierimapsubscribedFile->mode(0600);
-		$rs |= $courierimapsubscribedFile->owner($mailUidName, $mailGidName);
+		$rs = $courierimapsubscribedFile->set(join "\n", @subscribedFolders);
+		return $rs if $rs;
+
+		$rs = $courierimapsubscribedFile->save();
+		return $rs if $rs;
+
+		$rs = $courierimapsubscribedFile->mode(0600);
+		return $rs if $rs;
+
+		$rs = $courierimapsubscribedFile->owner($mailUidName, $mailGidName);
+		return $rs if $rs;
 	}
 
-	$rs;
+	0;
 }
 
 =item delMail()
@@ -362,17 +378,18 @@ sub delMail
 		return $rs if $rs;
 
 		if(-f "$self->{'wrkDir'}/userdb"){
-			$rs |= iMSCP::File->new(
+			$rs = iMSCP::File->new(
 				'filename' => "$self->{'wrkDir'}/userdb"
 			)->copyFile(
 				"$self->{'bkpDir'}/userdb." . time
 			);
+			return $rs if $rs;
 		}
 
 		my $userdbWrkFile = -f "$self->{'wrkDir'}/userdb" ? "$self->{'wrkDir'}/userdb" : "$self->{'cfgDir'}/userdb";
 
 		# Getting userdb working file content
-		my $userdbWrkFile = iMSCP::File->new('filename' => $userdbWrkFile);
+		$userdbWrkFile = iMSCP::File->new('filename' => $userdbWrkFile);
 		my $userdbWrkFileContent = $userdbWrkFile->get();
 		return 1 unless defined $userdbWrkFileContent;
 
@@ -383,26 +400,36 @@ sub delMail
 
 		# Writing the new userdb working file
 		$userdbWrkFile->{'filename'} = "$self->{'wrkDir'}/userdb";
-		$userdbWrkFile->set($userdbWrkFileContent);
-		$rs |= $userdbWrkFile->save();
+
+		$rs = $userdbWrkFile->set($userdbWrkFileContent);
+		return $rs if $rs;
+
+		$rs = $userdbWrkFile->save();
+		return $rs if $rs;
 
 		# Setting permissions on userdb working file
 		$rs |= $userdbWrkFile->mode(0600);
-		$rs |= $userdbWrkFile->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
+		return $rs if $rs;
+
+		$rs = $userdbWrkFile->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
+		return $rs if $rs;
 
 		# Copying new file in production directory (permissions are preserved)
-		$rs |= $userdbWrkFile->copyFile("$self->{'AUTHLIB_CONF_DIR'}/userdb");
+		$rs = $userdbWrkFile->copyFile("$self->{'AUTHLIB_CONF_DIR'}/userdb");
+		return $rs if $rs;
 
 		# Updating userdb.dat file from the contents of the new userdb file
 		my ($stdout, $stderr);
-		$rs |= execute($self->{'CMD_MAKEUSERDB'}, \$stdout, \$stderr);
+		$rs = execute($self->{'CMD_MAKEUSERDB'}, \$stdout, \$stderr);
 		debug($stdout) if $stdout;
 		error($stderr) if $stderr && $rs;
+		return $rs if $rs;
 
-		$rs |= $self->{'hooksManager'}->trigger('afterPoDelMail');
+		$rs = $self->{'hooksManager'}->trigger('afterPoDelMail');
+		return $rs if $rs;
 	}
 
-	$rs;
+	0;
 }
 
 =item start()
@@ -419,19 +446,18 @@ sub start
 	my $rs = 0;
 
 	$rs = $self->{'hooksManager'}->trigger('beforePoStart');
+	return $rs if $rs;
 
 	my ($stdout, $stderr);
 
 	for('CMD_AUTHD', 'CMD_POP', 'CMD_IMAP', 'CMD_POP_SSL', 'CMD_IMAP_SSL') {
-		$rs |= execute("$self::courierConfig{$_} start", \$stdout, \$stderr);
+		$rs = execute("$self::courierConfig{$_} start", \$stdout, \$stderr);
 		debug($stdout) if $stdout;
 		error($stderr) if $stderr && $rs;
-		last if $rs;
+		return $rs if $rs;
 	}
 
-	$rs |= $self->{'hooksManager'}->trigger('afterPoStart');
-
-	$rs;
+	$self->{'hooksManager'}->trigger('afterPoStart');
 }
 
 =item stop()
@@ -448,19 +474,18 @@ sub stop
 	my $rs = 0;
 
 	$rs = $self->{'hooksManager'}->trigger('beforePoStop');
+	return $rs if $rs;
 
 	my ($stdout, $stderr);
 
 	for('CMD_AUTHD', 'CMD_POP', 'CMD_IMAP', 'CMD_POP_SSL', 'CMD_IMAP_SSL') {
-		$rs |= execute("$self::courierConfig{$_} stop", \$stdout, \$stderr);
+		$rs = execute("$self::courierConfig{$_} stop", \$stdout, \$stderr);
 		debug($stdout) if $stdout;
 		error($stderr) if $stderr && $rs;
-		last if $rs;
+		return $rs if $rs;;
 	}
 
-	$rs |= $self->{'hooksManager'}->trigger('afterPoStop');
-
-	$rs;
+	$self->{'hooksManager'}->trigger('afterPoStop');
 }
 
 =item restart()
@@ -481,15 +506,13 @@ sub restart
 	my ($stdout, $stderr);
 
 	for('CMD_AUTHD', 'CMD_POP', 'CMD_IMAP', 'CMD_POP_SSL', 'CMD_IMAP_SSL') {
-		$rs |= execute("$self::courierConfig{$_} restart", \$stdout, \$stderr);
+		$rs = execute("$self::courierConfig{$_} restart", \$stdout, \$stderr);
 		debug($stdout) if $stdout;
 		error($stderr) if $stderr && $rs;
-		last if $rs;
+		return $rs if $rs;
 	}
 
-	$rs |= $self->{'hooksManager'}->trigger('afterPoRestart');
-
-	$rs;
+	$$self->{'hooksManager'}->trigger('afterPoRestart');
 }
 
 =item getTraffic()
@@ -533,10 +556,10 @@ sub getTraffic
 
 		# save last line
 		$self->{'logDb'}->{'line'} = $#content;
-		$self->{'logDb'}->{'content'} = @content[$#content];
+		$self->{'logDb'}->{'content'} = $content[$#content];
 
 		# test for logratation
-		if(@content[$lastLineNo] && @content[$lastLineNo] eq $lastLine){
+		if($content[$lastLineNo] && $content[$lastLineNo] eq $lastLine){
 			## No logratation ocure. We zero already readed files
 			(tied @content)->defer;
 			@content = @content[$lastLineNo + 1 .. $#content];
@@ -592,9 +615,9 @@ sub getTraffic
 
 =over 4
 
-=item
+=item _init()
 
- Called by new(). Initialize instance.
+ Called by getInstance(). Initialize instance.
 
  Return Servers::po::courier
 
@@ -636,7 +659,7 @@ sub _init
 END
 {
 	my $endCode = $?;
-	my $self = Servers::po::courier->new();
+	my $self = Servers::po::courier->getInstance();
 	my $wrkLogFile = "$main::imscpConfig{LOG_DIR}/mail.po.log";
 	my $rs = 0;
 

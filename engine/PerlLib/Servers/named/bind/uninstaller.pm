@@ -27,6 +27,7 @@ package Servers::named::bind::uninstaller;
 
 use strict;
 use warnings;
+
 use iMSCP::Debug;
 use parent 'Common::SingletonClass';
 
@@ -62,16 +63,18 @@ sub restoreConfFile
 
 	for ($self::bindConfig{'BIND_CONF_FILE'}) {
 		my ($filename, $directories, $suffix) = fileparse($_);
+
 		if(-f "$self->{bkpDir}/$filename$suffix.system"){
-			$rs	|=	iMSCP::File->new(
+			$rs	=	iMSCP::File->new(
 				filename => "$self->{bkpDir}/$filename$suffix.system"
 			)->copyFile(
 				$_
 			);
+			return $rs if $rs;
 		}
 	}
 
-	$rs;
+	0;
 }
 
 1;

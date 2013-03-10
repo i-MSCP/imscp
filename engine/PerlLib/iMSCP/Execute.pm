@@ -1,5 +1,11 @@
 #!/usr/bin/perl
 
+=head1 NAME
+
+ iMSCP::Execute - Allows to execute external commands
+
+=cut
+
 # i-MSCP - internet Multi Server Control Panel
 # Copyright (C) 2010-2013 by internet Multi Server Control Panel
 #
@@ -19,6 +25,7 @@
 #
 # @category		i-MSCP
 # @copyright	2010-2013 by i-MSCP | http://i-mscp.net
+# @author		Laurent Declercq <l.declercq@nuxwin.com>
 # @author		Daniel Andreca <sci2tech@gmail.com>
 # @link			http://i-mscp.net i-MSCP Home Site
 # @license		http://www.gnu.org/licenses/gpl-2.0.html GPL v2
@@ -27,80 +34,92 @@ package iMSCP::Execute;
 
 use strict;
 use warnings;
+
 use iMSCP::Debug;
-use iMSCP::STDCapture;
+use IPC::Open3;
+use Symbol qw/gensym/;
 use parent 'Exporter';
 
-use vars qw/@EXPORT/;
-@EXPORT = qw/execute/;
+our @EXPORT = qw/execute escapeShell getExitCode/;
+
+=head1 DESCRIPTION
+
+ This class provides set of functions allowing to execute external commands. It's also possible to capture STDOUT and
+ and/or STDERR.
+
+=head1 FUNCTIONS
+
+=over 4
+
+=item execute($command, \$stdout, \$stderr)
+
+ Execute the given external command.
+
+ If a scalar reference is passed as first argument, command STDOUT is captured into it.
+ If a scalar reference is passed as third argument, command STDERR is captured into it.
+
+ Return int External command exit code
+
+=cut
 
 sub execute
 {
-	my ($code, $output, $error) = @_;
-	my $rv;
+	my $command = shift;
+	my $stdout = shift;
+	my $stderr = shift;
 
-	if (ref $output && ref $error){
-		$rv = _execCaptureBoth($code, $output, $error);
-	} elsif(ref $output){
-		$rv = _execCaptureOutput($code, $output);
-	} elsif(ref $error){
-		$rv = _execCaptureError($code, $error);
+	debug("Execute $command");
+
+	my $pid;
+
+	if(ref $stdout && ref $stderr) {
+		$pid = open3(gensym, \*CATCHOUT, \*CATCHERR, $command);
+		$$stdout = do { local $/; <CATCHOUT> };
+		$$stderr = do { local $/; <CATCHERR> };
+	} elsif(ref $stdout) {
+		$pid = open3(gensym, \*CATCHOUT, ">&STDERR", $command);
+		$$stdout = do { local $/; <CATCHOUT> };
+	} elsif(ref $stderr) {
+		$pid = open3(gensym, ">&STDOUT", \*CATCHERR, $command);
+		$$stderr = do { local $/; <CATCHERR> };
 	} else {
-		$rv = _execCode($code);
+		system($command);
 	}
 
-	$rv;
+	waitpid($pid, 0) if $pid;
+
+	chomp($$stdout ||= '');
+	chomp($$stderr ||= '');
+
+	getExitCode($?);
 }
 
-sub _execCaptureBoth
+=item escapeShell($string)
+
+ Escape the given string.
+
+ Return string Escaped string
+
+=cut
+
+sub escapeShell
 {
-	my ($code, $output, $error) = @_;
-	my $out = new iMSCP::STDCapture('STDOUT', $output);
-	my $err = new iMSCP::STDCapture('STDERR', $error);
+   return $_[0] if $_[0] =~ /^[a-zA-Z0-9_\-]+\z/;
+   my $s = $_[0];
+   $s =~ s/'/'\\''/g;
 
-	debug("Execute $code");
-
-	system($code);
-
-	_getExitCode($?);
+   "'$s'";
 }
 
-sub _execCaptureOutput
-{
-	my ($code, $output) = @_;
-	my $out = new iMSCP::STDCapture('STDOUT', $output);
+=item escapeShell($exitValue)
 
-	debug("Execute $code");
+ Return human exit code
 
-	system($code);
+ Return int exit code
 
-	_getExitCode($?);
-}
+=cut
 
-sub _execCaptureError
-{
-	my ($code, $error) = @_;
-	my $err = new iMSCP::STDCapture('STDERR', $error);
-
-	debug("Execute $code");
-
-	system($code);
-
-	_getExitCode($?);
-}
-
-sub _execCode
-{
-	my $code = shift;
-
-	debug("Execute $code");
-
-	system($code);
-
-	_getExitCode($?);
-}
-
-sub _getExitCode
+sub getExitCode
 {
 	my $exitValue = shift;
 
@@ -120,5 +139,14 @@ sub _getExitCode
 
 	$exitValue;
 }
+
+=back
+
+=head1 AUTHORS
+
+ Laurent Declercq <l.declercq@nuxwin.com>
+ Daniel Andreca <sci2tech@gmail.com>
+
+=cut
 
 1;

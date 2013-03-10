@@ -37,19 +37,21 @@ use iMSCP::Addons;
 
 newDebug('imscp-set-gui-permissions.log');
 
+silent(1);
+
 sub start_up
 {
 	umask(027);
 
-	iMSCP::Boot->new()->init({ 'nolock' => 'yes', 'nodatabase' => 'yes' });
+	iMSCP::Boot->getInstance({ 'nolock' => 'yes', 'nodatabase' => 'yes' })->boot();
 
 	0;
 }
 
 sub shut_down
 {
-	my @warnings = getMessageByType('WARNING');
-	my @errors = getMessageByType('ERROR');
+	my @warnings = getMessageByType('warn');
+	my @errors = getMessageByType('error');
 
 	my $msg = "\nWARNINGS:\n" . join("\n", @warnings) . "\n" if @warnings > 0;
 	$msg .= "\nERRORS:\n" . join("\n", @errors) . "\n" if @errors > 0;
@@ -64,41 +66,38 @@ sub shut_down
 
 sub set_permissions
 {
-	my ($rs, $item, $file, $class);
+	my $rs = 0;
+	my ($instance, $file, $class);
 
 	for('named', 'ftpd', 'mta', 'po', 'httpd') {
 		$file = "Servers/$_.pm";
 		$class = "Servers::$_";
 		require $file;
-		$item = $class->factory();
+		$instance = $class->factory();
 
-		if($item->can('setGuiPermissions')) {
+		if($instance->can('setGuiPermissions')) {
 			debug("Set GUI permissions for the $_ server");
-			$rs |= $item->setGuiPermissions();
-		}
-
-		last if $rs;
-	}
-
-	if(! $rs) {
-		for(iMSCP::Addons->new()->get()) {
-			s/\.pm//;
-
-			$file = "Addons/$_.pm";
-			$class = "Addons::$_";
-			require $file;
-			$item = $class->factory();
-
-			if( $item->can('setGuiPermissions')) {
-				debug("Set GUI permissions for the $_ addon");
-				$rs |= $item->setGuiPermissions();
-			}
-
-			last if $rs;
+			$rs = $instance->setGuiPermissions();
+			return $rs if $rs;
 		}
 	}
 
-	$rs;
+	for(iMSCP::Addons->getInstance()->get()) {
+		s/\.pm//;
+
+		$file = "Addons/$_.pm";
+		$class = "Addons::$_";
+		require $file;
+		$instance = $class->factory();
+
+		if($instance->can('setGuiPermissions')) {
+			debug("Set GUI permissions for the $_ addon");
+			$rs = $instance->setGuiPermissions();
+			return $rs if $rs;
+		}
+	}
+
+	0;
 }
 
 exit 1 if start_up();

@@ -68,14 +68,14 @@ sub registerSetupHooks
 	my $rs = 0;
 
 	$rs = $hooksManager->trigger('beforePoRegisterSetupHooks', $hooksManager, 'dovecot');
+	return $rs if $rs;
 
 	require Servers::po::dovecot::installer;
 
-	$rs |= Servers::po::dovecot::installer->new()->registerSetupHooks($hooksManager);
+	$rs = Servers::po::dovecot::installer->getInstance()->registerSetupHooks($hooksManager);
+	return $rs if $rs;
 
-	$rs |= $hooksManager->trigger('afterPoRegisterSetupHooks', $hooksManager, 'dovecot');
-
-	$rs;
+	$hooksManager->trigger('afterPoRegisterSetupHooks', $hooksManager, 'dovecot');
 }
 
 =item install()
@@ -92,14 +92,14 @@ sub install
 	my $rs = 0;
 
 	$rs = $self->{'hooksManager'}->trigger('beforePoInstall', 'dovecot');
+	return $rs if $rs;
 
 	require Servers::po::dovecot::installer;
 
-	$rs |= Servers::po::dovecot::installer->new()->install();
+	$rs = Servers::po::dovecot::installer->getInstance()->install();
+	return $rs if $rs;
 
-	$rs |= $self->{'hooksManager'}->trigger('afterPoInstall', 'dovecot');
-
-	$rs;
+	$self->{'hooksManager'}->trigger('afterPoInstall', 'dovecot');
 }
 
 =item postinstall()
@@ -116,12 +116,11 @@ sub postinstall
 	my $rs = 0;
 
 	$rs = $self->{'hooksManager'}->trigger('beforePoPostinstall', 'dovecot');
+	return $rs if $rs;
 
 	$self->{'restart'} = 'yes';
 
-	$rs |= $self->{'hooksManager'}->trigger('afterPoPostinstall', 'dovecot');
-
-	$rs;
+	$self->{'hooksManager'}->trigger('afterPoPostinstall', 'dovecot');
 }
 
 =item postaddMail()
@@ -151,19 +150,17 @@ sub postaddMail
 		for ("$mailDir/.Drafts", "$mailDir/.Junk", "$mailDir/.Sent", "$mailDir/.Trash") {
 
 			# Creating maildir directory or only set its permissions if already exists
-			$rs |= iMSCP::Dir->new('dirname' => $_)->make(
+			$rs = iMSCP::Dir->new('dirname' => $_)->make(
 				{ 'user' => $mailUidName, 'group' => $mailGidName , 'mode' => 0700 }
 			);
-
-			last if $rs;
+			return $rs if $rs;
 
 			# Creating maildir sub folders (cur, new, tmp) or only set there permissions if they already exists
 			for my $subdir ('cur', 'new', 'tmp') {
-				$rs |= iMSCP::Dir->new('dirname' => "$_/$subdir")->make(
+				$rs = iMSCP::Dir->new('dirname' => "$_/$subdir")->make(
 					{ 'user' => $mailUidName, 'group' => $mailGidName, 'mode' => 0700 }
 				);
-
-				last if $rs;
+				return $rs if $rs;
 			}
 		}
 
@@ -175,6 +172,7 @@ sub postaddMail
 		if(-f "$mailDir/subscriptions") {
 
 			my $subscriptionsFileContent = $subscriptionsFile->get();
+
 			if(! defined $subscriptionsFileContent) {
 				error('Unable to read dovecot subscriptions file');
 				return 1;
@@ -187,13 +185,20 @@ sub postaddMail
 			}
 		}
 
-		$rs |= $subscriptionsFile->set(join "\n", @subscribedFolders);
-		$rs |= $subscriptionsFile->save();
-		$rs |= $subscriptionsFile->mode(0600);
-		$rs |= $subscriptionsFile->owner($mailUidName, $mailGidName);
+		$rs = $subscriptionsFile->set(join "\n", @subscribedFolders);
+		return $rs if $rs;
+
+		$rs = $subscriptionsFile->save();
+		return $rs if $rs;
+
+		$rs = $subscriptionsFile->mode(0600);
+		return $rs if $rs;
+
+		$rs = $subscriptionsFile->owner($mailUidName, $mailGidName);
+		return $rs if $rs;
 	}
 
-	$rs;
+	0;
 }
 
 =item uninstall()
@@ -210,15 +215,17 @@ sub uninstall
 	my $rs = 0;
 
 	$rs = $self->{'hooksManager'}->trigger('beforePoUninstall', 'dovecot');
+	return $rs if $rs;
 
 	require Servers::po::dovecot::uninstaller;
 
-	$rs |= Servers::po::dovecot::uninstaller->new()->uninstall();
-	$rs |= $self->restart();
+	$rs = Servers::po::dovecot::uninstaller->getInstance()->uninstall();
+	return $rs if $rs;
 
-	$rs |= i$self->{'hooksManager'}->trigger('afterPoUninstall', 'dovecot');
+	$rs = $self->restart();
+	return $rs if $rs;
 
-	$rs;
+	$self->{'hooksManager'}->trigger('afterPoUninstall', 'dovecot');
 }
 
 =item restart()
@@ -235,15 +242,15 @@ sub restart
 	my $rs = 0;
 
 	$rs = $self->{'hooksManager'}->trigger('beforePoRestart');
+	return $rs if $rs;
 
 	my ($stdout, $stderr);
-	$rs |= execute("$self::dovecotConfig{'CMD_DOVECOT'} restart", \$stdout, \$stderr);
+	$rs = execute("$self::dovecotConfig{'CMD_DOVECOT'} restart", \$stdout, \$stderr);
 	debug($stdout) if $stdout;
 	error($stderr) if $stderr && $rs;
+	return $rs if $rs;
 
-	$rs |= $self->{'hooksManager'}->trigger('afterPoRestart');
-
-	$rs;
+	$self->{'hooksManager'}->trigger('afterPoRestart');
 }
 
 
@@ -287,10 +294,10 @@ sub getTraffic
 
 		# save last line
 		$self->{'logDb'}->{'line'} = $#content;
-		$self->{'logDb'}->{'content'} = @content[$#content];
+		$self->{'logDb'}->{'content'} = $content[$#content];
 
 		# test for logratation
-		if(@content[$lastLineNo] && @content[$lastLineNo] eq $lastLine){
+		if($content[$lastLineNo] && $content[$lastLineNo] eq $lastLine){
 			## No logratation ocure. We zero already readed files
 			(tied @content)->defer;
 			@content = @content[$lastLineNo + 1 .. $#content];
@@ -332,9 +339,9 @@ sub getTraffic
 
 =over 4
 
-=item
+=item _init()
 
- Called by new(). Initialize instance.
+ Called by getInstance(). Initialize instance.
 
  Return Servers::po::dovecot
 
@@ -375,7 +382,7 @@ sub _init
 END
 {
 	my $endCode	= $?;
-	my $self = Servers::po::dovecot->new();
+	my $self = Servers::po::dovecot->getInstance();
 	my $wrkLogFile = "$main::imscpConfig{'LOG_DIR'}/mail.po.log";
 	my $rs = 0;
 

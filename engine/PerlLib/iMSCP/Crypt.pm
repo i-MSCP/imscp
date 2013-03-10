@@ -23,7 +23,6 @@
 # @link			http://i-mscp.net i-MSCP Home Site
 # @license      http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
-
 package iMSCP::Crypt;
 
 use strict;
@@ -36,6 +35,7 @@ use parent 'Common::SingletonClass';
 sub _init
 {
 	my $self = shift;
+
 	$self->{cipher}->{'key'} = '';
 	$self->{cipher}->{'keysize'} = 32;
 	$self->{cipher}->{'cipher'} = 'Blowfish';

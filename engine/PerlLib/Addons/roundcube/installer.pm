@@ -82,6 +82,7 @@ sub preinstall
 	my $self = shift;
 
 	require iMSCP::Addons::ComposerInstaller;
+
 	iMSCP::Addons::ComposerInstaller->getInstance()->registerPackage('imscp/roundcube');
 }
 
@@ -96,7 +97,7 @@ sub preinstall
 sub install
 {
 	my $self = shift;
-	my $rs	= 0;
+	my $rs = 0;
 
 	# Backup current configuration files if they exists (only relevant when running imscp-setup)
 	for (
@@ -104,19 +105,32 @@ sub install
 		"$main::imscpConfig{'GUI_PUBLIC_DIR'}/$self::roundcubeConfig{'ROUNDCUBE_CONF_DIR'}/main.inc.php",
 		"$main::imscpConfig{'GUI_PUBLIC_DIR'}/$self::roundcubeConfig{'ROUNDCUBE_PWCHANGER_DIR'}/config.inc.php"
 	) {
-		$rs |= $self->_backupConfigFile($_);
+		$rs = $self->_backupConfigFile($_);
+		return $rs if $rs;
 	}
 
-	$rs |= $self->_installFiles();		# Install roundcube files from local addon packages repository
-	$rs |= $self->setGuiPermissions();	# Set roundcube permissions
-	$rs |= $self->_setVersion();		# Set new roundcube version
-	$rs |= $self->_createDatabase();	# Create/update roundcube database
-	$rs |= $self->_setupDatabase();		# Setup roundcube database
-	$rs |= $self->_generateDESKey();	# Generate DES key
-	$rs |= $self->_buildConfig();		# Build new configuration files
-	$rs |= $self->_saveConfig();		# Save configuration
+	$rs = $self->_installFiles();		# Install roundcube files from local addon packages repository
+	return $rs if $rs;
 
-	$rs;
+	$rs = $self->setGuiPermissions();	# Set roundcube permissions
+	return $rs if $rs;
+
+	$rs = $self->_setVersion();			# Set new roundcube version
+	return $rs if $rs;
+
+	$rs = $self->_createDatabase();		# Create/update roundcube database
+	return $rs if $rs;
+
+	$rs = $self->_setupDatabase();		# Setup roundcube database
+	return $rs if $rs;
+
+	$rs = $self->_generateDESKey();		# Generate DES key
+	return $rs if $rs;
+
+	$rs = $self->_buildConfig();		# Build new configuration files
+	return $rs if $rs;
+
+	$self->_saveConfig();				# Save configuration
 }
 
 =back
@@ -225,17 +239,16 @@ sub setGuiPermissions
 	require iMSCP::Rights;
 	iMSCP::Rights->import();
 
-	$rs |= setRights(
+	$rs = setRights(
 		"$rootDir/gui/public/tools/webmail",
 		{ 'user' => $panelUName, 'group' => $apacheGName, 'dirmode' => '0550', 'filemode' => '0440', 'recursive' => 'yes' }
 	);
+	return $rs if $rs;
 
-	$rs |= setRights(
+	setRights(
 		"$rootDir/gui/public/tools/webmail/logs",
 		{ 'user' => $panelUName, 'group' => $panelGName, 'dirmode' => '0750', 'filemode' => '0640', 'recursive' => 'yes' }
 	);
-
-	$rs;
 }
 
 =back
@@ -246,7 +259,7 @@ sub setGuiPermissions
 
 =item _init()
 
- Called by new(). Initialize Roundcube addon installer instance.
+ Called by getInstance(). Initialize Roundcube addon installer instance.
 
  Return Addons::roundcube::installer
 
@@ -287,12 +300,13 @@ sub _backupConfigFile
 	my $self = shift;
 	my $cfgFile = shift;
 
-	my $timestamp = time;
 	my ($name, $path, $suffix) = fileparse($cfgFile);
 
 	if(-f $cfgFile) {
+		my $timestamp = time;
 		my $file = iMSCP::File->new('filename' => $cfgFile);
-		$file->copyFile("$self->{'bkpDir'}/$name$suffix.$timestamp") and return 1;
+		my $rs = $file->copyFile("$self->{'bkpDir'}/$name$suffix.$timestamp");
+		return $rs if $rs;
 	}
 
 	0;
@@ -325,14 +339,16 @@ sub _installFiles
 		);
 		debug($stdout) if $stdout;
 		error($stderr) if $rs && $stderr;
+		return $rs if $rs;
 
-		$rs |= execute(
+		$rs = execute(
 			"$main::imscpConfig{'CMD_RM'} -rf $main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/webmail/.git",
 			\$stdout,
 			\$stderr
 		);
 		debug($stdout) if $stdout;
 		error($stderr) if $rs && $stderr;
+		return $rs if $rs;
 	} else {
 		error("Couldn't find the imscp/roundcube package into the local repository");
 		$rs = 1;
@@ -356,20 +372,28 @@ sub _saveConfig
 	my $rootGrp = $main::imscpConfig{'ROOT_GROUP'};
 	my $rs = 0;
 
-	my $file = iMSCP::File->new(filename => "$self->{'cfgDir'}/roundcube.data");
+	my $file = iMSCP::File->new('filename' => "$self->{'cfgDir'}/roundcube.data");
 	my $cfg = $file->get();
-	return 1 unless $cfg;
+	return 1 if !defined  $cfg;
 
-	$rs |= $file->mode(0640);
-	$rs |= $file->owner($rootUsr, $rootGrp);
+	$rs = $file->mode(0640);
+	return $rs if $rs;
 
-	$file = iMSCP::File->new(filename => "$self->{'cfgDir'}/roundcube.old.data");
-	$rs |= $file->set($cfg);
-	$rs |= $file->save();
-	$rs |= $file->mode(0640);
-	$rs |= $file->owner($rootUsr, $rootGrp);
+	$rs = $file->owner($rootUsr, $rootGrp);
+	return $rs if $rs;
 
-	$rs;
+	$file = iMSCP::File->new('filename' => "$self->{'cfgDir'}/roundcube.old.data");
+
+	$rs = $file->set($cfg);
+	return $rs if $rs;
+
+	$rs = $file->save();
+	return $rs if $rs;
+
+	$rs = $file->mode(0640);
+	return $rs if $rs;
+
+	$file->owner($rootUsr, $rootGrp);
 }
 
 =item _createDatabase()
@@ -387,16 +411,25 @@ sub _createDatabase
 	my $dbName = 'imscp_roundcube';
 
 	my ($database, $errStr) = main::setupGetSqlConnect();
-	fatal('Unable to connect to SQL Server: $errStr') if ! $database;
+	if(! $database) {
+		error("Unable to connect to SQL server: $errStr");
+		return 1;
+	}
 
 	# Check for database existence
 	my $rs = $database->doQuery('1', 'SHOW DATABASES LIKE ?', $dbName);
-	fatal('SQL query failed: $rs') if ref $rs ne 'HASH';
+	if(ref $rs ne 'HASH') {
+		error("SQL query failed: $rs");
+		return 1;
+	}
 
 	if(! %$rs) {
 		my $qdbName = $database->quoteIdentifier($dbName);
 		my $rs = $database->doQuery('dummy', "CREATE DATABASE $qdbName CHARACTER SET utf8 COLLATE utf8_unicode_ci;");
-		fatal("Unable to create the '$dbName' SQL database: $rs") if ref $rs ne 'HASH';
+		if(ref $rs ne 'HASH') {
+			error("Unable to create the '$dbName' SQL database: $rs");
+			return 1;
+		}
 
 		$database->set('DATABASE_NAME', $dbName);
 		$rs = $database->connect();
@@ -417,8 +450,8 @@ sub _createDatabase
 
 			my $file = iMSCP::File->new('filename' => "$roundcubeDir/SQL/mysql.update.sql")->getRFileHandle();
 
-			if(! $file) {
-				error("Couldn't read the Roundcube database schema update file");
+			if(! defined $file) {
+				error("Unable to read $roundcubeDir/SQL/mysql.update.sql");
 				return 1;
 			}
 
@@ -451,10 +484,15 @@ sub _createDatabase
 
 				# Save roundcube db update file in temporary directory
 				$file = iMSCP::File->new('filename' => '/tmp/roundcube_update.sql');
-				$file->set($sql) and return 1;
-				$file->save() and return 1;
+
+				$rs = $file->set($sql);
+				return $rs if $rs;
+
+				$rs = $file->save();
+				return $rs if $rs;
 
 				$database->set('DATABASE_NAME', $dbName);
+
 				$rs = $database->connect();
 				return $rs if $rs;
 
@@ -462,7 +500,8 @@ sub _createDatabase
 				return $rs if $rs;
 
 				# Remove temporary file
-				$file->delFile() and return 1;
+				$rs = $file->delFile();
+				return $rs if $rs;
 			}
 		}
 	}
@@ -486,10 +525,12 @@ sub _setVersion
 	require JSON;
 	JSON->import();
 
-	my $json = iMSCP::File->new('filename' => "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/webmail/composer.json")->get();
+	my $json = iMSCP::File->new(
+	'filename' => "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/webmail/composer.json"
+	)->get();
 
-	if(! $json) {
-		error('Cannot read the Roundcube composer.json file');
+	if(! defined $json) {
+		error("Unable to read $main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/webmail/composer.json");
 		return 1;
 	}
 
@@ -624,13 +665,13 @@ sub _buildConfig
 	my $rs = 0;
 
 	my $cfg = {
+		BASE_SERVER_VHOST => $main::imscpConfig{'BASE_SERVER_VHOST'},
 		DB_HOST => $main::imscpConfig{'DATABASE_HOST'},
 		DB_USER => $self::roundcubeConfig{'DATABASE_USER'},
 		DB_PASS => $self::roundcubeConfig{'DATABASE_PASSWORD'},
-		BASE_SERVER_VHOST => $main::imscpConfig{'BASE_SERVER_VHOST'},
 		TMP_PATH => "$main::imscpConfig{'GUI_ROOT_DIR'}/data/tmp",
 		DES_KEY => $self::roundcubeConfig{'DES_KEY'},
-		PLUGINS => $self::roundcubeConfig{'PLUGINS'},
+		PLUGINS => $self::roundcubeConfig{'PLUGINS'}
 	};
 
 	my $cfgFiles = {
@@ -642,10 +683,9 @@ sub _buildConfig
 	for (keys %{$cfgFiles}) {
 		my $file = iMSCP::File->new('filename' => "$confDir/$_");
 		my $cfgTpl = $file->get();
-
-		if (! $cfgTpl) {
-			$rs = 1;
-			next;
+		if(! defined $cfgTpl) {
+			error("Unable to read $cfgTpl");
+			return 1;
 		}
 
 		# the password changer plugin act on the immscp database
@@ -656,24 +696,30 @@ sub _buildConfig
 		}
 
 		$cfgTpl = iMSCP::Templator::process($cfg, $cfgTpl);
-
-		if (! $cfgTpl) {
-			$rs = 1;
-			next;
-		}
+		return 1 if ! defined $cfgTpl;
 
 		# store file in working directory
-		$file = iMSCP::File->new(filename => "$self->{'wrkDir'}/$_");
-		$rs |= $file->set($cfgTpl);
-		$rs |= $file->save();
-		$rs |= $file->mode(0640);
-		$rs |= $file->owner($panelUName, $panelGName);
+		$file = iMSCP::File->new('filename' => "$self->{'wrkDir'}/$_");
+
+		$rs = $file->set($cfgTpl);
+		return $rs if $rs;
+
+		$rs = $file->save();
+		return $rs if $rs;
+
+		$rs = $file->mode(0640);
+		return $rs if $rs;
+
+		$rs = $file->owner($panelUName, $panelGName);
+		return $rs if $rs;
 
 		# Install new file in production directory
-		$rs |= $file->copyFile($cfgFiles->{$_});
+		$rs = $file->copyFile($cfgFiles->{$_});
+		return $rs if $rs;
 
 		# Remove template file in production directory
-		$rs |= $file = iMSCP::File->new('filename' => "$confDir/$_")->delFile();
+		$rs = iMSCP::File->new('filename' => "$confDir/$_")->delFile();
+		return $rs if $rs;
 	}
 
 	0;

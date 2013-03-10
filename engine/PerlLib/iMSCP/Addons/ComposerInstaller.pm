@@ -52,19 +52,6 @@ use parent 'Common::SingletonClass';
 
 =over 4
 
-=item getInstance()
-
- Implements Singleton Design Pattern - Returns instance of this class.
-
- Return iMSCP::Addons::ComposerInstaller
-
-=cut
-
-sub getInstance
-{
-	iMSCP::Addons::ComposerInstaller->new();
-}
-
 =item registerPackage($package)
 
  Register the given composer package for installation.
@@ -91,7 +78,7 @@ sub registerPackage($ $)
 
 =item _init()
 
- Called by new(). Initialize instance of this class.
+ Called by getInstance(). Initialize instance of this class.
 
  Return iMSCP::Addons::ComposerInstaller
 
@@ -101,12 +88,13 @@ sub _init
 {
 	my $self = shift;
 
-	$self->{'toInstall'} = ();
+	$self->{'toInstall'} = [];
 	$self->{'cacheDir'} = $main::imscpConfig{'ADDON_PACKAGES_CACHE_DIR'};
 	$self->{'phpCmd'} = "$main::imscpConfig{'CMD_PHP'} -d suhosin.executor.include.whitelist=phar";
 
-	my $cacheDir = iMSCP::Dir->new(dirname => $self->{'cacheDir'});
-	$cacheDir->make() and die('Unable to create the cache directory for addon packages');
+	iMSCP::Dir->new(
+		'dirname' => $self->{'cacheDir'}
+	)->make() and die('Unable to create the cache directory for addon packages');
 
 	# Override default composer home directory
 	$ENV{'COMPOSER_HOME'} = "$self->{'cacheDir'}/.composer";
@@ -133,10 +121,14 @@ sub _init
 sub _installPackages
 {
 	my $self = shift;
-	my ($stdout, $stderr) = (undef, undef);
+	my ($stdout, $stderr);
+	my $rs = 0;
 
-	$self->_buildComposerFile() and return 1;
-	$self->_getComposer() and return 1;
+	$rs = $self->_buildComposerFile();
+	return $rs if $rs;
+
+	$rs = $self->_getComposer();
+	return $rs if $rs;
 
 	iMSCP::Dialog->factory()->infobox(
 "
@@ -147,11 +139,12 @@ Please wait, this may take a few minutes...
 	);
 
 	# The update option is used here but composer will automatically fallback to install mode when needed
-	my $rs = execute(
+	$rs = execute(
 		"$self->{'phpCmd'} $self->{'cacheDir'}/composer.phar -d=$self->{'cacheDir'} update", \$stdout, \$stderr
 	);
-	error("Unable to get i-MSCP addon packages from packagist.org: $stderr") if $rs;
 	debug($stdout) if $stdout;
+	error($stderr) if $stderr && $rs;
+	error('Unable to get i-MSCP addon packages from packagist.org') if $rs && ! $stderr;
 
 	$rs;
 }
@@ -167,6 +160,7 @@ Please wait, this may take a few minutes...
 sub _buildComposerFile
 {
 	my $self = shift;
+	my $rs = 0;
 
 	iMSCP::Dialog->factory()->infobox("\nBuilding composer.json file for addon packages...");
 
@@ -174,8 +168,11 @@ sub _buildComposerFile
 		{ 'PACKAGES' => join ",\n", @{$self->{'toInstall'}} }, $self->_getComposerFileTpl()
 	);
 
-	my $file = iMSCP::File->new(filename => "$self->{'cacheDir'}/composer.json");
-	$file->set($composerJsonFile) and return 1;
+	my $file = iMSCP::File->new('filename' => "$self->{'cacheDir'}/composer.json");
+
+	$file->set($composerJsonFile);
+	return $rs if $rs;
+
 	$file->save();
 }
 
@@ -190,7 +187,7 @@ sub _buildComposerFile
 sub _getComposer
 {
 	my $self = shift;
-	my ($stdout, $stderr) = (undef, undef);
+	my ($stdout, $stderr);
 	my $curDir = getcwd();
 	my $rs = 0;
 
@@ -209,16 +206,42 @@ Please wait, this may take a few seconds...
 		);
 
 		$rs = execute(
-			"$main::imscpConfig{'CMD_CURL'} -s http://getcomposer.org/installer | $self->{'phpCmd'}", \$stdout, \$stderr
+			"$main::imscpConfig{'CMD_CURL'} -s 'http://getcomposer.org/installer' | $self->{'phpCmd'}", \$stdout, \$stderr
 		);
-		error("Unable to get composer installer from http://getcomposer.org: $stderr") if $rs;
 		debug($stdout) if $stdout;
+		error($stderr) if $stderr && $rs;
+		error('Unable to get composer installer from http://getcomposer.org') if $rs && ! $stderr;
 
 		unless(chdir($curDir)) {
-    		error("Unable to change working directory to $curDir: $!");
-    		return 1;
-    	}
-    }
+		error("Unable to change working directory to $curDir: $!");
+		return 1;
+		}
+	} else {
+		unless(chdir($self->{'cacheDir'})) {
+			error("Unable to change working directory to $self->{'cacheDir'}: $!");
+			return 1;
+		}
+
+		iMSCP::Dialog->factory()->infobox(
+"
+Updating composer installer from http://getcomposer.org.
+
+Please wait, this may take a few seconds...
+"
+		);
+
+		$rs = execute(
+			"$self->{'phpCmd'} $self->{'cacheDir'}/composer.phar -d=$self->{'cacheDir'} self-update", \$stdout, \$stderr
+		);
+		debug($stdout) if $stdout;
+		error($stderr) if $stderr && $rs;
+		error('Unable to update composer installer') if $rs && ! $stderr;
+
+		unless(chdir($curDir)) {
+			error("Unable to change working directory to $curDir: $!");
+			return 1;
+		}
+	}
 
 	$rs;
 }
@@ -227,7 +250,7 @@ Please wait, this may take a few seconds...
 
  Get composer.json template.
 
- Return string
+ Return string composer.json template file
 
 =cut
 
@@ -261,14 +284,20 @@ EOF
 sub _cleanCacheDir
 {
 	my $self = shift;
+	my $rs = 0;
 
 	iMSCP::Dialog->factory()->infobox("\nCleaning local addon packages repository.");
 
 	if(-d $self->{'cacheDir'}) {
-		execute("$main::imscpConfig{'CMD_RM'} -rf $self->{'cacheDir'}/*");
-	} else {
-		0;
+		my ($stdout, $stderr);
+		$rs = execute("$main::imscpConfig{'CMD_RM'} -fr $self->{'cacheDir'}/*", \$stdout, \$stderr);
+		debug($stdout) if $stdout;
+		error($stderr) if $stderr && $rs;
+		error('Unable to clean addon cache directory') if $rs && ! $stderr;
+
 	}
+
+	$rs;
 }
 
 =back

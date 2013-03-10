@@ -79,7 +79,7 @@ sub preBuild
 
 =cut
 
-sub installPackages
+sub uninstallPackages
 {
 	my $self = shift;
 

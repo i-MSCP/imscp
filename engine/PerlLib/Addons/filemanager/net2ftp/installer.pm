@@ -61,6 +61,7 @@ sub preinstall
 	my $self = shift;
 
 	require iMSCP::Addons::ComposerInstaller;
+
 	iMSCP::Addons::ComposerInstaller->getInstance()->registerPackage('imscp/net2ftp');
 }
 
@@ -77,10 +78,10 @@ sub install
 	my $self = shift;
 	my $rs = 0;
 
-	$rs |= $self->_installFiles();		# Install ajaxplorer files from local addon packages repository
-	$rs |= $self->setGuiPermissions();	# Set ajaxplorer permissions
+	$rs = $self->_installFiles();	# Install ajaxplorer files from local addon packages repository
+	return $rs if $rs;
 
-	$rs;
+	$self->setGuiPermissions();		# Set ajaxplorer permissions
 }
 
 =item setGuiPermissions()
@@ -97,7 +98,6 @@ sub setGuiPermissions
 	my $panelUName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} . $main::imscpConfig{'SYSTEM_USER_MIN_UID'};
 	my $panelGName = $panelUName;
 	my $rootDir = $main::imscpConfig{'ROOT_DIR'};
-	my $rs = 0;
 
 	require Servers::httpd;
 	my $http = Servers::httpd->factory();
@@ -106,12 +106,10 @@ sub setGuiPermissions
 	require iMSCP::Rights;
 	iMSCP::Rights->import();
 
-	$rs |= setRights(
+	setRights(
 		"$rootDir/gui/public/tools/filemanager",
-		{ user => $panelUName, group => $apacheGName, dirmode => '0550', filemode => '0440', recursive => 'yes' }
+		{ 'user' => $panelUName, 'group' => $apacheGName, 'dirmode' => '0550', 'filemode' => '0440', 'recursive' => 'yes' }
 	);
-
-	$rs;
 }
 
 =back
@@ -132,7 +130,7 @@ sub _installFiles
 {
 	my $self = shift;
 	my $repoDir = $main::imscpConfig{'ADDON_PACKAGES_CACHE_DIR'};
-	my ($stdout, $stderr) = (undef, undef);
+	my ($stdout, $stderr);
 	my $rs = 0;
 
 	if(-d "$repoDir/vendor/imscp/net2ftp") {
@@ -141,20 +139,22 @@ sub _installFiles
 		iMSCP::Execute->import();
 
 		$rs = execute(
-			"$main::imscpConfig{CMD_CP} -rTf $repoDir/vendor/imscp/net2ftp $main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/filemanager",
+			"$main::imscpConfig{'CMD_CP'} -rTf $repoDir/vendor/imscp/net2ftp $main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/filemanager",
 			\$stdout,
 			\$stderr
 		);
 		debug($stdout) if $stdout;
 		error($stderr) if $rs && $stderr;
+		return $rs if $rs;
 
-		$rs |= execute(
+		$rs = execute(
 			"$main::imscpConfig{'CMD_RM'} -rf $main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/filemanager/.git",
 			\$stdout,
 			\$stderr
 		);
 		debug($stdout) if $stdout;
 		error($stderr) if $rs && $stderr;
+		return $rs if $rs;
 	} else {
 		error("Couldn't find the imscp/net2ftp package into the local repository");
 		$rs = 1;

@@ -48,25 +48,6 @@ folder manipulation and message filters.
 
  Project homepage: http://www.roundcube.net/
 
-=head1 CLASS METHODS
-
-=over 4
-
-=item factory()
-
- Implement singleton design pattern. Return instance of this class.
-
- Return Addons::roundcube
-
-=cut
-
-sub factory
-{
-	Addons::roundcube->new();
-}
-
-=back
-
 =head1 PUBLIC METHODS
 
 =over 4
@@ -86,7 +67,8 @@ sub registerSetupHooks
 	my $hooksManager = shift;
 
 	require Addons::roundcube::installer;
-	Addons::roundcube::installer->new()->registerSetupHooks($hooksManager);
+
+	Addons::roundcube::installer->getInstance()->registerSetupHooks($hooksManager);
 }
 
 =item preinstall()
@@ -100,7 +82,8 @@ sub preinstall
 	my $self = shift;
 
 	require Addons::roundcube::installer;
-	Addons::roundcube::installer->new()->preinstall();
+
+	Addons::roundcube::installer->getInstance()->preinstall();
 }
 
 =item install()
@@ -116,7 +99,8 @@ sub install
 	my $self = shift;
 
 	require Addons::roundcube::installer;
-	Addons::roundcube::installer->new()->install();
+
+	Addons::roundcube::installer->getInstance()->install();
 }
 
 =item setGuiPermissions()
@@ -132,7 +116,8 @@ sub setGuiPermissions
 	my $self = shift;
 
 	require Addons::roundcube::installer;
-	Addons::roundcube::installer->new()->setGuiPermissions();
+
+	Addons::roundcube::installer->getInstance()->setGuiPermissions();
 }
 
 =item delMail()

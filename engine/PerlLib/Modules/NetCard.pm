@@ -27,25 +27,28 @@ package Modules::NetCard;
 
 use strict;
 use warnings;
+
 use iMSCP::Debug;
 use iMSCP::Execute;
-use Data::Dumper;
 use parent 'Common::SimpleClass';
 
-sub process{
-
+sub process
+{
 	my $self = shift;
 	my $rs = 0;
 	my ($stdour, $stderr);
-	$rs |= execute("$main::imscpConfig{ENGINE_ROOT_DIR}/tools/imscp-net-interfaces-mngr stop", \$stdour, \$stderr);
-	debug($stdour) if $stdour;
-	error($stderr) if $stderr;
 
-	$rs |= execute("$main::imscpConfig{ENGINE_ROOT_DIR}/tools/imscp-net-interfaces-mngr start", \$stdour, \$stderr);
+	$rs = execute("$main::imscpConfig{'ENGINE_ROOT_DIR'}/tools/imscp-net-interfaces-mngr stop", \$stdour, \$stderr);
 	debug($stdour) if $stdour;
-	error($stderr) if $stderr;
+	error($stderr) if $stderr && $rs;
+	return $rs if $rs;
 
-	$rs;
+	$rs = execute("$main::imscpConfig{'ENGINE_ROOT_DIR'}/tools/imscp-net-interfaces-mngr start", \$stdour, \$stderr);
+	debug($stdour) if $stdour;
+	error($stderr) if $stderr && $rs;
+	return $rs if $rs;
+
+	0;
 }
 
 1;

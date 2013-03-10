@@ -27,16 +27,15 @@ package iMSCP::Addons;
 
 use strict;
 use warnings;
+
 use iMSCP::Debug;
 use iMSCP::Dir;
 use parent 'Common::SingletonClass';
 
 sub load
 {
-	my $self = shift || iMSCP::Addons->new();
-	my $addons = iMSCP::Dir->new(dirname => "$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Addons");
-
-	return 1 if $addons->get();
+	my $self = shift;
+	my $addons = iMSCP::Dir->new('dirname' => "$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Addons");
 
 	@{$self->{'addons'}} = $addons->getFiles();
 
@@ -47,7 +46,7 @@ sub load
 
 sub get
 {
-	my $self = shift || iMSCP::Addons->new();
+	my $self = shift;
 
 	$self->load() unless exists $self->{'addons'};
 

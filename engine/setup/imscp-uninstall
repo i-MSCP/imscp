@@ -38,6 +38,8 @@ use iMSCP::Dialog;
 
 newDebug('imscp-uninstall.log');
 
+silent(1);
+
 ################################################################################
 # Starting update process
 #
@@ -45,10 +47,7 @@ newDebug('imscp-uninstall.log');
 #
 sub uninstall_start_up {
 
-	iMSCP::Boot->new()->init();
-
-	#enter silent mode
-	silent(1);
+	iMSCP::Boot->getInstance()->boot()
 
 	user_dialog();
 
@@ -137,7 +136,8 @@ sub uninstall_engine {
 		$rs |= step($_->[0], $_->[1], scalar @steps, $step);
 		$step++;
 	}
-	iMSCP::Dialog->factory()->endGauge() if iMSCP::Dialog->factory()->needGauge();
+
+	iMSCP::Dialog->factory()->endGauge() if iMSCP::Dialog->factory()->hasGauge();
 
 	$rs;
 }
@@ -171,14 +171,15 @@ sub uninstall_customers {
 		$rs = 1 if (ref $error ne 'HASH');
 	}
 
-	iMSCP::Boot->new()->unlock();
+	iMSCP::Boot->getInstance()->unlock();
 
 	my ($stdout, $stderr);
 	$rs |= execute("perl $main::imscpConfig{'ENGINE_ROOT_DIR'}/imscp-rqst-mngr", \$stdout, \$stderr);
-	debug("$stdout") if $stdout;
-	error("$stderr") if $stderr;
-	error("Error while rebuilding customers configuration files") if(!$stderr && $rs);
-	iMSCP::Boot->new()->lock();
+	debug($stdout) if $stdout;
+	error($stderr) if $stderr && $rs;
+	error("Error while rebuilding customers configuration files") if $rs && ! $stderr;
+
+	iMSCP::Boot->getInstance()->lock();
 
 	$rs;
 }
@@ -192,9 +193,6 @@ sub uninstallServers{
 	my ($rs, $file, $class, $server, $msg);
 
 	my $dir	= iMSCP::Dir->new(dirname => "$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Servers");
-	$rs		= $dir->get();
-	return $rs if $rs;
-
 	my @servers = $dir->getFiles();
 
 	my $step = 1;
@@ -326,8 +324,8 @@ sub uninstall_imscpd{
 
 		# Services remove (Debian, Ubuntu)
 		$rs = execute("/usr/sbin/update-rc.d -f $serviceName remove", \$stdout, \$stderr);
-		debug("$stdout") if $stdout;
-		error("$stderr") if $rs;
+		debug($stdout) if $stdout;
+		error($stderr) if $stderr && $rs;
 
 		$rs |= iMSCP::File->new(filename => $filename)->delFile();
 	}

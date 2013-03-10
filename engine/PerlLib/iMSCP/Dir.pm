@@ -27,7 +27,12 @@ package iMSCP::Dir;
 
 use strict;
 use warnings;
+
 use iMSCP::Debug;
+use iMSCP::File;
+use File::Path;
+use File::Path qw/mkpath remove_tree/;
+use File::Copy;
 use parent 'Common::SimpleClass';
 use vars qw/$AUTOLOAD/;
 
@@ -45,74 +50,56 @@ sub getFiles
 	my $self = shift;
 
 	if(! $self->{'files'}) {
-		$self->{'files'} = ();
-		$self->get();
+		$self->{'files'} = [];
+		$self->_get();
 		$self->{'fileType'} = '' unless $self->{'fileType'};
 
-		for (@{$self->{'dirContent'}}){
-			push(
-				@{$self->{'files'}},
-				$_
-			) if( -f "$self->{dirname}/$_" && $_ =~ m!$self->{'fileType'}$!);
+		for (@{$self->{'dirContent'}}) {
+			push(@{$self->{'files'}}, $_) if -f "$self->{'dirname'}/$_" && $_ =~ /$self->{'fileType'}$/;
 		}
 	}
 
-	my @files = ($self->{'files'} ? @{$self->{'files'}} : ());
+	my @files = $self->{'files'} ? @{$self->{'files'}} : ();
 
-	debug("Return @files");
+	debug("Return @{$self->{'files'}}");
 
-	return (wantarray ? @files : join(' ', @files));
+	wantarray ? @files : join(' ', @files);
 }
 
 sub getDirs
 {
 	my $self = shift;
 
-	if(! $self->{'dirs'}) {
+	unless(defined $self->{'dirs'}) {
 		$self->{'dirs'} = [];
+		$self->_get();
 
-		for (@{$self->{'dirContent'}}){
+		for (@{$self->{'dirContent'}}) {
 			next if $_ eq '.' || $_ eq '..';
-			push(@{$self->{'dirs'}}, $_) if -d "$self->{dirname}/$_";
+			push(@{$self->{'dirs'}}, $_) if -d "$self->{'dirname'}/$_";
 		}
 	}
 
 	debug("Return @{$self->{'dirs'}}");
 
-	return (wantarray ? @{$self->{'dirs'}} : join(' ', @{$self->{'dirs'}}));
-}
-
-sub get
-{
-	my $self = shift;
-
-	if(! $self->{'dirContent'}) {
-		debug("Open directory $self->{dirname}");
-
-		$self->{'dirContent'} = ();
-
-		unless (opendir(DIRH, $self->{'dirname'})){
-			error("Cannot open directory $self->{dirname}");
-			return 1;
-		}
-
-		@{$self->{'dirContent'}} = readdir(DIRH);
-		closedir(DIRH);
-	}
-
-	0;
+	wantarray ? @{$self->{'dirs'}} : join(' ', @{$self->{'dirs'}});
 }
 
 sub mode
 {
 	my $self = shift;
 	my $mode = shift;
-	my $dir = shift;
+	my $dirname = shift || $self->{'dirname'};
 
-	debug( sprintf "Change mode: %o for '" . ( $dir || $self->{'dirname'}) ."'", $mode);
+	unless(defined $dirname) {
+		error("Attribut 'dirname' is not set");
+		return 1;
+	}
 
-	unless (chmod($mode, $dir || $self->{'dirname'})){
-		error("Cannot change permissions of file '".( $dir || $self->{'dirname'}) ."': $!");
+	debug(sprintf("Changing mode for $dirname to %o", $mode));
+
+	unless (chmod($mode, $dirname)) {
+		error("Unable to change mode for $dirname: $!");
 		return 1;
 	}
 
@@ -124,86 +111,90 @@ sub owner
 	my $self = shift;
 	my $owner = shift;
 	my $group = shift;
-	my $dir	= shift;
+	my $dirname	= shift || $self->{'dirname'};
 
-	my $uid = ($owner =~ /^\d+$/) ? $owner : getpwnam($owner);
-	$uid = -1 unless (defined $uid);
-
-	my $gid = ($group =~ /^\d+$/) ? $group : getgrnam($group);
-	$gid = -1 unless (defined $gid);
-
-	debug("Change owner uid:$uid, gid:$gid for '" . ( $dir || $self->{'dirname'}) . "'");
-
-	unless (chown($uid, $gid, $dir || $self->{'dirname'})){
-		error("Cannot change owner of file '" . ( $dir || $self->{'dirname'}) . "': $!");
+	unless(defined $dirname) {
+		error("Attribut 'dirname' is not set");
 		return 1;
 	}
+
+	my $uid = ($owner =~ /^\d+$/) ? $owner : getpwnam($owner);
+	$uid = -1 unless defined $uid;
+
+	my $gid = ($group =~ /^\d+$/) ? $group : getgrnam($group);
+	$gid = -1 unless defined $gid;
+
+	debug("Changing owner and group for $dirname to $uid:$gid");
+
+	unless (chown($uid, $gid, $dirname)) {
+		error("Unable to change owner and group for $dirname: $!");
+		return 1;
+	}
+
 	0;
 }
 
 sub make
 {
 	my $self = shift;
-	my $option = shift || {};
+	my $options = shift || {};
+	my $rs = 0;
 
-	$option = {} if (ref $option ne 'HASH');
+	$options = {} if ref $options ne 'HASH';
 
-	if (-e  $self->{'dirname'} && ! -d  $self->{'dirname'}) {
-		warning("'$self->{dirname}' exists as file. Removing file first...");
+	unless(defined $self->{'dirname'}) {
+		error("Attribut 'dirname' is not set");
+		return 1;
+	}
 
-		if(! unlink  $self->{'dirname'}){
-			error("Cannot unlink $self->{dirname}: $!");
+	if (-f $self->{'dirname'}) {
+		warning("Directory $self->{'dirname'} already exists as file. Removing file first...");
+
+		unless(unlink $self->{'dirname'}) {
+			error("Unable to remove file $self->{'dirname'}: $!");
 			return 1;
 		 }
 	}
 
-	if (!(-e  $self->{'dirname'} && -d  $self->{'dirname'})) {
-		debug("'$self->{dirname}' doesn't exists as directory. Creating...");
+	unless(-d $self->{'dirname'}) {
+		debug("Creating directory $self->{'dirname'}");
 		my $err;
-
-		use File::Path;
-		my @lines =  mkpath( $self->{'dirname'}, {error => \$err});
+		my @lines = mkpath($self->{'dirname'}, { 'error' => \$err});
 
 		if (@$err) {
 			for my $diag (@$err) {
-				my ($dir, $message) = %$diag;
+				my ($directory, $message) = %$diag;
 
-				if ($dir eq '') {
+				if ($directory eq '') {
 					error("General error: $message");
 				} else {
-					error("Problem creating $dir: $message");
+					error("Unable to create directory $directory: $message");
 				}
 			}
 
 			return 1;
 		}
 
-		for (@lines){
-			if($option->{'mode'}){
-				return 1 if $self->mode($option->{'mode'}, $_);
-			}
+		for (@lines) {
+			$rs = $self->mode($options->{'mode'}, $_) if defined $options->{'mode'};
+			return $rs if $rs;
 
-			if($option->{'user'} || $option->{'group'}){
-				return 1 if $self->owner(
-					$option->{'user'} || -1,
-					$option->{'group'} || -1,
-					$_
-				);
+			if(defined $options->{'user'} || defined $options->{'group'}) {
+				$rs = $self->owner($options->{'user'} || -1, $options->{'group'} || -1, $_);
+				return $rs if $rs;
 			}
 		}
 	} else {
-		debug("'$self->{dirname}' already exists. Setting its permissions...");
+		debug("Directory $self->{'dirname'} already exists. Setting its permissions...");
 
-		if($option->{'mode'}){
-			return 1 if $self->mode( $option->{'mode'}, $self->{'dirname'});
+		if(defined $options->{'mode'}) {
+			$rs = $self->mode($options->{'mode'});
+			return $rs if $rs;
 		}
 
-		if(defined $option->{'user'} || defined $option->{'group'}) {
-			return 1 if $self->owner(
-				defined $option->{'user'} ? $option->{'user'} : -1,
-				defined $option->{'group'} ? $option->{'group'} : -1,
-				$self->{dirname}
-			);
+		if(defined $options->{'user'} || defined $options->{'group'}) {
+			$rs = $self->owner($options->{'user'} || -1, $options->{'group'} || -1, $self->{'dirname'});
+			return $rs if $rs;
 		}
 	}
 
@@ -213,24 +204,27 @@ sub make
 sub remove
 {
 	my $self = shift;
-	my $err;
 
-	use File::Path 'remove_tree';
+	unless(defined $self->{'dirname'}) {
+		error("Attribut 'dirname' is not set");
+		return 1;
+	}
 
-	debug("Remove $self->{dirname}");
+	if (-d $self->{'dirname'}) {
 
-	if (-d  $self->{'dirname'}) {
+		debug("Removing directory $self->{'dirname'}");
 
-		remove_tree($self->{'dirname'}, {error => \$err});
+		my $err;
+		remove_tree($self->{'dirname'}, { 'error' => \$err });
 
 		if (@$err) {
 			for my $diag (@$err) {
-				my ($dir, $message) = %$diag;
+				my ($directory, $message) = %$diag;
 
-				if ($dir eq '') {
+				if ($directory eq '') {
 					error("General error: $message");
 				} else {
-					error("Problem deleting $dir: $message");
+					error("Unable to delete directory $directory: $message");
 				}
 			}
 
@@ -245,52 +239,61 @@ sub rcopy
 {
 	my $self = shift;
 	my $destDir = shift;
-	my $option = shift;
+	my $options = shift;
+	my $rs = 0;
 
-	use iMSCP::File;
+	$options = {} if ref $options ne 'HASH';
 
-	$option = {} if(ref $option ne 'HASH');
+	unless(defined $self->{'dirname'}) {
+		error("Attribut 'dirname' is not set");
+		return 1;
+	}
 
 	my $dh;
 
-	unless(opendir $dh, $self->{'dirname'}){
-		error("Could not open dir '$self->{dirname}': $!");
+	unless(opendir $dh, $self->{'dirname'}) {
+		error("Unable to open directory $self->{'dirname'}: $!");
 		return 1;
 	}
 
 	for my $entry (readdir $dh) {
 		next if($entry eq '.' or $entry eq '..');
-		my $source = "$self->{dirname}/$entry";
+		my $source = "$self->{'dirname'}/$entry";
 		my $destination = "$destDir/$entry";
 
 		if (-d $source) {
-			next if($option->{'excludeDir'} && $source =~ /$option->{'excludeDir'}/);
+			next if $options->{'excludeDir'} && $source =~ /$options->{'excludeDir'}/;
 			my $opts = {};
 
-			if(!$option->{preserve} || (lc($option->{preserve}) ne 'no')){
+			if(! $options->{'preserve'} || lc($options->{'preserve'}) ne 'no') {
 				my $mode = (stat($source))[2] & 00777;
 				my $user = (stat($source))[4];
 				my $group = (stat($source))[5];
-				$opts	= { user => $user, mode => $mode, group => $group }
+				$opts = { 'user' => $user, 'mode' => $mode, 'group' => $group }
 			}
 
-			debug("Copy directory $source to $destination");
+			debug("Copying directory $source to $destination");
 
-			my $dir=iMSCP::Dir->new();
-			$dir->{'dirname'} = $destination;
-			$dir->make($opts) and return 1;
-			$dir->{'dirname'} = $source;
-			$dir->rcopy($destination, $option) and return 1;
+			my $directory = iMSCP::Dir->new();
+			$directory->{'dirname'} = $destination;
+
+			$rs = $directory->make($opts);
+			return $rs if $rs;
+
+			$directory->{'dirname'} = $source;
+
+			$rs = $directory->rcopy($destination, $options);
+			return $rs if $rs;
 		} else {
-			if($option->{'excludeFile'}) {
-				error("$option->{excludeFile}");
-			}
+			error($options->{'excludeFile'}) if $options->{'excludeFile'};
 
-			next if($option->{excludeFile} && ($source =~ /$option->{excludeFile}/));
-			debug("Copy file $self->{dirname}/$entry to $destDir/$entry");
-			my $file=iMSCP::File->new();
-			$file->{'filename'} = $source;
-			$file->copyFile($destination, $option) and return 1;
+			next if $options->{'excludeFile'} && $source =~ /$options->{'excludeFile'}/;
+
+			debug("Copying file $self->{'dirname'}/$entry to $destDir/$entry");
+
+			my $file = iMSCP::File->new('filename' => $source);
+			$rs = $file->copyFile($destination, $options);
+			return $rs if $rs;
 		}
 	}
 
@@ -304,21 +307,42 @@ sub moveDir
 	my $self = shift;
 	my $dest = shift;
 
-	if(!$self->{'dirname'} || ! -d $self->{'dirname'}) {
-		error("" . ($self->{'filename'} ? "Directory $self->{dirname} doesn't exits" : "Directory name not set!"));
+	unless(defined $self->{'dirname'}) {
+		error("Attribut 'dirname' is not set");
 		return 1;
 	}
 
-	debug("Move $self->{dirname} to $dest");
+	unless(-d $self->{'dirname'}) {
+		error("Directory $self->{'dirname'} doesn't exits!");
+		return 1;
+	}
 
-	use File::Copy ;
+	debug("Moving directory $self->{'dirname'} to $dest");
 
-	if(! move ($self->{'dirname'}, $dest)){
-		error("Move $self->{dirname} to $dest failed: $!");
+	unless(move($self->{'dirname'}, $dest)) {
+		error("Unable to move $self->{'dirname'} to $dest: $!");
 		return 1;
 	}
 
 	0;
+}
+
+sub _get
+{
+	my $self = shift;
+
+	unless(defined $self->{'dirContent'}) {
+		debug("Opening directory $self->{'dirname'}");
+
+		$self->{'dirContent'} = ();
+
+		unless(opendir(DIRH, $self->{'dirname'})) {
+			fatal("Unable to open directory $self->{'dirname'}: $!");
+		}
+
+		@{$self->{'dirContent'}} = readdir(DIRH);
+		closedir(DIRH);
+	}
 }
 
 1;

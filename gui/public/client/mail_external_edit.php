@@ -441,10 +441,12 @@ function client_generateView($verifiedData, $data)
 /***********************************************************************************************************************
  * Main
  */
+
 // Include core library
 require_once 'imscp-lib.php';
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
+
 check_login('user');
 
 if (customerHasFeature(array('mail', 'external_mail'))) {
@@ -457,7 +459,7 @@ if (customerHasFeature(array('mail', 'external_mail'))) {
                 'page_message' => 'layout',
                 'item_entries' => 'page',
                 'name_options' => 'item_entries',
-                'priority_options' => 'page',
+                'priority_options' => 'page'
             )
         );
 

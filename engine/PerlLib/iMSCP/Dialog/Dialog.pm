@@ -34,8 +34,9 @@ package iMSCP::Dialog::Dialog;
 
 use strict;
 use warnings;
+
 use iMSCP::Debug;
-use iMSCP::Execute 'execute';
+use iMSCP::Execute;
 use FileHandle;
 use parent 'Common::SingletonClass';
 
@@ -103,7 +104,7 @@ sub radiolist
 	my $default = shift || '';
 
 	my @init = ();
-	push @init, ("'$_'", "''", $default eq $_ ? 'on' : 'off') for @choices;
+	push @init, (escapeShell($_), "''", $default eq $_ ? 'on' : 'off') for @choices;
 
 	$self->_textbox($text, 'radiolist', @choices . " @init");
 }
@@ -129,7 +130,7 @@ sub checkbox
 	my %values = map { $_ => 1 } @defaults;
 	my @init = ();
 
-	push @init, ("'$_'", "''", $values{$_} ? 'on' : 'off') for @choices;
+	push @init, (escapeShell($_), "''", $values{$_} ? 'on' : 'off') for @choices;
 
 	$self->_textbox($text, 'checklist', @choices . " @init");
 }
@@ -237,7 +238,7 @@ sub inputbox
 	my $text = shift;
 	my $init = shift || '';
 
-	$self->_textbox($text, 'inputbox', $self->_quote($init));
+	$self->_textbox($text, 'inputbox', escapeShell($init));
 }
 
 =item passwordbox($text, $init = '')
@@ -258,7 +259,7 @@ sub passwordbox
 
 	$self->{'_opts'}->{'insecure'} = '';
 
-	$self->_textbox($text, 'passwordbox', $self->_quote($init));
+	$self->_textbox($text, 'passwordbox', escapeShell($init));
 }
 
 =item infobox($text)
@@ -298,13 +299,12 @@ sub startGauge
 	return 0 if $main::noprompt;
 
 	my $self = shift;
-	my $text = shift;
+	my $text = escapeShell(shift);
 	my $percent = shift || 0;
 
 	$self->{'gauge'} ||= {};
 	return 0 if defined $self->{'gauge'}->{'FH'};
 
-	$text = $self->_escape($text);
 	$percent = $percent ? " $percent" : 0;
 
 	my $height = $self->{'autosize'} ? 0 : ($self->{'lines'});
@@ -315,16 +315,16 @@ sub startGauge
 
 	my $command = $self->_buildCommandOptions();
 
-	$command = "$self->{'bin'} $command --gauge \"$text\" $height $width $percent";
+	$command = "$self->{'bin'} $command --gauge $text $height $width $percent";
 
 	$self->{'_opts'}->{'begin'} = $begin;
 
-	debug($command);
+	debug($self->_stripFormats($command));
 
 	$self->{'gauge'}->{'FH'} = new FileHandle;
-	$self->{'gauge'}->{'FH'}->open("| $command") || error("Can`t start gauge!");
+	$self->{'gauge'}->{'FH'}->open("| $command") || error("Unable to start gauge");
 	debugRegCallBack(\&endGauge);
-	$SIG{PIPE} = \&endGauge;
+	$SIG{'PIPE'} = \&endGauge;
 	my $exitCode = $? >> 8;
 	$self->{'gauge'}->{'FH'}->autoflush(1);
 	debug("Returned value $exitCode");
@@ -332,21 +332,21 @@ sub startGauge
 	$exitCode;
 }
 
-=item needGauge()
+=item hasGauge()
 
- Determine if gauge dialog box is needed by testing file handle existence.
+ Determine if gauge has been already started testing file handle existence.
 
- Return INT 0 if gauge is needed, 1 otherwise
+ Return int 1 if gauge has been already started, 0 otherwise
 
 =cut
 
-sub needGauge
+sub hasGauge
 {
 	return 0 if $main::noprompt;
 
 	my $self = shift;
 
-	$self->{'gauge'}->{'FH'} ? 0 : 1;
+	(exists $self->{'gauge'}->{'FH'}) ? 1 : 0;
 }
 
 =item setGauge($value, $text = '')
@@ -369,14 +369,12 @@ sub setGauge
 
 	return 0 unless $self->{'gauge'}->{'FH'};
 
-	$text = $text ? "XXX\n$percent\n" . $self->_escape($text) . "\nXXX\n" : "$percent\n";
+	$text = $text ? "XXX\n$percent\n$text\nXXX\n" : "$percent\n";
 
-	debug($text);
+	debug($self->_stripFormats($text));
 
-	my $fh = $self->{'gauge'}->{'FH'};
-
-	print $fh $text;
-	$SIG{PIPE} = \&endGauge;
+	print {$self->{'gauge'}->{'FH'}} $text;
+	$SIG{'PIPE'} = \&endGauge;
 
 	defined $self->{'gauge'}->{'FH'} ? 1 : 0;
 }
@@ -476,7 +474,7 @@ sub _init
 
 	$self->{'_opts'}->{'no-cancel'} = $self->{'args'}->{'no-cancel'} || undef;
 	$self->{'_opts'}->{'no-ok'} = $self->{'args'}->{'no-ok'} || undef;
-	$self->{'_opts'}->{'clear'} = '';
+	$self->{'_opts'}->{'clear'} = $self->{'args'}->{'clear'} || undef;
 
 	$self->{'_opts'}->{'column-separator'} = undef;
 
@@ -595,7 +593,7 @@ sub _stripFormats
 {
 	my ($self, $string) = (shift, shift);
 
-	$string =~ s!\\Z[0-9bBuUrRn]!!gmi;
+	$string =~ s/\\Z[0-9bBuUrRn]//gmi;
 
 	$string;
 }
@@ -614,13 +612,13 @@ sub _buildCommandOptions
 	my $commandOptions = '';
 
 	for(keys %{$self->{'_opts'}}){
-		if(defined $self->{'_opts'}->{$_} ) {
+		if(defined $self->{'_opts'}->{$_}) {
 			$commandOptions .= " --$_ ";
 
 			if (ref $self->{'_opts'}->{$_} eq 'ARRAY') {
-				$commandOptions .=  $self->_escape("@{$self->{'_opts'}->{$_}}")
-			} elsif($self->{'_opts'}->{$_} !~ /^\d+$/ && $self->{'_opts'}->{$_}){
-				$commandOptions .= '"' . $self->_escape($self->{'_opts'}->{$_}) . '"';
+				$commandOptions .=  escapeShell("@{$self->{'_opts'}->{$_}}")
+			} elsif($self->{'_opts'}->{$_} !~ /^\d+$/ && $self->{'_opts'}->{$_}) {
+				$commandOptions .= escapeShell($self->{'_opts'}->{$_});
 			} elsif($self->{'_opts'}->{$_} =~ /^\d+$/){
 				$commandOptions .= $self->{'_opts'}->{$_};
 			}
@@ -628,40 +626,6 @@ sub _buildCommandOptions
 	}
 
 	$commandOptions;
-}
-
-=item _escape($string)
-
- Escape the given string.
-
- Param STRING $string String to escape
- Return STRING Escaped string
-
-=cut
-
-sub _escape
-{
-	my ($self, $string) = (shift, shift);
-
-	$string =~ s/(["`])/\\$1/g;
-
-	$string;
-}
-
-=item _quote($string)
-
- Quote the given string.
-
- Param STRING $string String to quote
- Return STRING Quoted string
-
-=cut
-
-sub _quote
-{
-	my $self = shift;
-
-	'"' . $self->_escape(shift) . '"';
 }
 
 =item _restoreDefaults()
@@ -715,7 +679,7 @@ sub _execute
 
 	my $command = $self->_buildCommandOptions();
 
-	$text = $self->_escape($text);
+	$text = escapeShell($text);
 	$init = $init ? $init : '';
 
 	my $height = defined $self->{'autosize'} ? 0 : $self->{'lines'};
@@ -723,7 +687,7 @@ sub _execute
 
 	my ($output, $exitCode);
 
-	$exitCode = execute("$self->{'bin'} $command --$type \"$text\" $height $width $init", undef, \$output);
+	$exitCode = execute("$self->{'bin'} $command --$type $text $height $width $init", undef, \$output);
 
 	debug('Returned text: ' . $output) if $output;
 

@@ -53,11 +53,13 @@ sub uninstall
 	my $self = shift;
 	my $rs = 0;
 
-	$rs |= $self->restoreConfFile();
-	$rs |= $self->removeDB();
-	$rs |= $self->removeDirs();
+	$rs = $self->restoreConfFile();
+	return $rs if $rs;
 
-	$rs;
+	$rs = $self->removeDB();
+	return $rs if $rs;
+
+	$self->removeDirs();
 }
 
 sub removeDirs
@@ -68,10 +70,11 @@ sub removeDirs
 	use iMSCP::Dir;
 
 	for($self::proftpdConfig{FTPD_CONF_DIR}, "$main::imscpConfig{TRAFF_LOG_DIR}/proftpd"){
-		$rs |= iMSCP::Dir->new(dirname => $_)->remove() if -d $_;
+		$rs = iMSCP::Dir->new(dirname => $_)->remove() if -d $_;
+		return $rs if $rs;
 	}
 
-	$rs;
+	0;
 }
 
 sub removeDB
@@ -108,7 +111,8 @@ sub restoreConfFile
 		my ($filename, $directories, $suffix) = fileparse($_);
 
 		if(-f "$self->{bkpDir}/$filename$suffix.system"){
-			$rs	|=	iMSCP::File->new(filename => "$self->{bkpDir}/$filename$suffix.system")->copyFile($_);
+			$rs	= iMSCP::File->new(filename => "$self->{bkpDir}/$filename$suffix.system")->copyFile($_);
+			return $rs if $rs;
 		}
 	}
 

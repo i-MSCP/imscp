@@ -75,7 +75,7 @@ sub parse
 		local $Text::Wrap::break =  qr/[\s\n\|]/;
 
 		print STDERR $usage."\n";
-		print STDERR wrap('','', <<EOF);
+		print STDERR wrap('', '', <<EOF);
  -r,  --reconfigure  <item>  Type --reconfigure help for more information.
  -n,  --noprompt             Switch to non-interactive mode.
  -p,  --preseed      <file>  Path to preseed file.
@@ -146,7 +146,7 @@ sub reconfigure
 			$optionHelp .= "\n\n";
 			die();
 		} elsif($value eq '') {
-			$options->{'reconfigure'} = 'all';
+			$value = 'all';
 		}
 
 		$value ~~ $reconfigureItems or die("Error: '$value' is not a valid argument for the --reconfigure option.");

@@ -62,6 +62,7 @@ sub preinstall
 	my $self = shift;
 
 	require iMSCP::Addons::ComposerInstaller;
+
 	iMSCP::Addons::ComposerInstaller->getInstance()->registerPackage('imscp/ajaxplorer');
 }
 
@@ -78,10 +79,10 @@ sub install
 	my $self = shift;
 	my $rs = 0;
 
-	$rs |= $self->_installFiles();		# Install ajaxplorer files from local addon packages repository
-	$rs |= $self->setGuiPermissions();	# Set ajaxplorer permissions
+	$rs = $self->_installFiles();	# Install ajaxplorer files from local addon packages repository
+	return $rs if $rs;
 
-	$rs;
+	$self->setGuiPermissions();		# Set ajaxplorer permissions
 }
 
 =item setGuiPermissions()
@@ -107,17 +108,16 @@ sub setGuiPermissions
 	require iMSCP::Rights;
 	iMSCP::Rights->import();
 
-	$rs |= setRights(
+	$rs = setRights(
 		"$rootDir/gui/public/tools/filemanager",
-		{ user => $panelUName, group => $apacheGName, dirmode => '0550', filemode => '0440', recursive => 'yes' }
+		{ 'user' => $panelUName, 'group' => $apacheGName, 'dirmode' => '0550', 'filemode' => '0440', 'recursive' => 'yes' }
 	);
+	return $rs if $rs;
 
-	$rs |= setRights(
+	setRights(
 		"$rootDir/gui/public/tools/filemanager/data",
-		{ user => $panelUName, group => $panelGName, dirmode => '0700', filemode => '0600', recursive => 'yes' }
+		{ 'user' => $panelUName, 'group' => $panelGName, 'dirmode' => '0700', 'filemode' => '0600', 'recursive' => 'yes' }
 	);
-
-	$rs;
 }
 
 =back
@@ -138,7 +138,7 @@ sub _installFiles
 {
 	my $self = shift;
 	my $repoDir = $main::imscpConfig{'ADDON_PACKAGES_CACHE_DIR'};
-	my ($stdout, $stderr) = (undef, undef);
+	my ($stdout, $stderr);
 	my $rs = 0;
 
 	if(-d "$repoDir/vendor/imscp/ajaxplorer") {
@@ -147,20 +147,22 @@ sub _installFiles
 		iMSCP::Execute->import();
 
 		$rs = execute(
-			"$main::imscpConfig{CMD_CP} -rTf $repoDir/vendor/imscp/ajaxplorer $main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/filemanager",
+			"$main::imscpConfig{'CMD_CP'} -rTf $repoDir/vendor/imscp/ajaxplorer $main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/filemanager",
 			\$stdout,
 			\$stderr
 		);
 		debug($stdout) if $stdout;
 		error($stderr) if $rs && $stderr;
+		return $rs if $rs;
 
-		$rs |= execute(
+		$rs = execute(
 			"$main::imscpConfig{'CMD_RM'} -rf $main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/filemanager/.git",
 			\$stdout,
 			\$stderr
 		);
 		debug($stdout) if $stdout;
 		error($stderr) if $rs && $stderr;
+		return $rs if $rs;
 	} else {
 		error("Couldn't find the imscp/ajaxplorer package into the local repository");
 		$rs = 1;

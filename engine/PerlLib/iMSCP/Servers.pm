@@ -33,22 +33,20 @@ use parent 'Common::SingletonClass';
 
 sub load
 {
-	my $self = shift || iMSCP::Servers->new();
+	my $self = shift;
 
-	my $servers	= iMSCP::Dir->new(dirname => "$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Servers");
-
-	return 1 if $servers->get();
+	my $servers	= iMSCP::Dir->new('dirname' => "$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Servers");
 
 	@{$self->{'servers'}} = $servers->getFiles();
 
-	debug("Returning: @{$self->{servers}}");
+	debug("Returning: @{$self->{'servers'}}");
 
 	0;
 }
 
 sub get
 {
-	my $self = shift || iMSCP::Servers->new();
+	my $self = shift;
 
 	$self->load() unless exists $self->{'servers'};
 

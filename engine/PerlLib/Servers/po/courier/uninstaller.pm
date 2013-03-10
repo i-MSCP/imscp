@@ -37,10 +37,10 @@ sub _init
 	my $self = shift;
 
 	$self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/courier";
-	$self->{'bkpDir'} = "$self->{cfgDir}/backup";
-	$self->{'wrkDir'} = "$self->{cfgDir}/working";
+	$self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
+	$self->{'wrkDir'} = "$self->{'cfgDir'}/working";
 
-	my $conf = "$self->{cfgDir}/courier.data";
+	my $conf = "$self->{'cfgDir'}/courier.data";
 
 	tie %self::courierConfig, 'iMSCP::Config','fileName' => $conf;
 
@@ -52,11 +52,13 @@ sub uninstall
 	my $self = shift;
 	my $rs = 0;
 
-	$rs |= $self->restoreConfFile();
-	$rs |= $self->authDaemon();
-	$rs |= $self->userDB();
+	$rs = $self->restoreConfFile();
+	return $rs if $rs;
 
-	$rs;
+	$rs = $self->authDaemon();
+	return $rs if $rs;
+
+	$self->userDB();
 }
 
 sub restoreConfFile
@@ -66,14 +68,15 @@ sub restoreConfFile
 	my $file;
 
 	for ('authdaemonrc', 'userdb', $self::courierConfig{'COURIER_IMAP_SSL'}, $self::courierConfig{'COURIER_POP_SSL'}) {
-		$rs	|=	iMSCP::File->new(
-			filename => "$self->{bkpDir}/$_.system"
+		$rs	= iMSCP::File->new(
+			'filename' => "$self->{'bkpDir'}/$_.system"
 		)->copyFile(
 			"$self::courierConfig{'AUTHLIB_CONF_DIR'}/$_"
-		) if -f "$self->{bkpDir}/$_.system";
+		) if -f "$self->{'bkpDir'}/$_.system";
+		return $rs if $rs;
 	}
 
-	$rs;
+	0;
 }
 
 sub authDaemon
@@ -82,11 +85,12 @@ sub authDaemon
 	my $rs	= 0;
 	my $file;
 
-	$file = iMSCP::File->new(filename => "$self::courierConfig{'AUTHLIB_CONF_DIR'}/authdaemonrc");
-	$rs |= $file->mode(0660);
-	$rs |= $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
+	$file = iMSCP::File->new('filename' => "$self::courierConfig{'AUTHLIB_CONF_DIR'}/authdaemonrc");
 
-	$rs;
+	$rs = $file->mode(0660);
+	return $rs if $rs;
+
+	$file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
 }
 
 sub userDB
@@ -95,17 +99,19 @@ sub userDB
 	my $rs = 0;
 	my $file;
 
-	$file = iMSCP::File->new(filename => "$self::courierConfig{'AUTHLIB_CONF_DIR'}/userdb");
-	$rs |= $file->mode(0600);
-	$rs |= $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
+	$file = iMSCP::File->new('filename' => "$self::courierConfig{'AUTHLIB_CONF_DIR'}/userdb");
 
-	my ($rs, $stdout, $stderr);
-	$rs |= execute($self::courierConfig{'CMD_MAKEUSERDB'}, \$stdout, \$stderr);
-	debug("$stdout") if ($stdout);
-	if($rs){
-		error("$stderr") if $stderr;
-		error("Error while executing $self::courierConfig{CMD_MAKEUSERDB} returned status $rs") unless $stderr;
-	}
+	$rs = $file->mode(0600);
+	return $rs if $rs;
+
+	$rs = $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
+	return $rs if $rs;
+
+	my ($stdout, $stderr);
+	$rs = execute($self::courierConfig{'CMD_MAKEUSERDB'}, \$stdout, \$stderr);
+	debug($stdout) if ($stdout);
+	error($stderr) if $stderr && $rs;
+	error("Error while executing $self::courierConfig{CMD_MAKEUSERDB} returned status $rs") if $rs && ! $stderr;
 
 	$rs;
 }

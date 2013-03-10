@@ -53,7 +53,7 @@ sub _init
 
 sub factory
 {
-	Servers::cron->new();
+	Servers::cron->getInstance();
 }
 
 sub addTask
@@ -62,15 +62,15 @@ sub addTask
 	my $data = shift;
 	my $rs = 0;
 
-	$data = {} if (ref $data ne 'HASH');
+	$data = {} if ref $data ne 'HASH';
 
 	my $errmsg = {
 		USER	=> 'You must provide running user!',
-		C0MMAND	=> 'You must provide cron command!',
+		COMMAND	=> 'You must provide cron command!',
 		TASKID	=> 'You must provide a unique task id!',
 	};
 
-	foreach(keys %{$errmsg}){
+	for(keys %{$errmsg}){
 		error("$errmsg->{$_}") unless $data->{$_};
 		return 1 unless $data->{$_};
 	}
@@ -83,18 +83,19 @@ sub addTask
 	$data->{'LOG_DIR'} = $main::imscpConfig{'LOG_DIR'};
 
 	# Backup production file
-	$rs |=	iMSCP::File->new(
+	$rs =	iMSCP::File->new(
 		'filename' => "$main::imscpConfig{'CRON_D_DIR'}/imscp"
 	)->copyFile(
 		"$self->{'bkpDir'}/imscp." . time
 	) if -f "$main::imscpConfig{'CRON_D_DIR'}/imscp";
+	return $rs if $rs;
 
 	my $file = iMSCP::File->new('filename' => "$self->{wrkDir}/imscp");
 	my $wrkFileContent = $file->get();
 
-	unless($wrkFileContent){
+	unless(defined $wrkFileContent){
 		error("Cannot read $self->{'wrkDir'}/imscp");
-		$rs = 1;
+		return 1;
 	} else {
 		my $cleanBTag = iMSCP::File->new(filename => "$self->{'tplDir'}/task_b.tpl")->get();
 		my $cleanTag = iMSCP::File->new(filename => "$self->{'tplDir'}/task_entry.tpl")->get();
@@ -108,13 +109,22 @@ sub addTask
 
 		# Store the file in the working directory
 		my $file = iMSCP::File->new('filename' =>"$self->{'wrkDir'}/imscp");
-		$rs |= $file->set($wrkFileContent);
-		$rs |= $file->save();
-		$rs |= $file->mode(0644);
-		$rs |= $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
+
+		$rs = $file->set($wrkFileContent);
+		return $rs if $rs;
+
+		$rs = $file->save();
+		return $rs if $rs;
+
+		$rs = $file->mode(0644);
+		return $rs if $rs;
+
+		$rs = $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
+		return $rs if $rs;
 
 		# Install the file in the production directory
-		$rs |= $file->copyFile("$main::imscpConfig{'CRON_D_DIR'}/imscp");
+		$rs = $file->copyFile("$main::imscpConfig{'CRON_D_DIR'}/imscp");
+		return $rs if $rs;
 	}
 
 	$rs;
@@ -132,41 +142,51 @@ sub delTask
 		TASKID	=> 'You must provide a unique task id!'
 	};
 
-	foreach(keys %{$errmsg}){
+	for(keys %{$errmsg}){
 		error("$errmsg->{$_}") unless $data->{$_};
 		return 1 unless $data->{$_};
 	}
 
 	# BACKUP PRODUCTION FILE
-	$rs |= iMSCP::File->new(
+	$rs = iMSCP::File->new(
 		filename => "$main::imscpConfig{'CRON_D_DIR'}/imscp"
 	)->copyFile(
 		"$self->{'bkpDir'}/imscp." . time
 	) if(-f "$main::imscpConfig{'CRON_D_DIR'}/imscp");
+	return $rs if $rs;
 
 	my $file = iMSCP::File->new('filename' => "$self->{'wrkDir'}/imscp");
 	my $wrkFileContent = $file->get();
 
-	unless($wrkFileContent){
+	unless(defined $wrkFileContent){
 		error("Cannot read $self->{'wrkDir'}/imscp");
-		$rs = 1;
+		return 1;
 	} else {
-		my $cleanBTag = iMSCP::File->new(filename => "$self->{'tplDir'}/task_b.tpl")->get();
-		my $cleanETag = iMSCP::File->new(filename => "$self->{'tplDir'}/task_e.tpl")->get();
-		my $bTag = process({TASKID => $data->{'TASKID'}}, $cleanBTag);
-		my $eTag = process({TASKID => $data->{'TASKID'}}, $cleanETag);
+		my $cleanBTag = iMSCP::File->new('filename' => "$self->{'tplDir'}/task_b.tpl")->get();
+		my $cleanETag = iMSCP::File->new('filename' => "$self->{'tplDir'}/task_e.tpl")->get();
+		my $bTag = process({ TASKID => $data->{'TASKID'} }, $cleanBTag);
+		my $eTag = process({ TASKID => $data->{'TASKID'} }, $cleanETag);
 
 		$wrkFileContent = replaceBloc($bTag, $eTag, '', $wrkFileContent, undef);
 
 		# Store the file in the working directory
 		my $file = iMSCP::File->new('filename' => "$self->{'wrkDir'}/imscp");
-		$rs |= $file->set($wrkFileContent);
-		$rs |= $file->save();
-		$rs |= $file->mode(0644);
-		$rs |= $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
+
+		$rs = $file->set($wrkFileContent);
+		return $rs if $rs;
+
+		$rs = $file->save();
+		return $rs if $rs;
+
+		$rs = $file->mode(0644);
+		return $rs if $rs;
+
+		$rs = $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
+		return $rs if $rs;
 
 		# Install the file in the production directory
-		$rs |= $file->copyFile("$main::imscpConfig{'CRON_D_DIR'}/imscp");
+		$rs = $file->copyFile("$main::imscpConfig{'CRON_D_DIR'}/imscp");
+		return $rs if $rs;
 	}
 
 	$rs;

@@ -29,7 +29,6 @@
  * The i-MSCP Home Page is:
  *
  *    http://i-mscp.net
- *
  */
 
 // GUI root directory absolute path
@@ -47,23 +46,16 @@ set_include_path('.' . PATH_SEPARATOR . $guiRootDir . '/library');
 require_once 'imscp-lib.php';
 
 try {
-	// Gets an iMSCP_Update_Database instance
 	$databaseUpdate = iMSCP_Update_Database::getInstance();
 
 	if(!$databaseUpdate->applyUpdates()) {
-		print "\n[ERROR]: " . $databaseUpdate->getError() . "\n\n";
+		fwrite(STDERR, "[ERROR] Database update failed: " . $databaseUpdate->getError() . "\n");
 		exit(1);
 	}
-
 } catch(Exception $e) {
-	$message = "\n[ERROR]: " . $e->getMessage() . "\n\nStackTrace:\n" .
-		$e->getTraceAsString() . "\n\n";
-
-	print "$message\n\n";
-
+	fwrite(STDERR, "[ERROR] " . $e->getMessage() . "\n\nStackTrace:\n" . $e->getTraceAsString() . "\n");
 	exit(1);
 }
 
-print "\n[INFO]: i-MSCP database update succeeded!\n\n";
-
-exit(0);
+fwrite(STDOUT, "[INFO] i-MSCP database has been successfully updated\n");
+exit;

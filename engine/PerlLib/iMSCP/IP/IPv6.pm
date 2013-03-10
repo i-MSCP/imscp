@@ -30,28 +30,26 @@ use warnings;
 
 use iMSCP::Debug;
 use iMSCP::Execute;
-use Data::Dumper;
+use Data::Validate::IP qw/is_ipv6/;
+use parent 'iMSCP::IP::abstractIP';
 
-use vars qw/@ISA/;
-
-@ISA = ('iMSCP::IP::abstractIP');
-use iMSCP::IP::abstractIP;
-
-sub parseIPs{
+sub parseIPs
+{
 	my $self = shift;
 	my $data = shift;
 
-	unless($self->{_loadedIPs}){
-		$self->{ips} = {};
+	unless($self->{'_loadedIPs'}) {
+		$self->{'ips'} = {};
 
-		while($data =~ m/^(([^\s]+).*?)\n(\n|$)/smgi){
+		while($data =~ m/^(([^\s]+).*?)\n(\n|$)/sgim) {
 			my $netCardName = (split(':', $2))[0];
 			my $netCardData = $1;
-			$self->{cards}->{$netCardName} = {} if $netCardName ne 'lo';
+			$self->{'cards'}->{$netCardName} = {} if $netCardName ne 'lo';
+
 			while($netCardData =~ /\s+[^\s]+\s[^\s:]+:\s([0-9a-f:]+)(\/[^s]+)?\s/img){
 				my $ip = $self->normalize($1);
-				push(@{$self->{cards}->{$netCardName}->{ips}}, $ip) if $netCardName ne 'lo';
-				$self->{ips}->{$ip} = $netCardName if $netCardName ne 'lo';
+				push(@{$self->{'cards'}->{$netCardName}->{'ips'}}, $ip) if $netCardName ne 'lo';
+				$self->{'ips'}->{$ip} = $netCardName if $netCardName ne 'lo';
 			}
 		}
 		$self->{_loadedIPs} = 1
@@ -59,101 +57,112 @@ sub parseIPs{
 	0;
 }
 
-sub normalize{
-	my $self	= shift;
-	my $ip		= lc(shift);
+sub normalize
+{
+	my $self = shift;
+	my $ip = lc(shift);
 	my @result;
 
 	my @parts = split(':', $ip);
-	foreach(@parts){
+
+	for(@parts){
 		my $segment = $_;
-		unless ($segment eq ''){
+
+		unless ($segment eq '') {
 			$segment = "0$segment" for((length($_)+1)..4);
 			push(@result, $segment);
 		} else {
 			push(@result, '0000') for((@parts) .. 8);
 		}
 	}
+
 	join(':', @result);
 }
 
-sub parseNetCards{
+sub parseNetCards
+{
 	my $self = shift;
 	my $data = shift;
 
-	unless($self->{_loadedCards}){
-		$self->{cards} = {};
+	unless($self->{'_loadedCards'}) {
+		$self->{'cards'} = {};
 
-		while($data =~ m/^([^\s]+)\s{1,}[^\n]*\n/mgi){
-			debug("$1") if $1;
-			if($1 ne 'lo'){
+		while($data =~ m/^([^\s]+)\s{1,}[^\n]*\n/gim) {
+			debug($1) if $1;
+
+			if($1 ne 'lo') {
 				my @cards =split(':', $1);
 				my $card = shift(@cards);
-				$self->{cards}->{$card}->{up} = 'yes';
+				$self->{'cards'}->{$card}->{'up'} = 'yes';
 			}
 		}
 
-		$self->{_loadedCards} = 1
+		$self->{'_loadedCards'} = 1
 	}
+
 	0;
 }
 
-sub addedToVCard{
+sub addedToVCard
+{
 	0;
 }
 
-sub getCardByIP{
-	my $self	= shift;
-	my $ip		= shift;
+sub getCardByIP
+{
+	my $self = shift;
+	my $ip = shift;
 
 	$ip = $self->normalize($ip);
 
-	debug("Network card having ip $ip: ". (exists $self->{ips}->{$ip} ? $self->{ips}->{$ip} : 'not exists'));
+	debug("Network card having ip $ip: ". (exists $self->{'ips'}->{$ip} ? $self->{'ips'}->{$ip} : 'not exists'));
 
-	return (exists $self->{ips}->{$ip} ? $self->{ips}->{$ip} : 0);
+	return (exists $self->{'ips'}->{$ip} ? $self->{'ips'}->{$ip} : 0);
 }
 
-sub isValidIp{
-	my $self	= shift;
-	my $ip		= shift;
-
-	use Data::Validate::IP qw/is_ipv6/;
+sub isValidIp
+{
+	my $self = shift;
+	my $ip = shift;
 
 	debug("Ip is ipv6? ". (is_ipv6($ip) ? 'yes' : 'no'));
-	return (is_ipv6($ip) ? 1 : 0);
+
+	(is_ipv6($ip) ? 1 : 0);
 }
 
-sub attachIpToNetCard{
-	my $self	= shift;
-	my $card	= shift;
-	my $ip		= shift;
+sub attachIpToNetCard
+{
+	my $self = shift;
+	my $card = shift;
+	my $ip = shift;
 
 	$ip = $self->normalize($ip);
 
 	my $fCard = $self->getCardByIP($ip);
 
-	return 0 if($fCard eq $card);
-	return 1 if($fCard && $fCard ne $card);
-	return 1 unless($self->existsNetCard($card));
-	return 1 unless($self->isValidIp($ip));
+	return 0 if $fCard eq $card;
+	return 1 if $fCard && $fCard ne $card;
+	return 1 unless $self->existsNetCard($card);
+	return 1 unless $self->isValidIp($ip);
 
 	my ($stdout, $stderr);
 
 	my $rs = execute("$main::imscpConfig{'CMD_IFCONFIG'} $card inet6 add $ip/64", \$stdout, \$stderr);
-	debug("$stdout")if $stdout;
-	error("$stderr")if $stderr;
+	debug($stdout) if $stdout;
+	error($stderr) if $stderr && $rs;
 
 	$rs;
 }
 
-sub detachIpFromNetCard{
-	my $self	= shift;
-	my $ip		= shift;
+sub detachIpFromNetCard
+{
+	my $self = shift;
+	my $ip = shift;
 	my $card;
 
 	$ip = $self->normalize($ip);
 
-	my $card = $self->getCardByIP($ip);
+	$card = $self->getCardByIP($ip);
 
 	return 1 unless($card);
 	return 1 unless($self->isValidIp($ip));
@@ -161,17 +170,18 @@ sub detachIpFromNetCard{
 	my ($stdout, $stderr);
 
 	my $rs = execute("$main::imscpConfig{'CMD_IFCONFIG'} $card inet6 del $ip/64", \$stdout, \$stderr);
-	debug("$stdout")if $stdout;
-	error("$stderr")if $stderr;
+	debug($stdout) if $stdout;
+	error($stderr) if $stderr && $rs;
 
 	$rs;
 }
 
-sub reset{
-	my $self	= shift;
+sub reset
+{
+	my $self = shift;
 
-	delete $self->{_loadedIPs};
-	delete $self->{_loadedCards};
+	delete $self->{'_loadedIPs'};
+	delete $self->{'_loadedCards'};
 }
 
 1;

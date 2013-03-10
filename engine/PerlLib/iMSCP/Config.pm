@@ -88,7 +88,7 @@ sub _init
 		fatal('fileName attribut is not defined');
 	}
 
-	debug("Tying $self->{confFileName}");
+	debug("Tying $self->{'confFileName'}");
 
 	$self->_loadConfig();
 	$self->_parseConfig();
@@ -109,7 +109,7 @@ sub _loadConfig
 	my $self = shift;
 	my $mode;
 
-	debug("Tying configuration file: $self->{confFileName}");
+	debug("Loading $self->{'confFileName'}");
 
 	if($self->{'args'}->{'nocreate'}) {
 		$mode = O_RDWR;
@@ -119,8 +119,8 @@ sub _loadConfig
 		$mode = O_RDWR | O_CREAT;
 	}
 
-	tie @{$self->{'confFile'}}, 'Tie::File', $self->{'confFileName'}, mode => $mode or
-		fatal("Can`t open file $self->{confFileName}");
+	tie @{$self->{'confFile'}}, 'Tie::File', $self->{'confFileName'}, 'mode' => $mode or
+		fatal("Unable to open file $self->{'confFileName'}");
 
 	undef;
 }
@@ -139,9 +139,11 @@ sub _parseConfig
 
 	my $lineNo = 0;
 
+	debug("Parsing $self->{'confFileName'}");
+
 	for (@{$self->{'confFile'}}) {
 		if (/^([^#\s=]+)\s{0,}=\s{0,}(.{0,})$/) {
-			$self->{'configValues'}->{$1}	= $2;
+			$self->{'configValues'}->{$1} = $2;
 			$self->{'lineMap'}->{$1} = $lineNo;
 		}
 
@@ -162,8 +164,6 @@ sub FETCH
 {
 	my $self = shift;
 	my $config = shift;
-
-	debug("Fetching ${config}..." );
 
 	if (! exists $self->{'configValues'}->{$config} && ! $self->{'args'}->{'noerrors'}){
 		error(sprintf('Accessing non existing config value %s', $config));
@@ -186,7 +186,7 @@ sub STORE
 	my $value = shift;
 
 	if(! $self->{'args'}->{'readonly'}) {
-		debug("Store ${config} as " . ($value ? $value : 'empty') . '...');
+		debug("Store $config as " . ($value ? $value : 'empty') . '...');
 
 		if(! exists $self->{'configValues'}->{$config}) {
 			$self->_insertConfig($config, $value);

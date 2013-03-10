@@ -72,13 +72,17 @@ sub registerSetupHooks
 	$rs = $hooksManager->register(
 		'beforeSetupDialog', sub { my $dialogStack = shift; push(@$dialogStack, sub { $self->askDovecot(@_) }); 0; }
 	);
+	return $rs if $rs;
 
 	if(defined $main::imscpConfig{'MTA_SERVER'} && lc($main::imscpConfig{'MTA_SERVER'}) eq 'postfix') {
-		$rs |= $hooksManager->register('beforeMtaBuildMainCfFile', sub { $self->buildPostfixConf(@_); });
-		$rs |= $hooksManager->register('beforeMtaBuildMasterCfFile', sub { $self->buildPostfixConf(@_); });
+		$rs = $hooksManager->register('beforeMtaBuildMainCfFile', sub { $self->buildPostfixConf(@_); });
+		return $rs if $rs;
+
+		$rs = $hooksManager->register('beforeMtaBuildMasterCfFile', sub { $self->buildPostfixConf(@_); });
+		return $rs if $rs;
 	}
 
-	$rs;
+	0;
 }
 
 =item askDovecot($dialog)
@@ -166,17 +170,25 @@ sub install
 	my $self = shift;
 	my $rs = 0;
 
-	$rs |= $self->_bkpConfFile($_) for ('dovecot.conf', 'dovecot-sql.conf');
-	$rs |= $self->_setupDb();
-	$rs |= $self->_buildConf();
-	$rs |= $self->_saveConf();
+	$rs = $self->_bkpConfFile($_) for ('dovecot.conf', 'dovecot-sql.conf');
+	return $rs if $rs;
+
+	$rs = $self->_setupDb();
+	return $rs if $rs;
+
+	$rs = $self->_buildConf();
+	return $rs if $rs;
+
+	$rs = $self->_saveConf();
+	return $rs if $rs;
 
 	# Migrate from Courier if needed
 	if(defined $main::imscpOldConfig{'PO_SERVER'} && $main::imscpOldConfig{'PO_SERVER'} eq 'courier') {
-		$rs |= $self->_migrateFromCourier();
+		$rs = $self->_migrateFromCourier();
+		return $rs if $rs;
 	}
 
-	$rs;
+	0;
 }
 
 =back
@@ -245,7 +257,7 @@ EOF
 
 =item _init()
 
- Called by new(). Initialize instance.
+ Called by getInstance(). Initialize instance.
 
  Return Servers::po::dovecot::installer
 
@@ -300,7 +312,7 @@ sub _getVersion
 	$rs = execute('dovecot --version', \$stdout, \$stderr);
 	debug($stdout) if $stdout;
 	error($stderr) if $stderr;
-	error("Cannot get dovecot version") if !$stderr and $rs;
+	error("Unable to get dovecot version") if $rs && ! $stderr;
 	return $rs if $rs;
 
 	chomp($stdout);
@@ -309,7 +321,7 @@ sub _getVersion
 	if($1) {
 		$self->{'version'} = $1;
 	} else {
-		error("Can't get dovecot version");
+		error("Unable to find dovecot version");
 		return 1;
 	}
 
@@ -331,21 +343,22 @@ sub _bkpConfFile
 	my $rs = 0;
 
 	$rs = $self->{'hooksManager'}->trigger('beforePoBkpConfFile', $cfgFile);
+	return $rs if $rs;
 
-	if(! $rs && -f "$self::dovecotConfig{'DOVECOT_CONF_DIR'}/$cfgFile"){
+	if(-f "$self::dovecotConfig{'DOVECOT_CONF_DIR'}/$cfgFile") {
 		my $file = iMSCP::File->new('filename' => "$self::dovecotConfig{'DOVECOT_CONF_DIR'}/$cfgFile");
 
-		if(!-f "$self->{'bkpDir'}/$cfgFile.system") {
+		if(! -f "$self->{'bkpDir'}/$cfgFile.system") {
 			$rs = $file->copyFile("$self->{'bkpDir'}/$cfgFile.system");
+			return $rs if $rs;
 		} else {
 			my $timestamp = time;
 			$rs = $file->copyFile("$self->{'bkpDir'}/$cfgFile.$timestamp");
+			return $rs if $rs;
 		}
 	}
 
-	$rs |= $self->{'hooksManager'}->trigger('afterPoBkpConfFile', $cfgFile);
-
-	$rs;
+	$self->{'hooksManager'}->trigger('afterPoBkpConfFile', $cfgFile);
 }
 
 =item _getVersion()
@@ -374,13 +387,13 @@ sub _setupDb
 	for($main::imscpOldConfig{'DATABASE_HOST'} || '', $main::imscpOldConfig{'BASE_SERVER_IP'} || '') {
 		next if $_ eq '' || $dbOldUser eq '';
 		$rs = main::setupDeleteSqlUser($dbOldUser, $_);
-		error("Unable to remove the old dovecot '$dbOldUser' restricted SQL user") if $rs;
+		error("Unable to remove old dovecot '$dbOldUser' restricted SQL user") if $rs;
 		return 1 if $rs;
 	}
 
 	# Ensure new dovecot restricted SQL user do not already exists by removing it
 	$rs = main::setupDeleteSqlUser($dbUserHost, $dbUser);
-	error("Unable to delete the dovecot '$dbUser' restricted SQL user") if $rs;
+	error("Unable to delete dovecot '$dbUser' restricted SQL user") if $rs;
 	return 1 if $rs;
 
 	# Get SQL connection with full privileges
@@ -469,29 +482,38 @@ sub _buildConf
 	for (keys %{$cfgFiles}) {
 		my $file = iMSCP::File->new('filename' => "$self->{'cfgDir'}/$cfgFiles->{$_}");
 		my $cfgTpl = $file->get();
-		return 1 if ! $cfgTpl;
+		return 1 if ! defined $cfgTpl;
 
 		$rs = $self->{'hooksManager'}->trigger('beforePoBuildConf', \$cfgTpl, $_);
+		return $rs if $rs;
 
 		$cfgTpl = iMSCP::Templator::process($cfg, $cfgTpl);
-		return 1 if ! $cfgTpl;
+		return 1 if ! defined $cfgTpl;
 
-		$rs |= $self->{'hooksManager'}->trigger('afterPoBuildConf', \$cfgTpl, $_);
+		$rs = $self->{'hooksManager'}->trigger('afterPoBuildConf', \$cfgTpl, $_);
+		return $rs if $rs;
 
 		$file = iMSCP::File->new('filename' => "$self->{'wrkDir'}/$_");
-		$rs |= $file->set($cfgTpl);
-		$rs |= $file->save();
-		$rs |= $file->mode(0640);
-		$rs |= $file->owner($main::imscpConfig{'ROOT_USER'}, $mta->{'MTA_MAILBOX_GID_NAME'});
-		$rs |= $file->copyFile($self::dovecotConfig{'DOVECOT_CONF_DIR'});
 
-		last if $rs;
+		$rs = $file->set($cfgTpl);
+		return $rs if $rs;
+
+		$rs = $file->save();
+		return $rs if $rs;
+
+		$rs = $file->mode(0640);
+		return $rs if $rs;
+
+		$rs = $file->owner($main::imscpConfig{'ROOT_USER'}, $mta->{'MTA_MAILBOX_GID_NAME'});
+		return $rs if $rs;
+
+		$rs = $file->copyFile($self::dovecotConfig{'DOVECOT_CONF_DIR'});
+		return $rs if $rs;
 	}
 
-	my $file = iMSCP::File->new('filename' => "$self::dovecotConfig{'DOVECOT_CONF_DIR'}/dovecot.conf") if ! $rs;
-	$rs |= $file->mode(0644);
+	my $file = iMSCP::File->new('filename' => "$self::dovecotConfig{'DOVECOT_CONF_DIR'}/dovecot.conf");
 
-	$rs;
+	$file->mode(0644);
 }
 
 =item _saveConf()
@@ -508,22 +530,36 @@ sub _saveConf
 	my $rs = 0;
 
 	my $file = iMSCP::File->new('filename' => "$self->{'cfgDir'}/dovecot.data");
-	my $cfg = $file->get() or return 1;
+	my $cfg = $file->get();
+	unless (defined $cfg) {
+		error("Unable to read $self->{'cfgDir'}/dovecot.data");
+		return 1;
+	}
 
 	$rs = $self->{'hooksManager'}->trigger('beforePoSaveConf', \$cfg, 'dovecot.old.data');
+	return $rs if $rs;
 
-	$rs |= $file->mode(0640);
-	$rs |= $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
+	$rs = $file->mode(0640);
+	return $rs if $rs;
+
+	$rs = $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
+	return $rs if $rs;
 
 	$file = iMSCP::File->new('filename' => "$self->{'cfgDir'}/dovecot.old.data");
-	$file->set($cfg);
-	$rs |= $file->save;
-	$rs |= $file->mode(0640);
-	$rs |= $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
 
-	$rs |= $self->{'hooksManager'}->trigger('afterPoSaveConf', 'dovecot.old.data');
+	$rs = $file->set($cfg);
+	return $rs if $rs;
 
-	$rs;
+	$rs = $file->save;
+	return $rs if $rs;
+
+	$rs = $file->mode(0640);
+	return $rs if $rs;
+
+	$rs = $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
+	return $rs if $rs;
+
+	$self->{'hooksManager'}->trigger('afterPoSaveConf', 'dovecot.old.data');
 }
 
 =item _migrateFromCourier()
@@ -540,6 +576,7 @@ sub _migrateFromCourier
 	my $rs = 0;
 
 	$rs = $self->{'hooksManager'}->trigger('beforePoMigrateFromCourier');
+	return $rs if $rs;
 
 	# Getting i-MSCP MTA server implementation instance
 	require Servers::mta;
@@ -561,14 +598,10 @@ sub _migrateFromCourier
 	# Converting courier subscription files to dovecot format
 
 	my $domainDirs = iMSCP::Dir->new('dirname' => $mailPath);
-	$rs = $domainDirs->get();
-	return $rs if $rs;
 
 	for($domainDirs->getDirs()) {
 
 		my $mailboxesDirs = iMSCP::Dir->new('dirname' => "$mailPath/$_");
-		$rs = $mailboxesDirs->get();
-		return $rs if $rs;
 
 		for my $mailDir($mailboxesDirs->getDirs()) {
 
@@ -584,7 +617,7 @@ sub _migrateFromCourier
 				my $subscriptionsFile = iMSCP::File->new('filename' => "$mailPath/$_/$mailDir/subscriptions");
 				my $subscriptionsFileContent = $subscriptionsFile->get();
 
-				if(!defined $subscriptionsFileContent) {
+				unless(defined $subscriptionsFileContent) {
 					error('Unable to read dovecot subscriptions file newly created');
 					return 1;
 				}
@@ -594,19 +627,19 @@ sub _migrateFromCourier
 
 				# Writing new dovecot subscriptions file
 				$rs = $subscriptionsFile->set($subscriptionsFileContent);
-				$rs |= $subscriptionsFile->save();
+				return $rs if $rs;
+
+				$rs = $subscriptionsFile->save();
+				return $rs if $rs;
 
 				# Removing no longer needed file
-				$rs |= $courierimapsubscribedFile->delFile();
+				$rs = $courierimapsubscribedFile->delFile();
+				return $rs if $rs;
 			}
-
-			last if $rs;
 		}
 	}
 
-	$rs |= $self->{'hooksManager'}->trigger('afterPoMigrateFromCourier');
-
-	$rs;
+	$self->{'hooksManager'}->trigger('afterPoMigrateFromCourier');
 }
 
 =back

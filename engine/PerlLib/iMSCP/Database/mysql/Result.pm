@@ -27,52 +27,53 @@ package iMSCP::Database::mysql::Result;
 
 use strict;
 use warnings;
-use iMSCP::Debug;
+
 use parent 'Common::SimpleClass';
 
-sub TIEHASH {
-
+sub TIEHASH
+{
 	my $self = shift;
 
 	$self = $self->new(@_);
 
-	debug('Tieing ...');
-
 	return $self;
-};
-
-sub FIRSTKEY {
-	my $self	= shift;
-
-	my $a = scalar keys %{$self->{args}->{result}};
-
-	each %{$self->{args}->{result}};
 }
 
-sub NEXTKEY {
-	my $self	= shift;
+sub FIRSTKEY
+{
+	my $self = shift;
 
-	each %{$self->{args}->{result}};
+	my $a = scalar keys %{$self->{'args'}->{'result'}};
+
+	each %{$self->{'args'}->{'result'}};
 }
 
-sub FETCH {
+sub NEXTKEY
+{
+	my $self = shift;
+
+	each %{$self->{'args'}->{'result'}};
+}
+
+sub FETCH
+{
 	my $self = shift;
 	my $key = shift;
 
-	debug("Fetching $key");
+	$self->{'args'}->{'result'}->{$key} ? $self->{'args'}->{'result'}->{$key} : undef;
+}
 
-	$self->{args}->{result}->{$key} ? $self->{args}->{result}->{$key} : undef;
-};
-
-sub EXISTS {
+sub EXISTS
+{
 	my $self = shift;
 	my $key = shift;
 
-	debug("Cheching key $key ...".(exists $self->{args}->{result}->{$key} ? 'exists' : 'not exists'));
+	$self->{'args'}->{'result'}->{$key} ? 1 : 0;
+}
 
-	$self->{args}->{result}->{$key} ? 1 : 0;
-};
+sub STORE
+{
 
-sub STORE {};
+}
 
 1;
