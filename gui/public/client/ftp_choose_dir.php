@@ -101,7 +101,7 @@ function client_generateDirectoriesList($tpl)
 				'CHOOSE_IT' => $dr,
 				'LINK' => 'ftp_choose_dir.php?cur_dir=' . $dr));
 
-		$forbidden_Dir_Names = ('/backups|disabled|errors|logs|phptmp/i');
+		$forbidden_Dir_Names = ('/backups|disabled|errors|logs|phptmp|statistics/i');
 		$forbidden = preg_match($forbidden_Dir_Names, $entry['file']);
 		($forbidden == 1) ? $tpl->assign('ACTION_LINK', '') : $tpl->parse('ACTION_LINK', 'action_link');
 

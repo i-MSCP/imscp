@@ -279,9 +279,36 @@ function showHideBlocks(id) {
  *
  * @return boolean prevent loading of new page on main page
  */
+ /*
 function showFileTree() {
 	libwindow = window.open("ftp_choose_dir.php", "FileTreeDialogPage", "menubar=no,width=550,height=400,scrollbars=yes");
 	return false; // return false to prevent loading of new main page
+}
+*/
+
+/**
+ * Display dialog box allowing to choose ftp directory
+ *
+ * @return false
+ */
+function chooseFtpDir() {
+		var dialog1 = $('<div id="dial_ftp_dir"/>').append($("<iframe scrolling='auto' />").attr("src", "ftp_choose_dir.php")).dialog(
+		{
+			hide:'blind',
+			show:'slide',
+			focus:false,
+			width:900,
+			height:520,
+			autoOpen:false,
+			modal:true,
+			//title:"{TR_CHOOSE_DIR}",
+			close:function (e, ui) {
+				$(this).remove();
+			}
+		}
+	);
+    dialog1.dialog('open');
+    return false;
 }
 
 /*******************************************************************************

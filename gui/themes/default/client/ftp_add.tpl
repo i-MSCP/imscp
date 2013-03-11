@@ -62,8 +62,7 @@
 		}
 		<!-- EDP: js_to_alias_domain -->
 
-		$(window).load(function() {begin_js();});
-	});
+		$(window).load(function() { begin_js();});
 	/*]]>*/
 	</script>
 		<form name="addFrm" method="post" action="ftp_add.php">
@@ -104,8 +103,9 @@
 						<input id="use_other_dir" type="checkbox" name="use_other_dir" {USE_OTHER_DIR_CHECKED} />
 						<label for="use_other_dir">{TR_USE_OTHER_DIR}</label></td>
 					<td>
-						<input type="text" name="other_dir" value="{OTHER_DIR}"/>
-						<a href="#" onclick="showFileTree();" class="icon i_bc_folder">{CHOOSE_DIR}</a>
+						<input type="text" id="ftp_directory" name="other_dir" value="{OTHER_DIR}"/>
+						<a href="#" onclick="chooseFtpDir();" class="icon i_bc_folder">{CHOOSE_DIR}</a>
+						<!--<a href="#" id="choose_directory" class="icon i_bc_folder">{CHOOSE_DIR}</a>-->
 					</td>
 				</tr>
 			</table>
