@@ -58,14 +58,8 @@ sub loadData
 			`domain_mailacc_limit`, `domain_dns`, `external_mail`, `ips`.`ip_number`, `mail_count`.`mail_on_domain`
 		FROM
 			`subdomain` AS `sub`
-		LEFT JOIN
-			`domain`
-		ON
-			`sub`.`domain_id` = `domain`.`domain_id`
-		LEFT JOIN
-			`server_ips` AS `ips`
-		ON
-			`domain`.`domain_ip_id` = `ips`.`ip_id`
+		LEFT JOIN `domain` ON `sub`.`domain_id` = `domain`.`domain_id`
+		LEFT JOIN `server_ips` AS `ips` ON `domain`.`domain_ip_id` = `ips`.`ip_id`
 		LEFT JOIN
 			(
 				SELECT

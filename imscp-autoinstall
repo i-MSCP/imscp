@@ -137,7 +137,7 @@ installPreRequiredPackages() and exit 1 if ! $main::skippackages;
 
 iMSCP::HooksManager->getInstance()->trigger('afterInstallPreRequiredPackages') if ! $main::skippackages;
 
-if(! $main::buildonly && ! $main::noprompt) {
+if(! $main::buildonly && ! $main::noprompt && $main::reconfigure eq 'none') {
 
 	$ENV{'DIALOGOPTS'} = "--ok-label Ok --yes-label Yes --no-label No --cancel-label Back";
 

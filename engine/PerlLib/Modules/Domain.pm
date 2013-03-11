@@ -58,10 +58,7 @@ sub loadData{
 			`domain`.*, `ips`.`ip_number`, `mail_count`.`mail_on_domain`, `ips_count`.`domains_on_ip`
 		FROM
 			`domain` AS `domain`
-		LEFT JOIN
-			`server_ips` AS `ips`
-		ON
-			`domain`.`domain_ip_id` = `ips`.`ip_id`
+		LEFT JOIN `server_ips` AS `ips` ON `domain`.`domain_ip_id` = `ips`.`ip_id`
 		LEFT JOIN
 			(
 				SELECT
@@ -332,37 +329,38 @@ sub buildHTTPDData
 		have_cgi => $self->{'domain_cgi'},
 		have_cert => $haveCert,
 		BWLIMIT => $self->{'domain_traffic_limit'},
-		IP_ON_DOMAIN => (defined $self->{'domains_on_ip'} ? $self->{'domains_on_ip'} : 0),
+		IP_ON_DOMAIN => defined $self->{'domains_on_ip'}
+			? $self->{'domains_on_ip'}
+			: 0,
 		ALIAS => $userName,
 		FORWARD => 'no',
-
 		DISABLE_FUNCTIONS => (exists $phpiniData->{$self->{'domain_id'}})
-		 	? $phpiniData->{$self->{'domain_id'}}->{'disable_functions'} : $rdata->{'PHPINI_DISABLE_FUNCTIONS'}->{'value'},
-
+		 	? $phpiniData->{$self->{'domain_id'}}->{'disable_functions'}
+		 	: $rdata->{'PHPINI_DISABLE_FUNCTIONS'}->{'value'},
 		MAX_EXECUTION_TIME => (exists $phpiniData->{$self->{'domain_id'}})
-			? $phpiniData->{$self->{'domain_id'}}->{'max_execution_time'} : $rdata->{'PHPINI_MAX_EXECUTION_TIME'}->{'value'},
-
+			? $phpiniData->{$self->{'domain_id'}}->{'max_execution_time'}
+			: $rdata->{'PHPINI_MAX_EXECUTION_TIME'}->{'value'},
 		MAX_INPUT_TIME => (exists $phpiniData->{$self->{'domain_id'}})
-		 	? $phpiniData->{$self->{'domain_id'}}->{'max_input_time'} : $rdata->{'PHPINI_MAX_INPUT_TIME'}->{'value'},
-
+		 	? $phpiniData->{$self->{'domain_id'}}->{'max_input_time'}
+		 	: $rdata->{'PHPINI_MAX_INPUT_TIME'}->{'value'},
 		MEMORY_LIMIT => (exists $phpiniData->{$self->{'domain_id'}})
-			? $phpiniData->{$self->{'domain_id'}}->{'memory_limit'} : $rdata->{'PHPINI_MEMORY_LIMIT'}->{'value'},
-
+			? $phpiniData->{$self->{'domain_id'}}->{'memory_limit'}
+			: $rdata->{'PHPINI_MEMORY_LIMIT'}->{'value'},
 		ERROR_REPORTING => (exists $phpiniData->{$self->{'domain_id'}})
-			? $phpiniData->{$self->{'domain_id'}}->{'error_reporting'} : $rdata->{'PHPINI_ERROR_REPORTING'}->{'value'},
-
+			? $phpiniData->{$self->{'domain_id'}}->{'error_reporting'}
+			: $rdata->{'PHPINI_ERROR_REPORTING'}->{'value'},
 		DISPLAY_ERRORS => (exists $phpiniData->{$self->{'domain_id'}})
-			? $phpiniData->{$self->{'domain_id'}}->{'display_errors'} : $rdata->{'PHPINI_DISPLAY_ERRORS'}->{'value'},
-
+			? $phpiniData->{$self->{'domain_id'}}->{'display_errors'}
+			: $rdata->{'PHPINI_DISPLAY_ERRORS'}->{'value'},
 		POST_MAX_SIZE => (exists $phpiniData->{$self->{'domain_id'}})
-			? $phpiniData->{$self->{'domain_id'}}->{'post_max_size'} : $rdata->{'PHPINI_POST_MAX_SIZE'}->{'value'},
-
+			? $phpiniData->{$self->{'domain_id'}}->{'post_max_size'}
+			: $rdata->{'PHPINI_POST_MAX_SIZE'}->{'value'},
 		UPLOAD_MAX_FILESIZE => (exists $phpiniData->{$self->{'domain_id'}})
-			? $phpiniData->{$self->{'domain_id'}}->{'upload_max_filesize'} : $rdata->{'PHPINI_UPLOAD_MAX_FILESIZE'}->{'value'},
-
+			? $phpiniData->{$self->{'domain_id'}}->{'upload_max_filesize'}
+			: $rdata->{'PHPINI_UPLOAD_MAX_FILESIZE'}->{'value'},
 		ALLOW_URL_FOPEN => (exists $phpiniData->{$self->{'domain_id'}})
-			? $phpiniData->{$self->{'domain_id'}}->{'allow_url_fopen'} : $rdata->{'PHPINI_ALLOW_URL_FOPEN'}->{value},
-
+			? $phpiniData->{$self->{'domain_id'}}->{'allow_url_fopen'}
+			: $rdata->{'PHPINI_ALLOW_URL_FOPEN'}->{value},
 		PHPINI_OPEN_BASEDIR => (exists $phpiniData->{$self->{'domain_id'}}->{'PHPINI_OPEN_BASEDIR'})
 			? ':' . $phpiniData->{$self->{'domain_id'}}->{'PHPINI_OPEN_BASEDIR'}
 			: $rdata->{'PHPINI_OPEN_BASEDIR'}->{'value'} ? ':'.$rdata->{'PHPINI_OPEN_BASEDIR'}->{'value'} : ''
