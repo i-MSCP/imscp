@@ -63,14 +63,9 @@ use parent 'Common::SingletonClass';
 sub boot
 {
 	my $self = shift;
+	my $options = shift;
 
 	debug('Booting...');
-
-	$self->lock() unless($self->{'nolock'} && $self->{'nolock'} eq 'yes');
-
-	iMSCP::Requirements->new()->test(
-		$self->{'mode'} && $self->{'mode'} eq 'setup' ? 'all' : 'user'
-	) unless($self->{'norequirements'} && $self->{'norequirements'} eq 'yes');
 
 	tie
 		%main::imscpConfig,
@@ -82,7 +77,15 @@ sub boot
 	# Set verbose mode
 	verbose(iMSCP::Getopt->debug || $main::imscpConfig{'DEBUG'} || 0);
 
-	unless ($self->{'nodatabase'} && $self->{'nodatabase'} eq 'yes') {
+	iMSCP::Requirements->new()->test(
+		$options->{'mode'} && $options->{'mode'} eq 'setup' ? 'all' : 'user'
+	) unless($options->{'norequirements'} && $options->{'norequirements'} eq 'yes');
+
+	$self->lock() unless($options->{'nolock'} && $options->{'nolock'} eq 'yes');
+
+	$self->_genKey();
+
+	unless ($options->{'nodatabase'} && $options->{'nodatabase'} eq 'yes') {
 		require iMSCP::Crypt;
 		my $crypt = iMSCP::Crypt->getInstance();
 		my $database = iMSCP::Database->new('db' => $main::imscpConfig{'DATABASE_TYPE'})->factory();
@@ -96,8 +99,6 @@ sub boot
 
 		fatal("Unable to connect to the SQL server: $rs") if $rs;
 	}
-
-	$self->_genKey();
 
 	$self;
 }

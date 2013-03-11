@@ -43,7 +43,7 @@ newDebug('imscp-migrate-from-ispcp.log');
 
 silent(1);
 
-iMSCP::Boot->getInstance(mode => 'setup', 'nodatabase' => 'yes' })->boot();
+iMSCP::Boot->getInstance()->boot({'mode' => 'setup', 'nodatabase' => 'yes' });
 
 loadConfigs();
 

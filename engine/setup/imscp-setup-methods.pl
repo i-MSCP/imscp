@@ -64,7 +64,7 @@ use iMSCP::Getopt;
 sub setupBoot
 {
 	# We do not try to establish connection to database since needed data can be unavailable
-	iMSCP::Boot->getInstance({ 'mode' => 'setup', 'nodatabase' => 'yes' })->boot();
+	iMSCP::Boot->getInstance()->boot({ 'mode' => 'setup', 'nodatabase' => 'yes' });
 
 	0;
 }
@@ -2451,7 +2451,7 @@ sub setupGetSqlConnect
 			: ''
 	);
 
-	my $rs =  $database->connect();
+	my $rs = $database->connect();
 	my ($ret, $errstr) = ! $rs ? ($database, '') : (0, $rs);
 
 	wantarray ? ($ret, $errstr) : $ret;

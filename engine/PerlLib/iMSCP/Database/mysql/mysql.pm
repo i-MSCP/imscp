@@ -69,28 +69,32 @@ sub connect
 	my $self = shift;
 
 	my $dsn =
-		'dbi:mysql:'.
+		'dbi:mysql:' .
 		'database=' . $self->{'db'}->{'DATABASE_NAME'} .
 		($self->{'db'}->{'DATABASE_HOST'} ? ';host=' . $self->{'db'}->{'DATABASE_HOST'} : '').
 		($self->{'db'}->{'DATABASE_PORT'} ? ';port=' . $self->{'db'}->{'DATABASE_PORT'} : '');
 
-	if($self->{'dsn'} ne $dsn) { # Avoid to disconnect and reconnect when using same DSN
+	#if($self->{'dsn'} eq $dsn) { # Avoid to disconnect and reconnect when using same DSN
 		debug("Connect with $dsn");
 
 		$self->{'connection'}->disconnect() if $self->{'connection'};
 
-		if(! ($self->{'connection'} = DBI->connect(
-			$dsn, $self->{'db'}->{'DATABASE_USER'}, $self->{'db'}->{'DATABASE_PASSWORD'},
-			(
-				defined($self->{'db'}->{'DATABASE_SETTINGS'}) &&
-				ref($self->{'db'}->{'DATABASE_SETTINGS'}) eq 'HASH' ? $self->{'db'}->{'DATABASE_SETTINGS'} : ()
+		if(
+			!(
+				$self->{'connection'} = DBI->connect(
+					$dsn, $self->{'db'}->{'DATABASE_USER'}, $self->{'db'}->{'DATABASE_PASSWORD'},
+					(
+						defined($self->{'db'}->{'DATABASE_SETTINGS'}) &&
+						ref($self->{'db'}->{'DATABASE_SETTINGS'}) eq 'HASH' ? $self->{'db'}->{'DATABASE_SETTINGS'} : ()
+					)
+				)
 			)
-		))) {
+		) {
 			return $DBI::errstr;
 		}
 
 		$self->{'dsn'} = $dsn;
-	}
+	#}
 
 	0;
 }

@@ -233,7 +233,7 @@ unless($main::buildonly) {
 	require "$FindBin::Bin/engine/setup/imscp-setup-methods.pl";
 
 	@steps = (
-		[\&doImscpBackup,			'Backup existing i-MSCP installation if any'],
+		#[\&doImscpBackup,			'Backup existing i-MSCP installation if any'],
 		[\&saveGuiPersistentData,	'Saving GUI persistent data'],
 		[\&installTmp,				'Installing new i-MSCP files on file system'],
 		[\&setupBoot,				'Setup bootstrapping'],

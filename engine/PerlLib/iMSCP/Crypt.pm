@@ -56,12 +56,12 @@ sub set
 
 sub randomString
 {
-	my $self = shift || iMSCP::Crypt->new();
+	my $self = shift || iMSCP::Crypt->getInstance();
 	my $length = shift;
 
 	if(!ref $self || !$self->isa('iMSCP::Crypt')) {
 		$length = $self;
-		$self = iMSCP::Crypt->new();
+		$self = iMSCP::Crypt->getInstance();
 	}
 
 	my $string = '';
@@ -121,12 +121,12 @@ sub decrypt_db_password
 
 sub crypt_md5_data
 {
-	my $self = shift || iMSCP::Crypt->new();
+	my $self = shift || iMSCP::Crypt->getInstance();
 	my $data = shift;
 
 	if(! ref $self || !$self->isa('iMSCP::Crypt')) {
 		$data = $self;
-		$self = iMSCP::Crypt->new();
+		$self = iMSCP::Crypt->getInstance();
 	}
 
 	if (! $data) {

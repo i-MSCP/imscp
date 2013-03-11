@@ -42,7 +42,7 @@ sub quota_start_up
 {
 	umask(027);
 
-	iMSCP::Boot->getInstance({ 'nolock' => 'yes' })->boot();
+	iMSCP::Boot->getInstance()->boot({ 'nolock' => 'yes' });
 
 	0;
 }

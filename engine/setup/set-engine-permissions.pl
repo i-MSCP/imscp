@@ -43,7 +43,7 @@ sub start_up
 {
 	umask(027);
 
-	iMSCP::Boot->getInstance({ 'nolock' => 'yes', 'nodatabase' => 'yes'})->boot();
+	iMSCP::Boot->getInstance()->boot({ 'nolock' => 'yes', 'nodatabase' => 'yes'});
 
 	0;
 }
