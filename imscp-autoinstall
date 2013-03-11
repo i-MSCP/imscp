@@ -128,7 +128,7 @@ iMSCP::Requirements->new()->user();
 # Load config
 loadConfig() and fatal('Unable to load i-MSCP main configuration file');
 
-# Lock engine
+# Lock engine as soon as possible
 iMSCP::Boot->getInstance()->lock();
 
 iMSCP::HooksManager->getInstance()->trigger('beforeInstallPreRequiredPackages') and exit 1 if ! $main::skippackages;

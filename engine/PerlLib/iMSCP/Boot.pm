@@ -36,7 +36,6 @@ use strict;
 use warnings;
 
 use iMSCP::Debug;
-use iMSCP::Crypt;
 use iMSCP::Config;
 use iMSCP::Requirements;
 use iMSCP::File;
@@ -67,8 +66,24 @@ sub boot
 
 	debug('Booting...');
 
-	unless ($self->{'nodatabase'} && $self->{'nodatabase'} eq 'yes') {
+	$self->lock() unless($self->{'nolock'} && $self->{'nolock'} eq 'yes');
 
+	iMSCP::Requirements->new()->test(
+		$self->{'mode'} && $self->{'mode'} eq 'setup' ? 'all' : 'user'
+	) unless($self->{'norequirements'} && $self->{'norequirements'} eq 'yes');
+
+	tie
+		%main::imscpConfig,
+		'iMSCP::Config',
+		'fileName' => (($^O =~ /bsd$/ ? '/usr/local/etc/' : '/etc/') . 'imscp/imscp.conf'),
+		'nocreate' => 1, # Do not create file if it doesn't exists (raise error instead)
+		'noerrors' => 1; # Do not raise error when attempting to access to an inexistent configuration parameter
+
+	# Set verbose mode
+	verbose(iMSCP::Getopt->debug || $main::imscpConfig{'DEBUG'} || 0);
+
+	unless ($self->{'nodatabase'} && $self->{'nodatabase'} eq 'yes') {
+		require iMSCP::Crypt;
 		my $crypt = iMSCP::Crypt->getInstance();
 		my $database = iMSCP::Database->new('db' => $main::imscpConfig{'DATABASE_TYPE'})->factory();
 
@@ -81,6 +96,8 @@ sub boot
 
 		fatal("Unable to connect to the SQL server: $rs") if $rs;
 	}
+
+	$self->_genKey();
 
 	$self;
 }
@@ -132,39 +149,6 @@ sub unlock
 
 =over 4
 
-=item _init()
-
- Called by getInstance(). Initialize instance
-
- Return iMSCP::Boot
-
-=cut
-
-sub _init
-{
-	my $self = shift;
-
-	tie
-		%main::imscpConfig,
-		'iMSCP::Config',
-		'fileName' => (($^O =~ /bsd$/ ? '/usr/local/etc/' : '/etc/') . 'imscp/imscp.conf'),
-		'nocreate' => 1, # Do not create file if it doesn't exists (raise error instead)
-		'noerrors' => 1; # Do not raise error when attempting to access to an inexistent configuration parameter
-
-	# Set verbose mode
-	verbose(iMSCP::Getopt->debug || $main::imscpConfig{'DEBUG'} || 0);
-
-	iMSCP::Requirements->new()->test(
-		$self->{'mode'} && $self->{'mode'} eq 'setup' ? 'all' : 'user'
-	) unless($self->{'norequirements'} && $self->{'norequirements'} eq 'yes');
-
-	$self->lock() unless($self->{'nolock'} && $self->{'nolock'} eq 'yes');
-
-	$self->_genKey();
-
-	$self;
-}
-
 =item _genKey()
 
  Generates encryption key and vector.
@@ -181,6 +165,7 @@ sub _genKey
 	our $db_pass_key = '{KEY}';
 	our $db_pass_iv = '{IV}';
 
+	require  iMSCP::Crypt;
 	require "$keyFile" if -f $keyFile;
 
 	if ($db_pass_key eq '{KEY}' || $db_pass_iv eq '{IV}') {
