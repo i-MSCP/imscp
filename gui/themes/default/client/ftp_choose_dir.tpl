@@ -4,6 +4,7 @@
 				function CopyText(mp) {
 					$('#ftp_directory', window.parent.document).val(mp);
 					window.parent.$("#dial_ftp_dir").dialog('close');
+					return false;
 				}
 			/*]]>*/
 			</script>

@@ -105,7 +105,6 @@
 					<td>
 						<input type="text" id="ftp_directory" name="other_dir" value="{OTHER_DIR}"/>
 						<a href="#" onclick="chooseFtpDir();" class="icon i_bc_folder">{CHOOSE_DIR}</a>
-						<!--<a href="#" id="choose_directory" class="icon i_bc_folder">{CHOOSE_DIR}</a>-->
 					</td>
 				</tr>
 			</table>
