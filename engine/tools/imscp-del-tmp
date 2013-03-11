@@ -69,7 +69,7 @@ sub del_tmp
 		my $file = "Addons/$_.pm";
 		my $class = "Addons::$_";
 		require $file;
-		my $instance = $class->factory();
+		my $instance = $class->getInstance();
 		$rs = $instance->delTmp() if $instance->can('delTmp');
 		return $rs if $rs;
 	}

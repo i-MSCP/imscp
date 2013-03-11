@@ -66,7 +66,7 @@ sub shut_down
 
 sub set_permissions
 {
-	my $rs = 0:
+	my $rs = 0;
 	my ($server, $file, $class);
 	my $rootUName = $main::imscpConfig{'ROOT_USER'};
 	my $rootGName = $main::imscpConfig{'ROOT_GROUP'};

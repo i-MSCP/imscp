@@ -1,8 +1,9 @@
 
 			<script type="text/javascript">
 			/*<![CDATA[*/
-				function CopyText(mp) {
-					$('#ftp_directory', window.parent.document).val(mp);
+				/** @return boolean */
+				function copyFtpDir(ftpDir) {
+					$('#ftp_directory', window.parent.document).val(ftpDir);
 					window.parent.$("#dial_ftp_dir").dialog('close');
 					return false;
 				}
@@ -21,8 +22,7 @@
 						<td><a href="{LINK}" class="icon i_bc_{ICON}">{DIR_NAME}</a></td>
 						<td>
 							<!-- BDP: action_link -->
-							<a href="#" onclick="CopyText('{CHOOSE_IT}');">{CHOOSE}</a>
-							<!--<input type="hidden" name="{CHOOSE_IT}" value="{CHOOSE_IT}"/>-->
+							<a href="#" onclick="copyFtpDir('{CHOOSE_IT}');">{CHOOSE}</a>
 							<!-- EDP: action_link -->
 						</td>
 						<!-- EDP: list_item -->

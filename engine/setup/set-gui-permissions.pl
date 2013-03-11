@@ -88,7 +88,7 @@ sub set_permissions
 		$file = "Addons/$_.pm";
 		$class = "Addons::$_";
 		require $file;
-		$instance = $class->factory();
+		$instance = $class->getInstance();
 
 		if($instance->can('setGuiPermissions')) {
 			debug("Set GUI permissions for the $_ addon");

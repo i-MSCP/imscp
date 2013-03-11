@@ -171,7 +171,7 @@ sub net_interfaces_mngr_engine
 		$rs = virtual_netcard_remove();
 		return $rs if $rs;
 	} else {
-		my $msg = "Must be called with 'Start', 'Restart' or 'Stop' argument";
+		my $msg = "Must be called with 'start', 'restart' or 'stop' argument";
 		error($msg);
 		iMSCP::Mail->new()->errmsg($msg);
 		exit 1;
