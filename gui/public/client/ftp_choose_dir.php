@@ -24,9 +24,9 @@
  * Portions created by the i-MSCP Team are Copyright (C) 2010-2013 by
  * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
  *
- * @category	i-MSCP
- * @package		iMSCP_Core
- * @subpackage	Client
+ * @category    i-MSCP
+ * @package        iMSCP_Core
+ * @subpackage    Client
  * @copyright   2001-2006 by moleSoftware GmbH
  * @copyright   2006-2010 by ispCP | http://isp-control.net
  * @copyright   2010-2013 by i-MSCP | http://i-mscp.net
@@ -37,9 +37,61 @@
 
 // TODO: Replace popup by modal dialog (jQuery)
 
-/********************************************************************
- * Function
+/***********************************************************************************************************************
+ * Functions
  */
+
+/**
+ * Whether or not the given directory is allowed
+ *
+ * @param int $domainId Main customer domain unique identifier
+ * @param string $directory Directory to check
+ * @return bool TRUE if the given directory is allowed, FALSE otherwis
+ */
+function isAllowedDir($domainId, $directory)
+{
+	static $mountPoints = array();
+
+	if (empty($mountPoints)) {
+		$query = "
+			SELECT
+				`subdomain_mount` AS `mount_point`
+			FROM
+				`subdomain`
+			WHERE
+				`domain_id` = ?
+			UNION
+			SELECT
+				`alias_mount` AS `mount_point`
+			FROM
+				`domain_aliasses`
+			WHERE
+				`domain_id` = ?
+			UNION
+			SELECT
+				`subdomain_alias_mount` AS `mount_point`
+			FROM
+				`subdomain_alias`
+			WHERE
+				`alias_id` IN(SELECT `alias_id` FROM `domain_aliasses` WHERE `domain_id` = ?)
+		";
+		$stmt = exec_query($query, array($domainId, $domainId, $domainId));
+
+		if ($stmt->rowCount()) {
+			$mountPoints = $stmt->fetchAll(PDO::FETCH_COLUMN);
+		}
+
+		$mountPoints[] = '/';
+	}
+
+	foreach ($mountPoints as $mountPoint) {
+		if (preg_match("%^$mountPoint/?(?:backups|disabled|errors|logs|phptmp|statistics)$%", "$directory")) {
+			return false;
+		}
+	}
+
+	return true;
+}
 
 /**
  * Generates directories list.
@@ -75,43 +127,42 @@ function client_generateDirectoriesList($tpl)
 			'ACTION' => '',
 			'ICON' => 'parent',
 			'DIR_NAME' => tr('Parent Directory'),
-			'LINK' => "ftp_choose_dir.php?cur_dir=$parent"));
+			'LINK' => "ftp_choose_dir.php?cur_dir=$parent"
+		)
+	);
 
 	$tpl->parse('DIR_ITEM', '.dir_item');
 
 	// Show directories only
 	foreach ($list as $entry) {
-		// Skip non-directory entries
-		if ($entry['type'] != iMSCP_VirtualFileSystem::VFS_TYPE_DIR) {
+		$directory = $path . '/' . $entry['file'];
+
+		if (
+			$entry['type'] != iMSCP_VirtualFileSystem::VFS_TYPE_DIR ||
+			($entry['file'] == '.' || $entry['file'] == '..') ||
+			!isAllowedDir(get_user_domain_id($_SESSION['user_id']), $directory)
+		) {
 			continue;
 		}
-
-		// Skip '.' and '..'
-		if ($entry['file'] == '.' || $entry['file'] == '..') {
-			continue;
-		}
-
-		// Check for .htaccess existence to display another icon
-		$dr = $path . '/' . $entry['file'];
 
 		// Create the directory link
 		$tpl->assign(
 			array(
 				'DIR_NAME' => tohtml($entry['file']),
-				'CHOOSE_IT' => $dr,
-				'LINK' => 'ftp_choose_dir.php?cur_dir=' . $dr));
+				'CHOOSE_IT' => $directory,
+				'LINK' => 'ftp_choose_dir.php?cur_dir=' . $directory
+			)
+		);
 
-		$forbidden_Dir_Names = ('/backups|disabled|errors|logs|phptmp|statistics/i');
-		$forbidden = preg_match($forbidden_Dir_Names, $entry['file']);
-		($forbidden == 1) ? $tpl->assign('ACTION_LINK', '') : $tpl->parse('ACTION_LINK', 'action_link');
-
+		$tpl->parse('ACTION_LINK', 'action_link');
 		$tpl->parse('DIR_ITEM', '.dir_item');
 	}
 }
 
-/********************************************************************
- * Main script
+/***********************************************************************************************************************
+ * Main
  */
+
 // Include core library
 require_once 'imscp-lib.php';
 
@@ -119,7 +170,6 @@ iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptStart)
 
 check_login('user');
 
-// If the feature is disabled, redirects in silent way
 if (!customerHasFeature('ftp') && !customerHasFeature('protected_areas')) {
 	showBadRequestErrorPage();
 }
@@ -136,7 +186,9 @@ $tpl->define_dynamic(
 		'ftp_chooser' => 'page',
 		'dir_item' => 'ftp_chooser',
 		'list_item' => 'dir_item',
-		'action_link' => 'list_item'));
+		'action_link' => 'list_item'
+	)
+);
 
 $tpl->assign(
 	array(
@@ -149,7 +201,9 @@ $tpl->assign(
 		'TR_DIRECTORY_TREE' => tr('Directory tree'),
 		'TR_DIRS' => tr('Directories'),
 		'TR_ACTION' => tr('Action'),
-		'CHOOSE' => tr('Choose')));
+		'CHOOSE' => tr('Choose')
+	)
+);
 
 client_generateDirectoriesList($tpl);
 generatePageMessage($tpl);

@@ -22,7 +22,7 @@
 						<td>
 							<!-- BDP: action_link -->
 							<a href="#" onclick="CopyText('{CHOOSE_IT}');">{CHOOSE}</a>
-							<input type="hidden" name="{CHOOSE_IT}" value="{CHOOSE_IT}"/>
+							<!--<input type="hidden" name="{CHOOSE_IT}" value="{CHOOSE_IT}"/>-->
 							<!-- EDP: action_link -->
 						</td>
 						<!-- EDP: list_item -->

@@ -1,17 +1,17 @@
 <script type="text/javascript">
 	/* <![CDATA[ */
 	function action_delete(url, subject) {
-	return confirm(sprintf("{TR_MESSAGE_DELETE}", subject));
+		return confirm(sprintf("{TR_MESSAGE_DELETE}", subject));
 	}
 
-			function begin_js() {
-			document.forms[0].elements["users[]"].disabled = {USER_FORM_ELEMENS};
-			document.forms[0].elements["groups[]"].disabled = {GROUP_FORM_ELEMENS};
-			}
+	function begin_js() {
+		document.forms[0].elements["users[]"].disabled = {USER_FORM_ELEMENS};
+		document.forms[0].elements["groups[]"].disabled = {GROUP_FORM_ELEMENS};
+	}
 
-					function changeType(wath) {
-	document.forms[0].elements["users[]"].disabled = wath != "user";
-	document.forms[0].elements["groups[]"].disabled = wath == "user";
+	function changeType(wath) {
+		document.forms[0].elements["users[]"].disabled = wath != "user";
+		document.forms[0].elements["groups[]"].disabled = wath == "user";
 	}
 	/* ]]> */
 </script>
@@ -25,10 +25,10 @@
 			<td><input name="paname" type="text" class="textinput" id="paname" value="{AREA_NAME}"/></td>
 		</tr>
 		<tr>
-			<td><label for="path">{TR_PATH}</label></td>
+			<td><label for="ftp_directory">{TR_PATH}</label></td>
 			<td>
-				<input name="other_dir" type="text" class="textinput" id="path" value="{PATH}"/>
-				<a href="#" onclick="showFileTree();return false;" class="icon i_bc_folder">{CHOOSE_DIR}</a>
+				<input name="other_dir" type="text" class="textinput" id="ftp_directory" value="{PATH}"/>
+				<a href="#" onclick="chooseFtpDir();" class="icon i_bc_folder">{CHOOSE_DIR}</a>
 			</td>
 		</tr>
 	</table>
