@@ -44,17 +44,17 @@
  *
  * @throws iMSCP_Exception_Production
  * @param  iMSCP_pTemplate $tpl iMSCP_pTemplate instance
- * @param  int $user_id User unique identifier
+ * @param  int $userId User unique identifier
  * @return void
  */
-function gen_packages_list($tpl, $user_id)
+function gen_packages_list($tpl, $userId)
 {
 	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
 
 	// In any case, we must check that the provided $user_id is one of existent reseller
 	$query = "SELECT count('admin_id') as `cnt` FROM admin where admin_id = ? and admin_type = 'reseller'";
-	$stmt = exec_query($query, $user_id);
+	$stmt = exec_query($query, $userId);
 
 	if ($stmt->fields['cnt']) {
 
@@ -76,12 +76,12 @@ function gen_packages_list($tpl, $user_id)
 			$stmt = exec_query($query, array('admin', 1));
 		} else {
 			$query = "SELECT * FROM `hosting_plans` WHERE `reseller_id` = ? AND `status` = '1'";
-			$stmt = exec_query($query, $user_id);
+			$stmt = exec_query($query, $userId);
 		}
 
 		if (!$stmt->rowCount()) {
-			showBadRequestErrorPage();
-			//throw new iMSCP_Exception_Production(tr('No hosting plan available for purchase'));
+			set_page_message('No hosting plan available.', 'info');
+			$tpl->assign(strtoupper('PURCHASE_LIST'), '');
 		} else {
 			while (!$stmt->EOF) {
 				$description = $stmt->fields['description'];
@@ -100,7 +100,7 @@ function gen_packages_list($tpl, $user_id)
 					array(
 						'PACK_NAME' => tohtml($stmt->fields['name']),
 						'PACK_ID' => $stmt->fields['id'],
-						'USER_ID' => $user_id,
+						'USER_ID' => $userId,
 						'PAYMENT_PERIOD' => (is_numeric($price)) ? '(' . tohtml($stmt->fields['payment']) . ')' : '',
 						'PACK_INFO' => tohtml($description),
 						'PRICE' => (is_numeric($price)) ? $price . tohtml($stmt->fields['value']) : $price
@@ -133,8 +133,6 @@ function gen_packages_list($tpl, $user_id)
 
 // Include needed libraries
 require 'imscp-lib.php';
-
-//session_unset();
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onOrderPanelScriptStart);
 
