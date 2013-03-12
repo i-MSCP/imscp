@@ -704,7 +704,7 @@ sub _updatePackagesIndex
 
 =item _debconfSetSelection()
 
- Preseed debconf question according value from i-MSCP preseed file
+ Pre-fill debconf database using values from i-MSCP preseed file
 
  Return int 0 on success, other on failure
 
