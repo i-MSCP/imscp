@@ -2,19 +2,19 @@
 
 # i-MSCP preseed.pl template file for installer preseeding
 # See documentation at http://wiki.i-mscp.net/doku.php?id=start:preseeding
-# Last update on 2013.02.19
+# Last update on 2013.03.12
 # Status (Experimental)
 
 ## Autoinstall questions
 
 # Service to use
 $main::preseed{'SERVERS'} = {
-	'HTTPD_SERVER' => 'apache_itk',	# Server to use for the Httpd service (apache_itk|apache_fgci|apache_php_fpm)
-	'PO_SERVER' => 'courier',		# Server to use for the po service (courier|dovecot)
-	'FTPD_SERVER' => 'proftpd',		# No relevant for now since only proftpd is supported
-	'MTA_SERVER' => 'postfix',		# No relevant for now since only postfix is supported
-	'NAMED_SERVER' => 'bind',		# No relevant for now since only Bind9 is supported
-	'SQL_SERVER' => 'mysql_5.5'		# Server to use for the Sql service (mysql_5.1|mysql_5.5|mariadb_5.3|mariadb_5.5)
+	'HTTPD_SERVER' => 'apache_fgci',	# Server to use for the Httpd service (apache_itk|apache_fgci|apache_php_fpm)
+	'PO_SERVER' => 'courier',			# Server to use for the po service (courier|dovecot)
+	'FTPD_SERVER' => 'proftpd',			# No relevant for now since only proftpd is supported
+	'MTA_SERVER' => 'postfix',			# No relevant for now since only postfix is supported
+	'NAMED_SERVER' => 'bind',			# No relevant for now since only Bind9 is supported
+	'SQL_SERVER' => 'mysql_5.1'			# Server to use for the Sql service (mysql_5.1|mysql_5.5|mariadb_5.3|mariadb_5.5)
 };
 
 # apache_fcgi - Only relevant if server for the HTTPD server question is set to 'apache_fcgi'
@@ -41,7 +41,7 @@ $main::preseed{'BASE_SERVER_IP'} = '192.168.5.110';
 
 # IPs to add in the i-MSCP database - Accept both IPv4 and IPv6
 # Any unconfigured IPs will be added to the first netcard found (eg: eth0)
-$main::preseed{'SERVER_IPS'} = ['192.168.5.115']; # ['192.168.5.115', '192.168.5.115']
+$main::preseed{'SERVER_IPS'} = []; # ['192.168.5.115', '192.168.5.120']
 
 # SQL DSN
 $main::preseed{'DATABASE_TYPE'} = 'mysql'; # Database type (for now, only 'mysql' is supported)

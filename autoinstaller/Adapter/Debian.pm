@@ -136,6 +136,9 @@ sub uninstallPackages
 	my $self = shift;
 	my $rs = 0;
 
+	$rs = iMSCP::HooksManager->getInstance()->trigger('beforeUninstallPackages', $self->{'packagesToUninstall'});
+	return $rs if $rs;
+
 	if(@{$self->{'packagesToUninstall'}}) {
 		my ($stdout, $stderr);
 		my $command = 'apt-get';
@@ -156,7 +159,7 @@ sub uninstallPackages
 		return $rs if $rs;
 	}
 
-	$rs;
+	iMSCP::HooksManager->getInstance()->trigger('afterUninstallPackages');
 }
 
 =item installPackages()
@@ -170,6 +173,10 @@ sub uninstallPackages
 sub installPackages
 {
 	my $self = shift;
+	my $rs = 0;
+
+	$rs = iMSCP::HooksManager->getInstance()->trigger('beforeInstallPackages', $self->{'packagesToInstall'});
+	return $rs if $rs;
 
 	my ($stdout, $stderr);
 	my $command = 'apt-get';
@@ -180,15 +187,16 @@ sub installPackages
 		$command = 'debconf-apt-progress --logstderr -- ' . $command;
 	}
 
-	my $rs = execute(
+	$rs = execute(
 		"$command -y install @{$self->{'packagesToInstall'}} --auto-remove --purge",
 		(%main::preseed || $main::noprompt) ? \$stdout : undef, \$stderr
 	);
 	debug($stdout) if $stdout;
 	error($stderr) if $stderr && $rs;
 	error('Unable to install packages') if $rs && ! $stderr;
+	return $rs if $rs;
 
-	$rs;
+	iMSCP::HooksManager->getInstance()->trigger('afterInstallPackages');
 }
 
 =item postBuild()
@@ -230,7 +238,9 @@ sub _init
 	delete $ENV{'DEBCONF_FORCE_DIALOG'};
 
 	$self->{'repositorySections'} = ['main', 'non-free'];
-	$self->{'preRequiredPackages'} = ['aptitude', 'dialog', 'liblist-moreutils-perl', 'libxml-simple-perl', 'wget'];
+	$self->{'preRequiredPackages'} = [
+		'aptitude', 'debconf-utils', 'dialog', 'liblist-moreutils-perl', 'libxml-simple-perl', 'wget'
+	];
 	$self->{'externalRepositoriesToRemove'} = [];
 	$self->{'externalRepositories'} = [];
 	$self->{'aptPreferences'} = [];
@@ -238,6 +248,10 @@ sub _init
 	$self->{'packagesToUninstall'} = [];
 
 	$self->_updateAptSourceList() and fatal('Unable to configure APT packages manager') if ! $main::skippackages;
+
+	if(%main::preseed) {
+		iMSCP::HooksManager->getInstance()->register('beforeInstallPackages', sub { _debconfSetSelections(); });
+	}
 
 	$self;
 }
@@ -448,7 +462,7 @@ sub _updateAptSourceList
 	my $self = shift;
 	my $rs = 0;
 
-	my $file = iMSCP::File->new(filename => '/etc/apt/sources.list');
+	my $file = iMSCP::File->new('filename' => '/etc/apt/sources.list');
 
 	$file->copyFile('/etc/apt/sources.list.bkp') unless -f '/etc/apt/sources.list.bkp';
 	my $content = $file->get();
@@ -686,6 +700,87 @@ sub _updatePackagesIndex
 	error('Unable to update package index from remote repository') if $rs && ! $stderr;
 
 	$rs
+}
+
+=item _debconfSetSelection()
+
+ Preseed debconf question according value from i-MSCP preseed file
+
+ Return int 0 on success, other on failure
+
+=cut
+
+sub _debconfSetSelections()
+{
+	my $self = shift;
+	my $rs = 0;
+
+	my $sqlServer = $main::preseed{'SERVERS'}->{'SQL_SERVER'} || undef;
+	my $poServer = $main::preseed{'SERVERS'}->{'PO_SERVER'} || undef;
+	my $sqlServerPackageName = undef;
+
+	if(defined $sqlServer) {
+		if($sqlServer eq 'mysql_5.1') {
+			$sqlServerPackageName = 'mysql-server-5.1';
+		} elsif($sqlServer eq 'mysql_5.5') {
+			$sqlServerPackageName = 'mysql-server-5.5';
+		} elsif($sqlServer eq 'mariadb_5.3') {
+			$sqlServerPackageName = 'mariadb-server-5.3';
+		} elsif($sqlServer eq 'mariadb_5.5') {
+			$sqlServerPackageName = 'mariadb-server-5.5';
+		} else {
+			error('Unknown SQL server package name');
+			return 1;
+		}
+	} else {
+		error('Unable to retrieve SQL server name in your preseed file');
+		return 1;
+	}
+
+	my $selectionsFileContent = <<EOF;
+$sqlServerPackageName mysql-server/root_password password $main::preseed{'DATABASE_PASSWORD'}
+$sqlServerPackageName mysql-server/root_password_again password $main::preseed{'DATABASE_PASSWORD'}
+courier-base courier-base/webadmin-configmode boolean false
+postfix postfix/main_mailer_type select Internet Site
+postfix postfix/destinations string $main::preseed{'SERVER_HOSTNAME'}, $main::preseed{'SERVER_HOSTNAME'}.local, localhost
+postfix	postfix/mailname string $main::preseed{'SERVER_HOSTNAME'}
+proftpd-basic shared/proftpd/inetd_or_standalone select standalone
+EOF
+
+	if(defined $poServer) {
+		if($poServer eq 'courier') {
+			$selectionsFileContent .= 'courier-base courier-base/webadmin-configmode boolean false';
+		}
+	} else {
+		error('Unable to retrieve PO server name in your preseed file');
+		return 1;
+	}
+
+	my $debconfSelectionsFile = iMSCP::File->new('filename' => '/tmp/imscp-debconf-selections');
+
+	$rs= $debconfSelectionsFile->set($selectionsFileContent);
+	return $rs if $rs;
+
+	$rs = $debconfSelectionsFile->save();
+	return $rs if $rs;
+
+	$rs = $debconfSelectionsFile->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
+	return $rs if $rs;
+
+	$rs = $debconfSelectionsFile->mode('0600');
+	return $rs if $rs;
+
+	my ($stdout, $stderr);
+	$rs = execute('debconf-set-selections /tmp/imscp-debconf-selections', \$stdout, $stderr);
+	debug($stdout) if $stdout;
+	error($stderr) if $rs && $stderr;
+	error('Unable to insert entries in debconf database') if $rs && ! $stderr;
+
+	# In any case, the file must be deleted
+	$rs = $debconfSelectionsFile->delFile();
+	return $rs if $rs;
+
+	$rs;
 }
 
 =item _parseHash(\%hash, $target)
