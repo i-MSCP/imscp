@@ -63,7 +63,9 @@ sub _init
 	delete $ENV{'DEBCONF_FORCE_DIALOG'};
 
 	$self->{'repositorySections'} = ['main', 'universe', 'multiverse'];
-	$self->{'preRequiredPackages'} = ['aptitude', 'dialog', 'liblist-moreutils-perl', 'libxml-simple-perl', 'wget'];
+	$self->{'preRequiredPackages'} = [
+		'aptitude', 'debconf-utils', 'dialog', 'liblist-moreutils-perl', 'libxml-simple-perl', 'wget'
+	];
 
 	if(iMSCP::LsbRelease->getInstance()->getRelease(1) < 12.10) {
 		push @{$self->{'preRequiredPackages'}}, 'python-software-properties';
