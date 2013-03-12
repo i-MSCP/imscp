@@ -98,8 +98,8 @@ $main::preseed{'BACKUP_IMSCP'} = 'yes'; # (yes|no) - It's recommended to set thi
 $main::preseed{'BACKUP_DOMAINS'} = 'no'; # (yes|no)
 
 # Proftpd SQL user
-$main::preseed['FTPD_SQL_USER'] = 'vftp';
-$main::preseed['FTPD_SQL_PASSWORD'] = '<password>'; # Password shouldn't be empty
+$main::preseed{'FTPD_SQL_USER'} = 'vftp';
+$main::preseed{'FTPD_SQL_PASSWORD'} = '<password>'; # Password shouldn't be empty
 
 # bind
 $main::preseed{'BIND_MODE'} = 'master'; # (master|slave) - Mode in which the DNS server should acts

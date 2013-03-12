@@ -113,8 +113,11 @@ sub askDovecot
 	my ($rs, $msg) = (0, '');
 
 	if(
-		$main::reconfigure ~~ ['po', 'servers', 'all', 'forced']
-		|| main::setupCheckSqlConnect($dbType, '', $dbHost, $dbPort, $dbUser, $dbPass)
+		$main::reconfigure ~~ ['po', 'servers', 'all', 'forced'] ||
+		(
+			! $main::preseed{'DOVECOT_SQL_USER'} &&
+			main::setupCheckSqlConnect($dbType, '', $dbHost, $dbPort, $dbUser, $dbPass)
+		)
 	) {
 		# Ask for the dovecot restricted SQL username
 		do{
