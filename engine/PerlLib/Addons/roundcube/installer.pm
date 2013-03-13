@@ -368,19 +368,21 @@ sub _installFiles
 sub _saveConfig
 {
 	my $self = shift;
-	my $rootUsr = $main::imscpConfig{'ROOT_USER'};
-	my $rootGrp = $main::imscpConfig{'ROOT_GROUP'};
 	my $rs = 0;
 
 	my $file = iMSCP::File->new('filename' => "$self->{'cfgDir'}/roundcube.data");
-	my $cfg = $file->get();
-	return 1 if !defined  $cfg;
+
+	$rs = $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
+	return $rs if $rs;
 
 	$rs = $file->mode(0640);
 	return $rs if $rs;
 
-	$rs = $file->owner($rootUsr, $rootGrp);
-	return $rs if $rs;
+	my $cfg = $file->get();
+	unless(defined $cfg) {
+		error("Unable to read $self->{'cfgDir'}/roundcube.data");
+		return 1;
+	}
 
 	$file = iMSCP::File->new('filename' => "$self->{'cfgDir'}/roundcube.old.data");
 
@@ -390,10 +392,10 @@ sub _saveConfig
 	$rs = $file->save();
 	return $rs if $rs;
 
-	$rs = $file->mode(0640);
+	$file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
 	return $rs if $rs;
 
-	$file->owner($rootUsr, $rootGrp);
+	$file->mode(0640);
 }
 
 =item _createDatabase()

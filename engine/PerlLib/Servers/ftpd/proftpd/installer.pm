@@ -188,16 +188,20 @@ sub saveConf
 	my $rs = 0;
 
 	my $file = iMSCP::File->new('filename' => "$self->{'cfgDir'}/proftpd.data");
-	my $cfg = $file->get();
-	return 1 if ! defined $cfg;
 
-	$rs = $self->{'hooksManager'}->trigger('beforeFtpdSaveConf', \$cfg, 'proftpd.old.data');
+	$rs = $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
 	return $rs if $rs;
 
 	$rs = $file->mode(0640);
 	return $rs if $rs;
 
-	$rs = $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
+	my $cfg = $file->get();
+	unless(defined $cfg) {
+		error("Unable to read $self->{'cfgDir'}/proftpd.data");
+		return 1;
+	}
+
+	$rs = $self->{'hooksManager'}->trigger('beforeFtpdSaveConf', \$cfg, 'proftpd.old.data');
 	return $rs if $rs;
 
 	$file = iMSCP::File->new('filename' => "$self->{'cfgDir'}/proftpd.old.data");
@@ -208,10 +212,10 @@ sub saveConf
 	$rs = $file->save();
 	return $rs if $rs;
 
-	$rs = $file->mode(0640);
+	$rs = $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
 	return $rs if $rs;
 
-	$rs = $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
+	$rs = $file->mode(0640);
 	return $rs if $rs;
 
 	$self->{'hooksManager'}->trigger('afterFtpdSaveConf', 'proftpd.old.data');

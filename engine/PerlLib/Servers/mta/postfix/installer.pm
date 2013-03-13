@@ -382,7 +382,18 @@ sub saveConf
 	my $rs = 0;
 
 	my $file = iMSCP::File->new('filename' => "$self->{'cfgDir'}/postfix.data");
-	my $cfg = $file->get() or return 1;
+
+	$rs = $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
+	return $rs if $rs;
+
+	$rs = $file->mode(0640);
+	return $rs if $rs;
+
+	my $cfg = $file->get();
+	unless(defined $cfg) {
+		error("Unable to read $self->{'cfgDir'}/postfix.data");
+		return 1;
+	}
 
 	$rs = $self->{'hooksManager'}->trigger('beforeMtaSaveConf', \$cfg, 'postfix.old.data');
 	return $rs if $rs;
@@ -395,10 +406,10 @@ sub saveConf
 	$rs = $file->save;
 	return $rs if $rs;
 
-	$rs = $file->mode(0640);
+	$rs = $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
 	return $rs if $rs;
 
-	$rs = $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
+	$rs = $file->mode(0640);
 	return $rs if $rs;
 
 	$self->{'hooksManager'}->trigger('afterMtaSaveConf', 'postfix.old.data');

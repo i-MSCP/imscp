@@ -105,7 +105,7 @@ sub askMode
 		if($_ && ! $ip->isValidIp($_)) {
 			debug("$_ is invalid ip");
 
-			for(qw/BIND_MODE PRIMARY_DNS SECONDARY_DNS/){
+			for(qw/BIND_MODE PRIMARY_DNS SECONDARY_DNS/) {
 				$self::bindConfig{$_} = '';
 				$self::bindOldConfig{$_} = '';
 			}
@@ -142,9 +142,7 @@ sub askOtherDns
 
 	if($mode eq 'master') {
 		($rs, $out) = $dialog->radiolist(
-			"\nDo you want add slave DNS server(s)?",
-			['no', 'yes'],
-			$slaveDns ne 'no' ? 'yes' : 'no'
+			"\nDo you want add slave DNS server(s)?", ['no', 'yes'], $slaveDns ne 'no' ? 'yes' : 'no'
 		);
 
 		if($rs != 30 && $out eq 'no') {
@@ -159,16 +157,16 @@ sub askOtherDns
 		my $ip = iMSCP::IP->new();
 		my $msg = '';
 
+		my $trMode = ($mode eq 'slave') ? 'master' : 'slave';
+
 		do {
-			my $rmode = $mode eq 'master' ? 'slave' : 'master';
-			my $ips = $rmode eq 'master'
-				? $masterDns ne $main::imscpConfig{'BASE_SERVER_IP'} ? $masterDns : '' : $slaveDns;
+			my $ips = ($mode eq 'master') ? ($masterDns ne $main::imscpConfig{'BASE_SERVER_IP'}) ? $masterDns : '' : $slaveDns;
 
 			$ips = '' if $ips eq 'no';
 			@ips = split ';', $ips if $ips;
 
 			($rs, $_) = $dialog->inputbox(
-				"\nPlease, enter IP address(es) for master DNS server(s), each separated by space: $msg", "@ips"
+				"\nPlease, enter IP address(es) for $trMode DNS server(s), each separated by space: $msg", "@ips"
 			);
 
 			$msg = '';
@@ -180,6 +178,7 @@ sub askOtherDns
 				} else {
 					for(@ips) {
 						$rs = 1 if ! $ip->isValidIp($_) || $_ eq '127.0.0.1';
+
 						if($rs) {
 							$msg = "\n\n\\Z1Wrong IP address found.\\Zn\n\nPlease, try again:";
 							last if $rs;
@@ -332,25 +331,19 @@ sub saveConf
 
 	my $file = iMSCP::File->new('filename' => "$self->{'cfgDir'}/bind.data");
 
-	$self::bindConfig{'BIND_MODE'} = $self::bindOldConfig{'BIND_MODE'}
-		if $self::bindOldConfig{'BIND_MODE'} && $self::bindConfig{'BIND_MODE'} ne $self::bindOldConfig{'BIND_MODE'};
+	$rs = $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
+	return $rs if $rs;
 
-	$self::bindConfig{'PRIMARY_DNS'} = $self::bindOldConfig{'PRIMARY_DNS'}
-		if $self::bindOldConfig{'PRIMARY_DNS'} && $self::bindConfig{'PRIMARY_DNS'} ne $self::bindOldConfig{'PRIMARY_DNS'};
-
-	$self::bindConfig{'SECONDARY_DNS'} = $self::bindOldConfig{'SECONDARY_DNS'}
-		if $self::bindOldConfig{'SECONDARY_DNS'} && $self::bindConfig{'SECONDARY_DNS'} ne $self::bindOldConfig{'SECONDARY_DNS'};
+	$rs = $file->mode(0640);
+	return $rs if $rs;
 
 	my $cfg = $file->get();
-	return 1 if ! defined $cfg;
+	unless(defined $cfg) {
+		error("Unable to read $self->{'cfgDir'}/bind.data");
+		return 1;
+	}
 
 	$rs = $self->{'hooksManager'}->trigger('beforeNamedSaveConf', \$cfg, 'bind.old.data');
-	return $rs if $rs;
-
-	$rs = $file->mode(0644);
-	return $rs if $rs;
-
-	$rs = $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
 	return $rs if $rs;
 
 	$file = iMSCP::File->new('filename' => "$self->{'cfgDir'}/bind.old.data");
@@ -361,10 +354,10 @@ sub saveConf
 	$rs = $file->save();
 	return $rs if $rs;
 
-	$rs = $file->mode(0644);
+	$rs = $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
 	return $rs if $rs;
 
-	$rs = $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
+	$rs = $file->mode(0640);
 	return $rs if $rs;
 
 	$self->{'hooksManager'}->trigger('afterNamedSaveConf', 'bind.old.data');

@@ -212,26 +212,31 @@ sub saveConf
 	my $rs = 0;
 
 	my $file = iMSCP::File->new(filename => "$self->{'cfgDir'}/policyd.data");
+
+	$rs = $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
+	return $rs if $rs;
+
+	$rs = $file->mode(0640);
+	return $rs if $rs;
+
 	my $cfg = $file->get();
-	return 1 if ! defined $cfg;
-
-	$rs	= $file->mode(0640);
-	return $rs if $rs;
-
-	$rs	= $file->owner($rootUsr, $rootGrp);
-	return $rs if $rs;
+	unless(defined $cfg) {
+		error("Unable to read $self->{'cfgDir'}/policyd.data");
+		return 1;
+	}
 
 	$file = iMSCP::File->new('filename' => "$self->{'cfgDir'}/policyd.old.data");
+
 	$rs = $file->set($cfg);
 	return $rs if $rs;
 
 	$rs = $file->save();
 	return $rs if $rs;
 
-	$rs = $file->mode(0640);
+	$file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
 	return $rs if $rs;
 
-	$file->owner($rootUsr, $rootGrp);
+	$file->mode(0640);
 }
 
 =item buildConf()

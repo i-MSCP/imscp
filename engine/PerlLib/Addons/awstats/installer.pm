@@ -94,7 +94,7 @@ sub install
 	$self->{'httpd'} = Servers::httpd->factory() unless $self->{'httpd'} ;
 
 	$self->{'user'} = $self->{'httpd'}->can('getRunningUser')
-		? $self->{httpd}->getRunningUser() : $main::imscpConfig{'ROOT_USER'};
+		? $self->{'httpd'}->getRunningUser() : $main::imscpConfig{'ROOT_USER'};
 
 	$self->{'group'} = $self->{'httpd'}->can('getRunningUser') ?
 		$self->{'httpd'}->getRunningGroup() : $main::imscpConfig{'ROOT_GROUP'};
