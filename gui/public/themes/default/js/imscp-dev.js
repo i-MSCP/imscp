@@ -328,7 +328,7 @@ function chooseFtpDir() {
 * Note: Should be used as error callback funct of the jquery ajax request
 * @since r2587
 */
-function ispCPajxError(xhr, settings, exception) {
+function iMSCPajxError(xhr, settings, exception) {
 
 	switch (xhr.status) {
 		// We receive this status when the session is expired

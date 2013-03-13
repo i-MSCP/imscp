@@ -63,6 +63,7 @@ Tickets:
 	- Fixed #618: Defect - IMAP - Subscribed folders are not re-added to the subscription file
 	- Fixed #619: Bug - HTTP Redirection - Null field - Update errors
 	- Fixed #623: Bug - Error on update - Unable to delete etc/apt/preferences.d/imscp file
+	- Fixed #629: Unable to change PHP editor settings when editing reseller
 
 -------------------------------------------------------------------------------------
 i-MSCP 1.1.0-rc1.4
