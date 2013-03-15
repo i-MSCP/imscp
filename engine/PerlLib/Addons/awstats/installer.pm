@@ -152,8 +152,7 @@ sub installLogrotate
 				:
 				''
 			),
-			$$content,
-			undef
+			$$content
 		);
 	} else {
 		my $rs = iMSCP::HooksManager->getInstance()->register('beforeHttpdBuildConf', sub { return $self->installLogrotate(@_); });

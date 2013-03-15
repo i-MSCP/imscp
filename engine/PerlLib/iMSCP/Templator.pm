@@ -20,6 +20,7 @@
 # @category		i-MSCP
 # @copyright	2010-2013 by i-MSCP | http://i-mscp.net
 # @author		Daniel Andreca <sci2tech@gmail.com>
+# @author		Laurent Declercq <l.declercq@nuxwin.com>
 # @link			http://i-mscp.net i-MSCP Home Site
 # @license		http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
@@ -46,19 +47,21 @@ sub _init
 	$self;
 }
 
-sub set($ $)
+sub set($$)
 {
+	my $self = iMSCP::Templator->getInstance();
 	my $prop = shift;
 	my $value = shift;
-	my $self = iMSCP::Templator->getInstance();
+
 	debug("Setting $prop as $value");
 
 	$self->{$prop} = $value if exists $self->{$prop};
 }
 
-sub process($ $)
+sub process($$)
 {
 	my $self = iMSCP::Templator->getInstance();
+
 	$self->{'vars'} = shift || ref {};
 	$self->{'tContent'} = shift || '';
 
@@ -72,6 +75,46 @@ sub process($ $)
 	$self->{'tContent'};
 }
 
+sub getBloc($$$;$)
+{
+	my $self = iMSCP::Templator->getInstance();
+	my $startTag = shift;
+	my $endTag = shift;
+	my $content = shift;
+	my $includeTags = shift || 0;
+
+	my $regexp = '[\t ]*' . quotemeta($startTag) . '(.*)' . quotemeta($endTag);
+	my $rs = '';
+
+	if($includeTags) {
+		$rs = $1 if $content =~ m/($regexp)/gims;
+	} elsif($content =~ m/$regexp/gims) {
+		$rs = $1;
+	}
+
+	$rs;
+}
+
+sub replaceBloc($$$$;$)
+{
+	my $self = iMSCP::Templator->getInstance();
+	my $startTag = shift;
+	my $endTag = shift;
+	my $replacement = shift;
+	my $content = shift;
+	my $preserve = shift || 0;
+
+	my $regexp = '([\t ]*' . quotemeta($startTag) . '.*?' . quotemeta($endTag) . ')';
+
+	if($preserve) {
+		$content =~ s/$regexp/$1$replacement/gis;
+	} else {
+		$content =~ s/$regexp/$replacement/gis;
+	}
+
+	return $content;
+}
+
 sub _replaceStatic
 {
 	my $self = shift;
@@ -82,45 +125,6 @@ sub _replaceStatic
 		my $regexp = sprintf($self->{'varRegexp'}, quotemeta($_));
 		$self->{'tContent'} =~ s/$regexp/$self->{'vars'}->{$_}/gim
 	}
-}
-
-sub replaceBloc($ $ $ $ $)
-{
-	my $self = iMSCP::Templator->getInstance();
-	my $startTag = shift;
-	my $endTag = shift;
-	my $replacement = shift;
-	my $content = shift;
-	my $preserve = shift;
-
-	my $regexp = '([\t ]*' . quotemeta($startTag) . '.*?' . quotemeta($endTag) . ')';
-
-	if($preserve){
-		$content =~ s/$regexp/$1$replacement/gis;
-	} else {
-		$content =~ s/$regexp/$replacement/gis;
-	}
-
-	return $content;
-}
-
-sub getBloc($ $ $)
-{
-	my $self = iMSCP::Templator->getInstance();
-	my $startTag = shift;
-	my $endTag = shift;
-	my $content = shift;
-
-	my $regexp = quotemeta($startTag) . '(.*)' . quotemeta($endTag);
-	my $rs;
-
-	if($content =~ m/$regexp/smig){
-		$rs = $1;
-	} else {
-		$rs = '';
-	}
-
-	$rs;
 }
 
 1;

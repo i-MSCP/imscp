@@ -2398,7 +2398,7 @@ sub setupAdditionalTasks
 sub setupGetQuestion
 {
 	my $question = shift;
-	my $searchIn = shift || '';
+	my $searchIn = shift;
 
 	if(! $searchIn) {
 		return $main::questions{$question} if exists $main::questions{$question};

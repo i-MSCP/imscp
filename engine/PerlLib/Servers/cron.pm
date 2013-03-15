@@ -104,8 +104,8 @@ sub addTask
 		my $eTag = process({ TASKID => $data->{'TASKID'} }, $cleanETag);
 		my $tag = process($data, $cleanTag);
 
-		$wrkFileContent = replaceBloc($bTag, $eTag, '', $wrkFileContent, undef);
-		$wrkFileContent = replaceBloc($cleanBTag, $cleanETag, "$bTag$tag$eTag", $wrkFileContent, 'keep');
+		$wrkFileContent = replaceBloc($bTag, $eTag, '', $wrkFileContent);
+		$wrkFileContent = replaceBloc($cleanBTag, $cleanETag, "$bTag$tag$eTag", $wrkFileContent, 'preserve');
 
 		# Store the file in the working directory
 		my $file = iMSCP::File->new('filename' =>"$self->{'wrkDir'}/imscp");
@@ -167,7 +167,7 @@ sub delTask
 		my $bTag = process({ TASKID => $data->{'TASKID'} }, $cleanBTag);
 		my $eTag = process({ TASKID => $data->{'TASKID'} }, $cleanETag);
 
-		$wrkFileContent = replaceBloc($bTag, $eTag, '', $wrkFileContent, undef);
+		$wrkFileContent = replaceBloc($bTag, $eTag, '', $wrkFileContent);
 
 		# Store the file in the working directory
 		my $file = iMSCP::File->new('filename' => "$self->{'wrkDir'}/imscp");

@@ -232,7 +232,7 @@ sub awstatsSection
 		}
 
 		# Remove useless section
-		$$content = replaceBloc($bTag, $eTag, '', $$content, undef);
+		$$content = replaceBloc($bTag, $eTag, '', $$content);
 
 		my $tags = {
 			AWSTATS_CACHE_DIR => $main::imscpConfig{'AWSTATS_CACHE_DIR'},
@@ -276,7 +276,7 @@ sub delAwstatsSection
 		my $bTag = "# SECTION awstats_support BEGIN.\n";
 		my $eTag = "# SECTION awstats_support END.\n";
 
-		$$content = replaceBloc($bTag, $eTag, '', $$content, undef);
+		$$content = replaceBloc($bTag, $eTag, '', $$content);
 	}  else {
 		$rs = iMSCP::HooksManager->getInstance()->register('beforeHttpdBuildConf', sub { $self->delAwstatsSection(@_); });
 	}

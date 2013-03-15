@@ -20,6 +20,7 @@
 # @category		i-MSCP
 # @copyright	2010-2013 by i-MSCP | http://i-mscp.net
 # @author		Daniel Andreca <sci2tech@gmail.com>
+# @author		Laurent Declercq <l.declercq@nuxwin.com>
 # @link			http://i-mscp.net i-MSCP Home Site
 # @license		http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
@@ -29,6 +30,8 @@ use strict;
 use warnings;
 
 use iMSCP::Debug;
+use File::Basename;
+use iMSCP::File;
 use parent 'Common::SingletonClass';
 
 sub _init
@@ -36,12 +39,12 @@ sub _init
 	my $self = shift;
 
 	$self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/bind";
-	$self->{'bkpDir'} = "$self->{cfgDir}/backup";
-	$self->{'wrkDir'} = "$self->{cfgDir}/working";
+	$self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
+	$self->{'wrkDir'} = "$self->{'cfgDir'}/working";
 
-	my $conf = "$self->{cfgDir}/bind.data";
+	my $conf = "$self->{'cfgDir'}/bind.data";
 
-	tie %self::bindConfig, 'iMSCP::Config','fileName' => $conf;
+	tie %self::bindConfig, 'iMSCP::Config', 'fileName' => $conf, 'noerrors' => 1;
 
 	0;
 }
@@ -50,26 +53,26 @@ sub uninstall
 {
 	my $self = shift;
 
-	$self->restoreConfFile();
+	$self->_restoreConfFiles();
 }
 
-sub restoreConfFile
+sub _restoreConfFiles
 {
 	my $self = shift;
 	my $rs = 0;
 
-	use File::Basename;
-	use iMSCP::File;
+	for (
+		$self::bindConfig{'BIND_CONF_FILE'},
+		$self::bindConfig{'BIND_LOCAL_CONF_FILE'},
+		$self::bindConfig{'BIND_CONF_FILE'}
+	) {
+		next if !defined $_;
+		my $filename = fileparse($_);
 
-	for ($self::bindConfig{'BIND_CONF_FILE'}) {
-		my ($filename, $directories, $suffix) = fileparse($_);
-
-		if(-f "$self->{bkpDir}/$filename$suffix.system"){
-			$rs	=	iMSCP::File->new(
-				filename => "$self->{bkpDir}/$filename$suffix.system"
-			)->copyFile(
-				$_
-			);
+		if(-f "$self->{'bkpDir'}/$filename.system"){
+			$rs	= iMSCP::File->new(
+				'filename' => "$self->{'bkpDir'}/$filename.system"
+			)->copyFile($_);
 			return $rs if $rs;
 		}
 	}

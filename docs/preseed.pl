@@ -2,7 +2,7 @@
 
 # i-MSCP preseed.pl template file for installer preseeding
 # See documentation at http://wiki.i-mscp.net/doku.php?id=start:preseeding
-# Last update on 2013.03.12
+# Last update on 2013.03.14
 # Status (Experimental)
 
 ## Autoinstall questions
@@ -101,15 +101,16 @@ $main::preseed{'BACKUP_DOMAINS'} = 'no'; # (yes|no)
 $main::preseed{'FTPD_SQL_USER'} = 'vftp';
 $main::preseed{'FTPD_SQL_PASSWORD'} = '<password>'; # Password shouldn't be empty
 
-# bind
-$main::preseed{'BIND_MODE'} = 'master'; # (master|slave) - Mode in which the DNS server should acts
+# Mode in which the DNS server should acts
+$main::preseed{'BIND_MODE'} = 'master'; # (master|slave) -
 
-# Only relevant if you set the BIND_MODE question to 'slave'
 # Allow to indicate IP addresses of your primary DNS server(s)
-$main::preseed{'PRIMARY_DNS'} = ''; # (empty value or list of ips, each separated by semicolon)
+# Only relevant if you set the BIND_MODE question to 'slave'
+$main::preseed{'PRIMARY_DNS'} = ''; # List of IP addresses, each separated by semicolon
 
-# Only relevant if you set the BIND_MODE question to 'master' and if you have slave DNS server(s)
-$main::preseed{'SECONDARY_DNS'} = 'no'; # (no|list of IPs, each separated by semicolon)
+# Allow to indicate IP addresses of your slave DNS server(s)
+# Only relevant if you set the BIND_MODE question to 'master'
+$main::preseed{'SECONDARY_DNS'} = 'no'; # (no|list of addresses IP, each separated by semicolon)
 
 # dovecot SQL user (only relevant if you set the  PO_SERVER question to 'dovecot'
 $main::preseed{'DOVECOT_SQL_USER'} = 'dovecot_user';
@@ -127,7 +128,7 @@ $main::preseed{'AWSTATS_MODE'} = ''; # (empty value if the AWSTATS_ACTIVE questi
 $main::preseed{'DNSBL_CHECKS_ONLY'} = 'no'; # (yes|no)
 
 # Ftp Web file manager
-$main::preseed{'FILEMANAGER_ADDON'} = 'AjaxPlorer'; # (AjaxPlorer|Net2ftp)
+$main::preseed{'FILEMANAGER_ADDON'} = 'AjaxPlorer'; # Name of the filemanager addon, eg: AjaxPlorer|Net2ftp
 
 # Phpmyadmin addon
 $main::preseed{'PHPMYADMIN_SQL_USER'} = 'pma';

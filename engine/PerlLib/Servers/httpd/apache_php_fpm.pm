@@ -239,13 +239,13 @@ sub addUser
 		chomp($entry);
 		$entry =~ s/#//g;
 
-		$content = replaceBloc($bUTag, $eUTag, '', $content, undef);
+		$content = replaceBloc($bUTag, $eUTag, '', $content);
 		chomp($content);
 
 		$self->{'data'}->{'BWLIMIT_DISABLED'} = ($data->{'BWLIMIT'} ? '' : '#');
 
 		$entry = $self->buildConf($bTag . $entry . $eTag);
-		$content = replaceBloc($bTag, $eTag, $entry, $content, 'yes');
+		$content = replaceBloc($bTag, $eTag, $entry, $content, 'preserve');
 
 		$file = iMSCP::File->new('filename' => "$self->{'apacheWrkDir'}/00_modcband.conf");
 
@@ -356,7 +356,7 @@ sub delUser
 		my $bUTag = "## SECTION $data->{'USER'} BEGIN.\n";
 		my $eUTag = "## SECTION $data->{'USER'} END.\n";
 
-		$content = replaceBloc($bUTag, $eUTag, '', $content, undef);
+		$content = replaceBloc($bUTag, $eUTag, '', $content);
 
 		$file = iMSCP::File->new('filename' => "$self->{'apacheWrkDir'}/00_modcband.conf");
 
@@ -798,7 +798,7 @@ sub addHtaccess
 		$tag .=	"\t\tRequire user $data->{'HTUSERS'}\n";
 	}
 
-	$fileContent = replaceBloc($bTag, $eTag, '', $fileContent, undef);
+	$fileContent = replaceBloc($bTag, $eTag, '', $fileContent);
 	$fileContent = $bTag . $tag . $eTag . $fileContent;
 
 	$rs = $fileH->set($fileContent);
@@ -844,7 +844,7 @@ sub delHtaccess
 	my $bTag = "\t\t### START i-MSCP PROTECTION ###\n";
 	my $eTag = "\t\t### END i-MSCP PROTECTION ###\n";
 
-	$fileContent = replaceBloc($bTag, $eTag, '', $fileContent, undef);
+	$fileContent = replaceBloc($bTag, $eTag, '', $fileContent);
 
 	if($fileContent ne '') {
 		$rs = $fileH->set($fileContent);
@@ -1122,7 +1122,7 @@ sub removeSection
 
 	debug("Removing useless section: $sectionName");
 
-	$$cfgTpl = replaceBloc($bTag, $eTag, '', $$cfgTpl, undef);
+	$$cfgTpl = replaceBloc($bTag, $eTag, '', $$cfgTpl);
 
 	$self->{'hooksManager'}->trigger('afterHttpdRemoveSection', $sectionName, $cfgTpl);
 }

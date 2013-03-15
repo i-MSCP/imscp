@@ -7,13 +7,22 @@ i-MSCP Git Master
 
 CONFIGS:
 	- Added MariaDb support
+	- Added named.conf.local and named.conf options files
 	- Fixed: Remove useless sections in Apache configuration files
 	- Fixed: The diff package is not available for Ubuntu > 12.04 (replaced by diffutils)
 	- Updated php.ini files
 
 ENGINE:
 	- Added support for Apache + PHP FPM
+	- Fixed: Admin must be able to add custom data in named configuration files (Bind9)
+	- Fixed: DNS server must answer to queries only for zones for which it's authoritative (excepted for localhost)
+	- Fixed: DNS server must be protected against common attacks
+	- Fixed: DNS zone files must be checked and cleaned before installation in production directory
+	- Fixed: DNS zones must be added in named.conf.local instead of named.conf
+	- Fixed: Entire config/zones must not be reloaded when adding new DNS zone/entries (Bind9)
 	- Fixed: i-MSCP network daemon should start/stop MySQL server only if installed
+	- Fixed: Permissions as set by Debian must be keep (bind9)
+	- Fixed: Slave DNS zone files should be put in dedicated directory (Bind9)
 	- Fixed SPF record syntax
 
 GUI:

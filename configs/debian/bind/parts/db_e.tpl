@@ -1,4 +1,4 @@
-$TTL 24H
+$TTL 3H
 $ORIGIN {DMN_NAME}.
 @				IN			SOA				ns1.{DMN_NAME}. postmaster.{DMN_NAME}. (
 ; dmn [{DMN_NAME}] timestamp entry BEGIN.

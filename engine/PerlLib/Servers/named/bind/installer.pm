@@ -34,7 +34,9 @@ use iMSCP::HooksManager;
 use iMSCP::Config;
 use iMSCP::IP;
 use iMSCP::File;
+use iMSCP::Dir;
 use File::Basename;
+use iMSCP::Templator;
 use parent 'Common::SingletonClass';
 
 sub _init
@@ -52,7 +54,7 @@ sub _init
 	my $conf = "$self->{'cfgDir'}/bind.data";
 	my $oldConf = "$self->{'cfgDir'}/bind.old.data";
 
-	tie %self::bindConfig, 'iMSCP::Config','fileName' => $conf, noerrors => 1;
+	tie %self::bindConfig, 'iMSCP::Config','fileName' => $conf, 'noerrors' => 1;
 
 	if(-f $oldConf) {
 		tie %self::bindOldConfig, 'iMSCP::Config','fileName' => $oldConf, noerrors => 1;
@@ -61,7 +63,7 @@ sub _init
 
 	$self->{'hooksManager'}->trigger('afterNamedInitInstaller', $self, 'bind');
 
-	0;
+	$self;
 }
 
 sub registerSetupHooks
@@ -69,7 +71,7 @@ sub registerSetupHooks
 	my $self = shift;
 	my $hooksManager = shift;
 
-	# Add bind installer dialog in setup dialog stack
+	# Adding bind installer dialog in setup dialog stack
 	$hooksManager->register(
 		'beforeSetupDialog', sub { my $dialogStack = shift; push(@$dialogStack, sub { $self->askMode(@_) }); 0; }
 	);
@@ -79,36 +81,36 @@ sub askMode
 {
 	my $self = shift;
 	my $dialog = shift;
-	my $mode = $main::preseed{'BIND_MODE'} || $self::bindConfig{'BIND_MODE'} || $self::bindOldConfig{'BIND_MODE'} || '';
+	my $mode = $main::preseed{'BIND_MODE'} || $self::bindConfig{'BIND_MODE'};
 
-	my $primaryDnsIps = $main::preseed{'PRIMARY_DNS'} || $self::bindConfig{'PRIMARY_DNS'} ||
-		$self::bindOldConfig{'PRIMARY_DNS'} || '';
+	my $primaryDnsIps = ($mode eq 'slave')
+		? $main::preseed{'PRIMARY_DNS'} || $self::bindConfig{'PRIMARY_DNS'} : $main::imscpConfig{'BASE_SERVER_IP'};
 
-	my $secondaryDnsIps = $main::preseed{'SECONDARY_DNS'} || $self::bindConfig{'SECONDARY_DNS'} ||
-		$self::bindOldConfig{'SECONDARY_DNS'} || '';
+	my $secondaryDnsIps = ($mode eq 'master')
+		? $main::preseed{'SECONDARY_DNS'} || $self::bindConfig{'SECONDARY_DNS'} : 'no';
 
 	my $ip = iMSCP::IP->new();
 	my @ips = ();
 	my $rs = 0;
 
-	# Retrieve master DNS server ips if any
+	# Retrieving master DNS server ips if any
 	@ips = (@ips, split(';', $primaryDnsIps)) if $primaryDnsIps;
 
-	# Retrieve slave DNS server ips if any
+	# Retrieving slave DNS server ips if any
 	@ips = (@ips, split(';', $secondaryDnsIps)) if $secondaryDnsIps && $secondaryDnsIps ne 'no';
 
-	if($mode eq 'slave' && ! @ips) {
-		unshift(@ips, 'wrongip');
-    }
+	# In case slave mode is selected, we must have a least one IP address in the stack.
+	# If it's not the case, we force dialog to be show
+	$mode = '' if $mode eq 'slave' && ! @ips;
 
+	# Checl each IP address. If one is invalid, we force dialog to be show
 	for (@ips) {
-		if($_ && ! $ip->isValidIp($_)) {
+		if($_ && $_ ne 'no' && ! $ip->isValidIp($_)) {
 			debug("$_ is invalid ip");
 
-			for(qw/BIND_MODE PRIMARY_DNS SECONDARY_DNS/) {
-				$self::bindConfig{$_} = '';
-				$self::bindOldConfig{$_} = '';
-			}
+			$self::bindConfig{'BIND_MODE'} = '';
+			$self::bindConfig{'PRIMARY_DNS'} = '';
+			$self::bindConfig{'SECONDARY_DNS'} = '';
 
 			last;
 		}
@@ -123,9 +125,11 @@ sub askMode
 			$self::bindConfig{'BIND_MODE'} = $mode;
 			$rs = $self->askOtherDns($dialog);
 		}
+	} elsif(defined $main::preseed['BIND_MODE']) {
+		$self::bindConfig{'BIND_MODE'} = $mode;
+		$self::bindConfig{'PRIMARY_DNS'} = $primaryDnsIps;
+		$self::bindConfig{'SECONDARY_DNS'} = $secondaryDnsIps;
 	}
-
-	$self::bindConfig{'BIND_MODE'} = $mode if $rs != 30; # Really needed for preseed mode
 
 	$rs;
 }
@@ -135,18 +139,24 @@ sub askOtherDns
 	my $self = shift;
 	my $dialog = shift;
 	my $mode = $self::bindConfig{'BIND_MODE'};
-	my $masterDns = $main::preseed{'PRIMARY_DNS'} || $self::bindConfig{'PRIMARY_DNS'} || 'no';
-	my $slaveDns = $main::preseed{'SECONDARY_DNS'} || $self::bindConfig{'SECONDARY_DNS'} || 'no';
+
+	my $primaryDnsIps = ($mode eq 'slave')
+		? ($self::bindConfig{'PRIMARY_DNS'} ne $main::imscpConfig{'BASE_SERVER_IP'})
+			? $self::bindConfig{'PRIMARY_DNS'}
+			: ''
+		: $main::imscpConfig{'BASE_SERVER_IP'};
+
+	my $secondaryDnsIps = ($mode eq 'master') ? $self::bindConfig{'SECONDARY_DNS'} : 'no';
 
 	my ($rs, $out) = (0, '');
 
 	if($mode eq 'master') {
 		($rs, $out) = $dialog->radiolist(
-			"\nDo you want add slave DNS server(s)?", ['no', 'yes'], $slaveDns ne 'no' ? 'yes' : 'no'
+			"\nDo you want add slave DNS server(s)?", ['no', 'yes'], $secondaryDnsIps ne 'no' ? 'yes' : 'no'
 		);
 
 		if($rs != 30 && $out eq 'no') {
-			$self::bindConfig{'PRIMARY_DNS'} = $main::imscpConfig{'BASE_SERVER_IP'}; # just to avoid empty value
+			$self::bindConfig{'PRIMARY_DNS'} = $primaryDnsIps;
 			$self::bindConfig{'SECONDARY_DNS'} = 'no';
 			return 0;
 		}
@@ -160,9 +170,10 @@ sub askOtherDns
 		my $trMode = ($mode eq 'slave') ? 'master' : 'slave';
 
 		do {
-			my $ips = ($mode eq 'master') ? ($masterDns ne $main::imscpConfig{'BASE_SERVER_IP'}) ? $masterDns : '' : $slaveDns;
+			my $ips = $mode eq 'slave'
+				? $primaryDnsIps
+				: $secondaryDnsIps ne 'no' ? $secondaryDnsIps : '';
 
-			$ips = '' if $ips eq 'no';
 			@ips = split ';', $ips if $ips;
 
 			($rs, $_) = $dialog->inputbox(
@@ -190,7 +201,7 @@ sub askOtherDns
 
 		if($rs != 30) {
 			if($mode eq 'master') {
-				$self::bindConfig{'PRIMARY_DNS'} = $main::imscpConfig{'BASE_SERVER_IP'}; # just to avoid empty value
+				$self::bindConfig{'PRIMARY_DNS'} = $primaryDnsIps;
 				$self::bindConfig{'SECONDARY_DNS'} = join ';', @ips;
 			} else { # Only slave server
 				$self::bindConfig{'PRIMARY_DNS'} = join ';', @ips;
@@ -207,19 +218,28 @@ sub install
 	my $self = shift;
 	my $rs = 0;
 
-	$rs = $self->bkpConfFile($self::bindConfig{'BIND_CONF_FILE'});
+	for(
+		$self::bindConfig{'BIND_CONF_FILE'},
+		$self::bindConfig{'BIND_LOCAL_CONF_FILE'},
+		$self::bindConfig{'BIND_OPTIONS_CONF_FILE'}
+	) {
+		$rs = $self->_bkpConfFile($_);
+		return $rs if $rs;
+	}
+
+	$rs = $self->_switchTasks();
 	return $rs if $rs;
 
-	$rs = $self->buildConf();
+	$rs = $self->_buildConf();
 	return $rs if $rs;
 
-	$rs = $self->addMasterZone();
+	$rs = $self->_addMasterZone();
 	return $rs if $rs;
 
-	$self->saveConf();
+	$self->_saveConf();
 }
 
-sub bkpConfFile
+sub _bkpConfFile
 {
 	my $self = shift;
 	my $cfgFile = shift;
@@ -228,16 +248,15 @@ sub bkpConfFile
 	$rs = $self->{'hooksManager'}->trigger('beforeNamedBkpConfFile', $cfgFile);
 	return $rs if $rs;
 
-	if(-f $cfgFile){
+	if(-f $cfgFile) {
 		my $file = iMSCP::File->new('filename' => $cfgFile );
-		my ($filename, $directories, $suffix) = fileparse($cfgFile);
+		my $filename = fileparse($cfgFile);
 
-		if(! -f "$self->{'bkpDir'}/$filename$suffix.system") {
-			$rs = $file->copyFile("$self->{'bkpDir'}/$filename$suffix.system");
+		if(! -f "$self->{'bkpDir'}/$filename.system") {
+			$rs = $file->copyFile("$self->{'bkpDir'}/$filename.system");
 			return $rs if $rs;
 		} else {
-			my $timestamp = time;
-			$rs = $file->copyFile("$self->{'bkpDir'}/$filename$suffix.$timestamp");
+			$rs = $file->copyFile("$self->{'bkpDir'}/$filename." . time);
 			return $rs if $rs;
 		}
 	}
@@ -245,74 +264,126 @@ sub bkpConfFile
 	$self->{'hooksManager'}->trigger('afterNamedBkpConfFile', $cfgFile);
 }
 
-sub buildConf
+sub _switchTasks
 {
 	my $self = shift;
 	my $rs = 0;
-	my ($rdata, $cfgTpl, $cfg, $err);
 
-	## Building new configuration file
+	my $slaveDbDir = iMSCP::Dir->new('dirname' => "$self::bindConfig{'BIND_DB_DIR'}/slave");
 
-	# Loading the system main configuration file named.conf.system if it exists
-	if(-f "$self->{'bkpDir'}/named.conf.system") {
-		$cfg = iMSCP::File->new('filename' => "$self->{'bkpDir'}/named.conf.system")->get();
-		return 1 if ! defined $cfg;
+	if($self::bindConfig{'BIND_MODE'} eq 'slave') {
+		$rs = $slaveDbDir->make(
+			{
+				'user' => $main::imscpConfig{'ROOT_USER'},
+				'group' => $self::bindConfig{'BIND_GROUP'},
+				'mode' => '0755'
+			}
+		);
+		return $rs if $rs;
 
-		# Adjusting the configuration if needed
-		$cfg =~ s/listen-on ((.*) )?{ 127.0.0.1; };/listen-on $1 { any; };/;
-		$cfg .= "\n";
+		my ($stdout, $stderr);
+
+		$rs = execute("$main::imscpConfig{'CMD_RM'} -f $self->{'wrkDir'}/*.db", \$stdout, \$stderr);
+		debug($stdout) if $stdout;
+		error($stderr) if $stderr && $rs;
+		return $rs if $rs;
+
+		$rs = execute("$main::imscpConfig{'CMD_RM'} -f $self::bindConfig{'BIND_DB_DIR'}/*.db", \$stdout, \$stderr);
+		debug($stdout) if $stdout;
+		error($stderr) if $stderr && $rs;
+		return $rs if $rs;
 	} else {
-		warning("Unable to find the default distribution file for named...");
-		$cfg = '';
+		$rs = $slaveDbDir->remove() if -d "$self::bindConfig{'BIND_DB_DIR'}/slave";
 	}
 
-	# Loading the template from /etc/imscp/bind/named.conf
-	$cfgTpl = iMSCP::File->new('filename' => "$self->{'cfgDir'}/named.conf")->get();
-	return 1 if ! defined $cfgTpl;
-
-	$rs = $self->{'hooksManager'}->trigger('beforeNamedBuildConf', \$cfgTpl, 'named.conf');
-	return $rs if $rs;
-
-	# Building new file
-	$cfg .= $cfgTpl;
-
-	$rs = $self->{'hooksManager'}->trigger('afterNamedBuildConf', \$cfg, 'named.conf');
-	return $rs if $rs;
-
-	## Storage and installation of new file
-
-	# Storing new file in the working directory
-	my $file = iMSCP::File->new('filename' => "$self->{'wrkDir'}/named.conf");
-
-	$rs = $file->set($cfg);
-	return $rs if $rs;
-
-	$rs = $file->save();
-	return $rs if $rs;
-
-	$rs = $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
-	return $rs if $rs;
-
-	$rs = $file->mode(0644);
-	return $rs if $rs;
-
-	# Install the new file in the production directory
-	$file->copyFile($self::bindConfig{'BIND_CONF_FILE'});
+	$rs;
 }
 
-sub addMasterZone
+sub _buildConf
 {
 	my $self = shift;
 	my $rs = 0;
 
-	require Servers::named;
+	for('BIND_CONF_FILE', 'BIND_LOCAL_CONF_FILE', 'BIND_OPTIONS_CONF_FILE') {
 
-	my $named = Servers::named->factory();
+		# Handle case were the file is not provided by specfic distro
+		next if ! defined $self::bindConfig{$_} || $self::bindConfig{$_} eq '';
+
+		# Retrieving file basename
+		my $filename = fileparse($self::bindConfig{$_});
+
+		# Loading the template file
+		my $cfgTpl = iMSCP::File->new('filename' => "$self->{'cfgDir'}/$filename")->get();
+		unless(defined $cfgTpl) {
+			error("Unable to read $self->{'cfgDir'}/$filename");
+			return 1;
+		}
+
+		$rs = $self->{'hooksManager'}->trigger('beforeNamedBuildConf', \$cfgTpl, $filename);
+		return $rs if $rs;
+
+		# Re-add custom bind data snippet
+		if(-f "$self->{'wrkDir'}/$filename") {
+			my $wrkFile = iMSCP::File->new('filename' => "$self->{'wrkDir'}/$filename");
+
+			my $wrkFileContent = $wrkFile->get();
+			unless(defined $wrkFileContent) {
+				error("Unable to read $self->{'wrkDir'}/$filename");
+				return 1;
+			}
+
+			my $customBindDataBeginTag = "// bind custom data BEGIN.\n";
+			my $customBindDataEndTag = "// bind custom data END.\n";
+			my $customBindDataBlock = getBloc(
+				$customBindDataBeginTag, $customBindDataEndTag, $wrkFileContent, 'includeTags'
+			);
+
+			if($customBindDataBlock ne '') {
+				$cfgTpl = replaceBloc($customBindDataBeginTag, $customBindDataEndTag, $customBindDataBlock, $cfgTpl);
+			}
+		}
+
+		if($filename eq 'named.conf' && ! -f "$self::bindConfig{'BIND_CONF_DIR'}/bind.keys") {
+			$cfgTpl =~ s%include "$self::bindConfig{'BIND_CONF_DIR'}/bind.keys";\n%%;
+		}
+
+		$rs = $self->{'hooksManager'}->trigger('afterNamedBuildConf', \$cfgTpl, $filename);
+		return $rs if $rs;
+
+		# Storing new file in working directory
+		my $file = iMSCP::File->new('filename' => "$self->{'wrkDir'}/$filename");
+
+		$rs = $file->set($cfgTpl);
+		return $rs if $rs;
+
+		$rs = $file->save();
+		return $rs if $rs;
+
+		$rs = $file->owner($main::imscpConfig{'ROOT_USER'}, $self::bindConfig{'BIND_GROUP'});
+		return $rs if $rs;
+
+		$rs = $file->mode(0644);
+		return $rs if $rs;
+
+		# Installing new file in production directory
+		$rs = $file->copyFile($self::bindConfig{$_});
+		return $rs if $rs;
+	}
+
+	$rs;
+}
+
+sub _addMasterZone
+{
+	my $self = shift;
+	my $rs = 0;
 
 	$rs = $self->{'hooksManager'}->trigger('beforeNamedAddMasterZone');
 	return $rs if $rs;
 
-	$rs = $named->addDmn(
+	require Servers::named;
+
+	$rs = Servers::named->factory()->addDmn(
 		{
 			DMN_NAME => $main::imscpConfig{'BASE_SERVER_VHOST'},
 			DMN_IP => $main::imscpConfig{'BASE_SERVER_IP'},
@@ -324,7 +395,7 @@ sub addMasterZone
 	$self->{'hooksManager'}->trigger('afterNamedAddMasterZone');
 }
 
-sub saveConf
+sub _saveConf
 {
 	my $self = shift;
 	my $rs = 0;

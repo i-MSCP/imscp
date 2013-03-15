@@ -580,9 +580,9 @@ sub otherMessCleanup{
 	my $bind = $file->get();
 	push(@errors, "Can not read $main::ispcpConfig{'BIND_CONF_FILE'}") if !$bind;
 
-	$bind = replaceBloc($startTag, $endTag, ' ', $bind, 0) if($bind && $startTag && $endTag);
+	$bind = replaceBloc($startTag, $endTag, ' ', $bind) if $bind && $startTag && $endTag;
 
-	if($bind){
+	if($bind) {
 		$file->set($bind) and push(@errors, getLastError());
 		$file->save() and push(@errors, getLastError());
 	}
@@ -592,7 +592,7 @@ sub otherMessCleanup{
 	push(@errors, "Can not read $main::imscpConfig{'CONF_DIR'}/bind/backup/named.conf.system") if !$bkbind;
 
 	if($bkbind && $startTag && $endTag){
-		$bkbind = replaceBloc($startTag, $endTag, ' ', $bkbind, 0);
+		$bkbind = replaceBloc($startTag, $endTag, ' ', $bkbind);
 	}
 	if ($bkbind){
 		$file->set($bkbind) and push(@errors, getLastError());
