@@ -490,7 +490,7 @@ sub addDmnConfig
 
 	if($self::bindConfig{'BIND_MODE'} eq 'master') {
 		if($self::bindConfig{'SECONDARY_DNS'} ne 'no') {
-			$tags_hash->{'SECONDARY_DNS'} = join( '; ', split(';', $self::bindConfig{'SECONDARY_DNS'})) . ';';
+			$tags_hash->{'SECONDARY_DNS'} = join( '; ', split(';', $self::bindConfig{'SECONDARY_DNS'})) . '; localhost;';
 		} else {
 			$tags_hash->{'SECONDARY_DNS'} = 'localhost;';
 		}
