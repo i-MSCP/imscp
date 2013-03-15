@@ -488,7 +488,13 @@ sub addDmnConfig
 	# Tags preparation
 	my $tags_hash = { DB_DIR => $self::bindConfig{'BIND_DB_DIR'} };
 
-	if($self::bindConfig{'BIND_MODE'} =~ /^slave$/i) {
+	if($self::bindConfig{'BIND_MODE'} eq 'master') {
+		if($self::bindConfig{'SECONDARY_DNS'} ne 'no') {
+			$tags_hash->{'SECONDARY_DNS'} = join( '; ', split(';', $self::bindConfig{'SECONDARY_DNS'})) . ';';
+		} else {
+			$tags_hash->{'SECONDARY_DNS'} = 'localhost;';
+		}
+	} else {
 		$tags_hash->{'PRIMARY_DNS'} = join( '; ', split(';', $self::bindConfig{'PRIMARY_DNS'})) . ';';
 	}
 

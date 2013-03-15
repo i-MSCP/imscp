@@ -30,6 +30,7 @@ options {
         allow-recursion { localhost; };
         allow-query-cache { localhost; };
         additional-from-cache no;
+        allow-transfer { none; };
         version "i-MSCP DNS Server";
 
         // bind custom data BEGIN.
