@@ -7,9 +7,9 @@ i-MSCP Git Master
 
 CONFIGS:
 	- Added MariaDb support
-	- Added named.conf.local and named.conf options files
-	- Fixed: Remove useless sections in Apache configuration files
-	- Fixed: The diff package is not available for Ubuntu > 12.04 (replaced by diffutils)
+	- Added named.conf.local and named.conf.options files
+	- Fixed: Useless section must be removed in generated Apache configuration files
+	- Fixed: diff package isn't available for Ubuntu > 12.04 (replaced by diffutils)
 	- Updated php.ini files
 
 ENGINE:
@@ -18,12 +18,12 @@ ENGINE:
 	- Fixed: DNS server must answer to queries only for zones for which it's authoritative (excepted for localhost)
 	- Fixed: DNS server must be protected against common attacks
 	- Fixed: DNS zone files must be checked and cleaned before installation in production directory
-	- Fixed: DNS zones must be added in named.conf.local instead of named.conf
+	- Fixed: DNS zones must be added in named.conf.local instead of named.conf (Bind9)
 	- Fixed: Entire config/zones must not be reloaded when adding new DNS zone/entries (Bind9)
-	- Fixed: i-MSCP network daemon should start/stop MySQL server only if installed
+	- Fixed: i-MSCP network init script must start/stop MySQL server only if installed
 	- Fixed: Permissions as set by Debian must be keep (bind9)
 	- Fixed: Slave DNS zone files should be put in dedicated directory (Bind9)
-	- Fixed SPF record syntax
+	- Fixed: SPF record syntax
 
 GUI:
 	- Added option allowing to disconnect an user without removing its session (admin/session_manage.php)
@@ -37,9 +37,9 @@ GUI:
 SETUP:
 	- Added support for external repositories (Debian/Ubuntu)
 	- Fixed: APT packages manager must be configured before any package installation
-	- Fixed: All mysql secure installation tasks are now done by the i-MSCP installer
-	- Fixed: Allow usage of remote mysql server
-	- Fixed: Allow per item reconfiguration
+	- Fixed: All MySQL secure installation tasks are now done by the i-MSCP installer
+	- Fixed: i-MSCP must allow usage of remote SQL server
+	- Fixed: Both imsc-autoinstall and imscp-setup script must allow per item reconfiguration
 	- Fixed: Duplicate entries in sources.list file (Ubuntu)
 	- Fixed: Do not show any dialog when --noprompt option is used
 	- Fixed: Uninstall unneeded packages when switching to another server
@@ -61,10 +61,11 @@ Tickets:
 	- Fixed #586: defect - PHP FPM still running when switching to another server
 	- Fixed #591: Bug - PHP FPM - SSL connection for the panel is not working
 	- Fixed #593: Bug - Setup (update) is not working
+	- Fixed #594: Defect - Awstats addon - cron task is not working
 	- Fixed #595: Enhancement - Allow per item reconfiguration
 	- Fixed #596: Bug - GUI - External mail server feature not implemented
 	- Fixed #599: Bug - Ubuntu auto-installer adapter is broken
-	- Fixed #603 Bug - Awstats Addon - cron task is sending messages to stdout
+	- Fixed #603: Bug - Awstats Addon - cron task is sending messages to stdout
 	- Fixed #604: Bug - insserv - Script imscp_network is broken: incomplete LSB comment
 	- Fixed #607: Bug - History of customer stats is limited to 3 years
 	- Fixed #609: Bug - PHP FPM - Internal Server Error after deleting any domain
@@ -72,6 +73,8 @@ Tickets:
 	- Fixed #618: Defect - IMAP - Subscribed folders are not re-added to the subscription file
 	- Fixed #619: Bug - HTTP Redirection - Null field - Update errors
 	- Fixed #623: Bug - Error on update - Unable to delete etc/apt/preferences.d/imscp file
+	- Fixed #624: Bug - Setup/Update imscp-autoinstall is broken
+	- Fixed #625: Defect - Missing file themes/default/images/black/login/stripe.png
 	- Fixed #629: Unable to change PHP editor settings when editing reseller
 
 -------------------------------------------------------------------------------------
