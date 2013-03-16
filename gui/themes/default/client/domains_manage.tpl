@@ -25,7 +25,7 @@
 			<tr>
 				<!-- BDP: domain_status_reload_true -->
 				<td>
-					<a href="http://{DOMAIN_NAME}/" class="icon i_domain_icon" title="{DOMAIN_NAME}">{DOMAIN_NAME}</a>
+					<a href="http://{DOMAIN_NAME}/" class="icon i_domain_icon" target="_blank" title="{DOMAIN_NAME}">{DOMAIN_NAME}</a>
 				</td>
 				<!-- EDP: domain_status_reload_true -->
 				<!-- BDP: domain_status_reload_false -->
