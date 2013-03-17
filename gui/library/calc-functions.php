@@ -299,9 +299,12 @@ function passgen()
 		$password = _passgen();
 	}
 
+	if(Zend_Session::namespaceIsset('pageMessages')) {
+		Zend_Session::namespaceUnset('pageMessages');
+	}
+
 	return $password;
 }
-
 
 /**
  * Return UNIX timestamp representing first day of $month for $year.

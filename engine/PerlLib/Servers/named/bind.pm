@@ -428,7 +428,7 @@ sub addDmnDb
 	$rs = $file->save();
 	return $rs if $rs;
 
-	$rs = $file->mode(0644);
+	$rs = $file->mode(0640);
 	return $rs if $rs;
 
 	$rs = $file->owner($main::imscpConfig{'ROOT_USER'}, $self::bindConfig{'BIND_GROUP'});
@@ -444,6 +444,14 @@ sub addDmnDb
 	debug($stdout) if $stdout;
 	error($stderr) if $stderr && $rs;
 	error("Unable to install zone file $options->{'DMN_NAME'}.db") if $rs && ! $stderr;
+	return $rs if $rs;
+
+	my $file = iMSCP::File->new('filename' => "$self::bindConfig{'BIND_DB_DIR'}/$options->{'DMN_NAME'}.db");
+
+	$rs = $file->mode(0640);
+	return $rs if $rs;
+
+	$rs = $file->owner($main::imscpConfig{'ROOT_USER'}, $self::bindConfig{'BIND_GROUP'});
 	return $rs if $rs;
 
 	$self->{'hooksManager'}->trigger('afterNamedAddDmnDb');
@@ -895,7 +903,7 @@ sub addSub
 	$rs = $file->save();
 	return $rs if $rs;
 
-	$rs = $file->mode(0644);
+	$rs = $file->mode(0640);
 	return $rs if $rs;
 
 	$rs = $file->owner($main::imscpConfig{'ROOT_USER'}, $self::bindConfig{'BIND_GROUP'});
@@ -911,6 +919,14 @@ sub addSub
 	debug($stdout) if $stdout;
 	error($stderr) if $stderr && $rs;
 	error("Unable to install zone file $data->{'PARENT_DMN_NAME'}.db") if $rs && ! $stderr;
+	return $rs if $rs;
+
+	my $file = iMSCP::File->new('filename' => "$self::bindConfig{'BIND_DB_DIR'}/$data->{'PARENT_DMN_NAME'}.db");
+
+	$rs = $file->mode(0640);
+	return $rs if $rs;
+
+	$rs = $file->owner($main::imscpConfig{'ROOT_USER'}, $self::bindConfig{'BIND_GROUP'});
 	return $rs if $rs;
 
 	$self->{'hooksManager'}->trigger('afterNamedAddSub', $data);

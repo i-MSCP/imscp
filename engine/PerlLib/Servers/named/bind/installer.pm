@@ -249,7 +249,7 @@ sub _bkpConfFile
 	return $rs if $rs;
 
 	if(-f $cfgFile) {
-		my $file = iMSCP::File->new('filename' => $cfgFile );
+		my $file = iMSCP::File->new('filename' => $cfgFile);
 		my $filename = fileparse($cfgFile);
 
 		if(! -f "$self->{'bkpDir'}/$filename.system") {
@@ -381,9 +381,9 @@ sub _addMasterZone
 	$rs = $self->{'hooksManager'}->trigger('beforeNamedAddMasterZone');
 	return $rs if $rs;
 
-	require Servers::named;
+	require Servers::named::bind;
 
-	$rs = Servers::named->factory()->addDmn(
+	$rs = Servers::named::bind->getInstance()->addDmn(
 		{
 			DMN_NAME => $main::imscpConfig{'BASE_SERVER_VHOST'},
 			DMN_IP => $main::imscpConfig{'BASE_SERVER_IP'},
