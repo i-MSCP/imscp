@@ -302,7 +302,7 @@ sub buildHTTPDData
 		return 1;
 	}
 
-	my $haveCert = exists $certData->{$self->{'subdomain_alias_id}'} &&
+	my $haveCert = exists $certData->{$self->{'subdomain_alias_id'}} &&
 		! $self->testCert($self->{'subdomain_alias_name'} . '.' . $self->{'alias_name'});
 
 	$self->{'httpd'} = {
