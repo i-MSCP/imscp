@@ -37,6 +37,7 @@ use iMSCP::File;
 use iMSCP::Dir;
 use File::Basename;
 use iMSCP::Templator;
+use iMSCP::Execute;
 use parent 'Common::SingletonClass';
 
 sub _init
@@ -72,9 +73,16 @@ sub registerSetupHooks
 	my $hooksManager = shift;
 
 	# Adding bind installer dialog in setup dialog stack
-	$hooksManager->register(
+	my $rs = $hooksManager->register(
 		'beforeSetupDialog', sub { my $dialogStack = shift; push(@$dialogStack, sub { $self->askMode(@_) }); 0; }
 	);
+	return $rs if $rs;
+
+	$rs = $hooksManager->register(
+		'beforeSetupDialog', sub { my $dialogStack = shift; push(@$dialogStack, sub { $self->askIPv6(@_) }); 0; }
+    );
+
+	$rs;
 }
 
 sub askMode
@@ -213,17 +221,36 @@ sub askOtherDns
 	$rs;
 }
 
+sub askIPv6
+{
+	my $self = shift;
+	my $dialog = shift;
+	my $ipv6 = $main::preseed{'BIND_IPV6'} || $self::bindConfig{'BIND_IPV6'};
+	my $rs = 0;
+
+	if($main::reconfigure ~~ ['named', 'servers', 'all', 'forced'] || $ipv6 !~ /^yes|no$/) {
+		($rs, $ipv6) = $dialog->radiolist(
+			"\nDo you want enable IPv6 support for your DNS server?", ['yes', 'no'], $ipv6 eq 'no' ? 'no' : 'yes'
+		);
+	}
+
+	if($rs != 30) {
+		$self::bindConfig{'BIND_IPV6'} = $ipv6;
+	}
+
+	$rs;
+}
+
 sub install
 {
 	my $self = shift;
 	my $rs = 0;
 
-	for(
-		$self::bindConfig{'BIND_CONF_FILE'},
-		$self::bindConfig{'BIND_LOCAL_CONF_FILE'},
-		$self::bindConfig{'BIND_OPTIONS_CONF_FILE'}
-	) {
-		$rs = $self->_bkpConfFile($_);
+	for('BIND_CONF_DEFAULT_FILE', 'BIND_CONF_FILE', 'BIND_LOCAL_CONF_FILE', 'BIND_OPTIONS_CONF_FILE') {
+		# Handle case where the file is not provided by specfic distribution
+		next unless defined $self::bindConfig{$_} && $self::bindConfig{$_} ne '';
+
+		$rs = $self->_bkpConfFile($self::bindConfig{$_});
 		return $rs if $rs;
 	}
 
@@ -243,9 +270,8 @@ sub _bkpConfFile
 {
 	my $self = shift;
 	my $cfgFile = shift;
-	my $rs = 0;
 
-	$rs = $self->{'hooksManager'}->trigger('beforeNamedBkpConfFile', $cfgFile);
+	my $rs = $self->{'hooksManager'}->trigger('beforeNamedBkpConfFile', $cfgFile);
 	return $rs if $rs;
 
 	if(-f $cfgFile) {
@@ -276,7 +302,7 @@ sub _switchTasks
 			{
 				'user' => $main::imscpConfig{'ROOT_USER'},
 				'group' => $self::bindConfig{'BIND_GROUP'},
-				'mode' => '0755'
+				'mode' => '0775'
 			}
 		);
 		return $rs if $rs;
@@ -306,8 +332,8 @@ sub _buildConf
 
 	for('BIND_CONF_FILE', 'BIND_LOCAL_CONF_FILE', 'BIND_OPTIONS_CONF_FILE') {
 
-		# Handle case were the file is not provided by specfic distro
-		next if ! defined $self::bindConfig{$_} || $self::bindConfig{$_} eq '';
+		# Handle case where the file is not provided by specfic distribution
+		next unless defined $self::bindConfig{$_} && $self::bindConfig{$_} ne '';
 
 		# Retrieving file basename
 		my $filename = fileparse($self::bindConfig{$_});
@@ -343,8 +369,52 @@ sub _buildConf
 			}
 		}
 
-		if($filename eq 'named.conf' && ! -f "$self::bindConfig{'BIND_CONF_DIR'}/bind.keys") {
+		if($_ eq 'BIND_CONF_FILE' && ! -f "$self::bindConfig{'BIND_CONF_DIR'}/bind.keys") {
 			$cfgTpl =~ s%include "$self::bindConfig{'BIND_CONF_DIR'}/bind.keys";\n%%;
+		} elsif($_ eq 'BIND_OPTIONS_CONF_FILE') {
+
+			$cfgTpl =~ s/listen-on-v6 { none; };/listen-on-v6 { any; };/ unless $self::bindConfig{'BIND_IPV6'} eq 'no';
+
+			if(defined($self::bindConfig{'BIND_CONF_DEFAULT_FILE'}) && -f $self::bindConfig{'BIND_CONF_DEFAULT_FILE'}) {
+
+				my $filename = fileparse($self::bindConfig{'BIND_CONF_DEFAULT_FILE'});
+
+				my $file = iMSCP::File->new('filename' => $self::bindConfig{'BIND_CONF_DEFAULT_FILE'});
+
+				my $fileContent = $file->get();
+				unless(defined $fileContent) {
+					error("Unable to read $self::bindConfig{'BIND_CONF_DEFAULT_FILE'}");
+					return 1;
+				}
+
+				$rs = $self->{'hooksManager'}->trigger('beforeNamedBuildConf', \$fileContent, $filename);
+				return $rs if $rs;
+
+				$fileContent =~ s/OPTIONS="(.*?)(?:[^\w]-4|-4\s)(.*)"/OPTIONS="$1$2"/;
+				$fileContent =~ s/OPTIONS="/OPTIONS="-4 / unless $self::bindConfig{'BIND_IPV6'} eq 'yes';
+
+				$rs = $self->{'hooksManager'}->trigger('afterNamedBuildConf', \$fileContent, $filename);
+				return $rs if $rs;
+
+				# Storing new file in working directory
+				$file = iMSCP::File->new('filename' => "$self->{'wrkDir'}/$filename");
+
+				$rs = $file->set($fileContent);
+				return $rs if $rs;
+
+				$rs = $file->save();
+				return $rs if $rs;
+
+				$rs = $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
+				return $rs if $rs;
+
+				$rs = $file->mode(0644);
+				return $rs if $rs;
+
+				# Installing new file in production directory
+				$rs = $file->copyFile($self::bindConfig{'BIND_CONF_DEFAULT_FILE'});
+				return $rs if $rs;
+			}
 		}
 
 		$rs = $self->{'hooksManager'}->trigger('afterNamedBuildConf', \$cfgTpl, $filename);
@@ -376,9 +446,8 @@ sub _buildConf
 sub _addMasterZone
 {
 	my $self = shift;
-	my $rs = 0;
 
-	$rs = $self->{'hooksManager'}->trigger('beforeNamedAddMasterZone');
+	my $rs = $self->{'hooksManager'}->trigger('beforeNamedAddMasterZone');
 	return $rs if $rs;
 
 	require Servers::named::bind;
@@ -398,11 +467,10 @@ sub _addMasterZone
 sub _saveConf
 {
 	my $self = shift;
-	my $rs = 0;
 
 	my $file = iMSCP::File->new('filename' => "$self->{'cfgDir'}/bind.data");
 
-	$rs = $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
+	my $rs = $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
 	return $rs if $rs;
 
 	$rs = $file->mode(0640);

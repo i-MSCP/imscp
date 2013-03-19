@@ -65,9 +65,8 @@ sub registerSetupHooks
 {
 	my $self = shift;
 	my $hooksManager = shift;
-	my $rs = 0;
 
-	$rs = $hooksManager->trigger('beforeNamedRegisterSetupHooks', $hooksManager, 'bind');
+	my $rs = $hooksManager->trigger('beforeNamedRegisterSetupHooks', $hooksManager, 'bind');
 	return $rs if $rs;
 
 	require Servers::named::bind::installer;
@@ -81,9 +80,8 @@ sub registerSetupHooks
 sub install
 {
 	my $self = shift;
-	my $rs = 0;
 
-	$rs = $self->{'hooksManager'}->trigger('beforeNamedInstall', 'bind');
+	my $rs = $self->{'hooksManager'}->trigger('beforeNamedInstall', 'bind');
 	return $rs if $rs;
 
 	require Servers::named::bind::installer;
@@ -97,9 +95,8 @@ sub install
 sub postinstall
 {
 	my $self = shift;
-	my $rs = 0;
 
-	$rs = $self->{'hooksManager'}->trigger('beforeNamedPostinstall');
+	my $rs = $self->{'hooksManager'}->trigger('beforeNamedPostinstall');
 	return $rs if $rs;
 
 	$self->{'restart'} = 'yes';
@@ -110,9 +107,8 @@ sub postinstall
 sub uninstall
 {
 	my $self = shift;
-	my $rs = 0;
 
-	$rs = $self->{'hooksManager'}->trigger('beforeNamedUninstall', 'bind');
+	my $rs = $self->{'hooksManager'}->trigger('beforeNamedUninstall', 'bind');
 	return $rs if $rs;
 
 	require Servers::named::bind::uninstaller;
@@ -126,12 +122,12 @@ sub uninstall
 	$self->{'hooksManager'}->trigger('afterNamedUninstall', 'bind');
 }
 
+# Restart the server
 sub restart
 {
 	my $self = shift;
-	my $rs = 0;
 
-	$rs = $self->{'hooksManager'}->trigger('beforeNamedRestart');
+	my $rs = $self->{'hooksManager'}->trigger('beforeNamedRestart');
 	return $rs if $rs;
 
 	my ($stdout, $stderr);
@@ -143,33 +139,50 @@ sub restart
 	$self->{'hooksManager'}->trigger('afterNamedRestart');
 }
 
+# Without any argument, reload configuration files and zones
+# With an argument that is a zone name, reload a single zone
 sub reload
 {
 	my $self = shift;
-	my $zone = shift; # Optional zone name to reload
-	my $rs = 0;
+	my $zoneName = shift || ''; # Optional zone name to reload
 
-	$rs = $self->{'hooksManager'}->trigger('beforeNamedReload');
+	my $rs = $self->{'hooksManager'}->trigger('beforeNamedReload', $zoneName);
 	return $rs if $rs;
 
 	my ($stdout, $stderr);
-	$rs = execute("$self->{'CMD_RNDC'} reload", \$stdout, \$stderr);
+	$rs = execute("$self->{'CMD_RNDC'} reload $zoneName", \$stdout, \$stderr);
 	debug($stdout) if $stdout;
 	error($stderr) if $stderr && $rs;
 	return $rs if $rs;
 
-	$self->{'hooksManager'}->trigger('afterNamedReload');
+	$self->{'hooksManager'}->trigger('afterNamedReload', $zoneName);
+}
+
+# Reload configuration file and new zones only
+sub reconfig
+{
+	my $self = shift;
+
+	my $rs = $self->{'hooksManager'}->trigger('beforeNamedReconfig');
+	return $rs if $rs;
+
+	my ($stdout, $stderr);
+	$rs = execute("$self->{'CMD_RNDC'} reconfig", \$stdout, \$stderr);
+	debug($stdout) if $stdout;
+	error($stderr) if $stderr && $rs;
+	return $rs if $rs;
+
+	$self->{'hooksManager'}->trigger('afterNamedReconfig');
 }
 
 sub incTimeStamp
 {
 	my $self = shift;
-	my $rs = 0;
 	my $oldZoneFile	= shift;
 	my $dmnName = shift;
 	my $newZoneFile	= shift || $oldZoneFile;
 
-	$rs = $self->{'hooksManager'}->trigger('beforeNamedIncTimeStamp');
+	my $rs = $self->{'hooksManager'}->trigger('beforeNamedIncTimeStamp');
 	return undef if $rs;
 
 	# Create or Update serial number according RFC 1912
@@ -234,10 +247,10 @@ sub addDmnDb
 {
 	my $self = shift;
 	my $options = shift;
-	my $rs = 0;
+
 	my $zoneFile = "$self->{'wrkDir'}/$options->{'DMN_NAME'}.db";
 
-	$rs = $self->{'hooksManager'}->trigger('beforeNamedAddDmnDb');
+	my $rs = $self->{'hooksManager'}->trigger('beforeNamedAddDmnDb');
 	return $rs if $rs;
 
 	# Saving current working file if it exists
@@ -461,20 +474,20 @@ sub addDmnConfig
 {
 	my $self = shift;
 	my $options = shift;
-	my $rs = 0;
-	my ($cfg, $file);
+
+	my $rs = $self->{'hooksManager'}->trigger('beforeNamedAddDmnConfig');
+	return $rs if $rs;
+
+	my ($file, $cfg);
 
 	my ($confFileName, $confFileDirectory) = fileparse(
 		$self::bindConfig{'BIND_LOCAL_CONF_FILE'} || $self::bindConfig{'BIND_CONF_FILE'}
 	);
 
-	$rs = $self->{'hooksManager'}->trigger('beforeNamedAddDmnConfig');
-	return $rs if $rs;
-
 	# Backup config file
 
 	if(-f "$self->{'wrkDir'}/$confFileName") {
-		my $file = iMSCP::File->new('filename' => "$self->{'wrkDir'}/$confFileName");
+		$file = iMSCP::File->new('filename' => "$self->{'wrkDir'}/$confFileName");
 		$rs = $file->copyFile("$self->{'bkpDir'}/$confFileName." . time);
 		return $rs if $rs;
 	} else {
@@ -556,7 +569,6 @@ sub addDmn
 {
 	my $self = shift;
 	my $options = shift;
-	my $rs = 0;
 
 	$options = {} if ref $options ne 'HASH';
 
@@ -566,23 +578,22 @@ sub addDmn
 	};
 
 	for(keys %{$errmsg}) {
-		error($errmsg->{$_}) unless $options->{$_};
-		return 1 unless $options->{$_};
+		unless(defined $options->{$_}) {
+			error($errmsg->{$_});
+			return 1;
+		}
 	}
 
-	$rs = $self->{'hooksManager'}->trigger('beforeNamedAddDmn', $options);
+	my $rs = $self->{'hooksManager'}->trigger('beforeNamedAddDmn', $options);
 	return $rs if $rs;
 
 	if($self::bindConfig{'BIND_MODE'} eq 'master') {
-
 		$rs = $self->addDmnConfig($options);
 		return $rs if $rs;
 
 		$rs = $self->addDmnDb($options);
 		return $rs if $rs;
-
 	} else {
-
 		$rs = $self->addDmnConfig($options);
 		return $rs if $rs;
 
@@ -611,8 +622,10 @@ sub postaddDmn
 	};
 
 	for(keys %{$errmsg}) {
-		error($errmsg->{$_}) unless $options->{$_};
-		return 1 unless $options->{$_};
+		unless(defined $options->{$_}) {
+			error($errmsg->{$_});
+			return 1;
+		}
 	}
 
 	if($self::bindConfig{'BIND_MODE'} eq 'master') {
@@ -621,6 +634,7 @@ sub postaddDmn
 
 		my $ipH = iMSCP::IP->new();
 
+		# Add DNS entry for domain alternative URL in master zone file
 		$rs = $self->addDmn(
 			{
 				DMN_NAME => $main::imscpConfig{'BASE_SERVER_VHOST'},
@@ -637,8 +651,10 @@ sub postaddDmn
 		return $rs if $rs;
 	}
 
-	$rs = $self->reload($options->{'DMN_NAME'});
+	# Reload configuration file and new zones only unless restart is already scheduled
+	$rs = $self->reconfig() unless defined $self->{'restart'};
 	return $rs if $rs;
+
 	delete $self->{'data'};
 
 	$rs = $self->{'hooksManager'}->trigger('afterNamedPostAddDmn', $options);
@@ -648,23 +664,23 @@ sub delDmnConfig
 {
 	my $self = shift;
 	my $options = shift;
-	my ($cfg, $file);
-	my $rs = 0;
+
+	my $rs = $self->{'hooksManager'}->trigger('beforeNamedDelDmnConfig');
+	return $rs if $rs;
 
 	my ($confFileName, $confFileDirectory) = fileparse(
 		$self::bindConfig{'BIND_LOCAL_CONF_FILE'} || $self::bindConfig{'BIND_CONF_FILE'}
 	);
 
-	$rs = $self->{'hooksManager'}->trigger('beforeNamedDelDmnConfig');
-	return $rs if $rs;
+	my ($file, $cfg);
 
 	# Backup config file
 	if(-f "$self->{'wrkDir'}/$confFileName") {
-		my $file = iMSCP::File->new('filename' => "$self->{'wrkDir'}/$confFileName");
+		$file = iMSCP::File->new('filename' => "$self->{'wrkDir'}/$confFileName");
 		$rs = $file->copyFile("$self->{'bkpDir'}/$confFileName." . time);
 		return $rs if $rs;
 	} else {
-		error("Unable to find the your $self->{'wrkDir'}/$confFileName file. Run setup again to fix this");
+		error("Unable to find the the $self->{'wrkDir'}/$confFileName file. Run setup again to fix this");
 		return 1;
 	}
 
@@ -718,63 +734,31 @@ sub delDmn
 {
 	my $self = shift;
 	my $options = shift;
-	my $rs = 0;
 
 	$options = {} if ref $options ne 'HASH';
 
-	error('You must supply domain name!') unless $options->{'DMN_NAME'};
-	return 1 unless $options->{'DMN_NAME'};
+	unless(defined $options->{'DMN_NAME'}) {
+		error('You must supply domain name!');
+		return 1;
+	}
 
-	$rs = $self->{'hooksManager'}->trigger('beforeNamedDelDmn', $options);
+	my $rs = $self->{'hooksManager'}->trigger('beforeNamedDelDmn', $options);
 	return $rs if $rs;
 
+	# Removing zone from named configuration file
 	$rs = $self->delDmnConfig($options);
 	return $rs if $rs;
 
-	my $zoneFile = "$self::bindConfig{'BIND_DB_DIR'}/$options->{'DMN_NAME'}.db";
-
-	$rs = iMSCP::File->new('filename' => $zoneFile)->delFile() if -f $zoneFile;
-	return $rs if $rs;
-
+	# Removing working zone file
 	$rs = iMSCP::File->new(
 		'filename' => "$self->{'wrkDir'}/$options->{'DMN_NAME'}.db"
 	)->delFile() if -f "$self->{'wrkDir'}/$options->{'DMN_NAME'}.db";
 	return $rs if $rs;
 
-	$zoneFile = "$self->{'wrkDir'}/$main::imscpConfig{'BASE_SERVER_VHOST'}.db";
-	$zoneFile = "$self::bindConfig{'BIND_DB_DIR'}/$main::imscpConfig{'BASE_SERVER_VHOST'}.db" unless -f $zoneFile;
-
-	unless(-f $zoneFile) {
-		error("$main::imscpConfig{'BASE_SERVER_VHOST'}.db doesn't exists");
-		return 1;
-	}
-
-	my $zContent = iMSCP::File->new('filename' => $zoneFile)->get();
-
-	unless(defined $zContent) {
-		error("$main::imscpConfig{'BASE_SERVER_VHOST'}.db is empty");
-		return 1;
-	}
-
-	$zContent =~ s/$options->{'USER_NAME'}\.$main::imscpConfig{'BASE_SERVER_VHOST'}\.\s[^\n]*\n//gim;
-
-	# Store the new builded file in the working directory
-	my $file = iMSCP::File->new('filename' => "$self->{'wrkDir'}/$main::imscpConfig{'BASE_SERVER_VHOST'}.db");
-
-	$rs = $file->set($zContent);
-	return $rs if $rs;
-
-	$rs = $file->save();
-	return $rs if $rs;
-
-	$rs = $file->mode(0644);
-	return $rs if $rs;
-
-	$rs = $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
-	return $rs if $rs;
-
-	# Install the new file in the production directory
-	$rs = $file->copyFile($self::bindConfig{'BIND_DB_DIR'});
+	# Removing production zone file
+	$rs = iMSCP::File->new(
+		'filename' => "$self::bindConfig{'BIND_DB_DIR'}/$options->{'DMN_NAME'}.db"
+	)->delFile() if -f "$self::bindConfig{'BIND_DB_DIR'}/$options->{'DMN_NAME'}.db";
 	return $rs if $rs;
 
 	$self->{'hooksManager'}->trigger('afterNamedDelDmn', $options);
@@ -784,17 +768,17 @@ sub postdelDmn
 {
 	my $self = shift;
 	my $data = shift;
-	my $rs = 0;
 
-	$rs = $self->{'hooksManager'}->trigger('beforeNamedPostDelDmn', $data);
+	my $rs = $self->{'hooksManager'}->trigger('beforeNamedPostDelDmn', $data);
 	return $rs if $rs;
 
+	# Removing DNS entry for domain alternative URL in master zone file
 	$rs = $self->addDmn(
 		{
 			DMN_NAME => $main::imscpConfig{'BASE_SERVER_VHOST'},
 			DMN_IP => $main::imscpConfig{'BASE_SERVER_IP'},
 			MX => '',
-			DMN_DEL => { MANUAL_DNS_NAME => "$data->{'USER_NAME'}.$main::imscpConfig{'BASE_SERVER_VHOST'}.", }
+			DMN_DEL => { MANUAL_DNS_NAME => "$data->{'USER_NAME'}.$main::imscpConfig{'BASE_SERVER_VHOST'}." }
 		}
 	);
 	return $rs if $rs;
@@ -802,7 +786,10 @@ sub postdelDmn
 	$rs = $self->{'hooksManager'}->trigger('afterNamedPostDelDmn', $data);
 	return $rs if $rs;
 
-	$self->{'restart'} = 'yes';
+	# Reload configuration file and zones unless restart is already scheduled
+    $rs = $self->reload() unless defined $self->{'restart'};
+    return $rs if $rs;
+
 	delete $self->{'data'};
 
 	0;
@@ -812,7 +799,6 @@ sub addSub
 {
 	my $self = shift;
 	my $data = shift;
-	my $rs = 0;
 
 	my $errmsg = {
 		'DMN_NAME' => 'You must supply domain name!',
@@ -820,11 +806,13 @@ sub addSub
 	};
 
 	for(keys %{$errmsg}) {
-		error("$errmsg->{$_}") unless $data->{$_};
-		return 1 unless $data->{$_};
+		unless(defined $data->{$_}) {
+			error($errmsg->{$_});
+			return 1;
+		}
 	}
 
-	$rs = $self->{'hooksManager'}->trigger('beforeNamedAddSub', $data);
+	my $rs = $self->{'hooksManager'}->trigger('beforeNamedAddSub', $data);
 	return $rs if $rs;
 
 	my $zoneFile = "$self->{'wrkDir'}/$data->{'PARENT_DMN_NAME'}.db";
@@ -869,7 +857,11 @@ sub addSub
 
 	if($data->{'MX'}) {
 		my $cleanMXBlock = getBloc($bTag, $eTag, $cleanTag);
-		$mxBlock .= process({ MAIL_SERVER => $data->{'MX'}->{$_}->{'domain_text'} }, $cleanMXBlock) for keys %{$data->{'MX'}};
+
+		$mxBlock .= process(
+			{ MAIL_SERVER => $data->{'MX'}->{$_}->{'domain_text'} }, $cleanMXBlock
+		) for keys %{$data->{'MX'}};
+
 		$cleanTag = replaceBloc($bTag, $eTag, $mxBlock, $cleanTag);
 	} else {
 		$cleanTag = replaceBloc($bTag, $eTag, '', $cleanTag);
@@ -944,6 +936,7 @@ sub postaddSub
 		$rs = $self->{'hooksManager'}->trigger('beforeNamedPostAddSub', $data);
 		return $rs if $rs;
 
+		# Adding DNS entry for subdomain alternative URL in master zone file
 		$rs = $self->addDmn(
 			{
 				DMN_NAME => $main::imscpConfig{'BASE_SERVER_VHOST'},
@@ -963,8 +956,10 @@ sub postaddSub
 		return $rs if $rs;
 	}
 
-	$rs = $self->reload($data->{'DMN_NAME'});
+	# Reload parent zones unless restart is already scheduled
+	$rs = $self->reload($data->{'PARENT_DMN_NAME'}) unless defined $self->{'restart'};
 	return $rs if $rs;
+
 	delete $self->{'data'};
 
 	0;
@@ -974,7 +969,6 @@ sub delSub
 {
 	my $self = shift;
 	my $data = shift;
-	my $rs = 0;
 
 	my $errmsg = {
 		'DMN_NAME' => 'You must supply domain name!',
@@ -982,30 +976,31 @@ sub delSub
 		'PARENT_DMN_NAME' => 'You must supply parent domain name!'
 	};
 
-	for(keys %{$errmsg}){
-		error("$errmsg->{$_}") unless $data->{$_};
-		return 1 unless $data->{$_};
+	for(keys %{$errmsg}) {
+		unless(defined $data->{$_}) {
+			error($errmsg->{$_});
+			return 1;
+		}
 	}
 
-	$rs = $self->{'hooksManager'}->trigger('beforeNamedDelSub', $data);
+	my $rs = $self->{'hooksManager'}->trigger('beforeNamedDelSub', $data);
 	return $rs if $rs;
 
-	my $zoneFile = "$self::bindConfig{'BIND_DB_DIR'}/$data->{'PARENT_DMN_NAME'}.db";
+	my $zoneFile = "$self->{'wrkDir'}/$data->{'PARENT_DMN_NAME'}.db";
 
-	# Saving current production file if it exists
-	$rs =	iMSCP::File->new(
+	# Saving working file if it exists
+	$rs =iMSCP::File->new(
 		'filename' => $zoneFile
 	)->copyFile(
 		"$self->{'bkpDir'}/$data->{'PARENT_DMN_NAME'}.db." . time
 	) if -f $zoneFile;
 	return $rs if $rs;
 
-	# Loading the current working db file
-	my $wrkCfg = "$self->{'wrkDir'}/$data->{'PARENT_DMN_NAME'}.db";
-	my $wrkFileContent = iMSCP::File->new('filename' => $wrkCfg)->get();
+	# Loading current working db file
+	my $wrkFileContent = iMSCP::File->new('filename' => $zoneFile)->get();
 
 	unless(defined $wrkFileContent) {
-		error("Unable to read $wrkCfg");
+		error("Unable to read $zoneFile");
 		return 1;
 	}
 
@@ -1032,7 +1027,7 @@ sub delSub
 	# SUBDOMAIN SECTION END
 
 	# Storing new file in working directory
-	my $file = iMSCP::File->new('filename' => $wrkCfg);
+	my $file = iMSCP::File->new('filename' => $zoneFile);
 
 	$rs = $file->set($wrkFileContent);
 	return $rs if $rs;
@@ -1040,14 +1035,34 @@ sub delSub
 	$rs = $file->save();
 	return $rs if $rs;
 
-	$rs = $file->mode(0644);
+	$rs = $file->mode(0640);
 	return $rs if $rs;
 
 	$rs = $file->owner($main::imscpConfig{'ROOT_USER'}, $self::bindConfig{'BIND_GROUP'});
 	return $rs if $rs;
 
-	# Installing newfile in production directory
+	# Installing new file in production directory
 	$rs = $file->copyFile($self::bindConfig{'BIND_DB_DIR'});
+	return $rs if $rs;
+
+	# Installing new file in production directory (also cleanup file and perform entries checks)
+	my ($stdout, $stderr);
+	$rs = execute(
+		"$self::bindConfig{'CMD_NAMED_COMPILEZONE'} -s relative " .
+		"-o $self::bindConfig{'BIND_DB_DIR'}/$data->{'PARENT_DMN_NAME'}.db $data->{'PARENT_DMN_NAME'} $zoneFile",
+		\$stdout, \$stderr
+	);
+	debug($stdout) if $stdout;
+	error($stderr) if $stderr && $rs;
+	error("Unable to install zone file $data->{'PARENT_DMN_NAME'}.db") if $rs && ! $stderr;
+	return $rs if $rs;
+
+	my $file = iMSCP::File->new('filename' => "$self::bindConfig{'BIND_DB_DIR'}/$data->{'PARENT_DMN_NAME'}.db");
+
+	$rs = $file->mode(0640);
+	return $rs if $rs;
+
+	$rs = $file->owner($main::imscpConfig{'ROOT_USER'}, $self::bindConfig{'BIND_GROUP'});
 	return $rs if $rs;
 
 	$self->{'hooksManager'}->trigger('afterNamedDelSub', $data);
@@ -1057,19 +1072,17 @@ sub postdelSub
 {
 	my $self = shift;
 	my $data = shift;
-	my $rs = 0;
 
-	$rs = $self->{'hooksManager'}->trigger('beforeNamedPostDelSub', $data);
+	my $rs = $self->{'hooksManager'}->trigger('beforeNamedPostDelSub', $data);
 	return $rs if $rs;
 
+	# Removing DNS entry for subdomain alternative URL in master zone file
 	$rs = $self->addDmn(
 		{
 			DMN_NAME => $main::imscpConfig{'BASE_SERVER_VHOST'},
 			DMN_IP => $main::imscpConfig{'BASE_SERVER_IP'},
 			MX => '',
-			DMN_DEL => {
-				MANUAL_DNS_NAME => "$data->{'USER_NAME'}.$main::imscpConfig{'BASE_SERVER_VHOST'}.",
-			}
+			DMN_DEL => { MANUAL_DNS_NAME => "$data->{'USER_NAME'}.$main::imscpConfig{'BASE_SERVER_VHOST'}." }
 		}
 	);
 	return $rs if $rs;
@@ -1077,7 +1090,10 @@ sub postdelSub
 	$rs = $self->{'hooksManager'}->trigger('afterNamedPostDelSub', $data);
 	return $rs if $rs;
 
-	$self->{'restart'} = 'yes';
+	# # Reload parent zones unless restart is already scheduled
+    $rs = $self->reload($data->{'PARENT_DMN_NAME'}) unless defined $self->{'restart'};
+    return $rs if $rs;
+
 	delete $self->{'data'};
 
 	0;
@@ -1085,11 +1101,11 @@ sub postdelSub
 
 END
 {
-	my $endCode	= $?;
 	my $self = Servers::named::bind->getInstance();
 
-	my $rs = $self->restart() if $self->{'restart'} && $self->{'restart'} eq 'yes';
-	$? = $endCode || $rs;
+	my $rs = $self->restart() if defined $self->{'restart'} && $self->{'restart'} eq 'yes';
+
+	$? ||= $rs;
 }
 
 1;

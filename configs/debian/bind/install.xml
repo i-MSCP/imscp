@@ -23,8 +23,8 @@ program. If not, see <http://www.gnu.org/licenses/>
 -->
 
 <install>
-    <folders user="root" group="bind" mode="2755">${ROOT_CONF}/bind</folders>
-    <folders user="root" group="bind" mode="0755">${INST_PREF}/var/cache/bind</folders>
+    <folders group="bind" mode="2755">${ROOT_CONF}/bind</folders>
+    <folders group="bind" mode="0775">${INST_PREF}/var/cache/bind</folders>
     <folders>${SYSTEM_CONF}/bind</folders>
     <folders>${SYSTEM_CONF}/bind/backup</folders>
     <folders>${SYSTEM_CONF}/bind/working</folders>

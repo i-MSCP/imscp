@@ -76,6 +76,7 @@ Tickets:
 	- Fixed #624: Bug - Setup/Update imscp-autoinstall is broken
 	- Fixed #625: Defect - Missing file themes/default/images/black/login/stripe.png
 	- Fixed #629: Unable to change PHP editor settings when editing reseller
+	- Fixed #634: Bug - i-MSCP update from git master - Error in bind9 server implementation
 
 -------------------------------------------------------------------------------------
 i-MSCP 1.1.0-rc1.4

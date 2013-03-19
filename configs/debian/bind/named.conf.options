@@ -21,7 +21,7 @@ options {
 
         // Listen to all IPv4 and IPv6 interfaces
         listen-on { any; };
-        listen-on-v6 { any; };
+        listen-on-v6 { none; };
 
         // Improving server performances by reducing outgoing data volumes
         minimal-responses yes;
@@ -29,7 +29,6 @@ options {
         // Protecting server against common attacks
         allow-recursion { localhost; };
         allow-query-cache { localhost; };
-        additional-from-cache no;
         allow-transfer { none; };
         version "i-MSCP DNS Server";
 
