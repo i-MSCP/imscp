@@ -21,7 +21,7 @@ options {
 
         // Listen to all IPv4 and IPv6 interfaces
         listen-on { any; };
-        listen-on-v6 { none; };
+        listen-on-v6 { any; };
 
         // Improving server performances by reducing outgoing data volumes
         minimal-responses yes;

@@ -373,7 +373,7 @@ sub _buildConf
 			$cfgTpl =~ s%include "$self::bindConfig{'BIND_CONF_DIR'}/bind.keys";\n%%;
 		} elsif($_ eq 'BIND_OPTIONS_CONF_FILE') {
 
-			$cfgTpl =~ s/listen-on-v6 { none; };/listen-on-v6 { any; };/ unless $self::bindConfig{'BIND_IPV6'} eq 'no';
+			$cfgTpl =~ s/listen-on-v6 { any; };/listen-on-v6 { none; };/ unless $self::bindConfig{'BIND_IPV6'} eq 'yes';
 
 			if(defined($self::bindConfig{'BIND_CONF_DEFAULT_FILE'}) && -f $self::bindConfig{'BIND_CONF_DEFAULT_FILE'}) {
 

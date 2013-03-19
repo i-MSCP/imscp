@@ -14,6 +14,7 @@ CONFIGS:
 
 ENGINE:
 	- Added support for Apache + PHP FPM
+	- Added option allowing to disable/enable IPv6 support (Bind9)
 	- Fixed: Admin must be able to add custom data in named configuration files (Bind9)
 	- Fixed: DNS server must answer to queries only for zones for which it's authoritative (excepted for localhost)
 	- Fixed: DNS server must be protected against common attacks
