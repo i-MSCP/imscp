@@ -139,42 +139,6 @@ sub restart
 	$self->{'hooksManager'}->trigger('afterNamedRestart');
 }
 
-# Without any argument, reload configuration files and zones
-# With an argument that is a zone name, reload a single zone
-sub reload
-{
-	my $self = shift;
-	my $zoneName = shift || ''; # Optional zone name to reload
-
-	my $rs = $self->{'hooksManager'}->trigger('beforeNamedReload', $zoneName);
-	return $rs if $rs;
-
-	my ($stdout, $stderr);
-	$rs = execute("$self->{'CMD_RNDC'} reload $zoneName", \$stdout, \$stderr);
-	debug($stdout) if $stdout;
-	error($stderr) if $stderr && $rs;
-	return $rs if $rs;
-
-	$self->{'hooksManager'}->trigger('afterNamedReload', $zoneName);
-}
-
-# Reload configuration file and new zones only
-sub reconfig
-{
-	my $self = shift;
-
-	my $rs = $self->{'hooksManager'}->trigger('beforeNamedReconfig');
-	return $rs if $rs;
-
-	my ($stdout, $stderr);
-	$rs = execute("$self->{'CMD_RNDC'} reconfig", \$stdout, \$stderr);
-	debug($stdout) if $stdout;
-	error($stderr) if $stderr && $rs;
-	return $rs if $rs;
-
-	$self->{'hooksManager'}->trigger('afterNamedReconfig');
-}
-
 sub incTimeStamp
 {
 	my $self = shift;
@@ -651,9 +615,7 @@ sub postaddDmn
 		return $rs if $rs;
 	}
 
-	# Reload configuration file and new zones only unless restart is already scheduled
-	$rs = $self->reconfig() unless defined $self->{'restart'};
-	return $rs if $rs;
+	$self->{'restart'} = 'yes';
 
 	delete $self->{'data'};
 
@@ -688,7 +650,10 @@ sub delDmnConfig
 	my ($bTag, $eTag);
 	$bTag = iMSCP::File->new('filename' => "$self->{'tplDir'}/cfg_entry_b.tpl")->get();
 	$eTag = iMSCP::File->new('filename' => "$self->{'tplDir'}/cfg_entry_e.tpl")->get();
-	return 1 unless($bTag && $eTag);
+	unless(defined $bTag && defined $eTag) {
+		error('A template has not been found');
+		return 1;
+	}
 
 	# Preparing tags
 	my $tags_hash = { DMN_NAME => $options->{'DMN_NAME'} };
@@ -724,7 +689,7 @@ sub delDmnConfig
 	return $rs if $rs;
 
 	# Installing new file in production directory
-	$rs = $file->copyFile("confFileDirectory$confFileName");
+	$rs = $file->copyFile("$confFileDirectory$confFileName");
 	return $rs if $rs;
 
 	$self->{'hooksManager'}->trigger('afterNamedDelDmnConfig');
@@ -786,9 +751,7 @@ sub postdelDmn
 	$rs = $self->{'hooksManager'}->trigger('afterNamedPostDelDmn', $data);
 	return $rs if $rs;
 
-	# Reload configuration file and zones unless restart is already scheduled
-    $rs = $self->reload() unless defined $self->{'restart'};
-    return $rs if $rs;
+	$self->{'restart'} = 'yes';
 
 	delete $self->{'data'};
 
@@ -956,9 +919,7 @@ sub postaddSub
 		return $rs if $rs;
 	}
 
-	# Reload parent zones unless restart is already scheduled
-	$rs = $self->reload($data->{'PARENT_DMN_NAME'}) unless defined $self->{'restart'};
-	return $rs if $rs;
+	$self->{'restart'} = 'yes';
 
 	delete $self->{'data'};
 
@@ -1090,9 +1051,7 @@ sub postdelSub
 	$rs = $self->{'hooksManager'}->trigger('afterNamedPostDelSub', $data);
 	return $rs if $rs;
 
-	# # Reload parent zones unless restart is already scheduled
-    $rs = $self->reload($data->{'PARENT_DMN_NAME'}) unless defined $self->{'restart'};
-    return $rs if $rs;
+	$self->{'restart'} = 'yes';
 
 	delete $self->{'data'};
 

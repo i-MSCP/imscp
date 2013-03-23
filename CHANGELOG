@@ -20,7 +20,6 @@ ENGINE:
 	- Fixed: DNS server must be protected against common attacks
 	- Fixed: DNS zone files must be checked and cleaned before installation in production directory
 	- Fixed: DNS zones must be added in named.conf.local instead of named.conf (Bind9)
-	- Fixed: Entire config/zones must not be reloaded when adding new DNS zone/entries (Bind9)
 	- Fixed: i-MSCP network init script must start/stop MySQL server only if installed
 	- Fixed: Permissions as set by Debian must be keep (bind9)
 	- Fixed: Slave DNS zone files should be put in dedicated directory (Bind9)
