@@ -47,9 +47,9 @@ silent(1);
 #
 sub uninstall_start_up {
 
-	iMSCP::Boot->getInstance()->boot()
+	iMSCP::Boot->getInstance()->boot();
 
-	&user_dialog();
+	user_dialog();
 
 	0;
 }
