@@ -36,6 +36,7 @@ GUI:
 
 SETUP:
 	- Added support for external repositories (Debian/Ubuntu)
+	- Enhancement: created WEBSTATS_ADDON to allow choosing the webstats provider
 	- Fixed: APT packages manager must be configured before any package installation
 	- Fixed: All MySQL secure installation tasks are now done by the i-MSCP installer
 	- Fixed: i-MSCP must allow usage of remote SQL server
