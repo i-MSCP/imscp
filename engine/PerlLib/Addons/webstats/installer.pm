@@ -170,7 +170,7 @@ sub askWebstats
 	if($main::reconfigure ~~ ['webstats', 'all', 'forced'] || $webStatsAddon !~ /^awstats|piwik$/) {
 		($rs, $webStatsAddon) = $dialog->radiolist(
 			"\nPlease, select the Webstats addon you want use:",
-			['awstats', 'piwik (beta)'],
+			['awstats'],
 			$webStatsAddon ne '' ? $webStatsAddon : 'awstats'
 		);
 	}
