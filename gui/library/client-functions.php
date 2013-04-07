@@ -518,7 +518,7 @@ function check_ftp_perms($ftp_acc)
 /**
  * Deletes a SQL user.
  *
- * Note: Please, be sure to execute this function inside a MYSQL transaction to ensure data consistency.
+ * Note: Please, be sure to execute this function inside a MySQL transaction to ensure data consistency.
  *
  * @param  int $domainId Domain unique identifier
  * @param  int $sqlUserId Sql user unique identifier
@@ -549,26 +549,22 @@ function sql_delete_user($domainId, $sqlUserId)
 	$sqlUserName = $stmt->fields['sqlu_name'];
 
 	// If SQL user is only assigned to one database we can remove it completely
-	if (count_sql_user_by_name($stmt->fields['sqlu_name']) == 1) {
-		$query = 'DELETE FROM `mysql`.`user` WHERE `User` = ?';
-		exec_query($query, $sqlUserName);
-
-		$query = 'DELETE FROM `mysql`.`db` WHERE `User` = ?';
-		exec_query($query, $sqlUserName);
-
+	if (count_sql_user_by_name($sqlUserName) == 1) {
+		exec_query('DELETE FROM `mysql`.`user` WHERE `User` = ?', $sqlUserName);
+		exec_query('DELETE FROM `mysql`.`db` WHERE `User` = ?', $sqlUserName);
 	} else {
-		$query = 'DELETE FROM `mysql`.`db` WHERE `User` = ? AND `Db` = ?';
-		exec_query($query, array($sqlUserName, quoteIdentifier($stmt->fields['sqld_name'])));
+		exec_query(
+			'DELETE FROM `mysql`.`db` WHERE `User` = ? AND `Db` = ?',
+			array($sqlUserName, $stmt->fields['sqld_name'])
+		);
 	}
 
-	// Flush mysql privileges
-	$query = "FLUSH PRIVILEGES";
-	execute_query($query);
+	// Flush MySQL privileges
+	execute_query('FLUSH PRIVILEGES');
 
 	// Delete the database from the i-MSCP sql_user table
 	// Must be done at end of process
-	$query = 'DELETE FROM `sql_user` WHERE `sqlu_id` = ?';
-	exec_query($query, $sqlUserId);
+	exec_query('DELETE FROM `sql_user` WHERE `sqlu_id` = ?', $sqlUserId);
 
 	// Update reseller sql user limit
 	update_reseller_c_props(get_reseller_id($domainId));
@@ -579,8 +575,9 @@ function sql_delete_user($domainId, $sqlUserId)
 }
 
 /**
- * Deletes a SQL database.
+ * Deletes the given SQL database.
  *
+ * @throws iMSCP_Exception in case a SQL user linked to the given databsae cannot be removed
  * @param  int $domainId Domain unique identifier
  * @param  int $databaseId Databse unique identifier
  * @return bool TRUE when $databaseId has been found and successfully deleted, FALSE otherwise

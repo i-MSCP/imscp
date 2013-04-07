@@ -50,7 +50,7 @@ if (customerHasFeature('sql') && isset($_GET['id'])) {
 		iMSCP_Database::getInstance()->beginTransaction();
 
 		if (!sql_delete_user(get_user_domain_id($_SESSION['user_id']), $sqlUserId)) {
-			throw new iMSCP_Exception(sprintf('SQL user with ID %d no found in iMSCP database or not owned by customer with ID %d.', $_SESSION['user_id'], $sqlUserId));
+			throw new iMSCP_Exception(sprintf('SQL user with ID %d not found in iMSCP database or not owned by customer with ID %d.', $_SESSION['user_id'], $sqlUserId));
 		}
 
 		iMSCP_Database::getInstance()->commit();
