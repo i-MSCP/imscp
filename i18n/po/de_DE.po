@@ -30,7 +30,7 @@ msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
 "POT-Creation-Date: 2013-03-01 04:50+0100\n"
-"PO-Revision-Date: 2013-03-01 03:51+0000\n"
+"PO-Revision-Date: 2013-04-07 19:21+0000\n"
 "Last-Translator: Torsten Widmann <info@goover.de>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -1053,7 +1053,7 @@ msgid "Auto-responder successfully scheduled for update."
 msgstr "E-Mail Auto-Antwort fuer Update hinzugefuegt."
 
 msgid "Automatic Updates"
-msgstr ""
+msgstr "Automatische Updates"
 
 msgid "Autoresponders"
 msgstr ""
@@ -1129,7 +1129,7 @@ msgid "Blocking time between logins and captcha attempts"
 msgstr "Wartezeit zwischen Login/Captcha-Eingaben"
 
 msgid "Blocktime <small>(in minutes)</small>"
-msgstr ""
+msgstr "Sperrzeit <small>(in Minuten)</small>"
 
 msgid "Both source and destination are identical."
 msgstr "Quelle und Ziel sind indentisch."
@@ -1396,7 +1396,7 @@ msgid "Current password"
 msgstr "Aktuelles Passwort"
 
 msgid "Custom DNS Records"
-msgstr ""
+msgstr "Eigene DNS-Einträge."
 
 msgid "Custom DNS record"
 msgstr "Eigene DNS Records"
@@ -1417,7 +1417,7 @@ msgid "Custom DNS records"
 msgstr "Eigene DNS-Einträge."
 
 msgid "Custom Error Pages"
-msgstr ""
+msgstr "Eigene Fehlerseiten"
 
 msgid "Custom apache logs"
 msgstr "Benutzerdefinierte Apache-Logs"
@@ -1734,7 +1734,7 @@ msgid "Disk limit"
 msgstr "Speicherplatz"
 
 msgid "Disk space"
-msgstr ""
+msgstr "Speicherplatz"
 
 msgid "Disk space limit"
 msgstr ""
@@ -2186,7 +2186,7 @@ msgid "Error state..."
 msgstr "Fehler Zustand ..."
 
 msgid "Error while trying to obtain list of network cards."
-msgstr "Fehler beim Versuch eine Liste der Netzwerkkarten zu erstellen."
+msgstr "Fehler beim Versuch, eine Liste der Netzwerkkarten zu erstellen."
 
 msgid "Error: Remote File not found!"
 msgstr "Fehler: Remotedatei nicht gefunden!"
@@ -2243,7 +2243,7 @@ msgid "FTP"
 msgstr "FTP"
 
 msgid "FTP Accounts"
-msgstr ""
+msgstr "FTP Konten"
 
 msgid "FTP Users"
 msgstr "FTP-Benutzer"
@@ -2467,7 +2467,7 @@ msgid "Host must be filled."
 msgstr "Der Host muss angegeben werden."
 
 msgid "Hosting Plan"
-msgstr ""
+msgstr "Tarif"
 
 msgid "Hosting details"
 msgstr "Tarifdetails"
@@ -3218,7 +3218,7 @@ msgid "More Details"
 msgstr "Mehr Details"
 
 msgid "More details"
-msgstr ""
+msgstr "Mehr Details"
 
 msgid "Mount"
 msgstr "Einhängepunkt"
@@ -4175,7 +4175,7 @@ msgid "Reseller total"
 msgstr "Reseller Gesamt"
 
 msgid "Reseller users"
-msgstr "Reseller Benutzer"
+msgstr "Reseller"
 
 msgid "Reseller users table"
 msgstr "Reseller Kundentabelle"
@@ -4403,7 +4403,7 @@ msgid "Server ports"
 msgstr "Serverports"
 
 msgid "Server statistics"
-msgstr "Serverstatistik"
+msgstr "Server Statistiken"
 
 msgid "Server status"
 msgstr "Serverstatus"
@@ -5213,7 +5213,7 @@ msgid "Total installations"
 msgstr "Gesamte Installationen"
 
 msgid "Total packages in Web software repository"
-msgstr ""
+msgstr "Insgesamt Pakete im Web Software-Repository"
 
 msgid "Total reseller"
 msgstr "Reseller gesamt"
@@ -5284,7 +5284,7 @@ msgid "Unable to read Web software repository index file."
 msgstr ""
 
 msgid "Unable to read xml file for Web softwares."
-msgstr ""
+msgstr "Kann XML Datei für Web Software nicht lesen."
 
 msgid "Unable to read xml file for web softwares."
 msgstr "Kann xml-Datei für Web-Software nicht lesen."
@@ -5497,7 +5497,7 @@ msgid "User session was successfully killed for password change"
 msgstr "Benutzersitzung wurde erfolgreich für Passwort-ändern gelöscht."
 
 msgid "User successfully disconnected."
-msgstr ""
+msgstr "Benutzer erfolgreich getrennt."
 
 msgid "User type"
 msgstr "Benutzertyp"
@@ -5541,7 +5541,7 @@ msgid "Values"
 msgstr "Werte"
 
 msgid "Vat"
-msgstr ""
+msgstr "Steuer"
 
 msgid "Vat must be a number."
 msgstr ""
