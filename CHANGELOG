@@ -78,6 +78,7 @@ Tickets:
 	- Fixed #629: Unable to change PHP editor settings when editing reseller
 	- Fixed #634: Bug - i-MSCP update from git master - Error in bind9 server implementation
 	- Fixed #649 - imscp-uninstall syntax error
+	- Fixed #650: Bug - Error when assigning an existing SQL User to a new database
 
 -------------------------------------------------------------------------------------
 i-MSCP 1.1.0-rc1.4
