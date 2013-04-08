@@ -30,7 +30,7 @@ Addons::awstats::installer - i-MSCP Awstats addon installer
 # @link			http://i-mscp.net i-MSCP Home Site
 # @license		http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
-package Addons::awstats::installer;
+package Addons::webstats::awstats::installer;
 
 use strict;
 use warnings;
