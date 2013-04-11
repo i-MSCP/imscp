@@ -236,15 +236,13 @@ sub addUser
 		my $eUTag = "## SECTION $data->{'USER'} END.\n";
 
 		my $entry = getBloc($bTag, $eTag, $content);
-		chomp($entry);
 		$entry =~ s/#//g;
 
 		$content = replaceBloc($bUTag, $eUTag, '', $content);
-		chomp($content);
 
 		$self->{'data'}->{'BWLIMIT_DISABLED'} = ($data->{'BWLIMIT'} ? '' : '#');
 
-		$entry = $self->buildConf($bTag . $entry . $eTag);
+		$entry = $self->buildConf("    $bTag$entry    $eTag");
 		$content = replaceBloc($bTag, $eTag, $entry, $content, 'preserve');
 
 		$file = iMSCP::File->new('filename' => "$self->{'apacheWrkDir'}/00_modcband.conf");
