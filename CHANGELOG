@@ -19,7 +19,7 @@ ENGINE:
 	- Fixed: DNS server must answer to queries only for zones for which it's authoritative (excepted for localhost)
 	- Fixed: DNS server must be protected against common attacks
 	- Fixed: DNS zone files must be checked and cleaned before installation in production directory
-	- Fixed: DNS zones must be added in named.conf.local instead of named.conf (Bind9)
+	- Fixed: DNS zones must be added in named.conf.local instead of named.conf (Bind9 - Debian/Ubuntu)
 	- Fixed: i-MSCP network init script must start/stop MySQL server only if installed
 	- Fixed: Permissions as set by Debian must be keep (bind9)
 	- Fixed: Slave DNS zone files should be put in dedicated directory (Bind9)
@@ -36,7 +36,6 @@ GUI:
 
 SETUP:
 	- Added support for external repositories (Debian/Ubuntu)
-	- Enhancement: created WEBSTATS_ADDON to allow choosing the webstats provider
 	- Fixed: APT packages manager must be configured before any package installation
 	- Fixed: All MySQL secure installation tasks are now done by the i-MSCP installer
 	- Fixed: i-MSCP must allow usage of remote SQL server

@@ -236,12 +236,15 @@ function gen_client_menu($tpl, $menuTemplateFile)
 	$domainProperties = get_domain_default_props($_SESSION['user_id']);
 
 	if (customerHasFeature('awstats')) {
-		$tpl->assign(array(
-						  'TR_LMENU_AWSTATS' => tr('Web statistics'),
-						  'AWSTATS_PATH' => 'http://' . decode_idna($domainProperties['domain_name']) . $cfg->AWSTATS_PATH,
-						  'AWSTATS_TARGET' => $cfg->AWSTATS_TARGET));
+		$tpl->assign(
+			array(
+				  'TR_LMENU_WEBSTATS' => tr('Web statistics'),
+				  'WEBSTATS_RPATH' => 'http://' . decode_idna($domainProperties['domain_name']) . '/' .  $cfg->WEBSTATS_RPATH,
+				  'WEBSTATS_TARGET' => $cfg->WEBSTATS_TARGET
+			)
+		);
 	} else {
-		$tpl->assign('AWSTATS_FEATURE', '');
+		$tpl->assign('WEBSTATS_FEATURE', '');
 	}
 
 	if (customerHasFeature('backup')) {

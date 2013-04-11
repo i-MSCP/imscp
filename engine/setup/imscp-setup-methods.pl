@@ -1775,7 +1775,7 @@ sub setupCron
 	}
 
 	# Awstats cron task preparation (On|Off) according status in imscp.conf
-	if ($main::imscpConfig{'AWSTATS_ACTIVE'} !~ /^yes/i || $main::imscpConfig{'AWSTATS_MODE'} eq '1') {
+	if ($main::imscpConfig{'WEBSTATS_ADDON'} ne 'Awstats' || $main::imscpConfig{'AWSTATS_MODE'} eq '1') {
 		$awstats = '#';
 	}
 

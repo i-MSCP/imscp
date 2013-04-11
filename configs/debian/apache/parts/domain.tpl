@@ -35,47 +35,6 @@
         CBandUser {USER}
     </IfModule>
 
-    # SECTION awstats_support BEGIN.
-    # SECTION awstats_dynamic BEGIN.
-    ProxyRequests Off
-    <Proxy *>
-        Order deny,allow
-        Allow from all
-    </Proxy>
-        ProxyPass           /stats  http://localhost/stats/{DMN_NAME}
-        ProxyPassReverse    /stats  http://localhost/stats/{DMN_NAME}
-    <Location /stats>
-        <IfModule mod_rewrite.c>
-            RewriteEngine on
-            RewriteRule ^(.+)\?config=([^\?\&]+)(.*) $1\?config={DMN_NAME}&$3 [NC,L]
-        </IfModule>
-        AuthType Basic
-        AuthName "Statistics for domain {DMN_NAME}"
-        AuthUserFile {WWW_DIR}/{ROOT_DMN_NAME}/{HTACCESS_USERS_FILE_NAME}
-        AuthGroupFile {WWW_DIR}/{ROOT_DMN_NAME}/{HTACCESS_GROUPS_FILE_NAME}
-        Require group {AWSTATS_GROUP_AUTH}
-    </Location>
-    # SECTION awstats_dynamic END.
-
-    # SECTION awstats_static BEGIN.
-    Alias /awstatsicons     "{AWSTATS_WEB_DIR}/icon/"
-    Alias /stats            "{HOME_DIR}/statistics/"
-    <Directory "{HOME_DIR}/statistics">
-        AllowOverride AuthConfig
-        DirectoryIndex awstats.{DMN_NAME}.html
-        Order allow,deny
-        Allow from all
-    </Directory>
-    <Location /stats>
-        AuthType Basic
-        AuthName "Statistics for domain {DMN_NAME}"
-        AuthUserFile {WWW_DIR}/{ROOT_DMN_NAME}/{HTACCESS_USERS_FILE_NAME}
-        AuthGroupFile {WWW_DIR}/{ROOT_DMN_NAME}/{HTACCESS_GROUPS_FILE_NAME}
-        Require group {AWSTATS_GROUP_AUTH}
-    </Location>
-    # SECTION awstats_static END.
-    # SECTION awstats_support END.
-
     # SECTION cgi_support BEGIN.
     ScriptAlias /cgi-bin/ {HOME_DIR}/cgi-bin/
     <Directory {HOME_DIR}/cgi-bin>
@@ -186,6 +145,9 @@
     </IfModule>
     # SECTION itk END.
     # SECTION php_disabled END.
+
+    # SECTION addons BEGIN.
+    # SECTION addons END.
 
     Include {APACHE_CUSTOM_SITES_CONFIG_DIR}/{DMN_NAME}.conf
 

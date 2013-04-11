@@ -304,15 +304,18 @@ function generateNavigation($tpl)
 
 		$domainProperties = get_domain_default_props($_SESSION['user_id']);
 
-		$tpl->assign(array(
-			'FILEMANAGER_PATH' => $cfg->FILEMANAGER_PATH,
-			'FILEMANAGER_TARGET' => $cfg->FILEMANAGER_TARGET,
-			'PMA_PATH' => $cfg->PMA_PATH,
-			'PMA_TARGET' => $cfg->PMA_TARGET,
-			'WEBMAIL_PATH' => $cfg->WEBMAIL_PATH,
-			'WEBMAIL_TARGET' => $cfg->WEBMAIL_TARGET,
-			'AWSTATS_PATH' => 'http://' . decode_idna($domainProperties['domain_name']) . $cfg->AWSTATS_PATH,
-			'AWSTATS_TARGET' => $cfg->AWSTATS_TARGET));
+		$tpl->assign(
+			array(
+				'FILEMANAGER_PATH' => $cfg->FILEMANAGER_PATH,
+				'FILEMANAGER_TARGET' => $cfg->FILEMANAGER_TARGET,
+				'PMA_PATH' => $cfg->PMA_PATH,
+				'PMA_TARGET' => $cfg->PMA_TARGET,
+				'WEBMAIL_PATH' => $cfg->WEBMAIL_PATH,
+				'WEBMAIL_TARGET' => $cfg->WEBMAIL_TARGET,
+				'WEBSTATS_RPATH' => 'http://' . decode_idna($domainProperties['domain_name']) . '/' . $cfg->WEBSTATS_RPATH,
+				'WEBSTATS_TARGET' => $cfg->WEBSTATS_TARGET
+			)
+		);
 	}
 
 	// Dynamic links (All levels)

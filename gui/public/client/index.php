@@ -174,7 +174,7 @@ function client_generateFeatureStatus($tpl)
 			 'CUSTOM_DNS_RECORDS_FEATURE_STATUS' => customerHasFeature('custom_dns_records') ? $trYes : $trNo,
              'EXTERNAL_MAIL_SERVERS_FEATURE_STATUS' => customerHasFeature(array('mail', 'external_mail')) ? $trYes : $trNo,
 			 'APP_INSTALLER_FEATURE_STATUS' => customerHasFeature('aps') ? $trYes : $trNo,
-             'AWSTATS_FEATURE_STATUS' => customerHasFeature('awstats') ? $trYes : $trNo
+             'WEBSTATS_FEATURE_STATUS' => customerHasFeature('webstats') ? $trYes : $trNo
         )
     );
 
@@ -405,7 +405,7 @@ $tpl->assign(
          'TR_EXTERNAL_MAIL_SERVER_FEATURE' => tr('External mail servers'),
 		 'TR_APP_INSTALLER_FEATURE' => tr('Software installer'),
 		 'TR_BACKUP_FEATURE' => tr('Backup'),
-		 'TR_AWSTATS_FEATURE' => tr('Web statistics (AWStats)'),
+		 'TR_WEBSTATS_FEATURE' => tr('Web statistics'),
 		 'TR_TRAFFIC_USAGE' => tr('Traffic usage'),
 		 'TR_DISK_USAGE' => tr('Disk usage'),
          'TR_DISK_USAGE_DETAIL' => tr('Disk usage detail'),

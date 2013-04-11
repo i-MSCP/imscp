@@ -2,7 +2,7 @@
 
 =head1 NAME
 
-Addons::awstats::installer - i-MSCP Awstats addon installer
+Addons::webstats::awstats::installer - i-MSCP Awstats addon installer
 
 =cut
 
@@ -25,7 +25,6 @@ Addons::awstats::installer - i-MSCP Awstats addon installer
 #
 # @category		i-MSCP
 # @copyright	2010-2013 by i-MSCP | http://i-mscp.net
-# @author		Daniel Andreca <sci2tech@gmail.com>
 # @author		Laurent Declercq <l.declercq@nuxwin.com>
 # @link			http://i-mscp.net i-MSCP Home Site
 # @license		http://www.gnu.org/licenses/gpl-2.0.html GPL v2
@@ -34,6 +33,7 @@ package Addons::webstats::awstats::installer;
 
 use strict;
 use warnings;
+
 use iMSCP::Debug;
 use iMSCP::HooksManager;
 use iMSCP::Templator;
@@ -46,43 +46,62 @@ use parent 'Common::SingletonClass';
 
  Awstats addon installer.
 
- See Addons::awstats for more information.
+ See Addons::webstats::awstats::awstats for more information.
 
 =head1 PUBLIC METHODS
 
 =over 4
 
-=item registerSetupHooks(HooksManager)
+=item askAwstats()
 
- Register setup hook functions
+ Show installer questions.
 
- Param iMSCP::HooksManager instance
- Return int 0 on success, 1 on failure
+ Return int 0 or 30
 
 =cut
 
-sub registerSetupHooks
+sub askAwstats
+{
+	my ($self, $dialog, $rs) = (shift, shift, 0);
+	my $awstatsMode =  main::setupGetQuestion('AWSTATS_MODE');
+
+	if($main::reconfigure ~~ ['webstats', 'all', 'forced'] || $awstatsMode !~ /^0|1$/) {
+		($rs, $awstatsMode) = $dialog->radiolist(
+			"\nPlease, select the Awstats mode you want use:",
+			['Dynamic', 'Static'],
+			$awstatsMode ? 'Static' : 'Dynamic'
+		);
+
+		$awstatsMode = $awstatsMode eq 'Dynamic' ? 0 : 1 if $rs != 30;
+	}
+
+	$main::questions{'AWSTATS_MODE'} = $awstatsMode if $rs != 30;
+
+	$rs;
+}
+
+=item preinstall()
+
+ Process preinstall tasks.
+
+ Return int 0 on success, other on failure
+
+=cut
+
+sub preinstall
 {
 	my $self = shift;
-	my $hooksManager = shift;
 
-	my $rs = 0;
-
-	# Register add awstats dialog in setup dialog stack to show awstats addon questions on install
-	$rs = $hooksManager->register(
-		'beforeSetupDialog', sub { my $dialogStack = shift; push(@$dialogStack, sub { $self->askAwstats(@_) }); 0; }
-	);
-	return $rs if $rs;
-
-	# Register installLogrotate filter hook function to process logrotate awstats section on install
-	$hooksManager->register('beforeHttpdBuildConf', sub { $self->installLogrotate(@_); });
+	# Register the _installLogrotate() filter hook function to add the Awstats logrotate configuration snippet in the
+	# Apache logrotate file
+	iMSCP::HooksManager->getInstance()->register('beforeHttpdBuildConf', sub { $self->_installLogrotate(@_); });
 }
 
 =item install()
 
  Process install tasks.
 
- Return int 0 on success, 1 on failure
+ Return int 0 on success, other on failure
 
 =cut
 
@@ -91,19 +110,14 @@ sub install
 	my $self = shift;
 	my $rs = 0;
 
-	$self->{'httpd'} = Servers::httpd->factory() unless $self->{'httpd'} ;
-
-	$self->{'user'} = $self->{'httpd'}->can('getRunningUser')
-		? $self->{'httpd'}->getRunningUser() : $main::imscpConfig{'ROOT_USER'};
-
-	$self->{'group'} = $self->{'httpd'}->can('getRunningUser') ?
-		$self->{'httpd'}->getRunningGroup() : $main::imscpConfig{'ROOT_GROUP'};
-
-	if (main::setupGetQuestion('AWSTATS_ACTIVE') =~ /^yes$/i) {
+	if (main::setupGetQuestion('WEBSTATS_ADDON') eq 'Awstats') {
 		$rs = $self->_makeCacheDir();
 		return $rs if $rs;
 
-		$rs = $self->_createVhost();
+		$rs = $self->_createGlobalAwstatsVhost();
+		return $rs if $rs;
+	} else {
+		$rs = $self->_removeGlobalAwstatsVhost();
 		return $rs if $rs;
 	}
 
@@ -115,24 +129,24 @@ sub install
 
 =back
 
-=head1 HOOK FUNCTIONS
+=head1 PRIVATE METHODS
 
 =over 4
 
-=item installLogrotate(\$content, $filename)
+=item _installLogrotate(\$content, $filename)
 
- Add or remove awstats logrotate section in the Apache logrotate file.
+ Add or remove Awstats logrotate configuration snippet in the Apache logrotate file.
 
- Filter hook function responsible to add or remove the logrotate awstats section in the Apache logrotate file. If the
-file received is not the one expected, this function will auto-register itself to act on the next file.
+ Filter hook function responsible to add or remove the Awstats logrotate configuration snippet in the Apache logrotate
+file. If the file received is not the one expected, this function will auto-register itself to act on the next file.
 
  Param SCALAR reference - A reference to a scalar containing file content
  Param Param SCALAR Filename
- Return int 0 on success, 1 on failure
+ Return int 0 on success, other on failure
 
 =cut
 
-sub installLogrotate
+sub _installLogrotate
 {
 	my $self = shift;
 	my $content = shift;
@@ -140,94 +154,35 @@ sub installLogrotate
 
 	if ($filename eq 'logrotate.conf') {
 		$$content = replaceBloc(
-			'# SECTION awstats BEGIN.',
-			'# SECTION awstats END.',
+			"# SECTION awstats BEGIN.\n",
+			"# SECTION awstats END.\n",
 			(
-				main::setupGetQuestion('AWSTATS_ACTIVE') =~ /^yes$/i
+				main::setupGetQuestion('WEBSTATS_ADDON') eq 'Awstats'
 				?
-				"\tprerotate\n".
-				"\t\t$main::imscpConfig{'AWSTATS_ROOT_DIR'}\/awstats_updateall.pl ".
-				"now -awstatsprog=$main::imscpConfig{'AWSTATS_ENGINE_DIR'}\/awstats.pl &> \/dev\/null\n".
-				"\tendscript"
+					"\tprerotate\n".
+					"\t\t$main::imscpConfig{'AWSTATS_ROOT_DIR'}/awstats_updateall.pl now " .
+					"-awstatsprog=$main::imscpConfig{'AWSTATS_ENGINE_DIR'}/awstats.pl &> /dev/null\n" .
+					"\tendscript\n"
 				:
-				''
+					''
 			),
 			$$content
 		);
 	} else {
-		my $rs = iMSCP::HooksManager->getInstance()->register('beforeHttpdBuildConf', sub { return $self->installLogrotate(@_); });
+		my $rs = iMSCP::HooksManager->getInstance()->register(
+			'beforeHttpdBuildConf', sub { return $self->_installLogrotate(@_); }
+		);
 		return $rs if $rs;
 	}
 
 	0;
 }
 
-=item askAwstats()
-
- Show awstats installer questions.
-
- Hook function responsible to show awstats installer questions.
-
- Return int 0 or 30
-
-=cut
-
-sub askAwstats
-{
-	my ($self, $dialog, $rs) = (shift, shift, 0);
-	my $awstatsActive = main::setupGetQuestion('AWSTATS_ACTIVE');
-	my $awstatsMode =  main::setupGetQuestion('AWSTATS_MODE');
-
-	$awstatsActive = lc($awstatsActive);
-
-	if(
-		$main::reconfigure ~~ ['webstats', 'all', 'forced'] || $awstatsActive !~ /^yes|no$/ ||
-		($awstatsActive eq 'yes' && $awstatsMode !~ /^0|1$/) || ($awstatsActive eq 'no' && $awstatsMode ne '')
-	) {
-		($rs, $awstatsActive)  = $dialog->radiolist(
-"
-\\Z4\\Zb\\Zui-MSCP Awstats Addon\\Zn
-
-Do you want activate the Awstats addon?
-",
-			['yes', 'no'],
-			$awstatsActive ne 'yes' ? 'no' : 'yes'
-		);
-
-		if($rs != 30) {
-			if($awstatsActive eq 'yes') {
-           		($rs, $awstatsMode) = $dialog->radiolist(
-           			"\nPlease, select the Awstats mode you want use:",
-           			['dynamic', 'static'],
-           			$awstatsMode ? 'static' : 'dynamic'
-           		);
-
-				$awstatsMode = $awstatsMode eq 'dynamic' ? 0 : 1 if $rs != 30;
-       		} else {
-        		$awstatsMode = '';
-        	}
-        }
-	}
-
-    if($rs != 30) {
-    	$main::questions{'AWSTATS_ACTIVE'} = $awstatsActive;
-    	$main::questions{'AWSTATS_MODE'} = $awstatsMode;
-    }
-
-	$rs;
-}
-
-=back
-
-=head1 PRIVATE METHODS
-
-=over 4
-
 =item _makeCacheDir()
 
- Create awstats cache directory.
+ Create cache directory for Awstats.
 
- Return int 0 on success, 1 on failure
+ Return int 0 on success, other on failure
 
 =cut
 
@@ -235,24 +190,25 @@ sub _makeCacheDir
 {
 	my $self = shift;
 
+	my $httpd = Servers::httpd->factory();
 
 	iMSCP::Dir->new(
 		'dirname' => $main::imscpConfig{'AWSTATS_CACHE_DIR'}
 	)->make(
-		{ 'user' => $self->{'user'},'group' => $self->{'group'}, 'mode' => 0755 }
+		{ 'user' => $httpd->getRunningUser(),'group' => $httpd->getRunningGroup(), 'mode' => 0750 }
 	);
 }
 
-=item _createVhost()
+=item _createGlobalAwstatsVhost()
 
  Create and install global awstats Apache vhost file.
 
- Return int 0 on success, 1 on failure
+ Return int 0 on success, other on failure
 
 =cut
 
-sub _createVhost {
-
+sub _createGlobalAwstatsVhost
+{
 	my $self = shift;
 	my $rs = 0;
 
@@ -261,33 +217,54 @@ sub _createVhost {
 	$httpd->setData(
 		{
 			AWSTATS_ENGINE_DIR => $main::imscpConfig{'AWSTATS_ENGINE_DIR'},
-			AWSTATS_WEB_DIR => $main::imscpConfig{'AWSTATS_WEB_DIR'}
+			AWSTATS_WEB_DIR => $main::imscpConfig{'AWSTATS_WEB_DIR'},
+			WEBSTATS_RPATH => $main::imscpConfig{'WEBSTATS_RPATH'}
 		}
 	);
 
-	if($httpd->can('buildConfFile')){
-		$rs = $httpd->buildConfFile('01_awstats.conf');
+	$rs = $httpd->buildConfFile('01_awstats.conf') if $httpd->can('buildConfFile');
+	return $rs if $rs;
+
+	$rs = $httpd->installConfFile('01_awstats.conf') if $httpd->can('installConfFile');
+	return $rs if $rs;
+
+	$rs = $httpd->enableSite('01_awstats.conf') if $httpd->can('enableSite');
+
+	$rs;
+}
+
+=item _removeGlobalAwstatsVhost()
+
+ Disable and remove global Apache vhost file for Awstats.
+
+ Return int 0 on success, other on failure
+
+=cut
+
+sub _removeGlobalAwstatsVhost
+{
+	my $self = shift;
+
+	my $httpd = Servers::httpd->factory();
+	my $ApacheSiteDir = $httpd->{'tplValues'}->{'APACHE_SITES_DIR'};
+	my $awstatsVhostFile = '01_awstats.conf';
+	my $rs = 0;
+
+	if (-f "$ApacheSiteDir/$awstatsVhostFile") {
+		$rs = $httpd->disableSite('01_awstats.conf') if $httpd->can('disableSite');
 		return $rs if $rs;
+
+		$rs = iMSCP::File->new('filename' => "$ApacheSiteDir/$awstatsVhostFile")->delFile();
 	}
 
-	if($httpd->can('installConfFile')){
-		$rs = $httpd->installConfFile('01_awstats.conf');
-		return $rs if $rs;
-	}
-
-	if($httpd->can('enableSite')){
-		$rs = $httpd->enableSite('01_awstats.conf');
-		return $rs if $rs;
-	}
-
-	0;
+	$rs;
 }
 
 =item _disableDefaultConfig()
 
- Disable default awstats configuration file provided by awstats Debian package.
+ Disable default Awstats configuration file provided by Awstats Debian package.
 
- Return int 0 on success, 1 on failure
+ Return int 0 on success, other on failure
 
 =cut
 
@@ -310,9 +287,9 @@ sub _disableDefaultConfig
 
 =item _disableDefaultCronTask()
 
- Disable default awstats cron task provided by awstats Debian package.
+ Disable default Awstats cron task provided by Awstats Debian package.
 
- Return int 0 on success, 1 on failure
+ Return int 0 on success, other on failure
 
 =cut
 
@@ -322,23 +299,21 @@ sub _disableDefaultCronTask
 	my $rs = 0;
 
 	if(-f "$main::imscpConfig{'CRON_D_DIR'}/awstats") {
-		iMSCP::File->new(
+		$rs = iMSCP::File->new(
 			'filename' => "$main::imscpConfig{'CRON_D_DIR'}/awstats"
 		)->moveFile(
 			"$main::imscpConfig{'CONF_DIR'}/cron.d/backup/awstats.system"
 		);
-		return $rs if $rs;
 	}
 
-	0;
+	$rs;
 }
 
 =back
 
-=head1 AUTHORS
+=head1 AUTHOR
 
- - Daniel Andreca <sci2tech@gmail.com>
- - Laurent Declercq <l.declercq@nuxwin.com>
+ Laurent Declercq <l.declercq@nuxwin.com>
 
 =cut
 

@@ -35,10 +35,10 @@
 					<td>{TR_APP_INSTALLER_TXT}</td>
 				</tr>
 				<!-- EDP: aps_feature -->
-				<!-- BDP: awstats_feature -->
+				<!-- BDP: webstats_feature -->
 				<tr>
-					<td><a href="{AWSTATS_PATH}" target="{AWSTATS_TARGET}" class="icon_big icon_center i_awstatsicon" title="{TR_AWSTATS}"></a></td>
-					<td>{TR_AWSTATS_TXT}</td>
+					<td><a href="/{WEBSTATS_RPATH}" target="{WEBSTATS_TARGET}" class="icon_big icon_center i_awstatsicon" title="{TR_WEBSTATS}"></a></td>
+					<td>{TR_WEBSTATS_TXT}</td>
 				</tr>
 				<!-- EDP: awstats_feature -->
 			</table>

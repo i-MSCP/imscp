@@ -481,7 +481,7 @@ sub buildADDONData
 	my $userName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} .
 		($main::imscpConfig{'SYSTEM_USER_MIN_UID'} + $self->{'domain_admin_id'});
 
-	my $hDir = "$main::imscpConfig{'USER_HOME_DIR'}/$self->{domain_name}";
+	my $hDir = "$main::imscpConfig{'USER_HOME_DIR'}/$self->{'domain_name'}";
 	$hDir =~ s~/+~/~g;
 
 	$self->{'AddonsData'} = {

@@ -33,14 +33,15 @@ package Addons::webstats;
 
 use strict;
 use warnings;
+
 use iMSCP::Debug;
 use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
 
- Filemanager addon for i-MSCP.
+ Webstats addon for i-MSCP.
 
- This addon provide Web Ftp client for i-MSCP. For now only Ajaxplorer and Net2Ftp are available.
+ This addon provide Web statistics for i-MSCP customers. For now only Awstats is available.
 
 =head1 PUBLIC METHODS
 
@@ -61,7 +62,6 @@ sub registerSetupHooks
 	my $hooksManager = shift;
 
 	require Addons::webstats::installer;
-
 	Addons::webstats::installer->getInstance()->registerSetupHooks($hooksManager);
 }
 
@@ -78,7 +78,6 @@ sub preinstall
 	my $self = shift;
 
 	require Addons::webstats::installer;
-
 	Addons::webstats::installer->getInstance()->preinstall();
 }
 
@@ -86,7 +85,7 @@ sub preinstall
 
  Run the install method on the webstats addon installer.
 
- Return int 0 on success, 1 on failure
+ Return int 0 on success, other on failure
 
 =cut
 
@@ -95,13 +94,12 @@ sub install
 	my $self = shift;
 
 	require Addons::webstats::installer;
-
 	Addons::webstats::installer->getInstance()->install();
 }
 
 =item setGuiPermissions()
 
- Set webstats files permissions.
+ Set webstats addon files permissions.
 
  Return int 0 on success, other on failure
 
@@ -112,8 +110,84 @@ sub setGuiPermissions
 	my $self = shift;
 
 	require Addons::webstats::installer;
-
 	Addons::webstats::installer->getInstance()->setGuiPermissions();
+}
+
+=item preaddDmn(\$data)
+
+ Perform preAddDmn tasks.
+
+ Return int 0 on success, other on failure
+
+=cut
+
+sub preaddDmn
+{
+	my $self = shift;
+	my $data = shift;
+
+	my $webStatsAddon = $main::imscpConfig{'WEBSTATS_ADDON'};
+	my $rs = 0;
+
+	if($webStatsAddon eq 'Awstats') {
+		require Addons::webstats::awstats::awstats;
+		$rs = Addons::webstats::awstats::awstats->getInstance()->preaddDmn($data);
+	}
+
+	$rs;
+}
+
+=item addDmn(\$data)
+
+ Process addDmn tasks.
+
+ Return int 0 on success, other on failure
+
+=cut
+
+sub addDmn
+{
+	my $self = shift;
+	my $data = shift;
+
+	my $webStatsAddon = $main::imscpConfig{'WEBSTATS_ADDON'};
+	my $rs = 0;
+
+	if($webStatsAddon eq 'Awstats') {
+		require Addons::webstats::awstats::awstats;
+		$rs = Addons::webstats::awstats::awstats->getInstance()->addDmn($data);
+	} else {
+		# Needed to remove any Awstats configuration file when switching to another Web statistics addon
+		# TODO review addon implementation to avoid such thing
+		require Addons::webstats::awstats::awstats;
+		$rs = Addons::webstats::awstats::awstats->getInstance()->delDmn($data);
+	}
+
+	$rs;
+}
+
+=item delDmn(\$data)
+
+ Process delDmn tasks.
+
+ Return int 0 on success, other on failure
+
+=cut
+
+sub delDmn
+{
+	my $self = shift;
+	my $data = shift;
+
+	my $webStatsAddon = $main::imscpConfig{'WEBSTATS_ADDON'};
+	my $rs = 0;
+
+	if($webStatsAddon eq 'Awstats') {
+		require Addons::webstats::awstats::awstats;
+		$rs = Addons::webstats::awstats::awstats->getInstance()->delDmn($data);
+	}
+
+	$rs;
 }
 
 =back

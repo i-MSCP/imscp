@@ -275,12 +275,12 @@
 					<uri>/client/domain_statistics.php</uri>
 					<title_class>stats</title_class>
 				</overview>
-				<awstats>
+				<webstats>
 					<label>Web statistics</label>
-					<uri>{AWSTATS_PATH}</uri>
-					<target>{AWSTATS_TARGET}</target>
-					<privilege_callback name="customerHasFeature" param="awstats"/>
-				</awstats>
+					<uri>{WEBSTATS_RPATH}/</uri>
+					<target>{WEBSTATS_TARGET}</target>
+					<privilege_callback name="customerHasFeature" param="webstats"/>
+				</webstats>
 			</pages>
 		</statistics>
 
@@ -398,12 +398,12 @@
 					<target>{PMA_TARGET}</target>
 					<privilege_callback name="customerHasFeature" param="sql"/>
 				</phpmyadmin>
-				<awstats>
+				<webstats>
 					<label>Web statistics</label>
-					<uri>{AWSTATS_PATH}</uri>
-					<target>{AWSTATS_TARGET}</target>
-					<privilege_callback name="customerHasFeature" param="awstats"/>
-				</awstats>
+					<uri>{WEBSTATS_RPATH}</uri>
+					<target>{WEBSTATS_TARGET}</target>
+					<privilege_callback name="customerHasFeature" param="webstats"/>
+				</webstats>
 			</pages>
 		</webtools>
 

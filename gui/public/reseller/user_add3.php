@@ -317,7 +317,7 @@ function add_user_data($reseller_id)
             )
 	";
 
-	exec_query($query, array($dmn_id, $cfg->AWSTATS_GROUP_AUTH, $user_id, $cfg->ITEM_ADD_STATUS));
+	exec_query($query, array($dmn_id, $cfg->WEBSTATS_GROUP_AUTH, $user_id, $cfg->ITEM_ADD_STATUS));
 
 	// Create default addresses if needed
 	if ($cfg->CREATE_DEFAULT_EMAIL_ADDRESSES) {

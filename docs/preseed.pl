@@ -2,7 +2,7 @@
 
 # i-MSCP preseed.pl template file for installer preseeding
 # See documentation at http://wiki.i-mscp.net/doku.php?id=start:preseeding
-# Last update on 2013.03.14
+# Last update on 2013.04.10
 # Status (Experimental)
 
 ## Autoinstall questions
@@ -118,11 +118,11 @@ $main::preseed{'DOVECOT_SQL_USER'} = 'dovecot_user';
 # dovecot SQL user (only relevant if you set the  PO_SERVER question to 'dovecot'
 $main::preseed{'DOVECOT_SQL_PASSWORD'} = '<password>'; # Password shouldn't be empty
 
-# Aswtats addon
-$main::preseed{'AWSTATS_ACTIVE'} = 'no'; # (yes|no)
+# Webstats addon
+$main::preseed{'WEBSTATS_ADDON'} = 'No'; # (Awstats|No)
 
-# Only relevant if the AWSTATS_ACTIVE question is set to 'yes'
-$main::preseed{'AWSTATS_MODE'} = ''; # (empty value if the AWSTATS_ACTIVE question is set to 'no', 0 for dynamic or 1 for static)
+# Only relevant if the WEBSTATS_ADDON question is set to 'Awstats'
+$main::preseed{'AWSTATS_MODE'} = ''; # (empty value if the WEBSTATS_ADDON question is set to 'No', 0 for dynamic or 1 for static)
 
 # Policyd Weight addon
 $main::preseed{'DNSBL_CHECKS_ONLY'} = 'no'; # (yes|no)

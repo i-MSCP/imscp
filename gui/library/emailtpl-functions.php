@@ -167,7 +167,7 @@ function get_welcome_email($userId, $userType = 'user')
 
     // No custom template for welcome mail - return the default
     if (empty($data['message'])) {
-        if ($userType == 'user' && $cfg->AWSTATS_ACTIVE == 'yes') {
+        if ($userType == 'user' && $cfg->WEBSTATS_ADDON != 'No') {
             $data['message'] = tr('
 
 Dear {NAME},
@@ -184,7 +184,7 @@ Remember to change your password often and the first time you login.
 
 You can login right now at {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}
 
-Statistics: {BASE_SERVER_VHOST_PREFIX}{USERNAME}/stats/
+Statistics: http://{USERNAME}/{WEBSTATS_RPATH}
 (Same username and password than above)
 
 Thank you for using i-MSCP services.

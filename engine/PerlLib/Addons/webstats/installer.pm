@@ -33,6 +33,7 @@ package Addons::webstats::installer;
 
 use strict;
 use warnings;
+
 use iMSCP::Debug;
 use parent 'Common::SingletonClass';
 
@@ -58,103 +59,16 @@ sub registerSetupHooks
 	my $self = shift;
 	my $hooksManager = shift;
 
-	# Add webstats addon installer dialog in setup dialog stack
 	$hooksManager->register(
 		'beforeSetupDialog', sub { my $dialogStack = shift; push(@$dialogStack, sub { $self->askWebstats(@_) }); 0; }
 	);
 }
 
-=item preinstall()
-
- Process web stats  addon preinstall tasks.
-
- Return int 0 on success, other on failure
-
-=cut
-
-sub preinstall
-{
-	my $self = shift;
-
-	my $webStatsAddon = $main::imscpConfig{'WEBSTATS_ADDON'} || '';
-
-	if($webStatsAddon eq 'awstats') {
-		require Addons::webstats::awstats::installer;
-		#Addons::webstats::awstats::installer->getInstance()->preinstall();
-		#preinstall not needed, force return 0
-		return 0;
-	} elsif($webStatsAddon eq 'piwik') {
-		require Addons::webstats::piwik::installer;
-		Addons::webstats::piwik::installer->getInstance()->preinstall();
-	} else {
-		error("Unknown Web Stats addon: $webStatsAddon");
-		return 1;
-	}
-}
-
-=item install()
-
- Process file manager addon install tasks.
-
- Return int 0 on success, 1 on failure
-
-=cut
-
-sub install
-{
-	my $self = shift;
-
-	my $webStatsAddon = $main::imscpConfig{'WEBSTATS_ADDON'} || '';
-
-	if($webStatsAddon eq 'awstats') {
-		require Addons::webstats::awstats::installer;
-		Addons::webstats::awstats::installer->getInstance()->install();
-	} elsif($webStatsAddon eq 'piwik') {
-		require Addons::webstats::piwik::installer;
-		Addons::webstats::piwik::installer->getInstance()->install();
-	} else {
-		error("Unknown Web Stats addon: $webStatsAddon");
-		return 1;
-	}
-}
-
-=item setGuiPermissions()
-
- Set file manager addon files permissions.
-
- Return int 0 on success, other on failure
-
-=cut
-
-sub setGuiPermissions
-{
-	my $self = shift;
-
-	my $webStatsAddon = $main::imscpConfig{'WEBSTATS_ADDON'} || '';
-
-	if($webStatsAddon eq 'awstats') {
-		require Addons::webstats::awstats::installer;
-		Addons::webstats::awstats::installer->getInstance()->setGuiPermissions();
-	} elsif($webStatsAddon eq 'piwik') {
-		require Addons::webstats::piwik::installer;
-		Addons::webstats::piwik::installer->getInstance()->setGuiPermissions();
-	} else {
-		error("Unknown Web Stats addon: $webStatsAddon");
-		return 1;
-	}
-}
-
-=back
-
-=head1 HOOK FUNCTIONS
-
-=over 4
-
 =item askWebstats()
 
- Show file manager addon question.
+ Show webstats addon question.
 
- Hook function responsible to show webstats installer question.
+ Hook function responsible to show webstats addon question(s).
 
  Param iMSCP::Dialog
  Return int 0 or 30
@@ -167,17 +81,104 @@ sub askWebstats
 
 	my $webStatsAddon = main::setupGetQuestion('WEBSTATS_ADDON');
 
-	if($main::reconfigure ~~ ['webstats', 'all', 'forced'] || $webStatsAddon !~ /^awstats|piwik$/) {
+	if($main::reconfigure ~~ ['webstats', 'all', 'forced'] || $webStatsAddon !~ /^Awstats|No$/) {
 		($rs, $webStatsAddon) = $dialog->radiolist(
-			"\nPlease, select the Webstats addon you want use:",
-			['awstats'],
-			$webStatsAddon ne '' ? $webStatsAddon : 'awstats'
+"
+Please, select the Web statistics addon you want install.
+
+Choose 'No' if you do not want provide any Web statistics for your customers.
+",
+			['Awstats', 'No'],
+			$webStatsAddon ne '' ? $webStatsAddon : 'Awstats'
 		);
 	}
 
 	$main::questions{'WEBSTATS_ADDON'} = $webStatsAddon if $rs != 30;
 
+	if($rs != 30) {
+		if($webStatsAddon eq 'Awstats') {
+			require Addons::webstats::awstats::installer;
+			$rs = Addons::webstats::awstats::installer->getInstance()->askAwstats($dialog);
+		}
+	}
+
 	$rs;
+}
+
+=item preinstall()
+
+ Process webstats addon preinstall tasks.
+
+ Return int 0 on success, other on failure
+
+=cut
+
+sub preinstall
+{
+	my $self = shift;
+
+	my $webStatsAddon = $main::imscpConfig{'WEBSTATS_ADDON'} || '';
+
+	if($webStatsAddon eq 'Awstats') {
+		require Addons::webstats::awstats::installer;
+		Addons::webstats::awstats::installer->getInstance()->preinstall();
+	} elsif($webStatsAddon ne 'No') {
+		error("Unknown Web Statistics addon: $webStatsAddon");
+		return 1;
+	}
+}
+
+=item install()
+
+ Process webstats addon install tasks.
+
+ Return int 0 on success, other on failure
+
+=cut
+
+sub install
+{
+	my $self = shift;
+
+	my $webStatsAddon = $main::imscpConfig{'WEBSTATS_ADDON'} || '';
+	my $rs = 0;
+
+	# In any case, the install method on the Awstats addon installer must be called since it act also as uninstaller
+	# for Awstats global vhost file
+	# TODO review addon implementation to avoid such thing
+	require Addons::webstats::awstats::installer;
+	$rs = Addons::webstats::awstats::installer->getInstance()->install();
+	return $rs if $rs;
+
+	if($webStatsAddon ne 'Awstats' && $webStatsAddon ne 'No') {
+		error("Unknown Web Statistics addon: $webStatsAddon");
+		$rs = 1;
+	}
+
+	$rs;
+}
+
+=item setGuiPermissions()
+
+ Set webstats addon files permissions.
+
+ Return int 0 on success, other on failure
+
+=cut
+
+sub setGuiPermissions
+{
+	my $self = shift;
+
+	my $webStatsAddon = $main::imscpConfig{'WEBSTATS_ADDON'} || '';
+
+	if($webStatsAddon eq 'Awstats') {
+		require Addons::webstats::awstats::installer;
+		Addons::webstats::awstats::installer->getInstance()->setGuiPermissions();
+	} elsif($webStatsAddon ne 'No') {
+		error("Unknown Web Statistics addon: $webStatsAddon");
+		return 1;
+	}
 }
 
 =back

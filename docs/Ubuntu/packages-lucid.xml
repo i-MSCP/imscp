@@ -156,6 +156,7 @@
         <package>libjson-perl</package>
     </perl>
     <other>
+        <package>at</package>
         <package>bash</package>
         <package>pbzip2</package>
         <package>bzip2</package>

@@ -117,7 +117,7 @@ require_once  'iMSCP/Config/Handler.php';
  * @property int CUSTOM_ORDERPANEL_ID Custom order panel id
  * @property int DATABASE_REVISION Last database revision
  * @property int CRITICAL_UPDATE_REVISION Last critical update revision
- * @property string AWSTATS_GROUP_AUTH Awstats group authentication
+ * @property string WEBSTATS_GROUP_AUTH Webstats group authentication
  * @property string BASE_SERVER_IP Base server IP
  * @property string PORT_POSTGREY Posgrey port
  * @property int BuildDate i-MSCP package Build date

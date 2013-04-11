@@ -62,8 +62,8 @@ function client_hideDisabledFeatures($tpl)
 		$tpl->assign('APS_FEATURE', '');
 	}
 
-	if (!customerHasFeature('awstats')) {
-		$tpl->assign('AWSTATS_FEATURE', '');
+	if (!customerHasFeature('webstats')) {
+		$tpl->assign('WEBSTATS_FEATURE', '');
 	}
 }
 
@@ -105,8 +105,8 @@ $tpl->assign(
 		'TR_WEBMAIL_TXT' => tr('Access your mail through the web interface.'),
 		'TR_FILEMANAGER' => tr('FileManager'),
 		'TR_FILEMANAGER_TXT' => tr('Access your files through the web interface.'),
-		'TR_AWSTATS' => tr('Awstats'),
-		'TR_AWSTATS_TXT' => tr('Access your domain statistics through the Awstats Web interface.'),
+		'TR_WEBSTATS' => tr('Web Statistics'),
+		'TR_AWSTATS_TXT' => tr('Access your domain statistics through the Web interface.'),
 		'TR_APP_INSTALLER' => tr('Application installer'),
 		'TR_APP_INSTALLER_TXT' => tr('Install various Web applications with a few clicks.')));
 

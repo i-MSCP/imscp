@@ -57,7 +57,7 @@ if (isset($_GET['gname']) && $_GET['gname'] !== '' && is_numeric($_GET['gname'])
 }
 
 $change_status = $cfg->ITEM_DELETE_STATUS;
-$awstats_auth = $cfg->AWSTATS_GROUP_AUTH;
+$webstats_auth = $cfg->WEBSTATS_GROUP_AUTH;
 
 $query = "
 	UPDATE
@@ -71,7 +71,7 @@ $query = "
 	AND
 		`ugroup` != ?
 ";
-$rs = exec_query($query, array($change_status, $group_id, $dmn_id, $awstats_auth));
+$rs = exec_query($query, array($change_status, $group_id, $dmn_id, $webstats_auth));
 
 $query = "SELECT *  FROM `htaccess` WHERE `dmn_id` = ?";
 $rs = exec_query($query, $dmn_id);

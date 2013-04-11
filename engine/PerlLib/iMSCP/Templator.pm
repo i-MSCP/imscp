@@ -83,7 +83,7 @@ sub getBloc($$$;$)
 	my $content = shift;
 	my $includeTags = shift || 0;
 
-	my $regexp = '[\t ]*' . quotemeta($startTag) . '(.*)' . quotemeta($endTag);
+	my $regexp = '[\t ]*' . quotemeta($startTag) . '(.*?)[\t ]*' . quotemeta($endTag);
 	my $rs = '';
 
 	if($includeTags) {

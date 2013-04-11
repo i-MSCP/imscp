@@ -226,7 +226,7 @@ $rs = exec_query($query, array($dmn_id, $dmn_user_name,
 
 $user_id = $db->insertId();
 
-$awstats_auth = $cfg->AWSTATS_GROUP_AUTH;
+$webstats_auth = $cfg->WEBSTATS_GROUP_AUTH;
 
 $query = "
 	INSERT INTO `htaccess_groups`
@@ -234,7 +234,7 @@ $query = "
 	VALUES
 		(?, ?, ?, ?)
 ";
-$rs = exec_query($query, array($dmn_id, $awstats_auth, $user_id, $status));
+$rs = exec_query($query, array($dmn_id, $webstats_auth, $user_id, $status));
 
 // Create the 3 default addresses if wanted
 if ($cfg->CREATE_DEFAULT_EMAIL_ADDRESSES)

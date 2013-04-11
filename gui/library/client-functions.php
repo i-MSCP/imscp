@@ -744,7 +744,7 @@ function customerHasFeature($featureNames, $forceReload = false)
 			'subdomains' => ($dmnProps['domain_subd_limit'] != '-1') ? true : false,
 			'domain_aliases' => ($dmnProps['domain_alias_limit'] != '-1') ? true : false,
 			'custom_dns_records' => ($dmnProps['domain_dns'] != 'no') ? true : false,
-			'awstats' => ($cfg->AWSTATS_ACTIVE != 'no') ? true : false,
+			'webstats' => ($cfg->WEBSTATS_ADDON != 'No') ? true : false,
 			'backup' => ($cfg->BACKUP_DOMAINS != 'no' && $dmnProps['allowbackup'] != 'no') ? true : false,
 			'protected_areas' => true,
 			'custom_error_pages' => true,

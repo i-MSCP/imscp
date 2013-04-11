@@ -92,8 +92,8 @@
 			</tr>
 
 			<tr>
-				<td>{TR_AWSTATS_FEATURE}</td>
-				<td>{AWSTATS_FEATURE_STATUS}</td>
+				<td>{TR_WEBSTATS_FEATURE}</td>
+				<td>{WEBSTATS_FEATURE_STATUS}</td>
 			</tr>
 
 			<tr>
