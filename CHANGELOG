@@ -77,6 +77,8 @@ Tickets:
 	- Fixed #625: Defect - Missing file themes/default/images/black/login/stripe.png
 	- Fixed #629: Unable to change PHP editor settings when editing reseller
 	- Fixed #634: Bug - i-MSCP update from git master - Error in bind9 server implementation
+	- Fixed #639: Defect - Setup - Package 'debconf-utils' has no installation candidate
+	- Fixed #643: Bug - Unable to switch from php-fpm to fastcgi
 	- Fixed #649 - imscp-uninstall syntax error
 	- Fixed #650: Bug - Error when assigning an existing SQL User to a new database
 

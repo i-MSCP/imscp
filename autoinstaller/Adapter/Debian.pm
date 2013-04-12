@@ -65,6 +65,9 @@ sub installPreRequiredPackages
 
 	fatal('Not a Debian like system') if checkCommandAvailability('apt-get');
 
+	$rs = $self->_updatePackagesIndex();
+	return $rs if $rs;
+
 	my $command = 'apt-get';
 
 	if(! %main::preseed && ! $main::noprompt && ! checkCommandAvailability('debconf-apt-progress')) {
