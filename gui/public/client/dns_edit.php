@@ -369,7 +369,13 @@ function tryPost($id, $data) {
  */
 function validate_CNAME($record, &$err = null)
 {
-	if(!iMSCP_Validate::getInstance()->domainName($record['dns_cname'], array('tld' => false))) {
+	if(substr($record['dns_cname'], -1) == '.') {
+		$cnameRecord = rtrim($record['dns_cname'], '.');
+	} else {
+		$cnameRecord = $record['dns_cname'];
+	}
+
+	if(!iMSCP_Validate::getInstance()->domainName($cnameRecord, array('tld' => false))) {
 		$err .= tr('Usage of disallowed character in CNAME');
 		return false;
 	}

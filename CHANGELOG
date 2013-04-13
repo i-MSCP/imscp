@@ -65,6 +65,7 @@ Tickets:
 	- Fixed #595: Enhancement - Allow per item reconfiguration
 	- Fixed #596: Bug - GUI - External mail server feature not implemented
 	- Fixed #599: Bug - Ubuntu auto-installer adapter is broken
+	- Fixed #600: Defect - Custom DNS CNAME to CNAME - Trailing period
 	- Fixed #603: Bug - Awstats Addon - cron task is sending messages to stdout
 	- Fixed #604: Bug - insserv - Script imscp_network is broken: incomplete LSB comment
 	- Fixed #607: Bug - History of customer stats is limited to 3 years
