@@ -79,8 +79,9 @@ Tickets:
 	- Fixed #634: Bug - i-MSCP update from git master - Error in bind9 server implementation
 	- Fixed #639: Defect - Setup - Package 'debconf-utils' has no installation candidate
 	- Fixed #643: Bug - Unable to switch from php-fpm to fastcgi
-	- Fixed #649 - imscp-uninstall syntax error
+	- Fixed #649: Bug - imscp-uninstall syntax error
 	- Fixed #650: Bug - Error when assigning an existing SQL User to a new database
+	- Fixed #742: Bug - Welcome email don't show the correct information
 
 -------------------------------------------------------------------------------------
 i-MSCP 1.1.0-rc1.4
