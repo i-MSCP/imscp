@@ -2041,7 +2041,7 @@ sub setupRebuildCustomerFiles
 			SET
 				`$field` = 'change'
 			WHERE
-				`$field` NOT IN('toadd', 'todelete', 'disabled', 'ordered')
+				`$field` NOT IN('toadd', 'delete', 'disabled', 'ordered')
 			"
 		);
 		if(ref $rs ne 'HASH') {
