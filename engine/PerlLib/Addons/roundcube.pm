@@ -121,7 +121,7 @@ sub setGuiPermissions
 
 =item delMail()
 
- Delete mail user from Roundcube database.
+ Delete mail user from i-MSCP database.
 
  Return int 0 on success, other on failure
 
