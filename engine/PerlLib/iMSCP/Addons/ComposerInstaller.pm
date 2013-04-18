@@ -52,7 +52,7 @@ use parent 'Common::SingletonClass';
 
 =over 4
 
-=item registerPackage($package)
+=item registerPackage($package, [$packageVersion = 'dev-master'])
 
  Register the given composer package for installation.
 
@@ -60,12 +60,13 @@ use parent 'Common::SingletonClass';
 
 =cut
 
-sub registerPackage($ $)
+sub registerPackage($;$)
 {
 	my $self = shift;
 	my $package = shift;
+	my $packageVersion = shift || 'dev-master';
 
-	push @{$self->{'toInstall'}}, "\t\t\"$package\":\"dev-master\"";
+	push @{$self->{'toInstall'}}, "\t\t\"$package\":\"$packageVersion\"";
 
 	0;
 }

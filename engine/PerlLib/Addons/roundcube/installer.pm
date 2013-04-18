@@ -33,11 +33,14 @@ package Addons::roundcube::installer;
 
 use strict;
 use warnings;
+
 use iMSCP::Debug;
 use iMSCP::HooksManager;
 use iMSCP::File;
 use File::Basename;
 use parent 'Common::SingletonClass';
+
+our $VERSION = '0.2.0';
 
 =head1 DESCRIPTION
 
@@ -54,7 +57,7 @@ use parent 'Common::SingletonClass';
  Register Roundcube setup hook functions.
 
  Param iMSCP::HooksManager instance
- Return int 0 on success, 1 on failure
+ Return int 0 on success, other on failure
 
 =cut
 
@@ -63,7 +66,7 @@ sub registerSetupHooks
 	my $self = shift;
 	my $hooksManager = shift;
 
-	# Add roundcube installer dialog in setup dialog stack
+	# Add Roundcube installer dialog in setup dialog stack
 	$hooksManager->register(
 		'beforeSetupDialog', sub { my $dialogStack = shift; push(@$dialogStack, sub { $self->askRoundcube(@_) }); 0; }
 	);
@@ -71,7 +74,7 @@ sub registerSetupHooks
 
 =item preinstall()
 
- Register Roundcube composer package for installation.
+ Register Roundcube addon package for installation.
 
  Return int 0 on success, other on failure
 
@@ -82,15 +85,16 @@ sub preinstall
 	my $self = shift;
 
 	require iMSCP::Addons::ComposerInstaller;
+	iMSCP::Addons::ComposerInstaller->getInstance()->registerPackage('imscp/roundcube', "$VERSION.*\@dev");
 
-	iMSCP::Addons::ComposerInstaller->getInstance()->registerPackage('imscp/roundcube');
+	0;
 }
 
 =item install()
 
  Process Roundcube addon install tasks.
 
- Return int 0 on success, 1 on failure
+ Return int 0 on success, other on failure
 
 =cut
 
@@ -109,41 +113,41 @@ sub install
 		return $rs if $rs;
 	}
 
-	$rs = $self->_installFiles();		# Install roundcube files from local addon packages repository
+	# Install Roundcube files from local addon packages repository
+	$rs = $self->_installFiles();
 	return $rs if $rs;
 
-	$rs = $self->setGuiPermissions();	# Set roundcube permissions
+	# Set Roundcube files permissions
+	$rs = $self->setGuiPermissions();
 	return $rs if $rs;
 
-	$rs = $self->_setVersion();			# Set new roundcube version
+	# Setup Roundcube database (database, user)
+	$rs = $self->_setupDatabase();
 	return $rs if $rs;
 
-	$rs = $self->_createDatabase();		# Create/update roundcube database
+	# Generate Roundcube DES key
+	$rs = $self->_generateDESKey();
 	return $rs if $rs;
 
-	$rs = $self->_setupDatabase();		# Setup roundcube database
+	# Build new Roundcube configuration files
+	$rs = $self->_buildConfig();
 	return $rs if $rs;
 
-	$rs = $self->_generateDESKey();		# Generate DES key
+	# Update Roundcube database if needed (should be done after roundcube config files generation)
+	$rs = $self->_updateDatabase() unless $self->{'newInstall'};
 	return $rs if $rs;
 
-	$rs = $self->_buildConfig();		# Build new configuration files
+	# Set new Roundcube version
+	$rs = $self->_setVersion();
 	return $rs if $rs;
 
-	$self->_saveConfig();				# Save configuration
+	# Save Roundcube addon configuration file
+	$self->_saveConfig();
 }
-
-=back
-
-=head1 HOOK FUNCTIONS
-
-=over 4
 
 =item askRoundcube()
 
- Show roundcube questions.
-
- Hook function responsible to show Roundcube installer questions.
+ Show roundcube installer questions.
 
  Param iMSCP::Dialog
  Return int 0 or 30
@@ -182,7 +186,7 @@ sub askRoundcube
 			);
 
 			# i-MSCP SQL user cannot be reused
-			if($dbUser eq $main::imscpConfig{'DATABASE_USER'}){
+			if($dbUser eq $main::imscpConfig{'DATABASE_USER'}) {
 				$msg = "\n\n\\Z1You cannot reuse the i-MSCP SQL user '$dbUser'.\\Zn\n\nPlease, try again:";
 				$dbUser = '';
 			}
@@ -210,8 +214,8 @@ sub askRoundcube
 
 	if($rs != 30) {
 		$self::roundcubeConfig{'DATABASE_USER'} = $dbUser;
-    	$self::roundcubeConfig{'DATABASE_PASSWORD'} = $dbPass;
-    }
+		$self::roundcubeConfig{'DATABASE_PASSWORD'} = $dbPass;
+	}
 
 	$rs;
 }
@@ -230,7 +234,6 @@ sub setGuiPermissions
 	my $panelUName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} . $main::imscpConfig{'SYSTEM_USER_MIN_UID'};
 	my $panelGName = $panelUName;
 	my $rootDir = $main::imscpConfig{'ROOT_DIR'};
-	my $rs = 0;
 
 	require Servers::httpd;
 	my $http = Servers::httpd->factory();
@@ -239,15 +242,15 @@ sub setGuiPermissions
 	require iMSCP::Rights;
 	iMSCP::Rights->import();
 
-	$rs = setRights(
+	my $rs = setRights(
 		"$rootDir/gui/public/tools/webmail",
-		{ 'user' => $panelUName, 'group' => $apacheGName, 'dirmode' => '0550', 'filemode' => '0440', 'recursive' => 'yes' }
+		{ 'user' => $panelUName, 'group' => $apacheGName, 'dirmode' => '0550', 'filemode' => '0440', 'recursive' => 1 }
 	);
 	return $rs if $rs;
 
 	setRights(
 		"$rootDir/gui/public/tools/webmail/logs",
-		{ 'user' => $panelUName, 'group' => $panelGName, 'dirmode' => '0750', 'filemode' => '0640', 'recursive' => 'yes' }
+		{ 'user' => $panelUName, 'group' => $panelGName, 'dirmode' => '0750', 'filemode' => '0640', 'recursive' => 1 }
 	);
 }
 
@@ -272,10 +275,10 @@ sub _init
 	$self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/roundcube";
 	$self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
 	$self->{'wrkDir'} = "$self->{'cfgDir'}/working";
-	$self->{'forceDbSetup'} = '';
+	$self->{'newInstall'} = 1;
 
 	my $conf = "$self->{'cfgDir'}/roundcube.data";
-	my $oldConf	= "$self->{'cfgDir'}/roundcube.old.data";
+	my $oldConf = "$self->{'cfgDir'}/roundcube.old.data";
 
 	tie %self::roundcubeConfig, 'iMSCP::Config','fileName' => $conf, 'noerrors' => 1;
 
@@ -291,7 +294,7 @@ sub _init
 
  Backup the given Roundcube configuration file.
 
- Return int 0
+ Return int 0, other on failure
 
 =cut
 
@@ -300,12 +303,10 @@ sub _backupConfigFile
 	my $self = shift;
 	my $cfgFile = shift;
 
-	my ($name, $path, $suffix) = fileparse($cfgFile);
-
 	if(-f $cfgFile) {
-		my $timestamp = time;
+		my $filename = fileparse($cfgFile);
 		my $file = iMSCP::File->new('filename' => $cfgFile);
-		my $rs = $file->copyFile("$self->{'bkpDir'}/$name$suffix.$timestamp");
+		my $rs = $file->copyFile("$self->{'bkpDir'}/$filename" . time);
 		return $rs if $rs;
 	}
 
@@ -324,18 +325,16 @@ sub _installFiles
 {
 	my $self = shift;
 	my $repoDir = $main::imscpConfig{'ADDON_PACKAGES_CACHE_DIR'};
-	my ($stdout, $stderr) = (undef, undef);
 	my $rs = 0;
 
 	if(-d "$repoDir/vendor/imscp/roundcube") {
-
 		require iMSCP::Execute;
 		iMSCP::Execute->import();
 
+		my ($stdout, $stderr);
 		$rs = execute(
 			"$main::imscpConfig{'CMD_CP'} -rTf $repoDir/vendor/imscp/roundcube $main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/webmail",
-			\$stdout,
-			\$stderr
+			\$stdout, \$stderr
 		);
 		debug($stdout) if $stdout;
 		error($stderr) if $rs && $stderr;
@@ -343,8 +342,7 @@ sub _installFiles
 
 		$rs = execute(
 			"$main::imscpConfig{'CMD_RM'} -rf $main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/webmail/.git",
-			\$stdout,
-			\$stderr
+			\$stdout, \$stderr
 		);
 		debug($stdout) if $stdout;
 		error($stderr) if $rs && $stderr;
@@ -357,231 +355,64 @@ sub _installFiles
 	$rs;
 }
 
-=item _saveConfig()
-
- Save Roundcube configuration.
-
- Return int 0 on success, 1 on failure
-
-=cut
-
-sub _saveConfig
-{
-	my $self = shift;
-	my $rs = 0;
-
-	my $file = iMSCP::File->new('filename' => "$self->{'cfgDir'}/roundcube.data");
-
-	$rs = $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
-	return $rs if $rs;
-
-	$rs = $file->mode(0640);
-	return $rs if $rs;
-
-	my $cfg = $file->get();
-	unless(defined $cfg) {
-		error("Unable to read $self->{'cfgDir'}/roundcube.data");
-		return 1;
-	}
-
-	$file = iMSCP::File->new('filename' => "$self->{'cfgDir'}/roundcube.old.data");
-
-	$rs = $file->set($cfg);
-	return $rs if $rs;
-
-	$rs = $file->save();
-	return $rs if $rs;
-
-	$file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
-	return $rs if $rs;
-
-	$file->mode(0640);
-}
-
-=item _createDatabase()
-
- Create or update Roundcube database
-
- Return int 0 on success other on failure
-
-=cut
-
-sub _createDatabase
-{
-	my $self = shift;
-	my $roundcubeDir = "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/webmail";
-	my $dbName = 'imscp_roundcube';
-
-	my ($database, $errStr) = main::setupGetSqlConnect();
-	if(! $database) {
-		error("Unable to connect to SQL server: $errStr");
-		return 1;
-	}
-
-	# Check for database existence
-	my $rs = $database->doQuery('1', 'SHOW DATABASES LIKE ?', $dbName);
-	if(ref $rs ne 'HASH') {
-		error("SQL query failed: $rs");
-		return 1;
-	}
-
-	if(! %$rs) {
-		my $qdbName = $database->quoteIdentifier($dbName);
-		my $rs = $database->doQuery('dummy', "CREATE DATABASE $qdbName CHARACTER SET utf8 COLLATE utf8_unicode_ci;");
-		if(ref $rs ne 'HASH') {
-			error("Unable to create the '$dbName' SQL database: $rs");
-			return 1;
-		}
-
-		$database->set('DATABASE_NAME', $dbName);
-		$rs = $database->connect();
-		return $rs if $rs;
-
-		$rs = main::setupImportSqlSchema($database, "$roundcubeDir/SQL/mysql.initial.sql");
-		return $rs if $rs;
-
-		$self->{'forceDbSetup'} = 'true';
-	}
-
-	if(! $self->{'forceDbSetup'}) {
-		my $fromVersion = $self->_parseVersion($self::roundcubeOldConfig{'ROUNDCUBE_VERSION'} || '0.8.4');
-		my $newVersion = $self->_parseVersion($self::roundcubeConfig{'ROUNDCUBE_VERSION'});
-		my $needUpdate = `$main::imscpConfig{'CMD_PHP'} -r "print (version_compare('$fromVersion', '$newVersion', '<'));"`;
-
-		if($fromVersion && $needUpdate) {
-
-			my $file = iMSCP::File->new('filename' => "$roundcubeDir/SQL/mysql.update.sql")->getRFileHandle();
-
-			if(! defined $file) {
-				error("Unable to read $roundcubeDir/SQL/mysql.update.sql");
-				return 1;
-			}
-
-			my $from = 0;
-			my $sql = '';
-
-			while($file->getline()) {
-				chomp;
-				next if ! $_; # skip empty line
-				my $isComment = (index($_, '--') == 0);
-
-				if(! $from && $isComment && /from version\s([0-9.]+[a-z-]*)/) {
-					my $fileVersion = $self->_parseVersion($1);
-
-					if(
-						$fileVersion eq $fromVersion ||
-						`$main::imscpConfig{'CMD_PHP'} -r "print (version_compare('$fromVersion', '$fileVersion', '<='));"`
-					) {
-						$from = 1;
-					}
-				}
-
-				$sql .= $_ . "\n" if $from && ! $isComment;
-			}
-
-			undef $file;
-
-			if($sql) {
-				debug("Updating Roundcube database schema:\n\n$sql");
-
-				# Save roundcube db update file in temporary directory
-				$file = iMSCP::File->new('filename' => '/tmp/roundcube_update.sql');
-
-				$rs = $file->set($sql);
-				return $rs if $rs;
-
-				$rs = $file->save();
-				return $rs if $rs;
-
-				$database->set('DATABASE_NAME', $dbName);
-
-				$rs = $database->connect();
-				return $rs if $rs;
-
-				$rs = main::setupImportSqlSchema($database, '/tmp/roundcube_update.sql');
-				return $rs if $rs;
-
-				# Remove temporary file
-				$rs = $file->delFile();
-				return $rs if $rs;
-			}
-		}
-	}
-
-	0;
-}
-
-=item _setVersion()
-
- Set Roundcube version.
-
- Return int 0 on success, 1 on failure
-
-=cut
-
-sub _setVersion
-{
-	my $self = shift;
-
-	require iMSCP::File;
-	require JSON;
-	JSON->import();
-
-	my $json = iMSCP::File->new(
-	'filename' => "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/webmail/composer.json"
-	)->get();
-
-	if(! defined $json) {
-		error("Unable to read $main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/webmail/composer.json");
-		return 1;
-	}
-
-	$json = decode_json($json);
-	debug("Set roundcube version to $json->{'version'}");
-	$self::roundcubeConfig{'ROUNDCUBE_VERSION'} = $json->{'version'};
-
-	0;
-}
-
-=item _parseVersion()
-
- Parse Roundcube version.
-
- Return string
-
-=cut
-
-sub _parseVersion($ $)
-{
-	my $self = shift;
-	my $version = shift;
-
-	$version =~ s/-stable/.0/; # stable is lower than rc, beta and alpha
-	$version =~ s/-git/.99/; # git is greater than stable, rc, beta and alpha
-
-	lc($version);
-}
-
 =item _setupDatabase()
 
  Setup Roundcube database.
 
- Return int 0 on success, 1 on failure
+ Return int 0 on success, other on failure
 
 =cut
 
 sub _setupDatabase
 {
 	my $self = shift;
-
+	my $roundcubeDir = "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/webmail";
+	my $dbName = 'imscp_roundcube';
 	my $dbUser = $self::roundcubeConfig{'DATABASE_USER'};
 	my $dbOldUser = $self::roundcubeOldConfig{'DATABASE_USER'} || '';
 	my $dbPass = $self::roundcubeConfig{'DATABASE_PASSWORD'};
 	my $dbUserHost = $main::imscpConfig{'SQL_SERVER'} ne 'remote_server'
 		? $main::imscpConfig{'DATABASE_HOST'} : $main::imscpConfig{'BASE_SERVER_IP'};
-	my $rs = 0;
 
-	# Remove old roundcube restricted SQL user and all it privileges (if any)
+	# Get SQL connection with full privileges
+	my ($database, $errStr) = main::setupGetSqlConnect();
+	if(! $database) {
+		error("Unable to connect to SQL server: $errStr");
+		return 1;
+	}
+
+	# Check for Roundcube database existence
+	my $rs = $database->doQuery('1', 'SHOW DATABASES LIKE ?', $dbName);
+	unless(ref $rs eq 'HASH') {
+		error("SQL query failed: $rs");
+		return 1;
+	}
+
+	# The Roundcube database doesn't exists, create it
+	unless(%$rs) {
+		my $qdbName = $database->quoteIdentifier($dbName);
+		$rs = $database->doQuery('dummy', "CREATE DATABASE $qdbName CHARACTER SET utf8 COLLATE utf8_unicode_ci;");
+		unless(ref $rs eq 'HASH') {
+			error("Unable to create '$dbName' database: $rs");
+			return 1;
+		}
+
+		# Connect to newly created Roundcube database
+		$database->set('DATABASE_NAME', $dbName);
+		$rs = $database->connect();
+		if($rs) {
+			error("Unable to connect to the '$dbName' SQL database: $rs");
+			return $rs if $rs;
+		}
+
+		# Import Roundcube database schema
+		$rs = main::setupImportSqlSchema($database, "$roundcubeDir/SQL/mysql.initial.sql");
+		return $rs if $rs;
+	} else {
+		$self->{'newInstall'} = 0;
+	}
+
+	# Remove old Roundcube restricted SQL user and all it privileges (if any)
 	for($main::imscpOldConfig{'DATABASE_HOST'} || '', $main::imscpOldConfig{'BASE_SERVER_IP'} || '') {
 		next if $_ eq '' || $dbOldUser eq '';
 		$rs = main::setupDeleteSqlUser($dbOldUser, $_);
@@ -589,31 +420,30 @@ sub _setupDatabase
 		return 1 if $rs;
 	}
 
-	# Ensure new roundcube restricted SQL user do not already exists by removing it
+	# Ensure new Roundcube restricted SQL user do not already exists by removing it
 	$rs = main::setupDeleteSqlUser($dbUser, $dbUserHost);
-	error("Unable to delete the roundcube '$dbUser' restricted SQL user") if $rs;
-	return 1 if $rs;
+	if($rs) {
+		error("Unable to delete the roundcube '$dbUser' restricted SQL user");
+		return 1 if $rs;
+	}
 
-	# Get SQL connection with full privileges
-	my ($database, $errStr) = main::setupGetSqlConnect();
-	fatal('Unable to connect to SQL Server: $errStr') if ! $database;
-
-	# Add new roundcube restricted SQL user with needed privilegess
+	# Add new Roundcube restricted SQL user with needed privileges
 
 	$rs = $database->doQuery(
-		'dummy', "GRANT ALL PRIVILEGES ON `imscp\\_roundcube`.* TO ?@? IDENTIFIED BY ?;", $dbUser, $dbUserHost , $dbPass
+		'dummy', "GRANT ALL PRIVILEGES ON `$dbName`.* TO ?@? IDENTIFIED BY ?;", $dbUser, $dbUserHost , $dbPass
 	);
-	if(ref $rs ne 'HASH') {
-		error("Unable to add privileges on the 'imscp_roundcube.$_' table for the '$dbUser' SQL user: $rs");
+	unless(ref $rs eq 'HASH') {
+		error("Unable to add privileges on the '$dbName' database tables for the '$dbUser' SQL user: $rs");
 		return 1;
 	}
 
+	# Needed for password changer plugin
 	$rs = $database->doQuery(
 		'dummy',
 		"GRANT SELECT,UPDATE ON `$main::imscpConfig{'DATABASE_NAME'}`.`mail_users` TO ?@? IDENTIFIED BY ?;",
 		$dbUser, $dbUserHost, $dbPass
 	);
-	if(ref $rs ne 'HASH') {
+	unless(ref $rs eq 'HASH') {
 		error(
 			"Unable to add privileges on the '$main::imscpConfig{'DATABASE_NAME'}.mail_users' table for the" .
 			" '$dbUser' SQL user: $rs"
@@ -635,7 +465,6 @@ sub _setupDatabase
 sub _generateDESKey
 {
 	my $self = shift;
-
 	$self::roundcubeConfig{'DES_KEY'} = $self::roundcubeOldConfig{'DES_KEY'}
 		if ! $self::roundcubeConfig{'DES_KEY'} && $self::roundcubeOldConfig{'DES_KEY'};
 
@@ -654,7 +483,7 @@ sub _generateDESKey
 
  Process Roundcube addon install tasks.
 
- Return int 0 on success, 1 on failure
+ Return int 0 on success, other on failure
 
 =cut
 
@@ -683,25 +512,23 @@ sub _buildConfig
 	};
 
 	for (keys %{$cfgFiles}) {
-		my $file = iMSCP::File->new('filename' => "$confDir/$_");
-		my $cfgTpl = $file->get();
-		if(! defined $cfgTpl) {
+		my $cfgTpl = iMSCP::File->new('filename' => "$confDir/$_")->get();
+		unless(defined $cfgTpl) {
 			error("Unable to read $cfgTpl");
 			return 1;
 		}
 
-		# the password changer plugin act on the immscp database
-		if($_ eq 'imscp.pw.changer.inc.php') {
-			$cfg->{'DB_NAME'} = $main::imscpConfig{'DATABASE_NAME'};
-		} else {
-			$cfg->{'DB_NAME'} = 'imscp_roundcube';
-		}
+		# The password changer plugin act on the i-MSCP database
+		$cfg->{'DB_NAME'} = ($_ eq 'imscp.pw.changer.inc.php') ? $main::imscpConfig{'DATABASE_NAME'} : 'imscp_roundcube';
 
 		$cfgTpl = iMSCP::Templator::process($cfg, $cfgTpl);
-		return 1 if ! defined $cfgTpl;
+		unless(defined $cfgTpl) {
+			error("Unable to process template: $confDir/$_");
+			return 1;
+		}
 
-		# store file in working directory
-		$file = iMSCP::File->new('filename' => "$self->{'wrkDir'}/$_");
+		# Store new file in working directory
+		my $file = iMSCP::File->new('filename' => "$self->{'wrkDir'}/$_");
 
 		$rs = $file->set($cfgTpl);
 		return $rs if $rs;
@@ -719,7 +546,7 @@ sub _buildConfig
 		$rs = $file->copyFile($cfgFiles->{$_});
 		return $rs if $rs;
 
-		# Remove template file in production directory
+		# Remove template file from production directory
 		$rs = iMSCP::File->new('filename' => "$confDir/$_")->delFile();
 		return $rs if $rs;
 	}
@@ -727,11 +554,164 @@ sub _buildConfig
 	0;
 }
 
+=item _updateDatabase()
+
+ Update Roundcube database
+
+ Return int 0 on success other on failure
+
+=cut
+
+sub _updateDatabase
+{
+	my $self = shift;
+	my $roundcubeDir = "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/webmail";
+	my $dbName = 'imscp_roundcube';
+	my $fromVersion = $self::roundcubeOldConfig{'ROUNDCUBE_VERSION'} || '0.8.4';
+
+	require iMSCP::Execute;
+	iMSCP::Execute->import();
+
+	# Check on suhosin.session.encrypt=off will be removed in next roundcube version
+	# See http://trac.roundcube.net/ticket/1489044
+	my ($stdout, $stderr);
+	my $rs = execute(
+		"$main::imscpConfig{'CMD_PHP'} -d suhosin.session.encrypt=off $roundcubeDir/bin/updatedb.sh " .
+		"--version=$fromVersion --dir=$roundcubeDir/SQL --package=roundcube",
+		\$stdout, \$stderr
+	);
+	debug($stdout) if $stdout;
+	error($stderr) if $stderr && $rs;
+	error('Unable to update roundcube database schema.') if $rs && ! $stderr;
+
+	# Since the updatedb.sh script can exit with 0 on error, we made additional checks to be sure the db schema has been
+	# correctly updated (These checks will be removed when http://trac.roundcube.net/ticket/1489044 will be fixed)
+
+	my ($database, $errStr) = main::setupGetSqlConnect($dbName);
+	if(! $database) {
+		error("Unable to connect to the '$dbName' SQL database: $errStr");
+		return 1;
+	}
+
+	my $rdata = $database->doQuery('1', 'SHOW TABLES LIKE ?', 'system');
+	unless(ref $rdata eq 'HASH') {
+		error("SQL query failed: $rs");
+		return 1;
+	}
+
+	unless(%$rdata) {
+		error("Roundcube database schema update failed: 'system' table not found.");
+		return 1
+	}
+
+	$rdata = $database->doQuery('name', 'SELECT * FROM `system` WHERE `name` = ?', 'roundcube-version');
+	unless(ref $rdata eq 'HASH') {
+		error("SQL query failed: $rs");
+		return 1;
+	}
+
+	if(%$rdata) {
+		require iMSCP::Dir;
+
+		my @updateFiles = iMSCP::Dir->new('dirname' => "$roundcubeDir/SQL/mysql", 'fileType' => '.sql')->getFiles();
+		unless(@updateFiles) {
+			error('Unable to get list of available database updates.');
+			return 1;
+		}
+
+		s/.sql// for @updateFiles;
+		@updateFiles = sort { $a <=> $b } @updateFiles;
+		my $lastAvailableUpdate = pop @updateFiles;
+
+		if($rdata->{'roundcube-version'}->{'value'} < $lastAvailableUpdate) {
+			error(
+				'Roundcube database schema update failed: ' .
+				"roundcube-version value ($rs->{'roundcube-version'}->{'value'}) is smaller than the last available " .
+				"database update version ($lastAvailableUpdate)"
+			);
+			return 1
+		}
+	} else {
+		error("Roundcube database schema update failed: roundcube-version value not found in 'system' table.");
+		return 1
+	}
+
+	$rs;
+}
+
+=item _setVersion()
+
+ Set Roundcube version.
+
+ Return int 0 on success, 1 on failure
+
+=cut
+
+sub _setVersion
+{
+	my $self = shift;
+
+	require iMSCP::File;
+	require JSON;
+	JSON->import();
+
+	my $json = iMSCP::File->new('filename' => "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/webmail/composer.json")->get();
+	unless(defined $json) {
+		error("Unable to read $main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/webmail/composer.json");
+		return 1;
+	}
+
+	$json = decode_json($json);
+	debug("Set new roundcube version to $json->{'version'}");
+	$self::roundcubeConfig{'ROUNDCUBE_VERSION'} = $json->{'version'};
+
+	0;
+}
+
+=item _saveConfig()
+
+ Save Roundcube configuration.
+
+ Return int 0 on success, other on failure
+
+=cut
+
+sub _saveConfig
+{
+	my $self = shift;
+	my $file = iMSCP::File->new('filename' => "$self->{'cfgDir'}/roundcube.data");
+
+	my $rs = $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
+	return $rs if $rs;
+
+	$rs = $file->mode(0640);
+	return $rs if $rs;
+
+	my $cfg = $file->get();
+	unless(defined $cfg) {
+		error("Unable to read $self->{'cfgDir'}/roundcube.data");
+		return 1;
+	}
+
+	$file = iMSCP::File->new('filename' => "$self->{'cfgDir'}/roundcube.old.data");
+
+	$rs = $file->set($cfg);
+	return $rs if $rs;
+
+	$rs = $file->save();
+	return $rs if $rs;
+
+	$file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
+	return $rs if $rs;
+
+	$file->mode(0640);
+}
+
 =back
 
-=head1 AUTHORS
+=head1 AUTHOR
 
- - Laurent Declercq <l.declercq@nuxwin.com>
+ Laurent Declercq <l.declercq@nuxwin.com>
 
 =cut
 

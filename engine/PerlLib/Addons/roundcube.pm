@@ -33,6 +33,7 @@ package Addons::roundcube;
 
 use strict;
 use warnings;
+
 use iMSCP::Debug;
 use parent 'Common::SingletonClass';
 
@@ -40,9 +41,9 @@ use parent 'Common::SingletonClass';
 
  Roundcube addon for i-MSCP.
 
- RoundCube Webmail is a browser-based multilingual IMAP client with an application-like user interface.
- It provides full functionality expected from an e-mail client, including MIME support, address book,
-folder manipulation and message filters.
+ RoundCube Webmail is a browser-based multilingual IMAP client with an application-like user interface. It provides full
+functionality expected from an e-mail client, including MIME support, address book, folder manipulation and message
+filters.
 
  The user interface is fully skinnable using XHTML and CSS 2.
 
@@ -57,7 +58,7 @@ folder manipulation and message filters.
  Register setup hook functions.
 
  Param iMSCP::HooksManager instance
- Return int - 0 on success, 1 on failure
+ Return int 0 on success, other on failure
 
 =cut
 
@@ -67,13 +68,14 @@ sub registerSetupHooks
 	my $hooksManager = shift;
 
 	require Addons::roundcube::installer;
-
 	Addons::roundcube::installer->getInstance()->registerSetupHooks($hooksManager);
 }
 
 =item preinstall()
 
  Run the install method on the Roundcube addon installer.
+
+ Return int 0 on success, other on failure
 
 =cut
 
@@ -82,7 +84,6 @@ sub preinstall
 	my $self = shift;
 
 	require Addons::roundcube::installer;
-
 	Addons::roundcube::installer->getInstance()->preinstall();
 }
 
@@ -90,7 +91,7 @@ sub preinstall
 
  Run the install method on the Roundcube addon installer.
 
- Return int - 0 on success, 1 on failure
+ Return int 0 on success, other on failure
 
 =cut
 
@@ -99,7 +100,6 @@ sub install
 	my $self = shift;
 
 	require Addons::roundcube::installer;
-
 	Addons::roundcube::installer->getInstance()->install();
 }
 
@@ -116,7 +116,6 @@ sub setGuiPermissions
 	my $self = shift;
 
 	require Addons::roundcube::installer;
-
 	Addons::roundcube::installer->getInstance()->setGuiPermissions();
 }
 
@@ -124,7 +123,7 @@ sub setGuiPermissions
 
  Delete mail user from Roundcube database.
 
- Return int - 0 on success, other on failure
+ Return int 0 on success, other on failure
 
 =cut
 
@@ -141,14 +140,18 @@ sub delMail
 		return $rs if $rs;
 
 		$rs = $database->doQuery('dummy', 'DELETE FROM `users` WHERE `username` = ?', $data->{'MAIL_ADDR'});
-		if(ref $rs ne 'HASH') {
+		unless(ref $rs eq 'HASH') {
 			error("Unable to remove mail user '$data->{'MAIL_ADDR'}' from the roundcube database: $rs");
 			return $rs;
 		}
 
-		# Restore connection to imscp database
+		# Restore connection to i-MSCP database
 		$database->set('DATABASE_NAME', $main::imscpConfig{'DATABASE_NAME'});
 		$rs = $database->connect();
+		if($rs) {
+			error("Unable to restore connection to i-MSCP database: $rs");
+			$rs = 1;
+		}
 	}
 
 	$rs;
@@ -156,9 +159,9 @@ sub delMail
 
 =back
 
-=head1 AUTHORS
+=head1 AUTHOR
 
- - Laurent Declercq <l.declercq@nuxwin.com>
+ Laurent Declercq <l.declercq@nuxwin.com>
 
 =cut
 

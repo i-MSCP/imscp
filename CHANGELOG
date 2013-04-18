@@ -83,6 +83,7 @@ Tickets:
 	- Fixed #649: Bug - imscp-uninstall syntax error
 	- Fixed #650: Bug - Error when assigning an existing SQL User to a new database
 	- Fixed #742: Bug - Welcome email don't show the correct information
+	- Fixed #743: Update - Roundcube update available (version 0.9.0)
 
 -------------------------------------------------------------------------------------
 i-MSCP 1.1.0-rc1.4
