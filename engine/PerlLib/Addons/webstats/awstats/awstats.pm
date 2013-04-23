@@ -376,7 +376,7 @@ sub _addAwstatsConfig
 	return $rs if $rs;
 
 	# Install the file in the production directory
-	$file->copyFile($main::imscpConfig{'AWSTATS_CONFIG_DIR'});
+	$file->copyFile($cfgFile);
 }
 
 =item _addAwstatsCronTask(\$data)
