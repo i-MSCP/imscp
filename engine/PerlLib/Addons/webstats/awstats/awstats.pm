@@ -327,11 +327,12 @@ sub _addAwstatsConfig
 
 	my $tplFile	= "$self->{'tplDir'}/awstats.imscp_tpl.conf";
 	my $cfgFileName	= "awstats.$data->{'DMN_NAME'}.conf";
+	my $bkpFile	= "$self->{'bkpDir'}/$cfgFileName";
 	my $cfgFile	= "$main::imscpConfig{'AWSTATS_CONFIG_DIR'}/$cfgFileName";
 	my $wrkFile	= "$self->{'wrkDir'}/$cfgFileName";
 
 	# Saving current working file if it exists
-	my $rs = iMSCP::File->new('filename' => $wrkFile)->copyFile("$wrkFile." . time) if -f $cfgFile;
+	my $rs = iMSCP::File->new('filename' => $wrkFile)->copyFile("$bkpFile." . time) if -f $wrkFile;
 	return $rs if $rs;
 
 	# Loading template file
