@@ -169,16 +169,24 @@ sub install
 sub setGuiPermissions
 {
 	my $self = shift;
+	my $addon;
+	my $rs = 0;
 
 	my $webStatsAddon = $main::imscpConfig{'WEBSTATS_ADDON'} || '';
 
 	if($webStatsAddon eq 'Awstats') {
 		require Addons::webstats::awstats::installer;
-		Addons::webstats::awstats::installer->getInstance()->setGuiPermissions();
+		$addon = Addons::webstats::awstats::installer->getInstance();
 	} elsif($webStatsAddon ne 'No') {
 		error("Unknown Web Statistics addon: $webStatsAddon");
 		return 1;
+	} else {
+		return 0;
 	}
+
+	$rs = $addon->setGuiPermissions() if $addon->can('setGuiPermissions');
+
+	$rs;
 }
 
 =back
