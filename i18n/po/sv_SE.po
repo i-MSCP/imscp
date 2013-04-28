@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2013-03-01 04:50+0100\n"
-"PO-Revision-Date: 2013-04-27 08:37+0000\n"
+"POT-Creation-Date: 2013-04-28 09:06+0200\n"
+"PO-Revision-Date: 2013-04-28 07:06+0000\n"
 "Last-Translator: Torsten Widmann <info@goover.de>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -36,7 +36,7 @@ msgid ""
 "\n"
 "You can login right now at {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}\n"
 "\n"
-"Statistics: {BASE_SERVER_VHOST_PREFIX}{USERNAME}/stats/\n"
+"Statistics: http://{USERNAME}/{WEBSTATS_RPATH}\n"
 "(Same username and password than above)\n"
 "\n"
 "Thank you for using i-MSCP services.\n"
@@ -44,7 +44,7 @@ msgid ""
 "___________________________\n"
 "The i-MSCP Team\n"
 "\n"
-msgstr "\n\nDear {NAME},\n\nA new i-MSCP account has been created for you.\n\nYour account information:\n\nUser type: {USERTYPE}\nUser name: {USERNAME}\nPassword: {PASSWORD}\n\nRemember to change your password often and the first time you login.\n\nYou can login right now at {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}\n\nStatistics: {BASE_SERVER_VHOST_PREFIX}{USERNAME}/stats/\n(Same username and password than above)\n\nThank you for using i-MSCP services.\n\n___________________________\nThe i-MSCP Team\n\n"
+msgstr ""
 
 msgid ""
 "\n"
@@ -540,8 +540,8 @@ msgid ""
 "instead</small>."
 msgstr "ACE labels are not allowed. Please use the ToUnicode equivalent.<br /><small>Example: for ACE label <b>xn--bcher-kva</b> use <b>bücher</b> instead</small>."
 
-msgid "Access your domain statistics through the Awstats Web interface."
-msgstr "Tillgång till din domän statistik via Awstats webbgränssnittet."
+msgid "Access your domain statistics through the Web interface."
+msgstr ""
 
 msgid "Access your files through the web interface."
 msgstr "Kom åt dina filer via webbgränssnittet."
@@ -1053,9 +1053,6 @@ msgstr "Väntar på aktivering"
 msgid "Awaiting approval"
 msgstr "Väntar på aktivering"
 
-msgid "Awstats"
-msgstr "Awstats"
-
 msgid "B"
 msgstr "B"
 
@@ -1374,6 +1371,9 @@ msgstr "Valuta"
 
 msgid "Current password"
 msgstr "Nuvarande lösenord"
+
+msgid "Current password is invalid."
+msgstr ""
 
 msgid "Custom DNS Records"
 msgstr "Egna DNS-Records"
@@ -3690,6 +3690,9 @@ msgstr "Lösenord"
 msgid "Password E-Mail"
 msgstr "Lösenordsmeddelande"
 
+msgid "Password cannot be greater than 30 characters."
+msgstr ""
+
 msgid "Password change is deactivated!"
 msgstr "Byte av lösenord är inaktiverat!"
 
@@ -3702,25 +3705,30 @@ msgstr "Lösenordsdata"
 msgid "Password data is missing."
 msgstr "Lösenord data saknas."
 
-#, php-format
-msgid ""
-"Password data is shorter than %s signs or includes not permitted signs."
-msgstr "Lösenord data är kortare än%s tecken eller ingår inte tillåtet tecken."
+msgid "Password includes not permitted signs."
+msgstr ""
 
 msgid "Password is missing."
 msgstr "Lösenord saknas."
 
+#, php-format
+msgid "Password is shorter than %s characters."
+msgstr ""
+
 msgid "Password length"
 msgstr "Lösenordslängd"
+
+#, php-format
+msgid ""
+"Password must be at least %s character long and contain letters and numbers "
+"to be valid."
+msgstr ""
 
 msgid "Password settings"
 msgstr "Lösenordsinställningar"
 
 msgid "Password successfully updated."
 msgstr "Lösenord uppdaterats."
-
-msgid "Password updated."
-msgstr "Lösenord uppdateras."
 
 msgid "Passwords doesn't match."
 msgstr "Passwords doesn't match."
@@ -3809,9 +3817,6 @@ msgstr "Ange användarnamn postkonto."
 
 msgid "Please enter protected area path"
 msgstr "Ange skyddat område vägen"
-
-msgid "Please fill up all data fields!"
-msgstr "Vänligen fyll i alla fält!"
 
 msgid "Please fill up both data fields for password."
 msgstr "Fyll upp både datafält för lösenord."
@@ -4262,6 +4267,9 @@ msgstr "SQL databases limit<br/><i>(-1 disabled, 0 unlimited)</i>"
 msgid "SQL user name"
 msgstr "SQL-användarnamn"
 
+msgid "SQL user not found."
+msgstr ""
+
 msgid "SQL user password successfully updated."
 msgstr "SQL användarens lösenord uppdaterades."
 
@@ -4270,6 +4278,9 @@ msgstr "SQL användare skapades."
 
 msgid "SQL user successfully deleted."
 msgstr "SQL användare raderades."
+
+msgid "SQL username name already in use."
+msgstr ""
 
 msgid "SQL users"
 msgstr "SQL-användare"
@@ -4294,9 +4305,6 @@ msgstr "SQL users limit<br/><i>(-1 disabled, 0 unlimited)</i>"
 
 msgid "SQL-User"
 msgstr "SQL-User"
-
-msgid "SQL-user not found."
-msgstr "SQL-användare hittades inte."
 
 msgid "SSL Certificates"
 msgstr "SSL certs"
@@ -4598,9 +4606,6 @@ msgstr "Softwares management"
 
 msgid "Softwares permissions"
 msgstr "Softwares permissions"
-
-msgid "Specified SQL username name already exists."
-msgstr "Angivna SQL-användarnamn namn finns redan."
 
 msgid "Specified database name already exists."
 msgstr "Angivna databasen namn finns redan."
@@ -4916,9 +4921,6 @@ msgstr "The `Enter` key is disabled for performance reasons."
 msgid "The admin has <em>%s</em> disabled on this system."
 msgstr "Administratörerna <em>har%s</em> inaktiverats på detta system."
 
-msgid "The current password is wrong."
-msgstr "Det aktuella lösenordet är fel."
-
 #, php-format
 msgid "The directory %s doesn't exist. Please create it first."
 msgstr "The directory %s doesn't exist. Please create it first."
@@ -4963,15 +4965,6 @@ msgstr "The package will be installed automaticly to your system after upload.<b
 
 msgid "The password field is empty."
 msgstr "Fältet för lösenord är tomt."
-
-msgid "The password is too long."
-msgstr "Lösenordet är för långt."
-
-#, php-format
-msgid ""
-"The password must be at least %s long and contain letters and numbers to be "
-"valid."
-msgstr "Lösenordet måste vara minst %s tecken och innehåller bokstäver och siffror för att vara giltigt."
 
 #, php-format
 msgid "The plugin %s is protected. You cannot perform an action on it."
@@ -5278,6 +5271,9 @@ msgid ""
 "reseller."
 msgstr "Det gick inte att hämta kataloger lista för din domän. Kontakta din återförsäljare."
 
+msgid "Unable to retrieve your password in database."
+msgstr ""
+
 #, php-format
 msgid "Unbale not upload file. Max. upload filesize (%1$d MB) reached?"
 msgstr "Kan inte ladda upp filer. Max. uppladdning filstorlek (%1$d MB) nått?"
@@ -5455,9 +5451,6 @@ msgstr "Användarnamnet är för långt!"
 msgid "User password"
 msgstr "Användarlösenord"
 
-msgid "User password successfully updated."
-msgstr "Användarlösenord uppdaterats."
-
 msgid "User personal data successfully updated."
 msgstr "Personligt data för användare uppdaterad"
 
@@ -5613,9 +5606,6 @@ msgstr "Web programvaruförråd index är redan uppdaterad."
 
 msgid "Web statistics"
 msgstr "Webbstatistik"
-
-msgid "Web statistics (AWStats)"
-msgstr "Web statistics (AWStats)"
 
 msgid "Web traffic"
 msgstr "Webbtrafik"
@@ -6190,9 +6180,9 @@ msgid "Your request for hosting plan update was successfully registered."
 msgstr "Din begäran om prenumerations uppdatering har registrerats."
 
 msgid ""
-"Your request for new password was registered. You will receive an email with"
-" instructions to complete the process."
-msgstr "Din begäran om nytt lösenord registrerades. Du kommer att få ett mail med instruktioner för att slutföra processen."
+"Your request for new password has been registered. You will receive an email"
+" with instructions to complete the process."
+msgstr ""
 
 msgid "ZB"
 msgstr "ZB"
@@ -6327,11 +6317,11 @@ msgstr "i-MSCP - Admin / Manage users / Edit Reseller"
 msgid "i-MSCP - Admin / My Profile"
 msgstr "i-MSCP - Admin / My Profile"
 
+msgid "i-MSCP - Admin / Password"
+msgstr ""
+
 msgid "i-MSCP - Admin / Profile /  Language"
 msgstr "i-MSCP - Admin / Profile /  Language"
-
-msgid "i-MSCP - Admin / Profile /  Password"
-msgstr "i-MSCP - Admin / Profile /  Password"
 
 msgid "i-MSCP - Admin / Profile /  Personal Data"
 msgstr "i-MSCP - Admin / Profile /  Personal Data"
@@ -6456,6 +6446,9 @@ msgstr "i-MSCP - Client / Manage mail / Edit account"
 msgid "i-MSCP - Client / Manage mail / Edit quota"
 msgstr "i-MSCP - Client / Manage mail / Edit quota"
 
+msgid "i-MSCP - Client / Password"
+msgstr ""
+
 msgid "i-MSCP - Client / Support Ticket System / Closed Tickets"
 msgstr "i-MSCP - Client / Supportsystem / stängda tickets"
 
@@ -6494,9 +6487,6 @@ msgstr "i-MSCP - Kund/Lägg till SQL-databas"
 
 msgid "i-MSCP - Client/Add SQL User"
 msgstr "i-MSCP - Kund/Lägg till SQL-användare"
-
-msgid "i-MSCP - Client/Change Password"
-msgstr "i-MSCP - Kund/Ändra lösenord"
 
 msgid "i-MSCP - Client/Change Personal Data"
 msgstr "i-MSCP - Kund/Ändra personlig information"
@@ -6620,9 +6610,6 @@ msgstr "i-MSCP - Återförsäljare / Visa hosting plan"
 
 msgid "i-MSCP - Reseller/Change Language"
 msgstr "i-MSCP - Återförsäljare/Ändra Språk"
-
-msgid "i-MSCP - Reseller/Change Password"
-msgstr "i-MSCP - Återförsäljare/Ändra lösenord"
 
 msgid "i-MSCP - Reseller/Change Personal Data"
 msgstr "i-MSCP - Återförsäljare/Ändra personlig information"

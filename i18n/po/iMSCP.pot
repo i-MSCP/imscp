@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.0.1.6\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2013-03-01 04:50+0100\n"
+"POT-Creation-Date: 2013-04-28 09:06+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -34,7 +34,7 @@ msgid ""
 "\n"
 "You can login right now at {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}\n"
 "\n"
-"Statistics: {BASE_SERVER_VHOST_PREFIX}{USERNAME}/stats/\n"
+"Statistics: http://{USERNAME}/{WEBSTATS_RPATH}\n"
 "(Same username and password than above)\n"
 "\n"
 "Thank you for using i-MSCP services.\n"
@@ -537,7 +537,7 @@ msgid ""
 "instead</small>."
 msgstr ""
 
-msgid "Access your domain statistics through the Awstats Web interface."
+msgid "Access your domain statistics through the Web interface."
 msgstr ""
 
 msgid "Access your files through the web interface."
@@ -1050,9 +1050,6 @@ msgstr ""
 msgid "Awaiting approval"
 msgstr ""
 
-msgid "Awstats"
-msgstr ""
-
 msgid "B"
 msgstr ""
 
@@ -1370,6 +1367,9 @@ msgid "Currency"
 msgstr ""
 
 msgid "Current password"
+msgstr ""
+
+msgid "Current password is invalid."
 msgstr ""
 
 msgid "Custom DNS Records"
@@ -3686,6 +3686,9 @@ msgstr ""
 msgid "Password E-Mail"
 msgstr ""
 
+msgid "Password cannot be greater than 30 characters."
+msgstr ""
+
 msgid "Password change is deactivated!"
 msgstr ""
 
@@ -3698,23 +3701,29 @@ msgstr ""
 msgid "Password data is missing."
 msgstr ""
 
-#, php-format
-msgid "Password data is shorter than %s signs or includes not permitted signs."
+msgid "Password includes not permitted signs."
 msgstr ""
 
 msgid "Password is missing."
 msgstr ""
 
+#, php-format
+msgid "Password is shorter than %s characters."
+msgstr ""
+
 msgid "Password length"
+msgstr ""
+
+#, php-format
+msgid ""
+"Password must be at least %s character long and contain letters and numbers "
+"to be valid."
 msgstr ""
 
 msgid "Password settings"
 msgstr ""
 
 msgid "Password successfully updated."
-msgstr ""
-
-msgid "Password updated."
 msgstr ""
 
 msgid "Passwords doesn't match."
@@ -3803,9 +3812,6 @@ msgid "Please enter mail account username."
 msgstr ""
 
 msgid "Please enter protected area path"
-msgstr ""
-
-msgid "Please fill up all data fields!"
 msgstr ""
 
 msgid "Please fill up both data fields for password."
@@ -4257,6 +4263,9 @@ msgstr ""
 msgid "SQL user name"
 msgstr ""
 
+msgid "SQL user not found."
+msgstr ""
+
 msgid "SQL user password successfully updated."
 msgstr ""
 
@@ -4264,6 +4273,9 @@ msgid "SQL user successfully added."
 msgstr ""
 
 msgid "SQL user successfully deleted."
+msgstr ""
+
+msgid "SQL username name already in use."
 msgstr ""
 
 msgid "SQL users"
@@ -4288,9 +4300,6 @@ msgid "SQL users limit<br/><i>(-1 disabled, 0 unlimited)</i>"
 msgstr ""
 
 msgid "SQL-User"
-msgstr ""
-
-msgid "SQL-user not found."
 msgstr ""
 
 msgid "SSL Certificates"
@@ -4592,9 +4601,6 @@ msgid "Softwares management"
 msgstr ""
 
 msgid "Softwares permissions"
-msgstr ""
-
-msgid "Specified SQL username name already exists."
 msgstr ""
 
 msgid "Specified database name already exists."
@@ -4910,9 +4916,6 @@ msgstr ""
 msgid "The admin has <em>%s</em> disabled on this system."
 msgstr ""
 
-msgid "The current password is wrong."
-msgstr ""
-
 #, php-format
 msgid "The directory %s doesn't exist. Please create it first."
 msgstr ""
@@ -4956,15 +4959,6 @@ msgid ""
 msgstr ""
 
 msgid "The password field is empty."
-msgstr ""
-
-msgid "The password is too long."
-msgstr ""
-
-#, php-format
-msgid ""
-"The password must be at least %s long and contain letters and numbers to be "
-"valid."
 msgstr ""
 
 #, php-format
@@ -5271,6 +5265,9 @@ msgid ""
 "reseller."
 msgstr ""
 
+msgid "Unable to retrieve your password in database."
+msgstr ""
+
 #, php-format
 msgid "Unbale not upload file. Max. upload filesize (%1$d MB) reached?"
 msgstr ""
@@ -5448,9 +5445,6 @@ msgstr ""
 msgid "User password"
 msgstr ""
 
-msgid "User password successfully updated."
-msgstr ""
-
 msgid "User personal data successfully updated."
 msgstr ""
 
@@ -5604,9 +5598,6 @@ msgid "Web software repository index is already up to date."
 msgstr ""
 
 msgid "Web statistics"
-msgstr ""
-
-msgid "Web statistics (AWStats)"
 msgstr ""
 
 msgid "Web traffic"
@@ -6180,8 +6171,8 @@ msgid "Your request for hosting plan update was successfully registered."
 msgstr ""
 
 msgid ""
-"Your request for new password was registered. You will receive an email with "
-"instructions to complete the process."
+"Your request for new password has been registered. You will receive an email "
+"with instructions to complete the process."
 msgstr ""
 
 msgid "ZB"
@@ -6317,10 +6308,10 @@ msgstr ""
 msgid "i-MSCP - Admin / My Profile"
 msgstr ""
 
-msgid "i-MSCP - Admin / Profile /  Language"
+msgid "i-MSCP - Admin / Password"
 msgstr ""
 
-msgid "i-MSCP - Admin / Profile /  Password"
+msgid "i-MSCP - Admin / Profile /  Language"
 msgstr ""
 
 msgid "i-MSCP - Admin / Profile /  Personal Data"
@@ -6445,6 +6436,9 @@ msgstr ""
 msgid "i-MSCP - Client / Manage mail / Edit quota"
 msgstr ""
 
+msgid "i-MSCP - Client / Password"
+msgstr ""
+
 msgid "i-MSCP - Client / Support Ticket System / Closed Tickets"
 msgstr ""
 
@@ -6482,9 +6476,6 @@ msgid "i-MSCP - Client/Add SQL Database"
 msgstr ""
 
 msgid "i-MSCP - Client/Add SQL User"
-msgstr ""
-
-msgid "i-MSCP - Client/Change Password"
 msgstr ""
 
 msgid "i-MSCP - Client/Change Personal Data"
@@ -6608,9 +6599,6 @@ msgid "i-MSCP - Reseller / View hosting plan"
 msgstr ""
 
 msgid "i-MSCP - Reseller/Change Language"
-msgstr ""
-
-msgid "i-MSCP - Reseller/Change Password"
 msgstr ""
 
 msgid "i-MSCP - Reseller/Change Personal Data"

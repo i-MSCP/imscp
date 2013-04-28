@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2013-03-01 04:50+0100\n"
-"PO-Revision-Date: 2013-04-27 08:37+0000\n"
+"POT-Creation-Date: 2013-04-28 09:06+0200\n"
+"PO-Revision-Date: 2013-04-28 07:06+0000\n"
 "Last-Translator: Torsten Widmann <info@goover.de>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -39,7 +39,7 @@ msgid ""
 "\n"
 "You can login right now at {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}\n"
 "\n"
-"Statistics: {BASE_SERVER_VHOST_PREFIX}{USERNAME}/stats/\n"
+"Statistics: http://{USERNAME}/{WEBSTATS_RPATH}\n"
 "(Same username and password than above)\n"
 "\n"
 "Thank you for using i-MSCP services.\n"
@@ -47,7 +47,7 @@ msgid ""
 "___________________________\n"
 "The i-MSCP Team\n"
 "\n"
-msgstr "\n\nУважаемый {NAME},\n\nНовая учетная запись i-MSCP была создана для Вас..\n\nИнформация о Вашей учетной записи:\n\nТип пользователя: {USERTYPE}\nИмя пользователя: {USERNAME}\nПароль: {PASSWORD}\n\nПожалуйста, для Вашей безопасности, измените Ваш пароль при первом входе.\n\nВы можете войти прямо сейчас {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}\n\nСтатистика: {BASE_SERVER_VHOST_PREFIX}{USERNAME}/stats/\n(Те же имя пользователя и пароль, которые указаны выше)\n\nБлагодарим за использование сервисов i-MSCP.\n\n___________________________\nКоманда i-MSCP\n\n"
+msgstr ""
 
 msgid ""
 "\n"
@@ -543,8 +543,8 @@ msgid ""
 "instead</small>."
 msgstr "ACE -ярлыки не разрешены. Пожалуйста, используйте эквивалент ToUnicode.<br /><small>Например: для ACE ярлыка <b>xn--bcher-kva</b> используйте <b>bücher</b></small>."
 
-msgid "Access your domain statistics through the Awstats Web interface."
-msgstr "Получить доступ к статистике домена через Awstats Web-интерфейс."
+msgid "Access your domain statistics through the Web interface."
+msgstr ""
 
 msgid "Access your files through the web interface."
 msgstr "Получить доступ к файлам через Web-интерфейс."
@@ -1056,9 +1056,6 @@ msgstr "Ожидает активации"
 msgid "Awaiting approval"
 msgstr "В ожидании утверждения"
 
-msgid "Awstats"
-msgstr "Статистика AwStats"
-
 msgid "B"
 msgstr "В"
 
@@ -1377,6 +1374,9 @@ msgstr "Валюта"
 
 msgid "Current password"
 msgstr "Текущий пароль"
+
+msgid "Current password is invalid."
+msgstr ""
 
 msgid "Custom DNS Records"
 msgstr "Пользовательские DNS-записи"
@@ -3693,6 +3693,9 @@ msgstr "Пароль"
 msgid "Password E-Mail"
 msgstr "Восстановление пароля"
 
+msgid "Password cannot be greater than 30 characters."
+msgstr ""
+
 msgid "Password change is deactivated!"
 msgstr "Изменение пароля отключено!"
 
@@ -3705,25 +3708,30 @@ msgstr "Данные пароля"
 msgid "Password data is missing."
 msgstr "Пароль отсутствует."
 
-#, php-format
-msgid ""
-"Password data is shorter than %s signs or includes not permitted signs."
-msgstr "Пароль короче чем %s знаков или содержит неразрешенные знаки."
+msgid "Password includes not permitted signs."
+msgstr ""
 
 msgid "Password is missing."
 msgstr "Пароль отсутствует."
 
+#, php-format
+msgid "Password is shorter than %s characters."
+msgstr ""
+
 msgid "Password length"
 msgstr "Длина пароля"
+
+#, php-format
+msgid ""
+"Password must be at least %s character long and contain letters and numbers "
+"to be valid."
+msgstr ""
 
 msgid "Password settings"
 msgstr "Настройки пароля"
 
 msgid "Password successfully updated."
 msgstr "Пароль успешно обновлен."
-
-msgid "Password updated."
-msgstr "Пароль обновлен."
 
 msgid "Passwords doesn't match."
 msgstr "Пароли не совпадают."
@@ -3812,9 +3820,6 @@ msgstr "Пожалуйста, введите имя пользователя д�
 
 msgid "Please enter protected area path"
 msgstr "Пожалуйста, укажите путь для защищенной зоны"
-
-msgid "Please fill up all data fields!"
-msgstr "Пожалуйста, заполните все поля!"
 
 msgid "Please fill up both data fields for password."
 msgstr "Пожалуйста, заполните оба поля для пароля."
@@ -4265,6 +4270,9 @@ msgstr "Количество SQL баз данных <br/><i>(-1 отключе�
 msgid "SQL user name"
 msgstr "Имя пользователя SQL"
 
+msgid "SQL user not found."
+msgstr ""
+
 msgid "SQL user password successfully updated."
 msgstr "Пароль пользователя SQL успешно обновлен."
 
@@ -4273,6 +4281,9 @@ msgstr "Пользователь SQL успешно добавлен."
 
 msgid "SQL user successfully deleted."
 msgstr "Пользователь SQL успешно удален."
+
+msgid "SQL username name already in use."
+msgstr ""
 
 msgid "SQL users"
 msgstr "Пользователи SQL"
@@ -4297,9 +4308,6 @@ msgstr "Пользователей SQL <br /><i>(-1 отключено, 0 не �
 
 msgid "SQL-User"
 msgstr "Пользователь SQL"
-
-msgid "SQL-user not found."
-msgstr "Пользователь SQL не найден."
 
 msgid "SSL Certificates"
 msgstr "SSL сертификаты"
@@ -4601,9 +4609,6 @@ msgstr "Управление ПО"
 
 msgid "Softwares permissions"
 msgstr "Права ПО"
-
-msgid "Specified SQL username name already exists."
-msgstr "Указанное имя пользователя SQL уже существует"
 
 msgid "Specified database name already exists."
 msgstr "Указанное имя базы данных уже существует."
@@ -4919,9 +4924,6 @@ msgstr "Клавиша `Enter` отключена по причинам прои
 msgid "The admin has <em>%s</em> disabled on this system."
 msgstr "У администратора отключен <em>%s</em> в этой системе."
 
-msgid "The current password is wrong."
-msgstr "Ваш текущий пароль неверен."
-
 #, php-format
 msgid "The directory %s doesn't exist. Please create it first."
 msgstr "Каталог %s не существует. Сначала создайте его."
@@ -4966,15 +4968,6 @@ msgstr "Пакет будет автоматически установлен в
 
 msgid "The password field is empty."
 msgstr "Поле пароля пусто."
-
-msgid "The password is too long."
-msgstr "Пароль слишком длинный."
-
-#, php-format
-msgid ""
-"The password must be at least %s long and contain letters and numbers to be "
-"valid."
-msgstr "Пароль должен быть не короче %s символов и содержать буквы и цифры."
 
 #, php-format
 msgid "The plugin %s is protected. You cannot perform an action on it."
@@ -5281,6 +5274,9 @@ msgid ""
 "reseller."
 msgstr "Невозможно получить список каталогов для Вашего домена. Пожалуйста, свяжитесь с вашим реселлером."
 
+msgid "Unable to retrieve your password in database."
+msgstr ""
+
 #, php-format
 msgid "Unbale not upload file. Max. upload filesize (%1$d MB) reached?"
 msgstr "Невозможно загрузить файл. Максимальный размен файла (%1$d MB) достигнут?"
@@ -5458,9 +5454,6 @@ msgstr "Имя пользователя слишком длинное!"
 msgid "User password"
 msgstr "Пароль пользователя"
 
-msgid "User password successfully updated."
-msgstr "Пароль пользователя успешно обновлен."
-
 msgid "User personal data successfully updated."
 msgstr "Личные данные пользователя успешно обновлены"
 
@@ -5616,9 +5609,6 @@ msgstr "Индекс Web-репозитория имеет последнюю в
 
 msgid "Web statistics"
 msgstr "Web-статистика"
-
-msgid "Web statistics (AWStats)"
-msgstr "Web-статистика (AWStats)"
 
 msgid "Web traffic"
 msgstr "WEB трафик"
@@ -6193,9 +6183,9 @@ msgid "Your request for hosting plan update was successfully registered."
 msgstr "Ваш запрос на обновление хостинг-плана  успешно зарегистрирован."
 
 msgid ""
-"Your request for new password was registered. You will receive an email with"
-" instructions to complete the process."
-msgstr "Ваш запрос нового пароля был зарегистрирован. Вы получите письмо с инструкциями по завершению процесса смены пароля."
+"Your request for new password has been registered. You will receive an email"
+" with instructions to complete the process."
+msgstr ""
 
 msgid "ZB"
 msgstr "ЗБ"
@@ -6330,11 +6320,11 @@ msgstr "i-MSCP - Администратор / Управление пользо�
 msgid "i-MSCP - Admin / My Profile"
 msgstr "i-MSCP - Администратор / Мой профиль"
 
+msgid "i-MSCP - Admin / Password"
+msgstr ""
+
 msgid "i-MSCP - Admin / Profile /  Language"
 msgstr "i-MSCP - Администратор / Мой профиль / Язык"
-
-msgid "i-MSCP - Admin / Profile /  Password"
-msgstr "i-MSCP - Администратор / Мой профиль / Пароль"
 
 msgid "i-MSCP - Admin / Profile /  Personal Data"
 msgstr "i-MSCP - Администратор / Мой профиль / Персональные данные"
@@ -6459,6 +6449,9 @@ msgstr "i-MSCP - Клиент / Управление почтой / Измени
 msgid "i-MSCP - Client / Manage mail / Edit quota"
 msgstr "i-MSCP - Клиент / Управление почтой / Изменение квот"
 
+msgid "i-MSCP - Client / Password"
+msgstr ""
+
 msgid "i-MSCP - Client / Support Ticket System / Closed Tickets"
 msgstr "i-MSCP - Клиент / Служба поддержки / Закрытые тикеты"
 
@@ -6497,9 +6490,6 @@ msgstr "i-MSCP - Клиент / Добавить базу данных SQL"
 
 msgid "i-MSCP - Client/Add SQL User"
 msgstr "i-MSCP - Клиент / Добавить пользователя SQL"
-
-msgid "i-MSCP - Client/Change Password"
-msgstr "i-MSCP - Клиент / Изменить пароль"
 
 msgid "i-MSCP - Client/Change Personal Data"
 msgstr "i-MSCP - Клиент / Изменить персональные данные"
@@ -6623,9 +6613,6 @@ msgstr "i-MSCP - Реселлер / Просмотр хостинг-плана"
 
 msgid "i-MSCP - Reseller/Change Language"
 msgstr "i-MSCP - Реселлер / Изменить язык"
-
-msgid "i-MSCP - Reseller/Change Password"
-msgstr "i-MSCP - Реселлер / Изменить пароль"
 
 msgid "i-MSCP - Reseller/Change Personal Data"
 msgstr "i-MSCP - Реселлер / Изменить персональные данные"
