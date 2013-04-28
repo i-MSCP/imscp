@@ -3,17 +3,17 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-#   <9beliy@gmail.com>, 2012.
-#   <DragonZX@yandex.ru>, 2012-2013.
-# Oleg Olegov <>, 2012.
-#   <rwer353453534@mail.ru>, 2011.
-# Vitaliy Zhukov <DragonZX@yandex.ru>, 2013.
+# 9 Beliy <9beliy@gmail.com>, 2012
+# DragonZX <DragonZX@yandex.ru>, 2012-2013
+# Oleg Olegov <>, 2012
+# hosterdev <rwer353453534@mail.ru>, 2011
+# DragonZX <DragonZX@yandex.ru>, 2013
 msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
 "POT-Creation-Date: 2013-03-01 04:50+0100\n"
-"PO-Revision-Date: 2013-03-01 03:51+0000\n"
+"PO-Revision-Date: 2013-04-27 08:37+0000\n"
 "Last-Translator: Torsten Widmann <info@goover.de>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -1335,7 +1335,7 @@ msgid "Could not upload file."
 msgstr "Не могу загрузить файл."
 
 msgid "Could not upload file. File not found."
-msgstr ""
+msgstr "Невозможно загрузить файл. Файл не найден"
 
 #, php-format
 msgid ""
@@ -2297,7 +2297,7 @@ msgid "File exceeds the size limit."
 msgstr "Размер файла превышает лимит."
 
 msgid "File has been successfully uploaded."
-msgstr ""
+msgstr "Файл был успешно загружен."
 
 msgid "File is not readable."
 msgstr "Нечитаемый файл."
@@ -5190,7 +5190,7 @@ msgid "Total Softwares"
 msgstr "Всего ПО"
 
 msgid "Total Web software repositories"
-msgstr ""
+msgstr "Всего Web-репозиториев"
 
 msgid "Total installations"
 msgstr "Всего установок"
@@ -5264,7 +5264,7 @@ msgid "Unable to move file."
 msgstr "Не удалось переместить файл."
 
 msgid "Unable to read Web software repository index file."
-msgstr ""
+msgstr "Невозможно прочесть индексный файл Web-репозитория"
 
 msgid "Unable to read xml file for Web softwares."
 msgstr "Невозможно прочитать XML удаленного репозитория."

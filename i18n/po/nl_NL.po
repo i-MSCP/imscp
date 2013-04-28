@@ -3,13 +3,14 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-#   <s.kuijpers@freakez.eu>, 2012.
+# Steve Kuijpers <s.kuijpers@freakez.eu>, 2012
+# joneszy <claeysy@gmail.com>, 2013
 msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
 "POT-Creation-Date: 2013-03-01 04:50+0100\n"
-"PO-Revision-Date: 2013-03-01 03:51+0000\n"
+"PO-Revision-Date: 2013-04-27 08:37+0000\n"
 "Last-Translator: Torsten Widmann <info@goover.de>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -2308,7 +2309,7 @@ msgid "File usage"
 msgstr ""
 
 msgid "FileManager"
-msgstr ""
+msgstr "Bestandsbeheer"
 
 msgid "Filemanager"
 msgstr "Bestandbeheerder"
@@ -6744,7 +6745,7 @@ msgid "i-MSCP updates"
 msgstr "i-MSCP Updates"
 
 msgid "iMSCP - Admin/Admin Log"
-msgstr ""
+msgstr "i-MSCP - Beheerder/Logboek"
 
 msgid "install"
 msgstr "installeer"

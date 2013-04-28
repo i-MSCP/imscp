@@ -3,18 +3,18 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-#   <adriangam@gmail.com>, 2012.
-#  <reachme@mailinator.com>, 2013.
-#   <sagi@canbasis.com>, 2012.
-# Sagi Roca <sagi@canbasis.com>, 2012.
-#   <vh.rodriguez.a@gmail.com>, 2012.
-#   <victor53134@gmail.com>, 2012.
+# adriangam <adriangam@gmail.com>, 2012
+# killerbender0temp <reachme@mailinator.com>, 2013
+# Sagi Roca <sagi@canbasis.com>, 2012
+# Sagi Roca <sagi@canbasis.com>, 2012
+# alfauno <vh.rodriguez.a@gmail.com>, 2012
+# victor531 <victor53134@gmail.com>, 2012
 msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
 "POT-Creation-Date: 2013-03-01 04:50+0100\n"
-"PO-Revision-Date: 2013-03-01 03:51+0000\n"
+"PO-Revision-Date: 2013-04-27 08:37+0000\n"
 "Last-Translator: Torsten Widmann <info@goover.de>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"

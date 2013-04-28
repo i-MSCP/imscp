@@ -3,14 +3,14 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-#  <kazu.nito@gmail.com>, 2013.
-#   <kazu.nito@gmail.com>, 2011-2013.
+# kazuo <kazu.nito@gmail.com>, 2013
+# kazuo <kazu.nito@gmail.com>, 2011-2013
 msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
 "POT-Creation-Date: 2013-03-01 04:50+0100\n"
-"PO-Revision-Date: 2013-03-01 03:51+0000\n"
+"PO-Revision-Date: 2013-04-27 08:37+0000\n"
 "Last-Translator: Torsten Widmann <info@goover.de>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -1332,7 +1332,7 @@ msgid "Could not upload file."
 msgstr "ファイルをアップロードできませんでした。"
 
 msgid "Could not upload file. File not found."
-msgstr ""
+msgstr "ファイルをアップロードできませんでした。ファイルが見つかりません。"
 
 #, php-format
 msgid ""
@@ -2294,7 +2294,7 @@ msgid "File exceeds the size limit."
 msgstr "ファイルのサイズ制限を超えています。"
 
 msgid "File has been successfully uploaded."
-msgstr ""
+msgstr "ファイルがアップロードされました。"
 
 msgid "File is not readable."
 msgstr "ファイルは読み取り可能ではありません。"
@@ -5187,7 +5187,7 @@ msgid "Total Softwares"
 msgstr "ソフトウェアの合計"
 
 msgid "Total Web software repositories"
-msgstr ""
+msgstr "全てのWebソフトウェアリポジトリ"
 
 msgid "Total installations"
 msgstr "インストール合計"
@@ -5261,7 +5261,7 @@ msgid "Unable to move file."
 msgstr "ファイルを移動することができません。"
 
 msgid "Unable to read Web software repository index file."
-msgstr ""
+msgstr "Webソフトウェアリポジトリのインデックスファイルを読み込むことができません。"
 
 msgid "Unable to read xml file for Web softwares."
 msgstr "Webソフトウェアのためのxmlファイルを読み込むことができません。"

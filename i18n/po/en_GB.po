@@ -3,19 +3,19 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-#   <barni@telia.com>, 2012-2013.
-#   <flo_jung@web.de>, 2012.
-# Laurent Declercq <l.declercq@nuxwin.com>, 2011.
-# Torsten Widmann <goover0976@googlemail.com>, 2012.
-# Torsten Widmann <goover0976@yahoo.de>, 2011, 2012.
-# Torsten Widmann <info@goover.de>, 2012.
-# Vitaliy Zhukov <DragonZX@yandex.ru>, 2013.
+# Cool <barni@telia.com>, 2012-2013
+# FlorianJ <flo_jung@web.de>, 2012
+# Laurent Declercq <l.declercq@nuxwin.com>, 2011
+# Torsten Widmann <info@goover.de>, 2012
+# Torsten Widmann <info@goover.de>, 2011, 2012
+# Torsten Widmann <info@goover.de>, 2012
+# DragonZX <DragonZX@yandex.ru>, 2013
 msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
 "POT-Creation-Date: 2013-03-01 04:50+0100\n"
-"PO-Revision-Date: 2013-03-01 03:51+0000\n"
+"PO-Revision-Date: 2013-04-27 08:37+0000\n"
 "Last-Translator: Torsten Widmann <info@goover.de>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"

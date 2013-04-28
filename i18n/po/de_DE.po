@@ -3,34 +3,34 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-#   <alexander@wachert.com>, 2011.
-# Alex H <paderwan@googlemail.com>, 2012.
-#  <barni@telia.com>, 2013.
-#   <barni@telia.com>, 2011,2013.
-#   <bene@deluxe-styles.de>, 2011, 2012.
-# Christian Hernmarck <joximu@web.de>, 2012.
-#   <eiweleit@osob.de>, 2011.
-#   <flo_jung@web.de>, 2012.
-# Florian Jung <>, 2012.
-#   <ma.ambauen@bluewin.ch>, 2012.
-#   <mail@stefan-riegel.de>, 2011.
-# Marc Schütz <schuetzm@gmx.net>, 2011.
-# Markus  <daywalkerebay@googlemail.com>, 2011.
-#   <neppumuck@web.de>, 2012.
-#   <paderwan@googlemail.com>, 2012.
-# Pascal Küppers <>, 2012.
-#   <schlanki_26@web.de>, 2011.
-#   <strauss3@gmx.at>, 2011.
-#   <tango-net@freenet.de>, 2011.
-# Torsten Widmann <goover0976@googlemail.com>, 2012.
-# Torsten Widmann <goover0976@yahoo.de>, 2011, 2012.
-# Torsten Widmann <info@goover.de>, 2012-2013.
+# Wachert <alexander@wachert.com>, 2011
+# Alex H <paderwan@googlemail.com>, 2012
+# Cool <barni@telia.com>, 2013
+# Cool <barni@telia.com>, 2011,2013
+# BeNe <bene@deluxe-styles.de>, 2011, 2012
+# Christian Hernmarck <joximu@web.de>, 2012
+# bastey <eiweleit@osob.de>, 2011
+# FlorianJ <flo_jung@web.de>, 2012
+# Florian Jung <>, 2012
+# fluser <ma.ambauen@bluewin.ch>, 2012
+# w3bster <mail@stefan-riegel.de>, 2011
+# Marc Schütz <schuetzm@gmx.net>, 2011
+# Markus <daywalkerebay@googlemail.com>, 2011
+# neppumuck <neppumuck@web.de>, 2012
+# Alex H <paderwan@googlemail.com>, 2012
+# Pascal Küppers <>, 2012
+# design <schlanki_26@web.de>, 2011
+# kreilinger <strauss3@gmx.at>, 2011
+# Tango <tango-net@freenet.de>, 2011
+# Torsten Widmann <info@goover.de>, 2012
+# Torsten Widmann <info@goover.de>, 2011, 2012
+# Torsten Widmann <info@goover.de>, 2012-2013
 msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
 "POT-Creation-Date: 2013-03-01 04:50+0100\n"
-"PO-Revision-Date: 2013-04-07 19:21+0000\n"
+"PO-Revision-Date: 2013-04-27 08:37+0000\n"
 "Last-Translator: Torsten Widmann <info@goover.de>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"

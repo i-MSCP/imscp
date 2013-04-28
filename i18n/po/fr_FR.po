@@ -3,22 +3,24 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-#   <coolternet@live.ca>, 2012.
-#  <krok@totalynet.fr>, 2013.
-#   <krok@totalynet.fr>, 2011, 2012.
-# Laurent Declercq <l.declercq@nuxwin.com>, 2011-2012.
-#   <l.declercq@nuxwin.com>, 2011.
-#   <ludofloria@aifesdespets.fr>, 2012.
-#   <minicore@jypino.eu>, 2012.
-# Morgan Henreaux <morgan@henreaux.com>, 2012.
-#  <sebtiz13@gmail.com>, 2013.
-# Stéphane Aulery <lkppo@free.fr>, 2012.
+# Alexandre Breteau <0xfuture@gmail.com>, 2013
+# coolternet <coolternet@live.ca>, 2012
+# Kévin L <kevinus60@gmail.com>, 2013
+# krok <krok@totalynet.fr>, 2013
+# krok <krok@totalynet.fr>, 2011, 2012
+# Laurent Declercq <l.declercq@nuxwin.com>, 2011-2012
+# Laurent Declercq <l.declercq@nuxwin.com>, 2011
+# Afresh <ludofloria@aifesdespets.fr>, 2012
+# minicore <minicore@jypino.eu>, 2012
+# Morgan Henreaux <morgan@henreaux.com>, 2012
+# sebtiz13 <sebtiz13@gmail.com>, 2013
+# Stéphane Aulery <lkppo@free.fr>, 2012
 msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
 "POT-Creation-Date: 2013-03-01 04:50+0100\n"
-"PO-Revision-Date: 2013-03-01 03:51+0000\n"
+"PO-Revision-Date: 2013-04-27 08:37+0000\n"
 "Last-Translator: Torsten Widmann <info@goover.de>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -381,11 +383,11 @@ msgstr "'%hostname%' n'est pas dans un segment de réseau routable. L'adresse em
 
 #, php-format
 msgid "'%localPart%' can not be matched against dot-atom format"
-msgstr ""
+msgstr "'%localPart%' est introuvable vis à vis du format dot-atom"
 
 #, php-format
 msgid "'%localPart%' can not be matched against quoted-string format"
-msgstr ""
+msgstr "'%localPart%' est introuvable vis à vis du format quoted-string"
 
 msgid "'%localPart%' is no valid local part for email address '%value%'"
 msgstr "'%localPart%' n'est pas une partie valide pour l'adresse e-mail '%value%'"
@@ -884,7 +886,7 @@ msgid "Alternative URL to reach your website"
 msgstr "URL alternative pour accéder à votre site web"
 
 msgid "An error occured. Please, contact your administrator."
-msgstr ""
+msgstr "Une erreur est survenue. Veuillez contacter votre administrateur."
 
 msgid "An error occurred while the authentication attempt."
 msgstr "Une erreur s'est produite lors de la tentative d'authentification."
@@ -2750,7 +2752,7 @@ msgid "Invalid mail local part."
 msgstr "La oartie locale de l'adresse email est erronée"
 
 msgid "Invalid menu order."
-msgstr ""
+msgstr "Ordre du menu invalide."
 
 msgid "Invalid name."
 msgstr "Nom incorrecte."
@@ -4259,7 +4261,7 @@ msgid "SQL databases limit <br /><i>(-1 disabled, 0 unlimited)</i>"
 msgstr ""
 
 msgid "SQL databases limit is disabled but SQL users limit is not."
-msgstr ""
+msgstr "La limite de bases de données SQL désactivée mais la limite des utilisateurs SQL est toujours active."
 
 msgid "SQL databases limit is not <i>disabled</i>."
 msgstr "La limit pour les bases de données SQL n'est pas <i>désactivé</b>."
@@ -4289,10 +4291,10 @@ msgid "SQL users limit is <i>disabled</i>."
 msgstr "La limite d'utilisateur SQL est <i>désactivé</i>"
 
 msgid "SQL users limit is disabled but SQL databases limit is not."
-msgstr ""
+msgstr "La limite de bases de données SQL désactivée mais la limite des utilisateurs SQL est toujours active."
 
 msgid "SQL users limit is disabled but SQL databases limit not."
-msgstr ""
+msgstr "La limite de bases de données SQL désactivée mais la limite des utilisateurs SQL est toujours active."
 
 msgid "SQL users limit reached."
 msgstr "Limite d'utilisateurs SQL atteinte."
@@ -4310,7 +4312,7 @@ msgid "SSL Certificates"
 msgstr "Certificats SSL"
 
 msgid "SSL feature is disabled. You cannot add / change certificate"
-msgstr ""
+msgstr "La fonctionnalité SSL est désactivée. Vous ne pouvez pas ajouter / modifier les certificats."
 
 msgid "Save"
 msgstr "Sauver"
@@ -4473,7 +4475,7 @@ msgid "Show default E-Mail addresses"
 msgstr "Afficher les adresses mail créées par défaut"
 
 msgid "Show detailed statistics for this domain"
-msgstr ""
+msgstr "afficher les statistiques détaillées de ce domaine"
 
 msgid "Show detailed statistics for this reseller"
 msgstr ""
@@ -4539,7 +4541,7 @@ msgid "Software installer options"
 msgstr "Options d'installation du logiciel"
 
 msgid "Software installer options successfully updated."
-msgstr ""
+msgstr "Options d'installation du logiciel mises à jour avec succès."
 
 msgid "Software installer: disabled"
 msgstr ""
@@ -5353,7 +5355,7 @@ msgid "Update"
 msgstr "Mise à jour"
 
 msgid "Update SQL user password"
-msgstr ""
+msgstr "Mettre à jour le mot de passe SQL"
 
 msgid "Update checking is disabled."
 msgstr "La vérification des mise à jour est désactivée."
@@ -5403,7 +5405,7 @@ msgid "Usage status"
 msgstr "Utilisation"
 
 msgid "Use normal connection (No SSL)"
-msgstr ""
+msgstr "Utiliser une connexion normale (Pas de SSL)"
 
 msgid "Use numeric ID"
 msgstr "Utiliser un identifiant numérique"
@@ -5467,7 +5469,7 @@ msgid "User password successfully updated."
 msgstr "Mot de passe de l'utilisateur mise à jour."
 
 msgid "User personal data successfully updated."
-msgstr ""
+msgstr "Données personnelles de l'utilisateur mises à jour."
 
 msgid "User real (first and last) name"
 msgstr "Nom réel de l'utilisateur (nom et prénom)"
@@ -5517,13 +5519,13 @@ msgstr "Valeur de la directive %s"
 
 #, php-format
 msgid "Value for the PHP %s directive is out of range."
-msgstr ""
+msgstr "La valeur pour la directive PHP %s est hors de portée."
 
 #, php-format
 msgid ""
 "Value for the PHP <strong>%%s</strong> directive must be between %%d and "
 "%%d."
-msgstr ""
+msgstr "La valeur pour la directive PHP <strong>%%s</strong> doit être comprise entre %%d et %%d."
 
 msgid "Values"
 msgstr "Valeur"
@@ -5765,7 +5767,7 @@ msgstr "Syntaxe incorrecte pour l'adresse e-mail de transfert %s."
 
 #, php-format
 msgid "Wrong syntax for the %s limit."
-msgstr ""
+msgstr "Syntaxe incorrecte pour la limite de %s."
 
 msgid "Wrong syntax in forward URL."
 msgstr "Syntaxe incorrect pour l'URL de redirection"
@@ -5945,7 +5947,7 @@ msgstr "Vous ne devez pas inclure le préfix 'www.'. i-MSCP le fera pour vous."
 
 #, php-format
 msgid "You have %d new accounts %s."
-msgstr ""
+msgstr "Vous avez %d nouveaux comptes %s."
 
 #, php-format
 msgid "You have %d new domain alias %s."
@@ -6011,7 +6013,7 @@ msgstr ""
 
 msgid ""
 "You have chosen a directory which doesn't matches the domain directory."
-msgstr ""
+msgstr "Vous avez choisi un répertoire qui ne correspond pas au chemin du domaine."
 
 msgid ""
 "You have custom DNS enabled, but the new hosting plan doesn't provide this "
@@ -6139,7 +6141,7 @@ msgstr ""
 
 #, php-format
 msgid "You received %d new answer(s) to your support questions."
-msgstr ""
+msgstr "Vous avez reçu %d nouvelles réponse(s) à vos questions."
 
 msgid "You send email to your users successfully!"
 msgstr "Votre email à bien été envoyée à vos clients"
@@ -6312,7 +6314,7 @@ msgid "i-MSCP - Admin / Domain Account Deletion Validation"
 msgstr "i-MSCP / Admin / Compte de domaine - Validation pour suppression"
 
 msgid "i-MSCP - Admin / Edit customer"
-msgstr ""
+msgstr "i-MSCP - Admin / Édition d'un client"
 
 msgid "i-MSCP - Admin / Edit hosting plan"
 msgstr "i-MSCP - Admin / Edition d'un plan d'hébergement"
@@ -6351,7 +6353,7 @@ msgid "i-MSCP - Admin / Reseller customer statistics"
 msgstr ""
 
 msgid "i-MSCP - Admin / Reseller statistics"
-msgstr ""
+msgstr "i-MSCP - Admin / Statistiques des revendeurs"
 
 msgid "i-MSCP - Admin / Settings"
 msgstr ""
@@ -6534,7 +6536,7 @@ msgid "i-MSCP - Client/Manage Users"
 msgstr "i-MSCP - Client/Gestion Utilisateurs"
 
 msgid "i-MSCP - Client/Manage certificates"
-msgstr ""
+msgstr "i-MSCP - Client/Gestion des certificats"
 
 msgid "i-MSCP - Client/Webtools"
 msgstr "i-MSCP - Client/Outils Web"
@@ -6546,7 +6548,7 @@ msgid "i-MSCP - Domain/Edit"
 msgstr "i-MSCP - Domaine/Editer"
 
 msgid "i-MSCP - Ftp / Choose directory"
-msgstr ""
+msgstr "i-MSCP - Ftp / Choix du répertoire"
 
 msgid "i-MSCP - Install Software"
 msgstr "-MSCP - Installation logiciel"
@@ -6573,16 +6575,16 @@ msgid "i-MSCP - Multi Server Control Panel / Login"
 msgstr "i-MSCP Panneau de contrôle internet multi-serveurs / Connexion"
 
 msgid "i-MSCP - Multi Server Control Panel / Lost password"
-msgstr ""
+msgstr "i-MSCP Panneau de contrôle internet multi-serveurs / Mot de passe perdu"
 
 msgid "i-MSCP - Multi Server Control Panel / Maintenance"
-msgstr ""
+msgstr "i-MSCP Panneau de contrôle internet multi-serveurs / Maintenance"
 
 msgid "i-MSCP - Reseller / Add customer - step 1"
-msgstr ""
+msgstr "i-MSCP - Utilisateur / Ajout d'un client - étape 1"
 
 msgid "i-MSCP - Reseller / Add hosting plan"
-msgstr ""
+msgstr "i-MSCP - Revendeur / Ajout d'un plan d'hébergement"
 
 msgid "i-MSCP - Reseller / Domain Account Deletion Validation"
 msgstr "i-MSCP - Revendeur / Suppression d'un compte / Validation"
@@ -6600,7 +6602,7 @@ msgid "i-MSCP - Reseller / Main Index"
 msgstr ""
 
 msgid "i-MSCP - Reseller / My Profile"
-msgstr ""
+msgstr "i-MSCP - Revendeur / Mon Profile"
 
 msgid "i-MSCP - Reseller / Order management"
 msgstr ""
@@ -6669,7 +6671,7 @@ msgid "i-MSCP - Software details"
 msgstr "i-MSCP - Détails logiciel"
 
 msgid "i-MSCP - Software installer options"
-msgstr ""
+msgstr "i-MSCP - Options d'installation du logiciel"
 
 msgid "i-MSCP - Softwares Management"
 msgstr ""
@@ -6720,7 +6722,7 @@ msgid "i-MSCP Client / Domain statistics"
 msgstr ""
 
 msgid "i-MSCP Client / General Information"
-msgstr ""
+msgstr "i-MSCP - Client / Information Générales"
 
 msgid "i-MSCP Client : Add Alias"
 msgstr "i-MSCP Client: Ajouter un alias"
@@ -6732,10 +6734,10 @@ msgid "i-MSCP Notice"
 msgstr ""
 
 msgid "i-MSCP Reseller / Domain statistics"
-msgstr ""
+msgstr "i-MSCP - Revendeur / Statistiques du domaine"
 
 msgid "i-MSCP Reseller/Add Alias"
-msgstr ""
+msgstr "i-MSCP Revendeur/Ajouter un alias"
 
 msgid "i-MSCP Reseller/Circular"
 msgstr ""
