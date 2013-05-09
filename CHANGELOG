@@ -10,8 +10,8 @@ CONFIGS:
 	- Added named.conf.local and named.conf.options files
 	- Fixed: Useless section must be removed in generated Apache configuration files
 	- Fixed: diff package isn't available for Ubuntu > 12.04 (replaced by diffutils)
+	- Removed packages file for Ubuntu Oneiric Ocelot ( EOL 20130509)
 	- Updated php.ini files
-
 ENGINE:
 	- Added support for Apache + PHP FPM
 	- Added option allowing to disable/enable IPv6 support (Bind9)
@@ -36,6 +36,7 @@ GUI:
 
 SETUP:
 	- Added support for external repositories (Debian/Ubuntu)
+	- Fixed: add-apt-repository - unknown -y option (Ubuntu Lucid Lynx)
 	- Fixed: APT packages manager must be configured before any package installation
 	- Fixed: All MySQL secure installation tasks are now done by the i-MSCP installer
 	- Fixed: i-MSCP must allow usage of remote SQL server

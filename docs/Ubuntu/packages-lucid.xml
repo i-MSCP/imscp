@@ -14,7 +14,7 @@
                 <package>apache2-mpm-itk</package>
                 <package>libapache2-mod-php5</package>
             </apache_itk>
-            <apache_php_fpm repository="ppa:brianmercer/php5" repository_origin="LP-PPA-brianmercer-php5">
+            <apache_php_fpm repository="ppa:fabianarias/php5" repository_origin="LP-PPA-fabianarias-php5">
                 <package>apache2</package>
                 <package>apache2-mpm-worker</package>
                 <package>libapache2-mod-fastcgi</package>

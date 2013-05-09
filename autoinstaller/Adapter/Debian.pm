@@ -108,8 +108,8 @@ sub preBuild
 
 		my @steps = (
 			[sub { $self->_preparePackagesList() }, 'Generating list of packages to uninstall and install'],
-			[sub { $self->_addExternalRepositories() }, 'Adding external repositories if any'],
-			[sub { $self->_addAptPreferencesFile() }, 'Adding APT preferences file if any'],
+			[sub { $self->_addExternalRepositories() }, 'Process external repositories if any'],
+			[sub { $self->_addAptPreferencesFile() }, 'Process APT preferences file if any'],
 			[sub { $self->_updatePackagesIndex() }, 'Updating packages index files']
 		);
 
@@ -274,6 +274,7 @@ sub _preparePackagesList
 	my $distribution = lc($lsbRelease->getId(1));
 	my $codename = lc($lsbRelease->getCodename(1));
 	my $packagesFile = "$FindBin::Bin/docs/" . ucfirst($distribution) . "/packages-$codename.xml";
+
 	my $rs = 0;
 
 	eval "use XML::Simple; 1";
@@ -284,6 +285,8 @@ sub _preparePackagesList
 
 	my $xml = XML::Simple->new(NoEscape => 1);
 	my $data = eval { $xml->XMLin($packagesFile, KeyAttr => 'name') };
+
+	fatal("Unable to read $packagesFile: $@") if($@);
 
 	for(sort keys %{$data}) {
 		if($data->{$_}->{'alternative'}) {
@@ -481,13 +484,17 @@ sub _updateAptSourceList
 		my $section = $_;
 		my @seen = ();
 
-		while($content =~ /^deb\s+(?<uri>(?:https?|ftp)[^\s]+)\s+(?<distrib>[^\s]+)\s+(?<components>.+)$/mg) {
+		while($content =~ /^deb\s+(?<uri>(?:https?|ftp)[^\s]+)\s+(?<distrib>[^\s]+)\s+(?<components>.+)$/gm) {
 			my %repository = %+;
 
-			next if "$repository{'uri'}#$repository{'distrib'}" ~~ @seen;
+			if("$repository{'uri'} $repository{'distrib'}" ~~ @seen) {
+				debug("Repository '$repository{'uri'} $repository{'distrib'}' already checked for '$section' section. Skipping...");
+				next;
+			}
 
-			# is a section available in repository?
-			unless($repository{'components'} =~ /\s?$section(\s|$)/) {
+			debug("\nChecking repository '$repository{'uri'} $repository{'distrib'}' for '$section' section.");
+
+			unless($content =~ /^deb\s+$repository{'uri'}\s+\b$repository{'distrib'}\b\s+.*\b$section\b/m) {
 				my $uri = "$repository{'uri'}/dists/$repository{'distrib'}/$section/";
 				$rs = execute("wget --spider $uri", \$stdout, \$stderr);
 				debug($stdout) if $stdout;
@@ -495,16 +502,17 @@ sub _updateAptSourceList
 
 				unless ($rs) {
 					$foundSection = 1;
-					debug("Enabling section '$section' on $repository{uri}");
-					$content =~ s/^($&)$/$1 $section/mg;
+					debug("Enabling section '$section' on '$repository{uri} $repository{'distrib'}'");
+					$content =~ s/^($&)$/$1 $section/m;
+
 					$needUpdate = 1;
-					push @seen, "$repository{'uri'} $repository{'distrib'}";
 				}
 			} else {
-				debug("Section '$section' is already enabled on $repository{uri}");
+				debug("Section '$section' already enabled on '$repository{uri} $repository{'distrib'}'");
 				$foundSection = 1;
-				push @seen, "$repository{'uri'} $repository{'distrib'}";
 			}
+
+			push @seen, "$repository{'uri'} $repository{'distrib'}";
 		}
 
 		unless($foundSection) {
@@ -518,9 +526,6 @@ sub _updateAptSourceList
 		return $rs if $rs;
 
 		$rs = $file->save();
-		return $rs if $rs;
-
-		$rs = $self->_updatePackagesIndex();
 		return $rs if $rs;
 	}
 
@@ -544,14 +549,14 @@ sub _addExternalRepositories
 
 	if(@{$self->{'externalRepositoriesToRemove'}} || @{$self->{'externalRepositories'}}) {
 
-		my $file = iMSCP::File->new('filename' => '/etc/apt/sources.list');
+		my $sourceListFile = iMSCP::File->new('filename' => '/etc/apt/sources.list');
 
 		unless (-f '/etc/apt/sources.list.bkp') {
-			$rs = $file->copyFile('/etc/apt/sources.list.bkp');;
+			$rs = $sourceListFile->copyFile('/etc/apt/sources.list.bkp');
 			return $rs if $rs;
 		}
 
-		my $content = $file->get();
+		my $content = $sourceListFile->get();
 
 		unless (defined $content) {
 			error('Unable to read /etc/apt/sources.list file');
@@ -584,9 +589,7 @@ sub _addExternalRepositories
 			return $rs if $rs;
 
 			# Schedule packages for deletion
-			if($stdout) {
-				@{$self->{'packagesToUninstall'}} = (@{$self->{'packagesToUninstall'}}, split("\n", $stdout));
-			}
+			@{$self->{'packagesToUninstall'}} = (@{$self->{'packagesToUninstall'}}, split("\n", $stdout)) if $stdout;
 
 			# Remove the repository from the sources.list file
 			$content =~ s/\n?(deb|deb-src)\s+$_->{'repository'}\n?//gm;
@@ -626,10 +629,10 @@ sub _addExternalRepositories
 		}
 
 		if($needUpdate) {
-			$rs = $file->set($content);
+			$rs = $sourceListFile->set($content);
 			return $rs if $rs;
 
-			$file->save();
+			$sourceListFile->save();
 			return $rs if $rs;
 		}
 	}

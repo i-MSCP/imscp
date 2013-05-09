@@ -97,14 +97,16 @@ sub _init
 sub _addExternalRepositories
 {
 	my $self = shift;
+
+	my $distroRelease = iMSCP::LsbRelease->getInstance()->getRelease(1);
 	my $rs = 0;
 
 	if(@{$self->{'externalRepositoriesToRemove'}} || @{$self->{'externalRepositories'}}) {
 
-		my $file = iMSCP::File->new('filename' => '/etc/apt/sources.list');
+		my $sourceListFile = iMSCP::File->new('filename' => '/etc/apt/sources.list');
 
 		unless(-f '/etc/apt/sources.list.bkp') {
-			$rs = $file->copyFile('/etc/apt/sources.list.bkp');
+			$rs = $sourceListFile->copyFile('/etc/apt/sources.list.bkp');
 			return $rs if $rs;
 		}
 
@@ -134,14 +136,36 @@ sub _addExternalRepositories
 			return $rs if $rs;
 
 			# Schedule packages for deletion
-			if($stdout) {
-				@{$self->{'packagesToUninstall'}} = (@{$self->{'packagesToUninstall'}}, split("\n", $stdout));
-			}
+			@{$self->{'packagesToUninstall'}} = (@{$self->{'packagesToUninstall'}}, split("\n", $stdout)) if $stdout;
 
-			# Remove the repository from the sources.list file
-			$rs = execute("add-apt-repository -y -r $_->{'repository'}", \$stdout, \$stderr);
-			debug($stdout) if $stdout;
-			error($stderr) if $stderr && $rs;
+			# Remove the repository
+			if($distroRelease > 10.04) {
+				$rs = execute("add-apt-repository -y -r $_->{'repository'}", \$stdout, \$stderr);
+				debug($stdout) if $stdout;
+				error($stderr) if $stderr && $rs;
+			} else {
+				# add-apt-repository command as provided by Ubuntu lucid doesn't provide any option
+				if($_->{'repository'} =~ m%^ppa:(.*)/(.*)%) { # PPA repository
+					my $ppaFile = "/etc/apt/sources.list.d/$1-$2-*";
+
+					if(glob $ppaFile) {
+						$rs = execute("$main::imscpConfig{'CMD_RM'} $ppaFile", \$stdout, \$stderr);
+						debug($stdout) if $stdout;
+						error($stderr) if $stderr && $rs;
+						return $rs if $rs;
+					}
+				} else { # Normal repository
+					# Remove the repository from the sources.list file
+					my $content = $sourceListFile->get();
+					$content =~ s/\n?(deb|deb-src)\s+$_->{'repository'}\n?//gm;
+
+					$rs = $sourceListFile->set($content);
+					return $rs if $rs;
+
+					$rs = $sourceListFile->save();
+					return $rs if $rs;
+				}
+			}
 		}
 
 		eval "use List::MoreUtils qw(uniq); 1";
@@ -153,18 +177,26 @@ sub _addExternalRepositories
 		# Add needed external repositories
 		for(@{$self->{'externalRepositories'}}) {
 			if($_->{'repository'} =~ /^ppa:/) { # PPA repository
-				if($_->{'repository_key_srv'}) {
-					$cmd = "add-apt-repository -y -k $_->{'repository_key_srv'} $_->{'repository'}";
-				} else {
-					$cmd = "add-apt-repository -y $_->{'repository'}";
-				}
+				if($distroRelease > 10.4) {
+					if($_->{'repository_key_srv'}) {
+						$cmd = "add-apt-repository -y -k $_->{'repository_key_srv'} $_->{'repository'}";
+					} else {
+						$cmd = "add-apt-repository -y $_->{'repository'}";
+					}
+				 } else {
+					$cmd = "add-apt-repository $_->{'repository'}";
+				 }
 
 				$rs = execute($cmd, \$stdout, \$stderr);
 				debug($stdout) if $stdout;
 				error($stderr) if $stderr && $rs;
 				return $rs if $rs
-			} else { # normal repository
-				$rs = execute("add-apt-repository -y $_->{'repository'}", \$stdout, \$stderr);
+			} else { # Normal repository
+				if($distroRelease > 10.4) {
+					$rs = execute("add-apt-repository -y $_->{'repository'}", \$stdout, \$stderr);
+				} else {
+					$rs = execute("add-apt-repository $_->{'repository'}", \$stdout, \$stderr);
+				}
 				debug($stdout) if $stdout;
 				error($stderr) if $stderr && $rs;
 				return $rs if $rs;
