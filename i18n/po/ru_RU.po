@@ -12,9 +12,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2013-04-28 09:06+0200\n"
-"PO-Revision-Date: 2013-04-28 07:06+0000\n"
-"Last-Translator: Torsten Widmann <info@goover.de>\n"
+"POT-Creation-Date: 2013-05-16 12:20+0200\n"
+"PO-Revision-Date: 2013-05-06 07:42+0000\n"
+"Last-Translator: DragonZX <DragonZX@yandex.ru>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -47,7 +47,7 @@ msgid ""
 "___________________________\n"
 "The i-MSCP Team\n"
 "\n"
-msgstr ""
+msgstr "\n\nУважаемый {NAME},\n\nНовый пароль к учетной записи i-MSCP был создан для Вас.\n\nИнформация по учетной записи:\n\nТип пользователя: {USERTYPE}\nИмя пользователя: {USERNAME}\nПароль: {PASSWORD}\n\nНе забудьте сменить Ваш пароль после первого входа в учетную запись.\n\nВы можете войти по адресу {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}\n\nСтатистика: http://{USERNAME}/{WEBSTATS_RPATH}\n(С теми же учетными данными)\n\nСпасибо за использование i-MSCP.\n\n___________________________\nКоманда i-MSCP\n\n"
 
 msgid ""
 "\n"
@@ -544,7 +544,7 @@ msgid ""
 msgstr "ACE -ярлыки не разрешены. Пожалуйста, используйте эквивалент ToUnicode.<br /><small>Например: для ACE ярлыка <b>xn--bcher-kva</b> используйте <b>bücher</b></small>."
 
 msgid "Access your domain statistics through the Web interface."
-msgstr ""
+msgstr "Получить доступ к статистике домена через Web-интерфейс."
 
 msgid "Access your files through the web interface."
 msgstr "Получить доступ к файлам через Web-интерфейс."
@@ -1376,7 +1376,7 @@ msgid "Current password"
 msgstr "Текущий пароль"
 
 msgid "Current password is invalid."
-msgstr ""
+msgstr "Текущий пароль неверен."
 
 msgid "Custom DNS Records"
 msgstr "Пользовательские DNS-записи"
@@ -3694,7 +3694,7 @@ msgid "Password E-Mail"
 msgstr "Восстановление пароля"
 
 msgid "Password cannot be greater than 30 characters."
-msgstr ""
+msgstr "Пароль не может быть длиннее 30 символов."
 
 msgid "Password change is deactivated!"
 msgstr "Изменение пароля отключено!"
@@ -3709,14 +3709,14 @@ msgid "Password data is missing."
 msgstr "Пароль отсутствует."
 
 msgid "Password includes not permitted signs."
-msgstr ""
+msgstr "Пароль содержит запрещенные символы!"
 
 msgid "Password is missing."
 msgstr "Пароль отсутствует."
 
 #, php-format
 msgid "Password is shorter than %s characters."
-msgstr ""
+msgstr "Пароль короче чем %s знаков."
 
 msgid "Password length"
 msgstr "Длина пароля"
@@ -3725,7 +3725,7 @@ msgstr "Длина пароля"
 msgid ""
 "Password must be at least %s character long and contain letters and numbers "
 "to be valid."
-msgstr ""
+msgstr "Пароль должен быть не короче %s символов и содержать буквы и цифры."
 
 msgid "Password settings"
 msgstr "Настройки пароля"
@@ -4271,7 +4271,7 @@ msgid "SQL user name"
 msgstr "Имя пользователя SQL"
 
 msgid "SQL user not found."
-msgstr ""
+msgstr "Пользователь SQL не найден."
 
 msgid "SQL user password successfully updated."
 msgstr "Пароль пользователя SQL успешно обновлен."
@@ -4283,7 +4283,7 @@ msgid "SQL user successfully deleted."
 msgstr "Пользователь SQL успешно удален."
 
 msgid "SQL username name already in use."
-msgstr ""
+msgstr "Указанное имя пользователя SQL уже используется"
 
 msgid "SQL users"
 msgstr "Пользователи SQL"
@@ -5275,7 +5275,7 @@ msgid ""
 msgstr "Невозможно получить список каталогов для Вашего домена. Пожалуйста, свяжитесь с вашим реселлером."
 
 msgid "Unable to retrieve your password in database."
-msgstr ""
+msgstr "Не удается проверить ваш пароль к базе данных."
 
 #, php-format
 msgid "Unbale not upload file. Max. upload filesize (%1$d MB) reached?"
@@ -6185,7 +6185,7 @@ msgstr "Ваш запрос на обновление хостинг-плана 
 msgid ""
 "Your request for new password has been registered. You will receive an email"
 " with instructions to complete the process."
-msgstr ""
+msgstr "Ваш запрос нового пароля был зарегистрирован. Вы получите письмо с инструкциями по завершению процесса смены пароля."
 
 msgid "ZB"
 msgstr "ЗБ"
@@ -6321,7 +6321,7 @@ msgid "i-MSCP - Admin / My Profile"
 msgstr "i-MSCP - Администратор / Мой профиль"
 
 msgid "i-MSCP - Admin / Password"
-msgstr ""
+msgstr "i-MSCP - Администратор / Пароль"
 
 msgid "i-MSCP - Admin / Profile /  Language"
 msgstr "i-MSCP - Администратор / Мой профиль / Язык"
@@ -6450,7 +6450,7 @@ msgid "i-MSCP - Client / Manage mail / Edit quota"
 msgstr "i-MSCP - Клиент / Управление почтой / Изменение квот"
 
 msgid "i-MSCP - Client / Password"
-msgstr ""
+msgstr "i-MSCP - Клиент / Пароль"
 
 msgid "i-MSCP - Client / Support Ticket System / Closed Tickets"
 msgstr "i-MSCP - Клиент / Служба поддержки / Закрытые тикеты"

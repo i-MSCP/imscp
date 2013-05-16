@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2013-04-28 09:06+0200\n"
-"PO-Revision-Date: 2013-04-28 07:06+0000\n"
+"POT-Creation-Date: 2013-05-16 12:20+0200\n"
+"PO-Revision-Date: 2013-04-29 08:35+0000\n"
 "Last-Translator: Torsten Widmann <info@goover.de>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -44,7 +44,7 @@ msgid ""
 "___________________________\n"
 "The i-MSCP Team\n"
 "\n"
-msgstr ""
+msgstr "\n\nDear {NAME},\n\nA new i-MSCP account has been created for you.\n\nYour account information:\n\nUser type: {USERTYPE}\nUser name: {USERNAME}\nPassword: {PASSWORD}\n\nRemember to change your password often and the first time you login.\n\nYou can login right now at {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}\n\nStatistics: http://{USERNAME}/{WEBSTATS_RPATH}\n(Same username and password than above)\n\nThank you for using i-MSCP services.\n\n___________________________\nThe i-MSCP Team\n\n"
 
 msgid ""
 "\n"
@@ -541,7 +541,7 @@ msgid ""
 msgstr "ACE labels are not allowed. Please use the ToUnicode equivalent.<br /><small>Example: for ACE label <b>xn--bcher-kva</b> use <b>bücher</b> instead</small>."
 
 msgid "Access your domain statistics through the Web interface."
-msgstr ""
+msgstr "Tillgång till din domän statistik via webbgränssnittet."
 
 msgid "Access your files through the web interface."
 msgstr "Kom åt dina filer via webbgränssnittet."
@@ -1373,7 +1373,7 @@ msgid "Current password"
 msgstr "Nuvarande lösenord"
 
 msgid "Current password is invalid."
-msgstr ""
+msgstr "Det nuvarande lösenordet är felaktigt!"
 
 msgid "Custom DNS Records"
 msgstr "Egna DNS-Records"
@@ -3691,7 +3691,7 @@ msgid "Password E-Mail"
 msgstr "Lösenordsmeddelande"
 
 msgid "Password cannot be greater than 30 characters."
-msgstr ""
+msgstr "Lösenord får inte vara längre än 30 teken"
 
 msgid "Password change is deactivated!"
 msgstr "Byte av lösenord är inaktiverat!"
@@ -3706,14 +3706,14 @@ msgid "Password data is missing."
 msgstr "Lösenord data saknas."
 
 msgid "Password includes not permitted signs."
-msgstr ""
+msgstr "Lösenordet innehåller inte tillåtna tecken."
 
 msgid "Password is missing."
 msgstr "Lösenord saknas."
 
 #, php-format
 msgid "Password is shorter than %s characters."
-msgstr ""
+msgstr "Lösenordet är kortare än %s tecken."
 
 msgid "Password length"
 msgstr "Lösenordslängd"
@@ -3722,7 +3722,7 @@ msgstr "Lösenordslängd"
 msgid ""
 "Password must be at least %s character long and contain letters and numbers "
 "to be valid."
-msgstr ""
+msgstr "Lösenordet måste vara minst %s tecken och innehåller bokstäver och siffror för att vara giltigt."
 
 msgid "Password settings"
 msgstr "Lösenordsinställningar"
@@ -4268,7 +4268,7 @@ msgid "SQL user name"
 msgstr "SQL-användarnamn"
 
 msgid "SQL user not found."
-msgstr ""
+msgstr "SQL-användare hittades inte."
 
 msgid "SQL user password successfully updated."
 msgstr "SQL användarens lösenord uppdaterades."
@@ -4280,7 +4280,7 @@ msgid "SQL user successfully deleted."
 msgstr "SQL användare raderades."
 
 msgid "SQL username name already in use."
-msgstr ""
+msgstr "Angiven SQL-användarnamn finns redan."
 
 msgid "SQL users"
 msgstr "SQL-användare"
@@ -5272,7 +5272,7 @@ msgid ""
 msgstr "Det gick inte att hämta kataloger lista för din domän. Kontakta din återförsäljare."
 
 msgid "Unable to retrieve your password in database."
-msgstr ""
+msgstr "Lösenord finns inte i databas"
 
 #, php-format
 msgid "Unbale not upload file. Max. upload filesize (%1$d MB) reached?"
@@ -6182,7 +6182,7 @@ msgstr "Din begäran om prenumerations uppdatering har registrerats."
 msgid ""
 "Your request for new password has been registered. You will receive an email"
 " with instructions to complete the process."
-msgstr ""
+msgstr "Din begäran om nytt lösenord registrerades. Du kommer att få ett mail med instruktioner för att slutföra processen."
 
 msgid "ZB"
 msgstr "ZB"
@@ -6318,7 +6318,7 @@ msgid "i-MSCP - Admin / My Profile"
 msgstr "i-MSCP - Admin / My Profile"
 
 msgid "i-MSCP - Admin / Password"
-msgstr ""
+msgstr "i-MSCP - Admin / Lösenord"
 
 msgid "i-MSCP - Admin / Profile /  Language"
 msgstr "i-MSCP - Admin / Profile /  Language"
@@ -6447,7 +6447,7 @@ msgid "i-MSCP - Client / Manage mail / Edit quota"
 msgstr "i-MSCP - Client / Manage mail / Edit quota"
 
 msgid "i-MSCP - Client / Password"
-msgstr ""
+msgstr "i-MSCP - Kund / Lösenord"
 
 msgid "i-MSCP - Client / Support Ticket System / Closed Tickets"
 msgstr "i-MSCP - Client / Supportsystem / stängda tickets"

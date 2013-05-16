@@ -6,13 +6,14 @@
 # Ste <stefano@cortile.it>, 2011
 # Ste <stefano@cortile.it>, 2013
 # Ste <stefano@cortile.it>, 2011
+# Zer0, 2013
 msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2013-04-28 09:06+0200\n"
-"PO-Revision-Date: 2013-04-28 07:06+0000\n"
-"Last-Translator: Torsten Widmann <info@goover.de>\n"
+"POT-Creation-Date: 2013-05-16 12:20+0200\n"
+"PO-Revision-Date: 2013-05-15 14:25+0000\n"
+"Last-Translator: Zer0\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -248,11 +249,11 @@ msgstr ""
 
 #, php-format
 msgid "%d configuration parameter(s) have/has been created."
-msgstr ""
+msgstr "%d parametri sono stati creati."
 
 #, php-format
 msgid "%d configuration parameter(s) have/has been updated."
-msgstr ""
+msgstr "%d parametri sono stati aggiornati."
 
 #, php-format
 msgid "%d of %s"
@@ -557,7 +558,7 @@ msgid "Account limits"
 msgstr ""
 
 msgid "Account name"
-msgstr "Nome Account"
+msgstr "Nome account"
 
 msgid "Account overview"
 msgstr ""
@@ -593,7 +594,7 @@ msgid "Activation E-Mail"
 msgstr "Attivazione E-Mail"
 
 msgid "Activation Link"
-msgstr ""
+msgstr "Link di attivazione"
 
 msgid "Activation link expire time <small>(In minutes)</small>"
 msgstr ""
@@ -767,7 +768,7 @@ msgid "Administrator level"
 msgstr "Livello di amministrazione"
 
 msgid "Administrator login"
-msgstr "Login Amministratore"
+msgstr "Accesso amministratore"
 
 msgid "Administrators"
 msgstr "Amministratori"
@@ -874,7 +875,7 @@ msgid "Already in use"
 msgstr ""
 
 msgid "Alternative URL to reach your website"
-msgstr ""
+msgstr "URL alternativo per raggiungere il tuo sito"
 
 msgid "An error occured. Please, contact your administrator."
 msgstr ""
@@ -943,7 +944,7 @@ msgstr ""
 
 #, php-format
 msgid "Are you sure you want to delete %s?"
-msgstr "Siete sicuri di voler cancellare %s?"
+msgstr "Sei sicuro di voler cancellare %s?"
 
 msgid "Are you sure you want to delete all closed tickets?"
 msgstr ""
@@ -982,7 +983,7 @@ msgid "Are you sure you want to delete this order?"
 msgstr "Sei sicuro di voler cancellare questo ordine?"
 
 msgid "Are you sure you want to delete this package?"
-msgstr ""
+msgstr "Sei sicuro di voler eliminare questo pacchetto?"
 
 msgid ""
 "Are you sure you want to import this package into the local software "
@@ -1260,7 +1261,7 @@ msgstr "Scegli la directory"
 
 #, php-format
 msgid "Choose file (Max: %1$d MB)"
-msgstr ""
+msgstr "Scegli file (massimo: %1$d MB)"
 
 msgid "Choose hosting plan"
 msgstr "Scegli il piano di hosting"
@@ -1278,7 +1279,7 @@ msgid "City"
 msgstr "Città"
 
 msgid "Class"
-msgstr ""
+msgstr "Classe"
 
 msgid "Clear log"
 msgstr "Pulire log"
@@ -1341,7 +1342,7 @@ msgid "Couldn't check for updates. Website not reachable."
 msgstr "Non è possibile verificare gli aggiornamenti. Il sito web non è raggiungibile."
 
 msgid "Count default E-Mail addresses"
-msgstr ""
+msgstr "Conta gli indirizzi e-mail predefiniti."
 
 msgid "Country"
 msgstr "Paese"
@@ -1479,10 +1480,10 @@ msgid "Customize error pages for your domain."
 msgstr ""
 
 msgid "DNS Support: disabled"
-msgstr ""
+msgstr "Supporto DNS: disattivato"
 
 msgid "DNS Support: enabled"
-msgstr ""
+msgstr "Supporto DNS: attivato"
 
 msgid "DNS record already exist."
 msgstr ""
@@ -1587,7 +1588,7 @@ msgid ""
 "\tPackage ID: {SOFTWARE_ID}\n"
 "\n"
 "\tPlease login into your i-MSCP control panel for more details."
-msgstr ""
+msgstr "Gentile {ADMIN},\n{RESELLER} ha caricato un nuovo pacchetto software.\n\nDettagli:\nID reseller: {RESELLER_ID}\nNome pacchetto: {SOFTWARE}\nID pacchetto: {SOFTWARE_ID}\n\nPer favore accedi al pannello di controllo i-MSCP per maggiori informazioni."
 
 msgid ""
 "Dear {RESELLER},\n"
@@ -1610,7 +1611,7 @@ msgid ""
 "\tPackage ID: {SOFTWARE_ID}\n"
 "\n"
 "\tPlease login into your i-MSCP control panel for more details."
-msgstr ""
+msgstr "Gentile {RESELLER},\nil pacchetto software che hai caricato è stato attivato con successo da {ADMIN}.\n\nDettagli:\nnome pacchetto: {SOFTWARE}\nID pacchetto: {SOFTWARE_ID}\n\nPer favore accedi al pannello di controllo i-MSCP per maggiori informazioni."
 
 msgid "Debugger"
 msgstr ""
@@ -1851,7 +1852,7 @@ msgid ""
 msgstr ""
 
 msgid "Domain aliases"
-msgstr "Aliases di dominio"
+msgstr "Alias di dominio"
 
 msgid "Domain aliases limit reached."
 msgstr ""
@@ -2060,10 +2061,10 @@ msgid "Edit reseller"
 msgstr "Modifica rivenditore"
 
 msgid "Edit subdomain"
-msgstr ""
+msgstr "Modifica sottodominio"
 
 msgid "Edit user"
-msgstr "Modifica dell'utente"
+msgstr "Modifica utente"
 
 msgid "EiB"
 msgstr ""
@@ -2567,7 +2568,7 @@ msgid "IP usage"
 msgstr "IP utilizzato"
 
 msgid "IPv6 address"
-msgstr ""
+msgstr "Indirizzi IPv6"
 
 msgid ""
 "If yes, means that the reseller can allow its customers to edit this "
@@ -2857,14 +2858,14 @@ msgid "Log in to answer"
 msgstr ""
 
 msgid "Login"
-msgstr "Login"
+msgstr "Accesso"
 
 msgid "Login As"
-msgstr ""
+msgstr "Accesso come"
 
 #, php-format
 msgid "Login data successfully sent to %s."
-msgstr ""
+msgstr "Dati di accesso spediti con successo a %s."
 
 msgid "Login into phpMyAdmin"
 msgstr "Accedi a phpMyAdmin"
@@ -2882,7 +2883,7 @@ msgid "Login username"
 msgstr ""
 
 msgid "Login with your FTP account"
-msgstr "Effettuare il login con il proprio account FTP"
+msgstr "Effettuare l'accesso con il proprio account FTP"
 
 msgid "Logo file"
 msgstr "File del logo"
@@ -2960,7 +2961,7 @@ msgid "Mail account scheduled for update."
 msgstr ""
 
 msgid "Mail accounts"
-msgstr "Account Email"
+msgstr "Account di posta"
 
 msgid "Mail accounts limit reached."
 msgstr ""
@@ -3060,7 +3061,7 @@ msgid "Manage orders"
 msgstr "Gestione ordini"
 
 msgid "Manage subdomain"
-msgstr ""
+msgstr "Gestione sottodominio"
 
 msgid "Manage user sessions"
 msgstr "Gestione sessioni utente"
@@ -3148,7 +3149,7 @@ msgid "Message template info"
 msgstr "Informazioni sul template del messaggio"
 
 msgid "Message to reseller before deleting the software"
-msgstr ""
+msgstr "Manda un messaggio ai rivenditori prima di cancellare il software."
 
 msgid "Messages"
 msgstr "Messaggi"
@@ -3262,7 +3263,7 @@ msgid "New ticket"
 msgstr "Nuovo ticket"
 
 msgid "Next"
-msgstr ""
+msgstr "Successivo"
 
 msgid "Next step"
 msgstr "Passo successivo"
@@ -3623,10 +3624,10 @@ msgid "PHP support"
 msgstr "Supporto PHP"
 
 msgid "POP3/IMAP in"
-msgstr ""
+msgstr "POP3/IMAP in entrata"
 
 msgid "POP3/IMAP out"
-msgstr ""
+msgstr "POP3/IMAP in uscita"
 
 msgid "POP3/IMAP traffic"
 msgstr "Traffico POP3/IMAP"
@@ -3954,7 +3955,7 @@ msgid "Preview"
 msgstr "Anteprima"
 
 msgid "Previous"
-msgstr ""
+msgstr "Precedente"
 
 msgid "Price"
 msgstr "Prezzo"
@@ -4251,7 +4252,7 @@ msgid "SQL database successfully deleted."
 msgstr ""
 
 msgid "SQL databases"
-msgstr "Databases SQL"
+msgstr "Database SQL"
 
 msgid "SQL databases limit <br /><i>(-1 disabled, 0 unlimited)</i>"
 msgstr ""
@@ -4425,7 +4426,7 @@ msgid "Service ports"
 msgstr ""
 
 msgid "Service protocol"
-msgstr ""
+msgstr "Protocollo servizio"
 
 msgid "Services status"
 msgstr "Stato dei servizi"
@@ -4579,10 +4580,10 @@ msgid "Software upload"
 msgstr ""
 
 msgid "Software was activated."
-msgstr ""
+msgstr "Il software è stato attivato."
 
 msgid "Software was deleted."
-msgstr ""
+msgstr "Il software è stato cancellato."
 
 msgid "Software-Synonym"
 msgstr ""
@@ -4810,10 +4811,10 @@ msgid "Target"
 msgstr ""
 
 msgid "Target host"
-msgstr ""
+msgstr "Host di destinazione"
 
 msgid "Target port"
-msgstr ""
+msgstr "Porta di destinazione"
 
 msgid ""
 "Tells whether or not customers can add/change SSL certificates for their "
@@ -5184,7 +5185,7 @@ msgid "Total Web software repositories"
 msgstr ""
 
 msgid "Total installations"
-msgstr ""
+msgstr "Installazioni totali"
 
 msgid "Total packages in Web software repository"
 msgstr ""
@@ -5214,7 +5215,7 @@ msgid "UP"
 msgstr "Su"
 
 msgid "URL protocol"
-msgstr ""
+msgstr "Protocollo URL"
 
 msgid "URL to this admin panel"
 msgstr "URL per accedere al pannello di amministratore"
@@ -5483,7 +5484,7 @@ msgid "User was not deleted."
 msgstr "L'utente non è stato eliminato."
 
 msgid "Username"
-msgstr "Nome Utente"
+msgstr "Nome utente"
 
 msgid "Username and password for application login"
 msgstr ""
@@ -5695,7 +5696,7 @@ msgid "Wrong domain name syntax."
 msgstr ""
 
 msgid "Wrong domain name!"
-msgstr ""
+msgstr "Nome dominio sbagliato!"
 
 #, php-format
 msgid "Wrong domain name: <b>%s</b> is reserved!"
@@ -5725,13 +5726,13 @@ msgid "Wrong request."
 msgstr ""
 
 msgid "Wrong reseller id."
-msgstr ""
+msgstr "ID rivenditore sbagliato."
 
 msgid "Wrong security code"
 msgstr "Codice si sicurezza non valido"
 
 msgid "Wrong software id."
-msgstr ""
+msgstr "ID software errato."
 
 msgid "Wrong subdomain lenght!"
 msgstr ""
@@ -6301,7 +6302,7 @@ msgid "i-MSCP - Admin / Edit hosting plan"
 msgstr ""
 
 msgid "i-MSCP - Admin / General information"
-msgstr ""
+msgstr "i-MSCP - Amministratore / Informazioni generali"
 
 msgid "i-MSCP - Admin / General settings / IPs management"
 msgstr ""
@@ -6370,13 +6371,13 @@ msgid "i-MSCP - Admin / Support Ticket System / View Ticket"
 msgstr ""
 
 msgid "i-MSCP - Admin / System tools / Database Update"
-msgstr ""
+msgstr "i-MSCP - Amministratore / Utilità di sistema / Aggiornamento Database"
 
 msgid "i-MSCP - Admin / Users management / Domain Details"
 msgstr ""
 
 msgid "i-MSCP - Admin/IP Usage"
-msgstr ""
+msgstr "i-MSCP - Amministratore / Utilizzo IP"
 
 msgid "i-MSCP - Admin/Lost password email setup"
 msgstr ""
@@ -6406,10 +6407,10 @@ msgid "i-MSCP - Administrator / Hosting Plans Management"
 msgstr ""
 
 msgid "i-MSCP - Application Management"
-msgstr ""
+msgstr "i-MSCP - Gestione Applicazione"
 
 msgid "i-MSCP - Application Management (Permissions)"
-msgstr ""
+msgstr "i-MSCP - Gestione Applicazione (Permessi)"
 
 msgid "i-MSCP - Client / Change Language"
 msgstr ""
@@ -6532,7 +6533,7 @@ msgid "i-MSCP - Ftp / Choose directory"
 msgstr ""
 
 msgid "i-MSCP - Install Software"
-msgstr ""
+msgstr "i-MSCP - Installa Software"
 
 msgid "i-MSCP - Manage Domain Alias/Add DNS zones record"
 msgstr ""
@@ -6553,7 +6554,7 @@ msgid "i-MSCP - Multi Server Control Panel"
 msgstr "i-MSCP - Multi Server Control Panel"
 
 msgid "i-MSCP - Multi Server Control Panel / Login"
-msgstr "i-MSCP - Multi Server Control Panel / Login"
+msgstr "i-MSCP - Multi Server Control Panel / Accesso"
 
 msgid "i-MSCP - Multi Server Control Panel / Lost password"
 msgstr ""
@@ -6616,7 +6617,7 @@ msgid "i-MSCP - Reseller/Change Personal Data"
 msgstr "i-MSCP - Rivenditore/Modificare i Dati Personali"
 
 msgid "i-MSCP - Reseller/IP Usage"
-msgstr ""
+msgstr "i-MSCP - Rivenditore / Utilizzo IP"
 
 msgid "i-MSCP - Reseller/Lost password email setup"
 msgstr ""
@@ -6646,7 +6647,7 @@ msgid "i-MSCP - Software Management (Permissions)"
 msgstr ""
 
 msgid "i-MSCP - Software details"
-msgstr ""
+msgstr "i-MSCP - Dettagli Software"
 
 msgid "i-MSCP - Software installer options"
 msgstr ""
@@ -6658,13 +6659,13 @@ msgid "i-MSCP - Sofware Management"
 msgstr ""
 
 msgid "i-MSCP - User/Add domain account - step 2"
-msgstr ""
+msgstr "i-MSCP - Utente / Aggiungi dominio all'account - Passo 2"
 
 msgid "i-MSCP - User/Add domain account - step 3"
-msgstr ""
+msgstr "i-MSCP - Utente / Aggiungi dominio all'account - Passo 3"
 
 msgid "i-MSCP - User/Add domain alias"
-msgstr ""
+msgstr "i-MSCP - Utente / Aggiungi alias di dominio"
 
 msgid "i-MSCP - Users"
 msgstr "i-MSCP - Utenti"
@@ -6691,7 +6692,7 @@ msgid "i-MSCP / Softwares Installer / Management"
 msgstr ""
 
 msgid "i-MSCP Admin / General Information / Server Status"
-msgstr ""
+msgstr "i-MSCP - Amministratore / Informazioni Generali / Stato del Server"
 
 msgid "i-MSCP Admin / System Tools / Anti-Rootkits Tools Log Checker"
 msgstr "i-MSCP Admin / Tool di sistema / Anti-Rootkits Tool Log Checker"
@@ -6797,7 +6798,7 @@ msgstr "o seleziona nel caso che <strong>non scada mai</strong>"
 
 #, php-format
 msgid "or remote file (Max: %1$d MB)"
-msgstr ""
+msgstr "o file remoto (massimo: %1$d MB)"
 
 msgid "order"
 msgstr "ordine"

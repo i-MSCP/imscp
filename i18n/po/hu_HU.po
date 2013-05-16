@@ -11,9 +11,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2013-04-28 09:06+0200\n"
-"PO-Revision-Date: 2013-04-28 07:06+0000\n"
-"Last-Translator: Torsten Widmann <info@goover.de>\n"
+"POT-Creation-Date: 2013-05-16 12:20+0200\n"
+"PO-Revision-Date: 2013-04-30 21:42+0000\n"
+"Last-Translator: Zoltán Balázs <balazsz@citromail.hu>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -46,7 +46,7 @@ msgid ""
 "___________________________\n"
 "The i-MSCP Team\n"
 "\n"
-msgstr ""
+msgstr "\n\nKedves {NAME},\n\nTárhelye sikeresen elkészült a következő beállításokkal:⏎\n\nAz Ön hozzáférési adatai:\n\nFelhasználói szint:  {USERTYPE}\nFelhasználó neve:  {USERNAME}\nJelszava:                {PASSWORD}\n\nKérjük változtassa meg ideiglenes jelszavát az első bejeletkezéskor!⏎\n\nA következő oldalon tud belépni: {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}\n\nStatisztika elérése: http://{USERNAME}/{WEBSTATS_RPATH}\n(A belépési adatok megegyeznek  a megadott felhasználónévvel és jelszóval)\n\nKöszönjük, hogy minket választott.\n\n___________________________\nThe i-MSCP Team\n"
 
 msgid ""
 "\n"
@@ -354,11 +354,11 @@ msgstr "%s: Ennek a viszonteladónak korlátlan joggal rendelkező felhasználó
 #, php-format
 msgid ""
 "%s: You cannot disable a service already consumed by reseller's customers"
-msgstr ""
+msgstr "%s: Nem lehet letiltani ezt a szolgáltatást a viszonteladó ügyfelei használata miatt"
 
 #, php-format
 msgid "%s: You cannot disable a service already sold to reseller's customers."
-msgstr ""
+msgstr "%s: Nem lehet letiltani ezt a szolgáltatást a viszonteladó ügyfeleinek értékesítése miatt"
 
 msgid ""
 "'%hostname%' does not appear to have a valid MX record for the email address"
@@ -543,7 +543,7 @@ msgid ""
 msgstr "ACE címkék használata nem engedélyezett. Kérjük, használja a ToUnicode egyenértékű. <br /> <small> Példa: ACE címke <b> xn - bcher kVA-</ b> használata <b> Bücher </ b> helyett </ small>."
 
 msgid "Access your domain statistics through the Web interface."
-msgstr ""
+msgstr "Webes statisztika."
 
 msgid "Access your files through the web interface."
 msgstr "Webes fájlkezelés"
@@ -1339,7 +1339,7 @@ msgid ""
 msgstr "Nem lehet feltölteni a fájlt, mert a feltölthető fájl maximális mérete (%1$d MB)"
 
 msgid "Couldn't check for updates. Website not reachable."
-msgstr "Nem lehet ellenőrizni, hogy van-e frissítés, mert a weboldal elérhetetlen"
+msgstr "Nem lehet ellenőrizni, hogy van-e frissítés, mert a weboldal elérhetetlen."
 
 msgid "Count default E-Mail addresses"
 msgstr "Alternatív email címek beleszámítása a korlátba"
@@ -1375,7 +1375,7 @@ msgid "Current password"
 msgstr "Jelenlegi jelszó"
 
 msgid "Current password is invalid."
-msgstr ""
+msgstr "Jelenlegi jelszó érvénytelen"
 
 msgid "Custom DNS Records"
 msgstr "Egyéni DNS rekordok"
@@ -3370,7 +3370,7 @@ msgid "No software available"
 msgstr "Nincs elérhető program"
 
 msgid "No software in Web repository found!"
-msgstr ""
+msgstr "Nincs szoftver a webes tárolóban!"
 
 msgid "No software in software depot available!"
 msgstr "Nincs elérhető program a tárolóban"
@@ -3693,7 +3693,7 @@ msgid "Password E-Mail"
 msgstr "Új jelszó email"
 
 msgid "Password cannot be greater than 30 characters."
-msgstr ""
+msgstr "Jelszó nem lehet hosszabb, mint 30 karakter"
 
 msgid "Password change is deactivated!"
 msgstr "A jelszó megváltoztatása nem engedélyezett!"
@@ -3708,14 +3708,14 @@ msgid "Password data is missing."
 msgstr "Hiányzó jelszó adat"
 
 msgid "Password includes not permitted signs."
-msgstr ""
+msgstr "Jelszó tartalmaz nem megengedett jeleket"
 
 msgid "Password is missing."
 msgstr "Hiányzik a jelszó"
 
 #, php-format
 msgid "Password is shorter than %s characters."
-msgstr ""
+msgstr "A jelszó rövidebb, mint %s karakter"
 
 msgid "Password length"
 msgstr "Jelszavak hossza"
@@ -3724,7 +3724,7 @@ msgstr "Jelszavak hossza"
 msgid ""
 "Password must be at least %s character long and contain letters and numbers "
 "to be valid."
-msgstr ""
+msgstr "A jelszónak legalább %s karakterből kell állnia, továbbá tartalmaznia kell betűtek és számokat is."
 
 msgid "Password settings"
 msgstr "Jelszavak beállításai"
@@ -4270,7 +4270,7 @@ msgid "SQL user name"
 msgstr "SQL felhasználó neve"
 
 msgid "SQL user not found."
-msgstr ""
+msgstr "SQL felhasználó nem található"
 
 msgid "SQL user password successfully updated."
 msgstr "SQL felhasználó jelszava sikeresen frissítve"
@@ -4282,7 +4282,7 @@ msgid "SQL user successfully deleted."
 msgstr "SQL felhasználó sikeresen törölve"
 
 msgid "SQL username name already in use."
-msgstr ""
+msgstr "SQL felhasználó már létezik"
 
 msgid "SQL users"
 msgstr "SQL felhasználók"
@@ -4396,7 +4396,7 @@ msgid "Server statistics"
 msgstr "Forgalmi adatok"
 
 msgid "Server status"
-msgstr "Szolgáltatások állapotai"
+msgstr "Szerver állapota"
 
 msgid "Server traffic"
 msgstr "Szerver adatforgalma"
@@ -5029,7 +5029,7 @@ msgstr "Nincs olyan felhasználó, akihez domain álnevet lehetnet felvenni"
 
 #, php-format
 msgid "This IP (%s) is not assigned to any network card!"
-msgstr "A(z) %s IP-cím egyik hálózati csatolóhoz sincs hozzárendelve"
+msgstr "Ez a IP-cím (%s) egyik hálózati csatolóhoz sincs hozzárendelve!"
 
 #, php-format
 msgid ""
@@ -5274,7 +5274,7 @@ msgid ""
 msgstr "Nem sikerült lekérdezni a domain névhez tartozó könyvtárak listáját. Forduljon a viszonteladójához!"
 
 msgid "Unable to retrieve your password in database."
-msgstr ""
+msgstr "Nem sikerült beolvasni az adatbázis jelszavát"
 
 #, php-format
 msgid "Unbale not upload file. Max. upload filesize (%1$d MB) reached?"
@@ -6184,7 +6184,7 @@ msgstr "A tárhely csomag frissítésére vonatkozó kérelme sikeresen regisztr
 msgid ""
 "Your request for new password has been registered. You will receive an email"
 " with instructions to complete the process."
-msgstr ""
+msgstr "Jelszó változtatási igényét regisztráltuk. Hamarosan kapni fog egy email-t  a további teendőkről."
 
 msgid "ZB"
 msgstr "ZB"
@@ -6320,7 +6320,7 @@ msgid "i-MSCP - Admin / My Profile"
 msgstr "i-MSCP - Adminisztrátor / Profilom"
 
 msgid "i-MSCP - Admin / Password"
-msgstr ""
+msgstr "i-MSCP - Adminisztrátor / Jelszó"
 
 msgid "i-MSCP - Admin / Profile /  Language"
 msgstr "i-MSCP - Adminisztrátor / Profil / Nyelv beállítása"
@@ -6449,7 +6449,7 @@ msgid "i-MSCP - Client / Manage mail / Edit quota"
 msgstr "i-MSCP - Ügyfél / Levelezés / Kvóta módosítása"
 
 msgid "i-MSCP - Client / Password"
-msgstr ""
+msgstr "i-MSCP - Ügyfél / Jelszó"
 
 msgid "i-MSCP - Client / Support Ticket System / Closed Tickets"
 msgstr "i-MSCP - Ügyfél / Ügyfélszolgálat / Lezárt hibajegyek"
