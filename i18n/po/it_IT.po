@@ -11,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2013-05-16 12:20+0200\n"
-"PO-Revision-Date: 2013-05-15 14:25+0000\n"
+"POT-Creation-Date: 2013-05-17 09:54+0200\n"
+"PO-Revision-Date: 2013-05-16 17:45+0000\n"
 "Last-Translator: Zer0\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -1800,19 +1800,19 @@ msgid "Domain alias errors"
 msgstr "Errori alias di dominio"
 
 msgid "Domain alias limit reached."
-msgstr ""
+msgstr "Raggiunto il limite per gli alias di dominio."
 
 msgid "Domain alias name"
 msgstr ""
 
 msgid "Domain alias not modified."
-msgstr ""
+msgstr "Alias di dominio non modificato."
 
 msgid "Domain alias not scheduled for addition."
-msgstr ""
+msgstr "Alias di dominio non programmato per la creazione."
 
 msgid "Domain alias not scheduled for deletion."
-msgstr ""
+msgstr "Alias di dominio non in attesa di eliminazione."
 
 msgid "Domain alias scheduled for creation."
 msgstr "Alias di dominio programmato per la creazione"
@@ -1821,16 +1821,16 @@ msgid "Domain alias scheduled for update."
 msgstr ""
 
 msgid "Domain alias successfully modified"
-msgstr ""
+msgstr "Alias di dominio modificato con successo"
 
 msgid "Domain alias successfully scheduled for addition"
-msgstr ""
+msgstr "Alias di dominio programmato per la creazione"
 
 msgid "Domain alias successfully scheduled for addition."
 msgstr ""
 
 msgid "Domain alias successfully scheduled for deletion."
-msgstr ""
+msgstr "Alias di dominio in attesa di eliminazione."
 
 msgid ""
 "Domain alias you are trying to remove has FTP accounts.<br/>First remove "
@@ -1855,7 +1855,7 @@ msgid "Domain aliases"
 msgstr "Alias di dominio"
 
 msgid "Domain aliases limit reached."
-msgstr ""
+msgstr "Limite alias di dominio raggiunto."
 
 msgid "Domain aliases limit<br/><i>(-1 disabled, 0 unlimited)</i>"
 msgstr ""
@@ -2610,16 +2610,16 @@ msgid ""
 msgstr ""
 
 msgid "Incorrect FTP accounts limit."
-msgstr ""
+msgstr "Limite account FTP errato."
 
 msgid "Incorrect SQL databases limit."
-msgstr ""
+msgstr "Limite database SQL errato."
 
 msgid "Incorrect SQL users limit."
-msgstr ""
+msgstr "Limite utenti SQL errato."
 
 msgid "Incorrect aliases limit."
-msgstr ""
+msgstr "Limite alias errato."
 
 msgid "Incorrect disk space limit."
 msgstr ""
@@ -2638,7 +2638,7 @@ msgid "Incorrect limit for %s."
 msgstr ""
 
 msgid "Incorrect mail accounts limit."
-msgstr ""
+msgstr "Limite account e-mail errato."
 
 msgid "Incorrect monthly traffic limit."
 msgstr ""
@@ -2656,7 +2656,7 @@ msgid "Incorrect or is not allowed."
 msgstr ""
 
 msgid "Incorrect subdomains limit."
-msgstr ""
+msgstr "Limite sottodomini errato."
 
 msgid "Incorrect syntax for email address."
 msgstr ""
@@ -4177,7 +4177,7 @@ msgid "Reseller's statistics"
 msgstr ""
 
 msgid "Reseller/IP usage statistics"
-msgstr ""
+msgstr "Rivenditore/Statistiche utilizzo IP"
 
 msgid "Resellers"
 msgstr "Rivenditori"
@@ -4672,7 +4672,7 @@ msgid "Subdomain"
 msgstr "Sottodomini"
 
 msgid "Subdomain alias"
-msgstr ""
+msgstr "Alias sottodominio"
 
 msgid "Subdomain alias scheduled for deletion."
 msgstr ""
@@ -5895,7 +5895,7 @@ msgid "You do not have database."
 msgstr ""
 
 msgid "You do not have domain aliases."
-msgstr ""
+msgstr "Non possiedi nessun alias di dominio."
 
 msgid "You do not have new orders."
 msgstr "Non hai nuovi ordini."
