@@ -583,6 +583,13 @@ sub savePersistentData
 
 		# Save Web directories skeletons
 		if(-d "$main::imscpConfig{'CONF_DIR'}/apache/skel") {
+			if(-l "$main::imscpConfig{'CONF_DIR'}/apache/skel/subdomain/htdocs") {
+				$rs = iMSCP::File->new(
+					'filename' => "$main::imscpConfig{'CONF_DIR'}/apache/skel/subdomain/htdocs"
+				)->delFile();
+				return $rs if $rs;
+			}
+
 			$rs = execute(
 				"$main::imscpConfig{'CMD_CP'} -fRT $main::imscpConfig{'CONF_DIR'}/apache/skel " .
 				"$destdir$main::imscpConfig{'CONF_DIR'}/apache/skel", \$stdout, \$stderr

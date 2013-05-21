@@ -1883,7 +1883,7 @@ sub _addFiles($$)
 	if(-d $skelDir) {
 		$tmpDir = File::Temp->newdir();
 
-		$rs = execute("$main::imscpConfig{'CMD_CP'} -LRT $skelDir $tmpDir", \$stdout, \$stderr);
+		$rs = execute("$main::imscpConfig{'CMD_CP'} -RT $skelDir $tmpDir", \$stdout, \$stderr);
 		debug($stdout) if $stdout;
 		error($stderr) if $stderr && $rs;
 		return $rs if $rs;
