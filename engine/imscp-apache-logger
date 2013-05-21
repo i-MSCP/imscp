@@ -86,7 +86,7 @@ use Getopt::Long;
 use sigtrap 'handler' => \&signalHandler, 'normal-signals';
 
 # Turn off localisation features to force any command output to be in english
-$ENV{LANG} = 'C';
+$ENV{'LC_MESSAGES'} = 'C';
 
 my %opt = (
 	loggingType => 'access', # Default logging type

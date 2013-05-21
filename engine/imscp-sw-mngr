@@ -34,7 +34,7 @@ use XML::Parser;
 use warnings;
 
 # Turn off localisation features to force any command output to be in english
-$ENV{LANG} = 'C';
+$ENV{'LC_MESSAGES'} = 'C';
 
 # Decoding received data
 my $decoded_pushstring = decode_base64($ARGV[0]);

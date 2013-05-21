@@ -39,7 +39,7 @@ use iMSCP::HooksManager;
 use iMSCP::Getopt;
 
 # Turn off localisation features to force any command output to be in english
-$ENV{LANG} = 'C';
+$ENV{'LC_MESSAGES'} = 'C';
 
 newDebug('imscp-setup.log');
 

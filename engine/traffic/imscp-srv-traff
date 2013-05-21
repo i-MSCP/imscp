@@ -42,7 +42,7 @@ use strict;
 use warnings;
 
 # Turn off localisation features to force any command output to be in english
-$ENV{LANG} = 'C';
+$ENV{'LC_MESSAGES'} = 'C';
 
 sub srv_traff_start_up {
 

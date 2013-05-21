@@ -39,7 +39,7 @@ use iMSCP::Servers;
 use iMSCP::Addons;
 
 # Turn off localisation features to force any command output to be in english
-$ENV{LANG} = 'C';
+$ENV{'LC_MESSAGES'} = 'C';
 
 # Mode in which the script is triggered
 # For now, this variable is only used by i-MSCP installer/setup scripts

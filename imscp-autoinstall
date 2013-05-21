@@ -33,7 +33,7 @@ use lib "$FindBin::Bin", "$FindBin::Bin/engine/PerlLib", "$FindBin::Bin/engine/P
 umask(022);
 
 # Turn off localisation features to force any command output to be in english
-$ENV{LANG} = 'C';
+$ENV{'LC_MESSAGES'} = 'C';
 
 use iMSCP::Debug;
 use iMSCP::Requirements;

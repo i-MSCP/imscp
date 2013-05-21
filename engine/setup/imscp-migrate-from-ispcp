@@ -39,7 +39,7 @@ use iMSCP::Requirements;
 use Data::Dumper;
 
 # Turn off localisation features to force any command output to be in english
-$ENV{LANG} = 'C';
+$ENV{'LC_MESSAGES'} = 'C';
 
 umask(027);
 

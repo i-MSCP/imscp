@@ -584,7 +584,7 @@ sub savePersistentData
 		# Save Web directories skeletons
 		if(-d "$main::imscpConfig{'CONF_DIR'}/apache/skel") {
 			$rs = execute(
-				"$main::imscpConfig{'CMD_CP'} -TRf $main::imscpConfig{'CONF_DIR'}/apache/skel " .
+				"$main::imscpConfig{'CMD_CP'} -fRT $main::imscpConfig{'CONF_DIR'}/apache/skel " .
 				"$destdir$main::imscpConfig{'CONF_DIR'}/apache/skel", \$stdout, \$stderr
 			);
 			debug($stdout) if $stdout;
