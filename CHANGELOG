@@ -112,6 +112,7 @@ Tickets:
 	- Fixed #743: Update - Roundcube update available (version 0.9.0)
 	- Fixed #751: Bug - Installer - Ubuntu 13.04 - php5-suhosin is not available
 	- Fixed #753: Bug - Backup Restore - Use of uninitialized value $dbname
+	- Fixed #754: Bug - errors while rebuilding cusomers files (ssl cert)
 
 ------------------------------------------------------------------------------------------------------------------------
 i-MSCP 1.1.0-rc1.4
