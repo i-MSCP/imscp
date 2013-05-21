@@ -152,6 +152,7 @@ CREATE TABLE IF NOT EXISTS `domain` (
   `domain_external_mail` varchar(15) collate utf8_unicode_ci NOT NULL default 'no',
   `external_mail` varchar(15) collate utf8_unicode_ci NOT NULL default 'off',
   `external_mail_dns_ids` varchar(255) collate utf8_unicode_ci NOT NULL,
+  `web_folder_protection` varchar(5) collate utf8_unicode_ci NOT NULL DEFAULT 'yes',
   PRIMARY KEY (`domain_id`),
   UNIQUE KEY `domain_name` (`domain_name`),
   KEY `i_domain_admin_id` (`domain_admin_id`)

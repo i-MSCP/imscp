@@ -329,10 +329,8 @@ function add_user_data($reseller_id)
 			redirectTo('users.php');
 		}
 	} catch (iMSCP_Exception_Database $e) {
-		set_page_message(tr('An unexpected error has been encountered. Customer account creation canceled'), 'success');
-		write_log("Customer account creation has been canceled: " . $e->getMessage(), E_USER_ERROR);
 		$db->rollBack();
-		exit;
+		throw new iMSCP_Exception_Database($e->getMessage(), $e->getQuery(), $e->getCode(), $e);
 	}
 }
 
