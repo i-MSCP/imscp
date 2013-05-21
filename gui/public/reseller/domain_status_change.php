@@ -46,7 +46,7 @@ iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onResellerScriptStar
 
 check_login('reseller');
 
-if (!isset($_GET['domain_id'])) {
+if (isset($_GET['domain_id'])) {
 	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
 
