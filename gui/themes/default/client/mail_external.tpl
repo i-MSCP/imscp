@@ -21,13 +21,9 @@
                 }
         );
     });
+
     function onclick_action(url, domain) {
-        if (url.indexOf('delete') == -1) {
-            location = url;
-        } else if (confirm(sprintf("{TR_DEACTIVATE_MESSAGE}", domain))) {
-            location = url;
-        }
-        return false;
+		return (url.indexOf('delete') == -1 || confirm(sprintf("{TR_DEACTIVATE_MESSAGE}", domain)));
     }
     /* ]]> */
 </script>
@@ -57,13 +53,13 @@
             <td>{STATUS}</td>
             <td>
                 <!-- BDP: activate_link -->
-                <a href="#" class="icon i_users" onclick="onclick_action('{ACTIVATE_URL}', '')">{TR_ACTIVATE}</a>
+                <a href="{ACTIVATE_URL}" class="icon i_users" onclick="return onclick_action('{ACTIVATE_URL}', '');">{TR_ACTIVATE}</a>
                 <!-- EDP: activate_link -->
                 <!-- BDP: edit_link -->
-                <a href="#" class="icon i_edit" onclick="onclick_action('{EDIT_URL}', '')">{TR_EDIT}</a>
+                <a href="{EDIT_URL}" class="icon i_edit" onclick="return onclick_action('{EDIT_URL}', '');">{TR_EDIT}</a>
                 <!-- EDP: edit_link -->
                 <!-- BDP: deactivate_link -->
-                <a href="#" class="icon i_delete" onclick="onclick_action('{DEACTIVATE_URL}', '{DOMAIN}')">{TR_DEACTIVATE}</a>
+                <a href="{DEACTIVATE_URL}" class="icon i_delete" onclick="return onclick_action('{DEACTIVATE_URL}', '{DOMAIN}');">{TR_DEACTIVATE}</a>
                 <!-- EDP: deactivate_link -->
             </td>
         </tr>

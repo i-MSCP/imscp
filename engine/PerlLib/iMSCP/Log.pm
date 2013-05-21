@@ -23,11 +23,11 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
-# @category		i-MSCP
-# @copyright	2010-2013 by i-MSCP | http://i-mscp.net
-# @author		Laurent Declercq <l.declercq@nuxwin.com>
-# @link			http://i-mscp.net i-MSCP Home Site
-# @license		http://www.gnu.org/licenses/gpl-2.0.html GPL v2
+# @category    i-MSCP
+# @copyright   2010-2013 by i-MSCP | http://i-mscp.net
+# @author      Laurent Declercq <l.declercq@nuxwin.com>
+# @link        http://i-mscp.net i-MSCP Home Site
+# @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
 package iMSCP::Log;
 
@@ -49,7 +49,7 @@ BEGIN {
 
  Generic message storage mechanism allowing to store messages on a stack.
 
- Code upon based on the Log-Message module by Chris Williams and simplified for i-MSCP.
+ Code upon based on the Log-Message module by Chris Williams, which has been simplified for i-MSCP.
 
 =head1 PUBLIC METHODS
 
@@ -122,8 +122,8 @@ sub store
 		},
 		'tag' => { 'default' => 'none' },
 		'level' => { 'default' => 'log',  },
-		'shortmess' => { 'default' => _clean(Carp::shortmess()),  },
-		'longmess' => { 'default' => _clean(Carp::longmess()),  }
+		'shortmess' => { 'default' => _clean(Carp::shortmess()) },
+		'longmess' => { 'default' => _clean(Carp::longmess()) }
 	};
 
 	if( @_ == 1 ) {

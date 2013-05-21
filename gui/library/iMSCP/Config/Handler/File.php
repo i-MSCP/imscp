@@ -41,7 +41,6 @@ require_once  'iMSCP/Config/Handler.php';
  * iMSCP_Config_Handler adapter class to handle configuration parameters that are stored in a flat file where each pair
  * of key-values are separated by the equal sign.
  *
- * @property string MR_LOCK_FILE Path to lock file
  * @property string ROOT_TEMPLATE_PATH Root templates path
  * @property string USER_INITIAL_THEME User initial theme
  * @property string LOGIN_TEMPLATE_PATH Login templates path
@@ -66,11 +65,7 @@ require_once  'iMSCP/Config/Handler.php';
  * @property string ITEM_RESTORE_STATUS Status for scheduled data restoring
  * @property string ITEM_TOENABLE_STATUS Status for scheduled enabling
  * @property string ITEM_TODISABLED_STATUS Status for scheduled disabling
- * @property string ITEM_ORDERED_STATUS Status for domain/alias order
  * @property string ITEM_DNSCHANGE_STATUS Status for scheduled dns change
- * @property string ITEM_ORDER_UNCONFIRMED_STATUS Unconfirmed order
- * @property string ITEM_ORDER_CONFIRMED_STATUS Confirmed order
- * @property string ITEM_ORDER_TREATED_STATUS Order added
  * @property int MAX_SQL_DATABASE_LENGTH Max. length for database name
  * @property int MAX_SQL_USER_LENGTH Max. length for Sql username
  * @property int MAX_SQL_PASS_LENGTH Max. length for Sql password
@@ -114,7 +109,6 @@ require_once  'iMSCP/Config/Handler.php';
  * @property string BASE_SERVER_VHOST Base server vhost
  * @property string GUI_SOFTWARE_DEPOT_DIR Application software repository directory
  * @property string MAX_REMOTE_FILESIZE Max size for remote application package
- * @property int CUSTOM_ORDERPANEL_ID Custom order panel id
  * @property int DATABASE_REVISION Last database revision
  * @property int CRITICAL_UPDATE_REVISION Last critical update revision
  * @property string WEBSTATS_GROUP_AUTH Webstats group authentication
@@ -143,13 +137,22 @@ require_once  'iMSCP/Config/Handler.php';
  * @property string IMSCP_SUPPORT_SYSTEM_PATH
  * @property string Version
  * @property string CodeName
- * @property int ORDERS_EXPIRE_TIME Default expiration time for unconfirmed orders
  * @property string GUI_SOFTWARE_DIR Directory for software repositories
  * @property int COMPRESS_OUTPUT Tells whether or not output must be compressed
  * @property int ENABLE_SSL Tells whether or not SSL feature for customers is enabled
  * @property bool MAIN_MENU_SHOW_LABELS Tells whether or not labels must be showed for main menu links
  * @property array PLUGIN Plugins configuration
  * @property string PHPINI_OPEN_BASEDIR paths appended to the default PHP open_basedir directive of customers
+ * @property string FTP_USERNAME_SEPARATOR Ftp username separator
+ * @property string FILEMANAGER_TARGET Filemanager target window
+ * @property string FILEMANAGER_PATH Filenamager path
+ * @property string PMA_PATH PhpMyAdmin path
+ * @property string WEBMAIL_PATH Webmail path
+ * @property string WEBMAIL_TARGET Webmail target window
+ * @property string WEBSTATS_RPATH Web statistics path
+ * @property string WEBSTATS_TARGET Web statistics target window
+ * @property string BACKUP_DOMAINS (yes|no)
+ * @property string WEBSTATS_ADDON (No|<webstats_addon_name>)
  *
  * @category	iMSCP
  * @package		iMSCP_Core

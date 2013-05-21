@@ -24,15 +24,19 @@
  * Portions created by the i-MSCP Team are Copyright (C) 2010-2013 by
  * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
  *
- * @category	i-MSCP
- * @package		iMSCP_Core
- * @subpackage	Client
+ * @category    i-MSCP
+ * @package     iMSCP_Core
+ * @subpackage  Client
  * @copyright   2001-2006 by moleSoftware GmbH
  * @copyright   2006-2010 by ispCP | http://isp-control.net
  * @copyright   2010-2013 by i-MSCP | http://i-mscp.net
  * @author      ispCP Team
  * @author      i-MSCP Team
  * @link        http://i-mscp.net
+ */
+
+/***********************************************************************************************************************
+ * Main
  */
 
 // Include core library
@@ -42,71 +46,98 @@ iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptStart)
 
 check_login('user');
 
-customerHasFeature('domain_aliases') or showBadRequestErrorPage();
-
-if (isset($_GET['id']) && $_GET['id'] !== '') {
-	$sub_id = $_GET['id'];
-	$dmn_id = get_user_domain_id($_SESSION['user_id']);
+if (customerHasFeature('domain_aliases') && isset($_GET['id'])) {
+	$alssubId = clean_input($_GET['id']);
+	$dmnId = get_user_domain_id($_SESSION['user_id']);
 
 	$query = "
 		SELECT
-			`subdomain_alias_id`,
-			`subdomain_alias_name`
+			`t1`.`subdomain_alias_id`,
+			CONCAT(`t1`.`subdomain_alias_name`, '.', `t2`.`alias_name`) AS `subdomain_alias_name`
 		FROM
-			`subdomain_alias` JOIN `domain_aliasses`
-		ON
-			`subdomain_alias`.`alias_id` = `domain_aliasses`.`alias_id`
+			`subdomain_alias` AS `t1`
+		LEFT JOIN
+			`domain_aliasses` AS `t2` ON (`t2`.`alias_id` = `t1`.`alias_id`)
 		WHERE
-			`domain_id` = ?
+			`t2`.`domain_id` = ?
 		AND
-			`subdomain_alias_id` = ?
+			`t1`.`subdomain_alias_id` = ?
 	";
+	$stmt = exec_query($query, array($dmnId, $alssubId));
 
-	$rs = exec_query($query, array($dmn_id, $sub_id));
-	$sub_name = $rs->fields['subdomain_alias_name'];
+	if ($stmt->rowCount()) {
+		$alssubName = $stmt->fields['subdomain_alias_name'];
+		$ret = false;
 
-	if ($rs->recordCount() == 0) {
+		// check for mail accounts
+		$query = "
+			SELECT
+				COUNT(`mail_id`) AS `cnt`
+			FROM
+				`mail_users`
+			WHERE
+				(`mail_type` LIKE ? OR `mail_type` = ?)
+			AND
+				`sub_id` = ?
+		";
+		$stmt = exec_query($query, array(MT_ALSSUB_MAIL . '%', MT_ALSSUB_FORWARD, $alssubId));
+
+		if ($stmt->fields['cnt']) {
+			set_page_message(
+				tr('Subdomain you are trying to remove has email accounts. Remove them first.'), 'error'
+			);
+			$ret = true;
+		}
+
+		// Check for Ftp accounts
+		$query = "SELECT count(`userid`) AS `cnt` FROM `ftp_users` WHERE `userid` LIKE ?";
+		$stmt = exec_query($query, "%@$alssubName");
+
+		if ($stmt->fields['cnt']) {
+			set_page_message(
+				tr('Subdomain alias you are trying to remove has Ftp accounts. Remove them first.'), 'error'
+			);
+			$ret = true;
+		}
+
+		if (!$ret) {
+			iMSCP_Events_Manager::getInstance()->dispatch(
+				iMSCP_Events::onBeforeDeleteSubdomain, array('subdomainId' => $alssubId, 'type' => 'alssub')
+			);
+
+			/** @var $cfg iMSCP_Config_Handler_File */
+			$cfg = iMSCP_Registry::get('config');
+
+			/** @var $db iMSCP_Database */
+			$db = iMSCP_Registry::get('db');
+
+			try {
+				$db->beginTransaction();
+
+				$query = "UPDATE `subdomain_alias` SET `subdomain_alias_status` = ? WHERE `subdomain_alias_id` = ?";
+				$stmt = exec_query($query, array($cfg->ITEM_DELETE_STATUS, $alssubId));
+
+				$query = "UPDATE `ssl_certs` SET `status` = ? WHERE `id` = ? AND `type` = ?";
+				$stmt = exec_query($query, array($cfg->ITEM_DELETE_STATUS, $alssubId, 'alssub'));
+
+				$db->commit();
+			} catch (iMSCP_Exception_Database $e) {
+				$db->rollBack();
+				throw new iMSCP_Exception_Database($e->getMessage(), $e->getQuery(), $e->getCode(), $e);
+			}
+
+			iMSCP_Events_Manager::getInstance()->dispatch(
+				iMSCP_Events::onAfterDeleteSubdomain, array('subdomainId' => $alssubId, 'type' => 'alssub')
+			);
+
+			send_request();
+
+			write_log("{$_SESSION['user_logged']} scheduled deletion of subdomain alias $alssubName", E_USER_NOTICE);
+			set_page_message(tr('Subdomain alias successfully scheduled for deletion.'), 'success');
+		}
+
 		redirectTo('domains_manage.php');
 	}
-
-	// check for mail accounts
-	// TODO use prepared statement for constants
-	$query = "SELECT COUNT(`mail_id`) AS cnt FROM `mail_users` WHERE (`mail_type` LIKE '".MT_ALSSUB_MAIL."%' OR `mail_type` = '".MT_ALSSUB_FORWARD."') AND `sub_id` = ?";
-	$rs = exec_query($query, $sub_id);
-
-	if ($rs->fields['cnt'] > 0) {
-		set_page_message(tr('Subdomain you are trying to remove has email accounts.<br/>First remove them.'), 'error');
-		redirectTo('domains_manage.php');
-	}
-
-	$query = "
-		UPDATE
-			`subdomain_alias`
-		SET
-			`subdomain_alias_status` = 'delete'
-		WHERE
-			`subdomain_alias_id` = ?
-	";
-
-	$rs = exec_query($query, $sub_id);
-
-	$query = "
-		UPDATE
-			`ssl_certs`
-		SET
-			`status` = 'delete'
-		WHERE
-			`id` = ?
-		AND
-			`type` = 'alssub'
-	";
-
-	$rs = exec_query($query, $sub_id);
-	send_request();
-	write_log($_SESSION['user_logged'].": delete alias subdomain: ".$sub_name, E_USER_NOTICE);
-	set_page_message(tr('Subdomain alias scheduled for deletion.'), 'success');
-	redirectTo('domains_manage.php');
-
-} else {
-	redirectTo('domains_manage.php');
 }
+
+showBadRequestErrorPage();

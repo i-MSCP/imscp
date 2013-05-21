@@ -33,6 +33,7 @@ package iMSCP::Requirements;
 
 use strict;
 use warnings;
+
 use iMSCP::Debug;
 use version;
 use iMSCP::Execute;
@@ -119,7 +120,7 @@ sub all
 # @return void
 sub user
 {
-	fatal('The script must be run by root user.') if $< != 0 ;
+	fatal('This script must be run as root user.') if $< != 0;
 }
 
 # Checks for perl module availability.

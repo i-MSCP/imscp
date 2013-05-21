@@ -60,8 +60,8 @@ function check_client_domainalias_counts($user_id)
  */
 function init_empty_data()
 {
-	global $cr_user_id, $alias_name, $domain_ip, $forward, $mount_point;
-	$cr_user_id = $alias_name = $domain_ip = $forward = $mount_point = '';
+	global $cr_user_id, $alias_name, $domainIp, $forward, $mount_point;
+	$cr_user_id = $alias_name = $domainIp = $forward = $mount_point = '';
 }
 
 /**
@@ -161,7 +161,7 @@ function _client_isAllowedMountPoint($mountPoint, $domainId)
  */
 function add_domain_alias()
 {
-	global $cr_user_id, $alias_name, $domain_ip, $forward, $forward_prefix, $mount_point, $validation_err_msg;
+	global $cr_user_id, $alias_name, $domainIp, $forward, $forward_prefix, $mount_point, $validation_err_msg;
 
 	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
@@ -181,7 +181,7 @@ function add_domain_alias()
 	$query = "SELECT `domain_ip_id` FROM `domain` WHERE `domain_id` = ?";
 	$rs = exec_query($query, $cr_user_id);
 
-	$domain_ip = $rs->fields['domain_ip_id'];
+	$domainIp = $rs->fields['domain_ip_id'];
 
 	// First check if input string is a valid domain names
 	if (!validates_dname($alias_name)) {
@@ -310,7 +310,7 @@ function add_domain_alias()
 				?, ?, ?, ?, ?, ?
 			)
 	";
-	exec_query($query, array($cr_user_id, $alias_name, $mount_point, $status, $domain_ip, $forward));
+	exec_query($query, array($cr_user_id, $alias_name, $mount_point, $status, $domainIp, $forward));
 
 	$als_id = $db->insertId();
 
@@ -322,8 +322,6 @@ function add_domain_alias()
 			'domainAliasId' => $als_id
 		)
 	);
-
-	update_reseller_c_props(get_reseller_id($cr_user_id));
 
 	$admin_login = $_SESSION['user_logged'];
 

@@ -2,7 +2,7 @@
 
 =head1 NAME
 
- iMSCP::Getopt - Provides command line optionsfor both imscp-autoinstall and imscp-setup scripts
+ iMSCP::Getopt - Provides command line options for both imscp-autoinstall and imscp-setup scripts
 
 =cut
 
@@ -23,20 +23,20 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 #
-# @category i-MSCP
-# @copyright 2010-2013 by i-MSCP | http://i-mscp.net
-# @author Laurent Declercq <l.declercq@nuxwin.com>
-# @link http://i-mscp.net i-MSCP Home Site
-# @license http://www.gnu.org/licenses/gpl-2.0.html GPL v2
+# @category    i-MSCP
+# @copyright   2010-2013 by i-MSCP | http://i-mscp.net
+# @author      Laurent Declercq <l.declercq@nuxwin.com>
+# @link        http://i-mscp.net i-MSCP Home Site
+# @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
 package iMSCP::Getopt;
 
 use strict;
 use warnings;
+
 use iMSCP::HooksManager;
-use Text::Wrap;
-use iMSCP::Debug qw / error /;
-use fields qw / reconfigure noprompt preseed hookFile cleanAddons debug /;
+use iMSCP::Debug qw /error debugRegisterCallBack output /;
+use fields qw / reconfigure noprompt preseed hookFile cleanAddons debug backtrace /;
 our $options = fields::new('iMSCP::Getopt');
 
 our $optionHelp = '';
@@ -64,31 +64,28 @@ additional options.
 
 =cut
 
-sub parse
+sub parse($$)
 {
 	my $class = shift;
 	my $usage = shift;
 
-	my $showusage = sub {
-
-		local $Text::Wrap::columns = 80;
-		local $Text::Wrap::break =  qr/[\s\n\|]/;
-
-		print STDERR $usage."\n";
-		print STDERR wrap('', '', <<EOF);
+	my $showUsage = sub {
+		my $exitCode = shift || 0;
+		print STDERR output(<<EOF);
+$usage
  -r,  --reconfigure  <item>  Type --reconfigure help for more information.
  -n,  --noprompt             Switch to non-interactive mode.
  -p,  --preseed      <file>  Path to preseed file.
  -h,  --hook-file    <file>  Path to hook file.
  -c   --clean-addons         Cleanup local addon packages repository.
  -d,  --debug                Force debug mode.
+ -t,  --backtrace            Enable backtrace (implies debug option).
  -?,  --help                 Show this help.
 
  $optionHelp
 EOF
-		print "\n";
-		iMSCP::HooksManager->getInstance()->register('beforeExit', sub { exit 1; });
-		exit 1;
+		debugRegisterCallBack(sub { exit $exitCode; });
+		exit $exitCode;
 	};
 
 	# Do not load Getopt::Long if not needed
@@ -97,7 +94,7 @@ EOF
     local $SIG{__WARN__} = sub {
     	my $error = shift;
     	$error =~ s/(.*?) at.*/$1/;
-    	print STDERR $error if $error ne "Died\n";
+    	print STDERR output($error) if $error ne "Died\n";
     };
 
 	require Getopt::Long;
@@ -107,14 +104,15 @@ EOF
 	eval {
 		Getopt::Long::GetOptions(
 			'reconfigure|r:s', sub { shift, $class->reconfigure(shift) },
-			'noprompt|n', sub { $options->{'noprompt'} = 'true' },
+			'noprompt|n', sub { $options->{'noprompt'} = 1 },
 			'preseed|p=s', sub { shift; $class->preseed(shift) },
 			'hook-file|h=s', sub { shift; $class->hookFile(shift) },
-			'clean-addons|c', sub { $options->{'cleanAddons'} = 'true' },
-			'debug|d', sub { $options->{'debug'} = 'true' },
-			'help|?', $showusage,
+			'clean-addons|c', sub { $options->{'cleanAddons'} = 1 },
+			'debug|d', sub { $options->{'debug'} = 1 },
+			'backtrace|t', sub { shift; $class->backtrace(shift) },
+			'help|?', sub { $showUsage->() },
 			@_,
-		) || $showusage->();
+		) || $showUsage->(1);
 	};
 
 	undef;
@@ -133,7 +131,7 @@ our $reconfigureItems = [
 
 =cut
 
-sub reconfigure
+sub reconfigure($;$)
 {
 	my ($class, $value) = @_;
 
@@ -157,7 +155,7 @@ sub reconfigure
 	$options->{'reconfigure'} ? $options->{'reconfigure'} : 'none';
 }
 
-=item noprompt()
+=item noprompt($;$)
 
  Whether user asked for non-interactive mode
 
@@ -181,7 +179,7 @@ sub noprompt
 
 =cut
 
-sub preseed
+sub preseed($;$)
 {
 	my ($class, $value) = @_;
 
@@ -204,7 +202,7 @@ sub preseed
 
 =cut
 
-sub hookFile
+sub hookFile($;$)
 {
 	my ($class, $value) = @_;
 
@@ -217,6 +215,26 @@ sub hookFile
 	}
 
 	$options->{'hookFile'};
+}
+
+=item
+
+ Whether user asked for backtrace
+
+ Return int 0 or 1
+
+=cut
+
+sub backtrace($;$)
+{
+	my ($class, $value) = @_;
+
+	if(defined $value) {
+		$options->{'debug'} = 1;
+		$options->{'backtrace'} = 1;
+	}
+
+	$options->{'backtrace'} ? 1 : 0;
 }
 
 =back

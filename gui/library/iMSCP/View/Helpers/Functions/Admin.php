@@ -99,9 +99,10 @@ function gen_admin_list($tpl)
 								  'ADMIN_DELETE_SHOW' => '',
 								  'TR_DELETE' => tr('Delete'),
 								  'URL_DELETE_ADMIN' => 'user_delete.php?delete_id='
-														. $rs->fields['admin_id'] .
-														'&amp;delete_username=' .
-														$rs->fields['admin_name'],
+									  					. $rs->fields['admin_id'],
+														//. $rs->fields['admin_id'] .
+														//'&amp;delete_username=' .
+														//$rs->fields['admin_name'],
 								  'ADMIN_USERNAME' => tohtml($rs->fields['admin_name'])));
 
 				$tpl->parse('ADMIN_DELETE_LINK', 'admin_delete_link');
@@ -175,9 +176,10 @@ function gen_reseller_list($tpl)
 								  'RSL_DELETE_SHOW' => '',
 								  'TR_DELETE' => tr('Delete'),
 								  'URL_DELETE_RSL' => 'user_delete.php?delete_id=' .
-													  $rs->fields['admin_id'] .
-													  '&amp;delete_username=' .
-													  $rs->fields['admin_name'],
+									  				  $rs->fields['admin_id'],
+													  //$rs->fields['admin_id'] .
+													  //'&amp;delete_username=' .
+													  //$rs->fields['admin_name'],
 								  'TR_CHANGE_USER_INTERFACE' => tr('Switch to user interface'),
 								  'GO_TO_USER_INTERFACE' => tr('Switch'),
 								  'URL_CHANGE_INTERFACE' => 'change_user_interface.php?to_id=' .
@@ -289,6 +291,7 @@ function gen_user_list($tpl){
 			unset($_SESSION['search_status']);
 		} else {
 			$tpl->assign(array(
+							'SEARCH_FORM' => '',
 							'USR_MESSAGE' => tr('No customer accounts found.'),
 							'USR_LIST' => '',
 							'SCROLL_PREV' => '',
@@ -332,13 +335,11 @@ function gen_user_list($tpl){
 
 			$query = "
 				SELECT
-					`admin_name`
+					`admin_name`, `admin_status`
 				FROM
 					`admin`
 				WHERE
 					`admin_id` = ?
-				ORDER BY
-					`admin_name` ASC
 			";
 			$rs2 = exec_query($query, $domain_created_id);
 
@@ -350,6 +351,7 @@ function gen_user_list($tpl){
 
 			$tpl->assign(array(
 							  'USR_DELETE_SHOW' => '',
+							  'USER_ID' => $rs->fields['admin_id'],
 							  'DOMAIN_ID' => $rs->fields['domain_id'],
 							  'TR_DELETE' => tr('Delete'),
 							  'URL_DELETE_USR' => 'user_delete.php?domain_id=' . $rs->fields['domain_id'],
@@ -362,32 +364,50 @@ function gen_user_list($tpl){
 
 			$tpl->parse('USR_DELETE_LINK', 'usr_delete_link');
 
-			if ($rs->fields['domain_status'] == $cfg->ITEM_OK_STATUS) {
+			if (
+					$rs->fields['admin_status'] == $cfg->ITEM_OK_STATUS &&
+					$rs->fields['domain_status'] == $cfg->ITEM_OK_STATUS
+			) {
 				$status = 'ok';
-				$status_txt = tr('Ok');
-				$status_url = 'domain_status_change.php?domain_id=' .
-							  $rs->fields['domain_id'];
+				$status_txt = translate_dmn_status($rs->fields['domain_status']);
+				$status_url = 'domain_status_change.php?domain_id=' . $rs->fields['domain_id'];
 				$status_bool = true;
 			} elseif ($rs->fields['domain_status'] == $cfg->ITEM_DISABLED_STATUS) {
 				$status = 'disabled';
-				$status_txt = tr('Disabled');
-				$status_url = 'domain_status_change.php?domain_id=' .
-							  $rs->fields['domain_id'];
+				$status_txt = translate_dmn_status($rs->fields['domain_status']);
+				$status_url = 'domain_status_change.php?domain_id=' . $rs->fields['domain_id'];
 				$status_bool = false;
-			} elseif ($rs->fields['domain_status'] == $cfg->ITEM_ADD_STATUS
-					  || $rs->fields['domain_status'] == $cfg->ITEM_RESTORE_STATUS
-					  || $rs->fields['domain_status'] == $cfg->ITEM_CHANGE_STATUS
-					  || $rs->fields['domain_status'] == $cfg->ITEM_TOENABLE_STATUS
-					  || $rs->fields['domain_status'] == $cfg->ITEM_TODISABLED_STATUS
-					  || $rs->fields['domain_status'] == $cfg->ITEM_DELETE_STATUS
+			} elseif (
+				(
+					$rs->fields['admin_status'] == $cfg->ITEM_ADD_STATUS ||
+					$rs->fields['admin_status'] == $cfg->ITEM_CHANGE_STATUS ||
+					$rs->fields['admin_status'] == $cfg->ITEM_DELETE_STATUS
+				) ||
+				(
+					$rs->fields['domain_status'] == $cfg->ITEM_ADD_STATUS ||
+					$rs->fields['domain_status'] == $cfg->ITEM_RESTORE_STATUS ||
+					$rs->fields['domain_status'] == $cfg->ITEM_CHANGE_STATUS ||
+					$rs->fields['domain_status'] == $cfg->ITEM_TOENABLE_STATUS ||
+					$rs->fields['domain_status'] == $cfg->ITEM_TODISABLED_STATUS ||
+					$rs->fields['domain_status'] == $cfg->ITEM_DELETE_STATUS
+				)
 			) {
+
 				$status = 'reload';
-				$status_txt = tr('Reload');
+				$status_txt = translate_dmn_status(
+					($rs->fields['admin_status'] != $cfg->ITEM_OK_STATUS)
+						? $rs->fields['admin_status']
+						: $rs->fields['domain_status']
+				);
 				$status_url = '#';
 				$status_bool = false;
 			} else {
 				$status = 'error';
-				$status_txt = tr('Error');
+				$status_txt = translate_dmn_status(
+					($rs->fields['admin_status'] != $cfg->ITEM_OK_STATUS)
+						? $rs->fields['admin_status']
+						: $rs->fields['domain_status']
+				);
 				$status_url = 'domain_details.php?domain_id=' . $rs->fields['domain_id'];
 				$status_bool = false;
 			}
@@ -396,7 +416,6 @@ function gen_user_list($tpl){
 							  'STATUS' => $status,
 							  'TR_STATUS' => $status_txt,
 							  'URL_CHANGE_STATUS' => $status_url));
-
 
 			$admin_name = decode_idna($rs->fields['domain_name']);
 			$domain_created = $rs->fields['domain_created'];
@@ -476,7 +495,7 @@ function get_admin_manage_users($tpl)
  *
  * @param  iMSCP_pTemplate $tpl iMSCP_pTemplate instance
  * @param  string $search_for Object to search for
- * @param  $search_common Commone object to search for
+ * @param  string $search_common Common object to search for
  * @param  $search_status Object status to search for
  * @return void
  */

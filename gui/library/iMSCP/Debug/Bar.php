@@ -89,7 +89,6 @@ class iMSCP_Debug_Bar implements iMSCP_Events_Listeners_Interface
 		iMSCP_Events::onAdminScriptEnd,
 		iMSCP_Events::onResellerScriptEnd,
 		iMSCP_Events::onClientScriptEnd,
-		iMSCP_Events::onOrderPanelScriptEnd,
 		iMSCP_Events::onExceptionToBrowserEnd
 	);
 
@@ -140,6 +139,7 @@ class iMSCP_Debug_Bar implements iMSCP_Events_Listeners_Interface
 	 * Catch all calls for listener methods of this class to avoid to declarate them
 	 * since they do same job.
 	 *
+	 * @throws iMSCP_Debug_Bar_Exception
 	 * @param string $listenerMethod Listener method
 	 * @param array $arguments Enumerated array containing listener method arguments (always an iMSCP_Events_Description object)
 	 */

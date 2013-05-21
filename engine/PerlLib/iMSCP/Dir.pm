@@ -17,11 +17,11 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
-# @category		i-MSCP
-# @copyright	2010-2013 by i-MSCP | http://i-mscp.net
-# @author		Daniel Andreca <sci2tech@gmail.com>
-# @link			http://i-mscp.net i-MSCP Home Site
-# @license		http://www.gnu.org/licenses/gpl-2.0.html GPL v2
+# @category    i-MSCP
+# @copyright   2010-2013 by i-MSCP | http://i-mscp.net
+# @author      Daniel Andreca <sci2tech@gmail.com>
+# @link        http://i-mscp.net i-MSCP Home Site
+# @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
 package iMSCP::Dir;
 
@@ -30,7 +30,6 @@ use warnings;
 
 use iMSCP::Debug;
 use iMSCP::File;
-use File::Path;
 use File::Path qw/mkpath remove_tree/;
 use File::Copy;
 use parent 'Common::SimpleClass';
@@ -55,7 +54,7 @@ sub getFiles
 		$self->{'fileType'} = '' unless $self->{'fileType'};
 
 		for (@{$self->{'dirContent'}}) {
-			push(@{$self->{'files'}}, $_) if -f "$self->{'dirname'}/$_" && $_ =~ /$self->{'fileType'}$/;
+			push(@{$self->{'files'}}, $_) if -f "$self->{'dirname'}/$_" && /$self->{'fileType'}$/;
 		}
 	}
 
@@ -85,6 +84,44 @@ sub getDirs
 	wantarray ? @{$self->{'dirs'}} : join(' ', @{$self->{'dirs'}});
 }
 
+sub getAll
+{
+	my $self = shift;
+
+	my @all = ($self->getDirs(), $self->getFiles());
+
+	debug("Return @all");
+
+	wantarray ? @all : join(' ', @all);
+}
+
+sub isEmpty
+{
+	my $self = shift;
+	my $dirname = shift || $self->{'dirname'};
+
+	unless(defined $dirname) {
+		error("Attribut 'dirname' is not set");
+		return 1;
+	}
+
+	$self->{'dirname'} = $dirname;
+
+	unless(opendir(DIRH, $self->{'dirname'})) {
+		fatal("Unable to open directory $self->{'dirname'}: $!");
+	}
+
+	for (readdir DIRH) {
+		next if $_ eq '.' || $_ eq '..';
+		closedir(DIRH);
+		return 0;
+	}
+
+	closedir(DIRH);
+
+	1;
+}
+
 sub mode
 {
 	my $self = shift;
@@ -96,10 +133,12 @@ sub mode
 		return 1;
 	}
 
-	debug(sprintf("Changing mode for $dirname to %o", $mode));
+	$self->{'dirname'} = $dirname;
 
-	unless (chmod($mode, $dirname)) {
-		error("Unable to change mode for $dirname: $!");
+	debug(sprintf("Changing mode for $self->{'dirname'} to %o", $mode));
+
+	unless (chmod($mode, $self->{'dirname'})) {
+		error("Unable to change mode for $self->{'dirname'}: $!");
 		return 1;
 	}
 
@@ -118,16 +157,18 @@ sub owner
 		return 1;
 	}
 
+	$self->{'dirname'} = $dirname;
+
 	my $uid = ($owner =~ /^\d+$/) ? $owner : getpwnam($owner);
 	$uid = -1 unless defined $uid;
 
 	my $gid = ($group =~ /^\d+$/) ? $group : getgrnam($group);
 	$gid = -1 unless defined $gid;
 
-	debug("Changing owner and group for $dirname to $uid:$gid");
+	debug("Changing owner and group for $self->{'dirname'} to $uid:$gid");
 
-	unless (chown($uid, $gid, $dirname)) {
-		error("Unable to change owner and group for $dirname: $!");
+	unless (chown($uid, $gid, $self->{'dirname'})) {
+		error("Unable to change owner and group for $self->{'dirname'}: $!");
 		return 1;
 	}
 
@@ -159,7 +200,7 @@ sub make
 	unless(-d $self->{'dirname'}) {
 		debug("Creating directory $self->{'dirname'}");
 		my $err;
-		my @lines = mkpath($self->{'dirname'}, { 'error' => \$err});
+		my @createdDirs = mkpath($self->{'dirname'}, { 'error' => \$err});
 
 		if (@$err) {
 			for my $diag (@$err) {
@@ -175,7 +216,7 @@ sub make
 			return 1;
 		}
 
-		for (@lines) {
+		for (@createdDirs) {
 			$rs = $self->mode($options->{'mode'}, $_) if defined $options->{'mode'};
 			return $rs if $rs;
 
@@ -341,6 +382,7 @@ sub _get
 		}
 
 		@{$self->{'dirContent'}} = readdir(DIRH);
+
 		closedir(DIRH);
 	}
 }

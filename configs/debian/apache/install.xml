@@ -1,39 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--
-i-MSCP - internet Multi Server Control Panel
-
-Copyright 2010-2013 by internet Multi Server Control Panel - http://i-mscp.net
-
-This program is free software; you can redistribute it and/or modify it under the
-terms of the GNU General Public License as published by the Free Software Foundation;
-either version 2 of the License, or (at your option) any later version.
-
-This program is distributed in the hope that it will be useful, but WITHOUT ANY
-WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
-PARTICULAR PURPOSE. See the GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License along with this
-program. If not, see <http://www.gnu.org/licenses/>
-
-@category	i-MSCP
-@copyright	2010-2013 by i-MSCP | http://i-mscp.net
-@author		Daniel Andreca <sci2tech@i-mscp.net>
-@link		http://i-mscp.net i-MSCP Home Site
-@license	http://www.gnu.org/licenses/ GPL v2
--->
 
 <install>
     <folders export="ROOT_APACHE_CONF">${ROOT_CONF}/apache2</folders>
+    <folders>${ROOT_APACHE_CONF}/imscp</folders>
     <folders>${INST_PREF}/var/log/apache2/backup</folders>
+    <folders>${INST_PREF}/var/www/scoreboards</folders>
     <folders>${SYSTEM_CONF}/apache</folders>
     <folders>${SYSTEM_CONF}/apache/backup</folders>
     <folders>${SYSTEM_CONF}/apache/working</folders>
-    <folders>${ROOT_APACHE_CONF}</folders>
-    <folders>${ROOT_APACHE_CONF}/sites-available</folders>
-    <folders>${ROOT_APACHE_CONF}/mods-available</folders>
-    <folders>${ROOT_APACHE_CONF}/imscp</folders>
-    <folders>${INST_PREF}/var/www/scoreboards</folders>
     <copy_config>${SYSTEM_CONF}/apache/parts</copy_config>
+    <copy_config>${SYSTEM_CONF}/apache/skel</copy_config>
     <copy_config>${SYSTEM_CONF}/apache/00_master.conf</copy_config>
     <copy_config>${SYSTEM_CONF}/apache/00_master_ssl.conf</copy_config>
     <copy_config>${SYSTEM_CONF}/apache/00_modcband.conf</copy_config>

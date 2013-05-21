@@ -17,11 +17,12 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
-# @category		i-MSCP
-# @copyright	2010-2013 by i-MSCP | http://i-mscp.net
-# @author		Daniel Andreca <sci2tech@gmail.com>
-# @link			http://i-mscp.net i-MSCP Home Site
-# @license		http://www.gnu.org/licenses/gpl-2.0.html GPL v2
+# @category    i-MSCP
+# @copyright   2010-2013 by i-MSCP | http://i-mscp.net
+# @author      Daniel Andreca <sci2tech@gmail.com>
+# @author      Laurent Declercq <l.declercq@nuxwin.com>
+# @link        http://i-mscp.net i-MSCP Home Site
+# @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
 package iMSCP::Debug;
 
@@ -29,12 +30,18 @@ use strict;
 use warnings;
 
 use iMSCP::Log;
+use Text::Wrap;
 use parent 'Common::SingletonClass', 'Exporter';
 
+$Text::Wrap::columns = 80;
+$Text::Wrap::break = qr/[\s\n\|]/;
+
 our @EXPORT = qw/
-	debug warning error fatal newDebug endDebug getMessage getLastError getMessageByType silent verbose debugRegCallBack
+	debug warning error fatal newDebug endDebug getMessage getLastError getMessageByType silent verbose
+	backtrace debugRegisterCallBack output
 /;
 
+=item
 BEGIN
 {
 	$SIG{__DIE__} = sub {
@@ -51,6 +58,7 @@ BEGIN
 		}
 	};
 }
+=cut
 
 sub newDebug
 {
@@ -93,10 +101,19 @@ sub verbose
 
 	unless($verbose) {
 		getMessageByType('debug', { 'remove' => 1 });
-		debug("Debug messages off");
+		debug("Debug mode off");
 	}
 
 	__PACKAGE__->getInstance()->{'verbose'} = $verbose;
+
+	undef;
+}
+
+sub backtrace
+{
+	my $backtrace = shift || 0;
+
+	__PACKAGE__->getInstance()->{'backtrace'} = $backtrace;
 
 	undef;
 }
@@ -231,37 +248,48 @@ sub _getMessageLevel
 
 	if ($self->{'log'}->{$log}) {
 		for ($self->{'log'}->{$log}->flush()) {
-			$line .= "[$_->{'when'}] [$_->{'tag'}] $_->{'message'}\nTraces: $_->{'longmess'}\n\n";
+			next unless defined $_;
+
+			$line .= "[$_->{'when'}] [$_->{'tag'}] $_->{'message'}\n";
+			$line .= "Traces: $_->{'longmess'}\n\n" if $self->{'backtrace'};
 		}
 	}
+
 	$line;
 }
 
 sub output
 {
 	my $text = shift;
-	my $options	= shift;
+	my $mode = shift;
 
-	$options = {} if ref $options ne 'HASH';
+	my $output = '';
 
-	if ($options->{'mode'} && lc($options->{'mode'}) eq 'fatal') {
-		return "[ \033[0;31m" . ($options->{'text'} ? uc($options->{'text'}) : 'FATAL ERROR') . "\033[0m ] ${text}\n";
-	} elsif ($options->{'mode'} && lc($options->{'mode'}) eq 'error') {
-		return "[ \033[0;31m" . ($options->{'text'} ? uc($options->{'text'}) : 'ERROR') . "\033[0m ] ${text}\n";
-	} elsif ($options->{'mode'} && lc($options->{'mode'}) eq 'warn'){
-		return "[ \033[0;33m" . ($options->{'text'} ? uc($options->{'text'}) : 'WARN') . "\033[0m ] ${text}\n";
-	} elsif ($options->{'mode'} && lc($options->{'mode'}) eq 'ok'){
-		return "[ \033[0;32m" . ($options->{'text'} ? uc($options->{'text'}) : 'ok') . "\033[0m ] ${text}\n";
+	if($mode) {
+		if ($mode eq 'fatal') {
+			$output = "\n[\033[0;31m FATAL ERROR \033[0m]$text\n";
+		} elsif ($mode eq 'error') {
+			$output = "\n[\033[0;31m ERROR \033[0m]\n\n$text\n";
+		} elsif ($mode eq 'warn'){
+			$output = "\n[\033[0;33m WARN \033[0m]\n\n$text\n";
+		} elsif ($mode eq 'ok'){
+			$output = "\n[\033[0;32m OK \033[0m]\n\n$text\n";
+		}
 	} else {
-		return "$text\n";
+		$output = "\n$text\n\n"
 	}
+
+	return wrap('', '', $output);
 }
 
-sub debugRegCallBack
+sub debugRegisterCallBack
 {
 	my $self = __PACKAGE__->getInstance();
-	my $code = shift;
-	push @{$self->{'callBacks'}}, $code;
+	my $callback = shift;
+
+	push @{$self->{'debugCallBacks'}}, $callback;
+
+	0;
 }
 
 sub _init
@@ -272,8 +300,9 @@ sub _init
 	$self->{'log'} = {};
 	$self->{'lastLog'} = iMSCP::Log->new();
 	$self->{'silent'} = 0;
-	$self->{'verbose'} = 0;
-	$self->{'callBacks'} = [];
+	$self->{'verbose'} = 1;
+	$self->{'backtrace'} = 0;
+	$self->{'debugCallBacks'} = [];
 
 	$self;
 }
@@ -283,14 +312,8 @@ END
 	my $exitCode = $?;
 
 	my $self = __PACKAGE__->getInstance();
-	my $logdir = $main::imscpConfig{'LOG_DIR'} || '/tmp';
-	my $msg;
 
-	&$_ for @{$self->{'callBacks'}};
-
-	my $clearScreen = 1;
-	#use iMSCP::HooksManager;
-	iMSCP::HooksManager->getInstance()->trigger('beforeExit', \$exitCode, \$clearScreen);
+	&$_ for @{$self->{'debugCallBacks'}};
 
 	if($exitCode) {
 		error("Exit code is $exitCode!");
@@ -298,7 +321,10 @@ END
 		debug("Exit code is $exitCode");
 	}
 
-	system 'clear' if $clearScreen;
+	system 'clear';
+
+	my $logdir = $main::imscpConfig{'LOG_DIR'} || '/tmp';
+	my $msg;
 
 	for (keys %{$self->{'log'}}) {
 		next if $_ eq 'discard';
@@ -307,9 +333,9 @@ END
 		my @errors = getMessageByType('error');
 		my @fatals = getMessageByType('fatal error');
 
-		$msg = "\n" . output('', { 'text' => 'WARNINGS', 'mode' => 'warn'}) . "\n" . join("\n", @warnings) . "\n\n" if @warnings > 0;
-		$msg .= "\n" . output('', { 'text' => 'ERRORS', 'mode' => 'error'}) . "\n" . join("\n", @errors) . "\n\n" if @errors > 0;
-		$msg .= "\n".output('', { 'text' => 'FATAL ERRORS', 'mode' => 'error'}) . "\n" . join("\n", @fatals) . "\n\n" if @fatals > 0;
+		$msg = output(join("\n", @warnings), 'warn') if @warnings;
+		$msg .= output(join("\n", @errors), 'error') if @errors;
+		$msg .= output(join("\n", @fatals), 'fatal') if @fatals;
 
 		writeLogs($_, "$logdir/$_");
 	}

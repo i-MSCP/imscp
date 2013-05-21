@@ -17,11 +17,12 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 #
-# @category		i-MSCP
-# @copyright	2010-2013 by i-MSCP | http://i-mscp.net
-# @author		Daniel Andreca <sci2tech@gmail.com>
-# @link			http://i-mscp.net i-MSCP Home Site
-# @license		http://www.gnu.org/licenses/gpl-2.0.html GPL v2
+# @category    i-MSCP
+# @copyright   2010-2013 by i-MSCP | http://i-mscp.net
+# @author      Daniel Andreca <sci2tech@gmail.com>
+# @author      Laurent Declercq <l.declercq@nuxwin.com>
+# @link        http://i-mscp.net i-MSCP Home Site
+# @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
 use strict;
 use warnings;
@@ -34,284 +35,245 @@ use lib "$FindBin::Bin/PerlVendor";
 use iMSCP::Debug;
 use iMSCP::Boot;
 use iMSCP::Execute;
-use Data::Dumper;
 use MIME::Base64;
+
+# Turn off localisation features to force any command output to be in english
+$ENV{LANG} = 'C';
 
 # Mode in which the request dispatcher is triggered
 # For now, this variable is only used by i-MSCP installer/setup scripts
 $main::execmode = shift || '';
 
+umask(027);
+
 newDebug('imscp-rqst-mngr.log');
 
 silent(1);
 
-sub start_up
+sub startUp
 {
-	umask(027);
-
 	iMSCP::Boot->getInstance()->boot();
 
 	0;
 }
 
-sub mngr_engine_process
+sub engine
 {
-	my ($type, $sql, $ipMods) = @_;
 	my $rs = 0;
 
-	debug("Processing type $type.");
+	# Process add|change SSL certificates tasks
+	my $sql = "
+		SELECT
+			`cert_id` AS `id`, `type` AS `name`, `status` AS `status`
+		FROM
+			`ssl_certs`
+		WHERE
+			`status` IN ('toadd', 'change', 'delete')
+	";
+	$rs = _process('Certificates', $sql);
+	return $rs if $rs;
 
-	if ($main::execmode ne 'setup') {
-		print("=======================\n");
-		print("Processing type $type.\n");
-	}
+	# Process add|change users tasks
+	my $sql = "
+		SELECT
+			`admin_id` AS `id`, `admin_name` AS `name`, `admin_status` AS `status`
+		FROM
+			`admin`
+		WHERE
+			`admin_type` = 'user'
+		AND
+			`admin_status` IN ('toadd', 'change');
+	";
+	$rs = _process('User', $sql);
+	return $rs if $rs;
 
-	my $database = iMSCP::Database->factory();
-	my $rdata = $database->doQuery('id', $sql);
+	my $ipsMod = 0;
 
-	if(ref $rdata ne 'HASH') {
-		error($rdata);
-		return 1;
-	}
+	# Process add|change|restore|enable|disable domain tasks
+	$sql = "
+		SELECT
+			`domain_id` AS `id`, `domain_name` AS `name`, `domain_status` AS `status`
+		FROM
+			`domain`
+		WHERE
+			`domain_status` IN ('toadd', 'change', 'dnschange', 'restore', 'toenable', 'todisable', 'disabled')
+	";
+	$rs = _process('Domain', $sql, \$ipsMod);
+	return $rs if $rs;
 
-	my $i = 1;
-	my $total = scalar keys %$rdata;
-	$$ipMods += $total if ref $ipMods;
+	# Process add|change|restore|enable|disable subdomains tasks
+	$sql = "
+		SELECT
+			`subdomain_id` AS `id`, `subdomain_name` AS `name`, `subdomain_status` AS `status`
+		FROM
+			`subdomain`
+		WHERE
+			`subdomain_status` IN ('toadd', 'change', 'restore', 'toenable', 'todisable', 'disabled')
+	";
+	$rs = _process('Subdomain', $sql, \$ipsMod);
+	return $rs if $rs;
 
-	for (keys %$rdata) {
-		my $id = $rdata->{$_}->{'id'};
-		my $name = $rdata->{$_}->{'name'};
-		my $status = $rdata->{$_}->{'status'};
+	# Process add|change|restore|enable|disable domain aliases tasks
+	$sql = "
+		SELECT
+			`alias_id` AS `id`, `alias_name` AS `name`, `alias_status` AS `status`
+		FROM
+			`domain_aliasses`
+		WHERE
+			`alias_status` IN ('toadd', 'change', 'dnschange', 'restore', 'toenable', 'todisable', 'disabled')
+	";
+	$rs = _process('Alias', $sql, \$ipsMod);
+	return $rs if $rs;
 
-		debug("Processing $id, $name, $status.");
-		print("Processing $id, $name, $status. ($i of $total: remaining ".($total -$i).")\n") if $main::execmode ne 'setup';
-		print STDOUT ("$type\t$status\t$name\t$id\t$total\t$i\n") if $main::execmode eq 'setup';
-		$i++;
+	# Process add|change|restore|enable|disable subdomains of domain aliases tasks
+	$sql = "
+		SELECT
+			`subdomain_alias_id` AS `id`, `subdomain_alias_name` AS `name`, `subdomain_alias_status` AS `status`
+		FROM
+			`subdomain_alias`
+		WHERE
+			`subdomain_alias_status` IN ('toadd', 'change', 'restore', 'toenable', 'todisable', 'disabled')
+	";
+	$rs = _process('SubAlias', $sql, \$ipsMod);
+	return $rs if $rs;
 
-		newDebug("${type}_mngr_$name.log");
+	# Process add|change|enable|disable|delete mail tasks
+	$sql = "
+		SELECT
+			`mail_id` AS `id`, `mail_addr` AS `name`, `status` AS `status`
+		FROM
+			`mail_users`
+		WHERE
+			`status` IN ('toadd', 'change', 'toenable', 'delete', 'todisable')
+	";
+	$rs = _process('Mail', $sql);
+	return $rs if $rs;
 
-		my $file = "Modules/${type}.pm";
-		my $class = "Modules::$type";
+	# Process add|change|delete Htusers tasks
+	$sql = "
+		SELECT
+			`id`, `uname` AS `name`, `status`
+		FROM
+			`htaccess_users`
+		WHERE
+			`status` IN ('toadd', 'change', 'delete')
+	";
+	$rs = _process('Htusers', $sql);
+	return $rs if $rs;
 
-		require $file;
-		$rs = $class->new()->process($id);
-		error("Error while processing $id, $name, $status.") if $rs;
-		error("See ${type}_mngr_$name.log for details.") if $rs;
+	# Process add|change|delete Htgroups tasks
+	$sql = "
+		SELECT
+			`id` AS `id`, CONCAT(`ugroup`, ':', `id`) AS `name`, `status`
+		FROM
+			`htaccess_groups`
+		WHERE
+			`status` IN ('toadd', 'change', 'delete')
+	";
+	$rs = _process('Htgroup', $sql);
+	return $rs if $rs;
+
+	# Process add|change|delete Htaccess tasks
+	$sql = "
+		SELECT
+			`id`, `auth_name` AS `name`, `status`
+		FROM
+			`htaccess`
+		WHERE
+			`status` IN ('toadd', 'change', 'delete')
+	";
+	$rs = _process('Htaccess', $sql);
+	return $rs if $rs;
+
+	# Process delete subdomain aliases tasks
+	$sql = "
+		SELECT
+			`subdomain_alias_id` AS `id`, `subdomain_alias_name` AS `name`, `subdomain_alias_status` AS `status`
+		FROM
+			`subdomain_alias`
+		WHERE
+			`subdomain_alias_status` = 'delete'
+	";
+	$rs = _process('SubAlias', $sql, \$ipsMod);
+	return $rs if $rs;
+
+	# Process delete subdomains tasks
+	$sql = "
+		SELECT
+			`subdomain_id` AS `id`, `subdomain_name` AS `name`, `subdomain_status` AS `status`
+		FROM
+			`subdomain`
+		WHERE
+			`subdomain_status` = 'delete'
+	";
+	$rs = _process('Subdomain', $sql, \$ipsMod);
+	return $rs if $rs;
+
+	# Process delete domain aliases tasks
+	$sql = "
+		SELECT
+			`alias_id` AS `id`, `alias_name` AS `name`, `alias_status` AS `status`
+		FROM
+			`domain_aliasses`
+		WHERE
+			`alias_status` = 'delete'
+	";
+	$rs = _process('Alias', $sql, \$ipsMod);
+	return $rs if $rs;
+
+	# Process delete domains tasks
+	$sql = "
+		SELECT
+			`domain_id` AS `id`, `domain_name` AS `name`, `domain_status` AS `status`
+		FROM
+			`domain`
+		WHERE
+			`domain_status` = 'delete'
+	";
+	$rs = _process('Domain', $sql, \$ipsMod);
+	return $rs if $rs;
+
+	# Process delete users tasks
+	my $sql = "
+		SELECT
+			`admin_id` AS `id`, `admin_name` AS `name`, `admin_status` AS `status`
+		FROM
+			`admin`
+		WHERE
+			`admin_type` = 'user'
+		AND
+			`admin_status` = 'delete';
+	";
+	$rs = _process('User', $sql);
+	return $rs if $rs;
+
+	# Process network cards tasks
+	$sql = "
+		SELECT
+			`ip_id` AS `id`, `ip_status` AS `name`, `ip_status` AS `status`
+		FROM
+			`server_ips`
+		WHERE
+			`ip_status` != 'ok'
+	";
+	$rs = _process('NetCard', $sql);
+	return $rs if $rs;
+
+
+	# Process IP addresses tasks
+	# This module should always me processed to handle case were only one domain is registered and disabled)
+	if($ipsMod != 0) {
+		newDebug("Ips_mngr.log");
+
+		require Modules::Ips;
+		$rs = Modules::Ips->new()->process();
 
 		endDebug();
 
 		return $rs if $rs;
 	}
 
-	0;
-}
-
-sub engine {
-
-	my $rs = 0;
-	my $sql;
-
-	# First we add / delete ssl certificates
-	# Next we add / alter main domain
-	# Next we add / alter subdomain for main domain
-	# Next we add / alter alias for main domain
-	# Next we add / alter subdomain for alias
-	# Next we process mailboxes
-	# Next we process .htaccess related data
-	# Next we can delete in order:
-	# alias subdomains
-	# Subdomains
-	# Alias
-	# Main domain
-
-	$sql = "
-		SELECT
-			`cert_id` AS 'id', `type` AS 'name', `status` AS 'status'
-		FROM
-			`ssl_certs`
-		WHERE
-			`status`
-		IN ('toadd', 'change', 'delete')
-	";
-
-	$rs = mngr_engine_process('Certificates', $sql);
-	return $rs if $rs;
-
-	my $ipsMod = 0;
-
-	$sql = "
-		SELECT
-			`domain_id` AS 'id', `domain_name` AS 'name', `domain_status` AS 'status'
-		FROM
-			`domain`
-		WHERE
-			`domain_status`
-		IN ('toadd', 'change', 'dnschange', 'restore', 'toenable', 'todisable')
-	";
-
-	$rs = mngr_engine_process('Domain', $sql, \$ipsMod);
-	return $rs if $rs;
-
-	$sql = "
-		SELECT
-			`subdomain_id` AS 'id', `subdomain_name` AS 'name', `subdomain_status` AS 'status'
-		FROM
-			`subdomain`
-		WHERE
-			`subdomain_status`
-		IN ('toadd', 'change', 'toenable', 'todisable')
-	";
-
-	$rs = mngr_engine_process('Subdomain', $sql, \$ipsMod);
-	return $rs if $rs;
-
-	$sql = "
-		SELECT
-			`alias_id` AS 'id', `alias_name` AS 'name', `alias_status` AS 'status'
-		FROM
-			`domain_aliasses`
-		WHERE
-			`alias_status`
-		IN ('toadd', 'change', 'dnschange', 'toenable', 'todisable')
-	";
-
-	$rs = mngr_engine_process('Alias', $sql, \$ipsMod);
-	return $rs if $rs;
-
-	$sql = "
-		SELECT
-			`subdomain_alias_id` AS 'id', `subdomain_alias_name` AS 'name', `subdomain_alias_status` AS 'status'
-		FROM
-			`subdomain_alias`
-		WHERE
-			`subdomain_alias_status`
-		IN ('toadd', 'change', 'toenable', 'todisable')
-	";
-
-	$rs = mngr_engine_process('SubAlias', $sql, \$ipsMod);
-	return $rs if $rs;
-
-	$sql = "
-		SELECT
-			`mail_id` AS 'id', `mail_addr` AS 'name', `status` as 'status'
-		FROM
-			`mail_users`
-		WHERE
-			`status`
-		IN ('toadd', 'change', 'toenable', 'delete', 'todisable')
-	";
-
-	$rs = mngr_engine_process('Mail', $sql);
-	return $rs if $rs;
-
-	$sql = "
-		SELECT
-			`id`, `uname` as 'name', `status`
-		FROM
-			`htaccess_users`
-		WHERE
-			`status`
-		IN ('toadd', 'change', 'delete')
-	";
-	$rs = mngr_engine_process('Htusers', $sql);
-	return $rs if $rs;
-
-	$sql = "
-		SELECT
-			`id` AS 'id', CONCAT(`ugroup`,':',`id`) AS 'name', `status`
-		FROM
-			`htaccess_groups`
-		WHERE
-			`status`
-		IN ('toadd', 'change', 'delete')
-	";
-	$rs = mngr_engine_process('Htgroup', $sql);
-	return $rs if $rs;
-
-	$sql = "
-		SELECT
-			`id`, `auth_name` AS 'name', `status`
-		FROM
-			`htaccess`
-		WHERE
-			`status`
-		IN ('toadd', 'change', 'delete')
-	";
-	$rs = mngr_engine_process('Htaccess', $sql);
-	return $rs if $rs;
-
-	$sql = "
-		SELECT
-			`subdomain_alias_id` AS 'id', `subdomain_alias_name` AS 'name', `subdomain_alias_status` AS 'status'
-		FROM
-			`subdomain_alias`
-		WHERE
-			`subdomain_alias_status` = 'delete'
-	";
-	$rs = mngr_engine_process('SubAlias', $sql, \$ipsMod);
-	return $rs if $rs;
-
-	$sql = "
-		SELECT
-			`subdomain_id` AS 'id', `subdomain_name` AS 'name', `subdomain_status` AS 'status'
-		FROM
-			`subdomain`
-		WHERE
-			`subdomain_status` = 'delete'
-	";
-	$rs = mngr_engine_process('Subdomain', $sql, \$ipsMod);
-	return $rs if $rs;
-
-	$sql = "
-		SELECT
-			`alias_id` AS 'id', `alias_name` AS 'name', `alias_status` AS 'status'
-		FROM
-			`domain_aliasses`
-		WHERE
-			`alias_status` = 'delete'
-	";
-	$rs = mngr_engine_process('Alias', $sql, \$ipsMod);
-	return $rs if $rs;
-
-	$sql = "
-		SELECT
-			`domain_id` AS 'id', `domain_name` AS 'name', `domain_status` AS 'status'
-		FROM
-			`domain`
-		WHERE
-			`domain_status` = 'delete'
-	";
-	$rs = mngr_engine_process('Domain', $sql, \$ipsMod);
-	return $rs if $rs;
-
-	#
-	# Network card management BEGIN.
-	#
-
-	$sql = "
-		SELECT
-			`ip_id` AS 'id', `ip_status` AS 'name', `ip_status` AS 'status'
-		FROM
-			`server_ips`
-		WHERE
-			`ip_status` != 'ok'
-	";
-	$rs = mngr_engine_process('NetCard', $sql);
-	return $rs if $rs;
-
-	#
-	# IP management BEGIN.
-	#
-
-	if($ipsMod != 0) {
-		require Modules::Ips;
-		$rs = Modules::Ips->new()->process();
-		return $rs if $rs;
-	}
-
-	#
 	# software installation BEGIN
-	#
 
 	$sql = "
 		SELECT
@@ -321,20 +283,19 @@ sub engine {
 		FROM
 			`web_software_inst`
 		WHERE
-			`software_status`
-		IN ('toadd', 'delete')
+			`software_status` IN ('toadd', 'delete')
 		ORDER BY
 			`domain_id`
 	";
 
 	my $rdata = iMSCP::Database->factory()->doQuery('software_id', $sql);
 
-	if(ref $rdata ne 'HASH'){
+	unless(ref $rdata eq 'HASH'){
 		error($rdata);
 		return 1;
 	}
 
-	my $count =  scalar keys %$rdata;
+	my $count = scalar keys %$rdata;
 
 	newDebug('imscp_sw_mngr_engine') if $count;
 
@@ -354,18 +315,22 @@ sub engine {
 
 		# Encoding data to push to another script
 		my $imscp_sw_mngr_pushstring = encode_base64(
-			"$sw_domain_id,$sw_software_id,$sw_path,$sw_software_prefix,$sw_database,$sw_database_user,$sw_database_tmp_pwd,$sw_install_username,$sw_install_password,$sw_install_email,$sw_software_status,$sw_software_depot,$sw_software_master_id,$sw_aliasdomain_id,$sw_subdomain_id,$sw_aliassubdomain_id"
+			"$sw_domain_id,$sw_software_id,$sw_path,$sw_software_prefix,$sw_database,$sw_database_user," .
+			"$sw_database_tmp_pwd,$sw_install_username,$sw_install_password,$sw_install_email,$sw_software_status," .
+			"$sw_software_depot,$sw_software_master_id,$sw_aliasdomain_id,$sw_subdomain_id,$sw_aliassubdomain_id"
 		);
 
 		debug("Processing encoded pushtring: $imscp_sw_mngr_pushstring.");
 
 		my ($stdout, $stderr);
-		$rs = execute("perl $main::imscpConfig{ENGINE_ROOT_DIR}/imscp-sw-mngr \"$imscp_sw_mngr_pushstring\"", \$stdout, \$stderr);
+		$rs = execute(
+			"perl $main::imscpConfig{ENGINE_ROOT_DIR}/imscp-sw-mngr \"$imscp_sw_mngr_pushstring\"", \$stdout, \$stderr
+		);
 		debug($stdout) if $stdout;
 		error($stderr) if $stderr && $rs;
 		last if $rs;
 
-		$rs = execute("$main::imscpConfig{CMD_RM} -rf /tmp/sw-$sw_domain_id-$sw_software_id", \$stdout, \$stderr);
+		$rs = execute("$main::imscpConfig{CMD_RM} -fR /tmp/sw-$sw_domain_id-$sw_software_id", \$stdout, \$stderr);
 		debug($stdout) if $stdout;
 		error($stderr) if $stderr && $rs;
 		last if $rs;
@@ -373,7 +338,6 @@ sub engine {
 
 	endDebug() if $count;
 	return $rs if $rs;
-
 
 	$sql = "
 		SELECT
@@ -386,7 +350,7 @@ sub engine {
 			`reseller_id`
 	";
 	$rdata = iMSCP::Database->factory()->doQuery('software_id', $sql);
-	if(ref $rdata ne 'HASH'){
+	unless(ref $rdata eq 'HASH'){
 		error($rdata);
 		return 1;
 	}
@@ -395,7 +359,7 @@ sub engine {
 
 	newDebug('imscp_pkt_mngr_engine.log') if $count;
 
-	foreach (keys %$rdata) {
+	for (keys %$rdata) {
 
 		my (
 			$sw_software_id, $sw_reseller_id, $sw_software_archive, $sw_software_status, $sw_software_depot
@@ -418,19 +382,82 @@ sub engine {
 		error($stderr) if $stderr && $rs;
 		last if $rs;
 
-		$rs = execute("$main::imscpConfig{CMD_RM} -rf /tmp/sw-$sw_software_archive-$sw_software_id", \$stdout, \$stderr);
+		$rs = execute("$main::imscpConfig{CMD_RM} -fR /tmp/sw-$sw_software_archive-$sw_software_id", \$stdout, \$stderr);
 		debug($stdout) if $stdout;
 		error($stderr) if $stderr && $rs;
 		last if $rs
 	}
+
 	endDebug() if $count;
 
 	$rs;
 }
 
+sub _process
+{
+	my ($type, $sql, $ipMods) = @_;
+	my $rs = 0;
 
-my $rs = 0;
-$rs = start_up();
-$rs = engine() unless $rs;
+	debug("Processing type $type");
+
+	if ($main::execmode ne 'setup') {
+		print("=======================\n");
+		print("Processing type $type.\n");
+	}
+
+	my $database = iMSCP::Database->factory();
+	my $rdata = $database->doQuery('id', $sql);
+
+	unless(ref $rdata eq 'HASH') {
+		error($rdata);
+		return 1;
+	}
+
+	my $i = 1;
+	my $total = scalar keys %$rdata;
+	$$ipMods += $total if ref $ipMods;
+
+	for (keys %$rdata) {
+		my $id = $rdata->{$_}->{'id'};
+		my $name = $rdata->{$_}->{'name'};
+		my $status = $rdata->{$_}->{'status'};
+
+		# Needed to run ips module in case all registered domain are disabled
+		next if $rdata->{$_}->{'status'} eq 'disabled';
+
+		debug("Processing $id, $name, $status.");
+
+		if($main::execmode ne 'setup') {
+			print("Processing $id, $name, $status. ($i of $total: remaining " . ($total -$i) . ")\n");
+		} else {
+			print STDOUT ("$type\t$status\t$name\t$id\t$total\t$i\n");
+		}
+
+		$i++;
+
+		newDebug("${type}_mngr_$name.log");
+
+		my $file = "Modules/${type}.pm";
+		my $class = "Modules::$type";
+
+		require $file;
+		$rs = $class->new()->process($id);
+
+		endDebug();
+
+		if($rs) {
+			error("Error while processing $id, $name, $status.");
+			my $logDir = defined $main::imscpConfig{'LOG_DIR'} ? $main::imscpConfig{'LOG_DIR'} : '';
+			error("See $logDir/${type}_mngr_$name.log for details.");
+		}
+
+		return $rs if $rs;
+	}
+
+	0;
+}
+
+my $rs = startUp();
+$rs ||= engine();
 
 exit $rs;

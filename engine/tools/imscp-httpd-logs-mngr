@@ -32,80 +32,109 @@ use lib "$FindBin::Bin/../PerlLib";
 
 use iMSCP::Debug;
 use iMSCP::Boot;
-use iMSCP::Mail;
 use iMSCP::Database;
-use Servers::httpd;
+
+# Turn off localisation features to force any command output to be in english
+$ENV{LANG} = 'C';
+
+umask(027);
 
 newDebug('imscp-httpd-logs-mngr.log');
 
 silent(1);
 
-sub logs_start_up
+sub startUp
 {
-	umask(027);
-
 	iMSCP::Boot->getInstance()->boot({ 'nolock' => 'yes' });
 
 	0;
 }
 
-sub copy_logs
+sub process
 {
 	my $rs = 0;
-	my $httpd = Servers::httpd->factory();
 
 	my $sql = "
-		SELECT `domain_name`, `domain_name`as `mp`, `domain_admin_id` AS `id` FROM `domain` WHERE `domain_status` = 'ok'
+		SELECT
+			`domain_name`, `domain_name`as `mp`, `domain_admin_id` AS `id`
+		FROM
+			`domain`
+		WHERE
+			`domain_status` = 'ok'
 		UNION
-		SELECT `alias_name`, `domain_name`, `domain_admin_id` AS `id` FROM `domain_aliasses`
-		JOIN `domain` using(`domain_id`) WHERE `alias_status` = 'ok'
+		SELECT
+			`alias_name`, `domain_name`, `domain_admin_id` AS `id`
+		FROM
+			`domain_aliasses`
+		JOIN
+			`domain` using(`domain_id`)
+		WHERE
+			`alias_status` = 'ok'
 		UNION
-		SELECT CONCAT(`subdomain_name`, '.', `domain_name`), `domain_name`, `domain_admin_id` AS `id` FROM `subdomain`
-		JOIN `domain` using(`domain_id`)  WHERE `subdomain_status` = 'ok'
+		SELECT
+			CONCAT(`subdomain_name`, '.', `domain_name`), `domain_name`, `domain_admin_id` AS `id`
+		FROM
+			`subdomain`
+		JOIN
+			`domain` using(`domain_id`)
+		WHERE
+			`subdomain_status` = 'ok'
 		UNION
-		SELECT CONCAT(`subdomain_alias_name`, '.', `alias_name`), `domain_name`, `domain_admin_id` AS `id` FROM `subdomain_alias`
-		JOIN `domain_aliasses` using(`alias_id`)
-		JOIN `domain` using(`domain_id`) WHERE `subdomain_alias_status` = 'ok'
+		SELECT
+			CONCAT(`subdomain_alias_name`, '.', `alias_name`), `domain_name`, `domain_admin_id` AS `id`
+		FROM
+			`subdomain_alias`
+		JOIN
+			`domain_aliasses` using(`alias_id`)
+		JOIN
+			`domain` using(`domain_id`)
+		WHERE
+			`subdomain_alias_status` = 'ok'
 	";
 	my $rdata = iMSCP::Database->new()->factory()->doQuery('domain_name', $sql);
 
 	if (ref $rdata ne 'HASH') {
 		error($rdata);
+		require iMSCP::Mail;
 		iMSCP::Mail->new()->errmsg($rdata);
 		$rs = 1;
 	} else {
+		require iMSCP::Httpd;
+		my $srcFolder = Servers::httpd->factory()->{'tplValues'}->{'APACHE_USERS_LOG_DIR'};
+
 		for(keys %$rdata) {
 			my $groupName =
 			my $userName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} .
 				($main::imscpConfig{'SYSTEM_USER_MIN_UID'} + $rdata->{$_}->{'id'});
-			my $srcFolder = "$httpd->{'tplValues'}->{'APACHE_USERS_LOG_DIR'}";
-			my $destFolder = "$main::imscpConfig{'USER_HOME_DIR'}/$rdata->{$_}->{'mp'}/logs/";
-			my $accessSRC = "$srcFolder/$_-access.log";
-			my $accessDST = "$destFolder/$_-access.log";
-			my $errorSRC = "$srcFolder/$_-error.log";
-			my $errorDST = "$destFolder/$_-error.log";
 
-			$rs |= iMSCP::Dir->new('dirname' => $destFolder)->make(
+			my $destFolder = "$main::imscpConfig{'USER_WEB_DIR'}/$rdata->{$_}->{'mp'}/logs/";
+			my $accessSrc = "$srcFolder/$_-access.log";
+			my $accessDest = "$destFolder/$_-access.log";
+			my $errorSrc = "$srcFolder/$_-error.log";
+			my $errorDest = "$destFolder/$_-error.log";
+
+			# Create customer logs directory if doesn't already exists
+			$rs = iMSCP::Dir->new('dirname' => $destFolder)->make(
 				{ 'user' => $userName, 'group' => $groupName, 'mode' => 0750}
 			) unless -d $destFolder;
 			return $rs if $rs;
 
-			$rs = iMSCP::File->new('filename' => $accessSRC)->copyFile($accessDST) if -f $accessSRC;
+			$rs = iMSCP::File->new('filename' => $accessSrc)->copyFile($accessDest) if -f $accessSrc;
 			return $rs if $rs;
 
-			$rs = iMSCP::File->new('filename' => $accessDST)->owner($userName, $groupName) if -f $accessDST;
+			$rs = iMSCP::File->new('filename' => $accessDest)->owner($userName, $groupName) if -f $accessDest;
 			return $rs if $rs;
 
-			$rs = iMSCP::File->new('filename' => $accessDST)->mode(0640) if -f $accessDST;
+			$rs = iMSCP::File->new('filename' => $accessDest)->mode(0640) if -f $accessDest;
 			return $rs if $rs;
 
-			$rs = iMSCP::File->new('filename' => $errorSRC)->copyFile($errorDST) if -f $errorSRC;
+			$rs = iMSCP::File->new('filename' => $errorSrc)->copyFile($errorDest) if -f $errorSrc;
 			return $rs if $rs;
 
-			$rs = iMSCP::File->new('filename' => $errorDST)->owner($userName, $groupName) if -f $errorDST;
+			$rs = iMSCP::File->new('filename' => $errorDest)->owner($userName, $groupName) if -f $errorDest;
 			return $rs if $rs;
 
-			$rs = iMSCP::File->new('filename' => $errorDST)->mode(0640) if -f $errorDST;
+			$rs = iMSCP::File->new('filename' => $errorDest)->mode(0640) if -f $errorDest;
 			return $rs if $rs;
 		}
 	}
@@ -113,5 +142,9 @@ sub copy_logs
 	$rs;
 }
 
-exit 1 if logs_start_up();
-exit copy_logs();
+my $rs = 0;
+
+$rs = startUp();
+$rs ||= process();
+
+exit $rs;

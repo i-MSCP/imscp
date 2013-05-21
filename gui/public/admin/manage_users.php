@@ -35,7 +35,7 @@
  * @link        http://i-mscp.net
  */
 
-/************************************************************************************
+/***********************************************************************************************************************
  * Main script
  */
 
@@ -66,6 +66,7 @@ $tpl->define_dynamic(
 		'rsl_delete_show' => 'rsl_item',
 		'rsl_delete_link' => 'rsl_item',
 		'usr_message' => 'page',
+		'search_form' => 'page',
 		'usr_list' => 'page',
 		'usr_item' => 'usr_list',
 		'user_details' => 'usr_list',
@@ -81,7 +82,7 @@ $tpl->define_dynamic(
 
 $tpl->assign(
 	array(
-		'TR_PAGE_TITLE' => tr('i-MSCP - Admin/Manage Users'),
+		'TR_PAGE_TITLE' => tr('i-MSCP - Admin / Manage Users'),
 		'THEME_CHARSET' => tr('encoding'),
 		'TR_NEXT' => tr('Next'),
 		'TR_PREVIOUS' => tr('Previous'),
@@ -106,21 +107,16 @@ if (isset($_SESSION['user_added'])) {
 	set_page_message(tr('Customer account successfully updated.'), 'success');
 } elseif (isset($_SESSION['user_deleted'])) {
 	unset($_SESSION['user_deleted']);
-	set_page_message(tr('Customer scheduled for deletion.'), 'success');
+	set_page_message(tr('Customer successfully scheduled for deletion.'), 'success');
 } elseif (isset($_SESSION['email_updated'])) {
 	unset($_SESSION['email_updated']);
 	set_page_message(tr('Email Updated.'), 'success');
 } elseif (isset($_SESSION['hdomain'])) {
 	unset($_SESSION['hdomain']);
-	set_page_message(tr('This reseller has one or more customers accounts.<br /> To remove this reseller, please first remove these customers accounts.'), 'error');
-} elseif (isset($_SESSION['user_disabled'])) {
-	unset($_SESSION['user_disabled']);
-	set_page_message(tr('Customer account scheduled for deactivation.'), 'success');
+	set_page_message(tr('The reseller you want to remove has one or more customers accounts.<br />Remove them first.'), 'error');
 }
 
-if (!$cfg->exists('HOSTING_PLANS_LEVEL') ||
-    strtolower($cfg->HOSTING_PLANS_LEVEL) !== 'admin'
-) {
+if (!$cfg->exists('HOSTING_PLANS_LEVEL') || strtolower($cfg->HOSTING_PLANS_LEVEL) !== 'admin') {
 	$tpl->assign('EDIT_OPTION', '');
 }
 

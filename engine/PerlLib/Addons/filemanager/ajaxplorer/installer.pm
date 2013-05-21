@@ -33,6 +33,7 @@ package Addons::filemanager::ajaxplorer::installer;
 
 use strict;
 use warnings;
+
 use iMSCP::Debug;
 use parent 'Common::SingletonClass';
 
@@ -62,7 +63,6 @@ sub preinstall
 	my $self = shift;
 
 	require iMSCP::Addons::ComposerInstaller;
-
 	iMSCP::Addons::ComposerInstaller->getInstance()->registerPackage('imscp/ajaxplorer');
 }
 
@@ -77,12 +77,8 @@ sub preinstall
 sub install
 {
 	my $self = shift;
-	my $rs = 0;
 
-	$rs = $self->_installFiles();	# Install ajaxplorer files from local addon packages repository
-	return $rs if $rs;
-
-	$self->setGuiPermissions();		# Set ajaxplorer permissions
+	$self->_installFiles();	# Install ajaxplorer files from local addon packages repository
 }
 
 =item setGuiPermissions()
@@ -156,7 +152,7 @@ sub _installFiles
 		return $rs if $rs;
 
 		$rs = execute(
-			"$main::imscpConfig{'CMD_RM'} -rf $main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/filemanager/.git",
+			"$main::imscpConfig{'CMD_RM'} -fR $main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/filemanager/.git",
 			\$stdout,
 			\$stderr
 		);

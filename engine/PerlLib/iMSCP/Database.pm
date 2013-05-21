@@ -17,30 +17,32 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
-# @category		i-MSCP
-# @copyright	2010-2013 by i-MSCP | http://i-mscp.net
-# @author		Daniel Andreca <sci2tech@gmail.com>
-# @link			http://i-mscp.net i-MSCP Home Site
-# @license      http://www.gnu.org/licenses/gpl-2.0.html GPL v2
+# @category    i-MSCP
+# @copyright   2010-2013 by i-MSCP | http://i-mscp.net
+# @author      Daniel Andreca <sci2tech@gmail.com>
+# @link        http://i-mscp.net i-MSCP Home Site
+# @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
 package iMSCP::Database;
 
 use strict;
 use warnings;
 
+use iMSCP::Debug 'fatal';
 use parent 'Common::SimpleClass';
 
 sub factory
 {
 	my $self = shift;
-	$self = iMSCP::Database->new() if ref $self ne 'iMSCP::Database';
-	my $db = defined $self->{'args'}->{'db'} ? $self->{'args'}->{'db'} : $main::imscpConfig{'DATABASE_TYPE'};
-	my $file = "iMSCP/Database/${db}/${db}.pm";
-	my $class = "iMSCP::Database::${db}::${db}";
 
-	require $file;
+	$self = iMSCP::Database->new() if ref $self ne __PACKAGE__;
 
-	$class->getInstance();
+	my $dbAdapter = defined $self->{'args'}->{'db'} ? lc($self->{'args'}->{'db'}) : lc($main::imscpConfig{'DATABASE_TYPE'});
+	$dbAdapter = "iMSCP::Database::${dbAdapter}::${dbAdapter}";
+
+	eval "require $dbAdapter" or fatal("Unable to load database driver $dbAdapter: $@");
+
+	$dbAdapter->getInstance();
 }
 
 1;

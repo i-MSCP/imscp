@@ -353,13 +353,6 @@ function generate_als_messages()
 	} elseif (isset($_SESSION["dahaveftp"])) {
         set_page_message(tr('Domain alias you are trying to remove has FTP accounts.<br/>First remove them.'), 'error');
 		unset($_SESSION['dahavemail']);
-	} elseif (isset($_SESSION["aldel"])) {
-		if ('_yes_' === $_SESSION['aldel']) {
-            set_page_message(tr('Domain alias successfully scheduled for deletion.'), 'success');
-        } else {
-            set_page_message(tr('Domain alias not scheduled for deletion.'), 'error');
-        }
-		unset($_SESSION['aldel']);
 	} elseif (isset($_SESSION['aladd'])) {
 		if ('_yes_' === $_SESSION['aladd']) {
             set_page_message(tr('Domain alias successfully scheduled for addition'), 'success');

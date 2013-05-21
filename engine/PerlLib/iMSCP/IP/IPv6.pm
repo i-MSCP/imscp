@@ -17,11 +17,11 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
-# @category		i-MSCP
-# @copyright	2010-2013 by i-MSCP | http://i-mscp.net
-# @author		Daniel Andreca <sci2tech@gmail.com>
-# @link			http://i-mscp.net i-MSCP Home Site
-# @license		http://www.gnu.org/licenses/gpl-2.0.html GPL v2
+# @category    i-MSCP
+# @copyright   2010-2013 by i-MSCP | http://i-mscp.net
+# @author      Daniel Andreca <sci2tech@gmail.com>
+# @link        http://i-mscp.net i-MSCP Home Site
+# @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
 package iMSCP::IP::IPv6;
 
@@ -52,7 +52,8 @@ sub parseIPs
 				$self->{'ips'}->{$ip} = $netCardName if $netCardName ne 'lo';
 			}
 		}
-		$self->{_loadedIPs} = 1
+
+		$self->{'_loadedIPs'} = 1
 	}
 	0;
 }
@@ -61,6 +62,7 @@ sub normalize
 {
 	my $self = shift;
 	my $ip = lc(shift);
+
 	my @result;
 
 	my @parts = split(':', $ip);
@@ -69,7 +71,7 @@ sub normalize
 		my $segment = $_;
 
 		unless ($segment eq '') {
-			$segment = "0$segment" for((length($_)+1)..4);
+			$segment = "0$segment" for((length($_) + 1) .. 4);
 			push(@result, $segment);
 		} else {
 			push(@result, '0000') for((@parts) .. 8);
@@ -146,7 +148,6 @@ sub attachIpToNetCard
 	return 1 unless $self->isValidIp($ip);
 
 	my ($stdout, $stderr);
-
 	my $rs = execute("$main::imscpConfig{'CMD_IFCONFIG'} $card inet6 add $ip/64", \$stdout, \$stderr);
 	debug($stdout) if $stdout;
 	error($stderr) if $stderr && $rs;

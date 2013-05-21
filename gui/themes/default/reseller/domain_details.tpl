@@ -57,32 +57,32 @@
 				<tr>
 					<td>{TR_MAIL_ACCOUNTS}</td>
 					<td>{VL_MAIL_ACCOUNTS_USED}</td>
-					<td>{VL_MAIL_ACCOUNTS_LIIT}</td>
+					<td>{VL_MAIL_ACCOUNTS_LIMIT}</td>
 				</tr>
 				<tr>
 					<td>{TR_FTP_ACCOUNTS}</td>
 					<td>{VL_FTP_ACCOUNTS_USED}</td>
-					<td>{VL_FTP_ACCOUNTS_LIIT}</td>
+					<td>{VL_FTP_ACCOUNTS_LIMIT}</td>
 				</tr>
 				<tr>
 					<td>{TR_SQL_DB_ACCOUNTS}</td>
 					<td>{VL_SQL_DB_ACCOUNTS_USED}</td>
-					<td>{VL_SQL_DB_ACCOUNTS_LIIT}</td>
+					<td>{VL_SQL_DB_ACCOUNTS_LIMIT}</td>
 				</tr>
 				<tr>
 					<td>{TR_SQL_USER_ACCOUNTS}</td>
 					<td>{VL_SQL_USER_ACCOUNTS_USED}</td>
-					<td>{VL_SQL_USER_ACCOUNTS_LIIT}</td>
+					<td>{VL_SQL_USER_ACCOUNTS_LIMIT}</td>
 				</tr>
 				<tr>
 					<td>{TR_SUBDOM_ACCOUNTS}</td>
 					<td>{VL_SUBDOM_ACCOUNTS_USED}</td>
-					<td>{VL_SUBDOM_ACCOUNTS_LIIT}</td>
+					<td>{VL_SUBDOM_ACCOUNTS_LIMIT}</td>
 				</tr>
 				<tr>
 					<td>{TR_DOMALIAS_ACCOUNTS}</td>
 					<td>{VL_DOMALIAS_ACCOUNTS_USED}</td>
-					<td>{VL_DOMALIAS_ACCOUNTS_LIIT}</td>
+					<td>{VL_DOMALIAS_ACCOUNTS_LIMIT}</td>
 				</tr>
 			</table>
 			<form name="buttons" method="post" action="?">

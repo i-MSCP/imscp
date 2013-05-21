@@ -17,11 +17,11 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
-# @category		i-MSCP
-# @copyright	2010-2013 by i-MSCP | http://i-mscp.net
-# @author		Daniel Andreca <sci2tech@gmail.com>
-# @link			http://i-mscp.net i-MSCP Home Site
-# @license		http://www.gnu.org/licenses/gpl-2.0.html GPL v2
+# @category    i-MSCP
+# @copyright   2010-2013 by i-MSCP | http://i-mscp.net
+# @author      Daniel Andreca <sci2tech@gmail.com>
+# @link        http://i-mscp.net i-MSCP Home Site
+# @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
 package iMSCP::Rights;
 
@@ -38,51 +38,44 @@ use vars qw/@EXPORT/;
 sub setRights
 {
 	my $file = shift;
-	my $option = shift;
+	my $options = shift;
 	my $rs = 0;
-	$option = {} if ref $option ne 'HASH';
+	$options = {} if ref $options ne 'HASH';
 
 	my  @dchmod = (
 		"find $file -type d -print0 | xargs",
 		($^O !~ /bsd$/ ? '-r' : ''),
-		'-0 chmod',
-		#($main::imscpConfig{'DEBUG'} ? '-v' : ''),
-		$option->{'dirmode'}
-	) if $option->{'dirmode'};
+		"-0 chmod $options->{'dirmode'}"
+	) if $options->{'dirmode'};
 
 	my  @fchmod = (
 		"find $file -type f -print0 | xargs",
 		($^O !~ /bsd$/ ? '-r' : ''),
-		'-0 chmod',
-		#($main::imscpConfig{'DEBUG'} ? '-v' : ''),
-		$option->{'filemode'}
-	) if $option->{'filemode'};
+		"-0 chmod $options->{'filemode'}"
+	) if $options->{'filemode'};
 
 	my  @chmod = (
-		'chmod',
-		#($main::imscpConfig{'DEBUG'} ? '-v' : ''),
-		($option->{'recursive'} ? '-R' : ''),
-		$option->{'mode'},
-		$file
-	) if $option->{'mode'};
+		$main::imscpConfig{'CMD_CHMOD'},
+		($options->{'recursive'} ? '-R' : ''),
+		"$options->{'mode'} $file"
+	) if $options->{'mode'};
 
 	my  @chown = (
-		"chown",
-		#($main::imscpConfig{'DEBUG'} ? '-v' : ''),
-		($option->{'recursive'} ? '-R' : ''),
-		"$option->{user}:$option->{group} $file"
-	) if $option->{'user'} && $option->{'group'};
+		$main::imscpConfig{'CMD_CHOWN'},
+		($options->{'recursive'} ? '-R' : ''),
+		"$options->{'user'}:$options->{'group'} $file"
+	) if $options->{'user'} && $options->{'group'};
 
-	$rs = _set(@chmod) if $option->{'mode'};
+	$rs = _set(@chmod) if $options->{'mode'};
 	return $rs if $rs;
 
-	$rs = _set(@dchmod) if $option->{'dirmode'} && $option->{'recursive'};
+	$rs = _set(@dchmod) if $options->{'dirmode'} && $options->{'recursive'};
 	return $rs if $rs;
 
-	$rs = _set(@fchmod) if $option->{'filemode'} && $option->{'recursive'};
+	$rs = _set(@fchmod) if $options->{'filemode'} && $options->{'recursive'};
 	return $rs if $rs;
 
-	$rs = _set(@chown) if $option->{'user'} && $option->{'group'};
+	$rs = _set(@chown) if $options->{'user'} && $options->{'group'};
 	return $rs if $rs;
 
 	$rs;

@@ -34,6 +34,7 @@ package Addons::policyd::installer;
 
 use strict;
 use warnings;
+
 use iMSCP::Debug;
 use File::Basename;
 use iMSCP::File;
@@ -68,28 +69,6 @@ sub registerSetupHooks
 	$hooksManager->register(
 		'beforeSetupDialog', sub { my $dialogStack = shift; push(@$dialogStack, sub { $self->askRBL(@_) }); 0; }
 	);
-}
-
-=item install()
-
- Process policyd addon install tasks.
-
- Return int 0 on success, other on failure
-
-=cut
-
-sub install
-{
-	my $self = shift;
-	my $rs = 0;
-
-	$rs = $self->bkpConfFile($self::policydConfig{'POLICYD_CONF_FILE'});
-	return $rs if $rs;
-
-	$rs = $self->buildConf();
-	return $rs if $rs;
-
-	$self->saveConf();
 }
 
 =back
@@ -135,6 +114,28 @@ sub askRBL
 	$rs;
 }
 
+=item install()
+
+ Process policyd addon install tasks.
+
+ Return int 0 on success, other on failure
+
+=cut
+
+sub install
+{
+	my $self = shift;
+	my $rs = 0;
+
+	$rs = $self->_bkpConfFile($self::policydConfig{'POLICYD_CONF_FILE'});
+	return $rs if $rs;
+
+	$rs = $self->_buildConf();
+	return $rs if $rs;
+
+	$self->_saveConf();
+}
+
 =back
 
 =head1 PRIVATE METHODS
@@ -149,8 +150,8 @@ sub askRBL
 
 =cut
 
-sub _init{
-
+sub _init
+{
 	my $self = shift;
 
 	$self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/policyd";
@@ -170,7 +171,7 @@ sub _init{
 	$self;
 }
 
-=item bkpConfFile($cfgFile)
+=item _bkpConfFile($cfgFile)
 
  Backup configuration file.
 
@@ -179,14 +180,14 @@ sub _init{
 
 =cut
 
-sub bkpConfFile
+sub _bkpConfFile
 {
 	my $self = shift;
 	my $cfgFile = shift;
 
 	my ($name, $path, $suffix) = fileparse($cfgFile);
 
-	if(-f $cfgFile){
+	if(-f $cfgFile) {
 		my $timestamp = time;
 		my $file = iMSCP::File->new('filename' => $cfgFile);
 		my $rs = $file->copyFile("$self->{'bkpDir'}/$name$suffix.$timestamp");
@@ -196,7 +197,63 @@ sub bkpConfFile
 	0;
 }
 
-=item saveConf()
+=item _buildConf()
+
+ Build configuration file.
+
+ Return int 0 on success, other on failure
+
+=cut
+
+sub _buildConf
+{
+	my $self = shift;
+
+	my $rs = 0;
+	my $uName = $self::policydConfig{'POLICYD_USER'};
+	my $gName = $self::policydConfig{'POLICYD_GROUP'};
+	my ($name, $path, $suffix) = fileparse($self::policydConfig{'POLICYD_CONF_FILE'});
+
+	unless (-f $self::policydConfig{'POLICYD_CONF_FILE'}) {
+		my ($stdout, $stderr);
+		$rs = execute(
+			"$self::policydConfig{'POLICYD_BIN_FILE'} defaults > $self::policydConfig{'POLICYD_CONF_FILE'}",
+			\$stdout, \$stderr
+		);
+		debug($stdout) if $stdout;
+		warning($stderr) if ! $rs && $stderr;
+		error($stderr) if $rs && $stderr;
+		error("Unable to create  $self::policydConfig{'POLICYD_CONF_FILE'} configuration file") if $rs && ! $stderr;
+		return $rs if $rs;
+	}
+
+	my $file = iMSCP::File->new('filename' => $self::policydConfig{'POLICYD_CONF_FILE'});
+	my $cfgTpl = $file->get();
+	unless(defined $cfgTpl) {
+		error("Unable to read $self::policydConfig{'POLICYD_CONF_FILE'} file");
+		return 1;
+	}
+
+	my $dnsblChecksOnly = $self::policydConfig{'DNSBL_CHECKS_ONLY'} =~ /^yes$/i ? 0 : 1;
+	$cfgTpl =~ s/^\s{0,}\$dnsbl_checks_only\s{0,}=.*$/\n   \$dnsbl_checks_only = $dnsblChecksOnly;          # 1: ON, 0: OFF (default)/mi;
+
+	$file = iMSCP::File->new('filename' => "$self->{'wrkDir'}/$name$suffix");
+	$rs = $file->set($cfgTpl);
+	return $rs if $rs;
+
+	$rs = $file->save();
+	return $rs if $rs;
+
+	$rs = $file->mode(0640);
+	return $rs if $rs;
+
+	$rs = $file->owner($uName, $gName);
+	return $rs if $rs;
+
+	$file->copyFile($self::policydConfig{'POLICYD_CONF_FILE'});
+}
+
+=item _saveConf()
 
  Save configuration
 
@@ -204,7 +261,7 @@ sub bkpConfFile
 
 =cut
 
-sub saveConf
+sub _saveConf
 {
 	my $self = shift;
 	my $rootUsr	= $main::imscpConfig{'ROOT_USER'};
@@ -237,59 +294,6 @@ sub saveConf
 	return $rs if $rs;
 
 	$file->mode(0640);
-}
-
-=item buildConf()
-
- Build configuration file.
-
- Return int 0 on success, other on failure
-
-=cut
-
-sub buildConf
-{
-	my $self = shift;
-
-	my $rs = 0;
-	my $uName = $self::policydConfig{'POLICYD_USER'};
-	my $gName = $self::policydConfig{'POLICYD_GROUP'};
-	my ($name, $path, $suffix) = fileparse($self::policydConfig{'POLICYD_CONF_FILE'});
-
-	unless (-f $self::policydConfig{'POLICYD_CONF_FILE'}) {
-		my ($stdout, $stderr);
-		$rs = execute(
-			"$self::policydConfig{'POLICYD_BIN_FILE'} defaults > $self::policydConfig{'POLICYD_CONF_FILE'}",
-			\$stdout, \$stderr
-		);
-		debug($stdout) if $stdout;
-		warning($stderr) if ! $rs && $stderr;
-		error($stderr) if $rs && $stderr;
-		error("Unable to create default config file") if $rs && ! $stderr;
-		return $rs if $rs;
-	}
-
-	my $file = iMSCP::File->new('filename' => $self::policydConfig{POLICYD_CONF_FILE});
-	my $cfgTpl = $file->get();
-	return 1 if ! defined $cfgTpl;
-
-	my $dnsblChecksOnly = $self::policydConfig{DNSBL_CHECKS_ONLY} =~ /^yes$/i ? 0 : 1;
-	$cfgTpl =~ s/^\s{0,}\$dnsbl_checks_only\s{0,}=.*$/\n   \$dnsbl_checks_only = $dnsblChecksOnly;          # 1: ON, 0: OFF (default)/mi;
-
-	$file = iMSCP::File->new('filename' => "$self->{'wrkDir'}/$name$suffix");
-	$rs = $file->set($cfgTpl);
-	return $rs if $rs;
-
-	$rs = $file->save();
-	return $rs if $rs;
-
-	$rs = $file->mode(0640);
-	return $rs if $rs;
-
-	$rs = $file->owner($uName, $gName);
-	return $rs if $rs;
-
-	$file->copyFile($self::policydConfig{'POLICYD_CONF_FILE'});
 }
 
 =back

@@ -24,9 +24,9 @@
  * Portions created by the i-MSCP Team are Copyright (C) 2010-2013 by
  * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
  *
- * @category	i-MSCP
- * @package		iMSCP_Core
- * @subpackage	Reseller
+ * @category    i-MSCP
+ * @package     iMSCP_Core
+ * @subpackage  Reseller
  * @copyright   2001-2006 by moleSoftware GmbH
  * @copyright   2006-2010 by ispCP | http://isp-control.net
  * @copyright   2010-2013 by i-MSCP | http://i-mscp.net
@@ -35,8 +35,8 @@
  * @link        http://i-mscp.net
  */
 
-/************************************************************************************
- * Main script
+/***********************************************************************************************************************
+ * Main
  */
 
 // Include core library
@@ -46,44 +46,26 @@ iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onResellerScriptStar
 
 check_login('reseller');
 
-/** @var $cfg iMSCP_Config_Handler_File */
-$cfg = iMSCP_Registry::get('config');
+if (!isset($_GET['domain_id'])) {
+	/** @var $cfg iMSCP_Config_Handler_File */
+	$cfg = iMSCP_Registry::get('config');
 
-if (!isset($_GET['domain_id']) || !is_numeric($_GET['domain_id'])) {
-    set_page_message(tr('Wrong domain ID.'), 'error');
-    redirectTo('users.php?psi=last');
+	$domainId = clean_input($_GET['domain_id']);
+
+	$query = "SELECT `domain_admin_id`, `domain_created_id`, `domain_status` FROM `domain` WHERE `domain_id` = ?";
+	$stmt = exec_query($query, $domainId);
+
+	if ($stmt->rowCount() && $stmt->fields['domain_created_id'] == $_SESSION['user_id']) {
+		$customerId = $stmt->fields['domain_admin_id'];
+
+		if ($stmt->fields['domain_status'] == $cfg->ITEM_OK_STATUS) {
+			change_domain_status($customerId, 'deactivate');
+		} elseif ($stmt->fields['domain_status'] == $cfg->ITEM_DISABLED_STATUS) {
+			change_domain_status($customerId, 'activate');
+		}
+
+		redirectTo('users.php');
+	}
 }
 
-// so we have domain id and let's disable or enable it
-$domain_id = $_GET['domain_id'];
-
-// check status to know if have to disable or enable it
-$query = "
-	SELECT
-		`domain_name`, `domain_status`, `domain_created_id`
-	FROM
-		`domain`
-	WHERE
-		`domain_id` = ?
-";
-$stmt = exec_query($query, $domain_id);
-
-// let's check if this reseller has rights to disable/enable this domain
-// If we are logged as admin and we have created reseller account, we can also
-// suspend the domain
-if ($stmt->fields['domain_created_id'] != $_SESSION['user_id'] &&
-    $_SESSION['logged_from_id'] != $_SESSION['user_created_by']
-) {
-    set_page_message(tr('You are not allowed to perform this operation.'), 'error');
-    redirectTo('users.php?psi=last');
-}
-
-if ($stmt->fields['domain_status'] == $cfg->ITEM_OK_STATUS) {
-    set_page_message(tr('Domain account scheduled for suspension.'), 'success');
-    change_domain_status($domain_id, $stmt->fields['domain_name'], 'disable', 'reseller');
-} elseif ($stmt->fields['domain_status'] == $cfg->ITEM_DISABLED_STATUS) {
-    set_page_message(tr('Domain account scheduled for activation.'), 'success');
-    change_domain_status($domain_id, $stmt->fields['domain_name'], 'enable', 'reseller');
-} else {
-    redirectTo('users.php?psi=last');
-}
+showBadRequestErrorPage();

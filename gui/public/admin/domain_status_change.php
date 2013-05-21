@@ -24,15 +24,19 @@
  * Portions created by the i-MSCP Team are Copyright (C) 2010-2013 by
  * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
  *
- * @category	i-MSCP
- * @package		iMSCP_Core
- * @subpackage	Admin
+ * @category    i-MSCP
+ * @package     iMSCP_Core
+ * @subpackage  Admin
  * @copyright   2001-2006 by moleSoftware GmbH
  * @copyright   2006-2010 by ispCP | http://isp-control.net
  * @copyright   2010-2013 by i-MSCP | http://i-mscp.net
  * @author      ispCP Team
  * @author      i-MSCP Team
  * @link        http://i-mscp.net
+ */
+
+/***********************************************************************************************************************
+ * Main
  */
 
 // Include core library
@@ -42,39 +46,26 @@ iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAdminScriptStart);
 
 check_login('admin');
 
-/** @var $cfg iMSCP_Config_Handler_File */
-$cfg = iMSCP_Registry::get('config');
+if (isset($_GET['domain_id'])) {
+	/** @var $cfg iMSCP_Config_Handler_File */
+	$cfg = iMSCP_Registry::get('config');
 
-if (!isset($_GET['domain_id'])) {
-	redirectTo('manage_users.php');
+	$domainId = clean_input($_GET['domain_id']);
+
+	$query = "SELECT `domain_admin_id`, `domain_status` FROM `domain` WHERE `domain_id` = ?";
+	$stmt = exec_query($query, $domainId);
+
+	if ($stmt->rowCount()) {
+		$customerId = $stmt->fields['domain_admin_id'];
+
+		if ($stmt->fields['domain_status'] == $cfg->ITEM_OK_STATUS) {
+			change_domain_status($customerId, 'deactivate');
+		} elseif ($stmt->fields['domain_status'] == $cfg->ITEM_DISABLED_STATUS) {
+			change_domain_status($customerId, 'activate');
+		}
+
+		redirectTo('manage_users.php');
+	}
 }
 
-if (!is_numeric($_GET['domain_id'])) {
-	redirectTo('manage_users.php');
-}
-
-$domain_id = $_GET['domain_id'];
-
-$query = "
-	SELECT
-		`domain_name`,
-		`domain_status`
-	FROM
-		`domain`
-	WHERE
-		`domain_id` = ?
-";
-
-$rs = exec_query($query, $domain_id);
-
-$location = 'admin';
-
-if ($rs->fields['domain_status'] == $cfg->ITEM_OK_STATUS) {
-	$action = "disable";
-	change_domain_status($domain_id, $rs->fields['domain_name'], $action, $location);
-} else if ($rs->fields['domain_status'] == $cfg->ITEM_DISABLED_STATUS) {
-	$action = "enable";
-	change_domain_status($domain_id, $rs->fields['domain_name'], $action, $location);
-} else {
-	redirectTo('manage_users.php');
-}
+showBadRequestErrorPage();

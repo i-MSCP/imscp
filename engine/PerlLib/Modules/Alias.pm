@@ -17,11 +17,12 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 #
-# @category		i-MSCP
-# @copyright	2010-2013 by i-MSCP | http://i-mscp.net
-# @author		Daniel Andreca <sci2tech@gmail.com>
-# @link			http://i-mscp.net i-MSCP Home Site
-# @license		http://www.gnu.org/licenses/gpl-2.0.html GPL v2
+# @category    i-MSCP
+# @copyright   2010-2013 by i-MSCP | http://i-mscp.net
+# @author      Daniel Andreca <sci2tech@gmail.com>
+# @author      Laurent Declercq <l.declercq@nuxwin.com>
+# @link        http://i-mscp.net i-MSCP Home Site
+# @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
 package Modules::Alias;
 
@@ -46,18 +47,14 @@ sub loadData
 	my $sql = "
 		SELECT
 			`alias`.*, `domain_name` AS `user_home`, `domain_admin_id`, `domain_php`, `domain_cgi`,
-			`domain_traffic_limit`, `domain_mailacc_limit`, `domain_dns`, `ips`.`ip_number`,
+			`domain_traffic_limit`, `domain_mailacc_limit`, `domain_dns`, `web_folder_protection`, `ips`.`ip_number`,
 			`mail_count`.`mail_on_domain`
 		FROM
 			`domain_aliasses` AS `alias`
 		LEFT JOIN
-			`domain`
-		ON
-			`alias`.`domain_id` = `domain`.`domain_id`
+			`domain` ON (`alias`.`domain_id` = `domain`.`domain_id`)
 		LEFT JOIN
-			`server_ips` AS `ips`
-		ON
-			`alias`.`alias_ip_id` = `ips`.`ip_id`
+			`server_ips` AS `ips` ON (`alias`.`alias_ip_id` = `ips`.`ip_id`)
 		LEFT JOIN
 			(
 				SELECT
@@ -72,12 +69,12 @@ sub loadData
 					`sub_id`
 			) AS `mail_count`
 		ON
-			`alias`.`alias_id` = `mail_count`.`id`
+			(`alias`.`alias_id` = `mail_count`.`id`)
 		WHERE
 		`alias`.`alias_id` = ?
 	";
 
-	my $rdata = iMSCP::Database->factory()->doQuery('alias_id', $sql, $self->{alsId}, $self->{'alsId'});
+	my $rdata = iMSCP::Database->factory()->doQuery('alias_id', $sql, $self->{'alsId'}, $self->{'alsId'});
 	if(ref $rdata ne 'HASH') {
 		error($rdata);
 		return 1;
@@ -110,7 +107,7 @@ sub process
 			($rs ? scalar getMessageByType('error') : 'ok'),
 			$self->{'alias_id'}
 		);
-	} elsif($self->{'alias_status'} =~ /^delete$/){
+	} elsif($self->{'alias_status'} eq 'delete') {
 		$rs = $self->delete();
 		if($rs) {
 			@sql = (
@@ -121,14 +118,14 @@ sub process
 		}else {
 			@sql = ("DELETE FROM `domain_aliasses` WHERE `alias_id` = ?", $self->{'alias_id'});
 		}
-	} elsif($self->{'alias_status'} =~ /^todisable$/){
+	} elsif($self->{'alias_status'} eq 'todisable') {
 		$rs = $self->disable();
 		@sql = (
 			"UPDATE `domain_aliasses` SET `alias_status` = ? WHERE `alias_id` = ?",
 			($rs ? scalar getMessageByType('error') : 'disabled'),
 			$self->{'alias_id'}
 		);
-	} elsif($self->{'alias_status'} =~ /^restore$/){
+	} elsif($self->{'alias_status'} eq 'restore') {
 		$rs = $self->restore();
 		@sql = (
 			"UPDATE `domain_aliasses` SET `alias_status` = ? WHERE `alias_id` = ?",
@@ -146,125 +143,6 @@ sub process
 	$rs;
 }
 
-sub delete
-{
-	my $self = shift;
-	my $rs = 0;
-	my $userName =
-	my $groupName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} .
-		($main::imscpConfig{'SYSTEM_USER_MIN_UID'} + $self->{'domain_admin_id'});
-
-	my $httpdGroup = (
-		Servers::httpd->factory()->can('getRunningGroup') ? Servers::httpd->factory()->getRunningGroup() : $groupName
-	);
-
-	my ($stdout, $stderr);
-
-	my @sql = ("
-		SELECT `alias_mount` AS `mount_point`, concat('alias',`alias_id`) AS 'id'
-		FROM `domain_aliasses`
-		WHERE `alias_mount` LIKE '$self->{alias_mount}%'
-		AND `alias_status` NOT IN ('delete', 'ordered')
-		AND `domain_id` = ?
-		UNION
-		SELECT `subdomain_mount` AS `mount_point`, concat('subdomain',`subdomain_id`) as 'id'
-		FROM `subdomain`
-		WHERE `subdomain_mount` LIKE '$self->{alias_mount}%'
-		AND `subdomain_status` != 'delete'
-		AND `domain_id` = ?
-		UNION
-		SELECT `subdomain_alias_mount` AS `mount_point`, concat('subdomain_alias',`subdomain_alias_id`) as 'id'
-		FROM `subdomain_alias`
-		WHERE `subdomain_alias_mount` LIKE '$self->{alias_mount}%'
-		AND `subdomain_alias_status` != 'delete'
-		AND `alias_id` IN (SELECT `alias_id` FROM `domain_aliasses` WHERE `domain_id` = ?)
-		",
-		$self->{'domain_id'},
-		$self->{'domain_id'},
-		$self->{'domain_id'}
-	);
-
-	my $rdata = iMSCP::Database->factory()->doQuery('id', @sql);
-	if(ref $rdata ne 'HASH') {
-		error($rdata);
-		return 1;
-	}
-
-	my %mountPoints;
-
-	unless($self->{'alias_mount'} eq '/'){
-		my %toSaveMountPoints;
-		%mountPoints = map{$_ => $rdata->{$_}->{'mount_point'}} keys%{$rdata};
-
-		for(keys %mountPoints){
-			my $mp = $rdata->{$_}->{'mount_point'};
-			my $id = $_;
-
-			if(grep $mp =~ m/^$rdata->{$_}->{'mount_point'}/ && $id ne $_, keys %mountPoints) {
-				delete $mountPoints{$id};
-			}
-		}
-	} else {
-		$mountPoints{'1'} = '/';
-	}
-
-	my $dir = File::Temp->newdir('CLEANUP' => 1);
-	my @savedDirs;
-
-	for(keys %mountPoints){
-		my $sourceDir = "$main::imscpConfig{'USER_HOME_DIR'}/$self->{user_home}/" . $mountPoints{$_};
-		$sourceDir =~ s~/+~/~g;
-
-		my $destDir = "$dir/" . $mountPoints{$_};
-		$destDir =~ s~/+~/~g;
-
-		$rs = iMSCP::Dir->new('dirname' => "$destDir")->make(
-			{ 'user' => $userName, 'group' => $httpdGroup, 'mode' => 0710 }
-		);
-		return $rs if $rs;
-
-		$rs = execute("$main::imscpConfig{'CMD_CP'} -pTRf $sourceDir $destDir", \$stdout, \$stderr);
-		debug($stdout) if $stdout;
-		error($stderr) if $stderr && $rs;
-		return $rs if $rs;
-
-		$rs = execute("$main::imscpConfig{'CMD_RM'} -fR $sourceDir", \$stdout, \$stderr);
-		debug($stdout) if $stdout;
-		error($stderr) if $stderr && $rs;
-		return $rs if $rs;
-
-		push(@savedDirs, $mountPoints{$_});
-	}
-
-	$rs = $self->SUPER::delete();
-	return $rs if $rs;
-
-	for (@savedDirs) {
-		my $destDir = "$main::imscpConfig{'USER_HOME_DIR'}/$self->{'user_home'}/$_";
-		$destDir =~ s~/+~/~g;
-
-		my $sourceDir = "$dir/$_";
-		$sourceDir =~ s~/+~/~g;
-
-		$rs = iMSCP::Dir->new(dirname => "$destDir")->make(
-			{ 'user' => $userName, 'group' => $httpdGroup, 'mode' => 0710 }
-		);
-		return $rs if $rs;
-
-		$rs = execute("$main::imscpConfig{'CMD_CP'} -pTRf $sourceDir $destDir ", \$stdout, \$stderr);
-		debug($stdout) if $stdout;
-		error($stderr) if $stderr && $rs;
-		return $rs if $rs;
-
-		$rs = execute("$main::imscpConfig{'CMD_RM'} -fR $sourceDir ", \$stdout, \$stderr);
-		debug($stdout) if $stdout;
-		error($stderr) if $stderr && $rs;
-		return $rs if $rs;
-	}
-
-	$rs;
-}
-
 sub buildHTTPDData
 {
 	my $self = shift;
@@ -272,10 +150,10 @@ sub buildHTTPDData
 	my $userName =
 		$main::imscpConfig{'SYSTEM_USER_PREFIX'} .
 			($main::imscpConfig{'SYSTEM_USER_MIN_UID'} + $self->{'domain_admin_id'});
-	my $hDir = "$main::imscpConfig{'USER_HOME_DIR'}/$self->{'user_home'}/$self->{'alias_mount'}";
+	my $hDir = "$main::imscpConfig{'USER_WEB_DIR'}/$self->{'user_home'}/$self->{'alias_mount'}";
 	$hDir =~ s~/+~/~g;
 
-	my $pDir = "$main::imscpConfig{'USER_HOME_DIR'}/$self->{'user_home'}";
+	my $pDir = "$main::imscpConfig{'USER_WEB_DIR'}/$self->{'user_home'}";
 	$pDir =~ s~/+~/~g;
 
 	my $sql = "SELECT * FROM `config` WHERE `name` LIKE 'PHPINI%'";
@@ -302,13 +180,14 @@ sub buildHTTPDData
 	my $haveCert = exists $certData->{$self->{'alias_id'}} && !$self->testCert($self->{'alias_name'});
 
 	$self->{'httpd'} = {
-		DMN_NAME => $self->{'alias_name'},
+		DOMAIN_TYPE => 'als',
 		DOMAIN_NAME => $self->{'alias_name'},
-		ROOT_DMN_NAME => $self->{'user_home'},
-		PARENT_DMN_NAME => $self->{'user_home'},
-		DMN_IP => $self->{'ip_number'},
-		WWW_DIR => $main::imscpConfig{'USER_HOME_DIR'},
-		HOME_DIR => $hDir,
+		ROOT_DOMAIN_NAME => $self->{'user_home'},
+		PARENT_DOMAIN_NAME => $self->{'user_home'},
+		DOMAIN_IP => $self->{'ip_number'},
+		WWW_DIR => $main::imscpConfig{'USER_WEB_DIR'},
+		WEB_DIR => $hDir,
+		MOUNT_POINT => $self->{'alias_mount'},
 		PARENT_DIR => $pDir,
 		PEAR_DIR => $main::imscpConfig{'PEAR_DIR'},
 		PHP_TIMEZONE => $main::imscpConfig{'PHP_TIMEZONE'},
@@ -317,14 +196,13 @@ sub buildHTTPDData
 		BASE_SERVER_VHOST => $main::imscpConfig{'BASE_SERVER_VHOST'},
 		USER => $userName,
 		GROUP => $groupName,
-		have_php => $self->{'domain_php'},
-		have_cgi => $self->{'domain_cgi'},
-		have_cert => $haveCert,
+		PHP_SUPPORT => $self->{'domain_php'},
+		CGI_SUPPORT => $self->{'domain_cgi'},
+		WEB_FOLDER_PROTECTION => $self->{'web_folder_protection'},
+		SSL_SUPPORT => $haveCert,
 		BWLIMIT => $self->{'domain_traffic_limit'},
 		ALIAS => $userName.'als' . $self->{'alias_id'},
-		FORWARD => (defined $self->{'url_forward'} && $self->{'url_forward'} ne '')
-			? $self->{'url_forward'}
-			: 'no',
+		FORWARD => (defined $self->{'url_forward'} && $self->{'url_forward'} ne '') ? $self->{'url_forward'} : 'no',
 		DISABLE_FUNCTIONS => (exists $phpiniData->{$self->{'domain_id'}})
 			? $phpiniData->{$self->{'domain_id'}}->{'disable_functions'}
 			: $rdata->{'PHPINI_DISABLE_FUNCTIONS'}->{'value'},
@@ -357,6 +235,16 @@ sub buildHTTPDData
 			: $rdata->{'PHPINI_OPEN_BASEDIR'}->{'value'} ? ':' . $rdata->{'PHPINI_OPEN_BASEDIR'}->{'value'} : ''
 	};
 
+	if($self->{'alias_status'} eq 'delete') {
+		my $sharedMountPoints = $self->_getSharedMountPoints();
+
+		unless(ref $sharedMountPoints eq 'HASH') {
+			return 1;
+		}
+
+		$self->{'httpd'}->{'SHARED_MOUNT_POINTS'} = [keys %{$sharedMountPoints}];
+	}
+
 	0;
 }
 
@@ -369,8 +257,8 @@ sub buildMTAData
 		defined $self->{'domain_mailacc_limit'} && $self->{'domain_mailacc_limit'} >= 0
 	) {
 		$self->{'mta'} = {
-			DMN_NAME => $self->{'alias_name'},
-			DMN_TYPE => $self->{'type'},
+			DOMAIN_NAME => $self->{'alias_name'},
+			DOMAIN_TYPE => $self->{'type'},
 			TYPE => 'vals_entry',
 			EXTERNAL_MAIL => $self->{'external_mail'}
 		};
@@ -431,36 +319,13 @@ sub buildNAMEDData
 	my $userName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} .
 		($main::imscpConfig{'SYSTEM_USER_MIN_UID'} + $self->{'domain_admin_id'});
 
-	$self->{'named'}->{'DMN_NAME'} = $self->{'alias_name'};
-	$self->{'named'}->{'DMN_IP'} = $self->{'ip_number'};
+	$self->{'named'}->{'DOMAIN_NAME'} = $self->{'alias_name'};
+	$self->{'named'}->{'DOMAIN_IP'} = $self->{'ip_number'};
 	$self->{'named'}->{'USER_NAME'} = $userName . 'als' . $self->{'alias_id'};
 	$self->{'named'}->{'MX'} = (
 		($self->{'mail_on_domain'} || $self->{'domain_mailacc_limit'} >= 0) && ($self->{'external_mail'} ne 'on')
 		? '' : ';'
 	);
-
-	0;
-}
-
-sub buildFTPDData
-{
-	my $self = shift;
-	my $rs = 0;
-
-	return 0 if($self->{'alias_mount'} eq '/');
-
-	my $hDir = "$main::imscpConfig{'USER_HOME_DIR'}/$self->{'user_home'}/$self->{'alias_mount'}";
-	my $fileName = "$self->{user_home}/$self->{alias_mount}";
-	$fileName =~ s~/+~\.~g;
-	$fileName =~ s~\.$~~g;
-	$hDir =~ s~/+~/~g;
-	$hDir =~ s~/$~~g;
-
-	$self->{'ftpd'} = {
-		FILE_NAME => $fileName,
-		PATH => $hDir,
-		ROOT_DOMAIN	=> 'false'
-	};
 
 	0;
 }
@@ -473,18 +338,80 @@ sub buildADDONData
 	my $userName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} .
 		($main::imscpConfig{'SYSTEM_USER_MIN_UID'} + $self->{'domain_admin_id'});
 
-	my $hDir = "$main::imscpConfig{'USER_HOME_DIR'}/$self->{'user_home'}";
+	my $hDir = "$main::imscpConfig{'USER_WEB_DIR'}/$self->{'user_home'}";
 	$hDir =~ s~/+~/~g;
 
-
 	$self->{'AddonsData'} = {
-		DMN_NAME => $self->{'alias_name'},
+		DOMAIN_NAME => $self->{'alias_name'},
 		USER => $userName,
 		GROUP => $groupName,
-		HOME_DIR => $hDir
+		WEB_DIR => $hDir,
+		WEB_FOLDER_PROTECTION => $self->{'web_folder_protection'}
 	};
 
 	0;
+}
+
+sub _getSharedMountPoints
+{
+	my $self = shift;
+
+	my $regexp = "^$self->{'alias_mount'}(/.*|\$)";
+	my @sql = (
+		"
+			SELECT
+				`alias_mount` AS `mount_point`
+			FROM
+				`domain_aliasses`
+			WHERE
+				`alias_id` <> ?
+			AND
+				`domain_id` = ?
+			AND
+				`alias_status` NOT IN ('delete', 'ordered')
+			AND
+				`alias_mount` RLIKE ?
+			UNION
+			SELECT
+				`subdomain_mount` AS `mount_point`
+			FROM
+				`subdomain`
+			WHERE
+				`domain_id` = ?
+			AND
+				`subdomain_status` != 'delete'
+			AND
+				`subdomain_mount` RLIKE ?
+			UNION
+			SELECT
+				`subdomain_alias_mount` AS `mount_point`
+			FROM
+				`subdomain_alias`
+			WHERE
+				`subdomain_alias_status` != 'delete'
+			AND
+				`alias_id` IN (SELECT `alias_id` FROM `domain_aliasses` WHERE `domain_id` = ?)
+			AND
+				`subdomain_alias_mount` RLIKE ?
+		",
+		$self->{'alias_id'},
+		$self->{'domain_id'},
+		$regexp,
+
+		$self->{'domain_id'},
+		$regexp,
+
+		$self->{'domain_id'},
+		$regexp
+	);
+
+	my $rdata = iMSCP::Database->factory()->doQuery('mount_point', @sql);
+	if(ref $rdata ne 'HASH') {
+		error($rdata);
+		return 1;
+	}
+
+	$rdata;
 }
 
 1;

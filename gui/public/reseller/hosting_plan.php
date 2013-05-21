@@ -24,15 +24,101 @@
  * Portions created by the i-MSCP Team are Copyright (C) 2010-2013 by
  * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
  *
- * @category	i-MSCP
- * @package		iMSCP_Core
- * @subpackage	Reseller
+ * @category    i-MSCP
+ * @package     iMSCP_Core
+ * @subpackage  Reseller
  * @copyright   2001-2006 by moleSoftware GmbH
  * @copyright   2006-2010 by ispCP | http://isp-control.net
  * @copyright   2010-2013 by i-MSCP | http://i-mscp.net
  * @author      ispCP Team
  * @author      i-MSCP Team
  * @link        http://i-mscp.net
+ */
+
+/***********************************************************************************************************************
+ * Functions
+ */
+
+/**
+ * Generate page.
+ *
+ * @param iMSCP_pTemplate $tpl
+ * @return void
+ */
+function client_generatePage($tpl)
+{
+	$cfg = iMSCP_Registry::get('config');
+
+	$hostingPlanLevel = $cfg->HOSTING_PLANS_LEVEL;
+
+	if ($hostingPlanLevel != 'reseller') {
+		$query = "
+			SELECT
+				`t1`.`id`, `t1`.`name`, `t1`.`props`, `t1`.`status`,
+			FROM
+				`hosting_plans` AS `t1`
+			LEFT JOIN
+				`admin` AS `t2` ON(`t2`.`admin_id` = `t1`.`reseller_id`)
+			WHERE
+				`t2`.`admin_type` = ?
+			ORDER BY
+				`t1`.`id`
+		";
+		$stmt = exec_query($query, 'admin');
+
+		$trEdit = tr('View');
+	} else {
+		$query = "SELECT `id`, `name`, `props`, `status` FROM `hosting_plans` WHERE `reseller_id` = ? ORDER BY `id`";
+		$stmt = exec_query($query, $_SESSION['user_id']);
+
+		$trEdit = tr('Edit');
+	}
+
+	if (!$stmt->rowCount()) {
+		$tpl->assign(
+			array(
+				'HOSTING_PLANS_JS',
+				'HOSTING_PLANS' => ''
+			)
+		);
+
+		set_page_message(tr('No hosting plan available'), 'info');
+	} else {
+		$tpl->assign(
+			array(
+				'TR_NUMBER' => tr('No.'),
+				'TR_NAME' => tr('Name'),
+				'TR_STATUS' => tr('Status'),
+				'TR_EDIT' => $trEdit,
+				'TR_ACTION' => tr('Actions'),
+				'TR_DELETE' => tr('Delete'),
+				'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete %s?', true, '%s')
+			)
+		);
+
+		$i = 1;
+
+		while ($data = $stmt->fetchRow()) {
+			$tpl->assign(
+				array(
+					'NUMBER' => $i++,
+					'NAME' => tohtml($data['name']),
+					'STATUS' => ($data['status']) ? tr('Available') : tr('Unavailable'),
+					'ID' => $data['id']
+				)
+			);
+
+			if ($hostingPlanLevel != 'reseller') {
+				$tpl->assign('HOSTING_PLAN_DELETE', '');
+			}
+
+			$tpl->parse('HOSTING_PLAN', '.hosting_plan');
+		}
+	}
+}
+
+/***********************************************************************************************************************
+ * Main
  */
 
 // Include core library
@@ -51,31 +137,23 @@ $tpl->define_dynamic(
 		'layout' => 'shared/layouts/ui.tpl',
 		'page' => 'reseller/hosting_plan.tpl',
 		'page_message' => 'layout',
-		'hp_table' => 'page',
-		'hp_entry' => 'hp_table',
-		'hp_delete' => 'page',
-		'hp_menu_add' => 'page'));
+		'hosting_plans_js' => 'page',
+		'hosting_plans' => 'page',
+		'hosting_plan' => 'hosting_plans',
+		'hosting_plan_delete' => 'hosting_plan'
+	)
+);
 
 $tpl->assign(
 	array(
-		'TR_PAGE_TITLE' => tr('i-MSCP - Reseller / Main Index'),
+		'TR_PAGE_TITLE' => tr('i-MSCP - Reseller / Manage hosting Plans / Hosting plans'),
 		'THEME_CHARSET' => tr('encoding'),
-		'ISP_LOGO' => layout_getUserLogo()));
+		'ISP_LOGO' => layout_getUserLogo()
+	)
+);
 
 generateNavigation($tpl);
-gen_hp_table($tpl, $_SESSION['user_id']);
-
-$tpl->assign(
-	array(
-		'TR_HOSTING_PLANS' => tr('Hosting plans'),
-		'TR_PAGE_MENU' => tr('Manage hosting plans'),
-		'TR_PURCHASING' => tr('Purchasing'),
-		'TR_ADD_HOSTING_PLAN' => tr('Add hosting plan'),
-		'TR_TITLE_ADD_HOSTING_PLAN' => tr('Add new user hosting plan'),
-		'TR_BACK' => tr('Back'),
-		'TR_TITLE_BACK' => tr('Return to previous menu'),
-		'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete %s?', true, '%s')));
-
+client_generatePage($tpl);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
@@ -83,136 +161,5 @@ $tpl->parse('LAYOUT_CONTENT', 'page');
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onResellerScriptEnd, array('templateEngine' => $tpl));
 
 $tpl->prnt();
-
-// BEGIN FUNCTION DECLARE PATH
-
-/**
- * Extract and show data for hosting plans.
- *
- * @param iMSCP_pTemplate $tpl
- * @param $reseller_id
- */
-function gen_hp_table($tpl, $reseller_id) {
-	global $external_event;
-
-	$cfg = iMSCP_Registry::get('config');
-
-	if (isset($cfg->HOSTING_PLANS_LEVEL)
-		&& $cfg->HOSTING_PLANS_LEVEL === 'admin') {
-		$query = "
-			SELECT
-				t1.`id`, t1.`reseller_id`, t1.`name`, t1.`props`, t1.`status`,
-				t2.`admin_id`, t2.`admin_type`
-			FROM
-				`hosting_plans` AS t1,
-				`admin` AS t2
-			WHERE
-				t2.`admin_type` = ?
-			AND
-				t1.`reseller_id` = t2.`admin_id`
-			AND
-				t1.`status` = 1
-			ORDER BY
-				t1.`name`
-		";
-
-		$rs = exec_query($query, 'admin');
-		$tr_edit = tr('View details');
-		$tpl->assign('HP_MENU_ADD', '');
-	} else {
-		$query = "
-			SELECT
-				`id`, `name`, `props`, `status`
-			FROM
-				`hosting_plans`
-			WHERE
-				`reseller_id` = ?
-			ORDER BY
-				`name`
-		";
-		$rs = exec_query($query, $reseller_id);
-		$tr_edit = tr('Edit');
-	}
-
-	if ($rs->rowCount() == 0) {
-		// if ($external_event == '_off_') {
-		set_page_message(tr("Hosting plans are not found."));
-		// }
-		$tpl->assign('HP_TABLE', '');
-	} else { // There are data for hosting plans :-)
-		if ($external_event == '_off_') {
-			$tpl->assign('HP_MESSAGE', '');
-		}
-
-		$tpl->assign(
-			array(
-				'TR_HOSTING_PLANS' 	=> tr('Hosting plans'),
-				'TR_NOM' 			=> tr('No.'),
-				'TR_EDIT' 			=> $tr_edit,
-				'TR_PLAN_NAME' 		=> tr('Name'),
-				'TR_ACTION' 		=> tr('Actions')
-			)
-		);
-
-		$coid = isset($cfg->CUSTOM_ORDERPANEL_ID)
-			? $cfg->CUSTOM_ORDERPANEL_ID
-			: '';
-
-		$i = 1;
-		$orders_count = 0;
-		while ($data = $rs->fetchRow()) {
-			/* this needed or bug ? 
-			list(
-				$hp_php,
-				$hp_cgi,
-				$hp_sub,
-				$hp_als,
-				$hp_mail,
-				$hp_ftp,
-				$hp_sql_db,
-				$hp_sql_user,
-				$hp_traff,
-				$hp_disk,
-				$hp_backup,
-				$hp_dns,
-				$hp_allowsoftware
-			) = explode(";", $data['props']);
-			
-			if($hp_allowsoftware == "_no_" || $hp_allowsoftware == "" || $hp_allowsoftware == "_yes_" && get_reseller_sw_installer($reseller_id) == "yes") {
-			*/
-				$orders_count++;
-
-				$status = ($data['status']) ? tr('Enabled') : tr('Disabled');
-
-				$tpl->assign(
-					array(
-						'PLAN_NOM' => $i++,
-						'PLAN_NAME' => tohtml($data['name']),
-						'PLAN_NAME2' => addslashes(clean_html($data['name'])),
-						'PLAN_ACTION' => tr('Delete'),
-						'PLAN_SHOW' => tr('Show hosting plan'),
-						'PURCHASING' => $status,
-						'CUSTOM_ORDERPANEL_ID' => $coid,
-						'HP_ID' => $data['id'],
-						'RESELLER_ID' => $_SESSION['user_id']
-					)
-				);
-
-				if (isset($cfg->HOSTING_PLANS_LEVEL) && $cfg->HOSTING_PLANS_LEVEL === 'admin') {
-					$tpl->assign('HP_DELETE', '');
-				}
-				$tpl->parse('HP_ENTRY', '.hp_entry');
-			//}
-		}
-
-		if ($orders_count == 0) {
-			set_page_message(tr("Hosting plans are not found."));
-			$tpl->assign('HP_TABLE', '');
-		} else {
-			$tpl->parse('HP_TABLE', 'hp_table');
-		}
-	}
-
-}
 
 unsetMessages();

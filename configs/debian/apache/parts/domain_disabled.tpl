@@ -1,17 +1,12 @@
-<VirtualHost {DMN_IP}:80>
+<VirtualHost {DOMAIN_IP}:80>
 
-    ServerAdmin	webmaster@{DMN_NAME}
-    ServerName	{DMN_NAME}
-    ServerAlias	*.{DMN_NAME} {DMN_NAME} {ALIAS}.{BASE_SERVER_VHOST}
+    ServerAdmin webmaster@{DOMAIN_NAME}
+    ServerName {DOMAIN_NAME}
+    ServerAlias *.{DOMAIN_NAME} {DOMAIN_NAME} {ALIAS}.{BASE_SERVER_VHOST}
 
-    DocumentRoot	{PARENT_DIR}/domain_disable_page
+    DocumentRoot {PARENT_DIR}/domain_disable_page
 
-    Alias /errors {WWW_DIR}/{ROOT_DMN_NAME}/errors/
-
-    #RedirectMatch permanent ^/ftp[\/]?$		{BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}/ftp/
-    #RedirectMatch permanent ^/pma[\/]?$		{BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}/pma/
-    #RedirectMatch permanent ^/webmail[\/]?$	{BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}/webmail/
-    #RedirectMatch permanent ^/imscp[\/]?$	{BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}/
+    Alias /errors {WWW_DIR}/{ROOT_DOMAIN_NAME}/errors/
 
     <IfModule mod_cband.c>
         CBandUser {USER}

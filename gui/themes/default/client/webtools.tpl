@@ -37,8 +37,8 @@
 				<!-- EDP: aps_feature -->
 				<!-- BDP: webstats_feature -->
 				<tr>
-					<td><a href="/{WEBSTATS_RPATH}" target="{WEBSTATS_TARGET}" class="icon_big icon_center i_awstatsicon" title="{TR_WEBSTATS}"></a></td>
+					<td><a href="{WEBSTATS_RPATH}" target="{WEBSTATS_TARGET}" class="icon_big icon_center i_awstatsicon" title="{TR_WEBSTATS}"></a></td>
 					<td>{TR_WEBSTATS_TXT}</td>
 				</tr>
-				<!-- EDP: awstats_feature -->
+				<!-- EDP: webstats_feature -->
 			</table>

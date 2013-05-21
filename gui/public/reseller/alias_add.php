@@ -46,8 +46,8 @@
  */
 function init_empty_data()
 {
-    global $cr_user_id, $alias_name, $domain_ip, $forward, $mount_point;
-    $cr_user_id = $alias_name = $domain_ip = $forward = $mount_point = '';
+    global $cr_user_id, $alias_name, $domainIp, $forward, $mount_point;
+    $cr_user_id = $alias_name = $domainIp = $forward = $mount_point = '';
 }
 
 /**
@@ -181,7 +181,7 @@ function _reseller_isAllowedMountPoint($mountPoint, $domainId)
  */
 function add_domain_alias()
 {
-    global $cr_user_id, $alias_name, $domain_ip, $forward, $forward_prefix, $mount_point, $validation_err_msg;
+    global $cr_user_id, $alias_name, $domainIp, $forward, $forward_prefix, $mount_point, $validation_err_msg;
 
     /** @var $cfg iMSCP_Config_Handler_File */
     $cfg = iMSCP_Registry::get('config');
@@ -202,7 +202,7 @@ function add_domain_alias()
     $query = "SELECT `domain_ip_id` FROM `domain` WHERE `domain_id` = ?";
     $stmt = exec_query($query, $cr_user_id);
 
-    $domain_ip = $stmt->fields['domain_ip_id'];
+    $domainIp = $stmt->fields['domain_ip_id'];
 
     // First check if input string is a valid domain names
     if (!validates_dname($alias_name)) {
@@ -328,13 +328,11 @@ function add_domain_alias()
 			    ?, ?, ?, ?, ?, ?
 			)
 	";
-    exec_query($query, array($cr_user_id, $alias_name, $mount_point, $cfg->ITEM_ADD_STATUS, $domain_ip, $forward));
+    exec_query($query, array($cr_user_id, $alias_name, $mount_point, $cfg->ITEM_ADD_STATUS, $domainIp, $forward));
 
     /** @var $db iMSCP_Database */
     $db = iMSCP_Registry::get('db');
     $als_id = $db->insertId();
-
-    update_reseller_c_props(get_reseller_id($cr_user_id));
 
     $query = "SELECT `email` FROM `admin` WHERE `admin_id` = ? LIMIT 1";
     $stmt = exec_query($query, who_owns_this($cr_user_id, 'dmn_id'));
@@ -382,7 +380,7 @@ function gen_users_list($tpl, $reseller_id)
     $ar = exec_query($query, $reseller_id);
 
     if (!$ar->rowCount()) {
-        set_page_message(tr('There is no user records for this reseller to add an alias for.'));
+        set_page_message(tr('There is no customer records for this reseller to add an alias for.'), 'error');
         redirectTo('alias.php');
     }
 
@@ -492,7 +490,7 @@ if (!is_xhr()) {
         $_SESSION['almax'] = '_yes_';
     }
 
-    if (!check_reseller_permissions($reseller_id, 'alias') || isset($_SESSION['almax'])) {
+    if (!resellerHasFeature('domain_aliases') || isset($_SESSION['almax'])) {
         redirectTo('alias.php');
     }
 }

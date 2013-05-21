@@ -24,9 +24,9 @@
  * Portions created by the i-MSCP Team are Copyright (C) 2010-2013 by
  * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
  *
- * @category	i-MSCP
- * @package		iMSCP_Core
- * @subpackage	Admin
+ * @category    i-MSCP
+ * @package     iMSCP_Core
+ * @subpackage  Admin
  * @copyright   2001-2006 by moleSoftware GmbH
  * @copyright   2006-2010 by ispCP | http://isp-control.net
  * @copyright   2010-2013 by i-MSCP | http://i-mscp.net
@@ -35,79 +35,73 @@
  * @link        http://i-mscp.net
  */
 
-/************************************************************************************
- * Script functions
+/***********************************************************************************************************************
+ * Functions
  */
 
 /**
- * Generates hosting plans list.
+ * Generates page.
  *
  * @param iMSCP_pTemplate $tpl Template engine instance
  * @return void
  */
-function admin_generateHostingPlansList($tpl)
+function admin_generatePage($tpl)
 {
-	/** @var $cfg iMSCP_Config_Handler_File */
-	$cfg = iMSCP_Registry::get('config');
-
 	$query = "
-		SELECT
-			`t1`.`id`, `t1`.`reseller_id`, `t1`.`name`, `t1`.`props`, `t1`.`status`,
-			`t2`.`admin_id`, `t2`.`admin_type`
-		FROM
-			`hosting_plans` `t1`,
-			`admin` `t2`
-		WHERE
-			`t2`.`admin_type` = ?
-		AND
-			`t1`.`reseller_id` = t2.`admin_id`
-		ORDER BY
-			`t1`.`name`
-	";
+			SELECT
+				`t1`.`id`, `t1`.`name`, `t1`.`props`, `t1`.`status`
+			FROM
+				`hosting_plans` AS `t1`
+			LEFT JOIN
+				`admin` AS `t2` ON(`t2`.`admin_id` = `t1`.`reseller_id`)
+			WHERE
+				`t2`.`admin_type` = ?
+			ORDER BY
+				`t1`.`id`
+		";
 	$stmt = exec_query($query, 'admin');
 
 	if (!$stmt->rowCount()) {
-		set_page_message(tr("Hosting plans are not found."), 'info');
-		$tpl->assign('HP_TABLE', '');
-	} else {
-		$editTranslation = tr('Edit');
-		$deleteTranslation = tr('Delete');
-		$showHostingPlanTranslation = tr('Show hosting plan');
-
 		$tpl->assign(
 			array(
-				 'TR_HOSTING_PLANS' => tr('Hosting plans'),
-				 'TR_NUMBER' => tr('No.'),
-				 'TR_EDIT' => $editTranslation,
-				 'TR_PLAN_NAME' => tr('Name'),
-				 'TR_ACTIONS' => tr('Actions')));
+				'HOSTING_PLANS_JS',
+				'HOSTING_PLANS' => ''
+			)
+		);
 
-		$coid = $cfg->exists('CUSTOM_ORDERPANEL_ID') ? $cfg->CUSTOM_ORDERPANEL_ID : '';
+		set_page_message(tr("No hosting plan available."), 'info');
+	} else {
+		$tpl->assign(
+			array(
+				'TR_NUMBER' => tr('No.'),
+				'TR_NAME' => tr('Name'),
+				'TR_STATUS' => tr('Status'),
+				'TR_ACTIONS' => tr('Actions'),
+				'TR_EDIT' => tr('Edit'),
+				'TR_DELETE' => tr('Delete'),
+				'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete the %s hosting plan?', true, '%s')
+			)
+		);
+
 		$i = 1;
 
-		while (!$stmt->EOF) {
+		while ($data = $stmt->fetchRow()) {
 			$tpl->assign(
 				array(
-					 'PLAN_NUMBER' => $i++,
-					 'PLAN_NAME' => tohtml($stmt->fields['name']),
-					 'PLAN_NAME2' => addslashes(clean_html($stmt->fields['name'], true)),
-					 'PLAN_ACTION' => $deleteTranslation,
-					 'PLAN_SHOW' => $showHostingPlanTranslation,
-					 'PURCHASING' => ($stmt->fields['status']) ? tr('Enabled') : tr('Disabled'),
-					 'CUSTOM_ORDERPANEL_ID' => $coid,
-					 'HP_ID' => $stmt->fields['id'],
-					 'ADMIN_ID' => $_SESSION['user_id']));
+					'NUMBER' => $i++,
+					'NAME' => tohtml($data['name']),
+					'STATUS' => ($data['status']) ? tr('Available') : tr('Unavailable'),
+					'ID' => $data['id'],
+				)
+			);
 
-			$tpl->parse('HP_ENTRY', '.hp_entry');
-			$stmt->moveNext();
+			$tpl->parse('HOSTING_PLAN', '.hosting_plan');
 		}
-
-		$tpl->parse('HP_TABLE', 'hp_table');
 	}
 }
 
-/************************************************************************************
- * Main script
+/***********************************************************************************************************************
+ * Main
  */
 
 // Include core library
@@ -120,39 +114,37 @@ check_login('admin');
 /** @var $cfg iMSCP_Config_Handler_File */
 $cfg = iMSCP_Registry::get('config');
 
-if ($cfg->HOSTING_PLANS_LEVEL != 'admin') {
-	redirectTo('index.php');
+if ($cfg->HOSTING_PLANS_LEVEL == 'admin') {
+	$tpl = new iMSCP_pTemplate();
+	$tpl->define_dynamic(
+		array(
+			'layout' => 'shared/layouts/ui.tpl',
+			'page' => 'admin/hosting_plan.tpl',
+			'page_message' => 'layout',
+			'hosting_plans' => 'page',
+			'hosting_plan' => 'hosting_plans'
+		)
+	);
+
+	$tpl->assign(
+		array(
+			'TR_PAGE_TITLE' => tr('i-MSCP - Administrator / Manage hosting Plans / Hosting plans'),
+			'THEME_CHARSET' => tr('encoding'),
+			'ISP_LOGO' => layout_getUserLogo()
+		)
+	);
+
+	generateNavigation($tpl);
+	admin_generatePage($tpl);
+	generatePageMessage($tpl);
+
+	$tpl->parse('LAYOUT_CONTENT', 'page');
+
+	iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAdminScriptEnd, array('templateEngine' => $tpl));
+
+	$tpl->prnt();
+
+	unsetMessages();
+} else {
+	showBadRequestErrorPage();
 }
-
-$tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic(
-	array(
-		 'layout' => 'shared/layouts/ui.tpl',
-		 'page' => 'admin/hosting_plan.tpl',
-		 'page_message' => 'layout',
-		 'hosting_plans' => 'page',
-		 'hp_table' => 'page',
-		 'hp_entry' => 'hp_table',
-		 'hp_delete' => 'page',
-		 'hp_menu_add' => 'page'));
-
-$tpl->assign(
-	array(
-		 'TR_PAGE_TITLE' => tr('i-MSCP - Administrator / Hosting Plans Management'),
-		 'THEME_CHARSET' => tr('encoding'),
-		 'ISP_LOGO' => layout_getUserLogo(),
-		 'TR_HOSTING_PLANS' => tr('Hosting plans'),
-		 'TR_PURCHASING' => tr('Purchasing'),
-		 'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete the %s hosting plan?', true, '%s')));
-
-generateNavigation($tpl);
-admin_generateHostingPlansList($tpl, $_SESSION['user_id']);
-generatePageMessage($tpl);
-
-$tpl->parse('LAYOUT_CONTENT', 'page');
-
-iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAdminScriptEnd, array('templateEngine' => $tpl));
-
-$tpl->prnt();
-
-unsetMessages();

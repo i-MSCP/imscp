@@ -1,0 +1,7 @@
+Web folder skeletons
+====================
+
+This directory contain skeletons used by the i-MSCP httpd server implementations to create either domain or subdomain
+Web folders. You can customize these skeletons by adding your own directories with content of your choices.
+
+IMPORTANT: You should not delete the directories and files already present unless you know exactly what you are doing.

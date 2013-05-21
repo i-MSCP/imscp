@@ -64,8 +64,6 @@ class iMSCP_Debug_Bar_Plugin_Memory extends iMSCP_Debug_Bar_Plugin implements iM
 		iMSCP_Events::onResellerScriptEnd,
 		iMSCP_Events::onClientScriptStart,
 		iMSCP_Events::onClientScriptEnd,
-		iMSCP_Events::onOrderPanelScriptStart,
-		iMSCP_Events::onOrderPanelScriptEnd,
 		iMSCP_Events::onExceptionToBrowserStart,
 		iMSCP_Events::onExceptionToBrowserEnd
 	);
@@ -94,7 +92,6 @@ class iMSCP_Debug_Bar_Plugin_Memory extends iMSCP_Debug_Bar_Plugin implements iM
 				case iMSCP_Events::onAdminScriptStart:
 				case iMSCP_Events::onResellerScriptStart:
 				case iMSCP_Events::onClientScriptStart:
-				case iMSCP_Events::onOrderPanelScriptStart:
 				case iMSCP_Events::onExceptionToBrowserStart:
 					$this->startComputeMemory();
 					break;

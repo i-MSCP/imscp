@@ -17,11 +17,11 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
-# @category		i-MSCP
-# @copyright	2010-2013 by i-MSCP | http://i-mscp.net
-# @author		Daniel Andreca <sci2tech@gmail.com>
-# @link			http://i-mscp.net i-MSCP Home Site
-# @license		http://www.gnu.org/licenses/gpl-2.0.html GPL v2
+# @category    i-MSCP
+# @copyright   2010-2013 by i-MSCP | http://i-mscp.net
+# @author      Daniel Andreca <sci2tech@gmail.com>
+# @link        http://i-mscp.net i-MSCP Home Site
+# @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
 package iMSCP::Stepper;
 
@@ -83,6 +83,12 @@ sub step($ $ $ $)
 	my $rs = &{$code}() if ref $code eq 'CODE';
 
 	if($rs) {
+		my $errorMessage = $rs =~ /^-?\d+$/ ? getLastError() : $rs;
+
+		# Make error message free of any ANSI color and end of line codes
+		$errorMessage =~ s/\x1B\[([0-9]{1,3}((;[0-9]{1,3})*)?)?[m|K]//g;
+		$errorMessage = 'An unexpected error occured...' unless $errorMessage;
+
 		iMSCP::Dialog->factory()->endGauge() if iMSCP::Dialog->factory()->hasGauge();
 		iMSCP::Dialog->factory()->msgbox(
 "
@@ -94,10 +100,8 @@ $text
 
 Error was:
 
-\\Z1" . ($rs =~ /^-?\d+$/ ? getLastError() : $rs) . "\\Zn\n
-
-To obtain help please use http://i-mscp.net/forum/
-
+\\Z1$errorMessage \\Zn
+Please, post on http://i-mscp.net/forum to get any help.
 "
 		);
 

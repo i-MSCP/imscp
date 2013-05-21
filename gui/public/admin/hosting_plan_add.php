@@ -150,37 +150,12 @@ function generateForm($tpl, $phpini)
 			'TR_EXTMAIL_YES' => '',
 			'TR_EXTMAIL_NO' => $htmlChecked,
 
-			'HP_PRICE' => '0.00',
-			'HP_SETUP_FEE' => '0.00',
-			'HP_VAT' => '0.00',
-			'HP_CURRENCY' => '',
 			'TR_STATUS_YES' => $htmlChecked,
 			'TR_STATUS_NO' => '',
-
-			'HP_TOS_VALUE' => ''
 		)
 	);
 
 	_generatePhpBlock($tpl, $phpini);
-
-	$tpl->assign('HP_PAYMENT_DISABLED', '');
-
-	foreach (
-		array(
-			'monthly' => tr('Monthly'), 'annually' => tr('Annually'), 'biennially' => tr('Biennially'),
-			'triennially' => tr('Triennially')
-		) as $period => $trPeriod
-	) {
-		$tpl->assign(
-			array(
-				'HP_PAYMENT_VALUE' => $period,
-				'TR_HP_PAYMENT_VALUE' => $trPeriod,
-				'HP_PAYMENT_SELECTED' => ($period == 'monthly') ? $cfg->HTML_SELECTED : ''
-			)
-		);
-
-		$tpl->parse('HP_PAYMENT_OPTION', '.hp_payment_option');
-	}
 }
 
 /**
@@ -193,8 +168,7 @@ function generateForm($tpl, $phpini)
 function generateErrorForm($tpl, $phpini)
 {
 	global $hpName, $description, $hpSub, $hpAls, $hpMail, $hpFtp, $hpSqlDb, $hpSqlUsers, $hpTraffic, $hpDiskspace,
-		   $hpPhp, $hpCgi, $hpBackup, $hpDns, $hpSoftwaresInstaller, $hpExtMail, $price, $setupFee, $vat, $currency,
-		   $payment, $status,  $tos;
+		$hpPhp, $hpCgi, $hpBackup, $hpDns, $hpSoftwaresInstaller, $hpExtMail,  $status;
 
 	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
@@ -229,38 +203,12 @@ function generateErrorForm($tpl, $phpini)
 			'TR_EXTMAIL_YES' => ($hpExtMail == '_yes_') ? $htmlChecked : '',
 			'TR_EXTMAIL_NO' => ($hpExtMail == '_no_') ? $htmlChecked : '',
 
-			'HP_PRICE' => tohtml($price),
-			'HP_SETUP_FEE' => tohtml($setupFee),
-			'HP_CURRENCY' => tohtml($currency),
-			'HP_VAT' => tohtml($vat),
-
-			'HP_TOS_VALUE' => tohtml($tos),
-
 			'TR_STATUS_YES' => ($status) ? $htmlChecked : '',
 			'TR_STATUS_NO' => (!$status) ? $htmlChecked : ''
 		)
 	);
 
 	_generatePhpBlock($tpl, $phpini);
-
-	$tpl->assign('HP_PAYMENT_DISABLED', '');
-
-	foreach (
-		array(
-			'monthly' => tr('Monthly'), 'annually' => tr('Annually'), 'biennially' => tr('Biennially'),
-			'triennially' => tr('Triennially')
-		) as $period => $trPeriod
-	) {
-		$tpl->assign(
-			array(
-				'HP_PAYMENT_VALUE' => $period,
-				'TR_HP_PAYMENT_VALUE' => $trPeriod,
-				'HP_PAYMENT_SELECTED' => ($period == $payment) ? $cfg->HTML_SELECTED : ''
-			)
-		);
-
-		$tpl->parse('HP_PAYMENT_OPTION', '.hp_payment_option');
-	}
 }
 
 /**
@@ -272,8 +220,7 @@ function generateErrorForm($tpl, $phpini)
 function checkInputData($phpini)
 {
 	global $hpName, $description, $hpSub, $hpAls, $hpMail, $hpFtp, $hpSqlDb, $hpSqlUsers, $hpTraffic, $hpDiskspace,
-		   $hpPhp, $hpCgi, $hpDns, $hpBackup, $hpSoftwaresInstaller, $hpExtMail, $price, $setupFee, $vat, $currency,
-		   $payment, $status, $tos;
+		$hpPhp, $hpCgi, $hpDns, $hpBackup, $hpSoftwaresInstaller, $hpExtMail,  $status;
 
 	$hpName = isset($_POST['hp_name']) ? clean_input($_POST['hp_name']) : '';
 	$description = isset($_POST['hp_description']) ? clean_input($_POST['hp_description']) : '';
@@ -294,16 +241,7 @@ function checkInputData($phpini)
 	$hpSoftwaresInstaller = isset($_POST['hp_softwares_installer']) ? clean_input($_POST['hp_softwares_installer']) : '_no_';
 	$hpExtMail = isset($_POST['hp_external_mail']) ? clean_input($_POST['hp_external_mail']) : '_no_';
 
-	$price = isset($_POST['hp_price']) ? clean_input($_POST['hp_price']) : '0';
-	$setupFee = isset($_POST['hp_setup_fee']) ? clean_input($_POST['hp_setup_fee']) : '0';
-	$vat = isset($_POST['hp_vat']) ? clean_input($_POST['hp_vat']) : '0';
-	$currency = isset($_POST['hp_currency']) ? clean_input($_POST['hp_currency']) : '';
-	$payment = isset($_POST['hp_payment']) ? clean_input($_POST['hp_payment']) : 'monthly';
-
 	$status = isset($_POST['hp_status']) ? clean_input($_POST['hp_status']) : '0';
-	$tos = isset($_POST['hp_tos']) ? clean_input($_POST['hp_tos']) : '';
-
-	if (!in_array($payment, array('monthly', 'annually', 'biennially', 'triennially'))) $payment = 'monthly';
 
 	$hpPhp = ($hpPhp == '_yes_') ? '_yes_' : '_no_';
 	$hpCgi = ($hpCgi == '_yes_') ? '_yes_' : '_no_';
@@ -406,18 +344,6 @@ function checkInputData($phpini)
 		set_page_message(tr('The software installer require the PHP support.'), 'error');
 	}
 
-	if (!is_numeric($price)) {
-		set_page_message(tr('Price must be a number.'), 'error');
-	}
-
-	if (!is_numeric($setupFee)) {
-		set_page_message(tr('Setup fee must be a number.'), 'error');
-	}
-
-	if (!is_numeric($vat)) {
-		set_page_message(tr('Vat must be a number.'), 'error');
-	}
-
 	if (!Zend_Session::namespaceIsset('pageMessages')) {
 		return true;
 	} else {
@@ -435,8 +361,7 @@ function checkInputData($phpini)
 function saveData($adminId, $phpini)
 {
 	global $hpName, $description, $hpSub, $hpAls, $hpMail, $hpFtp, $hpSqlDb, $hpSqlUsers, $hpTraffic, $hpDiskspace,
-		   $hpPhp, $hpCgi, $hpDns, $hpBackup, $hpSoftwaresInstaller, $hpExtMail, $price, $setupFee, $currency, $vat,
-		   $payment, $status, $tos;
+		$hpPhp, $hpCgi, $hpDns, $hpBackup, $hpSoftwaresInstaller, $hpExtMail, $status;
 
 	$query = "
 		SELECT
@@ -465,16 +390,11 @@ function saveData($adminId, $phpini)
 	$hpProps .= ';' . $phpini->getDataVal('phpiniMemoryLimit') . ';' . $hpExtMail;
 
 	$query = "
-		INSERT INTO
-			`hosting_plans`(
-				`reseller_id`, `name`, `description`, `props`, `price`, `setup_fee`, `value`, `vat`, `payment`,
-					`status`, `tos`
-			) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+		INSERT INTO `hosting_plans`(
+			`reseller_id`, `name`, `description`, `props`, `status`
+		) VALUES (?, ?, ?, ?, ?)
 	";
-	exec_query(
-		$query,
-		array($adminId, $hpName, $description, $hpProps, $price, $setupFee, $currency, $vat, $payment, $status, $tos)
-	);
+	exec_query($query, array($adminId, $hpName, $description, $hpProps, $status));
 
 	return true;
 }
@@ -517,8 +437,7 @@ $tpl->define_dynamic(
 		'php_editor_display_errors_block' => 'php_editor_permissions_block',
 		'php_editor_disable_functions_block' => 'php_editor_permissions_block',
 		'php_editor_default_values_block' => 'php_editor_block',
-		't_software_support' => 'page',
-		'hp_payment_option' => 'page',
+		't_software_support' => 'page'
 	)
 );
 
@@ -570,19 +489,8 @@ $tpl->assign(
 		'TR_SOFTWARE_SUPP' => tr('Software installer'),
 		'TR_EXTMAIL' => tr('External mail server'),
 
-		'TR_BILLING_PROPS' => tr('Billing Settings'),
-		'TR_VAT' => tr('Vat'),
-		'TR_PRICE' => tr('Price'),
-		'TR_SETUP_FEE' => tr('Setup fee'),
-		'TR_CURRENCY' => tr('Currency'),
-		'TR_PAYMENT' => tr('Billing cycle'),
-		'TR_STATUS' => tr('Available for purchasing'),
-		'TR_TAX_FREE' => tr('Excl. tax'),
-		'TR_EXAMPLE' => tr('(e.g. EUR)'),
-
-		'TR_TOS_PROPS' => tr('Terms of Service'),
-		'TR_TOS_NOTE' => tr('<b>Optional:</b> Leave this field empty if you do not want terms of service for this hosting plan.'),
-		'TR_TOS_DESCRIPTION' => tr('Text Only'),
+		'TR_HP_AVAILABILITY' => tr('Hosting plan availability'),
+		'TR_STATUS' => tr('Available'),
 
 		'TR_YES' => tr('yes'),
 		'TR_NO' => tr('no'),

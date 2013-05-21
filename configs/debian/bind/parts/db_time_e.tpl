@@ -1,1 +1,1 @@
-; dmn [{DMN_NAME}] timestamp entry END.
+; dmn [{DOMAIN_NAME}] timestamp entry END.

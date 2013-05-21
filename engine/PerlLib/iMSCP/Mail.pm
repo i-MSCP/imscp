@@ -17,28 +17,30 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
-# @category		i-MSCP
-# @copyright	2010-2013 by i-MSCP | http://i-mscp.net
-# @author		Daniel Andreca <sci2tech@gmail.com>
-# @link			http://i-mscp.net i-MSCP Home Site
-# @license      http://www.gnu.org/licenses/gpl-2.0.html GPL v2
+# @category    i-MSCP
+# @copyright   2010-2013 by i-MSCP | http://i-mscp.net
+# @author      Daniel Andreca <sci2tech@gmail.com>
+# @link        http://i-mscp.net i-MSCP Home Site
+# @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
 package iMSCP::Mail;
 
 use strict;
 use warnings;
+
 use iMSCP::Debug;
+use POSIX;
+use Net::LibIDN qw/idn_to_ascii/;
+use MIME::Entity;
 use parent 'Common::SimpleClass';
 
 sub errmsg
 {
 	my ($self, $errmsg) = @_;
 
-	use POSIX;
-	use Net::LibIDN qw/idn_to_ascii/;
-	use MIME::Entity;
-
 	my @parts = split('@', $main::imscpConfig{'DEFAULT_ADMIN_ADDRESS'});
+	return 0 if @parts < 2;
+
 	my $dmn = pop(@parts);
 	$dmn = idn_to_ascii($dmn, 'utf-8');
 	push(@parts, $dmn);
@@ -52,8 +54,8 @@ sub errmsg
 
 	my $msg_data =
 		"Dear admin,\n\n".
-		"I'm an automatic email sent by your $server_name ($server_ip) server.\n\n".
-		"A critical error just was encountered while executing function $fname in $0.\n\n".
+		"This is an automatic email sent by your $server_name ($server_ip) server.\n\n".
+		"A critical error has been encountered while executing function $fname in $0.\n\n".
 		"Error encountered was:\n\n".
 		"=====================================================================\n".
 		"$errmsg\n".
@@ -69,13 +71,14 @@ sub errmsg
 		To => $admin_email,
 		Subject => "[$date] i-MSCP Error report",
 		Data => $msg_data,
-		'X-Mailer' => "i-MSCP $main::imscpConfig{'Version'} Automatic Error Messenger"
+		'X-Mailer' => "i-MSCP $main::imscpConfig{'Version'} Automatic Messenger"
 	);
 
-	debug("Send message to $admin_email: $msg_data");
+	debug("Sending message to $admin_email: $msg_data");
 
-	unless(open MAIL, "| /usr/sbin/sendmail -t -oi"){
-		error('Can not send mail...');
+	unless(open MAIL, "| /usr/sbin/sendmail -t -oi") {
+		error("Unable to send mail: $!");
+		return 1;
 	} else {
 		$out -> print(\*MAIL);
 		close MAIL;
@@ -88,11 +91,9 @@ sub warnMsg
 {
 	my ($self, $msg) = @_;
 
-	use POSIX;
-	use Net::LibIDN qw/idn_to_ascii/;
-	use MIME::Entity;
-
 	my @parts = split('@', $main::imscpConfig{'DEFAULT_ADMIN_ADDRESS'});
+	return 0 if @parts < 2;
+
 	my $dmn = pop(@parts);
 	$dmn = idn_to_ascii($dmn, 'utf-8');
 	push(@parts, $dmn);
@@ -105,8 +106,8 @@ sub warnMsg
 
 	my $msg_data =
 		"Dear admin,\n\n".
-		"I'm an automatic email sent by your $server_name ($server_ip) server.\n\n".
-		"Folowing warning was raised while executing $fname in $0.\n\n".
+		"This is an automatic email sent by your $server_name ($server_ip) server.\n\n".
+		"Following warning has been raised while executing function $fname in $0.\n\n".
 		"Warning text:\n\n".
 		"=====================================================================\n".
 		"$msg\n".
@@ -122,13 +123,14 @@ sub warnMsg
 		To => $admin_email,
 		Subject => "[$date] i-MSCP Error report",
 		Data => $msg_data,
-		'X-Mailer' => "i-MSCP $main::imscpConfig{'Version'} Automatic Error Messenger"
+		'X-Mailer' => "i-MSCP $main::imscpConfig{'Version'} Automatic Messenger"
 	);
 
-	debug("Send message to $admin_email: $msg_data");
+	debug("Sending message to $admin_email: $msg_data");
 
-	unless(open MAIL, "| /usr/sbin/sendmail -t -oi"){
-		error('Can not send mail...');
+	unless(open MAIL, '| /usr/sbin/sendmail -t -oi'){
+		error("Unable to send mail: $!");
+		return 1;
 	} else {
 		$out -> print(\*MAIL);
 		close MAIL;

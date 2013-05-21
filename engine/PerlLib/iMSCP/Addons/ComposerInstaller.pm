@@ -23,16 +23,17 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 #
-# @category		i-MSCP
-# @copyright	2010-2013 by i-MSCP | http://i-mscp.net
-# @author		Laurent Declercq <l.declercq@nuxwin.com>
-# @link			http://i-mscp.net i-MSCP Home Site
-# @license		http://www.gnu.org/licenses/gpl-2.0.html GPL v2
+# @category    i-MSCP
+# @copyright   2010-2013 by i-MSCP | http://i-mscp.net
+# @author      Laurent Declercq <l.declercq@nuxwin.com>
+# @link        http://i-mscp.net i-MSCP Home Site
+# @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
 package iMSCP::Addons::ComposerInstaller;
 
 use strict;
 use warnings;
+
 use iMSCP::Debug;
 use iMSCP::File;
 use iMSCP::Dir;
@@ -95,7 +96,7 @@ sub _init
 
 	iMSCP::Dir->new(
 		'dirname' => $self->{'cacheDir'}
-	)->make() and die('Unable to create the cache directory for addon packages');
+	)->make() and fatal('Unable to create addon cache directory');
 
 	# Override default composer home directory
 	$ENV{'COMPOSER_HOME'} = "$self->{'cacheDir'}/.composer";
@@ -122,10 +123,8 @@ sub _init
 sub _installPackages
 {
 	my $self = shift;
-	my ($stdout, $stderr);
-	my $rs = 0;
 
-	$rs = $self->_buildComposerFile();
+	my $rs = $self->_buildComposerFile();
 	return $rs if $rs;
 
 	$rs = $self->_getComposer();
@@ -140,6 +139,7 @@ Please wait, this may take a few minutes...
 	);
 
 	# The update option is used here but composer will automatically fallback to install mode when needed
+	my ($stdout, $stderr);
 	$rs = execute(
 		"$self->{'phpCmd'} $self->{'cacheDir'}/composer.phar -d=$self->{'cacheDir'} update", \$stdout, \$stderr
 	);
@@ -287,11 +287,9 @@ sub _cleanCacheDir
 	my $self = shift;
 	my $rs = 0;
 
-	iMSCP::Dialog->factory()->infobox("\nCleaning local addon packages repository.");
-
 	if(-d $self->{'cacheDir'}) {
 		my ($stdout, $stderr);
-		$rs = execute("$main::imscpConfig{'CMD_RM'} -fr $self->{'cacheDir'}/*", \$stdout, \$stderr);
+		$rs = execute("$main::imscpConfig{'CMD_RM'} -fR $self->{'cacheDir'}/*", \$stdout, \$stderr);
 		debug($stdout) if $stdout;
 		error($stderr) if $stderr && $rs;
 		error('Unable to clean addon cache directory') if $rs && ! $stderr;

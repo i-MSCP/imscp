@@ -17,11 +17,12 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
-# @category		i-MSCP
-# @copyright	2010-2013 by i-MSCP | http://i-mscp.net
-# @author		Daniel Andreca <sci2tech@gmail.com>
-# @link			http://i-mscp.net i-MSCP Home Site
-# @license		http://www.gnu.org/licenses/gpl-2.0.html GPL v2
+# @category    i-MSCP
+# @copyright   2010-2013 by i-MSCP | http://i-mscp.net
+# @author      Daniel Andreca <sci2tech@gmail.com>
+# @author      Laurent Declercq <l.declercq@nuxwin.com>
+# @link        http://i-mscp.net i-MSCP Home Site
+# @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
 package Modules::User;
 
@@ -29,17 +30,23 @@ use strict;
 use warnings;
 
 use iMSCP::Debug;
+use iMSCP::HooksManager;
 use iMSCP::Execute;
 use iMSCP::Database;
-use Modules::SystemGroup;
-use Modules::SystemUser;
+use iMSCP::SystemGroup;
+use iMSCP::SystemUser;
 use iMSCP::Rights;
-use Servers::httpd;
+use iMSCP::File;
+use iMSCP::Ext2Attributes qw(setImmutable clearImmutable);
 use parent 'Modules::Abstract';
 
 sub _init
 {
 	my $self = shift;
+
+	$self->{$_} = $self->{'args'}->{$_} for keys %{$self->{'args'}};
+
+	$self->{'hooksManager'} = iMSCP::HooksManager->getInstance();
 
 	$self->{'type'} = 'User';
 
@@ -50,21 +57,22 @@ sub loadData
 {
 	my $self = shift;
 
-	my $database = iMSCP::Database->factory();
-	my $rdata = $database->doQuery(
-		'domain_admin_id',
-		"
+	# TODO User module shouldn't known about domain table
+	my $rdata = iMSCP::Database->factory()->doQuery(
+		'admin_id',
+		'
 			SELECT
-				*
+				`admin_id`, `admin_name`, `admin_status`, `domain_name`, domain_traffic_limit
 			FROM
-				`domain`
-			LEFT JOIN `admin` ON `domain_admin_id` = `admin_id`
+				`admin`
+			LEFT JOIN
+				`domain` ON (`domain_admin_id` = `admin_id`)
 			WHERE
-				`domain_admin_id` = ?
-		",
+				admin_id = ?
+		',
 		$self->{'userId'}
 	);
-	if(ref $rdata ne 'HASH') {
+	unless(ref $rdata eq 'HASH') {
 		error($rdata);
 		return 1;
 	}
@@ -82,6 +90,7 @@ sub loadData
 sub process
 {
 	my $self = shift;
+
 	$self->{'userId'} = shift;
 
 	my $rs = $self->loadData();
@@ -90,23 +99,30 @@ sub process
 	my @sql;
 	my $rdata;
 
-	if($self->{'domain_status'} =~ /^(toadd|change|toenable)$/){
+	if($self->{'admin_status'} =~ /^(toadd|change)$/) {
 		$rs = $self->add();
 		@sql = (
-			"UPDATE `domain` SET `domain_status` = ? WHERE `domain_id` = ?",
-			scalar getMessageByType('error'), $self->{'domain_id'}
-		) if $rs;
-	} elsif($self->{'domain_status'} =~ /^delete$/){
+			"UPDATE `admin` SET `admin_status` = ? WHERE `admin_id` = ?",
+			($rs ? scalar getMessageByType('error') : 'ok'), $self->{'userId'}
+		);
+	} elsif($self->{'admin_status'} eq 'delete') {
 		$rs = $self->delete();
-		@sql = (
-			"UPDATE `domain` SET `domain_status` = ? WHERE `domain_id` = ?",
-			scalar getMessageByType('error'), $self->{'domain_id'}
-		) if $rs;
+		if($rs) {
+			@sql = (
+				"UPDATE `admin` SET `admin_status` = ? WHERE `admin_id` = ?",
+				scalar getMessageByType('error'), $self->{'userId'}
+			)
+		} else {
+			@sql = ('DELETE FROM `admin` WHERE `admin_id` = ?', $self->{'userId'});
+		}
 	}
 
-	if(scalar @sql){
+	if(@sql) {
 		$rdata = iMSCP::Database->factory()->doQuery('dummy', @sql);
-		error($rdata) and return 1 if ref $rdata ne 'HASH';
+		unless(ref $rdata eq 'HASH') {
+			error($rdata);
+			return 1;
+		}
 	}
 
 	$rs;
@@ -116,248 +132,122 @@ sub add
 {
 	my $self = shift;
 
-	error('Data not defined') if ! $self->{'domain_admin_id'};
-	return 1 if ! $self->{'domain_admin_id'};
-
-	my $rs = 0;
-
 	my $groupName =
 	my $userName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} .
-		($main::imscpConfig{'SYSTEM_USER_MIN_UID'} + $self->{'domain_admin_id'});
+		($main::imscpConfig{'SYSTEM_USER_MIN_UID'} + $self->{'admin_id'});
 
-	$rs = Modules::SystemGroup->new()->addSystemGroup($groupName);
-	return $rs if $rs;
+	my $comment = 'iMSCP virtual user';
+	# TODO change to  "$main::imscpConfig{'USER_HOME_DIR'}/$userName";
+	my $home = "$main::imscpConfig{'USER_WEB_DIR'}/$self->{'domain_name'}";
+	my $skeletonPath = $self->{'skeletonPath'} || '/dev/null';
+	my $shell = '/bin/false';
 
-	my $user = Modules::SystemUser->new();
-	$user->{'comment'} = "iMSCP virtual user";
-	$user->{'home'} = "$main::imscpConfig{'USER_HOME_DIR'}/$self->{'domain_name'}";
-	$user->{'group'} = $groupName;
-	$user->{'shell'} = '/bin/false';
-
-	$rs = $user->addSystemUser($userName);
-	return $rs if $rs;
-
-	my $httpdGroup = (
-		Servers::httpd->factory()->can('getRunningGroup') ? Servers::httpd->factory()->getRunningGroup() : '-1'
-	);
-
-	my $rootUser = $main::imscpConfig{'ROOT_USER'};
-	my $rootGroup = $main::imscpConfig{'ROOT_GROUP'};
-
-	$rs = iMSCP::Dir->new(
-		'dirname' => "$main::imscpConfig{'USER_HOME_DIR'}/$self->{'domain_name'}"
-	)->make(
-		{ 'mode' => 0750, 'user' => $userName, 'group' => $httpdGroup }
+	my $rs = $self->{'hooksManager'}->trigger(
+		'onBeforeAddImscpUnixUser', $userName, $groupName, \$comment, \$home, \$skeletonPath, \$shell
 	);
 	return $rs if $rs;
 
-	$rs = $self->oldEngineCompatibility();
+	# Creating i-MSCP unix user group
+	$rs = iMSCP::SystemGroup->new()->addSystemGroup($groupName);
 	return $rs if $rs;
 
-	$rs = iMSCP::Dir->new(
-		'dirname' => "$main::imscpConfig{'USER_HOME_DIR'}/$self->{'domain_name'}/logs"
-	)->make(
-		{ 'mode' => 0750, 'user' => $userName, 'group' => $groupName }
+	clearImmutable($home) if -d $home; # Transitional code - Will be removed ASAP
+
+	# Creating i-MSCP unix user
+	$rs = iMSCP::SystemUser->new(
+		'comment' => $comment, 'home' => $home, 'skeletonPath' => $skeletonPath, 'group' => $groupName, 'shell' => $shell
+	)->addSystemUser(
+		$userName
 	);
 	return $rs if $rs;
 
-	$rs = iMSCP::Dir->new(
-		'dirname' => "$main::imscpConfig{'USER_HOME_DIR'}/$self->{'domain_name'}/backups"
-	)->make(
-		{ 'mode' => 0755, 'user' => $rootUser, 'group' => $rootGroup }
-	);
-	return $rs if $rs;
+	# Now part of the domain skeleton as provided by the i-MSCP HTTP server implementations
+	#$rs = iMSCP::Dir->new(
+	#	'dirname' => "$main::imscpConfig{'USER_WEB_DIR'}/$self->{'domain_name'}/backups"
+	#)->make(
+	#	{ 'mode' => 0750, 'user' => $userName, 'group' => $groupName }
+	#);
+	#return $rs if $rs;
 
-	$self->SUPER::add();
+	#setImmutable($home) if $self->{'web_folder_protection'} eq 'yes'; # Transitional code - Will be removed ASAP
+
+	my $uid = scalar getpwnam($userName);
+	my $gid = scalar getgrnam($groupName);
+
+	# Updating admin.admin_sys_uid and admin.admin_sys_gid columns
+	my @sql = (
+		"UPDATE `admin` SET `admin_sys_uid` = ?, `admin_sys_gid` = ? WHERE `admin_id` = ?", $uid, $gid, $self->{'userId'}
+	);
+	my $rdata = iMSCP::Database->factory()->doQuery('update', @sql);
+	unless(ref $rdata eq 'HASH') {
+		error($rdata);
+		return 1;
+	}
+
+	$self->{'hooksManager'}->trigger(
+		'onAfterAddImscpUnixUser', $userName, $groupName, $comment, $home, $skeletonPath, $shell
+	);
+
+	# Run the preaddUser(), addUser() and postaddUser() methods on servers/addons that implement them
+	$rs = $self->SUPER::add();
+	return $rs if $rs;
 }
 
 sub delete
 {
 	my $self = shift;
-	my $rs = 0;
 
-	error('Data not defined') if ! $self->{'domain_admin_id'};
-	return 1 if ! $self->{'domain_admin_id'};
+	my $userName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} .
+		($main::imscpConfig{'SYSTEM_USER_MIN_UID'} + $self->{'admin_id'});
 
+	my $rs = $self->{'hooksManager'}->trigger('onBeforeDeleteImscpUnixUser', $userName);
+	return $rs if $rs;
+
+	# Run the predelUser(), delUser() and postdelUser() methods on servers/addons that implement them
 	$rs = $self->SUPER::delete();
 	return $rs if $rs;
 
-	my $userName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} .
-		($main::imscpConfig{'SYSTEM_USER_MIN_UID'} + $self->{'domain_admin_id'});
-
-	my $user = Modules::SystemUser->new();
+	my $user = iMSCP::SystemUser->new();
 	$user->{'force'} = 'yes';
 
-	$user->delSystemUser($userName);
-}
-
-sub oldEngineCompatibility
-{
-	my $self = shift;
-	my $rs = 0;
-	my $userName =
-	my $groupName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} .
-		($main::imscpConfig{'SYSTEM_USER_MIN_UID'} + $self->{'domain_admin_id'});
-
-	my $uid = scalar getpwnam($userName);
-	my $gid = scalar getgrnam($groupName);
-
-	my @sql = (
-		"UPDATE `domain` SET `domain_uid` = ?, `domain_gid` = ? WHERE `domain_name` = ?",
-		$uid, $gid, $self->{'domain_name'}
-	);
-	my $rdata = iMSCP::Database->factory()->doQuery('update', @sql);
-	if(ref $rdata ne 'HASH') {
-		error($rdata);
-		return 1;
-	}
-
-	@sql = (
-		"UPDATE
-			`ftp_users`
-		SET
-			`uid` = ?, `gid` = ?
-		WHERE
-			`homedir` LIKE '$main::imscpConfig{'USER_HOME_DIR'}/$self->{'domain_name'}/%'
-		OR
-			`homedir` = '$main::imscpConfig{'USER_HOME_DIR'}/$self->{'domain_name'}'
-		",
-		$uid, $gid
-	);
-	$rdata = iMSCP::Database->factory()->doQuery('update', @sql);
-	if(ref $rdata ne 'HASH') {
-		error($rdata);
-		return 1;
-	}
-
-	@sql = ('UPDATE `ftp_group` SET `gid` = ? WHERE `groupname` = ?', $uid, $self->{'domain_name'});
-	$rdata = iMSCP::Database->factory()->doQuery('update', @sql);
-	if(ref $rdata ne 'HASH') {
-		error($rdata);
-		return 1;
-	}
-
-	my $httpdGroup = (
-		Servers::httpd->factory()->can('getRunningGroup') ? Servers::httpd->factory()->getRunningGroup() : $groupName
-	);
-
-	my $hDir = "$main::imscpConfig{USER_HOME_DIR}/$self->{'domain_name'}";
-	my ($stdout, $stderr);
-
-	my $cmd = "$main::imscpConfig{'CMD_CHOWN'} -R $userName:$httpdGroup $hDir";
-	$rs = execute($cmd, \$stdout, \$stderr);
-	debug($stdout) if $stdout;
-	error($stderr) if $stderr && $rs;
+	$rs = $user->delSystemUser($userName);
 	return $rs if $rs;
 
-	$rs = setRights(
-		"$hDir/domain_disable_page",
-		{
-			'user' => $main::imscpConfig{'ROOT_USER'},
-			'group' => $httpdGroup,
-			'filemode' => '0640',
-			'dirmode' => '0710',
-			'recursive' => 'yes'
-		}
-	) if -d "$hDir/domain_disable_page";
-	return $rs if $rs;
-
-	$rs = setRights(
-		"$hDir/backups",
-		{
-			'user' => $main::imscpConfig{'ROOT_USER'},
-			'group' => $main::imscpConfig{'ROOT_GROUP'},
-			'filemode' => '0640',
-			'dirmode' => '0750',
-			'recursive' => 'yes'
-		}
-	) if -d "$hDir/backups";
-	return $rs if $rs;
-
-	0;
+	$self->{'hooksManager'}->trigger('onAfterDeleteImscpUnixUser', $userName);
 }
 
 sub buildHTTPDData
 {
 	my $self = shift;
+
 	my $groupName =
 	my $userName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} .
-		($main::imscpConfig{'SYSTEM_USER_MIN_UID'} + $self->{'domain_admin_id'});
-	my $hDir = "$main::imscpConfig{'USER_HOME_DIR'}/$self->{'domain_name'}";
-	$hDir =~ s~/+~/~g;
-
-	my $rdata = iMSCP::Database->factory()->doQuery('name', "SELECT * FROM `config` WHERE `name` LIKE 'PHPINI%'");
-	error("$rdata") and return 1 if(ref $rdata ne 'HASH');
-
-	my $phpiniData = iMSCP::Database->factory()->doQuery(
-		'domain_id', 'SELECT * FROM `php_ini` WHERE `domain_id` = ?', $self->{'domain_id'}
-	);
-	if(ref $phpiniData ne 'HASH') {
-		error($phpiniData);
-		return 1;
-	}
+		($main::imscpConfig{'SYSTEM_USER_MIN_UID'} + $self->{'admin_id'});
 
 	$self->{'httpd'} = {
-		DMN_NAME => $self->{'domain_name'},
-		DOMAIN_NAME => $self->{'domain_name'},
-		HOME_DIR => $hDir,
-		PEAR_DIR => $main::imscpConfig{'PEAR_DIR'},
-		PHP_TIMEZONE => $main::imscpConfig{'PHP_TIMEZONE'},
 		USER => $userName,
 		GROUP => $groupName,
 		BASE_SERVER_VHOST_PREFIX => $main::imscpConfig{'BASE_SERVER_VHOST_PREFIX'},
 		BASE_SERVER_VHOST => $main::imscpConfig{'BASE_SERVER_VHOST'},
-		BWLIMIT => $self->{'domain_traffic_limit'},
-		DISABLE_FUNCTIONS => (
-			exists $phpiniData->{$self->{'domain_id'}}
-				? $phpiniData->{$self->{'domain_id'}}->{'disable_functions'}
-				: $rdata->{'PHPINI_DISABLE_FUNCTIONS'}->{'value'}
-		),
-		MAX_EXECUTION_TIME => (
-			exists $phpiniData->{$self->{'domain_id'}}
-				? $phpiniData->{$self->{'domain_id'}}->{'max_execution_time'}
-				: $rdata->{'PHPINI_MAX_EXECUTION_TIME'}->{'value'}
-		),
-		MAX_INPUT_TIME => (
-			exists $phpiniData->{$self->{'domain_id'}}
-				? $phpiniData->{$self->{'domain_id'}}->{'max_input_time'}
-				: $rdata->{'PHPINI_MAX_INPUT_TIME'}->{'value'}
-		),
-		MEMORY_LIMIT => (
-			exists $phpiniData->{$self->{'domain_id'}}
-				? $phpiniData->{$self->{'domain_id'}}->{'memory_limit'}
-				: $rdata->{'PHPINI_MEMORY_LIMIT'}->{'value'}
-		),
-		ERROR_REPORTING => (
-			exists $phpiniData->{$self->{'domain_id'}}
-				? $phpiniData->{$self->{'domain_id'}}->{'error_reporting'}
-				: $rdata->{'PHPINI_ERROR_REPORTING'}->{'value'}
-		),
-		DISPLAY_ERRORS => (
-			exists $phpiniData->{$self->{'domain_id'}}
-				? $phpiniData->{$self->{'domain_id'}}->{'display_errors'}
-				: $rdata->{'PHPINI_DISPLAY_ERRORS'}->{'value'}
-		),
-		POST_MAX_SIZE => (
-			exists $phpiniData->{$self->{'domain_id'}}
-				? $phpiniData->{$self->{'domain_id'}}->{'post_max_size'}
-				: $rdata->{'PHPINI_POST_MAX_SIZE'}->{'value'}
-		),
-		UPLOAD_MAX_FILESIZE => (
-			exists $phpiniData->{$self->{'domain_id'}}
-				? $phpiniData->{$self->{'domain_id'}}->{'upload_max_filesize'}
-				: $rdata->{'PHPINI_UPLOAD_MAX_FILESIZE'}->{'value'}
-		),
-		ALLOW_URL_FOPEN => (
-			exists $phpiniData->{$self->{'domain_id'}}
-				? $phpiniData->{$self->{'domain_id'}}->{'allow_url_fopen'}
-				: $rdata->{'PHPINI_ALLOW_URL_FOPEN'}->{'value'}
-		),
-		PHPINI_OPEN_BASEDIR => (
-			exists $phpiniData->{$self->{'domain_id'}}->{'PHPINI_OPEN_BASEDIR'}
-				? ':'.$phpiniData->{$self->{'domain_id'}}->{'PHPINI_OPEN_BASEDIR'}
-				: $rdata->{'PHPINI_OPEN_BASEDIR'}->{value} ? ':'.$rdata->{'PHPINI_OPEN_BASEDIR'}->{'value'} : ''
-		)
+		BWLIMIT => $self->{'domain_traffic_limit'}
+	};
+
+	0;
+}
+
+sub buildFTPDData
+{
+	my $self = shift;
+
+	my $groupName =
+	my $userName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} .
+		($main::imscpConfig{'SYSTEM_USER_MIN_UID'} + $self->{'admin_id'});
+
+	$self->{'ftpd'} = {
+		USER_ID => $self->{'admin_id'},
+		USERNAME => $self->{'admin_name'},
+		USER => $userName,
+		GROUP => $groupName
 	};
 
 	0;

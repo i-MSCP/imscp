@@ -57,27 +57,25 @@ function calc_bars($crnt, $max, $bars_max)
 }
 
 /**
- * Turns byte counts to usual readable format.
+ * Turns byte counts to human readable format.
  *
  * If you feel like a hard-drive manufacturer, you can start counting bytes by power
- * of 1000 (instead of the generous 1024). Just set $power to 1000.
+ * of 1000 (instead of the generous 1024). Just set power to 1000.
  *
  * But if you are a floppy disk manufacturer and want to start counting in units of
- * 1024 (for your "1.44 MB" disks ?) let the default value for $power.
+ * 1024 (for your "1.44 MB" disks ?) let the default value for power.
  *
- * The units for power 1000 are:
- * ('B', 'kB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB')
+ * The units for power 1000 are: ('B', 'kB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB')
  *
- * Those for power 1024 are:
- *
- * ('B', 'KiB', 'MiB', 'GiB', 'TiB', 'PiB', 'EiB', 'ZiB', 'YiB')
+ * Those for power 1024 are: ('B', 'KiB', 'MiB', 'GiB', 'TiB', 'PiB', 'EiB', 'ZiB', 'YiB')
  *
  * with the horrible names: bytes, kibibytes, mebibytes, etc.
  *
  * @see http://physics.nist.gov/cuu/Units/binary.html
- * @throws iMSCP_Exception if $base is wrong
+ * @author Laurent Declercq <l.declercq@nuxwin.com>
+ * @throws iMSCP_Exception if power or unit value is unknown
  * @param int|float $bytes Bytes value to convert
- * @param string $unit OPTIONAL Unit to format
+ * @param string $unit OPTIONAL Unit to calculate to
  * @param int $decimals OPTIONAL Number of decimal to be show
  * @param int $power OPTIONAL Power to use for conversion (1024 or 1000)
  * @return string
@@ -85,21 +83,27 @@ function calc_bars($crnt, $max, $bars_max)
 function bytesHuman($bytes, $unit = null, $decimals = 2, $power = 1024)
 {
 	if ($power == 1000) {
-		$units = array('B' => 0, 'kB' => 1, 'MB' => 2, 'GB' => 3, 'TB' => 4,
-			'PB' => 5, 'EB' => 6, 'ZB' => 7, 'YB' => 8);
+		$units = array(
+			'B' => 0, 'kB' => 1, 'MB' => 2, 'GB' => 3, 'TB' => 4, 'PB' => 5, 'EB' => 6, 'ZB' => 7, 'YB' => 8
+		);
 	} elseif ($power == 1024) {
-		$units = array('B' => 0, 'kiB' => 1, 'MiB' => 2, 'GiB' => 3, 'TiB' => 4,
-			'PiB' => 5, 'EiB' => 6, 'ZiB' => 7, 'YiB' => 8);
+		$units = array(
+			'B' => 0, 'kiB' => 1, 'MiB' => 2, 'GiB' => 3, 'TiB' => 4, 'PiB' => 5, 'EiB' => 6, 'ZiB' => 7, 'YiB' => 8
+		);
 	} else {
-		throw new iMSCP_Exception('Wrong value given for $base.');
+		throw new iMSCP_Exception('Unknown power value');
 	}
 
 	$value = 0;
 
 	if ($bytes > 0) {
 		if (!array_key_exists($unit, $units)) {
-			$pow = floor(log($bytes) / log($power));
-			$unit = array_search($pow, $units);
+			if(null === $unit) {
+				$pow = floor(log($bytes) / log($power));
+				$unit = array_search($pow, $units);
+			} else {
+				throw new iMSCP_Exception('Unknown unit value');
+			}
 		}
 
 		$value = ($bytes / pow($power, floor($units[$unit])));
@@ -174,8 +178,9 @@ function bytesHuman($bytes, $unit = null, $decimals = 2, $power = 1024)
 /**
  * Humanize a mebibyte value.
  *
+ * @author Laurent Declercs <l.declercq@nuxwin.com>
  * @param int $value mebibyte value
- * @param $unit
+ * @param string $unit OPTIONAL Unit to calculate to ('B', 'kB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB')
  * @return string
  */
 function mebibyteHuman($value, $unit = null)
@@ -188,16 +193,28 @@ function mebibyteHuman($value, $unit = null)
  *
  * @param int $value variable to be translated
  * @param bool $autosize calculate value in different unit (default false)
- * @param string $to unit to calclulate to (default 'MiB')
+ * @param string $to OPTIONAL Unit to calclulate to ('B', 'kB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB')
  * @return String
  */
-function translate_limit_value($value, $autosize = false, $to = 'MiB')
+function translate_limit_value($value, $autosize = false, $to = null)
 {
 	switch ($value) {
 		case '-1':
-			return tr('disabled');
+			return tr('Disabled');
 		case  '0':
-			return tr('unlimited');
+			return tr('Unlimited');
+		case '_yes_':
+		case 'yes':
+			return tr('Yes');
+		case '_no_':
+		case 'no':
+			return tr('No');
+		case '_full_':
+			return tr('Domain and SQL databases');
+		case '_dmn_':
+			return tr('Web files only');
+		case '_sql_':
+			return tr('SQL databases only');
 		default:
 			return (!$autosize) ? $value : mebibyteHuman($value, $to);
 	}
@@ -208,6 +225,7 @@ function translate_limit_value($value, $autosize = false, $to = 'MiB')
  *
  * Note: Only algorithms present in the mainline glibc >= 2.7 (Debian) are supported (SHA512, SHA256, MD5 and DES)
  *
+ * @throws iMSCP_Exception in case no encryption algorithm is available
  * @author Laurent Declercq <l.declercq@nuxwin.com>
  * @return string Random salt
  */

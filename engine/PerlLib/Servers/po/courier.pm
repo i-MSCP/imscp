@@ -23,12 +23,12 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
-# @category		i-MSCP
-# @copyright	2010-2013 by i-MSCP | http://i-mscp.net
-# @author		Daniel Andreca <sci2tech@gmail.com>
-# @author		Laurent Declercq <l.declercq@nuxwin.com>
-# @link			http://i-mscp.net i-MSCP Home Site
-# @license		http://www.gnu.org/licenses/gpl-2.0.html GPL v2
+# @category    i-MSCP
+# @copyright   2010-2013 by i-MSCP | http://i-mscp.net
+# @author      Daniel Andreca <sci2tech@gmail.com>
+# @author      Laurent Declercq <l.declercq@nuxwin.com>
+# @link        http://i-mscp.net i-MSCP Home Site
+# @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
 package Servers::po::courier;
 
@@ -64,9 +64,8 @@ sub registerSetupHooks
 {
 	my $self = shift;
 	my $hooksManager = shift;
-	my $rs = 0;
 
-	$rs = $hooksManager->trigger('beforePoRegisterSetupHooks', $hooksManager, 'courier');
+	my $rs = $hooksManager->trigger('beforePoRegisterSetupHooks', $hooksManager, 'courier');
 	return $rs if $rs;
 
 	$hooksManager->trigger('afterPoRegisterSetupHooks', $hooksManager, 'courier');
@@ -83,9 +82,8 @@ sub registerSetupHooks
 sub preinstall
 {
 	my $self = shift;
-	my $rs = 0;
 
-	$rs = $self->{'hooksManager'}->trigger('beforePoPreinstall', 'courier');
+	my $rs = $self->{'hooksManager'}->trigger('beforePoPreinstall', 'courier');
 	return $rs if $rs;
 
 	$rs = $self->stop();
@@ -105,17 +103,9 @@ sub preinstall
 sub install
 {
 	my $self = shift;
-	my $rs = 0;
-
-	$rs = $self->{'hooksManager'}->trigger('beforePoInstall', 'courier');
-	return $rs if $rs;
 
 	require Servers::po::courier::installer;
-
-	$rs = Servers::po::courier::installer->getInstance()->install();
-	return $rs if $rs;
-
-	$self->{'hooksManager'}->trigger('afterPoInstall', 'courier');
+	Servers::po::courier::installer->getInstance(courierConfig => \%self::courierConfig)->install();
 }
 
 =item postinstall()
@@ -129,9 +119,8 @@ sub install
 sub postinstall
 {
 	my $self = shift;
-	my $rs = 0;
 
-	$rs = $self->{'hooksManager'}->trigger('beforePoPostinstall', 'courier');
+	my $rs = $self->{'hooksManager'}->trigger('beforePoPostinstall', 'courier');
 	return $rs if $rs;
 
 	$rs = $self->start();
@@ -151,9 +140,8 @@ sub postinstall
 sub uninstall
 {
 	my $self = shift;
-	my $rs = 0;
 
-	$rs = $self->{'hooksManager'}->trigger('beforePoUninstall', 'courier');
+	my $rs = $self->{'hooksManager'}->trigger('beforePoUninstall', 'courier');
 	return $rs if $rs;
 
 	require Servers::po::courier::uninstaller;
@@ -181,18 +169,7 @@ sub addMail
 	my $data = shift;
 	my $rs = 0;
 
-	my $errmsg = {
-		'MAIL_ADDR'	=> 'You must supply mail address!',
-		'MAIL_PASS'	=> 'You must supply account password!'
-	};
-
-	for(keys %{$errmsg}) {
-		error($errmsg->{$_}) unless $data->{$_};
-		return 1 unless $data->{$_};
-	}
-
 	if($data->{'MAIL_TYPE'} =~ /_mail/) {
-
 		$rs = $self->{'hooksManager'}->trigger('beforePoAddMail');
 		return $rs if $rs;
 
@@ -235,8 +212,8 @@ sub addMail
 
 		# Adding new entry in userdb file
 		$userdbWrkFileContent .=
-			"$data->{'MAIL_ADDR'}\tuid=$uid|gid=$gid|home=$mailDir/$data->{'DMN_NAME'}/$data->{'MAIL_ACC'}|" .
-			"shell=/bin/false|systempw=$password|mail=$mailDir/$data->{'DMN_NAME'}/$data->{'MAIL_ACC'}\n";
+			"$data->{'MAIL_ADDR'}\tuid=$uid|gid=$gid|home=$mailDir/$data->{'DOMAIN_NAME'}/$data->{'MAIL_ACC'}|" .
+			"shell=/bin/false|systempw=$password|mail=$mailDir/$data->{'DOMAIN_NAME'}/$data->{'MAIL_ACC'}\n";
 
 		# Writing the new userdb working file
 		$userdbWrkFile->{'filename'} = "$self->{'wrkDir'}/userdb";
@@ -290,7 +267,7 @@ sub postaddMail
 		require Servers::mta;
 		my $mta = Servers::mta->factory();
 
-		my $mailDir = "$mta->{'MTA_VIRTUAL_MAIL_DIR'}/$data->{'DMN_NAME'}/$data->{'MAIL_ACC'}";
+		my $mailDir = "$mta->{'MTA_VIRTUAL_MAIL_DIR'}/$data->{'DOMAIN_NAME'}/$data->{'MAIL_ACC'}";
 		my $mailUidName =  $mta->{'MTA_MAILBOX_UID_NAME'};
 		my $mailGidName = $mta->{'MTA_MAILBOX_GID_NAME'};
 
@@ -361,16 +338,6 @@ sub delMail
 	my $self = shift;
 	my $data = shift;
 	my $rs = 0;
-
-	my $errmsg = {
-		'MAIL_ADDR'	=> 'You must supply mail address!',
-		'MAIL_PASS'	=> 'You must supply account password!'
-	};
-
-	for(keys %{$errmsg}){
-		error("$errmsg->{$_}") unless $data->{$_};
-		return 1 unless $data->{$_};
-	}
 
 	if($data->{'MAIL_TYPE'} =~ /_mail/) {
 
@@ -443,9 +410,8 @@ sub delMail
 sub start
 {
 	my $self = shift;
-	my $rs = 0;
 
-	$rs = $self->{'hooksManager'}->trigger('beforePoStart');
+	my $rs = $self->{'hooksManager'}->trigger('beforePoStart');
 	return $rs if $rs;
 
 	my ($stdout, $stderr);
@@ -471,9 +437,8 @@ sub start
 sub stop
 {
 	my $self = shift;
-	my $rs = 0;
 
-	$rs = $self->{'hooksManager'}->trigger('beforePoStop');
+	my $rs = $self->{'hooksManager'}->trigger('beforePoStop');
 	return $rs if $rs;
 
 	my ($stdout, $stderr);
@@ -499,9 +464,9 @@ sub stop
 sub restart
 {
 	my $self = shift;
-	my $rs = 0;
 
-	$rs = $self->{'hooksManager'}->trigger('beforePoRestart');
+	my $rs = $self->{'hooksManager'}->trigger('beforePoRestart');
+	return $rs if $rs;
 
 	my ($stdout, $stderr);
 
@@ -629,7 +594,9 @@ sub _init
 
 	$self->{'hooksManager'} = iMSCP::HooksManager->getInstance();
 
-	$self->{'hooksManager'}->trigger('beforePoInit', $self, 'courier');
+	$self->{'hooksManager'}->trigger(
+		'beforePoInit', $self, 'courier'
+	) and fatal('courier - beforePoInit hook has failed');
 
 	$self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/courier";
 	$self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
@@ -640,7 +607,9 @@ sub _init
 
 	$self->{$_} = $self::courierConfig{$_} for keys %self::courierConfig;
 
-	$self->{'hooksManager'}->trigger('afterPoInit', $self, 'courier');
+	$self->{'hooksManager'}->trigger(
+		'afterPoInit', $self, 'courier'
+	) and fatal('courier - afterPoInit hook has failed');
 
 	$self;
 }
@@ -658,14 +627,14 @@ sub _init
 
 END
 {
-	my $endCode = $?;
 	my $self = Servers::po::courier->getInstance();
-	my $wrkLogFile = "$main::imscpConfig{LOG_DIR}/mail.po.log";
+	my $wrkLogFile = "$main::imscpConfig{'LOG_DIR'}/mail.po.log";
 	my $rs = 0;
 
-	$rs |= $self->restart() if $self->{'restart'} && $self->{'restart'} eq 'yes';
+	$rs = $self->restart() if $self->{'restart'} && $self->{'restart'} eq 'yes';
 	$rs |= iMSCP::File->new('filename' => $wrkLogFile)->delFile() if -f $wrkLogFile;
-	$? = $endCode || $rs;
+
+	$? ||= $rs;
 }
 
 =back

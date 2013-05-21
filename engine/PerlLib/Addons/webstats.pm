@@ -99,7 +99,7 @@ sub install
 
 =item setGuiPermissions()
 
- Set webstats addon files permissions.
+ Set webstats addon files permissions (FrontEnd part only).
 
  Return int 0 on success, other on failure
 
@@ -113,9 +113,25 @@ sub setGuiPermissions
 	Addons::webstats::installer->getInstance()->setGuiPermissions();
 }
 
+=item setEnginePermissions()
+
+ Set webstats addon files permissions (backend part only).
+
+ Return int 0 on success, other on failure
+
+=cut
+
+sub setEnginePermissions
+{
+	my $self = shift;
+
+	require Addons::webstats::installer;
+	Addons::webstats::installer->getInstance()->setEnginePermissions();
+}
+
 =item preaddDmn(\$data)
 
- Perform preAddDmn tasks.
+ Process preAddDmn tasks.
 
  Return int 0 on success, other on failure
 

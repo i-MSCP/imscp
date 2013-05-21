@@ -19,7 +19,7 @@
  *
  * @category    iMSCP
  * @package     iMSCP_Loader
- * @copyright   2010-2013 by -MSCP Team
+ * @copyright   2010-2013 by i-MSCP Team
  * @author      Laurent Declercq <l.declercq@nuxwin.com>
  * @link        http://www.i-mscp.net i-MSCP Home Site
  * @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
@@ -34,7 +34,7 @@ namespace iMSCP\Loader;
  * also acts as an autoloader registry.
  *
  * @package     iMSCP_Loader
- * @copyright   2012 by iMSCP Team
+ * @copyright   2010-2013 by i-MSCP Team
  * @author      Laurent Declercq <l.declercq@nuxwin.com>
  * @version     0.0.1
  */

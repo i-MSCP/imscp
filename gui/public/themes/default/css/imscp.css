@@ -357,6 +357,7 @@ h2 span, h3 span {
 .body .custom_link { background-image: url(../images/content/table_icon_custom_link.png); }
 .body .plugin { background-image: url(../images/content/table_icon_plugin.png); }
 
+
 /* Paragraph */
 p { margin: 0.5em 0;}
 
@@ -540,6 +541,7 @@ table .icon {float: none;}
 .i_appicon { background-image: url(../images/icons/appicon.png); }
 .i_open { background-image: url(../images/icons/open.png); }
 .i_close { background-image: url(../images/icons/close.png); }
+.i_purchase { background-image: url(../images/icons/purchase.png); }
 
 /* data tables */
 .dataTables_wrapper {

@@ -65,11 +65,11 @@
     <sql>
         <alternative default="mysql_5.5">
             <mysql_5.5>
-                <package>mysql-server</package>
-                <package>mysql-client</package>
+                <package>mysql-server-5.5</package>
+                <package>mysql-client-5.5</package>
             </mysql_5.5>
             <mariadb_5.5
-                    pinning_package="mariadb-client mariadb-server mariadb-common mysql-common libmysqlclient18"
+                    pinning_package="mariadb-client-5.5 mariadb-server-5.5 mariadb-common mysql-common libmysqlclient18"
                     pinning_pin="origin mirror.netcologne.de"
                     pinning_pin_priority="1001"
                     repository="http://mirror.netcologne.de/mariadb/repo/5.5/debian wheezy main"
@@ -77,9 +77,8 @@
                     repository_key_srv="keyserver.ubuntu.com"
                     repository_key_id="0xcbcb082a1bb943db"
                     >
-                <package>mariadb-client</package>
-                <package>mariadb-server</package>
-                <package>mysql-common</package>
+                <package>mariadb-client-5.5</package>
+                <package>mariadb-server-5.5</package>
             </mariadb_5.5>
             <remote_server>
                 <package>mysql-client</package>

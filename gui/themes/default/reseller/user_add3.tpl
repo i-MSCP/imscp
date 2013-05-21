@@ -18,7 +18,7 @@
 						<td><input type="password" name="userpassword_repeat" id="pass_rep" value="{VL_USR_PASS}" autocomplete="off" /></td>
 					</tr>
 					<tr>
-						<td><label for="domain_ip">{TR_DMN_IP}</label></td>
+						<td><label for="domain_ip">{TR_DOMAIN_IP}</label></td>
 						<td>
 							<select id="domain_ip" name="domain_ip">
 								<!-- BDP: ip_entry -->
@@ -71,6 +71,10 @@
 					<tr>
 						<td><label for="userstreet1">{TR_STREET1}</label></td>
 						<td><input type="text" name="userstreet1" id="userstreet1" value="{VL_STREET1}"/></td>
+					</tr>
+					<tr>
+						<td><label for="userstreet2">{TR_STREET2}</label></td>
+						<td><input type="text" name="userstreet2" id="userstreet2" value="{VL_STREET2}"/></td>
 					</tr>
 					<tr>
 						<td><label for="userzip">{TR_POST_CODE}</label></td>

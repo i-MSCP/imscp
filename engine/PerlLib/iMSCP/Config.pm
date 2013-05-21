@@ -22,17 +22,18 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
-# @category		i-MSCP
-# @copyright	2010-2013 by i-MSCP | http://i-mscp.net
-# @author		Daniel Andreca <sci2tech@gmail.com>
-# @author		Laurent Declercq <l.declercq@nuxwin.com>
-# @link			http://i-mscp.net i-MSCP Home Site
-# @license      http://www.gnu.org/licenses/gpl-2.0.html GPL v2
+# @category    i-MSCP
+# @copyright   2010-2013 by i-MSCP | http://i-mscp.net
+# @author      Daniel Andreca <sci2tech@gmail.com>
+# @author      Laurent Declercq <l.declercq@nuxwin.com>
+# @link        http://i-mscp.net i-MSCP Home Site
+# @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
 package iMSCP::Config;
 
 use strict;
 use warnings;
+
 use Tie::File;
 use iMSCP::Debug;
 use Fcntl 'O_RDWR', 'O_CREAT', 'O_RDONLY';
@@ -56,7 +57,8 @@ use parent 'Common::SimpleClass';
 
  Optional arguments for the tie command are:
   - noerrors: Do not warn when trying to access to an inexistent configuration parameter
-  - nocreate: Do not create file if it doesn't already exist (thrown a fatal error instead)
+  - nocreate: Do not create file if it doesn't already exist (throws a fatal error instead)
+  - nofail: Do not throws fatal error in case configuration file doesn't exists
   - readonly: Sets  a read-only access on the tied configuration file
 
 =cut
@@ -119,8 +121,14 @@ sub _loadConfig
 		$mode = O_RDWR | O_CREAT;
 	}
 
-	tie @{$self->{'confFile'}}, 'Tie::File', $self->{'confFileName'}, 'mode' => $mode or
-		fatal("Unable to open file $self->{'confFileName'}");
+	if(! tie @{$self->{'confFile'}}, 'Tie::File', $self->{'confFileName'}, 'mode' => $mode) {
+		if($self->{'args'}->{'nofail'}) {
+			require Tie::Array;
+			tie @{$self->{'confFile'}}, 'Tie::StdArray';
+		} else {
+			fatal("Unable to tie file $self->{'confFileName'}: $!");
+		}
+	}
 
 	undef;
 }
@@ -165,7 +173,7 @@ sub FETCH
 	my $self = shift;
 	my $config = shift;
 
-	if (! exists $self->{'configValues'}->{$config} && ! $self->{'args'}->{'noerrors'}){
+	if (! exists $self->{'configValues'}->{$config} && ! $self->{'args'}->{'noerrors'}) {
 		error(sprintf('Accessing non existing config value %s', $config));
 	}
 
@@ -177,6 +185,7 @@ sub FETCH
  Store the given configuration parameters.
 
  Return undef;
+
 =cut
 
 sub STORE
@@ -186,8 +195,6 @@ sub STORE
 	my $value = shift;
 
 	if(! $self->{'args'}->{'readonly'}) {
-		debug("Store $config as " . ($value ? $value : 'empty') . '...');
-
 		if(! exists $self->{'configValues'}->{$config}) {
 			$self->_insertConfig($config, $value);
 		} else {
@@ -198,6 +205,25 @@ sub STORE
 	}
 
 	undef;
+}
+
+=item
+
+ Delete the given configuration parameters.
+
+=cut
+
+sub DELETE
+{
+	my $self = shift;
+	my $config = shift;
+
+	if(! $self->{'args'}->{'readonly'}) {
+		delete $self->{'lineMap'}->{$config};
+		delete $self->{'configValues'}->{$config};
+	} else {
+		fatal('Config object is readonly');
+	}
 }
 
 =item
@@ -277,8 +303,6 @@ sub _replaceConfig
 
 	$value = '' unless defined $value;
 
-	debug("Setting $config as $value");
-
 	@{$self->{'confFile'}}[$self->{'lineMap'}->{$config}] = "$config = $value";
 	$self->{'configValues'}->{$config} = $value;
 }
@@ -300,8 +324,6 @@ sub _insertConfig
 	my $value = shift;
 
 	$value = '' unless defined $value;
-
-	debug("Setting $config as $value");
 
 	push (@{$self->{'confFile'}}, "$config = $value");
 	$self->{'lineMap'}->{$config} = $#{$self->{confFile}};

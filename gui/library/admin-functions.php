@@ -37,10 +37,10 @@
  */
 function get_sql_user_count()
 {
-    $query = "SELECT DISTINCT `sqlu_name` FROM `sql_user`";
-    $rs = execute_query($query);
+	$query = "SELECT DISTINCT `sqlu_name` FROM `sql_user`";
+	$rs = execute_query($query);
 
-    return $rs->recordCount();
+	return $rs->recordCount();
 }
 
 /**
@@ -51,20 +51,20 @@ function get_sql_user_count()
  */
 function generate_reseller_users_props($resellerId)
 {
-    $rdmnConsumed = $rdmnAssigned = $rsubConsumed = $rsubAssigned = $ralsConsumed = $ralsAssigned = $rmailConsumed =
+	$rdmnConsumed = $rdmnAssigned = $rsubConsumed = $rsubAssigned = $ralsConsumed = $ralsAssigned = $rmailConsumed =
 	$rmailAssigned = $rftpConsumed = $rftpAssigned = $rsqlDbConsumed = $rsqlDbAssigned = $rsqlUserConsumed =
 	$rsqlUserAssigned = $rtraffConsumed = $rtraffAssigned = $rdiskConsumed = $rdiskAssigned = 0;
 
-    $query = "SELECT `admin_id` FROM `admin` WHERE `created_by` = ?";
-    $stmt = exec_query($query, $resellerId);
+	$query = "SELECT `admin_id` FROM `admin` WHERE `created_by` = ?";
+	$stmt = exec_query($query, $resellerId);
 
 	$rdmnUnlimited = $rsubUnlimited = $ralsUnlimited = $rmailUnlimited = $rftpUnlimited = $rsqlDbUnlimited =
 	$rsqlUserUnlimited = $rtraffUnlimited = $rdiskUnlimited = false;
 
 
-    if (!$stmt->rowCount()) { // Case in reseller has not customer yet
-        return array(
-            $rdmnConsumed, $rdmnAssigned, $rdmnUnlimited,
+	if (!$stmt->rowCount()) { // Case in reseller has not customer yet
+		return array(
+			$rdmnConsumed, $rdmnAssigned, $rdmnUnlimited,
 			$rsubConsumed, $rsubAssigned, $rsubUnlimited,
 			$ralsConsumed, $ralsAssigned, $ralsUnlimited,
 			$rmailConsumed, $rmailAssigned, $rmailUnlimited,
@@ -73,93 +73,89 @@ function generate_reseller_users_props($resellerId)
 			$rsqlUserConsumed, $rsqlUserAssigned, $rsqlUserUnlimited,
 			$rtraffConsumed, $rtraffAssigned, $rtraffUnlimited,
 			$rdiskConsumed, $rdiskAssigned, $rdiskUnlimited
-        );
-    }
+		);
+	}
 
-    while (!$stmt->EOF) {
-        $stmt2 = exec_query("SELECT `domain_id` FROM `domain` WHERE `domain_admin_id` = ?", $stmt->fields['admin_id']);
-        $userId = $stmt2->fields['domain_id'];
+	while (!$stmt->EOF) {
+		$stmt2 = exec_query("SELECT `domain_id` FROM `domain` WHERE `domain_admin_id` = ?", $stmt->fields['admin_id']);
+		$userId = $stmt2->fields['domain_id'];
 
-        list(
+		list(
 			$subConsumed, $subAssigned, $alsConsumed, $alsAssigned, $mailConsumed, $mailAssigned, $ftpConsumed,
 			$ftpAssigned, $sqlDbConsumed, $sqlDbAssigned, $sqlUserConsumed, $sqlUserAssigned, $traffAssigned, $diskAssigned
-        ) = generate_user_props($userId);
+			) = generate_user_props($userId);
 
-        list(, , , , , , $traffConsumed, $diskConsumed) = generate_user_traffic($userId);
+		list(, , , , , , $traffConsumed, $diskConsumed) = generate_user_traffic($userId);
 
-        $rdmnConsumed += 1;
+		$rdmnConsumed += 1;
 
 		// Compute subdomains
-        if ($subAssigned != -1) {
-            $rsubConsumed += $subConsumed;
+		if ($subAssigned != -1) {
+			$rsubConsumed += $subConsumed;
 			$rsubAssigned += $subAssigned;
 
-			if(!$subAssigned) $rsubUnlimited = true;
-        }
+			if (!$subAssigned) $rsubUnlimited = true;
+		}
 
 		// Compute domain aliases
-        if ($alsAssigned != -1) {
-            $ralsConsumed += $alsConsumed;
+		if ($alsAssigned != -1) {
+			$ralsConsumed += $alsConsumed;
 			$ralsAssigned += $alsAssigned;
 
-			if(!$alsAssigned) $ralsUnlimited = true;
-        }
+			if (!$alsAssigned) $ralsUnlimited = true;
+		}
 
 		// Compute mail accounts
 		if ($sqlDbAssigned != -1) {
-        	$rmailConsumed += $mailConsumed;
+			$rmailConsumed += $mailConsumed;
 			$rmailAssigned += $mailAssigned;
 
-			if(!$mailAssigned) $rmailUnlimited = true;
+			if (!$mailAssigned) $rmailUnlimited = true;
 		}
 
 		// Compute Ftp account
 		if ($ftpAssigned != -1) {
-        	$rftpConsumed += $ftpConsumed;
+			$rftpConsumed += $ftpConsumed;
 			$rftpAssigned += $ftpAssigned;
 
-			if(!$ftpAssigned) $rftpUnlimited = true;
+			if (!$ftpAssigned) $rftpUnlimited = true;
 		}
 
 		// Compute Sql databases
-        if ($sqlDbAssigned != -1) {
-            $rsqlDbConsumed += $sqlDbConsumed;
+		if ($sqlDbAssigned != -1) {
+			$rsqlDbConsumed += $sqlDbConsumed;
 			$rsqlDbAssigned += $sqlDbAssigned;
 
-			if(!$sqlDbAssigned) $rsqlDbUnlimited = true;
-        }
+			if (!$sqlDbAssigned) $rsqlDbUnlimited = true;
+		}
 
 		// Compute Sql users
-        if ($sqlUserAssigned != -1) {
-            $rsqlUserConsumed += $sqlUserConsumed;
+		if ($sqlUserAssigned != -1) {
+			$rsqlUserConsumed += $sqlUserConsumed;
 			$rsqlUserAssigned += $sqlUserAssigned;
 
-			if(!$sqlUserAssigned) $rsqlUserUnlimited = true;
-        }
+			if (!$sqlUserAssigned) $rsqlUserUnlimited = true;
+		}
 
 		// Compute Monthly traffic volume
-        $rtraffConsumed += $traffConsumed;
-        $rtraffAssigned += $traffAssigned;
-		if(!$rtraffAssigned) $rtraffUnlimited = true;
+		$rtraffConsumed += $traffConsumed;
+		$rtraffAssigned += $traffAssigned;
+		if (!$rtraffAssigned) $rtraffUnlimited = true;
 
 		// Compute diskspace
-        $rdiskConsumed += $diskConsumed;
-        $rdiskAssigned += $diskAssigned;
-		if(!$rdiskAssigned) $rdiskUnlimited = true;
+		$rdiskConsumed += $diskConsumed;
+		$rdiskAssigned += $diskAssigned;
+		if (!$rdiskAssigned) $rdiskUnlimited = true;
 
-        $stmt->moveNext();
-    }
+		$stmt->moveNext();
+	}
 
-    return array(
-		$rdmnConsumed, $rdmnAssigned, $rdmnUnlimited,
-		$rsubConsumed, $rsubAssigned, $rsubUnlimited,
-		$ralsConsumed, $ralsAssigned, $ralsUnlimited,
-		$rmailConsumed, $rmailAssigned, $rmailUnlimited,
-		$rftpConsumed, $rftpAssigned, $rftpUnlimited,
-		$rsqlDbConsumed, $rsqlDbAssigned, $rsqlDbUnlimited,
-		$rsqlUserConsumed, $rsqlUserAssigned, $rsqlUserUnlimited,
-		$rtraffConsumed, $rtraffAssigned, $rtraffUnlimited,
-		$rdiskConsumed, $rdiskAssigned, $rdiskUnlimited
+	return array(
+		$rdmnConsumed, $rdmnAssigned, $rdmnUnlimited, $rsubConsumed, $rsubAssigned, $rsubUnlimited, $ralsConsumed,
+		$ralsAssigned, $ralsUnlimited, $rmailConsumed, $rmailAssigned, $rmailUnlimited, $rftpConsumed, $rftpAssigned,
+		$rftpUnlimited, $rsqlDbConsumed, $rsqlDbAssigned, $rsqlDbUnlimited, $rsqlUserConsumed, $rsqlUserAssigned,
+		$rsqlUserUnlimited, $rtraffConsumed, $rtraffAssigned, $rtraffUnlimited, $rdiskConsumed, $rdiskAssigned,
+		$rdiskUnlimited
 	);
 }
 
@@ -175,91 +171,176 @@ function generate_reseller_users_props($resellerId)
  * @param  $search_status
  * @return void
  */
-function gen_admin_domain_query(&$search_query, &$count_query, $start_index,
-    $rows_per_page, $search_for, $search_common, $search_status)
-{
-    if ($search_for == 'n/a' && $search_common == 'n/a' && $search_status == 'n/a') {
-        // We have pure list query;
-        $count_query = "SELECT COUNT(*) AS `cnt` FROM `domain`";
+function gen_admin_domain_query(
+	&$search_query, &$count_query, $start_index, $rows_per_page, $search_for, $search_common, $search_status
+) {
+	if ($search_for == 'n/a' && $search_common == 'n/a' && $search_status == 'n/a') {
+		// We have pure list query;
+		$count_query = "SELECT COUNT(*) AS `cnt` FROM `domain`";
 
-        $search_query = "
-            SELECT
-                *
-            FROM
-                `domain`
-            ORDER BY
-                `domain_name` ASC
-            LIMIT
-                $start_index, $rows_per_page
-            ;
+		$search_query = "
+			SELECT
+				*
+			FROM
+				`domain`
+			LEFT JOIN
+				`admin` ON (`domain_admin_id` = `admin_id`)
+			ORDER BY
+				`domain_name` ASC
+			LIMIT
+				$start_index, $rows_per_page
+			;
+		";
+	} elseif ($search_for == '' && $search_status != '') {
+		if ($search_status == 'all') {
+			$add_query = '';
+		} else {
+			$add_query = " WHERE `domain_status` = '$search_status'";
+		}
+
+		$count_query = "SELECT COUNT(*) AS `cnt` FROM `domain` $add_query";
+		$search_query = "
+			SELECT
+				*
+			FROM
+				`domain` $add_query
+			LEFT JOIN
+				`admin` ON (`domain_admin_id` = `admin_id`)
+			ORDER BY
+				`domain_name` ASC
+			LIMIT
+				$start_index, $rows_per_page
         ";
-    } elseif ($search_for == '' && $search_status != '') {
-        if ($search_status == 'all') {
-            $add_query = '';
-        } else {
-            $add_query = " WHERE `domain_status` = '$search_status'";
-        }
+	} elseif ($search_for != '') {
+		if ($search_common == 'domain_name') {
+			$search_for = idn_to_ascii($search_for);
+			$add_query = " WHERE `admin_name` RLIKE '$search_for' %s";
+		} elseif ($search_common == 'customer_id') {
+			$add_query = " WHERE `customer_id` RLIKE '$search_for' %s";
+		} elseif ($search_common == 'lname') {
+			$add_query = "WHERE (`lname` RLIKE '$search_for' OR `fname` RLIKE '$search_for') %s";
+		} elseif ($search_common == 'firm') {
+			$add_query = "WHERE `firm` RLIKE '$search_for' %s";
+		} elseif ($search_common == 'city') {
+			$add_query = "WHERE `city` RLIKE '$search_for' %s";
+		} elseif ($search_common == 'state') {
+			$add_query = "WHERE `state` ,RLIKE '$search_for' %s ";
+		} elseif ($search_common == 'country') {
+			$add_query = "WHERE `country` RLIKE '$search_for' %s";
+		}
 
-        $count_query = "SELECT COUNT(*) AS `cnt` FROM `domain` $add_query";
-        $search_query = "
-            SELECT
-                *
-            FROM
-                `domain` $add_query
-            ORDER BY
-                `domain_name` ASC
-            LIMIT
-                $start_index, $rows_per_page
-        ";
-    } elseif ($search_for != '') {
-        if ($search_common == 'domain_name') {
-            $add_query = " WHERE `admin_name` RLIKE '$search_for' %s";
-        } elseif ($search_common == 'customer_id') {
-            $add_query = " WHERE `customer_id` RLIKE '$search_for' %s";
-        } elseif ($search_common == 'lname') {
-            $add_query = "WHERE (`lname` RLIKE '$search_for' OR `fname` RLIKE '$search_for') %s";
-        } elseif ($search_common == 'firm') {
-            $add_query = "WHERE `firm` RLIKE '$search_for' %s";
-        } elseif ($search_common == 'city') {
-            $add_query = "WHERE `city` RLIKE '$search_for' %s";
-        } elseif ($search_common == 'state') {
-            $add_query = "WHERE `state` ,RLIKE '$search_for' %s ";
-        } elseif ($search_common == 'country') {
-            $add_query = "WHERE `country` RLIKE '$search_for' %s";
-        }
+		if (isset($add_query)) {
+			if ($search_status != 'all') {
+				$add_query = sprintf($add_query, " AND t2.`domain_status` = '$search_status'");
 
-        if(isset($add_query)) {
-            if ($search_status != 'all') {
-                $add_query = sprintf($add_query,
-                                     " AND t2.`domain_status` = '$search_status'");
-
-                $count_query = "
+				$count_query = "
 				    SELECT
-					    COUNT(*) AS cnt
+					    COUNT(*) AS `cnt`
 				    FROM
 					    `admin` AS t1, `domain` AS t2
 				        $add_query
 				    AND
 					    t1.`admin_id` = t2.`domain_admin_id`
 			    ";
-            } else {
-                $add_query = sprintf($add_query, ' ');
-                $count_query = "SELECT COUNT(*) AS cnt FROM `admin` $add_query";
-            }
+			} else {
+				$add_query = sprintf($add_query, ' ');
+				$count_query = "SELECT COUNT(*) AS cnt FROM `admin` $add_query";
+			}
 
-            $search_query = "
-			SELECT
-				t1.`admin_id`, t2.*
-			FROM
-				`admin` AS t1, `domain` AS t2
+			$search_query = "
+				SELECT
+					t1.`admin_id`, t1.`admin_status`, t2.*
+				FROM
+					`admin` AS t1, `domain` AS t2
 				$add_query
-			AND
-				t1.`admin_id` = t2.`domain_admin_id`
-			ORDER BY
-				t2.`domain_name` ASC
-			LIMIT
-				$start_index, $rows_per_page
-		";
-        }
-    }
+				AND
+					t1.`admin_id` = t2.`domain_admin_id`
+				ORDER BY
+					t2.`domain_name` ASC
+				LIMIT
+					$start_index, $rows_per_page
+			";
+		}
+	}
+}
+
+/**
+ * Whether or not the system has a least the given number of registered resellers.
+ *
+ * @param int $minNbResellers Minimum number of resellers
+ * @return bool TRUE if the system has a least the given number of registered resellers, FALSE otherwise
+ */
+function systemHasResellers($minNbResellers = 1)
+{
+	static $resellersCount = null;
+
+	if (null === $resellersCount ) {
+		$stmt = exec_query('SELECT COUNT(`admin_id`) AS `count` FROM `admin` WHERE `admin_type` = ?', 'reseller');
+		$resellersCount = $stmt->fields['count'];
+	}
+
+
+	return ($resellersCount >= $minNbResellers);
+}
+
+/**
+ * Whether or not the system has a least the given number of registered customers.
+ *
+ * @param int $minNbCustomers Minimum number of customers
+ * @return bool TRUE if system has a least the given number of registered customers, FALSE otherwise
+ */
+function systemHasCustomers($minNbCustomers = 1)
+{
+	static $customersCount = null;
+
+	if (null === $customersCount ) {
+
+		/** @var $cfg iMSCP_Config_Handler_File */
+		$cfg = iMSCP_Registry::get('config');
+
+		$stmt = exec_query(
+			'SELECT COUNT(`admin_id`) AS `count` FROM `admin` WHERE `admin_type` = ? AND `admin_status` <> ?',
+			array('user', $cfg->ITEM_DELETE_STATUS)
+		);
+
+		$customersCount = $stmt->fields['count'];
+	}
+
+	return ($customersCount >= $minNbCustomers);
+}
+
+/**
+ * Whether or not system has registered resellers or customers.
+ *
+ * @return bool
+ */
+function systemHasResellersOrCustomers()
+{
+	if (systemHasResellers() || systemHasCustomers()) {
+		return true;
+	}
+
+	return false;
+}
+
+/**
+ * Whether or not system as many admins.
+ *
+ * @return bool
+ */
+function systemHasManyAdmins()
+{
+	static $hasManyAdmins = null;
+
+	if (null === $hasManyAdmins) {
+		$stmt = exec_query('SELECT `admin_id` FROM `admin` WHERE `admin_type` = ? LIMIT 2', 'admin');
+
+		if ($stmt->rowCount() > 1) {
+			$hasManyAdmins = true;
+		} else {
+			$hasManyAdmins = false;
+		}
+	}
+
+	return $hasManyAdmins;
 }

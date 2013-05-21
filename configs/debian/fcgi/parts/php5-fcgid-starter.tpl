@@ -1,8 +1,10 @@
 #!/bin/sh
 
-umask 022
+# Newly created files: 0640
+# Newly created directories: 0750
+umask 027
 
-PHPRC="{PHP_STARTER_DIR}/{DMN_NAME}/php5/"
+PHPRC="{PHP_STARTER_DIR}/{DOMAIN_NAME}/php5/"
 export PHPRC
 
 # This should *always* be 0 when running with mod_fcgid, because
@@ -16,7 +18,7 @@ export PHP_FCGI_CHILDREN
 PHP_FCGI_MAX_REQUESTS=1500
 export PHP_FCGI_MAX_REQUESTS
 
-TMPDIR="{HOME_DIR}/phptmp"
+TMPDIR="{WEB_DIR}/phptmp"
 export TMPDIR
 
 exec {PHP5_FASTCGI_BIN}

@@ -1,6 +1,6 @@
-zone "{DMN_NAME}" {
+zone "{DOMAIN_NAME}" {
 	type master;
-	file "{DB_DIR}/{DMN_NAME}.db";
+	file "{DB_DIR}/{DOMAIN_NAME}.db";
 	allow-transfer { {SECONDARY_DNS} };
 	notify yes;
 };

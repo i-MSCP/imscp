@@ -20,6 +20,7 @@
 # @category		i-MSCP
 # @copyright	2010-2013 by i-MSCP | http://i-mscp.net
 # @author		Daniel Andreca <sci2tech@gmail.com>
+# @author		Laurent Declercq <l.declercq@nuxwin.com>
 # @link			http://i-mscp.net i-MSCP Home Site
 # @license		http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
@@ -33,74 +34,109 @@ use lib "$FindBin::Bin/../PerlVendor";
 
 use iMSCP::Debug;
 use iMSCP::Boot;
+use iMSCP::Servers;
 use iMSCP::Addons;
+
+# Turn off localisation features to force any command output to be in english
+$ENV{LANG} = 'C';
+
+# Mode in which the script is triggered
+# For now, this variable is only used by i-MSCP installer/setup scripts
+$main::execmode = shift || '';
+
+umask(027);
 
 newDebug('imscp-set-gui-permissions.log');
 
 silent(1);
 
-sub start_up
+sub startUp
 {
-	umask(027);
+	iMSCP::Boot->getInstance()->boot({ 'nolock' => 'yes', 'nodatabase' => 'yes', 'nokeys' => 'yes' });
 
-	iMSCP::Boot->getInstance()->boot({ 'nolock' => 'yes', 'nodatabase' => 'yes' });
+	my $rs = 0;
 
-	0;
-}
-
-sub shut_down
-{
-	my @warnings = getMessageByType('warn');
-	my @errors = getMessageByType('error');
-
-	my $msg = "\nWARNINGS:\n" . join("\n", @warnings) . "\n" if @warnings > 0;
-	$msg .= "\nERRORS:\n" . join("\n", @errors) . "\n" if @errors > 0;
-
-	if($msg) {
-		require iMSCP::Mail;
-		iMSCP::Mail->new()->errmsg($msg);
+	unless($main::execmode eq 'setup') {
+		require iMSCP::HooksManager;
+		$rs = iMSCP::HooksManager->getInstance()->register(
+			'beforeExit', sub { shift; my $clearScreen = shift; $$clearScreen = 0; 0; }
+		)
 	}
 
-	0;
+	$rs;
 }
 
-sub set_permissions
+sub process
 {
-	my $rs = 0;
 	my ($instance, $file, $class);
+	my @servers = iMSCP::Servers->getInstance()->get();
+	my @addons = iMSCP::Addons->getInstance()->get();
+	my $totalItems = @servers + @addons;
+	my $counter = 1;
+	my $rs = 0;
 
-	for('named', 'ftpd', 'mta', 'po', 'httpd') {
+	for(@servers) {
+		s/\.pm//;
+
 		$file = "Servers/$_.pm";
 		$class = "Servers::$_";
+
 		require $file;
 		$instance = $class->factory();
 
 		if($instance->can('setGuiPermissions')) {
-			debug("Set GUI permissions for the $_ server");
+			debug("Setting $_ server frontEnd permissions");
+			print "Setting frontEnd permissions for the $_ server\t$totalItems\t$counter\n" if $main::execmode eq 'setup';
 			$rs = $instance->setGuiPermissions();
 			return $rs if $rs;
 		}
+
+		$counter++;
 	}
 
-	for(iMSCP::Addons->getInstance()->get()) {
+	for(@addons) {
 		s/\.pm//;
 
 		$file = "Addons/$_.pm";
 		$class = "Addons::$_";
+
 		require $file;
 		$instance = $class->getInstance();
 
 		if($instance->can('setGuiPermissions')) {
-			debug("Set GUI permissions for the $_ addon");
+			debug("Setting $_ addon frontEnd permissions");
+			print "Setting frontEnd permissions for the $_ addon\t$totalItems\t$counter\n" if $main::execmode eq 'setup';
 			$rs = $instance->setGuiPermissions();
 			return $rs if $rs;
 		}
+
+		$counter++;
 	}
 
 	0;
 }
 
-exit 1 if start_up();
-exit 1 if set_permissions();
-exit 1 if shut_down();
-exit 0;
+sub shutDown
+{
+	unless($main::execmode eq 'setup') {
+		my @warnings = getMessageByType('warn');
+		my @errors = getMessageByType('error');
+		my $rs = 0;
+
+		my $msg = "\nWARNINGS:\n" . join("\n", @warnings) . "\n" if @warnings > 0;
+		$msg .= "\nERRORS:\n" . join("\n", @errors) . "\n" if @errors > 0;
+
+		if($msg) {
+			require iMSCP::Mail;
+
+			$rs = iMSCP::Mail->new()->errmsg($msg);
+			return $rs if $rs;
+		}
+	}
+}
+
+my $rs = startUp();
+$rs ||= process();
+shutDown();
+
+exit $rs;

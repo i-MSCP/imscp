@@ -24,9 +24,9 @@
  * Portions created by the i-MSCP Team are Copyright (C) 2010-2013 by
  * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
  *
- * @category	i-MSCP
- * @package		iMSCP_Core
- * @subpackage	Client
+ * @category    i-MSCP
+ * @package     iMSCP_Core
+ * @subpackage  Client
  * @copyright   2001-2006 by moleSoftware GmbH
  * @copyright   2006-2010 by ispCP | http://isp-control.net
  * @copyright   2010-2013 by i-MSCP | http://i-mscp.net
@@ -44,100 +44,52 @@ check_login('user');
 
 customerHasFeature('custom_dns_records') or showBadRequestErrorPage();
 
-if (isset($_GET['edit_id']) && $_GET['edit_id'] !== '') {
-
+if (isset($_GET['id'])) {
 	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
 
-	$dns_id = (int) $_GET['edit_id'];
-	$dmn_id = get_user_domain_id($_SESSION['user_id']);
+	$dnsRecordId = $_GET['id'];
+	$mainDomainId = get_user_domain_id($_SESSION['user_id']);
 
-	$query = "
-		SELECT
-			`domain_dns`.`domain_dns_id`, `domain_dns`.`domain_dns`,
-			`domain_dns`.`alias_id`,
-			IFNULL(`domain_aliasses`.`alias_name`, `domain`.`domain_name`) AS domain_name,
-			IFNULL(`domain_aliasses`.`alias_id`, `domain_dns`.`domain_id`) AS id,
-			`domain_dns`.`protected`
-		FROM
-			`domain_dns`
-		LEFT JOIN
-			`domain_aliasses` USING (`alias_id`, `domain_id`), `domain`
-		WHERE
-			`domain_dns`.`domain_id` = ?
-		AND
-			`domain_dns`.`domain_dns_id` = ?
-		AND
-			`domain`.`domain_id` = `domain_dns`.`domain_id`
-	";
+	$query = "SELECT `alias_id` FROM `domain_dns` WHERE `domain_dns_id` = ? AND domain_id = ? AND protected <> ?";
+	$stmt = exec_query($query, array($dnsRecordId, $mainDomainId, 'yes'));
 
-	$rs = exec_query($query, array($dmn_id, $dns_id));
-	$dom_name = $rs->fields['domain_name'];
-	$dns_name = $rs->fields['domain_dns'];
-	$id = $rs->fields['id'];
-	$alias_id = $rs->fields['alias_id'];
-
-	// DNS record not found or not owned by current customer ?
-	if ($rs->recordCount() == 0) {
-		// Back to the main page
-		redirectTo('domains_manage.php');
-	} elseif($rs->fields['protected'] == 'yes') {
-		set_page_message(tr('You are not allowed to remove this DNS record.'), 'error');
-		redirectTo('domains_manage.php');
+	if (!$stmt->rowCount()) {
+		showBadRequestErrorPage();
 	}
 
-	// Delete DNS record from the database
-	$query = "
-		DELETE FROM
-			`domain_dns`
-		WHERE
-			`domain_dns_id` = ?
-	";
+	$aliasId = $stmt->fields['alias_id'];
 
-	$rs = exec_query($query, $dns_id);
+	/** @var $db iMSCP_Database */
+	$db = iMSCP_Registry::get('db');
 
-	if (empty($alias_id)) {
+	try {
+		$db->beginTransaction();
 
-		$query = "
-			UPDATE
-				`domain`
-			SET
-				`domain`.`domain_status` = ?
-			WHERE
-   				`domain`.`domain_id` = ?
-  		";
+		// Delete DNS record from the database
+		$query = "DELETE FROM `domain_dns` WHERE `domain_dns_id` = ?";
+		exec_query($query, $dnsRecordId);
 
-		exec_query($query, array($cfg->ITEM_DNSCHANGE_STATUS, $dmn_id));
+		if ($aliasId == 0) {
+			$query = "UPDATE `domain` SET `domain_status` = ? WHERE `domain_id` = ?";
+			exec_query($query, array($cfg->ITEM_DNSCHANGE_STATUS, $mainDomainId));
+		} else {
+			$query = "UPDATE `domain_aliasses` SET `alias_status` = ? WHERE `domain_id` = ? AND `alias_id` = ?";
+			exec_query($query, array($cfg->ITEM_DNSCHANGE_STATUS, $mainDomainId, $aliasId));
+		}
 
-	} else {
+		$db->commit();
 
-		$query = "
- 			UPDATE
- 				`domain_aliasses`
-			SET
-				`domain_aliasses`.`alias_status` = ?
- 			WHERE
-				`domain_aliasses`.`domain_id` = ?
-			AND
-				`domain_aliasses`.`alias_id` = ?
-		";
-
-		exec_query(
-			$query,
-			array($cfg->ITEM_DNSCHANGE_STATUS, $dmn_id, $alias_id)
-		);
+		send_request();
+		write_log($_SESSION['user_logged'] . ": deleted custom DNS record with ID $dnsRecordId", E_USER_NOTICE);
+		set_page_message(tr('Custom DNS record scheduled for deletion.'), 'success');
+	} catch (iMSCP_Exception_Database $e) {
+		$db->rollBack();
+		write_log("System was unable to schedule deletion of DNS record with ID: $dnsRecordId");
+		throw new iMSCP_Exception_Database($e->getMessage(), $e->getQuery(), $e->getCode(), $e);
 	}
 
-	// Send request to i-MSCP daemon
-	send_request();
-
-	write_log(
-		$_SESSION['user_logged'] . ': deletes dns zone record: ' . $dns_name .
-		' of domain ' . $dom_name, E_USER_NOTICE
-	);
-
-	set_page_message(tr('Custom DNS record scheduled for deletion.'), 'success');
+	redirectTo('domains_manage.php');
 }
 
-//  Back to the main page
-redirectTo('domains_manage.php');
+showBadRequestErrorPage();

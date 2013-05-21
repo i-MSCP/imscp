@@ -36,7 +36,7 @@
  *
  * Note: For performance reasons, the data are retrieved once per request.
  *
- * @param int $domainAdminId User unique identifier
+ * @param int $domainAdminId Customer unique identifier
  * @return array Returns an associative array where each key is a domain propertie name.
  */
 function get_domain_default_props($domainAdminId)
@@ -45,7 +45,7 @@ function get_domain_default_props($domainAdminId)
 
 	if (null === $domainProperties) {
 		$stmt = exec_query("SELECT * FROM `domain` WHERE `domain_admin_id` = ?", $domainAdminId);
-		$domainProperties = $stmt->fields;
+		$domainProperties = $stmt->fetchRow();
 	}
 
     return $domainProperties;
@@ -166,157 +166,17 @@ function get_domain_running_mail_acc_cnt($domain_id)
 }
 
 /**
- * Returns total number of Ftp accounts that belong to a domain.
+ * Returns total number of Ftp account owned by the given customer
  *
- * @param  int $domain_id Domain unique identifier
- * @return int Number of Ftp accounts
+ * @param  int $customerId Customer unique identifier
+ * @return int Number of Ftp account owned by the given customer
  */
-function get_domain_running_dmn_ftp_acc_cnt($domain_id)
+function get_customer_running_ftp_acc_cnt($customerId)
 {
-    /** @var $cfg iMSCP_Config_Handler_File */
-    $cfg = iMSCP_Registry::get('config');
+	$query = 'SELECT COUNT(`userid`) AS `count` FROM `ftp_users` WHERE `admin_id` = ?';
+	$stmt = exec_query($query, $customerId);
 
-    $query = "
-		SELECT
-			`domain_name`
-		FROM
-			`domain`
-		WHERE
-			`domain_id` = ?
-	";
-
-    $stmt = exec_query($query, $domain_id);
-
-    $query = "
-		SELECT
-			COUNT(*) AS `cnt`
-		FROM
-			`ftp_users`
-		WHERE
-			`userid` LIKE ?
-	";
-
-    $stmt = exec_query($query, '%' . $cfg->FTP_USERNAME_SEPARATOR .
-                                      $stmt->fields['domain_name']);
-
-    return $stmt->fields['cnt'];
-}
-
-/**
- * Returns total number of Ftp accounts that belong to subdomains of a specific
- * domain.
- *
- * @param  int $domain_id Domain unique identifier
- * @return int Total number of Ftp accounts
- */
-function get_domain_running_sub_ftp_acc_cnt($domain_id)
-{
-    $query = "SELECT `domain_name` FROM `domain` WHERE `domain_id` = ?";
-    $stmt1 = exec_query($query, $domain_id);
-
-    $query = "
-		SELECT
-			`subdomain_name`
-		FROM
-			`subdomain`
-		WHERE
-			`domain_id` = ?
-		ORDER BY
-			`subdomain_id`
-	";
-    $stmt2 = exec_query($query, $domain_id);
-
-    $sub_ftp_acc_cnt = 0;
-
-    if ($stmt2->rowCount() != 0) {
-        /** @var $cfg iMSCP_Config_Handler_File */
-        $cfg = iMSCP_Registry::get('config');
-        $ftpSeparator = $cfg->FTP_USERNAME_SEPARATOR;
-
-        while (!$stmt2->EOF) {
-            $query = "
-			    SELECT
-				    COUNT(*) AS `cnt`
-			    FROM
-				    `ftp_users`
-			    WHERE
-				    `userid` LIKE ?
-		    ";
-            $stmt3 = exec_query($query,
-                                '%' . $ftpSeparator .
-                                $stmt2->fields['subdomain_name'] . '.' .
-                                $stmt1->fields['domain_name']);
-
-            $sub_ftp_acc_cnt += $stmt3->fields['cnt'];
-            $stmt2->moveNext();
-        }
-    }
-
-    return $sub_ftp_acc_cnt;
-}
-
-/**
- * Returns total number of Ftp accounts that belong to domain aliases of a specific
- * domain.
- *
- * @param  int $domain_id Domain unique identifier
- * @return int Total number of Ftp accounts
- */
-function get_domain_running_als_ftp_acc_cnt($domain_id)
-{
-    $query = "
-		SELECT
-			`alias_name`
-		FROM
-			`domain_aliasses`
-		WHERE
-			`domain_id` = ?
-		ORDER BY
-			`alias_id`
-	";
-    $stmt1 = exec_query($query, $domain_id);
-
-    $als_ftp_acc_cnt = 0;
-
-    if ($stmt1->rowCount() != 0) {
-        /** @var $cfg iMSCP_Config_Handler_File */
-        $cfg = iMSCP_Registry::get('config');
-        $ftpSeparator = $cfg->FTP_USERNAME_SEPARATOR;
-        while (!$stmt1->EOF) {
-            $query = "
-			    SELECT
-				    COUNT(*) AS cnt
-			    FROM
-				    `ftp_users`
-			    WHERE
-				    `userid` LIKE ?
-		    ";
-            $stmt2 = exec_query($query,
-                                '%' . $ftpSeparator . $stmt1->fields['alias_name']);
-            $als_ftp_acc_cnt += $stmt2->fields['cnt'];
-            $stmt1->moveNext();
-        }
-    }
-
-    return $als_ftp_acc_cnt;
-}
-
-/**
- * Returns information about number of Ftp account for a specific domain.
- *
- * @param  int $domain_id     Domain unique identifier
- * @return array              An array of values where the first item is the sum of
- *                            all other items, and where each other item represents
- *                            total number of a specific Ftp account type
- */
-function get_domain_running_ftp_acc_cnt($domain_id)
-{
-    $dmn_ftp_acc_cnt = get_domain_running_dmn_ftp_acc_cnt($domain_id);
-    $sub_ftp_acc_cnt = get_domain_running_sub_ftp_acc_cnt($domain_id);
-    $als_ftp_acc_cnt = get_domain_running_als_ftp_acc_cnt($domain_id);
-
-    return array($dmn_ftp_acc_cnt + $sub_ftp_acc_cnt + $als_ftp_acc_cnt,
-                 $dmn_ftp_acc_cnt, $sub_ftp_acc_cnt, $als_ftp_acc_cnt);
+	return $stmt->fields['count'];
 }
 
 /**
@@ -379,41 +239,26 @@ function get_domain_running_sql_acc_cnt($domain_id)
 }
 
 /**
- * Must be documented.
+ * Get domain limit properties
  *
- * @param  int $domain_id Domain unique identifier
+ * @param  int $domainId Domain unique identifier
  * @return array
  */
-function get_domain_running_props_cnt($domain_id)
+function get_domain_running_props_cnt($domainId)
 {
-    $sub_cnt = get_domain_running_sub_cnt($domain_id);
-    $als_cnt = get_domain_running_als_cnt($domain_id);
+    $sub_cnt = get_domain_running_sub_cnt($domainId);
+    $als_cnt = get_domain_running_als_cnt($domainId);
 
-    list($mail_acc_cnt,,,,) = get_domain_running_mail_acc_cnt($domain_id);
-    list($ftp_acc_cnt,,,) = get_domain_running_ftp_acc_cnt($domain_id);
-    list($sqld_acc_cnt, $sqlu_acc_cnt) = get_domain_running_sql_acc_cnt($domain_id);
+    list($mail_acc_cnt) = get_domain_running_mail_acc_cnt($domainId);
 
-    return array($sub_cnt, $als_cnt, $mail_acc_cnt, $ftp_acc_cnt, $sqld_acc_cnt,
-                 $sqlu_acc_cnt);
-}
+	# Transitional query - Will be removed asap
+	$query = "SELECT `domain_admin_id` FROM `domain` WHERE `domain_id` = ?";
+	$stmt = exec_query($query, $domainId);
 
-/**
- * Return domain unique identifier that belong to a specific user account.
- *
- * @param  int $userId User unique identifier
- * @return int Unique identifier of user's domain
- */
-function get_user_domain_id($userId)
-{
-	static $domainId = null;
+    $ftp_acc_cnt = get_customer_running_ftp_acc_cnt($stmt->fields['domain_admin_id']);
+    list($sqld_acc_cnt, $sqlu_acc_cnt) = get_domain_running_sql_acc_cnt($domainId);
 
-	if(null === $domainId) {
-    	$query = 'SELECT `domain_id` FROM `domain` WHERE `domain_admin_id` = ?';
-    	$stmt = exec_query($query, $userId);
-		$domainId = $stmt->fields['domain_id'];
-	}
-
-    return $domainId;
+    return array($sub_cnt, $als_cnt, $mail_acc_cnt, $ftp_acc_cnt, $sqld_acc_cnt, $sqlu_acc_cnt);
 }
 
 /**
@@ -501,21 +346,6 @@ function check_db_sql_perms($db_id)
 }
 
 /**
- * Checks if an user has permissions on a specific Ftp account.
- *
- * @param  int $ftp_acc Ftp account unique identifier
- * @return bool TRUE if user have permission on Ftp account, FALSE otherwise.
- */
-function check_ftp_perms($ftp_acc)
-{
-    if (who_owns_this($ftp_acc, 'ftp_user') != $_SESSION['user_id']) {
-        return false;
-    }
-
-    return true;
-}
-
-/**
  * Deletes a SQL user.
  *
  * Note: Please, be sure to execute this function inside a MySQL transaction to ensure data consistency.
@@ -554,20 +384,16 @@ function sql_delete_user($domainId, $sqlUserId)
 		exec_query('DELETE FROM `mysql`.`db` WHERE `User` = ?', $sqlUserName);
 	} else {
 		exec_query(
-			'DELETE FROM `mysql`.`db` WHERE `User` = ? AND `Db` = ?',
-			array($sqlUserName, $stmt->fields['sqld_name'])
+			'DELETE FROM `mysql`.`db` WHERE `User` = ? AND `Db` = ?', array($sqlUserName, $stmt->fields['sqld_name'])
 		);
 	}
 
-	// Flush MySQL privileges
+	// Flush SQL privileges
 	execute_query('FLUSH PRIVILEGES');
 
 	// Delete the database from the i-MSCP sql_user table
 	// Must be done at end of process
 	exec_query('DELETE FROM `sql_user` WHERE `sqlu_id` = ?', $sqlUserId);
-
-	// Update reseller sql user limit
-	update_reseller_c_props(get_reseller_id($domainId));
 
 	iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAfterDeleteSqlUser, array('sqlUserId' => $sqlUserId));
 
@@ -596,7 +422,7 @@ function delete_sql_database($domainId, $databaseId)
 
 	$databaseName = quoteIdentifier($stmt->fields['sqld_name']);
 
-	// Get list of users assigned to $databaseId
+	// Get list of users assigned to the database to remove
 	$query = "
 		SELECT
 			`t2`.`sqlu_id`
@@ -614,6 +440,7 @@ function delete_sql_database($domainId, $databaseId)
 	if ($stmt->rowCount()) {
 		while (!$stmt->EOF) {
 			$sqlUserId = $stmt->fields['sqlu_id'];
+
 			if (!sql_delete_user($domainId, $sqlUserId)) {
 				throw new iMSCP_Exception(sprintf('Unable to delete SQL user linked to database with ID %d.', $sqlUserId));
 			}
@@ -625,9 +452,7 @@ function delete_sql_database($domainId, $databaseId)
 	$query = "DELETE FROM `sql_database` WHERE `domain_id` = ? AND `sqld_id` = ?";
 	exec_query($query, array($domainId, $databaseId));
 
-	update_reseller_c_props(get_reseller_id($databaseId));
-
-	// Must be done last du to the implicit commit
+	// Must be done last due to the implicit commit
 	exec_query("DROP DATABASE IF EXISTS $databaseName");
 
 	iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAfterDeleteSqlDb, array('sqlDbId' => $databaseId));
@@ -738,7 +563,6 @@ function customerHasFeature($featureNames, $forceReload = false)
 							  || in_array($dmnProps['phpini_perm_disable_functions'], array('yes', 'exec')))) ? true : false,
 			'cgi' => ($dmnProps['domain_cgi'] == 'yes') ? true : false,
 			'ftp' => ($dmnProps['domain_ftpacc_limit'] != '-1') ? true : false,
-			'ftp_easy_login' => (isset($cfg->FILEMANAGER_ADDON) && $cfg->FILEMANAGER_ADDON == 'AjaxPlorer') ? true : false,
 			'sql' => ($dmnProps['domain_sqld_limit'] != '-1') ? true : false,
 			'mail' => ($dmnProps['domain_mailacc_limit'] != '-1') ? true : false,
 			'subdomains' => ($dmnProps['domain_subd_limit'] != '-1') ? true : false,
@@ -774,6 +598,85 @@ function customerHasFeature($featureNames, $forceReload = false)
     }
 
 	return $canAccess;
+}
+
+/**
+ * Does the given customer is the owner of the given domain?
+ *
+ * @param string $domainName Domain name (dmn,sub,als,alssub)
+ * @param int $customerId Customer unique identifier
+ * @return bool TRUE if the given customer is the owner of the given domain, FALSE otherwise
+ * TODO add admin_id as foreign key in all domain tables too avoid too many jointures
+ */
+function customerHasDomain($domainName, $customerId)
+{
+	$domainName = decode_idna($domainName);
+
+	// Check in domain table
+	$query = "
+		SELECT
+			'found'
+		FROM
+			`domain`
+		WHERE
+			`domain_admin_id` = ?
+		AND
+			`domain_name` = ?
+	";
+	$stmt = exec_query($query, array($customerId, $domainName));
+	if($stmt->rowCount()) return true;
+
+	// Check in domain_aliasses table
+	$query = "
+		SELECT
+			'found'
+		FROM
+			`domain` AS `t1`
+		INNER JOIN
+			`domain_aliasses` AS `t2` ON(`t2`.`domain_id` = `t1`.`domain_id`)
+		WHERE
+			`t1`.`domain_admin_id` = ?
+		AND
+			`t2`.`alias_name` = ?
+	";
+	$stmt = exec_query($query, array($customerId, $domainName));
+	if($stmt->rowCount()) return true;
+
+	// Check in subdomain table
+	$query = "
+		SELECT
+			'found'
+		FROM
+			`domain` AS `t1`
+		INNER JOIN
+			`subdomain` AS `t2` ON (`t2`.`domain_id` = `t1`.`domain_id`)
+		WHERE
+			`t1`.`domain_admin_id` = ?
+		AND
+			CONCAT(`t2`.`subdomain_name`, '.', `t1`.`domain_name`) = ?
+	";
+	$stmt = exec_query($query, array($customerId, $domainName));
+	if($stmt->rowCount()) return true;
+
+	// Check in subdomain_alias table
+	$query = "
+		SELECT
+			'found'
+		FROM
+			`domain` AS `t1`
+		INNER JOIN
+			`domain_aliasses` AS `t2` ON(`t2`.`domain_id` = `t1`.`domain_id`)
+		INNER JOIN
+		 	`subdomain_alias` AS `t3` ON(`t3`.`alias_id` = `t2`.`alias_id`)
+		WHERE
+			`t1`.`domain_admin_id` = ?
+		AND
+			CONCAT(`t3`.`subdomain_alias_name`, '.', `t2`.`alias_name`) = ?
+	";
+	$stmt = exec_query($query, array($customerId, $domainName));
+	if($stmt->rowCount()) return true;
+
+	return false;
 }
 
 /**

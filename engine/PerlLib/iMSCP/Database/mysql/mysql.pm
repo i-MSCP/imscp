@@ -17,11 +17,11 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
-# @category		i-MSCP
-# @copyright	2010-2013 by i-MSCP | http://i-mscp.net
-# @author		Daniel Andreca <sci2tech@gmail.com>
-# @author		Laurent <l.declercq@nuxwin.com>
-# @link			http://i-mscp.net i-MSCP Home Site
+# @category     i-MSCP
+# @copyright    2010-2013 by i-MSCP | http://i-mscp.net
+# @author       Daniel Andreca <sci2tech@gmail.com>
+# @author       Laurent <l.declercq@nuxwin.com>
+# @link         http://i-mscp.net i-MSCP Home Site
 # @license      http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
 package iMSCP::Database::mysql::mysql;
@@ -47,7 +47,9 @@ sub _init
 	$self->{'db'}->{'DATABASE_SETTINGS'} = { 'PrintError' => 0 };
 
 	# for internal use only
-	$self->{'dsn'} = '';
+	$self->{'_dsn'} = '';
+	$self->{'_currentUser'} = '';
+	$self->{'_currentPassword'} = '';
 
 	$self;
 }
@@ -58,7 +60,8 @@ sub set
 	my $self = shift;
 	my $prop = shift;
 	my $value = shift;
-	debug("Setting $prop as ".($value ? $value : 'undef'));
+
+	debug("Setting $prop as " . ($value ? $value : 'undef'));
 	$self->{'db'}->{$prop} = $value if exists $self->{'db'}->{$prop};
 }
 
@@ -74,27 +77,30 @@ sub connect
 		($self->{'db'}->{'DATABASE_HOST'} ? ';host=' . $self->{'db'}->{'DATABASE_HOST'} : '').
 		($self->{'db'}->{'DATABASE_PORT'} ? ';port=' . $self->{'db'}->{'DATABASE_PORT'} : '');
 
-	#if($self->{'dsn'} eq $dsn) { # Avoid to disconnect and reconnect when using same DSN
-		debug("Connect with $dsn");
-
+	if(
+		! $self->{'connection'} ||
+		(
+			$self->{'_dsn'} ne $dsn || $self->{'_currentUser'} ne $self->{'db'}->{'DATABASE_USER'} ||
+			$self->{'_currentPassword'} ne $self->{'db'}->{'DATABASE_PASSWORD'}
+		)
+	) {
 		$self->{'connection'}->disconnect() if $self->{'connection'};
+		debug("Connecting with ($dsn, $self->{'db'}->{'DATABASE_USER'}, $self->{'db'}->{'DATABASE_PASSWORD'})");
 
-		if(
-			!(
-				$self->{'connection'} = DBI->connect(
-					$dsn, $self->{'db'}->{'DATABASE_USER'}, $self->{'db'}->{'DATABASE_PASSWORD'},
-					(
-						defined($self->{'db'}->{'DATABASE_SETTINGS'}) &&
-						ref($self->{'db'}->{'DATABASE_SETTINGS'}) eq 'HASH' ? $self->{'db'}->{'DATABASE_SETTINGS'} : ()
-					)
-				)
+		$self->{'connection'} = DBI->connect(
+			$dsn, $self->{'db'}->{'DATABASE_USER'}, $self->{'db'}->{'DATABASE_PASSWORD'},
+			(
+				defined($self->{'db'}->{'DATABASE_SETTINGS'}) &&
+				ref $self->{'db'}->{'DATABASE_SETTINGS'} eq 'HASH' ? $self->{'db'}->{'DATABASE_SETTINGS'} : ()
 			)
-		) {
-			return $DBI::errstr;
-		}
+		) or return $DBI::errstr;
 
-		$self->{'dsn'} = $dsn;
-	#}
+		$self->{'_dsn'} = $dsn;
+		$self->{'_currentUser'} = $self->{'db'}->{'DATABASE_USER'};
+		$self->{'_currentPassword'} = $self->{'db'}->{'DATABASE_PASSWORD'};
+	} else {
+		debug('Reusing previous SQL connection');
+	}
 
 	0;
 }
@@ -111,7 +117,7 @@ sub doQuery
 	my $query = shift || error('No query provided');
 	my @subs = @_;
 
-	debug("$query with @subs");
+	debug("$query" . (@subs ? ' with: ' . join(', ', @subs) : ''));
 
 	$self->{'sth'} = $self->{'connection'}->prepare($query) || return "Error while preparing query: $DBI::errstr $key|$query";
 
@@ -197,7 +203,7 @@ sub dumpdb
 	my $filename = shift;
 
 	unless($self->{'connection'}) {
-		error('Not connected');
+		error('Not database name provided');
 		return 1;
 	}
 
@@ -226,22 +232,9 @@ sub dumpdb
 	my $dbUser = escapeShell($self->{'db'}->{'DATABASE_USER'});
 	my $dbPass = escapeShell($self->{'db'}->{'DATABASE_PASSWORD'});
 
-	my $bkpCmd = "$stdout " .
-			 	 "--add-drop-database " .
-				 "--add-drop-table " .
-				 "--add-drop-database " .
-				 "--allow-keywords " .
-				 "--compress " .
-				 "--create-options " .
-				 "--default-character-set=utf8 " .
-				 "--extended-insert " .
-				 "--lock-tables " .
-				 "--quote-names " .
-				 "-h $dbHost " .
-				 "-P $dbPort " .
-				 "-u $dbUser " .
-				 "-p$dbPass " .
-				 "$dbName > $filename";
+	my $bkpCmd = "$stdout --add-drop-database --add-drop-table --allow-keywords --compress --create-options " .
+		"--default-character-set=utf8 --extended-insert --lock-tables --quote-names -h $dbHost -P $dbPort -u $dbUser " .
+		"-p$dbPass $dbName > $filename";
 
 	$rs = execute($bkpCmd, \$stdout, \$stderr);
 	debug($stdout) if $stdout;

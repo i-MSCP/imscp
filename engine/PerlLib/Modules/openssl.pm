@@ -17,11 +17,11 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
-# @category		i-MSCP
-# @copyright	2010-2013 by i-MSCP | http://i-mscp.net
-# @author		Daniel Andreca <sci2tech@gmail.com>
-# @link			http://i-mscp.net i-MSCP Home Site
-# @license		http://www.gnu.org/licenses/gpl-2.0.html GPL v2
+# @category    i-MSCP
+# @copyright   2010-2013 by i-MSCP | http://i-mscp.net
+# @author      Daniel Andreca <sci2tech@gmail.com>
+# @link        http://i-mscp.net i-MSCP Home Site
+# @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
 package Modules::openssl;
 
@@ -55,7 +55,7 @@ sub ssl_check_intermediate_cert
 {
 	my $self = shift;
 
-	if ($self->{'intermediate_cert_path'} ne '' && ! -e $self->{'intermediate_cert_path'}) {
+	if ($self->{'intermediate_cert_path'} ne '' && ! -f $self->{'intermediate_cert_path'}) {
 		error("Intermediate certificate $self->{'intermediate_cert_path'} doesn't exists. Exiting...");
 		return 1;
 	}
@@ -67,7 +67,7 @@ sub ssl_check_cert
 {
 	my $self = shift;
 
-	if (($self->{'cert_path'} eq '') || (! -e $self->{'cert_path'})) {
+	if ($self->{'cert_path'} eq '' || ! -f $self->{'cert_path'}) {
 		error("Certificate $self->{'cert_path'} doesn't exists. Exiting...");
 		return 1;
 	}
@@ -84,9 +84,9 @@ sub ssl_check_cert
 	my $rs = execute($cmd, \$stdout, \$stderr);
 	debug($stdout) if $stdout;
 	error($stderr) if $stderr;
-	return 1 if($rs || $stderr);
+	return 1 if $rs || $stderr;
 
-	if ($stdout !~ m~$self->{cert_path}:.*OK~ms ){
+	if ($stdout !~ /$self->{'cert_path'}:.*OK/ms ){
 		error("Certificate $self->{'cert_path'} is not valid. Exiting...");
 		return 1;
 	}
@@ -98,7 +98,7 @@ sub ssl_check_key
 {
 	my $self = shift;
 
-	if (($self->{'key_path'} eq '') || (! -e $self->{'key_path'})) {
+	if ($self->{'key_path'} eq '' || ! -f $self->{'key_path'}) {
 		error("Key $self->{'key_path'} doesn't exists. Exiting...");
 		return -1;
 	}
@@ -136,13 +136,19 @@ sub ssl_export_key
 {
 	my $self = shift;
 
+	# TODO Passing the password in such way is not really recommended since the password will appear
+	# in result of some commands such as PS
 	my $password = escapeShell(defined $self->{'key_pass'} ? $self->{'key_pass'} : 'dummypass');
-	my $cmd = "$self->{openssl_path} rsa -in $self->{'key_path'} -out $self->{'new_cert_path'}/$self->{'new_cert_name'}.pem -passin pass:$password";
+	my $cmd =
+		"$self->{openssl_path} rsa " .
+		"-in $self->{'key_path'} " .
+		"-out $self->{'new_cert_path'}/$self->{'new_cert_name'}.pem " .
+		"-passin pass:$password";
 
 	my ($stdout, $stderr);
 	my $rs = execute($cmd, \$stdout, \$stderr);
 	debug($stdout) if $stdout;
-	error("Cannot save certificate key" . ($stderr ? ": $stderr" : '') . ". Exiting...") if $rs;
+	error("Unable to save certificate key" . ($stderr ? ": $stderr" : '') . ". Exiting...") if $rs;
 	return $rs if $rs;
 
 	0;
@@ -152,13 +158,16 @@ sub ssl_export_cert
 {
 	my $self = shift;
 
-	my $cmd = "$self->{'openssl_path'} x509 -in $self->{'cert_path'} -outform PEM >> $self->{'new_cert_path'}/$self->{'new_cert_name'}.pem";
+	my $cmd =
+		"$self->{'openssl_path'} x509 " .
+		"-in $self->{'cert_path'} " .
+		"-outform PEM >> $self->{'new_cert_path'}/$self->{'new_cert_name'}.pem";
 
 	my ($stdout, $stderr);
 	my $rs = execute($cmd, \$stdout, \$stderr);
 	debug($stdout) if $stdout;
 	warning($stderr) if $stderr && ! $rs;
-	error("Cannot save certificate" . ($stderr ? ": $stderr" : '') . ". Exiting...") if $rs;
+	error("Unable to save certificate" . ($stderr ? ": $stderr" : '') . ". Exiting...") if $rs;
 	return $rs if $rs;
 
 	0;
@@ -170,13 +179,16 @@ sub ssl_export_intermediate_cert
 
 	return 0 if $self->{'intermediate_cert_path'} eq '';
 
-	my $cmd = "$self->{'openssl_path'} x509 -in $self->{'intermediate_cert_path'} -outform PEM >> $self->{'new_cert_path'}/$self->{'new_cert_name'}.pem 2>/dev/null";
+	my $cmd =
+		"$self->{'openssl_path'} x509 " .
+		"-in $self->{'intermediate_cert_path'} " .
+		"-outform PEM >> $self->{'new_cert_path'}/$self->{'new_cert_name'}.pem 2>/dev/null";
 
 	my ($stdout, $stderr);
 	my $rs = execute($cmd, \$stdout, \$stderr);
 	debug($stdout) if $stdout;
 	warning($stderr) if $stderr && ! $rs;
-	error("Cannot save intermediate certificate" . ($stderr ? ": $stderr" : '') . ". Exiting...") if $rs;
+	error("Unable to save intermediate certificate" . ($stderr ? ": $stderr" : '') . ". Exiting...") if $rs;
 	return $rs if $rs;
 
 	0;
@@ -186,13 +198,18 @@ sub ssl_generate_selsigned_cert
 {
 	my $self = shift;
 
-	my $cmd = "$self->{'openssl_path'} req -x509 -nodes -days 1825 -subj '/C=/ST=/L=/CN=*.$self->{'vhost_cert_name'}' -newkey rsa:2048 -keyout $self->{'new_cert_path'}/$self->{'new_cert_name'}.pem -out $self->{'new_cert_path'}/$self->{'new_cert_name'}.pem";
+	my $cmd =
+		"$self->{'openssl_path'} req -x509 -nodes -days 1825 " .
+		"-subj '/C=/ST=/L=/CN=*.$self->{'vhost_cert_name'}' " .
+		"-newkey rsa:2048 " .
+		"-keyout $self->{'new_cert_path'}/$self->{'new_cert_name'}.pem " .
+		"-out $self->{'new_cert_path'}/$self->{'new_cert_name'}.pem";
 
 	my ($stdout, $stderr);
 	my $rs = execute($cmd, \$stdout, \$stderr);
 	debug($stdout) if $stdout;
 	debug($stderr) if $stderr && ! $rs;
-	error("Cannot generate self-signed certificate" . ($stderr ? ": $stderr" : '') . ". Exiting...") if $rs;
+	error("Unable to generate self-signed certificate" . ($stderr ? ": $stderr" : '') . ". Exiting...") if $rs;
 	return $rs if($rs);
 
 	0;
@@ -200,17 +217,13 @@ sub ssl_generate_selsigned_cert
 
 sub ssl_export_all
 {
-
 	my $self = shift;
 	my $rs = 0;
 
 	if($self->{'cert_selfsigned'}) {
-
 		$rs = $self->ssl_generate_selsigned_cert();
 		return $rs if $rs;
-
 	} else {
-
 		$rs = $self->ssl_export_key();
 		return $rs if $rs;
 

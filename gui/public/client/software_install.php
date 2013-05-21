@@ -124,30 +124,8 @@ if (!empty($_POST)) {
 	$vfs = new iMSCP_VirtualFileSystem($domain);
 	$list = $vfs->ls($other_dir);
 
-	// Check dir exists
-
 	$domainProps = get_domain_default_props($_SESSION['user_id']);
 	$dmn_id = $domainProps['domain_id'];
-	$dmn_name = $domainProps['domain_name'];
-	$dmn_gid = $domainProps['domain_gid'];
-	$dmn_uid = $domainProps['domain_uid'];
-	$dmn_created_id = $domainProps['domain_created_id'];
-	$dmn_created = $domainProps['domain_created'];
-	$dmn_last_modified = $domainProps['domain_last_modified'];
-	$dmn_mailacc_limit = $domainProps['domain_mailacc_limit'];
-	$dmn_ftpacc_limit = $domainProps['domain_ftpacc_limit'];
-	$dmn_traff_limit = $domainProps['domain_traffic_limit'];
-	$dmn_sqld_limit = $domainProps['domain_sqld_limit'];
-	$dmn_sqlu_limit = $domainProps['domain_sqlu_limit'];
-	$dmn_status = $domainProps['domain_status'];
-	$dmn_als_limit = $domainProps['domain_alias_limit'];
-	$dmn_subd_limit = $domainProps['domain_subd_limit'];
-	$dmn_ip_id = $domainProps['domain_ip_id'];
-	$dmn_disk_limit = $domainProps['domain_disk_limit'];
-	$dmn_disk_usage = $domainProps['domain_disk_usage'];
-	$dmn_php = $domainProps['domain_php'];
-	$dmn_cgi = $domainProps['domain_cgi'];
-
 
 	$query = "
 		SELECT
@@ -191,7 +169,12 @@ if (!empty($_POST)) {
 		$domain_path = $posted_mountpath;
 	}
 
-	if ($stmt->fields['software_db'] == "1") {
+	$db_connection_ok = true;
+	$selected_db = '';
+	$sql_user = '';
+	$sql_pass = '';
+
+	if ($stmt->fields['software_db'] == '1') {
 		$selected_db = clean_input($_POST['selected_db'], true);
 		$sql_user = clean_input($_POST['sql_user'], true);
 		$query = "SELECT `sqlu_pass` FROM `sql_user` WHERE `sqlu_name` = ?";
@@ -261,7 +244,7 @@ if (!empty($_POST)) {
 				array(
 					$dmn_id, $posted_aliasdomain_id, $posted_subdomain_id, $posted_aliassubdomain_id, $id,
 					$software_master_id, $sw_software_name, $sw_software_version, $software_language, $other_dir,
-					"not_required", "not_required", "not_required", "not_required", $install_username, $install_password,
+					'not_required', 'not_required', 'not_required', 'not_required', $install_username, $install_password,
 					$install_email, $cfg->ITEM_ADD_STATUS, $software_depot));
 		}
 

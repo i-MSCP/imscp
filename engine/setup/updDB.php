@@ -35,7 +35,7 @@
 $guiRootDir = '{GUI_ROOT_DIR}';
 
 if(strpos($guiRootDir, 'GUI_ROOT_DIR') !== false) {
-	print 'The gui root directory is not defined in the ' . __FILE__ ." file.\n";
+	fwrite(STDERR, '[ERROR] gui root directory is not defined at ' . __FILE__ . ' line ' . __LINE__ . "\n");
 	exit(1);
 }
 

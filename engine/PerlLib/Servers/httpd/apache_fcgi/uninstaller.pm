@@ -49,9 +49,8 @@ sub _init
 sub uninstall
 {
 	my $self = shift;
-	my $rs = 0;
 
-	$rs = $self->removeUsers();
+	my $rs = $self->removeUsers();
 	return $rs if $rs;
 
 	$rs = $self->removeDirs();
@@ -73,9 +72,9 @@ sub removeUsers
 	my ($panelGName, $panelUName);
 
 	# Panel user
-	use Modules::SystemUser;
+	use iMSCP::SystemUser;
 
-	$panelUName = Modules::SystemUser->new();
+	$panelUName = iMSCP::SystemUser->new();
 	$panelUName->{'force'} = 'yes';
 
 	$rs = $panelUName->delSystemUser(
@@ -84,8 +83,8 @@ sub removeUsers
 	return $rs if $rs;
 
 	# Panel group
-	use Modules::SystemGroup;
-	$panelGName = Modules::SystemGroup->new();
+	use iMSCP::SystemGroup;
+	$panelGName = iMSCP::SystemGroup->new();
 
 	$panelGName->delSystemGroup(
 		$main::imscpConfig{'SYSTEM_USER_PREFIX'} . $main::imscpConfig{'SYSTEM_USER_MIN_UID'}
@@ -139,9 +138,8 @@ sub fastcgiConf
 	use Servers::httpd::apache_fcgi;
 
 	my $httpd = Servers::httpd::apache_fcgi->getInstance();
-	my $rs = 0;
 
-	$rs = $httpd->disableMod('fastcgi_imscp fcgid_imscp');
+	my $rs = $httpd->disableMod('fastcgi_imscp fcgid_imscp');
 	return $rs if $rs;
 
 	for ('fastcgi_imscp.conf', 'fastcgi_imscp.load', 'fcgid_imscp.conf', 'fcgid_imscp.load') {

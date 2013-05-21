@@ -24,15 +24,199 @@
  * Portions created by the i-MSCP Team are Copyright (C) 2010-2013 by
  * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
  *
- * @category	i-MSCP
- * @package		iMSCP_Core
- * @subpackage	Reseller
+ * @category    i-MSCP
+ * @package     iMSCP_Core
+ * @subpackage  Reseller
  * @copyright   2001-2006 by moleSoftware GmbH
  * @copyright   2006-2010 by ispCP | http://isp-control.net
  * @copyright   2010-2013 by i-MSCP | http://i-mscp.net
  * @author      ispCP Team
  * @author      i-MSCP Team
  * @link        http://i-mscp.net
+ */
+
+/***********************************************************************************************************************
+ * TODO: Using the PHP mail function to send mass emails is an error (as stated by the PHP documentation).
+ * We must solve this by using a specific library such as phpmailer that is really more efficient in such context.
+ */
+
+/***********************************************************************************************************************
+ * Functions
+ */
+
+/**
+ * Send the given email.
+ *
+ * @param string $to receivers of the mail
+ * @param string $from Sender of the mail
+ * @param string $subject Message subject
+ * @param string $message Message body
+ * @return void
+ */
+function sendEmail($to, $from, $subject, $message)
+{
+	$headers = "MIME-Version: 1.0\r\n";
+	$headers .= "Content-Type: text/plain; charset=utf-8\r\n";
+	$headers .= "Content-Transfer-Encoding: 8bit\r\n";
+	$headers .= "From: $from\r\n";
+	$headers .= "X-Mailer: i-MSCP mailer\r\n";
+
+	mail($to, $subject, $message, $headers);
+}
+
+/**
+ * Send email to all customers of the given reseller.
+ *
+ * @param int $resellerId Reseller unique identifier
+ * @return void
+ */
+function sendEmailToResellerCustomers($resellerId)
+{
+	global $messageSubject, $messageBody,  $senderName, $senderEmail;
+
+	$query = '
+		SELECT
+			`admin_name`, `fname`, `lname`, `email`
+		FROM
+			`admin`
+		WHERE
+			`admin_type` = ?
+		AND
+			`created_by` = ?
+		GROUP BY
+			`email`
+	';
+	$stmt = exec_query($query, array('user', $resellerId));
+
+	while (!$stmt->EOF) {
+		if($stmt->fields['fname'] == '' &&  $stmt->fields['lname'] == '') {
+			$to = encode(decode_idna($stmt->fields['admin_name']));
+		} else {
+			$to = trim("{$stmt->fields['fname']} {$stmt->fields['lname']}");
+		}
+
+		$to = encode($to . "<{$stmt->fields['email']}>");
+		$from = encode(trim($senderName)) . " <$senderEmail>";
+
+		sendEmail($to, $from, encode($messageSubject), $messageBody);
+		$stmt->moveNext();
+	}
+}
+
+/**
+ * Check email data.
+ *
+ * @return bool TRUE if all data are valid, FALSE otherwise
+ */
+function checkEmailData()
+{
+	global $messageSubject, $messageBody, $senderEmail, $senderName;
+
+	if(
+		isset($_POST['rcpt_to']) && isset($_POST['msg_subject']) && isset($_POST['msg_text']) &&
+		isset($_POST['sender_email']) && isset($_POST['sender_name'])
+	) {
+
+		$messageSubject = clean_input($_POST['msg_subject'], false);
+		$messageBody = clean_input($_POST['msg_text'], false);
+		$senderEmail = clean_input($_POST['sender_email'], false);
+		$senderName =  clean_input($_POST['sender_name'], false);
+
+		if ($messageSubject == '') {
+			set_page_message(tr('Message subject is missing.'), 'error');
+		}
+
+		if ($messageBody == '') {
+			set_page_message(tr('Message body is missing.'), 'error');
+		}
+
+		if ($senderName == '') {
+			set_page_message(tr('Sender name is missing.'), 'error');
+		}
+
+		if ($senderEmail == '') {
+			set_page_message(tr('Sender email is missing.'), 'error');
+		} elseif (!chk_email($senderEmail)) {
+			set_page_message(tr("Incorrect email length or syntax."), 'error');
+		}
+
+		if (Zend_Session::namespaceIsset('pageMessages')) {
+			return false;
+		}
+
+		return true;
+	} else {
+		showBadRequestErrorPage();
+		exit;
+	}
+}
+
+/**
+ * Generate page  data.
+ *
+ * @param iMSCP_pTemplate $tpl
+ * @return void
+ */
+function generatePageData($tpl)
+{
+	global $messageSubject, $messageBody, $senderEmail, $senderName;
+
+	if (isset($_POST['uaction']) && $_POST['uaction'] === 'send_circular') {
+		$tpl->assign(
+			array(
+				'MESSAGE_SUBJECT' => tohtml($messageSubject),
+				'MESSAGE_TEXT' => tohtml($messageBody),
+				'SENDER_EMAIL' => tohtml($senderEmail),
+				'SENDER_NAME' => tohtml($senderName)
+			)
+		);
+	} else {
+		$query = 'SELECT `admin_name`, `fname`, `lname`, `email` FROM `admin` WHERE `admin_id` = ?';
+		$stmt = exec_query($query, $_SESSION['user_id']);
+		$data = $stmt->fetchRow();
+
+		if (!empty($data['fname']) && !empty($data['lname'])) {
+			$senderName = $data['fname'] . ' ' . $data['lname'];
+		} elseif (!empty($data['fname'])) {
+			$senderName = $stmt->fields['fname'];
+		} elseif (!empty($data['lname'])) {
+			$senderName = $stmt->fields['lname'];
+		} else {
+			$senderName = $data['admin_name'];
+		}
+
+		$tpl->assign(
+			array(
+				'MESSAGE_SUBJECT' => '',
+				'MESSAGE_TEXT' => '',
+				'SENDER_EMAIL' => tohtml($data['email']),
+				'SENDER_NAME' => tohtml($senderName)
+			)
+		);
+	}
+}
+
+/**
+ * Send circular.
+ *
+ * @return void
+ */
+function sendCircular()
+{
+	global $senderName, $senderEmail;
+
+	if (isset($_POST['uaction']) && $_POST['uaction'] == 'send_circular' && isset($_POST['rcpt_to'])) {
+		if (checkEmailData()) {
+			sendEmailToResellerCustomers($_SESSION['user_id']);
+			set_page_message(tr('Mass email successfully sent.'), 'success');
+			write_log('Mass email has been sent from Reseller ' . tohtml("$senderName <$senderEmail"), E_USER_NOTICE);
+			redirectTo('users.php');
+		}
+	}
+}
+
+/***********************************************************************************************************************
+ * Main
  */
 
 // Include core library
@@ -42,187 +226,36 @@ iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onResellerScriptStar
 
 check_login('reseller');
 
-/** @var $cfg iMSCP_Config_Handler_File */
-$cfg = iMSCP_Registry::get('config');
+if(!resellerHasCustomers()) {
+	showBadRequestErrorPage();
+}
 
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic(
 	array(
 		'layout' => 'shared/layouts/ui.tpl',
 		'page' => 'reseller/circular.tpl',
-		'page_message' => 'layout'));
+		'page_message' => 'layout'
+	)
+);
 
 $tpl->assign(
 	array(
 		'TR_PAGE_TITLE' => tr('i-MSCP Reseller/Circular'),
 		'THEME_CHARSET' => tr('encoding'),
-		'ISP_LOGO' => layout_getUserLogo(),));
-
-/**
- * @param iMSCP_pTemplate $tpl
- */
-function gen_page_data($tpl) {
-	if (isset($_POST['uaction']) && $_POST['uaction'] === 'send_circular') {
-		$tpl->assign(
-			array(
-				'MESSAGE_SUBJECT' => clean_input($_POST['msg_subject'], true),
-				'MESSAGE_TEXT' => clean_input($_POST['msg_text'], true),
-				'SENDER_EMAIL' => clean_input($_POST['sender_email'], true),
-				'SENDER_NAME' => clean_input($_POST['sender_name'], true)));
-	} else {
-		$user_id = $_SESSION['user_id'];
-
-		$query = "
-			SELECT
-				`fname`, `lname`, `email`
-			FROM
-				`admin`
-			WHERE
-				`admin_id` = ?
-			GROUP BY
-				`email`
-		";
-
-		$rs = exec_query($query, $user_id);
-
-		if (isset($rs->fields['fname']) && isset($rs->fields['lname'])) {
-			$sender_name = $rs->fields['fname'] . ' ' . $rs->fields['lname'];
-		} elseif (isset($rs->fields['fname']) && !isset($rs->fields['lname'])) {
-			$sender_name = $rs->fields['fname'];
-		} elseif (!isset($rs->fields['fname']) && isset($rs->fields['lname'])) {
-			$sender_name = $rs->fields['lname'];
-		} else {
-			$sender_name = '';
-		}
-
-		$tpl->assign(
-			array(
-				'MESSAGE_SUBJECT' => '',
-				'MESSAGE_TEXT' => '',
-				'SENDER_EMAIL' => tohtml($rs->fields['email']),
-				'SENDER_NAME' => tohtml($sender_name)));
-	}
-}
-
-/**
- * @param $tpl
- * @return bool
- */
-function check_user_data($tpl) {
-	global $msg_subject, $msg_text, $sender_email, $sender_name;
-
-	$msg_subject = clean_input($_POST['msg_subject'], false);
-	$msg_text = clean_input($_POST['msg_text'], false);
-	$sender_email = clean_input($_POST['sender_email'], false);
-	$sender_name = clean_input($_POST['sender_name'], false);
-
-	if (empty($msg_subject)) {
-		set_page_message(tr('Please specify a message subject.'), 'error');
-	}
-
-	if (empty($msg_text)) {
-		set_page_message(tr('Please specify a message content.'), 'error');
-	}
-
-	if (empty($sender_name)) {
-		set_page_message(tr('Please specify a sender name.'), 'error');
-	}
-
-	if (empty($sender_email)) {
-		set_page_message(tr('Please specify a sender email.'), 'error');
-	} else if (!chk_email($sender_email)) {
-		set_page_message(tr('Incorrect email length or syntax.'), 'error');
-	}
-
-	if(Zend_Session::namespaceIsset('pageMessages')) {
-		return false;
-	} else {
-		return true;
-	}
-}
-
-/**
- * @param $tpl
- */
-function send_circular($tpl) {
-	if (isset($_POST['uaction']) && $_POST['uaction'] === 'send_circular') {
-		if (check_user_data($tpl)) {
-			send_reseller_users_message($_SESSION['user_id']);
-			unset($_POST['uaction']);
-			gen_page_data($tpl);
-		}
-	}
-}
-
-/**
- * @param $admin_id
- */
-function send_reseller_users_message($admin_id) {
-
-	$msg_subject = clean_input($_POST['msg_subject'], false);
-	$msg_text = clean_input($_POST['msg_text'], false);
-	$sender_email = clean_input($_POST['sender_email'], false);
-	$sender_name = clean_input($_POST['sender_name'], false);
-
-	$query = "
-		SELECT
-			`fname`, `lname`, `email`
-		FROM
-			`admin`
-		WHERE
-			`admin_type` = 'user' AND `created_by` = ?
-		GROUP BY
-			`email`
-	";
-	$rs = exec_query($query, $admin_id);
-
-	while (!$rs->EOF) {
-		$to = "\"" . encode($rs->fields['fname'] . " " . $rs->fields['lname']) . "\" <" . $rs->fields['email'] . ">";
-
-		send_circular_email($to, "\"" . encode($sender_name) . "\" <" . $sender_email . ">", $msg_subject, $msg_text);
-
-		$rs->moveNext();
-	}
-	
-	$sender_name = tohtml($sender_name);
-	set_page_message(tr('Mail successfully sent to your users.'), 'success');
-	write_log("Mass email was sent from Reseller " . $sender_name . " <" . $sender_email . ">", E_USER_NOTICE);
-}
-
-/**
- * @param $to
- * @param $from
- * @param $subject
- * @param $message
- */
-function send_circular_email($to, $from, $subject, $message) {
-	$subject = encode($subject);
-	$headers = "MIME-Version: 1.0\nContent-Type: text/plain; charset=utf-8\nContent-Transfer-Encoding: 8bit\n";
-	$headers .= "From: " . $from . "\n";
-	$headers .= "X-Mailer: i-MSCP marketing mailer";
-
-	mail($to, $subject, $message, $headers);
-}
-
-generateNavigation($tpl);
-
-$tpl->assign(
-	array(
+		'ISP_LOGO' => layout_getUserLogo(),
 		'TR_CIRCULAR' => tr('Circular'),
-		'TR_CORE_DATA' => tr('Core data'),
-		'TR_SEND_TO' => tr('Send message to'),
-		'TR_ALL_USERS' => tr('All users'),
-		'TR_ALL_RESELLERS' => tr('All resellers'),
-		'TR_ALL_USERS_AND_RESELLERS' => tr('All users & resellers'),
 		'TR_MESSAGE_SUBJECT' => tr('Message subject'),
-		'TR_MESSAGE_TEXT' => tr('Message'),
-		'TR_ADDITIONAL_DATA' => tr('Additional data'),
-		'TR_SENDER_EMAIL' => tr('Senders email'),
-		'TR_SENDER_NAME' => tr('Senders name'),
-		'TR_SEND_MESSAGE' => tr('Send message')));
+		'TR_MESSAGE_TEXT' => tr('Message body'),
+		'TR_SENDER_EMAIL' => tr('Sender email'),
+		'TR_SENDER_NAME' => tr('Sender name'),
+		'TR_SEND_MESSAGE' => tr('Send message')
+	)
+);
 
-send_circular($tpl);
-gen_page_data($tpl);
+sendCircular();
+generateNavigation($tpl);
+generatePageData($tpl);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');

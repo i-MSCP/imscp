@@ -23,17 +23,18 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
-# @category		i-MSCP
-# @copyright	2010-2013 by i-MSCP | http://i-mscp.net
-# @author		Daniel Andreca <sci2tech@gmail.com>
-# @author		Laurent Declercq <l.declercq@nuxwin.com>
-# @link			http://i-mscp.net i-MSCP Home Site
-# @license		http://www.gnu.org/licenses/gpl-2.0.html GPL v2
+# @category    i-MSCP
+# @copyright   2010-2013 by i-MSCP | http://i-mscp.net
+# @author      Daniel Andreca <sci2tech@gmail.com>
+# @author      Laurent Declercq <l.declercq@nuxwin.com>
+# @link        http://i-mscp.net i-MSCP Home Site
+# @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
 package autoinstaller::Adapter::Debian;
 
 use strict;
 use warnings;
+
 use iMSCP::Debug;
 use iMSCP::Execute;
 use iMSCP::Dialog;
@@ -61,19 +62,20 @@ use parent 'autoinstaller::Adapter::Abstract';
 sub installPreRequiredPackages
 {
 	my $self = shift;
-	my($rs, $stdout, $stderr);
-
-	fatal('Not a Debian like system') if checkCommandAvailability('apt-get');
-
-	$rs = $self->_updatePackagesIndex();
-	return $rs if $rs;
 
 	my $command = 'apt-get';
+
+	fatal('Not a Debian like system') if checkCommandAvailability($command);
+
+	# Ensure packages index is up to date
+	my $rs = $self->_updatePackagesIndex();
+	return $rs if $rs;
 
 	if(! %main::preseed && ! $main::noprompt && ! checkCommandAvailability('debconf-apt-progress')) {
 		$command = 'debconf-apt-progress --logstderr -- ' . $command;
 	}
 
+	my ($stdout, $stderr);
 	$rs = execute(
 		"$command -y install @{$self->{'preRequiredPackages'}}",
 		(%main::preseed || $main::noprompt) ? \$stdout : undef, \$stderr
@@ -96,23 +98,22 @@ sub installPreRequiredPackages
 sub preBuild
 {
 	my $self = shift;
-	my $rs = 0;
 
 	unless($main::skippackages) {
 		iMSCP::Dialog->factory()->endGauge();
 
-		# TODO review (check this on preseed)
 		if($main::imscpConfig{'DATABASE_PASSWORD'} ne '' && not $main::reconfigure ~~ ['sql', 'servers', 'all']) {
 			$ENV{'DEBIAN_PRIORITY'} = 'critical';
 		}
 
 		my @steps = (
 			[sub { $self->_preparePackagesList() }, 'Generating list of packages to uninstall and install'],
-			[sub { $self->_addExternalRepositories() }, 'Process external repositories if any'],
-			[sub { $self->_addAptPreferencesFile() }, 'Process APT preferences file if any'],
+			[sub { $self->_processExternalRepositories() }, 'Process external repositories if any'],
+			[sub { $self->_processAptPreferencesFile() }, 'Process APT preferences file if any'],
 			[sub { $self->_updatePackagesIndex() }, 'Updating packages index files']
 		);
 
+		my $rs = 0;
 		my $step = 1;
 		my $nbSteps = scalar @steps;
 
@@ -137,9 +138,8 @@ sub preBuild
 sub uninstallPackages
 {
 	my $self = shift;
-	my $rs = 0;
 
-	$rs = iMSCP::HooksManager->getInstance()->trigger('beforeUninstallPackages', $self->{'packagesToUninstall'});
+	my $rs = iMSCP::HooksManager->getInstance()->trigger('beforeUninstallPackages', $self->{'packagesToUninstall'});
 	return $rs if $rs;
 
 	if(@{$self->{'packagesToUninstall'}}) {
@@ -176,9 +176,8 @@ sub uninstallPackages
 sub installPackages
 {
 	my $self = shift;
-	my $rs = 0;
 
-	$rs = iMSCP::HooksManager->getInstance()->trigger('beforeInstallPackages', $self->{'packagesToInstall'});
+	my $rs = iMSCP::HooksManager->getInstance()->trigger('beforeInstallPackages', $self->{'packagesToInstall'});
 	return $rs if $rs;
 
 	my ($stdout, $stderr);
@@ -191,7 +190,7 @@ sub installPackages
 	}
 
 	$rs = execute(
-		"$command -y install @{$self->{'packagesToInstall'}} --auto-remove --purge",
+		"$command -y -o DPkg::Options::='--force-confdef' install @{$self->{'packagesToInstall'}} --auto-remove --purge",
 		(%main::preseed || $main::noprompt) ? \$stdout : undef, \$stderr
 	);
 	debug($stdout) if $stdout;
@@ -244,8 +243,8 @@ sub _init
 	$self->{'preRequiredPackages'} = [
 		'aptitude', 'debconf-utils', 'dialog', 'liblist-moreutils-perl', 'libxml-simple-perl', 'wget'
 	];
-	$self->{'externalRepositoriesToRemove'} = [];
-	$self->{'externalRepositories'} = [];
+	$self->{'externalRepositoriesToRemove'} = {};
+	$self->{'externalRepositoriesToAdd'} = {};
 	$self->{'aptPreferences'} = [];
 	$self->{'packagesToInstall'} = [];
 	$self->{'packagesToUninstall'} = [];
@@ -274,19 +273,15 @@ sub _preparePackagesList
 	my $distribution = lc($lsbRelease->getId(1));
 	my $codename = lc($lsbRelease->getCodename(1));
 	my $packagesFile = "$FindBin::Bin/docs/" . ucfirst($distribution) . "/packages-$codename.xml";
-
 	my $rs = 0;
 
 	eval "use XML::Simple; 1";
-	fatal('Unable to load the XML::Simple perl module') if($@);
-
-	eval "use List::MoreUtils qw(uniq); 1";
-	fatal('Unable to load the List::MoreUtils perl module') if($@);
+	fatal("Unable to load the XML::Simple perl module: $@") if $@;
 
 	my $xml = XML::Simple->new(NoEscape => 1);
 	my $data = eval { $xml->XMLin($packagesFile, KeyAttr => 'name') };
 
-	fatal("Unable to read $packagesFile: $@") if($@);
+	fatal("Unable to parse $packagesFile: $@") if $@;
 
 	for(sort keys %{$data}) {
 		if($data->{$_}->{'alternative'}) {
@@ -350,6 +345,9 @@ Do you agree?
 						$server = '' if $rs;
 						$rs = 0;
 					} while (! $server);
+
+					iMSCP::Dialog->factory->set('no-cancel', undef);
+
 				} else {
 					$server = pop(@alternative);
 				}
@@ -365,13 +363,11 @@ Do you agree?
 					if(ref $data->{$service}->{'alternative'}->{$_} eq 'HASH' &&
 						exists $data->{$service}->{'alternative'}->{$_}->{'repository'}
 					) {
-						push (
-							@{$self->{'externalRepositoriesToRemove'}},
-							{
-								'repository' => $data->{$service}->{'alternative'}->{$_}->{'repository'},
-								'repository_origin' => $data->{$service}->{'alternative'}->{$_}->{'repository_origin'}
-							}
-						);
+
+						$self->{'externalRepositoriesToRemove'}->{$data->{$service}->{'alternative'}->{$_}->{'repository'}} = {
+							'repository' => $data->{$service}->{'alternative'}->{$_}->{'repository'},
+							'repository_origin' => $data->{$service}->{'alternative'}->{$_}->{'repository_origin'}
+						};
 					}
 
 					for my $attr (keys %{$data->{$service}->{'alternative'}->{$_}}) {
@@ -392,15 +388,12 @@ Do you agree?
 					ref $data->{$service}->{'alternative'}->{$_} eq 'HASH' &&
                    	exists $data->{$service}->{'alternative'}->{$_}->{'repository'}
 				) {
-					push (
-						@{$self->{'externalRepositories'}},
-						{
+					$self->{'externalRepositoriesToAdd'}->{$data->{$service}->{'alternative'}->{$_}->{'repository'}} = {
 							'repository' => $data->{$service}->{'alternative'}->{$_}->{'repository'},
 							'repository_key_uri' => $data->{$service}->{'alternative'}->{$_}->{'repository_key_uri'} || undef,
 							'repository_key_id' => $data->{$service}->{'alternative'}->{$_}->{'repository_key_id'} || undef,
 							'repository_key_srv' => $data->{$service}->{'alternative'}->{$_}->{'repository_key_srv'} || undef
-						}
-					);
+					}
 				}
 
 				# Add apt preferences if any
@@ -430,12 +423,14 @@ Do you agree?
 
 	# Build list of packages to uninstall
 
+	eval "use List::MoreUtils qw(uniq); 1";
+	fatal("Unable to load the List::MoreUtils perl module: $@") if $@;
+
 	@{$self->{'packagesToUninstall'}} = uniq(@{$self->{'packagesToUninstall'}});
 
 	# Do not remove a package scheduled for installation
-	# Warn: Remove check on mysql-common package and you can end with broken system
 	@{$self->{'packagesToUninstall'}} = grep {
-		not $_ ~~  [@{$self->{'packagesToInstall'}}] && $_ ne 'mysql-common'
+		not $_ ~~  @{$self->{'packagesToInstall'}}
 	} @{$self->{'packagesToUninstall'}};
 
 	# This test is needed to be sure to not try to remove package no longer available
@@ -466,35 +461,36 @@ Do you agree?
 sub _updateAptSourceList
 {
 	my $self = shift;
-	my $rs = 0;
 
-	my $file = iMSCP::File->new('filename' => '/etc/apt/sources.list');
+	my $sourceListFile = iMSCP::File->new('filename' => '/etc/apt/sources.list');
 
-	$file->copyFile('/etc/apt/sources.list.bkp') unless -f '/etc/apt/sources.list.bkp';
-	my $content = $file->get();
+	my $rs = $sourceListFile->copyFile('/etc/apt/sources.list.bkp') unless -f '/etc/apt/sources.list.bkp';
+	return $rs if $rs;
 
-	unless (defined $content) {
+	my $sourceListFileContent = $sourceListFile->get();
+
+	unless (defined $sourceListFileContent) {
 		error('Unable to read /etc/apt/sources.list file');
 		return 1;
 	}
 
-	my ($foundSection, $needUpdate, $rs, $stdout, $stderr);
+	my ($foundSection, $stdout, $stderr);
 
 	for(@{$self->{'repositorySections'}}) {
 		my $section = $_;
 		my @seen = ();
 
-		while($content =~ /^deb\s+(?<uri>(?:https?|ftp)[^\s]+)\s+(?<distrib>[^\s]+)\s+(?<components>.+)$/gm) {
+		while($sourceListFileContent =~ /^deb\s+(?<uri>(?:https?|ftp)[^\s]+)\s+(?<distrib>[^\s]+)\s+(?<components>.+)$/gm) {
 			my %repository = %+;
 
 			if("$repository{'uri'} $repository{'distrib'}" ~~ @seen) {
-				debug("Repository '$repository{'uri'} $repository{'distrib'}' already checked for '$section' section. Skipping...");
+				debug("Repository '$repository{'uri'} $repository{'distrib'}' already checked for '$section' section");
 				next;
 			}
 
-			debug("\nChecking repository '$repository{'uri'} $repository{'distrib'}' for '$section' section.");
+			debug("Checking repository '$repository{'uri'} $repository{'distrib'}' for '$section' section");
 
-			unless($content =~ /^deb\s+$repository{'uri'}\s+\b$repository{'distrib'}\b\s+.*\b$section\b/m) {
+			unless($sourceListFileContent =~ /^deb\s+$repository{'uri'}\s+\b$repository{'distrib'}\b\s+.*\b$section\b/m) {
 				my $uri = "$repository{'uri'}/dists/$repository{'distrib'}/$section/";
 				$rs = execute("wget --spider $uri", \$stdout, \$stderr);
 				debug($stdout) if $stdout;
@@ -502,13 +498,11 @@ sub _updateAptSourceList
 
 				unless ($rs) {
 					$foundSection = 1;
-					debug("Enabling section '$section' on '$repository{uri} $repository{'distrib'}'");
-					$content =~ s/^($&)$/$1 $section/m;
-
-					$needUpdate = 1;
+					debug("Enabling section '$section' on '$repository{'uri'} $repository{'distrib'}'");
+					$sourceListFileContent =~ s/^($&)$/$1 $section/m;
 				}
 			} else {
-				debug("Section '$section' already enabled on '$repository{uri} $repository{'distrib'}'");
+				debug("Section '$section' already enabled on '$repository{'uri'} $repository{'distrib'}'");
 				$foundSection = 1;
 			}
 
@@ -516,106 +510,96 @@ sub _updateAptSourceList
 		}
 
 		unless($foundSection) {
-			error("Unable to found repository supporting '$section' packages");
+			error("Unable to found repository supporting '$section' section");
 			return 1;
 		}
 	}
 
-	if($needUpdate) {
-		$rs = $file->set($content);
-		return $rs if $rs;
+	$rs = $sourceListFile->set($sourceListFileContent);
+	return $rs if $rs;
 
-		$rs = $file->save();
-		return $rs if $rs;
-	}
+	$rs = $sourceListFile->save();
+	return $rs if $rs;
 
 	0;
 }
 
-=item _addExternalRepositories()
+=item _processExternalRepositories()
 
- Add external repositories to the sources.list file and their gpg keys.
-
- Note: Also removes repositories that are no longer needed.
+ Process external repositories.
 
  Return int 0 on success, other on failure.
 
 =cut
 
-sub _addExternalRepositories
+sub _processExternalRepositories
 {
 	my $self = shift;
-	my $rs = 0;
 
-	if(@{$self->{'externalRepositoriesToRemove'}} || @{$self->{'externalRepositories'}}) {
+	if(%{$self->{'externalRepositoriesToRemove'}} || %{$self->{'externalRepositoriesToAdd'}}) {
 
 		my $sourceListFile = iMSCP::File->new('filename' => '/etc/apt/sources.list');
 
-		unless (-f '/etc/apt/sources.list.bkp') {
-			$rs = $sourceListFile->copyFile('/etc/apt/sources.list.bkp');
-			return $rs if $rs;
-		}
+		my $rs = $sourceListFile->copyFile('/etc/apt/sources.list.bkp') unless -f '/etc/apt/sources.list.bkp';
+		return $rs if $rs;
 
-		my $content = $sourceListFile->get();
+		my $sourceListFileContent = $sourceListFile->get();
 
-		unless (defined $content) {
+		unless (defined $sourceListFileContent) {
 			error('Unable to read /etc/apt/sources.list file');
 			return 1;
 		}
 
-		for(@{$self->{'externalRepositories'}}) {
-			my $repository = $_->{'repository'};
+		delete $self->{'externalRepositoriesToRemove'}->{$_} for keys %{$self->{'externalRepositoriesToAdd'}};
 
-			for(@{$self->{'externalRepositoriesToRemove'}}) {
-				if($repository eq $_->{'repository'}) {
-					my $index = 0;
-					$index++ until @{$self->{'externalRepositoriesToRemove'}}[$index] eq $_;
-					splice(@{$self->{'externalRepositoriesToRemove'}}, $index, 1);
-				}
+		my ($cmd, $stdout, $stderr);
+
+		for(keys %{$self->{'externalRepositoriesToRemove'}}) {
+			if($sourceListFileContent =~  /$_/) {
+				my $repository = $self->{'externalRepositoriesToRemove'}->{$_};
+
+				# Retrieve any packages installed from the repository to remove
+				# TODO This command is too slow ; A better alternative must be found
+				$rs = execute(
+					"aptitude search '?installed?origin($repository->{'repository_origin'})' | cut -b 5- | cut -d ' ' -f 1",
+					\$stdout, \$stderr
+				);
+				debug($stdout) if $stdout;
+				error($stderr) if $stderr && $rs;
+				return $rs if $rs;
+
+				# Schedule packages for deletion
+				@{$self->{'packagesToUninstall'}} = (@{$self->{'packagesToUninstall'}}, split("\n", $stdout)) if $stdout;
+
+				# Remove the repository from the sources.list file
+				$sourceListFileContent =~ s/\n?(deb|deb-src)\s+$_\n?//gm;
 			}
 		}
 
-		my ($cmd, $stdout, $stderr, $needUpdate);
+		eval "use List::MoreUtils qw(uniq); 1";
+		fatal('Unable to load the List::MoreUtils perl module') if $@;
 
-		for(@{$self->{'externalRepositoriesToRemove'}}) {
-			# Retrieve any packages installed from the repository to remove
-			# TODO This command is too slow. Try to find a replacement for it
-			$rs = execute(
-				"aptitude search '?installed?origin($_->{'repository_origin'})' | cut -b 5- | cut -d ' ' -f 1",
-				\$stdout, \$stderr
-			);
-			debug($stdout) if $stdout;
-			error($stderr) if $stderr && $rs;
-			return $rs if $rs;
-
-			# Schedule packages for deletion
-			@{$self->{'packagesToUninstall'}} = (@{$self->{'packagesToUninstall'}}, split("\n", $stdout)) if $stdout;
-
-			# Remove the repository from the sources.list file
-			$content =~ s/\n?(deb|deb-src)\s+$_->{'repository'}\n?//gm;
-			$needUpdate = 1;
-		}
-
-		# Remove any duplicate entries
+		# Remove duplicate entries
 		@{$self->{'packagesToUninstall'}} = uniq(@{$self->{'packagesToUninstall'}});
 
 		# Add needed external repositories
-		for(@{$self->{'externalRepositories'}}) {
-			# Add needed repository if not already there
-			if($content !~ /^deb\s+$_->{'repository'}$/m) {
-				$content .= "\ndeb $_->{'repository'}\ndeb-src $_->{'repository'}\n";
+		for(keys %{$self->{'externalRepositoriesToAdd'}}) {
+			if($sourceListFileContent !~ /^deb\s+$_$/m) {
+				my $repository = $self->{'externalRepositoriesToAdd'}->{$_};
 
-				if($_->{'repository_key_srv'}) { # Add the repository gpg key using key id
-					if($_->{'repository_key_id'}) {
-						$cmd = "apt-key adv --recv-keys --keyserver $_->{'repository_key_srv'} $_->{'repository_key_id'}";
+				$sourceListFileContent .= "\ndeb $_\ndeb-src $_\n";
+
+				if($repository->{'repository_key_srv'}) { # Add the repository key from the given server, using key id
+					if($repository->{'repository_key_id'}) {
+						$cmd = "apt-key adv --recv-keys --keyserver $repository->{'repository_key_srv'} $repository->{'repository_key_id'}";
 					} else {
-						error("The repository_key_id entry for the '$_->{'repository'} repository was not found");
+						error("The repository_key_id entry for the '$_' repository was not found");
 						return 1;
 					}
-				} elsif($_->{'repository_key_uri'}) { # Add the repository gpg key by fetching the key
-					$cmd = "wget -qO- $_->{'repository_key_uri'} | apt-key add -"
+				} elsif($repository->{'repository_key_uri'}) { # Add the repository key by fetching it from the given URI
+					$cmd = "wget -qO- $repository->{'repository_key_uri'} | apt-key add -";
 				} else {
-					error("The repository_key_uri entry for the '$_->{'repository'}' repository was not found");
+					error("The repository_key_uri entry for the '$_' repository was not found");
 					return 1;
 				}
 
@@ -623,32 +607,28 @@ sub _addExternalRepositories
 				debug($stdout) if $stdout;
 				error($stderr) if $stderr && $rs;
 				return $rs if $rs;
-
-				$needUpdate = 1;
 			}
 		}
 
-		if($needUpdate) {
-			$rs = $sourceListFile->set($content);
-			return $rs if $rs;
+		$rs = $sourceListFile->set($sourceListFileContent);
+		return $rs if $rs;
 
-			$sourceListFile->save();
-			return $rs if $rs;
-		}
+		$sourceListFile->save();
+		return $rs if $rs;
 	}
 
 	0;
 }
 
-=item _addAptPreferencesFile()
+=item _processAptPreferencesFile()
 
- Create apt preferences file for i-MSCP (according selected packages)
+ Process apt preferences file.
 
  Return 0 on success, other on failure
 
 =cut
 
-sub _addAptPreferencesFile
+sub _processAptPreferencesFile
 {
 	my $self = shift;
 	my $fileContent = '';
@@ -673,6 +653,9 @@ sub _addAptPreferencesFile
 
 		$rs = $file->save();
 		return $rs if $rs;
+
+		$rs = $file->mode(0644);
+		return $rs if $rs;
 	} elsif(-f '/etc/apt/preferences.d/imscp') {
 		$rs = $file->delFile();
 		return $rs if $rs;
@@ -692,15 +675,15 @@ sub _addAptPreferencesFile
 sub _updatePackagesIndex
 {
 	my $self = shift;
-	my $rs = 0;
+
 	my $command = 'apt-get';
 	my ($stdout, $stderr);
 
-	if(! %main::preseed && ! $main::noprompt &&  ! checkCommandAvailability('debconf-apt-progress')) {
+	if(! %main::preseed && ! $main::noprompt && ! checkCommandAvailability('debconf-apt-progress')) {
 		$command = 'debconf-apt-progress --logstderr -- ' . $command;
 	}
 
-	$rs = execute("$command -y update", (%main::preseed || $main::noprompt) ? \$stdout : undef, \$stderr);
+	my $rs = execute("$command -y update", (%main::preseed || $main::noprompt) ? \$stdout : undef, \$stderr);
 	debug($stdout) if $stdout;
 	error($stderr) if $stderr && $rs;
 	error('Unable to update package index from remote repository') if $rs && ! $stderr;
@@ -719,7 +702,6 @@ sub _updatePackagesIndex
 sub _debconfSetSelections()
 {
 	my $self = shift;
-	my $rs = 0;
 
 	my $sqlServer = $main::preseed{'SERVERS'}->{'SQL_SERVER'} || undef;
 	my $poServer = $main::preseed{'SERVERS'}->{'PO_SERVER'} || undef;
@@ -764,7 +746,7 @@ EOF
 
 	my $debconfSelectionsFile = iMSCP::File->new('filename' => '/tmp/imscp-debconf-selections');
 
-	$rs= $debconfSelectionsFile->set($selectionsFileContent);
+	my $rs= $debconfSelectionsFile->set($selectionsFileContent);
 	return $rs if $rs;
 
 	$rs = $debconfSelectionsFile->save();

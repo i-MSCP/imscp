@@ -1,245 +1,212 @@
 <?php
 /**
  * i-MSCP - internet Multi Server Control Panel
+ * Copyright (C) 2010-2013 by i-MSCP team
  *
- * The contents of this file are subject to the Mozilla Public License
- * Version 1.1 (the "License"); you may not use this file except in
- * compliance with the License. You may obtain a copy of the License at
- * http://www.mozilla.org/MPL/
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
  *
- * Software distributed under the License is distributed on an "AS IS"
- * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
- * License for the specific language governing rights and limitations
- * under the License.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- * The Original Code is "VHCS - Virtual Hosting Control System".
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
- * The Initial Developer of the Original Code is moleSoftware GmbH.
- * Portions created by Initial Developer are Copyright (C) 2001-2006
- * by moleSoftware GmbH. All Rights Reserved.
- *
- * Portions created by the ispCP Team are Copyright (C) 2006-2010 by
- * isp Control Panel. All Rights Reserved.
- *
- * Portions created by the i-MSCP Team are Copyright (C) 2010-2013 by
- * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
- *
- * @category	i-MSCP
- * @package		iMSCP_Core
- * @subpackage	Client
- * @copyright   2001-2006 by moleSoftware GmbH
- * @copyright   2006-2010 by ispCP | http://isp-control.net
- * @copyright   2010-2013 by i-MSCP | http://i-mscp.net
- * @author      ispCP Team
- * @author      i-MSCP Team
- * @link        http://i-mscp.net
+ * @category    iMSCP
+ * @package	    iMSCP_Core
+ * @subpackage  Client_Ftp
+ * @copyright   2010-2013 by i-MSCP team
+ * @author      Laurent Declercq <l.declercq@nuxwin.com>
+ * @link        http://www.i-mscp.net i-MSCP Home Site
+ * @license     http://www.gnu.org/licenses/gpl-2.0.txt GPL v2
  */
 
 // Include core library
 require_once 'imscp-lib.php';
 
+/***********************************************************************************************************************
+ * Functions
+ */
+
+/**
+ * Generate page data
+ *
+ * @param iMSCP_pTemplate $tpl Template engine instance
+ * @param string $ftpUserId Ftp userid
+ * @param string $mainDomainName Main domain name
+ * @return void
+ */
+function generatePageData($tpl, $ftpUserId, $mainDomainName)
+{
+	/** @var $cfg iMSCP_Config_Handler_File */
+	$cfg = iMSCP_Registry::get('config');
+
+	$query = "SELECT `homedir` FROM `ftp_users` WHERE `userid` = ?";
+	$stmt = exec_query($query, $ftpUserId);
+
+	$ftpHomeDir = $stmt->fields['homedir'];
+	$customerHomeDir = $cfg->FTP_HOMEDIR . '/' . $mainDomainName;
+
+	if ($ftpHomeDir == $customerHomeDir) {
+		$customFtpHomeDir = '/';
+	} else {
+		$customFtpHomeDir = substr($ftpHomeDir, strlen($customerHomeDir));
+	}
+
+	$tpl->assign(
+		array(
+			'USERNAME' => tohtml($ftpUserId),
+			'PASSWORD' => '',
+			'PASSWORD_REPEAT' => '',
+			'HOME_DIR' => (isset($_POST['home_dir'])) ? tohtml($_POST['home_dir']) : tohtml($customFtpHomeDir),
+			'ID' => tohtml($ftpUserId),
+		)
+	);
+}
+
+/**
+ * Update Ftp account
+ *
+ * @param string $userid Ftp userid
+ * @param string $mainDomainName Main domain name
+ * @return bool TRUE on success, FALSE on failure
+ */
+function updateFtpAccount($userid, $mainDomainName)
+{
+	$ret = true;
+
+	if (!empty($_POST['password'])) {
+		if (empty($_POST['password_repeat']) || $_POST['password'] !== $_POST['password_repeat']) {
+			set_page_message(tr("Passwords doesn't match."), 'error');
+			$ret = false;
+		}
+
+		if (!checkPasswordSyntax($_POST['password'])) {
+			$ret = false;
+		}
+
+		$rawPassword = $_POST['password'];
+		$password = cryptPasswordWithSalt($rawPassword);
+	}
+
+	if (isset($_POST['home_dir'])) {
+		$homeDir = clean_input($_POST['home_dir']);
+
+		if($homeDir != '/' && $homeDir != '') {
+			// Strip possible double-slashes
+			$homeDir = str_replace('//', '/', $homeDir);
+
+			// Check for updirs '..'
+			if (strpos($homeDir, '..') !== false) {
+				set_page_message(tr('Invalid home directory.'), 'error');
+				$ret = false;
+			}
+
+			if($ret) {
+				$vfs = new iMSCP_VirtualFileSystem($mainDomainName);
+
+				// Check for directory existence
+				if (!$vfs->exists($homeDir)) {
+					set_page_message(tr("Home directory '%s' doesn't exists", $homeDir), 'error');
+					$ret = false;
+				}
+
+				/** @var $cfg iMSCP_Config_Handler_File */
+				$cfg = iMSCP_Registry::get('config');
+				$homeDir = rtrim(str_replace('//', '/', $cfg->FTP_HOMEDIR . '/' . $mainDomainName . '/' . $homeDir), '/');
+			}
+		}
+	} else {
+		showBadRequestErrorPage();
+		exit;
+	}
+
+	if($ret) {
+		iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onBeforeEditFtp, array('ftpUserId' => $userid));
+
+		if (isset($rawPassword) && isset($password) && isset($homeDir)) {
+			$query = "UPDATE `ftp_users` SET `passwd` = ?, `rawpasswd` = ?, `homedir` = ? WHERE `userid` = ?";
+			exec_query($query, array($password, $rawPassword, $homeDir, $userid));
+		} else {
+			$query = "UPDATE `ftp_users` SET `homedir` = ? WHERE `userid` = ?";
+			exec_query($query, array($homeDir, $userid));
+		}
+
+		iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAfterEditFtp, array('ftpUserId' => $userid));
+
+		write_log(sprintf("%s updated Ftp account: %s", $_SESSION['user_logged'], $userid), E_USER_NOTICE);
+		set_page_message(tr('FTP account successfully updated.'), 'success');
+	}
+
+	return $ret;
+}
+
+/***********************************************************************************************************************
+ * Main
+ */
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
 
 check_login('user');
 
 customerHasFeature('ftp') or showBadRequestErrorPage();
 
-/** @var $cfg iMSCP_Config_Handler_File */
-$cfg = iMSCP_Registry::get('config');
-
 if (isset($_GET['id'])) {
-	$ftp_acc = $_GET['id'];
-} else if (isset($_POST['id'])) {
-	$ftp_acc = $_POST['id'];
-} else {
-	redirectTo('ftp_accounts.php');
-}
+	$userid = clean_input($_GET['id']);
 
-$tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic('layout', 'shared/layouts/ui.tpl');
-$tpl->define_dynamic(
-	array(
-		'page' => 'client/ftp_edit.tpl',
-		'page_message' => 'layout'));
-
-
-/**
- * @param iMSCP_pTemplate $tpl Template engine instance
- * @param $ftp_acc
- * @return void
- */
-function gen_page_dynamic_data($tpl, $ftp_acc) {
-
-	/** @var $cfg iMSCP_Config_Handler_File */
-	$cfg = iMSCP_Registry::get('config');
-
-	$query = "SELECT `homedir` FROM `ftp_users` WHERE `userid` = ?";
-	$rs = exec_query($query, $ftp_acc);
-
-	$homedir = $rs->fields['homedir'];
-	$domain_ftp = $_SESSION['user_logged'];
-	$nftp_dir = $cfg->FTP_HOMEDIR . "/" . $domain_ftp;
-
-	if ($nftp_dir == $homedir) {
-		$odir = '';
-		$oins = '';
-	} else {
-		$odir = $cfg->HTML_CHECKED;
-		$oins = substr($homedir, strlen($nftp_dir));
+	if (who_owns_this($userid, 'ftpuser') != $_SESSION['user_id']) {
+		showBadRequestErrorPage();
 	}
 
-	$tpl->assign(
-		array(
-			'FTP_ACCOUNT' => $ftp_acc,
-			'ID' => $ftp_acc,
-			'USE_OTHER_DIR_CHECKED' => $odir,
-			'OTHER_DIR' => $oins));
-}
+	$stmt = exec_query("SELECT `domain_name` FROM `domain` WHERE`domain_admin_id` = ?", $_SESSION['user_id']);
+	$mainDomainName = $stmt->fields['domain_name'];
 
-/**
- * @param $ftp_acc
- * @param $dmn_name
- * @return
- */
-function update_ftp_account($ftp_acc, $dmn_name) {
-
-	global $other_dir;
-
-	/** @var $cfg iMSCP_Config_Handler_File */
-	$cfg = iMSCP_Registry::get('config');
-
-	// Create a virtual filesystem (it's important to use =&!)
-	$vfs = new iMSCP_VirtualFileSystem($dmn_name);
-
-	if (isset($_POST['uaction']) && $_POST['uaction'] === 'edit_user') {
-
-		iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onBeforeEditFtp, array('ftpId' => $ftp_acc));
-
-		if (!empty($_POST['pass']) || !empty($_POST['pass_rep'])) {
-			if ($_POST['pass'] !== $_POST['pass_rep']) {
-				set_page_message(tr("Entered passwords doesn't match."), 'error');
-				return;
-			}
-
-			if (!checkPasswordSyntax($_POST['pass'])) {
-				return;
-			}
-
-			$pass = cryptPasswordWithSalt($_POST['pass']);
-			$rawpass = $_POST['pass'];
-			if (isset($_POST['use_other_dir']) && $_POST['use_other_dir'] === 'on') {
-
-				$other_dir = clean_input($_POST['other_dir']);
-
-				$rs = $vfs->exists($other_dir);
-				if (!$rs) {
-					set_page_message(tr("%s doesn't exist", clean_input($_POST['other_dir'])), 'error');
-					return;
-				} // domain_id
-
-				// append the full path (vfs is always checking per ftp so it's logged
-				// in in the root of the user (no absolute paths are allowed here!)
-
-				$other_dir = $cfg->FTP_HOMEDIR . "/" . $_SESSION['user_logged']
-							. clean_input($_POST['other_dir']);
-
-				$query = "
-					UPDATE
-						`ftp_users`
-					SET
-						`passwd` = ?,
-						`rawpasswd` = ?,
-						`homedir` = ?
-					WHERE
-						`userid` = ?
-				";
-
-				exec_query($query, array($pass, $rawpass, $other_dir, $ftp_acc));
-			} else {
-				$query = "UPDATE `ftp_users` SET `passwd` = ?, `rawpasswd` = ? WHERE `userid` = ?";
-				exec_query($query, array($pass, $rawpass, $ftp_acc));
-			}
-
-			write_log($_SESSION['user_logged'] . ": updated FTP " . $ftp_acc . " account data", E_USER_NOTICE);
-			set_page_message(tr('FTP account successfully updated.'), 'success');
-			redirectTo('ftp_accounts.php');
-		} else {
-			if (isset($_POST['use_other_dir']) && $_POST['use_other_dir'] === 'on') {
-				$other_dir = clean_input($_POST['other_dir']);
-				// Strip possible double-slashes
-				$other_dir = str_replace('//', '/', $other_dir);
-				// Check for updirs ".."
-				$res = preg_match("/\.\./", $other_dir);
-				if ($res !== 0) {
-					set_page_message(tr('Incorrect mount point length or syntax.'), 'error');
-					return;
-				}
-				$ftp_home = $cfg->FTP_HOMEDIR . "/$dmn_name/" . $other_dir;
-				// Strip possible double-slashes
-				$ftp_home = str_replace('//', '/', $other_dir);
-				// Check for $other_dir existence
-				// Create a virtual filesystem (it's important to use =&!)
-				$vfs = new iMSCP_VirtualFileSystem($dmn_name);
-				// Check for directory existence
-				$res = $vfs->exists($other_dir);
-				if (!$res) {
-					set_page_message(tr("%s doesn't exist", $other_dir), 'error');
-					return;
-				}
-				$other_dir = $cfg->FTP_HOMEDIR . "/" . $_SESSION['user_logged'] . $other_dir;
-			} else { // End of user-specified mount-point
-
-				$other_dir = $cfg->FTP_HOMEDIR . "/" . $_SESSION['user_logged'];
-
-			}
-			$query = "UPDATE `ftp_users` SET `homedir` = ? WHERE `userid` = ?";
-			exec_query($query, array($other_dir, $ftp_acc));
-
-			iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAfterEditFtp, array('ftpId' => $ftp_acc));
-
-			set_page_message(tr('FTP account successfully updated.'), 'success');
+	if (!empty($_POST)) {
+		if(updateFtpAccount($userid, $mainDomainName)) {
 			redirectTo('ftp_accounts.php');
 		}
 	}
+
+	$tpl = new iMSCP_pTemplate();
+	$tpl->define_dynamic(
+		array(
+			'layout' => 'shared/layouts/ui.tpl',
+			'page' => 'client/ftp_edit.tpl',
+			'page_message' => 'layout'
+		)
+	);
+
+	$tpl->assign(
+		array(
+			'TR_PAGE_TITLE' => tr('i-MSCP - Client/Edit FTP Account'),
+			'THEME_CHARSET' => tr('encoding'),
+			'ISP_LOGO' => layout_getUserLogo(),
+			'TR_FTP_USER_DATA' => tr('Ftp account data'),
+			'TR_USERNAME' => tr('Username'),
+			'TR_PASSWORD' => tr('Password'),
+			'TR_PASSWORD_REPEAT' => tr('Repeat password'),
+			'TR_HOME_DIR' => tr('Home directory'),
+			'CHOOSE_DIR' => tr('Choose dir'),
+			'TR_CHANGE' => tr('Update'),
+			'TR_CANCEL' => tr('Cancel')
+		)
+	);
+
+	generatePageData($tpl, $userid, $mainDomainName);
+	generateNavigation($tpl);
+	generatePageMessage($tpl);
+
+	$tpl->parse('LAYOUT_CONTENT', 'page');
+
+	iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, array('templateEngine' => $tpl));
+
+	$tpl->prnt();
+
+	unsetMessages();
+} else {
+	showBadRequestErrorPage();
 }
-
-$tpl->assign(
-	array(
-		'TR_PAGE_TITLE' => tr('i-MSCP - Client/Edit FTP Account'),
-		'THEME_CHARSET' => tr('encoding'),
-		'ISP_LOGO' => layout_getUserLogo()));
-
-$query = "SELECT `domain_name` FROM `domain` WHERE`domain_admin_id` = ?";
-$rs = exec_query($query, $_SESSION['user_id']);
-
-$dmn_name = $rs->fields['domain_name'];
-
-if(!check_ftp_perms($ftp_acc)) {
-    set_page_message(tr('Ftp account not found.'), 'error');
-    redirectTo('ftp_accounts.php');
-}
-
-gen_page_dynamic_data($tpl, $ftp_acc);
-update_ftp_account($ftp_acc, $dmn_name);
-generateNavigation($tpl);
-
-$tpl->assign(
-	array(
-		'TR_TITLE_EDIT_FTP_USER' => tr('Edit FTP user'),
-		'TR_FTP_ACCOUNT' => tr('FTP account'),
-		'TR_PASSWORD' => tr('Password'),
-		'TR_PASSWORD_REPEAT' => tr('Repeat password'),
-		'TR_USE_OTHER_DIR' => tr('Use other dir'),
-		'TR_CHANGE' => tr('Change'),
-		'CHOOSE_DIR' => tr('Choose dir'),
-		'TR_FTP_USER_DATA' => tr('Ftp user data')));
-
-generatePageMessage($tpl);
-
-$tpl->parse('LAYOUT_CONTENT', 'page');
-
-iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, array('templateEngine' => $tpl));
-
-$tpl->prnt();
-
-unsetMessages();

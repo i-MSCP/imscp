@@ -20,6 +20,7 @@
 # @category		i-MSCP
 # @copyright	2010-2013 by i-MSCP | http://i-mscp.net
 # @author		Daniel Andreca <sci2tech@gmail.com>
+# @author		Laurent Declercq <l.declercq@nuxwin.com>
 # @link			http://i-mscp.net i-MSCP Home Site
 # @license		http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
@@ -33,10 +34,19 @@ use lib "$FindBin::Bin/../PerlLib";
 use iMSCP::Debug;
 use iMSCP::Boot;
 use iMSCP::Execute;
-use iMSCP::Mail;
 use iMSCP::Dir;
+use iMSCP::Ext2Attributes qw( setImmutable clearImmutable );
+use POSIX qw(strftime);
+
+# Turn off localisation features to force any command output to be in english
+$ENV{LANG} = 'C';
+
+umask(027);
 
 newDebug('imscp-backup-all.log');
+
+# Entering in silent mode
+silent(1);
 
 our $command = {
 	'pbzip2' => { 'extension' => 'bz2', 'command' => 'CMD_PBZIP' },
@@ -46,20 +56,17 @@ our $command = {
 	'xz' => { 'extension' => 'xz', 'command' => 'CMD_XZ' }
 };
 
-sub backup_start_up
-{
-	umask(027);
+# Public functions
 
+sub startUp
+{
 	iMSCP::Boot->getInstance()->boot({ 'nolock' => 'yes' });
 
 	0;
 }
 
-sub backup
+sub process
 {
-	my $rs = 0;
-	my ($stdout, $stderr);
-
 	return 0 if $main::imscpConfig{'BACKUP_DOMAINS'} ne 'yes';
 
 	unless ($main::imscpConfig{'ZIP'} =~ /^(pbzip2|bzip2|gzip|lzma|xz)$/i) {
@@ -67,128 +74,155 @@ sub backup
 		return 1;
 	}
 
+	my ($rs, $ret, $rdata, $stdout, $stderr);
+	my $database = iMSCP::Database->new()->factory();
+	my $canDumpDatabases = $database->can('dumpdb');
+	my $cmdTar = $main::imscpConfig{'CMD_TAR'};
+	my $algoryhtm = lc($main::imscpConfig{'ZIP'});
+
 	my $sql = "
 		SELECT
-			*
+			`domain_id`, `domain_name`, `domain_admin_id`, `allowbackup`
 		FROM
-			`domain` AS t1, `admin` AS t2
+			`domain`
 		WHERE
-			t1.domain_status = 'ok'
+			`domain_status` = ?
 		AND
-			t1.domain_admin_id = t2.admin_id
-		AND
-			t1.allowbackup != 'no'
+			`allowbackup` <> ?
 	";
-	my $rdata = iMSCP::Database->new()->factory()->doQuery('domain_name', $sql);
+	$rdata = $database->doQuery('domain_name', $sql, 'ok', 'no');
 
-	if (ref $rdata ne 'HASH'){
-		error("$rdata");
+	unless (ref $rdata eq 'HASH') {
+		error($rdata);
 		$rs = 1;
 	} else {
 		for (keys %$rdata) {
+			$ret = 0;
 
+			# TODO ticket: #747
+			# Usage of global lock here is an error. Depending on the size of data to backup, a process can take a
+			# while and along this time, any backend task will be blocked. It could be better to lock only the domain
+			# for which the script acts
 			iMSCP::Boot->getInstance()->lock();
 
-			if ($rdata->{$_}->{'allowbackup'} !~ m/^no$/i) {
+			if ($rdata->{$_}->{'allowbackup'} ne 'no') {
 
-				my $hDir = $main::imscpConfig{'USER_HOME_DIR'}."/$_";
-				my $bkpDir = "$hDir/backups";
+				my $homeDir = "$main::imscpConfig{'USER_WEB_DIR'}/$rdata->{$_}->{'domain_name'}";
+				my $bkpDir = "$homeDir/backups";
+				my $userName =
+				my $groupName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} .
+					($main::imscpConfig{'SYSTEM_USER_MIN_UID'} + $rdata->{$_}->{'domain_admin_id'});
 
-				my $rv |= iMSCP::Dir->new('dirname' => $bkpDir)->make(
-					{
-						'user' => $main::imscpConfig{'ROOT_USER'},
-						'group' => $main::imscpConfig{'ROOT_GROUP'},
-						'mode' => 0755
-					}
-				);
-				$rs |= $rv;
-
-				if($rv) {
+				if(! -d $homeDir) { # Skip backup if home directory doesn't exists
+					warning("Home directory $homeDir doesn't exists. Skipping backup...");
 					iMSCP::Boot->getInstance()->unlock();
-					next ;
+					next
+				} elsif(! -d $bkpDir) { # Create backups directory if doesn't already exists
+					# Unprotect customer home directory to be able to write in it
+					clearImmutable($homeDir);
+
+					$ret = iMSCP::Dir->new('dirname' => $bkpDir)->make(
+						{ 'user' => $userName, 'group' => $groupName, 'mode' => 0750 }
+					);
+
+					# Protect home directory
+					setImmutable($homeDir);
+
+					if($ret) {
+						$rs |= $ret;
+						goto NEXT;
+					}
 				}
 
-				$rs |= execute("$main::imscpConfig{'CMD_RM'} -rf $bkpDir/*", \$stdout, \$stderr);
+				# Remove any previous backup file
+				$rs |= execute("$main::imscpConfig{'CMD_RM'} -fR $bkpDir/*", \$stdout, \$stderr);
 				debug($stdout) if $stdout;
 				error($stderr) if $stderr && $rs;
 
-				use POSIX qw(strftime);
-				my $ext = $command->{lc($main::imscpConfig{'ZIP'})}->{'extension'};
+				my $ext = $command->{$algoryhtm}->{'extension'};
 				my $date = strftime "%Y.%m.%d-%H-%M", localtime;
 
-				if ($rdata->{$_}->{'allowbackup'} =~ m/full|dmn/i) {
-
+				if ($rdata->{$_}->{'allowbackup'} =~ /^full|dmn$/) {
 					my @cmd = (
-						lc($main::imscpConfig{'CMD_TAR'}),
-						"--create --directory=$hDir",
-						"--use-compress-program=" . lc($main::imscpConfig{'ZIP'}),
-						"--file=$bkpDir/$_-backup-$date.tar.$ext",
-						"--exclude=logs",
-						"--exclude=phptmp",
-						"--exclude=backups",
-						"--exclude=domain_disable_page",
-						". "
+						$cmdTar,
+						"--create",										# Create new archive
+						"--directory=$homeDir",							# Change to directory
+						'--use-compress-program=' . lc($algoryhtm),		# Compress archive with given program
+						"--file=$bkpDir/$_-backup-$date.tar.$ext",		# use archive file
+						'--exclude=logs',								# exclude logs directory from archive
+						'--exclude=phptmp',								# exclude phptmp directory from archive
+						'--exclude=backups',							# exclude backup from archive/-
+						'--exclude=domain_disable_page',				# exclude domain_disable_page from archive/-
+						'.'												# pathname
 					);
 
-					my $rs |= execute(join(' ', @cmd), \$stdout, \$stderr);
+					$rs |= execute("@cmd", \$stdout, \$stderr);
 					debug($stdout) if $stdout;
 					error($stderr) if $stderr && $rs;
-
-					my $file = iMSCP::File->new('filename' => "$bkpDir/$_-backup-$date.tar.$ext");
-					$rs |= $file->mode(0644);
-					$rs |= $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
 				}
 
-				if ($rdata->{$_}->{'allowbackup'} =~ m/full|sql/i && iMSCP::Database->new()->factory()->can('dumpdb')) {
+				my $file = iMSCP::File->new(filename => "$bkpDir/$_-backup-$date.tar.$ext");
+				$rs |= $file->mode(0644);
 
-					$sql = "SELECT `sqld_id`, `sqld_name` FROM `sql_database` WHERE `domain_id` = ?";
-					my $dbData = iMSCP::Database->new()->factory()->doQuery(
-						'sqld_name', $sql, $rdata->{$_}->{'domain_id'}
+				# Backup all customer databases
+				if ($canDumpDatabases && $rdata->{$_}->{'allowbackup'} =~ /^full|sql$/) {
+
+					my $dbData = $database->doQuery(
+						'sqld_name',
+						"SELECT `sqld_id`, `sqld_name` FROM `sql_database` WHERE `domain_id` = ?",
+						$rdata->{$_}->{'domain_id'}
 					);
 
-					if (ref $dbData ne 'HASH'){
+					unless (ref $dbData eq 'HASH') {
 						error($dbData);
 						$rs |= 1;
-						iMSCP::Boot->getInstance()->unlock();
-						next;
+						goto NEXT;
 					}
 
 					for (keys %$dbData) {
+						$ret = iMSCP::Database->new()->factory()->dumpdb($_, "$bkpDir/$_.sql");
+						if($ret) {
+							$rs |= $ret;
+							goto NEXT;
+						}
 
-						my $cmd = $main::imscpConfig{$command->{$main::imscpConfig{'ZIP'}}->{'command'}} .
-							" --force \'$bkpDir/$_.sql\'";
-
-						$rs |= iMSCP::Database->new()->factory()->dumpdb($_, "$bkpDir/$_.sql");
-
-						my $file = iMSCP::File->new('filename' => "$bkpDir/$_.sql");
+						my $file = iMSCP::File->new(filename => "$bkpDir/$_.sql");
 						$rs |= $file->mode(0644);
-						$rs |= $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
 
-						$rs |= execute($cmd, \$stdout, \$stderr);
+						my $cmd = $main::imscpConfig{$command->{$algoryhtm}->{'command'}} . ' --force ' .
+							escapeShell("$bkpDir/$_.sql");
+
+						$rs = execute($cmd, \$stdout, \$stderr);
 						debug($stdout) if $stdout;
 						error($stderr) if $stderr && $rs;
-						error("Unable to dump $_") if $rs && ! $stderr;
+						error("Unable to dump the $_ database") if $rs && ! $stderr;
 					}
 				}
 			}
 
+			NEXT:
 			iMSCP::Boot->getInstance()->unlock();
 		}
 	}
 
-	my @warnings = getMessageByType('warn');
-	my @errors = getMessageByType('error');
-	my @all = (@warnings, @errors);
-
-	iMSCP::Mail->new()->errmsg("@all") if scalar @all > 0 ;
-
 	$rs;
 }
 
-my $rs = 0;
+sub shutDown
+{
+	my @errorMessages = (getMessageByType('warn'), getMessageByType('error'));
 
-exit 1 if backup_start_up();
+	if(@errorMessages) {
+		require iMSCP::Mail;
+		iMSCP::Mail->new()->errmsg("@errorMessages");
+	}
+}
 
-$rs |= backup();
+# Main program
+
+my $rs = startUp();
+$rs ||= process();
+
+shutDown();
 
 exit $rs;

@@ -85,6 +85,9 @@ use FileCache maxopen => 55;
 use Getopt::Long;
 use sigtrap 'handler' => \&signalHandler, 'normal-signals';
 
+# Turn off localisation features to force any command output to be in english
+$ENV{LANG} = 'C';
+
 my %opt = (
 	loggingType => 'access', # Default logging type
 	logDir => '/var/log/imscp' # Default directory for script events log
@@ -116,6 +119,7 @@ sub getConf
 	%main::cfg = join('', <F>) =~ /^\s*(\w+)\s*=\s*(.*)$/gm;
 	close F;
 
+	# TODO path shouldn't be hardcoded
 	$main::cfg{'APACHE_LOG_DIR'} = '/var/log/apache2';
 	$main::cfg{'PHP_STARTER_DIR'} = '/var/www/fcgi';
 	$main::cfg{'APACHE_USERS_LOG_DIR'} = '/var/log/apache2/users';
@@ -139,7 +143,7 @@ sub ErrorLogHandler
 
 		# Trying to retrieve the virtual host identity
 		$vhost = $1 if /
-			(?:$main::cfg{'USER_HOME_DIR'}|$main::cfg{'PHP_STARTER_DIR'})
+			(?:$main::cfg{'USER_WEB_DIR'}|$main::cfg{'PHP_STARTER_DIR'})
 			\/([\w\d.-]+)
 		/x;
 

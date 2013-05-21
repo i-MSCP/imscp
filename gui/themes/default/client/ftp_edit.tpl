@@ -1,5 +1,5 @@
 
-		<form name="editFrm" method="post" action="ftp_edit.php">
+		<form name="edit_ftp_account_frm" method="post" action="ftp_edit.php?id={ID}">
 			<table>
 				<tr>
 					<th colspan="2">
@@ -7,31 +7,30 @@
 					</th>
 				</tr>
 				<tr>
-					<td><label for="ftp_account">{TR_FTP_ACCOUNT}</label></td>
+					<td><label for="username">{TR_USERNAME}</label></td>
 					<td>
-						<input id="ftp_account" type="text" name="username" value="{FTP_ACCOUNT}" readonly="readonly"/>
+						<input id="username" type="text" name="username" value="{USERNAME}" disabled="disabled"/>
 					</td>
 				</tr>
 				<tr>
-					<td><label for="pass">{TR_PASSWORD}</label></td>
-					<td><input id="pass" type="password" name="pass" value="" autocomplete="off"/></td>
+					<td><label for="password">{TR_PASSWORD}</label></td>
+					<td><input id="password" type="password" name="password" value="{PASSWORD}" autocomplete="off"/></td>
 				</tr>
 				<tr>
-					<td><label for="pass_rep">{TR_PASSWORD_REPEAT}</label></td>
-					<td><input id="pass_rep" type="password" name="pass_rep" value="" autocomplete="off"/></td>
+					<td><label for="password_repeat">{TR_PASSWORD_REPEAT}</label></td>
+					<td><input id="password_repeat" type="password" name="password_repeat" value="{PASSWORD_REPEAT}" autocomplete="off"/></td>
 				</tr>
 				<tr>
-					<td><input id="use_other_dir" type="checkbox" name="use_other_dir" {USE_OTHER_DIR_CHECKED} />
-						<label for="use_other_dir">{TR_USE_OTHER_DIR}</label></td>
 					<td>
-						<input type="text" id="ftp_directory" name="other_dir" value="{OTHER_DIR}"/>
+						<label for="ftp_directory">{TR_HOME_DIR}</label></td>
+					<td>
+						<input type="text" id="ftp_directory" name="home_dir" value="{HOME_DIR}"/>
 						<a href="#" onclick="chooseFtpDir();" class="icon i_bc_folder">{CHOOSE_DIR}</a>
 					</td>
 				</tr>
 			</table>
 			<div class="buttons">
-				<input type="hidden" name="uaction" value="edit_user"/>
-				<input type="hidden" name="id" value="{ID}"/>
 				<input name="submit" type="submit" value="{TR_CHANGE}"/>
+				<input name="Submit" type="submit" onclick="MM_goToURL('parent','ftp_accounts.php');return document.MM_returnValue" value="{TR_CANCEL}" />
 			</div>
 		</form>

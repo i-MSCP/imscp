@@ -1,38 +1,405 @@
 <?php
 /**
  * i-MSCP - internet Multi Server Control Panel
+ * Copyright (C) 2010-2013 by i-MSCP team
  *
- * The contents of this file are subject to the Mozilla Public License
- * Version 1.1 (the "License"); you may not use this file except in
- * compliance with the License. You may obtain a copy of the License at
- * http://www.mozilla.org/MPL/
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
  *
- * Software distributed under the License is distributed on an "AS IS"
- * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
- * License for the specific language governing rights and limitations
- * under the License.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- * The Original Code is "VHCS - Virtual Hosting Control System".
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
- * The Initial Developer of the Original Code is moleSoftware GmbH.
- * Portions created by Initial Developer are Copyright (C) 2001-2006
- * by moleSoftware GmbH. All Rights Reserved.
+ * @category    iMSCP
+ * @package     iMSCP_Core
+ * @subpackage  Client_Ftp
+ * @copyright   2010-2013 by i-MSCP team
+ * @author      Laurent Declercq <l.declercq@nuxwin.com>
+ * @link        http://www.i-mscp.net i-MSCP Home Site
+ * @license     http://www.gnu.org/licenses/gpl-2.0.txt GPL v2
+ */
+
+/***********************************************************************************************************************
+ * Functions
+ */
+
+/**
+ * Get domain list
  *
- * Portions created by the ispCP Team are Copyright (C) 2006-2010 by
- * isp Control Panel. All Rights Reserved.
+ * @param string $mainDmnName Customer main domain name
+ * @param string $mainDmnId Customer main domain id
+ * @param string $dmnType Domain type (dmn|sub|als|alssub) for which list must be generated
+ * @return array Domain list
+ */
+function ftp_getDomainList($mainDmnName, $mainDmnId, $dmnType = 'dmn')
+{
+	$dmnList = array();
+
+	switch ($dmnType) {
+		case 'dmn':
+			$dmnList = array(
+				array(
+					'domain_id' => $mainDmnId,
+					'domain_name' => $mainDmnName
+				)
+			);
+			break;
+		case 'sub':
+			$query = "
+				SELECT
+					CONCAT(`subdomain_name`, '.', '$mainDmnName') AS `name`
+				FROM
+					`subdomain`
+				WHERE
+					`domain_id` = ?
+				AND
+					`subdomain_status` = ?
+			";
+			break;
+		case 'als':
+			$query = "
+				SELECT
+					`alias_name` AS `name`
+				FROM
+					`domain_aliasses`
+				WHERE
+					`domain_id` = ?
+				AND
+					`alias_status` = ?
+			";
+			break;
+		case 'alssub':
+			$query = "
+				SELECT
+					CONCAT(`t2`.`subdomain_alias_name`, '.', `t1`.`alias_name`) AS `name`
+				FROM
+					`domain_aliasses` AS `t1`
+				INNER JOIN
+					`subdomain_alias` AS `t2` ON(`t2`.`alias_id` = `t1`.`alias_id`)
+				WHERE
+					`t1`.domain_id = ?
+				AND
+					`t2`.`subdomain_alias_status` = ?
+			";
+			break;
+		default:
+			showBadRequestErrorPage();
+	}
+
+	if (isset($query)) {
+		/** @var $cfg iMSCP_Config_Handler_File */
+		$cfg = iMSCP_Registry::get('config');
+
+		$stmt = exec_query($query, array($mainDmnId, $cfg->ITEM_OK_STATUS));
+
+		if (!$stmt->rowCount()) {
+			showBadRequestErrorPage();
+		} else {
+			while (!$stmt->EOF) {
+				$dmnList[] = array(
+					'domain_name_val' => $stmt->fields['name'],
+					'domain_name' => idn_to_utf8($stmt->fields['name'])
+				);
+
+				$stmt->moveNext();
+			}
+		}
+	}
+
+	return $dmnList;
+}
+
+/**
+ * Generate domain type list
  *
- * Portions created by the i-MSCP Team are Copyright (C) 2010-2013 by
- * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
+ * @throws iMSCP_Exception
+ * @param int $mainDmnId Customer main domain id
+ * @param iMSCP_pTemplate $tpl
+ * @return void
+ */
+function ftp_generateDomainTypeList($mainDmnId, $tpl)
+{
+	$query = "
+		SELECT
+			count(`t2`.`subdomain_id`) AS `sub_count`, count(`t3`.`alias_id`) AS `als_count`,
+			count(`t4`.`subdomain_alias_id`) AS `alssub_count`
+		FROM
+			`domain` AS `t1`
+		LEFT JOIN
+			`subdomain` AS `t2` ON(`t2`.`domain_id` = `t1`.`domain_id`)
+		LEFT JOIN
+			`domain_aliasses` AS `t3` ON(`t3`.`domain_id` = `t1`.`domain_id`)
+		LEFT JOIN
+			`subdomain_alias` AS `t4` ON(`t4`.`alias_id` = `t3`.`alias_id`)
+		WHERE
+			`t1`.`domain_id` = ?
+	";
+	$stmt = exec_query($query, $mainDmnId);
+
+	/** @var $cfg iMSCP_Config_Handler_File */
+	$cfg = iMSCP_Registry::get('config');
+	$selected = $cfg->HTML_SELECTED;
+	$dmns = array(
+		array('count' => '1', 'type' => 'dmn', 'tr' => tr('Domain')),
+		array('count' => $stmt->fields['sub_count'], 'type' => 'sub', 'tr' => tr('Subdomain')),
+		array('count' => $stmt->fields['als_count'], 'type' => 'als', 'tr' => tr('Domain alias')),
+		array('count' => $stmt->fields['alssub_count'], 'type' => 'alssub', 'tr' => tr('Subdomain alias'))
+	);
+
+	foreach ($dmns as $dmn) {
+		if ($dmn['count']) {
+			$tpl->assign(
+				array(
+					'DOMAIN_TYPE' => tohtml($dmn['type']),
+					'DOMAIN_TYPE_SELECTED' => (isset($_POST['domain_type']) && $_POST['domain_type'] == $dmn['type'])
+						? $selected : ($dmn['type'] == 'dmn') ? $selected : '',
+					'TR_DOMAIN_TYPE' => $dmn['tr']
+				)
+			);
+
+			$tpl->parse('DOMAIN_TYPES', '.domain_types');
+		}
+	}
+}
+
+/**
+ * Generate page data
  *
- * @category	i-MSCP
- * @package		iMSCP_Core
- * @subpackage	Client
- * @copyright   2001-2006 by moleSoftware GmbH
- * @copyright   2006-2010 by ispCP | http://isp-control.net
- * @copyright   2010-2013 by i-MSCP | http://i-mscp.net
- * @author      ispCP Team
- * @author      i-MSCP Team
- * @link        http://i-mscp.net
+ * @param string $mainDmn Customer main domain name
+ * @param string $mainDmnId Customer main domain id
+ * @param iMSCP_pTemplate $tpl
+ * @return void
+ */
+function ftp_generatePageData($mainDmn, $mainDmnId, $tpl)
+{
+	$tpl->assign(
+		array(
+			'USERNAME' => isset($_POST['username']) ? tohtml(clean_input($_POST['username'])) : '',
+			'PASSWORD' => isset($_POST['password']) ? tohtml(clean_input($_POST['password'])) : '',
+			'PASSWORD_REPEAT' => isset($_POST['password_repeat']) ? tohtml(clean_input($_POST['password_repeat'])) : '',
+			'HOME_DIR' => isset($_POST['home_dir']) ? tohtml(clean_input($_POST['home_dir'])) : '/'
+		)
+	);
+
+	ftp_generateDomainTypeList($mainDmnId, $tpl);
+
+	/** @var $cfg iMSCP_Config_Handler_File */
+	$cfg = iMSCP_Registry::get('config');
+
+	$dmnList = ftp_getDomainList(
+		$mainDmn, $mainDmnId, isset($_POST['domain_type']) ? clean_input($_POST['domain_type']) : 'dmn'
+	);
+
+	foreach ($dmnList as $dmn) {
+		$tpl->assign(
+			array(
+				'DOMAIN_NAME_VAL' => tohtml($dmn['domain_name']),
+				'DOMAIN_NAME' => tohtml(idn_to_utf8($dmn['domain_name'])),
+				'DOMAIN_NAME_SELECTED' =>
+				(isset($_POST['domain_name']) && $_POST['domain_name'] == $dmn['domain_name'])
+					? $cfg->HTML_SELECTED : ''
+			)
+		);
+
+		$tpl->parse('DOMAIN_LIST', '.domain_list');
+	}
+}
+
+/**
+ * Add Ftp account
+ *
+ * @throws iMSCP_Exception_Database
+ * @param string $mainDmnName Customer main domain
+ * @return bool TRUE on success, FALSE otherwise
+ */
+function ftp_addAccount($mainDmnName)
+{
+	$ret = true;
+
+	if (
+		isset($_POST['domain_type']) && isset($_POST['username']) && isset($_POST['domain_name']) &&
+		isset($_POST['password']) && isset($_POST['password_repeat']) && isset($_POST['home_dir'])
+	) {
+		$username = clean_input($_POST['username']);
+		$dmnName = clean_input($_POST['domain_name']);
+		$passwd = clean_input($_POST['password']);
+		$passwdRepeat = clean_input($_POST['password_repeat']);
+		$homeDir = clean_input($_POST['home_dir']);
+
+		if (!validates_username($username)) {
+			set_page_message(tr("Incorrect username length or syntax."), 'error');
+			$ret = false;
+		}
+
+		if ($passwd !== $passwdRepeat) {
+			set_page_message(tr("Passwords doesn't match"), 'error');
+			$ret = false;
+		} elseif (!checkPasswordSyntax($passwd)) {
+			$ret = false;
+		}
+
+		// Check for home directory existence
+		if ($homeDir != '/' && $homeDir != '') {
+
+			// Strip possible double-slashes
+			$homeDir = str_replace('//', '/', $homeDir);
+
+			// Check for updirs '..'
+			if (strpos($homeDir, '..') !== false) {
+				set_page_message(tr('Invalid home directory.'), 'error');
+				$ret = false;
+			}
+
+			if ($ret) {
+				$vfs = new iMSCP_VirtualFileSystem($mainDmnName);
+
+				if (!$vfs->exists($homeDir)) {
+					set_page_message(tr("Home directory '%s' doesn't exists", $homeDir), 'error');
+					$ret = false;
+				}
+			}
+		}
+
+		if ($ret) {
+			// Check that the customer is the owner of the domain for which the ftp Account is added
+			if (!customerHasDomain($dmnName, $_SESSION['user_id'])) {
+				showBadRequestErrorPage();
+			}
+
+			/** @var $cfg iMSCP_Config_Handler_File */
+			$cfg = iMSCP_Registry::get('config');
+
+			$userid = $username . $cfg->FTP_USERNAME_SEPARATOR . $dmnName;
+			$encryptedPassword = cryptPasswordWithSalt($passwd);
+			$shell = $cfg->CMD_SHELL;
+			$homeDir = rtrim(str_replace('//', '/', $cfg->FTP_HOMEDIR . '/' . $mainDmnName . '/' . $homeDir), '/');
+
+			// Retrieve customer uid/gid
+			$query = '
+				SELECT
+					`t1`.`admin_name`, `t1`.`admin_sys_uid`, `t1`.`admin_sys_gid`, `t2`.`domain_disk_limit`,
+					count(`t3`.`name`) AS `quota_entry`
+				FROM
+					`admin` AS `t1`
+				LEFT JOIN
+					`domain` AS `t2` ON (`t2`.`domain_admin_id` = `t1`.`admin_id` )
+				LEFT JOIN
+					`quotalimits` AS `t3` ON (`t3`.`name` = `t1`.`admin_name` )
+				WHERE
+					`t1`.`admin_id` = ?
+			';
+			$stmt = exec_query($query, $_SESSION['user_id']);
+
+			$groupName = $stmt->fields['admin_name'];
+			$uid = $stmt->fields['admin_sys_uid'];
+			$gid = $stmt->fields['admin_sys_gid'];
+			$diskspaceLimit = $stmt->fields['domain_disk_limit'];
+			$quotaEntriesExist = ($stmt->fields['quota_entry']) ? true : false;
+
+			iMSCP_Events_Manager::getInstance()->dispatch(
+				iMSCP_Events::onBeforeAddFtp,
+				array(
+					'ftpUserId' => $userid,
+					'ftpPassword' => $encryptedPassword,
+					'ftpRawPassword' => $passwd,
+					'ftpUserUid' => $uid,
+					'ftpUserGid' => $gid,
+					'ftpUserShell' => $shell,
+					'ftpUserHome' => $homeDir
+				)
+			);
+
+			/** @var $db iMSCP_Database */
+			$db = iMSCP_Registry::get('db');
+
+			try {
+				$db->beginTransaction();
+
+				// Add ftp user
+				$query = "
+					INSERT INTO `ftp_users` (
+						`userid`, `admin_id`, `passwd`, `rawpasswd`, `uid`, `gid`, `shell`, `homedir`
+					) VALUES (
+						?, ?, ?, ?, ?, ?, ?, ?
+					)
+				";
+				exec_query(
+					$query,
+					array($userid, $_SESSION['user_id'], $encryptedPassword, $passwd, $uid, $gid, $shell, $homeDir)
+				);
+
+				$query = "SELECT `members` FROM `ftp_group` WHERE `groupname` = ? LIMIT 1";
+				$stmt = exec_query($query, $groupName);
+
+				// Ftp group
+				if (!$stmt->rowCount()) {
+					$query = "
+						INSERT INTO `ftp_group` (
+							`groupname`, `gid`, `members`
+						) VALUES (
+							?, ?, ?
+						)
+					";
+					exec_query($query, array($groupName, $gid, $userid));
+				} else {
+					$query = "UPDATE `ftp_group` SET `members` = ? WHERE `groupname` = ?";
+					exec_query($query, array("{$stmt->fields['members']},$userid}", $groupName));
+				}
+
+				// Quota limit
+				if (!$quotaEntriesExist) {
+					$query = "
+						INSERT INTO `quotalimits` (
+							`name`, `quota_type`, `per_session`, `limit_type`, `bytes_in_avail`, `bytes_out_avail`,
+							`bytes_xfer_avail`, `files_in_avail`, `files_out_avail`, `files_xfer_avail`
+						) VALUES (
+							?, ?, ?, ?, ?, ?, ?, ?, ?, ?
+						)
+					";
+					exec_query(
+						$query,
+						array($groupName, 'group', 'false', 'hard', $diskspaceLimit * 1024 * 1024, 0, 0, 0, 0, 0));
+				}
+
+				$db->commit();
+
+				iMSCP_Events_Manager::getInstance()->dispatch(
+					iMSCP_Events::onAfterAddFtp,
+					array(
+						'ftpUserId' => $userid,
+						'ftpPassword' => $encryptedPassword,
+						'ftpRawPassword' => $passwd,
+						'ftpUserUid' => $uid,
+						'ftpUserGid' => $gid,
+						'ftpUserShell' => $shell,
+						'ftpUserHome' => $homeDir
+					)
+				);
+
+				write_log(sprintf("%s added Ftp account: %s", $_SESSION['user_logged'], $userid), E_USER_NOTICE);
+				set_page_message(tr('FTP account successfully added.'), 'success');
+
+			} catch (iMSCP_Exception_Database $e) {
+				$db->rollBack();
+				throw new iMSCP_Exception_Database($e->getMessage(), $e->getQuery(), $e->getCode(), $e);
+			}
+		}
+	} else {
+		showBadRequestErrorPage();
+	}
+
+	return $ret;
+} // end ftp_addAccount()
+
+/***********************************************************************************************************************
+ * Main
  */
 
 // Include core library
@@ -44,546 +411,64 @@ check_login('user');
 
 customerHasFeature('ftp') or showBadRequestErrorPage();
 
+$mainDmnProps = get_domain_default_props($_SESSION['user_id']);
+$mainDmnId = $mainDmnProps['domain_id'];
+$mainDmnName = $mainDmnProps['domain_name'];
+$ftpAccountLimit = $mainDmnProps['domain_ftpacc_limit'];
+
+
+if (is_xhr() && isset($_POST['domain_type'])) {
+	echo json_encode(ftp_getDomainList($mainDmnName, $mainDmnId, clean_input($_POST['domain_type'])));
+	exit;
+} elseif (!empty($_POST)) {
+	// Check for ftp account limit (only on new account submission to avoid too many query each time the page
+	// is displayed
+	$nbFtpAccounts = get_customer_running_ftp_acc_cnt($_SESSION['user_id']);
+
+	if ($ftpAccountLimit && $nbFtpAccounts >= $ftpAccountLimit) {
+		set_page_message(tr('FTP accounts limit reached.'), 'error');
+		redirectTo('ftp_accounts.php');
+	}
+
+	if (ftp_addAccount($mainDmnName)) {
+		redirectTo('ftp_accounts.php');
+	}
+}
+
 /** @var $cfg iMSCP_Config_Handler_File */
 $cfg = iMSCP_Registry::get('config');
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic('layout', 'shared/layouts/ui.tpl');
-$tpl->define_dynamic('page', 'client/ftp_add.tpl');
-$tpl->define_dynamic('page_message', 'layout');
-$tpl->define_dynamic('als_list', 'page');
-$tpl->define_dynamic('sub_list', 'page');
-$tpl->define_dynamic('to_subdomain', 'page');
-$tpl->define_dynamic('to_alias_domain', 'page');
-$tpl->define_dynamic('js_to_subdomain', 'page');
-$tpl->define_dynamic('js_to_alias_domain', 'page');
-$tpl->define_dynamic('js_to_all_domain', 'page');
-$tpl->define_dynamic('js_not_domain', 'page');
-
-
-/**
- * @param $alias_name
- * @return
- */
-function get_alias_mount_point($alias_name) {
-	$query = "SELECT `alias_mount` FROM `domain_aliasses` WHERE `alias_name` = ?";
-
-	$rs = exec_query($query, $alias_name);
-	return $rs->fields['alias_mount'];
-}
-
-/**
- * @param iMSCP_pTemplate $tpl
- * @param string $dmn_name
- * @param string $post_check
- * @return void
- */
-function gen_page_form_data($tpl, $dmn_name, $post_check) {
-
-	/** @var $cfg iMSCP_Config_Handler_File */
-	$cfg = iMSCP_Registry::get('config');
-
-	$dmn_name = decode_idna($dmn_name);
-
-	if ($post_check === 'no') {
-		$tpl->assign(
-			array(
-				'USERNAME' => '',
-				'DOMAIN_NAME' => tohtml($dmn_name),
-				'DMN_TYPE_CHECKED' => $cfg->HTML_CHECKED,
-				'ALS_TYPE_CHECKED' => '',
-				'SUB_TYPE_CHECKED' => '',
-				'OTHER_DIR' => '',
-				'USE_OTHER_DIR_CHECKED' => ''
-			)
-		);
-	} else {
-		$tpl->assign(
-			array(
-				'USERNAME' => clean_input($_POST['username'], true),
-				'DOMAIN_NAME' => tohtml($dmn_name),
-				'DMN_TYPE_CHECKED' => ($_POST['dmn_type'] === 'dmn') ? $cfg->HTML_CHECKED : '',
-				'ALS_TYPE_CHECKED' => ($_POST['dmn_type'] === 'als') ? $cfg->HTML_CHECKED : '',
-				'SUB_TYPE_CHECKED' => ($_POST['dmn_type'] === 'sub') ? $cfg->HTML_CHECKED : '',
-				'OTHER_DIR' => clean_input($_POST['other_dir'], true),
-				'USE_OTHER_DIR_CHECKED' => (isset($_POST['use_other_dir']) && $_POST['use_other_dir'] === 'on') ? $cfg->HTML_CHECKED : ''));
-	}
-}
-
-/**
- * @param iMSCP_pTemplate $tpl
- * @param int $dmn_id
- * @param string $post_check
- * @return void
- */
-function gen_dmn_als_list($tpl, $dmn_id, $post_check) {
-
-	/** @var $cfg iMSCP_Config_Handler_File */
-	$cfg = iMSCP_Registry::get('config');
-
-	$ok_status = $cfg->ITEM_OK_STATUS;
-
-	$query = "
-		SELECT
-			`alias_id`, `alias_name`
-		FROM
-			`domain_aliasses`
-		WHERE
-			`domain_id` = ?
-		AND
-			`alias_status` = ?
-		ORDER BY
-			`alias_name`
-	";
-
-	$rs = exec_query($query, array($dmn_id, $ok_status));
-	if ($rs->recordCount() == 0) {
-		$tpl->assign(
-			array(
-				'ALS_ID' => 'n/a',
-				'ALS_SELECTED' => $cfg->HTML_SELECTED,
-				'ALS_NAME' => tr('Empty List')));
-
-		$tpl->parse('ALS_LIST', 'als_list');
-		$tpl->assign('TO_ALIAS_DOMAIN', '');
-		$_SESSION['alias_count'] = "no";
-	} else {
-		$first_passed = false;
-		while (!$rs->EOF) {
-			if ($post_check === 'yes') {
-				$als_id = (!isset($_POST['als_id'])) ? '' : $_POST['als_id'];
-				$als_selected = ($als_id == $rs->fields['alias_name'])
-					? $cfg->HTML_SELECTED
-					: '';
-			} else {
-				$als_selected = (!$first_passed) ? $cfg->HTML_SELECTED : '';
-			}
-
-			$als_menu_name = decode_idna($rs->fields['alias_name']);
-
-			$tpl->assign(
-				array(
-					'ALS_ID' => tohtml($rs->fields['alias_name']),
-					'ALS_SELECTED' => $als_selected,
-					'ALS_NAME' => tohtml($als_menu_name)));
-
-			$tpl->parse('ALS_LIST', '.als_list');
-			$rs->moveNext();
-
-			if (!$first_passed) $first_passed = true;
-		}
-	}
-}
-
-/**
- * @param iMSCP_pTemplate $tpl
- * @param int $dmn_id
- * @param string $dmn_name
- * @param string $post_check
- * @return void
- */
-function gen_dmn_sub_list($tpl, $dmn_id, $dmn_name, $post_check) {
-
-	/** @var $cfg iMSCP_Config_Handler_File */
-	$cfg = iMSCP_Registry::get('config');
-
-	$ok_status = $cfg->ITEM_OK_STATUS;
-	$query = "
-		SELECT
-			`subdomain_id` AS sub_id, `subdomain_name` AS sub_name
-		FROM
-			`subdomain`
-		WHERE
-			`domain_id` = ?
-		AND
-			`subdomain_status` = ?
-		ORDER BY
-			`subdomain_name`
-	";
-
-	$rs = exec_query($query, array($dmn_id, $ok_status));
-
-	if ($rs->recordCount() == 0) {
-		$tpl->assign(
-			array(
-				'SUB_ID' => 'n/a',
-				'SUB_SELECTED' => $cfg->HTML_SELECTED,
-				'SUB_NAME' => tr('Empty list')));
-
-		$tpl->parse('SUB_LIST', 'sub_list');
-		$tpl->assign('TO_SUBDOMAIN', '');
-		$_SESSION['subdomain_count'] = "no";
-	} else {
-		$first_passed = false;
-		while (!$rs->EOF) {
-			if ($post_check === 'yes') {
-				$sub_id = (!isset($_POST['sub_id'])) ? '' : $_POST['sub_id'];
-				$sub_selected = ($sub_id == $rs->fields['sub_name'])
-					? $cfg->HTML_SELECTED
-					: '';
-			} else {
-				$sub_selected = (!$first_passed) ? $cfg->HTML_SELECTED : '';
-			}
-
-			$sub_menu_name = decode_idna($rs->fields['sub_name']);
-			$dmn_menu_name = decode_idna($dmn_name);
-			$tpl->assign(
-				array(
-					'SUB_ID' => tohtml($rs->fields['sub_name']),
-					'SUB_SELECTED' => $sub_selected,
-					'SUB_NAME' => tohtml($sub_menu_name . '.' . $dmn_menu_name)));
-
-			$tpl->parse('SUB_LIST', '.sub_list');
-			$rs->moveNext();
-			if (!$first_passed) $first_passed = true;
-		}
-	}
-}
-
-/**
- * @param $dmn_name
- * @param $ftp_user
- * @return
- */
-function get_ftp_user_gid($dmn_name, $ftp_user) {
-
-	global $last_gid, $max_gid;
-
-	$query = "SELECT `gid`, `members` FROM `ftp_group` WHERE `groupname` = ?";
-
-	$rs = exec_query($query, $dmn_name);
-
-	if ($rs->recordCount() == 0) { // there is no such group. we'll need a new one.
-        $domainProps =  get_domain_default_props($_SESSION['user_id']);
-        $temp_dmn_name = $domainProps['domain_name'];
-        $temp_dmn_gid = $domainProps['domain_gid'];
-        $temp_dmn_disk_limit = $domainProps['domain_disk_limit'];
-
-		$query = "
-			INSERT INTO ftp_group
-				(`groupname`, `gid`, `members`)
-			VALUES
-				(?, ?, ?)
-		";
-
-		exec_query($query, array($dmn_name, $temp_dmn_gid, $ftp_user));
-		// add entries in the quota tables
-		// first check if we have it by one or other reason
-		$query = "SELECT COUNT(`name`) AS cnt FROM `quotalimits` WHERE `name` = ?";
-		$rs = exec_query($query, $temp_dmn_name);
-		if ($rs->fields['cnt'] == 0) {
-			// ok insert it
-			if ($temp_dmn_disk_limit == 0) {
-				$dlim = 0;
-			} else {
-				$dlim = $temp_dmn_disk_limit * 1024 * 1024;
-			}
-
-			$query = "
-				INSERT INTO `quotalimits`
-					(`name`, `quota_type`, `per_session`, `limit_type`,
-					`bytes_in_avail`, `bytes_out_avail`, `bytes_xfer_avail`,
-					`files_in_avail`, `files_out_avail`, `files_xfer_avail`)
-				VALUES
-					(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-			";
-
-			exec_query($query, array($temp_dmn_name, 'group', 'false', 'hard', $dlim, 0, 0, 0, 0, 0));
-		}
-
-		return $temp_dmn_gid;
-	} else {
-		$ftp_gid = $rs->fields['gid'];
-		$members = $rs->fields['members'];
-
-		if (preg_match("/" . $ftp_user . "/", $members) == 0) {
-			$members .= ",$ftp_user";
-		}
-
-		$query = "
-			UPDATE
-				`ftp_group`
-			SET
-				`members` = ?
-			WHERE
-				`gid` = ?
-			AND
-				`groupname` = ?
-		";
-		exec_query($query, array($members, $ftp_gid, $dmn_name));
-
-		return $ftp_gid;
-	}
-}
-
-/**
- * @param $dmn_name
- * @param $ftp_user
- * @param $ftp_user_gid
- * @return int
- */
-function get_ftp_user_uid($dmn_name, $ftp_user, $ftp_user_gid) {
-
-	global $max_uid;
-
-	$query = "
-		SELECT
-			`uid`
-		FROM
-			`ftp_users`
-		WHERE
-			`userid` = ?
-		AND
-			`gid` = ?
-	";
-
-	$rs = exec_query($query, array($ftp_user, $ftp_user_gid));
-	if ($rs->recordCount() > 0) {
-		set_page_message(tr('FTP account already exists.'), 'error');
-		return -1;
-	}
-
-    $domainProps = get_domain_default_props($_SESSION['user_id']);
-    $temp_dmn_uid = $domainProps['domain_uid'];
-
-	return $temp_dmn_uid;
-}
-
-/**
- * @param $dmn_name
- * @return
- */
-function add_ftp_user($dmn_name)
-{
-	iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onBeforeAddFtp);
-
-	/** @var $cfg iMSCP_Config_Handler_File */
-	$cfg = iMSCP_Registry::get('config');
-
-	$username = strtolower(clean_input($_POST['username']));
-
-	if (!validates_username($username)) {
-		set_page_message(tr("Incorrect username length or syntax."), 'error');
-		return;
-	}
-
-	// Set default values ($ftp_home may be overwritten if user
-	// has specified a mount point)
-	switch ($_POST['dmn_type']) {
-		// Default moint point for a domain
-		case 'dmn':
-			$ftp_user = $username . $cfg->FTP_USERNAME_SEPARATOR . $dmn_name;
-			$ftp_home = $cfg->FTP_HOMEDIR . "/$dmn_name";
-			break;
-		// Default mount point for an alias domain
-		case 'als':
-			$ftp_user = $username . $cfg->FTP_USERNAME_SEPARATOR . $_POST['als_id'];
-			$alias_mount_point = get_alias_mount_point($_POST['als_id']);
-			$ftp_home = $cfg->FTP_HOMEDIR . "/$dmn_name" . $alias_mount_point;
-			break;
-		// Default mount point for a subdomain
-		case 'sub':
-			$ftp_user = $username . $cfg->FTP_USERNAME_SEPARATOR . $_POST['sub_id'] . '.' . $dmn_name;
-			$ftp_home = $cfg->FTP_HOMEDIR . "/$dmn_name/" . clean_input($_POST['sub_id']);
-			break;
-		// Unknown domain type (?)
-		default:
-			set_page_message(tr('Unknown domain type.'), 'error');
-			return;
-			break;
-	}
-	// User-specified mount point
-	if (isset($_POST['use_other_dir']) && $_POST['use_other_dir'] === 'on') {
-		$ftp_vhome = clean_input($_POST['other_dir'], false);
-		// Strip possible double-slashes
-		$ftp_vhome = str_replace('//', '/', $ftp_vhome);
-		// Check for updirs ".."
-		$res = preg_match("/\.\./", $ftp_vhome);
-		if ($res !== 0) {
-			set_page_message(tr('Incorrect mount point length or syntax.'), 'error');
-			return;
-		}
-		$ftp_home = $cfg->FTP_HOMEDIR . "/$dmn_name/" . $ftp_vhome;
-		// Strip possible double-slashes
-		$ftp_home = str_replace('//', '/', $ftp_home);
-		// Check for $ftp_vhome existence
-		// Create a virtual filesystem (it's important to use =&!)
-		$vfs = new iMSCP_VirtualFileSystem($dmn_name);
-		// Check for directory existence
-		$res = $vfs->exists($ftp_vhome);
-
-		if (!$res) {
-			set_page_message(tr("%s doesn't exist", $ftp_vhome), 'error');
-			return;
-		}
-	} // End of user-specified mount-point
-
-	$ftp_gid = get_ftp_user_gid($dmn_name, $ftp_user);
-	$ftp_uid = get_ftp_user_uid($dmn_name, $ftp_user, $ftp_gid);
-
-	if ($ftp_uid == -1) return;
-
-	$ftp_shell = $cfg->CMD_SHELL;
-	$ftp_passwd = cryptPasswordWithSalt($_POST['pass']);
-	$ftp_rawpasswd = $_POST['pass'];
-
-	$query = "
-		INSERT INTO ftp_users
-			(`userid`, `passwd`, `rawpasswd`, `uid`, `gid`, `shell`, `homedir`)
-		VALUES
-			(?, ?, ?, ?, ?, ?, ?)
-	";
-	exec_query($query, array($ftp_user, $ftp_passwd, $ftp_rawpasswd, $ftp_uid, $ftp_gid, $ftp_shell, $ftp_home));
-
-	$domain_props = get_domain_default_props($_SESSION['user_id']);
-	update_reseller_c_props($domain_props['domain_created_id']);
-
-	iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAfterAddFtp);
-
-	write_log($_SESSION['user_logged'] . ": add new FTP account: $ftp_user", E_USER_NOTICE);
-	set_page_message(tr('FTP account added.'), 'success');
-	redirectTo('ftp_accounts.php');
-}
-
-/**
- * @param $tpl
- * @param $dmn_id
- * @param $dmn_name
- * @return
- */
-function check_ftp_acc_data($tpl, $dmn_id, $dmn_name) {
-
-	/** @var $cfg iMSCP_Config_Handler_File */
-	$cfg = iMSCP_Registry::get('config');
-
-	if (!isset($_POST['username']) || $_POST['username'] === '') {
-		set_page_message(tr('Please enter FTP account username.'), 'error');
-		return;
-	}
-
-	if (!isset($_POST['pass']) || empty($_POST['pass'])
-		|| !isset($_POST['pass_rep'])
-		|| $_POST['pass_rep'] === '') {
-		set_page_message(tr('Password is missing.'), 'error');
-		return;
-	}
-
-	if ($_POST['pass'] !== $_POST['pass_rep']) {
-		set_page_message(tr("Passwords doesn't match."), 'error');
-		return;
-	}
-
-	if (!checkPasswordSyntax($_POST['pass'])) {
-		return;
-	}
-
-	if ($_POST['dmn_type'] === 'sub' && $_POST['sub_id'] === 'n/a') {
-		set_page_message(tr('Subdomain list is empty! You cannot add FTP accounts there!'), 'error');
-		return;
-	}
-
-	if ($_POST['dmn_type'] === 'als' && $_POST['als_id'] === 'n/a') {
-		set_page_message(tr('Alias list is empty! You cannot add FTP accounts there!'), 'error');
-		return;
-	}
-
-	if (isset($_POST['use_other_dir']) && $_POST['use_other_dir'] === 'on' && empty($_POST['other_dir'])) {
-		set_page_message(tr('Please specify other FTP account directory!'), 'error');
-		return;
-	}
-
-	add_ftp_user($dmn_name);
-}
-
-/**
- * @param $tpl
- * @param $user_id
- * @return void
- */
-function gen_page_ftp_acc_props($tpl, $user_id) {
-    $domainProps = get_domain_default_props($user_id);
-    $dmn_id = $domainProps['domain_id'];
-    $dmn_name = $domainProps['domain_name'];
-    $dmn_ftpacc_limit = $domainProps['domain_ftpacc_limit'];
-
-	list($ftp_acc_cnt, $dmn_ftp_acc_cnt, $sub_ftp_acc_cnt, $als_ftp_acc_cnt) = get_domain_running_ftp_acc_cnt($dmn_id);
-
-	if ($dmn_ftpacc_limit != 0 && $ftp_acc_cnt >= $dmn_ftpacc_limit) {
-		set_page_message(tr('FTP accounts limit reached!'), 'error');
-		redirectTo('ftp_accounts.php');
-	} else {
-		if (!isset($_POST['uaction'])) {
-			gen_page_form_data($tpl, $dmn_name, 'no');
-			gen_dmn_als_list($tpl, $dmn_id, 'no');
-			gen_dmn_sub_list($tpl, $dmn_id, $dmn_name, 'no');
-			gen_page_js($tpl);
-		} else if (isset($_POST['uaction']) && $_POST['uaction'] === 'add_user') {
-			gen_page_form_data($tpl, $dmn_name, 'yes');
-			gen_dmn_als_list($tpl, $dmn_id, 'yes');
-			gen_dmn_sub_list($tpl, $dmn_id, $dmn_name, 'yes');
-			check_ftp_acc_data($tpl, $dmn_id, $dmn_name);
-		}
-	}
-}
-
-/**
- * @param iMSCP_pTemplate $tpl
- * @return void
- */
-function gen_page_js($tpl) {
-
-	if (isset($_SESSION['subdomain_count']) && isset($_SESSION['alias_count'])) { // no subdomains and no alias
-		$tpl->parse('JS_NOT_DOMAIN', 'js_not_domain');
-		$tpl->assign('JS_TO_SUBDOMAIN', '');
-		$tpl->assign('JS_TO_ALIAS_DOMAIN', '');
-		$tpl->assign('JS_TO_ALL_DOMAIN', '');
-	} else if (isset($_SESSION['subdomain_count']) && !isset($_SESSION['alias_count'])) { // no subdomains - alaias available
-		$tpl->assign('JS_NOT_DOMAIN', '');
-		$tpl->assign('JS_TO_SUBDOMAIN', '');
-		$tpl->parse('JS_TO_ALIAS_DOMAIN', 'js_to_alias_domain');
-		$tpl->assign('JS_TO_ALL_DOMAIN', '');
-	} else if (!isset($_SESSION['subdomain_count']) && isset($_SESSION['alias_count'])) { // no alias - subdomain available
-		$tpl->assign('JS_NOT_DOMAIN', '');
-		$tpl->parse('JS_TO_SUBDOMAIN', 'js_to_subdomain');
-		$tpl->assign('JS_TO_ALIAS_DOMAIN', '');
-		$tpl->assign('JS_TO_ALL_DOMAIN', '');
-	} else { // there are subdomains and aliases
-		$tpl->assign('JS_NOT_DOMAIN', '');
-		$tpl->assign('JS_TO_SUBDOMAIN', '');
-		$tpl->assign('JS_TO_ALIAS_DOMAIN', '');
-		$tpl->parse('JS_TO_ALL_DOMAIN', 'js_to_all_domain');
-	}
-
-	unset($GLOBALS['subdomain_count']);
-	unset($GLOBALS['alias_count']);
-	unset($_SESSION['subdomain_count']);
-	unset($_SESSION['alias_count']);
-}
+$tpl->define_dynamic(
+	array(
+		'layout' => 'shared/layouts/ui.tpl',
+		'page' => 'client/ftp_add.tpl',
+		'page_message' => 'layout',
+		'domain_list' => 'page',
+		'domain_types' => 'page'
+	)
+);
 
 $tpl->assign(
 	array(
-		'TR_PAGE_TITLE' => tr('i-MSCP - Client/Add FTP User'),
+		'TR_PAGE_TITLE' => tr('i-MSCP - Client/Add FTP Account'),
 		'THEME_CHARSET' => tr('encoding'),
-		'ISP_LOGO' => layout_getUserLogo()));
-
-gen_page_ftp_acc_props($tpl, $_SESSION['user_id']);
-generateNavigation($tpl);
-
-$tpl->assign(
-	array(
-		'TR_TITLE_ADD_FTP_USER' => tr('Add FTP user'),
+		'ISP_LOGO' => layout_getUserLogo(),
+		'TR_FTP_ACCOUNT_DATA' => tr('Ftp account data'),
+		'TR_DOMAIN_TYPE_LABEL' => tr('Domain type'),
 		'TR_USERNAME' => tr('Username'),
-		'TR_TO_MAIN_DOMAIN' => tr('To main domain'),
-		'TR_TO_DOMAIN_ALIAS' => tr('To domain alias'),
-		'TR_TO_SUBDOMAIN' => tr('To subdomain'),
+		'FTP_USERNAME_SEPARATOR' => $cfg->FTP_USERNAME_SEPARATOR,
 		'TR_PASSWORD' => tr('Password'),
 		'TR_PASSWORD_REPEAT' => tr('Repeat password'),
-		'TR_USE_OTHER_DIR' => tr('Use other dir'),
+		'TR_HOME_DIR' => tr('Home directory'),
+		'TR_CHOOSE_DIR' => tr('Choose dir'),
 		'TR_ADD' => tr('Add'),
-		'CHOOSE_DIR' => tr('Choose dir'),
-		'FTP_SEPARATOR' => $cfg->FTP_USERNAME_SEPARATOR,
-		'TR_FTP_USER_DATA' => tr('Ftp user data')));
+		'TR_CANCEL' => tr('Cancel')
+	)
+);
 
+ftp_generatePageData($mainDmnName, $mainDmnId, $tpl);
+generateNavigation($tpl);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
@@ -591,3 +476,5 @@ $tpl->parse('LAYOUT_CONTENT', 'page');
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, array('templateEngine' => $tpl));
 
 $tpl->prnt();
+
+unsetMessages();

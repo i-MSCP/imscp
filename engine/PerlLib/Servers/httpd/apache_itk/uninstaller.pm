@@ -27,6 +27,7 @@ package Servers::httpd::apache_itk::uninstaller;
 
 use strict;
 use warnings;
+
 use iMSCP::Debug;
 use parent 'Common::SingletonClass';
 
@@ -48,9 +49,8 @@ sub _init
 sub uninstall
 {
 	my $self = shift;
-	my $rs = 0;
 
-	$rs = $self->removeUsers();
+	my $rs = $self->removeUsers();
 	return $rs if $rs;
 
 	$rs = $self->removeDirs();
@@ -65,21 +65,19 @@ sub uninstall
 sub removeUsers
 {
 	my $self = shift;
-	my $rs = 0;
-	my ($panelGName, $panelUName);
 
 	## Panel user
-	use Modules::SystemUser;
-	$panelUName = Modules::SystemUser->new();
+	use iMSCP::SystemUser;
+	my $panelUName = iMSCP::SystemUser->new();
 	$panelUName->{'force'} = 'yes';
-	$rs = $panelUName->delSystemUser(
+	my $rs = $panelUName->delSystemUser(
 		$main::imscpConfig{'SYSTEM_USER_PREFIX'} . $main::imscpConfig{'SYSTEM_USER_MIN_UID'}
 	);
 	return $rs if $rs;
 
 	# Panel group
-	use Modules::SystemGroup;
-	$panelGName = Modules::SystemGroup->new();
+	use iMSCP::SystemGroup;
+	my $panelGName = iMSCP::SystemGroup->new();
 	$panelGName->delSystemGroup(
 		$main::imscpConfig{'SYSTEM_USER_PREFIX'} . $main::imscpConfig{'SYSTEM_USER_MIN_UID'}
 	);
@@ -88,6 +86,7 @@ sub removeUsers
 sub removeDirs
 {
 	my $self = shift;
+
 	use iMSCP::Dir;
 
 	my $rs = 0;

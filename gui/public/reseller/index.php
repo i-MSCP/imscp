@@ -70,26 +70,6 @@ function reseller_generateSupportQuestionsMessage()
 }
 
 /**
- * Generates message for new orders.
- *
- * @return void
- */
-function reseller_generateOrdersMessage()
-{
-	/** @var $cfg iMSCP_Config_Handler_File */
-	$cfg = iMSCP_Registry::get('config');
-
-	$query = "SELECT COUNT(`id`) `nbAccountOrders` FROM `orders` WHERE `user_id` = ? AND `status` = ?";
-	$stmt = exec_query($query, array($_SESSION['user_id'], $cfg->ITEM_ORDER_CONFIRMED_STATUS));
-
-	$nbAccountOrders = $stmt->fields['nbAccountOrders'];
-
-	if ($nbAccountOrders) {
-		set_page_message(tr('You have %d new accounts %s.', $nbAccountOrders, ($nbAccountOrders > 1) ? tr('orders') : tr('order')));
-	}
-}
-
-/**
  * Generates message for new domain aliases orders.
  *
  * @return void
@@ -303,7 +283,6 @@ $tpl->assign(
 
 generateNavigation($tpl);
 reseller_generateSupportQuestionsMessage();
-reseller_generateOrdersMessage();
 reseller_generateOrdersAliasesMessage();
 reseller_generatePageData($tpl, $_SESSION['user_id'], $_SESSION['user_logged']);
 generatePageMessage($tpl);

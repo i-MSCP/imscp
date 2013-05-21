@@ -36,45 +36,46 @@ use iMSCP::Boot;
 use Mail::Address;
 use MIME::Entity;
 use Email::Simple;
-use Data::Dumper;
 use Encode;
+
+# Turn off localisation features to force any command output to be in english
+$ENV{LANG} = 'C';
+
+umask(027);
 
 newDebug('imscp-arpl-msgr/imscp-arpl-msgr.log');
 
-
-sub arpl_start_up {
-
-	umask(027);
-
-	iMSCP::Boot->getInstance()->boot({ 'nolock' => 'yes', 'norequirements' => 'yes'});
+sub startUp
+{
+	iMSCP::Boot->getInstance()->boot({ 'nolock' => 'yes', 'norequirements' => 'yes' });
 
 	0;
 }
 
-sub arpl_engine {
-
+sub process
+{
 	my $from = $ARGV[0];
 	$from =~ s/imscp-arpl\.//gim;
 
 	my @msg = <STDIN>;
 
-	my $sql = "
-		DELETE FROM
-			`autoreplies_log`
-		WHERE
-			ADDTIME(`time`, '24:00:00') < NOW()
-	";
+	my $database = iMSCP::Database->factory();
 
-	my $rdata = iMSCP::Database->factory()->doQuery('delete', $sql);
-	error("$rdata") if(ref $rdata ne 'HASH');
+	my $sql = "DELETE FROM `autoreplies_log` WHERE ADDTIME(`time`, '24:00:00') < NOW()";
 
-	my $mail	= Email::Simple->new(join('', @msg));
-	my ($to)	= Mail::Address->parse($mail->header("From"));
+	my $rdata = $database->doQuery('delete', $sql);
+	unless(ref $rdata eq 'HASH') {
+		error($rdata);;
+	}
 
-	if (not $to){
+	my $mail = Email::Simple->new(join('', @msg));
+	my ($to) = Mail::Address->parse($mail->header("From"));
+
+	if (not $to) {
 		error("Couldn't parse a From address");
 		return 0;
 	}
+
 	my ($to) = lc($to->address);
 
 	if(
@@ -86,21 +87,11 @@ sub arpl_engine {
 		return 0;
 	}
 
-	$sql = "
-			SELECT
-				`time`
-			FROM
-				`autoreplies_log`
-			WHERE
-				`from` = ?
-			AND
-				`to` = ?
-			AND
-				ADDTIME(`time`, '24:00:00') > NOW()
-	";
-
-	$rdata = iMSCP::Database->factory()->doQuery('time', $sql, $from, $to);
-	error("$rdata") if(ref $rdata ne 'HASH');
+	$sql = "SELECT `time` FROM `autoreplies_log` WHERE `from` = ? AND `to` = ? AND ADDTIME(`time`, '24:00:00') > NOW()";
+	$rdata = $database->doQuery('time', $sql, $from, $to);
+	unless(ref $rdata eq 'HASH') {
+		error($rdata);;
+	}
 
 	return 0 if(scalar keys %{$rdata});
 
@@ -116,14 +107,14 @@ sub arpl_engine {
 	";
 
 	$rdata = iMSCP::Database->factory()->doQuery('text', $sql, $from);
-	if(ref $rdata ne 'HASH'){
-		error("$rdata");
+	unless(ref $rdata eq 'HASH'){
+		error($rdata);
 		return 1;
 	}
+
 	return 0 unless(scalar keys %{$rdata});
 
 	my $text = (keys %{$rdata})[0];
-
 	my $out = new MIME::Entity;
 
 	$out->build(
@@ -137,7 +128,7 @@ sub arpl_engine {
 
 	$out->attach(
 		Type => "text/plain; charset=utf-8",
-		Encoding => "7bit",
+		Encoding => "8bit",
 		Description => "Mail User Autoreply Message",
 		Data => Encode::encode("UTF-8", $text)
 	);
@@ -154,16 +145,18 @@ sub arpl_engine {
 
 	# Log the autoreply
 	$sql = "INSERT INTO `autoreplies_log` (`time`, `from`, `to`) VALUES (NOW(), ?, ?)";
-	$rdata = iMSCP::Database->factory()->doQuery('insert', $sql, $from, $to);
-	if(ref $rdata ne 'HASH'){
-		error("$rdata");
+	$rdata = $database->doQuery('insert', $sql, $from, $to);
+	unless(ref $rdata eq 'HASH'){
+		error($rdata);
 		return 1;
 	}
 
 	0;
 }
 
-exit 1 if arpl_start_up();
-exit 1 if arpl_engine();
+my $rs = 0;
 
-exit 0;
+$rs = startUp();
+$rs ||= process();
+
+exit $rs;

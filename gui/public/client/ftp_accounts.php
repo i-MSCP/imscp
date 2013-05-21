@@ -1,84 +1,76 @@
 <?php
 /**
  * i-MSCP - internet Multi Server Control Panel
+ * Copyright (C) 2010-2013 by i-MSCP team
  *
- * The contents of this file are subject to the Mozilla Public License
- * Version 1.1 (the "License"); you may not use this file except in
- * compliance with the License. You may obtain a copy of the License at
- * http://www.mozilla.org/MPL/
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
  *
- * Software distributed under the License is distributed on an "AS IS"
- * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
- * License for the specific language governing rights and limitations
- * under the License.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- * The Original Code is "VHCS - Virtual Hosting Control System".
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
- * The Initial Developer of the Original Code is moleSoftware GmbH.
- * Portions created by Initial Developer are Copyright (C) 2001-2006
- * by moleSoftware GmbH. All Rights Reserved.
- *
- * Portions created by the ispCP Team are Copyright (C) 2006-2010 by
- * isp Control Panel. All Rights Reserved.
- *
- * Portions created by the i-MSCP Team are Copyright (C) 2010-2013 by
- * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
- *
- * @category    i-MSCP
- * @package        iMSCP_Core
- * @subpackage    Client
- * @copyright   2001-2006 by moleSoftware GmbH
- * @copyright   2006-2010 by ispCP | http://isp-control.net
- * @copyright   2010-2013 by i-MSCP | http://i-mscp.net
- * @author      ispCP Team
- * @author      i-MSCP Team
- * @link        http://i-mscp.net
+ * @category    iMSCP
+ * @package	    iMSCP_Core
+ * @subpackage  Client_Ftp
+ * @copyright   2010-2013 by i-MSCP team
+ * @author      Laurent Declercq <l.declercq@nuxwin.com>
+ * @link        http://www.i-mscp.net i-MSCP Home Site
+ * @license     http://www.gnu.org/licenses/gpl-2.0.txt GPL v2
  */
 
-/************************************************************************************
+/***********************************************************************************************************************
  * Script functions
  */
 
 /**
- * Generates FTP accounts list.
+ * Generates page data
  *
  * @param iMSCP_pTemplate $tpl
  * @return void
  */
-function gen_page_ftp_list($tpl)
+function ftp_generatePageData($tpl)
 {
-	$domainProps = get_domain_default_props($_SESSION['user_id']);
-	$dmn_name = $domainProps['domain_name'];
+	$query = "SELECT `userid` FROM `ftp_users` WHERE `admin_id` = ? ORDER BY LENGTH(`userid`) DESC";
+	$stmt = exec_query($query, $_SESSION['user_id']);
 
-	$query = "SELECT `gid`, `members` FROM `ftp_group` WHERE `groupname` = ?";
-	$stmt = exec_query($query, $dmn_name);
-
-	if ($stmt->rowCount() == 0) {
-		set_page_message(tr('You do not have FTP users.'), 'info');
+	if (!$stmt->rowCount()) {
+		set_page_message(tr('You do not have FTP accounts.'), 'info');
 		$tpl->assign('FTP_ACCOUNTS', '');
 	} else {
-		$ftp_accs = explode(',', $stmt->fields['members']);
-		sort($ftp_accs);
-		reset($ftp_accs);
+		/** @var $cfg iMSCP_Config_Handler_File */
+		$cfg = iMSCP_Registry::get('config');
 
-		customerHasFeature('ftp_easy_login') or $tpl->assign('FTP_EASY_LOGIN', '');
+		if(!(isset($cfg->FILEMANAGER_ADDON) && $cfg->FILEMANAGER_ADDON == 'AjaxPlorer')) {
+			$tpl->assign('FTP_EASY_LOGIN', '');
+		}
 
-		for ($i = 0, $cnt_ftp_accs = count($ftp_accs); $i < $cnt_ftp_accs; $i++) {
-			$ftp_accs_encode[$i] = decode_idna($ftp_accs[$i]);
+		$nbFtpAccounts = 0;
+
+		while(!$stmt->EOF) {
+			$userid = $stmt->fields['userid'];
+			list($username, $domain) = explode($cfg->FTP_USERNAME_SEPARATOR, $userid);
 
 			$tpl->assign(
 				array(
-					'FTP_ACCOUNT' => tohtml($ftp_accs_encode[$i]),
-					'UID' => urlencode($ftp_accs[$i])
+					'FTP_ACCOUNT' => tohtml($username . $cfg->FTP_USERNAME_SEPARATOR . decode_idna($domain)),
+					'UID' => urlencode($userid)
 				)
 			);
 
 			$tpl->parse('FTP_ITEM', '.ftp_item');
+			$stmt->moveNext();
+			$nbFtpAccounts++;
 		}
 
-
-
-		$tpl->assign('TOTAL_FTP_ACCOUNTS', count($ftp_accs));
+		$tpl->assign('TOTAL_FTP_ACCOUNTS', $nbFtpAccounts);
 	}
 }
 
@@ -99,9 +91,9 @@ customerHasFeature('ftp') or showBadRequestErrorPage();
 $cfg = iMSCP_Registry::get('config');
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic('layout', 'shared/layouts/ui.tpl');
 $tpl->define_dynamic(
 	array(
+		'layout' => 'shared/layouts/ui.tpl',
 		'page' => 'client/ftp_accounts.tpl',
 		'page_message' => 'layout',
 		'ftp_message' => 'page',
@@ -113,7 +105,7 @@ $tpl->define_dynamic(
 
 $tpl->assign(
 	array(
-		'TR_PAGE_TITLE' => tr('i-MSCP - Client/Manage Users'),
+		'TR_PAGE_TITLE' => tr('i-MSCP - Client/Manage Ftp Accounts'),
 		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => layout_getUserLogo(),
 		'TR_TOTAL_FTP_ACCOUNTS' => tr('FTPs total'),
@@ -129,7 +121,7 @@ $tpl->assign(
 );
 
 generateNavigation($tpl);
-gen_page_ftp_list($tpl);
+ftp_generatePageData($tpl);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');

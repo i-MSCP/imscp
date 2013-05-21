@@ -338,43 +338,7 @@
             </table>
             <table class="firstColFixed">
                 <tr>
-                    <th colspan="2">{TR_BILLING_PROPS}</th>
-                </tr>
-                <tr>
-                    <td><label for="hp_price">{TR_PRICE}</label></td>
-                    <td><input name="hp_price" type="text" id="hp_price" value="{HP_PRICE}"/>
-                        <small>({TR_TAX_FREE})</small>
-                    </td>
-                </tr>
-                <tr>
-                    <td><label for="hp_setup_fee">{TR_SETUP_FEE}</label></td>
-                    <td><input name="hp_setup_fee" type="text" id="hp_setup_fee" value="{HP_SETUP_FEE}"/>
-                        <small>({TR_TAX_FREE})</small>
-                    </td>
-                </tr>
-                <tr>
-                    <td><label for="hp_vat">{TR_VAT}</label></td>
-                    <td>
-                        <input name="hp_vat" type="text" id="hp_vat" value="{HP_VAT}"{READONLY} />
-                        <small>%</small>
-                    </td>
-                </tr>
-                <tr>
-                    <td><label for="hp_currency">{TR_CURRENCY}</label></td>
-                    <td>
-                        <input class="ui-" name="hp_currency" type="text" id="hp_currency" value="{HP_CURRENCY}"/>
-                        <small>{TR_EXAMPLE}</small>
-                    </td>
-                </tr>
-                <tr>
-                    <td><label for="hp_payment">{TR_PAYMENT}</label></td>
-                    <td>
-                        <select id="hp_payment" name="hp_payment"{HP_PAYMENT_DISABLED}>
-                            <!-- BDP: hp_payment_option -->
-                            <option value="{HP_PAYMENT_VALUE}"{HP_PAYMENT_SELECTED}>{TR_HP_PAYMENT_VALUE}</option>
-                            <!-- EDP: hp_payment_option -->
-                        </select>
-                    </td>
+                    <th colspan="2">{TR_HP_AVAILABILITY}</th>
                 </tr>
                 <tr>
                     <td>{TR_STATUS}</td>
@@ -386,18 +350,6 @@
                             <label for="status_no">{TR_NO}</label>
                         </div>
                     </td>
-                </tr>
-            </table>
-            <table class="firstColFixed">
-                <tr>
-                    <th colspan="2">{TR_TOS_PROPS}</th>
-                </tr>
-                <tr>
-                    <td colspan="2">{TR_TOS_NOTE}</td>
-                </tr>
-                <tr>
-                    <td><label for="hp_tos">{TR_TOS_DESCRIPTION}</label></td>
-                    <td><textarea name="hp_tos" id="hp_tos">{HP_TOS_VALUE}</textarea></td>
                 </tr>
             </table>
             <!-- BDP: form -->

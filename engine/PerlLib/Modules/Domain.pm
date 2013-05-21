@@ -17,11 +17,12 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 #
-# @category		i-MSCP
-# @copyright	2010-2013 by i-MSCP | http://i-mscp.net
-# @author		Daniel Andreca <sci2tech@gmail.com>
-# @link			http://i-mscp.net i-MSCP Home Site
-# @license		http://www.gnu.org/licenses/gpl-2.0.html GPL v2
+# @category    i-MSCP
+# @copyright   2010-2013 by i-MSCP | http://i-mscp.net
+# @author      Daniel Andreca <sci2tech@gmail.com>
+# @author      Laurent Declercq <l.declercq@nuxwin.com>
+# @link        http://i-mscp.net i-MSCP Home Site
+# @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
 package Modules::Domain;
 
@@ -29,7 +30,6 @@ use strict;
 use warnings;
 
 use iMSCP::Debug;
-use Data::Dumper;
 use Modules::User;
 use iMSCP::Execute;
 use iMSCP::Dir;
@@ -38,6 +38,7 @@ use iMSCP::Rights;
 use Servers::httpd;
 use iMSCP::Database;
 use Modules::openssl;
+use iMSCP::Ext2Attributes qw(clearImmutable);
 use parent 'Modules::Abstract';
 
 sub _init
@@ -49,8 +50,8 @@ sub _init
 	$self;
 }
 
-sub loadData{
-
+sub loadData
+{
 	my $self = shift;
 
 	my $sql = "
@@ -58,7 +59,8 @@ sub loadData{
 			`domain`.*, `ips`.`ip_number`, `mail_count`.`mail_on_domain`, `ips_count`.`domains_on_ip`
 		FROM
 			`domain` AS `domain`
-		LEFT JOIN `server_ips` AS `ips` ON `domain`.`domain_ip_id` = `ips`.`ip_id`
+		LEFT JOIN
+			`server_ips` AS `ips` ON (`domain`.`domain_ip_id` = `ips`.`ip_id`)
 		LEFT JOIN
 			(
 				SELECT
@@ -69,7 +71,7 @@ sub loadData{
 					`domain_id`
 			) AS `mail_count`
 		ON
-			`domain`.`domain_id` = `mail_count`.`id`
+			(`domain`.`domain_id` = `mail_count`.`id`)
 		LEFT JOIN
 			(
 				SELECT
@@ -80,7 +82,7 @@ sub loadData{
 					`domain_ip_id`
 			) AS `ips_count`
 		ON
-			`domain`.`domain_ip_id` = `ips_count`.`ip_id`
+			(`domain`.`domain_ip_id` = `ips_count`.`ip_id`)
 		WHERE
 			`domain_id` = ?
 	";
@@ -91,7 +93,7 @@ sub loadData{
 		return 1;
 	}
 
-	unless(exists $rdata->{$self->{'dmnId'}}) {
+	unless($rdata->{$self->{'dmnId'}}) {
 		error("No domain has id = $self->{'dmnId'}");
 		return 1
 	}
@@ -109,37 +111,34 @@ sub process
 	my $rs = $self->loadData();
 	return $rs if $rs;
 
-    $rs = Modules::User->new()->process($self->{'domain_admin_id'});
-    return $rs if $rs;
-
 	my @sql;
 
-	if($self->{'domain_status'} =~ /^toadd|change|toenable|dnschange$/){
+	if($self->{'domain_status'} =~ /^toadd|change|toenable|dnschange$/) {
 		$rs = $self->add();
 		@sql = (
 			"UPDATE `domain` SET `domain_status` = ? WHERE `domain_id` = ?",
 			($rs ? scalar getMessageByType('error') : 'ok'),
 			$self->{'domain_id'}
 		);
-	} elsif($self->{'domain_status'} =~ /^delete$/){
+	} elsif($self->{'domain_status'} eq 'delete') {
 		$rs = $self->delete();
-		if($rs){
+		if($rs) {
 			@sql = (
 				"UPDATE `domain` SET `domain_status` = ? WHERE `domain_id` = ?",
 				scalar getMessageByType('error'),
 				$self->{'domain_id'}
 			);
-		}else {
+		} else {
 			@sql = ("DELETE FROM `domain` WHERE `domain_id` = ?", $self->{'domain_id'});
 		}
-	} elsif($self->{'domain_status'} =~ /^todisable$/){
+	} elsif($self->{'domain_status'} eq 'todisable') {
 		$rs = $self->disable();
 		@sql = (
 			"UPDATE `domain` SET `domain_status` = ? WHERE `domain_id` = ?",
 			($rs ? scalar getMessageByType('error') : 'disabled'),
 			$self->{'domain_id'}
 		);
-	} elsif($self->{'domain_status'} =~ /^restore$/){
+	} elsif($self->{'domain_status'} eq 'restore') {
 		$rs = $self->restore();
 		@sql = (
 			"UPDATE `domain` SET `domain_status` = ? WHERE `domain_id` = ?",
@@ -149,7 +148,7 @@ sub process
 	}
 
 	my $rdata = iMSCP::Database->factory()->doQuery('dummy', @sql);
-	if(ref $rdata ne 'HASH') {
+	unless(ref $rdata eq 'HASH') {
 		error($rdata);
 		return 1;
 	}
@@ -160,21 +159,20 @@ sub process
 sub restore
 {
 	my $self = shift;
+
 	$self->{'action'} = 'restore';
+
+	my $dmnDir = "$main::imscpConfig{'USER_WEB_DIR'}/$self->{'domain_name'}";
+	my $dmnBkpdir = "$dmnDir/backups";
+    my ($cmd, $rdata, $stdout, $stderr);
 	my $rs = 0;
-	my ($stdout, $stderr);
 
-	my $dmn_dir = "$main::imscpConfig{'USER_HOME_DIR'}/$self->{'domain_name'}";
-	my $dmn_bk_dir = "$dmn_dir/backups";
-	my $cmd;
+	my @bkpFiles = iMSCP::Dir->new('dirname' => $dmnBkpdir)->getFiles();
 
-	my $dir	= iMSCP::Dir->new('dirname' => $dmn_bk_dir);
-	my @bkpFiles = $dir->getFiles();
-
-	return 0 unless (scalar @bkpFiles);
+	return 0 unless @bkpFiles;
 
 	for (@bkpFiles) {
-		if(/^(.+?)\.sql\.(bz2|gz|lzma|xz)$/) {
+		if(/^(.+?)\.sql\.(bz2|gz|lzma|xz)$/) { # Restore SQL database
 			my $sql = "
 				SELECT
 					*
@@ -186,23 +184,22 @@ sub restore
 					`sql_user`.`sqld_id` = `sql_database`.`sqld_id`
 				AND
 					`sql_database`.`sqld_name` = ?
-				;
 			";
-			my $rdata = iMSCP::Database->factory()->doQuery('sqld_name', $sql, $self->{'domain_id'}, $1);
+			$rdata = iMSCP::Database->factory()->doQuery('sqld_name', $sql, $self->{'domain_id'}, $1);
 			if(ref $rdata ne 'HASH') {
 				error($rdata);
 				return 1,
 			}
 
 			unless(exists $rdata->{$1}) {
-				error("No owned database has name = $1");
-				return 1;
+				warning("orphaned database found ($1). skipping...");
+				next;
 			}
 
 			if(scalar keys %{$rdata}) {
 				my $dbuser = escapeShell($rdata->{$1}->{'sqlu_name'});
 				my $dbpass = escapeShell($rdata->{$1}->{'sqlu_pass'});
-				my $dbname = escapeShell($1);
+				my $dbname = escapeShell($rdata->{$1}->{'sqld_name'});
 
 				if($2 eq 'bz2') {
 					$cmd = "$main::imscpConfig{'CMD_BZCAT'} -d ";
@@ -214,14 +211,27 @@ sub restore
 					$cmd = "$main::imscpConfig{'CMD_XZ'} -dc ";
 				}
 
-				$cmd .= "$dmn_bk_dir/$_ | $main::imscpConfig{'CMD_MYSQL'} -u$dbuser -p$dbpass $dbname";
+				$cmd .= "$dmnBkpdir/$_ | $main::imscpConfig{'CMD_MYSQL'} -u$dbuser -p$dbpass $dbname";
 
 				$rs = execute($cmd, \$stdout, \$stderr);
 				debug($stdout) if $stdout;
 				error($stderr) if $stderr && $rs;
 				return $rs if $rs;
 			}
-		} elsif(/^.+?\.tar\.(bz2|gz|lzma|xz)$/) { # Restore dmn files
+		} elsif(/^.+?\.tar\.(bz2|gz|lzma|xz)$/) { # Restore domain files
+
+			# Since we are now using extended attribute to protect some folders, we must in order do the following to
+			# restore a backup:
+			#
+			# - Update status of sub, als and alssub, entities linked to the parent domain to 'restore'
+			# - Un-protect user home dir (clear immutable flag recursively)
+			# - restore the files
+			# - Run the restore() parent method
+			#
+			# The first and last tasks allow the i-MSCP Httpd server implementations to set correct permissions and set
+			# immutable flag on folders if needed for each entity
+			#
+			# Note: This is a bunch of works but this will be fixed when the backup feature will be rewritten
 
 			my $type = $1;
 
@@ -231,46 +241,64 @@ sub restore
 				$type = 'gzip';
 			}
 
-			my $cmd = "$main::imscpConfig{'CMD_TAR'} -x -p --$type -C $dmn_dir -f $dmn_bk_dir/$_";
+			# TODO: Should we also update status of htuser, htgroup and htaccess entities?
+			my $database = iMSCP::Database->factory();
+
+			# Update status of any sub to 'restore'
+			$rdata = $database->doQuery(
+				'dummy',
+				"UPDATE `subdomain` SET `subdomain_status` = 'restore' WHERE `domain_id` = ?",
+				$self->{'domain_id'}
+			);
+			unless(ref $rdata eq 'HASH') {
+				error($rdata);
+				return 1;
+			}
+
+			# Update status of any als to 'restore'
+			$rdata = $database->doQuery(
+				'dummy',
+				"UPDATE `domain_aliasses` SET `alias_status` = 'restore' WHERE `domain_id` = ?",
+				$self->{'domain_id'}
+			);
+			unless(ref $rdata eq 'HASH') {
+				error($rdata);
+				return 1;
+			}
+
+			# Update status of any alssub to 'restore'
+			$rdata = $database->doQuery(
+				'dummy',
+				"
+					UPDATE
+						`subdomain_alias`
+					SET
+						`subdomain_alias_status` = 'restore'
+					WHERE
+						`alias_id` IN (SELECT `alias_id` FROM `domain_aliasses` WHERE `domain_id` = ?)
+				",
+				$self->{'domain_id'}
+			);
+			unless(ref $rdata eq 'HASH') {
+				error($rdata);
+				return 1;
+			}
+
+			# Un-protect folders
+			clearImmutable($dmnDir, 1);
+
+			$cmd = "$main::imscpConfig{'CMD_TAR'} -x -p --$type -C '$dmnDir' -f '$dmnBkpdir/$_'";
 			$rs = execute($cmd, \$stdout, \$stderr);
 			debug($stdout) if $stdout;
 			error($stderr) if $stderr && $rs;
 			return $rs if $rs;
+
+			$rs = $self->SUPER::restore();
+			return $rs if $rs;
 		}
 	}
 
-	my $httpdGroup = (
-		Servers::httpd->factory()->can('getRunningGroup') ? Servers::httpd->factory()->getRunningGroup() : '0'
-	);
-
-	$cmd = "$main::imscpConfig{'CMD_CHOWN'} -R $self->{'domain_uid'}:$httpdGroup $dmn_dir";
-	$rs = execute($cmd, \$stdout, \$stderr);
-	debug($stdout) if $stdout;
-	error($stderr) if $stderr && $rs;
-	return $rs if $rs;
-
-	$rs = setRights(
-		"$dmn_dir/domain_disable_page",
-		{
-			'user' => $main::imscpConfig{'ROOT_USER'},
-			'group' => $httpdGroup,
-			'filemode' => '0640',
-			'dirmode' => '0750',
-			'recursive' => 'yes'
-		}
-	);
-	return $rs if $rs;
-
-	setRights(
-		"$dmn_dir/backups",
-		{
-			'user' => $main::imscpConfig{'ROOT_USER'},
-			'group' => $main::imscpConfig{'ROOT_GROUP'},
-			'filemode' => '0640',
-			'dirmode' => '0750',
-			'recursive' => 'yes'
-		}
-	);
+	0;
 }
 
 sub buildHTTPDData
@@ -281,7 +309,7 @@ sub buildHTTPDData
 	my $userName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} .
 		($main::imscpConfig{'SYSTEM_USER_MIN_UID'} + $self->{'domain_admin_id'});
 
-	my $hDir = "$main::imscpConfig{'USER_HOME_DIR'}/$self->{'domain_name'}";
+	my $hDir = "$main::imscpConfig{'USER_WEB_DIR'}/$self->{'domain_name'}";
 	$hDir =~ s~/+~/~g;
 
 	my $pDir = $hDir;
@@ -310,13 +338,14 @@ sub buildHTTPDData
 	my $haveCert = exists $certData->{$self->{'domain_id'}} && ! $self->testCert($self->{'domain_name'});
 
 	$self->{'httpd'} = {
-		DMN_NAME => $self->{'domain_name'},
+		DOMAIN_TYPE => 'dmn',
 		DOMAIN_NAME => $self->{'domain_name'},
-		ROOT_DMN_NAME => $self->{'domain_name'},
-		PARENT_DMN_NAME => $self->{'domain_name'},
-		DMN_IP => $self->{'ip_number'},
-		WWW_DIR => $main::imscpConfig{'USER_HOME_DIR'},
-		HOME_DIR => $hDir,
+		PARENT_DOMAIN_NAME => $self->{'domain_name'},
+		ROOT_DOMAIN_NAME => $self->{'domain_name'},
+		DOMAIN_IP => $self->{'ip_number'},
+		WWW_DIR => $main::imscpConfig{'USER_WEB_DIR'},
+		WEB_DIR => $hDir,
+		MOUNT_POINT => '/',
 		PARENT_DIR => $pDir,
 		PEAR_DIR => $main::imscpConfig{'PEAR_DIR'},
 		PHP_TIMEZONE => $main::imscpConfig{'PHP_TIMEZONE'},
@@ -325,9 +354,10 @@ sub buildHTTPDData
 		BASE_SERVER_VHOST => $main::imscpConfig{'BASE_SERVER_VHOST'},
 		USER => $userName,
 		GROUP => $groupName,
-		have_php => $self->{'domain_php'},
-		have_cgi => $self->{'domain_cgi'},
-		have_cert => $haveCert,
+		PHP_SUPPORT => $self->{'domain_php'},
+		CGI_SUPPORT => $self->{'domain_cgi'},
+		WEB_FOLDER_PROTECTION => $self->{'web_folder_protection'},
+		SSL_SUPPORT => $haveCert,
 		BWLIMIT => $self->{'domain_traffic_limit'},
 		IP_ON_DOMAIN => defined $self->{'domains_on_ip'}
 			? $self->{'domains_on_ip'}
@@ -378,8 +408,8 @@ sub buildMTAData
 		defined $self->{'domain_mailacc_limit'} && $self->{'domain_mailacc_limit'} >= 0
 	) {
 		$self->{'mta'} = {
-			DMN_NAME => $self->{'domain_name'},
-			DMN_TYPE => $self->{'type'},
+			DOMAIN_NAME => $self->{'domain_name'},
+			DOMAIN_TYPE => $self->{'type'},
 			TYPE => 'vdmn_entry',
 			EXTERNAL_MAIL => $self->{'external_mail'}
 		};
@@ -412,7 +442,7 @@ sub buildNAMEDData
 			return 1;
 		}
 
-		$self->{'named'}->{'DMN_CUSTOM'}->{$_} = $rdata->{$_} for (keys %$rdata);
+		$self->{'named'}->{'DMN_CUSTOM'}->{$_} = $rdata->{$_} for keys %$rdata;
 
 		# We must trigger the module 'subdomain' whatever the number of entries
 		# found in the 'domain_dns' table to ensure that subdomain DNS entries will
@@ -440,35 +470,13 @@ sub buildNAMEDData
 	my $userName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} .
 		($main::imscpConfig{'SYSTEM_USER_MIN_UID'} + $self->{'domain_admin_id'});
 
-	$self->{'named'}->{'DMN_NAME'} = $self->{domain_name};
-	$self->{'named'}->{'DMN_IP'} = $self->{ip_number};
+	$self->{'named'}->{'DOMAIN_NAME'} = $self->{'domain_name'};
+	$self->{'named'}->{'DOMAIN_IP'} = $self->{'ip_number'};
 	$self->{'named'}->{'USER_NAME'} = $userName;
 	$self->{'named'}->{'MX'} = (
 		($self->{'mail_on_domain'} || $self->{'domain_mailacc_limit'} >= 0) && ($self->{'external_mail'} ne 'on')
 		? '' : ';'
 	);
-
-	0;
-}
-
-sub buildFTPDData
-{
-	my $self = shift;
-	my $rs = 0;
-	my ($stdout, $stderr);
-	my $hDir = "$main::imscpConfig{'USER_HOME_DIR'}/$self->{'domain_name'}";
-	my $file_name = "$self->{'domain_name'}";
-
-	$file_name =~ s~/+~\.~g;
-	$file_name =~ s~\.$~~g;
-	$hDir =~ s~/+~/~g;
-	$hDir =~ s~/$~~g;
-
-	$self->{'ftpd'} = {
-		FILE_NAME => $file_name,
-		PATH => $hDir,
-		ROOT_DOMAIN	=> 'true'
-	};
 
 	0;
 }
@@ -481,14 +489,15 @@ sub buildADDONData
 	my $userName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} .
 		($main::imscpConfig{'SYSTEM_USER_MIN_UID'} + $self->{'domain_admin_id'});
 
-	my $hDir = "$main::imscpConfig{'USER_HOME_DIR'}/$self->{'domain_name'}";
+	my $hDir = "$main::imscpConfig{'USER_WEB_DIR'}/$self->{'domain_name'}";
 	$hDir =~ s~/+~/~g;
 
 	$self->{'AddonsData'} = {
-		DMN_NAME => $self->{'domain_name'},
+		DOMAIN_NAME => $self->{'domain_name'},
 		USER => $userName,
 		GROUP => $groupName,
-		HOME_DIR => $hDir
+		WEB_DIR => $hDir,
+		WEB_FOLDER_PROTECTION => $self->{'web_folder_protection'}
 	};
 
 	0;
@@ -498,14 +507,16 @@ sub testCert
 {
 	my $self = shift;
 	my $domainName = shift;
-	my $certPath = "$main::imscpConfig{'GUI_ROOT_DIR'}/data/certs";
-	my $certFile = "$certPath/$domainName.pem";
 
-	Modules::openssl->getInstance()->{'openssl_path'} = $main::imscpConfig{'CMD_OPENSSL'};
-	Modules::openssl->getInstance()->{'cert_path'} = $certFile;
-	Modules::openssl->getInstance()->{'intermediate_cert_path'} = $certFile;
-	Modules::openssl->getInstance()->{'key_path'} = $certFile;
-	Modules::openssl->getInstance()->ssl_check_all();
+	my $certFile = "$main::imscpConfig{'GUI_ROOT_DIR'}/data/certs/$domainName.pem";
+	my $openSSL = Modules::openssl->getInstance();
+
+	$openSSL->{'openssl_path'} = $main::imscpConfig{'CMD_OPENSSL'};
+	$openSSL->{'cert_path'} = $certFile;
+	$openSSL->{'intermediate_cert_path'} = $certFile;
+	$openSSL->{'key_path'} = $certFile;
+
+	$openSSL->ssl_check_all();
 }
 
 1;

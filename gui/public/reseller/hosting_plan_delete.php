@@ -24,15 +24,19 @@
  * Portions created by the i-MSCP Team are Copyright (C) 2010-2013 by
  * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
  *
- * @category	i-MSCP
- * @package		iMSCP_Core
- * @subpackage	Reseller
+ * @category    i-MSCP
+ * @package     iMSCP_Core
+ * @subpackage  Reseller
  * @copyright   2001-2006 by moleSoftware GmbH
  * @copyright   2006-2010 by ispCP | http://isp-control.net
  * @copyright   2010-2013 by i-MSCP | http://i-mscp.net
  * @author      ispCP Team
  * @author      i-MSCP Team
  * @link        http://i-mscp.net
+ */
+
+/***********************************************************************************************************************
+ * Main
  */
 
 // Include core library
@@ -42,25 +46,20 @@ iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onResellerScriptStar
 
 check_login('reseller');
 
-if (isset($_GET['hpid']) && is_numeric($_GET['hpid']))
-	$hpid = $_GET['hpid'];
-else {
-	showBadRequestErrorPage();
-    exit;
+/** @var $cfg iMSCP_Config_Handler_File */
+$cfg = iMSCP_Registry::get('config');
+
+if (isset($_GET['id']) && $cfg->HOSTING_PLANS_LEVEL == 'reseller') {
+
+	$hostingPlanId = clean_input($_GET['id']);
+
+	$query = "DELETE FROM `hosting_plans` WHERE `id` = ? AND `reseller_id` = ?";
+	$stmt = exec_query($query, array($hostingPlanId, $_SESSION['user_id']));
+
+	if($stmt->rowCount()) {
+		set_page_message(tr('Hosting plan has been successfully deleted.'), 'success');
+		redirectTo('hosting_plan.php');
+	}
 }
 
-// Check if there is no order for this plan
-$res = exec_query("SELECT COUNT(`id`) FROM `orders` WHERE `plan_id` = ?", $hpid);
-$data = $res->fetchRow();
-
-if ($data['0'] > 0) {
-	set_page_message(tr("This hosting plan can't be deleted, there are some orders linked to it."), 'error');
-	redirectTo('hosting_plan.php');
-}
-
-// Try to delete hosting plan from db
-$query = "DELETE FROM `hosting_plans` WHERE `id` = ? AND `reseller_id` = ?";
-$res = exec_query($query, array($hpid, $_SESSION['user_id']));
-
-set_page_message(tr('Hosting plan successfully deleted.'), 'success');
-redirectTo('hosting_plan.php');
+showBadRequestErrorPage();

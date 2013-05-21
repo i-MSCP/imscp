@@ -23,16 +23,17 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 #
-# @category		i-MSCP
-# @copyright	2010-2013 by i-MSCP | http://i-mscp.net
-# @author		Laurent Declercq <l.declercq@nuxwin.com>
-# @link			http://i-mscp.net i-MSCP Home Site
-# @license		http://www.gnu.org/licenses/gpl-2.0.html GPL v2
+# @category     i-MSCP
+# @copyright    2010-2013 by i-MSCP | http://i-mscp.net
+# @author       Laurent Declercq <l.declercq@nuxwin.com>
+# @link         http://i-mscp.net i-MSCP Home Site
+# @license      http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
 package iMSCP::HooksManager;
 
 use strict;
 use warnings;
+
 use iMSCP::Debug;
 use parent 'Common::SingletonClass';
 
@@ -124,8 +125,8 @@ sub trigger($$)
 				local $Data::Dumper::Terse = 1;
 				local $Data::Dumper::Deparse = 1;
 				error(
-					"A hook function registered on the '$hook' hook and triggered in $caller has failed.\n" .
-					"Hook function was:\n" . Dumper($_)
+					"A hook function registered on the '$hook' hook and triggered in $caller has failed.\n\n" .
+					"Hook function code was:\n\n" . Dumper($_)
 				);
 				last;
 			}
@@ -154,6 +155,13 @@ sub _init
 	my $self = shift;
 
 	$self->{'hooks'} = {};
+
+	# Load any user hook files
+	my $hooksDir = "$main::imscpConfig{'CONF_DIR'}/hooks.d";
+
+	if(-d $hooksDir) {
+		require $_ for glob "$hooksDir/*.pl";
+	}
 
 	$self;
 }

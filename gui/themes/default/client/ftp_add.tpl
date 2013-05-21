@@ -1,115 +1,74 @@
 
-	<script type="text/javascript">
-	/* <![CDATA[ */
-		<!-- BDP: js_to_all_domain -->
-		function begin_js() {
-			document.forms[0].sub_id.disabled = true;
-			document.forms[0].als_id.disabled = true;
-			document.forms[0].username.focus();
-		}
-
-		function changeDom(wath) {
-			if (wath == 'real') {
-				document.forms[0].sub_id.disabled = true;
-				document.forms[0].als_id.disabled = true;
-			} else if (wath == 'subdom') {
-				document.forms[0].sub_id.disabled = false;
-				document.forms[0].als_id.disabled = true;
-			} else {
-				document.forms[0].sub_id.disabled = true;
-				document.forms[0].als_id.disabled = false;
-			}
-		}
-		<!-- EDP: js_to_all_domain -->
-
-		<!-- BDP: js_not_domain -->
-		function begin_js() {
-			document.forms[0].username.focus();
-		}
-		<!-- EDP: js_not_domain -->
-
-		<!-- BDP: js_to_subdomain -->
-		function begin_js() {
-			document.forms[0].sub_id.disabled = true;
-			document.forms[0].username.focus();
-		}
-
-		function changeDom(wath) {
-			if (wath == "real") {
-				document.forms[0].sub_id.disabled = true;
-			} else if (wath == "subdom") {
-				document.forms[0].sub_id.disabled = false;
-			} else {
-				document.forms[0].sub_id.disabled = true;
-			}
-		}
-		<!-- EDP: js_to_subdomain -->
-
-		<!-- BDP: js_to_alias_domain -->
-		function begin_js() {
-			document.forms[0].als_id.disabled = true;
-			document.forms[0].username.focus();
-		}
-
-		function changeDom(wath) {
-			if (wath == "real") {
-				document.forms[0].als_id.disabled = true;
-			} else if (wath == "subdom") {
-				document.forms[0].als_id.disabled = true;
-			} else {
-				document.forms[0].als_id.disabled = false;
-			}
-		}
-		<!-- EDP: js_to_alias_domain -->
-
-		$(window).load(function() { begin_js();});
-	/*]]>*/
-	</script>
-		<form name="addFrm" method="post" action="ftp_add.php">
+		<script type="text/javascript">
+		/* <![CDATA[ */
+		$(document).ready(function() {
+			$('#domain_type').change(
+				function()	{
+					$.post(
+						"ftp_add.php",
+						{ "domain_type" : this.value },
+						function(data) {
+							var select = $("#domain_name");
+							select.empty();
+							for (var i=0; i<data.length; i++) {
+								select.append(
+									'<option value="'+data[i].domain_name_val+'">'+data[i].domain_name+'</option>'
+								);
+							}
+						},
+						"json"
+					);
+				}
+			);
+		});
+		/*]]>*/
+		</script>
+		<form name="add_ftp_account_frm" method="post" action="ftp_add.php" autocomplete="off">
 			<table>
 				<tr>
-					<th colspan="2">{TR_FTP_USER_DATA}</th>
+					<th colspan="2">{TR_FTP_ACCOUNT_DATA}</th>
 				</tr>
 				<tr>
-					<td><label for="username">{TR_USERNAME}</label></td>
-					<td><input id="username" type="text" name="username" value="{USERNAME}"/></td>
-				</tr>
-				<tr>
-					<td><input type="radio" name="dmn_type" value="dmn" onfocus="changeDom('real');" {DMN_TYPE_CHECKED} />{TR_TO_MAIN_DOMAIN}</td>
-					<td>{FTP_SEPARATOR}{DOMAIN_NAME}</td>
-				</tr>
-				<!-- BDP: to_alias_domain -->
-				<tr>
-					<td><input type="radio" name="dmn_type" value="als" onfocus="changeDom('alias');" {ALS_TYPE_CHECKED} />{TR_TO_DOMAIN_ALIAS}</td>
+					<td><label for="domain_type">{TR_DOMAIN_TYPE_LABEL}</label></td>
 					<td>
-						<select name="als_id">
-							<!-- BDP: als_list -->
-							<option value="{ALS_ID}" {ALS_SELECTED}>{FTP_SEPARATOR}{ALS_NAME}</option>
-							<!-- EDP: als_list -->
+						<select id="domain_type" name="domain_type">
+							<!-- BDP: domain_types -->
+							<option value="{DOMAIN_TYPE}"{DOMAIN_TYPE_SELECTED}>{TR_DOMAIN_TYPE}</option>
+							<!-- EDP: domain_types -->
 						</select>
 					</td>
 				</tr>
-				<!-- EDP: to_alias_domain -->
 				<tr>
-					<td><label for="pass">{TR_PASSWORD}</label></td>
-					<td><input id="pass" type="password" name="pass" value="" autocomplete="off"/></td>
+					<td><label for="username">{TR_USERNAME}</label></td>
+					<td>
+						<input type="text" id="username" name="username" value="{USERNAME}"/>
+						<label for="domain">{FTP_USERNAME_SEPARATOR}
+							<select id="domain_name" name="domain_name">
+								<!-- BDP: domain_list -->
+								<option value="{DOMAIN_NAME_VAL}"{DOMAIN_NAME_SELECTED}>{DOMAIN_NAME}</option>
+								<!-- EDP: domain_list -->
+							</select>
+						</label>
+					</td>
 				</tr>
 				<tr>
-					<td><label for="pass_rep">{TR_PASSWORD_REPEAT}</label></td>
-					<td><input id="pass_rep" type="password" name="pass_rep" value="" autocomplete="off"/></td>
+					<td><label for="password">{TR_PASSWORD}</label></td>
+					<td><input type="password" id="password" name="password" value="{PASSWORD}"/></td>
 				</tr>
 				<tr>
+					<td><label for="password_repeat">{TR_PASSWORD_REPEAT}</label></td>
+					<td><input type="password" id="password_repeat" name="password_repeat" value="{PASSWORD_REPEAT}"/></td>
+				</tr>
+				<tr>
+					<td><label for="ftp_directory">{TR_HOME_DIR}</label></td>
 					<td>
-						<input id="use_other_dir" type="checkbox" name="use_other_dir" {USE_OTHER_DIR_CHECKED} />
-						<label for="use_other_dir">{TR_USE_OTHER_DIR}</label></td>
-					<td>
-						<input type="text" id="ftp_directory" name="other_dir" value="{OTHER_DIR}"/>
-						<a href="#" onclick="chooseFtpDir();" class="icon i_bc_folder">{CHOOSE_DIR}</a>
+						<input type="text" id="ftp_directory" name="home_dir" value="{HOME_DIR}"/>
+						<a href="#" onclick="chooseFtpDir();" class="icon i_bc_folder">{TR_CHOOSE_DIR}</a>
 					</td>
 				</tr>
 			</table>
 			<div class="buttons">
-				<input type="hidden" name="uaction" value="add_user"/>
 				<input name="submit" type="submit" value="{TR_ADD}"/>
+				<input name="Submit" type="submit" onclick="MM_goToURL('parent','ftp_accounts.php');return document.MM_returnValue" value="{TR_CANCEL}" />
 			</div>
 		</form>

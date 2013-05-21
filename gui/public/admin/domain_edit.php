@@ -19,7 +19,7 @@
  *
  * @category    iMSCP
  * @package     iMSCP_Core
- * @subpackage	Admin
+ * @subpackage  Admin
  * @copyright   2010-2013 by i-MSCP team
  * @author      Laurent Declercq <laurent.declercq@i-mscp.net>
  * @link        http://www.i-mscp.net i-MSCP Home Site
@@ -29,8 +29,8 @@
 // Note to developers: When editing this script, don't forget to also
 // edit the reseller/domain_edit.php script.
 
-/************************************************************************************
- * script functions
+/***********************************************************************************************************************
+ * Functions
  */
 
 /**
@@ -44,9 +44,9 @@ function admin_getResellerProps($resellerId)
 	$query = '
 		SELECT
 			`reseller_id`, `current_sub_cnt`, `max_sub_cnt`, `current_als_cnt`, `max_als_cnt`, `current_mail_cnt`,
-			`max_mail_cnt`, `current_ftp_cnt`, `max_ftp_cnt`, `current_sql_db_cnt`, `max_sql_db_cnt`, `current_sql_user_cnt`,
-			`max_sql_user_cnt`, `current_disk_amnt`, `max_disk_amnt`, `current_traff_amnt`, `max_traff_amnt`, `software_allowed`,
-			`php_ini_system` `reseller_php_ini_system`
+			`max_mail_cnt`, `current_ftp_cnt`, `max_ftp_cnt`, `current_sql_db_cnt`, `max_sql_db_cnt`,
+			`current_sql_user_cnt`, `max_sql_user_cnt`, `current_disk_amnt`, `max_disk_amnt`, `current_traff_amnt`,
+			`max_traff_amnt`, `software_allowed`, `php_ini_system` AS `reseller_php_ini_system`
 		FROM
 			`reseller_props`
 		WHERE
@@ -67,11 +67,11 @@ function admin_getDomainProps($domainId)
 {
 	$query = "
 		SELECT
-			`domain_id`, `domain_name`, `domain_expires`, `domain_created_id`, `domain_status`, `domain_subd_limit`,
-			`domain_alias_limit`, `domain_mailacc_limit`, `domain_ftpacc_limit`, `domain_sqld_limit`, `domain_sqlu_limit`,
-			`domain_disk_limit`, `domain_disk_usage`, `domain_traffic_limit`, `domain_php`, `domain_cgi`, `domain_dns`,
-			`domain_software_allowed`, `allowbackup`, `phpini_perm_system` `customer_php_ini_system`, `domain_external_mail`,
-			domain_ip_id
+			`domain_id`, `domain_name`, `domain_expires`, `domain_created_id`, `domain_status`, `domain_ip_id`,
+			`domain_subd_limit`, `domain_alias_limit`, `domain_mailacc_limit`, `domain_ftpacc_limit`,
+			`domain_sqld_limit`, `domain_sqlu_limit`, `domain_disk_limit`, `domain_disk_usage`, `domain_traffic_limit`,
+			`domain_php`, `domain_cgi`, `domain_dns`, `domain_software_allowed`, `allowbackup`,
+			`phpini_perm_system` AS `customer_php_ini_system`, `domain_external_mail`, `web_folder_protection`
 		FROM
 			`domain`
 		WHERE
@@ -88,7 +88,7 @@ function admin_getDomainProps($domainId)
 	$query = '
 		SELECT
 			IFNULL(SUM(`dtraff_web`) + SUM(`dtraff_ftp`) + SUM(`dtraff_mail`) +
-			SUM(`dtraff_pop`), 0) `traffic`
+			SUM(`dtraff_pop`), 0) AS `traffic`
 		FROM
 			`domain_traffic`
 		WHERE
@@ -116,18 +116,17 @@ function admin_getDomainProps($domainId)
  *
  * @param int $domainId Domain unique identifier
  * @param bool $forUpdate Tell whether or not data are fetched for update
- * @param bool $recoveryMode If set to TRUE, will force data to be fetched from database
  * @return array Reference to array of data
  */
-function &admin_getData($domainId, $forUpdate = false, $recoveryMode = false)
+function &admin_getData($domainId, $forUpdate = false)
 {
 	static $data = null;
 
 	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
 
-	if(null == $data || $recoveryMode) {
-		$statusOk = "$cfg->ITEM_OK_STATUS|$cfg->ITEM_DISABLED_STATUS|$cfg->ITEM_ORDERED_STATUS";
+	if(null == $data) {
+		$statusOk = "$cfg->ITEM_OK_STATUS|$cfg->ITEM_DISABLED_STATUS";
 
 		// Checks for domain existence and status
 
@@ -135,12 +134,15 @@ function &admin_getData($domainId, $forUpdate = false, $recoveryMode = false)
 			SELECT
 				`t1`.`domain_status`,
 				COUNT(`t2`.`subdomain_status`) + COUNT(`t3`.`alias_status`) +
-				COUNT(`t4`.`subdomain_alias_status`) `statusNotOk`
+				COUNT(`t4`.`subdomain_alias_status`) AS `statusNotOk`
 			FROM
 				`domain` `t1`
-			LEFT JOIN `subdomain` `t2` ON (`t1`.`domain_id` = `t2`.`domain_id` AND `t2`.`subdomain_status` NOT RLIKE ?)
-			LEFT JOIN `domain_aliasses` `t3` ON (`t1`.`domain_id` = `t3`.`domain_id` AND `t3`.`alias_status` NOT RLIKE ?)
-			LEFT JOIN `subdomain_alias` `t4` ON (`t4`.`alias_id` = `t3`.`alias_id` AND `t4`.`subdomain_alias_status` NOT RLIKE ?)
+			LEFT JOIN
+				`subdomain` `t2` ON (`t1`.`domain_id` = `t2`.`domain_id` AND `t2`.`subdomain_status` NOT RLIKE ?)
+			LEFT JOIN
+				`domain_aliasses` `t3` ON (`t1`.`domain_id` = `t3`.`domain_id` AND `t3`.`alias_status` NOT RLIKE ?)
+			LEFT JOIN
+				`subdomain_alias` `t4` ON (`t4`.`alias_id` = `t3`.`alias_id` AND `t4`.`subdomain_alias_status` NOT RLIKE ?)
 			WHERE
 				`t1`.`domain_id` = ?
 		";
@@ -190,6 +192,7 @@ function &admin_getData($domainId, $forUpdate = false, $recoveryMode = false)
 		$data['fallback_domain_software_allowed'] = $data['domain_software_allowed'];
 		$data['fallback_allowbackup'] = $data['allowbackup'];
 		$data['fallback_domain_external_mail'] = $data['domain_external_mail'];
+		$data['fallback_web_folder_protection'] = $data['web_folder_protection'];
 
 		$data['domain_expires_ok'] = true;
 		$data['domain_never_expires'] = ($data['domain_expires'] == 0) ? 'on' : 'off';
@@ -216,7 +219,7 @@ function &admin_getData($domainId, $forUpdate = false, $recoveryMode = false)
 				) as $customerLimit => $resellerMaxLimit
 			) {
 				if (array_key_exists($customerLimit, $_POST) && $data[$resellerMaxLimit] != -1) {
-						$data[$customerLimit] = clean_input($_POST[$customerLimit]);
+					$data[$customerLimit] = clean_input($_POST[$customerLimit]);
 				}
 			}
 
@@ -252,6 +255,8 @@ function &admin_getData($domainId, $forUpdate = false, $recoveryMode = false)
 			$data['domain_external_mail'] = isset($_POST['domain_external_mail'])
 				? clean_input($_POST['domain_external_mail']) : $data['domain_external_mail'];
 
+			$data['web_folder_protection'] = isset($_POST['web_folder_protection'])
+				? clean_input($_POST['web_folder_protection']) : $data['web_folder_protection'];
 		}
 	}
 
@@ -269,6 +274,7 @@ function admin_generateForm($tpl, &$data)
 {
 	_admin_generateLimitsForm($tpl, $data);
 	_admin_generateFeaturesForm($tpl, $data);
+	_admin_generatePermissionsForm($tpl, $data);
 }
 
 /**
@@ -295,7 +301,7 @@ function _admin_generateLimitsForm($tpl, &$data)
 	} else {
 		$tplVars['TR_SUBDOMAINS_LIMIT'] = tr('Subdomains limit<br /><i>(-1 disabled, 0 unlimited)</i>', true);
 		$tplVars['SUBDOMAIN_LIMIT'] = tohtml($data['domain_subd_limit']);
-		$tplVars['TR_CUSTOMER_SUBDOMAINS_COMSUPTION'] =  ($data['fallback_domain_subd_limit'] != -1) ? tohtml($data['nbSubdomains']) . ' / ' . (($data['fallback_domain_subd_limit'] != 0) ? tohtml($data['fallback_domain_subd_limit']) : tr('Unlimited')) : tr('Disabled');
+		$tplVars['TR_CUSTOMER_SUBDOMAINS_COMSUPTION'] = ($data['fallback_domain_subd_limit'] != -1) ? tohtml($data['nbSubdomains']) . ' / ' . (($data['fallback_domain_subd_limit'] != 0) ? tohtml($data['fallback_domain_subd_limit']) : tr('Unlimited')) : tr('Disabled');
 		$tplVars['TR_RESELLER_SUBDOMAINS_COMSUPTION'] = tohtml($data['current_sub_cnt']) . ' / ' . (($data['max_sub_cnt'] != 0) ? tohtml($data['max_sub_cnt']) : tr('Unlimited'));
 	}
 
@@ -532,13 +538,39 @@ function _admin_generateFeaturesForm($tpl, &$data)
 }
 
 /**
+ * Generates permissions form.
+ *
+ * @param iMSCP_pTemplate $tpl Template engine instance
+ * @param array $data Domain data
+ * @return void
+ */
+function _admin_generatePermissionsForm($tpl, &$data)
+{
+	/** @var $cfg iMSCP_Config_Handler_File */
+	$cfg = iMSCP_Registry::get('config');
+
+	$htmlChecked = $cfg->HTML_CHECKED;
+
+	$tplVars = array();
+
+	// Web folder protection
+	$tplVars['TR_PERMISSIONS'] = tr('Permissions');
+	$tplVars['TR_PROTECT_WEB_FOLDERS'] = tr('Protect Web folders');
+	$tplVars['TR_WEB_FOLDER_PROTECTION_HELP'] = tr("If set to 'yes', Web folders as provisioned by i-MSCP will be protected against deletion using the immutable flag (Extended attributes).");
+	$tplVars['WEB_FOLDER_PROTECTION_YES'] = ($data['web_folder_protection'] == 'yes') ? $htmlChecked : '';
+	$tplVars['WEB_FOLDER_PROTECTION_NO'] = ($data['web_folder_protection'] != 'yes') ? $htmlChecked : '';
+
+	$tpl->assign($tplVars);
+}
+
+/**
  * Check and updates domain data.
  *
+ * @throws iMSCP_Exception_Database
  * @param int $domainId Domain unique identifier
- * @param bool $recoveryMode
  * @return bool TRUE on success, FALSE otherwise
  */
-function admin_checkAndUpdateData($domainId, $recoveryMode = false)
+function admin_checkAndUpdateData($domainId)
 {
 	/** @var $db iMSCP_Database */
 	$db = iMSCP_Registry::get('db');
@@ -549,11 +581,8 @@ function admin_checkAndUpdateData($domainId, $recoveryMode = false)
 		/** @var $cfg iMSCP_Config_Handler_File */
 		$cfg = iMSCP_Registry::get('config');
 
-		// Start transaction
-		$db->beginTransaction();
-
 		// Getting domain data
-		$data =& admin_getData($domainId, true, $recoveryMode);
+		$data =& admin_getData($domainId, true);
 
 		// Check for expires date
 		if ($data['domain_never_expires'] == 'off') {
@@ -684,9 +713,7 @@ function admin_checkAndUpdateData($domainId, $recoveryMode = false)
 		// Needed to check if something changed (see below)
 		$phpEditorOld = array_merge($phpEditor->getData(), $phpEditor->getClPerm());
 
-		if ($data['domain_php'] == 'yes' && $phpEditor->checkRePerm('phpiniSystem')
-			&& isset($_POST['phpiniSystem'])
-		) {
+		if ($data['domain_php'] == 'yes' && $phpEditor->checkRePerm('phpiniSystem') && isset($_POST['phpiniSystem'])) {
 			$phpEditor->setClPerm('phpiniSystem', clean_input($_POST['phpiniSystem']));
 
 			if ($phpEditor->getClPermVal('phpiniSystem') == 'yes') {
@@ -767,6 +794,10 @@ function admin_checkAndUpdateData($domainId, $recoveryMode = false)
 		$data['allowbackup'] = (in_array($data['allowbackup'], array('dmn', 'sql', 'full', 'no')))
 			? $data['allowbackup'] : $data['fallback_allowbackup'];
 
+		// Check for Web folder protection support (we are safe here)
+		$data['web_folder_protection'] = (in_array($data['web_folder_protection'], array('no', 'yes')))
+			? $data['web_folder_protection'] : $data['fallback_web_folder_protection'];
+
 		if (empty($errFieldsStack) && !Zend_Session::namespaceIsset('pageMessages')) { // Update process begin here
 			$oldValues = array();
 			$newValues = array();
@@ -788,6 +819,13 @@ function admin_checkAndUpdateData($domainId, $recoveryMode = false)
 				return true;
 			}
 
+			iMSCP_Events_Manager::getInstance()->dispatch(
+				iMSCP_Events::onBeforeEditDomain, array('domainId' => $domainId)
+			);
+
+			// Start transaction
+			$db->beginTransaction();
+
 			if ($phpEditorNew != $phpEditorOld) {
 				if ($phpEditor->getClPermVal('phpiniSystem') == 'yes') {
 					$phpEditor->saveCustomPHPiniIntoDb($domainId);
@@ -799,10 +837,11 @@ function admin_checkAndUpdateData($domainId, $recoveryMode = false)
 				$daemonRequest = true;
 			}
 
-			// PHP or CGI was either enabled or disabled or PHP Settings were changed
-			// We must update the vhosts files of all domain entities (dmn, sub, als, alssub)
+			// PHP or CGI was either enabled or disabled or PHP Settings were changed or Web folder protection
+			// properties has been updated so we must update the vhosts files of all domain entities (dmn, sub, als, alssub)
 			if ($daemonRequest || $data['domain_php'] != $data['fallback_domain_php'] ||
-				$data['domain_cgi'] != $data['fallback_domain_cgi']
+				$data['domain_cgi'] != $data['fallback_domain_cgi'] ||
+				$data['web_folder_protection'] != $data['fallback_web_folder_protection']
 			) {
 				if($data['domain_alias_limit'] != '-1') {
 					$query = "
@@ -836,14 +875,11 @@ function admin_checkAndUpdateData($domainId, $recoveryMode = false)
 				$daemonRequest = true;
 			}
 
-			// Support for custom DNS records is now disabled - We must delete
-			// any related entries in the database and update the DNS zone file
-			// TODO Check for protected entries
-			if ($data['domain_dns'] != $data['fallback_domain_dns'] &&
-				$data['domain_dns'] == 'no'
-			) {
-				$query = 'DELETE FROM `domain_dns` WHERE `domain_id` = ?';
-				exec_query($query, $domainId);
+			// Support for custom DNS records is now disabled - We must delete all custom DNS entries
+			// (except those that are protected), and update the DNS zone file
+			if ($data['domain_dns'] != $data['fallback_domain_dns'] && $data['domain_dns'] == 'no') {
+				$query = 'DELETE FROM `domain_dns` WHERE `domain_id` = ? AND `protected` <> ?';
+				exec_query($query, array($domainId, 'yes'));
 
 				$daemonRequest= true;
 			}
@@ -860,7 +896,7 @@ function admin_checkAndUpdateData($domainId, $recoveryMode = false)
 					`allowbackup` = ?, `domain_dns` = ?,  `domain_software_allowed` = ?,
 					`phpini_perm_system` = ?, `phpini_perm_allow_url_fopen` = ?,
 					`phpini_perm_display_errors` = ?, `phpini_perm_disable_functions` = ?,
-					`domain_external_mail` = ?
+					`domain_external_mail` = ?, `web_folder_protection` = ?
 				WHERE
 					`domain_id` = ?
 			";
@@ -878,7 +914,7 @@ function admin_checkAndUpdateData($domainId, $recoveryMode = false)
 					$phpEditor->getClPermVal('phpiniAllowUrlFopen'),
 					$phpEditor->getClPermVal('phpiniDisplayErrors'),
 					$phpEditor->getClPermVal('phpiniDisableFunctions'),
-					$data['domain_external_mail'],
+					$data['domain_external_mail'], $data['web_folder_protection'],
 					$domainId
 				)
 			);
@@ -894,15 +930,23 @@ function admin_checkAndUpdateData($domainId, $recoveryMode = false)
 						?, ?, ?, ?, ?, ?, ?, ?, ?, ?
 					)
 				";
-				exec_query($query, array(
-										$data['domain_name'], 'group', 'false', 'hard',
-										$data['domain_disk_limit'] * 1048576, 0, 0, 0, 0, 0));
+				exec_query(
+					$query,
+					array(
+						$data['domain_name'], 'group', 'false', 'hard',
+						$data['domain_disk_limit'] * 1048576, 0, 0, 0, 0, 0
+					)
+				);
 			}
 
 			// Update reseller properties
 			update_reseller_c_props($data['reseller_id']);
 
 			$db->commit();
+
+			iMSCP_Events_Manager::getInstance()->dispatch(
+				iMSCP_Events::onAfterEditDomain, array('domainId' => $domainId)
+			);
 
 			if ($daemonRequest) {
 				send_request();
@@ -912,24 +956,11 @@ function admin_checkAndUpdateData($domainId, $recoveryMode = false)
 			}
 
 			write_log("Domain ". decode_idna($data['domain_name']) . " was updated by {$_SESSION['user_logged']}", E_USER_NOTICE);
-
 			return true;
 		}
 	} catch (iMSCP_Exception_Database $e) {
 		$db->rollBack();
-
-		if($e->getCode() == 40001) { // Deadlock error management
-			if(isset($data)) { // $data is tested here only to avoid IDE warning about possible indefined variable
-				if(admin_checkAndUpdateData($domainId, true)) {
-					set_page_message(tr('Domain data were modified by another person before your changes. The update process was successfully done but in recovery mode. We recommend you to check the result of it.'), 'warning');
-					return true;
-				} else {
-					return false;
-				}
-			}
-		} else {
-			throw new iMSCP_Exception_Database($e->getMessage(),  $e->getQuery(), $e->getCode(), $e);
-		}
+		throw new iMSCP_Exception_Database($e->getMessage(),  $e->getQuery(), $e->getCode(), $e);
 	}
 
 	if(!empty($errFieldsStack)) {

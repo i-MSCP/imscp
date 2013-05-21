@@ -119,13 +119,19 @@ sub preinstall
 
 	my $webStatsAddon = $main::imscpConfig{'WEBSTATS_ADDON'} || '';
 
-	if($webStatsAddon eq 'Awstats') {
-		require Addons::webstats::awstats::installer;
-		Addons::webstats::awstats::installer->getInstance()->preinstall();
-	} elsif($webStatsAddon ne 'No') {
+	# In any case, the preinstall method on the Awstats addon installer must be called since it register a method
+	# that remove useless Awstats section in apache logrotate file
+	# TODO review addon implementation to avoid such thing
+	require Addons::webstats::awstats::installer;
+	my $rs = Addons::webstats::awstats::installer->getInstance()->preinstall();
+	return $rs if $rs;
+
+	if($webStatsAddon ne 'Awstats' && $webStatsAddon ne 'No') {
 		error("Unknown Web Statistics addon: $webStatsAddon");
-		return 1;
+		$rs = 1;
 	}
+
+	$rs;
 }
 
 =item install()
@@ -141,13 +147,12 @@ sub install
 	my $self = shift;
 
 	my $webStatsAddon = $main::imscpConfig{'WEBSTATS_ADDON'} || '';
-	my $rs = 0;
 
 	# In any case, the install method on the Awstats addon installer must be called since it act also as uninstaller
 	# for Awstats global vhost file
 	# TODO review addon implementation to avoid such thing
 	require Addons::webstats::awstats::installer;
-	$rs = Addons::webstats::awstats::installer->getInstance()->install();
+	my $rs = Addons::webstats::awstats::installer->getInstance()->install();
 	return $rs if $rs;
 
 	if($webStatsAddon ne 'Awstats' && $webStatsAddon ne 'No') {
@@ -185,6 +190,37 @@ sub setGuiPermissions
 	}
 
 	$rs = $addon->setGuiPermissions() if $addon->can('setGuiPermissions');
+
+	$rs;
+}
+
+=item setEnginePermissions()
+
+ Set webstats addon files permissions (backend part only).
+
+ Return int 0 on success, other on failure
+
+=cut
+
+sub setEnginePermissions
+{
+	my $self = shift;
+	my $addon;
+	my $rs = 0;
+
+	my $webStatsAddon = $main::imscpConfig{'WEBSTATS_ADDON'} || '';
+
+	if($webStatsAddon eq 'Awstats') {
+		require Addons::webstats::awstats::installer;
+		$addon = Addons::webstats::awstats::installer->getInstance();
+	} elsif($webStatsAddon ne 'No') {
+		error("Unknown Web Statistics addon: $webStatsAddon");
+		return 1;
+	} else {
+		return 0;
+	}
+
+	$rs = $addon->setEnginePermissions() if $addon->can('setEnginePermissions');
 
 	$rs;
 }

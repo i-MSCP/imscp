@@ -24,15 +24,19 @@
  * Portions created by the i-MSCP Team are Copyright (C) 2010-2013 by
  * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
  *
- * @category	i-MSCP
- * @package		iMSCP_Core
- * @subpackage	Client
+ * @category    i-MSCP
+ * @package     iMSCP_Core
+ * @subpackage  Client
  * @copyright   2001-2006 by moleSoftware GmbH
  * @copyright   2006-2010 by ispCP | http://isp-control.net
  * @copyright   2010-2013 by i-MSCP | http://i-mscp.net
  * @author      ispCP Team
  * @author      i-MSCP Team
  * @link        http://i-mscp.net
+ */
+
+/***********************************************************************************************************************
+ * Main
  */
 
 // Include core library
@@ -44,146 +48,115 @@ check_login('user');
 
 customerHasFeature('domain_aliases') or showBadRequestErrorPage();
 
-if (isset($_GET['id']) && $_GET['id'] !== '') {
-	$als_id = $_GET['id'];
-	$dmn_id = get_user_domain_id($_SESSION['user_id']);
+if (customerHasFeature('domain_aliases') && isset($_GET['id'])) {
+	$alsId = clean_input($_GET['id']);
+	$mainDmnId = get_user_domain_id($_SESSION['user_id']);
 
-	$query = "
-		SELECT
-			`alias_id`
-			`alias_name`
-		FROM
-			`domain_aliasses`
-		WHERE
-			`domain_id` = ?
-		AND
-			`alias_id` = ?
-	";
+	$query = "SELECT `alias_name` FROM `domain_aliasses` WHERE `domain_id` = ? AND `alias_id` = ?";
+	$stmt = exec_query($query, array($mainDmnId, $alsId));
 
-	$rs = exec_query($query, array($dmn_id, $als_id));
-	$alias_name = $rs->fields['alias_name'];
+	if ($stmt->rowCount()) {
+		$alsName = $stmt->fields['alias_name'];
+		$ret = false;
 
-	if ($rs->recordCount() == 0) {
+		// check for subdomains
+		$query = "SELECT COUNT(`subdomain_alias_id`) AS `cnt` FROM `subdomain_alias` WHERE `alias_id` = ?";
+		$stmt = exec_query($query, $alsId);
+
+		if ($stmt->fields['cnt']) {
+			set_page_message(
+				tr('Domain alias you are trying to remove has subdomains. Remove them first.'), 'error'
+			);
+			$ret = true;
+		}
+
+		// Check for custom dns and external mail server records
+		$query = "SELECT COUNT(`domain_dns_id`) AS `cnt` FROM `domain_dns` WHERE `alias_id` = ?";
+		$stmt = exec_query($query, $alsId);
+
+		if ($stmt->fields['cnt']) {
+			set_page_message(
+				tr('Domain alias you are trying to remove has custom DNS records. Remove them first.'), 'error'
+			);
+			$ret = true;
+		}
+
+		// Check for Ftp accounts
+		$query = "SELECT count(`userid`) AS `cnt` FROM `ftp_users` WHERE `userid` LIKE ?";
+		$stmt = exec_query($query, "%@$alsName");
+
+		if ($stmt->fields['cnt']) {
+			set_page_message(
+				tr('Domain alias you are trying to remove has Ftp accounts. Remove them first.'), 'error'
+			);
+			$ret = true;
+		}
+
+		// Check for mail accounts
+		$query = "
+			SELECT
+				COUNT(`mail_id`) AS `cnt`
+			FROM
+				`mail_users`
+			WHERE
+				(`sub_id` = ? AND `mail_type` LIKE ?)
+			OR
+				(
+					`sub_id` IN (SELECT `subdomain_alias_id` FROM `subdomain_alias` WHERE `alias_id` = ?)
+					AND `mail_type` LIKE ?
+				)
+		";
+		$stmt = exec_query($query, array($alsId, '%alias_%', $alsId, '%alssub_%'));
+
+		if ($stmt->fields['cnt']) {
+			set_page_message(
+				tr('Domain alias you are trying to remove has email accounts. Remove them first.'), 'error'
+			);
+			$ret = true;
+		}
+
+		if (!$ret) {
+			iMSCP_Events_Manager::getInstance()->dispatch(
+				iMSCP_Events::onBeforeDeleteDomainAlias,
+				array('domainAliasId' => $alsId, 'domainAliasName' => $alsName)
+			);
+
+			/** @var $cfg iMSCP_Config_Handler_File */
+			$cfg = iMSCP_Registry::get('config');
+
+			/** @var $db iMSCP_Database */
+			$db = iMSCP_Registry::get('db');
+
+			try {
+				$db->beginTransaction();
+
+				# Schedule deletion of any SSL certificat, which have domain alias as parent
+				$query = "UPDATE `ssl_certs` SET `status` = ? WHERE `id` = ? AND `type` = ?";
+				exec_query($query, array($cfg->ITEM_DELETE_STATUS, $alsId, 'als'));
+
+				# Schedule deletion of domain alias
+				$query = "UPDATE `domain_aliasses` SET `alias_status` = ? WHERE `alias_id` = ?";
+				exec_query($query, array($cfg->ITEM_DELETE_STATUS, $alsId));
+
+				$db->commit();
+			} catch (iMSCP_Exception_Database $e) {
+				$db->rollBack();
+				throw new iMSCP_Exception_Database($e->getMessage(), $e->getQuery(), $e->getCode(), $e);
+			}
+
+			iMSCP_Events_Manager::getInstance()->dispatch(
+				iMSCP_Events::onAfterDeleteDomainAlias,
+				array('domainAliasId' => $alsId, 'domainAliasName' => $alsName)
+			);
+
+			send_request();
+
+			write_log("{$_SESSION['user_logged']} scheduled deletion of domain alias $alsName", E_USER_NOTICE);
+			set_page_message(tr('Domain alias successfully scheduled for deletion.'), 'success');
+		}
+
 		redirectTo('domains_manage.php');
 	}
-
-	// check for subdomains
-	$query = "
-		SELECT
-			COUNT(`subdomain_alias_id`) AS `count`
-		FROM
-			`subdomain_alias`
-		WHERE
-			`alias_id` = ?
-	";
-
-	$rs = exec_query($query, $als_id);
-	if ($rs->fields['count'] > 0) {
-		set_page_message(tr('Domain alias you are trying to remove has subdomains!<br/>First remove them!'), 'error');
-		redirectTo('domains_manage.php');
-	}
-
-	// check for dns records
-	$query = "
-		SELECT
-			COUNT(`domain_dns_id`) AS `dnsnum`
-		FROM
-			`domain_dns`
-		WHERE
-			`alias_id` = ?
-	";
-
-	$rs = exec_query($query, $als_id);
-	if ($rs->fields['dnsnum'] > 0) {
-		set_page_message(tr('Domain alias you are trying to remove has custom DNS records!<br/>First remove them!'), 'error');
-		redirectTo('domains_manage.php');
-	}
-
-	// check for mail accounts
-	$query = "
-		SELECT
-			COUNT(`mail_id`) AS `cnt`
-		FROM
-			`mail_users`
-		WHERE
-			(`sub_id` = ?
-			AND
-			`mail_type` LIKE '%alias_%')
-		OR
-			(`sub_id` IN (SELECT `subdomain_alias_id` FROM `subdomain_alias` WHERE `alias_id` = ?)
-			AND
-			`mail_type` LIKE '%alssub_%')
-	";
-
-	$rs = exec_query($query, array($als_id, $als_id));
-
-	if ($rs->fields['cnt'] > 0) {
-		set_page_message(tr('Domain alias you are trying to remove has email accounts.<br/>First remove them.'), 'error');
-		redirectTo('domains_manage.php');
-	}
-
-	// check for ftp accounts
-	$query = "
-		SELECT
-			COUNT(`fg`.`gid`) AS `ftpnum`
-		FROM
-			`ftp_group` `fg`,
-			`domain` `dmn`,
-			`domain_aliasses` `d`
-		WHERE
-			`d`.`alias_id` = ?
-		AND
-			`fg`.`groupname` = `dmn`.`domain_name`
-		AND
-			`fg`.`members` RLIKE `d`.`alias_name`
-		AND
-			`d`.`domain_id` = `dmn`.`domain_id`
-	";
-
-	$rs = exec_query($query, $als_id);
-	if ($rs->fields['ftpnum'] > 0) {
-		set_page_message(tr('Domain alias you are trying to remove has FTP accounts.<br/>First remove them.'), 'error');
-		redirectTo('domains_manage.php');
-	}
-
-	iMSCP_Events_Manager::getInstance()->dispatch(
-		iMSCP_Events::onBeforeDeleteDomainAlias, array('domainAliasId' => $als_id)
-	);
-
-	$query = "
-		UPDATE
-			`domain_aliasses`
-		SET
-			`alias_status` = 'delete'
-		WHERE
-			`alias_id` = ?
-	";
-
-	$rs = exec_query($query, $als_id);
-
-	$query = "
-		UPDATE
-			`ssl_certs`
-		SET
-			`status` = 'delete'
-		WHERE
-			`id` = ?
-		AND
-			`type` = 'als'
-	";
-
-	$rs = exec_query($query, $als_id);
-
-	iMSCP_Events_Manager::getInstance()->dispatch(
-		iMSCP_Events::onAfterDeleteDomainAlias, array('domainAliasId' => $als_id)
-	);
-
-	update_reseller_c_props(get_reseller_id($dmn_id));
-
-	send_request();
-	write_log($_SESSION['user_logged'].": delete alias ".$alias_name."!", E_USER_NOTICE);
-	set_page_message(tr('Alias scheduled for deletion.'), 'success');
-	redirectTo('domains_manage.php');
-} else {
-	redirectTo('domains_manage.php');
 }
+
+showBadRequestErrorPage();

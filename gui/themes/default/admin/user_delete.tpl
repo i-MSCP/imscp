@@ -1,18 +1,18 @@
 
-			<form name="admin_delete_domain_frm" method="post" action="user_delete.php">
-				<table>
+			<form name="admin_delete_customer_frm" method="post" action="user_delete.php">
+				<table class="firstColFixed">
 					<tr>
-						<th colspan="2"><strong>{TR_DOMAIN_SUMMARY}</strong></th>
+						<th colspan="2"><strong>{TR_ACCOUNT_SUMMARY}</strong></th>
 					</tr>
 
 					<!-- BDP: mail_list -->
 					<tr>
-						<td colspan="2"><strong><i>{TR_DOMAIN_EMAILS}</i></strong>
+						<td colspan="2"><strong><i>{TR_EMAILS}</i></strong>
 						</td>
 					</tr>
 					<!-- BDP: mail_item -->
 					<tr>
-						<td style="width:300px">{MAIL_ADDR}</td>
+						<td>{MAIL_ADDR}</td>
 						<td>{MAIL_TYPE}</td>
 					</tr>
 					<!-- EDP: mail_item -->
@@ -20,7 +20,7 @@
 
 					<!-- BDP: ftp_list -->
 					<tr>
-						<td colspan="2"><strong><i>{TR_DOMAIN_FTPS}</i></strong></td>
+						<td colspan="2"><strong><i>{TR_FTP_ACCOUNTS}</i></strong></td>
 					</tr>
 					<!-- BDP: ftp_item -->
 					<tr>
@@ -29,6 +29,17 @@
 					</tr>
 					<!-- EDP: ftp_item -->
 					<!-- EDP: ftp_list -->
+
+					<!-- BDP: dmn_list -->
+					<tr>
+						<td colspan="2"><strong><i>{TR_DOMAINS}</i></strong></td>
+					</tr>
+					<!-- BDP: dmn_item -->
+					<tr>
+						<td colspan="2">{DOMAIN_NAME}</td>
+					</tr>
+					<!-- EDP: dmn_item -->
+					<!-- EDP: dmn_list -->
 
 					<!-- BDP: als_list -->
 					<tr>
@@ -45,7 +56,7 @@
 
 					<!-- BDP: sub_list -->
 					<tr>
-						<td colspan="2"><strong><i>{TR_DOMAIN_SUBS}</i></strong></td>
+						<td colspan="2"><strong><i>{TR_SUBDOMAINS}</i></strong></td>
 					</tr>
 					<!-- BDP: sub_item -->
 					<tr>
@@ -57,7 +68,7 @@
 
 					<!-- BDP: db_list -->
 					<tr>
-						<td colspan="2"><strong><i>{TR_DOMAIN_DBS}</i></strong></td>
+						<td colspan="2"><strong><i>{TR_DATABASES}</i></strong></td>
 					</tr>
 					<!-- BDP: db_item -->
 					<tr>
@@ -71,14 +82,14 @@
 					</tr>
 					<tr>
 						<td colspan="2">
-							<p>{TR_REALLY_WANT_TO_DELETE_DOMAIN}</p>
-							<input type="hidden" name="domain_id" value="{DOMAIN_ID}" />
+							<p>{TR_REALLY_WANT_TO_DELETE_CUSTOMER_ACCOUNT}</p>
+							<input type="hidden" name="user_id" value="{USER_ID}" />
 							<input type="checkbox" value="1" name="delete" id="delete" style="vertical-align: middle" />
-							<label for="delete">{TR_YES_DELETE_DOMAIN}</label>
+							<label for="delete">{TR_YES_DELETE_ACCOUNT}</label>
 						</td>
 					</tr>
 				</table>
 				<div class="buttons">
-					<input type="submit" value="{TR_BUTTON_DELETE}" />
+					<input type="submit" value="{TR_DELETE_ACCOUNT}" />
 				</div>
 			</form>

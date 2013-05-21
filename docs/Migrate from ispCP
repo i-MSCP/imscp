@@ -1,43 +1,42 @@
 Migration from ispCP to i-MSCP
 
 This intends to be a guide for those interested into migrate your control panel from
-ispcp to imscp. Luckily there's a standard migration path ready for us.
+ispCP to i-MSCP. Luckily there's a standard migration path ready for us.
 
-Currently you can go from ispCP 1.0.7 to i-MSCP 1.0.3.0 or newer.
+Currently you can migrate from ispCP 1.0.7 to i-MSCP 1.0.3.0 or newer.
 
 IMPORTANT: Test it before with a clone of your system, there could be problems and
-it's important to find them on the test phase
+it's important to find them during the test phase.
 
-1.  Download the current version of i-mscp from http://i-mscp.net/download
+1.  Download the current version of i-MSCP from http://i-mscp.net/download
 2.  Untar the downloaded file
 
     # tar -xzf i-mscp-1.0.3.0.tar.gz
 
 3.  Start the installation of the system (as you would for a new install), but
-    IMPORTANT, when you see the i-mscp setup screen. SAY NO, because you've to
-    continue using the console instead of this installer.
+    IMPORTANT, when you see the Installer options screen, select the 'build' option,
+    because you've to continue using the console instead of this installer.
 
-    # perl imscp-autoinstall
+    # perl imscp-autoinstall --debug
 
-4.  Until you see the i-mscp setup screen. SAY NO, because you've to continue using
-    the console. Copy the generated files into their destination, after this point
-    there's NO POSSIBLE ROLLBACK
+4.  Copy the generated files into their destination, after this point there's
+	NO POSSIBLE ROLLBACK
 
-    # cp -Rv /tmp/imscp/* /
+    # cp -fR /tmp/imscp/* /
 
 5.  It's interesting to have the debug enabled to inspect possible problems, you have
     to change in /etc/imspc/imscp.conf
 
     DEBUG = 1
 
-6.  Now you have to use the migration script wich will be already in place.
+6.  Now you have to use the migration script which will be already in place.
 
     # cd /var/www/imscp/engine/setup/
     # perl imscp-migrate-from-ispcp
 
 7.  After the run of this script you'll have to run the regular install
 
-    # perl /var/www/imscp/engine/setup/imscp-setup
+    # perl /var/www/imscp/engine/setup/imscp-setup --debug
 
 If all the steps are fine, you should be able to enter in the control panel
 Some considerations
@@ -46,9 +45,5 @@ The logs for either a failed or succesful setup will be at /var/log/imscp/imscp-
 
     # less /var/log/imscp/imscp-setup.log
 
-The database user MUST have full privileges (or else it won't be able to create and
-populate the imscp table). You have two options, either using the root database user
-or having a database user with full rights:
-
-    # mysql -u root -p
-    # GRANT ALL PRIVILEGES ON *.* TO 'your_database_user'@'localhost'
+The database user MUST have full privileges (including GRANT) else, it won't be able to create and
+populate the i-MSCP database and create customer database.

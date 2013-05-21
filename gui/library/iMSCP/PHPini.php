@@ -477,6 +477,8 @@ class iMSCP_PHPini
 	 */
 	public function sendToEngine($domainId)
 	{
+		# TODO changing only the domain status is not sufficicent since
+		# we are providing many level for php.ini file
 		$query = "UPDATE `domain` SET `domain_status` = ? WHERE `domain_id` = ?";
 		exec_query($query, array($this->_cfg->ITEM_CHANGE_STATUS, $domainId));
 		send_request();

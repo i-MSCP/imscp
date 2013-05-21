@@ -18,7 +18,7 @@
  *
  * @category	iMSCP
  * @package		iMSCP_Core
- * @subpackage	Client
+ * @subpackage	Client_Ftp
  * @copyright	2010-2013 by i-MSCP team
  * @author		iMSCP Team
  * @author		Laurent Declercq <l.declercq@nuxwin.com>
@@ -32,6 +32,9 @@
  * This script allows AjaxPlorer authentication from i-MSCP (onClick login)
  *
  */
+
+// TODO since we are providing many filemanager addons, we must such authentication layer as plugin, which should be
+// installed by the addon installer
 
 /************************************************************************************
  *  Script functions
@@ -49,23 +52,20 @@ function _getLoginCredentials($userId)
 {
 	$query = "
 		SELECT
-			`userid`, `rawpasswd`
+			`t1`.`userid`, `t1`.`rawpasswd`
 		FROM
-			`ftp_users`, `domain`
+			`ftp_users` AS `t1`
+		INNER JOIN
+			`admin` AS `t2` ON(`t2`.`admin_sys_uid` = `t1`.`uid` AND `t2`.`admin_sys_gid` = `t1`.`gid`)
 		WHERE
-			`ftp_users`.`uid` = `domain`.`domain_uid`
+			`t1`.`userid` = ?
 		AND
-			`ftp_users`.`userid` = ?
-		AND
-			`domain`.`domain_admin_id` = ?
+			`t2`.`admin_id` = ?
 	";
 	$stmt = exec_query($query, array($userId, $_SESSION['user_id']));
 
 	if ($stmt->rowCount()) {
-		return array(
-			$stmt->fields['userid'],
-			$stmt->fields['rawpasswd']
-		);
+		return $stmt->fetchRow(PDO::FETCH_NUM);
 	} else {
 		return false;
 	}
@@ -191,13 +191,18 @@ iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptStart)
 // Check login
 check_login('user');
 
-customerHasFeature(array('ftp', 'ftp_easy_login')) or showBadRequestErrorPage();
+/** @var $cg iMSCP_Config_Handler_File */
+$cfg = iMSCP_Registry::get('config');
+
+if(!(isset($cfg->FILEMANAGER_ADDON) && $cfg->FILEMANAGER_ADDON == 'AjaxPlorer')) {
+	showBadRequestErrorPage();
+}
 
 /**
  *  Dispatches the request
  */
 if (isset($_GET['id'])) {
-	if (!_ajaxplorerAuth($_GET['id'])) {
+	if (!_ajaxplorerAuth(clean_input($_GET['id']))) {
 		redirectTo('ftp_accounts.php');
 	}
 } else {

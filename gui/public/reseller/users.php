@@ -24,9 +24,9 @@
  * Portions created by the i-MSCP Team are Copyright (C) 2010-2013 by
  * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
  *
- * @category	i-MSCP
- * @package		iMSCP_Core
- * @subpackage	Reseller
+ * @category    i-MSCP
+ * @package     iMSCP_Core
+ * @subpackage  Reseller
  * @copyright   2001-2006 by moleSoftware GmbH
  * @copyright   2006-2010 by ispCP | http://isp-control.net
  * @copyright   2010-2013 by i-MSCP | http://i-mscp.net
@@ -35,7 +35,7 @@
  * @link        http://i-mscp.net
  */
 
-/************************************************************************************
+/***********************************************************************************************************************
  * Script functions
  */
 
@@ -48,194 +48,222 @@
  */
 function generate_users_list($tpl, $resellerId)
 {
-    /** @var $cfg iMSCP_Config_Handler_File */
-    $cfg = iMSCP_Registry::get('config');
+	/** @var $cfg iMSCP_Config_Handler_File */
+	$cfg = iMSCP_Registry::get('config');
 
-    $rows_per_page = $cfg->DOMAIN_ROWS_PER_PAGE;
+	$rowsPerPage = $cfg->DOMAIN_ROWS_PER_PAGE;
 
-    if (isset($_POST['details']) && !empty($_POST['details'])) {
-        $_SESSION['details'] = $_POST['details'];
-    } else {
-        if (!isset($_SESSION['details'])) {
-            $_SESSION['details'] = 'hide';
-        }
-    }
+	if (isset($_POST['details']) && !empty($_POST['details'])) {
+		$_SESSION['details'] = $_POST['details'];
+	} else {
+		if (!isset($_SESSION['details'])) {
+			$_SESSION['details'] = 'hide';
+		}
+	}
 
-    if (isset($_GET['psi']) && $_GET['psi'] == 'last') {
-        if (isset($_SESSION['search_page'])) {
-            $_GET['psi'] = $_SESSION['search_page'];
-        } else {
-            unset($_GET['psi']);
-        }
-    }
+	if (isset($_GET['psi']) && $_GET['psi'] == 'last') {
+		if (isset($_SESSION['search_page'])) {
+			$_GET['psi'] = $_SESSION['search_page'];
+		} else {
+			unset($_GET['psi']);
+		}
+	}
 
-    // Search request generated?
-    if (isset($_POST['search_for']) && !empty($_POST['search_for'])) {
-        $_SESSION['search_for'] = trim(clean_input($_POST['search_for']));
-        $_SESSION['search_common'] = $_POST['search_common'];
-        $_SESSION['search_status'] = $_POST['search_status'];
-        $start_index = 0;
-    } else {
-        $start_index = isset($_GET['psi']) ? (int)$_GET['psi'] : 0;
+	// Search request generated?
+	if (isset($_POST['search_for']) && !empty($_POST['search_for'])) {
+		$_SESSION['search_for'] = trim(clean_input($_POST['search_for']));
+		$_SESSION['search_common'] = $_POST['search_common'];
+		$_SESSION['search_status'] = $_POST['search_status'];
+		$startIndex = 0;
+	} else {
+		$startIndex = isset($_GET['psi']) ? (int)$_GET['psi'] : 0;
 
-        if (isset($_SESSION['search_for']) && !isset($_GET['psi'])) {
-            // He have not got scroll through patient records.
-            unset($_SESSION['search_for']);
-            unset($_SESSION['search_common']);
-            unset($_SESSION['search_status']);
-        }
-    }
+		if (isset($_SESSION['search_for']) && !isset($_GET['psi'])) {
+			// He have not got scroll through patient records.
+			unset($_SESSION['search_for']);
+			unset($_SESSION['search_common']);
+			unset($_SESSION['search_status']);
+		}
+	}
 
-    $_SESSION['search_page'] = $start_index;
+	$_SESSION['search_page'] = $startIndex;
 
-    $search_query = '';
-    $count_query = '';
+	$searchQuery = '';
+	$countQuery = '';
 
-    if (isset($_SESSION['search_for'])) {
-        gen_manage_domain_query($search_query, $count_query, $resellerId,
-                                $start_index, $rows_per_page, $_SESSION['search_for'],
-                                $_SESSION['search_common'], $_SESSION['search_status']);
+	if (isset($_SESSION['search_for'])) {
+		gen_manage_domain_query($searchQuery, $countQuery, $resellerId,
+			$startIndex, $rowsPerPage, $_SESSION['search_for'],
+			$_SESSION['search_common'], $_SESSION['search_status']);
 
-        gen_manage_domain_search_options($tpl, $_SESSION['search_for'],
-                                         $_SESSION['search_common'],
-                                         $_SESSION['search_status']);
-    } else {
-        gen_manage_domain_query($search_query, $count_query, $resellerId,
-                                $start_index, $rows_per_page, 'n/a', 'n/a', 'n/a');
+		gen_manage_domain_search_options(
+			$tpl, $_SESSION['search_for'], $_SESSION['search_common'], $_SESSION['search_status']
+		);
+	} else {
+		gen_manage_domain_query(
+			$searchQuery, $countQuery, $resellerId, $startIndex, $rowsPerPage, 'n/a', 'n/a', 'n/a'
+		);
 
-        gen_manage_domain_search_options($tpl, 'n/a', 'n/a', 'n/a');
-    }
+		gen_manage_domain_search_options($tpl, 'n/a', 'n/a', 'n/a');
+	}
 
-    $stmt = execute_query($count_query);
-    $records_count = $stmt->fields['cnt'];
-    $stmt = execute_query($search_query);
+	$stmt = execute_query($countQuery);
+	$recordsCount = $stmt->fields['cnt'];
+	$stmt = execute_query($searchQuery);
 
-    if ($records_count == 0) {
-        if (isset($_SESSION['search_for'])) {
-            $tpl->assign(array(
-                              'USERS_LIST' => '',
-                              'SCROLL_PREV' => '',
-                              'SCROLL_NEXT' => '',
-                              'TR_VIEW_DETAILS' => tr('View aliases'),
-                              'SHOW_DETAILS' => tr('Show')));
+	if ($recordsCount == 0) {
+		if (isset($_SESSION['search_for'])) {
+			$tpl->assign(array(
+					'USR_MESSAGE' => tr('Not found records matching the search criteria.'),
+					'USERS_LIST' => '',
+					'SCROLL_PREV' => '',
+					'SCROLL_NEXT' => '',
+					'TR_VIEW_DETAILS' => tr('View aliases'),
+					'SHOW_DETAILS' => tr('Show')
+				)
+			);
+			unset($_SESSION['search_for']);
+			unset($_SESSION['search_common']);
+			unset($_SESSION['search_status']);
+		} else {
+			$tpl->assign(
+				array(
+					'USERS_SEARCH' => '',
+					'USR_MESSAGE' => tr('No customer accounts found.'),
+					'USERS_LIST' => '',
+					'SCROLL_PREV' => '',
+					'SCROLL_PREV_GRAY' => '',
+					'SCROLL_NEXT' => '',
+					'SCROLL_NEXT_GRAY' => '',
+					'TR_VIEW_DETAILS' => tr('View aliases'),
+					'SHOW_DETAILS' => tr('Show')
+				)
+			);
+		}
 
-            set_page_message(tr('Not found user records matching the search criteria.'), 'info');
+		$tpl->parse('USR_MESSAGE', 'usr_message');
+	} else {
+		$prevSi = $startIndex - $rowsPerPage;
 
-            unset($_SESSION['search_for']);
-            unset($_SESSION['search_common']);
-            unset($_SESSION['search_status']);
-        } else {
-            $tpl->assign(array(
-                              'USERS_SEARCH' => '',
-                              'USERS_LIST' => '',
-                              'SCROLL_PREV' => '',
-                              'SCROLL_PREV_GRAY' => '',
-                              'SCROLL_NEXT' => '',
-                              'SCROLL_NEXT_GRAY' => '',
-                              'TR_VIEW_DETAILS' => tr('View aliases'),
-                              'SHOW_DETAILS' => tr('Show')));
+		if ($startIndex == 0) {
+			$tpl->assign('SCROLL_PREV', '');
+		} else {
+			$tpl->assign(
+				array(
+					'SCROLL_PREV_GRAY' => '',
+					'PREV_PSI' => $prevSi
+				)
+			);
+		}
 
-            set_page_message(tr('You do not have customers.'), 'info');
-        }
-    } else {
-        $prev_si = $start_index - $rows_per_page;
+		$nextSi = $startIndex + $rowsPerPage;
 
-        if ($start_index == 0) {
-            $tpl->assign('SCROLL_PREV', '');
-        } else {
-            $tpl->assign(array(
-                              'SCROLL_PREV_GRAY' => '',
-                              'PREV_PSI' => $prev_si));
-        }
+		if ($nextSi + 1 > $recordsCount) {
+			$tpl->assign('SCROLL_NEXT', '');
+		} else {
+			$tpl->assign(
+				array(
+					'SCROLL_NEXT_GRAY' => '',
+					'NEXT_PSI' => $nextSi
+				)
+			);
+		}
 
-        $next_si = $start_index + $rows_per_page;
+		while (!$stmt->EOF) {
+			if (
+				$stmt->fields['admin_status'] == $cfg->ITEM_OK_STATUS &&
+				$stmt->fields['domain_status'] == $cfg->ITEM_OK_STATUS
+			) {
+				$statusIcon = 'ok';
+				$statusDomain = translate_dmn_status($stmt->fields['domain_status']);
+				$statusBool = true;
+			} else if ($stmt->fields['domain_status'] == $cfg->ITEM_DISABLED_STATUS) {
+				$statusIcon = 'disabled';
+				$statusDomain = translate_dmn_status($stmt->fields['domain_status']);
+				$statusBool = false;
+			} else if (
+				(
+					$stmt->fields['admin_status'] == $cfg->ITEM_ADD_STATUS ||
+					$stmt->fields['admin_status'] == $cfg->ITEM_CHANGE_STATUS ||
+					$stmt->fields['admin_status'] == $cfg->ITEM_DELETE_STATUS
+				) ||
+				(
+					$stmt->fields['domain_status'] == $cfg->ITEM_ADD_STATUS ||
+					$stmt->fields['domain_status'] == $cfg->ITEM_RESTORE_STATUS ||
+					$stmt->fields['domain_status'] == $cfg->ITEM_CHANGE_STATUS ||
+					$stmt->fields['domain_status'] == $cfg->ITEM_TOENABLE_STATUS ||
+					$stmt->fields['domain_status'] == $cfg->ITEM_TODISABLED_STATUS ||
+					$stmt->fields['domain_status'] == $cfg->ITEM_DELETE_STATUS
+				)
+			) {
+				$statusIcon = 'reload';
+				$statusDomain = translate_dmn_status(
+					($stmt->fields['admin_status'] != $cfg->ITEM_OK_STATUS)
+						? $stmt->fields['admin_status']
+						: $stmt->fields['domain_status']
+				);
+				$statusBool = false;
+			} else {
+				$statusIcon = 'error';
+				$statusDomain = translate_dmn_status(
+					($stmt->fields['admin_status'] != $cfg->ITEM_OK_STATUS)
+						? $stmt->fields['admin_status']
+						: $stmt->fields['domain_status']
+				);
+				$statusBool = false;
+			}
 
-        if ($next_si + 1 > $records_count) {
-            $tpl->assign('SCROLL_NEXT', '');
-        } else {
-            $tpl->assign(array(
-                              'SCROLL_NEXT_GRAY' => '',
-                              'NEXT_PSI' => $next_si));
-        }
+			$status_url = $stmt->fields['domain_id'];
 
-        while (!$stmt->EOF) {
-            if ($stmt->fields['domain_status'] == $cfg->ITEM_OK_STATUS) {
-                $status_icon = 'ok.png';
-                $status_domain = 'ok';
-                $status_bool = true;
-            } else if ($stmt->fields['domain_status'] == $cfg->ITEM_DISABLED_STATUS) {
-                $status_icon = 'disabled.png';
-                $status_domain = 'disabled';
-                $status_bool = false;
-            } else if ($stmt->fields['domain_status'] == $cfg->ITEM_ADD_STATUS
-                       || $stmt->fields['domain_status'] == $cfg->ITEM_CHANGE_STATUS
-                       || $stmt->fields['domain_status'] == $cfg->ITEM_TOENABLE_STATUS
-                       || $stmt->fields['domain_status'] == $cfg->ITEM_RESTORE_STATUS
-                       || $stmt->fields['domain_status'] == $cfg->ITEM_TODISABLED_STATUS
-                       || $stmt->fields['domain_status'] == $cfg->ITEM_DELETE_STATUS
-            ) {
-                $status_icon = 'reload.png';
-                $status_domain = 'reload';
-                $status_bool = false;
-            } else {
-                $status_icon = 'error.png';
-                $status_domain = 'error';
-                $status_bool = false;
-            }
+			$tpl->assign(
+				array(
+					'STATUS_DOMAIN' => $statusDomain,
+					'STATUS_ICON' => $statusIcon,
+					'URL_CHANGE_STATUS' => $status_url
+				)
+			);
 
-            $status_url = $stmt->fields['domain_id'];
+			$adminName = decode_idna($stmt->fields['domain_name']);
 
-            $tpl->assign(array(
-                              'STATUS_DOMAIN' => $status_domain,
-                              'STATUS_ICON' => $status_icon,
-                              'URL_CHANGE_STATUS' => $status_url));
-
-			$admin_name = decode_idna($stmt->fields['domain_name']);
-			
-			if($status_bool == false) { // reload
+			if ($statusBool == false) { // reload
 				$tpl->assign('STATUS_RELOAD_TRUE', '');
-				$tpl->assign('NAME', tohtml($admin_name));
+				$tpl->assign('NAME', tohtml($adminName));
 				$tpl->parse('STATUS_RELOAD_FALSE', 'status_reload_false');
 			} else {
 				$tpl->assign('STATUS_RELOAD_FALSE', '');
-				$tpl->assign('NAME', tohtml($admin_name));
+				$tpl->assign('NAME', tohtml($adminName));
 				$tpl->parse('STATUS_RELOAD_TRUE', 'status_reload_true');
 			}
 
-            $dom_created = $stmt->fields['domain_created'];
-            $dom_expires = $stmt->fields['domain_expires'];
+			$domainCreated = $stmt->fields['domain_created'];
 
-            if ($dom_created == 0) {
-                $dom_created = tr('N/A');
-            } else {
-                $dom_created = date($cfg->DATE_FORMAT, $dom_created);
-            }
+			if ($domainCreated == 0) {
+				$domainCreated = tr('N/A');
+			} else {
+				$domainCreated = date($cfg->DATE_FORMAT, $domainCreated);
+			}
 
-            if ($dom_expires == 0) {
-                $dom_expires = tr('Not Set');
-            } else {
-                $dom_expires = date($cfg->DATE_FORMAT, $dom_expires);
-            }
+			$tpl->assign(
+				array(
+					'CREATION_DATE' => $domainCreated,
+					'DOMAIN_ID' => $stmt->fields['domain_id'],
+					'ACTION' => tr('Delete'),
+					'USER_ID' => $stmt->fields['domain_admin_id'],
+					'CHANGE_INTERFACE' => tr('Switch'),
+					'DISK_USAGE' => ($stmt->fields['domain_disk_limit'])
+						? tr('%1$s of %2$s', bytesHuman($stmt->fields['domain_disk_usage']), mebibyteHuman($stmt->fields['domain_disk_limit']))
+						: tr('%1$s of <b>unlimited</b>', bytesHuman($stmt->fields['domain_disk_usage']))
+				)
+			);
 
-            $tpl->assign(array(
-                              'CREATION_DATE' => $dom_created,
-                              'EXPIRE_DATE' => $dom_expires,
-                              'DOMAIN_ID' => $stmt->fields['domain_id'],
-                              'ACTION' => tr('Delete'),
-                              'USER_ID' => $stmt->fields['domain_admin_id'],
-                              'CHANGE_INTERFACE' => tr('Switch'),
-                              'DISK_USAGE' => ($stmt->fields['domain_disk_limit'])
-                                  ? tr('%1$s of %2$s MB', round($stmt->fields['domain_disk_usage'] / 1024 / 1024, 1),
-                                       $stmt->fields['domain_disk_limit'])
-                                  : tr('%1$s of <b>unlimited</b> MB', round($stmt->fields['domain_disk_usage'] / 1024 / 1024, 1))));
+			gen_domain_details($tpl, $stmt->fields['domain_id']);
+			$tpl->parse('USER_ENTRY', '.user_entry');
+			$stmt->moveNext();
+		}
 
-            gen_domain_details($tpl, $stmt->fields['domain_id']);
-            $tpl->parse('USER_ENTRY', '.user_entry');
-            $stmt->moveNext();
-        }
-
-        //$tpl->parse('USER_LIST', 'users_list');
-    }
+		$tpl->assign('USR_MESSAGE', '');
+		$tpl->parse('USER_LIST', 'users_list');
+	}
 }
 
 /**
@@ -245,40 +273,31 @@ function generate_users_list($tpl, $resellerId)
  */
 function check_externel_events()
 {
-    global $externel_event;
+	if (isset($_SESSION['edit'])) {
+		if ('_yes_' == $_SESSION['edit']) {
+			set_page_message(tr('User data were successfully updated.'), 'success');
+		} else {
+			set_page_message(tr('User data were not updated.'), 'error');
+		}
+		unset($_SESSION['edit']);
+	} elseif (isset($_SESSION['user_has_domain'])) {
+		if ($_SESSION['user_has_domain'] == '_yes_') {
+			set_page_message(tr('This user has domain record.<br/>First remove the domain from the system.'), 'error');
+		}
 
-    if (isset($_SESSION['user_add3_added'])) {
-        if ($_SESSION['user_add3_added'] === '_yes_') {
-            set_page_message(tr('Domain account successfully scheduled for creation.'), 'success');
+		unset($_SESSION['user_has_domain']);
+	} elseif (isset($_SESSION['user_deleted'])) {
+		if ($_SESSION['user_deleted'] == '_yes_') {
+			set_page_message(tr('User scheduled for deletion.'), 'info');
+		} else {
+			set_page_message(tr('User has not been deleted.'), 'error');
+		}
 
-            $externel_event = '_on_';
-            unset($_SESSION['user_add3_added']);
-        }
-    } elseif (isset($_SESSION['edit'])) {
-        if ('_yes_' === $_SESSION['edit']) {
-            set_page_message(tr('User data were successfully updated.'), 'success');
-        } else {
-            set_page_message(tr('User data were not updated.'), 'error');
-        }
-        unset($_SESSION['edit']);
-    } elseif (isset($_SESSION['user_has_domain'])) {
-        if ($_SESSION['user_has_domain'] == '_yes_') {
-            set_page_message(tr('This user has domain record.<br/>First remove the domain from the system.'), 'error');
-        }
-
-        unset($_SESSION['user_has_domain']);
-    } elseif (isset($_SESSION['user_deleted'])) {
-        if ($_SESSION['user_deleted'] == '_yes_') {
-            set_page_message(tr('User scheduled for deletion.'), 'info');
-        } else {
-            set_page_message(tr('User was not deleted.'), 'error');
-        }
-
-        unset($_SESSION['user_deleted']);
-    }
+		unset($_SESSION['user_deleted']);
+	}
 }
 
-/************************************************************************************
+/***********************************************************************************************************************
  * Main script
  */
 require 'imscp-lib.php';
@@ -295,50 +314,47 @@ $tpl->define_dynamic(
 	array(
 		'layout' => 'shared/layouts/ui.tpl',
 		'page' => 'reseller/users.tpl',
+		'user_search' => 'page',
+		'usr_message' => 'page',
 		'users_list' => 'page',
 		'user_entry' => 'users_list',
 		'status_reload_true' => 'users_list',
 		'status_reload_false' => 'users_list',
 		'user_details' => 'users_list',
 		'page_message' => 'layout',
-		'scroll_prev_gray' => 'page',
-		'scroll_prev' => 'page',
-		'scroll_next_gray', 'page',
-		'scroll_next' => 'page',
-		'edit_option' => 'page'));
+		'scroll_prev_gray' => 'users_list',
+		'scroll_prev' => 'users_list',
+		'scroll_next_gray', 'users_list',
+		'scroll_next' => 'users_list',
+		'edit_option' => 'page'
+	)
+);
 
 $tpl->assign(
 	array(
 		'TR_PAGE_TITLE' => tr('i-MSCP - Users'),
 		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => layout_getUserLogo(),
-		'TR_MANAGE_USERS' => tr('Manage users'),
-		'TR_USERS' => tr('Users'),
 		'TR_USER_STATUS' => tr('Status'),
 		'TR_DETAILS' => tr('Details'),
 		'TR_SEARCH' => tr('Search'),
 		'TR_USERNAME' => tr('Username'),
 		'TR_ACTION' => tr('Actions'),
 		'TR_CREATION_DATE' => tr('Creation date'),
-		'TR_EXPIRE_DATE' => tr('Expire date'),
-		'TR_CHANGE_USER_INTERFACE' => tr('Switch to user interface'),
-		'TR_BACK' => tr('Back'),
-		'TR_TITLE_BACK' => tr('Return to previous menu'),
-		'TR_TABLE_NAME' => tr('Users list'),
 		'TR_MESSAGE_CHANGE_STATUS' => tr('Are you sure you want to change the status of %s?', true, '%s'),
-		'TR_MESSAGE_DELETE_ACCOUNT' => tr('Are you sure you want to delete %s?', true, '%s'),
 		'TR_STAT' => tr('Stats'),
 		'VL_MONTH' => date('m'),
 		'VL_YEAR' => date('Y'),
 		'TR_EDIT_DOMAIN' => tr('Edit Domain'),
 		'TR_EDIT_USER' => tr('Edit User'),
-		'TR_BW_USAGE' => tr('Bandwidth'),
-		'TR_DISK_USAGE' => tr('Disk'),
+		'TR_DISK_USAGE' => tr('Disk usage'),
 		'TR_PREVIOUS' => tr('Previous'),
-		'TR_NEXT' => tr('Next')));
+		'TR_NEXT' => tr('Next')
+	)
+);
 
 if (isset($cfg->HOSTING_PLANS_LEVEL) && $cfg->HOSTING_PLANS_LEVEL == 'admin') {
-    $tpl->assign('EDIT_OPTION', '');
+	$tpl->assign('EDIT_OPTION', '');
 }
 
 generateNavigation($tpl);
@@ -353,7 +369,6 @@ iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onResellerScriptEnd,
 
 $tpl->prnt();
 
-
 // Cleanup
 unset($_SESSION['dmn_name']);
 unset($_SESSION['ch_hpprops']);
@@ -367,4 +382,5 @@ unset($GLOBALS['user_add3_added']);
 unset($GLOBALS['user_add3_added']);
 unset($GLOBALS['dmn_ip']);
 unset($GLOBALS['dmn_id']);
+
 unsetMessages();

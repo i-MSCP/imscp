@@ -32,11 +32,11 @@
  * @author       i-MSCP Team
  */
 
-/************************************************************************************
+/***********************************************************************************************************************
  * This file contains functions that are used at many level (eg. admin, reseller, client)
  */
 
-/************************************************************************************
+/***********************************************************************************************************************
  * Account functions
  */
 
@@ -49,14 +49,39 @@
 function get_user_name($user_id)
 {
 	$query = "SELECT `admin_name` FROM `admin` WHERE `admin_id` = ?";
-	$rs = exec_query($query, $user_id);
+	$stmt = exec_query($query, $user_id);
 
-	return $rs->fields('admin_name');
+	return $stmt->fields('admin_name');
 }
 
-/************************************************************************************
+/***********************************************************************************************************************
  * Domain related functions
  */
+
+/**
+ * Return main domain unique identifier of the given customer.
+ *
+ * @throws iMSCP_Exception in case the domain id cannot be found
+ * @param int $customeId Customer unique identifier
+ * @return int main domain unique identifier
+ */
+function get_user_domain_id($customeId)
+{
+	static $domainId = null;
+
+	if(null === $domainId) {
+		$query = 'SELECT `domain_id` FROM `domain` WHERE `domain_admin_id` = ?';
+		$stmt = exec_query($query, $customeId);
+
+		if($stmt->rowCount()) {
+			$domainId = $stmt->fields['domain_id'];
+		} else {
+			throw new iMSCP_Exception("Unable to found domain ID of user with ID '$customeId''");
+		}
+	}
+
+	return $domainId;
+}
 
 /**
  * Returns the total number of consumed and max available items for the given customer.
@@ -149,10 +174,44 @@ function generate_user_props($domainId)
 }
 
 /**
- * Updates client's domain properties.
+ * Returns translated item status.
  *
- * @param  int $domainId Domain unique identifier
- * @param  string $props String that contain new properties values
+ * @param string $status Item status to translate
+ * @return string Translated status
+ */
+function translate_dmn_status($status)
+{
+	/** @var $cfg iMSCP_Config_Handler_File */
+	$cfg = iMSCP_Registry::get('config');
+
+	switch ($status) {
+		case $cfg->ITEM_OK_STATUS:
+			return tr('Ok');
+		case $cfg->ITEM_ADD_STATUS:
+			return tr('Addition in progress');
+		case $cfg->ITEM_CHANGE_STATUS:
+		case $cfg->ITEM_DNSCHANGE_STATUS:
+			return tr('Modification in progress');
+		case $cfg->ITEM_DELETE_STATUS:
+			return tr('Deletion in progress');
+		case $cfg->ITEM_DISABLED_STATUS:
+			return tr('Suspended');
+		case $cfg->ITEM_TOENABLE_STATUS:
+			return tr('Being enabled');
+		case $cfg->ITEM_TODISABLED_STATUS:
+			return tr('Being suspended');
+		case $cfg->ITEM_ORDERED_STATUS:
+			return tr('Awaiting approval');
+		default:
+			return tr('Unknown error');
+	}
+}
+
+/**
+ * Updates customer limits/features.
+ *
+ * @param int $domainId Domain unique identifier
+ * @param string $props String that contain new properties values
  * @return void
  */
 function update_user_props($domainId, $props)
@@ -161,15 +220,14 @@ function update_user_props($domainId, $props)
 	$cfg = iMSCP_Registry::get('config');
 
 	list(
-		, $subMaxValue, , $alsMaxValue, , $mailMaxValue, , $ftpMaxValue, , $sqlDbMaxValue, , $sqlUserMaxValue,
-		$trafficMaxValue, $diskMaxValue, $phpSupport, $cgiSupport, , $customDnsSupport, $softwareInstallerSupport
+		, $maxSubLimit, , $maxAlsLimit, , $maxMailLimit, , $maxFtpLimit, , $maxSqlDbLimit, , $maxSqlUserLimit,
+		$maxMonthlyTraffic, $maxDiskspace, $phpSupport, $cgiSupport, , $customDnsSupport, $softwareInstallerSupport
 	) = explode(';', $props);
 
 	$domainLastModified = time();
 
-	// We must check the previous values of some properties (eg. php, cgi, dns,
-	// software installer) to determine if we must send a request to the ispCP daemon
-
+	// We must check previous values for features (eg. php, cgi, dns, software installer) to determine if we must send a
+	// request to the ispCP daemon
 	$query = "
 		SELECT
 			`domain_name`
@@ -188,11 +246,11 @@ function update_user_props($domainId, $props)
 	";
 	$stmt = exec_query($query, array($domainId, $phpSupport, $cgiSupport, $customDnsSupport, $softwareInstallerSupport));
 
-	// No record found. That mean that a least one propertie value was changed
-	if ($stmt->recordCount() == 0) {
+	// No record found. That mean that a least one value was changed
+	if (!$stmt->rowCount()) {
 		$updateStatus = $cfg->ITEM_CHANGE_STATUS;
 
-		// Updating client's domain properties
+		// Update customer limits/features and schedule domain update
 		$query = "
 			UPDATE
 				`domain`
@@ -207,44 +265,35 @@ function update_user_props($domainId, $props)
 		exec_query(
 			$query,
 			array(
-				$domainLastModified, $mailMaxValue, $ftpMaxValue, $trafficMaxValue, $sqlDbMaxValue, $sqlUserMaxValue,
-				$updateStatus, $alsMaxValue, $subMaxValue, $diskMaxValue, $phpSupport, $cgiSupport, $customDnsSupport,
+				$domainLastModified, $maxMailLimit, $maxFtpLimit, $maxMonthlyTraffic, $maxSqlDbLimit, $maxSqlUserLimit,
+				$updateStatus, $maxAlsLimit, $maxSubLimit, $maxDiskspace, $phpSupport, $cgiSupport, $customDnsSupport,
 				$softwareInstallerSupport, $domainId
 			)
 		);
 
-		// Let's update all alias domains for this domain
+		// Schedule als update
 		$query = "UPDATE `domain_aliasses` SET `alias_status` = ? WHERE `domain_id` = ?";
 		exec_query($query, array($updateStatus, $domainId));
 
-		// Let's update all subdomains for this domain
+		// Schedule sub update
 		$query = "UPDATE `subdomain` SET `subdomain_status` = ? WHERE `domain_id` = ?";
 		exec_query($query, array($updateStatus, $domainId));
 
-		// Let's update all alias subdomains for this domain
+		// Let's update subals update
 		$query = "
 			UPDATE
 				`subdomain_alias`
 			SET
 				`subdomain_alias_status` = ?
 			WHERE
-				`alias_id` IN (
-					SELECT
-						`alias_id`
-					FROM
-						`domain_aliasses`
-					WHERE
-						`domain_id` = ?
-				)
+				`alias_id` IN (SELECT `alias_id` FROM `domain_aliasses` WHERE `domain_id` = ?)
 		";
 		exec_query($query, array($updateStatus, $domainId));
 
 		// Send a request to the i-MSCP daemon
 		send_request();
 	} else {
-		// We do not have changes for the PHP and/or CGI and/or CustomDNS and/or
-		// SoftwareInstaller properties. We have to update only the client's domain
-		// properties.
+		// We do not have changes for any feature. We have to update only customer limits.
 		$query = "
 			UPDATE
 				`domain`
@@ -258,8 +307,8 @@ function update_user_props($domainId, $props)
 		exec_query(
 			$query,
 			array(
-				$domainLastModified, $subMaxValue, $alsMaxValue, $mailMaxValue, $ftpMaxValue, $sqlDbMaxValue,
-				$sqlUserMaxValue, $trafficMaxValue, $diskMaxValue, $domainId
+				$domainLastModified, $maxSubLimit, $maxAlsLimit, $maxMailLimit, $maxFtpLimit, $maxSqlDbLimit,
+				$maxSqlUserLimit, $maxMonthlyTraffic, $maxDiskspace, $domainId
 			)
 		);
 	}
@@ -278,121 +327,134 @@ function update_expire_date($user_id, $domain_new_expire)
 }
 
 /**
- * Change domain status (eg. Schedule an action to be performed by engine).
+ * Activate or deactivate the given customer account.
  *
- * @param  int $domain_id Domain unique identifier
- * @param  string $domain_name Domain name
- * @param  string $action Action to schedule
- * @param  string $location Location to go back after action scheduling
+ * @throws iMSCP_Exception|iMSCP_Exception_Database
+ * @param int $customerId Customer unique identifier
+ * @param string $action Action to schedule
  * @return void
  */
-function change_domain_status($domain_id, $domain_name, $action, $location)
+function change_domain_status($customerId, $action)
 {
 	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
 
-	if ($action == 'disable') {
-		$new_status = $cfg->ITEM_TODISABLED_STATUS;
-	} else if ($action == 'enable') {
-		$new_status = $cfg->ITEM_TOENABLE_STATUS;
+	if ($action == 'deactivate') {
+		$newStatus = $cfg->ITEM_TODISABLED_STATUS;
+	} else if ($action == 'activate') {
+		$newStatus = $cfg->ITEM_TOENABLE_STATUS;
 	} else {
-		return;
+		throw new iMSCP_Exception("Unknow action: $action");
 	}
 
-	$query = "SELECT `mail_id`, `mail_pass`, `mail_type` FROM `mail_users` WHERE `domain_id` = ?";
-	$rs = exec_query($query, $domain_id);
+	$query = "SELECT `domain_id`, `domain_name` FROM `domain` WHERE `domain_admin_id` = ?";
+	$stmt = exec_query($query, $customerId);
 
-	while (!$rs->EOF) {
-		$mail_id = $rs->fields['mail_id'];
-		$mail_pass = $rs->fields['mail_pass'];
-		$mail_type = $rs->fields['mail_type'];
+	if(!$stmt->rowCount()) {
+		throw new iMSCP_Exception("Unable to found domain for user with ID $customerId");
+	}
 
-		if ($cfg->HARD_MAIL_SUSPENSION) {
-			$mail_status = $new_status;
-		} else {
-			if ($action == 'disable') {
-				$timestamp = time();
-				$pass_prefix = substr(md5($timestamp), 0, 4);
+	$domainId = $stmt->fields['domain_id'];
+	$domainName = decode_idna($stmt->fields['domain_name']);
 
-				if (preg_match('/^' . MT_NORMAL_MAIL . '/', $mail_type)
-					|| preg_match('/^' . MT_ALIAS_MAIL . '/', $mail_type)
-					|| preg_match('/^' . MT_SUBDOM_MAIL . '/', $mail_type)
-					|| preg_match('/^' . MT_ALSSUB_MAIL . '/', $mail_type)
-				) {
-					$mail_pass = $pass_prefix . $mail_pass;
-				}
-			} else if ($action == 'enable') {
-				if (preg_match('/^' . MT_NORMAL_MAIL . '/', $mail_type)
-					|| preg_match('/^' . MT_ALIAS_MAIL . '/', $mail_type)
-					|| preg_match('/^' . MT_SUBDOM_MAIL . '/', $mail_type)
-					|| preg_match('/^' . MT_ALSSUB_MAIL . '/', $mail_type)
-				) {
-					$mail_pass = substr($mail_pass, 4, 50);
-				}
+	/** @var $db iMSCP_Database */
+	$db = iMSCP_Registry::get('db');
+
+	try {
+		$db->beginTransaction();
+
+		$query = "SELECT `mail_id`, `mail_pass`, `mail_type` FROM `mail_users` WHERE `domain_id` = ?";
+		$stmt = exec_query($query, $domainId);
+
+		while ($row = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
+			$mailId = $row['mail_id'];
+			$mailPassword = $row['mail_pass'];
+			$mailType = $row['mail_type'];
+
+			if ($cfg->HARD_MAIL_SUSPENSION) {
+				$mailStatus = $newStatus;
 			} else {
-				return;
+				if ($action == 'deactivate') {
+					$timestamp = time();
+					$passwordPrefix = substr(md5($timestamp), 0, 4);
+
+					if (
+						preg_match('/^' . MT_NORMAL_MAIL . '/', $mailType) ||
+						preg_match('/^' . MT_ALIAS_MAIL . '/', $mailType) ||
+						preg_match('/^' . MT_SUBDOM_MAIL . '/', $mailType) ||
+						preg_match('/^' . MT_ALSSUB_MAIL . '/', $mailType)
+					) {
+						$mailPassword = $passwordPrefix . $mailPassword;
+					}
+				} elseif ($action == 'activate') {
+					if (
+						preg_match('/^' . MT_NORMAL_MAIL . '/', $mailType) ||
+						preg_match('/^' . MT_ALIAS_MAIL . '/', $mailType) ||
+						preg_match('/^' . MT_SUBDOM_MAIL . '/', $mailType) ||
+						preg_match('/^' . MT_ALSSUB_MAIL . '/', $mailType)
+					) {
+						$mailPassword = substr($mailPassword, 4, 50);
+					}
+				} else {
+					return;
+				}
+
+				$mailStatus = $cfg->ITEM_CHANGE_STATUS;
 			}
 
-			$mail_status = $cfg->ITEM_CHANGE_STATUS;
+			$query = "UPDATE `mail_users` SET `mail_pass` = ?, `status` = ? WHERE `mail_id` = ?";
+			exec_query($query, array($mailPassword, $mailStatus, $mailId));
 		}
 
-		$query = "UPDATE `mail_users` SET `mail_pass` = ?, `status` = ? WHERE `mail_id` = ?";
-		exec_query($query, array($mail_pass, $mail_status, $mail_id));
-		$rs->moveNext();
+		# TODO implements customer deactivation
+		#exec_query('UPDATE `admin` SET `admin_status` = ? WHERE `admin_id` = ?', array($newStatus, $customerId));
+		exec_query("UPDATE `domain` SET `domain_status` = ? WHERE `domain_id` = ?", array($newStatus, $domainId));
+		exec_query("UPDATE `subdomain` SET `subdomain_status` = ? WHERE `domain_id` = ?", array($newStatus, $domainId));
+		exec_query("UPDATE `domain_aliasses` SET `alias_status` = ? WHERE `domain_id` = ?", array($newStatus, $domainId));
+
+		$query = "
+			UPDATE
+				`subdomain_alias`
+			SET
+				`subdomain_alias_status` = ?
+			WHERE
+				`alias_id` IN (SELECT `alias_id` FROM `domain_aliasses` WHERE `domain_id` = ?)
+		";
+		exec_query($query, array($newStatus, $domainId));
+
+		$db->commit();
+	} catch(iMSCP_Exception_Database $e) {
+		$db->rollBack();
+		throw new iMSCP_Exception_Database($e->getMessage(), $e->getQuery(), $e->getCode(), $e);
 	}
 
-	exec_query("UPDATE `domain` SET `domain_status` = ? WHERE `domain_id` = ?", array($new_status, $domain_id));
-	exec_query("UPDATE `subdomain` SET `subdomain_status` = ? WHERE `domain_id` = ?", array($new_status, $domain_id));
-	exec_query("UPDATE `domain_aliasses` SET `alias_status` = ? WHERE `domain_id` = ?", array($new_status, $domain_id));
-
-	$query = "
-		UPDATE
-			`subdomain_alias`
-		SET
-			`subdomain_alias_status` = ?
-		WHERE
-			`alias_id` IN (SELECT `alias_id` FROM `domain_aliasses` WHERE `domain_id` = ?)
-	";
-	exec_query($query, array($new_status, $domain_id));
-
+	// Send request to i-MSCP daemon
 	send_request();
 
-	// let's get back to user overview after the system changes are finished
-	$user_logged = $_SESSION['user_logged'];
-	update_reseller_c_props(get_reseller_id($domain_id));
-
-	if ($action == 'disable') {
-		write_log("$user_logged: suspended domain: $domain_name", E_USER_NOTICE);
-		$_SESSION['user_disabled'] = 1;
-	} else if ($action == 'enable') {
-		write_log("$user_logged: enabled domain: $domain_name", E_USER_NOTICE);
-		$_SESSION['user_enabled'] = 1;
+	if($action == 'deactivate') {
+		write_log("{$_SESSION['user_logged']}: scheduled deactivation of customer account: $domainName", E_USER_NOTICE);
+		set_page_message(tr('Customer account successfully scheduled for deactivation.'), 'success');
 	} else {
-		return;
+		write_log("{$_SESSION['user_logged']}: scheduled activation of customer account: $domainName", E_USER_NOTICE);
+		set_page_message(tr('Customer account successfully scheduled for activation.'), 'success');
 	}
-
-	if ($location == 'admin') {
-		header('Location: manage_users.php');
-	} else if ($location == 'reseller') {
-		header('Location: users.php?psi=last');
-	}
-
-	exit();
 }
 
 /**
- * Deletes a domain account with all its sub items.
+ * Deletes the given customer.
  *
  * @throws iMSCP_Exception
- * @param integer $domainId Domain unique identifier
- * @param boolean $checkCreator Tell whether or not domain must have been created by logged-in user
+ * @param integer $customerId Customer unique identifier
+ * @param boolean $checkCreatedBy Tell whether or not customer must have been created by logged-in user
  * @return bool TRUE on success, FALSE otherwise
  */
-function delete_domain($domainId, $checkCreator = false)
+function deleteCustomer($customerId, $checkCreatedBy = false)
 {
-	$domainId = (int)$domainId;
+	$customerId = (int)$customerId;
 
-	iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onBeforeDeleteDomain, array('domainId' => $domainId));
+	iMSCP_Events_Manager::getInstance()->dispatch(
+		iMSCP_Events::onBeforeDeleteCustomer, array('customerId' => $customerId)
+	);
 
 	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
@@ -400,49 +462,45 @@ function delete_domain($domainId, $checkCreator = false)
 	// Get username, uid and gid of domain user
 	$query = "
 		SELECT
-			`a`.`domain_uid`, `a`.`domain_gid`, `a`.`domain_admin_id`, `a`.`domain_name`, `a`.`domain_created_id`,
-			`b`.admin_name
+			`admin_name`, `created_by`, `domain_id`
 		FROM
-			`domain` `a`
-		JOIN
-			`admin` `b` ON (`b`.`admin_id` = `a`.`domain_admin_id`)
+			`admin`
+		INNER JOIN
+			`domain` ON(`domain_admin_id` = `admin_id`)
 		WHERE
-			`domain_id` = ?
+			`admin_id` = ?
 	";
 
-	if ($checkCreator) {
-		$query .= 'AND `domain_created_id` = ?';
-		$stmt = exec_query($query, array($domainId, $_SESSION['user_id']));
+	if ($checkCreatedBy) {
+		$query .= 'AND `created_by` = ?';
+		$stmt = exec_query($query, array($customerId, $_SESSION['user_id']));
 	} else {
-		$stmt = exec_query($query, $domainId);
+		$stmt = exec_query($query, $customerId);
 	}
 
 	if (!$stmt->rowCount()) {
 		return false;
 	}
 
-	$domainAdminId = $stmt->fields['domain_admin_id'];
-	$domainAdminUsername = $stmt->fields['admin_name'];
-	$domainName = $stmt->fields['domain_name'];
-	$domainUid = $stmt->fields['domain_uid'];
-	$domainGid = $stmt->fields['domain_gid'];
-	$resellerId = $stmt->fields['domain_created_id'];
+	$customerName = $stmt->fields['admin_name'];
+	$mainDomainId = $stmt->fields['domain_id'];
+	$resellerId = $stmt->fields['created_by'];
+	$deleteStatus = $cfg->ITEM_DELETE_STATUS;
 
 	try {
-		// First, remove domain user sessions to prevent any problems
+		// First, remove customer sessions to prevent any problems
 		$query = 'DELETE FROM `login` WHERE `user_name` = ?';
-		// TODO
-		exec_query($query, $domainAdminUsername);
+		exec_query($query, $customerName);
 
 		$query = 'SELECT `sqld_id` FROM `sql_database` WHERE `domain_id` = ?';
-		$stmt = exec_query($query, $domainId);
+		$stmt = exec_query($query, $mainDomainId);
 
 		while (!$stmt->EOF) {
 			try {
 				iMSCP_Database::getInstance()->beginTransaction();
 
 				// Delete all SQL databases and users. Must be done in isolated transaction (implicit commit)
-				delete_sql_database($domainId, $stmt->fields['sqld_id']);
+				delete_sql_database($mainDomainId, $stmt->fields['sqld_id']);
 
 				// just for fun since an implicit commit is made before in the delete_sql_database() function
 				iMSCP_Database::getInstance()->commit();
@@ -456,117 +514,126 @@ function delete_domain($domainId, $checkCreator = false)
 
 		iMSCP_Database::getInstance()->beginTransaction();
 
-		// Deletes all protected areas related data (areas, groups and users)
+		// Deletes all protected areas data (areas, groups and users)
 
 		$query = "
 			DELETE
-				`areas`, `users`, `groups`
+				`t2`, `t3`, `t4`
 			FROM
-				`domain` `dmn`
+				`domain` AS `t1`
 			LEFT JOIN
-				`htaccess` `areas` ON (`areas`.`dmn_id` = `dmn`.`domain_id`)
+				`htaccess` AS `t2` ON (`t2`.`dmn_id` = `t1`.`domain_id`)
 			LEFT JOIN
-				`htaccess_users` `users` ON (`users`.`dmn_id` = `dmn`.`domain_id`)
+				`htaccess_users` AS `t3` ON (`t3`.`dmn_id` = `t1`.`domain_id`)
 			LEFT JOIN
-				`htaccess_groups` `groups` ON (`groups`.`dmn_id` = `dmn`.`domain_id`)
+				`htaccess_groups` AS `t4` ON (`t4`.`dmn_id` = `t1`.`domain_id`)
 			WHERE
-				`dmn`.`domain_id` = ?
+				`t1`.`domain_id` = ?
 		";
-		exec_query($query, $domainId);
+		exec_query($query, $mainDomainId);
 
 		// Deletes domain traffic entries
-		exec_query('DELETE FROM `domain_traffic` WHERE`domain_id` = ?', $domainId);
+		exec_query('DELETE FROM `domain_traffic` WHERE`domain_id` = ?', $mainDomainId);
 
 		// Deletes custom DNS records
-		exec_query('DELETE FROM `domain_dns` WHERE `domain_id` = ?', $domainId);
+		exec_query('DELETE FROM `domain_dns` WHERE `domain_id` = ?', $mainDomainId);
 
 		// Deletes FTP accounts (users and groups)
-		exec_query('DELETE FROM `ftp_users` WHERE `uid` = ?', $domainUid);
-		exec_query('DELETE FROM `ftp_group` WHERE `gid` = ?', $domainGid);
-
-		// Deletes account login data and personal data:
-		exec_query('DELETE FROM `admin` WHERE `admin_id` = ?', $domainAdminId);
+		exec_query('DELETE FROM `ftp_users` WHERE `admin_id` = ?', $customerId);
+		exec_query('DELETE FROM `ftp_group` WHERE `groupname` = ?', $customerName);
 
 		// Deletes quota entries
-		exec_query('DELETE FROM `quotalimits` WHERE `name` = ?', $domainName);
-		exec_query('DELETE FROM `quotatallies` WHERE `name` = ?', $domainName);
+		exec_query('DELETE FROM `quotalimits` WHERE `name` = ?', $customerName);
+		exec_query('DELETE FROM `quotatallies` WHERE `name` = ?', $customerName);
 
 		// Deletes support tickets
-		exec_query('DELETE FROM `tickets` WHERE ticket_from = ? OR ticket_to = ?', array($domainAdminId, $domainAdminId));
+		exec_query('DELETE FROM `tickets` WHERE ticket_from = ? OR ticket_to = ?', array($customerId, $customerId));
 
 		// Deletes user gui properties
-		exec_query('DELETE FROM `user_gui_props` WHERE `user_id` = ?', $domainAdminId);
+		exec_query('DELETE FROM `user_gui_props` WHERE `user_id` = ?', $customerId);
 
 		// Deletes own php.ini entry
-		exec_query('DELETE FROM `php_ini` WHERE `domain_id` = ?', $domainId);
+		exec_query('DELETE FROM `php_ini` WHERE `domain_id` = ?', $mainDomainId);
 
 		// Delegated tasks - begin
 
 		// Schedule mail accounts deletion
-		exec_query('UPDATE `mail_users` SET `status` = ? WHERE `domain_id` = ?', array($cfg->ITEM_DELETE_STATUS, $domainId));
+		exec_query('UPDATE `mail_users` SET `status` = ? WHERE `domain_id` = ?', array($deleteStatus, $mainDomainId));
 
 		// Schedule subdomain's aliasses deletion
-		$stmt = exec_query('SELECT `alias_id` FROM `domain_aliasses` WHERE `domain_id` = ?', $domainId);
-
-		if ($stmt->rowCount()) {
-			$aliasesIds = array();
-
-			// TODO Not better to use PDO::FETCH_COLUMN ?
-			while (!$stmt->EOF) {
-				$aliasesIds[] = $stmt->fields['alias_id'];
-				$stmt->moveNext();
-			}
-
-			$db = iMSCP_Database::getRawInstance();
-			$aliasesIds = implode(',', array_map(array($db, 'quote'), $aliasesIds));
-
-			$query = "UPDATE `subdomain_alias` SET `subdomain_alias_status` = ? WHERE `alias_id` IN ({$aliasesIds})";
-			exec_query($query, $cfg->ITEM_DELETE_STATUS);
-		}
-
-		// Delete Domain aliases
-		exec_query(
-			'UPDATE `domain_aliasses` SET `alias_status` =  ? WHERE `domain_id` = ?',
-			array($cfg->ITEM_DELETE_STATUS, $domainId)
-		);
-
-		// Deletes domain's subdomains
-		exec_query(
-			'UPDATE `subdomain` SET `subdomain_status` = ? WHERE `domain_id` = ?',
-			array($cfg->ITEM_DELETE_STATUS, $domainId)
-		);
-
-		// Delete domain
-		exec_query(
-			'UPDATE `domain` SET `domain_status` = ? WHERE `domain_id` = ?',
-			array($cfg->ITEM_DELETE_STATUS, $domainId)
-		);
-
-		// Delete SSL certificates
-		exec_query(
-			'UPDATE `ssl_certs` SET `status` = ? WHERE `type` = \'dmn\' AND `id` = ?',
-			array($cfg->ITEM_DELETE_STATUS, $domainId)
-		);
-
-		exec_query(
-			'UPDATE `ssl_certs` SET `status` = ? WHERE `type` = \'als\' AND `id` IN (SELECT `alias_id` FROM `domain_aliasses` WHERE `domain_id` = ?)',
-			array($cfg->ITEM_DELETE_STATUS, $domainId)
-		);
-
-		exec_query(
-			'UPDATE `ssl_certs` SET `status` = ? WHERE `type` = \'sub\' AND `id` IN (SELECT `subdomain_id` FROM `subdomain` WHERE `domain_id` = ?)',
-			array($cfg->ITEM_DELETE_STATUS, $domainId)
-		);
-
-		$query = '
+		$query = "
 			UPDATE
-				`ssl_certs` SET `status` = ?
+				`subdomain_alias` AS `t1`
+			JOIN
+				`domain_aliasses` AS `t2` ON(`t2`.`domain_id` = ?)
+			SET
+				`t1`.`subdomain_alias_status` = ?
 			WHERE
-				`type` = \'alssub\'
-			AND
-				`id` IN (SELECT `subdomain_alias_id` FROM `subdomain_alias` WHERE `alias_id` IN (SELECT `alias_id` FROM `domain_aliasses` WHERE `domain_id` = ?))
-		';
-		exec_query($query, array($cfg->ITEM_DELETE_STATUS, $domainId));
+				`t1`.`alias_id` = `t2`.`alias_id`
+
+		";
+		exec_query($query, array($mainDomainId, $deleteStatus));
+
+		// Schedule Domain aliases deletion
+		exec_query(
+			'UPDATE `domain_aliasses` SET `alias_status` =  ? WHERE `domain_id` = ?', array($deleteStatus, $mainDomainId)
+		);
+
+		// Schedule domain's subdomains deletion
+		exec_query(
+			'UPDATE `subdomain` SET `subdomain_status` = ? WHERE `domain_id` = ?', array($deleteStatus, $mainDomainId)
+		);
+
+		// Schedule domain deletion
+		exec_query('UPDATE `domain` SET `domain_status` = ? WHERE `domain_id` = ?', array($deleteStatus, $mainDomainId));
+
+		// Schedule user deletion
+		exec_query('UPDATE `admin` SET `admin_status` = ? WHERE `admin_id` = ?', array($deleteStatus, $customerId));
+
+		// Schedule SSL certificates deletion
+		exec_query(
+			"UPDATE `ssl_certs` SET `status` = ? WHERE `type` = 'dmn' AND `id` = ?", array($deleteStatus, $mainDomainId)
+		);
+		exec_query(
+			"
+				UPDATE
+					`ssl_certs` SET `status` = ?
+				WHERE
+					`type` = 'als'
+				AND
+					`id` IN (SELECT `alias_id` FROM `domain_aliasses` WHERE `domain_id` = ?)
+			",
+			array($deleteStatus, $mainDomainId)
+		);
+		exec_query(
+			"
+				UPDATE
+					`ssl_certs` SET `status` = ?
+				WHERE
+					`type` = 'sub'
+				AND
+					`id` IN (SELECT `subdomain_id` FROM `subdomain` WHERE `domain_id` = ?)
+			",
+			array($deleteStatus, $mainDomainId)
+		);
+		exec_query(
+			"
+				UPDATE
+					`ssl_certs` SET `status` = ?
+				WHERE
+					`type` = 'alssub'
+				AND
+					`id` IN (
+						SELECT
+							`subdomain_alias_id`
+						FROM
+							`subdomain_alias`
+						WHERE
+							`alias_id` IN (SELECT `alias_id` FROM `domain_aliasses` WHERE `domain_id` = ?)
+					)
+			",
+			array($deleteStatus, $mainDomainId)
+		);
 
 		// Delegated tasks to the engine - end
 
@@ -576,58 +643,58 @@ function delete_domain($domainId, $checkCreator = false)
 		// Commit all changes to database server
 		iMSCP_Database::getInstance()->commit();
 
-		iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAfterDeleteDomain, array('domainId' => $domainId));
+		iMSCP_Events_Manager::getInstance()->dispatch(
+			iMSCP_Events::onAfterDeleteCustomer, array('customerId' => $customerId)
+		);
 	} catch (iMSCP_Exception $e) {
 		iMSCP_Database::getInstance()->rollBack();
 		throw new iMSCP_Exception($e->getMessage(), $e->getCode(), $e);
 	}
 
 	// We are now ready to send a request to the daemon for delegated tasks.
-	// Note: We are safe here. If the daemon doesn't answer, the entities will not be removed but it's not really a
-	// problem because they are no longer viewable through the panel. To finish the deletion process, the administrator
-	// must send a request to the daemon manually via the panel, or run the imscp-rqst-mngr script manually.
+	// Note: We are safe here. If the daemon doesn't answer, some entities will not be removed. In such case the
+	// sysadmin will have to fix the problem causing deletion break and send a request to the daemon manually via the
+	// panel, or run the imscp-rqst-mngr script manually.
 	send_request();
 
 	return true;
 }
 
 /**
- * Must be documented
+ * Returns number of items in a database table with optional search criterias
  *
- * Returns number of items in a database  table with optional search criterias
- *
- * @param  $field
- * @param  $table
- * @param  $where
- * @param  $value
- * @param  $subfield
- * @param  $subtable
- * @param  $subwhere
- * @param  $subgroupname
+ * @param string $field
+ * @param string $table
+ * @param string $where
+ * @param string $value
+ * @param string $subfield
+ * @param string $subtable
+ * @param string $subwhere
+ * @param string $subgroupname
  * @return int
  */
 function sub_records_count($field, $table, $where, $value, $subfield, $subtable, $subwhere, $subgroupname)
 {
 	if ($where != '') {
 		$query = "SELECT $field AS `field` FROM $table WHERE $where = ?";
-		$rs = exec_query($query, $value);
+		$stmt = exec_query($query, $value);
 	} else {
 		$query = "SELECT $field AS `field` FROM $table";
-		$rs = execute_query($query);
+		$stmt = execute_query($query);
 	}
 
 	$result = 0;
 
-	if ($rs->rowCount() == 0) {
+	if (!$stmt->rowCount()) {
 		return $result;
 	}
 
 	if ($subgroupname != '') {
 		$sqld_ids = array();
 
-		while (!$rs->EOF) {
-			array_push($sqld_ids, $rs->fields['field']);
-			$rs->moveNext();
+		while (!$stmt->EOF) {
+			array_push($sqld_ids, $stmt->fields['field']);
+			$stmt->moveNext();
 		}
 
 		$sqld_ids = implode(',', $sqld_ids);
@@ -640,8 +707,8 @@ function sub_records_count($field, $table, $where, $value, $subfield, $subtable,
 			return $result;
 		}
 	} else {
-		while (!$rs->EOF) {
-			$contents = $rs->fields['field'];
+		while (!$stmt->EOF) {
+			$contents = $stmt->fields['field'];
 
 			if ($subwhere != '') {
 				$query = "SELECT COUNT(*) AS `cnt` FROM $subtable WHERE $subwhere = ?";
@@ -651,7 +718,7 @@ function sub_records_count($field, $table, $where, $value, $subfield, $subtable,
 
 			$subres = exec_query($query, $contents);
 			$result += $subres->fields['cnt'];
-			$rs->moveNext();
+			$stmt->moveNext();
 		}
 	}
 
@@ -661,34 +728,34 @@ function sub_records_count($field, $table, $where, $value, $subfield, $subtable,
 /**
  * Must be documented
  *
- * @param  $field
- * @param  $table
- * @param  $where
- * @param  $value
- * @param  $subfield
- * @param  $subtable
- * @param  $subwhere
- * @param  $a
- * @param  $b
+ * @param string $field
+ * @param string $table
+ * @param string $where
+ * @param string $value
+ * @param string $subfield
+ * @param string $subtable
+ * @param string $subwhere
+ * @param string $a
+ * @param string $b
  * @return int
  */
 function sub_records_rlike_count($field, $table, $where, $value, $subfield, $subtable, $subwhere, $a, $b)
 {
 
 	if ($where != '') {
-		$rs = exec_query("SELECT $field AS `field` FROM $table WHERE $where = ?", $value);
+		$stmt = exec_query("SELECT $field AS `field` FROM $table WHERE $where = ?", $value);
 	} else {
-		$rs = execute_query("SELECT $field AS `field` FROM $table");
+		$stmt = execute_query("SELECT $field AS `field` FROM $table");
 	}
 
 	$result = 0;
 
-	if ($rs->rowCount() == 0) {
+	if (!$stmt->rowCount()) {
 		return $result;
 	}
 
-	while (!$rs->EOF) {
-		$contents = $rs->fields['field'];
+	while (!$stmt->EOF) {
+		$contents = $stmt->fields['field'];
 
 		if ($subwhere != '') {
 			$query = "SELECT COUNT(*) AS `cnt` FROM $subtable WHERE $subwhere RLIKE ?";
@@ -696,15 +763,15 @@ function sub_records_rlike_count($field, $table, $where, $value, $subfield, $sub
 			return $result;
 		}
 
-		$subres = exec_query($query, $a . $contents . $b);
-		$result += $subres->fields['cnt'];
-		$rs->moveNext();
+		$stmt2 = exec_query($query, $a . $contents . $b);
+		$result += $stmt2->fields['cnt'];
+		$stmt->moveNext();
 	}
 
 	return $result;
 }
 
-/************************************************************************************
+/***********************************************************************************************************************
  * Reseller related functions
  */
 
@@ -766,7 +833,7 @@ function update_reseller_props($reseller_id, $props)
 			`reseller_id` = ?
 	";
 
-	$res = exec_query(
+	$stmt = exec_query(
 		$query,
 		array(
 			$dmn_current, $dmn_max, $sub_current, $sub_max, $als_current, $als_max, $mail_current, $mail_max, $ftp_current,
@@ -775,10 +842,77 @@ function update_reseller_props($reseller_id, $props)
 		)
 	);
 
-	return $res;
+	return $stmt;
 }
 
-/************************************************************************************
+/**
+ * Synchronize hosting plans of the given reseller according its limits and permissions.
+ *
+ * @author Laurent Declercq <l.declercq@nuxwin.com>
+ * @param int $resellerId Reseller unique identifier
+ * @return void
+ * TODO integrate (not tested/used yet)
+ */
+function syncHostingPlans($resellerId)
+{
+	$query = "SELECT `props` FROM `hosting_plans` WHERE `reseller_id` = ?";
+	$stmt = exec_query($query, $resellerId);
+
+	if($stmt->rowCount()) {
+		$query = "SELECT * FROM `reseller_props` WHERE `reseller_id` = ?";
+		$stmt = exec_query($query, $resellerId);
+
+		// Reseller properties
+		$rp = $stmt->fetchRow(PDO::FETCH_ASSOC);
+
+		while(!$stmt->EOF) {
+			list(
+				$php, $cgi, $sub, $als, $mail, $ftp, $sqlD, $sqlU, $traffic, $disks, $backup, $customDns, $aps,
+				$phpEditor, $phpAllowUrlFopen, $phpDisplayErrors, $phpDisableFunctions, $phpPostMaxSize,
+				$phpUploadMaxFilesize, $phpMaxExecutionTime, $phpMaxInputTime, $phpMemoryLimit, $extMailServer
+				) = explode(';', $stmt->fields['props']);
+
+			// Synced hosting plan properties
+			$sp = array();
+
+			$sp[] = $php; // Always available for reseller
+			$sp[] = $cgi; // Always available for reseller
+			$sp[] = ($rp['max_sub_cnt'] != 0 && $sub > $rp['max_sub_cnt']) ? $rp['max_sub_cnt'] : $sub;
+			$sp[] = ($rp['max_als_cnt'] != 0 && $als > $rp['max_als_cnt']) ? $rp['max_als_cnt'] : $als;
+			$sp[] = ($rp['max_mail_cnt'] != 0 && $mail > $rp['max_mail_cnt']) ? $rp['max_mail_cnt'] : $mail;
+			$sp[] = ($rp['max_ftp_cnt'] != 0 && $ftp > $rp['max_ftp_cnt']) ? $rp['max_ftp_cnt'] : $ftp;
+			$sp[] = ($rp['max_sql_db_cnt'] != 0 && $sqlD > $rp['max_sql_db_cnt']) ? $rp['max_sql_db_cnt'] : $sqlD;
+			$sp[] = ($rp['max_sql_user_cnt'] != 0 && $sqlU > $rp['max_sql_user_cnt']) ? $rp['max_sql_user_cnt'] : $sqlU;
+			$sp[] = ($rp['max_traff_amnt'] != 0 && $traffic > $rp['max_traff_amnt']) ? $rp['max_traff_amnt'] : $traffic;
+			$sp[] = ($rp['max_disk_amnt'] != 0 && $disks > $rp['max_disk_amnt']) ? $rp['max_disk_amnt'] : $disks;
+			$sp[] = $backup; // Always available for reseller (TODO can be disabled at system wide by admin)
+			$sp[] = $customDns; // Always available for reseller
+			$sp[] = $rp['software_allowed'] == 'yes' ? $aps : '_no_';
+			$sp[] = ($rp['php_ini_system'] == 'yes') ? $phpEditor : 'no';
+			$sp[] = ($rp['php_ini_al_allow_url_fopen'] == 'yes') ? $phpAllowUrlFopen : 'no';
+			$sp[] = ($rp['php_ini_al_display_errors'] == 'yes') ? $phpDisplayErrors : 'no';
+			$sp[] = ($rp['php_ini_al_disable_functions'] == 'yes') ? $phpDisableFunctions : 'no';
+			$sp[] = ($phpPostMaxSize <= $rp['php_ini_max_post_max_size'])
+				? $phpPostMaxSize : $rp['php_ini_max_post_max_size'];
+			$sp[] = ($phpUploadMaxFilesize <= $rp['php_ini_max_upload_max_filesize'])
+				? $phpUploadMaxFilesize : $rp['php_ini_max_upload_max_filesize'] ;
+			$sp[] = ($phpMaxExecutionTime <= $rp['php_ini_max_max_execution_time'])
+				? $phpMaxExecutionTime : $rp['php_ini_max_max_execution_time'];
+			$sp[] = ($phpMaxInputTime <= $rp['php_ini_max_max_input_time'])
+				? $phpMaxInputTime : $rp['php_ini_max_max_input_time'];
+			$sp[] = ($phpMemoryLimit <= $rp['php_ini_max_memory_limit'])
+				? $phpMemoryLimit : $rp['php_ini_max_memory_limit'];
+			$sp[] = $extMailServer; // // Always available for reseller
+
+			$query = "UPDATE `hosting_plans` SET `props` = ? WHERE id = ?";
+			exec_query($query, array(implode(';', $sp), $stmt->fields['id']));
+
+			$stmt->moveNext();
+		}
+	}
+}
+
+/***********************************************************************************************************************
  * Mail functions
  */
 
@@ -823,19 +957,19 @@ function encode($string, $charset = 'UTF-8')
 	return $string;
 }
 
-/************************************************************************************
+/***********************************************************************************************************************
  * Utils functions
  */
 
 /**
- * Redirect to other page.
+ * Redirect to the given location.
  *
- * @param  string $destination URL to redirect to
+ * @param string $location URL to redirect to
  * @return void
  */
-function redirectTo($destination)
+function redirectTo($location)
 {
-	header('Location: ' . $destination);
+	header('Location: ' . $location);
 	exit;
 }
 
@@ -910,7 +1044,6 @@ function decode_idna($domain)
 		throw new iMSCP_Exception("PHP 'intl' extension is not loaded.");
 	}
 }
-
 
 /**
  * Utils function to upload file.
@@ -1001,7 +1134,7 @@ function utils_randomString($length = 10)
 	return $string;
 }
 
-/************************************************************************************
+/***********************************************************************************************************************
  * Checks functions
  */
 
@@ -1074,7 +1207,7 @@ function is_serialized($data)
 	return false;
 }
 
-/************************************************************************************
+/***********************************************************************************************************************
  * Accounting related functions
  */
 
@@ -1126,21 +1259,21 @@ function generate_user_traffic($domainId)
 			`domain_name`
 	";
 
-	$rs = exec_query($query, $domainId);
+	$stmt = exec_query($query, $domainId);
 
-	if ($rs->rowCount() == 0 || $rs->rowCount() > 1) {
+	if ($stmt->rowCount() == 0 || $stmt->rowCount() > 1) {
 		write_log(
-			'TRAFFIC WARNING: ' . $rs->fields['domain_name'] .
-				' manages incorrect number of domains: ' . $rs->rowCount(), E_USER_WARNING
+			'TRAFFIC WARNING: ' . $stmt->fields['domain_name'] .
+				' manages incorrect number of domains: ' . $stmt->rowCount(), E_USER_WARNING
 		);
 
 		return array('n/a', 0, 0, 0, 0, 0, 0, 0, 0, 0);
 	} else {
-		$domain_id = $rs->fields['domain_id'];
-		$domain_disk_usage = $rs->fields['domain_disk_usage'];
-		$domain_traff_limit = $rs->fields['domain_traffic_limit'];
-		$domain_disk_limit = $rs->fields['domain_disk_limit'];
-		$domain_name = $rs->fields['domain_name'];
+		$domain_id = $stmt->fields['domain_id'];
+		$domain_disk_usage = $stmt->fields['domain_disk_usage'];
+		$domain_traff_limit = $stmt->fields['domain_traffic_limit'];
+		$domain_disk_limit = $stmt->fields['domain_disk_limit'];
+		$domain_name = $stmt->fields['domain_name'];
 
 		$query = "
 			SELECT
@@ -1157,12 +1290,11 @@ function generate_user_traffic($domainId)
 			AND
 				`dtraff_time` < ?
 		";
-		$rs1 = exec_query($query, array($domain_id, $from_timestamp, $to_timestamp));
+		$stmt = exec_query($query, array($domain_id, $from_timestamp, $to_timestamp));
 
 		return array(
-			$domain_name, $domain_id, $rs1->fields['web'], $rs1->fields['ftp'],
-			$rs1->fields['smtp'], $rs1->fields['pop'], $rs1->fields['total'],
-			$domain_disk_usage, $domain_traff_limit, $domain_disk_limit
+			$domain_name, $domain_id, $stmt->fields['web'], $stmt->fields['ftp'], $stmt->fields['smtp'],
+			$stmt->fields['pop'], $stmt->fields['total'], $domain_disk_usage, $domain_traff_limit, $domain_disk_limit
 		);
 	}
 }
@@ -1186,7 +1318,7 @@ function calc_bar_value($value, $value_max, $bar_width)
 	}
 }
 
-/************************************************************************************
+/***********************************************************************************************************************
  * Logging related functions
  */
 
@@ -1245,8 +1377,8 @@ Message: ----------------[END]----------------------------
 _________________________
 i-MSCP Log Mailer
 
-Note: If you want no longer receive this kind of message,
-you can change the logging level via the settings page.
+Note: If you want no longer receive messages for this log
+level, you can change it via the settings page.
 
 AUTO_LOG_MSG;
 
@@ -1263,19 +1395,18 @@ AUTO_LOG_MSG;
 }
 
 /**
- * Must be documented
+ * Send add user email
  *
- * @param  $admin_id
- * @param  $uname
- * @param  $upass
- * @param  $uemail
- * @param  $ufname
- * @param  $ulname
- * @param  $utype
- * @param string $gender
+ * @param int $admin_id Admin unique identifier
+ * @param string $uname Username
+ * @param string $upass User password
+ * @param string $uemail User email
+ * @param string $ufname User firstname
+ * @param string $ulname User lastname
+ * @param string $utype User type
  * @return void
  */
-function send_add_user_auto_msg($admin_id, $uname, $upass, $uemail, $ufname, $ulname, $utype, $gender = '')
+function send_add_user_auto_msg($admin_id, $uname, $upass, $uemail, $ufname, $ulname, $utype)
 {
 	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
@@ -1338,7 +1469,7 @@ function send_add_user_auto_msg($admin_id, $uname, $upass, $uemail, $ufname, $ul
 	);
 }
 
-/************************************************************************************
+/***********************************************************************************************************************
  * Softwares installer functions
  */
 
@@ -1356,37 +1487,37 @@ function get_client_software_permission($tpl, $userId)
 	$stmt = exec_query($query, array($userId));
 
 	if($stmt->recordCount()) {
-	if ($stmt->fields('domain_software_allowed') == 'yes' && $stmt->fields('domain_ftpacc_limit') != '1') {
-		$tpl->assign(
-			array(
-				'SOFTWARE_SUPPORT' => tr('yes'),
-				'TR_SOFTWARE_MENU' => tr('Software installer'),
-				'SOFTWARE_MENU' => tr('yes'),
-				'TR_INSTALLATION' => tr('Installation details'),
-				'TR_INSTALLATION_INFORMATION' => tr('Please set now the username and password for the later login in the software. (Required fiels)'),
-				'TR_INSTALL_USER' => tr('Login username'),
-				'TR_INSTALL_PWD' => tr('Login password'),
-				'TR_INSTALL_EMAIL' => tr('Email address'),
-				'SW_MSG' => tr('Enabled'),
-				'SW_ALLOWED' => tr('Software installer'),
-				'TR_SOFTWARE_DESCRIPTION' => tr('Software Description')
-			)
-		);
+		if ($stmt->fields('domain_software_allowed') == 'yes' && $stmt->fields('domain_ftpacc_limit') != '1') {
+			$tpl->assign(
+				array(
+					'SOFTWARE_SUPPORT' => tr('yes'),
+					'TR_SOFTWARE_MENU' => tr('Software installer'),
+					'SOFTWARE_MENU' => tr('yes'),
+					'TR_INSTALLATION' => tr('Installation details'),
+					'TR_INSTALLATION_INFORMATION' => tr('Please set now the username and password for the later login in the software. (Required fiels)'),
+					'TR_INSTALL_USER' => tr('Login username'),
+					'TR_INSTALL_PWD' => tr('Login password'),
+					'TR_INSTALL_EMAIL' => tr('Email address'),
+					'SW_MSG' => tr('Enabled'),
+					'SW_ALLOWED' => tr('Software installer'),
+					'TR_SOFTWARE_DESCRIPTION' => tr('Software Description')
+				)
+			);
 
-		$tpl->parse('T_SOFTWARE_SUPPORT', '.t_software_support');
-	} else {
-		$tpl->assign(
-			array(
-				'T_SOFTWARE_SUPPORT' => '',
-				'T_SOFTWARE_MENU' => '',
-				'SOFTWARE_ITEM' => '',
-				'TR_INSTALLATION' => tr('You do not have permissions to install software yet'),
-				'TR_SOFTWARE_DESCRIPTION' => tr('You do not have permissions to install softwares yet'),
-				'SW_MSG' => tr('Disabled'),
-				'SW_ALLOWED' => tr('Softwares installer')
-			)
-		);
-	}
+			$tpl->parse('T_SOFTWARE_SUPPORT', '.t_software_support');
+		} else {
+			$tpl->assign(
+				array(
+					'T_SOFTWARE_SUPPORT' => '',
+					'T_SOFTWARE_MENU' => '',
+					'SOFTWARE_ITEM' => '',
+					'TR_INSTALLATION' => tr('You do not have permissions to install software yet'),
+					'TR_SOFTWARE_DESCRIPTION' => tr('You do not have permissions to install softwares yet'),
+					'SW_MSG' => tr('Disabled'),
+					'SW_ALLOWED' => tr('Softwares installer')
+				)
+			);
+		}
 	} else {
 		throw new iMSCP_Exception('Unable to retrieve software installer permissions for the given user');
 	}
@@ -1529,8 +1660,8 @@ function check_package_is_installed($packageInstallType, $packageName, $packageV
 		$stmt = exec_query($query, array($packageInstallType, $packageName, $packageVersion, $packageLanguage));
 		$softwaresCountDepot = $stmt->recordCount();
 
-		if ($softwaresCount > 0 || $softwaresCountDepot > 0) {
-			if ($softwaresCount > 0) {
+		if ($softwaresCount || $softwaresCountDepot) {
+			if ($softwaresCount) {
 				return array(true, 'reseller');
 			} else {
 				return array(true, 'sw_depot');
@@ -1708,7 +1839,7 @@ function get_reseller_sw_installer($resellerId)
 	return $stmt->fields['software_allowed'];
 }
 
-/************************************************************************************
+/***********************************************************************************************************************
  * iMSCP daemon related functions
  */
 
@@ -1809,7 +1940,7 @@ function send_request()
 	return $answer;
 }
 
-/************************************************************************************
+/***********************************************************************************************************************
  * Database related functions
  */
 
@@ -1853,9 +1984,9 @@ function decrypt_db_password($password)
  *
  * @see iMSCP_Database::execute()
  * @throws iMSCP_Exception_Database
- * @param string $query                    Sql statement to be executed
- * @param array|int|string $parameters    OPTIONAL parameters - See iMSCP_Database::execute()
- * @return iMSCP_Database_ResultSet        An iMSCP_Database_ResultSet object
+ * @param string $query                 Sql statement to be executed
+ * @param array|int|string $parameters  OPTIONAL parameters - See iMSCP_Database::execute()
+ * @return iMSCP_Database_ResultSet     An iMSCP_Database_ResultSet object
  */
 function execute_query($query, $parameters = null)
 {
@@ -1935,7 +2066,7 @@ function quoteIdentifier($identifier)
 	return $quoteIdentifierSymbol . $identifier . $quoteIdentifierSymbol;
 }
 
-/************************************************************************************
+/***********************************************************************************************************************
  * Unclassified functions
  */
 
@@ -2175,11 +2306,11 @@ function showBadRequestErrorPage()
 
 	$filePath = $cfg->GUI_ROOT_DIR . '/public/errordocs/400.html';
 
-	if(file_exists($filePath)) {
-		header("Status: 400 Bad Request");
+	header("Status: 400 Bad Request");
+
+	if(!is_xhr()) {
 		include $filePath;
-		exit();
-	} else {
-		throw new iMSCP_Exception_Production('Bad Request');
 	}
+
+	exit();
 }

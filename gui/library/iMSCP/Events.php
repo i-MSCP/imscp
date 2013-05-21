@@ -31,7 +31,7 @@
  * @category	iMSCP
  * @package		iMSCP_Events
  * @author		Laurent Declercq <l.declercq@nuxwin.com>
- * @version		0.0.14
+ * @version		0.0.15
  */
 class iMSCP_Events
 {
@@ -157,26 +157,6 @@ class iMSCP_Events
 	 * @const string
 	 */
 	const onClientScriptEnd = 'onClientScriptEnd';
-
-	/**
-	 * The onOrderPanelScriptStart is triggered occurs at the very beginning of orderpanel scripts.
-	 *
-	 * The listeners receive an iMSCP_Events_Event object.
-	 *
-	 * @const string
-	 */
-	const onOrderPanelScriptStart = 'onOrderPanelScriptStart';
-
-	/**
-	 * The onOrderPanelScriptEnd event is triggered at the end of orderpanel scripts.
-	 *
-	 * The listeners receive an iMSCP_Events_Event object with the following parameter:
-	 *
-	 *  - templateEngine: An iMSCP_pTemplate object
-	 *
-	 * @const string
-	 */
-	const onOrderPanelScriptEnd = 'onOrderPanelScriptEnd';
 
 	/**
 	 * The onExceptioToBrowserStart event is triggered before of exception browser write processs.
@@ -351,31 +331,39 @@ class iMSCP_Events
 	const onAfterDeleteUser = 'onAfterDeleteUser';
 
 	/**
-	 * The onBeforeDeleteDomain event is triggered before a domain is deleted.
+	 * The onBeforeDeleteDomain event is triggered before a customer account is deleted.
 	 *
 	 * The listeners receive an iMSCP_Events_Event object with the following parameter:
 	 *
-	 *  - domainId: An integer representing the ID of domain being deleted
+	 *  - customerId: An integer representing the ID of customer being deleted
 	 *
 	 * @const string
 	 */
-	const onBeforeDeleteDomain = 'onBeforeDeleteDomain';
+	const onBeforeDeleteCustomer = 'onBeforeDeleteCustomer';
 
 	/**
-	 * The onAfterDeleteDomain event is triggered after a domain is deleted.
+	 * The onAfterDeleteCustomer event is triggered after a customer account is deleted.
 	 *
 	 * The listeners receive an iMSCP_Events_Event object with the following parameter:
 	 *
-	 *  - userId: an integer representing the ID of domain that has been deleted
+	 *  - customerId: An integer representing the ID of customer that has been deleted
 	 *
 	 * @const string
 	 */
-	const onAfterDeleteDomain = 'onAfterDeleteDomain';
+	const onAfterDeleteCustomer = 'onAfterDeleteCustomer';
 
 	/**
 	 * The onBeforeAddFtp event is triggered after a Ftp account is created.
 	 *
-	 * The listeners receive an iMSCP_Events_Event object.
+	 * The listeners receive an iMSCP_Events_Event object with the following parameters:
+	 *
+	 * - ftpUserId: A string representing Ftp account username
+	 * - ftpPassword: A string representing Ftp account encrypted password
+	 * - ftpRawPassword: A string representing Ftp account raw password
+	 * - ftpUserUid: A string representing Ftp user uid
+	 * - ftpUserGid: A string representing Ftp user gid
+	 * - ftpUserShell: A string representing Ftp user shell
+	 * - ftpUserHome: A string representing Ftp user home
 	 *
 	 * @const string
 	 */
@@ -384,7 +372,15 @@ class iMSCP_Events
 	/**
 	 * The onAfterAddFtp event is triggered after a Ftp account is created.
 	 *
-	 * The listeners receive an iMSCP_Events_Event object.
+	 * The listeners receive an iMSCP_Events_Event object with the following parameters:
+	 *
+	 * - ftpUserId: A string representing Ftp account username
+	 * - ftpPassword: A string representing Ftp account encrypted password
+	 * - ftpRawPassword: A string representing Ftp account raw password
+	 * - ftpUserUid: A string representing Ftp user uid
+	 * - ftpUserGid: A string representing Ftp user gid
+	 * - ftpUserShell: A string representing Ftp user shell
+	 * - ftpUserHome: A string representing Ftp user home
 	 *
 	 * @const string
 	 */
@@ -395,7 +391,7 @@ class iMSCP_Events
 	 *
 	 * The listeners receive an iMSCP_Events_Event object with the following parameter:
 	 *
-	 *  - ftpId: An integer representing the ID of Ftp account being edited
+	 *  - ftpUserId: A string representing Ftp account username being edited
 	 *
 	 * @const string
 	 */
@@ -406,7 +402,7 @@ class iMSCP_Events
 	 *
 	 * The listeners receive an iMSCP_Events_Event object with the following parameter:
 	 *
-	 *  - ftpId: An integer representing the ID of Ftp account that has been edited
+	 *  - ftpUserId: A string representing Ftp account username that has been edited
 	 *
 	 * @const string
 	 */
@@ -417,7 +413,7 @@ class iMSCP_Events
 	 *
 	 * The listeners receive an iMSCP_Events_Event object with the following parameter:
 	 *
-	 *  - ftpId: An integer representing the ID of Ftp account being deleted
+	 *  - ftpUserId: A string representing Ftp account username being deleted
 	 *
 	 * @const string
 	 */
@@ -428,7 +424,7 @@ class iMSCP_Events
 	 *
 	 * The listeners receive an iMSCP_Events_Event object with the following parameter:
 	 *
-	 *  - ftpId: An integer reprensenting the ID of Ftp account that has been deleted
+	 *  - ftpUserId: A string representing Ftp account username that has been deleted
 	 *
 	 * @const string
 	 */
@@ -758,6 +754,7 @@ class iMSCP_Events
 	 * The listeners receive an iMSCP_Events_Event object with the following parameter:
 	 *
 	 *  - subdomainId: An integer representing the ID of the subdomain being deleted
+	 *  - type: A string representing the type of subdomain (sub|alssub)
 	 *
 	 * @const string
 	 */
@@ -769,7 +766,7 @@ class iMSCP_Events
 	 * The listeners receive an iMSCP_Events_Event object with the following parameter:
 	 *
 	 *  - subdomainId: An integer representing the ID of the subdomain that has been deleted
-	 *
+	 *  - type: A string representing the type of subdomain (sub|alssub)
 	 * @const string
 	 */
 	const onAfterDeleteSubdomain = 'onAfterDeleteSubdomain';

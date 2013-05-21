@@ -23,12 +23,11 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
-# @category		i-MSCP
-# @copyright	2010-2013 by i-MSCP | http://i-mscp.net
-# @author		Daniel Andreca <sci2tech@gmail.com>
-# @author		Laurent Declercq <l.declercq@nuxwin.com>
-# @link			http://i-mscp.net i-MSCP Home Site
-# @license		http://www.gnu.org/licenses/gpl-2.0.html GPL v2
+# @category    i-MSCP
+# @copyright   2010-2013 by i-MSCP | http://i-mscp.net
+# @author      Daniel Andreca <sci2tech@gmail.com>
+# @link        http://i-mscp.net i-MSCP Home Site
+# @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
 package iMSCP::Dialog::Dialog;
 
@@ -323,13 +322,11 @@ sub startGauge
 
 	$self->{'gauge'}->{'FH'} = new FileHandle;
 	$self->{'gauge'}->{'FH'}->open("| $command") || error("Unable to start gauge");
-	debugRegCallBack(\&endGauge);
+	debugRegisterCallBack(\&endGauge);
 	$SIG{'PIPE'} = \&endGauge;
-	my $exitCode = $? >> 8;
 	$self->{'gauge'}->{'FH'}->autoflush(1);
-	debug("Returned value $exitCode");
 
-	$exitCode;
+	getExitCode($?);
 }
 
 =item hasGauge()
@@ -550,7 +547,7 @@ sub _determineConsoleSize
 	$error =~ /MaxSize:\s(\d+),\s(\d+)/;
 	$self->{'lines'} = (defined($1) && $1 != 0) ? $1 - 3 : 23;
 	$self->{'columns'} = (defined($2) && $2 != 0) ? $2 - 2 : 79;
-	error("$error") unless (!$?);
+	error($error) unless ! $?;
 	debug("Lines->$self->{'lines'}");
 	debug("Columns->$self->{'columns'}");
 
@@ -666,11 +663,8 @@ sub _execute
 	my ($self, $text, $init, $type) = @_;
 
 	if($main::noprompt) {
-		if($type ne 'infobox' && $type ne 'msgbox') {
-			exit 5;
-		} else {
-			return 0;
-		}
+		exit 5 if $type ne 'infobox' && $type ne 'msgbox';
+		return 0;
 	}
 
 	$self->endGauge();

@@ -41,6 +41,7 @@
  * defined commands is entered in a protected <input> field. An additional
  * information is displayed to the user.
  *
+ * @throws iMSCP_Exception
  * @param string $value
  */
 function check_input($value = '')
@@ -168,7 +169,6 @@ function tojs($text)
  * Checks if the syntax of the given password is valid.
  *
  * @param string $password username to be checked
- * @param int $num number of max. characters in password
  * @param string $unallowedChars RegExp for unallowed characters
  * @return bool TRUE if the password is valid, FALSE otherwise
  */
@@ -262,7 +262,9 @@ function chk_email($email, $num = 50)
 }
 
 /**
- * @param  $email
+ * Check local part if an email address
+ *
+ * @param string $email
  * @param int $num
  * @return bool
  */
@@ -381,7 +383,6 @@ function validates_dname($dname, $subdname_process = false)
  */
 function validates_subdname($subdname, $dname)
 {
-
 	$cfg = iMSCP_Registry::get('config');
 	global $validation_err_msg;
 	$validation_err_msg = tr('Wrong subdomain syntax or number of labels!');
@@ -662,7 +663,7 @@ function _validates_sld($sld)
  * with the ACE prefix 'xn--'.
  *
  * @author Laurent Declercq <l.declercq@nuxwin.com>
- * @param $label label to be validates
+ * @param string $label label to be validates
  * @return boolean TRUE if the string is an ACE lable, FALSE otherwise
  * @todo Check ASCII range
  */
@@ -780,6 +781,7 @@ function get_session($value)
 /**
  * All in one function to check who owns what.
  *
+ * @throws iMSCP_Exception
  * @param mixed $id FTP/mail/domain/alias/subdomain/etc id to check
  * @param string $type What kind of id $id is
  * @param boolean $forcefinal Ignore the resolver's is_final value (force as yes)
@@ -802,13 +804,13 @@ function who_owns_this($id, $type = 'dmn', $forcefinal = false)
 		case 'user':
 			$type = 'client';
 			break;
-		case 'domain_uid':
+		case 'admin_sys_uid':
 			$type = 'uid';
 			break;
 		case 'ticket':
 			$type = 'ticket_id';
 			break;
-		case 'domain_gid':
+		case 'admin_sys_gid':
 			$type = 'gid';
 			break;
 		case 'sqlu_id':
@@ -944,21 +946,16 @@ function who_owns_this($id, $type = 'dmn', $forcefinal = false)
 	$resolvers['ticket_id']['is_final'] = true;
 
 	$resolvers['uid'] = array();
-	$resolvers['uid']['query'] = 'SELECT `domain_admin_id` FROM `domain` WHERE `domain_uid` = ? LIMIT 1;';
+	$resolvers['uid']['query'] = 'SELECT `admin_id` FROM `admin` WHERE `admin_sys_uid` = ? LIMIT 1;';
 	$resolvers['uid']['is_final'] = true;
 
 	$resolvers['gid'] = array();
-	$resolvers['gid']['query'] = 'SELECT `domain_admin_id` FROM `domain` WHERE `domain_gid` = ? LIMIT 1;';
-	$resolvers['gid']['is_final'] = true;
-
-	$resolvers['gid'] = array();
-	$resolvers['gid']['query'] = 'SELECT `domain_admin_id` FROM `domain` WHERE `domain_gid` = ? LIMIT 1;';
+	$resolvers['gid']['query'] = 'SELECT `admin_id` FROM `admin` WHERE `admin_sys_gid` = ? LIMIT 1;';
 	$resolvers['gid']['is_final'] = true;
 
 	$resolvers['ftp_user'] = array();
-	$resolvers['ftp_user']['query'] = 'SELECT `uid` FROM `ftp_users` WHERE `userid` = ? LIMIT 1;';
-	$resolvers['ftp_user']['is_final'] = false;
-	$resolvers['ftp_user']['next'] = 'uid';
+	$resolvers['ftp_user']['query'] = 'SELECT `admin_id` FROM `ftp_users` WHERE `userid` = ? LIMIT 1;';
+	$resolvers['ftp_user']['is_final'] = true;
 
 	$resolvers['sql_user_id'] = array();
 	$resolvers['sql_user_id']['query'] = 'SELECT `sqld_id` FROM `sql_user` WHERE `sqlu_id` = ? LIMIT 1;';
@@ -1013,22 +1010,27 @@ function who_owns_this($id, $type = 'dmn', $forcefinal = false)
 
 	if (isset($resolvers[$type])) {
 		$r = $resolvers[$type];
+
 		if ($r['query']) {
 			$matches = array();
+
 			if (!preg_match('/SELECT[ \t]+`([\w]+)`[ \t]+FROM/i', $r['query'], $matches)) {
-				throw new iMSCP_Exception(tr('Unknown Error'));
+				throw new iMSCP_Exception(tr('Malformed resolver SQL query'));
 			}
+
 			$select = $matches[1];
-			$rs = exec_query($r['query'], $id);
-			if ($rs->recordCount() != 0) {
+			$stmt = exec_query($r['query'], $id);
+
+			if ($stmt->rowCount()) {
 				if ($r['is_final'] || $forcefinal) {
-					$who = $rs->fields[$select];
+					$who = $stmt->fields[$select];
 				} else {
-					$who = who_owns_this($rs->fields[$select], $r['next']);
+					$who = who_owns_this($stmt->fields[$select], $r['next']);
 				}
 			}
 		} else {
 			$ex = explode($r['separator'], $id);
+
 			if (!$r['is_final'] && !$forcefinal) {
 				$who = who_owns_this($r['pos'], $r['next']);
 			} else {

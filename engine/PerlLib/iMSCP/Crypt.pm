@@ -17,16 +17,17 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
-# @category		i-MSCP
-# @copyright	2010-2013 by i-MSCP | http://i-mscp.net
-# @author		Daniel Andreca <sci2tech@gmail.com>
-# @link			http://i-mscp.net i-MSCP Home Site
-# @license      http://www.gnu.org/licenses/gpl-2.0.html GPL v2
+# @category    i-MSCP
+# @copyright   2010-2013 by i-MSCP | http://i-mscp.net
+# @author      Daniel Andreca <sci2tech@gmail.com>
+# @link        http://i-mscp.net i-MSCP Home Site
+# @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
 package iMSCP::Crypt;
 
 use strict;
 use warnings;
+
 use iMSCP::Debug;
 use Crypt::CBC;
 use MIME::Base64;
@@ -36,13 +37,13 @@ sub _init
 {
 	my $self = shift;
 
-	$self->{cipher}->{'key'} = '';
-	$self->{cipher}->{'keysize'} = 32;
-	$self->{cipher}->{'cipher'} = 'Blowfish';
-	$self->{cipher}->{'iv'} = '';
-	$self->{cipher}->{'regenerate_key'} = 0;
-	$self->{cipher}->{'padding'} = 'space';
-	$self->{cipher}->{'prepend_iv'} = 0;
+	$self->{'cipher'}->{'key'} = '';
+	$self->{'cipher'}->{'keysize'} = 32;
+	$self->{'cipher'}->{'cipher'} = 'Blowfish';
+	$self->{'cipher'}->{'iv'} = '';
+	$self->{'cipher'}->{'regenerate_key'} = 0;
+	$self->{'cipher'}->{'padding'} = 'space';
+	$self->{'cipher'}->{'prepend_iv'} = 0;
 }
 
 sub set
@@ -50,8 +51,13 @@ sub set
 	my $self = shift;
 	my $prop = shift;
 	my $value = shift;
-	debug("Setting $prop as $value") if exists $self->{'cipher'}->{$prop};
-	$self->{'cipher'}->{$prop} = $value if exists $self->{'cipher'}->{$prop};
+
+	if(exists $self->{'cipher'}->{$prop}) {
+		debug("Setting $prop as $value");
+		$self->{'cipher'}->{$prop} = $value;
+	} else {
+		fatal("Unknown property: $prop");
+	}
 }
 
 sub randomString
@@ -68,7 +74,8 @@ sub randomString
 
 	while(length $string < $length) {
 		my $pool = Crypt::CBC->random_bytes(100);
-		foreach(unpack 'C*', $pool) {
+
+		for(unpack 'C*', $pool) {
 			next if $_ < 32 || $_ > 126;
 			length $string < $length ? $string .= chr $_ : last;
 		}

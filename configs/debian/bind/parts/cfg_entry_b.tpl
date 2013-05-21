@@ -1,1 +1,1 @@
-// dmn [{DMN_NAME}] cfg entry BEGIN.
+// dmn [{DOMAIN_NAME}] cfg entry BEGIN.

@@ -34,6 +34,7 @@ package Addons::policyd;
 
 use strict;
 use warnings;
+
 use iMSCP::Debug;
 use parent 'Common::SingletonClass';
 
@@ -67,7 +68,6 @@ sub registerSetupHooks
 	my $hooksManager = shift;
 
 	require Addons::policyd::installer;
-
     Addons::policyd::installer->getInstance()->registerSetupHooks($hooksManager);
 }
 
@@ -84,7 +84,6 @@ sub install
 	my $self = shift;
 
 	require Addons::policyd::installer;
-
 	Addons::policyd::installer->getInstance()->install();
 }
 

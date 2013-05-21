@@ -46,8 +46,8 @@
  */
 function init_empty_data()
 {
-    global $cr_user_id, $alias_name, $domain_ip, $forward, $mount_point;
-    $cr_user_id = $alias_name = $domain_ip = $forward = $mount_point = '';
+    global $cr_user_id, $alias_name, $domainIp, $forward, $mount_point;
+    $cr_user_id = $alias_name = $domainIp = $forward = $mount_point = '';
 }
 
 /**
@@ -188,7 +188,7 @@ function _reseller_isAllowedMountPoint($mountPoint, $domainId)
  */
 function add_domain_alias()
 {
-    global $cr_user_id, $alias_name, $domain_ip, $forward, $forward_prefix, $mount_point, $validation_err_msg;
+    global $cr_user_id, $alias_name, $domainIp, $forward, $forward_prefix, $mount_point, $validation_err_msg;
 
     /** @var $cfg iMSCP_Config_Handler_File */
     $cfg = iMSCP_Registry::get('config');
@@ -196,7 +196,7 @@ function add_domain_alias()
     $cr_user_id = (int) $_SESSION['dmn_id'];
 
     $alias_name = strtolower(clean_input($_POST['ndomain_name']));
-    $domain_ip = $_SESSION['dmn_ip'];
+    $domainIp = $_SESSION['dmn_ip'];
     $mount_point = array_encode_idna(strtolower($_POST['ndomain_mpoint']), true);
 
     if ($_POST['status'] == 1) {
@@ -307,9 +307,9 @@ function add_domain_alias()
                 ?, ?, ?, ?, ?, ?
             )
 	";
-    exec_query($query, array($cr_user_id, $alias_name, $mount_point, $cfg->ITEM_ADD_STATUS, $domain_ip, $forward));
+    exec_query($query, array($cr_user_id, $alias_name, $mount_point, $cfg->ITEM_ADD_STATUS, $domainIp, $forward));
 
-    update_reseller_c_props(get_reseller_id($cr_user_id));
+    #update_reseller_c_props(get_reseller_id($cr_user_id));
     send_request();
 
     $admin_login = $_SESSION['user_logged'];

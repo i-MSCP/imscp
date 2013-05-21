@@ -1,5 +1,3 @@
-POLICYD_CONF_DIR = /etc
-
 POLICYD_CONF_FILE = /etc/policyd-weight.conf
 
 POLICYD_BIN_FILE = /usr/sbin/policyd-weight

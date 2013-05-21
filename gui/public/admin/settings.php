@@ -81,13 +81,11 @@ if (isset($_POST['uaction']) && $_POST['uaction'] == 'apply') {
 	$prev_ext_login_admin = $_POST['prevent_external_login_admin'];
 	$prev_ext_login_reseller = $_POST['prevent_external_login_reseller'];
 	$prev_ext_login_client = $_POST['prevent_external_login_client'];
-	$custom_orderpanel_id = clean_input($_POST['coid']);
 	$tld_strict_validation = $_POST['tld_strict_validation'];
 	$sld_strict_validation = $_POST['sld_strict_validation'];
 	$max_dnames_labels = clean_input($_POST['max_dnames_labels']);
 	$max_subdnames_labels = clean_input($_POST['max_subdnames_labels']);
 	$log_level = defined($_POST['log_level']) ? constant($_POST['log_level']) : false;
-	$ordersExpireTime = clean_input($_POST['ordersExpireTime']);
 	$phpini->setData('phpiniAllowUrlFopen', clean_input($_POST['phpini_allow_url_fopen']));
 	$phpini->setData('phpiniDisplayErrors', clean_input($_POST['phpini_display_errors']));
 	$phpini->setData('phpiniErrorReporting', clean_input($_POST['phpini_error_reporting']));
@@ -124,7 +122,7 @@ if (isset($_POST['uaction']) && $_POST['uaction'] == 'apply') {
 		|| (!is_number($bruteforce_block_time)) || (!is_number($bruteforce_between_time))
 		|| (!is_number($bruteforce_max_capcha)) || (!is_number($bruteforce_max_attempts_before_wait))
 		|| (!is_number($domain_rows_per_page))  || (!is_number($max_dnames_labels))
-		|| (!is_number($max_subdnames_labels))  || (!is_number($ordersExpireTime))
+		|| (!is_number($max_subdnames_labels))
 	) {
 		set_page_message(tr('Only positive numbers are allowed.'), 'error');
 	} elseif ($domain_rows_per_page < 1) {
@@ -165,12 +163,10 @@ if (isset($_POST['uaction']) && $_POST['uaction'] == 'apply') {
 		$db_cfg->PREVENT_EXTERNAL_LOGIN_ADMIN = $prev_ext_login_admin;
 		$db_cfg->PREVENT_EXTERNAL_LOGIN_RESELLER = $prev_ext_login_reseller;
 		$db_cfg->PREVENT_EXTERNAL_LOGIN_CLIENT = $prev_ext_login_client;
-		$db_cfg->CUSTOM_ORDERPANEL_ID = $custom_orderpanel_id;
 		$db_cfg->TLD_STRICT_VALIDATION = $tld_strict_validation;
 		$db_cfg->SLD_STRICT_VALIDATION = $sld_strict_validation;
 		$db_cfg->MAX_DNAMES_LABELS = $max_dnames_labels;
 		$db_cfg->MAX_SUBDNAMES_LABELS = $max_subdnames_labels;
-		$db_cfg->ORDERS_EXPIRE_TIME = $ordersExpireTime * 86400;
 		$db_cfg->PHPINI_ALLOW_URL_FOPEN = $phpini->getDataVal('phpiniAllowUrlFopen');
 		$db_cfg->PHPINI_DISPLAY_ERRORS = $phpini->getDataVal('phpiniDisplayErrors');
 		$db_cfg->PHPINI_ERROR_REPORTING = $phpini->getDataVal('phpiniErrorReporting');
@@ -207,7 +203,7 @@ if (isset($_POST['uaction']) && $_POST['uaction'] == 'apply') {
 	redirectTo('settings.php');
 }
 
-$coid = isset($cfg->CUSTOM_ORDERPANEL_ID) ? $cfg->CUSTOM_ORDERPANEL_ID : '';
+$coid = '';
 
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic(
@@ -560,10 +556,8 @@ $tpl->assign(
 		 'BRUTEFORCE_MAX_CAPTCHA' => $cfg->BRUTEFORCE_MAX_CAPTCHA,
 		 'BRUTEFORCE_MAX_ATTEMPTS_BEFORE_WAIT' => $cfg->BRUTEFORCE_MAX_ATTEMPTS_BEFORE_WAIT,
 		 'DOMAIN_ROWS_PER_PAGE' => $cfg->DOMAIN_ROWS_PER_PAGE,
-		 'CUSTOM_ORDERPANEL_ID' => tohtml($coid),
 		 'MAX_DNAMES_LABELS_VALUE' => $cfg->MAX_DNAMES_LABELS,
 		 'MAX_SUBDNAMES_LABELS_VALUE' => $cfg->MAX_SUBDNAMES_LABELS,
-		 'ORDERS_EXPIRATION_TIME_VALUE' => $cfg->ORDERS_EXPIRE_TIME / 86400,
 		 'PHPINI_POST_MAX_SIZE' => $phpini->getDataVal('phpiniPostMaxSize'),
 		 'PHPINI_UPLOAD_MAX_FILESIZE' => $phpini->getDataVal('phpiniUploadMaxFileSize'),
 		 'PHPINI_MAX_EXECUTION_TIME' => $phpini->getDataVal('phpiniMaxExecutionTime'),
@@ -613,7 +607,6 @@ $tpl->assign(
 		 'TR_PREVENT_EXTERNAL_LOGIN_ADMIN' => tr('Prevent external login for admins'),
 		 'TR_PREVENT_EXTERNAL_LOGIN_RESELLER' => tr('Prevent external login for resellers'),
 		 'TR_PREVENT_EXTERNAL_LOGIN_CLIENT' => tr('Prevent external login for clients'),
-		 'TR_CUSTOM_ORDERPANEL_ID' => tr('Custom orderpanel Id'),
 		 'TR_DNAMES_VALIDATION_SETTINGS' => tr('Domain names validation'),
 		 'TR_TLD_STRICT_VALIDATION' => tr('Top Level Domain name strict validation'),
 		 'TR_TLD_STRICT_VALIDATION_HELP' => tr('Only Top Level Domains (TLD) listed in IANA root zone database can be used.'),
@@ -637,8 +630,6 @@ $tpl->assign(
 		 'TR_PHPINI_OPEN_BASEDIR' => tr('Value for the %s directive', true, '<b>open_basedir</b>'),
 		 'TR_PHPINI_OPEN_BASEDIR_TOOLTIP' => json_encode(tr('Paths are appended to the default PHP open_basedir directive of customers. Each of them must be separated by PATH_SEPARATOR. See the PHP documentation for more information.')),
 		 'TR_PHPINI_DISABLE_FUNCTIONS' => tr('Value for the %s directive', true, '<b>disable_functions</b>'),
-		 'TR_ORDERS_SETTINGS' => tr('Orders settings'),
-		 'TR_ORDERS_EXPIRE_TIME' => tr('Expire time for unconfirmed orders <small>(In days)</small>', true),
 		 'TR_MIB' => tr('MiB'),
 		 'TR_SEC' => tr('Sec.')
 	)

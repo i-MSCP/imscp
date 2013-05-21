@@ -117,10 +117,6 @@ sub install
 	$rs = $self->_installFiles();
 	return $rs if $rs;
 
-	# Set Roundcube files permissions
-	$rs = $self->setGuiPermissions();
-	return $rs if $rs;
-
 	# Setup Roundcube database (database, user)
 	$rs = $self->_setupDatabase();
 	return $rs if $rs;
@@ -173,21 +169,21 @@ sub askRoundcube
 	my ($rs, $msg) = (0, '');
 
 	if(
-		$main::reconfigure ~~ ['webmail', 'all', 'forced'] ||
-		(
-			! $main::preseed{'ROUNDCUBE_SQL_USER'} &&
-			main::setupCheckSqlConnect($dbType, '', $dbHost, $dbPort, $dbUser, $dbPass)
-		)
+		$main::reconfigure ~~ ['webmail', 'all', 'forced'] || ! ($dbUser && $dbPass) ||
+		main::setupCheckSqlConnect($dbType, '', $dbHost, $dbPort, $dbUser, $dbPass)
 	) {
 		# Ask for the roundcube restricted SQL username
 		do{
+
 			($rs, $dbUser) = iMSCP::Dialog->factory()->inputbox(
-				"\nPlease enter an username for the restricted roundcube SQL user:", $dbUser
+				"\nPlease enter an username for the restricted roundcube SQL user:$msg", $dbUser
 			);
 
-			# i-MSCP SQL user cannot be reused
 			if($dbUser eq $main::imscpConfig{'DATABASE_USER'}) {
 				$msg = "\n\n\\Z1You cannot reuse the i-MSCP SQL user '$dbUser'.\\Zn\n\nPlease, try again:";
+				$dbUser = '';
+			} elsif(length $dbUser > 16) {
+				$msg = "\n\n\\Z1MySQL user names can be up to 16 characters long.\\Zn\n\nPlease, try again:";
 				$dbUser = '';
 			}
 		} while ($rs != 30 && ! $dbUser);
@@ -367,12 +363,12 @@ sub _setupDatabase
 {
 	my $self = shift;
 	my $roundcubeDir = "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/webmail";
-	my $dbName = 'imscp_roundcube';
+	my $imscpDbName = $main::imscpConfig{'DATABASE_NAME'};
+	my $roundcubeDbName = $imscpDbName . '_roundcube';
 	my $dbUser = $self::roundcubeConfig{'DATABASE_USER'};
 	my $dbOldUser = $self::roundcubeOldConfig{'DATABASE_USER'} || '';
+	my $dbUserHost = main::setupGetQuestion('DATABASE_USER_HOST');
 	my $dbPass = $self::roundcubeConfig{'DATABASE_PASSWORD'};
-	my $dbUserHost = $main::imscpConfig{'SQL_SERVER'} ne 'remote_server'
-		? $main::imscpConfig{'DATABASE_HOST'} : $main::imscpConfig{'BASE_SERVER_IP'};
 
 	# Get SQL connection with full privileges
 	my ($database, $errStr) = main::setupGetSqlConnect();
@@ -382,7 +378,7 @@ sub _setupDatabase
 	}
 
 	# Check for Roundcube database existence
-	my $rs = $database->doQuery('1', 'SHOW DATABASES LIKE ?', $dbName);
+	my $rs = $database->doQuery('1', 'SHOW DATABASES LIKE ?', $roundcubeDbName);
 	unless(ref $rs eq 'HASH') {
 		error("SQL query failed: $rs");
 		return 1;
@@ -390,18 +386,18 @@ sub _setupDatabase
 
 	# The Roundcube database doesn't exists, create it
 	unless(%$rs) {
-		my $qdbName = $database->quoteIdentifier($dbName);
+		my $qdbName = $database->quoteIdentifier($roundcubeDbName);
 		$rs = $database->doQuery('dummy', "CREATE DATABASE $qdbName CHARACTER SET utf8 COLLATE utf8_unicode_ci;");
 		unless(ref $rs eq 'HASH') {
-			error("Unable to create '$dbName' database: $rs");
+			error("Unable to create the Roundcube '$roundcubeDbName' SQL database: $rs");
 			return 1;
 		}
 
 		# Connect to newly created Roundcube database
-		$database->set('DATABASE_NAME', $dbName);
+		$database->set('DATABASE_NAME', $roundcubeDbName);
 		$rs = $database->connect();
 		if($rs) {
-			error("Unable to connect to the '$dbName' SQL database: $rs");
+			error("Unable to connect to the Roundcube '$roundcubeDbName' SQL database: $rs");
 			return $rs if $rs;
 		}
 
@@ -413,40 +409,39 @@ sub _setupDatabase
 	}
 
 	# Remove old Roundcube restricted SQL user and all it privileges (if any)
-	for($main::imscpOldConfig{'DATABASE_HOST'} || '', $main::imscpOldConfig{'BASE_SERVER_IP'} || '') {
+	for($dbUserHost, $main::imscpOldConfig{'DATABASE_HOST'} || '', $main::imscpOldConfig{'BASE_SERVER_IP'} || '') {
 		next if $_ eq '' || $dbOldUser eq '';
 		$rs = main::setupDeleteSqlUser($dbOldUser, $_);
-		error("Unable to remove the old roundcube '$dbOldUser' restricted SQL user") if $rs;
+		error("Unable to remove the old Roundcube '$dbOldUser\@$dbUserHost' restricted SQL user") if $rs;
 		return 1 if $rs;
 	}
 
 	# Ensure new Roundcube restricted SQL user do not already exists by removing it
 	$rs = main::setupDeleteSqlUser($dbUser, $dbUserHost);
 	if($rs) {
-		error("Unable to delete the roundcube '$dbUser' restricted SQL user");
+		error("Unable to delete the Roundcube '$dbUser\@$dbUserHost' restricted SQL user");
 		return 1 if $rs;
 	}
 
 	# Add new Roundcube restricted SQL user with needed privileges
 
 	$rs = $database->doQuery(
-		'dummy', "GRANT ALL PRIVILEGES ON `$dbName`.* TO ?@? IDENTIFIED BY ?;", $dbUser, $dbUserHost , $dbPass
+		'dummy', "GRANT ALL PRIVILEGES ON `$roundcubeDbName`.* TO ?@? IDENTIFIED BY ?;",  $dbUser, $dbUserHost, $dbPass
 	);
 	unless(ref $rs eq 'HASH') {
-		error("Unable to add privileges on the '$dbName' database tables for the '$dbUser' SQL user: $rs");
+		error("Unable to add privileges on the '$roundcubeDbName' database tables for the Roundcube Roundcube '$dbUser\@$dbUserHost' SQL user: $rs");
 		return 1;
 	}
 
 	# Needed for password changer plugin
 	$rs = $database->doQuery(
 		'dummy',
-		"GRANT SELECT,UPDATE ON `$main::imscpConfig{'DATABASE_NAME'}`.`mail_users` TO ?@? IDENTIFIED BY ?;",
+		"GRANT SELECT,UPDATE ON `$imscpDbName`.`mail_users` TO ?@? IDENTIFIED BY ?;",
 		$dbUser, $dbUserHost, $dbPass
 	);
 	unless(ref $rs eq 'HASH') {
 		error(
-			"Unable to add privileges on the '$main::imscpConfig{'DATABASE_NAME'}.mail_users' table for the" .
-			" '$dbUser' SQL user: $rs"
+			"Unable to add privileges on the '$imscpDbName.mail_users' table for the '$dbUser\@$dbUserHost' SQL user: $rs"
 		);
 		return 1;
 	}

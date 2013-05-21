@@ -20,6 +20,7 @@
 # @category		i-MSCP
 # @copyright	2010-2013 by i-MSCP | http://i-mscp.net
 # @author		Daniel Andreca <sci2tech@gmail.com>
+# @author		Laurent Declercq <l.declercq@nuxwin.com>
 # @link			http://i-mscp.net i-MSCP Home Site
 # @license		http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
@@ -32,74 +33,146 @@ use lib "$FindBin::Bin/../PerlLib";
 use lib "$FindBin::Bin/../PerlVendor";
 
 use iMSCP::Debug;
-use iMSCP::Rights;
 use iMSCP::Boot;
+use iMSCP::Rights;
+use iMSCP::Servers;
+use iMSCP::Addons;
+
+# Turn off localisation features to force any command output to be in english
+$ENV{LANG} = 'C';
+
+# Mode in which the script is triggered
+# For now, this variable is only used by i-MSCP installer/setup scripts
+$main::execmode = shift || '';
+
+umask(027);
 
 newDebug('imscp-set-engine-permissions.log');
 
 silent(1);
 
-sub start_up
+sub startUp
 {
-	umask(027);
+	iMSCP::Boot->getInstance()->boot({ 'nolock' => 'yes', 'nodatabase' => 'yes', 'nokeys' => 'yes' });
 
-	iMSCP::Boot->getInstance()->boot({ 'nolock' => 'yes', 'nodatabase' => 'yes'});
+	my $rs = 0;
 
-	0;
-}
-
-sub shut_down
-{
-	my @warnings = getMessageByType('warn');
-	my @errors = getMessageByType('error');
-
-	my $msg = "\nWARNINGS:\n" . join("\n", @warnings) . "\n" if @warnings > 0;
-	$msg .= "\nERRORS:\n" . join("\n", @errors) . "\n" if @errors > 0;
-
-	if($msg) {
-		require iMSCP::Mail;
-		iMSCP::Mail->new()->errmsg($msg);
+	unless($main::execmode eq 'setup') {
+		require iMSCP::HooksManager;
+		$rs = iMSCP::HooksManager->getInstance()->register(
+			'beforeExit', sub { shift; my $clearScreen = shift; $$clearScreen = 0; 0; }
+		)
 	}
 
-	0;
+	$rs;
 }
 
-sub set_permissions
+sub process
 {
-	my $rs = 0;
-	my ($server, $file, $class);
 	my $rootUName = $main::imscpConfig{'ROOT_USER'};
 	my $rootGName = $main::imscpConfig{'ROOT_GROUP'};
-	my $masterUName = $main::imscpConfig{'MASTER_GROUP'};
-	my $CONF_DIR = $main::imscpConfig{'CONF_DIR'};
-	my $ROOT_DIR = $main::imscpConfig{'ROOT_DIR'};
-	my $LOG_DIR = $main::imscpConfig{'LOG_DIR'};
+	my $masterGName = $main::imscpConfig{'MASTER_GROUP'};
+	my $confDir = $main::imscpConfig{'CONF_DIR'};
+	my $rootDir = $main::imscpConfig{'ROOT_DIR'};
+	my $logDir = $main::imscpConfig{'LOG_DIR'};
 
-	$rs = setRights("$CONF_DIR/imscp.conf", { user => $rootUName, group => $masterUName, mode => '0660'} );
+	my ($instance, $file, $class);
+	my @servers = iMSCP::Servers->getInstance()->get();
+	my @addons = iMSCP::Addons->getInstance()->get();
+	my $totalItems = @servers + @addons + 1;
+	my $counter = 1;
+
+	# Set base permissions - begin
+	debug('Setting backend base permissions');
+	print "Setting backend base permissions\t$totalItems\t$counter\n" if $main::execmode eq 'setup';
+
+	my $rs = setRights(
+		$confDir,
+		{ 'user' => $rootUName, 'group' => $rootGName, 'dirmode' => '0750', 'filemode' => '0640', 'recursive' => 'yes' }
+	);
 	return $rs if $rs;
 
-	$rs = setRights("$CONF_DIR/imscp-db-keys", { user => $rootUName, group => $masterUName, mode => '0640'} );
+	$rs = setRights($confDir, { 'user' => $rootUName, 'group' => $masterGName } );
+    return $rs if $rs;
+
+	$rs = setRights("$confDir/imscp*", { 'user' => $rootUName, 'group' => $masterGName, 'mode' => '0640'} );
 	return $rs if $rs;
 
-	$rs = setRights("$ROOT_DIR/engine", { user => $rootUName, group => $masterUName, mode => '0755', recursive => 'yes'} );
+	$rs = setRights(
+		"$rootDir/engine", { 'user' => $rootUName, group => $masterGName, 'mode' => '0750', 'recursive' => 'yes'}
+	);
 	return $rs if $rs;
 
-	$rs = setRights($LOG_DIR, { user => $rootUName, group => $masterUName, mode => '0750'} );
+	$rs = setRights($logDir, { 'user' => $rootUName, 'group' => $masterGName, 'mode' => '0750'} );
 	return $rs if $rs;
 
-	for('named', 'ftpd', 'mta', 'po', 'httpd') {
+	$counter++;
+
+	# Set base permissions - ending
+
+	for(@servers) {
+		s/\.pm//;
+
 		$file = "Servers/$_.pm";
 		$class = "Servers::$_";
+
 		require $file;
-		$server = $class->factory();
-		$rs = $server->setEnginePermissions() if $server->can('setEnginePermissions');
-		return $rs if $rs;
+		$instance = $class->factory();
+
+		if($instance->can('setEnginePermissions')) {
+			debug("Setting $_ server backend permissions");
+			print "Setting backend permissions for the $_ server\t$totalItems\t$counter\n" if $main::execmode eq 'setup';
+			$rs = $instance->setEnginePermissions();
+			return $rs if $rs;
+		}
+
+		$counter++;
+	}
+
+	for(@addons) {
+		s/\.pm//;
+
+		$file = "Addons/$_.pm";
+		$class = "Addons::$_";
+
+		require $file;
+		$instance = $class->getInstance();
+
+		if($instance->can('setEnginePermissions')) {
+			debug("Setting $_ addon backend permissions");
+			print "Setting backend permissions for the $_ addon\t$totalItems\t$counter\n" if $main::execmode eq 'setup';
+			$rs = $instance->setEnginePermissions();
+			return $rs if $rs;
+		}
+
+		$counter++;
 	}
 
 	0;
 }
 
-exit 1 if start_up();
-exit 1 if set_permissions();
-exit 1 if shut_down();
-exit 0;
+sub shutDown
+{
+	unless($main::execmode eq 'setup') {
+		my @warnings = getMessageByType('warn');
+		my @errors = getMessageByType('error');
+		my $rs = 0;
+
+		my $msg = "\nWARNINGS:\n" . join("\n", @warnings) . "\n" if @warnings > 0;
+		$msg .= "\nERRORS:\n" . join("\n", @errors) . "\n" if @errors > 0;
+
+		if($msg) {
+			require iMSCP::Mail;
+
+			$rs = iMSCP::Mail->new()->errmsg($msg);
+			return $rs if $rs;
+		}
+	}
+}
+
+my $rs = startUp();
+$rs ||= process();
+
+shutDown();
+
+exit $rs;

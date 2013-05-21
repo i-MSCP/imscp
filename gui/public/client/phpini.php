@@ -20,7 +20,7 @@
  * @package     iMSCP_Core
  * @subpackage  Client
  * @copyright   2010-2013 by i-MSCP team
- * @author		Hannes Koschier <hannes@cheat.at>
+ * @author      Hannes Koschier <hannes@cheat.at>
  * @author      iMSCP Team
  * @link        http://www.i-mscp.net i-MSCP Home Site
  * @license     http://www.gnu.org/licenses/gpl-2.0.txt GPL v2

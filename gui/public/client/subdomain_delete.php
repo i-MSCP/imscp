@@ -24,15 +24,19 @@
  * Portions created by the i-MSCP Team are Copyright (C) 2010-2013 by
  * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
  *
- * @category	i-MSCP
- * @package		iMSCP_Core
- * @subpackage	Client
+ * @category    i-MSCP
+ * @package     iMSCP_Core
+ * @subpackage  Client
  * @copyright   2001-2006 by moleSoftware GmbH
  * @copyright   2006-2010 by ispCP | http://isp-control.net
  * @copyright   2010-2013 by i-MSCP | http://i-mscp.net
  * @author      ispCP Team
  * @author      i-MSCP Team
  * @link        http://i-mscp.net
+ */
+
+/***********************************************************************************************************************
+ * Main
  */
 
 // Include core library
@@ -42,71 +46,97 @@ iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptStart)
 
 check_login('user');
 
-customerHasFeature('subdomains') or showBadRequestErrorPage();
-
-if (isset($_GET['id']) && $_GET['id'] !== '') {
-	$sub_id = $_GET['id'];
-	$dmn_id = get_user_domain_id($_SESSION['user_id']);
+if (customerHasFeature('subdomains') && isset($_GET['id'])) {
+	$subId = clean_input($_GET['id']);
+	$dmnId = get_user_domain_id($_SESSION['user_id']);
 
 	$query = "
 		SELECT
-			`subdomain_id`, `subdomain_name`
+			`t1`.`subdomain_id`, CONCAT(`t1`.`subdomain_name`, '.', `t2`.`domain_name`) AS `subdomain_name`
 		FROM
-			`subdomain`
+			`subdomain` AS `t1`
+		LEFT JOIN
+			`domain` AS `t2` ON(`t2`.`domain_id` = `t1`.`domain_id`)
 		WHERE
-			`domain_id` = ?
+			`t2`.`domain_id` = ?
 		AND
-			`subdomain_id` = ?
+			`t1`.`subdomain_id` = ?
 	";
+	$stmt = exec_query($query, array($dmnId, $subId));
 
-	$rs = exec_query($query, array($dmn_id, $sub_id));
-	$sub_name = $rs->fields['subdomain_name'];
+	if ($stmt->rowCount()) {
+		$subName = $stmt->fields['subdomain_name'];
+		$ret = false;
 
-	if ($rs->recordCount() == 0) {
+		// Check for mail accounts
+		$query = "
+			SELECT
+				COUNT(`mail_id`) AS `cnt`
+			FROM
+				`mail_users`
+			WHERE
+				(`mail_type` LIKE ? OR `mail_type` = ?)
+			AND
+				`sub_id` = ?
+		";
+		$stmt = exec_query($query, array($subId, MT_SUBDOM_MAIL . '%', MT_SUBDOM_FORWARD));
+
+		if ($stmt->fields['cnt']) {
+			set_page_message(
+				tr('Subdomain you are trying to remove has email accounts. Remove them first.'), 'error'
+			);
+			$ret = true;
+		}
+
+		// Check for Ftp accounts
+		$query = "SELECT count(`userid`) AS `cnt` FROM `ftp_users` WHERE `userid` LIKE ?";
+		$stmt = exec_query($query, "%@$subName");
+
+		if ($stmt->fields['cnt']) {
+			set_page_message(
+				tr('Subdomain you are trying to remove has Ftp accounts. Remove them first.'), 'error'
+			);
+			$ret = true;
+		}
+
+		if (!$ret) {
+			iMSCP_Events_Manager::getInstance()->dispatch(
+				iMSCP_Events::onBeforeDeleteSubdomain, array('subdomainId' => $subId, 'type' => 'sub')
+			);
+
+			/** @var $cfg iMSCP_Config_Handler_File */
+			$cfg = iMSCP_Registry::get('config');
+
+			/** @var $db iMSCP_Database */
+			$db = iMSCP_Registry::get('db');
+
+			try {
+				$db->beginTransaction();
+
+				$query = "UPDATE `subdomain` SET `subdomain_status` = ? WHERE `subdomain_id` = ?";
+				$stmt = exec_query($query, array($cfg->ITEM_DELETE_STATUS, $subId));
+
+				$query = "UPDATE `ssl_certs` SET `status` = ? WHERE `id` = ? AND `type` = ?";
+				$stmt = exec_query($query, array($cfg->ITEM_DELETE_STATUS, $subId, 'sub'));
+
+				$db->commit();
+			} catch (iMSCP_Exception_Database $e) {
+				$db->rollBack();
+				throw new iMSCP_Exception_Database($e->getMessage(), $e->getQuery(), $e->getCode(), $e);
+			}
+
+			iMSCP_Events_Manager::getInstance()->dispatch(
+				iMSCP_Events::onAfterDeleteSubdomain, array('subdomainId' => $subId, 'type' => 'sub')
+			);
+
+			send_request();
+
+			write_log("{$_SESSION['user_logged']} scheduled deletion of subdomain: $subName", E_USER_NOTICE);
+			set_page_message(tr('Subdomain successfully scheduled for deletion.'), 'success');
+		}
+
 		redirectTo('domains_manage.php');
 	}
-
-	$query = "SELECT COUNT(`mail_id`) AS cnt FROM `mail_users` WHERE (`mail_type` LIKE '".MT_SUBDOM_MAIL."%' OR `mail_type` = '".MT_SUBDOM_FORWARD."') AND `sub_id` = ?";
-	$rs = exec_query($query, $sub_id);
-
-	if ($rs->fields['cnt'] > 0) {
-		set_page_message(tr('Subdomain you are trying to remove has email accounts.<br/>First remove them.'), 'error');
-		redirectTo('domains_manage.php');
-	}
-
-	iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onBeforeDeleteSubdomain, array('subdomainId' => $sub_id));
-
-	$query = "
-		UPDATE
-			`subdomain`
-		SET
-			`subdomain_status` = 'delete'
-		WHERE
-			`subdomain_id` = ?
-	";
-	$rs = exec_query($query, $sub_id);
-
-	$query = "
-		UPDATE
-			`ssl_certs`
-		SET
-			`status` = 'delete'
-		WHERE
-			`id` = ?
-		AND
-			`type` = 'sub'
-	";
-	$rs = exec_query($query, $sub_id);
-
-	iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAfterDeleteSubdomain, array('subdomainId' => $sub_id));
-
-	update_reseller_c_props(get_reseller_id($dmn_id));
-	send_request();
-
-	write_log($_SESSION['user_logged'].": deletes subdomain: " . $sub_name, E_USER_NOTICE);
-	set_page_message(tr('Subdomain scheduled for deletion.'), 'success');
-	redirectTo('domains_manage.php');
-
-} else {
-	redirectTo('domains_manage.php');
 }
+
+showBadRequestErrorPage();

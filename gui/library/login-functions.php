@@ -87,20 +87,33 @@ function login_checkDomainAccount($event)
         /** @var $cfg iMSCP_Config_Handler_File */
         $cfg = iMSCP_Registry::get('config');
 
-        $query = 'SELECT `domain_expires`, `domain_status` FROM `domain` WHERE `domain_admin_id` = ?';
+        $query = '
+            SELECT
+                `domain_expires`, `domain_status`, `admin_status`
+            FROM
+                `domain`
+            LEFT JOIN `admin` ON(`domain_admin_id` = `admin_id`)
+            WHERE
+                `domain_admin_id` = ?
+        ';
         $stmt = exec_query($query, $identity->admin_id);
 
         $isAccountStateOk = true;
 
-        if ($stmt->fields['domain_status'] != $cfg->ITEM_OK_STATUS) {
+        if (
+	        ($stmt->fields['admin_status'] != $cfg->ITEM_OK_STATUS) ||
+	        ($stmt->fields['domain_status'] != $cfg->ITEM_OK_STATUS)
+        ) {
             $isAccountStateOk = false;
-            set_page_message(tr('Domain account is in inconsistent state.'), 'error');
+            set_page_message(
+	            tr('Your account is currently in maintenance or disabled. Please, contact your reseller.'), 'error'
+            );
         } else {
             $domainExpireDate = $stmt->fields['domain_expires'];
 
             if ($domainExpireDate && $domainExpireDate < time()) {
                 $isAccountStateOk = false;
-                set_page_message(tr('Domain account expired.'), 'error');
+                set_page_message(tr('Your account has expired.'), 'error');
             }
         }
 

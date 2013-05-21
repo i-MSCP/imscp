@@ -297,22 +297,6 @@
                 </div>
                 <!-- EDP: php_editor_disable_functions_block -->
             </div>
-            <h1><strong>{TR_ORDERS_SETTINGS}</strong></h1>
-
-            <div style="padding: 0">
-                <div class="even">
-                    <div class="left"><label for="ordersExpireTime">{TR_ORDERS_EXPIRE_TIME}</label></div>
-                    <div class="right">
-                        <input type="text" name="ordersExpireTime" id="ordersExpireTime" value="{ORDERS_EXPIRATION_TIME_VALUE}"/>
-                    </div>
-                </div>
-                <div class="odd">
-                    <div class="left"><label for="coid">{TR_CUSTOM_ORDERPANEL_ID}</label></div>
-                    <div class="right">
-                        <input type="text" name="coid" id="coid" value="{CUSTOM_ORDERPANEL_ID}"/>
-                    </div>
-                </div>
-            </div>
             <h1><strong>{TR_OTHER_SETTINGS}</strong></h1>
 
             <div style="padding: 0">

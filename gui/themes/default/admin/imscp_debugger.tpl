@@ -1,4 +1,26 @@
-
+		<!-- BDP: props_list -->
+		<table>
+			<tr>
+				<th>{TR_USER_ERRORS}</th>
+			</tr>
+			<!-- BDP: user_message -->
+			<tr>
+				<td>{TR_USER_MESSAGE}</td>
+			</tr>
+			<!-- EDP: user_message -->
+			<!-- BDP: user_list -->
+			<tr>
+				<td>
+					<p>
+						<span class="bold">{TR_USER_NAME}</span> - <a
+								href="imscp_debugger.php?action=change_status&amp;id={CHANGE_ID}&amp;type={CHANGE_TYPE}"
+								class="link">{TR_CHANGE_STATUS}</a>
+					</p>
+					<span style="color:red;">{TR_USER_ERROR}</span>
+				</td>
+			</tr>
+			<!-- EDP: user_list -->
+		</table>
 			<!-- BDP: props_list -->
 			<table>
 				<tr>

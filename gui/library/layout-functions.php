@@ -129,6 +129,7 @@ function set_page_message($message, $level = 'info')
 /**
  * format message(s) to be displayed on client browser as page message.
  *
+ * @throws iMSCP_Exception
  * @param  string|array $messages Message or stack of messages to be concatenated
  * @return string Concatenated messages
  */
@@ -392,7 +393,7 @@ function layout_getUserLogo($searchForCreator = true, $returnDefault = true)
 
 	// No  user logo found
 	if (empty($stmt->fields['logo']) ||
-		!file_exists($cfg->GUI_ROOT_DIR . '/data/ispLogos/' . $stmt->fields['logo'])
+		!file_exists($cfg->GUI_ROOT_DIR . '/data/persistent/ispLogos/' . $stmt->fields['logo'])
 	) {
 		if (!$returnDefault) {
 			return '';
@@ -461,7 +462,7 @@ function layout_updateUserLogo()
 			'.' . $fileExtension;
 
 		// Return destination file path
-		return $cfg->GUI_ROOT_DIR . '/data/ispLogos/' . $fileName;
+		return $cfg->GUI_ROOT_DIR . '/data/persistent/ispLogos/' . $fileName;
 	};
 
 	if (($logoPath = utils_uploadFile('logoFile', array($beforeMove, $cfg))) === false) {
@@ -479,7 +480,7 @@ function layout_updateUserLogo()
 		$query = "UPDATE `user_gui_props` SET `logo` = ? WHERE `user_id` = ?";
 		exec_query($query, array(basename($logoPath), $userId));
 
-		// Deleting old logo (we are safe here) - We don't return FALSE on failure .
+		// Deleting old logo (we are safe here) - We don't return FALSE on failure.
 		// The administrator will be warned through logs.
 		layout_deleteUserLogo($oldLogoFile, true);
 	}
@@ -521,7 +522,7 @@ function layout_deleteUserLogo($logoFilePath = null, $onlyFile = false)
 	}
 
 	if (strpos($logoFilePath, $cfg->ISP_LOGO_PATH) !== false) {
-		$logoFilePath = $cfg->GUI_ROOT_DIR . '/data/ispLogos/' . basename($logoFilePath);
+		$logoFilePath = $cfg->GUI_ROOT_DIR . '/data/persistent/ispLogos/' . basename($logoFilePath);
 
 		if (file_exists($logoFilePath) && @unlink($logoFilePath)) {
 			return true;

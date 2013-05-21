@@ -24,9 +24,9 @@
  * Portions created by the i-MSCP Team are Copyright (C) 2010-2013 by
  * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
  *
- * @category	i-MSCP
- * @package		iMSCP_Core
- * @subpackage	Admin
+ * @category    i-MSCP
+ * @package     iMSCP_Core
+ * @subpackage  Admin
  * @copyright   2001-2006 by moleSoftware GmbH
  * @copyright   2006-2010 by ispCP | http://isp-control.net
  * @copyright   2010-2013 by i-MSCP | http://i-mscp.net
@@ -35,8 +35,8 @@
  * @link        http://i-mscp.net
  */
 
-/********************************************************************************
- * Main script
+/***********************************************************************************************************************
+ * Main
  */
 
 // Include core library
@@ -49,28 +49,17 @@ check_login('admin');
 /** @var $cfg iMSCP_Config_Handler_File */
 $cfg = iMSCP_Registry::get('config');
 
-if (strtolower($cfg->HOSTING_PLANS_LEVEL) != 'admin') {
-	redirectTo('index.php');
+if (isset($_GET['id']) && $cfg->HOSTING_PLANS_LEVEL == 'admin') {
+
+	$hostingPlanId = clean_input($_GET['id']);
+
+	$query = 'DELETE FROM `hosting_plans` WHERE `id` = ?';
+	$stmt = exec_query($query, $hostingPlanId);
+
+	if($stmt->rowCount()) {
+		set_page_message(tr('Hosting plan has been successfully deleted.'), 'success');
+		redirectTo('hosting_plan.php');
+	}
 }
 
-if (isset($_GET['hpid'])) {
-	$hostingPlanId = intval($_GET['hpid']);
-} else {
-	showBadRequestErrorPage();
-	exit;
-}
-
-// Check if there is no order for this plan
-$stmt = exec_query("SELECT COUNT(`id`) `cnt` FROM `orders` WHERE `plan_id` = ? AND `status` = 'new'", $hostingPlanId);
-
-if ($stmt->fields['cnt'] > 0) {
-	set_page_message(tr("Hosting plan can't be deleted, there are active orders."), 'error');
-	redirectTo('hosting_plan.php');
-}
-
-// Try to delete hosting plan from db
-$query = 'DELETE FROM `hosting_plans` WHERE `id` = ?';
-exec_query($query, $hostingPlanId);
-
-set_page_message(tr('Hosting plan successfully deleted.'), 'success');
-redirectTo('hosting_plan.php');
+showBadRequestErrorPage();

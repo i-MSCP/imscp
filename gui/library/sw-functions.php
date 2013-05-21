@@ -2002,12 +2002,11 @@ function check_db_connection($sql_database, $sql_user, $sql_pass)
 	$cfg = iMSCP_Registry::get('config');
 
 	try {
-		iMSCP_Database::connect($sql_user, $sql_pass,
-								$cfg->DATABASE_TYPE, $cfg->DATABASE_HOST,
-								$sql_database, 'privateConnection');
+		iMSCP_Database::connect(
+			$sql_user, $sql_pass, $cfg->DATABASE_TYPE, $cfg->DATABASE_HOST, $sql_database, 'privateConnection'
+		);
 
 	} catch (PDOException $e) {
-
 		return false;
 	}
 

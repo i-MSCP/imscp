@@ -57,7 +57,9 @@ function admin_generatePage($tpl, $domainId)
 		showBadRequestErrorPage();
 	}
 
-	$domainProperties = get_domain_default_props($stmt->fields['domain_admin_id']);
+	$domainAdminId = $stmt->fields['domain_admin_id'];
+
+	$domainProperties = get_domain_default_props($domainAdminId);
 
 	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
@@ -144,17 +146,17 @@ function admin_generatePage($tpl, $domainId)
 			'VL_DISK_USED' => bytesHuman($domainProperties['domain_disk_usage']),
 			'VL_DISK_LIMIT' => bytesHuman($diskspaceLimitBytes),
 			'VL_MAIL_ACCOUNTS_USED' => get_domain_running_mail_acc_cnt($domainId),
-			'VL_MAIL_ACCOUNTS_LIIT' => translate_limit_value($domainProperties['domain_mailacc_limit']),
-			'VL_FTP_ACCOUNTS_USED' => get_domain_running_ftp_acc_cnt($domainId),
-			'VL_FTP_ACCOUNTS_LIIT' => translate_limit_value($domainProperties['domain_ftpacc_limit']),
+			'VL_MAIL_ACCOUNTS_LIMIT' => translate_limit_value($domainProperties['domain_mailacc_limit']),
+			'VL_FTP_ACCOUNTS_USED' => get_customer_running_ftp_acc_cnt($domainAdminId),
+			'VL_FTP_ACCOUNTS_LIMIT' => translate_limit_value($domainProperties['domain_ftpacc_limit']),
 			'VL_SQL_DB_ACCOUNTS_USED' => get_domain_running_sqld_acc_cnt($domainId),
-			'VL_SQL_DB_ACCOUNTS_LIIT' => translate_limit_value($domainProperties['domain_sqld_limit']),
+			'VL_SQL_DB_ACCOUNTS_LIMIT' => translate_limit_value($domainProperties['domain_sqld_limit']),
 			'VL_SQL_USER_ACCOUNTS_USED' => get_domain_running_sqlu_acc_cnt($domainId),
-			'VL_SQL_USER_ACCOUNTS_LIIT' => translate_limit_value($domainProperties['domain_sqlu_limit']),
+			'VL_SQL_USER_ACCOUNTS_LIMIT' => translate_limit_value($domainProperties['domain_sqlu_limit']),
 			'VL_SUBDOM_ACCOUNTS_USED' => get_domain_running_sub_cnt($domainId),
-			'VL_SUBDOM_ACCOUNTS_LIIT' => translate_limit_value($domainProperties['domain_subd_limit']),
+			'VL_SUBDOM_ACCOUNTS_LIMIT' => translate_limit_value($domainProperties['domain_subd_limit']),
 			'VL_DOMALIAS_ACCOUNTS_USED' => get_domain_running_als_cnt($domainId),
-			'VL_DOMALIAS_ACCOUNTS_LIIT' => translate_limit_value($domainProperties['domain_alias_limit']),
+			'VL_DOMALIAS_ACCOUNTS_LIMIT' => translate_limit_value($domainProperties['domain_alias_limit']),
 		)
 	);
 }

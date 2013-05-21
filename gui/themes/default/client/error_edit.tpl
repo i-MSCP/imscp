@@ -1,6 +1,6 @@
 
 			<form name="error_edit" method="post" action="error_pages.php">
-				<textarea name="error" cols="80" rows="35" id="error">{ERROR}</textarea>
+				<textarea name="error" id="error">{ERROR}</textarea>
 				<div class="buttons">
 					<input type="hidden" name="uaction" value="updt_error" />
 					<input type="hidden" name="eid" value="{EID}" />

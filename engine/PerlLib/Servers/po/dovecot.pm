@@ -23,12 +23,12 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
-# @category		i-MSCP
-# @copyright	2010-2013 by i-MSCP | http://i-mscp.net
-# @author		Daniel Andreca <sci2tech@gmail.com>
-# @author		Laurent Declercq <l.declercq@nuxwin.com>
-# @link			http://i-mscp.net i-MSCP Home Site
-# @license		http://www.gnu.org/licenses/gpl-2.0.html GPL v2
+# @category    i-MSCP
+# @copyright   2010-2013 by i-MSCP | http://i-mscp.net
+# @author      Daniel Andreca <sci2tech@gmail.com>
+# @author      Laurent Declercq <l.declercq@nuxwin.com>
+# @link        http://i-mscp.net i-MSCP Home Site
+# @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
 package Servers::po::dovecot;
 
@@ -65,17 +65,11 @@ sub registerSetupHooks
 {
 	my $self = shift;
 	my $hooksManager = shift;
-	my $rs = 0;
-
-	$rs = $hooksManager->trigger('beforePoRegisterSetupHooks', $hooksManager, 'dovecot');
-	return $rs if $rs;
 
 	require Servers::po::dovecot::installer;
-
-	$rs = Servers::po::dovecot::installer->getInstance()->registerSetupHooks($hooksManager);
-	return $rs if $rs;
-
-	$hooksManager->trigger('afterPoRegisterSetupHooks', $hooksManager, 'dovecot');
+	Servers::po::dovecot::installer->getInstance(
+		dovecotConfig => \%self::dovecotConfig
+	)->registerSetupHooks($hooksManager);
 }
 
 =item install()
@@ -89,17 +83,9 @@ sub registerSetupHooks
 sub install
 {
 	my $self = shift;
-	my $rs = 0;
-
-	$rs = $self->{'hooksManager'}->trigger('beforePoInstall', 'dovecot');
-	return $rs if $rs;
 
 	require Servers::po::dovecot::installer;
-
-	$rs = Servers::po::dovecot::installer->getInstance()->install();
-	return $rs if $rs;
-
-	$self->{'hooksManager'}->trigger('afterPoInstall', 'dovecot');
+	Servers::po::dovecot::installer->getInstance(dovecotConfig => \%self::dovecotConfig)->install();
 }
 
 =item postinstall()
@@ -113,9 +99,8 @@ sub install
 sub postinstall
 {
 	my $self = shift;
-	my $rs = 0;
 
-	$rs = $self->{'hooksManager'}->trigger('beforePoPostinstall', 'dovecot');
+	my $rs = $self->{'hooksManager'}->trigger('beforePoPostinstall', 'dovecot');
 	return $rs if $rs;
 
 	$self->{'restart'} = 'yes';
@@ -143,7 +128,7 @@ sub postaddMail
 		require Servers::mta;
 		my $mta = Servers::mta->factory();
 
-		my $mailDir = "$mta->{'MTA_VIRTUAL_MAIL_DIR'}/$data->{'DMN_NAME'}/$data->{'MAIL_ACC'}";
+		my $mailDir = "$mta->{'MTA_VIRTUAL_MAIL_DIR'}/$data->{'DOMAIN_NAME'}/$data->{'MAIL_ACC'}";
 		my $mailUidName =  $mta->{'MTA_MAILBOX_UID_NAME'};
 		my $mailGidName = $mta->{'MTA_MAILBOX_GID_NAME'};
 
@@ -212,9 +197,8 @@ sub postaddMail
 sub uninstall
 {
 	my $self = shift;
-	my $rs = 0;
 
-	$rs = $self->{'hooksManager'}->trigger('beforePoUninstall', 'dovecot');
+	my $rs = $self->{'hooksManager'}->trigger('beforePoUninstall', 'dovecot');
 	return $rs if $rs;
 
 	require Servers::po::dovecot::uninstaller;
@@ -239,9 +223,8 @@ sub uninstall
 sub restart
 {
 	my $self = shift;
-	my $rs = 0;
 
-	$rs = $self->{'hooksManager'}->trigger('beforePoRestart');
+	my $rs = $self->{'hooksManager'}->trigger('beforePoRestart');
 	return $rs if $rs;
 
 	my ($stdout, $stderr);
@@ -353,7 +336,9 @@ sub _init
 
 	$self->{'hooksManager'} = iMSCP::HooksManager->getInstance();
 
-	$self->{'hooksManager'}->trigger('beforePoInit', $self, 'dovecot');
+	$self->{'hooksManager'}->trigger(
+		'beforePoInit', $self, 'dovecot'
+	) and fatal('dovecot - beforePoInit hook has failed');
 
 	$self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/dovecot";
 	$self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
@@ -363,7 +348,9 @@ sub _init
 
 	tie %self::dovecotConfig, 'iMSCP::Config','fileName' => $conf;
 
-	$self->{'hooksManager'}->trigger('afterPoInit', $self, 'dovecot');
+	$self->{'hooksManager'}->trigger(
+		'afterPoInit', $self, 'dovecot'
+	) and fatal('dovecot - afterPoInit hook has failed');
 
 	$self;
 }
@@ -381,15 +368,14 @@ sub _init
 
 END
 {
-	my $endCode	= $?;
 	my $self = Servers::po::dovecot->getInstance();
 	my $wrkLogFile = "$main::imscpConfig{'LOG_DIR'}/mail.po.log";
 	my $rs = 0;
 
-	$rs |= $self->restart() if $self->{'restart'} && $self->{'restart'} eq 'yes';
+	$rs = $self->restart() if $self->{'restart'} && $self->{'restart'} eq 'yes';
 	$rs |= iMSCP::File->new(filename => $wrkLogFile)->delFile() if -f $wrkLogFile;
 
-	$? = $endCode || $rs;
+	$? ||= $rs;
 }
 
 =back

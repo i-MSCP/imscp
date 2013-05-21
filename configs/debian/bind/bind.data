@@ -18,8 +18,6 @@ CMD_NAMED = /etc/init.d/bind9
 
 CMD_NAMED_COMPILEZONE = /usr/sbin/named-compilezone
 
-CMD_RNDC = /usr/sbin/rndc
-
 BIND_IPV6 =
 
 # Mode in which the server should acts (master|slave)

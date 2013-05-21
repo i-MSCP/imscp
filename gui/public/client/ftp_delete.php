@@ -1,38 +1,29 @@
 <?php
 /**
  * i-MSCP - internet Multi Server Control Panel
+ * Copyright (C) 2010-2013 by i-MSCP team
  *
- * The contents of this file are subject to the Mozilla Public License
- * Version 1.1 (the "License"); you may not use this file except in
- * compliance with the License. You may obtain a copy of the License at
- * http://www.mozilla.org/MPL/
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
  *
- * Software distributed under the License is distributed on an "AS IS"
- * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
- * License for the specific language governing rights and limitations
- * under the License.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- * The Original Code is "VHCS - Virtual Hosting Control System".
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
- * The Initial Developer of the Original Code is moleSoftware GmbH.
- * Portions created by Initial Developer are Copyright (C) 2001-2006
- * by moleSoftware GmbH. All Rights Reserved.
- *
- * Portions created by the ispCP Team are Copyright (C) 2006-2010 by
- * isp Control Panel. All Rights Reserved.
- *
- * Portions created by the i-MSCP Team are Copyright (C) 2010-2013 by
- * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
- *
- * @category	i-MSCP
- * @package		iMSCP_Core
- * @subpackage	Client
- * @copyright   2001-2006 by moleSoftware GmbH
- * @copyright   2006-2010 by ispCP | http://isp-control.net
- * @copyright   2010-2013 by i-MSCP | http://i-mscp.net
- * @author      ispCP Team
- * @author      i-MSCP Team
- * @link        http://i-mscp.net
+ * @category    iMSCP
+ * @package	    iMSCP_Core
+ * @subpackage  Client_Ftp
+ * @copyright   2010-2013 by i-MSCP team
+ * @author      Laurent Declercq <l.declercq@nuxwin.com>
+ * @link        http://www.i-mscp.net i-MSCP Home Site
+ * @license     http://www.gnu.org/licenses/gpl-2.0.txt GPL v2
  */
 
 // Include core library
@@ -42,101 +33,68 @@ iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptStart)
 
 check_login('user');
 
-customerHasFeature('ftp') or showBadRequestErrorPage();
+if (customerHasFeature('ftp') && isset($_GET['id'])) {
+	$ftpUserId = clean_input($_GET['id']);
 
-if (isset($_GET['id']) && $_GET['id'] !== '') {
+	iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onBeforeDeleteFtp, array('ftpUserId' => $ftpUserId));
 
-	$ftp_id = $_GET['id'];
+	$query = "SELECT `admin_id`, `gid` FROM `ftp_users` WHERE `userid` = ? AND `admin_id` = ?";
+	$stmt = exec_query($query, array($ftpUserId, $_SESSION['user_id']));
 
-	iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onBeforeDeleteFtp, array('ftpId' => $ftp_id));
-	$dmn_name = $_SESSION['user_logged'];
-
-	$query = "
-		SELECT
-			`t1`.`userid`, `t1`.`uid`, `t2`.`domain_uid`
-		FROM
-			`ftp_users` AS `t1`
-		JOIN
-			`domain` AS `t2`
-			ON
-				`t1`.`uid` = t2.`domain_uid`
-		WHERE
-			`t1`.`userid` = ?
-		AND
-			`t2`.`domain_name` = ?
-	";
-
-	$rs = exec_query($query, array($ftp_id, $dmn_name));
-	$ftp_name = $rs->fields['userid'];
-
-	if ($rs->recordCount() == 0) {
+	if (!$stmt->rowCount()) {
 		showBadRequestErrorPage();
 	}
 
-	$query = "
-		SELECT
-			`t1`.`gid`, t2.`members`
-		FROM
-			`ftp_users` AS `t1`
-		JOIN
-			`ftp_group` AS `t2`
-			ON
-				`t1`.`gid` = `t2`.`gid`
-		WHERE
-			`t1`.`userid` = ?
-	";
+	$ftpUserGid = $stmt->fields['gid'];
 
-	$rs = exec_query($query, $ftp_id);
+	/** @var $db iMSCP_Database */
+	$db = iMSCP_Registry::get('db');
 
-	$ftp_gid = $rs->fields['gid'];
-	$ftp_members = $rs->fields['members'];
+	try {
+		$db->beginTransaction();
 
-	$members = str_replace(",{$ftp_id},", ",", "$ftp_members");
-	if ($members == $ftp_members) {
-		$members = preg_replace("/(^{$ftp_id},)|(,{$ftp_id}$)|(^{$ftp_id}$)/", "", "$ftp_members");
+		$stmt = exec_query("SELECT `groupname`, `members` FROM `ftp_group` WHERE `gid` = ?", $ftpUserGid);
+
+		if ($stmt->rowCount()) {
+			$groupName = $stmt->fields['groupname'];
+			$members = preg_split(',', $stmt->fields['members'], -1, PREG_SPLIT_NO_EMPTY);
+			$member = array_search($ftpUserId, $members);
+
+			if (false !== $member) {
+				unset($members[$member]);
+
+				if (!empty($members)) {
+					exec_query(
+						"UPDATE `ftp_group` SET `members` = ? WHERE `gid` = ?",
+						array(implode(',', $members), $ftpUserGid)
+					);
+				} else {
+					exec_query('DELETE FROM `ftp_group` WHERE `groupname` = ?', $groupName);
+					exec_query('DELETE FROM `quotalimits` WHERE `name` = ?', $groupName);
+					exec_query('DELETE FROM `quotatallies` WHERE `name` = ?', $groupName);
+				}
+			}
+		}
+
+		exec_query('DELETE FROM `ftp_users` WHERE `userid` = ?', $ftpUserId);
+
+		$db->commit();
+
+		iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAfterDeleteFtp, array('ftpUserId' => $ftpUserId));
+
+		write_log(sprintf("%s: deleted FTP account: %s", $_SESSION['user_logged'], $ftpUserId), E_USER_NOTICE);
+		set_page_message(tr('FTP account successfully deleted.'), 'success');
+
+	} catch (iMSCP_Exception_Database $e) {
+		$db->rollBack();
+		set_page_message(tr('Unable to delete Ftp account. A message has been sent to the administrator.'), 'error');
+		write_log(
+			sprintf("System was unable to delete Ftp account %s. Message was: %s", $ftpUserId, $e->getMessage()),
+			E_USER_ERROR
+		);
 	}
 
-	if (strlen($members) == 0) {
-		$query = "
-			DELETE FROM
-				`ftp_group`
-			WHERE
-				`gid` = ?
-		";
-
-		$rs = exec_query($query, $ftp_gid);
-
-	} else {
-		$query = "
-			UPDATE
-				`ftp_group`
-			SET
-				`members` = ?
-			WHERE
-				`gid` = ?
-		";
-
-		$rs = exec_query($query, array($members, $ftp_gid));
-	}
-
-	$query = "
-		DELETE FROM
-			`ftp_users`
-		WHERE
-			`userid` = ?
-	";
-
-	$rs = exec_query($query, $ftp_id);
-
-	$domain_props = get_domain_default_props($_SESSION['user_id']);
-	update_reseller_c_props($domain_props['domain_created_id']);
-
-	iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAfterDeleteFtp, array('ftpid' => $ftp_id));
-
-	write_log($_SESSION['user_logged'].": deletes FTP account: ".$ftp_name, E_USER_NOTICE);
-	set_page_message(tr('FTP account deleted.'), 'success');
-	redirectTo('ftp_accounts.php');
-
-} else {
 	redirectTo('ftp_accounts.php');
 }
+
+showBadRequestErrorPage();

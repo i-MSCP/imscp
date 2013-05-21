@@ -236,17 +236,6 @@
 				<th>{TR_FEATURE}</th>
 				<th>{TR_STATUS}</th>
 			</tr>
-            <!-- BDP: ext_mail_block -->
-            <tr>
-                <td><label for="domain_external_mail">{TR_EXTMAIL}</label></td>
-                <td>
-                    <select id="domain_external_mail" name="domain_external_mail" style="vertical-align: middle">
-                        <option value="yes" {EXTMAIL_YES}>{TR_YES}</option>
-                        <option value="no" {EXTMAIL_NO}>{TR_NO}</option>
-                    </select>
-                </td>
-            </tr>
-            <!-- EDP: ext_mail_block -->
 			<!-- BDP: php_block -->
 			<tr>
 				<td><label for="domain_php">{TR_PHP}</label></td>
@@ -257,7 +246,6 @@
 					</select>
 				</td>
 			</tr>
-
 			<!-- BDP: php_editor_block -->
 			<tr id="php_editor_block">
 				<td><label for="phpiniSystem">{TR_PHP_EDITOR}</label></td>
@@ -358,7 +346,6 @@
 				</td>
 			</tr>
 			<!-- EDP: php_editor_block -->
-
 			<!-- EDP: php_block -->
 			<!-- BDP: cgi_block -->
 			<tr>
@@ -393,6 +380,17 @@
 				</td>
 			</tr>
 			<!-- EDP: aps_block -->
+			<!-- BDP: ext_mail_block -->
+			<tr>
+				<td><label for="domain_external_mail">{TR_EXTMAIL}</label></td>
+				<td>
+					<select id="domain_external_mail" name="domain_external_mail" style="vertical-align: middle">
+						<option value="yes" {EXTMAIL_YES}>{TR_YES}</option>
+						<option value="no" {EXTMAIL_NO}>{TR_NO}</option>
+					</select>
+				</td>
+			</tr>
+			<!-- EDP: ext_mail_block -->
 			<!-- BDP: backup_block -->
 			<tr>
 				<td><label for="allowbackup">{TR_BACKUP}</label></td>
@@ -406,6 +404,23 @@
 				</td>
 			</tr>
 			<!-- EDP: backup_block -->
+			<tr>
+				<th colspan="2">{TR_PERMISSIONS}</th>
+			</tr>
+			<tr>
+				<td>
+					<label for="web_folder_protection">{TR_PROTECT_WEB_FOLDERS}</label>
+					<span style="vertical-align:middle" class="icon i_help" id="web_folder_protection_help" title="{TR_WEB_FOLDER_PROTECTION_HELP}">{TR_HELP}</span>
+				</td>
+				<td>
+					<div class="radio">
+						<input type="radio" id="web_folder_protection_yes" name="web_folder_protection"  value="yes" {WEB_FOLDER_PROTECTION_YES} />
+						<label for="web_folder_protection_yes">{TR_YES}</label>
+						<input type="radio" id="web_folder_protection_no" name="web_folder_protection" value="no" {WEB_FOLDER_PROTECTION_NO} />
+						<label for="web_folder_protection_no">{TR_NO}</label>
+					</div>
+				</td>
+			</tr>
 		</table>
 		<div class="buttons">
 			<input name="submit" type="submit" value="{TR_UPDATE}"/>

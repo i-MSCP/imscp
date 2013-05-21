@@ -17,12 +17,12 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
-# @category		i-MSCP
-# @copyright	2010-2013 by i-MSCP | http://i-mscp.net
-# @author		Daniel Andreca <sci2tech@gmail.com>
-# @author		Laurent Declercq <l;declercq@nuxwin.com>
-# @link			http://i-mscp.net i-MSCP Home Site
-# @license		http://www.gnu.org/licenses/gpl-2.0.html GPL v2
+# @category    i-MSCP
+# @copyright   2010-2013 by i-MSCP | http://i-mscp.net
+# @author      Daniel Andreca <sci2tech@gmail.com>
+# @author      Laurent Declercq <l.declercq@nuxwin.com>
+# @link        http://i-mscp.net i-MSCP Home Site
+# @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
 package Servers::named::bind::installer;
 
@@ -40,40 +40,16 @@ use iMSCP::Templator;
 use iMSCP::Execute;
 use parent 'Common::SingletonClass';
 
-sub _init
-{
-	my $self = shift;
-
-	$self->{'hooksManager'} = iMSCP::HooksManager->getInstance();
-
-	$self->{'hooksManager'}->trigger('beforeNamedInitInstaller', $self, 'bind');
-
-	$self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/bind";
-	$self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
-	$self->{'wrkDir'} = "$self->{'cfgDir'}/working";
-
-	my $conf = "$self->{'cfgDir'}/bind.data";
-	my $oldConf = "$self->{'cfgDir'}/bind.old.data";
-
-	tie %self::bindConfig, 'iMSCP::Config','fileName' => $conf, 'noerrors' => 1;
-
-	if(-f $oldConf) {
-		tie %self::bindOldConfig, 'iMSCP::Config','fileName' => $oldConf, noerrors => 1;
-		%self::bindConfig = (%self::bindConfig, %self::bindOldConfig);
-	}
-
-	$self->{'hooksManager'}->trigger('afterNamedInitInstaller', $self, 'bind');
-
-	$self;
-}
-
 sub registerSetupHooks
 {
 	my $self = shift;
 	my $hooksManager = shift;
 
+	my $rs = $hooksManager->trigger('beforeNamedRegisterSetupHooks', $hooksManager, 'bind');
+	return $rs if $rs;
+
 	# Adding bind installer dialog in setup dialog stack
-	my $rs = $hooksManager->register(
+	$rs = $hooksManager->register(
 		'beforeSetupDialog', sub { my $dialogStack = shift; push(@$dialogStack, sub { $self->askMode(@_) }); 0; }
 	);
 	return $rs if $rs;
@@ -81,8 +57,9 @@ sub registerSetupHooks
 	$rs = $hooksManager->register(
 		'beforeSetupDialog', sub { my $dialogStack = shift; push(@$dialogStack, sub { $self->askIPv6(@_) }); 0; }
     );
+    return $rs if $rs;
 
-	$rs;
+	$hooksManager->trigger('afterNamedRegisterSetupHooks', $hooksManager, 'bind');
 }
 
 sub askMode
@@ -133,7 +110,7 @@ sub askMode
 			$self::bindConfig{'BIND_MODE'} = $mode;
 			$rs = $self->askOtherDns($dialog);
 		}
-	} elsif(defined $main::preseed['BIND_MODE']) {
+	} elsif(defined $main::preseed{'BIND_MODE'}) {
 		$self::bindConfig{'BIND_MODE'} = $mode;
 		$self::bindConfig{'PRIMARY_DNS'} = $primaryDnsIps;
 		$self::bindConfig{'SECONDARY_DNS'} = $secondaryDnsIps;
@@ -160,7 +137,7 @@ sub askOtherDns
 
 	if($mode eq 'master') {
 		($rs, $out) = $dialog->radiolist(
-			"\nDo you want add slave DNS server(s)?", ['no', 'yes'], $secondaryDnsIps ne 'no' ? 'yes' : 'no'
+			"\nDo you want add slave DNS server(s)?", ['no', 'yes'], $secondaryDnsIps eq 'yes' ? 'yes' : 'no'
 		);
 
 		if($rs != 30 && $out eq 'no') {
@@ -200,7 +177,7 @@ sub askOtherDns
 
 						if($rs) {
 							$msg = "\n\n\\Z1Wrong IP address found.\\Zn\n\nPlease, try again:";
-							last if $rs;
+							last;
 						}
 					}
 				}
@@ -230,7 +207,7 @@ sub askIPv6
 
 	if($main::reconfigure ~~ ['named', 'servers', 'all', 'forced'] || $ipv6 !~ /^yes|no$/) {
 		($rs, $ipv6) = $dialog->radiolist(
-			"\nDo you want enable IPv6 support for your DNS server?", ['yes', 'no'], $ipv6 eq 'no' ? 'no' : 'yes'
+			"\nDo you want enable IPv6 support for your DNS server?", ['yes', 'no'], $ipv6 eq 'yes' ? 'yes' : 'no'
 		);
 	}
 
@@ -244,7 +221,9 @@ sub askIPv6
 sub install
 {
 	my $self = shift;
-	my $rs = 0;
+
+	my $rs = $self->{'hooksManager'}->trigger('beforeNamedInstall', 'bind');
+	return $rs if $rs;
 
 	for('BIND_CONF_DEFAULT_FILE', 'BIND_CONF_FILE', 'BIND_LOCAL_CONF_FILE', 'BIND_OPTIONS_CONF_FILE') {
 		# Handle case where the file is not provided by specfic distribution
@@ -263,7 +242,40 @@ sub install
 	$rs = $self->_addMasterZone();
 	return $rs if $rs;
 
-	$self->_saveConf();
+	$rs = $self->_saveConf();
+	return $rs if $rs;
+
+	$self->{'hooksManager'}->trigger('afterNamedInstall', 'bind');
+}
+
+sub _init
+{
+	my $self = shift;
+
+	$self->{'hooksManager'} = iMSCP::HooksManager->getInstance();
+
+	$self->{'hooksManager'}->trigger(
+		'beforeNamedInitInstaller', $self, 'bind'
+	) and fatal('bind - beforeNamedInitInstaller hook has failed');
+
+	$self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/bind";
+	$self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
+	$self->{'wrkDir'} = "$self->{'cfgDir'}/working";
+
+	$self::bindConfig = $self->{'bindConfig'};
+
+	my $oldConf = "$self->{'cfgDir'}/bind.old.data";
+
+	if(-f $oldConf) {
+		tie %self::bindOldConfig, 'iMSCP::Config','fileName' => $oldConf, noerrors => 1;
+		%self::bindConfig = (%self::bindConfig, %self::bindOldConfig);
+	}
+
+	$self->{'hooksManager'}->trigger(
+		'afterNamedInitInstaller', $self, 'bind'
+	) and fatal('bind - afterNamedInitInstaller hook has failed');
+
+	$self;
 }
 
 sub _bkpConfFile
@@ -454,8 +466,8 @@ sub _addMasterZone
 
 	$rs = Servers::named::bind->getInstance()->addDmn(
 		{
-			DMN_NAME => $main::imscpConfig{'BASE_SERVER_VHOST'},
-			DMN_IP => $main::imscpConfig{'BASE_SERVER_IP'},
+			DOMAIN_NAME => $main::imscpConfig{'BASE_SERVER_VHOST'},
+			DOMAIN_IP => $main::imscpConfig{'BASE_SERVER_IP'},
 			MX => ''
 		}
 	);

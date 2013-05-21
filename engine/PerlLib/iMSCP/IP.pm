@@ -17,11 +17,11 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
-# @category		i-MSCP
-# @copyright	2010-2013 by i-MSCP | http://i-mscp.net
-# @author		Daniel Andreca <sci2tech@gmail.com>
-# @link			http://i-mscp.net i-MSCP Home Site
-# @license      http://www.gnu.org/licenses/gpl-2.0.html GPL v2
+# @category    i-MSCP
+# @copyright   2010-2013 by i-MSCP | http://i-mscp.net
+# @author      Daniel Andreca <sci2tech@gmail.com>
+# @link        http://i-mscp.net i-MSCP Home Site
+# @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
 package iMSCP::IP;
 
@@ -56,8 +56,12 @@ sub loadIPs
 			require $file;
 
 			$self->{$_} = $class->getInstance();
-			$rs |= $self->{$_}->parseNetCards($netCardUp);
-			$rs |= $self->{$_}->parseIPs($configuredIPs);
+
+			$rs = $self->{$_}->parseNetCards($netCardUp);
+			return $rs if $rs;
+
+			$rs = $self->{$_}->parseIPs($configuredIPs);
+			return $rs if $rs;
 		}
 
 		$self->{'_loaded'} = 1;
@@ -69,10 +73,9 @@ sub loadIPs
 sub getIPs
 {
 	my $self = shift;
-	my $rs = 0;
 	my @ips = ();
 
-	$rs = $self->loadIPs() unless $self->{'_loaded'};
+	my $rs = $self->loadIPs() unless $self->{'_loaded'};
 	return (wantarray ? () : '') if $rs;
 
 	@ips = (@ips, ($self->{$_}->getIPs())) for('IPv4', 'IPv6');
@@ -85,10 +88,9 @@ sub getIPs
 sub getNetCards
 {
 	my $self = shift;
-	my $rs = 0;
 	my %cards;
 
-	$rs = $self->loadIPs() unless $self->{'_loaded'};
+	my $rs = $self->loadIPs() unless $self->{'_loaded'};
 	return (wantarray ? () : '') if $rs;
 
 	%cards = (%cards, map { $_ => undef }($self->{$_}->getNetCards())) for('IPv4', 'IPv6');
@@ -102,10 +104,10 @@ sub getCardByIP
 {
 	my $self = shift;
 	my $ip = shift;
-	my $rs = 0;
+
 	my $card;
 
-	$rs = $self->loadIPs() unless $self->{'_loaded'};
+	my $rs = $self->loadIPs() unless $self->{'_loaded'};
 	return (wantarray ? () : '') if $rs;
 
 	for('IPv4', 'IPv6'){
@@ -122,9 +124,8 @@ sub addedToVCard
 {
 	my $self = shift;
 	my $ip = shift;
-	my $rs = 0;
 
-	$rs = $self->loadIPs() unless $self->{'_loaded'};
+	my $rs = $self->loadIPs() unless $self->{'_loaded'};
 	return (wantarray ? () : '') if $rs;
 
 	for('IPv4', 'IPv6'){
@@ -141,9 +142,8 @@ sub existsNetCard
 {
 	my $self = shift;
 	my $card = shift;
-	my $rs = 0;
 
-	$rs = $self->loadIPs() unless $self->{'_loaded'};
+	my $rs = $self->loadIPs() unless $self->{'_loaded'};
 	return (wantarray ? () : '') if $rs;
 
 	for('IPv4', 'IPv6'){
@@ -161,9 +161,8 @@ sub isCardUp
 {
 	my $self = shift;
 	my $card = shift;
-	my $rs = 0;
 
-	$rs = $self->loadIPs() unless $self->{'_loaded'};
+	my $rs = $self->loadIPs() unless $self->{'_loaded'};
 	return (wantarray ? () : '') if $rs;
 
 	for('IPv4', 'IPv6'){
@@ -180,9 +179,8 @@ sub isValidIp
 {
 	my $self = shift;
 	my $ip = shift;
-	my $rs = 0;
 
-	$rs = $self->loadIPs() unless $self->{'_loaded'};
+	my $rs = $self->loadIPs() unless $self->{'_loaded'};
 	return (wantarray ? () : '') if $rs;
 
 	for('IPv4', 'IPv6'){
@@ -214,7 +212,7 @@ sub normalize
 	my $ip = shift;
 
 	return $ip if $self->{'IPv4'}->isValidIp($ip);
-	return  $self->{'IPv6'}->normalize($ip) if $self->{'IPv6'}->isValidIp($ip);
+	return $self->{'IPv6'}->normalize($ip) if $self->{'IPv6'}->isValidIp($ip);
 }
 
 sub attachIpToNetCard

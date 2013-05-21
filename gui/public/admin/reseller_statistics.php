@@ -24,19 +24,19 @@
  * Portions created by the i-MSCP Team are Copyright (C) 2010-2013 by
  * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
  *
- * @category	i-MSCP
- * @package		iMSCP_Core
- * @subpackage	Admin
- * @copyright	2001-2006 by moleSoftware GmbH
- * @copyright	2006-2010 by ispCP | http://isp-control.net
- * @copyright	2010-2013 by i-MSCP | http://i-mscp.net
- * @author		ispCP Team
- * @author		i-MSCP Team
- * @link		http://i-mscp.net
+ * @category    i-MSCP
+ * @package     iMSCP_Core
+ * @subpackage  Admin
+ * @copyright   2001-2006 by moleSoftware GmbH
+ * @copyright   2006-2010 by ispCP | http://isp-control.net
+ * @copyright   2010-2013 by i-MSCP | http://i-mscp.net
+ * @author      ispCP Team
+ * @author      i-MSCP Team
+ * @link        http://i-mscp.net
  */
 
-/****************************************************************
- * script functions
+/***********************************************************************************************************************
+ * Functions
  */
 
 /**
@@ -124,18 +124,20 @@ function _admin_generateResellerStatisticsEntry($tpl, $resellerId, $resellerName
 				: (($resellerProperties['max_sql_user_cnt'] == "-1") ? tr('disabled') : tr('%1$d / %2$d of unlimited', $usql_user_current, $resellerProperties['current_sql_user_cnt']))));
 }
 
-/****************************************************************
- * main script
+/***********************************************************************************************************************
+ * Main
  */
+
 // Include core library
 require 'imscp-lib.php';
 
 check_login('admin');
 
-/** @var $cfg iMSCP_Config_Handler_File */
-$cfg = iMSCP_Registry::get('config');
-
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAdminScriptStart);
+
+if(!systemHasResellers()) {
+	showBadRequestErrorPage();
+}
 
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic(
@@ -144,7 +146,9 @@ $tpl->define_dynamic(
 		'page' => 'admin/reseller_statistics.tpl',
 		'page_message' => 'layout',
 		'reseller_statistics_entries_block' => 'page',
-		'reseller_statistics_entry_block' => 'reseller_statistics_entries_block'));
+		'reseller_statistics_entry_block' => 'reseller_statistics_entries_block'
+	)
+);
 
 $tpl->assign(
 	array(
@@ -163,7 +167,9 @@ $tpl->assign(
 		'TR_SQL_USER' => tr('SQL users'),
 		'TR_RESELLER_TOOLTIP' => tr('Show detailed statistics for this reseller'),
 		'TR_NO_RESELLER_STATISTICS' => tr('No reseller statistics to display.'),
-		'DATATABLE_TRANSLATIONS' => getDataTablesPluginTranslations()));
+		'DATATABLE_TRANSLATIONS' => getDataTablesPluginTranslations()
+	)
+);
 
 generateNavigation($tpl);
 admin_generatePage($tpl);

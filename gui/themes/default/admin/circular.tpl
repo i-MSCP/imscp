@@ -8,9 +8,13 @@
 						<td><label for="rcpt_to">{TR_SEND_TO}</label></td>
 						<td>
 							<select id="rcpt_to" name="rcpt_to">
-								<option value="usrs">{TR_ALL_USERS}</option>
-								<option value="rsls">{TR_ALL_RESELLERS}</option>
-								<option value="usrs_rslrs">{TR_ALL_USERS_AND_RESELLERS}</option>
+								<option value="all_resellers">{TR_ALL_RESELLERS}</option>
+								<!-- BDP: all_customers -->
+								<option value="all_users">{TR_ALL_CUSTOMERS}</option>
+								<!-- EDP: all_customers -->
+								<!-- BDP: all_resellers_and_customers -->
+								<option value="all_resellers_and_users">{TR_ALL_RESELLERS_AND_CUSTOMERS}</option>
+								<!-- EDP: all_resellers_and_customers -->
 							</select>
 						</td>
 					</tr>

@@ -38,6 +38,8 @@ CMD_SASLDB_LISTUSERS2 = /usr/sbin/sasldblistusers2
 
 CMD_SASLDB_PASSWD2 = /usr/sbin/saslpasswd2
 
+CMD_PFLOGSUM = /usr/sbin/maillogconvert.pl
+
 SASLDB_USER = root
 
 SASLDB_GROUP = sasl

@@ -75,7 +75,7 @@ $tpl->assign(
 		 'TR_USERNAME' => tr('Username'),
 		 'TR_PASSWORD' => tr('Password'),
 		 'TR_REP_PASSWORD' => tr('Repeat password'),
-		 'TR_DMN_IP' => tr('Domain IP'),
+		 'TR_DOMAIN_IP' => tr('Domain IP'),
 		 'TR_USREMAIL' => tr('Email'),
 		 'TR_ADDITIONAL_DATA' => tr('Additional data'),
 		 'TR_CUSTOMER_ID' => tr('Customer ID'),
@@ -139,7 +139,7 @@ if (isset($_POST['Submit']) && isset($_POST['uaction']) && ('save_changes' === $
         exit;
 	}
 
-	if (check_ruser_data($tpl, '_yes_')) { // Save data to db
+	if (check_ruser_data(true)) { // Save data to db
 		update_data_in_db($hpid);
 	}
 
@@ -410,13 +410,7 @@ function update_data_in_db($hpid)
 
 	if (isset($_POST['send_data']) && !empty($pure_user_pass)) {
 		send_add_user_auto_msg(
-			$reseller_id,
-			$dmn_user_name,
-			$pure_user_pass,
-			$user_email,
-			$first_name,
-			$last_name,
-			tr('Domain account')
+			$reseller_id, $dmn_user_name, $pure_user_pass, $user_email, $first_name, $last_name, tr('Customer')
 		);
 	}
 

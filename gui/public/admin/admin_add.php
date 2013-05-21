@@ -150,8 +150,8 @@ function add_user($tpl)
                                    clean_input($_POST['email']),
                                    clean_input($_POST['fname']),
                                    clean_input($_POST['lname']),
-                                   tr('Administrator'),
-                                   $gender);
+                                   tr('Administrator')
+                                   );
 
             //$_SESSION['user_added'] = 1;
 			set_page_message(tr('Admin account successfully created.'), 'success');

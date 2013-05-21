@@ -42,24 +42,28 @@ use warnings;
 
 =over 4
 
-=item getInstance()
+=item getInstance([%args])
 
  Implement singleton design pattern. Return instance of this class.
-
+ Param hash|hash_ref OPTIONAL hash representing class attributes
  Return Common::SingletonClass
 
 =cut
 
 sub getInstance
 {
-    my $class = shift;
-
-    return $class if ref $class;
+    my $self = shift;
+    return $self if ref $self;
 
     no strict 'refs';
-    my $instance = \${ "$class\::_instance" };
+    my $instance = \${ "$self\::_instance" };
 
-    defined $$instance ? $$instance : ($$instance = $class->_newInstance(@_));
+	if(!$$instance) {
+		$$instance = bless { @_ && ref $_[0] eq 'HASH' ? %{$_[0]} : @_ }, $self;
+		$$instance->_init();
+	}
+
+	$$instance;
 }
 
 =item hasInstance()
@@ -72,12 +76,12 @@ sub getInstance
 
 sub hasInstance
 {
-    my $class = shift;
+    my $self = shift;
 
-    $class = ref $class || $class;
+    $self = ref $self || $self;
     no strict 'refs';
 
-    return ${"$class\::_instance"};
+    return ${"$self\::_instance"};
 }
 
 =back
@@ -85,25 +89,6 @@ sub hasInstance
 =head1 PRIVATE METHODS
 
 =over 4
-
-=item _newInstance()
-
- Implement singleton design pattern. Return instance of this class.
-
- Return Common::SingletonClass
-
-=cut
-
-sub _newInstance
-{
-    my $class = shift;
-    my %args  = @_ && ref $_[0] eq 'HASH' ? %{ $_[0] } : @_;
-    $class = bless { %args }, $class;
-
-    $class->_init;
-
-    $class;
-}
 
 =item _init()
 

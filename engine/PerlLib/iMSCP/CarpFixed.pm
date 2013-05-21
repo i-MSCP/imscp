@@ -19,11 +19,11 @@ package Carp;
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
-# @category		i-MSCP
-# @copyright	2010-2013 by i-MSCP | http://i-mscp.net
-# @author		Laurent Declercq <l.declercq@nuxwin.com>
-# @link			http://i-mscp.net i-MSCP Home Site
-# @license		http://www.gnu.org/licenses/gpl-2.0.html GPL v2
+# @category    i-MSCP
+# @copyright   2010-2013 by i-MSCP | http://i-mscp.net
+# @author      Laurent Declercq <l.declercq@nuxwin.com>
+# @link        http://i-mscp.net i-MSCP Home Site
+# @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
 #
 # This packages provides a fix for the following errors:
@@ -47,7 +47,6 @@ BEGIN
     }
 }
 
-
 delete $Carp::Heavy::{'_cgc'};
 *_cgc = *_cgc_real;
 
@@ -57,7 +56,6 @@ sub _cgc_real
 	return \&{"CORE::GLOBAL::caller"} if defined &{"CORE::GLOBAL::caller"};
 	return;
 }
-
 
 delete $Carp::Heavy::{'caller_info'};
 *caller_info = *caller_info_sassign_fixed;

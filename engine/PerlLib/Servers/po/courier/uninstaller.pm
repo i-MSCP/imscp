@@ -17,16 +17,17 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
-# @category		i-MSCP
-# @copyright	2010-2013 by i-MSCP | http://i-mscp.net
-# @author		Daniel Andreca <sci2tech@gmail.com>
-# @link			http://i-mscp.net i-MSCP Home Site
-# @license		http://www.gnu.org/licenses/gpl-2.0.html GPL v2
+# @category     i-MSCP
+# @copyright    2010-2013 by i-MSCP | http://i-mscp.net
+# @author       Daniel Andreca <sci2tech@gmail.com>
+# @link         http://i-mscp.net i-MSCP Home Site
+# @license      http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
 package Servers::po::courier::uninstaller;
 
 use strict;
 use warnings;
+
 use iMSCP::Debug;
 use iMSCP::File;
 use iMSCP::Execute;
@@ -50,9 +51,8 @@ sub _init
 sub uninstall
 {
 	my $self = shift;
-	my $rs = 0;
 
-	$rs = $self->restoreConfFile();
+	my $rs = $self->restoreConfFile();
 	return $rs if $rs;
 
 	$rs = $self->authDaemon();
@@ -82,12 +82,10 @@ sub restoreConfFile
 sub authDaemon
 {
 	my $self= shift;
-	my $rs	= 0;
-	my $file;
 
-	$file = iMSCP::File->new('filename' => "$self::courierConfig{'AUTHLIB_CONF_DIR'}/authdaemonrc");
+	my $file = iMSCP::File->new('filename' => "$self::courierConfig{'AUTHLIB_CONF_DIR'}/authdaemonrc");
 
-	$rs = $file->mode(0660);
+	my $rs = $file->mode(0660);
 	return $rs if $rs;
 
 	$file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
@@ -96,12 +94,10 @@ sub authDaemon
 sub userDB
 {
 	my $self = shift;
-	my $rs = 0;
-	my $file;
 
-	$file = iMSCP::File->new('filename' => "$self::courierConfig{'AUTHLIB_CONF_DIR'}/userdb");
+	my $file = iMSCP::File->new('filename' => "$self::courierConfig{'AUTHLIB_CONF_DIR'}/userdb");
 
-	$rs = $file->mode(0600);
+	my $rs = $file->mode(0600);
 	return $rs if $rs;
 
 	$rs = $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});

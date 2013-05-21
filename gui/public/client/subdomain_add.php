@@ -351,8 +351,6 @@ function client_addSubdomain($userId, $domainId, $subdomainName, $subdomainMount
 		)
 	);
 
-	update_reseller_c_props(get_reseller_id($domainId));
-
 	write_log($_SESSION['user_logged'] . ": added new subdomain: " . $subdomainName, E_USER_NOTICE);
 	send_request();
 }

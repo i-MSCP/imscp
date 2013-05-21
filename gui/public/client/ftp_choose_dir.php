@@ -25,8 +25,8 @@
  * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
  *
  * @category    i-MSCP
- * @package        iMSCP_Core
- * @subpackage    Client
+ * @package     iMSCP_Core
+ * @subpackage  Client
  * @copyright   2001-2006 by moleSoftware GmbH
  * @copyright   2006-2010 by ispCP | http://isp-control.net
  * @copyright   2010-2013 by i-MSCP | http://i-mscp.net
@@ -34,8 +34,6 @@
  * @author      i-MSCP Team
  * @link        http://i-mscp.net
  */
-
-// TODO: Replace popup by modal dialog (jQuery)
 
 /***********************************************************************************************************************
  * Functions
@@ -85,7 +83,8 @@ function isAllowedDir($domainId, $directory)
 	}
 
 	foreach ($mountPoints as $mountPoint) {
-		if (preg_match("%^$mountPoint/?(?:backups|disabled|errors|logs|phptmp|statistics)$%", "$directory")) {
+		#if (preg_match("%^$mountPoint/?(?:backups|disabled|errors|logs|phptmp|statistics)$%", "$directory")) {
+		if (preg_match("%^$mountPoint/?(?:disabled|errors|phptmp|statistics|domain_disable_page)$%", "$directory")) {
 			return false;
 		}
 	}
@@ -97,7 +96,7 @@ function isAllowedDir($domainId, $directory)
  * Generates directories list.
  *
  * @param iMSCP_pTemplate $tpl Template engine instance
- * @return
+ * @return void
  */
 function client_generateDirectoriesList($tpl)
 {
@@ -173,9 +172,6 @@ check_login('user');
 if (!customerHasFeature('ftp') && !customerHasFeature('protected_areas')) {
 	showBadRequestErrorPage();
 }
-
-/** @var $cfg iMSCP_Config_Handler_File */
-$cfg = iMSCP_Registry::get('config');
 
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic(

@@ -17,129 +17,152 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 #
-# @category		i-MSCP
-# @copyright	2010-2013 by i-MSCP | http://i-mscp.net
-# @author		Daniel Andreca <sci2tech@gmail.com>
-# @link			http://i-mscp.net i-MSCP Home Site
-# @license		http://www.gnu.org/licenses/gpl-2.0.html GPL v2
+# @category    i-MSCP
+# @copyright   2010-2013 by i-MSCP | http://i-mscp.net
+# @author      Daniel Andreca <sci2tech@gmail.com>
+# @link        http://i-mscp.net i-MSCP Home Site
+# @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
 package Modules::Htgroup;
 
 use strict;
 use warnings;
+
 use iMSCP::Debug;
-use Data::Dumper;
 use parent 'Modules::Abstract';
 
-sub _init{
-	my $self		= shift;
-	$self->{type}	= 'Htgroup';
+sub _init
+{
+	my $self = shift;
+
+	$self->{'type'} = 'Htgroup';
+
+	$self;
 }
 
-sub loadData{
-
+sub loadData
+{
 	my $self = shift;
 
 	my $sql = "
 		SELECT
-			`t2`.`id`, `t2`.`ugroup`, `t2`.`status`, `t2`.`users`, `t3`.`domain_name`
+			`t2`.`id`, `t2`.`ugroup`, `t2`.`status`, `t2`.`users`, `t3`.`domain_name`, `t3`.`domain_admin_id`,
+			`t3`.`web_folder_protection`
 		FROM
 			(
 				SELECT * from `htaccess_groups`,
 				(
 					SELECT IFNULL(
 					(
-						SELECT group_concat(`uname` SEPARATOR ' ')
-						FROM `htaccess_users`
-						WHERE `id` regexp (
-							CONCAT(
-								'^(',
-								(
-									SELECT REPLACE(
-										(SELECT `members` FROM `htaccess_groups` WHERE `id` = ?),
-										',',
-										'|'
-									)
-								),
-								')\$'
-							)
-						) GROUP BY `dmn_id`
-					), '') as `users`
-				) as t1
-			) as t2
+						SELECT
+							group_concat(`uname` SEPARATOR ' ')
+						FROM
+							`htaccess_users`
+						WHERE
+							`id` regexp (
+								CONCAT(
+									'^(', (SELECT REPLACE((SELECT `members` FROM `htaccess_groups` WHERE `id` = ?), ',', '|')), ')\$'
+								)
+							) GROUP BY
+								`dmn_id`
+					), '') AS `users`
+				) AS t1
+			) AS t2
 		LEFT JOIN
-			`domain` AS `t3`
-		ON
-			`t2`.`dmn_id` = `t3`.`domain_id`
-		WHERE `id` = ?
+			`domain` AS `t3` ON (`t2`.`dmn_id` = `t3`.`domain_id`)
+		WHERE
+			`id` = ?
 	";
 
-	my $rdata = iMSCP::Database->factory()->doQuery('id', $sql, $self->{htgroupId}, $self->{htgroupId});
+	my $rdata = iMSCP::Database->factory()->doQuery('id', $sql, $self->{'htgroupId'}, $self->{'htgroupId'});
 
-	error("$rdata") and return 1 if(ref $rdata ne 'HASH');
-	error("No group in table htaccess_groups has id = $self->{htgroupId}") and return 1 unless(exists $rdata->{$self->{htgroupId}});
+	unless(ref $rdata eq 'HASH') {
+		error($rdata);
+		return 1;
+	}
 
-	unless($rdata->{$self->{htgroupId}}->{domain_name}){
+	unless(exists $rdata->{$self->{'htgroupId'}}) {
+		error("No group in table htaccess_groups has id = $self->{'htgroupId'}");
+		return 1;
+	}
+
+	unless($rdata->{$self->{'htgroupId'}}->{'domain_name'}) {
+		require Data::Dumper;
+		Data::Dumper->import();
 		local $Data::Dumper::Terse = 1;
-		error("Orphan entry: ".Dumper($rdata->{$self->{htgroupId}}));
+		error('Orphan entry: ' . Dumper($rdata->{$self->{'htgroupId'}}));
+
 		my @sql = (
 			"UPDATE `htaccess_groups` SET `status` = ? WHERE `id` = ?",
-			"Orphan entry: ".Dumper($rdata->{$self->{htgroupId}}),
-			$self->{htgroupId}
+			'Orphan entry: ' . Dumper($rdata->{$self->{'htgroupId'}}),
+			$self->{'htgroupId'}
 		);
+
 		my $rdata = iMSCP::Database->factory()->doQuery('update', @sql);
 		return 1;
 	}
 
-	$self->{$_} = $rdata->{$self->{htgroupId}}->{$_} for keys %{$rdata->{$self->{htgroupId}}};
+	$self->{$_} = $rdata->{$self->{'htgroupId'}}->{$_} for keys %{$rdata->{$self->{'htgroupId'}}};
 
 	0;
 }
 
-sub process{
+sub process
+{
+	my $self = shift;
 
-	my $self		= shift;
-	$self->{htgroupId}	= shift;
+	$self->{'htgroupId'} = shift;
 
 	my $rs = $self->loadData();
 	return $rs if $rs;
 
 	my @sql;
 
-	if($self->{status} =~ /^toadd|change$/){
+	if($self->{'status'} =~ /^toadd|change$/) {
 		$rs = $self->add();
 		@sql = (
 			"UPDATE `htaccess_groups` SET `status` = ? WHERE `id` = ?",
 			($rs ? scalar getMessageByType('error') : 'ok'),
-			$self->{id}
+			$self->{'id'}
 		);
-	}elsif($self->{status} =~ /^delete$/){
+	} elsif($self->{'status'} eq 'delete') {
 		$rs = $self->delete();
-		if($rs){
+		if($rs) {
 			@sql = (
 				"UPDATE `htaccess_groups` SET `status` = ? WHERE `id` = ?",
 				scalar getMessageByType('error'),
-				$self->{id}
+				$self->{'id'}
 			);
-		}else {
-			@sql = ("DELETE FROM `htaccess_groups` WHERE `id` = ?", $self->{id});
+		} else {
+			@sql = ("DELETE FROM `htaccess_groups` WHERE `id` = ?", $self->{'id'});
 		}
 	}
 
 	my $rdata = iMSCP::Database->factory()->doQuery('dummy', @sql);
-	error("$rdata") and return 1 if(ref $rdata ne 'HASH');
+	unless(ref $rdata eq 'HASH') {
+		error($rdata);
+		return 1;
+	}
 
 	$rs;
 }
 
-sub buildHTTPDData{
+sub buildHTTPDData
+{
+	my $self = shift;
 
-	my $self	= shift;
+	my $groupName =
+	my $userName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} .
+		($main::imscpConfig{'SYSTEM_USER_MIN_UID'} + $self->{'domain_admin_id'});
 
-	$self->{httpd} = {
-		HTGROUP_NAME	=> $self->{ugroup},
-		HTGROUP_USERS	=> $self->{users},
-		HTGROUP_DMN		=> $self->{domain_name},
+	$self->{'httpd'} = {
+		USER => $userName,
+		GROUP => $groupName,
+		WEB_DIR => "$main::imscpConfig{'USER_WEB_DIR'}/$self->{'domain_name'}",
+		HTGROUP_NAME => $self->{'ugroup'},
+		HTGROUP_USERS => $self->{'users'},
+		HTGROUP_DMN => $self->{'domain_name'},
+		WEB_FOLDER_PROTECTION => $self->{'web_folder_protection'}
 	};
 
 	0;

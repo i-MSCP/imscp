@@ -17,89 +17,132 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 #
-# @category		i-MSCP
-# @copyright	2010-2013 by i-MSCP | http://i-mscp.net
-# @author		Daniel Andreca <sci2tech@gmail.com>
-# @link			http://i-mscp.net i-MSCP Home Site
-# @license		http://www.gnu.org/licenses/gpl-2.0.html GPL v2
+# @category    i-MSCP
+# @copyright   2010-2013 by i-MSCP | http://i-mscp.net
+# @author      Daniel Andreca <sci2tech@gmail.com>
+# @link        http://i-mscp.net i-MSCP Home Site
+# @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
 package Modules::Ips;
 
 use strict;
 use warnings;
+
 use iMSCP::Debug;
 use iMSCP::Execute;
-use Data::Dumper;
 use parent 'Modules::Abstract';
 
-sub _init{
-	my $self		= shift;
-	$self->{type}	= 'Ips';
+sub _init
+{
+	my $self = shift;
+
+	$self->{'type'} = 'Ips';
+
+	$self;
 }
 
-sub process{
-
-	my $self	= shift;
-	my $rs		= 0;
+sub process
+{
+	my $self = shift;
 
 	my $sql = "
-		SELECT `domain_ip_id` AS `ip_id`, `ip_number` FROM `domain`
-		LEFT JOIN `server_ips` ON `domain`.`domain_ip_id` = `server_ips`.`ip_id`
-		WHERE `domain_status` != 'delete'
+		SELECT
+			`domain_ip_id` AS `ip_id`, `ip_number`
+		FROM
+			`domain`
+		LEFT JOIN
+			`server_ips` ON (`domain`.`domain_ip_id` = `server_ips`.`ip_id`)
+		WHERE
+			`domain_status` != 'delete'
 		UNION
-		SELECT `alias_ip_id` AS `ip_id`, `ip_number` FROM `domain_aliasses`
-		LEFT JOIN `server_ips` ON `domain_aliasses`.`alias_ip_id` = `server_ips`.`ip_id`
-		WHERE `alias_status` NOT IN ('delete', 'ordered')
+		SELECT
+			`alias_ip_id` AS `ip_id`, `ip_number`
+		FROM
+			`domain_aliasses`
+		LEFT JOIN
+			`server_ips` ON (`domain_aliasses`.`alias_ip_id` = `server_ips`.`ip_id`)
+		WHERE
+			`alias_status` NOT IN ('delete', 'ordered')
 	";
 
 	my $rdata = iMSCP::Database->factory()->doQuery('ip_number', $sql);
 
-	error("$rdata") and return 1 if(ref $rdata ne 'HASH');
+	unless(ref $rdata eq 'HASH') {
+		error($rdata);
+		return 1;
+	}
 
-	@{$self->{ips}} = keys %{$rdata};
+	@{$self->{'IPs'}} = keys %{$rdata};
 
 	my $sql = "
-		SELECT `ip_number` FROM `ssl_certs`
-		LEFT JOIN `domain` on `ssl_certs`.`id` = `domain`.`domain_id`
-		LEFT JOIN `server_ips` ON `domain`.`domain_ip_id` = `server_ips`.`ip_id`
-		WHERE `ssl_certs`.`type` = 'dmn'
+		SELECT
+			`ip_number`
+		FROM
+			`ssl_certs`
+		LEFT JOIN
+			`domain` ON (`ssl_certs`.`id` = `domain`.`domain_id`)
+		LEFT JOIN
+			`server_ips` ON (`domain`.`domain_ip_id` = `server_ips`.`ip_id`)
+		WHERE
+			`ssl_certs`.`type` = 'dmn'
 		UNION
-		SELECT `ip_number` FROM `ssl_certs`
-		LEFT JOIN `domain_aliasses` on `ssl_certs`.`id` = `domain_aliasses`.`alias_id`
-		LEFT JOIN `server_ips` ON `domain_aliasses`.`alias_ip_id` = `server_ips`.`ip_id`
-		WHERE `type` = 'als'
+		SELECT
+			`ip_number`
+		FROM
+			`ssl_certs`
+		LEFT JOIN
+			`domain_aliasses` ON (`ssl_certs`.`id` = `domain_aliasses`.`alias_id`)
+		LEFT JOIN
+			`server_ips` ON (`domain_aliasses`.`alias_ip_id` = `server_ips`.`ip_id`)
+		WHERE
+			`type` = 'als'
 		UNION
-		SELECT `ip_number` FROM `ssl_certs`
-		LEFT JOIN `subdomain_alias` on `ssl_certs`.`id` = `subdomain_alias`.`subdomain_alias_id`
-		LEFT JOIN `domain_aliasses` on `subdomain_alias`.`alias_id` = `domain_aliasses`.`alias_id`
-		LEFT JOIN `server_ips` ON `domain_aliasses`.`alias_ip_id` = `server_ips`.`ip_id`
-		WHERE `type` = 'alssub'
+		SELECT
+			`ip_number`
+		FROM
+			`ssl_certs`
+		LEFT JOIN
+			`subdomain_alias` ON (`ssl_certs`.`id` = `subdomain_alias`.`subdomain_alias_id`)
+		LEFT JOIN
+			`domain_aliasses` ON (`subdomain_alias`.`alias_id` = `domain_aliasses`.`alias_id`)
+		LEFT JOIN
+			`server_ips` ON (`domain_aliasses`.`alias_ip_id` = `server_ips`.`ip_id`)
+		WHERE
+			`type` = 'alssub'
 		UNION
-		SELECT `ip_number` FROM `ssl_certs`
-		LEFT JOIN `subdomain` on `ssl_certs`.`id` = `subdomain`.`subdomain_id`
-		LEFT JOIN `domain` on `subdomain`.`domain_id` = `domain`.`domain_id`
-		LEFT JOIN `server_ips` ON `domain`.`domain_ip_id` = `server_ips`.`ip_id`
-		WHERE `type` = 'sub'
+		SELECT
+			`ip_number`
+		FROM
+			`ssl_certs`
+		LEFT JOIN
+			`subdomain` ON (`ssl_certs`.`id` = `subdomain`.`subdomain_id`)
+		LEFT JOIN
+			`domain` ON (`subdomain`.`domain_id` = `domain`.`domain_id`)
+		LEFT JOIN
+			`server_ips` ON (`domain`.`domain_ip_id` = `server_ips`.`ip_id`)
+		WHERE
+			`type` = 'sub'
 	";
 
-	my $sslIPData = iMSCP::Database->factory()->doQuery('ip_number', $sql);
+	$rdata = iMSCP::Database->factory()->doQuery('ip_number', $sql);
 
-	error("$sslIPData") and return 1 if(ref $sslIPData ne 'HASH');
+	unless(ref $rdata eq 'HASH') {
+		error($rdata);
+		return 1;
+	}
 
-	@{$self->{sslIPs}} = keys %{$sslIPData};
+	@{$self->{'sslIPs'}} = keys %{$rdata};
 
-	$rs = $self->add();
-
-	$rs;
+	$self->add();
 }
 
-sub buildHTTPDData{
+sub buildHTTPDData
+{
+	my $self = shift;
 
-	my $self	= shift;
-
-	$self->{httpd} = {
-		IPS					=> $self->{ips},
-		SSLIPS				=> $self->{sslIPs}
+	$self->{'httpd'} = {
+		IPS => $self->{'IPs'},
+		SSLIPS => $self->{'sslIPs'}
 	};
 
 	0;

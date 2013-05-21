@@ -33,6 +33,7 @@ package Addons::phpmyadmin;
 
 use strict;
 use warnings;
+
 use iMSCP::Debug;
 use parent 'Common::SingletonClass';
 
@@ -63,7 +64,6 @@ sub registerSetupHooks
 	my $hooksManager = shift;
 
 	require Addons::phpmyadmin::installer;
-
 	Addons::phpmyadmin::installer->getInstance()->registerSetupHooks($hooksManager);
 }
 
@@ -78,7 +78,6 @@ sub preinstall
 	my $self = shift;
 
 	require Addons::phpmyadmin::installer;
-
 	Addons::phpmyadmin::installer->getInstance()->preinstall();
 }
 
@@ -95,7 +94,6 @@ sub install
 	my $self = shift;
 
 	require Addons::phpmyadmin::installer;
-
 	Addons::phpmyadmin::installer->getInstance()->install();
 }
 
@@ -112,7 +110,6 @@ sub setGuiPermissions
 	my $self = shift;
 
 	require Addons::phpmyadmin::installer;
-
 	Addons::phpmyadmin::installer->getInstance()->setGuiPermissions();
 }
 

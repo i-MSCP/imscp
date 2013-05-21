@@ -40,6 +40,7 @@ use iMSCP::Execute;
 use iMSCP::Templator;
 use iMSCP::Dir;
 use iMSCP::File;
+use iMSCP::Ext2Attributes qw(setImmutable clearImmutable);
 use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
@@ -87,16 +88,21 @@ sub addDmn
 	my $self = shift;
 	my $data = shift;
 
-	my $userStatisticsDir = "$data->{'HOME_DIR'}/statistics";
-
 	my $rs = $self->_addAwstatsConfig($data);
 	return $rs if $rs;
+
+	my $userStatisticsDir = "$data->{'WEB_DIR'}/statistics";
+
+	# Unprotect Web directory against deletion
+    my $rs = clearImmutable($data->{'WEB_DIR'});
+    return $rs if $rs;
 
 	if($main::imscpConfig{'AWSTATS_MODE'} eq '1') { # Static mode
 		require Servers::httpd;
 		my $httpd = Servers::httpd->factory();
 		my $httpdGname = $httpd->getRunningGroup();
 
+		# Set user statistics directory permissions, owner and group
 		$rs = iMSCP::Dir->new(
 			'dirname' => $userStatisticsDir
 		)->make(
@@ -107,6 +113,7 @@ sub addDmn
 		require iMSCP::Rights;
 		iMSCP::Rights->import();
 
+		# Set user statistics pages permissions, owner and group
 		$rs = setRights(
 			$userStatisticsDir,
 			{
@@ -125,7 +132,7 @@ sub addDmn
 		my ($stdout, $stderr);
 		$rs = execute(
 			"umask 022; $main::imscpConfig{'CMD_ECHO'} " .
-			"'perl $main::imscpConfig{'AWSTATS_ROOT_DIR'}/awstats_buildstaticpages.pl -config=$data->{'DMN_NAME'} " .
+			"'perl $main::imscpConfig{'AWSTATS_ROOT_DIR'}/awstats_buildstaticpages.pl -config=$data->{'DOMAIN_NAME'} " .
 			"-update -awstatsprog=$main::imscpConfig{'AWSTATS_ENGINE_DIR'}/awstats.pl -dir=$userStatisticsDir' " .
 			 "| $main::imscpConfig{'CMD_BATCH'}",
 			\$stdout, \$stderr
@@ -137,6 +144,10 @@ sub addDmn
 	} else {
 		$rs = iMSCP::Dir->new('dirname' => $userStatisticsDir)->remove() if -d $userStatisticsDir;
 	}
+
+	# Protect home directory against deletion
+	my $rs = setImmutable($data->{'WEB_DIR'}) if $data->{'WEB_FOLDER_PROTECTION'} eq 'yes';
+	return $rs if $rs;
 
 	$rs;
 }
@@ -155,9 +166,9 @@ sub delDmn
 	my $self = shift;
 	my $data = shift;
 
-	my $cfgFileName = "$main::imscpConfig{'AWSTATS_CONFIG_DIR'}/awstats.$data->{'DMN_NAME'}.conf";
-	my $wrkFileName = "$self->{'wrkDir'}/awstats.$data->{'DMN_NAME'}.conf";
-	my $userStatisticsDir = "$data->{'HOME_DIR'}/statistics";
+	my $cfgFileName = "$main::imscpConfig{'AWSTATS_CONFIG_DIR'}/awstats.$data->{'DOMAIN_NAME'}.conf";
+	my $wrkFileName = "$self->{'wrkDir'}/awstats.$data->{'DOMAIN_NAME'}.conf";
+	my $userStatisticsDir = "$data->{'WEB_DIR'}/statistics";
 	my $awstatsCacheDir = $main::imscpConfig{'AWSTATS_CACHE_DIR'};
 
 	my $rs = iMSCP::File->new('filename' => $cfgFileName)->delFile() if -f $cfgFileName;
@@ -166,8 +177,14 @@ sub delDmn
 	$rs = iMSCP::File->new('filename' => $wrkFileName)->delFile() if -f $wrkFileName;
 	return $rs if $rs;
 
-	$rs = iMSCP::Dir->new('dirname' => $userStatisticsDir)->remove() if -d $userStatisticsDir;
-	return $rs if $rs;
+	# Unprotect Web directory against deletion
+    #my $rs = clearImmutable($data->{'WEB_DIR'});
+    #return $rs if $rs;
+	#$rs = iMSCP::Dir->new('dirname' => $userStatisticsDir)->remove() if -d $userStatisticsDir;
+	#return $rs if $rs;
+	# Protect Web directory against deletion
+    #my $rs = setImmutable($data->{'WEB_DIR'});
+    #return $rs if $rs;
 
 	# Remove any Awstats cache file
 	my @awstatsCacheFiles = iMSCP::Dir->new(
@@ -175,7 +192,7 @@ sub delDmn
 	)->getFiles();
 
 	for(@awstatsCacheFiles) {
-		$rs = iMSCP::File->new('filename' => "$awstatsCacheDir/$_")->delFile() if /$data->{'DMN_NAME'}.txt$/;
+		$rs = iMSCP::File->new('filename' => "$awstatsCacheDir/$_")->delFile() if /$data->{'DOMAIN_NAME'}.txt$/;
 		return $rs if $rs;
 	}
 
@@ -272,18 +289,18 @@ sub _getApacheConfSnippet
 	if($main::imscpConfig{'AWSTATS_MODE'}) { # static
 		return <<EOF;
     Alias /awstatsicons "{AWSTATS_WEB_DIR}/icon/"
-    Alias /{WEBSTATS_RPATH} "{HOME_DIR}/statistics/"
-    <Directory "{HOME_DIR}/statistics">
+    Alias /{WEBSTATS_RPATH} "{WEB_DIR}/statistics/"
+    <Directory "{WEB_DIR}/statistics">
         AllowOverride AuthConfig
-        DirectoryIndex awstats.{DMN_NAME}.html
+        DirectoryIndex awstats.{DOMAIN_NAME}.html
         Order allow,deny
         Allow from all
     </Directory>
     <Location /{WEBSTATS_RPATH}>
         AuthType Basic
-        AuthName "Statistics for domain {DMN_NAME}"
-        AuthUserFile {WWW_DIR}/{ROOT_DMN_NAME}/{HTACCESS_USERS_FILE_NAME}
-        AuthGroupFile {WWW_DIR}/{ROOT_DMN_NAME}/{HTACCESS_GROUPS_FILE_NAME}
+        AuthName "Statistics for domain {DOMAIN_NAME}"
+        AuthUserFile {WWW_DIR}/{ROOT_DOMAIN_NAME}/{HTACCESS_USERS_FILE_NAME}
+        AuthGroupFile {WWW_DIR}/{ROOT_DOMAIN_NAME}/{HTACCESS_GROUPS_FILE_NAME}
         Require group {WEBSTATS_GROUP_AUTH}
     </Location>
 EOF
@@ -294,17 +311,17 @@ EOF
         Order deny,allow
         Allow from all
     </Proxy>
-        ProxyPass /{WEBSTATS_RPATH} http://localhost/{WEBSTATS_RPATH}/{DMN_NAME}
-        ProxyPassReverse /{WEBSTATS_RPATH} http://localhost/{WEBSTATS_RPATH}/{DMN_NAME}
+        ProxyPass /{WEBSTATS_RPATH} http://localhost/{WEBSTATS_RPATH}/{DOMAIN_NAME}
+        ProxyPassReverse /{WEBSTATS_RPATH} http://localhost/{WEBSTATS_RPATH}/{DOMAIN_NAME}
     <Location /{WEBSTATS_RPATH}>
         <IfModule mod_rewrite.c>
             RewriteEngine on
-            RewriteRule ^(.+)\?config=([^\?\&]+)(.*) \$1\?config={DMN_NAME}&\$3 [NC,L]
+            RewriteRule ^(.+)\?config=([^\?\&]+)(.*) \$1\?config={DOMAIN_NAME}&\$3 [NC,L]
         </IfModule>
         AuthType Basic
-        AuthName "Statistics for domain {DMN_NAME}"
-        AuthUserFile {WWW_DIR}/{ROOT_DMN_NAME}/{HTACCESS_USERS_FILE_NAME}
-        AuthGroupFile {WWW_DIR}/{ROOT_DMN_NAME}/{HTACCESS_GROUPS_FILE_NAME}
+        AuthName "Statistics for domain {DOMAIN_NAME}"
+        AuthUserFile {WWW_DIR}/{ROOT_DOMAIN_NAME}/{HTACCESS_USERS_FILE_NAME}
+        AuthGroupFile {WWW_DIR}/{ROOT_DOMAIN_NAME}/{HTACCESS_GROUPS_FILE_NAME}
         Require group {WEBSTATS_GROUP_AUTH}
     </Location>
 EOF
@@ -326,7 +343,7 @@ sub _addAwstatsConfig
 	my $data = shift;
 
 	my $tplFile	= "$self->{'tplDir'}/awstats.imscp_tpl.conf";
-	my $cfgFileName	= "awstats.$data->{'DMN_NAME'}.conf";
+	my $cfgFileName	= "awstats.$data->{'DOMAIN_NAME'}.conf";
 	my $bkpFile	= "$self->{'bkpDir'}/$cfgFileName";
 	my $cfgFile	= "$main::imscpConfig{'AWSTATS_CONFIG_DIR'}/$cfgFileName";
 	my $wrkFile	= "$self->{'wrkDir'}/$cfgFileName";
@@ -343,7 +360,7 @@ sub _addAwstatsConfig
 	}
 
 	my $tags = {
-		DOMAIN_NAME => $data->{'DMN_NAME'},
+		DOMAIN_NAME => $data->{'DOMAIN_NAME'},
 		AWSTATS_CACHE_DIR => $main::imscpConfig{'AWSTATS_CACHE_DIR'},
 		AWSTATS_ENGINE_DIR => $main::imscpConfig{'AWSTATS_ENGINE_DIR'},
 		AWSTATS_WEB_DIR => $main::imscpConfig{'AWSTATS_WEB_DIR'}
@@ -405,10 +422,10 @@ sub _addAwstatsCronTask
 			USER => $main::imscpConfig{'ROOT_USER'},
 			COMMAND =>
 				"perl $main::imscpConfig{'AWSTATS_ROOT_DIR'}/awstats_buildstaticpages.pl " .
-				"-config=$data->{'DMN_NAME'} -update " .
+				"-config=$data->{'DOMAIN_NAME'} -update " .
 				"-awstatsprog=$main::imscpConfig{'AWSTATS_ENGINE_DIR'}/awstats.pl " .
-				"-dir=$data->{'HOME_DIR'}/statistics/ >/dev/null 2>&1",
-			TASKID	=> "AWSTATS:$data->{'DMN_NAME'}"
+				"-dir=$data->{'WEB_DIR'}/statistics/ >/dev/null 2>&1",
+			TASKID	=> "AWSTATS:$data->{'DOMAIN_NAME'}"
 		}
 	);
 }
@@ -429,7 +446,7 @@ sub _delAwstatsCronTask
 
 	require Servers::cron;
 
-	Servers::cron->factory()->delTask({ 'TASKID' => "AWSTATS:$data->{'DMN_NAME'}" });
+	Servers::cron->factory()->delTask({ 'TASKID' => "AWSTATS:$data->{'DOMAIN_NAME'}" });
 }
 
 =back

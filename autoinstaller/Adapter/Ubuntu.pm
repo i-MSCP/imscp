@@ -23,16 +23,17 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
-# @category		i-MSCP
-# @copyright	2010-2013 by i-MSCP | http://i-mscp.net
-# @Author		Laurent Declercq <l.declercq@nuxwin.com>
-# @link			http://i-mscp.net i-MSCP Home Site
-# @license		http://www.gnu.org/licenses/gpl-2.0.html GPL v2
+# @category    i-MSCP
+# @copyright   2010-2013 by i-MSCP | http://i-mscp.net
+# @Author      Laurent Declercq <l.declercq@nuxwin.com>
+# @link        http://i-mscp.net i-MSCP Home Site
+# @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
 package autoinstaller::Adapter::Ubuntu;
 
 use strict;
 use warnings;
+
 use iMSCP::Debug;
 use iMSCP::LsbRelease;
 use iMSCP::Execute;
@@ -73,8 +74,8 @@ sub _init
 		push @{$self->{'preRequiredPackages'}}, 'software-properties-common';
 	}
 
-	$self->{'externalRepositoriesToRemove'} = [];
-	$self->{'externalRepositories'} = [];
+	$self->{'externalRepositoriesToRemove'} = {};
+	$self->{'externalRepositoriesToAdd'} = {};
 	$self->{'aptPreferences'} = [];
 	$self->{'packagesToInstall'} = [];
 	$self->{'packagesToUninstall'} = [];
@@ -84,141 +85,139 @@ sub _init
 	$self;
 }
 
-=item _addExternalRepositories()
+=item _processExternalRepositories()
 
- Add external repositories to the sources.list file and their gpg keys.
-
- Note: Also removes repositories that are no longer needed.
+ Process external repositories.
 
  Return int 0 on success, other on failure.
 
 =cut
 
-sub _addExternalRepositories
+sub _processExternalRepositories
 {
 	my $self = shift;
 
-	my $distroRelease = iMSCP::LsbRelease->getInstance()->getRelease(1);
-	my $rs = 0;
-
-	if(@{$self->{'externalRepositoriesToRemove'}} || @{$self->{'externalRepositories'}}) {
+	if(%{$self->{'externalRepositoriesToRemove'}} || %{$self->{'externalRepositoriesToAdd'}}) {
 
 		my $sourceListFile = iMSCP::File->new('filename' => '/etc/apt/sources.list');
 
-		unless(-f '/etc/apt/sources.list.bkp') {
-			$rs = $sourceListFile->copyFile('/etc/apt/sources.list.bkp');
-			return $rs if $rs;
+		my $rs = $sourceListFile->copyFile('/etc/apt/sources.list.bkp') unless -f '/etc/apt/sources.list.bkp';
+		return $rs if $rs;
+
+		my $sourceListFileContent = $sourceListFile->get();
+
+		unless (defined $sourceListFileContent) {
+			error('Unable to read /etc/apt/sources.list file');
+			return 1;
 		}
 
-		for(@{$self->{'externalRepositories'}}) {
-			my $repository = $_->{'repository'};
+		delete $self->{'externalRepositoriesToRemove'}->{$_} for keys %{$self->{'externalRepositoriesToAdd'}};
 
-			for(@{$self->{'externalRepositoriesToRemove'}}) {
-				if($repository eq $_->{'repository'}) {
-					my $index = 0;
-					$index++ until @{$self->{'externalRepositoriesToRemove'}}[$index] eq $_;
-					splice(@{$self->{'externalRepositoriesToRemove'}}, $index, 1);
-				}
-			}
-		}
-
+		my $distroRelease = iMSCP::LsbRelease->getInstance()->getRelease(1);
 		my ($cmd, $stdout, $stderr);
 
-		for(@{$self->{'externalRepositoriesToRemove'}}) {
-			# Retrieve any packages installed from the repository to remove
-			# TODO This command is too slow. Try to find a replacement for it
-			$rs = execute(
-				"aptitude search '?installed?origin($_->{'repository_origin'})' | cut -b 5- | cut -d ' ' -f 1",
-				\$stdout, \$stderr
-			);
-			debug($stdout) if $stdout;
-			error($stderr) if $stderr && $rs;
-			return $rs if $rs;
+		for(keys %{$self->{'externalRepositoriesToRemove'}}) {
 
-			# Schedule packages for deletion
-			@{$self->{'packagesToUninstall'}} = (@{$self->{'packagesToUninstall'}}, split("\n", $stdout)) if $stdout;
+			if(/^ppa:/ || $sourceListFileContent =~ /$_/) {
+				my $repository = $self->{'externalRepositoriesToRemove'}->{$_};
 
-			# Remove the repository
-			if($distroRelease > 10.04) {
-				$rs = execute("add-apt-repository -y -r $_->{'repository'}", \$stdout, \$stderr);
+				# Retrieve any packages installed from the repository to remove
+				$rs = execute(
+					"aptitude search '?installed?origin($repository->{'repository_origin'})' | cut -b 5- | cut -d ' ' -f 1",
+					\$stdout, \$stderr
+				);
 				debug($stdout) if $stdout;
 				error($stderr) if $stderr && $rs;
-			} else {
-				# add-apt-repository command as provided by Ubuntu lucid doesn't provide any option
-				if($_->{'repository'} =~ m%^ppa:(.*)/(.*)%) { # PPA repository
-					my $ppaFile = "/etc/apt/sources.list.d/$1-$2-*";
+				return $rs if $rs;
 
-					if(glob $ppaFile) {
-						$rs = execute("$main::imscpConfig{'CMD_RM'} $ppaFile", \$stdout, \$stderr);
-						debug($stdout) if $stdout;
-						error($stderr) if $stderr && $rs;
+				# Schedule packages for deletion
+				@{$self->{'packagesToUninstall'}} = (@{$self->{'packagesToUninstall'}}, split("\n", $stdout)) if $stdout;
+
+				if($distroRelease > 10.04) {
+					$rs = execute("add-apt-repository -y -r $_", \$stdout, \$stderr);
+					debug($stdout) if $stdout;
+					error($stderr) if $stderr && $rs;
+					return $rs if $rs;
+				} else {
+					if(m%^ppa:(.*)/(.*)%) { # PPA repository
+						my $ppaFile = "/etc/apt/sources.list.d/$1-$2-*";
+
+						if(glob $ppaFile) {
+							$rs = execute("$main::imscpConfig{'CMD_RM'} $ppaFile", \$stdout, \$stderr);
+							debug($stdout) if $stdout;
+							error($stderr) if $stderr && $rs;
+							return $rs if $rs;
+						}
+					} else { # Normal repository
+						# Remove the repository from the sources.list file
+						$sourceListFileContent = $sourceListFile->get();
+						$sourceListFileContent =~ s/\n?(deb|deb-src)\s+$_\n?//gm;
+
+						$rs = $sourceListFile->set($sourceListFileContent);
+						return $rs if $rs;
+
+						$rs = $sourceListFile->save();
 						return $rs if $rs;
 					}
-				} else { # Normal repository
-					# Remove the repository from the sources.list file
-					my $content = $sourceListFile->get();
-					$content =~ s/\n?(deb|deb-src)\s+$_->{'repository'}\n?//gm;
-
-					$rs = $sourceListFile->set($content);
-					return $rs if $rs;
-
-					$rs = $sourceListFile->save();
-					return $rs if $rs;
 				}
 			}
 		}
 
 		eval "use List::MoreUtils qw(uniq); 1";
-		fatal('Unable to load the List::MoreUtils perl module') if($@);
+		fatal('Unable to load the List::MoreUtils perl module') if $@;
 
 		# Remove any duplicate entries
 		@{$self->{'packagesToUninstall'}} = uniq(@{$self->{'packagesToUninstall'}});
 
 		# Add needed external repositories
-		for(@{$self->{'externalRepositories'}}) {
-			if($_->{'repository'} =~ /^ppa:/) { # PPA repository
-				if($distroRelease > 10.4) {
-					if($_->{'repository_key_srv'}) {
-						$cmd = "add-apt-repository -y -k $_->{'repository_key_srv'} $_->{'repository'}";
+		for(keys %{$self->{'externalRepositoriesToAdd'}}) {
+			if(/^ppa:/ || $sourceListFileContent !~ /^deb\s+$_$/m) {
+				my $repository = $self->{'externalRepositoriesToAdd'}->{$_};
+
+				if(/^ppa:/) { # PPA repository
+					if($distroRelease > 10.4) {
+						if($repository->{'repository_key_srv'}) {
+							$cmd = "add-apt-repository -y -k $repository->{'repository_key_srv'} $_";
+						} else {
+							$cmd = "add-apt-repository -y $_";
+						}
+				 	} else {
+						$cmd = "add-apt-repository $_";
+				 	}
+
+					$rs = execute($cmd, \$stdout, \$stderr);
+					debug($stdout) if $stdout;
+					error($stderr) if $stderr && $rs;
+					return $rs if $rs
+				} else { # Normal repository
+					if($distroRelease > 10.4) {
+						$rs = execute("add-apt-repository -y $_", \$stdout, \$stderr);
 					} else {
-						$cmd = "add-apt-repository -y $_->{'repository'}";
+						$rs = execute("add-apt-repository $_", \$stdout, \$stderr);
 					}
-				 } else {
-					$cmd = "add-apt-repository $_->{'repository'}";
-				 }
+					debug($stdout) if $stdout;
+					error($stderr) if $stderr && $rs;
+					return $rs if $rs;
 
-				$rs = execute($cmd, \$stdout, \$stderr);
-				debug($stdout) if $stdout;
-				error($stderr) if $stderr && $rs;
-				return $rs if $rs
-			} else { # Normal repository
-				if($distroRelease > 10.4) {
-					$rs = execute("add-apt-repository -y $_->{'repository'}", \$stdout, \$stderr);
-				} else {
-					$rs = execute("add-apt-repository $_->{'repository'}", \$stdout, \$stderr);
-				}
-				debug($stdout) if $stdout;
-				error($stderr) if $stderr && $rs;
-				return $rs if $rs;
-
-				if($_->{'repository_key_srv'}) {
-					if($_->{'repository_key_id'}) {
-						$cmd = "apt-key adv --recv-keys --keyserver $_->{'repository_key_srv'} $_->{'repository_key_id'}";
+					if($repository->{'repository_key_srv'}) {
+						if($repository->{'repository_key_id'}) {
+							$cmd = "apt-key adv --recv-keys --keyserver $repository->{'repository_key_srv'} $repository->{'repository_key_id'}";
+						} else {
+							error("The repository_key_id entry for the '$_' repository was not found");
+							return 1;
+						}
+					} elsif($repository->{'repository_key_uri'}) {
+						$cmd = "wget -qO- $repository->{'repository_key_uri'} | apt-key add -";
 					} else {
-						error("The repository_key_id entry for the '$_->{'repository'} repository was not found");
+						error("The repository_key_uri entry for the '$_' repository was not found");
 						return 1;
 					}
-				} elsif($_->{'repository_key_uri'}) {
-					$cmd = "wget -qO- $_->{'repository_key_uri'} | apt-key add -";
-				} else {
-					error("The repository_key_uri entry for the '$_->{'repository'}' repository was not found");
-					return 1;
-				}
 
-				$rs = execute($cmd, \$stdout, \$stderr);
-				debug($stdout) if $stdout;
-				error($stderr) if $stderr && $rs;
-				return $rs if $rs
+					$rs = execute($cmd, \$stdout, \$stderr);
+					debug($stdout) if $stdout;
+					error($stderr) if $stderr && $rs;
+					return $rs if $rs
+				}
 			}
 		}
 	}

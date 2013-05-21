@@ -17,17 +17,18 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
-# @category		i-MSCP
-# @copyright	2010-2013 by i-MSCP | http://i-mscp.net
-# @author		Daniel Andreca <sci2tech@gmail.com>
-# @link			http://i-mscp.net i-MSCP Home Site
-# @license		http://www.gnu.org/licenses/gpl-2.0.html GPL v2
+# @category    i-MSCP
+# @copyright   2010-2013 by i-MSCP | http://i-mscp.net
+# @author      Daniel Andreca <sci2tech@gmail.com>
+# @link        http://i-mscp.net i-MSCP Home Site
+# @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
 
 package Servers::mta::postfix::uninstaller;
 
 use strict;
 use warnings;
+
 use iMSCP::Debug;
 use iMSCP::Execute;
 use iMSCP::File;
@@ -53,9 +54,8 @@ sub _init
 sub uninstall
 {
 	my $self = shift;
-	my $rs = 0;
 
-	$rs = $self->restoreConfFile();
+	my $rs = $self->restoreConfFile();
 	return $rs if $rs;
 
 	$rs = $self->buildAliasses();
@@ -88,8 +88,8 @@ sub removeUsers
 {
 	my $rs = 0;
 
-	use Modules::SystemUser;
-	my $user = Modules::SystemUser->new();
+	use iMSCP::SystemUser;
+	my $user = iMSCP::SystemUser->new();
 
 	$user->{'force'} = 'yes';
 
@@ -99,11 +99,11 @@ sub removeUsers
 sub buildAliasses
 {
 	$self = shift;
-	my $rs = 0;
+
 	my ($$stdout, $stderr);
 
 	# Rebuilding the database for the mail aliases file - Begin
-	$rs = execute("$self::postfixConfig{'CMD_NEWALIASES'}", \$stdout, \$stderr);
+	my $rs = execute("$self::postfixConfig{'CMD_NEWALIASES'}", \$stdout, \$stderr);
 	debug($stdout);
 	error($stderr) if $stderr && $rs;
 	error("Error while executing $self::postfixConfig{'CMD_NEWALIASES'}") if ! $stderr && $rs;

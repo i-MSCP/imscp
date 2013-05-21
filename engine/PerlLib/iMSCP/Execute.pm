@@ -23,12 +23,12 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
-# @category		i-MSCP
-# @copyright	2010-2013 by i-MSCP | http://i-mscp.net
-# @author		Laurent Declercq <l.declercq@nuxwin.com>
-# @author		Daniel Andreca <sci2tech@gmail.com>
-# @link			http://i-mscp.net i-MSCP Home Site
-# @license		http://www.gnu.org/licenses/gpl-2.0.html GPL v2
+# @category    i-MSCP
+# @copyright   2010-2013 by i-MSCP | http://i-mscp.net
+# @author      Laurent Declercq <l.declercq@nuxwin.com>
+# @author      Daniel Andreca <sci2tech@gmail.com>
+# @link        http://i-mscp.net i-MSCP Home Site
+# @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
 package iMSCP::Execute;
 
@@ -51,22 +51,25 @@ our @EXPORT = qw/execute escapeShell getExitCode/;
 
 =over 4
 
-=item execute($command, \$stdout, \$stderr)
+=item execute($command, [\$stdout = undef], [\$stderr = undef])
 
  Execute the given external command.
 
- If a scalar reference is passed as first argument, command STDOUT is captured into it.
- If a scalar reference is passed as third argument, command STDERR is captured into it.
-
+ Param string String representing external command to execute
+ Param scalar_ref $stdout OPTIONAL Scalar reference referring to command stdout
+ Param scalar_ref $stderr OPTIONAL Scalar reference referring to command stderr
  Return int External command exit code
 
 =cut
 
-sub execute
+sub execute($;$$)
 {
 	my $command = shift;
 	my $stdout = shift;
 	my $stderr = shift;
+
+	fatal('$stdout must be a scalar reference') if $stdout && ref $stdout ne 'SCALAR';
+	fatal('$stderr must be a scalar reference') if $stderr && ref $stderr ne 'SCALAR';
 
 	debug("Execute $command");
 
@@ -98,30 +101,32 @@ sub execute
 
  Escape the given string.
 
+ Param string $string String to escape
  Return string Escaped string
 
 =cut
 
-sub escapeShell
+sub escapeShell($)
 {
-   return $_[0] if $_[0] =~ /^[a-zA-Z0-9_\-]+\z/;
-   my $s = $_[0];
-   $s =~ s/'/'\\''/g;
+	return $_[0] if $_[0] eq '' || $_[0] =~ /^[a-zA-Z0-9_\-]+\z/;
+	my $s = $_[0];
+	$s =~ s/'/'\\''/g;
 
-   "'$s'";
+	"'$s'";
 }
 
-=item escapeShell($exitValue)
+=item getExitCode([$exitValue = $?])
 
  Return human exit code
 
+ Param int $exitValue Raw exit code (default to $?)
  Return int exit code
 
 =cut
 
-sub getExitCode
+sub getExitCode(;$)
 {
-	my $exitValue = shift;
+	my $exitValue = shift || $?;
 
 	if ($exitValue == -1) {
 		error("Failed to execute external command: $!");

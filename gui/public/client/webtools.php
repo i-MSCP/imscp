@@ -24,19 +24,19 @@
  * Portions created by the i-MSCP Team are Copyright (C) 2010-2013 by
  * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
  *
- * @category	i-MSCP
- * @package		iMSCP_Core
- * @subpackage	Client
+ * @category    i-MSCP
+ * @package     iMSCP_Core
+ * @subpackage  Client
  * @copyright   2001-2006 by moleSoftware GmbH
  * @copyright   2006-2010 by ispCP | http://isp-control.net
  * @copyright   2010-2013 by i-MSCP | http://i-mscp.net
- * @author		ispCP Team
- * @author		i-MSCP Team
- * @link		http://i-mscp.net
+ * @author      ispCP Team
+ * @author      i-MSCP Team
+ * @link        http://i-mscp.net
  */
 
-/************************************************************************************
- * Script functions
+/***********************************************************************************************************************
+ * Functions
  */
 
 /**
@@ -67,8 +67,9 @@ function client_hideDisabledFeatures($tpl)
 	}
 }
 
-/************************************************************************************
- * Main script
+/***********************************************************************************************************************
+ * Main
+ *
  */
 
 // Include core library
@@ -82,11 +83,18 @@ check_login('user');
 $cfg = iMSCP_Registry::get('config');
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic('layout', 'shared/layouts/ui.tpl');
 $tpl->define_dynamic(
 	array(
+		'layout' => 'shared/layouts/ui.tpl',
 		'page' => 'client/webtools.tpl',
-		'page_message' => 'layout'));
+		'page_message' => 'layout',
+		'backup_feature' => 'page',
+		'mail_feature' => 'page',
+		'ftp_feature' => 'page',
+		'aps_feature' => 'page',
+		'webstats_feature' => 'page'
+	)
+);
 
 $tpl->assign(
 	array(
@@ -106,9 +114,11 @@ $tpl->assign(
 		'TR_FILEMANAGER' => tr('FileManager'),
 		'TR_FILEMANAGER_TXT' => tr('Access your files through the web interface.'),
 		'TR_WEBSTATS' => tr('Web Statistics'),
-		'TR_AWSTATS_TXT' => tr('Access your domain statistics through the Web interface.'),
+		'TR_WEBSTATS_TXT' => tr('Access your domain statistics through the Web interface.'),
 		'TR_APP_INSTALLER' => tr('Application installer'),
-		'TR_APP_INSTALLER_TXT' => tr('Install various Web applications with a few clicks.')));
+		'TR_APP_INSTALLER_TXT' => tr('Install various Web applications with a few clicks.')
+	)
+);
 
 generateNavigation($tpl);
 client_hideDisabledFeatures($tpl);

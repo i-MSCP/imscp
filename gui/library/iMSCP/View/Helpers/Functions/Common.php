@@ -36,55 +36,57 @@
  * Helper function to generates domain details.
  *
  * @param iMSCP_pTemplate $tpl Template engine
- * @param int $domain_id Domain unique identifier
+ * @param int $domainId Domain unique identifier
  * @return void
  */
-function gen_domain_details($tpl, $domain_id)
+function gen_domain_details($tpl, $domainId)
 {
-    $tpl->assign('USER_DETAILS', '');
+	$tpl->assign('USER_DETAILS', '');
 
-    if (isset($_SESSION['details']) && $_SESSION['details'] == 'hide') {
-        $tpl->assign(array(
-                          'TR_VIEW_DETAILS' => tr('View aliases'),
-                          'SHOW_DETAILS' => "show"));
+	if (isset($_SESSION['details']) && $_SESSION['details'] == 'hide') {
+		$tpl->assign(
+			array(
+				'TR_VIEW_DETAILS' => tr('View aliases'),
+				'SHOW_DETAILS' => 'show'
+			)
+		);
 
-        return;
-    } else if (isset($_SESSION['details']) && $_SESSION['details'] === 'show') {
-        $tpl->assign(array(
-                          'TR_VIEW_DETAILS' => tr('Hide aliases'),
-                          'SHOW_DETAILS' => "hide"));
+		return;
+	} else if (isset($_SESSION['details']) && $_SESSION['details'] == 'show') {
+		$tpl->assign(
+			array(
+				'TR_VIEW_DETAILS' => tr('Hide aliases'),
+				'SHOW_DETAILS' => 'hide'
+			)
+		);
 
-        $alias_query = '
-			SELECT
-				`alias_id`, `alias_name`
-			FROM
-				`domain_aliasses`
-			WHERE
-				`domain_id` = ?
-			ORDER BY
-				`alias_id` DESC
+		$aliasQuery = '
+			SELECT `alias_id`, `alias_name` FROM `domain_aliasses` WHERE `domain_id` = ? ORDER BY `alias_id` DESC
 		';
-        $alias_rs = exec_query($alias_query, $domain_id);
+		$aliasStmt = exec_query($aliasQuery, $domainId);
 
-        if ($alias_rs->recordCount() == 0) {
-            $tpl->assign('USER_DETAILS', '');
-        } else {
-            while (!$alias_rs->EOF) {
-                $alias_name = $alias_rs->fields['alias_name'];
+		if (!$aliasStmt->rowCount()) {
+			$tpl->assign('USER_DETAILS', '');
+		} else {
+			while (!$aliasStmt->EOF) {
+				$aliasName = $aliasStmt->fields['alias_name'];
 
-                $tpl->assign('ALIAS_DOMAIN', tohtml(decode_idna($alias_name)));
-                $tpl->parse('USER_DETAILS', '.user_details');
+				$tpl->assign('ALIAS_DOMAIN', tohtml(decode_idna($aliasName)));
+				$tpl->parse('USER_DETAILS', '.user_details');
 
-                $alias_rs->moveNext();
-            }
-        }
-    } else {
-        $tpl->assign(array(
-                          'TR_VIEW_DETAILS' => tr('View aliases'),
-                          'SHOW_DETAILS' => 'show'));
+				$aliasStmt->moveNext();
+			}
+		}
+	} else {
+		$tpl->assign(
+			array(
+				'TR_VIEW_DETAILS' => tr('View aliases'),
+				'SHOW_DETAILS' => 'show'
+			)
+		);
 
-        return;
-    }
+		return;
+	}
 }
 
 /**
@@ -100,7 +102,9 @@ function generateLoggedFrom($tpl)
 	if (isset($_SESSION['logged_from']) && isset($_SESSION['logged_from_id'])) {
 		$tpl->assign(
 			array(
-				'YOU_ARE_LOGGED_AS' => tr('%1$s you are now logged as %2$s', $_SESSION['logged_from'], decode_idna($_SESSION['user_logged'])),
+				'YOU_ARE_LOGGED_AS' => tr(
+					'%1$s you are now logged as %2$s', $_SESSION['logged_from'], decode_idna($_SESSION['user_logged'])
+				),
 				'TR_GO_BACK' => tr('Go back')));
 
 		$tpl->parse('LOGGED_FROM', 'logged_from');
@@ -112,14 +116,14 @@ function generateLoggedFrom($tpl)
 /**
  * Helper function to generates an html list of available languages.
  *
- * This method generate a HTML list of available languages. The language used by the
- * user is pre-selected. If no language is found, a specific message is shown.
+ * This method generate a HTML list of available languages. The language used by the user is pre-selected.
+ * If no language is found, a specific message is shown.
  *
  * @param  iMSCP_pTemplate $tpl Template engine
- * @param  $user_def_language
+ * @param  string $userDefinedLanguage User defined language
  * @return void
  */
-function gen_def_language($tpl, $user_def_language)
+function gen_def_language($tpl, $userDefinedLanguage)
 {
 	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
@@ -129,11 +133,14 @@ function gen_def_language($tpl, $user_def_language)
 
 	if (!empty($availableLanguages)) {
 		foreach ($availableLanguages as $language) {
-			$tpl->assign(array(
-							  'LANG_VALUE' => $language['locale'],
-							  'LANG_SELECTED' => ($language['locale'] == $user_def_language)
-								  ? $htmlSelected : '',
-							  'LANG_NAME' => tohtml($language['language'])));
+			$tpl->assign(
+				array(
+				'LANG_VALUE' => $language['locale'],
+				'LANG_SELECTED' => ($language['locale'] == $userDefinedLanguage)
+					? $htmlSelected : '',
+				'LANG_NAME' => tohtml($language['language'])
+				)
+			);
 
 			$tpl->parse('DEF_LANGUAGE', '.def_language');
 		}
@@ -147,9 +154,9 @@ function gen_def_language($tpl, $user_def_language)
  * Helper function to generate HTML list of months and years
  *
  * @param  iMSCP_pTemplate $tpl iMSCP_pTemplate instance
- * @param  $fromMonth
- * @param  $fromYear
- * @param  $numberYears
+ * @param  int $fromMonth
+ * @param  int $fromYear
+ * @param  int $numberYears
  * @return void
  */
 function generateSelectListForMonthsAndYears($tpl, $fromMonth = null, $fromYear = null, $numberYears = 3)
@@ -170,7 +177,7 @@ function generateSelectListForMonthsAndYears($tpl, $fromMonth = null, $fromYear 
 		$fromYearTwoDigit = date('y');
 	}
 
-	foreach(range(1, 12) as $month) {
+	foreach (range(1, 12) as $month) {
 		$tpl->assign(
 			array(
 				'OPTION_SELECTED' => ($month == $fromMonth) ? $cfg->HTML_SELECTED : '',
@@ -197,87 +204,12 @@ function generateSelectListForMonthsAndYears($tpl, $fromMonth = null, $fromYear 
 }
 
 /**
- * Helper function to generates header and footer for order panel pages.
- *
- * @param int $userId User unique identifier
- * @param bool $encode Tell whether or not htmlentities() must applied on template
- * @return array Array that contains Order panel layout
- */
-function gen_purchase_haf($userId, $encode = false)
-{
-    $query = "SELECT `header`, `footer` FROM `orders_settings` WHERE `user_id` = ?";
-    $stmt = exec_query($query, $userId);
-
-    if (!$stmt->rowCount()) {
-        $header = <<<RIC
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" dir="ltr" lang="en">
-<head>
-	<title>{TR_PAGE_TITLE}</title>
-	<meta name="robots" content="nofollow, noindex" />
-	<meta http-equiv="Content-Type" content="text/html; charset={THEME_CHARSET}" />
-	<meta http-equiv="Content-Script-Type" content="text/javascript" />
-	<link href="{THEME_COLOR_PATH}/css/imscp.css" rel="stylesheet" type="text/css" />
-	<link href="{THEME_COLOR_PATH}/css/{THEME_COLOR}.css" rel="stylesheet" type="text/css" />
-	<link href="{THEME_COLOR_PATH}/css/jquery-ui-{THEME_COLOR}.css" rel="stylesheet" type="text/css" />
-	<script type="text/javascript" src="{THEME_COLOR_PATH}/js/jquery.js"></script>
-	<script type="text/javascript" src="{THEME_COLOR_PATH}/js/jquery.ui.js"></script>
-	<script type="text/javascript" src="{THEME_COLOR_PATH}/js/jquery.imscpTooltip-min.js"></script>
-	<!--[if IE 6]>
-	<script type="text/javascript" src="{THEME_COLOR_PATH}/js/DD_belatedPNG_0.0.8a-min.js"></script>
-	<script type="text/javascript">
-		DD_belatedPNG.fix('.error');
-	</script>
-	<![endif]-->
-	<script type="text/javascript">
-	/*<![CDATA[*/
-		$(document).ready(function() {
-			$.fx.speeds._default = 500;
-			setTimeout(function(){\$('.error').fadeOut(1000);},3000);
-			$('.body a, .body span, .body input').imscpTooltip();
-			$("input:submit, input:button, button").button();
-
-			$(".accordion").accordion({
-				heightStyle:"content"
-			});
-		});
-	/*]]>*/
-	</script>
-</head>
-<body class="no_menu">
-	<div class="body" align="center" style="margin:0;">
-		{LAYOUT_CONTENT}
-RIC;
-        $footer = <<<RIC
-	</div>
-</body>
-</html>
-RIC;
-    } else {
-        $header = $stmt->fields['header'];
-        $footer = $stmt->fields['footer'];
-        $header = str_replace('\\', '', $header);
-        $footer = str_replace('\\', '', $footer);
-    }
-
-    if ($encode) {
-        $header = str_replace(array('{', '}'), array('&#123', '&#125;'), htmlentities($header, ENT_COMPAT, 'UTF-8'));
-        $footer = str_replace(array('{', '}'), array('&#123', '&#125;'), htmlentities($footer, ENT_COMPAT, 'UTF-8'));
-    }
-
-	return array($header, $footer);
-}
-
-/**
  * Helper function to generate navigation.
  *
  * @author Laurent Declercq <l.declercq@nuxwin.com>
- * @since iMSCP 1.0.1.6
  * @throws iMSCP_Exception_Production
  * @param iMSCP_pTemplate $tpl iMSCP_pTemplate instance
  * @return void
- * @todo review all this... Using view helper sound really better.
  */
 function generateNavigation($tpl)
 {
@@ -295,7 +227,9 @@ function generateNavigation($tpl)
 			'menu' => 'layout',
 			'left_menu_block' => 'menu',
 			'breadcrumbs' => 'layout',
-			'breadcrumb_block' => 'breadcrumbs'));
+			'breadcrumb_block' => 'breadcrumbs'
+		)
+	);
 
 	generateLoggedFrom($tpl);
 
@@ -334,10 +268,9 @@ function generateNavigation($tpl)
 		$navigation->removePage($navigation->findOneBy('class', 'support'));
 	}
 
-	// Hide hosting plan pages if management is delegated to reseller level
 	if ($_SESSION['user_type'] != 'user') {
 		if ($cfg->HOSTING_PLANS_LEVEL != $_SESSION['user_type']) {
-			if($_SESSION['user_type'] === 'admin') {
+			if ($_SESSION['user_type'] === 'admin') {
 				$navigation->findOneBy('class', 'hosting_plans')->setVisible(false);
 			} else {
 				$navigation->findOneBy('class', 'hosting_plan_add')->setVisible(false);
@@ -371,16 +304,23 @@ function generateNavigation($tpl)
 
 	/** @var $page Zend_Navigation_Page */
 	foreach ($navigation as $page) {
+		if (null !== ($callbacks = $page->get('privilege_callback'))) {
+			$callbacks = (isset($callbacks['name'])) ? array($callbacks) : $callbacks;
 
-		if(null !== ($callback = $page->get('privilege_callback'))) {
-			if(is_callable($callback['name'])) {
-				if(!call_user_func($callback['name'], $callback['param'])) {
-					continue;
+			foreach ($callbacks as $callback) {
+				if (is_callable($callback['name'])) {
+					if (
+						! call_user_func_array(
+							$callback['name'], isset($callback['param']) ? (array) $callback['param'] : array()
+						)
+					) {
+						continue 2;
+					}
+				} else {
+					throw new iMSCP_Exception_Production(
+						"Privileges callback function '{$callback['name']}' is not callable"
+					);
 				}
-			} else {
-				throw new iMSCP_Exception_Production(
-					"Privileges callback function '{$callback['name']}' is not callable"
-				);
 			}
 		}
 
@@ -413,15 +353,24 @@ function generateNavigation($tpl)
 					/** @var $subpage Zend_Navigation_Page_Uri */
 					foreach ($iterator as $subpage) {
 
-						if(null !== ($callback = $subpage->get('privilege_callback'))) {
-							if(is_callable($callback['name'])) {
-								if(!call_user_func($callback['name'], $callback['param'])) {
-									continue;
+						if (null !== ($callbacks = $subpage->get('privilege_callback'))) {
+							$callbacks = (isset($callbacks['name'])) ? array($callbacks) : $callbacks;
+
+							foreach ($callbacks AS $callback) {
+								if (is_callable($callback['name'])) {
+									if (
+										! call_user_func_array(
+											$callback['name'],
+											isset($callback['param']) ? (array) $callback['param'] : array()
+										)
+									) {
+										continue 2;
+									}
+								} else {
+									throw new iMSCP_Exception_Production(
+										"Privileges callback function '{$callback['name']}' is not callable"
+									);
 								}
-							} else {
-								throw new iMSCP_Exception_Production(
-									"Privileges callback function '{$callback['name']}' is not callable"
-								);
 							}
 						}
 
@@ -491,21 +440,20 @@ function generateNavigation($tpl)
  * Returns custom menus for given user.
  *
  * @author Laurent Declercq <l.declercq@nuxwin.com>
- * @since iMSCP 1.0.1.6
  * @throws iMSCP_Exception
  * @param string $userLevel User type (admin, reseller or user)
- * @return null|array Array that contain custom menus description or NULL
+ * @return null|array Array containing custom menus definitions or NULL in case no custom menu is found
  */
 function getCustomMenus($userLevel)
 {
-	if($userLevel == 'admin') {
+	if ($userLevel == 'admin') {
 		$params = 'A';
-	} elseif($userLevel == 'reseller') {
+	} elseif ($userLevel == 'reseller') {
 		$params = 'R';
-	} elseif($userLevel == 'user') {
+	} elseif ($userLevel == 'user') {
 		$params = 'C';
 	} else {
-		throw new iMSCP_Exception('Unknown $userLevel for getCustomMenus() function.');
+		throw new iMSCP_Exception("Unknown user level '$userLevel' for getCustomMenus() function.");
 	}
 
 	$query = "SELECT * FROM `custom_menus` WHERE `menu_level` LIKE ?";

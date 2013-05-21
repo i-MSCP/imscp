@@ -23,12 +23,12 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
-# @category		i-MSCP
-# @copyright	2010-2013 by i-MSCP | http://i-mscp.net
-# @author		Daniel Andreca <sci2tech@gmail.com>
-# @author		Laurent Declercq <l;declercq@nuxwin.com>
-# @link			http://i-mscp.net i-MSCP Home Site
-# @license		http://www.gnu.org/licenses/gpl-2.0.html GPL v2
+# @category    i-MSCP
+# @copyright   2010-2013 by i-MSCP | http://i-mscp.net
+# @author      Daniel Andreca <sci2tech@gmail.com>
+# @author      Laurent Declercq <l.declercq@nuxwin.com>
+# @link        http://i-mscp.net i-MSCP Home Site
+# @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
 package Servers::po::dovecot::installer;
 
@@ -66,7 +66,9 @@ sub registerSetupHooks
 {
 	my $self = shift;
 	my $hooksManager = shift;
-	my $rs = 0;
+
+	my $rs = $hooksManager->trigger('beforePoRegisterSetupHooks', $hooksManager, 'dovecot');
+    return $rs if $rs;
 
 	# Add installer dialog in setup dialog stack
 	$rs = $hooksManager->register(
@@ -82,7 +84,7 @@ sub registerSetupHooks
 		return $rs if $rs;
 	}
 
-	0;
+	$hooksManager->trigger('afterPoRegisterSetupHooks', $hooksManager, 'dovecot');
 }
 
 =item askDovecot($dialog)
@@ -171,7 +173,9 @@ sub askDovecot
 sub install
 {
 	my $self = shift;
-	my $rs = 0;
+
+	my $rs = $self->{'hooksManager'}->trigger('beforePoInstall', 'dovecot');
+	return $rs if $rs;
 
 	$rs = $self->_bkpConfFile($_) for ('dovecot.conf', 'dovecot-sql.conf');
 	return $rs if $rs;
@@ -191,7 +195,7 @@ sub install
 		return $rs if $rs;
 	}
 
-	0;
+	$self->{'hooksManager'}->trigger('afterPoInstall', 'dovecot');
 }
 
 =back
@@ -272,16 +276,17 @@ sub _init
 
 	$self->{'hooksManager'} = iMSCP::HooksManager->getInstance();
 
-	$self->{'hooksManager'}->trigger('beforePodInitInstaller', $self, 'dovecot');
+	$self->{'hooksManager'}->trigger(
+		'beforePodInitInstaller', $self, 'dovecot'
+	) and fatal('dovecot - beforePoInitInstaller hook has failed');;
 
 	$self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/dovecot";
 	$self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
 	$self->{'wrkDir'} = "$self->{'cfgDir'}/working";
 
-	my $conf = "$self->{'cfgDir'}/dovecot.data";
-	my $oldConf = "$self->{'cfgDir'}/dovecot.old.data";
+	$self::dovecotConfig = $self->{'dovecotConfig'};
 
-	tie %self::dovecotConfig, 'iMSCP::Config','fileName' => $conf, 'noerrors' => 1;
+	my $oldConf = "$self->{'cfgDir'}/dovecot.old.data";
 
 	if(-f $oldConf) {
 		tie %self::dovecotOldConfig, 'iMSCP::Config','fileName' => $oldConf, 'noerrors' => 1;
@@ -290,7 +295,9 @@ sub _init
 
 	$self->_getVersion() and fatal('Unable to get dovecot version');
 
-	$self->{'hooksManager'}->trigger('afterPodInitInstaller', $self, 'dovecot');
+	$self->{'hooksManager'}->trigger(
+		'afterPodInitInstaller', $self, 'dovecot'
+	) and fatal('dovecot - afterPoInitInstaller hook has failed');
 
 	$self;
 }

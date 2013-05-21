@@ -63,7 +63,9 @@ use parent 'Common::SingletonClass';
 sub install
 {
 	my $self = shift;
-	my $rs = 0;
+
+	my $rs = $self->{'hooksManager'}->trigger('beforePoInstall', 'courier');
+	return $rs if $rs;
 
 	for('authdaemonrc', 'userdb', $self::courierConfig{'COURIER_IMAP_SSL'}, $self::courierConfig{'COURIER_POP_SSL'}) {
 		$rs = $self->_bkpConfFile($_);
@@ -88,7 +90,7 @@ sub install
     	return $rs if $rs;
     }
 
-	0;
+	$self->{'hooksManager'}->trigger('afterPoInstall', 'courier');
 }
 
 =back
@@ -111,23 +113,26 @@ sub _init
 
 	$self->{'hooksManager'} = iMSCP::HooksManager->getInstance();
 
-	$self->{'hooksManager'}->trigger('beforePodInitInstaller', $self, 'courier');
+	$self->{'hooksManager'}->trigger(
+		'beforePodInitInstaller', $self, 'courier'
+	) and fatal('courier - beforePoInitInstaller hook has failed');
 
 	$self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/courier";
 	$self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
 	$self->{'wrkDir'} = "$self->{'cfgDir'}/working";
 
-	my $conf = "$self->{'cfgDir'}/courier.data";
-	my $oldConf = "$self->{'cfgDir'}/courier.old.data";
+	$self::courierConfig = $self->{'courierConfig'};
 
-	tie %self::courierConfig, 'iMSCP::Config','fileName' => $conf, 'noerrors' => 1;
+	my $oldConf = "$self->{'cfgDir'}/courier.old.data";
 
 	if(-f $oldConf) {
 		tie %self::courierOldConfig, 'iMSCP::Config','fileName' => $oldConf, 'noerrors' => 1;
 		%self::courierConfig = (%self::courierConfig, %self::courierOldConfig);
 	}
 
-	$self->{'hooksManager'}->trigger('afterPodInitInstaller', $self, 'courier');
+	$self->{'hooksManager'}->trigger(
+		'afterPodInitInstaller', $self, 'courier'
+	) and fatal('courier - afterPoInitInstaller hook has failed');
 
 	$self;
 }

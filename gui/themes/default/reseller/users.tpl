@@ -32,6 +32,11 @@
 				<input type="hidden" name="details" value="" />
 			</form>
 			<!-- EDP: users_search -->
+
+			<!-- BDP: usr_message -->
+			<div class="info">{USR_MESSAGE}</div>
+			<!-- EDP: usr_message -->
+
 			<!-- BDP: users_list -->
 			<table>
 				<thead>
@@ -47,7 +52,7 @@
 					<!-- BDP: user_entry -->
 					<tr>
 						<td>
-							<a href="#" onclick="action_status('{URL_CHANGE_STATUS}', '{NAME}'); return false;" class="icon i_{STATUS_DOMAIN}">{STATUS_DOMAIN}</a>
+							<a href="#" onclick="action_status('{URL_CHANGE_STATUS}', '{NAME}'); return false;" class="icon i_{STATUS_ICON}">{STATUS_DOMAIN}</a>
 						</td>
 						<td>
 							<!-- BDP: status_reload_true -->
@@ -70,7 +75,7 @@
 							<a class="icon i_details" href="change_user_interface.php?to_id={USER_ID}">{CHANGE_INTERFACE}</a>
 
 							<a class="icon i_stats" href="domain_statistics.php?month={VL_MONTH}&year={VL_YEAR}&domain_id={DOMAIN_ID}">{TR_STAT}</a>
-							<a class="icon i_delete" href="domain_delete.php?domain_id={DOMAIN_ID}">{ACTION}</a>
+							<a class="icon i_delete" href="user_delete.php?id={USER_ID}">{ACTION}</a>
 						</td>
 					</tr>
 					<!-- BDP: user_details -->
@@ -83,7 +88,6 @@
 					<!-- EDP: user_entry -->
 				</tbody>
 			</table>
-			<!-- EDP: users_list -->
 			<div class="paginator">
 				<!-- BDP: scroll_next_gray -->
 				<a class="icon i_next_gray" href="#">&nbsp;</a>
@@ -101,3 +105,4 @@
 				<a class="icon i_prev_gray" href="#">&nbsp;</a>
 				<!-- EDP: scroll_prev_gray -->
 			</div>
+			<!-- EDP: users_list -->

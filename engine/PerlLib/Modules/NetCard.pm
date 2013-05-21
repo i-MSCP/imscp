@@ -17,11 +17,11 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 #
-# @category		i-MSCP
-# @copyright	2010-2013 by i-MSCP | http://i-mscp.net
-# @author		Daniel Andreca <sci2tech@gmail.com>
-# @link			http://i-mscp.net i-MSCP Home Site
-# @license		http://www.gnu.org/licenses/gpl-2.0.html GPL v2
+# @category     i-MSCP
+# @copyright    2010-2013 by i-MSCP | http://i-mscp.net
+# @author       Daniel Andreca <sci2tech@gmail.com>
+# @link         http://i-mscp.net i-MSCP Home Site
+# @license      http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
 package Modules::NetCard;
 
@@ -38,12 +38,12 @@ sub process
 	my $rs = 0;
 	my ($stdour, $stderr);
 
-	$rs = execute("$main::imscpConfig{'ENGINE_ROOT_DIR'}/tools/imscp-net-interfaces-mngr stop", \$stdour, \$stderr);
+	$rs = execute("perl $main::imscpConfig{'ENGINE_ROOT_DIR'}/tools/imscp-net-interfaces-mngr stop", \$stdour, \$stderr);
 	debug($stdour) if $stdour;
 	error($stderr) if $stderr && $rs;
 	return $rs if $rs;
 
-	$rs = execute("$main::imscpConfig{'ENGINE_ROOT_DIR'}/tools/imscp-net-interfaces-mngr start", \$stdour, \$stderr);
+	$rs = execute("perl $main::imscpConfig{'ENGINE_ROOT_DIR'}/tools/imscp-net-interfaces-mngr start", \$stdour, \$stderr);
 	debug($stdour) if $stdour;
 	error($stderr) if $stderr && $rs;
 	return $rs if $rs;

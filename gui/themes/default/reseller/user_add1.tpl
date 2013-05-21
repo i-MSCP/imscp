@@ -38,7 +38,7 @@
                                 <span style="vertical-align:middle" class="icon i_help" id="dmn_help" title="{TR_DMN_HELP}">Help</span>
                             </td>
                             <td>
-                                <input type="text" name="dmn_name" id="dmn_name" value="{DMN_NAME_VALUE}" />
+                                <input type="text" name="dmn_name" id="dmn_name" value="{DOMAIN_NAME_VALUE}" />
                             </td>
                         </tr>
                         <tr>
@@ -57,7 +57,7 @@
                             <td>
                                 <select id="dmn_tpl" name="dmn_tpl">
                                     <!-- BDP: hosting_plan_entry_block -->
-                                    <option value="{CHN}"{CH{CHN}}>{HP_NAME}</option>
+                                    <option value="{HP_ID}"{HP_SELECTED}>{HP_NAME}</option>
                                     <!-- EDP: hosting_plan_entry_block -->
                                 </select>
                             </td>
@@ -66,8 +66,10 @@
                         <tr>
                             <td>{TR_PERSONALIZE_TEMPLATE}</td>
                             <td>
-                                <input type="radio" id="chtpl_yes" name="chtpl" value="_yes_" {CHTPL1_VAL} /><label for="chtpl_yes">{TR_YES}</label>
-                                <input type="radio" id="chtpl_no" name="chtpl" value="_no_" {CHTPL2_VAL} /><label for="chtpl_no">{TR_NO}</label>
+								<div class="radio">
+                                	<input type="radio" id="chtpl_yes" name="chtpl" value="_yes_" {CHTPL1_VAL} /><label for="chtpl_yes">{TR_YES}</label>
+                                	<input type="radio" id="chtpl_no" name="chtpl" value="_no_" {CHTPL2_VAL} /><label for="chtpl_no">{TR_NO}</label>
+								</div>
                             </td>
                         </tr>
                         <!-- EDP: customize_hosting_plan_block -->
@@ -75,7 +77,7 @@
                     </table>
                 <div class="buttons">
                     <input name="Submit" type="submit" class="button" value="{TR_NEXT_STEP}" />
+					<input type="hidden" name="uaction" value="user_add_next" />
                 </div>
-                <input type="hidden" name="uaction" value="user_add_next" />
             </form>
             <!-- EDP: add_customer_block -->

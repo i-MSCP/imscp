@@ -33,10 +33,11 @@ package Servers::httpd::apache_php_fpm::uninstaller;
 
 use strict;
 use warnings;
+
 use iMSCP::Debug;
 use Servers::httpd::apache_php_fpm;
-use Modules::SystemUser;
-use Modules::SystemGroup;
+use iMSCP::SystemUser;
+use iMSCP::SystemGroup;
 use iMSCP::Dir;
 use iMSCP::File;
 use File::Basename;
@@ -60,9 +61,8 @@ use parent 'Common::SingletonClass';
 sub uninstall
 {
 	my $self = shift;
-	my $rs = 0;
 
-	$rs = $self->_removeUserAndGroup();
+	my $rs = $self->_removeUserAndGroup();
 	return $rs if $rs;
 
 	$rs = $self->_restoreApacheConfig();
@@ -116,18 +116,17 @@ sub _init
 sub _removeUserAndGroup
 {
 	my $self = shift;
-	my $rs = 0;
 
 	# Remove panel user
-	my $panelUName = Modules::SystemUser->new();
+	my $panelUName = iMSCP::SystemUser->new();
 	$panelUName->{'force'} = 'yes';
-	$rs = $panelUName->delSystemUser(
+	my $rs = $panelUName->delSystemUser(
 		$main::imscpConfig{'SYSTEM_USER_PREFIX'} . $main::imscpConfig{'SYSTEM_USER_MIN_UID'}
 	);
 	return $rs if $rs;
 
 	# Remove panel group
-	my $panelGName = Modules::SystemGroup->new();
+	my $panelGName = iMSCP::SystemGroup->new();
 	$panelGName->delSystemGroup(
 		$main::imscpConfig{'SYSTEM_USER_PREFIX'} . $main::imscpConfig{'SYSTEM_USER_MIN_UID'}
 	);
@@ -144,9 +143,8 @@ sub _removeUserAndGroup
 sub _restoreApacheConfig
 {
 	my $self = shift;
-	my $rs = 0;
 
-	$rs = $self->{'httpd'}->disableMod('php_fpm_imscp') if -e "$self::apacheConfig{'APACHE_MODS_DIR'}/php_fpm_imscp.load";
+	my $rs = $self->{'httpd'}->disableMod('php_fpm_imscp') if -e "$self::apacheConfig{'APACHE_MODS_DIR'}/php_fpm_imscp.load";
 	return $rs if $rs;
 
 	for ('php_fpm_imscp.conf', 'php_fpm_imscp.load') {
@@ -202,9 +200,8 @@ sub _restoreApacheConfig
 sub _restorePhpfpmConfig
 {
 	my $self = shift;
-	my $rs = 0;
 
-	$rs = iMSCP::File->new(
+	my $rs = iMSCP::File->new(
 		'filename' => "$self::phpfpmConfig{'PHP_FPM_POOLS_CONF_DIR'}/master.conf"
 	)->delFile() if -f "$self::phpfpmConfig{'PHP_FPM_POOLS_CONF_DIR'}/master.conf";
 	return $rs if $rs;

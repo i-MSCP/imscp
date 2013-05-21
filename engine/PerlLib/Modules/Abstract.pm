@@ -23,12 +23,12 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 #
-# @category		i-MSCP
-# @copyright	2010-2013 by i-MSCP | http://i-mscp.net
-# @author		Daniel Andreca <sci2tech@gmail.com>
-# @author		Laurent Declercq <l.declercq@nuxwin.com>
-# @link			http://i-mscp.net i-MSCP Home Site
-# @license		http://www.gnu.org/licenses/gpl-2.0.html GPL v2
+# @category    i-MSCP
+# @copyright   2010-2013 by i-MSCP | http://i-mscp.net
+# @author      Daniel Andreca <sci2tech@gmail.com>
+# @author      Laurent Declercq <l.declercq@nuxwin.com>
+# @link        http://i-mscp.net i-MSCP Home Site
+# @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
 package Modules::Abstract;
 
@@ -63,7 +63,7 @@ sub _init
 
 =item loadData()
 
- Load base data for current item.
+ Load data for current module.
 
  return int - 0 on success, other on failure
 
@@ -95,7 +95,7 @@ sub process
 
  Add item
 
- Should be called for database items with a 'toadd|change|toenable|dnschange' status.
+ Should be called for items with 'toadd|change|toenable|dnschange' status.
 
  return int - 0 on success, other on failure
 
@@ -113,7 +113,7 @@ sub add
 
  Delete item.
 
- Should be called for database items with a 'delete' status.
+ Should be called for items with 'delete' status.
 
  return int - 0 on success, other on failure
 
@@ -131,7 +131,7 @@ sub delete
 
  Restore item.
 
- Should be called for database items with a 'restore' status.
+ Should be called for items with 'restore' status.
 
  return int - 0 on success, other on failure
 
@@ -139,14 +139,17 @@ sub delete
 
 sub restore
 {
-	0;
+	my $self = shift;
+
+	$self->{'action'} = 'restore';
+	$self->runAllActions();
 }
 
 =item disable()
 
  Disable item.
 
- Should be called for database items with a 'todisable' status.
+ Should be called for database items with 'todisable' status.
 
  return int - 0 on success, other on failure
 

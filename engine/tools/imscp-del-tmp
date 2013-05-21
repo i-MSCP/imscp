@@ -35,20 +35,23 @@ use iMSCP::Boot;
 use iMSCP::Servers;
 use iMSCP::Addons;
 
+# Turn off localisation features to force any command output to be in english
+$ENV{LANG} = 'C';
+
+umask(027);
+
 newDebug('imscp-del-tmp.log');
 
 silent(1);
 
-sub logs_start_up
+sub startUp
 {
-	umask(027);
-
 	iMSCP::Boot->getInstance()->boot({ 'nolock' => 'yes' });
 
 	0;
 }
 
-sub del_tmp
+sub process
 {
 	my $rs = 0;
 
@@ -59,6 +62,7 @@ sub del_tmp
 		my $class = "Servers::$_";
 		require $file;
 		my $instance = $class->factory();
+
 		$rs = $instance->delTmp() if $instance->can('delTmp');
 		return $rs if $rs;
 	}
@@ -69,6 +73,7 @@ sub del_tmp
 		my $file = "Addons/$_.pm";
 		my $class = "Addons::$_";
 		require $file;
+
 		my $instance = $class->getInstance();
 		$rs = $instance->delTmp() if $instance->can('delTmp');
 		return $rs if $rs;
@@ -77,5 +82,9 @@ sub del_tmp
 	0;
 }
 
-exit 1 if logs_start_up();
-exit del_tmp();
+my $rs = 0;
+
+$rs = startUp();
+$rs ||= process();
+
+exit $rs;

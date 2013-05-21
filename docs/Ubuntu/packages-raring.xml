@@ -66,13 +66,12 @@
     <sql>
         <alternative default="mysql_5.5">
             <mysql_5.5
-                    pinning_package="mysql-server mysql-server mysql-common libmysqlclient18"
+                    pinning_package="mysql-server-5.5 mysql-server-5.5 mysql-common libmysqlclient18"
                     pinning_pin="release o=Ubuntu,n=raring"
                     pinning_pin_priority="1001"
                     >
-                <package>mysql-server</package>
-                <package>mysql-client</package>
-                <package>mysql-common</package>
+                <package>mysql-server-5.5</package>
+                <package>mysql-client-5.5</package>
             </mysql_5.5>
             <remote_server>
                 <package>mysql-client</package>

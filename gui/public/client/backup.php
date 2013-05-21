@@ -24,15 +24,37 @@
  * Portions created by the i-MSCP Team are Copyright (C) 2010-2013 by
  * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
  *
- * @category	i-MSCP
- * @package		iMSCP_Core
- * @subpackage	Client
+ * @category    i-MSCP
+ * @package     iMSCP_Core
+ * @subpackage  Client
  * @copyright   2001-2006 by moleSoftware GmbH
  * @copyright   2006-2010 by ispCP | http://isp-control.net
  * @copyright   2010-2013 by i-MSCP | http://i-mscp.net
  * @author      ispCP Team
  * @author      i-MSCP Team
  * @link        http://i-mscp.net
+ */
+
+/***********************************************************************************************************************
+ * Functions
+ */
+
+/**
+ * Schedule backup restoration.
+ *
+ * @param int $userId Customer unique identifier
+ * @return void
+ */
+function scheduleBackupRestoration($userId)
+{
+	exec_query("UPDATE `domain` SET `domain_status` = 'restore' WHERE `domain_admin_id` = ?", $userId);
+	send_request();
+	write_log($_SESSION['user_logged'] . ": scheduled backup restoration.", E_USER_NOTICE);
+	set_page_message(tr('Backup has been successfully scheduled for restoration.'), 'success');
+
+}
+/***********************************************************************************************************************
+ * Main
  */
 
 // Include core library
@@ -44,71 +66,50 @@ check_login('user');
 
 customerHasFeature('backup') or showBadRequestErrorPage();
 
+if(isset($_POST['uaction']) && $_POST['uaction'] == 'bk_restore') {
+	scheduleBackupRestoration($_SESSION['user_id']);
+}
+
 /** @var $cfg iMSCP_Config_Handler_File */
 $cfg = iMSCP_Registry::get('config');
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic('layout', 'shared/layouts/ui.tpl');
-$tpl->define_dynamic('page', 'client/backup.tpl');
-$tpl->define_dynamic('page_message', 'layout');
+$tpl->define_dynamic(
+	array(
+		'layout' => 'shared/layouts/ui.tpl',
+		'page' => 'client/backup.tpl',
+		'page_message' => 'layout'
+	)
+);
 
-/**
- * Schedule backup.
- *
- * @param int $user_id
- * @return void
- */
-function send_backup_restore_request($user_id) {
-	if (isset($_POST['uaction']) && $_POST['uaction'] === 'bk_restore') {
-
-		$query = "
-			UPDATE
-				`domain`
-			SET
-				`domain_status` = 'restore'
-			WHERE
-				`domain_admin_id` = ?
-		";
-
-		exec_query($query, $user_id);
-
-		send_request();
-		write_log($_SESSION['user_logged'] . ": restore backup files.", E_USER_NOTICE);
-		set_page_message(tr('Backup archive scheduled for restoring.'), 'success');
-	}
+if ($cfg->ZIP == 'gzip') {
+	$name = '.*-backup-%Y.%m.%d-%H-%M.tar..tar.gz';
+} else if ($cfg->ZIP == 'bzip2' || $cfg->ZIP == 'pbzip2') {
+	$name = '.*-backup-%Y.%m.%d-%H-%M.tar.tar.bz2';
+} else {
+	$name = '.*-backup-%Y.%m.%d-%H-%M.tar.lzma';
 }
 
 $tpl->assign(
 	array(
 		'TR_PAGE_TITLE' => tr('i-MSCP - Client/Daily Backup'),
 		'THEME_CHARSET' => tr('encoding'),
-		'ISP_LOGO' => layout_getUserLogo()));
-
-send_backup_restore_request($_SESSION['user_id']);
-generateNavigation($tpl);
-
-if ($cfg->ZIP == "gzip") {
-	$name = "backup_YYYY_MM_DD.tar.gz";
-} else if ($cfg->ZIP == "bzip2") {
-	$name = "backup_YYYY_MM_DD.tar.bz2";
-} else { // Config::getInstance()->get('ZIP') == "lzma"
-	$name = "backup_YYYY_MM_DD.tar.lzma";
-}
-
-$tpl->assign(
-	array(
+		'ISP_LOGO' => layout_getUserLogo(),
 		'TR_BACKUP' => tr('Backup'),
 		'TR_DAILY_BACKUP' => tr('Daily backup'),
 		'TR_DOWNLOAD_DIRECTION' => tr("Instructions to download today's backup"),
 		'TR_FTP_LOG_ON' => tr('Login with your FTP account'),
-		'TR_SWITCH_TO_BACKUP' => tr('Switch to backups/ directory'),
-		'TR_DOWNLOAD_FILE' => tr('Download the files stored in this directory'),
-		'TR_USUALY_NAMED' => tr('(usually named') . ' ' . $name . ')',
+		'TR_SWITCH_TO_BACKUP' => tr('Switch to the backups directory'),
+		'TR_DOWNLOAD_FILE' => tr('Download the archives stored in this directory'),
+		'TR_USUALY_NAMED' => tr('(usually named') . ' ' . tohtml($name) . ')',
 		'TR_RESTORE_BACKUP' => tr('Restore backup'),
 		'TR_RESTORE_DIRECTIONS' => tr('Click the Restore button and the system will restore the last daily backup'),
 		'TR_RESTORE' => tr('Restore'),
-		'TR_CONFIRM_MESSAGE' => tr('Are you sure you want to restore the backup?')));
+		'TR_CONFIRM_MESSAGE' => tr('Are you sure you want to restore the backup?')
+	)
+);
 
+generateNavigation($tpl);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');

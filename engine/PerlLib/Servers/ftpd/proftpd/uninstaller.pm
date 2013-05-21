@@ -17,20 +17,23 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
-# @category		i-MSCP
-# @copyright	2010-2013 by i-MSCP | http://i-mscp.net
-# @author		Daniel Andreca <sci2tech@gmail.com>
-# @link			http://i-mscp.net i-MSCP Home Site
-# @license		http://www.gnu.org/licenses/gpl-2.0.html GPL v2
+# @category    i-MSCP
+# @copyright   2010-2013 by i-MSCP | http://i-mscp.net
+# @author      Daniel Andreca <sci2tech@gmail.com>
+# @link        http://i-mscp.net i-MSCP Home Site
+# @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
 package Servers::ftpd::proftpd::uninstaller;
 
 use strict;
 use warnings;
+
 use iMSCP::Debug;
 use iMSCP::Execute;
-use iMSCP::File;
 use iMSCP::Templator;
+use File::Basename;
+use iMSCP::File;
+use iMSCP::Dir;
 use parent 'Common::SingletonClass';
 
 sub _init
@@ -38,10 +41,10 @@ sub _init
 	my $self = shift;
 
 	$self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/proftpd";
-	$self->{'bkpDir'} = "$self->{cfgDir}/backup";
-	$self->{'wrkDir'} = "$self->{cfgDir}/working";
+	$self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
+	$self->{'wrkDir'} = "$self->{'cfgDir'}/working";
 
-	my $conf = "$self->{cfgDir}/proftpd.data";
+	my $conf = "$self->{'cfgDir'}/proftpd.data";
 
 	tie %self::proftpdConfig, 'iMSCP::Config','fileName' => $conf;
 
@@ -51,9 +54,8 @@ sub _init
 sub uninstall
 {
 	my $self = shift;
-	my $rs = 0;
 
-	$rs = $self->restoreConfFile();
+	my $rs = $self->restoreConfFile();
 	return $rs if $rs;
 
 	$rs = $self->removeDB();
@@ -67,10 +69,8 @@ sub removeDirs
 	my $self = shift;
 	my $rs = 0;
 
-	use iMSCP::Dir;
-
-	for($self::proftpdConfig{FTPD_CONF_DIR}, "$main::imscpConfig{TRAFF_LOG_DIR}/proftpd"){
-		$rs = iMSCP::Dir->new(dirname => $_)->remove() if -d $_;
+	for("$main::imscpConfig{'TRAFF_LOG_DIR'}/proftpd"){
+		$rs = iMSCP::Dir->new('dirname' => $_)->remove() if -d $_;
 		return $rs if $rs;
 	}
 
@@ -104,14 +104,11 @@ sub restoreConfFile
 	my $self = shift;
 	my $rs = 0;
 
-	use File::Basename;
-	use iMSCP::File;
-
 	for ($self::proftpdConfig{'FTPD_CONF_FILE'}) {
 		my ($filename, $directories, $suffix) = fileparse($_);
 
-		if(-f "$self->{bkpDir}/$filename$suffix.system"){
-			$rs	= iMSCP::File->new(filename => "$self->{bkpDir}/$filename$suffix.system")->copyFile($_);
+		if(-f "$self->{bkpDir}/$filename$suffix.system") {
+			$rs	= iMSCP::File->new(filename => "$self->{'bkpDir'}/$filename$suffix.system")->copyFile($_);
 			return $rs if $rs;
 		}
 	}

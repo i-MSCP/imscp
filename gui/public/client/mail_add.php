@@ -481,8 +481,6 @@ function schedule_mail_account($domain_id, $dmn_name, $mail_acc) {
 		)
 	);
 
-	update_reseller_c_props(get_reseller_id($domain_id));
-
 	write_log($_SESSION['user_logged'] . ': adds new mail account: ' . (!empty($mail_addr) ? $mail_addr : $mail_acc), E_USER_NOTICE);
 	set_page_message(tr('Mail account scheduled for addition.'), 'success');
 	send_request();

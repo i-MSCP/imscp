@@ -143,7 +143,7 @@ die("FATAL: Can't load database parameters")  if (setup_main_vars() != 0);
 ################################################################################
 # Lock file system variables
 #
-$main::lock_file = $main::cfg{'MR_LOCK_FILE'};
+$main::lock_file = '/tmp/imscp.lock';
 $main::fh_lock_file = undef;
 
 $main::log_dir = $main::cfg{'LOG_DIR'};

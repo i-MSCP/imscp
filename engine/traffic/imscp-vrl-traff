@@ -35,6 +35,9 @@ use iMSCP::Boot;
 use iMSCP::Mail;
 use iMSCP::Servers;
 
+# Turn off localisation features to force any command output to be in english
+$ENV{LANG} = 'C';
+
 newDebug('imscp-vrl-traff.log');
 
 silent(1);

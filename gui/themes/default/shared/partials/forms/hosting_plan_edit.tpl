@@ -100,71 +100,71 @@
             /*]]>*/
 			</script>
         	<!-- EDP: php_editor_js -->
-			<form id="hostingPlanEditFrm" name="hostingPlanEditFrm" method="post" action="hosting_plan_edit.php?hpid={HOSTING_PLAN_ID}">
+			<form id="hostingPlanEditFrm" name="hostingPlanEditFrm" method="post" action="hosting_plan_edit.php?id={ID}">
             <table class="firstColFixed">
             <tr>
-                <th colspan="2">{TR_HOSTING_PLAN_PROPS}</th>
+                <th colspan="2">{TR_PROPERTIES}</th>
             </tr>
             <tr>
                 <td><label for="hp_name">{TR_NAME}</label></td>
-                <td><input id="hp_name" type="text" name="hp_name" value="{HP_NAME_VALUE}" class="inputTitle"{READONLY}/></td>
+                <td><input id="hp_name" type="text" name="hp_name" value="{NAME}" class="inputTitle"{READONLY}/></td>
             </tr>
             <tr>
                 <td><label for="hp_description">{TR_DESCRIPTON}</label></td>
-                <td><textarea id="hp_description" name="hp_description"{READONLY}>{HP_DESCRIPTION_VALUE}</textarea></td>
+                <td><textarea id="hp_description" name="hp_description"{READONLY}>{DESCRIPTION}</textarea></td>
             </tr>
             <!-- BDP: subdomain_add -->
             <tr>
-                <td><label for="hp_sub">{TR_MAX_SUBDOMAINS}</label></td>
-                <td><input id="hp_sub" type="text" name="hp_sub" value="{TR_MAX_SUB_LIMITS}"{READONLY}/></td>
+                <td><label for="hp_sub">{TR_MAX_SUB}</label></td>
+                <td><input id="hp_sub" type="text" name="hp_sub" value="{MAX_SUB}"{READONLY}/></td>
             </tr>
             <!-- EDP: subdomain_add -->
             <!-- BDP: alias_add -->
             <tr>
-                <td><label for="hp_als">{TR_MAX_ALIASES}</label></td>
-                <td><input id="hp_als" type="text" name="hp_als" value="{TR_MAX_ALS_VALUES}"{READONLY}/></td>
+                <td><label for="hp_als">{TR_MAX_ALS}</label></td>
+                <td><input id="hp_als" type="text" name="hp_als" value="{MAX_ALS}"{READONLY}/></td>
             </tr>
             <!-- EDP: alias_add -->
             <!-- BDP: mail_add -->
             <tr>
-                <td><label for="hp_mail">{TR_MAX_MAILACCOUNTS}</label>
+                <td><label for="hp_mail">{TR_MAX_MAIL}</label>
                 </td>
-                <td><input id="hp_mail" type="text" name="hp_mail" value="{HP_MAIL_VALUE}"{READONLY}/></td>
+                <td><input id="hp_mail" type="text" name="hp_mail" value="{MAX_MAIL}"{READONLY}/></td>
             </tr>
             <!-- EDP: mail_add -->
             <!-- BDP: ftp_add -->
             <tr>
                 <td><label for="hp_ftp">{TR_MAX_FTP}</label></td>
-                <td><input id="hp_ftp" type="text" name="hp_ftp" value="{HP_FTP_VALUE}"{READONLY}/></td>
+                <td><input id="hp_ftp" type="text" name="hp_ftp" value="{MAX_FTP}"{READONLY}/></td>
             </tr>
             <!-- EDP: ftp_add -->
             <!-- BDP: sql_db_add -->
             <tr>
-                <td><label for="hp_sql_db">{TR_MAX_SQL}</label></td>
-                <td><input id="hp_sql_db" type="text" name="hp_sql_db" value="{HP_SQL_DB_VALUE}"{READONLY}/></td>
+                <td><label for="hp_sql_db">{TR_MAX_SQLD}</label></td>
+                <td><input id="hp_sql_db" type="text" name="hp_sql_db" value="{MAX_SQLD}"{READONLY}/></td>
             </tr>
             <!-- EDP: sql_db_add -->
             <!-- BDP: sql_user_add -->
             <tr>
-                <td><label for="hp_sql_user">{TR_MAX_SQL_USERS}</label></td>
-                <td><input id="hp_sql_user" type="text" name="hp_sql_user" value="{HP_SQL_USER_VALUE}"{READONLY}/></td>
+                <td><label for="hp_sql_user">{TR_MAX_SQLU}</label></td>
+                <td><input id="hp_sql_user" type="text" name="hp_sql_user" value="{MAX_SQLU}"{READONLY}/></td>
             </tr>
             <!-- EDP: sql_user_add -->
             <tr>
-                <td><label for="hp_traff">{TR_MAX_TRAFFIC}</label></td>
-                <td><input id="hp_traff" type="text" name="hp_traff" value="{HP_TRAFF_VALUE}"{READONLY}/></td>
+                <td><label for="hp_traff">{TR_MONTHLY_TRAFFIC}</label></td>
+                <td><input id="hp_traff" type="text" name="hp_traff" value="{MONTHLY_TRAFFIC}"{READONLY}/></td>
             </tr>
             <tr>
-                <td><label for="hp_disk">{TR_DISK_LIMIT}</label></td>
-                <td><input id="hp_disk" type="text" name="hp_disk" value="{HP_DISK_VALUE}"{READONLY}/></td>
+                <td><label for="hp_disk">{TR_MAX_DISKSPACE}</label></td>
+                <td><input id="hp_disk" type="text" name="hp_disk" value="{MAX_DISKSPACE}"{READONLY}/></td>
             </tr>
             <tr>
                 <td>{TR_PHP}</td>
                 <td>
                     <div class="radio">
-                        <input type="radio" name="hp_php" value="_yes_" id="hp_php_yes"{TR_PHP_YES}{DISABLED} />
+                        <input type="radio" name="hp_php" value="_yes_" id="hp_php_yes"{PHP_YES}{DISABLED} />
                         <label for="hp_php_yes">{TR_YES}</label>
-                        <input type="radio" name="hp_php" value="_no_" id="hp_php_no"{TR_PHP_NO}{DISABLED} />
+                        <input type="radio" name="hp_php" value="_no_" id="hp_php_no"{PHP_NO}{DISABLED} />
                         <label for="hp_php_no">{TR_NO}</label>
                     </div>
                 </td>
@@ -275,9 +275,9 @@
                 <td>{TR_CGI}</td>
                 <td>
                     <div class="radio">
-                        <input type="radio" name="hp_cgi" value="_yes_" id="hp_cgi_yes"{TR_CGI_YES}{DISABLED}/>
+                        <input type="radio" name="hp_cgi" value="_yes_" id="hp_cgi_yes"{CGI_YES}{DISABLED}/>
                         <label for="hp_cgi_yes">{TR_YES}</label>
-                        <input type="radio" name="hp_cgi" value="_no_" id="hp_cgi_no"{TR_CGI_NO}{DISABLED}/>
+                        <input type="radio" name="hp_cgi" value="_no_" id="hp_cgi_no"{CGI_NO}{DISABLED}/>
                         <label for="hp_cgi_no">{TR_NO}</label>
                     </div>
                 </td>
@@ -286,9 +286,9 @@
                 <td>{TR_DNS}</td>
                 <td>
                     <div class="radio">
-                        <input type="radio" name="hp_dns" value="_yes_" id="hp_dns_yes"{TR_DNS_YES}{DISABLED}/>
+                        <input type="radio" name="hp_dns" value="_yes_" id="hp_dns_yes"{DNS_YES}{DISABLED}/>
                         <label for="hp_dns_yes">{TR_YES}</label>
-                        <input type="radio" name="hp_dns" value="_no_" id="hp_dns_no"{TR_DNS_NO}{DISABLED}/>
+                        <input type="radio" name="hp_dns" value="_no_" id="hp_dns_no"{DNS_NO}{DISABLED}/>
                         <label for="hp_dns_no">{TR_NO}</label>
                     </div>
                 </td>
@@ -298,9 +298,9 @@
                 <td>{TR_SOFTWARE_SUPP}</td>
                 <td>
                     <div class="radio">
-                        <input type="radio" name="hp_softwares_installer" value="_yes_" id="hp_softwares_installer_yes"{TR_SOFTWARE_YES}{DISABLED}/>
+                        <input type="radio" name="hp_softwares_installer" value="_yes_" id="hp_softwares_installer_yes"{SOFTWARE_YES}{DISABLED}/>
                         <label for="hp_softwares_installer_yes">{TR_YES}</label>
-                        <input type="radio" name="hp_softwares_installer" value="_no_" id="hp_softwares_installer_no"{TR_SOFTWARE_NO}{DISABLED}/>
+                        <input type="radio" name="hp_softwares_installer" value="_no_" id="hp_softwares_installer_no"{SOFTWARE_NO}{DISABLED}/>
                         <label for="hp_softwares_installer_no">{TR_NO}</label>
                     </div>
                 </td>
@@ -310,13 +310,13 @@
                 <td>{TR_BACKUP}</td>
                 <td>
                     <div class="radio">
-                        <input type="radio" name="hp_backup" value="_dmn_" id="hp_backup_dmn"{VL_BACKUPD}{DISABLED}/>
+                        <input type="radio" name="hp_backup" value="_dmn_" id="hp_backup_dmn"{BACKUPD}{DISABLED}/>
                         <label for="hp_backup_dmn">{TR_BACKUP_DOMAIN}</label>
-                        <input type="radio" name="hp_backup" value="_sql_" id="hp_backup_sql"{VL_BACKUPS}{DISABLED}/>
+                        <input type="radio" name="hp_backup" value="_sql_" id="hp_backup_sql"{BACKUPS}{DISABLED}/>
                         <label for="hp_backup_sql">{TR_BACKUP_SQL}</label>
-                        <input type="radio" name="hp_backup" value="_full_" id="hp_backup_full"{VL_BACKUPF}{DISABLED}/>
+                        <input type="radio" name="hp_backup" value="_full_" id="hp_backup_full"{BACKUPF}{DISABLED}/>
                         <label for="hp_backup_full">{TR_BACKUP_FULL}</label>
-                        <input type="radio" name="hp_backup" value="_no_" id="hp_backup_none"{VL_BACKUPN}{DISABLED}/>
+                        <input type="radio" name="hp_backup" value="_no_" id="hp_backup_none"{BACKUPN}{DISABLED}/>
                         <label for="hp_backup_none">{TR_BACKUP_NO}</label>
                     </div>
                 </td>
@@ -325,9 +325,9 @@
                 <td>{TR_EXTMAIL}</td>
                 <td>
                     <div class="radio">
-                        <input type="radio" name="hp_external_mail" value="_yes_" id="hp_extmail_yes"{TR_EXTMAIL_YES}{DISABLED}/>
+                        <input type="radio" name="hp_external_mail" value="_yes_" id="hp_extmail_yes"{EXTMAIL_YES}{DISABLED}/>
                         <label for="hp_extmail_yes">{TR_YES}</label>
-                        <input type="radio" name="hp_external_mail" value="_no_" id="hp_extmail_no"{TR_EXTMAIL_NO}{DISABLED}/>
+                        <input type="radio" name="hp_external_mail" value="_no_" id="hp_extmail_no"{EXTMAIL_NO}{DISABLED}/>
                         <label for="hp_extmail_no">{TR_NO}</label>
                     </div>
                 </td>
@@ -335,72 +335,23 @@
             </table>
             <table class="firstColFixed">
                 <tr>
-                    <th colspan="2">{TR_BILLING_PROPS}</th>
-                </tr>
-                <tr>
-                    <td><label for="hp_price">{TR_PRICE}</label></td>
-                    <td><input name="hp_price" type="text" id="hp_price" value="{HP_PRICE}"{READONLY}/>
-                        <small>({TR_TAX_FREE})</small>
-                    </td>
-                </tr>
-                <tr>
-                    <td><label for="hp_setup_fee">{TR_SETUP_FEE}</label></td>
-                    <td>
-                        <input name="hp_setup_fee" type="text" id="hp_setup_fee" value="{HP_SETUP_FEE}"{READONLY}/>
-                        <small>({TR_TAX_FREE})</small>
-                    </td>
-                </tr>
-                <tr>
-                    <td><label for="hp_currency">{TR_CURRENCY}</label></td>
-                    <td>
-                        <input name="hp_currency" type="text" id="hp_currency" value="{HP_CURRENCY}"{READONLY}/>
-                        <small>{TR_EXAMPLE}</small>
-                    </td>
-                </tr>
-                <tr>
-                    <td><label for="hp_vat">{TR_VAT}</label></td>
-                    <td>
-                        <input name="hp_vat" type="text" id="hp_vat" value="{HP_VAT}"{READONLY}/>
-                        <small>%</small>
-                    </td>
-                </tr>
-                <tr>
-                    <td><label for="hp_payment">{TR_PAYMENT}</label></td>
-                    <td>
-                        <select id="hp_payment" name="hp_payment"{HP_PAYMENT_DISABLED}{DISABLED}>
-                            <!-- BDP: hp_payment_option -->
-                            <option value="{HP_PAYMENT_VALUE}"{HP_PAYMENT_SELECTED}>{TR_HP_PAYMENT_VALUE}</option>
-                            <!-- EDP: hp_payment_option -->
-                        </select>
-                    </td>
+                    <th colspan="2">{TR_AVAILABILITY}</th>
                 </tr>
                 <tr>
                     <td>{TR_STATUS}</td>
                     <td>
                         <div class="radio">
-                            <input type="radio" name="hp_status" value="1" id="hp_status_yes"{TR_STATUS_YES}{DISABLED}/>
+                            <input type="radio" name="hp_status" value="1" id="hp_status_yes"{STATUS_YES}{DISABLED}/>
                             <label for="hp_status_yes">{TR_YES}</label>
-                            <input type="radio" name="hp_status" value="0" id="hp_status_no"{TR_STATUS_NO}{DISABLED}/>
+                            <input type="radio" name="hp_status" value="0" id="hp_status_no"{STATUS_NO}{DISABLED}/>
                             <label for="hp_status_no">{TR_NO}</label>
                         </div>
                     </td>
                 </tr>
             </table>
-            <table class="firstColFixed">
-                <tr>
-                    <th colspan="2">{TR_TOS_PROPS}</th>
-                </tr>
-                <tr>
-                    <td colspan="2">{TR_TOS_NOTE}</td>
-                </tr>
-                <tr>
-                    <td><label for="hp_tos">{TR_TOS_DESCRIPTION}</label></td>
-                    <td><textarea name="hp_tos" id="hp_tos"{READONLY}>{HP_TOS_VALUE}</textarea></td>
-                </tr>
-            </table>
             <!-- BDP: submit_button -->
             <div class="buttons">
-                <input name="Submit" type="submit" value="{TR_UPDATE_PLAN}"/>
+                <input name="Submit" type="submit" value="{TR_UPDATE}"/>
             </div>
             <!-- EDP: submit_button -->
 			</form>

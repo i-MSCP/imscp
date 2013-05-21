@@ -339,8 +339,6 @@ function add_sql_user($customerId, $databaseId)
 				$query = "INSERT INTO `sql_user` (`sqld_id`, `sqlu_name`, `sqlu_pass`) VALUES (?, ?, ?)";
 				exec_query($query, array($databaseId, $sqlUser, $sqlUserPassword));
 
-				update_reseller_c_props(get_reseller_id($domainId));
-
 				iMSCP_Database::getInstance()->commit();
 
 				iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAfterAddSqlUser);

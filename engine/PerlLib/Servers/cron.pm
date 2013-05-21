@@ -29,6 +29,7 @@ use strict;
 use warnings;
 
 use iMSCP::Debug;
+use iMSCP::HooksManager;
 use iMSCP::File;
 use iMSCP::Templator;
 use parent 'Common::SingletonClass';
@@ -39,14 +40,18 @@ sub _init
 
 	$self->{'hooksManager'} = iMSCP::HooksManager->getInstance();
 
-	$self->{'hooksManager'}->trigger('beforeCronInit', $self, 'cron');
+	$self->{'hooksManager'}->trigger(
+		'beforeCronInit', $self, 'cron'
+	) and fatal('cron - beforeCronInit hook has failed');
 
 	$self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/cron.d";
 	$self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
 	$self->{'wrkDir'} = "$self->{'cfgDir'}/working";
 	$self->{'tplDir'} = "$self->{'cfgDir'}/parts";
 
-	$self->{'hooksManager'}->trigger('afterCronInit', $self, 'cron');
+	$self->{'hooksManager'}->trigger(
+		'afterCronInit', $self, 'cron'
+	) and fatal('cron - afterCronInit hook has failed');
 
 	$self;
 }
@@ -60,20 +65,11 @@ sub addTask
 {
 	my $self = shift;
 	my $data = shift;
-	my $rs = 0;
 
 	$data = {} if ref $data ne 'HASH';
 
-	my $errmsg = {
-		USER	=> 'You must provide running user!',
-		COMMAND	=> 'You must provide cron command!',
-		TASKID	=> 'You must provide a unique task id!',
-	};
-
-	for(keys %{$errmsg}){
-		error("$errmsg->{$_}") unless $data->{$_};
-		return 1 unless $data->{$_};
-	}
+	my $rs = $self->{'hooksManager'}->trigger('beforeCronAddTask', $data);
+	return $rs if $rs;
 
 	$data->{'MINUTE'} = 1 unless exists $data->{'MINUTE'};
 	$data->{'HOUR'} = 1 unless exists $data->{'HOUR'};
@@ -83,7 +79,7 @@ sub addTask
 	$data->{'LOG_DIR'} = $main::imscpConfig{'LOG_DIR'};
 
 	# Backup production file
-	$rs =	iMSCP::File->new(
+	$rs = iMSCP::File->new(
 		'filename' => "$main::imscpConfig{'CRON_D_DIR'}/imscp"
 	)->copyFile(
 		"$self->{'bkpDir'}/imscp." . time
@@ -127,27 +123,20 @@ sub addTask
 		return $rs if $rs;
 	}
 
-	$rs;
+	$self->{'hooksManager'}->trigger('afterCronAddTask', $data);
 }
 
 sub delTask
 {
 	my $self = shift;
 	my $data = shift;
-	my $rs;
 
 	$data = {} if (ref $data ne 'HASH');
 
-	my $errmsg = {
-		TASKID	=> 'You must provide a unique task id!'
-	};
+	my $rs = $self->{'hooksManager'}->trigger('beforeCronDelTask', $data);
+    return $rs if $rs;
 
-	for(keys %{$errmsg}){
-		error("$errmsg->{$_}") unless $data->{$_};
-		return 1 unless $data->{$_};
-	}
-
-	# BACKUP PRODUCTION FILE
+	# Backup production file
 	$rs = iMSCP::File->new(
 		filename => "$main::imscpConfig{'CRON_D_DIR'}/imscp"
 	)->copyFile(
@@ -189,7 +178,7 @@ sub delTask
 		return $rs if $rs;
 	}
 
-	$rs;
+	$self->{'hooksManager'}->trigger('afterCronDelTask', $data);
 }
 
 1;

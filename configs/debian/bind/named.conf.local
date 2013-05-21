@@ -8,8 +8,8 @@
 
 // bind Data BEGIN.
 
-// dmn [{DMN_NAME}] cfg entry BEGIN.
-// dmn [{DMN_NAME}] cfg entry END.
+// dmn [{DOMAIN_NAME}] cfg entry BEGIN.
+// dmn [{DOMAIN_NAME}] cfg entry END.
 
 // bind Data END.
 

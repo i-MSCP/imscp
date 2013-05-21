@@ -1,3 +1,4 @@
+<!-- BDP: logs -->
 <form name="admin_lod" method="post" action="admin_log.php">
 	<!-- BDP: clear_log -->
 	<label for="uaction_clear">{TR_CLEAR_LOG_MESSAGE}</label>
@@ -15,13 +16,13 @@
 </form>
 <table>
 	<tr>
-		<th style="width:150px;">{TR_DATE}</th>
+		<th>{TR_DATE}</th>
 		<th>{TR_MESSAGE}</th>
 	</tr>
 	<!-- BDP: log_row -->
 	<tr>
-		<td class="{ROW_CLASS}">{DATE}</td>
-		<td class="{ROW_CLASS}">{MESSAGE}</td>
+		<td>{DATE}</td>
+		<td>{MESSAGE}</td>
 	</tr>
 	<!-- EDP: log_row -->
 </table>
@@ -39,3 +40,4 @@
 	<a class="icon i_prev_gray" href="#">&nbsp;</a>
 	<!-- EDP: scroll_prev_gray -->
 </div>
+<!-- EDP: logs -->

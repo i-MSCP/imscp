@@ -34,20 +34,23 @@ use iMSCP::Debug;
 use iMSCP::Boot;
 use Servers::httpd;
 
+# Turn off localisation features to force any command output to be in english
+$ENV{LANG} = 'C';
+
+umask(027);
+
 newDebug('imscp-del-logs.log');
 
 silent(1);
 
-sub logs_start_up
+sub startUp
 {
-	umask(027);
-
 	iMSCP::Boot->getInstance()->boot({ 'nolock' => 'yes' });
 
 	0;
 }
 
-sub del_logs
+sub process
 {
 	my $httpd = Servers::httpd->factory();
 	my $rs = 0;
@@ -58,5 +61,9 @@ sub del_logs
 	$rs;
 }
 
-exit 1 if logs_start_up();
-exit del_logs();
+my $rs = 0;
+
+$rs = startUp();
+$rs ||= process();
+
+exit $rs;

@@ -33,6 +33,7 @@ package Addons::phpmyadmin::installer;
 
 use strict;
 use warnings;
+
 use iMSCP::Debug;
 use iMSCP::HooksManager;
 use parent 'Common::SingletonClass';
@@ -95,18 +96,14 @@ sub preinstall
 sub install
 {
 	my $self = shift;
-	my $rs	= 0;
 
 	# Backup current configuration file if it exists (only relevant when running imscp-setup)
-	$rs = $self->_backupConfigFile(
+	my $rs = $self->_backupConfigFile(
 		"$main::imscpConfig{'GUI_PUBLIC_DIR'}/$self::phpmyadminConfig{'PHPMYADMIN_CONF_DIR'}/config.inc.php"
 	);
 	return $rs if $rs;
 
 	$rs = $self->_installFiles();				# Install phpmyadmin files from local addon packages repository
-	return $rs if $rs;
-
-	$rs = $self->setGuiPermissions();			# Set phpmyadmin permissions
 	return $rs if $rs;
 
 	$rs = $self->_setupSqlUser();				# Setup phpmyadmin restricted SQL user
@@ -157,29 +154,28 @@ sub askPhpmyadmin
 	my ($rs, $msg) = (0, '');
 
 	if(
-		$main::reconfigure ~~ ['sqlmanager', 'all', 'forced'] ||
-		(
-			! $main::preseed{'PHPMYADMIN_SQL_USER'} &&
-			main::setupCheckSqlConnect($dbType, '', $dbHost, $dbPort, $dbUser, $dbPass)
-		)
+		$main::reconfigure ~~ ['sqlmanager', 'all', 'forced'] || ! ($dbUser && $dbPass) ||
+		main::setupCheckSqlConnect($dbType, '', $dbHost, $dbPort, $dbUser, $dbPass)
 	) {
-		# Ask for the phpmyadmin restricted SQL username
+		# Ask for the PhpMyAdmin restricted SQL username
 		do{
 			($rs, $dbUser) = iMSCP::Dialog->factory()->inputbox(
-				"\nPlease enter an username for the restricted phpmyadmin SQL user:", $dbUser
+				"\nPlease enter an username for the restricted PhpMyAdmin SQL user:$msg", $dbUser
 			);
 
-			# i-MSCP SQL user cannot be reused
-			if($dbUser eq $main::imscpConfig{'DATABASE_USER'}){
+			if($dbUser eq $main::imscpConfig{'DATABASE_USER'}) {
 				$msg = "\n\n\\Z1You cannot reuse the i-MSCP SQL user '$dbUser'.\\Zn\n\nPlease, try again:";
+				$dbUser = '';
+			} elsif(length $dbUser > 16) {
+				$msg = "\n\n\\Z1MySQL user names can be up to 16 characters long.\\Zn\n\nPlease, try again:";
 				$dbUser = '';
 			}
 		} while ($rs != 30 && ! $dbUser);
 
 		if($rs != 30) {
-			# Ask for the phpmyadmin restricted SQL user password
+			# Ask for the PhpMyAdmin restricted SQL user password
 			($rs, $dbPass) = $dialog->inputbox(
-				'\nPlease, enter a password for the restricted phpmyadmin SQL user (blank for autogenerate):', $dbPass
+				'\nPlease, enter a password for the restricted PhpMyAdmin SQL user (blank for autogenerate):', $dbPass
 			);
 
 			if($rs != 30) {
@@ -190,7 +186,7 @@ sub askPhpmyadmin
 				}
 
 				$dbPass =~ s/('|"|`|#|;|\/|\s|\||<|\?|\\)/_/g;
-				$dialog->msgbox("\nPassword for the restricted phpmyadmin SQL user set to: $dbPass");
+				$dialog->msgbox("\nPassword for the restricted PhpMyAdmin SQL user set to: $dbPass");
 				$dialog->set('cancel-label');
 			}
 		}
@@ -215,6 +211,7 @@ sub askPhpmyadmin
 sub setGuiPermissions
 {
 	my $self = shift;
+
 	my $panelUName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} . $main::imscpConfig{'SYSTEM_USER_MIN_UID'};
 	my $rootDir = $main::imscpConfig{'ROOT_DIR'};
 
@@ -278,8 +275,6 @@ sub _backupConfigFile
 {
 	my $self = shift;
 	my $cfgFile = shift;
-	my $timestamp = time;
-	my $rs = 0;
 
 	require File::Basename;
 	File::Basename->import();
@@ -287,10 +282,12 @@ sub _backupConfigFile
 	my ($name, $path, $suffix) = fileparse($cfgFile);
 
 	if(-f $cfgFile) {
+		my $timestamp = time;
+
 		require iMSCP::File;
 
-		my $file = iMSCP::File->new(filename => $cfgFile);
-		$rs = $file->copyFile("$self->{'bkpDir'}/$name$suffix.$timestamp");
+		my $file = iMSCP::File->new('filename' => $cfgFile);
+		my $rs = $file->copyFile("$self->{'bkpDir'}/$name$suffix.$timestamp");
 		return $rs if $rs;
 	}
 
@@ -308,6 +305,7 @@ sub _backupConfigFile
 sub _installFiles
 {
 	my $self = shift;
+
 	my $repoDir = $main::imscpConfig{'ADDON_PACKAGES_CACHE_DIR'};
 	my ($stdout, $stderr) = (undef, undef);
 	my $rs = 0;
@@ -327,7 +325,7 @@ sub _installFiles
 		return $rs if $rs;
 
 		$rs = execute(
-			"$main::imscpConfig{'CMD_RM'} -rf $main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/pma/.git",
+			"$main::imscpConfig{'CMD_RM'} -fR $main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/pma/.git",
 			\$stdout,
 			\$stderr
 		);
@@ -353,13 +351,12 @@ sub _installFiles
 sub _saveConfig
 {
 	my $self = shift;
-	my $rs = 0;
 
 	require iMSCP::File;
 
 	my $file = iMSCP::File->new('filename' => "$self->{'cfgDir'}/phpmyadmin.data");
 
-	$rs = $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
+	my $rs = $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
 	return $rs if $rs;
 
 	$rs = $file->mode(0640);
@@ -399,22 +396,21 @@ sub _setupSqlUser
 
 	my $dbUser = $self::phpmyadminConfig{'DATABASE_USER'};
 	my $dbOldUser = $self::phpmyadminOldConfig{'DATABASE_USER'} || '';
+	my $dbUserHost = main::setupGetQuestion('DATABASE_USER_HOST');
 	my $dbPass = $self::phpmyadminConfig{'DATABASE_PASSWORD'};
-	my $dbUserHost = $main::imscpConfig{'SQL_SERVER'} ne 'remote_server'
-		? $main::imscpConfig{'DATABASE_HOST'} : $main::imscpConfig{'BASE_SERVER_IP'};
 	my $rs = 0;
 
 	# Remove old phpmyadmin restricted SQL user and all it privileges (if any)
-	for($main::imscpOldConfig{'DATABASE_HOST'} || '', $main::imscpOldConfig{'BASE_SERVER_IP'} || '') {
+	for($dbUserHost, $main::imscpOldConfig{'DATABASE_HOST'} || '', $main::imscpOldConfig{'BASE_SERVER_IP'} || '') {
 		next if $_ eq '' || $dbOldUser eq '';
 		$rs = main::setupDeleteSqlUser($dbOldUser, $_);
-		error("Unable to remove the old phpmyadmin '$dbOldUser' restricted SQL user") if $rs;
+		error("Unable to remove the old phpmyadmin '$dbOldUser\@$_' restricted SQL user") if $rs;
 		return 1 if $rs;
 	}
 
-	# Ensure new phpmyadmin restricted SQL user do not already exists by removing it
+	# Ensure new PhpMyAdmin restricted SQL user do not already exists by removing it
 	$rs = main::setupDeleteSqlUser($dbUser, $dbUserHost);
-	error("Unable to delete the phpmyadmin '$dbUser' restricted SQL user") if $rs;
+	error("Unable to delete the PhpMyAdmin '$dbUser\@$dbUserHost' restricted SQL user") if $rs;
 	return 1 if $rs;
 
 	# Get SQL connection with full privileges
@@ -426,14 +422,14 @@ sub _setupSqlUser
 	# Add USAGE privilege on the mysql database (also create PhpMyAdmin user)
 	$rs = $database->doQuery('dummy', 'GRANT USAGE ON `mysql`.* TO ?@? IDENTIFIED BY ?', $dbUser, $dbUserHost, $dbPass);
 	if(ref $rs ne 'HASH') {
-		error("Failed to add USAGE privilege on the 'mysql' database for the '$dbUser' SQL user: $rs");
+		error("Failed to add USAGE privilege on the 'mysql' database for the PhpMyadmin '$dbUser\@$dbUserHost' SQL user: $rs");
 		return 1;
 	}
 
 	# Add SELECT privilege on the mysql.db table
 	$rs = $database->doQuery('dummy', 'GRANT SELECT ON `mysql`.`db` TO ?@?', $dbUser, $dbUserHost);
 	if(ref $rs ne 'HASH') {
-		error("Failed to add SELECT privilege on the 'mysql.db' table for the '$dbUser' SQL user: $rs");
+		error("Failed to add SELECT privilege on the 'mysql.db' table for the PhpMyAdmin '$dbUser\@$dbUserHost' SQL user: $rs");
 		return 1;
 	}
 
@@ -451,14 +447,14 @@ sub _setupSqlUser
 		$dbUser, $dbUserHost
 	);
 	if(ref $rs ne 'HASH') {
-		error("Failed to add SELECT privileges on columns of the 'mysql.user' table for the '$dbUser' SQL user: $rs");
+		error("Failed to add SELECT privileges on columns of the 'mysql.user' table for the PhpMyAdmin '$dbUser\@$dbUserHost' SQL user: $rs");
 		return 1;
 	}
 
 	# Add SELECT privilege on the mysql.host table
 	$rs = $database->doQuery('dummy', 'GRANT SELECT ON `mysql`.`host` TO ?@?', $dbUser, $dbUserHost);
 	if(ref $rs ne 'HASH') {
-		error("Failed to add SELECT privilege on the 'mysql.host' table for the '$dbUser' SQL user: $rs");
+		error("Failed to add SELECT privilege on the 'mysql.host' table for the PhpMyadmin '$dbUser\@$dbUserHost' SQL user: $rs");
 		return 1;
 	}
 
@@ -470,11 +466,10 @@ sub _setupSqlUser
 			ON `mysql`.`tables_priv`
 			TO?@?
 		',
-		$dbUser,
-		$dbUserHost
+		$dbUser, $dbUserHost
 	);
 	if(ref $rs ne 'HASH') {
-		error("Failed to add SELECT privilege on columns of the 'mysql.tables_priv' table for the '$dbUser' SQL user: $rs");
+		error("Failed to add SELECT privilege on columns of the 'mysql.tables_priv' table for the PhpMyAdmin '$dbUser\@$dbUserHost' SQL user: $rs");
 		return 1;
 	}
 

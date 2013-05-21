@@ -1,10 +1,10 @@
-<VirtualHost {DMN_IP}:80>
+<VirtualHost {DOMAIN_IP}:80>
 
-    ServerAdmin webmaster@{DMN_NAME}
-    ServerName  {DMN_NAME}
-    ServerAlias www.{DMN_NAME} {DMN_NAME} {ALIAS}.{BASE_SERVER_VHOST}
+    ServerAdmin webmaster@{DOMAIN_NAME}
+    ServerName {DOMAIN_NAME}
+    ServerAlias www.{DOMAIN_NAME} {DOMAIN_NAME} {ALIAS}.{BASE_SERVER_VHOST}
 
-    DocumentRoot    {HOME_DIR}/htdocs
+    DocumentRoot {WEB_DIR}/htdocs
 
     # SECTION itk BEGIN.
     <IfModule mpm_itk_module>
@@ -18,26 +18,18 @@
     </IfModule>
     # SECTION suexec END.
 
-    Alias /errors {WWW_DIR}/{ROOT_DMN_NAME}/errors/
+    Alias /errors {WWW_DIR}/{ROOT_DOMAIN_NAME}/errors/
 
-    RedirectMatch permanent ^/ftp[\/]?$     {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}/ftp/
-    RedirectMatch permanent ^/pma[\/]?$     {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}/pma/
-    RedirectMatch permanent ^/webmail[\/]?$ {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}/webmail/
-    RedirectMatch permanent ^/imscp[\/]?$   {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}/
-
-    ErrorDocument 401 /errors/401.html
-    ErrorDocument 403 /errors/403.html
-    ErrorDocument 404 /errors/404.html
-    ErrorDocument 500 /errors/500.html
-    ErrorDocument 503 /errors/503.html
+    RewriteEngine on
+    RewriteOptions inherit
 
     <IfModule mod_cband.c>
         CBandUser {USER}
     </IfModule>
 
     # SECTION cgi_support BEGIN.
-    ScriptAlias /cgi-bin/ {HOME_DIR}/cgi-bin/
-    <Directory {HOME_DIR}/cgi-bin>
+    ScriptAlias /cgi-bin/ {WEB_DIR}/cgi-bin/
+    <Directory {WEB_DIR}/cgi-bin>
         AllowOverride AuthConfig
         #Options ExecCGI
         Order allow,deny
@@ -45,7 +37,7 @@
     </Directory>
     # SECTION cgi_support END.
 
-    <Directory {HOME_DIR}/htdocs>
+    <Directory {WEB_DIR}/htdocs>
         Options -Indexes Includes FollowSymLinks MultiViews
         # SECTION php_enabled BEGIN.
         AllowOverride All
@@ -60,7 +52,7 @@
     # SECTION php_enabled BEGIN.
     # SECTION fcgid BEGIN.
     <IfModule fcgid_module>
-        <Directory {HOME_DIR}/htdocs>
+        <Directory {WEB_DIR}/htdocs>
             FCGIWrapper {PHP_STARTER_DIR}/{FCGID_NAME}/php{PHP_VERSION}-fcgid-starter .php
             Options +ExecCGI
         </Directory>
@@ -87,14 +79,14 @@
 
     # SECTION php_fpm BEGIN.
     <IfModule fastcgi_module>
-        Alias /php{PHP_VERSION}.{DMN_NAME}.fcgi /var/lib/apache2/fastcgi/php{PHP_VERSION}.{DMN_NAME}.fcgi
-        FastCGIExternalServer /var/lib/apache2/fastcgi/php{PHP_VERSION}.{DMN_NAME}.fcgi \
+        Alias /php{PHP_VERSION}.{DOMAIN_NAME}.fcgi /var/lib/apache2/fastcgi/php{PHP_VERSION}.{DOMAIN_NAME}.fcgi
+        FastCGIExternalServer /var/lib/apache2/fastcgi/php{PHP_VERSION}.{DOMAIN_NAME}.fcgi \
         -socket /var/run/php{PHP_VERSION}-fpm.{POOL_NAME}.socket \
         -pass-header Authorization \
         -idle-timeout 300
-        Action php-script /php{PHP_VERSION}.{DMN_NAME}.fcgi virtual
+        Action php-script /php{PHP_VERSION}.{DOMAIN_NAME}.fcgi virtual
         <Directory /var/lib/apache2/fastcgi>
-            <Files php{PHP_VERSION}.{DMN_NAME}.fcgi>
+            <Files php{PHP_VERSION}.{DOMAIN_NAME}.fcgi>
                 Order deny,allow
                 Allow from all
             </Files>
@@ -104,11 +96,11 @@
 
     # SECTION itk BEGIN.
     <IfModule php5_module>
-        php_admin_value open_basedir "{HOME_DIR}/:{HOME_DIR}/phptmp/:{PEAR_DIR}/{PHPINI_OPEN_BASEDIR}"
-        php_admin_value upload_tmp_dir "{HOME_DIR}/phptmp/"
-        php_admin_value session.save_path "{HOME_DIR}/phptmp/"
-        php_admin_value soap.wsdl_cache_dir "{HOME_DIR}/phptmp/"
-        php_admin_value sendmail_path "/usr/sbin/sendmail -t -i -f webmaster@{DMN_NAME}"
+        php_admin_value open_basedir "{WEB_DIR}/:{WEB_DIR}/phptmp/:{PEAR_DIR}/{PHPINI_OPEN_BASEDIR}"
+        php_admin_value upload_tmp_dir "{WEB_DIR}/phptmp/"
+        php_admin_value session.save_path "{WEB_DIR}/phptmp/"
+        php_admin_value soap.wsdl_cache_dir "{WEB_DIR}/phptmp/"
+        php_admin_value sendmail_path "/usr/sbin/sendmail -t -i -f webmaster@{DOMAIN_NAME}"
 
         # Custom values
         php_admin_value max_execution_time {MAX_EXECUTION_TIME}
@@ -149,6 +141,6 @@
     # SECTION addons BEGIN.
     # SECTION addons END.
 
-    Include {APACHE_CUSTOM_SITES_CONFIG_DIR}/{DMN_NAME}.conf
+    Include {APACHE_CUSTOM_SITES_CONFIG_DIR}/{DOMAIN_NAME}.conf
 
 </VirtualHost>

@@ -190,8 +190,6 @@ function add_sql_database($user_id)
 		$query = "INSERT INTO `sql_database` (`domain_id`, `sqld_name`) VALUES (?, ?)";
 		exec_query($query, array($dmn_id, $db_name));
 
-		update_reseller_c_props(get_reseller_id($dmn_id));
-
 		iMSCP_Database::getInstance()->commit();
 
 		iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAfterAddSqlDb);
