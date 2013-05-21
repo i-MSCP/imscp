@@ -55,11 +55,6 @@ silent(1);
 # Ensure that this script is run by root user
 iMSCP::Requirements->new()->user();
 
-# Load config
-loadConfig() and fatal('Unable to load main configuration file');
-
-verbose(iMSCP::Getopt->debug || $main::imscpConfig{'DEBUG'} || 0);
-
 # Initialize the buildonly option
 $main::buildonly = 0;
 
@@ -74,6 +69,11 @@ iMSCP::Getopt->parse(
   'buildonly|b' => \$main::buildonly,
   'skippackages|s' => \$main::skippackages
 );
+
+# Load config
+loadConfig() and fatal('Unable to load main configuration file');
+
+verbose(iMSCP::Getopt->debug || $main::imscpConfig{'DEBUG'} || 0);
 
 # Getting the reconfigure option value
 $main::reconfigure = iMSCP::Getopt->reconfigure;

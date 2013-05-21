@@ -74,7 +74,7 @@ sub engine
 	return $rs if $rs;
 
 	# Process add|change users tasks
-	my $sql = "
+	$sql = "
 		SELECT
 			`admin_id` AS `id`, `admin_name` AS `name`, `admin_status` AS `status`
 		FROM
@@ -355,7 +355,7 @@ sub engine
 		return 1;
 	}
 
-	my $count = scalar keys %$rdata;
+	$count = scalar keys %$rdata;
 
 	newDebug('imscp_pkt_mngr_engine.log') if $count;
 

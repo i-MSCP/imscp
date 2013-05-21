@@ -40,7 +40,7 @@ sub _init
 	my $self = shift;
 
 	$self->{'type'} = 'Certificates';
-	$self->{'certsDir'} = "$main::imscpConfig{'GUI_ROOT_DIR'}/data/certs"
+	$self->{'certsDir'} = "$main::imscpConfig{'GUI_ROOT_DIR'}/data/certs";
 
 	my $rs = iMSCP::Dir->new('dirname' => $self->{'certsDir'})->make(
 		{ 'mode' => 0750, 'owner' => $main::imscpConfig{'ROOT_USER'}, 'group' => $main::imscpConfig{'ROOT_GROUP'} }
@@ -78,7 +78,9 @@ sub loadData
 			SELECT
 				CONCAT(`subdomain_name`, '.', `domain_name`) AS `name`, `subdomain_id` AS `id`
 			FROM
-				`subdomain` LEFT JOIN `domain` USING(`domain_id`)
+				`subdomain`
+			LEFT JOIN
+				`domain` USING(`domain_id`)
 			WHERE
 				`subdomain_id` = ?
 		";
@@ -169,7 +171,6 @@ sub add
 	my $self = shift;
 
 	my $openSSL = Modules::openssl->getInstance();
-	my $rs = 0;
 
 	# Create temporary file for certificate
 	my $certFH = File::Temp->new();
@@ -177,7 +178,7 @@ sub add
 	# Write certificate from database into temporary file
 	my $file = iMSCP::File->new('filename' => $certFH->filename);
 	$file->set($self->{'cert'});
-	$rs = $file->save();
+	my $rs = $file->save();
 	return $rs if $rs;
 
 	# Set certificate file path on openssl module
@@ -224,8 +225,7 @@ sub add
 	return $rs if $rs;
 
 	# Set directory path to which certificate should be exported
-	$openSSL->{'new_cert_path'} = $self->{'certsDir'},
-
+	$openSSL->{'new_cert_path'} = $self->{'certsDir'};
 
 	$openSSL->{'new_cert_name'} = $self->{'name'};
 	$openSSL->{'cert_selfsigned'} = 0;
@@ -239,7 +239,9 @@ sub delete
 {
 	my $self = shift;
 
-	my $rs = iMSCP::File->new('filename' => "$self->{'certsDir'}/$self->{'name'}.pem")->delFile() if -f $cert;
+	my $rs = 0;
+
+	$rs = iMSCP::File->new('filename' => "$self->{'certsDir'}/$self->{'name'}.pem")->delFile() if -f $cert;
 	return $rs if $rs;
 
 	0;
