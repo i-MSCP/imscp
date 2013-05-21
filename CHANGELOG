@@ -60,7 +60,7 @@ VENDOR:
 	- Updated jQuery to 1.9.1
 	- Updated jQuery UI to 1.10.0
 	- Updated Net_DNS to Net_DNS2 (version 1.3.0)
-	- Updated Zend Framework to 1.12.1
+	- Updated Zend Framework to 1.12.3
 
 Tickets:
 	- Fixed #064: Nice to have - PHP FPM
