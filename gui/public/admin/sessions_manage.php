@@ -24,9 +24,9 @@
  * Portions created by the i-MSCP Team are Copyright (C) 2010-2013 by
  * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
  *
- * @category	i-MSCP
- * @package		iMSCP_Core
- * @subpackage	Admin
+ * @category    i-MSCP
+ * @package     iMSCP_Core
+ * @subpackage  Admin
  * @copyright   2001-2006 by moleSoftware GmbH
  * @copyright   2006-2010 by ispCP | http://isp-control.net
  * @copyright   2010-2013 by i-MSCP | http://i-mscp.net
@@ -35,7 +35,7 @@
  * @link        http://i-mscp.net
  */
 
-/************************************************************************************
+/***********************************************************************************************************************
  * Script functions
  */
 
@@ -89,7 +89,7 @@ function kill_session()
  * @param iMSCP_pTemplate $tpl Template engine
  * @return void
  */
-function gen_user_sessions($tpl)
+function client_generatePage($tpl)
 {
 	$currentUserSessionId = session_id();
 
@@ -119,11 +119,20 @@ function gen_user_sessions($tpl)
 		}
 
 		if ($currentUserSessionId === $sessionId) { // Deletion of our own session is not allowed
-			$tpl->assign('DISCONNECT_LINK', 'sessions_manage.php?own=1');
-			$tpl->assign('KILL_LINK', 'sessions_manage.php?own=1');
+			$tpl->assign(
+				array(
+					'DISCONNECT_LINK' => 'sessions_manage.php?own=1',
+					'KILL_LINK' => 'sessions_manage.php?own=1'
+				)
+			);
 		} else {
-			$tpl->assign('DISCONNECT_LINK', "sessions_manage.php?logout_only&kill={$stmt->fields['session_id']}&username={$username}");
-			$tpl->assign('KILL_LINK', "sessions_manage.php?kill={$stmt->fields['session_id']}&username={$username}");
+			$tpl->assign(
+				array(
+					'DISCONNECT_LINK'
+						=> "sessions_manage.php?logout_only&kill={$stmt->fields['session_id']}&username={$username}",
+					'KILL_LINK' => "sessions_manage.php?kill={$stmt->fields['session_id']}&username={$username}"
+				)
+			);
 		}
 
 		$tpl->parse('USER_SESSION', '.user_session');
@@ -131,7 +140,7 @@ function gen_user_sessions($tpl)
 	}
 }
 
-/************************************************************************************
+/***********************************************************************************************************************
  * Main script
  */
 
@@ -151,21 +160,19 @@ $tpl->define_dynamic(
 		'layout' => 'shared/layouts/ui.tpl',
 		'page' => 'admin/sessions_manage.tpl',
 		'page_message' => 'layout',
-		'hosting_plans' => 'page',
 		'user_session' => 'page'
 	)
 );
 
 $tpl->assign(
 	array(
-		'TR_PAGE_TITLE' => tr('i-MSCP - Admin/Manage Sessions'),
+		'TR_PAGE_TITLE' => tr('i-MSCP - Manage Users / Sessions'),
 		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => layout_getUserLogo(),
-		'TR_MANAGE_USER_SESSIONS' => tr('Manage user sessions'),
 		'TR_USERNAME' => tr('Username'),
 		'TR_USERTYPE' => tr('User type'),
 		'TR_LOGIN_ON' => tr('Last access'),
-		'TR_OPTIONS' => tr('Options'),
+		'TR_ACTIONS' => tr('Actions'),
 		'TR_DISCONNECT' => tr('Disconnect'),
 		'TR_KILL' => tr('Kill session')
 	)
@@ -173,7 +180,7 @@ $tpl->assign(
 
 generateNavigation($tpl);
 kill_session();
-gen_user_sessions($tpl);
+client_generatePage($tpl);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');

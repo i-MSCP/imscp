@@ -3,7 +3,7 @@
 				<tr>
 					<th>{TR_USERNAME}</th>
 					<th>{TR_LOGIN_ON}</th>
-					<th>{TR_OPTIONS}</th>
+					<th>{TR_ACTIONS}</th>
 				</tr>
 				<!-- BDP: user_session -->
 				<tr>
