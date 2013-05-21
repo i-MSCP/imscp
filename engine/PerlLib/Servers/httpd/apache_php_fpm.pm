@@ -2171,7 +2171,7 @@ sub _addFiles($$)
 				return $rs if $rs;
 			}
 		} else {
-			error("SkelDir must provide the 'htdocs' directory."); # TODO should we just create it instead?
+			error("Web folder skeleton $skelDir must provide the 'htdocs' directory."); # TODO should we just create it instead?
 			return 1;
 		}
 	} else {
@@ -2187,7 +2187,7 @@ sub _addFiles($$)
 			$rs = iMSCP::Dir->new('dirname' => "$tmpDir/errors")->remove() if -d "$tmpDir/errors";
 			return $rs if $rs;
 		} else {
-			warning("SkelDir should provide the 'errors' directory.");
+			warning("Web folder skeleton $skelDir should provide the 'errors' directory.");
 		}
 	}
 

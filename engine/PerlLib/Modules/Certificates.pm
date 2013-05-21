@@ -239,9 +239,10 @@ sub delete
 {
 	my $self = shift;
 
+	my $certFile = "$self->{'certsDir'}/$self->{'name'}.pem";
 	my $rs = 0;
 
-	$rs = iMSCP::File->new('filename' => "$self->{'certsDir'}/$self->{'name'}.pem")->delFile() if -f $cert;
+	$rs = iMSCP::File->new('filename' => $certFile)->delFile() if -f $certFile;
 	return $rs if $rs;
 
 	0;

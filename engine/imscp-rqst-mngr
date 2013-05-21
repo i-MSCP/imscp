@@ -234,7 +234,7 @@ sub engine
 	return $rs if $rs;
 
 	# Process delete users tasks
-	my $sql = "
+	$sql = "
 		SELECT
 			`admin_id` AS `id`, `admin_name` AS `name`, `admin_status` AS `status`
 		FROM
@@ -287,9 +287,7 @@ sub engine
 		ORDER BY
 			`domain_id`
 	";
-
 	my $rdata = iMSCP::Database->factory()->doQuery('software_id', $sql);
-
 	unless(ref $rdata eq 'HASH'){
 		error($rdata);
 		return 1;
