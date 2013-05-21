@@ -397,20 +397,6 @@ CREATE TABLE IF NOT EXISTS `mail_users` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `orders_settings`
---
-
-CREATE TABLE IF NOT EXISTS `orders_settings` (
-  `id` int(10) unsigned NOT NULL auto_increment,
-  `user_id` int(10) unsigned NOT NULL default '0',
-  `header` text collate utf8_unicode_ci,
-  `footer` text collate utf8_unicode_ci,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `php_ini`
 --
 
