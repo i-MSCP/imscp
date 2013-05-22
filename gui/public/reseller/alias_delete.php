@@ -76,9 +76,24 @@ if (resellerHasFeature('domain_aliases') && isset($_GET['del_id'])) {
 		try {
 			$db->beginTransaction();
 
-			// Delete any FTP account linked to $alsId
-			$query = "DELETE FROM `ftp_users` WHERE `userid` LIKE ?";
-			$stmt = exec_query($query, "%@$alsName");
+			// Delete any FTP account linked to $alsId or one of its subdomains
+			$query = "
+				DELETE
+					`ftp_users`
+				FROM
+					`ftp_users`
+				LEFT JOIN
+					`domain_aliasses` AS `t2` ON(`alias_id` = ?)
+				LEFT JOIN
+					`subdomain_alias` AS `t3` ON(`t3`.`alias_id` = `t2`.`alias_id`)
+				WHERE
+				(
+						`userid` LIKE CONCAT('%@', `t3`.`subdomain_alias_name`, '.', `t2`.`alias_name`)
+					OR
+						`userid` LIKE CONCAT('%@', `t2`.`alias_name`)
+				)
+			";
+			$stmt = exec_query($query, $alsId);
 
 			// Delete any custom DNS and external mail server record which have $alsId as parent
 			$query = "DELETE FROM `domain_dns` WHERE `alias_id` = ?";
