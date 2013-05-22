@@ -275,14 +275,14 @@ sub postaddMail
 
 			# Creating maildir directory or only set its permissions if already exists
 			$rs = iMSCP::Dir->new('dirname' => $_)->make(
-				{ 'user' => $mailUidName, 'group' => $mailGidName , 'mode' => 0700 }
+				{ 'user' => $mailUidName, 'group' => $mailGidName , 'mode' => 0750 }
 			);
 			return $rs if $rs;
 
 			# Creating maildir sub folders (cur, new, tmp) or only set there permissions if they already exists
 			for my $subdir ('cur', 'new', 'tmp') {
-				$rs |= iMSCP::Dir->new('dirname' => "$_/$subdir")->make(
-					{ 'user' => $mailUidName, 'group' => $mailGidName, 'mode' => 0700 }
+				$rs = iMSCP::Dir->new('dirname' => "$_/$subdir")->make(
+					{ 'user' => $mailUidName, 'group' => $mailGidName, 'mode' => 0750 }
 				);
 				return $rs if $rs;
 			}
@@ -294,7 +294,6 @@ sub postaddMail
 		my $courierimapsubscribedFile = iMSCP::File->new('filename' => "$mailDir/courierimapsubscribed");
 
 		if(-f "$mailDir/courierimapsubscribed") {
-
 			my $courierimapsubscribedFileContent = $courierimapsubscribedFile->get();
 
 			if(! defined $courierimapsubscribedFileContent) {
@@ -309,13 +308,13 @@ sub postaddMail
 			}
 		}
 
-		$rs = $courierimapsubscribedFile->set(join "\n", @subscribedFolders);
+		$rs = $courierimapsubscribedFile->set((join "\n", @subscribedFolders) . "\n");
 		return $rs if $rs;
 
 		$rs = $courierimapsubscribedFile->save();
 		return $rs if $rs;
 
-		$rs = $courierimapsubscribedFile->mode(0600);
+		$rs = $courierimapsubscribedFile->mode(0640);
 		return $rs if $rs;
 
 		$rs = $courierimapsubscribedFile->owner($mailUidName, $mailGidName);
@@ -375,7 +374,7 @@ sub delMail
 		return $rs if $rs;
 
 		# Setting permissions on userdb working file
-		$rs |= $userdbWrkFile->mode(0600);
+		$rs = $userdbWrkFile->mode(0600);
 		return $rs if $rs;
 
 		$rs = $userdbWrkFile->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});

@@ -353,7 +353,7 @@ sub addToDomainHash
 	$rs = iMSCP::Dir->new(
 		'dirname' => "$self->{'MTA_VIRTUAL_MAIL_DIR'}/$data->{'DOMAIN_NAME'}"
 	)->make(
-		{ 'user' => $self->{'MTA_MAILBOX_UID_NAME'}, 'group' => $self->{'MTA_MAILBOX_GID_NAME'}, 'mode' => 0700 }
+		{ 'user' => $self->{'MTA_MAILBOX_UID_NAME'}, 'group' => $self->{'MTA_MAILBOX_GID_NAME'}, 'mode' => 0750 }
 	);
 	return $rs if $rs;
 
@@ -993,14 +993,14 @@ sub addMailBox
 
 	# Creating maildir directory or only set its permissions if already exists
 	$rs = iMSCP::Dir->new('dirname' => $mailDir)->make(
-		{ 'user' => $self->{'MTA_MAILBOX_UID_NAME'}, 'group' => $self->{'MTA_MAILBOX_GID_NAME'}, 'mode' => 0700 }
+		{ 'user' => $self->{'MTA_MAILBOX_UID_NAME'}, 'group' => $self->{'MTA_MAILBOX_GID_NAME'}, 'mode' => 0750 }
 	);
 	return $rs if $rs;
 
 	# Creating maildir sub folders (cur, new, tmp) or only set there permissions if they already exists
 	for('cur', 'new', 'tmp') {
     	$rs = iMSCP::Dir->new('dirname' => "$mailDir/$_")->make(
-    		{ 'user' => $mailUidName, 'group' => $mailGidName, 'mode' => 0700 }
+    		{ 'user' => $mailUidName, 'group' => $mailGidName, 'mode' => 0750 }
     	);
     	return $rs if $rs;
 	}

@@ -278,7 +278,7 @@ sub _init
 
 	$self->{'hooksManager'}->trigger(
 		'beforePodInitInstaller', $self, 'dovecot'
-	) and fatal('dovecot - beforePoInitInstaller hook has failed');;
+	) and fatal('dovecot - beforePoInitInstaller hook has failed');
 
 	$self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/dovecot";
 	$self->{'bkpDir'} = "$self->{'cfgDir'}/backup";

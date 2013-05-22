@@ -136,14 +136,14 @@ sub postaddMail
 
 			# Creating maildir directory or only set its permissions if already exists
 			$rs = iMSCP::Dir->new('dirname' => $_)->make(
-				{ 'user' => $mailUidName, 'group' => $mailGidName , 'mode' => 0700 }
+				{ 'user' => $mailUidName, 'group' => $mailGidName , 'mode' => 0750 }
 			);
 			return $rs if $rs;
 
 			# Creating maildir sub folders (cur, new, tmp) or only set there permissions if they already exists
 			for my $subdir ('cur', 'new', 'tmp') {
 				$rs = iMSCP::Dir->new('dirname' => "$_/$subdir")->make(
-					{ 'user' => $mailUidName, 'group' => $mailGidName, 'mode' => 0700 }
+					{ 'user' => $mailUidName, 'group' => $mailGidName, 'mode' => 0750 }
 				);
 				return $rs if $rs;
 			}
@@ -155,7 +155,6 @@ sub postaddMail
 		my $subscriptionsFile = iMSCP::File->new('filename' => "$mailDir/subscriptions");
 
 		if(-f "$mailDir/subscriptions") {
-
 			my $subscriptionsFileContent = $subscriptionsFile->get();
 
 			if(! defined $subscriptionsFileContent) {
@@ -170,13 +169,13 @@ sub postaddMail
 			}
 		}
 
-		$rs = $subscriptionsFile->set(join "\n", @subscribedFolders);
+		$rs = $subscriptionsFile->set((join "\n", @subscribedFolders) . "\n");
 		return $rs if $rs;
 
 		$rs = $subscriptionsFile->save();
 		return $rs if $rs;
 
-		$rs = $subscriptionsFile->mode(0600);
+		$rs = $subscriptionsFile->mode(0640);
 		return $rs if $rs;
 
 		$rs = $subscriptionsFile->owner($mailUidName, $mailGidName);
