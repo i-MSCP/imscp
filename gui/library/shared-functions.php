@@ -2101,7 +2101,6 @@ function records_count($table, $where = '', $bind = '')
 function unsetMessages()
 {
 	$glToUnset = array();
-	$glToUnset[] = 'user_page_message';
 	$glToUnset[] = 'user_updated';
 	$glToUnset[] = 'dmn_tpl';
 	$glToUnset[] = 'chtpl';

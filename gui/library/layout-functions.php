@@ -99,6 +99,7 @@ function generatePageMessage($tpl)
 /**
  * Sets a page message to display on client browser.
  *
+ * @throws iMSCP_Exception
  * @param string $message $message Message to display
  * @param string $level Message level (INFO, WARNING, ERROR, SUCCESS)
  * @return void

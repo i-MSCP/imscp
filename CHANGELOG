@@ -16,7 +16,7 @@ CONFIGS:
 
 ENGINE:
 	- Added hooks for user module
-	- Added hook.d directory for storage of installer/engine hooks files
+	- Added hook.d directory for storage of engine hooks files
 	- Added support for Apache + PHP FPM
 	- Added option allowing to disable/enable IPv6 support (Bind9)
 	- Fixed: Admin must be able to add custom data in named configuration files (Bind9)
@@ -31,10 +31,10 @@ ENGINE:
 	- Fixed: SPF record syntax
 
 GUI:
-	- Added option allowing to disconnect an user without removing its session (admin/session_manage.php)
-	- Added option allowing to protect/unprotect Web folder
-	- Enhancement: Improved layout (admin/settings.php page)
-	- Fixed: Allow to trigger more than one callback function for menus
+	- Added option allowing to disconnect an user without removing its session
+	- Added option allowing to protect/unprotect Web folders
+	- Enhancement: Improved layout for admin/settings.php page
+	- Fixed: Allow to trigger more than one privilege callback functions for navigation
 	- Fixed: External mail server option not implemented in admin/domain_edit.page
 	- Fixed: i18n issues in reseller_add.php and reseller_edit.php pages
 	- Fixed: Hide menus referring to unplayable features
@@ -46,15 +46,16 @@ GUI:
 
 SETUP:
 	- Added support for external repositories (Debian/Ubuntu)
+	- Added hook.d directory for storage of installer hooks files
 	- Fixed: add-apt-repository - unknown -y option (Ubuntu Lucid Lynx)
 	- Fixed: APT packages manager must be configured before any package installation
 	- Fixed: All MySQL secure installation tasks are now done by the i-MSCP installer
 	- Fixed: i-MSCP must allow usage of remote SQL server
-	- Fixed: Both imsc-autoinstall and imscp-setup script must allow per item reconfiguration
+	- Fixed: Both imsc-autoinstall and imscp-setup scripts must allow per item reconfiguration
 	- Fixed: Duplicate entries in sources.list file (Ubuntu)
 	- Fixed: Do not show any dialog when --noprompt option is used
 	- Fixed: Make error messages free of any ANSI color and end of line codes in dialog
-	- Fixed: Uninstall unneeded packages when switching to another server
+	- Fixed: Uninstall unneeded packages when switching to another server implementation
 
 VENDOR:
 	- Updated jQuery to 1.9.1

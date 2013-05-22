@@ -24,8 +24,8 @@
  * Portions created by the i-MSCP Team are Copyright (C) 2010-2013 by
  * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
  *
- * @category	i-MSCP
- * @package		iMSCP_Core
+ * @category    i-MSCP
+ * @package     iMSCP_Core
  * @copyright   2001-2006 by moleSoftware GmbH
  * @copyright   2006-2010 by ispCP | http://isp-control.net
  * @copyright   2010-2013 by i-MSCP | http://i-mscp.net
@@ -54,7 +54,6 @@ switch ($action) {
 			set_page_message(tr('You have been successfully logged out.'), 'success');
 			write_log(sprintf("%s logged out", idn_to_utf8($adminName)), E_USER_NOTICE);
 		}
-		redirectTo('index.php');
 		break;
 	case 'login':
 		// Authentication process is triggered whatever the status of the following variables since authentication
@@ -73,7 +72,7 @@ switch ($action) {
 }
 
 # Redirect user to its interface level
-redirectToUiLevel();
+if($action != 'logout') redirectToUiLevel();
 
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic(
@@ -149,7 +148,6 @@ if ($cfg->MAINTENANCEMODE && !isset($_REQUEST['admin'])) {
 	} else {
 		$tpl->assign('SSL_SUPPORT', '');
 	}
-
 
 	if ($cfg->LOSTPASSWORD) {
 		$tpl->assign('TR_LOSTPW', tr('Lost password'));

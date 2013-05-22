@@ -286,7 +286,7 @@ class iMSCP_Authentication
 	{
 		$query = "SELECT COUNT(`session_id`) `cnt` FROM `login` WHERE `session_id` = ? AND `ipaddr` = ?";
 		$stmt = exec_query($query, array(session_id(), getipaddr()));
-		return ($stmt->fields['cnt'] && $_SESSION['user_id']);
+		return ($stmt->fields['cnt'] && isset($_SESSION['user_id']));
 	}
 
 	/**

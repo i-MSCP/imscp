@@ -345,9 +345,7 @@ function generate_als_list($tpl, $reseller_id)
  */
 function generate_als_messages()
 {
-    if(isset($_SESSION['user_page_message'])) {
-        return;
-	} elseif (isset($_SESSION["dahavemail"])) {
+    if (isset($_SESSION["dahavemail"])) {
         set_page_message(tr('Domain alias you are trying to remove has email accounts.<br/>First remove them.'), 'error');
 		unset($_SESSION['dahavemail']);
 	} elseif (isset($_SESSION["dahaveftp"])) {
