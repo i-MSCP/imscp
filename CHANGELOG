@@ -72,9 +72,10 @@ Tickets:
 	- Fixed #544: Bug - An exception have been thrown - magicfile
 	- Fixed #557: Bug - External mail server - Removing last entry (edit mode) doesn't remove DNS MX record
 	- Fixed #558: Defect - Unable to edit custom MX DNS records
-	- Fixed:#564: Security Failure - Passwords can be compromised
+	- Fixed #564: Security Failure - Passwords can be compromised
 	- Fixed #566: Cosmetics - i18n issues
 	- Fixed #567: Bug - Shared mount point get deleted even if used by other entity
+	- Fixed #568: Bug - Unable to delete domain aliases when using shared mount point and HTTP redirection
 	- Fixed #571: Bug - Proftpd - Unable to restart - Directive collision
 	- Fixed #572: Defect - Shared mount point - Entity Deletion
 	- Fixed #581: Task - Add support for MariaDB

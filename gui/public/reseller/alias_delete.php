@@ -25,8 +25,8 @@
  * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
  *
  * @category    i-MSCP
- * @package        iMSCP_Core
- * @subpackage    Reseller
+ * @package     iMSCP_Core
+ * @subpackage  Reseller
  * @copyright   2001-2006 by moleSoftware GmbH
  * @copyright   2006-2010 by ispCP | http://isp-control.net
  * @copyright   2010-2013 by i-MSCP | http://i-mscp.net
@@ -35,9 +35,6 @@
  * @link        http://i-mscp.net
  */
 
-// TODO: Check for protected areas - seem that for now, all protected areas are always linked to main domain, but
-// protected area paths can be linked to domain aliases or one of its child (subdomain)
-
 // Include core library
 require 'imscp-lib.php';
 
@@ -45,106 +42,108 @@ iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onResellerScriptStar
 
 check_login('reseller');
 
-resellerHasFeature('domain_aliases') or showBadRequestErrorPage();
+if (resellerHasFeature('domain_aliases') && isset($_GET['del_id'])) {
+	$alsId = clean_input($_GET['del_id']);
 
-$cfg = iMSCP_Registry::get('config');
-
-if (isset($_GET['del_id']))
-	$domainAliasId = $_GET['del_id'];
-else {
-	showBadRequestErrorPage();
-}
-
-$resellerId = $_SESSION['user_id'];
-
-$query = "
-	SELECT
-		`t1`.`domain_id`, `t1`.`alias_id`, `t1`.`alias_name`, `t2`.`domain_id`, `t2`.`domain_created_id`
-	FROM
-		`domain_aliasses` AS `t1`, `domain` AS `t2`
-	WHERE
-		`t1`.`alias_id` = ?
-	AND
-		`t1`.`domain_id` = `t2`.`domain_id`
-	AND
-		`t2`.`domain_created_id` = ?
-";
-$stmt = exec_query($query, array($domainAliasId, $resellerId));
-
-if ($stmt->rowCount()) {
-	showBadRequestErrorPage();
-}
-
-$domainAliasName = $stmt->fields['alias_name'];
-
-/** @var $db iMSCP_Database */
-$db = iMSCP_Registry::get('db');
-
-try {
-	$db->beginTransaction();
-
-	// Delete any FTP account linked to $domainAliasId
-	$query = "DELETE `userid` FROM `ftp_users` WHERE `userid` LIKE ?";
-	$stmt = exec_query($query, "%@$domainAliasName");
-
-	// Delete any custom DNS and external mail server record which have $domainAliasId as parent
-	$query = "DELETE FROM `domain_dns` WHERE `alias_id` = ?";
-	exec_query($query, $domainAliasId);
-
-	// Schedule deletion of any mail account, which are directly or indirectly linked to $domainAliasId
 	$query = "
-		UPDATE
-			`mail_users`
-		SET
-			`status` = ?
+		SELECT
+			`t1`.`domain_id`, `t1`.`alias_id`, `t1`.`alias_name`, `t2`.`domain_id`, `t2`.`domain_created_id`
+		FROM
+			`domain_aliasses` AS `t1`, `domain` AS `t2`
 		WHERE
-			(`sub_id` = ? AND `mail_type` LIKE ?)
-			OR
-			(
-				`sub_id` IN (SELECT `subdomain_alias_id` FROM `subdomain_alias` WHERE `alias_id` = ?)
-			AND
-				`mail_type` LIKE ?
-			)
-	";
-	exec_query($query, array($cfg->ITEM_DELETE_STATUS, $domainAliasId, '%alias_%', $domainAliasId, '%alssub_%'));
-
-	# Schedule deletion of any SSL certificat linked to subdomain, which have $domainAliasId as parent
-	$query = "
-		UPDATE
-			`ssl_certs`
-		SET
-			`status` = ?
-		WHERE
-			`type` = ?
+			`t1`.`alias_id` = ?
 		AND
-			`id` IN (SELECT `subdomain_alias_id` FROM `subdomain_alias` WHERE `alias_id` = ?)
+			`t1`.`domain_id` = `t2`.`domain_id`
+		AND
+			`t2`.`domain_created_id` = ?
 	";
-	exec_query($query, array($cfg->ITEM_DELETE_STATUS, 'alssub', $domainAliasId));
+	$stmt = exec_query($query, array($alsId, $_SESSION['user_id']));
 
-	# Schedule deletion of any SSL certificate linked to this domain alias
-	$query = "UPDATE `ssl_certs` SET `status` = ? WHERE `type` = ? AND `id` = ?";
-	exec_query($query, array($cfg->ITEM_DELETE_STATUS, 'als', $domainAliasId));
+	if ($stmt->rowCount()) {
+		$alsName = $stmt->fields['alias_name'];
 
-	# Schedule deletion of any subdomain, which have $domainAliasId alias as parent
-	$query = "UPDATE `subdomain_alias` SET `subdomain_alias_status` = ? WHERE `alias_id` = ?";
-	exec_query($query, array($cfg->ITEM_DELETE_STATUS, $domainAliasId));
+		iMSCP_Events_Manager::getInstance()->dispatch(
+			iMSCP_Events::onBeforeDeleteDomainAlias,
+			array('domainAliasId' => $alsId, 'domainAliasName' => $alsName)
+		);
 
-	# Schedule domain alias deletion
-	$query = "UPDATE `domain_aliasses` SET `alias_status` = ? WHERE `alias_id` = ?";
-	exec_query($query, array($cfg->ITEM_DELETE_STATUS, $domainAliasId));
+		/** @var $cfg iMSCP_Config_Handler_File */
+		$cfg = iMSCP_Registry::get('config');
 
-	$db->commit();
+		/** @var $db iMSCP_Database */
+		$db = iMSCP_Registry::get('db');
 
-	send_request();
-	set_page_message(tr('Domain alias successfully scheduled for deletion.'), 'success');
-	write_log(sprintf("{$_SESSION['user_logged']}: scheduled deletion of the %s domain alias: ", $domainAliasName), E_USER_NOTICE);
-} catch (iMSCP_Exception_Database $e) {
-	$db->rollBack();
-	set_page_message(tr('Unable to delete domain alias with id %d', $domainAliasId), 'error');
-	write_log(
-		sprintf("Unable to delete domain alias with Id %d for the following reason: %s", $domainAliasId, $e->getMessage()),
-		E_USER_ERROR
-	);
+		try {
+			$db->beginTransaction();
+
+			// Delete any FTP account linked to $alsId
+			$query = "DELETE FROM `ftp_users` WHERE `userid` LIKE ?";
+			$stmt = exec_query($query, "%@$alsName");
+
+			// Delete any custom DNS and external mail server record which have $alsId as parent
+			$query = "DELETE FROM `domain_dns` WHERE `alias_id` = ?";
+			exec_query($query, $alsId);
+
+			// Schedule deletion of any mail account, which are directly or indirectly linked to $alsId
+			$query = "
+				UPDATE
+					`mail_users`
+				SET
+					`status` = ?
+				WHERE
+					(`sub_id` = ? AND `mail_type` LIKE ?)
+				OR
+				(
+					`sub_id` IN (SELECT `subdomain_alias_id` FROM `subdomain_alias` WHERE `alias_id` = ?)
+				AND
+					`mail_type` LIKE ?
+				)
+			";
+			exec_query($query, array($cfg->ITEM_DELETE_STATUS, $alsId, '%alias_%', $alsId, '%alssub_%'));
+
+			# Schedule deletion of any SSL certificat linked to subdomain, which have $alsId as parent
+			$query = "
+				UPDATE
+					`ssl_certs`
+				SET
+					`status` = ?
+				WHERE
+					`type` = ?
+				AND
+					`id` IN (SELECT `subdomain_alias_id` FROM `subdomain_alias` WHERE `alias_id` = ?)
+			";
+			exec_query($query, array($cfg->ITEM_DELETE_STATUS, 'alssub', $alsId));
+
+			# Schedule deletion of any SSL certificate linked to this domain alias
+			$query = "UPDATE `ssl_certs` SET `status` = ? WHERE `type` = ? AND `id` = ?";
+			exec_query($query, array($cfg->ITEM_DELETE_STATUS, 'als', $alsId));
+
+			# Schedule deletion of any subdomain, which have $alsId alias as parent
+			$query = "UPDATE `subdomain_alias` SET `subdomain_alias_status` = ? WHERE `alias_id` = ?";
+			exec_query($query, array($cfg->ITEM_DELETE_STATUS, $alsId));
+
+			# Schedule domain alias deletion
+			$query = "UPDATE `domain_aliasses` SET `alias_status` = ? WHERE `alias_id` = ?";
+			exec_query($query, array($cfg->ITEM_DELETE_STATUS, $alsId));
+
+			$db->commit();
+		} catch (iMSCP_Exception_Database $e) {
+			$db->rollBack();
+			throw new iMSCP_Exception_Database($e->getMessage(), $e->getQuery(), $e->getCode(), $e);
+		}
+
+		iMSCP_Events_Manager::getInstance()->dispatch(
+			iMSCP_Events::onAfterDeleteDomainAlias,
+			array('domainAliasId' => $alsId, 'domainAliasName' => $alsName)
+		);
+
+		send_request();
+
+		set_page_message(tr('Domain alias successfully scheduled for deletion.'), 'success');
+		write_log("{$_SESSION['user_logged']}: scheduled deletion of the $alsName domain alias.", E_USER_NOTICE);
+
+		redirectTo('alias.php');
+	}
 }
 
-redirectTo('alias.php');
+showBadRequestErrorPage();

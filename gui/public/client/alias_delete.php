@@ -46,8 +46,6 @@ iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptStart)
 
 check_login('user');
 
-customerHasFeature('domain_aliases') or showBadRequestErrorPage();
-
 if (customerHasFeature('domain_aliases') && isset($_GET['id'])) {
 	$alsId = clean_input($_GET['id']);
 	$mainDmnId = get_user_domain_id($_SESSION['user_id']);
