@@ -34,6 +34,7 @@ GUI:
 	- Added option allowing to disconnect an user without removing its session
 	- Added option allowing to protect/unprotect Web folders
 	- Enhancement: Improved layout for admin/settings.php page
+	- Fixed: Allow idn for domain part of Ftp account username
 	- Fixed: Allow to trigger more than one privilege callback functions for navigation
 	- Fixed: External mail server option not implemented in admin/domain_edit.page
 	- Fixed: i18n issues in reseller_add.php and reseller_edit.php pages

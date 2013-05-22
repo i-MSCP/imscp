@@ -115,10 +115,6 @@ function updateFtpAccount($userid, $mainDomainName)
 					set_page_message(tr("Home directory '%s' doesn't exists", $homeDir), 'error');
 					$ret = false;
 				}
-
-				/** @var $cfg iMSCP_Config_Handler_File */
-				$cfg = iMSCP_Registry::get('config');
-				$homeDir = rtrim(str_replace('//', '/', $cfg->FTP_HOMEDIR . '/' . $mainDomainName . '/' . $homeDir), '/');
 			}
 		}
 	} else {
@@ -128,6 +124,10 @@ function updateFtpAccount($userid, $mainDomainName)
 
 	if($ret) {
 		iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onBeforeEditFtp, array('ftpUserId' => $userid));
+
+		/** @var $cfg iMSCP_Config_Handler_File */
+		$cfg = iMSCP_Registry::get('config');
+		$homeDir = rtrim(str_replace('//', '/', $cfg->FTP_HOMEDIR . '/' . $mainDomainName . '/' . $homeDir), '/');
 
 		if (isset($rawPassword) && isset($password) && isset($homeDir)) {
 			$query = "UPDATE `ftp_users` SET `passwd` = ?, `rawpasswd` = ?, `homedir` = ? WHERE `userid` = ?";

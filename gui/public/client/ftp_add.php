@@ -202,8 +202,7 @@ function ftp_generatePageData($mainDmn, $mainDmnId, $tpl)
 			array(
 				'DOMAIN_NAME_VAL' => tohtml($dmn['domain_name']),
 				'DOMAIN_NAME' => tohtml(idn_to_utf8($dmn['domain_name'])),
-				'DOMAIN_NAME_SELECTED' =>
-				(isset($_POST['domain_name']) && $_POST['domain_name'] == $dmn['domain_name'])
+				'DOMAIN_NAME_SELECTED' => (isset($_POST['domain_name']) && $_POST['domain_name'] == $dmn['domain_name'])
 					? $cfg->HTML_SELECTED : ''
 			)
 		);
@@ -276,7 +275,7 @@ function ftp_addAccount($mainDmnName)
 			/** @var $cfg iMSCP_Config_Handler_File */
 			$cfg = iMSCP_Registry::get('config');
 
-			$userid = $username . $cfg->FTP_USERNAME_SEPARATOR . $dmnName;
+			$userid = $username . $cfg->FTP_USERNAME_SEPARATOR . decode_idna($dmnName);
 			$encryptedPassword = cryptPasswordWithSalt($passwd);
 			$shell = $cfg->CMD_SHELL;
 			$homeDir = rtrim(str_replace('//', '/', $cfg->FTP_HOMEDIR . '/' . $mainDmnName . '/' . $homeDir), '/');
@@ -415,7 +414,6 @@ $mainDmnProps = get_domain_default_props($_SESSION['user_id']);
 $mainDmnId = $mainDmnProps['domain_id'];
 $mainDmnName = $mainDmnProps['domain_name'];
 $ftpAccountLimit = $mainDmnProps['domain_ftpacc_limit'];
-
 
 if (is_xhr() && isset($_POST['domain_type'])) {
 	echo json_encode(ftp_getDomainList($mainDmnName, $mainDmnId, clean_input($_POST['domain_type'])));

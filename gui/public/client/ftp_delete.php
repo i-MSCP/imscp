@@ -26,6 +26,10 @@
  * @license     http://www.gnu.org/licenses/gpl-2.0.txt GPL v2
  */
 
+/***********************************************************************************************************************
+ * Main
+ */
+
 // Include core library
 require_once 'imscp-lib.php';
 
@@ -84,14 +88,9 @@ if (customerHasFeature('ftp') && isset($_GET['id'])) {
 
 		write_log(sprintf("%s: deleted FTP account: %s", $_SESSION['user_logged'], $ftpUserId), E_USER_NOTICE);
 		set_page_message(tr('FTP account successfully deleted.'), 'success');
-
 	} catch (iMSCP_Exception_Database $e) {
 		$db->rollBack();
-		set_page_message(tr('Unable to delete Ftp account. A message has been sent to the administrator.'), 'error');
-		write_log(
-			sprintf("System was unable to delete Ftp account %s. Message was: %s", $ftpUserId, $e->getMessage()),
-			E_USER_ERROR
-		);
+		throw new iMSCP_Exception_Database($e->getMessage(), $e->getQuery(), $e->getCode(), $e);
 	}
 
 	redirectTo('ftp_accounts.php');

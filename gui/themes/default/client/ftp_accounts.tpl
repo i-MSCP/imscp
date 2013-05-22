@@ -1,12 +1,8 @@
 
 		<script type="text/javascript">
 			/*<![CDATA[*/
-			function action_delete(url, subject) {
-				if (!confirm(sprintf("{TR_MESSAGE_DELETE}", subject))) {
-					return false;
-				}
-
-				location = url;
+			function action_delete(subject) {
+				return confirm(sprintf("{TR_MESSAGE_DELETE}", subject));
 			}
 			/*]]>*/
 		</script>
@@ -27,7 +23,7 @@
                     <a href="ftp_auth.php?id={UID}" target="{FILEMANAGER_TARGET}" class="icon i_filemanager">{TR_LOGINAS}</a>
                     <!-- EDP: ftp_easy_login -->
                     <a href="ftp_edit.php?id={UID}" class="icon i_edit">{TR_EDIT}</a>
-                    <a href="#" class="icon i_delete" onclick="action_delete('ftp_delete.php?id={UID}', '{FTP_ACCOUNT}'); return false;">{TR_DELETE}</a>
+                    <a href="ftp_delete.php?id={UID}" class="icon i_delete" onclick="return action_delete('{FTP_ACCOUNT}');">{TR_DELETE}</a>
                 </td>
             </tr>
             <!-- EDP: ftp_item -->

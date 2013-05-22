@@ -610,7 +610,7 @@ function customerHasFeature($featureNames, $forceReload = false)
  */
 function customerHasDomain($domainName, $customerId)
 {
-	$domainName = decode_idna($domainName);
+	$domainName = encode_idna($domainName);
 
 	// Check in domain table
 	$query = "

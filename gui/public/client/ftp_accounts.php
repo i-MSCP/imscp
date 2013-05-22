@@ -56,11 +56,10 @@ function ftp_generatePageData($tpl)
 
 		while(!$stmt->EOF) {
 			$userid = $stmt->fields['userid'];
-			list($username, $domain) = explode($cfg->FTP_USERNAME_SEPARATOR, $userid);
 
 			$tpl->assign(
 				array(
-					'FTP_ACCOUNT' => tohtml($username . $cfg->FTP_USERNAME_SEPARATOR . decode_idna($domain)),
+					'FTP_ACCOUNT' => tohtml($userid),
 					'UID' => urlencode($userid)
 				)
 			);
@@ -74,7 +73,7 @@ function ftp_generatePageData($tpl)
 	}
 }
 
-/************************************************************************************
+/***********************************************************************************************************************
  * Main script
  */
 
