@@ -350,7 +350,7 @@ function ftp_addAccount($mainDmnName)
 					exec_query($query, array($groupName, $gid, $userid));
 				} else {
 					$query = "UPDATE `ftp_group` SET `members` = ? WHERE `groupname` = ?";
-					exec_query($query, array("{$stmt->fields['members']},$userid}", $groupName));
+					exec_query($query, array("{$stmt->fields['members']},$userid", $groupName));
 				}
 
 				// Quota limit
