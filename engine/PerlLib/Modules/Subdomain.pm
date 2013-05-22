@@ -38,6 +38,7 @@ use iMSCP::Execute;
 use iMSCP::Dir;
 use Servers::httpd;
 use Modules::openssl;
+use Net::LibIDN qw/idn_to_unicode/;
 use parent 'Modules::Abstract';
 
 sub _init
@@ -187,6 +188,7 @@ sub buildHTTPDData
 	$self->{'httpd'} = {
 		DOMAIN_TYPE => 'sub',
 		DOMAIN_NAME => $self->{'subdomain_name'} . '.' . $self->{'user_home'},
+		DOMAIN_NAME_UNICODE => idn_to_unicode($self->{'subdomain_name'} . '.' . $self->{'user_home'}, 'UTF-8'),
 		ROOT_DOMAIN_NAME => $self->{'user_home'},
 		PARENT_DOMAIN_NAME => $self->{'user_home'},
 		DOMAIN_IP => $self->{'ip_number'},

@@ -36,6 +36,7 @@ use iMSCP::Addons;
 use iMSCP::Execute;
 use iMSCP::Dir;
 use Servers::httpd;
+use Net::LibIDN qw/idn_to_unicode/;
 use parent 'Modules::Subdomain';
 
 sub loadData
@@ -177,6 +178,7 @@ sub buildHTTPDData
 	$self->{'httpd'} = {
 		DOMAIN_TYPE => 'alssub',
 		DOMAIN_NAME => $self->{'subdomain_alias_name'} . '.' . $self->{'alias_name'},
+		DOMAIN_NAME_UNICODE => idn_to_unicode($self->{'subdomain_alias_name'} . '.' . $self->{'alias_name'}, 'UTF-8'),
 		ROOT_DOMAIN_NAME => $self->{'user_home'},
 		PARENT_DOMAIN_NAME => $self->{'alias_name'},
 		DOMAIN_IP => $self->{'ip_number'},
