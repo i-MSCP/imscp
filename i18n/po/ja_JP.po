@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2013-05-21 05:50+0200\n"
-"PO-Revision-Date: 2013-05-21 03:51+0000\n"
+"POT-Creation-Date: 2013-05-23 20:21+0200\n"
+"PO-Revision-Date: 2013-05-23 18:21+0000\n"
 "Last-Translator: Torsten Widmann <info@goover.de>\n"
 "Language-Team: Japanese (Japan) (http://www.transifex.com/projects/p/i-MSCP/language/ja_JP/)\n"
 "MIME-Version: 1.0\n"
@@ -827,10 +827,6 @@ msgstr "認証処理中にエラーが発生しました。"
 
 msgid "An hosting plan with same name already exists."
 msgstr "同じ名前のホスティングプランが既に存在しています。"
-
-msgid ""
-"An unexpected error has been encountered. Customer account creation canceled"
-msgstr ""
 
 msgid "An unexpected error occured, please contact your reseller."
 msgstr "予期しないエラーが発生し、代理店にお問い合せください。"
@@ -2111,8 +2107,8 @@ msgstr "メッセージテキストを記入してください。"
 msgid "First name"
 msgstr "名字"
 
-msgid "Forward"
-msgstr "転送"
+msgid "Forward URL"
+msgstr ""
 
 msgid "Forward account"
 msgstr "フォワードアカウント"
@@ -2148,6 +2144,9 @@ msgid "Ftp account"
 msgstr "Ftp アカウント"
 
 msgid "Ftp account data"
+msgstr ""
+
+msgid "Ftp account with same username already exists."
 msgstr ""
 
 msgid "Ftp accounts"
@@ -2786,9 +2785,6 @@ msgstr "SQL管理"
 msgid "Manage Users"
 msgstr "ユーザー管理"
 
-msgid "Manage alias"
-msgstr "エイリアス管理"
-
 msgid "Manage aliasses"
 msgstr "エイリアス管理"
 
@@ -2803,9 +2799,6 @@ msgstr "htaccessユーザーとグループを管理"
 
 msgid "Manage subdomain"
 msgstr "サブドメイン管理"
-
-msgid "Manage user sessions"
-msgstr "ユーザーセッション管理"
 
 msgid "Manage users"
 msgstr "ユーザー管理"
@@ -3242,9 +3235,6 @@ msgstr "未解決のチケット"
 
 msgid "Optional"
 msgstr "オプショナル"
-
-msgid "Options"
-msgstr "オプション"
 
 msgid "Order"
 msgstr "オーダー"
@@ -3696,9 +3686,6 @@ msgstr "メモリ"
 
 msgid "Read the ticket"
 msgstr "チケットを読みます"
-
-msgid "Real domain"
-msgstr "本来のドメイン"
 
 msgid "Rebuild languages index"
 msgstr "言語のインデックスを再構築"
@@ -4775,14 +4762,6 @@ msgstr "言語ファイルのための'%s' ディレクトリを作成できま�
 msgid "Unable to create 'LC_MESSAGES' directory for language file."
 msgstr "言語ファイルのための\"LC_MESSAGES\"ディレクトリを作成できません。"
 
-msgid ""
-"Unable to delete Ftp account. A message has been sent to the administrator."
-msgstr ""
-
-#, php-format
-msgid "Unable to delete domain alias with id %d"
-msgstr ""
-
 #, php-format
 msgid "Unable to delete user with Id: %d"
 msgstr "このIDを持つユーザーを削除することができない： %d"
@@ -5796,9 +5775,6 @@ msgstr "i-MSCP - 管理者/失われたパスワードのEメール設定"
 msgid "i-MSCP - Admin/Maintenance mode"
 msgstr "i-MSCP - 管理者/メンテナンスモード"
 
-msgid "i-MSCP - Admin/Manage Sessions"
-msgstr "i-MSCP - 管理者/セッション管理"
-
 msgid "i-MSCP - Admin/Manage users / User assignment"
 msgstr "i-MSCP - 管理者/ユーザ管理 / ユーザー割り当て"
 
@@ -5834,6 +5810,9 @@ msgstr "i-MSCP - クライアント / メールアカウント / 自動応答を
 
 msgid "i-MSCP - Client / Mail accounts / Edit auto-responder"
 msgstr "i-MSCP - クライアント / メールアカウント / 自動応答編集"
+
+msgid "i-MSCP - Client / Manage Domains"
+msgstr ""
 
 msgid "i-MSCP - Client / Manage domains - Add subdomain"
 msgstr "i-MSCP - クライアント / ドメイン管理 - サブドメイン追加"
@@ -5913,9 +5892,6 @@ msgstr "i-MSCP - クライアント/日次バックアップ"
 msgid "i-MSCP - Client/Edit FTP Account"
 msgstr "i-MSCP - クライアント/FTPアカウント編集"
 
-msgid "i-MSCP - Client/Manage Domains"
-msgstr "i-MSCP - クライアント/ドメイン管理"
-
 msgid "i-MSCP - Client/Manage Error Custom Pages"
 msgstr "i-MSCP - クライアント/カスタムエラーページ管理"
 
@@ -5943,6 +5919,9 @@ msgstr "i-MSCP - Ftp / ディレクトリ選択"
 msgid "i-MSCP - Install Software"
 msgstr "i-MSCP - ソフトウェアのインストール"
 
+msgid "i-MSCP - Manage Customers / Manage Aliasses"
+msgstr ""
+
 msgid "i-MSCP - Manage Domain / Add Custom DNS  record"
 msgstr ""
 
@@ -5952,8 +5931,8 @@ msgstr ""
 msgid "i-MSCP - Manage Domain Alias/Edit Alias"
 msgstr "i-MSCP - ドメインエイリアス管理/エイリアス編集"
 
-msgid "i-MSCP - Manage Domain/Alias"
-msgstr "i-MSCP - ドメイン管理/エイリアス"
+msgid "i-MSCP - Manage Users / Sessions"
+msgstr ""
 
 msgid "i-MSCP - Manage domains / Edit Subdomain"
 msgstr "i-MSCP - ドメイン管理/サブドメイン編集"

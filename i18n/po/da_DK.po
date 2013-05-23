@@ -11,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2013-05-21 05:50+0200\n"
-"PO-Revision-Date: 2013-05-21 03:51+0000\n"
+"POT-Creation-Date: 2013-05-23 20:21+0200\n"
+"PO-Revision-Date: 2013-05-23 18:21+0000\n"
 "Last-Translator: Torsten Widmann <info@goover.de>\n"
 "Language-Team: Danish (Denmark) (http://www.transifex.com/projects/p/i-MSCP/language/da_DK/)\n"
 "MIME-Version: 1.0\n"
@@ -829,10 +829,6 @@ msgstr "Der opstod en fejl under godkendelses forsøg."
 
 msgid "An hosting plan with same name already exists."
 msgstr "En hosting plan med samme navn findes allerede."
-
-msgid ""
-"An unexpected error has been encountered. Customer account creation canceled"
-msgstr ""
 
 msgid "An unexpected error occured, please contact your reseller."
 msgstr "En uventet fejl opstod, du skal kontakte din forhandler."
@@ -2113,8 +2109,8 @@ msgstr "Udfyld en besked tekst."
 msgid "First name"
 msgstr "Fornavn"
 
-msgid "Forward"
-msgstr "Videresend"
+msgid "Forward URL"
+msgstr ""
 
 msgid "Forward account"
 msgstr "Videresende konto"
@@ -2150,6 +2146,9 @@ msgid "Ftp account"
 msgstr "Ftp konto"
 
 msgid "Ftp account data"
+msgstr ""
+
+msgid "Ftp account with same username already exists."
 msgstr ""
 
 msgid "Ftp accounts"
@@ -2788,9 +2787,6 @@ msgstr "Håndtér SQL"
 msgid "Manage Users"
 msgstr "Administrer brugere"
 
-msgid "Manage alias"
-msgstr "Håndtér alias"
-
 msgid "Manage aliasses"
 msgstr "Administrer aliasses"
 
@@ -2805,9 +2801,6 @@ msgstr "Administrer htaccess brugere og grupper"
 
 msgid "Manage subdomain"
 msgstr "Administrer subdomæne"
-
-msgid "Manage user sessions"
-msgstr "Håndtér brugere og sessioner"
 
 msgid "Manage users"
 msgstr "Håndtér brugere"
@@ -3244,9 +3237,6 @@ msgstr "Åbne support tickets"
 
 msgid "Optional"
 msgstr "Valgfri"
-
-msgid "Options"
-msgstr "Muligheder"
 
 msgid "Order"
 msgstr "Bestilling"
@@ -3698,9 +3688,6 @@ msgstr "RAM"
 
 msgid "Read the ticket"
 msgstr "Læs fejlrapporten"
-
-msgid "Real domain"
-msgstr "Hoved domæne"
 
 msgid "Rebuild languages index"
 msgstr "Genopbyg sprog index"
@@ -4777,14 +4764,6 @@ msgstr "Kunne ikke oprette '%s' mappe for sprog-fil."
 msgid "Unable to create 'LC_MESSAGES' directory for language file."
 msgstr "Kan ikke skabe 'LC_MESSAGES' mappe for sprog-fil."
 
-msgid ""
-"Unable to delete Ftp account. A message has been sent to the administrator."
-msgstr ""
-
-#, php-format
-msgid "Unable to delete domain alias with id %d"
-msgstr ""
-
 #, php-format
 msgid "Unable to delete user with Id: %d"
 msgstr "Kan ikke slette bruger med Id: %d"
@@ -5798,9 +5777,6 @@ msgstr "i-MSCP - Admin / Glemt kodeord e-mail opsætning"
 msgid "i-MSCP - Admin/Maintenance mode"
 msgstr "i-MSCP - Admin/Vedligeholdelses mode"
 
-msgid "i-MSCP - Admin/Manage Sessions"
-msgstr "i-MSCP - Admin/Håndtére Sessioner"
-
 msgid "i-MSCP - Admin/Manage users / User assignment"
 msgstr "i-MSCP - Admin / Administrer brugere / Bruger tildeling"
 
@@ -5836,6 +5812,9 @@ msgstr "I-MSCP - Klient / Mail konti / Aktivér auto-responder"
 
 msgid "i-MSCP - Client / Mail accounts / Edit auto-responder"
 msgstr "i-MSCP - Klient / Mail konti / Rediger auto-responder"
+
+msgid "i-MSCP - Client / Manage Domains"
+msgstr ""
 
 msgid "i-MSCP - Client / Manage domains - Add subdomain"
 msgstr "i-MSCP - Klient / Administrer domæne - Tilføj subdomæne"
@@ -5915,9 +5894,6 @@ msgstr "i-MSCP - Bruger/Daglig Backup"
 msgid "i-MSCP - Client/Edit FTP Account"
 msgstr "i-MSCP - Bruger/Rediger FTP Konto"
 
-msgid "i-MSCP - Client/Manage Domains"
-msgstr "i-MSCP - Bruger/Håndter Domæner"
-
 msgid "i-MSCP - Client/Manage Error Custom Pages"
 msgstr "i-MSCP - Bruger/Håndtere Egne Fejl Sider"
 
@@ -5945,6 +5921,9 @@ msgstr "i-MSCP - Ftp / Vælg mappe"
 msgid "i-MSCP - Install Software"
 msgstr "i-MSCP - Installer Software"
 
+msgid "i-MSCP - Manage Customers / Manage Aliasses"
+msgstr ""
+
 msgid "i-MSCP - Manage Domain / Add Custom DNS  record"
 msgstr ""
 
@@ -5954,8 +5933,8 @@ msgstr ""
 msgid "i-MSCP - Manage Domain Alias/Edit Alias"
 msgstr "i-MSCP - Håndtere Domæne Alias/Rediger Alias"
 
-msgid "i-MSCP - Manage Domain/Alias"
-msgstr "i-MSCP - Håndtere Domæne/Alias"
+msgid "i-MSCP - Manage Users / Sessions"
+msgstr ""
 
 msgid "i-MSCP - Manage domains / Edit Subdomain"
 msgstr "i-MSCP - Administrer domæne / Rediger Subdomæne"

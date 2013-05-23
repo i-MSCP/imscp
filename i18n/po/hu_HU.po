@@ -11,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2013-05-21 05:50+0200\n"
-"PO-Revision-Date: 2013-05-21 03:51+0000\n"
+"POT-Creation-Date: 2013-05-23 20:21+0200\n"
+"PO-Revision-Date: 2013-05-23 18:21+0000\n"
 "Last-Translator: Torsten Widmann <info@goover.de>\n"
 "Language-Team: Hungarian (Hungary) (http://www.transifex.com/projects/p/i-MSCP/language/hu_HU/)\n"
 "MIME-Version: 1.0\n"
@@ -829,10 +829,6 @@ msgstr "Hiba történt a hitelesítési kísérlet során"
 
 msgid "An hosting plan with same name already exists."
 msgstr "Ilyen nevű tárhely csomag már létezik"
-
-msgid ""
-"An unexpected error has been encountered. Customer account creation canceled"
-msgstr ""
 
 msgid "An unexpected error occured, please contact your reseller."
 msgstr "Váratlan hiba történt, kérjük lépjen kapcsolatba viszonteladójával. "
@@ -2113,8 +2109,8 @@ msgstr "Üzenet szövege nem lehet üres"
 msgid "First name"
 msgstr "Vezetéknév"
 
-msgid "Forward"
-msgstr "Továbbítás"
+msgid "Forward URL"
+msgstr ""
 
 msgid "Forward account"
 msgstr "Továbbítási fiók"
@@ -2150,6 +2146,9 @@ msgid "Ftp account"
 msgstr "FTP azonosító"
 
 msgid "Ftp account data"
+msgstr ""
+
+msgid "Ftp account with same username already exists."
 msgstr ""
 
 msgid "Ftp accounts"
@@ -2788,9 +2787,6 @@ msgstr "Adatbázisok kezelése"
 msgid "Manage Users"
 msgstr "Felhasználók kezelése"
 
-msgid "Manage alias"
-msgstr "Domain álnevek kezelése"
-
 msgid "Manage aliasses"
 msgstr "Domain álnevek kezelése"
 
@@ -2805,9 +2801,6 @@ msgstr "Védett területek, felhasználók és csoportok kezelése"
 
 msgid "Manage subdomain"
 msgstr "Aldomain kezelése"
-
-msgid "Manage user sessions"
-msgstr "Felhasználói munkafolyamat kezelő"
 
 msgid "Manage users"
 msgstr "Felhasználók kezelése"
@@ -3244,9 +3237,6 @@ msgstr "Nyitott hibajegyek"
 
 msgid "Optional"
 msgstr "Opcionális"
-
-msgid "Options"
-msgstr "Lehetőségek"
 
 msgid "Order"
 msgstr "Megrendelés"
@@ -3698,9 +3688,6 @@ msgstr "RAM"
 
 msgid "Read the ticket"
 msgstr "Hibajegy olvasása"
-
-msgid "Real domain"
-msgstr "Valódi domain"
 
 msgid "Rebuild languages index"
 msgstr "Újraindexelés"
@@ -4777,14 +4764,6 @@ msgstr "Nem hozható létre a(z) '%s' könyvtár a nyelvi fájl számára"
 msgid "Unable to create 'LC_MESSAGES' directory for language file."
 msgstr "Nem hozható létre a 'LC_MESSAGES' könyvtár a nyelvi fájl számára"
 
-msgid ""
-"Unable to delete Ftp account. A message has been sent to the administrator."
-msgstr ""
-
-#, php-format
-msgid "Unable to delete domain alias with id %d"
-msgstr ""
-
 #, php-format
 msgid "Unable to delete user with Id: %d"
 msgstr "Nem lehet törölni %d azonosítójú felhasználót"
@@ -5798,9 +5777,6 @@ msgstr "i-MSCP - Adminisztrátor / Üzenetsablon beállítása"
 msgid "i-MSCP - Admin/Maintenance mode"
 msgstr "i-MSCP - Adminisztrátor / Karbantartási mód"
 
-msgid "i-MSCP - Admin/Manage Sessions"
-msgstr "i-MSCP - Adminisztrátor / Munkafolyamat kezelő"
-
 msgid "i-MSCP - Admin/Manage users / User assignment"
 msgstr "i-MSCP - Adminisztrátor / Felhasználók kezelése / Ügyfelek átadása"
 
@@ -5836,6 +5812,9 @@ msgstr "i-MSCP - Ügyfél / Levelezés / Automatikus válaszoló aktiválása"
 
 msgid "i-MSCP - Client / Mail accounts / Edit auto-responder"
 msgstr "i-MSCP - Ügyfél / Levelezés / Automatikus válaszoló módosítása"
+
+msgid "i-MSCP - Client / Manage Domains"
+msgstr ""
 
 msgid "i-MSCP - Client / Manage domains - Add subdomain"
 msgstr "i-MSCP - Ügyfél / Domainek kezelése / Aldomain létrehozása"
@@ -5915,9 +5894,6 @@ msgstr "i-MSCP - Ügyfél / Napi mentés"
 msgid "i-MSCP - Client/Edit FTP Account"
 msgstr "i-MSCP - Ügyfél / FTP azonosító módosítása"
 
-msgid "i-MSCP - Client/Manage Domains"
-msgstr "i-MSCP - Ügyfél / Domainek kezelése"
-
 msgid "i-MSCP - Client/Manage Error Custom Pages"
 msgstr "i-MSCP - Ügyfél / Saját hibaleírások kezelése"
 
@@ -5945,6 +5921,9 @@ msgstr "i-MSCP - FTP / Könyvtár választás"
 msgid "i-MSCP - Install Software"
 msgstr "I-MSCP - Alkalmazás telepítése"
 
+msgid "i-MSCP - Manage Customers / Manage Aliasses"
+msgstr ""
+
 msgid "i-MSCP - Manage Domain / Add Custom DNS  record"
 msgstr ""
 
@@ -5954,8 +5933,8 @@ msgstr ""
 msgid "i-MSCP - Manage Domain Alias/Edit Alias"
 msgstr "i-MSCP - Domain álnevek kezelése / Domain álnév módosítása"
 
-msgid "i-MSCP - Manage Domain/Alias"
-msgstr "i-MSCP - Domain kezelés / Álnév"
+msgid "i-MSCP - Manage Users / Sessions"
+msgstr ""
 
 msgid "i-MSCP - Manage domains / Edit Subdomain"
 msgstr "i-MSCP - Domainek  kezelése / Domain álnév szerkesztése"

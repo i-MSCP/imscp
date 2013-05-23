@@ -29,8 +29,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2013-05-21 05:50+0200\n"
-"PO-Revision-Date: 2013-05-21 03:51+0000\n"
+"POT-Creation-Date: 2013-05-23 20:21+0200\n"
+"PO-Revision-Date: 2013-05-23 18:21+0000\n"
 "Last-Translator: Torsten Widmann <info@goover.de>\n"
 "Language-Team: German (Germany) (http://www.transifex.com/projects/p/i-MSCP/language/de_DE/)\n"
 "MIME-Version: 1.0\n"
@@ -786,7 +786,7 @@ msgid "All"
 msgstr "Alle"
 
 msgid "All administrators"
-msgstr ""
+msgstr "Alle Administratoren"
 
 msgid "All closed tickets were deleted."
 msgstr "Alle geschlossenen Tickets wurden gelöscht."
@@ -795,7 +795,7 @@ msgid "All closed tickets were successfully deleted."
 msgstr "Alle geschlossenen Tickets wurden erfolgreich gelöscht."
 
 msgid "All customers"
-msgstr ""
+msgstr "Alle Kunden"
 
 msgid "All fields are required."
 msgstr "Es müssen alle Felder ausgefüllt werden!"
@@ -825,7 +825,7 @@ msgid "All resellers"
 msgstr "Alle Reseller"
 
 msgid "All resellers and customers"
-msgstr ""
+msgstr "Alle Reseller und Kunden"
 
 msgid "All traffic"
 msgstr "Gesamtverbrauch"
@@ -846,10 +846,6 @@ msgid "An error occurred while the authentication attempt."
 msgstr "Ein Fehler trat auf während der Authentisierung"
 
 msgid "An hosting plan with same name already exists."
-msgstr ""
-
-msgid ""
-"An unexpected error has been encountered. Customer account creation canceled"
 msgstr ""
 
 msgid "An unexpected error occured, please contact your reseller."
@@ -995,7 +991,7 @@ msgid "Auto-responder successfully scheduled for update."
 msgstr "E-Mail Auto-Antwort fuer Update hinzugefuegt."
 
 msgid "Available"
-msgstr ""
+msgstr "Verfügbar"
 
 msgid "Available i-MSCP updates"
 msgstr "Verfügbare i-MSCP Updates"
@@ -1526,7 +1522,7 @@ msgid "Delete Customer - {DOMAIN_NAME}"
 msgstr ""
 
 msgid "Delete account"
-msgstr ""
+msgstr "Account löschen"
 
 msgid "Delete all tickets"
 msgstr "Alle Tickets löschen"
@@ -1568,7 +1564,7 @@ msgid "Description"
 msgstr "Beschreibung"
 
 msgid "Description cannot be empty."
-msgstr ""
+msgstr "Beschreibung darf nicht leer sein."
 
 msgid "Details"
 msgstr "Details"
@@ -2131,8 +2127,8 @@ msgstr "Füllen Sie eine Textnachricht aus."
 msgid "First name"
 msgstr "Vorname"
 
-msgid "Forward"
-msgstr "Weiterleiten"
+msgid "Forward URL"
+msgstr ""
 
 msgid "Forward account"
 msgstr "Weiterleitungs-Account"
@@ -2168,6 +2164,9 @@ msgid "Ftp account"
 msgstr "FTP Konto"
 
 msgid "Ftp account data"
+msgstr ""
+
+msgid "Ftp account with same username already exists."
 msgstr ""
 
 msgid "Ftp accounts"
@@ -2806,9 +2805,6 @@ msgstr "Datenbanken"
 msgid "Manage Users"
 msgstr "Benutzerverwaltung"
 
-msgid "Manage alias"
-msgstr "Aliase verwalten"
-
 msgid "Manage aliasses"
 msgstr "Verwaltung Aliasses"
 
@@ -2823,9 +2819,6 @@ msgstr "Htaccess-Benutzer und Gruppen verwalten"
 
 msgid "Manage subdomain"
 msgstr "Subdomain verwalten"
-
-msgid "Manage user sessions"
-msgstr "Sitzungen verwalten"
 
 msgid "Manage users"
 msgstr "Benutzerverwaltung"
@@ -3107,7 +3100,7 @@ msgid "No languages found."
 msgstr "Keine Sprachen gefunden."
 
 msgid "No logs found"
-msgstr ""
+msgstr "Keine Logs gefunden."
 
 msgid "No logs found."
 msgstr "Keine Logs gefunden"
@@ -3262,9 +3255,6 @@ msgstr "Offene Tickets"
 
 msgid "Optional"
 msgstr "Optional"
-
-msgid "Options"
-msgstr "Optionen"
 
 msgid "Order"
 msgstr "Bestellung"
@@ -3716,9 +3706,6 @@ msgstr "RAM"
 
 msgid "Read the ticket"
 msgstr "Lese das Ticket"
-
-msgid "Real domain"
-msgstr "Hauptdomain"
 
 msgid "Rebuild languages index"
 msgstr "Sprachen aktualisieren"
@@ -4795,14 +4782,6 @@ msgstr "Kann '%s' Verzeichnis für Sprach-Datei nicht erstellen."
 msgid "Unable to create 'LC_MESSAGES' directory for language file."
 msgstr "Kann 'LC_MESSAGES' Verzeichnis für Sprach-Datei nicht erstellen."
 
-msgid ""
-"Unable to delete Ftp account. A message has been sent to the administrator."
-msgstr ""
-
-#, php-format
-msgid "Unable to delete domain alias with id %d"
-msgstr ""
-
 #, php-format
 msgid "Unable to delete user with Id: %d"
 msgstr "Benutzer mit ID: %d kann nicht gelöscht werden"
@@ -5317,7 +5296,7 @@ msgid "Yes"
 msgstr "Ja"
 
 msgid "Yes, delete this account."
-msgstr ""
+msgstr "Ja, diesen Account löschen"
 
 msgid "YiB"
 msgstr "YiB"
@@ -5400,7 +5379,7 @@ msgid "You did not fill all required fields"
 msgstr "Bitte füllen Sie alle benötigten Felder aus"
 
 msgid "You do not have FTP accounts."
-msgstr ""
+msgstr "Sie haben keine FTP Accounts."
 
 msgid "You do not have any software uploaded yet"
 msgstr "Sie haben noch keine Software hochgeladen "
@@ -5816,9 +5795,6 @@ msgstr "i-MSCP - Admin/\"Kennwort vergessen\" E-Mail Einstellungen"
 msgid "i-MSCP - Admin/Maintenance mode"
 msgstr "i-MSCP - Admin/Wartungsmodus"
 
-msgid "i-MSCP - Admin/Manage Sessions"
-msgstr "i-MSCP - Admin/Sessionverwaltung"
-
 msgid "i-MSCP - Admin/Manage users / User assignment"
 msgstr "i-MSCP - Admin/Benutzer verwalten / Benutzer Assignment"
 
@@ -5854,6 +5830,9 @@ msgstr "i-MSCP - Kunde / Mail-konto / Aktivieren der Auto-Antwort"
 
 msgid "i-MSCP - Client / Mail accounts / Edit auto-responder"
 msgstr "i-MSCP - Kunde / Mail-konto / Ändern der Auto-Antwort"
+
+msgid "i-MSCP - Client / Manage Domains"
+msgstr ""
 
 msgid "i-MSCP - Client / Manage domains - Add subdomain"
 msgstr "i-MSCP - Kunde / Domains verwalten - Subdomain hinzufügen"
@@ -5910,7 +5889,7 @@ msgid "i-MSCP - Client / Webtools Protected areas / Add Htaccess group"
 msgstr "i-MSCP - Kunde / Webwerkzeuge / Geschützte Bereiche / htaccess-Gruppe hinzufügen"
 
 msgid "i-MSCP - Client/Add FTP Account"
-msgstr ""
+msgstr "i-MSCP - Kunde/FTP Account hinzufügen"
 
 msgid "i-MSCP - Client/Add SQL Database"
 msgstr "i-MSCP - Kunde/SQL-Datenbank anlegen"
@@ -5932,9 +5911,6 @@ msgstr "i-MSCP - Kunde/Tägliches Backup"
 
 msgid "i-MSCP - Client/Edit FTP Account"
 msgstr "i-MSCP - Kunde/FTP-Zugang bearbeiten"
-
-msgid "i-MSCP - Client/Manage Domains"
-msgstr "i-MSCP - Kunde/Domainverwaltung"
 
 msgid "i-MSCP - Client/Manage Error Custom Pages"
 msgstr "i-MSCP - Kunde/Eigene Fehlerseiten verwalten"
@@ -5963,6 +5939,9 @@ msgstr "i-MSCP - FTP / Verzeichnis auswählen"
 msgid "i-MSCP - Install Software"
 msgstr "i-MSCP - Software installieren"
 
+msgid "i-MSCP - Manage Customers / Manage Aliasses"
+msgstr ""
+
 msgid "i-MSCP - Manage Domain / Add Custom DNS  record"
 msgstr ""
 
@@ -5972,8 +5951,8 @@ msgstr ""
 msgid "i-MSCP - Manage Domain Alias/Edit Alias"
 msgstr "i-MSCP - Domain-Alias verwalten/Alias bearbeiten"
 
-msgid "i-MSCP - Manage Domain/Alias"
-msgstr "i-MSCP - Domainverwaltung/Alias"
+msgid "i-MSCP - Manage Users / Sessions"
+msgstr ""
 
 msgid "i-MSCP - Manage domains / Edit Subdomain"
 msgstr "i-MSCP - Domains verwalten / Editiere Subdomains"

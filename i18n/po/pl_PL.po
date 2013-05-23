@@ -11,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2013-05-21 05:50+0200\n"
-"PO-Revision-Date: 2013-05-21 03:51+0000\n"
+"POT-Creation-Date: 2013-05-23 20:21+0200\n"
+"PO-Revision-Date: 2013-05-23 18:21+0000\n"
 "Last-Translator: Torsten Widmann <info@goover.de>\n"
 "Language-Team: Polish (Poland) (http://www.transifex.com/projects/p/i-MSCP/language/pl_PL/)\n"
 "MIME-Version: 1.0\n"
@@ -828,10 +828,6 @@ msgid "An error occurred while the authentication attempt."
 msgstr "Wystąpił błąd przy skrypcie autentyfikującym."
 
 msgid "An hosting plan with same name already exists."
-msgstr ""
-
-msgid ""
-"An unexpected error has been encountered. Customer account creation canceled"
 msgstr ""
 
 msgid "An unexpected error occured, please contact your reseller."
@@ -2113,8 +2109,8 @@ msgstr "Wprowadź tekst wiadomości."
 msgid "First name"
 msgstr "Imię"
 
-msgid "Forward"
-msgstr "Przekierowanie"
+msgid "Forward URL"
+msgstr ""
 
 msgid "Forward account"
 msgstr "Przekierowanie konta"
@@ -2150,6 +2146,9 @@ msgid "Ftp account"
 msgstr "Konto FTP"
 
 msgid "Ftp account data"
+msgstr ""
+
+msgid "Ftp account with same username already exists."
 msgstr ""
 
 msgid "Ftp accounts"
@@ -2788,9 +2787,6 @@ msgstr "Zarządzaj bazami SQL"
 msgid "Manage Users"
 msgstr "Zarządzaj użytkownikami"
 
-msgid "Manage alias"
-msgstr "Zarządzaj aliasami"
-
 msgid "Manage aliasses"
 msgstr "Zarządzaj aliasami"
 
@@ -2805,9 +2801,6 @@ msgstr "Zarządzaj użytkownikami i grupami htaccess"
 
 msgid "Manage subdomain"
 msgstr "Zarządzaj poddomeną "
-
-msgid "Manage user sessions"
-msgstr "Zarządzaj sesjami użytkownika"
 
 msgid "Manage users"
 msgstr "Zarządzaj użytkownikami"
@@ -3244,9 +3237,6 @@ msgstr "Otwarte zgłoszenia"
 
 msgid "Optional"
 msgstr "Opcjonalne"
-
-msgid "Options"
-msgstr "Opcje"
 
 msgid "Order"
 msgstr "Zamówienie"
@@ -3698,9 +3688,6 @@ msgstr "RAM"
 
 msgid "Read the ticket"
 msgstr "Przeczytaj zgłoszenie"
-
-msgid "Real domain"
-msgstr "Prawdziwa domena"
 
 msgid "Rebuild languages index"
 msgstr "Przebuduj indeks języków."
@@ -4777,14 +4764,6 @@ msgstr "Nie udało się stworzyć katalogu '%s' dla pliku."
 msgid "Unable to create 'LC_MESSAGES' directory for language file."
 msgstr "Nie udało się stworzyć katalogu  'LC_MESSAGES' dla pliku z tłumaczeniem."
 
-msgid ""
-"Unable to delete Ftp account. A message has been sent to the administrator."
-msgstr ""
-
-#, php-format
-msgid "Unable to delete domain alias with id %d"
-msgstr ""
-
 #, php-format
 msgid "Unable to delete user with Id: %d"
 msgstr "Nie można usunąć użytkownika z id: %d"
@@ -5798,9 +5777,6 @@ msgstr ""
 msgid "i-MSCP - Admin/Maintenance mode"
 msgstr "i-MSCP - Admin/Tryb serwisowy"
 
-msgid "i-MSCP - Admin/Manage Sessions"
-msgstr "i-MSCP - Admin/Zarządzaj Sesjami"
-
 msgid "i-MSCP - Admin/Manage users / User assignment"
 msgstr "i-MSCP - Admin/ Zarządzaj użytkownikami/ Przypisanie użytkownika."
 
@@ -5835,6 +5811,9 @@ msgid "i-MSCP - Client / Mail accounts / Activate auto-responder"
 msgstr ""
 
 msgid "i-MSCP - Client / Mail accounts / Edit auto-responder"
+msgstr ""
+
+msgid "i-MSCP - Client / Manage Domains"
 msgstr ""
 
 msgid "i-MSCP - Client / Manage domains - Add subdomain"
@@ -5915,9 +5894,6 @@ msgstr "i-MSCP - Klient/Dzienna Kopia Zapasowa"
 msgid "i-MSCP - Client/Edit FTP Account"
 msgstr "i-MSCP - Klient/Edytuj Konto FTP"
 
-msgid "i-MSCP - Client/Manage Domains"
-msgstr "i-MSCP - Klient/Zarządzaj Domenami"
-
 msgid "i-MSCP - Client/Manage Error Custom Pages"
 msgstr "i-MSCP - Klient/Zarządzaj własnymi stronami błędów"
 
@@ -5945,6 +5921,9 @@ msgstr "i-MSCP - FTP / Wybierz katalog"
 msgid "i-MSCP - Install Software"
 msgstr "i-MSCP - Instalacja oprogramowania"
 
+msgid "i-MSCP - Manage Customers / Manage Aliasses"
+msgstr ""
+
 msgid "i-MSCP - Manage Domain / Add Custom DNS  record"
 msgstr ""
 
@@ -5954,8 +5933,8 @@ msgstr ""
 msgid "i-MSCP - Manage Domain Alias/Edit Alias"
 msgstr "i-MSCP - Zarządzaj Aliasem Domeny/Edytuj Alias"
 
-msgid "i-MSCP - Manage Domain/Alias"
-msgstr "i-MSCP - Zarządzaj Domeną/Alias"
+msgid "i-MSCP - Manage Users / Sessions"
+msgstr ""
 
 msgid "i-MSCP - Manage domains / Edit Subdomain"
 msgstr "i-MSCP - Zarządzanie domenami / Edytuj subdomenę"

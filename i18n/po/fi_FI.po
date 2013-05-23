@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2013-05-21 05:50+0200\n"
-"PO-Revision-Date: 2013-05-21 03:51+0000\n"
+"POT-Creation-Date: 2013-05-23 20:21+0200\n"
+"PO-Revision-Date: 2013-05-23 18:21+0000\n"
 "Last-Translator: Torsten Widmann <info@goover.de>\n"
 "Language-Team: Finnish (Finland) (http://www.transifex.com/projects/p/i-MSCP/language/fi_FI/)\n"
 "MIME-Version: 1.0\n"
@@ -825,10 +825,6 @@ msgid "An error occurred while the authentication attempt."
 msgstr ""
 
 msgid "An hosting plan with same name already exists."
-msgstr ""
-
-msgid ""
-"An unexpected error has been encountered. Customer account creation canceled"
 msgstr ""
 
 msgid "An unexpected error occured, please contact your reseller."
@@ -2110,8 +2106,8 @@ msgstr ""
 msgid "First name"
 msgstr "Etunimi"
 
-msgid "Forward"
-msgstr "Ohjaus"
+msgid "Forward URL"
+msgstr ""
 
 msgid "Forward account"
 msgstr ""
@@ -2147,6 +2143,9 @@ msgid "Ftp account"
 msgstr ""
 
 msgid "Ftp account data"
+msgstr ""
+
+msgid "Ftp account with same username already exists."
 msgstr ""
 
 msgid "Ftp accounts"
@@ -2785,9 +2784,6 @@ msgstr "Hallitse tietokantoja"
 msgid "Manage Users"
 msgstr ""
 
-msgid "Manage alias"
-msgstr "Hallitse aliaksia"
-
 msgid "Manage aliasses"
 msgstr ""
 
@@ -2802,9 +2798,6 @@ msgstr ""
 
 msgid "Manage subdomain"
 msgstr ""
-
-msgid "Manage user sessions"
-msgstr "Hallitse käyttäjäsessioita"
 
 msgid "Manage users"
 msgstr "Hallitse käyttäjiä"
@@ -3241,9 +3234,6 @@ msgstr "Avoimet kysymykset"
 
 msgid "Optional"
 msgstr ""
-
-msgid "Options"
-msgstr "Asetukset"
 
 msgid "Order"
 msgstr "Tilaus"
@@ -3695,9 +3685,6 @@ msgstr "RAM"
 
 msgid "Read the ticket"
 msgstr "Lue tukipyyntö"
-
-msgid "Real domain"
-msgstr "Oikea domain"
 
 msgid "Rebuild languages index"
 msgstr ""
@@ -4774,14 +4761,6 @@ msgstr ""
 msgid "Unable to create 'LC_MESSAGES' directory for language file."
 msgstr ""
 
-msgid ""
-"Unable to delete Ftp account. A message has been sent to the administrator."
-msgstr ""
-
-#, php-format
-msgid "Unable to delete domain alias with id %d"
-msgstr ""
-
 #, php-format
 msgid "Unable to delete user with Id: %d"
 msgstr ""
@@ -5795,9 +5774,6 @@ msgstr ""
 msgid "i-MSCP - Admin/Maintenance mode"
 msgstr "i-MSCP - Ylläpito / Huoltotila"
 
-msgid "i-MSCP - Admin/Manage Sessions"
-msgstr "i-MSCP - Ylläpito / Hallitse sessioita"
-
 msgid "i-MSCP - Admin/Manage users / User assignment"
 msgstr ""
 
@@ -5832,6 +5808,9 @@ msgid "i-MSCP - Client / Mail accounts / Activate auto-responder"
 msgstr ""
 
 msgid "i-MSCP - Client / Mail accounts / Edit auto-responder"
+msgstr ""
+
+msgid "i-MSCP - Client / Manage Domains"
 msgstr ""
 
 msgid "i-MSCP - Client / Manage domains - Add subdomain"
@@ -5912,9 +5891,6 @@ msgstr "i-MSCP - Asiakas / Päivittäinen varmuuskopio"
 msgid "i-MSCP - Client/Edit FTP Account"
 msgstr "i-MSCP - Asiakas / Muokkaa FTP-tunnusta"
 
-msgid "i-MSCP - Client/Manage Domains"
-msgstr "i-MSCP - Asiakas / Hallitse domaineja"
-
 msgid "i-MSCP - Client/Manage Error Custom Pages"
 msgstr "i-MSCP - Asiakas / Hallitse virhesivuja"
 
@@ -5942,6 +5918,9 @@ msgstr ""
 msgid "i-MSCP - Install Software"
 msgstr ""
 
+msgid "i-MSCP - Manage Customers / Manage Aliasses"
+msgstr ""
+
 msgid "i-MSCP - Manage Domain / Add Custom DNS  record"
 msgstr ""
 
@@ -5951,8 +5930,8 @@ msgstr ""
 msgid "i-MSCP - Manage Domain Alias/Edit Alias"
 msgstr "i-MSCP - Hallitse Domain-alias / Muokkaa aliasta"
 
-msgid "i-MSCP - Manage Domain/Alias"
-msgstr "i-MSCP - Hallitse Domain / Alias"
+msgid "i-MSCP - Manage Users / Sessions"
+msgstr ""
 
 msgid "i-MSCP - Manage domains / Edit Subdomain"
 msgstr ""

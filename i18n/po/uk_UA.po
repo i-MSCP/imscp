@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2013-05-21 05:50+0200\n"
-"PO-Revision-Date: 2013-05-21 03:51+0000\n"
+"POT-Creation-Date: 2013-05-23 20:21+0200\n"
+"PO-Revision-Date: 2013-05-23 18:21+0000\n"
 "Last-Translator: Torsten Widmann <info@goover.de>\n"
 "Language-Team: Ukrainian (Ukraine) (http://www.transifex.com/projects/p/i-MSCP/language/uk_UA/)\n"
 "MIME-Version: 1.0\n"
@@ -829,10 +829,6 @@ msgid "An error occurred while the authentication attempt."
 msgstr "При попытке аутентификации обнаружена ошибка."
 
 msgid "An hosting plan with same name already exists."
-msgstr ""
-
-msgid ""
-"An unexpected error has been encountered. Customer account creation canceled"
 msgstr ""
 
 msgid "An unexpected error occured, please contact your reseller."
@@ -2114,8 +2110,8 @@ msgstr "Заполните текст сообщения. "
 msgid "First name"
 msgstr "Ім'я"
 
-msgid "Forward"
-msgstr "Перенаправлення"
+msgid "Forward URL"
+msgstr ""
 
 msgid "Forward account"
 msgstr "Переслать учетную запись"
@@ -2151,6 +2147,9 @@ msgid "Ftp account"
 msgstr "Учетная запись FTP"
 
 msgid "Ftp account data"
+msgstr ""
+
+msgid "Ftp account with same username already exists."
 msgstr ""
 
 msgid "Ftp accounts"
@@ -2789,9 +2788,6 @@ msgstr "Управління SQL"
 msgid "Manage Users"
 msgstr "Управление пользователями"
 
-msgid "Manage alias"
-msgstr "Управление алиасами"
-
 msgid "Manage aliasses"
 msgstr "Управление алиасами"
 
@@ -2806,9 +2802,6 @@ msgstr "Управление htaccess пользователями и групп
 
 msgid "Manage subdomain"
 msgstr "Управление поддоменами"
-
-msgid "Manage user sessions"
-msgstr "Управління користувацькими сесіями"
 
 msgid "Manage users"
 msgstr "Управлення користувачами"
@@ -3245,9 +3238,6 @@ msgstr "Відкриті запити"
 
 msgid "Optional"
 msgstr "Опционально"
-
-msgid "Options"
-msgstr "Опції"
 
 msgid "Order"
 msgstr "Заказ"
@@ -3699,9 +3689,6 @@ msgstr "ОЗУ"
 
 msgid "Read the ticket"
 msgstr "Читать тикет"
-
-msgid "Real domain"
-msgstr "Реальный домен"
 
 msgid "Rebuild languages index"
 msgstr "Перестроить языковой индекс"
@@ -4778,14 +4765,6 @@ msgstr "Невозможно создать каталог '%s' для язык�
 msgid "Unable to create 'LC_MESSAGES' directory for language file."
 msgstr "Невозможно создать каталог 'LC_MESSAGES' для языкового файла."
 
-msgid ""
-"Unable to delete Ftp account. A message has been sent to the administrator."
-msgstr ""
-
-#, php-format
-msgid "Unable to delete domain alias with id %d"
-msgstr ""
-
 #, php-format
 msgid "Unable to delete user with Id: %d"
 msgstr "Невозможно удалить пользователя с ID: %d"
@@ -5799,9 +5778,6 @@ msgstr "i-MSCP - Администратор/Настройка письма во
 msgid "i-MSCP - Admin/Maintenance mode"
 msgstr "i-MSCP - Адміністратор/Режим технічного обслуговування"
 
-msgid "i-MSCP - Admin/Manage Sessions"
-msgstr "i-MSCP - Адміністратор/Управління сесіями"
-
 msgid "i-MSCP - Admin/Manage users / User assignment"
 msgstr "i-MSCP - Администратор / Управление пользователями / Подтверждение пользователей"
 
@@ -5837,6 +5813,9 @@ msgstr "i-MSCP - Клиент / Учетные записи почты / Акт�
 
 msgid "i-MSCP - Client / Mail accounts / Edit auto-responder"
 msgstr "i-MSCP - Клиент / Учетные записи почты / Редактировать автоответчик"
+
+msgid "i-MSCP - Client / Manage Domains"
+msgstr ""
 
 msgid "i-MSCP - Client / Manage domains - Add subdomain"
 msgstr "i-MSCP - Клиент / Управление доменами - Добавить поддомен"
@@ -5916,9 +5895,6 @@ msgstr "i-MSCP - Клієнт/Щоденне резервне копіюванн
 msgid "i-MSCP - Client/Edit FTP Account"
 msgstr "i-MSCP - Клиент / Редактировать учётную запись FTP"
 
-msgid "i-MSCP - Client/Manage Domains"
-msgstr "i-MSCP - Клієнт/Управління доменами"
-
 msgid "i-MSCP - Client/Manage Error Custom Pages"
 msgstr "i-MSCP - Клієнт/Керування сторінками помилок"
 
@@ -5946,6 +5922,9 @@ msgstr "i-MSCP - FTP / Выбрать каталог"
 msgid "i-MSCP - Install Software"
 msgstr "i-MSCP - Установить программное обеспечение"
 
+msgid "i-MSCP - Manage Customers / Manage Aliasses"
+msgstr ""
+
 msgid "i-MSCP - Manage Domain / Add Custom DNS  record"
 msgstr ""
 
@@ -5955,8 +5934,8 @@ msgstr ""
 msgid "i-MSCP - Manage Domain Alias/Edit Alias"
 msgstr "i-MSCP - Управління аліасами/Редагувати аліас"
 
-msgid "i-MSCP - Manage Domain/Alias"
-msgstr "i-MSCP - Управление Доменом / Алиасами"
+msgid "i-MSCP - Manage Users / Sessions"
+msgstr ""
 
 msgid "i-MSCP - Manage domains / Edit Subdomain"
 msgstr "i-MSCP - Управление доменами / Редактировать поддомен"

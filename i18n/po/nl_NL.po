@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2013-05-21 05:50+0200\n"
-"PO-Revision-Date: 2013-05-21 03:51+0000\n"
+"POT-Creation-Date: 2013-05-23 20:21+0200\n"
+"PO-Revision-Date: 2013-05-23 18:21+0000\n"
 "Last-Translator: Torsten Widmann <info@goover.de>\n"
 "Language-Team: Dutch (Netherlands) (http://www.transifex.com/projects/p/i-MSCP/language/nl_NL/)\n"
 "MIME-Version: 1.0\n"
@@ -826,10 +826,6 @@ msgid "An error occurred while the authentication attempt."
 msgstr ""
 
 msgid "An hosting plan with same name already exists."
-msgstr ""
-
-msgid ""
-"An unexpected error has been encountered. Customer account creation canceled"
 msgstr ""
 
 msgid "An unexpected error occured, please contact your reseller."
@@ -2111,8 +2107,8 @@ msgstr ""
 msgid "First name"
 msgstr "Voornaam"
 
-msgid "Forward"
-msgstr "Doorsturen"
+msgid "Forward URL"
+msgstr ""
 
 msgid "Forward account"
 msgstr ""
@@ -2148,6 +2144,9 @@ msgid "Ftp account"
 msgstr ""
 
 msgid "Ftp account data"
+msgstr ""
+
+msgid "Ftp account with same username already exists."
 msgstr ""
 
 msgid "Ftp accounts"
@@ -2786,9 +2785,6 @@ msgstr "Beheer MySQL"
 msgid "Manage Users"
 msgstr ""
 
-msgid "Manage alias"
-msgstr "Beheer alias"
-
 msgid "Manage aliasses"
 msgstr ""
 
@@ -2803,9 +2799,6 @@ msgstr ""
 
 msgid "Manage subdomain"
 msgstr ""
-
-msgid "Manage user sessions"
-msgstr "Beheer gebruikerssessies"
 
 msgid "Manage users"
 msgstr "Beheer gebruikers"
@@ -3242,9 +3235,6 @@ msgstr "Open tickets"
 
 msgid "Optional"
 msgstr ""
-
-msgid "Options"
-msgstr "Opties"
 
 msgid "Order"
 msgstr "Bestelling"
@@ -3696,9 +3686,6 @@ msgstr "Intern geheugen"
 
 msgid "Read the ticket"
 msgstr ""
-
-msgid "Real domain"
-msgstr "Echt domein"
 
 msgid "Rebuild languages index"
 msgstr ""
@@ -4775,14 +4762,6 @@ msgstr ""
 msgid "Unable to create 'LC_MESSAGES' directory for language file."
 msgstr ""
 
-msgid ""
-"Unable to delete Ftp account. A message has been sent to the administrator."
-msgstr ""
-
-#, php-format
-msgid "Unable to delete domain alias with id %d"
-msgstr ""
-
 #, php-format
 msgid "Unable to delete user with Id: %d"
 msgstr ""
@@ -5796,9 +5775,6 @@ msgstr ""
 msgid "i-MSCP - Admin/Maintenance mode"
 msgstr "i-MSCP - Beheer/Onderhoud module"
 
-msgid "i-MSCP - Admin/Manage Sessions"
-msgstr "i-MSCP - Beheer/Beheer Sessies"
-
 msgid "i-MSCP - Admin/Manage users / User assignment"
 msgstr ""
 
@@ -5833,6 +5809,9 @@ msgid "i-MSCP - Client / Mail accounts / Activate auto-responder"
 msgstr ""
 
 msgid "i-MSCP - Client / Mail accounts / Edit auto-responder"
+msgstr ""
+
+msgid "i-MSCP - Client / Manage Domains"
 msgstr ""
 
 msgid "i-MSCP - Client / Manage domains - Add subdomain"
@@ -5913,9 +5892,6 @@ msgstr "i-MSCP - Klant/Dagelijkste Backup"
 msgid "i-MSCP - Client/Edit FTP Account"
 msgstr "i-MSCP - Klant/Wijzig FTP Account"
 
-msgid "i-MSCP - Client/Manage Domains"
-msgstr "i-MSCP - Klant/Beheer Domeinen"
-
 msgid "i-MSCP - Client/Manage Error Custom Pages"
 msgstr "i-MSCP - Klant/Beheer Aangepaste Fout Paginas"
 
@@ -5943,6 +5919,9 @@ msgstr ""
 msgid "i-MSCP - Install Software"
 msgstr ""
 
+msgid "i-MSCP - Manage Customers / Manage Aliasses"
+msgstr ""
+
 msgid "i-MSCP - Manage Domain / Add Custom DNS  record"
 msgstr ""
 
@@ -5952,8 +5931,8 @@ msgstr ""
 msgid "i-MSCP - Manage Domain Alias/Edit Alias"
 msgstr "i-MSCP - Beheer Domein Aliassen/Wijzig Alias"
 
-msgid "i-MSCP - Manage Domain/Alias"
-msgstr "i-MSCP - Beheer Domein/Alias"
+msgid "i-MSCP - Manage Users / Sessions"
+msgstr ""
 
 msgid "i-MSCP - Manage domains / Edit Subdomain"
 msgstr ""
