@@ -97,10 +97,10 @@ $config->DOMAIN_ROWS_PER_PAGE = 10;
 $config->HOSTING_PLANS_LEVEL = 'reseller';
 
 // TLD strict validation (according IANA database)
-$config->TLD_STRICT_VALIDATION = 1;
+$config->TLD_STRICT_VALIDATION = 0;
 
 // SLD strict validation (according IANA database)
-$config->SLD_STRICT_VALIDATION = 1;
+$config->SLD_STRICT_VALIDATION = 0;
 
 // Maximum number of labels for the domain names
 // and subdomains (excluding SLD and TLD)

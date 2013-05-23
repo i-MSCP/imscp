@@ -339,13 +339,7 @@ function ftp_addAccount($mainDmnName)
 
 				// Ftp group
 				if (!$stmt->rowCount()) {
-					$query = "
-						INSERT INTO `ftp_group` (
-							`groupname`, `gid`, `members`
-						) VALUES (
-							?, ?, ?
-						)
-					";
+					$query = "INSERT INTO `ftp_group` (`groupname`, `gid`, `members`) VALUES (?, ?, ?)";
 					exec_query($query, array($groupName, $gid, $userid));
 				} else {
 					$query = "UPDATE `ftp_group` SET `members` = ? WHERE `groupname` = ?";
@@ -368,7 +362,18 @@ function ftp_addAccount($mainDmnName)
 				}
 
 				$db->commit();
+			} catch (iMSCP_Exception_Database $e) {
+				$db->rollBack();
 
+				if($e->getCode() == 23000) {
+					set_page_message(tr('Ftp account with same username already exists.'), 'error');
+					$ret = false;
+				} else {
+					throw new iMSCP_Exception_Database($e->getMessage(), $e->getQuery(), $e->getCode(), $e);
+				}
+			}
+
+			if($ret) {
 				iMSCP_Events_Manager::getInstance()->dispatch(
 					iMSCP_Events::onAfterAddFtp,
 					array(
@@ -384,16 +389,6 @@ function ftp_addAccount($mainDmnName)
 
 				write_log(sprintf("%s added Ftp account: %s", $_SESSION['user_logged'], $userid), E_USER_NOTICE);
 				set_page_message(tr('FTP account successfully added.'), 'success');
-
-			} catch (iMSCP_Exception_Database $e) {
-				$db->rollBack();
-
-				if($e->getCode() == 23000) {
-					set_page_message(tr('Ftp account with same username already exists.'), 'error');
-					$ret = false;
-				} else {
-					throw new iMSCP_Exception_Database($e->getMessage(), $e->getQuery(), $e->getCode(), $e);
-				}
 			}
 		}
 	} else {
@@ -401,7 +396,7 @@ function ftp_addAccount($mainDmnName)
 	}
 
 	return $ret;
-} // end ftp_addAccount()
+}
 
 /***********************************************************************************************************************
  * Main
