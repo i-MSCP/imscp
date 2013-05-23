@@ -42,7 +42,7 @@ if (customerHasFeature('ftp') && isset($_GET['id'])) {
 
 	iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onBeforeDeleteFtp, array('ftpUserId' => $ftpUserId));
 
-	$query = "SELECT `admin_id`, `gid` FROM `ftp_users` WHERE `userid` = ? AND `admin_id` = ?";
+	$query = "SELECT `gid` FROM `ftp_users` WHERE `userid` = ? AND `admin_id` = ?";
 	$stmt = exec_query($query, array($ftpUserId, $_SESSION['user_id']));
 
 	if (!$stmt->rowCount()) {
@@ -61,7 +61,7 @@ if (customerHasFeature('ftp') && isset($_GET['id'])) {
 
 		if ($stmt->rowCount()) {
 			$groupName = $stmt->fields['groupname'];
-			$members = preg_split(',', $stmt->fields['members'], -1, PREG_SPLIT_NO_EMPTY);
+			$members = preg_split('/,/', $stmt->fields['members'], -1, PREG_SPLIT_NO_EMPTY);
 			$member = array_search($ftpUserId, $members);
 
 			if (false !== $member) {

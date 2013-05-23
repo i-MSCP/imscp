@@ -387,7 +387,13 @@ function ftp_addAccount($mainDmnName)
 
 			} catch (iMSCP_Exception_Database $e) {
 				$db->rollBack();
-				throw new iMSCP_Exception_Database($e->getMessage(), $e->getQuery(), $e->getCode(), $e);
+
+				if($e->getCode() == 23000) {
+					set_page_message(tr('Ftp account with same username already exists.'), 'error');
+					$ret = false;
+				} else {
+					throw new iMSCP_Exception_Database($e->getMessage(), $e->getQuery(), $e->getCode(), $e);
+				}
 			}
 		}
 	} else {

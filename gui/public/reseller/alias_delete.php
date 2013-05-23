@@ -76,7 +76,55 @@ if (resellerHasFeature('domain_aliases') && isset($_GET['del_id'])) {
 		try {
 			$db->beginTransaction();
 
-			// Delete any FTP account linked to $alsId or one of its subdomains
+			// Delete any FTP account linked to $alsId or one of its subdomains - begin
+
+			$query = "
+				SELECT
+					`t1`.`groupname`, `t1`.`gid`, `t1`.`members`
+				FROM
+					`ftp_group` AS `t1`
+				LEFT JOIN
+					`domain_aliasses` AS `t3` ON(`alias_id` = ?)
+				LEFT JOIN
+					`subdomain_alias` AS `t4` ON(`t4`.`alias_id` = `t3`.`alias_id`)
+				LEFT JOIN
+					`ftp_users` AS t2 ON(
+						`userid` LIKE CONCAT('%@', `t4`.`subdomain_alias_name`, '.', `t3`.`alias_name`)
+						OR
+						`userid` LIKE CONCAT('%@', `t3`.`alias_name`)
+					)
+				WHERE
+					`t1`.`gid` = `t2`.`gid`
+				LIMIT
+					1
+			";
+			$stmt = exec_query($query, $alsId);
+
+			if($stmt->rowCount()) {
+				$ftpGroupName = $stmt->fields['groupname'];
+				$ftpGroupGid = $stmt->fields['gid'];
+				$ftpMembers = preg_split('/,/', $stmt->fields['members'], -1, PREG_SPLIT_NO_EMPTY);
+
+				$newFtpMembers = array();
+
+				foreach($ftpMembers as $ftpMember) {
+					if(!preg_match("/@(?:.+?\.)*$alsName$/", $ftpMember)) {
+						$newFtpMembers[] = $ftpMember;
+					}
+				}
+
+				if (!empty($newFtpMembers)) {
+					exec_query(
+						"UPDATE `ftp_group` SET `members` = ? WHERE `gid` = ?",
+						array(implode(',', $newFtpMembers), $ftpGroupGid)
+					);
+				} else {
+					exec_query('DELETE FROM `ftp_group` WHERE `groupname` = ?', $ftpGroupName);
+					exec_query('DELETE FROM `quotalimits` WHERE `name` = ?', $ftpGroupName);
+					exec_query('DELETE FROM `quotatallies` WHERE `name` = ?', $ftpGroupName);
+				}
+			}
+
 			$query = "
 				DELETE
 					`ftp_users`
@@ -87,13 +135,14 @@ if (resellerHasFeature('domain_aliases') && isset($_GET['del_id'])) {
 				LEFT JOIN
 					`subdomain_alias` AS `t3` ON(`t3`.`alias_id` = `t2`.`alias_id`)
 				WHERE
-				(
+					(
 						`userid` LIKE CONCAT('%@', `t3`.`subdomain_alias_name`, '.', `t2`.`alias_name`)
 					OR
 						`userid` LIKE CONCAT('%@', `t2`.`alias_name`)
-				)
+					)
 			";
 			$stmt = exec_query($query, $alsId);
+			// Delete any FTP account linked to $alsId or one of its subdomains - ending
 
 			// Delete any custom DNS and external mail server record which have $alsId as parent
 			$query = "DELETE FROM `domain_dns` WHERE `alias_id` = ?";
