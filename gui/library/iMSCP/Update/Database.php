@@ -1912,17 +1912,6 @@ class iMSCP_Update_Database extends iMSCP_Update
 	}
 
 	/**
-	 * Delete order component related parameters
-	 *
-	 * @author Laurent Declercq <l.declercq@nuxwin.com>
-	 * @return string SQL statement to be e executed
-	 */
-	protected function _databaseUpdate_132()
-	{
-		return "DELETE FROM `config` WHERE `name` = 'CUSTOM_ORDERPANEL_ID' OR `name` = 'ORDERS_EXPIRE_TIME'";
-	}
-
-	/**
 	 * Drop useless columns in hosting_plan table
 	 *
 	 * @author Laurent Declercq <l.declercq@nuxwin.com>
@@ -1938,5 +1927,16 @@ class iMSCP_Update_Database extends iMSCP_Update
 			$this->_dropColumn('hosting_plans', 'payment'),
 			$this->_dropColumn('hosting_plans', 'tos')
 		);
+	}
+
+	/**
+	 * Delete order component related parameters
+	 *
+	 * @author Laurent Declercq <l.declercq@nuxwin.com>
+	 * @return string SQL statement to be e executed
+	 */
+	protected function _databaseUpdate_134()
+	{
+		return "DELETE FROM `config` WHERE `name` = 'CUSTOM_ORDERPANEL_ID' OR `name` = 'ORDERS_EXPIRE_TIME'";
 	}
 }

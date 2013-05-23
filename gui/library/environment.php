@@ -21,14 +21,14 @@
  * Portions created by the i-MSCP Team are Copyright (C) 2010-2013 by
  * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
  *
- * @category	i-MSCP
- * @package		i-MSCP_Core
- * @copyright	2006-2010 by ispCP | http://isp-control.net
+ * @category    i-MSCP
+ * @package     i-MSCP_Core
+ * @copyright   2006-2010 by ispCP | http://isp-control.net
  * @copyright   2010-2013 by i-MSCP | http://i-mscp.net
- * @author		ispCP Team
- * @author		i-MSCP Team
+ * @author      ispCP Team
+ * @author      i-MSCP Team
  * @link        http://i-mscp.net i-MSCP Home Site
- * @license		http://www.mozilla.org/MPL/ MPL 1.1
+ * @license     http://www.mozilla.org/MPL/ MPL 1.1
  */
 
 // Boot i-MSCP
@@ -73,11 +73,6 @@ $config->ITEM_TOENABLE_STATUS = 'toenable';
 $config->ITEM_TODISABLED_STATUS = 'todisable';
 $config->ITEM_ORDERED_STATUS = 'ordered';
 $config->ITEM_DNSCHANGE_STATUS = 'dnschange';
-
-// Orders status
-$config->ITEM_ORDER_UNCONFIRMED_STATUS = 'unconfirmed';
-$config->ITEM_ORDER_CONFIRMED_STATUS = 'confirmed';
-$config->ITEM_ORDER_TREATED_STATUS = 'added';
 
 // SQL variables
 $config->MAX_SQL_DATABASE_LENGTH = 64;
@@ -185,10 +180,6 @@ $config->PASSWD_CHARS = 6;
 // 0: Strong password allowed
 $config->PASSWD_STRONG = 1;
 
-// The virtual host file from Apache which contains our virtual host
-// entries
-#$config->SERVER_VHOST_FILE = $config->APACHE_SITES_DIR . '/imscp.conf';
-
 /**
  * Logging Mailer default level (messages sent to DEFAULT_ADMIN_ADDRESS)
  *
@@ -236,9 +227,6 @@ $config->DEFAULT_ADMIN_ADDRESS = encode_idna($config->DEFAULT_ADMIN_ADDRESS);
 $config->SERVER_HOSTNAME = encode_idna($config->SERVER_HOSTNAME);
 $config->BASE_SERVER_VHOST = encode_idna($config->BASE_SERVER_VHOST);
 $config->DATABASE_HOST = encode_idna($config->DATABASE_HOST);
-
-// Default expiration time for unconfirmed orders  - defaulted to one week
-$config->ORDERS_EXPIRE_TIME = 604800;
 
 // Plugins config namespace
 $config->PLUGIN = array();

@@ -93,8 +93,6 @@ require_once  'iMSCP/Config/Handler.php';
  * @property string MAINTENANCEMODE_MESSAGE Message to display during maintenance
  * @property int PASSWD_CHARS Allowed number of chararacterd for passwords
  * @property bool PASSWD_STRONG If TRUE, only strong password are allowed
- * @property string SERVER_VHOST_FILE Server virtualHost file
- * @property string APACHE_SITES_DIR Apache sites directory
  * @property int LOG_LEVEL Log level (only for user errors)
  * @property bool CREATE_DEFAULT_EMAIL_ADDRESSES If TRUE, create default email addresse (abuse, postmaster, webmaster)
  * @property bool COUNT_DEFAULT_EMAIL_ADDRESSES If TRUE, count the default mail addresses
