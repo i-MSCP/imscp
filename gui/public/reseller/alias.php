@@ -24,9 +24,9 @@
  * Portions created by the i-MSCP Team are Copyright (C) 2010-2013 by
  * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
  *
- * @category	i-MSCP
- * @package		iMSCP_Core
- * @subpackage	Reseller
+ * @category    i-MSCP
+ * @package     iMSCP_Core
+ * @subpackage  Reseller
  * @copyright   2001-2006 by moleSoftware GmbH
  * @copyright   2006-2010 by ispCP | http://isp-control.net
  * @copyright   2010-2013 by i-MSCP | http://i-mscp.net
@@ -35,7 +35,7 @@
  * @link        http://i-mscp.net
  */
 
-/************************************************************************************
+/***********************************************************************************************************************
  * Script functions
  */
 
@@ -48,10 +48,10 @@
  */
 function generate_als_list($tpl, $reseller_id)
 {
-    /** @var $cfg iMSCP_Config_Handler_File */
+	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
 
-	list(,,,,,,$uals_current) = generate_reseller_user_props($reseller_id);
+	list(, , , , , , $uals_current) = generate_reseller_user_props($reseller_id);
 
 	$resellerProperties = imscp_getResellerProperties($reseller_id);
 
@@ -80,17 +80,20 @@ function generate_als_list($tpl, $reseller_id)
 		$search_for = $_SESSION['search_for'];
 		$search_common = $_SESSION['search_common'];
 
-	} elseif(isset($_SESSION['search_for']) && !isset($_GET['psi'])) {
-			unset($_SESSION['search_for']);
-			unset($_SESSION['search_common']);
+	} elseif (isset($_SESSION['search_for']) && !isset($_GET['psi'])) {
+		unset($_SESSION['search_for']);
+		unset($_SESSION['search_common']);
 	}
 
-    $tpl->assign(array(
-                      'PSI' => $current_psi,
-                      'SEARCH_FOR' => tohtml($search_for),
-                      'TR_SEARCH' => tr('Search'),
-                      'M_ALIAS_NAME' => tr('Alias name'),
-                      'M_ACCOUNT_NAME' => tr('Account name')));
+	$tpl->assign(
+		array(
+			'PSI' => $current_psi,
+			'SEARCH_FOR' => tohtml($search_for),
+			'TR_SEARCH' => tr('Search'),
+			'M_ALIAS_NAME' => tr('Alias name'),
+			'M_ACCOUNT_NAME' => tr('Account name')
+		)
+	);
 
 	if (isset($_SESSION['search_for']) && $_SESSION['search_for'] != '') {
 		if (isset($search_common) && $search_common == 'alias_name') {
@@ -195,37 +198,43 @@ function generate_als_list($tpl, $reseller_id)
 
 	if ($records_count == 0) {
 		if (isset($_SESSION['search_for']) && $_SESSION['search_for'] != '') {
-            $tpl->assign(array(
-                              'TABLE_LIST' => '',
-                              'USERS_LIST' => '',
-                              'SCROLL_PREV' => '',
-                              'SCROLL_NEXT' => '',
-                              'M_DOMAIN_NAME_SELECTED' => '',
-                              'M_ACCOUN_NAME_SELECTED' => ''));
+			$tpl->assign(
+				array(
+				'TABLE_LIST' => '',
+				'USERS_LIST' => '',
+				'SCROLL_PREV' => '',
+				'SCROLL_NEXT' => '',
+				'M_DOMAIN_NAME_SELECTED' => '',
+				'M_ACCOUN_NAME_SELECTED' => ''
+				)
+			);
 		} else {
-            $tpl->assign(array(
-                             'SEARCH_FORM' => '',
-                              'TABLE_LIST' => '',
-                              'TABLE_HEADER' => '',
-                              'USERS_LIST' => '',
-                              'SCROLL_PREV' => '',
-                              'SCROLL_PREV_GRAY' => '',
-                              'SCROLL_NEXT' => '',
-                             'SCROLL_NEXT_GRAY' => ''));
+			$tpl->assign(
+				array(
+				'SEARCH_FORM' => '',
+				'TABLE_LIST' => '',
+				'TABLE_HEADER' => '',
+				'USERS_LIST' => '',
+				'SCROLL_PREV' => '',
+				'SCROLL_PREV_GRAY' => '',
+				'SCROLL_NEXT' => '',
+				'SCROLL_NEXT_GRAY' => ''
+				)
+			);
 		}
 
 		if (isset($_SESSION['search_for'])) {
-            set_page_message(tr('Not found user records matching the search criteria.', 'info'));
+			set_page_message(tr('Not found user records matching the search criteria.', 'info'));
 		} else {
 			if (isset($_SESSION['almax'])) {
 				if ($_SESSION['almax'] === '_yes_') {
-                    set_page_message(tr('Domain aliases limit reached.'), 'error');
-                } else {
-                    set_page_message(tr('You do not have order for domain aliases.'), 'info');
-                }
+					set_page_message(tr('Domain aliases limit reached.'), 'error');
+				} else {
+					set_page_message(tr('You do not have order for domain aliases.'), 'info');
+				}
 				unset($_SESSION['almax']);
 			} else {
-                set_page_message(tr('You do not have order for domain aliases.'), 'info');
+				set_page_message(tr('You do not have order for domain aliases.'), 'info');
 			}
 		}
 		return;
@@ -235,9 +244,12 @@ function generate_als_list($tpl, $reseller_id)
 		if ($start_index == 0) {
 			$tpl->assign('SCROLL_PREV', '');
 		} else {
-            $tpl->assign(array(
-                              'SCROLL_PREV_GRAY' => '',
-                              'PREV_PSI' => $prev_si));
+			$tpl->assign(
+				array(
+				'SCROLL_PREV_GRAY' => '',
+				'PREV_PSI' => $prev_si
+				)
+			);
 		}
 
 		$next_si = $start_index + $rows_per_page;
@@ -245,18 +257,19 @@ function generate_als_list($tpl, $reseller_id)
 		if ($next_si + 1 > $records_count) {
 			$tpl->assign('SCROLL_NEXT', '');
 		} else {
-            $tpl->assign(array(
-                              'SCROLL_NEXT_GRAY' => '',
-                              'NEXT_PSI' => $next_si));
+			$tpl->assign(
+				array(
+				'SCROLL_NEXT_GRAY' => '',
+				'NEXT_PSI' => $next_si
+				)
+			);
 		}
 	}
 
-	$i = 1;
 	while (!$rs->EOF) {
 		$als_id = $rs->fields['alias_id'];
 		$als_name = $rs->fields['alias_name'];
-		$als_mount_point = ($rs->fields['alias_mount'] != '')
-			? $rs->fields['alias_mount'] : '/';
+		$als_mount_point = ($rs->fields['alias_mount'] != '') ? $rs->fields['alias_mount'] : '/';
 		$als_status = $rs->fields['alias_status'];
 		$als_ip_id = $rs->fields['alias_ip_id'];
 		$als_fwd = $rs->fields['url_forward'];
@@ -271,34 +284,33 @@ function generate_als_list($tpl, $reseller_id)
 		$als_ip = $alsip_d['ip_number'];
 		$als_ip_name = $alsip_d['ip_domain'];
 
-		$page_cont = ($i % 2 == 0) ? 'content' : 'content2';
-
 		if ($als_status === $cfg->ITEM_OK_STATUS) {
 			$delete_link = "alias_delete.php?del_id=" . $als_id;
 			$edit_link = "alias_edit.php?edit_id=" . $als_id;
 			$action_text = tr('Delete');
 			$edit_text = tr('Edit');
-            $status_bool = true;
-		} else if ($als_status === $cfg->ITEM_ORDERED_STATUS) {
+			$status_bool = true;
+		} elseif ($als_status == $cfg->ITEM_ORDERED_STATUS) {
 			$delete_link = 'alias_order.php?action=delete&del_id=' . $als_id;
 			$edit_link = 'alias_order.php?action=activate&act_id=' . $als_id;
 			$action_text = tr('Delete order');
 			$edit_text = tr('Activate');
-            $status_bool = false;
+			$status_bool = false;
 		} else {
 			$delete_link = '#';
 			$edit_link = '#';
 			$action_text = tr('N/A');
 			$edit_text = tr('N/A');
-            $status_bool = false;
+			$status_bool = false;
 		}
+
 		$als_status = translate_dmn_status($als_status);
 		$als_name = decode_idna($als_name);
 		$show_als_fwd = decode_idna($show_als_fwd);
 
 		if (isset($_SESSION['search_common'])
 			&& $_SESSION['search_common'] === 'account_name'
-        ){
+		) {
 			$domain_name_selected = '';
 			$account_name_selected = $cfg->HTML_SELECTED;
 		} else {
@@ -306,33 +318,34 @@ function generate_als_list($tpl, $reseller_id)
 			$account_name_selected = '';
 		}
 
-        if($status_bool == false) { // reload
-            $tpl->assign('STATUS_RELOAD_TRUE', '');
-            $tpl->assign('NAME', tohtml($als_name));
-            $tpl->parse('STATUS_RELOAD_FALSE', 'status_reload_false');
-        } else {
-            $tpl->assign('STATUS_RELOAD_FALSE', '');
-            $tpl->assign('NAME', tohtml($als_name));
-            $tpl->parse('STATUS_RELOAD_TRUE', 'status_reload_true');
-        }
+		if ($status_bool == false) { // reload
+			$tpl->assign('STATUS_RELOAD_TRUE', '');
+			$tpl->assign('NAME', tohtml($als_name));
+			$tpl->parse('STATUS_RELOAD_FALSE', 'status_reload_false');
+		} else {
+			$tpl->assign('STATUS_RELOAD_FALSE', '');
+			$tpl->assign('NAME', tohtml($als_name));
+			$tpl->parse('STATUS_RELOAD_TRUE', 'status_reload_true');
+		}
 
-        $tpl->assign(array(
-                          'NAME' => tohtml($als_name),
-                          'ALIAS_IP' => tohtml("$als_ip ($als_ip_name)"),
-                          'REAL_DOMAIN' => tohtml($domain_name),
-                          'REAL_DOMAIN_MOUNT' => tohtml($als_mount_point),
-                          'FORWARD' => tohtml($show_als_fwd),
-                          'STATUS' => $als_status,
-                          'ID' => $als_id,
-                          'DELETE' => $action_text,
-                          'CONTENT' => $page_cont,
-                          'DELETE_LINK' => $delete_link,
-                          'EDIT_LINK' => $edit_link,
-                          'EDIT' => $edit_text,
-                          'M_DOMAIN_NAME_SELECTED' => $domain_name_selected,
-                          'M_ACCOUN_NAME_SELECTED' => $account_name_selected));
+		$tpl->assign(
+			array(
+			'NAME' => tohtml($als_name),
+			'ALIAS_IP' => tohtml("$als_ip ($als_ip_name)"),
+			'OWNER' => tohtml($domain_name),
+			'MOUNT_POINT' => tohtml($als_mount_point),
+			'FORWARD' => tohtml($show_als_fwd),
+			'STATUS' => $als_status,
+			'ID' => $als_id,
+			'DELETE' => $action_text,
+			'DELETE_LINK' => $delete_link,
+			'EDIT_LINK' => $edit_link,
+			'EDIT' => $edit_text,
+			'M_DOMAIN_NAME_SELECTED' => $domain_name_selected,
+			'M_ACCOUN_NAME_SELECTED' => $account_name_selected
+			)
+		);
 
-		$i++;
 		$tpl->parse('TABLE_ITEM', '.table_item');
 		$rs->moveNext();
 	}
@@ -345,47 +358,47 @@ function generate_als_list($tpl, $reseller_id)
  */
 function generate_als_messages()
 {
-    if (isset($_SESSION["dahavemail"])) {
-        set_page_message(tr('Domain alias you are trying to remove has email accounts.<br/>First remove them.'), 'error');
+	if (isset($_SESSION["dahavemail"])) {
+		set_page_message(tr('Domain alias you are trying to remove has email accounts.<br/>First remove them.'), 'error');
 		unset($_SESSION['dahavemail']);
 	} elseif (isset($_SESSION["dahaveftp"])) {
-        set_page_message(tr('Domain alias you are trying to remove has FTP accounts.<br/>First remove them.'), 'error');
+		set_page_message(tr('Domain alias you are trying to remove has FTP accounts.<br/>First remove them.'), 'error');
 		unset($_SESSION['dahavemail']);
 	} elseif (isset($_SESSION['aladd'])) {
 		if ('_yes_' === $_SESSION['aladd']) {
-            set_page_message(tr('Domain alias successfully scheduled for addition'), 'success');
-        } else {
-            set_page_message(tr('Domain alias not scheduled for addition.'), 'error');
-        }
+			set_page_message(tr('Domain alias successfully scheduled for addition'), 'success');
+		} else {
+			set_page_message(tr('Domain alias not scheduled for addition.'), 'error');
+		}
 		unset($_SESSION['aladd']);
 	} elseif (isset($_SESSION['aledit'])) {
 		if ('_yes_' === $_SESSION['aledit']) {
-            set_page_message(tr('Domain alias successfully modified'), 'success');
-        } else {
-            set_page_message(tr('Domain alias not modified.'), 'error');
-        }
+			set_page_message(tr('Domain alias successfully modified'), 'success');
+		} else {
+			set_page_message(tr('Domain alias not modified.'), 'error');
+		}
 		unset($_SESSION['aledit']);
 	} elseif (isset($_SESSION['orderaldel'])) {
 		if ('_no_' === $_SESSION['orderaldel']) {
-            set_page_message(tr('Order for domain alias not deleted.'), 'error');
+			set_page_message(tr('Order for domain alias not deleted.'), 'error');
 		}
 		unset($_SESSION['orderaldel']);
 	} elseif (isset($_SESSION['orderalact'])) {
 		if ('_yes_' === $_SESSION['orderalact']) {
-            set_page_message(tr('Domain alias successfully scheduled for addition.'), 'success');
-        } else {
-            set_page_message(tr('Domain alias not scheduled for addition.'), 'error');
-        }
+			set_page_message(tr('Domain alias successfully scheduled for addition.'), 'success');
+		} else {
+			set_page_message(tr('Domain alias not scheduled for addition.'), 'error');
+		}
 		unset($_SESSION['orderalact']);
 	} elseif (isset($_SESSION['almax'])) {
 		if ('_yes_' === $_SESSION['almax']) {
-            set_page_message(tr('Domain alias limit reached.'), 'error');
-        }
+			set_page_message(tr('Domain alias limit reached.'), 'error');
+		}
 		unset($_SESSION['almax']);
 	}
 }
 
-/************************************************************************************
+/***********************************************************************************************************************
  * Main script
  */
 
@@ -407,7 +420,7 @@ $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic(
 	array(
 		'layout' => 'shared/layouts/ui.tpl',
-		'page' => 'reseller/domain_alias.tpl',
+		'page' => 'reseller/alias.tpl',
 		'page_message' => 'layout',
 		'table_list' => 'page',
 		'table_header' => 'page',
@@ -417,31 +430,32 @@ $tpl->define_dynamic(
 		'scroll_prev' => 'page',
 		'scroll_next_gray' => 'page',
 		'scroll_next' => 'page',
-		'als_add_button' => 'page'));
+		'als_add_button' => 'page'
+	)
+);
 
 $tpl->assign(
 	array(
-		'TR_PAGE_TITLE' => tr('i-MSCP - Manage Domain/Alias'),
+		'TR_PAGE_TITLE' => tr('i-MSCP - Manage Customers / Manage Aliasses'),
 		'THEME_CHARSET' => tr('encoding'),
-		'ISP_LOGO' => layout_getUserLogo()));
+		'ISP_LOGO' => layout_getUserLogo(),
+		'TR_NAME' => tr('Name'),
+		'TR_MOUNT_POINT' => tr('Mount point'),
+		'TR_FORWARD' => tr('Forward URL'),
+		'TR_STATUS' => tr('Status'),
+		'TR_OWNER' => tr('Owner'),
+		'TR_ACTION' => tr('Actions'),
+		'TR_ADD_ALIAS' => tr('Add alias'),
+		'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete %s?', true, '%s'),
+		'TR_PREVIOUS' => tr('Previous'),
+		'TR_NEXT' => tr('Next')
+	)
+);
 
 generateNavigation($tpl);
 generate_als_list($tpl, $_SESSION['user_id']);
 generate_als_messages();
 generatePageMessage($tpl);
-
-$tpl->assign(
-	array(
-		'TR_MANAGE_ALIAS' => tr('Manage alias'),
-		'TR_NAME' => tr('Name'),
-		'TR_REAL_DOMAIN' => tr('Real domain'),
-		'TR_FORWARD' => tr('Forward'),
-		'TR_STATUS' => tr('Status'),
-		'TR_ACTION' => tr('Action'),
-		'TR_ADD_ALIAS' => tr('Add alias'),
-		'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete %s?', true, '%s'),
-		'TR_PREVIOUS' => tr('Previous'),
-		'TR_NEXT' => tr('Next')));
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
 

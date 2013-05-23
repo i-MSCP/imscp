@@ -1,11 +1,8 @@
 
 		<script type="text/javascript">
 			/*<![CDATA[*/
-				function delete_account(url, name) {
-					if (!confirm(sprintf("{TR_MESSAGE_DELETE}", name))) {
-						return false;
-					}
-					location = url;
+				function delete_account(name) {
+					return confirm(sprintf("{TR_MESSAGE_DELETE}", name));
 				}
 			/*]]>*/
 		</script>
@@ -26,8 +23,9 @@
 				<thead>
 					<tr>
 						<th>{TR_NAME}</th>
-						<th>{TR_REAL_DOMAIN}</th>
+						<th>{TR_MOUNT_POINT}</th>
 						<th>{TR_FORWARD}</th>
+						<th>{TR_OWNER}</th>
 						<th>{TR_STATUS}</th>
 						<th>{TR_ACTION}</th>
 					</tr>
@@ -46,12 +44,13 @@
 
 							<br />{ALIAS_IP}
 						</td>
-						<td>{REAL_DOMAIN}<br />{REAL_DOMAIN_MOUNT}</td>
+						<td>{MOUNT_POINT}</td>
 						<td>{FORWARD}</td>
+						<td>{OWNER}</td>
 						<td>{STATUS}</td>
 						<td>
 							<a href="{EDIT_LINK}" class="icon i_edit" title="{EDIT}">{EDIT}</a>
-							<a href="#" onclick="delete_account('{DELETE_LINK}', '{NAME}')" class="icon i_delete" title="{DELETE}">{DELETE}</a>
+							<a href="{DELETE_LINK}" onclick="return delete_account('{NAME}')" class="icon i_delete" title="{DELETE}">{DELETE}</a>
 						</td>
 					</tr>
 					<!-- EDP: table_item -->
