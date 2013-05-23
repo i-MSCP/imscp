@@ -117,8 +117,7 @@ function client_generateDomainAliasesList($tpl, $userId)
 
 		$query = "
 			SELECT
-				`alias_id`, `alias_name`, `alias_status`, `alias_mount`, `alias_ip_id`,
-				`url_forward`
+				`alias_id`, `alias_name`, `alias_status`, `alias_mount`, `alias_ip_id`, `url_forward`
 			FROM
 				`domain_aliasses`
 			WHERE
@@ -137,28 +136,31 @@ function client_generateDomainAliasesList($tpl, $userId)
 			);
 		} else {
 			while (!$stmt->EOF) {
+				$alsId = $stmt->fields['alias_id'];
+				$alsName = $stmt->fields['alias_name'];
+				$alsStatus = $stmt->fields['alias_status'];
+				$alsForwardUrl = $stmt->fields['url_forward'];
+				$alsMountPoint = $stmt->fields['alias_mount'];
+
 				list(
 					$action, $actionScript, $isStatusOk, $certText, $certScript
 				) = _client_generateDomainAliasAction(
-					$stmt->fields['alias_id'],
-					$stmt->fields['alias_status']
+					$alsId, $alsStatus
 				);
 
 				list(
 					$redirectUrl, $editLink, $edit
 				) = _client_generateDomainAliasRedirect(
-					$stmt->fields['alias_id'],
-					$stmt->fields['alias_status'],
-					$stmt->fields['url_forward']
+					$alsId, $alsStatus, $alsForwardUrl
 				);
 
-				$name = decode_idna($stmt->fields['alias_name']);
+				$alsName = decode_idna($alsName);
 				$redirectUrl = decode_idna($redirectUrl);
 
 				if ($isStatusOk) {
 					$tpl->assign(
 						array(
-							'ALS_NAME' => tohtml($name),
+							'ALS_NAME' => tohtml($alsName),
 							'ALS_STATUS_RELOAD_FALSE' => ''
 						)
 					);
@@ -167,7 +169,7 @@ function client_generateDomainAliasesList($tpl, $userId)
 				} else {
 					$tpl->assign(
 						array(
-							'ALS_NAME' => tohtml($name),
+							'ALS_NAME' => tohtml($alsName),
 							'ALS_STATUS_RELOAD_TRUE' => ''
 						)
 					);
@@ -177,9 +179,9 @@ function client_generateDomainAliasesList($tpl, $userId)
 
 				$tpl->assign(
 					array(
-						'ALS_NAME' => tohtml($name),
-						'ALS_MOUNT' => tohtml($stmt->fields['alias_mount']),
-						'ALS_STATUS' => translate_dmn_status($stmt->fields['alias_status']),
+						'ALS_NAME' => tohtml($alsName),
+						'ALS_MOUNT' => tohtml($alsMountPoint),
+						'ALS_STATUS' => translate_dmn_status($alsStatus),
 						'ALS_REDIRECT' => tohtml($redirectUrl),
 						'ALS_EDIT_LINK' => $editLink,
 						'ALS_EDIT' => $edit,
@@ -315,30 +317,34 @@ function client_generateSubdomainsList($tpl, $userId)
 			);
 		} else {
 			while (!$stmt1->EOF) {
+				$domainName = $stmt1->fields['domain_name'];
+				$subId = $stmt1->fields['subdomain_id'];
+				$subName = $stmt1->fields['subdomain_name'];
+				$subStatus = $stmt1->fields['subdomain_status'];
+				$subUrlForward = $stmt1->fields['subdomain_url_forward'];
+				$subMountPoint = $stmt1->fields['subdomain_mount'];
+
 				list(
 					$action, $actionScript, $isStatusOk, $certText, $certScript
 				) = _client_generateSubdomainAction(
-					$stmt1->fields['subdomain_id'],
-					$stmt1->fields['subdomain_status']
+					$subId, $subStatus
 				);
 
 				list(
 					$redirectUrl, $editLink, $edit
 				) = _client_generateSubdomainRedirect(
-					$stmt1->fields['subdomain_id'],
-					$stmt1->fields['subdomain_status'],
-					$stmt1->fields['subdomain_url_forward'],
-					'dmn'
+					$subId, $subStatus, $subUrlForward, 'dmn'
 				);
 
-				$name = decode_idna($stmt1->fields['subdomain_name']);
+				$domainName = decode_idna($domainName);
+				$subName = decode_idna($subName);
 				$redirectUrl = decode_idna($redirectUrl);
 
 				if ($isStatusOk) {
 					$tpl->assign(
 						array(
-							'SUB_NAME' => tohtml($name),
-							'SUB_ALIAS_NAME' => tohtml($stmt1->fields['domain_name']),
+							'SUB_NAME' => tohtml($subName),
+							'SUB_ALIAS_NAME' => tohtml($domainName),
 							'SUB_STATUS_RELOAD_FALSE' => ''
 						)
 					);
@@ -347,8 +353,8 @@ function client_generateSubdomainsList($tpl, $userId)
 				} else {
 					$tpl->assign(
 						array(
-							'SUB_NAME' => tohtml($name),
-							'SUB_ALIAS_NAME' => tohtml($stmt1->fields['domain_name']),
+							'SUB_NAME' => tohtml($subName),
+							'SUB_ALIAS_NAME' => tohtml($domainName),
 							'SUB_STATUS_RELOAD_TRUE' => ''
 						)
 					);
@@ -358,10 +364,10 @@ function client_generateSubdomainsList($tpl, $userId)
 
 				$tpl->assign(
 					array(
-						'SUB_NAME' => tohtml($name),
-						'SUB_MOUNT' => tohtml($stmt1->fields['subdomain_mount']),
+						//'SUB_NAME' => tohtml($name),
+						'SUB_MOUNT' => tohtml($subMountPoint),
 						'SUB_REDIRECT' => $redirectUrl,
-						'SUB_STATUS' => translate_dmn_status($stmt1->fields['subdomain_status']),
+						'SUB_STATUS' => translate_dmn_status($subStatus),
 						'SUB_EDIT_LINK' => $editLink,
 						'SUB_EDIT' => $edit,
 						'CERT_SCRIPT' => $certScript,
@@ -376,30 +382,35 @@ function client_generateSubdomainsList($tpl, $userId)
 			}
 
 			while (!$stmt2->EOF) {
+
+				$alsName = $stmt2->fields['alias_name'];
+				$alssubId = $stmt2->fields['subdomain_alias_id'];
+				$alssubName = $stmt2->fields['subdomain_alias_name'];
+				$alssubStatus = $stmt2->fields['subdomain_alias_status'];
+				$alssubMountPoint = $stmt2->fields['subdomain_alias_mount'];
+				$alssubUrlForward = $stmt2->fields['subdomain_alias_url_forward'];
+
 				list(
 					$action, $actionScript, $isStatusOk, $certText, $certScript
 				) = _client_generateSubdomainAliasAction(
-					$stmt2->fields['subdomain_alias_id'],
-					$stmt2->fields['subdomain_alias_status']
+					$alssubId, $alssubStatus
 				);
 
 				list(
 					$redirectUrl, $editLink, $edit
 				) = _client_generateSubdomainRedirect(
-					$stmt2->fields['subdomain_alias_id'],
-					$stmt2->fields['subdomain_alias_status'],
-					$stmt2->fields['subdomain_alias_url_forward'],
-					'als'
+					$alssubId, $alssubStatus, $alssubUrlForward, 'als'
 				);
 
-				$name = decode_idna($stmt2->fields['subdomain_alias_name']);
+				$alsName = decode_idna($alsName);
+				$name = decode_idna($alssubName);
 				$redirectUrl = decode_idna($redirectUrl);
 
 				if ($isStatusOk) {
 					$tpl->assign(
 						array(
 							'SUB_NAME' => tohtml($name),
-							'SUB_ALIAS_NAME' => tohtml($stmt2->fields['alias_name']),
+							'SUB_ALIAS_NAME' => tohtml($alsName),
 							'SUB_STATUS_RELOAD_FALSE' => ''
 						)
 					);
@@ -409,7 +420,7 @@ function client_generateSubdomainsList($tpl, $userId)
 					$tpl->assign(
 						array(
 							'SUB_NAME' => tohtml($name),
-							'SUB_ALIAS_NAME' => tohtml($stmt2->fields['alias_name']),
+							'SUB_ALIAS_NAME' => tohtml($alsName),
 							'SUB_STATUS_RELOAD_TRUE' => ''
 						)
 					);
@@ -420,9 +431,9 @@ function client_generateSubdomainsList($tpl, $userId)
 				$tpl->assign(
 					array(
 						'SUB_NAME' => tohtml($name),
-						'SUB_MOUNT' => tohtml($stmt2->fields['subdomain_alias_mount']),
+						'SUB_MOUNT' => tohtml($alssubMountPoint),
 						'SUB_REDIRECT' => $redirectUrl,
-						'SUB_STATUS' => translate_dmn_status($stmt2->fields['subdomain_alias_status']),
+						'SUB_STATUS' => translate_dmn_status($alssubStatus),
 						'SUB_EDIT_LINK' => $editLink,
 						'SUB_EDIT' => $edit,
 						'CERT_SCRIPT' => $certScript,
@@ -703,11 +714,9 @@ $tpl->define_dynamic(
 
 $tpl->assign(
 	array(
-		'TR_PAGE_TITLE' => tr('i-MSCP - Client/Manage Domains'),
+		'TR_PAGE_TITLE' => tr('i-MSCP - Client / Manage Domains'),
 		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => layout_getUserLogo(),
-
-		'TR_MANAGE_DOMAINS' => tr('Manage domains'),
 
 		'TR_DOMAINS' => tr('Domains'),
 		'TR_CREATE_DATE' => tr('Creation date'),
