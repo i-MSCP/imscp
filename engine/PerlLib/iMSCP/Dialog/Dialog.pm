@@ -445,7 +445,7 @@ sub _init
 	$ENV{'NCURSES_NO_UTF8_ACS'} = '1';
 
 	$self->{'autosize'} = undef;
-	$self->{'autoreset'} = '';
+	$self->{'autoreset'} = 0;
 	$self->{'lines'} = undef;
 	$self->{'columns'} = undef;
 
@@ -613,7 +613,9 @@ sub _buildCommandOptions
 			$commandOptions .= " --$_ ";
 
 			if (ref $self->{'_opts'}->{$_} eq 'ARRAY') {
-				$commandOptions .=  escapeShell("@{$self->{'_opts'}->{$_}}")
+				for(@{$self->{'_opts'}->{$_}}) {
+					$commandOptions .=  escapeShell($_) . ' ';
+				}
 			} elsif($self->{'_opts'}->{$_} !~ /^\d+$/ && $self->{'_opts'}->{$_}) {
 				$commandOptions .= escapeShell($self->{'_opts'}->{$_});
 			} elsif($self->{'_opts'}->{$_} =~ /^\d+$/){

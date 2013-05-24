@@ -117,6 +117,8 @@ Tickets:
 	- Fixed #751: Bug - Installer - Ubuntu 13.04 - php5-suhosin is not available
 	- Fixed #753: Bug - Backup Restore - Use of uninitialized value $dbname
 	- Fixed #754: Bug - errors while rebuilding cusomers files (ssl cert)
+	- Fixed #757: Bug - setup - Problem with SSL certificat
+	- Fixed #758: Bug - typo in Database.php (line 729)
 
 ------------------------------------------------------------------------------------------------------------------------
 i-MSCP 1.1.0-rc1.4
