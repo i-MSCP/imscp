@@ -726,7 +726,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 
 		// Ftp users passwords
 
-		$stmt = exec_query("SELECT `userid`, `passwd` FROM `ftp_user`");
+		$stmt = exec_query("SELECT `userid`, `passwd` FROM `ftp_users`");
 
 		if ($stmt->rowCount()) {
 			while (!$stmt->EOF) {
