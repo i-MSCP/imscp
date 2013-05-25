@@ -41,69 +41,24 @@ no warnings 'once';
 
 # Global variables;
 
-$main::cc_stdout = '/tmp/imscp-cc.stdout';
-
-$main::cc_stderr = '/tmp/imscp-cc.stderr';
-
 $main::el_sep = "\t#\t";
-
-# Initialize the stack that will contain all logging messages
 @main::el = ();
-
-%main::domain_id_name = ();
-
-%main::domain_name_id = ();
-
-%main::domain_id_ipid = ();
-
-%main::sub_id_name = ();
-
-%main::sub_name_id = ();
-
-%main::sub_id_parentid = ();
-
-%main::als_id_name = ();
-
-%main::als_name_id = ();
-
-%main::als_id_parentid = ();
-
-%main::ip_id_num = ();
-
-%main::ip_num_id = ();
-
 $main::db_host = undef;
-
 $main::db_user = undef;
-
 $main::db_pwd = undef;
-
 $main::db_name = undef;
-
 @main::db_connect = ();
-
 $main::db = undef;
-
 $main::use_crypted_pwd = undef;
-
-$main::master_name = 'imscp-rqst-mngr';
-
 %main::cfg = ();
-
-%main::cfg_reg = ();
-
 $main::cfg_re = '^[ \t]*([\_A-Za-z0-9]+) *= *([^\n\r]*)[\n\r]';
 
 # License request function must not SIGPIPE;
 $SIG{PIPE} = 'IGNORE';
-
 $SIG{HUP} = 'IGNORE';
 
-################################################################################
-#                                Logging subroutines                           #
-################################################################################
+# Logging subroutines
 
-################################################################################
 # Add a new message in the logging stack and print it
 #
 # Note:  Printing is only done in DEBUG mode
@@ -120,11 +75,10 @@ sub push_el
 	push @$el, "$sub_name".$main::el_sep."$msg";
 
 	if (defined $main::engine_debug) {
-        print STDOUT "[DEBUG] push_el() sub_name: $sub_name, msg: $msg\n";
-    }
+		print STDOUT "[DEBUG] push_el() sub_name: $sub_name, msg: $msg\n";
+	}
 }
 
-################################################################################
 # Print and return the last message from the logging stack
 #
 # Note: Printing is only done in DEBUG mode.
@@ -155,11 +109,10 @@ sub pop_el
 		print STDOUT "[DEBUG] pop_el() sub_name: $sub_name, msg: $msg\n";
 	}
 
-    return $data;
+    $data;
 }
 
-################################################################################
-# Dump the logging stack
+# Dump logging stack
 #
 # @param arrayref $el Reference to the global Logging stack array
 # @param [string $fname Logfile name]
@@ -190,9 +143,7 @@ sub dump_el
 	close FP;
 }
 
-################################################################################
-#                                SQL subroutines                               #
-################################################################################
+# SQL subroutines
 
 sub doSQL
 {
@@ -210,7 +161,9 @@ sub doSQL
 		$main::db = DBI->connect(@main::db_connect, { PrintError => 0 });
 
 		if (!defined $main::db) {
-			push_el(\@main::el, 'doSQL()', "[ERROR] Unable to connect SQL server with current DSN: @main::db_connect");
+			push_el(
+				\@main::el, 'doSQL()', "[ERROR] Unable to connect to SQL server with current DSN: @main::db_connect"
+			);
 			return (-1, '');
 		} elsif ($main::cfg{'DATABASE_UTF8'} eq 'yes' ) {
 			$qr = $main::db->do("SET NAMES 'utf8';");
@@ -229,16 +182,14 @@ sub doSQL
 		push_el(\@main::el, 'doSQL()', 'Ending...');
 		return (0, $qr);
 	} else {
-		push_el(\@main::el, 'doSQL()', '[ERROR] Incorrect SQL Query -> ' . $main::db -> errstr);
+		push_el(\@main::el, 'doSQL()', '[ERROR] Wrong SQL Query: ' . $main::db -> errstr);
 		return (-1, '');
 	}
 }
 
-################################################################################
-#                                Other subroutines                             #
-################################################################################
 
-################################################################################
+# Other subroutines
+
 # Get file content in string
 #
 # @return int 0 on success, -1 otherwise
@@ -260,7 +211,7 @@ sub get_file
 	}
 
 	if (!open(F, '<', $fname)) {
-		push_el(\@main::el, 'get_file()', "[ERROR] Can't open '$fname' for reading: $!");
+		push_el(\@main::el, 'get_file()', "[ERROR] Unable to open '$fname' for reading: $!");
 		return 1;
 	}
 
@@ -274,7 +225,6 @@ sub get_file
 	return (0, $line);
 }
 
-################################################################################
 # Delete a file
 #
 # @param scalar $fname File name to be deleted
@@ -287,19 +237,19 @@ sub del_file
 	my ($fname) = @_;
 
 	if (! defined $fname || $fname eq '') {
-		push_el(\@main::el, 'del_file()', "[ERROR] Undefined input data, fname: |$fname| !");
+		push_el(\@main::el, 'del_file()', "[ERROR] Undefined input data, fname: $fname");
 		return -1;
 	}
 
 	if (! -f $fname) {
-		push_el(\@main::el, 'del_file()', "[ERROR] File '$fname' does not exist !");
+		push_el(\@main::el, 'del_file()', "[ERROR] File '$fname' doesn't exist");
 		return -1;
 	}
 
 	my $res = unlink($fname);
 
 	if ($res != 1) {
-		push_el(\@main::el, 'del_file()', "[ERROR] Can't unlink '$fname' !");
+		push_el(\@main::el, 'del_file()', "[ERROR] Unable to unlink '$fname' !");
 		return -1;
 	}
 
@@ -308,11 +258,8 @@ sub del_file
 	0;
 }
 
-################################################################################
-#                         Subroutine for handle external commands              #
-################################################################################
+# Subroutine for handle external commands
 
-################################################################################
 # Get and return external command exit value
 #
 # This is an merely subroutine to get the external command exit value. If the
@@ -330,10 +277,7 @@ sub getCmdExitValue()
 	my $exitValue = -1;
 
 	if ($? == -1) {
- 		push_el(
- 		    \@main::el, 'getCmdExitValue()',
- 		    "[ERROR] Failed to execute external command: $!"
-		);
+ 		push_el(\@main::el, 'getCmdExitValue()', "[ERROR] Failed to execute external command: $!");
 	} elsif ($? & 127) {
  		push_el(
  		    \@main::el, 'getCmdExitValue()', sprintf "[ERROR] External command died with signal %d, %s coredump",
@@ -341,7 +285,6 @@ sub getCmdExitValue()
  	    );
 	} else {
 		$exitValue = $? >> 8;
-
 		push_el(\@main::el, 'getCmdExitValue()', "[DEBUG] External command exited with value $exitValue");
 	}
 
@@ -350,7 +293,6 @@ sub getCmdExitValue()
 	$exitValue;
 }
 
-################################################################################
 # Execute an external command and show
 #
 # Note:
@@ -373,16 +315,13 @@ sub sys_command
 
 	if ($exit_value == 0) {
 		push_el(\@main::el, "sys_command('$cmd')", 'Ending...');
-
 		0;
 	} else {
 		push_el(\@main::el, 'sys_command()', "[ERROR] External command '$cmd' exited with value $exit_value !");
-
 		-1;
 	}
 }
 
-################################################################################
 # Execute an external command and return the real exit value
 #
 # @param string $cmd External command to be executed
@@ -437,7 +376,6 @@ sub decrypt_db_password
 	return (0, $plaintext);
 }
 
-################################################################################
 # Setup the global database variables and redefines the DSN
 #
 # @return int 0
@@ -448,7 +386,7 @@ sub setup_db_vars
 
 	$main::db_host = $main::cfg{'DATABASE_HOST'};
 	$main::db_user = $main::cfg{'DATABASE_USER'};
-	$main::db_pwd  = $main::cfg{'DATABASE_PASSWORD'};
+	$main::db_pwd = $main::cfg{'DATABASE_PASSWORD'};
 	$main::db_name = $main::cfg{'DATABASE_NAME'};
 
 	if ($main::db_pwd ne '') {
@@ -465,7 +403,6 @@ sub setup_db_vars
 	0;
 }
 
-################################################################################
 # Load all configuration parameters from a specific configuration file
 #
 # This subroutine load all configuration parameters from a specific file where
@@ -480,13 +417,7 @@ sub get_conf
 {
 	push_el(\@main::el, 'get_conf()', 'Starting...');
 
-	my $file_name;
-
-	if (defined $_[0]) {
-		$file_name = $_[0];
-	} else {
-		$file_name = $main::cfg_file;
-	}
+	my $file_name = shift || $main::cfg_file;
 
 	my ($rs, $fline) = get_file($file_name);
 	return -1 if ($rs != 0);
@@ -513,9 +444,8 @@ sub get_el_error
 	push_el(\@main::el, 'get_el_error()', 'Starting...');
 
 	my ($fname) = @_;
-	my ($rs, $rdata) = (undef, undef);
 
-	($rs, $rdata) = get_file($fname);
+	my ($rs, $rdata) = get_file($fname);
 	return $rs if $rs;
 
 	my @frows = split(/\n/, $rdata);
