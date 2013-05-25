@@ -113,8 +113,8 @@ $SIG{HUP} = 'IGNORE';
 # @param scalar $msg message to be logged
 # @void
 #
-sub push_el {
-
+sub push_el
+{
 	my ($el, $sub_name, $msg) = @_;
 
 	push @$el, "$sub_name".$main::el_sep."$msg";
@@ -136,8 +136,8 @@ sub push_el {
 # @return mixed Last message from the log stack or undef if the logging stack is
 # empty
 #
-sub pop_el {
-
+sub pop_el
+{
 	my ($el) = @_;
 	my $data = pop @$el;
 
@@ -165,8 +165,8 @@ sub pop_el {
 # @param [string $fname Logfile name]
 # @return int
 #
-sub dump_el {
-
+sub dump_el
+{
 	my ($el, $fname) = @_;
 
 	if ($fname ne 'stdout' && $fname ne 'stderr') {
@@ -194,19 +194,19 @@ sub dump_el {
 #                                SQL subroutines                               #
 ################################################################################
 
-sub doSQL {
-
+sub doSQL
+{
 	push_el(\@main::el, 'doSQL()', 'Starting...');
 
 	my ($sql) = @_;
 	my $qr;
 
 	if (!defined $sql || $sql eq '') {
-		push_el(\@main::el, 'doSQL()', '[ERROR] Undefined SQL query !');
+		push_el(\@main::el, 'doSQL()', '[ERROR] Undefined SQL query');
 		return (-1, '');
 	}
 
-	if (!defined $main::db || !ref $main::db) {
+	if (!defined $main::db || ! ref $main::db) {
 		$main::db = DBI->connect(@main::db_connect, { PrintError => 0 });
 
 		if (!defined $main::db) {
@@ -243,8 +243,8 @@ sub doSQL {
 #
 # @return int 0 on success, -1 otherwise
 #
-sub get_file {
-
+sub get_file
+{
 	push_el(\@main::el, 'get_file()', 'Starting...');
 
 	my ($fname) = @_;
@@ -280,8 +280,8 @@ sub get_file {
 # @param scalar $fname File name to be deleted
 # @return 0 on sucess, -1 otherwise
 #
-sub del_file {
-
+sub del_file
+{
 	push_el(\@main::el, 'del_file()', 'Starting...');
 
 	my ($fname) = @_;
@@ -323,8 +323,8 @@ sub del_file {
 # @return int -1 if the command failed to executed or died with any signal,
 # external command exit value otherwise
 #
-sub getCmdExitValue() {
-
+sub getCmdExitValue()
+{
 	push_el(\@main::el, 'getCmdExitValue()', 'Starting...');
 
 	my $exitValue = -1;
@@ -361,8 +361,8 @@ sub getCmdExitValue() {
 # @param string $cmd External command to be executed
 # @return int 0 on success, -1 otherwise
 #
-sub sys_command {
-
+sub sys_command
+{
 	push_el(\@main::el, 'sys_command()', 'Starting...');
 
 	my ($cmd) = @_;
@@ -388,8 +388,8 @@ sub sys_command {
 # @param string $cmd External command to be executed
 # @return int command exit code
 #
-sub sys_command_rs {
-
+sub sys_command_rs
+{
 	my ($cmd) = @_;
 
 	push_el(\@main::el, 'sys_command_rs()', 'Starting...');
@@ -442,9 +442,9 @@ sub decrypt_db_password
 #
 # @return int 0
 #
-sub setup_main_vars
+sub setup_db_vars
 {
-	push_el(\@main::el, 'setup_main_vars()', 'Starting...');
+	push_el(\@main::el, 'setup_db_vars()', 'Starting...');
 
 	$main::db_host = $main::cfg{'DATABASE_HOST'};
 	$main::db_user = $main::cfg{'DATABASE_USER'};
@@ -452,16 +452,15 @@ sub setup_main_vars
 	$main::db_name = $main::cfg{'DATABASE_NAME'};
 
 	if ($main::db_pwd ne '') {
-		my $rs = undef;
-
-		($rs, $main::db_pwd) = decrypt_db_password($main::db_pwd);
-		return 0 if $rs;
+		(my $rs, $main::db_pwd) = decrypt_db_password($main::db_pwd);
+		return $rs if $rs;
 	}
 
+	# Setup DSN
 	@main::db_connect = ("DBI:mysql:$main::db_name:$main::db_host", $main::db_user, $main::db_pwd);
 	$main::db = undef;
 
-	push_el(\@main::el, 'setup_main_vars()', 'Ending...');
+	push_el(\@main::el, 'setup_db_vars()', 'Ending...');
 
 	0;
 }
@@ -473,15 +472,12 @@ sub setup_main_vars
 # each of them are represented by a pair of key/value separated by the equal
 # sign.
 #
-# This subroutine also calls the setup_main_vars() subroutine that setup all the
-# global database variables and redefines the DSN.
-#
 # @param [scalar $file_name filename from where the configuration must be loaded]
 # Default value is the main i-MSCP configuration file (imscp.conf)
 # @return int 0 on success, 1 otherwise
 #
-sub get_conf {
-
+sub get_conf
+{
 	push_el(\@main::el, 'get_conf()', 'Starting...');
 
 	my $file_name;
@@ -507,15 +503,13 @@ sub get_conf {
 		}
 	}
 
-	return -1 if (setup_main_vars() != 0);
-
 	push_el(\@main::el, 'get_conf()', 'Ending...');
 
 	0;
 }
 
-sub get_el_error {
-
+sub get_el_error
+{
 	push_el(\@main::el, 'get_el_error()', 'Starting...');
 
 	my ($fname) = @_;

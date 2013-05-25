@@ -46,8 +46,9 @@ my (
 
 sub sw_mngr_start_up
 {
-	my ($rs, $rdata) = (undef, undef);
 	push_el(\@main::el, 'sw_mngr_start_up()', 'Starting software manager...');
+
+	my $rs = 0;
 
 	# Let's clear Execution Logs, if any.
 	if (-f $main::imscp_sw_mngr_el) {
@@ -55,12 +56,164 @@ sub sw_mngr_start_up
 		return $rs if $rs;
 	}
 
-	# config check;
-	$rs = get_conf();
+	# sql check
+	($rs) = doSQL('SELECT `domain_id` FROM `domain` LIMIT 1');
+
+	$rs;
+}
+
+sub sw_mngr_engine
+{
+	push_el(\@main::el, 'sw_mngr_engine()', 'Starting software manager engine...');
+
+	my ($rs, $rows, $rdata, $rowsdomainname);
+
+	my $sql = "
+		SELECT
+			`reseller_id`, `software_db`, `software_archive`, `software_installfile`, `software_depot`,
+			`software_master_id`
+		FROM
+			`web_software`
+		WHERE
+			`software_id` = $sw_software_id
+	";
+	($rs, $rows) = doSQL($sql);
 	return $rs if $rs;
 
-	# sql check
-	doSQL('SELECT `domain_id` FROM `domain` LIMIT 1');
+	$rows = @$rows[0];
+	my (
+		$sw_reseller_id, $sw_software_db, $sw_software_archive, $sw_software_installfile, $sw_software_depot,
+		$sw_software_master_id
+	) = (@$rows[0], @$rows[1], @$rows[2], @$rows[3], @$rows[4], @$rows[5]);
+
+	my $query = "
+		SELECT
+			`admin_sys_uid`, `admin_sys_gid`, `domain_name`
+		FROM
+			`admin`
+		INNER JOIN
+			`domain` ON(`domain_admin_id` = `admin_id`)
+		WHERE
+			`domain_id` = $sw_domain_id
+	";
+	($rs, $rows) = doSQL($query);
+	return $rs if $rs;
+
+	($rs, $rows) = doSQL($query);
+	return $rs if $rs;
+
+	$rows = @$rows[0];
+	my ($uid, $gid,  $dmn_name) = (@$rows[0], @$rows[1], @$rows[2]);
+	my $querydomainname;
+	my $domain_name = '';
+
+	if(($sw_aliasdomain_id + $sw_subdomain_id + $sw_aliassubdomain_id) > 0) {
+		if($sw_aliasdomain_id) {
+			$querydomainname = "
+				SELECT
+					`alias_name`
+				FROM
+					`domain_aliasses`
+				WHERE
+					`alias_id` = $sw_aliasdomain_id
+			";
+		} elsif($sw_subdomain_id) {
+			$querydomainname = "
+				SELECT
+					`subdomain`.`subdomain_name`, `domain`.`domain_name`
+				FROM
+					`subdomain`
+				JOIN
+					`domain`
+				ON
+					`subdomain`.`domain_id` = `domain`.`domain_id`
+				WHERE
+					`subdomain`.`subdomain_id` = $sw_subdomain_id
+			";
+		} elsif($sw_aliassubdomain_id) {
+			$querydomainname = "
+				SELECT
+					`subdomain_alias`.`subdomain_alias_name`, `domain_aliasses`.`alias_name`
+				FROM
+					`subdomain_alias`
+				JOIN
+					`domain_aliasses`
+				ON
+					`subdomain_alias`.`alias_id` = `domain_aliasses`.`alias_id`
+				WHERE
+					`subdomain_alias`.`subdomain_alias_id` = $sw_aliassubdomain_id
+			";
+		}
+		($rs, $rowsdomainname) = doSQL($querydomainname);
+		return $rs if $rs;
+
+		$rowsdomainname = @$rowsdomainname[0];
+		my ($domain_name_sub, $domain_name_master) = (@$rowsdomainname[0], @$rowsdomainname[1]);
+		$domain_name = $domain_name_sub . '.' . $domain_name_master;
+	} else {
+		$domain_name = $dmn_name;
+	}
+
+	my $sw_src_path = '';
+	my $gui_software_dir = $main::cfg{'GUI_SOFTWARE_DIR'};
+	my $gui_software_depot_dir = $main::cfg{'GUI_SOFTWARE_DEPOT_DIR'};
+	my $apache_www_dir = $main::cfg{'USER_WEB_DIR'};
+	my $software_tmp_dir = $main::cfg{'SOFTWARE_TMP_DIR'};
+
+	if ($sw_software_depot eq 'yes') {
+		$sw_src_path = "$gui_software_depot_dir/$sw_software_archive";
+	} else {
+		$sw_src_path = "$gui_software_dir/$sw_reseller_id/$sw_software_archive";
+	}
+
+	my $sw_tmp_path = "$software_tmp_dir/sw-$sw_domain_id-$sw_software_id";
+	my $sw_dest_path = "$apache_www_dir/$dmn_name$sw_path";
+
+	if ($sw_software_status eq 'toadd') {
+		my @entry = (
+			$sw_software_archive, $sw_software_installfile, $sw_software_db, $sw_software_prefix, $sw_database,
+			$sw_database_user, $sw_database_tmp_pwd, $sw_install_username, $sw_install_password, $sw_install_email,
+			$domain_name, $gid, $uid, $sw_src_path, $sw_tmp_path, $sw_dest_path, $sw_path
+		);
+		$rs = _sw_add_data(@entry);
+
+		if (!$rs) {
+			$sql = "
+				UPDATE
+					`web_software_inst`
+				SET
+					`software_status` = 'ok'
+				WHERE
+					`software_id` = $sw_software_id
+				AND
+					`domain_id` = $sw_domain_id
+			";
+			($rs, $rdata) = doSQL($sql);
+			return $rs if $rs;
+		}
+	} elsif ($sw_software_status eq 'delete') {
+		my @entry = (
+			$sw_software_archive, $sw_software_installfile, $sw_software_db, $sw_software_prefix, $sw_database,
+			$sw_database_user, $sw_database_tmp_pwd, $sw_install_username, $sw_install_password, $sw_install_email,
+			$domain_name, $gid, $uid, $sw_src_path, $sw_tmp_path, $sw_dest_path, $sw_path
+		);
+		$rs = _sw_del_data(@entry);
+
+		if (!$rs) {
+			$sql = "
+				DELETE FROM
+					`web_software_inst`
+				WHERE
+					`software_id` = $sw_software_id
+				AND
+					`domain_id` = $sw_domain_id
+			";
+			($rs, $rdata) = doSQL($sql);
+			return $rs if ($rs != 0);
+		}
+	}
+
+	push_el(\@main::el, 'sw_mngr_engine()', 'Ending software manager engine...');
 }
 
 sub sw_mngr_shut_down
@@ -70,13 +223,9 @@ sub sw_mngr_shut_down
 	0;
 }
 
-#
-# Software add/delete;
-#
-
-sub sw_add_data
+sub _sw_add_data
 {
-	push_el(\@main::el, 'sw_add_data()', 'Starting adding software...');
+	push_el(\@main::el, '_sw_add_data()', 'Starting adding software...');
 
 	my (
 		$sw_software_archive, $sw_software_installfile, $sw_software_db, $sw_software_prefix, $sw_database,
@@ -161,14 +310,14 @@ sub sw_add_data
 	$rs = sys_command_rs("$main::cfg{'CMD_RM'} -fR $sw_tmp_path");
 	return $rs if $rs;
 
-	push_el(\@main::el, 'sw_add_data()', 'Ending adding software...');
+	push_el(\@main::el, '_sw_add_data()', 'Ending adding software...');
 
 	0;
 }
 
-sub sw_del_data
+sub _sw_del_data
 {
-	push_el(\@main::el, 'sw_del_data()', 'Starting deleting software...');
+	push_el(\@main::el, '_sw_del_data()', 'Starting deleting software...');
 
 	my (
 		$sw_software_archive, $sw_software_installfile, $sw_software_db, $sw_software_prefix, $sw_database,
@@ -283,163 +432,9 @@ sub sw_del_data
 		}
 	}
 
-	push_el(\@main::el, 'sw_del_data()', 'Ending deleting software...');
+	push_el(\@main::el, '_sw_del_data()', 'Ending deleting software...');
 
 	0;
-}
-
-sub sw_mngr_engine
-{
-	push_el(\@main::el, 'sw_mngr_engine()', 'Starting software manager engine...');
-
-	my ($rs, $rows, $rdata, $rowsdomainname);
-
-	my $sql = "
-		SELECT
-			`reseller_id`, `software_db`, `software_archive`, `software_installfile`, `software_depot`,
-			`software_master_id`
-		FROM
-			`web_software`
-		WHERE
-			`software_id` = $sw_software_id
-	";
-	($rs, $rows) = doSQL($sql);
-	return $rs if $rs;
-
-	$rows = @$rows[0];
-	my (
-		$sw_reseller_id, $sw_software_db, $sw_software_archive, $sw_software_installfile, $sw_software_depot,
-		$sw_software_master_id
-	) = (@$rows[0], @$rows[1], @$rows[2], @$rows[3], @$rows[4], @$rows[5]);
-
-	my $query = "
-		SELECT
-			`admin_sys_uid`, `admin_sys_gid`, `domain_name`
-		FROM
-			`admin`
-		INNER JOIN
-			`domain` ON(`domain_admin_id` = `admin_id`)
-		WHERE
-			`domain_id` = $sw_domain_id
-	";
-	($rs, $rows) = doSQL($query);
-	return $rs if $rs;
-
-	($rs, $rows) = doSQL($query);
-	return $rs if $rs;
-
-	$rows = @$rows[0];
-	my ($uid, $gid,  $dmn_name) = (@$rows[0], @$rows[1], @$rows[2]);
-	my $querydomainname;
-	my $domain_name = '';
-
-	if(($sw_aliasdomain_id + $sw_subdomain_id + $sw_aliassubdomain_id) > 0) {
-		if($sw_aliasdomain_id > 0) {
-			$querydomainname = "
-				SELECT
-					`alias_name`
-				FROM
-					`domain_aliasses`
-				WHERE
-					`alias_id` = $sw_aliasdomain_id
-			";
-		} elsif($sw_subdomain_id > 0) {
-			$querydomainname = "
-				SELECT
-					`subdomain`.`subdomain_name`, `domain`.`domain_name`
-				FROM
-					`subdomain`
-				JOIN
-					`domain`
-				ON
-					`subdomain`.`domain_id` = `domain`.`domain_id`
-				WHERE
-					`subdomain`.`subdomain_id` = $sw_subdomain_id
-			";
-		} elsif($sw_aliassubdomain_id > 0) {
-			$querydomainname = "
-				SELECT
-					`subdomain_alias`.`subdomain_alias_name`, `domain_aliasses`.`alias_name`
-				FROM
-					`subdomain_alias`
-				JOIN
-					`domain_aliasses`
-				ON
-					`subdomain_alias`.`alias_id` = `domain_aliasses`.`alias_id`
-				WHERE
-					`subdomain_alias`.`subdomain_alias_id` = $sw_aliassubdomain_id
-			";
-		}
-		($rs, $rowsdomainname) = doSQL($querydomainname);
-		return $rs if $rs;
-
-		$rowsdomainname = @$rowsdomainname[0];
-		my ($domain_name_sub, $domain_name_master) = (@$rowsdomainname[0], @$rowsdomainname[1]);
-		$domain_name = $domain_name_sub . '.' . $domain_name_master;
-	} else {
-		$domain_name = $dmn_name;
-	}
-
-	my $sw_src_path = '';
-	my $gui_software_dir = $main::cfg{'GUI_SOFTWARE_DIR'};
-	my $gui_software_depot_dir = $main::cfg{'GUI_SOFTWARE_DEPOT_DIR'};
-	my $apache_www_dir = $main::cfg{'USER_WEB_DIR'};
-	my $software_tmp_dir = $main::cfg{'SOFTWARE_TMP_DIR'};
-
-	if ($sw_software_depot eq 'yes') {
-		$sw_src_path = "$gui_software_depot_dir/$sw_software_archive";
-	} else {
-		$sw_src_path = "$gui_software_dir/$sw_reseller_id/$sw_software_archive";
-	}
-
-	my $sw_tmp_path = "$software_tmp_dir/sw-$sw_domain_id-$sw_software_id";
-	my $sw_dest_path = "$apache_www_dir/$dmn_name$sw_path";
-
-	if ($sw_software_status eq 'toadd') {
-		my @entry = (
-			$sw_software_archive, $sw_software_installfile, $sw_software_db, $sw_software_prefix, $sw_database,
-			$sw_database_user, $sw_database_tmp_pwd, $sw_install_username, $sw_install_password, $sw_install_email,
-			$domain_name, $gid, $uid, $sw_src_path, $sw_tmp_path, $sw_dest_path, $sw_path
-		);
-		$rs = sw_add_data(@entry);
-
-		if ($rs == 0) {
-			$sql = "
-				UPDATE
-					`web_software_inst`
-				SET
-					`software_status` = 'ok'
-				WHERE
-					`software_id` = $sw_software_id
-				AND
-					`domain_id` = $sw_domain_id
-			";
-			($rs, $rdata) = doSQL($sql);
-			return $rs if $rs;
-		}
-	} elsif ($sw_software_status eq 'delete') {
-		my @entry = (
-			$sw_software_archive, $sw_software_installfile, $sw_software_db, $sw_software_prefix, $sw_database,
-			$sw_database_user, $sw_database_tmp_pwd, $sw_install_username, $sw_install_password, $sw_install_email,
-			$domain_name, $gid, $uid, $sw_src_path, $sw_tmp_path, $sw_dest_path, $sw_path
-		);
-		$rs = sw_del_data(@entry);
-
-		if ($rs == 0) {
-			$sql = "
-				DELETE FROM
-					`web_software_inst`
-				WHERE
-					`software_id` = $sw_software_id
-				AND
-					`domain_id` = $sw_domain_id
-			";
-			($rs, $rdata) = doSQL($sql);
-			return $rs if ($rs != 0);
-		}
-	}
-
-	push_el(\@main::el, 'sw_mngr_engine()', 'Ending software manager engine...');
 }
 
 my $rs = sw_mngr_start_up();

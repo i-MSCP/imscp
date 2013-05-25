@@ -102,43 +102,42 @@ require 'imscp_common_methods.pl';
 ################################################################################
 # Load i-MSCP configuration from the imscp.conf file
 
-if(-e '/usr/local/etc/imscp/imscp.conf'){
+if(-f '/usr/local/etc/imscp/imscp.conf'){
 	$main::cfg_file = '/usr/local/etc/imscp/imscp.conf';
 } else {
 	$main::cfg_file = '/etc/imscp/imscp.conf';
 }
 
 my $rs = get_conf($main::cfg_file);
-die("FATAL: Can't load the imscp.conf file") if($rs != 0);
-
+die('FATAL: Unable to load imscp.conf file.') if $rs;
 
 ################################################################################
 # Enable debug mode if needed
-if ($main::cfg{'DEBUG'} != 0) {
+if ($main::cfg{'DEBUG'}) {
 	$main::engine_debug = '_on_';
 }
 
-my $key_file		= "$main::cfg{'CONF_DIR'}/imscp-db-keys";
-our $db_pass_key	= '{KEY}';
-our $db_pass_iv		= '{IV}';
-my $file;
+################################################################################
+# Load i-MSCP Db key and initialization vector
+#
+my $key_file = "$main::cfg{'CONF_DIR'}/imscp-db-keys";
+our $db_pass_key = '{KEY}';
+our $db_pass_iv = '{IV}';
 
-require "$key_file" if( -f $key_file);
+require "$key_file" if -f $key_file;
 
 ################################################################################
-# Generating i-MSCP Db key and initialization vector if needed
+# Check for i-MSCP Db key and initialization vector
 #
 if ($db_pass_key eq '{KEY}' || $db_pass_iv eq '{IV}') {
-
-	print STDERR ("Key file not found at $main::cfg{'CONF_DIR'}/imscp-db-keys. Run Setup to fix");
+	print STDERR ("Key file not found at $main::cfg{'CONF_DIR'}/imscp-db-keys. Run i-MSCP setup script to fix.");
 	exit 1;
-
 }
 
-$main::db_pass_key	= $db_pass_key;
-$main::db_pass_iv	= $db_pass_iv;
+$main::db_pass_key = $db_pass_key;
+$main::db_pass_iv = $db_pass_iv;
 
-die("FATAL: Can't load database parameters")  if (setup_main_vars() != 0);
+die('FATAL: Unable to load database parameters') if setup_db_vars();
 
 ################################################################################
 # Lock file system variables
