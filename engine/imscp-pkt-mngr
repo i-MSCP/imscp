@@ -66,7 +66,7 @@ sub pkt_mngr_start_up
 
 	# sql check;
 
-	doSQL('SELECT `software_id`, FROM `web_software` LIMIT 1');
+	doSQL('SELECT `software_id` FROM `web_software` LIMIT 1');
 }
 
 sub pkt_mngr_shut_down
@@ -326,7 +326,7 @@ sub pkt_add_data
 						`web_software`
 					SET
 					    `software_installtype` = '$INSTALL_DATA{'software_installtype'}',
-						`software_name` = '$INSTALL_DATA{'software_name}',
+						`software_name` = '$INSTALL_DATA{'software_name'}',
 						`software_version` = '$INSTALL_DATA{'software_version'}',
 						`software_language` = '$INSTALL_DATA{'software_language'}',
 						`software_type` = '$INSTALL_DATA{'software_type'}',

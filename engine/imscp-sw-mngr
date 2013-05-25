@@ -60,7 +60,7 @@ sub sw_mngr_start_up
 	return $rs if $rs;
 
 	# sql check
-	doSQL('SELECT `domain_id`, FROM `domain` LIMIT 1');
+	doSQL('SELECT `domain_id` FROM `domain` LIMIT 1');
 }
 
 sub sw_mngr_shut_down
