@@ -330,7 +330,7 @@ function generateNavigation($tpl)
 					'HREF' => $page->getHref(),
 					'CLASS' => $page->getClass() . (($_SESSION['show_main_menu_labels']) ? ' show_labels' : ''),
 					'IS_ACTIVE_CLASS' => ($page->isActive(true)) ? 'active' : 'dummy',
-					'LABEL' => ($page->get('dynamic_title')) ? $page->get('dynamic_title') : tr($page->getLabel()),
+					'LABEL' => tr($page->getLabel()),
 					'TARGET' => ($page->getTarget()) ? $page->getTarget() : '_self',
 					'LINK_LABEL' => ($_SESSION['show_main_menu_labels']) ? tr($page->getLabel()) : '')
 			);
@@ -378,8 +378,7 @@ function generateNavigation($tpl)
 							array(
 								'HREF' => $subpage->getHref(),
 								'IS_ACTIVE_CLASS' => ($subpage->isActive(true)) ? 'active' : 'dummy',
-								//'LABEL' => tr($subpage->getLabel()),
-								'LABEL' =>($subpage->get('dynamic_title')) ? $subpage->get('dynamic_title') : tr($subpage->getLabel()),
+								'LABEL' => tr($subpage->getLabel()),
 								'TARGET' => ($subpage->getTarget()) ? $subpage->getTarget() : '_self'
 							)
 						);
