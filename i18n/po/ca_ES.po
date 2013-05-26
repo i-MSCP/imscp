@@ -18,8 +18,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2013-05-23 20:21+0200\n"
-"PO-Revision-Date: 2013-05-23 18:21+0000\n"
+"POT-Creation-Date: 2013-05-26 19:11+0200\n"
+"PO-Revision-Date: 2013-05-26 17:11+0000\n"
 "Last-Translator: Torsten Widmann <info@goover.de>\n"
 "Language-Team: Catalan (Spain) (http://www.transifex.com/projects/p/i-MSCP/language/ca_ES/)\n"
 "MIME-Version: 1.0\n"
@@ -152,6 +152,15 @@ msgid ""
 "The i-MSCP Team\n"
 "\n"
 msgstr "\n\nHola {NAME},\n\nEl teu nom d'usuari és: {USERNAME}\nLa teva contrasenya és: {PASSWORD}\n\nPots iniciar sessió a  {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}\n\nGràcies per utilitzar els serveis d'i-MSCP.\n\n___________________________\nL'equip de i-MSCP\n\n"
+
+msgid " Admin / Support / Open Tickets"
+msgstr ""
+
+msgid " Client / Webtools / Custom Error Pages / Edit Custom Error Page"
+msgstr ""
+
+msgid " Reseller / Statistics / Overview"
+msgstr ""
 
 msgid ""
 " Show all errors, except for warnings about deprecated code (Production)"
@@ -547,9 +556,6 @@ msgstr "Accions"
 msgid "Activate"
 msgstr "Activar"
 
-msgid "Activate mail auto-responder"
-msgstr "Activar l'autoresposta de correu"
-
 msgid "Activate this plugin"
 msgstr "Activar aquest pluguin"
 
@@ -619,11 +625,8 @@ msgstr "Afegir àlies de domini"
 msgid "Add email account"
 msgstr "Afegir compte de correu"
 
-msgid "Add external mail server entry"
-msgstr "Afegir una nova entrada de correu extern"
-
-msgid "Add external mail servers for {DOMAIN_UTF8}"
-msgstr "Afegir servidors de correu extern per {DOMAIN_UTF8}"
+msgid "Add external mail server for {DOMAIN_UTF8}"
+msgstr ""
 
 msgid "Add group"
 msgstr "Afegir grup"
@@ -684,6 +687,155 @@ msgstr "Dades addicionals"
 
 msgid "Admin"
 msgstr "Admin"
+
+msgid "Admin / Admin Log"
+msgstr ""
+
+msgid "Admin / General / Overview"
+msgstr ""
+
+msgid "Admin / General / Services Status"
+msgstr ""
+
+msgid "Admin / Hosting Plans / Overview"
+msgstr ""
+
+msgid "Admin / Hosting Plans / Overview / Edit hosting plan"
+msgstr ""
+
+msgid "Admin / Hosting plans / Add Hosting Plan"
+msgstr ""
+
+msgid "Admin / Profile / Account Summary"
+msgstr ""
+
+msgid "Admin / Profile / Language"
+msgstr ""
+
+msgid "Admin / Profile / Layout"
+msgstr ""
+
+msgid "Admin / Profile / Password"
+msgstr ""
+
+msgid "Admin / Profile / Personal Data"
+msgstr ""
+
+msgid "Admin / Settings"
+msgstr ""
+
+msgid "Admin / Settings / IP management"
+msgstr ""
+
+msgid "Admin / Settings / Languages"
+msgstr ""
+
+msgid "Admin / Settings / Lost password mail"
+msgstr ""
+
+msgid "Admin / Settings / Plugin management"
+msgstr ""
+
+msgid "Admin / Settings / Server traffic"
+msgstr ""
+
+msgid "Admin / Settings / Service ports"
+msgstr ""
+
+msgid "Admin / Settings / Software Management"
+msgstr ""
+
+msgid "Admin / Settings / Software options"
+msgstr ""
+
+msgid "Admin / Settings / {TR_DYNAMIC_TITLE}"
+msgstr ""
+
+msgid "Admin / Settings/ Welcome mail"
+msgstr ""
+
+msgid "Admin / Software Management / Reseller software"
+msgstr ""
+
+msgid "Admin / Statistics / IP Usage"
+msgstr ""
+
+msgid "Admin / Statistics / Reseller Statistics / Customer statistics"
+msgstr ""
+
+msgid ""
+"Admin / Statistics / Reseller Statistics / Customer statistics / Domain "
+"Statistics"
+msgstr ""
+
+msgid "Admin / Statistics / Reseller statistics"
+msgstr ""
+
+msgid "Admin / Statistics / Server statistics"
+msgstr ""
+
+msgid "Admin / Statistics / Server statistics / Day statistics"
+msgstr ""
+
+msgid "Admin / Support / Closed Tickets"
+msgstr ""
+
+msgid "Admin / Support / View Ticket"
+msgstr ""
+
+msgid "Admin / System Tools / Debugger"
+msgstr ""
+
+msgid "Admin / System Tools / Maintenance settings"
+msgstr ""
+
+msgid "Admin / System Tools / Rootkit Logs"
+msgstr ""
+
+msgid "Admin / System Tools / Updates"
+msgstr ""
+
+msgid "Admin / System tools / Database Update"
+msgstr ""
+
+msgid "Admin / System tools / System information"
+msgstr ""
+
+msgid "Admin / User / Add Admin"
+msgstr ""
+
+msgid "Admin / User / Overview / Domain Edit"
+msgstr ""
+
+msgid "Admin / Users / Add Reseller"
+msgstr ""
+
+msgid "Admin / Users / Circular"
+msgstr ""
+
+msgid "Admin / Users / Customers assignment"
+msgstr ""
+
+msgid "Admin / Users / Edit Reseller"
+msgstr ""
+
+msgid "Admin / Users / Overview"
+msgstr ""
+
+msgid "Admin / Users / Overview / Delete Customer"
+msgstr ""
+
+msgid "Admin / Users / Overview / Domain Details"
+msgstr ""
+
+msgid "Admin / Users / Overview / Edit Admin"
+msgstr ""
+
+msgid "Admin / Users / Resellers assignment"
+msgstr ""
+
+msgid "Admin / Users / Sessions"
+msgstr ""
 
 msgid "Admin Log"
 msgstr "Registre d'admin"
@@ -746,9 +898,6 @@ msgstr "Reenviament d'àlies"
 
 msgid "Alias mail"
 msgstr "Mail d'àlies"
-
-msgid "Alias mails"
-msgstr "Àlies de correu"
 
 msgid "Alias name"
 msgstr "Nom de l'àlies"
@@ -1009,9 +1158,6 @@ msgstr "Opcions de còpia de seguretat i restauració."
 msgid "Backup has been successfully scheduled for restoration."
 msgstr ""
 
-msgid "Backup support"
-msgstr "Suport de copia de seguretat"
-
 msgid "Bad password."
 msgstr "Contrasenya incorrecta."
 
@@ -1048,9 +1194,6 @@ msgstr "Per"
 
 msgid "CGI"
 msgstr "CGI"
-
-msgid "CGI support"
-msgstr "Suport de CGI"
 
 msgid "CPU MHz"
 msgstr "CPU MHz"
@@ -1123,9 +1266,6 @@ msgstr "Canviar"
 msgid "Change SQL user password"
 msgstr "Canviar contrasenya usuari SQL"
 
-msgid "Change language"
-msgstr "Canviar idioma"
-
 msgid "Change password"
 msgstr "Canviar contrasenya"
 
@@ -1194,6 +1334,166 @@ msgid ""
 "Click the Restore button and the system will restore the last daily backup"
 msgstr "Faci click sobre Restaurar i el sistema restaurarà el darrer backup diari"
 
+msgid "Client /  Domains / Add Alias"
+msgstr ""
+
+msgid "Client / Choose directory"
+msgstr ""
+
+msgid "Client / Database / Overview / Update SQL User Password"
+msgstr ""
+
+msgid "Client / Databases / Add SQL Database"
+msgstr ""
+
+msgid "Client / Databases / Overview"
+msgstr ""
+
+msgid "Client / Databases / Overview / Add SQL User"
+msgstr ""
+
+msgid "Client / Domain / Edit Custom DNS record"
+msgstr ""
+
+msgid "Client / Domains"
+msgstr ""
+
+msgid "Client / Domains / Add Custom DNS record"
+msgstr ""
+
+msgid "Client / Domains / Add subdomain"
+msgstr ""
+
+msgid "Client / Domains / Overview / Edit Domain Alias"
+msgstr ""
+
+msgid "Client / Domains / Overview / Edit Subdomain"
+msgstr ""
+
+msgid "Client / Domains / PHP Settings"
+msgstr ""
+
+msgid "Client / Domains / SSL certificates"
+msgstr ""
+
+msgid "Client / Ftp / Add Ftp Account"
+msgstr ""
+
+msgid "Client / Ftp / Overview"
+msgstr ""
+
+msgid "Client / Ftp / Overview / Edit Ftp Account"
+msgstr ""
+
+msgid "Client / General / Overview"
+msgstr ""
+
+msgid "Client / Mail / Add Email Account"
+msgstr ""
+
+msgid "Client / Mail / Catchall"
+msgstr ""
+
+msgid "Client / Mail / Catchall / Add Catchall"
+msgstr ""
+
+msgid "Client / Mail / External Mail Server"
+msgstr ""
+
+msgid ""
+"Client / Mail / External Mail Server / Add External Mail Server For "
+"{DOMAIN_UTF8}"
+msgstr ""
+
+msgid ""
+"Client / Mail / External Mail Server / Edit External Mail Server For "
+"{DOMAIN_UTF8}"
+msgstr ""
+
+msgid "Client / Mail / Overview"
+msgstr ""
+
+msgid "Client / Mail / Overview /  Edit Mail Account"
+msgstr ""
+
+msgid "Client / Mail / Overview /  Edit Mail Quota"
+msgstr ""
+
+msgid "Client / Mail / Overview / Edit Auto Responder"
+msgstr ""
+
+msgid "Client / Mail / Overview / Enable Auto Responder"
+msgstr ""
+
+msgid "Client / Profile / Account Summary"
+msgstr ""
+
+msgid "Client / Profile / Language"
+msgstr ""
+
+msgid "Client / Profile / Layout"
+msgstr ""
+
+msgid "Client / Profile / Password"
+msgstr ""
+
+msgid "Client / Profile / Personal Data"
+msgstr ""
+
+msgid "Client / Statistics"
+msgstr ""
+
+msgid "Client / Support / New Ticket"
+msgstr ""
+
+msgid "Client / Support / Tickets Closed"
+msgstr ""
+
+msgid "Client / Support / Tickets Open"
+msgstr ""
+
+msgid "Client / Support / View Ticket"
+msgstr ""
+
+msgid "Client / Webtools / Custom Error Pages"
+msgstr ""
+
+msgid "Client / Webtools / Daily Backup"
+msgstr ""
+
+msgid "Client / Webtools / Overview"
+msgstr ""
+
+msgid "Client / Webtools / Protected Areas"
+msgstr ""
+
+msgid "Client / Webtools / Protected Areas / Manage Htaccess users And Groups"
+msgstr ""
+
+msgid ""
+"Client / Webtools / Protected areas / Manage Htusers And Groups / Add "
+"Htaccess Group"
+msgstr ""
+
+msgid ""
+"Client / Webtools / Protected areas / Manage Htusers And Groups / Add "
+"Htaccess User"
+msgstr ""
+
+msgid ""
+"Client / Webtools / Protected areas / Manage Htusers And Groups / Edit "
+"Htaccess User"
+msgstr ""
+
+msgid "Client / Webtools / Software - Softwares Install"
+msgstr ""
+
+msgid "Client / Webtools / Softwares"
+msgstr ""
+
+msgid "Client / Webtools / Softwares / Software View"
+msgstr ""
+
 msgid "Close"
 msgstr "Tancar"
 
@@ -1250,9 +1550,6 @@ msgstr "Crear"
 msgid "Create catch all"
 msgstr "Crear catch all"
 
-msgid "Create catch all mail account"
-msgstr "Crear un compte catch all"
-
 msgid "Create default E-Mail addresses"
 msgstr "Crear adreces de correu per defecte"
 
@@ -1295,6 +1592,9 @@ msgstr "Pàgines d'error personalitzades"
 msgid "Custom menu name and link"
 msgstr "Nom i enllaç de l'entrada del menú"
 
+msgid "Custom menu properties"
+msgstr ""
+
 msgid "Custom menu successfully added."
 msgstr "Entrada del menú afegida correctament."
 
@@ -1312,6 +1612,9 @@ msgstr "Client"
 
 msgid "Customer ID"
 msgstr "ID del client"
+
+msgid "Customer ID cannot have more than 200 characters"
+msgstr ""
 
 msgid "Customer account successfully scheduled for activation."
 msgstr ""
@@ -1389,6 +1692,9 @@ msgstr "Usuaris i noms de base de dades"
 msgid "Database Update Revision"
 msgstr "Actualització de la Base de Dades"
 
+msgid "Database Update details"
+msgstr ""
+
 msgid "Database name"
 msgstr "Nom de base de dades"
 
@@ -1404,11 +1710,11 @@ msgstr "Prefix/sufix de la base de dades"
 msgid "Database required"
 msgstr "Base de dades requerida"
 
-msgid "Database update is available."
-msgstr "Hi ha una actualització de la base de dades."
+msgid "Database update"
+msgstr ""
 
-msgid "Database updates"
-msgstr "Actualitzacions de la base de dades"
+msgid "Database update is available"
+msgstr ""
 
 msgid "Database usage"
 msgstr "Ús de la base de dades"
@@ -1427,6 +1733,9 @@ msgstr "Data"
 
 msgid "Day"
 msgstr "Dia"
+
+msgid "Day statistics"
+msgstr ""
 
 msgid "Days"
 msgstr "Dies"
@@ -1723,9 +2032,6 @@ msgstr ""
 msgid "Domain data were been altered. Please try again."
 msgstr "Dades del domini alterades. "
 
-msgid "Domain detail"
-msgstr "Detall del domini"
-
 msgid "Domain details"
 msgstr "Detalls del domini"
 
@@ -1741,11 +2047,11 @@ msgstr "Has d'introduïr la data d'expiració del domini."
 msgid "Domain mail"
 msgstr "Mail de domini"
 
-msgid "Domain mails"
-msgstr "correus del domini"
-
 msgid "Domain name"
 msgstr "Nom del domini"
+
+msgid "Domain name must be filled."
+msgstr ""
 
 msgid "Domain names validation"
 msgstr "Validació del nom del domini"
@@ -1833,6 +2139,9 @@ msgstr "Editar certificat SSL"
 msgid "Edit User"
 msgstr "Editar Usuari"
 
+msgid "Edit admin"
+msgstr ""
+
 msgid "Edit alias"
 msgstr "Editar àlies"
 
@@ -1848,9 +2157,6 @@ msgstr "Editar pàgina d'error personalitzada"
 msgid "Edit custom menu"
 msgstr "Editar menú personalitzat"
 
-msgid "Edit customer"
-msgstr "Editar client"
-
 msgid "Edit domain"
 msgstr "Editar domini"
 
@@ -1860,7 +2166,7 @@ msgstr "Editar àlies de domini"
 msgid "Edit error page"
 msgstr "Editar pàgina d'error"
 
-msgid "Edit external mail servers for {DOMAIN_UTF8}"
+msgid "Edit external mail server for {DOMAIN_UTF8}"
 msgstr ""
 
 msgid "Edit hosting plan"
@@ -1871,9 +2177,6 @@ msgstr "Editar usuari htaccess"
 
 msgid "Edit mail account"
 msgstr "Modificar compte de correu"
-
-msgid "Edit mail auto-responder"
-msgstr ""
 
 msgid "Edit mail quota"
 msgstr "Editar quota de correu"
@@ -1932,8 +2235,8 @@ msgstr "Activar SSL"
 msgid "Enable auto responder"
 msgstr "Activar auto-resposta"
 
-msgid "Enable update at"
-msgstr "Habilitar actualització a "
+msgid "Enable update in the settings page."
+msgstr ""
 
 msgid "Enabled"
 msgstr "Activat"
@@ -2005,6 +2308,9 @@ msgstr "Executar consultes"
 
 msgid "Expire date"
 msgstr "Data de caducitat"
+
+msgid "Ext. mail server"
+msgstr ""
 
 msgid "External Mail Host"
 msgstr ""
@@ -2116,6 +2422,9 @@ msgstr "Omplir un missatge de text."
 msgid "First name"
 msgstr "Nom"
 
+msgid "First name cannot have more than 200 characters."
+msgstr ""
+
 msgid "Forward URL"
 msgstr ""
 
@@ -2169,6 +2478,9 @@ msgstr "GB"
 
 msgid "Gender"
 msgstr "Gènere"
+
+msgid "General"
+msgstr ""
 
 msgid "General information"
 msgstr "Informació General"
@@ -2237,6 +2549,9 @@ msgstr "Host"
 msgid "Host must be filled."
 msgstr "S'ha d'omplir el servidor."
 
+msgid "Hosting Plans"
+msgstr ""
+
 msgid "Hosting plan"
 msgstr "Pla de Hosting"
 
@@ -2251,6 +2566,9 @@ msgstr ""
 
 msgid "Hosting plan properties"
 msgstr "Propietats del pla de hosting"
+
+msgid "Hosting plan successfully added."
+msgstr ""
 
 msgid "Hosting plan successfully created."
 msgstr ""
@@ -2416,6 +2734,9 @@ msgstr "Sintaxis del punt de montatge incorrecte."
 msgid "Incorrect or is not allowed."
 msgstr "Incorrecta o no està permès."
 
+msgid "Incorrect post code length or syntax!"
+msgstr ""
+
 msgid "Incorrect subdomains limit."
 msgstr "Límit de subdominis incorrecte."
 
@@ -2576,6 +2897,9 @@ msgstr "Darrer accés"
 msgid "Last name"
 msgstr "Cognom"
 
+msgid "Last name cannot have more than 200 characters."
+msgstr ""
+
 msgid "Last reply date"
 msgstr "Última resposta"
 
@@ -2590,9 +2914,6 @@ msgstr "Color del panell"
 
 msgid "Layout color successfully updated."
 msgstr "Color del panell actualitzat"
-
-msgid "Layout settings"
-msgstr "Paràmetres presentació"
 
 msgid "Level"
 msgstr "Nivell"
@@ -2667,9 +2988,6 @@ msgstr "Contrasenya perduda"
 msgid "Lost password e-mail"
 msgstr "Contrasenya de correu perduda"
 
-msgid "Lost password email"
-msgstr ""
-
 msgid "Lost password link"
 msgstr "Link de contrasenya perduda"
 
@@ -2735,8 +3053,11 @@ msgstr ""
 msgid "Mail accounts list"
 msgstr "Llista de comptes de correu"
 
-msgid "Mail accounts list is empty!"
-msgstr "La llista de comptes de correu és buida!"
+msgid "Mail accounts list is empty."
+msgstr ""
+
+msgid "Mail feature is disabled."
+msgstr ""
 
 msgid "Mail forward list empty."
 msgstr "La llista de reenviament d'emails és buida."
@@ -2746,9 +3067,6 @@ msgstr "Error en la llista de reenviament!"
 
 msgid "Mail usage"
 msgstr ""
-
-msgid "Mail users"
-msgstr "Usuaris de correu"
 
 msgid "Mailformat of an address in your forward list is incorrect."
 msgstr "El format d'una adreça d'email a la vostra llista de reenviament és incorrecte."
@@ -2770,20 +3088,17 @@ msgid ""
 "login."
 msgstr "El mode de manteniment està actiu. En aquest mode, només els administradors poden entrar."
 
+msgid "Maintenance settings"
+msgstr ""
+
 msgid "Male"
 msgstr "Home"
 
 msgid "Malformed resolver SQL query"
 msgstr ""
 
-msgid "Manage Customers"
-msgstr "Gestionar Clients"
-
 msgid "Manage Domains"
 msgstr "Administrar Dominis"
-
-msgid "Manage Hosting Plans"
-msgstr "Gestionar Plans d'Hostatge"
 
 msgid "Manage IPs"
 msgstr "Administrar IPs"
@@ -2791,17 +3106,8 @@ msgstr "Administrar IPs"
 msgid "Manage SQL"
 msgstr "Administrar SQL"
 
-msgid "Manage Users"
-msgstr "Administrar usuaris"
-
-msgid "Manage aliasses"
-msgstr "Administrar àlies"
-
 msgid "Manage domain alias"
 msgstr "Administrar àlies de domini"
-
-msgid "Manage domains"
-msgstr "Administrar dominis"
 
 msgid "Manage htaccess users and groups"
 msgstr "Administrar usuaris i grups htaccess "
@@ -2960,9 +3266,6 @@ msgstr "Moure"
 msgid "Moving aborted."
 msgstr "Acció de moure cancel.lada."
 
-msgid "MySQL support"
-msgstr "Suport de MySQL"
-
 msgid "N/A"
 msgstr "N/A"
 
@@ -2980,6 +3283,9 @@ msgstr "Interfície de xarxa"
 
 msgid "Never"
 msgstr "Mai"
+
+msgid "Never expire"
+msgstr ""
 
 msgid "Never expires"
 msgstr "No expira mai"
@@ -3044,8 +3350,8 @@ msgstr "Menú personalitzat no trobat"
 msgid "No customer accounts found."
 msgstr "No s'han trobat comptes de client."
 
-msgid "No database updates available."
-msgstr "No hi han actualitzacions de la base de dades."
+msgid "No database update available."
+msgstr ""
 
 msgid "No domain alias system errors"
 msgstr "No hi ha errors d'àlies de domini al sistema"
@@ -3074,12 +3380,10 @@ msgstr "Grup no trobat"
 msgid "No hosting plan available"
 msgstr ""
 
-msgid ""
-"No hosting plan available for purchasing. Please contact your system "
-"administrator."
-msgstr "No hi ha pla d'allotjament disponible per comprar. Siusplau contacta amb l'administrador del sistema."
-
 msgid "No hosting plan available."
+msgstr ""
+
+msgid "No hosting plan available. Please contact your administrator."
 msgstr ""
 
 msgid "No htaccess related system errors"
@@ -3305,9 +3609,6 @@ msgstr "Funció PHP exec()"
 
 msgid "PHP settings"
 msgstr "Configuració del PHP"
-
-msgid "PHP support"
-msgstr "Suport de PHP"
 
 msgid "POP3/IMAP in"
 msgstr "POP3/IMAP entrada"
@@ -3629,8 +3930,8 @@ msgstr ""
 msgid "Priority: %s\n"
 msgstr "Prioritat: %s\n"
 
-msgid "Process updates"
-msgstr "Processar actualitzacions"
+msgid "Process update"
+msgstr ""
 
 msgid "Profile"
 msgstr "Perfil"
@@ -3757,6 +4058,87 @@ msgstr "Necessita base de dades?"
 msgid "Reseller"
 msgstr "Distribuïdor"
 
+msgid "Reseller / Customer / Overview"
+msgstr ""
+
+msgid "Reseller / Customer / Overview / Domain Details"
+msgstr ""
+
+msgid "Reseller / Customers / Add Customer - Next Step"
+msgstr ""
+
+msgid "Reseller / Customers / Add Customer / Next Step"
+msgstr ""
+
+msgid "Reseller / Customers / Add customer"
+msgstr ""
+
+msgid "Reseller / Customers / Circular"
+msgstr ""
+
+msgid "Reseller / Customers / Domain Aliases"
+msgstr ""
+
+msgid "Reseller / Customers / Domain Aliases / Add Alias"
+msgstr ""
+
+msgid "Reseller / Customers / Domain Aliases / Edit Alias"
+msgstr ""
+
+msgid "Reseller / Customers / Lost Password Email"
+msgstr ""
+
+msgid "Reseller / Customers / Overview / Edit Domain"
+msgstr ""
+
+msgid "Reseller / Customers / Welcome Mail"
+msgstr ""
+
+msgid "Reseller / General / Overview"
+msgstr ""
+
+msgid "Reseller / General / Software Upload"
+msgstr ""
+
+msgid "Reseller / Hosting Plan / Add Hosting Plan"
+msgstr ""
+
+msgid "Reseller / Profile / Account Summary"
+msgstr ""
+
+msgid "Reseller / Profile / Language"
+msgstr ""
+
+msgid "Reseller / Profile / Layout"
+msgstr ""
+
+msgid "Reseller / Profile / Password"
+msgstr ""
+
+msgid "Reseller / Profile / Personal Data"
+msgstr ""
+
+msgid "Reseller / Statistics / IP Usage"
+msgstr ""
+
+msgid "Reseller / Statistics / Overview / Domain Statistics - {DOMAIN_NAME}"
+msgstr ""
+
+msgid "Reseller / Support / New Ticket"
+msgstr ""
+
+msgid "Reseller / Support / Tickets Closed"
+msgstr ""
+
+msgid "Reseller / Support / Tickets Open"
+msgstr ""
+
+msgid "Reseller / Support / View Ticket"
+msgstr ""
+
+msgid "Reseller /Hosting Plans / {TR_DYNAMIC_TITLE}"
+msgstr ""
+
 msgid "Reseller Name"
 msgstr "Nom del distribuïdor"
 
@@ -3796,6 +4178,9 @@ msgstr "Nom del distribuïdor"
 msgid "Reseller software list"
 msgstr "Llista d'aplicacions de distribuïdors"
 
+msgid "Reseller statistics"
+msgstr ""
+
 msgid "Reseller successfully added."
 msgstr "S'ha afegit el distribuïdor correctament."
 
@@ -3813,9 +4198,6 @@ msgstr "Distribuïdor amb permisos totals"
 
 msgid "Reseller's layout color successfully updated."
 msgstr "Color del panell canviat per aquest distribuïdor"
-
-msgid "Reseller's statistics"
-msgstr "Estadístiques del distribuïdor"
 
 msgid "Reseller/IP usage statistics"
 msgstr "Distribuïdor / Estadístiques d'IPs"
@@ -3837,9 +4219,6 @@ msgstr "Restaurar"
 
 msgid "Restore backup"
 msgstr "Restaurar backup"
-
-msgid "Return to previous menu"
-msgstr "Tornar al menú previ"
 
 msgid "Revision date"
 msgstr "Data de revisió"
@@ -4024,9 +4403,6 @@ msgid ""
 "Separate multiple email addresses with a space, a comma or a line-break."
 msgstr "Separar múltiples adreces amb un espai, coma o salt de línia."
 
-msgid "Server day statistics"
-msgstr "Estadístiques diàries del servidor"
-
 msgid "Server ports"
 msgstr "Ports del servidor"
 
@@ -4169,6 +4545,12 @@ msgstr "Opcions de l'instal·lador de software"
 msgid "Software installer options successfully updated."
 msgstr "Opcions de l'instal·lador de software actualitzades."
 
+msgid "Software installer require PHP support."
+msgstr ""
+
+msgid "Software installer require PHP."
+msgstr ""
+
 msgid "Software name"
 msgstr "Nom del programa"
 
@@ -4306,9 +4688,6 @@ msgstr "Redirecció de subdomini"
 msgid "Subdomain mail"
 msgstr "Mail de subdomini"
 
-msgid "Subdomain mails"
-msgstr "correus del subdominis"
-
 msgid "Subdomain name"
 msgstr "Nom subdomini"
 
@@ -4343,9 +4722,6 @@ msgstr "Enviar canvis"
 
 msgid "Support"
 msgstr "Suport"
-
-msgid "Support Ticket System"
-msgstr "Sistema de Tiquets"
 
 msgid "Support system"
 msgstr "Sistema de suport"
@@ -4816,12 +5192,12 @@ msgid ""
 "logs or your mail for more information."
 msgstr ""
 
-msgid "Unavailable"
+#, php-format
+msgid "Unable to upload file. Max. upload filesize (%1$d MB) reached?"
 msgstr ""
 
-#, php-format
-msgid "Unbale not upload file. Max. upload filesize (%1$d MB) reached?"
-msgstr "No s'ha pogut pujar l'arxiu. Potser heu superat el limit de tamany de (%1$d MB)?"
+msgid "Unavailable"
+msgstr ""
 
 msgid "Under maintenance mode, only administrators can login."
 msgstr "Sota el mode de manteniment, només els administradors poden entrar al sistema."
@@ -4961,6 +5337,9 @@ msgstr "Assignació d'usuari"
 msgid "User auth"
 msgstr "Autentificació per usuari"
 
+msgid "User data successfully updated"
+msgstr ""
+
 msgid "User data were not updated."
 msgstr "No s'han canviat les dades de l'usuari."
 
@@ -5007,9 +5386,6 @@ msgstr ""
 msgid "User session successfully killed for password change."
 msgstr "La sessió d'usuari ha estat eliminada pel canvi de contrasenya."
 
-msgid "User session was successfully killed for password change"
-msgstr "S'ha tancat la sessió de l'usuari degut a un canvi de contrasenya."
-
 msgid "User successfully disconnected."
 msgstr ""
 
@@ -5030,9 +5406,6 @@ msgstr "Usuaris"
 
 msgid "Users and groups"
 msgstr "Usuaris i grups"
-
-msgid "Users list"
-msgstr "Llista d'usuaris"
 
 #, php-format
 msgid "Value for the %s directive"
@@ -5077,6 +5450,9 @@ msgstr "Veure àlies"
 
 msgid "View certificates"
 msgstr "Veure certificats"
+
+msgid "View hosting plan"
+msgstr ""
 
 msgid "View ticket"
 msgstr "Veure Ticket"
@@ -5481,8 +5857,8 @@ msgid "You have reached your domains limit.<br />You cannot add more domains."
 msgstr "Has assolit el teu limit de dominis.<br />No pots afegir més dominis."
 
 #, php-format
-msgid "You have received %d new support questions."
-msgstr "Has rebut %d noves peticions de suport."
+msgid "You have received %d new support request."
+msgstr ""
 
 #, php-format
 msgid "You have received %s new support questions."
@@ -5505,6 +5881,9 @@ msgstr "Heu d'introduïr almenys una adreça receptora de la redirecció."
 
 msgid "You must first generate a password"
 msgstr "En primer lloc, ha de generar una contrasenya"
+
+msgid "You must omit 'www'. It will be added automatically."
+msgstr ""
 
 msgid "You must provide a password."
 msgstr "Has de proporcionar una contrasenya."
@@ -5591,6 +5970,9 @@ msgstr "ZB"
 msgid "ZiB"
 msgstr "ZiB"
 
+msgid "Zip"
+msgstr ""
+
 msgid "Zip code"
 msgstr "Codi postal"
 
@@ -5676,278 +6058,17 @@ msgstr "getInfo() no implementat a %s i %s no trobat. <br /> Hi ha un 'bug' al p
 msgid "help"
 msgstr "ajuda"
 
-msgid "i-MSCP - Admin - Manage custom menus"
-msgstr "i-MSCP - Admin - Administrar menús personalitzats"
-
-msgid "i-MSCP - Admin - Mass mail"
-msgstr ""
-
-msgid "i-MSCP - Admin / Add hosting plan"
-msgstr "i-MSCP - Admin / Afegir pla d'allotjament"
-
 msgid "i-MSCP - Admin / Customer Account Deletion Validation"
 msgstr ""
-
-msgid "i-MSCP - Admin / Edit customer"
-msgstr "i-MSCP - Admin / Editar client"
-
-msgid "i-MSCP - Admin / General information"
-msgstr "i-MSCP - Admin / Informació general"
-
-msgid "i-MSCP - Admin / General settings / IPs management"
-msgstr "i-MSCP - Admin / Paràmetres generals / Gestió de IPs"
-
-msgid "i-MSCP - Admin / Internationalisation"
-msgstr "i-MSCP - Admin / Internacionalització"
-
-msgid "i-MSCP - Admin / Manage Hosting Plans / Edit hosting plan"
-msgstr ""
-
-msgid "i-MSCP - Admin / Manage Users"
-msgstr ""
-
-msgid "i-MSCP - Admin / Manage Users / Customer Account Deletion Validation"
-msgstr ""
-
-msgid "i-MSCP - Admin / Manage users / Add Reseller"
-msgstr "i-MSCP - Admin / Administrar usuaris / Afegir Distribuidor"
-
-msgid "i-MSCP - Admin / Manage users / Edit Reseller"
-msgstr "i-MSCP - Admin / Administrar usuaris / Editar Distribuidor"
-
-msgid "i-MSCP - Admin / My Profile"
-msgstr "i-MSCP - Admin / El meu Perfil"
-
-msgid "i-MSCP - Admin / Password"
-msgstr ""
-
-msgid "i-MSCP - Admin / Profile /  Language"
-msgstr "i-MSCP - Admin / Perfil /  Llenguatge"
-
-msgid "i-MSCP - Admin / Profile /  Personal Data"
-msgstr "i-MSCP - Admin / Perfil /  Dades Personals"
-
-msgid "i-MSCP - Admin / Profile / Layout"
-msgstr "i-MSCP - Admin / Perfil / Distribució"
-
-msgid "i-MSCP - Admin / Reseller customer statistics"
-msgstr "i-MSCP - Admin / Estadístiques Client Distribuidor"
-
-msgid "i-MSCP - Admin / Reseller statistics"
-msgstr "i-MSCP - Admin / Estadístiques distribuidor"
-
-msgid "i-MSCP - Admin / Settings"
-msgstr ""
-
-msgid "i-MSCP - Admin / Settings / Plugin management"
-msgstr "i-MSCP - Admin / Configuració / Administració de plugins"
-
-msgid "i-MSCP - Admin / Settings / Server traffic settings"
-msgstr "i-MSCP - Admin / Configuració / Configuració del tràfic del servidor"
-
-msgid "i-MSCP - Admin / Settings / Service ports"
-msgstr "i-MSCP - Admin / Configuració / Ports de servei"
-
-msgid "i-MSCP - Admin / Statistics  / Server statistics"
-msgstr "i-MSCP - Admin / Estadístiques / Estadístiques del servidor"
-
-msgid ""
-"i-MSCP - Admin / Statistics / Reseller's statistics / Customer statistics / "
-"Domain_statistics"
-msgstr "i-MSCP - Admin / Estadístiques / Estadístiques de distribuidor / Estadístiques de client / Estadístiques de domini"
-
-msgid ""
-"i-MSCP - Admin / Statistics / Server statistics / Server day statistics"
-msgstr "i-MSCP - Admin / Estadístiques / Estadístiques del servidor / Estadístiques diaries del servidor"
-
-msgid "i-MSCP - Admin / Support Ticket System / Closed Tickets"
-msgstr "i-MSCP - Administració / Sistema de Suport / Tiquets Tancats"
-
-msgid "i-MSCP - Admin / Support Ticket System / Open Tickets"
-msgstr "i-MSCP - Administració / Sistema de Suport / Tickets Oberts"
-
-msgid "i-MSCP - Admin / Support Ticket System / View Ticket"
-msgstr "i-MSCP - Administració / Sistema de Suport / Veure Tiquet"
-
-msgid "i-MSCP - Admin / System tools / Database Update"
-msgstr "i-MSCP - Admin / Eines de sistema / Actualització de la Base de dades"
-
-msgid "i-MSCP - Admin / Users management / Domain Details"
-msgstr "i-MSCP - Admin / Administració d'usuaris / Detalls del Domini"
-
-msgid "i-MSCP - Admin/IP Usage"
-msgstr "i-MSCP - Admin/Ús de IP"
-
-msgid "i-MSCP - Admin/Lost password email setup"
-msgstr ""
-
-msgid "i-MSCP - Admin/Maintenance mode"
-msgstr "i-MSCP - Admin/Mode Manteniment"
-
-msgid "i-MSCP - Admin/Manage users / User assignment"
-msgstr "i-MSCP - Admin/Administrar usuaris / Assignar usuari"
-
-msgid "i-MSCP - Admin/Manage users/Add User"
-msgstr "i-MSCP - Gestionar usuaris/Afegir usuari"
-
-msgid "i-MSCP - Admin/Manage users/Email setup"
-msgstr "i-MSCP - Admin/Administrar Usuaris/Configurar Email"
-
-msgid "i-MSCP - Admin/Manage users/Reseller assignment"
-msgstr "i-MSCP - Admin/Administrar usuaris/Assignació distribuïdors"
-
-msgid "i-MSCP - Administrator / Manage hosting Plans / Hosting plans"
-msgstr ""
-
-msgid "i-MSCP - Application Management"
-msgstr "i-MSCP - Gestió d'aplicacions"
 
 msgid "i-MSCP - Application Management (Permissions)"
 msgstr "i-MSCP - Repositori d'aplicacions (Permisos)"
 
-msgid "i-MSCP - Client / Change Language"
-msgstr "i-MSCP - Client / Canviar Idioma"
-
-msgid "i-MSCP - Client / Mail Account / Add external mail server"
+msgid "i-MSCP - Client/ Webtools / Protected Areas / {TR_DYNAMIC_TITLE}"
 msgstr ""
-
-msgid "i-MSCP - Client / Mail Accounts / External mail servers"
-msgstr ""
-
-msgid "i-MSCP - Client / Mail accounts / Activate auto-responder"
-msgstr ""
-
-msgid "i-MSCP - Client / Mail accounts / Edit auto-responder"
-msgstr ""
-
-msgid "i-MSCP - Client / Manage Domains"
-msgstr ""
-
-msgid "i-MSCP - Client / Manage domains - Add subdomain"
-msgstr "i-MSCP - Client / Administrar dominis - Afegir subdomini"
-
-msgid "i-MSCP - Client / Manage mail"
-msgstr "i-MSCP - Client / Administrar mail"
-
-msgid "i-MSCP - Client / Manage mail / Add account"
-msgstr "i-MSCP - Client / Administrar mail / Afegir compte"
-
-msgid "i-MSCP - Client / Manage mail / Add catchall"
-msgstr "i-MSCP - Client / Administrar mail / Afegir catchall"
-
-msgid "i-MSCP - Client / Manage mail / Catchall"
-msgstr "i-MSCP - Client / Administrar mail / Catchall"
-
-msgid "i-MSCP - Client / Manage mail / Edit account"
-msgstr "i-MSCP - Client / Administrar mail / Editar compte"
-
-msgid "i-MSCP - Client / Manage mail / Edit quota"
-msgstr "i-MSCP - Client / Administrar correu / Editar quota"
-
-msgid "i-MSCP - Client / Password"
-msgstr ""
-
-msgid "i-MSCP - Client / Support Ticket System / Closed Tickets"
-msgstr "i-MSCP - Client / Sistema de Suport / Tiquets Tancats"
-
-msgid "i-MSCP - Client / Support Ticket System / New Ticket"
-msgstr "i-MSCP - Cilent / Sistema de Suport / Nou tiquet"
-
-msgid "i-MSCP - Client / Support Ticket System / Open Tickets"
-msgstr "i-MSCP - Client / Sistema de Suport / Obrir tiquet"
-
-msgid "i-MSCP - Client / Support Ticket System / View Ticket"
-msgstr "i-MSCP - Client / Sistema de Suport / Veure tiquet"
-
-msgid "i-MSCP - Client / Webtools"
-msgstr "i-MSCP - Client / Eines web"
-
-msgid "i-MSCP - Client / Webtools / Protected areas / Add htaccess user"
-msgstr "i-MSCP - Client / Eines Web / Arees protegides / Afegir usuari htaccess"
-
-msgid "i-MSCP - Client / Webtools / Protected areas / Edit Htaccess user"
-msgstr "i-MSCP - Client / Eines Web / Arees protegides  / Editar usuari htaccess"
-
-msgid "i-MSCP - Client / Webtools / Protected areas / Manage users and groups"
-msgstr "i-MSCP - Client / Eines Web / Arees protegides  / Administrar usuaris i grups"
-
-msgid "i-MSCP - Client / Webtools / Softwares"
-msgstr "i-MSCP - Client / Eines Web / Programari"
-
-msgid "i-MSCP - Client / Webtools Protected areas / Add Htaccess group"
-msgstr "i-MSCP - Client / Eines Web /Àrees protegides / Afegir grup htaccess"
-
-msgid "i-MSCP - Client/Add FTP Account"
-msgstr ""
-
-msgid "i-MSCP - Client/Add SQL Database"
-msgstr "i-MSCP - Client/Afegir Base de Dades SQL"
-
-msgid "i-MSCP - Client/Add SQL User"
-msgstr "i-MSCP - Client/Afegir usuari SQL"
-
-msgid "i-MSCP - Client/Change Personal Data"
-msgstr "ispCp - Client/Canviar Dades Personals"
-
-msgid "i-MSCP - Client/Change SQL User Password"
-msgstr "i-MSCP - Client/Canviar Contrasenya Usuari SQL"
 
 msgid "i-MSCP - Client/Create CatchAll Mail Account"
 msgstr "i-MSCP - Client/Crear Compte Correu CatchAll"
-
-msgid "i-MSCP - Client/Daily Backup"
-msgstr "i-MSCP - Client/Backup Diari"
-
-msgid "i-MSCP - Client/Edit FTP Account"
-msgstr "i-MSCP - Client/Editar Compte FTP"
-
-msgid "i-MSCP - Client/Manage Error Custom Pages"
-msgstr "i-MSCP - Client/Administrar Pàgines d'Error Personalitzades"
-
-msgid "i-MSCP - Client/Manage Ftp Accounts"
-msgstr ""
-
-msgid "i-MSCP - Client/Manage SQL"
-msgstr "i-MSCP - Client/Administrar SQL"
-
-msgid "i-MSCP - Client/Manage certificates"
-msgstr "i-MSCP - Client/Administrar certificats"
-
-msgid "i-MSCP - Client/Webtools"
-msgstr "isCP - Client/Eines web"
-
-msgid "i-MSCP - Domain / Edit"
-msgstr "i-MSCP - Domini / Editar"
-
-msgid "i-MSCP - Domain/Edit"
-msgstr "i-MSCP - Domini/Editar"
-
-msgid "i-MSCP - Ftp / Choose directory"
-msgstr "i-MSCP - Ftp / Escollir directori"
-
-msgid "i-MSCP - Install Software"
-msgstr "i-MSCP - Instal·lar software"
-
-msgid "i-MSCP - Manage Customers / Manage Aliasses"
-msgstr ""
-
-msgid "i-MSCP - Manage Domain / Add Custom DNS  record"
-msgstr ""
-
-msgid "i-MSCP - Manage Domain / Edit Custom DNS record"
-msgstr ""
-
-msgid "i-MSCP - Manage Domain Alias/Edit Alias"
-msgstr "i-MSCP - Administrar Àlies de Domini/Editar Àlies"
-
-msgid "i-MSCP - Manage Users / Sessions"
-msgstr ""
-
-msgid "i-MSCP - Manage domains / Edit Subdomain"
-msgstr "i-MSCP - Gestionar dominis / Modificar subdomini"
-
-msgid "i-MSCP - Multi Server Control Panel"
-msgstr "i-MSCP - Multi Server Control Panel"
 
 msgid "i-MSCP - Multi Server Control Panel / Login"
 msgstr "i-MSCP - Multi Server Control Panel / Entrada"
@@ -5958,77 +6079,17 @@ msgstr "i-MSCP - Multi Server Control Panel / Contrasenya perduda"
 msgid "i-MSCP - Multi Server Control Panel / Maintenance"
 msgstr "i-MSCP - Multi Server Control Panel / Manteniment"
 
-msgid "i-MSCP - Reseller / Add customer - step 1"
-msgstr "i-MSCP - Distribuidor / Afegir client - pas 1"
-
-msgid "i-MSCP - Reseller / Add hosting plan"
-msgstr "i-MSCP - Distribuidor / Afegir pla d'allotjament"
-
-msgid "i-MSCP - Reseller / General information"
-msgstr "i-MSCP - Distribuïdor / Informació general"
-
-msgid "i-MSCP - Reseller / Layout"
-msgstr "i-MSCP - Distribuïdor / Disseny"
-
-msgid "i-MSCP - Reseller / Manage Hosting Plans / Edit hosting plan"
-msgstr ""
-
-msgid "i-MSCP - Reseller / Manage Hosting Plans / View hosting plan"
+msgid "i-MSCP - Reseller / Manage Customers / Customers / Edit Customer"
 msgstr ""
 
 msgid "i-MSCP - Reseller / Manage hosting Plans / Hosting plans"
 msgstr ""
 
-msgid "i-MSCP - Reseller / My Profile"
-msgstr "i-MSCP - Distribuidor / El meu Perfil"
-
-msgid "i-MSCP - Reseller / Statistics /  Customers statistics"
-msgstr "i-MSCP - Distribuidor / Estadístiques /  Estadístiques de client"
-
-msgid "i-MSCP - Reseller / Support Ticket System / Closed Tickets"
-msgstr "i-MSCP - Distribuïdor / Sistema de Suport / Tiquets tancats"
-
-msgid "i-MSCP - Reseller / Support Ticket System / New Ticket"
-msgstr "i-MSCP - Distribuïdor / Sistema de Suport / Nou tiquet"
-
-msgid "i-MSCP - Reseller / Support Ticket System / Open Tickets"
-msgstr "i-MSCP - Distribuïdor / Sistema de Suport / Tiquets oberts"
-
-msgid "i-MSCP - Reseller / Support Ticket System / View Ticket"
-msgstr "i-MSCP - Distribuïdor / Sistema de Suport / Veure tiquet"
-
-msgid "i-MSCP - Reseller / Users management / Domain Details"
-msgstr "i-MSCP - Distribuidor / Administració d'usuaris / Detalls del domini"
-
-msgid "i-MSCP - Reseller/Change Language"
-msgstr "i-MSCP - Distribuïdor/Canviar Llenguatge"
-
-msgid "i-MSCP - Reseller/Change Personal Data"
-msgstr "i-MSCP - Distribuïdor/Canviar dades personals"
-
-msgid "i-MSCP - Reseller/IP Usage"
-msgstr "i-MSCP - Distribuïdor / Adreces IP"
-
-msgid "i-MSCP - Reseller/Lost password email setup"
-msgstr ""
-
-msgid "i-MSCP - Reseller/Manage users/Email setup"
-msgstr "i-MSCP - Distribuïdor/Administració usuaris/Configuració Correu"
-
 msgid "i-MSCP - Software Installer / Management"
-msgstr ""
-
-msgid "i-MSCP - Software Management"
 msgstr ""
 
 msgid "i-MSCP - Software Management (Permissions)"
 msgstr ""
-
-msgid "i-MSCP - Software details"
-msgstr "i-MSCP: Detalls del software"
-
-msgid "i-MSCP - Software installer options"
-msgstr "i-MSCP - Opcions de l'instal.lador de programari"
 
 msgid "i-MSCP - Softwares Management"
 msgstr ""
@@ -6036,65 +6097,14 @@ msgstr ""
 msgid "i-MSCP - Sofware Management"
 msgstr ""
 
-msgid "i-MSCP - User/Add domain account - step 2"
-msgstr "i-MSCP - Usuaris / Afegir domini - Pas 2"
-
-msgid "i-MSCP - User/Add domain account - step 3"
-msgstr "i-MSCP - Usuaris / Afegir domini - Pas 3"
-
-msgid "i-MSCP - User/Add domain alias"
-msgstr "i-MSCP - Usuaris / Afegir àlies"
-
-msgid "i-MSCP - Users"
-msgstr "i-MSCP - Usuaris"
-
-msgid "i-MSCP - Users/Edit"
-msgstr "i-MSCP - Usuaris/Editar"
-
-msgid "i-MSCP - admin / System tools / System information"
-msgstr "i-MSCP - admin / Eines del sistema / Informació del sistema"
-
-msgid "i-MSCP - client / Setting Layout"
-msgstr "i-MSCP - client / Configurar Distribució"
-
-msgid "i-MSCP / Client / Manage domains / PHP Editor"
-msgstr "i-MSCP / Client / Gestionar dominis / Editor PHP"
-
-msgid "i-MSCP / Software Installer / Management"
-msgstr "i-MSCP / Instal·lador de software / Gestió"
-
 msgid "i-MSCP / Softwares Installer / Management"
 msgstr "i-MSCP / Instal·lador de software / Gestió"
-
-msgid "i-MSCP Admin / General Information / Server Status"
-msgstr "i-MSCP Administració / Informació General / Estat del servidor"
-
-msgid "i-MSCP Admin / System Tools / Anti-Rootkits Tools Log Checker"
-msgstr "i-MSCP - Admin/Eines de sistema/Registre dels anàlisi de les eines Anti-Rootkits"
-
-msgid "i-MSCP Client / Domain statistics"
-msgstr "i-MSCP Client / Estadístiques de domini"
-
-msgid "i-MSCP Client / General Information"
-msgstr "i-MSCP Client / Informació General"
-
-msgid "i-MSCP Client : Add Alias"
-msgstr "i-MSCP - Client: Afegir Àlies"
 
 msgid "i-MSCP Daemon tools"
 msgstr "i-MSCP Eines dels dimonis"
 
 msgid "i-MSCP Notice"
 msgstr "i-MSCP Nota"
-
-msgid "i-MSCP Reseller / Domain statistics"
-msgstr "i-MSCP Distribuidor / Estadistiques de domini"
-
-msgid "i-MSCP Reseller/Add Alias"
-msgstr "i-MSCP Distribuidor/Afegir àlies"
-
-msgid "i-MSCP Reseller/Circular"
-msgstr "i-MSCP Distribuidor/Circular"
 
 msgid "i-MSCP Software installer / Web software repository"
 msgstr ""
@@ -6107,9 +6117,6 @@ msgstr "i-MSCP debugger"
 
 msgid "i-MSCP updates"
 msgstr "Actualitzacions i-MSCP"
-
-msgid "iMSCP - Admin/Admin Log"
-msgstr "iMSCP - Administrador/Registre d'administrador"
 
 msgid "install"
 msgstr "instal·lar"
@@ -6167,9 +6174,6 @@ msgstr "més antic de tres mesos"
 
 msgid "older than 6 months"
 msgstr "més antic de sis mesos"
-
-msgid "or Check for <strong>never Expire</strong>"
-msgstr "o Marqueu per <strong>no expirar mai</strong>"
 
 #, php-format
 msgid "or remote file (Max: %1$d MB)"

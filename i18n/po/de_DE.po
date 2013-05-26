@@ -29,8 +29,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2013-05-23 20:21+0200\n"
-"PO-Revision-Date: 2013-05-23 18:21+0000\n"
+"POT-Creation-Date: 2013-05-26 19:11+0200\n"
+"PO-Revision-Date: 2013-05-26 17:11+0000\n"
 "Last-Translator: Torsten Widmann <info@goover.de>\n"
 "Language-Team: German (Germany) (http://www.transifex.com/projects/p/i-MSCP/language/de_DE/)\n"
 "MIME-Version: 1.0\n"
@@ -163,6 +163,15 @@ msgid ""
 "The i-MSCP Team\n"
 "\n"
 msgstr "\n\nHallo {NAME},\n\nIhr Benutzername lautet: {USERNAME}\nIhr Passwort lautet: {PASSWORD}\n\nSie können sich unter {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST} einloggen.\n\nDanke dass Sie i-MSCP nutzen.\n\n___________________________\nDas i-MSCP Team\n\n"
+
+msgid " Admin / Support / Open Tickets"
+msgstr ""
+
+msgid " Client / Webtools / Custom Error Pages / Edit Custom Error Page"
+msgstr ""
+
+msgid " Reseller / Statistics / Overview"
+msgstr ""
 
 msgid ""
 " Show all errors, except for warnings about deprecated code (Production)"
@@ -558,9 +567,6 @@ msgstr "Aktionen"
 msgid "Activate"
 msgstr "Aktivieren"
 
-msgid "Activate mail auto-responder"
-msgstr "E-Mail Auto-Antwort aktivieren"
-
 msgid "Activate this plugin"
 msgstr "Aktiviere dieses Plugin"
 
@@ -630,11 +636,8 @@ msgstr "Domain Alias hinzufügen"
 msgid "Add email account"
 msgstr "E-Mail Konto hinzufügen"
 
-msgid "Add external mail server entry"
-msgstr "Externen Mailserver-Eintrag hinzufügen"
-
-msgid "Add external mail servers for {DOMAIN_UTF8}"
-msgstr "Externen Mailserver für {DOMAIN_UTF8} hinzufügen"
+msgid "Add external mail server for {DOMAIN_UTF8}"
+msgstr ""
 
 msgid "Add group"
 msgstr "Gruppe anlegen"
@@ -695,6 +698,155 @@ msgstr "Zusätzliche Informationen"
 
 msgid "Admin"
 msgstr "Administrator"
+
+msgid "Admin / Admin Log"
+msgstr ""
+
+msgid "Admin / General / Overview"
+msgstr ""
+
+msgid "Admin / General / Services Status"
+msgstr ""
+
+msgid "Admin / Hosting Plans / Overview"
+msgstr ""
+
+msgid "Admin / Hosting Plans / Overview / Edit hosting plan"
+msgstr ""
+
+msgid "Admin / Hosting plans / Add Hosting Plan"
+msgstr ""
+
+msgid "Admin / Profile / Account Summary"
+msgstr ""
+
+msgid "Admin / Profile / Language"
+msgstr ""
+
+msgid "Admin / Profile / Layout"
+msgstr ""
+
+msgid "Admin / Profile / Password"
+msgstr ""
+
+msgid "Admin / Profile / Personal Data"
+msgstr ""
+
+msgid "Admin / Settings"
+msgstr ""
+
+msgid "Admin / Settings / IP management"
+msgstr ""
+
+msgid "Admin / Settings / Languages"
+msgstr ""
+
+msgid "Admin / Settings / Lost password mail"
+msgstr ""
+
+msgid "Admin / Settings / Plugin management"
+msgstr ""
+
+msgid "Admin / Settings / Server traffic"
+msgstr ""
+
+msgid "Admin / Settings / Service ports"
+msgstr ""
+
+msgid "Admin / Settings / Software Management"
+msgstr ""
+
+msgid "Admin / Settings / Software options"
+msgstr ""
+
+msgid "Admin / Settings / {TR_DYNAMIC_TITLE}"
+msgstr ""
+
+msgid "Admin / Settings/ Welcome mail"
+msgstr ""
+
+msgid "Admin / Software Management / Reseller software"
+msgstr ""
+
+msgid "Admin / Statistics / IP Usage"
+msgstr ""
+
+msgid "Admin / Statistics / Reseller Statistics / Customer statistics"
+msgstr ""
+
+msgid ""
+"Admin / Statistics / Reseller Statistics / Customer statistics / Domain "
+"Statistics"
+msgstr ""
+
+msgid "Admin / Statistics / Reseller statistics"
+msgstr ""
+
+msgid "Admin / Statistics / Server statistics"
+msgstr ""
+
+msgid "Admin / Statistics / Server statistics / Day statistics"
+msgstr ""
+
+msgid "Admin / Support / Closed Tickets"
+msgstr ""
+
+msgid "Admin / Support / View Ticket"
+msgstr ""
+
+msgid "Admin / System Tools / Debugger"
+msgstr ""
+
+msgid "Admin / System Tools / Maintenance settings"
+msgstr ""
+
+msgid "Admin / System Tools / Rootkit Logs"
+msgstr ""
+
+msgid "Admin / System Tools / Updates"
+msgstr ""
+
+msgid "Admin / System tools / Database Update"
+msgstr ""
+
+msgid "Admin / System tools / System information"
+msgstr ""
+
+msgid "Admin / User / Add Admin"
+msgstr ""
+
+msgid "Admin / User / Overview / Domain Edit"
+msgstr ""
+
+msgid "Admin / Users / Add Reseller"
+msgstr ""
+
+msgid "Admin / Users / Circular"
+msgstr ""
+
+msgid "Admin / Users / Customers assignment"
+msgstr ""
+
+msgid "Admin / Users / Edit Reseller"
+msgstr ""
+
+msgid "Admin / Users / Overview"
+msgstr ""
+
+msgid "Admin / Users / Overview / Delete Customer"
+msgstr ""
+
+msgid "Admin / Users / Overview / Domain Details"
+msgstr ""
+
+msgid "Admin / Users / Overview / Edit Admin"
+msgstr ""
+
+msgid "Admin / Users / Resellers assignment"
+msgstr ""
+
+msgid "Admin / Users / Sessions"
+msgstr ""
 
 msgid "Admin Log"
 msgstr "Admin Protokoll"
@@ -757,9 +909,6 @@ msgstr "Alias Weiterleitung"
 
 msgid "Alias mail"
 msgstr "Alias E-Mail"
-
-msgid "Alias mails"
-msgstr "Alias E-Mail Konten"
 
 msgid "Alias name"
 msgstr "Aliasname"
@@ -1020,9 +1169,6 @@ msgstr "Backup und Wiederherstellung"
 msgid "Backup has been successfully scheduled for restoration."
 msgstr ""
 
-msgid "Backup support"
-msgstr "Backup Support"
-
 msgid "Bad password."
 msgstr "Passwort falsch"
 
@@ -1059,9 +1205,6 @@ msgstr "von"
 
 msgid "CGI"
 msgstr "CGI"
-
-msgid "CGI support"
-msgstr "CGI-Unterstützung"
 
 msgid "CPU MHz"
 msgstr "CPU Taktrate (MHz)"
@@ -1134,9 +1277,6 @@ msgstr "Wechseln"
 msgid "Change SQL user password"
 msgstr "SQL-Benutzerpasswort ändern"
 
-msgid "Change language"
-msgstr "Sprache ändern"
-
 msgid "Change password"
 msgstr "Passwort ändern"
 
@@ -1205,6 +1345,166 @@ msgid ""
 "Click the Restore button and the system will restore the last daily backup"
 msgstr "Klicken Sie auf wiederherstellen und das System spielt das letzte Backup ein."
 
+msgid "Client /  Domains / Add Alias"
+msgstr ""
+
+msgid "Client / Choose directory"
+msgstr ""
+
+msgid "Client / Database / Overview / Update SQL User Password"
+msgstr ""
+
+msgid "Client / Databases / Add SQL Database"
+msgstr ""
+
+msgid "Client / Databases / Overview"
+msgstr ""
+
+msgid "Client / Databases / Overview / Add SQL User"
+msgstr ""
+
+msgid "Client / Domain / Edit Custom DNS record"
+msgstr ""
+
+msgid "Client / Domains"
+msgstr ""
+
+msgid "Client / Domains / Add Custom DNS record"
+msgstr ""
+
+msgid "Client / Domains / Add subdomain"
+msgstr ""
+
+msgid "Client / Domains / Overview / Edit Domain Alias"
+msgstr ""
+
+msgid "Client / Domains / Overview / Edit Subdomain"
+msgstr ""
+
+msgid "Client / Domains / PHP Settings"
+msgstr ""
+
+msgid "Client / Domains / SSL certificates"
+msgstr ""
+
+msgid "Client / Ftp / Add Ftp Account"
+msgstr ""
+
+msgid "Client / Ftp / Overview"
+msgstr ""
+
+msgid "Client / Ftp / Overview / Edit Ftp Account"
+msgstr ""
+
+msgid "Client / General / Overview"
+msgstr ""
+
+msgid "Client / Mail / Add Email Account"
+msgstr ""
+
+msgid "Client / Mail / Catchall"
+msgstr ""
+
+msgid "Client / Mail / Catchall / Add Catchall"
+msgstr ""
+
+msgid "Client / Mail / External Mail Server"
+msgstr ""
+
+msgid ""
+"Client / Mail / External Mail Server / Add External Mail Server For "
+"{DOMAIN_UTF8}"
+msgstr ""
+
+msgid ""
+"Client / Mail / External Mail Server / Edit External Mail Server For "
+"{DOMAIN_UTF8}"
+msgstr ""
+
+msgid "Client / Mail / Overview"
+msgstr ""
+
+msgid "Client / Mail / Overview /  Edit Mail Account"
+msgstr ""
+
+msgid "Client / Mail / Overview /  Edit Mail Quota"
+msgstr ""
+
+msgid "Client / Mail / Overview / Edit Auto Responder"
+msgstr ""
+
+msgid "Client / Mail / Overview / Enable Auto Responder"
+msgstr ""
+
+msgid "Client / Profile / Account Summary"
+msgstr ""
+
+msgid "Client / Profile / Language"
+msgstr ""
+
+msgid "Client / Profile / Layout"
+msgstr ""
+
+msgid "Client / Profile / Password"
+msgstr ""
+
+msgid "Client / Profile / Personal Data"
+msgstr ""
+
+msgid "Client / Statistics"
+msgstr ""
+
+msgid "Client / Support / New Ticket"
+msgstr ""
+
+msgid "Client / Support / Tickets Closed"
+msgstr ""
+
+msgid "Client / Support / Tickets Open"
+msgstr ""
+
+msgid "Client / Support / View Ticket"
+msgstr ""
+
+msgid "Client / Webtools / Custom Error Pages"
+msgstr ""
+
+msgid "Client / Webtools / Daily Backup"
+msgstr ""
+
+msgid "Client / Webtools / Overview"
+msgstr ""
+
+msgid "Client / Webtools / Protected Areas"
+msgstr ""
+
+msgid "Client / Webtools / Protected Areas / Manage Htaccess users And Groups"
+msgstr ""
+
+msgid ""
+"Client / Webtools / Protected areas / Manage Htusers And Groups / Add "
+"Htaccess Group"
+msgstr ""
+
+msgid ""
+"Client / Webtools / Protected areas / Manage Htusers And Groups / Add "
+"Htaccess User"
+msgstr ""
+
+msgid ""
+"Client / Webtools / Protected areas / Manage Htusers And Groups / Edit "
+"Htaccess User"
+msgstr ""
+
+msgid "Client / Webtools / Software - Softwares Install"
+msgstr ""
+
+msgid "Client / Webtools / Softwares"
+msgstr ""
+
+msgid "Client / Webtools / Softwares / Software View"
+msgstr ""
+
 msgid "Close"
 msgstr "Schliessen"
 
@@ -1261,9 +1561,6 @@ msgstr "Erstellen"
 msgid "Create catch all"
 msgstr "Catch-All anlegen"
 
-msgid "Create catch all mail account"
-msgstr "E-Mail-Konto für Catch-All anlegen"
-
 msgid "Create default E-Mail addresses"
 msgstr "Standard E-Mail Adressen erstellen"
 
@@ -1306,6 +1603,9 @@ msgstr "Eigene Fehlerseiten"
 msgid "Custom menu name and link"
 msgstr "Eigenes Menü und Link"
 
+msgid "Custom menu properties"
+msgstr ""
+
 msgid "Custom menu successfully added."
 msgstr "Eigenes Menü erfolgreich hinzugefügt."
 
@@ -1323,6 +1623,9 @@ msgstr "Kunden"
 
 msgid "Customer ID"
 msgstr "Kundennummer"
+
+msgid "Customer ID cannot have more than 200 characters"
+msgstr ""
 
 msgid "Customer account successfully scheduled for activation."
 msgstr ""
@@ -1400,6 +1703,9 @@ msgstr "Datenbank- und Benutzername"
 msgid "Database Update Revision"
 msgstr "Datenbank Update"
 
+msgid "Database Update details"
+msgstr ""
+
 msgid "Database name"
 msgstr "Datenbankname"
 
@@ -1415,11 +1721,11 @@ msgstr "Datenbank präfix/suffix"
 msgid "Database required"
 msgstr "Datenbank erforderlich"
 
-msgid "Database update is available."
-msgstr "Datenbank - Update ist verfügbar."
+msgid "Database update"
+msgstr ""
 
-msgid "Database updates"
-msgstr "i-MSCP Datenbank Updates"
+msgid "Database update is available"
+msgstr ""
 
 msgid "Database usage"
 msgstr "Datenbank detail"
@@ -1438,6 +1744,9 @@ msgstr "Datum"
 
 msgid "Day"
 msgstr "Tag"
+
+msgid "Day statistics"
+msgstr ""
 
 msgid "Days"
 msgstr "Tage"
@@ -1734,9 +2043,6 @@ msgstr ""
 msgid "Domain data were been altered. Please try again."
 msgstr "Domain-Daten wurden geändert. Bitte versuchen Sie es erneut."
 
-msgid "Domain detail"
-msgstr "Daomain Details"
-
 msgid "Domain details"
 msgstr "Domaindetails"
 
@@ -1752,11 +2058,11 @@ msgstr "Domain Ablaufdatum müssen ausgefüllt werden."
 msgid "Domain mail"
 msgstr "Domain E-Mail"
 
-msgid "Domain mails"
-msgstr "Domain E-Mail Konten"
-
 msgid "Domain name"
 msgstr "Domainname"
+
+msgid "Domain name must be filled."
+msgstr ""
 
 msgid "Domain names validation"
 msgstr "Überprüfung des Domainnames"
@@ -1844,6 +2150,9 @@ msgstr "SSL-Zertifikat bearbeiten"
 msgid "Edit User"
 msgstr "Benutzer bearbeiten"
 
+msgid "Edit admin"
+msgstr ""
+
 msgid "Edit alias"
 msgstr "Alias bearbeiten"
 
@@ -1859,9 +2168,6 @@ msgstr "Eigene Fehlerseiten bearbeiten"
 msgid "Edit custom menu"
 msgstr "Eigenes Menü bearbeiten"
 
-msgid "Edit customer"
-msgstr "Kunde bearbeiten"
-
 msgid "Edit domain"
 msgstr "Domain bearbeiten"
 
@@ -1871,8 +2177,8 @@ msgstr "Domain-Alias bearbeiten"
 msgid "Edit error page"
 msgstr "Fehlerseite bearbeiten"
 
-msgid "Edit external mail servers for {DOMAIN_UTF8}"
-msgstr "Editiere externer Mailserver für {DOMAIN_UTF8}"
+msgid "Edit external mail server for {DOMAIN_UTF8}"
+msgstr ""
 
 msgid "Edit hosting plan"
 msgstr "Tarif bearbeiten"
@@ -1882,9 +2188,6 @@ msgstr "Htaccess-Benutzer bearbeiten"
 
 msgid "Edit mail account"
 msgstr "Mail Konto bearbeiten"
-
-msgid "Edit mail auto-responder"
-msgstr "Ändere E-Mail Auto-Antwort."
 
 msgid "Edit mail quota"
 msgstr "Mailquota bearbeiten"
@@ -1943,8 +2246,8 @@ msgstr "SSL einschalten"
 msgid "Enable auto responder"
 msgstr "Automatische Antwort aktivieren"
 
-msgid "Enable update at"
-msgstr "Aktiviere die Updates in den"
+msgid "Enable update in the settings page."
+msgstr ""
 
 msgid "Enabled"
 msgstr "Aktiviert"
@@ -2016,6 +2319,9 @@ msgstr "Anfragen ausführen"
 
 msgid "Expire date"
 msgstr "Ablaufdatum"
+
+msgid "Ext. mail server"
+msgstr ""
 
 msgid "External Mail Host"
 msgstr "Externer Mailserver"
@@ -2127,6 +2433,9 @@ msgstr "Füllen Sie eine Textnachricht aus."
 msgid "First name"
 msgstr "Vorname"
 
+msgid "First name cannot have more than 200 characters."
+msgstr ""
+
 msgid "Forward URL"
 msgstr ""
 
@@ -2180,6 +2489,9 @@ msgstr "GB"
 
 msgid "Gender"
 msgstr "Geschlecht"
+
+msgid "General"
+msgstr ""
 
 msgid "General information"
 msgstr "Allgemeine Informationen"
@@ -2248,6 +2560,9 @@ msgstr "Host"
 msgid "Host must be filled."
 msgstr "Der Host muss angegeben werden."
 
+msgid "Hosting Plans"
+msgstr ""
+
 msgid "Hosting plan"
 msgstr "Tarif"
 
@@ -2262,6 +2577,9 @@ msgstr ""
 
 msgid "Hosting plan properties"
 msgstr "Tarifeigenschaften"
+
+msgid "Hosting plan successfully added."
+msgstr ""
 
 msgid "Hosting plan successfully created."
 msgstr ""
@@ -2427,6 +2745,9 @@ msgstr "Falsche Mount-Punkt-Syntax."
 msgid "Incorrect or is not allowed."
 msgstr "Falsch oder nicht erlaubt."
 
+msgid "Incorrect post code length or syntax!"
+msgstr ""
+
 msgid "Incorrect subdomains limit."
 msgstr "Falsche Anzahl der Subdomains."
 
@@ -2587,6 +2908,9 @@ msgstr "Letzter Zugriff"
 msgid "Last name"
 msgstr "Nachname"
 
+msgid "Last name cannot have more than 200 characters."
+msgstr ""
+
 msgid "Last reply date"
 msgstr "Letzte Antwort"
 
@@ -2601,9 +2925,6 @@ msgstr "Layout Farbe"
 
 msgid "Layout color successfully updated."
 msgstr "Layout-Farbe erfolgreich aktualisiert."
-
-msgid "Layout settings"
-msgstr "Layout Einstellungen"
 
 msgid "Level"
 msgstr "Ebene"
@@ -2678,9 +2999,6 @@ msgstr "Passwort vergessen"
 msgid "Lost password e-mail"
 msgstr "\"Passwort vergessen\" E-Mail"
 
-msgid "Lost password email"
-msgstr "Passwort-vergessen E-Mail"
-
 msgid "Lost password link"
 msgstr "\"Passwort vergessen\" Link"
 
@@ -2746,8 +3064,11 @@ msgstr ""
 msgid "Mail accounts list"
 msgstr "E-Mail Konten"
 
-msgid "Mail accounts list is empty!"
-msgstr "Es sind keine E-Mail Konten vorhanden!"
+msgid "Mail accounts list is empty."
+msgstr ""
+
+msgid "Mail feature is disabled."
+msgstr ""
 
 msgid "Mail forward list empty."
 msgstr "Keine Adressen vorhanden."
@@ -2757,9 +3078,6 @@ msgstr "Die Liste mit den E-Mail-Weiterleitungen ist fehlerhaft!"
 
 msgid "Mail usage"
 msgstr "E-Mail detail"
-
-msgid "Mail users"
-msgstr "E-Mail Konten"
 
 msgid "Mailformat of an address in your forward list is incorrect."
 msgstr "MailFormat einer Adresse in Ihrer Weiterleitungs-Liste, ist falsch."
@@ -2781,20 +3099,17 @@ msgid ""
 "login."
 msgstr "Wartungsmodus ist AKTIV. In diesem Modus können sich nur Administratoren einloggen"
 
+msgid "Maintenance settings"
+msgstr ""
+
 msgid "Male"
 msgstr "männlich"
 
 msgid "Malformed resolver SQL query"
 msgstr ""
 
-msgid "Manage Customers"
-msgstr "Kunden verwalten"
-
 msgid "Manage Domains"
 msgstr "Domains Verwalten"
-
-msgid "Manage Hosting Plans"
-msgstr "Hosting-Tarif verwalten"
 
 msgid "Manage IPs"
 msgstr "IP Verwaltung"
@@ -2802,17 +3117,8 @@ msgstr "IP Verwaltung"
 msgid "Manage SQL"
 msgstr "Datenbanken"
 
-msgid "Manage Users"
-msgstr "Benutzerverwaltung"
-
-msgid "Manage aliasses"
-msgstr "Verwaltung Aliasses"
-
 msgid "Manage domain alias"
 msgstr "Domain Alias verwalten"
-
-msgid "Manage domains"
-msgstr "Domainverwaltung"
 
 msgid "Manage htaccess users and groups"
 msgstr "Htaccess-Benutzer und Gruppen verwalten"
@@ -2971,9 +3277,6 @@ msgstr "verschieben"
 msgid "Moving aborted."
 msgstr "Verschieben abgebrochen."
 
-msgid "MySQL support"
-msgstr "MySQL-Unterstützung"
-
 msgid "N/A"
 msgstr "N/V"
 
@@ -2991,6 +3294,9 @@ msgstr "Netzwerkschnittstelle"
 
 msgid "Never"
 msgstr "Niemals"
+
+msgid "Never expire"
+msgstr ""
 
 msgid "Never expires"
 msgstr "Läuft Nie ab"
@@ -3055,8 +3361,8 @@ msgstr "Kein eigenes Menü gefunden"
 msgid "No customer accounts found."
 msgstr "Keine Kunden Konten gefunden."
 
-msgid "No database updates available."
-msgstr "Kein Datenbank Updates Verfügbar."
+msgid "No database update available."
+msgstr ""
 
 msgid "No domain alias system errors"
 msgstr "Keine Fehler im Domain-Alias-System"
@@ -3085,12 +3391,10 @@ msgstr "Keine Gruppe gefunden"
 msgid "No hosting plan available"
 msgstr ""
 
-msgid ""
-"No hosting plan available for purchasing. Please contact your system "
-"administrator."
-msgstr "Es existiert kein Hosting-Tarif für den Einkauf. Bitte kontaktieren Sie Ihren Systemadministrator."
-
 msgid "No hosting plan available."
+msgstr ""
+
+msgid "No hosting plan available. Please contact your administrator."
 msgstr ""
 
 msgid "No htaccess related system errors"
@@ -3316,9 +3620,6 @@ msgstr "PHP exec() Funktion"
 
 msgid "PHP settings"
 msgstr "PHP Einstellungen"
-
-msgid "PHP support"
-msgstr "PHP-Unterstützung"
 
 msgid "POP3/IMAP in"
 msgstr "POP3/IMAP (in)"
@@ -3640,8 +3941,8 @@ msgstr ""
 msgid "Priority: %s\n"
 msgstr "Priorität: %s\n"
 
-msgid "Process updates"
-msgstr "Updates ausführen"
+msgid "Process update"
+msgstr ""
 
 msgid "Profile"
 msgstr "Profil"
@@ -3768,6 +4069,87 @@ msgstr "Datenbank benötigt?"
 msgid "Reseller"
 msgstr "Reseller"
 
+msgid "Reseller / Customer / Overview"
+msgstr ""
+
+msgid "Reseller / Customer / Overview / Domain Details"
+msgstr ""
+
+msgid "Reseller / Customers / Add Customer - Next Step"
+msgstr ""
+
+msgid "Reseller / Customers / Add Customer / Next Step"
+msgstr ""
+
+msgid "Reseller / Customers / Add customer"
+msgstr ""
+
+msgid "Reseller / Customers / Circular"
+msgstr ""
+
+msgid "Reseller / Customers / Domain Aliases"
+msgstr ""
+
+msgid "Reseller / Customers / Domain Aliases / Add Alias"
+msgstr ""
+
+msgid "Reseller / Customers / Domain Aliases / Edit Alias"
+msgstr ""
+
+msgid "Reseller / Customers / Lost Password Email"
+msgstr ""
+
+msgid "Reseller / Customers / Overview / Edit Domain"
+msgstr ""
+
+msgid "Reseller / Customers / Welcome Mail"
+msgstr ""
+
+msgid "Reseller / General / Overview"
+msgstr ""
+
+msgid "Reseller / General / Software Upload"
+msgstr ""
+
+msgid "Reseller / Hosting Plan / Add Hosting Plan"
+msgstr ""
+
+msgid "Reseller / Profile / Account Summary"
+msgstr ""
+
+msgid "Reseller / Profile / Language"
+msgstr ""
+
+msgid "Reseller / Profile / Layout"
+msgstr ""
+
+msgid "Reseller / Profile / Password"
+msgstr ""
+
+msgid "Reseller / Profile / Personal Data"
+msgstr ""
+
+msgid "Reseller / Statistics / IP Usage"
+msgstr ""
+
+msgid "Reseller / Statistics / Overview / Domain Statistics - {DOMAIN_NAME}"
+msgstr ""
+
+msgid "Reseller / Support / New Ticket"
+msgstr ""
+
+msgid "Reseller / Support / Tickets Closed"
+msgstr ""
+
+msgid "Reseller / Support / Tickets Open"
+msgstr ""
+
+msgid "Reseller / Support / View Ticket"
+msgstr ""
+
+msgid "Reseller /Hosting Plans / {TR_DYNAMIC_TITLE}"
+msgstr ""
+
 msgid "Reseller Name"
 msgstr "Name des Resellers"
 
@@ -3807,6 +4189,9 @@ msgstr "Name des Resellers"
 msgid "Reseller software list"
 msgstr "Reseller Softwareliste"
 
+msgid "Reseller statistics"
+msgstr ""
+
 msgid "Reseller successfully added."
 msgstr "Reseller erfolgreich hinzugefügt."
 
@@ -3824,9 +4209,6 @@ msgstr "Reseller mit Berechtigungen insgesamt"
 
 msgid "Reseller's layout color successfully updated."
 msgstr "Reseller Layout Farbe erfolgreich aktualisiert."
-
-msgid "Reseller's statistics"
-msgstr "Reseller  Statistiken "
 
 msgid "Reseller/IP usage statistics"
 msgstr "Reseller/IP Nutzungsstatistiken"
@@ -3848,9 +4230,6 @@ msgstr "Wiederherstellen"
 
 msgid "Restore backup"
 msgstr "Sicherung wiederherstellen"
-
-msgid "Return to previous menu"
-msgstr "Zurück zum vorherigen Menü"
 
 msgid "Revision date"
 msgstr "MiB"
@@ -4035,9 +4414,6 @@ msgid ""
 "Separate multiple email addresses with a space, a comma or a line-break."
 msgstr "Trennen Sie mehrere E-Mail-Adressen mit einem Leerzeichen, ein Komma oder einen Zeilenumbruch."
 
-msgid "Server day statistics"
-msgstr "Server Tagesstatistik"
-
 msgid "Server ports"
 msgstr "Serverports"
 
@@ -4180,6 +4556,12 @@ msgstr "Software Installer Optionen"
 msgid "Software installer options successfully updated."
 msgstr "Software Installer Optionen erfolgreich aktualisiert."
 
+msgid "Software installer require PHP support."
+msgstr ""
+
+msgid "Software installer require PHP."
+msgstr ""
+
 msgid "Software name"
 msgstr "Name der Software"
 
@@ -4317,9 +4699,6 @@ msgstr "Subdomain weiterleitung"
 msgid "Subdomain mail"
 msgstr "Subdomain E-Mail"
 
-msgid "Subdomain mails"
-msgstr "Subdomain E-Mail Konten"
-
 msgid "Subdomain name"
 msgstr "Subdomainname"
 
@@ -4354,9 +4733,6 @@ msgstr "Änderungen übernehmen"
 
 msgid "Support"
 msgstr "Support"
-
-msgid "Support Ticket System"
-msgstr "Support Ticket System"
 
 msgid "Support system"
 msgstr "Support System"
@@ -4827,12 +5203,12 @@ msgid ""
 "logs or your mail for more information."
 msgstr ""
 
-msgid "Unavailable"
+#, php-format
+msgid "Unable to upload file. Max. upload filesize (%1$d MB) reached?"
 msgstr ""
 
-#, php-format
-msgid "Unbale not upload file. Max. upload filesize (%1$d MB) reached?"
-msgstr "Kann Datei nicht hochladen. Max. upload Dateigrösse (%1$d MB) erreicht?"
+msgid "Unavailable"
+msgstr ""
 
 msgid "Under maintenance mode, only administrators can login."
 msgstr "Im Wartungsmodus. Nur Administratoren können sich einloggen."
@@ -4972,6 +5348,9 @@ msgstr "Benutzer Zuordnung"
 msgid "User auth"
 msgstr "Erlaubte Benutzer"
 
+msgid "User data successfully updated"
+msgstr ""
+
 msgid "User data were not updated."
 msgstr " Benutzerdaten wurden nicht aktualisiert."
 
@@ -5018,9 +5397,6 @@ msgstr ""
 msgid "User session successfully killed for password change."
 msgstr "Benutzersitzung wurde erfolgreich für Passwort-ändern gelöscht."
 
-msgid "User session was successfully killed for password change"
-msgstr "Benutzersitzung wurde erfolgreich für Passwort-ändern gelöscht."
-
 msgid "User successfully disconnected."
 msgstr "Benutzer erfolgreich getrennt."
 
@@ -5041,9 +5417,6 @@ msgstr "Benutzer"
 
 msgid "Users and groups"
 msgstr "Benutzer und Gruppen"
-
-msgid "Users list"
-msgstr "Benutzerliste"
 
 #, php-format
 msgid "Value for the %s directive"
@@ -5088,6 +5461,9 @@ msgstr "Aliase anzeigen"
 
 msgid "View certificates"
 msgstr "Zertifikat anzeigen"
+
+msgid "View hosting plan"
+msgstr ""
 
 msgid "View ticket"
 msgstr "Zeige Ticket"
@@ -5492,8 +5868,8 @@ msgid "You have reached your domains limit.<br />You cannot add more domains."
 msgstr "Sie haben ihr Domainlimit erreicht.<br />Sie können keine weiteren Domains hinzufügen."
 
 #, php-format
-msgid "You have received %d new support questions."
-msgstr "Sie haben %d neue Support-Fragen erhalten."
+msgid "You have received %d new support request."
+msgstr ""
 
 #, php-format
 msgid "You have received %s new support questions."
@@ -5516,6 +5892,9 @@ msgstr "Sie müssen mindestens eine Weiterleitungs-Adresse angeben."
 
 msgid "You must first generate a password"
 msgstr "Sie müssen erst ein Passwort generieren"
+
+msgid "You must omit 'www'. It will be added automatically."
+msgstr ""
 
 msgid "You must provide a password."
 msgstr "Sie müssen ein Passwort angeben."
@@ -5602,6 +5981,9 @@ msgstr "ZB"
 msgid "ZiB"
 msgstr "ZiB"
 
+msgid "Zip"
+msgstr ""
+
 msgid "Zip code"
 msgstr "PLZ"
 
@@ -5687,278 +6069,17 @@ msgstr "getInfo() ist nicht eingebaut in %s und %s wurde nicht gefunden. <br /> 
 msgid "help"
 msgstr "Hilfe"
 
-msgid "i-MSCP - Admin - Manage custom menus"
-msgstr "i-MSCP - Admin - Eigene Menüs verwalten"
-
-msgid "i-MSCP - Admin - Mass mail"
-msgstr ""
-
-msgid "i-MSCP - Admin / Add hosting plan"
-msgstr "i-MSCP - Admin / Hosting-Tarif hinzufügen"
-
 msgid "i-MSCP - Admin / Customer Account Deletion Validation"
 msgstr ""
-
-msgid "i-MSCP - Admin / Edit customer"
-msgstr "i-MSCP - Admin / Kunde bearbeiten"
-
-msgid "i-MSCP - Admin / General information"
-msgstr "i-MSCP - Admin / Allgemeine Informationen"
-
-msgid "i-MSCP - Admin / General settings / IPs management"
-msgstr "i-MSCP - Admin / Allgemeine Einstellungen / IP-Verwaltung"
-
-msgid "i-MSCP - Admin / Internationalisation"
-msgstr "i-MSCP - Admin / Internationalisierung"
-
-msgid "i-MSCP - Admin / Manage Hosting Plans / Edit hosting plan"
-msgstr ""
-
-msgid "i-MSCP - Admin / Manage Users"
-msgstr ""
-
-msgid "i-MSCP - Admin / Manage Users / Customer Account Deletion Validation"
-msgstr ""
-
-msgid "i-MSCP - Admin / Manage users / Add Reseller"
-msgstr "Benutzer verwalten / Reseller hinzufügen"
-
-msgid "i-MSCP - Admin / Manage users / Edit Reseller"
-msgstr "i-MSCP - Admin / Benutzer Verwalten / Reseller bearbeiten"
-
-msgid "i-MSCP - Admin / My Profile"
-msgstr "i-MSCP - Admin / Mein Profil"
-
-msgid "i-MSCP - Admin / Password"
-msgstr "i-MSCP - Admin / Passwort"
-
-msgid "i-MSCP - Admin / Profile /  Language"
-msgstr "i-MSCP - Admin / Profil /  Sprache"
-
-msgid "i-MSCP - Admin / Profile /  Personal Data"
-msgstr "i-MSCP - Admin / Profil /  Persönliche Daten"
-
-msgid "i-MSCP - Admin / Profile / Layout"
-msgstr "i-MSCP - Admin / Profil / Layout"
-
-msgid "i-MSCP - Admin / Reseller customer statistics"
-msgstr "i-MSCP - Admin / Reseller Kunden Statistik"
-
-msgid "i-MSCP - Admin / Reseller statistics"
-msgstr "i-MSCP - Admin / Reseller Statistik"
-
-msgid "i-MSCP - Admin / Settings"
-msgstr "i-MSCP - Admin/Einstellungen"
-
-msgid "i-MSCP - Admin / Settings / Plugin management"
-msgstr "i-MSCP - Admin / Einstellungen / Plugin Management"
-
-msgid "i-MSCP - Admin / Settings / Server traffic settings"
-msgstr "i-MSCP - Admin / Einstellungen / Server Traffic Einstellungen"
-
-msgid "i-MSCP - Admin / Settings / Service ports"
-msgstr "i-MSCP - Admin / Einstellungen / Dienst-Ports"
-
-msgid "i-MSCP - Admin / Statistics  / Server statistics"
-msgstr "i-MSCP - Admin / Statistiken / Server Statistiken "
-
-msgid ""
-"i-MSCP - Admin / Statistics / Reseller's statistics / Customer statistics / "
-"Domain_statistics"
-msgstr "i-MSCP - Admin / Statistik / Reseller Statistik / Kunden Statistik / Domain Statistik"
-
-msgid ""
-"i-MSCP - Admin / Statistics / Server statistics / Server day statistics"
-msgstr "i-MSCP - Admin / Statistiken / Server Statistiken / Server Tages Statistiken"
-
-msgid "i-MSCP - Admin / Support Ticket System / Closed Tickets"
-msgstr "i-MSCP - Admin / Support Ticket System / Geschlossene Tickets"
-
-msgid "i-MSCP - Admin / Support Ticket System / Open Tickets"
-msgstr "i-MSCP - Admin / Support Ticket System / Offene Tickets"
-
-msgid "i-MSCP - Admin / Support Ticket System / View Ticket"
-msgstr "i-MSCP - Admin / Support Ticket System / Tickets zeigen"
-
-msgid "i-MSCP - Admin / System tools / Database Update"
-msgstr "i-MSCP - Admin / Systemwerkzeuge / Datenbank Update"
-
-msgid "i-MSCP - Admin / Users management / Domain Details"
-msgstr "i-MSCP - Admin / Benutzerverwaltung / Domain Details"
-
-msgid "i-MSCP - Admin/IP Usage"
-msgstr "i-MSCP - Administration / IP Verwendung"
-
-msgid "i-MSCP - Admin/Lost password email setup"
-msgstr "i-MSCP - Admin/\"Kennwort vergessen\" E-Mail Einstellungen"
-
-msgid "i-MSCP - Admin/Maintenance mode"
-msgstr "i-MSCP - Admin/Wartungsmodus"
-
-msgid "i-MSCP - Admin/Manage users / User assignment"
-msgstr "i-MSCP - Admin/Benutzer verwalten / Benutzer Assignment"
-
-msgid "i-MSCP - Admin/Manage users/Add User"
-msgstr "i-MSCP - Admin/Benutzerverwaltung/Benutzer anlegen"
-
-msgid "i-MSCP - Admin/Manage users/Email setup"
-msgstr "i-MSCP - Admin/Benutzerverwaltung/E-Mail-Einstellungen"
-
-msgid "i-MSCP - Admin/Manage users/Reseller assignment"
-msgstr "i-MSCP - Admin / Benutzerverwaltung / Reseller Zuordnung"
-
-msgid "i-MSCP - Administrator / Manage hosting Plans / Hosting plans"
-msgstr ""
-
-msgid "i-MSCP - Application Management"
-msgstr "i-MSCP - Application Management"
 
 msgid "i-MSCP - Application Management (Permissions)"
 msgstr "i-MSCP - Application Management (Berechtigungen)"
 
-msgid "i-MSCP - Client / Change Language"
-msgstr "i-MSCP - Kunde / Sprache Ändern"
-
-msgid "i-MSCP - Client / Mail Account / Add external mail server"
-msgstr "i-MSCP - Client / Mail Konten / Externe Mailserver"
-
-msgid "i-MSCP - Client / Mail Accounts / External mail servers"
-msgstr "i-MSCP - Client / Mail Konten / Externe Mailserver"
-
-msgid "i-MSCP - Client / Mail accounts / Activate auto-responder"
-msgstr "i-MSCP - Kunde / Mail-konto / Aktivieren der Auto-Antwort"
-
-msgid "i-MSCP - Client / Mail accounts / Edit auto-responder"
-msgstr "i-MSCP - Kunde / Mail-konto / Ändern der Auto-Antwort"
-
-msgid "i-MSCP - Client / Manage Domains"
+msgid "i-MSCP - Client/ Webtools / Protected Areas / {TR_DYNAMIC_TITLE}"
 msgstr ""
-
-msgid "i-MSCP - Client / Manage domains - Add subdomain"
-msgstr "i-MSCP - Kunde / Domains verwalten - Subdomain hinzufügen"
-
-msgid "i-MSCP - Client / Manage mail"
-msgstr "i-MSCP - Kunde / Mail Verwaltung"
-
-msgid "i-MSCP - Client / Manage mail / Add account"
-msgstr "i-MSCP - Kunde / Mail Verwaltung  / Account hinzufügen"
-
-msgid "i-MSCP - Client / Manage mail / Add catchall"
-msgstr "i-MSCP - Kunde / Mail Verwaltung  / Catchall hinzufügen"
-
-msgid "i-MSCP - Client / Manage mail / Catchall"
-msgstr "i-MSCP - Kunde / Mail Verwaltung / Catchall"
-
-msgid "i-MSCP - Client / Manage mail / Edit account"
-msgstr "i-MSCP - Kunde / Mail Verwaltung / Account bearbeiten"
-
-msgid "i-MSCP - Client / Manage mail / Edit quota"
-msgstr "i-MSCP - Client / Mail Konten / Limit ändern"
-
-msgid "i-MSCP - Client / Password"
-msgstr "i-MSCP - Kunde / Passwort"
-
-msgid "i-MSCP - Client / Support Ticket System / Closed Tickets"
-msgstr "i-MSCP - Kunde / Support Ticket System / Geschlossene Tickets"
-
-msgid "i-MSCP - Client / Support Ticket System / New Ticket"
-msgstr "i-MSCP - Kunde / Support Ticket System / Neues Ticket"
-
-msgid "i-MSCP - Client / Support Ticket System / Open Tickets"
-msgstr "i-MSCP - Kunde / Support Ticket System / Offene Tickets"
-
-msgid "i-MSCP - Client / Support Ticket System / View Ticket"
-msgstr "i-MSCP - Kunde / Support Ticket System / Ticket anzeigen"
-
-msgid "i-MSCP - Client / Webtools"
-msgstr "i-MSCP - Kunde / Webtools"
-
-msgid "i-MSCP - Client / Webtools / Protected areas / Add htaccess user"
-msgstr "i-MSCP - Kunde / Webwerkzeuge / Geschützte Bereiche / htaccess-Benutzer hinzufügen"
-
-msgid "i-MSCP - Client / Webtools / Protected areas / Edit Htaccess user"
-msgstr "i-MSCP - Kunde / Webwerkzeuge / Geschützte Bereiche / htaccess-Benutzer bearbeiten"
-
-msgid "i-MSCP - Client / Webtools / Protected areas / Manage users and groups"
-msgstr "i-MSCP - Kunde / Webwerkzeuge / Benutzer und Gruppen verwalten"
-
-msgid "i-MSCP - Client / Webtools / Softwares"
-msgstr "i-MSCP - Kunde / Webwerkzeuge / Software"
-
-msgid "i-MSCP - Client / Webtools Protected areas / Add Htaccess group"
-msgstr "i-MSCP - Kunde / Webwerkzeuge / Geschützte Bereiche / htaccess-Gruppe hinzufügen"
-
-msgid "i-MSCP - Client/Add FTP Account"
-msgstr "i-MSCP - Kunde/FTP Account hinzufügen"
-
-msgid "i-MSCP - Client/Add SQL Database"
-msgstr "i-MSCP - Kunde/SQL-Datenbank anlegen"
-
-msgid "i-MSCP - Client/Add SQL User"
-msgstr "i-MSCP - Kunde/SQL-Benutzer anlegen"
-
-msgid "i-MSCP - Client/Change Personal Data"
-msgstr "i-MSCP - Kunde/Eigene Daten ändern"
-
-msgid "i-MSCP - Client/Change SQL User Password"
-msgstr "i-MSCP - Kunde/SQL-Benutzerpasswort ändern"
 
 msgid "i-MSCP - Client/Create CatchAll Mail Account"
 msgstr "i-MSCP - Kunde/Catch-All-Konto anlegen"
-
-msgid "i-MSCP - Client/Daily Backup"
-msgstr "i-MSCP - Kunde/Tägliches Backup"
-
-msgid "i-MSCP - Client/Edit FTP Account"
-msgstr "i-MSCP - Kunde/FTP-Zugang bearbeiten"
-
-msgid "i-MSCP - Client/Manage Error Custom Pages"
-msgstr "i-MSCP - Kunde/Eigene Fehlerseiten verwalten"
-
-msgid "i-MSCP - Client/Manage Ftp Accounts"
-msgstr ""
-
-msgid "i-MSCP - Client/Manage SQL"
-msgstr "i-MSCP - Kunde/Datenbankverwaltung"
-
-msgid "i-MSCP - Client/Manage certificates"
-msgstr "i-MSCP - Kunde/Zertifikate verwalten"
-
-msgid "i-MSCP - Client/Webtools"
-msgstr "i-MSCP - Kunde/Webtools"
-
-msgid "i-MSCP - Domain / Edit"
-msgstr "i-MSCP - Domäne / Bearbeiten"
-
-msgid "i-MSCP - Domain/Edit"
-msgstr "i-MSCP - Domain/Bearbeiten"
-
-msgid "i-MSCP - Ftp / Choose directory"
-msgstr "i-MSCP - FTP / Verzeichnis auswählen"
-
-msgid "i-MSCP - Install Software"
-msgstr "i-MSCP - Software installieren"
-
-msgid "i-MSCP - Manage Customers / Manage Aliasses"
-msgstr ""
-
-msgid "i-MSCP - Manage Domain / Add Custom DNS  record"
-msgstr ""
-
-msgid "i-MSCP - Manage Domain / Edit Custom DNS record"
-msgstr ""
-
-msgid "i-MSCP - Manage Domain Alias/Edit Alias"
-msgstr "i-MSCP - Domain-Alias verwalten/Alias bearbeiten"
-
-msgid "i-MSCP - Manage Users / Sessions"
-msgstr ""
-
-msgid "i-MSCP - Manage domains / Edit Subdomain"
-msgstr "i-MSCP - Domains verwalten / Editiere Subdomains"
-
-msgid "i-MSCP - Multi Server Control Panel"
-msgstr "i-MSCP - Multi Server Control Panel"
 
 msgid "i-MSCP - Multi Server Control Panel / Login"
 msgstr "i-MSCP - Multi Server Control Panel / Anmeldung"
@@ -5969,77 +6090,17 @@ msgstr "i-MSCP - Multi Server Systemsteuerung / Passwort vergessen"
 msgid "i-MSCP - Multi Server Control Panel / Maintenance"
 msgstr "i-MSCP - Multi Server Systemsteuerung / Wartung"
 
-msgid "i-MSCP - Reseller / Add customer - step 1"
-msgstr "i-MSCP - Reseller / Kunde hinzufügen - Schritt 1"
-
-msgid "i-MSCP - Reseller / Add hosting plan"
-msgstr "i-MSCP - Reseller / Hosting-Tarif hinzufügen"
-
-msgid "i-MSCP - Reseller / General information"
-msgstr "i-MSCP - Reseller / Allgemeine Informationen"
-
-msgid "i-MSCP - Reseller / Layout"
-msgstr "i-MSCP - Reseller / Layout"
-
-msgid "i-MSCP - Reseller / Manage Hosting Plans / Edit hosting plan"
-msgstr ""
-
-msgid "i-MSCP - Reseller / Manage Hosting Plans / View hosting plan"
+msgid "i-MSCP - Reseller / Manage Customers / Customers / Edit Customer"
 msgstr ""
 
 msgid "i-MSCP - Reseller / Manage hosting Plans / Hosting plans"
 msgstr ""
 
-msgid "i-MSCP - Reseller / My Profile"
-msgstr "i-MSCP - Reseller / Mein Profil"
-
-msgid "i-MSCP - Reseller / Statistics /  Customers statistics"
-msgstr "i-MSCP - Reseller / Statistiken /  Kunden Statistiken"
-
-msgid "i-MSCP - Reseller / Support Ticket System / Closed Tickets"
-msgstr "i-MSCP - Reseller / Support Ticket System / Geschlossene Tickets"
-
-msgid "i-MSCP - Reseller / Support Ticket System / New Ticket"
-msgstr "i-MSCP - Reseller / Support Ticket System / Neues Ticket"
-
-msgid "i-MSCP - Reseller / Support Ticket System / Open Tickets"
-msgstr "i-MSCP - Reseller / Support Ticket System / Offene Tickets"
-
-msgid "i-MSCP - Reseller / Support Ticket System / View Ticket"
-msgstr "i-MSCP - Reseller / Support Ticket System / Ticket einsehen"
-
-msgid "i-MSCP - Reseller / Users management / Domain Details"
-msgstr "i-MSCP - Reseller / Benutzerverwaltung / Domain Details"
-
-msgid "i-MSCP - Reseller/Change Language"
-msgstr "i-MSCP - Reseller/Sprache ändern"
-
-msgid "i-MSCP - Reseller/Change Personal Data"
-msgstr "i-MSCP - Reseller/Persönliche Daten ändern"
-
-msgid "i-MSCP - Reseller/IP Usage"
-msgstr "i-MSCP - Reseller/IP Usage"
-
-msgid "i-MSCP - Reseller/Lost password email setup"
-msgstr "i-MSCP - Reseller/\"Passwort vergessen\"-E-Mail-Einstellungen"
-
-msgid "i-MSCP - Reseller/Manage users/Email setup"
-msgstr "i-MSCP - Reseller/Benutzerverwaltung/E-Mail-Einstellungen"
-
 msgid "i-MSCP - Software Installer / Management"
 msgstr "i-MSCP - Software Installer / Management"
 
-msgid "i-MSCP - Software Management"
-msgstr "i-MSCP - Software Management"
-
 msgid "i-MSCP - Software Management (Permissions)"
 msgstr "i-MSCP - Software Management (Rechte)"
-
-msgid "i-MSCP - Software details"
-msgstr "i-MSCP - Software details"
-
-msgid "i-MSCP - Software installer options"
-msgstr "i-MSCP - Software installer Optionen"
 
 msgid "i-MSCP - Softwares Management"
 msgstr "i-MSCP - Softwares Management"
@@ -6047,65 +6108,14 @@ msgstr "i-MSCP - Softwares Management"
 msgid "i-MSCP - Sofware Management"
 msgstr "i-MSCP - Sofware Management"
 
-msgid "i-MSCP - User/Add domain account - step 2"
-msgstr "i-MSCP - Benutzer / Domainkonto hinzufügen - Schritt 2"
-
-msgid "i-MSCP - User/Add domain account - step 3"
-msgstr "i-MSCP - Benutzer / Domainkonto hinzufügen - Schritt 3"
-
-msgid "i-MSCP - User/Add domain alias"
-msgstr "i-MSCP - Benutzer / Domain-Alias ​​hinzufügen"
-
-msgid "i-MSCP - Users"
-msgstr "i-MSCP - Benutzer"
-
-msgid "i-MSCP - Users/Edit"
-msgstr "i-MSCP - Benutzer/Bearbeiten"
-
-msgid "i-MSCP - admin / System tools / System information"
-msgstr "i-MSCP - Admin / System Tools / System Information"
-
-msgid "i-MSCP - client / Setting Layout"
-msgstr "i-MSCP - Kunde / Einstellungen Layout"
-
-msgid "i-MSCP / Client / Manage domains / PHP Editor"
-msgstr "i-MSCP / Kunde / Domänen verwalten / PHP-Editor"
-
-msgid "i-MSCP / Software Installer / Management"
-msgstr "i-MSCP / Software Installer / Management"
-
 msgid "i-MSCP / Softwares Installer / Management"
 msgstr "i-MSCP / Softwares Installer / Management"
-
-msgid "i-MSCP Admin / General Information / Server Status"
-msgstr "i-MSCP Admin / Allgemeine Information / Server Status"
-
-msgid "i-MSCP Admin / System Tools / Anti-Rootkits Tools Log Checker"
-msgstr "i-MSCP Admin / Systemtools / Anti-Rootkit-Tools-Logchecker"
-
-msgid "i-MSCP Client / Domain statistics"
-msgstr "i-MSCP Kunde / Domänenstatistiken"
-
-msgid "i-MSCP Client / General Information"
-msgstr "i-MSCP Kunde / Allgemeine Informationen"
-
-msgid "i-MSCP Client : Add Alias"
-msgstr "i-MSCP Kunde: Alias anlegen"
 
 msgid "i-MSCP Daemon tools"
 msgstr "i-MSCP Daemon Tools"
 
 msgid "i-MSCP Notice"
 msgstr "i-MSCP Notiz"
-
-msgid "i-MSCP Reseller / Domain statistics"
-msgstr "i-MSCP Reseller / Domain Statistik"
-
-msgid "i-MSCP Reseller/Add Alias"
-msgstr "i-MSCP Reseller/Alias hinzufügen"
-
-msgid "i-MSCP Reseller/Circular"
-msgstr "i-MSCP Reseller/Rundschreiben"
 
 msgid "i-MSCP Software installer / Web software repository"
 msgstr ""
@@ -6118,9 +6128,6 @@ msgstr "i-MSCP Debugger"
 
 msgid "i-MSCP updates"
 msgstr "i-MSCP Updates"
-
-msgid "iMSCP - Admin/Admin Log"
-msgstr "iMSCP - Admin/Admin Log"
 
 msgid "install"
 msgstr "installieren"
@@ -6178,9 +6185,6 @@ msgstr "älter als 3 Monate"
 
 msgid "older than 6 months"
 msgstr "älter als 6 Monate"
-
-msgid "or Check for <strong>never Expire</strong>"
-msgstr "oder markieren für <strong>nie Ablaufen</strong>"
 
 #, php-format
 msgid "or remote file (Max: %1$d MB)"
