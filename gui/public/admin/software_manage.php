@@ -54,9 +54,7 @@ $tpl->define_dynamic(
 		'package_install_link' => 'page',
 		'package_info_link' => 'page'));
 
-list(
-	$use_webdepot, $webdepot_xml_url, $webdepot_last_update
-	) = get_application_installer_conf();
+list($use_webdepot, $webdepot_xml_url, $webdepot_last_update) = get_application_installer_conf();
 
 if ($use_webdepot) {
 	$error = '';
@@ -64,6 +62,7 @@ if ($use_webdepot) {
 	if (isset($_POST['uaction']) && $_POST['uaction'] == "updatewebdepot") {
 		//$xml_file =  @file_get_contents(encode_idna(strtolower(clean_input($_POST['webdepot_xml_url']))));
 		$xml_file = @file_get_contents($webdepot_xml_url);
+
 		if ($xml_file === false) {
 			set_page_message(tr("Unable to read Web software repository index file."), 'error');
 			$error = 1;
@@ -126,6 +125,8 @@ if (isset($_POST['upload']) && $_SESSION['software_upload_token'] == $_POST['sen
 		$user_id = $_SESSION['user_id'];
 		$upload = 1;
 
+		$fname = '';
+
 		if ($file == 0) {
 			$fname = $_FILES['sw_file']['name'];
 		} elseif ($file == 1) {
@@ -177,7 +178,7 @@ if (isset($_POST['upload']) && $_SESSION['software_upload_token'] == $_POST['sen
 
 				set_page_message(
 					tr(
-						'Unbale not upload file. Max. upload filesize (%1$d MB) reached?',
+						'Unable to upload file. Max. upload filesize (%1$d MB) reached?',
 						ini_get('upload_max_filesize')
 					),
 					'error'
@@ -274,7 +275,7 @@ if (isset($_POST['upload']) && $_SESSION['software_upload_token'] == $_POST['sen
 
 $tpl->assign(
 	array(
-		'TR_PAGE_TITLE' => tr('i-MSCP / Software Installer / Management'),
+		'TR_PAGE_TITLE' => tr('Admin / Settings / Software Management'),
 		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => layout_getUserLogo()));
 

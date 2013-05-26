@@ -42,106 +42,87 @@
 /**
  * Check input data.
  *
- * @return bool TRUE if data are valid, FALSE otherwise
+ * @return void
  */
-function check_user_data()
+function reseller_checkData()
 {
-	global $dmn_name, $dmn_expire, $dmn_chp, $dmn_tpl, $validation_err_msg;
-
 	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
 
-	if (isset($_POST['dmn_name'])) {
-		$dmn_name = strtolower(trim($_POST['dmn_name']));
+	if (isset($_POST['dmn_name']) && $_POST['dmn_name'] != '') {
+		$dmnName = strtolower(trim($_POST['dmn_name']));
+	} else {
+		set_page_message(tr('Domain name must be filled.'), 'error');
+		return;
 	}
 
-	if (!validates_dname($dmn_name)) {
+	if (!validates_dname($dmnName)) {
+		global $validation_err_msg;
 		set_page_message($validation_err_msg, 'error');
-		return false;
+		return;
 	}
 
 	// Must be perfomed after domain names syntax validation
-	$dmn_name = encode_idna($dmn_name);
+	$dmnName = encode_idna($dmnName);
 
-	if (imscp_domain_exists($dmn_name, $_SESSION['user_id'])) {
+	if (imscp_domain_exists($dmnName, $_SESSION['user_id'])) {
 		set_page_message(tr('Domain already registered on the system.'), 'error');
-		return false;
-	} else if ($dmn_name == $cfg->BASE_SERVER_VHOST) {
+		return;
+	} else if ($dmnName == $cfg->BASE_SERVER_VHOST) {
 		set_page_message(tr('Master domain cannot be used.'), 'error');
-		return false;
+		return;
 	}
 
 	if (isset($_POST['datepicker']) && !empty($_POST['datepicker'])) {
-		if (($dmn_expire = strtotime($_POST['datepicker'])) === false) {
+		if (($dmnExpire = strtotime($_POST['datepicker'])) === false) {
 			set_page_message(tr('Invalid expiration date.'), 'error');
-			return false;
+			return;
 		}
 	} elseif (isset($_POST['never_expire'])) {
-		$dmn_expire = 0;
+		$dmnExpire = 0;
 	} else {
 		set_page_message(tr('Domain expiration date must be filled.'), 'error');
+		return;
 	}
 
 	// Get hosting plan name if one is set
 	if (isset($_POST['dmn_tpl'])) {
-		$dmn_tpl = $_POST['dmn_tpl'];
+		$hpId = clean_input($_POST['dmn_tpl']);
+	} else {
+		$hpId = 0;
 	}
 
 	// Whether or not reseller want customize hosting plan
-	if((isset($cfg->HOSTING_PLANS_LEVEL) && $cfg->HOSTING_PLANS_LEVEL == 'admin')) {
-		$dmn_chp = '_no_';
-	} elseif(!isset($_POST['chtpl'])) {
-		$dmn_chp = '_no_';
+	if ((isset($cfg->HOSTING_PLANS_LEVEL) && $cfg->HOSTING_PLANS_LEVEL == 'admin')) {
+		$customizeHp = '_no_';
+	} elseif (!isset($_POST['chtpl'])) {
+		$customizeHp = '_no_';
 	} else {
-		$dmn_chp = $_POST['chtpl'];
+		$customizeHp = $_POST['chtpl'];
 	}
 
 	// Reseller want customise hosting plan or not hosting plan is provided
-	if ($dmn_chp == '_yes_' || ! isset($_POST['dmn_tpl'])) {
-		$_SESSION['dmn_name'] = $dmn_name;
-		$_SESSION['dmn_expire'] = $dmn_expire;
-		$_SESSION['dmn_tpl'] = '0';
+	if (!$hpId || $customizeHp == '_yes_') {
+		$_SESSION['dmn_name'] = $dmnName;
+		$_SESSION['dmn_expire'] = $dmnExpire;
+		$_SESSION['dmn_tpl'] = $hpId;
 		$_SESSION['chtpl'] = '_yes_';
 		$_SESSION['step_one'] = '_yes_';
 
 		redirectTo('user_add2.php');
 	} else {
-		if (reseller_limits_check($_SESSION['user_id'], $dmn_tpl)) {
-			$_SESSION['dmn_name'] = $dmn_name;
-			$_SESSION['dmn_expire'] = $dmn_expire;
-			$_SESSION['dmn_tpl'] = $dmn_chp;
-			$_SESSION['chtpl'] = $dmn_tpl;
+		if (reseller_limits_check($_SESSION['user_id'], $hpId)) {
+			$_SESSION['dmn_name'] = $dmnName;
+			$_SESSION['dmn_expire'] = $dmnExpire;
+			$_SESSION['dmn_tpl'] = $hpId;
+			$_SESSION['chtpl'] = $customizeHp;
 			$_SESSION['step_one'] = '_yes_';
 
 			redirectTo('user_add3.php');
 		} else {
 			set_page_message(tr('Hosting plan limits exceed reseller limits.'), 'error');
-			return false;
 		}
 	}
-
-	return true;
-}
-
-/**
- * Generates empty page.
- *
- * @param  iMSCP_pTemplate $tpl Template engine
- * @return void
- */
-function get_empty_au1_page($tpl)
-{
-	/** @var $cfg iMSCP_Config_Handler_File */
-	$cfg = iMSCP_Registry::get('config');
-
-	$tpl->assign(
-		array(
-			'DOMAIN_NAME_VALUE' => '',
-			'DATEPICKER_VALUE' => '',
-			'CHTPL1_VAL' => '',
-			'CHTPL2_VAL' => $cfg->HTML_CHECKED
-		)
-	);
 }
 
 /**
@@ -150,34 +131,30 @@ function get_empty_au1_page($tpl)
  * @param  iMSCP_pTemplate $tpl Template engine
  * @return void
  */
-function get_data_au1_page($tpl)
+function reseller_generatePage($tpl)
 {
-	global $dmn_name, $dmn_chp;
-
 	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
 
 	$tpl->assign(
 		array(
-			'DOMAIN_NAME_VALUE' => tohtml($dmn_name),
+			'DOMAIN_NAME_VALUE' => isset($_POST['dmn_name']) ? tohtml($_POST['dmn_name']) : '',
 			'DATEPICKER_VALUE' => isset($_POST['datepicker']) ? tohtml($_POST['datepicker']) : '',
-			'CHTPL1_VAL' => $dmn_chp == '_yes_' ? $cfg->HTML_CHECKED : '',
-			'CHTPL2_VAL' => $dmn_chp == '_yes_' ? '' : $cfg->HTML_CHECKED
+			'CHTPL1_VAL' => (isset($_POST['chtpl']) && $_POST['chtpl'] == '_yes_') ? $cfg->HTML_CHECKED : '',
+			'CHTPL2_VAL' => (isset($_POST['chtpl']) && $_POST['chtpl'] == '_yes_') ? '' : $cfg->HTML_CHECKED
 		)
 	);
 }
 
 /**
- * Get list with hosting plan for selection.
+ * Generate hosting plan list.
  *
  * @param iMSCP_pTemplate $tpl Template engine
- * @param int $reseller_id Reseller unique identifier
+ * @param int $resellerId Reseller unique identifier
  * @return void
  */
-function get_hp_data_list($tpl, $reseller_id)
+function reseller_generateHostingPlanList($tpl, $resellerId)
 {
-	global $dmn_tpl;
-
 	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
 
@@ -202,31 +179,28 @@ function get_hp_data_list($tpl, $reseller_id)
 		$tpl->assign('CUSTOMIZE_HOSTING_PLAN_BLOCK', '');
 
 		if (!$stmt->rowCount()) {
-			set_page_message(tr('No hosting plan available for purchasing. Please contact your system administrator.'), 'error');
+			set_page_message(tr('No hosting plan available. Please contact your administrator.'), 'error');
 			$tpl->assign('ADD_CUSTOMER_BLOCK', '');
 		}
 	} else {
 		$query = "SELECT `id`, `name`, `props`, `status` FROM `hosting_plans` WHERE `reseller_id` = ? ORDER BY `name`";
-		$stmt = exec_query($query, $reseller_id);
+		$stmt = exec_query($query, $resellerId);
 	}
 
 	if ($stmt->rowCount()) {
 		$hasHostingPlan = false;
 
 		while (($data = $stmt->fetchRow())) {
-			list(, , , , , , , , , , , , $hp_allowsoftware) = explode(';', $data['props']);
+			list(, , , , , , , , , , , , $aps) = explode(';', $data['props']);
 
-			if (
-				$hp_allowsoftware == '_no_' || $hp_allowsoftware == '' ||
-				($hp_allowsoftware == '_yes_' && get_reseller_sw_installer($reseller_id) == 'yes')
-			) {
+			if ($aps == '_no_' || $aps == '' || ($aps == '_yes_' && resellerHasFeature('aps'))) {
 				$hasHostingPlan = true;
-				$dmn_tpl = isset($dmn_tpl) ? $dmn_tpl : $data['id'];
+				$hpId = isset($_POST['dmn_tpl']) ? $_POST['dmn_tpl'] : $data['id'];
 				$tpl->assign(
 					array(
 						'HP_NAME' => tohtml($data['name']),
 						'HP_ID' => $data['id'],
-						'HP_SELECTED' => ($data['id'] == $dmn_tpl) ? $cfg->HTML_SELECTED : ''
+						'HP_SELECTED' => ($data['id'] == $hpId) ? $cfg->HTML_SELECTED : ''
 					)
 				);
 
@@ -235,7 +209,7 @@ function get_hp_data_list($tpl, $reseller_id)
 		}
 
 		if (!$hasHostingPlan) {
-			set_page_message(tr('No hosting plan available for purchasing. Please contact your system administrator.'), 'error');
+			set_page_message(tr('No hosting plan available. Please contact your administrator.'), 'error');
 			$tpl->assign('ADD_CUSTOMER_BLOCK', '');
 		}
 	} else {
@@ -257,6 +231,10 @@ check_login('reseller');
 /** @var $cfg iMSCP_Config_Handler_File */
 $cfg = iMSCP_Registry::get('config');
 
+if (isset($_POST['uaction']) && $_POST['uaction'] == 'user_add_next') {
+	reseller_checkData();
+}
+
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic(
 	array(
@@ -272,34 +250,27 @@ $tpl->define_dynamic(
 
 $tpl->assign(
 	array(
-		'TR_PAGE_TITLE' => tr('i-MSCP - Reseller / Add customer - step 1'),
+		'TR_PAGE_TITLE' => tr('Reseller / Customers / Add customer'),
 		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => layout_getUserLogo(),
 		'TR_ADD_USER' => tr('Add user'),
 		'TR_CORE_DATA' => tr('Core data'),
 		'TR_DOMAIN_NAME' => tr('Domain name'),
 		'TR_DOMAIN_EXPIRE' => tr('Domain expiration date'),
-		'TR_EXPIRE_CHECKBOX' => tr('or Check for <strong>never Expire</strong>'),
+		'TR_EXPIRE_CHECKBOX' => tr('Never expire'),
 		'TR_CHOOSE_HOSTING_PLAN' => tr('Choose hosting plan'),
 		'TR_PERSONALIZE_TEMPLATE' => tr('Personalise template'),
 		'TR_YES' => tr('yes'),
 		'TR_NO' => tr('no'),
 		'TR_NEXT_STEP' => tr('Next step'),
-		'TR_DMN_HELP' => tr("You do not need 'www.' i-MSCP will add it automatically.")
+		'TR_DMN_HELP' => tr("You must omit 'www'. It will be added automatically."),
+		'TR_HELP' => tr('Help')
 	)
 );
 
 generateNavigation($tpl);
-
-if (isset($_POST['uaction']) && $_POST['uaction'] == 'user_add_next') {
-	if (!check_user_data()) {
-		get_data_au1_page($tpl);
-	}
-} else {
-	get_empty_au1_page($tpl);
-}
-
-get_hp_data_list($tpl, $_SESSION['user_id']);
+reseller_generatePage($tpl);
+reseller_generateHostingPlanList($tpl, $_SESSION['user_id']);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');

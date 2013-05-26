@@ -128,7 +128,7 @@ if ($cfg->HOSTING_PLANS_LEVEL == 'admin') {
 
 	$tpl->assign(
 		array(
-			'TR_PAGE_TITLE' => tr('i-MSCP - Administrator / Manage hosting Plans / Hosting plans'),
+			'TR_PAGE_TITLE' => tr('Admin / Hosting Plans / Overview'),
 			'THEME_CHARSET' => tr('encoding'),
 			'ISP_LOGO' => layout_getUserLogo()
 		)

@@ -44,36 +44,36 @@
  *
  * @return bool
  */
-function init_in_values()
+function getPreviousPageData()
 {
-	global $dmn_name, $dmn_expire, $dmn_user_name, $hpid, $web_folder_protection;
+	global $dmnName, $dmnExpire, $dmnUsername, $hpId, $webFolderProtection;
 
 	if (isset($_SESSION['dmn_expire'])) {
-		$dmn_expire = $_SESSION['dmn_expire'];
+		$dmnExpire = $_SESSION['dmn_expire'];
 	}
 
 	if (isset($_SESSION['step_one'])) {
-		$step_two = "{$_SESSION['dmn_name']};{$_SESSION['dmn_tpl']};yes";
-		$hpid = $_SESSION['dmn_tpl'];
+		$stepTwo = "{$_SESSION['dmn_name']};{$_SESSION['dmn_tpl']};yes";
+		$hpId = $_SESSION['dmn_tpl'];
 		unset($_SESSION['dmn_name']);
 		unset($_SESSION['dmn_tpl']);
 		unset($_SESSION['chtpl']);
 		unset($_SESSION['step_one']);
 	} elseif (isset($_SESSION['step_two_data'])) {
-		$step_two = $_SESSION['step_two_data'];
+		$stepTwo = $_SESSION['step_two_data'];
 		unset($_SESSION['step_two_data']);
 	} elseif (isset($_SESSION['local_data'])) {
-		$step_two = $_SESSION['local_data'];
+		$stepTwo = $_SESSION['local_data'];
 		unset($_SESSION['local_data']);
 	} else {
-		$step_two = "'';0,yes";
+		$stepTwo = "'';0,yes";
 	}
 
-	list($dmn_name, $hpid, $web_folder_protection) = explode(';', $step_two);
+	list($dmnName, $hpId, $webFolderProtection) = explode(';', $stepTwo);
 
-	$dmn_user_name = $dmn_name;
+	$dmnUsername = $dmnName;
 
-	if (!validates_dname(decode_idna($dmn_name)) || $hpid == '') {
+	if (!validates_dname(decode_idna($dmnName)) || $hpId == '') {
 		return false;
 	}
 
@@ -85,40 +85,40 @@ function init_in_values()
  *
  * @return void
  */
-function gen_empty_data()
+function reseller_generateEmptyPage()
 {
-	global $user_email, $customer_id, $first_name, $last_name, $gender, $firm, $zip, $city, $state, $country,
-	       $street_one, $street_two, $mail, $phone, $fax, $domainIp;
+	global $userEmail, $customerId, $firstName, $lastName, $gender, $firm, $zip, $city, $state, $country, $street1,
+		$street2, $mail, $phone, $fax, $domainIp;
 
-	$user_email = $customer_id = $first_name = $last_name = $firm = $zip = $city = $state = $country = $street_one =
-	$street_two = $phone = $mail = $fax = $domainIp = '';
+	$userEmail = $customerId = $firstName = $lastName = $firm = $zip = $city = $state = $country = $street1 = $street2 =
+	$phone = $mail = $fax = $domainIp = '';
 	$gender = 'U';
 }
 
 /**
- * Generates page add user 3.
+ * Generates page.
  *
  * @param  iMSCP_pTemplate $tpl Template engine
  * @return void
  */
-function gen_user_add3_page($tpl)
+function reseller_generatePage($tpl)
 {
-	global $dmn_name, $hpid, $dmn_user_name, $user_email, $customer_id, $first_name, $last_name, $gender, $firm, $zip,
-		$city, $state, $country, $street_one, $street_two, $phone, $fax, $web_folder_protection;
+	global $dmnName, $hpId, $dmnUsername, $userEmail, $customerId, $firstName, $lastName, $gender, $firm, $zip, $city,
+		$state, $country, $street1, $street2, $phone, $fax, $webFolderProtection;
 
 	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
 
-	$dmn_user_name = decode_idna($dmn_user_name);
+	$dmnUsername = decode_idna($dmnUsername);
 
 	$tpl->assign(
 		array(
-			'VL_USERNAME' => tohtml($dmn_user_name),
-			'VL_USR_PASS' => passgen(),
-			'VL_MAIL' => tohtml($user_email),
-			'VL_USR_ID' => $customer_id,
-			'VL_USR_NAME' => tohtml($first_name),
-			'VL_LAST_USRNAME' => tohtml($last_name),
+			'VL_USERNAME' => tohtml($dmnUsername),
+			'VL_USR_PASS' => tohtml(passgen()),
+			'VL_MAIL' => tohtml($userEmail),
+			'VL_USR_ID' => $customerId,
+			'VL_USR_NAME' => tohtml($firstName),
+			'VL_LAST_USRNAME' => tohtml($lastName),
 			'VL_USR_FIRM' => tohtml($firm),
 			'VL_USR_POSTCODE' => tohtml($zip),
 			'VL_USRCITY' => tohtml($city),
@@ -127,28 +127,29 @@ function gen_user_add3_page($tpl)
 			'VL_FEMALE' => ($gender == 'F') ? $cfg->HTML_SELECTED : '',
 			'VL_UNKNOWN' => ($gender == 'U') ? $cfg->HTML_SELECTED : '',
 			'VL_COUNTRY' => tohtml($country),
-			'VL_STREET1' => tohtml($street_one),
-			'VL_STREET2' => tohtml($street_two),
+			'VL_STREET1' => tohtml($street1),
+			'VL_STREET2' => tohtml($street2),
 			'VL_PHONE' => tohtml($phone),
 			'VL_FAX' => tohtml($fax)
 		)
 	);
 
 	generate_ip_list($tpl, $_SESSION['user_id']);
-	$_SESSION['local_data'] = "$dmn_name;$hpid;$web_folder_protection";
+	$_SESSION['local_data'] = "$dmnName;$hpId;$webFolderProtection";
 }
 
 /**
  * Save data for new user in db.
  *
- * @param  int $reseller_id Reseller unique identifier
+ * @throws iMSCP_Exception_Database
+ * @param  int $resellerId Reseller unique identifier
  * @return void
  */
-function add_user_data($reseller_id)
+function reseller_addCustomer($resellerId)
 {
-	global $hpid, $dmn_name, $dmn_expire, $dmn_user_name, $admin_login, $user_email, $customer_id, $first_name,
-		$last_name, $gender, $firm, $zip, $city, $state, $country, $street_one, $street_two, $mail, $phone, $fax,
-		$inpass, $domainIp, $dns, $backup, $software_allowed, $external_mail, $web_folder_protection;
+	global $hpId, $dmnName, $dmnExpire, $dmnUsername, $userEmail, $customerId, $firstName, $lastName, $gender, $firm,
+		$zip, $city, $state, $country, $street1, $street2, $mail, $phone, $fax, $password, $domainIp, $dns, $backup,
+		$aps, $extMailServer, $webFolderProtection;
 
 	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
@@ -159,10 +160,10 @@ function add_user_data($reseller_id)
 	} else {
 		if (isset($cfg->HOSTING_PLANS_LEVEL) && $cfg->HOSTING_PLANS_LEVEL == 'admin') {
 			$query = 'SELECT `props` FROM `hosting_plans` WHERE `id` = ?';
-			$stmt = exec_query($query, $hpid);
+			$stmt = exec_query($query, $hpId);
 		} else {
 			$query = "SELECT `props` FROM `hosting_plans` WHERE `reseller_id` = ? AND `id` = ?";
-			$stmt = exec_query($query, array($reseller_id, $hpid));
+			$stmt = exec_query($query, array($resellerId, $hpId));
 		}
 
 		$data = $stmt->fetchRow();
@@ -170,22 +171,20 @@ function add_user_data($reseller_id)
 	}
 
 	list(
-		$php, $cgi, $sub, $als, $mail, $ftp, $sql_db, $sql_user, $traff, $disk, $backup, $dns, $software_allowed,
-		$phpini_system, $phpini_al_allow_url_fopen, $phpini_al_display_errors, $phpini_al_disable_functions,
-		$phpini_post_max_size, $phpini_upload_max_filesize, $phpini_max_execution_time, $phpini_max_input_time,
-		$phpini_memory_limit, $external_mail
-	) = array_pad(explode(';', $props), 24, 'no');
+		$php, $cgi, $sub, $als, $mail, $ftp, $sql_db, $sql_user, $traff, $disk, $backup, $dns, $aps, $phpEditor,
+		$phpiniAllowUrlFopen, $phpiniDisplayErrors, $phpiniDisableFunctions, $phpiniPostMaxSize,
+		$phpiniUploadMaxFileSize, $phpiniMaxExecutionTime, $phpiniMaxInputTime, $phpiniMemoryLimit, $extMailServer
+	) = explode(';', $props);
 
 	$php = preg_replace("/\_/", '', $php);
 	$cgi = preg_replace("/\_/", '', $cgi);
 	$backup = preg_replace("/\_/", '', $backup);
 	$dns = preg_replace("/\_/", '', $dns);
-	$software_allowed = preg_replace("/\_/", '', $software_allowed);
-	$external_mail = preg_replace("/\_/", '', $external_mail);
-	$pure_user_pass = $inpass;
-	$inpass = cryptPasswordWithSalt($inpass);
-	$first_name = clean_input($first_name);
-	$last_name = clean_input($last_name);
+	$aps = preg_replace("/\_/", '', $aps);
+	$extMailServer = preg_replace("/\_/", '', $extMailServer);
+	$encryptedPassword = cryptPasswordWithSalt($password);
+	$firstName = clean_input($firstName);
+	$lastName = clean_input($lastName);
 	$firm = clean_input($firm);
 	$zip = clean_input($zip);
 	$city = clean_input($city);
@@ -193,11 +192,11 @@ function add_user_data($reseller_id)
 	$country = clean_input($country);
 	$phone = clean_input($phone);
 	$fax = clean_input($fax);
-	$street_one = clean_input($street_one);
-	$street_two = clean_input($street_two);
-	$customer_id = clean_input($customer_id);
+	$street1 = clean_input($street1);
+	$street2 = clean_input($street2);
+	$customerId = clean_input($customerId);
 
-	if (!validates_dname(decode_idna($dmn_user_name))) {
+	if (!validates_dname(decode_idna($dmnUsername))) {
 		return;
 	}
 
@@ -208,10 +207,10 @@ function add_user_data($reseller_id)
 		iMSCP_Events_Manager::getInstance()->dispatch(
 			iMSCP_Events::onBeforeAddDomain,
 			array(
-				'domainName' => $dmn_name,
-				'createdBy' => $reseller_id,
-				'customerId' => $customer_id,
-				'customerEmail' => $user_email
+				'domainName' => $dmnName,
+				'createdBy' => $resellerId,
+				'customerId' => $customerId,
+				'customerEmail' => $userEmail
 			)
 		);
 
@@ -229,12 +228,12 @@ function add_user_data($reseller_id)
 		exec_query(
 			$query,
 			array(
-				$dmn_user_name, $inpass, $reseller_id, $first_name, $last_name, $firm, $zip, $city, $state, $country,
-				$user_email, $phone, $fax, $street_one, $street_two, $customer_id, $gender, $cfg->ITEM_ADD_STATUS
+				$dmnUsername, $encryptedPassword, $resellerId, $firstName, $lastName, $firm, $zip, $city, $state,
+				$country, $userEmail, $phone, $fax, $street1, $street2, $customerId, $gender, $cfg->ITEM_ADD_STATUS
 			)
 		);
 
-		$record_id = $db->insertId();
+		$recordId = $db->insertId();
 
 		$query = "
 			INSERT INTO `domain` (
@@ -249,79 +248,77 @@ function add_user_data($reseller_id)
 				?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
 			)
 		";
-
 		exec_query(
 			$query,
 			array(
-				$dmn_name, $record_id, $reseller_id, time(), $dmn_expire, $mail, $ftp, $traff, $sql_db, $sql_user,
-				$cfg->ITEM_ADD_STATUS, $sub, $als, $domainIp, $disk, 0, $php, $cgi, $backup, $dns, $software_allowed,
-				$phpini_system, $phpini_al_allow_url_fopen, $phpini_al_display_errors, $phpini_al_disable_functions,
-				$external_mail, $web_folder_protection
+				$dmnName, $recordId, $resellerId, time(), $dmnExpire, $mail, $ftp, $traff, $sql_db, $sql_user,
+				$cfg->ITEM_ADD_STATUS, $sub, $als, $domainIp, $disk, 0, $php, $cgi, $backup, $dns, $aps, $phpEditor,
+				$phpiniAllowUrlFopen, $phpiniDisplayErrors, $phpiniDisableFunctions, $extMailServer,
+				$webFolderProtection
 			)
 		);
 
-		$dmn_id = $db->insertId();
+		$dmnId = $db->insertId();
 
 		// save php.ini if exist
-		if ($phpini_system == 'yes') {
+		if ($phpEditor == 'yes') {
 			/* @var $phpini iMSCP_PHPini */
 			$phpini = iMSCP_PHPini::getInstance();
 
-			// fill it with the custom values - other thake from default
+			// fill it with the custom values - other take from default
 			$phpini->setData('phpiniSystem', 'yes');
-			$phpini->setData('phpiniPostMaxSize', $phpini_post_max_size);
-			$phpini->setData('phpiniUploadMaxFileSize', $phpini_upload_max_filesize);
-			$phpini->setData('phpiniMaxExecutionTime', $phpini_max_execution_time);
-			$phpini->setData('phpiniMaxInputTime', $phpini_max_input_time);
-			$phpini->setData('phpiniMemoryLimit', $phpini_memory_limit);
+			$phpini->setData('phpiniPostMaxSize', $phpiniPostMaxSize);
+			$phpini->setData('phpiniUploadMaxFileSize', $phpiniUploadMaxFileSize);
+			$phpini->setData('phpiniMaxExecutionTime', $phpiniMaxExecutionTime);
+			$phpini->setData('phpiniMaxInputTime', $phpiniMaxInputTime);
+			$phpini->setData('phpiniMemoryLimit', $phpiniMemoryLimit);
 
 			// save it to php_ini table
-			$phpini->saveCustomPHPiniIntoDb($dmn_id);
+			$phpini->saveCustomPHPiniIntoDb($dmnId);
 		}
 
 		$query = 'INSERT INTO `htaccess_users` (`dmn_id`, `uname`, `upass`, `status`) VALUES (?, ?, ?, ?)';
-		exec_query($query, array($dmn_id, $dmn_name, cryptPasswordWithSalt($pure_user_pass), $cfg->ITEM_ADD_STATUS));
+		exec_query($query, array($dmnId, $dmnName, $encryptedPassword, $cfg->ITEM_ADD_STATUS));
 
 		$user_id = $db->insertId();
 
 		$query = 'INSERT INTO `htaccess_groups` (`dmn_id`, `ugroup`, `members`, `status`) VALUES (?, ?, ?, ?)';
-		exec_query($query, array($dmn_id, $cfg->WEBSTATS_GROUP_AUTH, $user_id, $cfg->ITEM_ADD_STATUS));
+		exec_query($query, array($dmnId, $cfg->WEBSTATS_GROUP_AUTH, $user_id, $cfg->ITEM_ADD_STATUS));
 
 		// Create default addresses if needed
 		if ($cfg->CREATE_DEFAULT_EMAIL_ADDRESSES) {
-			client_mail_add_default_accounts($dmn_id, $user_email, $dmn_name);
+			client_mail_add_default_accounts($dmnId, $userEmail, $dmnName);
 		}
 
 		// let's send mail to user
 		send_add_user_auto_msg(
-			$reseller_id, $dmn_user_name, $pure_user_pass, $user_email, $first_name, $last_name, tr('Customer')
+			$resellerId, $dmnUsername, $password, $userEmail, $firstName, $lastName, tr('Customer')
 		);
 
 		$query = 'INSERT INTO `user_gui_props` (`user_id`, `lang`, `layout`) VALUES (?, ?, ?)';
-		exec_query($query, array($record_id, $cfg->USER_INITIAL_LANG, $cfg->USER_INITIAL_THEME));
+		exec_query($query, array($recordId, $cfg->USER_INITIAL_LANG, $cfg->USER_INITIAL_THEME));
 
-		update_reseller_c_props($reseller_id);
+		update_reseller_c_props($resellerId);
 
 		$db->commit();
 
 		iMSCP_Events_Manager::getInstance()->dispatch(
 			iMSCP_Events::onAfterAddDomain,
 			array(
-				'domainName' => $dmn_name,
-				'createdBy' => $reseller_id,
-				'customerId' => $record_id,
-				'customerEmail' => $user_email,
-				'domainId' => $dmn_id
+				'domainName' => $dmnName,
+				'createdBy' => $resellerId,
+				'customerId' => $recordId,
+				'customerEmail' => $userEmail,
+				'domainId' => $dmnId
 			)
 		);
 
 		send_request();
 
-		$admin_login = $_SESSION['user_logged'];
-		write_log("$admin_login: added customer: $dmn_user_name", E_USER_NOTICE);
+		write_log("{$_SESSION['user_logged']} added new customer: $dmnUsername", E_USER_NOTICE);
 
 		if (isset($_POST['add_alias']) && $_POST['add_alias'] == 'on') {
-			$_SESSION['dmn_id'] = $dmn_id;
+			$_SESSION['dmn_id'] = $dmnId;
 			$_SESSION['dmn_ip'] = $domainIp;
 			redirectTo('user_add4.php');
 		} else {
@@ -345,6 +342,21 @@ iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onResellerScriptStar
 
 check_login('reseller');
 
+if (!getPreviousPageData()) {
+	set_page_message(tr('Data were been altered. Please try again.'), 'error');
+	unsetMessages();
+	redirectTo('user_add1.php');
+}
+
+if (isset($_POST['uaction']) && ($_POST['uaction'] == 'user_add3_nxt') && !isset($_SESSION['step_two_data'])) {
+	if (check_ruser_data(false)) {
+		reseller_addCustomer($_SESSION['user_id']);
+	}
+} else {
+	unset($_SESSION['step_two_data']);
+	reseller_generateEmptyPage();
+}
+
 /** @var $cfg iMSCP_Config_Handler_File */
 $cfg = iMSCP_Registry::get('config');
 
@@ -361,7 +373,7 @@ $tpl->define_dynamic(
 
 $tpl->assign(
 	array(
-		'TR_PAGE_TITLE' => tr('i-MSCP - User/Add domain account - step 3'),
+		'TR_PAGE_TITLE' => tr('Reseller / Customers / Add Customer - Next Step'),
 		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => layout_getUserLogo(),
 		'TR_ADD_USER' => tr('Add user'),
@@ -380,7 +392,7 @@ $tpl->assign(
 		'TR_FEMALE' => tr('Female'),
 		'TR_UNKNOWN' => tr('Unknown'),
 		'TR_COMPANY' => tr('Company'),
-		'TR_POST_CODE' => tr('Zip/Postal code'),
+		'TR_POST_CODE' => tr('Zip'),
 		'TR_CITY' => tr('City'),
 		'TR_STATE_PROVINCE' => tr('State/Province'),
 		'TR_COUNTRY' => tr('Country'),
@@ -395,29 +407,12 @@ $tpl->assign(
 	)
 );
 
-generateNavigation($tpl);
-
-if (!init_in_values()) {
-	set_page_message(tr('Data were been altered. Please try again.'), 'error');
-	unsetMessages();
-	redirectTo('user_add1.php');
-}
-
-if (isset($_POST['uaction']) && ($_POST['uaction'] === 'user_add3_nxt') && !isset($_SESSION['step_two_data'])) {
-	if (check_ruser_data(false)) {
-		add_user_data($_SESSION['user_id']);
-	}
-} else {
-	unset($_SESSION['step_two_data']);
-	gen_empty_data();
-}
-
-gen_user_add3_page($tpl);
-
 if (!resellerHasFeature('domain_aliases')) {
 	$tpl->assign('ALIAS_FEATURE', '');
 }
 
+generateNavigation($tpl);
+reseller_generatePage($tpl);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');

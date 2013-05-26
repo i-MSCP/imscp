@@ -24,9 +24,9 @@
  * Portions created by the i-MSCP Team are Copyright (C) 2010-2013 by
  * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
  *
- * @category	i-MSCP
- * @package		iMSCP_Core
- * @subpackage	Admin
+ * @category    i-MSCP
+ * @package     iMSCP_Core
+ * @subpackage  Admin
  * @copyright   2001-2006 by moleSoftware GmbH
  * @copyright   2006-2010 by ispCP | http://isp-control.net
  * @copyright   2010-2013 by i-MSCP | http://i-mscp.net
@@ -35,7 +35,7 @@
  * @link        http://i-mscp.net
  */
 
-/************************************************************************************
+/***********************************************************************************************************************
  * Functions
  */
 
@@ -48,7 +48,7 @@
  */
 function admin_generateSupportQuestionsMessage()
 {
-    $query = "
+	$query = "
         SELECT
             COUNT(`ticket_id`) `nbQuestions`
         FROM
@@ -60,14 +60,15 @@ function admin_generateSupportQuestionsMessage()
         AND
             `ticket_reply` = 0
     ";
-    $stmt = exec_query($query, $_SESSION['user_id']);
+	$stmt = exec_query($query, $_SESSION['user_id']);
 
-    $nbQuestions = $stmt->fields('nbQuestions');
+	$nbQuestions = $stmt->fields('nbQuestions');
 
-    if ($nbQuestions != 0) {
-        set_page_message(
-            tr('You have received %d new support questions.', '<b>' . $nbQuestions . '</b>'), 'info');
-    }
+	if ($nbQuestions) {
+		set_page_message(
+			tr('You have received %d new support request.', '<b>' . $nbQuestions . '</b>'), 'info'
+		);
+	}
 }
 
 /**
@@ -75,37 +76,28 @@ function admin_generateSupportQuestionsMessage()
  *
  * Generates update messages for both database updates and i-MSCP updates.
  *
- * @param  iMSCP_pTemplate $tpl iMSCP_pTemplate instance
  * @return void
  */
-function admin_generateUpdateMessages($tpl)
+function admin_generateUpdateMessages()
 {
-    /** @var $cfg iMSCP_Config_Handler_File */
-    $cfg = iMSCP_Registry::get('config');
+	/** @var $cfg iMSCP_Config_Handler_File */
+	$cfg = iMSCP_Registry::get('config');
 
-    if (iMSCP_Update_Database::getInstance()->isAvailableUpdate()) {
-		$tpl->assign(
-			array(
-				'TR_DATABASE_UPDATE' => tr('Database update is available.'),
-				'TR_DATABASE_UPDATE_LINK' => 'Click here to process update.'));
-    } else {
-        $tpl->assign('IMSCP_DATABASE_UPDATE_MESSAGE', '');
-    }
+	if (iMSCP_Update_Database::getInstance()->isAvailableUpdate()) {
+		set_page_message(
+			'<a href="database_update.php" class="link">' . tr('Database update is available') . '</a>', 'info'
+		);
+	}
 
-    if ($cfg->CHECK_FOR_UPDATES) {
-        if (iMSCP_Update_Version::getInstance()->isAvailableUpdate()) {
-            $tpl->assign('UPDATE', '<a href="imscp_updates.php" class="link">' .
-                                   tr('New i-MSCP update is available') . '</a>');
-        } else {
-            if (iMSCP_Update_Version::getInstance()->getError() != '') {
-                $tpl->assign('UPDATE', iMSCP_Update_Version::getInstance()->getError());
-            } else {
-                $tpl->assign('IMSCP_UPDATE_MESSAGE', '');
-            }
-        }
-    } else {
-        $tpl->assign('UPDATE', tr('Update checking is disabled.'));
-    }
+	if ($cfg->CHECK_FOR_UPDATES) {
+		if (iMSCP_Update_Version::getInstance()->isAvailableUpdate()) {
+			set_page_message(
+				'<a href="imscp_updates.php" class="link">' . tr('New i-MSCP update is available') . '</a>', 'info'
+			);
+		} elseif (iMSCP_Update_Version::getInstance()->getError() != '') {
+			set_page_message('UPDATE', iMSCP_Update_Version::getInstance()->getError());
+		}
+	}
 }
 
 /**
@@ -116,23 +108,23 @@ function admin_generateUpdateMessages($tpl)
  */
 function admin_getAdminGeneralInfo($tpl)
 {
-    /** @var $cfg  iMSCP_Config_Handler_File */
-    $cfg = iMSCP_Registry::get('config');
+	/** @var $cfg  iMSCP_Config_Handler_File */
+	$cfg = iMSCP_Registry::get('config');
 
-    // If COUNT_DEFAULT_EMAIL_ADDRESSES == false, admin total emails show
-    // [total - default_emails]/[total_emails]
-    $totalMails = records_count('mail_users', 'mail_type NOT RLIKE \'_catchall\'', '');
+	// If COUNT_DEFAULT_EMAIL_ADDRESSES == false, admin total emails show
+	// [total - default_emails]/[total_emails]
+	$totalMails = records_count('mail_users', 'mail_type NOT RLIKE \'_catchall\'', '');
 
-    if ($cfg->COUNT_DEFAULT_EMAIL_ADDRESSES) {
-        $showTotalMails = $totalMails;
-    } else {
-        $totalDefaultMails = records_count('mail_users', 'mail_acc', 'abuse');
-        $totalDefaultMails += records_count('mail_users', 'mail_acc', 'webmaster');
-        $totalDefaultMails += records_count('mail_users', 'mail_acc', 'postmaster');
-        $showTotalMails = ($totalMails - $totalDefaultMails) . '/' . $totalMails;
-    }
+	if ($cfg->COUNT_DEFAULT_EMAIL_ADDRESSES) {
+		$showTotalMails = $totalMails;
+	} else {
+		$totalDefaultMails = records_count('mail_users', 'mail_acc', 'abuse');
+		$totalDefaultMails += records_count('mail_users', 'mail_acc', 'webmaster');
+		$totalDefaultMails += records_count('mail_users', 'mail_acc', 'postmaster');
+		$showTotalMails = ($totalMails - $totalDefaultMails) . '/' . $totalMails;
+	}
 
-    $tpl->assign(
+	$tpl->assign(
 		array(
 			'ACCOUNT_NAME' => tohtml($_SESSION['user_logged']),
 			'ADMIN_USERS' => records_count('admin', 'admin_type', 'admin'),
@@ -144,7 +136,9 @@ function admin_getAdminGeneralInfo($tpl)
 			'MAIL_ACCOUNTS' => $showTotalMails,
 			'FTP_ACCOUNTS' => records_count('ftp_users', '', ''),
 			'SQL_DATABASES' => records_count('sql_database', '', ''),
-			'SQL_USERS' => get_sql_user_count()));
+			'SQL_USERS' => get_sql_user_count()
+		)
+	);
 }
 
 /**
@@ -158,14 +152,14 @@ function admin_generateServerTrafficInfo($tpl)
 	// Getting max server traffic per month in mebibytes
 
 	$query = "SELECT IFNULL(`straff_max`, 0) `maxTraffic`, IFNULL(`straff_warn`, 0) `warningTraffic` FROM `straff_settings`";
- 	$stmt = exec_query($query);
+	$stmt = exec_query($query);
 
-	if($stmt->rowCount()) {
+	if ($stmt->rowCount()) {
 		// Get bytes value for max server traffic
 		$trafficLimitBytes = $stmt->fields['maxTraffic'] * 1048576;
 		$trafficWarningBytes = $stmt->fields['warningTraffic'] * 1048576;
 
-		if(!$trafficWarningBytes) {
+		if (!$trafficWarningBytes) {
 			$trafficWarningBytes = $trafficLimitBytes;
 		}
 	} else {
@@ -173,19 +167,19 @@ function admin_generateServerTrafficInfo($tpl)
 	}
 
 	// Getting server traffic usage value in bytes for the current month
-    $query = "
-        SELECT
-            IFNULL((SUM(`bytes_in`) + SUM(`bytes_out`)), 0) `serverTrafficUsage`
-        FROM
-            `server_traffic`
-        WHERE
-            `traff_time` > ?
-        AND
-            `traff_time` < ?
+	$query = "
+		SELECT
+			IFNULL((SUM(`bytes_in`) + SUM(`bytes_out`)), 0) `serverTrafficUsage`
+		FROM
+			`server_traffic`
+		WHERE
+			`traff_time` > ?
+		AND
+			`traff_time` < ?
     ";
-    $stmt = exec_query($query, array(getFirstDayOfMonth(), getLastDayOfMonth()));
+	$stmt = exec_query($query, array(getFirstDayOfMonth(), getLastDayOfMonth()));
 
-	if($stmt->rowCount()) {
+	if ($stmt->rowCount()) {
 		$trafficUsageBytes = $stmt->fields['serverTrafficUsage'];
 	} else {
 		$trafficUsageBytes = 0;
@@ -195,18 +189,20 @@ function admin_generateServerTrafficInfo($tpl)
 	$trafficUsagePercent = make_usage_vals($trafficUsageBytes, $trafficLimitBytes);
 
 	if ($trafficLimitBytes) {
-		$trafficMessage = tr('%1$s%% [%2$s of %3$s]', $trafficUsagePercent, bytesHuman($trafficUsageBytes), bytesHuman($trafficLimitBytes));
- 	} else {
+		$trafficMessage = tr(
+			'%1$s%% [%2$s of %3$s]', $trafficUsagePercent, bytesHuman($trafficUsageBytes), bytesHuman($trafficLimitBytes)
+		);
+	} else {
 		$trafficMessage = tr('%1$s%% [%2$s of unlimited]', $trafficUsagePercent, bytesHuman($trafficUsageBytes));
- 	}
+	}
 
 	// Warning message about traffic
-	if($trafficUsageBytes) {
-		if(($trafficWarningBytes && $trafficUsageBytes > $trafficWarningBytes) ||
+	if ($trafficUsageBytes) {
+		if (($trafficWarningBytes && $trafficUsageBytes > $trafficWarningBytes) ||
 			// In any case, display a warning if traffic limit is reached
-			($trafficLimitBytes &&  $trafficUsageBytes > $trafficLimitBytes)
+			($trafficLimitBytes && $trafficUsageBytes > $trafficLimitBytes)
 		) {
-			set_page_message( tr('You are exceeding the monthly server traffic limit.'), 'warning');
+			set_page_message(tr('You are exceeding the monthly server traffic limit.'), 'warning');
 		}
 	}
 
@@ -218,8 +214,8 @@ function admin_generateServerTrafficInfo($tpl)
 	);
 }
 
-/************************************************************************************
- * Main script
+/***********************************************************************************************************************
+ * Main
  */
 
 // Include core library
@@ -238,16 +234,15 @@ $tpl->define_dynamic(
 		'layout' => 'shared/layouts/ui.tpl',
 		'page' => 'admin/index.tpl',
 		'page_message' => 'layout',
-		'imscp_update_message' => 'page',
-		'imscp_database_update_message' => 'page',
-		'traffic_warning_message' => 'page'));
+		'traffic_warning_message' => 'page'
+	)
+);
 
 $tpl->assign(
 	array(
 		'THEME_CHARSET' => tr('encoding'),
-		'TR_PAGE_TITLE' => tr('i-MSCP - Admin / General information'),
+		'TR_PAGE_TITLE' => tr('Admin / General / Overview'),
 		'ISP_LOGO' => layout_getUserLogo(),
-		'TR_GENERAL_INFORMATION' => tr('General information'),
 		'TR_PROPERTIES' => tr('Properties'),
 		'TR_VALUES' => tr('Values'),
 		'TR_ACCOUNT_NAME' => tr('Account name'),
@@ -261,11 +256,13 @@ $tpl->assign(
 		'TR_FTP_ACCOUNTS' => tr('FTP accounts'),
 		'TR_SQL_DATABASES' => tr('SQL databases'),
 		'TR_SQL_USERS' => tr('SQL users'),
-		'TR_SERVER_TRAFFIC' => tr('Server traffic')));
+		'TR_SERVER_TRAFFIC' => tr('Server traffic')
+	)
+);
 
 generateNavigation($tpl);
 admin_generateSupportQuestionsMessage();
-admin_generateUpdateMessages($tpl);
+admin_generateUpdateMessages();
 admin_getAdminGeneralInfo($tpl);
 admin_generateServerTrafficInfo($tpl);
 generatePageMessage($tpl);

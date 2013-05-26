@@ -98,11 +98,8 @@ $tpl->define_dynamic(
 $tpl->assign(
 	array(
 		'THEME_CHARSET' => tr('encoding'),
-		'TR_PAGE_TITLE' => tr('i-MSCP - Admin / Support Ticket System / View Ticket'),
+		'TR_PAGE_TITLE' => tr('Admin / Support / View Ticket'),
 		'ISP_LOGO' => layout_getUserLogo(),
-		'TR_SUPPORT_SYSTEM' => tr('Support Ticket System'),
-		'TR_OPEN_TICKETS' => tr('Open tickets'),
-		'TR_CLOSED_TICKETS' => tr('Closed tickets'),
 		'TR_VIEW_SUPPORT_TICKET' => tr('View Support Ticket'),
 		'TR_TICKET_INFO' => tr('Ticket information'),
 		'TR_TICKET_URGENCY' => tr('Priority'),

@@ -48,15 +48,19 @@ customerHasFeature('mail') or showBadRequestErrorPage();
 $cfg = iMSCP_Registry::get('config');
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic('layout', 'shared/layouts/ui.tpl');
-$tpl->define_dynamic('page', 'client/mail_add.tpl');
-$tpl->define_dynamic('page_message', 'layout');
-$tpl->define_dynamic('als_list', 'page');
-$tpl->define_dynamic('sub_list', 'page');
-$tpl->define_dynamic('als_sub_list', 'page');
-$tpl->define_dynamic('to_alias_domain', 'page');
-$tpl->define_dynamic('to_subdomain', 'page');
-$tpl->define_dynamic('to_alias_subdomain', 'page');
+$tpl->define_dynamic(
+	array(
+		'layout' => 'shared/layouts/ui.tpl',
+		'page' => 'client/mail_add.tpl',
+		'page_message' => 'layout',
+		'als_list' => 'page',
+		'sub_list' => 'page',
+		'als_sub_list' => 'page',
+		'to_alias_domain' => 'page',
+		'to_subdomain' => 'page',
+		'to_alias_subdomain' => 'page'
+	)
+);
 
 /**
  * @param iMSCP_pTemplate $tpl
@@ -638,7 +642,7 @@ if (isset($_SESSION['email_support']) && $_SESSION['email_support'] == "no") {
 
 $tpl->assign(
 	array(
-		'TR_PAGE_TITLE' => tr('i-MSCP - Client / Manage mail / Add account'),
+		'TR_PAGE_TITLE' => tr('Client / Mail / Add Email Account'),
 		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => layout_getUserLogo()));
 

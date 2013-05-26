@@ -24,28 +24,28 @@
  * Portions created by the i-MSCP Team are Copyright (C) 2010-2013 by
  * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
  *
- * @category	i-MSCP
- * @package		iMSCP_Core
- * @subpckage	pTemplate
- * @copyright	2001-2006 by moleSoftware GmbH
- * @copyright	2006-2010 by ispCP | http://isp-control.net
- * @copyright	2010-2013 by i-MSCP | http://i-mscp.net
- * @author		VHCS Team
- * @author		ispCP Team
- * @author		i-MSCP Team
- * @link		http://i-mscp.net i-MSCP Home Site
- * @license		http://www.mozilla.org/MPL/ MPL 1.1
+ * @category    i-MSCP
+ * @package    iMSCP_Core
+ * @subpckage  pTemplate
+ * @copyright  2001-2006 by moleSoftware GmbH
+ * @copyright  2006-2010 by ispCP | http://isp-control.net
+ * @copyright  2010-2013 by i-MSCP | http://i-mscp.net
+ * @author     VHCS Team
+ * @author     ispCP Team
+ * @author     i-MSCP Team
+ * @link       http://i-mscp.net i-MSCP Home Site
+ * @license    http://www.mozilla.org/MPL/ MPL 1.1
  */
 
 /**
  * Class pTemplate is the i-MSCP template engine.
  *
- * @category	i-MSCP
- * @package		iMSCP_Core
- * @subpckage	pTemplate
- * @author		VHCS Team
- * @author		ispCP Team
- * @author		iMSCP Team
+ * @category    i-MSCP
+ * @package     iMSCP_Core
+ * @subpckage   pTemplate
+ * @author      VHCS Team
+ * @author      ispCP Team
+ * @author      iMSCP Team
  * @todo remove all error operators
  */
 class iMSCP_pTemplate
@@ -175,6 +175,7 @@ class iMSCP_pTemplate
 	/**
 	 * Sets templates root direcotry.
 	 *
+	 * @throws iMSCP_Exception
 	 * @param string $rootDir
 	 * @return void
 	 */
@@ -188,7 +189,7 @@ class iMSCP_pTemplate
 	}
 
 	/**
-	 * @param  string|array $namespaces Namespace(s)
+	 * @param string|array $namespaces Namespace(s)
 	 * @param string $namespacesData
 	 * @return void
 	 */
@@ -205,7 +206,7 @@ class iMSCP_pTemplate
 
 	/**
 	 *
-	 * @param  string|array $namespaces
+	 * @param string|array $namespaces
 	 * @return void
 	 */
 	public function unsign($namespaces)
@@ -221,7 +222,7 @@ class iMSCP_pTemplate
 
 	/**
 	 *
-	 * @param  string|array $t_name
+	 * @param string|array $t_name
 	 * @param string $t_value
 	 * @return void
 	 */
@@ -241,7 +242,7 @@ class iMSCP_pTemplate
 	}
 
 	/**
-	 * @param  $t_name
+	 * @param string|array $t_name
 	 * @param string $t_value
 	 * @return void
 	 */
@@ -261,7 +262,7 @@ class iMSCP_pTemplate
 	}
 
 	/**
-	 * @param  $t_name
+	 * @param string|array $t_name
 	 * @param string $t_value
 	 * @return void
 	 */
@@ -281,7 +282,7 @@ class iMSCP_pTemplate
 	}
 
 	/**
-	 * @param  $t_name
+	 * @param string|array $t_name
 	 * @param string $t_value
 	 * @return void
 	 */
@@ -304,8 +305,9 @@ class iMSCP_pTemplate
 
 	/**
 	 * Find next dynamic block
-	 * @param  $data Data in which search is made
-	 * @param  $spos Position from which starting to search
+	 *
+	 * @param string $data Data in which search is made
+	 * @param int $spos Position from which starting to search
 	 * @return array|bool
 	 */
 	public function find_next($data, $spos)
@@ -341,8 +343,8 @@ class iMSCP_pTemplate
 	/**
 	 * Finds the next pair of curly brakets.
 	 *
-	 * @param  $data
-	 * @param  $spos
+	 * @param string $data
+	 * @param int $spos
 	 * @return array|bool
 	 */
 	private function find_next_curl($data, $spos)
@@ -371,7 +373,7 @@ class iMSCP_pTemplate
 
 	/**
 	 *
-	 * @param  $data
+	 * @param string $data
 	 * @return mixed
 	 */
 	private function devide_dynamic($data)
@@ -469,7 +471,7 @@ class iMSCP_pTemplate
 	}
 
 	/**
-	 * @param  $fname
+	 * @param string $fname
 	 * @return bool
 	 */
 	private function is_safe($fname)
@@ -481,7 +483,6 @@ class iMSCP_pTemplate
 	 * Checks if a namespace is defined.
 	 *
 	 * @author Laurent Declercq <l.declercq@nuxwin.com>
-	 * @since r2467
 	 * @param string $namespace namespace
 	 * @return boolean TRUE if the namespace was define, FALSE otherwise
 	 */
@@ -493,8 +494,8 @@ class iMSCP_pTemplate
 	/**
 	 * Load a template file.
 	 *
-	 * @throws iMSCP_Exception		If template file is not found
-	 * @param string|array $fname	Template file path or an array where the second item contain the template file path
+	 * @throws iMSCP_Exception If template file is not found
+	 * @param string|array $fname Template file path or an array where the second item contain the template file path
 	 * @return mixed|string
 	 */
 	public function get_file($fname)
@@ -541,7 +542,7 @@ class iMSCP_pTemplate
 	}
 
 	/**
-	 * @param  $tname
+	 * @param string $tname
 	 * @return bool
 	 */
 	private function find_origin($tname)
@@ -550,7 +551,8 @@ class iMSCP_pTemplate
 			return false;
 		}
 
-		while (stripos($this->dtpl_name[$tname], 'tpl') === false &&
+		while (
+			stripos($this->dtpl_name[$tname], 'tpl') === false &&
 			strpos($this->dtpl_name[$tname], '_no_file_') === false
 		) {
 			$tname = $this->dtpl_name[$tname];
@@ -561,9 +563,9 @@ class iMSCP_pTemplate
 
 	/**
 	 *
-	 * @param  $pname
-	 * @param  $tname
-	 * @param  $ADD_FLAG
+	 * @param string $pname
+	 * @param string $tname
+	 * @param bool $ADD_FLAG
 	 * @return bool
 	 */
 	public function parse_dynamic($pname, $tname, $ADD_FLAG)
@@ -618,8 +620,8 @@ class iMSCP_pTemplate
 	/**
 	 * Parse given template namespace.
 	 *
-	 * @param  string $pname
-	 * @param  string $tname
+	 * @param string $pname
+	 * @param string $tname
 	 */
 	public function parse($pname, $tname)
 	{
@@ -638,7 +640,7 @@ class iMSCP_pTemplate
 			$ADD_FLAG = true;
 		}
 
-		if (@$this->tpl_name[$tname] == '_no_file_' || stripos(@$this->tpl_name[$tname], 'tpl') !== false) {
+		if (@$this->tpl_name[$tname] == '_no_file_' || stripos(@$this->tpl_name[$tname], '.tpl') !== false) {
 			// static NO FILE - static FILE
 
 			if (@$this->tpl_data[$tname] == '') {

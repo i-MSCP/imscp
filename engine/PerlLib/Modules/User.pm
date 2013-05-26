@@ -135,7 +135,7 @@ sub add
 	my $groupName =
 	my $userName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} .
 		($main::imscpConfig{'SYSTEM_USER_MIN_UID'} + $self->{'admin_id'});
-
+	my $password = '';
 	my $comment = 'iMSCP virtual user';
 	# TODO change to  "$main::imscpConfig{'USER_HOME_DIR'}/$userName";
 	my $home = "$main::imscpConfig{'USER_WEB_DIR'}/$self->{'domain_name'}";
@@ -143,7 +143,7 @@ sub add
 	my $shell = '/bin/false';
 
 	my $rs = $self->{'hooksManager'}->trigger(
-		'onBeforeAddImscpUnixUser', $userName, $groupName, \$comment, \$home, \$skeletonPath, \$shell
+		'onBeforeAddImscpUnixUser', $userName, \$password, $groupName, \$comment, \$home, \$skeletonPath, \$shell
 	);
 	return $rs if $rs;
 
@@ -155,21 +155,12 @@ sub add
 
 	# Creating i-MSCP unix user
 	$rs = iMSCP::SystemUser->new(
-		'comment' => $comment, 'home' => $home, 'skeletonPath' => $skeletonPath, 'group' => $groupName, 'shell' => $shell
+		'password' => $password, 'comment' => $comment, 'home' => $home, 'skeletonPath' => $skeletonPath,
+		'group' => $groupName, 'shell' => $shell
 	)->addSystemUser(
 		$userName
 	);
 	return $rs if $rs;
-
-	# Now part of the domain skeleton as provided by the i-MSCP HTTP server implementations
-	#$rs = iMSCP::Dir->new(
-	#	'dirname' => "$main::imscpConfig{'USER_WEB_DIR'}/$self->{'domain_name'}/backups"
-	#)->make(
-	#	{ 'mode' => 0750, 'user' => $userName, 'group' => $groupName }
-	#);
-	#return $rs if $rs;
-
-	#setImmutable($home) if $self->{'web_folder_protection'} eq 'yes'; # Transitional code - Will be removed ASAP
 
 	my $uid = scalar getpwnam($userName);
 	my $gid = scalar getgrnam($groupName);
@@ -185,7 +176,7 @@ sub add
 	}
 
 	$self->{'hooksManager'}->trigger(
-		'onAfterAddImscpUnixUser', $userName, $groupName, $comment, $home, $skeletonPath, $shell
+		'onAfterAddImscpUnixUser', $userName, $password, $groupName, $comment, $home, $skeletonPath, $shell
 	);
 
 	# Run the preaddUser(), addUser() and postaddUser() methods on servers/addons that implement them

@@ -1040,28 +1040,35 @@ sub setupSslDialog
 
 sub setupAskCertificateKeyPath
 {
-	my ($dialog, $rs, $ret) = (shift, 0, '');
+	my ($dialog, $rs, $ret1, $ret2, $msg) = (shift, 0, '', '', '');
 
 	my $key = '/root/' . setupGetQuestion('SERVER_HOSTNAME') . '.key';
 	my $openSSL = Modules::openssl->getInstance();
 
 	do {
-		($rs, $ret) = $dialog->passwordbox("\nPlease enter password for key if needed:", $ret);
+		($rs, $ret1) = $dialog->passwordbox("\nPlease enter the password for your private key if needed:$msg", $ret1);
 
 		if($rs != 30) {
-			$ret =~ s/(["\$`\\])/\\$1/g;
-			$openSSL->{'key_pass'} = $ret;
+			$ret1 =~ s/(["\$`\\])/\\$1/g;
+			$openSSL->{'key_pass'} = $ret1;
 
 			do {
-				($rs, $ret) = $dialog->fselect($key);
-			} while($rs != 30 && ! ($ret && -f $ret));
+				($rs, $ret2) = $dialog->fselect($key);
+			} while($rs != 30 && ! ($ret2 && -f $ret2));
 
 			if($rs != 30) {
-				$openSSL->{'key_path'} = $ret;
-				$key = $ret;
+				$openSSL->{'key_path'} = $ret2;
+				$key = $ret2;
 			}
 		}
-	} while($rs != 30 && $openSSL->ssl_check_key());
+
+		if($openSSL->ssl_check_key()) {
+			$msg = "\n\n\\Z1Wrong private key or password.\\Zn\n\nPlease try again:";
+		} else {
+			$msg = '';
+		}
+
+	} while($rs != 30 && $msg);
 
 	$rs;
 }

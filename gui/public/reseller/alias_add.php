@@ -458,8 +458,7 @@ if (!is_xhr()) {
 		array(
 			'THEME_CHARSET' => tr('encoding'),
 			'ISP_LOGO' => layout_getUserLogo(),
-			'TR_PAGE_TITLE' => tr('i-MSCP Reseller/Add Alias'),
-			'TR_MANAGE_DOMAIN_ALIAS' => tr('Manage domain alias'),
+			'TR_PAGE_TITLE' => tr('Reseller / Customers / Domain Aliases / Add Alias'),
 			'TR_ADD_ALIAS' => tr('Add domain alias'),
 			'TR_DOMAIN_NAME' => tr('Domain name'),
 			'TR_DOMAIN_ACCOUNT' => tr('User account'),

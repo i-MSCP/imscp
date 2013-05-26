@@ -688,8 +688,8 @@ $dnsRecordId = isset($_GET['edit_id']) ? clean_input($_GET['edit_id']) : 0;
 $tpl->assign(
 	array(
 		'TR_PAGE_TITLE' => (!$dnsRecordId)
-			? tr("i-MSCP - Manage Domain / Add Custom DNS  record")
-			: tr("i-MSCP - Manage Domain / Edit Custom DNS record"),
+			? tr("Client / Domains / Add Custom DNS record")
+			: tr("Client / Domain / Edit Custom DNS record"),
 		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => layout_getUserLogo(),
 		'ACTION_MODE' => (!$dnsRecordId) ? 'dns_add.php' : 'dns_edit.php?edit_id={ID}',

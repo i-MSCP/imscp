@@ -171,10 +171,9 @@ if (customerHasFeature('mail') && (isset($_REQUEST['mail_account_id']) && is_num
 
 			$tpl->assign(
 				array(
-					'TR_PAGE_TITLE' => tr('i-MSCP - Client / Mail accounts / Edit auto-responder'),
+					'TR_PAGE_TITLE' => tr('Client / Mail / Overview / Edit Auto Responder'),
 					'THEME_CHARSET' => tr('encoding'),
 					'ISP_LOGO' => layout_getUserLogo(),
-					'TR_EDIT_MAIL_AUTORESPONDER' => tr('Edit mail auto-responder'),
 					'TR_AUTORESPONDER_MESSAGE' => tr('Please, enter your auto-responder message below'),
 					'TR_ACTION' => tr('Update'),
 					'TR_CANCEL' => tr('Cancel'),

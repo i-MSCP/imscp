@@ -89,7 +89,7 @@ if (isset($_POST['uaction']) && $_POST['uaction'] == 'apply') {
 
 $tpl->assign(
 	array(
-		'TR_PAGE_TITLE' => tr('i-MSCP - Reseller/Lost password email setup'),
+		'TR_PAGE_TITLE' => tr('Reseller / Customers / Lost Password Email'),
 		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => layout_getUserLogo()));
 
@@ -97,7 +97,6 @@ generateNavigation($tpl);
 
 $tpl->assign(
 	array(
-		'TR_LOSTPW_EMAIL' => tr('Lost password email'),
 		'TR_MESSAGE_TEMPLATE_INFO' => tr('Message template info'),
 		'TR_MESSAGE_TEMPLATE' => tr('Message template'),
 		'SUBJECT_VALUE1' => tohtml($data_1['subject']),

@@ -57,6 +57,7 @@ sub addSystemUser
 		return 1;
 	}
 
+	my $password = $self->{'password'} ? '-p ' . escapeShell($self->{'password'}) : '';
 	my $comment	= $self->{'comment'} ? $self->{'comment'} : 'iMSCPuser';
 	my $home = $self->{'home'} ? $self->{'home'} : "$main::imscpConfig{'USER_WEB_DIR'}/$userName";
 	my $skipGroup = $self->{'skipGroup'} || $self->{'group'} ? '' : '-U';
@@ -74,6 +75,7 @@ sub addSystemUser
 		@cmd = (
 			$main::imscpConfig{'CMD_USERADD'},
 			($^O =~ /bsd$/ ? escapeShell($userName) : ''),	# username bsd way
+			$password,										# Password
 			'-c', escapeShell($comment),					# comment
 			'-d', escapeShell($home),						# homedir
 			$skipGroup,										# create group with same name and add user to group
@@ -90,6 +92,7 @@ sub addSystemUser
 			'skill -KILL -vu ' . escapeShell($userName) . '; ',
 			$main::imscpConfig{'CMD_USERMOD'},
 			($^O =~ /bsd$/ ? escapeShell($userName) : ''),	# username bsd way
+			$password,										# Password
 			'-c', escapeShell($comment),					# comment
 			'-d', escapeShell($home),						# homedir
 			'-m',											# Move current home content in new home if needed

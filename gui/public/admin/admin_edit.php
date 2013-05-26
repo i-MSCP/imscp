@@ -234,7 +234,7 @@ $tpl->assign(
 	array(
 		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => layout_getUserLogo(),
-		'TR_PAGE_TITLE' => tr('i-MSCP - Admin / Edit customer'),
+		'TR_PAGE_TITLE' => tr('Admin / Users / Overview / Edit Admin'),
 		'TR_EMPTY_OR_WORNG_DATA' => tr('Empty data or wrong field.'),
 		'TR_PASSWORD_NOT_MATCH' => tr("Passwords doesn't match."),
 		'TR_CORE_DATA' => tr('Core data'),

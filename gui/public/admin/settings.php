@@ -545,7 +545,7 @@ switch ($cfg->LOG_LEVEL) {
 $tpl->assign(
 	array(
 		 'THEME_CHARSET' => tr('encoding'),
-		 'TR_PAGE_TITLE' => tr('i-MSCP - Admin / Settings'),
+		 'TR_PAGE_TITLE' => tr('Admin / Settings'),
 		 'ISP_LOGO' => layout_getUserLogo(),
 		 'TR_UPDATES' => tr('Updates'),
 		 'LOSTPASSWORD_TIMEOUT_VALUE' => $cfg->LOSTPASSWORD_TIMEOUT,

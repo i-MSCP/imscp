@@ -882,7 +882,7 @@ $tpl->define_dynamic(
 
 $tpl->assign(
 	array(
-		'TR_PAGE_TITLE' => tr('i-MSCP - Admin / Manage users / Edit Reseller'),
+		'TR_PAGE_TITLE' => tr('Admin / Users / Edit Reseller'),
 		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => layout_getUserLogo(),
 		'EDIT_ID' => $resellerId,

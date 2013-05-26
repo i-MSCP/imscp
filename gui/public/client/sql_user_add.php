@@ -418,7 +418,7 @@ function gen_page_post_data($tpl, $db_id) {
 
 $tpl->assign(
 	array(
-		'TR_PAGE_TITLE' => tr('i-MSCP - Client/Add SQL User'),
+		'TR_PAGE_TITLE' => tr('Client / Databases / Overview / Add SQL User'),
 		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => layout_getUserLogo()));
 

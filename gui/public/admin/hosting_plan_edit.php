@@ -46,16 +46,16 @@
  * @param iMSCP_PHPini $phpini
  * @return void
  */
-function _generatePhpBlock($tpl, $phpini)
+function _admin_generatePhpBlock($tpl, $phpini)
 {
 	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
-	$htmlChecked = $cfg->HTML_CHECKED;
+	$checked = $cfg->HTML_CHECKED;
 
 	$tplVars = array();
 
-	$tplVars['PHP_EDITOR_YES'] = ($phpini->getClPermVal('phpiniSystem') == 'yes') ? $htmlChecked : '';
-	$tplVars['PHP_EDITOR_NO'] = ($phpini->getClPermVal('phpiniSystem') != 'yes') ? $htmlChecked : '';
+	$tplVars['PHP_EDITOR_YES'] = ($phpini->getClPermVal('phpiniSystem') == 'yes') ? $checked : '';
+	$tplVars['PHP_EDITOR_NO'] = ($phpini->getClPermVal('phpiniSystem') != 'yes') ? $checked : '';
 	$tplVars['TR_PHP_EDITOR'] = tr('PHP Editor');
 	$tplVars['TR_PHP_EDITOR_SETTINGS'] = tr('PHP Editor Settings');
 	$tplVars['TR_SETTINGS'] = tr('Settings');
@@ -71,20 +71,20 @@ function _generatePhpBlock($tpl, $phpini)
 	$tplVars['TR_MIB'] = tr('MiB');
 	$tplVars['TR_SEC'] = tr('Sec.');
 	$tplVars['TR_CAN_EDIT_ALLOW_URL_FOPEN'] = tr('Can edit the PHP %s directive', true, '<b>allow_url_fopen</b>');
-	$tplVars['ALLOW_URL_FOPEN_YES'] = ($phpini->getClPermVal('phpiniAllowUrlFopen') == 'yes') ? $htmlChecked : '';
-	$tplVars['ALLOW_URL_FOPEN_NO'] = ($phpini->getClPermVal('phpiniAllowUrlFopen') == 'no') ? $htmlChecked : '';
+	$tplVars['ALLOW_URL_FOPEN_YES'] = ($phpini->getClPermVal('phpiniAllowUrlFopen') == 'yes') ? $checked : '';
+	$tplVars['ALLOW_URL_FOPEN_NO'] = ($phpini->getClPermVal('phpiniAllowUrlFopen') == 'no') ? $checked : '';
 	$tplVars['TR_CAN_EDIT_DISPLAY_ERRORS'] = tr('Can edit the PHP %s directive', true, '<b>display_errors</b>');
-	$tplVars['DISPLAY_ERRORS_YES'] = ($phpini->getClPermVal('phpiniDisplayErrors') == 'yes') ? $htmlChecked : '';
-	$tplVars['DISPLAY_ERRORS_NO'] = ($phpini->getClPermVal('phpiniDisplayErrors') == 'no') ? $htmlChecked : '';
+	$tplVars['DISPLAY_ERRORS_YES'] = ($phpini->getClPermVal('phpiniDisplayErrors') == 'yes') ? $checked : '';
+	$tplVars['DISPLAY_ERRORS_NO'] = ($phpini->getClPermVal('phpiniDisplayErrors') == 'no') ? $checked : '';
 
 	if (PHP_SAPI == 'apache2handler') {
 		$tplVars['PHP_EDITOR_DISABLE_FUNCTIONS_BLOCK'] = '';
 	} else {
 		$tplVars['TR_CAN_EDIT_DISABLE_FUNCTIONS'] = tr('Can edit the PHP %s directive', true, '<b>disable_functions</b>');
-		$tplVars['DISABLE_FUNCTIONS_YES'] = ($phpini->getClPermVal('phpiniDisableFunctions') == 'yes') ? $htmlChecked : '';
-		$tplVars['DISABLE_FUNCTIONS_NO'] = ($phpini->getClPermVal('phpiniDisableFunctions') == 'no') ? $htmlChecked : '';
+		$tplVars['DISABLE_FUNCTIONS_YES'] = ($phpini->getClPermVal('phpiniDisableFunctions') == 'yes') ? $checked : '';
+		$tplVars['DISABLE_FUNCTIONS_NO'] = ($phpini->getClPermVal('phpiniDisableFunctions') == 'no') ? $checked : '';
 		$tplVars['TR_ONLY_EXEC'] = tr('Only exec');
-		$tplVars['DISABLE_FUNCTIONS_EXEC'] = ($phpini->getClPermVal('phpiniDisableFunctions') == 'exec') ? $htmlChecked : '';
+		$tplVars['DISABLE_FUNCTIONS_EXEC'] = ($phpini->getClPermVal('phpiniDisableFunctions') == 'exec') ? $checked : '';
 	}
 
 	$tplVars['TR_PERMISSIONS'] = tr('Permissions');
@@ -109,14 +109,14 @@ function _generatePhpBlock($tpl, $phpini)
 }
 
 /**
- * Generate form
+ * Generate page
  *
  * @param $tpl iMSCP_pTemplate
  * @param int $id Hosting plan unique identifier
  * @param $phpini iMSCP_PHPini
  * @return void
  */
-function generateForm($tpl, $id, $phpini)
+function admin_generatePage($tpl, $id, $phpini)
 {
 	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
@@ -142,11 +142,12 @@ function generateForm($tpl, $id, $phpini)
 	$description = $data['description'];
 	$status = $data['status'];
 
+
 	list(
 		$php, $cgi, $sub, $als, $mail, $ftp, $sqld, $sqlu, $monthlyTraffic, $diskspace, $bkp, $dns, $aps, $phpEditor,
 		$phpAllowUrlFopenPerm, $phpDisplayErrorsPerm, $phpDisableFunctionsPerm, $phpPostMaxSizeValue,
 		$phpUploadMaxFilesizeValue, $phpMaxExecutionTimeValue, $phpMaxInputTimeValue, $phpMemoryLimitValue, $hpExtMail
-	) = explode(';', $data['props']);
+		) = explode(';', $data['props']);
 
 	$phpini->setClPerm('phpiniSystem', $phpEditor);
 	$phpini->setClPerm('phpiniAllowUrlFopen', $phpAllowUrlFopenPerm);
@@ -180,39 +181,46 @@ function generateForm($tpl, $id, $phpini)
 			'CGI_NO' => ($cgi == '_no_') ? $checked : '',
 			'DNS_YES' => ($dns == '_yes_') ? $checked : '',
 			'DNS_NO' => ($dns == '_no_') ? $checked : '',
-			'BACKUPD' => ($bkp == '_dmn_') ? $checked : '',
-			'BACKUPS' => ($bkp == '_sql_') ? $checked : '',
-			'BACKUPF' => ($bkp == '_full_') ? $checked : '',
-			'BACKUPN' => ($bkp == '_no_') ? $checked : '',
 			'SOFTWARE_YES' => ($aps == '_yes_') ? $checked : '',
 			'SOFTWARE_NO' => ($aps == '_no_' || !$aps) ? $checked : '',
 			'EXTMAIL_YES' => ($hpExtMail == '_yes_') ? $checked : '',
 			'EXTMAIL_NO' => ($hpExtMail == '_no_') ? $checked : '',
 			'STATUS_YES' => ($status) ? $checked : '',
-			'STATUS_NO' => (!$status) ? $checked : '',
-			'EDIT_HOSTING_PLAN' => (isset($cfg->HOSTING_PLANS_LEVEL) && $cfg->HOSTING_PLANS_LEVEL == 'admin')
-				? tr('View') : tr('Edit')
+			'STATUS_NO' => (!$status) ? $checked : ''
 		)
 	);
 
-	_generatePhpBlock($tpl, $phpini);
+	if ($cfg->BACKUP_DOMAINS != 'no') {
+		$tpl->assign(
+			array(
+				'VL_BACKUPD' => '',
+				'VL_BACKUPS' => '',
+				'VL_BACKUPF' => '',
+				'VL_BACKUPN' => $checked,
+			)
+		);
+	} else {
+		$tpl->assign('BACKUP_FEATURE', '');
+	}
+
+	_admin_generatePhpBlock($tpl, $phpini);
 }
 
 /**
- * Generate error form
+ * Generate error page
  *
  * @param iMSCP_pTemplate $tpl
  * @param iMSCP_PHPini $phpini
  * @return void
  */
-function generateErrorForm($tpl, $phpini)
+function admin_generateErrorPage($tpl, $phpini)
 {
 	global $id, $name, $description, $sub, $als, $mail, $ftp, $sqld, $sqlu, $monthlyTraffic, $diskspace, $php, $cgi,
-		$bkp, $dns, $aps, $hpExtMail, $status;
+		   $bkp, $dns, $aps, $hpExtMail, $status;
 
 	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
-	$htmlChecked = $cfg->HTML_CHECKED;
+	$checked = $cfg->HTML_CHECKED;
 
 	$tpl->assign(
 		array(
@@ -227,26 +235,35 @@ function generateErrorForm($tpl, $phpini)
 			'MAX_SQLU' => tohtml($sqlu),
 			'MONTHLY_TRAFFIC' => tohtml($monthlyTraffic),
 			'MAX_DISKSPACE' => tohtml($diskspace),
-			'PHP_YES' => ($php == '_yes_') ? $htmlChecked : '',
+			'PHP_YES' => ($php == '_yes_') ? $checked : '',
 			'PHP_NO' => ($php == '_no_') ? $cfg->HTML_CHECKED : '',
-			'CGI_YES' => ($cgi == '_yes_') ? $htmlChecked : '',
-			'CGI_NO' => ($cgi == '_no_') ? $htmlChecked : '',
-			'DNS_YES' => ($dns == '_yes_') ? $htmlChecked : '',
-			'DNS_NO' => ($dns == '_no_') ? $htmlChecked : '',
-			'BACKUPD' => ($bkp == '_dmn_') ? $htmlChecked : '',
-			'BACKUPS' => ($bkp == '_sql_') ? $htmlChecked : '',
-			'BACKUPF' => ($bkp == '_full_') ? $htmlChecked : '',
-			'BACKUPN' => ($bkp == '_no_') ? $htmlChecked : '',
-			'SOFTWARE_YES' => ($aps == '_yes_') ? $htmlChecked : '',
-			'SOFTWARE_NO' => ($aps == '_no_') ? $htmlChecked : '',
-			'EXTMAIL_YES' => ($hpExtMail == '_yes_') ? $htmlChecked : '',
-			'EXTMAIL_NO' => ($hpExtMail == '_no_') ? $htmlChecked : '',
-			'STATUS_YES' => ($status) ? $htmlChecked : '',
-			'STATUS_NO' => (!$status) ? $htmlChecked : ''
+			'CGI_YES' => ($cgi == '_yes_') ? $checked : '',
+			'CGI_NO' => ($cgi == '_no_') ? $checked : '',
+			'DNS_YES' => ($dns == '_yes_') ? $checked : '',
+			'DNS_NO' => ($dns == '_no_') ? $checked : '',
+			'SOFTWARE_YES' => ($aps == '_yes_') ? $checked : '',
+			'SOFTWARE_NO' => ($aps == '_no_') ? $checked : '',
+			'EXTMAIL_YES' => ($hpExtMail == '_yes_') ? $checked : '',
+			'EXTMAIL_NO' => ($hpExtMail == '_no_') ? $checked : '',
+			'STATUS_YES' => ($status) ? $checked : '',
+			'STATUS_NO' => (!$status) ? $checked : ''
 		)
 	);
 
-	_generatePhpBlock($tpl, $phpini);
+	if ($cfg->BACKUP_DOMAINS != 'no') {
+		$tpl->assign(
+			array(
+				'BACKUPD' => ($bkp == '_dmn_') ? $checked : '',
+				'BACKUPS' => ($bkp == '_sql_') ? $checked : '',
+				'BACKUPF' => ($bkp == '_full_') ? $checked : '',
+				'BACKUPN' => ($bkp == '_no_') ? $checked : '',
+			)
+		);
+	} else {
+		$tpl->assign('BACKUP_FEATURE', '');
+	}
+
+	_admin_generatePhpBlock($tpl, $phpini);
 }
 
 /**
@@ -255,10 +272,10 @@ function generateErrorForm($tpl, $phpini)
  * @param iMSCP_PHPini $phpini
  * @return bool TRUE if data are valid, FALSE otherwise
  */
-function checkInputData($phpini)
+function admin_checkData($phpini)
 {
 	global $name, $description, $sub, $als, $mail, $ftp, $sqld, $sqlu, $monthlyTraffic, $diskspace, $php, $cgi, $dns,
-		$bkp, $aps, $hpExtMail, $status;
+		   $bkp, $aps, $hpExtMail, $status;
 
 	$name = isset($_POST['hp_name']) ? clean_input($_POST['hp_name']) : '';
 	$description = isset($_POST['hp_description']) ? clean_input($_POST['hp_description']) : '';
@@ -390,15 +407,15 @@ function checkInputData($phpini)
 }
 
 /**
- * Save new hosting plan
+ * Update hosting plan
  *
  * @param iMSCP_PHPini $phpini
  * @return bool TRUE on success, FALSE otherwise
  */
-function saveData($phpini)
+function admin_UpdateHostingPlan($phpini)
 {
 	global $id, $name, $description, $sub, $als, $mail, $ftp, $sqld, $sqlu, $monthlyTraffic, $diskspace, $php, $cgi,
-		$dns, $bkp, $aps, $hpExtMail, $status;
+		   $dns, $bkp, $aps, $hpExtMail, $status;
 
 	$query = "
 		SELECT
@@ -449,28 +466,15 @@ check_login('admin');
  */
 $cfg = iMSCP_Registry::get('config');
 
-if (isset($cfg->HOSTING_PLANS_LEVEL) && $cfg->HOSTING_PLANS_LEVEL != 'admin') {
+if (isset($cfg->HOSTING_PLANS_LEVEL) && $cfg->HOSTING_PLANS_LEVEL == 'admin') {
 	$tpl = new iMSCP_pTemplate();
 	$tpl->define_dynamic(
 		array(
 			'layout' => 'shared/layouts/ui.tpl',
 			'page' => 'shared/partials/forms/hosting_plan_edit.tpl',
 			'page_message' => 'layout',
-			'subdomain_edit' => 'page',
-			'alias_edit' => 'page',
-			'mail_edit' => 'page',
-			'ftp_edit' => 'page',
-			'sql_db_edit' => 'page',
-			'sql_user_edit' => 'page',
-			'php_editor_js' => 'page',
-			'php_editor_block' => 'page',
-			'php_editor_permissions_block' => 'php_editor_block',
-			'php_editor_allow_url_fopen_block' => 'php_editor_permissions_block',
-			'php_editor_display_errors_block' => 'php_editor_permissions_block',
-			'php_editor_disable_functions_block' => 'php_editor_permissions_block',
-			'php_editor_default_values_block' => 'php_editor_block',
-			't_software_support' => 'page',
-			'submit_button' => 'page'
+			'php_editor_disable_functions_block' => 'php_editor_feature',
+			'backup_feature' => 'page',
 		)
 	);
 
@@ -482,14 +486,14 @@ if (isset($cfg->HOSTING_PLANS_LEVEL) && $cfg->HOSTING_PLANS_LEVEL != 'admin') {
 		$phpini = iMSCP_PHPini::getInstance();
 
 		if (!empty($_POST)) {
-			if (checkInputData($phpini) && saveData($phpini)) {
+			if (admin_checkData($phpini) && admin_UpdateHostingPlan($phpini)) {
 				set_page_message(tr('Hosting plan successfully updated.'), 'success');
 				redirectTo('hosting_plan.php');
 			} else {
-				generateErrorForm($tpl, $phpini);
+				admin_generateErrorPage($tpl, $phpini);
 			}
 		} else {
-			generateForm($tpl, $id, $phpini);
+			admin_generatePage($tpl, $id, $phpini);
 		}
 
 		generateNavigation($tpl);
@@ -497,19 +501,19 @@ if (isset($cfg->HOSTING_PLANS_LEVEL) && $cfg->HOSTING_PLANS_LEVEL != 'admin') {
 		$tpl->assign(
 			array(
 				'THEME_CHARSET' => tr('encoding'),
-				'TR_PAGE_TITLE' => tr('i-MSCP - Admin / Manage Hosting Plans / Edit hosting plan'),
+				'TR_PAGE_TITLE' => tr('Admin / Hosting Plans / Overview / Edit hosting plan'),
 				'ISP_LOGO' => layout_getUserLogo(),
 				'TR_PROPERTIES' => tr('Hosting plan properties'),
 				'TR_NAME' => tr('Name'),
 				'TR_DESCRIPTON' => tr('Description'),
-				'TR_MAX_SUBDOMAINS' => tr('Max subdomains<br/><i>(-1 disabled, 0 unlimited)</i>'),
-				'TR_MAX_ALIASES' => tr('Max aliases<br/><i>(-1 disabled, 0 unlimited)</i>'),
-				'TR_MAX_MAILACCOUNTS' => tr('Mail accounts limit<br/><i>(-1 disabled, 0 unlimited)</i>'),
+				'TR_MAX_SUB' => tr('Max subdomains<br/><i>(-1 disabled, 0 unlimited)</i>'),
+				'TR_MAX_ALS' => tr('Max aliases<br/><i>(-1 disabled, 0 unlimited)</i>'),
+				'TR_MAX_MAIL' => tr('Mail accounts limit<br/><i>(-1 disabled, 0 unlimited)</i>'),
 				'TR_MAX_FTP' => tr('FTP accounts limit<br/><i>(-1 disabled, 0 unlimited)</i>'),
-				'TR_MAX_SQL_DB' => tr('SQL databases limit<br/><i>(-1 disabled, 0 unlimited)</i>'),
-				'TR_MAX_SQL_USERS' => tr('SQL users limit<br/><i>(-1 disabled, 0 unlimited)</i>'),
-				'TR_MAX_TRAFFIC' => tr('Monthly traffic limit [MiB]<br/><i>(0 unlimited)</i>'),
-				'TR_DISK_LIMIT' => tr('Disk space limit [MiB]<br/><i>(0 unlimited)</i>'),
+				'TR_MAX_SQLD' => tr('SQL databases limit<br/><i>(-1 disabled, 0 unlimited)</i>'),
+				'TR_MAX_SQLU' => tr('SQL users limit<br/><i>(-1 disabled, 0 unlimited)</i>'),
+				'TR_MONTHLY_TRAFFIC' => tr('Monthly traffic limit [MiB]<br/><i>(0 unlimited)</i>'),
+				'TR_MAX_DISKSPACE' => tr('Disk space limit [MiB]<br/><i>(0 unlimited)</i>'),
 				'TR_PHP' => tr('PHP'),
 				'TR_CGI' => tr('CGI'),
 				'TR_DNS' => tr('Custom DNS records'),

@@ -71,7 +71,7 @@ if (isset($_POST['uaction']) && $_POST['uaction'] == 'email_setup') {
 
 $tpl->assign(
 	array(
-		'TR_PAGE_TITLE' => tr('i-MSCP - Reseller/Manage users/Email setup'),
+		'TR_PAGE_TITLE' => tr('Reseller / Customers / Welcome Mail'),
 		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => layout_getUserLogo()));
 
@@ -79,7 +79,6 @@ generateNavigation($tpl);
 
 $tpl->assign(
 	array(
-		'TR_EMAIL_SETUP' => tr('Email setup'),
 		'TR_MESSAGE_TEMPLATE_INFO' => tr('Message template info'),
 		'TR_USER_LOGIN_NAME' => tr('User login (system) name'),
 		'TR_USER_PASSWORD' => tr('User password'),

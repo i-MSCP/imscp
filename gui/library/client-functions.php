@@ -601,6 +601,15 @@ function customerHasFeature($featureNames, $forceReload = false)
 }
 
 /**
+ * Tells whether or not the current customer can access the mail or external mail feature.
+ * @return bool
+ */
+function customerHasMailOrExtMailFeatures()
+{
+	return (customerHasFeature('mail') || customerHasFeature('external_mail'));
+}
+
+/**
  * Does the given customer is the owner of the given domain?
  *
  * @param string $domainName Domain name (dmn,sub,als,alssub)

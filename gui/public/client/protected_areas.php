@@ -48,16 +48,20 @@ customerHasFeature('protected_areas') or showBadRequestErrorPage();
 $cfg = iMSCP_Registry::get('config');
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic('layout', 'shared/layouts/ui.tpl');
-$tpl->define_dynamic('page', 'client/protected_areas.tpl');
-$tpl->define_dynamic('page_message', 'layout');
-$tpl->define_dynamic('dir_item', 'page');
-$tpl->define_dynamic('action_link', 'page');
-$tpl->define_dynamic('protected_areas', 'page');
+$tpl->define_dynamic(
+	array(
+		'layout' => 'shared/layouts/ui.tpl',
+		'page' => 'client/protected_areas.tpl',
+		'page_message' => 'layout',
+		'dir_item' => 'page',
+		'action_link' => 'page',
+		'protected_areas' => 'page'
+	)
+);
 
 $tpl->assign(
 	array(
-		'TR_PAGE_TITLE' => tr('i-MSCP - Client/Webtools'),
+		'TR_PAGE_TITLE' => tr('Client / Webtools / Protected Areas'),
 		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => layout_getUserLogo()));
 

@@ -78,11 +78,8 @@ $tpl->define_dynamic(
 $tpl->assign(
 	array(
 		'THEME_CHARSET' => tr('encoding'),
-		'TR_PAGE_TITLE' => tr('i-MSCP - Admin / Support Ticket System / Closed Tickets'),
+		'TR_PAGE_TITLE' => tr('Admin / Support / Closed Tickets'),
 		'ISP_LOGO' => layout_getUserLogo(),
-		'TR_SUPPORT_SYSTEM' => tr('Support Ticket System'),
-		'TR_OPEN_TICKETS' => tr('Open tickets'),
-		'TR_CLOSED_TICKETS' => tr('Closed tickets'),
 		'TR_TICKET_STATUS' => tr('Status'),
 		'TR_TICKET_FROM' => tr('From'),
 		'TR_TICKET_SUBJECT' => tr('Subject'),

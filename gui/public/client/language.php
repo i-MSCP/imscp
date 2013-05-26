@@ -89,8 +89,7 @@ if (!empty($_POST)) {
 
 $tpl->assign(
 	array(
-		 'TR_PAGE_TITLE' => tr('i-MSCP - Client / Change Language'),
-		 'TR_TITLE_CHANGE_LANGUAGE' => tr('Change language'),
+		 'TR_PAGE_TITLE' => tr('Client / Profile / Language'),
 		 'THEME_CHARSET' => tr('encoding'),
 		 'ISP_LOGO' => layout_getUserLogo(),
 		 'TR_GENERAL_INFO' => tr('General information'),

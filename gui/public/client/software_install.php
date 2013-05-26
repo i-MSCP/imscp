@@ -287,7 +287,7 @@ if (!empty($_POST)) {
 
 $tpl->assign(
 	array(
-		'TR_PAGE_TITLE' => tr('i-MSCP - Install Software'),
+		'TR_PAGE_TITLE' => tr('Client / Webtools / Software - Softwares Install'),
 		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => layout_getUserLogo(),
 		'TR_INSTALL_SOFTWARE' => tr('Install Software'),

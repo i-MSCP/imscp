@@ -29,8 +29,8 @@
 
 <config>
     <navigation>
-        <general_information>
-            <label>General information</label>
+        <general>
+            <label>General</label>
             <uri>/client/index.php</uri>
             <class>general</class>
             <pages>
@@ -40,10 +40,10 @@
                     <title_class>general</title_class>
                 </overview>
             </pages>
-        </general_information>
+        </general>
 
-        <manage_domains>
-            <label>Manage domains</label>
+        <domains>
+            <label>Domains</label>
             <uri>/client/domains_manage.php</uri>
             <class>domains</class>
             <privilege_callback name="customerHasFeature" param="domain"/>
@@ -104,10 +104,10 @@
                     <privilege_callback name="customerHasFeature" param="php_editor"/>
                 </php_settings>
             </pages>
-        </manage_domains>
+        </domains>
 
-        <ftp_accounts>
-            <label>Ftp accounts</label>
+        <ftp>
+            <label>Ftp</label>
             <uri>/client/ftp_accounts.php</uri>
             <class>ftp</class>
             <privilege_callback name="customerHasFeature" param="ftp"/>
@@ -136,7 +136,7 @@
                     <target>{FILEMANAGER_TARGET}</target>
                 </file_manager>
             </pages>
-        </ftp_accounts>
+        </ftp>
 
         <databases>
             <label>Databases</label>
@@ -176,11 +176,11 @@
             </pages>
         </databases>
 
-        <mail_account>
-            <label>Mail accounts</label>
+        <mail>
+            <label>Mail</label>
             <uri>/client/mail_accounts.php</uri>
             <class>email</class>
-            <privilege_callback name="customerHasFeature" param="mail"/>
+            <privilege_callback name="customerHasMailOrExtMailFeatures"/>
             <pages>
                 <overview>
                     <label>Overview</label>
@@ -217,11 +217,13 @@
                     <label>Add email account</label>
                     <uri>/client/mail_add.php</uri>
                     <title_class>email</title_class>
+                    <privilege_callback name="customerHasFeature" param="mail"/>
                 </add_email_account>
                 <catchall>
                     <label>Catchall</label>
                     <uri>/client/mail_catchall.php</uri>
                     <title_class>email</title_class>
+                    <privilege_callback name="customerHasFeature" param="mail"/>
                     <pages>
                         <add_catchall_link>
                             <label>Add catchall</label>
@@ -232,32 +234,33 @@
                     </pages>
                 </catchall>
                 <external_mail_servers>
-                    <label>External mail servers</label>
+                    <label>External mail server</label>
                     <uri>/client/mail_external.php</uri>
                     <title_class>email</title_class>
                     <privilege_callback name="customerHasFeature" param="external_mail"/>
                     <pages>
-                        <add_relay_link>
-                            <label>Add external mail servers for {DOMAIN_UTF8}</label>
+                        <add_ext_mail_server_link>
+                            <label>Add external mail server for {DOMAIN_UTF8}</label>
                             <uri>/client/mail_external_add.php</uri>
                             <visible>0</visible>
                             <title_class>email</title_class>
-                        </add_relay_link>
-                        <edit_relay_link>
-                            <label>Edit external mail servers for {DOMAIN_UTF8}</label>
+                        </add_ext_mail_server_link>
+                        <edit_ext_mail_server_link>
+                            <label>Edit external mail server for {DOMAIN_UTF8}</label>
                             <uri>/client/mail_external_edit.php</uri>
                             <visible>0</visible>
                             <title_class>email</title_class>
-                        </edit_relay_link>
+                        </edit_ext_mail_server_link>
                     </pages>
                 </external_mail_servers>
                 <webmail>
                     <label>Webmail</label>
                     <uri>{WEBMAIL_PATH}</uri>
                     <target>{WEBMAIL_TARGET}</target>
+                    <privilege_callback name="customerHasFeature" param="mail"/>
                 </webmail>
             </pages>
-        </mail_account>
+        </mail>
 
         <statistics>
             <label>Statistics</label>

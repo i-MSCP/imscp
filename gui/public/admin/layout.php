@@ -156,7 +156,7 @@ if (layout_isUserLogo($ispLogo)) {
 
 $tpl->assign(
 	array(
-		'TR_PAGE_TITLE' => tr('i-MSCP - Admin / Profile / Layout'),
+		'TR_PAGE_TITLE' => tr('Admin / Profile / Layout'),
 		'ISP_LOGO' => $ispLogo,
 		'OWN_LOGO' => $ispLogo,
 		'THEME_CHARSET' => tr('encoding'),

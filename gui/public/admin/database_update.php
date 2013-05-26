@@ -24,9 +24,9 @@
  * Portions created by the i-MSCP Team are Copyright (C) 2010-2013 by
  * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
  *
- * @category	i-MSCP
- * @package		iMSCP_Core
- * @subpackage	Admin
+ * @category    i-MSCP
+ * @package     iMSCP_Core
+ * @subpackage  Admin
  * @copyright   2001-2006 by moleSoftware GmbH
  * @copyright   2006-2010 by ispCP | http://isp-control.net
  * @copyright   2010-2013 by i-MSCP | http://i-mscp.net
@@ -35,7 +35,7 @@
  * @link        http://i-mscp.net
  */
 
-/************************************************************************************
+/***********************************************************************************************************************
  * Script functions
  */
 
@@ -50,9 +50,12 @@ function admin_generateDatabaseUpdateDetail($tpl)
 	$dbUpdatesDetail = iMSCP_Update_Database::getInstance()->getDatabaseUpdatesDetails();
 
 	foreach ($dbUpdatesDetail as $revision => $detail) {
-		$tpl->assign(array(
-						  'DB_UPDATE_REVISION' => (int)$revision,
-						  'DB_UPDATE_DETAIL' => _admin_generateIssueTrackerLink($detail)));
+		$tpl->assign(
+			array(
+				'DB_UPDATE_REVISION' => (int)$revision,
+				'DB_UPDATE_DETAIL' => _admin_generateIssueTrackerLink($detail)
+			)
+		);
 
 		$tpl->parse('DATABASE_UPDATE', '.database_update');
 	}
@@ -62,19 +65,19 @@ function admin_generateDatabaseUpdateDetail($tpl)
  * Generate issue tracker link for tickets references in database update detail.
  *
  * @access private
- * @param $detail database update detail
+ * @param string $detail database update detail
  * @return string
  */
 function _admin_generateIssueTrackerLink($detail)
 {
 	return preg_replace(
 		'/#([0-9]+)/',
-		'<a href="http://trac.i-mscp.net/ticket/\1" target="_blank" title="' .
-			tr('More Details') .'">#\1</a>',
-		$detail);
+		'<a href="http://trac.i-mscp.net/ticket/\1" target="_blank" title="' . tr('More Details') . '">#\1</a>',
+		$detail
+	);
 }
 
-/************************************************************************************
+/***********************************************************************************************************************
  * Main script
  */
 
@@ -99,7 +102,7 @@ if (isset($_POST['uaction']) && $_POST['uaction'] == 'update') {
 	}
 
 	// Set success page message
-	set_page_message('All database update were successfully applied.', 'success');
+	set_page_message('Database update successfully applied.', 'success');
 	redirectTo('system_info.php');
 }
 
@@ -115,9 +118,10 @@ $tpl->define_dynamic(
 $tpl->assign(
 	array(
 		'THEME_CHARSET' => tr('encoding'),
-		'TR_PAGE_TITLE' => tr('i-MSCP - Admin / System tools / Database Update'),
+		'TR_PAGE_TITLE' => tr('Admin / System tools / Database Update'),
 		'ISP_LOGO' => layout_getUserLogo(),
-		'TR_SECTION_TITLE' => tr('Database updates')));
+	)
+);
 
 generateNavigation($tpl);
 
@@ -128,11 +132,11 @@ if ($dbUpdate->isAvailableUpdate()) {
 	$tpl->assign(
 		array(
 			'TR_DATABASE_UPDATES' => tr('Database Update Revision'),
-			'TR_DATABASE_UPDATE_DETAIL' => 'Database Update details',
-			'TR_PROCESS_UPDATES' => tr('Process updates')));
+			'TR_DATABASE_UPDATE_DETAIL' => tr('Database Update details'),
+			'TR_PROCESS_UPDATES' => tr('Process update')));
 } else {
 	$tpl->assign('DATABASE_UPDATES', '');
-	set_page_message(tr('No database updates available.'), 'info');
+	set_page_message(tr('No database update available.'), 'info');
 }
 
 generatePageMessage($tpl);

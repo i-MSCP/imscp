@@ -46,17 +46,17 @@
  * @param iMSCP_PHPini $phpini
  * @return void
  */
-function _generatePhpBlock($tpl, $phpini)
+function _reseller_generatePhpBlock($tpl, $phpini)
 {
 	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
-	$htmlChecked = $cfg->HTML_CHECKED;
+	$checked = $cfg->HTML_CHECKED;
 
 	$tplVars = array();
 
 	if ($phpini->getRePermVal('phpiniSystem') == 'yes') {
-		$tplVars['PHP_EDITOR_YES'] = ($phpini->getClPermVal('phpiniSystem') == 'yes') ? $htmlChecked : '';
-		$tplVars['PHP_EDITOR_NO'] = ($phpini->getClPermVal('phpiniSystem') != 'yes') ? $htmlChecked : '';
+		$tplVars['PHP_EDITOR_YES'] = ($phpini->getClPermVal('phpiniSystem') == 'yes') ? $checked : '';
+		$tplVars['PHP_EDITOR_NO'] = ($phpini->getClPermVal('phpiniSystem') != 'yes') ? $checked : '';
 		$tplVars['TR_PHP_EDITOR'] = tr('PHP Editor');
 		$tplVars['TR_PHP_EDITOR_SETTINGS'] = tr('PHP Editor Settings');
 		$tplVars['TR_SETTINGS'] = tr('Settings');
@@ -78,8 +78,8 @@ function _generatePhpBlock($tpl, $phpini)
 			$tplVars['PHP_EDITOR_ALLOW_URL_FOPEN_BLOCK'] = '';
 		} else {
 			$tplVars['TR_CAN_EDIT_ALLOW_URL_FOPEN'] = tr('Can edit the PHP %s directive', true, '<b>allow_url_fopen</b>');
-			$tplVars['ALLOW_URL_FOPEN_YES'] = ($phpini->getClPermVal('phpiniAllowUrlFopen') == 'yes') ? $htmlChecked : '';
-			$tplVars['ALLOW_URL_FOPEN_NO'] = ($phpini->getClPermVal('phpiniAllowUrlFopen') == 'no') ? $htmlChecked : '';
+			$tplVars['ALLOW_URL_FOPEN_YES'] = ($phpini->getClPermVal('phpiniAllowUrlFopen') == 'yes') ? $checked : '';
+			$tplVars['ALLOW_URL_FOPEN_NO'] = ($phpini->getClPermVal('phpiniAllowUrlFopen') == 'no') ? $checked : '';
 			$permissionsBlock = true;
 		}
 
@@ -87,8 +87,8 @@ function _generatePhpBlock($tpl, $phpini)
 			$tplVars['PHP_EDITOR_DISPLAY_ERRORS_BLOCK'] = '';
 		} else {
 			$tplVars['TR_CAN_EDIT_DISPLAY_ERRORS'] = tr('Can edit the PHP %s directive', true, '<b>display_errors</b>');
-			$tplVars['DISPLAY_ERRORS_YES'] = ($phpini->getClPermVal('phpiniDisplayErrors') == 'yes') ? $htmlChecked : '';
-			$tplVars['DISPLAY_ERRORS_NO'] = ($phpini->getClPermVal('phpiniDisplayErrors') == 'no') ? $htmlChecked : '';
+			$tplVars['DISPLAY_ERRORS_YES'] = ($phpini->getClPermVal('phpiniDisplayErrors') == 'yes') ? $checked : '';
+			$tplVars['DISPLAY_ERRORS_NO'] = ($phpini->getClPermVal('phpiniDisplayErrors') == 'no') ? $checked : '';
 			$permissionsBlock = true;
 		}
 
@@ -96,10 +96,10 @@ function _generatePhpBlock($tpl, $phpini)
 			$tplVars['PHP_EDITOR_DISABLE_FUNCTIONS_BLOCK'] = '';
 		} else {
 			$tplVars['TR_CAN_EDIT_DISABLE_FUNCTIONS'] = tr('Can edit the PHP %s directive', true, '<b>disable_functions</b>');
-			$tplVars['DISABLE_FUNCTIONS_YES'] = ($phpini->getClPermVal('phpiniDisableFunctions') == 'yes') ? $htmlChecked : '';
-			$tplVars['DISABLE_FUNCTIONS_NO'] = ($phpini->getClPermVal('phpiniDisableFunctions') == 'no') ? $htmlChecked : '';
+			$tplVars['DISABLE_FUNCTIONS_YES'] = ($phpini->getClPermVal('phpiniDisableFunctions') == 'yes') ? $checked : '';
+			$tplVars['DISABLE_FUNCTIONS_NO'] = ($phpini->getClPermVal('phpiniDisableFunctions') == 'no') ? $checked : '';
 			$tplVars['TR_ONLY_EXEC'] = tr('Only exec');
-			$tplVars['DISABLE_FUNCTIONS_EXEC'] = ($phpini->getClPermVal('phpiniDisableFunctions') == 'exec') ? $htmlChecked : '';
+			$tplVars['DISABLE_FUNCTIONS_EXEC'] = ($phpini->getClPermVal('phpiniDisableFunctions') == 'exec') ? $checked : '';
 			$permissionsBlock = true;
 		}
 
@@ -134,7 +134,7 @@ function _generatePhpBlock($tpl, $phpini)
 }
 
 /**
- * Generate form
+ * Generate page
  *
  * @param $tpl iMSCP_pTemplate
  * @param int $id Hosting plan unique identifier
@@ -142,7 +142,7 @@ function _generatePhpBlock($tpl, $phpini)
  * @param $phpini iMSCP_PHPini
  * @return void
  */
-function generateForm($tpl, $id, $resellerId, $phpini)
+function reseller_generatePage($tpl, $id, $resellerId, $phpini)
 {
 	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
@@ -233,24 +233,37 @@ function generateForm($tpl, $id, $resellerId, $phpini)
 		)
 	);
 
-	_generatePhpBlock($tpl, $phpini);
+	if (resellerHasFeature('backup')) {
+		$tpl->assign(
+			array(
+				'BACKUPD' => ($bkp == '_dmn_') ? $checked : '',
+				'BACKUPS' => ($bkp == '_sql_') ? $checked : '',
+				'BACKUPF' => ($bkp == '_full_') ? $checked : '',
+				'BACKUPN' => ($bkp == '_no_') ? $checked : '',
+			)
+		);
+	} else {
+		$tpl->assign('BACKUP_FEATURE', '');
+	}
+
+	_reseller_generatePhpBlock($tpl, $phpini);
 }
 
 /**
- * Generate error form
+ * Generate error page
  *
  * @param iMSCP_pTemplate $tpl
  * @param iMSCP_PHPini $phpini
  * @return void
  */
-function generateErrorForm($tpl, $phpini)
+function reseller_generateErrorPage($tpl, $phpini)
 {
 	global $id, $name, $description, $sub, $als, $mail, $ftp, $sqld, $sqlu, $monthlyTraffic, $diskspace, $php, $cgi,
 		$bkp, $dns, $aps, $hpExtMail, $status;
 
 	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
-	$htmlChecked = $cfg->HTML_CHECKED;
+	$checked = $cfg->HTML_CHECKED;
 
 	$tpl->assign(
 		array(
@@ -265,26 +278,35 @@ function generateErrorForm($tpl, $phpini)
 			'MAX_SQLU' => tohtml($sqlu),
 			'MONTHLY_TRAFFIC' => tohtml($monthlyTraffic),
 			'MAX_DISKSPACE' => tohtml($diskspace),
-			'PHP_YES' => ($php == '_yes_') ? $htmlChecked : '',
+			'PHP_YES' => ($php == '_yes_') ? $checked : '',
 			'PHP_NO' => ($php == '_no_') ? $cfg->HTML_CHECKED : '',
-			'CGI_YES' => ($cgi == '_yes_') ? $htmlChecked : '',
-			'CGI_NO' => ($cgi == '_no_') ? $htmlChecked : '',
-			'DNS_YES' => ($dns == '_yes_') ? $htmlChecked : '',
-			'DNS_NO' => ($dns == '_no_') ? $htmlChecked : '',
-			'BACKUPD' => ($bkp == '_dmn_') ? $htmlChecked : '',
-			'BACKUPS' => ($bkp == '_sql_') ? $htmlChecked : '',
-			'BACKUPF' => ($bkp == '_full_') ? $htmlChecked : '',
-			'BACKUPN' => ($bkp == '_no_') ? $htmlChecked : '',
-			'SOFTWARE_YES' => ($aps == '_yes_') ? $htmlChecked : '',
-			'SOFTWARE_NO' => ($aps == '_no_') ? $htmlChecked : '',
-			'EXTMAIL_YES' => ($hpExtMail == '_yes_') ? $htmlChecked : '',
-			'EXTMAIL_NO' => ($hpExtMail == '_no_') ? $htmlChecked : '',
-			'STATUS_YES' => ($status) ? $htmlChecked : '',
-			'STATUS_NO' => (!$status) ? $htmlChecked : ''
+			'CGI_YES' => ($cgi == '_yes_') ? $checked : '',
+			'CGI_NO' => ($cgi == '_no_') ? $checked : '',
+			'DNS_YES' => ($dns == '_yes_') ? $checked : '',
+			'DNS_NO' => ($dns == '_no_') ? $checked : '',
+			'SOFTWARE_YES' => ($aps == '_yes_') ? $checked : '',
+			'SOFTWARE_NO' => ($aps == '_no_') ? $checked : '',
+			'EXTMAIL_YES' => ($hpExtMail == '_yes_') ? $checked : '',
+			'EXTMAIL_NO' => ($hpExtMail == '_no_') ? $checked : '',
+			'STATUS_YES' => ($status) ? $checked : '',
+			'STATUS_NO' => (!$status) ? $checked : ''
 		)
 	);
 
-	_generatePhpBlock($tpl, $phpini);
+	if (resellerHasFeature('backup')) {
+		$tpl->assign(
+			array(
+				'BACKUPD' => ($bkp == '_dmn_') ? $checked : '',
+				'BACKUPS' => ($bkp == '_sql_') ? $checked : '',
+				'BACKUPF' => ($bkp == '_full_') ? $checked : '',
+				'BACKUPN' => ($bkp == '_no_') ? $checked : '',
+			)
+		);
+	} else {
+		$tpl->assign('BACKUP_FEATURE', '');
+	}
+
+	_reseller_generatePhpBlock($tpl, $phpini);
 }
 
 /**
@@ -293,7 +315,7 @@ function generateErrorForm($tpl, $phpini)
  * @param iMSCP_PHPini $phpini
  * @return bool TRUE if data are valid, FALSE otherwise
  */
-function checkInputData($phpini)
+function reseller_checkData($phpini)
 {
 	global $name, $description, $sub, $als, $mail, $ftp, $sqld, $sqlu, $monthlyTraffic, $diskspace, $php, $cgi, $dns,
 		$bkp, $aps, $hpExtMail, $status;
@@ -442,12 +464,12 @@ function checkInputData($phpini)
 }
 
 /**
- * Save new hosting plan
+ * Update hosting plan
  *
  * @param iMSCP_PHPini $phpini
  * @return bool TRUE on success, FALSE otherwise
  */
-function saveData($phpini)
+function reseller_UpdateHostingPlan($phpini)
 {
 	global $id, $name, $description, $sub, $als, $mail, $ftp, $sqld, $sqlu, $monthlyTraffic, $diskspace, $php, $cgi,
 		$dns, $bkp, $aps, $hpExtMail, $status;
@@ -492,20 +514,24 @@ $tpl->define_dynamic(
 		'layout' => 'shared/layouts/ui.tpl',
 		'page' => 'shared/partials/forms/hosting_plan_edit.tpl',
 		'page_message' => 'layout',
-		'subdomain_edit' => 'page',
-		'alias_edit' => 'page',
-		'mail_edit' => 'page',
-		'ftp_edit' => 'page',
-		'sql_db_edit' => 'page',
-		'sql_user_edit' => 'page',
+		'nb_subdomains' => 'page',
+		'nb_domain_aliases' => 'page',
+		'nb_mail' => 'page',
+		'nb_ftp' => 'page',
+		'nb_sqld' => 'page',
+		'nb_sqlu' => 'page',
+		'php_feature' => 'page',
 		'php_editor_js' => 'page',
-		'php_editor_block' => 'page',
-		'php_editor_permissions_block' => 'php_editor_block',
+		'php_editor_feature' => 'page',
+		'php_editor_permissions_block' => 'php_editor_feature',
 		'php_editor_allow_url_fopen_block' => 'php_editor_permissions_block',
 		'php_editor_display_errors_block' => 'php_editor_permissions_block',
 		'php_editor_disable_functions_block' => 'php_editor_permissions_block',
-		'php_editor_default_values_block' => 'php_editor_block',
-		't_software_support' => 'page',
+		'php_editor_default_values_block' => 'php_editor_feature',
+		'cgi_feature' => 'page',
+		'custom_dns_feature' => 'page',
+		'aps_feature' => 'page',
+		'backup_feature' => 'page',
 		'submit_button' => 'page'
 	)
 );
@@ -520,30 +546,28 @@ if (isset($_GET['id'])) {
 
 	if (!empty($_POST)) {
 		if (isset($cfg->HOSTING_PLANS_LEVEL) && $cfg->HOSTING_PLANS_LEVEL == 'reseller') {
-			if (checkInputData($phpini) && saveData($phpini)) {
+			if (reseller_checkData($phpini) && reseller_UpdateHostingPlan($phpini)) {
 				set_page_message(tr('Hosting plan successfully updated.'), 'success');
 				redirectTo('hosting_plan.php');
 			} else {
-				generateErrorForm($tpl, $phpini);
+				reseller_generateErrorPage($tpl, $phpini);
 			}
 		} else {
 			showBadRequestErrorPage();
 		}
 	} else {
-		generateForm($tpl, $id, $_SESSION['user_id'], $phpini);
+		reseller_generatePage($tpl, $id, $_SESSION['user_id'], $phpini);
 	}
-
-	get_reseller_software_permission($tpl, $_SESSION['user_id']);
 
 	generateNavigation($tpl);
 
 	$tpl->assign(
 		array(
 			'THEME_CHARSET' => tr('encoding'),
-			'TR_PAGE_TITLE' => $cfg->HOSTING_PLANS_LEVEL != 'reseller'
-				? tr('i-MSCP - Reseller / Manage Hosting Plans / View hosting plan') :
-				tr('i-MSCP - Reseller / Manage Hosting Plans / Edit hosting plan'),
+			'TR_PAGE_TITLE' =>  tr('Reseller /Hosting Plans / {TR_DYNAMIC_TITLE}'),
 			'ISP_LOGO' => layout_getUserLogo(),
+			'TR_DYNAMIC_TITLE' => $cfg->HOSTING_PLANS_LEVEL != 'reseller'
+				? tr('View hosting plan') : tr('Edit hosting plan'),
 			'TR_PROPERTIES' => tr('Hosting plan properties'),
 			'TR_NAME' => tr('Name'),
 			'TR_DESCRIPTON' => tr('Description'),
@@ -575,12 +599,19 @@ if (isset($_GET['id'])) {
 
 	generatePageMessage($tpl);
 
-	if (!resellerHasFeature('subdomains')) $tpl->assign('SUBDOMAIN_ADD', '');
-	if (!resellerHasFeature('domain_aliases')) $tpl->assign('ALIAS_ADD', '');
-	if (!resellerHasFeature('mail')) $tpl->assign('MAIL_ADD', '');
-	if (!resellerHasFeature('ftp')) $tpl->assign('FTP_ADD', '');
-	if (!resellerHasFeature('sql_db')) $tpl->assign('SQL_DB_ADD', '');
-	if (!resellerHasFeature('sql_user')) $tpl->assign('SQL_USER_ADD', '');
+	if (!resellerHasFeature('subdomains')) $tpl->assign('NB_SUBDOMAIN', '');
+	if (!resellerHasFeature('domain_aliases')) $tpl->assign('NB_DOMAIN_ALIASES', '');
+	if (!resellerHasFeature('mail')) $tpl->assign('NB_MAIL', '');
+	if (!resellerHasFeature('ftp')) $tpl->assign('NB_FTP', '');
+	if (!resellerHasFeature('sql_db')) $tpl->assign('NB_SQLD', '');
+	if (!resellerHasFeature('sql_user')) $tpl->assign('NB_SQLU', '');
+	if (!resellerHasFeature('php')) $tpl->assign('PHP_FEATURE', '');
+	if (!resellerHasFeature('php_editor')) $tpl->assign('PHP_EDITOR_FEATURE', '');
+	if (!resellerHasFeature('cgi')) $tpl->assign('CGI_FEATURE', '');
+	if (!resellerHasFeature('custom_dns_records')) $tpl->assign('CUSTOM_DNS_FEATURE', '');
+	if (!resellerHasFeature('aps')) $tpl->assign('EXT_MAIL_FEATURE', '');
+	if (!resellerHasFeature('external_mail')) $tpl->assign('EXT_MAIL_FEATURE', '');
+	if (!resellerHasFeature('backup')) $tpl->assign('BACKUP_FEATURE', '');
 
 	$tpl->parse('LAYOUT_CONTENT', 'page');
 

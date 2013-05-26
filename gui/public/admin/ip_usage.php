@@ -167,7 +167,7 @@ $tpl->define_dynamic(
 
 $tpl->assign(
 	array(
-		'TR_PAGE_TITLE' => tr('i-MSCP - Admin/IP Usage'),
+		'TR_PAGE_TITLE' => tr('Admin / Statistics / IP Usage'),
 		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => layout_getUserLogo(),
 		'TR_SERVER_STATISTICS' => tr('Server statistics'),

@@ -52,7 +52,7 @@ $tpl->define_dynamic('page_message', 'layout');
 
 $tpl->assign(
 	array(
-		'TR_PAGE_TITLE' => tr('i-MSCP - Client/Change Personal Data'),
+		'TR_PAGE_TITLE' => tr('Client / Profile / Personal Data'),
 		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => layout_getUserLogo()));
 

@@ -113,43 +113,43 @@
                 <td><label for="hp_description">{TR_DESCRIPTON}</label></td>
                 <td><textarea id="hp_description" name="hp_description">{HP_DESCRIPTION_VALUE}</textarea></td>
             </tr>
-            <!-- BDP: subdomain_add -->
+            <!-- BDP: nb_subdomains -->
             <tr>
                 <td><label for="hp_sub">{TR_MAX_SUBDOMAINS}</label></td>
                 <td><input class="spinner" id="hp_sub" type="text" name="hp_sub" value="{TR_MAX_SUB_LIMITS}"/></td>
             </tr>
-            <!-- EDP: subdomain_add -->
-            <!-- BDP: alias_add -->
+            <!-- EDP: nb_subdomains -->
+            <!-- BDP: nb_domain_aliases -->
             <tr>
                 <td><label for="hp_als">{TR_MAX_ALIASES}</label></td>
                 <td><input class="spinner" id="hp_als" type="text" name="hp_als" value="{TR_MAX_ALS_VALUES}"/></td>
             </tr>
-            <!-- EDP: alias_add -->
-            <!-- BDP: mail_add -->
+            <!-- EDP: nb_domain_aliases -->
+            <!-- BDP: nb_mail -->
             <tr>
                 <td><label for="hp_mail">{TR_MAX_MAILACCOUNTS}</label>
                 </td>
                 <td><input class="spinner" id="hp_mail" type="text" name="hp_mail" value="{HP_MAIL_VALUE}"/></td>
             </tr>
-            <!-- EDP: mail_add -->
-            <!-- BDP: ftp_add -->
+            <!-- EDP: nb_mail -->
+            <!-- BDP: nb_ftp -->
             <tr>
                 <td><label for="hp_ftp">{TR_MAX_FTP}</label></td>
                 <td><input class="spinner" id="hp_ftp" type="text" name="hp_ftp" value="{HP_FTP_VALUE}"/></td>
             </tr>
-            <!-- EDP: ftp_add -->
-            <!-- BDP: sql_db_add -->
+            <!-- EDP: nb_ftp -->
+            <!-- BDP: nb_sqld -->
             <tr>
                 <td><label for="hp_sql_db">{TR_MAX_SQL}</label></td>
                 <td><input class="spinner" id="hp_sql_db" type="text" name="hp_sql_db" value="{HP_SQL_DB_VALUE}"/></td>
             </tr>
-            <!-- EDP: sql_db_add -->
-            <!-- BDP: sql_user_add -->
+            <!-- EDP: nb_sqld -->
+            <!-- BDP: nb_sqlu -->
             <tr>
                 <td><label for="hp_sql_user">{TR_MAX_SQL_USERS}</label></td>
                 <td><input class="spinner" id="hp_sql_user" type="text" name="hp_sql_user" value="{HP_SQL_USER_VALUE}"/></td>
             </tr>
-            <!-- EDP: sql_user_add -->
+            <!-- EDP: nb_sqlu -->
             <tr>
                 <td><label for="hp_traff">{TR_MAX_TRAFFIC}</label></td>
                 <td><input class="spinner" id="hp_traff" type="text" name="hp_traff" value="{HP_TRAFF_VALUE}"/></td>
@@ -158,6 +158,7 @@
                 <td><label for="hp_disk">{TR_DISK_LIMIT}</label></td>
                 <td><input class="spinner ui-autocomplete-input" id="hp_disk" type="text" name="hp_disk" value="{HP_DISK_VALUE}"/></td>
             </tr>
+			<!-- BDP: php_feature -->
             <tr>
                 <td>{TR_PHP}</td>
                 <td>
@@ -169,7 +170,8 @@
                     </div>
                 </td>
             </tr>
-            <!-- BDP: php_editor_block -->
+			<!-- EDP: php_feature -->
+            <!-- BDP: php_editor_feature -->
             <tr id="php_editor_block">
                 <td><label>{TR_PHP_EDITOR}</label></td>
                 <td colspan="2">
@@ -271,7 +273,8 @@
                     </div>
                 </td>
             </tr>
-            <!-- EDP: php_editor_block -->
+            <!-- EDP: php_editor_feature -->
+			<!-- BDP: cgi_feature -->
             <tr>
                 <td>{TR_CGI}</td>
                 <td>
@@ -283,6 +286,8 @@
                     </div>
                 </td>
             </tr>
+			<!-- BDP: cgi_feature -->
+			<!-- BPD: custom_dns_feature -->
             <tr>
                 <td>{TR_DNS}</td>
                 <td>
@@ -294,24 +299,8 @@
                     </div>
                 </td>
             </tr>
-            <!-- BDP: backup_support -->
-            <tr>
-                <td>{TR_BACKUP}</td>
-                <td>
-                    <div class="radio">
-                        <input type="radio" name="hp_backup" value="_dmn_" id="hp_backup_dmn"{VL_BACKUPD}/>
-                        <label for="hp_backup_dmn">{TR_BACKUP_DOMAIN}</label>
-                        <input type="radio" name="hp_backup" value="_sql_" id="hp_backup_sql"{VL_BACKUPS}/>
-                        <label for="hp_backup_sql">{TR_BACKUP_SQL}</label>
-                        <input type="radio" name="hp_backup" value="_full_" id="hp_backup_full"{VL_BACKUPF}/>
-                        <label for="hp_backup_full">{TR_BACKUP_FULL}</label>
-                        <input type="radio" name="hp_backup" value="_no_" id="hp_backup_none"{VL_BACKUPN}/>
-                        <label for="hp_backup_none">{TR_BACKUP_NO}</label>
-                    </div>
-                </td>
-            </tr>
-            <!-- EDP: backup_support -->
-            <!-- BDP: t_software_support -->
+			<!--EDP: custom_dns_feature -->
+            <!-- BDP: aps_feature -->
             <tr>
                 <td>{TR_SOFTWARE_SUPP}</td>
                 <td>
@@ -323,7 +312,8 @@
                     </div>
                 </td>
             </tr>
-            <!-- EDP: t_software_support -->
+            <!-- EDP: aps_feature -->
+			<!-- BDP: ext_mail_feature -->
             <tr>
                 <td>{TR_EXTMAIL}</td>
                 <td>
@@ -335,6 +325,24 @@
                     </div>
                 </td>
             </tr>
+			<!-- EDP: ext_mail_feature -->
+			<!-- BDP: backup_feature -->
+			<tr>
+				<td>{TR_BACKUP}</td>
+				<td>
+					<div class="radio">
+						<input type="radio" name="hp_backup" value="_dmn_" id="hp_backup_dmn"{VL_BACKUPD}/>
+						<label for="hp_backup_dmn">{TR_BACKUP_DOMAIN}</label>
+						<input type="radio" name="hp_backup" value="_sql_" id="hp_backup_sql"{VL_BACKUPS}/>
+						<label for="hp_backup_sql">{TR_BACKUP_SQL}</label>
+						<input type="radio" name="hp_backup" value="_full_" id="hp_backup_full"{VL_BACKUPF}/>
+						<label for="hp_backup_full">{TR_BACKUP_FULL}</label>
+						<input type="radio" name="hp_backup" value="_no_" id="hp_backup_none"{VL_BACKUPN}/>
+						<label for="hp_backup_none">{TR_BACKUP_NO}</label>
+					</div>
+				</td>
+			</tr>
+			<!-- EDP: backup_feature -->
             </table>
             <table class="firstColFixed">
                 <tr>
@@ -354,7 +362,7 @@
             </table>
             <!-- BDP: form -->
             <div class="buttons">
-                <input name="Submit" type="submit" value="{TR_ADD_PLAN}"/>
+                <input name="Submit" type="submit" value="{TR_ADD}"/>
             </div>
             <!-- EDP: form -->
 			</form>

@@ -206,10 +206,9 @@ $quotaValue=floor($mailAccountData['quota'] / 1024 / 1024);
 
 $tpl->assign(
 	array(
-		 'TR_PAGE_TITLE' => tr('i-MSCP - Client / Manage mail / Edit quota'),
+		 'TR_PAGE_TITLE' => tr('Client / Mail / Overview /  Edit Mail Quota'),
 		 'THEME_CHARSET' => tr('encoding'),
 		 'ISP_LOGO' => layout_getUserLogo(),
-		 'TR_EDIT_MAIL_QUOTA' => tr('Edit mail quota'),
 		 'TR_QUOTA' => tr('Quota in MB (0 unlimited)'),
 		 'QUOTA' => $quotaValue,
 		 'TR_HELP' => tr('help'),

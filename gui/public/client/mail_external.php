@@ -136,10 +136,9 @@ function client_generateView($tpl)
 	//$tpl = iMSCP_Registry::get('templateEngine');
 	$tpl->assign(
 		array(
-			'TR_PAGE_TITLE' => tr('i-MSCP - Client / Mail Accounts / External mail servers'),
+			'TR_PAGE_TITLE' => tr('Client / Mail / External Mail Server'),
 			'THEME_CHARSET' => tr('encoding'),
 			'ISP_LOGO' => layout_getUserLogo(),
-			'TR_TITLE_RELAY_MAIL_USERS' => tr('External mail servers'),
 			'TR_DOMAIN' => tr('Domain'),
 			'TR_STATUS' => tr('Status'),
 			'TR_ACTION' => tr('Action'),
@@ -165,7 +164,7 @@ iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptStart)
 
 check_login('user');
 
-if (customerHasFeature(array('mail', 'external_mail'))) {
+if (customerHasFeature('external_mail')) {
 	//$tpl = iMSCP_Registry::set('templateEngine', new iMSCP_pTemplate());
 	$tpl = new iMSCP_pTemplate();
 	$tpl->define_dynamic(
@@ -183,6 +182,7 @@ if (customerHasFeature(array('mail', 'external_mail'))) {
 	generateNavigation($tpl);
 	client_generateView($tpl);
 	generatePageMessage($tpl);
+
 	$tpl->parse('LAYOUT_CONTENT', 'page');
 	iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, array('templateEngine' => $tpl));
 	$tpl->prnt();

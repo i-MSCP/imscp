@@ -24,9 +24,9 @@
  * Portions created by the i-MSCP Team are Copyright (C) 2010-2013 by
  * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
  *
- * @category	i-MSCP
- * @package		iMSCP_Core
- * @subpackage	Admin
+ * @category    i-MSCP
+ * @package     iMSCP_Core
+ * @subpackage  Admin
  * @copyright   2001-2006 by moleSoftware GmbH
  * @copyright   2006-2010 by ispCP | http://isp-control.net
  * @copyright   2010-2013 by i-MSCP | http://i-mscp.net
@@ -35,7 +35,7 @@
  * @link        http://i-mscp.net
  */
 
-/*************************************************************************************
+/***********************************************************************************************************************
  * Script functions
  */
 
@@ -67,11 +67,11 @@ function admin_generateMenusList($tpl)
 				$menuLevel = tr('Reseller');
 			} elseif ($menuLevel == 'C') {
 				$menuLevel = tr('Customer');
-			} elseif($menuLevel == 'AR') {
+			} elseif ($menuLevel == 'AR') {
 				$menuLevel = tr('Administrator and reseller');
-			} elseif($menuLevel == 'AC') {
+			} elseif ($menuLevel == 'AC') {
 				$menuLevel = tr('Administrator and customer');
-			} elseif($menuLevel == 'RC') {
+			} elseif ($menuLevel == 'RC') {
 				$menuLevel = tr('Reseller and customer');
 			} elseif ($menuLevel == 'ARC') {
 				$menuLevel = tr('All');
@@ -84,7 +84,9 @@ function admin_generateMenusList($tpl)
 					'LEVEL' => tohtml($menuLevel),
 					'ORDER' => $menuOrder,
 					'MENU_NAME' => tohtml($menuName),
-					'LINK' => tohtml($menuLink)));
+					'LINK' => tohtml($menuLink)
+				)
+			);
 
 			$tpl->parse('MENU_BLOCK', '.menu_block');
 			$stmt->moveNext();
@@ -101,10 +103,12 @@ function admin_generateForm($tpl)
 {
 	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
+	$selected = $cfg->HTML_SELECTED;
 
 	$customMenu = array(
 		'menu_id' => '', 'menu_name' => '', 'menu_link' => '', 'menu_target' => '_self', 'menu_level' => 'a',
-		'menu_order' => '');
+		'menu_order' => ''
+	);
 
 	if (empty($_POST) && isset($_GET['edit_id'])) {
 		$query = "SELECT * FROM `custom_menus` WHERE `menu_id` = ?";
@@ -116,45 +120,55 @@ function admin_generateForm($tpl)
 		}
 
 		$customMenu = $stmt->fetchRow();
-	} elseif(!empty($_POST)) {
+	} elseif (!empty($_POST)) {
 		$customMenu = $_POST;
 	}
 
-	if(isset($_REQUEST['edit_id'])) {
+	if (isset($_REQUEST['edit_id'])) {
 		$tpl->assign(
 			array(
 				'TR_DYNAMIC_TITLE' => tr('Edit custom menu'),
 				'TR_UPDATE' => tr('Update'),
 				'EDIT_ID' => tohtml($_REQUEST['edit_id']),
-				'ADD_MENU' => ''));
+				'ADD_MENU' => ''
+			)
+		);
 	} else {
 		$tpl->assign(
 			array(
 				'TR_DYNAMIC_TITLE' => tr('Add custom menu'),
 				'TR_ADD' => tr('Add'),
-				'EDIT_MENU' => ''));
+				'EDIT_MENU' => ''
+			)
+		);
 	}
 
-	foreach(array('_blank', '_parent', '_self', '_top') as $target) {
+	foreach (array('_blank', '_parent', '_self', '_top') as $target) {
 		$tpl->assign(
 			array(
 				'TR_TARGET' => tr('%s page', str_replace('_', '', $target)),
 				'TARGET_VALUE' => $target,
-				'SELECTED_TARGET' => ($customMenu['menu_target'] == $target) ? $cfg->HTML_SELECTED : ''));
+				'SELECTED_TARGET' => ($customMenu['menu_target'] == $target) ? $selected : ''
+			)
+		);
 
 		$tpl->parse('MENU_TARGET_BLOCK', '.menu_target_block');
 	}
 
-	foreach (array(
-				 'A' => tr('Administrator level'), 'R' => tr('Reseller level'), 'C' => tr('Customer level'),
-				 'AR' => tr('Administrator and Reseller levels'), 'AC' => tr('Administrator and customer levels'),
-				 'RC' => tr('Reseller and customer levels'), 'ARC' => tr('All levels')) as $level => $trLevel
+	foreach (
+		array(
+			'A' => tr('Administrator level'), 'R' => tr('Reseller level'), 'C' => tr('Customer level'),
+			'AR' => tr('Administrator and Reseller levels'), 'AC' => tr('Administrator and customer levels'),
+			'RC' => tr('Reseller and customer levels'), 'ARC' => tr('All levels')
+		) as $level => $trLevel
 	) {
 		$tpl->assign(
 			array(
 				'TR_LEVEL' => $trLevel,
 				'LEVEL_VALUE' => $level,
-				'SELECTED_LEVEL' => ($customMenu['menu_level'] == $level) ? $cfg->HTML_SELECTED : ''));
+				'SELECTED_LEVEL' => ($customMenu['menu_level'] == $level) ? $selected : ''
+			)
+		);
 
 		$tpl->parse('MENU_LEVEL_BLOCK', '.menu_level_block');
 	}
@@ -163,24 +177,27 @@ function admin_generateForm($tpl)
 		array(
 			'MENU_NAME' => tohtml($customMenu['menu_name']),
 			'MENU_LINK' => tohtml($customMenu['menu_link']),
-			'MENU_ORDER' => $customMenu['menu_order']));
+			'MENU_ORDER' => $customMenu['menu_order']
+		)
+	);
 }
 
 /**
  * Check if menu is valid.
  *
- * @param $menuName Menu name
- * @param $menuLink Menu link
- * @param $menuTarget Menu target
- * @param $menuLevel Menu level
- * @param $menuOrder Menu order
+ * @param string $menuName Menu name
+ * @param string $menuLink Menu link
+ * @param string $menuTarget Menu target
+ * @param string $menuLevel Menu level
+ * @param int $menuOrder Menu order
  * @return bool TRUE if menu data are valid, FALSE otherwise
  */
-function admin_isValidMenu($menuName, $menuLink, $menuTarget, $menuLevel, $menuOrder) {
+function admin_isValidMenu($menuName, $menuLink, $menuTarget, $menuLevel, $menuOrder)
+{
 
 	$errorFieldsStack = array();
 
-	if(empty($menuName)) {
+	if (empty($menuName)) {
 		set_page_message(tr('Invalid name.'), 'error');
 		$errorFieldsStack[] = 'menu_name';
 	}
@@ -195,16 +212,16 @@ function admin_isValidMenu($menuName, $menuLink, $menuTarget, $menuLevel, $menuO
 		$errorFieldsStack[] = 'menu_target';
 	}
 
-	if(!in_array($menuLevel, array('A', 'R', 'C', 'AR', 'AC', 'RC', 'ARC'))) {
+	if (!in_array($menuLevel, array('A', 'R', 'C', 'AR', 'AC', 'RC', 'ARC'))) {
 		showBadRequestErrorPage();
 	}
 
-	if(!empty($menuOrder) && !is_numeric($menuOrder)) {
+	if (!empty($menuOrder) && !is_numeric($menuOrder)) {
 		set_page_message(tr('Invalid menu order.'), 'error');
 		$errorFieldsStack[] = 'menu_order';
 	}
 
-	if(Zend_Session::namespaceIsset('pageMessages')) {
+	if (Zend_Session::namespaceIsset('pageMessages')) {
 		iMSCP_Registry::set('errorFieldsStack', $errorFieldsStack);
 		return false;
 	}
@@ -225,7 +242,7 @@ function admin_addMenu()
 	$visibilityLevel = isset($_POST['menu_level']) ? clean_input($_POST['menu_level']) : '';
 	$menuOrder = isset($_POST['menu_order']) ? clean_input($_POST['menu_order']) : null;
 
-	if(admin_isValidMenu($menuName, $menuLink, $menuTarget, $visibilityLevel, $menuOrder)) {
+	if (admin_isValidMenu($menuName, $menuLink, $menuTarget, $visibilityLevel, $menuOrder)) {
 		$query = "
 			INSERT INTO
 				`custom_menus` (
@@ -258,7 +275,7 @@ function admin_updateMenu($menuId)
 	$menuLevel = isset($_POST['menu_level']) ? clean_input($_POST['menu_level']) : '';
 	$menuOrder = isset($_POST['menu_order']) ? clean_input($_POST['menu_order']) : null;
 
-	if(admin_isValidMenu($menuName, $menuLink, $menuTarget, $menuLevel, $menuOrder)) {
+	if (admin_isValidMenu($menuName, $menuLink, $menuTarget, $menuLevel, $menuOrder)) {
 		$query = "
 			UPDATE
 				`custom_menus`
@@ -286,14 +303,14 @@ function admin_updateMenu($menuId)
 function admin_deleteMenu($menuId)
 {
 	$query = "DELETE FROM `custom_menus` WHERE `menu_id` = ?";
-	$stmt = exec_query($query, (int) $menuId);
+	$stmt = exec_query($query, (int)$menuId);
 
-	if($stmt->rowCount()) {
+	if ($stmt->rowCount()) {
 		set_page_message(tr('Custom menu successfully deleted.'), 'success');
 	}
 }
 
-/*************************************************************************************
+/***********************************************************************************************************************
  * Main script
  */
 
@@ -304,19 +321,19 @@ iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAdminScriptStart);
 
 check_login('admin');
 
-if(isset($_POST['uaction'])) {
-	if($_POST['uaction'] == 'menu_add') {
-		if(admin_addMenu()) {
+if (isset($_POST['uaction'])) {
+	if ($_POST['uaction'] == 'menu_add') {
+		if (admin_addMenu()) {
 			redirectTo('custom_menus.php');
 		}
-	} elseif($_POST['uaction'] == 'menu_update' && isset($_POST['edit_id'])) {
-		if(admin_updateMenu($_POST['edit_id'])) {
+	} elseif ($_POST['uaction'] == 'menu_update' && isset($_POST['edit_id'])) {
+		if (admin_updateMenu($_POST['edit_id'])) {
 			redirectTo('custom_menus.php');
 		}
 	} else {
 		showBadRequestErrorPage();
 	}
-} elseif(isset($_GET['delete_id'])) {
+} elseif (isset($_GET['delete_id'])) {
 	admin_deleteMenu($_GET['delete_id']);
 }
 
@@ -335,13 +352,16 @@ $tpl->define_dynamic(
 		'menu_target_block' => 'page',
 		'menu_level_block' => 'page',
 		'add_menu' => 'page',
-		'edit_menu' => 'page'));
+		'edit_menu' => 'page'
+	)
+);
 
 $tpl->assign(
 	array(
-		'TR_PAGE_TITLE' => tr('i-MSCP - Admin - Manage custom menus'),
+		'TR_PAGE_TITLE' => tr('Admin / Settings / {TR_DYNAMIC_TITLE}'),
 		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => layout_getUserLogo(),
+		'TR_CUSTOM_MENU_PROPERTIES' => tr('Custom menu properties'),
 		'TR_MENU_NAME' => tr('Name'),
 		'TR_MENU_LINK' => tr('Link'),
 		'TR_MENU_TARGET' => tr('Target'),
@@ -358,7 +378,9 @@ $tpl->assign(
 		'TR_MESSAGE_DELETE' => json_encode(tr('Are you sure you want to delete the %s menu?', true, '%s')),
 		'DATATABLE_TRANSLATIONS' => getDataTablesPluginTranslations(),
 		'ERR_FIELDS_STACK' => iMSCP_Registry::isRegistered('errorFieldsStack')
-			? json_encode(iMSCP_Registry::get('errorFieldsStack')) : '[]'));
+			? json_encode(iMSCP_Registry::get('errorFieldsStack')) : '[]'
+	)
+);
 
 generateNavigation($tpl);
 admin_generateMenusList($tpl);

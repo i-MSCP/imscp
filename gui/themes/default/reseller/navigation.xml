@@ -29,13 +29,13 @@
 
 <config>
     <navigation>
-        <general_information>
-            <label>General information</label>
+        <general>
+            <label>General</label>
             <uri>/reseller/index.php</uri>
             <class>general</class>
             <pages>
                 <overview>
-                    <label>Account overview</label>
+                    <label>Overview</label>
                     <uri>/reseller/index.php</uri>
                     <title_class>general</title_class>
                 </overview>
@@ -46,20 +46,20 @@
                     <privilege_callback name="resellerHasFeature" param="aps"/>
                 </software_upload>
             </pages>
-        </general_information>
+        </general>
 
-        <manage_customers>
-            <label>Manage Customers</label>
+        <customers>
+            <label>Customers</label>
             <uri>/reseller/users.php</uri>
             <class>manage_users</class>
             <pages>
                 <overview>
-                    <label>Customers</label>
+                    <label>Overview</label>
                     <uri>/reseller/users.php</uri>
                     <title_class>users</title_class>
                     <pages>
                         <domain_detail_link>
-                            <label>Domain detail</label>
+                            <label>Domain details</label>
                             <uri>/reseller/domain_details.php</uri>
                             <visible>0</visible>
                             <title_class>domains</title_class>
@@ -110,7 +110,7 @@
                     </pages>
                 </add_customer>
                 <manage_aliasses>
-                    <label>Manage aliasses</label>
+                    <label>Domain aliases</label>
                     <uri>/reseller/alias.php</uri>
                     <title_class>domains</title_class>
                     <privilege_callback name="resellerHasFeature" param="domain_aliases"/>
@@ -147,10 +147,10 @@
                     <privilege_callback name="resellerHasCustomers"/>
                 </circular>
             </pages>
-        </manage_customers>
+        </customers>
 
         <hosting_plans>
-            <label>Manage Hosting Plans</label>
+            <label>Hosting Plans</label>
             <uri>/reseller/hosting_plan.php</uri>
             <class>hosting_plans</class>
             <pages>
@@ -160,7 +160,7 @@
                     <title_class>hosting_plans</title_class>
                     <pages>
                         <hosting_plan_edit_link>
-                            <label>Edit hosting plan</label>
+                            <dynamic_title>{TR_DYNAMIC_TITLE}</dynamic_title>
                             <uri>/reseller/hosting_plan_edit.php</uri>
                             <title_class>hosting_plans</title_class>
                             <visible>0</visible>

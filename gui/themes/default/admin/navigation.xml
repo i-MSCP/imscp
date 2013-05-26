@@ -29,8 +29,8 @@
 
 <config>
     <navigation>
-        <general_information>
-            <label>General information</label>
+        <general>
+            <label>General</label>
             <uri>/admin/index.php</uri>
             <class>general</class>
             <pages>
@@ -38,6 +38,7 @@
                     <label>Overview</label>
                     <uri>/admin/index.php</uri>
                     <title_class>general</title_class>
+
                 </overview>
                 <server_status>
                     <label>Services status</label>
@@ -50,15 +51,15 @@
                     <title_class>adminlog</title_class>
                 </admin_log>
             </pages>
-        </general_information>
+        </general>
 
-        <manage_users>
-            <label>Manage Users</label>
+        <users>
+            <label>Users</label>
             <uri>/admin/manage_users.php</uri>
             <class>manage_users</class>
             <pages>
                 <overview>
-                    <label>Users</label>
+                    <label>Overview</label>
                     <uri>/admin/manage_users.php</uri>
                     <title_class>users</title_class>
                     <pages>
@@ -69,13 +70,13 @@
                             <visible>0</visible>
                         </reseller_edit_link>
                         <domain_detail_link>
-                            <label>Domain detail</label>
+                            <label>Domain details</label>
                             <uri>/admin/domain_details.php</uri>
                             <title_class>general</title_class>
                             <visible>0</visible>
                         </domain_detail_link>
                         <customer_edit_link>
-                            <label>Edit customer</label>
+                            <label>Edit admin</label>
                             <uri>/admin/admin_edit.php</uri>
                             <title_class>user_blue</title_class>
                             <visible>0</visible>
@@ -129,7 +130,7 @@
                     <title_class>users2</title_class>
                 </sessions_management>
             </pages>
-        </manage_users>
+        </users>
 
         <hosting_plans>
             <label>Hosting plans</label>
@@ -167,18 +168,18 @@
                     <uri>/admin/system_info.php</uri>
                     <title_class>tools</title_class>
                 </overview>
-                <maintenance_mode>
-                    <label>Maintenance mode</label>
+                <maintenance_settings>
+                    <label>Maintenance settings</label>
                     <uri>/admin/settings_maintenance_mode.php</uri>
                     <title_class>maintenancemode</title_class>
-                </maintenance_mode>
+                </maintenance_settings>
                 <updates>
                     <label>Updates</label>
                     <uri>/admin/imscp_updates.php</uri>
                     <title_class>update</title_class>
                 </updates>
                 <database_updates>
-                    <label>Database updates</label>
+                    <label>Database update</label>
                     <uri>/admin/database_update.php</uri>
                     <title_class>update</title_class>
                 </database_updates>
@@ -206,7 +207,7 @@
                     <title_class>stats</title_class>
                     <pages>
                         <server_day_statistics_link>
-                            <label>Server day statistics</label>
+                            <label>Day statistics</label>
                             <uri>/admin/server_statistic_day.php</uri>
                             <title_class>stats</title_class>
                             <visible>0</visible>
@@ -214,7 +215,7 @@
                     </pages>
                 </server_statistic>
                 <resellers_statistics>
-                    <label>Reseller's statistics</label>
+                    <label>Reseller statistics</label>
                     <uri>/admin/reseller_statistics.php</uri>
                     <title_class>stats</title_class>
                     <privilege_callback name="systemHasResellers"/>
@@ -245,8 +246,8 @@
             </pages>
         </statistics>
 
-        <support_system>
-            <label>Support system</label>
+        <support>
+            <label>Support</label>
             <uri>/admin/ticket_system.php</uri>
             <class>support</class>
             <privilege_callback name="systemHasResellers"/>
@@ -268,7 +269,7 @@
                     <visible>0</visible>
                 </view_ticket>
             </pages>
-        </support_system>
+        </support>
 
         <settings>
             <label>Settings</label>

@@ -294,7 +294,7 @@ $tpl->define_dynamic(
 
 $tpl->assign(
 	array(
-		'TR_PAGE_TITLE' => tr('i-MSCP - Admin - Mass mail'),
+		'TR_PAGE_TITLE' => tr('Admin / Users / Circular'),
 		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => layout_getUserLogo(),
 		'TR_CORE_DATA' => tr('Core data'),

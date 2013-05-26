@@ -765,12 +765,11 @@ textarea {
 .login #messageContainer, .box_message #messageContainer {
 	position: relative;
 	height: 50px;
-	margin-top: 25px;
 	text-align: center;
 }
 .login #messageContainer #message, .box_message #message {
 	width: 400px;
-	margin: 0 auto;
+	margin: 0.5em auto;
 }
 
 /* Specific to the login and lostpassword pages */

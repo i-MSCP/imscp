@@ -35,7 +35,7 @@
  * @link        http://i-mscp.net
  */
 
-/************************************************************************************
+/***********************************************************************************************************************
  * Functions
  */
 
@@ -46,12 +46,12 @@
  */
 function get_pageone_param()
 {
-	global $dmn_name, $dmn_expire, $dmn_tpl;
+	global $dmnName, $dmnExpire, $hpId;
 
 	if (isset($_SESSION['dmn_name'])) {
-		$dmn_name = $_SESSION['dmn_name'];
-		$dmn_expire = $_SESSION['dmn_expire'];
-		$dmn_tpl = $_SESSION['dmn_tpl'];
+		$dmnName = $_SESSION['dmn_name'];
+		$dmnExpire = $_SESSION['dmn_expire'];
+		$hpId = $_SESSION['dmn_tpl'];
 	} else {
 		return false;
 	}
@@ -68,8 +68,8 @@ function get_pageone_param()
  */
 function get_init_au2_page($tpl, $phpini)
 {
-	global $hp_name, $hp_php, $hp_cgi, $hp_sub, $hp_als, $hp_mail, $hp_ftp, $hp_sql_db, $hp_sql_user, $hp_traff,
-		$hp_disk, $hp_backup, $hp_dns, $hp_allowsoftware, $hp_ext_mail, $web_folder_protection;
+	global $hpName, $php, $cgi, $sub, $als, $mail, $ftp, $sqlDb, $sqlUser, $traffic, $diskSpace, $backup, $dns, $aps,
+		$extMailServer, $webFolderProtection;
 
 	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
@@ -78,33 +78,33 @@ function get_init_au2_page($tpl, $phpini)
 
 	$tplVars = array();
 
-	$tplVars['VL_TEMPLATE_NAME'] = tohtml($hp_name);
+	$tplVars['VL_TEMPLATE_NAME'] = tohtml($hpName);
 	$tplVars['MAX_DMN_CNT'] = '';
-	$tplVars['MAX_SUBDMN_CNT'] = tohtml($hp_sub);
-	$tplVars['MAX_DMN_ALIAS_CNT'] = tohtml($hp_als);
-	$tplVars['MAX_MAIL_CNT'] = tohtml($hp_mail);
-	$tplVars['MAX_FTP_CNT'] = tohtml($hp_ftp);
-	$tplVars['MAX_SQL_CNT'] = tohtml($hp_sql_db);
-	$tplVars['VL_MAX_SQL_USERS'] = tohtml($hp_sql_user);
-	$tplVars['VL_MAX_TRAFFIC'] = tohtml($hp_traff);
-	$tplVars['VL_MAX_DISK_USAGE'] = tohtml($hp_disk);
-	$tplVars['VL_EXTMAILY'] = ($hp_ext_mail == '_yes_') ? $htmlChecked : '';
-	$tplVars['VL_EXTMAILN'] = ($hp_ext_mail == '_no_') ? $htmlChecked : '';
-	$tplVars['VL_PHPY'] = ($hp_php == '_yes_') ? $htmlChecked : '';
-	$tplVars['VL_PHPN'] = ($hp_php == '_no_') ? $htmlChecked : '';
-	$tplVars['VL_CGIY'] = ($hp_cgi == '_yes_') ? $htmlChecked : '';
-	$tplVars['VL_CGIN'] = ($hp_cgi == '_no_') ? $htmlChecked : '';
-	$tplVars['VL_BACKUPD'] = ($hp_backup == '_dmn_') ? $htmlChecked : '';
-	$tplVars['VL_BACKUPS'] = ($hp_backup == '_sql_') ? $htmlChecked : '';
-	$tplVars['VL_BACKUPF'] = ($hp_backup == '_full_') ? $htmlChecked : '';
-	$tplVars['VL_BACKUPN'] = ($hp_backup == '_no_') ? $htmlChecked : '';
-	$tplVars['VL_DNSY'] = ($hp_dns == '_yes_') ? $htmlChecked : '';
-	$tplVars['VL_DNSN'] = ($hp_dns == '_no_') ? $htmlChecked : '';
-	$tplVars['VL_SOFTWAREY'] = ($hp_allowsoftware == '_yes_') ? $htmlChecked : '';
-	$tplVars['VL_SOFTWAREN'] = ($hp_allowsoftware == '_no_') ? $htmlChecked : '';
+	$tplVars['MAX_SUBDMN_CNT'] = tohtml($sub);
+	$tplVars['MAX_DMN_ALIAS_CNT'] = tohtml($als);
+	$tplVars['MAX_MAIL_CNT'] = tohtml($mail);
+	$tplVars['MAX_FTP_CNT'] = tohtml($ftp);
+	$tplVars['MAX_SQL_CNT'] = tohtml($sqlDb);
+	$tplVars['VL_MAX_SQL_USERS'] = tohtml($sqlUser);
+	$tplVars['VL_MAX_TRAFFIC'] = tohtml($traffic);
+	$tplVars['VL_MAX_DISK_USAGE'] = tohtml($diskSpace);
+	$tplVars['VL_EXTMAILY'] = ($extMailServer == '_yes_') ? $htmlChecked : '';
+	$tplVars['VL_EXTMAILN'] = ($extMailServer == '_no_') ? $htmlChecked : '';
+	$tplVars['VL_PHPY'] = ($php == '_yes_') ? $htmlChecked : '';
+	$tplVars['VL_PHPN'] = ($php == '_no_') ? $htmlChecked : '';
+	$tplVars['VL_CGIY'] = ($cgi == '_yes_') ? $htmlChecked : '';
+	$tplVars['VL_CGIN'] = ($cgi == '_no_') ? $htmlChecked : '';
+	$tplVars['VL_BACKUPD'] = ($backup == '_dmn_') ? $htmlChecked : '';
+	$tplVars['VL_BACKUPS'] = ($backup == '_sql_') ? $htmlChecked : '';
+	$tplVars['VL_BACKUPF'] = ($backup == '_full_') ? $htmlChecked : '';
+	$tplVars['VL_BACKUPN'] = ($backup == '_no_') ? $htmlChecked : '';
+	$tplVars['VL_DNSY'] = ($dns == '_yes_') ? $htmlChecked : '';
+	$tplVars['VL_DNSN'] = ($dns == '_no_') ? $htmlChecked : '';
+	$tplVars['VL_SOFTWAREY'] = ($aps == '_yes_') ? $htmlChecked : '';
+	$tplVars['VL_SOFTWAREN'] = ($aps == '_no_') ? $htmlChecked : '';
 
-	$tplVars['VL_WEB_FOLDER_PROTECTION_YES'] = ($web_folder_protection == 'yes') ? $htmlChecked : '';
-	$tplVars['VL_WEB_FOLDER_PROTECTION_NO'] = ($web_folder_protection == 'no') ? $htmlChecked : '';
+	$tplVars['VL_WEB_FOLDER_PROTECTION_YES'] = ($webFolderProtection == 'yes') ? $htmlChecked : '';
+	$tplVars['VL_WEB_FOLDER_PROTECTION_NO'] = ($webFolderProtection == 'no') ? $htmlChecked : '';
 
 	if ($phpini->getRePermVal('phpiniSystem') == 'yes') {
 		$tplVars['PHP_EDITOR_YES'] = ($phpini->getClPermVal('phpiniSystem') == 'yes') ? $htmlChecked : '';
@@ -199,45 +199,49 @@ function get_init_au2_page($tpl, $phpini)
  * @param iMSCP_PHPini $phpini
  * @return void
  */
-function get_hp_data($hpid, $resellerId, $phpini)
+function reseller_getHostingPlanData($hpid, $resellerId, $phpini)
 {
-	global $hp_name, $hp_php, $hp_cgi, $hp_sub, $hp_als, $hp_mail, $hp_ftp, $hp_sql_db,
-		$hp_sql_user, $hp_traff, $hp_disk, $hp_backup, $hp_dns, $hp_allowsoftware, $hp_ext_mail, $web_folder_protection;
+	global $hpName, $php, $cgi, $sub, $als, $mail, $ftp, $sqlDb, $sqlUser, $traffic, $diskSpace, $backup, $dns, $aps,
+		$extMailServer, $webFolderProtection;
 
-	$query = 'SELECT `name`, `props` FROM `hosting_plans` WHERE `reseller_id` = ? AND `id` = ?';
-	$stmt = exec_query($query, array($resellerId, $hpid));
+	if($hpid != 0) {
+		$query = 'SELECT `name`, `props` FROM `hosting_plans` WHERE `reseller_id` = ? AND `id` = ?';
+		$stmt = exec_query($query, array($resellerId, $hpid));
 
-	if ($stmt->rowCount()) {
-		$data = $stmt->fetchRow();
-		$props = $data['props'];
+		if ($stmt->rowCount()) {
+			$data = $stmt->fetchRow();
+			$props = $data['props'];
 
-		list(
-			$hp_php, $hp_cgi, $hp_sub, $hp_als, $hp_mail, $hp_ftp, $hp_sql_db, $hp_sql_user, $hp_traff, $hp_disk,
-			$hp_backup, $hp_dns, $hp_allowsoftware, $phpini_system, $phpini_al_allow_url_fopen,
-			$phpini_al_display_errors, $phpini_al_disable_functions, $phpini_post_max_size, $phpini_upload_max_filesize,
-			$phpini_max_execution_time, $phpini_max_input_time, $phpini_memory_limit, $hp_ext_mail
-		) = array_pad(explode(';', $props), 24, 'no');
+			list(
+				$php, $cgi, $sub, $als, $mail, $ftp, $sqlDb, $sqlUser, $traffic, $diskSpace, $backup, $dns, $aps,
+				$phpEditor, $phpiniAllowUrlFopen, $phpiniDisplayErrors, $phpiniDisableFunctions, $phpiniPostMaxSize,
+				$phpiniUploadMaxFileSize, $phpiniMaxExecutionTime, $phpiniMaxInputTime, $phpiniMemoryLimit, $extMailServer
+			) = explode(';', $props);
 
-		$hp_name = $data['name'];
+			$hpName = $data['name'];
 
-		// Write into phpini object
-		$phpini->setClPerm('phpiniSystem', $phpini_system);
-		$phpini->setClPerm('phpiniAllowUrlFopen', $phpini_al_allow_url_fopen);
-		$phpini->setClPerm('phpiniDisplayErrors', $phpini_al_display_errors);
-		$phpini->setClPerm('phpiniDisableFunctions', $phpini_al_disable_functions);
+			// Write into phpini object
+			$phpini->setClPerm('phpiniSystem', $phpEditor);
+			$phpini->setClPerm('phpiniAllowUrlFopen', $phpiniAllowUrlFopen);
+			$phpini->setClPerm('phpiniDisplayErrors', $phpiniDisplayErrors);
+			$phpini->setClPerm('phpiniDisableFunctions', $phpiniDisableFunctions);
 
-		// Use phpini->phpiniData as datastore for the following values - should be better in something like property class/object later
-		$phpini->setData('phpiniPostMaxSize', $phpini_post_max_size);
-		$phpini->setData('phpiniUploadMaxFileSize', $phpini_upload_max_filesize);
-		$phpini->setData('phpiniMaxExecutionTime', $phpini_max_execution_time);
-		$phpini->setData('phpiniMaxInputTime', $phpini_max_input_time);
-		$phpini->setData('phpiniMemoryLimit', $phpini_memory_limit);
+			// Use phpini->phpiniData as datastore for the following values -
+			// Should be better in something like property class/object later
+			$phpini->setData('phpiniPostMaxSize', $phpiniPostMaxSize);
+			$phpini->setData('phpiniUploadMaxFileSize', $phpiniUploadMaxFileSize);
+			$phpini->setData('phpiniMaxExecutionTime', $phpiniMaxExecutionTime);
+			$phpini->setData('phpiniMaxInputTime', $phpiniMaxInputTime);
+			$phpini->setData('phpiniMemoryLimit', $phpiniMemoryLimit);
+		} else {
+			showBadRequestErrorPage();
+		}
 	} else {
-		$hp_name = 'Custom';
-		$hp_php = $hp_cgi = $hp_backup = $hp_dns = $hp_allowsoftware = '_no_';
-		$hp_sub = $hp_als = $hp_mail = $hp_ftp = $hp_sql_db = $hp_sql_user = $hp_traff = $hp_disk = '';
-		$hp_ext_mail = '_no_';
-		$web_folder_protection = 'yes';
+		$hpName = 'Custom';
+		$php = $cgi = $backup = $dns = $aps = '_no_';
+		$sub = $als = $mail = $ftp = $sqlDb = $sqlUser = $traffic = $diskSpace = '';
+		$extMailServer = '_no_';
+		$webFolderProtection = 'yes';
 	}
 }
 
@@ -249,11 +253,11 @@ function get_hp_data($hpid, $resellerId, $phpini)
  */
 function check_user_data($phpini)
 {
-	global $hp_name, $hp_php, $hp_cgi, $hp_sub, $hp_als, $hp_mail, $hp_ftp, $hp_sql_db, $hp_sql_user, $hp_traff,
-		$hp_disk, $hp_dmn, $hp_backup, $hp_dns, $hp_allowsoftware, $hp_ext_mail, $web_folder_protection;
+	global $hpName, $php, $cgi, $sub, $als, $mail, $ftp, $sqlDb, $sqlUser, $traffic, $diskSpace, $hp_dmn, $backup,
+		$dns, $aps, $extMailServer, $webFolderProtection;
 
 	if (isset($_POST['template'])) {
-		$hp_name = $_POST['template'];
+		$hpName = $_POST['template'];
 	}
 
 	if (isset($_POST['nreseller_max_domain_cnt'])) {
@@ -261,68 +265,69 @@ function check_user_data($phpini)
 	}
 
 	if (isset($_POST['nreseller_max_subdomain_cnt'])) {
-		$hp_sub = clean_input($_POST['nreseller_max_subdomain_cnt']);
+		$sub = clean_input($_POST['nreseller_max_subdomain_cnt']);
 	}
 
 	if (isset($_POST['nreseller_max_alias_cnt'])) {
-		$hp_als = clean_input($_POST['nreseller_max_alias_cnt']);
+		$als = clean_input($_POST['nreseller_max_alias_cnt']);
 	}
 
 	if (isset($_POST['nreseller_max_mail_cnt'])) {
-		$hp_mail = clean_input($_POST['nreseller_max_mail_cnt']);
+		$mail = clean_input($_POST['nreseller_max_mail_cnt']);
+
 		if (isset($_POST['external_mail'])) {
-			$hp_ext_mail = $_POST['external_mail'];
+			$extMailServer = $_POST['external_mail'];
 		} else {
-			$hp_ext_mail = 'no';
+			$extMailServer = 'no';
 		}
 	}
 
 	if (isset($_POST['web_folder_protection'])) {
-		$web_folder_protection = $_POST['web_folder_protection'];
+		$webFolderProtection = $_POST['web_folder_protection'];
 	} else {
-		$web_folder_protection = 'yes';
+		$webFolderProtection = 'yes';
 	}
 
-	if (isset($_POST['nreseller_max_ftp_cnt']) || $hp_ftp == -1) {
-		$hp_ftp = clean_input($_POST['nreseller_max_ftp_cnt']);
+	if (isset($_POST['nreseller_max_ftp_cnt']) || $ftp == -1) {
+		$ftp = clean_input($_POST['nreseller_max_ftp_cnt']);
 	}
 
 	if (isset($_POST['nreseller_max_sql_db_cnt'])) {
-		$hp_sql_db = clean_input($_POST['nreseller_max_sql_db_cnt']);
+		$sqlDb = clean_input($_POST['nreseller_max_sql_db_cnt']);
 	}
 
 	if (isset($_POST['nreseller_max_sql_user_cnt'])) {
-		$hp_sql_user = clean_input($_POST['nreseller_max_sql_user_cnt']);
+		$sqlUser = clean_input($_POST['nreseller_max_sql_user_cnt']);
 	}
 
 	if (isset($_POST['nreseller_max_traffic'])) {
-		$hp_traff = clean_input($_POST['nreseller_max_traffic']);
+		$traffic = clean_input($_POST['nreseller_max_traffic']);
 	}
 
 	if (isset($_POST['nreseller_max_disk'])) {
-		$hp_disk = clean_input($_POST['nreseller_max_disk']);
+		$diskSpace = clean_input($_POST['nreseller_max_disk']);
 	}
 
 	if (isset($_POST['php'])) {
-		$hp_php = $_POST['php'];
+		$php = $_POST['php'];
 	}
 
 	if (isset($_POST['cgi'])) {
-		$hp_cgi = $_POST['cgi'];
+		$cgi = $_POST['cgi'];
 	}
 
 	if (isset($_POST['backup'])) {
-		$hp_backup = $_POST['backup'];
+		$backup = $_POST['backup'];
 	}
 
 	if (isset($_POST['dns'])) {
-		$hp_dns = $_POST['dns'];
+		$dns = $_POST['dns'];
 	}
 
 	if (isset($_POST['software_allowed']) && resellerHasFeature('aps')) {
-		$hp_allowsoftware = $_POST['software_allowed'];
+		$aps = $_POST['software_allowed'];
 	} else {
-		$hp_allowsoftware = 'no';
+		$aps = 'no';
 	}
 
 	if ($phpini->checkRePerm('phpiniSystem') && isset($_POST['phpiniSystem'])) {
@@ -369,59 +374,59 @@ function check_user_data($phpini)
 	}
 
 	if (!resellerHasFeature('subdomains')) {
-		$hp_sub = '-1';
-	} elseif (!imscp_limit_check($hp_sub, -1)) {
+		$sub = '-1';
+	} elseif (!imscp_limit_check($sub, -1)) {
 		set_page_message(tr('Incorrect subdomains limit.'), 'error');
 	}
 
 	if (!resellerHasFeature('domain_aliases')) {
-		$hp_als = '-1';
-	} elseif (!imscp_limit_check($hp_als, -1)) {
+		$als = '-1';
+	} elseif (!imscp_limit_check($als, -1)) {
 		set_page_message(tr('Incorrect aliases limit.'), 'error');
 	}
 
 	if (!resellerHasFeature('mail')) {
-		$hp_mail = '-1';
-		$hp_ext_mail = '_no_';
-	} elseif (!imscp_limit_check($hp_mail, -1)) {
+		$mail = '-1';
+		$extMailServer = '_no_';
+	} elseif (!imscp_limit_check($mail, -1)) {
 		set_page_message(tr('Incorrect mail accounts limit.'), 'error');
 	}
 
 	if (!resellerHasFeature('ftp')) {
-		$hp_ftp = '-1';
-	} elseif (!imscp_limit_check($hp_ftp, -1)) {
+		$ftp = '-1';
+	} elseif (!imscp_limit_check($ftp, -1)) {
 		set_page_message(tr('Incorrect FTP accounts limit.'), 'error');
 	}
 
 	if (!resellerHasFeature('sql_db')) {
-		$hp_sql_db = '-1';
-	} elseif (!imscp_limit_check($hp_sql_db, -1)) {
+		$sqlDb = '-1';
+	} elseif (!imscp_limit_check($sqlDb, -1)) {
 		set_page_message(tr('Incorrect SQL databases limit.'), 'error');
-	} elseif ($hp_sql_user != -1 && $hp_sql_db == -1) {
+	} elseif ($sqlUser != -1 && $sqlDb == -1) {
 		set_page_message(tr('SQL users limit is <i>disabled</i>.'), 'error');
 	}
 
 	if (!resellerHasFeature('sql_user')) {
-		$hp_sql_user = '-1';
-	} elseif (!imscp_limit_check($hp_sql_user, -1)) {
+		$sqlUser = '-1';
+	} elseif (!imscp_limit_check($sqlUser, -1)) {
 		set_page_message(tr('Incorrect SQL users limit.'), 'error');
-	} elseif ($hp_sql_user == -1 && $hp_sql_db != -1) {
+	} elseif ($sqlUser == -1 && $sqlDb != -1) {
 		set_page_message(tr('SQL databases limit is not <i>disabled</i>.'), 'error');
 	}
 
-	if (!imscp_limit_check($hp_traff, null)) {
+	if (!imscp_limit_check($traffic, null)) {
 		set_page_message(tr('Incorrect monthly traffic limit.'), 'error');
 	}
 
-	if (!imscp_limit_check($hp_disk, null)) {
+	if (!imscp_limit_check($diskSpace, null)) {
 		set_page_message(tr('Incorrect diskspace limit.'), 'error');
 	}
 
-	if ($hp_mail == '-1' && $hp_ext_mail == '_yes_') {
+	if ($mail == '-1' && $extMailServer == '_yes_') {
 		set_page_message(tr('The external mail feature needs min. 1 email account.'), 'error');
 	}
 
-	if ($hp_php == '_no_' && $hp_allowsoftware == '_yes_') {
+	if ($php == '_no_' && $aps == '_yes_') {
 		set_page_message(tr('The software installer require PHP.'), 'error');
 	}
 
@@ -479,7 +484,7 @@ $tpl->define_dynamic(
 
 $tpl->assign(
 	array(
-		'TR_PAGE_TITLE' => tr('i-MSCP - User/Add domain account - step 2'),
+		'TR_PAGE_TITLE' => tr('Reseller / Customers / Add Customer - Next Step'),
 		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => layout_getUserLogo(),
 		'TR_ADD_USER' => tr('Add user'),
@@ -518,8 +523,8 @@ $tpl->assign(
 
 generateNavigation($tpl);
 
-global $dmn_name, $dmn_expire, $hp_php, $hp_cgi, $hp_sub, $hp_als, $hp_mail, $hp_ftp, $hp_sql_db, $hp_sql_user,
-	$hp_traff, $hp_disk, $hp_backup, $hp_dns, $hp_allowsoftware, $hp_ext_mail, $web_folder_protection;
+global $dmnName, $dmnExpire, $php, $cgi, $sub, $als, $mail, $ftp, $sqlDb, $sqlUser, $traffic, $diskSpace, $backup, $dns,
+	$aps, $extMailServer, $webFolderProtection;
 
 if (!get_pageone_param()) {
 	set_page_message(tr('Domain data were been altered. Please try again.'), 'error');
@@ -529,10 +534,9 @@ if (!get_pageone_param()) {
 
 if (isset($_POST['uaction']) && ('user_add2_nxt' == $_POST['uaction']) && (!isset($_SESSION['step_one']))) {
 	if (check_user_data($phpini)) {
-		$_SESSION['step_two_data'] = "$dmn_name;0;$web_folder_protection";
+		$_SESSION['step_two_data'] = "$dmnName;0;$webFolderProtection";
 		$_SESSION['ch_hpprops'] =
-			"$hp_php;$hp_cgi;$hp_sub;$hp_als;$hp_mail;$hp_ftp;$hp_sql_db;$hp_sql_user;$hp_traff;$hp_disk;$hp_backup;" .
-			"$hp_dns;$hp_allowsoftware;" .
+			"$php;$cgi;$sub;$als;$mail;$ftp;$sqlDb;$sqlUser;$traffic;$diskSpace;$backup;$dns;$aps;" .
 			$phpini->getClPermVal('phpiniSystem') . ';' .
 			$phpini->getClPermVal('phpiniAllowUrlFopen') . ';' .
 			$phpini->getClPermVal('phpiniDisplayErrors') . ';' .
@@ -542,7 +546,7 @@ if (isset($_POST['uaction']) && ('user_add2_nxt' == $_POST['uaction']) && (!isse
 			$phpini->getDataVal('phpiniMaxExecutionTime') . ';' .
 			$phpini->getDataVal('phpiniMaxInputTime') . ';' .
 			$phpini->getDataVal('phpiniMemoryLimit') . ';' .
-			$hp_ext_mail;
+			$extMailServer;
 
 		if (reseller_limits_check($_SESSION['user_id'], $_SESSION['ch_hpprops'])) {
 			redirectTo('user_add3.php');
@@ -550,8 +554,8 @@ if (isset($_POST['uaction']) && ('user_add2_nxt' == $_POST['uaction']) && (!isse
 	}
 } else {
 	unset($_SESSION['step_one']);
-	global $dmn_tpl;
-	get_hp_data($dmn_tpl, $_SESSION['user_id'], $phpini);
+	global $hpId;
+	reseller_getHostingPlanData($hpId, $_SESSION['user_id'], $phpini);
 }
 
 get_init_au2_page($tpl, $phpini);

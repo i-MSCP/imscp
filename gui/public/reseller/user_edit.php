@@ -24,15 +24,206 @@
  * Portions created by the i-MSCP Team are Copyright (C) 2010-2013 by
  * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
  *
- * @category	i-MSCP
- * @package		iMSCP_Core
- * @subpackage	Reseller
+ * @category    i-MSCP
+ * @package     iMSCP_Core
+ * @subpackage  Reseller
  * @copyright   2001-2006 by moleSoftware GmbH
  * @copyright   2006-2010 by ispCP | http://isp-control.net
  * @copyright   2010-2013 by i-MSCP | http://i-mscp.net
  * @author      ispCP Team
  * @author      i-MSCP Team
  * @link        http://i-mscp.net
+ */
+
+/***********************************************************************************************************************
+ * Script functions
+ */
+
+/**
+ * Load data user data from database
+ *
+ * @param int $adminId Customer unique identifier
+ * @return void
+ */
+function reseller_loadUserData($adminId)
+{
+	global $dmnUsername, $userEmail, $customerId, $firstName, $lastName, $firm, $zip, $gender, $city, $state, $country,
+		$street1, $street2, $mail, $phone, $fax;
+
+	$query = "
+		SELECT
+			`admin_name`, `created_by`, `fname`, `lname`, `firm`, `zip`, `city`, `state`, `country`, `email`, `phone`,
+			`fax`, `street1`, `street2`, `customer_id`, `gender`
+		FROM
+			`admin`
+		WHERE
+			`admin_id` = ?
+		AND
+			`created_by` = ?
+	";
+	$stmt = exec_query($query, array($adminId, $_SESSION['user_id']));
+
+	if (!$stmt->rowCount()) {
+		showBadRequestErrorPage();
+	} else {
+		$data = $stmt->fetchRow();
+
+		$dmnUsername = $data['admin_name'];
+		$userEmail = $data['email'];
+		$customerId = $data['customer_id'];
+		$firstName = $data['fname'];
+		$lastName = $data['lname'];
+		$gender = $data['gender'];
+		$firm = $data['firm'];
+		$zip = $data['zip'];
+		$city = $data['city'];
+		$state = $data['state'];
+		$country = $data['country'];
+		$street1 = $data['street1'];
+		$street2 = $data['street2'];
+		$mail = $data['email'];
+		$phone = $data['phone'];
+		$fax = $data['fax'];
+	}
+}
+
+/**
+ * Generate page
+ *
+ * @param iMSCP_pTemplate $tpl
+ * @return void
+ */
+function reseller_generatePage($tpl)
+{
+	global $dmnUsername, $userEmail, $customerId, $firstName, $lastName, $firm, $zip, $gender, $city, $state, $country,
+		$street1, $street2, $phone, $fax;
+
+	$cfg = iMSCP_Registry::get('config');
+
+	// Fill in the fields
+	$tpl->assign(
+		array(
+			'VL_USERNAME' => tohtml(decode_idna($dmnUsername)),
+			'VL_MAIL' => tohtml($userEmail),
+			'VL_USR_ID' => tohtml($customerId),
+			'VL_USR_NAME' => tohtml($firstName),
+			'VL_LAST_USRNAME' => tohtml($lastName),
+			'VL_USR_FIRM' => tohtml($firm),
+			'VL_USR_POSTCODE' => tohtml($zip),
+			'VL_USRCITY' => tohtml($city),
+			'VL_USRSTATE' => tohtml($state),
+			'VL_COUNTRY' => tohtml($country),
+			'VL_STREET1' => tohtml($street1),
+			'VL_STREET2' => tohtml($street2),
+			'VL_MALE' => ($gender == 'M') ? $cfg->HTML_SELECTED : '',
+			'VL_FEMALE' => ($gender == 'F') ? $cfg->HTML_SELECTED : '',
+			'VL_UNKNOWN' => ($gender == 'U') ? $cfg->HTML_SELECTED : '',
+			'VL_PHONE' => tohtml($phone),
+			'VL_FAX' => tohtml($fax)
+		)
+	);
+}
+
+/**
+ * Function to update changes into db
+ *
+ * @param int $adminId Customer unique identifier
+ * @return void
+ */
+function reseller_updateUserData($adminId)
+{
+	iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onBeforeEditUser, array('userId' => $adminId));
+
+	global $dmnUsername, $userEmail, $customerId, $firstName, $lastName, $firm, $zip, $gender, $city, $state, $country,
+		$street1, $street2, $mail, $phone, $fax, $password;
+
+	$resellerId = $_SESSION['user_id'];
+
+	$firstName = clean_input($firstName);
+	$lastName = clean_input($lastName);
+	$firm = clean_input($firm);
+	$gender = clean_input($gender);
+	$zip = clean_input($zip);
+	$city = clean_input($city);
+	$state = clean_input($state);
+	$country = clean_input($country);
+	$phone = clean_input($phone);
+	$fax = clean_input($fax);
+	$street1 = clean_input($street1);
+	$street2 = clean_input($street2);
+
+	if ($password == '') {
+		// Save without password
+		$query = "
+			UPDATE
+				`admin`
+			SET
+				`fname` = ?, `lname` = ?, `firm` = ?, `zip` = ?, `city` = ?, `state` = ?, `country` = ?, `email` = ?,
+				`phone` = ?, `fax` = ?, `street1` = ?, `street2` = ?, `gender` = ?, `customer_id` = ?
+			WHERE
+				`admin_id` = ?
+			AND
+				`created_by` = ?
+		";
+		exec_query(
+			$query,
+			array(
+				$firstName, $lastName, $firm, $zip, $city, $state, $country, $mail, $phone, $fax, $street1, $street2,
+				$gender, $customerId, $adminId, $resellerId
+			)
+		);
+	} else { // Change password
+		if (!checkPasswordSyntax($_POST['userpassword'])) {
+			redirectTo('user_edit.php?edit_id=' . $adminId);
+		}
+
+		if ($_POST['userpassword'] != $_POST['userpassword_repeat']) {
+			set_page_message(tr("Passwords doesn't match."), 'error');
+			redirectTo('user_edit.php?edit_id=' . $adminId);
+		}
+
+		$encryptedPassword = cryptPasswordWithSalt($password);
+
+		$query = "
+			UPDATE
+				`admin`
+			SET
+				`admin_pass` = ?, `fname` = ?, `lname` = ?, `firm` = ?, `zip` = ?, `city` = ?, `state` = ?,
+				`country` = ?, `email` = ?, `phone` = ?, `fax` = ?, `street1` = ?, `street2` = ?, `gender` = ?,
+				`customer_id` = ?
+			WHERE
+				`admin_id` = ?
+			AND
+				`created_by` = ?
+		";
+		exec_query(
+			$query,
+			array(
+				$encryptedPassword, $firstName, $lastName, $firm, $zip, $city, $state, $country, $mail, $phone, $fax,
+				$street1, $street2, $gender, $customerId, $adminId, $resellerId
+			)
+		);
+
+		$adminName = get_user_name($adminId);
+
+		$query = "DELETE FROM `login` WHERE `user_name` = ?";
+		exec_query($query, $adminName);
+	}
+
+	iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAfterEditUser, array('userId' => $adminId));
+
+	set_page_message(tr('User data successfully updated'), 'success');
+	write_log("{$_SESSION['user_logged']} updated data for $dmnUsername.", E_USER_NOTICE);
+
+	if (isset($_POST['send_data']) && $password != '') {
+		send_add_user_auto_msg($resellerId, $dmnUsername, $password, $userEmail, $firstName, $lastName, tr('Customer'));
+	}
+
+	redirectTo('users.php');
+}
+
+/***********************************************************************************************************************
+ * Main
  */
 
 // Include core library
@@ -45,379 +236,73 @@ $cfg = iMSCP_Registry::get('config');
 
 check_login('reseller');
 
-if (isset($_GET['edit_id'])) {
-	$edit_id = $_GET['edit_id'];
-} else if (isset($_POST['edit_id'])) {
-	$edit_id = $_POST['edit_id'];
-} else {
-	redirectTo('users.php?psi=last');
-    exit;
-}
+if (isset($_REQUEST['edit_id'])) {
+	$adminId = clean_input($_GET['edit_id']);
 
-$tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic(
-	array(
-		'layout' => 'shared/layouts/ui.tpl',
-		'page' => 'reseller/user_edit.tpl',
-		'page_message' => 'layout',
-		'ip_entry' => 'page'));
-
-$tpl->assign(
-	array(
-		 'TR_PAGE_TITLE' => tr('i-MSCP - Users/Edit'),
-		 'THEME_CHARSET' => tr('encoding'),
-		 'ISP_LOGO' => layout_getUserLogo(),));
-
-$tpl->assign(
-	array(
-		 'TR_EDIT_USER' => tr('Edit user'),
-		 'TR_CORE_DATA' => tr('Core data'),
-		 'TR_USERNAME' => tr('Username'),
-		 'TR_PASSWORD' => tr('Password'),
-		 'TR_REP_PASSWORD' => tr('Repeat password'),
-		 'TR_DOMAIN_IP' => tr('Domain IP'),
-		 'TR_USREMAIL' => tr('Email'),
-		 'TR_ADDITIONAL_DATA' => tr('Additional data'),
-		 'TR_CUSTOMER_ID' => tr('Customer ID'),
-		 'TR_FIRSTNAME' => tr('First name'),
-		 'TR_LASTNAME' => tr('Last name'),
-		 'TR_COMPANY' => tr('Company'),
-		 'TR_POST_CODE' => tr('Zip/Postal code'),
-		 'TR_CITY' => tr('City'),
-		 'TR_STATE' => tr('State/Province'),
-		 'TR_COUNTRY' => tr('Country'),
-		 'TR_STREET1' => tr('Street 1'),
-		 'TR_STREET2' => tr('Street 2'),
-		 'TR_MAIL' => tr('Email'),
-		 'TR_PHONE' => tr('Phone'),
-		 'TR_FAX' => tr('Fax'),
-		 'TR_GENDER' => tr('Gender'),
-		 'TR_MALE' => tr('Male'),
-		 'TR_FEMALE' => tr('Female'),
-		 'TR_UNKNOWN' => tr('Unknown'),
-		 'EDIT_ID' => $edit_id,
-		 'TR_BTN_ADD_USER' => tr('Submit changes')));
-
-generateNavigation($tpl);
-
-$tpl->assign(
-	array(
-		 'TR_MANAGE_USERS' => tr('Manage users'),
-		 'TR_USERS' => tr('Users'),
-		 'TR_NO' => tr('No.'),
-		 'TR_USERNAME' => tr('Username'),
-		 'TR_ACTION' => tr('Action'),
-		 'TR_BACK' => tr('Back'),
-		 'TR_TITLE_BACK' => tr('Return to previous menu'),
-		 'TR_TABLE_NAME' => tr('Users list'),
-		 'TR_SEND_DATA' => tr('Send new login data'),
-		 'TR_PASSWORD_GENERATE' => tr('Generate password')));
-
-if (isset($_POST['genpass'])) {
-	$tpl->assign('VAL_PASSWORD', passgen());
-} else {
-	$tpl->assign('VAL_PASSWORD', '');
-}
-
-if (isset($_POST['Submit']) && isset($_POST['uaction']) && ('save_changes' === $_POST['uaction'])
-) {
-	// Process data
-
-	if (isset($_SESSION['edit_ID'])) {
-		$hpid = $_SESSION['edit_ID'];
-	} else {
-		$_SESSION['edit'] = '_no_';
-		redirectTo('users.php?psi=last');
-        exit;
-	}
-
-	if (isset($_SESSION['user_name'])) {
-		$dmn_user_name = $_SESSION['user_name'];
-	} else {
-		$_SESSION['edit'] = '_no_';
-		redirectTo('users.php?psi=last');
-        exit;
-	}
-
-	if (check_ruser_data(true)) { // Save data to db
-		update_data_in_db($hpid);
-	}
-
-} else {
-	// Get user id that comes for edit
-	$hpid = $edit_id;
-	load_user_data_page($hpid);
-	$_SESSION['edit_ID'] = $hpid;
-
-}
-
-gen_edituser_page($tpl);
-
-generatePageMessage($tpl);
-
-$tpl->parse('LAYOUT_CONTENT', 'page');
-
-iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onResellerScriptEnd, array('templateEngine' => $tpl));
-
-$tpl->prnt();
-
-/**
- * Load data from sql
- */
-function load_user_data_page($user_id)
-{
-	global $dmn_user_name, $user_email, $customer_id, $first_name, $last_name, $firm, $zip, $gender, $city, $state,
-           $country, $street_one, $street_two, $mail, $phone, $fax;
-
-	$reseller_id = $_SESSION['user_id'];
-
-	$query = "
-		SELECT
-			`admin_name`, `created_by`, `fname`, `lname`, `firm`, `zip`,
-			`city`, `state`, `country`, `email`, `phone`, `fax`, `street1`,
-			`street2`, `customer_id`, `gender`
-		FROM
-			`admin`
-		WHERE
-			`admin_id` = ?
-		AND
-			`created_by` = ?
-	";
-
-	$res = exec_query($query, array($user_id, $reseller_id));
-	$data = $res->fetchRow();
-
-	if ($res->recordCount() == 0) {
-		set_page_message(tr('User does not exist or you do not have permission to access this interface'), 'error');
-		redirectTo('users.php?psi=last');
-	} else {
-		// Get data from sql
-		$_SESSION['user_name'] = $data['admin_name'];
-
-		$dmn_user_name = $data['admin_name'];
-		$user_email = $data['email'];
-		$customer_id = $data['customer_id'];
-		$first_name = $data['fname'];
-		$last_name = $data['lname'];
-		$gender = $data['gender'];
-		$firm = $data['firm'];
-		$zip = $data['zip'];
-		$city = $data['city'];
-		$state = $data['state'];
-		$country = $data['country'];
-		$street_one = $data['street1'];
-		$street_two = $data['street2'];
-		$mail = $data['email'];
-		$phone = $data['phone'];
-		$fax = $data['fax'];
-	}
-
-}
-
-/**
- * Show user data
- *
- * @param iMSCP_pTemplate $tpl
- */
-function gen_edituser_page($tpl)
-{
-	global $dmn_user_name, $user_email, $customer_id, $first_name, $last_name,
-$firm, $zip, $gender, $city, $state, $country, $street_one, $street_two,
-$phone, $fax;
-
-	$cfg = iMSCP_Registry::get('config');
-
-	if ($customer_id == NULL) {
-		$customer_id = '';
-	}
-
-	// Fill in the fields
-	$tpl->assign(
+	$tpl = new iMSCP_pTemplate();
+	$tpl->define_dynamic(
 		array(
-			 'VL_USERNAME' => tohtml(decode_idna($dmn_user_name)),
-			 'VL_MAIL' => empty($user_email) ? '' : tohtml($user_email),
-			 'VL_USR_ID' => empty($customer_id) ? '' : tohtml($customer_id),
-			 'VL_USR_NAME' => empty($first_name) ? '' : tohtml($first_name),
-			 'VL_LAST_USRNAME' => empty($last_name) ? '' : tohtml($last_name),
-			 'VL_USR_FIRM' => empty($firm) ? '' : tohtml($firm),
-			 'VL_USR_POSTCODE' => empty($zip) ? '' : tohtml($zip),
-			 'VL_USRCITY' => empty($city) ? '' : tohtml($city),
-			 'VL_USRSTATE' => empty($state) ? '' : tohtml($state),
-			 'VL_COUNTRY' => empty($country) ? '' : tohtml($country),
-			 'VL_STREET1' => empty($street_one) ? '' : tohtml($street_one),
-			 'VL_STREET2' => empty($street_two) ? '' : tohtml($street_two),
-			 'VL_MALE' => ($gender == 'M') ? $cfg->HTML_SELECTED : '',
-			 'VL_FEMALE' => ($gender == 'F') ? $cfg->HTML_SELECTED : '',
-			 'VL_UNKNOWN' => ($gender == 'U') ? $cfg->HTML_SELECTED : '',
-			 'VL_PHONE' => empty($phone) ? '' : tohtml($phone),
-			 'VL_FAX' => empty($fax) ? '' : tohtml($fax)
+			'layout' => 'shared/layouts/ui.tpl',
+			'page' => 'reseller/user_edit.tpl',
+			'page_message' => 'layout',
+			'ip_entry' => 'page'
 		)
 	);
 
-	generate_ip_list($tpl, $_SESSION['user_id']);
+	$tpl->assign(
+		array(
+			'TR_PAGE_TITLE' => tr('i-MSCP - Reseller / Manage Customers / Customers / Edit Customer'),
+			'THEME_CHARSET' => tr('encoding'),
+			'ISP_LOGO' => layout_getUserLogo(),
+			'TR_CORE_DATA' => tr('Core data'),
+			'TR_USERNAME' => tr('Username'),
+			'TR_PASSWORD' => tr('Password'),
+			'TR_REP_PASSWORD' => tr('Repeat password'),
+			'TR_USREMAIL' => tr('Email'),
+			'TR_ADDITIONAL_DATA' => tr('Additional data'),
+			'TR_CUSTOMER_ID' => tr('Customer ID'),
+			'TR_FIRSTNAME' => tr('First name'),
+			'TR_LASTNAME' => tr('Last name'),
+			'TR_COMPANY' => tr('Company'),
+			'TR_POST_CODE' => tr('Zip'),
+			'TR_CITY' => tr('City'),
+			'TR_STATE' => tr('State/Province'),
+			'TR_COUNTRY' => tr('Country'),
+			'TR_STREET1' => tr('Street 1'),
+			'TR_STREET2' => tr('Street 2'),
+			'TR_PHONE' => tr('Phone'),
+			'TR_FAX' => tr('Fax'),
+			'TR_GENDER' => tr('Gender'),
+			'TR_MALE' => tr('Male'),
+			'TR_FEMALE' => tr('Female'),
+			'TR_UNKNOWN' => tr('Unknown'),
+			'EDIT_ID' => $adminId,
+			'TR_UPDATE' => tr('Update'),
+			'TR_SEND_DATA' => tr('Send new login data'),
+			'TR_PASSWORD_GENERATE' => tr('Generate password')
+		)
+	);
 
-} // End of gen_edituser_page()
-
-
-/**
- * Function to update changes into db
- */
-function update_data_in_db($hpid)
-{
-	iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onBeforeEditUser, array('userId' => $hpid));
-
-	global $dmn_user_name, $user_email, $customer_id, $first_name, $last_name, $firm, $zip, $gender, $city, $state,
-           $country, $street_one, $street_two, $mail, $phone, $fax, $inpass, $admin_login;
-
-	$cfg = iMSCP_Registry::get('config');
-
-	$reseller_id = $_SESSION['user_id'];
-
-	$first_name = clean_input($first_name);
-	$last_name = clean_input($last_name);
-	$firm = clean_input($firm);
-	$gender = clean_input($gender);
-	$zip = clean_input($zip);
-	$city = clean_input($city);
-	$state = clean_input($state);
-	$country = clean_input($country);
-	$phone = clean_input($phone);
-	$fax = clean_input($fax);
-	$street_one = clean_input($street_one);
-	$street_two = clean_input($street_two);
-
-	if (empty($inpass)) {
-		// Save without password
-		$query = "
-			UPDATE
-				`admin`
-			SET
-				`fname` = ?,
-				`lname` = ?,
-				`firm` = ?,
-				`zip` = ?,
-				`city` = ?,
-				`state` = ?,
-				`country` = ?,
-				`email` = ?,
-				`phone` = ?,
-				`fax` = ?,
-				`street1` = ?,
-				`street2` = ?,
-				`gender` = ?,
-				`customer_id` = ?
-			WHERE
-				`admin_id` = ?
-			AND
-				`created_by` = ?
-		";
-		exec_query($query, array(
-								$first_name,
-								$last_name,
-								$firm,
-								$zip,
-								$city,
-								$state,
-								$country,
-								$mail,
-								$phone,
-								$fax,
-								$street_one,
-								$street_two,
-								$gender,
-								$customer_id,
-								$hpid,
-								$reseller_id)
-		);
+	if (isset($_POST['genpass'])) {
+		$tpl->assign('VAL_PASSWORD', passgen());
 	} else {
-		// Change password
-		if (!checkPasswordSyntax($_POST['userpassword'])) {
-			redirectTo('user_edit.php?edit_id=' . $hpid);
-            exit;
-		}
+		$tpl->assign('VAL_PASSWORD', '');
 
-		if ($_POST['userpassword'] != $_POST['userpassword_repeat']) {
-
-			set_page_message(tr("Passwords doesn't match."), 'error');
-
-			redirectTo('user_edit.php?edit_id=' . $hpid);
-            exit;
-		}
-		$pure_user_pass = $inpass;
-
-		$inpass = cryptPasswordWithSalt($inpass);
-
-		$query = "
-			UPDATE
-				`admin`
-			SET
-				`admin_pass` = ?,
-				`fname` = ?,
-				`lname` = ?,
-				`firm` = ?,
-				`zip` = ?,
-				`city` = ?,
-				`state` = ?,
-				`country` = ?,
-				`email` = ?,
-				`phone` = ?,
-				`fax` = ?,
-				`street1` = ?,
-				`street2` = ?,
-				`gender` = ?,
-				`customer_id` = ?
-			WHERE
-				`admin_id` = ?
-			AND
-				`created_by` = ?
-		";
-		exec_query($query, array(
-								$inpass,
-								$first_name,
-								$last_name,
-								$firm,
-								$zip,
-								$city,
-								$state,
-								$country,
-								$mail,
-								$phone,
-								$fax,
-								$street_one,
-								$street_two,
-								$gender,
-								$customer_id,
-								$hpid,
-								$reseller_id)
-		);
-
-		// Kill any existing session of the edited user
-		$admin_name = get_user_name($hpid);
-
-		$query = "DELETE FROM `login` WHERE `user_name` = ? ";
-		$rs = exec_query($query, $admin_name);
-
-		if ($rs->recordCount() != 0) {
-			set_page_message(tr('User session was successfully killed for password change'), 'success');
-			write_log($_SESSION['user_logged'] . " killed " . $admin_name . "'s session because of password change", E_USER_NOTICE);
+		if (isset($_POST['uaction']) && $_POST['uaction'] == 'save_changes' && check_ruser_data(true)) {
+			reseller_updateUserData($adminId); // Save data to db
 		}
 	}
 
-	iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAfterEditUser, array('userId' => $hpid));
+	reseller_loadUserData($adminId);
+	generateNavigation($tpl);
+	reseller_generatePage($tpl);
+	generatePageMessage($tpl);
 
-	$admin_login = $_SESSION['user_logged'];
-	write_log("$admin_login changes data/password for $dmn_user_name!", E_USER_NOTICE);
+	$tpl->parse('LAYOUT_CONTENT', 'page');
 
-	if (isset($_POST['send_data']) && !empty($pure_user_pass)) {
-		send_add_user_auto_msg(
-			$reseller_id, $dmn_user_name, $pure_user_pass, $user_email, $first_name, $last_name, tr('Customer')
-		);
-	}
+	iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onResellerScriptEnd, array('templateEngine' => $tpl));
 
-	unset($_SESSION['edit_ID']);
-	unset($_SESSION['user_name']);
-
-	$_SESSION['edit'] = "_yes_";
-	redirectTo('users.php?psi=last');
-    exit;
+	$tpl->prnt();
+} else {
+	showBadRequestErrorPage();
 }

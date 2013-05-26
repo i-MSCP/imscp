@@ -104,9 +104,8 @@ $tpl->define_dynamic(
 $tpl->assign(
 	array(
 		 'THEME_CHARSET' => tr('encoding'),
-		 'TR_PAGE_TITLE' => tr('i-MSCP - Client / Support Ticket System / New Ticket'),
+		 'TR_PAGE_TITLE' => tr('Client / Support / New Ticket'),
 		 'ISP_LOGO' => layout_getUserLogo(),
-		 'TR_SUPPORT_SYSTEM' => tr('Support Ticket System'),
 		 'TR_NEW_TICKET' => tr('New ticket'),
 		 'TR_LOW' => tr('Low'),
 		 'TR_MEDIUM' => tr('Medium'),

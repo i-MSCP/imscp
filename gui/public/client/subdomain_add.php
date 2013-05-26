@@ -515,7 +515,7 @@ if (!is_xhr()) {
 
 	$tpl->assign(
 		array(
-			'TR_PAGE_TITLE' => tr('i-MSCP - Client / Manage domains - Add subdomain'),
+			'TR_PAGE_TITLE' => tr('Client / Domains / Add subdomain'),
 			'THEME_CHARSET' => tr('encoding'),
 			'ISP_LOGO' => layout_getUserLogo(),
 			'TR_SUBDOMAIN_DATA' => tr('Subdomain data'),

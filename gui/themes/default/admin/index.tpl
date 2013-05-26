@@ -1,15 +1,3 @@
-
-			<!-- BDP: imscp_update_message -->
-			<div class="info">{UPDATE}</div>
-			<!-- EDP: imscp_update_message -->
-
-			<!-- BDP: imscp_database_update_message -->
-			<div class="info">
-				{TR_DATABASE_UPDATE}
-				<a href="database_update.php" class="link">{TR_DATABASE_UPDATE_LINK}</a>
-			</div>
-			<!-- EDP: imscp_database_update_message -->
-
 			<table class="firstColFixed">
 				<tr>
 					<th>{TR_PROPERTIES}</th>

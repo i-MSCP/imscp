@@ -188,7 +188,7 @@ $tpl->define_dynamic(
 
 $tpl->assign(
 	array(
-		'TR_PAGE_TITLE' => tr('i-MSCP - Ftp / Choose directory'),
+		'TR_PAGE_TITLE' => tr('Client / Choose directory'),
 		'CONTEXT_CLASS' => 'box_message ftp_choose_dir',
 		'THEME_CHARSET' => tr('encoding'),
 		'productLongName' => tr('internet Multi Server Control Panel'),

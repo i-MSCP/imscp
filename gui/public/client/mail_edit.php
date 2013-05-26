@@ -308,10 +308,9 @@ $tpl->define_dynamic(
 
 $tpl->assign(
 	array(
-		 'TR_PAGE_TITLE' => tr('i-MSCP - Client / Manage mail / Edit account'),
+		 'TR_PAGE_TITLE' => tr('Client / Mail / Overview /  Edit Mail Account'),
 		 'THEME_CHARSET' => tr('encoding'),
 		 'ISP_LOGO' => layout_getUserLogo(),
-		 'TR_EDIT_MAIL_ACCOUNT' => tr('Edit mail account'),
 		 'TR_PASSWORD' => tr('Password'),
 		 'TR_PASSWORD_CONFIRMATION' => tr('Password confirmation'),
 		 'TR_FORWARD_ACCOUNT' => tr('Forward account'),

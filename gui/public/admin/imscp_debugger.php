@@ -828,7 +828,7 @@ $errors += get_error_htaccess($tpl);
 
 $tpl->assign(
 	array(
-		'TR_PAGE_TITLE' => tr('i-MSCP - Multi Server Control Panel'),
+		'TR_PAGE_TITLE' => tr('Admin / System Tools / Debugger'),
 		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => layout_getUserLogo(),
 		'TR_DEBUGGER_TITLE' => tr('i-MSCP debugger'),

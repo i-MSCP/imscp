@@ -202,7 +202,7 @@ $tpl->define_dynamic(
 
 $tpl->assign(
 	array(
-		 'TR_PAGE_TITLE' => tr('i-MSCP - Client / Webtools / Protected areas / Manage users and groups'),
+		 'TR_PAGE_TITLE' => tr('Client / Webtools / Protected Areas / Manage Htaccess users And Groups'),
 		 'THEME_CHARSET' => tr('encoding'),
 		 'ISP_LOGO' => layout_getUserLogo(),
 		 'TR_HTACCESS' => tr('Protected areas'),

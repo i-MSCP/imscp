@@ -77,8 +77,13 @@ sub fselect
 {
 	my $self = shift;
 
+	my $begin = $self->{'_opts'}->{'begin'};
+	$self->{'_opts'}->{'begin'} = undef;
 	$self->{'lines'} = $self->{'lines'} - 8;
+
 	my ($exitCode, $output) = $self->_execute(shift, undef, 'fselect');
+
+	$self->{'_opts'}->{'begin'} = $begin;
 	$self->{'lines'} = $self->{'lines'} + 8;
 
 	wantarray ? ($exitCode, $output) : $output;
@@ -714,7 +719,9 @@ sub _textbox
 	$self->{'autosize'} = undef;
 	my $begin = $self->{'_opts'}->{'begin'};
 	$self->{'_opts'}->{'begin'} = undef;
+
 	my ($exitCode, $output) = $self->_execute($text, $init, $type);
+
 	$self->{'_opts'}->{'begin'} = $begin;
 	$self->{'autosize'} = $autosize;
 

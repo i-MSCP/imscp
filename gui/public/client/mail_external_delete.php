@@ -156,7 +156,7 @@ iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptStart)
 check_login('user');
 
 // If the feature is disabled, redirects in silent way
-if (customerHasFeature(array('mail', 'external_mail'))) {
+if (customerHasFeature('external_mail')) {
     if (!empty($_POST)) {
         $items['normal'] = (isset($_POST['normal'])) ? $_POST['normal'] : null;
         $items['alias'] = (isset($_POST['alias'])) ? $_POST['alias'] : null;

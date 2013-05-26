@@ -281,7 +281,7 @@ function _client_initView()
 
 	$tpl->assign(
 		array(
-			'TR_PAGE_TITLE' => tr('i-MSCP - Manage domains / Edit Subdomain'),
+			'TR_PAGE_TITLE' => tr('Client / Domains / Overview / Edit Subdomain'),
 			'THEME_CHARSET' => tr('encoding'),
 			'ISP_LOGO' => layout_getUserLogo()));
 

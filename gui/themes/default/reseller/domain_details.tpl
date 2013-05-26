@@ -17,20 +17,28 @@
 					<td>{VL_PHP_SUPP}</td>
 				</tr>
 				<tr>
-					<td>{TR_CGI_SUPP}</td>
-					<td>{VL_CGI_SUPP}</td>
+					<td>{TR_PHP_EDITOR_SUPP}</td>
+					<td>{VL_PHP_EDITOR_SUPP}</td>
 				</tr>
 				<tr>
-					<td>{TR_SOFTWARE_SUPP}</td>
-					<td>{VL_SOFTWARE_SUPP}</td>
+					<td>{TR_CGI_SUPP}</td>
+					<td>{VL_CGI_SUPP}</td>
 				</tr>
 				<tr>
 					<td>{TR_DNS_SUPP}</td>
 					<td>{VL_DNS_SUPP}</td>
 				</tr>
 				<tr>
-					<td>{TR_MYSQL_SUPP}</td>
-					<td>{VL_MYSQL_SUPP}</td>
+					<td>{TR_EXT_MAIL_SUPP}</td>
+					<td>{VL_EXT_MAIL_SUPP}</td>
+				</tr>
+				<tr>
+					<td>{TR_SOFTWARE_SUPP}</td>
+					<td>{VL_SOFTWARE_SUPP}</td>
+				</tr>
+				<tr>
+					<td>{TR_BACKUP_SUPP}</td>
+					<td>{VL_BACKUP_SUP}</td>
 				</tr>
 				<tr>
 					<td>{TR_TRAFFIC}</td>
@@ -55,6 +63,16 @@
 					<th>{TR_LIMIT}</th>
 				</tr>
 				<tr>
+					<td>{TR_SUBDOM_ACCOUNTS}</td>
+					<td>{VL_SUBDOM_ACCOUNTS_USED}</td>
+					<td>{VL_SUBDOM_ACCOUNTS_LIMIT}</td>
+				</tr>
+				<tr>
+					<td>{TR_DOMALIAS_ACCOUNTS}</td>
+					<td>{VL_DOMALIAS_ACCOUNTS_USED}</td>
+					<td>{VL_DOMALIAS_ACCOUNTS_LIMIT}</td>
+				</tr>
+				<tr>
 					<td>{TR_MAIL_ACCOUNTS}</td>
 					<td>{VL_MAIL_ACCOUNTS_USED}</td>
 					<td>{VL_MAIL_ACCOUNTS_LIMIT}</td>
@@ -73,16 +91,6 @@
 					<td>{TR_SQL_USER_ACCOUNTS}</td>
 					<td>{VL_SQL_USER_ACCOUNTS_USED}</td>
 					<td>{VL_SQL_USER_ACCOUNTS_LIMIT}</td>
-				</tr>
-				<tr>
-					<td>{TR_SUBDOM_ACCOUNTS}</td>
-					<td>{VL_SUBDOM_ACCOUNTS_USED}</td>
-					<td>{VL_SUBDOM_ACCOUNTS_LIMIT}</td>
-				</tr>
-				<tr>
-					<td>{TR_DOMALIAS_ACCOUNTS}</td>
-					<td>{VL_DOMALIAS_ACCOUNTS_USED}</td>
-					<td>{VL_DOMALIAS_ACCOUNTS_LIMIT}</td>
 				</tr>
 			</table>
 			<form name="buttons" method="post" action="?">

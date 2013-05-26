@@ -281,7 +281,7 @@ function client_generateView($verifiedData, $data)
 
     $tpl->assign(
         array(
-            'TR_PAGE_TITLE' => tr('i-MSCP - Client / Mail Account / Add external mail server'),
+            'TR_PAGE_TITLE' => tr('Client / Mail / External Mail Server / Add External Mail Server For {DOMAIN_UTF8}'),
             'THEME_CHARSET' => tr('encoding'),
             'ISP_LOGO' => layout_getUserLogo(),
             'TR_MX_TYPE' => tr('Type'),
@@ -358,7 +358,7 @@ require_once 'imscp-lib.php';
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
 check_login('user');
 
-if (customerHasFeature(array('mail', 'external_mail'))) {
+if (customerHasFeature('external_mail')) {
     if (isset($_REQUEST['item']) && count($item = explode(';', $_REQUEST['item'], 2)) == 2) {
         $tpl = iMSCP_Registry::set('templateEngine', new iMSCP_pTemplate());
         $tpl->define_dynamic(

@@ -940,7 +940,7 @@ function resellerHasFeature($featureName, $forceReload = false)
 		/** @var $cfg iMSCP_Config_Handler_File */
 		$cfg = iMSCP_Registry::get('config');
 
-		$resellerProps = imscp_getResellerProperties((int)$_SESSION['user_id'], true);
+		$resellerProps = imscp_getResellerProperties($_SESSION['user_id'], true);
 
 		$availableFeatures = array(
 			'domains' => ($resellerProps['max_dmn_cnt'] != '-1') ? true : false,
@@ -951,9 +951,13 @@ function resellerHasFeature($featureName, $forceReload = false)
 			'sql' => ($resellerProps['max_sql_db_cnt'] != '-1') ? true : false, // TODO to be removed
 			'sql_db' => ($resellerProps['max_sql_db_cnt'] != '-1') ? true : false,
 			'sql_user' => ($resellerProps['max_sql_user_cnt'] != '-1') ? true : false,
+			'php' => true,
 			'php_editor' => ($resellerProps['php_ini_system'] == 'yes') ? true : false,
-			'backup' => ($cfg->BACKUP_DOMAINS != 'no') ? true : false,
+			'cgi' => true,
+			'custom_dns_records' => true,
 			'aps' => ($resellerProps['software_allowed'] != 'no') ? true : false, // aps feature check must be revisted
+			'external_mail' => true,
+			'backup' => ($cfg->BACKUP_DOMAINS != 'no') ? true : false,
 			'support' => ($cfg->IMSCP_SUPPORT_SYSTEM && $resellerProps['support_system'] == 'yes') ? true : false
 		);
 	}
@@ -999,4 +1003,129 @@ function resellerHasCustomers($minNbCustomers = 1)
 	}
 
 	return ($customerCount >= $minNbCustomers);
+}
+
+/**
+ * Check user data.
+ *
+ * @param  bool $noPass
+ * @return bool
+ */
+function check_ruser_data($noPass)
+{
+	global $userEmail, $customerId, $firstName, $lastName, $firm, $zip, $gender, $city, $state, $country, $street1,
+		   $street2, $mail, $phone, $fax, $password, $domainIp;
+
+	$passwordRepeat = '';
+
+	// Get data for fields from previous page
+	if (isset($_POST['userpassword'])) {
+		$password = $_POST['userpassword'];
+	}
+
+	if (isset($_POST['userpassword_repeat'])) {
+		$passwordRepeat = $_POST['userpassword_repeat'];
+	}
+
+	if (isset($_POST['domain_ip'])) {
+		$domainIp = $_POST['domain_ip'];
+	}
+
+	if (isset($_POST['useremail'])) {
+		$userEmail = $_POST['useremail'];
+	}
+
+	if (isset($_POST['useruid'])) {
+		$customerId = $_POST['useruid'];
+	}
+
+	if (isset($_POST['userfname'])) {
+		$firstName = $_POST['userfname'];
+	}
+
+	if (isset($_POST['userlname'])) {
+		$lastName = $_POST['userlname'];
+	}
+
+	if (isset($_POST['userfirm'])) {
+		$firm = $_POST['userfirm'];
+	}
+
+	if (isset($_POST['userzip'])) {
+		$zip = $_POST['userzip'];
+	}
+
+	if (isset($_POST['usercity'])) {
+		$city = $_POST['usercity'];
+	}
+
+	if (isset($_POST['userstate'])) {
+		$state = $_POST['userstate'];
+	}
+
+	if (isset($_POST['usercountry'])) {
+		$country = $_POST['usercountry'];
+	}
+
+	if (isset($_POST['userstreet1'])) {
+		$street1 = $_POST['userstreet1'];
+	}
+
+	if (isset($_POST['userstreet2'])) {
+		$street2 = $_POST['userstreet2'];
+	}
+
+	if (isset($_POST['useremail'])) {
+		$mail = $_POST['useremail'];
+	}
+
+	if (isset($_POST['userphone'])) {
+		$phone = $_POST['userphone'];
+	}
+
+	if (isset($_POST['userfax'])) {
+		$fax = $_POST['userfax'];
+	}
+
+	if (isset($_POST['gender']) && get_gender_by_code($_POST['gender'], true) !== null) {
+		$gender = $_POST['gender'];
+	} else {
+		$gender = 'U';
+	}
+
+	if (!$noPass) {
+		if ('' === $passwordRepeat || '' === $password) {
+			set_page_message(tr('Please fill up both data fields for password.'), 'error');
+		} elseif ($passwordRepeat !== $password) {
+			set_page_message(tr("Passwords doesn't match."), 'error');
+		}
+
+		checkPasswordSyntax($password);
+	}
+
+	if ($userEmail == NULL) { // TODO check email
+		set_page_message(tr('Incorrect email length or syntax.'), 'error');
+	}
+
+	if($customerId != '' && strlen($customerId) > 200) {
+		set_page_message(tr('Customer ID cannot have more than 200 characters'), 'error');
+	}
+
+	if($firstName != '' && strlen($firstName) > 200) {
+		set_page_message(tr('First name cannot have more than 200 characters.'), 'error');
+	}
+
+	if($lastName != '' && strlen($lastName) > 200) {
+		set_page_message(tr('Last name cannot have more than 200 characters.'), 'error');
+	}
+
+	if($zip != '' && (strlen($zip) > 200 || is_number(!$zip))) {
+		set_page_message(tr('Incorrect post code length or syntax!'));
+	}
+
+	if (Zend_Session::namespaceIsset('pageMessages')) {
+		return false;
+	}
+
+	return true;
 }

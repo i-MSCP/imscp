@@ -1,5 +1,5 @@
 
-            <form name="search_user" method="post" action="user_edit.php">
+            <form name="search_user" method="post" action="user_edit.php?edit_id={EDIT_ID}">
                 <fieldset>
                     <legend>{TR_CORE_DATA}</legend>
                     <table>
@@ -58,6 +58,7 @@
                                 <select id="gender" name="gender">
                                     <option value="M" {VL_MALE}>{TR_MALE}</option>
                                     <option value="F" {VL_FEMALE}>{TR_FEMALE}</option>
+									<option value="F" {VL_UNKNOWN}>{TR_UNKNOWN}</option>
                                 </select>
                             </td>
                         </tr>
@@ -73,6 +74,12 @@
                                 <input type="text" name="userstreet1" id="userstreet1" value="{VL_STREET1}" />
                             </td>
                         </tr>
+						<tr>
+							<td><label for="userstreet2">{TR_STREET2}</label></td>
+							<td>
+								<input type="text" name="userstreet2" id="userstreet2" value="{VL_STREET2}" />
+							</td>
+						</tr>
                         <tr>
                             <td><label for="userzip">{TR_POST_CODE}</label></td>
                             <td>
@@ -111,8 +118,9 @@
                         </tr>
                     </table>
                     <div class="buttons">
-                        <input name="Submit" type="submit" value="{TR_BTN_ADD_USER}" />
-                        <input type="checkbox" id="send_data" name="send_data" checked="checked" /><label for="send_data">{TR_SEND_DATA}</label>
+                        <input name="Submit" type="submit" value="{TR_UPDATE}" />
+                        <input type="checkbox" id="send_data" name="send_data" checked="checked" />
+						<label for="send_data">{TR_SEND_DATA}</label>
                     </div>
                 </fieldset>
                 <input type="hidden" name="uaction" value="save_changes" />

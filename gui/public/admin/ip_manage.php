@@ -304,7 +304,7 @@ $tpl->define_dynamic(
 
 $tpl->assign(
 	array(
-		'TR_PAGE_TITLE' => tr('i-MSCP - Admin / General settings / IPs management'),
+		'TR_PAGE_TITLE' => tr('Admin / Settings / IP management'),
 		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => layout_getUserLogo(),
 		'MANAGE_IPS' => tr('Manage IPs'),

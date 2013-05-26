@@ -87,9 +87,9 @@ check_login('user');
 $cfg = iMSCP_Registry::get('config');
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic('layout', 'shared/layouts/ui.tpl');
 $tpl->define_dynamic(
 	array(
+		'layout' => 'shared/layouts/ui.tpl',
 		'page' => 'client/layout.tpl',
 		'page_message' => 'layout',
 		'layout_colors_block' => 'page',
@@ -137,10 +137,9 @@ if (layout_isMainMenuLabelsVisible($userId)) {
 
 $tpl->assign(
 	array(
-		'TR_PAGE_TITLE' => tr('i-MSCP - client / Setting Layout'),
+		'TR_PAGE_TITLE' => tr('Client / Profile / Layout'),
 		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => layout_getUserLogo(),
-		'TR_LAYOUT_SETTINGS' => tr('Layout settings'),
 		'TR_LAYOUT_COLOR' => tr('Layout color'),
 		'TR_CHOOSE_LAYOUT_COLOR' =>  tr('Choose layout color'),
         'TR_ENABLED' => tr('Enabled'),

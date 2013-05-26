@@ -198,6 +198,10 @@ function mebibyteHuman($value, $unit = null)
  */
 function translate_limit_value($value, $autosize = false, $to = null)
 {
+
+	$trEnabled = '<span style="color:green">' . tr('Enabled') . '</span>';
+	$trDisabled = '<span style="color:red">' . tr('Disabled') . '</span>';
+
 	switch ($value) {
 		case '-1':
 			return tr('Disabled');
@@ -205,10 +209,10 @@ function translate_limit_value($value, $autosize = false, $to = null)
 			return tr('Unlimited');
 		case '_yes_':
 		case 'yes':
-			return tr('Yes');
+			return $trEnabled;
 		case '_no_':
 		case 'no':
-			return tr('No');
+			return $trDisabled;
 		case '_full_':
 			return tr('Domain and SQL databases');
 		case '_dmn_':
@@ -290,7 +294,7 @@ function _passgen()
 {
 	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
-	$passwordLength = $cfg->PASSWD_CHARS;
+	$passwordLength = isset($cfg->PASSWD_CHARS) ? $cfg->PASSWD_CHARS : 6;
 	$password = '';
 
 	for ($i = 0; $i <= $passwordLength; $i++) {
@@ -313,12 +317,8 @@ function passgen()
 {
 	$password = null;
 
-	while ($password == null || ! checkPasswordSyntax($password)) {
+	while ($password == null || ! checkPasswordSyntax($password, '', true)) {
 		$password = _passgen();
-	}
-
-	if(Zend_Session::namespaceIsset('pageMessages')) {
-		Zend_Session::namespaceUnset('pageMessages');
 	}
 
 	return $password;

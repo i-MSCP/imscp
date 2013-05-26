@@ -54,7 +54,7 @@ function client_generatePage($tpl)
 	if ($hostingPlanLevel != 'reseller') {
 		$query = "
 			SELECT
-				`t1`.`id`, `t1`.`name`, `t1`.`props`, `t1`.`status`,
+				`t1`.`id`, `t1`.`name`, `t1`.`props`, `t1`.`status`
 			FROM
 				`hosting_plans` AS `t1`
 			LEFT JOIN

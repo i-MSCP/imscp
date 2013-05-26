@@ -1536,7 +1536,7 @@ function get_reseller_software_permission($tpl, $resellerId)
 	$query = "SELECT `software_allowed` FROM `reseller_props` WHERE `reseller_id` = ?";
 	$stmt = exec_query($query, array($resellerId));
 
-	if($stmt->recordCount()) {
+	if($stmt->rowCount()) {
 		if ($stmt->fields('software_allowed') == 'yes') {
 			$tpl->assign(
 				array(
@@ -1825,18 +1825,6 @@ function generate_software_upload_token()
 	$_SESSION['software_upload_token'] = $token;
 
 	return $token;
-}
-
-/**
- * Tells whether or not the software installer is available for the given reseller
- *
- * @param  int $resellerId Reseller unique identifier
- * @return string 'yes' if software installer is available, 'no' otherwise
- */
-function get_reseller_sw_installer($resellerId)
-{
-	$stmt = exec_query('SELECT `software_allowed` FROM `reseller_props` WHERE `reseller_id` = ?', $resellerId);
-	return $stmt->fields['software_allowed'];
 }
 
 /***********************************************************************************************************************

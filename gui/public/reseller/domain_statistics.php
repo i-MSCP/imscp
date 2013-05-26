@@ -88,7 +88,7 @@ function reseller_generatePage($tpl, $domainId, $month, $year)
 		set_page_message(tr('Domain not found.'), 'error');
 		redirectTo('user_statistics.php');
 	} else {
-		$tpl->assign('DOMAIN_NAME', idn_to_utf8($stmt->fields['domain_name']));
+		$tpl->assign('DOMAIN_NAME', decode_idna($stmt->fields['domain_name']));
 	}
 
 	// Let see if we have any statistics available for the given periode
@@ -178,7 +178,7 @@ $tpl->define_dynamic(
 
 $tpl->assign(
 	array(
-		'TR_PAGE_TITLE' => tr('i-MSCP Reseller / Domain statistics'),
+		'TR_PAGE_TITLE' => tr('Reseller / Statistics / Overview / Domain Statistics - {DOMAIN_NAME}'),
 		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => layout_getUserLogo(),
 		'TR_DOMAIN_STATISTICS' => tr('Domain statistics'),

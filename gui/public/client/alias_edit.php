@@ -54,13 +54,12 @@ $tpl->define_dynamic('page_message', 'layout');
 
 $tpl->assign(
 	array(
-		 'TR_PAGE_TITLE' => tr('i-MSCP - Manage Domain Alias/Edit Alias'),
+		 'TR_PAGE_TITLE' => tr('Client / Domains / Overview / Edit Domain Alias'),
 		 'THEME_CHARSET' => tr('encoding'),
 		 'ISP_LOGO' => layout_getUserLogo()));
 
 $tpl->assign(
 	array(
-		'TR_TITLE_EDIT_ALIAS' => tr('Edit domain alias'),
 		'TR_ALIAS_NAME' => tr('Alias name'),
 		'TR_DOMAIN_IP' => tr('Domain IP'),
 		'TR_FORWARD' => tr('Forward to URL'),

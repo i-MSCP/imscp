@@ -24,19 +24,19 @@
  * Portions created by the i-MSCP Team are Copyright (C) 2010-2013 by
  * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
  *
- * @category	i-MSCP
- * @package		iMSCP_Core
- * @subpackage	Reseller
- * @copyright	2001-2006 by moleSoftware GmbH
- * @copyright	2006-2010 by ispCP | http://isp-control.net
- * @copyright	2010-2013 by i-MSCP | http://i-mscp.net
- * @author		ispCP Team
- * @author		i-MSCP Team
- * @link		http://i-mscp.net
+ * @category    i-MSCP
+ * @package     iMSCP_Core
+ * @subpackage  Reseller
+ * @copyright   2001-2006 by moleSoftware GmbH
+ * @copyright   2006-2010 by ispCP | http://isp-control.net
+ * @copyright   2010-2013 by i-MSCP | http://i-mscp.net
+ * @author      ispCP Team
+ * @author      i-MSCP Team
+ * @link        http://i-mscp.net
  */
 
-/*********************************************************************************
- * Script functions
+/***********************************************************************************************************************
+ * Functions
  */
 
 /**
@@ -72,7 +72,9 @@ function admin_generatePage($tpl, $domainId)
 	if (!$stmt->rowCount()) {
 		$domainIpAddr = tr('No found.');
 	} else {
-		$domainIpAddr = "{$stmt->fields['ip_number']} " . (($stmt->fields['ip_domain']) ? "({$stmt->fields['ip_domain']})" : '');
+		$domainIpAddr = "{$stmt->fields['ip_number']} " . (
+			($stmt->fields['ip_domain']) ? "({$stmt->fields['ip_domain']})" : ''
+		);
 	}
 
 	$domainStatus = $domainProperties['domain_status'];
@@ -135,10 +137,12 @@ function admin_generatePage($tpl, $domainId)
 			'VL_DOMAIN_IP' => tohtml($domainIpAddr),
 			'VL_STATUS' => $domainStatus,
 			'VL_PHP_SUPP' => ($domainProperties['domain_php'] == 'yes') ? $trEnabled : $trDisabled,
+			'VL_PHP_EDITOR_SUPP' => ($domainProperties['phpini_perm_system'] == 'yes') ? $trEnabled : $trDisabled,
 			'VL_CGI_SUPP' => ($domainProperties['domain_cgi'] == 'yes') ? $trEnabled : $trDisabled,
 			'VL_DNS_SUPP' => ($domainProperties['domain_dns'] == 'yes') ? $trEnabled : $trDisabled,
-			'VL_MYSQL_SUPP' => ($domainProperties['domain_sqld_limit'] >= 0) ? $trEnabled : $trDisabled,
+			'VL_EXT_MAIL_SUPP' => ($domainProperties['domain_external_mail'] == 'yes') ? $trEnabled : $trDisabled,
 			'VL_SOFTWARE_SUPP' => ($domainProperties['domain_software_allowed'] == 'yes') ? $trEnabled : $trDisabled,
+			'VL_BACKUP_SUP' => translate_limit_value($domainProperties['allowbackup']),
 			'VL_TRAFFIC_PERCENT' => $trafficUsagePercent,
 			'VL_TRAFFIC_USED' => bytesHuman($trafficUsageBytes),
 			'VL_TRAFFIC_LIMIT' => bytesHuman($trafficLimitBytes),
@@ -161,9 +165,10 @@ function admin_generatePage($tpl, $domainId)
 	);
 }
 
-/*********************************************************************************
- * Main script
+/***********************************************************************************************************************
+ * Main
  */
+
 // Include core library
 require 'imscp-lib.php';
 
@@ -191,29 +196,30 @@ $tpl->define_dynamic(
 
 $tpl->assign(
 	array(
-		'TR_PAGE_TITLE' => tr('i-MSCP - Reseller / Users management / Domain Details'),
+		'TR_PAGE_TITLE' => tr('Reseller / Customer / Overview / Domain Details'),
 		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => layout_getUserLogo(),
 		'TR_DOMAIN_DETAILS' => tr('Domain details'),
 		'TR_DOMAIN_NAME' => tr('Domain name'),
 		'TR_DOMAIN_IP' => tr('Domain IP'),
 		'TR_STATUS' => tr('Status'),
-		'TR_PHP_SUPP' => tr('PHP support'),
-		'TR_CGI_SUPP' => tr('CGI support'),
+		'TR_PHP_SUPP' => tr('PHP'),
+		'TR_PHP_EDITOR_SUPP' => tr('PHP Editor'),
+		'TR_CGI_SUPP' => tr('CGI'),
 		'TR_DNS_SUPP' => tr('Custom DNS records'),
-		'TR_BACKUP_SUPPORT' => tr('Backup support'),
-		'TR_MYSQL_SUPP' => tr('MySQL support'),
+		'TR_EXT_MAIL_SUPP' => tr('Ext. mail server'),
+		'TR_BACKUP_SUPP' => tr('Backup'),
 		'TR_TRAFFIC' => tr('Traffic'),
 		'TR_DISK' => tr('Disk'),
 		'TR_FEATURE' => tr('Feature'),
 		'TR_USED' => tr('Used'),
 		'TR_LIMIT' => tr('Limit'),
+		'TR_SUBDOM_ACCOUNTS' => tr('Subdomains'),
+		'TR_DOMALIAS_ACCOUNTS' => tr('Domain aliases'),
 		'TR_MAIL_ACCOUNTS' => tr('Mail accounts'),
 		'TR_FTP_ACCOUNTS' => tr('FTP accounts'),
 		'TR_SQL_DB_ACCOUNTS' => tr('SQL databases'),
 		'TR_SQL_USER_ACCOUNTS' => tr('SQL users'),
-		'TR_SUBDOM_ACCOUNTS' => tr('Subdomains'),
-		'TR_DOMALIAS_ACCOUNTS' => tr('Domain aliases'),
 		'TR_UPDATE_DATA' => tr('Submit changes'),
 		'TR_SOFTWARE_SUPP' => tr('Software installer'),
 		'TR_EDIT' => tr('Edit'),
@@ -221,12 +227,12 @@ $tpl->assign(
 	)
 );
 
-if (isset($cfg->HOSTING_PLANS_LEVEL) && $cfg->HOSTING_PLANS_LEVEL == 'admin') {
+if (isset($cfg->HOSTING_PLANS_LEVEL) && $cfg->HOSTING_PLANS_LEVEL != 'reseller') {
 	$tpl->assign('EDIT_OPTION', '');
 }
 
 generateNavigation($tpl);
-admin_generatePage($tpl, intval($_GET['domain_id']));
+admin_generatePage($tpl, $_GET['domain_id']);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
