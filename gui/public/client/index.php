@@ -172,7 +172,7 @@ function client_generateFeatureStatus($tpl)
 			 'PHP_DIRECTIVES_EDITOR_STATUS' => customerHasFeature('php_editor') ? $trYes : $trNo,
 			 'CGI_FEATURE_STATUS' => customerHasFeature('cgi') ? $trYes : $trNo,
 			 'CUSTOM_DNS_RECORDS_FEATURE_STATUS' => customerHasFeature('custom_dns_records') ? $trYes : $trNo,
-             'EXTERNAL_MAIL_SERVERS_FEATURE_STATUS' => customerHasFeature(array('mail', 'external_mail')) ? $trYes : $trNo,
+             'EXTERNAL_MAIL_SERVERS_FEATURE_STATUS' => customerHasFeature('external_mail') ? $trYes : $trNo,
 			 'APP_INSTALLER_FEATURE_STATUS' => customerHasFeature('aps') ? $trYes : $trNo,
              'WEBSTATS_FEATURE_STATUS' => customerHasFeature('webstats') ? $trYes : $trNo
         )
