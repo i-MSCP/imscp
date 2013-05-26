@@ -99,7 +99,7 @@ sub process
 		iMSCP::Mail->new()->errmsg($rdata);
 		$rs = 1;
 	} else {
-		require iMSCP::Httpd;
+		require Servers::httpd;
 		my $srcFolder = Servers::httpd->factory()->{'tplValues'}->{'APACHE_USERS_LOG_DIR'};
 
 		for(keys %$rdata) {
