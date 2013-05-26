@@ -56,8 +56,6 @@ our $command = {
 	'xz' => { 'extension' => 'xz', 'command' => 'CMD_XZ' }
 };
 
-# Public functions
-
 sub startUp
 {
 	iMSCP::Boot->getInstance()->boot({ 'nolock' => 'yes' });
@@ -74,7 +72,8 @@ sub process
 		return 1;
 	}
 
-	my ($rs, $ret, $rdata, $stdout, $stderr);
+	my $rs = 0;
+	my ($ret, $rdata, $stdout, $stderr);
 	my $database = iMSCP::Database->new()->factory();
 	my $canDumpDatabases = $database->can('dumpdb');
 	my $cmdTar = $main::imscpConfig{'CMD_TAR'};
