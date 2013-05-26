@@ -356,6 +356,7 @@ function client_generateView($verifiedData, $data)
 require_once 'imscp-lib.php';
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
+
 check_login('user');
 
 if (customerHasFeature('external_mail')) {

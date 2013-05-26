@@ -24,9 +24,9 @@
  * Portions created by the i-MSCP Team are Copyright (C) 2010-2013 by
  * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
  *
- * @category	i-MSCP
- * @package		iMSCP_Core
- * @subpackage	Client
+ * @category    i-MSCP
+ * @package     iMSCP_Core
+ * @subpackage  Client
  * @copyright   2001-2006 by moleSoftware GmbH
  * @copyright   2006-2010 by ispCP | http://isp-control.net
  * @copyright   2010-2013 by i-MSCP | http://i-mscp.net
@@ -35,7 +35,7 @@
  * @link        http://i-mscp.net
  */
 
-/************************************************************************************
+/***********************************************************************************************************************
  * script functions
  */
 
@@ -75,7 +75,7 @@ function client_getMailAccountData($mailAccountId)
 
 		if (strpos($mailAccountData['mail_type'], '_mail') === false) {
 			set_page_message(tr('This type of account does not have quota.'), 'error');
-                        redirectTo('mail_accounts.php');
+			redirectTo('mail_accounts.php');
 		} else {
 			return $mailAccountData;
 		}
@@ -92,41 +92,32 @@ function client_getMailAccountData($mailAccountId)
  */
 function client_UpdateMailAccount($mailAccountData)
 {
-	/** @var $cfg iMSCP_Config_Handler_File */
-	$cfg =iMSCP_Registry::get('config');
-
 	// Quota data validation
 	$quotaValue = 0;
 	$quotaUpdate = 0;
+
 	if (!empty($_POST['quota']) || $_POST['quota'] == 0) {
-		if($_POST['quota'] != floor($mailAccountData['quota'] / 1024 /1024)) {
-			if(is_numeric($_POST['quota'])) {
+		if ($_POST['quota'] != floor($mailAccountData['quota'] / 1024 / 1024)) {
+			if (is_numeric($_POST['quota'])) {
 				$quotaUpdate = 1;
 				$quotaValue = $_POST['quota'] * 1024 * 1024;
 			} else {
 				set_page_message(tr('Quota must be number'), 'error');
+				return false;
 			}
 		}
 	} else {
 		set_page_message(tr('Quota must have a value'), 'error');
+		return false;
 	}
 
-	if ((!Zend_Session::namespaceIsset('pageMessages')) && ($quotaUpdate!=0)) {
+	if ($quotaUpdate != 0) {
 		iMSCP_Events_Manager::getInstance()->dispatch(
 			iMSCP_Events::onBeforeEditMail, array('mailId' => $mailAccountData['mail_id'])
 		);
 
-		$query = "
-			UPDATE
-				`mail_users`
-			SET
-				`quota` = ?
-			WHERE
-				`mail_id` = ?
-		";
-		exec_query($query, array(
-				$quotaValue,
-				$mailAccountData['mail_id']));
+		$query = "UPDATE `mail_users` SET `quota` = ? WHERE `mail_id` = ?";
+		exec_query($query, array($quotaValue, $mailAccountData['mail_id']));
 
 		iMSCP_Events_Manager::getInstance()->dispatch(
 			iMSCP_Events::onAfterEditMail, array('mailId' => $mailAccountData['mail_id'])
@@ -135,12 +126,10 @@ function client_UpdateMailAccount($mailAccountData)
 		set_page_message(tr('Mail account quota updated.'), 'success');
 		write_log("{$_SESSION['user_logged']}: updated mail quota: {$mailAccountData['mail_addr']}", E_USER_NOTICE);
 		return true;
-	} else {
-		set_page_message(tr("Nothing has been changed."), 'info');
-		return true;
 	}
 
-	return false;
+	set_page_message(tr("Nothing has been changed."), 'info');
+	return true;
 }
 
 /**
@@ -152,20 +141,16 @@ function client_UpdateMailAccount($mailAccountData)
  */
 function client_generateQuotaForm($tpl, $mailAccountData)
 {
-	/** @var $cfg iMSCP_Config_Handler_File */
-	$cfg =iMSCP_Registry::get('config');
-
-	$htmlChecked = $cfg->HTML_CHECKED;
-
 	$tpl->assign(
 		array(
-			 'MAIL_ID_VAL' => $mailAccountData['mail_id'],
-			 'MAIL_ADDRESS_VAL' => tohtml($mailAccountData['mail_addr']),
-			 'TR_MAIL_ACCOUNT' => tr('Mail account'),
-			));
+			'MAIL_ID_VAL' => $mailAccountData['mail_id'],
+			'MAIL_ADDRESS_VAL' => tohtml($mailAccountData['mail_addr']),
+			'TR_MAIL_ACCOUNT' => tr('Mail account'),
+		)
+	);
 }
 
-/************************************************************************************
+/***********************************************************************************************************************
  * Main script
  */
 
@@ -181,45 +166,51 @@ customerHasFeature('mail') or showBadRequestErrorPage();
 /** @var $cfg iMSCP_Config_Handler_File */
 $cfg = iMSCP_Registry::get('config');
 
-if(isset($_GET['id'])) {
-	$mailAccountData = client_getMailAccountData((int) $_GET['id']);
+if (isset($_GET['id'])) {
+	$mailAccountData = client_getMailAccountData(clean_input($_GET['id']));
+
+	if (!empty($_POST) && client_updateMailAccount($mailAccountData)) {
+		redirectTo('mail_accounts.php');
+	}
+
+	$tpl = new iMSCP_pTemplate();
+	$tpl->define_dynamic(
+		array(
+			'layout' => 'shared/layouts/ui.tpl',
+			'page' => 'client/mail_quota.tpl',
+			'page_message' => 'layout',
+			'logged_frm' => 'page',
+			'quota_frm' => 'page'
+		)
+	);
+
+	client_generateQuotaForm($tpl, $mailAccountData);
+	//We have the data in db in MB, hence the conversion
+	$quotaValue = floor($mailAccountData['quota'] / 1024 / 1024);
+
+	$tpl->assign(
+		array(
+			'TR_PAGE_TITLE' => tr('Client / Mail / Overview /  Edit Mail Quota'),
+			'THEME_CHARSET' => tr('encoding'),
+			'ISP_LOGO' => layout_getUserLogo(),
+			'TR_QUOTA' => tr('Quota in MB (0 unlimited)'),
+			'QUOTA' => $quotaValue,
+			'TR_HELP' => tr('help'),
+			'TR_UPDATE' => tr('Update'),
+			'TR_CANCEL' => tr('Cancel')
+		)
+	);
+
+	generateNavigation($tpl);
+	generatePageMessage($tpl);
+
+	$tpl->parse('LAYOUT_CONTENT', 'page');
+
+	iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, array('templateEngine' => $tpl));
+
+	$tpl->prnt();
+
+	unsetMessages();
 } else {
 	showBadRequestErrorPage();
 }
-
-if(!empty($_POST) && client_updateMailAccount($mailAccountData)) {
-	redirectTo('mail_accounts.php');
-}
-
-$tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic('layout', 'shared/layouts/ui.tpl');
-$tpl->define_dynamic(
-	array(
-		 'page' => 'client/mail_quota.tpl',
-		 'page_message' => 'layout',
-		 'logged_frm' => 'page',
-		 'quota_frm' => 'page'));
-
-client_generateQuotaForm($tpl, $mailAccountData);
-//We have the data in db in MB, hence the conversion
-$quotaValue=floor($mailAccountData['quota'] / 1024 / 1024);
-
-$tpl->assign(
-	array(
-		 'TR_PAGE_TITLE' => tr('Client / Mail / Overview /  Edit Mail Quota'),
-		 'THEME_CHARSET' => tr('encoding'),
-		 'ISP_LOGO' => layout_getUserLogo(),
-		 'TR_QUOTA' => tr('Quota in MB (0 unlimited)'),
-		 'QUOTA' => $quotaValue,
-		 'TR_HELP' => tr('help'),
-		 'TR_UPDATE' => tr('Update'),
-		 'TR_CANCEL' => tr('Cancel')));
-
-generateNavigation($tpl);
-generatePageMessage($tpl);
-
-$tpl->parse('LAYOUT_CONTENT', 'page');
-
-iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, array('templateEngine' => $tpl));
-
-$tpl->prnt();
