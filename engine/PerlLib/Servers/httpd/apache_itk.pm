@@ -1984,7 +1984,7 @@ sub _addFiles($$)
 	$rs = setRights($webDir, { 'user' => $data->{'USER'}, 'group' => $data->{'GROUP'}, 'recursive' => 1 });
 	return $rs if $rs;
 
-	# Sets permissions for  root of Web folder
+	# Sets permissions for root of Web folder
 	$rs = setRights($webDir, { 'mode' => '0750' });
 	return $rs if $rs;
 
