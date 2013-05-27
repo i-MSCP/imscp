@@ -119,6 +119,7 @@ Tickets:
 	- Fixed #754: Bug - errors while rebuilding cusomers files (ssl cert)
 	- Fixed #757: Bug - setup - Problem with SSL certificat
 	- Fixed #758: Bug - typo in Database.php (line 729)
+	- Fixed #759: Bug - new account setup with partly wrong vu**** id
 	- Fixed #760: Bug - No logs or not updated logs in user space since may 22 00:00
 
 ------------------------------------------------------------------------------------------------------------------------

@@ -2246,17 +2246,19 @@ sub _addFiles($$)
 		return $rs if $rs;
 	}
 
-	# Set permisions - Begin
+	# Permissions, owner and group - Begin
 
-	$rs = setRights($webDir, {'user' => $data->{'USER'}, 'group' => $data->{'GROUP'}, 'mode' => '0750'});
+	# Set default owner and group recursively
+	$rs = setRights($webDir, { 'user' => $data->{'USER'}, 'group' => $data->{'GROUP'}, 'recursive' => 1 });
 	return $rs if $rs;
 
-	for(iMSCP::Dir->new('dirname' => $tmpDir)->getAll()) {
-		$rs = setRights(
-			"$webDir/$_", { 'user' => $data->{'USER'}, 'group' => $data->{'GROUP'}, 'recursive' => 1 }
-		) if -d "$webDir/$_" && $_ ne 'domain_disable_page';
-		return $rs if $rs;
+	# Sets permissions for  root of Web folder
+	$rs = setRights($webDir, { 'mode' => '0750' });
+	return $rs if $rs;
 
+	# Sets default permissions recursively, excepted for directories for which permissions of directories and files
+	# they contain should be preserved
+	for(iMSCP::Dir->new('dirname' => $tmpDir)->getAll()) {
 		$rs = setRights(
 			"$webDir/$_",
 			{
@@ -2268,16 +2270,20 @@ sub _addFiles($$)
 		return $rs if $rs;
 	}
 
-	# Set domain_disable_page pages owner and group
-	$rs = setRights(
-		"$webDir/domain_disable_page",
-		{
-			'user' => $main::imscpConfig{'ROOT_USER'},
-			'group' => $self->getRunningGroup(),
-			'recursive' => 1,
-		}
-	) if -d "$webDir/domain_disable_page";
-	return $rs if $rs;
+	# Sets owner and group for files that should be hidden to user
+	for('domain_disable_page', '.htgroup', '.htpasswd') {
+		$rs = setRights(
+			"$webDir/$_",
+			{
+				'user' => $main::imscpConfig{'ROOT_USER'},
+				'group' => $self->getRunningGroup(),
+				'recursive' => 1,
+			}
+		) if -e "$webDir/$_";
+		return $rs if $rs;
+	}
+
+	# Permissions, owner and group - Ending
 
 	if($data->{'WEB_FOLDER_PROTECTION'} eq 'yes') {
 		# Protect Web root directory

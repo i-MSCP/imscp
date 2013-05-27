@@ -187,12 +187,30 @@ sub restore
 					`sql_database`.`sqld_name` = ?
 			";
 			$rdata = iMSCP::Database->factory()->doQuery('sqld_name', $sql, $self->{'domain_id'}, $1);
-			if(ref $rdata ne 'HASH') {
+			unless(ref $rdata eq 'HASH') {
 				error($rdata);
 				return 1,
 			}
 
 			unless(exists $rdata->{$1}) {
+				$rdata = iMSCP::Database->factory()->doQuery(
+					'dummy',
+					"
+						INSERT INTO `log` (
+							`log_message`
+						) VALUES (
+							'
+								Unable to restore the <strong>$1</strong> SQL database of domain $self->{'domain_name'}:
+								Unknown database.
+							'
+						)
+					"
+				);
+				unless(ref $rdata eq 'HASH') {
+					error($rdata);
+					return 1,
+				}
+
 				warning("orphaned database found ($1). skipping...");
 				next;
 			}
