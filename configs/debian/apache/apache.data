@@ -48,7 +48,7 @@ APACHE_NAME = apache2
 #
 # per_user: each customer will have only one php.ini file
 # per_domain: each domain / domain alias will have its own php.ini file
-# per_vhost: each vhost for domain, domain alias, subdomain and subdomain alias will
+# per_site: each site for domain, domain alias, subdomain and subdomain alias will
 # have its own php.ini file
 #
 INI_LEVEL = per_user

@@ -1826,15 +1826,17 @@ sub _addCfg($$)
 		$self->{'data'}->{'CERT'} = "$main::imscpConfig{'GUI_ROOT_DIR'}/data/certs/$data->{'DOMAIN_NAME'}.pem";
 	}
 
+	my $phpiniLevel = $self::apacheConfig{'INI_LEVEL'};
+
 	if($data->{'FORWARD'} eq 'no') {
-		if($self::apacheConfig{'INI_LEVEL'} eq 'per_user') {
+		if($phpiniLevel eq 'per_user') {
 			$self->{'data'}->{'FCGID_NAME'} = $data->{'ROOT_DOMAIN_NAME'};
-		} elsif ($self::apacheConfig{'INI_LEVEL'} eq 'per_domain') {
+		} elsif ($phpiniLevel eq 'per_domain') {
 			$self->{'data'}->{'FCGID_NAME'} = $data->{'PARENT_DOMAIN_NAME'};
-		} elsif($self::apacheConfig{'INI_LEVEL'} eq 'per_vhost') {
+		} elsif($phpiniLevel eq 'per_site') {
 			$self->{'data'}->{'FCGID_NAME'} = $data->{'DOMAIN_NAME'};
 		} else {
-			error("Unknown php.ini level: $self::apacheConfig{'INI_LEVEL'}");
+			error("Unknown php.ini level: $phpiniLevel");
 			return 1;
 		}
 	}
@@ -1913,7 +1915,7 @@ sub _addCfg($$)
  Get Web folders list to create for the given domain or subdomain
 
  Param hash_ref Reference to a hash containing needed data
- Return array_ref Reference to an array containing list of Web folders to create
+ Return list List of Web folders to create
 
 =cut
 
@@ -1929,23 +1931,25 @@ sub _dmnFolders($$)
 
 	$self->{'hooksManager'}->trigger('beforeHttpdDmnFolders', \@folders);
 
-	my $php5Dir = "$self::apacheConfig{'PHP_STARTER_DIR'}/$data->{'DOMAIN_NAME'}";
+	my $fcgiDir = "$self::apacheConfig{'PHP_STARTER_DIR'}/$data->{'DOMAIN_NAME'}";
+	my $phpiniLevel = $self::apacheConfig{'INI_LEVEL'};
 
 	if(
 		$data->{'FORWARD'} eq 'no' &&
 		(
 			# per_user
-			($self::apacheConfig{'INI_LEVEL'} eq 'per_user' && $domainType eq 'dmn') ||
+			($phpiniLevel eq 'per_user' && $domainType eq 'dmn') ||
 			# per_domain
-			($self::apacheConfig{'INI_LEVEL'} eq 'per_domain' && ($domainType eq 'dmn' || $domainType eq 'als')) ||
-			# per_vhost
-			$self::apacheConfig{'INI_LEVEL'} eq 'per_vhost'
+			($phpiniLevel eq 'per_domain' && ($domainType eq 'dmn' || $domainType eq 'als')) ||
+			# per_site
+			$phpiniLevel eq 'per_site'
 		)
 	) {
-		push(@folders, ["$php5Dir", $data->{'USER'}, $data->{'GROUP'}, 0550]);
-		push(@folders, ["$php5Dir/php5", $data->{'USER'}, $data->{'GROUP'}, 0550]);
+		push(@folders, ["$fcgiDir", $data->{'USER'}, $data->{'GROUP'}, 0550]);
+		push(@folders, ["$fcgiDir/php5", $data->{'USER'}, $data->{'GROUP'}, 0550]);
 	} else {
-
+		my $rs = iMSCP::Dir->new('dirname' => $fcgiDir)->remove() if -d $fcgiDir;
+		return $rs if $rs;
 	}
 
 	$self->{'hooksManager'}->trigger('afterHttpdDmnFolders', \@folders);
@@ -2081,17 +2085,22 @@ sub _addFiles($$)
 
 	# Permissions, owner and group - Begin
 
-	# Set default owner and group recursively
-	$rs = setRights($webDir, { 'user' => $data->{'USER'}, 'group' => $data->{'GROUP'}, 'recursive' => 1 });
+	# Sets permissions for root of Web folder
+	$rs = setRights($webDir, { 'user' => $data->{'USER'}, 'group' => $data->{'GROUP'}, 'mode' => '0750' });
 	return $rs if $rs;
 
-	# Sets permissions for root of Web folder
-	$rs = setRights($webDir, { 'mode' => '0750' });
-	return $rs if $rs;
+	# Get list of directories/files for which permissions, owner and group must be set
+	my @items = iMSCP::Dir->new('dirname' => $skelDir)->getAll();
+
+	# Set default owner and group recursively
+	for(@items) {
+		$rs = setRights("$webDir/$_", { 'user' => $data->{'USER'}, 'group' => $data->{'GROUP'}, 'recursive' => 1 });
+		return $rs if $rs;
+	}
 
 	# Sets default permissions recursively, excepted for directories for which permissions of directories and files
 	# they contain should be preserved
-	for(iMSCP::Dir->new('dirname' => $tmpDir)->getAll()) {
+	for(@items) {
 		$rs = setRights(
 			"$webDir/$_",
 			{
@@ -2129,16 +2138,17 @@ sub _addFiles($$)
 	# Build fcgi wrapper and php configuration files
 
 	my $domainType = $data->{'DOMAIN_TYPE'};
+	my $phpiniLevel = $self::apacheConfig{'INI_LEVEL'};
 
 	if(
 		$data->{'FORWARD'} eq 'no' &&
 		(
 			# per_user
-			($self::apacheConfig{'INI_LEVEL'} eq 'per_user' && $domainType eq 'dmn') ||
+			($phpiniLevel eq 'per_user' && $domainType eq 'dmn') ||
 			# per_domain
-			($self::apacheConfig{'INI_LEVEL'} eq 'per_domain' && ($domainType eq 'dmn' || $domainType eq 'als')) ||
-			# per_vhost
-			$self::apacheConfig{'INI_LEVEL'} eq 'per_vhost'
+			($phpiniLevel eq 'per_domain' && ($domainType eq 'dmn' || $domainType eq 'als')) ||
+			# per_site
+			$phpiniLevel eq 'per_site'
 		)
 	) {
 		$rs = $self->_buildPHPini($data);
@@ -2169,7 +2179,7 @@ sub _buildPHPini($$)
 	my $php5Dir = "$self::apacheConfig{'PHP_STARTER_DIR'}/$data->{'DOMAIN_NAME'}";
 
 	if($self::apacheConfig{'PHP_FASTCGI'} eq 'fcgid') {
-		# FCGID wrapper setup
+		# Fcgid wrapper setup
 		my $fileSource = "$main::imscpConfig{'CONF_DIR'}/fcgi/parts/php5-fcgid-starter.tpl";
 		my $destFile = "$php5Dir/php5-fcgid-starter";
 
@@ -2184,7 +2194,7 @@ sub _buildPHPini($$)
 			return $rs if $rs;
 		}
 	} elsif($self::apacheConfig{'PHP_FASTCGI'} eq 'fastcgi') {
-		# FASTCGI wrapper setup
+		# fastCGI wrapper setup
 		my $fileSource = "$main::imscpConfig{'CONF_DIR'}/fcgi/parts/php5-fastcgi-starter.tpl";
 		my $destFile = "$php5Dir/php5-fastcgi-starter";
 

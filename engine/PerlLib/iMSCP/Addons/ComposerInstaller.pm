@@ -94,20 +94,24 @@ sub _init
 	$self->{'cacheDir'} = $main::imscpConfig{'ADDON_PACKAGES_CACHE_DIR'};
 	$self->{'phpCmd'} = "$main::imscpConfig{'CMD_PHP'} -d suhosin.executor.include.whitelist=phar";
 
-	iMSCP::Dir->new(
-		'dirname' => $self->{'cacheDir'}
-	)->make() and fatal('Unable to create addon cache directory');
+	# Do not process addons are already there and the skipAddonsUpdate option is set to true
+	if(! iMSCP::Getopt->skipAddonsUpdate && -d $self->{'cacheDir'}) {
+		iMSCP::Dir->new(
+			'dirname' => $self->{'cacheDir'}
+		)->make() and fatal('Unable to create addon cache directory');
 
-	# Override default composer home directory
-	$ENV{'COMPOSER_HOME'} = "$self->{'cacheDir'}/.composer";
+		# Override default composer home directory
+		$ENV{'COMPOSER_HOME'} = "$self->{'cacheDir'}/.composer";
 
-	# Cleanup addon packages cache directory if asked by user - This will cause all addon packages to be fetched again
-	$self->_cleanCacheDir() if iMSCP::Getopt->cleanAddons;
+		# Cleanup addon packages cache directory if asked by user - This will cause all addon packages to be fetched
+		# again
+		$self->_cleanCacheDir() if iMSCP::Getopt->cleanAddons;
 
-	# Schedule package installation (done after addons preinstallation)
-	iMSCP::HooksManager->getInstance()->register(
-		'afterSetupPreInstallAddons', sub { iMSCP::Dialog->factory()->endGauge(); $self->_installPackages() }
-	);
+		# Schedule package installation (done after addons preinstallation)
+		iMSCP::HooksManager->getInstance()->register(
+			'afterSetupPreInstallAddons', sub { iMSCP::Dialog->factory()->endGauge(); $self->_installPackages() }
+		);
+	}
 
 	$self;
 }

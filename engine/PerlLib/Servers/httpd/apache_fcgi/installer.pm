@@ -146,7 +146,7 @@ sub askForPhpIniLevel($$)
 
 	if(
 		$main::reconfigure ~~ ['httpd', 'php', 'servers', 'all', 'forced'] ||
-		$phpiniLevel !~ /^per_user|per_domain|per_vhost$/
+		$phpiniLevel !~ /^per_user|per_domain|per_site$/
 	) {
 		$phpiniLevel =~ s/_/ /g;
 
@@ -158,11 +158,11 @@ Please, choose the PHP INI level you want use for PHP. Available levels are:
 
 \\Z4Per user:\\Zn Each customer will have only one php.ini file
 \\Z4Per domain:\\Zn Each domain / domain alias will have its own php.ini file
-\\Z4Per vhost:\\Zn Each site will have its own php.ini file
+\\Z4Per site:\\Zn Each site will have its own php.ini file
 
 ",
-			['per user', 'per domain', 'per vhost'],
-			$phpiniLevel ne 'per domain' && $phpiniLevel ne 'per user' ? 'per vhost' : $phpiniLevel
+			['per user', 'per domain', 'per site'],
+			$phpiniLevel ne 'per domain' && $phpiniLevel ne 'per user' ? 'per site' : $phpiniLevel
 		);
 	}
 

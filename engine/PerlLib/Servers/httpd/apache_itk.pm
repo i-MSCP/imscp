@@ -1832,7 +1832,7 @@ sub _addCfg($$)
  Get Web folders list to create for the given domain or subdomain
 
  Param hash_ref Reference to a hash containing needed data
- Return array_ref Reference to an array containing list of Web folders to create
+ Return list List of Web folders to create
 
 =cut
 
@@ -1980,17 +1980,22 @@ sub _addFiles($$)
 
 	# Permissions, owner and group - Begin
 
-	# Set default owner and group recursively
-	$rs = setRights($webDir, { 'user' => $data->{'USER'}, 'group' => $data->{'GROUP'}, 'recursive' => 1 });
+	# Sets permissions for root of Web folder
+	$rs = setRights($webDir, { 'user' => $data->{'USER'}, 'group' => $data->{'GROUP'}, 'mode' => '0750' });
 	return $rs if $rs;
 
-	# Sets permissions for root of Web folder
-	$rs = setRights($webDir, { 'mode' => '0750' });
-	return $rs if $rs;
+	# Get list of directories/files for which permissions, owner and group must be set
+	my @items = iMSCP::Dir->new('dirname' => $skelDir)->getAll();
+
+	# Set default owner and group recursively
+	for(@items) {
+		$rs = setRights("$webDir/$_", { 'user' => $data->{'USER'}, 'group' => $data->{'GROUP'}, 'recursive' => 1 });
+		return $rs if $rs;
+	}
 
 	# Sets default permissions recursively, excepted for directories for which permissions of directories and files
 	# they contain should be preserved
-	for(iMSCP::Dir->new('dirname' => $tmpDir)->getAll()) {
+	for(@items) {
 		$rs = setRights(
 			"$webDir/$_",
 			{

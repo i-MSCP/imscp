@@ -36,7 +36,7 @@ use warnings;
 
 use iMSCP::HooksManager;
 use iMSCP::Debug qw /error debugRegisterCallBack output /;
-use fields qw / reconfigure noprompt preseed hookFile cleanAddons debug backtrace /;
+use fields qw / reconfigure noprompt preseed hookFile cleanAddons skipAddonsUpdate debug backtrace /;
 our $options = fields::new('iMSCP::Getopt');
 
 our $optionHelp = '';
@@ -73,14 +73,15 @@ sub parse($$)
 		my $exitCode = shift || 0;
 		print STDERR output(<<EOF);
 $usage
- -r,  --reconfigure  <item>  Type --reconfigure help for more information.
- -n,  --noprompt             Switch to non-interactive mode.
- -p,  --preseed      <file>  Path to preseed file.
- -h,  --hook-file    <file>  Path to hook file.
- -c   --clean-addons         Cleanup local addon packages repository.
- -d,  --debug                Force debug mode.
- -t,  --backtrace            Enable backtrace (implies debug option).
- -?,  --help                 Show this help.
+ -r,    --reconfigure  [item]  Type --reconfigure help for more information.
+ -n,    --noprompt             Switch to non-interactive mode.
+ -p,    --preseed      <file>  Path to preseed file.
+ -h,    --hook-file    <file>  Path to hook file.
+ -c     --clean-addons         Cleanup local addon packages repository.
+ -a     --skip-addons-update   Skip addons update
+ -d,    --debug                Force debug mode.
+ -t,    --backtrace            Enable backtrace (implies debug option).
+ -h,-?  --help                 Show this help.
 
  $optionHelp
 EOF
@@ -108,9 +109,10 @@ EOF
 			'preseed|p=s', sub { shift; $class->preseed(shift) },
 			'hook-file|h=s', sub { shift; $class->hookFile(shift) },
 			'clean-addons|c', sub { $options->{'cleanAddons'} = 1 },
+			'skip-addons-update|a', sub { $options->{'skipAddonsUpdate'} = 1 },
 			'debug|d', sub { $options->{'debug'} = 1 },
 			'backtrace|t', sub { shift; $class->backtrace(shift) },
-			'help|?', sub { $showUsage->() },
+			'help|h|?', sub { $showUsage->() },
 			@_,
 		) || $showUsage->(1);
 	};
@@ -137,11 +139,10 @@ sub reconfigure($;$)
 
 	if(defined $value) {
 		if($value eq 'help') {
-			$optionHelp .= "The --reconfigure option allows to reconfigure a specific item.\n";
-			$optionHelp .= " Available items:\n\n ";
-			$optionHelp .=  (join '|', @{$reconfigureItems});
-			$optionHelp .= "\n\n Without any argument, all is reconfigured.";
-			$optionHelp .= "\n\n";
+			$optionHelp .= "Without any argument, the --reconfigure option allows to reconfigure all items.";
+			$optionHelp .= " You can reconfigure a specific item by pasing it name as argument.\n\n";
+			$optionHelp .= " Available items are:\n\n";
+			$optionHelp .=  ' ' . (join '|', @{$reconfigureItems});
 			die();
 		} elsif($value eq '') {
 			$value = 'all';

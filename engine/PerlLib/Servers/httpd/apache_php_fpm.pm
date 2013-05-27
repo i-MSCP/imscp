@@ -1938,8 +1938,6 @@ sub _addCfg($$)
 	my $rs = $self->{'hooksManager'}->trigger('beforeHttpdAddCfg', $data);
 	return $rs if $rs;
 
-	my $poolLevel = $self::phpfpmConfig{'PHP_FPM_POOLS_LEVEL'};
-
 	# Disable and backup Apache sites if any
 	for("$data->{'DOMAIN_NAME'}.conf", "$data->{'DOMAIN_NAME'}_ssl.conf"){
 		$rs = $self->disableSite($_) if -f "$self::apacheConfig{'APACHE_SITES_DIR'}/$_";
@@ -1973,14 +1971,19 @@ sub _addCfg($$)
 		$self->{'data'}->{'CERT'} = "$main::imscpConfig{'GUI_ROOT_DIR'}/data/certs/$data->{'DOMAIN_NAME'}.pem";
 	}
 
+	my $poolLevel = $self::phpfpmConfig{'PHP_FPM_POOLS_LEVEL'};
+
 	if($data->{'FORWARD'} eq 'no') {
 		# Dertermine pool name according pool level setting
 		if($poolLevel eq 'per_site') {
 			$self->{'data'}->{'POOL_NAME'} = $data->{'DOMAIN_NAME'};
 		} elsif($poolLevel eq 'per_domain') {
 			$self->{'data'}->{'POOL_NAME'} = $data->{'PARENT_DOMAIN_NAME'};
-		} else {
+		} elsif($poolLevel eq 'per_site') {
 			$self->{'data'}->{'POOL_NAME'} = $data->{'ROOT_DOMAIN_NAME'};
+		} else {
+			error("Unknown php.ini level: $poolLevel");
+			return 1;
 		}
 	}
 
@@ -2055,14 +2058,6 @@ sub _addCfg($$)
 	$rs = $self->phpfpmBkpConfFile("$self->{'phpfpmWrkDir'}/$data->{'DOMAIN_NAME'}.conf");
 	return $rs if $rs;
 
-	# Remove any previous pool file (needed in case pools level has been changed)
-	#for("$self::phpfpmConfig{'PHP_FPM_POOLS_CONF_DIR'}", $self->{'phpfpmWrkDir'}) {
-	#	$rs = iMSCP::File->new(
-	#		'filename' => "$_/$data->{'DOMAIN_NAME'}.conf"
-	#	)->delFile() if -f "$_/$data->{'DOMAIN_NAME'}.conf";
-	#	return $rs if $rs;
-	#}
-
 	my $domainType = $data->{'DOMAIN_TYPE'};
 
 	if(
@@ -2072,11 +2067,10 @@ sub _addCfg($$)
 			($poolLevel eq 'per_user' && $domainType eq 'dmn') ||
 			# per_domain
 			($poolLevel eq 'per_domain' && ($domainType eq 'dmn' || $domainType eq 'als')) ||
-			# per_vhost
-			$poolLevel eq 'per_vhost'
+			# per_site
+			$poolLevel eq 'per_site'
 		)
 	) {
-
 		$rs = $self->buildConfFile(
 			"$self->{'phpfpmTplDir'}/pool.conf",
 			{ 'destination' => "$self->{'phpfpmWrkDir'}/$data->{'DOMAIN_NAME'}.conf" }
@@ -2087,6 +2081,16 @@ sub _addCfg($$)
 			"$self->{'phpfpmWrkDir'}/$data->{'DOMAIN_NAME'}.conf",
 			{ 'destination' => "$self::phpfpmConfig{'PHP_FPM_POOLS_CONF_DIR'}/$data->{'DOMAIN_NAME'}.conf" }
 		);
+		return $rs if $rs;
+	} else {
+		$rs = iMSCP::File->new(
+			'filename' => "$self->{'phpfpmWrkDir'}/$data->{'DOMAIN_NAME'}.conf"
+		)->delFile() if -f "$self->{'phpfpmWrkDir'}/$data->{'DOMAIN_NAME'}.conf";
+		return $rs if $rs;
+
+		$rs = iMSCP::File->new(
+			'filename' => "$self::phpfpmConfig{'PHP_FPM_POOLS_CONF_DIR'}/$data->{'DOMAIN_NAME'}.conf"
+		)->delFile() if -f "$self::phpfpmConfig{'PHP_FPM_POOLS_CONF_DIR'}/$data->{'DOMAIN_NAME'}.conf";
 		return $rs if $rs;
 	}
 
@@ -2100,7 +2104,7 @@ sub _addCfg($$)
  Get Web folders list to create for the given domain or subdomain
 
  Param hash_ref Reference to a hash containing needed data
- Return array_ref Reference to an array containing list of Web folders to create
+ Return list List of Web folders to create
 
 =cut
 
@@ -2248,17 +2252,22 @@ sub _addFiles($$)
 
 	# Permissions, owner and group - Begin
 
-	# Set default owner and group recursively
-	$rs = setRights($webDir, { 'user' => $data->{'USER'}, 'group' => $data->{'GROUP'}, 'recursive' => 1 });
+	# Sets permissions for root of Web folder
+	$rs = setRights($webDir, { 'user' => $data->{'USER'}, 'group' => $data->{'GROUP'}, 'mode' => '0750' });
 	return $rs if $rs;
 
-	# Sets permissions for root of Web folder
-	$rs = setRights($webDir, { 'mode' => '0750' });
-	return $rs if $rs;
+	# Get list of directories/files for which permissions, owner and group must be set
+	my @items = iMSCP::Dir->new('dirname' => $skelDir)->getAll();
+
+	# Set default owner and group recursively
+	for(@items) {
+		$rs = setRights("$webDir/$_", { 'user' => $data->{'USER'}, 'group' => $data->{'GROUP'}, 'recursive' => 1 });
+		return $rs if $rs;
+	}
 
 	# Sets default permissions recursively, excepted for directories for which permissions of directories and files
 	# they contain should be preserved
-	for(iMSCP::Dir->new('dirname' => $tmpDir)->getAll()) {
+	for(@items) {
 		$rs = setRights(
 			"$webDir/$_",
 			{
