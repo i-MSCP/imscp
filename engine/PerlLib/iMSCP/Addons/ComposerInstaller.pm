@@ -94,8 +94,7 @@ sub _init
 	$self->{'cacheDir'} = $main::imscpConfig{'ADDON_PACKAGES_CACHE_DIR'};
 	$self->{'phpCmd'} = "$main::imscpConfig{'CMD_PHP'} -d suhosin.executor.include.whitelist=phar";
 
-	# Do not process addons are already there and the skipAddonsUpdate option is set to true
-	if(! iMSCP::Getopt->skipAddonsUpdate && -d $self->{'cacheDir'}) {
+	if(! iMSCP::Getopt->skipAddonsUpdate || ! -d $self->{'cacheDir'}) {
 		iMSCP::Dir->new(
 			'dirname' => $self->{'cacheDir'}
 		)->make() and fatal('Unable to create addon cache directory');
