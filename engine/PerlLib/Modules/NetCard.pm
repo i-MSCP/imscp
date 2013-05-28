@@ -35,15 +35,18 @@ use parent 'Common::SimpleClass';
 sub process
 {
 	my $self = shift;
-	my $rs = 0;
-	my ($stdour, $stderr);
 
-	$rs = execute("perl $main::imscpConfig{'ENGINE_ROOT_DIR'}/tools/imscp-net-interfaces-mngr stop", \$stdour, \$stderr);
+	my ($stdour, $stderr);
+	my $rs = execute(
+		"perl $main::imscpConfig{'ENGINE_ROOT_DIR'}/tools/imscp-net-interfaces-mngr stop", \$stdour, \$stderr
+	);
 	debug($stdour) if $stdour;
 	error($stderr) if $stderr && $rs;
 	return $rs if $rs;
 
-	$rs = execute("perl $main::imscpConfig{'ENGINE_ROOT_DIR'}/tools/imscp-net-interfaces-mngr start", \$stdour, \$stderr);
+	$rs = execute(
+		"perl $main::imscpConfig{'ENGINE_ROOT_DIR'}/tools/imscp-net-interfaces-mngr start", \$stdour, \$stderr
+	);
 	debug($stdour) if $stdour;
 	error($stderr) if $stderr && $rs;
 	return $rs if $rs;

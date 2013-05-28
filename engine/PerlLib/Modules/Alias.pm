@@ -299,7 +299,7 @@ sub buildNAMEDData
 		# found in the 'domain_dns' table to ensure that sub alias DNS entries will
 		# be re-added into the db zone file. (It's a temporary fix for #503)
 		#if(scalar keys %$rdata){
-			my $sql = "
+			$sql = "
 				UPDATE
 					`subdomain_alias`
 				SET
@@ -310,7 +310,7 @@ sub buildNAMEDData
 					`alias_id` = ?
 			";
 
-			my $rdata = iMSCP::Database->factory()->doQuery('update', $sql, 'change', 'ok', $self->{'alias_id'});
+			$rdata = iMSCP::Database->factory()->doQuery('update', $sql, 'change', 'ok', $self->{'alias_id'});
 			if(ref $rdata ne 'HASH') {
 				error($rdata);
 				return 1;

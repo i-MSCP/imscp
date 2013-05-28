@@ -74,7 +74,7 @@ sub process
 
 	@{$self->{'IPs'}} = keys %{$rdata};
 
-	my $sql = "
+	$sql = "
 		SELECT
 			`ip_number`
 		FROM

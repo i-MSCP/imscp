@@ -94,7 +94,7 @@ sub addDmn
 	my $userStatisticsDir = "$data->{'WEB_DIR'}/statistics";
 
 	# Unprotect Web directory against deletion
-    my $rs = clearImmutable($data->{'WEB_DIR'});
+    $rs = clearImmutable($data->{'WEB_DIR'});
     return $rs if $rs;
 
 	if($main::imscpConfig{'AWSTATS_MODE'} eq '1') { # Static mode
@@ -146,7 +146,7 @@ sub addDmn
 	}
 
 	# Protect home directory against deletion
-	my $rs = setImmutable($data->{'WEB_DIR'}) if $data->{'WEB_FOLDER_PROTECTION'} eq 'yes';
+	$rs = setImmutable($data->{'WEB_DIR'}) if $data->{'WEB_FOLDER_PROTECTION'} eq 'yes';
 	return $rs if $rs;
 
 	$rs;

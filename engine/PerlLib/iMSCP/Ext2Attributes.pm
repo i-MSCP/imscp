@@ -55,12 +55,9 @@ use vars qw( @EXPORT_OK );
 
 BEGIN
 {
-	use Config;
+	chomp(my $bitness = `getconf LONG_BIT`);
+	my $module = "iMSCP::Ext2Attributes::Ext2Fs$bitness";
 
-	# little-endian == 1234 (32-bit)
-	# little-endian == 87654321 (64-bit)
-	my $module = $Config{'byteorder'} == 1234 ? 'Ext2Fs32' : 'Ext2Fs64';
-	$module = "iMSCP::Ext2Attributes::$module";
 	eval "require $module";
 	$module->import();
 }

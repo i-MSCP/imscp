@@ -303,13 +303,20 @@ sub restore
 				return 1;
 			}
 
-			# Un-protect folders
+			# Un-protect folders recursively
 			clearImmutable($dmnDir, 1);
 
 			$cmd = "$main::imscpConfig{'CMD_TAR'} -x -p --$type -C '$dmnDir' -f '$dmnBkpdir/$_'";
 			$rs = execute($cmd, \$stdout, \$stderr);
 			debug($stdout) if $stdout;
 			error($stderr) if $stderr && $rs;
+			return $rs if $rs;
+
+			my $groupName =
+			my $userName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} .
+				($main::imscpConfig{'SYSTEM_USER_MIN_UID'} + $self->{'domain_admin_id'});
+
+			$rs = setRights($dmnDir, { 'user' => $userName, 'group' => $groupName, 'recursive' => 1 });
 			return $rs if $rs;
 
 			$rs = $self->SUPER::restore();
@@ -468,7 +475,7 @@ sub buildNAMEDData
 		# found in the 'domain_dns' table to ensure that subdomain DNS entries will
 		# be re-added into the db zone file. (It's a temporary fix for #503)
 		#if(scalar keys %$rdata){
-			my $sql = "
+			$sql = "
 				UPDATE
 					`subdomain`
 				SET
@@ -479,7 +486,7 @@ sub buildNAMEDData
 					`domain_id` = ?
 			";
 
-			my $rdata = iMSCP::Database->factory()->doQuery('dummy', $sql, 'change', 'ok', $self->{'domain_id'});
+			$rdata = iMSCP::Database->factory()->doQuery('dummy', $sql, 'change', 'ok', $self->{'domain_id'});
 			if(ref $rdata ne 'HASH') {
 				error($rdata);
 				return 1;
