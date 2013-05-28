@@ -494,13 +494,11 @@ sub _buildConfig
 	my $panelUName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} . $main::imscpConfig{'SYSTEM_USER_MIN_UID'};
 	my $panelGName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} . $main::imscpConfig{'SYSTEM_USER_MIN_UID'};
 	my $confDir = "$main::imscpConfig{'GUI_PUBLIC_DIR'}/$self::roundcubeConfig{'ROUNDCUBE_CONF_DIR'}";
-
 	my $imscpDbName = $main::imscpConfig{'DATABASE_NAME'};
 	my $roundcubeDbName = $imscpDbName . '_roundcube';
 	my $dbUser = $self::roundcubeConfig{'DATABASE_USER'};
 	my $dbUserHost = main::setupGetQuestion('DATABASE_USER_HOST');
 	my $dbPass = $self::roundcubeConfig{'DATABASE_PASSWORD'};
-
 	my $rs = 0;
 
 	my $cfg = {

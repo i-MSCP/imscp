@@ -97,9 +97,9 @@ function update_existing_client_installations_res_upload($software_id, $reseller
 /**
  * Must be documented
  *
- * @param  $software_id Software unique identifier
- * @param  $software_master_id
- * @param  $reseller_id
+ * @param int $software_id Software unique identifier
+ * @param int $software_master_id
+ * @param int $reseller_id
  * @return void
  */
 function update_existing_client_installations_sw_depot($software_id,
@@ -141,9 +141,9 @@ function update_existing_client_installations_sw_depot($software_id,
 /**
  * Must be documented
  *
- * @param  $reseller_id Reseller unique identifier
- * @param  $file_name
- * @param  $sw_id
+ * @param int $reseller_id Reseller unique identifier
+ * @param string $file_name
+ * @param int $sw_id
  * @return void
  */
 function send_activated_sw($reseller_id, $file_name, $sw_id)
@@ -301,7 +301,7 @@ function send_deleted_sw($reseller_id, $file_name, $sw_id, $subject_input,
 /**
  * Must be documented.
  *
- * @param  iMSCP_pTemplate $tpl Template engine
+ * @param iMSCP_pTemplate $tpl Template engine
  * @return int
  */
 function get_avail_software($tpl)
@@ -365,7 +365,7 @@ function get_avail_software($tpl)
 /**
  * Must be documented.
  *
- * @param  iMSCP_pTemplate $tpl Teamplate engine
+ * @param iMSCP_pTemplate $tpl Teamplate engine
  * @return int
  */
 function get_avail_softwaredepot($tpl)
@@ -685,15 +685,14 @@ function get_installed_res_software($tpl, $reseller_id)
 /**
  * Must be documented.
  *
- * @param  iMSCP_pTemplate $tpl Template engine
+ * @param iMSCP_pTemplate $tpl Template engine
  * @return int
  */
 function get_reseller_software($tpl)
 {
 	$query = "
 		SELECT
-			t1.`admin_id` as reseller_id,
-			t1.`admin_name` as reseller
+			t1.`admin_id` as reseller_id, t1.`admin_name` as reseller
 		FROM
 			`admin` t1
 		LEFT JOIN
@@ -808,7 +807,7 @@ function get_reseller_software($tpl)
  * Must be documented
  *
  * @param iMSCP_pTemplate $tpl Template engine
- * @param $software_id
+ * @param int $software_id
  * @return int
  */
 function get_reseller_rights($tpl, $software_id)
@@ -873,8 +872,8 @@ function get_reseller_rights($tpl, $software_id)
 /**
  * Must be documented.
  *
- * @param  iMSCP_pTemplate $tpl Template engine
- * @param $software_id
+ * @param iMSCP_pTemplate $tpl Template engine
+ * @param int $software_id
  * @return void
  */
 function get_reseller_list($tpl, $software_id)
@@ -945,16 +944,16 @@ function get_reseller_list($tpl, $software_id)
 }
 
 
-/************************************************************************************
+/***********************************************************************************************************************
  * These functions are used by reseller
  */
 
 /**
  * Must be documented.
  *
- * @param  $reseller_id Reseller unique identifier
- * @param  $file_name
- * @param  $sw_id
+ * @param int $reseller_id Reseller unique identifier
+ * @param string $file_name
+ * @param int $sw_id
  * @return void
  */
 function send_new_sw_upload($reseller_id, $file_name, $sw_id)
@@ -1035,7 +1034,7 @@ function send_new_sw_upload($reseller_id, $file_name, $sw_id)
  * Check wheter the reseller has access to the websoftware depot
  *
  * @param int $user_id
- * @return result of websoftwaredepot_allowed
+ * @return string yes if reseller has access to the web software repository, no otherwise
  */
 function ask_reseller_is_allowed_web_depot($user_id)
 {
@@ -1055,8 +1054,8 @@ function ask_reseller_is_allowed_web_depot($user_id)
 /**
  * Must be documented.
  *
- * @param  iMSCP_pTemplate $tpl
- * @param  $user_id Reseller unique identifier
+ * @param iMSCP_pTemplate $tpl
+ * @param int $user_id Reseller unique identifier
  * @return int
  */
 function get_avail_software_reseller($tpl, $user_id)
@@ -1707,8 +1706,8 @@ function get_software_props_install($tpl, $dmn_id, $software_id, $dmn_created_id
 /**
  * Must be documented.
  *
- * @param  iMSCP_pTemplate $tpl
- * @param $user_id
+ * @param iMSCP_pTemplate $tpl
+ * @param int $user_id
  * @return void
  */
 function gen_user_domain_list($tpl, $user_id)
@@ -1769,12 +1768,16 @@ function gen_user_domain_list($tpl, $user_id)
 	$rssubaliase = exec_query($querysubaliase, $domain_id);
 
 	if (isset($_POST['selected_domain'])) {
-		list ($posted_domain_id, $posted_aliasdomain_id, $posted_subdomain_id, $posted_aliassubdomain_id, $posted_mountpath) = explode(";", $_POST['selected_domain']);
+		list (
+			$posted_domain_id, $posted_aliasdomain_id, $posted_subdomain_id, $posted_aliassubdomain_id,
+		) = explode(';', $_POST['selected_domain']);
 	} else {
-		$selecteddomain = '';
+		$posted_aliasdomain_id = 0;
+		$posted_subdomain_id = 0;
+		$posted_aliassubdomain_id = 0;
 	}
 
-	if (($rsaliase->recordCount() + $rssubdomain->recordCount() + $rssubaliase->recordCount()) > 0) {
+	if (($rsaliase->rowCount() + $rssubdomain->recordCount() + $rssubaliase->recordCount()) > 0) {
 		while (!$rsaliase->EOF) {
 			if (isset($_POST['selected_domain']) && $posted_aliasdomain_id != 0) {
 				if ($posted_aliasdomain_id == $rsaliase->fields['alias_id']) {
@@ -1989,11 +1992,11 @@ function check_db_avail($tpl, $dmn_id, $dmn_sqld_limit)
 }
 
 /**
- * Must be documented.
+ * Check database connection.
  *
- * @param  $sql_database
- * @param $sql_user
- * @param $sql_pass
+ * @param string $sql_database
+ * @param string $sql_user
+ * @param string $sql_pass
  * @return bool
  */
 function check_db_connection($sql_database, $sql_user, $sql_pass)
@@ -2011,34 +2014,4 @@ function check_db_connection($sql_database, $sql_user, $sql_pass)
 	}
 
 	return true;
-}
-
-/**
- * Must be documented.
- *
- * @param  $byte
- * @return string
- */
-function formatFilesize($byte)
-{
-	$string = 'Byte';
-
-	if ($byte > 1024) {
-		$byte /= 1024;
-		$string = 'KB';
-	}
-
-	if ($byte > 1024) {
-		$byte /= 1024;
-		$string = 'MB';
-	}
-
-	if ($byte > 1024) {
-		$byte /= 1024;
-		$string = 'GB';
-	}
-
-	if (number_format($byte, 0) != $byte) $byte = number_format($byte, 2);
-
-	return $byte . ' ' . $string;
 }

@@ -26,6 +26,10 @@
  * @license     http://www.gnu.org/licenses/gpl-2.0.txt GPL v2
  */
 
+/***********************************************************************************************************************
+ * Main
+ */
+
 // Include core library
 require 'imscp-lib.php';
 
@@ -48,19 +52,20 @@ $tpl->define_dynamic(
 		'page_message' => 'layout',
 		'list_software' => 'page',
 		'no_software_list' => 'page',
-		't_software_support' => 'page',
 		'webdepot_list' => 'page',
 		'list_webdepotsoftware' => 'page',
 		'no_webdepotsoftware_list' => 'page',
 		'package_install_link' => 'page',
-		'package_info_link' => 'page'));
+		'package_info_link' => 'page'
+	)
+);
 
 if (ask_reseller_is_allowed_web_depot($_SESSION['user_id']) == "yes") {
 	list(
 		$use_webdepot,
 		$webdepot_xml_url,
 		$webdepot_last_update
-		) = get_application_installer_conf();
+	) = get_application_installer_conf();
 
 	if ($use_webdepot) {
 		$error = "";
@@ -228,7 +233,7 @@ if (isset($_POST['upload']) && $_SESSION['software_upload_token'] == $_POST['sen
 					$remote_file_size = 0;
 				}
 
-				$show_remote_file_size = formatFilesize($remote_file_size);
+				$show_remote_file_size = bytesHuman($remote_file_size);
 
 				if ($remote_file_size < 1) {
 					// Delete software entry
@@ -239,8 +244,8 @@ if (isset($_POST['upload']) && $_SESSION['software_upload_token'] == $_POST['sen
 							`software_id` = ?
 					";
 					exec_query($query, $sw_id);
-					$show_max_remote_filesize = formatFilesize($cfg->MAX_REMOTE_FILESIZE);
-					set_page_message(tr('Your remote filesize (%1$d B) is lower than 1 Byte. Please check your URL.', $show_remote_file_size), 'error');
+					$show_max_remote_filesize = bytesHuman($cfg->MAX_REMOTE_FILESIZE);
+					set_page_message(tr('Your remote filesize (%s) is lower than 1 Byte. Please check your URL.', $show_remote_file_size), 'error');
 					$upload = 0;
 				} elseif ($remote_file_size > $cfg->MAX_REMOTE_FILESIZE) {
 					// Delete software entry
@@ -252,8 +257,8 @@ if (isset($_POST['upload']) && $_SESSION['software_upload_token'] == $_POST['sen
 					";
 					exec_query($query, $sw_id);
 
-					$show_max_remote_filesize = formatFilesize($cfg->MAX_REMOTE_FILESIZE);
-					set_page_message(tr('Max. remote filesize (%1$d MB) has been reached. Your remote file is %2$d MB', $show_max_remote_filesize, $show_remote_file_size), 'error');
+					$show_max_remote_filesize = bytesHuman($cfg->MAX_REMOTE_FILESIZE);
+					set_page_message(tr('Max. remote filesize (%s) has been reached. Your remote file is %s', $show_max_remote_filesize, $show_remote_file_size), 'error');
 					$upload = 0;
 				} else {
 					$remote_file = @file_get_contents($sw_wget);
@@ -335,8 +340,8 @@ $tpl->assign(
 		 'TR_SOFTWARE_HOME' => tr('Link to authors homepage'),
 		 'TR_SOFTWARE_DESC' => tr('Description'),
 		 'SOFTWARE_UPLOAD_TOKEN' => generate_software_upload_token(),
-		 'TR_SOFTWARE_FILE' => tr('Choose file (Max: %1$d MB)', ini_get('upload_max_filesize')),
-		 'TR_SOFTWARE_URL' => tr('or remote file (Max: %1$d MB)', formatFilesize($cfg->MAX_REMOTE_FILESIZE)),
+		 'TR_SOFTWARE_FILE' => tr('Choose file (Max: %1$d MiB)', ini_get('upload_max_filesize')),
+		 'TR_SOFTWARE_URL' => tr('or remote file (Max: %s)', bytesHuman($cfg->MAX_REMOTE_FILESIZE)),
 		 'TR_UPLOAD_SOFTWARE_BUTTON' => tr('Upload now'),
 		 'TR_UPLOAD_SOFTWARE_PAGE_TITLE' => tr('i-MSCP - Sofware Management'),
 		 'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete this package?', true),
@@ -351,7 +356,6 @@ $tpl->assign(
 		 'TR_LANGUAGE_DESC' => 'software_upload.php?sortby=language&order=desc'));
 
 generateNavigation($tpl);
-get_reseller_software_permission($tpl, $_SESSION['user_id']);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');

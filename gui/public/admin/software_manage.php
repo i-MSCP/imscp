@@ -209,16 +209,16 @@ if (isset($_POST['upload']) && $_SESSION['software_upload_token'] == $_POST['sen
 					}
 				}
 				($length) ? $remote_file_size = $length : $remote_file_size = 0;
-				$show_remote_file_size = formatFilesize($remote_file_size);
+				$show_remote_file_size = bytesHuman($remote_file_size);
 
 				if ($remote_file_size < 1) {
 					// Delete software entry
 					$query = "DELETE FROM `web_software` WHERE `software_id` = ?";
 					exec_query($query, $sw_id);
-					$show_max_remote_filesize = formatFilesize($cfg->MAX_REMOTE_FILESIZE);
+					$show_max_remote_filesize = bytesHuman($cfg->MAX_REMOTE_FILESIZE);
 					set_page_message(
 						tr(
-							'The remote filesize (%1$d B) is lower than 1 Byte. Please check the URL.',
+							'The remote filesize (%s) is lower than 1 Byte. Please check the URL.',
 							$show_remote_file_size
 						),
 						'error'
@@ -229,9 +229,9 @@ if (isset($_POST['upload']) && $_SESSION['software_upload_token'] == $_POST['sen
 					// Delete software entry
 					$query = "DELETE FROM `web_software` WHERE `software_id` = ?";
 					exec_query($query, $sw_id);
-					$show_max_remote_filesize = formatFilesize($cfg->MAX_REMOTE_FILESIZE);
+					$show_max_remote_filesize = bytesHuman($cfg->MAX_REMOTE_FILESIZE);
 					set_page_message(
-						tr('Max. remote filesize (%1$d MB) is reached. Your remote file is %2$d MB',
+						tr('Max. remote filesize (%s) is reached. Your remote file is %2$d MB',
 							$show_max_remote_filesize, $show_remote_file_size), 'error');
 
 					$upload = 0;
@@ -292,8 +292,8 @@ $tpl->assign(
 		'TR_SOFTWAREDEPOT_COUNT' => tr('Total Web software repositories'),
 		'TR_SOFTWAREDEPOT_NUM' => $swdepot_cnt,
 		'TR_UPLOAD_SOFTWARE' => tr('Software depot upload'),
-		'TR_SOFTWARE_FILE' => tr('Choose file (Max: %1$d MB)', ini_get('upload_max_filesize')),
-		'TR_SOFTWARE_URL' => tr('or remote file (Max: %1$d MB)', formatFilesize($cfg->MAX_REMOTE_FILESIZE)),
+		'TR_SOFTWARE_FILE' => tr('Choose file (Max: %1$d MiB)', ini_get('upload_max_filesize')),
+		'TR_SOFTWARE_URL' => tr('or remote file (Max: %s)', bytesHuman($cfg->MAX_REMOTE_FILESIZE)),
 		'TR_UPLOAD_SOFTWARE_BUTTON' => tr('Upload now'),
 		'TR_AWAITING_ACTIVATION' => tr('Awaiting activation'),
 		'TR_ACTIVATED_SOFTWARE' => tr('Reseller software list'),
