@@ -231,7 +231,7 @@ if (isset($_POST['upload']) && $_SESSION['software_upload_token'] == $_POST['sen
 					exec_query($query, $sw_id);
 					$show_max_remote_filesize = bytesHuman($cfg->MAX_REMOTE_FILESIZE);
 					set_page_message(
-						tr('Max. remote filesize (%s) is reached. Your remote file is %2$d MB',
+						tr('Max. remote filesize (%s) is reached. Your remote file is %s',
 							$show_max_remote_filesize, $show_remote_file_size), 'error');
 
 					$upload = 0;
