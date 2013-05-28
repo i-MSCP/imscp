@@ -2261,7 +2261,9 @@ sub _addFiles($$)
 
 	# Set default owner and group recursively
 	for(@items) {
-		$rs = setRights("$webDir/$_", { 'user' => $data->{'USER'}, 'group' => $data->{'GROUP'}, 'recursive' => 1 });
+		$rs = setRights(
+			"$webDir/$_", { 'user' => $data->{'USER'}, 'group' => $data->{'GROUP'}, 'recursive' => 1 }
+		) if -e "$webDir/$_";
 		return $rs if $rs;
 	}
 
