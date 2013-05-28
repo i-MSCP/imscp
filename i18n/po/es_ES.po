@@ -14,8 +14,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2013-05-26 19:11+0200\n"
-"PO-Revision-Date: 2013-05-26 17:11+0000\n"
+"POT-Creation-Date: 2013-05-28 20:04+0200\n"
+"PO-Revision-Date: 2013-05-28 18:04+0000\n"
 "Last-Translator: Torsten Widmann <info@goover.de>\n"
 "Language-Team: Spanish (Spain) (http://www.transifex.com/projects/p/i-MSCP/language/es_ES/)\n"
 "MIME-Version: 1.0\n"
@@ -1302,8 +1302,8 @@ msgid "Choose dir"
 msgstr "Seleccionar directorio"
 
 #, php-format
-msgid "Choose file (Max: %1$d MB)"
-msgstr "Escoger fichero (Max: %1$d MB)"
+msgid "Choose file (Max: %1$d MiB)"
+msgstr ""
 
 msgid "Choose hosting plan"
 msgstr "Seleccionar plan de hosting"
@@ -3152,13 +3152,12 @@ msgid "Max value for the %s PHP directive"
 msgstr "Valor máximo de la directiva PHP %s"
 
 #, php-format
-msgid ""
-"Max. remote filesize (%1$d MB) has been reached. Your remote file is %2$d MB"
-msgstr "Se ha alcanzado el tamaño máximo del fichero remoto (%1$d MB). Tu fichero remoto ocupa %2$d MB"
+msgid "Max. remote filesize (%s) has been reached. Your remote file is %s"
+msgstr ""
 
 #, php-format
-msgid "Max. remote filesize (%1$d MB) is reached. Your remote file is %2$d MB"
-msgstr "Se ha alcanzado el tamaño máximo del fichero remoto (%1$d MB). Tu fichero remoto mide %2$d MB"
+msgid "Max. remote filesize (%s) is reached. Your remote file is %s"
+msgstr ""
 
 msgid ""
 "Maximal number of labels for domain names (<small>Excluding SLD & "
@@ -4914,9 +4913,8 @@ msgid "The plugin %s is protected. You cannot perform an action on it."
 msgstr "El plug-in %s está protegido. No puedes realizar acciones sobre el."
 
 #, php-format
-msgid ""
-"The remote filesize (%1$d B) is lower than 1 Byte. Please check the URL."
-msgstr "El tamaño del fichero remoto (%1$d B) es menor de 1 Byte. Por favor comprueba la URL."
+msgid "The remote filesize (%s) is lower than 1 Byte. Please check the URL."
+msgstr ""
 
 msgid "The reseller account that you are trying to edit has not been found."
 msgstr "La cuenta de revendedor que estas intentando editar no existe."
@@ -5951,9 +5949,8 @@ msgid "Your package is corrupt. Please correct it!"
 msgstr "El paquete está corrupto. ¡Por favor corrigelo!"
 
 #, php-format
-msgid ""
-"Your remote filesize (%1$d B) is lower than 1 Byte. Please check your URL."
-msgstr "El tamaño de tu fichero remoto (%1$d B) es menor de 1 Byte. Por favor comprueba tu URL."
+msgid "Your remote filesize (%s) is lower than 1 Byte. Please check your URL."
+msgstr ""
 
 msgid ""
 "Your request for new password has been registered. You will receive an email"
@@ -6172,8 +6169,8 @@ msgid "older than 6 months"
 msgstr "anterior a 6 meses"
 
 #, php-format
-msgid "or remote file (Max: %1$d MB)"
-msgstr "o fichero remoto (Max: %1$d MB)"
+msgid "or remote file (Max: %s)"
+msgstr ""
 
 msgid "order"
 msgstr "pedido"

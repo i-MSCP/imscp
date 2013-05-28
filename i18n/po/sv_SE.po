@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2013-05-26 19:11+0200\n"
-"PO-Revision-Date: 2013-05-26 17:11+0000\n"
+"POT-Creation-Date: 2013-05-28 20:04+0200\n"
+"PO-Revision-Date: 2013-05-28 18:04+0000\n"
 "Last-Translator: Torsten Widmann <info@goover.de>\n"
 "Language-Team: Swedish (Sweden) (http://www.transifex.com/projects/p/i-MSCP/language/sv_SE/)\n"
 "MIME-Version: 1.0\n"
@@ -145,13 +145,13 @@ msgid ""
 msgstr "\n\nHello {NAME},\n\nYour user name is: {USERNAME}\nYour password is: {PASSWORD}\n\nYou can login at {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}\n\nThank you for using i-MSCP services.\n\n___________________________\nThe i-MSCP Team\n\n"
 
 msgid " Admin / Support / Open Tickets"
-msgstr ""
+msgstr "Admin / Support Ticket System / Open Tickets"
 
 msgid " Client / Webtools / Custom Error Pages / Edit Custom Error Page"
-msgstr ""
+msgstr "Client / Webtools / Custom Error Pages / Edit Custom Error Page"
 
 msgid " Reseller / Statistics / Overview"
-msgstr ""
+msgstr "Reseller / Statistics / Overview"
 
 msgid ""
 " Show all errors, except for warnings about deprecated code (Production)"
@@ -617,7 +617,7 @@ msgid "Add email account"
 msgstr "Lägg till ett mail konto"
 
 msgid "Add external mail server for {DOMAIN_UTF8}"
-msgstr ""
+msgstr "Lägg till externt mail servrar för {DOMAIN_UTF8}"
 
 msgid "Add group"
 msgstr "Lägg till grupp"
@@ -680,153 +680,153 @@ msgid "Admin"
 msgstr "Administratör"
 
 msgid "Admin / Admin Log"
-msgstr ""
+msgstr "Admin / Admin Log"
 
 msgid "Admin / General / Overview"
-msgstr ""
+msgstr "Admin / General / Overview"
 
 msgid "Admin / General / Services Status"
-msgstr ""
+msgstr "Admin / General / Services Status"
 
 msgid "Admin / Hosting Plans / Overview"
-msgstr ""
+msgstr "Admin / Hosting Plans / Overview"
 
 msgid "Admin / Hosting Plans / Overview / Edit hosting plan"
-msgstr ""
+msgstr "Admin / Hosting Plans / Overview / Edit hosting plan"
 
 msgid "Admin / Hosting plans / Add Hosting Plan"
-msgstr ""
+msgstr "Admin / Hosting plans / Add Hosting Plan"
 
 msgid "Admin / Profile / Account Summary"
-msgstr ""
+msgstr "Admin / Profile / Account Summary"
 
 msgid "Admin / Profile / Language"
-msgstr ""
+msgstr "Admin / Profile / Language"
 
 msgid "Admin / Profile / Layout"
-msgstr ""
+msgstr "Admin / Profile / Layout"
 
 msgid "Admin / Profile / Password"
-msgstr ""
+msgstr "Admin / Profile / Password"
 
 msgid "Admin / Profile / Personal Data"
-msgstr ""
+msgstr "Admin / Profile / Personal Data"
 
 msgid "Admin / Settings"
-msgstr ""
+msgstr "Admin / Settings"
 
 msgid "Admin / Settings / IP management"
-msgstr ""
+msgstr "Admin / Settings / IP management"
 
 msgid "Admin / Settings / Languages"
-msgstr ""
+msgstr "Admin / Settings / Languages"
 
 msgid "Admin / Settings / Lost password mail"
-msgstr ""
+msgstr "Admin / Settings / Lost password mail"
 
 msgid "Admin / Settings / Plugin management"
-msgstr ""
+msgstr "Admin / Settings / Plugin management"
 
 msgid "Admin / Settings / Server traffic"
-msgstr ""
+msgstr "Admin / Settings / Server traffic"
 
 msgid "Admin / Settings / Service ports"
-msgstr ""
+msgstr "Admin / Settings / Service ports"
 
 msgid "Admin / Settings / Software Management"
-msgstr ""
+msgstr "Admin / Settings / Software Management"
 
 msgid "Admin / Settings / Software options"
-msgstr ""
+msgstr "Admin / Settings / Software options"
 
 msgid "Admin / Settings / {TR_DYNAMIC_TITLE}"
-msgstr ""
+msgstr "Admin / Settings / {TR_DYNAMIC_TITLE}"
 
 msgid "Admin / Settings/ Welcome mail"
-msgstr ""
+msgstr "Admin / Settings/ Welcome mail"
 
 msgid "Admin / Software Management / Reseller software"
-msgstr ""
+msgstr "Admin / Software Management / Reseller software"
 
 msgid "Admin / Statistics / IP Usage"
-msgstr ""
+msgstr "Admin / Statistics / IP Usage"
 
 msgid "Admin / Statistics / Reseller Statistics / Customer statistics"
-msgstr ""
+msgstr "Admin / Statistics / Reseller Statistics / Customer statistics"
 
 msgid ""
 "Admin / Statistics / Reseller Statistics / Customer statistics / Domain "
 "Statistics"
-msgstr ""
+msgstr "Admin / Statistics / Reseller Statistics / Customer statistics / Domain Statistics"
 
 msgid "Admin / Statistics / Reseller statistics"
-msgstr ""
+msgstr "Admin / Statistics / Reseller statistics"
 
 msgid "Admin / Statistics / Server statistics"
-msgstr ""
+msgstr "Admin / Statistics / Server statistics"
 
 msgid "Admin / Statistics / Server statistics / Day statistics"
-msgstr ""
+msgstr "dmin / Statistics / Server statistics / Day statistics"
 
 msgid "Admin / Support / Closed Tickets"
-msgstr ""
+msgstr "Admin / Support / Closed Tickets"
 
 msgid "Admin / Support / View Ticket"
-msgstr ""
+msgstr "Admin / Support / View Ticket"
 
 msgid "Admin / System Tools / Debugger"
-msgstr ""
+msgstr "Admin / System Tools / Debugger"
 
 msgid "Admin / System Tools / Maintenance settings"
-msgstr ""
+msgstr "Admin / System Tools / Maintenance settings"
 
 msgid "Admin / System Tools / Rootkit Logs"
-msgstr ""
+msgstr "Admin / System Tools / Rootkit Logs"
 
 msgid "Admin / System Tools / Updates"
-msgstr ""
+msgstr "Admin / System Tools / Updates"
 
 msgid "Admin / System tools / Database Update"
-msgstr ""
+msgstr "Admin / System tools / Database Update"
 
 msgid "Admin / System tools / System information"
-msgstr ""
+msgstr "Admin / System tools / System information"
 
 msgid "Admin / User / Add Admin"
-msgstr ""
+msgstr "Admin / User / Add Admin"
 
 msgid "Admin / User / Overview / Domain Edit"
-msgstr ""
+msgstr "Admin / User / Overview / Domain Edit"
 
 msgid "Admin / Users / Add Reseller"
-msgstr ""
+msgstr "Admin / Users / Add Reseller"
 
 msgid "Admin / Users / Circular"
-msgstr ""
+msgstr "Admin / Users / Circular"
 
 msgid "Admin / Users / Customers assignment"
-msgstr ""
+msgstr "Admin / Users / Customers assignment"
 
 msgid "Admin / Users / Edit Reseller"
-msgstr ""
+msgstr "Admin / Users / Edit Reseller"
 
 msgid "Admin / Users / Overview"
-msgstr ""
+msgstr "Admin / Users / Overview"
 
 msgid "Admin / Users / Overview / Delete Customer"
-msgstr ""
+msgstr "Admin / Users / Overview / Delete Customer"
 
 msgid "Admin / Users / Overview / Domain Details"
-msgstr ""
+msgstr "Admin / Users / Overview / Domain Details"
 
 msgid "Admin / Users / Overview / Edit Admin"
-msgstr ""
+msgstr "Admin / Users / Overview / Edit Admin"
 
 msgid "Admin / Users / Resellers assignment"
-msgstr ""
+msgstr "Admin / Users / Resellers assignment"
 
 msgid "Admin / Users / Sessions"
-msgstr ""
+msgstr "Admin / Users / Sessions"
 
 msgid "Admin Log"
 msgstr "Adminstratörslogg"
@@ -1297,8 +1297,8 @@ msgid "Choose dir"
 msgstr "Välj katalog"
 
 #, php-format
-msgid "Choose file (Max: %1$d MB)"
-msgstr "Välj fil (Max:%1$d MB)"
+msgid "Choose file (Max: %1$d MiB)"
+msgstr ""
 
 msgid "Choose hosting plan"
 msgstr "Välj webbhotell"
@@ -1326,164 +1326,164 @@ msgid ""
 msgstr "Klicka på knappen Återställ så kommer systemet att återställa den sista dagliga backupen"
 
 msgid "Client /  Domains / Add Alias"
-msgstr ""
+msgstr "Kund / Domain / Lägg till Alias"
 
 msgid "Client / Choose directory"
-msgstr ""
+msgstr "Kund / Välj katalog"
 
 msgid "Client / Database / Overview / Update SQL User Password"
-msgstr ""
+msgstr "Kund / Databas / Översikt / Uppdaterar SQL Användarens lösenord"
 
 msgid "Client / Databases / Add SQL Database"
-msgstr ""
+msgstr "Kund / Databas / Lägg till databas"
 
 msgid "Client / Databases / Overview"
-msgstr ""
+msgstr "Kund / Databaser / Översikt"
 
 msgid "Client / Databases / Overview / Add SQL User"
-msgstr ""
+msgstr "Kund / Databaser / Översikt / Lägg till SQL användare"
 
 msgid "Client / Domain / Edit Custom DNS record"
-msgstr ""
+msgstr "Kund / Domain / Redigerar Custom DNS record"
 
 msgid "Client / Domains"
-msgstr ""
+msgstr "Kund / Domainer"
 
 msgid "Client / Domains / Add Custom DNS record"
-msgstr ""
+msgstr "Kund / Domainer / Lägg till Custom DNS record"
 
 msgid "Client / Domains / Add subdomain"
-msgstr ""
+msgstr "Kund / Domainer / Lägg till subdomain"
 
 msgid "Client / Domains / Overview / Edit Domain Alias"
-msgstr ""
+msgstr "Kund / Domainer / Översikt / Redigerar Domain Alias"
 
 msgid "Client / Domains / Overview / Edit Subdomain"
-msgstr ""
+msgstr "Kund / Domainer / Översikt / Redigerar Subdomain"
 
 msgid "Client / Domains / PHP Settings"
-msgstr ""
+msgstr "Kund / Domainer / PHP inställningar"
 
 msgid "Client / Domains / SSL certificates"
-msgstr ""
+msgstr "Kund / Domainer / SSL certificates"
 
 msgid "Client / Ftp / Add Ftp Account"
-msgstr ""
+msgstr "Kund / FTP / Lägg till Ftp konto"
 
 msgid "Client / Ftp / Overview"
-msgstr ""
+msgstr "Kund / FTP / Översikt"
 
 msgid "Client / Ftp / Overview / Edit Ftp Account"
-msgstr ""
+msgstr "Kund / FTP / Översikt / Redigerar Ftp konto"
 
 msgid "Client / General / Overview"
-msgstr ""
+msgstr "Kund / Allmänt / Översikt"
 
 msgid "Client / Mail / Add Email Account"
-msgstr ""
+msgstr "Kund / Mail / Lägg till mail-konto"
 
 msgid "Client / Mail / Catchall"
-msgstr ""
+msgstr "Kund / Mail / Catchall"
 
 msgid "Client / Mail / Catchall / Add Catchall"
-msgstr ""
+msgstr "Kund / Mail / Catchall / Lägg till Catchall"
 
 msgid "Client / Mail / External Mail Server"
-msgstr ""
+msgstr "Kund / Mail / External Mail Server"
 
 msgid ""
 "Client / Mail / External Mail Server / Add External Mail Server For "
 "{DOMAIN_UTF8}"
-msgstr ""
+msgstr "Kund / Mail / External Mail Server / Lägg till External Mail Server for {DOMAIN_UTF8}"
 
 msgid ""
 "Client / Mail / External Mail Server / Edit External Mail Server For "
 "{DOMAIN_UTF8}"
-msgstr ""
+msgstr "Kund / Mail / External Mail Server / Redigerar External Mail Server för {DOMAIN_UTF8}"
 
 msgid "Client / Mail / Overview"
-msgstr ""
+msgstr "Kund / Mail / Översikt"
 
 msgid "Client / Mail / Overview /  Edit Mail Account"
-msgstr ""
+msgstr "Kund / Mail / Översikt / Redigerar Mail konto"
 
 msgid "Client / Mail / Overview /  Edit Mail Quota"
-msgstr ""
+msgstr "Kund / Mail / Översikt / Redigerar Mail Quota"
 
 msgid "Client / Mail / Overview / Edit Auto Responder"
-msgstr ""
+msgstr "Kund / Mail Översikt / Redigerar Auto responder"
 
 msgid "Client / Mail / Overview / Enable Auto Responder"
-msgstr ""
+msgstr "Kund / Mail / Översikt / Tillåt Auto responder"
 
 msgid "Client / Profile / Account Summary"
-msgstr ""
+msgstr "Kund / Profil / Konto översikt"
 
 msgid "Client / Profile / Language"
-msgstr ""
+msgstr "Kunf / Profil / Språk"
 
 msgid "Client / Profile / Layout"
-msgstr ""
+msgstr "Kund / Profil / Layout"
 
 msgid "Client / Profile / Password"
-msgstr ""
+msgstr "Kund / Profil / Lösenord"
 
 msgid "Client / Profile / Personal Data"
-msgstr ""
+msgstr "Kunf / Profil / Personligt data"
 
 msgid "Client / Statistics"
-msgstr ""
+msgstr "Kund / Statistik"
 
 msgid "Client / Support / New Ticket"
-msgstr ""
+msgstr "Kund / Support / Nytt ticket"
 
 msgid "Client / Support / Tickets Closed"
-msgstr ""
+msgstr "Kund / Support / Stängda ticket"
 
 msgid "Client / Support / Tickets Open"
-msgstr ""
+msgstr "Kund / Support / Öppen tickets"
 
 msgid "Client / Support / View Ticket"
-msgstr ""
+msgstr "Kund / Support / Visa ticket"
 
 msgid "Client / Webtools / Custom Error Pages"
-msgstr ""
+msgstr "Kund / Webtools / Custom Error Pages"
 
 msgid "Client / Webtools / Daily Backup"
-msgstr ""
+msgstr "Kund / Webtools / Dagligt Backup"
 
 msgid "Client / Webtools / Overview"
-msgstr ""
+msgstr "Kund / Webtools / Översikt"
 
 msgid "Client / Webtools / Protected Areas"
-msgstr ""
+msgstr "Kund / Webtools / Skyddade områden"
 
 msgid "Client / Webtools / Protected Areas / Manage Htaccess users And Groups"
-msgstr ""
+msgstr "Kund / Webtools / Skyddade områden / Hanterar Htaccess användare och grupper"
 
 msgid ""
 "Client / Webtools / Protected areas / Manage Htusers And Groups / Add "
 "Htaccess Group"
-msgstr ""
+msgstr "Kund / Webtools / Skyddade områden / Hanterar Htusers och grupper / Lägg till Htaccess grupp"
 
 msgid ""
 "Client / Webtools / Protected areas / Manage Htusers And Groups / Add "
 "Htaccess User"
-msgstr ""
+msgstr "Kund / Webtools / Skyddade områden / Hanterar Htusers och grupper / Lägg till Htaccess användare"
 
 msgid ""
 "Client / Webtools / Protected areas / Manage Htusers And Groups / Edit "
 "Htaccess User"
-msgstr ""
+msgstr "Kund / Webtools / Skyddade områden / Hanterar Htusers och grupper / Redigerar Htaccess användare"
 
 msgid "Client / Webtools / Software - Softwares Install"
-msgstr ""
+msgstr "Kund / Webtools / Software - Softwares Install"
 
 msgid "Client / Webtools / Softwares"
-msgstr ""
+msgstr "Kund / Webtools / Softwares"
 
 msgid "Client / Webtools / Softwares / Software View"
-msgstr ""
+msgstr "Kund / Webtools / Softwares / Software View"
 
 msgid "Close"
 msgstr "Stäng"
@@ -1584,7 +1584,7 @@ msgid "Custom menu name and link"
 msgstr "Custom menu name and link"
 
 msgid "Custom menu properties"
-msgstr ""
+msgstr "Custom menu properties"
 
 msgid "Custom menu successfully added."
 msgstr "Custom menu successfully added."
@@ -1605,7 +1605,7 @@ msgid "Customer ID"
 msgstr "Kund ID"
 
 msgid "Customer ID cannot have more than 200 characters"
-msgstr ""
+msgstr "Customer ID cannot have more than 200 characters"
 
 msgid "Customer account successfully scheduled for activation."
 msgstr "Kundkonto planerad till aktivering."
@@ -1684,7 +1684,7 @@ msgid "Database Update Revision"
 msgstr "Uppdatering av databasen Versionshistorik"
 
 msgid "Database Update details"
-msgstr ""
+msgstr "Database Update details"
 
 msgid "Database name"
 msgstr "Databasnamn"
@@ -1702,10 +1702,10 @@ msgid "Database required"
 msgstr "Databas krävs"
 
 msgid "Database update"
-msgstr ""
+msgstr "Database update"
 
 msgid "Database update is available"
-msgstr ""
+msgstr "Database update is available"
 
 msgid "Database usage"
 msgstr "Database usage"
@@ -1726,7 +1726,7 @@ msgid "Day"
 msgstr "Dag"
 
 msgid "Day statistics"
-msgstr ""
+msgstr "Day statistics"
 
 msgid "Days"
 msgstr "Dagar"
@@ -2042,7 +2042,7 @@ msgid "Domain name"
 msgstr "Domännamn"
 
 msgid "Domain name must be filled."
-msgstr ""
+msgstr "Domain-Namnet måste fyllas i."
 
 msgid "Domain names validation"
 msgstr "Domännamnsvalidering"
@@ -2131,7 +2131,7 @@ msgid "Edit User"
 msgstr "Redigera användare"
 
 msgid "Edit admin"
-msgstr ""
+msgstr "Edit admin"
 
 msgid "Edit alias"
 msgstr "Ändra alias"
@@ -2158,7 +2158,7 @@ msgid "Edit error page"
 msgstr "Redigera felsida"
 
 msgid "Edit external mail server for {DOMAIN_UTF8}"
-msgstr ""
+msgstr "Redigera externt mail server för {DOMAIN_UTF8}"
 
 msgid "Edit hosting plan"
 msgstr "Ändra webbhotellsplan"
@@ -2227,7 +2227,7 @@ msgid "Enable auto responder"
 msgstr "Aktiverar auto. svar"
 
 msgid "Enable update in the settings page."
-msgstr ""
+msgstr "Enable update in the settings page."
 
 msgid "Enabled"
 msgstr "Aktiv"
@@ -2301,7 +2301,7 @@ msgid "Expire date"
 msgstr "Upphör"
 
 msgid "Ext. mail server"
-msgstr ""
+msgstr "Extern e-postserver"
 
 msgid "External Mail Host"
 msgstr "Extern post värd"
@@ -2414,7 +2414,7 @@ msgid "First name"
 msgstr "Förnamn"
 
 msgid "First name cannot have more than 200 characters."
-msgstr ""
+msgstr "First name cannot have more than 200 characters."
 
 msgid "Forward URL"
 msgstr "Vidarebefordra till URL"
@@ -2471,7 +2471,7 @@ msgid "Gender"
 msgstr "Kön"
 
 msgid "General"
-msgstr ""
+msgstr "General"
 
 msgid "General information"
 msgstr "Allmän information"
@@ -2541,7 +2541,7 @@ msgid "Host must be filled."
 msgstr "Värd måste fyllas i."
 
 msgid "Hosting Plans"
-msgstr ""
+msgstr "Webbhotellsplan"
 
 msgid "Hosting plan"
 msgstr "Webbhotellsplan"
@@ -2559,7 +2559,7 @@ msgid "Hosting plan properties"
 msgstr "Egenskaper för webbhotellsplan"
 
 msgid "Hosting plan successfully added."
-msgstr ""
+msgstr "Hosting plan lagts till."
 
 msgid "Hosting plan successfully created."
 msgstr "Webbkonto har skapats."
@@ -2726,7 +2726,7 @@ msgid "Incorrect or is not allowed."
 msgstr "Fel eller inte är tillåtna."
 
 msgid "Incorrect post code length or syntax!"
-msgstr ""
+msgstr "Incorrect post code length or syntax!"
 
 msgid "Incorrect subdomains limit."
 msgstr "Felaktig underdomäner gränsen."
@@ -2889,7 +2889,7 @@ msgid "Last name"
 msgstr "Efternamn"
 
 msgid "Last name cannot have more than 200 characters."
-msgstr ""
+msgstr "Last name cannot have more than 200 characters."
 
 msgid "Last reply date"
 msgstr "Sista svarsdatum"
@@ -3045,10 +3045,10 @@ msgid "Mail accounts list"
 msgstr "E-postkontolista"
 
 msgid "Mail accounts list is empty."
-msgstr ""
+msgstr "E-postkontolistan är tom!"
 
 msgid "Mail feature is disabled."
-msgstr ""
+msgstr "Mail feature is disabled."
 
 msgid "Mail forward list empty."
 msgstr "Postlista framåt tom."
@@ -3080,7 +3080,7 @@ msgid ""
 msgstr "Maintenance mode is activated. Under this mode, only administrators can login."
 
 msgid "Maintenance settings"
-msgstr ""
+msgstr "Underhållsläge"
 
 msgid "Male"
 msgstr "Man"
@@ -3147,13 +3147,12 @@ msgid "Max value for the %s PHP directive"
 msgstr "Max value for the %s PHP directive"
 
 #, php-format
-msgid ""
-"Max. remote filesize (%1$d MB) has been reached. Your remote file is %2$d MB"
-msgstr "Max. avlägsna filesize (%1$d MB) har nåtts. Din avlägsna filen %2$d MB"
+msgid "Max. remote filesize (%s) has been reached. Your remote file is %s"
+msgstr ""
 
 #, php-format
-msgid "Max. remote filesize (%1$d MB) is reached. Your remote file is %2$d MB"
-msgstr "Max. fjärr filstorlek (%1$d MB) är nådd. Fjärrfilen%2$d MB"
+msgid "Max. remote filesize (%s) is reached. Your remote file is %s"
+msgstr ""
 
 msgid ""
 "Maximal number of labels for domain names (<small>Excluding SLD & "
@@ -3276,7 +3275,7 @@ msgid "Never"
 msgstr "Aldrig"
 
 msgid "Never expire"
-msgstr ""
+msgstr "Never expire"
 
 msgid "Never expires"
 msgstr "Never expires"
@@ -3342,7 +3341,7 @@ msgid "No customer accounts found."
 msgstr "Ingen kundkonto hittats."
 
 msgid "No database update available."
-msgstr ""
+msgstr "No database update available."
 
 msgid "No domain alias system errors"
 msgstr "Inga domänalias systemfel"
@@ -3375,7 +3374,7 @@ msgid "No hosting plan available."
 msgstr "No hosting plan available."
 
 msgid "No hosting plan available. Please contact your administrator."
-msgstr ""
+msgstr "No hosting plan available. Please contact your administrator."
 
 msgid "No htaccess related system errors"
 msgstr "Inga htaccess relaterade systemfel"
@@ -3922,7 +3921,7 @@ msgid "Priority: %s\n"
 msgstr "Priority: %s\n"
 
 msgid "Process update"
-msgstr ""
+msgstr "Process update"
 
 msgid "Profile"
 msgstr "Profile"
@@ -4050,85 +4049,85 @@ msgid "Reseller"
 msgstr "Återförsäljare"
 
 msgid "Reseller / Customer / Overview"
-msgstr ""
+msgstr "Reseller / Kund / Översikt"
 
 msgid "Reseller / Customer / Overview / Domain Details"
-msgstr ""
+msgstr "Reseller / Kund / Översikt / Domain Details"
 
 msgid "Reseller / Customers / Add Customer - Next Step"
-msgstr ""
+msgstr "Reseller / Kunder / Lägg till kund - Nästa steg"
 
 msgid "Reseller / Customers / Add Customer / Next Step"
-msgstr ""
+msgstr "Reseller / Kunder/ Lägg till kund / Nästa steg"
 
 msgid "Reseller / Customers / Add customer"
-msgstr ""
+msgstr "Reseller / Kunder / Lägg till kund"
 
 msgid "Reseller / Customers / Circular"
-msgstr ""
+msgstr "Reseller / Kunder / Rundmail"
 
 msgid "Reseller / Customers / Domain Aliases"
-msgstr ""
+msgstr "Reseller / Kunder / Domain Aliases"
 
 msgid "Reseller / Customers / Domain Aliases / Add Alias"
-msgstr ""
+msgstr "Reseller 7 Kunder / Domain Aliases / Lägg till Alias"
 
 msgid "Reseller / Customers / Domain Aliases / Edit Alias"
-msgstr ""
+msgstr "Reseller / Kunder / Domain Aliases / Redigerar Alias"
 
 msgid "Reseller / Customers / Lost Password Email"
-msgstr ""
+msgstr "Reseller / Kunder / Glömt lösenord E-mail"
 
 msgid "Reseller / Customers / Overview / Edit Domain"
-msgstr ""
+msgstr "Reseller / Kunder / Översikt / Redigerar domain"
 
 msgid "Reseller / Customers / Welcome Mail"
-msgstr ""
+msgstr "Reseller / Kunder / Välkommen mail"
 
 msgid "Reseller / General / Overview"
-msgstr ""
+msgstr "Reseller / Allmänt / Översikt"
 
 msgid "Reseller / General / Software Upload"
-msgstr ""
+msgstr "Reseller / Allmänt / Software upload"
 
 msgid "Reseller / Hosting Plan / Add Hosting Plan"
-msgstr ""
+msgstr "Reseller / Hosting Plan / Add Hosting Plan"
 
 msgid "Reseller / Profile / Account Summary"
-msgstr ""
+msgstr "Reseller / Profile / Account Summary"
 
 msgid "Reseller / Profile / Language"
-msgstr ""
+msgstr "Reseller / Profile / Language"
 
 msgid "Reseller / Profile / Layout"
-msgstr ""
+msgstr "Reseller / Profile / Layout"
 
 msgid "Reseller / Profile / Password"
-msgstr ""
+msgstr "Reseller / Profile / Password"
 
 msgid "Reseller / Profile / Personal Data"
-msgstr ""
+msgstr "Reseller / Profile / Personal Data"
 
 msgid "Reseller / Statistics / IP Usage"
-msgstr ""
+msgstr "Reseller / Statistics / IP Usage"
 
 msgid "Reseller / Statistics / Overview / Domain Statistics - {DOMAIN_NAME}"
-msgstr ""
+msgstr "Reseller / Statistics / Overview / Domain Statistics - {DOMAIN_NAME}"
 
 msgid "Reseller / Support / New Ticket"
-msgstr ""
+msgstr "Reseller / Support / New Ticket"
 
 msgid "Reseller / Support / Tickets Closed"
-msgstr ""
+msgstr "Reseller / Support / Tickets Closed"
 
 msgid "Reseller / Support / Tickets Open"
-msgstr ""
+msgstr "Reseller / Support / Tickets Open"
 
 msgid "Reseller / Support / View Ticket"
-msgstr ""
+msgstr "Reseller / Support / View Ticket"
 
 msgid "Reseller /Hosting Plans / {TR_DYNAMIC_TITLE}"
-msgstr ""
+msgstr "Reseller /Hosting Plans / {TR_DYNAMIC_TITLE}"
 
 msgid "Reseller Name"
 msgstr "Återförsäljare Namn"
@@ -4170,7 +4169,7 @@ msgid "Reseller software list"
 msgstr "Återförsäljare programvara lista"
 
 msgid "Reseller statistics"
-msgstr ""
+msgstr "Reseller statistics"
 
 msgid "Reseller successfully added."
 msgstr "Återförsäljare lagts till."
@@ -4537,10 +4536,10 @@ msgid "Software installer options successfully updated."
 msgstr "Software installer options successfully updated."
 
 msgid "Software installer require PHP support."
-msgstr ""
+msgstr "Software installer require PHP support."
 
 msgid "Software installer require PHP."
-msgstr ""
+msgstr "Software installer require PHP."
 
 msgid "Software name"
 msgstr "Mjukvara namn"
@@ -4909,9 +4908,8 @@ msgid "The plugin %s is protected. You cannot perform an action on it."
 msgstr "Denna plugin %s är skyddad. Du kan inte utföra en åtgärd på den."
 
 #, php-format
-msgid ""
-"The remote filesize (%1$d B) is lower than 1 Byte. Please check the URL."
-msgstr "fjärr filstorlek (%1$d B) är lägre än 1 byte. Kontrollera webbadressen."
+msgid "The remote filesize (%s) is lower than 1 Byte. Please check the URL."
+msgstr ""
 
 msgid "The reseller account that you are trying to edit has not been found."
 msgstr "Återförsäljarens konto som du försöker redigera har inte hittats."
@@ -5185,7 +5183,7 @@ msgstr "Unable to schedule deletion of the customer account. Please, consult adm
 
 #, php-format
 msgid "Unable to upload file. Max. upload filesize (%1$d MB) reached?"
-msgstr ""
+msgstr "Unable to upload file. Max. upload filesize (%1$d MB) reached?"
 
 msgid "Unavailable"
 msgstr "Unavailable"
@@ -5329,7 +5327,7 @@ msgid "User auth"
 msgstr "Användarverifiering"
 
 msgid "User data successfully updated"
-msgstr ""
+msgstr "User data successfully updated"
 
 msgid "User data were not updated."
 msgstr "Användardata uppdaterades inte."
@@ -5443,7 +5441,7 @@ msgid "View certificates"
 msgstr "View certificates"
 
 msgid "View hosting plan"
-msgstr ""
+msgstr "View hosting plan"
 
 msgid "View ticket"
 msgstr "Visa ticket"
@@ -5849,7 +5847,7 @@ msgstr "Du har nått max antal domäner. < /br>Du kan inte lägga till fler dom�
 
 #, php-format
 msgid "You have received %d new support request."
-msgstr ""
+msgstr "You have received %d new support request."
 
 #, php-format
 msgid "You have received %s new support questions."
@@ -5874,7 +5872,7 @@ msgid "You must first generate a password"
 msgstr "Du måste först skapa ett lösenord"
 
 msgid "You must omit 'www'. It will be added automatically."
-msgstr ""
+msgstr "You must omit 'www'. It will be added automatically."
 
 msgid "You must provide a password."
 msgstr "Du måste ange ett lösenord."
@@ -5946,9 +5944,8 @@ msgid "Your package is corrupt. Please correct it!"
 msgstr "Ditt paket är skadat. Korrigera det!"
 
 #, php-format
-msgid ""
-"Your remote filesize (%1$d B) is lower than 1 Byte. Please check your URL."
-msgstr "Fjärr filstorlek (%1$d B) är lägre än 1 byte. Kontrollera din webbadress."
+msgid "Your remote filesize (%s) is lower than 1 Byte. Please check your URL."
+msgstr ""
 
 msgid ""
 "Your request for new password has been registered. You will receive an email"
@@ -5962,7 +5959,7 @@ msgid "ZiB"
 msgstr "ZiB"
 
 msgid "Zip"
-msgstr ""
+msgstr "Zip"
 
 msgid "Zip code"
 msgstr "Zip code"
@@ -6056,7 +6053,7 @@ msgid "i-MSCP - Application Management (Permissions)"
 msgstr "i-MSCP - Application Management (behörigheter)"
 
 msgid "i-MSCP - Client/ Webtools / Protected Areas / {TR_DYNAMIC_TITLE}"
-msgstr ""
+msgstr "i-MSCP - Client/ Webtools / Protected Areas / {TR_DYNAMIC_TITLE}"
 
 msgid "i-MSCP - Client/Create CatchAll Mail Account"
 msgstr "i-MSCP - Kund/Skapa catch-all-konto"
@@ -6071,7 +6068,7 @@ msgid "i-MSCP - Multi Server Control Panel / Maintenance"
 msgstr "i-MSCP - Multi Server Control Panel / Maintenance"
 
 msgid "i-MSCP - Reseller / Manage Customers / Customers / Edit Customer"
-msgstr ""
+msgstr "i-MSCP - Reseller / Manage Customers / Customers / Edit Customer"
 
 msgid "i-MSCP - Reseller / Manage hosting Plans / Hosting plans"
 msgstr "i-MSCP - Reseller / Manage hosting Plans / Hosting plans"
@@ -6167,8 +6164,8 @@ msgid "older than 6 months"
 msgstr "äldre än 6 månader"
 
 #, php-format
-msgid "or remote file (Max: %1$d MB)"
-msgstr "eller fjärr-fil (Max:%1$d MB)"
+msgid "or remote file (Max: %s)"
+msgstr ""
 
 msgid "order"
 msgstr "order"

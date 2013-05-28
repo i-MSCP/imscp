@@ -11,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2013-05-26 19:11+0200\n"
-"PO-Revision-Date: 2013-05-26 17:11+0000\n"
+"POT-Creation-Date: 2013-05-28 20:04+0200\n"
+"PO-Revision-Date: 2013-05-28 18:04+0000\n"
 "Last-Translator: Torsten Widmann <info@goover.de>\n"
 "Language-Team: Hungarian (Hungary) (http://www.transifex.com/projects/p/i-MSCP/language/hu_HU/)\n"
 "MIME-Version: 1.0\n"
@@ -1299,8 +1299,8 @@ msgid "Choose dir"
 msgstr "Könyvtár kijelölése"
 
 #, php-format
-msgid "Choose file (Max: %1$d MB)"
-msgstr "Fájl feltöltése (Max: %1$d MB)"
+msgid "Choose file (Max: %1$d MiB)"
+msgstr ""
 
 msgid "Choose hosting plan"
 msgstr "Tárhely csomag kiválasztása"
@@ -3149,13 +3149,12 @@ msgid "Max value for the %s PHP directive"
 msgstr "%s PHP korlátozás max. értéke"
 
 #, php-format
-msgid ""
-"Max. remote filesize (%1$d MB) has been reached. Your remote file is %2$d MB"
-msgstr "A letöltendő fájl mérete (%2$d MB) nagyobb, mint a megengedett (%1$d MB)"
+msgid "Max. remote filesize (%s) has been reached. Your remote file is %s"
+msgstr ""
 
 #, php-format
-msgid "Max. remote filesize (%1$d MB) is reached. Your remote file is %2$d MB"
-msgstr "A letöltendő fájl mérete (%2$d MB) nagyobb, mint a megengedett (%1$d MB)"
+msgid "Max. remote filesize (%s) is reached. Your remote file is %s"
+msgstr ""
 
 msgid ""
 "Maximal number of labels for domain names (<small>Excluding SLD & "
@@ -4911,9 +4910,8 @@ msgid "The plugin %s is protected. You cannot perform an action on it."
 msgstr "A %s bővítmény védett. Művelet nem hajtható végre rajta"
 
 #, php-format
-msgid ""
-"The remote filesize (%1$d B) is lower than 1 Byte. Please check the URL."
-msgstr "A távoli fájlméret (%1$d B) kevesebb, mint 1 bájt. Kérjük ellenőrizze a webcímet!"
+msgid "The remote filesize (%s) is lower than 1 Byte. Please check the URL."
+msgstr ""
 
 msgid "The reseller account that you are trying to edit has not been found."
 msgstr "Viszonteladó nem található"
@@ -5948,9 +5946,8 @@ msgid "Your package is corrupt. Please correct it!"
 msgstr "Az Ön csomagja nem megfelelő, kérjük javítsa!"
 
 #, php-format
-msgid ""
-"Your remote filesize (%1$d B) is lower than 1 Byte. Please check your URL."
-msgstr "A távoli fájlméret (%1$d B) kevesebb, mint 1 bájt. Kérjük ellenőrizze a webcímet"
+msgid "Your remote filesize (%s) is lower than 1 Byte. Please check your URL."
+msgstr ""
 
 msgid ""
 "Your request for new password has been registered. You will receive an email"
@@ -5964,7 +5961,7 @@ msgid "ZiB"
 msgstr "ZB"
 
 msgid "Zip"
-msgstr ""
+msgstr "Zip"
 
 msgid "Zip code"
 msgstr "Irányítószám"
@@ -6169,8 +6166,8 @@ msgid "older than 6 months"
 msgstr "hat hónapnál régebbi"
 
 #, php-format
-msgid "or remote file (Max: %1$d MB)"
-msgstr "vagy távoli fájl letöltése (Max: %1$d MB)"
+msgid "or remote file (Max: %s)"
+msgstr ""
 
 msgid "order"
 msgstr "megrendelés"

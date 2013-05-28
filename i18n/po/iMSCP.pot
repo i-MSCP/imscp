@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.0.1.6\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2013-05-26 19:11+0200\n"
+"POT-Creation-Date: 2013-05-28 20:04+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1295,7 +1295,7 @@ msgid "Choose dir"
 msgstr ""
 
 #, php-format
-msgid "Choose file (Max: %1$d MB)"
+msgid "Choose file (Max: %1$d MiB)"
 msgstr ""
 
 msgid "Choose hosting plan"
@@ -3144,12 +3144,11 @@ msgid "Max value for the %s PHP directive"
 msgstr ""
 
 #, php-format
-msgid ""
-"Max. remote filesize (%1$d MB) has been reached. Your remote file is %2$d MB"
+msgid "Max. remote filesize (%s) has been reached. Your remote file is %s"
 msgstr ""
 
 #, php-format
-msgid "Max. remote filesize (%1$d MB) is reached. Your remote file is %2$d MB"
+msgid "Max. remote filesize (%s) is reached. Your remote file is %s"
 msgstr ""
 
 msgid ""
@@ -4904,8 +4903,7 @@ msgid "The plugin %s is protected. You cannot perform an action on it."
 msgstr ""
 
 #, php-format
-msgid ""
-"The remote filesize (%1$d B) is lower than 1 Byte. Please check the URL."
+msgid "The remote filesize (%s) is lower than 1 Byte. Please check the URL."
 msgstr ""
 
 msgid "The reseller account that you are trying to edit has not been found."
@@ -5939,8 +5937,7 @@ msgid "Your package is corrupt. Please correct it!"
 msgstr ""
 
 #, php-format
-msgid ""
-"Your remote filesize (%1$d B) is lower than 1 Byte. Please check your URL."
+msgid "Your remote filesize (%s) is lower than 1 Byte. Please check your URL."
 msgstr ""
 
 msgid ""
@@ -6160,7 +6157,7 @@ msgid "older than 6 months"
 msgstr ""
 
 #, php-format
-msgid "or remote file (Max: %1$d MB)"
+msgid "or remote file (Max: %s)"
 msgstr ""
 
 msgid "order"

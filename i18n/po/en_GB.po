@@ -14,8 +14,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2013-05-26 19:11+0200\n"
-"PO-Revision-Date: 2013-05-26 17:11+0000\n"
+"POT-Creation-Date: 2013-05-28 20:04+0200\n"
+"PO-Revision-Date: 2013-05-28 18:04+0000\n"
 "Last-Translator: Torsten Widmann <info@goover.de>\n"
 "Language-Team: English (United Kingdom) (http://www.transifex.com/projects/p/i-MSCP/language/en_GB/)\n"
 "MIME-Version: 1.0\n"
@@ -1302,8 +1302,8 @@ msgid "Choose dir"
 msgstr "Choose dir"
 
 #, php-format
-msgid "Choose file (Max: %1$d MB)"
-msgstr "Choose file (Max: %1$d MB)"
+msgid "Choose file (Max: %1$d MiB)"
+msgstr ""
 
 msgid "Choose hosting plan"
 msgstr "Choose hosting plan"
@@ -3152,13 +3152,12 @@ msgid "Max value for the %s PHP directive"
 msgstr "Max value for the %s PHP directive"
 
 #, php-format
-msgid ""
-"Max. remote filesize (%1$d MB) has been reached. Your remote file is %2$d MB"
+msgid "Max. remote filesize (%s) has been reached. Your remote file is %s"
 msgstr ""
 
 #, php-format
-msgid "Max. remote filesize (%1$d MB) is reached. Your remote file is %2$d MB"
-msgstr "Max. remote filesize (%1$d MB) is reached. Your remote file is %2$d MB"
+msgid "Max. remote filesize (%s) is reached. Your remote file is %s"
+msgstr ""
 
 msgid ""
 "Maximal number of labels for domain names (<small>Excluding SLD & "
@@ -4914,9 +4913,8 @@ msgid "The plugin %s is protected. You cannot perform an action on it."
 msgstr "The plugin %s is protected. You cannot perform an action on it."
 
 #, php-format
-msgid ""
-"The remote filesize (%1$d B) is lower than 1 Byte. Please check the URL."
-msgstr "The remote filesize (%1$d B) is lower than 1 Byte. Please check the URL."
+msgid "The remote filesize (%s) is lower than 1 Byte. Please check the URL."
+msgstr ""
 
 msgid "The reseller account that you are trying to edit has not been found."
 msgstr ""
@@ -5951,9 +5949,8 @@ msgid "Your package is corrupt. Please correct it!"
 msgstr "Your package is corrupt. Please correct it!"
 
 #, php-format
-msgid ""
-"Your remote filesize (%1$d B) is lower than 1 Byte. Please check your URL."
-msgstr "Your remote filesize (%1$d B) is lower than 1 Byte. Please check your URL."
+msgid "Your remote filesize (%s) is lower than 1 Byte. Please check your URL."
+msgstr ""
 
 msgid ""
 "Your request for new password has been registered. You will receive an email"
@@ -6172,8 +6169,8 @@ msgid "older than 6 months"
 msgstr "older than 6 months"
 
 #, php-format
-msgid "or remote file (Max: %1$d MB)"
-msgstr "or remote file (Max: %1$d MB)"
+msgid "or remote file (Max: %s)"
+msgstr ""
 
 msgid "order"
 msgstr "order"

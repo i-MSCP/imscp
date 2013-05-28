@@ -11,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2013-05-26 19:11+0200\n"
-"PO-Revision-Date: 2013-05-26 17:11+0000\n"
+"POT-Creation-Date: 2013-05-28 20:04+0200\n"
+"PO-Revision-Date: 2013-05-28 18:04+0000\n"
 "Last-Translator: Torsten Widmann <info@goover.de>\n"
 "Language-Team: Danish (Denmark) (http://www.transifex.com/projects/p/i-MSCP/language/da_DK/)\n"
 "MIME-Version: 1.0\n"
@@ -1299,8 +1299,8 @@ msgid "Choose dir"
 msgstr "Vælg bibliotek"
 
 #, php-format
-msgid "Choose file (Max: %1$d MB)"
-msgstr "Vælg fil (Maks: %1$d MB)"
+msgid "Choose file (Max: %1$d MiB)"
+msgstr ""
 
 msgid "Choose hosting plan"
 msgstr "Vælg hosting plan"
@@ -3149,13 +3149,12 @@ msgid "Max value for the %s PHP directive"
 msgstr "Max værdi for %s PHP direktiv"
 
 #, php-format
-msgid ""
-"Max. remote filesize (%1$d MB) has been reached. Your remote file is %2$d MB"
-msgstr "Max. ekstern filstørrelse (%1$d MB) er blevet nået. Din eksterne fil er %2$d MB"
+msgid "Max. remote filesize (%s) has been reached. Your remote file is %s"
+msgstr ""
 
 #, php-format
-msgid "Max. remote filesize (%1$d MB) is reached. Your remote file is %2$d MB"
-msgstr "Max. ekstern filstørrelse (%1$d MB) er nået. Din eksterne fil er %2$d MB"
+msgid "Max. remote filesize (%s) is reached. Your remote file is %s"
+msgstr ""
 
 msgid ""
 "Maximal number of labels for domain names (<small>Excluding SLD & "
@@ -4911,9 +4910,8 @@ msgid "The plugin %s is protected. You cannot perform an action on it."
 msgstr "Dette plugin %s er beskyttet. Du kan ikke udføre en handling på det."
 
 #, php-format
-msgid ""
-"The remote filesize (%1$d B) is lower than 1 Byte. Please check the URL."
-msgstr "Den eksterne filstørrelse (%1$d B) er lavere end 1 byte. Kontroller webadressen."
+msgid "The remote filesize (%s) is lower than 1 Byte. Please check the URL."
+msgstr ""
 
 msgid "The reseller account that you are trying to edit has not been found."
 msgstr "Den forhandler konto, som du forsøger at redigere er ikke blevet fundet."
@@ -5948,9 +5946,8 @@ msgid "Your package is corrupt. Please correct it!"
 msgstr "Din pakke er beskadiget. Ret venligst dette!"
 
 #, php-format
-msgid ""
-"Your remote filesize (%1$d B) is lower than 1 Byte. Please check your URL."
-msgstr "Filens størrelse (%1$d B) er mindre end 1 Byte. Kontroller din URL."
+msgid "Your remote filesize (%s) is lower than 1 Byte. Please check your URL."
+msgstr ""
 
 msgid ""
 "Your request for new password has been registered. You will receive an email"
@@ -6169,8 +6166,8 @@ msgid "older than 6 months"
 msgstr "ældre end 6 måneder"
 
 #, php-format
-msgid "or remote file (Max: %1$d MB)"
-msgstr "eller fjernfil (Maks: %1$d MB)"
+msgid "or remote file (Max: %s)"
+msgstr ""
 
 msgid "order"
 msgstr "ordre"

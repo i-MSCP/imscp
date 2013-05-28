@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2013-05-26 19:11+0200\n"
-"PO-Revision-Date: 2013-05-26 17:11+0000\n"
+"POT-Creation-Date: 2013-05-28 20:04+0200\n"
+"PO-Revision-Date: 2013-05-28 18:04+0000\n"
 "Last-Translator: Torsten Widmann <info@goover.de>\n"
 "Language-Team: Japanese (Japan) (http://www.transifex.com/projects/p/i-MSCP/language/ja_JP/)\n"
 "MIME-Version: 1.0\n"
@@ -1297,8 +1297,8 @@ msgid "Choose dir"
 msgstr "ディレクトリ選択"
 
 #, php-format
-msgid "Choose file (Max: %1$d MB)"
-msgstr "ファイルを選択してください (最大: %1$d MB)"
+msgid "Choose file (Max: %1$d MiB)"
+msgstr ""
 
 msgid "Choose hosting plan"
 msgstr "ホスティングプラン選択"
@@ -3147,13 +3147,12 @@ msgid "Max value for the %s PHP directive"
 msgstr "%s のPHPディレクティブの最大値"
 
 #, php-format
-msgid ""
-"Max. remote filesize (%1$d MB) has been reached. Your remote file is %2$d MB"
-msgstr "リモートファイルサイズ (%1$d MB) が最大に達しています。あなたのリモートファイルは%2$d MBです"
+msgid "Max. remote filesize (%s) has been reached. Your remote file is %s"
+msgstr ""
 
 #, php-format
-msgid "Max. remote filesize (%1$d MB) is reached. Your remote file is %2$d MB"
-msgstr "最大。リモートファイルサイズ (%1$d MB) に達しました。あなたのリモートファイルは、%2$d MBです"
+msgid "Max. remote filesize (%s) is reached. Your remote file is %s"
+msgstr ""
 
 msgid ""
 "Maximal number of labels for domain names (<small>Excluding SLD & "
@@ -4909,9 +4908,8 @@ msgid "The plugin %s is protected. You cannot perform an action on it."
 msgstr " %sプラグインは保護されています。あなたはそれに対してアクションを実行することはできません。"
 
 #, php-format
-msgid ""
-"The remote filesize (%1$d B) is lower than 1 Byte. Please check the URL."
-msgstr "リモートファイルサイズ(%1$d B) が1バイト未満です。 URLを確認してください。"
+msgid "The remote filesize (%s) is lower than 1 Byte. Please check the URL."
+msgstr ""
 
 msgid "The reseller account that you are trying to edit has not been found."
 msgstr "編集しようとしている代理店アカウントが見つかりませんでした。"
@@ -5946,9 +5944,8 @@ msgid "Your package is corrupt. Please correct it!"
 msgstr "パッケージが破損しています。修正してください！"
 
 #, php-format
-msgid ""
-"Your remote filesize (%1$d B) is lower than 1 Byte. Please check your URL."
-msgstr "あなたのリモートファイルサイズ (%1$d B) が1バイト未満です。あなたのURLを確認してください。"
+msgid "Your remote filesize (%s) is lower than 1 Byte. Please check your URL."
+msgstr ""
 
 msgid ""
 "Your request for new password has been registered. You will receive an email"
@@ -6167,8 +6164,8 @@ msgid "older than 6 months"
 msgstr "過去半年"
 
 #, php-format
-msgid "or remote file (Max: %1$d MB)"
-msgstr "又はリモートファイル(最大: %1$d MB)"
+msgid "or remote file (Max: %s)"
+msgstr ""
 
 msgid "order"
 msgstr "オーダー"
