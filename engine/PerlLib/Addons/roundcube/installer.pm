@@ -52,7 +52,7 @@ our $VERSION = '0.2.0';
 
 =over 4
 
-=item registerSetupHooks(HooksManager)
+=item registerSetupHooks($hooksManager)
 
  Register Roundcube setup hook functions.
 
@@ -61,7 +61,7 @@ our $VERSION = '0.2.0';
 
 =cut
 
-sub registerSetupHooks
+sub registerSetupHooks($$)
 {
 	my $self = shift;
 	my $hooksManager = shift;
@@ -101,6 +101,7 @@ sub preinstall
 sub install
 {
 	my $self = shift;
+
 	my $rs = 0;
 
 	# Backup current configuration files if they exists (only relevant when running imscp-setup)
@@ -141,7 +142,7 @@ sub install
 	$self->_saveConfig();
 }
 
-=item askRoundcube()
+=item askRoundcube($hooksManager)
 
  Show roundcube installer questions.
 
@@ -150,7 +151,7 @@ sub install
 
 =cut
 
-sub askRoundcube
+sub askRoundcube($$)
 {
 	my $self = shift;
 	my $dialog = shift;
@@ -158,7 +159,6 @@ sub askRoundcube
 	my $dbType = main::setupGetQuestion('DATABASE_TYPE');
 	my $dbHost = main::setupGetQuestion('DATABASE_HOST');
 	my $dbPort = main::setupGetQuestion('DATABASE_PORT');
-	my $dbName = main::setupGetQuestion('DATABASE_NAME');
 
 	my $dbUser = $main::preseed{'ROUNDCUBE_SQL_USER'} || $self::roundcubeConfig{'DATABASE_USER'} ||
 		$self::roundcubeOldConfig{'DATABASE_USER'} || 'roundcube_user';
@@ -227,6 +227,7 @@ sub askRoundcube
 sub setGuiPermissions
 {
 	my $self = shift;
+
 	my $panelUName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} . $main::imscpConfig{'SYSTEM_USER_MIN_UID'};
 	my $panelGName = $panelUName;
 	my $rootDir = $main::imscpConfig{'ROOT_DIR'};
@@ -286,15 +287,16 @@ sub _init
 	$self;
 }
 
-=item _backupConfigFile()
+=item _backupConfigFile($cfgFile)
 
  Backup the given Roundcube configuration file.
 
+ Param string $cfgFile Path of file to backup
  Return int 0, other on failure
 
 =cut
 
-sub _backupConfigFile
+sub _backupConfigFile($$)
 {
 	my $self = shift;
 	my $cfgFile = shift;
@@ -320,6 +322,7 @@ sub _backupConfigFile
 sub _installFiles
 {
 	my $self = shift;
+
 	my $repoDir = $main::imscpConfig{'ADDON_PACKAGES_CACHE_DIR'};
 	my $rs = 0;
 
@@ -362,6 +365,7 @@ sub _installFiles
 sub _setupDatabase
 {
 	my $self = shift;
+
 	my $roundcubeDir = "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/webmail";
 	my $imscpDbName = $main::imscpConfig{'DATABASE_NAME'};
 	my $roundcubeDbName = $imscpDbName . '_roundcube';
@@ -460,6 +464,7 @@ sub _setupDatabase
 sub _generateDESKey
 {
 	my $self = shift;
+
 	$self::roundcubeConfig{'DES_KEY'} = $self::roundcubeOldConfig{'DES_KEY'}
 		if ! $self::roundcubeConfig{'DES_KEY'} && $self::roundcubeOldConfig{'DES_KEY'};
 
@@ -485,16 +490,24 @@ sub _generateDESKey
 sub _buildConfig
 {
 	my $self = shift;
+
 	my $panelUName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} . $main::imscpConfig{'SYSTEM_USER_MIN_UID'};
 	my $panelGName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} . $main::imscpConfig{'SYSTEM_USER_MIN_UID'};
 	my $confDir = "$main::imscpConfig{'GUI_PUBLIC_DIR'}/$self::roundcubeConfig{'ROUNDCUBE_CONF_DIR'}";
+
+	my $imscpDbName = $main::imscpConfig{'DATABASE_NAME'};
+	my $roundcubeDbName = $imscpDbName . '_roundcube';
+	my $dbUser = $self::roundcubeConfig{'DATABASE_USER'};
+	my $dbUserHost = main::setupGetQuestion('DATABASE_USER_HOST');
+	my $dbPass = $self::roundcubeConfig{'DATABASE_PASSWORD'};
+
 	my $rs = 0;
 
 	my $cfg = {
 		BASE_SERVER_VHOST => $main::imscpConfig{'BASE_SERVER_VHOST'},
-		DB_HOST => $main::imscpConfig{'DATABASE_HOST'},
-		DB_USER => $self::roundcubeConfig{'DATABASE_USER'},
-		DB_PASS => $self::roundcubeConfig{'DATABASE_PASSWORD'},
+		DB_HOST => $dbUserHost,
+		DB_USER => $dbUser,
+		DB_PASS => $dbPass,
 		TMP_PATH => "$main::imscpConfig{'GUI_ROOT_DIR'}/data/tmp",
 		DES_KEY => $self::roundcubeConfig{'DES_KEY'},
 		PLUGINS => $self::roundcubeConfig{'PLUGINS'}
@@ -514,7 +527,7 @@ sub _buildConfig
 		}
 
 		# The password changer plugin act on the i-MSCP database
-		$cfg->{'DB_NAME'} = ($_ eq 'imscp.pw.changer.inc.php') ? $main::imscpConfig{'DATABASE_NAME'} : 'imscp_roundcube';
+		$cfg->{'DB_NAME'} = ($_ eq 'imscp.pw.changer.inc.php') ? $imscpDbName : $roundcubeDbName;
 
 		$cfgTpl = iMSCP::Templator::process($cfg, $cfgTpl);
 		unless(defined $cfgTpl) {
@@ -560,8 +573,9 @@ sub _buildConfig
 sub _updateDatabase
 {
 	my $self = shift;
+
 	my $roundcubeDir = "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/webmail";
-	my $dbName = 'imscp_roundcube';
+	my $roundcubeDbName = $main::imscpConfig{'DATABASE_NAME'} . '_roundcube';
 	my $fromVersion = $self::roundcubeOldConfig{'ROUNDCUBE_VERSION'} || '0.8.4';
 
 	require iMSCP::Execute;
@@ -582,9 +596,9 @@ sub _updateDatabase
 	# Since the updatedb.sh script can exit with 0 on error, we made additional checks to be sure the db schema has been
 	# correctly updated (These checks will be removed when http://trac.roundcube.net/ticket/1489044 will be fixed)
 
-	my ($database, $errStr) = main::setupGetSqlConnect($dbName);
+	my ($database, $errStr) = main::setupGetSqlConnect($roundcubeDbName);
 	if(! $database) {
-		error("Unable to connect to the '$dbName' SQL database: $errStr");
+		error("Unable to connect to the '$roundcubeDbName' SQL database: $errStr");
 		return 1;
 	}
 

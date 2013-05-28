@@ -121,6 +121,7 @@ Tickets:
 	- Fixed #758: Bug - typo in Database.php (line 729)
 	- Fixed #759: Bug - new account setup with partly wrong vu**** id
 	- Fixed #760: Bug - No logs or not updated logs in user space since may 22 00:00
+	- Fixed #763: Bug - Errors in imscp-autoinstall when database is different from 'imscp'
 
 ------------------------------------------------------------------------------------------------------------------------
 i-MSCP 1.1.0-rc1.4
