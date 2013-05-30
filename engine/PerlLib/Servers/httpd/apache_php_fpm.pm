@@ -1975,7 +1975,7 @@ sub _addCfg($$)
 
 	if($data->{'FORWARD'} eq 'no') {
 		# Dertermine pool name according pool level setting
-		if($poolLevel eq 'per_site') {
+		if($poolLevel eq 'per_user') {
 			$self->{'data'}->{'POOL_NAME'} = $data->{'DOMAIN_NAME'};
 		} elsif($poolLevel eq 'per_domain') {
 			$self->{'data'}->{'POOL_NAME'} = $data->{'PARENT_DOMAIN_NAME'};
@@ -2063,11 +2063,8 @@ sub _addCfg($$)
 	if(
 		$data->{'FORWARD'} eq 'no' &&
 		(
-			# per_user
 			($poolLevel eq 'per_user' && $domainType eq 'dmn') ||
-			# per_domain
 			($poolLevel eq 'per_domain' && ($domainType eq 'dmn' || $domainType eq 'als')) ||
-			# per_site
 			$poolLevel eq 'per_site'
 		)
 	) {

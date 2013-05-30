@@ -1937,11 +1937,8 @@ sub _dmnFolders($$)
 	if(
 		$data->{'FORWARD'} eq 'no' &&
 		(
-			# per_user
 			($phpiniLevel eq 'per_user' && $domainType eq 'dmn') ||
-			# per_domain
 			($phpiniLevel eq 'per_domain' && ($domainType eq 'dmn' || $domainType eq 'als')) ||
-			# per_site
 			$phpiniLevel eq 'per_site'
 		)
 	) {
@@ -2145,11 +2142,8 @@ sub _addFiles($$)
 	if(
 		$data->{'FORWARD'} eq 'no' &&
 		(
-			# per_user
 			($phpiniLevel eq 'per_user' && $domainType eq 'dmn') ||
-			# per_domain
 			($phpiniLevel eq 'per_domain' && ($domainType eq 'dmn' || $domainType eq 'als')) ||
-			# per_site
 			$phpiniLevel eq 'per_site'
 		)
 	) {
