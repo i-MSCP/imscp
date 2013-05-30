@@ -149,21 +149,14 @@ function admin_getAdminGeneralInfo($tpl)
  */
 function admin_generateServerTrafficInfo($tpl)
 {
-	// Getting max server traffic per month in mebibytes
+	/** @var $cfg iMSCP_Config_Handler_File */
+	$cfg = iMSCP_Registry::get('config');
 
-	$query = "SELECT IFNULL(`straff_max`, 0) `maxTraffic`, IFNULL(`straff_warn`, 0) `warningTraffic` FROM `straff_settings`";
-	$stmt = exec_query($query);
+	$trafficLimitBytes = ($cfg->SERVER_TRAFFIC_LIMIT) ? $cfg->SERVER_TRAFFIC_LIMIT * 1048576 : 0;
+	$trafficWarningBytes = ($cfg->SERVER_TRAFFIC_WARN) ? $cfg->SERVER_TRAFFIC_WARN * 1048576 : 0;
 
-	if ($stmt->rowCount()) {
-		// Get bytes value for max server traffic
-		$trafficLimitBytes = $stmt->fields['maxTraffic'] * 1048576;
-		$trafficWarningBytes = $stmt->fields['warningTraffic'] * 1048576;
-
-		if (!$trafficWarningBytes) {
-			$trafficWarningBytes = $trafficLimitBytes;
-		}
-	} else {
-		$trafficLimitBytes = $trafficWarningBytes = 0;
+	if (!$trafficWarningBytes) {
+		$trafficWarningBytes = $trafficLimitBytes;
 	}
 
 	// Getting server traffic usage value in bytes for the current month

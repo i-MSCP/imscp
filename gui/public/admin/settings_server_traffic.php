@@ -24,18 +24,18 @@
  * Portions created by the i-MSCP Team are Copyright (C) 2010-2013 by
  * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
  *
- * @category	i-MSCP
- * @package		iMSCP_Core
- * @subpackage	Admin
- * @copyright	2001-2006 by moleSoftware GmbH
- * @copyright	2006-2010 by ispCP | http://isp-control.net
- * @copyright	2010-2013 by i-MSCP | http://i-mscp.net
- * @author		ispCP Team
- * @author		i-MSCP Team
- * @link		http://i-mscp.net
+ * @category    i-MSCP
+ * @package     iMSCP_Core
+ * @subpackage  Admin
+ * @copyright   2001-2006 by moleSoftware GmbH
+ * @copyright   2006-2010 by ispCP | http://isp-control.net
+ * @copyright   2010-2013 by i-MSCP | http://i-mscp.net
+ * @author      ispCP Team
+ * @author      i-MSCP Team
+ * @link        http://i-mscp.net
  */
 
-/******************************************************************************
+/***********************************************************************************************************************
  * Script functions
  */
 
@@ -65,9 +65,25 @@ function admin_updateServerTrafficSettings($trafficLimit, $trafficWarning)
 		$retVal = false;
 	}
 
-	if($retVal) {
-		$query = "UPDATE `straff_settings` SET `straff_max` = ?, `straff_warn` = ?";
-		exec_query($query, array($trafficLimit, $trafficWarning));
+	if ($retVal) {
+		/** @var $db_cfg iMSCP_Config_Handler_Db */
+		$dbConfig = iMSCP_Registry::get('dbConfig');
+
+		$dbConfig->SERVER_TRAFFIC_LIMIT = $trafficLimit;
+		$dbConfig->SERVER_TRAFFIC_WARN = $trafficWarning;
+
+		// gets the number of queries that were been executed
+		$updtCount = $dbConfig->countQueries('update');
+		$newCount = $dbConfig->countQueries('insert');
+
+		// An Update was been made in the database ?
+		if ($updtCount || $newCount) {
+			set_page_message(tr('Server traffic settings successfully updated.', $updtCount), 'success');
+			write_log("{$_SESSION['user_logged']} updated server  traffic settings.", E_USER_NOTICE);
+		} else {
+			set_page_message(tr("Nothing has been changed."), 'info');
+		}
+
 	}
 
 	return $retVal;
@@ -83,17 +99,12 @@ function admin_updateServerTrafficSettings($trafficLimit, $trafficWarning)
  */
 function admin_generatePage($tpl, $trafficLimit, $trafficWarning)
 {
-	if(empty($_POST)) {
-		$query = "SELECT `straff_max`, `straff_warn` FROM`straff_settings`";
-		$stmt = exec_query($query);
+	/** @var $cfg iMSCP_Config_Handler_File */
+	$cfg = iMSCP_Registry::get('config');
 
-		if($stmt->rowCount()) {
-			$trafficLimit = $stmt->fields['straff_max'];
-			$trafficWarning = $stmt->fields['straff_warn'];
-		} else {
-			$query = "INSERT INTO `straff_settings` SET `straff_max` = ?, `straff_warn` = ?";
-			exec_query($query, array($trafficLimit, $trafficWarning));
-		}
+	if (empty($_POST)) {
+		$trafficLimit = $cfg->SERVER_TRAFFIC_LIMIT;
+		$trafficWarning = $cfg->SERVER_TRAFFIC_WARN;
 	}
 
 	$tpl->assign(
@@ -104,7 +115,7 @@ function admin_generatePage($tpl, $trafficLimit, $trafficWarning)
 	);
 }
 
-/******************************************************************************
+/***********************************************************************************************************************
  * Main script
  */
 
@@ -119,12 +130,10 @@ $trafficLimit = $trafficWarning = 0;
 
 // Dispatches the request
 if (!empty($_POST)) {
-	$trafficLimit = !isset($_POST['max_traffic']) ?: clean_input($_POST['max_traffic']);
-	$trafficWarning = !isset($_POST['traffic_warning']) ?: clean_input($_POST['traffic_warning']);
+	$trafficLimit = !isset($_POST['max_traffic']) ? : clean_input($_POST['max_traffic']);
+	$trafficWarning = !isset($_POST['traffic_warning']) ? : clean_input($_POST['traffic_warning']);
 
-	if (admin_updateServerTrafficSettings($trafficLimit, $trafficWarning)) {
-		set_page_message(tr('Server traffic settings successfully updated.'), 'success');
-	}
+	admin_updateServerTrafficSettings($trafficLimit, $trafficWarning);
 }
 
 /** @var $cfg iMSCP_Config_Handler_File */

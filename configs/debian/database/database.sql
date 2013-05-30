@@ -84,7 +84,7 @@ INSERT IGNORE INTO `config` (`name`, `value`) VALUES
 ('PREVENT_EXTERNAL_LOGIN_ADMIN', '1'),
 ('PREVENT_EXTERNAL_LOGIN_RESELLER', '1'),
 ('PREVENT_EXTERNAL_LOGIN_CLIENT', '1'),
-('DATABASE_REVISION', '134'),
+('DATABASE_REVISION', '135'),
 ('PHPINI_ALLOW_URL_FOPEN', 'off'),
 ('PHPINI_DISPLAY_ERRORS', 'off'),
 ('PHPINI_UPLOAD_MAX_FILESIZE', '10'),
@@ -616,24 +616,6 @@ CREATE TABLE IF NOT EXISTS `ssl_certs` (
   PRIMARY KEY (`cert_id`),
   KEY `id` (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `straff_settings`
---
-
-CREATE TABLE IF NOT EXISTS `straff_settings` (
-  `straff_max` int(10) unsigned default NULL,
-  `straff_warn` int(10) unsigned default NULL,
-  `straff_email` int(10) unsigned default NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
---
--- Dumping data for table `straff_settings`
---
-
-INSERT IGNORE INTO `straff_settings` (`straff_max`, `straff_warn`, `straff_email`) VALUES (0, 0, 0);
 
 -- --------------------------------------------------------
 

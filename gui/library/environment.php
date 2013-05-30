@@ -222,11 +222,15 @@ if(!$config->IMSCP_SUPPORT_SYSTEM_TARGET) {
 	$config->IMSCP_SUPPORT_SYSTEM_TARGET = '_self';
 }
 
-# Converting some possible IDN to ACE
+// Converting some possible IDN to ACE
 $config->DEFAULT_ADMIN_ADDRESS = encode_idna($config->DEFAULT_ADMIN_ADDRESS);
 $config->SERVER_HOSTNAME = encode_idna($config->SERVER_HOSTNAME);
 $config->BASE_SERVER_VHOST = encode_idna($config->BASE_SERVER_VHOST);
 $config->DATABASE_HOST = encode_idna($config->DATABASE_HOST);
+
+// Server traffic settings
+$config->SERVER_TRAFFIC_LIMIT = 0;
+$config->SERVER_TRAFFIC_WARN = 0;
 
 // Plugins config namespace
 $config->PLUGIN = array();

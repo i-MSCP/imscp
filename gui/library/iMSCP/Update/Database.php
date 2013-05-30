@@ -1901,7 +1901,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	}
 
 	/**
-	 * Delete orders and orders_settings tables
+	 * Drop orders and orders_settings tables
 	 *
 	 * @author Laurent Declercq <l.declercq@nuxwin.com>
 	 * @return string SQL statement to be e executed
@@ -1938,5 +1938,16 @@ class iMSCP_Update_Database extends iMSCP_Update
 	protected function _databaseUpdate_134()
 	{
 		return "DELETE FROM `config` WHERE `name` = 'CUSTOM_ORDERPANEL_ID' OR `name` = 'ORDERS_EXPIRE_TIME'";
+	}
+
+	/**
+	 * Drop orders and orders_settings tables
+	 *
+	 * @author Laurent Declercq <l.declercq@nuxwin.com>
+	 * @return string SQL statement to be e executed
+	 */
+	protected function _databaseUpdate_135()
+	{
+		return "DROP TABLES IF EXISTS `straff_settings`";
 	}
 }
