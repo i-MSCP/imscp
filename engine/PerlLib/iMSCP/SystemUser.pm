@@ -104,9 +104,9 @@ sub addSystemUser
 	my ($stdout, $stderr);
 	my $rs = execute("@cmd", \$stdout, \$stderr);
 	debug($stdout) if $stdout;
-	error($stderr) if $stderr && $rs;
-	debug($stderr) if $stderr && ! $rs;
-	return $rs if $rs;
+	error($stderr) if $stderr && $rs && $rs != 12;
+	warning($stderr) if $stderr && ! $rs;
+	return $rs if $rs && $rs != 12;
 
 	0;
 }
@@ -139,7 +139,6 @@ sub delSystemUser
 		debug($stdout) if $stdout;
 		error($stderr) if $stderr && $rs && $rs != 12;
 		warning($stderr) if $stderr && ! $rs;
-
 		return $rs if $rs && $rs != 12;
 	}
 
