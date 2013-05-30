@@ -403,6 +403,9 @@ sub setup_db_vars
 	0;
 }
 
+# Added for BC issue with installers from software packages
+*setup_main_vars = *setup_db_vars;
+
 # Load all configuration parameters from a specific configuration file
 #
 # This subroutine load all configuration parameters from a specific file where
