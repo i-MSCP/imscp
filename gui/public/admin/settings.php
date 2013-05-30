@@ -24,9 +24,9 @@
  * Portions created by the i-MSCP Team are Copyright (C) 2010-2013 by
  * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
  *
- * @category	i-MSCP
- * @package		iMSCP_Core
- * @subpackage	Admin
+ * @category    i-MSCP
+ * @package     iMSCP_Core
+ * @subpackage  Admin
  * @copyright   2001-2006 by moleSoftware GmbH
  * @copyright   2006-2010 by ispCP | http://isp-control.net
  * @copyright   2010-2013 by i-MSCP | http://i-mscp.net
@@ -35,7 +35,7 @@
  * @link        http://i-mscp.net
  */
 
-/************************************************************************************
+/***********************************************************************************************************************
  * Main script
  */
 
@@ -94,15 +94,16 @@ if (isset($_POST['uaction']) && $_POST['uaction'] == 'apply') {
 	$phpini->setData('phpiniMaxExecutionTime', clean_input($_POST['phpini_max_execution_time']));
 	$phpini->setData('phpiniMaxInputTime', clean_input($_POST['phpini_max_input_time']));
 	$phpini->setData('phpiniMemoryLimit', clean_input($_POST['phpini_memory_limit']));
-	$phpini_open_basedir = isset($_POST['phpini_open_basedir']) ? clean_input($_POST['phpini_open_basedir']) : $cfg->PHPINI_OPEN_BASEDIR;
-
+	$phpini_open_basedir = isset($_POST['phpini_open_basedir'])
+		? clean_input($_POST['phpini_open_basedir']) : $cfg->PHPINI_OPEN_BASEDIR;
 
 	if (PHP_SAPI != 'apache2handler') {
 		$disabledFunctions = array();
 
-		foreach (array(
-					 'show_source', 'system', 'shell_exec', 'shell_exec', 'passthru', 'exec',
-					 'phpinfo', 'shell', 'symlink') as $function
+		foreach (
+			array(
+				'show_source', 'system', 'shell_exec', 'shell_exec', 'passthru', 'exec',  'phpinfo', 'shell', 'symlink'
+			) as $function
 		) {
 			if (isset($_POST[$function])) { // we are safe here
 				array_push($disabledFunctions, $function);
@@ -121,7 +122,7 @@ if (isset($_POST['uaction']) && $_POST['uaction'] == 'apply') {
 		|| (!is_number($pwd_chars)) || (!is_number($bruteforce_max_login))
 		|| (!is_number($bruteforce_block_time)) || (!is_number($bruteforce_between_time))
 		|| (!is_number($bruteforce_max_capcha)) || (!is_number($bruteforce_max_attempts_before_wait))
-		|| (!is_number($domain_rows_per_page))  || (!is_number($max_dnames_labels))
+		|| (!is_number($domain_rows_per_page)) || (!is_number($max_dnames_labels))
 		|| (!is_number($max_subdnames_labels))
 	) {
 		set_page_message(tr('Only positive numbers are allowed.'), 'error');
@@ -188,6 +189,7 @@ if (isset($_POST['uaction']) && $_POST['uaction'] == 'apply') {
 		// An Update was been made in the database ?
 		if ($updt_count > 0) {
 			set_page_message(tr('%d configuration parameter(s) have/has been updated.', $updt_count), 'success');
+
 		}
 
 		if ($new_count > 0) {
@@ -196,6 +198,8 @@ if (isset($_POST['uaction']) && $_POST['uaction'] == 'apply') {
 
 		if ($new_count == 0 && $updt_count == 0) {
 			set_page_message(tr("Nothing has been changed."), 'info');
+		} else {
+			write_log("{$_SESSION['user_logged']} updated settings.", E_USER_NOTICE);
 		}
 	}
 
