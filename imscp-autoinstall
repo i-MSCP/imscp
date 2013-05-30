@@ -52,6 +52,9 @@ newDebug('imscp-build.log');
 # Entering in silent mode
 silent(1);
 
+# Load config
+loadConfig() and fatal('Unable to load main configuration file');
+
 # Ensure that this script is run by root user
 iMSCP::Requirements->new()->user();
 
@@ -69,9 +72,6 @@ iMSCP::Getopt->parse(
   'build-only|b' => \$main::buildonly,
   'skip-packages|s' => \$main::skippackages
 );
-
-# Load config
-loadConfig() and fatal('Unable to load main configuration file');
 
 verbose(iMSCP::Getopt->debug || $main::imscpConfig{'DEBUG'} || 0);
 

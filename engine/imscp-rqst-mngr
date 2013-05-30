@@ -375,7 +375,10 @@ sub engine
 		debug("Processing encoded pushtring: $imscp_pkt_mngr_pushstring");
 
 		my ($stdout, $stderr);
-		$rs = execute("perl $main::imscpConfig{ENGINE_ROOT_DIR}/imscp-pkt-mngr \"$imscp_pkt_mngr_pushstring\"", \$stdout, \$stderr);
+		$rs = execute(
+			"$main::imscpConfig{'CMD_PERL'} $main::imscpConfig{ENGINE_ROOT_DIR}/imscp-pkt-mngr \"$imscp_pkt_mngr_pushstring\"",
+			\$stdout, \$stderr
+		);
 		debug($stdout) if $stdout;
 		error($stderr) if $stderr && $rs;
 		last if $rs;

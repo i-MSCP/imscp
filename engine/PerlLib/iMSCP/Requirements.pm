@@ -78,8 +78,8 @@ sub _init
 	};
 
 	$self->{'programs'} = {
-		'php' => { 'version' => 'php -v', 'regexp' => 'PHP ([\d.]+)', 'minversion' => '5.3.2' },
-		'perl' => { 'version' => 'perl -v', 'regexp' => 'v([\d.]+)', 'minversion' => '5.10.1' }
+		'php' => { 'version' => "$main::imscpConfig{'CMD_PHP'} -v", 'regexp' => 'PHP ([\d.]+)', 'minversion' => '5.3.2' },
+		'perl' => { 'version' => "$main::imscpConfig{'CMD_PERL'} -v", 'regexp' => 'v([\d.]+)', 'minversion' => '5.10.1' }
 	};
 }
 
@@ -153,12 +153,17 @@ sub _modules
 sub _externalProgram
 {
 	my $self = shift;
-	my ($rs, $stdout);
+	my ($rs, $stdout, $stderr);
 
-	fatal("Unable to find the 'which' program.") if(execute('which which', \$stdout, undef));
+	$rs = execute('which which', \$stdout, $stderr);
+	debug($stdout) if $stdout;
+	debug($stderr) if $rs && $stderr;
+	fatal("Unable to find the 'which' program.") if $rs;
 
 	for my $program (keys %{$self->{'programs'}}){
-		$rs = execute("which $program", \$stdout, undef);
+		$rs = execute("which $program", \$stdout, \$stderr);
+		debug($stdout) if $stdout;
+		debug($stderr) if $stderr && $rs;
 		fatal("Unable to find the '$program' program.") if $rs;
 
 		if($self->{'programs'}->{$program}->{'version'}) {
@@ -185,9 +190,12 @@ sub _externalProgram
 sub _programVersions
 {
 	my ($self, $program, $regexp, $minversion) = @_;
-	my $stdout;
+	my ($stdout, $stderr);
 
-	execute($program, \$stdout, undef) && fatal("Unable to find the $program program.");
+	execute($program, \$stdout, \$stderr);
+	debug($stdout) if $stdout;
+	debug($stderr) if $stderr;
+	fatal('Unable to find $program version: No output') if ! $stdout;
 
 	if($regexp) {
 		$stdout =~ m!$regexp!;

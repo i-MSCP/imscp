@@ -1941,7 +1941,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	}
 
 	/**
-	 * Drop orders and orders_settings tables
+	 * Drop straff_settings table
 	 *
 	 * @author Laurent Declercq <l.declercq@nuxwin.com>
 	 * @return string SQL statement to be e executed
