@@ -1071,7 +1071,7 @@ sub _fixPhpErrorReportingValues
 	}
 
 	my ($stdout, $stderr);
-	my $rs = execute("$main::imscpConfig{'PHP_CMD'} -v", \$stdout, \$stderr);
+	my $rs = execute("$main::imscpConfig{'CMD_PHP'} -v", \$stdout, \$stderr);
 	debug($stdout) if $stdout;
 	warning($stderr) if $stderr && ! $rs;
 	error($stderr) if $stderr && $rs;

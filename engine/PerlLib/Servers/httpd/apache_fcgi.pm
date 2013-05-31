@@ -509,11 +509,11 @@ sub delDmn($$)
 				my $skelDir;
 
 				if($data->{'DOMAIN_TYPE'} eq 'dmn') {
-					$skelDir = "$self->{'apacheCfgDir'}/skel/domain";
+					$skelDir = "$self->{'cfgDir'}/skel/domain";
 				} elsif($data->{'DOMAIN_TYPE'} eq 'als') {
-					$skelDir = "$self->{'apacheCfgDir'}/skel/alias";
+					$skelDir = "$self->{'cfgDir'}/skel/alias";
 				} else {
-					$skelDir = "$self->{'apacheCfgDir'}/skel/subdomain";
+					$skelDir = "$self->{'cfgDir'}/skel/subdomain";
 				}
 
 				for(iMSCP::Dir->new('dirname' => $skelDir)->getAll()) {
@@ -1152,7 +1152,7 @@ sub buildConf($$$)
 
  Build the given configuration file.
 
- Param string $file Absolute path to config file or config filename relative to the $self->{'apacheCfgDir'} directory
+ Param string $file Absolute path to config file or config filename relative to the $self->{'cfgDir'} directory
  Param hash_ref $options Reference to a hash containing options such as destination, mode, user and group for final file
  Return int 0 on success, other on failure
 
@@ -1987,11 +1987,11 @@ sub _addFiles($$)
 	my $skelDir;
 
 	if($data->{'DOMAIN_TYPE'} eq 'dmn') {
-		$skelDir = "$self->{'apacheCfgDir'}/skel/domain";
+		$skelDir = "$self->{'cfgDir'}/skel/domain";
 	} elsif($data->{'DOMAIN_TYPE'} eq 'als') {
-		$skelDir = "$self->{'apacheCfgDir'}/skel/alias";
+		$skelDir = "$self->{'cfgDir'}/skel/alias";
 	} else {
-		$skelDir = "$self->{'apacheCfgDir'}/skel/subdomain";
+		$skelDir = "$self->{'cfgDir'}/skel/subdomain";
 	}
 
 	my ($tmpDir, $stdout, $stderr);
