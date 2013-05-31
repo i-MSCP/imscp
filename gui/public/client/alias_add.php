@@ -40,25 +40,6 @@
  */
 
 /**
- * Check domain aliases limit.
- *
- * @param int $user_id Customer unique identifier
- */
-function check_client_domainalias_counts($user_id)
-{
-	$domainProperties = get_domain_default_props($user_id);
-
-	if ($domainProperties['domain_alias_limit'] != 0) {
-		$domainAliasesUsage = get_domain_running_als_cnt($domainProperties['domain_id']);
-
-		if($domainAliasesUsage >= $domainProperties['domain_alias_limit']) {
-			set_page_message(tr('You reached your domain aliases limit.'), 'error');
-			redirectTo('domains_manage.php');
-		}
-	}
-}
-
-/**
  * Initialize variables
  *
  * @return void
@@ -71,11 +52,11 @@ function client_initVariables()
 }
 
 /**
- * Show data fields.
+ * Generate page.
  *
  * @param iMSCP_pTemplate $tpl
  */
-function gen_al_page($tpl)
+function client_generatePage($tpl)
 {
 	global $alias_name, $forward, $forward_prefix, $mount_point;
 
@@ -403,7 +384,7 @@ if ($currentNumberDomainAliases != 0 && $currentNumberDomainAliases == $domainPr
 		echo "/" . encode_idna(strtolower($_POST['domain']));
 		exit;
 	} elseif ($_POST['uaction'] == 'add_alias') {
-		add_domain_alias();
+		client_addDomainAlias();
 	} else {
 		showBadRequestErrorPage();
 	}
@@ -411,7 +392,7 @@ if ($currentNumberDomainAliases != 0 && $currentNumberDomainAliases == $domainPr
 	client_initVariables();
 }
 
-gen_al_page($tpl);
+client_generatePage($tpl);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
