@@ -49,7 +49,6 @@ define('MT_ALSSUB_CATCHALL', 'alssub_catchall');
 /**
  * Generates user's properties.
  *
- * @throws iMSCP_Exception
  * @param int $resellerId Reseller unique identifier
  * @return array An array that contains user's properties
  */
@@ -66,7 +65,7 @@ function generate_reseller_user_props($resellerId)
 	$stmt = exec_query($query, $resellerId);
 
 	if (!$stmt->rowCount()) {
-		throw new iMSCP_Exception("No reseller with ID $resellerId");
+		return array_fill(0, 27, 0);
 	}
 
 	while ($data = $stmt->fetchRow()) {
