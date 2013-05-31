@@ -11,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2013-05-28 20:04+0200\n"
-"PO-Revision-Date: 2013-05-28 18:04+0000\n"
+"POT-Creation-Date: 2013-05-31 15:29+0200\n"
+"PO-Revision-Date: 2013-05-31 13:29+0000\n"
 "Last-Translator: Torsten Widmann <info@goover.de>\n"
 "Language-Team: Polish (Poland) (http://www.transifex.com/projects/p/i-MSCP/language/pl_PL/)\n"
 "MIME-Version: 1.0\n"
@@ -894,9 +894,6 @@ msgstr ""
 
 msgid "Alias name"
 msgstr "Nazwa aliasu"
-
-msgid "Alias scheduled for activation."
-msgstr "Alias oczekuje na aktywację."
 
 msgid "Alias scheduled for addition."
 msgstr "Alias oczekuje na dodanie."
@@ -1953,33 +1950,19 @@ msgstr "Osiągnięto limit aliasów domen."
 msgid "Domain alias name"
 msgstr "Nazwa aliasu domeny"
 
-msgid "Domain alias not modified."
-msgstr "Alias domeny nie został zmodyfikowany."
-
-msgid "Domain alias not scheduled for addition."
-msgstr "Alias domeny nie zakolejkowany do dodania."
-
 msgid "Domain alias scheduled for creation."
 msgstr "Alias domeny zakolejkowany do dodania."
 
 msgid "Domain alias scheduled for update."
 msgstr "Alias zaplanowany do zaktualizowania."
 
-msgid "Domain alias successfully modified"
-msgstr "Alias domeny zmodyfikowany pomyślnie"
-
 msgid "Domain alias successfully scheduled for addition"
-msgstr "Alias domeny pomyślnie zakolejkowany do dodania."
-
-msgid "Domain alias successfully scheduled for addition."
 msgstr "Alias domeny pomyślnie zakolejkowany do dodania."
 
 msgid "Domain alias successfully scheduled for deletion."
 msgstr "Alias domeny pomyślnie zakolejkowany do usunięcia."
 
-msgid ""
-"Domain alias you are trying to remove has FTP accounts.<br/>First remove "
-"them."
+msgid "Domain alias successfully updated"
 msgstr ""
 
 msgid ""
@@ -1996,19 +1979,11 @@ msgid ""
 msgstr ""
 
 msgid ""
-"Domain alias you are trying to remove has email accounts.<br/>First remove "
-"them."
-msgstr ""
-
-msgid ""
 "Domain alias you are trying to remove has subdomains. Remove them first."
 msgstr ""
 
 msgid "Domain aliases"
 msgstr "Aliasy domeny"
-
-msgid "Domain aliases limit reached."
-msgstr "Osiągnieto limit aliasów"
 
 msgid "Domain aliases limit<br/><i>(-1 disabled, 0 unlimited)</i>"
 msgstr ""
@@ -3544,14 +3519,11 @@ msgstr "Opcjonalne"
 msgid "Order"
 msgstr "Zamówienie"
 
-msgid "Order for domain alias deleted."
-msgstr "Zamówienie na alias usunięte."
+msgid "Order successfully deleted."
+msgstr ""
 
-msgid "Order for domain alias not deleted."
-msgstr "Zamówienie na alias nie zostało usunięte."
-
-msgid "Order not found. Nothing been deleted."
-msgstr "Zamówienie nie znalezione. Nic nie usunięto."
+msgid "Order successfully processed."
+msgstr ""
 
 msgid "Other in"
 msgstr "Inne przychodzące"
@@ -4946,15 +4918,9 @@ msgstr ""
 msgid "The values must not be equal"
 msgstr ""
 
-msgid "There is a subdomain with the same mount point."
-msgstr "Jest już domena z tym samym punktem montowania."
-
 msgid ""
 "There is an Error inside your package. Please check it!<br />Refresh your "
 "site to see the new status!"
-msgstr ""
-
-msgid "There is no customer records for this reseller to add an alias for."
 msgstr ""
 
 #, php-format
@@ -4974,6 +4940,9 @@ msgid ""
 " All users linked to this database will also be deleted if not linked to "
 "another database. Are you sure you want to delete the '%s' database?"
 msgstr "Baza danych zostanie permanentnie usunięta. Procesu nie można cofnąć. Wszyscy użytkownicy podpięci do tej bazy zostaną również usunięci jeśli nie są podpięci do innej bazy. Czy na pewno chcesz usunąć bazę '%s'?"
+
+msgid "This domain is not allowed."
+msgstr ""
 
 msgid "This htaccess group already exists."
 msgstr "Grupa htaccess już istnieje"
@@ -5466,6 +5435,11 @@ msgid ""
 msgstr ""
 
 msgid ""
+"We are sorry but you have reached the maximum number of domain aliases "
+"allowed by your subscription. Contact your reseller for more information."
+msgstr ""
+
+msgid ""
 "We are sorry, but the system is currently under maintenance.\n"
 "Please try again later."
 msgstr ""
@@ -5902,9 +5876,6 @@ msgstr "Musisz podać temat."
 
 msgid "You need a Database for this software"
 msgstr ""
-
-msgid "You reached your domain aliases limit."
-msgstr "Osiągnąłeś limit aliasów domeny."
 
 #, php-format
 msgid "You received %d new answer(s) to your support questions."

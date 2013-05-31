@@ -18,8 +18,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2013-05-28 20:04+0200\n"
-"PO-Revision-Date: 2013-05-28 18:04+0000\n"
+"POT-Creation-Date: 2013-05-31 15:29+0200\n"
+"PO-Revision-Date: 2013-05-31 13:29+0000\n"
 "Last-Translator: Torsten Widmann <info@goover.de>\n"
 "Language-Team: Catalan (Spain) (http://www.transifex.com/projects/p/i-MSCP/language/ca_ES/)\n"
 "MIME-Version: 1.0\n"
@@ -901,9 +901,6 @@ msgstr "Mail d'àlies"
 
 msgid "Alias name"
 msgstr "Nom de l'àlies"
-
-msgid "Alias scheduled for activation."
-msgstr "S'ha programat l'activació de l'alies."
 
 msgid "Alias scheduled for addition."
 msgstr "S'ha programat la creació de l'alies."
@@ -1960,34 +1957,20 @@ msgstr "Límit d'àlies de domini assolit."
 msgid "Domain alias name"
 msgstr "Nom de l'àlies de domini"
 
-msgid "Domain alias not modified."
-msgstr "No s'ha modificat l'àlies de domini."
-
-msgid "Domain alias not scheduled for addition."
-msgstr "Addició de l'àlies de domini anul·lada."
-
 msgid "Domain alias scheduled for creation."
 msgstr "Àlies de domini programat per ser afegit."
 
 msgid "Domain alias scheduled for update."
 msgstr "S'ha programat l'addició d'aquest àlies de domini."
 
-msgid "Domain alias successfully modified"
-msgstr "Àlies de domini modificat correctament."
-
 msgid "Domain alias successfully scheduled for addition"
 msgstr "Àlies de domini programat per afegir."
-
-msgid "Domain alias successfully scheduled for addition."
-msgstr "Àlies de domini programat per ésser afegit."
 
 msgid "Domain alias successfully scheduled for deletion."
 msgstr "Àlies de domini programat per eliminar."
 
-msgid ""
-"Domain alias you are trying to remove has FTP accounts.<br/>First remove "
-"them."
-msgstr "L'alias de domini que voleu el·liminar te comptes de FTP.<br/>Primer elimineu-les."
+msgid "Domain alias successfully updated"
+msgstr ""
 
 msgid ""
 "Domain alias you are trying to remove has Ftp accounts. Remove them first."
@@ -2003,19 +1986,11 @@ msgid ""
 msgstr ""
 
 msgid ""
-"Domain alias you are trying to remove has email accounts.<br/>First remove "
-"them."
-msgstr "L'alies de domini que voleu eliminar té comptes de correu. <br/>Primer elimineu-los. "
-
-msgid ""
 "Domain alias you are trying to remove has subdomains. Remove them first."
 msgstr ""
 
 msgid "Domain aliases"
 msgstr "Àlies de domini"
-
-msgid "Domain aliases limit reached."
-msgstr "S'ha assolit el límit d'àlies de domini."
 
 msgid "Domain aliases limit<br/><i>(-1 disabled, 0 unlimited)</i>"
 msgstr ""
@@ -3551,14 +3526,11 @@ msgstr "Opcional"
 msgid "Order"
 msgstr "Demanar"
 
-msgid "Order for domain alias deleted."
-msgstr "S'ha eliminat la sol·licitud d'aquest àlies de domini."
+msgid "Order successfully deleted."
+msgstr ""
 
-msgid "Order for domain alias not deleted."
-msgstr "Solicitud d'àlies de domini no eliminada."
-
-msgid "Order not found. Nothing been deleted."
-msgstr "Sol·licitud no trobada. No s'ha eliminat cap petició."
+msgid "Order successfully processed."
+msgstr ""
 
 msgid "Other in"
 msgstr "Altres entrada"
@@ -4953,16 +4925,10 @@ msgstr ""
 msgid "The values must not be equal"
 msgstr ""
 
-msgid "There is a subdomain with the same mount point."
-msgstr "Ja existeix un subdomini amb aquest punt de muntatge."
-
 msgid ""
 "There is an Error inside your package. Please check it!<br />Refresh your "
 "site to see the new status!"
 msgstr "Hi ha un Error dins el teu paquet. Si us plau verifica'l!<br/>Refresca el teu lloc per veure el nou estat!"
-
-msgid "There is no customer records for this reseller to add an alias for."
-msgstr ""
 
 #, php-format
 msgid "This IP (%s) is not assigned to any network card!"
@@ -4981,6 +4947,9 @@ msgid ""
 " All users linked to this database will also be deleted if not linked to "
 "another database. Are you sure you want to delete the '%s' database?"
 msgstr "Aquesta base de dades serà esborrada i no es podrà recuperar. Tots els usuaris enllaçats amb aquesta base de dades seràn també eliminats si no ténen accés a cap altra base de dades. Esteu segurs que voleu eliminar la base de dades '%s'?"
+
+msgid "This domain is not allowed."
+msgstr ""
 
 msgid "This htaccess group already exists."
 msgstr "Aquest grup de htaccess ja existeix."
@@ -5473,6 +5442,11 @@ msgid ""
 msgstr ""
 
 msgid ""
+"We are sorry but you have reached the maximum number of domain aliases "
+"allowed by your subscription. Contact your reseller for more information."
+msgstr ""
+
+msgid ""
 "We are sorry, but the system is currently under maintenance.\n"
 "Please try again later."
 msgstr "Malauradament, el sistema es troba actualment en manteniment. ⏎\nTorneu-ho a provar més tard."
@@ -5909,9 +5883,6 @@ msgstr "Introduïu l'assumpte del missatge."
 
 msgid "You need a Database for this software"
 msgstr "Necessites una Base de Dades per aquest programari"
-
-msgid "You reached your domain aliases limit."
-msgstr "Has assolit el teu limit d'àlies de domini."
 
 #, php-format
 msgid "You received %d new answer(s) to your support questions."

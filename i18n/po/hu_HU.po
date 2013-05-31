@@ -11,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2013-05-28 20:04+0200\n"
-"PO-Revision-Date: 2013-05-28 18:04+0000\n"
+"POT-Creation-Date: 2013-05-31 15:29+0200\n"
+"PO-Revision-Date: 2013-05-31 13:29+0000\n"
 "Last-Translator: Torsten Widmann <info@goover.de>\n"
 "Language-Team: Hungarian (Hungary) (http://www.transifex.com/projects/p/i-MSCP/language/hu_HU/)\n"
 "MIME-Version: 1.0\n"
@@ -147,7 +147,7 @@ msgid ""
 msgstr "\n\nHello {NAME},\n\nFelhasználó neve:  {USERNAME}\nJelszava:                {PASSWORD}\n\nA következő oldalon tud belépni: {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}\n\nKöszönjük, hogy igénybe vette szolgálatásainkat.\n\n___________________________\nThe i-MSCP Team\n\n"
 
 msgid " Admin / Support / Open Tickets"
-msgstr ""
+msgstr "Adminisztrátor / Ügyfélszolgálat / Nyitott hibajegyek"
 
 msgid " Client / Webtools / Custom Error Pages / Edit Custom Error Page"
 msgstr ""
@@ -212,7 +212,7 @@ msgstr "%1$s / %2$s"
 
 #, php-format
 msgid "%1$s of <b>unlimited</b>"
-msgstr ""
+msgstr "%1$s - <b>korlátlan</b>MB"
 
 #, php-format
 msgid "%1$s you are now logged as %2$s"
@@ -619,7 +619,7 @@ msgid "Add email account"
 msgstr "Email fiók hozzáadása"
 
 msgid "Add external mail server for {DOMAIN_UTF8}"
-msgstr ""
+msgstr "Külső levelező szerver hozzáadása a {DOMAIN_UTF8} -hez"
 
 msgid "Add group"
 msgstr "Csoport létrehozása"
@@ -682,7 +682,7 @@ msgid "Admin"
 msgstr "Adminisztrátor"
 
 msgid "Admin / Admin Log"
-msgstr ""
+msgstr "Adminisztrátor / Adminisztrátori napló"
 
 msgid "Admin / General / Overview"
 msgstr ""
@@ -700,43 +700,43 @@ msgid "Admin / Hosting plans / Add Hosting Plan"
 msgstr ""
 
 msgid "Admin / Profile / Account Summary"
-msgstr ""
+msgstr "Adminisztrátor / Profil / Összegzés"
 
 msgid "Admin / Profile / Language"
-msgstr ""
+msgstr "Adminisztrátor / Profil / Nyelv beállítása"
 
 msgid "Admin / Profile / Layout"
-msgstr ""
+msgstr "Adminisztrátor / Profil / Kinézet"
 
 msgid "Admin / Profile / Password"
-msgstr ""
+msgstr "Adminisztrátor / Profil / Jelszó megváltoztatása"
 
 msgid "Admin / Profile / Personal Data"
-msgstr ""
+msgstr "Adminisztrátor / Profil / Személyes adatok módosítása"
 
 msgid "Admin / Settings"
-msgstr ""
+msgstr "Adminisztrátor / Beállítások"
 
 msgid "Admin / Settings / IP management"
-msgstr ""
+msgstr "Adminisztrátor / Beállítások / IP-címek kezelése"
 
 msgid "Admin / Settings / Languages"
-msgstr ""
+msgstr "Adminisztrátor / Beállítások / Nyelv beállítása"
 
 msgid "Admin / Settings / Lost password mail"
-msgstr ""
+msgstr "Adminisztrátor / Beállítások / Üzenetsablon beállítása"
 
 msgid "Admin / Settings / Plugin management"
-msgstr ""
+msgstr "Adminisztrátor / Beállítások / Bővítőmodulok kezelése"
 
 msgid "Admin / Settings / Server traffic"
-msgstr ""
+msgstr "Adminisztrátor / Beállítások / Szerverforgalom beállításai"
 
 msgid "Admin / Settings / Service ports"
-msgstr ""
+msgstr "Adminisztrátor / Beállítások / Szolgáltatási portok"
 
 msgid "Admin / Settings / Software Management"
-msgstr ""
+msgstr "Adminisztrátor / Beállítások / Alkalmazástelepítő"
 
 msgid "Admin / Settings / Software options"
 msgstr ""
@@ -894,9 +894,6 @@ msgstr "Alternatív email cím"
 
 msgid "Alias name"
 msgstr "Domain álnév"
-
-msgid "Alias scheduled for activation."
-msgstr "Álnév jóváhagyásra beütemezve"
 
 msgid "Alias scheduled for addition."
 msgstr "Álnév hozzáadásra beütemezve"
@@ -1212,7 +1209,7 @@ msgstr "Mégsem"
 
 #, php-format
 msgid "Cannot validate %s record: %s"
-msgstr ""
+msgstr "Nem lehetett érvényesíteni a %s rekordot: %s"
 
 msgid "Canonical name"
 msgstr "Kanonikus név (CNAME)"
@@ -1568,10 +1565,10 @@ msgid "Custom DNS record scheduled for deletion."
 msgstr "Egyéni DNS rekord törlése beütemezve"
 
 msgid "Custom DNS record successfully scheduled for addition."
-msgstr ""
+msgstr "Egyéni DNS rekord hozzáadása beütemezve."
 
 msgid "Custom DNS record successfully scheduled for update."
-msgstr ""
+msgstr "Egyéni DNS rekord módosítása beütemezve."
 
 msgid "Custom DNS records"
 msgstr "Egyéni DNS rekordok"
@@ -1610,22 +1607,22 @@ msgid "Customer ID cannot have more than 200 characters"
 msgstr ""
 
 msgid "Customer account successfully scheduled for activation."
-msgstr ""
+msgstr "Ügyfél fiók aktiválása beütemezve."
 
 msgid "Customer account successfully scheduled for creation."
-msgstr ""
+msgstr "Ügyfél fiók létrehozása beütemezve."
 
 msgid "Customer account successfully scheduled for deactivation."
-msgstr ""
+msgstr "Ügyfél fiók deaktiválása beütemezve."
 
 msgid "Customer account successfully scheduled for deletion."
-msgstr ""
+msgstr "Ügyfél fiók törlése beütemezve."
 
 msgid "Customer account successfully updated."
 msgstr "Ügyfél fiók sikeresen módosítva"
 
 msgid "Customer account summary"
-msgstr ""
+msgstr "Ügyfél fiók összegzése"
 
 msgid "Customer consumption"
 msgstr "Ügyfél felhasználás"
@@ -1640,7 +1637,7 @@ msgid "Customer statistics"
 msgstr "Ügyfél statisztika"
 
 msgid "Customer successfully scheduled for deletion."
-msgstr ""
+msgstr "Ügyfél törlése beütemezve."
 
 msgid "Customer's layout color successfully updated."
 msgstr "Ügyfél kinézetének színe sikeresen frissítve"
@@ -1661,7 +1658,7 @@ msgid "DNS record already exist."
 msgstr "DNS rekord már létezik"
 
 msgid "DNS server unavailable. Please, contact your reseller."
-msgstr ""
+msgstr "DNS szerver nem elérhető. Kérem lépjen kapcsolatba viszonteladójával."
 
 msgid "DOWN"
 msgstr "ÁLL"
@@ -1810,10 +1807,10 @@ msgid "Delete CatchAll"
 msgstr "Catch-all törlése"
 
 msgid "Delete Customer - {DOMAIN_NAME}"
-msgstr ""
+msgstr "{DOMAIN_NAME} - ügyfél törlése"
 
 msgid "Delete account"
-msgstr ""
+msgstr "Fiók törlése"
 
 msgid "Delete all tickets"
 msgstr "Minden hibajegy törlése"
@@ -1953,34 +1950,20 @@ msgstr "Több domain álnév nem hozható létre, elérte a korlátot"
 msgid "Domain alias name"
 msgstr "Domain álnév"
 
-msgid "Domain alias not modified."
-msgstr "Domain álnév nincs módosítva"
-
-msgid "Domain alias not scheduled for addition."
-msgstr "Domain álnév nincs beütemezve létrehozásra"
-
 msgid "Domain alias scheduled for creation."
 msgstr "Domain álnév beütemezve létrehozásra"
 
 msgid "Domain alias scheduled for update."
 msgstr "Domain álnév módosítása beütemezve"
 
-msgid "Domain alias successfully modified"
-msgstr "Domain álnév sikeresen módosítva"
-
 msgid "Domain alias successfully scheduled for addition"
 msgstr "Domain álnév beütemezve létrehozásra"
-
-msgid "Domain alias successfully scheduled for addition."
-msgstr "Domain álnév létrehozása beütemezve"
 
 msgid "Domain alias successfully scheduled for deletion."
 msgstr "Domain álnév beütemezve megszüntetésre"
 
-msgid ""
-"Domain alias you are trying to remove has FTP accounts.<br/>First remove "
-"them."
-msgstr "A törölni kívánt domain álnévhez FTP hozzáférés tartozik!<br/>Először azt kell törölni!"
+msgid "Domain alias successfully updated"
+msgstr ""
 
 msgid ""
 "Domain alias you are trying to remove has Ftp accounts. Remove them first."
@@ -1996,19 +1979,11 @@ msgid ""
 msgstr ""
 
 msgid ""
-"Domain alias you are trying to remove has email accounts.<br/>First remove "
-"them."
-msgstr "A törölni kívánt domain álnévhez email fiók tartozik!<br/>Előbb azt kell törölni!"
-
-msgid ""
 "Domain alias you are trying to remove has subdomains. Remove them first."
 msgstr ""
 
 msgid "Domain aliases"
 msgstr "Domain álnevek"
-
-msgid "Domain aliases limit reached."
-msgstr "Több domain álnév nem hozható létre, elérte a korlátot"
 
 msgid "Domain aliases limit<br/><i>(-1 disabled, 0 unlimited)</i>"
 msgstr "Domain álnevek száma<br/><i>(-1 tiltva, 0 korlátlan)</i>"
@@ -2020,7 +1995,7 @@ msgid "Domain already registered on the system."
 msgstr "Ezt a domaint már regisztrálták a rendszerben"
 
 msgid "Domain and SQL databases"
-msgstr ""
+msgstr "Domain és adatbázisok"
 
 msgid "Domain data were been altered. Please try again."
 msgstr "Domain adatai megváltoztak. Újra be kell jelentkezni!"
@@ -2074,7 +2049,7 @@ msgid "Domain successfully updated."
 msgstr "Domain tulajdonságai sikeresen frissítve"
 
 msgid "Domain type"
-msgstr ""
+msgstr "Domain típusa"
 
 msgid "Domain with same name already exists."
 msgstr "Ez a domain név már létezik"
@@ -2318,7 +2293,7 @@ msgid "External mail server entries successfully scheduled for deletion."
 msgstr "Külső levelező szerver bejegyzések törlése sikeresen beütemezve"
 
 msgid "External mail server entries successfully scheduled for update."
-msgstr ""
+msgstr "Külső levelező szerver bejegyzések frissitése sikeresen beütemezve."
 
 msgid "External mail servers"
 msgstr "Külső levelező szerverek"
@@ -2330,10 +2305,10 @@ msgid "FTP account"
 msgstr "FTP azonosító"
 
 msgid "FTP account successfully added."
-msgstr ""
+msgstr "FTP azonosító hozzáadva."
 
 msgid "FTP account successfully deleted."
-msgstr ""
+msgstr "FTP azonosító törölve."
 
 msgid "FTP account successfully updated."
 msgstr "FTP azonosító sikeresen módosítva"
@@ -2345,7 +2320,7 @@ msgid "FTP accounts limit <br /><i>(-1 disabled, 0 unlimited)</i>"
 msgstr "FTP fiókok száma<br /><i>(-1 tiltva, 0 korlátlan)</i>"
 
 msgid "FTP accounts limit reached."
-msgstr ""
+msgstr "FTP azonosítók maximális száma elérve."
 
 msgid "FTP accounts limit<br/><i>(-1 disabled, 0 unlimited)</i>"
 msgstr "FTP fiókok száma<br/><i>(-1 tiltva, 0 korlátlan)</i>"
@@ -2455,7 +2430,7 @@ msgid "Ftp account"
 msgstr "FTP azonosító"
 
 msgid "Ftp account data"
-msgstr ""
+msgstr "FTP azonosító adatai"
 
 msgid "Ftp account with same username already exists."
 msgstr ""
@@ -2473,7 +2448,7 @@ msgid "Gender"
 msgstr "Nem"
 
 msgid "General"
-msgstr ""
+msgstr "Általános beállítások"
 
 msgid "General information"
 msgstr "Kezdőlap"
@@ -2543,16 +2518,16 @@ msgid "Host must be filled."
 msgstr "a \"Kiszolgáló\" (host) címe nincs megadva"
 
 msgid "Hosting Plans"
-msgstr ""
+msgstr "Tárhely csomagok"
 
 msgid "Hosting plan"
 msgstr "Tárhely csomag"
 
 msgid "Hosting plan availability"
-msgstr ""
+msgstr "Elérhető tárhely csomagok"
 
 msgid "Hosting plan has been successfully deleted."
-msgstr ""
+msgstr "Tárhely csomag sikeresen törölve"
 
 msgid "Hosting plan limits exceed reseller limits."
 msgstr "Tárhely csomag korlátai meghaladják a viszonteladóét"
@@ -2561,7 +2536,7 @@ msgid "Hosting plan properties"
 msgstr "Tárhely csomag tulajdonságai"
 
 msgid "Hosting plan successfully added."
-msgstr ""
+msgstr "Tárhely csomag sikeresen hozzáadva"
 
 msgid "Hosting plan successfully created."
 msgstr "Tárhely csomag sikeresen létrejött"
@@ -2930,7 +2905,7 @@ msgid "Load (1 Min, 5 Min, 15 Min)"
 msgstr "Terhelés (Load: 1, 5, 15 percre vonatkozóan)"
 
 msgid "Log entries successfully deleted."
-msgstr ""
+msgstr "Naplóbejegyzések sikeresen törölve."
 
 msgid "Log in to answer"
 msgstr "Jelentkezzen be a válaszoláshoz"
@@ -3277,7 +3252,7 @@ msgid "Never"
 msgstr "Soha"
 
 msgid "Never expire"
-msgstr ""
+msgstr "Soha nem jár le"
 
 msgid "Never expires"
 msgstr "Soha nem jár le"
@@ -3370,10 +3345,10 @@ msgid "No group found."
 msgstr "Nem található csoport"
 
 msgid "No hosting plan available"
-msgstr ""
+msgstr "Nincs elérhető tárhely csomag"
 
 msgid "No hosting plan available."
-msgstr ""
+msgstr "Nincs elérhető tárhely csomag."
 
 msgid "No hosting plan available. Please contact your administrator."
 msgstr ""
@@ -3436,7 +3411,7 @@ msgid "No user found."
 msgstr "Nem található felhasználó"
 
 msgid "No user system errors"
-msgstr ""
+msgstr "Nincs rendszer szintű ügyfél hiba"
 
 msgid "No users found for this reseller."
 msgstr "Nincs felhasználója ennek a viszonteladónak"
@@ -3544,14 +3519,11 @@ msgstr "Opcionális"
 msgid "Order"
 msgstr "Megrendelés"
 
-msgid "Order for domain alias deleted."
-msgstr "A megrendelt domain álnév törölve"
+msgid "Order successfully deleted."
+msgstr ""
 
-msgid "Order for domain alias not deleted."
-msgstr "A megrendelt domain álnév nincs törölve"
-
-msgid "Order not found. Nothing been deleted."
-msgstr "Megrendelés nem található"
+msgid "Order successfully processed."
+msgstr ""
 
 msgid "Other in"
 msgstr "Egyéb (bejövő)"
@@ -3923,7 +3895,7 @@ msgid "Priority: %s\n"
 msgstr "Prioritás: %s\n"
 
 msgid "Process update"
-msgstr ""
+msgstr "Frissítés folyamata"
 
 msgid "Profile"
 msgstr "Profil"
@@ -3939,7 +3911,7 @@ msgid "Protect"
 msgstr "Levédés"
 
 msgid "Protect Web folders"
-msgstr ""
+msgstr "Webes mappák védelme"
 
 msgid "Protect it"
 msgstr "Levédés"
@@ -4946,16 +4918,10 @@ msgstr "Az érték nem található a veremben"
 msgid "The values must not be equal"
 msgstr "Az értékek nem lehetnek egyenlőek"
 
-msgid "There is a subdomain with the same mount point."
-msgstr "Már van egy aldomain ugyanezzel a csatolási ponttal"
-
 msgid ""
 "There is an Error inside your package. Please check it!<br />Refresh your "
 "site to see the new status!"
 msgstr "Van egy hiba a csomagban. Kérjük ellenőrizze! <br /> Frissítise a weboldalt az új állapot megtekintéséhez!"
-
-msgid "There is no customer records for this reseller to add an alias for."
-msgstr ""
 
 #, php-format
 msgid "This IP (%s) is not assigned to any network card!"
@@ -4974,6 +4940,9 @@ msgid ""
 " All users linked to this database will also be deleted if not linked to "
 "another database. Are you sure you want to delete the '%s' database?"
 msgstr "Az adatbázis véglegesen törölve lesz. A törölt tartalom nem visszaállítható. Minden felhasználó, aki csak ehhez az adatbázishoz van hozzárendelve, törölve lesz. Biztosan törölni akarod a(z) %s adatbázist?"
+
+msgid "This domain is not allowed."
+msgstr ""
 
 msgid "This htaccess group already exists."
 msgstr "Ez a védett csoport már létezik"
@@ -5466,6 +5435,11 @@ msgid ""
 msgstr "Sajnáljuk, de elérte az előfizetés által megengedett domain álnevek maximális számát. További információért forduljon a viszonteladójához!"
 
 msgid ""
+"We are sorry but you have reached the maximum number of domain aliases "
+"allowed by your subscription. Contact your reseller for more information."
+msgstr ""
+
+msgid ""
 "We are sorry, but the system is currently under maintenance.\n"
 "Please try again later."
 msgstr "Sajnáljuk, de a rendszer jelenleg karbantartás alatt van.\nKérjük próbálja meg később!"
@@ -5474,7 +5448,7 @@ msgid "Web Statistics"
 msgstr "Webes statisztikák"
 
 msgid "Web files only"
-msgstr ""
+msgstr "Csak webes fájlok"
 
 msgid "Web in"
 msgstr "Web (bejövő)"
@@ -5735,7 +5709,7 @@ msgid "You did not fill all required fields"
 msgstr "Nincs kitöltve az összes szükséges mező"
 
 msgid "You do not have FTP accounts."
-msgstr ""
+msgstr "Nincsenek FTP azonosítók."
 
 msgid "You do not have any software uploaded yet"
 msgstr "Nem található feltöltött program"
@@ -5903,15 +5877,12 @@ msgstr "Adja meg az üzenet tárgyát"
 msgid "You need a Database for this software"
 msgstr "Ennek a szoftvernek adabázisra van szüksége"
 
-msgid "You reached your domain aliases limit."
-msgstr "Elérte a domain álnevek korlátját"
-
 #, php-format
 msgid "You received %d new answer(s) to your support questions."
 msgstr "Önnek %d új válasz(a) érkezett a támogatással kapcsolatos kérdéseire"
 
 msgid "Your account has expired."
-msgstr ""
+msgstr "Az Ön hozzáférése - fiókja - lejárt."
 
 msgid "Your account has expired. Please renew your subscription."
 msgstr "Az Ön hozzáférése (fiókja) lejárt. Meghosszabbításához kérjük előfizetésének megújítását."

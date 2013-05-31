@@ -14,8 +14,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2013-05-28 20:04+0200\n"
-"PO-Revision-Date: 2013-05-28 18:04+0000\n"
+"POT-Creation-Date: 2013-05-31 15:29+0200\n"
+"PO-Revision-Date: 2013-05-31 13:29+0000\n"
 "Last-Translator: Torsten Widmann <info@goover.de>\n"
 "Language-Team: Spanish (Spain) (http://www.transifex.com/projects/p/i-MSCP/language/es_ES/)\n"
 "MIME-Version: 1.0\n"
@@ -897,9 +897,6 @@ msgstr "Alias de correo"
 
 msgid "Alias name"
 msgstr "Nombre de alias de dominio"
-
-msgid "Alias scheduled for activation."
-msgstr "Alias programado para su activación."
 
 msgid "Alias scheduled for addition."
 msgstr "Àlias programado para ser añadido."
@@ -1956,34 +1953,20 @@ msgstr "Se ha alcanzado el límite de álias de dominio."
 msgid "Domain alias name"
 msgstr "Nombre del àlias de dominio"
 
-msgid "Domain alias not modified."
-msgstr "Álias de dominio no ha sido modificado."
-
-msgid "Domain alias not scheduled for addition."
-msgstr "Álias de dominio no programado para ser añadido."
-
 msgid "Domain alias scheduled for creation."
 msgstr "Álias de dominio programado para su creación."
 
 msgid "Domain alias scheduled for update."
 msgstr "Alias de dominio programado para su actualización."
 
-msgid "Domain alias successfully modified"
-msgstr "Álias de dominio modificado correctamente."
-
 msgid "Domain alias successfully scheduled for addition"
-msgstr "Álias de dominio programado para ser añadido."
-
-msgid "Domain alias successfully scheduled for addition."
 msgstr "Álias de dominio programado para ser añadido."
 
 msgid "Domain alias successfully scheduled for deletion."
 msgstr "Álias de dominio programado para ser eliminado."
 
-msgid ""
-"Domain alias you are trying to remove has FTP accounts.<br/>First remove "
-"them."
-msgstr "El alias de dominio que intentas eliminar tiene cuentas FTP.<br>Elimínalas primero."
+msgid "Domain alias successfully updated"
+msgstr ""
 
 msgid ""
 "Domain alias you are trying to remove has Ftp accounts. Remove them first."
@@ -1999,19 +1982,11 @@ msgid ""
 msgstr ""
 
 msgid ""
-"Domain alias you are trying to remove has email accounts.<br/>First remove "
-"them."
-msgstr "El alias de dominio que estás intentando eliminar tiene cuentas de email.<br>Elimínalas primero."
-
-msgid ""
 "Domain alias you are trying to remove has subdomains. Remove them first."
 msgstr ""
 
 msgid "Domain aliases"
 msgstr "Alias de dominio"
-
-msgid "Domain aliases limit reached."
-msgstr "Se alcanzó el límite de álias de dominio."
 
 msgid "Domain aliases limit<br/><i>(-1 disabled, 0 unlimited)</i>"
 msgstr "Límite de alias de dominio<br><i>(-1 deshabilitado, 0 ilimitadas)</i>"
@@ -3547,14 +3522,11 @@ msgstr "Opcional"
 msgid "Order"
 msgstr "Pedido"
 
-msgid "Order for domain alias deleted."
-msgstr "El pedido de alias de dominio ha sido eliminado."
+msgid "Order successfully deleted."
+msgstr ""
 
-msgid "Order for domain alias not deleted."
-msgstr "La orden de álias de dominio no ha sido eliminada."
-
-msgid "Order not found. Nothing been deleted."
-msgstr "Pedido no encontrado. No se ha eliminado nada."
+msgid "Order successfully processed."
+msgstr ""
 
 msgid "Other in"
 msgstr "Otros entrantes"
@@ -4949,16 +4921,10 @@ msgstr "El valor no se ha encontrado en la pila"
 msgid "The values must not be equal"
 msgstr "Los valores no deben ser iguales"
 
-msgid "There is a subdomain with the same mount point."
-msgstr "Ya existe un subdominio con el mismo punto de montaje."
-
 msgid ""
 "There is an Error inside your package. Please check it!<br />Refresh your "
 "site to see the new status!"
 msgstr "Tu paquete contiene un error. ¡Por favor, compruebalo!<br />¡Refresca tu sitio para ver el nuevo estado!"
-
-msgid "There is no customer records for this reseller to add an alias for."
-msgstr ""
 
 #, php-format
 msgid "This IP (%s) is not assigned to any network card!"
@@ -4977,6 +4943,9 @@ msgid ""
 " All users linked to this database will also be deleted if not linked to "
 "another database. Are you sure you want to delete the '%s' database?"
 msgstr "Esta Base de Datos será eliminada permanentemente. El proceso es irreversible. Todos los usuarios vinculados a esta Base de Datos tambien seran eliminados excepto si estan vinculados a otra Base de Datos. ¿Desea realmente eliminar la Base de Datos '%s' ? "
+
+msgid "This domain is not allowed."
+msgstr ""
 
 msgid "This htaccess group already exists."
 msgstr "Este grupo htaccess ya existe."
@@ -5469,6 +5438,11 @@ msgid ""
 msgstr "Lo sentimos, pero ha alcanzado el número máximo de alias de dominio permitidos por tu suscripción. Pónte en contacto con su revendedor para más información."
 
 msgid ""
+"We are sorry but you have reached the maximum number of domain aliases "
+"allowed by your subscription. Contact your reseller for more information."
+msgstr ""
+
+msgid ""
 "We are sorry, but the system is currently under maintenance.\n"
 "Please try again later."
 msgstr "We are sorry, but the system is currently under maintenance.\nPlease try again later."
@@ -5905,9 +5879,6 @@ msgstr "Debe especificar un asunto."
 
 msgid "You need a Database for this software"
 msgstr "Necesitas una Base de Datos para este software"
-
-msgid "You reached your domain aliases limit."
-msgstr "Has alcanzado el límite de alias de dominio."
 
 #, php-format
 msgid "You received %d new answer(s) to your support questions."

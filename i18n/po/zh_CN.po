@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2013-05-28 20:04+0200\n"
-"PO-Revision-Date: 2013-05-28 18:04+0000\n"
+"POT-Creation-Date: 2013-05-31 15:29+0200\n"
+"PO-Revision-Date: 2013-05-31 13:29+0000\n"
 "Last-Translator: Torsten Widmann <info@goover.de>\n"
 "Language-Team: Chinese (China) (http://www.transifex.com/projects/p/i-MSCP/language/zh_CN/)\n"
 "MIME-Version: 1.0\n"
@@ -890,9 +890,6 @@ msgstr ""
 
 msgid "Alias name"
 msgstr "别名名称"
-
-msgid "Alias scheduled for activation."
-msgstr ""
 
 msgid "Alias scheduled for addition."
 msgstr ""
@@ -1949,33 +1946,19 @@ msgstr ""
 msgid "Domain alias name"
 msgstr ""
 
-msgid "Domain alias not modified."
-msgstr ""
-
-msgid "Domain alias not scheduled for addition."
-msgstr ""
-
 msgid "Domain alias scheduled for creation."
 msgstr ""
 
 msgid "Domain alias scheduled for update."
 msgstr ""
 
-msgid "Domain alias successfully modified"
-msgstr ""
-
 msgid "Domain alias successfully scheduled for addition"
-msgstr ""
-
-msgid "Domain alias successfully scheduled for addition."
 msgstr ""
 
 msgid "Domain alias successfully scheduled for deletion."
 msgstr ""
 
-msgid ""
-"Domain alias you are trying to remove has FTP accounts.<br/>First remove "
-"them."
+msgid "Domain alias successfully updated"
 msgstr ""
 
 msgid ""
@@ -1992,19 +1975,11 @@ msgid ""
 msgstr ""
 
 msgid ""
-"Domain alias you are trying to remove has email accounts.<br/>First remove "
-"them."
-msgstr ""
-
-msgid ""
 "Domain alias you are trying to remove has subdomains. Remove them first."
 msgstr ""
 
 msgid "Domain aliases"
 msgstr "域名别名"
-
-msgid "Domain aliases limit reached."
-msgstr ""
 
 msgid "Domain aliases limit<br/><i>(-1 disabled, 0 unlimited)</i>"
 msgstr ""
@@ -3540,13 +3515,10 @@ msgstr ""
 msgid "Order"
 msgstr "订单"
 
-msgid "Order for domain alias deleted."
+msgid "Order successfully deleted."
 msgstr ""
 
-msgid "Order for domain alias not deleted."
-msgstr ""
-
-msgid "Order not found. Nothing been deleted."
+msgid "Order successfully processed."
 msgstr ""
 
 msgid "Other in"
@@ -4942,15 +4914,9 @@ msgstr ""
 msgid "The values must not be equal"
 msgstr ""
 
-msgid "There is a subdomain with the same mount point."
-msgstr ""
-
 msgid ""
 "There is an Error inside your package. Please check it!<br />Refresh your "
 "site to see the new status!"
-msgstr ""
-
-msgid "There is no customer records for this reseller to add an alias for."
 msgstr ""
 
 #, php-format
@@ -4969,6 +4935,9 @@ msgid ""
 "This database will be permanently deleted. This process cannot be recovered."
 " All users linked to this database will also be deleted if not linked to "
 "another database. Are you sure you want to delete the '%s' database?"
+msgstr ""
+
+msgid "This domain is not allowed."
 msgstr ""
 
 msgid "This htaccess group already exists."
@@ -5462,6 +5431,11 @@ msgid ""
 msgstr ""
 
 msgid ""
+"We are sorry but you have reached the maximum number of domain aliases "
+"allowed by your subscription. Contact your reseller for more information."
+msgstr ""
+
+msgid ""
 "We are sorry, but the system is currently under maintenance.\n"
 "Please try again later."
 msgstr ""
@@ -5897,9 +5871,6 @@ msgid "You must specify a subject."
 msgstr ""
 
 msgid "You need a Database for this software"
-msgstr ""
-
-msgid "You reached your domain aliases limit."
 msgstr ""
 
 #, php-format

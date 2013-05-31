@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2013-05-28 20:04+0200\n"
-"PO-Revision-Date: 2013-05-28 18:04+0000\n"
+"POT-Creation-Date: 2013-05-31 15:29+0200\n"
+"PO-Revision-Date: 2013-05-31 13:29+0000\n"
 "Last-Translator: Torsten Widmann <info@goover.de>\n"
 "Language-Team: Ukrainian (Ukraine) (http://www.transifex.com/projects/p/i-MSCP/language/uk_UA/)\n"
 "MIME-Version: 1.0\n"
@@ -895,9 +895,6 @@ msgstr "алиас почты"
 
 msgid "Alias name"
 msgstr "Ім'я аліаса"
-
-msgid "Alias scheduled for activation."
-msgstr "Алиас запланирован для активации."
 
 msgid "Alias scheduled for addition."
 msgstr "Алиас запланирован для добавления."
@@ -1954,33 +1951,19 @@ msgstr "Лимит алиаса достигнут."
 msgid "Domain alias name"
 msgstr "Имя адиаса домена"
 
-msgid "Domain alias not modified."
-msgstr "Алиас домена не изменен."
-
-msgid "Domain alias not scheduled for addition."
-msgstr "Алиас домена не помечен для добавления."
-
 msgid "Domain alias scheduled for creation."
 msgstr "Алиас домена помечен для создания."
 
 msgid "Domain alias scheduled for update."
 msgstr "Алиас домена помечен для обновления."
 
-msgid "Domain alias successfully modified"
-msgstr "Алиас домена успешно изменен"
-
 msgid "Domain alias successfully scheduled for addition"
-msgstr "Алиас домена успешно помечен для добавления"
-
-msgid "Domain alias successfully scheduled for addition."
 msgstr "Алиас домена успешно помечен для добавления"
 
 msgid "Domain alias successfully scheduled for deletion."
 msgstr "Алиас домена успешно помечен для удаления."
 
-msgid ""
-"Domain alias you are trying to remove has FTP accounts.<br/>First remove "
-"them."
+msgid "Domain alias successfully updated"
 msgstr ""
 
 msgid ""
@@ -1997,19 +1980,11 @@ msgid ""
 msgstr ""
 
 msgid ""
-"Domain alias you are trying to remove has email accounts.<br/>First remove "
-"them."
-msgstr ""
-
-msgid ""
 "Domain alias you are trying to remove has subdomains. Remove them first."
 msgstr ""
 
 msgid "Domain aliases"
 msgstr "Аліаси домену"
-
-msgid "Domain aliases limit reached."
-msgstr "Лимит алиасов домена исчерпан."
 
 msgid "Domain aliases limit<br/><i>(-1 disabled, 0 unlimited)</i>"
 msgstr ""
@@ -3545,14 +3520,11 @@ msgstr "Опционально"
 msgid "Order"
 msgstr "Заказ"
 
-msgid "Order for domain alias deleted."
-msgstr "Заказ на алиас домена удален."
+msgid "Order successfully deleted."
+msgstr ""
 
-msgid "Order for domain alias not deleted."
-msgstr "Заказ на алиас домена не удален."
-
-msgid "Order not found. Nothing been deleted."
-msgstr "Заказ не найден. Ничего не было удалено."
+msgid "Order successfully processed."
+msgstr ""
 
 msgid "Other in"
 msgstr "Інше вх"
@@ -4947,16 +4919,10 @@ msgstr "Значение не было найдено в стеке"
 msgid "The values must not be equal"
 msgstr "Значения не должны быть равны"
 
-msgid "There is a subdomain with the same mount point."
-msgstr "Сушествует поддомен с той же точкой монтирования."
-
 msgid ""
 "There is an Error inside your package. Please check it!<br />Refresh your "
 "site to see the new status!"
 msgstr "Ошибка Вашего пакета. Пожалуйста, проверьте его!<br />Обновите Ваш сайт, чтобы увидеть новый статус!"
-
-msgid "There is no customer records for this reseller to add an alias for."
-msgstr ""
 
 #, php-format
 msgid "This IP (%s) is not assigned to any network card!"
@@ -4975,6 +4941,9 @@ msgid ""
 " All users linked to this database will also be deleted if not linked to "
 "another database. Are you sure you want to delete the '%s' database?"
 msgstr "Эта база данных будет удалена навсегда. Процесс не может быть отменен. Все пользователи, прикрепленные к базе данных также будут удалены, если они не прикреплены к другим базам данных. Вы уверены что хотите удалить базу данных '%s' ?"
+
+msgid "This domain is not allowed."
+msgstr ""
 
 msgid "This htaccess group already exists."
 msgstr "Группа htaccess уже существует."
@@ -5467,6 +5436,11 @@ msgid ""
 msgstr "Приносим наши извинения, но Вы достигли максимального числа алиасов домена, доступного Вашей подписке. Свяжитесь с Вашим реселлером для более подробной информации."
 
 msgid ""
+"We are sorry but you have reached the maximum number of domain aliases "
+"allowed by your subscription. Contact your reseller for more information."
+msgstr ""
+
+msgid ""
 "We are sorry, but the system is currently under maintenance.\n"
 "Please try again later."
 msgstr "Мы приносим наши извинения, но система находится в техобслуживании.\nПожалуйста, попробуйте позже."
@@ -5903,9 +5877,6 @@ msgstr "Вы должны указать тему."
 
 msgid "You need a Database for this software"
 msgstr "Для этого ПО Вам необходима база данных"
-
-msgid "You reached your domain aliases limit."
-msgstr "Вы достигли своего предела имен доменов."
 
 #, php-format
 msgid "You received %d new answer(s) to your support questions."

@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2013-05-28 20:04+0200\n"
-"PO-Revision-Date: 2013-05-28 18:04+0000\n"
+"POT-Creation-Date: 2013-05-31 15:29+0200\n"
+"PO-Revision-Date: 2013-05-31 13:29+0000\n"
 "Last-Translator: Torsten Widmann <info@goover.de>\n"
 "Language-Team: Swedish (Sweden) (http://www.transifex.com/projects/p/i-MSCP/language/sv_SE/)\n"
 "MIME-Version: 1.0\n"
@@ -893,9 +893,6 @@ msgstr "Alias mail"
 msgid "Alias name"
 msgstr "Aliasnamn"
 
-msgid "Alias scheduled for activation."
-msgstr "Alias ​​planeras för aktivering."
-
 msgid "Alias scheduled for addition."
 msgstr "Alias ​​planerad till tillägg."
 
@@ -1298,7 +1295,7 @@ msgstr "Välj katalog"
 
 #, php-format
 msgid "Choose file (Max: %1$d MiB)"
-msgstr ""
+msgstr "Välj fil (Max:%1$d MB)"
 
 msgid "Choose hosting plan"
 msgstr "Välj webbhotell"
@@ -1951,34 +1948,20 @@ msgstr "Domänalias limit nådd."
 msgid "Domain alias name"
 msgstr "Domänalias namn"
 
-msgid "Domain alias not modified."
-msgstr "Domänalias ändras inte."
-
-msgid "Domain alias not scheduled for addition."
-msgstr "Domänalias planeras inte för addition."
-
 msgid "Domain alias scheduled for creation."
 msgstr "Domänalias planerad till skapelsen."
 
 msgid "Domain alias scheduled for update."
 msgstr "Domänalias planerad till uppdatering."
 
-msgid "Domain alias successfully modified"
-msgstr "Domänalias ändrades korrekt"
-
 msgid "Domain alias successfully scheduled for addition"
 msgstr "Domänalias planerad framgång för addition"
-
-msgid "Domain alias successfully scheduled for addition."
-msgstr "Domänalias planerad framgångsrikt för addition."
 
 msgid "Domain alias successfully scheduled for deletion."
 msgstr "Domänalias planerad framgångsrikt för radering."
 
-msgid ""
-"Domain alias you are trying to remove has FTP accounts.<br/>First remove "
-"them."
-msgstr "Domän alias du försöker ta bort har FTP-konton. <br />Först ta bort dem."
+msgid "Domain alias successfully updated"
+msgstr ""
 
 msgid ""
 "Domain alias you are trying to remove has Ftp accounts. Remove them first."
@@ -1994,19 +1977,11 @@ msgid ""
 msgstr "Domänalias du försöker ta bort har e-postkonton. <br> Först ta bort dem."
 
 msgid ""
-"Domain alias you are trying to remove has email accounts.<br/>First remove "
-"them."
-msgstr "Domän alias du försöker ta bort har e-postkonton. <br />Först ta bort dem."
-
-msgid ""
 "Domain alias you are trying to remove has subdomains. Remove them first."
 msgstr "Domänaliaset du försöker ta bort har subdomäner!<br>Vänligen ta bort dem först!"
 
 msgid "Domain aliases"
 msgstr "Domänalias"
-
-msgid "Domain aliases limit reached."
-msgstr "Domänalias övre gräns nådd."
 
 msgid "Domain aliases limit<br/><i>(-1 disabled, 0 unlimited)</i>"
 msgstr "Domain aliases limit<br/><i>(-1 disabled, 0 unlimited)</i>"
@@ -3148,11 +3123,11 @@ msgstr "Max value for the %s PHP directive"
 
 #, php-format
 msgid "Max. remote filesize (%s) has been reached. Your remote file is %s"
-msgstr ""
+msgstr "Max. fjärr filstorlek (%s) är nådd. Din fjärrfilen är %s."
 
 #, php-format
 msgid "Max. remote filesize (%s) is reached. Your remote file is %s"
-msgstr ""
+msgstr "Max. fjärr filstorlek (%s) är nådd. Din fjärr fil är %s"
 
 msgid ""
 "Maximal number of labels for domain names (<small>Excluding SLD & "
@@ -3542,14 +3517,11 @@ msgstr "Valfri"
 msgid "Order"
 msgstr "Beställning"
 
-msgid "Order for domain alias deleted."
-msgstr "Order på domänalias togs bort."
+msgid "Order successfully deleted."
+msgstr ""
 
-msgid "Order for domain alias not deleted."
-msgstr "Order på domänalias raderas inte."
-
-msgid "Order not found. Nothing been deleted."
-msgstr "För att inte hittats. Ingenting tagits bort."
+msgid "Order successfully processed."
+msgstr ""
 
 msgid "Other in"
 msgstr "Annat inåt"
@@ -4909,7 +4881,7 @@ msgstr "Denna plugin %s är skyddad. Du kan inte utföra en åtgärd på den."
 
 #, php-format
 msgid "The remote filesize (%s) is lower than 1 Byte. Please check the URL."
-msgstr ""
+msgstr "fjärr filstorlek (%s) är lägre än 1 byte. Kontrollera webbadressen."
 
 msgid "The reseller account that you are trying to edit has not been found."
 msgstr "Återförsäljarens konto som du försöker redigera har inte hittats."
@@ -4944,16 +4916,10 @@ msgstr "Värdet har inte hittats i stapeln"
 msgid "The values must not be equal"
 msgstr "Värdena får inte vara lika"
 
-msgid "There is a subdomain with the same mount point."
-msgstr "Det finns en subdomän med samma monteringspunkt."
-
 msgid ""
 "There is an Error inside your package. Please check it!<br />Refresh your "
 "site to see the new status!"
 msgstr "There is an Error inside your package. Please check it!<br />Refresh your site to see the new status!"
-
-msgid "There is no customer records for this reseller to add an alias for."
-msgstr "Det finns ingen användare poster för detta återförsäljare att lägga till ett alias för."
 
 #, php-format
 msgid "This IP (%s) is not assigned to any network card!"
@@ -4972,6 +4938,9 @@ msgid ""
 " All users linked to this database will also be deleted if not linked to "
 "another database. Are you sure you want to delete the '%s' database?"
 msgstr "Denna databas kommer att tas bort permanent. Denna process kan inte återställas. Alla användare kopplade till denna databas kommer också att tas bort om inte kopplade till en annan databas. Är du säker på att du vill ta bort '%s' databas?"
+
+msgid "This domain is not allowed."
+msgstr ""
 
 msgid "This htaccess group already exists."
 msgstr "Detta htaccess-grupp finns redan."
@@ -5464,6 +5433,11 @@ msgid ""
 msgstr "Vi är ledsna, men du har nått det högsta antalet domänalias tillåts av din prenumeration. Kontakta din återförsäljare för mer information."
 
 msgid ""
+"We are sorry but you have reached the maximum number of domain aliases "
+"allowed by your subscription. Contact your reseller for more information."
+msgstr ""
+
+msgid ""
 "We are sorry, but the system is currently under maintenance.\n"
 "Please try again later."
 msgstr "Vi beklagar, men systemet är för närvarande under underhåll. \nFörsök igen senare."
@@ -5901,9 +5875,6 @@ msgstr "Du måste ange ett ämne."
 msgid "You need a Database for this software"
 msgstr "Du behöver en databas för denna mjukvara"
 
-msgid "You reached your domain aliases limit."
-msgstr "Du har uppnått din antal domän alias."
-
 #, php-format
 msgid "You received %d new answer(s) to your support questions."
 msgstr "You received %d new answer(s) to your support questions."
@@ -5945,7 +5916,7 @@ msgstr "Ditt paket är skadat. Korrigera det!"
 
 #, php-format
 msgid "Your remote filesize (%s) is lower than 1 Byte. Please check your URL."
-msgstr ""
+msgstr "Fjärr filstorlek (%s) är lägre än 1 byte. Kontrollera din webbadress."
 
 msgid ""
 "Your request for new password has been registered. You will receive an email"
@@ -6165,7 +6136,7 @@ msgstr "äldre än 6 månader"
 
 #, php-format
 msgid "or remote file (Max: %s)"
-msgstr ""
+msgstr "eller fjärr-fil (Max: %s)"
 
 msgid "order"
 msgstr "order"

@@ -11,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2013-05-28 20:04+0200\n"
-"PO-Revision-Date: 2013-05-28 18:04+0000\n"
+"POT-Creation-Date: 2013-05-31 15:29+0200\n"
+"PO-Revision-Date: 2013-05-31 13:29+0000\n"
 "Last-Translator: Torsten Widmann <info@goover.de>\n"
 "Language-Team: Danish (Denmark) (http://www.transifex.com/projects/p/i-MSCP/language/da_DK/)\n"
 "MIME-Version: 1.0\n"
@@ -93,7 +93,7 @@ msgid ""
 "___________________________\n"
 "The i-MSCP Team\n"
 "\n"
-msgstr ""
+msgstr "\n\nKære {NAME},\n\nDette er en automatisk bekræftelse for ordren af domænet:\n\n{DOMAIN}\n\nDu er nødt til at klikke på følgende link for at bekræfte din bestilling.\n\n{ACTIVATION_LINK}\n\nHvis du ikke bekræfter det før {EXPIRE_DATE}, vil ordren\nautomatisk blive annulleret.\n\nTak fordi du bruger i-MSCP tjenester.\n\n___________________________\ni-MSCP Teamet\n\n"
 
 msgid ""
 "\n"
@@ -127,7 +127,7 @@ msgid ""
 "___________________________\n"
 "The i-MSCP Team\n"
 "\n"
-msgstr ""
+msgstr "\n\nKære {RESELLER},\n\nDin kunde {CUSTOMER} afventer for godkendelse af sit nye alias:\n\n{ALIAS}\n\nNår du er logget ind, kan du aktivere det nye alias på {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}/reseller/alias.php\n\nTak fordi du bruger i-MSCP tjenester.\n\n___________________________\ni-MSCP Teamet\n\n"
 
 msgid ""
 "\n"
@@ -147,13 +147,13 @@ msgid ""
 msgstr "\n\nHej {NAME},\n\nDit brugernavn er: {USERNAME}\nDit password er: {PASSWORD}\n\nDu kan logge ind på {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}\n\nTak fordi du bruger i-MSCP tjenester.\n\n___________________________\ni-MSCP Teamet\n\n"
 
 msgid " Admin / Support / Open Tickets"
-msgstr ""
+msgstr "Admin / Support / Åbne Tickets"
 
 msgid " Client / Webtools / Custom Error Pages / Edit Custom Error Page"
-msgstr ""
+msgstr "Kunde / Webværktøjer / brugerdefinerede fejlsider / Edit Brugerdefineret Fejlside"
 
 msgid " Reseller / Statistics / Overview"
-msgstr ""
+msgstr "Forhandler / Statistik / Overblik"
 
 msgid ""
 " Show all errors, except for warnings about deprecated code (Production)"
@@ -212,7 +212,7 @@ msgstr "%1$s af %2$s"
 
 #, php-format
 msgid "%1$s of <b>unlimited</b>"
-msgstr ""
+msgstr "%1$s af <b>ubegrænset</b> MB"
 
 #, php-format
 msgid "%1$s you are now logged as %2$s"
@@ -619,7 +619,7 @@ msgid "Add email account"
 msgstr "Tilføj e-mail konto"
 
 msgid "Add external mail server for {DOMAIN_UTF8}"
-msgstr ""
+msgstr "Tilføj ekstern mailserver for {DOMAIN_UTF8}"
 
 msgid "Add group"
 msgstr "Tilføj gruppe"
@@ -682,153 +682,153 @@ msgid "Admin"
 msgstr "Admin"
 
 msgid "Admin / Admin Log"
-msgstr ""
+msgstr "Admin / Admin Log"
 
 msgid "Admin / General / Overview"
-msgstr ""
+msgstr "Admin / General / Overblik"
 
 msgid "Admin / General / Services Status"
-msgstr ""
+msgstr "Admin / General / Services Status"
 
 msgid "Admin / Hosting Plans / Overview"
-msgstr ""
+msgstr "Admin / Hosting Planer / Oversigt"
 
 msgid "Admin / Hosting Plans / Overview / Edit hosting plan"
-msgstr ""
+msgstr "Admin / Hosting Planer / Oversigt / Rediger hosting plan"
 
 msgid "Admin / Hosting plans / Add Hosting Plan"
-msgstr ""
+msgstr "Admin / Hosting Planer / Tilføj hosting plan"
 
 msgid "Admin / Profile / Account Summary"
-msgstr ""
+msgstr "Admin / Profil / Samlet Konto Oversigt"
 
 msgid "Admin / Profile / Language"
-msgstr ""
+msgstr "Admin / Profil / Sprog"
 
 msgid "Admin / Profile / Layout"
-msgstr ""
+msgstr "Admin / Profil / Layout"
 
 msgid "Admin / Profile / Password"
-msgstr ""
+msgstr "Admin / Profil / Kodeord"
 
 msgid "Admin / Profile / Personal Data"
-msgstr ""
+msgstr "Admin / Profil / Personlig Data"
 
 msgid "Admin / Settings"
-msgstr ""
+msgstr "Admin / Indstillinger"
 
 msgid "Admin / Settings / IP management"
-msgstr ""
+msgstr "Admin / Indstillinger / IP administration"
 
 msgid "Admin / Settings / Languages"
-msgstr ""
+msgstr "Admin / Indstillinger / Sprog"
 
 msgid "Admin / Settings / Lost password mail"
-msgstr ""
+msgstr "Admin / Indstillinger / Glemt adgangskode e-mail"
 
 msgid "Admin / Settings / Plugin management"
-msgstr ""
+msgstr "Admin / Indstillinger / Plugin administration"
 
 msgid "Admin / Settings / Server traffic"
-msgstr ""
+msgstr "Admin / Indstillinger / server trafik"
 
 msgid "Admin / Settings / Service ports"
-msgstr ""
+msgstr "Admin / Indstillinger / Service porte"
 
 msgid "Admin / Settings / Software Management"
-msgstr ""
+msgstr "Admin / Indstillinger / Software administration"
 
 msgid "Admin / Settings / Software options"
-msgstr ""
+msgstr "Admin / Indstillinger / Software valgmuligheder"
 
 msgid "Admin / Settings / {TR_DYNAMIC_TITLE}"
-msgstr ""
+msgstr "Admin / Indstillinger / {TR_DYNAMIC_TITLE}"
 
 msgid "Admin / Settings/ Welcome mail"
-msgstr ""
+msgstr "Admin / Indstillinger / Velkomst e-mail"
 
 msgid "Admin / Software Management / Reseller software"
-msgstr ""
+msgstr "Admin / Software administration / Forhandler software"
 
 msgid "Admin / Statistics / IP Usage"
-msgstr ""
+msgstr "Admin / Statistik / IP Forbrug"
 
 msgid "Admin / Statistics / Reseller Statistics / Customer statistics"
-msgstr ""
+msgstr "Admin / Statistik / Forhandler statistik / Kunde statistik"
 
 msgid ""
 "Admin / Statistics / Reseller Statistics / Customer statistics / Domain "
 "Statistics"
-msgstr ""
+msgstr "Admin / Statistik / Forhandler statistik / Kunde statistik / Domæne statistik"
 
 msgid "Admin / Statistics / Reseller statistics"
-msgstr ""
+msgstr "Admin / Statistik / Forhandler statistik"
 
 msgid "Admin / Statistics / Server statistics"
-msgstr ""
+msgstr "Admin / Statistik / Server statistik"
 
 msgid "Admin / Statistics / Server statistics / Day statistics"
-msgstr ""
+msgstr "Admin / Statistik / Server statistik / Server dags statistik"
 
 msgid "Admin / Support / Closed Tickets"
-msgstr ""
+msgstr "Admin / Support / Lukkede Tickets"
 
 msgid "Admin / Support / View Ticket"
-msgstr ""
+msgstr " Admin / Support / Vis Ticket"
 
 msgid "Admin / System Tools / Debugger"
-msgstr ""
+msgstr "Admin / Systemværktøjer / Debugger"
 
 msgid "Admin / System Tools / Maintenance settings"
-msgstr ""
+msgstr "Admin / Systemværktøjer / Administrations indstillinger"
 
 msgid "Admin / System Tools / Rootkit Logs"
-msgstr ""
+msgstr "Admin / Systemværktøjer / Rootkits Log"
 
 msgid "Admin / System Tools / Updates"
-msgstr ""
+msgstr "Admin / Systemværktøjer / Opdateringer"
 
 msgid "Admin / System tools / Database Update"
-msgstr ""
+msgstr "Admin / Systemværktøker / Databaseopdatering"
 
 msgid "Admin / System tools / System information"
-msgstr ""
+msgstr "Admin / Systemværktøjer / System information"
 
 msgid "Admin / User / Add Admin"
-msgstr ""
+msgstr "Admin / Bruger / Tilføj Admin"
 
 msgid "Admin / User / Overview / Domain Edit"
-msgstr ""
+msgstr "Admin / Bruger / Oversigt / Domæne Redigering"
 
 msgid "Admin / Users / Add Reseller"
-msgstr ""
+msgstr "Admin / Brugere / Tilføj Forhandler"
 
 msgid "Admin / Users / Circular"
-msgstr ""
+msgstr "Admin / Brugere / Circular"
 
 msgid "Admin / Users / Customers assignment"
-msgstr ""
+msgstr "Admin / Brugere / Kunde tildeling"
 
 msgid "Admin / Users / Edit Reseller"
-msgstr ""
+msgstr "Admin / Brugere / Rediger Forhandler"
 
 msgid "Admin / Users / Overview"
-msgstr ""
+msgstr "Admin / Brugere / Oversigt"
 
 msgid "Admin / Users / Overview / Delete Customer"
-msgstr ""
+msgstr "Admin / Brugere / Oversigt / Slet Kunde"
 
 msgid "Admin / Users / Overview / Domain Details"
-msgstr ""
+msgstr "Admin / Brugere / Oversigt / Domæne Detaljer"
 
 msgid "Admin / Users / Overview / Edit Admin"
-msgstr ""
+msgstr "Admin / Brugere / Oversigt / Rediger Admin"
 
 msgid "Admin / Users / Resellers assignment"
-msgstr ""
+msgstr "Admin / Brugere / Forhandler tildeling"
 
 msgid "Admin / Users / Sessions"
-msgstr ""
+msgstr "Admin / Brugere / Sessioner"
 
 msgid "Admin Log"
 msgstr "Admin Log"
@@ -895,9 +895,6 @@ msgstr "Alias mail"
 msgid "Alias name"
 msgstr "Alias navn"
 
-msgid "Alias scheduled for activation."
-msgstr "Alias ​​planlagt til aktivering."
-
 msgid "Alias scheduled for addition."
 msgstr "Alias planlagt for tilføjelse."
 
@@ -917,7 +914,7 @@ msgid "All"
 msgstr "Alle"
 
 msgid "All administrators"
-msgstr ""
+msgstr "Alle administratorer"
 
 msgid "All closed tickets were deleted."
 msgstr "Alle lukkede sager blev slettet."
@@ -926,7 +923,7 @@ msgid "All closed tickets were successfully deleted."
 msgstr "Alle lukkede sager blev slettet."
 
 msgid "All customers"
-msgstr ""
+msgstr "Alle kunder"
 
 msgid "All fields are required."
 msgstr "Alle felter er påkrævet"
@@ -956,7 +953,7 @@ msgid "All resellers"
 msgstr "Alle forhandlere"
 
 msgid "All resellers and customers"
-msgstr ""
+msgstr "Alle forhandlere og kunder"
 
 msgid "All traffic"
 msgstr "Alt trafik"
@@ -1122,7 +1119,7 @@ msgid "Auto-responder successfully scheduled for update."
 msgstr "Auto-responder planlagt til opdatering."
 
 msgid "Available"
-msgstr ""
+msgstr "Tilgængelig"
 
 msgid "Available i-MSCP updates"
 msgstr "Tilgænglige i-MSCP opdateringer"
@@ -1149,7 +1146,7 @@ msgid "Backup and restore settings."
 msgstr "Backup og gendannelses indstillinger."
 
 msgid "Backup has been successfully scheduled for restoration."
-msgstr ""
+msgstr "Backup er succesfuldt blevet planlagt til gendannelse."
 
 msgid "Bad password."
 msgstr "Forkert password."
@@ -1212,7 +1209,7 @@ msgstr "Anullér"
 
 #, php-format
 msgid "Cannot validate %s record: %s"
-msgstr ""
+msgstr "Kan ikke validere %s rekord. Årsag: '%s'."
 
 msgid "Canonical name"
 msgstr "Canonical navn"
@@ -1300,7 +1297,7 @@ msgstr "Vælg bibliotek"
 
 #, php-format
 msgid "Choose file (Max: %1$d MiB)"
-msgstr ""
+msgstr "Vælg fil (Maks: %1$d MB)"
 
 msgid "Choose hosting plan"
 msgstr "Vælg hosting plan"
@@ -1328,164 +1325,164 @@ msgid ""
 msgstr "Klik på Gendan knappen og systemet vil gendanne den seneste daglige backup"
 
 msgid "Client /  Domains / Add Alias"
-msgstr ""
+msgstr "Klient / Domæner / Tilføj Alias"
 
 msgid "Client / Choose directory"
-msgstr ""
+msgstr "Klient / Vælg bibliotek"
 
 msgid "Client / Database / Overview / Update SQL User Password"
-msgstr ""
+msgstr "Klient / Databaser / Oversigt / Opdater SQL Bruger Kodeord"
 
 msgid "Client / Databases / Add SQL Database"
-msgstr ""
+msgstr "Klient / Databaser / Tilføj SQL Database"
 
 msgid "Client / Databases / Overview"
-msgstr ""
+msgstr "Klient / Databaser / Oversigt"
 
 msgid "Client / Databases / Overview / Add SQL User"
-msgstr ""
+msgstr "Klient / Databaser / Oversigt / Tilføj SQL Bruger"
 
 msgid "Client / Domain / Edit Custom DNS record"
-msgstr ""
+msgstr "Klient / Domæne / Rediger brugerdefineret DNS record"
 
 msgid "Client / Domains"
-msgstr ""
+msgstr "Klient / Domæner"
 
 msgid "Client / Domains / Add Custom DNS record"
-msgstr ""
+msgstr "Klient / Domæner / Tilføj brugerdefineret DNS record"
 
 msgid "Client / Domains / Add subdomain"
-msgstr ""
+msgstr "Klient / Domæner / Tilføj subdomæne"
 
 msgid "Client / Domains / Overview / Edit Domain Alias"
-msgstr ""
+msgstr "Klient / Domæner / Oversigt / Rediger Domæne Alias"
 
 msgid "Client / Domains / Overview / Edit Subdomain"
-msgstr ""
+msgstr "Klient / Domæner / Oversigt / Rediger Subdomæne"
 
 msgid "Client / Domains / PHP Settings"
-msgstr ""
+msgstr "Klient / Domæner / PHP Indstillinger"
 
 msgid "Client / Domains / SSL certificates"
-msgstr ""
+msgstr "Klient / Domæner / SSL certifikater"
 
 msgid "Client / Ftp / Add Ftp Account"
-msgstr ""
+msgstr "Klient / Ftp / Tilføj Ftp Konto"
 
 msgid "Client / Ftp / Overview"
-msgstr ""
+msgstr "Klient / Ftp / Oversigt"
 
 msgid "Client / Ftp / Overview / Edit Ftp Account"
-msgstr ""
+msgstr "Klient / Ftp / Oversigt / Rediger Ftp Konto"
 
 msgid "Client / General / Overview"
-msgstr ""
+msgstr "Klient / General / Oversigt"
 
 msgid "Client / Mail / Add Email Account"
-msgstr ""
+msgstr "Klient / Mail / Tilføj E-mail Konto"
 
 msgid "Client / Mail / Catchall"
-msgstr ""
+msgstr "Klient / Mail / Catchall"
 
 msgid "Client / Mail / Catchall / Add Catchall"
-msgstr ""
+msgstr "Klient / Mail / Catchall / Tilføj Catchall"
 
 msgid "Client / Mail / External Mail Server"
-msgstr ""
+msgstr " Klient / Mail / Ekstern Mail server"
 
 msgid ""
 "Client / Mail / External Mail Server / Add External Mail Server For "
 "{DOMAIN_UTF8}"
-msgstr ""
+msgstr " Klient / Mail / Ekstern Mail Server / Tilføj Ekstern Mail Server for {DOMAIN_UTF8}"
 
 msgid ""
 "Client / Mail / External Mail Server / Edit External Mail Server For "
 "{DOMAIN_UTF8}"
-msgstr ""
+msgstr " Klient / Mail / Ekstern Mail Server / Rediger Ekstern Mail Server for {DOMAIN_UTF8}"
 
 msgid "Client / Mail / Overview"
-msgstr ""
+msgstr "Klient / Mail / Oversigt"
 
 msgid "Client / Mail / Overview /  Edit Mail Account"
-msgstr ""
+msgstr "Klient / Mail / Oversigt / Rediger Mail Konto"
 
 msgid "Client / Mail / Overview /  Edit Mail Quota"
-msgstr ""
+msgstr "Klient / Mail / Oversigt / Rediger Mail Quota"
 
 msgid "Client / Mail / Overview / Edit Auto Responder"
-msgstr ""
+msgstr "Klient / Mail / Oversigt / Rediger Autosvar"
 
 msgid "Client / Mail / Overview / Enable Auto Responder"
-msgstr ""
+msgstr "Klient / Mail / Oversigt / Aktiver Autosvar"
 
 msgid "Client / Profile / Account Summary"
-msgstr ""
+msgstr "Klient / Profil / Samlet Konto Oversigt"
 
 msgid "Client / Profile / Language"
-msgstr ""
+msgstr "Klient / Profil / Sprog"
 
 msgid "Client / Profile / Layout"
-msgstr ""
+msgstr "Klient / Profil / Layout"
 
 msgid "Client / Profile / Password"
-msgstr ""
+msgstr "Klient / Profil / Kodeord"
 
 msgid "Client / Profile / Personal Data"
-msgstr ""
+msgstr "Klient / Profil / Personlig Data"
 
 msgid "Client / Statistics"
-msgstr ""
+msgstr "Klient / Statistik"
 
 msgid "Client / Support / New Ticket"
-msgstr ""
+msgstr "Klient / Support / Ny Ticket"
 
 msgid "Client / Support / Tickets Closed"
-msgstr ""
+msgstr "Klient / Support / Lukkede Tickets"
 
 msgid "Client / Support / Tickets Open"
-msgstr ""
+msgstr "Klient / Support / Åbne Tickets"
 
 msgid "Client / Support / View Ticket"
-msgstr ""
+msgstr "Klient / Support / Vis Ticket"
 
 msgid "Client / Webtools / Custom Error Pages"
-msgstr ""
+msgstr "Klient /  Webværktøjer / brugerdefinerede fejlsider"
 
 msgid "Client / Webtools / Daily Backup"
-msgstr ""
+msgstr "Klient /  Webværktøjer / Daglig Backup"
 
 msgid "Client / Webtools / Overview"
-msgstr ""
+msgstr "Klient /  Webværktøjer / Oversigt"
 
 msgid "Client / Webtools / Protected Areas"
-msgstr ""
+msgstr "Klient /  Webværktøjer / Beskyttede områder"
 
 msgid "Client / Webtools / Protected Areas / Manage Htaccess users And Groups"
-msgstr ""
+msgstr "Klient /  Webværktøjer / Beskyttede områder / Administrer Htaccess brugere og grupper"
 
 msgid ""
 "Client / Webtools / Protected areas / Manage Htusers And Groups / Add "
 "Htaccess Group"
-msgstr ""
+msgstr "Klient /  Webværktøjer / Beskyttede områder / Administrer Htaccess brugere og grupper / Tilføj Htaccess Gruppe"
 
 msgid ""
 "Client / Webtools / Protected areas / Manage Htusers And Groups / Add "
 "Htaccess User"
-msgstr ""
+msgstr "Klient /  Webværktøjer / Beskyttede områder / Administrer Htaccess brugere og grupper / Tilføj Htaccess Bruger"
 
 msgid ""
 "Client / Webtools / Protected areas / Manage Htusers And Groups / Edit "
 "Htaccess User"
-msgstr ""
+msgstr "Klient /  Webværktøjer / Beskyttede områder / Administrer Htaccess brugere og grupper / Rediger Htaccess Bruger"
 
 msgid "Client / Webtools / Software - Softwares Install"
-msgstr ""
+msgstr "Klient /  Webværktøjer / Software - Software Installering"
 
 msgid "Client / Webtools / Softwares"
-msgstr ""
+msgstr "Klient /  Webværktøjer / Software"
 
 msgid "Client / Webtools / Softwares / Software View"
-msgstr ""
+msgstr "Klient /  Webværktøjer / Software / Software Visning"
 
 msgid "Close"
 msgstr "Luk"
@@ -1497,7 +1494,7 @@ msgid "Closed tickets"
 msgstr "Lukkede Support sager"
 
 msgid "Closes tickets"
-msgstr "Lukker fejlrapporterne"
+msgstr "Lukkede tickets"
 
 msgid "Company"
 msgstr "Firma"
@@ -1568,10 +1565,10 @@ msgid "Custom DNS record scheduled for deletion."
 msgstr "Brugerdefineret DNS record planlagt til sletning."
 
 msgid "Custom DNS record successfully scheduled for addition."
-msgstr ""
+msgstr "Brugerdefineret DNS record succesfuldt planlagt til tilføjelse."
 
 msgid "Custom DNS record successfully scheduled for update."
-msgstr ""
+msgstr "Brugerdefineret DNS record succesfuldt planlagt til opdatering."
 
 msgid "Custom DNS records"
 msgstr "Brugerdefineret DNS records"
@@ -1586,7 +1583,7 @@ msgid "Custom menu name and link"
 msgstr "Brugerdefineret menu navn og link"
 
 msgid "Custom menu properties"
-msgstr ""
+msgstr "Custom menu egenskaber"
 
 msgid "Custom menu successfully added."
 msgstr "Brugerdefineret menu tilføjet."
@@ -1607,25 +1604,25 @@ msgid "Customer ID"
 msgstr "Kunde nummer (ID)"
 
 msgid "Customer ID cannot have more than 200 characters"
-msgstr ""
+msgstr "Kunde ID kan ikke have mere end 200 karakterer"
 
 msgid "Customer account successfully scheduled for activation."
-msgstr ""
+msgstr "Kundekonto succesfuldt planlagt til aktivering."
 
 msgid "Customer account successfully scheduled for creation."
-msgstr ""
+msgstr "Kundekonto succesfuldt planlagt til oprettelse."
 
 msgid "Customer account successfully scheduled for deactivation."
-msgstr ""
+msgstr "Kundekonto succesfuldt planlagt til deaktivering."
 
 msgid "Customer account successfully scheduled for deletion."
-msgstr ""
+msgstr "Kundekonto succesfuldt planlagt til sletning."
 
 msgid "Customer account successfully updated."
 msgstr "Kundekonto blevet opdateret."
 
 msgid "Customer account summary"
-msgstr ""
+msgstr "Kundekonto oversigt"
 
 msgid "Customer consumption"
 msgstr "Kunde forbrug"
@@ -1640,7 +1637,7 @@ msgid "Customer statistics"
 msgstr "Kunde statistik"
 
 msgid "Customer successfully scheduled for deletion."
-msgstr ""
+msgstr "Kunde succesfuldt planlagt til sletning."
 
 msgid "Customer's layout color successfully updated."
 msgstr "Kundens layout farve blevet opdateret."
@@ -1661,7 +1658,7 @@ msgid "DNS record already exist."
 msgstr "DNS record eksisterer allerede."
 
 msgid "DNS server unavailable. Please, contact your reseller."
-msgstr ""
+msgstr "DNS server ikke tilgængelig. Vær venlig at kontakte din forhandler."
 
 msgid "DOWN"
 msgstr "NEDE"
@@ -1671,7 +1668,7 @@ msgid "Daemon returned %d as status code"
 msgstr "Daemon returneret %d som status kode"
 
 msgid "Daily backup"
-msgstr "Bestil backup"
+msgstr "Daglig backup"
 
 msgid "Data were been altered. Please try again."
 msgstr "Data blev ændret. Prøv igen."
@@ -1686,7 +1683,7 @@ msgid "Database Update Revision"
 msgstr "Revision af Database Opdatering"
 
 msgid "Database Update details"
-msgstr ""
+msgstr "Database Opdaterings Detaljer"
 
 msgid "Database name"
 msgstr "Database navn"
@@ -1704,10 +1701,10 @@ msgid "Database required"
 msgstr "Database kræves"
 
 msgid "Database update"
-msgstr ""
+msgstr "Database opdatering"
 
 msgid "Database update is available"
-msgstr ""
+msgstr "Database opdatering er tilgængelig"
 
 msgid "Database usage"
 msgstr "Database forbrug"
@@ -1728,7 +1725,7 @@ msgid "Day"
 msgstr "Dag"
 
 msgid "Day statistics"
-msgstr ""
+msgstr "Daglig statistik"
 
 msgid "Days"
 msgstr "Dage"
@@ -1810,10 +1807,10 @@ msgid "Delete CatchAll"
 msgstr "Slet FangAlle"
 
 msgid "Delete Customer - {DOMAIN_NAME}"
-msgstr ""
+msgstr "Slet Kunde - {DOMAIN_NAME}"
 
 msgid "Delete account"
-msgstr ""
+msgstr "Slet konto"
 
 msgid "Delete all tickets"
 msgstr "Slet alle fejlrapports"
@@ -1915,7 +1912,7 @@ msgstr "Vis ikke nogen fejl"
 msgid ""
 "Do you really want to delete the entire <strong>'%s'</strong> customer "
 "account? This operation cannot be undone."
-msgstr ""
+msgstr "Ønsker du virkelig at slette hele <strong>'%s'</strong> kundekontoen? Denne handling kan ikke fortrydes."
 
 msgid "Domain"
 msgstr "Domæne"
@@ -1953,62 +1950,40 @@ msgstr "Maksimum antal domæne alias nået."
 msgid "Domain alias name"
 msgstr "Domænealias navn"
 
-msgid "Domain alias not modified."
-msgstr "Domæne alias ikke ændret."
-
-msgid "Domain alias not scheduled for addition."
-msgstr "Domæne alias ikke planlagt for tilføjelse."
-
 msgid "Domain alias scheduled for creation."
 msgstr "Domæne alias planlagt til oprettelse."
 
 msgid "Domain alias scheduled for update."
 msgstr "Domæne alias planlagt til opdatering."
 
-msgid "Domain alias successfully modified"
-msgstr "Domæne alias ændret."
-
 msgid "Domain alias successfully scheduled for addition"
 msgstr "Domæne alias planlagt for tilføjelse."
-
-msgid "Domain alias successfully scheduled for addition."
-msgstr "Domæne alias planlagt til tilføjelse."
 
 msgid "Domain alias successfully scheduled for deletion."
 msgstr "Domæne alias planlagt for sletning."
 
-msgid ""
-"Domain alias you are trying to remove has FTP accounts.<br/>First remove "
-"them."
-msgstr "Domæne alias, du prøver at fjerne har FTP-konti.<br/>Slet dem først."
+msgid "Domain alias successfully updated"
+msgstr ""
 
 msgid ""
 "Domain alias you are trying to remove has Ftp accounts. Remove them first."
-msgstr ""
+msgstr "Domæne alias, du prøver at fjerne har FTP-konti. Slet dem først."
 
 msgid ""
 "Domain alias you are trying to remove has custom DNS records. Remove them "
 "first."
-msgstr ""
+msgstr "Domæne alias, du prøver at fjerne har brugerdefinerede DNS records. Slet dem først."
 
 msgid ""
 "Domain alias you are trying to remove has email accounts. Remove them first."
-msgstr ""
-
-msgid ""
-"Domain alias you are trying to remove has email accounts.<br/>First remove "
-"them."
-msgstr "Domæne alias, du prøver at fjerne har email konti.<br/>Slet dem først."
+msgstr "Domæne alias, du prøver at fjerne har email konti. Slet dem først."
 
 msgid ""
 "Domain alias you are trying to remove has subdomains. Remove them first."
-msgstr ""
+msgstr "Domæne aliaset du prøver at fjerne har subdomæner. Slet dem først."
 
 msgid "Domain aliases"
 msgstr "Domæne aliaser"
-
-msgid "Domain aliases limit reached."
-msgstr "Maksimalt antal domæne aliaser nået."
 
 msgid "Domain aliases limit<br/><i>(-1 disabled, 0 unlimited)</i>"
 msgstr "Domænealiasser grænse<br/><i>(-1 deaktiveret, 0 ubegrænset)</i>"
@@ -2020,7 +1995,7 @@ msgid "Domain already registered on the system."
 msgstr "Domain allerede er registreret på systemet."
 
 msgid "Domain and SQL databases"
-msgstr ""
+msgstr "Domæne og SQL databaser"
 
 msgid "Domain data were been altered. Please try again."
 msgstr "Domæne data blev ændret. Prøv igen."
@@ -2044,7 +2019,7 @@ msgid "Domain name"
 msgstr "Domæne navn"
 
 msgid "Domain name must be filled."
-msgstr ""
+msgstr "Domænenavn skal være udfyldt."
 
 msgid "Domain names validation"
 msgstr "Domæne navne validering"
@@ -2074,7 +2049,7 @@ msgid "Domain successfully updated."
 msgstr "Domæne blevet opdateret."
 
 msgid "Domain type"
-msgstr ""
+msgstr "Domæne type"
 
 msgid "Domain with same name already exists."
 msgstr "Domæne med samme navn findes allerede."
@@ -2103,7 +2078,7 @@ msgid "Download"
 msgstr "Download"
 
 msgid "Download the archives stored in this directory"
-msgstr ""
+msgstr "Download arkivfilerne gemt i denne mappe"
 
 msgid "E-Mail accounts are hard suspended"
 msgstr "E-mail-konti er Admin suspenderet"
@@ -2133,7 +2108,7 @@ msgid "Edit User"
 msgstr "Rediger Bruger"
 
 msgid "Edit admin"
-msgstr ""
+msgstr "Rediger Admin"
 
 msgid "Edit alias"
 msgstr "Rediger alias"
@@ -2160,7 +2135,7 @@ msgid "Edit error page"
 msgstr "Rediger fejlside"
 
 msgid "Edit external mail server for {DOMAIN_UTF8}"
-msgstr ""
+msgstr "Rediger ekatern mail server for {DOMAIN_UTF8}"
 
 msgid "Edit hosting plan"
 msgstr "Rediger hosting plan"
@@ -2229,7 +2204,7 @@ msgid "Enable auto responder"
 msgstr "Aktiver auto responder"
 
 msgid "Enable update in the settings page."
-msgstr ""
+msgstr "Aktiver opdaterer på indstillings siden."
 
 msgid "Enabled"
 msgstr "Aktiveret"
@@ -2303,7 +2278,7 @@ msgid "Expire date"
 msgstr "Udløbsdato"
 
 msgid "Ext. mail server"
-msgstr ""
+msgstr "Ekst. mail server"
 
 msgid "External Mail Host"
 msgstr "Ekstern Mail Host"
@@ -2318,7 +2293,7 @@ msgid "External mail server entries successfully scheduled for deletion."
 msgstr "Eksterne mailserver poster planlagt til sletning."
 
 msgid "External mail server entries successfully scheduled for update."
-msgstr ""
+msgstr "Ekstern mailserver poster succesfuldt planlagt til opdatering."
 
 msgid "External mail servers"
 msgstr "Eksterne mail servers"
@@ -2330,10 +2305,10 @@ msgid "FTP account"
 msgstr "FTP konto"
 
 msgid "FTP account successfully added."
-msgstr ""
+msgstr "FTP konto succesfuldt tilføjet."
 
 msgid "FTP account successfully deleted."
-msgstr ""
+msgstr "FTP konto succesfuldt slettet."
 
 msgid "FTP account successfully updated."
 msgstr "FTP konto er blevet opdateret."
@@ -2345,7 +2320,7 @@ msgid "FTP accounts limit <br /><i>(-1 disabled, 0 unlimited)</i>"
 msgstr "FTP konti begrænsning <br /><i>(-1 deaktiveret, 0 ubegrænset)</i>"
 
 msgid "FTP accounts limit reached."
-msgstr ""
+msgstr "FTP konti grænsen er nået."
 
 msgid "FTP accounts limit<br/><i>(-1 disabled, 0 unlimited)</i>"
 msgstr "FTP konti begrænsning <br /><i>(-1 deaktiveret, 0 ubegrænset)</i>"
@@ -2416,10 +2391,10 @@ msgid "First name"
 msgstr "Fornavn"
 
 msgid "First name cannot have more than 200 characters."
-msgstr ""
+msgstr "Fornavn kan ikke have mere end 200 karakterer"
 
 msgid "Forward URL"
-msgstr ""
+msgstr "Videresendelses URL"
 
 msgid "Forward account"
 msgstr "Videresende konto"
@@ -2455,10 +2430,10 @@ msgid "Ftp account"
 msgstr "Ftp konto"
 
 msgid "Ftp account data"
-msgstr ""
+msgstr "Ftp konto data"
 
 msgid "Ftp account with same username already exists."
-msgstr ""
+msgstr "Ftp-konto med samme navn findes allerede."
 
 msgid "Ftp accounts"
 msgstr "Ftp konti"
@@ -2473,7 +2448,7 @@ msgid "Gender"
 msgstr "Køn"
 
 msgid "General"
-msgstr ""
+msgstr "General"
 
 msgid "General information"
 msgstr "Generel information"
@@ -2527,11 +2502,11 @@ msgid "High"
 msgstr "Høj"
 
 msgid "Home directory"
-msgstr ""
+msgstr "Home bibliotek"
 
 #, php-format
 msgid "Home directory '%s' doesn't exists"
-msgstr ""
+msgstr "Home bibliotek '%s' findes ikke"
 
 msgid "Homepage"
 msgstr "Hjemmeside"
@@ -2543,16 +2518,16 @@ msgid "Host must be filled."
 msgstr "Vært skal udfyldes."
 
 msgid "Hosting Plans"
-msgstr ""
+msgstr "Hosting Planer"
 
 msgid "Hosting plan"
 msgstr "Hosting Plan"
 
 msgid "Hosting plan availability"
-msgstr ""
+msgstr "Hosting plan tilgængelig"
 
 msgid "Hosting plan has been successfully deleted."
-msgstr ""
+msgstr "Hosting plan succesfuldt slettet."
 
 msgid "Hosting plan limits exceed reseller limits."
 msgstr "Hosting plan grænser overskrider forhandler grænser."
@@ -2561,7 +2536,7 @@ msgid "Hosting plan properties"
 msgstr "Hosting plan egenskaber"
 
 msgid "Hosting plan successfully added."
-msgstr ""
+msgstr "Hosting plan succesfuldt oprettet."
 
 msgid "Hosting plan successfully created."
 msgstr "Hosting plan oprettet."
@@ -2643,7 +2618,7 @@ msgstr "IPv6 adresse"
 msgid ""
 "If set to 'yes', Web folders as provisioned by i-MSCP will be protected "
 "against deletion using the immutable flag (Extended attributes)."
-msgstr ""
+msgstr "Hvis sat til »ja«, vil webmapper som er klargjort af I-MSCP, være beskyttet mod sletning ved brug af flaget (Extended attributes)."
 
 msgid ""
 "If yes, means that the reseller can allow its customers to edit this "
@@ -2728,7 +2703,7 @@ msgid "Incorrect or is not allowed."
 msgstr "Forkert eller ikke tilladt."
 
 msgid "Incorrect post code length or syntax!"
-msgstr ""
+msgstr "Forkert post kode længde eller syntaks!"
 
 msgid "Incorrect subdomains limit."
 msgstr "Forkert maksimum antal for subdomæner."
@@ -2807,7 +2782,7 @@ msgid "Invalid group name!"
 msgstr "Ugyldigt gruppe navn!"
 
 msgid "Invalid home directory."
-msgstr ""
+msgstr "Ugyldig home bibliotek"
 
 msgid "Invalid htaccess group name."
 msgstr "Ugyldigt htaccess gruppenavn."
@@ -2891,7 +2866,7 @@ msgid "Last name"
 msgstr "Efternavn"
 
 msgid "Last name cannot have more than 200 characters."
-msgstr ""
+msgstr "Efternavn kan ikke have mere end 200 karakterer"
 
 msgid "Last reply date"
 msgstr "Seneste svar dato"
@@ -2930,7 +2905,7 @@ msgid "Load (1 Min, 5 Min, 15 Min)"
 msgstr "Load (1 Min, 5 Min, 15 Min)"
 
 msgid "Log entries successfully deleted."
-msgstr ""
+msgstr "Log poster succesfuldt slettet."
 
 msgid "Log in to answer"
 msgstr "Log ind for svar"
@@ -3047,10 +3022,10 @@ msgid "Mail accounts list"
 msgstr "Mailkonti liste"
 
 msgid "Mail accounts list is empty."
-msgstr ""
+msgstr "Mail konti liste er tom."
 
 msgid "Mail feature is disabled."
-msgstr ""
+msgstr "Mail funktioner er deaktiveret."
 
 msgid "Mail forward list empty."
 msgstr "Mail videresendelses liste tom."
@@ -3082,13 +3057,13 @@ msgid ""
 msgstr "Vedligeholdelsestilstand er aktivt. Under denne tilstand kan kun administratorer logge ind."
 
 msgid "Maintenance settings"
-msgstr ""
+msgstr "Vedligeholdelses indstillinger"
 
 msgid "Male"
 msgstr "Mand"
 
 msgid "Malformed resolver SQL query"
-msgstr ""
+msgstr "Forkert udformet resolver SQL query"
 
 msgid "Manage Domains"
 msgstr "Administrer domæner"
@@ -3124,7 +3099,7 @@ msgid "Mark all"
 msgstr "Markér alle"
 
 msgid "Mass email successfully sent."
-msgstr ""
+msgstr "Gruppe e-mail succesfuldt sendt."
 
 msgid "Master domain cannot be used."
 msgstr "Master domæne kan ikke bruges."
@@ -3150,11 +3125,11 @@ msgstr "Max værdi for %s PHP direktiv"
 
 #, php-format
 msgid "Max. remote filesize (%s) has been reached. Your remote file is %s"
-msgstr ""
+msgstr "Max. ekstern filstørrelse (%s) er blevet nået. Din eksterne fil er %s"
 
 #, php-format
 msgid "Max. remote filesize (%s) is reached. Your remote file is %s"
-msgstr ""
+msgstr "Max. ekstern filstørrelse (%s) er nået. Din eksterne fil er %s"
 
 msgid ""
 "Maximal number of labels for domain names (<small>Excluding SLD & "
@@ -3184,16 +3159,16 @@ msgid "Message"
 msgstr "Meddelse"
 
 msgid "Message body"
-msgstr ""
+msgstr "Meddelelses body"
 
 msgid "Message body is missing."
-msgstr ""
+msgstr "Meddelelses body mangler."
 
 msgid "Message subject"
 msgstr "Meddelse emne"
 
 msgid "Message subject is missing."
-msgstr ""
+msgstr "Meddelelses emne mangler."
 
 msgid "Message template"
 msgstr "Meddelses skabelon"
@@ -3277,7 +3252,7 @@ msgid "Never"
 msgstr "Aldrig"
 
 msgid "Never expire"
-msgstr ""
+msgstr "Udløber aldrig"
 
 msgid "Never expires"
 msgstr "Udløber aldrig"
@@ -3343,7 +3318,7 @@ msgid "No customer accounts found."
 msgstr "Ingen kundekonti fundet."
 
 msgid "No database update available."
-msgstr ""
+msgstr "Ingen database opdateringer tilgængelige."
 
 msgid "No domain alias system errors"
 msgstr "Ingen domænealiases systemfejl"
@@ -3370,13 +3345,13 @@ msgid "No group found."
 msgstr "Ingen gruppe fundet."
 
 msgid "No hosting plan available"
-msgstr ""
+msgstr "Ingen hosting plan til rådighed"
 
 msgid "No hosting plan available."
-msgstr ""
+msgstr "Ingen hosting plan til rådighed."
 
 msgid "No hosting plan available. Please contact your administrator."
-msgstr ""
+msgstr "Ingen hosting plan til rådighed. Kontakt venligst din systemadministrator."
 
 msgid "No htaccess related system errors"
 msgstr "Ingen htaccess relaterede systemfejl"
@@ -3385,7 +3360,7 @@ msgid "No languages found."
 msgstr "Ingen sprog fundet."
 
 msgid "No logs found"
-msgstr ""
+msgstr "Ingen log fundet"
 
 msgid "No logs found."
 msgstr "Ingen logs fundet."
@@ -3436,7 +3411,7 @@ msgid "No user found."
 msgstr "Ingen brugere fundet."
 
 msgid "No user system errors"
-msgstr ""
+msgstr "Ingen bruger systemfejl"
 
 msgid "No users found for this reseller."
 msgstr "Ingen brugere fundet for denne forhandler."
@@ -3481,7 +3456,7 @@ msgid "Nothing has been changed."
 msgstr "Intet er blevet ændret."
 
 msgid "Nothing has been deleted."
-msgstr ""
+msgstr "Intet er blevet slettet."
 
 msgid "Nothing has been scheduled for deletion."
 msgstr "Intet er blevet planlagt til at blive slettet."
@@ -3544,14 +3519,11 @@ msgstr "Valgfri"
 msgid "Order"
 msgstr "Bestilling"
 
-msgid "Order for domain alias deleted."
-msgstr "Ordre for domænet alias slettet."
+msgid "Order successfully deleted."
+msgstr ""
 
-msgid "Order for domain alias not deleted."
-msgstr "Ordrer for domæne alias ikke slettet."
-
-msgid "Order not found. Nothing been deleted."
-msgstr "Ordre ikke fundet. Intet er blevet slettet."
+msgid "Order successfully processed."
+msgstr ""
 
 msgid "Other in"
 msgstr "Andet ind"
@@ -3709,7 +3681,7 @@ msgid "Password successfully updated."
 msgstr "Password opdateret."
 
 msgid "Passwords doesn't match"
-msgstr ""
+msgstr "Adgangskoderne er ikke ens"
 
 msgid "Passwords doesn't match."
 msgstr "Passwords matcher ikke."
@@ -3898,7 +3870,7 @@ msgid "Port"
 msgstr "Port"
 
 msgid "Port must be a number."
-msgstr ""
+msgstr "Port skal være et tal."
 
 msgid "Prevent external login for admins"
 msgstr "Forhindre ekstern adgang for admins"
@@ -3916,14 +3888,14 @@ msgid "Priority"
 msgstr "Prioritet"
 
 msgid "Priority must be a number."
-msgstr ""
+msgstr "Priotet skal være et tal."
 
 #, php-format
 msgid "Priority: %s\n"
 msgstr "Prioritet: %s\n"
 
 msgid "Process update"
-msgstr ""
+msgstr "Process opdatering"
 
 msgid "Profile"
 msgstr "Profil"
@@ -3939,7 +3911,7 @@ msgid "Protect"
 msgstr "Beskyt"
 
 msgid "Protect Web folders"
-msgstr ""
+msgstr "Beskyt Webmapper"
 
 msgid "Protect it"
 msgstr "Beskyt det"
@@ -4009,10 +3981,10 @@ msgid "Registration date"
 msgstr "Registreringsdato"
 
 msgid "Relative weight"
-msgstr ""
+msgstr "Relativ vægt"
 
 msgid "Relative weight must be a number."
-msgstr ""
+msgstr "Relativ vægt skal være et tal."
 
 msgid "Remote Web software repository"
 msgstr "Ekstern Web softwarearkiv"
@@ -4051,85 +4023,85 @@ msgid "Reseller"
 msgstr "Forhandler"
 
 msgid "Reseller / Customer / Overview"
-msgstr ""
+msgstr "Forhandler / Kunde / Oversigt"
 
 msgid "Reseller / Customer / Overview / Domain Details"
-msgstr ""
+msgstr "Forhandler / Kunde / Oversigt / Domæne Detaljer"
 
 msgid "Reseller / Customers / Add Customer - Next Step"
-msgstr ""
+msgstr "Forhandler / Kunder / Tilføj Kunde / Næste Step"
 
 msgid "Reseller / Customers / Add Customer / Next Step"
-msgstr ""
+msgstr "Forhandler / Kunder / Tilføj Kunde / Næste Step"
 
 msgid "Reseller / Customers / Add customer"
-msgstr ""
+msgstr "Forhandler / Kunder / Tilføj Kunde"
 
 msgid "Reseller / Customers / Circular"
-msgstr ""
+msgstr "Forhandler / Kunder / "
 
 msgid "Reseller / Customers / Domain Aliases"
-msgstr ""
+msgstr "Forhandler / Kunder / Domæne Aliases"
 
 msgid "Reseller / Customers / Domain Aliases / Add Alias"
-msgstr ""
+msgstr "Forhandler / Kunder / Domæne Aliases / Tilføj Alias"
 
 msgid "Reseller / Customers / Domain Aliases / Edit Alias"
-msgstr ""
+msgstr "Forhandler / Kunder / Domæne Aliases / Rediger Alias"
 
 msgid "Reseller / Customers / Lost Password Email"
-msgstr ""
+msgstr "Forhandler / Kunder / Glemt Kodeord E-mail"
 
 msgid "Reseller / Customers / Overview / Edit Domain"
-msgstr ""
+msgstr "Forhandler / Kunder / Oversigt / Rediger Domæne"
 
 msgid "Reseller / Customers / Welcome Mail"
-msgstr ""
+msgstr "Forhandler / Kunder / Velkomst Mail"
 
 msgid "Reseller / General / Overview"
-msgstr ""
+msgstr "Forhandler / General / Oversigt"
 
 msgid "Reseller / General / Software Upload"
-msgstr ""
+msgstr "Forhandler / General / Software Upload"
 
 msgid "Reseller / Hosting Plan / Add Hosting Plan"
-msgstr ""
+msgstr "Forhandler / Hosting Plan / Tilføj Hosting Plan"
 
 msgid "Reseller / Profile / Account Summary"
-msgstr ""
+msgstr "Forhandler / Profil / Samlet Konto Oversigt"
 
 msgid "Reseller / Profile / Language"
-msgstr ""
+msgstr "Forhandler / Profil / Sprog"
 
 msgid "Reseller / Profile / Layout"
-msgstr ""
+msgstr "Forhandler / Profil / Layout"
 
 msgid "Reseller / Profile / Password"
-msgstr ""
+msgstr "Forhandler / Profil / Kodeord"
 
 msgid "Reseller / Profile / Personal Data"
-msgstr ""
+msgstr "Forhandler / Profil / Personlig Data"
 
 msgid "Reseller / Statistics / IP Usage"
-msgstr ""
+msgstr "Forhandler / Statistik / IP Forbrug"
 
 msgid "Reseller / Statistics / Overview / Domain Statistics - {DOMAIN_NAME}"
-msgstr ""
+msgstr "Forhandler / Statistik / Oversigt / Domæne Statistik - {DOMAIN_NAME}"
 
 msgid "Reseller / Support / New Ticket"
-msgstr ""
+msgstr "Forhandler / Support / Ny Ticket"
 
 msgid "Reseller / Support / Tickets Closed"
-msgstr ""
+msgstr "Forhandler / Support / Lukkede Tickets"
 
 msgid "Reseller / Support / Tickets Open"
-msgstr ""
+msgstr "Forhandler / Support / Åbne Tickets"
 
 msgid "Reseller / Support / View Ticket"
-msgstr ""
+msgstr "Forhandler / Support / Vis Ticket"
 
 msgid "Reseller /Hosting Plans / {TR_DYNAMIC_TITLE}"
-msgstr ""
+msgstr "Forhandler / Hosting Planer / {TR_DYNAMIC_TITLE}"
 
 msgid "Reseller Name"
 msgstr "Forhandler Navn"
@@ -4171,7 +4143,7 @@ msgid "Reseller software list"
 msgstr "Forhandler softwareliste"
 
 msgid "Reseller statistics"
-msgstr ""
+msgstr "Forhandler Statistikker"
 
 msgid "Reseller successfully added."
 msgstr "Forhandler tilføjet."
@@ -4264,7 +4236,7 @@ msgid "SQL databases limit<br/><i>(-1 disabled, 0 unlimited)</i>"
 msgstr "SQL databaser grænse<br/><i>(-1 deaktiveret, 0 ubegrænset)</i>"
 
 msgid "SQL databases only"
-msgstr ""
+msgstr "Kun SQL databaser"
 
 msgid "SQL user name"
 msgstr "SQL Brugernavn"
@@ -4371,16 +4343,16 @@ msgid "Send reply"
 msgstr "Send svar"
 
 msgid "Sender email"
-msgstr ""
+msgstr "Afsenders e-mail"
 
 msgid "Sender email is missing."
-msgstr ""
+msgstr "Afsenders e-mail mangler"
 
 msgid "Sender name"
-msgstr ""
+msgstr "Afsenders navn"
 
 msgid "Sender name is missing."
-msgstr ""
+msgstr "Afsenders navn mangler."
 
 msgid "Senders email"
 msgstr "Afsenders email"
@@ -4538,10 +4510,10 @@ msgid "Software installer options successfully updated."
 msgstr "Software Installer valgmuligheder blevet opdateret."
 
 msgid "Software installer require PHP support."
-msgstr ""
+msgstr "Software installer kræver PHP support."
 
 msgid "Software installer require PHP."
-msgstr ""
+msgstr "Software installer kræver PHP."
 
 msgid "Software name"
 msgstr "Software navn"
@@ -4628,7 +4600,7 @@ msgid "Start installation"
 msgstr "Start installation"
 
 msgid "State"
-msgstr "Tilstand"
+msgstr "Kommune"
 
 msgid "State/Province"
 msgstr "Kommune"
@@ -4658,12 +4630,12 @@ msgid "Subdomain alias"
 msgstr "Subdomæne alias"
 
 msgid "Subdomain alias successfully scheduled for deletion."
-msgstr ""
+msgstr "Subdomæne alias succesfuldt planlagt til sletning."
 
 msgid ""
 "Subdomain alias you are trying to remove has Ftp accounts. Remove them "
 "first."
-msgstr ""
+msgstr "Domæne alias, du prøver at slette har Ftp konti. Slet dem først."
 
 msgid "Subdomain already exists or is not allowed."
 msgstr "Subdomæne eksisterer allerede eller ikke er tilladt."
@@ -4690,15 +4662,15 @@ msgid "Subdomain successfully scheduled for addition."
 msgstr "Subdomæne planlagt til tilføjelse."
 
 msgid "Subdomain successfully scheduled for deletion."
-msgstr ""
+msgstr "Subdomæne succesfuldt planlagt til sletning."
 
 msgid ""
 "Subdomain you are trying to remove has Ftp accounts. Remove them first."
-msgstr ""
+msgstr "Subdomæne, du forsøger at slette har Ftp konti. Slet dem først."
 
 msgid ""
 "Subdomain you are trying to remove has email accounts. Remove them first."
-msgstr ""
+msgstr "Subdomæne, du forsøger at slette har e-mail konti. Slet dem først."
 
 msgid "Subdomains"
 msgstr "Subdomæner"
@@ -4728,7 +4700,7 @@ msgid "Switch"
 msgstr "Skift"
 
 msgid "Switch to the backups directory"
-msgstr ""
+msgstr "Skift til backup biblioteket"
 
 msgid "Switch to user interface"
 msgstr "Skift til bruger interface"
@@ -4778,7 +4750,7 @@ msgid "TTL"
 msgstr "TTL"
 
 msgid "TTL must be a number."
-msgstr ""
+msgstr "TTL skal være et tal."
 
 msgid "TXT data"
 msgstr "TXT data"
@@ -4911,7 +4883,7 @@ msgstr "Dette plugin %s er beskyttet. Du kan ikke udføre en handling på det."
 
 #, php-format
 msgid "The remote filesize (%s) is lower than 1 Byte. Please check the URL."
-msgstr ""
+msgstr "Den eksterne filstørrelse (%s) er lavere end 1 byte. Kontroller URL."
 
 msgid "The reseller account that you are trying to edit has not been found."
 msgstr "Den forhandler konto, som du forsøger at redigere er ikke blevet fundet."
@@ -4919,7 +4891,7 @@ msgstr "Den forhandler konto, som du forsøger at redigere er ikke blevet fundet
 msgid ""
 "The reseller you want to remove has one or more customers accounts.<br "
 "/>Remove them first."
-msgstr ""
+msgstr "Denne forhandler har en eller flere kunders konti.<br /> For at fjerne denne forhandler, skal du først fjerne disse kunders konti."
 
 msgid "The software installer require PHP."
 msgstr "Installationsprogrammet kræver PHP."
@@ -4946,16 +4918,10 @@ msgstr "Værdien er ikke fundet i stacken"
 msgid "The values must not be equal"
 msgstr "Værdierne skal ikke være ens"
 
-msgid "There is a subdomain with the same mount point."
-msgstr "Der er et subdomæne med samme mount point."
-
 msgid ""
 "There is an Error inside your package. Please check it!<br />Refresh your "
 "site to see the new status!"
 msgstr "Der er en fejl i din pakke. Venligst tjek det!<br />Opdater dit websted for at se den nye status!"
-
-msgid "There is no customer records for this reseller to add an alias for."
-msgstr ""
 
 #, php-format
 msgid "This IP (%s) is not assigned to any network card!"
@@ -4974,6 +4940,9 @@ msgid ""
 " All users linked to this database will also be deleted if not linked to "
 "another database. Are you sure you want to delete the '%s' database?"
 msgstr "Denne database vil blive slettet permanent. Denne proces kan ikke gendannes. Alle brugere der er knyttet til denne database vil også blive slettet, hvis de ikke er knyttet til en anden database. Er du sikker på du vil slette '%s' database?"
+
+msgid "This domain is not allowed."
+msgstr ""
 
 msgid "This htaccess group already exists."
 msgstr "Denne htaccess gruppe findes allerede."
@@ -5176,19 +5145,19 @@ msgstr "Kan ikke hente dit password i databasen."
 msgid ""
 "Unable to schedule deletion of the customer account. A message has been sent"
 " to the administrator."
-msgstr ""
+msgstr "Kan ikke planlægge sletning af kundens konto. En meddelelse er sendt til administratoren."
 
 msgid ""
 "Unable to schedule deletion of the customer account. Please, consult admin "
 "logs or your mail for more information."
-msgstr ""
+msgstr "Kan ikke planlægge sletning af kundens konto. Venligst konsultere admin logs eller din e-mail for mere information."
 
 #, php-format
 msgid "Unable to upload file. Max. upload filesize (%1$d MB) reached?"
-msgstr ""
+msgstr "Kan ikke uploade filen. Max. upload filstørrelse (%1$d MB) nået?"
 
 msgid "Unavailable"
-msgstr ""
+msgstr "Ikke tilgængelig"
 
 msgid "Under maintenance mode, only administrators can login."
 msgstr "Under vedligeholdelse tilstand, kun administratorer kan logge ind."
@@ -5329,7 +5298,7 @@ msgid "User auth"
 msgstr "Brugerrettigheder"
 
 msgid "User data successfully updated"
-msgstr ""
+msgstr "Brugerdata blev succesfuldt opdateret."
 
 msgid "User data were not updated."
 msgstr "Brugerdata blev ikke opdateret."
@@ -5345,10 +5314,10 @@ msgid "User does not exist."
 msgstr "Bruger findes ikke."
 
 msgid "User errors"
-msgstr ""
+msgstr "Bruger fejl"
 
 msgid "User has not been deleted."
-msgstr ""
+msgstr "Bruger er ikke blevet slettet."
 
 msgid "User login (system) name"
 msgstr "Bruger login (system) navn"
@@ -5443,7 +5412,7 @@ msgid "View certificates"
 msgstr "Se certifikater"
 
 msgid "View hosting plan"
-msgstr ""
+msgstr "Vis hosting plan"
 
 msgid "View ticket"
 msgstr "Se ticket"
@@ -5466,6 +5435,11 @@ msgid ""
 msgstr "Vi beklager, men du har nået det maksimale antal domænealiasser tilladt af dit abonnement. Kontakt din forhandler for at få flere oplysninger."
 
 msgid ""
+"We are sorry but you have reached the maximum number of domain aliases "
+"allowed by your subscription. Contact your reseller for more information."
+msgstr ""
+
+msgid ""
 "We are sorry, but the system is currently under maintenance.\n"
 "Please try again later."
 msgstr "Vi beklager, men systemet er i øjeblikket under vedligeholdelse.\nPrøv venligst igen senere."
@@ -5474,7 +5448,7 @@ msgid "Web Statistics"
 msgstr "Web Statistikker"
 
 msgid "Web files only"
-msgstr ""
+msgstr "Kun webfiler"
 
 msgid "Web in"
 msgstr "Web ind"
@@ -5566,7 +5540,7 @@ msgid "Wrong address in forward URL."
 msgstr "Forkert adresse i forward URL."
 
 msgid "Wrong customer ID."
-msgstr ""
+msgstr "Forkert kunde ID."
 
 msgid "Wrong domain name lenght!"
 msgstr "Forkert domænenavn længde!"
@@ -5652,7 +5626,7 @@ msgid "Yes"
 msgstr "Ja"
 
 msgid "Yes, delete this account."
-msgstr ""
+msgstr "Ja, slet denne konto."
 
 msgid "YiB"
 msgstr "YiB"
@@ -5694,7 +5668,7 @@ msgid "You can only upload images."
 msgstr "Du kan kun uploade billeder."
 
 msgid "You cannot delete a reseller that has customer accounts."
-msgstr ""
+msgstr "Du kan ikke slette en forhandler, der har kundekonti."
 
 msgid "You cannot delete the last active IP address."
 msgstr "Du kan ikke slette den sidste aktive IP adresse."
@@ -5735,7 +5709,7 @@ msgid "You did not fill all required fields"
 msgstr "Du har ikke udfylde alle obligatoriske felter"
 
 msgid "You do not have FTP accounts."
-msgstr ""
+msgstr "Du har ikke FTP konti."
 
 msgid "You do not have any software uploaded yet"
 msgstr "Du har ikke noget software uploadet endnu"
@@ -5849,7 +5823,7 @@ msgstr "Du har nået din domæne grænse.<br />Du kan ikke tilføje flere domæn
 
 #, php-format
 msgid "You have received %d new support request."
-msgstr ""
+msgstr "Du har modtaget %d ny support anmodning."
 
 #, php-format
 msgid "You have received %s new support questions."
@@ -5865,7 +5839,7 @@ msgid "You must choose between local and remote upload."
 msgstr "Du skal vælge mellem lokal og remote upload."
 
 msgid "You must confirm customer account deletion."
-msgstr ""
+msgstr "Du skal bekræfte kundekonto sletning."
 
 msgid "You must enter a least one forward address."
 msgstr "Du skal angive mindst én forward adresse."
@@ -5874,7 +5848,7 @@ msgid "You must first generate a password"
 msgstr "Du skal først oprette et password"
 
 msgid "You must omit 'www'. It will be added automatically."
-msgstr ""
+msgstr "Du behøver ikke \"www\". i-MSCP vil tilføje det automatisk."
 
 msgid "You must provide a password."
 msgstr "Du skal angive et password."
@@ -5903,15 +5877,12 @@ msgstr "Du skal angive et emne."
 msgid "You need a Database for this software"
 msgstr "Du har brug for en database til denne software"
 
-msgid "You reached your domain aliases limit."
-msgstr "Du nåede dit domænes alias grænse."
-
 #, php-format
 msgid "You received %d new answer(s) to your support questions."
 msgstr "Du har modtaget %d nyt/nye svar til dit/dine support spørgsmål."
 
 msgid "Your account has expired."
-msgstr ""
+msgstr "Din konto er udløbet."
 
 msgid "Your account has expired. Please renew your subscription."
 msgstr "Din konto er udløbet. Venligst forny dit abonnement."
@@ -5919,7 +5890,7 @@ msgstr "Din konto er udløbet. Venligst forny dit abonnement."
 msgid ""
 "Your account is currently in maintenance or disabled. Please, contact your "
 "reseller."
-msgstr ""
+msgstr "Din konto er i øjeblikket under vedligeholdelse eller deaktiveret. Kontakt venligst din forhandler."
 
 msgid "Your are not the owner of this domain alias."
 msgstr "Du er ikke ejeren af dette domæne alias."
@@ -5947,7 +5918,7 @@ msgstr "Din pakke er beskadiget. Ret venligst dette!"
 
 #, php-format
 msgid "Your remote filesize (%s) is lower than 1 Byte. Please check your URL."
-msgstr ""
+msgstr "Din eksterne filstørrelse (%s) er lavere end 1 byte. Kontroller URL."
 
 msgid ""
 "Your request for new password has been registered. You will receive an email"
@@ -5961,7 +5932,7 @@ msgid "ZiB"
 msgstr "ZiB"
 
 msgid "Zip"
-msgstr ""
+msgstr "Zip"
 
 msgid "Zip code"
 msgstr "Postnr"
@@ -6049,13 +6020,13 @@ msgid "help"
 msgstr "hjælp"
 
 msgid "i-MSCP - Admin / Customer Account Deletion Validation"
-msgstr ""
+msgstr "i-MSCP - Admin / Kundekonto Sletnings Validering"
 
 msgid "i-MSCP - Application Management (Permissions)"
 msgstr "i-MSCP - Programadministration (Tilladelser)"
 
 msgid "i-MSCP - Client/ Webtools / Protected Areas / {TR_DYNAMIC_TITLE}"
-msgstr ""
+msgstr "i-MSCP - Klient / Webværktøjer / Beskyttede områder / {TR_DYNAMIC_TITLE}"
 
 msgid "i-MSCP - Client/Create CatchAll Mail Account"
 msgstr "i-MSCP - Bruger/Opret FangAlle Mail Konto"
@@ -6070,10 +6041,10 @@ msgid "i-MSCP - Multi Server Control Panel / Maintenance"
 msgstr "i-MSCP - Multi Server Control Panel / Vedligeholdelse"
 
 msgid "i-MSCP - Reseller / Manage Customers / Customers / Edit Customer"
-msgstr ""
+msgstr "i-MSCP - Forhandler / Håndter brugere / Kunder / Rediger Kunder"
 
 msgid "i-MSCP - Reseller / Manage hosting Plans / Hosting plans"
-msgstr ""
+msgstr "i-MSCP - Forhandler / Administrer hosting Planer / Hosting planer"
 
 msgid "i-MSCP - Software Installer / Management"
 msgstr "i-MSCP - Software Installer / Administration"
@@ -6167,7 +6138,7 @@ msgstr "ældre end 6 måneder"
 
 #, php-format
 msgid "or remote file (Max: %s)"
-msgstr ""
+msgstr "eller ekstern fil (Maks: %s)"
 
 msgid "order"
 msgstr "ordre"

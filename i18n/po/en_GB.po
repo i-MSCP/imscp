@@ -14,8 +14,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2013-05-28 20:04+0200\n"
-"PO-Revision-Date: 2013-05-28 18:04+0000\n"
+"POT-Creation-Date: 2013-05-31 15:29+0200\n"
+"PO-Revision-Date: 2013-05-31 13:29+0000\n"
 "Last-Translator: Torsten Widmann <info@goover.de>\n"
 "Language-Team: English (United Kingdom) (http://www.transifex.com/projects/p/i-MSCP/language/en_GB/)\n"
 "MIME-Version: 1.0\n"
@@ -897,9 +897,6 @@ msgstr "Alias mail"
 
 msgid "Alias name"
 msgstr "Alias name"
-
-msgid "Alias scheduled for activation."
-msgstr "Alias scheduled for activation."
 
 msgid "Alias scheduled for addition."
 msgstr "Alias scheduled for addition."
@@ -1956,33 +1953,19 @@ msgstr "Domain alias limit reached."
 msgid "Domain alias name"
 msgstr "Domain alias name"
 
-msgid "Domain alias not modified."
-msgstr "Domain alias not modified."
-
-msgid "Domain alias not scheduled for addition."
-msgstr "Domain alias not scheduled for addition."
-
 msgid "Domain alias scheduled for creation."
 msgstr "Domain alias scheduled for creation."
 
 msgid "Domain alias scheduled for update."
 msgstr "Domain alias scheduled for update."
 
-msgid "Domain alias successfully modified"
-msgstr "Domain alias successfully modified"
-
 msgid "Domain alias successfully scheduled for addition"
 msgstr "Domain alias successfully scheduled for addition"
-
-msgid "Domain alias successfully scheduled for addition."
-msgstr "Domain alias successfully scheduled for addition."
 
 msgid "Domain alias successfully scheduled for deletion."
 msgstr "Domain alias successfully scheduled for deletion."
 
-msgid ""
-"Domain alias you are trying to remove has FTP accounts.<br/>First remove "
-"them."
+msgid "Domain alias successfully updated"
 msgstr ""
 
 msgid ""
@@ -1999,19 +1982,11 @@ msgid ""
 msgstr ""
 
 msgid ""
-"Domain alias you are trying to remove has email accounts.<br/>First remove "
-"them."
-msgstr ""
-
-msgid ""
 "Domain alias you are trying to remove has subdomains. Remove them first."
 msgstr ""
 
 msgid "Domain aliases"
 msgstr "Domain aliases"
-
-msgid "Domain aliases limit reached."
-msgstr "Domain aliases limit reached."
 
 msgid "Domain aliases limit<br/><i>(-1 disabled, 0 unlimited)</i>"
 msgstr ""
@@ -3547,14 +3522,11 @@ msgstr "Optional"
 msgid "Order"
 msgstr "Order"
 
-msgid "Order for domain alias deleted."
-msgstr "Order for domain alias deleted."
+msgid "Order successfully deleted."
+msgstr ""
 
-msgid "Order for domain alias not deleted."
-msgstr "Order for domain alias not deleted."
-
-msgid "Order not found. Nothing been deleted."
-msgstr "Order not found. Nothing been deleted."
+msgid "Order successfully processed."
+msgstr ""
 
 msgid "Other in"
 msgstr "Other in"
@@ -4949,16 +4921,10 @@ msgstr "The value has not been found in the stack"
 msgid "The values must not be equal"
 msgstr "The values must not be equal"
 
-msgid "There is a subdomain with the same mount point."
-msgstr "There is a subdomain with the same mount point."
-
 msgid ""
 "There is an Error inside your package. Please check it!<br />Refresh your "
 "site to see the new status!"
 msgstr "There is an Error inside your package. Please check it!<br />Refresh your site to see the new status!"
-
-msgid "There is no customer records for this reseller to add an alias for."
-msgstr ""
 
 #, php-format
 msgid "This IP (%s) is not assigned to any network card!"
@@ -4977,6 +4943,9 @@ msgid ""
 " All users linked to this database will also be deleted if not linked to "
 "another database. Are you sure you want to delete the '%s' database?"
 msgstr "This database will be permanently deleted. This process cannot be recovered. All users linked to this database will also be deleted if not linked to another database. Are you sure you want to delete the '%s' database?"
+
+msgid "This domain is not allowed."
+msgstr ""
 
 msgid "This htaccess group already exists."
 msgstr "This htaccess group already exists."
@@ -5469,6 +5438,11 @@ msgid ""
 msgstr "We are sorry but you have reached the maximum number of domain aliases allowed by your subscription. Contact to your reseller for more information."
 
 msgid ""
+"We are sorry but you have reached the maximum number of domain aliases "
+"allowed by your subscription. Contact your reseller for more information."
+msgstr ""
+
+msgid ""
 "We are sorry, but the system is currently under maintenance.\n"
 "Please try again later."
 msgstr "We are sorry, but the system is currently under maintenance.\nPlease try again later."
@@ -5905,9 +5879,6 @@ msgstr "You must specify a subject."
 
 msgid "You need a Database for this software"
 msgstr "You need a Database for this software"
-
-msgid "You reached your domain aliases limit."
-msgstr "You reached your domain aliases limit."
 
 #, php-format
 msgid "You received %d new answer(s) to your support questions."

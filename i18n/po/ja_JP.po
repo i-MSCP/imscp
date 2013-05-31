@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2013-05-28 20:04+0200\n"
-"PO-Revision-Date: 2013-05-28 18:04+0000\n"
+"POT-Creation-Date: 2013-05-31 15:29+0200\n"
+"PO-Revision-Date: 2013-05-31 13:29+0000\n"
 "Last-Translator: Torsten Widmann <info@goover.de>\n"
 "Language-Team: Japanese (Japan) (http://www.transifex.com/projects/p/i-MSCP/language/ja_JP/)\n"
 "MIME-Version: 1.0\n"
@@ -892,9 +892,6 @@ msgstr "エイリアスメール"
 
 msgid "Alias name"
 msgstr "エイリアスネーム"
-
-msgid "Alias scheduled for activation."
-msgstr "エイリアスのアクティベーションを予定されました。"
 
 msgid "Alias scheduled for addition."
 msgstr "エイリアスの追加が予定されました。"
@@ -1951,34 +1948,20 @@ msgstr "ドメインエイリアスは制限に達しています。"
 msgid "Domain alias name"
 msgstr "ドメインエイリアス名"
 
-msgid "Domain alias not modified."
-msgstr "ドメインエイリアスは変更されません。"
-
-msgid "Domain alias not scheduled for addition."
-msgstr "ドメインエイリアスは予定通り追加されませんでした。"
-
 msgid "Domain alias scheduled for creation."
 msgstr "ドメインエイリアスの作成が予定されました。"
 
 msgid "Domain alias scheduled for update."
 msgstr "ドメインエイリアスの更新が予定されました。"
 
-msgid "Domain alias successfully modified"
-msgstr "ドメインエイリアスを修正しました"
-
 msgid "Domain alias successfully scheduled for addition"
 msgstr "ドメインエイリアスは予定通り追加されました"
-
-msgid "Domain alias successfully scheduled for addition."
-msgstr "ドメインエイリアスは予定通り追加されました。"
 
 msgid "Domain alias successfully scheduled for deletion."
 msgstr "ドメインエイリアスは予定通り削除されました。"
 
-msgid ""
-"Domain alias you are trying to remove has FTP accounts.<br/>First remove "
-"them."
-msgstr "削除しようとしたドメインエイリアスにはFTPアカウントがあります。<br/>最初にそれらを削除します。"
+msgid "Domain alias successfully updated"
+msgstr ""
 
 msgid ""
 "Domain alias you are trying to remove has Ftp accounts. Remove them first."
@@ -1994,19 +1977,11 @@ msgid ""
 msgstr ""
 
 msgid ""
-"Domain alias you are trying to remove has email accounts.<br/>First remove "
-"them."
-msgstr "削除しようとしたドメインエイリアスには、Eメールアカウントを持っています。<br/>\n最初にそれらを削除します。"
-
-msgid ""
 "Domain alias you are trying to remove has subdomains. Remove them first."
 msgstr ""
 
 msgid "Domain aliases"
 msgstr "ドメインエイリアス"
-
-msgid "Domain aliases limit reached."
-msgstr "ドメインエイリアスが制限に達しています。"
 
 msgid "Domain aliases limit<br/><i>(-1 disabled, 0 unlimited)</i>"
 msgstr "ドメインエイリアス制限<br/><i>(-1 無効, 0 無制限)</i>"
@@ -3542,14 +3517,11 @@ msgstr "オプショナル"
 msgid "Order"
 msgstr "オーダー"
 
-msgid "Order for domain alias deleted."
-msgstr "ドメインエイリアスのオーダーは削除しました。"
+msgid "Order successfully deleted."
+msgstr ""
 
-msgid "Order for domain alias not deleted."
-msgstr "ドメインエイリアスのオーダーは削除されません。"
-
-msgid "Order not found. Nothing been deleted."
-msgstr "オーダーが見つかりません。何も削除しませんでした。"
+msgid "Order successfully processed."
+msgstr ""
 
 msgid "Other in"
 msgstr "その他 in"
@@ -4944,16 +4916,10 @@ msgstr "値はスタックに発見されていない"
 msgid "The values must not be equal"
 msgstr "値が等しくてはいけません"
 
-msgid "There is a subdomain with the same mount point."
-msgstr "同じマウントポイントがあるサブドメインがあります。"
-
 msgid ""
 "There is an Error inside your package. Please check it!<br />Refresh your "
 "site to see the new status!"
 msgstr "パッケージ内部エラーがあります。確認してください！<br/>新しいステータスを表示するにはサイトを更新してください！"
-
-msgid "There is no customer records for this reseller to add an alias for."
-msgstr ""
 
 #, php-format
 msgid "This IP (%s) is not assigned to any network card!"
@@ -4972,6 +4938,9 @@ msgid ""
 " All users linked to this database will also be deleted if not linked to "
 "another database. Are you sure you want to delete the '%s' database?"
 msgstr "データベースは完全に削除されます。この処理を回復することはできません。別のデータベースにリンクされていない場合は、このデータベースにリンクされている全てのユーザーも削除されます。 '%s' データベースを削除してもよろしいですか？"
+
+msgid "This domain is not allowed."
+msgstr ""
 
 msgid "This htaccess group already exists."
 msgstr "htaccessグループが既に存在しています。"
@@ -5464,6 +5433,11 @@ msgid ""
 msgstr "申し訳ありませんが、あなたのサブスクリプションで許可されているドメインエイリアスの最大数に達しました。詳細については、代理店にお問い合わせください。"
 
 msgid ""
+"We are sorry but you have reached the maximum number of domain aliases "
+"allowed by your subscription. Contact your reseller for more information."
+msgstr ""
+
+msgid ""
 "We are sorry, but the system is currently under maintenance.\n"
 "Please try again later."
 msgstr "申し訳ありませんが、システムは現在メンテナンス中です。\n後でもう一度やり直してください。"
@@ -5900,9 +5874,6 @@ msgstr "件名を指定する必要があります。"
 
 msgid "You need a Database for this software"
 msgstr "このソフトウェアはデータベースが必要です"
-
-msgid "You reached your domain aliases limit."
-msgstr "ドメインエイリアスの上限に達しました。"
 
 #, php-format
 msgid "You received %d new answer(s) to your support questions."
