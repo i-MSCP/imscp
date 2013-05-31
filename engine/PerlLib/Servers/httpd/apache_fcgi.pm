@@ -506,8 +506,15 @@ sub delDmn($$)
 				# Unprotect Web root directory
 				clearImmutable($webDir);
 
-				my $skelDir = $data->{'DOMAIN_TYPE'} eq 'als'
-					? "$self->{'cfgDir'}/skel/domain" : "$self->{'cfgDir'}/skel/subdomain";
+				my $skelDir;
+
+				if($data->{'DOMAIN_TYPE'} eq 'dmn') {
+					$skelDir = "$self->{'apacheCfgDir'}/skel/domain";
+				} elsif($data->{'DOMAIN_TYPE'} eq 'als') {
+					$skelDir = "$self->{'apacheCfgDir'}/skel/alias";
+				} else {
+					$skelDir = "$self->{'apacheCfgDir'}/skel/subdomain";
+				}
 
 				for(iMSCP::Dir->new('dirname' => $skelDir)->getAll()) {
 					if(-d "$webDir/$_") {
@@ -1977,8 +1984,15 @@ sub _addFiles($$)
 
 	# Build domain/subdomain Web directory tree using skeleton from (eg /etc/imscp/etc/skel) - BEGIN
 
-	my $skelDir = ($data->{'DOMAIN_TYPE'} eq 'dmn' || $data->{'DOMAIN_TYPE'} eq 'als')
-		? "$self->{'cfgDir'}/skel/domain" : "$self->{'cfgDir'}/skel/subdomain";
+	my $skelDir;
+
+	if($data->{'DOMAIN_TYPE'} eq 'dmn') {
+		$skelDir = "$self->{'apacheCfgDir'}/skel/domain";
+	} elsif($data->{'DOMAIN_TYPE'} eq 'als') {
+		$skelDir = "$self->{'apacheCfgDir'}/skel/alias";
+	} else {
+		$skelDir = "$self->{'apacheCfgDir'}/skel/subdomain";
+	}
 
 	my ($tmpDir, $stdout, $stderr);
 
@@ -2055,20 +2069,6 @@ sub _addFiles($$)
 	debug($stdout) if $stdout;
 	error($stderr) if $stderr && $rs;
 	return $rs if $rs;
-
-	# Remove uneeded directories/files (This is done at $webDir level instead of $tmpLevel to remove unneeded directory,
-	# which, were copied by mistake using the hard coded skeleton as provided by previous i-MSCP versions
-	if($data->{'DOMAIN_TYPE'} eq 'als') {
-		for('backups', 'domain_disable_page', 'errors', '.htgroup', '.htpasswd') {
-			if(-d "$webDir/$_") {
-				$rs = iMSCP::Dir->new('dirname' => "$webDir/$_")->remove();
-				return $rs if $rs;
-			} elsif(-f _) {
-				$rs = iMSCP::File->new('filename' => "$webDir/$_")->delFile();
-				return $rs if $rs;
-			}
-		}
-	}
 
 	# Create other directories as returned by the dmnFolders() method
 	for ($self->_dmnFolders($data)) {
