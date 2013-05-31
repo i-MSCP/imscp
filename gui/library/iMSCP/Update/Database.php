@@ -1950,4 +1950,15 @@ class iMSCP_Update_Database extends iMSCP_Update
 	{
 		return "DROP TABLES IF EXISTS `straff_settings`";
 	}
+
+	/**
+	 * Drop useless php_ini.status column
+	 *
+	 * @author Laurent Declercq <l.declercq@nuxwin.com>
+	 * @return string SQL statement to be e executed
+	 */
+	protected function _databaseUpdate_136()
+	{
+		return $this->_dropColumn('php_ini', 'status');
+	}
 }

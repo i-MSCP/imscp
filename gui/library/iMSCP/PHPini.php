@@ -429,7 +429,7 @@ class iMSCP_PHPini
 				UPDATE
 					`php_ini`
 				SET
-					`status` = ?, `disable_functions` = ?, `allow_url_fopen` = ?, `display_errors` = ?,
+					`disable_functions` = ?, `allow_url_fopen` = ?, `display_errors` = ?,
 					`error_reporting` = ?, `post_max_size` = ?, `upload_max_filesize` = ?, `max_execution_time` = ?,
 					`max_input_time` = ?, `memory_limit` = ?
 				WHERE
@@ -438,20 +438,19 @@ class iMSCP_PHPini
 			exec_query(
 				$query,
 				array(
-					$this->_cfg->ITEM_CHANGE_STATUS, $this->_phpiniData['phpiniDisableFunctions'],
-					$this->_phpiniData['phpiniAllowUrlFopen'], $this->_phpiniData['phpiniDisplayErrors'],
-					$this->_phpiniData['phpiniErrorReporting'], $this->_phpiniData['phpiniPostMaxSize'],
-					$this->_phpiniData['phpiniUploadMaxFileSize'], $this->_phpiniData['phpiniMaxExecutionTime'],
-					$this->_phpiniData['phpiniMaxInputTime'], $this->_phpiniData['phpiniMemoryLimit'], $domainId
+					$this->_phpiniData['phpiniDisableFunctions'], $this->_phpiniData['phpiniAllowUrlFopen'],
+					$this->_phpiniData['phpiniDisplayErrors'], $this->_phpiniData['phpiniErrorReporting'],
+					$this->_phpiniData['phpiniPostMaxSize'], $this->_phpiniData['phpiniUploadMaxFileSize'],
+					$this->_phpiniData['phpiniMaxExecutionTime'], $this->_phpiniData['phpiniMaxInputTime'],
+					$this->_phpiniData['phpiniMemoryLimit'], $domainId
 				)
 			);
 		} else {
 			$query = "
 				INSERT INTO
 					`php_ini` (
-						`status`, `disable_functions`, `allow_url_fopen`, `display_errors`, `error_reporting`,
-						`post_max_size`, `upload_max_filesize`, `max_execution_time`, `max_input_time`, `memory_limit`,
-						`domain_id`
+						`disable_functions`, `allow_url_fopen`, `display_errors`, `error_reporting`, `post_max_size`,
+						`upload_max_filesize`, `max_execution_time`, `max_input_time`, `memory_limit`, `domain_id`
 				 ) VALUES (
 					?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
 				)
@@ -459,11 +458,11 @@ class iMSCP_PHPini
 			exec_query(
 				$query,
 				array(
-					$this->_cfg->ITEM_ADD_STATUS, $this->_phpiniData['phpiniDisableFunctions'],
-					$this->_phpiniData['phpiniAllowUrlFopen'], $this->_phpiniData['phpiniDisplayErrors'],
-					$this->_phpiniData['phpiniErrorReporting'], $this->_phpiniData['phpiniPostMaxSize'],
-					$this->_phpiniData['phpiniUploadMaxFileSize'], $this->_phpiniData['phpiniMaxExecutionTime'],
-					$this->_phpiniData['phpiniMaxInputTime'], $this->_phpiniData['phpiniMemoryLimit'], $domainId
+					$this->_phpiniData['phpiniDisableFunctions'], $this->_phpiniData['phpiniAllowUrlFopen'],
+					$this->_phpiniData['phpiniDisplayErrors'], $this->_phpiniData['phpiniErrorReporting'],
+					$this->_phpiniData['phpiniPostMaxSize'], $this->_phpiniData['phpiniUploadMaxFileSize'],
+					$this->_phpiniData['phpiniMaxExecutionTime'], $this->_phpiniData['phpiniMaxInputTime'],
+					$this->_phpiniData['phpiniMemoryLimit'], $domainId
 				)
 			);
 		}

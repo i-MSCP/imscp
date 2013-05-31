@@ -84,7 +84,7 @@ INSERT IGNORE INTO `config` (`name`, `value`) VALUES
 ('PREVENT_EXTERNAL_LOGIN_ADMIN', '1'),
 ('PREVENT_EXTERNAL_LOGIN_RESELLER', '1'),
 ('PREVENT_EXTERNAL_LOGIN_CLIENT', '1'),
-('DATABASE_REVISION', '135'),
+('DATABASE_REVISION', '136'),
 ('PHPINI_ALLOW_URL_FOPEN', 'off'),
 ('PHPINI_DISPLAY_ERRORS', 'off'),
 ('PHPINI_UPLOAD_MAX_FILESIZE', '10'),
@@ -404,7 +404,6 @@ CREATE TABLE IF NOT EXISTS `mail_users` (
 CREATE TABLE IF NOT EXISTS `php_ini` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `domain_id` int(10) NOT NULL,
-  `status` varchar(55) COLLATE utf8_unicode_ci NOT NULL,
   `disable_functions` varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'show_source, system, shell_exec, passthru, exec, phpinfo, shell, symlink, popen, proc_open',
   `allow_url_fopen` varchar(10) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'off',
   `display_errors` varchar(10) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'off',
