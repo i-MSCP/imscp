@@ -381,11 +381,11 @@ function reseller_generateUserList($tpl, $reselleId)
 	$cfg = iMSCP_Registry::get('config');
 
 	$query = "SELECT `admin_id` FROM `admin` WHERE `admin_type` = 'user' AND `created_by` = ? ORDER BY `admin_name`";
-	$stmt = exec_query($query, $reselleId);
+	$stmt1 = exec_query($query, $reselleId);
 
 	$i = 1;
 
-	while ($adminData = $stmt->fetchRow()) {
+	while ($adminData = $stmt1->fetchRow()) {
 		$adminId = $adminData['admin_id'];
 
 		$selected = '';
@@ -394,8 +394,8 @@ function reseller_generateUserList($tpl, $reselleId)
 		$query = "
 			SELECT `domain_id`, IFNULL(`domain_name`, '') `domain_name` FROM `domain` WHERE `domain_admin_id` = ?
 		";
-		$stmt = exec_query($query, $adminId);
-		$dmnData = $stmt->fetchRow();
+		$stmt2 = exec_query($query, $adminId);
+		$dmnData = $stmt2->fetchRow();
 
 		$dmnId = $dmnData['domain_id'];
 		$dmnName = $dmnData['domain_name'];
