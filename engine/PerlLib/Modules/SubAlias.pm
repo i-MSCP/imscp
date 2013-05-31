@@ -149,7 +149,10 @@ sub buildHTTPDData
 		$main::imscpConfig{'SYSTEM_USER_PREFIX'} .
 			($main::imscpConfig{'SYSTEM_USER_MIN_UID'} + $self->{'domain_admin_id'});
 	my $hDir = "$main::imscpConfig{'USER_WEB_DIR'}/$self->{'user_home'}/$self->{'subdomain_alias_mount'}";
+
+	# Remove double and trailing slashes
 	$hDir =~ s~/+~/~g;
+	$hDir =~ s~/$~~g;
 
 	my $sql = "SELECT * FROM `config` WHERE `name` LIKE 'PHPINI%'";
 	my $rdata = iMSCP::Database->factory()->doQuery('name', $sql);
@@ -179,8 +182,8 @@ sub buildHTTPDData
 		DOMAIN_TYPE => 'alssub',
 		DOMAIN_NAME => $self->{'subdomain_alias_name'} . '.' . $self->{'alias_name'},
 		DOMAIN_NAME_UNICODE => idn_to_unicode($self->{'subdomain_alias_name'} . '.' . $self->{'alias_name'}, 'UTF-8'),
-		ROOT_DOMAIN_NAME => $self->{'user_home'},
 		PARENT_DOMAIN_NAME => $self->{'alias_name'},
+		ROOT_DOMAIN_NAME => $self->{'user_home'},
 		DOMAIN_IP => $self->{'ip_number'},
 		WWW_DIR => $main::imscpConfig{'USER_WEB_DIR'},
 		WEB_DIR => $hDir,

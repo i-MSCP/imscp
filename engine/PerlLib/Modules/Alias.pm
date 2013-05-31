@@ -152,7 +152,10 @@ sub buildHTTPDData
 		$main::imscpConfig{'SYSTEM_USER_PREFIX'} .
 			($main::imscpConfig{'SYSTEM_USER_MIN_UID'} + $self->{'domain_admin_id'});
 	my $hDir = "$main::imscpConfig{'USER_WEB_DIR'}/$self->{'user_home'}/$self->{'alias_mount'}";
+
+	# Remove double and trailing slashes
 	$hDir =~ s~/+~/~g;
+	$hDir =~ s~/$~~g;
 
 	my $pDir = "$main::imscpConfig{'USER_WEB_DIR'}/$self->{'user_home'}";
 	$pDir =~ s~/+~/~g;
@@ -184,8 +187,8 @@ sub buildHTTPDData
 		DOMAIN_TYPE => 'als',
 		DOMAIN_NAME => $self->{'alias_name'},
 		DOMAIN_NAME_UNICODE => idn_to_unicode($self->{'alias_name'}, 'UTF-8'),
+		PARENT_DOMAIN_NAME => $self->{'alias_name'},
 		ROOT_DOMAIN_NAME => $self->{'user_home'},
-		PARENT_DOMAIN_NAME => $self->{'user_home'},
 		DOMAIN_IP => $self->{'ip_number'},
 		WWW_DIR => $main::imscpConfig{'USER_WEB_DIR'},
 		WEB_DIR => $hDir,

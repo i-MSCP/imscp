@@ -1989,7 +1989,7 @@ sub _addCfg($$)
 		} elsif($poolLevel eq 'per_site') {
 			$self->{'data'}->{'POOL_NAME'} = $data->{'DOMAIN_NAME'};
 		} else {
-			error("Unknown php.ini level: $poolLevel");
+			error("Unknown php-fpm pool level: $poolLevel");
 			return 1;
 		}
 	}
@@ -2148,6 +2148,8 @@ sub _addFiles($$)
 	return $rs if $rs;
 
 	my $webDir = $data->{'WEB_DIR'};
+
+	debug("NUXWIN: $webDir");
 
 	# Build domain/subdomain Web directory tree using skeleton from (eg /etc/imscp/etc/skel) - BEGIN
 

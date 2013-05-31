@@ -336,7 +336,10 @@ sub buildHTTPDData
 		($main::imscpConfig{'SYSTEM_USER_MIN_UID'} + $self->{'domain_admin_id'});
 
 	my $hDir = "$main::imscpConfig{'USER_WEB_DIR'}/$self->{'domain_name'}";
+
+	# Remove double and trailing slashes
 	$hDir =~ s~/+~/~g;
+	$hDir =~ s~/$~~g;
 
 	my $pDir = $hDir;
 
