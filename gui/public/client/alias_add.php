@@ -156,8 +156,8 @@ function client_addDomainAlias()
 	$cfg = iMSCP_Registry::get('config');
 
 	$cr_user_id = $domain_id = get_user_domain_id($_SESSION['user_id']);
-	$alias_name = strtolower($_POST['ndomain_name']);
-	$mount_point = array_encode_idna(strtolower($_POST['ndomain_mpoint']), true);
+	$alias_name = strtolower(trim(clean_input($_POST['ndomain_name'])));
+	$mount_point = array_encode_idna(strtolower(trim(clean_input($_POST['ndomain_mpoint']))), true);
 
 	if ($_POST['status'] == 1) {
 		$forward = encode_idna(strtolower(clean_input($_POST['forward'])));
@@ -182,7 +182,7 @@ function client_addDomainAlias()
 
 	if (imscp_domain_exists($alias_name, 0)) {
 		set_page_message(tr('Domain with same name already exists.'), 'error');
-	} elseif (!validates_mpoint($mount_point)) {
+	} elseif ($mount_point == '' || !validates_mpoint($mount_point)) {
 		set_page_message(tr('Incorrect mount point syntax.'), 'error');
 	} elseif(!_client_isAllowedMountPoint($mount_point, $domain_id)) {
 		set_page_message(tr('This mount point is not allowed.'), 'error');

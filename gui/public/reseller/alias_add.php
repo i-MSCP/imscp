@@ -193,10 +193,10 @@ function reseller_addDomainAlias()
 	$customerDmnId = clean_input($_POST['user_domain_account']);
 
 	$alsName = strtolower($_POST['ndomain_name']);
-	$mountPoint = array_encode_idna(strtolower($_POST['ndomain_mpoint']), true);
+	$mountPoint = array_encode_idna(strtolower(trim(clean_input($_POST['ndomain_mpoint']))), true);
 
 	if ($_POST['status'] == 1) {
-		$forward = encode_idna(strtolower(clean_input($_POST['forward'])));
+		$forward = encode_idna(strtolower(trim(clean_input($_POST['forward']))));
 		$forwardProto = clean_input($_POST['forward_prefix']);
 	} else {
 		$forward = 'no';
@@ -213,7 +213,7 @@ function reseller_addDomainAlias()
 
 	if (imscp_domain_exists($asciiAlsName, $_SESSION['user_id'])) {
 		set_page_message(tr('Domain with same name already exists.'), 'error');
-	} elseif (!validates_mpoint($mountPoint)) {
+	} elseif ($mountPoint == '' || !validates_mpoint($mountPoint)) {
 		set_page_message(tr('Incorrect mount point syntax.'), 'error');
 	} elseif (!_reseller_isAllowedMountPoint($mountPoint, $customerDmnId)) {
 		set_page_message(tr('This mount point is not allowed.'), 'error');
