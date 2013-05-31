@@ -1397,7 +1397,7 @@ AUTO_LOG_MSG;
 /**
  * Send add user email
  *
- * @param int $admin_id Admin unique identifier
+ * @param int $adminId Admin unique identifier
  * @param string $uname Username
  * @param string $upass User password
  * @param string $uemail User email
@@ -1406,22 +1406,22 @@ AUTO_LOG_MSG;
  * @param string $utype User type
  * @return void
  */
-function send_add_user_auto_msg($admin_id, $uname, $upass, $uemail, $ufname, $ulname, $utype)
+function send_add_user_auto_msg($adminId, $uname, $upass, $uemail, $ufname, $ulname, $utype)
 {
 	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
 
-	$admin_login = $_SESSION['user_logged'];
-	$data = get_welcome_email($admin_id, $_SESSION['user_type']);
-	$from_name = $data['sender_name'];
-	$from_email = $data['sender_email'];
+	$adminLogin = $_SESSION['user_logged'];
+	$data = get_welcome_email($adminId, $_SESSION['user_type']);
+	$fromName = $data['sender_name'];
+	$fromEmail = $data['sender_email'];
 	$message = $data['message'];
-	$base_vhost = $cfg->BASE_SERVER_VHOST;
+	$baseVhost = $cfg->BASE_SERVER_VHOST;
 
-	if ($from_name) {
-		$from = '"' . encode($from_name) . "\" <" . $from_email . ">";
+	if ($fromName) {
+		$from = '"' . encode($fromName) . "\" <" . $fromEmail . ">";
 	} else {
-		$from = $from_email;
+		$from = $fromEmail;
 	}
 
 	if ($ufname && $ulname) {
@@ -1446,7 +1446,7 @@ function send_add_user_auto_msg($admin_id, $uname, $upass, $uemail, $ufname, $ul
 	$search [] = '{PASSWORD}';
 	$replace[] = $password;
 	$search [] = '{BASE_SERVER_VHOST}';
-	$replace[] = $base_vhost;
+	$replace[] = $baseVhost;
 	$search [] = '{BASE_SERVER_VHOST_PREFIX}';
 	$replace[] = $cfg->BASE_SERVER_VHOST_PREFIX;
 	$search[] = '{WEBSTATS_RPATH}';
@@ -1457,14 +1457,14 @@ function send_add_user_auto_msg($admin_id, $uname, $upass, $uemail, $ufname, $ul
 	$headers = "From: " . $from . "\n";
 	$headers .= "MIME-Version: 1.0\nContent-Type: text/plain; charset=utf-8\nContent-Transfer-Encoding: 8bit\n";
 	$headers .= "X-Mailer: i-MSCP {$cfg->Version} Service Mailer";
-	$mail_result = mail($to, $subject, $message, $headers);
-	$mail_status = ($mail_result) ? 'OK' : 'NOT OK';
+
+	$mailStatus = (mail($to, $subject, $message, $headers, "-f $fromEmail")) ? 'OK' : 'NOT OK';
 
 	$name = tohtml($name);
-	$from_name = tohtml($from_name);
+	$fromName = tohtml($fromName);
 
 	write_log(
-		"$admin_login: Auto Add User To: |$name <$uemail>|, From: |$from_name <$from_email>|, Status: |$mail_status|!",
+		"$adminLogin: Auto Add User To: |$name <$uemail>|, From: |$fromName <$fromEmail>|, Status: |$mailStatus|!",
 		E_USER_NOTICE
 	);
 }

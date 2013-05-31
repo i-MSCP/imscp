@@ -24,19 +24,19 @@
  * Portions created by the i-MSCP Team are Copyright (C) 2010-2013 by
  * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
  *
- * @category	i-MSCP
- * @package		iMSCP_Core
- * @subpackage	Client
- * @copyright	2001-2006 by moleSoftware GmbH
- * @copyright	2006-2010 by ispCP | http://isp-control.net
- * @copyright	2010-2013 by i-MSCP | http://i-mscp.net
- * @author		ispCP Team
- * @author		i-MSCP Team
- * @link		http://i-mscp.net
+ * @category    i-MSCP
+ * @package     iMSCP_Core
+ * @subpackage  Client
+ * @copyright   2001-2006 by moleSoftware GmbH
+ * @copyright   2006-2010 by ispCP | http://isp-control.net
+ * @copyright   2010-2013 by i-MSCP | http://i-mscp.net
+ * @author      ispCP Team
+ * @author      i-MSCP Team
+ * @link        http://i-mscp.net
  */
 
-/********************************************************************************
- * Script function
+/***********************************************************************************************************************
+ * Functions
  */
 
 /**
@@ -47,20 +47,26 @@
 function check_client_domainalias_counts($user_id)
 {
 	$domainProperties = get_domain_default_props($user_id);
-	$domainAliasesUsage = get_domain_running_als_cnt($domainProperties['domain_id']);
 
-	if ($domainProperties['domain_alias_limit'] != 0 && $domainAliasesUsage >= $domainProperties['domain_alias_limit']) {
-		set_page_message(tr('You reached your domain aliases limit.'), 'error');
-		redirectTo('domains_manage.php');
+	if ($domainProperties['domain_alias_limit'] != 0) {
+		$domainAliasesUsage = get_domain_running_als_cnt($domainProperties['domain_id']);
+
+		if($domainAliasesUsage >= $domainProperties['domain_alias_limit']) {
+			set_page_message(tr('You reached your domain aliases limit.'), 'error');
+			redirectTo('domains_manage.php');
+		}
 	}
 }
 
 /**
+ * Initialize variables
+ *
  * @return void
  */
-function init_empty_data()
+function client_initVariables()
 {
 	global $cr_user_id, $alias_name, $domainIp, $forward, $mount_point;
+
 	$cr_user_id = $alias_name = $domainIp = $forward = $mount_point = '';
 }
 
@@ -157,9 +163,11 @@ function _client_isAllowedMountPoint($mountPoint, $domainId)
 }
 
 /**
+ * Add domain alias
+ *
  * @return mixed
  */
-function add_domain_alias()
+function client_addDomainAlias()
 {
 	global $cr_user_id, $alias_name, $domainIp, $forward, $forward_prefix, $mount_point, $validation_err_msg;
 
@@ -206,6 +214,7 @@ function add_domain_alias()
 			set_page_message(tr('Wrong address in forward URL.'), 'error');
 		} else {
 			$domain = $aurl['host'];
+
 			if (substr_count($domain, '.') <= 2) {
 				$ret = validates_dname($domain);
 			} else {
@@ -244,7 +253,7 @@ function add_domain_alias()
 			}
 		}
 	} else {
-		$query = " SELECT  `domain_id` FROM `domain_aliasses` WHERE `alias_name` = ?";
+		$query = " SELECT `domain_id` FROM `domain_aliasses` WHERE `alias_name` = ?";
 		$res = exec_query($query, $alias_name);
 
 		$query = "SELECT `domain_id` FROM `domain` WHERE `domain_name` = ?";
@@ -253,38 +262,6 @@ function add_domain_alias()
 		if ($res->rowCount() || $res2->rowCount()) {
 			// we already have domain with this name
 			set_page_message(tr('Domain with same name already exists.'), 'error');
-		}
-
-		$query = "
-			SELECT 
-				COUNT(`subdomain_id`) AS cnt
-			FROM 
-				`subdomain`
-			WHERE
-				`domain_id` = ?
-			AND
-				`subdomain_mount` = ?
-		";
-		$subdomres = exec_query($query, array($cr_user_id, $mount_point));
-
-		$subdomdata = $subdomres->fetchRow();
-
-		$query = "
-			SELECT
-				COUNT(`subdomain_alias_id`) `alscnt`
-			FROM
-				`subdomain_alias`
-			WHERE
-				`alias_id` IN (SELECT `alias_id` FROM `domain_aliasses` WHERE `domain_id` = ?)
-			AND
-				`subdomain_alias_mount` = ?
-		";
-		$alssubdomres = exec_query($query, array($cr_user_id, $mount_point));
-
-		$alssubdomdata = $alssubdomres->fetchRow();
-
-		if ($subdomdata['cnt'] || $alssubdomdata['alscnt']) {
-			set_page_message(tr('There is a subdomain with the same mount point.'), 'error');
 		}
 	}
 
@@ -339,8 +316,8 @@ function add_domain_alias()
 	redirectTo('domains_manage.php');
 }
 
-/********************************************************************************
- * Main script
+/***********************************************************************************************************************
+ * Main
  */
 
 // Include core library
@@ -406,7 +383,7 @@ if ($currentNumberDomainAliases != 0 && $currentNumberDomainAliases == $domainPr
 		showBadRequestErrorPage();
 	}
 
-	set_page_message(tr('We are sorry but you have reached the maximum number of domain aliases allowed by your subscription. Contact to your reseller for more information.'), 'warning');
+	set_page_message(tr('We are sorry but you have reached the maximum number of domain aliases allowed by your subscription. Contact your reseller for more information.'), 'warning');
 
 	$tpl->assign(
 		array(
@@ -430,8 +407,8 @@ if ($currentNumberDomainAliases != 0 && $currentNumberDomainAliases == $domainPr
 	} else {
 		showBadRequestErrorPage();
 	}
-} else { // Default view
-	init_empty_data();
+} else {
+	client_initVariables();
 }
 
 gen_al_page($tpl);

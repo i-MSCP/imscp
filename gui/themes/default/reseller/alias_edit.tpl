@@ -17,15 +17,11 @@
 			<form name="edit_alias_frm" method="post" action="alias_edit.php?edit_id={ID}">
 				<table class="firstColFixed">
 					<tr>
-						<th colspan="2">{TR_EDIT_ALIAS}</th>
+						<th colspan="2">{TR_ALIAS_DATA}</th>
 					</tr>
 					<tr>
 						<td>{TR_ALIAS_NAME}</td>
 						<td>{ALIAS_NAME}</td>
-					</tr>
-					<tr>
-						<td>{TR_DOMAIN_IP}</td>
-						<td>{DOMAIN_IP}</td>
 					</tr>
 					<tr>
 						<td>{TR_ENABLE_FWD}</td>

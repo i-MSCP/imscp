@@ -47,21 +47,16 @@ customerHasFeature('domain_aliases') or showBadRequestErrorPage();
 /** @var $cfg iMSCP_Config_Handler_File */
 $cfg = iMSCP_Registry::get('config');
 
-if (isset($_GET['del_id']) && !empty($_GET['del_id'])) {
-	$domainAliasId = (int)$_GET['del_id'];
-} else {
-	showBadRequestErrorPage();
+if (isset($_GET['del_id'])) {
+	$alsId = clean_input($_GET['del_id']);
+
+	$query = 'DELETE FROM `domain_aliasses` WHERE `alias_id` = ? AND `domain_id` = ? AND `alias_status` = ?';
+	$stmt = exec_query($query, array($alsId, get_user_domain_id($_SESSION['user_id']), $cfg->ITEM_ORDERED_STATUS));
+
+	if($stmt->rowCount()) {
+		set_page_message(tr('Order successfully deleted.'), 'success');
+		redirectTo('domains_manage.php');
+	}
 }
 
-$domainId = get_user_domain_id($_SESSION['user_id']);
-
-$query = 'DELETE FROM `domain_aliasses` WHERE `alias_id` = ? AND `domain_id` = ? AND `alias_status` = ?';
-$stmt = exec_query($query, array($domainAliasId, $domainId, $cfg->ITEM_ORDERED_STATUS));
-
-if($stmt->rowCount()) {
-	set_page_message(tr('Order for domain alias deleted.'), 'success');
-} else {
-	set_page_message(tr('Order not found. Nothing been deleted.'), 'error');
-}
-
-redirectTo('domains_manage.php');
+showBadRequestErrorPage();

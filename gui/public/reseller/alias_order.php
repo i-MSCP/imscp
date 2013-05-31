@@ -24,15 +24,19 @@
  * Portions created by the i-MSCP Team are Copyright (C) 2010-2013 by
  * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
  *
- * @category	i-MSCP
- * @package		iMSCP_Core
- * @subpackage	Reseller
+ * @category    i-MSCP
+ * @package     iMSCP_Core
+ * @subpackage  Reseller
  * @copyright   2001-2006 by moleSoftware GmbH
  * @copyright   2006-2010 by ispCP | http://isp-control.net
  * @copyright   2010-2013 by i-MSCP | http://i-mscp.net
  * @author      ispCP Team
  * @author      i-MSCP Team
  * @link        http://i-mscp.net
+ */
+
+/***********************************************************************************************************************
+ * Main
  */
 
 // Include core library
@@ -47,69 +51,75 @@ resellerHasFeature('domain_aliases') or showBadRequestErrorPage();
 /** @var $cfg iMSCP_Config_Handler_File */
 $cfg = iMSCP_Registry::get('config');
 
-if (isset($_GET['action']) && $_GET['action'] === "delete") {
+if (isset($_GET['action']) && $_GET['action'] == "delete") {
 
-	if (isset($_GET['del_id']) && !empty($_GET['del_id'])) {
-		$del_id = $_GET['del_id'];
-	} else {
-		$_SESSION['orderaldel'] = '_no_';
-		redirectTo('alias.php');
+	if (isset($_GET['del_id'])) {
+		$alsId = clean_input($_GET['del_id']);
+
+		$query = "DELETE FROM `domain_aliasses` WHERE `alias_id` = ? AND `alias_status` = ?";
+		$stmt = exec_query($query, array($alsId, $cfg->ITEM_ORDERED_STATUS));
+
+		if($stmt->rowCount()) {
+			set_page_message('Order successfully deleted.', 'success');
+			redirectTo('alias.php');
+		}
 	}
+} elseif (isset($_GET['action']) && $_GET['action'] == "activate") {
+	if (isset($_GET['act_id'])) {
+		$alsId = clean_input($_GET['act_id']);
 
-	$query = "DELETE FROM `domain_aliasses` WHERE `alias_id` = ?";
-	$rs = exec_query($query, $del_id);
+		$query = "SELECT `alias_name`, `domain_id` FROM `domain_aliasses` WHERE `alias_id` = ? AND `alias_status` = ?";
+		$stmt = exec_query($query, array($alsId, $cfg->ITEM_ORDERED_STATUS));
 
-	// delete "ordered"/pending email accounts
-	$domain_id = who_owns_this($del_id, 'als_id', true);
-	$query = "DELETE FROM `mail_users` WHERE `sub_id` = ? AND `domain_id` = ? AND `status` = ? AND `mail_type` LIKE 'alias%'";
-	$rs = exec_query($query, array($del_id, $domain_id, $cfg->ITEM_ORDERED_STATUS));
+		if ($stmt->rowCount()) {
+			$alsName = $stmt->fields['alias_name'];
+			$mainDmnId = $stmt->fields['domain_id'];
 
-	redirectTo('alias.php');
+			/** @var iMSCP_Database $db */
+			$db = iMSCP_Registry::get('db');
 
-} else if (isset($_GET['action']) && $_GET['action'] === "activate") {
+			try {
+				$db->beginTransaction();
 
-	if (isset($_GET['act_id']) && !empty($_GET['act_id']))
-		$act_id = $_GET['act_id'];
-	else {
-		$_SESSION['orderalact'] = '_no_';
-		redirectTo('alias.php');
+				$query = "UPDATE `domain_aliasses` SET `alias_status` = ? WHERE `alias_id` = ? AND `alias_status` = ?";
+				$stmt = exec_query($query, array($cfg->ITEM_ADD_STATUS, $alsId, $cfg->ITEM_ORDERED_STATUS));
+
+				if($stmt->rowCount()) {
+					// Create default email addresses if needed
+					if ($cfg->CREATE_DEFAULT_EMAIL_ADDRESSES) {
+						$query = '
+							SELECT
+								`email`
+							FROM
+								`admin`
+							LEFT JOIN
+								`domain` ON(`admin`.`admin_id` = `domain`.`domain_admin_id`)
+							WHERE
+								`domain`.`domain_id` = ?
+						';
+						$stmt = exec_query($query, $mainDmnId);
+
+						if ($stmt->rowCount()) {
+							$customerEmail = $stmt->fields['email'];
+
+							client_mail_add_default_accounts(
+								$mainDmnId, $stmt->fields['email'], $alsName, 'alias', $alsId
+							);
+						}
+					}
+				}
+
+				$db->commit();
+
+				send_request();
+				set_page_message(tr('Order successfully processed.'), 'success');
+				redirectTo('alias.php');
+			} catch(iMSCP_Exception_Database $e) {
+				$db->rollBack();
+				throw new iMSCP_Exception_Database($e->getMessage(), $e->getQuery(), $e->getCode(), $e);
+			}
+		}
 	}
-	$query = "SELECT `alias_name` FROM `domain_aliasses` WHERE `alias_id` = ?";
-	$rs = exec_query($query, $act_id);
-	if ($rs->recordCount() == 0) {
-		redirectTo('alias.php');
-	}
-	$alias_name = $rs->fields['alias_name'];
-
-	$query = "UPDATE `domain_aliasses` SET `alias_status` = 'toadd' WHERE `alias_id` = ?";
-	$rs = exec_query($query, $act_id);
-
-	$domain_id = who_owns_this($act_id, 'als_id', true);
-	$query = 'SELECT `email` FROM `admin`, `domain` WHERE `admin`.`admin_id` = `domain`.`domain_admin_id` AND `domain`.`domain_id` = ?';
-	$rs = exec_query($query, $domain_id);
-	if ($rs->recordCount() == 0) {
-		redirectTo('alias.php');
-	}
-	$user_email = $rs->fields['email'];
-	// Create the 3 default addresses if wanted
-	if ($cfg->CREATE_DEFAULT_EMAIL_ADDRESSES) client_mail_add_default_accounts($domain_id, $user_email, $alias_name, 'alias', $act_id);
-
-	// enable "ordered"/pending email accounts
-	// ??? are there pending mail_addresses ???, joximu
-	$query = "UPDATE `mail_users` SET `status` = ? WHERE `sub_id` = ? AND `domain_id` = ? AND `status` = ? AND `mail_type` LIKE 'alias%'";
-	$rs = exec_query($query, array($cfg->ITEM_ADD_STATUS, $act_id, $domain_id, $cfg->ITEM_ORDERED_STATUS));
-
-	send_request();
-
-	$admin_login = $_SESSION['user_logged'];
-
-	write_log("$admin_login: domain alias activated: $alias_name.", E_USER_NOTICE);
-
-	set_page_message(tr('Alias scheduled for activation.'), 'success');
-
-	$_SESSION['orderalact'] = '_yes_';
-	redirectTo('alias.php');
-
-} else {
-	redirectTo('alias.php');
 }
+
+showBadRequestErrorPage();

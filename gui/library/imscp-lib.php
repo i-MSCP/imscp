@@ -105,7 +105,7 @@ require_once 'shared-functions.php';
 /**
  * Include i-MSCP app installer functions
  * @Todo move this statement at begin of related action scripts since the sw
- * functions are not needed in all application.
+ * functions are not needed in whole application.
  */
 require_once 'sw-functions.php';
 

@@ -35,6 +35,10 @@
  * @link        http://i-mscp.net
  */
 
+/***********************************************************************************************************************
+ * Main
+ */
+
 // Include core library
 require 'imscp-lib.php';
 
@@ -197,14 +201,12 @@ if (resellerHasFeature('domain_aliases') && isset($_GET['del_id'])) {
 		}
 
 		iMSCP_Events_Manager::getInstance()->dispatch(
-			iMSCP_Events::onAfterDeleteDomainAlias,
-			array('domainAliasId' => $alsId, 'domainAliasName' => $alsName)
+			iMSCP_Events::onAfterDeleteDomainAlias, array('domainAliasId' => $alsId, 'domainAliasName' => $alsName)
 		);
 
 		send_request();
-
+		write_log("{$_SESSION['user_logged']}: deleted domain alias: $alsName", E_USER_NOTICE);
 		set_page_message(tr('Domain alias successfully scheduled for deletion.'), 'success');
-		write_log("{$_SESSION['user_logged']}: scheduled deletion of the $alsName domain alias.", E_USER_NOTICE);
 
 		redirectTo('alias.php');
 	}

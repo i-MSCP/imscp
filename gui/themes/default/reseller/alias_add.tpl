@@ -34,12 +34,12 @@
 			<form name="add_alias_frm" method="post" action="alias_add.php">
 				<table class="firstColFixed">
 					<tr>
-						<th colspan="2">{TR_ADD_ALIAS}</th>
+						<th colspan="2">{TR_ALIAS_DATA}</th>
 					</tr>
 					<tr>
-						<td><label for="usraccounts">{TR_DOMAIN_ACCOUNT}</label></td>
+						<td><label for="user_domain_account">{TR_DOMAIN_ACCOUNT}</label></td>
 						<td>
-							<select id="usraccounts" name="usraccounts">
+							<select id="user_domain_account" name="user_domain_account">
 								<!-- BDP: user_entry -->
 								<option value="{USER}" {SELECTED}>{USER_DOMAIN_ACCOUNT}</option>
 								<!-- EDP: user_entry -->

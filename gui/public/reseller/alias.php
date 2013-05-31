@@ -36,50 +36,51 @@
  */
 
 /***********************************************************************************************************************
- * Script functions
+ * Functions
  */
 
 /**
- * Generates aliases list.
+ * Generates domain aliases list.
  *
  * @param  iMSCP_pTemplate $tpl Template engine
- * @param  int $reseller_id Reseller unique identifier
+ * @param  int $resellerId Reseller unique identifier
  * @return void
  */
-function generate_als_list($tpl, $reseller_id)
+function reseller_generateAlsList($tpl, $resellerId)
 {
 	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
 
-	list(, , , , , , $uals_current) = generate_reseller_user_props($reseller_id);
+	$resellerProps = imscp_getResellerProperties($resellerId);
 
-	$resellerProperties = imscp_getResellerProperties($reseller_id);
+	if ($resellerProps['max_als_cnt'] != 0) {
+		list(, , , , , , $customersAlsCount) = generate_reseller_user_props($resellerId);
 
-	if ($uals_current >= $resellerProperties['max_als_cnt'] && $resellerProperties['max_als_cnt'] != '0') {
-		$tpl->assign('ALS_ADD_BUTTON', '');
+		if(
+			$customersAlsCount >= $resellerProps['max_als_cnt'] ||
+			$resellerProps['current_als_cnt'] >= $resellerProps['max_als_cnt']
+		) {
+			$tpl->assign('ALS_ADD_BUTTON', '');
+		}
 	}
 
-	$start_index = 0;
-
-	$rows_per_page = $cfg->DOMAIN_ROWS_PER_PAGE;
-
-	$current_psi = 0;
+	$startIndex = 0;
+	$rowsPerPage = $cfg->DOMAIN_ROWS_PER_PAGE;
+	$currentPsi = 0;
 	$_SESSION['search_for'] = '';
-	$search_common = '';
-	$search_for = '';
+	$searchCommon = '';
+	$searchFor = '';
 
 	if (isset($_GET['psi'])) {
-		$start_index = $_GET['psi'];
-		$current_psi = $_GET['psi'];
+		$startIndex = $_GET['psi'];
+		$currentPsi = $_GET['psi'];
 	}
 
 	if (isset($_POST['uaction']) && !empty($_POST['uaction'])) {
-
 		$_SESSION['search_for'] = trim(clean_input($_POST['search_for']));
 		$_SESSION['search_common'] = $_POST['search_common'];
-		$search_for = $_SESSION['search_for'];
-		$search_common = $_SESSION['search_common'];
-
+		$searchFor = $_SESSION['search_for'];
+		$searchCommon = $_SESSION['search_common'];
 	} elseif (isset($_SESSION['search_for']) && !isset($_GET['psi'])) {
 		unset($_SESSION['search_for']);
 		unset($_SESSION['search_common']);
@@ -87,8 +88,8 @@ function generate_als_list($tpl, $reseller_id)
 
 	$tpl->assign(
 		array(
-			'PSI' => $current_psi,
-			'SEARCH_FOR' => tohtml($search_for),
+			'PSI' => $currentPsi,
+			'SEARCH_FOR' => tohtml($searchFor),
 			'TR_SEARCH' => tr('Search'),
 			'M_ALIAS_NAME' => tr('Alias name'),
 			'M_ACCOUNT_NAME' => tr('Account name')
@@ -96,14 +97,14 @@ function generate_als_list($tpl, $reseller_id)
 	);
 
 	if (isset($_SESSION['search_for']) && $_SESSION['search_for'] != '') {
-		if (isset($search_common) && $search_common == 'alias_name') {
+		if (isset($searchCommon) && $searchCommon == 'alias_name') {
 			$query = "
 				SELECT
 					t1.*, t2.`domain_id`, t2.`domain_name`, t2.`domain_created_id`
 				FROM
 					`domain_aliasses` AS t1, `domain` AS t2
 				WHERE
-					`alias_name` RLIKE '$search_for'
+					`alias_name` RLIKE '$searchFor'
 				AND
 					t2.`domain_created_id` = ?
 				AND
@@ -111,7 +112,7 @@ function generate_als_list($tpl, $reseller_id)
 				ORDER BY
 					t1.`alias_name` ASC
 				LIMIT
-					$start_index, $rows_per_page
+					$startIndex, $rowsPerPage
 			";
 
 			// count query
@@ -123,7 +124,7 @@ function generate_als_list($tpl, $reseller_id)
 				WHERE
 					t2.`domain_created_id` = ?
 				AND
-					`alias_name` RLIKE '$search_for'
+					`alias_name` RLIKE '$searchFor'
 				AND
 					t1.`domain_id` = t2.`domain_id`
 			";
@@ -134,7 +135,7 @@ function generate_als_list($tpl, $reseller_id)
 				FROM
 					`domain_aliasses` AS t1, `domain` AS t2
 				WHERE
-					t2.`domain_name` RLIKE '$search_for'
+					t2.`domain_name` RLIKE '$searchFor'
 				AND
 					t1.`domain_id` = t2.`domain_id`
 				AND
@@ -142,7 +143,7 @@ function generate_als_list($tpl, $reseller_id)
 				ORDER BY
 					t1.`alias_name` ASC
 				LIMIT
-					$start_index, $rows_per_page
+					$startIndex, $rowsPerPage
 				;
 			";
 
@@ -155,7 +156,7 @@ function generate_als_list($tpl, $reseller_id)
 				WHERE
 					t2.`domain_created_id` = ?
 				AND
-					t2.`domain_name` RLIKE '$search_for'
+					t2.`domain_name` RLIKE '$searchFor'
 				AND
 					t1.`domain_id` = t2.`domain_id`
 			";
@@ -173,7 +174,7 @@ function generate_als_list($tpl, $reseller_id)
 			ORDER BY
 				t1.`alias_name` ASC
 			LIMIT
-				$start_index, $rows_per_page
+				$startIndex, $rowsPerPage
 		";
 
 		// count query
@@ -190,35 +191,35 @@ function generate_als_list($tpl, $reseller_id)
 	}
 
 	// let's count
-	$rs = exec_query($count_query, $reseller_id);
-	$records_count = $rs->fields['cnt'];
+	$stmt = exec_query($count_query, $resellerId);
+	$recordCount = $stmt->fields['cnt'];
 
 	// Get all alias records
-	$rs = exec_query($query, $reseller_id);
+	$stmt = exec_query($query, $resellerId);
 
-	if ($records_count == 0) {
+	if (!$recordCount) {
 		if (isset($_SESSION['search_for']) && $_SESSION['search_for'] != '') {
 			$tpl->assign(
 				array(
-				'TABLE_LIST' => '',
-				'USERS_LIST' => '',
-				'SCROLL_PREV' => '',
-				'SCROLL_NEXT' => '',
-				'M_DOMAIN_NAME_SELECTED' => '',
-				'M_ACCOUN_NAME_SELECTED' => ''
+					'TABLE_LIST' => '',
+					'USERS_LIST' => '',
+					'SCROLL_PREV' => '',
+					'SCROLL_NEXT' => '',
+					'M_DOMAIN_NAME_SELECTED' => '',
+					'M_ACCOUN_NAME_SELECTED' => ''
 				)
 			);
 		} else {
 			$tpl->assign(
 				array(
-				'SEARCH_FORM' => '',
-				'TABLE_LIST' => '',
-				'TABLE_HEADER' => '',
-				'USERS_LIST' => '',
-				'SCROLL_PREV' => '',
-				'SCROLL_PREV_GRAY' => '',
-				'SCROLL_NEXT' => '',
-				'SCROLL_NEXT_GRAY' => ''
+					'SEARCH_FORM' => '',
+					'TABLE_LIST' => '',
+					'TABLE_HEADER' => '',
+					'USERS_LIST' => '',
+					'SCROLL_PREV' => '',
+					'SCROLL_PREV_GRAY' => '',
+					'SCROLL_NEXT' => '',
+					'SCROLL_NEXT_GRAY' => ''
 				)
 			);
 		}
@@ -226,180 +227,124 @@ function generate_als_list($tpl, $reseller_id)
 		if (isset($_SESSION['search_for'])) {
 			set_page_message(tr('Not found user records matching the search criteria.', 'info'));
 		} else {
-			if (isset($_SESSION['almax'])) {
-				if ($_SESSION['almax'] === '_yes_') {
-					set_page_message(tr('Domain aliases limit reached.'), 'error');
-				} else {
-					set_page_message(tr('You do not have order for domain aliases.'), 'info');
-				}
-				unset($_SESSION['almax']);
-			} else {
-				set_page_message(tr('You do not have order for domain aliases.'), 'info');
-			}
+			set_page_message(tr('You do not have order for domain aliases.'), 'info');
 		}
 		return;
 	} else {
-		$prev_si = $start_index - $rows_per_page;
+		$prevSi = $startIndex - $rowsPerPage;
 
-		if ($start_index == 0) {
+		if ($startIndex == 0) {
 			$tpl->assign('SCROLL_PREV', '');
 		} else {
 			$tpl->assign(
 				array(
-				'SCROLL_PREV_GRAY' => '',
-				'PREV_PSI' => $prev_si
+					'SCROLL_PREV_GRAY' => '',
+					'PREV_PSI' => $prevSi
 				)
 			);
 		}
 
-		$next_si = $start_index + $rows_per_page;
+		$nextSi = $startIndex + $rowsPerPage;
 
-		if ($next_si + 1 > $records_count) {
+		if ($nextSi + 1 > $recordCount) {
 			$tpl->assign('SCROLL_NEXT', '');
 		} else {
 			$tpl->assign(
 				array(
-				'SCROLL_NEXT_GRAY' => '',
-				'NEXT_PSI' => $next_si
+					'SCROLL_NEXT_GRAY' => '',
+					'NEXT_PSI' => $nextSi
 				)
 			);
 		}
 	}
 
-	while (!$rs->EOF) {
-		$als_id = $rs->fields['alias_id'];
-		$als_name = $rs->fields['alias_name'];
-		$als_mount_point = ($rs->fields['alias_mount'] != '') ? $rs->fields['alias_mount'] : '/';
-		$als_status = $rs->fields['alias_status'];
-		$als_ip_id = $rs->fields['alias_ip_id'];
-		$als_fwd = $rs->fields['url_forward'];
-		$show_als_fwd = ($als_fwd == 'no') ? "-" : $als_fwd;
-		$domain_name = decode_idna($rs->fields['domain_name']);
+	while (!$stmt->EOF) {
+		$alsId = $stmt->fields['alias_id'];
+		$alsName = $stmt->fields['alias_name'];
+		$alsMountPoint = ($stmt->fields['alias_mount'] != '') ? $stmt->fields['alias_mount'] : '/';
+		$alsStatus = $stmt->fields['alias_status'];
+		$alsIpId = $stmt->fields['alias_ip_id'];
+		$alsForward = $stmt->fields['url_forward'];
+		$showAlsForward = ($alsForward == 'no') ? '-' : $alsForward;
+		$dmnName = decode_idna($stmt->fields['domain_name']);
 
 		$query = "SELECT `ip_number`, `ip_domain` FROM `server_ips` WHERE `ip_id` = ?";
 
-		$alsip_r = exec_query($query, $als_ip_id);
-		$alsip_d = $alsip_r->fetchRow();
+		$alsIpR = exec_query($query, $alsIpId);
+		$alsIpD = $alsIpR->fetchRow();
 
-		$als_ip = $alsip_d['ip_number'];
-		$als_ip_name = $alsip_d['ip_domain'];
+		$alsIp = $alsIpD['ip_number'];
+		$alsIpName = $alsIpD['ip_domain'];
 
-		if ($als_status === $cfg->ITEM_OK_STATUS) {
-			$delete_link = "alias_delete.php?del_id=" . $als_id;
-			$edit_link = "alias_edit.php?edit_id=" . $als_id;
-			$action_text = tr('Delete');
-			$edit_text = tr('Edit');
-			$status_bool = true;
-		} elseif ($als_status == $cfg->ITEM_ORDERED_STATUS) {
-			$delete_link = 'alias_order.php?action=delete&del_id=' . $als_id;
-			$edit_link = 'alias_order.php?action=activate&act_id=' . $als_id;
-			$action_text = tr('Delete order');
-			$edit_text = tr('Activate');
-			$status_bool = false;
+		if ($alsStatus === $cfg->ITEM_OK_STATUS) {
+			$deleteLink = "alias_delete.php?del_id=" . $alsId;
+			$editLink = "alias_edit.php?edit_id=" . $alsId;
+			$actionText = tr('Delete');
+			$editText = tr('Edit');
+			$statusBool = true;
+		} elseif ($alsStatus == $cfg->ITEM_ORDERED_STATUS) {
+			$deleteLink = 'alias_order.php?action=delete&del_id=' . $alsId;
+			$editLink = 'alias_order.php?action=activate&act_id=' . $alsId;
+			$actionText = tr('Delete order');
+			$editText = tr('Activate');
+			$statusBool = false;
 		} else {
-			$delete_link = '#';
-			$edit_link = '#';
-			$action_text = tr('N/A');
-			$edit_text = tr('N/A');
-			$status_bool = false;
+			$deleteLink = '#';
+			$editLink = '#';
+			$actionText = tr('N/A');
+			$editText = tr('N/A');
+			$statusBool = false;
 		}
 
-		$als_status = translate_dmn_status($als_status);
-		$als_name = decode_idna($als_name);
-		$show_als_fwd = decode_idna($show_als_fwd);
+		$alsStatus = translate_dmn_status($alsStatus);
+		$alsName = decode_idna($alsName);
+		$showAlsForward = decode_idna($showAlsForward);
 
 		if (isset($_SESSION['search_common'])
-			&& $_SESSION['search_common'] === 'account_name'
+			&& $_SESSION['search_common'] == 'account_name'
 		) {
-			$domain_name_selected = '';
-			$account_name_selected = $cfg->HTML_SELECTED;
+			$dmnNameSelected = '';
+			$accountNameSelected = $cfg->HTML_SELECTED;
 		} else {
-			$domain_name_selected = $cfg->HTML_SELECTED;
-			$account_name_selected = '';
+			$dmnNameSelected = $cfg->HTML_SELECTED;
+			$accountNameSelected = '';
 		}
 
-		if ($status_bool == false) { // reload
+		if ($statusBool == false) {
 			$tpl->assign('STATUS_RELOAD_TRUE', '');
-			$tpl->assign('NAME', tohtml($als_name));
+			$tpl->assign('NAME', tohtml($alsName));
 			$tpl->parse('STATUS_RELOAD_FALSE', 'status_reload_false');
 		} else {
 			$tpl->assign('STATUS_RELOAD_FALSE', '');
-			$tpl->assign('NAME', tohtml($als_name));
+			$tpl->assign('NAME', tohtml($alsName));
 			$tpl->parse('STATUS_RELOAD_TRUE', 'status_reload_true');
 		}
 
 		$tpl->assign(
 			array(
-			'NAME' => tohtml($als_name),
-			'ALIAS_IP' => tohtml("$als_ip ($als_ip_name)"),
-			'OWNER' => tohtml($domain_name),
-			'MOUNT_POINT' => tohtml($als_mount_point),
-			'FORWARD' => tohtml($show_als_fwd),
-			'STATUS' => $als_status,
-			'ID' => $als_id,
-			'DELETE' => $action_text,
-			'DELETE_LINK' => $delete_link,
-			'EDIT_LINK' => $edit_link,
-			'EDIT' => $edit_text,
-			'M_DOMAIN_NAME_SELECTED' => $domain_name_selected,
-			'M_ACCOUN_NAME_SELECTED' => $account_name_selected
+				'NAME' => tohtml($alsName),
+				'ALIAS_IP' => tohtml("$alsIp ($alsIpName)"),
+				'OWNER' => tohtml($dmnName),
+				'MOUNT_POINT' => tohtml($alsMountPoint),
+				'FORWARD' => tohtml($showAlsForward),
+				'STATUS' => $alsStatus,
+				'ID' => $alsId,
+				'DELETE' => $actionText,
+				'DELETE_LINK' => $deleteLink,
+				'EDIT_LINK' => $editLink,
+				'EDIT' => $editText,
+				'M_DOMAIN_NAME_SELECTED' => $dmnNameSelected,
+				'M_ACCOUN_NAME_SELECTED' => $accountNameSelected
 			)
 		);
 
 		$tpl->parse('TABLE_ITEM', '.table_item');
-		$rs->moveNext();
-	}
-}
-
-/**
- * Generate messages
- *
- * @return void
- */
-function generate_als_messages()
-{
-	if (isset($_SESSION["dahavemail"])) {
-		set_page_message(tr('Domain alias you are trying to remove has email accounts.<br/>First remove them.'), 'error');
-		unset($_SESSION['dahavemail']);
-	} elseif (isset($_SESSION["dahaveftp"])) {
-		set_page_message(tr('Domain alias you are trying to remove has FTP accounts.<br/>First remove them.'), 'error');
-		unset($_SESSION['dahavemail']);
-	} elseif (isset($_SESSION['aladd'])) {
-		if ('_yes_' === $_SESSION['aladd']) {
-			set_page_message(tr('Domain alias successfully scheduled for addition'), 'success');
-		} else {
-			set_page_message(tr('Domain alias not scheduled for addition.'), 'error');
-		}
-		unset($_SESSION['aladd']);
-	} elseif (isset($_SESSION['aledit'])) {
-		if ('_yes_' === $_SESSION['aledit']) {
-			set_page_message(tr('Domain alias successfully modified'), 'success');
-		} else {
-			set_page_message(tr('Domain alias not modified.'), 'error');
-		}
-		unset($_SESSION['aledit']);
-	} elseif (isset($_SESSION['orderaldel'])) {
-		if ('_no_' === $_SESSION['orderaldel']) {
-			set_page_message(tr('Order for domain alias not deleted.'), 'error');
-		}
-		unset($_SESSION['orderaldel']);
-	} elseif (isset($_SESSION['orderalact'])) {
-		if ('_yes_' === $_SESSION['orderalact']) {
-			set_page_message(tr('Domain alias successfully scheduled for addition.'), 'success');
-		} else {
-			set_page_message(tr('Domain alias not scheduled for addition.'), 'error');
-		}
-		unset($_SESSION['orderalact']);
-	} elseif (isset($_SESSION['almax'])) {
-		if ('_yes_' === $_SESSION['almax']) {
-			set_page_message(tr('Domain alias limit reached.'), 'error');
-		}
-		unset($_SESSION['almax']);
+		$stmt->moveNext();
 	}
 }
 
 /***********************************************************************************************************************
- * Main script
+ * Main
  */
 
 // Include core library
@@ -445,7 +390,7 @@ $tpl->assign(
 		'TR_STATUS' => tr('Status'),
 		'TR_OWNER' => tr('Owner'),
 		'TR_ACTION' => tr('Actions'),
-		'TR_ADD_ALIAS' => tr('Add alias'),
+		'TR_ADD_ALIAS' => tr('Add'),
 		'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete %s?', true, '%s'),
 		'TR_PREVIOUS' => tr('Previous'),
 		'TR_NEXT' => tr('Next')
@@ -453,8 +398,7 @@ $tpl->assign(
 );
 
 generateNavigation($tpl);
-generate_als_list($tpl, $_SESSION['user_id']);
-generate_als_messages();
+reseller_generateAlsList($tpl, $_SESSION['user_id']);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');

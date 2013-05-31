@@ -49,10 +49,11 @@ define('MT_ALSSUB_CATCHALL', 'alssub_catchall');
 /**
  * Generates user's properties.
  *
- * @param int $reseller_id Reseller unique identifier
+ * @throws iMSCP_Exception
+ * @param int $resellerId Reseller unique identifier
  * @return array An array that contains user's properties
  */
-function generate_reseller_user_props($reseller_id)
+function generate_reseller_user_props($resellerId)
 {
 	$rdmn_current = $rdmn_max = $rsub_current = $rsub_max = $rals_current = $rals_max = $rmail_current = $rmail_max =
 	$rftp_current = $rftp_max = $rsql_db_current = $rsql_db_max = $rsql_user_current = $rsql_user_max =
@@ -62,10 +63,10 @@ function generate_reseller_user_props($reseller_id)
 	$rsql_user_uf = $rtraff_uf = $rdisk_uf = '_off_';
 
 	$query = "SELECT `admin_id` FROM `admin` WHERE `created_by` = ?";
-	$stmt = exec_query($query, $reseller_id);
+	$stmt = exec_query($query, $resellerId);
 
 	if (!$stmt->rowCount()) {
-		return array_fill(0, 27, 0);
+		throw new iMSCP_Exception("No reseller with ID $resellerId");
 	}
 
 	while ($data = $stmt->fetchRow()) {
@@ -77,9 +78,11 @@ function generate_reseller_user_props($reseller_id)
 		$ddata = $stmt1->fetchRow();
 		$user_id = $ddata['domain_id'];
 
-		list($sub_current, $sub_max, $als_current, $als_max, $mail_current, $mail_max,
-			$ftp_current, $ftp_max, $sql_db_current, $sql_db_max, $sql_user_current,
-			$sql_user_max, $traff_max, $disk_max) = get_user_props($user_id);
+		list(
+			$sub_current, $sub_max, $als_current, $als_max, $mail_current, $mail_max, $ftp_current, $ftp_max,
+			$sql_db_current, $sql_db_max, $sql_user_current,
+			$sql_user_max, $traff_max, $disk_max
+		) = get_user_props($user_id);
 
 		list(, , , , , , $traff_current, $disk_current) = generate_user_traffic($user_id);
 		$rdmn_current += 1;

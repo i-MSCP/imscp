@@ -57,9 +57,11 @@
 				</tbody>
 			</table>
 			<!-- EDP: table_list -->
+			<!-- BDP: als_add_button -->
 			<div class="buttons">
 				<input name="Submit" type="submit" onclick="MM_goToURL('parent','alias_add.php');return document.MM_returnValue" value="{TR_ADD_ALIAS}" />
 			</div>
+			<!-- EDP: als_add_button -->
 			<div class="paginator">
 				<!-- BDP: scroll_next_gray -->
 				<a class="icon i_next_gray" href="#">&nbsp;</a>

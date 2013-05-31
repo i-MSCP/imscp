@@ -66,6 +66,7 @@ require_once  'iMSCP/Config/Handler.php';
  * @property string ITEM_TOENABLE_STATUS Status for scheduled enabling
  * @property string ITEM_TODISABLED_STATUS Status for scheduled disabling
  * @property string ITEM_DNSCHANGE_STATUS Status for scheduled dns change
+ * @property string ITEM_ORDERED_STATUS Ordered item status
  * @property int MAX_SQL_DATABASE_LENGTH Max. length for database name
  * @property int MAX_SQL_USER_LENGTH Max. length for Sql username
  * @property int MAX_SQL_PASS_LENGTH Max. length for Sql password
@@ -155,7 +156,6 @@ require_once  'iMSCP/Config/Handler.php';
  * @category	iMSCP
  * @package		iMSCP_Core
  * @subpackage  Config_Handler
- * @author		Benedikt Heintel <benedikt.heintel@ispcp.net>
  * @author		Laurent Declercq <l.declercq@nuxwin.com>
  * @version		0.0.7
  */
