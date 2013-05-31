@@ -2149,8 +2149,6 @@ sub _addFiles($$)
 
 	my $webDir = $data->{'WEB_DIR'};
 
-	debug("NUXWIN: $webDir");
-
 	# Build domain/subdomain Web directory tree using skeleton from (eg /etc/imscp/etc/skel) - BEGIN
 
 	my $skelDir;
