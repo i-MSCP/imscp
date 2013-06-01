@@ -447,12 +447,11 @@ class iMSCP_PHPini
 			);
 		} else {
 			$query = "
-				INSERT INTO
-					`php_ini` (
-						`disable_functions`, `allow_url_fopen`, `display_errors`, `error_reporting`, `post_max_size`,
-						`upload_max_filesize`, `max_execution_time`, `max_input_time`, `memory_limit`, `domain_id`
-				 ) VALUES (
-					?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
+				INSERT INTO `php_ini` (
+					`disable_functions`, `allow_url_fopen`, `display_errors`, `error_reporting`, `post_max_size`,
+					`upload_max_filesize`, `max_execution_time`, `max_input_time`, `memory_limit`, `domain_id`
+				) VALUES (
+					?, ?, ?, ?, ?, ?, ?, ?, ?, ?
 				)
 			";
 			exec_query(
