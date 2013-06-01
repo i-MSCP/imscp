@@ -422,10 +422,6 @@ function check_user_data($phpini)
 		set_page_message(tr('Incorrect diskspace limit.'), 'error');
 	}
 
-	if ($mail == '-1' && $extMailServer == '_yes_') {
-		set_page_message(tr('The external mail feature needs min. 1 email account.'), 'error');
-	}
-
 	if ($php == '_no_' && $aps == '_yes_') {
 		set_page_message(tr('The software installer require PHP.'), 'error');
 	}
