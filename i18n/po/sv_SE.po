@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
 "POT-Creation-Date: 2013-05-31 15:29+0200\n"
-"PO-Revision-Date: 2013-05-31 13:29+0000\n"
+"PO-Revision-Date: 2013-06-02 08:24+0000\n"
 "Last-Translator: Torsten Widmann <info@goover.de>\n"
 "Language-Team: Swedish (Sweden) (http://www.transifex.com/projects/p/i-MSCP/language/sv_SE/)\n"
 "MIME-Version: 1.0\n"
@@ -1961,7 +1961,7 @@ msgid "Domain alias successfully scheduled for deletion."
 msgstr "Domänalias planerad framgångsrikt för radering."
 
 msgid "Domain alias successfully updated"
-msgstr ""
+msgstr "Domänalias ändrades korrekt"
 
 msgid ""
 "Domain alias you are trying to remove has Ftp accounts. Remove them first."
@@ -3518,10 +3518,10 @@ msgid "Order"
 msgstr "Beställning"
 
 msgid "Order successfully deleted."
-msgstr ""
+msgstr "Beställning raderades."
 
 msgid "Order successfully processed."
-msgstr ""
+msgstr "Beställning genomförd."
 
 msgid "Other in"
 msgstr "Annat inåt"
@@ -4855,7 +4855,7 @@ msgid "The entry %s already exists or is defined twice below."
 msgstr "Posten %s finns redan eller är dubbelt definierad nedan."
 
 msgid "The external mail feature needs min. 1 email account."
-msgstr "Extern post-funktionen behöver minst 1 e-postkonto."
+msgstr ""
 
 msgid ""
 "The mail host must not be equal to the domain name for which you add it."
@@ -4940,7 +4940,7 @@ msgid ""
 msgstr "Denna databas kommer att tas bort permanent. Denna process kan inte återställas. Alla användare kopplade till denna databas kommer också att tas bort om inte kopplade till en annan databas. Är du säker på att du vill ta bort '%s' databas?"
 
 msgid "This domain is not allowed."
-msgstr ""
+msgstr "Denna domain är inte tillåten."
 
 msgid "This htaccess group already exists."
 msgstr "Detta htaccess-grupp finns redan."
@@ -5435,7 +5435,7 @@ msgstr "Vi är ledsna, men du har nått det högsta antalet domänalias tillåts
 msgid ""
 "We are sorry but you have reached the maximum number of domain aliases "
 "allowed by your subscription. Contact your reseller for more information."
-msgstr ""
+msgstr "Vi är ledsna, men du har nått det högsta antalet domänalias tillåts av din prenumeration. Kontakta din återförsäljare för mer information."
 
 msgid ""
 "We are sorry, but the system is currently under maintenance.\n"

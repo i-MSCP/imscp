@@ -16,6 +16,7 @@
 # w3bster <mail@stefan-riegel.de>, 2011
 # Marc Schütz <schuetzm@gmx.net>, 2011
 # Markus <daywalkerebay@googlemail.com>, 2011
+# haze <hazenetwork@gmail.com>, 2013
 # neppumuck <neppumuck@web.de>, 2012
 # Alex H <paderwan@googlemail.com>, 2012
 # Pascal Küppers <>, 2012
@@ -31,8 +32,8 @@ msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
 "POT-Creation-Date: 2013-05-31 15:29+0200\n"
-"PO-Revision-Date: 2013-05-31 13:29+0000\n"
-"Last-Translator: Torsten Widmann <info@goover.de>\n"
+"PO-Revision-Date: 2013-06-02 06:34+0000\n"
+"Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: German (Germany) (http://www.transifex.com/projects/p/i-MSCP/language/de_DE/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -1982,7 +1983,7 @@ msgid "Domain alias successfully scheduled for deletion."
 msgstr "Domain-Alias ​​erfolgreich zum Löschen vorgemerkt."
 
 msgid "Domain alias successfully updated"
-msgstr ""
+msgstr "Domain Alias erfolgreich geändert"
 
 msgid ""
 "Domain alias you are trying to remove has Ftp accounts. Remove them first."
@@ -3539,10 +3540,10 @@ msgid "Order"
 msgstr "Bestellung"
 
 msgid "Order successfully deleted."
-msgstr ""
+msgstr "Bestellung erfolgreich gelöscht."
 
 msgid "Order successfully processed."
-msgstr ""
+msgstr "Die Bestellung wurde erfolgreich verarbeitet."
 
 msgid "Other in"
 msgstr "Sonstiges (in)"
@@ -4876,7 +4877,7 @@ msgid "The entry %s already exists or is defined twice below."
 msgstr "Den Eintrag %s existiert bereits oder wurde zweimal definiert"
 
 msgid "The external mail feature needs min. 1 email account."
-msgstr "Um Externe Mailserver verwenden zu können wird mindestens 1 Mail Account benötigt"
+msgstr ""
 
 msgid ""
 "The mail host must not be equal to the domain name for which you add it."
@@ -4961,7 +4962,7 @@ msgid ""
 msgstr "Diese Datenbank wird permanent gelöscht werden. Dieser Prozess kann nicht wiederhergestellt werden. Alle Benutzer in Verbindung mit dieser Datenbank werden ebenfalls gelöscht, wenn diese nicht zu einer anderen Datenbank verknüpft werden. Sind Sie sicher, dass Sie die '%s' Datenbank löschen?"
 
 msgid "This domain is not allowed."
-msgstr ""
+msgstr "Diese Domain ist nicht erlaubt."
 
 msgid "This htaccess group already exists."
 msgstr "Diese htaccess Gruppe existiert bereits."
@@ -5456,7 +5457,7 @@ msgstr "Wir bitten um Entschuldigung, aber Sie haben ihr Limit für Domain Alias
 msgid ""
 "We are sorry but you have reached the maximum number of domain aliases "
 "allowed by your subscription. Contact your reseller for more information."
-msgstr ""
+msgstr "Wir bitten um Entschuldigung, Sie haben die maximale Anzahl an Domain Aliases erreicht. Für mehr Informationen, kontaktieren Sie bitte Ihren Reseller."
 
 msgid ""
 "We are sorry, but the system is currently under maintenance.\n"
