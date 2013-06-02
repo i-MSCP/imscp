@@ -17,6 +17,7 @@ VENDOR:
 
 Tickets:
 	Fixed #767: Update -jQuery 1.10.1 released
+	Fixed #769: Review - Language issue in imscp GUI
 
 ------------------------------------------------------------------------------------------------------------------------
 i-MSCP 1.1.0-rc2.1

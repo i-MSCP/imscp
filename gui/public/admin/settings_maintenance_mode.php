@@ -88,7 +88,7 @@ $tpl->assign(
 		'SELECTED_OFF' => $selected_off,
 		'TR_ENABLED' => tr('Enabled'),
 		'TR_DISABLED' => tr('Disabled'),
-		'TR_CHANGES' => tr('Changes'),
+		'TR_APPLY' => tr('Apply'),
 		'TR_MAINTENANCE_MESSAGE' => tr('Maintenance message')));
 
 generateNavigation($tpl);

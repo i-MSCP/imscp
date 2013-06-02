@@ -19,7 +19,7 @@
 					</tr>
 				</table>
 				<div class="buttons">
-					<input name="submit" type="submit" value="{TR_CHANGES}"/>
+					<input name="submit" type="submit" value="{TR_APPLY}"/>
 					<input type="hidden" name="uaction" value="apply"/>
 				</div>
 			</form>
