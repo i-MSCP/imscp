@@ -16,7 +16,7 @@ CONFIGS:
 
 ENGINE:
 	- Added hooks for user module
-	- Added hook.d directory for storage of engine hooks files
+	- Added hooks.d directory for storage of engine hook files
 	- Added support for Apache + PHP FPM
 	- Added option allowing to disable/enable IPv6 support (Bind9)
 	- Fixed: Admin must be able to add custom data in named configuration files (Bind9)
@@ -47,12 +47,12 @@ GUI:
 
 SETUP:
 	- Added support for external repositories (Debian/Ubuntu)
-	- Added hook.d directory for storage of installer hooks files
+	- Added hooks.d directory for storage of installer hook files
 	- Fixed: add-apt-repository - unknown -y option (Ubuntu Lucid Lynx)
 	- Fixed: APT packages manager must be configured before any package installation
 	- Fixed: All MySQL secure installation tasks are now done by the i-MSCP installer
 	- Fixed: i-MSCP must allow usage of remote SQL server
-	- Fixed: Both imsc-autoinstall and imscp-setup scripts must allow per item reconfiguration
+	- Fixed: Both imscp-autoinstall and imscp-setup scripts must allow per item reconfiguration
 	- Fixed: Duplicate entries in sources.list file (Ubuntu)
 	- Fixed: Do not show any dialog when --noprompt option is used
 	- Fixed: Make error messages free of any ANSI color and end of line codes in dialog
