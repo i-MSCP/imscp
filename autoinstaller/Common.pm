@@ -98,10 +98,10 @@ sub loadConfig
 	%main::imscpConfig = (%imscpNewConfig, %main::imscpOldConfig);
 
 	# Update needed variables with newest values
-	$main::imscpConfig{'BuildDate'} = $main::imscpNewConfig{'BuildDate'} if exists $main::imscpNewConfig{'BuildDate'};
-	$main::imscpConfig{'Version'} = $main::imscpNewConfig{'Version'} if exists $main::imscpNewConfig{'Version'};
-	$main::imscpConfig{'CodeName'} = $main::imscpNewConfig{'CodeName'} if exists $main::imscpNewConfig{'CodeName'};
-	$main::imscpConfig{'DistName'} = $main::imscpNewConfig{'DistName'} if exists $main::imscpNewConfig{'DistName'};
+	$main::imscpConfig{'BuildDate'} = $imscpNewConfig{'BuildDate'} if exists $imscpNewConfig{'BuildDate'};
+	$main::imscpConfig{'Version'} = $imscpNewConfig{'Version'} if exists $imscpNewConfig{'Version'};
+	$main::imscpConfig{'CodeName'} = $imscpNewConfig{'CodeName'} if exists $imscpNewConfig{'CodeName'};
+	$main::imscpConfig{'DistName'} = $imscpNewConfig{'DistName'} if exists $imscpNewConfig{'DistName'};
 
 	0;
 }
