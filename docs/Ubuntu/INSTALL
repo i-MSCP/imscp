@@ -15,10 +15,10 @@ Table of Content
 1)  Version Info
 ----------------
 
-i-MSCP Version:		Git Master
+i-MSCP Version:     Git Master
 Maintainer:         i-MSCP Team
-Homepage:			http://i-mscp.net
-Linux Distros:		Ubuntu (lucid, precise, quantal, raring)
+Homepage:           http://i-mscp.net
+Linux Distros:      Ubuntu (lucid, precise, quantal, raring)
 
 ================================================================================
 2)  Requirements
@@ -52,24 +52,24 @@ Make sure you as logged as root
 
 1.  Untar or unzip the distribution files to a secure directory
 
-    # cd /usr/local/src
+	# cd /usr/local/src
 	# rm -fR imscp
-    # tar xjvf imscp-archive.tar.bz2
+	# tar xjvf imscp-archive.tar.bz2
 
 2. Change to the newly created directory
 
-    # cd ./imscp-archive
+	# cd ./imscp-archive
 
 3.  (optional) Check the imscp.conf and adapt it to your requirements.
 
 4.  Install by running the imscp-autoinstall script
 
-    # sudo perl imscp-autoinstall -d
+	# sudo perl imscp-autoinstall -d
 
 5.  Install i-MSCP step-by-step
 
-    If you get no error, all went good; if you get one, look at
-    http://i-mscp.net to solve the problem.
+	If you get no error, all went good; if you get one, look at
+	http://i-mscp.net to solve the problem.
 
 ================================================================================
 5)  Update
@@ -79,17 +79,17 @@ Make sure you are logged in as root and MySQL is running.
 
 1. Untar or unzip the distribution files to a secure directory
 
-    # cd /usr/local/src
+	# cd /usr/local/src
 	# rm -fR imscp
-    # tar xjvf imscp-archive.tar.bz2
+	# tar xjvf imscp-archive.tar.bz2
 
 2.  Change to the newly created directory
 
-    # cd ./imscp-archive
+	# cd ./imscp-archive
 
 3.  Update by running the imscp-autoinstall script
 
-    # perl imscp-autoinstall -d
+	# perl imscp-autoinstall -d
 
 4.  Update i-MSCP step-by-step
 
@@ -103,11 +103,11 @@ Make sure you are logged in as root and MySQL is running.
 
 1.  Change into the engine directory
 
-    # cd /var/www/imscp/engine/setup
+	# cd /var/www/imscp/engine/setup
 
 2.  Start the uninstall script
 
-    # perl imscp-uninstall -d
+	# perl imscp-uninstall -d
 
 3.  Clean up your system
 
