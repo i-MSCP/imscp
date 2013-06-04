@@ -9,7 +9,7 @@ GUI:
 	Fixed: Custom DNS feature not working due to missing files
 
 VENDOR:
-	- jQuery to v1.10.1
+	- Updated jQuery to v1.10.1
 	- Updated jQuery UI to v1.10.3
 
 Tickets:
@@ -22,7 +22,7 @@ i-MSCP 1.1.0-rc2.1
 ------------------------------------------------------------------------------------------------------------------------
 
 2013-06-02: Torsten Widmann
-	- RELEASE i-MSCP 1.1.0-rc2
+	- RELEASE i-MSCP 1.1.0-rc2.1
 
 CONFIGS:
 	- Added MariaDb support
