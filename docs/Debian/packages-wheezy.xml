@@ -64,7 +64,11 @@
     </named>
     <sql>
         <alternative default="mysql_5.5">
-            <mysql_5.5>
+            <mysql_5.5
+                    pinning_package="mysql-client-5.5 mysql-server-5.5 mysql-common libmysqlclient18"
+                    pinning_pin="release o=Debian,n=wheezy"
+                    pinning_pin_priority="1001"
+                    >
                 <package>mysql-server-5.5</package>
                 <package>mysql-client-5.5</package>
             </mysql_5.5>
