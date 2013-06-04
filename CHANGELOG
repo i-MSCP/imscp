@@ -5,11 +5,8 @@
 Git Master
 ------------------------------------------------------------------------------------------------------------------------
 
-CONFIGS:
-
 GUI:
-
-SETUP:
+	Fixed: Custom DNS feature not working due to missing files
 
 VENDOR:
 	- jQuery to v1.10.1
