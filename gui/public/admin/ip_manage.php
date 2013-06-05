@@ -24,9 +24,9 @@
  * Portions created by the i-MSCP Team are Copyright (C) 2010-2013 by
  * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
  *
- * @category	i-MSCP
- * @package		iMSCP_Core
- * @subpackage	Admin
+ * @category    i-MSCP
+ * @package    iMSCP_Core
+ * @subpackage  Admin
  * @copyright   2001-2006 by moleSoftware GmbH
  * @copyright   2006-2010 by ispCP | http://isp-control.net
  * @copyright   2010-2013 by i-MSCP | http://i-mscp.net
@@ -35,8 +35,8 @@
  * @link        http://i-mscp.net
  */
 
-/************************************************************************************
- * Script functions
+/***********************************************************************************************************************
+ * Functions
  */
 
 /**
@@ -45,7 +45,8 @@
  * @param iMSCP_pTemplate $tpl Template engine
  * @return void
  */
-function client_generatePage($tpl) {
+function client_generatePage($tpl)
+{
 	// Generates IP list
 	_client_generateIpsList($tpl);
 
@@ -57,13 +58,17 @@ function client_generatePage($tpl) {
 			array(
 				'VALUE_IP' => tohtml($_POST['ip_number']),
 				'VALUE_DOMAIN' => clean_input($_POST['domain'], true),
-				'VALUE_ALIAS' => clean_input($_POST['alias'], true)));
+				'VALUE_ALIAS' => clean_input($_POST['alias'], true
+				)
+			));
 	} else {
 		$tpl->assign(
 			array(
 				'VALUE_IP' => '',
 				'VALUE_DOMAIN' => '',
-				'VALUE_ALIAS' => ''));
+				'VALUE_ALIAS' => ''
+			)
+		);
 	}
 }
 
@@ -93,12 +98,17 @@ function _client_generateIpsList($tpl)
 					 'IP' => $stmt->fields['ip_number'],
 					 'DOMAIN' => tohtml(idn_to_utf8($stmt->fields['ip_domain'])),
 					 'ALIAS' => tohtml(idn_to_utf8($stmt->fields['ip_alias'])),
-					 'NETWORK_CARD' => ($stmt->fields['ip_card'] === NULL) ? '' : tohtml($stmt->fields['ip_card'])));
+					 'NETWORK_CARD' => ($stmt->fields['ip_card'] === NULL) ? '' : tohtml($stmt->fields['ip_card'])
+				)
+			);
 
 			$tpl->assign(
 				array(
-					 'ACTION_NAME' => ($cfg->BASE_SERVER_IP == $stmt->fields['ip_number']) ? tr('Protected') : $actionName,
-					 'ACTION_URL' => ($cfg->BASE_SERVER_IP == $stmt->fields['ip_number']) ? '#' : $actionUrl));
+					 'ACTION_NAME' => ($cfg->BASE_SERVER_IP == $stmt->fields['ip_number'])
+						 ? tr('Protected') : $actionName,
+					 'ACTION_URL' => ($cfg->BASE_SERVER_IP == $stmt->fields['ip_number']) ? '#' : $actionUrl
+				)
+			);
 
 			$tpl->parse('IP_ADDRESS_BLOCK', '.ip_address_block');
 			$stmt->moveNext();
@@ -125,11 +135,16 @@ function _client_generateIpAction($ipId, $status)
 	if ($status == $cfg->ITEM_OK_STATUS) {
 		return array(tr('Remove IP'), 'ip_delete.php?delete_id=' . $ipId);
 	} elseif($status == $cfg->ITEM_DELETE_STATUS) {
-		return array(tr('Deletion in progress...'), '#');
+		return array(tr('Deletion in progress'), '#');
 	} elseif($status == $cfg->ITEM_ADD_STATUS) {
-		return array(tr('Configuration in progress...'), '#');
-	} elseif(!in_array($status, array($cfg->ITEM_ADD_STATUS, $cfg->ITEM_CHANGE_STATUS, $cfg->ITEM_OK_STATUS, $cfg->ITEM_DELETE_STATUS))) {
-		return array(tr('Error state...'), '#');
+		return array(tr('Addition in progress'), '#');
+	} elseif(
+		!in_array(
+			$status,
+			array($cfg->ITEM_ADD_STATUS, $cfg->ITEM_CHANGE_STATUS, $cfg->ITEM_OK_STATUS, $cfg->ITEM_DELETE_STATUS)
+		)
+	) {
+		return array(tr('Unknown Error'), '#');
 	} else {
 		return array(tr('N/A'), '#');
 	}
@@ -159,7 +174,7 @@ function _client_generateNetcardsList($tpl)
 			$tpl->parse('NETWORK_CARD_BLOCK', '.network_card_block');
 		}
 	} else { // Should never occur but who knows.
-		set_page_message(tr('Unable to find network cards. Form to add new IP address has been disabled.'), 'error');
+		set_page_message(tr('Unable to find network cards. You cannot add new IP address.'), 'error');
 		$tpl->assign('IP_ADDRESS_FORM_BLOCK', '');
 	}
 }
@@ -206,7 +221,10 @@ function client_checkIpData($ipNumber, $domain, $alias, $netcard)
 		$errFieldsStack[] = 'domain';
 	}
 
-	if(!iMSCP_Validate::getInstance()->hostname(idn_to_ascii($alias), array('allow' => Zend_Validate_Hostname::ALLOW_LOCAL)) ||
+	if(
+		!iMSCP_Validate::getInstance()->hostname(
+			idn_to_ascii($alias), array('allow' => Zend_Validate_Hostname::ALLOW_LOCAL)
+		) ||
 		strpos($alias, '.') !== false) {
 		set_page_message('Wrong alias syntax.', 'error');
 		$errFieldsStack[] = 'alias';
@@ -246,15 +264,15 @@ function client_registerIp($ipNumber, $domain, $alias, $netcard)
 
 	$query = "
 		INSERT INTO `server_ips` (
-			`ip_number`, `ip_domain`, `ip_alias`, `ip_card`, `ip_ssl_domain_id`,
-			`ip_status`
+			`ip_number`, `ip_domain`, `ip_alias`, `ip_card`, `ip_ssl_domain_id`, `ip_status`
 		) VALUES (
 			?, ?, ?, ?, ?, ?
 		)
 	";
-	exec_query($query, array(
-		$ipNumber, idn_to_ascii($domain), idn_to_ascii($alias), $netcard, null,
-		$cfg->ITEM_ADD_STATUS));
+	exec_query(
+		$query,
+		array($ipNumber, idn_to_ascii($domain), idn_to_ascii($alias), $netcard, null, $cfg->ITEM_ADD_STATUS)
+	);
 
 	send_request();
 	set_page_message(tr('IP address scheduled for addition.'), 'success');
@@ -262,8 +280,8 @@ function client_registerIp($ipNumber, $domain, $alias, $netcard)
 	redirectTo('ip_manage.php');
 }
 
-/************************************************************************************
- * Main script
+/***********************************************************************************************************************
+ * Main
  */
 
 // Include core library
@@ -300,7 +318,9 @@ $tpl->define_dynamic(
 		'ip_addresses_block' => 'page',
 		'ip_address_block' => 'ip_addresses_block',
 		'ip_address_form_block' => 'page',
-		'network_card_block' => 'ip_address_form_block'));
+		'network_card_block' => 'ip_address_form_block'
+	)
+);
 
 $tpl->assign(
 	array(
@@ -323,7 +343,9 @@ $tpl->assign(
 		'TR_MESSAGE_DENY_DELETE' => json_encode(tr('You cannot remove the %s IP address.', true, '%s')),
 		'ERR_FIELDS_STACK' => (iMSCP_Registry::isRegistered('errFieldsStack'))
 			 ? json_encode(iMSCP_Registry::get('errFieldsStack')) : '[]',
-		'DATATABLE_TRANSLATIONS' => getDataTablesPluginTranslations()));
+		'DATATABLE_TRANSLATIONS' => getDataTablesPluginTranslations()
+	)
+);
 
 generateNavigation($tpl);
 client_generatePage($tpl);

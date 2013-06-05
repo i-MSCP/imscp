@@ -1313,7 +1313,7 @@ function gen_user_software_action($software_id, $dmn_id, $tpl)
 				'TR_MESSAGE_INSTALL' => ''));
 
 		$tpl->parse('SOFTWARE_ACTION_DELETE', '');
-		return array(tr('Install in progress...'), '', '', $software_status, $software_icon);
+		return array(tr('Install in progress'), '', '', $software_status, $software_icon);
 	} elseif ($software_status == 'deleting') {
 		$tpl->assign(
 			array(
@@ -1322,7 +1322,7 @@ function gen_user_software_action($software_id, $dmn_id, $tpl)
 
 		$tpl->parse('SOFTWARE_ACTION_DELETE', '');
 
-		return array(tr('Deletion in progress...'), '', '', $software_status, $software_icon);
+		return array(tr('Deletion in progress'), '', '', $software_status, $software_icon);
 	} elseif ($software_status == 'installed') {
 		$tpl->assign(
 			array(
