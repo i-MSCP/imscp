@@ -4,8 +4,11 @@
 Git Master
 ------------------------------------------------------------------------------------------------------------------------
 
+ENGINE:
+	- Fixed: Error on backup: Unable to change mode for...
+
 GUI:
-	- Fixed unable to add hosting plan (reseller level)
+	- Fixed: Unable to add hosting plan (reseller level)
 
 Tickets:
 	- Fixed #777: Bug - Autoinstaller - Two entries for imscp-autoinstall option -h
