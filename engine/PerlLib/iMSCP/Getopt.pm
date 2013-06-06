@@ -81,7 +81,7 @@ $usage
  -a     --skip-addons-update   Skip addons update
  -d,    --debug                Force debug mode.
  -t,    --backtrace            Enable backtrace (implies debug option).
- -h,-?  --help                 Show this help.
+ -?,    --help                 Show this help.
 
  $optionHelp
 EOF
@@ -112,7 +112,7 @@ EOF
 			'skip-addons-update|a', sub { $options->{'skipAddonsUpdate'} = 1 },
 			'debug|d', sub { $options->{'debug'} = 1 },
 			'backtrace|t', sub { shift; $class->backtrace(shift) },
-			'help|h|?', sub { $showUsage->() },
+			'help|?', sub { $showUsage->() },
 			@_,
 		) || $showUsage->(1);
 	};
