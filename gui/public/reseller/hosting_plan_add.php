@@ -264,7 +264,7 @@ function reseller_generateErrorPage($tpl, $phpini)
 		$tpl->assign('BACKUP_FEATURE', '');
 	}
 
-	_generatePhpBlock($tpl, $phpini);
+	_reseller_generatePhpBlock($tpl, $phpini);
 }
 
 /**
