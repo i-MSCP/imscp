@@ -1961,4 +1961,87 @@ class iMSCP_Update_Database extends iMSCP_Update
 	{
 		return $this->_dropColumn('php_ini', 'status');
 	}
+
+	/**
+	 * #776 Add possible missing hosting plan properties
+	 *
+	 * @author Laurent Declercq <l.declercq@nuxwin.com>
+	 * @return array SQL statements to be e executed
+	 */
+	protected function _databaseUpdate_137()
+	{
+		$sqlUpd = array();
+
+		$stmt = execute_query(
+			"
+			SELECT
+				`t1`.`id`,
+				`t1`.`reseller_id`,
+				`t1`.`props`,
+				IFNULL(`t2`.`php_ini_max_post_max_size`, '99999999') AS `post_max_size`,
+				IFNULL(`t2`.`php_ini_max_upload_max_filesize`, '99999999') AS `upload_max_filesize`,
+				IFNULL(`t2`.`php_ini_max_max_execution_time`, '99999999') AS `max_execution_time`,
+				IFNULL(`t2`.`php_ini_max_max_input_time`, '99999999') AS `max_input_time`,
+				IFNULL(`t2`.`php_ini_max_memory_limit`, '99999999') AS `memory_limit`
+			FROM
+				`hosting_plans` AS `t1`
+			LEFT JOIN
+				`reseller_props` AS `t2` ON(`t2`.`reseller_id` = `t1`.`reseller_id`)
+			"
+		);
+
+		if($stmt->rowCount()) {
+			/** @var $dbConfig iMSCP_Config_Handler_File */
+			$cfg = iMSCP_Registry::get('config');
+
+			while($row = $stmt->fetchRow()) {
+				$propsArr = explode(';', rtrim($row['props'], ';'));
+
+				$hpPropMap = array(
+					0 => array('_no_', array('_yes_', '_no_')), // PHP Support
+					1 => array('_no_', array('_yes_', '_no_')), // CGI Support
+					2 => array('-1', 'LIMIT'), // Max Subdomains
+					3 => array('-1', 'LIMIT'), // Max Domain Aliases
+					4 => array('-1', 'LIMIT'), // Max Mail Accounts
+					5 => array('-1', 'LIMIT'), // Max Ftp Accounts
+					6 => array('-1', 'LIMIT'), // Max Sql Databases
+					7 => array('-1', 'LIMIT'), // Max Sql Users
+					8 => array('0', 'NUM'), // Monthly Traffic Limit
+					9 => array('0', 'NUM'), // Diskspace limit
+					10 => array('_no_', array('_no_','_dmn_', '_sql_', '_full_')), // Backup feature
+					11 => array('_no_', array('_yes_', '_no_')), // Custom DNS feature
+					12 => array('_no_', array('_yes_', '_no_')), // Software Installer feature
+					13 => array('no', array('yes', 'no')), // Php Editor Feature
+					14 => array('no', array('yes', 'no')), // Allow URL fopen
+					15 => array('no', array('yes', 'no')), // Display errors
+					16 => array('no', array('yes', 'no', 'exec')), // Disable funtions
+					17 => array(min($row['post_max_size'], $cfg['PHPINI_POST_MAX_SIZE']), 'NUM'),
+					18 => array(min($row['upload_max_filesize'], $cfg['PHPINI_UPLOAD_MAX_FILESIZE']), 'NUM'),
+					19 => array(min($row['max_execution_time'], $cfg['PHPINI_MAX_EXECUTION_TIME']), 'NUM'),
+					20 => array(min($row['max_input_time'], $cfg['PHPINI_MAX_INPUT_TIME']), 'NUM'),
+					21 => array(min($row['memory_limit'], $cfg['PHPINI_MEMORY_LIMIT']), 'NUM'),
+					22 => array('_no_', array('_yes_', '_no_')) // External Mail Server Feature
+				);
+
+				foreach($hpPropMap as $index => $values) {
+					if(isset($propsArr[$index])) {
+						if($values[1] == 'LIMIT' && ! imscp_limit_check($propsArr[$index])) {
+							$propsArr[$index] = $values[0];
+						} elseif($values[1] == 'NUM' && ! is_number($propsArr[$index])) {
+							$propsArr[$index] = $values[0];
+						} elseif(is_array($values[1]) && !in_array($propsArr[$index], $values[1])) {
+							$propsArr[$index] = $values[0];
+						}
+					} else {
+						$propsArr[$index] = $values[0];
+					}
+				}
+
+				$propStr = implode(';', $propsArr);
+				$sqlUpd[] = "UPDATE hosting_plans SET props = '$propStr' WHERE id = '{$row['id']}'";
+			}
+		}
+
+		return $sqlUpd;
+	}
 }

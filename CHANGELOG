@@ -9,8 +9,10 @@ ENGINE:
 
 GUI:
 	- Fixed: Unable to add hosting plan (reseller level)
+	- Fixed: Possible missing properties (hosting_plans)
 
 Tickets:
+	- Fixed #776: Bug - Hosting plans attribs aren't updated with the migration
 	- Fixed #777: Bug - Autoinstaller - Two entries for imscp-autoinstall option -h
 
 ------------------------------------------------------------------------------------------------------------------------
