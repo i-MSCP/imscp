@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.0.1.6\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2013-06-04 22:05+0200\n"
+"POT-Creation-Date: 2013-06-08 21:29+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1495,9 +1495,6 @@ msgstr ""
 msgid "Compress HTML output"
 msgstr ""
 
-msgid "Configuration in progress..."
-msgstr ""
-
 msgid "Confirmation for domain order {DOMAIN}"
 msgstr ""
 
@@ -1830,9 +1827,6 @@ msgid "Delete the ticket"
 msgstr ""
 
 msgid "Deletion in progress"
-msgstr ""
-
-msgid "Deletion in progress..."
 msgstr ""
 
 msgid "Demo Version!"
@@ -2240,9 +2234,6 @@ msgstr ""
 msgid "Error pages"
 msgstr ""
 
-msgid "Error state..."
-msgstr ""
-
 msgid "Error while trying to obtain list of network cards."
 msgstr ""
 
@@ -2593,13 +2584,13 @@ msgstr ""
 msgid "IP address scheduled for addition."
 msgstr ""
 
+msgid "IP address successfully scheduled for deletion."
+msgstr ""
+
 msgid "IP addresse data"
 msgstr ""
 
 msgid "IP addresses configured"
-msgstr ""
-
-msgid "IP scheduled for deletion."
 msgstr ""
 
 msgid "IP usage"
@@ -2713,7 +2704,7 @@ msgstr ""
 msgid "Install Software"
 msgstr ""
 
-msgid "Install in progress..."
+msgid "Install in progress"
 msgstr ""
 
 msgid "Install path"
@@ -4816,7 +4807,7 @@ msgid ""
 "exists or is not readable."
 msgstr ""
 
-msgid "The IP address you trying to remove is assigned to a reseller."
+msgid "The IP address you're trying to remove is assigned to a reseller."
 msgstr ""
 
 msgid "The `Enter` key is disabled for performance reasons."
@@ -5098,8 +5089,7 @@ msgstr ""
 msgid "Unable to delete user with Id: %d"
 msgstr ""
 
-msgid ""
-"Unable to find network cards. Form to add new IP address has been disabled."
+msgid "Unable to find network cards. You cannot add new IP address."
 msgstr ""
 
 msgid "Unable to get the IP addresses list. Please fix this problem."

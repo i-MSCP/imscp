@@ -12,9 +12,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2013-06-04 22:05+0200\n"
-"PO-Revision-Date: 2013-06-04 16:16+0000\n"
-"Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
+"POT-Creation-Date: 2013-06-08 21:29+0200\n"
+"PO-Revision-Date: 2013-06-08 19:29+0000\n"
+"Last-Translator: Torsten Widmann <info@goover.de>\n"
 "Language-Team: Russian (Russia) (http://www.transifex.com/projects/p/i-MSCP/language/ru_RU/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -1500,9 +1500,6 @@ msgstr "Компания"
 msgid "Compress HTML output"
 msgstr "Сжать вывод HTML"
 
-msgid "Configuration in progress..."
-msgstr "Настройка в процессе..."
-
 msgid "Confirmation for domain order {DOMAIN}"
 msgstr "Подтверждение заказа домена {DOMAIN}"
 
@@ -1836,9 +1833,6 @@ msgstr "Удалить тикет"
 
 msgid "Deletion in progress"
 msgstr "Удаление в процессе"
-
-msgid "Deletion in progress..."
-msgstr "Удаление в процессе..."
 
 msgid "Demo Version!"
 msgstr "Демоверсия!"
@@ -2245,9 +2239,6 @@ msgstr "Ошибка значений php.ini"
 msgid "Error pages"
 msgstr "Страницы ошибок"
 
-msgid "Error state..."
-msgstr "Статус ошибки..."
-
 msgid "Error while trying to obtain list of network cards."
 msgstr "Ошибка при попытке получить список сетевых карт."
 
@@ -2598,14 +2589,14 @@ msgstr "IP адрес уже известен системе."
 msgid "IP address scheduled for addition."
 msgstr "IP адрес помечен для добавления."
 
+msgid "IP address successfully scheduled for deletion."
+msgstr ""
+
 msgid "IP addresse data"
 msgstr "Данные IP адресов"
 
 msgid "IP addresses configured"
 msgstr "Сконфигурированные IP адреса"
-
-msgid "IP scheduled for deletion."
-msgstr "IP адрес помечен для удаления."
 
 msgid "IP usage"
 msgstr "Использование IP"
@@ -2718,8 +2709,8 @@ msgstr "Установить"
 msgid "Install Software"
 msgstr "Установить ПО"
 
-msgid "Install in progress..."
-msgstr "Установка в процессе"
+msgid "Install in progress"
+msgstr ""
 
 msgid "Install path"
 msgstr "Путь установки"
@@ -4824,8 +4815,8 @@ msgid ""
 "exists or is not readable."
 msgstr "Класс <strong>%s</strong> для <strong>%s</strong> плагина недоступен для чтения."
 
-msgid "The IP address you trying to remove is assigned to a reseller."
-msgstr "IP адрес, который вы пытаетесь удалить, назначен реселлеру."
+msgid "The IP address you're trying to remove is assigned to a reseller."
+msgstr ""
 
 msgid "The `Enter` key is disabled for performance reasons."
 msgstr "Клавиша `Enter` отключена по причинам производительности."
@@ -5106,9 +5097,8 @@ msgstr "Невозможно создать каталог 'LC_MESSAGES' для 
 msgid "Unable to delete user with Id: %d"
 msgstr "Невозможно удалить пользователя с ID: %d"
 
-msgid ""
-"Unable to find network cards. Form to add new IP address has been disabled."
-msgstr "Невозможно найти сетевую карту. Форма добавления IP адресов была отключена."
+msgid "Unable to find network cards. You cannot add new IP address."
+msgstr ""
 
 msgid "Unable to get the IP addresses list. Please fix this problem."
 msgstr "Невозможно создать список IP адресов. Пожалуйста, исправьте проблему."

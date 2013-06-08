@@ -10,9 +10,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2013-06-04 22:05+0200\n"
-"PO-Revision-Date: 2013-06-04 16:16+0000\n"
-"Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
+"POT-Creation-Date: 2013-06-08 21:29+0200\n"
+"PO-Revision-Date: 2013-06-08 19:29+0000\n"
+"Last-Translator: Torsten Widmann <info@goover.de>\n"
 "Language-Team: Japanese (Japan) (http://www.transifex.com/projects/p/i-MSCP/language/ja_JP/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -92,7 +92,7 @@ msgid ""
 "___________________________\n"
 "The i-MSCP Team\n"
 "\n"
-msgstr ""
+msgstr "\n\n親愛なる {NAME}様\n\nドメインのオーダーの自動確認メールです：\n\n{DOMAIN}\n\nあなたのオーダーを確認するため、次のリンクをクリックする必要があります。\n\n{ACTIVATION_LINK}\n\nあなたが、{EXPIRE_DATE}より前に上記リンクをクリックして確認しないと、自動的にオーダーはキャンセルされます。\n.\n\ni-MSCPサービスをご利用いただきありがとうございます。.\n\n___________________________\ni-MSCP チーム\n"
 
 msgid ""
 "\n"
@@ -126,7 +126,7 @@ msgid ""
 "___________________________\n"
 "The i-MSCP Team\n"
 "\n"
-msgstr ""
+msgstr "\n\n親愛なる {RESELLER}様,\n\nあなたの顧客{CUSTOMER}は彼の新しいドメインエイリアスの承認を待っています：\n\n{ALIAS}\n\nログインしたら、あなたは{BASE_SERVER_VHOST_PREFIX}で新しいエイリアスを有効にすることができます{BASE_SERVER_VHOST}/reseller/alias.php\n\ni-MSCPサービスをご利用いただきありがとうございます。\n\n___________________________\ni-MSCP チーム\n\n"
 
 msgid ""
 "\n"
@@ -1498,9 +1498,6 @@ msgstr "会社"
 msgid "Compress HTML output"
 msgstr "圧縮HTML出力"
 
-msgid "Configuration in progress..."
-msgstr "設定中..."
-
 msgid "Confirmation for domain order {DOMAIN}"
 msgstr "{DOMAIN} ドメインオーダーの確認"
 
@@ -1835,9 +1832,6 @@ msgstr "チケットを削除します"
 msgid "Deletion in progress"
 msgstr "削除中"
 
-msgid "Deletion in progress..."
-msgstr "削除中..."
-
 msgid "Demo Version!"
 msgstr "デモ版！"
 
@@ -1908,7 +1902,7 @@ msgstr "全てのエラーを表示しない"
 msgid ""
 "Do you really want to delete the entire <strong>'%s'</strong> customer "
 "account? This operation cannot be undone."
-msgstr ""
+msgstr "あなたは本当に<strong>'％s'</ strong>の顧客アカウントを削除してもよろしいですか？この操作は元に戻すことはできません。"
 
 msgid "Domain"
 msgstr "ドメイン"
@@ -1963,20 +1957,20 @@ msgstr "ドメインエイリアスを更新"
 
 msgid ""
 "Domain alias you are trying to remove has Ftp accounts. Remove them first."
-msgstr ""
+msgstr "削除しようとしたドメインエイリアスは、FTPアカウントを持っています。それを最初に削除します。"
 
 msgid ""
 "Domain alias you are trying to remove has custom DNS records. Remove them "
 "first."
-msgstr ""
+msgstr "削除しようとしたドメインエイリアスは、カスタムDNSレコードを持っています。それを最初に削除します。"
 
 msgid ""
 "Domain alias you are trying to remove has email accounts. Remove them first."
-msgstr ""
+msgstr "削除しようとしたドメインエイリアスは、Eメールアカウントを持っています。それを最初に削除します。"
 
 msgid ""
 "Domain alias you are trying to remove has subdomains. Remove them first."
-msgstr ""
+msgstr "削除しようとしたドメインエイリアスは、サブドメインを持っています。それを最初に削除します。"
 
 msgid "Domain aliases"
 msgstr "ドメインエイリアス"
@@ -2243,9 +2237,6 @@ msgstr "php.ini の値に誤りがあります。"
 msgid "Error pages"
 msgstr "エラーページ"
 
-msgid "Error state..."
-msgstr "エラー状態..."
-
 msgid "Error while trying to obtain list of network cards."
 msgstr "ネットワークカードのリストを取得中にエラーが発生しました。"
 
@@ -2387,7 +2378,7 @@ msgid "First name"
 msgstr "名字"
 
 msgid "First name cannot have more than 200 characters."
-msgstr "名前は200文字以内です。"
+msgstr "名は、200文字以内です。"
 
 msgid "Forward URL"
 msgstr "Forward URL"
@@ -2596,14 +2587,14 @@ msgstr "IPアドレスはシステムで既にわかっています。"
 msgid "IP address scheduled for addition."
 msgstr "IPアドレスの追加が予定しました。"
 
+msgid "IP address successfully scheduled for deletion."
+msgstr ""
+
 msgid "IP addresse data"
 msgstr "IPアドレスのデータ"
 
 msgid "IP addresses configured"
 msgstr "IPアドレスが設定された"
-
-msgid "IP scheduled for deletion."
-msgstr "IPアドレスの削除が予定されました。"
 
 msgid "IP usage"
 msgstr "IPアドレス使用"
@@ -2614,7 +2605,7 @@ msgstr "IPv6アドレス"
 msgid ""
 "If set to 'yes', Web folders as provisioned by i-MSCP will be protected "
 "against deletion using the immutable flag (Extended attributes)."
-msgstr ""
+msgstr "i-MSCPによってプロビジョニングとしてWebフォルダ、\"はい\"に設定した場合、不変フラグ（拡張属性）を使用して削除から保護されます。"
 
 msgid ""
 "If yes, means that the reseller can allow its customers to edit this "
@@ -2699,7 +2690,7 @@ msgid "Incorrect or is not allowed."
 msgstr "間違っているか、または許可されていません。"
 
 msgid "Incorrect post code length or syntax!"
-msgstr ""
+msgstr "郵便番号の長さや構文が正しくありません！"
 
 msgid "Incorrect subdomains limit."
 msgstr "サブドメイン制限が誤っています。"
@@ -2716,8 +2707,8 @@ msgstr "インストール"
 msgid "Install Software"
 msgstr "ソフトウェアのインストール"
 
-msgid "Install in progress..."
-msgstr "インストールを実行中..."
+msgid "Install in progress"
+msgstr ""
 
 msgid "Install path"
 msgstr "インストールのパス"
@@ -2862,7 +2853,7 @@ msgid "Last name"
 msgstr "名前"
 
 msgid "Last name cannot have more than 200 characters."
-msgstr ""
+msgstr "姓は、200文字以内です。"
 
 msgid "Last reply date"
 msgstr "最終返信日"
@@ -2901,7 +2892,7 @@ msgid "Load (1 Min, 5 Min, 15 Min)"
 msgstr "ロードアベレージ (1 秒, 5 秒, 15秒)"
 
 msgid "Log entries successfully deleted."
-msgstr ""
+msgstr "ログエントリを削除しました。"
 
 msgid "Log in to answer"
 msgstr "回答するには、ログインしてください"
@@ -3021,7 +3012,7 @@ msgid "Mail accounts list is empty."
 msgstr "メールアカウントリストは空です。"
 
 msgid "Mail feature is disabled."
-msgstr ""
+msgstr "メール機能が無効"
 
 msgid "Mail forward list empty."
 msgstr "メール転送一覧が空です。"
@@ -3059,7 +3050,7 @@ msgid "Male"
 msgstr "男性"
 
 msgid "Malformed resolver SQL query"
-msgstr ""
+msgstr "不正な形式なリゾルバSQLクエリ"
 
 msgid "Manage Domains"
 msgstr "ドメイン管理"
@@ -3095,7 +3086,7 @@ msgid "Mark all"
 msgstr "全てのマークを付ける"
 
 msgid "Mass email successfully sent."
-msgstr ""
+msgstr "マスEメールが送信された。"
 
 msgid "Master domain cannot be used."
 msgstr "マスタードメインは使用できません。"
@@ -3121,11 +3112,11 @@ msgstr "%s のPHPディレクティブの最大値"
 
 #, php-format
 msgid "Max. remote filesize (%s) has been reached. Your remote file is %s"
-msgstr ""
+msgstr "最大リモートファイルサイズ（％s）に達します。あなたのリモートファイルは％sです"
 
 #, php-format
 msgid "Max. remote filesize (%s) is reached. Your remote file is %s"
-msgstr ""
+msgstr "最大リモートファイルサイズ（％s）に達しました。あなたのリモートファイルは％sです"
 
 msgid ""
 "Maximal number of labels for domain names (<small>Excluding SLD & "
@@ -3158,13 +3149,13 @@ msgid "Message body"
 msgstr "本文"
 
 msgid "Message body is missing."
-msgstr ""
+msgstr "メッセージ本文がありません。"
 
 msgid "Message subject"
 msgstr "メッセージタイトル"
 
 msgid "Message subject is missing."
-msgstr ""
+msgstr "件名がありません。"
 
 msgid "Message template"
 msgstr "メッセージのテンプレート"
@@ -3248,7 +3239,7 @@ msgid "Never"
 msgstr "ない"
 
 msgid "Never expire"
-msgstr ""
+msgstr "有効期限が切れることはありません"
 
 msgid "Never expires"
 msgstr "期限切れになることはありません"
@@ -3347,7 +3338,7 @@ msgid "No hosting plan available."
 msgstr "利用可能なホスティングプランがありません。"
 
 msgid "No hosting plan available. Please contact your administrator."
-msgstr ""
+msgstr "利用可能なホスティングプランはありません。管理者に連絡してください。"
 
 msgid "No htaccess related system errors"
 msgstr "htaccess関連のシステムのエラーは発生していません"
@@ -3356,7 +3347,7 @@ msgid "No languages found."
 msgstr "言語が見つかりません。"
 
 msgid "No logs found"
-msgstr ""
+msgstr "ログが見つかりません"
 
 msgid "No logs found."
 msgstr "ログは見つかりませんでした。"
@@ -3407,7 +3398,7 @@ msgid "No user found."
 msgstr "ユーザーが見つかりませんでした。"
 
 msgid "No user system errors"
-msgstr ""
+msgstr "ユーザシステムのエラーがありません"
 
 msgid "No users found for this reseller."
 msgstr "代理店のユーザーが見つかりません。"
@@ -3452,7 +3443,7 @@ msgid "Nothing has been changed."
 msgstr "何も変更されていません。"
 
 msgid "Nothing has been deleted."
-msgstr ""
+msgstr "何も削除されていない。"
 
 msgid "Nothing has been scheduled for deletion."
 msgstr "何も削除が予定されていません。"
@@ -3677,7 +3668,7 @@ msgid "Password successfully updated."
 msgstr "パスワードは更新されました。"
 
 msgid "Passwords doesn't match"
-msgstr ""
+msgstr "パスワードが一致しません"
 
 msgid "Passwords doesn't match."
 msgstr "パスワードが一致しません。"
@@ -3866,7 +3857,7 @@ msgid "Port"
 msgstr "ポート番号"
 
 msgid "Port must be a number."
-msgstr ""
+msgstr "ポートは数値でなければなりません。"
 
 msgid "Prevent external login for admins"
 msgstr "管理者の外部ログインを禁止"
@@ -3884,14 +3875,14 @@ msgid "Priority"
 msgstr "優先度"
 
 msgid "Priority must be a number."
-msgstr ""
+msgstr "優先度は数値でなければなりません。"
 
 #, php-format
 msgid "Priority: %s\n"
 msgstr "優先度： %s\n"
 
 msgid "Process update"
-msgstr ""
+msgstr "プロセス更新"
 
 msgid "Profile"
 msgstr "プロフィール"
@@ -3907,7 +3898,7 @@ msgid "Protect"
 msgstr "保護"
 
 msgid "Protect Web folders"
-msgstr ""
+msgstr "Webフォルダを保護する"
 
 msgid "Protect it"
 msgstr "保護する"
@@ -3977,10 +3968,10 @@ msgid "Registration date"
 msgstr "登録日"
 
 msgid "Relative weight"
-msgstr ""
+msgstr "相対的な重み"
 
 msgid "Relative weight must be a number."
-msgstr ""
+msgstr "相対的な重みは、数値でなければなりません。"
 
 msgid "Remote Web software repository"
 msgstr "リモートのWebソフトウェアリポジトリ"
@@ -4342,13 +4333,13 @@ msgid "Sender email"
 msgstr "Eメール送信者"
 
 msgid "Sender email is missing."
-msgstr ""
+msgstr "送信メールがありません。"
 
 msgid "Sender name"
-msgstr ""
+msgstr "送信者名"
 
 msgid "Sender name is missing."
-msgstr ""
+msgstr "送信者名がありません。"
 
 msgid "Senders email"
 msgstr "送信者のEメール"
@@ -4506,10 +4497,10 @@ msgid "Software installer options successfully updated."
 msgstr "ソフトウェアインストーラオプションを更新しました。"
 
 msgid "Software installer require PHP support."
-msgstr ""
+msgstr "ソフトウェアのインストーラはPHPサポートを必要です。"
 
 msgid "Software installer require PHP."
-msgstr ""
+msgstr "ソフトウェアのインストーラは、PHPが必要です。"
 
 msgid "Software name"
 msgstr "ソフトウェア名"
@@ -4626,12 +4617,12 @@ msgid "Subdomain alias"
 msgstr "サブドメインエイリアス"
 
 msgid "Subdomain alias successfully scheduled for deletion."
-msgstr ""
+msgstr "サブドメインエイリアスの削除が予定されました。"
 
 msgid ""
 "Subdomain alias you are trying to remove has Ftp accounts. Remove them "
 "first."
-msgstr ""
+msgstr "削除しようとしているサブドメインエイリアスは、FTPアカウントを持っています。それを最初に削除します。"
 
 msgid "Subdomain already exists or is not allowed."
 msgstr "サブドメインが既に存在するか、許可されていません。"
@@ -4655,18 +4646,18 @@ msgid "Subdomain scheduled for update."
 msgstr "サブドメインの更新が予定されました。"
 
 msgid "Subdomain successfully scheduled for addition."
-msgstr "サブドメインの追加がスケジュールされました。"
+msgstr "サブドメインの追加が予定されました。"
 
 msgid "Subdomain successfully scheduled for deletion."
-msgstr ""
+msgstr "サブドメインの削除が予定されました。"
 
 msgid ""
 "Subdomain you are trying to remove has Ftp accounts. Remove them first."
-msgstr ""
+msgstr "削除しようとしているサブドメインは、FTPアカウントを持っています。それを最初に削除します。"
 
 msgid ""
 "Subdomain you are trying to remove has email accounts. Remove them first."
-msgstr ""
+msgstr "削除しようとしているサブドメインは、Eメールアカウントを持っています。それを最初に削除します。"
 
 msgid "Subdomains"
 msgstr "サブドメイン"
@@ -4696,7 +4687,7 @@ msgid "Switch"
 msgstr "変更"
 
 msgid "Switch to the backups directory"
-msgstr ""
+msgstr "バックアップディレクトリに切り替え"
 
 msgid "Switch to user interface"
 msgstr "ユーザーインターフェースを変更"
@@ -4746,7 +4737,7 @@ msgid "TTL"
 msgstr "TTL"
 
 msgid "TTL must be a number."
-msgstr ""
+msgstr "TTLは数値でなければなりません。"
 
 msgid "TXT data"
 msgstr "TXT データ"
@@ -4822,8 +4813,8 @@ msgid ""
 "exists or is not readable."
 msgstr "<strong>%s</strong> プラグインの <strong>%s</strong> のファイルが存在するか読み出し可能でありません。"
 
-msgid "The IP address you trying to remove is assigned to a reseller."
-msgstr "削除しようとしたIPアドレスは代理店に割り当てられています。"
+msgid "The IP address you're trying to remove is assigned to a reseller."
+msgstr ""
 
 msgid "The `Enter` key is disabled for performance reasons."
 msgstr "`Enter`キーは、パフォーマンス理由のために無効です。"
@@ -4876,7 +4867,7 @@ msgstr " %sプラグインは保護されています。あなたはそれに対
 
 #, php-format
 msgid "The remote filesize (%s) is lower than 1 Byte. Please check the URL."
-msgstr ""
+msgstr "リモートファイルサイズ（％s）は1バイト未満です。URLを確認してください。"
 
 msgid "The reseller account that you are trying to edit has not been found."
 msgstr "編集しようとしている代理店アカウントが見つかりませんでした。"
@@ -4884,7 +4875,7 @@ msgstr "編集しようとしている代理店アカウントが見つかりま
 msgid ""
 "The reseller you want to remove has one or more customers accounts.<br "
 "/>Remove them first."
-msgstr ""
+msgstr "削除する代理店は、1つ又は複数の顧客アカウントを持っています。<br/>それを最初に削除します。"
 
 msgid "The software installer require PHP."
 msgstr "ソフトウェアのインストーラはPHPが必要です。"
@@ -5104,9 +5095,8 @@ msgstr "言語ファイルのための\"LC_MESSAGES\"ディレクトリを作成
 msgid "Unable to delete user with Id: %d"
 msgstr "このIDを持つユーザーを削除することができない： %d"
 
-msgid ""
-"Unable to find network cards. Form to add new IP address has been disabled."
-msgstr "ネットワークカードを見つけることができません。 新しいIPアドレスを追加するフォームは無効にされました。"
+msgid "Unable to find network cards. You cannot add new IP address."
+msgstr ""
 
 msgid "Unable to get the IP addresses list. Please fix this problem."
 msgstr "IPアドレスのリストを取得することができません。この問題を修正してください。"
@@ -5138,16 +5128,16 @@ msgstr "データベースから、あなたのパスワードを取得するこ
 msgid ""
 "Unable to schedule deletion of the customer account. A message has been sent"
 " to the administrator."
-msgstr ""
+msgstr "顧客アカウントの削除を予定することができません。メッセージが管理者に送信されています。"
 
 msgid ""
 "Unable to schedule deletion of the customer account. Please, consult admin "
 "logs or your mail for more information."
-msgstr ""
+msgstr "顧客アカウントの削除を予定することができません。詳細については、管理ログやメールを参照してください。"
 
 #, php-format
 msgid "Unable to upload file. Max. upload filesize (%1$d MB) reached?"
-msgstr ""
+msgstr "ファイルをアップロードすることができません。最大アップロードファイルサイズ（％1 $ dのMB）に達しましたか？"
 
 msgid "Unavailable"
 msgstr "使用禁止"
@@ -5291,7 +5281,7 @@ msgid "User auth"
 msgstr "ユーザー認証"
 
 msgid "User data successfully updated"
-msgstr ""
+msgstr "ユーザー·データは更新されました"
 
 msgid "User data were not updated."
 msgstr "ユーザーデータは更新されませんでした。"
@@ -5405,7 +5395,7 @@ msgid "View certificates"
 msgstr "証明書を表示する"
 
 msgid "View hosting plan"
-msgstr ""
+msgstr "ホスティングプラン表示"
 
 msgid "View ticket"
 msgstr "チケットを表示"
@@ -5702,7 +5692,7 @@ msgid "You did not fill all required fields"
 msgstr "必須項目をすべて入力してください"
 
 msgid "You do not have FTP accounts."
-msgstr ""
+msgstr "FTPアカウントを持っていません。"
 
 msgid "You do not have any software uploaded yet"
 msgstr "任意のソフトウェアがまだアップロードされていません"
@@ -5816,7 +5806,7 @@ msgstr "ドメインの制限に達しました。<br/>もう、ドメインを�
 
 #, php-format
 msgid "You have received %d new support request."
-msgstr ""
+msgstr "あなたが %d 新しいサポート要求を受け取りました。"
 
 #, php-format
 msgid "You have received %s new support questions."
@@ -5832,7 +5822,7 @@ msgid "You must choose between local and remote upload."
 msgstr "ローカル又はリモートのアップロードのどちらかを選択する必要があります。"
 
 msgid "You must confirm customer account deletion."
-msgstr ""
+msgstr "顧客アカウントの削除を確認する必要があります。"
 
 msgid "You must enter a least one forward address."
 msgstr "少なくとも一つのフォワードアドレスを入力する必要があります。"
@@ -5841,7 +5831,7 @@ msgid "You must first generate a password"
 msgstr "最初にパスワードを生成する必要があります"
 
 msgid "You must omit 'www'. It will be added automatically."
-msgstr ""
+msgstr "'WWW'を省略してください。自動的に追加されます。"
 
 msgid "You must provide a password."
 msgstr "パスワードを入力する必要があります。"
@@ -5875,7 +5865,7 @@ msgid "You received %d new answer(s) to your support questions."
 msgstr "あなたのサポートに関する質問に %d 個の新しい回答を受け取った。"
 
 msgid "Your account has expired."
-msgstr ""
+msgstr "アカウントは有効期限が切れています。"
 
 msgid "Your account has expired. Please renew your subscription."
 msgstr "アカウントの有効期限が切れています。契約を更新してください。"
@@ -5883,7 +5873,7 @@ msgstr "アカウントの有効期限が切れています。契約を更新し
 msgid ""
 "Your account is currently in maintenance or disabled. Please, contact your "
 "reseller."
-msgstr ""
+msgstr "アカウントはメンテナンス中か無効です。代理店にお問い合わせください。"
 
 msgid "Your are not the owner of this domain alias."
 msgstr "あなたは、このドメインエイリアスの所有者ではありません。"
@@ -5911,7 +5901,7 @@ msgstr "パッケージが破損しています。修正してください！"
 
 #, php-format
 msgid "Your remote filesize (%s) is lower than 1 Byte. Please check your URL."
-msgstr ""
+msgstr "リモートファイルサイズ（％s）は1バイト未満です。URLを確認してください。"
 
 msgid ""
 "Your request for new password has been registered. You will receive an email"

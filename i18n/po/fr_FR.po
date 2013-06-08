@@ -19,9 +19,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2013-06-04 22:05+0200\n"
-"PO-Revision-Date: 2013-06-04 16:16+0000\n"
-"Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
+"POT-Creation-Date: 2013-06-08 21:29+0200\n"
+"PO-Revision-Date: 2013-06-08 19:29+0000\n"
+"Last-Translator: Torsten Widmann <info@goover.de>\n"
 "Language-Team: French (France) (http://www.transifex.com/projects/p/i-MSCP/language/fr_FR/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -1507,9 +1507,6 @@ msgstr "Société"
 msgid "Compress HTML output"
 msgstr "Compresser la sortie HTML"
 
-msgid "Configuration in progress..."
-msgstr "Configuration en cours..."
-
 msgid "Confirmation for domain order {DOMAIN}"
 msgstr ""
 
@@ -1843,9 +1840,6 @@ msgstr "Supprimer le ticket"
 
 msgid "Deletion in progress"
 msgstr ""
-
-msgid "Deletion in progress..."
-msgstr "Surpression en cours..."
 
 msgid "Demo Version!"
 msgstr "Version de démonstration!"
@@ -2252,9 +2246,6 @@ msgstr "Certaines valeurs du php.ini sont erronnées"
 msgid "Error pages"
 msgstr "Pages d'erreur"
 
-msgid "Error state..."
-msgstr "Etat d'erreur..."
-
 msgid "Error while trying to obtain list of network cards."
 msgstr "Une erreur est survenue pendant la tentative de récupération des cartes réseau."
 
@@ -2605,14 +2596,14 @@ msgstr "L'ip existe déjà dans le systeme."
 msgid "IP address scheduled for addition."
 msgstr "Ajout de l'adresse IP programmée."
 
+msgid "IP address successfully scheduled for deletion."
+msgstr ""
+
 msgid "IP addresse data"
 msgstr "Données de l'adresse IP"
 
 msgid "IP addresses configured"
 msgstr "Les adresses IP ont été configurée"
-
-msgid "IP scheduled for deletion."
-msgstr "Adresse Ip programmée pour suppression."
 
 msgid "IP usage"
 msgstr "Usage des adresse IP"
@@ -2725,7 +2716,7 @@ msgstr "Installer"
 msgid "Install Software"
 msgstr "Installer le logiciel."
 
-msgid "Install in progress..."
+msgid "Install in progress"
 msgstr ""
 
 msgid "Install path"
@@ -4831,8 +4822,8 @@ msgid ""
 "exists or is not readable."
 msgstr ""
 
-msgid "The IP address you trying to remove is assigned to a reseller."
-msgstr "L'adresse IP que vous essayer de supprimée et utilisée par un revendeur."
+msgid "The IP address you're trying to remove is assigned to a reseller."
+msgstr ""
 
 msgid "The `Enter` key is disabled for performance reasons."
 msgstr "La touche 'Enter' a été désactivé pour des raisons de performances."
@@ -5113,9 +5104,8 @@ msgstr "Impossible de créer le répertoire 'LC_MESSAGE' pour le langage."
 msgid "Unable to delete user with Id: %d"
 msgstr "Impossible de supprimer l'utilisateur ayant pour Id: %d"
 
-msgid ""
-"Unable to find network cards. Form to add new IP address has been disabled."
-msgstr "Impossible de trouver les cartes réseaux. Le formulaire pour l'ajout de nouvelles adresses Ip a été désactivé."
+msgid "Unable to find network cards. You cannot add new IP address."
+msgstr ""
 
 msgid "Unable to get the IP addresses list. Please fix this problem."
 msgstr "Impossible de retrouver la liste des IP. Merci de corriger le problème."
