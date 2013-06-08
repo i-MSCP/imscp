@@ -14,6 +14,7 @@ GUI:
 Tickets:
 	- Fixed #776: Bug - Hosting plans attribs aren't updated with the migration
 	- Fixed #777: Bug - Autoinstaller - Two entries for imscp-autoinstall option -h
+	- Fixed #781: Bug - Network card not found
 
 ------------------------------------------------------------------------------------------------------------------------
 1.1.0-rc2.2

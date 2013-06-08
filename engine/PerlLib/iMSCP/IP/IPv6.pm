@@ -64,7 +64,6 @@ sub normalize
 	my $ip = lc(shift);
 
 	my @result;
-
 	my @parts = split(':', $ip);
 
 	for(@parts){
@@ -169,7 +168,6 @@ sub detachIpFromNetCard
 	return 1 unless($self->isValidIp($ip));
 
 	my ($stdout, $stderr);
-
 	my $rs = execute("$main::imscpConfig{'CMD_IFCONFIG'} $card inet6 del $ip/64", \$stdout, \$stderr);
 	debug($stdout) if $stdout;
 	error($stderr) if $stderr && $rs;

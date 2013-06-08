@@ -74,8 +74,9 @@ sub getIPs
 {
 	my $self = shift;
 	my @ips = ();
+	my $rs = 0;
 
-	my $rs = $self->loadIPs() unless $self->{'_loaded'};
+	$rs = $self->loadIPs() unless $self->{'_loaded'};
 	return (wantarray ? () : '') if $rs;
 
 	@ips = (@ips, ($self->{$_}->getIPs())) for('IPv4', 'IPv6');
@@ -89,8 +90,9 @@ sub getNetCards
 {
 	my $self = shift;
 	my %cards;
+	my $rs = 0;
 
-	my $rs = $self->loadIPs() unless $self->{'_loaded'};
+	$rs = $self->loadIPs() unless $self->{'_loaded'};
 	return (wantarray ? () : '') if $rs;
 
 	%cards = (%cards, map { $_ => undef }($self->{$_}->getNetCards())) for('IPv4', 'IPv6');
@@ -104,10 +106,11 @@ sub getCardByIP
 {
 	my $self = shift;
 	my $ip = shift;
+	my $rs = 0;
 
 	my $card;
 
-	my $rs = $self->loadIPs() unless $self->{'_loaded'};
+	$rs = $self->loadIPs() unless $self->{'_loaded'};
 	return (wantarray ? () : '') if $rs;
 
 	for('IPv4', 'IPv6'){
@@ -124,8 +127,9 @@ sub addedToVCard
 {
 	my $self = shift;
 	my $ip = shift;
+	my $rs = 0;
 
-	my $rs = $self->loadIPs() unless $self->{'_loaded'};
+	$rs = $self->loadIPs() unless $self->{'_loaded'};
 	return (wantarray ? () : '') if $rs;
 
 	for('IPv4', 'IPv6'){
@@ -142,8 +146,9 @@ sub existsNetCard
 {
 	my $self = shift;
 	my $card = shift;
+	my $rs = 0;
 
-	my $rs = $self->loadIPs() unless $self->{'_loaded'};
+	$rs = $self->loadIPs() unless $self->{'_loaded'};
 	return (wantarray ? () : '') if $rs;
 
 	for('IPv4', 'IPv6'){
@@ -156,13 +161,13 @@ sub existsNetCard
 	$rs;
 }
 
-
 sub isCardUp
 {
 	my $self = shift;
 	my $card = shift;
+	my $rs = 0;
 
-	my $rs = $self->loadIPs() unless $self->{'_loaded'};
+	$rs = $self->loadIPs() unless $self->{'_loaded'};
 	return (wantarray ? () : '') if $rs;
 
 	for('IPv4', 'IPv6'){
@@ -178,9 +183,11 @@ sub isCardUp
 sub isValidIp
 {
 	my $self = shift;
+
+	my $rs = 0;
 	my $ip = shift;
 
-	my $rs = $self->loadIPs() unless $self->{'_loaded'};
+	$rs = $self->loadIPs() unless $self->{'_loaded'};
 	return (wantarray ? () : '') if $rs;
 
 	for('IPv4', 'IPv6'){
