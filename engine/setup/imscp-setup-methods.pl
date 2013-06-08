@@ -1414,7 +1414,10 @@ sub setupServerIps
 		'UPDATE `server_ips` SET `ip_domain` = NULL, `ip_alias` = NULL WHERE `ip_number` <> ?  AND `ip_domain` = ?',
 		$baseServerIp, $serverHostname
 	);
-	return $rs if ref $rs ne 'HASH';
+	unless(ref $rs eq 'HASH') {
+		error($rs);
+		return 1;
+	}
 
 	# Server ips replacement
 
@@ -1430,8 +1433,8 @@ sub setupServerIps
 				'SELECT `id`, `reseller_ips` FROM `reseller_props` WHERE `reseller_ips` REGEXP ?',
 				"(^|[^0-9]$oldIpId;)"
 			);
-			if(ref $resellerIps ne 'HASH') {
-				error("Query failed: $resellerIps");
+			unless(ref $resellerIps eq 'HASH') {
+				error($resellerIps);
 				return 1;
 			}
 
@@ -1439,8 +1442,8 @@ sub setupServerIps
 			my $newIpId = $database->doQuery(
 				'ip_number', 'SELECT `ip_id`, `ip_number` FROM `server_ips` WHERE `ip_number` = ?', $newIp
 			);
-			if(ref $newIpId ne 'HASH') {
-				error("Unable to get ID of the '$newIp' address IP:$newIpId");
+			unless(ref $newIpId eq 'HASH') {
+				error($newIpId);
 				return 1;
 			}
 
@@ -1454,11 +1457,20 @@ sub setupServerIps
 					$rs = $database->doQuery(
 						'dummy', 'UPDATE `reseller_props` SET `reseller_ips` = ? WHERE `id` = ?', $ips, $_
 					);
-					if(ref $rs ne 'HASH') {
-						error("Unable to update reseller IP list: $rs");
+					unless(ref $rs eq 'HASH') {
+						error($rs);
 						return 1;
 					}
 				}
+			}
+
+			# Update IP id of customers if needed
+			$rs = $database->doQuery(
+				'dummy', 'UPDATE `domain` SET `domain_ip_id` = ? WHERE `domain_ip_id` = ?', $newIpId, $oldIpId
+			);
+			unless(ref $rs eq 'HASH') {
+				error($rs);
+				return 1;
 			}
 		}
 	}
@@ -1472,8 +1484,8 @@ sub setupServerIps
 			'delete',
 			$baseServerIp
 		);
-		if (ref $rs ne 'HASH') {
-			error("Unable to schedule server IPs deletion: $rs");
+		unless (ref $rs eq 'HASH') {
+			error($rs);
 			return 1;
 		}
 	}

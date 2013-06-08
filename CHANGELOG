@@ -15,6 +15,7 @@ SETUP:
 	- Fixed: Pressed feature is broken
 
 Tickets:
+	- Fixed #647: Bug - Setup - Unable to reconfigure IP addresses
 	- Fixed #776: Bug - Hosting plans attribs aren't updated with the migration
 	- Fixed #777: Bug - Autoinstaller - Two entries for imscp-autoinstall option -h
 	- Fixed #778: Bug - Autoinstaller - Exit code 5 in non-interactive mode --nopromt
