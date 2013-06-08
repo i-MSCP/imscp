@@ -76,7 +76,10 @@ sub askProftpd
 
 	if(
 		$main::reconfigure ~~ ['ftpd', 'servers', 'all', 'forced'] || ! ($dbUser && $dbPass) ||
-		main::setupCheckSqlConnect($dbType, '', $dbHost, $dbPort, $dbUser, $dbPass)
+		(
+			! ($main::preseed{'FTPD_SQL_USER'} && $main::preseed{'FTPD_SQL_PASSWORD'}) &&
+			main::setupCheckSqlConnect($dbType, '', $dbHost, $dbPort, $dbUser, $dbPass)
+		)
 	) {
 		# Ask for the proftpd restricted SQL username
 		do{

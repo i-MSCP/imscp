@@ -11,9 +11,13 @@ GUI:
 	- Fixed: Unable to add hosting plan (reseller level)
 	- Fixed: Possible missing properties (hosting_plans)
 
+SETUP:
+	- Fixed: Pressed feature is broken
+
 Tickets:
 	- Fixed #776: Bug - Hosting plans attribs aren't updated with the migration
 	- Fixed #777: Bug - Autoinstaller - Two entries for imscp-autoinstall option -h
+	- Fixed #778: Bug - Autoinstaller - Exit code 5 in non-interactive mode --nopromt
 	- Fixed #781: Bug - Network card not found
 
 ------------------------------------------------------------------------------------------------------------------------

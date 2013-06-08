@@ -5,7 +5,7 @@
 # See documentation at http://wiki.i-mscp.net/doku.php?id=start:preseeding
 #
 # Author: Laurent Declercq <l.declercq@nuxwin.com>
-# Last update: 2013.04.27
+# Last update: 2013.06.08
 # Status: (Experimental)
 
 ## Autoinstall questions
@@ -23,7 +23,7 @@ $main::preseed{'SERVERS'} = {
 	# Server to use for the Dns service
 	'NAMED_SERVER' => 'bind', # (bind)
 	# Server to use for the Sql service
-	'SQL_SERVER' => 'mysql_5.1' # Depending of your distro (mysql_5.1|mysql_5.5|mariadb_5.3|mariadb_5.5|remote_server)
+	'SQL_SERVER' => 'mysql_5.5' # Depending of your distro (mysql_5.1|mysql_5.5|mariadb_5.3|mariadb_5.5|remote_server)
 };
 
 # apache_fcgi - Only relevant if the server for the http service is set to 'apache_fcgi'
@@ -61,7 +61,7 @@ $main::preseed{'DATABASE_NAME'} = 'imscp';
 # i-MSCP SQL user
 $main::preseed{'DATABASE_USER'} = 'root'; # Sql user (user must exist and have full privileges on SQL server)
 $main::preseed{'DATABASE_USER_HOST'} = 'localhost'; # Host from which SQL users should be allowed to connect to the MySQL server
-$main::preseed{'DATABASE_PASSWORD'} = 'password'; # Password shouldn't be empty
+$main::preseed{'DATABASE_PASSWORD'} = '<password>'; # Password shouldn't be empty
 
 # MySQL prefix/sufix
 $main::preseed{'MYSQL_PREFIX'} = 'no'; # (yes|no)
@@ -69,7 +69,7 @@ $main::preseed{'MYSQL_PREFIX_TYPE'} = 'none'; # (none if MYSQL_PREFIX question i
 
 # Default admin
 $main::preseed{'ADMIN_LOGIN_NAME'} = 'admin'; # Default admin name
-$main::preseed{'ADMIN_PASSWORD'} = 'password'; # Default admin password (A least 6 characters long)
+$main::preseed{'ADMIN_PASSWORD'} = '<password>'; # Default admin password (A least 6 characters long)
 $main::preseed{'DEFAULT_ADMIN_ADDRESS'} = 'user@domain.tld'; # Default admin email address (should be a valid email)
 
 # PHP Timzone
@@ -96,10 +96,6 @@ $main::preseed{'CERTIFICATE_PATH'} = ''; # Path to SSL certificat
 # Only relevant if SSL_ENABLED is set to 'yes' ;
 # Let's value set to 'http://' if you set SSL_ENABLED to 'no'
 $main::preseed{'BASE_SERVER_VHOST_PREFIX'} = 'http://'; # Default panel access mode (http:// or https://)
-
-# PhpMyAdmin restricted SQL user
-$main::preseed{'PMA_USER'} = 'pma';
-$main::preseed{'PMA_PASSWORD'} = 'password'; # Password shouldn't be empty
 
 # iMSCP backup feature (database and configuration files)
 $main::preseed{'BACKUP_IMSCP'} = 'yes'; # (yes|no) - It's recommended to set this question to 'yes'
@@ -142,10 +138,10 @@ $main::preseed{'FILEMANAGER_ADDON'} = 'AjaxPlorer'; # Name of the filemanager ad
 
 # Phpmyadmin addon
 $main::preseed{'PHPMYADMIN_SQL_USER'} = 'pma';
-$main::preseed{'PHPMYADMIN_SQL_PASSWORD'} = 'password'; # Password shouldn't be empty
+$main::preseed{'PHPMYADMIN_SQL_PASSWORD'} = '<password>'; # Password shouldn't be empty
 
 # Roundcube addon
 $main::preseed{'ROUNDCUBE_SQL_USER'} = 'roundcube_user';
-$main::preseed{'ROUNDCUBE_SQL_PASSWORD'} = 'password'; # Password shouldn't be empty
+$main::preseed{'ROUNDCUBE_SQL_PASSWORD'} = '<password>'; # Password shouldn't be empty
 
 1;

@@ -155,7 +155,10 @@ sub askPhpmyadmin
 
 	if(
 		$main::reconfigure ~~ ['sqlmanager', 'all', 'forced'] || ! ($dbUser && $dbPass) ||
-		main::setupCheckSqlConnect($dbType, '', $dbHost, $dbPort, $dbUser, $dbPass)
+		(
+			! ($main::preseed{'PHPMYADMIN_SQL_USER'} && $main::preseed{'PHPMYADMIN_SQL_PASSWORD'}) &&
+			main::setupCheckSqlConnect($dbType, '', $dbHost, $dbPort, $dbUser, $dbPass)
+		)
 	) {
 		# Ask for the PhpMyAdmin restricted SQL username
 		do{
