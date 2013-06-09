@@ -289,8 +289,13 @@ sub _init
 	my $oldConf = "$self->{'apacheCfgDir'}/apache.old.data";
 
 	if(-f $oldConf) {
-		tie %self::apacheOldConfig, 'iMSCP::Config','fileName' => $oldConf, 'noerrors' => 1;
-		%self::apacheConfig = (%self::apacheConfig, %self::apacheOldConfig);
+		tie %self::apacheOldConfig, 'iMSCP::Config', 'fileName' => $oldConf, 'noerrors' => 1;
+
+		for(keys %self::apacheOldConfig) {
+			if(exists $self::apacheConfig{$_}) {
+				$self::apacheConfig{$_} = $self::apacheOldConfig{$_};
+			}
+		}
 	}
 
 	$self->{'phpfpmCfgDir'} = "$main::imscpConfig{'CONF_DIR'}/php-fpm";
@@ -303,13 +308,18 @@ sub _init
 	$oldConf = "$self->{'phpfpmCfgDir'}/phpfpm.old.data";
 
 	if(-f $oldConf) {
-		tie %self::phpfpmOldConfig, 'iMSCP::Config','fileName' => $oldConf, 'noerrors' => 1;
-		%self::phpfpmConfig = (%self::phpfpmConfig, %self::phpfpmOldConfig);
+		tie %self::phpfpmOldConfig, 'iMSCP::Config', 'fileName' => $oldConf, 'noerrors' => 1;
+
+		for(keys %self::phpfpmOldConfig) {
+			if(exists $self::phpfpmConfig{$_}) {
+				$self::phpfpmConfig{$_} = $self::phpfpmOldConfig{$_};
+			}
+		}
 	}
 
 	$self->{'hooksManager'}->trigger(
 		'afterHttpdInitInstaller', $self, 'apache_php_fpm'
-	) and fatal('apache_php_fpm - afterHttpdInitInstaller hook has failed'); ;
+	) and fatal('apache_php_fpm - afterHttpdInitInstaller hook has failed');
 
 	$self;
 }

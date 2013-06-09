@@ -120,9 +120,9 @@ print STDOUT output("Installation in progress... Please wait.") if $main::noprom
 
 if($main::skippackages && ! %main::preseed) {
 	unless(
-		defined $main::imscpConfig{'HTTPD_SERVER'} && defined $main::imscpConfig{'PO_SERVER'} &&
-		defined $main::imscpConfig{'MTA_SERVER'} && defined $main::imscpConfig{'FTPD_SERVER'} &&
-		defined $main::imscpConfig{'NAMED_SERVER'} && defined $main::imscpConfig{'SQL_SERVER'}
+		$main::imscpConfig{'HTTPD_SERVER'} && $main::imscpConfig{'PO_SERVER'} &&
+		$main::imscpConfig{'MTA_SERVER'} && $main::imscpConfig{'FTPD_SERVER'} &&
+		$main::imscpConfig{'NAMED_SERVER'} && $main::imscpConfig{'SQL_SERVER'}
 	) {
 		$main::noprompt = 0;
 		$main::skippackages = 0;

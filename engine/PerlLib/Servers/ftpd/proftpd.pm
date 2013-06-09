@@ -51,7 +51,7 @@ sub _init
 
 	$self->{'commentChar'} = '#';
 
-	tie %self::proftpdConfig, 'iMSCP::Config','fileName' => "$self->{'cfgDir'}/proftpd.data";
+	tie %self::proftpdConfig, 'iMSCP::Config', 'fileName' => "$self->{'cfgDir'}/proftpd.data";
 	$self->{$_} = $self::proftpdConfig{$_} for keys %self::proftpdConfig;
 
 	$self->{'hooksManager'}->trigger(

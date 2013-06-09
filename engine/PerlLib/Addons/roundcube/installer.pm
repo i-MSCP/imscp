@@ -280,11 +280,16 @@ sub _init
 	my $conf = "$self->{'cfgDir'}/roundcube.data";
 	my $oldConf = "$self->{'cfgDir'}/roundcube.old.data";
 
-	tie %self::roundcubeConfig, 'iMSCP::Config','fileName' => $conf, 'noerrors' => 1;
+	tie %self::roundcubeConfig, 'iMSCP::Config', 'fileName' => $conf, 'noerrors' => 1;
 
 	if(-f $oldConf) {
-		tie %self::roundcubeOldConfig, 'iMSCP::Config','fileName' => $oldConf, 'noerrors' => 1;
-		%self::roundcubeConfig = (%self::roundcubeConfig, %self::roundcubeOldConfig);
+		tie %self::roundcubeOldConfig, 'iMSCP::Config', 'fileName' => $oldConf, 'noerrors' => 1;
+
+		for(keys %self::roundcubeOldConfig) {
+			if(exists $self::roundcubeConfig{$_}) {
+				$self::roundcubeConfig{$_} = $self::roundcubeOldConfig{$_};
+			}
+		}
 	}
 
 	$self;

@@ -256,11 +256,16 @@ sub _init
 	my $conf = "$self->{'cfgDir'}/phpmyadmin.data";
 	my $oldConf	= "$self->{'cfgDir'}/phpmyadmin.old.data";
 
-	tie %self::phpmyadminConfig, 'iMSCP::Config','fileName' => $conf, noerrors => 1;
+	tie %self::phpmyadminConfig, 'iMSCP::Config', 'fileName' => $conf, 'noerrors' => 1;
 
 	if(-f $oldConf) {
-		tie %self::phpmyadminOldConfig, 'iMSCP::Config','fileName' => $oldConf, noerrors => 1;
-		%self::phpmyadminConfig = (%self::phpmyadminConfig, %self::phpmyadminOldConfig);
+		tie %self::phpmyadminOldConfig, 'iMSCP::Config', 'fileName' => $oldConf, 'noerrors' => 1;
+
+		for(keys %self::phpmyadminOldConfig) {
+			if(exists $self::phpmyadminConfig{$_}) {
+				$self::phpmyadminConfig{$_} = $self::phpmyadminOldConfig{$_};
+			}
+		}
 	}
 
 	$self;

@@ -54,7 +54,7 @@ sub _init
 	$self->{'wrkDir'} = "$self->{'cfgDir'}/working";
 	$self->{'tplDir'}	= "$self->{'cfgDir'}/parts";
 
-	tie %self::bindConfig, 'iMSCP::Config','fileName' => "$self->{'cfgDir'}/bind.data", 'noerrors' => 1;
+	tie %self::bindConfig, 'iMSCP::Config', 'fileName' => "$self->{'cfgDir'}/bind.data";
 
 	$self->{$_} = $self::bindConfig{$_} for keys %self::bindConfig;
 

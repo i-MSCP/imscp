@@ -267,8 +267,13 @@ sub _init
 	my $oldConf = "$self->{'cfgDir'}/bind.old.data";
 
 	if(-f $oldConf) {
-		tie %self::bindOldConfig, 'iMSCP::Config','fileName' => $oldConf, noerrors => 1;
-		%self::bindConfig = (%self::bindConfig, %self::bindOldConfig);
+		tie %self::bindOldConfig, 'iMSCP::Config', 'fileName' => $oldConf, 'noerrors' => 1;
+
+		for(keys %self::bindOldConfig) {
+			if(exists $self::bindConfig{$_}) {
+				$self::bindConfig{$_} = $self::bindOldConfig{$_};
+			}
+		}
 	}
 
 	$self->{'hooksManager'}->trigger(

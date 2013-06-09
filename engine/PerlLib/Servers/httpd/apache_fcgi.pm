@@ -1763,8 +1763,7 @@ sub _init
 	$self->{'wrkDir'} = "$self->{'cfgDir'}/working";
 	$self->{'tplDir'} = "$self->{'cfgDir'}/parts";
 
-	my $conf = "$self->{'cfgDir'}/apache.data";
-	tie %self::apacheConfig, 'iMSCP::Config', 'fileName' => $conf;
+	tie %self::apacheConfig, 'iMSCP::Config', 'fileName' => "$self->{'cfgDir'}/apache.data";
 
 	$self->{'tplValues'}->{$_} = $self::apacheConfig{$_} for keys %self::apacheConfig;
 

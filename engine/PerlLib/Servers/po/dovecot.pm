@@ -343,9 +343,7 @@ sub _init
 	$self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
 	$self->{'wrkDir'} = "$self->{'cfgDir'}/working";
 
-	my $conf = "$self->{'cfgDir'}/dovecot.data";
-
-	tie %self::dovecotConfig, 'iMSCP::Config','fileName' => $conf;
+	tie %self::dovecotConfig, 'iMSCP::Config','fileName' => "$self->{'cfgDir'}/dovecot.data";
 
 	$self->{'hooksManager'}->trigger(
 		'afterPoInit', $self, 'dovecot'

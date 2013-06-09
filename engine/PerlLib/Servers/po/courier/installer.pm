@@ -126,8 +126,13 @@ sub _init
 	my $oldConf = "$self->{'cfgDir'}/courier.old.data";
 
 	if(-f $oldConf) {
-		tie %self::courierOldConfig, 'iMSCP::Config','fileName' => $oldConf, 'noerrors' => 1;
-		%self::courierConfig = (%self::courierConfig, %self::courierOldConfig);
+		tie %self::courierOldConfig, 'iMSCP::Config', 'fileName' => $oldConf, 'noerrors' => 1;
+
+		for(keys %self::courierOldConfig) {
+			if(exists $self::courierConfig{$_}) {
+				$self::courierConfig{$_} = $self::courierOldConfig{$_};
+			}
+		}
 	}
 
 	$self->{'hooksManager'}->trigger(

@@ -62,8 +62,13 @@ sub _init
 	my $oldConf = "$self->{'cfgDir'}/postfix.old.data";
 
 	if(-f $oldConf) {
-		tie %self::postfixOldConfig, 'iMSCP::Config','fileName' => $oldConf, noerrors => 1;
-		%self::postfixConfig = (%self::postfixConfig, %self::postfixOldConfig);
+		tie %self::postfixOldConfig, 'iMSCP::Config', 'fileName' => $oldConf, 'noerrors' => 1;
+
+		for(keys %self::postfixOldConfig) {
+			if(exists $self::postfixConfig{$_}) {
+				$self::postfixConfig{$_} = $self::postfixOldConfig{$_};
+			}
+		}
 	}
 
 	$self->{'hooksManager'}->trigger(

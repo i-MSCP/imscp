@@ -215,7 +215,7 @@ if (isset($_POST['upload']) && $_SESSION['software_upload_token'] == $_POST['sen
 					// Delete software entry
 					$query = "DELETE FROM `web_software` WHERE `software_id` = ?";
 					exec_query($query, $sw_id);
-					$show_max_remote_filesize = bytesHuman($cfg->MAX_REMOTE_FILESIZE);
+					$show_max_remote_filesize = bytesHuman($cfg->APS_MAX_REMOTE_FILESIZE);
 					set_page_message(
 						tr(
 							'The remote filesize (%s) is lower than 1 Byte. Please check the URL.',
@@ -225,11 +225,11 @@ if (isset($_POST['upload']) && $_SESSION['software_upload_token'] == $_POST['sen
 					);
 
 					$upload = 0;
-				} elseif ($remote_file_size > $cfg->MAX_REMOTE_FILESIZE) {
+				} elseif ($remote_file_size > $cfg->APS_MAX_REMOTE_FILESIZE) {
 					// Delete software entry
 					$query = "DELETE FROM `web_software` WHERE `software_id` = ?";
 					exec_query($query, $sw_id);
-					$show_max_remote_filesize = bytesHuman($cfg->MAX_REMOTE_FILESIZE);
+					$show_max_remote_filesize = bytesHuman($cfg->APS_MAX_REMOTE_FILESIZE);
 					set_page_message(
 						tr('Max. remote filesize (%s) is reached. Your remote file is %s',
 							$show_max_remote_filesize, $show_remote_file_size), 'error');
@@ -293,7 +293,7 @@ $tpl->assign(
 		'TR_SOFTWAREDEPOT_NUM' => $swdepot_cnt,
 		'TR_UPLOAD_SOFTWARE' => tr('Software depot upload'),
 		'TR_SOFTWARE_FILE' => tr('Choose file (Max: %1$d MiB)', ini_get('upload_max_filesize')),
-		'TR_SOFTWARE_URL' => tr('or remote file (Max: %s)', bytesHuman($cfg->MAX_REMOTE_FILESIZE)),
+		'TR_SOFTWARE_URL' => tr('or remote file (Max: %s)', bytesHuman($cfg->APS_MAX_REMOTE_FILESIZE)),
 		'TR_UPLOAD_SOFTWARE_BUTTON' => tr('Upload now'),
 		'TR_AWAITING_ACTIVATION' => tr('Awaiting activation'),
 		'TR_ACTIVATED_SOFTWARE' => tr('Reseller software list'),

@@ -80,28 +80,33 @@ sub loadConfig
 	tie
 		my %imscpNewConfig,
 		'iMSCP::Config',
-		'fileName' => "$FindBin::Bin/configs/" . lc(iMSCP::LsbRelease->getInstance()->getId(1)) . '/imscp.conf',
-		readonly => 1;
+		'fileName' => "$FindBin::Bin/configs/" . lc(iMSCP::LsbRelease->getInstance()->getId(1)) . '/imscp.conf';
+
+	%main::imscpConfig = %imscpNewConfig;
 
 	# Load current i-MSCP conffile as readonly if it exists
 	if (-f "$imscpNewConfig{'CONF_DIR'}/imscp.conf") {
 		tie
 			%main::imscpOldConfig,
 			'iMSCP::Config',
-			fileName => "$imscpNewConfig{'CONF_DIR'}/imscp.conf",
-			readonly => 1;
+			'fileName' => "$imscpNewConfig{'CONF_DIR'}/imscp.conf",
+			'readonly' => 1;
+
+		# Merge current config with the new but do not write anything yet. This is done at postBuild step
+		for(keys %main::imscpOldConfig) {
+			if(exists $main::imscpConfig{$_}) {
+				$main::imscpConfig{$_} = $main::imscpOldConfig{$_};
+			}
+		}
+
+		# Revert back needed variables with newest values
+		$main::imscpConfig{'BuildDate'} = $imscpNewConfig{'BuildDate'};
+		$main::imscpConfig{'Version'} = $imscpNewConfig{'Version'};
+		$main::imscpConfig{'CodeName'} = $imscpNewConfig{'CodeName'};
+		$main::imscpConfig{'DistName'} = $imscpNewConfig{'DistName'};
 	} else { # No conffile found, assumption is made that it's a new install
 		%main::imscpOldConfig = ();
 	}
-
-	# Merge current config with the new but do not write anything yet. This is done at postBuild step
-	%main::imscpConfig = (%imscpNewConfig, %main::imscpOldConfig);
-
-	# Update needed variables with newest values
-	$main::imscpConfig{'BuildDate'} = $imscpNewConfig{'BuildDate'} if exists $imscpNewConfig{'BuildDate'};
-	$main::imscpConfig{'Version'} = $imscpNewConfig{'Version'} if exists $imscpNewConfig{'Version'};
-	$main::imscpConfig{'CodeName'} = $imscpNewConfig{'CodeName'} if exists $imscpNewConfig{'CodeName'};
-	$main::imscpConfig{'DistName'} = $imscpNewConfig{'DistName'} if exists $imscpNewConfig{'DistName'};
 
 	0;
 }
@@ -500,7 +505,9 @@ sub postBuild
 	my %imscpConf = %main::imscpConfig;
 	tie %main::imscpConfig, 'iMSCP::Config', 'fileName' => "$main::{'SYSTEM_CONF'}/imscp.conf";
 
-	%main::imscpConfig = (%main::imscpConfig, %imscpConf);
+	for(keys %imscpConf) {
+		$main::imscpConfig{$_} = $imscpConf{$_};
+	}
 
 	# Cleanup build tree directory (remove any .gitignore|empty-file)
     find(

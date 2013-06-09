@@ -289,8 +289,13 @@ sub _init
 	my $oldConf = "$self->{'cfgDir'}/dovecot.old.data";
 
 	if(-f $oldConf) {
-		tie %self::dovecotOldConfig, 'iMSCP::Config','fileName' => $oldConf, 'noerrors' => 1;
-		%self::dovecotConfig = (%self::dovecotConfig, %self::dovecotOldConfig);
+		tie %self::dovecotOldConfig, 'iMSCP::Config', 'fileName' => $oldConf, 'noerrors' => 1;
+
+		for(keys %self::dovecotOldConfig) {
+			if(exists $self::dovecotConfig{$_}) {
+				$self::dovecotConfig{$_} = $self::dovecotOldConfig{$_};
+			}
+		}
 	}
 
 	$self->_getVersion() and fatal('Unable to get dovecot version');

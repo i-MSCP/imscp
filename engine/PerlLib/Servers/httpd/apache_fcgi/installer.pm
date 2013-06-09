@@ -349,8 +349,13 @@ sub _init
 	my $oldConf = "$self->{'cfgDir'}/apache.old.data";
 
 	if(-f $oldConf) {
-		tie %self::apacheOldConfig, 'iMSCP::Config','fileName' => $oldConf, noerrors => 1;
-		%self::apacheConfig = (%self::apacheConfig, %self::apacheOldConfig);
+		tie %self::apacheOldConfig, 'iMSCP::Config', 'fileName' => $oldConf, 'noerrors' => 1;
+
+		for(keys %self::apacheOldConfig) {
+			if(exists $self::apacheConfig{$_}) {
+				$self::apacheConfig{$_} = $self::apacheOldConfig{$_};
+			}
+		}
 	}
 
 	$self->{'hooksManager'}->trigger(

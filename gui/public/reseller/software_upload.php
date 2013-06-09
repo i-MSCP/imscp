@@ -244,10 +244,10 @@ if (isset($_POST['upload']) && $_SESSION['software_upload_token'] == $_POST['sen
 							`software_id` = ?
 					";
 					exec_query($query, $sw_id);
-					$show_max_remote_filesize = bytesHuman($cfg->MAX_REMOTE_FILESIZE);
+					$show_max_remote_filesize = bytesHuman($cfg->APS_MAX_REMOTE_FILESIZE);
 					set_page_message(tr('Your remote filesize (%s) is lower than 1 Byte. Please check your URL.', $show_remote_file_size), 'error');
 					$upload = 0;
-				} elseif ($remote_file_size > $cfg->MAX_REMOTE_FILESIZE) {
+				} elseif ($remote_file_size > $cfg->APS_MAX_REMOTE_FILESIZE) {
 					// Delete software entry
 					$query = "
 						DELETE FROM
@@ -257,7 +257,7 @@ if (isset($_POST['upload']) && $_SESSION['software_upload_token'] == $_POST['sen
 					";
 					exec_query($query, $sw_id);
 
-					$show_max_remote_filesize = bytesHuman($cfg->MAX_REMOTE_FILESIZE);
+					$show_max_remote_filesize = bytesHuman($cfg->APS_MAX_REMOTE_FILESIZE);
 					set_page_message(tr('Max. remote filesize (%s) has been reached. Your remote file is %s', $show_max_remote_filesize, $show_remote_file_size), 'error');
 					$upload = 0;
 				} else {
@@ -341,7 +341,7 @@ $tpl->assign(
 		 'TR_SOFTWARE_DESC' => tr('Description'),
 		 'SOFTWARE_UPLOAD_TOKEN' => generate_software_upload_token(),
 		 'TR_SOFTWARE_FILE' => tr('Choose file (Max: %1$d MiB)', ini_get('upload_max_filesize')),
-		 'TR_SOFTWARE_URL' => tr('or remote file (Max: %s)', bytesHuman($cfg->MAX_REMOTE_FILESIZE)),
+		 'TR_SOFTWARE_URL' => tr('or remote file (Max: %s)', bytesHuman($cfg->APS_MAX_REMOTE_FILESIZE)),
 		 'TR_UPLOAD_SOFTWARE_BUTTON' => tr('Upload now'),
 		 'TR_UPLOAD_SOFTWARE_PAGE_TITLE' => tr('i-MSCP - Sofware Management'),
 		 'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete this package?', true),

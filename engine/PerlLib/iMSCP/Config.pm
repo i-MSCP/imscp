@@ -207,24 +207,24 @@ sub STORE
 	undef;
 }
 
-=item
-
- Delete the given configuration parameters.
-
-=cut
-
-sub DELETE
-{
-	my $self = shift;
-	my $config = shift;
-
-	if(! $self->{'args'}->{'readonly'}) {
-		delete $self->{'lineMap'}->{$config};
-		delete $self->{'configValues'}->{$config};
-	} else {
-		fatal('Config object is readonly');
-	}
-}
+#=item
+#
+# Delete the given configuration parameters.
+#
+#=cut
+#
+#sub DELETE
+#{
+#	my $self = shift;
+#	my $config = shift;
+#
+#	if(! $self->{'args'}->{'readonly'}) {
+#		delete $self->{'lineMap'}->{$config};
+#		delete $self->{'configValues'}->{$config};
+#	} else {
+#		fatal('Config object is readonly');
+#	}
+#}
 
 =item
 
@@ -274,16 +274,16 @@ sub EXISTS
 	exists $self->{'configValues'}->{$config};
 }
 
-=item
-
- Clear all values from the tied hash.
-
-=cut
-
-sub CLEAR
-{
-
-}
+#=item
+#
+# Clear all values from the tied hash.
+#
+#=cut
+#
+#sub CLEAR
+#{
+#
+#}
 
 =item _insertConfig($config, $value)
 

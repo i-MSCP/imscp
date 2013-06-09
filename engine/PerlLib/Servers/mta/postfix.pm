@@ -55,7 +55,7 @@ sub _init
 
 	$self->{'commentChar'} = '#';
 
-	tie %self::postfixConfig, 'iMSCP::Config','fileName' => "$self->{'cfgDir'}/postfix.data";
+	tie %self::postfixConfig, 'iMSCP::Config', 'fileName' => "$self->{'cfgDir'}/postfix.data";
 	$self->{$_} = $self::postfixConfig{$_} for keys %self::postfixConfig;
 
 	$self->{'hooksManager'}->trigger(
@@ -805,7 +805,7 @@ sub delMailForward
 	$wrkContent =~ s/^$mailbox\t[^\n]*\n//gmi;
 
 	# handle normal mail accounts entries for which auto-responder is active
-	if($data->{'MAIL_STATUS'} ne'delete') {
+	if($data->{'MAIL_STATUS'} ne 'delete') {
 		my @line;
 
 		# if auto-responder is activated, we must add the recipient as address to keep local copy of any forwarded mail

@@ -107,7 +107,7 @@ require_once  'iMSCP/Config/Handler.php';
  * @property string DATE_FORMAT Date format
  * @property string BASE_SERVER_VHOST Base server vhost
  * @property string GUI_SOFTWARE_DEPOT_DIR Application software repository directory
- * @property string MAX_REMOTE_FILESIZE Max size for remote application package
+ * @property string APS_MAX_REMOTE_FILESIZE Max size for remote application package
  * @property int DATABASE_REVISION Last database revision
  * @property int CRITICAL_UPDATE_REVISION Last critical update revision
  * @property string WEBSTATS_GROUP_AUTH Webstats group authentication

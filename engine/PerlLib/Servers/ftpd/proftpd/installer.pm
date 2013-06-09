@@ -171,8 +171,15 @@ sub _init
 	my $oldConf = "$self->{'cfgDir'}/proftpd.old.data";
 
 	if(-f $oldConf) {
-		tie %self::proftpdOldConfig, 'iMSCP::Config','fileName' => $oldConf, noerrors => 1;
-		%self::proftpdConfig = (%self::proftpdConfig, %self::proftpdOldConfig);
+		tie %self::proftpdOldConfig, 'iMSCP::Config', 'fileName' => $oldConf, 'noerrors' => 1;
+
+		for(keys %self::proftpdOldConfig) {
+			if(exists $self::proftpdConfi{$_}) {
+				$self::proftpdConfig{$_} = $self::proftpdOldConfig{$_};
+			}
+		}
+
+		#%self::proftpdConfig = (%self::proftpdConfig, %self::proftpdOldConfig);
 	}
 
 	$self->{'hooksManager'}->trigger(
@@ -361,15 +368,12 @@ sub _oldEngineCompatibility
 	my $rs = $self->{'hooksManager'}->trigger('beforeFtpdOldEngineCompatibility');
 	return $rs if $rs;
 
-	if(exists $self::proftpdConfig{'FTPD_CONF_DIR'}) {
-		if(-d "$self::proftpdConfig{'FTPD_CONF_DIR'}") {
+	if(exists $self::proftpdOldConfig{'FTPD_CONF_DIR'}) {
+		if(-d $self::proftpdOldConfig{'FTPD_CONF_DIR'}) {
 
-			$rs = iMSCP::Dir->new('dirname' => $self::proftpdConfig{'FTPD_CONF_DIR'})->remove();
+			$rs = iMSCP::Dir->new('dirname' => $self::proftpdOldConfig{'FTPD_CONF_DIR'})->remove();
 			return $rs if $rs;
 		}
-
-		delete $self::proftpdConfig{'FTPD_CONF_DIR'};
-		delete $self::proftpdOldConfig{'FTPD_CONF_DIR'};
 	}
 
 	$self->{'hooksManager'}->trigger('afterFtpdOldEngineCompatibility');

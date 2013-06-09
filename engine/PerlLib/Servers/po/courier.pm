@@ -601,8 +601,7 @@ sub _init
 	$self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
 	$self->{'wrkDir'} = "$self->{'cfgDir'}/working";
 
-	my $conf = "$self->{'cfgDir'}/courier.data";
-	tie %self::courierConfig, 'iMSCP::Config', 'fileName' => $conf;
+	tie %self::courierConfig, 'iMSCP::Config', 'fileName' => "$self->{'cfgDir'}/courier.data";
 
 	$self->{$_} = $self::courierConfig{$_} for keys %self::courierConfig;
 

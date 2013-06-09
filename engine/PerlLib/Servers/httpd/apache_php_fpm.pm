@@ -1902,8 +1902,7 @@ sub _init
 	$self->{'apacheWrkDir'} = "$self->{'apacheCfgDir'}/working";
 	$self->{'apacheTplDir'} = "$self->{'apacheCfgDir'}/parts";
 
-	my $conf = "$self->{'apacheCfgDir'}/apache.data";
-	tie %self::apacheConfig, 'iMSCP::Config','fileName' => $conf;
+	tie %self::apacheConfig, 'iMSCP::Config', 'fileName' => "$self->{'apacheCfgDir'}/apache.data";
 
 	$self->{'tplValues'}->{$_} = $self::apacheConfig{$_} for keys %self::apacheConfig;
 
@@ -1912,8 +1911,7 @@ sub _init
 	$self->{'phpfpmWrkDir'} = "$self->{'phpfpmCfgDir'}/working";
 	$self->{'phpfpmTplDir'} = "$self->{'phpfpmCfgDir'}/parts";
 
-	$conf = "$self->{'phpfpmCfgDir'}/phpfpm.data";
-	tie %self::phpfpmConfig, 'iMSCP::Config', 'fileName' => $conf;
+	tie %self::phpfpmConfig, 'iMSCP::Config', 'fileName' => "$self->{'phpfpmCfgDir'}/phpfpm.data";
 
 	$self->{'tplValues'}->{$_} = $self::phpfpmConfig{$_} for keys %self::phpfpmConfig;
 

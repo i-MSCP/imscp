@@ -161,11 +161,16 @@ sub _init
 	my $conf = "$self->{'cfgDir'}/policyd.data";
 	my $oldConf	= "$self->{'cfgDir'}/policyd.old.data";
 
-	tie %self::policydConfig, 'iMSCP::Config','fileName' => $conf, 'noerrors' => 1;
+	tie %self::policydConfig, 'iMSCP::Config', 'fileName' => $conf, 'noerrors' => 1;
 
 	if(-f $oldConf) {
-		tie %self::policydOldConfig, 'iMSCP::Config','fileName' => $oldConf, 'noerrors' => 1;
-		%self::policydConfig = (%self::policydConfig, %self::policydOldConfig);
+		tie %self::policydOldConfig, 'iMSCP::Config', 'fileName' => $oldConf, 'noerrors' => 1;
+
+		for(keys %self::policydOldConfig) {
+			if(exists $self::policydConfig{$_}) {
+				$self::policydConfig{$_} = $self::policydOldConfig{$_};
+			}
+		}
 	}
 
 	$self;
