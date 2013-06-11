@@ -67,11 +67,11 @@ sub setupBoot
 	# We do not try to establish connection to the database since needed data can be unavailable
 	iMSCP::Boot->getInstance()->boot({ 'mode' => 'setup', 'nodatabase' => 'yes' });
 
-	my $oldConfig = "$main::imscpConfig{'CONF_DIR'}/imscp.old.conf";
-
 	if(! %main::imscpOldConfig) {
 		%main::imscpOldConfig = ();
-		tie %main::imscpOldConfig, 'iMSCP::Config', 'fileName' => $oldConfig, 'readonly' => 1;
+
+		my $oldConfig = "$main::imscpConfig{'CONF_DIR'}/imscp.old.conf";
+		tie %main::imscpOldConfig, 'iMSCP::Config', 'fileName' => $oldConfig, 'readonly' => 1 if -f $oldConfig;
 	}
 
 	0;

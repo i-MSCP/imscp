@@ -532,7 +532,7 @@ sub doImscpBackup
 {
 	my $rs = 0;
 
-	if(-x "$main::imscpConfig{'ROOT_DIR'}/engine/backup/imscp-backup-imscp") {
+	if(-x "$main::imscpConfig{'ROOT_DIR'}/engine/backup/imscp-backup-imscp" && -f "$main::{'SYSTEM_CONF'}/imscp.conf") {
 		my ($stdout, $stderr);
 		$rs = execute("$main::imscpConfig{'ROOT_DIR'}/engine/backup/imscp-backup-imscp", \$stdout, \$stderr);
 		debug($stdout) if $stdout;
