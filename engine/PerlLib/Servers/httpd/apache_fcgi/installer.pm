@@ -514,7 +514,6 @@ sub _buildFastCgiConfFiles
 			{
 				SYSTEM_USER_PREFIX => $main::imscpConfig{'SYSTEM_USER_PREFIX'},
 				SYSTEM_USER_MIN_UID	=> $main::imscpConfig{'SYSTEM_USER_MIN_UID'},
-				PHP_VERSION => $main::imscpConfig{'PHP_VERSION'}
 			}
 		);
 
@@ -615,6 +614,7 @@ sub _buildPhpConfFiles
 	# Set needed data
 	$self->{'httpd'}->setData(
 		{
+			HOME_DIR => $main::imscpConfig{'GUI_ROOT_DIR'},
 			WEB_DIR => $main::imscpConfig{'GUI_ROOT_DIR'},
 			DOMAIN_NAME => 'master'
 		}
@@ -678,6 +678,7 @@ sub _buildPhpConfFiles
 	# Set needed data
 	$self->{'httpd'}->setData(
 		{
+			HOME_DIR => $main::imscpConfig{'GUI_ROOT_DIR'},
 			WEB_DIR => $main::imscpConfig{'GUI_ROOT_DIR'},
 			DOMAIN => $main::imscpConfig{'BASE_SERVER_VHOST'},
 			CONF_DIR => $main::imscpConfig{'CONF_DIR'},
@@ -842,10 +843,11 @@ sub _buildMasterVhostFiles
 			BASE_SERVER_IP => $main::imscpConfig{'BASE_SERVER_IP'},
 			BASE_SERVER_VHOST => $main::imscpConfig{'BASE_SERVER_VHOST'},
 			DEFAULT_ADMIN_ADDRESS => $adminEmailAddress,
-			ROOT_DIR => $main::imscpConfig{'ROOT_DIR'},
+			HOME_DIR => $main::imscpConfig{'GUI_ROOT_DIR'},
+			WEB_DIR => $main::imscpConfig{'GUI_ROOT_DIR'},
 			SYSTEM_USER_PREFIX => $main::imscpConfig{'SYSTEM_USER_PREFIX'},
 			SYSTEM_USER_MIN_UID => $main::imscpConfig{'SYSTEM_USER_MIN_UID'},
-			PHP_VERSION => $main::imscpConfig{'PHP_VERSION'},
+			PEAR_DIR => $main::imscpConfig{'PEAD_DIR'},
 			GUI_CERT_DIR => $main::imscpConfig{'GUI_CERT_DIR'},
 			SERVER_HOSTNAME => $main::imscpConfig{'SERVER_HOSTNAME'}
 		}

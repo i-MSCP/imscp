@@ -405,6 +405,7 @@ sub _buildPhpConfFiles
 	# Set needed data
 	$self->{'httpd'}->setData(
 		{
+			PEAR_DIR => $main::imscpConfig{'PEAR_DIR'},
 			PHP_TIMEZONE => $main::imscpConfig{'PHP_TIMEZONE'}
 		}
 	);
@@ -555,7 +556,8 @@ sub _buildMasterVhostFiles
 			BASE_SERVER_IP => $main::imscpConfig{'BASE_SERVER_IP'},
 			BASE_SERVER_VHOST => $main::imscpConfig{'BASE_SERVER_VHOST'},
 			DEFAULT_ADMIN_ADDRESS => $adminEmailAddress,
-			ROOT_DIR => $main::imscpConfig{'ROOT_DIR'},
+			HOME_DIR => $main::imscpConfig{'GUI_ROOT_DIR'},
+			WEB_DIR => $main::imscpConfig{'GUI_ROOT_DIR'},
 			SYSTEM_USER_PREFIX => $main::imscpConfig{'SYSTEM_USER_PREFIX'},
 			SYSTEM_USER_MIN_UID => $main::imscpConfig{'SYSTEM_USER_MIN_UID'},
 			CONF_DIR => $main::imscpConfig{'CONF_DIR'},

@@ -299,8 +299,8 @@ sub _getApacheConfSnippet
     <Location /{WEBSTATS_RPATH}>
         AuthType Basic
         AuthName "Statistics for domain {DOMAIN_NAME}"
-        AuthUserFile {WWW_DIR}/{ROOT_DOMAIN_NAME}/{HTACCESS_USERS_FILE_NAME}
-        AuthGroupFile {WWW_DIR}/{ROOT_DOMAIN_NAME}/{HTACCESS_GROUPS_FILE_NAME}
+        AuthUserFile {HOME_DIR}/{HTACCESS_USERS_FILE_NAME}
+        AuthGroupFile {HOME_DIR}/{HTACCESS_GROUPS_FILE_NAME}
         Require group {WEBSTATS_GROUP_AUTH}
     </Location>
 EOF
@@ -320,8 +320,8 @@ EOF
         </IfModule>
         AuthType Basic
         AuthName "Statistics for domain {DOMAIN_NAME}"
-        AuthUserFile {WWW_DIR}/{ROOT_DOMAIN_NAME}/{HTACCESS_USERS_FILE_NAME}
-        AuthGroupFile {WWW_DIR}/{ROOT_DOMAIN_NAME}/{HTACCESS_GROUPS_FILE_NAME}
+        AuthUserFile {HOME_DIR}/{HTACCESS_USERS_FILE_NAME}
+        AuthGroupFile {HOME_DIR}/{HTACCESS_GROUPS_FILE_NAME}
         Require group {WEBSTATS_GROUP_AUTH}
     </Location>
 EOF

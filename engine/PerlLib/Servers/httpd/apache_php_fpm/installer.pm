@@ -496,6 +496,7 @@ sub _buildPhpConfFiles
 	# Set needed data
 	$self->{'httpd'}->setData(
 		{
+			PEAR_DIR => $main::imscpConfig{'PEAR_DIR'},
 			PHP_TIMEZONE => $main::imscpConfig{'PHP_TIMEZONE'}
 		}
 	);
@@ -553,7 +554,7 @@ sub _buildMasterPhpFpmPoolFile
 			BASE_SERVER_VHOST => $main::imscpConfig{'BASE_SERVER_VHOST'},
 			SYSTEM_USER_PREFIX => $main::imscpConfig{'SYSTEM_USER_PREFIX'},
 			SYSTEM_USER_MIN_UID => $main::imscpConfig{'SYSTEM_USER_MIN_UID'},
-			ROOT_DIR => $main::imscpConfig{'ROOT_DIR'},
+			HOME_DIR => $main::imscpConfig{'GUI_ROOT_DIR'},
 			WEB_DIR => $main::imscpConfig{'GUI_ROOT_DIR'},
 			CONF_DIR => $main::imscpConfig{'CONF_DIR'},
 			RKHUNTER_LOG => $main::imscpConfig{'RKHUNTER_LOG'},
@@ -697,7 +698,10 @@ sub _buildMasterVhostFiles
 			BASE_SERVER_IP => $main::imscpConfig{'BASE_SERVER_IP'},
 			BASE_SERVER_VHOST => $main::imscpConfig{'BASE_SERVER_VHOST'},
 			DEFAULT_ADMIN_ADDRESS => $adminEmailAddress,
+			HOME_DIR => $main::imscpConfig{'GUI_ROOT_DIR'},
+			WEB_DIR => $main::imscpConfig{'GUI_ROOT_DIR'},
 			ROOT_DIR => $main::imscpConfig{'ROOT_DIR'},
+			PEAR_DIR => $main::imscpConfig{'PEAD_DIR'},
 			GUI_CERT_DIR => $main::imscpConfig{'GUI_CERT_DIR'},
 			SERVER_HOSTNAME => $main::imscpConfig{'SERVER_HOSTNAME'}
 		}

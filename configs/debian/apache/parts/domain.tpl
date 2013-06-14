@@ -2,7 +2,7 @@
 
     ServerAdmin webmaster@{DOMAIN_NAME}
     ServerName {DOMAIN_NAME}
-    ServerAlias www.{DOMAIN_NAME} {DOMAIN_NAME} {ALIAS}.{BASE_SERVER_VHOST}
+    ServerAlias www.{DOMAIN_NAME} {ALIAS}.{BASE_SERVER_VHOST}
 
     DocumentRoot {WEB_DIR}/htdocs
 
@@ -18,7 +18,7 @@
     </IfModule>
     # SECTION suexec END.
 
-    Alias /errors {WWW_DIR}/{ROOT_DOMAIN_NAME}/errors/
+    Alias /errors {HOME_DIR}/errors/
 
     RewriteEngine on
     RewriteOptions inherit
@@ -96,10 +96,10 @@
 
     # SECTION itk BEGIN.
     <IfModule php5_module>
-        php_admin_value open_basedir "{WEB_DIR}/:{WEB_DIR}/phptmp/:{PEAR_DIR}/{PHPINI_OPEN_BASEDIR}"
-        php_admin_value upload_tmp_dir "{WEB_DIR}/phptmp/"
-        php_admin_value session.save_path "{WEB_DIR}/phptmp/"
-        php_admin_value soap.wsdl_cache_dir "{WEB_DIR}/phptmp/"
+        php_admin_value open_basedir "{HOME_DIR}/:{PEAR_DIR}/{PHPINI_OPEN_BASEDIR}"
+        php_admin_value upload_tmp_dir "{WEB_DIR}/phptmp"
+        php_admin_value session.save_path "{WEB_DIR}/phptmp"
+        php_admin_value soap.wsdl_cache_dir "{WEB_DIR}/phptmp"
         php_admin_value sendmail_path "/usr/sbin/sendmail -t -i -f webmaster@{DOMAIN_NAME}"
 
         # Custom values

@@ -6,6 +6,7 @@ Git Master
 
 Tickets:
 	- Fixed #782: Bug - Notice: A non well formed numeric value encountered...
+	- Fixed #786: Bug - Httpd Server impl. - apache_php_fpm. - No input file specified
 	- Fixed #790: Defect - Postfix 2.10.x - Relay access - SASL authentication
 	- Fixed #793: Bug - Autoinstaller/Setup - Admin user is getting new id in database
 

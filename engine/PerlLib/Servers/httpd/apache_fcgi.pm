@@ -527,7 +527,7 @@ sub delDmn($$)
 				}
 
 				(my $mountPointRootDir = $mountPoint) =~ s%^(/[^/]+).*%$1%;
-				$mountPointRootDir = dirname("$data->{'WWW_DIR'}/$data->{'ROOT_DOMAIN_NAME'}$mountPointRootDir");
+				$mountPointRootDir = dirname("$data->{'HOME_DIR'}$mountPointRootDir");
 				my $dirToRemove = $webDir;
 				my $dirToRemoveParentDir;
 				my $isProtectedDirToRemoveParentDir = 0;

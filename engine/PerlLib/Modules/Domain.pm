@@ -331,17 +331,14 @@ sub buildHTTPDData
 {
 	my $self = shift;
 
-	my $groupName =
-	my $userName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} .
+	my $groupName = my $userName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} .
 		($main::imscpConfig{'SYSTEM_USER_MIN_UID'} + $self->{'domain_admin_id'});
 
-	my $hDir = "$main::imscpConfig{'USER_WEB_DIR'}/$self->{'domain_name'}";
+	my $homeDir = "$main::imscpConfig{'USER_WEB_DIR'}/$self->{'domain_name'}";
+	$homeDir =~ s~/+~/~g;
+	$homeDir =~ s~/$~~g;
 
-	# Remove double and trailing slashes
-	$hDir =~ s~/+~/~g;
-	$hDir =~ s~/$~~g;
-
-	my $pDir = $hDir;
+	my $webDir = $homeDir;
 
 	my $sql = "SELECT * FROM `config` WHERE `name` LIKE 'PHPINI%'";
 	my $rdata = iMSCP::Database->factory()->doQuery('name', $sql);
@@ -374,9 +371,9 @@ sub buildHTTPDData
 		ROOT_DOMAIN_NAME => $self->{'domain_name'},
 		DOMAIN_IP => $self->{'ip_number'},
 		WWW_DIR => $main::imscpConfig{'USER_WEB_DIR'},
-		WEB_DIR => $hDir,
+		HOME_DIR => $homeDir,
+		WEB_DIR => $webDir,
 		MOUNT_POINT => '/',
-		PARENT_DIR => $pDir,
 		PEAR_DIR => $main::imscpConfig{'PEAR_DIR'},
 		PHP_TIMEZONE => $main::imscpConfig{'PHP_TIMEZONE'},
 		PHP_VERSION => $main::imscpConfig{'PHP_VERSION'},
@@ -389,9 +386,7 @@ sub buildHTTPDData
 		WEB_FOLDER_PROTECTION => $self->{'web_folder_protection'},
 		SSL_SUPPORT => $haveCert,
 		BWLIMIT => $self->{'domain_traffic_limit'},
-		IP_ON_DOMAIN => defined $self->{'domains_on_ip'}
-			? $self->{'domains_on_ip'}
-			: 0,
+		IP_ON_DOMAIN => defined $self->{'domains_on_ip'} ? $self->{'domains_on_ip'} : 0,
 		ALIAS => $userName,
 		FORWARD => 'no',
 		DISABLE_FUNCTIONS => (exists $phpiniData->{$self->{'domain_id'}})

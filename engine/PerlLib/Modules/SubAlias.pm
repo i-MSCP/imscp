@@ -144,15 +144,17 @@ sub process
 sub buildHTTPDData
 {
 	my $self = shift;
-	my $groupName =
-	my $userName =
-		$main::imscpConfig{'SYSTEM_USER_PREFIX'} .
-			($main::imscpConfig{'SYSTEM_USER_MIN_UID'} + $self->{'domain_admin_id'});
-	my $hDir = "$main::imscpConfig{'USER_WEB_DIR'}/$self->{'user_home'}/$self->{'subdomain_alias_mount'}";
 
-	# Remove double and trailing slashes
-	$hDir =~ s~/+~/~g;
-	$hDir =~ s~/$~~g;
+	my $groupName = my $userName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} .
+		($main::imscpConfig{'SYSTEM_USER_MIN_UID'} + $self->{'domain_admin_id'});
+
+	my $homeDir = "$main::imscpConfig{'USER_WEB_DIR'}/$self->{'user_home'}";
+	$homeDir =~ s~/+~/~g;
+	$homeDir =~ s~/$~~g;
+
+	my $webDir = "$homeDir/$self->{'subdomain_alias_mount'}";
+	$webDir =~ s~/+~/~g;
+	$webDir =~ s~/$~~g;
 
 	my $sql = "SELECT * FROM `config` WHERE `name` LIKE 'PHPINI%'";
 	my $rdata = iMSCP::Database->factory()->doQuery('name', $sql);
@@ -186,7 +188,8 @@ sub buildHTTPDData
 		ROOT_DOMAIN_NAME => $self->{'user_home'},
 		DOMAIN_IP => $self->{'ip_number'},
 		WWW_DIR => $main::imscpConfig{'USER_WEB_DIR'},
-		WEB_DIR => $hDir,
+		HOME_DIR => $homeDir,
+		WEB_DIR => $webDir,
 		MOUNT_POINT => $self->{'subdomain_alias_mount'},
 		PEAR_DIR => $main::imscpConfig{'PEAR_DIR'},
 		PHP_TIMEZONE => $main::imscpConfig{'PHP_TIMEZONE'},
