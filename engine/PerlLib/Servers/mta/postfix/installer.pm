@@ -548,6 +548,25 @@ sub buildMainCfFile
 	);
 	return 1 if ! defined $cfgTpl;
 
+	# Fix for #790
+	my ($stdout, $stderr);
+	execute('postconf -h mail_version', \$stdout, \$stderr);
+	debug($stdout) if $stdout;
+	error($stderr) if $stderr; # Only errors are sent to stderr even with 0 as exit code
+	return 1 if $stderr;
+
+	if(defined $stdout) {
+		chomp($stdout);
+		require version;
+
+		if(version->parse($stdout) >= version->parse('2.10.0')) {
+			$cfgTpl =~ s/smtpd_recipient_restrictions/smtpd_relay_restrictions =\n\nsmtpd_recipient_restrictions/;
+		}
+	} else {
+		error('Unable to find Postfix version');
+		return 1;
+	}
+
 	$rs = $self->{'hooksManager'}->trigger('afterMtaBuildMainCfFile', \$cfgTpl, 'main.cf');
 	return $rs if $rs;
 
