@@ -6,6 +6,7 @@ Git Master
 
 Tickets:
 	- Fixed #782: Bug - Notice: A non well formed numeric value encountered...
+	- Fixed #793: Bug - Autoinstaller/Setup - Admin user is getting new id in database
 
 ------------------------------------------------------------------------------------------------------------------------
 1.1.0-rc2.3

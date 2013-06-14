@@ -17,12 +17,12 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 #
-# @category		i-MSCP
-# @copyright	2010-2013 by i-MSCP | http://i-mscp.net
-# @author		Daniel Andreca <sci2tech@gmail.com>
-# @author		Laurent Declercq <l.declercq@nuxwin.com>
-# @link			http://i-mscp.net i-MSCP Home Site
-# @license		http://www.gnu.org/licenses/gpl-2.0.html GPL v2
+# @category    i-MSCP
+# @copyright   2010-2013 by i-MSCP | http://i-mscp.net
+# @author      Daniel Andreca <sci2tech@gmail.com>
+# @author      Laurent Declercq <l.declercq@nuxwin.com>
+# @link        http://i-mscp.net i-MSCP Home Site
+# @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
 use strict;
 use warnings;
@@ -394,8 +394,8 @@ sub setupAskServerIps
 
 				if(@networkCardList > 1) { # Do not ask about network card if not more than one is available
 					($rs, $networkCard) = $dialog->radiolist(
-                    	"\nPlease, select the network card on which you want to add the IP address:", @networkCardList
-                    );
+						"\nPlease, select the network card on which you want to add the IP address:", @networkCardList
+					);
 				} else {
 					$networkCard = pop(@networkCardList);
 				}
@@ -799,6 +799,7 @@ sub setupAskDefaultAdmin
 	if(setupGetQuestion('ADMIN_LOGIN_NAME', 'preseed')) {
 		$adminLoginName = setupGetQuestion('ADMIN_LOGIN_NAME', 'preseed');
 		$password = setupGetQuestion('ADMIN_PASSWORD', 'preseed');
+		$adminLoginName = '' if $password eq '';
 	} elsif($database) {
 		my $defaultAdmin = $database->doQuery(
 			'created_by',
@@ -806,15 +807,21 @@ sub setupAskDefaultAdmin
 				SELECT
 					`admin_name`, `created_by`
 				FROM
-					`admin` WHERE `created_by` = ? AND `admin_type` = ?
+					`admin` WHERE `created_by` = ?
+				AND
+					`admin_type` = ?
 				LIMIT
 					1
 			',
 			'0',
 			'admin'
 		);
+		unless(ref $defaultAdmin eq 'HASH') {
+			error($defaultAdmin);
+			return 1;
+		}
 
-		if(ref $defaultAdmin eq 'HASH' && %{$defaultAdmin}) {
+		if(%{$defaultAdmin}) {
 			$adminLoginName = $$defaultAdmin{'0'}->{'admin_name'};
 			$main::questions{'ADMIN_OLD_LOGIN_NAME'} = $adminLoginName;
 		}
@@ -837,6 +844,18 @@ sub setupAskDefaultAdmin
 				$adminLoginName !~ /^[a-z0-9](:?(?<![-_])(:?-*|[_.])?(?![-_])[a-z0-9]*)*?(?<![-_.])$/i
 			) {
 				$msg = '\n\n\\Z1Bad admin login name syntax or length.\\Zn\n\nPlease, try again:'
+			} elsif($database) {
+				my $rdata = $database->doQuery(
+					'admin_id',
+					'SELECT `admin_id` FROM `admin` WHERE `admin_name` = ? AND `created_by` <> 0 LIMIT 1',
+					$adminLoginName
+				);
+				unless(ref $rdata eq 'HASH') {
+					error($rdata);
+					return 1;
+				} elsif(%{$rdata}) {
+					$msg = '\n\n\\Z1This login name already exists.\\Zn\n\nPlease, try again:'
+				}
 			}
 		} while($rs != 30 &&  $msg);
 
@@ -956,11 +975,11 @@ sub setupAskSsl
 
 		if($rs) { # In preseed mode, will cause fatal error and it's expected
 			$rs = setupSslDialog($dialog);
-        	return $rs if $rs;
-        } else {
-        	$rs = $openSSL->ssl_export_all();
-        	return $rs if $rs;
-        }
+			return $rs if $rs;
+		} else {
+			$rs = $openSSL->ssl_export_all();
+			return $rs if $rs;
+		}
 	} elsif($sslEnabled eq 'yes') {
 		$openSSL->{'openssl_path'} = $cmdOpenSsl;
 		$openSSL->{'key_path'} = "$guiCertDir/$hostname.pem";
@@ -1694,17 +1713,17 @@ sub setupSecureSqlInstallation
 		}
 	}
 
-    # Remove test database if any
-    $errStr = $database->doQuery('dummy', 'DROP DATABASE `test`;');
-   	if(ref $errStr ne 'HASH'){
-    	debug("Unable to remove database test (not critical): $errStr"); # Not critical, keep moving...
-    }
+	# Remove test database if any
+	$errStr = $database->doQuery('dummy', 'DROP DATABASE `test`;');
+	if(ref $errStr ne 'HASH'){
+		debug("Unable to remove database test (not critical): $errStr"); # Not critical, keep moving...
+	}
 
-    # Remove privileges on test database
-    $errStr = $database->doQuery('dummy', "DELETE FROM `mysql`.`db` WHERE `Db` = 'test' OR `Db` = 'test\\_%';");
-   	if(ref $errStr ne 'HASH'){
-    	debug("Unable to remove privilege on test database (not critical): $errStr"); # Not critical, keep moving...
-    }
+	# Remove privileges on test database
+	$errStr = $database->doQuery('dummy', "DELETE FROM `mysql`.`db` WHERE `Db` = 'test' OR `Db` = 'test\\_%';");
+	if(ref $errStr ne 'HASH'){
+		debug("Unable to remove privilege on test database (not critical): $errStr"); # Not critical, keep moving...
+	}
 
 	# Disallow remote root login
 	if($main::imscpConfig{'SQL_SERVER'} ne 'remote_server') {
@@ -1712,18 +1731,18 @@ sub setupSecureSqlInstallation
 			'dummy',
 			"DELETE FROM `mysql`.`user` WHERE `User` = 'root' AND `Host` NOT IN ('localhost', '127.0.0.1', '::1');"
 		);
-   		if(ref $errStr ne 'HASH'){
-    		error("Unable to remove remote root user: $errStr");
-    		return 1;
-    	}
-    }
+		if(ref $errStr ne 'HASH'){
+			error("Unable to remove remote root user: $errStr");
+			return 1;
+		}
+	}
 
 	# Reload privilege tables
-    $errStr = $database->doQuery('dummy', 'FLUSH PRIVILEGES;');
-   	if(ref $errStr ne 'HASH') {
-    	debug("Unable to reload privileges tables: $errStr");
-    	return 1;
-    }
+	$errStr = $database->doQuery('dummy', 'FLUSH PRIVILEGES;');
+	if(ref $errStr ne 'HASH') {
+		debug("Unable to reload privileges tables: $errStr");
+		return 1;
+	}
 
 	iMSCP::HooksManager->getInstance()->trigger('afterSetupSecureSqlInstallation');
 }
@@ -1742,7 +1761,6 @@ sub setupDefaultAdmin
 	return $rs if $rs;
 
 	if($adminLoginName && $adminPassword) {
-
 		$adminPassword = iMSCP::Crypt->getInstance()->crypt_md5_data($adminPassword);
 
 		my ($database, $errStr) = setupGetSqlConnect(setupGetQuestion('DATABASE_NAME'));
@@ -1752,61 +1770,52 @@ sub setupDefaultAdmin
 		}
 
 		my $rs = $database->doQuery(
-			'dummy', 'DELETE FROM `admin` WHERE `admin_name` = ? OR `admin_name` = ?',
-			$adminLoginName, $adminOldLoginName
+			'admin_name',
+			'SELECT `admin_id`, `admin_name` FROM `admin` WHERE `admin_name` = ? LIMIT 1',
+			$adminOldLoginName
 		);
-		return $rs if ref $rs ne 'HASH';
+		unless(ref $rs eq 'HASH') {
+			error($rs);
+			return 1;
+		}
 
-		$rs = $database->doQuery(
-			'dummy',
-			'
-				INSERT INTO `admin` (
-					`admin_name`, `admin_pass`, `admin_type`, `email`
-				) VALUES (
-					?, ?, ?, ?
-				)
-			',
-			$adminLoginName, $adminPassword, 'admin', $adminEmail
-		);
-		return $rs if ref $rs ne 'HASH';
+		if(! %{$rs}) {
+			$rs = $database->doQuery(
+				'dummy',
+				'INSERT INTO `admin` (`admin_name`, `admin_pass`, `admin_type`, `email`) VALUES (?, ?, ?, ?)',
+				$adminLoginName, $adminPassword, 'admin', $adminEmail
+			);
+			unless(ref $rs eq 'HASH') {
+				error($rs);
+				return 1;
+			}
 
-		$rs = $database->doQuery('admin_id', 'SELECT `admin_id` FROM `admin` WHERE `admin_type` = ?', 'reseller');
-		return $rs if ref $rs ne 'HASH';
-
-		if(%{$rs}) {
 			$rs = $database->doQuery(
 				'dummy',
 				'
-					UPDATE
-						`admin` SET `created_by` = LAST_INSERT_ID()
-					WHERE
-						`admin_type` = ?
-					AND
-						`created_by` NOT IN (' . join(',', keys %{$rs}) . ')
+					INSERT IGNORE INTO `user_gui_props` (
+						`user_id`, `lang`, `layout`, `layout_color`, `logo`, `show_main_menu_labels`
+					) VALUES (
+						LAST_INSERT_ID(), ?, ?, ?, ?, ?
+					)
 				',
-				'reseller'
+				'en_GB', 'default', 'black', '', '1'
 			);
-			return $rs if ref $rs ne 'HASH';
+			unless(ref $rs eq 'HASH') {
+				error($rs);
+				return 1;
+			}
+		} else {
+			$rs = $database->doQuery(
+				'dummy',
+				'UPDATE `admin` SET `admin_name` = ? , `admin_pass` = ?, `email` = ? WHERE `admin_id` = ?',
+				$adminLoginName, $adminPassword, $adminEmail, $rs->{$adminOldLoginName}->{'admin_id'}
+			);
+			unless(ref $rs eq 'HASH') {
+				error($rs);
+				return 1;
+			}
 		}
-
-		$rs = $database->doQuery(
-			'dummy',
-			'
-				INSERT IGNORE INTO `user_gui_props` (
-					`user_id`, `lang`, `layout`, `layout_color`, `logo`, `show_main_menu_labels`
-				) VALUES (
-					LAST_INSERT_ID(), ?, ?, ?, ?, ?
-				)
-			',
-			'en_GB', 'default', 'black', '', '1'
-		);
-		return $rs if ref $rs ne 'HASH';
-
-		# Remove any orphaned user properties
-		$rs = $database->doQuery(
-			'dummy', 'DELETE FROM `user_gui_props` WHERE `user_id` NOT IN (SELECT `admin_id` FROM `admin`)'
-		);
-		return $rs if ref $rs ne 'HASH';
 	}
 
 	iMSCP::HooksManager->getInstance()->trigger('afterSetupDefaultAdmin');
@@ -1985,7 +1994,7 @@ sub setupSetPermissions
 	}
 
 	$main::imscpConfig{'BACKTRACE'} = $backtrace;
-    $main::imscpConfig{'DEBUG'} = $debug;
+	$main::imscpConfig{'DEBUG'} = $debug;
 
 	iMSCP::HooksManager->getInstance()->trigger('afterSetupSetPermissions');
 }
