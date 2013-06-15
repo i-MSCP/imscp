@@ -339,9 +339,13 @@ sub buildADDONData
 	my $self = shift;
 
 	my $groupName = my $userName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} .
-	($main::imscpConfig{'SYSTEM_USER_MIN_UID'} + $self->{'domain_admin_id'});
+		($main::imscpConfig{'SYSTEM_USER_MIN_UID'} + $self->{'domain_admin_id'});
 
-	my $webDir = "$main::imscpConfig{'USER_WEB_DIR'}/$self->{'user_home'}/$self->{'alias_mount'}";
+	my $homeDir = "$main::imscpConfig{'USER_WEB_DIR'}/$self->{'user_home'}";
+	$homeDir =~ s~/+~/~g;
+	$homeDir =~ s~/$~~g;
+
+	my $webDir = "$homeDir/$self->{'user_home'}/$self->{'alias_mount'}";
 	$webDir =~ s~/+~/~g;
 	$webDir =~ s~/$~~g;
 
@@ -349,6 +353,7 @@ sub buildADDONData
 		DOMAIN_NAME => $self->{'alias_name'},
 		USER => $userName,
 		GROUP => $groupName,
+		HOME_DIR => $homeDir,
 		WEB_DIR => $webDir,
 		WEB_FOLDER_PROTECTION => $self->{'web_folder_protection'}
 	};

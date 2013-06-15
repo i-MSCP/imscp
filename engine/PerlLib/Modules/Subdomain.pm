@@ -321,15 +321,6 @@ sub buildNAMEDData
 	0;
 }
 
-sub buildADDONData
-{
-	my $self = shift;
-
-	$self->{'AddonsData'} = {};
-
-	0;
-}
-
 sub testCert
 {
 	my $self = shift;

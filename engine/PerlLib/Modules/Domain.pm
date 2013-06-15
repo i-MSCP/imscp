@@ -338,8 +338,6 @@ sub buildHTTPDData
 	$homeDir =~ s~/+~/~g;
 	$homeDir =~ s~/$~~g;
 
-	my $webDir = $homeDir;
-
 	my $sql = "SELECT * FROM `config` WHERE `name` LIKE 'PHPINI%'";
 	my $rdata = iMSCP::Database->factory()->doQuery('name', $sql);
 	if(ref $rdata ne 'HASH') {
@@ -372,7 +370,7 @@ sub buildHTTPDData
 		DOMAIN_IP => $self->{'ip_number'},
 		WWW_DIR => $main::imscpConfig{'USER_WEB_DIR'},
 		HOME_DIR => $homeDir,
-		WEB_DIR => $webDir,
+		WEB_DIR => $homeDir,
 		MOUNT_POINT => '/',
 		PEAR_DIR => $main::imscpConfig{'PEAR_DIR'},
 		PHP_TIMEZONE => $main::imscpConfig{'PHP_TIMEZONE'},
@@ -513,15 +511,16 @@ sub buildADDONData
 	my $groupName = my $userName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} .
 		($main::imscpConfig{'SYSTEM_USER_MIN_UID'} + $self->{'domain_admin_id'});
 
-	my $webDir = "$main::imscpConfig{'USER_WEB_DIR'}/$self->{'domain_name'}";
-	$webDir =~ s~/+~/~g;
-	$webDir =~ s~/$~~g;
+	my $homeDir = "$main::imscpConfig{'USER_WEB_DIR'}/$self->{'domain_name'}";
+	$homeDir =~ s~/+~/~g;
+	$homeDir =~ s~/$~~g;
 
 	$self->{'AddonsData'} = {
 		DOMAIN_NAME => $self->{'domain_name'},
 		USER => $userName,
 		GROUP => $groupName,
-		WEB_DIR => $webDir,
+		HOME_DIR => $homeDir,
+		WEB_DIR => $homeDir,
 		WEB_FOLDER_PROTECTION => $self->{'web_folder_protection'}
 	};
 

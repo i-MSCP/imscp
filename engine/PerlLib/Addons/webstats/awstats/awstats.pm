@@ -23,11 +23,11 @@ Addons::webstats::awstats::awstats - i-MSCP Awstats addon
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
-# @category		i-MSCP
-# @copyright	2010-2013 by i-MSCP | http://i-mscp.net
-# @author		Laurent Declercq <l.declercq@nuxwin.com>
-# @link			http://i-mscp.net i-MSCP Home Site
-# @license		http://www.gnu.org/licenses/gpl-2.0.html GPL v2
+# @category    i-MSCP
+# @copyright   2010-2013 by i-MSCP | http://i-mscp.net
+# @author      Laurent Declercq <l.declercq@nuxwin.com>
+# @link        http://i-mscp.net i-MSCP Home Site
+# @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
 package Addons::webstats::awstats::awstats;
 
@@ -91,17 +91,13 @@ sub addDmn
 	my $rs = $self->_addAwstatsConfig($data);
 	return $rs if $rs;
 
-	my $userStatisticsDir = "$data->{'WEB_DIR'}/statistics";
+	my $userStatisticsDir = "$data->{'HOME_DIR'}/statistics";
 
-	# Unprotect Web directory against deletion
-	$rs = clearImmutable($data->{'WEB_DIR'});
+	# Unprotect home directory
+	$rs = clearImmutable($data->{'HOME_DIR'});
 	return $rs if $rs;
 
 	if($main::imscpConfig{'AWSTATS_MODE'} eq '1') { # Static mode
-		require Servers::httpd;
-		my $httpd = Servers::httpd->factory();
-		my $httpdGname = $httpd->getRunningGroup();
-
 		# Create statistics directory if doesn't not exist - Set its permissions, owner and group
 		$rs = iMSCP::Dir->new(
 			'dirname' => $userStatisticsDir
@@ -145,8 +141,8 @@ sub addDmn
 		$rs = iMSCP::Dir->new('dirname' => $userStatisticsDir)->remove() if -d $userStatisticsDir;
 	}
 
-	# Protect home directory against deletion
-	$rs = setImmutable($data->{'WEB_DIR'}) if $data->{'WEB_FOLDER_PROTECTION'} eq 'yes';
+	# Protect home directory if needed
+	$rs = setImmutable($data->{'HOME_DIR'}) if $data->{'WEB_FOLDER_PROTECTION'} eq 'yes';
 	return $rs if $rs;
 
 	$rs;
@@ -168,7 +164,6 @@ sub delDmn
 
 	my $cfgFileName = "$main::imscpConfig{'AWSTATS_CONFIG_DIR'}/awstats.$data->{'DOMAIN_NAME'}.conf";
 	my $wrkFileName = "$self->{'wrkDir'}/awstats.$data->{'DOMAIN_NAME'}.conf";
-	my $awstatsCacheDir = $main::imscpConfig{'AWSTATS_CACHE_DIR'};
 
 	my $rs = iMSCP::File->new('filename' => $cfgFileName)->delFile() if -f $cfgFileName;
 	return $rs if $rs;
@@ -176,12 +171,32 @@ sub delDmn
 	$rs = iMSCP::File->new('filename' => $wrkFileName)->delFile() if -f $wrkFileName;
 	return $rs if $rs;
 
-	# Remove Awstats cache file if any
+	# Remove Awstats static HTML files if any
+	if($main::imscpConfig{'AWSTATS_MODE'} eq '1') { # Static mode
+		my $userStatisticsDir = "$data->{'HOME_DIR'}/statistics";
+
+		if(-d $userStatisticsDir) {
+			my @awstatsStaticFiles = iMSCP::Dir->new(
+				'dirname' => $userStatisticsDir, 'fileType' => '.html'
+			)->getFiles();
+
+			for(@awstatsStaticFiles) {
+				if(/^awstats\.$data->{'DOMAIN_NAME'}\./) {
+					$rs = iMSCP::File->new('filename' => "$userStatisticsDir/$_")->delFile();
+					return $rs if $rs;
+				}
+			}
+		}
+	}
+
+	# Remove Awstats cache files if any
+	my $awstatsCacheDir = $main::imscpConfig{'AWSTATS_CACHE_DIR'};
+
 	if(-d $awstatsCacheDir) {
 		my @awstatsCacheFiles = iMSCP::Dir->new('dirname' => $awstatsCacheDir, 'fileType' => '.txt')->getFiles();
 
 		for(@awstatsCacheFiles) {
-			$rs = iMSCP::File->new('filename' => "$awstatsCacheDir/$_")->delFile() if /$data->{'DOMAIN_NAME'}.txt$/;
+			$rs = iMSCP::File->new('filename' => "$awstatsCacheDir/$_")->delFile() if /$data->{'DOMAIN_NAME'}\.txt$/;
 			return $rs if $rs;
 		}
 	}
@@ -279,8 +294,8 @@ sub _getApacheConfSnippet
 	if($main::imscpConfig{'AWSTATS_MODE'}) { # static mode
 		return <<EOF;
     Alias /awstatsicons "{AWSTATS_WEB_DIR}/icon/"
-    Alias /{WEBSTATS_RPATH} "{WEB_DIR}/statistics/"
-    <Directory "{WEB_DIR}/statistics">
+    Alias /{WEBSTATS_RPATH} "{HOME_DIR}/statistics/"
+    <Directory "{HOME_DIR}/statistics">
         AllowOverride AuthConfig
         DirectoryIndex awstats.{DOMAIN_NAME}.html
         Order allow,deny
@@ -413,7 +428,7 @@ sub _addAwstatsCronTask
 				"umask 027; perl $main::imscpConfig{'AWSTATS_ROOT_DIR'}/awstats_buildstaticpages.pl " .
 				"-config=$data->{'DOMAIN_NAME'} -update " .
 				"-awstatsprog=$main::imscpConfig{'AWSTATS_ENGINE_DIR'}/awstats.pl " .
-				"-dir=$data->{'WEB_DIR'}/statistics >/dev/null 2>&1"
+				"-dir=$data->{'HOME_DIR'}/statistics >/dev/null 2>&1"
 		}
 	);
 }
