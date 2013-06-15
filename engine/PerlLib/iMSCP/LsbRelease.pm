@@ -265,8 +265,8 @@ my $RELEASE_CODENAME_LOOKUP = {
 	'4.0' => 'etch',
 	'5.0' => 'lenny',
 	'6.0' => 'squeeze',
-	'7.0' => 'wheezy',
-	'8.0' => 'jessie'
+	'7' => 'wheezy',
+	'8' => 'jessie'
 };
 
 sub _lookupCodename($$)
@@ -277,7 +277,13 @@ sub _lookupCodename($$)
 
 	return $unknown if $release !~ /(\d+)\.(\d+)(r(\d+))?/;
 
-	my $shortRelease = sprintf '%s.%s', $1, $2;
+	my $shortRelease;
+
+	if($1 < 7) {
+		$shortRelease = sprintf '%s.%s', $1, $2;
+	} else {
+		$shortRelease = sprintf '%s', $1;
+	}
 
 	$$RELEASE_CODENAME_LOOKUP{$shortRelease} ? $$RELEASE_CODENAME_LOOKUP{$shortRelease} : $unknown;
 }
