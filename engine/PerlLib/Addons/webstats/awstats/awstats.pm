@@ -102,11 +102,11 @@ sub addDmn
 		my $httpd = Servers::httpd->factory();
 		my $httpdGname = $httpd->getRunningGroup();
 
-		# Set user statistics directory permissions, owner and group
+		# Create statistics directory if doesn't not exist - Set its permissions, owner and group
 		$rs = iMSCP::Dir->new(
 			'dirname' => $userStatisticsDir
 		)->make(
-			{ 'mode' => 02750, 'user' => $main::imscpConfig{'ROOT_USER'}, 'group' => $httpdGname }
+			{ 'mode' => 02750, 'user' => $main::imscpConfig{'ROOT_USER'}, 'group' => $data->{'GROUP'} }
 		);
 		return $rs if $rs;
 
@@ -118,9 +118,9 @@ sub addDmn
 			$userStatisticsDir,
 			{
 				'filemode' => '0640',
-				'recursive' => 1,
 				'user' => $main::imscpConfig{'ROOT_USER'},
-				'group' => $httpdGname
+				'group' => $data->{'GROUP'},
+				'recursive' => 1
 			}
 		);
 		return $rs if $rs;
@@ -131,7 +131,7 @@ sub addDmn
 		# Schedule static pages generation to avoid empty statistics directory
 		my ($stdout, $stderr);
 		$rs = execute(
-			"umask 022; $main::imscpConfig{'CMD_ECHO'} " .
+			"umask 027; $main::imscpConfig{'CMD_ECHO'} " .
 			"'perl $main::imscpConfig{'AWSTATS_ROOT_DIR'}/awstats_buildstaticpages.pl -config=$data->{'DOMAIN_NAME'} " .
 			"-update -awstatsprog=$main::imscpConfig{'AWSTATS_ENGINE_DIR'}/awstats.pl -dir=$userStatisticsDir' " .
 			 "| $main::imscpConfig{'CMD_BATCH'}",
@@ -168,7 +168,6 @@ sub delDmn
 
 	my $cfgFileName = "$main::imscpConfig{'AWSTATS_CONFIG_DIR'}/awstats.$data->{'DOMAIN_NAME'}.conf";
 	my $wrkFileName = "$self->{'wrkDir'}/awstats.$data->{'DOMAIN_NAME'}.conf";
-	my $userStatisticsDir = "$data->{'WEB_DIR'}/statistics";
 	my $awstatsCacheDir = $main::imscpConfig{'AWSTATS_CACHE_DIR'};
 
 	my $rs = iMSCP::File->new('filename' => $cfgFileName)->delFile() if -f $cfgFileName;
@@ -177,23 +176,14 @@ sub delDmn
 	$rs = iMSCP::File->new('filename' => $wrkFileName)->delFile() if -f $wrkFileName;
 	return $rs if $rs;
 
-	# Unprotect Web directory against deletion
-    #my $rs = clearImmutable($data->{'WEB_DIR'});
-    #return $rs if $rs;
-	#$rs = iMSCP::Dir->new('dirname' => $userStatisticsDir)->remove() if -d $userStatisticsDir;
-	#return $rs if $rs;
-	# Protect Web directory against deletion
-    #my $rs = setImmutable($data->{'WEB_DIR'});
-    #return $rs if $rs;
+	# Remove Awstats cache file if any
+	if(-d $awstatsCacheDir) {
+		my @awstatsCacheFiles = iMSCP::Dir->new('dirname' => $awstatsCacheDir, 'fileType' => '.txt')->getFiles();
 
-	# Remove any Awstats cache file
-	my @awstatsCacheFiles = iMSCP::Dir->new(
-		'dirname' => $awstatsCacheDir, 'fileType' => '.txt'
-	)->getFiles();
-
-	for(@awstatsCacheFiles) {
-		$rs = iMSCP::File->new('filename' => "$awstatsCacheDir/$_")->delFile() if /$data->{'DOMAIN_NAME'}.txt$/;
-		return $rs if $rs;
+		for(@awstatsCacheFiles) {
+			$rs = iMSCP::File->new('filename' => "$awstatsCacheDir/$_")->delFile() if /$data->{'DOMAIN_NAME'}.txt$/;
+			return $rs if $rs;
+		}
 	}
 
 	$self->_delAwstatsCronTask($data);
@@ -230,8 +220,8 @@ sub _init
  Add Apache configuration snippet for Awstats in the given domain vhost template file.
 
  Filter hook function responsible to build and insert Apache configuration snipped for Awstats in the given domain vhost
- template file. The type of configuration snippet inserted depends on the Awstats mode (dynamic or static). If the file
- received is not the one expected, this function will auto-register itself to act on the next file.
+ file. The type of configuration snippet inserted depends on the Awstats mode (dynamic or static). If the received file
+ is not the one expected, this function will register itself on the hooks manager to act on the next file.
 
  Param SCALAR reference - A scalar reference containing file content
  Param SCALAR Filename
@@ -286,7 +276,7 @@ sub _getApacheConfSnippet
 {
 	my $self = shift;
 
-	if($main::imscpConfig{'AWSTATS_MODE'}) { # static
+	if($main::imscpConfig{'AWSTATS_MODE'}) { # static mode
 		return <<EOF;
     Alias /awstatsicons "{AWSTATS_WEB_DIR}/icon/"
     Alias /{WEBSTATS_RPATH} "{WEB_DIR}/statistics/"
@@ -304,7 +294,7 @@ sub _getApacheConfSnippet
         Require group {WEBSTATS_GROUP_AUTH}
     </Location>
 EOF
-	} else { # Dynamic
+	} else { # Dynamic mode
 		return <<EOF;
     ProxyRequests Off
     <Proxy *>
@@ -342,13 +332,13 @@ sub _addAwstatsConfig
 	my $self = shift;
 	my $data = shift;
 
-	my $tplFile	= "$self->{'tplDir'}/awstats.imscp_tpl.conf";
-	my $cfgFileName	= "awstats.$data->{'DOMAIN_NAME'}.conf";
-	my $bkpFile	= "$self->{'bkpDir'}/$cfgFileName";
-	my $cfgFile	= "$main::imscpConfig{'AWSTATS_CONFIG_DIR'}/$cfgFileName";
-	my $wrkFile	= "$self->{'wrkDir'}/$cfgFileName";
+	my $tplFile = "$self->{'tplDir'}/awstats.imscp_tpl.conf";
+	my $cfgFileName = "awstats.$data->{'DOMAIN_NAME'}.conf";
+	my $bkpFile = "$self->{'bkpDir'}/$cfgFileName";
+	my $cfgFile = "$main::imscpConfig{'AWSTATS_CONFIG_DIR'}/$cfgFileName";
+	my $wrkFile = "$self->{'wrkDir'}/$cfgFileName";
 
-	# Saving current working file if it exists
+	# Save current working file if any
 	my $rs = iMSCP::File->new('filename' => $wrkFile)->copyFile("$bkpFile." . time) if -f $wrkFile;
 	return $rs if $rs;
 
@@ -369,7 +359,6 @@ sub _addAwstatsConfig
 	$cfgFileContent = process($tags, $cfgFileContent);
 
 	require Servers::httpd;
-
 	$cfgFileContent = Servers::httpd->factory()->buildConf($cfgFileContent);
 
 	unless(defined $cfgFileContent) {
@@ -411,9 +400,9 @@ sub _addAwstatsCronTask
 	my $data = shift;
 
 	require Servers::cron;
-
 	Servers::cron->factory()->addTask(
 		{
+			TASKID => "AWSTATS:$data->{'DOMAIN_NAME'}",
 			MINUTE => int(rand(60)), # random number between 0..59
 			HOUR => int(rand(6)), # random number between 0..5
 			DAY => '*',
@@ -421,11 +410,10 @@ sub _addAwstatsCronTask
 			DWEEK => '*',
 			USER => $main::imscpConfig{'ROOT_USER'},
 			COMMAND =>
-				"perl $main::imscpConfig{'AWSTATS_ROOT_DIR'}/awstats_buildstaticpages.pl " .
+				"umask 027; perl $main::imscpConfig{'AWSTATS_ROOT_DIR'}/awstats_buildstaticpages.pl " .
 				"-config=$data->{'DOMAIN_NAME'} -update " .
 				"-awstatsprog=$main::imscpConfig{'AWSTATS_ENGINE_DIR'}/awstats.pl " .
-				"-dir=$data->{'WEB_DIR'}/statistics/ >/dev/null 2>&1",
-			TASKID	=> "AWSTATS:$data->{'DOMAIN_NAME'}"
+				"-dir=$data->{'WEB_DIR'}/statistics >/dev/null 2>&1"
 		}
 	);
 }
@@ -445,7 +433,6 @@ sub _delAwstatsCronTask
 	my $data = shift;
 
 	require Servers::cron;
-
 	Servers::cron->factory()->delTask({ 'TASKID' => "AWSTATS:$data->{'DOMAIN_NAME'}" });
 }
 

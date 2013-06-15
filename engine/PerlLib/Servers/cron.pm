@@ -17,11 +17,11 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 #
-# @category		i-MSCP
-# @copyright	2010-2013 by i-MSCP | http://i-mscp.net
-# @author		Daniel Andreca <sci2tech@gmail.com>
-# @link			http://i-mscp.net i-MSCP Home Site
-# @license		http://www.gnu.org/licenses/gpl-2.0.html GPL v2
+# @category    i-MSCP
+# @copyright   2010-2013 by i-MSCP | http://i-mscp.net
+# @author      Daniel Andreca <sci2tech@gmail.com>
+# @link        http://i-mscp.net i-MSCP Home Site
+# @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
 package Servers::cron;
 
@@ -66,7 +66,7 @@ sub addTask
 	my $self = shift;
 	my $data = shift;
 
-	$data = {} if ref $data ne 'HASH';
+	$data = {} unless ref $data eq 'HASH';
 
 	my $rs = $self->{'hooksManager'}->trigger('beforeCronAddTask', $data);
 	return $rs if $rs;
@@ -76,7 +76,13 @@ sub addTask
 	$data->{'DAY'} = 1 unless exists $data->{'DAY'};
 	$data->{'MONTH'} = 1 unless exists $data->{'MONTH'};
 	$data->{'DWEEK'} = 1 unless exists $data->{'DWEEK'};
+	$data->{'USER'} = $main::imscpConfig{'ROOT_USER'} unless exists $data->{'USER'};
 	$data->{'LOG_DIR'} = $main::imscpConfig{'LOG_DIR'};
+
+	unless(exists $data->{'COMMAND'} && exists $data->{'TASKID'}) {
+		error('Missing command or task ID');
+		return 1;
+	}
 
 	# Backup production file
 	$rs = iMSCP::File->new(
@@ -86,16 +92,16 @@ sub addTask
 	) if -f "$main::imscpConfig{'CRON_D_DIR'}/imscp";
 	return $rs if $rs;
 
-	my $file = iMSCP::File->new('filename' => "$self->{wrkDir}/imscp");
+	my $file = iMSCP::File->new('filename' => "$self->{'wrkDir'}/imscp");
 	my $wrkFileContent = $file->get();
 
 	unless(defined $wrkFileContent){
-		error("Cannot read $self->{'wrkDir'}/imscp");
+		error("Unable to read $self->{'wrkDir'}/imscp");
 		return 1;
 	} else {
-		my $cleanBTag = iMSCP::File->new(filename => "$self->{'tplDir'}/task_b.tpl")->get();
-		my $cleanTag = iMSCP::File->new(filename => "$self->{'tplDir'}/task_entry.tpl")->get();
-		my $cleanETag = iMSCP::File->new(filename => "$self->{'tplDir'}/task_e.tpl")->get();
+		my $cleanBTag = iMSCP::File->new('filename' => "$self->{'tplDir'}/task_b.tpl")->get();
+		my $cleanTag = iMSCP::File->new('filename' => "$self->{'tplDir'}/task_entry.tpl")->get();
+		my $cleanETag = iMSCP::File->new('filename' => "$self->{'tplDir'}/task_e.tpl")->get();
 		my $bTag = process({ TASKID => $data->{'TASKID'} }, $cleanBTag);
 		my $eTag = process({ TASKID => $data->{'TASKID'} }, $cleanETag);
 		my $tag = process($data, $cleanTag);
@@ -131,10 +137,15 @@ sub delTask
 	my $self = shift;
 	my $data = shift;
 
-	$data = {} if (ref $data ne 'HASH');
+	$data = {} unless ref $data eq 'HASH';
 
 	my $rs = $self->{'hooksManager'}->trigger('beforeCronDelTask', $data);
     return $rs if $rs;
+
+	unless(exists $data->{'TASKID'}) {
+		error('Missing task ID');
+		return 1;
+	}
 
 	# Backup production file
 	$rs = iMSCP::File->new(
@@ -148,7 +159,7 @@ sub delTask
 	my $wrkFileContent = $file->get();
 
 	unless(defined $wrkFileContent){
-		error("Cannot read $self->{'wrkDir'}/imscp");
+		error("Unable to read $self->{'wrkDir'}/imscp");
 		return 1;
 	} else {
 		my $cleanBTag = iMSCP::File->new('filename' => "$self->{'tplDir'}/task_b.tpl")->get();

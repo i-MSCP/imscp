@@ -176,8 +176,8 @@ sub runAllActions
 	my $self = shift;
 	my $rs = 0;
 
-	@{$self->{'Addons'}} = iMSCP::Addons->getInstance()->get();
 	@{$self->{'Servers'}} = iMSCP::Servers->getInstance()->get();
+	@{$self->{'Addons'}} = iMSCP::Addons->getInstance()->get();
 
 	# Build service/addon data if provided by the module
 	for(@{$self->{'Servers'}}, 'Addon') {
@@ -242,7 +242,7 @@ sub runAction
  Build HTTPD data.
 
  This method should be implemented by any module that provides data for HTTPD service.
- Resulting data must be stored in an anonymous array accessible through the 'httpd' attribute.
+ Resulting data must be stored in an anonymous hash accessible through the 'httpd' attribute.
 
  return int - 0 on success, other on failure
 
@@ -258,7 +258,7 @@ sub buildHTTPDData
  Build MTA data.
 
  This method should be implemented by any module that provides data for MTA service.
- Resulting data must be stored in an anonymous array accessible through the 'mta' attribute.
+ Resulting data must be stored in an anonymous hash accessible through the 'mta' attribute.
 
  return int - 0 on success, other on failure
 
@@ -274,7 +274,7 @@ sub buildMTAData
  Build PO data.
 
  This method should be implemented by any module that provides data for PO service.
- Resulting data must be stored in an anonymous array accessible through the 'po' attribute.
+ Resulting data must be stored in an anonymous hash accessible through the 'po' attribute.
 
  return int - 0 on success, other on failure
 
@@ -290,7 +290,7 @@ sub buildPOData
  Build NAMED data.
 
  This method should be implemented by any module that provides data for NAMED service.
- Resulting data must be stored in an anonymous array accessible through the 'named' attribute.
+ Resulting data must be stored in an anonymous hash accessible through the 'named' attribute.
 
  return int - 0 on success, other on failure
 
@@ -306,7 +306,7 @@ sub buildNAMEDData
  Build FTPD data.
 
  This method should be implemented by any module that provides data for FTPD service.
- Resulting data must be stored in an anonymous array accessible through the 'ftpd' attribute.
+ Resulting data must be stored in an anonymous hash accessible through the 'ftpd' attribute.
 
  return int - 0 on success, other on failure
 
@@ -322,7 +322,7 @@ sub buildFTPDData
  Build CRON data.
 
  This method should be implemented by any module that provides data for CRON service.
- Resulting data must be stored in an anonymous array accessible through the 'cron' attribute.
+ Resulting data must be stored in an anonymous hash accessible through the 'cron' attribute.
 
  return int - 0 on success, other on failure
 
@@ -338,7 +338,7 @@ sub buildCRONData
  Build ADDON data.
 
  This method should be implemented by any module that provides data for i-MSCP Addonss.
- Resulting data must be stored in an anonymous array accessible through the 'AddonsData' attribute.
+ Resulting data must be stored in an anonymous hash accessible through the 'AddonsData' attribute.
 
  return int - 0 on success, other on failure
 
