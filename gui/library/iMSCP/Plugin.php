@@ -17,14 +17,13 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
- * @category	iMSCP
- * @package		iMSCP_Core
- * @subpackage	Plugin
- * @copyright	2010-2013 by i-MSCP Team
- * @author		Laurent Declercq <l.declercq@nuxwin.com>
- * @version		0.0.1
- * @link		http://www.i-mscp.net i-MSCP Home Site
- * @license		http://www.gnu.org/licenses/gpl-2.0.html GPL v2
+ * @category    iMSCP
+ * @package     iMSCP_Core
+ * @subpackage  Plugin
+ * @copyright   2010-2013 by i-MSCP Team
+ * @author      Laurent Declercq <l.declercq@nuxwin.com>
+ * @link        http://www.i-mscp.net i-MSCP Home Site
+ * @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
  */
 
 /**
@@ -33,11 +32,10 @@
  * Please, do not inherite from this class. Instead, inherite from the specialized classes localized into
  * gui/library/iMSCP/Plugin/
  *
- * @category	iMSCP
- * @package		iMSCP_Core
- * @subpackage	Plugin
- * @author		Laurent Declercq <l.declercq@nuxwin.com>
- * @version		0.0.4
+ * @category    iMSCP
+ * @package     iMSCP_Core
+ * @subpackage  Plugin
+ * @author      Laurent Declercq <l.declercq@nuxwin.com>
  */
 abstract class iMSCP_Plugin
 {

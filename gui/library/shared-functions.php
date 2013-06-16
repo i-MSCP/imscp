@@ -2301,3 +2301,26 @@ function showBadRequestErrorPage()
 
 	exit();
 }
+
+/**
+ * Show 404 error page
+ *
+ * @author Laurent Declercq <l.declercq@nuxwin.com>
+ * @throws iMSCP_Exception_Production in case the error page is not found
+ * @return void
+ */
+function showNotFoundErrorPage()
+{
+	/** @var $cfg iMSCP_Config_Handler_File */
+	$cfg = iMSCP_Registry::get('config');
+
+	$filePath = $cfg->GUI_ROOT_DIR . '/public/errordocs/404.html';
+
+	header("Status: 404 Not Found");
+
+	if(!is_xhr()) {
+		include $filePath;
+	}
+
+	exit();
+}
