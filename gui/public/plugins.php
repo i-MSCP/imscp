@@ -31,6 +31,8 @@
 // Include core library
 require_once 'imscp-lib.php';
 
+check_login();
+
 $plugins = iMSCP_Registry::get('PLUGINS');
 
 if(!empty($plugins)) {
