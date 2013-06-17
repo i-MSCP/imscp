@@ -61,8 +61,21 @@ sub engine
 {
 	my $rs = 0;
 
-	# Process add|change SSL certificates tasks
+	# Process plugins
+	# Should always be processed first to allow the plugins to register their hook functions on the hook manager
 	my $sql = "
+		SELECT
+			`plugin_id` AS `id`, `plugin_name` AS `name`, `plugin_status` AS `status`
+		FROM
+			`plugin`
+		WHERE
+			`plugin_status` IN ('enabled', 'install', 'uninstall')
+	";
+	$rs = _process('Plugin', $sql);
+	return $rs if $rs;
+
+	# Process add|change SSL certificates tasks
+	$sql = "
 		SELECT
 			`cert_id` AS `id`, `type` AS `name`, `status` AS `status`
 		FROM

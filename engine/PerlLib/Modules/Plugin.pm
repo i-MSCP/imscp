@@ -37,6 +37,7 @@ use warnings;
 use iMSCP::Debug;
 use iMSCP::Database;
 use iMSCP::HooksManager;
+use iMSCP::File;
 
 use parent 'Common::SimpleClass';
 
@@ -169,13 +170,13 @@ sub _executePlugin($$)
 	my $self = shift;
 	my $method = shift;
 
-	my $backendPluginsDir = "$main::imscpConfig{'ENGINE_ROOT_DIR'}/plugins";
+	my $backendPluginsDir = "$main::imscpConfig{'ENGINE_ROOT_DIR'}/Plugins";
 	my $rs = 0;
 
-	my $pluginFile = "$backendPluginsDir/$self->{'plugin_name'}";
+	my $pluginFile = "$backendPluginsDir/$self->{'plugin_name'}.pm";
 
-	if($method eq 'install' && ! -f $pluginFile)) {
-		my $guiPluginDir = "$main::imscpConfig{'GUI_ROOT_DIR'}/plugins"
+	if($method eq 'install') {
+		my $guiPluginDir = "$main::imscpConfig{'GUI_ROOT_DIR'}/plugins";
 
 		if(-f "$guiPluginDir/$self->{'plugin_name'}/backend/$self->{'plugin_name'}.pm") {
 			my $file = iMSCP::File->new(
@@ -197,7 +198,7 @@ sub _executePlugin($$)
 	$rs = $pluginClass->getInstance($self->{'hooksManager'})->$method();
 	return $rs if $rs;
 
-	if($method eq 'uninstall) {
+	if($method eq 'uninstall') {
 		my $file = iMSCP::File->new('filename' => $pluginFile);
 		$rs = $file->delFile();
 	}

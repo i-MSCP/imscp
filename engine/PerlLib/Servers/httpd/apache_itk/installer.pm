@@ -836,12 +836,18 @@ sub _fixPhpErrorReportingValues
 			"UPDATE `config` SET `value` = ? WHERE `name` = 'PHPINI_ERROR_REPORTING' AND `value` = ?",
 			$to, $from
 		);
+		unless(ref $rs eq 'HASH') {
+			error($rs);
+			return 1;
+		}
 
-		return 1 if ref $rs ne 'HASH';
-			$rs = $database->doQuery(
+		$rs = $database->doQuery(
 			'dummy', 'UPDATE `php_ini` SET `error_reporting` = ? WHERE `error_reporting` = ?', $to, $from
 		);
-		return 1 if ref $rs ne 'HASH';
+		unless(ref $rs eq 'HASH') {
+			error($rs);
+			return 1;
+		}
 	}
 
 	0;
