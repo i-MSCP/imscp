@@ -32,9 +32,15 @@
  * Script functions
  */
 
-function admin_pluginManagerTrStatus($rawStatus)
+/**
+ * Translate plugin status
+ *
+ * @param string $rawPluginStatus Raw plugin status
+ * @return string Translated plugin status
+ */
+function admin_pluginManagerTrStatus($rawPluginStatus)
 {
-	switch($rawStatus) {
+	switch($rawPluginStatus) {
 		case 'install':
 			return tr('Install in progress...');
 			break;
@@ -48,7 +54,7 @@ function admin_pluginManagerTrStatus($rawStatus)
 			return tr('Deactivated');
 			break;
 		default:
-			return tr('Unknown error: %s', $rawStatus);
+			return tr('Unknown error: %s', $rawPluginStatus);
 	}
 }
 
@@ -73,37 +79,37 @@ function admin_pluginManagerGeneratePluginList($tpl, $pluginManager)
 		$hasLoadedPlugins = false;
 
 		foreach ($pluginList as $pluginName) {
-			$plugin = $pluginManager->load('Action', $pluginName, false, true);
-			if (null === $plugin) continue;
-			$pluginInfo = $plugin->getInfo();
-			$tpl->assign(
-				array(
-					'PLUGIN_NAME' => tohtml($plugin->getName()),
-					'PLUGIN_DESCRIPTION' => tohtml($pluginInfo['desc']),
-					'PLUGIN_STATUS' => tohtml(admin_pluginManagerTrStatus($pluginManager->getStatus($pluginName))),
-					'PLUGIN_VERSION' => tohtml($pluginInfo['version']),
-					'PLUGIN_AUTHOR' => tohtml($pluginInfo['author']),
-					'PLUGIN_MAILTO' => tohtml($pluginInfo['email']),
-					'PLUGIN_SITE' => tohtml($pluginInfo['url'])
-				)
-			);
+			if (($plugin = $pluginManager->load('Action', $pluginName, false, false)) !== null) {
+				$pluginInfo = $plugin->getInfo();
+				$tpl->assign(
+					array(
+						'PLUGIN_NAME' => tohtml($plugin->getName()),
+						'PLUGIN_DESCRIPTION' => tohtml($pluginInfo['desc']),
+						'PLUGIN_STATUS' => tohtml(admin_pluginManagerTrStatus($pluginManager->getStatus($pluginName))),
+						'PLUGIN_VERSION' => tohtml($pluginInfo['version']),
+						'PLUGIN_AUTHOR' => tohtml($pluginInfo['author']),
+						'PLUGIN_MAILTO' => tohtml($pluginInfo['email']),
+						'PLUGIN_SITE' => tohtml($pluginInfo['url'])
+					)
+				);
 
-			if ($pluginManager->isProtected($pluginName)) {
-				$tpl->assign('PLUGIN_DEACTIVATE_LINK', '');
-				$tpl->assign('PLUGIN_ACTIVATE_LINK', $protectTooltip);
-			} elseif ($pluginManager->isActivated($pluginName)) {
-				$tpl->assign('PLUGIN_ACTIVATE_LINK', '');
-				$tpl->parse('PLUGIN_DEACTIVATE_LINK', 'plugin_deactivate_link');
-			} elseif ($pluginManager->isDeactivated($pluginName)) {
-				$tpl->assign('PLUGIN_DEACTIVATE_LINK', '');
-				$tpl->parse('PLUGIN_ACTIVATE_LINK', 'plugin_activate_link');
-			} else {
-				$tpl->assign('PLUGIN_DEACTIVATE_LINK', '');
-				$tpl->assign('PLUGIN_ACTIVATE_LINK', '');
+				if ($pluginManager->isProtected($pluginName)) {
+					$tpl->assign('PLUGIN_DEACTIVATE_LINK', '');
+					$tpl->assign('PLUGIN_ACTIVATE_LINK', $protectTooltip);
+				} elseif ($pluginManager->isActivated($pluginName)) {
+					$tpl->assign('PLUGIN_ACTIVATE_LINK', '');
+					$tpl->parse('PLUGIN_DEACTIVATE_LINK', 'plugin_deactivate_link');
+				} elseif ($pluginManager->isDeactivated($pluginName)) {
+					$tpl->assign('PLUGIN_DEACTIVATE_LINK', '');
+					$tpl->parse('PLUGIN_ACTIVATE_LINK', 'plugin_activate_link');
+				} else {
+					$tpl->assign('PLUGIN_DEACTIVATE_LINK', '');
+					$tpl->assign('PLUGIN_ACTIVATE_LINK', '');
+				}
+
+				$tpl->parse('PLUGIN_BLOCK', '.plugin_block');
+				$hasLoadedPlugins = true;
 			}
-
-			$tpl->parse('PLUGIN_BLOCK', '.plugin_block');
-			$hasLoadedPlugins = true;
 		}
 
 		if (!$hasLoadedPlugins) {

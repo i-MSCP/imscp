@@ -649,9 +649,9 @@ class iMSCP_Initializer
 
 			foreach ($pluginList as $pluginName) {
 				/** @var $plugin iMSCP_Plugin_Action */
-				$plugin = $pluginManager->load('Action', $pluginName);
-				if (null === $plugin) continue;
-				$plugin->register($eventManager);
+				if(($plugin = $pluginManager->load('Action', $pluginName)) !== null) {
+					$plugin->register($eventManager);
+				}
 			}
 		}
 

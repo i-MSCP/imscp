@@ -209,12 +209,12 @@ class iMSCP_Plugin_Manager
 	 * @param string $pluginType Type of plugin to load
 	 * @param string $pluginName Name of the plugin to load
 	 * @param bool $newInstance true to return a new instance of the plugin, false to use an already loaded instance
-	 * @param bool $loadDisabled true to load even disabled plugins
+	 * @param bool $loadEnabledOnly true to load only enabled plugins
 	 * @return null|iMSCP_Plugin
 	 */
-	public function load($pluginType, $pluginName, $newInstance = false, $loadDisabled = false)
+	public function load($pluginType, $pluginName, $newInstance = false, $loadEnabledOnly = true)
 	{
-		if (!$loadDisabled && $this->isDeactivated($pluginName)) {
+		if ($loadEnabledOnly && ! $this->isActivated($pluginName)) {
 			return null;
 		}
 
@@ -245,20 +245,26 @@ class iMSCP_Plugin_Manager
 	/**
 	 * Get status of given plugin
 	 *
+	 * @throws iMSCP_Plugin_Exception in case $pluginName is not known
 	 * @param string $pluginName Plugin name
 	 * @return string Plugin status
 	 */
 	public function getStatus($pluginName)
 	{
-		return $this->_plugins[$pluginName];
+		if(isset($this->_plugins[$pluginName])) {
+			return $this->_plugins[$pluginName];
+		} else {
+			throw new iMSCP_Plugin_Exception('Unknown plugin $pluginName');
+		}
 	}
 
 	/**
 	 * Set status of given plugin
 	 *
+	 * @throws iMSCP_Plugin_Exception in case $pluginName is not known
 	 * @param string $pluginName Plugin name
 	 * @param string $pluginStatus Plugin status
-	 * @return boolean TRUE on success, FALSE otherwise
+	 * @return void
 	 */
 	public function setStatus($pluginName, $pluginStatus)
 	{
@@ -266,11 +272,9 @@ class iMSCP_Plugin_Manager
 			exec_query(
 				"UPDATE `plugin` SET `plugin_status` = ? WHERE `plugin_name` = ?", array($pluginStatus, $pluginName)
 			);
-
-			return true;
+		} else {
+			throw new iMSCP_Plugin_Exception('Unknown plugin $pluginName');
 		}
-
-		return false;
 	}
 
 	/**
@@ -295,7 +299,7 @@ class iMSCP_Plugin_Manager
 		if (array_key_exists($pluginName, $this->_plugins)) {
 			if ($this->_plugins[$pluginName] == 'disabled') {
 				// TODO find plugin type dynamically
-				$pluginInstance = $this->load('Action', $pluginName, true, true);
+				$pluginInstance = $this->load('Action', $pluginName, true, false);
 
 				if($pluginInstance && is_callable(array($pluginInstance, 'install'))) {
 					$this->setStatus($pluginName, 'install');
@@ -335,7 +339,7 @@ class iMSCP_Plugin_Manager
 		if (array_key_exists($pluginName, $this->_plugins)) {
 			if ($this->_plugins[$pluginName] == 'enabled') {
 				// TODO find plugin type dynamically
-				$pluginInstance = $this->load('Action', $pluginName, true, true);
+				$pluginInstance = $this->load('Action', $pluginName, true, false);
 
 				if($pluginInstance && is_callable(array($pluginInstance, 'uninstall'))) {
 					$this->setStatus($pluginName, 'uninstall');
