@@ -52,6 +52,7 @@
 						<th style="width:21px;"><input type="checkbox"/></th>
 						<th style="width:200px">{TR_PLUGIN}</th>
 						<th>{TR_DESCRIPTION}</th>
+						<th>{TR_STATUS}</th>
 					</tr>
 					</thead>
 					<tfoot>
@@ -59,6 +60,7 @@
 						<th><input type="checkbox"/></th>
 						<th>{TR_PLUGIN}</th>
 						<th>{TR_DESCRIPTION}</th>
+						<th>{TR_STATUS}</th>
 					</tr>
 					</tfoot>
 					<tbody>
@@ -82,6 +84,7 @@
 								{TR_VERSION} {PLUGIN_VERSION} | <a href="mailto:{PLUGIN_MAILTO}">{TR_BY} {PLUGIN_AUTHOR}</a> | <a href="{PLUGIN_SITE}" target="_blank">{TR_VISIT_PLUGIN_SITE}</a>
 							</span>
 						</td>
+						<td>{PLUGIN_STATUS}</td>
 					</tr>
 					<!-- EDP: plugin_block -->
 					</tbody>

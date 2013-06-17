@@ -84,7 +84,7 @@ INSERT IGNORE INTO `config` (`name`, `value`) VALUES
 ('PREVENT_EXTERNAL_LOGIN_ADMIN', '1'),
 ('PREVENT_EXTERNAL_LOGIN_RESELLER', '1'),
 ('PREVENT_EXTERNAL_LOGIN_CLIENT', '1'),
-('DATABASE_REVISION', '137'),
+('DATABASE_REVISION', '138'),
 ('PHPINI_ALLOW_URL_FOPEN', 'off'),
 ('PHPINI_DISPLAY_ERRORS', 'off'),
 ('PHPINI_UPLOAD_MAX_FILESIZE', '10'),
@@ -428,7 +428,7 @@ CREATE TABLE IF NOT EXISTS `plugin` (
   `plugin_type` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
   `plugin_info` text COLLATE utf8_unicode_ci NOT NULL,
   `plugin_config` text COLLATE utf8_unicode_ci DEFAULT NULL,
-  `plugin_status` varchar(10) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'disabled',
+  `plugin_status` text COLLATE utf8_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`plugin_id`),
   UNIQUE KEY `name` (`plugin_name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;

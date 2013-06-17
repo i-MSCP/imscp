@@ -2044,4 +2044,20 @@ class iMSCP_Update_Database extends iMSCP_Update
 
 		return $sqlUpd;
 	}
+
+	/**
+	 * Update plugin.plugin_status column
+	 *
+	 * @author Laurent Declercq <l.declercq@nuxwin.com>
+	 * @return array SQL statement to be e executed
+	 */
+	protected function _databaseUpdate_138()
+	{
+		return '
+			ALTER TABLE
+				`plugin`
+			CHANGE
+				`plugin_status` `plugin_status` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL
+		';
+	}
 }

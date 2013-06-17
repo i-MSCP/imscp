@@ -17,21 +17,40 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
- * @category	iMSCP
- * @package		iMSCP_Core
- * @subpackage	Admin_Plugin
- * @copyright	2010-2013 by i-MSCP Team
- * @author		Laurent Declercq <l.declercq@nuxwin.com>
- * @version		0.0.1
- * @link		http://www.i-mscp.net i-MSCP Home Site
- * @license		http://www.gnu.org/licenses/gpl-2.0.html GPL v2
+ * @category    iMSCP
+ * @package     iMSCP_Core
+ * @subpackage  Admin_Plugin
+ * @copyright   2010-2013 by i-MSCP Team
+ * @author      Laurent Declercq <l.declercq@nuxwin.com>
+ * @link        http://www.i-mscp.net i-MSCP Home Site
+ * @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
  */
 
 // TODO datatable (Must fix layout issue before - table header + checkbox)
 
-/*******************************************************************************
+/***********************************************************************************************************************
  * Script functions
  */
+
+function admin_pluginManagerTrStatus($rawStatus)
+{
+	switch($rawStatus) {
+		case 'install':
+			return tr('Install in progress...');
+			break;
+		case 'uninstall':
+			return tr('Uninstall in progress...');
+			break;
+		case 'enabled':
+			return tr('Activated');
+			break;
+		case 'disabled':
+			return tr('Deactivated');
+			break;
+		default:
+			return tr('Unknown error: %s', $rawStatus);
+	}
+}
 
 /**
  * Generates plugins list from database.
@@ -61,6 +80,7 @@ function admin_pluginManagerGeneratePluginList($tpl, $pluginManager)
 				array(
 					'PLUGIN_NAME' => tohtml($plugin->getName()),
 					'PLUGIN_DESCRIPTION' => tohtml($pluginInfo['desc']),
+					'PLUGIN_STATUS' => tohtml(admin_pluginManagerTrStatus($pluginManager->getStatus($pluginName))),
 					'PLUGIN_VERSION' => tohtml($pluginInfo['version']),
 					'PLUGIN_AUTHOR' => tohtml($pluginInfo['author']),
 					'PLUGIN_MAILTO' => tohtml($pluginInfo['email']),
@@ -71,13 +91,15 @@ function admin_pluginManagerGeneratePluginList($tpl, $pluginManager)
 			if ($pluginManager->isProtected($pluginName)) {
 				$tpl->assign('PLUGIN_DEACTIVATE_LINK', '');
 				$tpl->assign('PLUGIN_ACTIVATE_LINK', $protectTooltip);
-
 			} elseif ($pluginManager->isActivated($pluginName)) {
 				$tpl->assign('PLUGIN_ACTIVATE_LINK', '');
 				$tpl->parse('PLUGIN_DEACTIVATE_LINK', 'plugin_deactivate_link');
 			} elseif ($pluginManager->isDeactivated($pluginName)) {
 				$tpl->assign('PLUGIN_DEACTIVATE_LINK', '');
 				$tpl->parse('PLUGIN_ACTIVATE_LINK', 'plugin_activate_link');
+			} else {
+				$tpl->assign('PLUGIN_DEACTIVATE_LINK', '');
+				$tpl->assign('PLUGIN_ACTIVATE_LINK', '');
 			}
 
 			$tpl->parse('PLUGIN_BLOCK', '.plugin_block');
@@ -139,7 +161,7 @@ function admin_pluginManagerDoBulkAction($pluginManager)
 	}
 }
 
-/*******************************************************************************
+/***********************************************************************************************************************
  * Main script
  */
 
@@ -263,6 +285,7 @@ $tpl->assign(
 		'TR_BULK_ACTIONS' => tr('Bulk Actions'),
 		'TR_PLUGIN' => tr('Plugin'),
 		'TR_DESCRIPTION' => tr('Description'),
+		'TR_STATUS' => tr('Status'),
 		'TR_ACTIVATE' => tr('Activate'),
 		'TR_ACTIVATE_TOOLTIP' => tr('Activate this plugin'),
 		'TR_DEACTIVATE_TOOLTIP' => tr('Deactivate this plugin'),
