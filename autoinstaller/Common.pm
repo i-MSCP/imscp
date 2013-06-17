@@ -661,6 +661,18 @@ sub savePersistentData
 			error($stderr) if $stderr && $rs;
 			return $rs if $rs;
 		}
+
+		# Save backend plugins
+		if(-d "$main::imscpConfig{'ENGINE_ROOT_DIR'}/Plugins") {
+			$rs = execute(
+				"$main::imscpConfig{'CMD_CP'} -fRT $main::imscpConfig{'ENGINE_ROOT_DIR'}/Plugins " .
+				"$destdir$main::imscpConfig{'ENGINE_ROOT_DIR'}/Plugins",
+				\$stdout, \$stderr
+			);
+			debug($stdout) if $stdout;
+			error($stderr) if $stderr && $rs;
+			return $rs if $rs;
+		}
 	}
 
 	0;
