@@ -1074,7 +1074,7 @@ sub addIps($$)
 	$rs = $self->enableSite('00_nameserver.conf');
 	return $rs if $rs;
 
-	$self->{'restart'} = 'yes';
+	$self->{'restartApache'} = 'yes';
 
 	delete $self->{'data'};
 
@@ -1512,6 +1512,8 @@ sub enableSite($$)
 			debug($stdout) if $stdout;
 			error($stderr) if $stderr && $rs;
 			return $rs if $rs;
+
+			$self->{'restartApache'} = 'yes';
 		} else {
 			warning("Site $_ doesn't exists");
 		}
@@ -1545,6 +1547,8 @@ sub disableSite($$)
 			debug($stdout) if $stdout;
 			error($stderr) if $stderr && $rs;
 			return $rs if $rs;
+
+			$self->{'restartApache'} = 'yes';
 		} else {
 			warning("Site $_ doesn't exists");
 		}
@@ -1576,6 +1580,8 @@ sub enableMod($$)
 	error($stderr) if $stderr && $rs;
 	return $rs if $rs;
 
+	$self->{'restartApache'} = 'yes';
+
 	$self->{'hooksManager'}->trigger('afterHttpdEnableMod', $modules);
 }
 
@@ -1601,6 +1607,8 @@ sub disableMod($$)
 	debug($stdout) if $stdout;
 	error($stderr) if $stderr && $rs;
 	return $rs if $rs;
+
+	$self->{'restartApache'};
 
 	$self->{'hooksManager'}->trigger('afterHttpdDisableMod', $modules);
 }

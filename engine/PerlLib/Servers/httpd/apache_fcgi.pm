@@ -1543,6 +1543,8 @@ sub enableSite($$)
 			debug($stdout) if $stdout;
 			error($stderr) if $stderr && $rs;
 			return $rs if $rs;
+
+			$self->{'restart'} eq 'yes';
 		} else {
 			warning("Site $_ doesn't exists");
 		}
@@ -1576,6 +1578,8 @@ sub disableSite($$)
 			debug($stdout) if $stdout;
 			error($stderr) if $stderr && $rs;
 			return $rs if $rs;
+
+			$self->{'restart'} eq 'yes';
 		} else {
 			warning("Site $_ doesn't exists");
 		}
@@ -1607,6 +1611,8 @@ sub enableMod($$)
 	error($stderr) if $stderr && $rs;
 	return $rs if $rs;
 
+	$self->{'restart'} eq 'yes';
+
 	$self->{'hooksManager'}->trigger('afterHttpdEnableMod', $modules);
 }
 
@@ -1632,6 +1638,8 @@ sub disableMod($$)
 	debug($stdout) if $stdout;
 	error($stderr) if $stderr && $rs;
 	return $rs if $rs;
+
+	$self->{'restart'} eq 'yes';
 
 	$self->{'hooksManager'}->trigger('afterHttpdDisableMod', $modules);
 }
