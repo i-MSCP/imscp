@@ -70,6 +70,8 @@ sub engine
 			`plugin`
 		WHERE
 			`plugin_status` IN ('enabled', 'install', 'uninstall')
+		AND
+			`plugin_backend` = 'yes'
 	";
 	$rs = _process('Plugin', $sql);
 	return $rs if $rs;

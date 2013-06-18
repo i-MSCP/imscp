@@ -2060,4 +2060,19 @@ class iMSCP_Update_Database extends iMSCP_Update
 				`plugin_status` `plugin_status` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL
 		';
 	}
+
+	/**
+	 * Add plugin_backend column in plugin table
+	 *
+	 * @author Laurent Declercq <l.declercq@nuxwin.com>
+	 * @return string SQL statement to be executed
+	 */
+	protected function _databaseUpdate_139()
+	{
+		return $this->_addColumn(
+			'plugin',
+			'plugin_backend',
+			"VARCHAR(3) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT 'no'"
+		);
+	}
 }

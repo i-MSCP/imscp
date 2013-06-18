@@ -474,7 +474,8 @@ class iMSCP_Plugin_Manager
 							// will be ready
 							'config' => serialize($plugin->getDefaultConfig()),
 							'status' => array_key_exists($pluginName, $knownPlugins)
-								? $knownPlugins[$pluginName][0]['plugin_status'] : 'disabled'
+								? $knownPlugins[$pluginName][0]['plugin_status'] : 'disabled',
+							'backend' => file_exists($fileInfo->getPathname() . "/backend/$pluginName.pm") ? 'yes' : 'no'
 						);
 
 						unset($plugin);
@@ -522,20 +523,28 @@ class iMSCP_Plugin_Manager
 			$query = '
 				INSERT INTO
 					`plugin` (
-						`plugin_name`, `plugin_type`, `plugin_info`, `plugin_config`, `plugin_status`
+						`plugin_name`, `plugin_type`, `plugin_info`, `plugin_config`, `plugin_status`, `plugin_backend`
 					) VALUE (
-						:name, :type, :info, :config, :status
+						:name, :type, :info, :config, :status, :backend
 					)
 			';
 			exec_query($query, $pluginData);
 			return 1;
 		}
 
-		$query = 'UPDATE `plugin` SET `plugin_info` = ?, `plugin_config` = ? WHERE `plugin_name` = ?';
-		exec_query($query, array($pluginData['info'], $pluginData['config'], $pluginData['name']));
+		$query = '
+			UPDATE
+				`plugin`
+			SET
+				`plugin_info` = ?, `plugin_config` = ?, `plugin_backend` = ?
+			WHERE
+				`plugin_name` = ?
+		';
+		exec_query(
+			$query, array($pluginData['info'], $pluginData['config'], $pluginData['backend'], $pluginData['name'])
+		);
 
 		return 2;
-
 	}
 
 	/**
