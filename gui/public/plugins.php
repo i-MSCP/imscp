@@ -31,24 +31,32 @@
 // Include core library
 require_once 'imscp-lib.php';
 
-check_login();
+iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onBeforePluginsRoute);
 
 $plugins = iMSCP_Registry::get('PLUGINS');
+$pluginActionScript = null;
 
 if(!empty($plugins)) {
 	if(isset($plugins['Action'])) {
 		/** @var $plugin iMSCP_Plugin_Action */
 		foreach($plugins['Action'] as $plugin) {
-			$routes = $plugin->getRoutes();
-			foreach($routes as $route => $actionScript) {
-				if($route == parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH)) {
-					$_SERVER['SCRIPT_NAME'] = $route;
-					require $actionScript;
-					exit;
+			$pluginRoutes = $plugin->getRoutes();
+
+			foreach($pluginRoutes as $pluginRoute => $pluginActionScript) {
+				if($pluginRoute == parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH)) {
+					$_SERVER['SCRIPT_NAME'] = $pluginRoute;
+
+					break;
 				}
 			}
 		}
 	}
 }
 
-showNotFoundErrorPage();
+iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAfterPluginsRoute);
+
+if($pluginActionScript !== null) {
+	require $pluginActionScript;
+} else {
+	showNotFoundErrorPage();
+}

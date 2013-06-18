@@ -1080,4 +1080,22 @@ class iMSCP_Events
      * @const string
      */
     const onAfterAddExternalMailServer = 'onAfterAddExternalMailServer';
+
+	/**
+	 * The onBeforePluginRoute event is triggered before routing of plugins.
+	 *
+	 * The listeners receive an iMSCP_Events_Event object.
+	 *
+	 * @const string
+	 */
+	const onBeforePluginsRoute = 'onBeforePluginsRoute';
+
+	/**
+	 * The onAfterPluginRoute event is triggered after routing of plugins.
+	 *
+	 * The listeners receive an iMSCP_Events_Event object.
+	 *
+	 *  @const string
+	 */
+	const onAfterPluginsRoute = 'onAfterPluginsRoute';
 }
