@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2013-06-08 21:29+0200\n"
-"PO-Revision-Date: 2013-06-08 19:29+0000\n"
+"POT-Creation-Date: 2013-06-18 13:40+0200\n"
+"PO-Revision-Date: 2013-06-18 11:41+0000\n"
 "Last-Translator: Torsten Widmann <info@goover.de>\n"
 "Language-Team: Russian (Russia) (http://www.transifex.com/projects/p/i-MSCP/language/ru_RU/)\n"
 "MIME-Version: 1.0\n"
@@ -2712,6 +2712,9 @@ msgstr "Установить ПО"
 msgid "Install in progress"
 msgstr ""
 
+msgid "Install in progress..."
+msgstr ""
+
 msgid "Install path"
 msgstr "Путь установки"
 
@@ -5150,6 +5153,9 @@ msgstr "Режим техобслуживания, только админист
 msgid "Uninstall"
 msgstr "Удалить"
 
+msgid "Uninstall in progress..."
+msgstr ""
+
 msgid "Unknown"
 msgstr "Неизвестно"
 
@@ -5171,6 +5177,10 @@ msgstr "Неизвестный тип домена."
 
 msgid "Unknown error"
 msgstr "Неизвестная ошибка"
+
+#, php-format
+msgid "Unknown error: %s"
+msgstr ""
 
 msgid "Unknown language name."
 msgstr "Неизвестное имя языкового файла."

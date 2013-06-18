@@ -3,12 +3,13 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
+# oeyhope <oyvind.hope@bits-bytes.no>, 2013
 msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2013-06-08 21:29+0200\n"
-"PO-Revision-Date: 2013-06-08 19:29+0000\n"
+"POT-Creation-Date: 2013-06-18 13:40+0200\n"
+"PO-Revision-Date: 2013-06-18 11:41+0000\n"
 "Last-Translator: Torsten Widmann <info@goover.de>\n"
 "Language-Team: Norwegian Bokmål (Norway) (http://www.transifex.com/projects/p/i-MSCP/language/nb_NO/)\n"
 "MIME-Version: 1.0\n"
@@ -639,10 +640,10 @@ msgid "Add new entry"
 msgstr ""
 
 msgid "Add new protected area"
-msgstr ""
+msgstr "Legg til nytt beskyttet område"
 
 msgid "Add new service port"
-msgstr ""
+msgstr "Legg til ny serviceport"
 
 msgid "Add other domains to this account"
 msgstr "Legg flere domener til denne kontoen"
@@ -675,7 +676,7 @@ msgid "Additional data"
 msgstr "Tilleggsinformasjon"
 
 msgid "Admin"
-msgstr ""
+msgstr "Admin"
 
 msgid "Admin / Admin Log"
 msgstr ""
@@ -922,7 +923,7 @@ msgid "All customers"
 msgstr ""
 
 msgid "All fields are required."
-msgstr ""
+msgstr "Alle felter er nødvendig."
 
 msgid "All fields seem to be valid."
 msgstr ""
@@ -1013,7 +1014,7 @@ msgstr ""
 
 #, php-format
 msgid "Are you sure you want to change the status of %s?"
-msgstr ""
+msgstr "Er du sikkerpå du vil endre status på %s?"
 
 #, php-format
 msgid ""
@@ -1023,11 +1024,11 @@ msgstr ""
 
 #, php-format
 msgid "Are you sure you want to delete %s service port ?"
-msgstr ""
+msgstr "Er du sikker på du vil slette %s service porten?"
 
 #, php-format
 msgid "Are you sure you want to delete %s?"
-msgstr ""
+msgstr "Er du sikkerpå du vil slette %s?"
 
 msgid "Are you sure you want to delete all closed tickets?"
 msgstr ""
@@ -1259,7 +1260,7 @@ msgid "Change personal data"
 msgstr "Endre personlig informasjon"
 
 msgid "Check for update"
-msgstr ""
+msgstr "Sjekk for oppdateringer"
 
 msgid ""
 "Check the reseller uploads!<br />It is not allowed to upload this package "
@@ -1516,7 +1517,7 @@ msgid ""
 msgstr ""
 
 msgid "Couldn't check for updates. Website not reachable."
-msgstr ""
+msgstr "Kunne ikke sjekke for oppdateringer. Får ikke kontakt med nettside"
 
 msgid "Count default E-Mail addresses"
 msgstr ""
@@ -1528,10 +1529,10 @@ msgid "Create"
 msgstr ""
 
 msgid "Create catch all"
-msgstr ""
+msgstr "Lag catch all konto"
 
 msgid "Create default E-Mail addresses"
-msgstr ""
+msgstr "Opprett standard epost addresser"
 
 msgid "Create directory, if not exist!"
 msgstr ""
@@ -1718,7 +1719,7 @@ msgid "Day statistics"
 msgstr ""
 
 msgid "Days"
-msgstr ""
+msgstr "Dager"
 
 msgid "Deactivate"
 msgstr ""
@@ -1818,10 +1819,10 @@ msgid "Delete order"
 msgstr "Slatt ordre"
 
 msgid "Delete reseller software"
-msgstr ""
+msgstr "Slett forhandler programvare"
 
 msgid "Delete software and send message"
-msgstr ""
+msgstr "Slett programvare og send melding"
 
 msgid "Delete the ticket"
 msgstr ""
@@ -2071,7 +2072,7 @@ msgid "E-Mail accounts are hard suspended"
 msgstr ""
 
 msgid "E-Mail settings"
-msgstr ""
+msgstr "Epost instillinger"
 
 msgid "EB"
 msgstr ""
@@ -2113,7 +2114,7 @@ msgid "Edit custom menu"
 msgstr ""
 
 msgid "Edit domain"
-msgstr ""
+msgstr "Domene innstillinger"
 
 msgid "Edit domain alias"
 msgstr "Endre domene pekere"
@@ -2238,7 +2239,7 @@ msgid "Error while trying to obtain list of network cards."
 msgstr ""
 
 msgid "Error: Remote File not found!"
-msgstr ""
+msgstr "Feil: Fil ikke funnet!"
 
 msgid "Error: Service port with same name already exists."
 msgstr ""
@@ -2253,13 +2254,13 @@ msgid "Error: Wrong value for show entry."
 msgstr ""
 
 msgid "Errors"
-msgstr ""
+msgstr "Feilemeldinger"
 
 msgid "Execute requests"
 msgstr "Utfør handlindger"
 
 msgid "Expire date"
-msgstr ""
+msgstr "Utløps dato"
 
 msgid "Ext. mail server"
 msgstr ""
@@ -2339,7 +2340,7 @@ msgstr ""
 
 #, php-format
 msgid "File does not exist. %1$s.tar.gz"
-msgstr ""
+msgstr "Filen eksisterer ikke. %1$s.tar.gz"
 
 msgid "File exceeds the size limit."
 msgstr ""
@@ -2360,7 +2361,7 @@ msgid "File usage"
 msgstr ""
 
 msgid "FileManager"
-msgstr ""
+msgstr "Filbehandler"
 
 msgid "Filemanager"
 msgstr "Filbehandler"
@@ -2538,13 +2539,13 @@ msgid "Hosting plans"
 msgstr "Betalingsplaner"
 
 msgid "Hosting plans available for"
-msgstr ""
+msgstr "Betalingsløsninger tilgjengelig for"
 
 msgid "Hour"
 msgstr "Time"
 
 msgid "Hours"
-msgstr ""
+msgstr "Timer"
 
 msgid "Htaccess group"
 msgstr ""
@@ -2707,6 +2708,9 @@ msgstr ""
 msgid "Install in progress"
 msgstr ""
 
+msgid "Install in progress..."
+msgstr ""
+
 msgid "Install path"
 msgstr ""
 
@@ -2810,7 +2814,7 @@ msgid "Ip usage"
 msgstr ""
 
 msgid "Kernel Version"
-msgstr ""
+msgstr "Kernel Version"
 
 msgid "Kill session"
 msgstr "Drep sesjon"
@@ -2886,7 +2890,7 @@ msgid "Link to authors homepage"
 msgstr ""
 
 msgid "Load (1 Min, 5 Min, 15 Min)"
-msgstr ""
+msgstr "Last (1 Min, 5 Min, 15 Min)"
 
 msgid "Log entries successfully deleted."
 msgstr ""
@@ -3161,7 +3165,7 @@ msgid "Message template info"
 msgstr "Meldingsmal informasjon"
 
 msgid "Message to reseller before deleting the software"
-msgstr ""
+msgstr "Send melding til forhandler før sletting av programvare"
 
 msgid "Messages"
 msgstr "Meldinger"
@@ -3170,10 +3174,10 @@ msgid "MiB"
 msgstr ""
 
 msgid "Minute"
-msgstr ""
+msgstr "Minutt"
 
 msgid "Minutes"
-msgstr ""
+msgstr "Minutter"
 
 msgid "Missing domain"
 msgstr ""
@@ -3248,10 +3252,10 @@ msgid "New alias order for {CUSTOMER}"
 msgstr ""
 
 msgid "New i-MSCP update is available"
-msgstr ""
+msgstr "Ny i-MSCP oppdatering tilgjengelig"
 
 msgid "New password has not been sent. Ask your administrator."
-msgstr ""
+msgstr "Ditt nye passord ble ikke send. Vennligst ta kontakt med administrator"
 
 msgid "New password is"
 msgstr ""
@@ -3281,7 +3285,7 @@ msgid "No Reseller with permissions for this software found"
 msgstr ""
 
 msgid "No Resellers found."
-msgstr ""
+msgstr "Ingen forhandlere funnet."
 
 msgid "No administrator accounts found."
 msgstr ""
@@ -3419,7 +3423,7 @@ msgid "Normal users"
 msgstr "Normal bruker"
 
 msgid "Not Set"
-msgstr ""
+msgstr "Ikke satt"
 
 msgid "Not found records matching the search criteria."
 msgstr ""
@@ -3449,10 +3453,10 @@ msgid "Nothing to do. Daemon request has been canceled."
 msgstr ""
 
 msgid "Notices, Warnings and Errors"
-msgstr ""
+msgstr "Informasjon, Advarsler og Feilmeldinger"
 
 msgid "Number of CPU Cores"
-msgstr ""
+msgstr "Antall CPU kjerner"
 
 msgid "Numeric prefix"
 msgstr ""
@@ -3464,7 +3468,7 @@ msgid "OK"
 msgstr "OK"
 
 msgid "Ok"
-msgstr ""
+msgstr "Ok"
 
 msgid "One or more database updates are now available. See the details below."
 msgstr ""
@@ -3541,7 +3545,7 @@ msgid "PHP Editor Settings"
 msgstr ""
 
 msgid "PHP GD extension not loaded."
-msgstr ""
+msgstr "PHP GD utvidelse ikke startet."
 
 msgid "PHP Settings (system default)"
 msgstr ""
@@ -3568,7 +3572,7 @@ msgid "POP3/IMAP traffic"
 msgstr "POP3/IMAP trafikk"
 
 msgid "Package actions"
-msgstr ""
+msgstr "Pakke handlinger"
 
 msgid "Package already exist in the reseller depot!"
 msgstr ""
@@ -3583,7 +3587,7 @@ msgid "Package already exist in your software repository!"
 msgstr ""
 
 msgid "Package install type"
-msgstr ""
+msgstr "Pakke installasjons type"
 
 msgid "Package installed successfully!"
 msgstr ""
@@ -3592,22 +3596,22 @@ msgid "Package installed successfully... Awaiting release from Admin!"
 msgstr ""
 
 msgid "Package language"
-msgstr ""
+msgstr "Språkpakke"
 
 msgid "Package name"
 msgstr ""
 
 msgid "Package title"
-msgstr ""
+msgstr "Pakke tittel"
 
 msgid "Package type"
-msgstr ""
+msgstr "Pakketype"
 
 msgid "Package vendor HP"
-msgstr ""
+msgstr "Pakke leverandør HP"
 
 msgid "Package version"
-msgstr ""
+msgstr "Pakke version"
 
 msgid "Panel default language"
 msgstr ""
@@ -3857,13 +3861,13 @@ msgid "Port must be a number."
 msgstr ""
 
 msgid "Prevent external login for admins"
-msgstr ""
+msgstr "Blokker ekstern pålogging for admin"
 
 msgid "Prevent external login for clients"
-msgstr ""
+msgstr "Blokker ekstern pålogging for kunder"
 
 msgid "Prevent external login for resellers"
-msgstr ""
+msgstr "Blokker ekstern pålogging for forhandlere"
 
 msgid "Previous"
 msgstr ""
@@ -4109,7 +4113,7 @@ msgid "Reseller consumption"
 msgstr ""
 
 msgid "Reseller data"
-msgstr ""
+msgstr "Forhandler data"
 
 msgid "Reseller level"
 msgstr "Forhandler nivå"
@@ -4151,7 +4155,7 @@ msgid "Reseller/IP usage statistics"
 msgstr ""
 
 msgid "Resellers"
-msgstr ""
+msgstr "Forhandlere"
 
 msgid "Resellers assignment"
 msgstr ""
@@ -4175,10 +4179,10 @@ msgid "Rights"
 msgstr ""
 
 msgid "Rights succesfully added."
-msgstr ""
+msgstr "Rettigheter lagt til korrekt."
 
 msgid "Rights succesfully removed."
-msgstr ""
+msgstr "Rettigheter ble fjernet korrekt."
 
 msgid "Rootkit logs"
 msgstr ""
@@ -4530,10 +4534,10 @@ msgid "Software upload"
 msgstr ""
 
 msgid "Software was activated."
-msgstr ""
+msgstr "Programvare ble aktivert."
 
 msgid "Software was deleted."
-msgstr ""
+msgstr "Programvare ble slettet."
 
 msgid "Software-Synonym"
 msgstr ""
@@ -4587,7 +4591,7 @@ msgid "State"
 msgstr ""
 
 msgid "State/Province"
-msgstr ""
+msgstr "Stat/Provins"
 
 msgid "Statistics"
 msgstr "Statistikk"
@@ -4675,7 +4679,7 @@ msgid "Support system"
 msgstr "Hjelp system"
 
 msgid "Suspended"
-msgstr ""
+msgstr "Suspendert"
 
 msgid "Swap"
 msgstr "Swap"
@@ -5072,10 +5076,10 @@ msgid "UP"
 msgstr "OPPE"
 
 msgid "URL protocol"
-msgstr ""
+msgstr "URL protokoll"
 
 msgid "URL to this admin panel"
-msgstr ""
+msgstr "URL til dette adminstrasjonspanelet"
 
 #, php-format
 msgid "Unable to close the ticket with Id '%s'."
@@ -5145,6 +5149,9 @@ msgstr ""
 msgid "Uninstall"
 msgstr ""
 
+msgid "Uninstall in progress..."
+msgstr ""
+
 msgid "Unknown"
 msgstr "Ukjent"
 
@@ -5165,6 +5172,10 @@ msgid "Unknown domain type."
 msgstr ""
 
 msgid "Unknown error"
+msgstr ""
+
+#, php-format
+msgid "Unknown error: %s"
 msgstr ""
 
 msgid "Unknown language name."
@@ -5213,7 +5224,7 @@ msgid "Update from Web software repository"
 msgstr ""
 
 msgid "Update from web depot"
-msgstr ""
+msgstr "Last opp fra web lager"
 
 msgid "Update hosting plan"
 msgstr ""
@@ -5233,7 +5244,7 @@ msgid "Upload"
 msgstr "Last opp"
 
 msgid "Upload logo"
-msgstr "Las topp logo"
+msgstr "Last opp logo"
 
 msgid "Upload now"
 msgstr ""
@@ -5281,7 +5292,7 @@ msgid "User data successfully updated"
 msgstr ""
 
 msgid "User data were not updated."
-msgstr ""
+msgstr "Bruker data ble ikke oppdatert."
 
 msgid "User data were successfully updated."
 msgstr ""
@@ -5318,7 +5329,7 @@ msgid "User real (first and last) name"
 msgstr "Brukerens ekte (for og etter) navn"
 
 msgid "User scheduled for deletion."
-msgstr ""
+msgstr "Bruker markert for sletting."
 
 msgid "User session successfully destroyed."
 msgstr ""
@@ -5333,7 +5344,7 @@ msgid "User type"
 msgstr "Brukertype"
 
 msgid "User type (admin, reseller, user)"
-msgstr ""
+msgstr "Bruker type (admin,forhandler,klient)"
 
 msgid "Username"
 msgstr "Brukernavn"
@@ -5377,7 +5388,7 @@ msgid "View"
 msgstr "Vis"
 
 msgid "View / Update service(s) port"
-msgstr ""
+msgstr "Vis / Oppdater service(s) porter"
 
 msgid "View SSL certificate"
 msgstr ""
@@ -5407,7 +5418,7 @@ msgid "Warning traffic"
 msgstr ""
 
 msgid "Warnings and Errors"
-msgstr ""
+msgstr "Advarsler og Feilmeldinger"
 
 msgid ""
 "We are sorry but you have reached the maximum number of domain aliases "
@@ -5559,10 +5570,10 @@ msgid "Wrong reseller id."
 msgstr ""
 
 msgid "Wrong security code"
-msgstr ""
+msgstr "Feil sikkerhetskode"
 
 msgid "Wrong software id."
-msgstr ""
+msgstr "Feil programvare id."
 
 msgid "Wrong subdomain lenght!"
 msgstr ""
@@ -5698,7 +5709,7 @@ msgid "You do not have custom DNS records."
 msgstr ""
 
 msgid "You do not have customers."
-msgstr ""
+msgstr "Du har ingen kunder."
 
 msgid "You do not have database."
 msgstr ""
@@ -5837,7 +5848,7 @@ msgid "You must select a file to upload."
 msgstr ""
 
 msgid "You must select a file to upload/download."
-msgstr ""
+msgstr "Du må velge en fil til opplasting/nedlasting"
 
 msgid "You must select a least one item to deactivate."
 msgstr ""
@@ -5891,7 +5902,7 @@ msgid "Your new i-MSCP login"
 msgstr ""
 
 msgid "Your new password has been sent. Check your mail."
-msgstr ""
+msgstr "Ditt nye passord har blitt sendt via epost"
 
 msgid "Your package is corrupt. Please correct it!"
 msgstr ""
@@ -6012,7 +6023,7 @@ msgid "i-MSCP - Client/Create CatchAll Mail Account"
 msgstr "i-MSCP - Klient/Legg til FangAlle Mail Kontoer"
 
 msgid "i-MSCP - Multi Server Control Panel / Login"
-msgstr ""
+msgstr "i-MSCP - Multi Server Control Panel / Pålogging"
 
 msgid "i-MSCP - Multi Server Control Panel / Lost password"
 msgstr ""
@@ -6069,7 +6080,7 @@ msgid "installing"
 msgstr ""
 
 msgid "internet Multi Server Control Panel"
-msgstr ""
+msgstr "internet Multi Server Control Panel"
 
 msgid "kB"
 msgstr ""

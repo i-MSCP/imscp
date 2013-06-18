@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2013-06-08 21:29+0200\n"
-"PO-Revision-Date: 2013-06-08 19:29+0000\n"
+"POT-Creation-Date: 2013-06-18 13:40+0200\n"
+"PO-Revision-Date: 2013-06-18 11:41+0000\n"
 "Last-Translator: Torsten Widmann <info@goover.de>\n"
 "Language-Team: Swedish (Sweden) (http://www.transifex.com/projects/p/i-MSCP/language/sv_SE/)\n"
 "MIME-Version: 1.0\n"
@@ -2587,7 +2587,7 @@ msgid "IP address scheduled for addition."
 msgstr "IP adr. kommer att läggs till."
 
 msgid "IP address successfully scheduled for deletion."
-msgstr ""
+msgstr "IP planeras för radering."
 
 msgid "IP addresse data"
 msgstr "IP adr. data"
@@ -2707,6 +2707,9 @@ msgid "Install Software"
 msgstr "Installera program"
 
 msgid "Install in progress"
+msgstr "Install in progress..."
+
+msgid "Install in progress..."
 msgstr ""
 
 msgid "Install path"
@@ -4813,7 +4816,7 @@ msgid ""
 msgstr "The <strong>%s</strong> file for the <strong>%s</strong> plugin do not exists or is not readable."
 
 msgid "The IP address you're trying to remove is assigned to a reseller."
-msgstr ""
+msgstr "The IP address you trying to remove is assigned to a reseller."
 
 msgid "The `Enter` key is disabled for performance reasons."
 msgstr "The `Enter` key is disabled for performance reasons."
@@ -5095,7 +5098,7 @@ msgid "Unable to delete user with Id: %d"
 msgstr "Det går inte att ta bort användaren med id:%d"
 
 msgid "Unable to find network cards. You cannot add new IP address."
-msgstr ""
+msgstr "Unable to find network cards. You cannot add new IP address."
 
 msgid "Unable to get the IP addresses list. Please fix this problem."
 msgstr "Det gick inte att hämta IP-adresser. Var vänlig och åtgärda detta problem."
@@ -5147,6 +5150,9 @@ msgstr "Under maintenance mode, endast administratörer kan logga in."
 msgid "Uninstall"
 msgstr "Avinstallera"
 
+msgid "Uninstall in progress..."
+msgstr ""
+
 msgid "Unknown"
 msgstr "Okänt"
 
@@ -5168,6 +5174,10 @@ msgstr "Okänd domän typ."
 
 msgid "Unknown error"
 msgstr "Okänt fel"
+
+#, php-format
+msgid "Unknown error: %s"
+msgstr ""
 
 msgid "Unknown language name."
 msgstr "Okänt språk namn."

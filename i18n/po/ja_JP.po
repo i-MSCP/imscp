@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2013-06-08 21:29+0200\n"
-"PO-Revision-Date: 2013-06-08 19:29+0000\n"
+"POT-Creation-Date: 2013-06-18 13:40+0200\n"
+"PO-Revision-Date: 2013-06-18 11:41+0000\n"
 "Last-Translator: Torsten Widmann <info@goover.de>\n"
 "Language-Team: Japanese (Japan) (http://www.transifex.com/projects/p/i-MSCP/language/ja_JP/)\n"
 "MIME-Version: 1.0\n"
@@ -2588,7 +2588,7 @@ msgid "IP address scheduled for addition."
 msgstr "IPアドレスの追加が予定しました。"
 
 msgid "IP address successfully scheduled for deletion."
-msgstr ""
+msgstr "IPアドレスの削除を予定。"
 
 msgid "IP addresse data"
 msgstr "IPアドレスのデータ"
@@ -2708,6 +2708,9 @@ msgid "Install Software"
 msgstr "ソフトウェアのインストール"
 
 msgid "Install in progress"
+msgstr "進行中のインストール"
+
+msgid "Install in progress..."
 msgstr ""
 
 msgid "Install path"
@@ -4814,7 +4817,7 @@ msgid ""
 msgstr "<strong>%s</strong> プラグインの <strong>%s</strong> のファイルが存在するか読み出し可能でありません。"
 
 msgid "The IP address you're trying to remove is assigned to a reseller."
-msgstr ""
+msgstr "削除しようとしているIPアドレスは、代理店に割り当てられています。"
 
 msgid "The `Enter` key is disabled for performance reasons."
 msgstr "`Enter`キーは、パフォーマンス理由のために無効です。"
@@ -5096,7 +5099,7 @@ msgid "Unable to delete user with Id: %d"
 msgstr "このIDを持つユーザーを削除することができない： %d"
 
 msgid "Unable to find network cards. You cannot add new IP address."
-msgstr ""
+msgstr "ネットワークカードが見つかりません。新しいIPアドレスを追加することはできません。"
 
 msgid "Unable to get the IP addresses list. Please fix this problem."
 msgstr "IPアドレスのリストを取得することができません。この問題を修正してください。"
@@ -5148,6 +5151,9 @@ msgstr "メンテナンスモードで、管理者だけがログインするこ
 msgid "Uninstall"
 msgstr "アンインストール"
 
+msgid "Uninstall in progress..."
+msgstr ""
+
 msgid "Unknown"
 msgstr "不明"
 
@@ -5169,6 +5175,10 @@ msgstr "ドメインタイプがありません。"
 
 msgid "Unknown error"
 msgstr "不明なエラー"
+
+#, php-format
+msgid "Unknown error: %s"
+msgstr ""
 
 msgid "Unknown language name."
 msgstr "不明な言語名が指定されました。"

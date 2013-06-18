@@ -18,8 +18,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2013-06-08 21:29+0200\n"
-"PO-Revision-Date: 2013-06-08 19:29+0000\n"
+"POT-Creation-Date: 2013-06-18 13:40+0200\n"
+"PO-Revision-Date: 2013-06-18 11:41+0000\n"
 "Last-Translator: Torsten Widmann <info@goover.de>\n"
 "Language-Team: Catalan (Spain) (http://www.transifex.com/projects/p/i-MSCP/language/ca_ES/)\n"
 "MIME-Version: 1.0\n"
@@ -2718,6 +2718,9 @@ msgstr "Instal·lar software"
 msgid "Install in progress"
 msgstr ""
 
+msgid "Install in progress..."
+msgstr ""
+
 msgid "Install path"
 msgstr "Ruta d'instal·lació"
 
@@ -5156,6 +5159,9 @@ msgstr "Sota el mode de manteniment, només els administradors poden entrar al s
 msgid "Uninstall"
 msgstr "Desinstal.lar"
 
+msgid "Uninstall in progress..."
+msgstr ""
+
 msgid "Unknown"
 msgstr "Desconegut"
 
@@ -5177,6 +5183,10 @@ msgstr "Tipus de domini desconegut."
 
 msgid "Unknown error"
 msgstr "Error desconegut"
+
+#, php-format
+msgid "Unknown error: %s"
+msgstr ""
 
 msgid "Unknown language name."
 msgstr "Nom de llenguatge desconegut."

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.0.1.6\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2013-06-08 21:29+0200\n"
+"POT-Creation-Date: 2013-06-18 13:40+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -2707,6 +2707,9 @@ msgstr ""
 msgid "Install in progress"
 msgstr ""
 
+msgid "Install in progress..."
+msgstr ""
+
 msgid "Install path"
 msgstr ""
 
@@ -5142,6 +5145,9 @@ msgstr ""
 msgid "Uninstall"
 msgstr ""
 
+msgid "Uninstall in progress..."
+msgstr ""
+
 msgid "Unknown"
 msgstr ""
 
@@ -5162,6 +5168,10 @@ msgid "Unknown domain type."
 msgstr ""
 
 msgid "Unknown error"
+msgstr ""
+
+#, php-format
+msgid "Unknown error: %s"
 msgstr ""
 
 msgid "Unknown language name."

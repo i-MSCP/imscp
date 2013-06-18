@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2013-06-08 21:29+0200\n"
-"PO-Revision-Date: 2013-06-08 19:29+0000\n"
+"POT-Creation-Date: 2013-06-18 13:40+0200\n"
+"PO-Revision-Date: 2013-06-18 11:41+0000\n"
 "Last-Translator: Torsten Widmann <info@goover.de>\n"
 "Language-Team: Dutch (Netherlands) (http://www.transifex.com/projects/p/i-MSCP/language/nl_NL/)\n"
 "MIME-Version: 1.0\n"
@@ -2709,6 +2709,9 @@ msgstr "Installeer software"
 msgid "Install in progress"
 msgstr ""
 
+msgid "Install in progress..."
+msgstr ""
+
 msgid "Install path"
 msgstr ""
 
@@ -5147,6 +5150,9 @@ msgstr ""
 msgid "Uninstall"
 msgstr ""
 
+msgid "Uninstall in progress..."
+msgstr ""
+
 msgid "Unknown"
 msgstr "Onbekend"
 
@@ -5167,6 +5173,10 @@ msgid "Unknown domain type."
 msgstr ""
 
 msgid "Unknown error"
+msgstr ""
+
+#, php-format
+msgid "Unknown error: %s"
 msgstr ""
 
 msgid "Unknown language name."
