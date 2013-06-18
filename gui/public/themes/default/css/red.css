@@ -111,7 +111,7 @@ input[type="text"], input[type="password"], select, textarea {
 	border-color: rgb(204, 204, 204);
 }
 input[type="text"]:focus, input[type="password"]:focus, select:focus, textarea:focus {border-color: rgb(153, 153, 153);}
-input[type="text"]:disabled, input[type="password"]:disabled, select:disabled, textarea:disabled{background: rgb(204,204,204) url('../images/background/stripe_0582bcfb31aaf8571dba1adb85ffc318.png') repeat;}
+input[readonly="readonly"], input[type="text"]:disabled, input[type="password"]:disabled, select:disabled, textarea:disabled{background: rgb(204,204,204) url('../images/background/stripe_0582bcfb31aaf8571dba1adb85ffc318.png') repeat;}
 
 .buttons {background:transparent;}
 
