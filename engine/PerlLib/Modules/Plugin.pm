@@ -43,7 +43,26 @@ use parent 'Common::SimpleClass';
 
 =head1 DESCRIPTION
 
- Plugin module responsible to load and trigger plugin actions.
+ This module is responsible to run actions on the plugins according their current status. To each status can correspond
+a specific action, which is executed by the module:
+
+ - install status: The install status correspond to the install action
+ - uninstall status: The uninstall status correspond to the uninstall action
+ - enabled status: The enabled status correspond to the process action
+ - disabled status: No action
+ - other status: No action
+
+ The module will attempt to run the action on the plugin only if it implements it.
+
+ When the install action is run, the plugin file is automatically installed from the plugin package into the
+imscp/engine/Plugins directory, which is the plugins backend repository. The plugin file must be located in a specific
+subdirectory of plugin package:
+
+ <PluginName>/backend/<PluginName>.pm
+
+ The plugin packages are located in the imscp/gui/plugins directory.
+
+ When the uninstall action is run, the plugin file is simply deleted from the backend plugins repository.
 
 =head1 PUBLIC METHODS
 
@@ -85,7 +104,7 @@ sub loadData
 
  Process plugin
 
- Param int Plugin ID
+ Param int Plugin unique identifier
  Return int 0 on success, other on failure
 
 =cut
@@ -117,7 +136,7 @@ sub process
 		$rs = $self->_executePlugin('uninstall');
 		@sql = (
 			"UPDATE `plugin` SET `plugin_status` = ? WHERE `plugin_id` = ?",
-			($rs ? scalar getMessageByType('error') : 'deactivated'), $self->{'pluginId'}
+			($rs ? scalar getMessageByType('error') : 'disabled'), $self->{'pluginId'}
 		);
 	}
 
@@ -156,9 +175,9 @@ sub _init
 	$self;
 }
 
-=item _executePlugin($method)
+=item _executePlugin($action)
 
- Execute plugin
+ Execute the given plugin action
 
  Param string Plugin method to call
  Return int 0 on success, other on failure
@@ -168,14 +187,18 @@ sub _init
 sub _executePlugin($$)
 {
 	my $self = shift;
-	my $method = shift;
+	my $action = shift;
 
 	my $backendPluginsDir = "$main::imscpConfig{'ENGINE_ROOT_DIR'}/Plugins";
+	my $pluginFile = "$backendPluginsDir/$self->{'plugin_name'}.pm";
 	my $rs = 0;
 
-	my $pluginFile = "$backendPluginsDir/$self->{'plugin_name'}.pm";
-
-	if($method eq 'install') {
+	# The 'install' action is scheduled either when the plugin is activated through the panel
+	# interface or when  the i-MSCP is updated.
+	#
+	# Each time the action 'install' is scheduled, we try to install the newest version of
+	# the plugin as provided in plugin package.
+	if($action eq 'install') {
 		my $guiPluginDir = "$main::imscpConfig{'GUI_ROOT_DIR'}/plugins";
 
 		if(-f "$guiPluginDir/$self->{'plugin_name'}/backend/$self->{'plugin_name'}.pm") {
@@ -186,7 +209,7 @@ sub _executePlugin($$)
 			$rs = $file->copyFile($pluginFile);
 			return $rs if $rs;
 		} else {
-			error("Unable to find plugin file $pluginFile");
+			error("Unable to install backend plugin: Plugin file $pluginFile not found");
 			return 1;
 		}
 	}
@@ -195,10 +218,17 @@ sub _executePlugin($$)
 
 	my $pluginClass = "Plugin::$self->{'plugin_name'}";
 
-	$rs = $pluginClass->getInstance($self->{'hooksManager'})->$method();
-	return $rs if $rs;
+	# Any backend plugin is a singleton which receive an iMSCP::HooksManager instance
+	my $pluginInstance = $pluginClass->getInstance($self->{'hooksManager'});
 
-	if($method eq 'uninstall') {
+	# If the given action is implemented in the backend plugin, we call it.
+	if($pluginInstance->can($action)) {
+		$rs = $pluginInstance->$action();
+		return $rs if $rs;
+	}
+
+	# When the 'uninstall' action is scheduled, we simply remove the plugin file
+	if($action eq 'uninstall' && -f $pluginFile) {
 		my $file = iMSCP::File->new('filename' => $pluginFile);
 		$rs = $file->delFile();
 	}

@@ -2148,7 +2148,7 @@ sub setupRebuildCustomerFiles
 				SET
 					`plugin_status` = 'install'
 				WHERE
-					`plugin_status` <> 'disabled'
+					`plugin_status` NOT IN('disabled', 'uninstall')
 				AND
 					`plugin_backend` = 'yes'
 			"
