@@ -2141,7 +2141,17 @@ sub setupRebuildCustomerFiles
 		}
 
 		$rs = $database->doQuery(
-			'dummy', "UPDATE `plugin` SET `plugin_status` = 'install' WHERE `plugin_backend` = 'yes'"
+			'dummy',
+			"
+				UPDATE
+					`plugin`
+				SET
+					`plugin_status` = 'install'
+				WHERE
+					`plugin_status` <> 'disabled'
+				AND
+					`plugin_backend` = 'yes'
+			"
 		);
 		unless(ref $rs eq 'HASH') {
 			error("Unable to execute SQL query: $rs");

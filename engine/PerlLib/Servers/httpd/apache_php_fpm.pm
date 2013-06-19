@@ -1608,7 +1608,7 @@ sub disableMod($$)
 	error($stderr) if $stderr && $rs;
 	return $rs if $rs;
 
-	$self->{'restartApache'};
+	$self->{'restartApache'} = 'yes';
 
 	$self->{'hooksManager'}->trigger('afterHttpdDisableMod', $modules);
 }

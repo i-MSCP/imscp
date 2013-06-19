@@ -45,7 +45,6 @@ if(!empty($plugins)) {
 			foreach($pluginRoutes as $pluginRoute => $pluginActionScript) {
 				if($pluginRoute == parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH)) {
 					$_SERVER['SCRIPT_NAME'] = $pluginRoute;
-
 					break;
 				}
 			}
