@@ -186,7 +186,7 @@ Thanks for using i-MSCP.
 
 We are sorry but your distribution is not supported yet.
 
-Only \\ZDebian-like\\Zn operating systems are supported.
+Only \\ZuDebian-like\\Zn operating systems are supported.
 
 Thanks for using i-MSCP.
 "
