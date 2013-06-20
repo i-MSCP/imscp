@@ -67,7 +67,7 @@ $main::skippackages = 0;
 # Add autoinstaller specific command line options
 iMSCP::Getopt->parse(
 	qq{Usage: perl imscp-autoinstall [options]
- -b,    --buil-donly           Process only build step.
+ -b,    --build-donly          Process only build step.
  -s,    --skip-packages        Do not install/update distro packages.},
   'build-only|b' => \$main::buildonly,
   'skip-packages|s' => \$main::skippackages
