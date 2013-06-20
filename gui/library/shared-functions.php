@@ -1060,11 +1060,7 @@ function decode_idna($domain)
  */
 function utils_uploadFile($inputFieldName, $destPath)
 {
-	$inputFieldName = (string)$inputFieldName;
-
-	if (isset($_FILES[$inputFieldName]) &&
-		$_FILES[$inputFieldName]['error'] == UPLOAD_ERR_OK
-	) {
+	if (isset($_FILES[$inputFieldName]) && $_FILES[$inputFieldName]['error'] == UPLOAD_ERR_OK) {
 		$tmpFilePath = $_FILES[$inputFieldName]['tmp_name'];
 
 		if (!is_readable($tmpFilePath)) {
@@ -1132,6 +1128,47 @@ function utils_randomString($length = 10)
 	}
 
 	return $string;
+}
+
+/**
+ * Returns Upload max file size in bytes
+ *
+ * @return int Upload max file size in bytes
+ */
+function utils_getMaxFileUpload()
+{
+	$uploadMaxFilesize = utils_getPhpValueInBytes(ini_get('upload_max_filesize'));
+	$postMaxSize = utils_getPhpValueInBytes(ini_get('post_max_size'));
+	$memoryLimit = utils_getPhpValueInBytes(ini_get('memory_limit'));
+
+	return min($uploadMaxFilesize, $postMaxSize, $memoryLimit);
+}
+
+/**
+ * Returns PHP directive value in bytes
+ *
+ * Note: If $value do not come with shorthand byte value, the value is retured as this.
+ * See http://fr2.php.net/manual/en/faq.using.php#faq.using.shorthandbytes for further explaination
+ *
+ * @throws iMSCP_Exception
+ * @param int|string PHP directive value
+ * @return int Value in bytes
+ */
+function utils_getPhpValueInBytes($value)
+{
+	$val = trim($value);
+	$last = strtolower($val[strlen($value)-1]);
+
+	switch($last) {
+		case 'g':
+			$val *= 1024;
+		case 'm':
+			$val *= 1024;
+		case 'k':
+			$val *= 1024;
+	}
+
+	return $val;
 }
 
 /***********************************************************************************************************************

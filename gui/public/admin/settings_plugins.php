@@ -33,6 +33,80 @@
  */
 
 /**
+ * Upload plugin archive into the gui/plugins directory
+ *
+ * @return bool TRUE on success, FALSE on failure
+ */
+function admin_pluginManagerUploadPlugin()
+{
+	$ret = true;
+
+	if (isset($_FILES['pluginArchive'])) {
+		$tmpDir = GUI_ROOT_DIR . '/data/tmp';
+		$extToMimetypes = array(
+			'application/x-gzip' => 'tar.gz', 'application/x-bzip2' => 'tar.bz2', 'application/zip' => 'zip'
+		);
+
+		$beforeMove = function ($extToMimetypes, $tmpDir) {
+			$tmpFilePath = $_FILES['pluginArchive']['tmp_name'];
+
+			$pluginArchiveSize = $_FILES['pluginArchive']['size'];
+			$maxUploadFileSize = utils_getMaxFileUpload();
+
+			if($pluginArchiveSize > $maxUploadFileSize) {
+				set_page_message(
+					tr(
+						'Plugin archive is too big (%s). Max size is: %s.',
+						bytesHuman($pluginArchiveSize),
+						bytesHuman($maxUploadFileSize)
+					), 'error'
+				);
+				return false;
+			}
+
+			// Check file mime type
+			if (!($fileMimeType = checkMimeType($tmpFilePath, array_keys($extToMimetypes)))) {
+				set_page_message(tr('Only tar.gz, tar.bz2 and zip archives are supported.'), 'error');
+				return false;
+			}
+
+			return $tmpDir . '/' . $_FILES['pluginArchive']['name'];
+		};
+
+		$archPath = utils_uploadFile('pluginArchive', array($beforeMove, $extToMimetypes, $tmpDir));
+
+		if ($archPath === false) {
+			$ret = false;
+		} else {
+			## TODO remove previous plugin dir
+
+			$archType = $extToMimetypes[checkMimeType($archPath, array_keys($extToMimetypes))];
+
+			try {
+				if ($archType != 'zip') {
+					$arch = new PharData($archPath);
+					$arch = $arch->decompress();
+					$archTarPath = $arch->getPath();
+				}
+
+				$arch = new PharData(isset($archTarPath) ? $archTarPath : $archPath);
+				$arch->extractTo(PLUGINS_PATH, null, true);
+			} catch (Exception $e) {
+				set_page_message(tr('Unable to extract plugin archive: %s', $e->getMessage()), 'error');
+				$ret = false;
+			}
+
+			if (isset($archTarPath)) @unlink($archTarPath); // Cleanup
+			@unlink($archPath); // Cleanup
+		}
+	} else {
+		showBadRequestErrorPage();
+	}
+
+	return $ret;
+}
+
+/**
  * Translate plugin status
  *
  * @param string $rawPluginStatus Raw plugin status
@@ -44,6 +118,9 @@ function admin_pluginManagerTrStatus($rawPluginStatus)
 		case 'install':
 			return tr('Install in progress...');
 			break;
+//		case 'update':
+//			return tr('Update in progress...');
+//			break;
 		case 'uninstall':
 			return tr('Uninstall in progress...');
 			break;
@@ -102,7 +179,7 @@ function admin_pluginManagerGeneratePluginList($tpl, $pluginManager)
 				} elseif ($pluginManager->isDeactivated($pluginName)) {
 					$tpl->assign('PLUGIN_DEACTIVATE_LINK', '');
 					$tpl->parse('PLUGIN_ACTIVATE_LINK', 'plugin_activate_link');
-				} else {
+				} else { # Install, Update and Unknown status cases
 					$tpl->assign('PLUGIN_DEACTIVATE_LINK', '');
 					$tpl->assign('PLUGIN_ACTIVATE_LINK', '');
 				}
@@ -167,6 +244,28 @@ function admin_pluginManagerDoBulkAction($pluginManager)
 	}
 }
 
+/**
+ * Update plugin list
+ *
+ * @param iMSCP_Plugin_Manager $pluginManager
+ *
+ */
+function admin_pluginManagerUpdatePluginList($pluginManager)
+{
+	iMSCP_Events_Manager::getInstance()->dispatch(
+		iMSCP_Events::onBeforeUpdatePluginList, array('pluginManager' => $pluginManager)
+	);
+
+	$info = $pluginManager->updatePluginList();
+
+	iMSCP_Events_Manager::getInstance()->dispatch(
+		iMSCP_Events::onAfterUpdatePluginList, array('pluginManager' => $pluginManager)
+	);
+
+	set_page_message(
+		tr('Plugin list successfully updated.<br/><strong>%d</strong> new plugin(s) found, <strong>%d</strong> plugin(s) updated, and <strong>%d</strong> plugin(s) deleted.', $info['added'], $info['updated'], $info['deleted']), 'success'
+	);
+}
 /***********************************************************************************************************************
  * Main script
  */
@@ -183,20 +282,7 @@ $pluginManager = iMSCP_Registry::get('pluginManager');
 
 // Dispatches the request
 if (isset($_GET['updatePluginList'])) {
-	iMSCP_Events_Manager::getInstance()->dispatch(
-		iMSCP_Events::onBeforeUpdatePluginList, array('pluginManager' => $pluginManager)
-	);
-
-	$info = $pluginManager->updatePluginList();
-
-	iMSCP_Events_Manager::getInstance()->dispatch(
-		iMSCP_Events::onAfterUpdatePluginList, array('pluginManager' => $pluginManager)
-	);
-
-	set_page_message(
-		tr('Plugin list successfully updated.<br/><strong>%d</strong> new plugin(s) found, <strong>%d</strong> plugin(s) updated, and <strong>%d</strong> plugin(s) deleted.', $info['added'], $info['updated'], $info['deleted']), 'success'
-	);
-
+	admin_pluginManagerUpdatePluginList($pluginManager);
 	redirectTo('settings_plugins.php');
 } elseif (isset($_GET['activate'])) {
 	$pluginName = clean_input($_GET['activate']);
@@ -264,6 +350,12 @@ if (isset($_GET['updatePluginList'])) {
 	);
 
 	redirectTo('settings_plugins.php');
+} elseif(!empty($_FILES)) {
+	if (admin_pluginManagerUploadPlugin()) {
+		set_page_message(tr('Plugin successfully uploaded.'), 'success');
+		admin_pluginManagerUpdatePluginList($pluginManager);
+		redirectTo('settings_plugins.php');
+	}
 }
 
 /** @var $cfg iMSCP_Config_Handler_File */
@@ -292,8 +384,11 @@ $tpl->assign(
 		'TR_PLUGIN' => tr('Plugin'),
 		'TR_DESCRIPTION' => tr('Description'),
 		'TR_STATUS' => tr('Status'),
+		'TR_ACTIONS' => tr('Actions'),
 		'TR_ACTIVATE' => tr('Activate'),
 		'TR_ACTIVATE_TOOLTIP' => tr('Activate this plugin'),
+		//'TR_UPDATE' => tr('Update'),
+		//'TR_UPDATE_TOOLTIP' => tr('Force plugin update'),
 		'TR_DEACTIVATE_TOOLTIP' => tr('Deactivate this plugin'),
 		'TR_DEACTIVATE' => tr('Deactivate'),
 		'TR_PROTECT' => tr('Protect'),
@@ -305,7 +400,12 @@ $tpl->assign(
 		'TR_BY' => tr('By'),
 		'TR_VISIT_PLUGIN_SITE' => tr('Visit plugin site'),
 		'TR_UPDATE_PLUGIN_LIST' => tr('Update plugin list'),
-		'TR_APPLY' => tr('Apply')
+		'TR_APPLY' => tr('Apply'),
+
+		'TR_PLUGIN_UPLOAD' => tr('Plugin Upload'),
+		'TR_PLUGIN_ARCHIVE' => tr('Plugin archive'),
+		'TR_PLUGIN_ARCHIVE_TOOLTIP' => 'Only tar.gz, tar.bz2 and zip archives are accepted.',
+		'TR_UPLOAD' => tr('Upload')
 	)
 );
 

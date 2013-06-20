@@ -38,6 +38,7 @@
 					<select name="bulkActions" id="bulkActionsTop">
 						<option value="dummy">{TR_BULK_ACTIONS}</option>
 						<option value="activate">{TR_ACTIVATE}</option>
+						<!--<option value="install">{TR_UPDATE}</option>-->
 						<option value="deactivate">{TR_DEACTIVATE}</option>
 						<option value="protect">{TR_PROTECT}</option>
 					</select>
@@ -50,9 +51,10 @@
 					<thead>
 					<tr>
 						<th style="width:21px;"><input type="checkbox"/></th>
-						<th style="width:200px">{TR_PLUGIN}</th>
+						<th style="width:150px">{TR_PLUGIN}</th>
 						<th>{TR_DESCRIPTION}</th>
 						<th>{TR_STATUS}</th>
+						<th>{TR_ACTIONS}</th>
 					</tr>
 					</thead>
 					<tfoot>
@@ -61,6 +63,7 @@
 						<th>{TR_PLUGIN}</th>
 						<th>{TR_DESCRIPTION}</th>
 						<th>{TR_STATUS}</th>
+						<th>{TR_ACTIONS}</th>
 					</tr>
 					</tfoot>
 					<tbody>
@@ -69,14 +72,6 @@
 						<td><input type='checkbox' name='checked[]' value="{PLUGIN_NAME}"/></td>
 						<td>
 							<p><strong>{PLUGIN_NAME}</strong></p>
-							<!-- BDP: plugin_activate_link -->
-							<a class="icon i_open" href="settings_plugins.php?activate={PLUGIN_NAME}" title="{TR_ACTIVATE_TOOLTIP}">{TR_ACTIVATE}</a>
-							<!-- EDP: plugin_activate_link -->
-
-							<!-- BDP: plugin_deactivate_link -->
-							<a class="icon i_close" href="settings_plugins.php?deactivate={PLUGIN_NAME}" title="{TR_DEACTIVATE_TOOLTIP}">{TR_DEACTIVATE}</a>
-							<a class="icon i_change_password" href="settings_plugins.php?protect={PLUGIN_NAME}" title="{TR_PROTECT_TOOLTIP}">{TR_PROTECT}</a>
-							<!-- EDP: plugin_deactivate_link -->
 						</td>
 						<td>
 							<p>{PLUGIN_DESCRIPTION}</p>
@@ -85,6 +80,17 @@
 							</span>
 						</td>
 						<td>{PLUGIN_STATUS}</td>
+						<td>
+							<!-- BDP: plugin_activate_link -->
+							<a style="vertical-align: middle" class="icon i_open" href="settings_plugins.php?activate={PLUGIN_NAME}" title="{TR_ACTIVATE_TOOLTIP}">{TR_ACTIVATE}</a>
+							<!-- EDP: plugin_activate_link -->
+
+							<!-- BDP: plugin_deactivate_link -->
+							<!--<a style="vertical-align: middle" class="icon i_open" href="settings_plugins.php?update={PLUGIN_NAME}" title="{TR_UPDATE_TOOLTIP}">{TR_UPDATE}</a>-->
+							<a style="vertical-align: middle" class="icon i_close" href="settings_plugins.php?deactivate={PLUGIN_NAME}" title="{TR_DEACTIVATE_TOOLTIP}">{TR_DEACTIVATE}</a>
+							<a style="vertical-align: middle" class="icon i_change_password" href="settings_plugins.php?protect={PLUGIN_NAME}" title="{TR_PROTECT_TOOLTIP}">{TR_PROTECT}</a>
+							<!-- EDP: plugin_deactivate_link -->
+						</td>
 					</tr>
 					<!-- EDP: plugin_block -->
 					</tbody>
@@ -93,6 +99,7 @@
 					<select name="bulkActions" id="bulkActionsBottom">
 						<option value="dummy">{TR_BULK_ACTIONS}</option>
 						<option value="activate">{TR_ACTIVATE}</option>
+						<!--<option value="install">{TR_UPDATE}</option>-->
 						<option value="deactivate">{TR_DEACTIVATE}</option>
 						<option value="protect">{TR_PROTECT}</option>
 					</select>
@@ -105,3 +112,20 @@
 				<button type="button" name="updatePluginList">{TR_UPDATE_PLUGIN_LIST}</button>
 			</div>
 
+			<br /><br/>
+
+			<h2 class="plugin"><span>{TR_PLUGIN_UPLOAD}</span></h2>
+			<form name="pluginsUploadFrm" action="settings_plugins.php" method="post" enctype="multipart/form-data">
+				<table class="firstColFixed">
+					<tr>
+						<th colspan="2">{TR_PLUGIN_UPLOAD}</th>
+					</tr>
+					<tr>
+						<td>{TR_PLUGIN_ARCHIVE}<span class="upload_help icon i_help" title="{TR_PLUGIN_ARCHIVE_TOOLTIP}" style="vertical-align: middle;">Help</span></td>
+						<td>
+							<input type="file" name="pluginArchive" />
+							<input type="submit" class="frm-button" value="{TR_UPLOAD}"/>
+						</td>
+					</tr>
+				</table>
+			</form>
