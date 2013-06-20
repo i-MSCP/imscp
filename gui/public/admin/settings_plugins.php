@@ -376,7 +376,7 @@ $tpl->define_dynamic(
 
 $tpl->assign(
 	array(
-		'TR_PAGE_TITLE' => tr('Admin / Settings / Plugin management'),
+		'TR_PAGE_TITLE' => tr('Admin / Settings / Plugins management'),
 		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => layout_getUserLogo(),
 		'DATATABLE_TRANSLATIONS' => getDataTablesPluginTranslations(),
@@ -402,7 +402,8 @@ $tpl->assign(
 		'TR_UPDATE_PLUGIN_LIST' => tr('Update plugin list'),
 		'TR_APPLY' => tr('Apply'),
 
-		'TR_PLUGIN_UPLOAD' => tr('Plugin Upload'),
+		'TR_PLUGIN_UPLOAD' => tr('Plugins Upload'),
+		'TR_UPLOAD' => tr('Upload'),
 		'TR_PLUGIN_ARCHIVE' => tr('Plugin archive'),
 		'TR_PLUGIN_ARCHIVE_TOOLTIP' => 'Only tar.gz, tar.bz2 and zip archives are accepted.',
 		'TR_UPLOAD' => tr('Upload')

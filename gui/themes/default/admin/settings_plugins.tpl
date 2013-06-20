@@ -118,7 +118,7 @@
 			<form name="pluginsUploadFrm" action="settings_plugins.php" method="post" enctype="multipart/form-data">
 				<table class="firstColFixed">
 					<tr>
-						<th colspan="2">{TR_PLUGIN_UPLOAD}</th>
+						<th colspan="2">{TR_UPLOAD}</th>
 					</tr>
 					<tr>
 						<td>{TR_PLUGIN_ARCHIVE}<span class="upload_help icon i_help" title="{TR_PLUGIN_ARCHIVE_TOOLTIP}" style="vertical-align: middle;">Help</span></td>
