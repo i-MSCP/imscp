@@ -528,6 +528,7 @@ table .icon {float: none;}
 .i_prev { background-image: url(../images/icons/prev.png);}
 .i_prev_gray {background-image: url(../images/icons/prev_gray.png);}
 .i_reload { background-image: url(../images/icons/reload.png);}
+.i_refresh { background-image: url(../images/icons/arrow_refresh.png);}
 .i_show_alias {background-image: url(../images/icons/show_alias.png);}
 .i_stats {background-image: url(../images/icons/stats.png);}
 .i_user {background-image: url(../images/icons/user.png);}

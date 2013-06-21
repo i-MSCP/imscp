@@ -38,7 +38,7 @@
 					<select name="bulkActions" id="bulkActionsTop">
 						<option value="dummy">{TR_BULK_ACTIONS}</option>
 						<option value="activate">{TR_ACTIVATE}</option>
-						<!--<option value="install">{TR_UPDATE}</option>-->
+						<option value="install">{TR_REINSTALL}</option>
 						<option value="deactivate">{TR_DEACTIVATE}</option>
 						<option value="protect">{TR_PROTECT}</option>
 					</select>
@@ -85,8 +85,11 @@
 							<a style="vertical-align: middle" class="icon i_open" href="settings_plugins.php?activate={PLUGIN_NAME}" title="{TR_ACTIVATE_TOOLTIP}">{TR_ACTIVATE}</a>
 							<!-- EDP: plugin_activate_link -->
 
+							<!-- BDP: plugin_reinstall_link -->
+							<a style="vertical-align: middle" class="icon i_refresh" href="settings_plugins.php?reinstall={PLUGIN_NAME}" title="{TR_REINSTALL_TOOLTIP}">{TR_REINSTALL}</a>
+							<!-- EDP: plugin_reinstall_link -->
+
 							<!-- BDP: plugin_deactivate_link -->
-							<!--<a style="vertical-align: middle" class="icon i_open" href="settings_plugins.php?update={PLUGIN_NAME}" title="{TR_UPDATE_TOOLTIP}">{TR_UPDATE}</a>-->
 							<a style="vertical-align: middle" class="icon i_close" href="settings_plugins.php?deactivate={PLUGIN_NAME}" title="{TR_DEACTIVATE_TOOLTIP}">{TR_DEACTIVATE}</a>
 							<a style="vertical-align: middle" class="icon i_change_password" href="settings_plugins.php?protect={PLUGIN_NAME}" title="{TR_PROTECT_TOOLTIP}">{TR_PROTECT}</a>
 							<!-- EDP: plugin_deactivate_link -->
@@ -99,7 +102,7 @@
 					<select name="bulkActions" id="bulkActionsBottom">
 						<option value="dummy">{TR_BULK_ACTIONS}</option>
 						<option value="activate">{TR_ACTIVATE}</option>
-						<!--<option value="install">{TR_UPDATE}</option>-->
+						<option value="install">{TR_REINSTALL}</option>
 						<option value="deactivate">{TR_DEACTIVATE}</option>
 						<option value="protect">{TR_PROTECT}</option>
 					</select>

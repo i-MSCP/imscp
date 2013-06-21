@@ -118,9 +118,6 @@ function admin_pluginManagerTrStatus($rawPluginStatus)
 		case 'install':
 			return tr('Install in progress...');
 			break;
-//		case 'update':
-//			return tr('Update in progress...');
-//			break;
 		case 'uninstall':
 			return tr('Uninstall in progress...');
 			break;
@@ -179,7 +176,7 @@ function admin_pluginManagerGeneratePluginList($tpl, $pluginManager)
 				} elseif ($pluginManager->isDeactivated($pluginName)) {
 					$tpl->assign('PLUGIN_DEACTIVATE_LINK', '');
 					$tpl->parse('PLUGIN_ACTIVATE_LINK', 'plugin_activate_link');
-				} else { # Install, Update and Unknown status cases
+				} else { # Install, and Unknown status cases
 					$tpl->assign('PLUGIN_DEACTIVATE_LINK', '');
 					$tpl->assign('PLUGIN_ACTIVATE_LINK', '');
 				}
@@ -284,6 +281,17 @@ $pluginManager = iMSCP_Registry::get('pluginManager');
 if (isset($_GET['updatePluginList'])) {
 	admin_pluginManagerUpdatePluginList($pluginManager);
 	redirectTo('settings_plugins.php');
+} elseif (isset($_GET['reinstall'])) {
+	$pluginName = clean_input($_GET['reinstall']);
+
+	if($pluginManager->isInstallable($pluginName)) {
+		$pluginManager->forceReinstall($pluginName);
+	} else {
+		showBadRequestErrorPage();
+	}
+
+	set_page_message(tr('Plugin successfully scheduled for reinstallation.'), 'success');
+	redirectTo('settings_plugins.php');
 } elseif (isset($_GET['activate'])) {
 	$pluginName = clean_input($_GET['activate']);
 
@@ -296,7 +304,11 @@ if (isset($_GET['updatePluginList'])) {
 			iMSCP_Events::onAfterActivatePlugin, array('pluginManager' => $pluginManager, 'pluginName' => $pluginName)
 		);
 
-		set_page_message(tr('Plugin successfully activated.'), 'success');
+		if($pluginManager->isInstallable($pluginName)) {
+			set_page_message(tr('Plugin successfully scheduled for installation and activation.'), 'success');
+		} else {
+			set_page_message(tr('Plugin successfully activated.'), 'success');
+		}
 	} else {
 		set_page_message(tr('Plugin manager was unable to activate the plugin.'), 'error');
 	}
@@ -314,7 +326,11 @@ if (isset($_GET['updatePluginList'])) {
 			iMSCP_Events::onAfterDeactivatePlugin, array('pluginManager' => $pluginManager, 'pluginName' => $pluginName)
 		);
 
-		set_page_message(tr('Plugin successfully deactivated.'), 'success');
+		if($pluginManager->isUninstallable($pluginName)) {
+			set_page_message(tr('Plugin successfully scheduled for uninstallation and deactivation.'), 'success');
+		} else {
+			set_page_message(tr('Plugin successfully deactivated.'), 'success');
+		}
 	} else {
 		set_page_message(tr('Plugin manager was unable to deactivate the plugin.'), 'error');
 	}
@@ -387,8 +403,8 @@ $tpl->assign(
 		'TR_ACTIONS' => tr('Actions'),
 		'TR_ACTIVATE' => tr('Activate'),
 		'TR_ACTIVATE_TOOLTIP' => tr('Activate this plugin'),
-		//'TR_UPDATE' => tr('Update'),
-		//'TR_UPDATE_TOOLTIP' => tr('Force plugin update'),
+		'TR_REINSTALL' => tr('Reinstall'),
+		'TR_REINSTALL_TOOLTIP' => tr('Force plugin re-installation'),
 		'TR_DEACTIVATE_TOOLTIP' => tr('Deactivate this plugin'),
 		'TR_DEACTIVATE' => tr('Deactivate'),
 		'TR_PROTECT' => tr('Protect'),
@@ -406,7 +422,6 @@ $tpl->assign(
 		'TR_UPLOAD' => tr('Upload'),
 		'TR_PLUGIN_ARCHIVE' => tr('Plugin archive'),
 		'TR_PLUGIN_ARCHIVE_TOOLTIP' => 'Only tar.gz, tar.bz2 and zip archives are accepted.',
-		'TR_UPLOAD' => tr('Upload')
 	)
 );
 
