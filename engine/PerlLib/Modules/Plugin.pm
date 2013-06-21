@@ -121,11 +121,7 @@ sub process
 	my @sql;
 
 	if($self->{'plugin_status'} eq 'enabled') {
-		$rs = $self->_executePlugin('process');
-		@sql = (
-			"UPDATE `plugin` SET `plugin_status` = ? WHERE `plugin_id` = ?",
-			($rs ? scalar getMessageByType('error') : 'enabled'), $self->{'pluginId'}
-		);
+		$rs = $self->_executePlugin('run');
 	} elsif($self->{'plugin_status'} eq 'install') {
 		$rs = $self->_executePlugin('install');
 		@sql = (
@@ -194,7 +190,7 @@ sub _executePlugin($$)
 	my $rs = 0;
 
 	# The 'install' action is scheduled either when the plugin is activated through the panel
-	# interface or when  the i-MSCP is updated.
+	# interface or when i-MSCP is updated.
 	#
 	# Each time the action 'install' is scheduled, we try to install the newest version of
 	# the plugin as provided in plugin package.
@@ -206,7 +202,7 @@ sub _executePlugin($$)
 				'filename' => "$guiPluginDir/$self->{'plugin_name'}/backend/$self->{'plugin_name'}.pm"
 			);
 
-			$rs = $file->copyFile($pluginFile);
+			$rs = $file->copyFile($pluginFile, { 'preserve' => 'no' });
 			return $rs if $rs;
 		} else {
 			error("Unable to install backend plugin: Plugin file $pluginFile not found");
@@ -219,7 +215,7 @@ sub _executePlugin($$)
 	my $pluginClass = "Plugin::$self->{'plugin_name'}";
 
 	# Any backend plugin is a singleton which receive an iMSCP::HooksManager instance
-	my $pluginInstance = $pluginClass->getInstance($self->{'hooksManager'});
+	my $pluginInstance = $pluginClass->getInstance('hooksManager' => $self->{'hooksManager'});
 
 	# If the given action is implemented in the backend plugin, we call it.
 	if($pluginInstance->can($action)) {

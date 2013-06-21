@@ -178,7 +178,7 @@ sub copyFile
 	my $dest = shift;
 	my $option = shift;
 
-	$option = {} if(ref $option ne 'HASH');
+	$option = {} unless ref $option eq 'HASH';
 
 	unless(defined $self->{'filename'}) {
 		error("Attribut 'filename' is not set");
