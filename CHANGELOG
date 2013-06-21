@@ -37,6 +37,7 @@ Tickets:
 	- Fixed #777: Bug - Autoinstaller - Two entries for imscp-autoinstall option -h
 	- Fixed #778: Bug - Autoinstaller - Exit code 5 in non-interactive mode --nopromt
 	- Fixed #781: Bug - Network card not found
+	- Fixed #812: Review - i-MSCP should true system memory values
 
 ------------------------------------------------------------------------------------------------------------------------
 1.1.0-rc2.2

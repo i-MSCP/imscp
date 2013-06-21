@@ -474,9 +474,18 @@ class iMSCP_SystemInfo {
 						case 'MemFree':
 							$ram['free'] = $this->strstrb($line[1], ' kB');
 							break;
+						case 'Buffers':
+							$ram['buffers'] = $this->strstrb($line[1], ' kB');
+							break;
+						case 'Cached':
+							$ram['cached'] = $this->strstrb($line[1], ' kB');
+							break;
 					}
 				}
-				$ram['used'] = $ram['total'] - $ram['free'];
+
+				# TODO report fixes below for freeBSD (see #812)
+				$ram['used'] = ($ram['total'] - $ram['free']) - ($ram['buffers'] + $ram['cached']);
+				$ram['free'] = $ram['total'] - $ram['used'];
 			}
 		}
 
