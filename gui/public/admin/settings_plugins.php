@@ -87,10 +87,18 @@ function admin_pluginManagerUploadPlugin()
 					$arch = new PharData($archPath);
 					$arch = $arch->decompress();
 					$archTarPath = $arch->getPath();
-				}
+					$arch = new PharData($archTarPath);
+					$arch->extractTo(PLUGINS_PATH, null, true);
+				} else {
+					$arch = new ZipArchive;
 
-				$arch = new PharData(isset($archTarPath) ? $archTarPath : $archPath);
-				$arch->extractTo(PLUGINS_PATH, null, true);
+					if ($arch->open($archPath) === TRUE) {
+						$arch->extractTo(PLUGINS_PATH);
+						$arch->close();
+					} else {
+						throw new iMSCP_Exception('Unknown error');
+					}
+				}
 			} catch (Exception $e) {
 				set_page_message(tr('Unable to extract plugin archive: %s', $e->getMessage()), 'error');
 				$ret = false;
