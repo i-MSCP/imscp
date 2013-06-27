@@ -47,14 +47,13 @@
  *
  * <b>Usage example:</b>
  * <code>
- * $parameters = array('PLUGIN_NAME' => 'billing', 'PLUGIN_VERSION' => '1.0.0');
+ * $parameters = array('PARAMETER_NAME' => 'PARAMETER_VALUE');
  * iMSCP_Registry::set('My_ConfigHandler', new iMSCP_Config_Handler($parameters));
  *
  * // From another context:
  *
  * $my_cfg = iMSCP_Registry::get('My_ConfigHandler');
- * echo $my_cfg->PLUGIN_NAME; // billing
- * echo $my_cfg->PLUGIN_VERSION; // 1.0.0
+ * echo $my_cfg->PARAMETER_NAME; // PARAMETER_VALUE
  * </code>
  *
  * See {@link iMSCP_Registry} for more information.
@@ -67,7 +66,6 @@
  * @package		iMSCP_Config
  * @author		ispCP Team
  * @author		iMSCP Team
- * @version		1.0.9
  */
 class iMSCP_Config
 {

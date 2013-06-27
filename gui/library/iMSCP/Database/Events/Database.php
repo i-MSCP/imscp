@@ -17,13 +17,13 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
- * @category	iMSCP
- * @package		iMSCP_Database
- * @package		Events
- * @copyright	2010-2013 by i-MSCP team
- * @author		Laurent Declercq <l.declercq@nuxwin.com>
- * @link		http://www.i-mscp.net i-MSCP Home Site
- * @license		http://www.gnu.org/licenses/gpl-2.0.html GPL v2
+ * @category    iMSCP
+ * @package     iMSCP_Database
+ * @package     Events
+ * @copyright   2010-2013 by i-MSCP team
+ * @author      Laurent Declercq <l.declercq@nuxwin.com>
+ * @link        http://www.i-mscp.net i-MSCP Home Site
+ * @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
  */
 
 /** @see iMSCP_Events_Event */
@@ -32,11 +32,10 @@ require_once 'iMSCP/Events/Event.php';
 /**
  * Base class for events thrown in the iMSCP_Database component.
  *
- * @category	iMSCP
- * @package		iMSCP_Database
- * @package		Events
- * @author		Laurent Declercq <l.declercq@nuxwin.com>
- * @version		0.0.1
+ * @category    iMSCP
+ * @package     iMSCP_Database
+ * @package     Events
+ * @author      Laurent Declercq <l.declercq@nuxwin.com>
  */
 class iMSCP_Database_Events_Database extends iMSCP_Events_Event
 {

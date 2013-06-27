@@ -36,19 +36,18 @@ require_once 'iMSCP/Database/Events/Database.php';
  * @package     iMSCP_Database
  * @package     Events
  * @author      Laurent Declercq <l.declercq@nuxwin.com>
- * @version     0.0.1
  */
 class iMSCP_Database_Events_Statement extends iMSCP_Database_Events_Database
 {
-    /**
-     * Returns a PDOstatement.
-     *
-     * @return PDOStatement
-     */
-    public function getStatement()
-    {
+	/**
+	 * Returns a PDOstatement.
+	 *
+	 * @return PDOStatement
+	 */
+	public function getStatement()
+	{
 		return $this->getParam('statement');
-    }
+	}
 
 	/**
 	 * Returns the query string.

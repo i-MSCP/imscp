@@ -17,13 +17,13 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
- * @category	iMSCP
- * @package		iMSCP_Core
- * @subpackage	Events_Listeners
- * @copyright	2010-2013 by i-MSCP team
- * @author		Laurent Declercq <l.declercq@i-mscp.net>
- * @link		http://www.i-mscp.net i-MSCP Home Site
- * @license		http://www.gnu.org/licenses/gpl-2.0.txt GPL v2
+ * @category    iMSCP
+ * @package     iMSCP_Core
+ * @subpackage  Events_Listeners
+ * @copyright   2010-2013 by i-MSCP team
+ * @author      Laurent Declercq <l.declercq@i-mscp.net>
+ * @link        http://www.i-mscp.net i-MSCP Home Site
+ * @license     http://www.gnu.org/licenses/gpl-2.0.txt GPL v2
  */
 
 /**
@@ -32,11 +32,10 @@
  * Objects of this class represent a listeners stack that belong to a particular
  * event.
  *
- * @category	iMSCP
- * @package		iMSCP_Core
- * @subpackage	Events_Listeners
- * @author		Laurent Declercq <l.declercq@i-mscp.net>
- * @version		0.0.1
+ * @category    iMSCP
+ * @package     iMSCP_Core
+ * @subpackage  Events_Listeners
+ * @author      Laurent Declercq <l.declercq@i-mscp.net>
  */
 class iMSCP_Events_Listeners_Stack implements IteratorAggregate
 {

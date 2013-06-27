@@ -41,6 +41,21 @@ require_once  'iMSCP/Config/Handler.php';
  * iMSCP_Config_Handler adapter class to handle configuration parameters that are stored in a flat file where each pair
  * of key-values are separated by the equal sign.
  *
+ * @property string ITEM_OK_STATUS ok status
+ * @property string ITEM_INSTALLED_STATUS installed status
+ * @property string ITEM_UNINSTALLED_STATUS uninstalled status
+ * @property string ITEM_TOINSTALL_STATUS toinstall status
+ * @property string ITEM_TOUNINSTALL_STATUS touninstall status
+ * @property string ITEM_ADD_STATUS toadd status
+ * @property string ITEM_CHANGE_STATUS change status
+ * @property string ITEM_DNSCHANGE_STATUS dnschange status
+ * @property string ITEM_RESTORE_STATUS restore status
+ * @property string ITEM_DELETE_STATUS delete status
+ * @property string ITEM_ENABLED_STATUS enabled status
+ * @property string ITEM_DISABLED_STATUS disabled status
+ * @property string ITEM_TOENABLE_STATUS toenable status
+ * @property string ITEM_TODISABLE_STATUS to disable status
+ * @property string ITEM_ORDERED_STATUS ordered status
  * @property string ROOT_TEMPLATE_PATH Root templates path
  * @property string USER_INITIAL_THEME User initial theme
  * @property string LOGIN_TEMPLATE_PATH Login templates path
@@ -57,16 +72,6 @@ require_once  'iMSCP/Config/Handler.php';
  * @property bool DUMP_GUI_DEBUG If true, display some information for debugging
  * @property bool SHOW_COMPRESSION_SIZE If TRUE, show page compression info
  * @property int SESSION_TIMEOUT Session timeout
- * @property string ITEM_ADD_STATUS Status that reflect cheduled data addition
- * @property string ITEM_OK_STATUS  Status that reflect normal state
- * @property string ITEM_CHANGE_STATUS Status for scheduled data changes
- * @property string ITEM_DELETE_STATUS Status for scheduled data deletion
- * @property string ITEM_DISABLED_STATUS Status for disabled domains
- * @property string ITEM_RESTORE_STATUS Status for scheduled data restoring
- * @property string ITEM_TOENABLE_STATUS Status for scheduled enabling
- * @property string ITEM_TODISABLED_STATUS Status for scheduled disabling
- * @property string ITEM_DNSCHANGE_STATUS Status for scheduled dns change
- * @property string ITEM_ORDERED_STATUS Ordered item status
  * @property int MAX_SQL_DATABASE_LENGTH Max. length for database name
  * @property int MAX_SQL_USER_LENGTH Max. length for Sql username
  * @property int MAX_SQL_PASS_LENGTH Max. length for Sql password
@@ -140,7 +145,6 @@ require_once  'iMSCP/Config/Handler.php';
  * @property int COMPRESS_OUTPUT Tells whether or not output must be compressed
  * @property int ENABLE_SSL Tells whether or not SSL feature for customers is enabled
  * @property bool MAIN_MENU_SHOW_LABELS Tells whether or not labels must be showed for main menu links
- * @property array PLUGIN Plugins configuration
  * @property string PHPINI_OPEN_BASEDIR paths appended to the default PHP open_basedir directive of customers
  * @property string FTP_USERNAME_SEPARATOR Ftp username separator
  * @property string FILEMANAGER_TARGET Filemanager target window
@@ -157,7 +161,6 @@ require_once  'iMSCP/Config/Handler.php';
  * @package		iMSCP_Core
  * @subpackage  Config_Handler
  * @author		Laurent Declercq <l.declercq@nuxwin.com>
- * @version		0.0.7
  */
 class iMSCP_Config_Handler_File extends iMSCP_Config_Handler
 {

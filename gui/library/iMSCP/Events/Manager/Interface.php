@@ -17,13 +17,13 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
- * @category	iMSCP
- * @package		iMSCP_Events
- * @subpackage	Manager
- * @copyright	2010-2013 by i-MSCP team
- * @author		Laurent Declercq <l.declercq@nuxwin.com>
- * @link		http://www.i-mscp.net i-MSCP Home Site
- * @license		http://www.gnu.org/licenses/gpl-2.0.txt GPL v2
+ * @category    iMSCP
+ * @package     iMSCP_Events
+ * @subpackage  Manager
+ * @copyright   2010-2013 by i-MSCP team
+ * @author      Laurent Declercq <l.declercq@nuxwin.com>
+ * @link        http://www.i-mscp.net i-MSCP Home Site
+ * @license     http://www.gnu.org/licenses/gpl-2.0.txt GPL v2
  */
 
 /**
@@ -37,21 +37,20 @@
  * places in the core code or components. When a event is dispatched, the listener methods of all the listeners that
  * listens this event are executed.
  *
- * @category	iMSCP
- * @package		iMSCP_Events
- * @subpackage	Manager
- * @author		Laurent Declercq <l.declercq@nuxwin.com>
- * @version		0.0.4
+ * @category    iMSCP
+ * @package     iMSCP_Events
+ * @subpackage  Manager
+ * @author      Laurent Declercq <l.declercq@nuxwin.com>
  */
 interface iMSCP_Events_Manager_Interface
 {
 	/**
 	 * Dispatches an event to all registered listeners.
 	 *
-	 * @throws iMSCP_Events_Manager_Exception	When an listener is an object that do not implement the listener method or
-	 * 											when the listener is not a valid PHP callback
-	 * @param string $eventName					The name of the event to dispatch.
-	 * @param mixed $arguments OPTIONAL			The data to pass to the event listener method.
+	 * @throws iMSCP_Events_Manager_Exception When an listener is an object that do not implement the listener method or
+	 *                              when the listener is not a valid PHP callback
+	 * @param string $eventName The name of the event to dispatch.
+	 * @param mixed $arguments OPTIONAL The data to pass to the event listener method.
 	 *
 	 * @return iMSCP_Events_Listeners_ResponseCollection
 	 */
@@ -61,10 +60,9 @@ interface iMSCP_Events_Manager_Interface
 	 * Registers an event listener that listens on the specified events.
 	 *
 	 * @abstract
-	 * @param  string|array $eventNames		The event(s) to listen on.
-	 * @param  callable|object $listener	Listener callback or listener object.
-	 * @param  int $priority				The higher this value, the earlier an event listener will be triggered in
-	 * 										the chain.
+	 * @param  string|array $eventNames The event(s) to listen on.
+	 * @param  callable|object $listener Listener callback or listener object.
+	 * @param  int $priority The higher this value, the earlier an event listener will be triggered in the chain.
 	 * @return iMSCP_Events_Manager_Interface Provide fluent interface, returns self
 	 */
 	public function registerListener($eventNames, $listener, $priority = 1);

@@ -62,17 +62,22 @@ $config->SHOW_COMPRESSION_SIZE = 1;
 // Session timeout in minutes
 $config->SESSION_TIMEOUT = 30;
 
-// Item states
-$config->ITEM_ADD_STATUS = 'toadd';
+// Item status
 $config->ITEM_OK_STATUS = 'ok';
+$config->ITEM_INSTALLED_STATUS = 'installed';
+$config->ITEM_UNINSTALLED_STATUS = 'uninstalled';
+$config->ITEM_TOINSTALL_STATUS = 'toinstall';
+$config->ITEM_TOUNINSTALL_STATUS = 'touninstall';
+$config->ITEM_ADD_STATUS = 'toadd';
 $config->ITEM_CHANGE_STATUS = 'change';
-$config->ITEM_DELETE_STATUS = 'delete';
-$config->ITEM_DISABLED_STATUS = 'disabled';
-$config->ITEM_RESTORE_STATUS = 'restore';
-$config->ITEM_TOENABLE_STATUS = 'toenable';
-$config->ITEM_TODISABLED_STATUS = 'todisable';
-$config->ITEM_ORDERED_STATUS = 'ordered';
 $config->ITEM_DNSCHANGE_STATUS = 'dnschange';
+$config->ITEM_RESTORE_STATUS = 'restore';
+$config->ITEM_DELETE_STATUS = 'delete';
+$config->ITEM_ENABLED_STATUS = 'enabled';
+$config->ITEM_DISABLED_STATUS = 'disabled';
+$config->ITEM_TOENABLE_STATUS = 'toenable';
+$config->ITEM_TODISABLE_STATUS = 'todisable';
+$config->ITEM_ORDERED_STATUS = 'ordered';
 
 // SQL variables
 $config->MAX_SQL_DATABASE_LENGTH = 64;
@@ -231,9 +236,6 @@ $config->DATABASE_HOST = encode_idna($config->DATABASE_HOST);
 // Server traffic settings
 $config->SERVER_TRAFFIC_LIMIT = 0;
 $config->SERVER_TRAFFIC_WARN = 0;
-
-// Plugins config namespace
-$config->PLUGIN = array();
 
 // Paths appended to the default PHP open_basedir directive of customers
 $config->PHPINI_OPEN_BASEDIR = '';

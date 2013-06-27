@@ -192,7 +192,7 @@ function generate_users_list($tpl, $resellerId)
 					$stmt->fields['domain_status'] == $cfg->ITEM_RESTORE_STATUS ||
 					$stmt->fields['domain_status'] == $cfg->ITEM_CHANGE_STATUS ||
 					$stmt->fields['domain_status'] == $cfg->ITEM_TOENABLE_STATUS ||
-					$stmt->fields['domain_status'] == $cfg->ITEM_TODISABLED_STATUS ||
+					$stmt->fields['domain_status'] == $cfg->ITEM_TODISABLE_STATUS ||
 					$stmt->fields['domain_status'] == $cfg->ITEM_DELETE_STATUS
 				)
 			) {

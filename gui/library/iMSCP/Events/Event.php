@@ -17,12 +17,12 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
- * @category	iMSCP
- * @package		iMSCP_Events
- * @copyright	2010-2013 by i-MSCP team
- * @author		Laurent Declercq <l.declercq@i-mscp.net>
- * @link		http://www.i-mscp.net i-MSCP Home Site
- * @license		http://www.gnu.org/licenses/gpl-2.0.txt GPL v2
+ * @category    iMSCP
+ * @package     iMSCP_Events
+ * @copyright   2010-2013 by i-MSCP team
+ * @author      Laurent Declercq <l.declercq@i-mscp.net>
+ * @link        http://www.i-mscp.net i-MSCP Home Site
+ * @license     http://www.gnu.org/licenses/gpl-2.0.txt GPL v2
  */
 
 /**
@@ -32,10 +32,9 @@
  *
  * Note: Most part of this code was borrowed to Zend Framework 2.
  *
- * @category	iMSCP
- * @package		iMSCP_Events
- * @author		Laurent Declercq <l.declercq@i-mscp.net>
- * @version		0.0.2
+ * @category    iMSCP
+ * @package     iMSCP_Events
+ * @author      Laurent Declercq <l.declercq@i-mscp.net>
  */
 class iMSCP_Events_Event implements iMSCP_Events_Description
 {
@@ -86,6 +85,7 @@ class iMSCP_Events_Event implements iMSCP_Events_Description
 	 *
 	 * Overwrites parameters
 	 *
+	 * @throws iMSCP_Events_Exception
 	 * @param  array|ArrayAccess|object $params
 	 * @return iMSCP_Events_Event Provides fluent interface, returns self
 	 */

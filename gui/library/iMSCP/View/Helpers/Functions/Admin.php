@@ -388,7 +388,7 @@ function gen_user_list($tpl){
 					$rs->fields['domain_status'] == $cfg->ITEM_RESTORE_STATUS ||
 					$rs->fields['domain_status'] == $cfg->ITEM_CHANGE_STATUS ||
 					$rs->fields['domain_status'] == $cfg->ITEM_TOENABLE_STATUS ||
-					$rs->fields['domain_status'] == $cfg->ITEM_TODISABLED_STATUS ||
+					$rs->fields['domain_status'] == $cfg->ITEM_TODISABLE_STATUS ||
 					$rs->fields['domain_status'] == $cfg->ITEM_DELETE_STATUS
 				)
 			) {

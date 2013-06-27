@@ -198,7 +198,7 @@ function translate_dmn_status($status)
 			return tr('Suspended');
 		case $cfg->ITEM_TOENABLE_STATUS:
 			return tr('Being enabled');
-		case $cfg->ITEM_TODISABLED_STATUS:
+		case $cfg->ITEM_TODISABLE_STATUS:
 			return tr('Being suspended');
 		case $cfg->ITEM_ORDERED_STATUS:
 			return tr('Awaiting approval');
@@ -340,7 +340,7 @@ function change_domain_status($customerId, $action)
 	$cfg = iMSCP_Registry::get('config');
 
 	if ($action == 'deactivate') {
-		$newStatus = $cfg->ITEM_TODISABLED_STATUS;
+		$newStatus = $cfg->ITEM_TODISABLE_STATUS;
 	} else if ($action == 'activate') {
 		$newStatus = $cfg->ITEM_TOENABLE_STATUS;
 	} else {
@@ -2304,7 +2304,21 @@ function getDataTablesPluginTranslations()
 {
 	return json_encode(
 		array(
-			'sLengthMenu' => tr('Show %s records per page', true, '_MENU_'),
+			'sLengthMenu'=> tr(
+				'Show %s records per page',
+				true,
+				'
+					<select>
+					<option value="5">5</option>
+					<option value="10">10</option>
+					<option value="15">15</option>
+					<option value="20">20</option>
+					<option value="50">50</option>
+					<option value="-1">'. tr('All', true) . '</option>
+					</select>
+				'
+			),
+			//'sLengthMenu' => tr('Show %s records per page', true, '_MENU_'),
 			'sZeroRecords' => tr('Nothing found - sorry', true),
 			'sInfo' => tr('Showing %s to %s of %s records', true, '_START_', '_END_', '_TOTAL_'),
 			'sInfoEmpty' => tr('Showing 0 to 0 of 0 records', true),
@@ -2360,4 +2374,41 @@ function showNotFoundErrorPage()
 	}
 
 	exit();
+}
+
+/**
+ * Remove the given directory recusively
+ *
+ * @param string $directory Path of directory to remove
+ * @return boolean TRUE on success, FALSE otherwise
+ */
+function utils_removeDir($directory)
+{
+	$directory = rtrim($directory, '/');
+
+	if (! file_exists($directory) || ! is_dir($directory)) {
+		return false;
+	} elseif (is_readable($directory)) {
+		$handle = opendir($directory);
+
+		while (false !== ($item = readdir($handle))) {
+			if ($item != '.' && $item != '..') {
+				$path = $directory . '/' . $item;
+
+				if (is_dir($path)) {
+					utils_removeDir($path);
+				} else {
+					unlink($path);
+				}
+			}
+		}
+
+		closedir($handle);
+
+		if (!rmdir($directory)) {
+			return false;
+		}
+	}
+
+	return true;
 }
