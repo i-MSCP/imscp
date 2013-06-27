@@ -133,8 +133,7 @@ sub postinstall
 	my $rs = $self->{'hooksManager'}->trigger('beforeHttpdPostInstall', 'apache_php_fpm');
 	return $rs if $rs;
 
-	$self->{'startPhpFpm'} = 'yes';
-	$self->{'startApache'} = 'yes';
+	$self->{'start'} = 'yes';
 
 	$self->{'hooksManager'}->trigger('afterHttpdPostInstall', 'apache_php_fpm');
 }
@@ -257,8 +256,7 @@ sub addUser($$)
 	$rs = $apacheUName->addToGroup($data->{'GROUP'});
 	return $rs if $rs;
 
-	$self->{'restartPhpFpm'} = 'yes';
-	$self->{'restartApache'} = 'yes';
+	$self->{'restart'} = 'yes';
 
 	$self->{'hooksManager'}->trigger('afterHttpdAddUser', $data);
 }
@@ -333,8 +331,7 @@ sub delUser($$)
 	$rs = $apacheUName->removeFromGroup($data->{'GROUP'});
 	return $rs if $rs;
 
-	$self->{'restartPhpFpm'} = 'yes';
-	$self->{'restartApache'} = 'yes';
+	$self->{'restart'} = 'yes';
 
 	$self->{'hooksManager'}->trigger('afterHttpdDelUser', $data);
 }
@@ -366,8 +363,7 @@ sub addDmn($$)
 	$rs = $self->_addFiles($data) if $data->{'FORWARD'} eq 'no';
 	return $rs if $rs;
 
-	$self->{'restartPhpFpm'} = 'yes';
-	$self->{'restartApache'} = 'yes';
+	$self->{'restart'} = 'yes';
 
 	delete $self->{'data'};
 
@@ -439,8 +435,7 @@ sub disableDmn($$)
 	$rs = $self->enableSite("$data->{'DOMAIN_NAME'}.conf");
 	return $rs if $rs;
 
-	$self->{'restartPhpFpm'} = 'yes';
-	$self->{'restartApache'} = 'yes';
+	$self->{'restart'} = 'yes';
 
 	delete $self->{'data'};
 
@@ -564,8 +559,7 @@ sub delDmn($$)
 		}
 	}
 
-	$self->{'restartPhpFpm'} = 'yes';
-	$self->{'restartApache'} = 'yes';
+	$self->{'restart'} = 'yes';
 
 	delete $self->{'data'};
 
@@ -599,8 +593,7 @@ sub addSub($$)
 	$rs = $self->_addFiles($data) if $data->{'FORWARD'} eq 'no';
 	return $rs if $rs;
 
-	$self->{'restartPhpFpm'} = 'yes';
-	$self->{'restartApache'} = 'yes';
+	$self->{'restart'} = 'yes';
 
 	delete $self->{'data'};
 
@@ -1074,7 +1067,7 @@ sub addIps($$)
 	$rs = $self->enableSite('00_nameserver.conf');
 	return $rs if $rs;
 
-	$self->{'restartApache'} = 'yes';
+	$self->{'restart'} = 'yes';
 
 	delete $self->{'data'};
 
@@ -1513,7 +1506,7 @@ sub enableSite($$)
 			error($stderr) if $stderr && $rs;
 			return $rs if $rs;
 
-			$self->{'restartApache'} = 'yes';
+			$self->{'restart'} = 'yes';
 		} else {
 			warning("Site $_ doesn't exists");
 		}
@@ -1548,7 +1541,7 @@ sub disableSite($$)
 			error($stderr) if $stderr && $rs;
 			return $rs if $rs;
 
-			$self->{'restartApache'} = 'yes';
+			$self->{'restart'} = 'yes';
 		} else {
 			warning("Site $_ doesn't exists");
 		}
@@ -1580,7 +1573,7 @@ sub enableMod($$)
 	error($stderr) if $stderr && $rs;
 	return $rs if $rs;
 
-	$self->{'restartApache'} = 'yes';
+	$self->{'restart'} = 'yes';
 
 	$self->{'hooksManager'}->trigger('afterHttpdEnableMod', $modules);
 }
@@ -1608,26 +1601,9 @@ sub disableMod($$)
 	error($stderr) if $stderr && $rs;
 	return $rs if $rs;
 
-	$self->{'restartApache'} = 'yes';
+	$self->{'restart'} = 'yes';
 
 	$self->{'hooksManager'}->trigger('afterHttpdDisableMod', $modules);
-}
-
-=item forceRestartPhpFpm()
-
- Schedule PHP FPM restart.
-
- Return int 0
-
-=cut
-
-sub forceRestartPhpFpm
-{
-	my $self = shift;
-
-	$self->{'forceRestartPhpFpm'} = 'yes';
-
-	0;
 }
 
 =item startPhpFpm()
@@ -1722,7 +1698,7 @@ sub forceRestartApache
 {
 	my $self = shift;
 
-	$self->{'forceRestartApache'} = 'yes';
+	$self->{'forceRestart'} = 'yes';
 
 	0;
 }
@@ -2328,16 +2304,12 @@ END
 	my $trafficDir = "$self::apacheConfig{'APACHE_LOG_DIR'}/traff";
 	my $rs = 0;
 
-	if($self->{'startPhpFpm'} && $self->{'startPhpFpm'} eq 'yes') {
-		$rs = $self->startPhpFpm();
-	} elsif($self->{'restartPhpFpm'} && $self->{'restartPhpFpm'} eq 'yes') {
-		$rs = $self->restartPhpFpm();
-	}
-
-	if($self->{'startApache'} && $self->{'startApache'} eq 'yes') {
-		$rs |= $self->startApache();
-	} elsif($self->{'restartApache'} && $self->{'restartApache'} eq 'yes') {
-		$rs |= $self->restartApache();
+	if($self->{'start'} && $self->{'start'} eq 'yes') {
+		$rs = $self->startApache();
+		$rs |= $self->startPhpFpm();
+	} elsif($self->{'restart'} && $self->{'restart'} eq 'yes') {
+		$rs = $self->restartApache();
+		$rs |= $self->restartPhpFpm();
 	}
 
 	$rs |= iMSCP::Dir->new('dirname' => "$trafficDir.old")->remove() if -d "$trafficDir.old";
