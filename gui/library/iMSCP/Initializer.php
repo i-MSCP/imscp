@@ -139,9 +139,6 @@ class iMSCP_Initializer
 		// Include path
 		$this->_setIncludePath();
 
-		// initialize the debug bar
-		$this->initializeDebugBar();
-
 		// Sets encryption keys
 		$this->_setEncryptionKeys();
 
@@ -602,46 +599,14 @@ class iMSCP_Initializer
 	}
 
 	/**
-	 * Initialize Debug bar.
-	 *
-	 * Note: Each Debug bar plugin listens specfics events. They will auto-registered on the events manager by the debug
-	 * bar component.
-	 *
-	 * @return void
-	 */
-	public function initializeDebugBar()
-	{
-		if (isset($this->_config->DEBUG) && $this->_config->DEBUG) {
-			iMSCP_Registry::set(
-				'debugBar',
-				new iMSCP_Debug_Bar(
-					iMSCP_Events_Manager::getInstance(),
-					array(
-						// Debug information about variables such as $_GET, $_POST...
-						new iMSCP_Debug_Bar_Plugin_Variables(),
-						// Debug information about script execution time
-						new iMSCP_Debug_Bar_Plugin_Timer(),
-						// Debug information about memory consumption
-						new iMSCP_Debug_Bar_Plugin_Memory(),
-						// Debug information about all included files
-						new iMSCP_Debug_Bar_Plugin_Files(),
-						// Debug information about all queries made during a script exection
-						// and their execution time.
-						new iMSCP_Debug_Bar_Plugin_Database()
-					)
-				)
-			);
-		}
-	}
-
-	/**
 	 * Initialize action plugins.
 	 *
 	 * @return void
 	 */
 	protected function _initializeActionPlugins()
 	{
-		$pluginManager = new iMSCP_Plugin_Manager(PLUGINS_PATH);
+		/** @var iMSCP_Plugin_Manager $pluginManager */
+		$pluginManager = iMSCP_Registry::set('pluginManager', new iMSCP_Plugin_Manager(PLUGINS_PATH));
 		$pluginList = $pluginManager->getPluginList('Action');
 
 		if (!empty($pluginList)) {
@@ -654,9 +619,6 @@ class iMSCP_Initializer
 				}
 			}
 		}
-
-		// Register the plugin manager for further usage
-		iMSCP_Registry::set('pluginManager', $pluginManager);
 	}
 
 	/**
