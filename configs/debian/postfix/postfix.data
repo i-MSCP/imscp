@@ -48,6 +48,8 @@ POSTFIX_USER = postfix
 
 POSTFIX_GROUP = postfix
 
+CMD_POSTCONF = /usr/sbin/postconf
+
 CMD_POSTMAP = /usr/sbin/postmap
 
 CMD_NEWALIASES = /usr/bin/newaliases

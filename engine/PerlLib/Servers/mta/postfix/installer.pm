@@ -550,10 +550,11 @@ sub buildMainCfFile
 
 	# Fix for #790
 	my ($stdout, $stderr);
-	execute('postconf -h mail_version', \$stdout, \$stderr);
+	execute("$self::postfixConfig{'CMD_POSTCONF'} -h mail_version", \$stdout, \$stderr);
 	debug($stdout) if $stdout;
-	error($stderr) if $stderr; # Only errors are sent to stderr even with 0 as exit code
-	return 1 if $stderr;
+	warning($stderr) if $stderr && ! $rs;
+	error($stderr) if $stderr && $rs;
+	return 1 if $rs;
 
 	if(defined $stdout) {
 		chomp($stdout);
