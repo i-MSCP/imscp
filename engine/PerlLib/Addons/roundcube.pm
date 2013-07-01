@@ -139,20 +139,22 @@ sub delMail
 		my $database = iMSCP::Database->factory();
 		$database->set('DATABASE_NAME', $roundcubeDbName);
 		$rs = $database->connect();
-		return $rs if $rs;
 
-		$rs = $database->doQuery('dummy', 'DELETE FROM `users` WHERE `username` = ?', $data->{'MAIL_ADDR'});
-		unless(ref $rs eq 'HASH') {
-			error("Unable to remove mail user '$data->{'MAIL_ADDR'}' from the roundcube database: $rs");
-			return $rs;
+		if(!$rs) {
+			$rs = $database->doQuery('dummy', 'DELETE FROM `users` WHERE `username` = ?', $data->{'MAIL_ADDR'});
+			unless(ref $rs eq 'HASH') {
+				error("Unable to remove mail user '$data->{'MAIL_ADDR'}' from roundcube database: $rs");
+				$rs = 1;
+			}
+		} else {
+			error($rs);
+			$rs = 1;
 		}
 
 		# Restore connection to i-MSCP database
 		$database->set('DATABASE_NAME', $main::imscpConfig{'DATABASE_NAME'});
-		$rs = $database->connect();
-		if($rs) {
-			error("Unable to restore connection to i-MSCP database: $rs");
-			$rs = 1;
+		if($database->connect()) {
+			fatal("Unable to restore connection to i-MSCP database: $rs");
 		}
 	}
 

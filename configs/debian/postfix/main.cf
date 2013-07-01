@@ -99,8 +99,10 @@ smtpd_data_restrictions = reject_multi_recipient_bounce,
 {SSL}smtpd_tls_auth_only = no
 {SSL}smtpd_tls_received_header = yes
 
-# AMaViS parameters; activate, if available/used
+# AMaViS parameters
+# Uncomment two lines below when using AMaViS
 #content_filter = amavis:[127.0.0.1]:10024
+#receive_override_options=no_address_mappings
 
 # Quota support; activate, if available/used
 #virtual_create_maildirsize = yes

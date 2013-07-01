@@ -91,20 +91,18 @@ sub process
 
 	my @sql;
 
-	if($self->{status} =~ /^toadd|change|toenable$/) {
+	if($self->{'status'} =~ /^toadd|change|toenable$/) {
 		$rs = $self->add();
 		@sql = (
 			"UPDATE `mail_users` SET `status` = ? WHERE `mail_id` = ?",
-			($rs ? scalar getMessageByType('error') : 'ok'),
-			$self->{'mail_id'}
+			($rs ? scalar getMessageByType('error') : 'ok'), $self->{'mail_id'}
 		);
 	} elsif($self->{'status'} eq 'delete') {
 		$rs = $self->delete();
 		if($rs){
 			@sql = (
 				"UPDATE `mail_users` SET `status` = ? WHERE `mail_id` = ?",
-				scalar getMessageByType('error'),
-				$self->{'mail_id'}
+				scalar getMessageByType('error'), $self->{'mail_id'}
 			);
 		} else {
 			@sql = ("DELETE FROM `mail_users` WHERE `mail_id` = ?", $self->{'mail_id'});
@@ -113,8 +111,7 @@ sub process
 		$rs = $self->disable();
 		@sql = (
 			"UPDATE `mail_users` SET `status` = ? WHERE `mail_id` = ?",
-			($rs ? scalar getMessageByType('error') : 'disabled'),
-			$self->{'mail_id'}
+			($rs ? scalar getMessageByType('error') : 'disabled'), $self->{'mail_id'}
 		);
 	}
 
