@@ -131,11 +131,13 @@ sub delMail
 {
 	my $self = shift;
 	my $data = shift;
+
+	my $roundcubeDbName = $main::imscpConfig{'DATABASE_NAME'} . '_roundcube';
 	my $rs = 0;
 
 	if($data->{'MAIL_TYPE'} =~ /_mail/) {
 		my $database = iMSCP::Database->factory();
-		$database->set('DATABASE_NAME', 'imscp_roundcube');
+		$database->set('DATABASE_NAME', $roundcubeDbName);
 		$rs = $database->connect();
 		return $rs if $rs;
 
