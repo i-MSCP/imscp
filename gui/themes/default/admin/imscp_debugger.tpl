@@ -117,7 +117,7 @@
 			</tr>
 			<!-- BDP: htaccess_message -->
 			<tr>
-				<td>{TR_MAIL_MESSAGE}</td>
+				<td>{TR_HTACCESS_MESSAGE}</td>
 			</tr>
 			<!-- EDP: htaccess_message -->
 			<!-- BDP: htaccess_list -->
@@ -161,7 +161,7 @@
 			</tr>
 			<!-- BDP: plugins_message -->
 			<tr>
-				<td>{TR_MAIL_MESSAGE}</td>
+				<td>{TR_PLUGIN_MESSAGE}</td>
 			</tr>
 			<!-- EDP: plugin_message -->
 			<!-- BDP: plugin_list -->
