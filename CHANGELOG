@@ -7,6 +7,9 @@ Git Master
 GUI:
 	- Added plugin archive upload feature (tar.gz, tar.bz2 and zip)
 
+TOOLS:
+	- Fixed: Awstats - Forbidden access (Ubuntu Lucid)
+
 Tickets:
 	- Fixed #782: Bug - Notice: A non well formed numeric value encountered...
 	- Fixed #786: Bug - Httpd Server impl. - apache_php_fpm. - No input file specified

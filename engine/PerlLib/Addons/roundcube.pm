@@ -141,9 +141,9 @@ sub delMail
 		$rs = $database->connect();
 
 		if(!$rs) {
-			$rs = $database->doQuery('dummy', 'DELETE FROM `users` WHERE `username` = ?', $data->{'MAIL_ADDR'});
-			unless(ref $rs eq 'HASH') {
-				error("Unable to remove mail user '$data->{'MAIL_ADDR'}' from roundcube database: $rs");
+			my $rdata = $database->doQuery('dummy', 'DELETE FROM `users` WHERE `username` = ?', $data->{'MAIL_ADDR'});
+			unless(ref $rdata eq 'HASH') {
+				error("Unable to remove mail user '$data->{'MAIL_ADDR'}' from roundcube database: $rdata");
 				$rs = 1;
 			}
 		} else {
