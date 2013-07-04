@@ -312,12 +312,8 @@ EOF
 	} else { # Dynamic mode
 		return <<EOF;
     ProxyRequests Off
-    <Proxy *>
-        Order deny,allow
-        Allow from all
-    </Proxy>
-        ProxyPass /{WEBSTATS_RPATH} http://localhost/{WEBSTATS_RPATH}/{DOMAIN_NAME}
-        ProxyPassReverse /{WEBSTATS_RPATH} http://localhost/{WEBSTATS_RPATH}/{DOMAIN_NAME}
+    ProxyPass /{WEBSTATS_RPATH} http://localhost/{WEBSTATS_RPATH}/{DOMAIN_NAME}
+    ProxyPassReverse /{WEBSTATS_RPATH} http://localhost/{WEBSTATS_RPATH}/{DOMAIN_NAME}
     <Location /{WEBSTATS_RPATH}>
         <IfModule mod_rewrite.c>
             RewriteEngine on
