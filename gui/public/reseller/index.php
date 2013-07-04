@@ -65,7 +65,7 @@ function reseller_generateSupportQuestionsMessage()
 	$nbQuestions = $stmt->fields['nbQuestions'];
 
 	if ($nbQuestions != 0) {
-		set_page_message(tr('You have received %s new support questions.', '<strong>' . $nbQuestions . '</strong>'));
+		set_page_message(tr('You have received %s new support questions.', '<strong>' . $nbQuestions . '</strong>'), 'info');
 	}
 }
 
@@ -96,7 +96,7 @@ function reseller_generateOrdersAliasesMessage()
 	$nbOrdersAliases = $stmt->fields['nbOrdersAliases'];
 
 	if ($nbOrdersAliases) {
-		set_page_message(tr('You have %d new domain alias %s.', $nbOrdersAliases, ($nbOrdersAliases > 1) ? tr('orders') : tr('order')));
+		set_page_message(tr('You have %d new domain alias %s.', $nbOrdersAliases, ($nbOrdersAliases > 1) ? tr('orders') : tr('order')), 'info');
 	}
 }
 

@@ -236,7 +236,7 @@ function updateTicket($ticketId, $userId, $urgency, $subject, $message, $ticketL
             return true;
         } catch (PDOException $e) {
             $db->rollBack();
-            set_page_message('System was unable to create ticket answer.');
+            set_page_message('System was unable to create ticket answer.', 'error');
             write_log('System was unable to create ticket answer: ' . $e->getMessage(), E_USER_ERROR);
             return false;
         }

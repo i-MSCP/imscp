@@ -54,7 +54,7 @@ function admin_generatePage($tpl, $domainId)
 	$stmt = exec_query($query, $domainId);
 
 	if (!$stmt->rowCount()) {
-		set_page_message(tr('Domain not found.'));
+		set_page_message(tr('Domain not found.'), 'error');
 		redirectTo('manage_users.php');
 	}
 

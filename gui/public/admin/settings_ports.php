@@ -238,7 +238,7 @@ function admin_addUpdateServices($mode = 'add')
 		if($updateCount > 0) {
 			set_page_message(tr('%d Service(s) port was successfully updated', $updateCount), 'success');
 		} else {
-			set_page_message(tr("Nothing has been changed."));
+			set_page_message(tr('Nothing has been changed.'), 'info');
 		}
 	}
 }
@@ -279,7 +279,7 @@ function admin_showServices($tpl)
 
 	if(empty($services)) {
 		$tpl->assign('SERVICE_PORTS', '');
-		set_page_message(tr('You have no custom service ports defined.'));
+		set_page_message(tr('You have no custom service ports defined.'), 'info');
 	} else {
 		sort($services);
 

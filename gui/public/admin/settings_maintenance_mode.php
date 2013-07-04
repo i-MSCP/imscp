@@ -70,10 +70,10 @@ $selected_off = '';
 
 if ($cfg->MAINTENANCEMODE) {
 	$selected_on = $cfg->HTML_SELECTED;
-	set_page_message(tr('Maintenance mode is activated. Under this mode, only administrators can login.', 'info'));
+	set_page_message(tr('Maintenance mode is activated. Under this mode, only administrators can login.'), 'info');
 } else {
 	$selected_off = $cfg->HTML_SELECTED;
-	set_page_message(tr('Under maintenance mode, only administrators can login.', 'info'));
+	set_page_message(tr('Under maintenance mode, only administrators can login.'), 'info');
 }
 
 $tpl->assign(

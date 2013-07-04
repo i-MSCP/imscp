@@ -95,7 +95,7 @@ function admin_generateUpdateMessages()
 				'<a href="imscp_updates.php" class="link">' . tr('New i-MSCP update is available') . '</a>', 'info'
 			);
 		} elseif (iMSCP_Update_Version::getInstance()->getError() != '') {
-			set_page_message('UPDATE', iMSCP_Update_Version::getInstance()->getError());
+			set_page_message(iMSCP_Update_Version::getInstance()->getError(), 'error');
 		}
 	}
 }

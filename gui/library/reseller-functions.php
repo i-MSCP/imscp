@@ -606,7 +606,7 @@ function reseller_limits_check($resellerId, $hp)
 			if ($newAlsLimit == 0) {
 				set_page_message(tr('You have a domain aliases limit.<br />You cannot add an user with unlimited domain aliases.'), 'error');
 			} else if ($currentAlsLimit + $newAlsLimit > $maxAlsLimit) {
-				set_page_message(tr('You are exceeding you domain aliases Limit.'));
+				set_page_message(tr('You are exceeding you domain aliases Limit.'), 'error');
 			}
 		}
 	}
@@ -1122,7 +1122,7 @@ function check_ruser_data($noPass)
 	}
 
 	if($zip != '' && (strlen($zip) > 200 || is_number(!$zip))) {
-		set_page_message(tr('Incorrect post code length or syntax!'));
+		set_page_message(tr('Incorrect post code length or syntax!'), 'error');
 	}
 
 	if (Zend_Session::namespaceIsset('pageMessages')) {

@@ -613,7 +613,7 @@ if (isset($_GET['action'])) {
 	if ($_GET['action'] == 'run_engine') {
 		if ($execCount > 0) {
 			$code = send_request();
-			set_page_message(tr('Daemon returned %d as status code', $code));
+			set_page_message(tr('Daemon returned %d as status code', $code), 'info');
 		} else {
 			set_page_message(tr('Nothing to do. Daemon request has been canceled.', $code), 'warning');
 		}
