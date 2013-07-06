@@ -2,7 +2,5 @@
 
 <install>
     <folders>${SYSTEM_CONF}/database</folders>
-    <copy_config>${SYSTEM_CONF}/database/amavisd.sql</copy_config>
     <copy_config>${SYSTEM_CONF}/database/database.sql</copy_config>
-    <copy_config>${SYSTEM_CONF}/database/spamassassin.sql</copy_config>
 </install>
