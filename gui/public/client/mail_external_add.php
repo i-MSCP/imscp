@@ -205,7 +205,7 @@ function client_addExternalMailServerEntries($item)
                         $query,
                         array(
                             ($wildcardMxOnly) ? 'wildcard' : 'on',
-                            $cfg->ITEM_DNSCHANGE_STATUS,
+                            $cfg->ITEM_TOCHANGE_STATUS,
                             ltrim($dnsEntriesIds, ','),
                             $verifiedData['item_id'])
                     );
@@ -220,7 +220,7 @@ function client_addExternalMailServerEntries($item)
                         $query,
                         array(
                             ($wildcardMxOnly) ? 'wildcard' : 'on',
-                            $cfg->ITEM_DNSCHANGE_STATUS,
+                            $cfg->ITEM_TOCHANGE_STATUS,
                             ltrim($dnsEntriesIds, ','),
                             $verifiedData['item_id'])
                     );

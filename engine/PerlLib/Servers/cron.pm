@@ -132,7 +132,7 @@ sub addTask
 	$self->{'hooksManager'}->trigger('afterCronAddTask', $data);
 }
 
-sub delTask
+sub deleteTask
 {
 	my $self = shift;
 	my $data = shift;

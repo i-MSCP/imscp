@@ -324,7 +324,7 @@ sub postaddMail
 	0;
 }
 
-=item delMail()
+=item deleteMail()
 
  Delete mail account.
 
@@ -332,7 +332,7 @@ sub postaddMail
 
 =cut
 
-sub delMail
+sub deleteMail
 {
 	my $self = shift;
 	my $data = shift;

@@ -99,13 +99,13 @@ sub process
 	my @sql;
 	my $rdata;
 
-	if($self->{'admin_status'} =~ /^(toadd|change)$/) {
+	if($self->{'admin_status'} =~ /^(toadd|tochange)$/) {
 		$rs = $self->add();
 		@sql = (
 			"UPDATE `admin` SET `admin_status` = ? WHERE `admin_id` = ?",
 			($rs ? scalar getMessageByType('error') : 'ok'), $self->{'userId'}
 		);
-	} elsif($self->{'admin_status'} eq 'delete') {
+	} elsif($self->{'admin_status'} eq 'todelete') {
 		$rs = $self->delete();
 		if($rs) {
 			@sql = (

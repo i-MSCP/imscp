@@ -63,7 +63,7 @@ sub process
 		require $file;
 		my $instance = $class->factory();
 
-		$rs = $instance->delTmp() if $instance->can('delTmp');
+		$rs = $instance->deleteTmp() if $instance->can('deleteTmp');
 		return $rs if $rs;
 	}
 
@@ -75,7 +75,7 @@ sub process
 		require $file;
 
 		my $instance = $class->getInstance();
-		$rs = $instance->delTmp() if $instance->can('delTmp');
+		$rs = $instance->deleteTmp() if $instance->can('deleteTmp');
 		return $rs if $rs;
 	}
 

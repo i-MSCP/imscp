@@ -376,7 +376,7 @@ sub _pkt_add_data
 				UPDATE
 					`web_software`
 				SET
-					`software_status` = 'delete'
+					`software_status` = 'todelete'
 				WHERE
 					`software_id` = $sw_software_id
 			";
@@ -393,7 +393,7 @@ sub _pkt_add_data
 			UPDATE
 				`web_software`
 			SET
-				`software_status` = 'delete'
+				`software_status` = 'todelete'
 			WHERE
 				`software_id` = $sw_software_id
 		";

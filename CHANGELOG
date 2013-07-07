@@ -4,8 +4,22 @@
 Git Master
 ------------------------------------------------------------------------------------------------------------------------
 
+CONFIGS:
+	- Removed Amavis, ClamAV and SpamAssassin configuration (Such service must be provided as plugin)
+
+ENGINE:
+	- Fixed: unable to remove htgroup
+	- Removed 'dnschange' status
+	- Updated 'change' status to 'tochange' and 'delete' status to 'todelete'
+
 GUI:
 	- Added plugin archive upload feature (tar.gz, tar.bz2 and zip)
+	- Updated plugin API (Several BC breaks expected)
+	- Removed 'dnschange' status
+	- Updated status: 'change' to 'tochange' and 'delete' to 'todelete'
+
+SETUP:
+	- Items with status other than 'ok' and similar are not longer rebuilded on update
 
 TOOLS:
 	- Fixed: Awstats - Forbidden access (Ubuntu Lucid)

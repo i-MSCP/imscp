@@ -192,7 +192,7 @@ sub sw_mngr_engine
 			($rs, $rdata) = doSQL($sql);
 			return $rs if $rs;
 		}
-	} elsif ($sw_software_status eq 'delete') {
+	} elsif ($sw_software_status eq 'todelete') {
 		my @entry = (
 			$sw_software_archive, $sw_software_installfile, $sw_software_db, $sw_software_prefix, $sw_database,
 			$sw_database_user, $sw_database_tmp_pwd, $sw_install_username, $sw_install_password, $sw_install_email,

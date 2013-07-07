@@ -261,7 +261,7 @@ sub addUser($$)
 	$self->{'hooksManager'}->trigger('afterHttpdAddUser', $data);
 }
 
-=item delUser(\%data)
+=item deleteUser(\%data)
 
  Delete mod_cband directive snippet for the given user.
 
@@ -270,7 +270,7 @@ sub addUser($$)
 
 =cut
 
-sub delUser($$)
+sub deleteUser($$)
 {
 	my $self = shift;
 	my $data = shift;
@@ -442,16 +442,16 @@ sub disableDmn($$)
 	$self->{'hooksManager'}->trigger('afterHttpdDisableDmn', $data);
 }
 
-=item delDmn(\%data)
+=item deleteDmn(\%data)
 
- Process delDmn tasks.
+ Process deleteDmn tasks.
 
  Param hash_ref $data Reference to a hash containing data as provided by Alias|Subdomain|SubAlias modules
  Return int 0 on success, other on failure
 
 =cut
 
-sub delDmn($$)
+sub deleteDmn($$)
 {
 	my $self = shift;
 	my $data = shift;
@@ -656,16 +656,16 @@ sub disableSub($$)
 	$self->{'hooksManager'}->trigger('afterHttpdDisableSub', $data);
 }
 
-=item delSub(\%data)
+=item deleteSub(\%data)
 
- Process delSub tasks.
+ Process deleteSub tasks.
 
  Param hash_ref $data Reference to a hash containing data as provided by the module Subdomain|SubAlias
  Return int 0 on success, other on failure
 
 =cut
 
-sub delSub($$)
+sub deleteSub($$)
 {
 	my $self = shift;
 	my $data = shift;
@@ -674,7 +674,7 @@ sub delSub($$)
 
 	my $rs = $self->{'hooksManager'}->trigger('beforeHttpdDelSub', $data);
 
-	$rs = $self->delDmn($data);
+	$rs = $self->deleteDmn($data);
 	return $rs if $rs;
 
 	$self->{'hooksManager'}->trigger('afterHttpdDelSub', $data);
@@ -734,16 +734,16 @@ sub addHtuser($$)
 	0;
 }
 
-=item delHtuser(\%data)
+=item deleteHtuser(\%data)
 
- Process delHtuser tasks.
+ Process deleteHtuser tasks.
 
  Param hash_ref $data Reference to a hash containing data as provided by Htuser module
  Return int 0 on success, other on failure
 
 =cut
 
-sub delHtuser($$)
+sub deleteHtuser($$)
 {
 	my $self = shift;
 	my $data = shift;
@@ -841,16 +841,16 @@ sub addHtgroup($$)
 	0;
 }
 
-=item delHtgroup(\%data)
+=item deleteHtgroup(\%data)
 
- Process delHtgroup tasks..
+ Process deleteHtgroup tasks..
 
  Param hash_ref $data Reference to a hash containing data as provided by Htgroup module
  Return int 0 on success, other on failure
 
 =cut
 
-sub delHtgroup
+sub deleteHtgroup
 {
 	my $self = shift;
 	my $data = shift;
@@ -873,7 +873,7 @@ sub delHtgroup
 
 	$fileContent =~ s/^$data->{'HTGROUP_NAME'}:[^\n]*\n//gim;
 
-	$rs = set($fileContent);
+	$rs = $file->set($fileContent);
 	return $rs if $rs;
 
 	$rs = $self->{'hooksManager'}->trigger('afterHttpdDelHtgroup', \$fileContent, $data);
@@ -955,16 +955,16 @@ sub addHtaccess
 	}
 }
 
-=item delHtaccess(\%data)
+=item deleteHtaccess(\%data)
 
- Process delHtaccess tasks.
+ Process deleteHtaccess tasks.
 
  Param hash_ref $data Reference to a hash containing data as provided by Htaccess module
  Return int 0 on success, other on failure
 
 =cut
 
-sub delHtaccess($$)
+sub deleteHtaccess($$)
 {
 	my $self = shift;
 	my $data = shift;
@@ -1359,7 +1359,7 @@ sub getTraffic($$)
 	$traff;
 }
 
-=item delOldLogs()
+=item deleteOldLogs()
 
  Remove Apache logs (logs older than 1 year).
 
@@ -1367,7 +1367,7 @@ sub getTraffic($$)
 
 =cut
 
-sub delOldLogs
+sub deleteOldLogs
 {
 	my $self = shift;
 
@@ -1391,7 +1391,7 @@ sub delOldLogs
 	$self->{'hooksManager'}->trigger('afterHttpdDelOldLogs');
 }
 
-=item delTmp()
+=item deleteTmp()
 
  Delete temporary files (PHP session files).
 
@@ -1399,7 +1399,7 @@ sub delOldLogs
 
 =cut
 
-sub delTmp
+sub deleteTmp
 {
 	my $self = shift;
 

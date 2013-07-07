@@ -60,7 +60,7 @@ $rs = exec_query($query, array($dmn_id, $uuser_id));
 
 $uname = $rs->fields['uname'];
 
-$change_status = $cfg->ITEM_DELETE_STATUS;
+$change_status = $cfg->ITEM_TODELETE_STATUS;
 // let's delete the user from the SQL
 $query = "UPDATE `htaccess_users` SET `status` = ? WHERE `id` = ? AND `dmn_id` = ?";
 $rs = exec_query($query, array($change_status, $uuser_id, $dmn_id));
@@ -78,7 +78,7 @@ $rs = exec_query($query, $dmn_id);
 		if ($key !== false) {
 			unset($members[$key]);
 			$members = implode(",", $members);
-			$change_status = $cfg->ITEM_CHANGE_STATUS;
+			$change_status = $cfg->ITEM_TOCHANGE_STATUS;
 			$update_query = "
 				UPDATE
 					`htaccess_groups`
@@ -107,10 +107,10 @@ while (!$rs->EOF) {
 	if ($key !== false) {
 		unset($usr_id_splited[$key]);
 		if (count($usr_id_splited) == 0) {
-			$status = $cfg->ITEM_DELETE_STATUS;
+			$status = $cfg->ITEM_TODELETE_STATUS;
 		} else {
 			$usr_id = implode(",", $usr_id_splited);
-			$status = $cfg->ITEM_CHANGE_STATUS;
+			$status = $cfg->ITEM_TOCHANGE_STATUS;
 		}
 
 		$update_query = "UPDATE `htaccess` SET `user_id` = ?, `status` = ? WHERE `id` = ?";

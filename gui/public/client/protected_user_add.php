@@ -67,7 +67,7 @@ function client_addHtaccessUser($domainId)
 				return;
 			}
 
-			$status = $cfg->ITEM_ADD_STATUS;
+			$status = $cfg->ITEM_TOADD_STATUS;
 			$uname = clean_input($_POST['username']);
 			$upass = cryptPasswordWithSalt($_POST['pass']);
 

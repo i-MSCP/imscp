@@ -72,10 +72,10 @@ if (isset($_GET['id'])) {
 
 		if ($aliasId == 0) {
 			$query = "UPDATE `domain` SET `domain_status` = ? WHERE `domain_id` = ?";
-			exec_query($query, array($cfg->ITEM_DNSCHANGE_STATUS, $mainDomainId));
+			exec_query($query, array($cfg->ITEM_TOCHANGE_STATUS, $mainDomainId));
 		} else {
 			$query = "UPDATE `domain_aliasses` SET `alias_status` = ? WHERE `domain_id` = ? AND `alias_id` = ?";
-			exec_query($query, array($cfg->ITEM_DNSCHANGE_STATUS, $mainDomainId, $aliasId));
+			exec_query($query, array($cfg->ITEM_TOCHANGE_STATUS, $mainDomainId, $aliasId));
 		}
 
 		$db->commit();

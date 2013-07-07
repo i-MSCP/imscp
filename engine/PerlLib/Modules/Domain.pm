@@ -78,7 +78,7 @@ sub loadData
 				SELECT
 					`domain_ip_id` AS `ip_id`, COUNT( `domain_ip_id` ) AS `domains_on_ip`
 				FROM
-					`domain` WHERE `domain_status` != 'delete'
+					`domain` WHERE `domain_status` != 'todelete'
 				GROUP BY
 					`domain_ip_id`
 			) AS `ips_count`
@@ -114,14 +114,14 @@ sub process
 
 	my @sql;
 
-	if($self->{'domain_status'} =~ /^toadd|change|toenable|dnschange$/) {
+	if($self->{'domain_status'} =~ /^toadd|tochange|toenable$/) {
 		$rs = $self->add();
 		@sql = (
 			"UPDATE `domain` SET `domain_status` = ? WHERE `domain_id` = ?",
 			($rs ? scalar getMessageByType('error') : 'ok'),
 			$self->{'domain_id'}
 		);
-	} elsif($self->{'domain_status'} eq 'delete') {
+	} elsif($self->{'domain_status'} eq 'todelete') {
 		$rs = $self->delete();
 		if($rs) {
 			@sql = (
@@ -139,7 +139,7 @@ sub process
 			($rs ? scalar getMessageByType('error') : 'disabled'),
 			$self->{'domain_id'}
 		);
-	} elsif($self->{'domain_status'} eq 'restore') {
+	} elsif($self->{'domain_status'} eq 'torestore') {
 		$rs = $self->restore();
 		@sql = (
 			"UPDATE `domain` SET `domain_status` = ? WHERE `domain_id` = ?",
@@ -242,7 +242,7 @@ sub restore
 			# Since we are now using extended attribute to protect some folders, we must in order do the following to
 			# restore a backup:
 			#
-			# - Update status of sub, als and alssub, entities linked to the parent domain to 'restore'
+			# - Update status of sub, als and alssub, entities linked to the parent domain to 'torestore'
 			# - Un-protect user home dir (clear immutable flag recursively)
 			# - restore the files
 			# - Run the restore() parent method
@@ -263,10 +263,10 @@ sub restore
 			# TODO: Should we also update status of htuser, htgroup and htaccess entities?
 			my $database = iMSCP::Database->factory();
 
-			# Update status of any sub to 'restore'
+			# Update status of any sub to 'torestore'
 			$rdata = $database->doQuery(
 				'dummy',
-				"UPDATE `subdomain` SET `subdomain_status` = 'restore' WHERE `domain_id` = ?",
+				"UPDATE `subdomain` SET `subdomain_status` = 'torestore' WHERE `domain_id` = ?",
 				$self->{'domain_id'}
 			);
 			unless(ref $rdata eq 'HASH') {
@@ -274,10 +274,10 @@ sub restore
 				return 1;
 			}
 
-			# Update status of any als to 'restore'
+			# Update status of any als to 'torestore'
 			$rdata = $database->doQuery(
 				'dummy',
-				"UPDATE `domain_aliasses` SET `alias_status` = 'restore' WHERE `domain_id` = ?",
+				"UPDATE `domain_aliasses` SET `alias_status` = 'torestore' WHERE `domain_id` = ?",
 				$self->{'domain_id'}
 			);
 			unless(ref $rdata eq 'HASH') {
@@ -285,14 +285,14 @@ sub restore
 				return 1;
 			}
 
-			# Update status of any alssub to 'restore'
+			# Update status of any alssub to 'torestore'
 			$rdata = $database->doQuery(
 				'dummy',
 				"
 					UPDATE
 						`subdomain_alias`
 					SET
-						`subdomain_alias_status` = 'restore'
+						`subdomain_alias_status` = 'torestore'
 					WHERE
 						`alias_id` IN (SELECT `alias_id` FROM `domain_aliasses` WHERE `domain_id` = ?)
 				",
@@ -482,7 +482,7 @@ sub buildNAMEDData
 					`domain_id` = ?
 			";
 
-			$rdata = iMSCP::Database->factory()->doQuery('dummy', $sql, 'change', 'ok', $self->{'domain_id'});
+			$rdata = iMSCP::Database->factory()->doQuery('dummy', $sql, 'tochange', 'ok', $self->{'domain_id'});
 			if(ref $rdata ne 'HASH') {
 				error($rdata);
 				return 1;

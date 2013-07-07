@@ -81,7 +81,7 @@ function client_updateEntityStatus($type, $id) {
 			$query = 'UPDATE `subdomain_alias` SET `subdomain_alias_status` = ? WHERE `subdomain_alias_id` = ?';
 	}
 
-	exec_query($query, array($cfg->ITEM_CHANGE_STATUS, $id));
+	exec_query($query, array($cfg->ITEM_TOCHANGE_STATUS, $id));
 }
 
 /**
@@ -133,7 +133,7 @@ function client_generatePage($tpl, $id, $type) {
 					?, ?, ?, ?, ?, ?, ?
 				)
 			';
-			exec_query($query, array($id, $type, $_POST['pass'], $_POST['key_cert'], $_POST['cert_cert'], $_POST['ca_cert'], $cfg->ITEM_ADD_STATUS));
+			exec_query($query, array($id, $type, $_POST['pass'], $_POST['key_cert'], $_POST['cert_cert'], $_POST['ca_cert'], $cfg->ITEM_TOADD_STATUS));
 			client_updateEntityStatus($type, $id);
 			set_page_message(tr('Certificate successfully scheduled for addition or modification.'), 'success');
 			write_log($_SESSION['user_logged'] . ': added new certificate for: ' . $name, E_USER_NOTICE);
@@ -141,7 +141,7 @@ function client_generatePage($tpl, $id, $type) {
 		}
 	} elseif (isset($_POST['delete'])) {
 		$query = 'UPDATE `ssl_certs` SET `status` = ? WHERE `type` = ? AND `id` = ? ';
-		exec_query($query, array($cfg->ITEM_DELETE_STATUS, $type, $id));
+		exec_query($query, array($cfg->ITEM_TODELETE_STATUS, $type, $id));
 		client_updateEntityStatus($type, $id);
 		set_page_message(tr('Certificate sucessfully scheduled for deletion.'), 'success');
 		write_log($_SESSION['user_logged'] . ': deleted certificate for: ' . $name, E_USER_NOTICE);
@@ -167,7 +167,7 @@ function client_generatePage($tpl, $id, $type) {
 			$tpl->assign('CERT_ENABLE', '');
 		}
 
-		if (in_array($stmt->fields['status'], array($cfg->ITEM_OK_STATUS, $cfg->ITEM_DELETE_STATUS, $cfg->ITEM_ADD_STATUS, $cfg->ITEM_CHANGE_STATUS))) {
+		if (in_array($stmt->fields['status'], array($cfg->ITEM_OK_STATUS, $cfg->ITEM_TODELETE_STATUS, $cfg->ITEM_TOADD_STATUS, $cfg->ITEM_TOCHANGE_STATUS))) {
 			$status = translate_dmn_status($stmt->fields['status']);
 		} else {
 			$status = tr('Error') . ': ' . $stmt->fields['status'];

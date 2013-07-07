@@ -445,7 +445,7 @@ function get_avail_softwaredepot($tpl)
 									  'TR_SOFTWARE_RIGHTS' => '',
 									  'SOFTWARE_RIGHTS_LINK' => ''));
 				} else {
-					if ($rs->fields['swstatus'] == "delete") {
+					if ($rs->fields['swstatus'] == $cfg->ITEM_TODELETE_STATUS) {
 						$tpl->assign(array(
 										  'TR_NAME' => tr('Failure in the package. Deleting!'),
 										  'LINK_COLOR' => '#FF0000',
@@ -1200,7 +1200,7 @@ function get_avail_software_reseller($tpl, $user_id)
 										  'SW_STATUS' => tr('installing'),
 										  'SOFTWARE_ICON' => 'disabled'));
 					} else {
-						if ($rs->fields['swstatus'] == 'delete') {
+						if ($rs->fields['swstatus'] == $cfg->ITEM_TODELETE_STATUS) {
 							$tpl->assign(array(
 											  'SW_NAME' => tr('Failure in the package. Deleting!'),
 											  'LINK_COLOR' => '#FF0000',
@@ -1285,6 +1285,9 @@ function get_avail_software_reseller($tpl, $user_id)
  */
 function gen_user_software_action($software_id, $dmn_id, $tpl)
 {
+	/** @var iMSCP_Config_Handler_File $cfg */
+	$cfg = iMSCP_Registry::get('config');
+
 	$query = "SELECT `software_status` FROM `web_software_inst` WHERE `software_id` = ? AND `domain_id` = ?";
 	$stmt = exec_query($query, array($software_id, $dmn_id));
 
@@ -1298,7 +1301,7 @@ function gen_user_software_action($software_id, $dmn_id, $tpl)
 		} elseif ($stmt->fields['software_status'] == 'toadd') {
 			$software_status = 'installing';
 			$software_icon = 'disabled';
-		} elseif ($stmt->fields['software_status'] == 'delete') {
+		} elseif ($stmt->fields['software_status'] == $cfg->ITEM_TODELETE_STATUS) {
 			$software_status = 'deleting';
 			$software_icon = 'delete';
 		} else {
@@ -1350,6 +1353,8 @@ function gen_user_software_action($software_id, $dmn_id, $tpl)
  */
 function gen_software_list($tpl, $domainId, $resellerId)
 {
+	/** @var iMSCP_Config_Handler_File $cfg */
+	$cfg = iMSCP_Registry::get('config');
 
 	$query = "
 		SELECT
@@ -1380,7 +1385,7 @@ function gen_software_list($tpl, $domainId, $resellerId)
 				$del_software_action_script = "software_delete.php?id=" . $stmt->fields['software_id'];
 				$tpl->assign('DEL_SOFTWARE_ACTION', tr('Uninstall'));
 				$tpl->assign('TR_RES_MESSAGE_DELETE', tr('Are you sure you want to delete this package?', true));
-			} elseif ($stmt->fields['software_status'] == 'delete') {
+			} elseif ($stmt->fields['software_status'] == $cfg->ITEM_TODELETE_STATUS) {
 				$delsoftware_status = 'deleting';
 				$del_software_action_script = '';
 

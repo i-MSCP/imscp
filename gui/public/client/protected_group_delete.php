@@ -56,7 +56,7 @@ if (isset($_GET['gname']) && $_GET['gname'] !== '' && is_numeric($_GET['gname'])
 	redirectTo('protected_areas.php');
 }
 
-$change_status = $cfg->ITEM_DELETE_STATUS;
+$change_status = $cfg->ITEM_TODELETE_STATUS;
 $webstats_auth = $cfg->WEBSTATS_GROUP_AUTH;
 
 $query = "
@@ -86,10 +86,10 @@ while (!$rs->EOF) {
 	if ($key !== false) {
 		unset($grp_id_splited[$key]);
 		if (count($grp_id_splited) == 0) {
-			$status = $cfg->ITEM_DELETE_STATUS;
+			$status = $cfg->ITEM_TODELETE_STATUS;
 		} else {
 			$grp_id = implode(",", $grp_id_splited);
-			$status = $cfg->ITEM_CHANGE_STATUS;
+			$status = $cfg->ITEM_TOCHANGE_STATUS;
 		}
 		$update_query = "
 			UPDATE

@@ -307,7 +307,7 @@ function add_domain_alias()
                 ?, ?, ?, ?, ?, ?
             )
 	";
-    exec_query($query, array($cr_user_id, $alias_name, $mount_point, $cfg->ITEM_ADD_STATUS, $domainIp, $forward));
+    exec_query($query, array($cr_user_id, $alias_name, $mount_point, $cfg->ITEM_TOADD_STATUS, $domainIp, $forward));
 
     #update_reseller_c_props(get_reseller_id($cr_user_id));
     send_request();

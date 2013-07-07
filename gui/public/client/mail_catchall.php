@@ -81,13 +81,13 @@ function gen_user_catchall_action($mail_id, $mail_status) {
 	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
 
-	if ($mail_status === $cfg->ITEM_ADD_STATUS) {
+	if ($mail_status === $cfg->ITEM_TOADD_STATUS) {
 		return array(tr('N/A'), '#'); // Addition in progress
 	} else if ($mail_status === $cfg->ITEM_OK_STATUS) {
 		return array(tr('Delete CatchAll'), "mail_catchall_delete.php?id=$mail_id");
-	} else if ($mail_status === $cfg->ITEM_CHANGE_STATUS) {
+	} else if ($mail_status === $cfg->ITEM_TOCHANGE_STATUS) {
 		return array(tr('N/A'), '#');
-	} else if ($mail_status === $cfg->ITEM_DELETE_STATUS) {
+	} else if ($mail_status === $cfg->ITEM_TODELETE_STATUS) {
 		return array(tr('N/A'), '#');
 	} else {
 		return null;

@@ -31,7 +31,6 @@
  * @category	iMSCP
  * @package		iMSCP_Events
  * @author		Laurent Declercq <l.declercq@nuxwin.com>
- * @version		0.0.15
  */
 class iMSCP_Events
 {
@@ -533,6 +532,24 @@ class iMSCP_Events
 	const onAfterDeleteSqlDb = 'onAfterSqlDb';
 
 	/**
+	 * The onBeforePluginRoute event is triggered before routing of plugins.
+	 *
+	 * The listeners receive an iMSCP_Events_Event object.
+	 *
+	 * @const string
+	 */
+	const onBeforePluginsRoute = 'onBeforePluginsRoute';
+
+	/**
+	 * The onAfterPluginRoute event is triggered after routing of plugins.
+	 *
+	 * The listeners receive an iMSCP_Events_Event object.
+	 *
+	 *  @const string
+	 */
+	const onAfterPluginsRoute = 'onAfterPluginsRoute';
+
+	/**
 	 * The onAfterUpdatePluginList event is triggered before the plugin list is updated.
 	 *
 	 * The listeners receive an iMSCP_Envents_Event object with the following parameter:
@@ -549,104 +566,141 @@ class iMSCP_Events
 	 * The listeners receive an iMSCP_Envents_Event object with the following parameter:
 	 *
 	 *  - pluginManager: An iMSCP_Plugin_Manager instance
+	 *  - pluginInstance: An iMSCP_Plugin instance
 	 *
 	 * @const string
 	 */
 	const onAfterUpdatePluginList = 'onAfterUpdatePLuginList';
 
 	/**
-	 * The onAfterUpdatePluginList event is triggered before the plugin list is updated.
+	 * The onAfterUpdatePluginList event is triggered before a plugin activation.
 	 *
 	 * The listeners receive an iMSCP_Envents_Event object with the following parameters:
 	 *
 	 *  - pluginManager: An iMSCP_Plugin_Manager instance
-	 *  - pluginName: Name of the plugin being activated
+	 *  - pluginName: Plugin name
+	 *  - pluginInstance: An iMSCP_Plugin instance
 	 *
 	 * @const string
 	 */
 	const onBeforeActivatePlugin = 'onBeforeActivatePlugin';
 
 	/**
-	 * The onAfterActivatePlugin event is triggered after the plugin list is updated.
+	 * The onAfterActivatePlugin event is triggered after a plugin activation
 	 *
 	 * The listeners receive an iMSCP_Envents_Event object with the following parameters:
 	 *
 	 *  - pluginManager: An iMSCP_Plugin_Manager instance
-	 *  - pluginName: Name of the plugin that has been activated
+	 *  - pluginName: Plugin name
+	 *  - pluginInstance: An iMSCP_Plugin instance
 	 *
 	 * @const string
 	 */
 	const onAfterActivatePlugin = 'onAfterActivatePlugin';
 
 	/**
-	 * The onBeforeDeactivatePlugin event is triggered before a plugin is deactivated.
+	 * The onBeforeDeactivatePlugin event is triggered before a plugin deactivation.
 	 *
 	 * The listeners receive an iMSCP_Envents_Event object with the following parameters:
 	 *
 	 *  - pluginManager: An iMSCP_Plugin_Manager instance
-	 *  - pluginName: Name of the plugin being deactivated
+	 *  - pluginName: Plugin name
+	 *  - pluginInstance: An iMSCP_Plugin instance
 	 *
 	 * @const string
 	 */
 	const onBeforeDeactivatePlugin = 'onBeforeDeactivatePlugin';
 
 	/**
-	 * The onAfterDeactivatePlugin event is triggered after a plugin is deactivated.
+	 * The onAfterDeactivatePlugin event is triggered after a plugin deactivation.
 	 *
 	 * The listeners receive an iMSCP_Envents_Event object with the following parameters:
 	 *
 	 *  - pluginManager: An iMSCP_Plugin_Manager instance
-	 *  - pluginName: Name of the plugin that has been deactivated
+	 *  - pluginName: Plugin name
+	 *  - pluginInstance: An iMSCP_Plugin instance
 	 *
 	 * @const string
 	 */
 	const onAfterDeactivatePlugin = 'onAfterDeactivatePlugin';
 
 	/**
-	 * The onBeforeProtectPlugin event is triggered before a plugin is protected.
+	 * The onBeforeUpdatePlugin event is triggered before a plugin updae.
 	 *
 	 * The listeners receive an iMSCP_Envents_Event object with the following parameters:
 	 *
 	 *  - pluginManager: An iMSCP_Plugin_Manager instance
-	 *  - pluginName: Name of the plugin being protected
+	 *  - pluginName: Plugin name
+	 *  - pluginInstance: An iMSCP_Plugin instance
+	 *
+	 * @const string
+	 */
+	const onBeforeUpdatePlugin = 'onBeforeUpdatePlugin';
+
+	/**
+	 * The onAfterUpdatePlugin event is triggered after a plugin update.
+	 *
+	 * The listeners receive an iMSCP_Envents_Event object with the following parameters:
+	 *
+	 *  - pluginManager: An iMSCP_Plugin_Manager instance
+	 *  - pluginName: Plugin name
+	 *  - pluginInstance: An iMSCP_Plugin instance
+	 *
+	 * @const string
+	 */
+	const onAfterUpdatePlugin = 'onAfterUpdatePlugin';
+
+	/**
+	 * The onBeforeDeletePlugin event is triggered before a plugin deletion.
+	 *
+	 * The listeners receive an iMSCP_Envents_Event object with the following parameters:
+	 *
+	 *  - pluginManager: An iMSCP_Plugin_Manager instance
+	 *  - pluginName: Plugin name
+	 *  - pluginInstance: An iMSCP_Plugin instance
+	 *
+	 * @const string
+	 */
+	const onBeforeDeletePlugin = 'onBeforeDeletePlugin';
+
+	/**
+	 * The onAfterDeletePlugin event is triggered after a plugin deletion.
+	 *
+	 * The listeners receive an iMSCP_Envents_Event object with the following parameters:
+	 *
+	 *  - pluginManager: An iMSCP_Plugin_Manager instance
+	 *  - pluginName: Plugin name
+	 *  - pluginInstance: An iMSCP_Plugin instance
+	 *
+	 * @const string
+	 */
+	const onAfterDeletePlugin = 'onAfterDeletePlugin';
+
+	/**
+	 * The onBeforeProtectPlugin event is triggered before a plugin protection.
+	 *
+	 * The listeners receive an iMSCP_Envents_Event object with the following parameters:
+	 *
+	 *  - pluginManager: An iMSCP_Plugin_Manager instance
+	 *  - pluginName: Plugin name
+	 *  - pluginInstance: An iMSCP_Plugin instance
 	 *
 	 * @const string
 	 */
 	const onBeforeProtectPlugin = 'onBeforeProtectPlugin';
 
 	/**
-	 * The onAfterProtectPlugin event is triggered after a plugin is protected.
+	 * The onAfterProtectPlugin event is triggered after a plugin protection.
 	 *
 	 * The listeners receive an iMSCP_Envents_Event object with the following parameters:
 	 *
 	 *  - pluginManager: An iMSCP_Plugin_Manager instance
-	 *  - pluginName: Name of the plugin that has been protected
+	 *  - pluginName: Plugin name
+	 *  - pluginInstance: An iMSCP_Plugin instance
 	 *
 	 * @const string
 	 */
 	const onAfterProtectPlugin = 'onAfterProtectPlugin';
-
-	/**
-	 * The onBeforeBulkAction event is triggered before a plugin bulk action.
-	 *
-	 * The listeners receive an iMSCP_Envents_Event object with the following parameter:
-	 *
-	 *  - pluginManager: An iMSCP_Plugin_Manager instance
-	 *
-	 * @const string
-	 */
-	const onBeforeBulkAction = 'onBeforeBulkAction';
-
-	/**
-	 * The onAfterBulkAction event is triggered after a plugin bulk action.
-	 *
-	 * The listeners receive an iMSCP_Envents_Event object with the following parameter:
-	 *
-	 *  - pluginManager: An iMSCP_Plugin_Manager instance
-	 *
-	 * @const string
-	 */
-	const onAfterBulkAction = 'onAfterBulkAction';
 
 	/**
 	 * The onBeforeAddDomain event is triggered before a domain is created.
@@ -1080,22 +1134,4 @@ class iMSCP_Events
      * @const string
      */
     const onAfterAddExternalMailServer = 'onAfterAddExternalMailServer';
-
-	/**
-	 * The onBeforePluginRoute event is triggered before routing of plugins.
-	 *
-	 * The listeners receive an iMSCP_Events_Event object.
-	 *
-	 * @const string
-	 */
-	const onBeforePluginsRoute = 'onBeforePluginsRoute';
-
-	/**
-	 * The onAfterPluginRoute event is triggered after routing of plugins.
-	 *
-	 * The listeners receive an iMSCP_Events_Event object.
-	 *
-	 *  @const string
-	 */
-	const onAfterPluginsRoute = 'onAfterPluginsRoute';
 }

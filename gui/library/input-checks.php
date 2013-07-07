@@ -1073,33 +1073,8 @@ function checkMimeType($pathFile, $mimeTypes)
 	static $finfo = null;
 
 	if (null == $finfo) {
-		/*
-		if(
-			(PHP_MINOR_VERSION == 3 && version_compare(PHP_VERSION, '5.3.11', '>=')) ||
-			(PHP_MINOR_VERSION >= 4 && version_compare(PHP_VERSION, '5.4.1', '>='))
-		) {
-			$magicFilePath = LIBRARY_PATH . '/resources/magic-2.mgc';
-		} else {
-			$magicFilePath = LIBRARY_PATH . '/resources/magic-1.mgc';
-		}
-
-		if (!is_readable($magicFilePath)) {
-			require_once 'iMSCP/Exception.php';
-			throw new iMSCP_Exception('Unable to found a magicfile to use.');
-		} elseif (!(class_exists('finfo', false))) {
-			require_once 'iMSCP/Exception.php';
-			throw new iMSCP_Exception('PHP finfo extension not installed.');
-		}
-		*/
-
 		$const = defined('FILEINFO_MIME_TYPE') ? FILEINFO_MIME_TYPE : FILEINFO_MIME;
-		//$finfo = @finfo_open($const, $magicFilePath);
 		$finfo = @finfo_open($const);
-
-		//if (empty($finfo)) {
-		//	require_once 'iMSCP/Exception.php';
-		//	throw new iMSCP_Exception("The $magicFilePath magicfile is not accepted by finfo");
-		//}
 	}
 
 	$mimeType = finfo_file($finfo, $pathFile);

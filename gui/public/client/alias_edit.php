@@ -288,10 +288,10 @@ function check_fwd_data($tpl, $alias_id) {
 		);
 
 		$query = "UPDATE `domain_aliasses` SET `url_forward` = ?, `alias_status` = ? WHERE `alias_id` = ?";
-		exec_query($query, array($forward, $cfg->ITEM_CHANGE_STATUS, $alias_id));
+		exec_query($query, array($forward, $cfg->ITEM_TOCHANGE_STATUS, $alias_id));
 
 		$query = "UPDATE `subdomain_alias` SET `subdomain_alias_status` = ? WHERE `alias_id` = ?";
-		exec_query($query, array($cfg->ITEM_CHANGE_STATUS, $alias_id));
+		exec_query($query, array($cfg->ITEM_TOCHANGE_STATUS, $alias_id));
 
 		iMSCP_Events_Manager::getInstance()->dispatch(
 			iMSCP_Events::onAfterEditDomainALias, array('domainAliasId' => $alias_id)

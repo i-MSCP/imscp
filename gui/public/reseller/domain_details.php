@@ -83,10 +83,9 @@ function admin_generatePage($tpl, $domainId)
 
 	if (
 		$domainStatus == $cfg->ITEM_OK_STATUS || $domainStatus == $cfg->ITEM_DISABLED_STATUS ||
-		$domainStatus == $cfg->ITEM_DELETE_STATUS || $domainStatus == $cfg->ITEM_ADD_STATUS ||
-		$domainStatus == $cfg->ITEM_RESTORE_STATUS || $domainStatus == $cfg->ITEM_CHANGE_STATUS ||
-		$domainStatus == $cfg->ITEM_TOENABLE_STATUS || $domainStatus == $cfg->ITEM_TODISABLE_STATUS ||
-		$domainStatus == $cfg->ITEM_DNSCHANGE_STATUS
+		$domainStatus == $cfg->ITEM_TODELETE_STATUS || $domainStatus == $cfg->ITEM_TOADD_STATUS ||
+		$domainStatus == $cfg->ITEM_TORESTORE_STATUS || $domainStatus == $cfg->ITEM_TOCHANGE_STATUS ||
+		$domainStatus == $cfg->ITEM_TOENABLE_STATUS || $domainStatus == $cfg->ITEM_TODISABLE_STATUS
 	) {
 		$domainStatus = '<span style="color:green">' . tohtml(translate_dmn_status($domainStatus)) . '</span>';
 	} else {

@@ -35,6 +35,8 @@
  * @link        http://i-mscp.net
  */
 
+// TODO Plugin items's related errors
+
 /***********************************************************************************************************************
  * Functions
  */
@@ -61,7 +63,8 @@ function debugger_getUserErrors($tpl)
 			`admin_status` NOT IN (?, ?, ?, ?)
 	";
 	$stmt = exec_query(
-		$query, array($cfg->ITEM_OK_STATUS, $cfg->ITEM_DELETE_STATUS, $cfg->ITEM_ADD_STATUS, $cfg->ITEM_CHANGE_STATUS)
+		$query,
+		array($cfg->ITEM_OK_STATUS, $cfg->ITEM_TOADD_STATUS, $cfg->ITEM_TOCHANGE_STATUS, $cfg->ITEM_TODELETE_STATUS)
 	);
 
 	$errors = $stmt->rowCount();
@@ -99,29 +102,20 @@ function debugger_getDmnErrors($tpl)
 	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
 
-	$okStatus = $cfg->ITEM_OK_STATUS;
-	$disabledStatus = $cfg->ITEM_DISABLED_STATUS;
-	$deleteStatus = $cfg->ITEM_DELETE_STATUS;
-	$addStatus = $cfg->ITEM_ADD_STATUS;
-	$restoreStatus = $cfg->ITEM_RESTORE_STATUS;
-	$changeStatus = $cfg->ITEM_CHANGE_STATUS;
-	$dnschangeStatus = $cfg->ITEM_DNSCHANGE_STATUS;
-	$toenableStatus = $cfg->ITEM_TOENABLE_STATUS;
-	$todisableStatus = $cfg->ITEM_TODISABLE_STATUS;
-
 	$query = "
 		SELECT
 			`domain_name`, `domain_status`, `domain_id`
 		FROM
 			`domain`
 		WHERE
-			`domain_status` NOT IN (?, ?, ?, ?, ?, ?, ?, ?, ?)
+			`domain_status` NOT IN (?, ?, ?, ?, ?, ?, ?, ?)
 	";
 	$stmt = exec_query(
 		$query,
 		array(
-			$okStatus, $disabledStatus, $deleteStatus, $addStatus, $restoreStatus, $changeStatus, $toenableStatus,
-			$todisableStatus, $dnschangeStatus
+			$cfg->ITEM_OK_STATUS, $cfg->ITEM_DISABLED_STATUS, $cfg->ITEM_TOADD_STATUS, $cfg->ITEM_TOCHANGE_STATUS,
+			$cfg->ITEM_TORESTORE_STATUS, $cfg->ITEM_TOENABLE_STATUS, $cfg->ITEM_TODISABLE_STATUS,
+			$cfg->ITEM_TODELETE_STATUS
 		)
 	);
 
@@ -166,14 +160,14 @@ function debugger_getAlsErrors($tpl)
 		FROM
 			`domain_aliasses`
 		WHERE
-			`alias_status` NOT IN (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+			`alias_status` NOT IN (?, ?, ?, ?, ?, ?, ?, ?, ?)
 	";
 	$stmt = exec_query(
 		$query,
 		array(
-			$cfg->ITEM_OK_STATUS, $cfg->ITEM_DISABLED_STATUS, $cfg->ITEM_DELETE_STATUS, $cfg->ITEM_ADD_STATUS,
-			$cfg->ITEM_RESTORE_STATUS, $cfg->ITEM_CHANGE_STATUS, $cfg->ITEM_TOENABLE_STATUS,
-			$cfg->ITEM_TODISABLE_STATUS, $cfg->ITEM_ORDERED_STATUS, $cfg->ITEM_DNSCHANGE_STATUS
+			$cfg->ITEM_OK_STATUS, $cfg->ITEM_DISABLED_STATUS, $cfg->ITEM_TOADD_STATUS, $cfg->ITEM_TOCHANGE_STATUS,
+			$cfg->ITEM_TORESTORE_STATUS, $cfg->ITEM_TOENABLE_STATUS, $cfg->ITEM_TODISABLE_STATUS,
+			$cfg->ITEM_TODELETE_STATUS, $cfg->ITEM_ORDERED_STATUS
 		)
 	);
 
@@ -226,8 +220,9 @@ function debugger_getSubErrors($tpl)
 	$stmt = exec_query(
 		$query,
 		array(
-			$cfg->ITEM_OK_STATUS, $cfg->ITEM_DISABLED_STATUS, $cfg->ITEM_DELETE_STATUS, $cfg->ITEM_ADD_STATUS,
-			$cfg->ITEM_RESTORE_STATUS, $cfg->ITEM_CHANGE_STATUS, $cfg->ITEM_TOENABLE_STATUS, $cfg->ITEM_TODISABLE_STATUS
+			$cfg->ITEM_OK_STATUS, $cfg->ITEM_DISABLED_STATUS, $cfg->ITEM_TOADD_STATUS, $cfg->ITEM_TOCHANGE_STATUS,
+			$cfg->ITEM_TORESTORE_STATUS, $cfg->ITEM_TOENABLE_STATUS, $cfg->ITEM_TODISABLE_STATUS,
+			$cfg->ITEM_TODELETE_STATUS
 		)
 	);
 
@@ -279,9 +274,9 @@ function debugger_getAlssubErrors($tpl)
 	$stmt = exec_query(
 		$query,
 		array(
-			$cfg->ITEM_OK_STATUS, $cfg->ITEM_DISABLED_STATUS, $cfg->ITEM_DELETE_STATUS, $cfg->ITEM_ADD_STATUS,
-			$cfg->ITEM_RESTORE_STATUS, $cfg->ITEM_CHANGE_STATUS, $cfg->ITEM_TOENABLE_STATUS,
-			$cfg->ITEM_TODISABLE_STATUS
+			$cfg->ITEM_OK_STATUS, $cfg->ITEM_DISABLED_STATUS, $cfg->ITEM_TOADD_STATUS, $cfg->ITEM_TOCHANGE_STATUS,
+			$cfg->ITEM_TORESTORE_STATUS, $cfg->ITEM_TOENABLE_STATUS, $cfg->ITEM_TODISABLE_STATUS,
+			$cfg->ITEM_TODELETE_STATUS
 		)
 	);
 
@@ -322,11 +317,6 @@ function debugger_getHtaccessErrors($tpl)
 	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
 
-	$okStatus = $cfg->ITEM_OK_STATUS;
-	$deleteStatus = $cfg->ITEM_DELETE_STATUS;
-	$addStatus = $cfg->ITEM_ADD_STATUS;
-	$changeStatus = $cfg->ITEM_CHANGE_STATUS;
-
 	$dmn_query = "
 		SELECT
 			`id`, `dmn_id`, `status`, 'htaccess' AS `type`, `domain_name`
@@ -335,7 +325,7 @@ function debugger_getHtaccessErrors($tpl)
 		LEFT JOIN
 			`domain` ON (`dmn_id` = `domain_id`)
 		WHERE
-			`status` NOT IN (?, ?, ?, ?)
+			`status` NOT IN (:ok, :toadd, :tochange, :todelete)
 		UNION
 		SELECT
 			`id`, `dmn_id`, `status`, 'htaccess_groups' AS `type`, `domain_name`
@@ -344,7 +334,7 @@ function debugger_getHtaccessErrors($tpl)
 		LEFT JOIN
 			`domain` ON (`dmn_id` = `domain_id`)
 		WHERE
-			`status` NOT IN (?, ?, ?, ?)
+			`status` NOT IN (:ok, :toadd, :tochange, :todelete)
 		UNION
 		SELECT
 			`id`, `dmn_id`, `status`, 'htaccess_users' AS `type`, `domain_name`
@@ -353,13 +343,13 @@ function debugger_getHtaccessErrors($tpl)
 		LEFT JOIN
 			`domain` ON (`dmn_id` = `domain_id`)
 		WHERE
-			`status` NOT IN (?, ?, ?, ?)
+			`status` NOT IN (:ok, :toadd, :tochange, :todelete)
 	";
 	$stmt = exec_query(
 		$dmn_query,
 		array(
-			$okStatus, $deleteStatus, $addStatus, $changeStatus, $okStatus, $deleteStatus, $addStatus, $changeStatus,
-			$okStatus, $deleteStatus, $addStatus, $changeStatus
+			'ok' => $cfg->ITEM_OK_STATUS, 'toadd' => $cfg->ITEM_TOADD_STATUS, 'tochange' => $cfg->ITEM_TOCHANGE_STATUS,
+			'todelete' => $cfg->ITEM_TODELETE_STATUS
 		)
 	);
 
@@ -411,9 +401,9 @@ function debugger_getMailsErrors($tpl)
 	$stmt = exec_query(
 		$query,
 		array(
-			$cfg->ITEM_OK_STATUS, $cfg->ITEM_DISABLED_STATUS, $cfg->ITEM_DELETE_STATUS, $cfg->ITEM_ADD_STATUS,
-			$cfg->ITEM_RESTORE_STATUS, $cfg->ITEM_CHANGE_STATUS, $cfg->ITEM_TOENABLE_STATUS, $cfg->ITEM_TODISABLE_STATUS,
-			$cfg->ITEM_ORDERED_STATUS
+			$cfg->ITEM_OK_STATUS, $cfg->ITEM_DISABLED_STATUS, $cfg->ITEM_TOADD_STATUS, $cfg->ITEM_TOCHANGE_STATUS,
+			$cfg->ITEM_TORESTORE_STATUS, $cfg->ITEM_TOENABLE_STATUS, $cfg->ITEM_TODISABLE_STATUS,
+			$cfg->ITEM_TODELETE_STATUS, $cfg->ITEM_ORDERED_STATUS
 		)
 	);
 
@@ -441,7 +431,10 @@ function debugger_getMailsErrors($tpl)
 				case 'subdom_mail,subdom_forward':
 					$query = "
 						SELECT
-							CONCAT('@', `subdomain_name`, '.', IF(`t2`.`domain_name` IS NULL,'" . tr('missing domain') . "',`t2`.`domain_name`)) AS 'domain_name'
+							CONCAT(
+								'@', `subdomain_name`, '.', IF(`t2`.`domain_name` IS NULL,'" . tr('missing domain') . "',
+								`t2`.`domain_name`)
+							) AS 'domain_name'
 						FROM
 							`subdomain` AS `t1`
 						LEFT JOIN
@@ -455,7 +448,10 @@ function debugger_getMailsErrors($tpl)
 				case 'alssub_mail,alssub_forward':
 					$query = "
 						SELECT
-							CONCAT('@', `t1`.`subdomain_alias_name`, '.', IF(`t2`.`alias_name` IS NULL,'" . tr('missing alias') . "',`t2`.`alias_name`)) AS `domain_name`
+							CONCAT(
+								'@', `t1`.`subdomain_alias_name`, '.', IF(`t2`.`alias_name` IS NULL,'" .
+								tr('missing alias') . "',`t2`.`alias_name`)
+							) AS `domain_name`
 						FROM
 							`subdomain_alias` AS `t1`
 						LEFT JOIN
@@ -509,6 +505,8 @@ function debugger_getMailsErrors($tpl)
 /**
  * Get plugins errors
  *
+ * Note: There are only errors related to the plugin itself, not to the plugin items
+ *
  * @param  iMSCP_pTemplate $tpl Template engine instance
  * @return int
  */
@@ -516,8 +514,6 @@ function debugger_getPluginsErrors($tpl)
 {
 	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
-
-	// enabled, disabled, install, uninstall
 
 	$query = "
 		SELECT
@@ -530,9 +526,9 @@ function debugger_getPluginsErrors($tpl)
 	$stmt = exec_query(
 		$query,
 		array(
-			$cfg->ITEM_UNINSTALLED_STATUS, $cfg->ITEM_INSTALLED_STATUS, $cfg->ITEM_TOINSTALL_STATUS,
-			$cfg->ITEM_TOUNINSTALL_STATUS, $cfg->ITEM_ENABLED_STATUS, $cfg->ITEM_DISABLED_STATUS,
-			$cfg->ITEM_TOENABLE_STATUS, $cfg->ITEM_TODISABLE_STATUS, $cfg->ITEM_CHANGE_STATUS
+			$cfg->ITEM_ENABLED_STATUS, $cfg->ITEM_DISABLED_STATUS, $cfg->ITEM_UNINSTALLED_STATUS,
+			$cfg->ITEM_TOINSTALL_STATUS, $cfg->ITEM_TOUPDATE_STATUS, $cfg->ITEM_TOUNINSTALL_STATUS,
+			$cfg->ITEM_TOENABLE_STATUS, $cfg->ITEM_TODISABLE_STATUS, $cfg->ITEM_TODELETE_STATUS
 		)
 	);
 
@@ -575,9 +571,9 @@ function debugger_countRequests($statusField, $tableName)
 	$stmt = exec_query(
 		$query,
 		array(
-			$cfg->ITEM_ADD_STATUS, $cfg->ITEM_CHANGE_STATUS, $cfg->ITEM_DELETE_STATUS, $cfg->ITEM_RESTORE_STATUS,
-			$cfg->ITEM_TOENABLE_STATUS, $cfg->ITEM_TODISABLE_STATUS, $cfg->ITEM_DNSCHANGE_STATUS,
-			$cfg->ITEM_TOINSTALL_STATUS, $cfg->ITEM_TOUNINSTALL_STATUS
+			$cfg->ITEM_TOINSTALL_STATUS, $cfg->ITEM_TOUPDATE_STATUS, $cfg->ITEM_TOUNINSTALL_STATUS,
+			$cfg->ITEM_TOADD_STATUS, $cfg->ITEM_TOCHANGE_STATUS, $cfg->ITEM_TORESTORE_STATUS,
+			$cfg->ITEM_TOENABLE_STATUS, $cfg->ITEM_TODISABLE_STATUS, $cfg->ITEM_TODELETE_STATUS,
 		)
 	);
 
@@ -595,23 +591,26 @@ iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAdminScriptStart);
 
 check_login('admin');
 
+/** @var iMSCP_Plugin_Manager $plugingManager */
+$plugingManager = iMSCP_Registry::get('pluginManager');
+
 /** @var $cfg iMSCP_Config_Handler_File */
 $cfg = iMSCP_Registry::get('config');
 
-$execCount = debugger_countRequests('admin_status', 'admin');
-$execCount += debugger_countRequests('domain_status', 'domain');
-$execCount += debugger_countRequests('alias_status', 'domain_aliasses');
-$execCount += debugger_countRequests('subdomain_status', 'subdomain');
-$execCount += debugger_countRequests('subdomain_alias_status', 'subdomain_alias');
-$execCount += debugger_countRequests('status', 'mail_users');
-$execCount += debugger_countRequests('status', 'htaccess');
-$execCount += debugger_countRequests('status', 'htaccess_groups');
-$execCount += debugger_countRequests('status', 'htaccess_users');
-$execCount += debugger_countRequests('plugin_status', 'plugin');
+$rqstCount = debugger_countRequests('admin_status', 'admin');
+$rqstCount += debugger_countRequests('domain_status', 'domain');
+$rqstCount += debugger_countRequests('alias_status', 'domain_aliasses');
+$rqstCount += debugger_countRequests('subdomain_status', 'subdomain');
+$rqstCount += debugger_countRequests('subdomain_alias_status', 'subdomain_alias');
+$rqstCount += debugger_countRequests('status', 'mail_users');
+$rqstCount += debugger_countRequests('status', 'htaccess');
+$rqstCount += debugger_countRequests('status', 'htaccess_groups');
+$rqstCount += debugger_countRequests('status', 'htaccess_users');
+$rqstCount += debugger_countRequests('plugin_status', 'plugin');
 
 if (isset($_GET['action'])) {
 	if ($_GET['action'] == 'run_engine') {
-		if ($execCount > 0) {
+		if ($rqstCount > 0) {
 			$code = send_request();
 			set_page_message(tr('Daemon returned %d as status code', $code), 'info');
 		} else {
@@ -619,41 +618,42 @@ if (isset($_GET['action'])) {
 		}
 		redirectTo('imscp_debugger.php');
 	} elseif ($_GET['action'] == 'change_status' && (isset($_GET['id']) && isset($_GET['type']))) {
+		/** @var iMSCP_Config_Handler_File $cfg */
+		$cfg = iMSCP_Registry::get('config');
+
 		switch ($_GET['type']) {
 			case 'user':
-				$query = "UPDATE `admin` SET `admin_status` = 'change' WHERE `admin_id` = ?";
+				$query = "UPDATE `admin` SET `admin_status` = ? WHERE `admin_id` = ?";
 				break;
 			case 'domain':
-				$query = "UPDATE `domain` SET `domain_status` = 'change' WHERE `domain_id` = ?";
+				$query = "UPDATE `domain` SET `domain_status` = ? WHERE `domain_id` = ?";
 				break;
 			case 'alias':
-				$query = "UPDATE `domain_aliasses` SET `alias_status` = 'change' WHERE `alias_id` = ?";
+				$query = "UPDATE `domain_aliasses` SET `alias_status` = ? WHERE `alias_id` = ?";
 				break;
 			case 'subdomain':
-				$query = "UPDATE `subdomain` SET `subdomain_status` = 'change' WHERE `subdomain_id` = ?";
+				$query = "UPDATE `subdomain` SET `subdomain_status` = ? WHERE `subdomain_id` = ?";
 				break;
 			case 'subdomain_alias':
-				$query = "
-					UPDATE `subdomain_alias` SET `subdomain_alias_status` = 'change' WHERE `subdomain_alias_id` = ?
-				";
+				$query = "UPDATE `subdomain_alias` SET `subdomain_alias_status` = ? WHERE `subdomain_alias_id` = ?";
 				break;
 			case 'mail':
-				$query = "UPDATE `mail_users` SET `status` = 'change' WHERE `mail_id` = ?";
+				$query = "UPDATE `mail_users` SET `status` = ? WHERE `mail_id` = ?";
 				break;
 			case 'htaccess':
 			case 'htaccess_users':
 			case 'htaccess_groups':
-				$query = "UPDATE `" . $_GET['type'] . "` SET `status` = 'change' WHERE `id` = ?";
+				$query = "UPDATE `" . $_GET['type'] . "` SET `status` = ? WHERE `id` = ?";
 				break;
 			case 'plugin':
-				$query = "UPDATE `plugin` SET `plugin_status` = 'change' WHERE `plugin_id` = ?";
+				$query = "UPDATE `plugin` SET `plugin_status` = ? WHERE `plugin_id` = ?";
 				break;
 			default:
 				set_page_message(tr('Unknown type.'), 'error');
 				redirectTo('imscp_debugger.php');
 		}
 
-		$stmt = exec_query($query, $_GET['id']);
+		$stmt = exec_query($query, array($cfg->ITEM_TOCHANGE_STATUS, $_GET['id']));
 
 		if ($stmt !== false) {
 			set_page_message(tr('Done'), 'success');
@@ -718,12 +718,10 @@ $tpl->assign(
 		'TR_HTACCESS_ERRORS' => tr('Htaccess errors'),
 		'TR_PLUGINS_ERRORS' => tr('Plugins errors'),
 
-
-
 		'TR_DAEMON_TOOLS' => tr('i-MSCP Daemon tools'),
 		'TR_EXEC_REQUESTS' => tr('Execute requests'),
-		'TR_CHANGE_STATUS' => tr("Set status to 'change'"),
-		'EXEC_COUNT' => $execCount,
+		'TR_CHANGE_STATUS' => tr("Set status to 'tochange'"),
+		'EXEC_COUNT' => $rqstCount,
 		'TR_ERRORS' => tr('%s Errors in database', $errors)
 	)
 );

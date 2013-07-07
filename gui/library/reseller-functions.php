@@ -774,7 +774,7 @@ function client_mail_add_default_accounts($domainId, $userEmail, $domainPart, $d
 		exec_query(
 			$query,
 			array(
-				'webmaster', '_no_', $userEmail, $domainId, $forwardType, $subId, $cfg->ITEM_ADD_STATUS, '_no_',
+				'webmaster', '_no_', $userEmail, $domainId, $forwardType, $subId, $cfg->ITEM_TOADD_STATUS, '_no_',
 				10485760, 'webmaster@' . $domainPart
 			)
 		);
@@ -783,7 +783,7 @@ function client_mail_add_default_accounts($domainId, $userEmail, $domainPart, $d
 		exec_query(
 			$query,
 			array(
-				'postmaster', '_no_', $_SESSION['user_email'], $domainId, $forwardType, $subId, $cfg->ITEM_ADD_STATUS,
+				'postmaster', '_no_', $_SESSION['user_email'], $domainId, $forwardType, $subId, $cfg->ITEM_TOADD_STATUS,
 				'_no_', 10485760, 'postmaster@' . $domainPart
 			)
 		);
@@ -792,7 +792,7 @@ function client_mail_add_default_accounts($domainId, $userEmail, $domainPart, $d
 		exec_query(
 			$query,
 			array(
-				'abuse', '_no_', $_SESSION['user_email'], $domainId, $forwardType, $subId, $cfg->ITEM_ADD_STATUS,
+				'abuse', '_no_', $_SESSION['user_email'], $domainId, $forwardType, $subId, $cfg->ITEM_TOADD_STATUS,
 				'_no_', 10485760, 'abuse@' . $domainPart
 			)
 		);
@@ -839,7 +839,7 @@ function recalc_reseller_c_props($resellerId)
 		AND
 			`t1`.`domain_status` != ?
 	";
-	$stmt = exec_query($query, array($resellerId, 'reseller', $resellerId, $cfg->ITEM_DELETE_STATUS));
+	$stmt = exec_query($query, array($resellerId, 'reseller', $resellerId, $cfg->ITEM_TODELETE_STATUS));
 
 	$row = $stmt->fetchRow();
 
@@ -998,7 +998,7 @@ function resellerHasCustomers($minNbCustomers = 1)
 				AND
 					`admin_status` <> ?
 			',
-			array('user', $_SESSION['user_id'], $cfg->ITEM_DELETE_STATUS)
+			array('user', $_SESSION['user_id'], $cfg->ITEM_TODELETE_STATUS)
 		);
 
 		$customerCount = $stmt->fields['count'];

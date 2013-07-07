@@ -94,7 +94,7 @@ function client_deactivateAutoresponder($mailAccountId)
 		$stmt = exec_query($query, $mailAccountId);
 
 		$query = "UPDATE `mail_users` SET `status` = ?, `mail_auto_respond` = ? WHERE `mail_id` = ?";
-		exec_query($query, array($config->ITEM_CHANGE_STATUS, 0, $mailAccountId));
+		exec_query($query, array($config->ITEM_TOCHANGE_STATUS, 0, $mailAccountId));
 
 		// Purge autoreplies log entries
 		delete_autoreplies_log_entries();

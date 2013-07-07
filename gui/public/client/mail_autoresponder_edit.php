@@ -101,7 +101,7 @@ function client_updateAutoresponder($mailAccountId, $autoresponderMessage)
 			$stmt = exec_query($query, $mailAccountId);
 
 			$query = "UPDATE `mail_users` SET `status` = ?, `mail_auto_respond_text` = ? WHERE `mail_id` = ?";
-			exec_query($query, array($config->ITEM_CHANGE_STATUS, $autoresponderMessage, $mailAccountId));
+			exec_query($query, array($config->ITEM_TOCHANGE_STATUS, $autoresponderMessage, $mailAccountId));
 
 			// Purge autoreplies log entries
 			delete_autoreplies_log_entries();

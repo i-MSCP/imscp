@@ -227,7 +227,7 @@ if (!empty($_POST)) {
 					$dmn_id, $posted_aliasdomain_id, $posted_subdomain_id, $posted_aliassubdomain_id, $id,
 					$software_master_id, $sw_software_name, $sw_software_version, $software_language,
 					$other_dir, $prefix, $selected_db, $sql_user, $sql_pass, $install_username, $install_password,
-					$install_email, $cfg->ITEM_ADD_STATUS, $software_depot));
+					$install_email, $cfg->ITEM_TOADD_STATUS, $software_depot));
 		} else {
 			$query = "
 				INSERT INTO `web_software_inst` (
@@ -245,7 +245,7 @@ if (!empty($_POST)) {
 					$dmn_id, $posted_aliasdomain_id, $posted_subdomain_id, $posted_aliassubdomain_id, $id,
 					$software_master_id, $sw_software_name, $sw_software_version, $software_language, $other_dir,
 					'not_required', 'not_required', 'not_required', 'not_required', $install_username, $install_password,
-					$install_email, $cfg->ITEM_ADD_STATUS, $software_depot));
+					$install_email, $cfg->ITEM_TOADD_STATUS, $software_depot));
 		}
 
 		send_request();

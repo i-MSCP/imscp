@@ -101,14 +101,14 @@ sub process
 
 	my @sql;
 
-	if($self->{'alias_status'} =~ /^toadd|change|toenable|dnschange$/) {
+	if($self->{'alias_status'} =~ /^toadd|tochange|toenable$/) {
 		$rs = $self->add();
 		@sql = (
 			"UPDATE `domain_aliasses` SET `alias_status` = ? WHERE `alias_id` = ?",
 			($rs ? scalar getMessageByType('error') : 'ok'),
 			$self->{'alias_id'}
 		);
-	} elsif($self->{'alias_status'} eq 'delete') {
+	} elsif($self->{'alias_status'} eq 'todelete') {
 		$rs = $self->delete();
 		if($rs) {
 			@sql = (
@@ -126,7 +126,7 @@ sub process
 			($rs ? scalar getMessageByType('error') : 'disabled'),
 			$self->{'alias_id'}
 		);
-	} elsif($self->{'alias_status'} eq 'restore') {
+	} elsif($self->{'alias_status'} eq 'torestore') {
 		$rs = $self->restore();
 		@sql = (
 			"UPDATE `domain_aliasses` SET `alias_status` = ? WHERE `alias_id` = ?",
@@ -239,7 +239,7 @@ sub buildHTTPDData
 			: $rdata->{'PHPINI_OPEN_BASEDIR'}->{'value'} ? ':' . $rdata->{'PHPINI_OPEN_BASEDIR'}->{'value'} : ''
 	};
 
-	if($self->{'alias_status'} eq 'delete') {
+	if($self->{'alias_status'} eq 'todelete') {
 		my $sharedMountPoints = $self->_getSharedMountPoints();
 
 		unless(ref $sharedMountPoints eq 'HASH') {
@@ -312,7 +312,7 @@ sub buildNAMEDData
 					`alias_id` = ?
 			";
 
-			$rdata = iMSCP::Database->factory()->doQuery('update', $sql, 'change', 'ok', $self->{'alias_id'});
+			$rdata = iMSCP::Database->factory()->doQuery('update', $sql, 'tochange', 'ok', $self->{'alias_id'});
 			if(ref $rdata ne 'HASH') {
 				error($rdata);
 				return 1;
@@ -377,7 +377,7 @@ sub _getSharedMountPoints
 			AND
 				`domain_id` = ?
 			AND
-				`alias_status` NOT IN ('delete', 'ordered')
+				`alias_status` NOT IN ('todelete', 'ordered')
 			AND
 				`alias_mount` RLIKE ?
 			UNION
@@ -388,7 +388,7 @@ sub _getSharedMountPoints
 			WHERE
 				`domain_id` = ?
 			AND
-				`subdomain_status` != 'delete'
+				`subdomain_status` != 'todelete'
 			AND
 				`subdomain_mount` RLIKE ?
 			UNION
@@ -397,7 +397,7 @@ sub _getSharedMountPoints
 			FROM
 				`subdomain_alias`
 			WHERE
-				`subdomain_alias_status` != 'delete'
+				`subdomain_alias_status` != 'todelete'
 			AND
 				`alias_id` IN (SELECT `alias_id` FROM `domain_aliasses` WHERE `domain_id` = ?)
 			AND

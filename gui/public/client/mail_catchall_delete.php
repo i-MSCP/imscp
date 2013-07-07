@@ -49,7 +49,7 @@ $cfg = iMSCP_Registry::get('config');
 
 if (isset($_GET['id']) && $_GET['id'] !== '') {
 	$mail_id = $_GET['id'];
-	$item_delete_status = $cfg->ITEM_DELETE_STATUS;
+	$item_delete_status = $cfg->ITEM_TODELETE_STATUS;
 	$dmn_id = get_user_domain_id($_SESSION['user_id']);
 
 	$query = "

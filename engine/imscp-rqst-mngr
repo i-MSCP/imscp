@@ -62,33 +62,35 @@ sub engine
 	my $rs = 0;
 
 	# Process plugins
-	# Should always be processed first to allow the plugins to register their hook functions on the hook manager
+	# Should always be processed first to allow plugins to register their listeners on the hooks manager
 	my $sql = "
 		SELECT
 			`plugin_id` AS `id`, `plugin_name` AS `name`, `plugin_status` AS `status`
 		FROM
 			`plugin`
 		WHERE
-			`plugin_status` IN ('enabled', 'install', 'uninstall')
+			`plugin_status` IN ('toinstall', 'toupdate', 'touninstall', 'todisable', 'toenable', 'enabled')
+		AND
+			`plugin_error` IS NULL
 		AND
 			`plugin_backend` = 'yes'
 	";
 	$rs = _process('Plugin', $sql);
 	return $rs if $rs;
 
-	# Process add|change SSL certificates tasks
+	# Process toadd|tochange SSL certificates tasks
 	$sql = "
 		SELECT
 			`cert_id` AS `id`, `type` AS `name`, `status` AS `status`
 		FROM
 			`ssl_certs`
 		WHERE
-			`status` IN ('toadd', 'change', 'delete')
+			`status` IN ('toadd', 'tochange', 'todelete')
 	";
 	$rs = _process('Certificates', $sql);
 	return $rs if $rs;
 
-	# Process add|change users tasks
+	# Process toadd|tochange users tasks
 	$sql = "
 		SELECT
 			`admin_id` AS `id`, `admin_name` AS `name`, `admin_status` AS `status`
@@ -97,158 +99,158 @@ sub engine
 		WHERE
 			`admin_type` = 'user'
 		AND
-			`admin_status` IN ('toadd', 'change');
+			`admin_status` IN ('toadd', 'tochange');
 	";
 	$rs = _process('User', $sql);
 	return $rs if $rs;
 
 	my $ipsMod = 0;
 
-	# Process add|change|restore|enable|disable domain tasks
+	# Process toadd|tochange|torestore|toenable|todisable domain tasks
 	$sql = "
 		SELECT
 			`domain_id` AS `id`, `domain_name` AS `name`, `domain_status` AS `status`
 		FROM
 			`domain`
 		WHERE
-			`domain_status` IN ('toadd', 'change', 'dnschange', 'restore', 'toenable', 'todisable', 'disabled')
+			`domain_status` IN ('toadd', 'tochange', 'torestore', 'toenable', 'todisable', 'disabled')
 	";
 	$rs = _process('Domain', $sql, \$ipsMod);
 	return $rs if $rs;
 
-	# Process add|change|restore|enable|disable subdomains tasks
+	# Process toadd|tochange|torestore|toenable|todisable subdomains tasks
 	$sql = "
 		SELECT
 			`subdomain_id` AS `id`, `subdomain_name` AS `name`, `subdomain_status` AS `status`
 		FROM
 			`subdomain`
 		WHERE
-			`subdomain_status` IN ('toadd', 'change', 'restore', 'toenable', 'todisable', 'disabled')
+			`subdomain_status` IN ('toadd', 'tochange', 'torestore', 'toenable', 'todisable', 'disabled')
 	";
 	$rs = _process('Subdomain', $sql, \$ipsMod);
 	return $rs if $rs;
 
-	# Process add|change|restore|enable|disable domain aliases tasks
+	# Process toadd|tochange|torestore|toenable|todisable domain aliases tasks
 	$sql = "
 		SELECT
 			`alias_id` AS `id`, `alias_name` AS `name`, `alias_status` AS `status`
 		FROM
 			`domain_aliasses`
 		WHERE
-			`alias_status` IN ('toadd', 'change', 'dnschange', 'restore', 'toenable', 'todisable', 'disabled')
+			`alias_status` IN ('toadd', 'tochange', 'torestore', 'toenable', 'todisable', 'disabled')
 	";
 	$rs = _process('Alias', $sql, \$ipsMod);
 	return $rs if $rs;
 
-	# Process add|change|restore|enable|disable subdomains of domain aliases tasks
+	# Process toadd|tochange|torestore|toenable|todisable subdomains of domain aliases tasks
 	$sql = "
 		SELECT
 			`subdomain_alias_id` AS `id`, `subdomain_alias_name` AS `name`, `subdomain_alias_status` AS `status`
 		FROM
 			`subdomain_alias`
 		WHERE
-			`subdomain_alias_status` IN ('toadd', 'change', 'restore', 'toenable', 'todisable', 'disabled')
+			`subdomain_alias_status` IN ('toadd', 'tochange', 'torestore', 'toenable', 'todisable', 'disabled')
 	";
 	$rs = _process('SubAlias', $sql, \$ipsMod);
 	return $rs if $rs;
 
-	# Process add|change|enable|disable|delete mail tasks
+	# Process toadd|tochange|toenable|todisable|todelete mail tasks
 	$sql = "
 		SELECT
 			`mail_id` AS `id`, `mail_addr` AS `name`, `status` AS `status`
 		FROM
 			`mail_users`
 		WHERE
-			`status` IN ('toadd', 'change', 'toenable', 'delete', 'todisable')
+			`status` IN ('toadd', 'tochange', 'toenable', 'todelete', 'todisable')
 	";
 	$rs = _process('Mail', $sql);
 	return $rs if $rs;
 
-	# Process add|change|delete Htusers tasks
+	# Process toadd|tochange|todelete Htusers tasks
 	$sql = "
 		SELECT
 			`id`, `uname` AS `name`, `status`
 		FROM
 			`htaccess_users`
 		WHERE
-			`status` IN ('toadd', 'change', 'delete')
+			`status` IN ('toadd', 'tochange', 'todelete')
 	";
 	$rs = _process('Htusers', $sql);
 	return $rs if $rs;
 
-	# Process add|change|delete Htgroups tasks
+	# Process toadd|tochange|todelete Htgroups tasks
 	$sql = "
 		SELECT
 			`id` AS `id`, CONCAT(`ugroup`, ':', `id`) AS `name`, `status`
 		FROM
 			`htaccess_groups`
 		WHERE
-			`status` IN ('toadd', 'change', 'delete')
+			`status` IN ('toadd', 'tochange', 'todelete')
 	";
 	$rs = _process('Htgroup', $sql);
 	return $rs if $rs;
 
-	# Process add|change|delete Htaccess tasks
+	# Process toadd|tochange|todelete Htaccess tasks
 	$sql = "
 		SELECT
 			`id`, `auth_name` AS `name`, `status`
 		FROM
 			`htaccess`
 		WHERE
-			`status` IN ('toadd', 'change', 'delete')
+			`status` IN ('toadd', 'tochange', 'todelete')
 	";
 	$rs = _process('Htaccess', $sql);
 	return $rs if $rs;
 
-	# Process delete subdomain aliases tasks
+	# Process todelete subdomain aliases tasks
 	$sql = "
 		SELECT
 			`subdomain_alias_id` AS `id`, `subdomain_alias_name` AS `name`, `subdomain_alias_status` AS `status`
 		FROM
 			`subdomain_alias`
 		WHERE
-			`subdomain_alias_status` = 'delete'
+			`subdomain_alias_status` = 'todelete'
 	";
 	$rs = _process('SubAlias', $sql, \$ipsMod);
 	return $rs if $rs;
 
-	# Process delete subdomains tasks
+	# Process todelete subdomains tasks
 	$sql = "
 		SELECT
 			`subdomain_id` AS `id`, `subdomain_name` AS `name`, `subdomain_status` AS `status`
 		FROM
 			`subdomain`
 		WHERE
-			`subdomain_status` = 'delete'
+			`subdomain_status` = 'todelete'
 	";
 	$rs = _process('Subdomain', $sql, \$ipsMod);
 	return $rs if $rs;
 
-	# Process delete domain aliases tasks
+	# Process todelete domain aliases tasks
 	$sql = "
 		SELECT
 			`alias_id` AS `id`, `alias_name` AS `name`, `alias_status` AS `status`
 		FROM
 			`domain_aliasses`
 		WHERE
-			`alias_status` = 'delete'
+			`alias_status` = 'todelete'
 	";
 	$rs = _process('Alias', $sql, \$ipsMod);
 	return $rs if $rs;
 
-	# Process delete domains tasks
+	# Process todelete domains tasks
 	$sql = "
 		SELECT
 			`domain_id` AS `id`, `domain_name` AS `name`, `domain_status` AS `status`
 		FROM
 			`domain`
 		WHERE
-			`domain_status` = 'delete'
+			`domain_status` = 'todelete'
 	";
 	$rs = _process('Domain', $sql, \$ipsMod);
 	return $rs if $rs;
 
-	# Process delete users tasks
+	# Process todelete users tasks
 	$sql = "
 		SELECT
 			`admin_id` AS `id`, `admin_name` AS `name`, `admin_status` AS `status`
@@ -257,7 +259,7 @@ sub engine
 		WHERE
 			`admin_type` = 'user'
 		AND
-			`admin_status` = 'delete';
+			`admin_status` = 'todelete';
 	";
 	$rs = _process('User', $sql);
 	return $rs if $rs;
@@ -298,7 +300,7 @@ sub engine
 		FROM
 			`web_software_inst`
 		WHERE
-			`software_status` IN ('toadd', 'delete')
+			`software_status` IN ('toadd', 'todelete')
 		ORDER BY
 			`domain_id`
 	";

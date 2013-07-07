@@ -101,14 +101,14 @@ sub process
 
 	my @sql;
 
-	if($self->{'status'} =~ /^toadd|change$/) {
+	if($self->{'status'} =~ /^toadd|tochange$/) {
 		$rs = $self->add();
 		@sql = (
 			"UPDATE `htaccess_users` SET `status` = ? WHERE `id` = ?",
 			($rs ? scalar getMessageByType('error') : 'ok'),
 			$self->{'id'}
 		);
-	} elsif($self->{'status'} eq 'delete') {
+	} elsif($self->{'status'} eq 'todelete') {
 		$rs = $self->delete();
 		if($rs) {
 			@sql = (

@@ -130,11 +130,11 @@ if (customerHasFeature('domain_aliases') && isset($_GET['id'])) {
 
 				# Schedule deletion of any SSL certificat, which have domain alias as parent
 				$query = "UPDATE `ssl_certs` SET `status` = ? WHERE `id` = ? AND `type` = ?";
-				exec_query($query, array($cfg->ITEM_DELETE_STATUS, $alsId, 'als'));
+				exec_query($query, array($cfg->ITEM_TODELETE_STATUS, $alsId, 'als'));
 
 				# Schedule deletion of domain alias
 				$query = "UPDATE `domain_aliasses` SET `alias_status` = ? WHERE `alias_id` = ?";
-				exec_query($query, array($cfg->ITEM_DELETE_STATUS, $alsId));
+				exec_query($query, array($cfg->ITEM_TODELETE_STATUS, $alsId));
 
 				$db->commit();
 			} catch (iMSCP_Exception_Database $e) {

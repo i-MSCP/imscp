@@ -298,7 +298,7 @@ function reseller_addDomainAlias()
 				)
 			";
 			exec_query(
-				$query, array($customerDmnId, $asciiAlsName, $mountPoint, $cfg->ITEM_ADD_STATUS, $dmnIp, $forward)
+				$query, array($customerDmnId, $asciiAlsName, $mountPoint, $cfg->ITEM_TOADD_STATUS, $dmnIp, $forward)
 			);
 
 			$alsId = $db->insertId();

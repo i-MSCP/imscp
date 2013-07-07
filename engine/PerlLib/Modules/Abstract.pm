@@ -95,7 +95,7 @@ sub process
 
  Add item
 
- Should be called for items with 'toadd|change|toenable|dnschange' status.
+ Should be called for items with 'toadd|tochange|toenable' status.
 
  return int - 0 on success, other on failure
 
@@ -113,7 +113,7 @@ sub add
 
  Delete item.
 
- Should be called for items with 'delete' status.
+ Should be called for items with 'todelete' status.
 
  return int - 0 on success, other on failure
 
@@ -123,7 +123,7 @@ sub delete
 {
 	my $self = shift;
 
-	$self->{'action'} = 'del';
+	$self->{'action'} = 'delete';
 	$self->runAllActions();
 }
 
@@ -131,7 +131,7 @@ sub delete
 
  Restore item.
 
- Should be called for items with 'restore' status.
+ Should be called for items with 'torestore' status.
 
  return int - 0 on success, other on failure
 

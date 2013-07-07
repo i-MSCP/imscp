@@ -338,7 +338,7 @@ function create_catchall_mail_account($id) {
 				$rs = exec_query($query, $mail_id);
 				$domain_id = $rs->fields['domain_id'];
 				$sub_id = $rs->fields['sub_id'];
-				$status = $cfg->ITEM_ADD_STATUS;
+				$status = $cfg->ITEM_TOADD_STATUS;
 
 				// find the mail_addr (catchall -> "@(sub/alias)domain.tld", should be domain part of mail_acc
 				$match = explode('@', $mail_acc);
@@ -426,7 +426,7 @@ function create_catchall_mail_account($id) {
 				$mail_acc[] = $value;
 			}
 
-			$status = $cfg->ITEM_ADD_STATUS;
+			$status = $cfg->ITEM_TOADD_STATUS;
 
 			$query = "
 				INSERT INTO `mail_users` (

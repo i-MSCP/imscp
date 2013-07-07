@@ -182,15 +182,15 @@ sub addDmn
 	$rs;
 }
 
-=item delDmn(\$data)
+=item deleteDmn(\$data)
 
- Process delDmn tasks.
+ Process deleteDmn tasks.
 
  Return int 0 on success, other on failure
 
 =cut
 
-sub delDmn
+sub deleteDmn
 {
 	my $self = shift;
 	my $data = shift;
@@ -200,7 +200,7 @@ sub delDmn
 
 	if($webStatsAddon eq 'Awstats') {
 		require Addons::webstats::awstats::awstats;
-		$rs = Addons::webstats::awstats::awstats->getInstance()->delDmn($data);
+		$rs = Addons::webstats::awstats::awstats->getInstance()->deleteDmn($data);
 	}
 
 	$rs;

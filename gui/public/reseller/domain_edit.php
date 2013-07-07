@@ -862,12 +862,12 @@ function reseller_checkAndUpdateData($domainId, $recoveryMode = false)
 						AND
 							`alias_status` != ?
 					";
-					exec_query($query, array($cfg->ITEM_CHANGE_STATUS, $domainId, $cfg->ITEM_ORDERED_STATUS));
+					exec_query($query, array($cfg->ITEM_TOCHANGE_STATUS, $domainId, $cfg->ITEM_ORDERED_STATUS));
 				}
 
 				if($data['domain_subd_limit'] != '-1') {
 					$query = "UPDATE `subdomain` SET `subdomain_status` = ? WHERE `domain_id` = ?";
-					exec_query($query, array($cfg->ITEM_CHANGE_STATUS, $domainId));
+					exec_query($query, array($cfg->ITEM_TOCHANGE_STATUS, $domainId));
 
 					$query = "
 						UPDATE
@@ -877,7 +877,7 @@ function reseller_checkAndUpdateData($domainId, $recoveryMode = false)
 						WHERE
 							`alias_id` IN (SELECT `alias_id` FROM `domain_aliasses` WHERE `domain_id` = ?)
 					";
-					exec_query($query, array($cfg->ITEM_CHANGE_STATUS, $domainId));
+					exec_query($query, array($cfg->ITEM_TOCHANGE_STATUS, $domainId));
 				}
 
 				$daemonRequest = true;
@@ -914,7 +914,7 @@ function reseller_checkAndUpdateData($domainId, $recoveryMode = false)
 					$data['domain_expires'], time(), $data['domain_mailacc_limit'],
 					$data['domain_ftpacc_limit'], $data['domain_traffic_limit'],
 					$data['domain_sqld_limit'], $data['domain_sqlu_limit'],
-					($daemonRequest) ? $cfg->ITEM_CHANGE_STATUS : $cfg->ITEM_OK_STATUS,
+					($daemonRequest) ? $cfg->ITEM_TOCHANGE_STATUS : $cfg->ITEM_OK_STATUS,
 					$data['domain_alias_limit'], $data['domain_subd_limit'],
 					$data['domain_disk_limit'], $data['domain_php'], $data['domain_cgi'],
 					$data['allowbackup'], $data['domain_dns'],

@@ -178,7 +178,7 @@ sub addDmn
 
 		if($data->{'DOMAIN_TYPE'} eq 'Dmn') {
 			# Remove any previous entry of this domain from the Postfix relay_domains map
-        	$rs = $self->delFromRelayHash($data);
+        	$rs = $self->deleteFromRelayHash($data);
         	return $rs if $rs;
 
 			# Add the domain entry to the Postfix relay_domain map
@@ -192,7 +192,7 @@ sub addDmn
 
 		if($data->{'DOMAIN_TYPE'} eq 'Dmn') {
 			# Remove any previous entry of this domain from the Postfix relay_domains map
-			$rs = $self->delFromRelayHash($data);
+			$rs = $self->deleteFromRelayHash($data);
 			return $rs if $rs;
 
 			# Add the wildcard entry for in-existent subdomains to the Postfix relay_domain map
@@ -206,7 +206,7 @@ sub addDmn
 
 		if($data->{'DOMAIN_TYPE'} eq 'Dmn') {
 			# Remove any previous entry of this domain from the Postfix relay_domains map
-			$rs = $self->delFromRelayHash($data);
+			$rs = $self->deleteFromRelayHash($data);
 			return $rs if $rs;
 		}
 	}
@@ -263,7 +263,7 @@ sub addToRelayHash
 	$self->{'hooksManager'}->trigger('afterMtaAddToRelayHash', $data);
 }
 
-sub delFromRelayHash
+sub deleteFromRelayHash
 {
 	my $self = shift;
 	my $data = shift;
@@ -360,7 +360,7 @@ sub addToDomainHash
 	$self->{'hooksManager'}->trigger('afterMtaAddToDomainHash', $data);
 }
 
-sub delDmn
+sub deleteDmn
 {
 	my $self = shift;
 	my $data = shift;
@@ -418,7 +418,7 @@ sub disableDmn
 	$self->{'postmap'}->{$self->{'MTA_VIRTUAL_DMN_HASH'}} = $data->{'DOMAIN_NAME'};
 
 	if($data->{'DOMAIN_TYPE'} eq 'Dmn') {
-		$rs = $self->delFromRelayHash($data);
+		$rs = $self->deleteFromRelayHash($data);
 		return $rs if $rs;
 	}
 
@@ -439,7 +439,7 @@ sub addSub
 	$self->{'hooksManager'}->trigger('afterMtaAddSub', $data);
 }
 
-sub delSub
+sub deleteSub
 {
 	my $self = shift;
 	my $data = shift;
@@ -447,7 +447,7 @@ sub delSub
 	my $rs = $self->{'hooksManager'}->trigger('beforeMtaDelSub', $data);
 	return $rs if $rs;
 
-	$rs = $self->delDmn($data);
+	$rs = $self->deleteDmn($data);
 	return $rs if $rs;
 
 	$self->{'hooksManager'}->trigger('afterMtaDelSub', $data);
@@ -491,35 +491,35 @@ sub addMail
 
 	$rs = $self->addSaslData($data) if $data->{'MAIL_TYPE'} =~ m/_mail/;
 	return $rs if $rs;
-	$rs = $self->delSaslData($data) if $data->{'MAIL_TYPE'} !~ m/_mail/;
+	$rs = $self->deleteSaslData($data) if $data->{'MAIL_TYPE'} !~ m/_mail/;
 	return $rs if $rs;
 
 	$rs = $self->addMailBox($data) if $data->{'MAIL_TYPE'} =~ m/_mail/;
 	return $rs if $rs;
-	$rs = $self->delMailBox($data) if $data->{'MAIL_TYPE'} !~ m/_mail/;
+	$rs = $self->deleteMailBox($data) if $data->{'MAIL_TYPE'} !~ m/_mail/;
 	return $rs if $rs;
 
 	$rs = $self->addAutoRspnd($data) if $data->{'MAIL_HAS_AUTO_RSPND'}  eq 'yes';
 	return $rs if $rs;
-	$rs = $self->delAutoRspnd($data) if $data->{'MAIL_HAS_AUTO_RSPND'} eq 'no';
+	$rs = $self->deleteAutoRspnd($data) if $data->{'MAIL_HAS_AUTO_RSPND'} eq 'no';
 	return $rs if $rs;
 
 	$rs = $self->addMailForward($data) if $data->{'MAIL_TYPE'} =~ m/_forward/;
 	return $rs if $rs;
-	$rs = $self->delMailForward($data) if $data->{'MAIL_TYPE'} !~ m/_forward/;
+	$rs = $self->deleteMailForward($data) if $data->{'MAIL_TYPE'} !~ m/_forward/;
 	return $rs if $rs;
 
 
 	$rs = $self->addCatchAll($data) if $data->{'MAIL_HAS_CATCH_ALL'} eq 'yes';
 	return $rs if $rs;
-	$rs = $self->delCatchAll($data) if $data->{'MAIL_HAS_CATCH_ALL'} eq 'no';
+	$rs = $self->deleteCatchAll($data) if $data->{'MAIL_HAS_CATCH_ALL'} eq 'no';
 	return $rs if $rs;
 
 
 	$self->{'hooksManager'}->trigger('afterMtaAddMail', $data);
 }
 
-sub delMail
+sub deleteMail
 {
 	my $self = shift;
 	my $data = shift;
@@ -540,19 +540,19 @@ sub delMail
 		}
 	}
 
-	$rs = $self->delSaslData($data);
+	$rs = $self->deleteSaslData($data);
 	return $rs if $rs;
 
-	$rs = $self->delMailBox($data);
+	$rs = $self->deleteMailBox($data);
 	return $rs if $rs;
 
-	$rs = $self->delMailForward($data);
+	$rs = $self->deleteMailForward($data);
 	return $rs if $rs;
 
-	$rs = $self->delAutoRspnd($data);
+	$rs = $self->deleteAutoRspnd($data);
 	return $rs if $rs;
 
-	$rs = $self->delCatchAll($data);
+	$rs = $self->deleteCatchAll($data);
 	return $rs if $rs;
 
 	$self->{'hooksManager'}->trigger('afterMtaDelMail', $data);
@@ -579,25 +579,25 @@ sub disableMail
 		}
 	}
 
-	$rs = $self->delSaslData($data);
+	$rs = $self->deleteSaslData($data);
 	return $rs if $rs;
 
 	$rs = $self->disableMailBox($data);
 	return $rs if $rs;
 
-	$rs = $self->delMailForward($data);
+	$rs = $self->deleteMailForward($data);
 	return $rs if $rs;
 
-	$rs = $self->delAutoRspnd($data);
+	$rs = $self->deleteAutoRspnd($data);
 	return $rs if $rs;
 
-	$rs = $self->delCatchAll($data);
+	$rs = $self->deleteCatchAll($data);
 	return $rs if $rs;
 
 	$self->{'hooksManager'}->trigger('afterMtaDisableMail', $data);
 }
 
-sub delSaslData
+sub deleteSaslData
 {
 	my $self = shift;
 	my $data = shift;
@@ -706,7 +706,7 @@ sub addSaslData
 	$self->{'hooksManager'}->trigger('afterMtaAddSaslData', $data);
 }
 
-sub delAutoRspnd
+sub deleteAutoRspnd
 {
 	my $self = shift;
 	my $data = shift;
@@ -785,7 +785,7 @@ sub addAutoRspnd
 	$self->{'hooksManager'}->trigger('afterMtaAddAutoRspnd', $data);
 }
 
-sub delMailForward
+sub deleteMailForward
 {
 	my $self = shift;
 	my $data = shift;
@@ -805,7 +805,7 @@ sub delMailForward
 	$wrkContent =~ s/^$mailbox\t[^\n]*\n//gmi;
 
 	# handle normal mail accounts entries for which auto-responder is active
-	if($data->{'MAIL_STATUS'} ne 'delete') {
+	if($data->{'MAIL_STATUS'} ne 'todelete') {
 		my @line;
 
 		# if auto-responder is activated, we must add the recipient as address to keep local copy of any forwarded mail
@@ -890,7 +890,7 @@ sub addMailForward
 	$self->{'hooksManager'}->trigger('afterMtaAddMailForward', $data);
 }
 
-sub delMailBox
+sub deleteMailBox
 {
 	my $self = shift;
 	my $data = shift;
@@ -1057,7 +1057,7 @@ sub addCatchAll
 	$self->{'hooksManager'}->trigger('afterMtaAddCatchAll', $data);
 }
 
-sub delCatchAll
+sub deleteCatchAll
 {
 	my $self = shift;
 	my $data = shift;

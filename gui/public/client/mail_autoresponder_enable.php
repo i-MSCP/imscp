@@ -109,7 +109,7 @@ function client_ActivateAutoresponder($mailAccountId, $autoresponderMessage)
 				WHERE
 					`mail_id` = ?
 			';
-			exec_query($query, array($config->ITEM_CHANGE_STATUS, 1, $autoresponderMessage, $mailAccountId));
+			exec_query($query, array($config->ITEM_TOCHANGE_STATUS, 1, $autoresponderMessage, $mailAccountId));
 
 			// Purge autoreplies log entries
 			delete_autoreplies_log_entries();

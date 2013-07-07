@@ -55,7 +55,7 @@ sub process
 	my $httpd = Servers::httpd->factory();
 	my $rs = 0;
 
-	$httpd->delOldLogs() if $httpd->can('delOldLogs');
+	$httpd->deleteOldLogs() if $httpd->can('deleteOldLogs');
 	return $rs if $rs;
 
 	$rs;

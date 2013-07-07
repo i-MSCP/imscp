@@ -148,7 +148,7 @@ sub addDmn
 	$rs;
 }
 
-=item delDmn(\$data)
+=item deleteDmn(\$data)
 
  Delete Awstats configuration.
 
@@ -157,7 +157,7 @@ sub addDmn
 
 =cut
 
-sub delDmn
+sub deleteDmn
 {
 	my $self = shift;
 	my $data = shift;
@@ -201,7 +201,7 @@ sub delDmn
 		}
 	}
 
-	$self->_delAwstatsCronTask($data);
+	$self->_deleteAwstatsCronTask($data);
 }
 
 =back
@@ -429,7 +429,7 @@ sub _addAwstatsCronTask
 	);
 }
 
-=item _delAwstatsCronTask(\$data)
+=item _deleteAwstatsCronTask(\$data)
 
  Remove Awstats cron task.
 
@@ -438,7 +438,7 @@ sub _addAwstatsCronTask
 
 =cut
 
-sub _delAwstatsCronTask
+sub _deleteAwstatsCronTask
 {
 	my $self = shift;
 	my $data = shift;

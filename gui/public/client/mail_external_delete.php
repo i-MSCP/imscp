@@ -76,7 +76,7 @@ function client_deleteExternalMailServers($items, $postRequest)
                           WHERE
                             `domain_id` = ?
 					    ';
-                        exec_query($query, array('off', $cfg->ITEM_CHANGE_STATUS, null, $itemId));
+                        exec_query($query, array('off', $cfg->ITEM_TOCHANGE_STATUS, null, $itemId));
 
                         $numberDeletedEntries++;
                     }
@@ -116,7 +116,7 @@ function client_deleteExternalMailServers($items, $postRequest)
                           AND
                             `domain_id` = ?
     					';
-                        exec_query($query, array('off', $cfg->ITEM_CHANGE_STATUS, null, $itemId, $domainId));
+                        exec_query($query, array('off', $cfg->ITEM_TOCHANGE_STATUS, null, $itemId, $domainId));
 
                         $numberDeletedEntries++;
                     }

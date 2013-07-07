@@ -154,7 +154,7 @@ if (isset($_POST['upload']) && $_SESSION['software_upload_token'] == $_POST['sen
 			array(
 				$user_id, 'waiting_for_input', 'waiting_for_input', 'waiting_for_input', 'waiting_for_input', 0,
 				$filename, 'waiting_for_input', 'waiting_for_input', 'waiting_for_input', 'waiting_for_input', 1,
-				$cfg->ITEM_ADD_STATUS, 'yes'
+				$cfg->ITEM_TOADD_STATUS, 'yes'
 			)
 		);
 

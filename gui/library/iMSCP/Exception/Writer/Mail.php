@@ -168,7 +168,7 @@ class iMSCP_Exception_Writer_Mail extends iMSCP_Exception_Writer
 		if (iMSCP_Registry::isRegistered('dbConfig')) {
 			$dbConfig = iMSCP_Registry::get('dbConfig');
 
-			if (isset($dbConfig->MAIL_BODY_FOOTPRINTS) && is_serialized($dbConfig->MAIL_BODY_FOOTPRINTS)) {
+			if (isset($dbConfig->MAIL_BODY_FOOTPRINTS) && isSerialized($dbConfig->MAIL_BODY_FOOTPRINTS)) {
 				$this->_cache = unserialize($dbConfig->MAIL_BODY_FOOTPRINTS);
 			}
 		}
@@ -215,7 +215,7 @@ class iMSCP_Exception_Writer_Mail extends iMSCP_Exception_Writer
 			/** @var $dbConfig iMSCP_Config_Handler_Db */
 			$dbConfig = iMSCP_Registry::get('dbConfig');
 
-			if (isset($dbConfig->MAIL_BODY_FOOTPRINTS) && is_serialized($dbConfig->MAIL_BODY_FOOTPRINTS)) {
+			if (isset($dbConfig->MAIL_BODY_FOOTPRINTS) && isSerialized($dbConfig->MAIL_BODY_FOOTPRINTS)) {
 				$cache = unserialize($dbConfig->MAIL_BODY_FOOTPRINTS);
 				$now = time();
 

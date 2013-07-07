@@ -26,8 +26,6 @@
  * @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
  */
 
-// TODO datatable (Must fix layout issue before - table header + checkbox)
-
 /***********************************************************************************************************************
  * Script functions
  */
@@ -35,20 +33,23 @@
 /**
  * Upload plugin archive into the gui/plugins directory
  *
+ * @param iMSCP_Plugin_Manager $pluginManager
  * @return bool TRUE on success, FALSE on failure
  */
-function admin_pluginManagerUploadPlugin()
+function admin_pluginManagerUploadPlugin($pluginManager)
 {
-	$ret = true;
+	$pluginDirectory = $pluginManager->getPluginDirectory();
+	$tmpDirectory = GUI_ROOT_DIR . '/data/tmp';
+	$ret = false;
 
 	if (isset($_FILES['pluginArchive'])) {
-		$tmpDir = GUI_ROOT_DIR . '/data/tmp';
-		$extToMimetypes = array(
-			'application/x-gzip' => 'tar.gz', 'application/x-bzip2' => 'tar.bz2', 'application/zip' => 'zip'
-		);
-
-		$beforeMove = function ($extToMimetypes, $tmpDir) {
+		$beforeMove = function ($tmpDirectory) {
 			$tmpFilePath = $_FILES['pluginArchive']['tmp_name'];
+
+			if (!checkMimeType($tmpFilePath, array('application/x-gzip','application/x-bzip2', 'application/zip'))) {
+				set_page_message(tr('Only tar.gz, tar.bz2 and zip archives are supported.'), 'error');
+				return false;
+			}
 
 			$pluginArchiveSize = $_FILES['pluginArchive']['size'];
 			$maxUploadFileSize = utils_getMaxFileUpload();
@@ -56,56 +57,94 @@ function admin_pluginManagerUploadPlugin()
 			if($pluginArchiveSize > $maxUploadFileSize) {
 				set_page_message(
 					tr(
-						'Plugin archive is too big (%s). Max size is: %s.',
+						'Plugin archive exceeds the maximum upload size (%s). Max upload size is: %s.',
 						bytesHuman($pluginArchiveSize),
 						bytesHuman($maxUploadFileSize)
-					), 'error'
+					),
+					'error'
 				);
 				return false;
 			}
 
-			// Check file mime type
-			if (!($fileMimeType = checkMimeType($tmpFilePath, array_keys($extToMimetypes)))) {
-				set_page_message(tr('Only tar.gz, tar.bz2 and zip archives are supported.'), 'error');
-				return false;
-			}
-
-			return $tmpDir . '/' . $_FILES['pluginArchive']['name'];
+			return $tmpDirectory . '/' . $_FILES['pluginArchive']['name'];
 		};
 
-		$archPath = utils_uploadFile('pluginArchive', array($beforeMove, $extToMimetypes, $tmpDir));
-
-		if ($archPath === false) {
-			$ret = false;
-		} else {
-			## TODO remove previous plugin dir
-
-			$archType = $extToMimetypes[checkMimeType($archPath, array_keys($extToMimetypes))];
+		if (($archPath = utils_uploadFile('pluginArchive', array($beforeMove, $tmpDirectory))) !== false) {
+			$zipArch = (substr($archPath, -3) === 'zip');
 
 			try {
-				if ($archType != 'zip') {
+				if (!$zipArch) {
 					$arch = new PharData($archPath);
-					$arch = $arch->decompress();
-					$archTarPath = $arch->getPath();
-					$arch = new PharData($archTarPath);
-					$arch->extractTo(PLUGINS_PATH, null, true);
+					$name = $arch->getBasename();
+
+					if(!isset($arch["$name/$name.php"])) {
+						throw new iMSCP_Exception(tr('File %s is missing in plugin directory.', "$name.php"));
+					}
 				} else {
 					$arch = new ZipArchive;
 
-					if ($arch->open($archPath) === TRUE) {
-						$arch->extractTo(PLUGINS_PATH);
-						$arch->close();
+					if ($arch->open($archPath) === true) {
+						if(($name = $arch->getNameIndex(0, ZIPARCHIVE::FL_UNCHANGED)) !== false) {
+							$name = rtrim($name, '/');
+
+							$index = $arch->locateName("$name.php", ZipArchive::FL_NODIR);
+
+							if($index !== false) {
+								if(($stats = $arch->statIndex($index))) {
+									if($stats['name'] != "$name/$name.php") {
+										throw new iMSCP_Exception(tr('File %s is missing in plugin directory.', "$name.php"));
+									}
+								} else {
+									throw new iMSCP_Exception(tr('Unable to get stats for file %s.', "$name.php"));
+								}
+							} else {
+								throw new iMSCP_Exception(tr('File %s is missing in plugin directory.', "$name.php"));
+							}
+						} else {
+							throw new iMSCP_Exception(tr('Unable to find plugin root directory.'));
+						}
 					} else {
-						throw new iMSCP_Exception('Unknown error');
+						throw new iMSCP_Exception(tr('Unable to open archive.'));
 					}
 				}
+
+				if($pluginManager->isKnown($name) && $pluginManager->isProtected($name)) {
+					throw new iMSCP_Exception(tr('You are not allowed to update a protected plugin.'));
+				}
+
+				# Backup current plugin directory in temporary directory if exists
+				if(is_dir("$pluginDirectory/$name")) {
+					if(!@rename("$pluginDirectory/$name", "$tmpDirectory/$name")) {
+						throw new iMSCP_Exception(
+							tr('Unable to backup %s plugin directory.', "<strong>$name</strong>")
+						);
+					}
+				}
+
+				if(!$zipArch) {
+					$arch->extractTo($pluginDirectory, null, true);
+				} elseif(!$arch->extractTo($pluginDirectory)) {
+					throw new iMSCP_Exception(tr('Unable to extract plugin archive.'));
+				}
+
+				$ret  = true;
 			} catch (Exception $e) {
-				set_page_message(tr('Unable to extract plugin archive: %s', $e->getMessage()), 'error');
-				$ret = false;
+				if($e instanceof iMSCP_Exception) {
+					set_page_message($e->getMessage(), 'error');
+				} else {
+					set_page_message(tr('Unable to extract plugin archive: %s', $e->getMessage()), 'error');
+				}
+
+				if(isset($name) && is_dir("$tmpDirectory/$name")) {
+					// Restore previous plugin directory on error
+					if(!@rename("$tmpDirectory/$name", "$pluginDirectory/$name")) {
+						set_page_message(tr('Unable to restore %s plugin directory', "<strong>$name</strong>"), 'error');
+					}
+				}
 			}
 
-			if (isset($archTarPath)) @unlink($archTarPath); // Cleanup
 			@unlink($archPath); // Cleanup
+			if (isset($name)) utils_removeDir("$tmpDirectory/$name"); // cleanup
 		}
 	} else {
 		showBadRequestErrorPage();
@@ -123,51 +162,71 @@ function admin_pluginManagerUploadPlugin()
 function admin_pluginManagerTrStatus($rawPluginStatus)
 {
 	switch($rawPluginStatus) {
-		case 'install':
-			return tr('Install in progress...');
-			break;
-		case 'uninstall':
-			return tr('Uninstall in progress...');
-			break;
 		case 'enabled':
 			return tr('Activated');
 			break;
+		case 'uninstalled':
 		case 'disabled':
 			return tr('Deactivated');
 			break;
+		case 'toinstall':
+		case 'toenable':
+			return tr('Activation in progress...');
+			break;
+		case 'toupdate':
+			return tr('Update in progress...');
+			break;
+		case 'touninstall':
+		case 'todisable':
+			return tr('Deactivation in progress...');
 		default:
-			return tr('Unknown error: %s', $rawPluginStatus);
+			return tr('Unknown error');
 	}
 }
 
 /**
- * Generates plugins list from database.
+ * Generates plugins list from database
  *
  * @param iMSCP_pTemplate $tpl Template engine instance
  * @param iMSCP_Plugin_Manager $pluginManager
+ * @return void
  */
 function admin_pluginManagerGeneratePluginList($tpl, $pluginManager)
 {
+	$trAction = array(
+		'toinstall' => tr('activation'),
+		'toupdate' => tr('update'),
+		'touninstall' => tr('deletion'),
+		'toenable' => tr('activation'),
+		'todisable' => tr('deactivation'),
+		'todelete' => tr('deletion'),
+	);
+
 	$pluginList = $pluginManager->getPluginList('Action', false);
 
 	if (empty($pluginList)) {
 		$tpl->assign('PLUGINS_BLOCK', '');
-		set_page_message(tr('Plugin list is empty. To install a new plugin, extract its archive content into the <strong>gui/plugins</strong> directory and update the plugin list.'), 'info');
+		set_page_message(tr('Plugin list is empty.'), 'info');
 	} else {
 		sort($pluginList);
-		$cacheFile = 'gui/data/persistent/protected_plugins.php';
-		$protectTooltip = '<span style="color:rgb(96, 0, 14);cursor:pointer" title="' . tr('To unprotect this plugin, you must edit the %s file', $cacheFile) . '">' . tr('Protected plugin') . '</span>';
+		$cacheFile = PERSISTENT_PATH . '/protected_plugins.php';
+		$protectTooltip = '<span style="color:rgb(96, 0, 14);cursor:pointer" title="' .
+			tr('To unprotect this plugin, you must edit the %s file', $cacheFile) . '">' .
+			tr('Protected plugin') . '</span>';
 
 		$hasLoadedPlugins = false;
 
 		foreach ($pluginList as $pluginName) {
-			if (($plugin = $pluginManager->load('Action', $pluginName, false, false)) !== null) {
+			if (($plugin = $pluginManager->load($pluginName, false, false)) !== null) {
 				$pluginInfo = $plugin->getInfo();
+				$pluginStatus = $pluginManager->getStatus($pluginName);
 				$tpl->assign(
 					array(
 						'PLUGIN_NAME' => tohtml($plugin->getName()),
 						'PLUGIN_DESCRIPTION' => tohtml($pluginInfo['desc']),
-						'PLUGIN_STATUS' => tohtml(admin_pluginManagerTrStatus($pluginManager->getStatus($pluginName))),
+						'PLUGIN_STATUS' => ($pluginManager->hasError($pluginName))
+							? tohtml(admin_pluginManagerTrStatus('unknown'))
+							: tohtml(admin_pluginManagerTrStatus($pluginStatus)),
 						'PLUGIN_VERSION' => tohtml($pluginInfo['version']),
 						'PLUGIN_AUTHOR' => tohtml($pluginInfo['author']),
 						'PLUGIN_MAILTO' => tohtml($pluginInfo['email']),
@@ -175,18 +234,30 @@ function admin_pluginManagerGeneratePluginList($tpl, $pluginManager)
 					)
 				);
 
-				if ($pluginManager->isProtected($pluginName)) {
-					$tpl->assign('PLUGIN_DEACTIVATE_LINK', '');
-					$tpl->assign('PLUGIN_ACTIVATE_LINK', $protectTooltip);
-				} elseif ($pluginManager->isActivated($pluginName)) {
-					$tpl->assign('PLUGIN_ACTIVATE_LINK', '');
-					$tpl->parse('PLUGIN_DEACTIVATE_LINK', 'plugin_deactivate_link');
-				} elseif ($pluginManager->isDeactivated($pluginName)) {
-					$tpl->assign('PLUGIN_DEACTIVATE_LINK', '');
-					$tpl->parse('PLUGIN_ACTIVATE_LINK', 'plugin_activate_link');
-				} else { # Install, and Unknown status cases
-					$tpl->assign('PLUGIN_DEACTIVATE_LINK', '');
-					$tpl->assign('PLUGIN_ACTIVATE_LINK', '');
+				if($pluginManager->hasError($pluginName)) {
+					$tpl->assign(
+						'PLUGIN_STATUS_DETAILS',
+						tr(
+							'An unexpected error occured while plugin %s attempt: %s',
+							$trAction[$pluginStatus], '<br /><br />' . $pluginManager->getError($pluginName)
+						)
+					);
+					$tpl->parse('PLUGIN_STATUS_DETAILS_BLOCK', 'plugin_status_details_block');
+					$tpl->assign(array('PLUGIN_DEACTIVATE_LINK' => '', 'PLUGIN_ACTIVATE_LINK' => ''));
+				} else {
+					$tpl->assign('PLUGIN_STATUS_DETAILS_BLOCK', '');
+
+					if($pluginManager->isProtected($pluginName)) {
+						$tpl->assign(array('PLUGIN_ACTIVATE_LINK' => $protectTooltip, 'PLUGIN_DEACTIVATE_LINK' => ''));
+					} elseif($pluginManager->isDeactivated($pluginName)) {
+						$tpl->assign('PLUGIN_DEACTIVATE_LINK', '');
+						$tpl->parse('PLUGIN_ACTIVATE_LINK', 'plugin_activate_link');
+					} elseif($pluginManager->isActivated($pluginName)) {
+						$tpl->assign('PLUGIN_ACTIVATE_LINK', '');
+						$tpl->parse('PLUGIN_DEACTIVATE_LINK', 'plugin_deactivate_link');
+					}  else {
+						$tpl->assign(array('PLUGIN_DEACTIVATE_LINK' => '', 'PLUGIN_ACTIVATE_LINK' => ''));
+					}
 				}
 
 				$tpl->parse('PLUGIN_BLOCK', '.plugin_block');
@@ -195,14 +266,82 @@ function admin_pluginManagerGeneratePluginList($tpl, $pluginManager)
 		}
 
 		if (!$hasLoadedPlugins) {
-			set_page_message(tr('Plugin list is empty. To install a new plugin, extract its archive content into the <strong>gui/plugins</strong> directory and update the plugin list.'), 'info');
+			set_page_message(tr('Plugin list is empty.'), 'info');
 			$tpl->assign('PLUGINS_BLOCK', '');
 		}
 	}
 }
 
 /**
- * Do bulk action (activate|deactivate|protect).
+ * Execute the given action for the given plugin
+ *
+ * @param iMSCP_Plugin_Manager $pluginManager
+ * @param string $pluginName Plugin name
+ * @param string $action Action (activate|deactivate|delete|protect)
+ * @param bool $force Force action
+ * @return void
+ */
+function admin_pluginManagerDoAction($pluginManager, $pluginName, $action, $force = false)
+{
+	$trActions = array(
+		'activate' => tr('activate'),
+		'update' => tr('update'),
+		'deactivate' => tr('deactivate'),
+		'delete' => tr('delete'),
+		'protect' => tr('protect'),
+
+		'activated' => tr('activated'),
+		'updated' => tr('updated'),
+		'deactivated' => tr('deactivated'),
+		'deleted' => tr('deleted'),
+		'protected' => tr('protected')
+	);
+
+	$pluginName = clean_input($pluginName);
+
+	if ($pluginManager->isKnown($pluginName)) {
+		if ($pluginManager->isProtected($pluginName)) {
+			set_page_message(tr('Plugin %s is protected.', "<strong>$pluginName</strong>"), 'warning');
+		} elseif ($action == 'activate' && $pluginManager->isActivated($pluginName)) {
+			set_page_message(tr('Plugin %s is already activated.', "<strong>$pluginName</strong>"), 'warning');
+		} elseif ($action == 'deactivate' && $pluginManager->isDeactivated($pluginName)) {
+			set_page_message(tr('Plugin %s is already deactivated.', "<strong>$pluginName</strong>"), 'warning');
+		} else {
+			if (!$pluginManager->{$action}($pluginName, $force)) {
+				set_page_message(
+					tr(
+						'Plugin manager was unable to %s the %s plugin.', $trActions[$action],
+						"<strong>$pluginName</strong>"
+					),
+					'error'
+				);
+			} else {
+				if($action != 'delete' && $pluginManager->hasBackend($pluginName)) {
+					set_page_message(
+						tr(
+							'Plugin %s successfully scheduled for %s.',
+							"<strong>$pluginName</strong>",
+							($action == 'activate') ? tr('activation') : tr('deactivation')
+						),
+						'success'
+					);
+				} else {
+					set_page_message(
+						tr(
+							'Plugin %s successfully %s.', "<strong>$pluginName</strong>", $trActions[$action . 'd']
+						),
+						'success'
+					);
+				}
+			}
+		}
+	} else {
+		showBadRequestErrorPage();
+	}
+}
+
+/**
+ * Do bulk action (activate|deactivate|protect)
  *
  * @param iMSCP_Plugin_Manager $pluginManager
  * @return void
@@ -211,41 +350,15 @@ function admin_pluginManagerDoBulkAction($pluginManager)
 {
 	$action = clean_input($_POST['bulkActions']);
 
-	if (isset($_POST['checked']) && is_array($_POST['checked']) && !empty($_POST['checked'])) {
-		if (!empty($_POST['checked'])) {
-			$trActions = array(
-				'activate' => tr('activate'), 'deactivate' => tr('deactivate'), 'protect' => tr('protect'),
-				'activated' => tr('activated'), 'deactivated' => tr('deactivated'), 'protectd' => tr('protected')
-			);
-
-			$eventAction = array(
-				'activate' => array(iMSCP_Events::onBeforeActivatePlugin, iMSCP_Events::onAfterActivatePlugin),
-				'deactivate' => array(iMSCP_Events::onBeforeDeactivatePlugin, iMSCP_Events::onAfterDeactivatePlugin),
-				'protect' => array(iMSCP_Events::onBeforeProtectPlugin, iMSCP_Events::onAfterProtectPlugin),
-			);
-
-			foreach ($_POST['checked'] as $pluginName) {
-				if (!$pluginManager->isProtected($pluginName)) {
-					iMSCP_Events_Manager::getInstance()->dispatch(
-						$eventAction[$action][0], array('pluginManager' => $pluginManager, 'pluginName' => $pluginName)
-					);
-
-					if (!$pluginManager->{$action}(clean_input($pluginName))) {
-						set_page_message(tr('Plugin manager was unable to %s the %s plugin.', $trActions[$action], "<strong>$pluginName</strong>"), 'error');
-					} else {
-						iMSCP_Events_Manager::getInstance()->dispatch(
-							$eventAction[$action][1], array('pluginManager' => $pluginManager, 'pluginName' => $pluginName)
-						);
-
-						set_page_message(tr('Plugin %s successfully %s.', "<strong>$pluginName</strong>", $trActions[$action . 'd']), 'success');
-					}
-				} else {
-					set_page_message(tr('The plugin %s is protected. You cannot perform an action on it.', "<strong>$pluginName</strong>"), 'warning');
-				}
-			}
+	if(!in_array($action, array('activate', 'deactivate', 'delete', 'protect'))) {
+		showBadRequestErrorPage();
+	} elseif(isset($_POST['checked']) && is_array($_POST['checked']) && !empty($_POST['checked'])) {
+		foreach ($_POST['checked'] as $pluginName) {
+			$pluginName = clean_input($pluginName);
+			admin_pluginManagerDoAction($pluginManager, $pluginName, $action);
 		}
 	} else {
-		set_page_message(tr('You must select one or more plugins to operate on.'), 'error');
+		set_page_message(tr('You must select a plugin.'), 'error');
 	}
 }
 
@@ -253,7 +366,7 @@ function admin_pluginManagerDoBulkAction($pluginManager)
  * Update plugin list
  *
  * @param iMSCP_Plugin_Manager $pluginManager
- *
+ * @return void
  */
 function admin_pluginManagerUpdatePluginList($pluginManager)
 {
@@ -268,7 +381,15 @@ function admin_pluginManagerUpdatePluginList($pluginManager)
 	);
 
 	set_page_message(
-		tr('Plugin list successfully updated.<br/><strong>%d</strong> new plugin(s) found, <strong>%d</strong> plugin(s) updated, and <strong>%d</strong> plugin(s) deleted.', $info['added'], $info['updated'], $info['deleted']), 'success'
+		tr('Plugin list successfully updated.') .
+		'<br />' .
+		tr(
+			'%s new plugin(s) found, %s plugin(s) updated, and %s plugin(s) deleted.',
+			"<strong>{$info['new']}</strong>",
+			"<strong>{$info['updated']}</strong>",
+			"<strong>{$info['deleted']}</strong>"
+		),
+		'success'
 	);
 }
 /***********************************************************************************************************************
@@ -282,100 +403,62 @@ iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAdminScriptStart);
 
 check_login('admin');
 
-/** @var $pluginManager iMSCP_Plugin_Manager */
-$pluginManager = iMSCP_Registry::get('pluginManager');
+if(iMSCP_Registry::isRegistered('pluginManager')) {
+	/** @var iMSCP_Plugin_Manager $pluginManager */
+	$pluginManager = iMSCP_Registry::get('pluginManager');
+} else {
+	throw new iMSCP_Plugin_Exception('An unexpected error occured');
+}
 
 // Dispatches the request
 if (isset($_GET['updatePluginList'])) {
 	admin_pluginManagerUpdatePluginList($pluginManager);
 	redirectTo('settings_plugins.php');
-} elseif (isset($_GET['reinstall'])) {
-	$pluginName = clean_input($_GET['reinstall']);
-
-	if($pluginManager->isInstallable($pluginName)) {
-		$pluginManager->forceReinstall($pluginName);
-	} else {
-		showBadRequestErrorPage();
-	}
-
-	set_page_message(tr('Plugin successfully scheduled for reinstallation.'), 'success');
-	redirectTo('settings_plugins.php');
 } elseif (isset($_GET['activate'])) {
 	$pluginName = clean_input($_GET['activate']);
-
-	iMSCP_Events_Manager::getInstance()->dispatch(
-		iMSCP_Events::onBeforeActivatePlugin, array('pluginManager' => $pluginManager, 'pluginName' => $pluginName)
-	);
-
-	if ($pluginManager->activate($pluginName)) {
-		iMSCP_Events_Manager::getInstance()->dispatch(
-			iMSCP_Events::onAfterActivatePlugin, array('pluginManager' => $pluginManager, 'pluginName' => $pluginName)
-		);
-
-		if($pluginManager->isInstallable($pluginName)) {
-			set_page_message(tr('Plugin successfully scheduled for installation and activation.'), 'success');
-		} else {
-			set_page_message(tr('Plugin successfully activated.'), 'success');
-		}
-	} else {
-		set_page_message(tr('Plugin manager was unable to activate the plugin.'), 'error');
-	}
-
+	admin_pluginManagerDoAction($pluginManager, $pluginName, 'activate');
 	redirectTo('settings_plugins.php');
 } elseif (isset($_GET['deactivate'])) {
 	$pluginName = clean_input($_GET['deactivate']);
-
-	iMSCP_Events_Manager::getInstance()->dispatch(
-		iMSCP_Events::onBeforeDeactivatePlugin, array('pluginManager' => $pluginManager, 'pluginName' => $pluginName)
-	);
-
-	if ($pluginManager->deactivate($pluginName)) {
-		iMSCP_Events_Manager::getInstance()->dispatch(
-			iMSCP_Events::onAfterDeactivatePlugin, array('pluginManager' => $pluginManager, 'pluginName' => $pluginName)
-		);
-
-		if($pluginManager->isUninstallable($pluginName)) {
-			set_page_message(tr('Plugin successfully scheduled for uninstallation and deactivation.'), 'success');
-		} else {
-			set_page_message(tr('Plugin successfully deactivated.'), 'success');
-		}
-	} else {
-		set_page_message(tr('Plugin manager was unable to deactivate the plugin.'), 'error');
-	}
-
+	admin_pluginManagerDoAction($pluginManager, $pluginName, 'deactivate');
 	redirectTo('settings_plugins.php');
+} elseif (isset($_GET['delete'])) {
+	$pluginName = clean_input($_GET['delete']);
+	admin_pluginManagerDoAction($pluginManager, $pluginName, 'delete');
+	redirectTo('settings_plugins.php');
+} elseif (isset($_GET['retry'])) {
+	$pluginName = clean_input($_GET['retry']);
+
+	if($pluginManager->isKnown($pluginName)) {
+		switch($pluginManager->getStatus($pluginName)) {
+			case 'toinstall':
+			case 'toenable':
+				$action = 'activate';
+				break;
+			case 'toupdate':
+				$action = 'update';
+				break;
+			case 'todisable':
+				$action = 'deactivate';
+				break;
+			case 'touninstall':
+				$action = 'delete';
+		}
+
+		admin_pluginManagerDoAction($pluginManager, $pluginName, $action, true);
+		redirectTo('settings_plugins.php');
+	} else {
+		showBadRequestErrorPage();
+	}
 } elseif (isset($_GET['protect'])) {
 	$pluginName = clean_input($_GET['protect']);
-
-	iMSCP_Events_Manager::getInstance()->dispatch(
-		iMSCP_Events::onBeforeProtectPlugin, array('pluginManager' => $pluginManager, 'pluginName' => $pluginName)
-	);
-
-	if ($pluginManager->protect($pluginName)) {
-		iMSCP_Events_Manager::getInstance()->dispatch(
-			iMSCP_Events::onAfterProtectPlugin, array('pluginManager' => $pluginManager, 'pluginName' => $pluginName)
-		);
-
-		set_page_message(tr('Plugin successfully protected.'), 'success');
-	} else {
-		set_page_message(tr('Plugin manager was unable to protect the plugin.'), 'error');
-	}
-
+	admin_pluginManagerDoAction($pluginManager, $pluginName, 'protect');
 	redirectTo('settings_plugins.php');
-} elseif (isset($_POST['bulkActions']) && in_array($_POST['bulkActions'], array('activate', 'deactivate', 'protect'))) {
-	iMSCP_Events_Manager::getInstance()->dispatch(
-		iMSCP_Events::onBeforeBulkAction, array('pluginManager' => $pluginManager)
-	);
-
+} elseif (isset($_POST['bulkActions'])) {
 	admin_pluginManagerDoBulkAction($pluginManager);
-
-	iMSCP_Events_Manager::getInstance()->dispatch(
-		iMSCP_Events::onAfterBulkAction, array('pluginManager' => $pluginManager)
-	);
-
 	redirectTo('settings_plugins.php');
 } elseif(!empty($_FILES)) {
-	if (admin_pluginManagerUploadPlugin()) {
+	if (admin_pluginManagerUploadPlugin($pluginManager)) {
 		set_page_message(tr('Plugin successfully uploaded.'), 'success');
 		admin_pluginManagerUpdatePluginList($pluginManager);
 		redirectTo('settings_plugins.php');
@@ -393,6 +476,7 @@ $tpl->define_dynamic(
 		'page_message' => 'layout',
 		'plugins_block' => 'page',
 		'plugin_block' => 'plugins_block',
+		'plugin_status_details_block' => 'plugin_block',
 		'plugin_activate_link' => 'plugin_block',
 		'plugin_deactivate_link' => 'plugin_block',
 	)
@@ -410,26 +494,32 @@ $tpl->assign(
 		'TR_STATUS' => tr('Status'),
 		'TR_ACTIONS' => tr('Actions'),
 		'TR_ACTIVATE' => tr('Activate'),
-		'TR_ACTIVATE_TOOLTIP' => tr('Activate this plugin'),
-		'TR_REINSTALL' => tr('Reinstall'),
-		'TR_REINSTALL_TOOLTIP' => tr('Force plugin re-installation'),
-		'TR_DEACTIVATE_TOOLTIP' => tr('Deactivate this plugin'),
+		'TR_ACTIVATE_TOOLTIP' => tr('Activate this plugin.'),
+		'TR_DEACTIVATE_TOOLTIP' => tr('Deactivate this plugin.'),
 		'TR_DEACTIVATE' => tr('Deactivate'),
 		'TR_PROTECT' => tr('Protect'),
+		'TR_DELETE' => tr('Delete'),
+		'TR_DELETE_TOOLTIP' => ('Delete this plugin'),
 		'TR_PROTECT_TOOLTIP' => tr('Protect this plugin'),
 		'TR_PLUGIN_CONFIRMATION_TITLE' => tr('Confirmation for plugin protection'),
-		'TR_PROTECT_CONFIRMATION' => tr("If you protect a plugin, you'll no longer be able to deactivate it from the plugin management interface.<br /><br />To unprotect  a plugin, you'll have to edit the %s file.", 'gui/data/persistent/protected_plugins.php'),
+		'TR_PROTECT_CONFIRMATION' => tr(
+			"If you protect a plugin, you'll no longer be able to deactivate it from the plugin management interface."
+		),
 		'TR_CANCEL' => tr('Cancel'),
 		'TR_VERSION' => tr('Version'),
 		'TR_BY' => tr('By'),
 		'TR_VISIT_PLUGIN_SITE' => tr('Visit plugin site'),
 		'TR_UPDATE_PLUGIN_LIST' => tr('Update plugin list'),
 		'TR_APPLY' => tr('Apply'),
-
 		'TR_PLUGIN_UPLOAD' => tr('Plugins Upload'),
 		'TR_UPLOAD' => tr('Upload'),
 		'TR_PLUGIN_ARCHIVE' => tr('Plugin archive'),
-		'TR_PLUGIN_ARCHIVE_TOOLTIP' => 'Only tar.gz, tar.bz2 and zip archives are accepted.',
+		'TR_PLUGIN_ARCHIVE_TOOLTIP' => tr('Only tar.gz, tar.bz2 and zip archives are accepted.'),
+		'TR_PLUGIN_HINT' => tr('Plugins hook into i-MSCP to extend its functionality with custom features. Plugins are developed independently from the core i-MSCP application by thousands of developers all over the world. You can find new plugins to install by browsing the %s.', true, '<u><a href="http://plugins.i-mscp.net" target="_blank">' . tr('i-MSCP plugin repository') . '</a></u>'),
+		'TR_CLICK_FOR_MORE_DETAILS' => tr('Click here for more details'),
+		'TR_ERROR_DETAILS' => tr('Error details'),
+		'TR_FORCE_RETRY'  => tr('Force retry'),
+		'TR_CLOSE' => tr('Close')
 	)
 );
 

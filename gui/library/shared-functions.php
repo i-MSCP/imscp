@@ -187,12 +187,11 @@ function translate_dmn_status($status)
 	switch ($status) {
 		case $cfg->ITEM_OK_STATUS:
 			return tr('Ok');
-		case $cfg->ITEM_ADD_STATUS:
+		case $cfg->ITEM_TOADD_STATUS:
 			return tr('Addition in progress');
-		case $cfg->ITEM_CHANGE_STATUS:
-		case $cfg->ITEM_DNSCHANGE_STATUS:
+		case $cfg->ITEM_TOCHANGE_STATUS:
 			return tr('Modification in progress');
-		case $cfg->ITEM_DELETE_STATUS:
+		case $cfg->ITEM_TODELETE_STATUS:
 			return tr('Deletion in progress');
 		case $cfg->ITEM_DISABLED_STATUS:
 			return tr('Suspended');
@@ -248,7 +247,7 @@ function update_user_props($domainId, $props)
 
 	// No record found. That mean that a least one value was changed
 	if (!$stmt->rowCount()) {
-		$updateStatus = $cfg->ITEM_CHANGE_STATUS;
+		$updateStatus = $cfg->ITEM_TOCHANGE_STATUS;
 
 		// Update customer limits/features and schedule domain update
 		$query = "
@@ -399,7 +398,7 @@ function change_domain_status($customerId, $action)
 					return;
 				}
 
-				$mailStatus = $cfg->ITEM_CHANGE_STATUS;
+				$mailStatus = $cfg->ITEM_TOCHANGE_STATUS;
 			}
 
 			$query = "UPDATE `mail_users` SET `mail_pass` = ?, `status` = ? WHERE `mail_id` = ?";
@@ -485,7 +484,7 @@ function deleteCustomer($customerId, $checkCreatedBy = false)
 	$customerName = $stmt->fields['admin_name'];
 	$mainDomainId = $stmt->fields['domain_id'];
 	$resellerId = $stmt->fields['created_by'];
-	$deleteStatus = $cfg->ITEM_DELETE_STATUS;
+	$deleteStatus = $cfg->ITEM_TODELETE_STATUS;
 
 	try {
 		// First, remove customer sessions to prevent any problems
@@ -1171,6 +1170,43 @@ function utils_getPhpValueInBytes($value)
 	return $val;
 }
 
+/**
+ * Remove the given directory recusively
+ *
+ * @param string $directory Path of directory to remove
+ * @return boolean TRUE on success, FALSE otherwise
+ */
+function utils_removeDir($directory)
+{
+	$directory = rtrim($directory, '/');
+
+	if (! file_exists($directory) || ! is_dir($directory)) {
+		return false;
+	} elseif (is_readable($directory)) {
+		$handle = opendir($directory);
+
+		while (false !== ($item = readdir($handle))) {
+			if ($item != '.' && $item != '..') {
+				$path = $directory . '/' . $item;
+
+				if (is_dir($path)) {
+					utils_removeDir($path);
+				} else {
+					@unlink($path);
+				}
+			}
+		}
+
+		closedir($handle);
+
+		if (!@rmdir($directory)) {
+			return false;
+		}
+	}
+
+	return true;
+}
+
 /***********************************************************************************************************************
  * Checks functions
  */
@@ -1220,10 +1256,10 @@ function is_xhr()
  * Check if a data is serialized.
  *
  * @author Laurent Declercq (nuxwin) <l.declercq@nuxwin.com>
- * @param mixed $data Data to be checked
+ * @param string $data Data to be checked
  * @return boolean TRUE if serialized data, FALSE otherwise
  */
-function is_serialized($data)
+function isSerialized($data)
 {
 	if (!is_string($data)) {
 		return false;
@@ -1242,6 +1278,19 @@ function is_serialized($data)
 	}
 
 	return false;
+}
+
+/**
+ * Check if the given string look like json data.
+ *
+ * @author Laurent Declercq (nuxwin) <l.declercq@nuxwin.com>
+ * @param $string $string $string to be checked
+ * @return boolean TRUE if the given string look like json data, FALSE otherwise
+ */
+function isJson($string)
+{
+	json_decode($string);
+	return (json_last_error() == JSON_ERROR_NONE);
 }
 
 /***********************************************************************************************************************
@@ -2374,41 +2423,4 @@ function showNotFoundErrorPage()
 	}
 
 	exit();
-}
-
-/**
- * Remove the given directory recusively
- *
- * @param string $directory Path of directory to remove
- * @return boolean TRUE on success, FALSE otherwise
- */
-function utils_removeDir($directory)
-{
-	$directory = rtrim($directory, '/');
-
-	if (! file_exists($directory) || ! is_dir($directory)) {
-		return false;
-	} elseif (is_readable($directory)) {
-		$handle = opendir($directory);
-
-		while (false !== ($item = readdir($handle))) {
-			if ($item != '.' && $item != '..') {
-				$path = $directory . '/' . $item;
-
-				if (is_dir($path)) {
-					utils_removeDir($path);
-				} else {
-					unlink($path);
-				}
-			}
-		}
-
-		closedir($handle);
-
-		if (!rmdir($directory)) {
-			return false;
-		}
-	}
-
-	return true;
 }

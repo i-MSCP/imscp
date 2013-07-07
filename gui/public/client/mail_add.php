@@ -472,7 +472,7 @@ function schedule_mail_account($domain_id, $dmn_name, $mail_acc) {
 			$domain_id,
 			$mail_type,
 			$sub_id,
-			$cfg->ITEM_ADD_STATUS,
+			$cfg->ITEM_TOADD_STATUS,
 			$mail_auto_respond,
 			$mail_auto_respond_text,
 			$mail_acc.'@'.$dmn_name));

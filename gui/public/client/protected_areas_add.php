@@ -157,8 +157,8 @@ function protect_area($domainId)
 	";
 
 	$rs = exec_query($query, array($domainId, $path, $alt_path));
-	$toadd_status = $cfg->ITEM_ADD_STATUS;
-	$tochange_status = $cfg->ITEM_CHANGE_STATUS;
+	$toadd_status = $cfg->ITEM_TOADD_STATUS;
+	$tochange_status = $cfg->ITEM_TOCHANGE_STATUS;
 
 	if ($rs->rowCount() !== 0) {
 		$update_id = $rs->fields['id'];

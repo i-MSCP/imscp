@@ -111,13 +111,13 @@ sub process
 
 	my @sql;
 
-	if($self->{'subdomain_status'} =~ /^toadd|change|toenable|dnschange$/) {
+	if($self->{'subdomain_status'} =~ /^toadd|tochange|toenable$/) {
 		$rs = $self->add();
 		@sql = (
 			"UPDATE `subdomain` SET `subdomain_status` = ? WHERE `subdomain_id` = ?",
 			($rs ? scalar getMessageByType('error') : 'ok'), $self->{'subdomain_id'}
 		);
-	} elsif($self->{'subdomain_status'} eq 'delete') {
+	} elsif($self->{'subdomain_status'} eq 'todelete') {
 		$rs = $self->delete();
 		if($rs) {
 			@sql = (
@@ -133,7 +133,7 @@ sub process
 			"UPDATE `subdomain` SET `subdomain_status` = ? WHERE `subdomain_id` = ?",
 			($rs ? scalar getMessageByType('error') : 'disabled'), $self->{'subdomain_id'}
 		);
-	} elsif($self->{'subdomain_status'} eq 'restore') {
+	} elsif($self->{'subdomain_status'} eq 'torestore') {
 		$rs = $self->restore();
 		@sql = (
 			"UPDATE `subdomain` SET `subdomain_status` = ? WHERE `subdomain_id` = ?",
@@ -239,7 +239,7 @@ sub buildHTTPDData
 			: $rdata->{'PHPINI_OPEN_BASEDIR'}->{'value'} ? ':'.$rdata->{'PHPINI_OPEN_BASEDIR'}->{'value'} : ''
 	};
 
-	if($self->{'subdomain_status'} eq 'delete') {
+	if($self->{'subdomain_status'} eq 'todelete') {
 		my $sharedMountPoints = $self->_getSharedMountPoints();
 
 		unless(ref $sharedMountPoints eq 'HASH') {
@@ -351,7 +351,7 @@ sub _getSharedMountPoints
 			WHERE
 				`domain_id` = ?
 			AND
-				`alias_status` NOT IN ('delete', 'ordered')
+				`alias_status` NOT IN ('todelete', 'ordered')
 			AND
 				`alias_mount` RLIKE ?
 			UNION
@@ -364,7 +364,7 @@ sub _getSharedMountPoints
 			AND
 				`domain_id` = ?
 			AND
-				`subdomain_status` <> 'delete'
+				`subdomain_status` <> 'todelete'
 			AND
 				`subdomain_mount` RLIKE ?
 			UNION
@@ -373,7 +373,7 @@ sub _getSharedMountPoints
 			FROM
 				`subdomain_alias`
 			WHERE
-				`subdomain_alias_status` <> 'delete'
+				`subdomain_alias_status` <> 'todelete'
 			AND
 				`alias_id` IN (SELECT `alias_id` FROM `domain_aliasses` WHERE `domain_id` = ?)
 			AND

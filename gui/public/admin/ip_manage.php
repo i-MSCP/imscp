@@ -134,14 +134,14 @@ function _client_generateIpAction($ipId, $status)
 
 	if ($status == $cfg->ITEM_OK_STATUS) {
 		return array(tr('Remove IP'), 'ip_delete.php?delete_id=' . $ipId);
-	} elseif($status == $cfg->ITEM_DELETE_STATUS) {
+	} elseif($status == $cfg->ITEM_TODELETE_STATUS) {
 		return array(tr('Deletion in progress'), '#');
-	} elseif($status == $cfg->ITEM_ADD_STATUS) {
+	} elseif($status == $cfg->ITEM_TOADD_STATUS) {
 		return array(tr('Addition in progress'), '#');
 	} elseif(
 		!in_array(
 			$status,
-			array($cfg->ITEM_ADD_STATUS, $cfg->ITEM_CHANGE_STATUS, $cfg->ITEM_OK_STATUS, $cfg->ITEM_DELETE_STATUS)
+			array($cfg->ITEM_TOADD_STATUS, $cfg->ITEM_TOCHANGE_STATUS, $cfg->ITEM_OK_STATUS, $cfg->ITEM_TODELETE_STATUS)
 		)
 	) {
 		return array(tr('Unknown Error'), '#');
@@ -271,7 +271,7 @@ function client_registerIp($ipNumber, $domain, $alias, $netcard)
 	";
 	exec_query(
 		$query,
-		array($ipNumber, idn_to_ascii($domain), idn_to_ascii($alias), $netcard, null, $cfg->ITEM_ADD_STATUS)
+		array($ipNumber, idn_to_ascii($domain), idn_to_ascii($alias), $netcard, null, $cfg->ITEM_TOADD_STATUS)
 	);
 
 	send_request();

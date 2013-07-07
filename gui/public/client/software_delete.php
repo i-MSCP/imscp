@@ -35,6 +35,9 @@ check_login('user');
 
 customerHasFeature('aps') or showBadRequestErrorPage();
 
+/** @var iMSCP_Config_Handler_File $cfg */
+$cfg = iMSCP_Registry::get('config');
+
 if (isset($_GET['id']) && is_numeric($_GET['id'])) {
     $domainProps = get_domain_default_props($_SESSION['user_id']);
     $dmn_id = $domainProps['domain_id'];
@@ -76,7 +79,7 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
 				AND
 					`domain_id` = ?
 			";
-			$res = exec_query($delete, array('delete', $_GET['id'], $dmn_id));
+			$res = exec_query($delete, array($cfg->ITEM_TODELETE_STATUS, $_GET['id'], $dmn_id));
 			send_request();
 			set_page_message(tr('Software scheduled for deletion.'), 'success');
 		}

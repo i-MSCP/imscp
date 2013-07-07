@@ -31,31 +31,38 @@
 // Include core library
 require_once 'imscp-lib.php';
 
-iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onBeforePluginsRoute);
+if(iMSCP_Registry::isRegistered('pluginManager')) {
+	iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onBeforePluginsRoute);
 
-$plugins = iMSCP_Registry::get('PLUGINS');
-$pluginActionScript = null;
+	/** @var iMSCP_Plugin_Manager $pluginManager */
+	$pluginManager = iMSCP_Registry::get('pluginManager');
+	$plugins = $pluginManager->getLoadedPlugins('Action');
+	$actionScript = null;
 
-if(!empty($plugins)) {
-	if(isset($plugins['Action'])) {
+	if(!empty($plugins)) {
 		/** @var $plugin iMSCP_Plugin_Action */
-		foreach($plugins['Action'] as $plugin) {
+		foreach($plugins as $plugin) {
 			$pluginRoutes = $plugin->getRoutes();
 
-			foreach($pluginRoutes as $pluginRoute => $pluginActionScript) {
-				if($pluginRoute == parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH)) {
-					$_SERVER['SCRIPT_NAME'] = $pluginRoute;
-					break;
+			if(!empty($pluginRoutes)) {
+				foreach($pluginRoutes as $pluginRoute => $pluginActionScript) {
+					if($pluginRoute == parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH)) {
+						$actionScript = $pluginActionScript;
+						$_SERVER['SCRIPT_NAME'] = $pluginRoute;
+						break;
+					}
 				}
 			}
 		}
 	}
-}
 
-iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAfterPluginsRoute);
+	iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAfterPluginsRoute);
 
-if($pluginActionScript !== null) {
-	require $pluginActionScript;
+	if($actionScript !== null) {
+		require $actionScript;
+	} else {
+		showNotFoundErrorPage();
+	}
 } else {
-	showNotFoundErrorPage();
+	throw new iMSCP_Plugin_Exception('An unexpected error occured');
 }

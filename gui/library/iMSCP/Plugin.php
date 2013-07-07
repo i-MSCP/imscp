@@ -63,8 +63,54 @@ abstract class iMSCP_Plugin
 
 	/**
 	 * Allow plugin initialization.
+	 * return void
 	 */
 	public function init() {}
+
+	/**
+	 * Plugin installation
+	 *
+	 * @throws iMSCP_Plugin_Exception
+	 * @param iMSCP_Plugin_Manager $pluginManager
+	 * @return void
+	 */
+	public function install(iMSCP_Plugin_Manager $pluginManager) {}
+
+	/**
+	 * Plugin update
+	 *
+	 * @throws iMSCP_Plugin_Exception
+	 * @param iMSCP_Plugin_Manager $pluginManager
+	 * @return void
+	 */
+	public function update(iMSCP_Plugin_Manager $pluginManager) {}
+
+	/**
+	 * PLugin uninstallation
+	 *
+	 * @throws iMSCP_Plugin_Exception
+	 * @param iMSCP_Plugin_Manager $pluginManager
+	 * @return void
+	 */
+	public function uninstall(iMSCP_Plugin_Manager $pluginManager) {}
+
+	/**
+	 * Plugin activation
+	 *
+	 * @throws iMSCP_Plugin_Exception
+	 * @param iMSCP_Plugin_Manager $pluginManager
+	 * @return void
+	 */
+	public function enable(iMSCP_Plugin_Manager $pluginManager) {}
+
+	/**
+	 * Plugin deactivation
+	 *
+	 * @throws iMSCP_Plugin_Exception
+	 * @param iMSCP_Plugin_Manager $pluginManager
+	 * @return void
+	 */
+	public function disable(iMSCP_Plugin_Manager $pluginManager) {}
 
 	/**
 	 * Returns plugin general information.
@@ -85,34 +131,33 @@ abstract class iMSCP_Plugin
 	public function getInfo()
 	{
 		$parts = explode('_', get_class($this));
-		$infoFile = PLUGINS_PATH . '/' . $parts[2] . '/info.php';
+		$infoFile = iMSCP_Registry::get('pluginManager')->getPluginDirectory() . '/' . $parts[2] . '/info.php';
 
 		$info = array();
 
-		if(file_exists($infoFile)) {
-			if (is_readable($infoFile)) {
-				$info = include $infoFile;
-			} else {
-				throw new iMSCP_Plugin_Exception(
-					"Unable to read the plugin $infoFile file. Please, check file permissions"
-				);
-			}
+		if(is_readable($infoFile)) {
+			$info = include $infoFile;
 		} else {
-			set_page_message(
-				tr(
-					'getInfo() not implemented in %s and %s not found. <br /> This is a bug in the %s plugin and should be reported to the plugin author.',
-					get_class($this),
-					$infoFile,
-					$parts[2]
-				), 'warning'
-			);
+			if(!file_exists($infoFile)) {
+				set_page_message(
+					tr(
+						'getInfo() not implemented in %s and %s not found. <br /> This is a bug in the %s plugin and should be reported to the plugin author.',
+						get_class($this),
+						$infoFile,
+						$parts[2]
+					),
+					'warning'
+				);
+			} else {
+				throw new iMSCP_Plugin_Exception("Unable to read the $infoFile file. Please, check file permissions");
+			}
 		}
 
 		return array_merge(
 			array(
 				'author' => tr('Unknown'),
 				'email' => '',
-				'version' => 'Unknown',
+				'version' => '0.0.0',
 				'date' => '0000-00-00',
 				'name' => $parts[2],
 				'desc' => tr('No provided'),
@@ -195,30 +240,25 @@ abstract class iMSCP_Plugin
 	 */
 	final protected function loadConfig()
 	{
-		/** @var $config iMSCP_Config_Handler_File */
-		$config = iMSCP_Registry::get('config');
-
 		$default = $this->_loadDefaultConfig();
-		$name = $this->getName();
 
-		$stmt = exec_query('SELECT `plugin_config` FROM `plugin` WHERE `plugin_name` = ?', $name);
+		$stmt = exec_query('SELECT `plugin_config` FROM `plugin` WHERE `plugin_name` = ?', $this->getName());
 
 		if ($stmt->rowCount()) {
-			$config->PLUGIN[$name] = unserialize($stmt->fetchRow(PDO::FETCH_COLUMN));
+			$this->_config = unserialize($stmt->fetchRow(PDO::FETCH_COLUMN));
 
 			foreach ($default as $parameter => $value) {
-				if (isset($config->PLUGIN[$name][$parameter])) {
+				if (isset($this->_config[$parameter])) {
 					continue;
 				}
 
-				$config->PLUGIN[$name][$parameter] = $value;
+				$this->_config[$parameter] = $value;
 			}
 		} else {
-			$config->PLUGIN[$name] = $default;
+			$this->_config = $default;
 		}
 
 		$this->_isLoadedConfig = true;
-		$this->_config =& $config->PLUGIN[$name];
 	}
 
 	/**
@@ -229,7 +269,7 @@ abstract class iMSCP_Plugin
 	 */
 	final protected function _loadDefaultConfig()
 	{
-		$configFile = PLUGINS_PATH . '/' . $this->getName() . '/config.php';
+		$configFile = iMSCP_Registry::get('pluginManager')->getPluginDirectory() . '/' . $this->getName() . '/config.php';
 		$config = array();
 
 		if(file_exists($configFile)) {

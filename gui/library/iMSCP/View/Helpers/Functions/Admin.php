@@ -379,17 +379,17 @@ function gen_user_list($tpl){
 				$status_bool = false;
 			} elseif (
 				(
-					$rs->fields['admin_status'] == $cfg->ITEM_ADD_STATUS ||
-					$rs->fields['admin_status'] == $cfg->ITEM_CHANGE_STATUS ||
-					$rs->fields['admin_status'] == $cfg->ITEM_DELETE_STATUS
+					$rs->fields['admin_status'] == $cfg->ITEM_TOADD_STATUS ||
+					$rs->fields['admin_status'] == $cfg->ITEM_TOCHANGE_STATUS ||
+					$rs->fields['admin_status'] == $cfg->ITEM_TODELETE_STATUS
 				) ||
 				(
-					$rs->fields['domain_status'] == $cfg->ITEM_ADD_STATUS ||
-					$rs->fields['domain_status'] == $cfg->ITEM_RESTORE_STATUS ||
-					$rs->fields['domain_status'] == $cfg->ITEM_CHANGE_STATUS ||
+					$rs->fields['domain_status'] == $cfg->ITEM_TOADD_STATUS ||
+					$rs->fields['domain_status'] == $cfg->ITEM_TORESTORE_STATUS ||
+					$rs->fields['domain_status'] == $cfg->ITEM_TOCHANGE_STATUS ||
 					$rs->fields['domain_status'] == $cfg->ITEM_TOENABLE_STATUS ||
 					$rs->fields['domain_status'] == $cfg->ITEM_TODISABLE_STATUS ||
-					$rs->fields['domain_status'] == $cfg->ITEM_DELETE_STATUS
+					$rs->fields['domain_status'] == $cfg->ITEM_TODELETE_STATUS
 				)
 			) {
 

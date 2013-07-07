@@ -75,7 +75,7 @@ if (isset($_GET['delete_id'])) {
 	write_log("{$_SESSION['user_logged']}: deleted IP address {$stmt->fields['ipNumber']}", E_USER_NOTICE);
 
 	$query = "UPDATE `server_ips` SET `ip_status` = ? WHERE `ip_id` = ?";
-	$stmt = exec_query($query, array($cfg->ITEM_DELETE_STATUS, $deleteIpId));
+	$stmt = exec_query($query, array($cfg->ITEM_TODELETE_STATUS, $deleteIpId));
 
 	send_request();
 

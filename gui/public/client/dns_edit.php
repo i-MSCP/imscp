@@ -639,10 +639,10 @@ function saveDnsRecord($dnsRecordId)
 
 		if (!$domainId) {
 			$query = "UPDATE `domain` SET `domain_status` = ? WHERE `domain_id` = ?";
-			exec_query($query, array($cfg->ITEM_DNSCHANGE_STATUS, $mainDomainId));
+			exec_query($query, array($cfg->ITEM_TOCHANGE_STATUS, $mainDomainId));
 		} else {
 			$query = "UPDATE `domain_aliasses` SET `alias_status` = ? WHERE `domain_id` = ? AND`alias_id` = ?";
-			exec_query($query, array($cfg->ITEM_DNSCHANGE_STATUS, $mainDomainId, $domainId));
+			exec_query($query, array($cfg->ITEM_TOCHANGE_STATUS, $mainDomainId, $domainId));
 		}
 
 		send_request();

@@ -1501,7 +1501,7 @@ sub setupServerIps
 		my $rs = $database->doQuery(
 			'dummy',
 			'UPDATE`server_ips` set `ip_status` = ?  WHERE `ip_number` IN(' . $serverIpsToDelete . ') AND `ip_number` <> ?',
-			'delete',
+			'todelete',
 			$baseServerIp
 		);
 		unless (ref $rs eq 'HASH') {
@@ -2102,7 +2102,8 @@ sub setupRebuildCustomerFiles
 		mail_users => 'status',
 		htaccess => 'status',
 		htaccess_groups => 'status',
-		htaccess_users => 'status'
+		htaccess_users => 'status',
+		plugin => ['plugin_status', "AND `plugin_backend` = 'yes'"]
 	};
 
 	my ($database, $errStr) = setupGetSqlConnect(setupGetQuestion('DATABASE_NAME'));
@@ -2121,36 +2122,16 @@ sub setupRebuildCustomerFiles
 			$aditionalCondition = ''
 		}
 
-		# Matching only on 'ok' status is not sufficient since if setup fail for any reason, next execution
-		# will not change error status to 'change'
 		$rs = $database->doQuery(
 			'dummy',
 			"
 				UPDATE
 					`$table`
 				SET
-					`$field` = 'change'
+					`$field` = 'tochange'
 				WHERE
-					`$field` NOT IN('toadd', 'delete', 'disabled', 'ordered')
+					`$field` IN('ok', 'enabled')
 				$aditionalCondition
-			"
-		);
-		unless(ref $rs eq 'HASH') {
-			error("Unable to execute SQL query: $rs");
-			return 1;
-		}
-
-		$rs = $database->doQuery(
-			'dummy',
-			"
-				UPDATE
-					`plugin`
-				SET
-					`plugin_status` = 'install'
-				WHERE
-					`plugin_status` NOT IN('disabled', 'uninstall')
-				AND
-					`plugin_backend` = 'yes'
 			"
 		);
 		unless(ref $rs eq 'HASH') {

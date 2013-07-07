@@ -2049,7 +2049,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	 * Update plugin.plugin_status column
 	 *
 	 * @author Laurent Declercq <l.declercq@nuxwin.com>
-	 * @return array SQL statement to be e executed
+	 * @return string SQL statement to be e executed
 	 */
 	protected function _databaseUpdate_138()
 	{
@@ -2074,5 +2074,111 @@ class iMSCP_Update_Database extends iMSCP_Update
 			'plugin_backend',
 			"VARCHAR(3) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT 'no'"
 		);
+	}
+
+	/**
+	 * Update any 'delete' status to 'todelete'
+	 *
+	 * @author Laurent Declercq <l.declercq@nuxwin.com>
+	 * @return array SQL statements to be e executed
+	 */
+	protected function _databaseUpdate_140()
+	{
+		$map = array(
+			'ssl_certs' => 'status',
+			'admin' => 'admin_status',
+			'domain' => 'domain_status',
+			'domain_aliasses' => 'alias_status',
+			'subdomain' => 'subdomain_status',
+			'subdomain_alias' => 'subdomain_alias_status',
+			'mail_users' => 'status',
+			'htaccess' => 'status',
+			'htaccess_groups' => 'status',
+			'htaccess_users' => 'status'
+		);
+
+		$sqlUpd = array();
+
+		/** @var iMSCP_Config_Handler_File $cfg */
+		$cfg = iMSCP_Registry::get('config');
+		$tochange = $cfg->ITEM_TOCHANGE_STATUS;
+		$todelete = $cfg->ITEM_TODELETE_STATUS;
+
+		foreach($map as $table => $field) {
+			$sqlUpd[] = "UPDATE `$table` SET `$field` = '$tochange' WHERE `$field` IN('change', 'dnschange')";
+			$sqlUpd[] = "UPDATE `$table` SET `$field` = '$todelete' WHERE `$field` = 'delete'";
+		}
+
+		return $sqlUpd;
+	}
+
+	/**
+	 * Add plugin.plugin_previous_status and plugin_plugin_error columns
+	 *
+	 * @author Laurent Declercq <l.declercq@nuxwin.com>
+	 * @return array|string
+	 */
+	protected function _databaseUpdate_141()
+	{
+		$sqlUdp = array();
+
+		if(
+			($q =  $this->_addColumn(
+				'plugin',
+				'plugin_previous_status',
+				"VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL AFTER `plugin_status`"
+			)) != ''
+		) {
+			$sqlUdp[] = $q;
+		}
+
+		if(
+			($q =  $this->_addColumn(
+				'plugin',
+				'plugin_error',
+				"TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL AFTER `plugin_previous_status`"
+			)) != ''
+		) {
+			$sqlUdp[] = $q;
+		}
+
+		if(!empty($sqlUdp)) {
+			/** @var iMSCP_Config_Handler_File $cfg */
+			$cfg = iMSCP_Registry::get('config');
+			$enabled = $cfg->ITEM_ENABLED_STATUS;
+			$disabled = $cfg->ITEM_DISABLED_STATUS;
+			$uninstalled = $cfg->ITEM_UNINSTALLED_STATUS;
+			$toinstall = $cfg->ITEM_TOINSTALL_STATUS;
+			$toupdate = $cfg->ITEM_TOUPDATE_STATUS;
+			$touninstall = $cfg->ITEM_TOUNINSTALL_STATUS;
+			$toenable = $cfg->ITEM_TOENABLE_STATUS;
+			$todisable = $cfg->ITEM_TODISABLE_STATUS;
+			$todelete = $cfg->ITEM_TODELETE_STATUS;
+
+			$sqlUdp[] = "
+				UPDATE
+					`plugin` AS `t1`
+				JOIN
+					`plugin` AS `t2` ON (`t2`.`plugin_id` = `t1`.`plugin_id`)
+				SET
+					`t1`.`plugin_status` = '$toinstall',
+					`t1`.`plugin_error` = `t2`.`plugin_status`
+				WHERE
+					`t1`.`plugin_status` NOT IN(
+						'$enabled', '$disabled', '$uninstalled', '$toinstall', '$toupdate', '$touninstall', '$toenable',
+						'$todisable', '$todelete'
+					)
+			";
+
+			$sqlUdp[] = "
+				ALTER TABLE
+					`plugin`
+				CHANGE
+					 `plugin_status` `plugin_status` VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci
+					 NOT NULL DEFAULT 'uninstalled';
+			";
+		}
+
+		return $sqlUdp;
 	}
 }

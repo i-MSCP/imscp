@@ -53,7 +53,7 @@ sub process
 		LEFT JOIN
 			`server_ips` ON (`domain`.`domain_ip_id` = `server_ips`.`ip_id`)
 		WHERE
-			`domain_status` != 'delete'
+			`domain_status` != 'todelete'
 		UNION
 		SELECT
 			`alias_ip_id` AS `ip_id`, `ip_number`
@@ -62,7 +62,7 @@ sub process
 		LEFT JOIN
 			`server_ips` ON (`domain_aliasses`.`alias_ip_id` = `server_ips`.`ip_id`)
 		WHERE
-			`alias_status` NOT IN ('delete', 'ordered')
+			`alias_status` NOT IN ('todelete', 'ordered')
 	";
 
 	my $rdata = iMSCP::Database->factory()->doQuery('ip_number', $sql);

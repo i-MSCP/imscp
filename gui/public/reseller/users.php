@@ -183,17 +183,17 @@ function generate_users_list($tpl, $resellerId)
 				$statusBool = false;
 			} else if (
 				(
-					$stmt->fields['admin_status'] == $cfg->ITEM_ADD_STATUS ||
-					$stmt->fields['admin_status'] == $cfg->ITEM_CHANGE_STATUS ||
-					$stmt->fields['admin_status'] == $cfg->ITEM_DELETE_STATUS
+					$stmt->fields['admin_status'] == $cfg->ITEM_TOADD_STATUS ||
+					$stmt->fields['admin_status'] == $cfg->ITEM_TOCHANGE_STATUS ||
+					$stmt->fields['admin_status'] == $cfg->ITEM_TODELETE_STATUS
 				) ||
 				(
-					$stmt->fields['domain_status'] == $cfg->ITEM_ADD_STATUS ||
-					$stmt->fields['domain_status'] == $cfg->ITEM_RESTORE_STATUS ||
-					$stmt->fields['domain_status'] == $cfg->ITEM_CHANGE_STATUS ||
+					$stmt->fields['domain_status'] == $cfg->ITEM_TOADD_STATUS ||
+					$stmt->fields['domain_status'] == $cfg->ITEM_TORESTORE_STATUS ||
+					$stmt->fields['domain_status'] == $cfg->ITEM_TOCHANGE_STATUS ||
 					$stmt->fields['domain_status'] == $cfg->ITEM_TOENABLE_STATUS ||
 					$stmt->fields['domain_status'] == $cfg->ITEM_TODISABLE_STATUS ||
-					$stmt->fields['domain_status'] == $cfg->ITEM_DELETE_STATUS
+					$stmt->fields['domain_status'] == $cfg->ITEM_TODELETE_STATUS
 				)
 			) {
 				$statusIcon = 'reload';

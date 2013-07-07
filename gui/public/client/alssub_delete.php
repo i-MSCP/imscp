@@ -115,10 +115,10 @@ if (customerHasFeature('domain_aliases') && isset($_GET['id'])) {
 				$db->beginTransaction();
 
 				$query = "UPDATE `subdomain_alias` SET `subdomain_alias_status` = ? WHERE `subdomain_alias_id` = ?";
-				$stmt = exec_query($query, array($cfg->ITEM_DELETE_STATUS, $alssubId));
+				$stmt = exec_query($query, array($cfg->ITEM_TODELETE_STATUS, $alssubId));
 
 				$query = "UPDATE `ssl_certs` SET `status` = ? WHERE `id` = ? AND `type` = ?";
-				$stmt = exec_query($query, array($cfg->ITEM_DELETE_STATUS, $alssubId, 'alssub'));
+				$stmt = exec_query($query, array($cfg->ITEM_TODELETE_STATUS, $alssubId, 'alssub'));
 
 				$db->commit();
 			} catch (iMSCP_Exception_Database $e) {

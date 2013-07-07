@@ -175,7 +175,7 @@ function client_addHtaccessUserToHtaccessGroup(&$dmn_id)
 			$members = $members . "," . $uuser_id;
 		}
 
-		$change_status = $cfg->ITEM_CHANGE_STATUS;
+		$change_status = $cfg->ITEM_TOCHANGE_STATUS;
 
 		$update_query = "
 			UPDATE
@@ -232,7 +232,7 @@ function client_removeHtaccessUserFromHtaccessGroup(&$dmn_id)
 		if ($key !== false) {
 			unset($members[$key]);
 			$members = implode(",", $members);
-			$change_status = $cfg->ITEM_CHANGE_STATUS;
+			$change_status = $cfg->ITEM_TOCHANGE_STATUS;
 			$update_query = "
 				UPDATE
 					`htaccess_groups`

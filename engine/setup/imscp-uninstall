@@ -139,18 +139,41 @@ The uninstall process has been aborted...
 sub _removeCustomers
 {
 	my $tables = {
+		admin => ['admin_status', "AND `admin_type` = 'user'"],
 		domain => 'domain_status',
 		domain_aliasses => 'alias_status',
 		subdomain => 'subdomain_status',
 		subdomain_alias => 'subdomain_alias_status',
-		mail_users => 'status'
+		mail_users => 'status',
+		htaccess => 'status',
+		htaccess_groups => 'status',
+		htaccess_users => 'status',
+		ssl_certs => 'status'
 	};
 
 	my $database = iMSCP::Database->new()->factory();
 
+	my $aditionalCondition;
+
 	while (my ($table, $field) = each %$tables) {
-		my $rdata = $database->doQuery('dummy', "UPDATE $table SET $field = 'delete'");
-		unless($rdata eq 'HASH') {
+		if(ref $field eq 'ARRAY') {
+			$aditionalCondition = $field->[1];
+			$field = $field->[0];
+		} else {
+			$aditionalCondition = ''
+		}
+
+		my $rdata = $database->doQuery(
+			'dummy',
+			"
+				UPDATE
+					`$table`
+				SET
+					`$field` = 'todelete'
+				$aditionalCondition
+			"
+		);
+		unless(ref $rdata eq 'HASH') {
 			error($rdata);
 			return 1;
 		}

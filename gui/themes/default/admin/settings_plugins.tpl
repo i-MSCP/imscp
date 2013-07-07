@@ -2,16 +2,16 @@
 			<script type="text/javascript">
 			/* <![CDATA[ */
 				$(document).ready(function(){
-					// $('.datatable').dataTable({"oLanguage": {DATATABLE_TRANSLATIONS}});
+					$('.datatable').dataTable({ "oLanguage": {DATATABLE_TRANSLATIONS}, "iDisplayLength": 5 });
 
-					$('#dialog_box').dialog({modal: true, autoOpen:false, hide:'blind', show:'blind', width:'500'});
-					$('.i_change_password').click(function(e) {
+					$("#dialog_box").dialog({ modal: true, autoOpen:false, hide:"blind", show:"blind", width:"500" });
+					$(".i_change_password").click(function(e) {
 						e.preventDefault();
 						var href = $(this).attr("href");
 
-						$("#dialog_box").dialog('option', 'buttons', {
-							"{TR_PROTECT}" : function() {document.location.href = href;},
-							"{TR_CANCEL}" : function() {$(this).dialog("close");}
+						$("#dialog_box").dialog("option", "buttons", {
+							"{TR_PROTECT}" : function() { window.location.href = href; },
+							"{TR_CANCEL}" : function() { $(this).dialog("close"); }
 						});
 
 						$("#dialog_box").dialog("open");
@@ -21,35 +21,50 @@
 						$('select[name="bulkActions"] option[value='+$(this).val()+']').attr("selected", "selected");
 					});
 
-					$("th :checkbox").change(function(){$("table :checkbox").prop('checked', $(this).is(':checked'));});
+					$("th :checkbox").change(
+						function($e){ $("table :checkbox").prop('checked', $(this).is(':checked')); }
+					);
 
-					$('button[name=updatePluginList]').click(function(){document.location = "?updatePluginList=all";});
+					$('button[name=updatePluginList]').click(function(){ document.location = "?updatePluginList=all"; });
+
+					$(".plugin_error").click(function(e) {
+						var errDialog = $('<div>' + '<pre>' + $.trim($(this).html()) + '</pre>' + '</div>');
+						var pluginName = $(this).attr('id');
+
+						errDialog.dialog(
+							{
+								modal: true,
+								title: pluginName + " - {TR_ERROR_DETAILS}",
+								show: "clip",
+								hide: "clip",
+								minHeight: 200,
+								minWidth: 500,
+								//width: 'auto',
+								buttons: [
+									{ text: "{TR_FORCE_RETRY}", click: function() { window.location = "?retry=" + pluginName } },
+									{ text: "{TR_CLOSE}", click: function() { $(this).dialog("close").dialog("destroy")} }
+								]
+							}
+						);
+
+						return false;
+					});
 				});
 			/*]]>*/
 			</script>
 			<!-- BDP: plugins_block -->
+
+			<p class="hint" style="font-variant: small-caps;font-size: small;">{TR_PLUGIN_HINT}</p>
+			<br />
 
 			<div id="dialog_box" title="{TR_PLUGIN_CONFIRMATION_TITLE}">
 				<p>{TR_PROTECT_CONFIRMATION}</p>
 			</div>
 
 			<form name="pluginsFrm" action="settings_plugins.php" method="post">
-				<div style="float:left;">
-					<select name="bulkActions" id="bulkActionsTop">
-						<option value="dummy">{TR_BULK_ACTIONS}</option>
-						<option value="activate">{TR_ACTIVATE}</option>
-						<option value="install">{TR_REINSTALL}</option>
-						<option value="deactivate">{TR_DEACTIVATE}</option>
-						<option value="protect">{TR_PROTECT}</option>
-					</select>
-					<label for="bulkActionsTop"><input type="submit" name="Submit" value="{TR_APPLY}"/></label>
-				</div>
-				<div class="buttons" style="margin: 0px;">
-					<button type="button" name="updatePluginList">{TR_UPDATE_PLUGIN_LIST}</button>
-				</div>
-				<table>
+				<table class="datatable">
 					<thead>
-					<tr>
+					<tr style="border: none;">
 						<th style="width:21px;"><input type="checkbox"/></th>
 						<th style="width:150px">{TR_PLUGIN}</th>
 						<th>{TR_DESCRIPTION}</th>
@@ -76,22 +91,27 @@
 						<td>
 							<p>{PLUGIN_DESCRIPTION}</p>
 							<span class="bold italic">
-								{TR_VERSION} {PLUGIN_VERSION} | <a href="mailto:{PLUGIN_MAILTO}">{TR_BY} {PLUGIN_AUTHOR}</a> | <a href="{PLUGIN_SITE}" target="_blank">{TR_VISIT_PLUGIN_SITE}</a>
+								<small>{TR_VERSION} {PLUGIN_VERSION} | <a href="mailto:{PLUGIN_MAILTO}">{TR_BY} {PLUGIN_AUTHOR}</a> | <a href="{PLUGIN_SITE}" target="_blank">{TR_VISIT_PLUGIN_SITE}</a></small>
 							</span>
 						</td>
-						<td>{PLUGIN_STATUS}</td>
+						<td>
+							{PLUGIN_STATUS}
+							<!-- BDP: plugin_status_details_block -->
+							<span
+								 id="{PLUGIN_NAME}" style="vertical-align: middle" class="plugin_error icon i_help" title="{TR_CLICK_FOR_MORE_DETAILS}">
+								{PLUGIN_STATUS_DETAILS}
+							</span>
+							<!-- EDP: plugin_status_details_block -->
+						</td>
 						<td>
 							<!-- BDP: plugin_activate_link -->
-							<a style="vertical-align: middle" class="icon i_open" href="settings_plugins.php?activate={PLUGIN_NAME}" title="{TR_ACTIVATE_TOOLTIP}">{TR_ACTIVATE}</a>
+							<a style="vertical-align: middle" class="icon i_open" href="settings_plugins.php?activate={PLUGIN_NAME}" title="{TR_ACTIVATE_TOOLTIP}"></a>
+							<a style="vertical-align: middle" class="icon i_close" href="settings_plugins.php?delete={PLUGIN_NAME}" title="{TR_DELETE_TOOLTIP}"></a>
 							<!-- EDP: plugin_activate_link -->
 
-							<!-- BDP: plugin_reinstall_link -->
-							<a style="vertical-align: middle" class="icon i_refresh" href="settings_plugins.php?reinstall={PLUGIN_NAME}" title="{TR_REINSTALL_TOOLTIP}">{TR_REINSTALL}</a>
-							<!-- EDP: plugin_reinstall_link -->
-
 							<!-- BDP: plugin_deactivate_link -->
-							<a style="vertical-align: middle" class="icon i_close" href="settings_plugins.php?deactivate={PLUGIN_NAME}" title="{TR_DEACTIVATE_TOOLTIP}">{TR_DEACTIVATE}</a>
-							<a style="vertical-align: middle" class="icon i_change_password" href="settings_plugins.php?protect={PLUGIN_NAME}" title="{TR_PROTECT_TOOLTIP}">{TR_PROTECT}</a>
+							<a style="vertical-align: middle" class="icon i_close" href="settings_plugins.php?deactivate={PLUGIN_NAME}" title="{TR_DEACTIVATE_TOOLTIP}"></a>
+							<a style="vertical-align: middle" class="icon i_change_password" href="settings_plugins.php?protect={PLUGIN_NAME}" title="{TR_PROTECT_TOOLTIP}"></a>
 							<!-- EDP: plugin_deactivate_link -->
 						</td>
 					</tr>
@@ -102,9 +122,9 @@
 					<select name="bulkActions" id="bulkActionsBottom">
 						<option value="dummy">{TR_BULK_ACTIONS}</option>
 						<option value="activate">{TR_ACTIVATE}</option>
-						<option value="install">{TR_REINSTALL}</option>
 						<option value="deactivate">{TR_DEACTIVATE}</option>
 						<option value="protect">{TR_PROTECT}</option>
+						<option value="delete">{TR_DELETE}</option>
 					</select>
 					<label for="bulkActionsBottom"><input type="submit" name="Submit" value="{TR_APPLY}"/></label>
 				</div>

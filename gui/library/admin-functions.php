@@ -300,7 +300,7 @@ function systemHasCustomers($minNbCustomers = 1)
 
 		$stmt = exec_query(
 			'SELECT COUNT(`admin_id`) AS `count` FROM `admin` WHERE `admin_type` = ? AND `admin_status` <> ?',
-			array('user', $cfg->ITEM_DELETE_STATUS)
+			array('user', $cfg->ITEM_TODELETE_STATUS)
 		);
 
 		$customersCount = $stmt->fields['count'];

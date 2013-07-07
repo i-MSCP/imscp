@@ -222,7 +222,7 @@ function client_UpdateMailAccount($mailAccountData)
 									$mailAccountData['mail_pass'],
 									$mailAccountData['mail_forward'],
 									$mailAccountData['mail_type'],
-									$cfg->ITEM_CHANGE_STATUS,
+									$cfg->ITEM_TOCHANGE_STATUS,
 									$mailAccountData['mail_id']));
 
 			iMSCP_Events_Manager::getInstance()->dispatch(

@@ -398,7 +398,7 @@ function _client_updateSubdomainData($subdomainId, $subdomainType, $forwardUrl)
 
 	iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onBeforeEditSubdomain, array('subdomainId' => $subdomainId));
 
-	exec_query($query, array($forwardUrl, $cfg->ITEM_CHANGE_STATUS, $subdomainId));
+	exec_query($query, array($forwardUrl, $cfg->ITEM_TOCHANGE_STATUS, $subdomainId));
 
 	iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAfterEditSubdomain, array('subdomainId' => $subdomainId));
 

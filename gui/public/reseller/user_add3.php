@@ -229,7 +229,7 @@ function reseller_addCustomer($resellerId)
 			$query,
 			array(
 				$dmnUsername, $encryptedPassword, $resellerId, $firstName, $lastName, $firm, $zip, $city, $state,
-				$country, $userEmail, $phone, $fax, $street1, $street2, $customerId, $gender, $cfg->ITEM_ADD_STATUS
+				$country, $userEmail, $phone, $fax, $street1, $street2, $customerId, $gender, $cfg->ITEM_TOADD_STATUS
 			)
 		);
 
@@ -252,7 +252,7 @@ function reseller_addCustomer($resellerId)
 			$query,
 			array(
 				$dmnName, $recordId, $resellerId, time(), $dmnExpire, $mail, $ftp, $traff, $sql_db, $sql_user,
-				$cfg->ITEM_ADD_STATUS, $sub, $als, $domainIp, $disk, 0, $php, $cgi, $backup, $dns, $aps, $phpEditor,
+				$cfg->ITEM_TOADD_STATUS, $sub, $als, $domainIp, $disk, 0, $php, $cgi, $backup, $dns, $aps, $phpEditor,
 				$phpiniAllowUrlFopen, $phpiniDisplayErrors, $phpiniDisableFunctions, $extMailServer,
 				$webFolderProtection
 			)
@@ -278,12 +278,12 @@ function reseller_addCustomer($resellerId)
 		}
 
 		$query = 'INSERT INTO `htaccess_users` (`dmn_id`, `uname`, `upass`, `status`) VALUES (?, ?, ?, ?)';
-		exec_query($query, array($dmnId, $dmnName, $encryptedPassword, $cfg->ITEM_ADD_STATUS));
+		exec_query($query, array($dmnId, $dmnName, $encryptedPassword, $cfg->ITEM_TOADD_STATUS));
 
 		$user_id = $db->insertId();
 
 		$query = 'INSERT INTO `htaccess_groups` (`dmn_id`, `ugroup`, `members`, `status`) VALUES (?, ?, ?, ?)';
-		exec_query($query, array($dmnId, $cfg->WEBSTATS_GROUP_AUTH, $user_id, $cfg->ITEM_ADD_STATUS));
+		exec_query($query, array($dmnId, $cfg->WEBSTATS_GROUP_AUTH, $user_id, $cfg->ITEM_TOADD_STATUS));
 
 		// Create default addresses if needed
 		if ($cfg->CREATE_DEFAULT_EMAIL_ADDRESSES) {

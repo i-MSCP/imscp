@@ -66,7 +66,7 @@ function client_updateHtaccessUser(&$dmn_id, &$uuser_id)
 
 			$nadmin_password = cryptPasswordWithSalt($_POST['pass']);
 
-			$change_status = $cfg->ITEM_CHANGE_STATUS;
+			$change_status = $cfg->ITEM_TOCHANGE_STATUS;
 
 			$query = "
 				UPDATE

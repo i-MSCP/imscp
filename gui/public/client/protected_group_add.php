@@ -73,7 +73,7 @@ function client_addHtaccessGroup($domainId)
 			$rs = exec_query($query, array($groupname, $domainId));
 
 			if ($rs->rowCount() == 0) {
-				$change_status = $cfg->ITEM_ADD_STATUS;
+				$change_status = $cfg->ITEM_TOADD_STATUS;
 
 				$query = "
 					INSERT INTO `htaccess_groups` (

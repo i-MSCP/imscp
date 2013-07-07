@@ -91,13 +91,13 @@ sub process
 
 	my @sql;
 
-	if($self->{'status'} =~ /^toadd|change|toenable$/) {
+	if($self->{'status'} =~ /^toadd|tochange|toenable$/) {
 		$rs = $self->add();
 		@sql = (
 			"UPDATE `mail_users` SET `status` = ? WHERE `mail_id` = ?",
 			($rs ? scalar getMessageByType('error') : 'ok'), $self->{'mail_id'}
 		);
-	} elsif($self->{'status'} eq 'delete') {
+	} elsif($self->{'status'} eq 'todelete') {
 		$rs = $self->delete();
 		if($rs){
 			@sql = (

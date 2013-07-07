@@ -42,19 +42,18 @@ require_once  'iMSCP/Config/Handler.php';
  * of key-values are separated by the equal sign.
  *
  * @property string ITEM_OK_STATUS ok status
- * @property string ITEM_INSTALLED_STATUS installed status
- * @property string ITEM_UNINSTALLED_STATUS uninstalled status
- * @property string ITEM_TOINSTALL_STATUS toinstall status
- * @property string ITEM_TOUNINSTALL_STATUS touninstall status
- * @property string ITEM_ADD_STATUS toadd status
- * @property string ITEM_CHANGE_STATUS change status
- * @property string ITEM_DNSCHANGE_STATUS dnschange status
- * @property string ITEM_RESTORE_STATUS restore status
- * @property string ITEM_DELETE_STATUS delete status
  * @property string ITEM_ENABLED_STATUS enabled status
  * @property string ITEM_DISABLED_STATUS disabled status
+ * @property string ITEM_UNINSTALLED_STATUS uninstalled status
+ * @property string ITEM_TOINSTALL_STATUS toinstall status
+ * @property string ITEM_TOUPDATE_STATUS toupdate status
+ * @property string ITEM_TOUNINSTALL_STATUS touninstall status
+ * @property string ITEM_TOADD_STATUS toadd status
+ * @property string ITEM_TOCHANGE_STATUS tochange status
+ * @property string ITEM_TORESTORE_STATUS torestore status
  * @property string ITEM_TOENABLE_STATUS toenable status
- * @property string ITEM_TODISABLE_STATUS to disable status
+ * @property string ITEM_TODISABLE_STATUS todisable status
+ * @property string ITEM_TODELETE_STATUS todelete status
  * @property string ITEM_ORDERED_STATUS ordered status
  * @property string ROOT_TEMPLATE_PATH Root templates path
  * @property string USER_INITIAL_THEME User initial theme

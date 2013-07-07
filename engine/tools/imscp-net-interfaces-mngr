@@ -181,7 +181,7 @@ sub process
 
 	my $database = iMSCP::Database->new('db' => $main::imscpConfig{'DATABASE_TYPE'})->factory();
 
-	my $rdata = $database->doQuery('dummy', "DELETE FROM `server_ips` WHERE `ip_status` = 'delete'");
+	my $rdata = $database->doQuery('dummy', "DELETE FROM `server_ips` WHERE `ip_status` = 'todelete'");
 	unless (ref $rdata eq 'HASH') {
 		error($rdata);
 		iMSCP::Mail->new()->errmsg($rdata);

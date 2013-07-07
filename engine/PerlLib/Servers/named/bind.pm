@@ -590,7 +590,7 @@ sub postaddDmn
 	$rs = $self->{'hooksManager'}->trigger('afterNamedPostAddDmn', $options);
 }
 
-sub delDmnConfig
+sub deleteDmnConfig
 {
 	my $self = shift;
 	my $options = shift;
@@ -663,7 +663,7 @@ sub delDmnConfig
 	$self->{'hooksManager'}->trigger('afterNamedDelDmnConfig');
 }
 
-sub delDmn
+sub deleteDmn
 {
 	my $self = shift;
 	my $options = shift;
@@ -674,7 +674,7 @@ sub delDmn
 	return $rs if $rs;
 
 	# Removing zone from named configuration file
-	$rs = $self->delDmnConfig($options);
+	$rs = $self->deleteDmnConfig($options);
 	return $rs if $rs;
 
 	# Removing working zone file
@@ -692,7 +692,7 @@ sub delDmn
 	$self->{'hooksManager'}->trigger('afterNamedDelDmn', $options);
 }
 
-sub postdelDmn
+sub postdeleteDmn
 {
 	my $self = shift;
 	my $data = shift;
@@ -877,7 +877,7 @@ sub postaddSub
 	0;
 }
 
-sub delSub
+sub deleteSub
 {
 	my $self = shift;
 	my $data = shift;
@@ -967,7 +967,7 @@ sub delSub
 	$self->{'hooksManager'}->trigger('afterNamedDelSub', $data);
 }
 
-sub postdelSub
+sub postdeleteSub
 {
 	my $self = shift;
 	my $data = shift;

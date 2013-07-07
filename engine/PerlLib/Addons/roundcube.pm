@@ -119,7 +119,7 @@ sub setGuiPermissions
 	Addons::roundcube::installer->getInstance()->setGuiPermissions();
 }
 
-=item delMail()
+=item deleteMail()
 
  Delete mail user from i-MSCP database.
 
@@ -127,7 +127,7 @@ sub setGuiPermissions
 
 =cut
 
-sub delMail
+sub deleteMail
 {
 	my $self = shift;
 	my $data = shift;

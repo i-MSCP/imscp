@@ -314,7 +314,7 @@ function client_addSubdomain($userId, $domainId, $subdomainName, $subdomainMount
 	/** @var $db iMSCP_Database */
 	$db = iMSCP_Registry::get('db');
 
-	$statusAdd = $cfg->ITEM_ADD_STATUS;
+	$statusAdd = $cfg->ITEM_TOADD_STATUS;
 
 	iMSCP_Events_Manager::getInstance()->dispatch(
 		iMSCP_Events::onBeforeAddSubdomain,

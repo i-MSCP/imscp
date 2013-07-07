@@ -47,7 +47,13 @@
  */
 function scheduleBackupRestoration($userId)
 {
-	exec_query("UPDATE `domain` SET `domain_status` = 'restore' WHERE `domain_admin_id` = ?", $userId);
+	/** @var iMSCP_Config_Handler_File $cfg */
+	$cfg = iMSCP_Registry::get('config');
+
+	exec_query(
+		"UPDATE `domain` SET `domain_status` = ? WHERE `domain_admin_id` = ?",
+		array($cfg->ITEM_TORESTORE_STATUS, $userId)
+	);
 	send_request();
 	write_log($_SESSION['user_logged'] . ": scheduled backup restoration.", E_USER_NOTICE);
 	set_page_message(tr('Backup has been successfully scheduled for restoration.'), 'success');

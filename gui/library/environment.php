@@ -64,19 +64,19 @@ $config->SESSION_TIMEOUT = 30;
 
 // Item status
 $config->ITEM_OK_STATUS = 'ok';
-$config->ITEM_INSTALLED_STATUS = 'installed';
-$config->ITEM_UNINSTALLED_STATUS = 'uninstalled';
-$config->ITEM_TOINSTALL_STATUS = 'toinstall';
-$config->ITEM_TOUNINSTALL_STATUS = 'touninstall';
-$config->ITEM_ADD_STATUS = 'toadd';
-$config->ITEM_CHANGE_STATUS = 'change';
-$config->ITEM_DNSCHANGE_STATUS = 'dnschange';
-$config->ITEM_RESTORE_STATUS = 'restore';
-$config->ITEM_DELETE_STATUS = 'delete';
 $config->ITEM_ENABLED_STATUS = 'enabled';
 $config->ITEM_DISABLED_STATUS = 'disabled';
+$config->ITEM_UNINSTALLED_STATUS = 'uninstalled';
+$config->ITEM_TOINSTALL_STATUS = 'toinstall';
+$config->ITEM_TOUPDATE_STATUS = 'toupdate';
+$config->ITEM_TOUNINSTALL_STATUS = 'touninstall';
+$config->ITEM_TOADD_STATUS = 'toadd';
+$config->ITEM_TOCHANGE_STATUS = 'tochange';
+$config->ITEM_TORESTORE_STATUS = 'torestore';
 $config->ITEM_TOENABLE_STATUS = 'toenable';
 $config->ITEM_TODISABLE_STATUS = 'todisable';
+$config->ITEM_TODELETE_STATUS = 'todelete';
+
 $config->ITEM_ORDERED_STATUS = 'ordered';
 
 // SQL variables

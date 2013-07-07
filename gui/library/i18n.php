@@ -179,7 +179,7 @@ function i18n_getAvailableLanguages()
 	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
 
-	if (!isset($cfg->AVAILABLE_LANGUAGES) || !is_serialized($cfg->AVAILABLE_LANGUAGES)
+	if (!isset($cfg->AVAILABLE_LANGUAGES) || !isSerialized($cfg->AVAILABLE_LANGUAGES)
 	) {
 		i18n_buildLanguageIndex();
 	}
