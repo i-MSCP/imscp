@@ -183,7 +183,6 @@ my @steps = (
 	[\&installEngine,					'Installing engine files in temporary directory'],
 	[\&installGui,						'Installing GUI files in temporary directory'],
 	[\&savePersistentData,				'Saving persistent data from previous installation if any'],
-	[\&installDistMaintainerScripts,	"Installing $distribution maintainer scripts in temporary directory"],
 	[\&postBuild,						'Processing postBuild tasks']
 );
 

@@ -1149,16 +1149,9 @@ sub getTraffic
 		while($stdout =~ m/^[^\s]+\s[^\s]+\s[^\s\@]+\@([^\s]+)\s[^\s\@]+\@([^\s]+)\s([^\s]+)\s([^\s]+)\s[^\s]+\s[^\s]+\s[^\s]+\s(.*)$/mg){
 						 #  date    time    mailfrom @ domain   mailto   @ domain    relay_s   relay_r   SMTP  extinfo  code     size
 						 #                                1                  2         3         4                                 5
-			if($main::imscpConfig{'MAIL_LOG_INC_AMAVIS'}){
-				if($5 ne '?' &&  !($3 =~ /localhost|127.0.0.1/ && $4 =~ /localhost|127.0.0.1/)){
-					$self->{'traff'}->{$1} += $5;
-					$self->{'traff'}->{$2} += $5;
-				}
-			} else {
-				if($5 ne '?' && $4 !~ /virtual/ && !($3 =~ /localhost|127.0.0.1/ && $4 =~ /localhost|127.0.0.1/)){
-					$self->{'traff'}->{$1} += $5;
-					$self->{'traff'}->{$2} += $5;
-				}
+			if($5 ne '?' && $4 !~ /virtual/ && !($3 =~ /localhost|127.0.0.1/ && $4 =~ /localhost|127.0.0.1/)){
+				$self->{'traff'}->{$1} += $5;
+				$self->{'traff'}->{$2} += $5;
 			}
 		}
 	}

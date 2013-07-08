@@ -102,7 +102,6 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * Checks for available database update.
 	 *
-	 * @author Laurent Declercq <l.declercq@nuxwin.com>
 	 * @return bool TRUE if a database update is available, FALSE otherwise
 	 */
 	public function isAvailableUpdate()
@@ -117,7 +116,6 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * Apply all available database updates.
 	 *
-	 * @author Laurent Declercq <l.declercq@nuxwin.com>
 	 * @return bool TRUE on success, FALSE otherwise
 	 */
 	public function applyUpdates()
@@ -197,7 +195,6 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * Returns database update(s) details.
 	 *
-	 * @author Laurent Declercq <l.declercq@nuxwin.com>
 	 * @return array
 	 */
 	public function getDatabaseUpdatesDetails()
@@ -243,7 +240,6 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * Return next database update revision.
 	 *
-	 * @author Laurent Declercq <l.declercq@nuxwin.com>
 	 * @return int 0 if no update is available
 	 */
 	protected function _getNextUpdate()
@@ -263,7 +259,6 @@ class iMSCP_Update_Database extends iMSCP_Update
 	 *
 	 * Note: For performances reasons, the revision is retrieved once per process.
 	 *
-	 * @author Laurent Declercq <l.declercq@nuxwin.com>
 	 * @return int Last database update revision number
 	 */
 	protected function _getLastAvailableUpdateRevision()
@@ -292,7 +287,6 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * Returns the revision number of the last applied database update.
 	 *
-	 * @author Laurent Declercq <l.declercq@nuxwin.com>
 	 * @return int Revision number of the last applied database update
 	 */
 	protected function _getLastAppliedUpdate()
@@ -310,8 +304,6 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * Checks if a column exists in a database table and if not, return query to add it.
 	 *
-	 * @author Daniel Andreca <sci2tech@gmail.com>
-	 * @since r4509
 	 * @param string $table Database table name to operate on
 	 * @param string $column Column to be added in the database table
 	 * @param string $columnDefinition Column definition including the optional
@@ -345,8 +337,6 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * Checks if a column exists in a database table and if yes, return a query to drop it.
 	 *
-	 * @author Daniel Andreca <sci2tech@gmail.com>
-	 * @since r4509
 	 * @param string $table Database table from where the column must be dropped
 	 * @param string $column Column to be dropped from $table
 	 * @return string Query to be executed
@@ -377,7 +367,6 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * Checks if a database table have an index and if yes, return a query to drop it.
 	 *
-	 * @author Daniel Andreca <sci2tech@gmail.com>
 	 * @param string $table Database table from where the column must be dropped
 	 * @param string $indexName Index name
 	 * @param string $columnName Column to which index belong to
@@ -409,7 +398,6 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * Checks if a database table have an index and if no, return a query to add it.
 	 *
-	 * @author Daniel Andreca <sci2tech@gmail.com>
 	 * @param string $table Database table from where the column must be dropped
 	 * @param string $columnName Column to which index belong to
 	 * @param string $indexType Index type (Primary Unique)
@@ -460,14 +448,12 @@ class iMSCP_Update_Database extends iMSCP_Update
 	}
 
 	/**
-	 * Please, add all the database update methods below. Don't forgot to add the doc and revision (@since rxxx). Also,
-	 * when you add a ticket reference in a databaseUpdate_XX method, place it at begin to allow link generation on GUI.
+	 * Please, add all the database update methods below.
 	 */
 
 	/**
 	 * Fixes some CSRF issues in admin log
 	 *
-	 * @author Thomas Wacker <thomas.wacker@ispcp.net>
 	 * @return array SQL Statement
 	 */
 	protected function _databaseUpdate_46()
@@ -478,7 +464,6 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * Removes useless 'suexec_props' table
 	 *
-	 * @author Laurent Declercq <l.declercq@nuxwin.com>
 	 * @return array SQL Statement
 	 */
 	protected function _databaseUpdate_47()
@@ -489,7 +474,6 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * #14: Adds table for software installer
 	 *
-	 * @author Sascha Bay <worst.case@gmx.de>
 	 * @return array Stack of SQL statements to be executed
 	 */
 	protected function _databaseUpdate_48()
@@ -573,7 +557,6 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * Adds i-MSCP daemon service properties in config table
 	 *
-	 * @author Laurent Declercq <l.declercq@nuxwin.com>
 	 * @return void
 	 */
 	protected function _databaseUpdate_50()
@@ -586,7 +569,6 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * Adds required field for on-click-logon from the ftp-user site.
 	 *
-	 * @author William Lightning <kassah@gmail.com>
 	 * @return string SQL Statement
 	 */
 	protected function _databaseUpdate_51()
@@ -601,7 +583,6 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * Adds new options for applications installer
 	 *
-	 * @author Sascha Bay <worst.case@gmx.de>
 	 * @return array Stack of SQL statements to be executed
 	 */
 	protected function _databaseUpdate_52()
@@ -662,7 +643,6 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * Decrypts email, ftp and SQL users passwords in database
 	 *
-	 * @author Daniel Andreca <sci2tech@gmail.com>
 	 * @return array Stack of SQL statements to be executed
 	 */
 	protected function _databaseUpdate_53()
@@ -749,7 +729,6 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * Converts all tables to InnoDB engine
 	 *
-	 * @author Daniel Andreca <sci2tech@gmail.com>
 	 * @return array Stack of SQL statements to be executed
 	 */
 	protected function _databaseUpdate_54()
@@ -771,7 +750,6 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * Converts the autoreplies_log table to InnoDB engine
 	 *
-	 * @author Daniel Andreca <sci2tech@gmail.com>
 	 * @return string SQL Statement to be executed
 	 */
 	protected function _databaseUpdate_60()
@@ -782,7 +760,6 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * Deletes old DUMP_GUI_DEBUG parameter from the config table
 	 *
-	 * @author Laurent Declercq <l.declercq@nuxwin.com>
 	 * @return void
 	 */
 	protected function _databaseUpdate_66()
@@ -798,7 +775,6 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * #124: Enhancement - Switch to gettext (Machine Object Files)
 	 *
-	 * @author Laurent Declercq <l.declercq@nuxwin.com>
 	 * @return array Stack of SQL statements to be executed
 	 */
 	protected function _databaseUpdate_67()
@@ -860,7 +836,6 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * #119: Defect - Error when adding IP's
 	 *
-	 * @author Daniel Andreca <sci2tech@gmail.com>
 	 * @return array Stack of SQL statements to be executed
 	 */
 	protected function _databaseUpdate_68()
@@ -895,7 +870,6 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * Some fixes for the user_gui_props table
 	 *
-	 * @author Laurent Declercq <l.declercq@nuxwin.com>
 	 * @return array Stack of SQL statements to be executed
 	 */
 	protected function _databaseUpdate_69()
@@ -914,7 +888,6 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * Changes the log table schema to allow storage of large messages
 	 *
-	 * @author Laurent Declercq <l.declercq@nuxwin.com>
 	 * @return string SQL statement to be executed
 	 */
 	protected function _databaseUpdate_71()
@@ -926,7 +899,6 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * Adds unique index on the web_software_options.use_webdepot column
 	 *
-	 * @author Daniel Andreca <sci2tech@gmail.com>
 	 * @return string SQL statement to be executed
 	 */
 	protected function _databaseUpdate_72()
@@ -937,7 +909,6 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * #166: Adds dovecot quota table
 	 *
-	 * @author Daniel Andreca <sci2tech@gmail.com>
 	 * @return string SQL statement to be executed
 	 */
 	protected function _databaseUpdate_73()
@@ -955,7 +926,6 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * #58: Increases mail quota value from 10 Mio to 100 Mio
 	 *
-	 * @author Daniel Andreca <sci2tech@gmail.com>
 	 * @return string SQL statement to be executed
 	 */
 	protected function _databaseUpdate_75()
@@ -966,7 +936,6 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * Adds unique index on user_gui_props.user_id column
 	 *
-	 * @author Laurent Declercq <l.declercq@nuxwin.com>
 	 * @return array Stack of SQL statements to be executed
 	 */
 	protected function _databaseUpdate_76()
@@ -1000,7 +969,6 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * Drops useless user_gui_props.id column
 	 *
-	 * @author Laurent Declercq <l.declercq@nuxwin.com>
 	 * @return string SQL Statement to be executed
 	 */
 	protected function _databaseUpdate_77()
@@ -1011,7 +979,6 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * #175: Fix for mail_addr saved in mail_type_forward too
 	 *
-	 * @author Daniel Andreca <sci2tech@gmail.com>
 	 * @return array Stack of SQL statements to be executed
 	 */
 	protected function _databaseUpdate_78()
@@ -1077,7 +1044,6 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * #188: Defect - Table quota_dovecot is still myisam than innoDB
 	 *
-	 * @author Laurent Declercq <l.declercq@nuxwin.com>
 	 * @return string SQL Statement
 	 */
 	protected function _databaseUpdate_80()
@@ -1088,8 +1054,6 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * #15: Feature - PHP directives editor: Add/Update system wide values for PHP directives
 	 *
-	 * @author Hannes Koschier <hannes@cheat.at>
-	 * @author Laurent Declercq <l.declercq@nuxwin.com>
 	 * @return array Stack of SQL statements to be executed
 	 */
 	protected function _databaseUpdate_84()
@@ -1113,8 +1077,6 @@ class iMSCP_Update_Database extends iMSCP_Update
 	 * #15: Feature - PHP directives editor: Add columns for PHP directives
 	 * #202: Bug - Unknown column php_ini_al_disable_functions in reseller_props table
 	 *
-	 * @author Hannes Koschier <hannes@cheat.at>
-	 * @author Laurent Declercq <l.declercq@nuxwin.com>
 	 * @return array Stack of SQL statements to be executed
 	 */
 	protected function _databaseUpdate_85()
@@ -1146,8 +1108,6 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * #15: Feature - PHP directives editor: Add php_ini table
 	 *
-	 * @author Hannes Koschier <hannes@cheat.at>
-	 * @author Laurent Declercq <l.declercq@nuxwin.com>
 	 * @return string SQL Statement
 	 */
 	protected function _databaseUpdate_86()
@@ -1177,7 +1137,6 @@ class iMSCP_Update_Database extends iMSCP_Update
 	 *
 	 * Note: For consistency reasons, this update will reset the feature values.
 	 *
-	 * @author Laurent Declercq <l.declercq@nuxwin.com>
 	 * @return array Stack of SQL statements to be executed
 	 */
 	protected function _databaseUpdate_88()
@@ -1211,7 +1170,6 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * Truncate the php_ini table (related to _databaseUpdate_88)
 	 *
-	 * @author Laurent Declercq <l.declercq@nuxwin.com>
 	 * @return string SQL Statement to be executed
 	 */
 	protected function _databaseUpdate_89()
@@ -1227,7 +1185,6 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * Drop unused table auto_num
 	 *
-	 * @author Daniel Andreca <sci2tech@gmail.com>
 	 * @return string SQL Statement to be executed
 	 */
 	protected function _databaseUpdate_91()
@@ -1238,7 +1195,6 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * #238: Delete orphan php_ini entries in the php.ini table
 	 *
-	 * @author Sascha Bay <thecry@i-mscp.net>
 	 * @return string SQL Statement to be executed
 	 */
 	protected function _databaseUpdate_92()
@@ -1249,7 +1205,6 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * Rename php_ini.ID column to php_ini.id
 	 *
-	 * @author Laurent Declercq <l.declercq@nuxwin.com>
 	 * @return string SQL Statement to be executed
 	 */
 	protected function _databaseUpdate_93()
@@ -1260,7 +1215,6 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * Database schema update (UNIQUE KEY to PRIMARY KEY for some fields)
 	 *
-	 * @author Daniel Andreca <sci2tech@gmail.com>
 	 * @return array Stack of SQL statements to be executed
 	 */
 	protected function _databaseUpdate_95()
@@ -1301,7 +1255,6 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * #292: Feature - Layout color chooser
 	 *
-	 * @author Laurent Declercq <l.declercq@nuxwin.com>
 	 * @return string SQL Statement to be executed
 	 */
 	protected function _databaseUpdate_96()
@@ -1316,7 +1269,6 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * Allow to change SSH port number
 	 *
-	 * @author Laurent Declercq <l.declercq@nuxwin.com>
 	 * @return void
 	 */
 	protected function _databaseUpdate_97()
@@ -1331,7 +1283,6 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * Update level propertie for custom menus
 	 *
-	 * @author Laurent Declercq <l.declercq@nuxwin.com>
 	 * @return array Stack of SQL statements to be executed
 	 */
 	protected function _databaseUpdate_98()
@@ -1347,7 +1298,6 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * #228: Enhancement - Multiple HTTPS domains on same IP + wildcard SSL
 	 *
-	 * @author Daniel Andreca<sci2tech@gmail.com>
 	 * @return string SQL Statement
 	 */
 	protected function _databaseUpdate_100()
@@ -1371,7 +1321,6 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * Add order option for custom menus
 	 *
-	 * @author Laurent Declercq <l.declercq@nuxwin.com>
 	 * @return string SQL Statement to be executed
 	 */
 	protected function _databaseUpdate_101()
@@ -1386,7 +1335,6 @@ class iMSCP_Update_Database extends iMSCP_Update
 	 *
 	 * Note: Not used at this moment.
 	 *
-	 * @author Laurent Declercq <l.declercq@nuxwin.com>
 	 * @return string SQL Statement to be executed
 	 */
 	protected function _databaseUpdate_103()
@@ -1408,7 +1356,6 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * Update for the `mail_users` table structure
 	 *
-	 * @author Laurent Declercq <l.declercq@nuxwin.com>
 	 * @return array Stack of SQL statements to be executed
 	 */
 	protected function _databaseUpdate_104()
@@ -1424,7 +1371,6 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * Added parameter to allow the admin to append some paths to the default PHP open_basedir directive of customers
 	 *
-	 * @author Laurent Declercq <l.declercq@nuxwin.com>
 	 * @return void
 	 */
 	protected function _databaseUpdate_105()
@@ -1440,7 +1386,6 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * Database schema update (KEY for some fields)
 	 *
-	 * @author Daniel Andreca <sci2tech@gmail.com>
 	 * @return array Stack of SQL statements to be executed
 	 */
 	protected function _databaseUpdate_106()
@@ -1460,7 +1405,6 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * #366: Enhancement - Move menu label show/disable option at user profile level
 	 *
-	 * @author Paweł Iwanowski <kontakt@raisen.pl>
 	 * @return array Stack of SQL statements to be executed
 	 */
 	protected function _databaseUpdate_107()
@@ -1474,7 +1418,6 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * #157: Enhancement - Relaying Domains
 	 *
-	 * @author Sascha Bay <worst.case@gmx.de>
 	 * @return array Stack of SQL statements to be executed
 	 */
 	protected function _databaseUpdate_109()
@@ -1492,7 +1435,6 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * #157: Enhancement - Relaying Domains
 	 *
-	 * @author Daniel Andreca <sci2tech@gmail.com>
 	 * @return array Stack of SQL statements to be executed
 	 */
 	protected function _databaseUpdate_110()
@@ -1506,7 +1448,6 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * #470: Default mail_quota is still 10485760 bytes
 	 *
-	 * @author Sascha Bay <worst.case@gmx.de>
 	 * @return array Stack of SQL statements to be executed
 	 */
 	protected function _databaseUpdate_111()
@@ -1518,7 +1459,6 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * Update for the `quotalimits` and `quotatallies` table structure
 	 *
-	 * @author Daniel Andreca <sci2tech@gmail.com>
 	 * @return array Stack of SQL statements to be executed
 	 */
 	protected function _databaseUpdate_112()
@@ -1532,7 +1472,6 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * #433: Defect - register_globals does not exist in php 5.4.0 and above
 	 *
-	 * @author Sascha Bay <worst.case@gmx.de>
 	 * @return array Stack of SQL statements to be executed
 	 */
 	protected function _databaseUpdate_113()
@@ -1549,7 +1488,6 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * #447: External mail server feature is broken
 	 *
-	 * @author Laurent Declercq <l.declercq@nuxwin.com>
 	 * @return array Stack of SQL statements to be executed
 	 */
 	protected function _databaseUpdate_114()
@@ -1633,7 +1571,6 @@ class iMSCP_Update_Database extends iMSCP_Update
 	 *
 	 * Moved from database update 70 due to duplicate key in foreign keys map.
 	 *
-	 * @author Laurent Declercq <l.declercq@nuxwin.com>
 	 * @return array Stack of SQL statements to be executed
 	 */
 	protected function _databaseUpdate_115()
@@ -1668,7 +1605,6 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * Disk detail integration
 	 *
-	 * @author Laurent Declercq <l.declercq@nuxwin.com>
 	 * @return array Stack of SQL statements to be executed
 	 */
 	protected function _databaseUpdate_116()
@@ -1683,7 +1619,6 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * Deletion of useless tables
 	 *
-	 * @author Laurent Declercq <l.declercq@nuxwin.com>
 	 * @return array Stack of SQL statements to be executed
 	 */
 	protected function _databaseUpdate_117()
@@ -1712,7 +1647,6 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * Lowercase PHP INI boolean
 	 *
-	 * @author Laurent Declercq <l.declercq@nuxwin.com>
 	 * @return array Stack of SQL statements to be executed
 	 */
 	protected function _databaseUpdate_119()
@@ -1731,7 +1665,6 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * #552: Bug - PHP constants are not recognized outside of PHP (such as in Apache vhost files)
 	 *
-	 * @author Laurent Declercq <l.declercq@nuxwin.com>
 	 * @return array Stack of SQL statements to be executed
 	 */
 	protected function _databaseUpdate_120()
@@ -1756,7 +1689,6 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * Update for url forward fields
 	 *
-	 * @author Laurent Declercq <l.declercq@nuxwin.com>
 	 * @return array Stack of SQL statements to be executed
 	 */
 	protected function _databaseUpdate_122()
@@ -1774,7 +1706,6 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * Adds admin.admin_status column
 	 *
-	 * @author Laurent Declercq <l.declercq@nuxwin.com>
 	 * @return string SQL statement to be executed
 	 */
 	protected function _databaseUpdate_123()
@@ -1789,7 +1720,6 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * Adds admin.admin_sys_uid and admin.admin_sys_gid columns
 	 *
-	 * @author Laurent Declercq <l.declercq@nuxwin.com>
 	 * @return array Stack of SQL statements to be executed
 	 */
 	protected function _databaseUpdate_124()
@@ -1803,7 +1733,6 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * Update admin.admin_sys_uid and admin.admin_sys_gid columns with data from domain table
 	 *
-	 * @author Laurent Declercq <l.declercq@nuxwin.com>
 	 * @return string SQL statements to be executed
 	 */
 	protected function _databaseUpdate_125()
@@ -1830,7 +1759,6 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * Drop domain.domain_uid and domain.domain_gid columns
 	 *
-	 * @author Laurent Declercq <l.declercq@nuxwin.com>
 	 * @return array SQL statetments to be executed
 	 */
 	protected function _databaseUpdate_126()
@@ -1844,7 +1772,6 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * Add ftp_users.admin_id column (foreign key)
 	 *
-	 * @author Laurent Declercq <l.declercq@nuxwin.com>
 	 * @return string SQL statement to be executed
 	 */
 	protected function _databaseUpdate_127()
@@ -1859,7 +1786,6 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * Update ftp_users.admin_id column with data from admin table
 	 *
-	 * @author Laurent Declercq <l.declercq@nuxwin.com>
 	 * @return string SQL statement to be executed
 	 */
 	protected function _databaseUpdate_128()
@@ -1877,7 +1803,6 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * Add web_folder_protection column in domain table
 	 *
-	 * @author Laurent Declercq <l.declercq@nuxwin.com>
 	 * @return string SQL statement to be executed
 	 */
 	protected function _databaseUpdate_129()
@@ -1892,7 +1817,6 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * Set web folder protection option to 'no' for any existent customer
 	 *
-	 * @author Laurent Declercq <l.declercq@nuxwin.com>
 	 * @return string SQL statement to be executed
 	 */
 	protected function _databaseUpdate_130()
@@ -1903,7 +1827,6 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * Drop orders and orders_settings tables
 	 *
-	 * @author Laurent Declercq <l.declercq@nuxwin.com>
 	 * @return string SQL statement to be e executed
 	 */
 	protected function _databaseUpdate_131()
@@ -1914,7 +1837,6 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * Drop useless columns in hosting_plan table
 	 *
-	 * @author Laurent Declercq <l.declercq@nuxwin.com>
 	 * @return array SQL statetments to be executed
 	 */
 	protected function _databaseUpdate_133()
@@ -1943,7 +1865,6 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * Drop straff_settings table
 	 *
-	 * @author Laurent Declercq <l.declercq@nuxwin.com>
 	 * @return string SQL statement to be e executed
 	 */
 	protected function _databaseUpdate_135()
@@ -1954,7 +1875,6 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * Drop useless php_ini.status column
 	 *
-	 * @author Laurent Declercq <l.declercq@nuxwin.com>
 	 * @return string SQL statement to be e executed
 	 */
 	protected function _databaseUpdate_136()
@@ -1965,7 +1885,6 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * #776 Add possible missing hosting plan properties
 	 *
-	 * @author Laurent Declercq <l.declercq@nuxwin.com>
 	 * @return array SQL statements to be e executed
 	 */
 	protected function _databaseUpdate_137()
@@ -2048,7 +1967,6 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * Update plugin.plugin_status column
 	 *
-	 * @author Laurent Declercq <l.declercq@nuxwin.com>
 	 * @return string SQL statement to be e executed
 	 */
 	protected function _databaseUpdate_138()
@@ -2064,7 +1982,6 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * Add plugin_backend column in plugin table
 	 *
-	 * @author Laurent Declercq <l.declercq@nuxwin.com>
 	 * @return string SQL statement to be executed
 	 */
 	protected function _databaseUpdate_139()
@@ -2079,7 +1996,6 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * Update any 'delete' status to 'todelete'
 	 *
-	 * @author Laurent Declercq <l.declercq@nuxwin.com>
 	 * @return array SQL statements to be e executed
 	 */
 	protected function _databaseUpdate_140()
@@ -2115,8 +2031,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * Add plugin.plugin_previous_status and plugin_plugin_error columns
 	 *
-	 * @author Laurent Declercq <l.declercq@nuxwin.com>
-	 * @return array|string
+	 * @return array SQL statements to be e executed
 	 */
 	protected function _databaseUpdate_141()
 	{
@@ -2180,5 +2095,15 @@ class iMSCP_Update_Database extends iMSCP_Update
 		}
 
 		return $sqlUdp;
+	}
+
+	/**
+	 * Removes ports entries for unsupported services
+	 *
+	 * @return array SQL statements to be e executed
+	 */
+	protected function _databaseUpdate_142()
+	{
+		return "DELETE FROM `config` WHERE `name` IN('PORT_AMAVIS', 'PORT_SPAMASSASSIN')";
 	}
 }

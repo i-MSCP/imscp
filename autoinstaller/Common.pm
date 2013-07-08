@@ -427,47 +427,6 @@ sub installGui
 	$rs;
 }
 
-=item installDistMaintainerScripts()
-
- Install distribution maintainer scripts in build folder.
-
- Some distribution can require pre and post installation tasks managed by maintainers scripts (preinst.DISTNAME or
-postinst.DISTNAME) written in Shell, PHP or Perl. If a script is found for the current distribution, it will be intalled
-in the setup directory with the distribution maintainer helper library (for shell scripts).
-
- Return int - 0
-
-=cut
-
-sub installDistMaintainerScripts
-{
-	my $rs = 0;
-	my $distribution = lc(iMSCP::LsbRelease->getInstance()->getId(1));
-
-	for("$FindBin::Bin/maintscripts/preinst.$distribution", "$FindBin::Bin/maintscripts/postinst.$distribution") {
-		next if ! -f $_;
-		my $file = iMSCP::File->new('filename' => $_);
-		$rs = $file->mode(0750);
-		return $rs if $rs;
-		$rs = $file->owner(0, 0);
-		return $rs if $rs;
-		$rs = $file->copyFile("$main::{'SYSTEM_ROOT'}/engine/setup/");
-		return $rs if $rs;
-	}
-
-	if(-f "$FindBin::Bin/maintscripts/preinst.$distribution" || -f "$FindBin::Bin/maintscripts/postinst.$distribution") {
-		my $file = iMSCP::File->new('filename' => "$FindBin::Bin/maintscripts/maintainer-helper.sh");
-		$rs = $file->mode(0750);
-		return $rs if $rs;
-		$rs = $file->owner(0, 0);
-		return $rs if $rs;
-		$rs = $file->copyFile("$main::{'SYSTEM_ROOT'}/engine/setup/");
-		return $rs if $rs;
-	}
-
-	0;
-}
-
 =item postBuild()
 
  Process post-build tasks.

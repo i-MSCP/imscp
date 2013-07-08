@@ -2414,10 +2414,8 @@ sub setupRestartServices
 		#['Variable holding command', 'command to execute', 'ignore error if 0 exit on error if 1']
 		['CMD_IMSCPN', 'restart', 1],
 		['CMD_IMSCPD', 'restart', 1],
-		['CMD_CLAMD', 'reload', 1],
 		['CMD_POSTGREY', 'restart', 1],
-		['CMD_POLICYD_WEIGHT', 'reload', 0],
-		['CMD_AMAVIS', 'reload', 1]
+		['CMD_POLICYD_WEIGHT', 'reload', 0]
 	);
 
 	my ($stdout, $stderr);
