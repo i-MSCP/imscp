@@ -89,7 +89,7 @@ sub addSystemUser
 
 	} else { # Modify existent user
 		@cmd = (
-			'skill -KILL -vu ' . escapeShell($userName) . '; ',
+			'/usr/bin/skill -KILL -vu ' . escapeShell($userName) . '; ',
 			$main::imscpConfig{'CMD_USERMOD'},
 			($^O =~ /bsd$/ ? escapeShell($userName) : ''),	# username bsd way
 			$password,										# Password
@@ -174,7 +174,7 @@ sub addToGroup
 		if(! $self->{'userGroups'}->{$groupName}) {
 			my $newGroups = join(',', keys %{$self->{'userGroups'}}) . ",$groupName";
 			my  @cmd = (
-				'skill -KILL -vu ' . escapeShell($userName) . '; ',
+				'/usr/bin/skill -KILL -vu ' . escapeShell($userName) . '; ',
 				"$main::imscpConfig{'CMD_USERMOD'}",
 				($^O =~ /bsd$/ ? escapeShell($userName) : ''),	# bsd way
 				'-G', escapeShell($newGroups),
@@ -205,7 +205,7 @@ sub getUserGroups
 
 	my ($rs, $stdout, $stderr);
 
-	$rs = execute('id -nG ' . escapeShell($userName), \$stdout, \$stderr);
+	$rs = execute('/usr/bin/id -nG ' . escapeShell($userName), \$stdout, \$stderr);
 	debug($stdout) if $stdout;
 	error($stderr) if $stderr && $rs;
 	warning($stderr) if $stderr && ! $rs;
@@ -247,7 +247,7 @@ sub removeFromGroup
 
 		my $newGroups =  join(',', keys %{$self->{'userGroups'}});
 		my  @cmd = (
-			'skill -KILL -vu ' . $userName . '; ',
+			'/usr/bin/skill -KILL -vu ' . $userName . '; ',
 			"$main::imscpConfig{'CMD_USERMOD'}",
 			($^O =~ /bsd$/ ? escapeShell($userName) : ''),	# bsd way
 			'-G', escapeShell($newGroups),

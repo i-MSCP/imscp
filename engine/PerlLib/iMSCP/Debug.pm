@@ -321,7 +321,7 @@ END
 		debug("Exit code is $exitCode");
 	}
 
-	system 'clear';
+	system('clear') if $ENV{'TERM'};
 
 	my $logdir = $main::imscpConfig{'LOG_DIR'} || '/tmp';
 	my $msg;

@@ -152,7 +152,7 @@ sub attachIpToNetCard
 	my $slot = $self->_getFirstFreeSlotOnCard($card, 'reserve');
 
 	my ($stdout, $stderr);
-	my $rs = execute("ifconfig $card:$slot $ip netmask 255.255.255.255 up", \$stdout, \$stderr);
+	my $rs = execute("$main::imscpConfig{'CMD_IFCONFIG'} $card:$slot $ip netmask 255.255.255.255 up", \$stdout, \$stderr);
 	debug($stdout) if $stdout;
 	error($stderr) if $stderr && $rs;
 
@@ -170,7 +170,7 @@ sub detachIpFromNetCard
 	return 1 unless $self->isValidIp($ip);
 
 	my ($stdout, $stderr);
-	my $rs = execute("ifconfig $card down", \$stdout, \$stderr);
+	my $rs = execute("$main::imscpConfig{'CMD_IFCONFIG'} $card down", \$stdout, \$stderr);
 	debug($stdout) if $stdout;
 	error($stderr) if $stderr && $rs;
 

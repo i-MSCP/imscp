@@ -108,7 +108,7 @@ sub process
 	# Remove any backup older than 7 days
 	my ($stdout, $stderr);
 	$rs = execute(
-		"find $main::imscpConfig{'BACKUP_FILE_DIR'}/* -maxdepth 0 -type f -mtime +7 -print | xargs -r /bin/rm -v",
+		"/usr/bin/find $main::imscpConfig{'BACKUP_FILE_DIR'}/* -maxdepth 0 -type f -mtime +7 -print | xargs -r /bin/rm -v",
 		\$stdout, \$stderr
 	);
 	debug($stdout) if $stdout;

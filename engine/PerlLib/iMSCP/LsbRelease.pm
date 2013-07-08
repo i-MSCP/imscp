@@ -406,7 +406,7 @@ sub _guessDebianRelease
 	my $distinfo = {'ID' => 'Debian'};
 	my ($rs, $stdout, $stderr, $release, $codename);
 
-	$rs = execute('uname', \$stdout, \$stderr); # We are safe here
+	$rs = execute('/bin/uname', \$stdout, \$stderr); # We are safe here
 	debug($stdout) if $stdout;
 	error($stderr) if $stderr && $rs;
 

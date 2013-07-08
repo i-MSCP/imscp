@@ -720,7 +720,7 @@ sub daemonRemove
 		push(@errors, $stderr) if $stderr && $rs;
 
 		if($rs && $_ eq $main::ispcpConfig{'CMD_ISPCPD'}){
-			$rs = execute("kill -9 `pidof ispcp_daemon`", \$stdout, \$stderr);
+			$rs = execute("/bin/kill -9 `/bin/pidof ispcp_daemon`", \$stdout, \$stderr);
 			debug($stdout) if $stdout;
 			push(@errors, $stderr) if $stderr && $rs;
 		}

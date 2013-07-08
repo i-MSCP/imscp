@@ -893,12 +893,12 @@ sub _installPhpFpmInitScript
 
 		my $service = fileparse($self::phpfpmConfig{'CMD_PHP_FPM'});
 
-		$rs = execute("update-rc.d -f $service remove", \$stdout, \$stderr);
+		$rs = execute("/usr/sbin/update-rc.d -f $service remove", \$stdout, \$stderr);
 		debug ($stdout) if $stdout;
 		error($stderr) if $stderr && $rs;
 		return $rs if $rs;
 
-		$rs = execute("update-rc.d $service defaults", \$stdout, \$stderr);
+		$rs = execute("/usr/sbin/update-rc.d $service defaults", \$stdout, \$stderr);
 		debug ($stdout) if $stdout;
 		error($stderr) if $stderr && $rs;
 		return $rs if $rs;

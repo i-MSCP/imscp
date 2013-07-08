@@ -1539,7 +1539,7 @@ sub enableSite($$)
 
 	for(split(' ', $sites)){
 		if(-f "$self::apacheConfig{'APACHE_SITES_DIR'}/$_") {
-			$rs = execute("a2ensite $_", \$stdout, \$stderr);
+			$rs = execute("$self::apacheConfig{'CMD_A2ENSITE'} $_", \$stdout, \$stderr);
 			debug($stdout) if $stdout;
 			error($stderr) if $stderr && $rs;
 			return $rs if $rs;
@@ -1574,7 +1574,7 @@ sub disableSite($$)
 
 	for(split(' ', $sites)) {
 		if(-f "$self::apacheConfig{'APACHE_SITES_DIR'}/$_") {
-			$rs = execute("a2dissite $_", \$stdout, \$stderr);
+			$rs = execute("$self::apacheConfig{'CMD_A2DISSITE'} $_", \$stdout, \$stderr);
 			debug($stdout) if $stdout;
 			error($stderr) if $stderr && $rs;
 			return $rs if $rs;
@@ -1606,7 +1606,7 @@ sub enableMod($$)
 	return $rs if $rs;
 
 	my ($stdout, $stderr);
-	$rs = execute("a2enmod $modules", \$stdout, \$stderr);
+	$rs = execute("$self::apacheConfig{'CMD_A2ENMOD'} $modules", \$stdout, \$stderr);
 	debug($stdout) if $stdout;
 	error($stderr) if $stderr && $rs;
 	return $rs if $rs;
@@ -1634,7 +1634,7 @@ sub disableMod($$)
 	return $rs if $rs;
 
 	my ($stdout, $stderr);
-	$rs = execute("a2dismod $modules", \$stdout, \$stderr);
+	$rs = execute("$self::apacheConfig{'CMD_A2DISMOD'} $modules", \$stdout, \$stderr);
 	debug($stdout) if $stdout;
 	error($stderr) if $stderr && $rs;
 	return $rs if $rs;

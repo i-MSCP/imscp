@@ -106,7 +106,7 @@ sub addVirtualNetcard
 		for(@cards) {
 			if(!$ips->isCardUp($_)) {
 				# netcard is not up so we try put that up
-				$rs = execute("ifconfig $_ up", \$stdout, \$stderr);
+				$rs = execute("/sbin/ifconfig $_ up", \$stdout, \$stderr);
 				debug($stdout) if $stdout;
 				error($stderr) if $stderr && $rs;
 				iMSCP::Mail->new()->errmsg($stderr) if $stderr && $rs;

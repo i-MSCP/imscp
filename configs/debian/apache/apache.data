@@ -4,6 +4,10 @@ PHP_VERSION = 5
 
 ITK_PHP5_PATH = /etc/php5/apache2/php.ini
 
+CMD_A2ENSITE = /usr/sbin/a2ensite
+CMD_A2DISSITE = /usr/sbin/a2dissite
+CMD_A2ENMOD = /usr/sbin/a2enmod
+CMD_A2DISMOD = /usr/sbin/a2dismod
 CMD_HTTPD = /etc/init.d/apache2
 
 APACHE_CONF_DIR = /etc/apache2

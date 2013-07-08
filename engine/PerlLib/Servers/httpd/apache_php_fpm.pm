@@ -1336,7 +1336,7 @@ sub getTraffic($$)
 			error('imscp-apache-logger is not running') unless $stderr;
 		} else {
 			while($stdout =~ m/^\s{0,}(\d+)(?!.*error)/gm) {
-				$rs = execute("kill -s HUP $1", \$stdout, \$stderr);
+				$rs = execute("/bin/kill -s HUP $1", \$stdout, \$stderr);
 				debug($stdout) if $stdout;
 				error($stderr) if $stderr && $rs;
 			}
@@ -1380,7 +1380,7 @@ sub deleteOldLogs
 	my ($stdout, $stderr);
 
 	for ($logDir, $backupLogDir, $usersLogDir) {
-		my $cmd = "nice -n 19 find $_ -maxdepth 1 -type f -name '*.log*' -mtime +365 -exec rm -v {} \\;";
+		my $cmd = "/usr/bin/nice -n 19 /usr/bin/find $_ -maxdepth 1 -type f -name '*.log*' -mtime +365 -exec rm -v {} \\;";
 		$rs = execute($cmd, \$stdout, \$stderr);
 		debug($stdout) if $stdout;
 		error($stderr) if $stderr && $rs;
@@ -1431,7 +1431,7 @@ sub deleteTmp
 	my ($cmd, $stdout, $stderr);
 
 	# panel sessions gc (Only for security since Zend_Session normaly take care of this)
-	$cmd = "[ -d /var/www/imscp/gui/data/sessions ] && find /var/www/imscp/gui/data/sessions/ -type f -cmin +$max -exec rm -v {} \\;";
+	$cmd = "[ -d /var/www/imscp/gui/data/sessions ] && /usr/bin/find /var/www/imscp/gui/data/sessions/ -type f -cmin +$max -exec rm -v {} \\;";
 	$rs = execute($cmd, \$stdout, \$stderr);
 	debug($stdout) if $stdout;
 	error($stderr) if $stderr && $rs;
@@ -1440,7 +1440,7 @@ sub deleteTmp
 
 	# customers sessions gc
 	# TODO should we check for any maxlifetime overriden in pools configuration file?
-	$cmd = "nice -n 19 find $main::imscpConfig{'USER_WEB_DIR'} -type f -path '*/phptmp/sess_*' -cmin +$max -exec rm -v {} \\;";
+	$cmd = "/usr/bin/nice -n 19 /usr/bin/find $main::imscpConfig{'USER_WEB_DIR'} -type f -path '*/phptmp/sess_*' -cmin +$max -exec rm -v {} \\;";
 	$rs = execute($cmd, \$stdout, \$stderr);
 	debug($stdout) if $stdout;
 	error($stderr) if $stderr && $rs;
@@ -1501,7 +1501,7 @@ sub enableSite($$)
 
 	for(split(' ', $sites)){
 		if(-f "$self::apacheConfig{'APACHE_SITES_DIR'}/$_") {
-			$rs = execute("a2ensite $_", \$stdout, \$stderr);
+			$rs = execute("$self::apacheConfig{'CMD_A2ENSITE'} $_", \$stdout, \$stderr);
 			debug($stdout) if $stdout;
 			error($stderr) if $stderr && $rs;
 			return $rs if $rs;
@@ -1536,7 +1536,7 @@ sub disableSite($$)
 
 	for(split(' ', $sites)) {
 		if(-f "$self::apacheConfig{'APACHE_SITES_DIR'}/$_") {
-			$rs = execute("a2dissite $_", \$stdout, \$stderr);
+			$rs = execute("$self::apacheConfig{'CMD_A2DISSITE'} $_", \$stdout, \$stderr);
 			debug($stdout) if $stdout;
 			error($stderr) if $stderr && $rs;
 			return $rs if $rs;
@@ -1568,7 +1568,7 @@ sub enableMod($$)
 	return $rs if $rs;
 
 	my ($stdout, $stderr);
-	$rs = execute("a2enmod $modules", \$stdout, \$stderr);
+	$rs = execute("$self::apacheConfig{'CMD_A2ENMOD'} $modules", \$stdout, \$stderr);
 	debug($stdout) if $stdout;
 	error($stderr) if $stderr && $rs;
 	return $rs if $rs;
@@ -1596,7 +1596,7 @@ sub disableMod($$)
 	return $rs if $rs;
 
 	my ($stdout, $stderr);
-	$rs = execute("a2dismod $modules", \$stdout, \$stderr);
+	$rs = execute("$self::apacheConfig{'CMD_A2DISMOD'} $modules", \$stdout, \$stderr);
 	debug($stdout) if $stdout;
 	error($stderr) if $stderr && $rs;
 	return $rs if $rs;

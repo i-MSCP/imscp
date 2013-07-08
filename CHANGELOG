@@ -9,6 +9,7 @@ CONFIGS:
 
 ENGINE:
 	- Fixed: unable to remove htgroup
+	- Fixed: TERM environment variable not set (IMSCP::Debug library)
 	- Removed 'dnschange' status
 	- Updated 'change' status to 'tochange' and 'delete' status to 'todelete'
 
