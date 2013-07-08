@@ -726,7 +726,7 @@ class iMSCP_Plugin_Manager
 						$pluginBackend = file_exists($fileInfo->getPathname() . "/backend/$pluginName.pm") ? 'yes' : 'no';
 
 						// Is a plugin already known by plugin manager?
-						if(isset($pluginName, $knownPluginsData)) {
+						if(isset($knownPluginsData[$pluginName])) {
 							$pluginStatus = $knownPluginsData[$pluginName]['plugin_status'];
 							$knownPluginInfo = unserialize($knownPluginsData[$pluginName]['plugin_info']);
 
@@ -870,7 +870,7 @@ class iMSCP_Plugin_Manager
 	 */
 	protected function addPluginIntoDatabase($pluginData)
 	{
-		if (!isset($pluginData['name'], $this->plugins)) {
+		if (!isset($this->plugins[$pluginData['name']])) {
 			exec_query(
 				'
 					INSERT INTO `plugin` (
