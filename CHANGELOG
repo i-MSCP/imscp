@@ -8,6 +8,8 @@ CONFIGS:
 	- Removed Amavis, ClamAV and SpamAssassin configuration (Such service must be provided as plugin)
 
 ENGINE:
+	- Added cron job for deactivation of entities belonging to an expired account
+	- Fixed: Allow to get raw db connection
 	- Fixed: unable to remove htgroup
 	- Fixed: TERM environment variable not set (IMSCP::Debug library)
 	- Removed 'dnschange' status

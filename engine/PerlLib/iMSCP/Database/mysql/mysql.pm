@@ -105,6 +105,19 @@ sub connect
 	0;
 }
 
+# Return raw db connection
+sub getRawDb
+{
+	my $self = shift;
+
+	if(!$self->{'connection'}) {
+		my $rs = $self->connect();
+		fatal("Unable to connect: $rs") if $rs;
+	}
+
+	$self->{'connection'};
+}
+
 # Execute the given query
 #
 # Param int|string Query key

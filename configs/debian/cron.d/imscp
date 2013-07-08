@@ -20,6 +20,9 @@
 # Remove Daemon Logs older than 14 days (except .gz files)
 @daily root find {LOG_DIR}/* -maxdepth 1 -type f -mtime +14 -print | egrep '.*\.gz$' | xargs -r /bin/rm
 
+# Disable entities (dmn, als, sub, alssub and mail) of expired accounts
+@daily root umask 027; {TOOLS_ROOT_DIR}/imscp-disable-accounts >/dev/null 2>&1
+
 # AWStats
 {AW-ENABLED}15 */6 * * * root {AWSTATS_ROOT_DIR}/awstats_updateall.pl now -awstatsprog={AWSTATS_ENGINE_DIR}/awstats.pl >/dev/null 2>&1
 
