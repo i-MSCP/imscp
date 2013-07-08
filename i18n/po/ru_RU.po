@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2013-06-18 13:40+0200\n"
-"PO-Revision-Date: 2013-06-18 11:41+0000\n"
+"POT-Creation-Date: 2013-07-08 20:33+0200\n"
+"PO-Revision-Date: 2013-07-08 18:33+0000\n"
 "Last-Translator: Torsten Widmann <info@goover.de>\n"
 "Language-Team: Russian (Russia) (http://www.transifex.com/projects/p/i-MSCP/language/ru_RU/)\n"
 "MIME-Version: 1.0\n"
@@ -312,6 +312,11 @@ msgid "%s list is empty! You cannot add mail accounts."
 msgstr "%s список пуст! Вы не можете создать учетную запись почты."
 
 #, php-format
+msgid ""
+"%s new plugin(s) found, %s plugin(s) updated, and %s plugin(s) deleted."
+msgstr ""
+
+#, php-format
 msgid "%s of %s"
 msgstr "%s из %s"
 
@@ -486,9 +491,6 @@ msgstr "(отфильтровано из %s записей)"
 msgid "(usually named"
 msgstr "(Обычное имя архива: "
 
-msgid ".htaccess related errors"
-msgstr "Ошибки, связанные с .htaccess"
-
 #, php-format
 msgid "<b>%1$s</b> has unlimited rights for a <b>%2$s</b> Service.<br />"
 msgstr "<b>%1$s</b> имеет неограниченные права на <b>%2$s</b> службу.<br />"
@@ -550,8 +552,8 @@ msgstr "Действия"
 msgid "Activate"
 msgstr "Активировать"
 
-msgid "Activate this plugin"
-msgstr "Активировать плагин"
+msgid "Activate this plugin."
+msgstr ""
 
 msgid "Activated"
 msgstr "Активировано"
@@ -561,6 +563,9 @@ msgstr "Активировать ПО"
 
 msgid "Activation E-Mail"
 msgstr "Активационное письмо"
+
+msgid "Activation in progress..."
+msgstr ""
 
 msgid "Activation link expire time <small>(In minutes)</small>"
 msgstr "Время истечения ссылки активации <small>(В минутах)</small>"
@@ -727,7 +732,7 @@ msgstr ""
 msgid "Admin / Settings / Lost password mail"
 msgstr ""
 
-msgid "Admin / Settings / Plugin management"
+msgid "Admin / Settings / Plugins management"
 msgstr ""
 
 msgid "Admin / Settings / Server traffic"
@@ -899,9 +904,6 @@ msgstr "Имя алиаса"
 msgid "Alias scheduled for addition."
 msgstr "Алиас запланирован для добавления."
 
-msgid "Alias subdomain errors"
-msgstr "Ошибки алиасов поддоменов"
-
 msgid "Alias subdomain forward"
 msgstr "Перенаправление поддомена алиаса"
 
@@ -976,6 +978,10 @@ msgstr "При попытке аутентификации обнаружена 
 
 msgid "An hosting plan with same name already exists."
 msgstr "Хостинг-план с таким названием уже существует."
+
+#, php-format
+msgid "An unexpected error occured while plugin %s attempt: %s"
+msgstr ""
 
 msgid "An unexpected error occured, please contact your reseller."
 msgstr "Произошла неизвестная ошибка, пожалуйста, свяжитесь с Вашим реселлером."
@@ -1317,6 +1323,9 @@ msgstr "Класс"
 
 msgid "Clear log"
 msgstr "Очистить лог"
+
+msgid "Click here for more details"
+msgstr ""
 
 msgid ""
 "Click the Restore button and the system will restore the last daily backup"
@@ -1731,11 +1740,14 @@ msgstr "Деактивировать"
 msgid "Deactivate selected items"
 msgstr "Деактивировать выбранное"
 
-msgid "Deactivate this plugin"
-msgstr "Деактивировать плагин"
+msgid "Deactivate this plugin."
+msgstr ""
 
 msgid "Deactivated"
 msgstr "Деактивировано"
+
+msgid "Deactivation in progress..."
+msgstr ""
 
 #, php-format
 msgid ""
@@ -1933,9 +1945,6 @@ msgstr "Алиасы доменов"
 msgid "Domain alias data"
 msgstr "Данные алиаса домена"
 
-msgid "Domain alias errors"
-msgstr "Ошибки алиасов доменов"
-
 msgid "Domain alias limit reached."
 msgstr "Лимит алиаса достигнут."
 
@@ -1980,6 +1989,9 @@ msgstr "Алиасы домена"
 msgid "Domain aliases limit<br/><i>(-1 disabled, 0 unlimited)</i>"
 msgstr "Количество алиасов домена <br/><i>(-1 отключено, 0 не ограничено)</i>"
 
+msgid "Domain aliasses errors"
+msgstr ""
+
 msgid "Domain already assigned to another IP address."
 msgstr "Домен уже назначен на другой IP адрес."
 
@@ -1994,9 +2006,6 @@ msgstr "Данные домена уже были изменены. Пожалу
 
 msgid "Domain details"
 msgstr "Информация о домене"
-
-msgid "Domain errors"
-msgstr "Ошибки доменов"
 
 msgid "Domain expiration date"
 msgstr "Дата истечения домена"
@@ -2053,6 +2062,9 @@ msgstr "Домен: Установите запись MX для переадре
 
 msgid "Domains"
 msgstr "Домены"
+
+msgid "Domains errors"
+msgstr ""
 
 msgid "Domains limit<br/><i>(0 unlimited)</i>"
 msgstr "Количество доменов <br/><i>(0 не ограничено)</i>"
@@ -2233,6 +2245,9 @@ msgstr "Ошибка 500 (внутренняя ошибка сервера)"
 msgid "Error 503 (service unavailable)"
 msgstr "Ошибка 503 (сервис не доступен)"
 
+msgid "Error details"
+msgstr ""
+
 msgid "Error in php.ini values."
 msgstr "Ошибка значений php.ini"
 
@@ -2343,6 +2358,10 @@ msgid "File %s doesn't exists or cannot be reached!"
 msgstr "Файл %s не существует или недоступен!"
 
 #, php-format
+msgid "File %s is missing in plugin directory."
+msgstr ""
+
+#, php-format
 msgid "File does not exist. %1$s.tar.gz"
 msgstr "Файл не существует. %1$s.tar.gz"
 
@@ -2380,6 +2399,9 @@ msgid "First name"
 msgstr "Имя"
 
 msgid "First name cannot have more than 200 characters."
+msgstr ""
+
+msgid "Force retry"
 msgstr ""
 
 msgid "Forward URL"
@@ -2551,6 +2573,9 @@ msgstr "Час"
 msgid "Hours"
 msgstr "Часов"
 
+msgid "Htaccess errors"
+msgstr ""
+
 msgid "Htaccess group"
 msgstr "Группа Htaccess"
 
@@ -2614,12 +2639,10 @@ msgid ""
 "directive"
 msgstr "Если да, то реселлер сможет позволить пользователю изменить эту опцию"
 
-#, php-format
 msgid ""
 "If you protect a plugin, you'll no longer be able to deactivate it from the "
-"plugin management interface.<br /><br />To unprotect  a plugin, you'll have "
-"to edit the %s file."
-msgstr "Если Вы защитите плагин, Вы не сможете больше деактивировать его через менеджер плагинов. <br /><br />Чтобы снять защиту, вы должны будете отредактировать файл %s ."
+"plugin management interface."
+msgstr ""
 
 msgid "If you want to limit the reseller, you must first limit its customers."
 msgstr "Если Вы хотите ограничить реселлера, Вы сначала должны ограничить его клиентов."
@@ -2710,9 +2733,6 @@ msgid "Install Software"
 msgstr "Установить ПО"
 
 msgid "Install in progress"
-msgstr ""
-
-msgid "Install in progress..."
 msgstr ""
 
 msgid "Install path"
@@ -2978,9 +2998,6 @@ msgstr "Почтовый ящик уже существует."
 msgid "Mail account data"
 msgstr "Данные почтового ящика"
 
-msgid "Mail account errors"
-msgstr "Ошибки почтовых ящиков"
-
 msgid "Mail account not found."
 msgstr "Почтовый ящик не найден"
 
@@ -2998,6 +3015,9 @@ msgstr "Почтовый ящик помечен для обновления."
 
 msgid "Mail accounts"
 msgstr "Почтовые ящики"
+
+msgid "Mail accounts errors"
+msgstr ""
 
 msgid "Mail accounts limit reached."
 msgstr "Лимит почтовых ящиков исчерпан."
@@ -3294,9 +3314,6 @@ msgstr "Не найдено реселлеров."
 msgid "No administrator accounts found."
 msgstr "Не найдено учетных записей администраторов."
 
-msgid "No alias subdomain system errors"
-msgstr "Нет ошибок системы алиасов поддоменов"
-
 msgid "No certificate found."
 msgstr "Не найдено сертификатов"
 
@@ -3312,20 +3329,14 @@ msgstr "Не найдено учетных записей клиентов."
 msgid "No database update available."
 msgstr ""
 
-msgid "No domain alias system errors"
-msgstr "Нет ошибок системы алиасов доменов"
-
 msgid "No domain statistics to display for this reseller."
 msgstr "Нет статистики доменов для отображения этому реселлеру."
 
 msgid "No domain statistics to display."
 msgstr "Нет статистики доменов для отображения."
 
-msgid "No domain system errors"
-msgstr "Нет ошибок системы доменов"
-
-msgid "No email account system errors"
-msgstr "Нет ошибок системы почтовых ящиков"
+msgid "No errors"
+msgstr ""
 
 msgid "No file was uploaded."
 msgstr "Файл не был загружен."
@@ -3344,9 +3355,6 @@ msgstr "Нет доступных хостинг-планов."
 
 msgid "No hosting plan available. Please contact your administrator."
 msgstr ""
-
-msgid "No htaccess related system errors"
-msgstr "Нет системных ошибок, связанных с htaccess"
 
 msgid "No languages found."
 msgstr "Языки не найдены."
@@ -3393,17 +3401,11 @@ msgstr "Нет приложений ожидающих активации"
 msgid "No statistics found for the given period. Try another period."
 msgstr "Не найдено статистики за запрашиваемый период, попробуйте другой период."
 
-msgid "No subdomain system errors"
-msgstr "Нет ошибок системы поддоменов"
-
 msgid "No unassigned users was found in database."
 msgstr "В базе данных не найдено неназначенных пользователей."
 
 msgid "No user found."
 msgstr "Не найдено пользователей"
-
-msgid "No user system errors"
-msgstr "Нет ошибок системы пользователей"
 
 msgid "No users found for this reseller."
 msgstr "Не найдены клиентов этого реселлера."
@@ -3498,6 +3500,12 @@ msgstr "Портами служб могут быть только положи�
 
 msgid "Only positive numbers are allowed."
 msgstr "Разрешены только положительные числа"
+
+msgid "Only tar.gz, tar.bz2 and zip archives are accepted."
+msgstr ""
+
+msgid "Only tar.gz, tar.bz2 and zip archives are supported."
+msgstr ""
 
 msgid "Open ticket"
 msgstr "Открыть тикет"
@@ -3809,54 +3817,70 @@ msgid "Plugin"
 msgstr "Плагин"
 
 #, php-format
+msgid "Plugin %s is already activated."
+msgstr ""
+
+#, php-format
+msgid "Plugin %s is already deactivated."
+msgstr ""
+
+#, php-format
+msgid "Plugin %s is protected."
+msgstr ""
+
+#, php-format
 msgid "Plugin %s successfully %s."
 msgstr "Плагин %s успешно %s."
 
-msgid ""
-"Plugin list is empty. To install a new plugin, extract its archive content "
-"into the <strong>gui/plugins</strong> directory and update the plugin list."
-msgstr "Список плагинов пуст. Для установки нового плагина, извлеките содержимое архива в каталог <strong>gui/plugins</strong> и обновите список плагинов."
+#, php-format
+msgid "Plugin %s successfully scheduled for %s."
+msgstr ""
+
+msgid "Plugin archive"
+msgstr ""
 
 #, php-format
 msgid ""
-"Plugin list successfully updated.<br/><strong>%d</strong> new plugin(s) "
-"found, <strong>%d</strong> plugin(s) updated, and <strong>%d</strong> "
-"plugin(s) deleted."
-msgstr "Список плагинов успешно обновлен.<br/><strong>%d</strong> новый(х) плагин(ов) найден(о), <strong>%d</strong> плагин(ов) обновлен(о), и <strong>%d</strong> плагин(ов) удалено."
+"Plugin archive exceeds the maximum upload size (%s). Max upload size is: %s."
+msgstr ""
 
-msgid "Plugin management"
-msgstr "Управление плагинами"
+#, php-format
+msgid "Plugin class %s not found in file %s"
+msgstr ""
+
+#, php-format
+msgid "Plugin file %s doesn't exists or is not readable."
+msgstr ""
+
+msgid "Plugin list is empty."
+msgstr ""
+
+msgid "Plugin list successfully updated."
+msgstr ""
 
 #, php-format
 msgid "Plugin manager was unable to %s the %s plugin."
 msgstr "Менеджер плагинов не может %s  %s плагин."
 
-msgid "Plugin manager was unable to activate the plugin."
-msgstr "Менеджер плагинов не может активировать плагин."
+msgid "Plugin successfully uploaded."
+msgstr ""
 
-msgid "Plugin manager was unable to deactivate the plugin."
-msgstr "Менеджер плагинов не может деактивировать плагин."
+msgid "Plugins Upload"
+msgstr ""
 
-msgid "Plugin manager was unable to protect the plugin."
-msgstr "Менеджер плагинов не может защитить плагин."
-
-#, php-format
-msgid "Plugin manager was unable to remove the %s file"
-msgstr "Менеджер плагинов не может удалить файл %s "
+msgid "Plugins errors"
+msgstr ""
 
 #, php-format
 msgid ""
-"Plugin manager was unable to write the %s cache file for protected plugins."
-msgstr "Менеджер плагинов не может записать %s файл кеша для защищенных плагинов."
+"Plugins hook into i-MSCP to extend its functionality with custom features. "
+"Plugins are developed independently from the core i-MSCP application by "
+"thousands of developers all over the world. You can find new plugins to "
+"install by browsing the %s."
+msgstr ""
 
-msgid "Plugin successfully activated."
-msgstr "Плагин успешно активирован."
-
-msgid "Plugin successfully deactivated."
-msgstr "Плагин успешно деактивирован."
-
-msgid "Plugin successfully protected."
-msgstr "Плагин успешно защищен."
+msgid "Plugins management"
+msgstr ""
 
 msgid "Port"
 msgstr "Порт"
@@ -4404,8 +4428,8 @@ msgstr "Статус служб"
 msgid "Sessions"
 msgstr "Сессия"
 
-msgid "Set status to 'change'"
-msgstr "Сменить статус на \"изменено\""
+msgid "Set status to 'tochange'"
+msgstr ""
 
 msgid "Settings"
 msgstr "Настройки"
@@ -4629,14 +4653,14 @@ msgid ""
 "first."
 msgstr "Алиас домена, который Вы пытаетесь удалить имеет учетные записи FTP. Сначала удалите их."
 
+msgid "Subdomain aliases errors"
+msgstr ""
+
 msgid "Subdomain already exists or is not allowed."
 msgstr "Поддомен уже существует или не разрешен."
 
 msgid "Subdomain data"
 msgstr "Данные поддомена"
-
-msgid "Subdomain errors"
-msgstr "Ошибки поддоменов"
 
 msgid "Subdomain forward"
 msgstr "Перенаправление поддомена"
@@ -4666,6 +4690,9 @@ msgstr "Поддомен, который вы пытаетесь удалить,
 
 msgid "Subdomains"
 msgstr "Поддомены"
+
+msgid "Subdomains errors"
+msgstr ""
 
 msgid "Subdomains limit<br /><i>(-1 disabled, 0 unlimited)</i>"
 msgstr "Количество поддоменов <br/><i>(-1 отключено, 0 не ограничено)</i>"
@@ -4806,18 +4833,6 @@ msgid ""
 "for this service."
 msgstr "Лимит %s для этого клиента не может быть неограниченнным, потому что существует ограничение для Вас."
 
-#, php-format
-msgid ""
-"The <strong>%s</strong> class for the <strong>%s</strong> plugin was not "
-"found in file <strong>%s</strong>"
-msgstr "Класс <strong>%s</strong> для <strong>%s</strong> плагина не был найден в <strong>%s</strong>"
-
-#, php-format
-msgid ""
-"The <strong>%s</strong> file for the <strong>%s</strong> plugin do not "
-"exists or is not readable."
-msgstr "Класс <strong>%s</strong> для <strong>%s</strong> плагина недоступен для чтения."
-
 msgid "The IP address you're trying to remove is assigned to a reseller."
 msgstr ""
 
@@ -4865,10 +4880,6 @@ msgstr "Пакет будет автоматически установлен в
 
 msgid "The password field is empty."
 msgstr "Поле пароля пусто."
-
-#, php-format
-msgid "The plugin %s is protected. You cannot perform an action on it."
-msgstr "Плагин %s защищен. Вы не можете совершать над ним действия."
 
 #, php-format
 msgid "The remote filesize (%s) is lower than 1 Byte. Please check the URL."
@@ -5086,6 +5097,10 @@ msgid "URL to this admin panel"
 msgstr "Ссылка на панель управления"
 
 #, php-format
+msgid "Unable to backup %s plugin directory."
+msgstr ""
+
+#, php-format
 msgid "Unable to close the ticket with Id '%s'."
 msgstr "Невосможно закрыть тикет с ID '%s'."
 
@@ -5097,10 +5112,28 @@ msgid "Unable to create 'LC_MESSAGES' directory for language file."
 msgstr "Невозможно создать каталог 'LC_MESSAGES' для языкового файла."
 
 #, php-format
+msgid "Unable to delete the %s plugin. Please, remove it manually."
+msgstr ""
+
+#, php-format
 msgid "Unable to delete user with Id: %d"
 msgstr "Невозможно удалить пользователя с ID: %d"
 
+msgid "Unable to extract plugin archive."
+msgstr ""
+
+#, php-format
+msgid "Unable to extract plugin archive: %s"
+msgstr ""
+
 msgid "Unable to find network cards. You cannot add new IP address."
+msgstr ""
+
+msgid "Unable to find plugin root directory."
+msgstr ""
+
+#, php-format
+msgid "Unable to get stats for file %s."
 msgstr ""
 
 msgid "Unable to get the IP addresses list. Please fix this problem."
@@ -5108,6 +5141,9 @@ msgstr "Невозможно создать список IP адресов. По
 
 msgid "Unable to move file."
 msgstr "Не удалось переместить файл."
+
+msgid "Unable to open archive."
+msgstr ""
 
 msgid "Unable to read Web software repository index file."
 msgstr "Невозможно прочесть индексный файл Web-репозитория"
@@ -5121,6 +5157,10 @@ msgstr "Невозможно прочесть xml файл Web-репозито�
 #, php-format
 msgid "Unable to reopen ticket with Id '%s'."
 msgstr "Не удается открыть тикет с Id '%s'."
+
+#, php-format
+msgid "Unable to restore %s plugin directory"
+msgstr ""
 
 msgid ""
 "Unable to retrieve directories list for your domain. Please contact your "
@@ -5144,6 +5184,10 @@ msgstr "Не удается удалить учетную запись клие�
 msgid "Unable to upload file. Max. upload filesize (%1$d MB) reached?"
 msgstr ""
 
+#, php-format
+msgid "Unable to write the %s file for protected plugins."
+msgstr ""
+
 msgid "Unavailable"
 msgstr "Недоступно"
 
@@ -5152,9 +5196,6 @@ msgstr "Режим техобслуживания, только админист
 
 msgid "Uninstall"
 msgstr "Удалить"
-
-msgid "Uninstall in progress..."
-msgstr ""
 
 msgid "Unknown"
 msgstr "Неизвестно"
@@ -5177,10 +5218,6 @@ msgstr "Неизвестный тип домена."
 
 msgid "Unknown error"
 msgstr "Неизвестная ошибка"
-
-#, php-format
-msgid "Unknown error: %s"
-msgstr ""
 
 msgid "Unknown language name."
 msgstr "Неизвестное имя языкового файла."
@@ -5232,6 +5269,9 @@ msgstr "Обновить из Web-репозитория"
 
 msgid "Update hosting plan"
 msgstr "Обновить хостинг-план"
+
+msgid "Update in progress..."
+msgstr ""
 
 msgid ""
 "Update of Web software repository index has been aborted. Missing or empty "
@@ -5308,9 +5348,6 @@ msgstr "Пользователь не существует, или у Вас н�
 msgid "User does not exist."
 msgstr "Пользователь не существует."
 
-msgid "User errors"
-msgstr "Ошибки пользователя"
-
 msgid "User has not been deleted."
 msgstr "Пользователь не был удален."
 
@@ -5361,6 +5398,9 @@ msgstr "Пользователи"
 
 msgid "Users and groups"
 msgstr "Пользователи и группы"
+
+msgid "Users errors"
+msgstr ""
 
 #, php-format
 msgid "Value for the %s directive"
@@ -5659,6 +5699,9 @@ msgstr "Вам не разрешено действовать в собстве�
 msgid "You are not allowed to remove this service port entry."
 msgstr "Вам не разрешено удалять эту запись порта служб."
 
+msgid "You are not allowed to update a protected plugin."
+msgstr ""
+
 msgid "You can only upload images."
 msgstr "Вы можете загружать только изображения."
 
@@ -5860,8 +5903,8 @@ msgstr "Вы должны выбрать как минимум один пунк
 msgid "You must select a network card."
 msgstr "Вы должны выбрать сетевую карту."
 
-msgid "You must select one or more plugins to operate on."
-msgstr "Вы должны выбрать один или более плагинов для управления ими."
+msgid "You must select a plugin."
+msgstr ""
 
 msgid "You must specify a message."
 msgstr "Вы должны написать сообщение."
@@ -5956,6 +5999,9 @@ msgstr "активировано"
 msgid "activated (Softwaredepot)"
 msgstr "активирован (Репозиторий)"
 
+msgid "activation"
+msgstr ""
+
 msgid "back"
 msgstr "назад"
 
@@ -5971,8 +6017,20 @@ msgstr "деактивировать"
 msgid "deactivated"
 msgstr "деактивировано"
 
+msgid "deactivation"
+msgstr ""
+
+msgid "delete"
+msgstr ""
+
+msgid "deleted"
+msgstr ""
+
 msgid "deleting"
 msgstr "Удаление"
+
+msgid "deletion"
+msgstr ""
 
 msgid "disabled"
 msgstr "отключено"
@@ -6068,8 +6126,8 @@ msgstr "i-MSCP - Установка ПО / Web-репозиторий"
 msgid "i-MSCP Web softwares repository"
 msgstr "i-MSCP - Web-репозиторий"
 
-msgid "i-MSCP debugger"
-msgstr "Отладчик i-MSCP"
+msgid "i-MSCP plugin repository"
+msgstr ""
 
 msgid "i-MSCP updates"
 msgstr "Обновления i-MSCP"
@@ -6173,6 +6231,12 @@ msgstr "udp"
 
 msgid "unlimited"
 msgstr "не ограничено"
+
+msgid "update"
+msgstr ""
+
+msgid "updated"
+msgstr ""
 
 msgid "view aliases"
 msgstr "показать алиасы"

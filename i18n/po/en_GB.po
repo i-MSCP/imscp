@@ -14,8 +14,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2013-06-18 13:40+0200\n"
-"PO-Revision-Date: 2013-06-18 11:41+0000\n"
+"POT-Creation-Date: 2013-07-08 20:33+0200\n"
+"PO-Revision-Date: 2013-07-08 18:34+0000\n"
 "Last-Translator: Torsten Widmann <info@goover.de>\n"
 "Language-Team: English (United Kingdom) (http://www.transifex.com/projects/p/i-MSCP/language/en_GB/)\n"
 "MIME-Version: 1.0\n"
@@ -314,6 +314,11 @@ msgid "%s list is empty! You cannot add mail accounts."
 msgstr "%s list is empty! You cannot add mail accounts."
 
 #, php-format
+msgid ""
+"%s new plugin(s) found, %s plugin(s) updated, and %s plugin(s) deleted."
+msgstr ""
+
+#, php-format
 msgid "%s of %s"
 msgstr "%s of %s"
 
@@ -488,9 +493,6 @@ msgstr "(filtered from %s total records)"
 msgid "(usually named"
 msgstr "(usually named"
 
-msgid ".htaccess related errors"
-msgstr ".htaccess related errors"
-
 #, php-format
 msgid "<b>%1$s</b> has unlimited rights for a <b>%2$s</b> Service.<br />"
 msgstr "<b>%1$s</b> has unlimited rights for a <b>%2$s</b> Service.<br />"
@@ -552,8 +554,8 @@ msgstr "Actions"
 msgid "Activate"
 msgstr "Activate"
 
-msgid "Activate this plugin"
-msgstr "Activate this plugin"
+msgid "Activate this plugin."
+msgstr ""
 
 msgid "Activated"
 msgstr "Activated"
@@ -563,6 +565,9 @@ msgstr "Activated softwares"
 
 msgid "Activation E-Mail"
 msgstr "Activation E-Mail"
+
+msgid "Activation in progress..."
+msgstr ""
 
 msgid "Activation link expire time <small>(In minutes)</small>"
 msgstr ""
@@ -729,7 +734,7 @@ msgstr ""
 msgid "Admin / Settings / Lost password mail"
 msgstr ""
 
-msgid "Admin / Settings / Plugin management"
+msgid "Admin / Settings / Plugins management"
 msgstr ""
 
 msgid "Admin / Settings / Server traffic"
@@ -901,9 +906,6 @@ msgstr "Alias name"
 msgid "Alias scheduled for addition."
 msgstr "Alias scheduled for addition."
 
-msgid "Alias subdomain errors"
-msgstr "Alias subdomain errors"
-
 msgid "Alias subdomain forward"
 msgstr "Alias subdomain forward"
 
@@ -977,6 +979,10 @@ msgid "An error occurred while the authentication attempt."
 msgstr "An error occurred while the authentication attempt."
 
 msgid "An hosting plan with same name already exists."
+msgstr ""
+
+#, php-format
+msgid "An unexpected error occured while plugin %s attempt: %s"
 msgstr ""
 
 msgid "An unexpected error occured, please contact your reseller."
@@ -1319,6 +1325,9 @@ msgstr "Class"
 
 msgid "Clear log"
 msgstr "Clear log"
+
+msgid "Click here for more details"
+msgstr ""
 
 msgid ""
 "Click the Restore button and the system will restore the last daily backup"
@@ -1733,11 +1742,14 @@ msgstr "Deactivate"
 msgid "Deactivate selected items"
 msgstr "Deactivate selected items"
 
-msgid "Deactivate this plugin"
-msgstr "Deactivate this plugin"
+msgid "Deactivate this plugin."
+msgstr ""
 
 msgid "Deactivated"
 msgstr "Deactivated"
+
+msgid "Deactivation in progress..."
+msgstr ""
 
 #, php-format
 msgid ""
@@ -1935,9 +1947,6 @@ msgstr "Domain alias"
 msgid "Domain alias data"
 msgstr "Domain alias data"
 
-msgid "Domain alias errors"
-msgstr "Domain alias errors"
-
 msgid "Domain alias limit reached."
 msgstr "Domain alias limit reached."
 
@@ -1982,6 +1991,9 @@ msgstr "Domain aliases"
 msgid "Domain aliases limit<br/><i>(-1 disabled, 0 unlimited)</i>"
 msgstr ""
 
+msgid "Domain aliasses errors"
+msgstr ""
+
 msgid "Domain already assigned to another IP address."
 msgstr "Domain already assigned to another IP address."
 
@@ -1996,9 +2008,6 @@ msgstr "Domain data were been altered. Please try again."
 
 msgid "Domain details"
 msgstr "Domain details"
-
-msgid "Domain errors"
-msgstr "Domain errors"
 
 msgid "Domain expiration date"
 msgstr "Domain expiration date"
@@ -2055,6 +2064,9 @@ msgstr "Domain: Setup an MX record to relay mail of your entire domain (includin
 
 msgid "Domains"
 msgstr "Domains"
+
+msgid "Domains errors"
+msgstr ""
 
 msgid "Domains limit<br/><i>(0 unlimited)</i>"
 msgstr ""
@@ -2235,6 +2247,9 @@ msgstr "Error 500 (internal server error)"
 msgid "Error 503 (service unavailable)"
 msgstr "Error 503 (service unavailable)"
 
+msgid "Error details"
+msgstr ""
+
 msgid "Error in php.ini values."
 msgstr "Error in php.ini values."
 
@@ -2345,6 +2360,10 @@ msgid "File %s doesn't exists or cannot be reached!"
 msgstr "File %s doesn't exists or cannot be reached!"
 
 #, php-format
+msgid "File %s is missing in plugin directory."
+msgstr ""
+
+#, php-format
 msgid "File does not exist. %1$s.tar.gz"
 msgstr "File does not exist. %1$s.tar.gz"
 
@@ -2382,6 +2401,9 @@ msgid "First name"
 msgstr "First name"
 
 msgid "First name cannot have more than 200 characters."
+msgstr ""
+
+msgid "Force retry"
 msgstr ""
 
 msgid "Forward URL"
@@ -2553,6 +2575,9 @@ msgstr "Hour"
 msgid "Hours"
 msgstr "Hours"
 
+msgid "Htaccess errors"
+msgstr ""
+
 msgid "Htaccess group"
 msgstr "Htaccess group"
 
@@ -2616,12 +2641,10 @@ msgid ""
 "directive"
 msgstr "If yes, means that the reseller can allow its customers to edit this directive"
 
-#, php-format
 msgid ""
 "If you protect a plugin, you'll no longer be able to deactivate it from the "
-"plugin management interface.<br /><br />To unprotect  a plugin, you'll have "
-"to edit the %s file."
-msgstr "If you protect a plugin, you'll no longer be able to deactivate it from the plugin management interface.<br /><br />To unprotect  a plugin, you'll have to edit the %s file."
+"plugin management interface."
+msgstr ""
 
 msgid "If you want to limit the reseller, you must first limit its customers."
 msgstr "If you want to limit the reseller, you must first limit its customers."
@@ -2712,9 +2735,6 @@ msgid "Install Software"
 msgstr "Install Software"
 
 msgid "Install in progress"
-msgstr ""
-
-msgid "Install in progress..."
 msgstr ""
 
 msgid "Install path"
@@ -2980,9 +3000,6 @@ msgstr "Mail account already exists."
 msgid "Mail account data"
 msgstr "Mail account data"
 
-msgid "Mail account errors"
-msgstr "Mail account errors"
-
 msgid "Mail account not found."
 msgstr "Mail account not found."
 
@@ -3000,6 +3017,9 @@ msgstr "Mail account scheduled for update."
 
 msgid "Mail accounts"
 msgstr "Mail accounts"
+
+msgid "Mail accounts errors"
+msgstr ""
 
 msgid "Mail accounts limit reached."
 msgstr "Mail accounts limit reached."
@@ -3296,9 +3316,6 @@ msgstr "No Resellers found."
 msgid "No administrator accounts found."
 msgstr "No administrator accounts found."
 
-msgid "No alias subdomain system errors"
-msgstr "No alias subdomain system errors"
-
 msgid "No certificate found."
 msgstr "No certificate found."
 
@@ -3314,20 +3331,14 @@ msgstr "No customer accounts found."
 msgid "No database update available."
 msgstr ""
 
-msgid "No domain alias system errors"
-msgstr "No domain alias system errors"
-
 msgid "No domain statistics to display for this reseller."
 msgstr "No domain statistics to display for this reseller."
 
 msgid "No domain statistics to display."
 msgstr "No domain statistics to display."
 
-msgid "No domain system errors"
-msgstr "No domain system errors"
-
-msgid "No email account system errors"
-msgstr "No email account system errors"
+msgid "No errors"
+msgstr ""
 
 msgid "No file was uploaded."
 msgstr "No file was uploaded."
@@ -3346,9 +3357,6 @@ msgstr ""
 
 msgid "No hosting plan available. Please contact your administrator."
 msgstr ""
-
-msgid "No htaccess related system errors"
-msgstr "No htaccess related system errors"
 
 msgid "No languages found."
 msgstr "No languages found."
@@ -3395,17 +3403,11 @@ msgstr "No software is waiting for activation"
 msgid "No statistics found for the given period. Try another period."
 msgstr "No statistics found for the given period. Try another period."
 
-msgid "No subdomain system errors"
-msgstr "No subdomain system errors"
-
 msgid "No unassigned users was found in database."
 msgstr "No unassigned users was found in database."
 
 msgid "No user found."
 msgstr "No user found."
-
-msgid "No user system errors"
-msgstr ""
 
 msgid "No users found for this reseller."
 msgstr "No users found for this reseller."
@@ -3500,6 +3502,12 @@ msgstr "Only positive numbers are allowed for services ports."
 
 msgid "Only positive numbers are allowed."
 msgstr "Only positive numbers are allowed."
+
+msgid "Only tar.gz, tar.bz2 and zip archives are accepted."
+msgstr ""
+
+msgid "Only tar.gz, tar.bz2 and zip archives are supported."
+msgstr ""
 
 msgid "Open ticket"
 msgstr "Open ticket"
@@ -3811,54 +3819,70 @@ msgid "Plugin"
 msgstr "Plugin"
 
 #, php-format
+msgid "Plugin %s is already activated."
+msgstr ""
+
+#, php-format
+msgid "Plugin %s is already deactivated."
+msgstr ""
+
+#, php-format
+msgid "Plugin %s is protected."
+msgstr ""
+
+#, php-format
 msgid "Plugin %s successfully %s."
 msgstr "Plugin %s successfully %s."
 
-msgid ""
-"Plugin list is empty. To install a new plugin, extract its archive content "
-"into the <strong>gui/plugins</strong> directory and update the plugin list."
-msgstr "Plugin list is empty. To install a new plugin, extract its archive content into the <strong>gui/plugins</strong> directory and update the plugin list."
+#, php-format
+msgid "Plugin %s successfully scheduled for %s."
+msgstr ""
+
+msgid "Plugin archive"
+msgstr ""
 
 #, php-format
 msgid ""
-"Plugin list successfully updated.<br/><strong>%d</strong> new plugin(s) "
-"found, <strong>%d</strong> plugin(s) updated, and <strong>%d</strong> "
-"plugin(s) deleted."
-msgstr "Plugin list successfully updated.<br/><strong>%d</strong> new plugin(s) found, <strong>%d</strong> plugin(s) updated, and <strong>%d</strong> plugin(s) deleted."
+"Plugin archive exceeds the maximum upload size (%s). Max upload size is: %s."
+msgstr ""
 
-msgid "Plugin management"
-msgstr "Plugin management"
+#, php-format
+msgid "Plugin class %s not found in file %s"
+msgstr ""
+
+#, php-format
+msgid "Plugin file %s doesn't exists or is not readable."
+msgstr ""
+
+msgid "Plugin list is empty."
+msgstr ""
+
+msgid "Plugin list successfully updated."
+msgstr ""
 
 #, php-format
 msgid "Plugin manager was unable to %s the %s plugin."
 msgstr "Plugin manager was unable to %s the %s plugin."
 
-msgid "Plugin manager was unable to activate the plugin."
-msgstr "Plugin manager was unable to activate the plugin."
+msgid "Plugin successfully uploaded."
+msgstr ""
 
-msgid "Plugin manager was unable to deactivate the plugin."
-msgstr "Plugin manager was unable to deactivate the plugin."
+msgid "Plugins Upload"
+msgstr ""
 
-msgid "Plugin manager was unable to protect the plugin."
-msgstr "Plugin manager was unable to protect the plugin."
-
-#, php-format
-msgid "Plugin manager was unable to remove the %s file"
-msgstr "Plugin manager was unable to remove the %s file"
+msgid "Plugins errors"
+msgstr ""
 
 #, php-format
 msgid ""
-"Plugin manager was unable to write the %s cache file for protected plugins."
-msgstr "Plugin manager was unable to write the %s cache file for protected plugins."
+"Plugins hook into i-MSCP to extend its functionality with custom features. "
+"Plugins are developed independently from the core i-MSCP application by "
+"thousands of developers all over the world. You can find new plugins to "
+"install by browsing the %s."
+msgstr ""
 
-msgid "Plugin successfully activated."
-msgstr "Plugin successfully activated."
-
-msgid "Plugin successfully deactivated."
-msgstr "Plugin successfully deactivated."
-
-msgid "Plugin successfully protected."
-msgstr "Plugin successfully protected."
+msgid "Plugins management"
+msgstr ""
 
 msgid "Port"
 msgstr "Port"
@@ -4406,8 +4430,8 @@ msgstr "Services status"
 msgid "Sessions"
 msgstr "Sessions"
 
-msgid "Set status to 'change'"
-msgstr "Set status to 'change'"
+msgid "Set status to 'tochange'"
+msgstr ""
 
 msgid "Settings"
 msgstr "Settings"
@@ -4631,14 +4655,14 @@ msgid ""
 "first."
 msgstr ""
 
+msgid "Subdomain aliases errors"
+msgstr ""
+
 msgid "Subdomain already exists or is not allowed."
 msgstr "Subdomain already exists or is not allowed."
 
 msgid "Subdomain data"
 msgstr "Subdomain data"
-
-msgid "Subdomain errors"
-msgstr "Subdomain errors"
 
 msgid "Subdomain forward"
 msgstr "Subdomain forward"
@@ -4668,6 +4692,9 @@ msgstr ""
 
 msgid "Subdomains"
 msgstr "Subdomains"
+
+msgid "Subdomains errors"
+msgstr ""
 
 msgid "Subdomains limit<br /><i>(-1 disabled, 0 unlimited)</i>"
 msgstr ""
@@ -4808,18 +4835,6 @@ msgid ""
 "for this service."
 msgstr "The %s limit for this customer cannot be unlimited because your are limited for this service."
 
-#, php-format
-msgid ""
-"The <strong>%s</strong> class for the <strong>%s</strong> plugin was not "
-"found in file <strong>%s</strong>"
-msgstr "The <strong>%s</strong> class for the <strong>%s</strong> plugin was not found in file <strong>%s</strong>"
-
-#, php-format
-msgid ""
-"The <strong>%s</strong> file for the <strong>%s</strong> plugin do not "
-"exists or is not readable."
-msgstr "The <strong>%s</strong> file for the <strong>%s</strong> plugin do not exists or is not readable."
-
 msgid "The IP address you're trying to remove is assigned to a reseller."
 msgstr ""
 
@@ -4867,10 +4882,6 @@ msgstr "The package will be installed automaticly to your system after upload.<b
 
 msgid "The password field is empty."
 msgstr "The password field is empty."
-
-#, php-format
-msgid "The plugin %s is protected. You cannot perform an action on it."
-msgstr "The plugin %s is protected. You cannot perform an action on it."
 
 #, php-format
 msgid "The remote filesize (%s) is lower than 1 Byte. Please check the URL."
@@ -5088,6 +5099,10 @@ msgid "URL to this admin panel"
 msgstr "URL to this admin panel"
 
 #, php-format
+msgid "Unable to backup %s plugin directory."
+msgstr ""
+
+#, php-format
 msgid "Unable to close the ticket with Id '%s'."
 msgstr "Unable to close the ticket with Id '%s'."
 
@@ -5099,10 +5114,28 @@ msgid "Unable to create 'LC_MESSAGES' directory for language file."
 msgstr "Unable to create 'LC_MESSAGES' directory for language file."
 
 #, php-format
+msgid "Unable to delete the %s plugin. Please, remove it manually."
+msgstr ""
+
+#, php-format
 msgid "Unable to delete user with Id: %d"
 msgstr "Unable to delete user with Id: %d"
 
+msgid "Unable to extract plugin archive."
+msgstr ""
+
+#, php-format
+msgid "Unable to extract plugin archive: %s"
+msgstr ""
+
 msgid "Unable to find network cards. You cannot add new IP address."
+msgstr ""
+
+msgid "Unable to find plugin root directory."
+msgstr ""
+
+#, php-format
+msgid "Unable to get stats for file %s."
 msgstr ""
 
 msgid "Unable to get the IP addresses list. Please fix this problem."
@@ -5110,6 +5143,9 @@ msgstr "Unable to get the IP addresses list. Please fix this problem."
 
 msgid "Unable to move file."
 msgstr "Unable to move file."
+
+msgid "Unable to open archive."
+msgstr ""
 
 msgid "Unable to read Web software repository index file."
 msgstr ""
@@ -5123,6 +5159,10 @@ msgstr "Unable to read xml file for web softwares."
 #, php-format
 msgid "Unable to reopen ticket with Id '%s'."
 msgstr "Unable to reopen ticket with Id '%s'."
+
+#, php-format
+msgid "Unable to restore %s plugin directory"
+msgstr ""
 
 msgid ""
 "Unable to retrieve directories list for your domain. Please contact your "
@@ -5146,6 +5186,10 @@ msgstr ""
 msgid "Unable to upload file. Max. upload filesize (%1$d MB) reached?"
 msgstr ""
 
+#, php-format
+msgid "Unable to write the %s file for protected plugins."
+msgstr ""
+
 msgid "Unavailable"
 msgstr ""
 
@@ -5154,9 +5198,6 @@ msgstr "Under maintenance mode, only administrators can login."
 
 msgid "Uninstall"
 msgstr "Uninstall"
-
-msgid "Uninstall in progress..."
-msgstr ""
 
 msgid "Unknown"
 msgstr "Unknown"
@@ -5179,10 +5220,6 @@ msgstr "Unknown domain type."
 
 msgid "Unknown error"
 msgstr "Unknown error"
-
-#, php-format
-msgid "Unknown error: %s"
-msgstr ""
 
 msgid "Unknown language name."
 msgstr "Unknown language name."
@@ -5234,6 +5271,9 @@ msgstr "Update from web depot"
 
 msgid "Update hosting plan"
 msgstr "Update hosting plan"
+
+msgid "Update in progress..."
+msgstr ""
 
 msgid ""
 "Update of Web software repository index has been aborted. Missing or empty "
@@ -5310,9 +5350,6 @@ msgstr "User does not exist or you do not have permission to access this interfa
 msgid "User does not exist."
 msgstr "User does not exist."
 
-msgid "User errors"
-msgstr ""
-
 msgid "User has not been deleted."
 msgstr ""
 
@@ -5363,6 +5400,9 @@ msgstr "Users"
 
 msgid "Users and groups"
 msgstr "Users and groups"
+
+msgid "Users errors"
+msgstr ""
 
 #, php-format
 msgid "Value for the %s directive"
@@ -5661,6 +5701,9 @@ msgstr ""
 msgid "You are not allowed to remove this service port entry."
 msgstr "You are not allowed to remove this service port entry."
 
+msgid "You are not allowed to update a protected plugin."
+msgstr ""
+
 msgid "You can only upload images."
 msgstr "You can only upload images."
 
@@ -5862,8 +5905,8 @@ msgstr "You must select a least one item to deactivate."
 msgid "You must select a network card."
 msgstr "You must select a network card."
 
-msgid "You must select one or more plugins to operate on."
-msgstr "You must select one or more plugins to operate on."
+msgid "You must select a plugin."
+msgstr ""
 
 msgid "You must specify a message."
 msgstr "You must specify a message."
@@ -5958,6 +6001,9 @@ msgstr "activated"
 msgid "activated (Softwaredepot)"
 msgstr "activated (Softwaredepot)"
 
+msgid "activation"
+msgstr ""
+
 msgid "back"
 msgstr "back"
 
@@ -5973,8 +6019,20 @@ msgstr "deactivate"
 msgid "deactivated"
 msgstr "deactivated"
 
+msgid "deactivation"
+msgstr ""
+
+msgid "delete"
+msgstr ""
+
+msgid "deleted"
+msgstr ""
+
 msgid "deleting"
 msgstr "deleting"
+
+msgid "deletion"
+msgstr ""
 
 msgid "disabled"
 msgstr "disabled"
@@ -6070,8 +6128,8 @@ msgstr ""
 msgid "i-MSCP Web softwares repository"
 msgstr ""
 
-msgid "i-MSCP debugger"
-msgstr "i-MSCP debugger"
+msgid "i-MSCP plugin repository"
+msgstr ""
 
 msgid "i-MSCP updates"
 msgstr "i-MSCP updates"
@@ -6175,6 +6233,12 @@ msgstr "udp"
 
 msgid "unlimited"
 msgstr "unlimited"
+
+msgid "update"
+msgstr ""
+
+msgid "updated"
+msgstr ""
 
 msgid "view aliases"
 msgstr "view aliases"

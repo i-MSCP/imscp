@@ -18,8 +18,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2013-06-18 13:40+0200\n"
-"PO-Revision-Date: 2013-06-18 11:41+0000\n"
+"POT-Creation-Date: 2013-07-08 20:33+0200\n"
+"PO-Revision-Date: 2013-07-08 18:34+0000\n"
 "Last-Translator: Torsten Widmann <info@goover.de>\n"
 "Language-Team: Catalan (Spain) (http://www.transifex.com/projects/p/i-MSCP/language/ca_ES/)\n"
 "MIME-Version: 1.0\n"
@@ -318,6 +318,11 @@ msgid "%s list is empty! You cannot add mail accounts."
 msgstr "la llista %s és buida! No pots afegir comptes de correu."
 
 #, php-format
+msgid ""
+"%s new plugin(s) found, %s plugin(s) updated, and %s plugin(s) deleted."
+msgstr ""
+
+#, php-format
 msgid "%s of %s"
 msgstr "%s de %s "
 
@@ -492,9 +497,6 @@ msgstr "(filtrat d'un total de  %s registres)"
 msgid "(usually named"
 msgstr "(normalment anomenat"
 
-msgid ".htaccess related errors"
-msgstr "errors relacionats amb .htaccess"
-
 #, php-format
 msgid "<b>%1$s</b> has unlimited rights for a <b>%2$s</b> Service.<br />"
 msgstr "<b>%1$s</b> te drets il.limitats per al Servei <b>%2$s</b> .<br />"
@@ -556,8 +558,8 @@ msgstr "Accions"
 msgid "Activate"
 msgstr "Activar"
 
-msgid "Activate this plugin"
-msgstr "Activar aquest pluguin"
+msgid "Activate this plugin."
+msgstr ""
 
 msgid "Activated"
 msgstr "Activat"
@@ -567,6 +569,9 @@ msgstr "Programes activats"
 
 msgid "Activation E-Mail"
 msgstr "Activació de correu"
+
+msgid "Activation in progress..."
+msgstr ""
 
 msgid "Activation link expire time <small>(In minutes)</small>"
 msgstr "Temps d'expiració de l'enllaç d'activació <small>(In minutes)</small>"
@@ -733,7 +738,7 @@ msgstr ""
 msgid "Admin / Settings / Lost password mail"
 msgstr ""
 
-msgid "Admin / Settings / Plugin management"
+msgid "Admin / Settings / Plugins management"
 msgstr ""
 
 msgid "Admin / Settings / Server traffic"
@@ -905,9 +910,6 @@ msgstr "Nom de l'àlies"
 msgid "Alias scheduled for addition."
 msgstr "S'ha programat la creació de l'alies."
 
-msgid "Alias subdomain errors"
-msgstr "Errors de àlies de subdomini"
-
 msgid "Alias subdomain forward"
 msgstr "Reenviament d'àlies de subdomini"
 
@@ -982,6 +984,10 @@ msgstr "S'ha produït un error durant l'intent d'identificació."
 
 msgid "An hosting plan with same name already exists."
 msgstr "Un pla de hosting amb aquest nom ja existeix."
+
+#, php-format
+msgid "An unexpected error occured while plugin %s attempt: %s"
+msgstr ""
 
 msgid "An unexpected error occured, please contact your reseller."
 msgstr "Ha passat un error inesperat, contacteu amb el vostre distribuïdor."
@@ -1323,6 +1329,9 @@ msgstr "Classe"
 
 msgid "Clear log"
 msgstr "Esborrar registre"
+
+msgid "Click here for more details"
+msgstr ""
 
 msgid ""
 "Click the Restore button and the system will restore the last daily backup"
@@ -1737,11 +1746,14 @@ msgstr "Desactivar"
 msgid "Deactivate selected items"
 msgstr "Desactivar els seleccionats"
 
-msgid "Deactivate this plugin"
-msgstr "Desactivar aquest plugin"
+msgid "Deactivate this plugin."
+msgstr ""
 
 msgid "Deactivated"
 msgstr "Desactivat"
+
+msgid "Deactivation in progress..."
+msgstr ""
 
 #, php-format
 msgid ""
@@ -1939,9 +1951,6 @@ msgstr "Àlies de dominis"
 msgid "Domain alias data"
 msgstr "Informació de l'àlies de domini"
 
-msgid "Domain alias errors"
-msgstr "Errors d'àlies de domini"
-
 msgid "Domain alias limit reached."
 msgstr "Límit d'àlies de domini assolit."
 
@@ -1986,6 +1995,9 @@ msgstr "Àlies de domini"
 msgid "Domain aliases limit<br/><i>(-1 disabled, 0 unlimited)</i>"
 msgstr ""
 
+msgid "Domain aliasses errors"
+msgstr ""
+
 msgid "Domain already assigned to another IP address."
 msgstr "Aquest domini ja està assignat a unaltra adreça IP."
 
@@ -2000,9 +2012,6 @@ msgstr "Dades del domini alterades. "
 
 msgid "Domain details"
 msgstr "Detalls del domini"
-
-msgid "Domain errors"
-msgstr "Errors de domini"
 
 msgid "Domain expiration date"
 msgstr ""
@@ -2059,6 +2068,9 @@ msgstr ""
 
 msgid "Domains"
 msgstr "Dominis"
+
+msgid "Domains errors"
+msgstr ""
 
 msgid "Domains limit<br/><i>(0 unlimited)</i>"
 msgstr ""
@@ -2239,6 +2251,9 @@ msgstr "Error 500 (error intern del servidor)"
 msgid "Error 503 (service unavailable)"
 msgstr "Error 503 (servei no disponible)"
 
+msgid "Error details"
+msgstr ""
+
 msgid "Error in php.ini values."
 msgstr "Error als valors de php.ini."
 
@@ -2349,6 +2364,10 @@ msgid "File %s doesn't exists or cannot be reached!"
 msgstr ""
 
 #, php-format
+msgid "File %s is missing in plugin directory."
+msgstr ""
+
+#, php-format
 msgid "File does not exist. %1$s.tar.gz"
 msgstr "L'arxiu no existeix. %1$s.tar.gz"
 
@@ -2386,6 +2405,9 @@ msgid "First name"
 msgstr "Nom"
 
 msgid "First name cannot have more than 200 characters."
+msgstr ""
+
+msgid "Force retry"
 msgstr ""
 
 msgid "Forward URL"
@@ -2557,6 +2579,9 @@ msgstr "Hora"
 msgid "Hours"
 msgstr "Hores"
 
+msgid "Htaccess errors"
+msgstr ""
+
 msgid "Htaccess group"
 msgstr "Grup htaccess"
 
@@ -2620,12 +2645,10 @@ msgid ""
 "directive"
 msgstr "El distribuïdor pot permetre als seus clients que modifiquin aquesta directiva."
 
-#, php-format
 msgid ""
 "If you protect a plugin, you'll no longer be able to deactivate it from the "
-"plugin management interface.<br /><br />To unprotect  a plugin, you'll have "
-"to edit the %s file."
-msgstr "Si protegeixes un plugin, després no podràs desactivar-el des de l'interficie d'administració de plugins.<br/><br/>Per a desprotegir un plugin, hauràs d'editar l'arxiu  %s ."
+"plugin management interface."
+msgstr ""
 
 msgid "If you want to limit the reseller, you must first limit its customers."
 msgstr "Heu de limitar els seus clients abans de limitar el distribuïdor."
@@ -2716,9 +2739,6 @@ msgid "Install Software"
 msgstr "Instal·lar software"
 
 msgid "Install in progress"
-msgstr ""
-
-msgid "Install in progress..."
 msgstr ""
 
 msgid "Install path"
@@ -2984,9 +3004,6 @@ msgstr "El compte d'email ja existeix."
 msgid "Mail account data"
 msgstr "Dades del compte d'email."
 
-msgid "Mail account errors"
-msgstr "Errors de comptes de correu"
-
 msgid "Mail account not found."
 msgstr "Compte de correu no trobat."
 
@@ -3004,6 +3021,9 @@ msgstr "Compte d'email programat per a ésser actualitzat."
 
 msgid "Mail accounts"
 msgstr "Comptes de correu"
+
+msgid "Mail accounts errors"
+msgstr ""
 
 msgid "Mail accounts limit reached."
 msgstr "S'ha superat el límit de comptes d'email."
@@ -3300,9 +3320,6 @@ msgstr "No s'ha trobat cap distribuïdor"
 msgid "No administrator accounts found."
 msgstr "No s'han trobat comptes d'administrador"
 
-msgid "No alias subdomain system errors"
-msgstr "No hi ha errors amb els alies de subdomini al sistema"
-
 msgid "No certificate found."
 msgstr "Certificat no trobat"
 
@@ -3318,20 +3335,14 @@ msgstr "No s'han trobat comptes de client."
 msgid "No database update available."
 msgstr ""
 
-msgid "No domain alias system errors"
-msgstr "No hi ha errors d'àlies de domini al sistema"
-
 msgid "No domain statistics to display for this reseller."
 msgstr "No hi ha estadístiques de domini per mostrar d'aquest distribuidor."
 
 msgid "No domain statistics to display."
 msgstr "No hi ha estadístiques de domini per mostrar."
 
-msgid "No domain system errors"
-msgstr "No hi ha errors de domini al sistema"
-
-msgid "No email account system errors"
-msgstr "No hi ha errors amb els comptes de correu al sistema"
+msgid "No errors"
+msgstr ""
 
 msgid "No file was uploaded."
 msgstr "No s'ha carregat cap arxiu."
@@ -3350,9 +3361,6 @@ msgstr ""
 
 msgid "No hosting plan available. Please contact your administrator."
 msgstr ""
-
-msgid "No htaccess related system errors"
-msgstr "No hi ha errors relacionats amb htaccess"
 
 msgid "No languages found."
 msgstr "No s'han trobat idiomes."
@@ -3399,17 +3407,11 @@ msgstr "No hi ha programari en espera d'activació"
 msgid "No statistics found for the given period. Try another period."
 msgstr "No s'ha trobat estadístiques per el període de temps donat. Proveu amb un altre període."
 
-msgid "No subdomain system errors"
-msgstr "No hi ha errors amb els subdominis al sistema"
-
 msgid "No unassigned users was found in database."
 msgstr "No s'han trobat usuaris sense assignar a la Base de Dades."
 
 msgid "No user found."
 msgstr "Usuari no trobat"
-
-msgid "No user system errors"
-msgstr ""
 
 msgid "No users found for this reseller."
 msgstr "No s'han trobat usuaris per aquest distribuidor."
@@ -3504,6 +3506,12 @@ msgstr "Només es permeten números positius per als ports de serveis."
 
 msgid "Only positive numbers are allowed."
 msgstr "Només s'accepten nombres positius."
+
+msgid "Only tar.gz, tar.bz2 and zip archives are accepted."
+msgstr ""
+
+msgid "Only tar.gz, tar.bz2 and zip archives are supported."
+msgstr ""
 
 msgid "Open ticket"
 msgstr "Obrir tiquet"
@@ -3815,54 +3823,70 @@ msgid "Plugin"
 msgstr "Plugin"
 
 #, php-format
+msgid "Plugin %s is already activated."
+msgstr ""
+
+#, php-format
+msgid "Plugin %s is already deactivated."
+msgstr ""
+
+#, php-format
+msgid "Plugin %s is protected."
+msgstr ""
+
+#, php-format
 msgid "Plugin %s successfully %s."
 msgstr "El plugin %s %s amb éxit."
 
-msgid ""
-"Plugin list is empty. To install a new plugin, extract its archive content "
-"into the <strong>gui/plugins</strong> directory and update the plugin list."
-msgstr "La llista de plugins és buida. Per instal.lar un nou plugin, extreu el contingut del seu arxiu al directori <strong>gui/plugins</strong> i actualitza la llist de plugins."
+#, php-format
+msgid "Plugin %s successfully scheduled for %s."
+msgstr ""
+
+msgid "Plugin archive"
+msgstr ""
 
 #, php-format
 msgid ""
-"Plugin list successfully updated.<br/><strong>%d</strong> new plugin(s) "
-"found, <strong>%d</strong> plugin(s) updated, and <strong>%d</strong> "
-"plugin(s) deleted."
-msgstr "Llista de plugins actualitzada. S'han trobat <br/><strong>%d</strong> nou(s) plugin(s) , s'han actualitzat <strong>%d</strong> plugin(s) , i s'han esborrat <strong>%d</strong> plugin(s)."
+"Plugin archive exceeds the maximum upload size (%s). Max upload size is: %s."
+msgstr ""
 
-msgid "Plugin management"
-msgstr "Administrador de plugins"
+#, php-format
+msgid "Plugin class %s not found in file %s"
+msgstr ""
+
+#, php-format
+msgid "Plugin file %s doesn't exists or is not readable."
+msgstr ""
+
+msgid "Plugin list is empty."
+msgstr ""
+
+msgid "Plugin list successfully updated."
+msgstr ""
 
 #, php-format
 msgid "Plugin manager was unable to %s the %s plugin."
 msgstr "Administrador de complements no va poder %s plugin de%s."
 
-msgid "Plugin manager was unable to activate the plugin."
-msgstr "L'administrador de plugins no ha pogut activar el plugin"
+msgid "Plugin successfully uploaded."
+msgstr ""
 
-msgid "Plugin manager was unable to deactivate the plugin."
-msgstr "L'administrador de plugins no ha pogut desactivar el plugin"
+msgid "Plugins Upload"
+msgstr ""
 
-msgid "Plugin manager was unable to protect the plugin."
-msgstr "L'administrador de plugins no ha pogut protegir el plugin"
-
-#, php-format
-msgid "Plugin manager was unable to remove the %s file"
-msgstr "L'administrador de plugins no ha pogut eliminar l'arxiu %s"
+msgid "Plugins errors"
+msgstr ""
 
 #, php-format
 msgid ""
-"Plugin manager was unable to write the %s cache file for protected plugins."
-msgstr "L'administrador de  no ha pogut escriure l'arxiu cau %s per plugins protegits."
+"Plugins hook into i-MSCP to extend its functionality with custom features. "
+"Plugins are developed independently from the core i-MSCP application by "
+"thousands of developers all over the world. You can find new plugins to "
+"install by browsing the %s."
+msgstr ""
 
-msgid "Plugin successfully activated."
-msgstr "El plugin ha estat activat."
-
-msgid "Plugin successfully deactivated."
-msgstr "El plugin ha estat desactivat."
-
-msgid "Plugin successfully protected."
-msgstr "El plugin ha estat protegit."
+msgid "Plugins management"
+msgstr ""
 
 msgid "Port"
 msgstr "Port"
@@ -4410,8 +4434,8 @@ msgstr "Estat dels serveis"
 msgid "Sessions"
 msgstr "Sessions"
 
-msgid "Set status to 'change'"
-msgstr "Canvia a estat 'canviar'"
+msgid "Set status to 'tochange'"
+msgstr ""
 
 msgid "Settings"
 msgstr "Paràmetres"
@@ -4635,14 +4659,14 @@ msgid ""
 "first."
 msgstr ""
 
+msgid "Subdomain aliases errors"
+msgstr ""
+
 msgid "Subdomain already exists or is not allowed."
 msgstr "El subdomini ja existeix o no està permès."
 
 msgid "Subdomain data"
 msgstr "Dades subdominis"
-
-msgid "Subdomain errors"
-msgstr "Errors de subdomini"
 
 msgid "Subdomain forward"
 msgstr "Redirecció de subdomini"
@@ -4672,6 +4696,9 @@ msgstr ""
 
 msgid "Subdomains"
 msgstr "Subdominis"
+
+msgid "Subdomains errors"
+msgstr ""
 
 msgid "Subdomains limit<br /><i>(-1 disabled, 0 unlimited)</i>"
 msgstr ""
@@ -4812,18 +4839,6 @@ msgid ""
 "for this service."
 msgstr "No pots posar com il.limitat el limit de %s per aquest client ja que estàs limitat per aquest servei."
 
-#, php-format
-msgid ""
-"The <strong>%s</strong> class for the <strong>%s</strong> plugin was not "
-"found in file <strong>%s</strong>"
-msgstr "La classe <strong>%s</strong> per al plugin <strong>%s</strong> no s'ha trobat a l'arxiu <strong>%s</strong>"
-
-#, php-format
-msgid ""
-"The <strong>%s</strong> file for the <strong>%s</strong> plugin do not "
-"exists or is not readable."
-msgstr "L'arxiu <strong>%s</strong> per al plugin <strong>%s</strong> no existeix o no es pot llegir."
-
 msgid "The IP address you're trying to remove is assigned to a reseller."
 msgstr ""
 
@@ -4871,10 +4886,6 @@ msgstr "El paquet s'instal.larà automàticament en el teu sistema després de c
 
 msgid "The password field is empty."
 msgstr ""
-
-#, php-format
-msgid "The plugin %s is protected. You cannot perform an action on it."
-msgstr "El plugin %s està protegit. No es pot realitzar cap acció sobre aquest."
 
 #, php-format
 msgid "The remote filesize (%s) is lower than 1 Byte. Please check the URL."
@@ -5092,6 +5103,10 @@ msgid "URL to this admin panel"
 msgstr "URL al panell d'administrador "
 
 #, php-format
+msgid "Unable to backup %s plugin directory."
+msgstr ""
+
+#, php-format
 msgid "Unable to close the ticket with Id '%s'."
 msgstr ""
 
@@ -5103,10 +5118,28 @@ msgid "Unable to create 'LC_MESSAGES' directory for language file."
 msgstr "No s'ha pogut crear el directori 'LC_MESSAGES' per el fitxer d'idioma."
 
 #, php-format
+msgid "Unable to delete the %s plugin. Please, remove it manually."
+msgstr ""
+
+#, php-format
 msgid "Unable to delete user with Id: %d"
 msgstr "No s'ha pogut eliminar l'usuari amb identificador %d"
 
+msgid "Unable to extract plugin archive."
+msgstr ""
+
+#, php-format
+msgid "Unable to extract plugin archive: %s"
+msgstr ""
+
 msgid "Unable to find network cards. You cannot add new IP address."
+msgstr ""
+
+msgid "Unable to find plugin root directory."
+msgstr ""
+
+#, php-format
+msgid "Unable to get stats for file %s."
 msgstr ""
 
 msgid "Unable to get the IP addresses list. Please fix this problem."
@@ -5114,6 +5147,9 @@ msgstr "Impossible obtenir la llista d'adreces IP. Si us plau arregleu el proble
 
 msgid "Unable to move file."
 msgstr "No s'ha pogut moure l'arxiu."
+
+msgid "Unable to open archive."
+msgstr ""
 
 msgid "Unable to read Web software repository index file."
 msgstr ""
@@ -5127,6 +5163,10 @@ msgstr "No s'ha pogut llegir l'arxiu xml de definició del software."
 #, php-format
 msgid "Unable to reopen ticket with Id '%s'."
 msgstr "No s'ha pogut re.obrir el tiquet amb Id '%s'"
+
+#, php-format
+msgid "Unable to restore %s plugin directory"
+msgstr ""
 
 msgid ""
 "Unable to retrieve directories list for your domain. Please contact your "
@@ -5150,6 +5190,10 @@ msgstr ""
 msgid "Unable to upload file. Max. upload filesize (%1$d MB) reached?"
 msgstr ""
 
+#, php-format
+msgid "Unable to write the %s file for protected plugins."
+msgstr ""
+
 msgid "Unavailable"
 msgstr ""
 
@@ -5158,9 +5202,6 @@ msgstr "Sota el mode de manteniment, només els administradors poden entrar al s
 
 msgid "Uninstall"
 msgstr "Desinstal.lar"
-
-msgid "Uninstall in progress..."
-msgstr ""
 
 msgid "Unknown"
 msgstr "Desconegut"
@@ -5183,10 +5224,6 @@ msgstr "Tipus de domini desconegut."
 
 msgid "Unknown error"
 msgstr "Error desconegut"
-
-#, php-format
-msgid "Unknown error: %s"
-msgstr ""
 
 msgid "Unknown language name."
 msgstr "Nom de llenguatge desconegut."
@@ -5238,6 +5275,9 @@ msgstr "Actualitzar des del repositori d'aplicacions"
 
 msgid "Update hosting plan"
 msgstr "Actualitzar pla de hosting"
+
+msgid "Update in progress..."
+msgstr ""
 
 msgid ""
 "Update of Web software repository index has been aborted. Missing or empty "
@@ -5314,9 +5354,6 @@ msgstr "El vostre usuari no existeix o no té permisos per accedir aquesta inter
 msgid "User does not exist."
 msgstr "L'usuari no existeix."
 
-msgid "User errors"
-msgstr ""
-
 msgid "User has not been deleted."
 msgstr ""
 
@@ -5367,6 +5404,9 @@ msgstr "Usuaris"
 
 msgid "Users and groups"
 msgstr "Usuaris i grups"
+
+msgid "Users errors"
+msgstr ""
 
 #, php-format
 msgid "Value for the %s directive"
@@ -5665,6 +5705,9 @@ msgstr ""
 msgid "You are not allowed to remove this service port entry."
 msgstr "No tens permís per eliminar aquesta entrada de port de servei."
 
+msgid "You are not allowed to update a protected plugin."
+msgstr ""
+
 msgid "You can only upload images."
 msgstr "Només pots carregar imatges,"
 
@@ -5866,8 +5909,8 @@ msgstr ""
 msgid "You must select a network card."
 msgstr "Heu de triar una targeta de xarxa."
 
-msgid "You must select one or more plugins to operate on."
-msgstr "Heu de seleccionar un o més plugins per operar."
+msgid "You must select a plugin."
+msgstr ""
 
 msgid "You must specify a message."
 msgstr "Introduïu el contingut del missatge."
@@ -5962,6 +6005,9 @@ msgstr "activat"
 msgid "activated (Softwaredepot)"
 msgstr "activat (Repositiri de Programari)"
 
+msgid "activation"
+msgstr ""
+
 msgid "back"
 msgstr "enrere"
 
@@ -5977,8 +6023,20 @@ msgstr "desactivar"
 msgid "deactivated"
 msgstr "desactivat"
 
+msgid "deactivation"
+msgstr ""
+
+msgid "delete"
+msgstr ""
+
+msgid "deleted"
+msgstr ""
+
 msgid "deleting"
 msgstr "esborrant"
+
+msgid "deletion"
+msgstr ""
 
 msgid "disabled"
 msgstr "desactivat"
@@ -6074,8 +6132,8 @@ msgstr ""
 msgid "i-MSCP Web softwares repository"
 msgstr ""
 
-msgid "i-MSCP debugger"
-msgstr "i-MSCP debugger"
+msgid "i-MSCP plugin repository"
+msgstr ""
 
 msgid "i-MSCP updates"
 msgstr "Actualitzacions i-MSCP"
@@ -6179,6 +6237,12 @@ msgstr "udp"
 
 msgid "unlimited"
 msgstr "il·limitat"
+
+msgid "update"
+msgstr ""
+
+msgid "updated"
+msgstr ""
 
 msgid "view aliases"
 msgstr "veure àlies"
