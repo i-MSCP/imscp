@@ -5,7 +5,7 @@
 # See documentation at http://wiki.i-mscp.net/doku.php?id=start:preseeding
 #
 # Author: Laurent Declercq <l.declercq@nuxwin.com>
-# Last update: 2013.06.08
+# Last update: 2013.07.08
 # Status: (Experimental)
 
 ## Autoinstall questions
@@ -23,7 +23,7 @@ $main::preseed{'SERVERS'} = {
 	# Server to use for the Dns service
 	'NAMED_SERVER' => 'bind', # (bind)
 	# Server to use for the Sql service
-	'SQL_SERVER' => 'mysql_5.5' # Depending of your distro (mysql_5.1|mysql_5.5|mariadb_5.3|mariadb_5.5|remote_server)
+	'SQL_SERVER' => 'mysql_5.5' # Depending of your distro (mysql_5.1|mysql_5.5|mariadb_5.3|mariadb_5.5|mariadb_10.0|remote_server)
 };
 
 # apache_fcgi - Only relevant if the server for the http service is set to 'apache_fcgi'
