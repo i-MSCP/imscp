@@ -444,7 +444,7 @@ sub _deleteAwstatsCronTask
 	my $data = shift;
 
 	require Servers::cron;
-	Servers::cron->factory()->delTask({ 'TASKID' => "AWSTATS:$data->{'DOMAIN_NAME'}" });
+	Servers::cron->factory()->deleteTask({ 'TASKID' => "AWSTATS:$data->{'DOMAIN_NAME'}" });
 }
 
 =back
