@@ -176,7 +176,7 @@ sub addDmn
 		# Needed to remove any Awstats configuration file when switching to another Web statistics addon
 		# TODO review addon implementation to avoid such thing
 		require Addons::webstats::awstats::awstats;
-		$rs = Addons::webstats::awstats::awstats->getInstance()->delDmn($data);
+		$rs = Addons::webstats::awstats::awstats->getInstance()->deleteDmn($data);
 	}
 
 	$rs;
