@@ -365,14 +365,15 @@ sub _init
 
 END
 {
+	my $exitCode = $?;
 	my $self = Servers::po::dovecot->getInstance();
 	my $wrkLogFile = "$main::imscpConfig{'LOG_DIR'}/mail.po.log";
 	my $rs = 0;
 
 	$rs = $self->restart() if $self->{'restart'} && $self->{'restart'} eq 'yes';
-	$rs |= iMSCP::File->new(filename => $wrkLogFile)->delFile() if -f $wrkLogFile;
+	$rs |= iMSCP::File->new('filename' => $wrkLogFile)->delFile() if -f $wrkLogFile;
 
-	$? ||= $rs;
+	$? = $exitCode || $rs;
 }
 
 =back

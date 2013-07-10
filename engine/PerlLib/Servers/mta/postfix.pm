@@ -1163,6 +1163,7 @@ sub getTraffic
 
 END
 {
+	my $exitCode = $?;
 	my $self = Servers::mta::postfix->getInstance();
 	my $wrkLogFile = "$main::imscpConfig{'LOG_DIR'}/mail.smtp.log";
 	my $rs = 0;
@@ -1177,7 +1178,7 @@ END
 
 	$rs |= iMSCP::File->new('filename' => $wrkLogFile)->delFile() if -f $wrkLogFile;
 
-	$? ||= $rs;
+	$? = $exitCode || $rs;
 }
 
 1;

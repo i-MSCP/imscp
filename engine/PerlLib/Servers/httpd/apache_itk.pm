@@ -1641,7 +1641,7 @@ sub stop
 	my ($stdout, $stderr);
 	$rs = execute("$self->{'tplValues'}->{'CMD_HTTPD'} stop", \$stdout, \$stderr);
 	debug($stdout) if $stdout;
-	warning($stderr) if $stderr && ! $rs;
+	debug($stderr) if $stderr && ! $rs;
 	error($stderr) if $stderr && $rs;
 	error("Error while stopping") if $rs && ! $stderr;
 	return $rs if $rs;
@@ -2055,6 +2055,7 @@ sub _addFiles($$)
 
 END
 {
+	my $exitCode = $?;
 	my $self = Servers::httpd::apache_itk->getInstance();
 	my $trafficDir = "$self::apacheConfig{'APACHE_LOG_DIR'}/traff";
 	my $rs = 0;
@@ -2067,7 +2068,7 @@ END
 
 	$rs |= iMSCP::Dir->new('dirname' => "$trafficDir.old")->remove() if -d "$trafficDir.old";
 
-	$? ||= $rs;
+	$? = $exitCode || $rs;
 }
 
 =back

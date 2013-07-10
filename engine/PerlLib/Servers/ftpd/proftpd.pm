@@ -187,6 +187,7 @@ sub getTraffic
 
 END
 {
+	my $exitCode = $?;
 	my $self = Servers::ftpd::proftpd->getInstance();
 	my $trfFile	= "$main::imscpConfig{'TRAFF_LOG_DIR'}/$self::proftpdConfig{'FTP_TRAFF_LOG'}";
 	my $rs = 0;
@@ -194,7 +195,7 @@ END
 	$rs = $self->restart() if defined $self->{'restart'} && $self->{'restart'} eq 'yes';
 	$rs |= iMSCP::File->new('filename' => "$trfFile.old")->delFile() if -f "$trfFile.old";
 
-	$? ||= $rs;
+	$? = $exitCode || $rs;
 }
 
 1;

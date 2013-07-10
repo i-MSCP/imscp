@@ -998,12 +998,13 @@ sub postdeleteSub
 
 END
 {
+	my $exitCode = $?;
 	my $self = Servers::named::bind->getInstance();
 	my $rs = 0;
 
 	$rs = $self->restart() if defined $self->{'restart'} && $self->{'restart'} eq 'yes';
 
-	$? ||= $rs;
+	$? = $exitCode || $rs;
 }
 
 1;

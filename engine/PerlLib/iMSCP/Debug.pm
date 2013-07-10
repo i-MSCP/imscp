@@ -41,7 +41,6 @@ our @EXPORT = qw/
 	backtrace debugRegisterCallBack output
 /;
 
-=item
 BEGIN
 {
 	$SIG{__DIE__} = sub {
@@ -58,7 +57,6 @@ BEGIN
 		}
 	};
 }
-=cut
 
 sub newDebug
 {
