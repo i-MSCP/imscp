@@ -878,7 +878,7 @@ sub deleteHtgroup($$)
 
 	$fileContent =~ s/^$data->{'HTGROUP_NAME'}:[^\n]*\n//gim;
 
-	$rs = set($fileContent);
+	$rs = $file->set($fileContent);
 	return $rs if $rs;
 
 	$rs = $self->{'hooksManager'}->trigger('afterHttpdDelHtgroup', \$fileContent, $data);

@@ -139,11 +139,15 @@ sub fastcgiConf
 
 	my $httpd = Servers::httpd::apache_fcgi->getInstance();
 
-	my $rs = $httpd->disableMod('fastcgi_imscp fcgid_imscp');
-	return $rs if $rs;
-
+	# try to disable but do not fail if do not exists
+	my $rs = 0;
+	for('fastcgi_imscp', 'fcgid_imscp') {
+		$rs = $self->{'httpd'}->disableMod($_) if -f "$self::apacheConfig{'APACHE_MODS_DIR'}/$_.load";
+		return $rs if $rs;
+	}
+	
 	for ('fastcgi_imscp.conf', 'fastcgi_imscp.load', 'fcgid_imscp.conf', 'fcgid_imscp.load') {
-		$rs = iMSCP::File->new('filename' => "$self::apacheConfig{'APACHE_MODS_DIR'}/$_")->delFile();
+		$rs = iMSCP::File->new('filename' => "$self::apacheConfig{'APACHE_MODS_DIR'}/$_")->delFile() if -f "$self::apacheConfig{'APACHE_MODS_DIR'}/$_";
 		return $rs if $rs;
 	}
 
@@ -173,7 +177,7 @@ sub vHostConf
 		}
 	}
 
-	$$httpd->enableSite('default');
+	$httpd->enableSite('default');
 }
 
 1;

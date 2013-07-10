@@ -98,8 +98,8 @@ sub _init
 	tie %self::apacheConfig, 'iMSCP::Config','fileName' => "$self->{'apacheCfgDir'}/apache.data";
 
 	$self->{'phpfpmCfgDir'} = "$main::imscpConfig{'CONF_DIR'}/php-fpm";
-	$self->{'apacheBkpDir'} = "$self->{'phpfpmCfgDir'}/backup";
-	$self->{'apacheWrkDir'} = "$self->{'phpfpmCfgDir'}/working";
+	$self->{'phpfpmBkpDir'} = "$self->{'phpfpmCfgDir'}/backup";
+	$self->{'phpfpmWrkDir'} = "$self->{'phpfpmCfgDir'}/working";
 
 	tie %self::phpfpmConfig, 'iMSCP::Config','fileName' => "$self->{'phpfpmCfgDir'}/phpfpm.data";
 
@@ -208,23 +208,23 @@ sub _restorePhpfpmConfig
 
 	my ($filename, $directories, $suffix) = fileparse("$main::imscpConfig{'LOGROTATE_CONF_DIR'}/php5-fpm");
 
-	if("$self->{'apacheBkpDir'}/logrotate.$filename$suffix.system") {
+	if(-f "$self->{'phpfpmBkpDir'}/logrotate.$filename$suffix.system") {
 		$rs = iMSCP::File->new(
-    		'filename' => "$self->{'apacheBkpDir'}/logrotate.$filename$suffix.system"
+    		'filename' => "$self->{'phpfpmBkpDir'}/logrotate.$filename$suffix.system"
     	)->copyFile("$main::imscpConfig{'LOGROTATE_CONF_DIR'}/$filename$suffix");
     	return $rs if $rs;
 	}
 
 	($filename, $directories, $suffix) = fileparse($self::phpfpmConfig{'CMD_PHP_FPM'});
 
-	if("$self->{'apacheBkpDir'}/init.$filename$suffix.system") {
+	if(-f "$self->{'phpfpmBkpDir'}/init.$filename$suffix.system") {
 		$rs = iMSCP::File->new(
     		'filename' => "$self->{'phpfpmBkpDir'}/init.$filename$suffix.system"
     	)->copyFile($self::phpfpmConfig{'CMD_PHP_FPM'});
     	return $rs if $rs;
 	}
 
-	for ("$self::phpfpmConfig{'PHP_FPM_CONF_DIR'}/php-fpm.conf" "$self::phpfpmConfig{'PHP_FPM_CONF_DIR'}/php.ini") {
+	for ("$self::phpfpmConfig{'PHP_FPM_CONF_DIR'}/php-fpm.conf", "$self::phpfpmConfig{'PHP_FPM_CONF_DIR'}/php.ini") {
 		($filename, $directories, $suffix) = fileparse($_);
 
 		$rs = iMSCP::File->new(

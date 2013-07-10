@@ -1808,11 +1808,11 @@ sub apacheBkpConfFile($$;$$)
 		my $file = iMSCP::File->new('filename' => $filepath);
 		my $filename = fileparse($filepath);
 
-		if($system && ! -f "$self->{'apacheBkpDir'}/$filename.system") {
-			$rs = $file->copyFile("$self->{'apacheBkpDir'}/$filename.system");
+		if($system && ! -f "$self->{'apacheBkpDir'}/$prefix$filename.system") {
+			$rs = $file->copyFile("$self->{'apacheBkpDir'}/$prefix$filename.system");
 			return $rs if $rs;
 		} else {
-			$rs = $file->copyFile("$self->{'apacheBkpDir'}/$filename." . time);
+			$rs = $file->copyFile("$self->{'apacheBkpDir'}/$prefix$filename." . time);
 			return $rs if $rs;
 		}
 	}
@@ -1845,11 +1845,11 @@ sub phpfpmBkpConfFile($$;$$)
 		my $file = iMSCP::File->new('filename' => $filepath);
 		my $filename = fileparse($filepath);
 
-		if($system && ! -f "$self->{'phpfpmBkpDir'}/$filename.system") {
-			$rs = $file->copyFile("$self->{'phpfpmBkpDir'}/$filename.system");
+		if($system && ! -f "$self->{'phpfpmBkpDir'}/$prefix$filename.system") {
+			$rs = $file->copyFile("$self->{'phpfpmBkpDir'}/$prefix$filename.system");
 			return $rs if $rs;
 		} else {
-			$rs = $file->copyFile("$self->{'phpfpmBkpDir'}/$filename." . time);
+			$rs = $file->copyFile("$self->{'phpfpmBkpDir'}/$prefix$filename." . time);
 			return $rs if $rs;
 		}
 	}

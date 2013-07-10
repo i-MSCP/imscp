@@ -844,7 +844,7 @@ sub _installLogrotate
 	$rs = $self->{'hooksManager'}->trigger('beforeHttpdInstallLogrotate', 'php5-fpm');
 	return $rs if $rs;
 
-	$rs = $self->{'httpd'}->phpfpmBkpConfFile("$main::imscpConfig{'LOGROTATE_CONF_DIR'}/php5-fpm", 'logrotate.');
+	$rs = $self->{'httpd'}->phpfpmBkpConfFile("$main::imscpConfig{'LOGROTATE_CONF_DIR'}/php5-fpm", 'logrotate.', 1);
 	return $rs if $rs;
 
 	$rs = $self->{'httpd'}->buildConfFile(

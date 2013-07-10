@@ -181,7 +181,7 @@ sub _removeCustomers
 
 	iMSCP::Boot->getInstance()->unlock();
 
-	my ($stdout, $stderr);
+	my ($rs, $stdout, $stderr);
 	$rs = execute(
 		"$main::imscpConfig{'CMD_PERL'} $main::imscpConfig{'ENGINE_ROOT_DIR'}/imscp-rqst-mngr", \$stdout, \$stderr
 	);
@@ -298,13 +298,13 @@ sub _removeSqlData
 
 	$rdata = $database->doQuery('dummy', 'FLUSH PRIVILEGES');
 	unless(ref $rdata eq 'HASH') {
-		error($err);
+		error($rdata);
 		return 1;
 	}
 
 	$database->doQuery('delete', "DROP DATABASE $main::imscpConfig{'DATABASE_NAME'}");
 	unless(ref $rdata eq 'HASH') {
-		error($err);
+		error($rdata);
 		return 1;
 	}
 
