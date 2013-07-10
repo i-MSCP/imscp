@@ -98,9 +98,9 @@ sub removeUsers
 
 sub buildAliasses
 {
-	$self = shift;
+	my $self = shift;
 
-	my ($$stdout, $stderr);
+	my ($stdout, $stderr);
 
 	# Rebuilding the database for the mail aliases file - Begin
 	my $rs = execute("$self::postfixConfig{'CMD_NEWALIASES'}", \$stdout, \$stderr);
