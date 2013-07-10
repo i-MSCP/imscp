@@ -476,7 +476,7 @@ sub restart
 		return $rs if $rs;
 	}
 
-	$$self->{'hooksManager'}->trigger('afterPoRestart');
+	$self->{'hooksManager'}->trigger('afterPoRestart');
 }
 
 =item getTraffic()
