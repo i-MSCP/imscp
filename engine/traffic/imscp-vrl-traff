@@ -110,15 +110,16 @@ sub traff_count
 
 		$sql = "
 			SELECT
-				`domain_id`
+				`dtraff_id`
 			FROM
 				`domain_traffic`
 			WHERE
 				`domain_id` = ?
 			AND
 				`dtraff_time` >= UNIX_TIMESTAMP(CURRENT_DATE())
+			LIMIT 1
 		";
-		my $result = iMSCP::Database->new()->factory()->doQuery('domain_id', $sql, $_);
+		my $result = iMSCP::Database->new()->factory()->doQuery('dtraff_id', $sql, $_);
 
 		if (ref $result ne 'HASH'){
 			error($result);
@@ -157,8 +158,7 @@ sub traff_count
 					WHERE
 						`domain_id` = ?
 					AND
-						`dtraff_time` >= UNIX_TIMESTAMP(CURRENT_DATE())
-					LIMIT 1
+						`dtraff_id` = ?
 				";
 				$result = iMSCP::Database->new()->factory()->doQuery(
 					'update', $sql,
@@ -166,7 +166,7 @@ sub traff_count
 					exists $traff{$_}->{'ftpd'} ? $traff{$_}->{'ftpd'} : 0,
 					exists $traff{$_}->{'mta'} ? $traff{$_}->{'mta'} : 0,
 					exists $traff{$_}->{'po'} ? $traff{$_}->{'po'} : 0,
-					$timestamp, $_
+					$timestamp, $_, (keys %{$result})[0]
 				);
 				if (ref $result ne 'HASH'){
 					error($result);
