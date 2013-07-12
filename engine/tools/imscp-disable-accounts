@@ -79,7 +79,7 @@ sub process
 				`domain_expires` <  UNIX_TIMESTAMP()
 			AND
 				`domain_status` <> 'disabled'
-			"
+		"
 	);
 	unless(ref $accounts eq 'HASH') {
 		error($accounts);
@@ -114,10 +114,8 @@ sub process
 						my $newMailStatus = 'todisable';
 
 						if (!$hardMailSuspension) {
-							my $passwordPrefix = substr(unix_md5_crypt(time()), 3, 4);
-
 							if ($mailType =~ /^(?:normal_mail|alias_mail|subdom_mail|alssub_mail)/) {
-								$mailPassword = $passwordPrefix . $mailPassword;
+								$mailPassword = substr(unix_md5_crypt(time()), 3, 4) . $mailPassword;
 							} else {
 								next;
 							}

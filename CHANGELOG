@@ -33,6 +33,7 @@ Tickets:
 	- Fixed #790: Defect - Postfix 2.10.x - Relay access - SASL authentication
 	- Fixed #793: Bug - Autoinstaller/Setup - Admin user is getting new id in database
 	- Fixed #808: Enhancement - Possibility to Upload i-MSCP Plugins via GUI
+	- Fixed #816: Bug - Unable to uninstall i-MSCP
 	- Fixed #819: Tasks - Clean up PHP Settings
 
 ------------------------------------------------------------------------------------------------------------------------
