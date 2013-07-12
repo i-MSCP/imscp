@@ -75,7 +75,7 @@ sub registerSetupHooks
 	return $rs if $rs;
 	
 	# Add installer dialog in setup dialog stack
-	my $rs = $hooksManager->register(
+	$rs = $hooksManager->register(
 		'beforeSetupDialog',
 		sub { my $dialogStack = shift; push(@$dialogStack, sub { $self->askForPhpFpmPoolsLevel(@_) }); 0; }
 	);
