@@ -43,10 +43,10 @@ use parent 'Common::SimpleClass';
 
 my %toStatus = (
 	'toinstall' => 'enabled',
-	'toenable' => 'enabled',
-	'todisable' => 'disabled',
-	'touninstall' => 'todelete',
-	'enabled' => 'enabled'
+	'toenable' => "'enabled'",
+	'todisable' => "'disabled'",
+	'touninstall' => "'todelete'",
+	'enabled' => "'enabled'"
 );
 
 =head1 DESCRIPTION
@@ -55,12 +55,12 @@ my %toStatus = (
 specific action, which is executed by the module:
 
  - toinstall: The 'toinstall' status correspond to the 'install' action. Next status should be 'enabled'.
+ - tochange: The 'tochange' status correspond to the 'change' action. Next status should be set to previous status.
  - toupdate status: The 'toupdate' status correspond to the 'update' action. Next status should be set to previous status.
  - touninstall status: The 'touninstall' status correspond to the 'uninstall' action. Next status should be 'todelete'.
  - todisable status: The 'todisable' status correspond to the 'disable' action. Next status should be 'disabled'.
  - toenable status: The 'toenable' status correspond to the 'enable' action. Next sttus should be 'enabled'.
  - enabled status: The 'enabled' status correspond to the 'run' action. Next status should be 'enabled'.
- - disabled status: No action
  - other status: No action
 
  The module will attempt to run the action on the plugin only if it implements it.
@@ -113,6 +113,7 @@ sub loadData
 	$self->{$_} = $rdata->{$self->{'pluginId'}}->{$_} for keys %{$rdata->{$self->{'pluginId'}}};
 
 	$toStatus{'toupdate'} = $self->{'plugin_previous_status'};
+	$toStatus{'tochange'} = $self->{'plugin_previous_status'};
 
 	0;
 }
@@ -141,6 +142,8 @@ sub process
 		$rs = $self->_executePlugin('run');
 	} elsif($status eq 'toinstall') {
 		$rs = $self->_executePlugin('install');
+	} elsif($status eq 'tochange') {
+		$rs = $self->_executePlugin('change');
 	} elsif($status eq 'toupdate') {
 		$rs = $self->_executePlugin('update');
 	} elsif($status eq 'touninstall') {

@@ -177,12 +177,13 @@ class iMSCP_Plugin_Manager
 					: $this->plugins
 			);
 		} elseif (isset($this->pluginsByType[$type])) {
-			$self = $this;
+			$plugins = $this->plugins;
+
 			return $onlyEnabled
 				? array_filter(
 					$this->pluginsByType[$type],
-					function ($pluginName) use ($self) {
-						return ($self->plugins[$pluginName]['current_status'] == 'enabled');
+					function ($pluginName) use ($plugins) {
+						return ($plugins[$pluginName]['current_status'] == 'enabled');
 					}
 				)
 				: $this->pluginsByType[$type];
@@ -505,44 +506,68 @@ class iMSCP_Plugin_Manager
 	public function update($pluginName, $force = false)
 	{
 		if ($this->isKnown($pluginName)) {
-			$pluginInstance = $this->load($pluginName, false, false);
+			if ($force || !in_array($this->getStatus($pluginName), array('uninstalled', 'toinstall'))) {
+				$pluginInstance = $this->load($pluginName, false, false);
 
-			$this->setError($pluginName, null);
-			$this->setStatus($pluginName, 'toupdate');
+				$this->setError($pluginName, null);
+				$this->setStatus($pluginName, 'toupdate');
 
-			try {
-				iMSCP_Events_Manager::getInstance()->dispatch(
-					iMSCP_Events::onBeforeUpdatePlugin,
-					array(
-						'pluginManager' => $this,
-						'pluginName' => $pluginName,
-						'PluginInstance' => $pluginInstance
-					)
-				);
+				try {
+					iMSCP_Events_Manager::getInstance()->dispatch(
+						iMSCP_Events::onBeforeUpdatePlugin,
+						array(
+							'pluginManager' => $this,
+							'pluginName' => $pluginName,
+							'PluginInstance' => $pluginInstance
+						)
+					);
 
-				$pluginInstance->{'update'}($this);
+					$pluginInstance->{'update'}($this);
 
-				if($this->hasBackend($pluginName)) {
-					$this->backendRequest = true;
-				} else {
-					$this->setStatus($pluginName, 'enabled');
+					if ($this->hasBackend($pluginName)) {
+						$this->backendRequest = true;
+					} else {
+						$this->setStatus($pluginName, 'enabled');
+					}
+
+					iMSCP_Events_Manager::getInstance()->dispatch(
+						iMSCP_Events::onAfterUpdatePlugin,
+						array(
+							'pluginManager' => $this,
+							'pluginName' => $pluginName,
+							'PluginInstance' => $pluginInstance
+						)
+					);
+				} catch (iMSCP_Plugin_Exception $e) {
+					$this->setError($pluginName, sprintf('Plugin update has failed: %s', $e->getMessage()));
+					write_log(sprintf('Plugin manager: %s plugin update has failed', $pluginName), E_USER_ERROR);
+					return false;
 				}
 
-				iMSCP_Events_Manager::getInstance()->dispatch(
-					iMSCP_Events::onAfterUpdatePlugin,
-					array(
-						'pluginManager' => $this,
-						'pluginName' => $pluginName,
-						'PluginInstance' => $pluginInstance
-					)
-				);
-			} catch(iMSCP_Plugin_Exception $e) {
-				$this->setError($pluginName, sprintf('Plugin update has failed: %s', $e->getMessage()));
-				write_log(sprintf('Plugin manager: %s plugin update has failed', $pluginName), E_USER_ERROR);
-				return false;
+				return true;
 			}
+		}
 
-			return true;
+		return false;
+	}
+
+	/**
+	 * Change the given plugin
+	 *
+	 * @param string $pluginName Plugin name
+	 * @param bool $force Force action
+	 * @return bool TRUE on success, FALSE otherwise
+	 */
+	public function change($pluginName, $force)
+	{
+		if ($this->isKnown($pluginName) && $this->hasBackend($pluginName)) {
+			if ($force || !in_array($this->getStatus($pluginName), array('uninstalled', 'toinstall'))) {
+				$this->setError($pluginName, null);
+				$this->setStatus($pluginName, 'tochange');
+				$this->backendRequest = true;
+
+				return true;
+			}
 		}
 
 		return false;

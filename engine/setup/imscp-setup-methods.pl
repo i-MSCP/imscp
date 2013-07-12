@@ -2102,8 +2102,7 @@ sub setupRebuildCustomerFiles
 		mail_users => 'status',
 		htaccess => 'status',
 		htaccess_groups => 'status',
-		htaccess_users => 'status',
-		plugin => ['plugin_status', "AND `plugin_backend` = 'yes'"]
+		htaccess_users => 'status'
 	};
 
 	my ($database, $errStr) = setupGetSqlConnect(setupGetQuestion('DATABASE_NAME'));
@@ -2112,32 +2111,51 @@ sub setupRebuildCustomerFiles
 		return 1;
 	}
 
-	my $aditionalCondition;
+	# Enable transaction support
+	my $rawDb = $database->getRawDb();
+	$rawDb->{'AutoCommit'} = 0;
+	$rawDb->{'RaiseError'} = 1;
 
-	while (my ($table, $field) = each %$tables) {
-		if(ref $field eq 'ARRAY') {
-			$aditionalCondition = $field->[1];
-			$field = $field->[0];
-		} else {
-			$aditionalCondition = ''
+	eval {
+		my $aditionalCondition;
+
+		while (my ($table, $field) = each %$tables) {
+			if(ref $field eq 'ARRAY') {
+				$aditionalCondition = $field->[1];
+				$field = $field->[0];
+			} else {
+				$aditionalCondition = ''
+			}
+
+			$rawDb->do("UPDATE `$table` SET `$field` = 'tochange' WHERE `$field` = 'ok' $aditionalCondition");
 		}
 
-		$rs = $database->doQuery(
-			'dummy',
+		$rawDb->do(
 			"
 				UPDATE
-					`$table`
+					`plugin`
 				SET
-					`$field` = 'tochange'
+					`plugin_status` = 'tochange', `plugin_previous_status` = `plugin_status`
 				WHERE
-					`$field` IN('ok', 'enabled')
-				$aditionalCondition
+					`plugin_status` = 'enabled'
+				AND
+					`plugin_error` IS NULL
+				AND
+					`plugin_backend` = 'yes'
 			"
 		);
-		unless(ref $rs eq 'HASH') {
-			error("Unable to execute SQL query: $rs");
-			return 1;
-		}
+
+		$rawDb->commit();
+	};
+
+	if($@) {
+		$rawDb->rollback();
+		error("Unable to execute SQL query: $@");
+		return 1;
+	} else {
+		# Disable transaction support
+		$rawDb->{'AutoCommit'} = 1;
+		$rawDb->{'RaiseError'} = 0;
 	}
 
 	iMSCP::Boot->getInstance()->unlock();

@@ -69,7 +69,7 @@ sub engine
 		FROM
 			`plugin`
 		WHERE
-			`plugin_status` IN ('toinstall', 'toupdate', 'touninstall', 'todisable', 'toenable', 'enabled')
+			`plugin_status` IN ('toinstall', 'toupdate', 'tochange', 'touninstall', 'todisable', 'toenable', 'enabled')
 		AND
 			`plugin_error` IS NULL
 		AND

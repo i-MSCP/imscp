@@ -164,15 +164,14 @@ function admin_pluginManagerTrStatus($rawPluginStatus)
 	switch($rawPluginStatus) {
 		case 'enabled':
 			return tr('Activated');
-			break;
 		case 'uninstalled':
 		case 'disabled':
 			return tr('Deactivated');
-			break;
 		case 'toinstall':
 		case 'toenable':
 			return tr('Activation in progress...');
-			break;
+		case 'tochange':
+			return tr('Change in progress...');
 		case 'toupdate':
 			return tr('Update in progress...');
 			break;
@@ -200,6 +199,7 @@ function admin_pluginManagerGeneratePluginList($tpl, $pluginManager)
 		'toenable' => tr('activation'),
 		'todisable' => tr('deactivation'),
 		'todelete' => tr('deletion'),
+		'tochange' => tr('change')
 	);
 
 	$pluginList = $pluginManager->getPluginList('Action', false);
@@ -286,6 +286,7 @@ function admin_pluginManagerDoAction($pluginManager, $pluginName, $action, $forc
 	$trActions = array(
 		'activate' => tr('activate'),
 		'update' => tr('update'),
+		'change' => tr('change'),
 		'deactivate' => tr('deactivate'),
 		'delete' => tr('delete'),
 		'protect' => tr('protect'),
@@ -443,6 +444,12 @@ if (isset($_GET['updatePluginList'])) {
 				break;
 			case 'touninstall':
 				$action = 'delete';
+				break;
+			case 'tochange':
+				$action = 'change';
+				break;
+			default:
+				showBadRequestErrorPage();
 		}
 
 		admin_pluginManagerDoAction($pluginManager, $pluginName, $action, true);
