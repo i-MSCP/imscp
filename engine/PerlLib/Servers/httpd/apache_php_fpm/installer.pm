@@ -71,6 +71,9 @@ sub registerSetupHooks
 	my $self = shift;
 	my $hooksManager = shift;
 
+	my $rs = $hooksManager->trigger('beforeHttpdRegisterSetupHooks', $hooksManager, 'apache_php_fpm');
+	return $rs if $rs;
+	
 	# Add installer dialog in setup dialog stack
 	my $rs = $hooksManager->register(
 		'beforeSetupDialog',
@@ -79,7 +82,10 @@ sub registerSetupHooks
 	return $rs if $rs;
 
 	# Fix error_reporting values into the database
-	$hooksManager->register('afterSetupCreateDatabase', sub { $self->_fixPhpErrorReportingValues(@_) });
+	$rs = $hooksManager->register('afterSetupCreateDatabase', sub { $self->_fixPhpErrorReportingValues(@_) });
+	return $rs if $rs;
+	
+	$hooksManager->trigger('afterHttpdRegisterSetupHooks', $hooksManager, 'apache_php_fpm');
 }
 
 =item askForPhpFpmPoolsLevel($dialog)
