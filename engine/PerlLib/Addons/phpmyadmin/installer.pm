@@ -106,13 +106,23 @@ sub install
 	$rs = $self->_installFiles();				# Install phpmyadmin files from local addon packages repository
 	return $rs if $rs;
 
+	$rs = $self->_setupDatabase();				# Setup phpmyadmin database
+	return $rs if $rs;
+	
 	$rs = $self->_setupSqlUser();				# Setup phpmyadmin restricted SQL user
 	return $rs if $rs;
 
-	$rs = $self->_generateBlowfishSecret();	# Generate Blowfish secret
+	$rs = $self->_generateBlowfishSecret();		# Generate Blowfish secret
 	return $rs if $rs;
 
 	$rs = $self->_buildConfig();				# Build new configuration files
+	return $rs if $rs;
+	
+	# Update phpMyAdmin database if needed (should be done after phpMyAdmin config files generation)
+	$rs = $self->_updateDatabase() unless $self->{'newInstall'};
+	return $rs if $rs;
+
+	$rs = $self->_setVersion();					# Set new phpMyAdmin version
 	return $rs if $rs;
 
 	$self->_saveConfig();						# Save configuration
@@ -252,6 +262,7 @@ sub _init
 	$self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/pma";
 	$self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
 	$self->{'wrkDir'} = "$self->{'cfgDir'}/working";
+	$self->{'newInstall'} = 1;
 
 	my $conf = "$self->{'cfgDir'}/phpmyadmin.data";
 	my $oldConf	= "$self->{'cfgDir'}/phpmyadmin.old.data";
@@ -402,6 +413,8 @@ sub _setupSqlUser
 {
 	my $self = shift;
 
+	my $imscpDbName = $main::imscpConfig{'DATABASE_NAME'};
+	my $phpmyadminDbName = $imscpDbName . '_pma';
 	my $dbUser = $self::phpmyadminConfig{'DATABASE_USER'};
 	my $dbOldUser = $self::phpmyadminOldConfig{'DATABASE_USER'} || '';
 	my $dbUserHost = main::setupGetQuestion('DATABASE_USER_HOST');
@@ -480,6 +493,144 @@ sub _setupSqlUser
 		error("Failed to add SELECT privilege on columns of the 'mysql.tables_priv' table for the PhpMyAdmin '$dbUser\@$dbUserHost' SQL user: $rs");
 		return 1;
 	}
+	
+	# Add ALL privileges for the phpMyAdmin configuration storage
+	$rs = $database->doQuery(
+		'dummy', "GRANT ALL PRIVILEGES ON `$phpmyadminDbName`.* TO ?@?;",  $dbUser, $dbUserHost
+	);
+	if(ref $rs ne 'HASH') {
+		error("Unable to add privileges on the '$phpmyadminDbName' database tables for the phpMyAdmin '$dbUser\@$dbUserHost' SQL user: $rs");
+		return 1;
+	}
+
+	0;
+}
+
+=item _setupDatabase()
+
+ Setup Roundcube database.
+
+ Return int 0 on success, other on failure
+
+=cut
+
+sub _setupDatabase
+{
+	my $self = shift;
+	
+	require iMSCP::File;
+	
+	my $phpmyadminDir = "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/pma";
+	my $imscpDbName = $main::imscpConfig{'DATABASE_NAME'};
+	my $phpmyadminDbName = $imscpDbName . '_pma';
+
+	# Get SQL connection with full privileges
+	my ($database, $errStr) = main::setupGetSqlConnect();
+	if(! $database) {
+		error("Unable to connect to SQL server: $errStr");
+		return 1;
+	}
+
+	# Check for PhpMyAdmin database existence
+	my $rs = $database->doQuery('1', 'SHOW DATABASES LIKE ?', $phpmyadminDbName);
+	unless(ref $rs eq 'HASH') {
+		error("SQL query failed: $rs");
+		return 1;
+	}
+
+	# The PhpMyAdmin database doesn't exists, create it
+	unless(%$rs) {
+		my $qdbName = $database->quoteIdentifier($phpmyadminDbName);
+		$rs = $database->doQuery('dummy', "CREATE DATABASE $qdbName CHARACTER SET utf8 COLLATE utf8_unicode_ci;");
+		unless(ref $rs eq 'HASH') {
+			error("Unable to create the PhpMyAdmin '$phpmyadminDbName' SQL database: $rs");
+			return 1;
+		}
+
+		# Connect to newly created PhpMyAdmin database
+		$database->set('DATABASE_NAME', $phpmyadminDbName);
+		$rs = $database->connect();
+		if($rs) {
+			error("Unable to connect to the PhpMyAdmin '$phpmyadminDbName' SQL database: $rs");
+			return $rs if $rs;
+		}
+
+		# Import PhpMyAdmin database schema
+		my $schemaFile = iMSCP::File->new('filename' => "$phpmyadminDir/examples/create_tables.sql");
+		
+		my $content = $schemaFile->get();
+		unless(defined $content) {
+			error("Unable to read $phpmyadminDir/examples/create_tables.sql");
+			return 1;
+		}
+
+		$content =~ s/^(--[^\n]{0,})?\n//gm;
+		my @queries = (split /;\n/, $content);
+		for (@queries) {
+			# the PhpMyAdmin script contains the creation of the database as well
+			# we ignore this part as the database has already been created
+			if ($_ !~ /^CREATE DATABASE/ and $_ !~ /^USE/) {
+				my $rs = $database->doQuery('dummy', $_);
+				if(ref $rs ne 'HASH') {
+					error("Unable to execute SQL query: $rs");
+					return 1;
+				}
+			}
+		}
+	} else {
+		$self->{'newInstall'} = 0;
+	}
+
+	0;
+}
+
+=item _updateDatabase()
+
+ Update phpMyAdmin database
+
+ Return int 0 on success other on failure
+
+=cut
+
+sub _updateDatabase
+{
+	my $self = shift;
+
+	my $phpmyadminDir = "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/pma";
+	my $imscpDbName = $main::imscpConfig{'DATABASE_NAME'};
+	my $phpmyadminDbName = $imscpDbName . '_pma';
+	my $fromVersion = $self::phpmyadminOldConfig{'PHPMYADMIN_VERSION'} || '4.0.4.1';
+
+	# Currently no update here because 4.0.4.1 is the first version we have with a configuration storage
+	
+	0;
+}
+
+=item _setVersion()
+
+ Set phpMyAdmin version.
+
+ Return int 0 on success, 1 on failure
+
+=cut
+
+sub _setVersion
+{
+	my $self = shift;
+
+	require iMSCP::File;
+	require JSON;
+	JSON->import();
+
+	my $json = iMSCP::File->new('filename' => "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/pma/composer.json")->get();
+	unless(defined $json) {
+		error("Unable to read $main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/pma/composer.json");
+		return 1;
+	}
+
+	$json = decode_json($json);
+	debug("Set new phpMyAdmin version to $json->{'version'}");
+	$self::phpmyadminConfig{'PHPMYADMIN_VERSION'} = $json->{'version'};
 
 	0;
 }
