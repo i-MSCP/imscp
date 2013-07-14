@@ -508,7 +508,7 @@ sub _setupSqlUser
 
 =item _setupDatabase()
 
- Setup Roundcube database.
+ Setup phpMyAdmin database.
 
  Return int 0 on success, other on failure
 
