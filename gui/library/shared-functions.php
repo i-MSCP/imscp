@@ -1962,6 +1962,10 @@ function daemon_sendCommand(&$socket, $command)
 				return true;
 			}
 		} else {
+			write_log(
+				sprintf('Unable to send command to i-MSCP daemon: %s', socket_strerror(socket_last_error())),
+				E_USER_ERROR
+			);
 			return false;
 		}
 	}
