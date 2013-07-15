@@ -1918,100 +1918,91 @@ function generate_software_upload_token()
  */
 
 /**
- * Reads line from the socket resource.
+ * Read an answer from i-MSCP daemon
  *
  * @param resource &$socket
- * @return string A line read from the socket resource
+ * @return bool TRUE on success, FALSE otherwise
  */
-function read_line(&$socket)
+function daemon_readAnswer(&$socket)
 {
-	$line = '';
+	if(($answer = @socket_read($socket, 1024, PHP_NORMAL_READ)) !== false) {
+		list($code) = explode(' ', $answer);
+		if($code == '999') {
+			write_log(sprintf('i-MSCP daemon returned an unexpected answer: %s', $answer), E_USER_ERROR);
+			return false;
+		}
+	} else {
+		write_log(
+			sprintf('Unable to read answer from i-MSCP daemon: %s'. socket_strerror(socket_last_error())), E_USER_ERROR
+		);
+		return false;
+	}
 
-	do {
-		$ch = socket_read($socket, 1);
-		$line = $line . $ch;
-	} while ($ch != "\r" && $ch != "\n");
-
-	return $line;
+	return true;
 }
 
 /**
- * Send a request to the daemon.
+ * Send a command to i-MSCP daemon
  *
- * @return string Daemon answer
+ * @param resource &$socket
+ * @param string $command Command
+ * @return bool TRUE on success, FALSE otherwise
+ */
+function daemon_sendCommand(&$socket, $command)
+{
+	$command .= "\n";
+	$commandLength = strlen($command);
+
+	while (true) {
+		if (($bytesSent = @socket_write($socket, $command, $commandLength)) !== false) {
+			if ($bytesSent < $commandLength) {
+				$command = substr($command, $bytesSent);
+				$commandLength -= $bytesSent;
+			} else {
+				return true;
+			}
+		} else {
+			return false;
+		}
+	}
+
+	return false;
+}
+
+/**
+ * Send a request to the daemon
+ *
+ * @return bool TRUE on success, FALSE otherwise
  */
 function send_request()
 {
-	/** @var $cfg  iMSCP_Config_Handler_File */
-	$cfg = iMSCP_Registry::get('config');
+	if(
+		($socket = @socket_create(AF_INET, SOCK_STREAM, SOL_TCP)) !== false &&
+		@socket_connect($socket, '127.0.0.1', 9876) !== false
+	) {
+		$cfg = iMSCP_Registry::get('config')->Version;
 
-	//$code = 999;
+		if(
+			daemon_readAnswer($socket) && // Read Welcome message from i-MSCP daemon
+			daemon_sendCommand($socket, "helo {$cfg->Version}") && // Send helo command to i-MSCP daemon
+			daemon_readAnswer($socket) && // Read answer from i-MSCP daemon
+			daemon_sendCommand($socket, 'execute query') && // Send execute query command to i-MSCP daemon
+			daemon_readAnswer($socket) && // Read answer from i-MSCP daemon
+			daemon_sendCommand($socket, 'bye') && // Send bye command to i-MSCP daemon
+			daemon_readAnswer($socket) // Read answer from i-MSCP daemon
+		) {
+			$ret = true;
+		} else {
+			$ret = false;
+		}
 
-	@$socket = socket_create(AF_INET, SOCK_STREAM, 0);
-
-	if ($socket < 0) {
-		$errno = "socket_create() failed.\n";
-		return $errno;
+		socket_close($socket);
+	} else {
+		write_log(sprintf('Unable to send request: %s' . socket_strerror(socket_last_error())), E_USER_ERROR);
+		$ret = false;
 	}
 
-	@$result = socket_connect($socket, '127.0.0.1', 9876);
-
-	if ($result == false) {
-		$errno = "socket_connect() failed.\n";
-		return $errno;
-	}
-
-	// read one line with welcome string
-	$out = read_line($socket);
-
-	list($code) = explode(' ', $out);
-	if ($code == 999) {
-		return $out;
-	}
-
-	// send hello query
-	$query = "helo  {$cfg->Version}\r\n";
-	socket_write($socket, $query, strlen($query));
-
-	// read one line with helo answer
-	$out = read_line($socket);
-
-	list($code) = explode(' ', $out);
-
-	if ($code == 999) {
-		return $out;
-	}
-
-	// send reg check query
-	$query = "execute query\r\n";
-	socket_write($socket, $query, strlen($query));
-	// read one line key replay
-	$execute_reply = read_line($socket);
-
-	list($code) = explode(' ', $execute_reply);
-
-	if ($code == 999) {
-		return $out;
-	}
-
-	// send quit query
-	$quit_query = "bye\r\n";
-	socket_write($socket, $quit_query, strlen($quit_query));
-
-	// read quit answer
-	$quit_reply = read_line($socket);
-
-	list($code) = explode(' ', $quit_reply);
-
-	if ($code == 999) {
-		return $out;
-	}
-
-	list($answer) = explode(' ', $execute_reply);
-
-	socket_close($socket);
-
-	return $answer;
+	return $ret;
 }
 
 /***********************************************************************************************************************

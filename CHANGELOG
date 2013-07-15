@@ -35,6 +35,7 @@ Tickets:
 	- Fixed #808: Enhancement - Possibility to Upload i-MSCP Plugins via GUI
 	- Fixed #816: Bug - Unable to uninstall i-MSCP
 	- Fixed #819: Tasks - Clean up PHP Settings
+	- Fixed #831: Bug - imscp_daemon: send_line(): socket write error
 
 ------------------------------------------------------------------------------------------------------------------------
 1.1.0-rc2.3

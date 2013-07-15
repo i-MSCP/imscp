@@ -611,10 +611,13 @@ $rqstCount += debugger_countRequests('plugin_status', 'plugin');
 if (isset($_GET['action'])) {
 	if ($_GET['action'] == 'run_engine') {
 		if ($rqstCount > 0) {
-			$code = send_request();
-			set_page_message(tr('Daemon returned %d as status code', $code), 'info');
+			if(send_request()) {
+				set_page_message(tr('Daemon request successfull.'), 'success');
+			} else {
+				set_page_message(tr('Daemon request failed.'), 'error');
+			}
 		} else {
-			set_page_message(tr('Nothing to do. Daemon request has been canceled.', $code), 'warning');
+			set_page_message(tr('Nothing to do. Daemon request has been canceled.'), 'warning');
 		}
 		redirectTo('imscp_debugger.php');
 	} elseif ($_GET['action'] == 'change_status' && (isset($_GET['id']) && isset($_GET['type']))) {
