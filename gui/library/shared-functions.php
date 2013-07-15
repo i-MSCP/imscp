@@ -1980,7 +1980,7 @@ function send_request()
 		($socket = @socket_create(AF_INET, SOCK_STREAM, SOL_TCP)) !== false &&
 		@socket_connect($socket, '127.0.0.1', 9876) !== false
 	) {
-		$cfg = iMSCP_Registry::get('config')->Version;
+		$cfg = iMSCP_Registry::get('config');
 
 		if(
 			daemon_readAnswer($socket) && // Read Welcome message from i-MSCP daemon
