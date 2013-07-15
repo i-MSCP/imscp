@@ -2,30 +2,21 @@
 
 #define _TAKE_CONNECTION_H
 
-#include "defs.h"
-
+#include <stdlib.h>
 #include <unistd.h>
-
-/* str*() stuff ;) */
-
 #include <string.h>
 
-extern char client_ip [MAX_MSG_SIZE];
+#include "defs.h"
 
+extern char client_ip[MAX_MSG_SIZE];
 extern char *message(int message_number);
 
-extern void say(char *format, char *message);
+extern int sendLine(int fd, char *src, size_t len);
+extern int heloCommand(int fd);
+extern int lrCommand(int fd, char *msg);
+extern int byeCommand(int fd, char *msg);
+extern int receiveLine(int fd, char *dest, size_t n);
 
-extern int send_line(int fd, char *src, size_t len);
-
-extern int helo_cmd(int fd);
-
-extern int lr_cmd(int fd, char *msg);
-
-extern int bye_cmd(int fd, char *msg);
-
-extern int recv_line(int fd, char *dest, size_t n);
-
-void take_connection(int sockfd);
+void takeConnection(int sockfd);
 
 #endif

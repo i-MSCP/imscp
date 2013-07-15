@@ -2,22 +2,14 @@
 
 #define _HELO_CMD_H
 
-#include "defs.h"
-
-#include <sys/types.h>
-
 #include <stdlib.h>
-
-/* memset() struff; */
-
 #include <string.h>
 
-extern void say(char *format, char *message);
+#include "defs.h"
 
-extern int recv_line(int fd, char *dest, size_t n);
+extern int receiveLine(int fd, char *dest, size_t n);
+extern int heloSyntax(int fd, char *buffer);
 
-extern int helo_syntax(int fd, char *buff);
-
-int helo_cmd(int fd);
+int heloCommand(int fd);
 
 #endif

@@ -2,27 +2,13 @@
 
 #define _DAEMON_INIT_H
 
-/* signal() stiff */
-
-#include <signal.h>
-
-/* syslog() stuff */
-
-#include <syslog.h>
-
-/* fork() stuff */
-
-#include <sys/types.h>
+#include <stdlib.h>
 #include <unistd.h>
-
-/* umask() stuff */
-
+#include <signal.h>
+#include <syslog.h>
+#include <sys/types.h>
 #include <sys/stat.h>
 
-/* exit() stuff */
-
-#include <stdlib.h>
-
-void daemon_init(const char *pname, int facility);
+void daemonInit(const char *pname, int facility);
 
 #endif

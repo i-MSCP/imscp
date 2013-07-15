@@ -24,16 +24,12 @@
 # internet Multi Server Control Panel. All Rights Reserved.
 #
 # @category		i-MSCP
-# @copyright	2010 by i-MSCP | http://i-mscp.net
-# @author		Daniel Andreca <sci2tech@i-mscp.net>
-# @version		SVN: $Id$
+# @copyright	2010-2013 by i-MSCP | http://i-mscp.net
 # @link			http://i-mscp.net i-MSCP Home Site
 # @license		http://www.gnu.org/licenses/ GPL v2
 
 EXEC = imscp_daemon
-
 CC = gcc -ansi -Wstrict-prototypes -pedantic $(CFLAGS)
-
 CFLAGS = -g -O2
 
 OBJECTS = $(EXEC).o message.o daemon_init.o say.o signal-handlers.o\
@@ -52,4 +48,3 @@ clean:
 	rm -f *.o *~ $(EXEC)
 
 .PHONY: clean
-

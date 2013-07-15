@@ -2,18 +2,8 @@
 
 #define _BYE_CMD_H
 
-#include "defs.h"
+extern int byeSyntax(int fd, char *buffer);
 
-#include <sys/types.h>
-
-#include <stdlib.h>
-
-#include <string.h>
-
-extern int recv_line(int fd, char *dest, size_t n);
-
-extern int bye_syntax(int fd, char *buff);
-
-int bye_cmd(int fd, char *msg);
+int byeCommand(int fd, char *msg);
 
 #endif

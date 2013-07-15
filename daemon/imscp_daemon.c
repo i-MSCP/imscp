@@ -1,11 +1,7 @@
 #include "imscp_daemon.h"
 
-int getopt(int argc, char * const argv[], const char *optstring);
-extern char *optarg;
-extern int optind, opterr, optopt;
-
-int main(int argc, char **argv) {
-
+int main(int argc, char *argv[])
+{
 	int listenfd, c;
 	struct sockaddr_in  servaddr;
 
@@ -21,30 +17,30 @@ int main(int argc, char **argv) {
 	given_pid = 0;
 	pidfile_path = (char)'\0';
 
-	while ((c = getopt( argc, argv, "p:")) != EOF) {
-		switch( c ) {
+	while ((c = getopt(argc, argv, "p:")) != EOF) {
+		switch(c) {
 			case 'p':
 			    pidfile_path = optarg;
 			    given_pid = 1;
 			    break;
 		}
-    }
+	}
 
-	daemon_init(message(MSG_DAEMON_NAME), SYSLOG_FACILITY);
+	daemonInit(message(MSG_DAEMON_NAME), SYSLOG_FACILITY);
 
 	listenfd = socket(AF_INET, SOCK_STREAM, 0);
 
 	memset((void *) &servaddr, '\0', (size_t) sizeof(servaddr));
 
 	servaddr.sin_family = AF_INET;
-    servaddr.sin_addr.s_addr = htonl(0x7F000001);
+	servaddr.sin_addr.s_addr = htonl(0x7F000001);
 	/*servaddr.sin_addr.s_addr = inet_addr("127.0.0.1");*/
 	servaddr.sin_port = htons(SERVER_LISTEN_PORT);
 
-    if (bind(listenfd, (struct sockaddr *) &servaddr, sizeof(servaddr)) < 0) {
-        say(message(MSG_ERROR_BIND), strerror(errno));
+	if (bind(listenfd, (struct sockaddr *) &servaddr, sizeof(servaddr)) < 0) {
+		say(message(MSG_ERROR_BIND), strerror(errno));
 		exit(errno);
-    }
+	}
 
 	if (listen(listenfd, MAX_LISTENQ) < 0) {
 		say(message(MSG_ERROR_LISTEN), strerror(errno));
@@ -65,8 +61,8 @@ int main(int argc, char **argv) {
 	tv_snd -> tv_sec = 30;
 	tv_snd -> tv_usec = 0;
 
-	signal(SIGCHLD, sig_child);
-	signal(SIGPIPE, sig_pipe);
+	signal(SIGCHLD, sigChild);
+	signal(SIGPIPE, sigPipe);
 
 	if(given_pid) {
 		FILE *file = fopen(pidfile_path, "w");
@@ -80,7 +76,6 @@ int main(int argc, char **argv) {
 
 		if ((connfd = accept(listenfd, (struct sockaddr *) &cliaddr, &clilen)) < 0) {
 			if (errno == EINTR) {
-				say("%s", message(MSG_ERROR_EINTR));
 				continue;
 			} else {
 				say(message(MSG_ERROR_ACCEPT), strerror(errno));
@@ -106,7 +101,7 @@ int main(int argc, char **argv) {
 
 			say(message(MSG_START_CHILD), nmb);
 
-			take_connection(connfd);
+			takeConnection(connfd);
             free(nmb);
 
 			exit(0);

@@ -2,24 +2,16 @@
 
 #define _HELO_SYNTAX_H
 
-#include "defs.h"
-
-#include <sys/types.h>
-
 #include <stdlib.h>
-
 #include <string.h>
 
-#include <stdio.h>
+#include "defs.h"
 
 extern char client_ip[MAX_MSG_SIZE];
 
 extern char *message(int message_number);
+extern int sendLine(int fd, char *src, size_t len);
 
-extern void say(char *format, char *message);
-
-extern int send_line(int fd, char *src, size_t len);
-
-int helo_syntax(int fd, char *buff);
+int heloSyntax(int fd, char *buffer);
 
 #endif

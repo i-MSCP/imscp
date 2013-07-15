@@ -1,24 +1,23 @@
 #include "bye_syntax.h"
 
-int bye_syntax(int fd, char *buff) {
-
+int byeSyntax(int fd, char *buffer)
+{
 	char *ptr;
-	ptr = strstr(buff, message(MSG_BYE_CMD));
+	ptr = strstr(buffer, message(MSG_BYE_CMD));
 
-	if (ptr != buff) {
+	if (ptr != buffer) {
 		return (1);
 	} else {
-		char *bye_ans = calloc(MAX_MSG_SIZE, sizeof(char));
-		strcat(bye_ans, message(MSG_CMD_OK));
-		strcat(bye_ans, "Good Bye!\r\n");
+		char *bye_answer = calloc(MAX_MSG_SIZE, sizeof(char));
+		strcat(bye_answer, message(MSG_CMD_OK));
+		strcat(bye_answer, "Good Bye.\n");
 
-		if (send_line(fd, bye_ans,  strlen(bye_ans)) < 0) {
-			free(bye_ans);
-
+		if (sendLine(fd, bye_answer,  strlen(bye_answer)) < 0) {
+			free(bye_answer);
 			return (-1);
 		}
 
-		free(bye_ans);
+		free(bye_answer);
 	}
 
 	return (NO_ERROR);

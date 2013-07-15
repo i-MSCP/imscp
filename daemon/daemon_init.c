@@ -1,7 +1,7 @@
 #include "daemon_init.h"
 
-void daemon_init(const char *pname, int facility) {
-
+void daemonInit(const char *pname, int facility)
+{
 	int i;
 	pid_t pid;
 

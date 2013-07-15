@@ -1,36 +1,35 @@
 #include "take_connection.h"
 
-#include <stdlib.h>
-
-void take_connection(int sockfd) {
-
+void takeConnection(int sockfd)
+{
 	int status;
-	char *buff;
+	char *buffer;
 
 	/* chek for client ip */
+	/*
 	if (strcmp(client_ip, "127.0.0.1")) {
 		close(sockfd);
-
 		return;
 	}
+	*/
 
-	send_line(sockfd, message(MSG_WELCOME), strlen(message(MSG_WELCOME)));
+	sendLine(sockfd, message(MSG_WELCOME), strlen(message(MSG_WELCOME)));
 
-	if (helo_cmd(sockfd)) {
+	if (heloCommand(sockfd)) {
 		close(sockfd);
 		return;
 	}
 
-	buff = calloc(MAX_MSG_SIZE, sizeof(char));
+	buffer = calloc(MAX_MSG_SIZE, sizeof(char));
 
 	while (1) {
-		memset(buff, '\0', MAX_MSG_SIZE);
+		memset(buffer, '\0', MAX_MSG_SIZE);
 
-		if (recv_line(sockfd, buff, MAX_MSG_SIZE - 1) <= 0) {
-			free(buff);
+		if (receiveLine(sockfd, buffer, MAX_MSG_SIZE - 1) <= 0) {
+			free(buffer);
 			break;
 		} else {
-			status = lr_cmd(sockfd, buff);
+			status = lrCommand(sockfd, buffer);
 
 			/* if something went wrong break */
 			if (status <= -1) {
@@ -40,14 +39,9 @@ void take_connection(int sockfd) {
 				continue;
 			/* else: nothing happened, this command wasn't requested */
 			} else {
-				status = bye_cmd(sockfd, buff);
+				status = byeCommand(sockfd, buffer);
 
-				if (status <= 0 ||
-					send_line(
-						sockfd,
-						message(MSG_BAD_SYNTAX),
-						strlen(message(MSG_BAD_SYNTAX))
-					) < 0) {
+				if (status <= 0 || sendLine(sockfd, message(MSG_BAD_SYNTAX), strlen(message(MSG_BAD_SYNTAX))) < 0) {
 					break;
 				}
 			}
