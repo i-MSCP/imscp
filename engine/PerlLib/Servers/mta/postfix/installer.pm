@@ -155,28 +155,28 @@ sub setEnginePermissions
 	# eg. /etc/postfix/imscp
 	$rs = setRights(
 		$mtaCfg,
-		{ 'user' => $rootUName, 'group' => $rootGName, 'dirmode' => '0755', 'filemode' => '0644', 'recursive' => 'yes' }
+		{ 'user' => $rootUName, 'group' => $rootGName, 'dirmode' => '0755', 'filemode' => '0644', 'recursive' => 1 }
 	);
 	return $rs if $rs;
 
 	# eg. /var/www/imscp/engine/messenger
 	$rs = setRights(
 		"$imscpRootDir/engine/messenger",
-		{ 'user' => $rootUName, 'group' => $masterGName, 'dirmode' => '0750', 'filemode' => '0750', 'recursive' => 'yes' }
+		{ 'user' => $rootUName, 'group' => $masterGName, 'dirmode' => '0750', 'filemode' => '0750', 'recursive' => 1 }
 	);
 	return $rs if $rs;
 
 	# eg. /var/log/imscp/imscp-arpl-msgr
 	$rs = setRights(
 		"$logDir/imscp-arpl-msgr",
-		{ 'user' => $mtaUName, 'group' => $mtaGName, 'dirmode' => '0750', 'filemode' => '0640', 'recursive' => 'yes' }
+		{ 'user' => $mtaUName, 'group' => $mtaGName, 'dirmode' => '0750', 'filemode' => '0640', 'recursive' => 1 }
 	);
 	return $rs if $rs;
 
 	# eg. /var/mail/virtual
 	$rs = setRights(
 		$mtaFolder,
-		{ 'user' => $mtaUName, 'group' => $mtaGName, 'dirmode' => '0750', 'filemode' => '0640', 'recursive' => 'yes' }
+		{ 'user' => $mtaUName, 'group' => $mtaGName, 'dirmode' => '0750', 'filemode' => '0640', 'recursive' => 1 }
 	);
 	return $rs if $rs;
 

@@ -227,7 +227,7 @@ sub setGuiPermissions
 
 	setRights(
 		"$rootDir/gui/public/tools/pma",
-		{ 'user' => $panelUName, 'group' => $apacheGName, 'dirmode' => '0550', 'filemode' => '0440', 'recursive' => 'yes' }
+		{ 'user' => $panelUName, 'group' => $apacheGName, 'dirmode' => '0550', 'filemode' => '0440', 'recursive' => 1 }
 	);
 }
 

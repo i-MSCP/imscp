@@ -80,18 +80,6 @@ mailman   unix  -       n       n       -       -       pipe
   flags=FR user=list argv=/usr/lib/mailman/bin/postfix-to-mailman.py
   ${nexthop} ${user}
 
-localhost:10025 inet  n -       n       -      -        smtpd
-  -o content_filter=
-  -o local_recipient_maps=
-  -o relay_recipient_maps=
-  -o smtpd_restriction_classes=
-  -o smtpd_client_restrictions=
-  -o smtpd_helo_restrictions=
-  -o smtpd_sender_restrictions=
-  -o smtpd_recipient_restrictions=permit_mynetworks,reject
-  -o mynetworks=127.0.0.0/8
-  -o strict_rfc821_envelopes=yes
-
 # i-MSCP autoresponder
 imscp-arpl unix  -      n       n       -       -       pipe
   flags=O user={ARPL_USER}:{ARPL_GROUP} argv={ARPL_PATH} $recipient

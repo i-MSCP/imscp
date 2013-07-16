@@ -43,21 +43,15 @@ sub setRights
 	$options = {} if ref $options ne 'HASH';
 
 	my  @dchmod = (
-		"find $file -type d -print0 | xargs",
-		($^O !~ /bsd$/ ? '-r' : ''),
-		"-0 chmod $options->{'dirmode'}"
+		"find $file -type d -print0 | xargs", ($^O !~ /bsd$/ ? '-r' : ''), "-0 chmod $options->{'dirmode'}"
 	) if $options->{'dirmode'};
 
 	my  @fchmod = (
-		"find $file -type f -print0 | xargs",
-		($^O !~ /bsd$/ ? '-r' : ''),
-		"-0 chmod $options->{'filemode'}"
+		"find $file -type f -print0 | xargs", ($^O !~ /bsd$/ ? '-r' : ''), "-0 chmod $options->{'filemode'}"
 	) if $options->{'filemode'};
 
 	my  @chmod = (
-		$main::imscpConfig{'CMD_CHMOD'},
-		($options->{'recursive'} ? '-R' : ''),
-		"$options->{'mode'} $file"
+		$main::imscpConfig{'CMD_CHMOD'}, ($options->{'recursive'} ? '-R' : ''), "$options->{'mode'} $file"
 	) if $options->{'mode'};
 
 	my  @chown = (

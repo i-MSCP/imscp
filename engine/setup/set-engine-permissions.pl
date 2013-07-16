@@ -88,7 +88,7 @@ sub process
 
 	my $rs = setRights(
 		$confDir,
-		{ 'user' => $rootUName, 'group' => $rootGName, 'dirmode' => '0750', 'filemode' => '0640', 'recursive' => 'yes' }
+		{ 'user' => $rootUName, 'group' => $rootGName, 'dirmode' => '0750', 'filemode' => '0640', 'recursive' => 1 }
 	);
 	return $rs if $rs;
 
@@ -99,7 +99,7 @@ sub process
 	return $rs if $rs;
 
 	$rs = setRights(
-		"$rootDir/engine", { 'user' => $rootUName, group => $masterGName, 'mode' => '0750', 'recursive' => 'yes'}
+		"$rootDir/engine", { 'user' => $rootUName, 'group' => $masterGName, 'mode' => '0750', 'recursive' => 1 }
 	);
 	return $rs if $rs;
 

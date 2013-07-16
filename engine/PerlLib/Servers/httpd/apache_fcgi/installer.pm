@@ -276,13 +276,13 @@ sub setGuiPermissions
 
 	$rs = setRights(
 		"$guiRootDir/i18n",
-		{ 'user' => $panelUName, 'group' => $panelGName, 'dirmode' => '0700', 'filemode' => '0600', recursive => 1 }
+		{ 'user' => $panelUName, 'group' => $panelGName, 'dirmode' => '0700', 'filemode' => '0600', 'recursive' => 1 }
 	);
 	return $rs if $rs;
 
 	$rs = setRights(
 		"$guiRootDir/plugins",
-		{ 'user' => $panelUName, 'group' => $panelGName, 'dirmode' => '0700', 'filemode' => '0600', recursive => 1 }
+		{ 'user' => $panelUName, 'group' => $panelGName, 'dirmode' => '0700', 'filemode' => '0600', 'recursive' => 1 }
 	);
 	return $rs if $rs;
 
