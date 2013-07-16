@@ -40,7 +40,7 @@ use iMSCP::File;
 use File::Basename;
 use parent 'Common::SingletonClass';
 
-our $VERSION = '0.2.0';
+our $VERSION = '0.2.1';
 
 =head1 DESCRIPTION
 
