@@ -220,10 +220,10 @@ function reseller_updateDomainAlias($tpl, $alsId)
 
 	if (!Zend_Session::namespaceIsset('pageMessages')) {
 		$query = "UPDATE `domain_aliasses` SET `url_forward` = ?, `alias_status` = ? WHERE `alias_id` = ?";
-		exec_query($query, array($forward, $cfg->ITEM_CHANGE_STATUS, $alsId));
+		exec_query($query, array($forward, $cfg->ITEM_TOCHANGE_STATUS, $alsId));
 
 		$query = "UPDATE `subdomain_alias` SET `subdomain_alias_status` = ? WHERE `alias_id` = ?";
-		exec_query($query, array($cfg->ITEM_CHANGE_STATUS, $alsId));
+		exec_query($query, array($cfg->ITEM_TOCHANGE_STATUS, $alsId));
 
 		send_request();
 		return true;

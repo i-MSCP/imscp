@@ -649,7 +649,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	{
 		$sqlUpd = array();
 
-		$status = iMSCP_Registry::get('config')->ITEM_CHANGE_STATUS;
+		$status = iMSCP_Registry::get('config')->ITEM_TOCHANGE_STATUS;
 
 		/** @var $db iMSCP_Database */
 		$db = iMSCP_Registry::get('db');
