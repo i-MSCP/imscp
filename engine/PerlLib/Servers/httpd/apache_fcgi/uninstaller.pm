@@ -142,7 +142,7 @@ sub fastcgiConf
 	# try to disable but do not fail if do not exists
 	my $rs = 0;
 	for('fastcgi_imscp', 'fcgid_imscp') {
-		$rs = $self->{'httpd'}->disableMod($_) if -f "$self::apacheConfig{'APACHE_MODS_DIR'}/$_.load";
+		$rs = $httpd->disableMod($_) if -f "$self::apacheConfig{'APACHE_MODS_DIR'}/$_.load";
 		return $rs if $rs;
 	}
 	
