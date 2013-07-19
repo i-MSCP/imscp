@@ -103,8 +103,8 @@ function get_init_au2_page($tpl, $phpini)
 	$tplVars['VL_SOFTWAREY'] = ($aps == '_yes_') ? $htmlChecked : '';
 	$tplVars['VL_SOFTWAREN'] = ($aps == '_no_') ? $htmlChecked : '';
 
-	$tplVars['VL_WEB_FOLDER_PROTECTION_YES'] = ($webFolderProtection == 'yes') ? $htmlChecked : '';
-	$tplVars['VL_WEB_FOLDER_PROTECTION_NO'] = ($webFolderProtection == 'no') ? $htmlChecked : '';
+	$tplVars['VL_WEB_FOLDER_PROTECTION_YES'] = ($webFolderProtection == '_yes_') ? $htmlChecked : '';
+	$tplVars['VL_WEB_FOLDER_PROTECTION_NO'] = ($webFolderProtection == '_no_') ? $htmlChecked : '';
 
 	if ($phpini->getRePermVal('phpiniSystem') == 'yes') {
 		$tplVars['PHP_EDITOR_YES'] = ($phpini->getClPermVal('phpiniSystem') == 'yes') ? $htmlChecked : '';
@@ -215,7 +215,7 @@ function reseller_getHostingPlanData($hpid, $resellerId, $phpini)
 			list(
 				$php, $cgi, $sub, $als, $mail, $ftp, $sqlDb, $sqlUser, $traffic, $diskSpace, $backup, $dns, $aps,
 				$phpEditor, $phpiniAllowUrlFopen, $phpiniDisplayErrors, $phpiniDisableFunctions, $phpiniPostMaxSize,
-				$phpiniUploadMaxFileSize, $phpiniMaxExecutionTime, $phpiniMaxInputTime, $phpiniMemoryLimit, $extMailServer
+				$phpiniUploadMaxFileSize, $phpiniMaxExecutionTime, $phpiniMaxInputTime, $phpiniMemoryLimit, $extMailServer, $webFolderProtection
 			) = explode(';', $props);
 
 			$hpName = $data['name'];
@@ -542,7 +542,7 @@ if (isset($_POST['uaction']) && ('user_add2_nxt' == $_POST['uaction']) && (!isse
 			$phpini->getDataVal('phpiniMaxExecutionTime') . ';' .
 			$phpini->getDataVal('phpiniMaxInputTime') . ';' .
 			$phpini->getDataVal('phpiniMemoryLimit') . ';' .
-			$extMailServer;
+			$extMailServer . ';' . $webFolderProtection;
 
 		if (reseller_limits_check($_SESSION['user_id'], $_SESSION['ch_hpprops'])) {
 			redirectTo('user_add3.php');

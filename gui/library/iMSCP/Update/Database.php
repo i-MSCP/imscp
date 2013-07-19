@@ -2106,4 +2106,16 @@ class iMSCP_Update_Database extends iMSCP_Update
 	{
 		return "DELETE FROM `config` WHERE `name` IN('PORT_AMAVIS', 'PORT_SPAMASSASSIN')";
 	}
+	
+	/**
+	 * Adds the protected webfolder to the hostingplans
+	 *
+	 * @return array Stack of SQL statements to be executed
+	 */
+	protected function _databaseUpdate_143()
+	{
+		return array(
+			"UPDATE `hosting_plans` SET `props` = CONCAT(`props`, ';_no_')"
+		);
+	}
 }

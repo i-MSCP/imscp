@@ -174,7 +174,7 @@
             <!-- BDP: php_editor_feature -->
             <tr id="php_editor_block">
                 <td><label>{TR_PHP_EDITOR}</label></td>
-                <td colspan="2">
+                <td>
                     <div class="radio">
                         <input type="radio" name="phpiniSystem" id="phpiniSystemYes" value="yes"{PHP_EDITOR_YES}/>
                         <label for="phpiniSystemYes">{TR_YES}</label>
@@ -274,7 +274,7 @@
                 </td>
             </tr>
             <!-- EDP: php_editor_feature -->
-			<!-- BDP: cgi_feature -->
+		<!-- BDP: cgi_feature -->
             <tr>
                 <td>{TR_CGI}</td>
                 <td>
@@ -286,8 +286,8 @@
                     </div>
                 </td>
             </tr>
-			<!-- BDP: cgi_feature -->
-			<!-- BPD: custom_dns_feature -->
+		<!-- BDP: cgi_feature -->
+		<!-- BPD: custom_dns_feature -->
             <tr>
                 <td>{TR_DNS}</td>
                 <td>
@@ -299,7 +299,7 @@
                     </div>
                 </td>
             </tr>
-			<!--EDP: custom_dns_feature -->
+		<!--EDP: custom_dns_feature -->
             <!-- BDP: aps_feature -->
             <tr>
                 <td>{TR_SOFTWARE_SUPP}</td>
@@ -313,7 +313,7 @@
                 </td>
             </tr>
             <!-- EDP: aps_feature -->
-			<!-- BDP: ext_mail_feature -->
+		<!-- BDP: ext_mail_feature -->
             <tr>
                 <td>{TR_EXTMAIL}</td>
                 <td>
@@ -325,24 +325,38 @@
                     </div>
                 </td>
             </tr>
-			<!-- EDP: ext_mail_feature -->
-			<!-- BDP: backup_feature -->
-			<tr>
-				<td>{TR_BACKUP}</td>
-				<td>
-					<div class="radio">
-						<input type="radio" name="hp_backup" value="_dmn_" id="hp_backup_dmn"{VL_BACKUPD}/>
-						<label for="hp_backup_dmn">{TR_BACKUP_DOMAIN}</label>
-						<input type="radio" name="hp_backup" value="_sql_" id="hp_backup_sql"{VL_BACKUPS}/>
-						<label for="hp_backup_sql">{TR_BACKUP_SQL}</label>
-						<input type="radio" name="hp_backup" value="_full_" id="hp_backup_full"{VL_BACKUPF}/>
-						<label for="hp_backup_full">{TR_BACKUP_FULL}</label>
-						<input type="radio" name="hp_backup" value="_no_" id="hp_backup_none"{VL_BACKUPN}/>
-						<label for="hp_backup_none">{TR_BACKUP_NO}</label>
-					</div>
-				</td>
-			</tr>
-			<!-- EDP: backup_feature -->
+		<!-- EDP: ext_mail_feature -->
+		<tr>
+			<td>
+				<label>{TR_PROTECT_WEB_FOLDERS}</label>
+				<span style="vertical-align:middle" class="icon i_help" id="web_folder_protection_help" title="{TR_WEB_FOLDER_PROTECTION_HELP}">{TR_HELP}</span>
+			</td>
+			<td>
+				<div class="radio">
+					<input type="radio" name="hp_protected_webfolders" value="_yes_" id="hp_protected_webfolders_yes"{TR_PROTECT_WEB_FOLDERS_YES}/>
+					<label for="hp_protected_webfolders_yes">{TR_YES}</label>
+					<input type="radio" name="hp_protected_webfolders" value="_no_" id="hp_protected_webfolders_no"{TR_PROTECT_WEB_FOLDERS_NO}/>
+					<label for="hp_protected_webfolders_no">{TR_NO}</label>
+				</div>
+			</td>
+            </tr>
+		<!-- BDP: backup_feature -->
+		<tr>
+			<td>{TR_BACKUP}</td>
+			<td>
+				<div class="radio">
+					<input type="radio" name="hp_backup" value="_dmn_" id="hp_backup_dmn"{VL_BACKUPD}/>
+					<label for="hp_backup_dmn">{TR_BACKUP_DOMAIN}</label>
+					<input type="radio" name="hp_backup" value="_sql_" id="hp_backup_sql"{VL_BACKUPS}/>
+					<label for="hp_backup_sql">{TR_BACKUP_SQL}</label>
+					<input type="radio" name="hp_backup" value="_full_" id="hp_backup_full"{VL_BACKUPF}/>
+					<label for="hp_backup_full">{TR_BACKUP_FULL}</label>
+					<input type="radio" name="hp_backup" value="_no_" id="hp_backup_none"{VL_BACKUPN}/>
+					<label for="hp_backup_none">{TR_BACKUP_NO}</label>
+				</div>
+			</td>
+		</tr>
+		<!-- EDP: backup_feature -->
             </table>
             <table class="firstColFixed">
                 <tr>

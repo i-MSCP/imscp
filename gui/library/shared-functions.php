@@ -868,7 +868,7 @@ function syncHostingPlans($resellerId)
 			list(
 				$php, $cgi, $sub, $als, $mail, $ftp, $sqlD, $sqlU, $traffic, $disks, $backup, $customDns, $aps,
 				$phpEditor, $phpAllowUrlFopen, $phpDisplayErrors, $phpDisableFunctions, $phpPostMaxSize,
-				$phpUploadMaxFilesize, $phpMaxExecutionTime, $phpMaxInputTime, $phpMemoryLimit, $extMailServer
+				$phpUploadMaxFilesize, $phpMaxExecutionTime, $phpMaxInputTime, $phpMemoryLimit, $extMailServer, $protectedWebFolders
 				) = explode(';', $stmt->fields['props']);
 
 			// Synced hosting plan properties
@@ -901,7 +901,8 @@ function syncHostingPlans($resellerId)
 				? $phpMaxInputTime : $rp['php_ini_max_max_input_time'];
 			$sp[] = ($phpMemoryLimit <= $rp['php_ini_max_memory_limit'])
 				? $phpMemoryLimit : $rp['php_ini_max_memory_limit'];
-			$sp[] = $extMailServer; // // Always available for reseller
+			$sp[] = $extMailServer; // Always available for reseller
+			$sp[] = $protectedWebFolders; // Always available for reseller
 
 			$query = "UPDATE `hosting_plans` SET `props` = ? WHERE id = ?";
 			exec_query($query, array(implode(';', $sp), $stmt->fields['id']));
