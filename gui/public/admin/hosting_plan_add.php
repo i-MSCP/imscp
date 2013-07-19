@@ -145,6 +145,8 @@ function admin_generatePage($tpl, $phpini)
 			'TR_SOFTWARE_NO' => $checked,
 			'TR_EXTMAIL_YES' => '',
 			'TR_EXTMAIL_NO' => $checked,
+			'TR_PROTECT_WEB_FOLDERS_YES' => '',
+			'TR_PROTECT_WEB_FOLDERS_NO' => $checked,
 
 			'TR_STATUS_YES' => $checked,
 			'TR_STATUS_NO' => '',
@@ -177,7 +179,7 @@ function admin_generatePage($tpl, $phpini)
 function admin_generateErrorPage($tpl, $phpini)
 {
 	global $name, $description, $sub, $als, $mail, $ftp, $sqld, $sqlu, $traffic, $diskSpace, $php, $cgi, $backup, $dns,
-		$aps, $extMail, $status;
+		$aps, $extMail, $protectedWebFolders, $status;
 
 	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
@@ -207,6 +209,9 @@ function admin_generateErrorPage($tpl, $phpini)
 			'TR_SOFTWARE_NO' => ($aps == '_no_') ? $checked : '',
 			'TR_EXTMAIL_YES' => ($extMail == '_yes_') ? $checked : '',
 			'TR_EXTMAIL_NO' => ($extMail == '_no_') ? $checked : '',
+			'TR_PROTECT_WEB_FOLDERS_YES' => ($protectedWebFolders == '_yes_') ? $checked : '',
+			'TR_PROTECT_WEB_FOLDERS_NO' => ($protectedWebFolders == '_no_') ? $checked : '',
+			
 
 			'TR_STATUS_YES' => ($status) ? $checked : '',
 			'TR_STATUS_NO' => (!$status) ? $checked : ''
@@ -238,7 +243,7 @@ function admin_generateErrorPage($tpl, $phpini)
 function admin_checkData($phpini)
 {
 	global $name, $description, $sub, $als, $mail, $ftp, $sqld, $sqlu, $traffic, $diskSpace, $php, $cgi, $dns, $backup,
-		$aps, $extMail, $status;
+		$aps, $extMail, $protectedWebFolders, $status;
 
 	$name = isset($_POST['hp_name']) ? clean_input($_POST['hp_name']) : '';
 	$description = isset($_POST['hp_description']) ? clean_input($_POST['hp_description']) : '';
@@ -258,6 +263,7 @@ function admin_checkData($phpini)
 	$backup = isset($_POST['hp_backup']) ? clean_input($_POST['hp_backup']) : '_no_';
 	$aps = isset($_POST['hp_softwares_installer']) ? clean_input($_POST['hp_softwares_installer']) : '_no_';
 	$extMail = isset($_POST['hp_external_mail']) ? clean_input($_POST['hp_external_mail']) : '_no_';
+	$protectedWebFolders = isset($_POST['hp_protected_webfolders']) ? clean_input($_POST['hp_protected_webfolders']) : '_no_';
 
 	$status = isset($_POST['hp_status']) ? clean_input($_POST['hp_status']) : '0';
 
@@ -267,6 +273,7 @@ function admin_checkData($phpini)
 	$backup = (in_array($backup, array('_full_', '_dmn_', '_sql_'))) ? $backup : '_no_';
 	$aps = ($aps == '_yes_') ? '_yes_' : '_no_';
 	$extMail = ($extMail == '_yes_') ? '_yes_' : '_no_';
+	$protectedWebFolders = ($protectedWebFolders == '_yes_') ? '_yes_' : '_no_';
 
 	if ($name == '') set_page_message(tr('Name cannot be empty.'), 'error');
 	if ($description == '') set_page_message(tr('Description cannot be empty.'), 'error');
@@ -379,7 +386,7 @@ function admin_checkData($phpini)
 function admin_addHostingPlan($adminId, $phpini)
 {
 	global $name, $description, $sub, $als, $mail, $ftp, $sqld, $sqlu, $traffic, $diskSpace, $php, $cgi, $dns, $backup,
-		$aps, $extMail, $status;
+		$aps, $extMail, $protectedWebFolders, $status;
 
 	$query = "
 		SELECT
@@ -404,7 +411,7 @@ function admin_addHostingPlan($adminId, $phpini)
 	$hpProps .= ';' . $phpini->getClPermVal('phpiniDisplayErrors') . ';' . $phpini->getClPermVal('phpiniDisableFunctions');
 	$hpProps .= ';' . $phpini->getDataVal('phpiniPostMaxSize') . ';' . $phpini->getDataVal('phpiniUploadMaxFileSize');
 	$hpProps .= ';' . $phpini->getDataVal('phpiniMaxExecutionTime') . ';' . $phpini->getDataVal('phpiniMaxInputTime');
-	$hpProps .= ';' . $phpini->getDataVal('phpiniMemoryLimit') . ';' . $extMail;
+	$hpProps .= ';' . $phpini->getDataVal('phpiniMemoryLimit') . ';' . $extMail . ';' . $protectedWebFolders;
 
 	$query = "
 		INSERT INTO `hosting_plans`(
@@ -488,13 +495,15 @@ if (isset($cfg->HOSTING_PLANS_LEVEL) && $cfg->HOSTING_PLANS_LEVEL == 'admin') {
 			'TR_BACKUP_NO' => tr('No'),
 			'TR_SOFTWARE_SUPP' => tr('Software installer'),
 			'TR_EXTMAIL' => tr('External mail server'),
+			'TR_PROTECT_WEB_FOLDERS' => tr('Protect Web folders'),
 
 			'TR_HP_AVAILABILITY' => tr('Hosting plan availability'),
 			'TR_STATUS' => tr('Available'),
 
 			'TR_YES' => tr('yes'),
 			'TR_NO' => tr('no'),
-			'TR_ADD' => tr('Add')
+			'TR_ADD' => tr('Add'),
+			'TR_WEB_FOLDER_PROTECTION_HELP' => tr("If set to 'yes', Web folders as provisioned by i-MSCP will be protected against deletion using the immutable flag (Extended attributes).")
 		)
 	);
 

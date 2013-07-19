@@ -174,7 +174,7 @@
             <!-- BDP: php_editor_feature -->
             <tr id="php_editor_block">
                 <td><label>{TR_PHP_EDITOR}</label></td>
-                <td colspan="2">
+                <td>
                     <div class="radio">
                         <input type="radio" name="phpiniSystem" id="phpiniSystemYes" value="yes"{PHP_EDITOR_YES}{DISABLED}/>
                         <label for="phpiniSystemYes">{TR_YES}</label>
@@ -312,36 +312,50 @@
                 </td>
             </tr>
             <!-- EDP: aps_feature -->
-			<!-- BDP: ext_mail_feature -->
+		<!-- BDP: ext_mail_feature -->
             <tr>
-                <td>{TR_EXTMAIL}</td>
-                <td>
-                    <div class="radio">
-                        <input type="radio" name="hp_external_mail" value="_yes_" id="hp_extmail_yes"{EXTMAIL_YES}{DISABLED}/>
-                        <label for="hp_extmail_yes">{TR_YES}</label>
-                        <input type="radio" name="hp_external_mail" value="_no_" id="hp_extmail_no"{EXTMAIL_NO}{DISABLED}/>
-                        <label for="hp_extmail_no">{TR_NO}</label>
-                    </div>
-                </td>
+			<td>{TR_EXTMAIL}</td>
+			<td>
+				<div class="radio">
+					<input type="radio" name="hp_external_mail" value="_yes_" id="hp_extmail_yes"{EXTMAIL_YES}{DISABLED}/>
+					<label for="hp_extmail_yes">{TR_YES}</label>
+					<input type="radio" name="hp_external_mail" value="_no_" id="hp_extmail_no"{EXTMAIL_NO}{DISABLED}/>
+					<label for="hp_extmail_no">{TR_NO}</label>
+				</div>
+			</td>
             </tr>
-			<!-- EDP: ext_mail_feature -->
-			<!-- BDP: backup_feature -->
-			<tr>
-				<td>{TR_BACKUP}</td>
-				<td>
-					<div class="radio">
-						<input type="radio" name="hp_backup" value="_dmn_" id="hp_backup_dmn"{BACKUPD}{DISABLED}/>
-						<label for="hp_backup_dmn">{TR_BACKUP_DOMAIN}</label>
-						<input type="radio" name="hp_backup" value="_sql_" id="hp_backup_sql"{BACKUPS}{DISABLED}/>
-						<label for="hp_backup_sql">{TR_BACKUP_SQL}</label>
-						<input type="radio" name="hp_backup" value="_full_" id="hp_backup_full"{BACKUPF}{DISABLED}/>
-						<label for="hp_backup_full">{TR_BACKUP_FULL}</label>
-						<input type="radio" name="hp_backup" value="_no_" id="hp_backup_none"{BACKUPN}{DISABLED}/>
-						<label for="hp_backup_none">{TR_BACKUP_NO}</label>
-					</div>
-				</td>
-			</tr>
-			<!-- EDP: backup_feature -->
+		<tr>
+			<td>
+				<label>{TR_PROTECT_WEB_FOLDERS}</label>
+				<span style="vertical-align:middle" class="icon i_help" id="web_folder_protection_help" title="{TR_WEB_FOLDER_PROTECTION_HELP}">{TR_HELP}</span>
+			</td>
+			<td>
+				<div class="radio">
+					<input type="radio" name="hp_protected_webfolders" value="_yes_" id="hp_protected_webfolders_yes"{PROTECT_WEB_FOLDERS_YES}{DISABLED}/>
+					<label for="hp_protected_webfolders_yes">{TR_YES}</label>
+					<input type="radio" name="hp_protected_webfolders" value="_no_" id="hp_protected_webfolders_no"{PROTECT_WEB_FOLDERS_NO}{DISABLED}/>
+					<label for="hp_protected_webfolders_no">{TR_NO}</label>
+				</div>
+			</td>
+            </tr>
+		<!-- EDP: ext_mail_feature -->
+		<!-- BDP: backup_feature -->
+		<tr>
+			<td>{TR_BACKUP}</td>
+			<td>
+				<div class="radio">
+					<input type="radio" name="hp_backup" value="_dmn_" id="hp_backup_dmn"{BACKUPD}{DISABLED}/>
+					<label for="hp_backup_dmn">{TR_BACKUP_DOMAIN}</label>
+					<input type="radio" name="hp_backup" value="_sql_" id="hp_backup_sql"{BACKUPS}{DISABLED}/>
+					<label for="hp_backup_sql">{TR_BACKUP_SQL}</label>
+					<input type="radio" name="hp_backup" value="_full_" id="hp_backup_full"{BACKUPF}{DISABLED}/>
+					<label for="hp_backup_full">{TR_BACKUP_FULL}</label>
+					<input type="radio" name="hp_backup" value="_no_" id="hp_backup_none"{BACKUPN}{DISABLED}/>
+					<label for="hp_backup_none">{TR_BACKUP_NO}</label>
+				</div>
+			</td>
+		</tr>
+		<!-- EDP: backup_feature -->
             </table>
             <table class="firstColFixed">
                 <tr>
