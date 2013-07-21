@@ -2118,4 +2118,19 @@ class iMSCP_Update_Database extends iMSCP_Update
 			"UPDATE `hosting_plans` SET `props` = CONCAT(`props`, ';_no_')"
 		);
 	}
+
+	/**
+	 * Update sql_user.sqlu_name column
+	 *
+	 * @return string SQL statement to be e executed
+	 */
+	protected  function _databaseUpdate_144()
+	{
+		return "
+			ALTER TABLE
+				`sql_user`
+			CHANGE
+				`sqlu_name` `sqlu_name` VARCHAR(16) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT 'n/a'
+		";
+	}
 }

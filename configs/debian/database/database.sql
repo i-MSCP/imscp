@@ -82,7 +82,7 @@ INSERT IGNORE INTO `config` (`name`, `value`) VALUES
 ('PREVENT_EXTERNAL_LOGIN_ADMIN', '1'),
 ('PREVENT_EXTERNAL_LOGIN_RESELLER', '1'),
 ('PREVENT_EXTERNAL_LOGIN_CLIENT', '1'),
-('DATABASE_REVISION', '143'),
+('DATABASE_REVISION', '144'),
 ('PHPINI_ALLOW_URL_FOPEN', 'off'),
 ('PHPINI_DISPLAY_ERRORS', 'off'),
 ('PHPINI_UPLOAD_MAX_FILESIZE', '10'),
@@ -592,7 +592,7 @@ CREATE TABLE IF NOT EXISTS `sql_database` (
 CREATE TABLE IF NOT EXISTS `sql_user` (
   `sqlu_id` int(10) unsigned NOT NULL auto_increment,
   `sqld_id` int(10) unsigned default '0',
-  `sqlu_name` varchar(64) collate utf8_unicode_ci default 'n/a',
+  `sqlu_name` varchar(16) collate utf8_unicode_ci default 'n/a',
   `sqlu_pass` varchar(64) collate utf8_unicode_ci default 'n/a',
   PRIMARY KEY (`sqlu_id`),
   KEY `sqld_id` (`sqld_id`)
