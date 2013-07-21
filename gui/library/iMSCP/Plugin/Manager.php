@@ -753,7 +753,7 @@ class iMSCP_Plugin_Manager
 						// Is a plugin already known by plugin manager?
 						if(isset($knownPluginsData[$pluginName])) {
 							$pluginStatus = $knownPluginsData[$pluginName]['plugin_status'];
-							$knownPluginInfo = unserialize($knownPluginsData[$pluginName]['plugin_info']);
+							$knownPluginInfo = json_decode($knownPluginsData[$pluginName]['plugin_info'], true);
 
 							// If the plugin has been already installed, schedule update if needed
 							if(
@@ -772,12 +772,12 @@ class iMSCP_Plugin_Manager
 						$pluginData = array(
 							'name' => $pluginName,
 							'type' => $pluginInstance->getType(),
-							'info' => serialize($pluginInfo),
+							'info' => json_encode($pluginInfo),
 							// TODO review this when plugin settings interface will be ready
 							// For now, when we update plugin list, we override parameters with those
 							// found in default configuration file. This behavior will change when settings interface
 							// will be ready
-							'config' => serialize($pluginInstance->getDefaultConfig()),
+							'config' => json_encode($pluginInstance->getDefaultConfig()),
 							'status' => $pluginStatus,
 							'backend' => $pluginBackend
 						);

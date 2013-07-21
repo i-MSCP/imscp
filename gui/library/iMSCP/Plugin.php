@@ -245,7 +245,7 @@ abstract class iMSCP_Plugin
 		$stmt = exec_query('SELECT `plugin_config` FROM `plugin` WHERE `plugin_name` = ?', $this->getName());
 
 		if ($stmt->rowCount()) {
-			$this->_config = unserialize($stmt->fetchRow(PDO::FETCH_COLUMN));
+			$this->_config = json_decode($stmt->fetchRow(PDO::FETCH_COLUMN), true);
 
 			foreach ($default as $parameter => $value) {
 				if (isset($this->_config[$parameter])) {

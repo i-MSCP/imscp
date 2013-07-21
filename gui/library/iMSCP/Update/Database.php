@@ -2133,4 +2133,45 @@ class iMSCP_Update_Database extends iMSCP_Update
 				`sqlu_name` `sqlu_name` VARCHAR(16) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT 'n/a'
 		";
 	}
+
+	/**
+	 * Store plugins info and config as json data instead of serialized data
+	 *
+	 * @return array Sql statements to be executed
+	 */
+	protected function _databaseUpdate_145()
+	{
+		$sqlUdp = array();
+
+		$stmt = exec_query('SELECT `plugin_id`, `plugin_info`, `plugin_config` FROM `plugin`');
+
+		if ($stmt->rowCount()) {
+			$db = iMSCP_Database::getRawInstance();
+
+			while ($row = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
+				if (!isJson($row['plugin_info'])) {
+					$pluginInfo = $db->quote(json_encode(unserialize($row['plugin_info'])));
+				} else {
+					$pluginInfo = $db->quote($row['plugin_info']);
+				}
+
+				if (!isJson($row['plugin_config'])) {
+					$pluginConfig = $db->quote(json_encode(unserialize($row['plugin_config'])));
+				} else {
+					$pluginConfig = $db->quote($row['plugin_config']);
+				}
+
+				$sqlUdp[] = "
+					UPDATE
+						`plugin`
+					SET
+						`plugin_info` = $pluginInfo, `plugin_config` = $pluginConfig
+					WHERE
+						`plugin_id` = {$row['plugin_id']}
+				";
+			}
+		}
+
+		return $sqlUdp;
+	}
 }
