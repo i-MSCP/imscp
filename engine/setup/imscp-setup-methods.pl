@@ -823,9 +823,10 @@ sub setupAskDefaultAdmin
 
 		if(%{$defaultAdmin}) {
 			$adminLoginName = $$defaultAdmin{'0'}->{'admin_name'};
-			$main::questions{'ADMIN_OLD_LOGIN_NAME'} = $adminLoginName;
 		}
 	}
+
+	$main::questions{'ADMIN_OLD_LOGIN_NAME'} = $adminLoginName;
 
 	if($main::reconfigure ~~ ['admin', 'all', 'forced'] || $adminLoginName eq '') {
 
@@ -956,6 +957,8 @@ sub setupAskSsl
 		return $rs if $rs;
 	} elsif(setupGetQuestion('SSL_ENABLED', 'preseed') eq 'yes') { # We are in preseed mode
 		$main::questions{'SSL_ENABLED'} = $sslEnabled;
+		$main::questions{'BASE_SERVER_VHOST_PREFIX'} =
+			(setupGetQuestion('BASE_SERVER_VHOST_PREFIX', 'preseed') eq 'https://') ? 'https://' : 'http://';
 
 		$openSSL->{'openssl_path'} = $cmdOpenSsl;
 		$openSSL->{'new_cert_path'} = $main::imscpConfig{'GUI_CERT_DIR'};
@@ -995,7 +998,7 @@ sub setupAskSsl
 		$main::questions{'SSL_ENABLED'} = 'no';
 	}
 
-	$main::questions{'BASE_SERVER_VHOST_PREFIX'} = 'http://' if $main::imscpConfig{'SSL_ENABLED'} eq 'no';
+	$main::questions{'BASE_SERVER_VHOST_PREFIX'} = 'http://' if $main::questions{'SSL_ENABLED'} eq 'no';
 
 	$rs;
 }

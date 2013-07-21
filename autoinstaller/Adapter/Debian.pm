@@ -699,7 +699,7 @@ sub _updatePackagesIndex
 
 =cut
 
-sub _debconfSetSelections()
+sub _debconfSetSelections
 {
 	my $self = shift;
 
@@ -708,16 +708,10 @@ sub _debconfSetSelections()
 	my $sqlServerPackageName = undef;
 
 	if(defined $sqlServer) {
-		if($sqlServer eq 'mysql_5.1') {
-			$sqlServerPackageName = 'mysql-server-5.1';
-		} elsif($sqlServer eq 'mysql_5.5') {
-			$sqlServerPackageName = 'mysql-server-5.5';
-		} elsif($sqlServer eq 'mariadb_5.3') {
-			$sqlServerPackageName = 'mariadb-server-5.3';
-		} elsif($sqlServer eq 'mariadb_5.5') {
-			$sqlServerPackageName = 'mariadb-server-5.5';
+		if( $sqlServer =~ /^(mysql|mariadb)_(\d{1,2}\.\d)$/) {
+			$sqlServerPackageName = "$1-server-$2";
 		} else {
-			error('Unknown SQL server package name');
+			error("Unknown SQL server package name: $sqlServer");
 			return 1;
 		}
 	} else {
@@ -728,7 +722,6 @@ sub _debconfSetSelections()
 	my $selectionsFileContent = <<EOF;
 $sqlServerPackageName mysql-server/root_password password $main::preseed{'DATABASE_PASSWORD'}
 $sqlServerPackageName mysql-server/root_password_again password $main::preseed{'DATABASE_PASSWORD'}
-courier-base courier-base/webadmin-configmode boolean false
 postfix postfix/main_mailer_type select Internet Site
 postfix postfix/destinations string $main::preseed{'SERVER_HOSTNAME'}, $main::preseed{'SERVER_HOSTNAME'}.local, localhost
 postfix	postfix/mailname string $main::preseed{'SERVER_HOSTNAME'}
@@ -737,7 +730,8 @@ EOF
 
 	if(defined $poServer) {
 		if($poServer eq 'courier') {
-			$selectionsFileContent .= 'courier-base courier-base/webadmin-configmode boolean false';
+			$selectionsFileContent .= "courier-base courier-base/webadmin-configmode boolean false\n";
+			$selectionsFileContent .= "courier-ssl courier-ssl/certnotice note\n";
 		}
 	} else {
 		error('Unable to retrieve PO server name in your preseed file');

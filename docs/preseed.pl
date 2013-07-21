@@ -5,7 +5,7 @@
 # See documentation at http://wiki.i-mscp.net/doku.php?id=start:preseeding
 #
 # Author: Laurent Declercq <l.declercq@nuxwin.com>
-# Last update: 2013.07.08
+# Last update: 2013.07.21
 # Status: (Experimental)
 
 ## Autoinstall questions
@@ -13,7 +13,7 @@
 # Service to use
 $main::preseed{'SERVERS'} = {
 	# Server to use for the Http service
-	'HTTPD_SERVER' => 'apache_fgci', # (apache_itk|apache_fgci|apache_php_fpm)
+	'HTTPD_SERVER' => 'apache_fcgi', # (apache_itk|apache_fcgi|apache_php_fpm)
 	# Server to use for the Pop/Imap services
 	'PO_SERVER' => 'courier', # (courier|dovecot)
 	# Server to use for the Ftp service
@@ -109,6 +109,9 @@ $main::preseed{'FTPD_SQL_PASSWORD'} = '<password>'; # Password shouldn't be empt
 
 # Mode in which the DNS server should acts
 $main::preseed{'BIND_MODE'} = 'master'; # (master|slave)
+
+# Ipv6 support for DNS service
+$main::preseed{'BIND_IPV6'} = 'no'; # (no|yes)
 
 # Allow to indicate IP addresses of your primary DNS server(s)
 # Only relevant if you set BIND_MODE to 'slave'
