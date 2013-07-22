@@ -45,7 +45,7 @@ sub startUp
 {
 	umask(027);
 
-	iMSCP::Boot->getInstance()->boot({ 'nolock' => 'yes' });
+	iMSCP::Boot->getInstance()->boot({ 'nolock' => 'yes', 'config_readonly' => 'yes' });
 
 	0;
 }

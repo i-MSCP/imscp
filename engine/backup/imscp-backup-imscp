@@ -65,7 +65,9 @@ our $command = {
 sub startUp
 {
 
-	iMSCP::Boot->getInstance()->boot({ 'nofail' => 'yes', 'nolock' => 'yes' })->lock('/tmp/imscp-backup-imscp.lock');
+	iMSCP::Boot->getInstance()->boot(
+		{ 'nofail' => 'yes', 'nolock' => 'yes', 'config_readonly' => 'yes' }
+	)->lock('/tmp/imscp-backup-imscp.lock');
 
 	my $rs = 0;
 

@@ -74,7 +74,8 @@ sub boot
 		'fileName' => ($^O =~ /bsd$/ ? '/usr/local/etc/' : '/etc/') . 'imscp/imscp.conf',
 		'nocreate' => 1, # Do not create file if it doesn't exists (raise error instead)
 		'noerrors' => 1, # Do not raise error when attempting to access to an inexistent configuration parameter
-		'nofail' => $options->{'nofail'} && $options->{'nofail'} eq 'yes' ? 1 : 0;
+		'nofail' => $options->{'nofail'} && $options->{'nofail'} eq 'yes' ? 1 : 0,
+		'readonly' => $options->{'config_readonly'} && $options->{'config_readonly'} eq 'yes' ? 1 : 0;
 
 	# Set verbose mode
 	verbose(iMSCP::Getopt->debug || $main::imscpConfig{'DEBUG'} || 0);

@@ -59,7 +59,7 @@ use parent 'Common::SimpleClass';
   - noerrors: Do not warn when trying to access to an inexistent configuration parameter
   - nocreate: Do not create file if it doesn't already exist (throws a fatal error instead)
   - nofail: Do not throws fatal error in case configuration file doesn't exists
-  - readonly: Sets  a read-only access on the tied configuration file
+  - readonly: Sets a read-only access on the tied configuration file
 
 =cut
 
@@ -114,7 +114,11 @@ sub _loadConfig
 	debug("Loading $self->{'confFileName'}");
 
 	if($self->{'args'}->{'nocreate'}) {
-		$mode = O_RDWR;
+		if($self->{'args'}->{'readonly'}) {
+			$mode = O_RDONLY;
+		} else {
+			$mode = O_RDWR;
+		}
 	} elsif($self->{'args'}->{'readonly'}) {
 		$mode = O_RDONLY;
 	} else {
