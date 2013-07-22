@@ -590,7 +590,7 @@ sub _buildMasterPhpFpmPoolFile
 		return $rs if $rs;
 	}
 
-	$self->{'hooksManager'}->trigger('beforeBuildMasterPhpFpmPoolFile');
+	$self->{'hooksManager'}->trigger('afterBuildMasterPhpFpmPoolFile');
 }
 
 =item _buildApacheConfFiles

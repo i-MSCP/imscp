@@ -41,6 +41,7 @@ Tickets:
 	- Fixed #822: Bug - Auto responder feature broken
 	- Fixed #831: Bug - imscp_daemon: send_line(): socket write error
 	- Fixed #841: Bug - Autoinstaller - Preseed feature - some errors
+	- Fixed #848: Bug - Backend - Wrong after hook in function _buildMasterPhpFpmPoolFile
 
 ------------------------------------------------------------------------------------------------------------------------
 1.1.0-rc2.3
