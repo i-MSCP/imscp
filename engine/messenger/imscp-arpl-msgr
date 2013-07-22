@@ -49,8 +49,6 @@ sub startUp
 {
 	iMSCP::Boot->getInstance()->boot({ 'nolock' => 'yes', 'norequirements' => 'yes', 'config_readonly' => 'yes' });
 
-	#print "Done\n";
-	#exit;
 	0;
 }
 
