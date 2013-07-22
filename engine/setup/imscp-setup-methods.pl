@@ -944,8 +944,6 @@ sub setupAskSsl
 	my($dialog) = shift;
 
 	my $sslEnabled = setupGetQuestion('SSL_ENABLED');
-	my $hostname = setupGetQuestion('SERVER_HOSTNAME');
-	my $guiCertDir = $main::imscpConfig{'GUI_CERT_DIR'};
 	my $cmdOpenSsl = $main::imscpConfig{'CMD_OPENSSL'};
 	my $openSSL = Modules::openssl->getInstance();
 
@@ -955,8 +953,11 @@ sub setupAskSsl
 		$openSSL->{'openssl_path'} = $cmdOpenSsl;
 		$rs = setupSslDialog($dialog);
 		return $rs if $rs;
+
+		$sslEnabled = setupGetQuestion('SSL_ENABLED');
 	} elsif(setupGetQuestion('SSL_ENABLED', 'preseed') eq 'yes') { # We are in preseed mode
-		$main::questions{'SSL_ENABLED'} = $sslEnabled;
+		$sslEnabled = 'yes';
+
 		$main::questions{'BASE_SERVER_VHOST_PREFIX'} =
 			(setupGetQuestion('BASE_SERVER_VHOST_PREFIX', 'preseed') eq 'https://') ? 'https://' : 'http://';
 
@@ -984,6 +985,9 @@ sub setupAskSsl
 			return $rs if $rs;
 		}
 	} elsif($sslEnabled eq 'yes') {
+		my $hostname = setupGetQuestion('SERVER_HOSTNAME');
+		my $guiCertDir = $main::imscpConfig{'GUI_CERT_DIR'};
+
 		$openSSL->{'openssl_path'} = $cmdOpenSsl;
 		$openSSL->{'key_path'} = "$guiCertDir/$hostname.pem";
 		$openSSL->{'cert_path'} = "$guiCertDir/$hostname.pem";
@@ -994,11 +998,10 @@ sub setupAskSsl
 			$rs = setupSslDialog($dialog);
 			return $rs if $rs;
 		}
-	} else {
-		$main::questions{'SSL_ENABLED'} = 'no';
 	}
 
-	$main::questions{'BASE_SERVER_VHOST_PREFIX'} = 'http://' if $main::questions{'SSL_ENABLED'} eq 'no';
+	$main::questions{'SSL_ENABLED'} = $sslEnabled;
+	$main::questions{'BASE_SERVER_VHOST_PREFIX'} = 'http://' if $sslEnabled eq 'no';
 
 	$rs;
 }

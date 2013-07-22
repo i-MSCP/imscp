@@ -2143,7 +2143,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	{
 		$sqlUdp = array();
 
-		$stmt = exec_query('SELECT `plugin_id`, `plugin_info`, `plugin_config` FROM `plugin`');
+		$stmt = execute_query('SELECT `plugin_id`, `plugin_info`, `plugin_config` FROM `plugin`');
 
 		if ($stmt->rowCount()) {
 			$db = iMSCP_Database::getRawInstance();
