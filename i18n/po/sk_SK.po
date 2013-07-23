@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2013-07-08 20:33+0200\n"
-"PO-Revision-Date: 2013-07-08 18:33+0000\n"
+"POT-Creation-Date: 2013-07-23 14:26+0200\n"
+"PO-Revision-Date: 2013-07-23 12:26+0000\n"
 "Last-Translator: Torsten Widmann <info@goover.de>\n"
 "Language-Team: Slovak (Slovakia) (http://www.transifex.com/projects/p/i-MSCP/language/sk_SK/)\n"
 "MIME-Version: 1.0\n"
@@ -1259,6 +1259,9 @@ msgstr "Zmeniť"
 msgid "Change SQL user password"
 msgstr "Zmeniť heslo SQL konta"
 
+msgid "Change in progress..."
+msgstr ""
+
 msgid "Change password"
 msgstr "Zmeniť heslo"
 
@@ -1663,9 +1666,11 @@ msgstr ""
 msgid "DOWN"
 msgstr "DOLE"
 
-#, php-format
-msgid "Daemon returned %d as status code"
-msgstr "Systémový mechanizmus vrátil %d ako stavový kód"
+msgid "Daemon request failed."
+msgstr ""
+
+msgid "Daemon request successfull."
+msgstr ""
 
 msgid "Daily backup"
 msgstr "Denná záloha"
@@ -5999,6 +6004,9 @@ msgid "activation"
 msgstr ""
 
 msgid "back"
+msgstr ""
+
+msgid "change"
 msgstr ""
 
 msgid "day"

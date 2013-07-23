@@ -1,8 +1,11 @@
 ﻿i-MSCP ChangeLog
 ~~~~~~~~~~~~~~~~
 ------------------------------------------------------------------------------------------------------------------------
-Git Master
+1.1.0-rc3
 ------------------------------------------------------------------------------------------------------------------------
+
+2013-07-23: Torsten Widmann
+	- RELEASE i-MSCP 1.1.0-rc3
 
 CONFIGS:
 	- Removed Amavis, ClamAV and SpamAssassin configuration (Such service must be provided as plugin)

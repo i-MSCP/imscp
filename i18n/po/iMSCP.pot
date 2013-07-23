@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.0.1.6\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2013-07-08 20:33+0200\n"
+"POT-Creation-Date: 2013-07-23 14:26+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1257,6 +1257,9 @@ msgstr ""
 msgid "Change SQL user password"
 msgstr ""
 
+msgid "Change in progress..."
+msgstr ""
+
 msgid "Change password"
 msgstr ""
 
@@ -1661,8 +1664,10 @@ msgstr ""
 msgid "DOWN"
 msgstr ""
 
-#, php-format
-msgid "Daemon returned %d as status code"
+msgid "Daemon request failed."
+msgstr ""
+
+msgid "Daemon request successfull."
 msgstr ""
 
 msgid "Daily backup"
@@ -5992,6 +5997,9 @@ msgid "activation"
 msgstr ""
 
 msgid "back"
+msgstr ""
+
+msgid "change"
 msgstr ""
 
 msgid "day"

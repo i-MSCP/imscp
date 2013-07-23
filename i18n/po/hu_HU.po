@@ -11,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2013-07-08 20:33+0200\n"
-"PO-Revision-Date: 2013-07-08 18:34+0000\n"
+"POT-Creation-Date: 2013-07-23 14:26+0200\n"
+"PO-Revision-Date: 2013-07-23 12:27+0000\n"
 "Last-Translator: Torsten Widmann <info@goover.de>\n"
 "Language-Team: Hungarian (Hungary) (http://www.transifex.com/projects/p/i-MSCP/language/hu_HU/)\n"
 "MIME-Version: 1.0\n"
@@ -1262,6 +1262,9 @@ msgstr "Módosítás"
 msgid "Change SQL user password"
 msgstr "SQL felhasználó jelszavának módosítása"
 
+msgid "Change in progress..."
+msgstr ""
+
 msgid "Change password"
 msgstr "Jelszó megváltoztatása"
 
@@ -1666,9 +1669,11 @@ msgstr "DNS szerver nem elérhető. Kérem lépjen kapcsolatba viszonteladójáv
 msgid "DOWN"
 msgstr "ÁLL"
 
-#, php-format
-msgid "Daemon returned %d as status code"
-msgstr "Háttérfolyamat visszatérési értéke: %d"
+msgid "Daemon request failed."
+msgstr ""
+
+msgid "Daemon request successfull."
+msgstr ""
 
 msgid "Daily backup"
 msgstr "Napi mentés"
@@ -3335,7 +3340,7 @@ msgid "No domain statistics to display."
 msgstr "Nincs megjeleníthető domain statisztika"
 
 msgid "No errors"
-msgstr ""
+msgstr "Nincs hiba"
 
 msgid "No file was uploaded."
 msgstr "Nincs feltöltött fájl"
@@ -3501,10 +3506,10 @@ msgid "Only positive numbers are allowed."
 msgstr "Csak pozitív szám adható meg"
 
 msgid "Only tar.gz, tar.bz2 and zip archives are accepted."
-msgstr ""
+msgstr "Csak a tar.gz, tar.bz2 és a zip archívumok az elfogadottak."
 
 msgid "Only tar.gz, tar.bz2 and zip archives are supported."
-msgstr ""
+msgstr "Csak a tar.gz, tar.bz2 és a zip archívumok a támogatottak."
 
 msgid "Open ticket"
 msgstr "Hibajegy megnyitása"
@@ -3836,7 +3841,7 @@ msgid "Plugin %s successfully scheduled for %s."
 msgstr ""
 
 msgid "Plugin archive"
-msgstr ""
+msgstr "Tömöritett bővítőmodul (plugin)"
 
 #, php-format
 msgid ""
@@ -3852,7 +3857,7 @@ msgid "Plugin file %s doesn't exists or is not readable."
 msgstr ""
 
 msgid "Plugin list is empty."
-msgstr ""
+msgstr "Plugin lista üres."
 
 msgid "Plugin list successfully updated."
 msgstr ""
@@ -5270,7 +5275,7 @@ msgid "Update hosting plan"
 msgstr "Tárhely csomag frissítése"
 
 msgid "Update in progress..."
-msgstr ""
+msgstr "Frissítés folyamatban..."
 
 msgid ""
 "Update of Web software repository index has been aborted. Missing or empty "
@@ -5999,10 +6004,13 @@ msgid "activated (Softwaredepot)"
 msgstr "aktívált (programtároló)"
 
 msgid "activation"
-msgstr ""
+msgstr "aktiválás"
 
 msgid "back"
 msgstr "vissza"
+
+msgid "change"
+msgstr ""
 
 msgid "day"
 msgstr "nap"
@@ -6017,13 +6025,13 @@ msgid "deactivated"
 msgstr "felfüggesztett"
 
 msgid "deactivation"
-msgstr ""
+msgstr "deaktiválás"
 
 msgid "delete"
-msgstr ""
+msgstr "törlés"
 
 msgid "deleted"
-msgstr ""
+msgstr "törölve"
 
 msgid "deleting"
 msgstr "törlés"
@@ -6232,10 +6240,10 @@ msgid "unlimited"
 msgstr "korlátlan"
 
 msgid "update"
-msgstr ""
+msgstr "frissítés"
 
 msgid "updated"
-msgstr ""
+msgstr "frissítve"
 
 msgid "view aliases"
 msgstr "álnevek mutatása"

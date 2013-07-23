@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2013-07-08 20:33+0200\n"
-"PO-Revision-Date: 2013-07-08 18:33+0000\n"
+"POT-Creation-Date: 2013-07-23 14:26+0200\n"
+"PO-Revision-Date: 2013-07-23 12:26+0000\n"
 "Last-Translator: Torsten Widmann <info@goover.de>\n"
 "Language-Team: Russian (Russia) (http://www.transifex.com/projects/p/i-MSCP/language/ru_RU/)\n"
 "MIME-Version: 1.0\n"
@@ -1263,6 +1263,9 @@ msgstr "Изменить"
 msgid "Change SQL user password"
 msgstr "Изменить пароль пользователя SQL"
 
+msgid "Change in progress..."
+msgstr ""
+
 msgid "Change password"
 msgstr "Изменить пароль"
 
@@ -1667,9 +1670,11 @@ msgstr "DNS-сервер недоступен, пожалуйста, свяжи�
 msgid "DOWN"
 msgstr "НЕ РАБОТАЕТ"
 
-#, php-format
-msgid "Daemon returned %d as status code"
-msgstr "Возврат статус кода системы: %d"
+msgid "Daemon request failed."
+msgstr ""
+
+msgid "Daemon request successfull."
+msgstr ""
 
 msgid "Daily backup"
 msgstr "Ежедневная резервная копия"
@@ -6004,6 +6009,9 @@ msgstr ""
 
 msgid "back"
 msgstr "назад"
+
+msgid "change"
+msgstr ""
 
 msgid "day"
 msgstr "день"

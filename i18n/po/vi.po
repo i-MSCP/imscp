@@ -4,12 +4,13 @@
 # 
 # Translators:
 # Laurent Declercq <l.declercq@nuxwin.com>, 2013
+# ppanhh <ppanhh@gmail.com>, 2013
 msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2013-07-08 20:33+0200\n"
-"PO-Revision-Date: 2013-07-08 18:34+0000\n"
+"POT-Creation-Date: 2013-07-23 14:26+0200\n"
+"PO-Revision-Date: 2013-07-23 12:27+0000\n"
 "Last-Translator: Torsten Widmann <info@goover.de>\n"
 "Language-Team: Vietnamese (http://www.transifex.com/projects/p/i-MSCP/language/vi/)\n"
 "MIME-Version: 1.0\n"
@@ -177,11 +178,11 @@ msgstr ""
 
 #, php-format
 msgid "%1$d%% [%2$s of %3$s]"
-msgstr ""
+msgstr "%1$d%% [%2$s của %3$s]"
 
 #, php-format
 msgid "%1$d%% [%2$s of unlimited]"
-msgstr ""
+msgstr "%1$d%% [%2$s của phần không giới hạn]"
 
 #, php-format
 msgid "%1$s (%2$s)"
@@ -213,7 +214,7 @@ msgstr ""
 
 #, php-format
 msgid "%1$s you are now logged as %2$s"
-msgstr ""
+msgstr "%1$s bạn hiện đang đăng nhập dưới dạng %2$s"
 
 #, php-format
 msgid "%1$s%% [%2$s of %3$s]"
@@ -257,7 +258,7 @@ msgstr ""
 
 #, php-format
 msgid "%s Errors in database"
-msgstr ""
+msgstr "%s lỗi trong cơ sở dữ liệu"
 
 #, php-format
 msgid "%s account successfully deleted."
@@ -281,7 +282,7 @@ msgstr ""
 
 #, php-format
 msgid "%s deleted the admin log older than two weeks!"
-msgstr ""
+msgstr "%s đã xóa nhật trình quản trị cũ có thời lượng quá hai tuần!"
 
 #, php-format
 msgid "%s deleted the full admin log."
@@ -293,7 +294,7 @@ msgstr ""
 
 #, php-format
 msgid "%s doesn't exist or is empty"
-msgstr ""
+msgstr "%s không tồn tại hoặc không có giá trị"
 
 #, php-format
 msgid "%s id is invalid! You cannot add mail accounts."
@@ -528,7 +529,7 @@ msgid "Account limits"
 msgstr ""
 
 msgid "Account name"
-msgstr ""
+msgstr "Tên tài khoản"
 
 msgid "Account overview"
 msgstr ""
@@ -540,7 +541,7 @@ msgid "Account type"
 msgstr ""
 
 msgid "Action"
-msgstr ""
+msgstr "Thao tác"
 
 msgid "Actions"
 msgstr ""
@@ -567,10 +568,10 @@ msgid "Activation link expire time <small>(In minutes)</small>"
 msgstr ""
 
 msgid "Add"
-msgstr ""
+msgstr "Thêm"
 
 msgid "Add FTP user"
-msgstr ""
+msgstr "Thêm người dùng FTP"
 
 msgid "Add Ftp account"
 msgstr ""
@@ -582,7 +583,7 @@ msgid "Add Htaccess user"
 msgstr ""
 
 msgid "Add SQL database"
-msgstr ""
+msgstr "Thêm cơ sở dữ liệu SQL"
 
 msgid "Add SQL user"
 msgstr ""
@@ -594,10 +595,10 @@ msgid "Add a new entry"
 msgstr ""
 
 msgid "Add admin"
-msgstr ""
+msgstr "Thêm người quản trị"
 
 msgid "Add alias"
-msgstr ""
+msgstr "Thêm tên đại diện"
 
 msgid "Add catchall"
 msgstr ""
@@ -627,10 +628,10 @@ msgid "Add group"
 msgstr ""
 
 msgid "Add hosting plan"
-msgstr ""
+msgstr "Thêm kết hoạch thuê hosting"
 
 msgid "Add mail user"
-msgstr ""
+msgstr "Thêm địa chỉ email người dùng"
 
 msgid "Add mail users"
 msgstr ""
@@ -663,13 +664,13 @@ msgid "Add protected area"
 msgstr ""
 
 msgid "Add reseller"
-msgstr ""
+msgstr "Thêm nhà phân phối"
 
 msgid "Add subdomain"
-msgstr ""
+msgstr "Thêm tên miền con"
 
 msgid "Add user"
-msgstr ""
+msgstr "Thêm người dùng"
 
 msgid "Added by"
 msgstr ""
@@ -678,7 +679,7 @@ msgid "Addition in progress"
 msgstr ""
 
 msgid "Additional data"
-msgstr ""
+msgstr "Dữ liệu bổ sung"
 
 msgid "Admin"
 msgstr ""
@@ -833,25 +834,25 @@ msgid "Admin / Users / Sessions"
 msgstr ""
 
 msgid "Admin Log"
-msgstr ""
+msgstr "Nhật trình quản trị"
 
 msgid "Admin account successfully created."
 msgstr ""
 
 msgid "Admin log"
-msgstr ""
+msgstr "Nhật trình quản trị"
 
 msgid "Admin not available"
 msgstr ""
 
 msgid "Admin users"
-msgstr ""
+msgstr "Người dùng dạng quản trị"
 
 msgid "Admin/IP usage statistics"
-msgstr ""
+msgstr "Thống kê việc sử dụng Quản Trị/Địa chỉ IP"
 
 msgid "Administrator"
-msgstr ""
+msgstr "Quản trị viên"
 
 msgid "Administrator and Reseller levels"
 msgstr ""
@@ -866,13 +867,13 @@ msgid "Administrator and reseller"
 msgstr ""
 
 msgid "Administrator level"
-msgstr ""
+msgstr "Cấp độ quản trị viên"
 
 msgid "Administrator login"
-msgstr ""
+msgstr "Đăng nhập dạng quản trị viên"
 
 msgid "Administrators"
-msgstr ""
+msgstr "Quản trị viên"
 
 msgid ""
 "After your upload the package it will be installed on your systems.<br "
@@ -880,7 +881,7 @@ msgid ""
 msgstr ""
 
 msgid "Alias"
-msgstr ""
+msgstr "Tên đại diện"
 
 msgid "Alias already assigned to another IP address."
 msgstr ""
@@ -907,10 +908,10 @@ msgid "Alias subdomain mail"
 msgstr ""
 
 msgid "Aliases"
-msgstr ""
+msgstr "Tên đại diện"
 
 msgid "All"
-msgstr ""
+msgstr "Tất cả"
 
 msgid "All administrators"
 msgstr ""
@@ -925,13 +926,13 @@ msgid "All customers"
 msgstr ""
 
 msgid "All fields are required."
-msgstr ""
+msgstr "Tất cả các khung thông tin đều phải được điền vào."
 
 msgid "All fields seem to be valid."
 msgstr ""
 
 msgid "All in"
-msgstr ""
+msgstr "Tất cả dữ liệu vào"
 
 msgid "All levels"
 msgstr ""
@@ -943,19 +944,19 @@ msgid "All open tickets were successfully deleted."
 msgstr ""
 
 msgid "All out"
-msgstr ""
+msgstr "Tất cả dữ liệu ra"
 
 msgid "All reseller"
 msgstr ""
 
 msgid "All resellers"
-msgstr ""
+msgstr "Tất cả các nhà phân phối"
 
 msgid "All resellers and customers"
 msgstr ""
 
 msgid "All traffic"
-msgstr ""
+msgstr "Tất cả băng thông"
 
 msgid "Allowed"
 msgstr ""
@@ -987,7 +988,7 @@ msgid "An unknown error occured during file upload: %s"
 msgstr ""
 
 msgid "Anti-Rootkits Tools Log Checker"
-msgstr ""
+msgstr "Anti-Rootkits Tools Log Checker"
 
 msgid "Application installer"
 msgstr ""
@@ -1034,7 +1035,7 @@ msgstr ""
 
 #, php-format
 msgid "Are you sure you want to delete %s?"
-msgstr ""
+msgstr "Bạn có chắc muốn xóa %s?"
 
 msgid "Are you sure you want to delete all closed tickets?"
 msgstr ""
@@ -1067,7 +1068,7 @@ msgstr ""
 
 #, php-format
 msgid "Are you sure you want to delete this IP: %s?"
-msgstr ""
+msgstr "Bạn có chắc muốn xóa địa chỉ IP này: %s?"
 
 msgid "Are you sure you want to delete this package?"
 msgstr ""
@@ -1092,7 +1093,7 @@ msgid "Area name"
 msgstr ""
 
 msgid "Assign"
-msgstr ""
+msgstr "Phân công"
 
 msgid "Assign existing SQL user"
 msgstr ""
@@ -1125,7 +1126,7 @@ msgid "Available"
 msgstr ""
 
 msgid "Available i-MSCP updates"
-msgstr ""
+msgstr "Hiện đã có phiên bản cập nhật mới của i-MSCP"
 
 msgid "Available softwares"
 msgstr ""
@@ -1140,10 +1141,10 @@ msgid "B"
 msgstr ""
 
 msgid "Back"
-msgstr ""
+msgstr "Quay trở lại"
 
 msgid "Backup"
-msgstr ""
+msgstr "Sao lưu dự phòng"
 
 msgid "Backup and restore settings."
 msgstr ""
@@ -1208,7 +1209,7 @@ msgid "Can edit the PHP %s directive"
 msgstr ""
 
 msgid "Cancel"
-msgstr ""
+msgstr "Hủy bỏ"
 
 #, php-format
 msgid "Cannot validate %s record: %s"
@@ -1218,10 +1219,10 @@ msgid "Canonical name"
 msgstr ""
 
 msgid "Captcha fontfile not found."
-msgstr ""
+msgstr "Không tìm thấy tập tin hiển thị Captcha."
 
 msgid "Catch all"
-msgstr ""
+msgstr "Chọn tất cả"
 
 msgid "Catch all account scheduled for creation."
 msgstr ""
@@ -1259,11 +1260,14 @@ msgstr ""
 msgid "Change SQL user password"
 msgstr ""
 
-msgid "Change password"
+msgid "Change in progress..."
 msgstr ""
 
+msgid "Change password"
+msgstr "Thay đổi mật khẩu"
+
 msgid "Change personal data"
-msgstr ""
+msgstr "Thay đổi dữ liệu người dùng cá nhân"
 
 msgid "Check for update"
 msgstr ""
@@ -1312,13 +1316,13 @@ msgid "Circular"
 msgstr ""
 
 msgid "City"
-msgstr ""
+msgstr "Thành phố"
 
 msgid "Class"
 msgstr ""
 
 msgid "Clear log"
-msgstr ""
+msgstr "Dọn dẹp nhật trình"
 
 msgid "Click here for more details"
 msgstr ""
@@ -1500,7 +1504,7 @@ msgid "Closes tickets"
 msgstr ""
 
 msgid "Company"
-msgstr ""
+msgstr "Công ty"
 
 msgid "Compress HTML output"
 msgstr ""
@@ -1512,7 +1516,7 @@ msgid "Confirmation for plugin protection"
 msgstr ""
 
 msgid "Core data"
-msgstr ""
+msgstr "Dữ liệu nguồn"
 
 msgid "Could not upload file."
 msgstr ""
@@ -1526,13 +1530,13 @@ msgid ""
 msgstr ""
 
 msgid "Couldn't check for updates. Website not reachable."
-msgstr ""
+msgstr "Không thể kiểm tra cho việc cập nhật. Không thể truy cập đến website."
 
 msgid "Count default E-Mail addresses"
 msgstr ""
 
 msgid "Country"
-msgstr ""
+msgstr "Quốc gia"
 
 msgid "Create"
 msgstr ""
@@ -1547,13 +1551,13 @@ msgid "Create directory, if not exist!"
 msgstr ""
 
 msgid "Created by"
-msgstr ""
+msgstr "Được tạo bởi"
 
 msgid "Creation date"
-msgstr ""
+msgstr "Ngày tạo"
 
 msgid "Current password"
-msgstr ""
+msgstr "Mật khẩu hiện tại"
 
 msgid "Current password is invalid."
 msgstr ""
@@ -1577,7 +1581,7 @@ msgid "Custom error page updated."
 msgstr ""
 
 msgid "Custom error pages"
-msgstr ""
+msgstr "Lỗi trang tùy chọn"
 
 msgid "Custom menu name and link"
 msgstr ""
@@ -1595,13 +1599,13 @@ msgid "Custom menu successfully updated."
 msgstr ""
 
 msgid "Custom menus"
-msgstr ""
+msgstr "Menu tùy chọn"
 
 msgid "Customer"
 msgstr ""
 
 msgid "Customer ID"
-msgstr ""
+msgstr "Chỉ số thứ tự khách hàng"
 
 msgid "Customer ID cannot have more than 200 characters"
 msgstr ""
@@ -1663,12 +1667,14 @@ msgstr ""
 msgid "DOWN"
 msgstr ""
 
-#, php-format
-msgid "Daemon returned %d as status code"
+msgid "Daemon request failed."
+msgstr ""
+
+msgid "Daemon request successfull."
 msgstr ""
 
 msgid "Daily backup"
-msgstr ""
+msgstr "Sao lưu hàng ngày"
 
 msgid "Data were been altered. Please try again."
 msgstr ""
@@ -1719,16 +1725,16 @@ msgid "Databases"
 msgstr ""
 
 msgid "Date"
-msgstr ""
+msgstr "Ngày tháng"
 
 msgid "Day"
-msgstr ""
+msgstr "Ngày"
 
 msgid "Day statistics"
 msgstr ""
 
 msgid "Days"
-msgstr ""
+msgstr "Ngày"
 
 msgid "Deactivate"
 msgstr ""
@@ -1804,7 +1810,7 @@ msgid "Default language successfully updated."
 msgstr ""
 
 msgid "Delete"
-msgstr ""
+msgstr "Xóa"
 
 msgid "Delete CatchAll"
 msgstr ""
@@ -1822,7 +1828,7 @@ msgid "Delete customer"
 msgstr ""
 
 msgid "Delete from log:"
-msgstr ""
+msgstr "Xóa từ nhật trình:"
 
 msgid "Delete marked mails"
 msgstr ""
@@ -1843,19 +1849,19 @@ msgid "Deletion in progress"
 msgstr ""
 
 msgid "Demo Version!"
-msgstr ""
+msgstr "Phiên bản thử nghiệm!"
 
 msgid "Depot import"
 msgstr ""
 
 msgid "Description"
-msgstr ""
+msgstr "Mô tả"
 
 msgid "Description cannot be empty."
 msgstr ""
 
 msgid "Details"
-msgstr ""
+msgstr "Chi tiết"
 
 msgid "Directive name"
 msgstr ""
@@ -1879,7 +1885,7 @@ msgid "Disable"
 msgstr ""
 
 msgid "Disabled"
-msgstr ""
+msgstr "Vô hiệu hóa"
 
 msgid "Disallowed"
 msgstr ""
@@ -1888,7 +1894,7 @@ msgid "Disconnect"
 msgstr ""
 
 msgid "Disk"
-msgstr ""
+msgstr "Đĩa"
 
 msgid "Disk space"
 msgstr ""
@@ -1915,19 +1921,19 @@ msgid ""
 msgstr ""
 
 msgid "Domain"
-msgstr ""
+msgstr "Tên miền"
 
 msgid "Domain IP"
-msgstr ""
+msgstr "Địa chỉ IP của tên miền"
 
 msgid "Domain Limit"
 msgstr ""
 
 msgid "Domain Name"
-msgstr ""
+msgstr "Định danh của tên miền"
 
 msgid "Domain account"
-msgstr ""
+msgstr "Tài khoản tên miền"
 
 msgid "Domain account expired."
 msgstr ""
@@ -1936,7 +1942,7 @@ msgid "Domain accounts"
 msgstr ""
 
 msgid "Domain alias"
-msgstr ""
+msgstr "Tên miền đại diện"
 
 msgid "Domain alias data"
 msgstr ""
@@ -1980,7 +1986,7 @@ msgid ""
 msgstr ""
 
 msgid "Domain aliases"
-msgstr ""
+msgstr "Tên miền đại diện"
 
 msgid "Domain aliases limit<br/><i>(-1 disabled, 0 unlimited)</i>"
 msgstr ""
@@ -2001,7 +2007,7 @@ msgid "Domain data were been altered. Please try again."
 msgstr ""
 
 msgid "Domain details"
-msgstr ""
+msgstr "Chi tiết về tên miền"
 
 msgid "Domain expiration date"
 msgstr ""
@@ -2013,7 +2019,7 @@ msgid "Domain mail"
 msgstr ""
 
 msgid "Domain name"
-msgstr ""
+msgstr "Tên miền"
 
 msgid "Domain name must be filled."
 msgstr ""
@@ -2034,7 +2040,7 @@ msgid "Domain scheduled for update."
 msgstr ""
 
 msgid "Domain statistics"
-msgstr ""
+msgstr "Thống kê tên miền"
 
 msgid "Domain statistics - {DOMAIN_NAME}"
 msgstr ""
@@ -2057,7 +2063,7 @@ msgid ""
 msgstr ""
 
 msgid "Domains"
-msgstr ""
+msgstr "Tên miền"
 
 msgid "Domains errors"
 msgstr ""
@@ -2072,7 +2078,7 @@ msgid "Don't use special chars like \"@, $, %...\" in the password."
 msgstr ""
 
 msgid "Done"
-msgstr ""
+msgstr "Đã hoàn tất"
 
 msgid "Download"
 msgstr ""
@@ -2090,13 +2096,13 @@ msgid "EB"
 msgstr ""
 
 msgid "Edit"
-msgstr ""
+msgstr "Chỉnh sửa"
 
 msgid "Edit Customer"
 msgstr ""
 
 msgid "Edit Domain"
-msgstr ""
+msgstr "Chỉnh sửa tên miền"
 
 msgid "Edit Ftp account"
 msgstr ""
@@ -2126,7 +2132,7 @@ msgid "Edit custom menu"
 msgstr ""
 
 msgid "Edit domain"
-msgstr ""
+msgstr "Chỉnh sửa tên miền"
 
 msgid "Edit domain alias"
 msgstr ""
@@ -2138,7 +2144,7 @@ msgid "Edit external mail server for {DOMAIN_UTF8}"
 msgstr ""
 
 msgid "Edit hosting plan"
-msgstr ""
+msgstr "Chỉnh sửa kế hoạch thuê hosting"
 
 msgid "Edit htaccess user"
 msgstr ""
@@ -2153,22 +2159,22 @@ msgid "Edit protected area"
 msgstr ""
 
 msgid "Edit reseller"
-msgstr ""
+msgstr "Chỉnh sửa nhà phân phối"
 
 msgid "Edit subdomain"
 msgstr ""
 
 msgid "Edit user"
-msgstr ""
+msgstr "Chỉnh sửa người dùng"
 
 msgid "EiB"
 msgstr ""
 
 msgid "Email"
-msgstr ""
+msgstr "Email"
 
 msgid "Email Accounts"
-msgstr ""
+msgstr "Tài khoản email"
 
 msgid "Email Updated."
 msgstr ""
@@ -2180,7 +2186,7 @@ msgid "Email forward"
 msgstr ""
 
 msgid "Email setup"
-msgstr ""
+msgstr "Cài đặt Email"
 
 msgid "Emails"
 msgstr ""
@@ -2207,7 +2213,7 @@ msgid "Enable update in the settings page."
 msgstr ""
 
 msgid "Enabled"
-msgstr ""
+msgstr "Bật"
 
 msgid "Enabled for SQL databases"
 msgstr ""
@@ -2224,7 +2230,7 @@ msgid ""
 msgstr ""
 
 msgid "Error"
-msgstr ""
+msgstr "Lỗi"
 
 msgid "Error 401 (unauthorised)"
 msgstr ""
@@ -2248,10 +2254,10 @@ msgid "Error in php.ini values."
 msgstr ""
 
 msgid "Error pages"
-msgstr ""
+msgstr "Trang thông báo lỗi"
 
 msgid "Error while trying to obtain list of network cards."
-msgstr ""
+msgstr "Xảy ra lỗi khi giao tiếp với danh sách các card mạng."
 
 msgid "Error: Remote File not found!"
 msgstr ""
@@ -2272,10 +2278,10 @@ msgid "Errors"
 msgstr ""
 
 msgid "Execute requests"
-msgstr ""
+msgstr "Thực thi yêu cầu"
 
 msgid "Expire date"
-msgstr ""
+msgstr "Ngày hết hạn"
 
 msgid "Ext. mail server"
 msgstr ""
@@ -2314,7 +2320,7 @@ msgid "FTP account successfully updated."
 msgstr ""
 
 msgid "FTP accounts"
-msgstr ""
+msgstr "Tài khoản FTP"
 
 msgid "FTP accounts limit <br /><i>(-1 disabled, 0 unlimited)</i>"
 msgstr ""
@@ -2326,7 +2332,7 @@ msgid "FTP accounts limit<br/><i>(-1 disabled, 0 unlimited)</i>"
 msgstr ""
 
 msgid "FTP traffic"
-msgstr ""
+msgstr "Băng thông FTP"
 
 msgid "FTPs total"
 msgstr ""
@@ -2338,16 +2344,16 @@ msgid "Failure in the package. Deleting!"
 msgstr ""
 
 msgid "Fax"
-msgstr ""
+msgstr "Fax"
 
 msgid "Feature"
-msgstr ""
+msgstr "Tính năng"
 
 msgid "Features"
 msgstr ""
 
 msgid "Female"
-msgstr ""
+msgstr "Nữ"
 
 #, php-format
 msgid "File %s doesn't exists or cannot be reached!"
@@ -2380,10 +2386,10 @@ msgid "File usage"
 msgstr ""
 
 msgid "FileManager"
-msgstr ""
+msgstr "Trình quản lý tập tin"
 
 msgid "Filemanager"
-msgstr ""
+msgstr "Trình quản lý tập tin"
 
 msgid "Filesystem system Info"
 msgstr ""
@@ -2392,7 +2398,7 @@ msgid "Fill out a message text."
 msgstr ""
 
 msgid "First name"
-msgstr ""
+msgstr "Tên"
 
 msgid "First name cannot have more than 200 characters."
 msgstr ""
@@ -2428,7 +2434,7 @@ msgid "From"
 msgstr ""
 
 msgid "From reseller"
-msgstr ""
+msgstr "Từ nhà phân phối"
 
 msgid "Ftp"
 msgstr ""
@@ -2446,40 +2452,40 @@ msgid "Ftp accounts"
 msgstr ""
 
 msgid "Full"
-msgstr ""
+msgstr "Đầy đủ"
 
 msgid "GB"
 msgstr ""
 
 msgid "Gender"
-msgstr ""
+msgstr "Giới tính"
 
 msgid "General"
 msgstr ""
 
 msgid "General information"
-msgstr ""
+msgstr "Thông tin tổng quan"
 
 msgid "General settings"
-msgstr ""
+msgstr "Thiết lập chung"
 
 msgid "Generate"
 msgstr ""
 
 msgid "Generate password"
-msgstr ""
+msgstr "Tạo mật khẩu"
 
 msgid "Get a new image"
 msgstr ""
 
 msgid "Get it at"
-msgstr ""
+msgstr "Tải phần này tại"
 
 msgid "GiB"
 msgstr ""
 
 msgid "Go back"
-msgstr ""
+msgstr "Quay trở lại"
 
 msgid "Group"
 msgstr ""
@@ -2540,7 +2546,7 @@ msgid "Hosting plan limits exceed reseller limits."
 msgstr ""
 
 msgid "Hosting plan properties"
-msgstr ""
+msgstr "Thuộc tính kế hoạch thuê hosting"
 
 msgid "Hosting plan successfully added."
 msgstr ""
@@ -2558,16 +2564,16 @@ msgid "Hosting plan values exceed your own limits."
 msgstr ""
 
 msgid "Hosting plans"
-msgstr ""
+msgstr "Kế hoạch thuê hosting"
 
 msgid "Hosting plans available for"
 msgstr ""
 
 msgid "Hour"
-msgstr ""
+msgstr "Giờ"
 
 msgid "Hours"
-msgstr ""
+msgstr "Giờ"
 
 msgid "Htaccess errors"
 msgstr ""
@@ -2599,7 +2605,7 @@ msgid "Http traffic"
 msgstr ""
 
 msgid "IP"
-msgstr ""
+msgstr "Địa chỉ IP"
 
 msgid "IP address"
 msgstr ""
@@ -2620,7 +2626,7 @@ msgid "IP addresses configured"
 msgstr ""
 
 msgid "IP usage"
-msgstr ""
+msgstr "Cách dùng địa chỉ IP"
 
 msgid "IPv6 address"
 msgstr ""
@@ -2765,7 +2771,7 @@ msgid "Intermediar certificate"
 msgstr ""
 
 msgid "Internationalization"
-msgstr ""
+msgstr "Quốc tế hóa"
 
 msgid "Invalid MX priority."
 msgstr ""
@@ -2840,17 +2846,17 @@ msgid "Kill session"
 msgstr ""
 
 msgid "Label"
-msgstr ""
+msgstr "Nhãn"
 
 #, php-format
 msgid "Label not allowed: <b>%s</b>"
 msgstr ""
 
 msgid "Language"
-msgstr ""
+msgstr "Ngôn ngữ"
 
 msgid "Language file"
-msgstr ""
+msgstr "Tập tin ngôn ngữ"
 
 msgid "Language file successfully installed."
 msgstr ""
@@ -2871,7 +2877,7 @@ msgid "Last access"
 msgstr ""
 
 msgid "Last name"
-msgstr ""
+msgstr "Họ"
 
 msgid "Last name cannot have more than 200 characters."
 msgstr ""
@@ -2883,7 +2889,7 @@ msgid "Last translator"
 msgstr ""
 
 msgid "Layout"
-msgstr ""
+msgstr "Trình bày"
 
 msgid "Layout color"
 msgstr ""
@@ -2892,10 +2898,10 @@ msgid "Layout color successfully updated."
 msgstr ""
 
 msgid "Level"
-msgstr ""
+msgstr "Cấp độ"
 
 msgid "Limit"
-msgstr ""
+msgstr "Giới hạn"
 
 msgid "Limit value"
 msgstr ""
@@ -2919,7 +2925,7 @@ msgid "Log in to answer"
 msgstr ""
 
 msgid "Login"
-msgstr ""
+msgstr "Đăng nhập"
 
 msgid "Login As"
 msgstr ""
@@ -2956,10 +2962,10 @@ msgid "Logo successfully updated."
 msgstr ""
 
 msgid "Logout"
-msgstr ""
+msgstr "Đăng xuất"
 
 msgid "Lost password"
-msgstr ""
+msgstr "Mất mật khẩu"
 
 msgid "Lost password e-mail"
 msgstr ""
@@ -2980,7 +2986,7 @@ msgid "MB"
 msgstr ""
 
 msgid "Mail"
-msgstr ""
+msgstr "Mail"
 
 msgid "Mail Log Level"
 msgstr ""
@@ -3010,7 +3016,7 @@ msgid "Mail account scheduled for update."
 msgstr ""
 
 msgid "Mail accounts"
-msgstr ""
+msgstr "Tài khoản email"
 
 msgid "Mail accounts errors"
 msgstr ""
@@ -3057,7 +3063,7 @@ msgid "Maintenance message"
 msgstr ""
 
 msgid "Maintenance mode"
-msgstr ""
+msgstr "Chế độ quản lý tự động"
 
 msgid ""
 "Maintenance mode is activated. Under this mode, only administrators can "
@@ -3068,7 +3074,7 @@ msgid "Maintenance settings"
 msgstr ""
 
 msgid "Male"
-msgstr ""
+msgstr "Nam"
 
 msgid "Malformed resolver SQL query"
 msgstr ""
@@ -3077,10 +3083,10 @@ msgid "Manage Domains"
 msgstr ""
 
 msgid "Manage IPs"
-msgstr ""
+msgstr "Quản lý địa chỉ IP"
 
 msgid "Manage SQL"
-msgstr ""
+msgstr "Quản lý SQL"
 
 msgid "Manage domain alias"
 msgstr ""
@@ -3092,7 +3098,7 @@ msgid "Manage subdomain"
 msgstr ""
 
 msgid "Manage users"
-msgstr ""
+msgstr "Quản lý người dùng"
 
 msgid "Manage users and groups"
 msgstr ""
@@ -3101,7 +3107,7 @@ msgid "Manage your protected areas, users and groups."
 msgstr ""
 
 msgid "Mark"
-msgstr ""
+msgstr "Đánh dấu"
 
 msgid "Mark all"
 msgstr ""
@@ -3164,7 +3170,7 @@ msgid "Memory system info"
 msgstr ""
 
 msgid "Message"
-msgstr ""
+msgstr "Tin nhắn"
 
 msgid "Message body"
 msgstr ""
@@ -3173,7 +3179,7 @@ msgid "Message body is missing."
 msgstr ""
 
 msgid "Message subject"
-msgstr ""
+msgstr "Chủ đề tin nhắn"
 
 msgid "Message subject is missing."
 msgstr ""
@@ -3188,19 +3194,19 @@ msgid "Message to reseller before deleting the software"
 msgstr ""
 
 msgid "Messages"
-msgstr ""
+msgstr "Tin nhắn"
 
 msgid "MiB"
 msgstr ""
 
 msgid "Minute"
-msgstr ""
+msgstr "Phút"
 
 msgid "Minutes"
-msgstr ""
+msgstr "Phút"
 
 msgid "Missing domain"
-msgstr ""
+msgstr "Thiếu tên miền"
 
 msgid "Modification in progress"
 msgstr ""
@@ -3212,7 +3218,7 @@ msgid "Monhtly traffic warning cannot be bigger than monthly traffic limit."
 msgstr ""
 
 msgid "Month"
-msgstr ""
+msgstr "Tháng"
 
 msgid "Monthly traffic limit [MiB]<br/><i>(0 unlimited)</i>"
 msgstr ""
@@ -3236,16 +3242,16 @@ msgid "Mount point already in use."
 msgstr ""
 
 msgid "Move"
-msgstr ""
+msgstr "Di chuyển"
 
 msgid "Moving aborted."
 msgstr ""
 
 msgid "N/A"
-msgstr ""
+msgstr "N/A"
 
 msgid "Name"
-msgstr ""
+msgstr "Tên"
 
 msgid "Name cannot be empty."
 msgstr ""
@@ -3254,7 +3260,7 @@ msgid "Name must be filled."
 msgstr ""
 
 msgid "Network interface"
-msgstr ""
+msgstr "Giao diện mạng"
 
 msgid "Never"
 msgstr ""
@@ -3275,13 +3281,13 @@ msgid "New i-MSCP update is available"
 msgstr ""
 
 msgid "New password has not been sent. Ask your administrator."
-msgstr ""
+msgstr "Mật khẩu mới vẫn chưa được gửi. Hãy liên hệ quản trị viên."
 
 msgid "New password is"
 msgstr ""
 
 msgid "New ticket"
-msgstr ""
+msgstr "Vé mới"
 
 msgid "Next"
 msgstr ""
@@ -3290,7 +3296,7 @@ msgid "Next step"
 msgstr ""
 
 msgid "No"
-msgstr ""
+msgstr "Không"
 
 msgid "No IP address found."
 msgstr ""
@@ -3362,13 +3368,13 @@ msgid "No logs found."
 msgstr ""
 
 msgid "No new i-MSCP updates available"
-msgstr ""
+msgstr "Hiện không có phiên bản cập nhật mới của i-MSCP"
 
 msgid "No provided"
 msgstr ""
 
 msgid "No records found"
-msgstr ""
+msgstr "Không tìm thấy bản ghi nào"
 
 msgid "No reseller accounts found."
 msgstr ""
@@ -3410,7 +3416,7 @@ msgid "No valid alias domain selected."
 msgstr ""
 
 msgid "No."
-msgstr ""
+msgstr "Số."
 
 msgid "None"
 msgstr ""
@@ -3422,10 +3428,10 @@ msgid "Normal mail"
 msgstr ""
 
 msgid "Normal users"
-msgstr ""
+msgstr "Người dùng dạng bình thường"
 
 msgid "Not Set"
-msgstr ""
+msgstr "Chưa thiết đặt"
 
 msgid "Not found records matching the search criteria."
 msgstr ""
@@ -3467,10 +3473,10 @@ msgid "Numeric suffix"
 msgstr ""
 
 msgid "OK"
-msgstr ""
+msgstr "Đồng ý"
 
 msgid "Ok"
-msgstr ""
+msgstr "Đồng ý"
 
 msgid "One or more database updates are now available. See the details below."
 msgstr ""
@@ -3522,25 +3528,25 @@ msgid "Order successfully processed."
 msgstr ""
 
 msgid "Other in"
-msgstr ""
+msgstr "Dữ liệu đầu vào khác"
 
 msgid "Other out"
-msgstr ""
+msgstr "Dữ liệu đầu ra khác"
 
 msgid "Other settings"
 msgstr ""
 
 msgid "Overview"
-msgstr ""
+msgstr "Sơ lược"
 
 msgid "Owner"
-msgstr ""
+msgstr "Người sở hữu"
 
 msgid "PB"
 msgstr ""
 
 msgid "PHP"
-msgstr ""
+msgstr "PHP"
 
 #, php-format
 msgid "PHP %s directive"
@@ -3571,13 +3577,13 @@ msgid "PHP settings"
 msgstr ""
 
 msgid "POP3/IMAP in"
-msgstr ""
+msgstr "Dữ liệu đầu vào POP3/IMAP"
 
 msgid "POP3/IMAP out"
-msgstr ""
+msgstr "Dữ liệu đầu ra POP3/IMAP"
 
 msgid "POP3/IMAP traffic"
-msgstr ""
+msgstr "Băng thông POP3/IMAP"
 
 msgid "Package actions"
 msgstr ""
@@ -3622,7 +3628,7 @@ msgid "Package version"
 msgstr ""
 
 msgid "Panel default language"
-msgstr ""
+msgstr "Ngôn ngữ mặc định dành cho khung điều khiển"
 
 msgid "Parameter"
 msgstr ""
@@ -3634,7 +3640,7 @@ msgid "Partition"
 msgstr ""
 
 msgid "Password"
-msgstr ""
+msgstr "Mật khẩu"
 
 msgid "Password E-Mail"
 msgstr ""
@@ -3643,13 +3649,13 @@ msgid "Password cannot be greater than 30 characters."
 msgstr ""
 
 msgid "Password change is deactivated!"
-msgstr ""
+msgstr "Đã hủy bỏ việc thay đổi mật khẩu!"
 
 msgid "Password confirmation"
 msgstr ""
 
 msgid "Password data"
-msgstr ""
+msgstr "Dữ liệu mật khẩu"
 
 msgid "Password data is missing."
 msgstr ""
@@ -3701,7 +3707,7 @@ msgid "Permissions"
 msgstr ""
 
 msgid "Personal data"
-msgstr ""
+msgstr "Dữ liệu cá nhân"
 
 msgid "Personal data successfully updated."
 msgstr ""
@@ -3713,10 +3719,10 @@ msgid "Personalise template"
 msgstr ""
 
 msgid "Phone"
-msgstr ""
+msgstr "Điện thoại"
 
 msgid "PhpMyAdmin"
-msgstr ""
+msgstr "PhpMyAdmin"
 
 msgid "PiB"
 msgstr ""
@@ -3947,7 +3953,7 @@ msgid "Protected area successfully scheduled for update."
 msgstr ""
 
 msgid "Protected areas"
-msgstr ""
+msgstr "Các khu vực được bảo vệ"
 
 msgid "Protected plugin"
 msgstr ""
@@ -4008,7 +4014,7 @@ msgid "Remove"
 msgstr ""
 
 msgid "Remove IP"
-msgstr ""
+msgstr "Loại bỏ địa chỉ IP"
 
 msgid "Remove last entry"
 msgstr ""
@@ -4023,7 +4029,7 @@ msgid "Reopen the ticket"
 msgstr ""
 
 msgid "Repeat password"
-msgstr ""
+msgstr "Lặp lại mật khẩu"
 
 msgid "Request from foreign host was blocked."
 msgstr ""
@@ -4032,7 +4038,7 @@ msgid "Requires Database?"
 msgstr ""
 
 msgid "Reseller"
-msgstr ""
+msgstr "Nhà phân phối"
 
 msgid "Reseller / Customer / Overview"
 msgstr ""
@@ -4116,7 +4122,7 @@ msgid "Reseller /Hosting Plans / {TR_DYNAMIC_TITLE}"
 msgstr ""
 
 msgid "Reseller Name"
-msgstr ""
+msgstr "Định danh của nhà phân phối"
 
 msgid "Reseller account successfully created."
 msgstr ""
@@ -4131,7 +4137,7 @@ msgid "Reseller and customer levels"
 msgstr ""
 
 msgid "Reseller assignment"
-msgstr ""
+msgstr "Phân công cho nhà phân phối"
 
 msgid "Reseller consumption"
 msgstr ""
@@ -4140,7 +4146,7 @@ msgid "Reseller data"
 msgstr ""
 
 msgid "Reseller level"
-msgstr ""
+msgstr "Cấp độ nhà phân phối"
 
 msgid "Reseller list"
 msgstr ""
@@ -4149,7 +4155,7 @@ msgid "Reseller list is empty."
 msgstr ""
 
 msgid "Reseller name"
-msgstr ""
+msgstr "Tên nhà phân phối"
 
 msgid "Reseller software list"
 msgstr ""
@@ -4164,10 +4170,10 @@ msgid "Reseller total"
 msgstr ""
 
 msgid "Reseller users"
-msgstr ""
+msgstr "Người dùng dạng nhà phân phối"
 
 msgid "Reseller users table"
-msgstr ""
+msgstr "Bảng người dùng của nhà phân phối"
 
 msgid "Reseller with permissions total"
 msgstr ""
@@ -4179,13 +4185,13 @@ msgid "Reseller/IP usage statistics"
 msgstr ""
 
 msgid "Resellers"
-msgstr ""
+msgstr "Nhà phân phối"
 
 msgid "Resellers assignment"
 msgstr ""
 
 msgid "Reset"
-msgstr ""
+msgstr "thiết đặt lại"
 
 msgid "Reset entries"
 msgstr ""
@@ -4212,16 +4218,16 @@ msgid "Rootkit logs"
 msgstr ""
 
 msgid "SMTP in"
-msgstr ""
+msgstr "Dữ liệu đầu vào SMTP"
 
 msgid "SMTP out"
-msgstr ""
+msgstr "Dữ liệu đầu ra SMTP"
 
 msgid "SMTP traffic"
-msgstr ""
+msgstr "Băng thông SMTP"
 
 msgid "SQL"
-msgstr ""
+msgstr "SQL"
 
 msgid "SQL accounts limit reached."
 msgstr ""
@@ -4233,7 +4239,7 @@ msgid "SQL database successfully deleted."
 msgstr ""
 
 msgid "SQL databases"
-msgstr ""
+msgstr "Cơ sở dữ liệu SQL"
 
 msgid "SQL databases limit <br /><i>(-1 disabled, 0 unlimited)</i>"
 msgstr ""
@@ -4269,7 +4275,7 @@ msgid "SQL username name already in use."
 msgstr ""
 
 msgid "SQL users"
-msgstr ""
+msgstr "Người dùng dạng SQL"
 
 msgid "SQL users limit <br /><i>(-1 disabled, 0 unlimited)</i>"
 msgstr ""
@@ -4299,10 +4305,10 @@ msgid "SSL feature is disabled. You cannot add / change certificate"
 msgstr ""
 
 msgid "Save"
-msgstr ""
+msgstr "Lưu"
 
 msgid "Search"
-msgstr ""
+msgstr "Tìm kiếm"
 
 msgid "Sec."
 msgstr ""
@@ -4314,7 +4320,7 @@ msgid "Secure connection"
 msgstr ""
 
 msgid "Security code"
-msgstr ""
+msgstr "Mã an ninh"
 
 msgid "Select Domain"
 msgstr ""
@@ -4340,13 +4346,13 @@ msgid "Send"
 msgstr ""
 
 msgid "Send message"
-msgstr ""
+msgstr "Gửi tin nhắn"
 
 msgid "Send message to"
-msgstr ""
+msgstr "Gửi tin nhắn tới"
 
 msgid "Send new login data"
-msgstr ""
+msgstr "Gửi dữ liệu đăng nhập mới"
 
 msgid "Send new reply"
 msgstr ""
@@ -4367,10 +4373,10 @@ msgid "Sender name is missing."
 msgstr ""
 
 msgid "Senders email"
-msgstr ""
+msgstr "Người gửi email"
 
 msgid "Senders name"
-msgstr ""
+msgstr "Tên người gửi"
 
 msgid "Separate multiple email addresses with a line-break."
 msgstr ""
@@ -4380,19 +4386,19 @@ msgid ""
 msgstr ""
 
 msgid "Server ports"
-msgstr ""
+msgstr "Cổng kết nối đến máy chủ"
 
 msgid "Server statistics"
-msgstr ""
+msgstr "Thống kê máy chủ"
 
 msgid "Server status"
-msgstr ""
+msgstr "Trạng thái máy chủ"
 
 msgid "Server traffic"
-msgstr ""
+msgstr "Băng thông máy chủ"
 
 msgid "Server traffic settings"
-msgstr ""
+msgstr "Thiết lập băng thông máy chủ"
 
 msgid "Server traffic settings successfully updated."
 msgstr ""
@@ -4419,7 +4425,7 @@ msgid "Service protocol"
 msgstr ""
 
 msgid "Services status"
-msgstr ""
+msgstr "Trạng thái dịch vụ"
 
 msgid "Sessions"
 msgstr ""
@@ -4428,13 +4434,13 @@ msgid "Set status to 'tochange'"
 msgstr ""
 
 msgid "Settings"
-msgstr ""
+msgstr "Thiết lập"
 
 msgid "Settings saved."
 msgstr ""
 
 msgid "Show"
-msgstr ""
+msgstr "Hiển thị"
 
 #, php-format
 msgid "Show %s records per page"
@@ -4462,7 +4468,7 @@ msgid "Show detailed statistics for this reseller"
 msgstr ""
 
 msgid "Show in"
-msgstr ""
+msgstr "Hiển thị trong"
 
 msgid "Show labels for main menu links"
 msgstr ""
@@ -4615,28 +4621,28 @@ msgid "State"
 msgstr ""
 
 msgid "State/Province"
-msgstr ""
+msgstr "Bang/Tỉnh"
 
 msgid "Statistics"
-msgstr ""
+msgstr "Thống kê"
 
 msgid "Stats"
 msgstr ""
 
 msgid "Status"
-msgstr ""
+msgstr "Trạng thái"
 
 msgid "Status for protected area must be 'OK' if you want to edit it."
 msgstr ""
 
 msgid "Street 1"
-msgstr ""
+msgstr "Đường 1"
 
 msgid "Street 2"
-msgstr ""
+msgstr "Đường 2"
 
 msgid "Subdomain"
-msgstr ""
+msgstr "Tên miền con"
 
 msgid "Subdomain alias"
 msgstr ""
@@ -4685,7 +4691,7 @@ msgid ""
 msgstr ""
 
 msgid "Subdomains"
-msgstr ""
+msgstr "Tên miền con"
 
 msgid "Subdomains errors"
 msgstr ""
@@ -4697,31 +4703,31 @@ msgid "Subject"
 msgstr ""
 
 msgid "Submit changes"
-msgstr ""
+msgstr "Đệ trình các thay đổi"
 
 msgid "Support"
 msgstr ""
 
 msgid "Support system"
-msgstr ""
+msgstr "Hệ thống hỗ trợ"
 
 msgid "Suspended"
-msgstr ""
+msgstr "Bị tạm dừng"
 
 msgid "Swap"
 msgstr ""
 
 msgid "Switch"
-msgstr ""
+msgstr "Chuyển đổi"
 
 msgid "Switch to the backups directory"
 msgstr ""
 
 msgid "Switch to user interface"
-msgstr ""
+msgstr "Chuyển đổi giao diện người dùng"
 
 msgid "System"
-msgstr ""
+msgstr "Hệ thống"
 
 msgid "System error - custom error page was not updated."
 msgstr ""
@@ -4738,7 +4744,7 @@ msgid "System is unable to remove '%s' user logo."
 msgstr ""
 
 msgid "System tools"
-msgstr ""
+msgstr "Công cụ hệ thống"
 
 msgid "System under maintenance"
 msgstr ""
@@ -4921,7 +4927,7 @@ msgstr ""
 
 #, php-format
 msgid "This IP (%s) is not assigned to any network card!"
-msgstr ""
+msgstr "Địa chỉ IP này (%s) vẫn chưa được gán cho bất kỳ card mạng nào!"
 
 #, php-format
 msgid ""
@@ -4982,7 +4988,7 @@ msgid ""
 msgstr ""
 
 msgid "This user name already exist."
-msgstr ""
+msgstr "Tên người dùng này đã tồn tại"
 
 msgid "TiB"
 msgstr ""
@@ -5020,7 +5026,7 @@ msgid "Tickets open"
 msgstr ""
 
 msgid "To Admin"
-msgstr ""
+msgstr "Đến Quản Trị Viên"
 
 msgid "To alias subdomain"
 msgstr ""
@@ -5032,7 +5038,7 @@ msgid "To main domain"
 msgstr ""
 
 msgid "To reseller"
-msgstr ""
+msgstr "Đến nhà phân phối"
 
 msgid "To subdomain"
 msgstr ""
@@ -5051,7 +5057,7 @@ msgid "Total"
 msgstr ""
 
 msgid "Total Domains"
-msgstr ""
+msgstr "Toàn bộ tên miền"
 
 msgid "Total Softwares"
 msgstr ""
@@ -5072,7 +5078,7 @@ msgid "Total softwares"
 msgstr ""
 
 msgid "Traffic"
-msgstr ""
+msgstr "Băng thông"
 
 msgid "Traffic usage"
 msgstr ""
@@ -5194,10 +5200,10 @@ msgid "Uninstall"
 msgstr ""
 
 msgid "Unknown"
-msgstr ""
+msgstr "Chưa rõ"
 
 msgid "Unknown Error"
-msgstr ""
+msgstr "Lỗi chưa rõ"
 
 msgid "Unknown FTP user id."
 msgstr ""
@@ -5243,7 +5249,7 @@ msgid "Up time"
 msgstr ""
 
 msgid "Update"
-msgstr ""
+msgstr "Cập nhật"
 
 msgid "Update SQL user password"
 msgstr ""
@@ -5252,10 +5258,10 @@ msgid "Update checking is disabled."
 msgstr ""
 
 msgid "Update data"
-msgstr ""
+msgstr "Cập nhật dữ liệu"
 
 msgid "Update details"
-msgstr ""
+msgstr "Cập nhật chi tiết"
 
 msgid "Update from Web software repository"
 msgstr ""
@@ -5308,13 +5314,13 @@ msgid "Use strong Passwords"
 msgstr ""
 
 msgid "Used"
-msgstr ""
+msgstr "Đã sử dụng"
 
 msgid "Used database:"
 msgstr ""
 
 msgid "User"
-msgstr ""
+msgstr "Người dùng"
 
 msgid "User (first and last) name"
 msgstr ""
@@ -5323,7 +5329,7 @@ msgid "User account"
 msgstr ""
 
 msgid "User assignment"
-msgstr ""
+msgstr "Phân công người dùng"
 
 msgid "User auth"
 msgstr ""
@@ -5351,7 +5357,7 @@ msgid "User login (system) name"
 msgstr ""
 
 msgid "User name"
-msgstr ""
+msgstr "Tên người dùng"
 
 msgid "User name too long!"
 msgstr ""
@@ -5384,13 +5390,13 @@ msgid "User type (admin, reseller, user)"
 msgstr ""
 
 msgid "Username"
-msgstr ""
+msgstr "Tên người dùng"
 
 msgid "Username and password for application login"
 msgstr ""
 
 msgid "Users"
-msgstr ""
+msgstr "Người dùng"
 
 msgid "Users and groups"
 msgstr ""
@@ -5425,7 +5431,7 @@ msgid "Very high"
 msgstr ""
 
 msgid "View"
-msgstr ""
+msgstr "Xem"
 
 msgid "View / Update service(s) port"
 msgstr ""
@@ -5482,10 +5488,10 @@ msgid "Web files only"
 msgstr ""
 
 msgid "Web in"
-msgstr ""
+msgstr "Dữ liệu đầu vào Web"
 
 msgid "Web out"
-msgstr ""
+msgstr "Dữ liệu đầu ra Web"
 
 msgid "Web software depot packages total"
 msgstr ""
@@ -5500,16 +5506,16 @@ msgid "Web software repository index is already up to date."
 msgstr ""
 
 msgid "Web statistics"
-msgstr ""
+msgstr "Thống kê web"
 
 msgid "Web traffic"
-msgstr ""
+msgstr "Băng thông web"
 
 msgid "Webmail"
-msgstr ""
+msgstr "Webmail"
 
 msgid "Webtools"
-msgstr ""
+msgstr "Webtools"
 
 msgid "Welcome mail"
 msgstr ""
@@ -5651,10 +5657,10 @@ msgid "YB"
 msgstr ""
 
 msgid "Year"
-msgstr ""
+msgstr "Năm"
 
 msgid "Yes"
-msgstr ""
+msgstr "Đồng ý"
 
 msgid "Yes, delete this account."
 msgstr ""
@@ -5945,7 +5951,7 @@ msgid "Your new i-MSCP login"
 msgstr ""
 
 msgid "Your new password has been sent. Check your mail."
-msgstr ""
+msgstr "Mật khẩu mới của bạn đã được gửi đến địa chỉ email của bạn. Vui lòng kiểm tra."
 
 msgid "Your package is corrupt. Please correct it!"
 msgstr ""
@@ -5972,7 +5978,7 @@ msgid "Zip code"
 msgstr ""
 
 msgid "Zip/Postal code"
-msgstr ""
+msgstr "Mã vùng/Zip code"
 
 msgid "[New]"
 msgstr ""
@@ -5999,6 +6005,9 @@ msgid "activation"
 msgstr ""
 
 msgid "back"
+msgstr ""
+
+msgid "change"
 msgstr ""
 
 msgid "day"
@@ -6051,10 +6060,10 @@ msgstr ""
 
 #. Please ignore this entry
 msgid "encoding"
-msgstr ""
+msgstr "đang mã hóa"
 
 msgid "everything"
-msgstr ""
+msgstr "mọi thứ"
 
 msgid "from other browser"
 msgstr ""
@@ -6081,7 +6090,7 @@ msgid "i-MSCP - Client/Create CatchAll Mail Account"
 msgstr ""
 
 msgid "i-MSCP - Multi Server Control Panel / Login"
-msgstr ""
+msgstr "i-MSCP - Multi Server Control Panel / Login"
 
 msgid "i-MSCP - Multi Server Control Panel / Lost password"
 msgstr ""
@@ -6111,7 +6120,7 @@ msgid "i-MSCP / Softwares Installer / Management"
 msgstr ""
 
 msgid "i-MSCP Daemon tools"
-msgstr ""
+msgstr "Công cụ Daemon i-MSCP"
 
 msgid "i-MSCP Notice"
 msgstr ""
@@ -6126,7 +6135,7 @@ msgid "i-MSCP plugin repository"
 msgstr ""
 
 msgid "i-MSCP updates"
-msgstr ""
+msgstr "Cập nhật i-MSCP"
 
 msgid "install"
 msgstr ""
@@ -6138,7 +6147,7 @@ msgid "installing"
 msgstr ""
 
 msgid "internet Multi Server Control Panel"
-msgstr ""
+msgstr "internet Multi Server Control Panel"
 
 msgid "kB"
 msgstr ""
@@ -6156,13 +6165,13 @@ msgid "mail accounts"
 msgstr ""
 
 msgid "missing alias"
-msgstr ""
+msgstr "thiếu tên đại diện"
 
 msgid "missing domain"
-msgstr ""
+msgstr "thiếu tên miền"
 
 msgid "no"
-msgstr ""
+msgstr "không"
 
 msgid "not available"
 msgstr ""
@@ -6171,19 +6180,19 @@ msgid "not required"
 msgstr ""
 
 msgid "older than 1 month"
-msgstr ""
+msgstr "cũ hơn 1 tháng"
 
 msgid "older than 12 months"
-msgstr ""
+msgstr "cũ hơn 12 tháng"
 
 msgid "older than 2 weeks"
-msgstr ""
+msgstr "cũ hơn 2 tuần"
 
 msgid "older than 3 months"
-msgstr ""
+msgstr "cũ hơn 3 tháng"
 
 msgid "older than 6 months"
-msgstr ""
+msgstr "cũ hơn 6 tháng"
 
 #, php-format
 msgid "or remote file (Max: %s)"
@@ -6196,10 +6205,10 @@ msgid "orders"
 msgstr ""
 
 msgid "orphan entry"
-msgstr ""
+msgstr "khung thông tin phụ thuộc"
 
 msgid "phpMyAdmin"
-msgstr ""
+msgstr "phpMyAdmin"
 
 msgid "protect"
 msgstr ""
@@ -6226,7 +6235,7 @@ msgid "udp"
 msgstr ""
 
 msgid "unlimited"
-msgstr ""
+msgstr "không giới hạn"
 
 msgid "update"
 msgstr ""
@@ -6235,13 +6244,13 @@ msgid "updated"
 msgstr ""
 
 msgid "view aliases"
-msgstr ""
+msgstr "xem tên đại diện"
 
 msgid "waiting for activation"
 msgstr ""
 
 msgid "yes"
-msgstr ""
+msgstr "đồng ý"
 
 msgid "{ADMIN} activated your software package"
 msgstr ""

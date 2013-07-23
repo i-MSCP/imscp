@@ -15,8 +15,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2013-07-08 20:33+0200\n"
-"PO-Revision-Date: 2013-07-08 18:34+0000\n"
+"POT-Creation-Date: 2013-07-23 14:26+0200\n"
+"PO-Revision-Date: 2013-07-23 12:27+0000\n"
 "Last-Translator: Torsten Widmann <info@goover.de>\n"
 "Language-Team: Spanish (Spain) (http://www.transifex.com/projects/p/i-MSCP/language/es_ES/)\n"
 "MIME-Version: 1.0\n"
@@ -1266,6 +1266,9 @@ msgstr "Cambiar"
 msgid "Change SQL user password"
 msgstr "Cambiar la contraseña del usuario SQL"
 
+msgid "Change in progress..."
+msgstr ""
+
 msgid "Change password"
 msgstr "Cambiar contraseña"
 
@@ -1670,9 +1673,11 @@ msgstr "Servidor DNS no disponible. Por favor, póngase en contacto con su Reven
 msgid "DOWN"
 msgstr "ABAJO"
 
-#, php-format
-msgid "Daemon returned %d as status code"
-msgstr "El demonio ha retornado %d como código de estado"
+msgid "Daemon request failed."
+msgstr ""
+
+msgid "Daemon request successfull."
+msgstr ""
 
 msgid "Daily backup"
 msgstr "Backup diario"
@@ -6007,6 +6012,9 @@ msgstr ""
 
 msgid "back"
 msgstr "atrás"
+
+msgid "change"
+msgstr ""
 
 msgid "day"
 msgstr "día"

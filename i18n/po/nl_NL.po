@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2013-07-08 20:33+0200\n"
-"PO-Revision-Date: 2013-07-08 18:33+0000\n"
+"POT-Creation-Date: 2013-07-23 14:26+0200\n"
+"PO-Revision-Date: 2013-07-23 12:27+0000\n"
 "Last-Translator: Torsten Widmann <info@goover.de>\n"
 "Language-Team: Dutch (Netherlands) (http://www.transifex.com/projects/p/i-MSCP/language/nl_NL/)\n"
 "MIME-Version: 1.0\n"
@@ -1260,6 +1260,9 @@ msgstr "Verander"
 msgid "Change SQL user password"
 msgstr "Verander wachtwoord MySQL gebruiker"
 
+msgid "Change in progress..."
+msgstr ""
+
 msgid "Change password"
 msgstr "Verander wachtwoord"
 
@@ -1664,9 +1667,11 @@ msgstr ""
 msgid "DOWN"
 msgstr "OMLAAG"
 
-#, php-format
-msgid "Daemon returned %d as status code"
-msgstr "Daemon gaf %d status code terug"
+msgid "Daemon request failed."
+msgstr ""
+
+msgid "Daemon request successfull."
+msgstr ""
 
 msgid "Daily backup"
 msgstr "Dagelijkse backup"
@@ -6001,6 +6006,9 @@ msgstr ""
 
 msgid "back"
 msgstr "terug"
+
+msgid "change"
+msgstr ""
 
 msgid "day"
 msgstr ""

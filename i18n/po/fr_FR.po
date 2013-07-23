@@ -19,8 +19,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2013-07-08 20:33+0200\n"
-"PO-Revision-Date: 2013-07-08 18:33+0000\n"
+"POT-Creation-Date: 2013-07-23 14:26+0200\n"
+"PO-Revision-Date: 2013-07-23 12:26+0000\n"
 "Last-Translator: Torsten Widmann <info@goover.de>\n"
 "Language-Team: French (France) (http://www.transifex.com/projects/p/i-MSCP/language/fr_FR/)\n"
 "MIME-Version: 1.0\n"
@@ -1270,6 +1270,9 @@ msgstr "Changer"
 msgid "Change SQL user password"
 msgstr "Changer le mot de passe SQL"
 
+msgid "Change in progress..."
+msgstr ""
+
 msgid "Change password"
 msgstr "Changement de mot de passe"
 
@@ -1674,9 +1677,11 @@ msgstr ""
 msgid "DOWN"
 msgstr "Arrêté"
 
-#, php-format
-msgid "Daemon returned %d as status code"
-msgstr "Le démon a retourné un code d'état %d"
+msgid "Daemon request failed."
+msgstr ""
+
+msgid "Daemon request successfull."
+msgstr ""
 
 msgid "Daily backup"
 msgstr "Sauvegardes journalières"
@@ -6011,6 +6016,9 @@ msgstr ""
 
 msgid "back"
 msgstr "retour"
+
+msgid "change"
+msgstr ""
 
 msgid "day"
 msgstr "jour"

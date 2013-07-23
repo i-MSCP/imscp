@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2013-07-08 20:33+0200\n"
-"PO-Revision-Date: 2013-07-08 18:34+0000\n"
+"POT-Creation-Date: 2013-07-23 14:26+0200\n"
+"PO-Revision-Date: 2013-07-23 12:27+0000\n"
 "Last-Translator: Torsten Widmann <info@goover.de>\n"
 "Language-Team: Swedish (Sweden) (http://www.transifex.com/projects/p/i-MSCP/language/sv_SE/)\n"
 "MIME-Version: 1.0\n"
@@ -311,7 +311,7 @@ msgstr "%s lista är tom! Du kan inte lägga på postkonton."
 #, php-format
 msgid ""
 "%s new plugin(s) found, %s plugin(s) updated, and %s plugin(s) deleted."
-msgstr ""
+msgstr "%s new plugin(s) found, %s plugin(s) updated, and %s plugin(s) deleted."
 
 #, php-format
 msgid "%s of %s"
@@ -550,7 +550,7 @@ msgid "Activate"
 msgstr "Aktivera"
 
 msgid "Activate this plugin."
-msgstr ""
+msgstr "Activate this plugin."
 
 msgid "Activated"
 msgstr "Activated"
@@ -562,7 +562,7 @@ msgid "Activation E-Mail"
 msgstr "Aktiveringsmeddelande"
 
 msgid "Activation in progress..."
-msgstr ""
+msgstr "Activation in progress..."
 
 msgid "Activation link expire time <small>(In minutes)</small>"
 msgstr "Aktiveringslänken löper ut <small>(i minuter)</small>"
@@ -730,7 +730,7 @@ msgid "Admin / Settings / Lost password mail"
 msgstr "Admin / Settings / Lost password mail"
 
 msgid "Admin / Settings / Plugins management"
-msgstr ""
+msgstr "Admin / Settings / Plugins management"
 
 msgid "Admin / Settings / Server traffic"
 msgstr "Admin / Settings / Server traffic"
@@ -978,7 +978,7 @@ msgstr "Ett webbkonto-plan med samma namn finns redan"
 
 #, php-format
 msgid "An unexpected error occured while plugin %s attempt: %s"
-msgstr ""
+msgstr "An unexpected error occured while plugin %s attempt: %s"
 
 msgid "An unexpected error occured, please contact your reseller."
 msgstr "Ett oväntat fel uppstod, vänligen kontakta din återförsäljare."
@@ -1260,6 +1260,9 @@ msgstr "Ändra"
 msgid "Change SQL user password"
 msgstr "Ändra SQL-användarens lösenord"
 
+msgid "Change in progress..."
+msgstr ""
+
 msgid "Change password"
 msgstr "Byta lösenord"
 
@@ -1322,7 +1325,7 @@ msgid "Clear log"
 msgstr "Rensa logg"
 
 msgid "Click here for more details"
-msgstr ""
+msgstr "Click here for more details"
 
 msgid ""
 "Click the Restore button and the system will restore the last daily backup"
@@ -1664,9 +1667,11 @@ msgstr "Fel på DNS-server, vänligen kontakta din återförsäljare."
 msgid "DOWN"
 msgstr "NER"
 
-#, php-format
-msgid "Daemon returned %d as status code"
-msgstr "Daemon returnerade %d som statuskod"
+msgid "Daemon request failed."
+msgstr ""
+
+msgid "Daemon request successfull."
+msgstr ""
 
 msgid "Daily backup"
 msgstr "Daglig backup"
@@ -1738,13 +1743,13 @@ msgid "Deactivate selected items"
 msgstr "Avaktivera valda poster"
 
 msgid "Deactivate this plugin."
-msgstr ""
+msgstr "Deactivate this plugin."
 
 msgid "Deactivated"
 msgstr "Deactivated"
 
 msgid "Deactivation in progress..."
-msgstr ""
+msgstr "Deactivation in progress..."
 
 #, php-format
 msgid ""
@@ -1987,7 +1992,7 @@ msgid "Domain aliases limit<br/><i>(-1 disabled, 0 unlimited)</i>"
 msgstr "Domain aliases limit<br/><i>(-1 disabled, 0 unlimited)</i>"
 
 msgid "Domain aliasses errors"
-msgstr ""
+msgstr "Domain aliasses errors"
 
 msgid "Domain already assigned to another IP address."
 msgstr "Domain already assigned to another IP address."
@@ -2061,7 +2066,7 @@ msgid "Domains"
 msgstr "Domäner"
 
 msgid "Domains errors"
-msgstr ""
+msgstr "Domains errors"
 
 msgid "Domains limit<br/><i>(0 unlimited)</i>"
 msgstr "Domains limit<br/><i>(0 unlimited)</i>"
@@ -2243,7 +2248,7 @@ msgid "Error 503 (service unavailable)"
 msgstr "Error 503 (tjänsten är inte tillgänglig)"
 
 msgid "Error details"
-msgstr ""
+msgstr "Error details"
 
 msgid "Error in php.ini values."
 msgstr "Fel i php.ini värden."
@@ -2356,7 +2361,7 @@ msgstr "Fil %s existerar eller kan inte nås!"
 
 #, php-format
 msgid "File %s is missing in plugin directory."
-msgstr ""
+msgstr "File %s is missing in plugin directory."
 
 #, php-format
 msgid "File does not exist. %1$s.tar.gz"
@@ -2399,7 +2404,7 @@ msgid "First name cannot have more than 200 characters."
 msgstr "First name cannot have more than 200 characters."
 
 msgid "Force retry"
-msgstr ""
+msgstr "Force retry"
 
 msgid "Forward URL"
 msgstr "Vidarebefordra till URL"
@@ -2571,7 +2576,7 @@ msgid "Hours"
 msgstr "Timmar"
 
 msgid "Htaccess errors"
-msgstr ""
+msgstr "Htaccess errors"
 
 msgid "Htaccess group"
 msgstr "Htaccess grupp"
@@ -2639,7 +2644,7 @@ msgstr "If yes, means that the reseller can allow its customers to edit this dir
 msgid ""
 "If you protect a plugin, you'll no longer be able to deactivate it from the "
 "plugin management interface."
-msgstr ""
+msgstr "If you protect a plugin, you'll no longer be able to deactivate it from the plugin management interface."
 
 msgid "If you want to limit the reseller, you must first limit its customers."
 msgstr "Om du vill begränsa återförsäljare, måste du begränsa först sina kunder."
@@ -3014,7 +3019,7 @@ msgid "Mail accounts"
 msgstr "E-postkonton"
 
 msgid "Mail accounts errors"
-msgstr ""
+msgstr "Mail accounts errors"
 
 msgid "Mail accounts limit reached."
 msgstr "Postkonton max. antal nådd."
@@ -3333,7 +3338,7 @@ msgid "No domain statistics to display."
 msgstr "Inga domain statistik att visa."
 
 msgid "No errors"
-msgstr ""
+msgstr "No errors"
 
 msgid "No file was uploaded."
 msgstr "No file was uploaded."
@@ -3499,10 +3504,10 @@ msgid "Only positive numbers are allowed."
 msgstr "Endast positiva tal är tillåtna."
 
 msgid "Only tar.gz, tar.bz2 and zip archives are accepted."
-msgstr ""
+msgstr "Only tar.gz, tar.bz2 and zip archives are accepted."
 
 msgid "Only tar.gz, tar.bz2 and zip archives are supported."
-msgstr ""
+msgstr "Only tar.gz, tar.bz2 and zip archives are supported."
 
 msgid "Open ticket"
 msgstr "Open ticket"
@@ -3815,15 +3820,15 @@ msgstr "Plugin"
 
 #, php-format
 msgid "Plugin %s is already activated."
-msgstr ""
+msgstr "Plugin %s is already activated."
 
 #, php-format
 msgid "Plugin %s is already deactivated."
-msgstr ""
+msgstr "Plugin %s is already deactivated."
 
 #, php-format
 msgid "Plugin %s is protected."
-msgstr ""
+msgstr "Plugin %s is protected."
 
 #, php-format
 msgid "Plugin %s successfully %s."
@@ -3831,42 +3836,42 @@ msgstr "Plugin %s successfully %s."
 
 #, php-format
 msgid "Plugin %s successfully scheduled for %s."
-msgstr ""
+msgstr "Plugin %s successfully scheduled for %s."
 
 msgid "Plugin archive"
-msgstr ""
+msgstr "Plugin archive"
 
 #, php-format
 msgid ""
 "Plugin archive exceeds the maximum upload size (%s). Max upload size is: %s."
-msgstr ""
+msgstr "Plugin archive exceeds the maximum upload size (%s). Max upload size is: %s."
 
 #, php-format
 msgid "Plugin class %s not found in file %s"
-msgstr ""
+msgstr "Plugin class %s not found in file %s"
 
 #, php-format
 msgid "Plugin file %s doesn't exists or is not readable."
-msgstr ""
+msgstr "Plugin file %s doesn't exists or is not readable."
 
 msgid "Plugin list is empty."
-msgstr ""
+msgstr "Plugin list is empty."
 
 msgid "Plugin list successfully updated."
-msgstr ""
+msgstr "Plugin list successfully updated."
 
 #, php-format
 msgid "Plugin manager was unable to %s the %s plugin."
 msgstr "Plugin manager was unable to %s the %s plugin."
 
 msgid "Plugin successfully uploaded."
-msgstr ""
+msgstr "Plugin successfully uploaded."
 
 msgid "Plugins Upload"
-msgstr ""
+msgstr "Plugins Upload"
 
 msgid "Plugins errors"
-msgstr ""
+msgstr "Plugins errors"
 
 #, php-format
 msgid ""
@@ -3874,10 +3879,10 @@ msgid ""
 "Plugins are developed independently from the core i-MSCP application by "
 "thousands of developers all over the world. You can find new plugins to "
 "install by browsing the %s."
-msgstr ""
+msgstr "Plugins hook into i-MSCP to extend its functionality with custom features. Plugins are developed independently from the core i-MSCP application by thousands of developers all over the world. You can find new plugins to install by browsing the %s."
 
 msgid "Plugins management"
-msgstr ""
+msgstr "Plugins management"
 
 msgid "Port"
 msgstr "Port"
@@ -4426,7 +4431,7 @@ msgid "Sessions"
 msgstr "Sessions"
 
 msgid "Set status to 'tochange'"
-msgstr ""
+msgstr "Set status to 'tochange'"
 
 msgid "Settings"
 msgstr "Inställningar"
@@ -4651,7 +4656,7 @@ msgid ""
 msgstr "Domänalias du försöker ta bort har FTP-konton. <br> Först ta bort dem."
 
 msgid "Subdomain aliases errors"
-msgstr ""
+msgstr "Subdomain aliases errors"
 
 msgid "Subdomain already exists or is not allowed."
 msgstr "Underdomän finns redan eller är inte tillåtet."
@@ -4689,7 +4694,7 @@ msgid "Subdomains"
 msgstr "Subdomäner"
 
 msgid "Subdomains errors"
-msgstr ""
+msgstr "Subdomains errors"
 
 msgid "Subdomains limit<br /><i>(-1 disabled, 0 unlimited)</i>"
 msgstr "Subdomains limit<br /><i>(-1 disabled, 0 unlimited)</i>"
@@ -5095,7 +5100,7 @@ msgstr "URL till denna administratörspanel"
 
 #, php-format
 msgid "Unable to backup %s plugin directory."
-msgstr ""
+msgstr "Unable to backup %s plugin directory."
 
 #, php-format
 msgid "Unable to close the ticket with Id '%s'."
@@ -5110,28 +5115,28 @@ msgstr "Det går inte att skapa 'LC_MESSAGES' katalog för språk-fil."
 
 #, php-format
 msgid "Unable to delete the %s plugin. Please, remove it manually."
-msgstr ""
+msgstr "Unable to delete the %s plugin. Please, remove it manually."
 
 #, php-format
 msgid "Unable to delete user with Id: %d"
 msgstr "Det går inte att ta bort användaren med id:%d"
 
 msgid "Unable to extract plugin archive."
-msgstr ""
+msgstr "Unable to extract plugin archive."
 
 #, php-format
 msgid "Unable to extract plugin archive: %s"
-msgstr ""
+msgstr "Unable to extract plugin archive: %s"
 
 msgid "Unable to find network cards. You cannot add new IP address."
 msgstr "Unable to find network cards. You cannot add new IP address."
 
 msgid "Unable to find plugin root directory."
-msgstr ""
+msgstr "Unable to find plugin root directory."
 
 #, php-format
 msgid "Unable to get stats for file %s."
-msgstr ""
+msgstr "Unable to get stats for file %s."
 
 msgid "Unable to get the IP addresses list. Please fix this problem."
 msgstr "Det gick inte att hämta IP-adresser. Var vänlig och åtgärda detta problem."
@@ -5140,7 +5145,7 @@ msgid "Unable to move file."
 msgstr "Det gick inte att flytta filen."
 
 msgid "Unable to open archive."
-msgstr ""
+msgstr "Unable to open archive."
 
 msgid "Unable to read Web software repository index file."
 msgstr "Det går inte att läsa index-fil för Web mjukvaran."
@@ -5157,7 +5162,7 @@ msgstr "Det gick inte att öppna ticket med Id '%s'."
 
 #, php-format
 msgid "Unable to restore %s plugin directory"
-msgstr ""
+msgstr "Unable to restore %s plugin directory"
 
 msgid ""
 "Unable to retrieve directories list for your domain. Please contact your "
@@ -5183,7 +5188,7 @@ msgstr "Unable to upload file. Max. upload filesize (%1$d MB) reached?"
 
 #, php-format
 msgid "Unable to write the %s file for protected plugins."
-msgstr ""
+msgstr "Unable to write the %s file for protected plugins."
 
 msgid "Unavailable"
 msgstr "Unavailable"
@@ -5268,7 +5273,7 @@ msgid "Update hosting plan"
 msgstr "Uppdatera hosting plan"
 
 msgid "Update in progress..."
-msgstr ""
+msgstr "Update in progress..."
 
 msgid ""
 "Update of Web software repository index has been aborted. Missing or empty "
@@ -5397,7 +5402,7 @@ msgid "Users and groups"
 msgstr "Användare och grupper"
 
 msgid "Users errors"
-msgstr ""
+msgstr "Users errors"
 
 #, php-format
 msgid "Value for the %s directive"
@@ -5697,7 +5702,7 @@ msgid "You are not allowed to remove this service port entry."
 msgstr "You are not allowed to remove this service port entry."
 
 msgid "You are not allowed to update a protected plugin."
-msgstr ""
+msgstr "You are not allowed to update a protected plugin."
 
 msgid "You can only upload images."
 msgstr "Du kan bara ladda upp bilder."
@@ -5901,7 +5906,7 @@ msgid "You must select a network card."
 msgstr "Du måste välja ett nätverkskort."
 
 msgid "You must select a plugin."
-msgstr ""
+msgstr "You must select a plugin."
 
 msgid "You must specify a message."
 msgstr "Du måste ange ett meddelande."
@@ -5997,10 +6002,13 @@ msgid "activated (Softwaredepot)"
 msgstr "activated (Softwaredepot)"
 
 msgid "activation"
-msgstr ""
+msgstr "activation"
 
 msgid "back"
 msgstr "tillbaka"
+
+msgid "change"
+msgstr ""
 
 msgid "day"
 msgstr "dag"
@@ -6015,19 +6023,19 @@ msgid "deactivated"
 msgstr "avstängd"
 
 msgid "deactivation"
-msgstr ""
+msgstr "deactivation"
 
 msgid "delete"
-msgstr ""
+msgstr "delete"
 
 msgid "deleted"
-msgstr ""
+msgstr "deleted"
 
 msgid "deleting"
 msgstr "deleting"
 
 msgid "deletion"
-msgstr ""
+msgstr "deletion"
 
 msgid "disabled"
 msgstr "Inte aktivt"
@@ -6124,7 +6132,7 @@ msgid "i-MSCP Web softwares repository"
 msgstr "i-MSCP Web softwares repository"
 
 msgid "i-MSCP plugin repository"
-msgstr ""
+msgstr "i-MSCP plugin repository"
 
 msgid "i-MSCP updates"
 msgstr "i-MSCP-uppdateringar"
@@ -6230,10 +6238,10 @@ msgid "unlimited"
 msgstr "obegränsad"
 
 msgid "update"
-msgstr ""
+msgstr "update"
 
 msgid "updated"
-msgstr ""
+msgstr "updated"
 
 msgid "view aliases"
 msgstr "visa alias"
