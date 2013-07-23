@@ -15,7 +15,7 @@ Table of Content
 1)  Version Info
 ----------------
 
-i-MSCP Version:     Git-Master
+i-MSCP Version:     Git Master
 Maintainer:         i-MSCP Team
 Homepage:           http://www.i-mscp.net
 Linux Distros:      Debian Squeeze, Wheezy
@@ -60,11 +60,11 @@ Make sure you are logged in as root:
 2.  Untar or unzip the distribution files to a secure directory
 
 	# cd /usr/local/src
-	# tar xjvf imscp-Git-Master
+	# tar xjvf imscp-archive.tar.bz2
 
 3.  Change to the newly created directory
 
-	# cd ./imscp-Git-Master
+	# cd ./imscp-archive
 
 4.  (optional) Check the imscp.conf and adapt it to your requirements.
 
@@ -86,11 +86,11 @@ Make sure you are logged in as root and MySQL is running.
 1.  Untar or unzip the distribution files to a secure directory
 
 	# cd /usr/local/src
-	# tar xjvf imscp-Git-Master.tar.bz2
+	# tar xjvf imscp-archive.tar.bz2
 
 2. Change to the newly created directory
 
-	# cd ./imscp-Git-Master
+	# cd ./imscp-archive
 
 3.  Update by running the imscp-autoinstall script
 
