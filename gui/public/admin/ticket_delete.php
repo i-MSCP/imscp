@@ -82,14 +82,14 @@ if (isset($_GET['ticket_id']) && !empty($_GET['ticket_id'])) {
 
 	deleteTicket($ticketId);
     set_page_message(tr('Ticket successfully deleted.'), 'success');
-	write_log(sprintf("%s: deleted ticket %d", $_SESSION['user_logged'], $ticketId), E_USER_NOTICE);
+	write_log(sprintf("%s: deleted Ticket %d", $_SESSION['user_logged'], $ticketId), E_USER_NOTICE);
 } elseif(isset($_GET['delete']) && $_GET['delete'] == 'open') {
 	deleteTickets('open', $userId);
-    set_page_message(tr('All open tickets were successfully deleted.'), 'success');
-	write_log(sprintf("%s: deleted all open tickets.", $_SESSION['user_logged']), E_USER_NOTICE);
+    set_page_message(tr('All open Tickets were successfully deleted.'), 'success');
+	write_log(sprintf("%s: deleted all open Tickets.", $_SESSION['user_logged']), E_USER_NOTICE);
 } elseif(isset($_GET['delete']) && $_GET['delete'] == 'closed') {
 	deleteTickets('closed', $userId);
-    set_page_message(tr('All closed tickets were successfully deleted.'), 'success');
+    set_page_message(tr('All closed Tickets were successfully deleted.'), 'success');
 	write_log(sprintf("%s: deleted all closed tickets.", $_SESSION['user_logged']), E_USER_NOTICE);
     $previousPage = 'ticket_closed';
 } else {

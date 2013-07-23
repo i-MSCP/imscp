@@ -88,12 +88,12 @@ $tpl->assign(
 		'TR_TICKET_ACTIONS' => tr('Actions'),
 		'TR_TICKET_DELETE' => tr('Delete'),
 		'TR_TICKET_CLOSE' => tr('Close'),
-		'TR_TICKET_READ_LINK' => tr('Read the ticket'),
-		'TR_TICKET_DELETE_LINK' => tr('Delete the ticket'),
-		'TR_TICKET_CLOSE_LINK' => tr('Close the ticket'),
-		'TR_TICKET_DELETE_ALL' => tr('Delete all tickets'),
-		'TR_TICKETS_DELETE_MESSAGE' => tr("Are you sure you want to delete the '%s' ticket?", '%s'),
-		'TR_TICKETS_DELETE_ALL_MESSAGE' => tr('Are you sure you want to delete all tickets?'),
+		'TR_TICKET_READ_LINK' => tr('Read Ticket'),
+		'TR_TICKET_DELETE_LINK' => tr('Delete Ticket'),
+		'TR_TICKET_CLOSE_LINK' => tr('Close Ticket'),
+		'TR_TICKET_DELETE_ALL' => tr('Delete all Tickets'),
+		'TR_TICKETS_DELETE_MESSAGE' => tr("Are you sure you want to delete the '%s' Ticket?", '%s'),
+		'TR_TICKETS_DELETE_ALL_MESSAGE' => tr('Are you sure you want to delete all Tickets?'),
 		'TR_PREVIOUS' => tr('Previous'),
 		'TR_NEXT' => tr('Next')));
 

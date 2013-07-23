@@ -400,7 +400,7 @@ function generateTicketList($tpl, $userId, $start, $count, $userLevel, $status)
                           'SCROLL_NEXT' => ''));
 
         if ($status == 'open') {
-            set_page_message(tr('You have no tickets open.'), 'info');
+            set_page_message(tr('You have no open tickets.'), 'info');
         } else {
             set_page_message(tr('You have no tickets closed.'), 'info');
         }

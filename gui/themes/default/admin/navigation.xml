@@ -238,7 +238,7 @@
                     </pages>
                 </resellers_statistics>
                 <ip_usage>
-                    <label>Ip usage</label>
+                    <label>IP usage</label>
                     <uri>/admin/ip_usage.php</uri>
                     <title_class>ip</title_class>
                     <privilege_callback name="systemHasCustomers"/>
@@ -253,17 +253,17 @@
             <privilege_callback name="systemHasResellers"/>
             <pages>
                 <open_tickets>
-                    <label>Open tickets</label>
+                    <label>Open Tickets</label>
                     <uri>/admin/ticket_system.php</uri>
                     <title_class>support</title_class>
                 </open_tickets>
                 <closed_tickets>
-                    <label>Closes tickets</label>
+                    <label>Closed Tickets</label>
                     <uri>/admin/ticket_closed.php</uri>
                     <title_class>support</title_class>
                 </closed_tickets>
                 <view_ticket>
-                    <label>View ticket</label>
+                    <label>View Ticket</label>
                     <uri>/admin/ticket_view.php</uri>
                     <title_class>support</title_class>
                     <visible>0</visible>
