@@ -15,8 +15,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2013-07-23 14:26+0200\n"
-"PO-Revision-Date: 2013-07-23 12:27+0000\n"
+"POT-Creation-Date: 2013-07-23 16:22+0200\n"
+"PO-Revision-Date: 2013-07-23 14:22+0000\n"
 "Last-Translator: Torsten Widmann <info@goover.de>\n"
 "Language-Team: Spanish (Spain) (http://www.transifex.com/projects/p/i-MSCP/language/es_ES/)\n"
 "MIME-Version: 1.0\n"
@@ -922,6 +922,9 @@ msgstr "Todo"
 msgid "All administrators"
 msgstr "Todos los Administradores"
 
+msgid "All closed Tickets were successfully deleted."
+msgstr ""
+
 msgid "All closed tickets were deleted."
 msgstr "Se han eliminado todos los tiquets cerrados."
 
@@ -942,6 +945,9 @@ msgstr "Todo entrante"
 
 msgid "All levels"
 msgstr "Todos los niveles"
+
+msgid "All open Tickets were successfully deleted."
+msgstr ""
 
 msgid "All open tickets were deleted."
 msgstr "Se han eliminado todos los tiquets abiertos."
@@ -1043,6 +1049,9 @@ msgstr "¿Está seguro que desea eliminar el puerto de servicio %s ?"
 msgid "Are you sure you want to delete %s?"
 msgstr "¿Está seguro que desea eliminar %s?"
 
+msgid "Are you sure you want to delete all Tickets?"
+msgstr ""
+
 msgid "Are you sure you want to delete all closed tickets?"
 msgstr "¿Estas seguro de que quieres eliminar todos los tickets cerrados?"
 
@@ -1067,6 +1076,10 @@ msgstr "¿Desea realmente eliminar el plan de alojamiento %s ?"
 #, php-format
 msgid "Are you sure you want to delete the %s menu?"
 msgstr "¿Desea realmente eliminar el menú %s ?"
+
+#, php-format
+msgid "Are you sure you want to delete the '%s' Ticket?"
+msgstr ""
 
 #, php-format
 msgid "Are you sure you want to delete the '%s' ticket?"
@@ -1500,14 +1513,17 @@ msgstr ""
 msgid "Close"
 msgstr "Cerrar"
 
+msgid "Close Ticket"
+msgstr ""
+
 msgid "Close the ticket"
 msgstr "Cerrar el ticket"
 
+msgid "Closed Tickets"
+msgstr ""
+
 msgid "Closed tickets"
 msgstr "Tickets cerrados"
-
-msgid "Closes tickets"
-msgstr "Cerrar tiquets"
 
 msgid "Company"
 msgstr "Empresa"
@@ -1824,8 +1840,14 @@ msgstr "Eliminar Catch-All"
 msgid "Delete Customer - {DOMAIN_NAME}"
 msgstr "Eliminar el cliente - {DOMAIN_NAME}"
 
+msgid "Delete Ticket"
+msgstr ""
+
 msgid "Delete account"
 msgstr "Eliminar cuenta"
+
+msgid "Delete all Tickets"
+msgstr ""
 
 msgid "Delete all tickets"
 msgstr "Eliminar todos los tickets"
@@ -1847,6 +1869,9 @@ msgstr "Eliminar software del revendedor"
 
 msgid "Delete software and send message"
 msgstr "Eliminar software y enviar mensaje"
+
+msgid "Delete the Ticket"
+msgstr ""
 
 msgid "Delete the ticket"
 msgstr "Eliminar el Ticket"
@@ -2842,9 +2867,6 @@ msgstr "La IP %s está esperando %s segundos."
 msgid "Ip management"
 msgstr "Administración de IP"
 
-msgid "Ip usage"
-msgstr "Uso de IP"
-
 msgid "Kernel Version"
 msgstr "Versión del Kernel"
 
@@ -3280,6 +3302,9 @@ msgstr "No expira nunca"
 msgid "New Sql user data"
 msgstr "Datos del nuevo usuario SQL"
 
+msgid "New Ticket"
+msgstr ""
+
 msgid "New alias order for {CUSTOMER}"
 msgstr "Nuevo pedido de alias de {CUSTOMER}"
 
@@ -3513,6 +3538,9 @@ msgid "Only tar.gz, tar.bz2 and zip archives are accepted."
 msgstr ""
 
 msgid "Only tar.gz, tar.bz2 and zip archives are supported."
+msgstr ""
+
+msgid "Open Tickets"
 msgstr ""
 
 msgid "Open ticket"
@@ -3982,6 +4010,12 @@ msgstr "La cuota debe tener un valor"
 msgid "RAM"
 msgstr "RAM"
 
+msgid "Read Ticket"
+msgstr ""
+
+msgid "Read the Ticket"
+msgstr ""
+
 msgid "Read the ticket"
 msgstr "Leer el Ticket"
 
@@ -4030,6 +4064,9 @@ msgstr "Eliminar permisos"
 
 msgid "Reopen"
 msgstr "Reabrir"
+
+msgid "Reopen the Ticket"
+msgstr ""
 
 msgid "Reopen the ticket"
 msgstr "Reabrir el ticket"
@@ -4999,6 +5036,9 @@ msgstr "Este nombre de usuario ya existe."
 msgid "TiB"
 msgstr "TiB"
 
+msgid "Ticket Information"
+msgstr ""
+
 msgid "Ticket deleted."
 msgstr "Tiquet eliminado."
 
@@ -5448,6 +5488,9 @@ msgstr "Ver certificado SSL"
 msgid "View Support Ticket"
 msgstr "Ver Ticket de Soporte"
 
+msgid "View Ticket"
+msgstr ""
+
 msgid "View aliases"
 msgstr "Ver los alias"
 
@@ -5858,11 +5901,11 @@ msgstr "No tienes puertos de servicio personalizados definidos."
 msgid "You have no groups."
 msgstr "No tienes grupos."
 
+msgid "You have no open tickets."
+msgstr ""
+
 msgid "You have no tickets closed."
 msgstr "No tienes tiquets cerrados."
-
-msgid "You have no tickets open."
-msgstr "No tienes tiquets abiertos."
 
 msgid "You have reached your domains limit.<br />You cannot add more domains."
 msgstr "Has alcanzado el límite de dominios. <br /> No se puede agregar más dominios."

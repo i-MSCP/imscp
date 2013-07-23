@@ -11,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2013-07-23 14:26+0200\n"
-"PO-Revision-Date: 2013-07-23 12:27+0000\n"
+"POT-Creation-Date: 2013-07-23 16:22+0200\n"
+"PO-Revision-Date: 2013-07-23 14:22+0000\n"
 "Last-Translator: Torsten Widmann <info@goover.de>\n"
 "Language-Team: Danish (Denmark) (http://www.transifex.com/projects/p/i-MSCP/language/da_DK/)\n"
 "MIME-Version: 1.0\n"
@@ -918,6 +918,9 @@ msgstr "Alle"
 msgid "All administrators"
 msgstr "Alle administratorer"
 
+msgid "All closed Tickets were successfully deleted."
+msgstr ""
+
 msgid "All closed tickets were deleted."
 msgstr "Alle lukkede sager blev slettet."
 
@@ -938,6 +941,9 @@ msgstr "Alle ind"
 
 msgid "All levels"
 msgstr "Alle niveauer"
+
+msgid "All open Tickets were successfully deleted."
+msgstr ""
 
 msgid "All open tickets were deleted."
 msgstr "Alle åbne sager blev slettet."
@@ -1039,6 +1045,9 @@ msgstr "Er du sikker på, at du vil slette %s service port ?"
 msgid "Are you sure you want to delete %s?"
 msgstr "Er du sikker på du vil slette %s?"
 
+msgid "Are you sure you want to delete all Tickets?"
+msgstr ""
+
 msgid "Are you sure you want to delete all closed tickets?"
 msgstr "Er du sikker på du vil slette alle lukkede support tikkets?"
 
@@ -1063,6 +1072,10 @@ msgstr "Er du sikker på at du vil slette %s hosting plan?"
 #, php-format
 msgid "Are you sure you want to delete the %s menu?"
 msgstr "Er du sikker på at du vil slette %s menuen?"
+
+#, php-format
+msgid "Are you sure you want to delete the '%s' Ticket?"
+msgstr ""
 
 #, php-format
 msgid "Are you sure you want to delete the '%s' ticket?"
@@ -1496,14 +1509,17 @@ msgstr "Klient /  Webværktøjer / Software / Software Visning"
 msgid "Close"
 msgstr "Luk"
 
+msgid "Close Ticket"
+msgstr ""
+
 msgid "Close the ticket"
 msgstr "Luk fejlrapporten"
 
+msgid "Closed Tickets"
+msgstr ""
+
 msgid "Closed tickets"
 msgstr "Lukkede Support sager"
-
-msgid "Closes tickets"
-msgstr "Lukkede tickets"
 
 msgid "Company"
 msgstr "Firma"
@@ -1820,8 +1836,14 @@ msgstr "Slet FangAlle"
 msgid "Delete Customer - {DOMAIN_NAME}"
 msgstr "Slet Kunde - {DOMAIN_NAME}"
 
+msgid "Delete Ticket"
+msgstr ""
+
 msgid "Delete account"
 msgstr "Slet konto"
+
+msgid "Delete all Tickets"
+msgstr ""
 
 msgid "Delete all tickets"
 msgstr "Slet alle fejlrapports"
@@ -1843,6 +1865,9 @@ msgstr "Slet forhandler software"
 
 msgid "Delete software and send message"
 msgstr "Slet software og send meddelelse"
+
+msgid "Delete the Ticket"
+msgstr ""
 
 msgid "Delete the ticket"
 msgstr "Slet fejlrapporten"
@@ -2838,9 +2863,6 @@ msgstr "Ip %s venter i %s sekunder."
 msgid "Ip management"
 msgstr "Ip administration"
 
-msgid "Ip usage"
-msgstr "Ip anvendelse"
-
 msgid "Kernel Version"
 msgstr "Kernel Version"
 
@@ -3276,6 +3298,9 @@ msgstr "Udløber aldrig"
 msgid "New Sql user data"
 msgstr "Ny Sql bruger data"
 
+msgid "New Ticket"
+msgstr ""
+
 msgid "New alias order for {CUSTOMER}"
 msgstr "Ny alias ordrer for {CUSTOMER}"
 
@@ -3510,6 +3535,9 @@ msgstr "Kun tar.gz, tar.bz2 og zip arkiver accepteret."
 
 msgid "Only tar.gz, tar.bz2 and zip archives are supported."
 msgstr "Kun tar.gz, tar.bz2 og zip arkiver understøttes."
+
+msgid "Open Tickets"
+msgstr ""
 
 msgid "Open ticket"
 msgstr "Åben support ticket"
@@ -3978,6 +4006,12 @@ msgstr "Kvote skal have en værdi"
 msgid "RAM"
 msgstr "RAM"
 
+msgid "Read Ticket"
+msgstr ""
+
+msgid "Read the Ticket"
+msgstr ""
+
 msgid "Read the ticket"
 msgstr "Læs fejlrapporten"
 
@@ -4026,6 +4060,9 @@ msgstr "Fjern tilladelser"
 
 msgid "Reopen"
 msgstr "Genåbn"
+
+msgid "Reopen the Ticket"
+msgstr ""
 
 msgid "Reopen the ticket"
 msgstr "Genåbn fejlrapporten"
@@ -4995,6 +5032,9 @@ msgstr "Dette brugernavn findes allerede."
 msgid "TiB"
 msgstr "TiB"
 
+msgid "Ticket Information"
+msgstr ""
+
 msgid "Ticket deleted."
 msgstr "Ticket slettet."
 
@@ -5444,6 +5484,9 @@ msgstr "Se SSL certifikat"
 msgid "View Support Ticket"
 msgstr "Se Support Ticket"
 
+msgid "View Ticket"
+msgstr ""
+
 msgid "View aliases"
 msgstr "Vis aliaser"
 
@@ -5854,11 +5897,11 @@ msgstr "Du har ingen brugerdefinerede service porte defineret."
 msgid "You have no groups."
 msgstr "Du har ingen grupper."
 
+msgid "You have no open tickets."
+msgstr ""
+
 msgid "You have no tickets closed."
 msgstr "Du har ingen tickets lukket."
-
-msgid "You have no tickets open."
-msgstr "Du har ingen tickets åben."
 
 msgid "You have reached your domains limit.<br />You cannot add more domains."
 msgstr "Du har nået din domæne grænse.<br />Du kan ikke tilføje flere domæner."

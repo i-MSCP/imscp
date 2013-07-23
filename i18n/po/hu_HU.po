@@ -11,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2013-07-23 14:26+0200\n"
-"PO-Revision-Date: 2013-07-23 12:27+0000\n"
+"POT-Creation-Date: 2013-07-23 16:22+0200\n"
+"PO-Revision-Date: 2013-07-23 14:22+0000\n"
 "Last-Translator: Torsten Widmann <info@goover.de>\n"
 "Language-Team: Hungarian (Hungary) (http://www.transifex.com/projects/p/i-MSCP/language/hu_HU/)\n"
 "MIME-Version: 1.0\n"
@@ -918,6 +918,9 @@ msgstr "Összes"
 msgid "All administrators"
 msgstr "Összes adminisztrátor"
 
+msgid "All closed Tickets were successfully deleted."
+msgstr ""
+
 msgid "All closed tickets were deleted."
 msgstr "Minden lezárt hibajegy sikeresen törölve"
 
@@ -938,6 +941,9 @@ msgstr "Összes (bejövő)"
 
 msgid "All levels"
 msgstr "Összes szint"
+
+msgid "All open Tickets were successfully deleted."
+msgstr ""
 
 msgid "All open tickets were deleted."
 msgstr "Minden nyitott hibajegy sikeresen törölve"
@@ -1039,6 +1045,9 @@ msgstr "Biztosan szeretné törölni a(z) \"%s\" szolgáltatási port?"
 msgid "Are you sure you want to delete %s?"
 msgstr "Biztosan szeretné törölni a következőt: %s ?"
 
+msgid "Are you sure you want to delete all Tickets?"
+msgstr ""
+
 msgid "Are you sure you want to delete all closed tickets?"
 msgstr "Biztosan szeretné töröln az összes lezárt hibajegyet?"
 
@@ -1063,6 +1072,10 @@ msgstr "Biztosan szeretné törölni a %s tárhely csomagot?"
 #, php-format
 msgid "Are you sure you want to delete the %s menu?"
 msgstr "Biztosan szeretné törölni a(z) %s menüt?"
+
+#, php-format
+msgid "Are you sure you want to delete the '%s' Ticket?"
+msgstr ""
 
 #, php-format
 msgid "Are you sure you want to delete the '%s' ticket?"
@@ -1496,13 +1509,16 @@ msgstr "Ügyfél / Webes eszközök / Szoftverek / Szoftverek"
 msgid "Close"
 msgstr "OK"
 
+msgid "Close Ticket"
+msgstr ""
+
 msgid "Close the ticket"
 msgstr "Hibajegy lezárása"
 
-msgid "Closed tickets"
-msgstr "Lezárt hibajegyek"
+msgid "Closed Tickets"
+msgstr ""
 
-msgid "Closes tickets"
+msgid "Closed tickets"
 msgstr "Lezárt hibajegyek"
 
 msgid "Company"
@@ -1820,8 +1836,14 @@ msgstr "Catch-all törlése"
 msgid "Delete Customer - {DOMAIN_NAME}"
 msgstr "{DOMAIN_NAME} - ügyfél törlése"
 
+msgid "Delete Ticket"
+msgstr ""
+
 msgid "Delete account"
 msgstr "Fiók törlése"
+
+msgid "Delete all Tickets"
+msgstr ""
 
 msgid "Delete all tickets"
 msgstr "Minden hibajegy törlése"
@@ -1843,6 +1865,9 @@ msgstr "Viszonteladó alkalmazásának törlése"
 
 msgid "Delete software and send message"
 msgstr "Alkalmazás törlése és üzenet küldése"
+
+msgid "Delete the Ticket"
+msgstr ""
 
 msgid "Delete the ticket"
 msgstr "Hibajegy törlése"
@@ -2838,9 +2863,6 @@ msgstr "%s IP-címnek várnia kell %s másodpercet"
 msgid "Ip management"
 msgstr "IP-címek kezelése"
 
-msgid "Ip usage"
-msgstr "IP-cím használat"
-
 msgid "Kernel Version"
 msgstr "Kernel verziója"
 
@@ -3276,6 +3298,9 @@ msgstr "Soha nem jár le"
 msgid "New Sql user data"
 msgstr "Új SQL felhasználói adatok"
 
+msgid "New Ticket"
+msgstr ""
+
 msgid "New alias order for {CUSTOMER}"
 msgstr "Új álnév megrendelése a(z) {CUSTOMER} felhasználónak"
 
@@ -3510,6 +3535,9 @@ msgstr "Csak a tar.gz, tar.bz2 és a zip archívumok az elfogadottak."
 
 msgid "Only tar.gz, tar.bz2 and zip archives are supported."
 msgstr "Csak a tar.gz, tar.bz2 és a zip archívumok a támogatottak."
+
+msgid "Open Tickets"
+msgstr ""
 
 msgid "Open ticket"
 msgstr "Hibajegy megnyitása"
@@ -3978,6 +4006,12 @@ msgstr "Kvótának értékkel kell rendelkeznie"
 msgid "RAM"
 msgstr "RAM"
 
+msgid "Read Ticket"
+msgstr ""
+
+msgid "Read the Ticket"
+msgstr ""
+
 msgid "Read the ticket"
 msgstr "Hibajegy olvasása"
 
@@ -4026,6 +4060,9 @@ msgstr "Jogosultság elvétele"
 
 msgid "Reopen"
 msgstr "Újranyitás"
+
+msgid "Reopen the Ticket"
+msgstr ""
 
 msgid "Reopen the ticket"
 msgstr "Hibajegy újranyitása"
@@ -4995,6 +5032,9 @@ msgstr "Ez a felhasználónév már létezik"
 msgid "TiB"
 msgstr "TB"
 
+msgid "Ticket Information"
+msgstr ""
+
 msgid "Ticket deleted."
 msgstr "Hibajegy sikeresen törölve"
 
@@ -5444,6 +5484,9 @@ msgstr "SSL tanúsítvány megjelenítése"
 msgid "View Support Ticket"
 msgstr "Hibajegy megtekintése"
 
+msgid "View Ticket"
+msgstr ""
+
 msgid "View aliases"
 msgstr "Domain álnevek megjelenítése"
 
@@ -5854,11 +5897,11 @@ msgstr "Nincs saját szerviz port beállítva"
 msgid "You have no groups."
 msgstr "Nincsenek csoportok"
 
+msgid "You have no open tickets."
+msgstr ""
+
 msgid "You have no tickets closed."
 msgstr "Nem található lezárt hibajegy"
-
-msgid "You have no tickets open."
-msgstr "Nem található nyitott hibajegy"
 
 msgid "You have reached your domains limit.<br />You cannot add more domains."
 msgstr "Nem tud hozzáadni még több domaint, mivel elérte a létrehoztahó domain azonosítók korlátját"

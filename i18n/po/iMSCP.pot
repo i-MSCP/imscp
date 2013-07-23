@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.0.1.6\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2013-07-23 14:26+0200\n"
+"POT-Creation-Date: 2013-07-23 16:22+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -913,6 +913,9 @@ msgstr ""
 msgid "All administrators"
 msgstr ""
 
+msgid "All closed Tickets were successfully deleted."
+msgstr ""
+
 msgid "All closed tickets were deleted."
 msgstr ""
 
@@ -932,6 +935,9 @@ msgid "All in"
 msgstr ""
 
 msgid "All levels"
+msgstr ""
+
+msgid "All open Tickets were successfully deleted."
 msgstr ""
 
 msgid "All open tickets were deleted."
@@ -1034,6 +1040,9 @@ msgstr ""
 msgid "Are you sure you want to delete %s?"
 msgstr ""
 
+msgid "Are you sure you want to delete all Tickets?"
+msgstr ""
+
 msgid "Are you sure you want to delete all closed tickets?"
 msgstr ""
 
@@ -1057,6 +1066,10 @@ msgstr ""
 
 #, php-format
 msgid "Are you sure you want to delete the %s menu?"
+msgstr ""
+
+#, php-format
+msgid "Are you sure you want to delete the '%s' Ticket?"
 msgstr ""
 
 #, php-format
@@ -1491,13 +1504,16 @@ msgstr ""
 msgid "Close"
 msgstr ""
 
+msgid "Close Ticket"
+msgstr ""
+
 msgid "Close the ticket"
 msgstr ""
 
-msgid "Closed tickets"
+msgid "Closed Tickets"
 msgstr ""
 
-msgid "Closes tickets"
+msgid "Closed tickets"
 msgstr ""
 
 msgid "Company"
@@ -1815,7 +1831,13 @@ msgstr ""
 msgid "Delete Customer - {DOMAIN_NAME}"
 msgstr ""
 
+msgid "Delete Ticket"
+msgstr ""
+
 msgid "Delete account"
+msgstr ""
+
+msgid "Delete all Tickets"
 msgstr ""
 
 msgid "Delete all tickets"
@@ -1837,6 +1859,9 @@ msgid "Delete reseller software"
 msgstr ""
 
 msgid "Delete software and send message"
+msgstr ""
+
+msgid "Delete the Ticket"
 msgstr ""
 
 msgid "Delete the ticket"
@@ -2833,9 +2858,6 @@ msgstr ""
 msgid "Ip management"
 msgstr ""
 
-msgid "Ip usage"
-msgstr ""
-
 msgid "Kernel Version"
 msgstr ""
 
@@ -3270,6 +3292,9 @@ msgstr ""
 msgid "New Sql user data"
 msgstr ""
 
+msgid "New Ticket"
+msgstr ""
+
 msgid "New alias order for {CUSTOMER}"
 msgstr ""
 
@@ -3503,6 +3528,9 @@ msgid "Only tar.gz, tar.bz2 and zip archives are accepted."
 msgstr ""
 
 msgid "Only tar.gz, tar.bz2 and zip archives are supported."
+msgstr ""
+
+msgid "Open Tickets"
 msgstr ""
 
 msgid "Open ticket"
@@ -3972,6 +4000,12 @@ msgstr ""
 msgid "RAM"
 msgstr ""
 
+msgid "Read Ticket"
+msgstr ""
+
+msgid "Read the Ticket"
+msgstr ""
+
 msgid "Read the ticket"
 msgstr ""
 
@@ -4019,6 +4053,9 @@ msgid "Remove permissions"
 msgstr ""
 
 msgid "Reopen"
+msgstr ""
+
+msgid "Reopen the Ticket"
 msgstr ""
 
 msgid "Reopen the ticket"
@@ -4987,6 +5024,9 @@ msgstr ""
 msgid "TiB"
 msgstr ""
 
+msgid "Ticket Information"
+msgstr ""
+
 msgid "Ticket deleted."
 msgstr ""
 
@@ -5435,6 +5475,9 @@ msgstr ""
 msgid "View Support Ticket"
 msgstr ""
 
+msgid "View Ticket"
+msgstr ""
+
 msgid "View aliases"
 msgstr ""
 
@@ -5844,10 +5887,10 @@ msgstr ""
 msgid "You have no groups."
 msgstr ""
 
-msgid "You have no tickets closed."
+msgid "You have no open tickets."
 msgstr ""
 
-msgid "You have no tickets open."
+msgid "You have no tickets closed."
 msgstr ""
 
 msgid "You have reached your domains limit.<br />You cannot add more domains."

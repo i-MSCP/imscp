@@ -13,8 +13,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2013-07-23 14:26+0200\n"
-"PO-Revision-Date: 2013-07-23 12:27+0000\n"
+"POT-Creation-Date: 2013-07-23 16:22+0200\n"
+"PO-Revision-Date: 2013-07-23 14:22+0000\n"
 "Last-Translator: Torsten Widmann <info@goover.de>\n"
 "Language-Team: Italian (Italy) (http://www.transifex.com/projects/p/i-MSCP/language/it_IT/)\n"
 "MIME-Version: 1.0\n"
@@ -920,6 +920,9 @@ msgstr "Tutti"
 msgid "All administrators"
 msgstr "Tutti gli amministratori"
 
+msgid "All closed Tickets were successfully deleted."
+msgstr ""
+
 msgid "All closed tickets were deleted."
 msgstr "Tutti i ticket chiusi sono stati eliminati."
 
@@ -940,6 +943,9 @@ msgstr "Totali in entrata"
 
 msgid "All levels"
 msgstr "Tutti i liveli"
+
+msgid "All open Tickets were successfully deleted."
+msgstr ""
 
 msgid "All open tickets were deleted."
 msgstr "Tutti i tickets aperti sono stati eliminati."
@@ -1041,6 +1047,9 @@ msgstr "Sicuro di voler eliminare il servizio %s?"
 msgid "Are you sure you want to delete %s?"
 msgstr "Sei sicuro di voler cancellare %s?"
 
+msgid "Are you sure you want to delete all Tickets?"
+msgstr ""
+
 msgid "Are you sure you want to delete all closed tickets?"
 msgstr "Sicuro di voler eliminare tutti i ticket chiusi?"
 
@@ -1065,6 +1074,10 @@ msgstr "Sicuro di voler eliminare il piano hosting %s?"
 #, php-format
 msgid "Are you sure you want to delete the %s menu?"
 msgstr "Sicuro di voler eliminare il menu %s?"
+
+#, php-format
+msgid "Are you sure you want to delete the '%s' Ticket?"
+msgstr ""
 
 #, php-format
 msgid "Are you sure you want to delete the '%s' ticket?"
@@ -1498,14 +1511,17 @@ msgstr "Cliente / Strumenti Web / Software / Visualizza Software"
 msgid "Close"
 msgstr "Chiudi"
 
+msgid "Close Ticket"
+msgstr ""
+
 msgid "Close the ticket"
 msgstr "Chiudi il ticket"
 
+msgid "Closed Tickets"
+msgstr ""
+
 msgid "Closed tickets"
 msgstr "Tickets chiusi"
-
-msgid "Closes tickets"
-msgstr "Ticket chiusi"
 
 msgid "Company"
 msgstr "Azienda"
@@ -1822,7 +1838,13 @@ msgstr "Eliminare CatchAll"
 msgid "Delete Customer - {DOMAIN_NAME}"
 msgstr ""
 
+msgid "Delete Ticket"
+msgstr ""
+
 msgid "Delete account"
+msgstr ""
+
+msgid "Delete all Tickets"
 msgstr ""
 
 msgid "Delete all tickets"
@@ -1844,6 +1866,9 @@ msgid "Delete reseller software"
 msgstr ""
 
 msgid "Delete software and send message"
+msgstr ""
+
+msgid "Delete the Ticket"
 msgstr ""
 
 msgid "Delete the ticket"
@@ -2840,9 +2865,6 @@ msgstr ""
 msgid "Ip management"
 msgstr ""
 
-msgid "Ip usage"
-msgstr ""
-
 msgid "Kernel Version"
 msgstr "Versione del kernel"
 
@@ -3278,6 +3300,9 @@ msgstr ""
 msgid "New Sql user data"
 msgstr ""
 
+msgid "New Ticket"
+msgstr ""
+
 msgid "New alias order for {CUSTOMER}"
 msgstr ""
 
@@ -3511,6 +3536,9 @@ msgid "Only tar.gz, tar.bz2 and zip archives are accepted."
 msgstr ""
 
 msgid "Only tar.gz, tar.bz2 and zip archives are supported."
+msgstr ""
+
+msgid "Open Tickets"
 msgstr ""
 
 msgid "Open ticket"
@@ -3980,6 +4008,12 @@ msgstr "La quota deve avere un valore"
 msgid "RAM"
 msgstr "RAM"
 
+msgid "Read Ticket"
+msgstr ""
+
+msgid "Read the Ticket"
+msgstr ""
+
 msgid "Read the ticket"
 msgstr "Leggi il ticket"
 
@@ -4028,6 +4062,9 @@ msgstr "Rimuovi permessi"
 
 msgid "Reopen"
 msgstr "Riapri"
+
+msgid "Reopen the Ticket"
+msgstr ""
 
 msgid "Reopen the ticket"
 msgstr "Riapri il ticket"
@@ -4997,6 +5034,9 @@ msgstr "Questo nome utente esiste già."
 msgid "TiB"
 msgstr ""
 
+msgid "Ticket Information"
+msgstr ""
+
 msgid "Ticket deleted."
 msgstr ""
 
@@ -5446,6 +5486,9 @@ msgstr ""
 msgid "View Support Ticket"
 msgstr ""
 
+msgid "View Ticket"
+msgstr ""
+
 msgid "View aliases"
 msgstr "visualizza aliases"
 
@@ -5856,10 +5899,10 @@ msgstr ""
 msgid "You have no groups."
 msgstr "Non hai nessun gruppo."
 
-msgid "You have no tickets closed."
+msgid "You have no open tickets."
 msgstr ""
 
-msgid "You have no tickets open."
+msgid "You have no tickets closed."
 msgstr ""
 
 msgid "You have reached your domains limit.<br />You cannot add more domains."

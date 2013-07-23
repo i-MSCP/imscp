@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2013-07-23 14:26+0200\n"
-"PO-Revision-Date: 2013-07-23 12:27+0000\n"
+"POT-Creation-Date: 2013-07-23 16:22+0200\n"
+"PO-Revision-Date: 2013-07-23 14:22+0000\n"
 "Last-Translator: Torsten Widmann <info@goover.de>\n"
 "Language-Team: Czech (Czech Republic) (http://www.transifex.com/projects/p/i-MSCP/language/cs_CZ/)\n"
 "MIME-Version: 1.0\n"
@@ -915,6 +915,9 @@ msgstr "Vše"
 msgid "All administrators"
 msgstr ""
 
+msgid "All closed Tickets were successfully deleted."
+msgstr ""
+
 msgid "All closed tickets were deleted."
 msgstr "Všechny uzavřené lístky byly smazány."
 
@@ -934,6 +937,9 @@ msgid "All in"
 msgstr "Vše příchozí"
 
 msgid "All levels"
+msgstr ""
+
+msgid "All open Tickets were successfully deleted."
 msgstr ""
 
 msgid "All open tickets were deleted."
@@ -1036,6 +1042,9 @@ msgstr "Jste si jisti, že chcete smazat %s port služby?"
 msgid "Are you sure you want to delete %s?"
 msgstr "Opravdu chcete odstranit %s?"
 
+msgid "Are you sure you want to delete all Tickets?"
+msgstr ""
+
 msgid "Are you sure you want to delete all closed tickets?"
 msgstr "Jste si jisti, že chcete smazat všechny uzavřené lístky?"
 
@@ -1059,6 +1068,10 @@ msgstr ""
 
 #, php-format
 msgid "Are you sure you want to delete the %s menu?"
+msgstr ""
+
+#, php-format
+msgid "Are you sure you want to delete the '%s' Ticket?"
 msgstr ""
 
 #, php-format
@@ -1493,14 +1506,17 @@ msgstr ""
 msgid "Close"
 msgstr "Zavřít"
 
+msgid "Close Ticket"
+msgstr ""
+
 msgid "Close the ticket"
 msgstr "Zavřít lístek"
 
+msgid "Closed Tickets"
+msgstr ""
+
 msgid "Closed tickets"
 msgstr "Uzavřené požadavky"
-
-msgid "Closes tickets"
-msgstr ""
 
 msgid "Company"
 msgstr "Společnost"
@@ -1817,7 +1833,13 @@ msgstr "Odtranit doménový koš"
 msgid "Delete Customer - {DOMAIN_NAME}"
 msgstr ""
 
+msgid "Delete Ticket"
+msgstr ""
+
 msgid "Delete account"
+msgstr ""
+
+msgid "Delete all Tickets"
 msgstr ""
 
 msgid "Delete all tickets"
@@ -1840,6 +1862,9 @@ msgstr ""
 
 msgid "Delete software and send message"
 msgstr "Odstranit software a poslat zprávu"
+
+msgid "Delete the Ticket"
+msgstr ""
 
 msgid "Delete the ticket"
 msgstr "Smazat lístek"
@@ -2835,9 +2860,6 @@ msgstr ""
 msgid "Ip management"
 msgstr ""
 
-msgid "Ip usage"
-msgstr ""
-
 msgid "Kernel Version"
 msgstr "Verze kernelu"
 
@@ -3273,6 +3295,9 @@ msgstr ""
 msgid "New Sql user data"
 msgstr ""
 
+msgid "New Ticket"
+msgstr ""
+
 msgid "New alias order for {CUSTOMER}"
 msgstr ""
 
@@ -3506,6 +3531,9 @@ msgid "Only tar.gz, tar.bz2 and zip archives are accepted."
 msgstr ""
 
 msgid "Only tar.gz, tar.bz2 and zip archives are supported."
+msgstr ""
+
+msgid "Open Tickets"
 msgstr ""
 
 msgid "Open ticket"
@@ -3975,6 +4003,12 @@ msgstr "Kvóta musí mít zadánu hodnotu"
 msgid "RAM"
 msgstr "RAM"
 
+msgid "Read Ticket"
+msgstr ""
+
+msgid "Read the Ticket"
+msgstr ""
+
 msgid "Read the ticket"
 msgstr "Číst lístek"
 
@@ -4023,6 +4057,9 @@ msgstr "Odebrat oprávnění"
 
 msgid "Reopen"
 msgstr "Znovu otevřít"
+
+msgid "Reopen the Ticket"
+msgstr ""
 
 msgid "Reopen the ticket"
 msgstr "Znovu otevřít lístek"
@@ -4992,6 +5029,9 @@ msgstr "Toto uživatelské jméno již existuje."
 msgid "TiB"
 msgstr "TiB"
 
+msgid "Ticket Information"
+msgstr ""
+
 msgid "Ticket deleted."
 msgstr "Lístek smazán."
 
@@ -5441,6 +5481,9 @@ msgstr ""
 msgid "View Support Ticket"
 msgstr "Zobrazit lístek podpory"
 
+msgid "View Ticket"
+msgstr ""
+
 msgid "View aliases"
 msgstr "Zobrazit aliasy"
 
@@ -5851,10 +5894,10 @@ msgstr ""
 msgid "You have no groups."
 msgstr "Nemáte žádné skupiny."
 
-msgid "You have no tickets closed."
+msgid "You have no open tickets."
 msgstr ""
 
-msgid "You have no tickets open."
+msgid "You have no tickets closed."
 msgstr ""
 
 msgid "You have reached your domains limit.<br />You cannot add more domains."

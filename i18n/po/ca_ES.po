@@ -18,8 +18,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2013-07-23 14:26+0200\n"
-"PO-Revision-Date: 2013-07-23 12:27+0000\n"
+"POT-Creation-Date: 2013-07-23 16:22+0200\n"
+"PO-Revision-Date: 2013-07-23 14:22+0000\n"
 "Last-Translator: Torsten Widmann <info@goover.de>\n"
 "Language-Team: Catalan (Spain) (http://www.transifex.com/projects/p/i-MSCP/language/ca_ES/)\n"
 "MIME-Version: 1.0\n"
@@ -925,6 +925,9 @@ msgstr "Tots"
 msgid "All administrators"
 msgstr ""
 
+msgid "All closed Tickets were successfully deleted."
+msgstr ""
+
 msgid "All closed tickets were deleted."
 msgstr "Tots el tiquets tancats s'han esborrat."
 
@@ -945,6 +948,9 @@ msgstr "Total Entrada"
 
 msgid "All levels"
 msgstr "Tots els nivells"
+
+msgid "All open Tickets were successfully deleted."
+msgstr ""
 
 msgid "All open tickets were deleted."
 msgstr "Tots els tiquets oberts s'han eliminat."
@@ -1046,6 +1052,9 @@ msgstr "Estàs segur que vols esborrar el port del servei %s ?"
 msgid "Are you sure you want to delete %s?"
 msgstr "Estàs segur que vols esborrar %s?"
 
+msgid "Are you sure you want to delete all Tickets?"
+msgstr ""
+
 msgid "Are you sure you want to delete all closed tickets?"
 msgstr "Esteu segurs d'esborrar tots aquests tiquets tancats?"
 
@@ -1070,6 +1079,10 @@ msgstr "Esteu segurs que voleu esborrar el plà d'hostatge %s?"
 #, php-format
 msgid "Are you sure you want to delete the %s menu?"
 msgstr "Esteu segurs que voleu eliminar l'entrada de menú %s?"
+
+#, php-format
+msgid "Are you sure you want to delete the '%s' Ticket?"
+msgstr ""
 
 #, php-format
 msgid "Are you sure you want to delete the '%s' ticket?"
@@ -1503,14 +1516,17 @@ msgstr ""
 msgid "Close"
 msgstr "Tancar"
 
+msgid "Close Ticket"
+msgstr ""
+
 msgid "Close the ticket"
 msgstr "Tancar el tiquet"
 
+msgid "Closed Tickets"
+msgstr ""
+
 msgid "Closed tickets"
 msgstr "Tiquets tancats"
-
-msgid "Closes tickets"
-msgstr "Tancar tiquet"
 
 msgid "Company"
 msgstr "Empresa"
@@ -1827,7 +1843,13 @@ msgstr "Esborrar CatchAll"
 msgid "Delete Customer - {DOMAIN_NAME}"
 msgstr ""
 
+msgid "Delete Ticket"
+msgstr ""
+
 msgid "Delete account"
+msgstr ""
+
+msgid "Delete all Tickets"
 msgstr ""
 
 msgid "Delete all tickets"
@@ -1850,6 +1872,9 @@ msgstr "Eliminar aplicació del distribuïdor"
 
 msgid "Delete software and send message"
 msgstr "Eliminar l'aplicació i enviar el missatge"
+
+msgid "Delete the Ticket"
+msgstr ""
 
 msgid "Delete the ticket"
 msgstr "Esborrar el tiquet"
@@ -2845,9 +2870,6 @@ msgstr "La IP %s s'està esperant %s segons."
 msgid "Ip management"
 msgstr "Gestió d'IPs"
 
-msgid "Ip usage"
-msgstr "Ús d'IPs"
-
 msgid "Kernel Version"
 msgstr "Versió del kernel"
 
@@ -3283,6 +3305,9 @@ msgstr "No expira mai"
 msgid "New Sql user data"
 msgstr "Noves dades d'usuari SQL."
 
+msgid "New Ticket"
+msgstr ""
+
 msgid "New alias order for {CUSTOMER}"
 msgstr "Nova ordre d'àlies per a {CUSTOMER}"
 
@@ -3516,6 +3541,9 @@ msgid "Only tar.gz, tar.bz2 and zip archives are accepted."
 msgstr ""
 
 msgid "Only tar.gz, tar.bz2 and zip archives are supported."
+msgstr ""
+
+msgid "Open Tickets"
 msgstr ""
 
 msgid "Open ticket"
@@ -3985,6 +4013,12 @@ msgstr "La Quota ha de tenir un valor"
 msgid "RAM"
 msgstr "RAM"
 
+msgid "Read Ticket"
+msgstr ""
+
+msgid "Read the Ticket"
+msgstr ""
+
 msgid "Read the ticket"
 msgstr "Llegir el tiquet"
 
@@ -4033,6 +4067,9 @@ msgstr "Eliminar permisos"
 
 msgid "Reopen"
 msgstr "Reobrir"
+
+msgid "Reopen the Ticket"
+msgstr ""
 
 msgid "Reopen the ticket"
 msgstr "Reobrir el tiquet"
@@ -5002,6 +5039,9 @@ msgstr "Aquest nom d'usuari ja existeix."
 msgid "TiB"
 msgstr "TiB"
 
+msgid "Ticket Information"
+msgstr ""
+
 msgid "Ticket deleted."
 msgstr "Tiquet eliminat."
 
@@ -5451,6 +5491,9 @@ msgstr "Veure el certificat SSL"
 msgid "View Support Ticket"
 msgstr "Veure tiquet"
 
+msgid "View Ticket"
+msgstr ""
+
 msgid "View aliases"
 msgstr "Veure àlies"
 
@@ -5861,11 +5904,11 @@ msgstr "No hi ha definits  ports de serveis personalitzats."
 msgid "You have no groups."
 msgstr "No tens grups."
 
+msgid "You have no open tickets."
+msgstr ""
+
 msgid "You have no tickets closed."
 msgstr "No tens tiquets tancats."
-
-msgid "You have no tickets open."
-msgstr "No tens tiquets oberts."
 
 msgid "You have reached your domains limit.<br />You cannot add more domains."
 msgstr "Has assolit el teu limit de dominis.<br />No pots afegir més dominis."

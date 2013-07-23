@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2013-07-23 14:26+0200\n"
-"PO-Revision-Date: 2013-07-23 12:27+0000\n"
+"POT-Creation-Date: 2013-07-23 16:22+0200\n"
+"PO-Revision-Date: 2013-07-23 14:22+0000\n"
 "Last-Translator: Torsten Widmann <info@goover.de>\n"
 "Language-Team: Swedish (Sweden) (http://www.transifex.com/projects/p/i-MSCP/language/sv_SE/)\n"
 "MIME-Version: 1.0\n"
@@ -916,6 +916,9 @@ msgstr "Alla"
 msgid "All administrators"
 msgstr "Alla Administratörer"
 
+msgid "All closed Tickets were successfully deleted."
+msgstr ""
+
 msgid "All closed tickets were deleted."
 msgstr "Alla stängda tickets togs bort."
 
@@ -936,6 +939,9 @@ msgstr "Allt inåt"
 
 msgid "All levels"
 msgstr "Alla nivåer"
+
+msgid "All open Tickets were successfully deleted."
+msgstr ""
 
 msgid "All open tickets were deleted."
 msgstr "Alla öppna tickets togs bort."
@@ -1037,6 +1043,9 @@ msgstr "Är du säker på att du vill radera%s tjänst port?"
 msgid "Are you sure you want to delete %s?"
 msgstr "Är du säker på att du vill radera %s?"
 
+msgid "Are you sure you want to delete all Tickets?"
+msgstr ""
+
 msgid "Are you sure you want to delete all closed tickets?"
 msgstr "Är du säker på att du vill ta bort alla stängda tickets?"
 
@@ -1061,6 +1070,10 @@ msgstr "Är du säker att du vill raderar %s webhotells-plan"
 #, php-format
 msgid "Are you sure you want to delete the %s menu?"
 msgstr "Är du säker att du vill raderar %s meny?"
+
+#, php-format
+msgid "Are you sure you want to delete the '%s' Ticket?"
+msgstr ""
 
 #, php-format
 msgid "Are you sure you want to delete the '%s' ticket?"
@@ -1494,14 +1507,17 @@ msgstr "Kund / Webtools / Softwares / Software View"
 msgid "Close"
 msgstr "Stäng"
 
+msgid "Close Ticket"
+msgstr ""
+
 msgid "Close the ticket"
 msgstr "Stäng ticket"
 
+msgid "Closed Tickets"
+msgstr ""
+
 msgid "Closed tickets"
 msgstr "Stängda supportärenden"
-
-msgid "Closes tickets"
-msgstr "Closes tickets"
 
 msgid "Company"
 msgstr "Företag"
@@ -1818,8 +1834,14 @@ msgstr "Ta bort Catch-all"
 msgid "Delete Customer - {DOMAIN_NAME}"
 msgstr "Raderar kund - {DOMAIN_NAME}"
 
+msgid "Delete Ticket"
+msgstr ""
+
 msgid "Delete account"
 msgstr "Radera konto"
+
+msgid "Delete all Tickets"
+msgstr ""
 
 msgid "Delete all tickets"
 msgstr "Ta bort alla tickets"
@@ -1841,6 +1863,9 @@ msgstr "Radera återförsäljare programvara"
 
 msgid "Delete software and send message"
 msgstr "Ta bort program och skicka meddelande"
+
+msgid "Delete the Ticket"
+msgstr ""
 
 msgid "Delete the ticket"
 msgstr "Ta bort ticket"
@@ -2836,9 +2861,6 @@ msgstr "Ip %s is waiting %s seconds."
 msgid "Ip management"
 msgstr "Ip management"
 
-msgid "Ip usage"
-msgstr "Ip usage"
-
 msgid "Kernel Version"
 msgstr "Kernel Version"
 
@@ -3274,6 +3296,9 @@ msgstr "Never expires"
 msgid "New Sql user data"
 msgstr "Ny Sql användardata"
 
+msgid "New Ticket"
+msgstr ""
+
 msgid "New alias order for {CUSTOMER}"
 msgstr "New alias order for {CUSTOMER}"
 
@@ -3508,6 +3533,9 @@ msgstr "Only tar.gz, tar.bz2 and zip archives are accepted."
 
 msgid "Only tar.gz, tar.bz2 and zip archives are supported."
 msgstr "Only tar.gz, tar.bz2 and zip archives are supported."
+
+msgid "Open Tickets"
+msgstr ""
 
 msgid "Open ticket"
 msgstr "Open ticket"
@@ -3976,6 +4004,12 @@ msgstr "Kvot måste ha ett värde"
 msgid "RAM"
 msgstr "RAM"
 
+msgid "Read Ticket"
+msgstr ""
+
+msgid "Read the Ticket"
+msgstr ""
+
 msgid "Read the ticket"
 msgstr "Läs ticket"
 
@@ -4024,6 +4058,9 @@ msgstr "Ta bort behörigheter"
 
 msgid "Reopen"
 msgstr "Återöppna"
+
+msgid "Reopen the Ticket"
+msgstr ""
 
 msgid "Reopen the ticket"
 msgstr "Återöppna ticket"
@@ -4993,6 +5030,9 @@ msgstr "Detta användarnamn finns redan."
 msgid "TiB"
 msgstr "TiB"
 
+msgid "Ticket Information"
+msgstr ""
+
 msgid "Ticket deleted."
 msgstr "Ticket togs bort."
 
@@ -5442,6 +5482,9 @@ msgstr "View SSL certificate"
 msgid "View Support Ticket"
 msgstr "Visa Support Ticket"
 
+msgid "View Ticket"
+msgstr ""
+
 msgid "View aliases"
 msgstr "Visa alias"
 
@@ -5852,11 +5895,11 @@ msgstr "You have no custom service ports defined."
 msgid "You have no groups."
 msgstr "Du har inga grupper."
 
+msgid "You have no open tickets."
+msgstr ""
+
 msgid "You have no tickets closed."
 msgstr "You have no tickets closed."
-
-msgid "You have no tickets open."
-msgstr "You have no tickets open."
 
 msgid "You have reached your domains limit.<br />You cannot add more domains."
 msgstr "Du har nått max antal domäner. < /br>Du kan inte lägga till fler domäner."

@@ -32,8 +32,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2013-07-23 14:26+0200\n"
-"PO-Revision-Date: 2013-07-23 12:27+0000\n"
+"POT-Creation-Date: 2013-07-23 16:22+0200\n"
+"PO-Revision-Date: 2013-07-23 14:22+0000\n"
 "Last-Translator: Torsten Widmann <info@goover.de>\n"
 "Language-Team: German (Germany) (http://www.transifex.com/projects/p/i-MSCP/language/de_DE/)\n"
 "MIME-Version: 1.0\n"
@@ -939,6 +939,9 @@ msgstr "Alle"
 msgid "All administrators"
 msgstr "Alle Administratoren"
 
+msgid "All closed Tickets were successfully deleted."
+msgstr ""
+
 msgid "All closed tickets were deleted."
 msgstr "Alle geschlossenen Tickets wurden gelöscht."
 
@@ -959,6 +962,9 @@ msgstr "Alle (in)"
 
 msgid "All levels"
 msgstr "Alle Ebenen"
+
+msgid "All open Tickets were successfully deleted."
+msgstr ""
 
 msgid "All open tickets were deleted."
 msgstr "Alle offenen Tickets wurden gelöscht."
@@ -1060,6 +1066,9 @@ msgstr "Sind Sie sicher, dass der Service-Port %s gelöscht werden soll?"
 msgid "Are you sure you want to delete %s?"
 msgstr "Sind Sie sicher, dass %s gelöscht werden soll?"
 
+msgid "Are you sure you want to delete all Tickets?"
+msgstr ""
+
 msgid "Are you sure you want to delete all closed tickets?"
 msgstr "Sind Sie sicher, dass Sie alle geschlossenen Tickets löschen wollen?"
 
@@ -1084,6 +1093,10 @@ msgstr "Sind Sie sicher, dass Sie den Tarif %s löschen möchten?"
 #, php-format
 msgid "Are you sure you want to delete the %s menu?"
 msgstr "Sind Sie sicher, dass Sie das Menü %s löschen möchten?"
+
+#, php-format
+msgid "Are you sure you want to delete the '%s' Ticket?"
+msgstr ""
 
 #, php-format
 msgid "Are you sure you want to delete the '%s' ticket?"
@@ -1517,14 +1530,17 @@ msgstr "Kunde / Webtools / Software / Softwareliste"
 msgid "Close"
 msgstr "Schliessen"
 
+msgid "Close Ticket"
+msgstr ""
+
 msgid "Close the ticket"
 msgstr "Ticket schliessen"
 
+msgid "Closed Tickets"
+msgstr ""
+
 msgid "Closed tickets"
 msgstr "Geschlossene Tickets"
-
-msgid "Closes tickets"
-msgstr "Tickets schliessen"
 
 msgid "Company"
 msgstr "Firma"
@@ -1841,8 +1857,14 @@ msgstr "Catch-All löschen"
 msgid "Delete Customer - {DOMAIN_NAME}"
 msgstr "Lösche Kunde - {DOMAIN_NAME}"
 
+msgid "Delete Ticket"
+msgstr ""
+
 msgid "Delete account"
 msgstr "Account löschen"
+
+msgid "Delete all Tickets"
+msgstr ""
 
 msgid "Delete all tickets"
 msgstr "Alle Tickets löschen"
@@ -1864,6 +1886,9 @@ msgstr "Lösche Reseller Software"
 
 msgid "Delete software and send message"
 msgstr "Lösche Software und sende Nachricht"
+
+msgid "Delete the Ticket"
+msgstr ""
 
 msgid "Delete the ticket"
 msgstr "Lösche das Ticket"
@@ -2859,9 +2884,6 @@ msgstr "IP %s wartet %s Sekunden."
 msgid "Ip management"
 msgstr "IP-Verwaltung"
 
-msgid "Ip usage"
-msgstr "IP-Benutzung"
-
 msgid "Kernel Version"
 msgstr "Kernelversion"
 
@@ -3297,6 +3319,9 @@ msgstr "Läuft Nie ab"
 msgid "New Sql user data"
 msgstr "Neue SQL-Nutzerdaten"
 
+msgid "New Ticket"
+msgstr ""
+
 msgid "New alias order for {CUSTOMER}"
 msgstr "Neue Alias-Bestellung für {CUSTOMER}"
 
@@ -3531,6 +3556,9 @@ msgstr "Nur tar.gz, tar.bz2 und zip Archive werden akzeptiert."
 
 msgid "Only tar.gz, tar.bz2 and zip archives are supported."
 msgstr "Nur tar.gz, tar.bz2 und zip Archive werden unterstützt."
+
+msgid "Open Tickets"
+msgstr ""
 
 msgid "Open ticket"
 msgstr "Offenes Ticket"
@@ -3999,6 +4027,12 @@ msgstr "Quota muss einen Wert haben"
 msgid "RAM"
 msgstr "RAM"
 
+msgid "Read Ticket"
+msgstr ""
+
+msgid "Read the Ticket"
+msgstr ""
+
 msgid "Read the ticket"
 msgstr "Lese das Ticket"
 
@@ -4047,6 +4081,9 @@ msgstr "Entferne Berechtigungen"
 
 msgid "Reopen"
 msgstr "Wiedereröffnen"
+
+msgid "Reopen the Ticket"
+msgstr ""
 
 msgid "Reopen the ticket"
 msgstr "Ticket erneut öffnen"
@@ -5016,6 +5053,9 @@ msgstr "Dieser Benutzername existiert bereits."
 msgid "TiB"
 msgstr "TiB"
 
+msgid "Ticket Information"
+msgstr ""
+
 msgid "Ticket deleted."
 msgstr "Ticket gelöscht."
 
@@ -5465,6 +5505,9 @@ msgstr "SSL-Zertifikat anzeigen"
 msgid "View Support Ticket"
 msgstr "Support Ticket ansehen"
 
+msgid "View Ticket"
+msgstr ""
+
 msgid "View aliases"
 msgstr "Aliase anzeigen"
 
@@ -5875,11 +5918,11 @@ msgstr "Sie haben keine eigenen Service-Ports definiert."
 msgid "You have no groups."
 msgstr "Sie haben keine Gruppen."
 
+msgid "You have no open tickets."
+msgstr ""
+
 msgid "You have no tickets closed."
 msgstr "Sie haben keine Tickets geschlossen"
-
-msgid "You have no tickets open."
-msgstr "Sie haben keine Tickets geöffenet."
 
 msgid "You have reached your domains limit.<br />You cannot add more domains."
 msgstr "Sie haben ihr Domainlimit erreicht.<br />Sie können keine weiteren Domains hinzufügen."

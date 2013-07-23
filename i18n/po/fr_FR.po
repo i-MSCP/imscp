@@ -19,8 +19,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2013-07-23 14:26+0200\n"
-"PO-Revision-Date: 2013-07-23 12:26+0000\n"
+"POT-Creation-Date: 2013-07-23 16:22+0200\n"
+"PO-Revision-Date: 2013-07-23 14:22+0000\n"
 "Last-Translator: Torsten Widmann <info@goover.de>\n"
 "Language-Team: French (France) (http://www.transifex.com/projects/p/i-MSCP/language/fr_FR/)\n"
 "MIME-Version: 1.0\n"
@@ -926,6 +926,9 @@ msgstr "Tous"
 msgid "All administrators"
 msgstr ""
 
+msgid "All closed Tickets were successfully deleted."
+msgstr ""
+
 msgid "All closed tickets were deleted."
 msgstr "Tous les tickets fermés ont été supprimés."
 
@@ -946,6 +949,9 @@ msgstr "Tous<br />entrant"
 
 msgid "All levels"
 msgstr "Tous les niveaux"
+
+msgid "All open Tickets were successfully deleted."
+msgstr ""
 
 msgid "All open tickets were deleted."
 msgstr "Tous les ticket ouverts ont été supprimés."
@@ -1047,6 +1053,9 @@ msgstr "Êtes-vous certain de vouloir supprimer le port service%s?"
 msgid "Are you sure you want to delete %s?"
 msgstr "Êtes-vous certain de vouloir supprimer %s?"
 
+msgid "Are you sure you want to delete all Tickets?"
+msgstr ""
+
 msgid "Are you sure you want to delete all closed tickets?"
 msgstr "Êtes-vous certains de vouloir supprimer tous les tickets fermés ?"
 
@@ -1071,6 +1080,10 @@ msgstr "Êtes-vous sûr de vouloir supprimer le plan d'hébergement %s?"
 #, php-format
 msgid "Are you sure you want to delete the %s menu?"
 msgstr "Êtes-vous certain de vouloir supprimer le menu %s ?"
+
+#, php-format
+msgid "Are you sure you want to delete the '%s' Ticket?"
+msgstr ""
 
 #, php-format
 msgid "Are you sure you want to delete the '%s' ticket?"
@@ -1504,13 +1517,16 @@ msgstr ""
 msgid "Close"
 msgstr "Fermer"
 
+msgid "Close Ticket"
+msgstr ""
+
 msgid "Close the ticket"
 msgstr "Ferme le ticket"
 
-msgid "Closed tickets"
-msgstr "Tickets fermés"
+msgid "Closed Tickets"
+msgstr ""
 
-msgid "Closes tickets"
+msgid "Closed tickets"
 msgstr "Tickets fermés"
 
 msgid "Company"
@@ -1828,7 +1844,13 @@ msgstr "Supprimer le collecteur (CatchAll)"
 msgid "Delete Customer - {DOMAIN_NAME}"
 msgstr ""
 
+msgid "Delete Ticket"
+msgstr ""
+
 msgid "Delete account"
+msgstr ""
+
+msgid "Delete all Tickets"
 msgstr ""
 
 msgid "Delete all tickets"
@@ -1851,6 +1873,9 @@ msgstr "Supprimer le logiciel du revendeur"
 
 msgid "Delete software and send message"
 msgstr "Supprimer le logiciel et envoyer un message"
+
+msgid "Delete the Ticket"
+msgstr ""
 
 msgid "Delete the ticket"
 msgstr "Supprimer le ticket"
@@ -2846,9 +2871,6 @@ msgstr ""
 msgid "Ip management"
 msgstr "Gestion des adresses IP"
 
-msgid "Ip usage"
-msgstr "Usage des adresses IP"
-
 msgid "Kernel Version"
 msgstr "Version du noyau"
 
@@ -3284,6 +3306,9 @@ msgstr "N'expire jamais"
 msgid "New Sql user data"
 msgstr "Nouvelles données pour l'utilisateur SQL"
 
+msgid "New Ticket"
+msgstr ""
+
 msgid "New alias order for {CUSTOMER}"
 msgstr ""
 
@@ -3517,6 +3542,9 @@ msgid "Only tar.gz, tar.bz2 and zip archives are accepted."
 msgstr ""
 
 msgid "Only tar.gz, tar.bz2 and zip archives are supported."
+msgstr ""
+
+msgid "Open Tickets"
 msgstr ""
 
 msgid "Open ticket"
@@ -3986,6 +4014,12 @@ msgstr ""
 msgid "RAM"
 msgstr "Mémoire vive (<i>RAM</i>)"
 
+msgid "Read Ticket"
+msgstr ""
+
+msgid "Read the Ticket"
+msgstr ""
+
 msgid "Read the ticket"
 msgstr "Lire le ticket"
 
@@ -4034,6 +4068,9 @@ msgstr "Supprimer les droits"
 
 msgid "Reopen"
 msgstr "Ré-ouvrir"
+
+msgid "Reopen the Ticket"
+msgstr ""
 
 msgid "Reopen the ticket"
 msgstr "Ré-ouvrir le ticket"
@@ -5003,6 +5040,9 @@ msgstr "Ce nom d'utilisateur est déjà utilisé"
 msgid "TiB"
 msgstr ""
 
+msgid "Ticket Information"
+msgstr ""
+
 msgid "Ticket deleted."
 msgstr " Ticket supprimé."
 
@@ -5452,6 +5492,9 @@ msgstr "Voir le certificat SSL"
 msgid "View Support Ticket"
 msgstr "Afficher les demandes de support"
 
+msgid "View Ticket"
+msgstr ""
+
 msgid "View aliases"
 msgstr "Afficher les alias"
 
@@ -5862,11 +5905,11 @@ msgstr "Vous n'avez pas de port personnalisé."
 msgid "You have no groups."
 msgstr "Vous n'avez pas de groupe."
 
+msgid "You have no open tickets."
+msgstr ""
+
 msgid "You have no tickets closed."
 msgstr "Vous n'avez pas de tickets fermés."
-
-msgid "You have no tickets open."
-msgstr "Vous n'avez pas de tickets ouverts."
 
 msgid "You have reached your domains limit.<br />You cannot add more domains."
 msgstr ""

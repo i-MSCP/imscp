@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2013-07-23 14:26+0200\n"
-"PO-Revision-Date: 2013-07-23 12:27+0000\n"
+"POT-Creation-Date: 2013-07-23 16:22+0200\n"
+"PO-Revision-Date: 2013-07-23 14:22+0000\n"
 "Last-Translator: Torsten Widmann <info@goover.de>\n"
 "Language-Team: Japanese (Japan) (http://www.transifex.com/projects/p/i-MSCP/language/ja_JP/)\n"
 "MIME-Version: 1.0\n"
@@ -917,6 +917,9 @@ msgstr "すべて"
 msgid "All administrators"
 msgstr "全ての管理者"
 
+msgid "All closed Tickets were successfully deleted."
+msgstr ""
+
 msgid "All closed tickets were deleted."
 msgstr "全ての解決したチケットが削除されました。"
 
@@ -937,6 +940,9 @@ msgstr "全体 in"
 
 msgid "All levels"
 msgstr "全てのレベル"
+
+msgid "All open Tickets were successfully deleted."
+msgstr ""
 
 msgid "All open tickets were deleted."
 msgstr "全ての未解決のチケットが削除されました。"
@@ -1038,6 +1044,9 @@ msgstr "サービスポート %s を削除してもよろしいですか？"
 msgid "Are you sure you want to delete %s?"
 msgstr "%s を削除してもよろしいですか？"
 
+msgid "Are you sure you want to delete all Tickets?"
+msgstr ""
+
 msgid "Are you sure you want to delete all closed tickets?"
 msgstr "全ての解決したチケットを削除してもよろしいですか？"
 
@@ -1062,6 +1071,10 @@ msgstr "%s のホスティングプランを削除してもよろしいですか
 #, php-format
 msgid "Are you sure you want to delete the %s menu?"
 msgstr "%s のメニューを削除してもよろしいですか？"
+
+#, php-format
+msgid "Are you sure you want to delete the '%s' Ticket?"
+msgstr ""
 
 #, php-format
 msgid "Are you sure you want to delete the '%s' ticket?"
@@ -1495,14 +1508,17 @@ msgstr "クライアント / Webツール / ソフトウェア / ソフトウェ
 msgid "Close"
 msgstr "閉じる"
 
+msgid "Close Ticket"
+msgstr ""
+
 msgid "Close the ticket"
 msgstr "チケットの処理"
 
+msgid "Closed Tickets"
+msgstr ""
+
 msgid "Closed tickets"
 msgstr "解決したチケット"
-
-msgid "Closes tickets"
-msgstr "チケットを選ぶ"
 
 msgid "Company"
 msgstr "会社"
@@ -1819,8 +1835,14 @@ msgstr "ごみ箱の削除"
 msgid "Delete Customer - {DOMAIN_NAME}"
 msgstr "顧客を削除 - {DOMAIN_NAME}"
 
+msgid "Delete Ticket"
+msgstr ""
+
 msgid "Delete account"
 msgstr "アカウントを削除"
+
+msgid "Delete all Tickets"
+msgstr ""
 
 msgid "Delete all tickets"
 msgstr "全てのチケットを削除"
@@ -1842,6 +1864,9 @@ msgstr "代理店ソフトウェア削除"
 
 msgid "Delete software and send message"
 msgstr "ソフトウェアを削除し、メッセージを送ります"
+
+msgid "Delete the Ticket"
+msgstr ""
 
 msgid "Delete the ticket"
 msgstr "チケットを削除します"
@@ -2837,9 +2862,6 @@ msgstr "IPアドレス %s は %s 秒間待っています。"
 msgid "Ip management"
 msgstr "IPアドレス管理"
 
-msgid "Ip usage"
-msgstr "IPアドレスの使用"
-
 msgid "Kernel Version"
 msgstr "カーネルバージョン"
 
@@ -3275,6 +3297,9 @@ msgstr "期限切れになることはありません"
 msgid "New Sql user data"
 msgstr "新しいSQLユーザーのデータ"
 
+msgid "New Ticket"
+msgstr ""
+
 msgid "New alias order for {CUSTOMER}"
 msgstr "{CUSTOMER} ための新しいエイリアスのオーダー"
 
@@ -3509,6 +3534,9 @@ msgstr "tar.gz、tar.bz2、そしてzipアーカイブのみが受け入れら�
 
 msgid "Only tar.gz, tar.bz2 and zip archives are supported."
 msgstr "tar.gz、tar.bz2、そしてzipアーカイブのみがサポートされています。"
+
+msgid "Open Tickets"
+msgstr ""
 
 msgid "Open ticket"
 msgstr "未解決のチケット"
@@ -3977,6 +4005,12 @@ msgstr "容量制限が値を持っている必要があります"
 msgid "RAM"
 msgstr "メモリ"
 
+msgid "Read Ticket"
+msgstr ""
+
+msgid "Read the Ticket"
+msgstr ""
+
 msgid "Read the ticket"
 msgstr "チケットを読みます"
 
@@ -4025,6 +4059,9 @@ msgstr "アクセス権を削除します。"
 
 msgid "Reopen"
 msgstr "再開"
+
+msgid "Reopen the Ticket"
+msgstr ""
 
 msgid "Reopen the ticket"
 msgstr "チケットを再開します"
@@ -4994,6 +5031,9 @@ msgstr "このユーザー名は既に存在している。"
 msgid "TiB"
 msgstr "TB"
 
+msgid "Ticket Information"
+msgstr ""
+
 msgid "Ticket deleted."
 msgstr "チケットは削除されました。"
 
@@ -5443,6 +5483,9 @@ msgstr "SSL証明書を表示する"
 msgid "View Support Ticket"
 msgstr "サポートチケット表示"
 
+msgid "View Ticket"
+msgstr ""
+
 msgid "View aliases"
 msgstr "エイリアス表示"
 
@@ -5853,11 +5896,11 @@ msgstr "カスタムサービスポートが定義されていません。"
 msgid "You have no groups."
 msgstr "グループがありません。"
 
+msgid "You have no open tickets."
+msgstr ""
+
 msgid "You have no tickets closed."
 msgstr "解決したチケットを持っていません。"
-
-msgid "You have no tickets open."
-msgstr "未解決のチケットを持っていません。"
 
 msgid "You have reached your domains limit.<br />You cannot add more domains."
 msgstr "ドメインの制限に達しました。<br/>もう、ドメインを追加することはできません。"

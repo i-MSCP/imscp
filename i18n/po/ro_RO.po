@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2013-07-23 14:26+0200\n"
-"PO-Revision-Date: 2013-07-23 12:27+0000\n"
+"POT-Creation-Date: 2013-07-23 16:22+0200\n"
+"PO-Revision-Date: 2013-07-23 14:22+0000\n"
 "Last-Translator: Torsten Widmann <info@goover.de>\n"
 "Language-Team: Romanian (Romania) (http://www.transifex.com/projects/p/i-MSCP/language/ro_RO/)\n"
 "MIME-Version: 1.0\n"
@@ -917,6 +917,9 @@ msgstr "Toate"
 msgid "All administrators"
 msgstr ""
 
+msgid "All closed Tickets were successfully deleted."
+msgstr ""
+
 msgid "All closed tickets were deleted."
 msgstr ""
 
@@ -936,6 +939,9 @@ msgid "All in"
 msgstr "Toate intrarile"
 
 msgid "All levels"
+msgstr ""
+
+msgid "All open Tickets were successfully deleted."
 msgstr ""
 
 msgid "All open tickets were deleted."
@@ -1038,6 +1044,9 @@ msgstr "Sigur ca doriti sa stergeti portul %s?"
 msgid "Are you sure you want to delete %s?"
 msgstr "Sigur ca doriti sa stergeti %s"
 
+msgid "Are you sure you want to delete all Tickets?"
+msgstr ""
+
 msgid "Are you sure you want to delete all closed tickets?"
 msgstr ""
 
@@ -1061,6 +1070,10 @@ msgstr ""
 
 #, php-format
 msgid "Are you sure you want to delete the %s menu?"
+msgstr ""
+
+#, php-format
+msgid "Are you sure you want to delete the '%s' Ticket?"
 msgstr ""
 
 #, php-format
@@ -1495,14 +1508,17 @@ msgstr ""
 msgid "Close"
 msgstr ""
 
+msgid "Close Ticket"
+msgstr ""
+
 msgid "Close the ticket"
+msgstr ""
+
+msgid "Closed Tickets"
 msgstr ""
 
 msgid "Closed tickets"
 msgstr "Ticket-uri inchise"
-
-msgid "Closes tickets"
-msgstr ""
 
 msgid "Company"
 msgstr "Companie"
@@ -1819,7 +1835,13 @@ msgstr "Sterge Cont Colector"
 msgid "Delete Customer - {DOMAIN_NAME}"
 msgstr ""
 
+msgid "Delete Ticket"
+msgstr ""
+
 msgid "Delete account"
+msgstr ""
+
+msgid "Delete all Tickets"
 msgstr ""
 
 msgid "Delete all tickets"
@@ -1841,6 +1863,9 @@ msgid "Delete reseller software"
 msgstr ""
 
 msgid "Delete software and send message"
+msgstr ""
+
+msgid "Delete the Ticket"
 msgstr ""
 
 msgid "Delete the ticket"
@@ -2837,9 +2862,6 @@ msgstr ""
 msgid "Ip management"
 msgstr ""
 
-msgid "Ip usage"
-msgstr ""
-
 msgid "Kernel Version"
 msgstr "Versiune Kernel"
 
@@ -3275,6 +3297,9 @@ msgstr ""
 msgid "New Sql user data"
 msgstr ""
 
+msgid "New Ticket"
+msgstr ""
+
 msgid "New alias order for {CUSTOMER}"
 msgstr ""
 
@@ -3508,6 +3533,9 @@ msgid "Only tar.gz, tar.bz2 and zip archives are accepted."
 msgstr ""
 
 msgid "Only tar.gz, tar.bz2 and zip archives are supported."
+msgstr ""
+
+msgid "Open Tickets"
 msgstr ""
 
 msgid "Open ticket"
@@ -3977,6 +4005,12 @@ msgstr ""
 msgid "RAM"
 msgstr "RAM"
 
+msgid "Read Ticket"
+msgstr ""
+
+msgid "Read the Ticket"
+msgstr ""
+
 msgid "Read the ticket"
 msgstr ""
 
@@ -4024,6 +4058,9 @@ msgid "Remove permissions"
 msgstr ""
 
 msgid "Reopen"
+msgstr ""
+
+msgid "Reopen the Ticket"
 msgstr ""
 
 msgid "Reopen the ticket"
@@ -4994,6 +5031,9 @@ msgstr "Acest nume de utilizator exista deja."
 msgid "TiB"
 msgstr ""
 
+msgid "Ticket Information"
+msgstr ""
+
 msgid "Ticket deleted."
 msgstr ""
 
@@ -5443,6 +5483,9 @@ msgstr ""
 msgid "View Support Ticket"
 msgstr ""
 
+msgid "View Ticket"
+msgstr ""
+
 msgid "View aliases"
 msgstr "Alias-e"
 
@@ -5853,10 +5896,10 @@ msgstr ""
 msgid "You have no groups."
 msgstr ""
 
-msgid "You have no tickets closed."
+msgid "You have no open tickets."
 msgstr ""
 
-msgid "You have no tickets open."
+msgid "You have no tickets closed."
 msgstr ""
 
 msgid "You have reached your domains limit.<br />You cannot add more domains."
