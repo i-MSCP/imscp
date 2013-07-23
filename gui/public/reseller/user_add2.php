@@ -102,7 +102,6 @@ function get_init_au2_page($tpl, $phpini)
 	$tplVars['VL_DNSN'] = ($dns == '_no_') ? $htmlChecked : '';
 	$tplVars['VL_SOFTWAREY'] = ($aps == '_yes_') ? $htmlChecked : '';
 	$tplVars['VL_SOFTWAREN'] = ($aps == '_no_') ? $htmlChecked : '';
-
 	$tplVars['VL_WEB_FOLDER_PROTECTION_YES'] = ($webFolderProtection == '_yes_') ? $htmlChecked : '';
 	$tplVars['VL_WEB_FOLDER_PROTECTION_NO'] = ($webFolderProtection == '_no_') ? $htmlChecked : '';
 
@@ -215,7 +214,8 @@ function reseller_getHostingPlanData($hpid, $resellerId, $phpini)
 			list(
 				$php, $cgi, $sub, $als, $mail, $ftp, $sqlDb, $sqlUser, $traffic, $diskSpace, $backup, $dns, $aps,
 				$phpEditor, $phpiniAllowUrlFopen, $phpiniDisplayErrors, $phpiniDisableFunctions, $phpiniPostMaxSize,
-				$phpiniUploadMaxFileSize, $phpiniMaxExecutionTime, $phpiniMaxInputTime, $phpiniMemoryLimit, $extMailServer, $webFolderProtection
+				$phpiniUploadMaxFileSize, $phpiniMaxExecutionTime, $phpiniMaxInputTime, $phpiniMemoryLimit,
+				$extMailServer, $webFolderProtection
 			) = explode(';', $props);
 
 			$hpName = $data['name'];
@@ -238,10 +238,9 @@ function reseller_getHostingPlanData($hpid, $resellerId, $phpini)
 		}
 	} else {
 		$hpName = 'Custom';
-		$php = $cgi = $backup = $dns = $aps = '_no_';
-		$sub = $als = $mail = $ftp = $sqlDb = $sqlUser = $traffic = $diskSpace = '';
-		$extMailServer = '_no_';
-		$webFolderProtection = 'yes';
+		$sub = $als = $mail = $ftp = $sqlDb = $sqlUser = $traffic = $diskSpace = '0';
+		$php = $cgi = $backup = $dns = $aps = $extMailServer = '_no_';
+		$webFolderProtection = '_yes_';
 	}
 }
 
@@ -278,14 +277,14 @@ function check_user_data($phpini)
 		if (isset($_POST['external_mail'])) {
 			$extMailServer = $_POST['external_mail'];
 		} else {
-			$extMailServer = 'no';
+			$extMailServer = '_no_';
 		}
 	}
 
 	if (isset($_POST['web_folder_protection'])) {
 		$webFolderProtection = $_POST['web_folder_protection'];
 	} else {
-		$webFolderProtection = 'yes';
+		$webFolderProtection = '_yes_';
 	}
 
 	if (isset($_POST['nreseller_max_ftp_cnt']) || $ftp == -1) {
@@ -530,7 +529,7 @@ if (!get_pageone_param()) {
 
 if (isset($_POST['uaction']) && ('user_add2_nxt' == $_POST['uaction']) && (!isset($_SESSION['step_one']))) {
 	if (check_user_data($phpini)) {
-		$_SESSION['step_two_data'] = "$dmnName;0;$webFolderProtection";
+		$_SESSION['step_two_data'] = "$dmnName;0";
 		$_SESSION['ch_hpprops'] =
 			"$php;$cgi;$sub;$als;$mail;$ftp;$sqlDb;$sqlUser;$traffic;$diskSpace;$backup;$dns;$aps;" .
 			$phpini->getClPermVal('phpiniSystem') . ';' .

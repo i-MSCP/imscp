@@ -179,8 +179,8 @@ function reseller_generatePage($tpl, $phpini)
 			'TR_SOFTWARE_NO' => $checked,
 			'TR_EXTMAIL_YES' => '',
 			'TR_EXTMAIL_NO' => $checked,
-			'TR_PROTECT_WEB_FOLDERS_YES' => '',
-			'TR_PROTECT_WEB_FOLDERS_NO' => $checked,
+			'TR_PROTECT_WEB_FOLDERS_YES' => $checked,
+			'TR_PROTECT_WEB_FOLDERS_NO' => '',
 
 			'TR_STATUS_YES' => $checked,
 			'TR_STATUS_NO' => '',

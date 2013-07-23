@@ -1994,7 +1994,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	}
 
 	/**
-	 * Update any 'delete' status to 'todelete'
+	 * Update objects status
 	 *
 	 * @return array SQL statements to be e executed
 	 */

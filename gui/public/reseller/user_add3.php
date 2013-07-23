@@ -46,14 +46,14 @@
  */
 function getPreviousPageData()
 {
-	global $dmnName, $dmnExpire, $dmnUsername, $hpId, $webFolderProtection;
+	global $dmnName, $dmnExpire, $dmnUsername, $hpId;
 
 	if (isset($_SESSION['dmn_expire'])) {
 		$dmnExpire = $_SESSION['dmn_expire'];
 	}
 
 	if (isset($_SESSION['step_one'])) {
-		$stepTwo = "{$_SESSION['dmn_name']};{$_SESSION['dmn_tpl']};yes";
+		$stepTwo = "{$_SESSION['dmn_name']};{$_SESSION['dmn_tpl']}";
 		$hpId = $_SESSION['dmn_tpl'];
 		unset($_SESSION['dmn_name']);
 		unset($_SESSION['dmn_tpl']);
@@ -66,10 +66,10 @@ function getPreviousPageData()
 		$stepTwo = $_SESSION['local_data'];
 		unset($_SESSION['local_data']);
 	} else {
-		$stepTwo = "'';0,yes";
+		$stepTwo = "'';0";
 	}
 
-	list($dmnName, $hpId, $webFolderProtection) = explode(';', $stepTwo);
+	list($dmnName, $hpId) = explode(';', $stepTwo);
 
 	$dmnUsername = $dmnName;
 
@@ -104,7 +104,7 @@ function reseller_generateEmptyPage()
 function reseller_generatePage($tpl)
 {
 	global $dmnName, $hpId, $dmnUsername, $userEmail, $customerId, $firstName, $lastName, $gender, $firm, $zip, $city,
-		$state, $country, $street1, $street2, $phone, $fax, $webFolderProtection;
+		$state, $country, $street1, $street2, $phone, $fax;
 
 	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
@@ -135,7 +135,7 @@ function reseller_generatePage($tpl)
 	);
 
 	generate_ip_list($tpl, $_SESSION['user_id']);
-	$_SESSION['local_data'] = "$dmnName;$hpId;$webFolderProtection";
+	$_SESSION['local_data'] = "$dmnName;$hpId";
 }
 
 /**
@@ -158,12 +158,12 @@ function reseller_addCustomer($resellerId)
 		$props = $_SESSION['ch_hpprops'];
 		unset($_SESSION['ch_hpprops']);
 	} else {
-		if (isset($cfg->HOSTING_PLANS_LEVEL) && $cfg->HOSTING_PLANS_LEVEL == 'admin') {
-			$query = 'SELECT `props` FROM `hosting_plans` WHERE `id` = ?';
-			$stmt = exec_query($query, $hpId);
+		if ($cfg->HOSTING_PLANS_LEVEL == 'admin') {
+			$stmt = exec_query('SELECT `props` FROM `hosting_plans` WHERE `id` = ?', $hpId);
 		} else {
-			$query = "SELECT `props` FROM `hosting_plans` WHERE `reseller_id` = ? AND `id` = ?";
-			$stmt = exec_query($query, array($resellerId, $hpId));
+			$stmt = exec_query(
+				'SELECT `props` FROM `hosting_plans` WHERE `reseller_id` = ? AND `id` = ?', array($resellerId, $hpId)
+			);
 		}
 
 		$data = $stmt->fetchRow();
@@ -173,15 +173,17 @@ function reseller_addCustomer($resellerId)
 	list(
 		$php, $cgi, $sub, $als, $mail, $ftp, $sql_db, $sql_user, $traff, $disk, $backup, $dns, $aps, $phpEditor,
 		$phpiniAllowUrlFopen, $phpiniDisplayErrors, $phpiniDisableFunctions, $phpiniPostMaxSize,
-		$phpiniUploadMaxFileSize, $phpiniMaxExecutionTime, $phpiniMaxInputTime, $phpiniMemoryLimit, $extMailServer
+		$phpiniUploadMaxFileSize, $phpiniMaxExecutionTime, $phpiniMaxInputTime, $phpiniMemoryLimit, $extMailServer,
+		$webFolderProtection
 	) = explode(';', $props);
 
-	$php = preg_replace("/\_/", '', $php);
-	$cgi = preg_replace("/\_/", '', $cgi);
-	$backup = preg_replace("/\_/", '', $backup);
-	$dns = preg_replace("/\_/", '', $dns);
-	$aps = preg_replace("/\_/", '', $aps);
-	$extMailServer = preg_replace("/\_/", '', $extMailServer);
+	$php = str_replace('_', '', $php);
+	$cgi = str_replace('_', '', $cgi);
+	$backup = str_replace('_', '', $backup);
+	$dns = str_replace('_', '', $dns);
+	$aps = str_replace('_', '', $aps);
+	$extMailServer = str_replace('_', '', $extMailServer);
+	$webFolderProtection = str_replace('_', '', $webFolderProtection);
 	$encryptedPassword = cryptPasswordWithSalt($password);
 	$firstName = clean_input($firstName);
 	$lastName = clean_input($lastName);
@@ -291,9 +293,7 @@ function reseller_addCustomer($resellerId)
 		}
 
 		// let's send mail to user
-		send_add_user_auto_msg(
-			$resellerId, $dmnUsername, $password, $userEmail, $firstName, $lastName, tr('Customer')
-		);
+		send_add_user_auto_msg($resellerId, $dmnUsername, $password, $userEmail, $firstName, $lastName, tr('Customer'));
 
 		$query = 'INSERT INTO `user_gui_props` (`user_id`, `lang`, `layout`) VALUES (?, ?, ?)';
 		exec_query($query, array($recordId, $cfg->USER_INITIAL_LANG, $cfg->USER_INITIAL_THEME));
