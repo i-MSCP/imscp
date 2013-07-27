@@ -86,6 +86,23 @@ sub quotaFiles
 					"$main::imscpConfig{'CMD_DU'} -s -B1 $mta->{'MTA_VIRTUAL_MAIL_DIR'}/$domainName"
 				);
 			}
+			
+			# Also check the alias mail dirs
+			$sql = "SELECT `alias_name` FROM `domain_aliasses` WHERE `domain_id` = ? AND `alias_status` = ?";
+			my $rdataAlias = $database->doQuery('alias_name', $sql, $domainId, 'ok');
+			if (ref $rdataAlias eq 'HASH'){
+				for (keys %$rdataAlias) {
+					my $aliasName = $rdataAlias->{$_}->{'alias_name'};
+					my $aliasMailDir = "$mta->{'MTA_VIRTUAL_MAIL_DIR'}/$aliasName";
+					if (-d $aliasMailDir) {
+						if ($^O =~ /bsd$/) {
+							push(@cmd, $main::imscpConfig{'CMD_DU'} . ' -d 0 '.$aliasMailDir);
+						} else {
+							push(@cmd, "$main::imscpConfig{'CMD_DU'} -s -B1 $aliasMailDir");
+						}
+					}
+				}
+			}
 
 			for(@cmd) {
 				my ($stdout, $stderr);
@@ -101,7 +118,7 @@ sub quotaFiles
 						$fileSize = ($^O =~ /bsd$/) ? $1*1024 : $1 if $1;
 					} else {
 						$stdout =~ /^(\d+)/;
-						$mailSize = ($^O =~ /bsd$/) ? $1*1024 : $1 if $1;
+						$mailSize += ($^O =~ /bsd$/) ? $1*1024 : $1 if $1;
 					}
 				}
 			}
