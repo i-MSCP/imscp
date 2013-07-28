@@ -43,10 +43,10 @@ use parent 'Common::SimpleClass';
 
 my %toStatus = (
 	'toinstall' => 'enabled',
-	'toenable' => "'enabled'",
-	'todisable' => "'disabled'",
-	'touninstall' => "'todelete'",
-	'enabled' => "'enabled'"
+	'toenable' => 'enabled',
+	'todisable' => 'disabled',
+	'touninstall' => 'todelete',
+	'enabled' => 'enabled'
 );
 
 =head1 DESCRIPTION

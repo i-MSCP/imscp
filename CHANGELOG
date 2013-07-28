@@ -4,6 +4,9 @@
 Git Master
 ------------------------------------------------------------------------------------------------------------------------
 
+ENGINE:
+	- Fixed: Plugin module is broken: Unable to disable, uninstall... any plugin
+
 Tickets:
     - Fixed #745: Defect - Disk detail in dovecot doesn't include aliases
     - Fixed #834: Cosmetics - Ticket system menu names
