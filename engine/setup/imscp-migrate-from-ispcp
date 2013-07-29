@@ -605,8 +605,6 @@ Be aware that some passwords must be changed before the login works again.
 	0;
 }
 
-#/var/www/imscp/gui/data/persistent/ispLogos
-# GUI_ROOT_DIR
 
 sub copyLogos
 {
