@@ -631,9 +631,8 @@ sub copyLogos
 					push(@errors, getLastError());
 				}
 			}
-			else
-			{
-				push(@errors, "Logo file $ispcpLogoFileName not found")
+			else {
+				push(@errors, "Logo file $ispcpLogoFileName not found");
 			}
 		}
 	}
