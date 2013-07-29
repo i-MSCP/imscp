@@ -68,6 +68,7 @@ sub setup_engine
 		[\&systemConfigTest, 'Save system config files if exists: '],
 		[\&confSave, 'Save system configuration: '],
 		[\&dbUpgrade, 'Upgrade database: '],
+		[\&copyLogos, 'Copy logos: '],
 		[\&otherMessCleanup, 'Some system cleaning: '],
 		[\&daemonRemove, 'Remove imscp daemon: '],
 		[\&removeDirs, 'Delete ispcp directories: '],
@@ -603,6 +604,58 @@ Be aware that some passwords must be changed before the login works again.
 
 	0;
 }
+
+#/var/www/imscp/gui/data/persistent/ispLogos
+# GUI_ROOT_DIR
+
+sub copyLogos
+{
+	use iMSCP::File;
+	my @errors;
+
+	my $panelUName = $main::imscpConfig{'SYSTEM_USER_PREFIX'}.$main::imscpConfig{'SYSTEM_USER_MIN_UID'};
+	my $panelGName = $main::imscpConfig{'SYSTEM_USER_PREFIX'}.$main::imscpConfig{'SYSTEM_USER_MIN_UID'};
+	
+	my $database = iMSCP::Database->new(db => 'mysql')->factory();
+	my $query = "SELECT DISTINCT `logo` FROM `user_gui_props` WHERE logo <> '0' AND logo <> ''";
+	my $result = $database->doQuery('logo', $query);
+
+	if (ref $result ne 'HASH') {
+		push(@errors, "$query produced the following error: $result");
+	} else {
+		for (keys %$result) {
+			my $logoName = $result->{$_}->{'logo'};
+			my $ispcpLogoFileName = "$main::ispcpConfig{'GUI_ROOT_DIR'}/themes/user_logos/$logoName";
+			if(-f $ispcpLogoFileName) {
+				# if the logo exists, copy it to the i-MSCP folder
+				my $ispcpFile = iMSCP::File->new(filename => $ispcpLogoFileName);
+				if ($ispcpFile->copyFile("$main::imscpConfig{'GUI_ROOT_DIR'}/data/persistent/ispLogos/$logoName")) {
+					push(@errors, getLastError());
+				}
+			}
+			else
+			{
+				push(@errors, "Logo file $ispcpLogoFileName not found")
+			}
+		}
+	}
+
+	if (@errors) {
+	iMSCP::Dialog->factory()->msgbox(
+"
+\\Z1\\ZuWARNING\\Zn\n
+The following errors occured:\n".
+join("\n", @errors)
+."\n
+These errors are not fatal so we can proceed forward.
+"
+	);
+	warning("\n".join("\n", @errors));
+	}
+
+	0;
+}
+
 
 sub otherMessCleanup
 {
