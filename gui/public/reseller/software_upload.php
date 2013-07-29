@@ -216,23 +216,10 @@ if (isset($_POST['upload']) && $_SESSION['software_upload_token'] == $_POST['sen
 			$connection = fsockopen($parts['host'], 80, $errno, $errstr, 30);
 
 			if ($connection) {
-				fputs($connection, "GET " . $sw_wget . " HTTP/1.1\r\nHost: " . $parts['host'] . "\r\n\r\n");
-
-				$size = 0;
-				while (!isset($length) || ($size <= 500 && !feof($connection))) {
-					$tstr = fgets($connection, 128);
-					$size += strlen($tstr);
-					if (substr($tstr, 0, 14) == 'Content-Length') {
-						$length = substr($tstr, 15);
-					}
-				}
-
-				if ($length) {
-					$remote_file_size = $length;
-				} else {
-					$remote_file_size = 0;
-				}
-
+				$appdata = get_headers($sw_wget, true);
+				$length = (isset($appdata['Content-Length'])) ? (int) $appdata['Content-Length'] : null;
+				
+				($length) ? $remote_file_size = $length : $remote_file_size = 0;
 				$show_remote_file_size = bytesHuman($remote_file_size);
 
 				if ($remote_file_size < 1) {
