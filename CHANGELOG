@@ -10,6 +10,7 @@ ENGINE:
 Tickets:
     - Fixed #745: Defect - Disk detail in dovecot doesn't include aliases
     - Fixed #834: Cosmetics - Ticket system menu names
+    - Fixed #852: Bug - Software installer - Unable to install any software
 
 ------------------------------------------------------------------------------------------------------------------------
 1.1.0-rc3
