@@ -823,41 +823,24 @@ Be aware that we do not guarantee that the migration will succeed.
 
 sub removePhpFcgiStarter
 {
-	use iMSCP::File;
-	my @errors;
-		
-	my $database = iMSCP::Database->new(db => 'mysql')->factory();
-	my $query = "SELECT `domain_name` FROM `domain` UNION SELECT 'master' AS `domain_name`";
-	my $result = $database->doQuery('domain_name', $query);
+	my($stdout, $stderr);
 
-	if (ref $result ne 'HASH') {
-		push(@errors, "$query produced the following error: $result");
-	} else {
-		for (keys %$result) {
-			my $domainName = $result->{$_}->{'domain_name'};
-			my $starterFile = "$main::ispcpConfig{'PHP_STARTER_DIR'}/$domainName/php5-fcgi-starter";
-			if(-f $starterFile) {
-				my $file = iMSCP::File->new(filename => $starterFile);
-				if ($file->delFile()) {
-					push(@errors, getLastError());
-				}
-			}
-		}
-	}
+	my $rs = execute("$main::imscpConfig{'CMD_RM'} -f $main::ispcpConfig{'PHP_STARTER_DIR'}/*/php5-fcgi-starter", \$stdout, \$stderr);
 	
-	if (@errors) {
+	debug($stdout) if $stdout;
+	if ($stderr && $rs) {
+
 		iMSCP::Dialog->factory()->msgbox(
 "
 \\Z1\\ZuWARNING\\Zn\n
-Please fix the following:\n".
-join("\n", @errors)
+The following errors occured:\n".
+$stderr
 ."\n
 These errors are not fatal so we can proceed forward.
 "
 		);
-		warning("\n".join("\n", @errors));
+		warning("\n$stderr\n");
 	}
-
 	0;
 }
 
