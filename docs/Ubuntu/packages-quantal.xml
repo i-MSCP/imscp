@@ -107,7 +107,6 @@
         <package>php5-cli</package>
         <package>php-pear</package>
         <package>php5</package>
-        <package>php5-adodb</package>
         <package>php5-gd</package>
         <package>php-gettext</package>
         <package>php5-intl</package>

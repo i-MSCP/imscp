@@ -4,6 +4,9 @@
 Git Master
 ------------------------------------------------------------------------------------------------------------------------
 
+SETUP:
+	- Removed php5-adodb package from distribution packages files
+
 ENGINE:
 	- Fixed: Plugin module is broken: Unable to disable, uninstall... any plugin
 
@@ -13,6 +16,7 @@ Tickets:
 	- Fixed #834: Cosmetics - Ticket system menu names
 	- Fixed #835: Task - Migration script - ispCP - Remove old php5-fcgi-starter
 	- Fixed #852: Bug - Software installer - Unable to install any software
+	- Fixed #858: Task - Remove php5-adodb package
 
 ------------------------------------------------------------------------------------------------------------------------
 1.1.0-rc3

@@ -50,8 +50,7 @@ use parent 'Exporter';
 our @EXPORT = qw(
 	loadConfig installPreRequiredPackages checkDistribution preBuild uninstallPackages installPackages
 	testRequirements processDistroLayoutFile processDistroInstallFiles buildImscpDaemon installEngine installGui
-	installDistMaintainerScripts postBuild doImscpBackup savePersistentData installTmp removeTmp
-	checkCommandAvailability
+	postBuild doImscpBackup savePersistentData installTmp removeTmp checkCommandAvailability
 );
 
 =head1 DESCRIPTION
@@ -526,112 +525,109 @@ sub savePersistentData
 	my ($stdout, $stderr);
 	my $destdir = $main::{'INST_PREF'};
 
-	if(! -d "$main::imscpConfig{'ROOT_DIR'}/gui/data/persistent") {
+	#
+	## i-MSCP version prior 1.0.4
+	#
 
-		#
-		## i-MSCP version prior 1.0.4
-		#
+	# Save ISP logos
+	if(-d "$main::imscpConfig{'ROOT_DIR'}/gui/themes/user_logos") {
+		$rs = execute(
+			"$main::imscpConfig{'CMD_CP'} -fRT $main::imscpConfig{'ROOT_DIR'}/gui/themes/user_logos " .
+			"$destdir$main::imscpConfig{'ROOT_DIR'}/gui/data/persistent/ispLogos", \$stdout, \$stderr
+		);
+		debug($stdout) if $stdout;
+		error($stderr) if $stderr && $rs;
+		return $rs if $rs;
+	}
 
-		# save isp logos
-		if(-d "$main::imscpConfig{'ROOT_DIR'}/gui/themes/user_logos") {
-			$rs = execute(
-				"$main::imscpConfig{'CMD_CP'} -fRT $main::imscpConfig{'ROOT_DIR'}/gui/themes/user_logos " .
-				"$destdir$main::imscpConfig{'ROOT_DIR'}/gui/data/persistent/ispLogos", \$stdout, \$stderr
-			);
-			debug($stdout) if $stdout;
-			error($stderr) if $stderr && $rs;
-			return $rs if $rs;
-		}
-	} else {
-		#
-		## i-MSCP version >= 1.0.4
-		#
+	#
+	## i-MSCP version >= 1.0.4
+	#
 
-		# Save Web directories skeletons
-		if(-d "$main::imscpConfig{'CONF_DIR'}/apache/skel") {
-			if(-l "$main::imscpConfig{'CONF_DIR'}/apache/skel/subdomain/htdocs") {
-				$rs = iMSCP::File->new(
-					'filename' => "$main::imscpConfig{'CONF_DIR'}/apache/skel/subdomain/htdocs"
-				)->delFile();
-				return $rs if $rs;
-			}
+	# Save Web directories skeletons
+	if(-d "$main::imscpConfig{'CONF_DIR'}/apache/skel") {
+		#if(-l "$main::imscpConfig{'CONF_DIR'}/apache/skel/subdomain/htdocs") {
+		#	$rs = iMSCP::File->new(
+		#		'filename' => "$main::imscpConfig{'CONF_DIR'}/apache/skel/subdomain/htdocs"
+		#	)->delFile();
+		#	return $rs if $rs;
+		#}
 
-			$rs = execute(
-				"$main::imscpConfig{'CMD_CP'} -fRT $main::imscpConfig{'CONF_DIR'}/apache/skel " .
-				"$destdir$main::imscpConfig{'CONF_DIR'}/apache/skel", \$stdout, \$stderr
-			);
-			debug($stdout) if $stdout;
-			error($stderr) if $stderr && $rs;
-			return $rs if $rs;
-		}
+		$rs = execute(
+			"$main::imscpConfig{'CMD_CP'} -fRT $main::imscpConfig{'CONF_DIR'}/apache/skel " .
+			"$destdir$main::imscpConfig{'CONF_DIR'}/apache/skel", \$stdout, \$stderr
+		);
+		debug($stdout) if $stdout;
+		error($stderr) if $stderr && $rs;
+		return $rs if $rs;
+	}
 
-		# Save GUI logs
-		if(-d "$main::imscpConfig{'ROOT_DIR'}/gui/data/logs") {
-			$rs = execute(
-				"$main::imscpConfig{'CMD_CP'} -fRT $main::imscpConfig{'ROOT_DIR'}/gui/data/logs " .
-				"$destdir$main::imscpConfig{'ROOT_DIR'}/gui/data/logs", \$stdout, \$stderr
-			);
-			debug($stdout) if $stdout;
-			error($stderr) if $stderr && $rs;
-			return $rs if $rs;
-		}
+	# Save GUI logs
+	if(-d "$main::imscpConfig{'ROOT_DIR'}/gui/data/logs") {
+		$rs = execute(
+			"$main::imscpConfig{'CMD_CP'} -fRT $main::imscpConfig{'ROOT_DIR'}/gui/data/logs " .
+			"$destdir$main::imscpConfig{'ROOT_DIR'}/gui/data/logs", \$stdout, \$stderr
+		);
+		debug($stdout) if $stdout;
+		error($stderr) if $stderr && $rs;
+		return $rs if $rs;
+	}
 
-		# Save persistent data
-		if(-d "$main::imscpConfig{'ROOT_DIR'}/gui/data/persistent") {
-			$rs = execute(
-				"$main::imscpConfig{'CMD_CP'} -fRT $main::imscpConfig{'ROOT_DIR'}/gui/data/persistent " .
-				"$destdir$main::imscpConfig{'ROOT_DIR'}/gui/data/persistent", \$stdout, \$stderr
-			);
-			debug($stdout) if $stdout;
-			error($stderr) if $stderr && $rs;
-			return $rs if $rs;
-		}
+	# Save persistent data
+	if(-d "$main::imscpConfig{'ROOT_DIR'}/gui/data/persistent") {
+		$rs = execute(
+			"$main::imscpConfig{'CMD_CP'} -fRT $main::imscpConfig{'ROOT_DIR'}/gui/data/persistent " .
+			"$destdir$main::imscpConfig{'ROOT_DIR'}/gui/data/persistent", \$stdout, \$stderr
+		);
+		debug($stdout) if $stdout;
+		error($stderr) if $stderr && $rs;
+		return $rs if $rs;
+	}
 
-		# save isp logos
-		if(-d "$main::imscpConfig{'ROOT_DIR'}/gui/data/ispLogos") {
-			$rs = execute(
-				"$main::imscpConfig{'CMD_CP'} -TRf $main::imscpConfig{'ROOT_DIR'}/gui/data/ispLogos " .
-				"$destdir$main::imscpConfig{'ROOT_DIR'}/gui/data/persistent/ispLogos", \$stdout, \$stderr
-			);
-			debug($stdout) if $stdout;
-			error($stderr) if $stderr && $rs;
-			return $rs if $rs;
-		}
+	# save isp logos
+	if(-d "$main::imscpConfig{'ROOT_DIR'}/gui/data/ispLogos") {
+		$rs = execute(
+			"$main::imscpConfig{'CMD_CP'} -TRf $main::imscpConfig{'ROOT_DIR'}/gui/data/ispLogos " .
+			"$destdir$main::imscpConfig{'ROOT_DIR'}/gui/data/persistent/ispLogos", \$stdout, \$stderr
+		);
+		debug($stdout) if $stdout;
+		error($stderr) if $stderr && $rs;
+		return $rs if $rs;
+	}
 
-		# Save softwares
-		if(-d "$main::imscpConfig{'ROOT_DIR'}/gui/data/softwares") {
-			$rs = execute(
-				"$main::imscpConfig{'CMD_CP'} -TRf $main::imscpConfig{'ROOT_DIR'}/gui/data/softwares " .
-				"$destdir$main::imscpConfig{'ROOT_DIR'}/gui/data/persistent/softwares", \$stdout, \$stderr
-			);
-			debug($stdout) if $stdout;
-			error($stderr) if $stderr && $rs;
-			return $rs if $rs;
-		}
+	# Save softwares (older path ./gui/data/softwares) to new path (./gui/data/persistent/softwares)
+	if(-d "$main::imscpConfig{'ROOT_DIR'}/gui/data/softwares") {
+		$rs = execute(
+			"$main::imscpConfig{'CMD_CP'} -TRf $main::imscpConfig{'ROOT_DIR'}/gui/data/softwares " .
+			"$destdir$main::imscpConfig{'ROOT_DIR'}/gui/data/persistent/softwares", \$stdout, \$stderr
+		);
+		debug($stdout) if $stdout;
+		error($stderr) if $stderr && $rs;
+		return $rs if $rs;
+	}
 
-		# Save GUI plugins
-		if(-d "$main::imscpConfig{'ROOT_DIR'}/gui/plugins") {
-			$rs = execute(
-				"$main::imscpConfig{'CMD_CP'} -fRT $main::imscpConfig{'ROOT_DIR'}/gui/plugins " .
-				"$destdir$main::imscpConfig{'ROOT_DIR'}/gui/plugins",
-				\$stdout, \$stderr
-			);
-			debug($stdout) if $stdout;
-			error($stderr) if $stderr && $rs;
-			return $rs if $rs;
-		}
+	# Save GUI plugins
+	if(-d "$main::imscpConfig{'ROOT_DIR'}/gui/plugins") {
+		$rs = execute(
+			"$main::imscpConfig{'CMD_CP'} -fRT $main::imscpConfig{'ROOT_DIR'}/gui/plugins " .
+			"$destdir$main::imscpConfig{'ROOT_DIR'}/gui/plugins",
+			\$stdout, \$stderr
+		);
+		debug($stdout) if $stdout;
+		error($stderr) if $stderr && $rs;
+		return $rs if $rs;
+	}
 
-		# Save backend plugins
-		if(-d "$main::imscpConfig{'ENGINE_ROOT_DIR'}/Plugins") {
-			$rs = execute(
-				"$main::imscpConfig{'CMD_CP'} -fRT $main::imscpConfig{'ENGINE_ROOT_DIR'}/Plugins " .
-				"$destdir$main::imscpConfig{'ENGINE_ROOT_DIR'}/Plugins",
-				\$stdout, \$stderr
-			);
-			debug($stdout) if $stdout;
-			error($stderr) if $stderr && $rs;
-			return $rs if $rs;
-		}
+	# Save backend plugins
+	if(-d "$main::imscpConfig{'ENGINE_ROOT_DIR'}/Plugins") {
+		$rs = execute(
+			"$main::imscpConfig{'CMD_CP'} -fRT $main::imscpConfig{'ENGINE_ROOT_DIR'}/Plugins " .
+			"$destdir$main::imscpConfig{'ENGINE_ROOT_DIR'}/Plugins",
+			\$stdout, \$stderr
+		);
+		debug($stdout) if $stdout;
+		error($stderr) if $stderr && $rs;
+		return $rs if $rs;
 	}
 
 	0;
