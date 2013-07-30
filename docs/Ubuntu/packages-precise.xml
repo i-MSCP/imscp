@@ -1,6 +1,6 @@
 <packages>
     <httpd>
-        <alternative default="apache_fcgi">
+        <alternative default="apache_php_fpm">
             <apache_fcgi>
                 <package>apache2</package>
                 <package>apache2-mpm-worker</package>
