@@ -68,10 +68,12 @@ sub setup_engine
 		[\&systemConfigTest, 'Save system config files if exists: '],
 		[\&confSave, 'Save system configuration: '],
 		[\&dbUpgrade, 'Upgrade database: '],
+		[\&copyLogos, 'Copy logos: '],
 		[\&otherMessCleanup, 'Some system cleaning: '],
 		[\&daemonRemove, 'Remove imscp daemon: '],
 		[\&removeDirs, 'Delete ispcp directories: '],
-		[\&removeFile, 'Delete ispcp files: ']
+		[\&removeFile, 'Delete ispcp files: '],
+		[\&removePhpFcgiStarter, 'Delte ispcp PHP FCGI Starters: ']
 	);
 
 	my $step = 1;
@@ -120,7 +122,7 @@ This program will upgrade your ispCP system to iMSCP.
 
 NOTE: During the migration process some or all services might require to be shut down or restarted.\n\n
 You can stop this process by pushing \\Z1EXIT\\Z0 button
-To process select \\Z1CONTINUE\\Z0 button
+To proceed select \\Z1CONTINUE\\Z0 button
 "
 
 		)
@@ -144,9 +146,9 @@ sub checkISPCPVersion
 
 We only support migration from ispCP 1.0.7 and later!
 
-By selecting CONTINUE button you can ignore this!
+By selecting the CONTINUE button you can ignore this!
 
-\\Z1WARNING: \\ZuDATA might be corrupt if you proceed forward\\Zn!!
+\\Z1WARNING: \\ZuDATA might be corrupted if you proceed forward\\Zn!!
 "
 		);
 	}
@@ -198,15 +200,15 @@ sub checkDbPass
 "
 \\Z1\\ZuispCP database keys are corrupt!\\Zn
 
-We tried to use folowing keys" . join("\n							", @paths) . "
+We tried to use the following keys" . join("\n							", @paths) . "
 
-but all seems corrupt!
+but all seem to be corrupt!
 
 Fix this and restart.
 "
 	);
 
-	error("ispCP database keys are corrupted! We tried to use folowing keys\n" . join("\n", @paths));
+	error("ispCP database keys are corrupted! We tried to use the following keys\n" . join("\n", @paths));
 
 	1;
 }
@@ -361,7 +363,7 @@ sub databaseIntegrityTest
 		iMSCP::Dialog->factory()->msgbox(
 "
 \\Z1\\ZuispCP database records are corrupted!\\Zn\n
-Please fix folowing:\n\n" .
+Please fix the following:\n\n" .
 
 join("\n\n", @errors) .
 "\nFix this and try again.
@@ -388,7 +390,7 @@ sub userTest
 	my $database = iMSCP::Database->new(db => 'mysql')->factory();
 	my $result = $database->doQuery('domain_gid', $query);
 	if (ref $result ne 'HASH'){
-		push(@errors, "$query produced following error: $result");
+		push(@errors, "$query produced the following error: $result");
 	} else {
 		if (keys %{$result}) {
 			local $Data::Dumper::Terse = 1;
@@ -406,8 +408,8 @@ sub userTest
 	if (@errors){
 		iMSCP::Dialog->factory()->msgbox(
 "
-\\Z1\\ZuispCP users records are missing or corrupt!\\Zn\n
-Please fix folowing:\n\n" .
+\\Z1\\ZuispCP user records are missing or corrupt!\\Zn\n
+Please fix the following:\n\n" .
 join("\n\n", @errors)
 ."\n\nFix this and try again.
 "
@@ -449,7 +451,7 @@ sub systemConfigTest{
 	my $result = $database->doQuery('name', $query);
 
 	if (ref $result ne 'HASH'){
-		push(@errors, "$query produced following error: $result");
+		push(@errors, "$query produced the following error: $result");
 	} else {
 		if (keys %{$result}){
 			local $Data::Dumper::Terse = 1;
@@ -471,7 +473,7 @@ sub systemConfigTest{
 "
 \\Z1\\ZuErrors while saving system files!\\Zn:\n\n
 " . join("\n", @errors) ."\n
-Fix this and after that try again
+Fix this and try again
 "
 			)
 		) {
@@ -540,7 +542,7 @@ sub savePass
 	my $error = $database->doQuery('dummy', $query, $pass, $values->{$field_id});
 
 	if (ref $error ne 'HASH'){
-		push(@{$errors}, "$query produced following error: $error");
+		push(@{$errors}, "$query produced the following error: $error");
 	}
 
 	0;
@@ -555,7 +557,7 @@ sub dbUpgrade
 	my $result = $database->doQuery('mail_id', $query);
 
 	if (ref $result ne 'HASH') {
-		push(@errors, "$query produced following error: $result");
+		push(@errors, "$query produced the following error: $result");
 	}
 
 	$query = 'SELECT `mail_id`, `mail_pass` FROM `mail_users` WHERE `mail_pass` != \'_no_\'';
@@ -563,7 +565,7 @@ sub dbUpgrade
 	$result = $database->doQuery('mail_id', $query);
 
 	if (ref $result ne 'HASH'){
-		push(@errors, "$query produced following error: $result");
+		push(@errors, "$query produced the following error: $result");
 	} else {
 		if (keys %{$result}) {
 			for my $row (values %{$result}) {
@@ -577,7 +579,7 @@ sub dbUpgrade
 	$result = $database->doQuery('sqlu_id', $query);
 
 	if (ref $result ne 'HASH') {
-		push(@errors, "$query produced following error: $result");
+		push(@errors, "$query produced the following error: $result");
 	} else {
 		if (keys %{$result}) {
 			for my $row (values %{$result}) {
@@ -591,17 +593,66 @@ sub dbUpgrade
 		exit 0 if iMSCP::Dialog->factory()->msgbox(
 "
 \\Z1\\ZuWARNING\\Zn\n
-Please fix folowing:\n\n" .
+Please fix the following:\n\n" .
 join("\n\n", @errors)
 ."\n
-This are not fatal error so we can proceed forward.
-Be aware that some password must be changed before works again
+These errors are not fatal so we can proceed forward.
+Be aware that some passwords must be changed before the login works again.
 "
 		);
 	}
 
 	0;
 }
+
+
+sub copyLogos
+{
+	use iMSCP::File;
+	my @errors;
+
+	my $panelUName = $main::imscpConfig{'SYSTEM_USER_PREFIX'}.$main::imscpConfig{'SYSTEM_USER_MIN_UID'};
+	my $panelGName = $main::imscpConfig{'SYSTEM_USER_PREFIX'}.$main::imscpConfig{'SYSTEM_USER_MIN_UID'};
+	
+	my $database = iMSCP::Database->new(db => 'mysql')->factory();
+	my $query = "SELECT DISTINCT `logo` FROM `user_gui_props` WHERE logo <> '0' AND logo <> ''";
+	my $result = $database->doQuery('logo', $query);
+
+	if (ref $result ne 'HASH') {
+		push(@errors, "$query produced the following error: $result");
+	} else {
+		for (keys %$result) {
+			my $logoName = $result->{$_}->{'logo'};
+			my $ispcpLogoFileName = "$main::ispcpConfig{'GUI_ROOT_DIR'}/themes/user_logos/$logoName";
+			if(-f $ispcpLogoFileName) {
+				# if the logo exists, copy it to the i-MSCP folder
+				my $ispcpFile = iMSCP::File->new(filename => $ispcpLogoFileName);
+				if ($ispcpFile->copyFile("$main::imscpConfig{'GUI_ROOT_DIR'}/data/persistent/ispLogos/$logoName")) {
+					push(@errors, getLastError());
+				}
+			}
+			else {
+				push(@errors, "Logo file $ispcpLogoFileName not found");
+			}
+		}
+	}
+
+	if (@errors) {
+	iMSCP::Dialog->factory()->msgbox(
+"
+\\Z1\\ZuWARNING\\Zn\n
+The following errors occured:\n".
+join("\n", @errors)
+."\n
+These errors are not fatal so we can proceed forward.
+"
+	);
+	warning("\n".join("\n", @errors));
+	}
+
+	0;
+}
+
 
 sub otherMessCleanup
 {
@@ -699,9 +750,9 @@ sub otherMessCleanup
 		exit 0 if iMSCP::Dialog->factory()->msgbox(
 "
 \\Z1\\ZuWARNING\\Zn\n
-Please fix folowing:\n" . join("\n\n", @errors) . "\n
-This are not fatal error so we can proceed forward.
-Be aware that we do not guarantee that will succeed
+Please fix the following:\n" . join("\n\n", @errors) . "\n
+These errors are not fatal so we can proceed forward.
+Be aware that we do not guarantee that the migration will succeed.
 "
 		);
 	}
@@ -745,9 +796,9 @@ sub daemonRemove
 		exit 0 if iMSCP::Dialog->factory()->msgbox(
 "
 \\Z1\\ZuWARNING\\Zn\n
-Please fix folowing:\n" . join("\n\n", @errors) . "\n
-This are not fatal error so we can proceed forward.
-Be aware that we do not guarantee that will succeed
+Please fix the following:\n" . join("\n\n", @errors) . "\n
+These errors are not fatal so we can proceed forward.
+Be aware that we do not guarantee that the migration will succeed.
 "
 		);
 	}
@@ -776,11 +827,11 @@ sub removeDirs
 		iMSCP::Dialog->factory()->msgbox(
 "
 \\Z1\\ZuWARNING\\Zn\n
-Please fix folowing:\n" .
+Please fix the following:\n" .
 $errors
 ."\n
-This are not fatal error so we can proceed forward.
-Be aware that we do not guarantee that will succeed
+These errors are not fatal so we can proceed forward.
+Be aware that we do not guarantee that the migration will succeed.
 "
 		);
 		warning("\n$errors\n");
@@ -807,16 +858,39 @@ sub removeFile
 		iMSCP::Dialog->factory()->msgbox(
 "
 \\Z1\\ZuWARNING\\Zn\n
-Please fix folowing:\n".
+Please fix the following:\n".
 $errors
 ."\n
-This are not fatal error so we can proceed forward.
-Be aware that we do not guarantee that will succeed
+These errors are not fatal so we can proceed forward.
+Be aware that we do not guarantee that the migration will succeed.
 "
 		);
 		warning("\n$errors\n");
 	}
 
+	0;
+}
+
+sub removePhpFcgiStarter
+{
+	my($stdout, $stderr);
+
+	my $rs = execute("$main::imscpConfig{'CMD_RM'} -f $main::ispcpConfig{'PHP_STARTER_DIR'}/*/php5-fcgi-starter", \$stdout, \$stderr);
+	
+	debug($stdout) if $stdout;
+	if ($stderr && $rs) {
+
+		iMSCP::Dialog->factory()->msgbox(
+"
+\\Z1\\ZuWARNING\\Zn\n
+The following errors occured:\n".
+$stderr
+."\n
+These errors are not fatal so we can proceed forward.
+"
+		);
+		warning("\n$stderr\n");
+	}
 	0;
 }
 

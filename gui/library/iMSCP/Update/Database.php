@@ -882,7 +882,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 				VARCHAR( 255 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT ''",
 			"ALTER TABLE `user_gui_props` CHANGE `lang` `lang`
 				VARCHAR( 5 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL",
-			"UPDATE `user_gui_props` SET `logo` = '' WHERE `logo` = 0");
+			"UPDATE `user_gui_props` SET `logo` = '' WHERE `logo` = '0'");
 	}
 
 	/**
