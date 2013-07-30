@@ -8,9 +8,11 @@ ENGINE:
 	- Fixed: Plugin module is broken: Unable to disable, uninstall... any plugin
 
 Tickets:
-    - Fixed #745: Defect - Disk detail in dovecot doesn't include aliases
-    - Fixed #834: Cosmetics - Ticket system menu names
-    - Fixed #852: Bug - Software installer - Unable to install any software
+	- Fixed #745: Defect - Disk detail in dovecot doesn't include aliases
+	- Fixed #779: Defect - When migrating from ispcp the reseller and admin logos are lost
+	- Fixed #834: Cosmetics - Ticket system menu names
+	- Fixed #835: Task - Migration script - ispCP - Remove old php5-fcgi-starter
+	- Fixed #852: Bug - Software installer - Unable to install any software
 
 ------------------------------------------------------------------------------------------------------------------------
 1.1.0-rc3
