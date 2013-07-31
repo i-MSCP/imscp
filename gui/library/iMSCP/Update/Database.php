@@ -2106,7 +2106,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	{
 		return "DELETE FROM `config` WHERE `name` IN('PORT_AMAVIS', 'PORT_SPAMASSASSIN')";
 	}
-	
+
 	/**
 	 * Adds the protected webfolder to the hostingplans
 	 *
@@ -2173,5 +2173,18 @@ class iMSCP_Update_Database extends iMSCP_Update
 		}
 
 		return $sqlUdp;
+	}
+
+	/**
+	 * Adds unique index for name of database and database user.
+	 *
+	 * @return array Stack of SQL statements to be executed
+	 */
+	protected function _databaseUpdate_146()
+	{
+		return array(
+			"ALTER TABLE `sql_database` ADD UNIQUE `database_name` (`sqld_name`)",
+			"ALTER TABLE `sql_user` ADD UNIQUE `db_user_name` (`sqlu_name`)",
+		);
 	}
 }
