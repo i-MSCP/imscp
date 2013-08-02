@@ -1408,12 +1408,12 @@ sub setupServerIps
 				'dummy',
 				'
 					INSERT IGNORE INTO `server_ips` (
-						`ip_number`, `ip_card`, `ip_status`, `ip_id`
+						`ip_number`, `ip_card`, `ip_status`
 					) VALUES(
-						?, ?, ?, (SELECT `ip_id` FROM `server_ips` AS `t1` WHERE `t1`.`ip_number` = ?)
+						?, ?, ?
 					)
 				',
-				$_, $netCard, 'toadd', $_
+				$_, $netCard, 'toadd'
 			);
 			if (ref $rs ne 'HASH') {
 				error("Unable to add/update server address IP '$_': $rs");
