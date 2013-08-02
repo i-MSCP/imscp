@@ -2174,14 +2174,4 @@ class iMSCP_Update_Database extends iMSCP_Update
 
 		return $sqlUdp;
 	}
-	
-	/**
-	 * Add unique key to server_ips
-	 *
-	 * @return string SQL statement to be e executed
-	 */
-	protected  function _databaseUpdate_146()
-	{
-		return "ALTER TABLE `server_ips` ADD UNIQUE `ip_number` (`ip_number`)";
-	}
 }
