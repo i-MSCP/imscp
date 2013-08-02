@@ -38,6 +38,8 @@ use iMSCP::Debug;
 use iMSCP::HooksManager;
 use parent 'Common::SingletonClass';
 
+our $VERSION = '0.2.0';
+
 =head1 DESCRIPTION
 
  This is the installer for the i-MSCP PhpMyAdmin addon.
@@ -82,7 +84,7 @@ sub preinstall
 
 	require iMSCP::Addons::ComposerInstaller;
 
-	iMSCP::Addons::ComposerInstaller->getInstance()->registerPackage('imscp/phpmyadmin');
+	iMSCP::Addons::ComposerInstaller->getInstance()->registerPackage('imscp/phpmyadmin', "$VERSION.*\@dev");
 }
 
 =item install()
@@ -596,12 +598,12 @@ sub _updateDatabase
 {
 	my $self = shift;
 
-	my $phpmyadminDir = "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/pma";
-	my $imscpDbName = $main::imscpConfig{'DATABASE_NAME'};
-	my $phpmyadminDbName = $imscpDbName . '_pma';
-	my $fromVersion = $self::phpmyadminOldConfig{'PHPMYADMIN_VERSION'} || '4.0.4.1';
+	#my $phpmyadminDir = "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/pma";
+	#my $imscpDbName = $main::imscpConfig{'DATABASE_NAME'};
+	#my $phpmyadminDbName = $imscpDbName . '_pma';
+	#my $fromVersion = $self::phpmyadminOldConfig{'PHPMYADMIN_VERSION'} || '4.0.4.1';
 
-	# Currently no update here because 4.0.4.1 is the first version we have with a configuration storage
+	# Currently no update here because 4.0.4.2 is the first version we have with a configuration storage
 	
 	0;
 }
@@ -678,6 +680,7 @@ sub _buildConfig
 	my $rs = 0;
 
 	my $cfg = {
+		PMA_DATABASE => $main::imscpConfig{'DATABASE_NAME'} . '_pma',
 		PMA_USER => $self::phpmyadminConfig{'DATABASE_USER'},
 		PMA_PASS => $self::phpmyadminConfig{'DATABASE_PASSWORD'},
 		HOSTNAME => $main::imscpConfig{'DATABASE_HOST'},
