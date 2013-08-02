@@ -38,8 +38,5 @@
 # Delete old apache logfiles weekly
 @weekly root {TOOLS_ROOT_DIR}/imscp-del-logs >/dev/null 2>&1
 
-# [{DOMAIN_NAME}]:{CRONJOB_ID} custom task START.
-# [{DOMAIN_NAME}]:{CRONJOB_ID} custom task END.
-
 # [{TASKID}] custom task START.
 # [{TASKID}] custom task END.
