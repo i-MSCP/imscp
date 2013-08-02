@@ -82,7 +82,7 @@ INSERT IGNORE INTO `config` (`name`, `value`) VALUES
 ('PREVENT_EXTERNAL_LOGIN_ADMIN', '1'),
 ('PREVENT_EXTERNAL_LOGIN_RESELLER', '1'),
 ('PREVENT_EXTERNAL_LOGIN_CLIENT', '1'),
-('DATABASE_REVISION', '146'),
+('DATABASE_REVISION', '147'),
 ('PHPINI_ALLOW_URL_FOPEN', 'off'),
 ('PHPINI_DISPLAY_ERRORS', 'off'),
 ('PHPINI_UPLOAD_MAX_FILESIZE', '10'),
@@ -582,7 +582,7 @@ CREATE TABLE IF NOT EXISTS `sql_database` (
   `sqld_name` varchar(64) character set utf8 collate utf8_bin default 'n/a',
   PRIMARY KEY (`sqld_id`),
   KEY `domain_id` (`domain_id`),
-  UNIQUE KEY `database_name` (`sqld_name`)
+  UNIQUE KEY `sqld_name` (`sqld_name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -598,7 +598,7 @@ CREATE TABLE IF NOT EXISTS `sql_user` (
   `sqlu_pass` varchar(64) collate utf8_unicode_ci default 'n/a',
   PRIMARY KEY (`sqlu_id`),
   KEY `sqld_id` (`sqld_id`),
-  UNIQUE KEY `db_user_name` (`sqlu_name`)
+  UNIQUE KEY `sqlu_name` (`sqlu_name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
