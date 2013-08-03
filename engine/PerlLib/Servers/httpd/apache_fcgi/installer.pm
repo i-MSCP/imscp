@@ -126,7 +126,7 @@ sub askCgiModule($$)
 	$rs;
 }
 
-=item askForPhpFpmPoolsLevel($dialog)
+=item askForPhpIniLevel($dialog)
 
  Ask user for PHP INI level to use.
 
