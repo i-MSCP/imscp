@@ -54,7 +54,7 @@ function customer_updatePassword()
 		} else if (!_customer_checkCurrentPassword($_POST['current_password'])) {
 			set_page_message(tr('Current password is invalid.'), 'error');
 		} else if ($_POST['password'] !== $_POST['password_confirmation']) {
-			set_page_message(tr("Passwords doesn't match."), 'error');
+			set_page_message(tr("Passwords do not match."), 'error');
 		} elseif (checkPasswordSyntax($_POST['password'])) {
 			$query = 'UPDATE `admin` SET `admin_pass` = ? WHERE `admin_id` = ?';
 			exec_query($query, array(cryptPasswordWithSalt($_POST['password']), $userId));

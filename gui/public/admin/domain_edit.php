@@ -157,7 +157,7 @@ function &admin_getData($domainId, $forUpdate = false)
 			set_page_message(tr("The domain or at least one of its entities has a different status than 'ok'."), 'warning');
 			redirectTo('manage_users.php');
 		} elseif($stmt->fields['domain_status'] == $cfg->ITEM_DISABLED_STATUS) {
-			set_page_message(tr('The domain is currently deactivated. The modification of some of its properties will result by a complete or partial reactivation of it.'), 'warning');
+			set_page_message(tr('The domain is currently deactivated. The modification of some of its properties will result in a complete or partial reactivation of it.'), 'warning');
 		}
 
 		$domainProps = admin_getDomainProps($domainId);
@@ -510,7 +510,7 @@ function _admin_generateFeaturesForm($tpl, &$data)
 	if($data['software_allowed'] == 'no') {
 		$tplVars['APS_BLOCK'] =  '';
 	} else {
-		$tplVars['TR_APS'] = tr('Softwares installer');
+		$tplVars['TR_APS'] = tr('Software installer');
 		$tplVars['APS_YES'] = ($data['domain_software_allowed'] == 'yes') ? $htmlSelected : '';
 		$tplVars['APS_NO'] = ($data['domain_software_allowed'] != 'yes') ? $htmlSelected : '';
 	}
@@ -758,7 +758,7 @@ function admin_checkAndUpdateData($domainId)
 				}
 
 				if($phpEditor->flagValueError) {
-					set_page_message(tr('Please, check the PHP Editor settings.'), 'error');
+					set_page_message(tr('Please check the PHP Editor settings.'), 'error');
 				}
 			} else {
 				// PHP Editor is disabled - back to the default values

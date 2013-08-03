@@ -89,7 +89,7 @@ function admin_generatePage($tpl, $domainId, $month, $year)
 		redirectTo('reseller_statistics.php');
 	}
 
-	// Let see if we have any statistics available for the given periode
+	// Let see if we have any statistics available for the given period
 	$query = "SELECT `domain_id` FROM `domain_traffic` WHERE `dtraff_time` > ? AND `dtraff_time` < ? LIMIT 1";
 	$stmt = exec_query($query, array(getFirstDayOfMonth($month, $year), getLastDayOfMonth($month, $year)));
 

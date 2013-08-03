@@ -63,7 +63,7 @@ function client_addHtaccessUser($domainId)
 			}
 
 			if ($_POST['pass'] !== $_POST['pass_rep']) {
-				set_page_message(tr("Passwords doesn't match."), 'error');
+				set_page_message(tr("Passwords do not match."), 'error');
 				return;
 			}
 

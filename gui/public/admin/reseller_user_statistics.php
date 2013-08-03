@@ -166,7 +166,7 @@ $tpl->assign(
 		'TR_DOMAIN_NAME' => tr('Domain name'),
 		'TR_TRAFF' => tr('Traffic usage'),
 		'TR_DISK' => tr('Disk usage'),
-		'TR_WEB' => tr('Http traffic'),
+		'TR_WEB' => tr('HTTP traffic'),
 		'TR_FTP_TRAFF' => tr('FTP traffic'),
 		'TR_SMTP' => tr('SMTP traffic'),
 		'TR_POP3' => tr('POP3/IMAP traffic'),

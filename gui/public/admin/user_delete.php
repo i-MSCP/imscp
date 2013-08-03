@@ -530,7 +530,7 @@ if (isset($_GET['delete_id']) && !empty($_GET['delete_id'])) { # admin/reseller 
 			$queryMessagePart = '';
 		}
 
-		set_page_message(tr('Unable to schedule deletion of the customer account. Please, consult admin logs or your mail for more information.'), 'error');
+		set_page_message(tr('Unable to schedule deletion of the customer account. Please consult admin logs or your mail for more information.'), 'error');
 		write_log(
 			sprintf("System was unable to schedule deletion of customer account with ID %s. Message was: %s.", $userId, $e->getMessage() . $queryMessagePart),
 			E_USER_ERROR

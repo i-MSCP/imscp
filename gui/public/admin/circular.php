@@ -45,7 +45,7 @@
  */
 
 /**
- * Send the givel email.
+ * Send the given email.
  *
  * @param string $to receivers of the mail
  * @param string $from Sender of the mail

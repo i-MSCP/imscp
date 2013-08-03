@@ -103,7 +103,7 @@ function client_generatePage($tpl, $id, $type) {
 
 	if (isset($_POST['send']) && $cfg->ENABLE_SSL) {
 		if ($_POST['pass'] != $_POST['pass_rep']) {
-			set_page_message(tr('Passwords doesn\'t not matches.'), 'error');
+			set_page_message(tr('Passwords do not match.'), 'error');
 		}
 
 		if (!is_resource(@openssl_x509_read($_POST['cert_cert']))) {
@@ -143,7 +143,7 @@ function client_generatePage($tpl, $id, $type) {
 		$query = 'UPDATE `ssl_certs` SET `status` = ? WHERE `type` = ? AND `id` = ? ';
 		exec_query($query, array($cfg->ITEM_TODELETE_STATUS, $type, $id));
 		client_updateEntityStatus($type, $id);
-		set_page_message(tr('Certificate sucessfully scheduled for deletion.'), 'success');
+		set_page_message(tr('Certificate successfully scheduled for deletion.'), 'success');
 		write_log($_SESSION['user_logged'] . ': deleted certificate for: ' . $name, E_USER_NOTICE);
 		send_request();
 	}
@@ -157,7 +157,7 @@ function client_generatePage($tpl, $id, $type) {
 		if ($cfg->ENABLE_SSL) {
 			$status = tr('No certificate found.');
 		} else {
-			set_page_message(tr('SSL feature is disabled. You cannot add / change certificate'), 'warning');
+			set_page_message(tr('SSL feature is disabled. You cannot add / change certificates'), 'warning');
 		}
 	} else {
 		if ($cfg->ENABLE_SSL) {
@@ -238,7 +238,7 @@ $tpl->assign(
 		'TR_PASSWORD_REPEAT' => tr('Repeat password'),
 		'TR_CERTIFICATE_KEY' => tr('Certificate key'),
 		'TR_CERTIFICATE' => tr('Certificate'),
-		'TR_INTERM_CERTIFICATE' => tr('Intermediar certificate'),
+		'TR_INTERM_CERTIFICATE' => tr('Intermediate certificate'),
 		'TR_DELETE' => tr('Delete'),
 		'TR_SAVE' => tr('Save'),
 		'TR_CANCEL' => tr('Cancel'),

@@ -151,7 +151,7 @@ function client_UpdateMailAccount($mailAccountData)
 	// Password validation
 	if($mailAccountData['mail_pass'] != '_no_' && (!empty($_POST['password']) || !empty($_POST['passwordConfirmation']))) {
 		if($mailAccountData['mail_pass'] !== $mailAccountData['mail_pass_confirmation']) {
-			set_page_message(tr("Passwords doesn't match."), 'error');
+			set_page_message(tr("Passwords do not match."), 'error');
 		}
 
 		checkPasswordSyntax($mailAccountData['mail_pass'], "/[`\xb4'\"\\\\\x01-\x1f\015\012|<>^$]/i");

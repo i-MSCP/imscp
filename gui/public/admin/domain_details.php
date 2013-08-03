@@ -71,7 +71,7 @@ function admin_generatePage($tpl, $domainId)
 	);
 
 	if (!$stmt->rowCount()) {
-		$domainIpAddr = tr('No found.');
+		$domainIpAddr = tr('Not found.');
 	} else {
 		$domainIpAddr = "{$stmt->fields['ip_number']} " . (
 			($stmt->fields['ip_domain']) ? "({$stmt->fields['ip_domain']})" : ''

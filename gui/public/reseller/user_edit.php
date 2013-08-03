@@ -178,7 +178,7 @@ function reseller_updateUserData($adminId)
 		}
 
 		if ($_POST['userpassword'] != $_POST['userpassword_repeat']) {
-			set_page_message(tr("Passwords doesn't match."), 'error');
+			set_page_message(tr("Passwords do not match."), 'error');
 			redirectTo('user_edit.php?edit_id=' . $adminId);
 		}
 

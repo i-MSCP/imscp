@@ -605,7 +605,7 @@ $tpl->assign(
 		 'TR_E_USER_ERROR' => tr('Errors'),
 		 'TR_CHECK_FOR_UPDATES' => tr('Check for update'),
 		 'TR_ENABLE_SSL' => tr('Enable SSL'),
-		 'TR_SSL_HELP' => tr('Tells whether or not customers can add/change SSL certificates for their domains.'),
+		 'TR_SSL_HELP' => tr('Defines whether or not customers can add/change SSL certificates for their domains.'),
 		 'TR_COMPRESS_OUTPUT' => tr('Compress HTML output'),
 		 'TR_SHOW_COMPRESSION_SIZE' => tr('Show HTML output compression size comment'),
 		 'TR_PREVENT_EXTERNAL_LOGIN_ADMIN' => tr('Prevent external login for admins'),

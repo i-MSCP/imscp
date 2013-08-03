@@ -251,7 +251,7 @@ function add_sql_user($customerId, $databaseId)
 			}
 
 			if (! isset($_POST['pass_rep']) || $_POST['pass'] !== $_POST['pass_rep']) {
-				set_page_message(tr("Passwords doesn't match."), 'error');
+				set_page_message(tr("Passwords do not match."), 'error');
 				return;
 			}
 

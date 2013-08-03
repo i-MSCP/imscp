@@ -57,7 +57,7 @@ function &admin_getData()
 		if ($stmt->rowCount()) {
 			$data['server_ips'] = $stmt->fetchAll();
 		} else {
-			set_page_message(tr('Unable to get the IP addresses list. Please fix this problem.'), 'error');
+			set_page_message(tr('Unable to get the IP address list. Please fix this problem.'), 'error');
 			redirectTo('manage_users.php');
 		}
 
@@ -288,7 +288,7 @@ function _admin_generateFeaturesForm($tpl, &$data)
 			'SUPPORT_SYSTEM_YES' => ($data['support_system'] == 'yes') ? $htmlChecked : '',
 			'SUPPORT_SYSTEM_NO' => ($data['support_system'] != 'yes') ? $htmlChecked : '',
 
-			'TR_PHP_INI_PERMISSION_HELP' => tr('If yes, means that the reseller can allow its customers to edit this directive'),
+			'TR_PHP_INI_PERMISSION_HELP' => tr('Yes means that the reseller can allow his customers to edit this directive'),
 			'TR_HELP' => tr('Help'),
 			'TR_YES' => tr('Yes'),
 			'TR_NO' => tr('No'),
@@ -415,7 +415,7 @@ function admin_checkAndCreateResellerAccount()
 			$errFieldsStack[] = 'password';
 			$errFieldsStack[] = 'password_confirmation';
 		} elseif($data['password'] != $data['password_confirmation']) {
-			set_page_message(tr("Passwords doesn't match."), 'error');
+			set_page_message(tr("Passwords do not match."), 'error');
 			$errFieldsStack[] = 'password';
 			$errFieldsStack[] = 'password_confirmation';
 		} elseif(!checkPasswordSyntax($data['password'])) {

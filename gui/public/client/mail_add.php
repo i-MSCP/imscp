@@ -530,7 +530,7 @@ function check_mail_acc_data($dmn_id, $dmn_name) {
 			set_page_message(tr('Password data is missing.'), 'error');
 			return false;
 		} else if ($pass !== $pass_rep) {
-			set_page_message(tr("Passwords doesn't match."), 'error');
+			set_page_message(tr("Passwords do not match."), 'error');
 			return false;
 		} else if (!checkPasswordSyntax($pass, "/[`\xb4'\"\\\\\x01-\x1f\015\012|<>^$]/i")) {
 			return false;

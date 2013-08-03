@@ -238,7 +238,7 @@ function ftp_addAccount($mainDmnName)
 		}
 
 		if ($passwd !== $passwdRepeat) {
-			set_page_message(tr("Passwords doesn't match"), 'error');
+			set_page_message(tr("Passwords do not match"), 'error');
 			$ret = false;
 		} elseif (!checkPasswordSyntax($passwd)) {
 			$ret = false;
