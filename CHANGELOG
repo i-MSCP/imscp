@@ -7,7 +7,7 @@ Git Master
 SETUP:
 	- Removed php5-adodb package from distribution packages files
 	- The i-MSCP apache_php_fpm server impl. is now the default choice for distributions  supporting it officialy
-	- Fixed: Plugins which provide backend part end with unknown error after update
+	- Fixed: Plugins which provide a backend end with unknown error after update
 
 ENGINE:
 	- Fixed: Plugin module is broken: Unable to disable, uninstall... any plugin
