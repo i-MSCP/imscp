@@ -42,7 +42,7 @@ As root:
 2.	Installing Transifex client
 
 	# aptitude install python-setuptools
-	# easy_install -- upgrade transifex-client
+	# easy_install --upgrade transifex-client
 
 As normal user:
 
