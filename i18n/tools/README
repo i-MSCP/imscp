@@ -52,9 +52,8 @@ As normal user:
 
 And putting the following content in it:
 
-[main]
-[https://www.transifex.net]
-hostname = https://www.transifex.net
+[https://www.transifex.com]
+hostname = https://www.transifex.com
 password = PASSWORD
 token =
 username = USERNAME
