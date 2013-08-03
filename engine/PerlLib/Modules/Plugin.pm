@@ -97,7 +97,14 @@ sub loadData
 
 	my $rdata = iMSCP::Database->factory()->doQuery(
 		'plugin_id',
-		'SELECT `plugin_id`, `plugin_name`, `plugin_status` FROM `plugin` WHERE `plugin_id` = ?',
+		'
+			SELECT
+				`plugin_id`, `plugin_name`, `plugin_status`, `plugin_previous_status`
+			FROM
+				`plugin`
+			WHERE
+				`plugin_id` = ?
+		',
 		$self->{'pluginId'}
 	);
 	unless(ref $rdata eq 'HASH') {
@@ -251,8 +258,8 @@ sub _executePlugin($$)
 
 		# Return value from run() action is ignored by default. It's the responsability of the plugin to set error
 		# status for its items. In case the plugin doesn't manage any item, it can force return value by defining the
-		# FORCE_RETVAL attribute
-		if($action ne 'run' || defined $pluginInstance->{'FORCE_RETVAL'}) {
+		# FORCE_RETVAL attribute and set it to 'yes'
+		if($action ne 'run' || defined $pluginInstance->{'FORCE_RETVAL'} && $pluginInstance->{'FORCE_RETVAL'} eq 'yes') {
 			return $rs if $rs;
 		} else {
 			$rs = 0;
