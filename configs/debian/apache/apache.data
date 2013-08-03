@@ -55,4 +55,4 @@ APACHE_NAME = apache2
 # per_site: each site for domain, domain alias, subdomain and subdomain alias will
 # have its own php.ini file
 #
-INI_LEVEL = per_user
+INI_LEVEL =
