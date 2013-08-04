@@ -39,12 +39,6 @@ use iMSCP::CarpFixed ();
 
 local $Params::Check::VERBOSE = 1;
 
-BEGIN {
-    #use vars qw[$AUTOLOAD $STACK];
-    use vars qw[$STACK];
-    $STACK = [];
-}
-
 =head1 DESCRIPTION
 
  Generic message storage mechanism allowing to store messages on a stack.
@@ -72,14 +66,11 @@ sub new
 		'stack' => { default  => [] }
 	};
 
-	my $args = check($tmpl, \%hash) or (
-		warn(sprintf('Could not create a new stack object: %s1', Params::Check->last_error)),
-		return
+	my $args = check($tmpl, \%hash) or die(
+		sprintf('Could not create a new iMSCP::Log object: %s1', Params::Check->last_error)
 	);
 
-	my %self = map { uc, $args->{$_} } keys %$args;
-
-	bless \%self, $class;
+	bless $args, $class
 }
 
 =item store()
@@ -97,7 +88,7 @@ sub new
 
 =item tag
 
-The tag to add to this message. If not provided, default tag 'NONE' will be used.
+The tag to add to this message. If not provided, default tag 'none' will be used.
 
 =item level
 
@@ -118,10 +109,10 @@ sub store
 		'message' => {
 			'default' => 'empty log',
 			'strict_type' => 1,
-			'required' => 1,
+			'required' => 1
 		},
 		'tag' => { 'default' => 'none' },
-		'level' => { 'default' => 'log',  },
+		'level' => { 'default' => 'log' },
 		'shortmess' => { 'default' => _clean(Carp::shortmess()) },
 		'longmess' => { 'default' => _clean(Carp::longmess()) }
 	};
@@ -140,7 +131,7 @@ sub store
 	my $item = {
 		'when' => scalar localtime,
 		'parent' => $self,
-		'id' => scalar @{$self->{'STACK'}},
+		'id' => scalar @{$self->{'stack'}},
 		'message' => $args->{'message'},
 		'tag' => $args->{'tag'},
 		'level' => $args->{'level'},
@@ -148,7 +139,7 @@ sub store
 		'longmess' => $args->{'longmess'}
 	};
 
-	push @{$self->{'STACK'}}, $item;
+	push @{$self->{'stack'}}, $item;
 
 	my $sub = "_$args->{'level'}";
 	$self->$sub($item);
@@ -226,12 +217,12 @@ sub retrieve
 		grep { $_->{'level'} =~ /$args->{'level'}/ ? 1 : 0 }
 		grep { $_->{'message'} =~ /$args->{'message'}/ ? 1 : 0 }
 		grep { defined }
-		$args->{'chrono'} ? @{$self->{'STACK'}} : reverse @{$self->{'STACK'}};
+		$args->{'chrono'} ? @{$self->{'stack'}} : reverse @{$self->{'stack'}};
 
 	my $amount = $args->{'amount'} || scalar @list;
 
     my @rv = map {
-		$args->{'remove'} ? splice(@{$self->{'STACK'}}, $_->{'id'}, 1, undef) : $_
+		$args->{'remove'} ? splice(@{$self->{'stack'}}, $_->{'id'}, 1, undef) : $_
     } scalar @list > $amount ? splice(@list, 0, $amount) : @list;
 
 	wantarray ? @rv : $rv[0];
@@ -285,7 +276,7 @@ sub flush()
 {
 	my $self = shift;
 
-	splice @{$self->{'STACK'}};
+	splice @{$self->{'stack'}};
 }
 
 =back
@@ -398,7 +389,6 @@ sub _warn
 	warn $item->{'message'};
 }
 
-
 =item _trace
 
  Will provide a traceback of this error item back to the first one that occurred, clucking with every item as it comes
@@ -414,28 +404,12 @@ sub _trace
 	$_->cluck for $item->{'parent'}->retrieve('chrono' => 0);
 }
 
-=item
+=back
+
+=head1 AUTHOR
+
+ Laurent Declercq <l.declercq@nuxwin.com>
 
 =cut
-
-#sub AUTOLOAD
-#{
-#    my $self = $_[0];
-#
-#    $AUTOLOAD =~ s/.+:://;
-#
-#    return $self->{$AUTOLOAD} if exists $self->{$AUTOLOAD};
-#
-#    local $Carp::CarpLevel = $Carp::CarpLevel + 3;
-#
-#}
-
-=item
-
-=cut
-
-sub DESTROY { 1 }
 
 1;
-
-__END__
