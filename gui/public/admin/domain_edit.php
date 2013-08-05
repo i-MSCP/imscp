@@ -102,12 +102,6 @@ function admin_getDomainProps($domainId)
 
 	$data['domainTraffic'] = $stmt->fields['traffic'];
 
-	// Domain ip
-
-	$query = 'SELECT `ip_number`, `ip_domain` FROM `server_ips` WHERE `ip_id` = ?';
-	$stmt = exec_query($query, $data['domain_ip_id']);
-	$data = array_merge($data, $stmt->fetchRow());
-
 	return $data;
 }
 
@@ -178,6 +172,7 @@ function &admin_getData($domainId, $forUpdate = false)
 
 		// Fallback values
 		$data['fallback_domain_expires'] = $data['domain_expires'];
+		$data['fallback_domain_ip_id'] = $data['domain_ip_id']; 
 		$data['fallback_domain_subd_limit'] = $data['domain_subd_limit'];
 		$data['fallback_domain_alias_limit'] = $data['domain_alias_limit'];
 		$data['fallback_domain_mailacc_limit'] = $data['domain_mailacc_limit'];
@@ -223,6 +218,9 @@ function &admin_getData($domainId, $forUpdate = false)
 				}
 			}
 
+			$data['domain_ip_id'] = (isset($_POST['domain_ip_id']))
+				? clean_input($_POST['domain_ip_id']) : $data['domain_ip_id']; 
+			
 			$data['domain_expires'] = (isset($_POST['domain_expires']))
 				? clean_input($_POST['domain_expires']) : $data['domain_expires'];
 
@@ -837,11 +835,13 @@ function admin_checkAndUpdateData($domainId)
 				$daemonRequest = true;
 			}
 
-			// PHP or CGI was either enabled or disabled or PHP Settings were changed or Web folder protection
-			// properties has been updated so we must update the vhosts files of all domain entities (dmn, sub, als, alssub)
+			// PHP or CGI was either enabled or disabled or PHP Settings were changed, web folder protection
+			// properties have been updated, or domain IP was changed, so we must update the vhosts files
+			// of all domain entities (dmn, sub, als, alssub) 
 			if ($daemonRequest || $data['domain_php'] != $data['fallback_domain_php'] ||
 				$data['domain_cgi'] != $data['fallback_domain_cgi'] ||
-				$data['web_folder_protection'] != $data['fallback_web_folder_protection']
+				$data['web_folder_protection'] != $data['fallback_web_folder_protection'] ||
+				$data['domain_ip_id'] != $data['fallback_domain_ip_id'] 
 			) {
 				if($data['domain_alias_limit'] != '-1') {
 					$query = "
@@ -896,7 +896,7 @@ function admin_checkAndUpdateData($domainId)
 					`allowbackup` = ?, `domain_dns` = ?,  `domain_software_allowed` = ?,
 					`phpini_perm_system` = ?, `phpini_perm_allow_url_fopen` = ?,
 					`phpini_perm_display_errors` = ?, `phpini_perm_disable_functions` = ?,
-					`domain_external_mail` = ?, `web_folder_protection` = ?
+					`domain_external_mail` = ?, `web_folder_protection` = ?, `domain_ip_id` = ?
 				WHERE
 					`domain_id` = ?
 			";
@@ -915,6 +915,7 @@ function admin_checkAndUpdateData($domainId)
 					$phpEditor->getClPermVal('phpiniDisplayErrors'),
 					$phpEditor->getClPermVal('phpiniDisableFunctions'),
 					$data['domain_external_mail'], $data['web_folder_protection'],
+					$data['domain_ip_id'], 
 					$domainId
 				)
 			);
@@ -1040,6 +1041,7 @@ $tpl->define_dynamic(
 		 'layout' => 'shared/layouts/ui.tpl',
 		 'page' => 'admin/domain_edit.tpl',
 		 'page_message' => 'layout',
+		 'ip_entry' => 'page', 
 		 'subdomain_limit_block' => 'page',
 		 'domain_aliasses_limit_block' => 'page',
 		 'mail_accounts_limit_block' => 'page',
@@ -1080,12 +1082,15 @@ $tpl->assign(
 		 'TR_DOMAIN_NEVER_EXPIRES' => tr('Never expires'),
 		 'DOMAIN_NEVER_EXPIRES_CHECKED' => ($data['domain_never_expires'] == 'on') ? 'checked="checked"' : '',
 		 'TR_DOMAIN_IP' => tr('Domain IP'),
-		 'DOMAIN_IP' => tohtml($data['ip_number']),
-		 'IP_DOMAIN' => ($data['ip_domain'] != null) ? '(' . tohtml(decode_idna($data['ip_domain'])) . ')' : '',
 		 'TR_UPDATE' => tr('Update'),
 		 'TR_CANCEL' => tr('Cancel'),
 		 'ERR_FIELDS_STACK' => (iMSCP_Registry::isRegistered('errFieldsStack'))
 			? json_encode(iMSCP_Registry::get('errFieldsStack')) : '[]'));
+
+// set the domain IP ID as global to be used in generate_ip_list
+global $domainIp;
+$domainIp = $data['domain_ip_id'];
+generate_ip_list($tpl); 
 
 generateNavigation($tpl);
 admin_generateForm($tpl, $data);
