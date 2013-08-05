@@ -4,7 +4,7 @@
             <apache_fcgi>
                 <package>apache2</package>
                 <package>apache2-mpm-worker</package>
-                <package>apache2-suexec</package>
+                <package>apache2-suexec-pristine</package>
                 <package>libapache2-mod-fcgid</package>
                 <package>libapache2-mod-fastcgi</package>
                 <package>php5-cgi</package>
@@ -35,9 +35,8 @@
             <dovecot>
                 <package>dovecot-imapd</package>
                 <package>dovecot-pop3d</package>
-                <package>dovecot-mysql</package>
                 <package>dovecot-sieve</package>
-                <package>dovecot-managesieved</package>
+                <package>dovecot-mysql</package>
             </dovecot>
         </alternative>
     </po>
@@ -66,37 +65,13 @@
     <sql>
         <alternative default="mysql_5.5">
             <mysql_5.5
-                    pinning_package="mysql-server-5.5 mysql-server-5.5 mysql-common libmysqlclient18"
-                    pinning_pin="release o=Ubuntu,n=precise"
+                    pinning_package="mysql-client-5.5 mysql-server-5.5 mysql-common libmysqlclient18"
+                    pinning_pin="release o=Debian,n=wheezy"
                     pinning_pin_priority="1001"
                     >
                 <package>mysql-server-5.5</package>
                 <package>mysql-client-5.5</package>
             </mysql_5.5>
-            <mariadb_5.5
-                    pinning_package="mariadb-client-5.5 mariadb-server-5.5 mariadb-common mysql-common libmysqlclient18"
-                    pinning_pin="origin mirror2.hs-esslingen.de"
-                    pinning_pin_priority="1001"
-                    repository="http://mirror2.hs-esslingen.de/mariadb/repo/5.5/ubuntu"
-                    repository_origin="MariaDB"
-                    repository_key_srv="keyserver.ubuntu.com"
-                    repository_key_id="0xcbcb082a1bb943db"
-                    >
-                <package>mariadb-client-5.5</package>
-                <package>mariadb-server-5.5</package>
-            </mariadb_5.5>
-            <mariadb_10.0
-                    pinning_package="mariadb-client-10.0 mariadb-server-10.0 mariadb-common mysql-common libmysqlclient18"
-                    pinning_pin="origin mirror2.hs-esslingen.de"
-                    pinning_pin_priority="1001"
-                    repository="http://mirror2.hs-esslingen.de/mariadb/repo/10.0/ubuntu"
-                    repository_origin="MariaDB"
-                    repository_key_srv="keyserver.ubuntu.com"
-                    repository_key_id="0xcbcb082a1bb943db"
-                    >
-                <package>mariadb-client-10.0</package>
-                <package>mariadb-server-10.0</package>
-            </mariadb_10.0>
             <remote_server>
                 <package>mysql-client</package>
             </remote_server>
@@ -111,7 +86,6 @@
         <package>php5-intl</package>
         <package>php5-mcrypt</package>
         <package>php5-mysqlnd</package>
-        <package>php5-suhosin</package>
     </php>
     <perl>
         <package>perl</package>

@@ -29,51 +29,49 @@
 
     # SECTION cgi_support BEGIN.
     ScriptAlias /cgi-bin/ {WEB_DIR}/cgi-bin/
+
     <Directory {WEB_DIR}/cgi-bin>
         AllowOverride AuthConfig
-        #Options ExecCGI
-        Order allow,deny
-        Allow from all
+        #Options +ExecCGI
+        {AUTHZ_DIRECTIVES}
     </Directory>
     # SECTION cgi_support END.
 
     <Directory {WEB_DIR}/htdocs>
-        Options -Indexes Includes FollowSymLinks MultiViews
+        Options -Indexes +Includes +FollowSymLinks +MultiViews
         # SECTION php_enabled BEGIN.
         AllowOverride All
         # SECTION php_enabled END.
         # SECTION php_disabled BEGIN.
         AllowOverride AuthConfig Indexes Limit Options
         # SECTION php_disabled END.
-        Order allow,deny
-        Allow from all
+        {AUTHZ_DIRECTIVES}
     </Directory>
 
     # SECTION php_enabled BEGIN.
     # SECTION fcgid BEGIN.
     <IfModule fcgid_module>
-        <Directory {WEB_DIR}/htdocs>
-            FCGIWrapper {PHP_STARTER_DIR}/{FCGID_NAME}/php{PHP_VERSION}-fcgid-starter .php
-            Options +ExecCGI
-        </Directory>
-        <Directory "{PHP_STARTER_DIR}/{FCGID_NAME}">
-            AllowOverride None
-            Options +ExecCGI MultiViews -Indexes
-            Order allow,deny
-            Allow from all
-        </Directory>
+    <Directory {WEB_DIR}/htdocs>
+        FCGIWrapper {PHP_STARTER_DIR}/{FCGID_NAME}/php{PHP_VERSION}-fcgid-starter .php
+        Options +ExecCGI
+    </Directory>
+    <Directory "{PHP_STARTER_DIR}/{FCGID_NAME}">
+        AllowOverride None
+        Options +ExecCGI +MultiViews -Indexes
+        {AUTHZ_DIRECTIVES}
+    </Directory>
     </IfModule>
     # SECTION fcgid END.
 
     # SECTION fastcgi BEGIN.
     <IfModule fastcgi_module>
-        ScriptAlias /php5/ {PHP_STARTER_DIR}/{FCGID_NAME}/
-        <Directory "{PHP_STARTER_DIR}/{FCGID_NAME}">
-            AllowOverride None
-            Options +ExecCGI -MultiViews -Indexes
-            Order allow,deny
-            Allow from all
-        </Directory>
+    ScriptAlias /php5/ {PHP_STARTER_DIR}/{FCGID_NAME}/
+
+    <Directory "{PHP_STARTER_DIR}/{FCGID_NAME}">
+        AllowOverride None
+        Options +ExecCGI -MultiViews -Indexes
+        {AUTHZ_DIRECTIVES}
+    </Directory>
     </IfModule>
     # SECTION fastcgi END.
 
@@ -85,11 +83,11 @@
         -pass-header Authorization \
         -idle-timeout 300
         Action php-script /php{PHP_VERSION}.{DOMAIN_NAME}.fcgi virtual
+
         <Directory /var/lib/apache2/fastcgi>
-            <Files php{PHP_VERSION}.{DOMAIN_NAME}.fcgi>
-                Order deny,allow
-                Allow from all
-            </Files>
+        <Files php{PHP_VERSION}.{DOMAIN_NAME}.fcgi>
+        {AUTHZ_DIRECTIVES}
+        </Files>
         </Directory>
     </IfModule>
     # SECTION php_fpm END.

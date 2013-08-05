@@ -13,10 +13,9 @@
     </IfModule>
 
     <Directory {HOME_DIR}/domain_disable_page>
-        Options -Indexes Includes FollowSymLinks MultiViews
+        Options -Indexes +Includes +FollowSymLinks +MultiViews
         AllowOverride None
-        Order allow,deny
-        Allow from all
+        {AUTHZ_DIRECTIVES}
     </Directory>
 
     SSLEngine On

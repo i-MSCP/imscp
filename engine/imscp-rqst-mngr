@@ -435,41 +435,45 @@ sub _process
 	my $total = scalar keys %$rdata;
 	$$ipMods += $total if ref $ipMods;
 
-	for (keys %$rdata) {
-		my $id = $rdata->{$_}->{'id'};
-		my $name = $rdata->{$_}->{'name'};
-		my $status = $rdata->{$_}->{'status'};
+	if(%{$rdata}) {
+		for (keys %{$rdata}) {
+			my $id = $rdata->{$_}->{'id'};
+			my $name = $rdata->{$_}->{'name'};
+			my $status = $rdata->{$_}->{'status'};
 
-		# Needed to run ips module in case all registered domain are disabled
-		next if $rdata->{$_}->{'status'} eq 'disabled';
+			# Needed to run ips module in case all registered domain are disabled
+			next if $rdata->{$_}->{'status'} eq 'disabled';
 
-		debug("Processing $id, $name, $status.");
+			debug("Processing $id, $name, $status.");
 
-		if($main::execmode ne 'setup') {
-			print("Processing $id, $name, $status. ($i of $total: remaining " . ($total -$i) . ")\n");
-		} else {
-			print STDOUT ("$type\t$status\t$name\t$id\t$total\t$i\n");
+			if($main::execmode ne 'setup') {
+				print("Processing $id, $name, $status. ($i of $total: remaining " . ($total -$i) . ")\n");
+			} else {
+				print STDOUT ("$type\t$status\t$name\t$id\t$total\t$i\n");
+			}
+
+			$i++;
+
+			newDebug("${type}_mngr_$name.log");
+
+			my $file = "Modules/${type}.pm";
+			my $class = "Modules::$type";
+
+			require $file;
+			$rs = $class->new()->process($id);
+
+			endDebug();
+
+			if($rs) {
+				error("Error while processing $id, $name, $status.");
+				my $logDir = defined $main::imscpConfig{'LOG_DIR'} ? $main::imscpConfig{'LOG_DIR'} : '';
+				error("See $logDir/${type}_mngr_$name.log for details.");
+			}
+
+			return $rs if $rs;
 		}
-
-		$i++;
-
-		newDebug("${type}_mngr_$name.log");
-
-		my $file = "Modules/${type}.pm";
-		my $class = "Modules::$type";
-
-		require $file;
-		$rs = $class->new()->process($id);
-
-		endDebug();
-
-		if($rs) {
-			error("Error while processing $id, $name, $status.");
-			my $logDir = defined $main::imscpConfig{'LOG_DIR'} ? $main::imscpConfig{'LOG_DIR'} : '';
-			error("See $logDir/${type}_mngr_$name.log for details.");
-		}
-
-		return $rs if $rs;
+	} else {
+			debug("No $type to process.");
 	}
 
 	0;

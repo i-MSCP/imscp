@@ -110,7 +110,7 @@ sub askCgiModule($$)
 	my $dialog = shift;
 
 	my $rs = 0;
-	my $cgiModule = $main::preseed{'PHP_FASTCGI'} || $self::apacheConfig{'PHP_FASTCGI'} ||
+	my $cgiModule = main::setupGetQuestion('PHP_FASTCGI', 'preseed') || $self::apacheConfig{'PHP_FASTCGI'} ||
 		$self::apacheOldConfig{'PHP_FASTCGI'} || '';
 
 	if($main::reconfigure ~~ ['httpd', 'servers', 'all', 'forced'] || $cgiModule !~ /^fcgid|fastcgi$/) {
@@ -141,8 +141,8 @@ sub askForPhpIniLevel($$)
 	my $dialog = shift;
 
 	my $rs = 0;
-	my $phpiniLevel = $main::preseed{'INI_LEVEL'} || $self::apacheConfig{'INI_LEVEL'} ||
-		$self::apacheConfig{'INI_LEVEL'} || '';
+	my $phpiniLevel = main::setupGetQuestion('INI_LEVEL', 'preseed') || $self::apacheConfig{'INI_LEVEL'} ||
+		$self::apacheOldConfig{'INI_LEVEL'} || '';
 
 	if(
 		$main::reconfigure ~~ ['httpd', 'php', 'servers', 'all', 'forced'] ||
@@ -198,6 +198,9 @@ sub install
 		return $rs if $rs;
 	}
 
+	$rs = $self->_setApacheVersion();
+	return $rs if $rs;
+
 	$rs = $self->_addUser();
 	return $rs if $rs;
 
@@ -223,6 +226,9 @@ sub install
 	return $rs if $rs;
 
 	$rs = $self->_oldEngineCompatibility();
+	return $rs if $rs;
+
+	$rs = $self->setEnginePermissions();
 	return $rs if $rs;
 
 	$self->{'hooksManager'}->trigger('afterHttpdInstall', 'apache_fcgi');
@@ -308,7 +314,16 @@ sub setEnginePermissions()
 	my $rs = $self->{'hooksManager'}->trigger('beforeHttpdSetEnginePermissions');
 	return $rs if $rs;
 
-	$rs = setRights($fcgiDir, { user => $rootUName, group => $rootGName, mode => '0555' });
+	$rs = setRights($fcgiDir, { 'user' => $rootUName, 'group' => $rootGName, mode => '0555' });
+	return $rs if $rs;
+
+	# eg. /var/www/imscp/engine/imscp-apache-logger
+	# FIXME: This is a quick fix for apache2.4
+	$rs = setRights(
+		"$main::imscpConfig{'ROOT_DIR'}/engine/imscp-apache-logger", {
+			'user' => $rootUName, 'group' => $rootGName, 'mode' => '0750'
+		}
+	);
 	return $rs if $rs;
 
 	$self->{'hooksManager'}->trigger('afterHttpdSetEnginePermissions');
@@ -397,6 +412,35 @@ sub _bkpConfFile($$)
 	}
 
 	$self->{'hooksManager'}->trigger('afterHttpdBkpConfFile', $cfgFile);
+}
+
+=item _setApacheVersion
+
+ Set Apache version
+
+ Return in 0 on success, other on failure
+
+=cut
+
+sub _setApacheVersion()
+{
+	my $self = shift;
+
+	my ($stdout, $stderr);
+	my $rs = execute("$self::apacheConfig{'CMD_HTTPD_CTL'} -v", \$stdout, \$stderr);
+	debug($stdout) if $stdout;
+	error($stderr) if $stderr && $rs;
+	error('Unable to find Apache version') if $rs && ! $stderr;
+	return $rs if $rs;
+
+	if($stdout =~ m%Apache/([\d.]+)%) {
+		$self::apacheConfig{'APACHE_VERSION'} = $1;
+	} else {
+		error('Unable to parse Apache version from Apache version string');
+		return 1;
+	}
+
+	0;
 }
 
 =item _addUser()
@@ -513,7 +557,7 @@ sub _buildFastCgiConfFiles
 		$self->{'httpd'}->setData(
 			{
 				SYSTEM_USER_PREFIX => $main::imscpConfig{'SYSTEM_USER_PREFIX'},
-				SYSTEM_USER_MIN_UID	=> $main::imscpConfig{'SYSTEM_USER_MIN_UID'},
+				SYSTEM_USER_MIN_UID => $main::imscpConfig{'SYSTEM_USER_MIN_UID'},
 			}
 		);
 
@@ -779,10 +823,10 @@ sub _buildApacheConfFiles
 	}
 
 	# Using alternative syntax for piped logs scripts when possible
-	# The alternative syntax does not involve the Shell (from Apache 2.2.12)
+	# The alternative syntax does not involve the shell (from Apache 2.2.12)
 	my $pipeSyntax = '|';
 
-	if(`$self::apacheConfig{'CMD_HTTPD_CTL'} -v` =~ m!Apache/([\d.]+)! && version->new($1) >= version->new('2.2.12')) {
+	if(version->new($self::apacheConfig{'APACHE_VERSION'}) >= version->new('2.2.12')) {
 		$pipeSyntax .= '|';
 	}
 
@@ -849,7 +893,9 @@ sub _buildMasterVhostFiles
 			SYSTEM_USER_MIN_UID => $main::imscpConfig{'SYSTEM_USER_MIN_UID'},
 			PEAR_DIR => $main::imscpConfig{'PEAD_DIR'},
 			GUI_CERT_DIR => $main::imscpConfig{'GUI_CERT_DIR'},
-			SERVER_HOSTNAME => $main::imscpConfig{'SERVER_HOSTNAME'}
+			SERVER_HOSTNAME => $main::imscpConfig{'SERVER_HOSTNAME'},
+			AUTHZ_DIRECTIVES => (version->new("v$self::apacheConfig{'APACHE_VERSION'}") >= version->new('v2.3.0'))
+				? 'Require all granted' : "Order allow,deny\n    Allow from all"
 		}
 	);
 

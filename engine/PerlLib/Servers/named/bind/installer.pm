@@ -66,13 +66,14 @@ sub askMode
 {
 	my $self = shift;
 	my $dialog = shift;
-	my $mode = $main::preseed{'BIND_MODE'} || $self::bindConfig{'BIND_MODE'};
+	my $mode = main::setupGetQuestion('BIND_MODE', 'preseed') || $self::bindConfig{'BIND_MODE'};
 
 	my $primaryDnsIps = ($mode eq 'slave')
-		? $main::preseed{'PRIMARY_DNS'} || $self::bindConfig{'PRIMARY_DNS'} : $main::imscpConfig{'BASE_SERVER_IP'};
+		? main::setupGetQuestion('PRIMARY_DNS', 'preseed') || $self::bindConfig{'PRIMARY_DNS'}
+		: $main::imscpConfig{'BASE_SERVER_IP'};
 
 	my $secondaryDnsIps = ($mode eq 'master')
-		? $main::preseed{'SECONDARY_DNS'} || $self::bindConfig{'SECONDARY_DNS'} : 'no';
+		? main::setupGetQuestion('SECONDARY_DNS', 'preseed') || $self::bindConfig{'SECONDARY_DNS'} : 'no';
 
 	my $ip = iMSCP::IP->new();
 	my @ips = ();
@@ -202,7 +203,7 @@ sub askIPv6
 {
 	my $self = shift;
 	my $dialog = shift;
-	my $ipv6 = $main::preseed{'BIND_IPV6'} || $self::bindConfig{'BIND_IPV6'};
+	my $ipv6 = main::setupGetQuestion('BIND_IPV6', 'preseed') || $self::bindConfig{'BIND_IPV6'};
 	my $rs = 0;
 
 	if($main::reconfigure ~~ ['named', 'servers', 'all', 'forced'] || $ipv6 !~ /^yes|no$/) {

@@ -157,11 +157,11 @@ sub askPhpmyadmin
 	my $dbPort = main::setupGetQuestion('DATABASE_PORT');
 	my $dbName = main::setupGetQuestion('DATABASE_NAME');
 
-	my $dbUser = $main::preseed{'PHPMYADMIN_SQL_USER'} || $self::phpmyadminConfig{'DATABASE_USER'} ||
+	my $dbUser = main::setupGetQuestion('PHPMYADMIN_SQL_USER', 'preseed') || $self::phpmyadminConfig{'DATABASE_USER'} ||
 		$self::phpmyadminOldConfig{'DATABASE_USER'} || 'pma';
 
-	my $dbPass = $main::preseed{'PHPMYADMIN_SQL_PASSWORD'} || $self::phpmyadminConfig{'DATABASE_PASSWORD'} ||
-		$self::phpmyadminOldConfig{'DATABASE_PASSWORD'} || '';
+	my $dbPass = main::setupGetQuestion('PHPMYADMIN_SQL_PASSWORD', 'preseed') ||
+		$self::phpmyadminConfig{'DATABASE_PASSWORD'} || $self::phpmyadminOldConfig{'DATABASE_PASSWORD'} || '';
 
 	my ($rs, $msg) = (0, '');
 

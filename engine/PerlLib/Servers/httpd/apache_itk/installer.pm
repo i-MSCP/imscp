@@ -106,6 +106,9 @@ sub install
 		return $rs if $rs;
 	}
 
+	$rs = $self->_setApacheVersion();
+	return $rs if $rs;
+
 	$rs = $self->_addUser();
 	return $rs if $rs;
 
@@ -296,6 +299,35 @@ sub _bkpConfFile($$)
 	}
 
 	$self->{'hooksManager'}->trigger('afterHttpdBkpConfFile', $cfgFile);
+}
+
+=item _setApacheVersion
+
+ Set Apache version
+
+ Return in 0 on success, other on failure
+
+=cut
+
+sub _setApacheVersion()
+{
+	my $self = shift;
+
+	my ($stdout, $stderr);
+	my $rs = execute("$self::apacheConfig{'CMD_HTTPD_CTL'} -v", \$stdout, \$stderr);
+	debug($stdout) if $stdout;
+	error($stderr) if $stderr && $rs;
+	error('Unable to find Apache version') if $rs && ! $stderr;
+	return $rs if $rs;
+
+	if($stdout =~ m%Apache/([\d.]+)%) {
+		$self::apacheConfig{'APACHE_VERSION'} = $1;
+	} else {
+		error('Unable to parse Apache version from Apache version string');
+		return 1;
+	}
+
+	0;
 }
 
 =item _addUser()
@@ -492,10 +524,10 @@ sub _buildApacheConfFiles
 	}
 
 	# Using alternative syntax for piped logs scripts when possible
-	# The alternative syntax does not involve the Shell (from Apache 2.2.12)
+	# The alternative syntax does not involve the shell (from Apache 2.2.12)
 	my $pipeSyntax = '|';
 
-	if(`$self::apacheConfig{'CMD_HTTPD_CTL'} -v` =~ m!Apache/([\d.]+)! && version->new($1) >= version->new('2.2.12')) {
+	if(version->new($self::apacheConfig{'APACHE_VERSION'}) >= version->new('2.2.12')) {
 		$pipeSyntax .= '|';
 	}
 

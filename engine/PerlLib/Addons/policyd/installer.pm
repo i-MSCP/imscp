@@ -88,8 +88,8 @@ sub registerSetupHooks
 sub askRBL
 {
 	my ($self, $dialog, $rs) = (shift, shift, 0);
-	my $dnsblCheckOnly = $main::preseed{'DNSBL_CHECKS_ONLY'} || $self::policydConfig{'DNSBL_CHECKS_ONLY'} ||
-		$self::policydOldConfig{'DNSBL_CHECKS_ONLY'} || '';
+	my $dnsblCheckOnly = main::setupGetQuestion('DNSBL_CHECKS_ONLY', 'preseed') ||
+		$self::policydConfig{'DNSBL_CHECKS_ONLY'} || $self::policydOldConfig{'DNSBL_CHECKS_ONLY'} || '';
 
 	$dnsblCheckOnly = lc($dnsblCheckOnly);
 

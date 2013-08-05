@@ -106,11 +106,11 @@ sub askDovecot
 	my $dbPort = main::setupGetQuestion('DATABASE_PORT');
 	my $dbName = main::setupGetQuestion('DATABASE_NAME');
 
-	my $dbUser = $main::preseed{'DOVECOT_SQL_USER'} || $self::dovecotConfig{'DATABASE_USER'} ||
+	my $dbUser = main::setupGetQuestion('DOVECOT_SQL_USER', 'preseed') || $self::dovecotConfig{'DATABASE_USER'} ||
 		$self::dovecotOldConfig{'DATABASE_USER'} || 'dovecot_user';
 
-	my $dbPass = $main::preseed{'DOVECOT_SQL_PASSWORD'} || $self::dovecotConfig{'DATABASE_PASSWORD'} ||
-		$self::dovecotOldConfig{'DATABASE_PASSWORD'} || '';
+	my $dbPass = main::setupGetQuestion('DOVECOT_SQL_PASSWORD', 'preseed') ||
+		$self::dovecotConfig{'DATABASE_PASSWORD'} || $self::dovecotOldConfig{'DATABASE_PASSWORD'} || '';
 
 	my ($rs, $msg) = (0, '');
 

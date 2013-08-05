@@ -1058,8 +1058,8 @@ sub addIps($$)
 
 	$content =~ s/NameVirtualHost[^\n]+\n//gi;
 
-	$content.= "NameVirtualHost $_:443\n" for @{$data->{'SSLIPS'}};
-	$content.= "NameVirtualHost $_:80\n" for @{$data->{'IPS'}};
+	#$content.= "NameVirtualHost $_:443\n" for @{$data->{'SSLIPS'}};
+	#$content.= "NameVirtualHost $_:80\n" for @{$data->{'IPS'}};
 
 	$rs = $self->{'hooksManager'}->trigger('afterHttpdAddIps', \$content, $data);
 	return $rs if $rs;
@@ -1644,9 +1644,9 @@ sub disableMod($$)
 	$self->{'hooksManager'}->trigger('afterHttpdDisableMod', $modules);
 }
 
-=item forceRestartApache()
+=item forceRestart()
 
- Schedule Apache restart.
+ Force Apache to be restarted instead of reloaded.
 
  Return int 0
 
@@ -1661,7 +1661,7 @@ sub forceRestart
 	0;
 }
 
-=item startApache()
+=item start()
 
  Start Apache.
 
@@ -1687,7 +1687,7 @@ sub start
 	$self->{'hooksManager'}->trigger('afterHttpdStart');
 }
 
-=item stopApache()
+=item stop()
 
  Stop Apache.
 
@@ -1713,7 +1713,7 @@ sub stop
 	$self->{'hooksManager'}->trigger('afterHttpdStop');
 }
 
-=item restartApache()
+=item restart()
 
  Restart or Reload Apache.
 
@@ -1735,7 +1735,8 @@ sub restart
 	debug($stdout) if $stdout;
 	warning($stderr) if $stderr && ! $rs;
 	error($stderr) if $stderr && $rs;
-	error("Error while restarting") if $rs && ! $stderr;
+	error($stdout) if $stdout && ! $stderr && $rs;
+	error("Error while " . ($self->{'forceRestart'} ? 'restarting' : 'reloading')) if $rs && ! $stderr && ! $stdout;
 	return $rs if $rs;
 
 	$self->{'hooksManager'}->trigger('afterHttpdRestart');
@@ -1854,6 +1855,10 @@ sub _addCfg($$)
 			return 1;
 		}
 	}
+
+	$self->{'data'}->{'AUTHZ_DIRECTIVES'} =
+	 	(version->new("v$self::apacheConfig{'APACHE_VERSION'}") >= version->new('v2.3.0'))
+    				? 'Require all granted' : "Order allow,deny\n    Allow from all";
 
 	for(keys %configs) {
 		# Schedule deletion of useless sections if needed
@@ -2249,6 +2254,11 @@ END
 	if($self->{'start'} && $self->{'start'} eq 'yes') {
 		$rs = $self->start();
 	} elsif($self->{'restart'} && $self->{'restart'} eq 'yes') {
+		# Quick fix for Debian Jessie (Apache init script return 1 if Apache is not already running)
+		if(defined $main::execmode && $main::execmode eq 'setup') {
+			$self->forceRestart();
+		}
+
 		$rs = $self->restart();
 	}
 

@@ -2194,8 +2194,8 @@ sub setupRebuildCustomerFiles
 
 	$main::imscpConfig{'DEBUG'} = $debug;
 	$main::imscpConfig{'BACKTRACE'} = $backtrace;
-	error($stderr) if $stderr && $rs;
-	error("Error while rebuilding customers files.") if $rs && ! $stderr;
+	error("\n$stderr") if $stderr && $rs;
+	error("Error while rebuilding customers files") if $rs && ! $stderr;
 	return $rs if $rs;
 
 	iMSCP::HooksManager->getInstance()->trigger('afterSetupRebuildCustomersFiles');

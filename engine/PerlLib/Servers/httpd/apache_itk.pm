@@ -1053,8 +1053,8 @@ sub addIps($$)
 
 	$content =~ s/NameVirtualHost[^\n]+\n//gi;
 
-	$content.= "NameVirtualHost $_:443\n" for @{$data->{'SSLIPS'}};
-	$content.= "NameVirtualHost $_:80\n" for @{$data->{'IPS'}};
+	#$content.= "NameVirtualHost $_:443\n" for @{$data->{'SSLIPS'}};
+	#$content.= "NameVirtualHost $_:80\n" for @{$data->{'IPS'}};
 
 	$rs = $self->{'hooksManager'}->trigger('afterHttpdAddIps', \$content, $data);
 	return $rs if $rs;
@@ -1582,7 +1582,7 @@ sub disableMod($$)
 
 =item forceRestartApache()
 
- Schedule Apache restart.
+ Force Apache to be restarted instead of reloaded.
 
  Return int 0
 
@@ -2063,6 +2063,11 @@ END
 	if($self->{'start'} && $self->{'start'} eq 'yes') {
 		$rs = $self->start();
 	} elsif($self->{'restart'} && $self->{'restart'} eq 'yes') {
+		# Quick fix for Debian Jessie (Apache init script return 1 if Apache is not already running)
+		if(defined $main::execmode && $main::execmode eq 'setup') {
+			$self->forceRestart();
+		}
+
 		$rs = $self->restart();
 	}
 
