@@ -409,7 +409,7 @@ function client_generateView($verifiedData, $data)
 
 	$tpl->assign(
 		array(
-			'TR_PAGE_TITLE' => tr('Client / Mail / External Mail Server / Edit External Mail Server For {DOMAIN_UTF8}'),
+			'TR_PAGE_TITLE' => tr('Client / Email / External Mail Server / Edit External Mail Server for {DOMAIN_UTF8}'),
 			'THEME_CHARSET' => tr('encoding'),
 			'ISP_LOGO' => layout_getUserLogo(),
 			'TR_MX_TYPE' => tr('Type'),

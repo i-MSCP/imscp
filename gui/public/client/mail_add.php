@@ -642,7 +642,7 @@ if (isset($_SESSION['email_support']) && $_SESSION['email_support'] == "no") {
 
 $tpl->assign(
 	array(
-		'TR_PAGE_TITLE' => tr('Client / Mail / Add Email Account'),
+		'TR_PAGE_TITLE' => tr('Client / Email / Add Email Account'),
 		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => layout_getUserLogo()));
 

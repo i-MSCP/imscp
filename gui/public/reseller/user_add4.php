@@ -347,7 +347,7 @@ if (!is_xhr()) {
 		array(
 			'THEME_CHARSET' => tr('encoding'),
 			'ISP_LOGO' => layout_getUserLogo(),
-			'TR_PAGE_TITLE' => tr('Reseller / Customers / Add Customer / Next Step'),
+			'TR_PAGE_TITLE' => tr('Reseller / Customers / Add Customer - Next Step'),
 			'TR_MANAGE_DOMAIN_ALIAS' => tr('Manage domain alias'),
 			'TR_ADD_ALIAS' => tr('Add domain alias'),
 			'TR_DOMAIN_NAME' => tr('Domain name'),

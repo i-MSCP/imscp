@@ -78,7 +78,7 @@ $tpl->define_dynamic(
 $tpl->assign(
 	array(
 		 'THEME_CHARSET' => tr('encoding'),
-		 'TR_PAGE_TITLE' => tr('Client / Support / Tickets Open'),
+		 'TR_PAGE_TITLE' => tr('Client / Support / Open Tickets'),
 		 'ISP_LOGO' => layout_getUserLogo(),
 		 'TR_TICKET_STATUS' => tr('Status'),
 		 'TR_TICKET_FROM' => tr('From'),

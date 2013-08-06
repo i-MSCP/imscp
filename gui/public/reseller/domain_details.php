@@ -195,7 +195,7 @@ $tpl->define_dynamic(
 
 $tpl->assign(
 	array(
-		'TR_PAGE_TITLE' => tr('Reseller / Customer / Overview / Domain Details'),
+		'TR_PAGE_TITLE' => tr('Reseller / Customers / Overview / Domain Details'),
 		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => layout_getUserLogo(),
 		'TR_DOMAIN_DETAILS' => tr('Domain details'),

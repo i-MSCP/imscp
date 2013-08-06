@@ -87,7 +87,7 @@ $software_id = client_generatePage($tpl, $_SESSION['user_id']);
 
 $tpl->assign(
 	array(
-		'TR_PAGE_TITLE' => tr('Client / Webtools / Softwares / Software View'),
+		'TR_PAGE_TITLE' => tr('Client / Webtools / Software / View'),
 		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => layout_getUserLogo(),
 		'SOFTWARE_ID' => $software_id,

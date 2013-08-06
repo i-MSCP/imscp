@@ -345,7 +345,7 @@ function gen_page_lists($tpl, $user_id)
 
 $tpl->assign(
 	array(
-		 'TR_PAGE_TITLE' => tr('Client / Mail / Catchall'),
+		 'TR_PAGE_TITLE' => tr('Client / Email / Catchall'),
 		 'THEME_CHARSET' => tr('encoding'),
 		 'ISP_LOGO' => layout_getUserLogo()));
 

@@ -179,7 +179,7 @@ if (customerHasFeature('mail') && (isset($_REQUEST['mail_account_id']) && is_num
 
 			$tpl->assign(
 				array(
-					'TR_PAGE_TITLE' => tr('Client / Mail / Overview / Enable Auto Responder'),
+					'TR_PAGE_TITLE' => tr('Client / Email / Overview / Enable Auto Responder'),
 					'THEME_CHARSET' => tr('encoding'),
 					'ISP_LOGO' => layout_getUserLogo(),
 					'TR_AUTORESPONDER_MESSAGE' => tr('Please, enter your auto-responder message below'),

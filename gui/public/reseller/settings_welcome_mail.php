@@ -71,7 +71,7 @@ if (isset($_POST['uaction']) && $_POST['uaction'] == 'email_setup') {
 
 $tpl->assign(
 	array(
-		'TR_PAGE_TITLE' => tr('Reseller / Customers / Welcome Mail'),
+		'TR_PAGE_TITLE' => tr('Reseller / Customers / Welcome Email'),
 		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => layout_getUserLogo()));
 

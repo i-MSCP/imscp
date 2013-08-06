@@ -190,7 +190,7 @@ if (isset($_GET['id'])) {
 
 	$tpl->assign(
 		array(
-			'TR_PAGE_TITLE' => tr('Client / Mail / Overview /  Edit Mail Quota'),
+			'TR_PAGE_TITLE' => tr('Client / Email / Overview / Edit Email Quota'),
 			'THEME_CHARSET' => tr('encoding'),
 			'ISP_LOGO' => layout_getUserLogo(),
 			'TR_QUOTA' => tr('Quota in MB (0 unlimited)'),

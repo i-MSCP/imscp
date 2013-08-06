@@ -242,7 +242,7 @@ $tpl->define_dynamic(
 
 $tpl->assign(
 	array(
-		'TR_PAGE_TITLE' => tr('Admin / Admin Log'),
+		'TR_PAGE_TITLE' => tr('Admin / General / Admin Log'),
 		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => layout_getUserLogo(),
 		'TR_ADMIN_LOG' => tr('Admin Log'),

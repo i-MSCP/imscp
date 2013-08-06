@@ -251,7 +251,7 @@ if (isset($_REQUEST['edit_id'])) {
 
 	$tpl->assign(
 		array(
-			'TR_PAGE_TITLE' => tr('i-MSCP - Reseller / Manage Customers / Customers / Edit Customer'),
+			'TR_PAGE_TITLE' => tr('Reseller / Customers / Overview / Edit Customer'),
 			'THEME_CHARSET' => tr('encoding'),
 			'ISP_LOGO' => layout_getUserLogo(),
 			'TR_CORE_DATA' => tr('Core data'),

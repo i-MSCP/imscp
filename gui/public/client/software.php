@@ -80,7 +80,7 @@ $tpl->define_dynamic(
 
 $tpl->assign(
 	array(
-		 'TR_PAGE_TITLE' => tr('Client / Webtools / Softwares'),
+		 'TR_PAGE_TITLE' => tr('Client / Webtools / Software'),
 		 'THEME_CHARSET' => tr('encoding'),
 		 'ISP_LOGO' => layout_getUserLogo(),
 		 'TR_SOFTWARE' => tr('Software'),

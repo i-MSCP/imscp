@@ -82,7 +82,7 @@ function reseller_generateCustomerAcountDeletionValidationPage($customerId)
 
 	$tpl->assign(
 		array(
-			'TR_PAGE_TITLE' => tr('i-MSCP - Admin / Customer Account Deletion Validation'),
+			'TR_PAGE_TITLE' => tr('Reseller / Customers / Overview / Delete Customer'),
 			'THEME_CHARSET' => tr('encoding'),
 			'ISP_LOGO' => layout_getUserLogo(),
 			'TR_ACCOUNT_SUMMARY' => tr('Customer account summary'),

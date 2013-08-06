@@ -463,7 +463,7 @@ generateNavigation($tpl);
 
 $tpl->assign(
 	array(
-		 'TR_PAGE_TITLE' => tr('Client / Mail / Catchall / Add Catchall'),
+		 'TR_PAGE_TITLE' => tr('Client / Email / Catchall / Add Catchall'),
 		 'TR_MAIL_LIST' => tr('Mail accounts list'),
 		 'TR_CREATE_CATCHALL' => tr('Create catch all'),
 		 'TR_FORWARD_MAIL' => tr('Forward mail'),

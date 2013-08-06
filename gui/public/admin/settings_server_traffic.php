@@ -151,7 +151,7 @@ $tpl->define_dynamic(
 
 $tpl->assign(
 	array(
-		'TR_PAGE_TITLE' => tr('Admin / Settings / Server traffic'),
+		'TR_PAGE_TITLE' => tr('Admin / Settings / Server Traffic'),
 		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => layout_getUserLogo(),
 		'TR_SET_SERVER_TRAFFIC_SETTINGS' => tr('Server traffic settings'),

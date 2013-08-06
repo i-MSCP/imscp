@@ -431,7 +431,7 @@ generateNavigation($tpl);
 
 $tpl->assign(
 	array(
-		'TR_ADD_SQL_USER' => tr('Add SQL user'),
+		'TR_ADD_SQL_USER' => tr('Add SQL User'),
 		'TR_USER_NAME' => tr('SQL user name'),
 		'TR_USE_DMN_ID' => tr('Use numeric ID'),
 		'TR_START_ID_POS' => tr('In front the name'),
@@ -443,7 +443,7 @@ $tpl->assign(
 		'TR_PASS_REP' => tr('Repeat password'),
 		'TR_SQL_USER_NAME' => tr('SQL users'),
 		'TR_ASSIGN_EXISTING_SQL_USER' => tr('Assign existing SQL user'),
-		'TR_NEW_SQL_USER_DATA' => tr('New Sql user data')));
+		'TR_NEW_SQL_USER_DATA' => tr('New SQL user data')));
 
 generatePageMessage($tpl);
 

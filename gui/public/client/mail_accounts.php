@@ -870,7 +870,7 @@ if (customerHasMailOrExtMailFeatures()) {
 
 	$tpl->assign(
 		array(
-			'TR_PAGE_TITLE' => tr('Client / Mail / Overview'),
+			'TR_PAGE_TITLE' => tr('Client / Email / Overview'),
 			'THEME_CHARSET' => tr('encoding'),
 			'ISP_LOGO' => layout_getUserLogo(),
 			'TR_MAIL' => tr('Mail'),
