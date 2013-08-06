@@ -269,7 +269,7 @@ sub _addAwstatsSection
 				WEBSTATS_GROUP_AUTH => $main::imscpConfig{'WEBSTATS_GROUP_AUTH'},
 				WEBSTATS_RPATH => $main::imscpConfig{'WEBSTATS_RPATH'},
 				HTACCESS_USERS_FILE_NAME => $httpd->{'apacheConfig'}->{'HTACCESS_USERS_FILE_NAME'},
-				HTACCESS_GROUPS_FILE_NAME => $httpd->{'apacheConfig'}->{'HTACCESS_GROUPS_FILE_NAME'},
+				HTACCESS_GROUPS_FILE_NAME => $httpd->{'apacheConfig'}->{'HTACCESS_GROUPS_FILE_NAME'}
 			},
 			$self->_getApacheConfSnippet()
 		);
