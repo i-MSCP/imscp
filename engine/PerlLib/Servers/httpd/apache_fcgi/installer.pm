@@ -617,7 +617,7 @@ sub _buildFastCgiConfFiles
 
 	if((version->new("v$self->{'apacheConfig'}->{'APACHE_VERSION'}") >= version->new('v2.4.0'))) {
 		push (@toDisableModules, ('mpm_event', 'mpm_itk', 'mpm_prefork'));
-		push (@toEnableModules, 'mpm_worker');
+		push (@toEnableModules, 'mpm_worker', 'authz_groupfile');
 	}
 
 	for(@toDisableModules) {
@@ -1018,11 +1018,14 @@ sub _buildMasterVhostFiles
 		}
 	}
 
- 	# Disable defaults sites if any
- 	for('000-default', 'default', 'default-ssl') {
- 		$rs = $self->{'httpd'}->disableSite($_) if -f "$self->{'apacheConfig'}->{'APACHE_SITES_DIR'}/$_";
- 		return $rs if $rs;
- 	}
+	# Disable defaults sites if any
+	#
+	# default, default-ssl (Debian < Jessie)
+	# 000-default.conf, default-ssl.conf' : (Debian >= Jessie)
+	for('default', 'default-ssl', '000-default.conf', 'default-ssl.conf') {
+		$rs = $self->{'httpd'}->disableSite($_) if -f "$self->{'apacheConfig'}->{'APACHE_SITES_DIR'}/$_";
+		return $rs if $rs;
+	}
 
 	$self->{'hooksManager'}->trigger('afterHttpdBuildMasterVhostFiles');
 }
