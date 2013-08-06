@@ -17,11 +17,11 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
-# @category		i-MSCP
-# @copyright	2010-2013 by i-MSCP | http://i-mscp.net
-# @author		Daniel Andreca <sci2tech@gmail.com>
-# @link			http://i-mscp.net i-MSCP Home Site
-# @license		http://www.gnu.org/licenses/gpl-2.0.html GPL v2
+# @category    i-MSCP
+# @copyright   2010-2013 by i-MSCP | http://i-mscp.net
+# @author      Daniel Andreca <sci2tech@gmail.com>
+# @link        http://i-mscp.net i-MSCP Home Site
+# @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
 package Servers::httpd::apache_itk::uninstaller;
 
@@ -29,6 +29,12 @@ use strict;
 use warnings;
 
 use iMSCP::Debug;
+use iMSCP::SystemUser;
+use iMSCP::SystemGroup;
+use iMSCP::Dir;
+use File::Basename;
+use iMSCP::File;
+use Servers::httpd::apache_itk;
 use parent 'Common::SingletonClass';
 
 sub _init
@@ -41,7 +47,7 @@ sub _init
 
 	my $conf = "$self->{'cfgDir'}/apache.data";
 
-	tie %self::apacheConfig, 'iMSCP::Config','fileName' => $conf;
+	tie %{$self->{'apacheConfig'}, 'iMSCP::Config','fileName' => $conf;
 
 	0;
 }
@@ -66,17 +72,16 @@ sub removeUsers
 {
 	my $self = shift;
 
-	## Panel user
-	use iMSCP::SystemUser;
+	# Panel user
 	my $panelUName = iMSCP::SystemUser->new();
 	$panelUName->{'force'} = 'yes';
+
 	my $rs = $panelUName->delSystemUser(
 		$main::imscpConfig{'SYSTEM_USER_PREFIX'} . $main::imscpConfig{'SYSTEM_USER_MIN_UID'}
 	);
 	return $rs if $rs;
 
 	# Panel group
-	use iMSCP::SystemGroup;
 	my $panelGName = iMSCP::SystemGroup->new();
 	$panelGName->delSystemGroup(
 		$main::imscpConfig{'SYSTEM_USER_PREFIX'} . $main::imscpConfig{'SYSTEM_USER_MIN_UID'}
@@ -87,15 +92,12 @@ sub removeDirs
 {
 	my $self = shift;
 
-	use iMSCP::Dir;
-
 	my $rs = 0;
-
-	my $phpdir = $self::apacheConfig{'PHP_STARTER_DIR'};
+	my $phpdir = $self->{'apacheConfig'}->{'PHP_STARTER_DIR'};
 
 	for (
-		$self::apacheConfig{'APACHE_USERS_LOG_DIR'}, $self::apacheConfig{'APACHE_BACKUP_LOG_DIR'},
-		$self::apacheConfig{'APACHE_CUSTOM_SITES_CONFIG_DIR'}, $phpdir
+		$self->{'apacheConfig'}->{'APACHE_USERS_LOG_DIR'}, $self->{'apacheConfig'}->{'APACHE_BACKUP_LOG_DIR'},
+		$self->{'apacheConfig'}->{'APACHE_CUSTOM_SITES_CONFIG_DIR'}, $phpdir
 	) {
 		$rs = iMSCP::Dir->new('dirname' => $_)->remove() if -d $_;
 		return $rs if $rs;
@@ -107,13 +109,12 @@ sub removeDirs
 sub restoreConf
 {
 	my $self = shift;
-	use File::Basename;
 
 	my $rs = 0;
 
 	for (
 		"$main::imscpConfig{LOGROTATE_CONF_DIR}/apache2", "$main::imscpConfig{LOGROTATE_CONF_DIR}/apache",
-		"$self::apacheConfig{APACHE_CONF_DIR}/ports.conf"
+		"$self->{'apacheConfig'}->{APACHE_CONF_DIR}/ports.conf"
 	) {
 		my ($filename, $directories, $suffix) = fileparse($_);
 		$rs	= iMSCP::File->new(
@@ -127,9 +128,6 @@ sub restoreConf
 
 sub vHostConf
 {
-	use iMSCP::File;
-	use Servers::httpd::apache_itk;
-
 	my $self = shift;
 	my $httpd = Servers::httpd::apache_itk->getInstance();
 	my $rs = 0;
@@ -139,9 +137,9 @@ sub vHostConf
 		$rs = $httpd->disableSite($_);
 		return $rs if $rs;
 
-		if(-f "$self::apacheConfig{'APACHE_SITES_DIR'}/$_") {
+		if(-f "$self->{'apacheConfig'}->{'APACHE_SITES_DIR'}/$_") {
 			$rs = iMSCP::File->new(
-				'filename' => "$self::apacheConfig{'APACHE_SITES_DIR'}/$_"
+				'filename' => "$self->{'apacheConfig'}->{'APACHE_SITES_DIR'}/$_"
 			)->delFile();
 			return $rs if $rs;
 		}

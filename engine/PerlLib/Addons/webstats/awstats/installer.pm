@@ -40,6 +40,7 @@ use iMSCP::Templator;
 use iMSCP::Dir;
 use iMSCP::File;
 use Servers::httpd;
+use version;
 use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
@@ -195,7 +196,7 @@ sub _makeCacheDir
 	iMSCP::Dir->new(
 		'dirname' => $main::imscpConfig{'AWSTATS_CACHE_DIR'}
 	)->make(
-		{ 'user' => $httpd->getRunningUser(),'group' => $httpd->getRunningGroup(), 'mode' => 0750 }
+		{ 'user' => $httpd->getRunningUser(), 'group' => $httpd->getRunningGroup(), 'mode' => 0750 }
 	);
 }
 
@@ -213,24 +214,32 @@ sub _createGlobalAwstatsVhost
 	my $rs = 0;
 
 	my $httpd = Servers::httpd->factory();
+	my $apache24 = (version->new("v$httpd->{'apacheConfig'}->{'APACHE_VERSION'}") >= version->new('v2.4.0'));
 
 	$httpd->setData(
 		{
 			AWSTATS_ENGINE_DIR => $main::imscpConfig{'AWSTATS_ENGINE_DIR'},
 			AWSTATS_WEB_DIR => $main::imscpConfig{'AWSTATS_WEB_DIR'},
-			WEBSTATS_RPATH => $main::imscpConfig{'WEBSTATS_RPATH'}
+			WEBSTATS_RPATH => $main::imscpConfig{'WEBSTATS_RPATH'},
+			AUTHZ_ALLOW_ALL => $apache24 ? 'Require all granted' : "Order allow,deny\n    Allow from all",
+			AUTHZ_DENY_ALL => $apache24 ? 'Require all denied' : "Order deny,allow\n    Deny from all"
 		}
 	);
 
-	$rs = $httpd->buildConfFile('01_awstats.conf') if $httpd->can('buildConfFile');
+	if($apache24) {
+		$rs = iMSCP::HooksManager->getInstance()->register(
+			'beforeHttpdBuildConfFile', sub { my $content = shift; $$content =~ s/NameVirtualHost[^\n]+\n//gi; 0; }
+		);
+		return $rs if $rs;
+	}
+
+	$rs = $httpd->buildConfFile('01_awstats.conf');
 	return $rs if $rs;
 
-	$rs = $httpd->installConfFile('01_awstats.conf') if $httpd->can('installConfFile');
+	$rs = $httpd->installConfFile('01_awstats.conf');
 	return $rs if $rs;
 
-	$rs = $httpd->enableSite('01_awstats.conf') if $httpd->can('enableSite');
-
-	$rs;
+	$httpd->enableSite('01_awstats.conf');
 }
 
 =item _removeGlobalAwstatsVhost()
@@ -246,15 +255,15 @@ sub _removeGlobalAwstatsVhost
 	my $self = shift;
 
 	my $httpd = Servers::httpd->factory();
-	my $ApacheSiteDir = $httpd->{'tplValues'}->{'APACHE_SITES_DIR'};
+	my $apacheSiteDir = $httpd->{'apacheConfig'}->{'APACHE_SITES_DIR'};
 	my $awstatsVhostFile = '01_awstats.conf';
 	my $rs = 0;
 
-	if (-f "$ApacheSiteDir/$awstatsVhostFile") {
-		$rs = $httpd->disableSite('01_awstats.conf') if $httpd->can('disableSite');
+	if (-f "$apacheSiteDir/$awstatsVhostFile") {
+		$rs = $httpd->disableSite('01_awstats.conf');
 		return $rs if $rs;
 
-		$rs = iMSCP::File->new('filename' => "$ApacheSiteDir/$awstatsVhostFile")->delFile();
+		$rs = iMSCP::File->new('filename' => "$apacheSiteDir/$awstatsVhostFile")->delFile();
 	}
 
 	$rs;
