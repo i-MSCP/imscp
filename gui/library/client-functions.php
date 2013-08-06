@@ -316,7 +316,7 @@ function count_sql_user_by_name($sqlu_name)
 }
 
 /**
- * Checks if an user has permissions on a specific SQL user.
+ * Checks if a user has permissions on a specific SQL user.
  *
  * @param  int $db_user_id SQL user unique identifier.
  * @return bool TRUE if user have permission on SQL user, FALSE otherwise.
@@ -331,7 +331,7 @@ function check_user_sql_perms($db_user_id)
 }
 
 /**
- * Checks if an user has permissions on  specific SQL Database.
+ * Checks if a user has permissions on  specific SQL Database.
  *
  * @param  int $db_id Database unique identifier
  * @return bool TRUE if user have permission on SQL user, FALSE otherwise.

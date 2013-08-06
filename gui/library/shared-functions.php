@@ -114,7 +114,7 @@ function generate_user_props($domainId)
 	$alsMax = $rs->fields['domain_alias_limit'];
 
 	// Retrieves total number of mail accounts already consumed by the customer
-	// This works with the admin option (Count default E-Mail addresses)
+	// This works with the admin option (Count default email addresses)
 	if ($cfg->COUNT_DEFAULT_EMAIL_ADDRESSES) {
 		$mailConsumed = records_count('mail_users', "mail_type NOT RLIKE '_catchall' AND domain_id", $domainId);
 	} else {

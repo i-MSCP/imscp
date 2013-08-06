@@ -279,29 +279,29 @@ function admin_checkData($phpini)
 	if ($description == '') set_page_message(tr('Description cannot be empty.'), 'error');
 
 	if (!imscp_limit_check($sub, -1)) {
-		set_page_message(tr('Incorrect subdomains limit.'), 'error');
+		set_page_message(tr('Incorrect subdomain limit.'), 'error');
 	}
 
 	if (!imscp_limit_check($als, -1)) {
-		set_page_message(tr('Incorrect domain aliases limit.'), 'error');
+		set_page_message(tr('Incorrect domain alias limit.'), 'error');
 	}
 
 	if (!imscp_limit_check($mail, -1)) {
-		set_page_message(tr('Incorrect mail accounts limit.'), 'error');
+		set_page_message(tr('Incorrect email account limit.'), 'error');
 	}
 
 	if (!imscp_limit_check($ftp, -1)) {
-		set_page_message(tr('Incorrect FTP accounts limit.'), 'error');
+		set_page_message(tr('Incorrect FTP account limit.'), 'error');
 	}
 
 	if (!imscp_limit_check($sqld, -1)) {
-		set_page_message(tr('Incorrect SQL users limit.'), 'error');
+		set_page_message(tr('Incorrect SQL user limit.'), 'error');
 	} else if ($sqlu != -1 && $sqld == -1) {
 		set_page_message(tr('SQL users limit is <i>disabled</i>.'), 'error');
 	}
 
 	if (!imscp_limit_check($sqlu, -1)) {
-		set_page_message(tr('Incorrect SQL databases limit.'), 'error');
+		set_page_message(tr('Incorrect SQL database limit.'), 'error');
 	} else if ($sqlu == -1 && $sqld != -1) {
 		set_page_message(tr('SQL databases limit is not <i>disabled</i>.'), 'error');
 	}
@@ -476,14 +476,14 @@ if (isset($cfg->HOSTING_PLANS_LEVEL) && $cfg->HOSTING_PLANS_LEVEL == 'admin') {
 			'TR_NAME' => tr('Name'),
 			'TR_DESCRIPTON' => tr('Description'),
 
-			'TR_MAX_SUBDOMAINS' => tr('Max subdomains<br/><i>(-1 disabled, 0 unlimited)</i>'),
-			'TR_MAX_ALIASES' => tr('Max aliases<br/><i>(-1 disabled, 0 unlimited)</i>'),
-			'TR_MAX_MAILACCOUNTS' => tr('Mail accounts limit<br/><i>(-1 disabled, 0 unlimited)</i>'),
-			'TR_MAX_FTP' => tr('FTP accounts limit<br/><i>(-1 disabled, 0 unlimited)</i>'),
-			'TR_MAX_SQL' => tr('SQL databases limit<br/><i>(-1 disabled, 0 unlimited)</i>'),
-			'TR_MAX_SQL_USERS' => tr('SQL users limit<br/><i>(-1 disabled, 0 unlimited)</i>'),
-			'TR_MAX_TRAFFIC' => tr('Monthly traffic limit [MiB]<br/><i>(0 unlimited)</i>'),
-			'TR_DISK_LIMIT' => tr('Disk space limit [MiB]<br/><i>(0 unlimited)</i>'),
+			'TR_MAX_SUBDOMAINS' => tr('Subdomain limit') . '<br/><i>(-1 ' . tr('disabled') . ', 0 ' . tr('unlimited') . ')</i>',
+			'TR_MAX_ALIASES' => tr('Domain alias limit') . '<br/><i>(-1 ' . tr('disabled') . ', 0 ' . tr('unlimited') . ')</i>',
+			'TR_MAX_MAILACCOUNTS' => tr('Email account limit') . '<br/><i>(-1 ' . tr('disabled') . ', 0 ' . tr('unlimited') . ')</i>',
+			'TR_MAX_FTP' => tr('FTP account limit') . '<br/><i>(-1 ' . tr('disabled') . ', 0 ' . tr('unlimited') . ')</i>',
+			'TR_MAX_SQL' => tr('SQL database limit') . '<br/><i>(-1 ' . tr('disabled') . ', 0 ' . tr('unlimited') . ')</i>',
+			'TR_MAX_SQL_USERS' => tr('SQL user limit') . '<br/><i>(-1 ' . tr('disabled') . ', 0 ' . tr('unlimited') . ')</i>',
+			'TR_MAX_TRAFFIC' => tr('Monthly traffic limit [MiB]') . '<br/><i>(0 ' . tr('unlimited') . ')</i>',
+			'TR_DISK_LIMIT' => tr('Disk space limit [MiB]') . '<br/><i>(0 ' . tr('unlimited') . ')</i>',
 
 			'TR_PHP' => tr('PHP'),
 			'TR_CGI' => tr('CGI'),

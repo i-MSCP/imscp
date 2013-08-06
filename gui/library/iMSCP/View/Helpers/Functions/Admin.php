@@ -214,7 +214,7 @@ function gen_reseller_list($tpl)
 }
 
 /**
- * Helper function to generate an user list.
+ * Helper function to generate a user list.
  *
  * @param  iMSCP_pTemplate $tpl iMSCP_pTemplate instance
  * @return void

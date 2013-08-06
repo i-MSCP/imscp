@@ -717,7 +717,7 @@ $tpl->assign(
 		'TR_ALS_ERRORS' => tr('Domain alias errors'),
 		'TR_SUB_ERRORS' => tr('Subdomain errors'),
 		'TR_ALSSUB_ERRORS' => tr('Subdomain alias errors'),
-		'TR_MAIL_ERRORS' => tr('Mail account errors'),
+		'TR_MAIL_ERRORS' => tr('Email account errors'),
 		'TR_HTACCESS_ERRORS' => tr('Htaccess errors'),
 		'TR_PLUGINS_ERRORS' => tr('Plugin errors'),
 

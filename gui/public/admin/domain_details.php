@@ -215,7 +215,7 @@ $tpl->assign(
 		'TR_LIMIT' => tr('Limit'),
 		'TR_SUBDOM_ACCOUNTS' => tr('Subdomains'),
 		'TR_DOMALIAS_ACCOUNTS' => tr('Domain aliases'),
-		'TR_MAIL_ACCOUNTS' => tr('Mail accounts'),
+		'TR_MAIL_ACCOUNTS' => tr('Email accounts'),
 		'TR_FTP_ACCOUNTS' => tr('FTP accounts'),
 		'TR_SQL_DB_ACCOUNTS' => tr('SQL databases'),
 		'TR_SQL_USER_ACCOUNTS' => tr('SQL users'),

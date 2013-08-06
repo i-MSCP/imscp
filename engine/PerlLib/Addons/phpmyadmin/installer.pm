@@ -175,7 +175,7 @@ sub askPhpmyadmin
 		# Ask for the PhpMyAdmin restricted SQL username
 		do{
 			($rs, $dbUser) = iMSCP::Dialog->factory()->inputbox(
-				"\nPlease enter an username for the restricted PhpMyAdmin SQL user:$msg", $dbUser
+				"\nPlease enter a username for the restricted PhpMyAdmin SQL user:$msg", $dbUser
 			);
 
 			if($dbUser eq $main::imscpConfig{'DATABASE_USER'}) {

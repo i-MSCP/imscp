@@ -241,7 +241,7 @@ function add_sql_user($customerId, $databaseId)
 
 		if(! isset($_POST['Add_Exist'])) { // Add new SQL user as specified in input data
 			if (empty($_POST['user_name'])) {
-				set_page_message(tr('Please enter an username.'), 'error');
+				set_page_message(tr('Please enter a username.'), 'error');
 				return;
 			}
 
@@ -431,7 +431,7 @@ generateNavigation($tpl);
 
 $tpl->assign(
 	array(
-		'TR_ADD_SQL_USER' => tr('Add SQL User'),
+		'TR_ADD_SQL_USER' => tr('Add SQL user'),
 		'TR_USER_NAME' => tr('SQL user name'),
 		'TR_USE_DMN_ID' => tr('Use numeric ID'),
 		'TR_START_ID_POS' => tr('In front the name'),

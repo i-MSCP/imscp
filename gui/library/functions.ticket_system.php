@@ -262,7 +262,7 @@ function deleteTicket($ticketId)
 }
 
 /**
- * Deletes all open/closed tickets that are belong to an user.
+ * Deletes all open/closed tickets that are belong to a user.
  *
  * @author Benedikt Heintel <benedikt.heintel@ispcp.net>
  * @author Laurent Declercq <l.declercq@nuxwin.com>
@@ -727,7 +727,7 @@ function _showTicketReplies($tpl, $ticketId)
 }
 
 /**
- * Informs an user about a ticket creation/update and writes a line to the log.
+ * Informs a user about a ticket creation/update and writes a line to the log.
  *
  * @author Benedikt Heintel <benedikt.heintel@ispcp.net>
  * @author Laurent Declercq <l.declercq@nuxwin.com>

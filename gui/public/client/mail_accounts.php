@@ -899,7 +899,7 @@ if (customerHasMailOrExtMailFeatures()) {
 			$tpl->assign(
 				array(
 					'TR_DEFAULT_EMAILS_BUTTON' => (!isset($_POST['uaction']) || $_POST['uaction'] != 'show')
-						? tr('Show default E-Mail addresses') : tr('Hide default E-Mail Addresses'),
+						? tr('Show default email addresses') : tr('Hide default email addresses'),
 					'VL_DEFAULT_EMAILS_BUTTON' => (isset($_POST['uaction']) && $_POST['uaction'] == 'show') ? 'hide' : 'show'
 				)
 			);
