@@ -1914,14 +1914,14 @@ sub _init
 	$self->{'apacheWrkDir'} = "$self->{'apacheCfgDir'}/working";
 	$self->{'apacheTplDir'} = "$self->{'apacheCfgDir'}/parts";
 
-	tie $self->{'apacheConfig'}, 'iMSCP::Config', 'fileName' => "$self->{'apacheCfgDir'}/apache.data";
+	tie %{$self->{'apacheConfig'}}, 'iMSCP::Config', 'fileName' => "$self->{'apacheCfgDir'}/apache.data";
 
 	$self->{'phpfpmCfgDir'} = "$main::imscpConfig{'CONF_DIR'}/php-fpm";
 	$self->{'phpfpmBkpDir'} = "$self->{'phpfpmCfgDir'}/backup";
 	$self->{'phpfpmWrkDir'} = "$self->{'phpfpmCfgDir'}/working";
 	$self->{'phpfpmTplDir'} = "$self->{'phpfpmCfgDir'}/parts";
 
-	tie $self->{'phpfpmConfig'}, 'iMSCP::Config', 'fileName' => "$self->{'phpfpmCfgDir'}/phpfpm.data";
+	tie %{$self->{'phpfpmConfig'}}, 'iMSCP::Config', 'fileName' => "$self->{'phpfpmCfgDir'}/phpfpm.data";
 
 	$self->{'hooksManager'}->trigger(
 		'afterHttpdInit', $self, 'apache_php_fpm'

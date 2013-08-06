@@ -187,6 +187,9 @@ sub install
 	$rs = $self->_oldEngineCompatibility();
 	return $rs if $rs;
 
+	$rs = $self->setEnginePermissions();
+	return $rs if $rs;
+
 	$self->{'hooksManager'}->trigger('afterHttpdInstall', 'apache_php_fpm');
 }
 
@@ -303,7 +306,7 @@ sub _init
 	$self->{'apacheBkpDir'} = "$self->{'apacheCfgDir'}/backup";
 	$self->{'apacheWrkDir'} = "$self->{'apacheCfgDir'}/working";
 
-	$self->{'apacheConfig'} = $self->{'httpd'}->self->{'apacheConfig'};
+	$self->{'apacheConfig'} = $self->{'httpd'}->{'apacheConfig'};
 
 	my $oldConf = "$self->{'apacheCfgDir'}/apache.old.data";
 
@@ -511,7 +514,7 @@ sub _buildFastCgiConfFiles
 	# Disable/Enable Apache modules
 
 	my @toDisableModules = ('fastcgi', 'fcgid', 'fastcgi_imscp', 'fcgid_imscp', 'php4', 'php5', 'php5filter', 'suexec');
-	my @toEnableModules = ('actions', 'php_fpm_imscp')
+	my @toEnableModules = ('actions', 'php_fpm_imscp');
 
 	if((version->new("v$self->{'apacheConfig'}->{'APACHE_VERSION'}") >= version->new('v2.4.0'))) {
 		push (@toDisableModules, ('mpm_event', 'mpm_itk', 'mpm_prefork'));
