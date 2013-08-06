@@ -449,7 +449,7 @@ function schedule_mail_account($domain_id, $dmn_name, $mail_acc) {
 	$rs = exec_query($check_acc_query, array($mail_acc, $domain_id, $sub_id, $dmn_type));
 
 	if ($rs->fields['cnt'] > 0) {
-		set_page_message(tr('Mail account already exists.'), 'error');
+		set_page_message(tr('Email account already exists.'), 'error');
 		return false;
 	}
 
@@ -485,8 +485,8 @@ function schedule_mail_account($domain_id, $dmn_name, $mail_acc) {
 		)
 	);
 
-	write_log($_SESSION['user_logged'] . ': adds new mail account: ' . (!empty($mail_addr) ? $mail_addr : $mail_acc), E_USER_NOTICE);
-	set_page_message(tr('Mail account scheduled for addition.'), 'success');
+	write_log($_SESSION['user_logged'] . ': adds new email account: ' . (!empty($mail_addr) ? $mail_addr : $mail_acc), E_USER_NOTICE);
+	set_page_message(tr('Email account scheduled for addition.'), 'success');
 	send_request();
 	redirectTo('mail_accounts.php');
 }
@@ -515,13 +515,13 @@ function check_mail_acc_data($dmn_id, $dmn_name) {
 	}
 
 	if (!isset($_POST['username']) || $_POST['username'] == '') {
-		set_page_message(tr('Please enter mail account username.'), 'error');
+		set_page_message(tr('Please enter email account username.'), 'error');
 		return false;
 	}
 
 	$mail_acc = strtolower(clean_input($_POST['username']));
 	if (imscp_check_local_part($mail_acc) == '0') {
-		set_page_message(tr('Invalid mail local part.'), 'error');
+		set_page_message(tr('Invalid email local part.'), 'error');
 		return false;
 	}
 
@@ -579,16 +579,16 @@ function check_mail_acc_data($dmn_id, $dmn_name) {
 
 	if (in_array($_POST['dmn_type'], array('sub', 'als_sub', 'als'))) {
 		if (!isset($_POST[$id])) {
-			set_page_message(sprintf(tr('%s list is empty! You cannot add mail accounts.'), $type), 'error');
+			set_page_message(sprintf(tr('%s list is empty! You cannot add email accounts.'), $type), 'error');
 			return false;
 		}
 		if (!is_numeric($_POST[$id])) {
-			set_page_message(sprintf(tr('%s id is invalid! You cannot add mail accounts.'), $type), 'error');
+			set_page_message(sprintf(tr('%s id is invalid! You cannot add email accounts.'), $type), 'error');
 			return false;
 		}
 		$rs = exec_query($query, array($_POST[$id], $dmn_id));
 		if ($rs->fields['name'] == '') {
-			set_page_message(sprintf(tr('%s id is invalid! You cannot add mail accounts.'), $type), 'error');
+			set_page_message(sprintf(tr('%s id is invalid! You cannot add email accounts.'), $type), 'error');
 			return false;
 		}
 		$dmn_name=$rs->fields['name'];
@@ -621,7 +621,7 @@ function gen_page_mail_acc_props($tpl, $user_id) {
 		$alssub_mail_acc_cnt) = get_domain_running_mail_acc_cnt($dmn_id);
 
 	if ($dmn_mailacc_limit != 0 && $mail_acc_cnt >= $dmn_mailacc_limit) {
-		set_page_message(tr('Mail accounts limit reached.'), 'error');
+		set_page_message(tr('Email account limit reached.'), 'error');
 		redirectTo('mail_accounts.php');
 	} else {
 		$post_check = isset($_POST['uaction']) ? 'yes' : 'no';
@@ -665,7 +665,7 @@ $tpl->assign(
 		 'TR_FWD_HELP' => tr('Separate multiple email addresses with a line-break.'),
 		 'TR_ADD' => tr('Add'),
 		 'TR_EMPTY_DATA' => tr('You did not fill all required fields'),
-		 'TR_MAIl_ACCOUNT_DATA' => tr('Mail account data')));
+		 'TR_MAIl_ACCOUNT_DATA' => tr('Email account data')));
 
 generatePageMessage($tpl);
 

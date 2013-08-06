@@ -227,7 +227,7 @@ function check_sql_permissions($user_id) {
 	list($sqld_acc_cnt) = get_domain_running_sql_acc_cnt($dmn_id);
 
 	if ($dmn_sqld_limit != 0 && $sqld_acc_cnt >= $dmn_sqld_limit) {
-		set_page_message(tr('SQL accounts limit reached.'), 'error');
+		set_page_message(tr('SQL account limit reached.'), 'error');
 		redirectTo('sql_manage.php');
 	}
 }

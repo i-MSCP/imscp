@@ -112,8 +112,8 @@ $tpl->assign(
 		'TR_LOSTPW_LINK' => tr('Lost password link'),
 		'TR_SUBJECT' => tr('Subject'),
 		'TR_MESSAGE' => tr('Message'),
-		'TR_SENDER_EMAIL' => tr('Senders email'),
-		'TR_SENDER_NAME' => tr('Senders name'),
+		'TR_SENDER_EMAIL' => tr('Sender email'),
+		'TR_SENDER_NAME' => tr('Sender name'),
 		'TR_APPLY_CHANGES' => tr('Apply changes'),
 		'TR_BASE_SERVER_VHOST' => tr('URL to this admin panel'),
 		'TR_BASE_SERVER_VHOST_PREFIX' => tr('URL protocol')));

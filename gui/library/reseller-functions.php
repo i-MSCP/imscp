@@ -613,7 +613,7 @@ function reseller_limits_check($resellerId, $hp)
 
 	if ($maxMailLimit != 0) {
 		if ($newMailLimit == 0) {
-			set_page_message(tr('You have an email account limit.<br />You cannot add a user with unlimited mail accounts.'), 'error');
+			set_page_message(tr('You have an email account limit.<br />You cannot add a user with unlimited email accounts.'), 'error');
 		} else if ($currentMailLimit + $newMailLimit > $maxMailLimit) {
 			set_page_message(tr('You are exceeding your email account limit.'), 'error');
 		}

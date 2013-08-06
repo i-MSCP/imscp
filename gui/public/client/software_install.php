@@ -185,13 +185,13 @@ if (!empty($_POST)) {
 	}
 
 	if ($stmt->fields['software_db'] == '1' && !$db_connection_ok) {
-		set_page_message(tr('Please select a valid  SQL user for the database.'), 'error');
+		set_page_message(tr('Please select a valid SQL user for the database.'), 'error');
 	} elseif (empty($install_username) || empty($install_password) || empty($install_email)) {
 		set_page_message(tr('All fields are required.'), 'error');
 	} elseif (!preg_match('/htdocs/', $other_dir)) {
-		set_page_message(tr("You cant't install the software outside the htdocs directory."), 'error');
+		set_page_message(tr("You can't install the software outside the htdocs directory."), 'error');
 	} elseif (($posted_aliasdomain_id + $posted_subdomain_id + $posted_aliassubdomain_id) > 0 && !preg_match("/" . $domain_path . "/", $other_dir)) {
-		set_page_message(tr("You have chosen a directory which doesn't matches the domain directory."), 'error');
+		set_page_message(tr("You have chosen a directory which doesn't match the domain directory."), 'error');
 	} elseif (!$list && $createdir == '0') {
 		set_page_message(tr("The directory %s doesn't exist. Please create it first.", $other_dir), 'error');
 	} elseif ($rspath->recordCount() > 0) {
@@ -302,7 +302,7 @@ $tpl->assign(
 		'CHOOSE_DIR' => tr('Choose dir'),
 		'CREATEDIR_MESSAGE' => tr('Create directory, if not exist!'),
 		'TR_SELECT_DB' => tr('Select database'),
-		'TR_SQL_USER' => tr('SQL-User'),
+		'TR_SQL_USER' => tr('SQL user'),
 		'TR_SQL_PWD' => tr('Password'),
 		'TR_SOFTWARE_MENU' => tr('Software installation'),
 		'TR_INSTALLATION' => tr('Installation details'),

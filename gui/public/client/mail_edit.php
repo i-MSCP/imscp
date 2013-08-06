@@ -105,7 +105,7 @@ function client_getMailAccountData($mailAccountId)
 		if ($stmt->rowCount()) {
 			$mailAccountData = $stmt->fetchRow();
 		} else {
-			set_page_message(tr('Mail account not found.'), 'error');
+			set_page_message(tr('Email account not found.'), 'error');
 			redirectTo('mail_accounts.php');
 			exit; // Useless but avoid IDE warning about possible undefined variable
 		}
@@ -231,8 +231,8 @@ function client_UpdateMailAccount($mailAccountData)
 
 			// Sending request to the i-MSCP daemon for backend process
 			send_request();
-			set_page_message(tr('Mail account scheduled for update.'), 'success');
-			write_log("{$_SESSION['user_logged']}: updated mail account: {$mailAccountData['mail_addr']}", E_USER_NOTICE);
+			set_page_message(tr('Email account scheduled for update.'), 'success');
+			write_log("{$_SESSION['user_logged']}: updated email account: {$mailAccountData['mail_addr']}", E_USER_NOTICE);
 		} else {
 			set_page_message(tr("Nothing has been changed."), 'info');
 		}
@@ -265,7 +265,7 @@ function client_generateEditForm($tpl, $mailAccountData)
 		array(
 			 'MAIL_ID_VAL' => $mailAccountData['mail_id'],
 			 'MAIL_ADDRESS_VAL' => tohtml($mailAccountData['mail_addr']),
-			 'TR_MAIL_ACCOUNT' => tr('Mail account'),
+			 'TR_MAIL_ACCOUNT' => tr('Email account'),
 			 'FORWARD_ACCOUNT_CHECKED' => ($mailAccountData['mail_forward'] != '_no_') ? $htmlChecked : '',
 			 'FORWARD_LIST_VAL' => ($mailAccountData['mail_forward'] != '_no_' && $mailAccountData['mail_forward'] != '')
 				 ? tohtml(implode("\n", _client_normalizeForwardAddresses($mailAccountData['mail_forward'], 'idn_to_utf8'))) : ''));

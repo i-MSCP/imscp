@@ -218,7 +218,7 @@ function add_domain_alias()
     if (imscp_domain_exists($alias_name, $_SESSION['user_id'])) {
         set_page_message(tr('Domain already registered on the system.'), 'error');
     } elseif (!validates_mpoint($mount_point)) {
-        set_page_message(tr('Incorrect mount point syntax'), 'error');
+        set_page_message(tr('Incorrect mount point syntax.'), 'error');
 	} elseif(!_reseller_isAllowedMountPoint($mount_point, $cr_user_id)) {
 		set_page_message(tr('This mount point is not allowed.'), 'error');
     } elseif ($_POST['status'] == 1) {

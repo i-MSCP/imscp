@@ -456,7 +456,7 @@ function admin_checkAndUpdateData($resellerId)
 
 		if (!empty($data['password']) || !empty($data['pasword_confirmation'])) {
 			if ($data['password'] != $data['password_confirmation']) {
-				set_page_message(tr("Password do not match."), 'error');
+				set_page_message(tr("Passwords do not match."), 'error');
 			}
 
 			checkPasswordSyntax($data['password']);
@@ -538,7 +538,7 @@ function admin_checkAndUpdateData($resellerId)
 				tr('mail')
 			);
 		} else {
-			set_page_message(tr('Incorrect limit for %s.', tr('mail accounts')), 'error');
+			set_page_message(tr('Incorrect limit for %s.', tr('email accounts')), 'error');
 			$rs = false;
 		}
 
@@ -563,12 +563,12 @@ function admin_checkAndUpdateData($resellerId)
 		if (!$rs = imscp_limit_check($data['max_sql_db_cnt'])) {
 			set_page_message(tr('Incorrect limit for %s.', tr('SQL databases')), 'error');
 		} elseif ($data['max_sql_db_cnt'] == -1 && $data['max_sql_user_cnt'] != -1) {
-			set_page_message(tr('SQL databases limit is disabled but SQL users limit is not.'), 'error');
+			set_page_message(tr('SQL database limit is disabled but SQL user limit is not.'), 'error');
 			$rs = false;
 		} else {
 			$rs = admin_checkResellerLimit(
 				$data['max_sql_db_cnt'], $data['current_sql_db_cnt'], $data['nbSqlDatabases'],
-				$data['unlimitedSqlDatabases'], tr('Sql databases')
+				$data['unlimitedSqlDatabases'], tr('SQL databases')
 			);
 		}
 
@@ -579,12 +579,12 @@ function admin_checkAndUpdateData($resellerId)
 		if (!$rs = imscp_limit_check($data['max_sql_user_cnt'])) {
 			set_page_message(tr('Incorrect limit for %s.', tr('SQL users')), 'error');
 		} elseif ($data['max_sql_db_cnt'] != -1 && $data['max_sql_user_cnt'] == -1) {
-			set_page_message(tr('SQL users limit is disabled but SQL databases limit is not.'), 'error');
+			set_page_message(tr('SQL user limit is disabled but SQL database limit is not.'), 'error');
 			$rs = false;
 		} else {
 			$rs = admin_checkResellerLimit(
 				$data['max_sql_user_cnt'], $data['current_sql_user_cnt'], $data['nbSqlUsers'], $data['unlimitedSqlUsers'],
-				tr('Sql Users')
+				tr('SQL users')
 			);
 		}
 
@@ -648,7 +648,7 @@ function admin_checkAndUpdateData($resellerId)
 				!$phpEditor->setRePerm('phpiniMaxInputTime', $data['php_ini_max_max_input_time']) ||
 				!$phpEditor->setRePerm('phpiniMemoryLimit', $data['php_ini_max_memory_limit'])
 			) {
-				set_page_message(tr('Please, check the PHP Editor settings.'), 'error');
+				set_page_message(tr('Please check the PHP editor settings.'), 'error');
 			}
 		} else {
 			$phpEditor->loadReDefaultPerm();

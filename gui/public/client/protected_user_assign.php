@@ -289,8 +289,8 @@ $tpl->assign(
 		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => layout_getUserLogo(),
 		'TR_PAGE_TITLE' => 'Client / Webtools / Protected Areas / Manage Users and Groups / Assign Group',
-		'TR_SELECT_GROUP' => tr('Select group:'),
-		'TR_MEMBER_OF_GROUP' => tr('Member of group:'),
+		'TR_SELECT_GROUP' => tr('Select group'),
+		'TR_MEMBER_OF_GROUP' => tr('Member of group'),
 		'TR_ADD' => tr('Add'),
 		'TR_REMOVE' => tr('Remove'),
 		'TR_CANCEL' => tr('Cancel')));

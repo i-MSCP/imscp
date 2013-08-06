@@ -130,7 +130,7 @@ if (isset($_GET['id']) || isset($_POST['id'])) {
 					$rs2->MoveNext();
 				}
 			}else{
-				set_page_message(tr('No Resellers found.'), 'error');
+				set_page_message(tr('No resellers found.'), 'error');
 				redirectTo('software_rights.php?id='.$software_id);
 			}
 		}else{

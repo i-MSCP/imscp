@@ -141,7 +141,7 @@ function update_user_personal_data($user_id) {
 	iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAfterEditUser, array('userId' => $user_id));
 
 	write_log($_SESSION['user_logged'] . ": update personal data", E_USER_NOTICE);
-	set_page_message(tr('Personal data updated.'), 'success');
+	set_page_message(tr('Personal data successfully updated.'), 'success');
 }
 
 generateNavigation($tpl);

@@ -90,7 +90,7 @@ $tpl->assign(
 		 'TR_NEED_DATABASE' => tr('Database'),
 		 'TR_STATUS' => tr('Status'),
 		 'TR_ACTION' => tr('Action'),
-		 'TR_SOFTWARE_AVAILABLE' => tr('Available softwares'),
+		 'TR_SOFTWARE_AVAILABLE' => tr('Available software'),
 		 'TR_SOFTWARE_ASC' => 'software.php?sortby=name&order=asc',
 		 'TR_SOFTWARE_DESC' => 'software.php?sortby=name&order=desc',
 		 'TR_TYPE_ASC' => 'software.php?sortby=type&order=asc',

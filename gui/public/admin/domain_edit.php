@@ -520,7 +520,7 @@ function _admin_generateFeaturesForm($tpl, &$data)
 		$tplVars['TR_BACKUP'] = tr('Backup');
 		$tplVars['TR_BACKUP_DOMAIN'] = tr('Domain');
 		$tplVars['BACKUP_DOMAIN'] = ($data['allowbackup'] == 'dmn') ? $htmlSelected : '';
-		$tplVars['TR_BACKUP_SQL'] = tr('Sql');
+		$tplVars['TR_BACKUP_SQL'] = tr('SQL');
 		$tplVars['BACKUP_SQL'] = ($data['allowbackup'] == 'sql') ? $htmlSelected : '';
 		$tplVars['TR_BACKUP_FULL'] = tr('Full');
 		$tplVars['BACKUP_FULL'] = ($data['allowbackup'] == 'full') ? $htmlSelected : '';
@@ -632,11 +632,11 @@ function admin_checkAndUpdateData($domainId)
 		// Check for the mail accounts limit
 		if ($data["fallback_domain_mailacc_limit"] != -1) {
 			if (!imscp_limit_check($data['domain_mailacc_limit'])) {
-				set_page_message(tr('Wrong syntax for the %s limit.', tr('mail accounts')), 'error');
+				set_page_message(tr('Wrong syntax for the %s limit.', tr('email accounts')), 'error');
 				$errFieldsStack[] = 'domain_mailacc_limit';
 			} elseif (!_admin_isValidServiceLimit($data['domain_mailacc_limit'], $data['nbMailAccounts'],
 												  $data["fallback_domain_mailacc_limit"], $data['current_mail_cnt'],
-												  $data['max_mail_cnt'], ($data["nbMailAccounts"] > 1) ? tr('mail accounts') : tr('mail account'))
+												  $data['max_mail_cnt'], ($data["nbMailAccounts"] > 1) ? tr('email accounts') : tr('email account'))
 			) {
 				$errFieldsStack[] = 'domain_mailacc_limit';
 			}
@@ -658,11 +658,11 @@ function admin_checkAndUpdateData($domainId)
 		// Check for the Sql databases limit
 		if ($data["fallback_domain_sqld_limit"] != -1) {
 			if (!imscp_limit_check($data['domain_sqld_limit'])) {
-				set_page_message(tr('Wrong syntax for the %s limit.', tr('Sql databases')), 'error');
+				set_page_message(tr('Wrong syntax for the %s limit.', tr('SQL databases')), 'error');
 				$errFieldsStack[] = 'domain_sqld_limit';
 			} elseif (!_admin_isValidServiceLimit($data['domain_sqld_limit'], $data['nbSqlDatabases'],
 												  $data["fallback_domain_sqld_limit"], $data['current_sql_db_cnt'],
-												  $data['max_sql_db_cnt'], ($data['nbSqlDatabases'] > 1 ) ? tr('Sql databases'): tr('Sql database'))
+												  $data['max_sql_db_cnt'], ($data['nbSqlDatabases'] > 1 ) ? tr('SQL databases'): tr('SQL database'))
 			) {
 				$errFieldsStack[] = 'domain_sqld_limit';
 			}
@@ -671,11 +671,11 @@ function admin_checkAndUpdateData($domainId)
 		// Check for the Sql users limit
 		if ($data["fallback_domain_sqlu_limit"] != -1) {
 			if (!imscp_limit_check($data['domain_sqlu_limit'])) {
-				set_page_message(tr('Wrong syntax for the %s limit.', tr('Sql users')), 'error');
+				set_page_message(tr('Wrong syntax for the %s limit.', tr('SQL users')), 'error');
 				$errFieldsStack[] = 'domain_sqlu_limit';
 			} elseif (!_admin_isValidServiceLimit($data['domain_sqlu_limit'], $data['nbSqlUsers'],
 												  $data["fallback_domain_sqlu_limit"], $data['current_sql_user_cnt'],
-												  $data['max_sql_user_cnt'], ($data['nbSqlUsers'] > 1) ?  tr('Sql users') : tr('Sql user'))
+												  $data['max_sql_user_cnt'], ($data['nbSqlUsers'] > 1) ?  tr('SQL users') : tr('SQL user'))
 			) {
 				$errFieldsStack[] = 'domain_sqlu_limit';
 			}
@@ -758,7 +758,7 @@ function admin_checkAndUpdateData($domainId)
 				}
 
 				if($phpEditor->flagValueError) {
-					set_page_message(tr('Please check the PHP Editor settings.'), 'error');
+					set_page_message(tr('Please check the PHP editor settings.'), 'error');
 				}
 			} else {
 				// PHP Editor is disabled - back to the default values
@@ -1077,7 +1077,7 @@ $tpl->assign(
 		 'TR_DOMAIN_EXPIRE_HELP' => tr("In case domain expiration date is 'N/A', the expiration date will be set from today."),
 		 'DOMAIN_NEW_EXPIRE_DATE' => tohtml(($data['domain_expires'] != 0) ? ($data['domain_expires_ok'] ? date('m/d/Y', $data['domain_expires'])  : $data['domain_expires']) : ''),
 		 'DOMAIN_NEW_EXPIRE_DATE_DISABLED' => ($data['domain_never_expires'] == 'on') ? 'disabled="disabled"' : '',
-		 'TR_DOMAIN_NEVER_EXPIRES' => tr('Never expires'),
+		 'TR_DOMAIN_NEVER_EXPIRES' => tr('Never'),
 		 'DOMAIN_NEVER_EXPIRES_CHECKED' => ($data['domain_never_expires'] == 'on') ? 'checked="checked"' : '',
 		 'TR_DOMAIN_IP' => tr('Domain IP'),
 		 'DOMAIN_IP' => tohtml($data['ip_number']),

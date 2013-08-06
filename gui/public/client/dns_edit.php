@@ -76,7 +76,7 @@ function validate_CNAME($record, &$errorString)
 	}
 
 	if (empty($record['dns_name'])) {
-		$errorString .= tr('Name must be filled.');
+		$errorString .= tr('Name cannot be empty.');
 		return false;
 	}
 
@@ -98,7 +98,7 @@ function validate_A($record, &$errorString)
 	}
 
 	if (empty($record['dns_name'])) {
-		$errorString .= tr('Name must be filled.');
+		$errorString .= tr('Name cannot be empty.');
 		return false;
 	}
 
@@ -120,7 +120,7 @@ function validate_AAAA($record, &$errorString)
 	}
 
 	if (empty($record['dns_name'])) {
-		$errorString .= tr('Name must be filled.');
+		$errorString .= tr('Name cannot be empty.');
 		return false;
 	}
 

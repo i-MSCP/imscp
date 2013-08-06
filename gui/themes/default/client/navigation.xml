@@ -352,7 +352,7 @@
                     </pages>
                 </custom_error_pages>
                 <softwares>
-                    <label>Softwares</label>
+                    <label>Software</label>
                     <uri>/client/software.php</uri>
                     <title_class>apps_installer</title_class>
                     <privilege_callback name="customerHasFeature" param="aps"/>

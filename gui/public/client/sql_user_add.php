@@ -84,7 +84,7 @@ function check_sql_permissions($tpl, $customerId, $databaseId, $sqlUserList)
 
 	if ($domainSqlUsersLimit != 0 && $limits[1] >= $domainSqlUsersLimit) {
 		if (!$sqlUserList) {
-			set_page_message(tr('SQL users limit reached.'), 'error');
+			set_page_message(tr('SQL user limit reached.'), 'error');
 			redirectTo('sql_manage.php');
 		} else {
 			$tpl->assign('CREATE_SQLUSER', '');
@@ -256,7 +256,7 @@ function add_sql_user($customerId, $databaseId)
 			}
 
 			if (!preg_match('/^[[:alnum:]:!*+#_.-]+$/', $_POST['pass'])) {
-				set_page_message(tr("Please, don't use special chars such as '@, $, %...' in the password."), 'error');
+				set_page_message(tr("Please don't use special chars such as '@, $, %...' in the password."), 'error');
 				return;
 			}
 
@@ -305,7 +305,7 @@ function add_sql_user($customerId, $databaseId)
 
 		// Ensure that SQL user doesn't already exists
 		if (!isset($_POST['Add_Exist']) && check_db_user($sqlUser)) {
-			set_page_message(tr('SQL username name already in use.'), 'error');
+			set_page_message(tr('SQL username already in use.'), 'error');
 			return;
 		}
 

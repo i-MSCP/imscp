@@ -333,13 +333,13 @@ function admin_checkData($phpini)
 	if (!imscp_limit_check($sqld, -1)) {
 		set_page_message(tr('Incorrect SQL user limit.'), 'error');
 	} else if ($sqlu != -1 && $sqld == -1) {
-		set_page_message(tr('SQL users limit is <i>disabled</i>.'), 'error');
+		set_page_message(tr('SQL user limit is <i>disabled</i>.'), 'error');
 	}
 
 	if (!imscp_limit_check($sqlu, -1)) {
 		set_page_message(tr('Incorrect SQL database limit.'), 'error');
 	} else if ($sqlu == -1 && $sqld != -1) {
-		set_page_message(tr('SQL databases limit is not <i>disabled</i>.'), 'error');
+		set_page_message(tr('SQL database limit is not <i>disabled</i>.'), 'error');
 	}
 
 	if (!imscp_limit_check($monthlyTraffic, null)) {
@@ -525,7 +525,7 @@ if (isset($cfg->HOSTING_PLANS_LEVEL) && $cfg->HOSTING_PLANS_LEVEL == 'admin') {
 				'TR_DNS' => tr('Custom DNS records'),
 				'TR_BACKUP' => tr('Backup'),
 				'TR_BACKUP_DOMAIN' => tr('Domain'),
-				'TR_BACKUP_SQL' => tr('Sql'),
+				'TR_BACKUP_SQL' => tr('SQL'),
 				'TR_BACKUP_FULL' => tr('Full'),
 				'TR_BACKUP_NO' => tr('No'),
 				'TR_SOFTWARE_SUPP' => tr('Software installer'),

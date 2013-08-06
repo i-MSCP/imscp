@@ -375,42 +375,42 @@ function check_user_data($phpini)
 	if (!resellerHasFeature('subdomains')) {
 		$sub = '-1';
 	} elseif (!imscp_limit_check($sub, -1)) {
-		set_page_message(tr('Incorrect subdomains limit.'), 'error');
+		set_page_message(tr('Incorrect subdomain limit.'), 'error');
 	}
 
 	if (!resellerHasFeature('domain_aliases')) {
 		$als = '-1';
 	} elseif (!imscp_limit_check($als, -1)) {
-		set_page_message(tr('Incorrect aliases limit.'), 'error');
+		set_page_message(tr('Incorrect alias limit.'), 'error');
 	}
 
 	if (!resellerHasFeature('mail')) {
 		$mail = '-1';
 		$extMailServer = '_no_';
 	} elseif (!imscp_limit_check($mail, -1)) {
-		set_page_message(tr('Incorrect mail accounts limit.'), 'error');
+		set_page_message(tr('Incorrect email account limit.'), 'error');
 	}
 
 	if (!resellerHasFeature('ftp')) {
 		$ftp = '-1';
 	} elseif (!imscp_limit_check($ftp, -1)) {
-		set_page_message(tr('Incorrect FTP accounts limit.'), 'error');
+		set_page_message(tr('Incorrect FTP account limit.'), 'error');
 	}
 
 	if (!resellerHasFeature('sql_db')) {
 		$sqlDb = '-1';
 	} elseif (!imscp_limit_check($sqlDb, -1)) {
-		set_page_message(tr('Incorrect SQL databases limit.'), 'error');
+		set_page_message(tr('Incorrect SQL database limit.'), 'error');
 	} elseif ($sqlUser != -1 && $sqlDb == -1) {
-		set_page_message(tr('SQL users limit is <i>disabled</i>.'), 'error');
+		set_page_message(tr('SQL user limit is <i>disabled</i>.'), 'error');
 	}
 
 	if (!resellerHasFeature('sql_user')) {
 		$sqlUser = '-1';
 	} elseif (!imscp_limit_check($sqlUser, -1)) {
-		set_page_message(tr('Incorrect SQL users limit.'), 'error');
+		set_page_message(tr('Incorrect SQL user limit.'), 'error');
 	} elseif ($sqlUser == -1 && $sqlDb != -1) {
-		set_page_message(tr('SQL databases limit is not <i>disabled</i>.'), 'error');
+		set_page_message(tr('SQL database limit is not <i>disabled</i>.'), 'error');
 	}
 
 	if (!imscp_limit_check($traffic, null)) {
@@ -422,7 +422,7 @@ function check_user_data($phpini)
 	}
 
 	if ($php == '_no_' && $aps == '_yes_') {
-		set_page_message(tr('The software installer require PHP.'), 'error');
+		set_page_message(tr('The software installer requires PHP.'), 'error');
 	}
 
 	if (!Zend_Session::namespaceIsset('pageMessages')) {

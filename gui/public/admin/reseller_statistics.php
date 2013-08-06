@@ -161,7 +161,7 @@ $tpl->assign(
 		'TR_DOMAIN' => tr('Domains'),
 		'TR_SUBDOMAIN' => tr('Subdomains'),
 		'TR_ALIAS' => tr('Aliases'),
-		'TR_MAIL' => tr('Mail accounts'),
+		'TR_MAIL' => tr('Email accounts'),
 		'TR_FTP' => tr('FTP accounts'),
 		'TR_SQL_DB' => tr('SQL databases'),
 		'TR_SQL_USER' => tr('SQL users'),

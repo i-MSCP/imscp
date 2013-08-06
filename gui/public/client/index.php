@@ -306,7 +306,7 @@ function client_generateDomainExpiresInformation($tpl)
 		$tpl->assign(
 			array(
 				 'DOMAIN_REMAINING_TIME' => '',
-				 'DOMAIN_EXPIRES_DATE' => tr('No set')));
+				 'DOMAIN_EXPIRES_DATE' => tr('Never')));
 	}
 }
 
@@ -391,13 +391,13 @@ $tpl->assign(
 		 'DOMAIN_ALIASES_FEATURE_STATUS' => gen_num_limit_msg($domainAliasCount, $domainProperties['domain_alias_limit']),
 		 'SUBDOMAINS_FEATURE_STATUS' => gen_num_limit_msg($subdomainCount, $domainProperties['domain_subd_limit']),
 		 'TR_SUBDOMAINS_FEATURE' => tr('Subdomains'),
-		 'TR_FTP_ACCOUNTS_FEATURE' => tr('Ftp accounts'),
+		 'TR_FTP_ACCOUNTS_FEATURE' => tr('FTP accounts'),
 		 'FTP_ACCOUNTS_FEATURE_STATUS' => gen_num_limit_msg($ftpAccountsCount, $domainProperties['domain_ftpacc_limit']),
-		 'TR_MAIL_ACCOUNTS_FEATURE' => tr('Mail accounts'),
+		 'TR_MAIL_ACCOUNTS_FEATURE' => tr('Email accounts'),
 		 'MAIL_ACCOUNTS_FEATURE_STATUS' => gen_num_limit_msg($mailAccountsCount, $domainProperties['domain_mailacc_limit']),
-		 'TR_SQL_DATABASES_FEATURE' => tr('Sql databases'),
+		 'TR_SQL_DATABASES_FEATURE' => tr('SQL databases'),
 		 'SQL_DATABASE_FEATURE_STATUS' => gen_num_limit_msg($sqlDatabasesCount, $domainProperties['domain_sqld_limit']),
-		 'TR_SQL_USERS_FEATURE' => tr('Sql users'),
+		 'TR_SQL_USERS_FEATURE' => tr('SQL users'),
 		 'SQL_USERS_FEATURE_STATUS' => gen_num_limit_msg($sqlUsersCount, $domainProperties['domain_sqlu_limit']),
 		 'TR_PHP_SUPPORT_FEATURE' => tr('PHP'),
 		 'TR_PHP_DIRECTIVES_EDITOR_SUPPORT_FEATURE' => tr('PHP Editor'),

@@ -367,41 +367,41 @@ function reseller_checkData($phpini)
 	if (!resellerHasFeature('subdomains')) {
 		$sub = '-1';
 	} elseif (!imscp_limit_check($sub, -1)) {
-		set_page_message(tr('Incorrect subdomains limit.'), 'error');
+		set_page_message(tr('Incorrect subdomain limit.'), 'error');
 	}
 
 	if (!resellerHasFeature('domain_aliases')) {
 		$als = '-1';
 	} elseif (!imscp_limit_check($als, -1)) {
-		set_page_message(tr('Incorrect domain aliases limit.'), 'error');
+		set_page_message(tr('Incorrect domain alias limit.'), 'error');
 	}
 
 	if (!resellerHasFeature('mail')) {
 		$mail = '-1';
 	} elseif (!imscp_limit_check($mail, -1)) {
-		set_page_message(tr('Incorrect mail accounts limit.'), 'error');
+		set_page_message(tr('Incorrect email account limit.'), 'error');
 	}
 
 	if (!resellerHasFeature('ftp')) {
 		$ftp = '-1';
 	} elseif (!imscp_limit_check($ftp, -1)) {
-		set_page_message(tr('Incorrect FTP accounts limit.'), 'error');
+		set_page_message(tr('Incorrect FTP account limit.'), 'error');
 	}
 
 	if (!resellerHasFeature('sql_db')) {
 		$sqld = '-1';
 	} elseif (!imscp_limit_check($sqld, -1)) {
-		set_page_message(tr('Incorrect SQL users limit.'), 'error');
+		set_page_message(tr('Incorrect SQL user limit.'), 'error');
 	} else if ($sqlu != -1 && $sqld == -1) {
-		set_page_message(tr('SQL users limit is <i>disabled</i>.'), 'error');
+		set_page_message(tr('SQL user limit is <i>disabled</i>.'), 'error');
 	}
 
 	if (!resellerHasFeature('sql_user')) {
 		$sqlu = '-1';
 	} elseif (!imscp_limit_check($sqlu, -1)) {
-		set_page_message(tr('Incorrect SQL databases limit.'), 'error');
+		set_page_message(tr('Incorrect SQL database limit.'), 'error');
 	} else if ($sqlu == -1 && $sqld != -1) {
-		set_page_message(tr('SQL databases limit is not <i>disabled</i>.'), 'error');
+		set_page_message(tr('SQL database limit is not <i>disabled</i>.'), 'error');
 	}
 
 	if (!imscp_limit_check($monthlyTraffic, null)) {
@@ -597,7 +597,7 @@ if (isset($_GET['id'])) {
 			'TR_DNS' => tr('Custom DNS records'),
 			'TR_BACKUP' => tr('Backup'),
 			'TR_BACKUP_DOMAIN' => tr('Domain'),
-			'TR_BACKUP_SQL' => tr('Sql'),
+			'TR_BACKUP_SQL' => tr('SQL'),
 			'TR_BACKUP_FULL' => tr('Full'),
 			'TR_BACKUP_NO' => tr('No'),
 			'TR_SOFTWARE_SUPP' => tr('Software installer'),

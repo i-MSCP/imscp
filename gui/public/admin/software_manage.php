@@ -76,7 +76,7 @@ if ($use_webdepot) {
 
 	$tpl->assign(
 		array(
-			'TR_WEBDEPOT' => tr('i-MSCP Web softwares repository'),
+			'TR_WEBDEPOT' => tr('i-MSCP Web software repository'),
 			'TR_APPLY_CHANGES' => tr('Update from Web software repository'),
 			'TR_PACKAGE_TITLE' => tr('Package name'),
 			'TR_PACKAGE_INSTALL_TYPE' => tr('Package install type'),
@@ -277,7 +277,7 @@ $res_cnt = get_reseller_software($tpl);
 
 $tpl->assign(
 	array(
-		'TR_SOFTWARE_DEPOT' => tr('Softwares in repository'),
+		'TR_SOFTWARE_DEPOT' => tr('Software in repository'),
 		'SOFTWARE_UPLOAD_TOKEN' => generate_software_upload_token(),
 		'TR_SOFTWARE_ADMIN' => tr('Admin'),
 		'TR_SOFTWARE_RIGHTS' => tr('Permissions'),
@@ -298,20 +298,20 @@ $tpl->assign(
 		'TR_SOFTWARE_DOWNLOAD' => tr('Download'),
 		'TR_SOFTWARE_ACTIVATION' => tr('Activate'),
 		'TR_SOFTWARE_DELETE' => tr('Delete'),
-		'TR_SOFTWARE_ACT_COUNT' => tr('Total softwares'),
+		'TR_SOFTWARE_ACT_COUNT' => tr('Total software'),
 		'TR_SOFTWARE_ACT_NUM' => $sw_cnt,
 		'TR_RESELLER_NAME' => tr('Reseller'),
 		'TR_RESELLER_ACT_COUNT' => tr('Total reseller'),
 		'TR_RESELLER_ACT_NUM' => $res_cnt,
 		'TR_RESELLER_COUNT_SWDEPOT' => tr('Software in repository'),
 		'TR_RESELLER_COUNT_WAITING' => tr('Awaiting activation'),
-		'TR_RESELLER_COUNT_ACTIVATED' => tr('Activated softwares'),
+		'TR_RESELLER_COUNT_ACTIVATED' => tr('Activated software'),
 		'TR_RESELLER_SOFTWARE_IN_USE' => tr('Total installations'),
 		'TR_MESSAGE_ACTIVATE' => tr('Are you sure you want to activate this package?', true),
 		'TR_MESSAGE_IMPORT' => tr('Are you sure you want to import this package into the local software repository?', true),
 		'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete this package?', true),
 		'TR_MESSAGE_INSTALL' => tr('Are you sure you want to install this package from the Web software repository?', true),
-		'TR_ADMIN_SOFTWARE_PAGE_TITLE' => tr('i-MSCP / Softwares Installer / Management')));
+		'TR_ADMIN_SOFTWARE_PAGE_TITLE' => tr('i-MSCP / Software Installer / Management')));
 
 generateNavigation($tpl);
 generatePageMessage($tpl);

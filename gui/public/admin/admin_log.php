@@ -112,7 +112,7 @@ function admin_generatePageData($tpl)
 
 	if(!$recordsCount) {
 		$tpl->assign('LOGS', '');
-		set_page_message(tr('No logs found'), 'info');
+		set_page_message(tr('No logs found.'), 'info');
 	} else {
 		$query = "
 			SELECT

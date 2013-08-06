@@ -136,7 +136,7 @@ function admin_generateCustomersTable($tpl)
 		if ($resellerId) {
 			set_page_message(tr('No users found for this reseller.'), 'info');
 		} else {
-			set_page_message(tr('No unassigned users was found in database.'), 'info');
+			set_page_message(tr('No unassigned users were found in the database.'), 'info');
 		}
 
 		redirectTo('manage_users.php');
@@ -184,7 +184,7 @@ function check_user_data()
 	}
 
 	if ($selectedUsers == '') {
-		set_page_message(tr('Please select a least one user.'), 'error');
+		set_page_message(tr('Please select at least one user.'), 'error');
 		return false;
 	} else if ($_POST['src_reseller'] == $_POST['dst_reseller']) {
 		set_page_message(tr('Both source and destination are identical.'), 'error');

@@ -114,7 +114,7 @@ function generate_users_list($tpl, $resellerId)
 	if ($recordsCount == 0) {
 		if (isset($_SESSION['search_for'])) {
 			$tpl->assign(array(
-					'USR_MESSAGE' => tr('Not found records matching the search criteria.'),
+					'USR_MESSAGE' => tr('No records found matching the search criteria.'),
 					'USERS_LIST' => '',
 					'SCROLL_PREV' => '',
 					'SCROLL_NEXT' => '',

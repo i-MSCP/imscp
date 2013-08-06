@@ -785,7 +785,7 @@ function client_generatePage($tpl, $userId)
 				)
 			);
 
-			set_page_message(tr('Mail accounts list is empty.'), 'info');
+			set_page_message(tr('Email account list is empty.'), 'info');
 		}
 	} else {
 		$tpl->assign('MAIL_FEATURE', '');

@@ -540,7 +540,7 @@ function admin_checkAndCreateResellerAccount()
 				!$phpEditor->setRePerm('phpiniMaxInputTime', $data['php_ini_max_max_input_time']) ||
 				!$phpEditor->setRePerm('phpiniMemoryLimit', $data['php_ini_max_memory_limit'])
 			) {
-				set_page_message(tr('Please, check the PHP Editor settings.'), 'error');
+				set_page_message(tr('Please check the PHP editor settings.'), 'error');
 			}
 		} else {
 			$phpEditor->loadReDefaultPerm();

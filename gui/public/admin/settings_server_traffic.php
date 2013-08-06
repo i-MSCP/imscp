@@ -51,17 +51,17 @@ function admin_updateServerTrafficSettings($trafficLimit, $trafficWarning)
 	$retVal = true;
 
 	if (!is_numeric($trafficLimit)) {
-		set_page_message(tr('Monthly traffic limit must be a digit.'), 'error');
+		set_page_message(tr('Monthly traffic limit must be a number.'), 'error');
 		$retVal = false;
 	}
 
 	if (!is_numeric($trafficWarning)) {
-		set_page_message(tr('Monthly traffic warning must be a digit.'), 'error');
+		set_page_message(tr('Monthly traffic warning must be a number.'), 'error');
 		$retVal = false;
 	}
 
 	if ($retVal && $trafficWarning > $trafficLimit) {
-		set_page_message(tr('Monhtly traffic warning cannot be bigger than monthly traffic limit.'), 'error');
+		set_page_message(tr('Monthly traffic warning cannot be bigger than monthly traffic limit.'), 'error');
 		$retVal = false;
 	}
 

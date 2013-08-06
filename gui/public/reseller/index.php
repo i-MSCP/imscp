@@ -201,7 +201,7 @@ function reseller_generatePageData($tpl, $resellerId, $resellerName)
 			 'DOMAINS' => tr('Domain accounts'),
 			 'SUBDOMAINS' => tr('Subdomains'),
 			 'ALIASES' => tr('Aliases'),
-			 'MAIL_ACCOUNTS' => tr('Mail accounts'),
+			 'MAIL_ACCOUNTS' => tr('Email accounts'),
 			 'TR_FTP_ACCOUNTS' => tr('FTP accounts'),
 			 'SQL_DATABASES' => tr('SQL databases'),
 			 'SQL_USERS' => tr('SQL users'),
