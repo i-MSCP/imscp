@@ -125,7 +125,7 @@ function client_generateDirectoriesList($tpl)
 			'ACTION_LINK' => '',
 			'ACTION' => '',
 			'ICON' => 'parent',
-			'DIR_NAME' => tr('Parent Directory'),
+			'DIR_NAME' => tr('Parent directory'),
 			'LINK' => "ftp_choose_dir.php?cur_dir=$parent"
 		)
 	);

@@ -78,7 +78,7 @@ function _customer_checkCurrentPassword($password)
 	$stmt = exec_query('SELECT `admin_pass` FROM `admin` WHERE `admin_id` = ?', $_SESSION['user_id']);
 
 	if (!$stmt->rowCount()) {
-		set_page_message(tr('Unable to retrieve your password in database.'), 'error');
+		set_page_message(tr('Unable to retrieve your password from the database.'), 'error');
 		return false;
 	} elseif (cryptPasswordWithSalt($password, $stmt->fields['admin_pass']) !== $stmt->fields['admin_pass']) {
 		return false;

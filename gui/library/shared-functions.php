@@ -1100,7 +1100,7 @@ function utils_uploadFile($inputFieldName, $destPath)
 				set_page_message(tr('A PHP extension stopped the file upload.'), 'error');
 				break;
 			default:
-				set_page_message(tr('An unknown error occured during file upload: %s', $_FILES[$inputFieldName]['error']), 'error');
+				set_page_message(tr('An unknown error occurred during file upload: %s', $_FILES[$inputFieldName]['error']), 'error');
 		}
 
 		return false;

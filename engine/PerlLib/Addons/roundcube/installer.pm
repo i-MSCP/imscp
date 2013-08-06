@@ -396,7 +396,7 @@ sub _setupDatabase
 		return 1;
 	}
 
-	# The Roundcube database doesn't exists, create it
+	# The Roundcube database doesn't exist, create it
 	unless(%$rs) {
 		my $qdbName = $database->quoteIdentifier($roundcubeDbName);
 		$rs = $database->doQuery('dummy', "CREATE DATABASE $qdbName CHARACTER SET utf8 COLLATE utf8_unicode_ci;");

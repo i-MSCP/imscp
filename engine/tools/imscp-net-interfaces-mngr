@@ -92,7 +92,7 @@ sub addVirtualNetcard
 					}
 				} else {
 					my $msg =
-						"Card $_->{'ip_card'} doesn't exists. Please fix this in " .
+						"Card $_->{'ip_card'} doesn't exist. Please fix this in " .
 						"$main::imscpConfig{BASE_SERVER_VHOST_PREFIX}" .
 						"$main::imscpConfig{BASE_SERVER_VHOST}/admin/ip_manage.php";
 					error($msg);

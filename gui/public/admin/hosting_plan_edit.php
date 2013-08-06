@@ -439,7 +439,7 @@ function admin_UpdateHostingPlan($phpini)
 	$stmt = exec_query($query, array($name, $id));
 
 	if ($stmt->rowCount()) {
-		set_page_message(tr('An hosting plan with same name already exists.'), 'error');
+		set_page_message(tr('A hosting plan with same name already exists.'), 'error');
 		return false;
 	}
 

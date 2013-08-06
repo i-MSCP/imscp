@@ -253,17 +253,17 @@
             <privilege_callback name="systemHasResellers"/>
             <pages>
                 <open_tickets>
-                    <label>Open Tickets</label>
+                    <label>Open tickets</label>
                     <uri>/admin/ticket_system.php</uri>
                     <title_class>support</title_class>
                 </open_tickets>
                 <closed_tickets>
-                    <label>Closed Tickets</label>
+                    <label>Closed tickets</label>
                     <uri>/admin/ticket_closed.php</uri>
                     <title_class>support</title_class>
                 </closed_tickets>
                 <view_ticket>
-                    <label>View Ticket</label>
+                    <label>View ticket</label>
                     <uri>/admin/ticket_view.php</uri>
                     <title_class>support</title_class>
                     <visible>0</visible>

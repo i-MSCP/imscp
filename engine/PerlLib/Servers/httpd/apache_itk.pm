@@ -1482,7 +1482,7 @@ sub enableSite($$)
 
 			$self->{'restart'} = 'yes';
 		} else {
-			warning("Site $_ doesn't exists");
+			warning("Site $_ doesn't exist");
 		}
 	}
 
@@ -1517,7 +1517,7 @@ sub disableSite($$)
 
 			$self->{'restart'} = 'yes';
 		} else {
-			warning("Site $_ doesn't exists");
+			warning("Site $_ doesn't exist");
 		}
 	}
 

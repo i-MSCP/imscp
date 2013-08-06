@@ -345,8 +345,8 @@ $tpl->assign(
 		'TR_STAT' => tr('Stats'),
 		'VL_MONTH' => date('m'),
 		'VL_YEAR' => date('Y'),
-		'TR_EDIT_DOMAIN' => tr('Edit Domain'),
-		'TR_EDIT_USER' => tr('Edit User'),
+		'TR_EDIT_DOMAIN' => tr('Edit domain'),
+		'TR_EDIT_USER' => tr('Edit user'),
 		'TR_DISK_USAGE' => tr('Disk usage'),
 		'TR_PREVIOUS' => tr('Previous'),
 		'TR_NEXT' => tr('Next')

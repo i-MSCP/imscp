@@ -338,9 +338,9 @@ function validates_dname($dname, $subdname_process = false)
 	$max_labels = ($subdname_process) ? 99 : $cfg->MAX_DNAMES_LABELS;
 
 	if (!$subdname_process) {
-		// Check lenght according RFC 1123 (Max of 255 chars)
+		// Check length according RFC 1123 (Max of 255 chars)
 		if (strlen($dname) > 255) {
-			$validation_err_msg = tr('Wrong domain name lenght!');
+			$validation_err_msg = tr('Wrong domain name length!');
 			return false;
 		}
 	}
@@ -399,9 +399,9 @@ function validates_subdname($subdname, $dname)
 	global $validation_err_msg;
 	$validation_err_msg = tr('Wrong subdomain syntax or number of labels!');
 
-	// Check lenght according RFC 1123 (Max of 255 chars)
+	// Check length according RFC 1123 (Max of 255 chars)
 	if (strlen($subdname . '.' . $dname) > 255) {
-		$validation_err_msg = tr('Wrong subdomain lenght!');
+		$validation_err_msg = tr('Wrong subdomain length!');
 		return false;
 	}
 
@@ -482,13 +482,13 @@ function _validates_dname_label($label)
 
 		$matches = array();
 
-		// TRUE if the label syntax and lenght is correct
-		// TRUE with $matches[1] set if the label lenght is wrong
+		// TRUE if the label syntax and length is correct
+		// TRUE with $matches[1] set if the label length is wrong
 		// FALSE if the label syntax is wrong
 		$pattern = '@^(?:[a-z0-9][-a-z0-9]{0,61}[a-z0-9]?(?<!-)|([-a-z0-9]{64,}))$@i';
 
 		if (($ret = preg_match($pattern, $label, $matches)) && array_key_exists(1, $matches)) {
-			$validation_err_msg = tr('Wrong label lenght: <b>%s</b>', $label);
+			$validation_err_msg = tr('Wrong label length: <b>%s</b>', $label);
 			$ret = false;
 		}
 
@@ -515,7 +515,7 @@ function _validates_dname_label($label)
  * @author Laurent Declercq <l.declercq@nuxwin.com>
  * @access private
  * @param string $tld
- * @return boolean TRUE if successfull, FALSE otherwise
+ * @return boolean TRUE if successful, FALSE otherwise
  * @todo build the Iana TLD list via xml
  */
 function _validates_tld($tld)
@@ -531,8 +531,8 @@ function _validates_tld($tld)
 
 		// This pattern Matches only Top Level Domain listed in Iana root database
 		// ( only ccTLDs and gTLDs, not IDNs )
-		// TRUE if the TLD syntax and lenght is correct
-		// TRUE with $matches[1] set if the TLD lenght is wrong
+		// TRUE if the TLD syntax and length is correct
+		// TRUE with $matches[1] set if the TLD length is wrong
 		// FALSE if the TLD syntax is wrong
 		$pattern =
 			'@^(?:
@@ -566,14 +566,14 @@ function _validates_tld($tld)
 	} else {
 
 		// This pattern matches only realistic TLDs (i.e. those with 2 to 6 letters) - Not strict.
-		// TRUE if the TLD syntax and lenght is correct
-		// TRUE with $matches[1] set if the TLD lenght is wrong
+		// TRUE if the TLD syntax and length is correct
+		// TRUE with $matches[1] set if the TLD length is wrong
 		// FALSE if the TLD syntax is wrong
 		$pattern = '@^(?:[a-z]{2,6}|([a-z]|[a-z]{7,}))$@';
 	}
 
 	if (($ret = preg_match($pattern, $tld, $matches)) && array_key_exists(1, $matches)) {
-		$validation_err_msg = tr('Wrong Top Level Domain lenght: <b>%s</b>', $tld);
+		$validation_err_msg = tr('Wrong Top Level Domain length: <b>%s</b>', $tld);
 		$ret = false;
 	}
 
@@ -622,9 +622,9 @@ function _validates_sld($sld)
 		// Reserved SLD according RFC 2606
 		$reserved_SLD = 'example\.(?:com|net|org)';
 
-		// TRUE if the SLD syntax and lenght is correct
+		// TRUE if the SLD syntax and length is correct
 		// TRUE with $matches[1] set if the SLD is reserved
-		// TRUE with $matches[2] set if the SLD lenght is wrong
+		// TRUE with $matches[2] set if the SLD length is wrong
 		// FALSE if the SLD syntax is wrong
 		$pattern = "@^
 			(?:($reserved_SLD)|
@@ -645,7 +645,7 @@ function _validates_sld($sld)
 			) {
 
 				if (array_key_exists(2, $matches)) {
-					$validation_err_msg = tr('Wrong Second Level Domain lenght: <b>%s</b>', $only_sld_part);
+					$validation_err_msg = tr('Wrong Second Level Domain length: <b>%s</b>', $only_sld_part);
 				} elseif (array_key_exists(1, $matches)) {
 					$validation_err_msg = tr('Wrong domain name: <b>%s</b> is reserved!', $sld);
 				}

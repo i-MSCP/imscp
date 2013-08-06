@@ -64,5 +64,5 @@ if(iMSCP_Registry::isRegistered('pluginManager')) {
 		showNotFoundErrorPage();
 	}
 } else {
-	throw new iMSCP_Plugin_Exception('An unexpected error occured');
+	throw new iMSCP_Plugin_Exception('An unexpected error occurred');
 }

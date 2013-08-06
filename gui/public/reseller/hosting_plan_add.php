@@ -443,7 +443,7 @@ function reseller_addHostingPlan($resellerId, $phpini)
 	$stmt = exec_query($query, array($name, $resellerId));
 
 	if ($stmt->rowCount()) {
-		set_page_message(tr('An hosting plan with same name already exists.'), 'error');
+		set_page_message(tr('A hosting plan with same name already exists.'), 'error');
 		return false;
 	} else {
 		$hpProps = "$php;$cgi;$sub;$als;$mail;$ftp;$sqld;$sqlu;$traffic;$diskSpace;$backup;";

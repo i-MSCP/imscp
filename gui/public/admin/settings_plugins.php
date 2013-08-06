@@ -238,7 +238,7 @@ function admin_pluginManagerGeneratePluginList($tpl, $pluginManager)
 					$tpl->assign(
 						'PLUGIN_STATUS_DETAILS',
 						tr(
-							'An unexpected error occured while plugin %s attempt: %s',
+							'An unexpected error occurred while plugin %s attempt: %s',
 							$trAction[$pluginStatus], '<br /><br />' . $pluginManager->getError($pluginName)
 						)
 					);
@@ -408,7 +408,7 @@ if(iMSCP_Registry::isRegistered('pluginManager')) {
 	/** @var iMSCP_Plugin_Manager $pluginManager */
 	$pluginManager = iMSCP_Registry::get('pluginManager');
 } else {
-	throw new iMSCP_Plugin_Exception('An unexpected error occured');
+	throw new iMSCP_Plugin_Exception('An unexpected error occurred');
 }
 
 // Dispatches the request

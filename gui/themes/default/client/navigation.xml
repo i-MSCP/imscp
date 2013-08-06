@@ -118,7 +118,7 @@
                     <title_class>ftp</title_class>
                     <pages>
                         <ftp_account_edit_link>
-                            <label>Edit Ftp account</label>
+                            <label>Edit FTP account</label>
                             <uri>/client/ftp_edit.php</uri>
                             <visible>0</visible>
                             <title_class>ftp</title_class>
@@ -126,7 +126,7 @@
                     </pages>
                 </overview>
                 <add_ftp_account>
-                    <label>Add Ftp account</label>
+                    <label>Add FTP account</label>
                     <uri>/client/ftp_add.php</uri>
                     <title_class>ftp</title_class>
                 </add_ftp_account>
@@ -412,12 +412,12 @@
             <privilege_callback name="customerHasFeature" param="support"/>
             <pages>
                 <tickets_open>
-                    <label>Tickets open</label>
+                    <label>Open tickets</label>
                     <uri>/client/ticket_system.php</uri>
                     <title_class>support</title_class>
                 </tickets_open>
                 <tickets_closed>
-                    <label>Tickets closed</label>
+                    <label>Closed tickets</label>
                     <uri>/client/ticket_closed.php</uri>
                     <title_class>support</title_class>
                 </tickets_closed>

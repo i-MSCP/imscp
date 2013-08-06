@@ -612,7 +612,7 @@ if (isset($_GET['action'])) {
 	if ($_GET['action'] == 'run_engine') {
 		if ($rqstCount > 0) {
 			if(send_request()) {
-				set_page_message(tr('Daemon request successfull.'), 'success');
+				set_page_message(tr('Daemon request successful.'), 'success');
 			} else {
 				set_page_message(tr('Daemon request failed.'), 'error');
 			}

@@ -71,7 +71,7 @@ function protect_area($domainId)
 	$path = clean_input($_POST['other_dir'], false);
 
 	// Cleanup path:
-	// Adds a slash as a first char of the path if it doesn't exists
+	// Adds a slash as a first char of the path if it doesn't exist
 	// Removes the double slashes
 	// Remove the trailing slash if it exists
 	if ($path != '/') {

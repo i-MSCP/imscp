@@ -729,7 +729,7 @@ $tpl->assign(
 		'TR_MOUNT' => tr('Mount point'),
 		'TR_REDIRECT' => tr('Redirect'),
 		'TR_STATUS' => tr('Status'),
-		'TR_CERT' => tr('SSL Certificates'),
+		'TR_CERT' => tr('SSL certificates'),
 		'TR_ACTIONS' => tr('Actions'),
 		'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete %s?', true, '%s'),
 

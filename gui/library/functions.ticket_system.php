@@ -402,7 +402,7 @@ function generateTicketList($tpl, $userId, $start, $count, $userLevel, $status)
         if ($status == 'open') {
             set_page_message(tr('You have no open tickets.'), 'info');
         } else {
-            set_page_message(tr('You have no tickets closed.'), 'info');
+            set_page_message(tr('You have no closed tickets.'), 'info');
         }
     }
 }
@@ -540,7 +540,7 @@ function getUserLevel($ticketId)
     $stmt = exec_query($query, $ticketId);
 
     if($stmt->rowCount() == 0) {
-        set_page_message(tr("Ticket with Id '%s' was not found.", $ticketId), 'error');
+        set_page_message(tr("Ticket with Id '%d' was not found.", $ticketId), 'error');
         return false;
     }
 

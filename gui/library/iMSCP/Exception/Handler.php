@@ -311,7 +311,7 @@ class iMSCP_Exception_Handler implements SplSubject, IteratorAggregate, Countabl
 						$cfg = iMSCP_Registry::get('config');
 
 						if (isset($cfg->DEBUG) && !$cfg->DEBUG) {
-							echo 'An error occured. Please contact your administrator or reseller.';
+							echo 'An error occurred. Please contact your administrator or reseller.';
 							exit;
 						}
 					}

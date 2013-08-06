@@ -104,7 +104,7 @@ function client_databasesList($tpl, $domainId)
 	$stmt = exec_query($query, $domainId);
 
 	if ($stmt->rowCount() == 0) {
-		set_page_message(tr('You do not have database.'), 'info');
+		set_page_message(tr('You do not have databases.'), 'info');
 		$tpl->assign('SQL_DATABASES_USERS_LIST', '');
 	} else {
 		while (!$stmt->EOF) {

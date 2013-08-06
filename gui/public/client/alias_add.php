@@ -332,7 +332,7 @@ if (!is_xhr()) {
 		array(
 			'THEME_CHARSET' => tr('encoding'),
 			'ISP_LOGO' => layout_getUserLogo(),
-			'TR_PAGE_TITLE' => tr('Client /  Domains / Add Alias'),
+			'TR_PAGE_TITLE' => tr('Client / Domains / Add Alias'),
 			'TR_TITLE_ADD_DOMAIN_ALIAS' => tr('Add domain alias'),
 			'TR_DOMAIN_ALIAS_DATA' => tr('Domain alias data'),
 			'TR_DOMAIN_ALIAS_NAME' => tr('Domain alias name'),

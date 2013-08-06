@@ -56,7 +56,7 @@ sub ssl_check_key
 	my $self = shift;
 
 	if ($self->{'key_path'} eq '' || ! -f $self->{'key_path'}) {
-		error("Key $self->{'key_path'} doesn't exists. Exiting...");
+		error("Key $self->{'key_path'} doesn't exist. Exiting...");
 		return -1;
 	}
 
@@ -78,7 +78,7 @@ sub ssl_check_intermediate_cert
 	my $self = shift;
 
 	if ($self->{'intermediate_cert_path'} ne '' && ! -f $self->{'intermediate_cert_path'}) {
-		error("Intermediate SSL certificate $self->{'intermediate_cert_path'} doesn't exists.");
+		error("Intermediate SSL certificate $self->{'intermediate_cert_path'} doesn't exist.");
 		return 1;
 	}
 
@@ -90,7 +90,7 @@ sub ssl_check_cert
 	my $self = shift;
 
 	if ($self->{'cert_path'} eq '' || ! -f $self->{'cert_path'}) {
-		error("SSL certificate $self->{'cert_path'} doesn't exists.");
+		error("SSL certificate $self->{'cert_path'} doesn't exist.");
 		return 1;
 	}
 

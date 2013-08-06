@@ -116,7 +116,7 @@ class iMSCP_Events_Event implements iMSCP_Events_Description
 	 * If the parameter does not exist, the $default value will be returned.
 	 *
 	 * @param  string|int $name Parameter name
-	 * @param  mixed $default Default value to be returned if $name doesn't exists
+	 * @param  mixed $default Default value to be returned if $name doesn't exist
 	 * @return mixed
 	 */
 	public function getParam($name, $default = null)

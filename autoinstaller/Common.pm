@@ -737,7 +737,7 @@ sub _processXmlFile($)
 	my $file = shift;
 
 	unless(-f $file) {
-		error("$file doesn't exists");
+		error("$file doesn't exist");
 		return 1;
 	}
 

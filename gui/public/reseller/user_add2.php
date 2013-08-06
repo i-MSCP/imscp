@@ -418,7 +418,7 @@ function check_user_data($phpini)
 	}
 
 	if (!imscp_limit_check($diskSpace, null)) {
-		set_page_message(tr('Incorrect diskspace limit.'), 'error');
+		set_page_message(tr('Incorrect disk space limit.'), 'error');
 	}
 
 	if ($php == '_no_' && $aps == '_yes_') {

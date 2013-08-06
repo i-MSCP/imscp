@@ -808,7 +808,7 @@ function client_mail_add_default_accounts($domainId, $userEmail, $domainPart, $d
  * customers. In other words, it's useless to call this function on client side.
  *
  *
- * @throws iMSCP_Exception in case the given reseller doesn't exists
+ * @throws iMSCP_Exception in case the given reseller doesn't exist
  * @param int $resellerId Reseller unique identifier
  * @return array list of properties
  */

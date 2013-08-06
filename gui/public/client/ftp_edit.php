@@ -112,7 +112,7 @@ function updateFtpAccount($userid, $mainDomainName)
 
 				// Check for directory existence
 				if (!$vfs->exists($homeDir)) {
-					set_page_message(tr("Home directory '%s' doesn't exists", $homeDir), 'error');
+					set_page_message(tr("Home directory '%s' doesn't exist", $homeDir), 'error');
 					$ret = false;
 				}
 			}

@@ -641,7 +641,7 @@ sub copyLogos
 	iMSCP::Dialog->factory()->msgbox(
 "
 \\Z1\\ZuWARNING\\Zn\n
-The following errors occured:\n".
+The following errors occurred:\n".
 join("\n", @errors)
 ."\n
 These errors are not fatal so we can proceed forward.
@@ -883,7 +883,7 @@ sub removePhpFcgiStarter
 		iMSCP::Dialog->factory()->msgbox(
 "
 \\Z1\\ZuWARNING\\Zn\n
-The following errors occured:\n".
+The following errors occurred:\n".
 $stderr
 ."\n
 These errors are not fatal so we can proceed forward.

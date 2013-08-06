@@ -157,7 +157,7 @@ if (isset($_GET['id']) || isset($_POST['id'])) {
 			$sw_id = $db->insertId();
 			update_existing_client_installations_sw_depot($sw_id, $software_id, $reseller_id);
 		}
-		set_page_message(tr('Rights succesfully added.'), 'success');
+		set_page_message(tr('Rights successfully added.'), 'success');
 		redirectTo('software_rights.php?id='.$software_id);
 	} else {
 		$reseller_id = $_GET['reseller_id'];
@@ -179,7 +179,7 @@ if (isset($_GET['id']) || isset($_POST['id'])) {
 		";
 		exec_query($delete, array($software_id, $reseller_id));
 		exec_query($update, $software_id);
-		set_page_message(tr('Rights succesfully removed.'), 'success');
+		set_page_message(tr('Rights successfully removed.'), 'success');
 		redirectTo('software_rights.php?id='.$software_id);
 	}
 } else {
