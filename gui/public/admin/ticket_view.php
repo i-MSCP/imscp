@@ -97,7 +97,6 @@ $tpl->define_dynamic(
 
 $tpl->assign(
 	array(
-		'THEME_CHARSET' => tr('encoding'),
 		'TR_PAGE_TITLE' => tr('Admin / Support / View Ticket'),
 		'ISP_LOGO' => layout_getUserLogo(),
 		'TR_VIEW_SUPPORT_TICKET' => tr('View Support Ticket'),

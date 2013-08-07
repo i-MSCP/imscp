@@ -235,7 +235,6 @@ function check_sql_permissions($user_id) {
 $tpl->assign(
 	array(
 		'TR_PAGE_TITLE' => tr('Client / Databases / Add SQL Database'),
-		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => layout_getUserLogo()));
 
 check_sql_permissions($_SESSION['user_id']);

@@ -83,7 +83,6 @@ $tpl->define_dynamic(
 $tpl->assign(
 	array(
 		'TR_PAGE_TITLE' => tr('Admin / Users / Overview'),
-		'THEME_CHARSET' => tr('encoding'),
 		'TR_NEXT' => tr('Next'),
 		'TR_PREVIOUS' => tr('Previous'),
 		'ISP_LOGO' => layout_getUserLogo()));

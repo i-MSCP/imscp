@@ -269,7 +269,6 @@ if(isset($_GET['edit_id'])) {
 	$tpl->assign(
 		array(
 			'TR_PAGE_TITLE' => tr('Reseller / Customers / Domain Aliases / Edit Alias'),
-			'THEME_CHARSET' => tr('encoding'),
 			'ISP_LOGO' => layout_getUserLogo(),
 			'TR_ALIAS_DATA' => tr('Domain alias data'),
 			'TR_ALIAS_NAME' => tr('Alias name'),

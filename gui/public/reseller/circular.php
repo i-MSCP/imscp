@@ -242,7 +242,6 @@ $tpl->define_dynamic(
 $tpl->assign(
 	array(
 		'TR_PAGE_TITLE' => tr('Reseller / Customers / Circular'),
-		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => layout_getUserLogo(),
 		'TR_CIRCULAR' => tr('Circular'),
 		'TR_MESSAGE_SUBJECT' => tr('Message subject'),

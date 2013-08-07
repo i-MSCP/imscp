@@ -268,7 +268,6 @@ if (isset($_POST['upload']) && $_SESSION['software_upload_token'] == $_POST['sen
 $tpl->assign(
 	array(
 		'TR_PAGE_TITLE' => tr('Admin / Settings / Software Management'),
-		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => layout_getUserLogo()));
 
 $sw_cnt = get_avail_software($tpl);

@@ -140,7 +140,6 @@ $tpl->define_dynamic(
 $tpl->assign(
 	array(
 		'TR_PAGE_TITLE' => tr('Client / Webtools / Protected areas / Manage Htusers And Groups / Add Htaccess User'),
-		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => layout_getUserLogo(),
 		'TR_HTACCESS_USER' => tr('Htaccess user'),
 		'TR_USERS' => tr('User'),

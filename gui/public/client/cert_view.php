@@ -229,7 +229,6 @@ if (!isset($_GET['id']) || !isset($_GET['type']) || !in_array($_GET['type'], arr
 $tpl->assign(
 	array(
 		'TR_PAGE_TITLE' => tr('Client / Domains / SSL certificates'),
-		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => layout_getUserLogo(),
 		'TR_CERTIFICATE_DATA' => tr('Certificate data'),
 		'TR_CERT_FOR' => tr('Certificate for'),

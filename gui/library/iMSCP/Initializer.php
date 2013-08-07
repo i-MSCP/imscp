@@ -37,10 +37,10 @@
  * The initializer is responsible for processing the i-MSCP configuration, such as setting the include_path, database
  * and more.
  *
- * @category	i-MSCP
- * @package		iMSCP_Core
- * @subpackage	Initializer
- * @author		Laurent Declercq <l.declercq@nuxwin.com>
+ * @category    i-MSCP
+ * @package     iMSCP_Core
+ * @subpackage  Initializer
+ * @author      Laurent Declercq <l.declercq@nuxwin.com>
  */
 class iMSCP_Initializer
 {
@@ -130,54 +130,22 @@ class iMSCP_Initializer
 	 */
 	protected function _processAll()
 	{
-		// Set display errors
 		$this->_setDisplayErrors();
-
-		// Set additionally iMSCP_Exception_Writer observers
-		$this->_setExceptionWriters();
-
-		// Include path
-		$this->_setIncludePath();
-
-		// Sets encryption keys
-		$this->_setEncryptionKeys();
-
-		// Establish the connection to the database
-		$this->_initializeDatabase();
-
-		// Se encoding (Both PHP and database)
-		$this->_setEncoding();
-
-		// Set timezone
-		$this->_setTimezone();
-
-		// Load all the configuration parameters from the database and merge
-		// it to our basis configuration object
-		$this->_processConfiguration();
-
-		// Initialize output buffering
-		$this->_initializeOutputBuffering();
-
-		// Create or restore the session
-		$this->_initializeSession();
-
-		$this->_checkForDatabaseUpdate();
-
-		// Initialize user's GUI properties
-		$this->_initializeUserGuiProperties();
-
-		// Initialize internationalization libraries
-		$this->_initializeLocalization();
-
-		// Initialize Layout
 		$this->_initializeLayout();
-
+		$this->_setExceptionWriters();
+		$this->_initializeSession();
+		$this->_setIncludePath();
+		$this->_initializeDatabase();
+		$this->_setTimezone();
+		$this->_processConfiguration();
+		$this->_initializeOutputBuffering();
+		$this->_checkForDatabaseUpdate();
+		$this->_initializeUserGuiProperties();
+		$this->_initializeLocalization();
 		$this->_initializeNavigation();
-
-		// Initialize plugin (Action)
 		$this->_initializeActionPlugins();
 
-		// Run after initialize callbacks (will be changed later)
+		// Run after initialize callbacks
 		$this->_afterInitialize();
 
 		self::$_initialized = true;
@@ -190,16 +158,7 @@ class iMSCP_Initializer
 	 */
 	protected function _processCLI()
 	{
-		// Sets encryption keys
-		$this->_setEncryptionKeys();
-
-		// Establish the connection to the database
 		$this->_initializeDatabase();
-
-		// Sets encoding (Both PHP and database)
-		$this->_setEncoding();
-
-		// Load all the configuration parameters from the database and merge it to our basis configuration object
 		$this->_processConfiguration();
 
 		self::$_initialized = true;
@@ -245,21 +204,35 @@ class iMSCP_Initializer
 	}
 
 	/**
-	 * Sets include path.
-	 *
-	 * Sets the PHP include_path. Duplicates entries are removed.
+	 * Initialize layout.
 	 *
 	 * @return void
 	 */
-	protected function _setIncludePath()
+	protected function _initializeLayout()
 	{
-		// Ensure library/ and vendor/ are in include_path
-		set_include_path(
-			implode(
-				PATH_SEPARATOR,
-				array_unique(array(LIBRARY_PATH, LIBRARY_PATH . '/vendor', DEFAULT_INCLUDE_PATH))
-			)
+		// Set template root directory
+		iMSCP_pTemplate::setRootDir($this->_config->ROOT_TEMPLATE_PATH);
+
+		$eventManager = iMSCP_Events_Manager::getInstance();
+
+		// Set layout color for the current environment (Must be donne at end)
+		$eventManager->registerListener(
+			array(
+				iMSCP_Events::onLoginScriptEnd,
+				iMSCP_Events::onLostPasswordScriptEnd,
+				iMSCP_Events::onAdminScriptEnd,
+				iMSCP_Events::onResellerScriptEnd,
+				iMSCP_Events::onClientScriptEnd,
+				iMSCP_Events::onExceptionToBrowserEnd
+			),
+			'layout_init'
 		);
+
+		if (!isset($_SESSION['user_logged'])) {
+			$eventManager->registerListener(
+				iMSCP_Events::onAfterSetIdentity, function($event) { unset($_SESSION['user_theme_color']); }
+			);
+		}
 	}
 
 	/**
@@ -271,7 +244,7 @@ class iMSCP_Initializer
 	protected function _initializeSession()
 	{
 		if (!is_writable($this->_config->GUI_ROOT_DIR . '/data/sessions')) {
-			throw new iMSCP_Exception('The GUI `gui/data/sessions` directory must be writable.');
+			throw new iMSCP_Exception('The gui/data/sessions directory must be writable.');
 		}
 
 		Zend_Session::setOptions(
@@ -290,6 +263,24 @@ class iMSCP_Initializer
 		);
 
 		Zend_Session::start();
+	}
+
+	/**
+	 * Sets include path.
+	 *
+	 * Sets the PHP include_path. Duplicates entries are removed.
+	 *
+	 * @return void
+	 */
+	protected function _setIncludePath()
+	{
+		// Ensure library/ and vendor/ are in include_path
+		set_include_path(
+			implode(
+				PATH_SEPARATOR,
+				array_unique(array(LIBRARY_PATH, LIBRARY_PATH . '/vendor', DEFAULT_INCLUDE_PATH))
+			)
+		);
 	}
 
 	/**
@@ -320,26 +311,6 @@ class iMSCP_Initializer
 	}
 
 	/**
-	 * Sets encryption keys.
-	 *
-	 * @throws iMSCP_Exception When key and/or initialization vector was not generated
-	 * @return void
-	 */
-	protected function _setEncryptionKeys()
-	{
-		$db_pass_key = $db_pass_iv = '';
-
-		eval(@file_get_contents($this->_config->CONF_DIR . '/imscp-db-keys'));
-
-		if (!empty($db_pass_key) && !empty($db_pass_iv)) {
-			iMSCP_Registry::set('MCRYPT_KEY', $db_pass_key);
-			iMSCP_Registry::set('MCRYPT_IV', $db_pass_iv);
-		} else {
-			throw new iMSCP_Exception('Database key and/or initialization vector was not generated.');
-		}
-	}
-
-	/**
 	 * Establishes the connection to the database server.
 	 *
 	 * This methods establishes the default connection to the database server by using configuration parameters that
@@ -348,19 +319,42 @@ class iMSCP_Initializer
 	 *
 	 * A PDO instance is also registered in the registry for further usage.
 	 *
-	 * @throws iMSCP_Exception_Database in case connection to the database cannot be established
+	 * @throws iMSCP_Exception_Database|iMSCP_Exception
 	 * @return void
 	 */
 	protected function _initializeDatabase()
 	{
 		try {
-			$connection = iMSCP_Database::connect(
-				$this->_config->DATABASE_USER,
-				decrypt_db_password($this->_config->DATABASE_PASSWORD),
-				$this->_config->DATABASE_TYPE,
-				$this->_config->DATABASE_HOST, $this->_config->DATABASE_NAME
-			);
+			$db_pass_key = $db_pass_iv = '';
 
+			eval(@file_get_contents($this->_config->CONF_DIR . '/imscp-db-keys'));
+
+			if (!empty($db_pass_key) && !empty($db_pass_iv)) {
+				iMSCP_Registry::set('MCRYPT_KEY', $db_pass_key);
+				iMSCP_Registry::set('MCRYPT_IV', $db_pass_iv);
+
+				$connection = iMSCP_Database::connect(
+					$this->_config->DATABASE_USER,
+					decrypt_db_password($this->_config->DATABASE_PASSWORD),
+					$this->_config->DATABASE_TYPE,
+					$this->_config->DATABASE_HOST,
+					$this->_config->DATABASE_NAME
+				);
+
+				// Switch optionally to utf8 based communication with the database
+				if (isset($this->_config->DATABASE_UTF8) && $this->_config->DATABASE_UTF8 == 'yes') {
+					if (!$connection->execute('SET NAMES `utf8`')) {
+						throw new iMSCP_Exception(
+							sprintf(
+								'Unable to set charset for database communication. SQL returned: %s',
+								$connection->errorMsg()
+							)
+						);
+					}
+				}
+			} else {
+				throw new iMSCP_Exception('Database key and/or initialization vector was not generated.');
+			}
 		} catch (PDOException $e) {
 			throw new iMSCP_Exception_Database(
 				'Unable to establish the connection to the database. SQL returned: ' . $e->getMessage()
@@ -369,36 +363,6 @@ class iMSCP_Initializer
 
 		// Register Database instance in registry for further usage.
 		iMSCP_Registry::set('db', $connection);
-	}
-
-	/**
-	 * Sets encoding.
-	 *
-	 * This methods set encoding for both communication database and PHP.
-	 *
-	 * @throws iMSCP_Exception
-	 * @return void
-	 * @todo add a specific listener that will operate on the 'onAfterConnection'
-	 * event of the database component and that will set the charset.
-	 */
-	protected function _setEncoding()
-	{
-		// Always send the following header:
-		// Content-type: text/html; charset=UTF-8'
-		// Note: This header can be overrided by calling the header() function
-		ini_set('default_charset', 'UTF-8');
-
-		// Switch optionally to utf8 based communication with the database
-		if (isset($this->_config->DATABASE_UTF8) && $this->_config->DATABASE_UTF8 == 'yes') {
-			/** @var $db iMSCP_Database */
-			$db = iMSCP_Registry::get('db');
-
-			if (!$db->execute('SET NAMES `utf8`')) {
-				throw new iMSCP_Exception(
-					'Error: Unable to set charset for database communication. SQL returned: ' . $db->errorMsg()
-				);
-			}
-		}
 	}
 
 	/**
@@ -440,6 +404,7 @@ class iMSCP_Initializer
 	 * The basis configuration object contains parameters that come from the i-mscp.conf configuration file or any
 	 * parameter defined in the {@link environment.php} file.
 	 *
+	 * @throws iMSCP_Exception
 	 * @return void
 	 */
 	protected function _processConfiguration()
@@ -451,7 +416,9 @@ class iMSCP_Initializer
 		$dbConfig = new iMSCP_Config_Handler_Db($pdo);
 
 		// Now, we can override our basis configuration object with parameter that come from the database
-		$this->_config->replaceWith($dbConfig);
+		if(!$this->_config->replaceWith($dbConfig)) {
+			throw new iMSCP_Exception('An unexpected error occured.');
+		}
 
 		// Finally, we register the iMSCP_Config_Handler_Db for shared access
 		iMSCP_Registry::set('dbConfig', $dbConfig);
@@ -496,7 +463,7 @@ class iMSCP_Initializer
 	 */
 	protected function _initializeLocalization()
 	{
-		require_once 'php-gettext/gettext.inc';
+
 
 		$locale = isset($_SESSION['user_def_lang']) ? $_SESSION['user_def_lang'] : $this->_config->USER_INITIAL_LANG;
 
@@ -536,12 +503,12 @@ class iMSCP_Initializer
 
 					/** @var $event iMSCP_Events_Event */
 					if (($identity = $event->getParam('identity', null))) {
-						if ($identity->admin_type != 'admin' &&
+						if (
+							$identity->admin_type != 'admin' &&
 							(!isset($_SESSION['logged_from_type']) || $_SESSION['logged_from_type'] != 'admin')
 						) {
 							set_page_message(
-								tr('Only administrators can login when maintenance mode is activated.'),
-								'error'
+								tr('Only administrators can login when maintenance mode is activated.'), 'error'
 							);
 							redirectTo('index.php?admin=1');
 						}
@@ -549,38 +516,6 @@ class iMSCP_Initializer
 				}
 			}
 		);
-	}
-
-	/**
-	 * Initialize layout.
-	 *
-	 * @return void
-	 */
-	protected function _initializeLayout()
-	{
-		// Set template root directory
-		iMSCP_pTemplate::setRootDir($this->_config->ROOT_TEMPLATE_PATH);
-
-		$eventManager = iMSCP_Events_Manager::getInstance();
-
-		// Set layout color for the current environment (Must be donne at end)
-		$eventManager->registerListener(
-			array(
-				iMSCP_Events::onLoginScriptEnd, iMSCP_Events::onLostPasswordScriptEnd,
-				iMSCP_Events::onAdminScriptEnd, iMSCP_Events::onResellerScriptEnd,
-				iMSCP_Events::onClientScriptEnd, iMSCP_Events::onExceptionToBrowserEnd
-			),
-			'layout_setColor'
-		);
-
-		if (!isset($_SESSION['user_logged'])) {
-			$callback = function($event)
-			{
-				unset($_SESSION['user_theme_color']);
-			};
-
-			$eventManager->registerListener(iMSCP_Events::onAfterSetIdentity, $callback);
-		}
 	}
 
 	/**

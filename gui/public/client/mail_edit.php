@@ -309,7 +309,6 @@ $tpl->define_dynamic(
 $tpl->assign(
 	array(
 		 'TR_PAGE_TITLE' => tr('Client / Mail / Overview /  Edit Mail Account'),
-		 'THEME_CHARSET' => tr('encoding'),
 		 'ISP_LOGO' => layout_getUserLogo(),
 		 'TR_PASSWORD' => tr('Password'),
 		 'TR_PASSWORD_CONFIRMATION' => tr('Password confirmation'),

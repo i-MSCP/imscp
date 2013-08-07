@@ -138,7 +138,6 @@ if (layout_isMainMenuLabelsVisible($userId)) {
 $tpl->assign(
 	array(
 		'TR_PAGE_TITLE' => tr('Client / Profile / Layout'),
-		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => layout_getUserLogo(),
 		'TR_LAYOUT_COLOR' => tr('Layout color'),
 		'TR_CHOOSE_LAYOUT_COLOR' =>  tr('Choose layout color'),

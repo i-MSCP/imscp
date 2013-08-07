@@ -94,7 +94,6 @@ $tpl->parse('DISK_LIST', 'disk_list');
 $tpl->assign(
 	array(
 		'TR_PAGE_TITLE' => tr('Admin / System tools / System information'),
-		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => layout_getUserLogo(),
 		'TR_CPU_BOGOMIPS' => tr('CPU bogomips'),
 		'TR_CPU_CACHE' => tr('CPU cache'),

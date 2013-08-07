@@ -157,7 +157,6 @@ $tpl->assign(
 		'TR_PAGE_TITLE' => tr('Reseller / Profile / Layout'),
 		'ISP_LOGO' => layout_getUserLogo(),
 		'OWN_LOGO' => $ispLogo,
-		'THEME_CHARSET' => tr('encoding'),
 		'TR_LAYOUT_SETTINGS' => tr('Layout'),
 		'TR_UPLOAD_LOGO' => tr('Upload logo'),
 		'TR_LOGO_FILE' => tr('Logo file'),

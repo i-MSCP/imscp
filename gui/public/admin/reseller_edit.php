@@ -883,7 +883,6 @@ $tpl->define_dynamic(
 $tpl->assign(
 	array(
 		'TR_PAGE_TITLE' => tr('Admin / Users / Edit Reseller'),
-		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => layout_getUserLogo(),
 		'EDIT_ID' => $resellerId,
 		'TR_EDIT_RESELLER' => tr('Edit reseller'),

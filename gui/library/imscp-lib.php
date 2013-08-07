@@ -84,16 +84,14 @@ iMSCP\Loader\AutoloaderFactory::factory(
 );
 
 /**
- * Attach the primary exception writer to write uncaught exceptions messages to the
- * client browser.
+ * Attach the primary exception writer to write uncaught exceptions messages to the client browser.
  *
- * The exception writer writes all exception messages to the client browser. In
- * production, all messages are replaced by a specific message to avoid revealing
- * important information about the i-MSCP application environment if the user is not
- * an administrator.
+ * The exception writer writes all exception messages to the client browser. In production, all messages are replaced by
+ * a specific message to avoid revealingimportant information about the i-MSCP application environment if the user is
+ * not an administrator.
  *
- * Another writers will be attached to this object during initialization process if
- * enabled in the application wide configuration file.
+ * Another writers will be attached to this object during initialization process if enabled in the application wide
+ * configuration file.
  */
 iMSCP_Exception_Handler::getInstance()->attach(new iMSCP_Exception_Writer_Browser('box.tpl'));
 

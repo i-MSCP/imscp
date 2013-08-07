@@ -228,7 +228,6 @@ function get_menu_vars($menu_link)
  * Returns available color set for current layout.
  *
  * @author Laurent Declercq <l.declercq@nuxwin.com>
- * @since i-MSCP 1.0.1.6
  * @return array
  */
 function layout_getAvailableColorSet()
@@ -266,18 +265,21 @@ function layout_getUserLayoutColor($userId)
 }
 
 /**
- * Set layout color.
+ * Init layout
  *
  * @author Laurent Declercq <l.declercq@nuxwin.com>
- * @since i-MSCP 1.0.1.6
  * @param iMSCP_Events_Event $event
  * @return void
  * @todo Use cookies to store user UI properties (Remember me implementation?)
  */
-function layout_setColor($event)
+function layout_init($event)
 {
 	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
+
+	$encoding = tr('encoding');
+
+	ini_set('default_charset', ($encoding !='encoding') ? $encoding : 'UTF-8');
 
 	if (isset($_SESSION['user_theme_color'])) {
 		$color = $_SESSION['user_theme_color'];
@@ -295,8 +297,11 @@ function layout_setColor($event)
 
 	$tpl->assign(
 		array(
-			'THEME_COLOR_PATH' => '/themes/' . $cfg->USER_INITIAL_THEME, // @TODO Move this statement
-			'THEME_COLOR' => $color));
+			'THEME_CHARSET' => ($encoding !='encoding') ? $encoding : 'UTF-8',
+			'THEME_COLOR_PATH' => '/themes/' . $cfg->USER_INITIAL_THEME,
+			'THEME_COLOR' => $color
+		)
+	);
 
 	$tpl->parse('LAYOUT', 'layout');
 }

@@ -188,7 +188,6 @@ $reseller_id = $_SESSION['user_id'];
 $tpl->assign(
 	array(
 		'TR_PAGE_TITLE' => tr('Reseller / Statistics / IP Usage'),
-		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => layout_getUserLogo()));
 
 generateNavigation($tpl);

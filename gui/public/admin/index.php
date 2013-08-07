@@ -233,7 +233,6 @@ $tpl->define_dynamic(
 
 $tpl->assign(
 	array(
-		'THEME_CHARSET' => tr('encoding'),
 		'TR_PAGE_TITLE' => tr('Admin / General / Overview'),
 		'ISP_LOGO' => layout_getUserLogo(),
 		'TR_PROPERTIES' => tr('Properties'),

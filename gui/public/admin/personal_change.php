@@ -55,7 +55,6 @@ $tpl->define_dynamic(
 $tpl->assign(
 	array(
 		'TR_PAGE_TITLE' => tr('Admin / Profile / Personal Data'),
-		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => layout_getUserLogo()));
 
 if (isset($_POST['uaction']) && $_POST['uaction'] === 'updt_data') {

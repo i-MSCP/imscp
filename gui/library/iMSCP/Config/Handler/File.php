@@ -21,15 +21,14 @@
  * Portions created by the i-MSCP Team are Copyright (C) 2010-2013 by
  * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
  *
- * @category	i-MSCP
- * @package		iMSCP_Core
+ * @category    i-MSCP
+ * @package     iMSCP_Core
  * @subpackage  Config_Handler
- * @copyright	2006-2010 by ispCP | http://isp-control.net
- * @copyright	2010-2013 by i-MSCP | http://i-mscp.net
- * @author		Benedikt Heintel <benedikt.heintel@ispcp.net>
- * @author		Laurent Declercq <l.declercq@nuxwin.com>
- * @link		http://i-mscp.net i-MSCP Home Site
- * @license		http://www.mozilla.org/MPL/ MPL 1.1
+ * @copyright   2006-2010 by ispCP | http://isp-control.net
+ * @copyright   2010-2013 by i-MSCP | http://i-mscp.net
+ * @author      Laurent Declercq <l.declercq@nuxwin.com>
+ * @link        http://i-mscp.net i-MSCP Home Site
+ * @license     http://www.mozilla.org/MPL/ MPL 1.1
  */
 
 /** @see iMSCP_Config_Handler */
@@ -156,10 +155,10 @@ require_once  'iMSCP/Config/Handler.php';
  * @property string BACKUP_DOMAINS (yes|no)
  * @property string WEBSTATS_ADDON (No|<webstats_addon_name>)
  *
- * @category	iMSCP
- * @package		iMSCP_Core
+ * @category    iMSCP
+ * @package     iMSCP_Core
  * @subpackage  Config_Handler
- * @author		Laurent Declercq <l.declercq@nuxwin.com>
+ * @author      Laurent Declercq <l.declercq@nuxwin.com>
  */
 class iMSCP_Config_Handler_File extends iMSCP_Config_Handler
 {
@@ -173,8 +172,7 @@ class iMSCP_Config_Handler_File extends iMSCP_Config_Handler
 	/**
 	 * Loads all configuration parameters from a flat file
 	 *
-	 * <b>Note:</b> Default file path is set to:
-	 * {/usr/local}/etc/imscp/imscp.conf depending of distribution.
+	 * <b>Note:</b> Default file path is set to {/usr/local}/etc/imscp/imscp.conf depending of distribution.
 	 *
 	 * @param string $pathFile Configuration file path
 	 */

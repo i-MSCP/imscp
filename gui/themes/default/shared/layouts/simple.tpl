@@ -21,7 +21,7 @@
 	<script type="text/javascript">
 	/*<![CDATA[*/
 		$(document).ready(function() {
-			setTimeout(function(){$('.error, .success').fadeOut(2000);},3000);
+			setTimeout(function(){ $('.error, .success').fadeOut(1000); },5000);
 			$('.body a').imscpTooltip();
 			$('button').button({icons: {secondary: "ui-icon-triangle-1-e"}});
 			$('input').first().focus();

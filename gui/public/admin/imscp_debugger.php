@@ -709,7 +709,6 @@ $errors += debugger_getPluginsErrors($tpl);
 $tpl->assign(
 	array(
 		'TR_PAGE_TITLE' => tr('Admin / System Tools / Debugger'),
-		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => layout_getUserLogo(),
 
 		'TR_USER_ERRORS' => tr('Users errors'),

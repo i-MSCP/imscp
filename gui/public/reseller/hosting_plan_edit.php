@@ -576,7 +576,6 @@ if (isset($_GET['id'])) {
 
 	$tpl->assign(
 		array(
-			'THEME_CHARSET' => tr('encoding'),
 			'TR_PAGE_TITLE' =>  tr('Reseller /Hosting Plans / {TR_DYNAMIC_TITLE}'),
 			'ISP_LOGO' => layout_getUserLogo(),
 			'TR_DYNAMIC_TITLE' => $cfg->HOSTING_PLANS_LEVEL != 'reseller'

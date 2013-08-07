@@ -110,7 +110,6 @@ $tpl->define_dynamic(
 $tpl->assign(
     array(
         'TR_PAGE_TITLE' => tr('Admin / Settings / Languages'),
-        'THEME_CHARSET' => tr('encoding'),
         'ISP_LOGO' => layout_getUserLogo(),
         'TR_MULTILANGUAGE' => tr('Internationalization'),
         'TR_LANGUAGE_NAME' => tr('Language'),

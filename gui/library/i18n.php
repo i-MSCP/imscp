@@ -32,16 +32,16 @@
  * @author      i-MSCP Team
  */
 
+require_once 'php-gettext/gettext.inc';
+
 /**
  * Translates a given message into the selected language, if exists.
  *
  * @author Laurent Declercq (nuxwin) <l.declercq@nuxwin.com>
  * @author Raphael Geissert (2007)
  * @param string $msgid string to translate
- * @param mixed $substitution,... If second parameter is bool (true), prevent the
- *                                returned string from being replaced with html
- *                                entities. If not considere the parameter(s) as
- *                                simple substitution value(s)
+ * @param mixed $substitution,... If second parameter is bool (true), prevent the returned string from being replaced
+ *                                with html entities. If not considere the parameter(s) as simple substitution value(s)
  * @return string Translated or original message
  */
 function tr($msgid, $substitution = false)

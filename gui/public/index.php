@@ -87,8 +87,7 @@ $tpl->assign(
 	array(
 		'productLongName' => tr('internet Multi Server Control Panel'),
 		'productLink' => 'http://www.i-mscp.net',
-		'productCopyright' => tr('© 2010-2013 i-MSCP Team<br/>All Rights Reserved'),
-		'THEME_CHARSET' => tr('encoding')
+		'productCopyright' => tr('© 2010-2013 i-MSCP Team<br/>All Rights Reserved')
 	)
 );
 

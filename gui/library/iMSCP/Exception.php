@@ -21,24 +21,23 @@
  * Portions created by the i-MSCP Team are Copyright (C) 2010-2013 by
  * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
  *
- * @category	i-MSCP
- * @package		iMSCP_Core
- * @subpackage	Exception
- * @copyright	2006-2010 by ispCP | http://isp-control.net
- * @copyright	2010-2013 by i-MSCP | http://i-mscp.net
- * @author		Laurent Declercq <l.declercq@nuxwin.com>
- * @link		http://i-mscp.net i-MSCP Home Site
- * @license		http://www.mozilla.org/MPL/ MPL 1.1
+ * @category    i-MSCP
+ * @package     iMSCP_Core
+ * @subpackage  Exception
+ * @copyright   2006-2010 by ispCP | http://isp-control.net
+ * @copyright   2010-2013 by i-MSCP | http://i-mscp.net
+ * @author      Laurent Declercq <l.declercq@nuxwin.com>
+ * @link        http://i-mscp.net i-MSCP Home Site
+ * @license     http://www.mozilla.org/MPL/ MPL 1.1
  */
 
 /**
  * i-MSCP default Exception
  *
- * @category	i-MSCP
- * @package		iMSCP_Core
- * @subpackage	Exception
- * @author		Laurent Declercq <l.declercq@nuxwin.com>
- * @version		0.0.2
+ * @category    i-MSCP
+ * @package     iMSCP_Core
+ * @subpackage  Exception
+ * @author      Laurent Declercq <l.declercq@nuxwin.com>
  */
 class iMSCP_Exception extends Exception
 {

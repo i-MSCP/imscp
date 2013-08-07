@@ -103,7 +103,6 @@ $tpl->define_dynamic(
 
 $tpl->assign(
 	array(
-		 'THEME_CHARSET' => tr('encoding'),
 		 'TR_PAGE_TITLE' => tr('Client / Support / New Ticket'),
 		 'ISP_LOGO' => layout_getUserLogo(),
 		 'TR_NEW_TICKET' => tr('New ticket'),

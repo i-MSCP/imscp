@@ -46,168 +46,168 @@
  * @package     iMSCP_Config
  * @subpackage  Handler
  * @author      Laurent Declercq <l.declercq@nuxwin.com>
- * @version     1.0.8
  */
 class iMSCP_Config_Handler implements ArrayAccess
 {
-    /**
-     * Loads all configuration parameters from an array.
-     *
-     * @param array $parameters Configuration parameters
-     */
-    public function __construct(array $parameters)
-    {
-        foreach ($parameters as $parameter => $value) {
-            $this->$parameter = $value;
-        }
-    }
+	/**
+	 * Loads all configuration parameters from an array.
+	 *
+	 * @param array $parameters Configuration parameters
+	 */
+	public function __construct(array $parameters)
+	{
+		foreach ($parameters as $parameter => $value) {
+			$this->$parameter = $value;
+		}
+	}
 
-    /**
-     * Sets a configuration parameter.
-     *
-     * @param string $key Configuration parameter key name
-     * @param mixed $value Configuration parameter value
-     * @return void
-     */
-    public function set($key, $value)
-    {
-        $this->$key = $value;
-    }
+	/**
+	 * Sets a configuration parameter.
+	 *
+	 * @param string $key Configuration parameter key name
+	 * @param mixed $value Configuration parameter value
+	 * @return void
+	 */
+	public function set($key, $value)
+	{
+		$this->$key = $value;
+	}
 
-    /**
-     * PHP overloading on inaccessible members.
-     *
-     * @param string $key Configuration parameter key name
-     * @return mixed Configuration parameter value
-     */
-    public function __get($key)
-    {
-        return $this->get($key);
-    }
+	/**
+	 * PHP overloading on inaccessible members.
+	 *
+	 * @param string $key Configuration parameter key name
+	 * @return mixed Configuration parameter value
+	 */
+	public function __get($key)
+	{
+		return $this->get($key);
+	}
 
-    /**
-     * Getter method to retrieve a configuration parameter value.
-     *
-     * @throws iMSCP_Exception
-     * @param string $key Configuration parameter key name
-     * @return mixed Configuration parameter value
-     */
-    public function get($key)
-    {
-        if (!$this->exists($key)) {
-            throw new iMSCP_Exception("Configuration variable `$key` is missing.");
-        }
+	/**
+	 * Getter method to retrieve a configuration parameter value.
+	 *
+	 * @throws iMSCP_Exception
+	 * @param string $key Configuration parameter key name
+	 * @return mixed Configuration parameter value
+	 */
+	public function get($key)
+	{
+		if (!$this->exists($key)) {
+			throw new iMSCP_Exception("Configuration variable `$key` is missing.");
+		}
 
-        return $this->$key;
-    }
+		return $this->$key;
+	}
 
-    /**
-     * Deletes a configuration parameters.
-     *
-     * @param string $key Configuration parameter key name
-     * @return void
-     */
-    public function del($key)
-    {
-        unset($this->$key);
-    }
+	/**
+	 * Deletes a configuration parameters.
+	 *
+	 * @param string $key Configuration parameter key name
+	 * @return void
+	 */
+	public function del($key)
+	{
+		unset($this->$key);
+	}
 
-    /**
-     * Checks whether configuration parameters exists.
-     *
-     * @param string $key Configuration parameter key name
-     * @return boolean TRUE if configuration parameter exists, FALSE otherwise
-     * @todo Remove this method
-     */
-    public function exists($key)
-    {
-        return property_exists($this, $key);
-    }
+	/**
+	 * Checks whether configuration parameters exists.
+	 *
+	 * @param string $key Configuration parameter key name
+	 * @return boolean TRUE if configuration parameter exists, FALSE otherwise
+	 * @todo Remove this method
+	 */
+	public function exists($key)
+	{
+		return property_exists($this, $key);
+	}
 
-    /**
-     * Replaces all parameters of this object with parameters from another.
-     *
-     * This method replace the parameters values of this object with the same values
-     * from another {@link iMSCP_Config_Handler} object.
-     *
-     * If a key from this object exists in the second object, its value will be
-     * replaced by the value from the second object. If the key exists in the second
-     * object, and not in the first, it will be created in the first object. All keys
-     * in this object that don't exist in the second object will be left untouched.
-     *
-     * <b>Note:</b> This method is not recursive.
-     *
-     * @param iMSCP_Config_Handler $config iMSCP_Config_Handler object
-     * @return void
-     */
-    public function replaceWith(iMSCP_Config_Handler $config)
-    {
-        foreach ($config as $key => $value) {
-            $this->set($key, $value);
-        }
-    }
+	/**
+	 * Replaces all parameters of this object with parameters from another.
+	 *
+	 * This method replace the parameters values of this object with the same values from another
+	 * {@link iMSCP_Config_Handler} object.
+	 *
+	 * If a key from this object exists in the second object, its value will be replaced by the value from the second
+	 * object. If the key exists in the second object, and not in the first, it will be created in the first object.
+	 * All keys in this object that don't exist in the second object will be left untouched.
+	 *
+	 * <b>Note:</b> This method is not recursive.
+	 *
+	 * @param iMSCP_Config_Handler $config iMSCP_Config_Handler object
+	 * @return bool TRUE on success, FALSE otherwise
+	 */
+	public function replaceWith(iMSCP_Config_Handler $config)
+	{
+		foreach ($config as $key => $value) {
+			$this->set($key, $value);
+		}
 
-    /**
-     * Return an associative array that contains all configuration parameters.
-     *
-     * @return array Array that contains configuration parameters
-     */
-    public function toArray()
-    {
-        $ref = new ReflectionObject($this);
-        $properties = $ref->getProperties(ReflectionProperty::IS_PUBLIC);
-        $array = array();
+		return true;
+	}
 
-        foreach ($properties as $property) {
-            $name = $property->name;
-            $array[$name] = $this->$name;
-        }
+	/**
+	 * Return an associative array that contains all configuration parameters.
+	 *
+	 * @return array Array that contains configuration parameters
+	 */
+	public function toArray()
+	{
+		$ref = new ReflectionObject($this);
+		$properties = $ref->getProperties(ReflectionProperty::IS_PUBLIC);
+		$array = array();
 
-        return $array;
-    }
+		foreach ($properties as $property) {
+			$name = $property->name;
+			$array[$name] = $this->$name;
+		}
 
-    /**
-     * Assigns a value to the specified offset.
-     *
-     * @param mixed $offset The offset to assign the value to
-     * @param mixed $value The value to set.
-     * @return void
-     */
-    public function offsetSet($offset, $value)
-    {
-        $this->set($offset, $value);
-    }
+		return $array;
+	}
 
-    /**
-     * Returns the value at specified offset.
-     *
-     * @param  mixed $offset The offset to retrieve
-     * @return mixed Offset value
-     */
-    public function offsetGet($offset)
-    {
-        return $this->get($offset);
-    }
+	/**
+	 * Assigns a value to the specified offset.
+	 *
+	 * @param mixed $offset The offset to assign the value to
+	 * @param mixed $value The value to set.
+	 * @return void
+	 */
+	public function offsetSet($offset, $value)
+	{
+		$this->set($offset, $value);
+	}
 
-    /**
-     * Whether or not an offset exists.
-     *
-     * @param mixed $offset An offset to check for existence
-     * @return boolean TRUE on success or FALSE on failure
-     */
-    public function offsetExists($offset)
-    {
-        return property_exists($this, $offset);
-    }
+	/**
+	 * Returns the value at specified offset.
+	 *
+	 * @param  mixed $offset The offset to retrieve
+	 * @return mixed Offset value
+	 */
+	public function offsetGet($offset)
+	{
+		return $this->get($offset);
+	}
 
-    /**
-     * Unsets an offset.
-     *
-     * @param  mixed $offset The offset to unset
-     * @return void
-     */
-    public function offsetUnset($offset)
-    {
-        unset($this->$offset);
-    }
+	/**
+	 * Whether or not an offset exists.
+	 *
+	 * @param mixed $offset An offset to check for existence
+	 * @return boolean TRUE on success or FALSE on failure
+	 */
+	public function offsetExists($offset)
+	{
+		return property_exists($this, $offset);
+	}
+
+	/**
+	 * Unsets an offset.
+	 *
+	 * @param  mixed $offset The offset to unset
+	 * @return void
+	 */
+	public function offsetUnset($offset)
+	{
+		unset($this->$offset);
+	}
 }

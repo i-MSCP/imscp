@@ -99,7 +99,6 @@ if ($cfg->ZIP == 'gzip') {
 $tpl->assign(
 	array(
 		'TR_PAGE_TITLE' => tr('Client / Webtools / Daily Backup'),
-		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => layout_getUserLogo(),
 		'TR_BACKUP' => tr('Backup'),
 		'TR_DAILY_BACKUP' => tr('Daily backup'),
