@@ -134,7 +134,6 @@ class iMSCP_Initializer
 		$this->_initializeLayout();
 		$this->_setExceptionWriters();
 		$this->_initializeSession();
-		$this->_setIncludePath();
 		$this->_initializeDatabase();
 		$this->_setTimezone();
 		$this->_processConfiguration();
@@ -263,24 +262,6 @@ class iMSCP_Initializer
 		);
 
 		Zend_Session::start();
-	}
-
-	/**
-	 * Sets include path.
-	 *
-	 * Sets the PHP include_path. Duplicates entries are removed.
-	 *
-	 * @return void
-	 */
-	protected function _setIncludePath()
-	{
-		// Ensure library/ and vendor/ are in include_path
-		set_include_path(
-			implode(
-				PATH_SEPARATOR,
-				array_unique(array(LIBRARY_PATH, LIBRARY_PATH . '/vendor', DEFAULT_INCLUDE_PATH))
-			)
-		);
 	}
 
 	/**
@@ -463,8 +444,6 @@ class iMSCP_Initializer
 	 */
 	protected function _initializeLocalization()
 	{
-
-
 		$locale = isset($_SESSION['user_def_lang']) ? $_SESSION['user_def_lang'] : $this->_config->USER_INITIAL_LANG;
 
 		$checkedLocale = setlocale(

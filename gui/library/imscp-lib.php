@@ -69,6 +69,14 @@ define('CACHE_PATH', GUI_ROOT_DIR .'/data/cache');
 // Define persistent directory path
 define('PERSISTENT_PATH', GUI_ROOT_DIR .'/data/persistent');
 
+// Set include path
+set_include_path(
+	implode(
+		PATH_SEPARATOR,
+		array_unique(array(LIBRARY_PATH, LIBRARY_PATH . '/vendor', DEFAULT_INCLUDE_PATH))
+	)
+);
+
 // Autoloader
 // TODO generate a classmap on first load and cache it for better performances
 require_once 'iMSCP/Loader/AutoloaderFactory.php';
