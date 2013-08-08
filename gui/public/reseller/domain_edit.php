@@ -927,6 +927,21 @@ function reseller_checkAndUpdateData($domainId, $recoveryMode = false)
 					$domainId
 				)
 			);
+			
+			// Update domain alias IP if needed
+			if ($data['domain_ip_id'] != $data['fallback_domain_ip_id']) {
+				if($data['domain_alias_limit'] != '-1') {
+					$query = "
+						UPDATE
+							`domain_aliasses`
+						SET
+							`alias_ip_id` = ?
+						WHERE
+							`domain_id` = ?
+					";
+					exec_query($query, array($data['domain_ip_id'], $domainId));
+				}
+			}
 
 			// Update Ftp quota limit if needed
 			if ($data['domain_disk_limit'] != $data['fallback_domain_disk_limit']) {
