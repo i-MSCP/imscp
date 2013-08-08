@@ -91,7 +91,7 @@ sub connect
 		# Set connection timeout to 2 second
 		my $mask = POSIX::SigSet->new(SIGALRM);
 		my $action = POSIX::SigAction->new(sub { die "SQL database connection timeout\n" }, $mask);
-   		my $oldaction = POSIX::SigAction->new();
+		my $oldaction = POSIX::SigAction->new();
 		sigaction(SIGALRM, $action, $oldaction);
 
 		eval {
@@ -114,6 +114,7 @@ sub connect
 		$self->{'_dsn'} = $dsn;
 		$self->{'_currentUser'} = $self->{'db'}->{'DATABASE_USER'};
 		$self->{'_currentPassword'} = $self->{'db'}->{'DATABASE_PASSWORD'};
+		$self->{'connection'}->{'RaiseError'} = 0;
 	} else {
 		debug('Reusing previous SQL connection');
 	}
