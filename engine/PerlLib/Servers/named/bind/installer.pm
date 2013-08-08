@@ -255,6 +255,8 @@ sub _init
 
 	$self->{'hooksManager'} = iMSCP::HooksManager->getInstance();
 
+	$self->{'named'} = Servers::named::bind->getInstance();
+
 	$self->{'hooksManager'}->trigger(
 		'beforeNamedInitInstaller', $self, 'bind'
 	) and fatal('bind - beforeNamedInitInstaller hook has failed');
@@ -263,16 +265,16 @@ sub _init
 	$self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
 	$self->{'wrkDir'} = "$self->{'cfgDir'}/working";
 
-	$self::bindConfig = $self->{'bindConfig'};
+	$self->{'bindConfig'} = $self->{'named'}->{'bindConfig'};
 
 	my $oldConf = "$self->{'cfgDir'}/bind.old.data";
 
 	if(-f $oldConf) {
-		tie %self::bindOldConfig, 'iMSCP::Config', 'fileName' => $oldConf, 'noerrors' => 1;
+		tie my %bindOldConfig, 'iMSCP::Config', 'fileName' => $oldConf, 'noerrors' => 1;
 
-		for(keys %self::bindOldConfig) {
-			if(exists $self::bindConfig{$_}) {
-				$self::bindConfig{$_} = $self::bindOldConfig{$_};
+		for(keys %bindOldConfig) {
+			if(exists $self->{'bindConfig'}->{$_}) {
+				$self->{'bindConfig'}->{$_} = $bindOldConfig{$_};
 			}
 		}
 	}
@@ -313,13 +315,13 @@ sub _switchTasks
 	my $self = shift;
 	my $rs = 0;
 
-	my $slaveDbDir = iMSCP::Dir->new('dirname' => "$self::bindConfig{'BIND_DB_DIR'}/slave");
+	my $slaveDbDir = iMSCP::Dir->new('dirname' => "$self->{'bindConfig'}->{'BIND_DB_DIR'}/slave");
 
-	if($self::bindConfig{'BIND_MODE'} eq 'slave') {
+	if($self->{'bindConfig'}->{'BIND_MODE'} eq 'slave') {
 		$rs = $slaveDbDir->make(
 			{
 				'user' => $main::imscpConfig{'ROOT_USER'},
-				'group' => $self::bindConfig{'BIND_GROUP'},
+				'group' => $self->{'bindConfig'}->{'BIND_GROUP'},
 				'mode' => '0775'
 			}
 		);
@@ -332,12 +334,12 @@ sub _switchTasks
 		error($stderr) if $stderr && $rs;
 		return $rs if $rs;
 
-		$rs = execute("$main::imscpConfig{'CMD_RM'} -f $self::bindConfig{'BIND_DB_DIR'}/*.db", \$stdout, \$stderr);
+		$rs = execute("$main::imscpConfig{'CMD_RM'} -f $self->{'bindConfig'}->{'BIND_DB_DIR'}/*.db", \$stdout, \$stderr);
 		debug($stdout) if $stdout;
 		error($stderr) if $stderr && $rs;
 		return $rs if $rs;
 	} else {
-		$rs = $slaveDbDir->remove() if -d "$self::bindConfig{'BIND_DB_DIR'}/slave";
+		$rs = $slaveDbDir->remove() if -d "$self->{'bindConfig'}->{'BIND_DB_DIR'}/slave";
 	}
 
 	$rs;
@@ -351,10 +353,10 @@ sub _buildConf
 	for('BIND_CONF_FILE', 'BIND_LOCAL_CONF_FILE', 'BIND_OPTIONS_CONF_FILE') {
 
 		# Handle case where the file is not provided by specfic distribution
-		next unless defined $self::bindConfig{$_} && $self::bindConfig{$_} ne '';
+		next unless defined $self->{'bindConfig'}->{$_} && $self->{'bindConfig'}->{$_} ne '';
 
 		# Retrieving file basename
-		my $filename = fileparse($self::bindConfig{$_});
+		my $filename = fileparse($self->{'bindConfig'}->{$_});
 
 		# Loading the template file
 		my $cfgTpl = iMSCP::File->new('filename' => "$self->{'cfgDir'}/$filename")->get();
@@ -387,21 +389,24 @@ sub _buildConf
 			}
 		}
 
-		if($_ eq 'BIND_CONF_FILE' && ! -f "$self::bindConfig{'BIND_CONF_DIR'}/bind.keys") {
-			$cfgTpl =~ s%include "$self::bindConfig{'BIND_CONF_DIR'}/bind.keys";\n%%;
+		if($_ eq 'BIND_CONF_FILE' && ! -f "$self->{'bindConfig'}->{'BIND_CONF_DIR'}/bind.keys") {
+			$cfgTpl =~ s%include "$self->{'bindConfig'}->{'BIND_CONF_DIR'}/bind.keys";\n%%;
 		} elsif($_ eq 'BIND_OPTIONS_CONF_FILE') {
 
-			$cfgTpl =~ s/listen-on-v6 { any; };/listen-on-v6 { none; };/ unless $self::bindConfig{'BIND_IPV6'} eq 'yes';
+			$cfgTpl =~ s/listen-on-v6 { any; };/listen-on-v6 { none; };/
+				unless $self->{'bindConfig'}->{'BIND_IPV6'} eq 'yes';
 
-			if(defined($self::bindConfig{'BIND_CONF_DEFAULT_FILE'}) && -f $self::bindConfig{'BIND_CONF_DEFAULT_FILE'}) {
+			if(
+				defined($self->{'bindConfig'}->{'BIND_CONF_DEFAULT_FILE'}) &&
+				-f $self->{'bindConfig'}->{'BIND_CONF_DEFAULT_FILE'}
+			) {
+				my $filename = fileparse($self->{'bindConfig'}->{'BIND_CONF_DEFAULT_FILE'});
 
-				my $filename = fileparse($self::bindConfig{'BIND_CONF_DEFAULT_FILE'});
-
-				my $file = iMSCP::File->new('filename' => $self::bindConfig{'BIND_CONF_DEFAULT_FILE'});
+				my $file = iMSCP::File->new('filename' => $self->{'bindConfig'}->{'BIND_CONF_DEFAULT_FILE'});
 
 				my $fileContent = $file->get();
 				unless(defined $fileContent) {
-					error("Unable to read $self::bindConfig{'BIND_CONF_DEFAULT_FILE'}");
+					error("Unable to read $self->{'bindConfig'}->{'BIND_CONF_DEFAULT_FILE'}");
 					return 1;
 				}
 
@@ -409,7 +414,7 @@ sub _buildConf
 				return $rs if $rs;
 
 				$fileContent =~ s/OPTIONS="(.*?)(?:[^\w]-4|-4\s)(.*)"/OPTIONS="$1$2"/;
-				$fileContent =~ s/OPTIONS="/OPTIONS="-4 / unless $self::bindConfig{'BIND_IPV6'} eq 'yes';
+				$fileContent =~ s/OPTIONS="/OPTIONS="-4 / unless $self->{'bindConfig'}->{'BIND_IPV6'} eq 'yes';
 
 				$rs = $self->{'hooksManager'}->trigger('afterNamedBuildConf', \$fileContent, $filename);
 				return $rs if $rs;
@@ -430,7 +435,7 @@ sub _buildConf
 				return $rs if $rs;
 
 				# Installing new file in production directory
-				$rs = $file->copyFile($self::bindConfig{'BIND_CONF_DEFAULT_FILE'});
+				$rs = $file->copyFile($self->{'bindConfig'}->{'BIND_CONF_DEFAULT_FILE'});
 				return $rs if $rs;
 			}
 		}
@@ -447,14 +452,14 @@ sub _buildConf
 		$rs = $file->save();
 		return $rs if $rs;
 
-		$rs = $file->owner($main::imscpConfig{'ROOT_USER'}, $self::bindConfig{'BIND_GROUP'});
+		$rs = $file->owner($main::imscpConfig{'ROOT_USER'}, $self->{'bindConfig'}->{'BIND_GROUP'});
 		return $rs if $rs;
 
 		$rs = $file->mode(0644);
 		return $rs if $rs;
 
 		# Installing new file in production directory
-		$rs = $file->copyFile($self::bindConfig{$_});
+		$rs = $file->copyFile($self->{'bindConfig'}->{$_});
 		return $rs if $rs;
 	}
 

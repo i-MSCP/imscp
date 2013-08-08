@@ -54,9 +54,7 @@ sub _init
 	$self->{'wrkDir'} = "$self->{'cfgDir'}/working";
 	$self->{'tplDir'}	= "$self->{'cfgDir'}/parts";
 
-	tie %self::bindConfig, 'iMSCP::Config', 'fileName' => "$self->{'cfgDir'}/bind.data";
-
-	$self->{$_} = $self::bindConfig{$_} for keys %self::bindConfig;
+	tie %{$self->{'bindConfig'}}, 'iMSCP::Config', 'fileName' => "$self->{'cfgDir'}/bind.data";
 
 	$self->{'hooksManager'}->trigger(
 		'afterNamedInit', $self, 'bind'
@@ -71,9 +69,7 @@ sub registerSetupHooks
 	my $hooksManager = shift;
 
 	require Servers::named::bind::installer;
-	Servers::named::bind::installer->getInstance(
-		bindConfig => \%self::bindConfig
-	)->registerSetupHooks($hooksManager);
+	Servers::named::bind::installer->getInstance()->registerSetupHooks($hooksManager);
 }
 
 sub install
@@ -81,7 +77,7 @@ sub install
 	my $self = shift;
 
 	require Servers::named::bind::installer;
-	Servers::named::bind::installer->getInstance(bindConfig => \%self::bindConfig)->install();
+	Servers::named::bind::installer->getInstance()->install();
 }
 
 sub postinstall
@@ -123,7 +119,7 @@ sub restart
 	return $rs if $rs;
 
 	my ($stdout, $stderr);
-	$rs = execute("$self->{'CMD_NAMED'} restart", \$stdout, \$stderr);
+	$rs = execute("$self->{'bindConfig'}->{'CMD_NAMED'} restart", \$stdout, \$stderr);
 	debug($stdout) if $stdout;
 	error($stderr) if $stderr && $rs;
 	return $rs if $rs;
