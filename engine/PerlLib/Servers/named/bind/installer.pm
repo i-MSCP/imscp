@@ -66,14 +66,15 @@ sub askMode
 {
 	my $self = shift;
 	my $dialog = shift;
-	my $mode = main::setupGetQuestion('BIND_MODE', 'preseed') || $self::bindConfig{'BIND_MODE'};
+
+	my $mode = main::setupGetQuestion('BIND_MODE') || $self->{'bindConfig'}->{'BIND_MODE'};
 
 	my $primaryDnsIps = ($mode eq 'slave')
-		? main::setupGetQuestion('PRIMARY_DNS', 'preseed') || $self::bindConfig{'PRIMARY_DNS'}
+		? main::setupGetQuestion('PRIMARY_DNS') || $self->{'bindConfig'}->{'PRIMARY_DNS'}
 		: $main::imscpConfig{'BASE_SERVER_IP'};
 
 	my $secondaryDnsIps = ($mode eq 'master')
-		? main::setupGetQuestion('SECONDARY_DNS', 'preseed') || $self::bindConfig{'SECONDARY_DNS'} : 'no';
+		? main::setupGetQuestion('SECONDARY_DNS') || $self->{'bindConfig'}->{'SECONDARY_DNS'} : 'no';
 
 	my $ip = iMSCP::IP->new();
 	my @ips = ();
@@ -89,14 +90,15 @@ sub askMode
 	# If it's not the case, we force dialog to be show
 	$mode = '' if $mode eq 'slave' && ! @ips;
 
-	# Checl each IP address. If one is invalid, we force dialog to be show
+	# Check each IP address. If one is invalid, we force dialog to be show
 	for (@ips) {
 		if($_ && $_ ne 'no' && ! $ip->isValidIp($_)) {
 			debug("$_ is invalid ip");
 
-			$self::bindConfig{'BIND_MODE'} = '';
-			$self::bindConfig{'PRIMARY_DNS'} = '';
-			$self::bindConfig{'SECONDARY_DNS'} = '';
+			$mode = 'dummy';
+			$self->{'bindConfig'}->{'BIND_MODE'} = '';
+			$self->{'bindConfig'}->{'PRIMARY_DNS'} = '';
+			$self->{'bindConfig'}->{'SECONDARY_DNS'} = '';
 
 			last;
 		}
@@ -108,13 +110,9 @@ sub askMode
 		);
 
 		if($rs != 30) {
-			$self::bindConfig{'BIND_MODE'} = $mode;
+			$self->{'bindConfig'}->{'BIND_MODE'} = $mode;
 			$rs = $self->askOtherDns($dialog);
 		}
-	} elsif(defined $main::preseed{'BIND_MODE'}) {
-		$self::bindConfig{'BIND_MODE'} = $mode;
-		$self::bindConfig{'PRIMARY_DNS'} = $primaryDnsIps;
-		$self::bindConfig{'SECONDARY_DNS'} = $secondaryDnsIps;
 	}
 
 	$rs;
@@ -124,15 +122,15 @@ sub askOtherDns
 {
 	my $self = shift;
 	my $dialog = shift;
-	my $mode = $self::bindConfig{'BIND_MODE'};
 
+	my $mode = $self->{'bindConfig'}->{'BIND_MODE'};
 	my $primaryDnsIps = ($mode eq 'slave')
-		? ($self::bindConfig{'PRIMARY_DNS'} ne $main::imscpConfig{'BASE_SERVER_IP'})
-			? $self::bindConfig{'PRIMARY_DNS'}
+		? ($self->{'bindConfig'}->{'PRIMARY_DNS'} ne $main::imscpConfig{'BASE_SERVER_IP'})
+			? $self->{'bindConfig'}->{'PRIMARY_DNS'}
 			: ''
 		: $main::imscpConfig{'BASE_SERVER_IP'};
 
-	my $secondaryDnsIps = ($mode eq 'master') ? $self::bindConfig{'SECONDARY_DNS'} : 'no';
+	my $secondaryDnsIps = ($mode eq 'master') ? $self->{'bindConfig'}->{'SECONDARY_DNS'} : 'no';
 
 	my ($rs, $out) = (0, '');
 
@@ -142,8 +140,8 @@ sub askOtherDns
 		);
 
 		if($rs != 30 && $out eq 'no') {
-			$self::bindConfig{'PRIMARY_DNS'} = $primaryDnsIps;
-			$self::bindConfig{'SECONDARY_DNS'} = 'no';
+			$self->{'bindConfig'}->{'PRIMARY_DNS'} = $primaryDnsIps;
+			$self->{'bindConfig'}->{'SECONDARY_DNS'} = 'no';
 			return 0;
 		}
 	}
@@ -187,11 +185,11 @@ sub askOtherDns
 
 		if($rs != 30) {
 			if($mode eq 'master') {
-				$self::bindConfig{'PRIMARY_DNS'} = $primaryDnsIps;
-				$self::bindConfig{'SECONDARY_DNS'} = join ';', @ips;
+				$self->{'bindConfig'}->{'PRIMARY_DNS'} = $primaryDnsIps;
+				$self->{'bindConfig'}->{'SECONDARY_DNS'} = join ';', @ips;
 			} else { # Only slave server
-				$self::bindConfig{'PRIMARY_DNS'} = join ';', @ips;
-        		$self::bindConfig{'SECONDARY_DNS'} = 'no';
+				$self->{'bindConfig'}->{'PRIMARY_DNS'} = join ';', @ips;
+        		$self->{'bindConfig'}->{'SECONDARY_DNS'} = 'no';
 			}
 		}
 	}
@@ -203,7 +201,8 @@ sub askIPv6
 {
 	my $self = shift;
 	my $dialog = shift;
-	my $ipv6 = main::setupGetQuestion('BIND_IPV6', 'preseed') || $self::bindConfig{'BIND_IPV6'};
+
+	my $ipv6 = main::setupGetQuestion('BIND_IPV6') || $self->{'bindConfig'}->{'BIND_IPV6'};
 	my $rs = 0;
 
 	if($main::reconfigure ~~ ['named', 'servers', 'all', 'forced'] || $ipv6 !~ /^yes|no$/) {
@@ -213,7 +212,7 @@ sub askIPv6
 	}
 
 	if($rs != 30) {
-		$self::bindConfig{'BIND_IPV6'} = $ipv6;
+		$self->{'bindConfig'}->{'BIND_IPV6'} = $ipv6;
 	}
 
 	$rs;
@@ -228,9 +227,9 @@ sub install
 
 	for('BIND_CONF_DEFAULT_FILE', 'BIND_CONF_FILE', 'BIND_LOCAL_CONF_FILE', 'BIND_OPTIONS_CONF_FILE') {
 		# Handle case where the file is not provided by specfic distribution
-		next unless defined $self::bindConfig{$_} && $self::bindConfig{$_} ne '';
+		next unless defined $self->{'bindConfig'}->{$_} && $self->{'bindConfig'}->{$_} ne '';
 
-		$rs = $self->_bkpConfFile($self::bindConfig{$_});
+		$rs = $self->_bkpConfFile($self->{'bindConfig'}->{$_});
 		return $rs if $rs;
 	}
 
