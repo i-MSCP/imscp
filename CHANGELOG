@@ -16,7 +16,9 @@ SETUP:
 
 ENGINE:
 	- Added support for Apache 2.4.x branch
+	- Added database connection timeout
 	- Fixed: Plugin module is broken: Unable to disable, uninstall... any plugin
+	- Fixed: MySQL server has gone away
 
 Tickets:
 	- Fixed #745: Defect - Disk detail in dovecot doesn't include aliases
