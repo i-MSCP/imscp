@@ -59,16 +59,16 @@ sub _init
 	$self->{'wrkDir'} = "$self->{'cfgDir'}/working";
 	$self->{'vrlDir'} = "$self->{'cfgDir'}/imscp";
 
-	$self->{'postfixConfig'} = $self->{'mta'}->{'postfixConfig'};
+	$self->{'config'} = $self->{'mta'}->{'config'};
 
 	my $oldConf = "$self->{'cfgDir'}/postfix.old.data";
 
 	if(-f $oldConf) {
-		tie my %postfixOldConfig, 'iMSCP::Config', 'fileName' => $oldConf, 'noerrors' => 1;
+		tie my %oldConfig, 'iMSCP::Config', 'fileName' => $oldConf, 'noerrors' => 1;
 
-		for(keys %postfixOldConfig) {
-			if(exists $self->{'postfixConfig'}->{$_}) {
-				$self->{'postfixConfig'}->{$_} = $postfixOldConfig{$_};
+		for(keys %oldConfig) {
+			if(exists $self->{'config'}->{$_}) {
+				$self->{'config'}->{$_} = $oldConfig{$_};
 			}
 		}
 	}
@@ -105,14 +105,14 @@ sub install
 	return $rs if $rs;
 
 	for (
-		$self->{'postfixConfig'}->{'POSTFIX_CONF_FILE'},
-		$self->{'postfixConfig'}->{'POSTFIX_MASTER_CONF_FILE'},
-		$self->{'postfixConfig'}->{'MTA_VIRTUAL_CONF_DIR'} . '/aliases',
-		$self->{'postfixConfig'}->{'MTA_VIRTUAL_CONF_DIR'} . '/domains',
-		$self->{'postfixConfig'}->{'MTA_VIRTUAL_CONF_DIR'} . '/mailboxes',
-		$self->{'postfixConfig'}->{'MTA_VIRTUAL_CONF_DIR'} . '/transport',
-		$self->{'postfixConfig'}->{'MTA_VIRTUAL_CONF_DIR'} . '/sender-access',
-		$self->{'postfixConfig'}->{'MTA_VIRTUAL_CONF_DIR'} . '/relay_domains'
+		$self->{'config'}->{'POSTFIX_CONF_FILE'},
+		$self->{'config'}->{'POSTFIX_MASTER_CONF_FILE'},
+		$self->{'config'}->{'MTA_VIRTUAL_CONF_DIR'} . '/aliases',
+		$self->{'config'}->{'MTA_VIRTUAL_CONF_DIR'} . '/domains',
+		$self->{'config'}->{'MTA_VIRTUAL_CONF_DIR'} . '/mailboxes',
+		$self->{'config'}->{'MTA_VIRTUAL_CONF_DIR'} . '/transport',
+		$self->{'config'}->{'MTA_VIRTUAL_CONF_DIR'} . '/sender-access',
+		$self->{'config'}->{'MTA_VIRTUAL_CONF_DIR'} . '/relay_domains'
 	) {
 		$rs = $self->bkpConfFile($_);
 		return $rs if $rs;
@@ -144,10 +144,10 @@ sub setEnginePermissions
 	my $rootUName = $main::imscpConfig{'ROOT_USER'};
 	my $rootGName = $main::imscpConfig{'ROOT_GROUP'};
 	my $masterGName = $main::imscpConfig{'MASTER_GROUP'};
-	my $mtaUName = $self->{'postfixConfig'}->{'MTA_MAILBOX_UID_NAME'};
-	my $mtaGName = $self->{'postfixConfig'}->{'MTA_MAILBOX_GID_NAME'};
-	my $mtaCfg = $self->{'postfixConfig'}->{'MTA_VIRTUAL_CONF_DIR'};
-	my $mtaFolder = $self->{'postfixConfig'}->{'MTA_VIRTUAL_MAIL_DIR'};
+	my $mtaUName = $self->{'config'}->{'MTA_MAILBOX_UID_NAME'};
+	my $mtaGName = $self->{'config'}->{'MTA_MAILBOX_GID_NAME'};
+	my $mtaCfg = $self->{'config'}->{'MTA_VIRTUAL_CONF_DIR'};
+	my $mtaFolder = $self->{'config'}->{'MTA_VIRTUAL_MAIL_DIR'};
 	my $imscpRootDir = $main::imscpConfig{'ROOT_DIR'};
 	my $logDir = $main::imscpConfig{'LOG_DIR'};
 
@@ -184,7 +184,7 @@ sub setEnginePermissions
 
 	# eg. /usr/sbin/maillogconvert.pl
 	$rs = setRights(
-		$self->{'postfixConfig'}->{'CMD_PFLOGSUM'},
+		$self->{'config'}->{'CMD_PFLOGSUM'},
 		'user' => $rootUName, 'group' => $rootGName, 'mode' => 0750
 	);
 
@@ -199,21 +199,21 @@ sub makeDirs
 
 	my @directories = (
 		[
-			$self->{'postfixConfig'}->{'MTA_VIRTUAL_CONF_DIR'}, # eg. /etc/postfix/imscp
+			$self->{'config'}->{'MTA_VIRTUAL_CONF_DIR'}, # eg. /etc/postfix/imscp
 			$main::imscpConfig{'ROOT_USER'},
 			$main::imscpConfig{'ROOT_GROUP'},
 			0755
 		],
 		[
-			$self->{'postfixConfig'}->{'MTA_VIRTUAL_MAIL_DIR'}, # eg. /var/mail/virtual
-			$self->{'postfixConfig'}->{'MTA_MAILBOX_UID_NAME'},
-			$self->{'postfixConfig'}->{'MTA_MAILBOX_GID_NAME'},
+			$self->{'config'}->{'MTA_VIRTUAL_MAIL_DIR'}, # eg. /var/mail/virtual
+			$self->{'config'}->{'MTA_MAILBOX_UID_NAME'},
+			$self->{'config'}->{'MTA_MAILBOX_GID_NAME'},
 			0750
 		],
 		[
 			$main::imscpConfig{'LOG_DIR'} . '/imscp-arpl-msgr', # eg /var/log/imscp/imscp-arpl-msgr
-			$self->{'postfixConfig'}->{'MTA_MAILBOX_UID_NAME'},
-			$self->{'postfixConfig'}->{'MTA_MAILBOX_GID_NAME'},
+			$self->{'config'}->{'MTA_MAILBOX_UID_NAME'},
+			$self->{'config'}->{'MTA_MAILBOX_GID_NAME'},
 			0750
 		]
 	);
@@ -241,17 +241,17 @@ sub addUsersAndGroups
 
 	my @groups = (
 		[
-			$self->{'postfixConfig'}->{'MTA_MAILBOX_GID_NAME'}, # Group name
+			$self->{'config'}->{'MTA_MAILBOX_GID_NAME'}, # Group name
 			'yes' # Whether it's a system group
 		]
 	);
 
 	my @users = (
 		[
-			$self->{'postfixConfig'}->{'MTA_MAILBOX_UID_NAME'}, # User name
-			$self->{'postfixConfig'}->{'MTA_MAILBOX_GID_NAME'}, # User primary group name
+			$self->{'config'}->{'MTA_MAILBOX_UID_NAME'}, # User name
+			$self->{'config'}->{'MTA_MAILBOX_GID_NAME'}, # User primary group name
 			'vmail_user', # Comment
-			$self->{'postfixConfig'}->{'MTA_VIRTUAL_MAIL_DIR'}, # User homedir
+			$self->{'config'}->{'MTA_VIRTUAL_MAIL_DIR'}, # User homedir
 			'yes', # Whether it's a system user
 			[$main::imscpConfig{'MASTER_GROUP'}] # Additional user group(s)
 		]
@@ -259,8 +259,8 @@ sub addUsersAndGroups
 
 	my @userToGroups = (
 		[
-			$self->{'postfixConfig'}->{'POSTFIX_USER'}, # User to add into group
-			[$self->{'postfixConfig'}->{'SASLDB_GROUP'}] # Group(s) to which add user
+			$self->{'config'}->{'POSTFIX_USER'}, # User to add into group
+			[$self->{'config'}->{'SASLDB_GROUP'}] # Group(s) to which add user
 		]
 	);
 
@@ -321,10 +321,10 @@ sub buildAliasesDb
 
 	# Rebuilding the database for the mail aliases file - Begin
 	my ($stdout, $stderr);
-	$rs = execute("$self->{'postfixConfig'}->{'CMD_NEWALIASES'}", \$stdout, \$stderr);
+	$rs = execute("$self->{'config'}->{'CMD_NEWALIASES'}", \$stdout, \$stderr);
 	debug($stdout) if $stdout;
 	error($stderr) if $stderr && $rs;
-	error("Error while executing $self->{'postfixConfig'}->{'CMD_NEWALIASES'}") if ! $stderr && $rs;
+	error("Error while executing $self->{'config'}->{'CMD_NEWALIASES'}") if ! $stderr && $rs;
 	return $rs if $rs;
 
 	$self->{'hooksManager'}->trigger('afterMtaBuildAliases');
@@ -347,7 +347,7 @@ sub arplSetup
 	return $rs if $rs;
 
 	$rs = $file->owner(
-		$self->{'postfixConfig'}->{'MTA_MAILBOX_UID_NAME'}, $self->{'postfixConfig'}->{'MTA_MAILBOX_GID_NAME'}
+		$self->{'config'}->{'MTA_MAILBOX_UID_NAME'}, $self->{'config'}->{'MTA_MAILBOX_GID_NAME'}
 	);
 	return $rs if $rs;
 
@@ -374,12 +374,12 @@ sub buildLookupTables
 		return $rs if $rs;
 
 		# Install the files in the production directory
-		$rs = $file->copyFile("$self->{'postfixConfig'}->{'MTA_VIRTUAL_CONF_DIR'}");
+		$rs = $file->copyFile("$self->{'config'}->{'MTA_VIRTUAL_CONF_DIR'}");
 		return $rs if $rs;
 
 		# Creating/updating databases for all lookup tables
 		my $rs = execute(
-			"$self->{'postfixConfig'}->{'CMD_POSTMAP'} $self->{'postfixConfig'}->{'MTA_VIRTUAL_CONF_DIR'}/$_",
+			"$self->{'config'}->{'CMD_POSTMAP'} $self->{'config'}->{'MTA_VIRTUAL_CONF_DIR'}/$_",
 			\$stdout,
 			\$stderr
 		);
@@ -486,8 +486,8 @@ sub buildMainCfFile
 
 	# Building the file
 	my $hostname = $main::imscpConfig{'SERVER_HOSTNAME'};
-	my $gid = getgrnam($self->{'postfixConfig'}->{'MTA_MAILBOX_GID_NAME'});
-	my $uid = getpwnam($self->{'postfixConfig'}->{'MTA_MAILBOX_UID_NAME'});
+	my $gid = getgrnam($self->{'config'}->{'MTA_MAILBOX_GID_NAME'});
+	my $uid = getpwnam($self->{'config'}->{'MTA_MAILBOX_UID_NAME'});
 
 	my $rs = $self->{'hooksManager'}->trigger('beforeMtaBuildMainCfFile', \$cfgTpl, 'main.cf');
 	return $rs if $rs;
@@ -497,14 +497,14 @@ sub buildMainCfFile
 			MTA_HOSTNAME => $hostname,
 			MTA_LOCAL_DOMAIN => "$hostname.local",
 			MTA_VERSION => $main::imscpConfig{'Version'},
-			MTA_TRANSPORT_HASH => $self->{'postfixConfig'}->{'MTA_TRANSPORT_HASH'},
-			MTA_LOCAL_MAIL_DIR => $self->{'postfixConfig'}->{'MTA_LOCAL_MAIL_DIR'},
-			MTA_LOCAL_ALIAS_HASH => $self->{'postfixConfig'}->{'MTA_LOCAL_ALIAS_HASH'},
-			MTA_VIRTUAL_MAIL_DIR => $self->{'postfixConfig'}->{'MTA_VIRTUAL_MAIL_DIR'},
-			MTA_VIRTUAL_DMN_HASH => $self->{'postfixConfig'}->{'MTA_VIRTUAL_DMN_HASH'},
-			MTA_VIRTUAL_MAILBOX_HASH => $self->{'postfixConfig'}->{'MTA_VIRTUAL_MAILBOX_HASH'},
-			MTA_VIRTUAL_ALIAS_HASH => $self->{'postfixConfig'}->{'MTA_VIRTUAL_ALIAS_HASH'},
-			MTA_RELAY_HASH => $self->{'postfixConfig'}->{'MTA_RELAY_HASH'},
+			MTA_TRANSPORT_HASH => $self->{'config'}->{'MTA_TRANSPORT_HASH'},
+			MTA_LOCAL_MAIL_DIR => $self->{'config'}->{'MTA_LOCAL_MAIL_DIR'},
+			MTA_LOCAL_ALIAS_HASH => $self->{'config'}->{'MTA_LOCAL_ALIAS_HASH'},
+			MTA_VIRTUAL_MAIL_DIR => $self->{'config'}->{'MTA_VIRTUAL_MAIL_DIR'},
+			MTA_VIRTUAL_DMN_HASH => $self->{'config'}->{'MTA_VIRTUAL_DMN_HASH'},
+			MTA_VIRTUAL_MAILBOX_HASH => $self->{'config'}->{'MTA_VIRTUAL_MAILBOX_HASH'},
+			MTA_VIRTUAL_ALIAS_HASH => $self->{'config'}->{'MTA_VIRTUAL_ALIAS_HASH'},
+			MTA_RELAY_HASH => $self->{'config'}->{'MTA_RELAY_HASH'},
 			MTA_MAILBOX_MIN_UID => $uid,
 			MTA_MAILBOX_UID => $uid,
 			MTA_MAILBOX_GID => $gid,
@@ -518,7 +518,7 @@ sub buildMainCfFile
 
 	# Fix for #790
 	my ($stdout, $stderr);
-	execute("$self->{'postfixConfig'}->{'CMD_POSTCONF'} -h mail_version", \$stdout, \$stderr);
+	execute("$self->{'config'}->{'CMD_POSTCONF'} -h mail_version", \$stdout, \$stderr);
 	debug($stdout) if $stdout;
 	warning($stderr) if $stderr && ! $rs;
 	error($stderr) if $stderr && $rs;
@@ -555,7 +555,7 @@ sub buildMainCfFile
 	return $rs if $rs;
 
 	# Installing the new file in production directory
-	$file->copyFile($self->{'postfixConfig'}->{'POSTFIX_CONF_FILE'});
+	$file->copyFile($self->{'config'}->{'POSTFIX_CONF_FILE'});
 }
 
 # Build and install Postfix master.cf configuration file
@@ -572,7 +572,7 @@ sub buildMasterCfFile
 
 	$cfgTpl = iMSCP::Templator::process(
 		{
-			ARPL_USER => $self->{'postfixConfig'}->{'MTA_MAILBOX_UID_NAME'},
+			ARPL_USER => $self->{'config'}->{'MTA_MAILBOX_UID_NAME'},
 			ARPL_GROUP => $main::imscpConfig{'MASTER_GROUP'},
 			ARPL_PATH => $main::imscpConfig{'ROOT_DIR'}."/engine/messenger/imscp-arpl-msgr"
 		},
@@ -598,7 +598,7 @@ sub buildMasterCfFile
 	return $rs if $rs;
 
 	# Installing the new file in the production dir
-	$file->copyFile($self->{'postfixConfig'}->{'POSTFIX_MASTER_CONF_FILE'});
+	$file->copyFile($self->{'config'}->{'POSTFIX_MASTER_CONF_FILE'});
 }
 
 1;

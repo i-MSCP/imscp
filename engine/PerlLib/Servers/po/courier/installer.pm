@@ -413,7 +413,7 @@ sub _migrateFromDovecot
 	my $mta	= Servers::mta->factory();
 
 	my $binPath = "$main::imscpConfig{'CMD_PERL'} $main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlVendor/courier-dovecot-migrate.pl";
-	my $mailPath = "$mta->{'postfixConfig'}->{'MTA_VIRTUAL_MAIL_DIR'}";
+	my $mailPath = "$mta->{'config'}->{'MTA_VIRTUAL_MAIL_DIR'}";
 
 	# Converting all mailboxes to courier format
 
