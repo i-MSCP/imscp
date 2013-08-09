@@ -766,9 +766,8 @@ class iMSCP_Plugin_Manager
 								)
 							) {
 								$toUpdatePlugins[] = $pluginName;
+								$returnInfo['updated']++;
 							}
-
-							$returnInfo['updated']++;
 						} else {
 							$pluginStatus = 'uninstalled';
 							$returnInfo['new']++;
