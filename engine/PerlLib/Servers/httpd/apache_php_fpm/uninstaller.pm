@@ -91,17 +91,17 @@ sub _init
 
 	$self->{'httpd'} = Servers::httpd::apache_php_fpm->getInstance();
 
-	$self->{'apacheCfgDir'} = "$main::imscpConfig{'CONF_DIR'}/apache";
+	$self->{'apacheCfgDir'} = $self->{'httpd'}->{'apachecCgDir'};
 	$self->{'apacheBkpDir'} = "$self->{'apacheCfgDir'}/backup";
 	$self->{'apacheWrkDir'} = "$self->{'apacheCfgDir'}/working";
 
-	tie %{$self->{'config'}, 'iMSCP::Config','fileName' => "$self->{'apacheCfgDir'}/apache.data";
+	$self->{'config'} = $self->{'httpd'}->{'apacheConfig'};
 
-	$self->{'phpfpmCfgDir'} = "$main::imscpConfig{'CONF_DIR'}/php-fpm";
+	$self->{'phpfpmCfgDir'} = $self->{'httpd'}->{'phpfpmCfgDir'};
 	$self->{'phpfpmBkpDir'} = "$self->{'phpfpmCfgDir'}/backup";
 	$self->{'phpfpmWrkDir'} = "$self->{'phpfpmCfgDir'}/working";
 
-	tie %{$self->{'phpfpmConfig'}, 'iMSCP::Config','fileName' => "$self->{'phpfpmCfgDir'}/phpfpm.data";
+	$self->{'phpfpmConfig'} = $self->{'httpd'}->{'phpfpmConfig'};
 
 	$self;
 }

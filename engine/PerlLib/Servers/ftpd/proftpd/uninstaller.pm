@@ -30,25 +30,24 @@ use warnings;
 
 use iMSCP::Debug;
 use iMSCP::Execute;
-use iMSCP::Templator;
 use File::Basename;
 use iMSCP::File;
-use iMSCP::Dir;
+#use iMSCP::Dir;
 use parent 'Common::SingletonClass';
 
 sub _init
 {
 	my $self = shift;
 
-	$self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/proftpd";
+	$self->{'ftpd'} = Servers::ftpd::proftpd->getInstance();
+
+	$self->{'cfgDir'} = $self->{'ftpd'}->{'cfgDir'};
 	$self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
 	$self->{'wrkDir'} = "$self->{'cfgDir'}/working";
 
-	my $conf = "$self->{'cfgDir'}/proftpd.data";
+	$self->{'config'} = $self->{'ftpd'}->{'config'};
 
-	tie %self::config, 'iMSCP::Config','fileName' => $conf;
-
-	0;
+	$self;
 }
 
 sub uninstall
@@ -85,10 +84,9 @@ sub removeDB
 	my $err = 0;
 	my $database = iMSCP::Database->new()->factory();
 
-	if($self::config{DATABASE_USER}){
-
-		$err = $database->doQuery('delete', "DROP USER ?@?", $self::config{'DATABASE_USER'}, 'localhost');
-		$err = $database->doQuery('delete', "DROP USER ?@?", $self::config{'DATABASE_USER'}, '%');
+	if($self->{'config'}->{'DATABASE_USER'}){
+		$err = $database->doQuery('delete', "DROP USER ?@?", $self->{'config'}->{'DATABASE_USER'}, 'localhost');
+		$err = $database->doQuery('delete', "DROP USER ?@?", $self->{'config'}->{'DATABASE_USER'}, '%');
 		$err = $database->doQuery('dummy', 'FLUSH PRIVILEGES');
 
 		if (ref $err ne 'HASH'){
@@ -105,11 +103,11 @@ sub restoreConfFile
 	my $self = shift;
 	my $rs = 0;
 
-	for ($self::config{'FTPD_CONF_FILE'}) {
+	for ($self->{'config'}->{'FTPD_CONF_FILE'}) {
 		my ($filename, $directories, $suffix) = fileparse($_);
 
 		if(-f "$self->{bkpDir}/$filename$suffix.system") {
-			$rs	= iMSCP::File->new(filename => "$self->{'bkpDir'}/$filename$suffix.system")->copyFile($_);
+			$rs	= iMSCP::File->new('filename' => "$self->{'bkpDir'}/$filename$suffix.system")->copyFile($_);
 			return $rs if $rs;
 		}
 	}

@@ -241,7 +241,7 @@ sub addDmnDb
 
 	my $ns = 1;
 	my (@nsASection, @nsDeclSection) = ((), ());
-	my @ips = $self::config{'SECONDARY_DNS'} eq 'no' ? () : split(';', $self::config{'SECONDARY_DNS'});
+	my @ips = $self->{'config'}->{'SECONDARY_DNS'} eq 'no' ? () : split(';', $self->{'config'}->{'SECONDARY_DNS'});
 
 	my $ipH = iMSCP::IP->new();
 
@@ -396,14 +396,14 @@ sub addDmnDb
 	$rs = $file->mode(0640);
 	return $rs if $rs;
 
-	$rs = $file->owner($main::imscpConfig{'ROOT_USER'}, $self::config{'BIND_GROUP'});
+	$rs = $file->owner($main::imscpConfig{'ROOT_USER'}, $self->{'config'}->{'BIND_GROUP'});
 	return $rs if $rs;
 
 	# Installing new file in production directory (also cleanup file and perform entries checks)
 	my ($stdout, $stderr);
 	$rs = execute(
-		"$self::config{'CMD_NAMED_COMPILEZONE'} -i none -s relative " .
-		"-o $self::config{'BIND_DB_DIR'}/$options->{'DOMAIN_NAME'}.db $options->{'DOMAIN_NAME'} $zoneFile",
+		"$self->{'config'}->{'CMD_NAMED_COMPILEZONE'} -i none -s relative " .
+		"-o $self->{'config'}->{'BIND_DB_DIR'}/$options->{'DOMAIN_NAME'}.db $options->{'DOMAIN_NAME'} $zoneFile",
 		\$stdout, \$stderr
 	);
 	debug($stdout) if $stdout;
@@ -411,12 +411,12 @@ sub addDmnDb
 	error("Unable to install zone file $options->{'DOMAIN_NAME'}.db") if $rs && ! $stderr;
 	return $rs if $rs;
 
-	$file = iMSCP::File->new('filename' => "$self::config{'BIND_DB_DIR'}/$options->{'DOMAIN_NAME'}.db");
+	$file = iMSCP::File->new('filename' => "$self->{'config'}->{'BIND_DB_DIR'}/$options->{'DOMAIN_NAME'}.db");
 
 	$rs = $file->mode(0640);
 	return $rs if $rs;
 
-	$rs = $file->owner($main::imscpConfig{'ROOT_USER'}, $self::config{'BIND_GROUP'});
+	$rs = $file->owner($main::imscpConfig{'ROOT_USER'}, $self->{'config'}->{'BIND_GROUP'});
 	return $rs if $rs;
 
 	$self->{'hooksManager'}->trigger('afterNamedAddDmnDb');
@@ -433,7 +433,7 @@ sub addDmnConfig
 	my ($file, $cfg);
 
 	my ($confFileName, $confFileDirectory) = fileparse(
-		$self::config{'BIND_LOCAL_CONF_FILE'} || $self::config{'BIND_CONF_FILE'}
+		$self->{'config'}->{'BIND_LOCAL_CONF_FILE'} || $self->{'config'}->{'BIND_CONF_FILE'}
 	);
 
 	# Backup config file
@@ -452,23 +452,23 @@ sub addDmnConfig
 	# Loading needed templates from /etc/imscp/bind/parts
 	my $entry_b = iMSCP::File->new('filename' => "$self->{'tplDir'}/cfg_entry_b.tpl")->get();
 	my $entry_e = iMSCP::File->new('filename' => "$self->{'tplDir'}/cfg_entry_e.tpl")->get();
-	my $entry = iMSCP::File->new('filename' => "$self->{'tplDir'}/cfg_entry_$self::config{'BIND_MODE'}.tpl")->get();
+	my $entry = iMSCP::File->new('filename' => "$self->{'tplDir'}/cfg_entry_$self->{'config'}->{'BIND_MODE'}.tpl")->get();
 	unless(defined $entry_b && defined $entry_e && defined $entry) {
 		error('A template has not been found');
 		return 1
 	}
 
 	# Tags preparation
-	my $tags_hash = { DB_DIR => $self::config{'BIND_DB_DIR'} };
+	my $tags_hash = { DB_DIR => $self->{'config'}->{'BIND_DB_DIR'} };
 
-	if($self::config{'BIND_MODE'} eq 'master') {
-		if($self::config{'SECONDARY_DNS'} ne 'no') {
-			$tags_hash->{'SECONDARY_DNS'} = join( '; ', split(';', $self::config{'SECONDARY_DNS'})) . '; localhost;';
+	if($self->{'config'}->{'BIND_MODE'} eq 'master') {
+		if($self->{'config'}->{'SECONDARY_DNS'} ne 'no') {
+			$tags_hash->{'SECONDARY_DNS'} = join( '; ', split(';', $self->{'config'}->{'SECONDARY_DNS'})) . '; localhost;';
 		} else {
 			$tags_hash->{'SECONDARY_DNS'} = 'localhost;';
 		}
 	} else {
-		$tags_hash->{'PRIMARY_DNS'} = join( '; ', split(';', $self::config{'PRIMARY_DNS'})) . ';';
+		$tags_hash->{'PRIMARY_DNS'} = join( '; ', split(';', $self->{'config'}->{'PRIMARY_DNS'})) . ';';
 	}
 
 	$tags_hash->{'DOMAIN_NAME'} = $options->{'DOMAIN_NAME'};
@@ -507,7 +507,7 @@ sub addDmnConfig
 	$rs = $file->mode(0644);
 	return $rs if $rs;
 
-	$rs = $file->owner($main::imscpConfig{'ROOT_USER'}, $self::config{'BIND_GROUP'});
+	$rs = $file->owner($main::imscpConfig{'ROOT_USER'}, $self->{'config'}->{'BIND_GROUP'});
 	return $rs if $rs;
 
 	# Installing new file in production directory
@@ -527,7 +527,7 @@ sub addDmn
 	my $rs = $self->{'hooksManager'}->trigger('beforeNamedAddDmn', $options);
 	return $rs if $rs;
 
-	if($self::config{'BIND_MODE'} eq 'master') {
+	if($self->{'config'}->{'BIND_MODE'} eq 'master') {
 		$rs = $self->addDmnConfig($options);
 		return $rs if $rs;
 
@@ -537,7 +537,7 @@ sub addDmn
 		$rs = $self->addDmnConfig($options);
 		return $rs if $rs;
 
-		my $zoneFile = "$self::config{'BIND_DB_DIR'}/$options->{'DOMAIN_NAME'}.db";
+		my $zoneFile = "$self->{'config'}->{'BIND_DB_DIR'}/$options->{'DOMAIN_NAME'}.db";
 
 		if(-f $zoneFile) {
 			$rs = iMSCP::File->new('filename' => $zoneFile)->delFile();
@@ -556,7 +556,7 @@ sub postaddDmn
 
 	$options = {} if ref $options ne 'HASH';
 
-	if($self::config{'BIND_MODE'} eq 'master') {
+	if($self->{'config'}->{'BIND_MODE'} eq 'master') {
 		$rs = $self->{'hooksManager'}->trigger('beforeNamedPostAddDmn', $options);
 		return $rs if $rs;
 
@@ -595,7 +595,7 @@ sub deleteDmnConfig
 	return $rs if $rs;
 
 	my ($confFileName, $confFileDirectory) = fileparse(
-		$self::config{'BIND_LOCAL_CONF_FILE'} || $self::config{'BIND_CONF_FILE'}
+		$self->{'config'}->{'BIND_LOCAL_CONF_FILE'} || $self->{'config'}->{'BIND_CONF_FILE'}
 	);
 
 	my ($file, $cfg);
@@ -649,7 +649,7 @@ sub deleteDmnConfig
 	$rs = $file->mode(0644);
 	return $rs if $rs;
 
-	$rs = $file->owner($main::imscpConfig{'ROOT_USER'}, $self::config{'BIND_GROUP'});
+	$rs = $file->owner($main::imscpConfig{'ROOT_USER'}, $self->{'config'}->{'BIND_GROUP'});
 	return $rs if $rs;
 
 	# Installing new file in production directory
@@ -681,8 +681,8 @@ sub deleteDmn
 
 	# Removing production zone file
 	$rs = iMSCP::File->new(
-		'filename' => "$self::config{'BIND_DB_DIR'}/$options->{'DOMAIN_NAME'}.db"
-	)->delFile() if -f "$self::config{'BIND_DB_DIR'}/$options->{'DOMAIN_NAME'}.db";
+		'filename' => "$self->{'config'}->{'BIND_DB_DIR'}/$options->{'DOMAIN_NAME'}.db"
+	)->delFile() if -f "$self->{'config'}->{'BIND_DB_DIR'}/$options->{'DOMAIN_NAME'}.db";
 	return $rs if $rs;
 
 	$self->{'hooksManager'}->trigger('afterNamedDelDmn', $options);
@@ -808,14 +808,14 @@ sub addSub
 	$rs = $file->mode(0640);
 	return $rs if $rs;
 
-	$rs = $file->owner($main::imscpConfig{'ROOT_USER'}, $self::config{'BIND_GROUP'});
+	$rs = $file->owner($main::imscpConfig{'ROOT_USER'}, $self->{'config'}->{'BIND_GROUP'});
 	return $rs if $rs;
 
 	# Installing new file in production directory (also cleanup file and perform entries checks)
 	my ($stdout, $stderr);
 	$rs = execute(
-		"$self::config{'CMD_NAMED_COMPILEZONE'} -i none -s relative " .
-		"-o $self::config{'BIND_DB_DIR'}/$data->{'PARENT_DOMAIN_NAME'}.db $data->{'PARENT_DOMAIN_NAME'} $zoneFile",
+		"$self->{'config'}->{'CMD_NAMED_COMPILEZONE'} -i none -s relative " .
+		"-o $self->{'config'}->{'BIND_DB_DIR'}/$data->{'PARENT_DOMAIN_NAME'}.db $data->{'PARENT_DOMAIN_NAME'} $zoneFile",
 		\$stdout, \$stderr
 	);
 	debug($stdout) if $stdout;
@@ -823,12 +823,12 @@ sub addSub
 	error("Unable to install zone file $data->{'PARENT_DOMAIN_NAME'}.db") if $rs && ! $stderr;
 	return $rs if $rs;
 
-	$file = iMSCP::File->new('filename' => "$self::config{'BIND_DB_DIR'}/$data->{'PARENT_DOMAIN_NAME'}.db");
+	$file = iMSCP::File->new('filename' => "$self->{'config'}->{'BIND_DB_DIR'}/$data->{'PARENT_DOMAIN_NAME'}.db");
 
 	$rs = $file->mode(0640);
 	return $rs if $rs;
 
-	$rs = $file->owner($main::imscpConfig{'ROOT_USER'}, $self::config{'BIND_GROUP'});
+	$rs = $file->owner($main::imscpConfig{'ROOT_USER'}, $self->{'config'}->{'BIND_GROUP'});
 	return $rs if $rs;
 
 	$self->{'hooksManager'}->trigger('afterNamedAddSub', $data);
@@ -840,7 +840,7 @@ sub postaddSub
 	my $data = shift;
 	my $rs = 0;
 
-	if($self::config{'BIND_MODE'} eq 'master') {
+	if($self->{'config'}->{'BIND_MODE'} eq 'master') {
 		my $ipH = iMSCP::IP->new();
 
 		$rs = $self->{'hooksManager'}->trigger('beforeNamedPostAddSub', $data);
@@ -933,18 +933,18 @@ sub deleteSub
 	$rs = $file->mode(0640);
 	return $rs if $rs;
 
-	$rs = $file->owner($main::imscpConfig{'ROOT_USER'}, $self::config{'BIND_GROUP'});
+	$rs = $file->owner($main::imscpConfig{'ROOT_USER'}, $self->{'config'}->{'BIND_GROUP'});
 	return $rs if $rs;
 
 	# Installing new file in production directory
-	$rs = $file->copyFile($self::config{'BIND_DB_DIR'});
+	$rs = $file->copyFile($self->{'config'}->{'BIND_DB_DIR'});
 	return $rs if $rs;
 
 	# Installing new file in production directory (also cleanup file and perform entries checks)
 	my ($stdout, $stderr);
 	$rs = execute(
-		"$self::config{'CMD_NAMED_COMPILEZONE'} -i none -s relative " .
-		"-o $self::config{'BIND_DB_DIR'}/$data->{'PARENT_DOMAIN_NAME'}.db $data->{'PARENT_DOMAIN_NAME'} $zoneFile",
+		"$self->{'config'}->{'CMD_NAMED_COMPILEZONE'} -i none -s relative " .
+		"-o $self->{'config'}->{'BIND_DB_DIR'}/$data->{'PARENT_DOMAIN_NAME'}.db $data->{'PARENT_DOMAIN_NAME'} $zoneFile",
 		\$stdout, \$stderr
 	);
 	debug($stdout) if $stdout;
@@ -952,12 +952,12 @@ sub deleteSub
 	error("Unable to install zone file $data->{'PARENT_DOMAIN_NAME'}.db") if $rs && ! $stderr;
 	return $rs if $rs;
 
-	$file = iMSCP::File->new('filename' => "$self::config{'BIND_DB_DIR'}/$data->{'PARENT_DOMAIN_NAME'}.db");
+	$file = iMSCP::File->new('filename' => "$self->{'config'}->{'BIND_DB_DIR'}/$data->{'PARENT_DOMAIN_NAME'}.db");
 
 	$rs = $file->mode(0640);
 	return $rs if $rs;
 
-	$rs = $file->owner($main::imscpConfig{'ROOT_USER'}, $self::config{'BIND_GROUP'});
+	$rs = $file->owner($main::imscpConfig{'ROOT_USER'}, $self->{'config'}->{'BIND_GROUP'});
 	return $rs if $rs;
 
 	$self->{'hooksManager'}->trigger('afterNamedDelSub', $data);

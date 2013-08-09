@@ -99,7 +99,7 @@ sub install
 
 	# Backup current configuration file if it exists (only relevant when running imscp-setup)
 	my $rs = $self->_backupConfigFile(
-		"$main::imscpConfig{'GUI_PUBLIC_DIR'}/$self::config{'PHPMYADMIN_CONF_DIR'}/config.inc.php"
+		"$main::imscpConfig{'GUI_PUBLIC_DIR'}/$self->{'config'}->{'PHPMYADMIN_CONF_DIR'}/config.inc.php"
 	);
 	return $rs if $rs;
 
@@ -154,8 +154,8 @@ sub askPhpmyadmin
 	my $dbHost = main::setupGetQuestion('DATABASE_HOST');
 	my $dbPort = main::setupGetQuestion('DATABASE_PORT');
 	my $dbName = main::setupGetQuestion('DATABASE_NAME');
-	my $dbUser = main::setupGetQuestion('PHPMYADMIN_SQL_USER') || $self::config{'DATABASE_USER'} || 'pma';
-	my $dbPass = main::setupGetQuestion('PHPMYADMIN_SQL_PASSWORD') || $self::config{'DATABASE_PASSWORD'} || '';
+	my $dbUser = main::setupGetQuestion('PHPMYADMIN_SQL_USER') || $self->{'config'}->{'DATABASE_USER'} || 'pma';
+	my $dbPass = main::setupGetQuestion('PHPMYADMIN_SQL_PASSWORD') || $self->{'config'}->{'DATABASE_PASSWORD'} || '';
 
 	my ($rs, $msg) = (0, '');
 
@@ -204,8 +204,8 @@ sub askPhpmyadmin
 	}
 
 	if($rs != 30) {
-		$self::config{'DATABASE_USER'} = $dbUser;
-		$self::config{'DATABASE_PASSWORD'} = $dbPass;
+		$self->{'config'}->{'DATABASE_USER'} = $dbUser;
+		$self->{'config'}->{'DATABASE_PASSWORD'} = $dbPass;
 	}
 
 	$rs;

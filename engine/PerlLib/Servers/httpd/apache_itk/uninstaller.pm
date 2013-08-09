@@ -41,15 +41,15 @@ sub _init
 {
 	my $self = shift;
 
-	$self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/apache";
+	$self->{'httpd'} = Servers::httpd::apache_fcgi->getInstance();
+
+	$self->{'cfgDir'} = $self->{'httpd'}->{'cfgDir'};
 	$self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
 	$self->{'wrkDir'} = "$self->{'cfgDir'}/working";
 
-	my $conf = "$self->{'cfgDir'}/apache.data";
+	$self->{'config'} = $self->{'httpd'}->{'config'};
 
-	tie %{$self->{'config'}, 'iMSCP::Config','fileName' => $conf;
-
-	0;
+	$self;
 }
 
 sub uninstall

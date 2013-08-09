@@ -416,7 +416,7 @@ sub start
 	my ($stdout, $stderr);
 
 	for('CMD_AUTHD', 'CMD_POP', 'CMD_IMAP', 'CMD_POP_SSL', 'CMD_IMAP_SSL') {
-		$rs = execute("$self::config{$_} start", \$stdout, \$stderr);
+		$rs = execute("$self->{'config'}->{$_} start", \$stdout, \$stderr);
 		debug($stdout) if $stdout;
 		error($stderr) if $stderr && $rs;
 		return $rs if $rs;
@@ -443,7 +443,7 @@ sub stop
 	my ($stdout, $stderr);
 
 	for('CMD_AUTHD', 'CMD_POP', 'CMD_IMAP', 'CMD_POP_SSL', 'CMD_IMAP_SSL') {
-		$rs = execute("$self::config{$_} stop", \$stdout, \$stderr);
+		$rs = execute("$self->{'config'}->{$_} stop", \$stdout, \$stderr);
 		debug($stdout) if $stdout;
 		error($stderr) if $stderr && $rs;
 		return $rs if $rs;;
@@ -470,7 +470,7 @@ sub restart
 	my ($stdout, $stderr);
 
 	for('CMD_AUTHD', 'CMD_POP', 'CMD_IMAP', 'CMD_POP_SSL', 'CMD_IMAP_SSL') {
-		$rs = execute("$self::config{$_} restart", \$stdout, \$stderr);
+		$rs = execute("$self->{'config'}->{$_} restart", \$stdout, \$stderr);
 		debug($stdout) if $stdout;
 		error($stderr) if $stderr && $rs;
 		return $rs if $rs;
@@ -601,9 +601,7 @@ sub _init
 	$self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
 	$self->{'wrkDir'} = "$self->{'cfgDir'}/working";
 
-	tie %self::config, 'iMSCP::Config', 'fileName' => "$self->{'cfgDir'}/courier.data";
-
-	$self->{$_} = $self::config{$_} for keys %self::config;
+	tie %{$self->{'config'}}, 'iMSCP::Config', 'fileName' => "$self->{'cfgDir'}/courier.data";
 
 	$self->{'hooksManager'}->trigger(
 		'afterPoInit', $self, 'courier'

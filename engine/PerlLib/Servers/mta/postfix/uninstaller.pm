@@ -42,14 +42,16 @@ sub _init
 {
 	my $self = shift;
 
-	$self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/postfix";
+	$self->{'mta'} = Servers::mta::postfix->getInstance();
+
+	$self->{'cfgDir'} = $self->{'mta'}->{'cfgDir'};
 	$self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
 	$self->{'wrkDir'} = "$self->{'cfgDir'}/working";
 	$self->{'vrlDir'} = "$self->{'cfgDir'}/imscp";
 
-	tie %{$self->{'config'}}, 'iMSCP::Config', 'fileName' => "$self->{'cfgDir'}/postfix.data";
+	$self->{'config'} = $self->{'mta'}->{'config'};
 
-	0;
+	$self;
 }
 
 sub uninstall

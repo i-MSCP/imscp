@@ -37,15 +37,15 @@ sub _init
 {
 	my $self = shift;
 
-	$self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/dovecot";
+	$self->{'po'} = Servers::po::dovecot->getInstance();
+
+	$self->{'cfgDir'} = $self->{'po'}->{'cfgDir'};
 	$self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
 	$self->{'wrkDir'} = "$self->{'cfgDir'}/working";
 
-	my $conf = "$self->{'cfgDir'}/dovecot.data";
+	$self->{'config'} = $self->{'po'}->{'config'};
 
-	tie %self::config, 'iMSCP::Config','fileName' => $conf;
-
-	0;
+	$self;
 }
 
 sub uninstall
@@ -68,7 +68,7 @@ sub restoreConfFile
 		$rs	= iMSCP::File->new(
 			'filename' => "$self->{bkpDir}/$_.system"
 		)->copyFile(
-			"$self::config{'DOVECOT_CONF_DIR'}/$_"
+			"$self->{'config'}->{'DOVECOT_CONF_DIR'}/$_"
 		) if -f "$self->{bkpDir}/$_.system";
 		return $rs if $rs;
 	}
@@ -77,7 +77,7 @@ sub restoreConfFile
 	my $mta	= Servers::mta->factory();
 
 	for ('dovecot-sql.conf', 'dovecot-dict-sql.conf') {
-		$file = iMSCP::File->new('filename' => "$self::config{'DOVECOT_CONF_DIR'}/$_");
+		$file = iMSCP::File->new('filename' => "$self->{'config'}->{'DOVECOT_CONF_DIR'}/$_");
 
 		$rs = $file->mode(0640);
 		return $rs if $rs;
@@ -86,7 +86,7 @@ sub restoreConfFile
 		return $rs if $rs;
 	}
 
-	$file= iMSCP::File->new('filename' => "$self::config{'DOVECOT_CONF_DIR'}/dovecot.conf");
+	$file= iMSCP::File->new('filename' => "$self->{'config'}->{'DOVECOT_CONF_DIR'}/dovecot.conf");
 
 	$file->mode(0644);
 }
@@ -95,11 +95,11 @@ sub removeSQL
 {
 	my $self = shift;
 
-	if($self::config{'DATABASE_USER'}) {
+	if($self->{'config'}->{'DATABASE_USER'}) {
 		my $database = iMSCP::Database->new()->factory();
 
-		$database->doQuery('delete', "DROP USER ?@?", $self::config{'DATABASE_USER'}, 'localhost');
-		$database->doQuery('delete', "DROP USER ?@?", $self::config{'DATABASE_USER'}, '%');
+		$database->doQuery('delete', "DROP USER ?@?", $self->{'config'}->{'DATABASE_USER'}, 'localhost');
+		$database->doQuery('delete', "DROP USER ?@?", $self->{'config'}->{'DATABASE_USER'}, '%');
 		$database->doQuery('dummy', 'FLUSH PRIVILEGES');
 
 	}

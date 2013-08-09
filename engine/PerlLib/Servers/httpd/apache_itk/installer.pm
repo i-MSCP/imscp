@@ -256,7 +256,7 @@ sub _init
 		'beforeHttpdInitInstaller', $self, 'apache_itk'
 	) and fatal('apache_itk - beforeHttpdInitInstaller hook has failed');
 
-	$self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/apache";
+	$self->{'cfgDir'} = $self->{'httpd'}->{'cfgDir'};
 	$self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
 	$self->{'wrkDir'} = "$self->{'cfgDir'}/working";
 

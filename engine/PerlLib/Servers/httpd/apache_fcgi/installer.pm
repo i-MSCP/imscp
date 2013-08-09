@@ -353,7 +353,7 @@ sub _init
 		'beforeHttpdInitInstaller', $self, 'apache_fcgi'
 	) and fatal('apache_fcgi - beforeHttpdInitInstaller hook has failed');
 
-	$self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/apache";
+	$self->{'cfgDir'} = $self->{'httpd'}->{'cfgDir'};
 	$self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
 	$self->{'wrkDir'} = "$self->{'cfgDir'}/working";
 

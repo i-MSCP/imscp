@@ -302,7 +302,7 @@ sub _init
 		'beforeHttpdInitInstaller', $self, 'apache_php_fpm'
 	) and fatal('apache_php_fpm - beforeHttpdInitInstaller hook has failed');
 
-	$self->{'apacheCfgDir'} = "$main::imscpConfig{'CONF_DIR'}/apache";
+	$self->{'apacheCfgDir'} = $self->{'httpd'}->{'apacheCfgDir'};
 	$self->{'apacheBkpDir'} = "$self->{'apacheCfgDir'}/backup";
 	$self->{'apacheWrkDir'} = "$self->{'apacheCfgDir'}/working";
 
@@ -320,7 +320,7 @@ sub _init
 		}
 	}
 
-	$self->{'phpfpmCfgDir'} = "$main::imscpConfig{'CONF_DIR'}/php-fpm";
+	$self->{'phpfpmCfgDir'} = $self->{'httpd'}->{'phpfpmCfgDir'};
 	$self->{'phpfpmBkpDir'} = "$self->{'phpfpmCfgDir'}/backup";
 	$self->{'phpfpmWrkDir'} = "$self->{'phpfpmCfgDir'}/working";
 

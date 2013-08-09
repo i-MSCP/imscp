@@ -87,7 +87,7 @@ sub registerSetupHooks
 sub askRBL
 {
 	my ($self, $dialog, $rs) = (shift, shift, 0);
-	my $dnsblCheckOnly = main::setupGetQuestion('DNSBL_CHECKS_ONLY') || $self::config{'DNSBL_CHECKS_ONLY'} ||  '';
+	my $dnsblCheckOnly = main::setupGetQuestion('DNSBL_CHECKS_ONLY') || $self->{'config'}->{'DNSBL_CHECKS_ONLY'} ||  '';
 
 	$dnsblCheckOnly = lc($dnsblCheckOnly);
 
@@ -106,7 +106,7 @@ Do you want to disable additional checks for MTA, HELO and domain?\n
 		);
 	}
 
-	$self::config{'DNSBL_CHECKS_ONLY'} = $dnsblCheckOnly if $rs != 30;
+	$self->{'config'}->{'DNSBL_CHECKS_ONLY'} = $dnsblCheckOnly if $rs != 30;
 
 	$rs;
 }
@@ -123,7 +123,7 @@ sub install
 {
 	my $self = shift;
 
-	my $rs = $self->_bkpConfFile($self::config{'POLICYD_CONF_FILE'});
+	my $rs = $self->_bkpConfFile($self->{'config'}->{'POLICYD_CONF_FILE'});
 	return $rs if $rs;
 
 	$rs = $self->_buildConf();

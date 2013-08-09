@@ -38,13 +38,16 @@ sub _init
 {
 	my $self = shift;
 
-	$self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/bind";
+	$self->{'named'} = Servers::named::bind->getInstance();
+
+	$self->{'cfgDir'} = $self->{'named'}->{'cfgDir'};
 	$self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
 	$self->{'wrkDir'} = "$self->{'cfgDir'}/working";
+	$self->{'vrlDir'} = "$self->{'cfgDir'}/imscp";
 
-	tie %{$self->{'config'}}, 'iMSCP::Config', 'fileName' => "$self->{'cfgDir'}/bind.data", 'noerrors' => 1;
+	$self->{'config'} = $self->{'named'}->{'config'};
 
-	0;
+	$self;
 }
 
 sub uninstall

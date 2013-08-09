@@ -157,17 +157,17 @@ sub _init
 
 	$self->{'hooksManager'} = iMSCP::HooksManager->getInstance();
 
-	$self->{'proftpd'} = Servers::ftpd::proftpd->getInstance();
+	$self->{'ftpd'} = Servers::ftpd::proftpd->getInstance();
 
 	$self->{'hooksManager'}->trigger(
 		'beforeFtpdInitInstaller', $self, 'proftpd'
 	) and fatal('proftpd - beforeFtpdInitInstaller hook has failed');
 
-	$self->{'cfgDir'} = $self->{'proftpd'}->{'cfgDir'};
+	$self->{'cfgDir'} = $self->{'ftpd'}->{'cfgDir'};
 	$self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
 	$self->{'wrkDir'} = "$self->{'cfgDir'}/working";
 
-	$self->{'config'} = $self->{'proftpd'}->{'config'};
+	$self->{'config'} = $self->{'ftpd'}->{'config'};
 
 	my $oldConf = "$self->{'cfgDir'}/proftpd.old.data";
 
@@ -279,10 +279,10 @@ sub _buildConfigFile
 		DATABASE_NAME => $main::imscpConfig{'DATABASE_NAME'},
 		DATABASE_HOST => $main::imscpConfig{'DATABASE_HOST'},
 		DATABASE_PORT => $main::imscpConfig{'DATABASE_PORT'},
-		DATABASE_USER => $self::config{'DATABASE_USER'},
-		DATABASE_PASS => $self::config{'DATABASE_PASSWORD'},
-		FTPD_MIN_UID => $self::config{'MIN_UID'},
-		FTPD_MIN_GID => $self::config{'MIN_GID'},
+		DATABASE_USER => $self->{'config'}->{'DATABASE_USER'},
+		DATABASE_PASS => $self->{'config'}->{'DATABASE_PASSWORD'},
+		FTPD_MIN_UID => $self->{'config'}->{'MIN_UID'},
+		FTPD_MIN_GID => $self->{'config'}->{'MIN_GID'},
 		GUI_CERT_DIR => $main::imscpConfig{'GUI_CERT_DIR'},
 		SSL => main::setupGetQuestion('SSL_ENABLED') eq 'yes' ? '' : '#'
 	};

@@ -227,7 +227,7 @@ sub restart
 	return $rs if $rs;
 
 	my ($stdout, $stderr);
-	$rs = execute("$self::config{'CMD_DOVECOT'} restart", \$stdout, \$stderr);
+	$rs = execute("$self->{'config'}->{'CMD_DOVECOT'} restart", \$stdout, \$stderr);
 	debug($stdout) if $stdout;
 	error($stderr) if $stderr && $rs;
 	return $rs if $rs;
@@ -343,7 +343,7 @@ sub _init
 	$self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
 	$self->{'wrkDir'} = "$self->{'cfgDir'}/working";
 
-	tie %self::config, 'iMSCP::Config','fileName' => "$self->{'cfgDir'}/dovecot.data";
+	tie %{$self->{'config'}}, 'iMSCP::Config','fileName' => "$self->{'cfgDir'}/dovecot.data";
 
 	$self->{'hooksManager'}->trigger(
 		'afterPoInit', $self, 'dovecot'
