@@ -23,12 +23,12 @@ Addons::policyd - i-MSCP Policyd Weight configurator addon
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
-# @category		i-MSCP
-# @copyright	2010-2013 by i-MSCP | http://i-mscp.net
-# @author		Daniel Andreca <sci2tech@gmail.com>
-# @author		Laurent Declercq <l.declercq@nuxwin.com>
-# @link			http://i-mscp.net i-MSCP Home Site
-# @license		http://www.gnu.org/licenses/gpl-2.0.html GPL v2
+# @category    i-MSCP
+# @copyright   2010-2013 by i-MSCP | http://i-mscp.net
+# @author      Daniel Andreca <sci2tech@gmail.com>
+# @author      Laurent Declercq <l.declercq@nuxwin.com>
+# @link        http://i-mscp.net i-MSCP Home Site
+# @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
 package Addons::policyd;
 
@@ -85,6 +85,33 @@ sub install
 
 	require Addons::policyd::installer;
 	Addons::policyd::installer->getInstance()->install();
+}
+
+=back
+
+=head1 PRIVATE METHODS
+
+=over 4
+
+=item _init()
+
+ Called by getInstance(). Initialize PhpMyAdmin addon instance.
+
+ Return Addons::phpmyadmin
+
+=cut
+
+sub _init
+{
+	my $self = shift;
+
+	$self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/policyd";
+	$self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
+	$self->{'wrkDir'} = "$self->{'cfgDir'}/working";
+
+	tie %{$self->{'policydConfig'}}, 'iMSCP::Config', 'fileName' => "$self->{'cfgDir'}/policyd.data";
+
+	$self;
 }
 
 =back

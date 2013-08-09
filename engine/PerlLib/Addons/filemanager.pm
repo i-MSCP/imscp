@@ -23,11 +23,11 @@ Addons::filemanager - i-MSCP filemanager addon
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
-# @category		i-MSCP
-# @copyright	2010-2013 by i-MSCP | http://i-mscp.net
-# @author		Laurent Declercq <l.declercq@nuxwin.com>
-# @link			http://i-mscp.net i-MSCP Home Site
-# @license		http://www.gnu.org/licenses/gpl-2.0.html GPL v2
+# @category    i-MSCP
+# @copyright   2010-2013 by i-MSCP | http://i-mscp.net
+# @author      Laurent Declercq <l.declercq@nuxwin.com>
+# @link        http://i-mscp.net i-MSCP Home Site
+# @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
 package Addons::filemanager;
 
@@ -62,7 +62,6 @@ sub registerSetupHooks
 	my $hooksManager = shift;
 
 	require Addons::filemanager::installer;
-
 	Addons::filemanager::installer->getInstance()->registerSetupHooks($hooksManager);
 }
 
@@ -79,7 +78,6 @@ sub preinstall
 	my $self = shift;
 
 	require Addons::filemanager::installer;
-
 	Addons::filemanager::installer->getInstance()->preinstall();
 }
 
@@ -96,7 +94,6 @@ sub install
 	my $self = shift;
 
 	require Addons::filemanager::installer;
-
 	Addons::filemanager::installer->getInstance()->install();
 }
 
@@ -113,7 +110,6 @@ sub setGuiPermissions
 	my $self = shift;
 
 	require Addons::filemanager::installer;
-
 	Addons::filemanager::installer->getInstance()->setGuiPermissions();
 }
 

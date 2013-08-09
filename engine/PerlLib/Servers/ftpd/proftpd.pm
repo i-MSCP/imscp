@@ -43,7 +43,7 @@ sub _init
 
 	$self->{'hooksManager'}->trigger(
 		'beforeFtpdInit', $self, 'proftpd'
-	) and fatal('proftpd - beforeFtpdInit hook has failed');;
+	) and fatal('proftpd - beforeFtpdInit hook has failed');
 
 	$self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/proftpd";
 	$self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
@@ -51,8 +51,7 @@ sub _init
 
 	$self->{'commentChar'} = '#';
 
-	tie %self::proftpdConfig, 'iMSCP::Config', 'fileName' => "$self->{'cfgDir'}/proftpd.data";
-	$self->{$_} = $self::proftpdConfig{$_} for keys %self::proftpdConfig;
+	tie %{$self->{'proftpdConfig'}}, 'iMSCP::Config', 'fileName' => "$self->{'cfgDir'}/proftpd.data";
 
 	$self->{'hooksManager'}->trigger(
 		'afterFtpdInit', $self, 'proftpd'
@@ -67,9 +66,7 @@ sub registerSetupHooks
 	my $hooksManager = shift;
 
 	require Servers::ftpd::proftpd::installer;
-	Servers::ftpd::proftpd::installer->getInstance(
-		proftpdConfig => \%self::proftpdConfig
-	)->registerSetupHooks($hooksManager);
+	Servers::ftpd::proftpd::installer->getInstance()->registerSetupHooks($hooksManager);
 }
 
 sub install
@@ -77,7 +74,7 @@ sub install
 	my $self = shift;
 
 	require Servers::ftpd::proftpd::installer;
-	Servers::ftpd::proftpd::installer->getInstance(proftpdConfig => \%self::proftpdConfig)->install();
+	Servers::ftpd::proftpd::installer->getInstance()->install();
 }
 
 sub postinstall
@@ -163,7 +160,7 @@ sub getTraffic
 {
 	my $self = shift;
 	my $who = shift;
-	my $trfFile	= "$main::imscpConfig{'TRAFF_LOG_DIR'}/$self::proftpdConfig{'FTP_TRAFF_LOG'}";
+	my $trfFile = "$main::imscpConfig{'TRAFF_LOG_DIR'}/$self->{'proftpdConfig'}->{'FTP_TRAFF_LOG'}";
 
 	unless(exists $self->{'logDb'}) {
 		$self->{'logDb'} = {};
@@ -189,7 +186,7 @@ END
 {
 	my $exitCode = $?;
 	my $self = Servers::ftpd::proftpd->getInstance();
-	my $trfFile	= "$main::imscpConfig{'TRAFF_LOG_DIR'}/$self::proftpdConfig{'FTP_TRAFF_LOG'}";
+	my $trfFile = "$main::imscpConfig{'TRAFF_LOG_DIR'}/$self->{'proftpdConfig'}->{'FTP_TRAFF_LOG'}";
 	my $rs = 0;
 
 	$rs = $self->restart() if defined $self->{'restart'} && $self->{'restart'} eq 'yes';

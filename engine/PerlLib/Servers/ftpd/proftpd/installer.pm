@@ -66,20 +66,19 @@ sub askProftpd
 	my $dbPort = main::setupGetQuestion('DATABASE_PORT');
 	my $dbName = main::setupGetQuestion('DATABASE_NAME');
 
-	my $dbUser = main::setupGetQuestion('FTPD_SQL_USER', 'preseed') || $self::proftpdConfig{'DATABASE_USER'} ||
-		$self::proftpdOldConfig{'DATABASE_USER'} || 'vftp';
-
-	my $dbPass = main::setupGetQuestion('FTPD_SQL_PASSWORD', 'preseed') || $self::proftpdConfig{'DATABASE_PASSWORD'} ||
-		$self::proftpdOldConfig{'DATABASE_PASSWORD'} || '';
+	my $dbUser = main::setupGetQuestion('FTPD_SQL_USER') || $self->{'proftpdConfig'}->{'DATABASE_USER'} || 'vftp';
+	my $dbPass = main::setupGetQuestion('FTPD_SQL_PASSWORD') || $self->{'proftpdConfig'}->{'DATABASE_PASSWORD'} || '';
 
 	my ($rs, $msg) = (0, '');
 
 	if(
-		$main::reconfigure ~~ ['ftpd', 'servers', 'all', 'forced'] || ! ($dbUser && $dbPass) ||
-		(
-			! ($main::preseed{'FTPD_SQL_USER'} && $main::preseed{'FTPD_SQL_PASSWORD'}) &&
-			main::setupCheckSqlConnect($dbType, '', $dbHost, $dbPort, $dbUser, $dbPass)
-		)
+		$main::reconfigure ~~ ['ftpd', 'servers', 'all', 'forced'] || ! ($dbUser && $dbPass)
+		# In any case, sql user will be reseted so...
+		#||
+		#(
+		#	! ($main::preseed{'FTPD_SQL_USER'} && $main::preseed{'FTPD_SQL_PASSWORD'}) && # If we are not in preseed mode
+		#	main::setupCheckSqlConnect($dbType, '', $dbHost, $dbPort, $dbUser, $dbPass)
+		#)
 	) {
 		# Ask for the proftpd restricted SQL username
 		do{
@@ -98,7 +97,7 @@ sub askProftpd
 
 		if($rs != 30) {
 			# Ask for the proftpd restricted SQL user password
-			($rs, $dbPass) = $dialog->inputbox(
+			($rs, $dbPass) = $dialog->passwordbox(
 				'\nPlease, enter a password for the restricted proftpd SQL user (blank for autogenerate):', $dbPass
 			);
 
@@ -117,8 +116,8 @@ sub askProftpd
 	}
 
 	if($rs != 30) {
-		$self::proftpdConfig{'DATABASE_USER'} = $dbUser;
-        $self::proftpdConfig{'DATABASE_PASSWORD'} = $dbPass;
+		$self->{'proftpdConfig'}->{'DATABASE_USER'} = $dbUser;
+        $self->{'proftpdConfig'}->{'DATABASE_PASSWORD'} = $dbPass;
 	}
 
 	$rs;
@@ -131,7 +130,7 @@ sub install
 	my $rs = $self->{'hooksManager'}->trigger('beforeFtpdInstall', 'proftpd');
 	return $rs if $rs;
 
-	$rs = $self->_bkpConfFile($self::proftpdConfig{'FTPD_CONF_FILE'});
+	$rs = $self->_bkpConfFile($self->{'proftpdConfig'}->{'FTPD_CONF_FILE'});
 	return $rs if $rs;
 
 	$rs = $self->_setupDatabase();
@@ -158,28 +157,28 @@ sub _init
 
 	$self->{'hooksManager'} = iMSCP::HooksManager->getInstance();
 
+	$self->{'proftpd'} = Servers::ftpd::proftpd->getInstance();
+
 	$self->{'hooksManager'}->trigger(
 		'beforeFtpdInitInstaller', $self, 'proftpd'
 	) and fatal('proftpd - beforeFtpdInitInstaller hook has failed');
 
-	$self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/proftpd";
+	$self->{'cfgDir'} = $self->{'proftpd'}->{'cfgDir'};
 	$self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
 	$self->{'wrkDir'} = "$self->{'cfgDir'}/working";
 
-	$self::proftpdConfig = $self->{'proftpdConfig'};
+	$self->{'proftpdConfig'} = $self->{'proftpd'}->{'proftpdConfig'};
 
 	my $oldConf = "$self->{'cfgDir'}/proftpd.old.data";
 
 	if(-f $oldConf) {
-		tie %self::proftpdOldConfig, 'iMSCP::Config', 'fileName' => $oldConf, 'noerrors' => 1;
+		tie my %proftpdOldConfig, 'iMSCP::Config', 'fileName' => $oldConf, 'noerrors' => 1;
 
-		for(keys %self::proftpdOldConfig) {
-			if(exists $self::proftpdConfi{$_}) {
-				$self::proftpdConfig{$_} = $self::proftpdOldConfig{$_};
+		for(keys %proftpdOldConfig) {
+			if(exists $self->{'proftpdConfig'}->{$_}) {
+				$self->{'proftpdConfig'}->{$_} = $proftpdOldConfig{$_};
 			}
 		}
-
-		#%self::proftpdConfig = (%self::proftpdConfig, %self::proftpdOldConfig);
 	}
 
 	$self->{'hooksManager'}->trigger(
@@ -205,8 +204,7 @@ sub _bkpConfFile
 			$rs = $file->copyFile("$self->{'bkpDir'}/$filename$suffix.system");
 			return $rs if $rs;
 		} else {
-			my $timestamp = time;
-			$rs = $file->copyFile("$self->{'bkpDir'}/$filename$suffix.$timestamp");
+			$rs = $file->copyFile("$self->{'bkpDir'}/$filename$suffix." . time);
 			return $rs if $rs;
 		}
 	}
@@ -218,26 +216,22 @@ sub _setupDatabase
 {
 	my $self = shift;
 
-	my $dbUser = $self::proftpdConfig{'DATABASE_USER'};
-	my $dbOldUser = $self::proftpdOldConfig{'DATABASE_USER'} || '';
+	my $dbUser = $self->{'proftpdConfig'}->{'DATABASE_USER'};
 	my $dbUserHost = main::setupGetQuestion('DATABASE_USER_HOST');
-	my $dbPass = $self::proftpdConfig{'DATABASE_PASSWORD'};
+	my $dbPass = $self->{'proftpdConfig'}->{'DATABASE_PASSWORD'};
 
 	my $rs = $self->{'hooksManager'}->trigger('beforeFtpdSetupDb', $dbUser, $dbPass, $dbOldUser);
 	return $rs if $rs;
 
 	# Remove old proftpd restricted SQL user and all it privileges (if any)
-	for($dbUserHost, $main::imscpOldConfig{'DATABASE_HOST'} || '', $main::imscpOldConfig{'BASE_SERVER_IP'} || '') {
-		next if $_ eq '' || $dbOldUser eq '';
-		$rs = main::setupDeleteSqlUser($dbOldUser, $_);
-		error("Unable to remove old Proftpd '$dbOldUser\@$_' restricted SQL user") if $rs;
-		return 1 if $rs;
+	if($dbUser) {
+		for($dbUserHost, $main::imscpOldConfig{'DATABASE_HOST'}, $main::imscpOldConfig{'BASE_SERVER_IP'}) {
+			next if $_ eq '';
+			$rs = main::setupDeleteSqlUser($dbUser, $_);
+			error("Unable to remove old Proftpd '$dbUser\@$_' restricted SQL user") if $rs;
+			return 1 if $rs;
+		}
 	}
-
-	# Ensure new proftpd user do not already exists by removing it
-	$rs = main::setupDeleteSqlUser($dbUser, $dbUserHost);
-	error("Unable to delete the Proftpd '$dbUser\@$dbUserHost' restricted SQL user") if $rs;
-	return 1 if $rs;
 
 	# Get SQL connection with full privileges
 	my $database = main::setupGetSqlConnect();
@@ -251,7 +245,8 @@ sub _setupDatabase
 		);
 		if(ref $rs ne 'HASH') {
 			error(
-				"Unable to add privileges on the '$main::imscpConfig{'DATABASE_NAME'}.$_' table for the Proftpd '$dbUser\@$dbUserHost' SQL user: $rs"
+				"Unable to add privileges on the '$main::imscpConfig{'DATABASE_NAME'}.$_' table for the Proftpd " .
+				"'$dbUser\@$dbUserHost' SQL user: $rs"
 			);
 			return 1;
 		}
@@ -265,7 +260,8 @@ sub _setupDatabase
 		);
 		if(ref $rs ne 'HASH') {
 			error(
-				"Unable to add privileges on the '$main::imscpConfig{'DATABASE_NAME'}.$_' table for the Proftpd '$dbUser\@$dbUserHost' SQL user: $rs"
+				"Unable to add privileges on the '$main::imscpConfig{'DATABASE_NAME'}.$_' table for the Proftpd " .
+				"'$dbUser\@$dbUserHost' SQL user: $rs"
 			);
 			return 1;
 		}
@@ -288,7 +284,7 @@ sub _buildConfigFile
 		FTPD_MIN_UID => $self::proftpdConfig{'MIN_UID'},
 		FTPD_MIN_GID => $self::proftpdConfig{'MIN_GID'},
 		GUI_CERT_DIR => $main::imscpConfig{'GUI_CERT_DIR'},
-		SSL => $main::imscpConfig{'SSL_ENABLED'} eq 'yes' ? '' : '#'
+		SSL => main::setupGetQuestion('SSL_ENABLED') eq 'yes' ? '' : '#'
 	};
 
 	my $file = iMSCP::File->new('filename' => "$self->{'cfgDir'}/proftpd.conf");
@@ -321,7 +317,7 @@ sub _buildConfigFile
 	$rs = $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
 	return $rs if $rs;
 
-	$file->copyFile($self::proftpdConfig{'FTPD_CONF_FILE'});
+	$file->copyFile($self->{'proftpdConfig'}->{'FTPD_CONF_FILE'});
 }
 
 sub _createTrafficLogFile
@@ -343,9 +339,9 @@ sub _createTrafficLogFile
 		return $rs if $rs;
 	}
 
-	if(! -f "$main::imscpConfig{'TRAFF_LOG_DIR'}$self::proftpdConfig{'FTP_TRAFF_LOG'}") {
+	if(! -f "$main::imscpConfig{'TRAFF_LOG_DIR'}$self->{'proftpdConfig'}->{'FTP_TRAFF_LOG'}") {
 		my $file = iMSCP::File->new(
-			'filename' => "$main::imscpConfig{'TRAFF_LOG_DIR'}$self::proftpdConfig{'FTP_TRAFF_LOG'}"
+			'filename' => "$main::imscpConfig{'TRAFF_LOG_DIR'}$self->{'proftpdConfig'}->{'FTP_TRAFF_LOG'}"
 		);
 
 		$rs = $file->save();
@@ -368,13 +364,10 @@ sub _oldEngineCompatibility
 	my $rs = $self->{'hooksManager'}->trigger('beforeFtpdOldEngineCompatibility');
 	return $rs if $rs;
 
-	if(exists $self::proftpdOldConfig{'FTPD_CONF_DIR'}) {
-		if(-d $self::proftpdOldConfig{'FTPD_CONF_DIR'}) {
-
-			$rs = iMSCP::Dir->new('dirname' => $self::proftpdOldConfig{'FTPD_CONF_DIR'})->remove();
-			return $rs if $rs;
-		}
-	}
+	#if(exists $self::proftpdOldConfig{'FTPD_CONF_DIR'} && -d $self::proftpdOldConfig{'FTPD_CONF_DIR'}) {
+	#	$rs = iMSCP::Dir->new('dirname' => $self::proftpdOldConfig{'FTPD_CONF_DIR'})->remove();
+	#	return $rs if $rs;
+	#}
 
 	$self->{'hooksManager'}->trigger('afterFtpdOldEngineCompatibility');
 }
@@ -383,9 +376,12 @@ sub _saveConf
 {
 	my $self = shift;
 
+	my $rootUname = $main::imscpConfig{'ROOT_USER'};
+	my $rootGname = $main::imscpConfig{'ROOT_GROUP'};
+
 	my $file = iMSCP::File->new('filename' => "$self->{'cfgDir'}/proftpd.data");
 
-	my $rs = $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
+	my $rs = $file->owner($rootUname, $rootGname);
 	return $rs if $rs;
 
 	$rs = $file->mode(0640);
@@ -408,7 +404,7 @@ sub _saveConf
 	$rs = $file->save();
 	return $rs if $rs;
 
-	$rs = $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
+	$rs = $file->owner($rootUname, $rootGname);
 	return $rs if $rs;
 
 	$rs = $file->mode(0640);

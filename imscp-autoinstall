@@ -47,6 +47,8 @@ use iMSCP::Getopt;
 use iMSCP::Boot;
 use autoinstaller::Common;
 
+require "$FindBin::Bin/engine/setup/imscp-setup-methods.pl";
+
 newDebug('imscp-build.log');
 
 # Entering in silent mode
@@ -78,6 +80,9 @@ verbose(iMSCP::Getopt->debug || $main::imscpConfig{'DEBUG'} || 0);
 # Getting the reconfigure option value
 $main::reconfigure = iMSCP::Getopt->reconfigure;
 
+# Global variable that holds questions
+%main::questions = ();
+
 # Handle the preseed option
 my $preseedFile = iMSCP::Getopt->preseed;
 if($preseedFile) {
@@ -87,8 +92,6 @@ if($preseedFile) {
 	$main::reconfigure = 'none';
 	undef $preseedFile;
 }
-
-%main::preseed = () if ! %main::preseed;
 
 # Handle the hook-file option
 my $hookFile = iMSCP::Getopt->hookFile;
@@ -129,7 +132,7 @@ if ($main::noprompt) {
 	}
 }
 
-if($main::skippackages && ! %main::preseed) {
+if($main::skippackages && ! iMSCP::Getopt->preseed) {
 	unless(
 		$main::imscpConfig{'HTTPD_SERVER'} && $main::imscpConfig{'PO_SERVER'} &&
 		$main::imscpConfig{'MTA_SERVER'} && $main::imscpConfig{'FTPD_SERVER'} &&
@@ -250,7 +253,7 @@ To complete the update, you must wait until the end of the process and follow th
 
 	## Setup steps
 
-	require "$FindBin::Bin/engine/setup/imscp-setup-methods.pl";
+	#require "$FindBin::Bin/engine/setup/imscp-setup-methods.pl";
 
 	@steps = (
 		[\&doImscpBackup,			'Backup existing i-MSCP installation if any'],

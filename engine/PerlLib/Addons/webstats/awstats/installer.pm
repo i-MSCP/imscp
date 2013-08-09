@@ -76,7 +76,7 @@ sub askAwstats
 		$awstatsMode = $awstatsMode eq 'Dynamic' ? 0 : 1 if $rs != 30;
 	}
 
-	$main::questions{'AWSTATS_MODE'} = $awstatsMode if $rs != 30;
+	main::setupSetQuestion('AWSTATS_MODE', $awstatsMode) if $rs != 30;
 
 	$rs;
 }

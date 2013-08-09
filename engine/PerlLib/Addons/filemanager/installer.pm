@@ -23,11 +23,11 @@ Addons::filemanager::installer - i-MSCP Web File manager addon installer
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
-# @category		i-MSCP
-# @copyright	2010-2013 by i-MSCP | http://i-mscp.net
-# @author		Laurent Declercq <l.declercq@nuxwin.com>
-# @link			http://i-mscp.net i-MSCP Home Site
-# @license		http://www.gnu.org/licenses/gpl-2.0.html GPL v2
+# @category    i-MSCP
+# @copyright   2010-2013 by i-MSCP | http://i-mscp.net
+# @author      Laurent Declercq <l.declercq@nuxwin.com>
+# @link        http://i-mscp.net i-MSCP Home Site
+# @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
 package Addons::filemanager::installer;
 
@@ -59,7 +59,6 @@ sub registerSetupHooks
 	my $self = shift;
 	my $hooksManager = shift;
 
-	# Add filemanager addon installer dialog in setup dialog stack
 	$hooksManager->register(
 		'beforeSetupDialog', sub { my $dialogStack = shift; push(@$dialogStack, sub { $self->askFilemanager(@_) }); 0; }
 	);
@@ -174,7 +173,7 @@ sub askFilemanager
 		);
 	}
 
-	$main::questions{'FILEMANAGER_ADDON'} = $fileManagerAddon if $rs != 30;
+	main::setupSetQuestion('FILEMANAGER_ADDON', $fileManagerAddon) if $rs != 30;
 
 	$rs;
 }
