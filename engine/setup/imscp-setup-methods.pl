@@ -161,10 +161,6 @@ sub setupDialog
 	}
 
 	iMSCP::HooksManager->getInstance()->trigger('afterSetupDialog');
-
-	use Data::Dumper;
-	print Dumper(\%main::questions);
-	exit;
 }
 
 # Process setup tasks
@@ -185,6 +181,7 @@ sub setupTasks
 		[\&setupSecureSqlInstallation,		'Securing SQL installation'],
 		[\&setupServerIps,					'Setting server ips'],
 		[\&setupDefaultAdmin, 				'Creating default admin'],
+		[\&setupSsl,						'Setup SSL'
 		[\&setupPreInstallServers,			'Servers pre-installation'],
 		[\&setupPreInstallAddons,			'Addons pre-installation'],
 		[\&setupInstallServers,				'Servers installation'],
@@ -221,6 +218,7 @@ sub setupTasks
 sub setupAskServerHostname
 {
 	my $dialog = shift;
+
 	my $hostname = setupGetQuestion('SERVER_HOSTNAME');
 	my %options = ($main::imscpConfig{'DEBUG'} || iMSCP::Getopt->debug)
 		? (domain_private_tld => qr /^(?:bogus|test)$/) : ();
@@ -321,6 +319,7 @@ sub setupAskLocalDnsResolver
 sub setupAskServerIps
 {
 	my $dialog = shift;
+
 	my $baseServerIp = setupGetQuestion('BASE_SERVER_IP');
 	my $manualIp = 0;
 	my $serverIps = '';
@@ -521,6 +520,7 @@ The IP address '$serverIpsToDelete{$_}' is already in use. Please, choose an IP 
 sub setupAskSqlDsn
 {
 	my $dialog = shift;
+
 	my $dbType = setupGetQuestion('DATABASE_TYPE') || 'mysql';
 	my $dbHost = setupGetQuestion('DATABASE_HOST') || 'localhost';
 	my $dbPort = setupGetQuestion('DATABASE_PORT') || '3306';
@@ -735,8 +735,7 @@ Are you sure you want to create a new database?
 
 Keep in mind that the new database will be free of any reseller and customer data.
 
-\\Z4Note:\\Zn If the database you want to create already exists, nothing
-      will happen.
+\\Z4Note:\\Zn If the database you want to create already exists, nothing will happen.
 "
 				);
 
@@ -925,6 +924,7 @@ sub setupAskAdminEmail
 sub setupAskPhpTimezone
 {
 	my $dialog = shift;
+
 	my $defaultTimezone = DateTime->new(year => 0, time_zone => 'local')->time_zone->name;
 	my $timezone = setupGetQuestion('PHP_TIMEZONE');
 	my $rs = 0;
@@ -934,7 +934,7 @@ sub setupAskPhpTimezone
 		my $msg = '';
 
 		do {
-			($rs, $timezone) = $dialog->inputbox("\nPlease enter timezone for PHP: $msg", $timezone);
+			($rs, $timezone) = $dialog->inputbox("\nPlease enter a timezone for PHP: $msg", $timezone);
 			$msg = "\n\n\\Z1'$timezone' is not a valid timezone.\\Zn\n\nPlease, try again:";
 		} while($rs != 30 && ! DateTime::TimeZone->is_valid_name($timezone));
 	}
@@ -955,7 +955,7 @@ sub setupAskSsl
 	my $certificatKeyPassword = setupGetQuestion('CERTIFICATE_KEY_PASSWORD');
 	my $intermediateCertificatPath = setupGetQuestion('INTERMEDIATE_CERTIFICATE_PATH');
 	my $certificatPath = setupGetQuestion('CERTIFICATE_PATH', "/root/$hostname.crt");
-	my $baseServerVhostPrefix = setupGetQuestion('BASE_SERVER_VHOST_PREFIX');
+	my $baseServerVhostPrefix = setupGetQuestion('BASE_SERVER_VHOST_PREFIX', 'http://');
 	my $sslEnabled = setupGetQuestion('SSL_ENABLED');
 
 	my $openSSL = Modules::openssl->getInstance();
@@ -966,19 +966,20 @@ sub setupAskSsl
 	if($main::reconfigure ~~ ['ssl', 'all', 'forced'] || $sslEnabled !~ /^yes|no$/) {
 		SSL_DIALOG:
 
+		# Ask for SSL
 		($rs, $sslEnabled) = $dialog->radiolist(
 			"\nDo you want to activate SSL for i-MSCP?", ['no', 'yes'], $sslEnabled eq 'yes' ? 'yes' : 'no'
 		);
 
 		if($sslEnabled eq 'yes' && $rs != 30) {
+			# Ask for self-signed certificat
 			($rs, $selfSignedCertificate) = $dialog->radiolist(
 				"\nDo you have an SSL certificate?",
 				['yes', 'no'],
 				($selfSignedCertificate ~~ ['yes', 'no']) ? $selfSignedCertificate : 'no'
 			);
 
-			if($selfSignedCertificate ne 'yes' && $rs != 30) { # No self-signed certificat
-
+			if($selfSignedCertificate ne 'yes' && $rs != 30) {
 				# Ask for certificat key
 				my $msg = '';
 
@@ -1007,7 +1008,7 @@ sub setupAskSsl
 					}
 				} while($rs != 30 && $msg);
 
-				# Ask for CA bundle (intermediate certificate)
+				# Ask for CA bundle
 				if($rs != 30) {
 					$rs = $dialog->yesno("\nDo you have an intermediate certificate?");
 
@@ -1020,52 +1021,46 @@ sub setupAskSsl
                 	}
 				}
 
-				$dialog->msgbox("\nPlease select your certificate:");
+				if($rs != 30) {
+					$dialog->msgbox("\nPlease select your certificate:");
 
-				do {
 					do {
-						($rs, $certificatKeyPath) = $dialog->fselect($certificatKeyPath);
-					} while($rs != 30 && ! ($certificatKeyPath && -f $certificatKeyPath));
+						do {
+							($rs, $certificatKeyPath) = $dialog->fselect($certificatKeyPath);
+						} while($rs != 30 && ! ($certificatKeyPath && -f $certificatKeyPath));
 
-					$openSSL->{'cert_path'} = $certificatKeyPath if $rs != 30;
-				} while($rs != 30 && $openSSL->ssl_check_cert());
-
-				#if($rs != 30) {
-				#	$rs = $openSSL->ssl_export_all();
-				#	return $rs if $rs;
-				#}
+						$openSSL->{'cert_path'} = $certificatKeyPath if $rs != 30;
+					} while($rs != 30 && $openSSL->ssl_check_cert());
+				}
 			}
 
 			if($rs != 30 && $sslEnabled eq 'yes') {
 				($rs, $baseServerVhostPrefix) = $dialog->radiolist(
-					"\nPlease, choose the default access mode for i-MSCP",
+					"\nPlease, choose the default HTTP access mode for i-MSCP",
 					['https', 'http'],
 					$baseServerVhostPrefix eq 'https://' ? 'https' : 'http'
 				);
 			}
 		}
+	} elsif($sssEnabled eq 'yes' && ! iMSCP::Getopt->preseed) {
+		$openSSL->{'key_path'} = "$main::imscpConfig{'GUI_CERT_DIR'}/$hostname.pem";
+		$openSSL->{'intermediate_cert_path'} = "$main::imscpConfig{'GUI_CERT_DIR'}/$hostname.pem";
+		$openSSL->{'cert_path'} = "$main::imscpConfig{'GUI_CERT_DIR'}/$hostname.pem";
+
+		if($openSSL->ssl_check_all()){
+			iMSCP::Dialog->factory()->msgbox("Certificate is missing or invalid.");
+			goto SSL_DIALOG;
+		}
 	}
 
 	if($rs != 30) {
-		if($sslEnabled eq 'yes') {
-			$openSSL->{'key_path'} = "$main::imscpConfig{'GUI_CERT_DIR'}/$hostname.pem";
-			$openSSL->{'cert_path'} = "$main::imscpConfig{'GUI_CERT_DIR'}/$hostname.pem";
-			$openSSL->{'intermediate_cert_path'} = "$main::imscpConfig{'GUI_CERT_DIR'}/$hostname.pem";
-
-			if($openSSL->ssl_check_all()){
-				iMSCP::Dialog->factory()->msgbox("Certificate is missing or corrupted. Try again");
-				goto SSL_DIALOG;
-			}
-		}
-
-		# Set question there
 		setupSetQuestion('SSL_ENABLED', $sslEnabled);
 		setupSetQuestion('SELFSIGNED_CERTIFICATE', $selfSignedCertificate);
 		setupSetQuestion('CERTIFICATE_KEY_PATH', $certificatKeyPath);
 		setupSetQuestion('CERTIFICATE_KEY_PASSWORD', $certificatKeyPassword);
 		setupSetQuestion('INTERMEDIATE_CERTIFICATE_PATH', $intermediateCertificatPath);
 		setupSetQuestion('CERTIFICATE_PATH', $certificatPath);
-		setupSetQuestion('BASE_SERVER_VHOST_PREFIX', $baseServerVhostPrefix);
+		setupSetQuestion('BASE_SERVER_VHOST_PREFIX', ($sslEnabled) ? $baseServerVhostPrefix . '://' : 'http://');
 	}
 
 	$rs;
@@ -1075,8 +1070,8 @@ sub setupAskSsl
 sub setupAskImscpBackup
 {
 	my $dialog = shift;
+
 	my $backupImscp = setupGetQuestion('BACKUP_IMSCP');
-	$backupImscp = lc($backupImscp);
 	my $rs = 0;
 
 	if($main::reconfigure ~~ ['backup', 'all', 'forced'] || $backupImscp !~ /^yes|no$/) {
@@ -1104,11 +1099,11 @@ activate this feature.
 sub setupAskDomainBackup
 {
 	my $dialog = shift;
+
 	my $backupDomains = setupGetQuestion('BACKUP_DOMAINS');
 	my $rs = 0;
 
 	if($main::reconfigure ~~ ['backup', 'all', 'forced'] || $backupDomains !~ /^yes|no$/) {
-
 		($rs, $backupDomains) = $dialog->radiolist(
 "
 \\Z4\\Zb\\ZuDomains Backup Feature\\Zn
@@ -1147,7 +1142,7 @@ sub setupSaveOldConfig
 
 	my $cfg = $file->get();
 	unless(defined $cfg) {
-		error("$main::imscpConfig{'CONF_DIR'}/imscp.conf");
+		error("Unable to read $main::imscpConfig{'CONF_DIR'}/imscp.conf");
 		return 1;
 	}
 
@@ -1200,7 +1195,7 @@ sub setupCreateSystemDirectories
 
 	my @systemDirectories  = (
 		#[$main::imscpConfig{'USER_WEB_DIR'}, $rootUName, $rootGName, 0555],
-		#[$main::imscpConfig{'LOG_DIR'}, $rootUName,	$rootGName, 0555],
+		#[$main::imscpConfig{'LOG_DIR'}, $rootUName, $rootGName, 0555],
 		[$main::imscpConfig{'BACKUP_FILE_DIR'}, $rootUName, $rootGName, 0750]
 	);
 
@@ -1470,7 +1465,7 @@ sub setupLocalResolver
 			return 1;
 		}
 
-		if(setupGetQuestion('LOCAL_DNS_RESOLVER') =~ /^yes$/i) {
+		if(setupGetQuestion('LOCAL_DNS_RESOLVER') =~ /^yes$/) {
 			if($content !~ /nameserver 127.0.0.1/i) {
 				$content =~ s/(nameserver.*)/nameserver 127.0.0.1\n$1/i;
 			}
@@ -1515,6 +1510,7 @@ sub setupCreateDatabase
 
 	if(! setupIsImscpDb($dbName)) {
 		my ($database, $errStr) = setupGetSqlConnect();
+
 		if(! $database) {
 			error("Unable to connect to SQL server: $errStr");
 			return 1;
@@ -1522,6 +1518,7 @@ sub setupCreateDatabase
 
 		my $qdbName = $database->quoteIdentifier($dbName);
 		my $rs = $database->doQuery('dummy', "CREATE DATABASE $qdbName CHARACTER SET utf8 COLLATE utf8_unicode_ci;");
+
 		if(ref $rs ne 'HASH') {
 			error("Unable to create the '$dbName' SQL database: $rs");
 			return 1;
@@ -1568,7 +1565,7 @@ sub setupImportSqlSchema
 
 	for (@queries) {
 		my $rs = $database->doQuery('dummy', $_);
-		if(ref $rs ne 'HASH') {
+		unless(ref $rs eq 'HASH') {
 			error("Unable to execute SQL query: $rs");
 			return 1;
 		}
@@ -1591,7 +1588,7 @@ sub setupUpdateDatabase
 
 	my $file = iMSCP::File->new('filename' => "$main::imscpConfig{'ROOT_DIR'}/engine/setup/updDB.php");
 
-	my $content	= $file->get();
+	my $content = $file->get();
 	unless(defined $content) {
 		error("Unable to read $main::imscpConfig{'ROOT_DIR'}/engine/setup/updDB.php");
 		return 1;
@@ -1758,6 +1755,50 @@ sub setupDefaultAdmin
 	}
 
 	iMSCP::HooksManager->getInstance()->trigger('afterSetupDefaultAdmin');
+}
+
+# Setup SSL
+sub setupSsl
+{
+	my $hostname =  setupGetQuestion('SERVER_HOSTNAME');
+	my $selfSignedCertificate = setupGetQuestion('SELFSIGNED_CERTIFICATE');
+	my $certificatKeyPath = setupGetQuestion('CERTIFICATE_KEY_PATH');
+	my $certificatKeyPassword = setupGetQuestion('CERTIFICATE_KEY_PASSWORD');
+	my $intermediateCertificatPath = setupGetQuestion('INTERMEDIATE_CERTIFICATE_PATH');
+	my $certificatPath = setupGetQuestion('CERTIFICATE_PATH');
+	my $baseServerVhostPrefix = setupGetQuestion('BASE_SERVER_VHOST_PREFIX');
+	my $sslEnabled = setupGetQuestion('SSL_ENABLED');
+
+	if($sslEnabled eq 'yes') {
+		my $openSSL = Modules::openssl->getInstance();
+		$openSSL->{'openssl_path'} = $main::imscpConfig{'CMD_OPENSSL'};
+
+		# Setup library for new certificat
+		$openSSL->{'key_path'} = $certificatKeyPath;
+		$openSSL->{'key_pass'} = $certificatKeyPassword;
+		$openSSL->{'intermediate_cert_path'} = $intermediateCertificatPath;
+		$openSSL->{'new_cert_name'} = $hostname;
+		$openSSL->{'cert_path'} = $certificatPath;
+		$openSSL->{'new_cert_path'} = $main::imscpConfig{'GUI_CERT_DIR'};
+		$openSSL->{'common_name'} = $hostname;
+
+		# FIXME
+		#
+		# 1. Self-signed certificate
+		#
+		# - One for the panel, with the common name matching the domain name from which the panel will be reachable
+		# - One for the services managed by i-MSCP (MTA, FTPD) with common name matching the server hostname
+		#
+		# 2. User certificate
+		# - In case the panel domain name doesn't match the server hostname, we must ask the admin for both, the panel
+		#
+		# In both case, the wildcard SSL option should be discarded
+
+		my $rs = $openSSL->ssl_export_all();
+		return $rs if $rs;
+	}
+
+	0;
 }
 
 # Setup crontab
