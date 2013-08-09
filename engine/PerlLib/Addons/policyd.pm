@@ -109,7 +109,7 @@ sub _init
 	$self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
 	$self->{'wrkDir'} = "$self->{'cfgDir'}/working";
 
-	tie %{$self->{'policydConfig'}}, 'iMSCP::Config', 'fileName' => "$self->{'cfgDir'}/policyd.data";
+	tie %{$self->{'config'}}, 'iMSCP::Config', 'fileName' => "$self->{'cfgDir'}/policyd.data";
 
 	$self;
 }

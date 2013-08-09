@@ -100,7 +100,7 @@ sub install
 	# Saving all system configuration files if they exists
 	for (
 		"$main::imscpConfig{'LOGROTATE_CONF_DIR'}/apache2", "$main::imscpConfig{'LOGROTATE_CONF_DIR'}/apache",
-		"$self->{'apacheConfig'}->{'APACHE_CONF_DIR'}/ports.conf"
+		"$self->{'config'}->{'APACHE_CONF_DIR'}/ports.conf"
 	) {
 		$rs = $self->_bkpConfFile($_);
 		return $rs if $rs;
@@ -260,16 +260,16 @@ sub _init
 	$self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
 	$self->{'wrkDir'} = "$self->{'cfgDir'}/working";
 
-	$self->{'apacheConfig'} = $self->{'httpd'}->{'apacheConfig'};
+	$self->{'config'} = $self->{'httpd'}->{'config'};
 
 	my $oldConf = "$self->{'cfgDir'}/apache.old.data";
 
 	if(-f $oldConf) {
-		tie my %apacheOldConfig, 'iMSCP::Config', 'fileName' => $oldConf, 'noerrors' => 1;
+		tie my %oldConfig, 'iMSCP::Config', 'fileName' => $oldConf, 'noerrors' => 1;
 
-		for(keys %apacheOldConfig) {
-			if(exists $self->{'apacheConfig'}->{$_}) {
-				$self->{'apacheConfig'}->{$_} = $apacheOldConfig{$_};
+		for(keys %oldConfig) {
+			if(exists $self->{'config'}->{$_}) {
+				$self->{'config'}->{$_} = $oldConfig{$_};
 			}
 		}
 	}
@@ -329,14 +329,14 @@ sub _setApacheVersion()
 	my $self = shift;
 
 	my ($stdout, $stderr);
-	my $rs = execute("$self->{'apacheConfig'}->{'CMD_HTTPD_CTL'} -v", \$stdout, \$stderr);
+	my $rs = execute("$self->{'config'}->{'CMD_HTTPD_CTL'} -v", \$stdout, \$stderr);
 	debug($stdout) if $stdout;
 	error($stderr) if $stderr && $rs;
 	error('Unable to find Apache version') if $rs && ! $stderr;
 	return $rs if $rs;
 
 	if($stdout =~ m%Apache/([\d.]+)%) {
-		$self->{'apacheConfig'}->{'APACHE_VERSION'} = $1;
+		$self->{'config'}->{'APACHE_VERSION'} = $1;
 		debug("Apache version set to: $1");
 	} else {
 		error('Unable to parse Apache version from Apache version string');
@@ -385,7 +385,7 @@ sub _addUser
 	return $rs if $rs;
 
 	# Adding Apache user in panel user group
-	my $apacheUName = iMSCP::SystemUser->new('username' => $self->{'apacheConfig'}->{'APACHE_USER'});
+	my $apacheUName = iMSCP::SystemUser->new('username' => $self->{'config'}->{'APACHE_USER'});
 	$rs = $apacheUName->addToGroup($groupName);
 	return $rs if $rs;
 
@@ -411,8 +411,8 @@ sub _makeDirs
 	my $rootGName = $main::imscpConfig{'ROOT_GROUP'};
 
 	for (
-		[$self->{'apacheConfig'}->{'APACHE_USERS_LOG_DIR'}, $rootUName, $rootUName, 0750],
-		[$self->{'apacheConfig'}->{'APACHE_BACKUP_LOG_DIR'}, $rootUName, $rootGName, 0750]
+		[$self->{'config'}->{'APACHE_USERS_LOG_DIR'}, $rootUName, $rootUName, 0750],
+		[$self->{'config'}->{'APACHE_BACKUP_LOG_DIR'}, $rootUName, $rootGName, 0750]
 	) {
 		$rs = iMSCP::Dir->new(
 			'dirname' => $_->[0]
@@ -423,8 +423,8 @@ sub _makeDirs
 	}
 
 	$rs = iMSCP::Dir->new(
-		'dirname' => $self->{'apacheConfig'}->{'PHP_STARTER_DIR'}
-	)->remove() if -d $self->{'apacheConfig'}->{'PHP_STARTER_DIR'};
+		'dirname' => $self->{'config'}->{'PHP_STARTER_DIR'}
+	)->remove() if -d $self->{'config'}->{'PHP_STARTER_DIR'};
 	return $rs if $rs;
 
 	$self->{'hooksManager'}->trigger('afterHttpdMakeDirs');
@@ -460,7 +460,7 @@ sub _buildPhpConfFiles
 
 	# Build file using template from apache/parts/php5.itk.ini
 	$rs = $self->{'httpd'}->buildConfFile(
-		$self->{'cfgDir'} . '/parts/php' . $self->{'apacheConfig'}->{'PHP_VERSION'} . '.itk.ini',
+		$self->{'cfgDir'} . '/parts/php' . $self->{'config'}->{'PHP_VERSION'} . '.itk.ini',
 		{ 'destination' => "$self->{'wrkDir'}/php.ini", 'mode' => 0644, 'user' => $rootUName, 'group' => $rootGName }
 	);
 	return $rs if $rs;
@@ -469,7 +469,7 @@ sub _buildPhpConfFiles
 	$rs = iMSCP::File->new(
 		'filename' => "$self->{'wrkDir'}/php.ini"
 	)->copyFile(
-		$self->{'apacheConfig'}->{"ITK_PHP$self->{'apacheConfig'}->{'PHP_VERSION'}_PATH"}
+		$self->{'config'}->{"ITK_PHP$self->{'config'}->{'PHP_VERSION'}_PATH"}
 	);
 	return $rs if $rs;
 
@@ -480,13 +480,13 @@ sub _buildPhpConfFiles
 	my @toDisableModules = ('fastcgi', 'fcgid', 'fastcgi_imscp', 'fcgid_imscp', 'php_fpm_imscp', 'php4', 'suexec');
 	my @toEnableModules = ('php5');
 
-	if((version->new("v$self->{'apacheConfig'}->{'APACHE_VERSION'}") >= version->new('v2.4.0'))) {
+	if((version->new("v$self->{'config'}->{'APACHE_VERSION'}") >= version->new('v2.4.0'))) {
 		push (@toDisableModules, ('mpm_event', 'mpm_prefork', 'mpm_worker'));
 		push(@toEnableModules, 'mpm_itk', 'authz_groupfile');
 	}
 
 	for(@toDisableModules) {
-		$rs = $self->{'httpd'}->disableMod($_) if -f "$self->{'apacheConfig'}->{'APACHE_MODS_DIR'}/$_.load";
+		$rs = $self->{'httpd'}->disableMod($_) if -f "$self->{'config'}->{'APACHE_MODS_DIR'}/$_.load";
 		return $rs if $rs;
 	}
 
@@ -513,13 +513,13 @@ sub _buildApacheConfFiles
 
 	# Backup, build, store and install ports.conf file if exists
 
-	if(-f "$self->{'apacheConfig'}->{'APACHE_CONF_DIR'}/ports.conf") {
+	if(-f "$self->{'config'}->{'APACHE_CONF_DIR'}/ports.conf") {
 
 		# Load file
-		my $file = iMSCP::File->new('filename' => "$self->{'apacheConfig'}->{'APACHE_CONF_DIR'}/ports.conf");
+		my $file = iMSCP::File->new('filename' => "$self->{'config'}->{'APACHE_CONF_DIR'}/ports.conf");
 		my $rdata = $file->get();
 		unless(defined $rdata) {
-			error("Unable to read $self->{'apacheConfig'}->{'APACHE_CONF_DIR'}/ports.conf");
+			error("Unable to read $self->{'config'}->{'APACHE_CONF_DIR'}/ports.conf");
 			return 1;
 		}
 
@@ -551,7 +551,7 @@ sub _buildApacheConfFiles
 	# The alternative syntax does not involve the shell (from Apache 2.2.12)
 	my $pipeSyntax = '|';
 
-	if(version->new("v$self->{'apacheConfig'}->{'APACHE_VERSION'}") >= version->new('v2.2.12')) {
+	if(version->new("v$self->{'config'}->{'APACHE_VERSION'}") >= version->new('v2.2.12')) {
 		$pipeSyntax .= '|';
 	}
 
@@ -573,7 +573,7 @@ sub _buildApacheConfFiles
 
 	# Install new file in production directory
 	my $file = iMSCP::File->new('filename' => "$self->{'wrkDir'}/00_nameserver.conf");
-	$rs = $file->copyFile($self->{'apacheConfig'}->{'APACHE_SITES_DIR'});
+	$rs = $file->copyFile($self->{'config'}->{'APACHE_SITES_DIR'});
 	return $rs if $rs;
 
 	# Enable required apache modules
@@ -624,7 +624,7 @@ sub _buildMasterVhostFiles
 				? ":$main::imscpConfig{'OTHER_ROOTKIT_LOG'}" : '',
 			GUI_CERT_DIR => $main::imscpConfig{'GUI_CERT_DIR'},
 			SERVER_HOSTNAME => $main::imscpConfig{'SERVER_HOSTNAME'},
-			AUTHZ_ALLOW_ALL => (version->new("v$self->{'apacheConfig'}->{'APACHE_VERSION'}") >= version->new('v2.4.0'))
+			AUTHZ_ALLOW_ALL => (version->new("v$self->{'config'}->{'APACHE_VERSION'}") >= version->new('v2.4.0'))
 				? 'Require all granted' : "Order allow,deny\n    Allow from all"
 		}
 	);
@@ -663,7 +663,7 @@ sub _buildMasterVhostFiles
 	$rs = iMSCP::File->new(
 		'filename' => "$self->{'wrkDir'}/00_master.conf"
 	)->copyFile(
-		"$self->{'apacheConfig'}->{'APACHE_SITES_DIR'}/00_master.conf"
+		"$self->{'config'}->{'APACHE_SITES_DIR'}/00_master.conf"
 	);
 	return $rs if $rs;
 
@@ -703,7 +703,7 @@ sub _buildMasterVhostFiles
 		$rs = iMSCP::File->new(
 			'filename' => "$self->{'wrkDir'}/00_master_ssl.conf"
 		)->copyFile(
-			"$self->{'apacheConfig'}->{'APACHE_SITES_DIR'}/00_master_ssl.conf"
+			"$self->{'config'}->{'APACHE_SITES_DIR'}/00_master_ssl.conf"
 		);
 		return $rs if $rs;
 
@@ -712,12 +712,12 @@ sub _buildMasterVhostFiles
 	} else {
 		$rs = $self->{'httpd'}->disableSite(
 			'00_master_ssl.conf'
-		) if -f "$self->{'apacheConfig'}->{'APACHE_SITES_DIR'}/00_master_ssl.conf";
+		) if -f "$self->{'config'}->{'APACHE_SITES_DIR'}/00_master_ssl.conf";
 		return $rs if $rs;
 
 		for(
 			"$self->{'wrkDir'}/00_master_ssl.conf",
-			"$self->{'apacheConfig'}->{'APACHE_SITES_DIR'}/00_master_ssl.conf"
+			"$self->{'config'}->{'APACHE_SITES_DIR'}/00_master_ssl.conf"
 		) {
 			$rs = iMSCP::File->new('filename' => $_)->delFile() if -f $_;
 			return $rs if $rs;
@@ -729,7 +729,7 @@ sub _buildMasterVhostFiles
 	# default, default-ssl (Debian < Jessie)
 	# 000-default.conf, default-ssl.conf' : (Debian >= Jessie)
 	for('default', 'default-ssl', '000-default.conf', 'default-ssl.conf') {
-		$rs = $self->{'httpd'}->disableSite($_) if -f "$self->{'apacheConfig'}->{'APACHE_SITES_DIR'}/$_";
+		$rs = $self->{'httpd'}->disableSite($_) if -f "$self->{'config'}->{'APACHE_SITES_DIR'}/$_";
 		return $rs if $rs;
 	}
 
@@ -823,11 +823,11 @@ sub _oldEngineCompatibility
 	my $rs = $self->{'hooksManager'}->trigger('beforeHttpdOldEngineCompatibility');
 	return $rs if $rs;
 
-	if(-f "$self->{'apacheConfig'}->{'APACHE_SITES_DIR'}/imscp.conf") {
+	if(-f "$self->{'config'}->{'APACHE_SITES_DIR'}/imscp.conf") {
 		$rs = $self->{'httpd'}->disableSite('imscp.conf');
 		return $rs if $rs;
 
-		$rs = iMSCP::File->new('filename' => "$self->{'apacheConfig'}->{'APACHE_SITES_DIR'}/imscp.conf")->delFile();
+		$rs = iMSCP::File->new('filename' => "$self->{'config'}->{'APACHE_SITES_DIR'}/imscp.conf")->delFile();
 		return $rs if $rs;
 	}
 

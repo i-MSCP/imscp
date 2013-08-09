@@ -87,7 +87,7 @@ sub registerSetupHooks
 sub askRBL
 {
 	my ($self, $dialog, $rs) = (shift, shift, 0);
-	my $dnsblCheckOnly = main::setupGetQuestion('DNSBL_CHECKS_ONLY') || $self::policydConfig{'DNSBL_CHECKS_ONLY'} ||  '';
+	my $dnsblCheckOnly = main::setupGetQuestion('DNSBL_CHECKS_ONLY') || $self::config{'DNSBL_CHECKS_ONLY'} ||  '';
 
 	$dnsblCheckOnly = lc($dnsblCheckOnly);
 
@@ -106,7 +106,7 @@ Do you want to disable additional checks for MTA, HELO and domain?\n
 		);
 	}
 
-	$self::policydConfig{'DNSBL_CHECKS_ONLY'} = $dnsblCheckOnly if $rs != 30;
+	$self::config{'DNSBL_CHECKS_ONLY'} = $dnsblCheckOnly if $rs != 30;
 
 	$rs;
 }
@@ -123,7 +123,7 @@ sub install
 {
 	my $self = shift;
 
-	my $rs = $self->_bkpConfFile($self::policydConfig{'POLICYD_CONF_FILE'});
+	my $rs = $self->_bkpConfFile($self::config{'POLICYD_CONF_FILE'});
 	return $rs if $rs;
 
 	$rs = $self->_buildConf();
@@ -156,16 +156,16 @@ sub _init
 	$self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
 	$self->{'wrkDir'} = "$self->{'cfgDir'}/working";
 
-	$self->{'policydConfig'} = $self->{'phpmyadmin'}->{'policydConfig'};
+	$self->{'config'} = $self->{'phpmyadmin'}->{'config'};
 
 	my $oldConf = "$self->{'cfgDir'}/policyd.old.data";
 
 	if(-f $oldConf) {
-		tie %self::policydOldConfig, 'iMSCP::Config', 'fileName' => $oldConf, 'noerrors' => 1;
+		tie %self::oldConfig, 'iMSCP::Config', 'fileName' => $oldConf, 'noerrors' => 1;
 
-		for(keys %self::policydOldConfig) {
-			if(exists $self->{'policydConfig'}->{$_}) {
-				$self->{'policydConfig'}->{$_} = $self::policydOldConfig{$_};
+		for(keys %self::oldConfig) {
+			if(exists $self->{'config'}->{$_}) {
+				$self->{'config'}->{$_} = $self::oldConfig{$_};
 			}
 		}
 	}
@@ -211,14 +211,14 @@ sub _buildConf
 	my $self = shift;
 
 	my $rs = 0;
-	my $uName = $self->{'policydConfig'}->{'POLICYD_USER'};
-	my $gName = $self->{'policydConfig'}->{'POLICYD_GROUP'};
-	my $policydConffile = $self->{'policydConfig'}->{'POLICYD_CONF_FILE'};
+	my $uName = $self->{'config'}->{'POLICYD_USER'};
+	my $gName = $self->{'config'}->{'POLICYD_GROUP'};
+	my $policydConffile = $self->{'config'}->{'POLICYD_CONF_FILE'};
 	my ($name, $path, $suffix) = fileparse($policydConffile);
 
 	unless (-f $policydConffile) {
 		my ($stdout, $stderr);
-		$rs = execute("$self->{'policydConfig'}->{'POLICYD_BIN_FILE'} defaults > $policydConffile", \$stdout, \$stderr);
+		$rs = execute("$self->{'config'}->{'POLICYD_BIN_FILE'} defaults > $policydConffile", \$stdout, \$stderr);
 		debug($stdout) if $stdout;
 		warning($stderr) if ! $rs && $stderr;
 		error($stderr) if $rs && $stderr;
@@ -233,7 +233,7 @@ sub _buildConf
 		return 1;
 	}
 
-	my $dnsblChecksOnly = $self->{'policydConfig'}->{'DNSBL_CHECKS_ONLY'} =~ /^yes$/i ? 0 : 1;
+	my $dnsblChecksOnly = $self->{'config'}->{'DNSBL_CHECKS_ONLY'} =~ /^yes$/i ? 0 : 1;
 	$cfgTpl =~ s/^\s{0,}\$dnsbl_checks_only\s{0,}=.*$/\n   \$dnsbl_checks_only = $dnsblChecksOnly;          # 1: ON, 0: OFF (default)/mi;
 
 	$file = iMSCP::File->new('filename' => "$self->{'wrkDir'}/$name$suffix");

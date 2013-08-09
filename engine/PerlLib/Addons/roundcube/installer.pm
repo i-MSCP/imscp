@@ -104,9 +104,9 @@ sub install
 
 	# Backup current configuration files if they exists (only relevant when running imscp-setup)
 	for (
-		"$main::imscpConfig{'GUI_PUBLIC_DIR'}/$self->{'roundcubeConfig'}->{'ROUNDCUBE_CONF_DIR'}/db.inc.php",
-		"$main::imscpConfig{'GUI_PUBLIC_DIR'}/$self->{'roundcubeConfig'}->{'ROUNDCUBE_CONF_DIR'}/main.inc.php",
-		"$main::imscpConfig{'GUI_PUBLIC_DIR'}/$self->{'roundcubeConfig'}->{'ROUNDCUBE_PWCHANGER_DIR'}/config.inc.php"
+		"$main::imscpConfig{'GUI_PUBLIC_DIR'}/$self->{'config'}->{'ROUNDCUBE_CONF_DIR'}/db.inc.php",
+		"$main::imscpConfig{'GUI_PUBLIC_DIR'}/$self->{'config'}->{'ROUNDCUBE_CONF_DIR'}/main.inc.php",
+		"$main::imscpConfig{'GUI_PUBLIC_DIR'}/$self->{'config'}->{'ROUNDCUBE_PWCHANGER_DIR'}/config.inc.php"
 	) {
 		$rs = $self->_backupConfigFile($_);
 		return $rs if $rs;
@@ -158,8 +158,8 @@ sub askRoundcube($$)
 	my $dbHost = main::setupGetQuestion('DATABASE_HOST');
 	my $dbPort = main::setupGetQuestion('DATABASE_PORT');
 
-	my $dbUser = main::setupGetQuestion('ROUNDCUBE_SQL_USER') || $self->{'roundcubeConfig'}->{'DATABASE_USER'} || 'roundcube_user';
-	my $dbPass = main::setupGetQuestion('ROUNDCUBE_SQL_PASSWORD') || $self->{'roundcubeConfig'}->{'DATABASE_PASSWORD'} || '';
+	my $dbUser = main::setupGetQuestion('ROUNDCUBE_SQL_USER') || $self->{'config'}->{'DATABASE_USER'} || 'roundcube_user';
+	my $dbPass = main::setupGetQuestion('ROUNDCUBE_SQL_PASSWORD') || $self->{'config'}->{'DATABASE_PASSWORD'} || '';
 
 	my ($rs, $msg) = (0, '');
 
@@ -209,8 +209,8 @@ sub askRoundcube($$)
 	}
 
 	if($rs != 30) {
-		$self->{'roundcubeConfig'}->{'DATABASE_USER'} = $dbUser;
-		$self->{'roundcubeConfig'}->{'DATABASE_PASSWORD'} = $dbPass;
+		$self->{'config'}->{'DATABASE_USER'} = $dbUser;
+		$self->{'config'}->{'DATABASE_PASSWORD'} = $dbPass;
 	}
 
 	$rs;
@@ -272,18 +272,18 @@ sub _init
 	$self->{'wrkDir'} = "$self->{'cfgDir'}/working";
 	$self->{'newInstall'} = 1;
 
-	$self->{'roundcubeConfig'} = $self->{'phpmyadmin'}->{'roundcubeConfig'};
+	$self->{'config'} = $self->{'phpmyadmin'}->{'config'};
 
 	my $oldConf = "$self->{'cfgDir'}/roundcube.old.data";
 
-	tie %roundcubeConfig, 'iMSCP::Config', 'fileName' => $conf, 'noerrors' => 1;
+	tie %config, 'iMSCP::Config', 'fileName' => $conf, 'noerrors' => 1;
 
 	if(-f $oldConf) {
-		tie my %roundcubeOldConfig, 'iMSCP::Config', 'fileName' => $oldConf, 'noerrors' => 1;
+		tie my %oldConfig, 'iMSCP::Config', 'fileName' => $oldConf, 'noerrors' => 1;
 
-		for(keys %roundcubeOldConfig) {
-			if(exists $self->{'roundcubeConfig'}->{$_}) {
-				$self->{'roundcubeConfig'}->{$_} = $roundcubeOldConfig{$_};
+		for(keys %oldConfig) {
+			if(exists $self->{'config'}->{$_}) {
+				$self->{'config'}->{$_} = $oldConfig{$_};
 			}
 		}
 	}
@@ -375,9 +375,9 @@ sub _setupDatabase
 	my $imscpDbName = $main::imscpConfig{'DATABASE_NAME'};
 	my $roundcubeDbName = $imscpDbName . '_roundcube';
 
-	my $dbUser = $self->{'roundcubeConfig'}->{'DATABASE_USER'};
+	my $dbUser = $self->{'config'}->{'DATABASE_USER'};
 	my $dbUserHost = main::setupGetQuestion('DATABASE_USER_HOST');
-	my $dbPass = $self->{'roundcubeConfig'}->{'DATABASE_PASSWORD'};
+	my $dbPass = $self->{'config'}->{'DATABASE_PASSWORD'};
 
 	# Get SQL connection with full privileges
 	my ($database, $errStr) = main::setupGetSqlConnect();
@@ -463,12 +463,12 @@ sub _generateDESKey
 {
 	my $self = shift;
 
-	unless($self->{'roundcubeConfig'}->{'DES_KEY'}) {
+	unless($self->{'config'}->{'DES_KEY'}) {
 		my $DESKey = '';
 		my @allowedChars = ('A'..'Z', 'a'..'z', '0'..'9', '_');
 
 		$DESKey .= $allowedChars[rand()*($#allowedChars + 1)] for (1..24);
-		$self->{'roundcubeConfig'}->{'DES_KEY'} = $DESKey;
+		$self->{'config'}->{'DES_KEY'} = $DESKey;
 	}
 
 	0;
@@ -488,12 +488,12 @@ sub _buildConfig
 
 	my $panelUName =
 	my $panelGName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} . $main::imscpConfig{'SYSTEM_USER_MIN_UID'};
-	my $confDir = "$main::imscpConfig{'GUI_PUBLIC_DIR'}/$self->{'roundcubeConfig'}->{'ROUNDCUBE_CONF_DIR'}";
+	my $confDir = "$main::imscpConfig{'GUI_PUBLIC_DIR'}/$self->{'config'}->{'ROUNDCUBE_CONF_DIR'}";
 	my $imscpDbName = $main::imscpConfig{'DATABASE_NAME'};
 	my $roundcubeDbName = $imscpDbName . '_roundcube';
-	my $dbUser = $self->{'roundcubeConfig'}->{'DATABASE_USER'};
+	my $dbUser = $self->{'config'}->{'DATABASE_USER'};
 	my $dbUserHost = main::setupGetQuestion('DATABASE_USER_HOST');
-	my $dbPass = $self->{'roundcubeConfig'}->{'DATABASE_PASSWORD'};
+	my $dbPass = $self->{'config'}->{'DATABASE_PASSWORD'};
 	my $rs = 0;
 
 	my $cfg = {
@@ -502,14 +502,14 @@ sub _buildConfig
 		DB_USER => $dbUser,
 		DB_PASS => $dbPass,
 		TMP_PATH => "$main::imscpConfig{'GUI_ROOT_DIR'}/data/tmp",
-		DES_KEY => $self->{'roundcubeConfig'}->{'DES_KEY'},
-		PLUGINS => $self->{'roundcubeConfig'}->{'PLUGINS'}
+		DES_KEY => $self->{'config'}->{'DES_KEY'},
+		PLUGINS => $self->{'config'}->{'PLUGINS'}
 	};
 
 	my $cfgFiles = {
 		'imscp.db.inc.php' => "$confDir/db.inc.php",
 		'imscp.main.inc.php' => "$confDir/main.inc.php",
-		'imscp.pw.changer.inc.php' => "$main::imscpConfig{'GUI_PUBLIC_DIR'}/$self->{'roundcubeConfig'}->{'ROUNDCUBE_PWCHANGER_DIR'}/config.inc.php"
+		'imscp.pw.changer.inc.php' => "$main::imscpConfig{'GUI_PUBLIC_DIR'}/$self->{'config'}->{'ROUNDCUBE_PWCHANGER_DIR'}/config.inc.php"
 	};
 
 	for (keys %{$cfgFiles}) {
@@ -569,7 +569,7 @@ sub _updateDatabase
 
 	my $roundcubeDir = "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/webmail";
 	my $roundcubeDbName = $main::imscpConfig{'DATABASE_NAME'} . '_roundcube';
-	my $fromVersion = $self->{'roundcubeConfig'}->{'ROUNDCUBE_VERSION'} || '0.8.4';
+	my $fromVersion = $self->{'config'}->{'ROUNDCUBE_VERSION'} || '0.8.4';
 
 	require iMSCP::Execute;
 	iMSCP::Execute->import();
@@ -667,7 +667,7 @@ sub _setVersion
 
 	$json = decode_json($json);
 	debug("Set new roundcube version to $json->{'version'}");
-	$self->{'roundcubeConfig'}->{'ROUNDCUBE_VERSION'} = $json->{'version'};
+	$self->{'config'}->{'ROUNDCUBE_VERSION'} = $json->{'version'};
 
 	0;
 }

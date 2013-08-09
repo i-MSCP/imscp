@@ -214,7 +214,7 @@ sub _createGlobalAwstatsVhost
 	my $rs = 0;
 
 	my $httpd = Servers::httpd->factory();
-	my $apache24 = (version->new("v$httpd->{'apacheConfig'}->{'APACHE_VERSION'}") >= version->new('v2.4.0'));
+	my $apache24 = (version->new("v$httpd->{'config'}->{'APACHE_VERSION'}") >= version->new('v2.4.0'));
 
 	$httpd->setData(
 		{
@@ -255,7 +255,7 @@ sub _removeGlobalAwstatsVhost
 	my $self = shift;
 
 	my $httpd = Servers::httpd->factory();
-	my $apacheSiteDir = $httpd->{'apacheConfig'}->{'APACHE_SITES_DIR'};
+	my $apacheSiteDir = $httpd->{'config'}->{'APACHE_SITES_DIR'};
 	my $awstatsVhostFile = '01_awstats.conf';
 	my $rs = 0;
 

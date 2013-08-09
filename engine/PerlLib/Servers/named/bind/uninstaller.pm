@@ -42,7 +42,7 @@ sub _init
 	$self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
 	$self->{'wrkDir'} = "$self->{'cfgDir'}/working";
 
-	tie %{$self->{'bindConfig'}}, 'iMSCP::Config', 'fileName' => "$self->{'cfgDir'}/bind.data", 'noerrors' => 1;
+	tie %{$self->{'config'}}, 'iMSCP::Config', 'fileName' => "$self->{'cfgDir'}/bind.data", 'noerrors' => 1;
 
 	0;
 }
@@ -60,10 +60,10 @@ sub _restoreConfFiles
 	my $rs = 0;
 
 	for (
-		$self->{'bindConfig'}->{'BIND_CONF_DEFAULT_FILE'},
-		$self->{'bindConfig'}->{'BIND_CONF_FILE'},
-		$self->{'bindConfig'}->{'BIND_LOCAL_CONF_FILE'},
-		$self->{'bindConfig'}->{'BIND_OPTIONS_CONF_FILE'}
+		$self->{'config'}->{'BIND_CONF_DEFAULT_FILE'},
+		$self->{'config'}->{'BIND_CONF_FILE'},
+		$self->{'config'}->{'BIND_LOCAL_CONF_FILE'},
+		$self->{'config'}->{'BIND_OPTIONS_CONF_FILE'}
 	) {
 		next if !defined $_;
 		my $filename = fileparse($_);

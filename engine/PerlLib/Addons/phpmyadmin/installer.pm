@@ -99,7 +99,7 @@ sub install
 
 	# Backup current configuration file if it exists (only relevant when running imscp-setup)
 	my $rs = $self->_backupConfigFile(
-		"$main::imscpConfig{'GUI_PUBLIC_DIR'}/$self::phpmyadminConfig{'PHPMYADMIN_CONF_DIR'}/config.inc.php"
+		"$main::imscpConfig{'GUI_PUBLIC_DIR'}/$self::config{'PHPMYADMIN_CONF_DIR'}/config.inc.php"
 	);
 	return $rs if $rs;
 
@@ -154,8 +154,8 @@ sub askPhpmyadmin
 	my $dbHost = main::setupGetQuestion('DATABASE_HOST');
 	my $dbPort = main::setupGetQuestion('DATABASE_PORT');
 	my $dbName = main::setupGetQuestion('DATABASE_NAME');
-	my $dbUser = main::setupGetQuestion('PHPMYADMIN_SQL_USER') || $self::phpmyadminConfig{'DATABASE_USER'} || 'pma';
-	my $dbPass = main::setupGetQuestion('PHPMYADMIN_SQL_PASSWORD') || $self::phpmyadminConfig{'DATABASE_PASSWORD'} || '';
+	my $dbUser = main::setupGetQuestion('PHPMYADMIN_SQL_USER') || $self::config{'DATABASE_USER'} || 'pma';
+	my $dbPass = main::setupGetQuestion('PHPMYADMIN_SQL_PASSWORD') || $self::config{'DATABASE_PASSWORD'} || '';
 
 	my ($rs, $msg) = (0, '');
 
@@ -204,8 +204,8 @@ sub askPhpmyadmin
 	}
 
 	if($rs != 30) {
-		$self::phpmyadminConfig{'DATABASE_USER'} = $dbUser;
-		$self::phpmyadminConfig{'DATABASE_PASSWORD'} = $dbPass;
+		$self::config{'DATABASE_USER'} = $dbUser;
+		$self::config{'DATABASE_PASSWORD'} = $dbPass;
 	}
 
 	$rs;
@@ -261,16 +261,16 @@ sub _init
 	$self->{'wrkDir'} = "$self->{'cfgDir'}/working";
 	$self->{'newInstall'} = 1;
 
-	$self->{'phpmyadminConfig'} = $self->{'phpmyadmin'}->{'phpmyadminConfig'};
+	$self->{'config'} = $self->{'phpmyadmin'}->{'config'};
 
 	my $oldConf	= "$self->{'cfgDir'}/phpmyadmin.old.data";
 
 	if(-f $oldConf) {
-		tie my %phpmyadminOldConfig, 'iMSCP::Config', 'fileName' => $oldConf, 'noerrors' => 1;
+		tie my %oldConfig, 'iMSCP::Config', 'fileName' => $oldConf, 'noerrors' => 1;
 
-		for(keys %phpmyadminOldConfig) {
-			if(exists $self->{'phpmyadminConfig'}->{$_}) {
-				$self->{'phpmyadminConfig'}->{$_} = $phpmyadminOldConfig{$_};
+		for(keys %oldConfig) {
+			if(exists $self->{'config'}->{$_}) {
+				$self->{'config'}->{$_} = $oldConfig{$_};
 			}
 		}
 	}
@@ -410,9 +410,9 @@ sub _setupSqlUser
 
 	my $imscpDbName = $main::imscpConfig{'DATABASE_NAME'};
 	my $phpmyadminDbName = $imscpDbName . '_pma';
-	my $dbUser = $self->{'phpmyadminConfig'}->{'DATABASE_USER'};
+	my $dbUser = $self->{'config'}->{'DATABASE_USER'};
 	my $dbUserHost = main::setupGetQuestion('DATABASE_USER_HOST');
-	my $dbPass = $self->{'phpmyadminConfig'}->{'DATABASE_PASSWORD'};
+	my $dbPass = $self->{'config'}->{'DATABASE_PASSWORD'};
 	my $rs = 0;
 
 	# Remove old phpmyadmin restricted SQL user and all it privileges (if any)
@@ -591,7 +591,7 @@ sub _updateDatabase
 	#my $phpmyadminDir = "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/pma";
 	#my $imscpDbName = $main::imscpConfig{'DATABASE_NAME'};
 	#my $phpmyadminDbName = $imscpDbName . '_pma';
-	#my $fromVersion = $self->{'phpmyadminConfig'}->{'PHPMYADMIN_VERSION'} || '4.0.4.2';
+	#my $fromVersion = $self->{'config'}->{'PHPMYADMIN_VERSION'} || '4.0.4.2';
 
 	# Currently no update here because 4.0.4.2 is the first version we have with a configuration storage
 	
@@ -624,7 +624,7 @@ sub _setVersion
 
 	$json = decode_json($json);
 	debug("Set new phpMyAdmin version to $json->{'version'}");
-	$self->{'phpmyadminConfig'}->{'PHPMYADMIN_VERSION'} = $json->{'version'};
+	$self->{'config'}->{'PHPMYADMIN_VERSION'} = $json->{'version'};
 
 	0;
 }
@@ -641,12 +641,12 @@ sub _generateBlowfishSecret
 {
 	my $self = shift;
 
-	unless($self->{'phpmyadminConfig'}->{'BLOWFISH_SECRET'}) { # FIXME: It is not better to regenerate on each update?
+	unless($self->{'config'}->{'BLOWFISH_SECRET'}) { # FIXME: It is not better to regenerate on each update?
 		my $blowfishSecret = '';
 		my @allowedChars = ('A'..'Z', 'a'..'z', '0'..'9', '_');
 
 		$blowfishSecret .= $allowedChars[rand()*($#allowedChars + 1)] for (1..31);
-		$self->{'phpmyadminConfig'}->{'BLOWFISH_SECRET'} = $blowfishSecret;
+		$self->{'config'}->{'BLOWFISH_SECRET'} = $blowfishSecret;
 	}
 
 	0;
@@ -666,18 +666,18 @@ sub _buildConfig
 
 	my $panelUName =
 	my $panelGName =  $main::imscpConfig{'SYSTEM_USER_PREFIX'} . $main::imscpConfig{'SYSTEM_USER_MIN_UID'};
-	my $confDir = "$main::imscpConfig{'GUI_PUBLIC_DIR'}/$self->{'phpmyadminConfig'}->{'PHPMYADMIN_CONF_DIR'}";
+	my $confDir = "$main::imscpConfig{'GUI_PUBLIC_DIR'}/$self->{'config'}->{'PHPMYADMIN_CONF_DIR'}";
 	my $rs = 0;
 
 	my $cfg = {
 		PMA_DATABASE => $main::imscpConfig{'DATABASE_NAME'} . '_pma',
-		PMA_USER => $self->{'phpmyadminConfig'}->{'DATABASE_USER'},
-		PMA_PASS => $self->{'phpmyadminConfig'}->{'DATABASE_PASSWORD'},
+		PMA_USER => $self->{'config'}->{'DATABASE_USER'},
+		PMA_PASS => $self->{'config'}->{'DATABASE_PASSWORD'},
 		HOSTNAME => $main::imscpConfig{'DATABASE_HOST'},
 		PORT => $main::imscpConfig{'DATABASE_PORT'},
 		UPLOADS_DIR => "$main::imscpConfig{'GUI_ROOT_DIR'}/data/uploads",
 		TMP_DIR => "$main::imscpConfig{'GUI_ROOT_DIR'}/data/tmp",
-		BLOWFISH => $self->{'phpmyadminConfig'}->{'BLOWFISH_SECRET'},
+		BLOWFISH => $self->{'config'}->{'BLOWFISH_SECRET'},
 	};
 
 	require iMSCP::File;

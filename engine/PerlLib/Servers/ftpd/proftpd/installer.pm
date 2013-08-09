@@ -66,8 +66,8 @@ sub askProftpd
 	my $dbPort = main::setupGetQuestion('DATABASE_PORT');
 	my $dbName = main::setupGetQuestion('DATABASE_NAME');
 
-	my $dbUser = main::setupGetQuestion('FTPD_SQL_USER') || $self->{'proftpdConfig'}->{'DATABASE_USER'} || 'vftp';
-	my $dbPass = main::setupGetQuestion('FTPD_SQL_PASSWORD') || $self->{'proftpdConfig'}->{'DATABASE_PASSWORD'} || '';
+	my $dbUser = main::setupGetQuestion('FTPD_SQL_USER') || $self->{'config'}->{'DATABASE_USER'} || 'vftp';
+	my $dbPass = main::setupGetQuestion('FTPD_SQL_PASSWORD') || $self->{'config'}->{'DATABASE_PASSWORD'} || '';
 
 	my ($rs, $msg) = (0, '');
 
@@ -116,8 +116,8 @@ sub askProftpd
 	}
 
 	if($rs != 30) {
-		$self->{'proftpdConfig'}->{'DATABASE_USER'} = $dbUser;
-        $self->{'proftpdConfig'}->{'DATABASE_PASSWORD'} = $dbPass;
+		$self->{'config'}->{'DATABASE_USER'} = $dbUser;
+        $self->{'config'}->{'DATABASE_PASSWORD'} = $dbPass;
 	}
 
 	$rs;
@@ -130,7 +130,7 @@ sub install
 	my $rs = $self->{'hooksManager'}->trigger('beforeFtpdInstall', 'proftpd');
 	return $rs if $rs;
 
-	$rs = $self->_bkpConfFile($self->{'proftpdConfig'}->{'FTPD_CONF_FILE'});
+	$rs = $self->_bkpConfFile($self->{'config'}->{'FTPD_CONF_FILE'});
 	return $rs if $rs;
 
 	$rs = $self->_setupDatabase();
@@ -167,16 +167,16 @@ sub _init
 	$self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
 	$self->{'wrkDir'} = "$self->{'cfgDir'}/working";
 
-	$self->{'proftpdConfig'} = $self->{'proftpd'}->{'proftpdConfig'};
+	$self->{'config'} = $self->{'proftpd'}->{'config'};
 
 	my $oldConf = "$self->{'cfgDir'}/proftpd.old.data";
 
 	if(-f $oldConf) {
-		tie my %proftpdOldConfig, 'iMSCP::Config', 'fileName' => $oldConf, 'noerrors' => 1;
+		tie my %oldConfig, 'iMSCP::Config', 'fileName' => $oldConf, 'noerrors' => 1;
 
-		for(keys %proftpdOldConfig) {
-			if(exists $self->{'proftpdConfig'}->{$_}) {
-				$self->{'proftpdConfig'}->{$_} = $proftpdOldConfig{$_};
+		for(keys %oldConfig) {
+			if(exists $self->{'config'}->{$_}) {
+				$self->{'config'}->{$_} = $oldConfig{$_};
 			}
 		}
 	}
@@ -216,9 +216,9 @@ sub _setupDatabase
 {
 	my $self = shift;
 
-	my $dbUser = $self->{'proftpdConfig'}->{'DATABASE_USER'};
+	my $dbUser = $self->{'config'}->{'DATABASE_USER'};
 	my $dbUserHost = main::setupGetQuestion('DATABASE_USER_HOST');
-	my $dbPass = $self->{'proftpdConfig'}->{'DATABASE_PASSWORD'};
+	my $dbPass = $self->{'config'}->{'DATABASE_PASSWORD'};
 
 	my $rs = $self->{'hooksManager'}->trigger('beforeFtpdSetupDb', $dbUser, $dbPass, $dbOldUser);
 	return $rs if $rs;
@@ -279,10 +279,10 @@ sub _buildConfigFile
 		DATABASE_NAME => $main::imscpConfig{'DATABASE_NAME'},
 		DATABASE_HOST => $main::imscpConfig{'DATABASE_HOST'},
 		DATABASE_PORT => $main::imscpConfig{'DATABASE_PORT'},
-		DATABASE_USER => $self::proftpdConfig{'DATABASE_USER'},
-		DATABASE_PASS => $self::proftpdConfig{'DATABASE_PASSWORD'},
-		FTPD_MIN_UID => $self::proftpdConfig{'MIN_UID'},
-		FTPD_MIN_GID => $self::proftpdConfig{'MIN_GID'},
+		DATABASE_USER => $self::config{'DATABASE_USER'},
+		DATABASE_PASS => $self::config{'DATABASE_PASSWORD'},
+		FTPD_MIN_UID => $self::config{'MIN_UID'},
+		FTPD_MIN_GID => $self::config{'MIN_GID'},
 		GUI_CERT_DIR => $main::imscpConfig{'GUI_CERT_DIR'},
 		SSL => main::setupGetQuestion('SSL_ENABLED') eq 'yes' ? '' : '#'
 	};
@@ -317,7 +317,7 @@ sub _buildConfigFile
 	$rs = $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
 	return $rs if $rs;
 
-	$file->copyFile($self->{'proftpdConfig'}->{'FTPD_CONF_FILE'});
+	$file->copyFile($self->{'config'}->{'FTPD_CONF_FILE'});
 }
 
 sub _createTrafficLogFile
@@ -339,9 +339,9 @@ sub _createTrafficLogFile
 		return $rs if $rs;
 	}
 
-	if(! -f "$main::imscpConfig{'TRAFF_LOG_DIR'}$self->{'proftpdConfig'}->{'FTP_TRAFF_LOG'}") {
+	if(! -f "$main::imscpConfig{'TRAFF_LOG_DIR'}$self->{'config'}->{'FTP_TRAFF_LOG'}") {
 		my $file = iMSCP::File->new(
-			'filename' => "$main::imscpConfig{'TRAFF_LOG_DIR'}$self->{'proftpdConfig'}->{'FTP_TRAFF_LOG'}"
+			'filename' => "$main::imscpConfig{'TRAFF_LOG_DIR'}$self->{'config'}->{'FTP_TRAFF_LOG'}"
 		);
 
 		$rs = $file->save();
@@ -364,8 +364,8 @@ sub _oldEngineCompatibility
 	my $rs = $self->{'hooksManager'}->trigger('beforeFtpdOldEngineCompatibility');
 	return $rs if $rs;
 
-	#if(exists $self::proftpdOldConfig{'FTPD_CONF_DIR'} && -d $self::proftpdOldConfig{'FTPD_CONF_DIR'}) {
-	#	$rs = iMSCP::Dir->new('dirname' => $self::proftpdOldConfig{'FTPD_CONF_DIR'})->remove();
+	#if(exists $self::oldConfig{'FTPD_CONF_DIR'} && -d $self::oldConfig{'FTPD_CONF_DIR'}) {
+	#	$rs = iMSCP::Dir->new('dirname' => $self::oldConfig{'FTPD_CONF_DIR'})->remove();
 	#	return $rs if $rs;
 	#}
 

@@ -100,7 +100,7 @@ sub process
 		$rs = 1;
 	} else {
 		require Servers::httpd;
-		my $srcFolder = Servers::httpd->factory()->{'apacheConfig'}->{'APACHE_USERS_LOG_DIR'};
+		my $srcFolder = Servers::httpd->factory()->{'config'}->{'APACHE_USERS_LOG_DIR'};
 
 		for(keys %$rdata) {
 			my $groupName =

@@ -135,7 +135,7 @@ sub _init
 	$self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
 	$self->{'wrkDir'} = "$self->{'cfgDir'}/working";
 
-	tie %{$self->{'phpmyadminConfig'}}, 'iMSCP::Config', 'fileName' => "$self->{'cfgDir'}/phpmyadmin.data";
+	tie %{$self->{'config'}}, 'iMSCP::Config', 'fileName' => "$self->{'cfgDir'}/phpmyadmin.data";
 
 	$self;
 }

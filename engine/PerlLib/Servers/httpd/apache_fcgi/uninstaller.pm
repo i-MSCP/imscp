@@ -47,7 +47,7 @@ sub _init
 
 	my $conf = "$self->{'cfgDir'}/apache.data";
 
-	tie %{$self->{'apacheConfig'}, 'iMSCP::Config','fileName' => $conf;
+	tie %{$self->{'config'}, 'iMSCP::Config','fileName' => $conf;
 
 	0;
 }
@@ -101,8 +101,8 @@ sub removeDirs
 	my $rs = 0;
 
 	for (
-		$self->{'apacheConfig'}->{'APACHE_USERS_LOG_DIR'}, $self->{'apacheConfig'}->{'APACHE_BACKUP_LOG_DIR'},
-		$self->{'apacheConfig'}->{'APACHE_CUSTOM_SITES_CONFIG_DIR'}, $self->{'apacheConfig'}->{'PHP_STARTER_DIR'}
+		$self->{'config'}->{'APACHE_USERS_LOG_DIR'}, $self->{'config'}->{'APACHE_BACKUP_LOG_DIR'},
+		$self->{'config'}->{'APACHE_CUSTOM_SITES_CONFIG_DIR'}, $self->{'config'}->{'PHP_STARTER_DIR'}
 	) {
 		$rs = iMSCP::Dir->new(dirname => $_)->remove() if -d $_;
 		return $rs if $rs;
@@ -118,7 +118,7 @@ sub restoreConf
 
 	for (
 		"$main::imscpConfig{LOGROTATE_CONF_DIR}/apache2", "$main::imscpConfig{LOGROTATE_CONF_DIR}/apache",
-		"$self->{'apacheConfig'}->{APACHE_CONF_DIR}/ports.conf"
+		"$self->{'config'}->{APACHE_CONF_DIR}/ports.conf"
 	) {
 		my ($filename, $directories, $suffix) = fileparse($_);
 		$rs	= iMSCP::File->new(
@@ -139,12 +139,12 @@ sub fastcgiConf
 	# try to disable but do not fail if do not exists
 	my $rs = 0;
 	for('fastcgi_imscp', 'fcgid_imscp') {
-		$rs = $httpd->disableMod($_) if -f "$self->{'apacheConfig'}->{'APACHE_MODS_DIR'}/$_.load";
+		$rs = $httpd->disableMod($_) if -f "$self->{'config'}->{'APACHE_MODS_DIR'}/$_.load";
 		return $rs if $rs;
 	}
 	
 	for ('fastcgi_imscp.conf', 'fastcgi_imscp.load', 'fcgid_imscp.conf', 'fcgid_imscp.load') {
-		$rs = iMSCP::File->new('filename' => "$self->{'apacheConfig'}->{'APACHE_MODS_DIR'}/$_")->delFile() if -f "$self->{'apacheConfig'}->{'APACHE_MODS_DIR'}/$_";
+		$rs = iMSCP::File->new('filename' => "$self->{'config'}->{'APACHE_MODS_DIR'}/$_")->delFile() if -f "$self->{'config'}->{'APACHE_MODS_DIR'}/$_";
 		return $rs if $rs;
 	}
 
@@ -163,9 +163,9 @@ sub vHostConf
 		$rs = $httpd->disableSite($_);
 		return $rs if $rs;
 
-		if(-f "$self->{'apacheConfig'}->{'APACHE_SITES_DIR'}/$_") {
+		if(-f "$self->{'config'}->{'APACHE_SITES_DIR'}/$_") {
 			$rs = iMSCP::File->new(
-				'filename' => "$self->{'apacheConfig'}->{'APACHE_SITES_DIR'}/$_"
+				'filename' => "$self->{'config'}->{'APACHE_SITES_DIR'}/$_"
 			)->delFile();
 			return $rs if $rs;
 		}

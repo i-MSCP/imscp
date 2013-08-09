@@ -221,7 +221,7 @@ sub addUser($$)
 		$self->setData(
 			{
 				BWLIMIT_DISABLED => $data->{'BWLIMIT'} ? '' : '#',
-				SCOREBOARDS_DIR => $self->{'apacheConfig'}->{'SCOREBOARDS_DIR'}
+				SCOREBOARDS_DIR => $self->{'config'}->{'SCOREBOARDS_DIR'}
 			}
 		);
 
@@ -242,15 +242,15 @@ sub addUser($$)
 		return $rs if $rs;
 
 		if($data->{'BWLIMIT'}) {
-			unless( -f "$self->{'apacheConfig'}->{'SCOREBOARDS_DIR'}/$data->{'USER'}") {
+			unless( -f "$self->{'config'}->{'SCOREBOARDS_DIR'}/$data->{'USER'}") {
 				$rs = iMSCP::File->new(
-					'filename' => "$self->{'apacheConfig'}->{'SCOREBOARDS_DIR'}/$data->{'USER'}"
+					'filename' => "$self->{'config'}->{'SCOREBOARDS_DIR'}/$data->{'USER'}"
 				)->save();
 				return $rs if $rs;
 			}
-		} elsif(-f "$self->{'apacheConfig'}->{'SCOREBOARDS_DIR'}/$data->{'USER'}") {
+		} elsif(-f "$self->{'config'}->{'SCOREBOARDS_DIR'}/$data->{'USER'}") {
 			$rs = iMSCP::File->new(
-				'filename' => "$self->{'apacheConfig'}->{'SCOREBOARDS_DIR'}/$data->{'USER'}"
+				'filename' => "$self->{'config'}->{'SCOREBOARDS_DIR'}/$data->{'USER'}"
 			)->delFile();
 			return $rs if $rs;
 		}
@@ -325,9 +325,9 @@ sub deleteUser($$)
 		$rs = $self->enableSite('00_modcband.conf');
 		return $rs if $rs;
 
-		if( -f "$self->{'apacheConfig'}->{'SCOREBOARDS_DIR'}/$data->{'USER'}"){
+		if( -f "$self->{'config'}->{'SCOREBOARDS_DIR'}/$data->{'USER'}"){
 			$rs = iMSCP::File->new(
-				'filename' => "$self->{'apacheConfig'}->{'SCOREBOARDS_DIR'}/$data->{'USER'}"
+				'filename' => "$self->{'config'}->{'SCOREBOARDS_DIR'}/$data->{'USER'}"
 			)->delFile();
 			return $rs if $rs;
 		}
@@ -430,7 +430,7 @@ sub disableDmn($$)
 	$self->setData($data);
 	$self->setData(
 		{
-			AUTHZ_ALLOW_ALL => (version->new("v$self->{'apacheConfig'}->{'APACHE_VERSION'}") >= version->new('v2.4.0'))
+			AUTHZ_ALLOW_ALL => (version->new("v$self->{'config'}->{'APACHE_VERSION'}") >= version->new('v2.4.0'))
 				? 'Require all granted' : "Order allow,deny\n    Allow from all"
 		}
 	);
@@ -478,15 +478,15 @@ sub deleteDmn($$)
 
 	# Disable apache site files
 	for("$data->{'DOMAIN_NAME'}.conf", "$data->{'DOMAIN_NAME'}_ssl.conf") {
-		$rs = $self->disableSite($_) if -f "$self->{'apacheConfig'}->{'APACHE_SITES_DIR'}/$_";
+		$rs = $self->disableSite($_) if -f "$self->{'config'}->{'APACHE_SITES_DIR'}/$_";
 		return $rs if $rs;
 	}
 
 	# Remove apache site files
 	for(
-		"$self->{'apacheConfig'}->{'APACHE_SITES_DIR'}/$data->{'DOMAIN_NAME'}.conf",
-		"$self->{'apacheConfig'}->{'APACHE_SITES_DIR'}/$data->{'DOMAIN_NAME'}_ssl.conf",
-		"$self->{'apacheConfig'}->{'APACHE_CUSTOM_SITES_CONFIG_DIR'}/$data->{'DOMAIN_NAME'}.conf",
+		"$self->{'config'}->{'APACHE_SITES_DIR'}/$data->{'DOMAIN_NAME'}.conf",
+		"$self->{'config'}->{'APACHE_SITES_DIR'}/$data->{'DOMAIN_NAME'}_ssl.conf",
+		"$self->{'config'}->{'APACHE_CUSTOM_SITES_CONFIG_DIR'}/$data->{'DOMAIN_NAME'}.conf",
 		"$self->{'apacheWrkDir'}/$data->{'DOMAIN_NAME'}.conf",
 		"$self->{'apacheWrkDir'}/$data->{'DOMAIN_NAME'}_ssl.conf",
 		"$self->{'phpfpmConfig'}->{'PHP_FPM_POOLS_CONF_DIR'}/$data->{'DOMAIN_NAME'}.conf"
@@ -710,7 +710,7 @@ sub addHtuser($$)
 	fatal('Hash reference expected') if ref $data ne 'HASH';
 
 	my $webDir = $data->{'WEB_DIR'};
-	my $fileName = $self->{'apacheConfig'}->{'HTACCESS_USERS_FILE_NAME'};
+	my $fileName = $self->{'config'}->{'HTACCESS_USERS_FILE_NAME'};
 	my $filePath = "$webDir/$fileName";
 
 	# Unprotect root Web directory
@@ -764,7 +764,7 @@ sub deleteHtuser($$)
 	fatal('Hash reference expected') if ref $data ne 'HASH';
 
 	my $webDir = $data->{'WEB_DIR'};
-	my $fileName = $self->{'apacheConfig'}->{'HTACCESS_USERS_FILE_NAME'};
+	my $fileName = $self->{'config'}->{'HTACCESS_USERS_FILE_NAME'};
 	my $filePath = "$webDir/$fileName";
 
 	# Unprotect root Web directory
@@ -817,7 +817,7 @@ sub addHtgroup($$)
 	fatal('Hash reference expected') if ref $data ne 'HASH';
 
 	my $webDir = $data->{'WEB_DIR'};
-	my $fileName = $self->{'apacheConfig'}->{'HTACCESS_GROUPS_FILE_NAME'};
+	my $fileName = $self->{'config'}->{'HTACCESS_GROUPS_FILE_NAME'};
 	my $filePath = "$webDir/$fileName";
 
 	# Unprotect root Web directory
@@ -871,7 +871,7 @@ sub deleteHtgroup
 	fatal('Hash reference expected') if ref $data ne 'HASH';
 
 	my $webDir = $data->{'WEB_DIR'};
-	my $fileName = $self->{'apacheConfig'}->{'HTACCESS_GROUPS_FILE_NAME'};
+	my $fileName = $self->{'config'}->{'HTACCESS_GROUPS_FILE_NAME'};
 	my $filePath = "$webDir/$fileName";
 
 	# Unprotect root Web directory
@@ -926,8 +926,8 @@ sub addHtaccess
 	# Here we process only if AUTH_PATH directory exists
 	# Note: It's temporary fix for 1.1.0-rc2 (See #749)
 	if(-d $data->{'AUTH_PATH'}) {
-		my $fileUser = "$data->{'HOME_PATH'}/$self->{'apacheConfig'}->{'HTACCESS_USERS_FILE_NAME'}";
-		my $fileGroup = "$data->'{HOME_PATH'}/$self->{'apacheConfig'}->{'HTACCESS_GROUPS_FILE_NAME'}";
+		my $fileUser = "$data->{'HOME_PATH'}/$self->{'config'}->{'HTACCESS_USERS_FILE_NAME'}";
+		my $fileGroup = "$data->'{HOME_PATH'}/$self->{'config'}->{'HTACCESS_GROUPS_FILE_NAME'}";
 		my $filePath = "$data->{'AUTH_PATH'}/.htaccess";
 
 		my $file = iMSCP::File->new('filename' => $filePath);
@@ -987,8 +987,8 @@ sub deleteHtaccess($$)
 	# Here we process only if AUTH_PATH directory exists
 	# Note: It's temporary fix for 1.1.0-rc2 (See #749)
 	if(-d $data->{'AUTH_PATH'}) {
-		my $fileUser = "$data->{'HOME_PATH'}/$self->{'apacheConfig'}->{'HTACCESS_USERS_FILE_NAME'}";
-		my $fileGroup = "$data->'{HOME_PATH'}/$self->{'apacheConfig'}->{'HTACCESS_GROUPS_FILE_NAME'}";
+		my $fileUser = "$data->{'HOME_PATH'}/$self->{'config'}->{'HTACCESS_USERS_FILE_NAME'}";
+		my $fileGroup = "$data->'{HOME_PATH'}/$self->{'config'}->{'HTACCESS_GROUPS_FILE_NAME'}";
 		my $filePath = "$data->{'AUTH_PATH'}/.htaccess";
 
 		my $file = iMSCP::File->new('filename' => $filePath);
@@ -1060,7 +1060,7 @@ sub addIps($$)
 	$rs = $self->{'hooksManager'}->trigger('beforeHttpdAddIps', \$content, $data);
 	return $rs if $rs;
 
-	if(!(version->new("v$self->{'apacheConfig'}->{'APACHE_VERSION'}") >= version->new('v2.4.0'))) {
+	if(!(version->new("v$self->{'config'}->{'APACHE_VERSION'}") >= version->new('v2.4.0'))) {
 		$content =~ s/NameVirtualHost[^\n]+\n//gi;
 		$content.= "NameVirtualHost $_:443\n" for @{$data->{'SSLIPS'}};
 		$content.= "NameVirtualHost $_:80\n" for @{$data->{'IPS'}};
@@ -1250,7 +1250,7 @@ sub installConfFile($$;$)
 
 	$rs = $fileH->copyFile(
 		$options->{'destination'}
-			? $options->{'destination'} : "$self->{'apacheConfig'}->{'APACHE_SITES_DIR'}/$name$suffix"
+			? $options->{'destination'} : "$self->{'config'}->{'APACHE_SITES_DIR'}/$name$suffix"
 	);
 	return $rs if $rs;
 
@@ -1339,7 +1339,7 @@ sub getTraffic($$)
 	my $who = shift;
 
 	my $traff = 0;
-	my $trfDir = "$self->{'apacheConfig'}->{'APACHE_LOG_DIR'}/traff";
+	my $trfDir = "$self->{'config'}->{'APACHE_LOG_DIR'}/traff";
 	my ($rv, $rs, $stdout, $stderr);
 
 	$self->{'hooksManager'}->trigger('beforeHttpdGetTraffic', $who);
@@ -1399,9 +1399,9 @@ sub deleteOldLogs
 	my $rs = $self->{'hooksManager'}->trigger('beforeHttpdDelOldLogs');
 	return $rs if $rs;
 
-	my $logDir = $self->{'apacheConfig'}->{'APACHE_LOG_DIR'};
-	my $backupLogDir = $self->{'apacheConfig'}->{'APACHE_BACKUP_LOG_DIR'};
-	my $usersLogDir = $self->{'apacheConfig'}->{'APACHE_USERS_LOG_DIR'};
+	my $logDir = $self->{'config'}->{'APACHE_LOG_DIR'};
+	my $backupLogDir = $self->{'config'}->{'APACHE_BACKUP_LOG_DIR'};
+	my $usersLogDir = $self->{'config'}->{'APACHE_USERS_LOG_DIR'};
 	my ($stdout, $stderr);
 
 	for ($logDir, $backupLogDir, $usersLogDir) {
@@ -1487,7 +1487,7 @@ sub getRunningUser
 {
 	my $self = shift;
 
-	$self->{'apacheConfig'}->{'APACHE_USER'};
+	$self->{'config'}->{'APACHE_USER'};
 }
 
 =item getRunningUser()
@@ -1502,7 +1502,7 @@ sub getRunningGroup
 {
 	my $self = shift;
 
-	$self->{'apacheConfig'}->{'APACHE_GROUP'};
+	$self->{'config'}->{'APACHE_GROUP'};
 }
 
 =item enableSite($sites)
@@ -1525,8 +1525,8 @@ sub enableSite($$)
 	my ($stdout, $stderr);
 
 	for(split(' ', $sites)){
-		if(-f "$self->{'apacheConfig'}->{'APACHE_SITES_DIR'}/$_") {
-			$rs = execute("$self->{'apacheConfig'}->{'CMD_A2ENSITE'} $_", \$stdout, \$stderr);
+		if(-f "$self->{'config'}->{'APACHE_SITES_DIR'}/$_") {
+			$rs = execute("$self->{'config'}->{'CMD_A2ENSITE'} $_", \$stdout, \$stderr);
 			debug($stdout) if $stdout;
 			error($stderr) if $stderr && $rs;
 			return $rs if $rs;
@@ -1560,8 +1560,8 @@ sub disableSite($$)
 	my ($stdout, $stderr);
 
 	for(split(' ', $sites)) {
-		if(-f "$self->{'apacheConfig'}->{'APACHE_SITES_DIR'}/$_") {
-			$rs = execute("$self->{'apacheConfig'}->{'CMD_A2DISSITE'} $_", \$stdout, \$stderr);
+		if(-f "$self->{'config'}->{'APACHE_SITES_DIR'}/$_") {
+			$rs = execute("$self->{'config'}->{'CMD_A2DISSITE'} $_", \$stdout, \$stderr);
 			debug($stdout) if $stdout;
 			error($stderr) if $stderr && $rs;
 			return $rs if $rs;
@@ -1593,7 +1593,7 @@ sub enableMod($$)
 	return $rs if $rs;
 
 	my ($stdout, $stderr);
-	$rs = execute("$self->{'apacheConfig'}->{'CMD_A2ENMOD'} $modules", \$stdout, \$stderr);
+	$rs = execute("$self->{'config'}->{'CMD_A2ENMOD'} $modules", \$stdout, \$stderr);
 	debug($stdout) if $stdout;
 	error($stderr) if $stderr && $rs;
 	return $rs if $rs;
@@ -1621,7 +1621,7 @@ sub disableMod($$)
 	return $rs if $rs;
 
 	my ($stdout, $stderr);
-	$rs = execute("$self->{'apacheConfig'}->{'CMD_A2DISMOD'} $modules", \$stdout, \$stderr);
+	$rs = execute("$self->{'config'}->{'CMD_A2DISMOD'} $modules", \$stdout, \$stderr);
 	debug($stdout) if $stdout;
 	error($stderr) if $stderr && $rs;
 	return $rs if $rs;
@@ -1745,7 +1745,7 @@ sub startApache
 	return $rs if $rs;
 
 	my ($stdout, $stderr);
-	$rs = execute("$self->{'apacheConfig'}->{'CMD_HTTPD'} start", \$stdout, \$stderr);
+	$rs = execute("$self->{'config'}->{'CMD_HTTPD'} start", \$stdout, \$stderr);
 	debug($stdout) if $stdout;
 	warning($stderr) if $stderr && ! $rs;
 	error($stderr) if $stderr && $rs;
@@ -1771,7 +1771,7 @@ sub stopApache
 	return $rs if $rs;
 
 	my ($stdout, $stderr);
-	$rs = execute("$self->{'apacheConfig'}->{'CMD_HTTPD'} stop", \$stdout, \$stderr);
+	$rs = execute("$self->{'config'}->{'CMD_HTTPD'} stop", \$stdout, \$stderr);
 	debug($stdout) if $stdout;
 	debug($stderr) if $stderr && ! $rs;
 	error($stderr) if $stderr && $rs;
@@ -1798,7 +1798,7 @@ sub restartApache
 
 	my ($stdout, $stderr);
 	$rs = execute(
-		"$self->{'apacheConfig'}->{'CMD_HTTPD'} " . ($self->{'forceRestart'} ? 'restart' : 'reload'), \$stdout, \$stderr
+		"$self->{'config'}->{'CMD_HTTPD'} " . ($self->{'forceRestart'} ? 'restart' : 'reload'), \$stdout, \$stderr
 	);
 	debug($stdout) if $stdout;
 	warning($stderr) if $stderr && ! $rs;
@@ -1914,7 +1914,7 @@ sub _init
 	$self->{'apacheWrkDir'} = "$self->{'apacheCfgDir'}/working";
 	$self->{'apacheTplDir'} = "$self->{'apacheCfgDir'}/parts";
 
-	tie %{$self->{'apacheConfig'}}, 'iMSCP::Config', 'fileName' => "$self->{'apacheCfgDir'}/apache.data";
+	tie %{$self->{'config'}}, 'iMSCP::Config', 'fileName' => "$self->{'apacheCfgDir'}/apache.data";
 
 	$self->{'phpfpmCfgDir'} = "$main::imscpConfig{'CONF_DIR'}/php-fpm";
 	$self->{'phpfpmBkpDir'} = "$self->{'phpfpmCfgDir'}/backup";
@@ -1953,7 +1953,7 @@ sub _addCfg($$)
 
 	# Disable and backup Apache sites if any
 	for("$data->{'DOMAIN_NAME'}.conf", "$data->{'DOMAIN_NAME'}_ssl.conf"){
-		$rs = $self->disableSite($_) if -f "$self->{'apacheConfig'}->{'APACHE_SITES_DIR'}/$_";
+		$rs = $self->disableSite($_) if -f "$self->{'config'}->{'APACHE_SITES_DIR'}/$_";
 		return $rs if $rs;
 
 		$rs = $self->apacheBkpConfFile("$self->{'apacheWrkDir'}/$_", '', 0);
@@ -1962,8 +1962,8 @@ sub _addCfg($$)
 
 	# Remove previous Apache sites if any
 	for(
-		"$self->{'apacheConfig'}->{'APACHE_SITES_DIR'}/$data->{'DOMAIN_NAME'}.conf",
-		"$self->{'apacheConfig'}->{'APACHE_SITES_DIR'}/$data->{'DOMAIN_NAME'}_ssl.conf",
+		"$self->{'config'}->{'APACHE_SITES_DIR'}/$data->{'DOMAIN_NAME'}.conf",
+		"$self->{'config'}->{'APACHE_SITES_DIR'}/$data->{'DOMAIN_NAME'}_ssl.conf",
 		"$self->{'apacheWrkDir'}/$data->{'DOMAIN_NAME'}.conf",
 		"$self->{'apacheWrkDir'}/$data->{'DOMAIN_NAME'}_ssl.conf"
 	) {
@@ -2002,9 +2002,9 @@ sub _addCfg($$)
 
 	$self->setData(
 		{
-			PHP_VERSION => $self->{'apacheConfig'}->{'PHP_VERSION'},
-			APACHE_CUSTOM_SITES_CONFIG_DIR => $self->{'apacheConfig'}->{'APACHE_CUSTOM_SITES_CONFIG_DIR'},
-			AUTHZ_ALLOW_ALL => (version->new("v$self->{'apacheConfig'}->{'APACHE_VERSION'}") >= version->new('v2.4.0'))
+			PHP_VERSION => $self->{'config'}->{'PHP_VERSION'},
+			APACHE_CUSTOM_SITES_CONFIG_DIR => $self->{'config'}->{'APACHE_CUSTOM_SITES_CONFIG_DIR'},
+			AUTHZ_ALLOW_ALL => (version->new("v$self->{'config'}->{'APACHE_VERSION'}") >= version->new('v2.4.0'))
 				? 'Require all granted' : "Order allow,deny\n    Allow from all"
 		}
 	);
@@ -2065,9 +2065,9 @@ sub _addCfg($$)
 	$rs = $self->buildConfFile(
 		"$self->{'apacheTplDir'}/custom.conf.tpl",
 		{
-			'destination' => "$self->{'apacheConfig'}->{'APACHE_CUSTOM_SITES_CONFIG_DIR'}/$data->{'DOMAIN_NAME'}.conf"
+			'destination' => "$self->{'config'}->{'APACHE_CUSTOM_SITES_CONFIG_DIR'}/$data->{'DOMAIN_NAME'}.conf"
 		}
-	) unless (-f "$self->{'apacheConfig'}->{'APACHE_CUSTOM_SITES_CONFIG_DIR'}/$data->{'DOMAIN_NAME'}.conf");
+	) unless (-f "$self->{'config'}->{'APACHE_CUSTOM_SITES_CONFIG_DIR'}/$data->{'DOMAIN_NAME'}.conf");
 	return $rs if $rs;
 
 	# Enable all Apache sites
@@ -2338,7 +2338,7 @@ END
 {
 	my $exitCode = $?;
 	my $self = Servers::httpd::apache_php_fpm->getInstance();
-	my $trafficDir = "$self->{'apacheConfig'}->{'APACHE_LOG_DIR'}/traff";
+	my $trafficDir = "$self->{'config'}->{'APACHE_LOG_DIR'}/traff";
 	my $rs = 0;
 
 	if($self->{'start'} && $self->{'start'} eq 'yes') {

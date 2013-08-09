@@ -51,7 +51,7 @@ sub _init
 
 	$self->{'commentChar'} = '#';
 
-	tie %{$self->{'proftpdConfig'}}, 'iMSCP::Config', 'fileName' => "$self->{'cfgDir'}/proftpd.data";
+	tie %{$self->{'config'}}, 'iMSCP::Config', 'fileName' => "$self->{'cfgDir'}/proftpd.data";
 
 	$self->{'hooksManager'}->trigger(
 		'afterFtpdInit', $self, 'proftpd'
@@ -160,7 +160,7 @@ sub getTraffic
 {
 	my $self = shift;
 	my $who = shift;
-	my $trfFile = "$main::imscpConfig{'TRAFF_LOG_DIR'}/$self->{'proftpdConfig'}->{'FTP_TRAFF_LOG'}";
+	my $trfFile = "$main::imscpConfig{'TRAFF_LOG_DIR'}/$self->{'config'}->{'FTP_TRAFF_LOG'}";
 
 	unless(exists $self->{'logDb'}) {
 		$self->{'logDb'} = {};
@@ -186,7 +186,7 @@ END
 {
 	my $exitCode = $?;
 	my $self = Servers::ftpd::proftpd->getInstance();
-	my $trfFile = "$main::imscpConfig{'TRAFF_LOG_DIR'}/$self->{'proftpdConfig'}->{'FTP_TRAFF_LOG'}";
+	my $trfFile = "$main::imscpConfig{'TRAFF_LOG_DIR'}/$self->{'config'}->{'FTP_TRAFF_LOG'}";
 	my $rs = 0;
 
 	$rs = $self->restart() if defined $self->{'restart'} && $self->{'restart'} eq 'yes';

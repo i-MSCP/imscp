@@ -106,11 +106,11 @@ sub askDovecot
 	my $dbPort = main::setupGetQuestion('DATABASE_PORT');
 	my $dbName = main::setupGetQuestion('DATABASE_NAME');
 
-	my $dbUser = main::setupGetQuestion('DOVECOT_SQL_USER', 'preseed') || $self::dovecotConfig{'DATABASE_USER'} ||
-		$self::dovecotOldConfig{'DATABASE_USER'} || 'dovecot_user';
+	my $dbUser = main::setupGetQuestion('DOVECOT_SQL_USER', 'preseed') || $self::config{'DATABASE_USER'} ||
+		$self::oldConfig{'DATABASE_USER'} || 'dovecot_user';
 
 	my $dbPass = main::setupGetQuestion('DOVECOT_SQL_PASSWORD', 'preseed') ||
-		$self::dovecotConfig{'DATABASE_PASSWORD'} || $self::dovecotOldConfig{'DATABASE_PASSWORD'} || '';
+		$self::config{'DATABASE_PASSWORD'} || $self::oldConfig{'DATABASE_PASSWORD'} || '';
 
 	my ($rs, $msg) = (0, '');
 
@@ -155,8 +155,8 @@ sub askDovecot
 	}
 
 	if($rs != 30) {
-		$self::dovecotConfig{'DATABASE_USER'} = $dbUser;
-        $self::dovecotConfig{'DATABASE_PASSWORD'} = $dbPass;
+		$self::config{'DATABASE_USER'} = $dbUser;
+        $self::config{'DATABASE_PASSWORD'} = $dbPass;
 	}
 
 	$rs;
@@ -226,12 +226,12 @@ sub buildPostfixConf
 
 	if($filename eq 'main.cf') {
 		# SASL part
-		my $dovecotConfigSnippet = <<EOF;
+		my $configSnippet = <<EOF;
 smtpd_sasl_type = dovecot
 smtpd_sasl_path = private/auth
 EOF
 
-	$$content =~ s/(# SASL parameters\n)/$1$dovecotConfigSnippet/;
+	$$content =~ s/(# SASL parameters\n)/$1$configSnippet/;
 
 	# LDA part
 	$$content .= <<EOF
@@ -242,14 +242,14 @@ EOF
 
 	} elsif($filename eq 'master.cf') {
 		# LDA part
-		my $dovecotConfigSnippet .= <<EOF;
+		my $configSnippet .= <<EOF;
 
 dovecot   unix  -       n       n       -       -       pipe
   flags=DRhu user={ARPL_USER} argv=/usr/lib/dovecot/deliver -f \${sender} -d \${recipient} {SFLAG}
 EOF
 		$$content .= iMSCP::Templator::process(
 			{ SFLAG => (version->new($self->{'version'}) < version->new('2.0.0') ? '-s' : '') },
-			$dovecotConfigSnippet
+			$configSnippet
 		);
 	}
 
@@ -284,16 +284,16 @@ sub _init
 	$self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
 	$self->{'wrkDir'} = "$self->{'cfgDir'}/working";
 
-	$self::dovecotConfig = $self->{'dovecotConfig'};
+	$self::config = $self->{'config'};
 
 	my $oldConf = "$self->{'cfgDir'}/dovecot.old.data";
 
 	if(-f $oldConf) {
-		tie %self::dovecotOldConfig, 'iMSCP::Config', 'fileName' => $oldConf, 'noerrors' => 1;
+		tie %self::oldConfig, 'iMSCP::Config', 'fileName' => $oldConf, 'noerrors' => 1;
 
-		for(keys %self::dovecotOldConfig) {
-			if(exists $self::dovecotConfig{$_}) {
-				$self::dovecotConfig{$_} = $self::dovecotOldConfig{$_};
+		for(keys %self::oldConfig) {
+			if(exists $self::config{$_}) {
+				$self::config{$_} = $self::oldConfig{$_};
 			}
 		}
 	}
@@ -360,8 +360,8 @@ sub _bkpConfFile
 	$rs = $self->{'hooksManager'}->trigger('beforePoBkpConfFile', $cfgFile);
 	return $rs if $rs;
 
-	if(-f "$self::dovecotConfig{'DOVECOT_CONF_DIR'}/$cfgFile") {
-		my $file = iMSCP::File->new('filename' => "$self::dovecotConfig{'DOVECOT_CONF_DIR'}/$cfgFile");
+	if(-f "$self::config{'DOVECOT_CONF_DIR'}/$cfgFile") {
+		my $file = iMSCP::File->new('filename' => "$self::config{'DOVECOT_CONF_DIR'}/$cfgFile");
 
 		if(! -f "$self->{'bkpDir'}/$cfgFile.system") {
 			$rs = $file->copyFile("$self->{'bkpDir'}/$cfgFile.system");
@@ -389,9 +389,9 @@ sub _setupDb
 	my $self = shift;
 	my $rs = 0;
 
-	my $dbUser = $self::dovecotConfig{'DATABASE_USER'};
-	my $dbOldUser = $self::dovecotOldConfig{'DATABASE_USER'} || '';
-	my $dbPass = $self::dovecotConfig{'DATABASE_PASSWORD'};
+	my $dbUser = $self::config{'DATABASE_USER'};
+	my $dbOldUser = $self::oldConfig{'DATABASE_USER'} || '';
+	my $dbPass = $self::config{'DATABASE_PASSWORD'};
 	my $dbUserHost = $main::imscpConfig{'SQL_SERVER'} ne 'remote_server'
 		? $main::imscpConfig{'DATABASE_HOST'} : $main::imscpConfig{'BASE_SERVER_IP'};
 
@@ -472,8 +472,8 @@ sub _buildConf
 				? "$main::imscpConfig{'DATABASE_HOST'} port=$main::imscpConfig{'DATABASE_PORT'}"
 				: $main::imscpConfig{'DATABASE_HOST'}
 		),
-		DATABASE_USER => $self::dovecotConfig{'DATABASE_USER'},
-		DATABASE_PASSWORD => $self::dovecotConfig{'DATABASE_PASSWORD'},
+		DATABASE_USER => $self::config{'DATABASE_USER'},
+		DATABASE_PASSWORD => $self::config{'DATABASE_PASSWORD'},
 		DATABASE_NAME => $main::imscpConfig{'DATABASE_NAME'},
 		GUI_CERT_DIR => $main::imscpConfig{'GUI_CERT_DIR'},
 		HOST_NAME => $main::imscpConfig{'SERVER_HOSTNAME'},
@@ -483,7 +483,7 @@ sub _buildConf
 		MAIL_GROUP =>$mta->{'config'}->{'MTA_MAILBOX_GID_NAME'},
 		vmailUID => scalar getpwnam($mta->{'config'}->{'MTA_MAILBOX_UID_NAME'}),
 		mailGID => scalar getgrnam($mta->{'config'}->{'MTA_MAILBOX_GID_NAME'}),
-		DOVECOT_CONF_DIR => $self::dovecotConfig{'DOVECOT_CONF_DIR'},
+		DOVECOT_CONF_DIR => $self::config{'DOVECOT_CONF_DIR'},
 		ENGINE_ROOT_DIR => $main::imscpConfig{'ENGINE_ROOT_DIR'}
 	};
 
@@ -521,11 +521,11 @@ sub _buildConf
 		$rs = $file->owner($main::imscpConfig{'ROOT_USER'}, $mta->{'config'}->{'MTA_MAILBOX_GID_NAME'});
 		return $rs if $rs;
 
-		$rs = $file->copyFile($self::dovecotConfig{'DOVECOT_CONF_DIR'});
+		$rs = $file->copyFile($self::config{'DOVECOT_CONF_DIR'});
 		return $rs if $rs;
 	}
 
-	my $file = iMSCP::File->new('filename' => "$self::dovecotConfig{'DOVECOT_CONF_DIR'}/dovecot.conf");
+	my $file = iMSCP::File->new('filename' => "$self::config{'DOVECOT_CONF_DIR'}/dovecot.conf");
 
 	$file->mode(0644);
 }

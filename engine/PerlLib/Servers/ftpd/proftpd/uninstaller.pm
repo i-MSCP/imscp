@@ -46,7 +46,7 @@ sub _init
 
 	my $conf = "$self->{'cfgDir'}/proftpd.data";
 
-	tie %self::proftpdConfig, 'iMSCP::Config','fileName' => $conf;
+	tie %self::config, 'iMSCP::Config','fileName' => $conf;
 
 	0;
 }
@@ -85,10 +85,10 @@ sub removeDB
 	my $err = 0;
 	my $database = iMSCP::Database->new()->factory();
 
-	if($self::proftpdConfig{DATABASE_USER}){
+	if($self::config{DATABASE_USER}){
 
-		$err = $database->doQuery('delete', "DROP USER ?@?", $self::proftpdConfig{'DATABASE_USER'}, 'localhost');
-		$err = $database->doQuery('delete', "DROP USER ?@?", $self::proftpdConfig{'DATABASE_USER'}, '%');
+		$err = $database->doQuery('delete', "DROP USER ?@?", $self::config{'DATABASE_USER'}, 'localhost');
+		$err = $database->doQuery('delete', "DROP USER ?@?", $self::config{'DATABASE_USER'}, '%');
 		$err = $database->doQuery('dummy', 'FLUSH PRIVILEGES');
 
 		if (ref $err ne 'HASH'){
@@ -105,7 +105,7 @@ sub restoreConfFile
 	my $self = shift;
 	my $rs = 0;
 
-	for ($self::proftpdConfig{'FTPD_CONF_FILE'}) {
+	for ($self::config{'FTPD_CONF_FILE'}) {
 		my ($filename, $directories, $suffix) = fileparse($_);
 
 		if(-f "$self->{bkpDir}/$filename$suffix.system") {

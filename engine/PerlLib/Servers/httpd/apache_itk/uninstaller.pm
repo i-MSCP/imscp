@@ -47,7 +47,7 @@ sub _init
 
 	my $conf = "$self->{'cfgDir'}/apache.data";
 
-	tie %{$self->{'apacheConfig'}, 'iMSCP::Config','fileName' => $conf;
+	tie %{$self->{'config'}, 'iMSCP::Config','fileName' => $conf;
 
 	0;
 }
@@ -93,11 +93,11 @@ sub removeDirs
 	my $self = shift;
 
 	my $rs = 0;
-	my $phpdir = $self->{'apacheConfig'}->{'PHP_STARTER_DIR'};
+	my $phpdir = $self->{'config'}->{'PHP_STARTER_DIR'};
 
 	for (
-		$self->{'apacheConfig'}->{'APACHE_USERS_LOG_DIR'}, $self->{'apacheConfig'}->{'APACHE_BACKUP_LOG_DIR'},
-		$self->{'apacheConfig'}->{'APACHE_CUSTOM_SITES_CONFIG_DIR'}, $phpdir
+		$self->{'config'}->{'APACHE_USERS_LOG_DIR'}, $self->{'config'}->{'APACHE_BACKUP_LOG_DIR'},
+		$self->{'config'}->{'APACHE_CUSTOM_SITES_CONFIG_DIR'}, $phpdir
 	) {
 		$rs = iMSCP::Dir->new('dirname' => $_)->remove() if -d $_;
 		return $rs if $rs;
@@ -114,7 +114,7 @@ sub restoreConf
 
 	for (
 		"$main::imscpConfig{LOGROTATE_CONF_DIR}/apache2", "$main::imscpConfig{LOGROTATE_CONF_DIR}/apache",
-		"$self->{'apacheConfig'}->{APACHE_CONF_DIR}/ports.conf"
+		"$self->{'config'}->{APACHE_CONF_DIR}/ports.conf"
 	) {
 		my ($filename, $directories, $suffix) = fileparse($_);
 		$rs	= iMSCP::File->new(
@@ -137,9 +137,9 @@ sub vHostConf
 		$rs = $httpd->disableSite($_);
 		return $rs if $rs;
 
-		if(-f "$self->{'apacheConfig'}->{'APACHE_SITES_DIR'}/$_") {
+		if(-f "$self->{'config'}->{'APACHE_SITES_DIR'}/$_") {
 			$rs = iMSCP::File->new(
-				'filename' => "$self->{'apacheConfig'}->{'APACHE_SITES_DIR'}/$_"
+				'filename' => "$self->{'config'}->{'APACHE_SITES_DIR'}/$_"
 			)->delFile();
 			return $rs if $rs;
 		}

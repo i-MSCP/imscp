@@ -184,7 +184,7 @@ sub _init
 	$self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
 	$self->{'wrkDir'} = "$self->{'cfgDir'}/working";
 
-	tie %{$self->{'roundcubeConfig'}}, 'iMSCP::Config', 'fileName' => "$self->{'cfgDir'}/roundcube.data";
+	tie %{$self->{'config'}}, 'iMSCP::Config', 'fileName' => "$self->{'cfgDir'}/roundcube.data";
 
 	$self;
 }
