@@ -47,7 +47,7 @@ sub _init
 	$self->{'wrkDir'} = "$self->{'cfgDir'}/working";
 	$self->{'vrlDir'} = "$self->{'cfgDir'}/imscp";
 
-	tie %{$self->{'postfixConfig'}}, 'iMSCP::Config', 'fileName' => "$self->{'cfgDir'}/postfix.data";
+	tie %{$self->{'config'}}, 'iMSCP::Config', 'fileName' => "$self->{'cfgDir'}/postfix.data";
 
 	0;
 }
@@ -73,7 +73,7 @@ sub removeDirs
 	my $self = shift;
 	my $rs = 0;
 
-	for ($self->{'postfixConfig'}->{'MTA_VIRTUAL_CONF_DIR'}, $self->{'postfixConfig'}->{'MTA_VIRTUAL_MAIL_DIR'}) {
+	for ($self->{'config'}->{'MTA_VIRTUAL_CONF_DIR'}, $self->{'config'}->{'MTA_VIRTUAL_MAIL_DIR'}) {
 		$rs = iMSCP::Dir->new('dirname' => $_)->remove();
 		return $rs if $rs;
 	}
@@ -90,7 +90,7 @@ sub removeUsers
 
 	$user->{'force'} = 'yes';
 
-	$user->delSystemUser($self->{'postfixConfig'}->{'MTA_MAILBOX_UID_NAME'});
+	$user->delSystemUser($self->{'config'}->{'MTA_MAILBOX_UID_NAME'});
 }
 
 sub buildAliasses
@@ -100,10 +100,10 @@ sub buildAliasses
 	my ($stdout, $stderr);
 
 	# Rebuilding the database for the mail aliases file - Begin
-	my $rs = execute("$self->{'postfixConfig'}->{'CMD_NEWALIASES'}", \$stdout, \$stderr);
+	my $rs = execute("$self->{'config'}->{'CMD_NEWALIASES'}", \$stdout, \$stderr);
 	debug($stdout) if $stdout;
 	error($stderr) if $stderr && $rs;
-	error("Error while executing $self->{'postfixConfig'}->{'CMD_NEWALIASES'}") if ! $stderr && $rs;
+	error("Error while executing $self->{'config'}->{'CMD_NEWALIASES'}") if ! $stderr && $rs;
 
 	$rs;
 }
@@ -113,7 +113,7 @@ sub restoreConfFile
 	my $self = shift;
 	my $rs = 0;
 
-	for ($self->{'postfixConfig'}->{'POSTFIX_CONF_FILE'}, $self->{'postfixConfig'}->{'POSTFIX_MASTER_CONF_FILE'}) {
+	for ($self->{'config'}->{'POSTFIX_CONF_FILE'}, $self->{'config'}->{'POSTFIX_MASTER_CONF_FILE'}) {
 		my ($filename, $directories, $suffix) = fileparse($_);
 
 		if(-f "$self->{bkpDir}/$filename$suffix.system"){
