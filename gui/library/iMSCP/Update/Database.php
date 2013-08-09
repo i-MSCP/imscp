@@ -2200,17 +2200,17 @@ class iMSCP_Update_Database extends iMSCP_Update
 	}
 	
 	/**
-	 * Update domain_dns.domain_text column to lenght 255 (preparation for OpenDKIM plugin)
+	 * Update domain_dns.domain_text column to 255 characters
 	 *
 	 * @return string SQL statement to be e executed
 	 */
 	protected  function _databaseUpdate_150()
 	{
-		return "
+		return '
 			ALTER TABLE
 				`domain_dns`
 			CHANGE
-				`domain_text` `domain_text` VARCHAR( 255 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL
-		";
+				`domain_text` `domain_text` VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL
+		';
 	}
 }
