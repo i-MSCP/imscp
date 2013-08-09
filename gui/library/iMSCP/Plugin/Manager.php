@@ -749,16 +749,21 @@ class iMSCP_Plugin_Manager
 						$pluginInfo = $pluginInstance->getInfo();
 						$pluginVersion = $pluginInfo['version'];
 						$pluginBackend = file_exists($fileInfo->getPathname() . "/backend/$pluginName.pm") ? 'yes' : 'no';
+						$pluginConfig = $pluginInstance->getConfigFromFile();
 
 						// Is a plugin already known by plugin manager?
 						if(isset($knownPluginsData[$pluginName])) {
 							$pluginStatus = $knownPluginsData[$pluginName]['plugin_status'];
 							$knownPluginInfo = json_decode($knownPluginsData[$pluginName]['plugin_info'], true);
+							$knownPluginsConfig = json_decode($knownPluginsData[$pluginName]['plugin_config'], true);
 
 							// If the plugin has been already installed, schedule update if needed
 							if(
 								!in_array($pluginStatus, array('uninstalled', 'toinstall')) &&
-								version_compare($pluginVersion,  $knownPluginInfo['version'], '>')
+								(
+									version_compare($pluginVersion,  $knownPluginInfo['version'], '>') ||
+									$pluginConfig !== $knownPluginsConfig
+								)
 							) {
 								$toUpdatePlugins[] = $pluginName;
 							}
@@ -774,10 +779,10 @@ class iMSCP_Plugin_Manager
 							'type' => $pluginInstance->getType(),
 							'info' => json_encode($pluginInfo),
 							// TODO review this when plugin settings interface will be ready
-							// For now, when we update plugin list, we override parameters with those
-							// found in default configuration file. This behavior will change when settings interface
+							// For now, when we update plugin list, we override parameters from database with those
+							// found in configuration file. This behavior will change when settings interface
 							// will be ready
-							'config' => json_encode($pluginInstance->getDefaultConfig()),
+							'config' => json_encode($pluginConfig),
 							'status' => $pluginStatus,
 							'backend' => $pluginBackend
 						);
