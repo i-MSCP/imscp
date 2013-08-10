@@ -43,7 +43,6 @@
  * Generate layout color form.
  *
  * @author Laurent Declercq <l.declerq@nuxwin.com>
- * @since iMSCP 1.0.1.6
  * @param $tpl iMSCP_pTemplate Template engine instance
  * @return void
  */

@@ -21,6 +21,7 @@ ENGINE:
 
 GUI:
 	- Fixed: Plugin update must be triggered when plugin configuration is updated
+	- Fixed: Unable to delete plugin in some contexts
 
 Tickets:
 	- Fixed #745: Defect - Disk detail in dovecot doesn't include aliases

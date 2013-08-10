@@ -246,19 +246,23 @@ function layout_getAvailableColorSet()
  */
 function layout_getUserLayoutColor($userId)
 {
-	$allowedColors = layout_getAvailableColorSet();
+	static $color = null;
 
-	$query = 'SELECT `layout_color` FROM `user_gui_props` WHERE `user_id` = ?';
-	$stmt = exec_query($query, (int)$userId);
+	if(null === $color) {
+		$allowedColors = layout_getAvailableColorSet();
 
-	if ($stmt->rowCount()) {
-		$color = $stmt->fields['layout_color'];
+		$query = 'SELECT `layout_color` FROM `user_gui_props` WHERE `user_id` = ?';
+		$stmt = exec_query($query, (int)$userId);
 
-		if (!$color || !in_array($color, $allowedColors)) {
+		if ($stmt->rowCount()) {
+			$color = $stmt->fields['layout_color'];
+
+			if (!$color || !in_array($color, $allowedColors)) {
+				$color = array_shift($allowedColors);
+			}
+		} else {
 			$color = array_shift($allowedColors);
 		}
-	} else {
-		$color = array_shift($allowedColors);
 	}
 
 	return $color;

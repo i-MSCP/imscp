@@ -583,7 +583,9 @@ class iMSCP_Plugin_Manager
 	public function delete($pluginName, $force = false)
 	{
 		if ($this->isKnown($pluginName)) {
-			if ($force || in_array($this->getStatus($pluginName), array('uninstalled', 'disabled'))) {
+			$pluginStatus = $this->getStatus($pluginName);
+
+			if ($force || in_array($pluginStatus, array('uninstalled', 'disabled'))) {
 				$pluginInstance = $this->load($pluginName, false, false);
 
 				$this->setError($pluginName, null);
@@ -601,7 +603,7 @@ class iMSCP_Plugin_Manager
 
 					$pluginInstance->{'uninstall'}($this);
 
-					if($this->hasBackend($pluginName)) {
+					if($this->hasBackend($pluginName) && $pluginStatus != 'uninstalled') {
 						$this->backendRequest = true;
 					} else {
 						$this->setStatus($pluginName, 'todelete');
