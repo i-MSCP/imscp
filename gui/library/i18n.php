@@ -76,7 +76,7 @@ function tr($msgid, $substitution = false)
 	}
 
 	if (!$substitution) {
-		$msgstr = replace_html(htmlentities($msgstr, ENT_COMPAT, 'UTF-8'));
+		$msgstr = replace_html(tohtml($msgstr));
 	}
 
 	return $msgstr;

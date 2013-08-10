@@ -138,7 +138,7 @@ if ($cfg->MAINTENANCEMODE && !isset($_REQUEST['admin'])) {
 	if ($cfg->exists('SSL_ENABLED') && $cfg->SSL_ENABLED == 'yes') {
 		$tpl->assign(
 			array(
-				'SSL_LINK' => isset($_SERVER['HTTPS']) ? 'http://' . htmlentities($_SERVER['HTTP_HOST']) : 'https://' . htmlentities($_SERVER['HTTP_HOST']),
+				'SSL_LINK' => isset($_SERVER['HTTPS']) ? 'http://' . tohtml($_SERVER['HTTP_HOST']) : 'https://' . tohtml($_SERVER['HTTP_HOST']),
 				'SSL_IMAGE_CLASS' => isset($_SERVER['HTTPS']) ? 'i_unlock' : 'i_lock',
 				'TR_SSL' => !isset($_SERVER['HTTPS']) ? tr('Secure connection') : tr('Normal connection'),
 				'TR_SSL_DESCRIPTION' => !isset($_SERVER['HTTPS']) ? tr('Use secure connection (SSL)') : tr('Use normal connection (No SSL)')

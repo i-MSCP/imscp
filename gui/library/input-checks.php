@@ -135,7 +135,7 @@ function clean_input($input, $htmlencode = false)
  */
 function tohtml($text)
 {
-	return htmlentities($text, ENT_QUOTES, "UTF-8");
+	return htmlentities($text, ENT_QUOTES, 'UTF-8', false);
 }
 
 /**
