@@ -108,7 +108,7 @@ sub askForPhpFpmPoolsLevel
 
 	if(
 		$main::reconfigure ~~ ['httpd', 'php', 'servers', 'all', 'forced'] ||
-		$poolsLevel !~ /^per_user|per_domain|per_site$/
+		not $poolsLevel ~~ ['per_user', 'per_domain', 'per_site']
 	) {
 		$poolsLevel =~ s/_/ /g;
 
@@ -125,7 +125,7 @@ Please, choose the pools level you want use for PHP. Available levels are:
 Note: PHP FPM use a global php.ini configuration file but you can override any settings per pool.
 ",
 			['per user', 'per domain', 'per site'],
-			$poolsLevel ne 'per user' && $poolsLevel ne 'per domain' ? 'per user' : $poolsLevel
+			$poolsLevel ne 'per site' && $poolsLevel ne 'per domain' ? 'per user' : $poolsLevel
 		);
 	}
 

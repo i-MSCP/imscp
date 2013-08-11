@@ -144,7 +144,7 @@ sub askForPhpIniLevel($$)
 
 	if(
 		$main::reconfigure ~~ ['httpd', 'php', 'servers', 'all', 'forced'] ||
-		$phpiniLevel !~ /^per_user|per_domain|per_site$/
+		not $phpiniLevel ~~ ['per_user', 'per_domain', 'per_site']
 	) {
 		$phpiniLevel =~ s/_/ /g;
 
@@ -160,7 +160,7 @@ Please, choose the PHP INI level you want use for PHP. Available levels are:
 
 ",
 			['per user', 'per domain', 'per site'],
-			$phpiniLevel ne 'per user' && $phpiniLevel ne 'per domain' ? 'per user' : $phpiniLevel
+			$phpiniLevel ne 'per site' && $phpiniLevel ne 'per domain' ? 'per user' : $phpiniLevel
 		);
 	}
 
