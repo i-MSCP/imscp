@@ -1418,9 +1418,18 @@ sub setupServerIps
 				}
 			}
 
-			# Update IP id of customers if needed
+			# Update IP id of customer domains if needed
 			$rs = $database->doQuery(
 				'dummy', 'UPDATE `domain` SET `domain_ip_id` = ? WHERE `domain_ip_id` = ?', $newIpId, $oldIpId
+			);
+			unless(ref $rs eq 'HASH') {
+				error($rs);
+				return 1;
+			}
+			
+			# Update IP id of customer domain aliases if needed
+			$rs = $database->doQuery(
+				'dummy', 'UPDATE `domain_aliasses` SET `alias_ip_id` = ? WHERE `alias_ip_id` = ?', $newIpId, $oldIpId
 			);
 			unless(ref $rs eq 'HASH') {
 				error($rs);
