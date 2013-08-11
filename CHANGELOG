@@ -34,6 +34,7 @@ Tickets:
 	- Fixed #852: Bug - Software installer - Unable to install any software
 	- Fixed #858: Task - Remove php5-adodb package
 	- Fixed #861: Bug -SQLSTATE[42000]: Syntax error or access violation
+	- Fixed #870: Bug - Error indicator for new tickets
 
 ------------------------------------------------------------------------------------------------------------------------
 1.1.0-rc3
