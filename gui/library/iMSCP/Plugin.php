@@ -207,11 +207,25 @@ abstract class iMSCP_Plugin
 	/**
 	 * Return plugin default configuration parameters.
 	 *
+	 * @throws iMSCP_Plugin_Exception in case plugin configuration file is not readable
 	 * @return array
 	 */
-	final public function getDefaultConfig()
+	final public function getConfigFromFile()
 	{
-		return $this->_loadDefaultConfig();
+		$configFile = iMSCP_Registry::get('pluginManager')->getPluginDirectory() . '/' . $this->getName() . '/config.php';
+		$config = array();
+
+		if(file_exists($configFile)) {
+			if (is_readable($configFile)) {
+				$config = include $configFile;
+			} else {
+				throw new iMSCP_Plugin_Exception(
+					"Unable to read the plugin $configFile file. Please, check file permissions"
+				);
+			}
+		}
+
+		return $config;
 	}
 
 	/**
@@ -234,54 +248,18 @@ abstract class iMSCP_Plugin
 	}
 
 	/**
-	 * Load plugin configuration parameters.
+	 * Load plugin configuration parameters from database.
 	 *
 	 * @return void
 	 */
 	final protected function loadConfig()
 	{
-		$default = $this->_loadDefaultConfig();
-
 		$stmt = exec_query('SELECT `plugin_config` FROM `plugin` WHERE `plugin_name` = ?', $this->getName());
 
-		if ($stmt->rowCount()) {
+		if($stmt->rowCount()) {
 			$this->_config = json_decode($stmt->fetchRow(PDO::FETCH_COLUMN), true);
-
-			foreach ($default as $parameter => $value) {
-				if (isset($this->_config[$parameter])) {
-					continue;
-				}
-
-				$this->_config[$parameter] = $value;
-			}
 		} else {
-			$this->_config = $default;
+			$this->_config = array();
 		}
-
-		$this->_isLoadedConfig = true;
-	}
-
-	/**
-	 * Load default plugin configuration parameters.
-	 *
-	 * @throws iMSCP_Plugin_Exception in case plugin configuration file cannot be read
-	 * @return array
-	 */
-	final protected function _loadDefaultConfig()
-	{
-		$configFile = iMSCP_Registry::get('pluginManager')->getPluginDirectory() . '/' . $this->getName() . '/config.php';
-		$config = array();
-
-		if(file_exists($configFile)) {
-			if (is_readable($configFile)) {
-				$config = include $configFile;
-			} else {
-				throw new iMSCP_Plugin_Exception(
-					"Unable to read the plugin $configFile file. Please, check file permissions"
-				);
-			}
-		}
-
-		return $config;
 	}
 }

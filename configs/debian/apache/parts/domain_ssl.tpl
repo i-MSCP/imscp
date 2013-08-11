@@ -8,13 +8,13 @@
 
     # SECTION itk BEGIN.
     <IfModule mpm_itk_module>
-        AssignUserID {USER} {GROUP}
+    AssignUserID {USER} {GROUP}
     </IfModule>
     # SECTION itk END.
 
     # SECTION suexec BEGIN.
     <IfModule suexec_module>
-        SuexecUserGroup {USER} {GROUP}
+    SuexecUserGroup {USER} {GROUP}
     </IfModule>
     # SECTION suexec END.
 
@@ -24,93 +24,91 @@
     RewriteOptions inherit
 
     <IfModule mod_cband.c>
-        CBandUser {USER}
+    CBandUser {USER}
     </IfModule>
 
     # SECTION cgi_support BEGIN.
     ScriptAlias /cgi-bin/ {WEB_DIR}/cgi-bin/
+
     <Directory {WEB_DIR}/cgi-bin>
         AllowOverride AuthConfig
-        #Options ExecCGI
-        Order allow,deny
-        Allow from all
+        #Options +ExecCGI
+        {AUTHZ_ALLOW_ALL}
     </Directory>
     # SECTION cgi_support END.
 
     <Directory {WEB_DIR}/htdocs>
-        Options -Indexes Includes FollowSymLinks MultiViews
+        Options -Indexes +Includes +FollowSymLinks +MultiViews
         # SECTION php_enabled BEGIN.
         AllowOverride All
         # SECTION php_enabled END.
         # SECTION php_disabled BEGIN.
         AllowOverride AuthConfig Indexes Limit Options
         # SECTION php_disabled END.
-        Order allow,deny
-        Allow from all
+        {AUTHZ_ALLOW_ALL}
     </Directory>
 
     # SECTION php_enabled BEGIN.
     # SECTION fcgid BEGIN.
     <IfModule fcgid_module>
-        <Directory {WEB_DIR}/htdocs>
-            FCGIWrapper {PHP_STARTER_DIR}/{FCGID_NAME}/php{PHP_VERSION}-fcgid-starter .php
-            Options +ExecCGI
-        </Directory>
-        <Directory "{PHP_STARTER_DIR}/{FCGID_NAME}">
-            AllowOverride None
-            Options +ExecCGI MultiViews -Indexes
-            Order allow,deny
-            Allow from all
-        </Directory>
+    <Directory {WEB_DIR}/htdocs>
+        FCGIWrapper {PHP_STARTER_DIR}/{FCGID_NAME}/php{PHP_VERSION}-fcgid-starter .php
+        Options +ExecCGI
+    </Directory>
+    <Directory "{PHP_STARTER_DIR}/{FCGID_NAME}">
+        AllowOverride None
+        Options +ExecCGI +MultiViews -Indexes
+        {AUTHZ_ALLOW_ALL}
+    </Directory>
     </IfModule>
     # SECTION fcgid END.
 
     # SECTION fastcgi BEGIN.
     <IfModule fastcgi_module>
-        ScriptAlias /php5/ {PHP_STARTER_DIR}/{FCGID_NAME}/
-        <Directory "{PHP_STARTER_DIR}/{FCGID_NAME}">
-            AllowOverride None
-            Options +ExecCGI -MultiViews -Indexes
-            Order allow,deny
-            Allow from all
-        </Directory>
+    ScriptAlias /php5/ {PHP_STARTER_DIR}/{FCGID_NAME}/
+
+    <Directory "{PHP_STARTER_DIR}/{FCGID_NAME}">
+        AllowOverride None
+        Options +ExecCGI -MultiViews -Indexes
+        {AUTHZ_ALLOW_ALL}
+    </Directory>
     </IfModule>
     # SECTION fastcgi END.
 
     # SECTION php_fpm BEGIN.
     <IfModule fastcgi_module>
-        Alias /php{PHP_VERSION}.{DOMAIN_NAME}.ssl.fcgi /var/lib/apache2/fastcgi/php{PHP_VERSION}.{DOMAIN_NAME}.ssl.fcgi
-        FastCGIExternalServer /var/lib/apache2/fastcgi/php{PHP_VERSION}.{DOMAIN_NAME}.ssl.fcgi \
-        -socket /var/run/php5-fpm.{POOL_NAME}.socket \
-        -pass-header Authorization \
-        -idle-timeout 300
-        Action php-script /php{PHP_VERSION}.{DOMAIN_NAME}.ssl.fcgi virtual
-        <Directory /var/lib/apache2/fastcgi>
-            <Files php{PHP_VERSION}.{DOMAIN_NAME}.ssl.fcgi>
-                Order deny,allow
-                Allow from all
-            </Files>
-        </Directory>
+    Alias /php{PHP_VERSION}.{DOMAIN_NAME}.ssl.fcgi /var/lib/apache2/fastcgi/php{PHP_VERSION}.{DOMAIN_NAME}.ssl.fcgi
+    FastCGIExternalServer /var/lib/apache2/fastcgi/php{PHP_VERSION}.{DOMAIN_NAME}.ssl.fcgi \
+     -socket /var/run/php5-fpm.{POOL_NAME}.socket \
+     -pass-header Authorization \
+     -idle-timeout 300
+    Action php-script /php{PHP_VERSION}.{DOMAIN_NAME}.ssl.fcgi virtual
+
+    <Directory /var/lib/apache2/fastcgi>
+        <Files php{PHP_VERSION}.{DOMAIN_NAME}.ssl.fcgi>
+        {AUTHZ_ALLOW_ALL}
+        </Files>
+    </Directory>
     </IfModule>
     # SECTION php_fpm END.
 
     # SECTION itk BEGIN.
     <IfModule php5_module>
-        php_admin_value open_basedir "{HOME_DIR}/:{PEAR_DIR}/{PHPINI_OPEN_BASEDIR}"
-        php_admin_value upload_tmp_dir "{WEB_DIR}/phptmp"
-        php_admin_value session.save_path "{WEB_DIR}/phptmp"
-        php_admin_value soap.wsdl_cache_dir "{WEB_DIR}/phptmp"
-        php_admin_value sendmail_path "/usr/sbin/sendmail -t -i -f webmaster@{DOMAIN_NAME}"
+    php_admin_value open_basedir "{HOME_DIR}/:{PEAR_DIR}/{PHPINI_OPEN_BASEDIR}"
+    php_admin_value upload_tmp_dir "{WEB_DIR}/phptmp"
+    php_admin_value session.save_path "{WEB_DIR}/phptmp"
+    php_admin_value soap.wsdl_cache_dir "{WEB_DIR}/phptmp"
+    php_admin_value sendmail_path "/usr/sbin/sendmail -t -i -f webmaster@{DOMAIN_NAME}"
 
-        # Custom values
-        php_admin_value max_execution_time {MAX_EXECUTION_TIME}
-        php_admin_value max_input_time {MAX_INPUT_TIME}
-        php_admin_value memory_limit "{MEMORY_LIMIT}M"
-        php_value error_reporting {ERROR_REPORTING}
-        php_flag display_errors {DISPLAY_ERRORS}
-        php_admin_value post_max_size "{POST_MAX_SIZE}M"
-        php_admin_value upload_max_filesize "{UPLOAD_MAX_FILESIZE}M"
-        php_admin_flag allow_url_fopen {ALLOW_URL_FOPEN}
+    # Custom values
+    php_admin_value max_execution_time {MAX_EXECUTION_TIME}
+    php_admin_value max_input_time {MAX_INPUT_TIME}
+    php_admin_value memory_limit "{MEMORY_LIMIT}M"
+    php_value error_reporting {ERROR_REPORTING}
+    php_flag display_errors {DISPLAY_ERRORS}
+    php_admin_value post_max_size "{POST_MAX_SIZE}M"
+    php_admin_value upload_max_filesize "{UPLOAD_MAX_FILESIZE}M"
+    php_admin_flag allow_url_fopen {ALLOW_URL_FOPEN}
     </IfModule>
     # SECTION itk END.
     # SECTION php_enabled END.
@@ -133,7 +131,7 @@
 
     # SECTION itk BEGIN.
     <IfModule php5_module>
-        php_admin_flag engine off
+    php_admin_flag engine off
     </IfModule>
     # SECTION itk END.
     # SECTION php_disabled END.

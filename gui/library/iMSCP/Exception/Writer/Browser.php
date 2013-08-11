@@ -98,7 +98,9 @@ class iMSCP_Exception_Writer_Browser extends iMSCP_Exception_Writer
 			$tpl->assign(
 				array(
 					'BOX_MESSAGE_TITLE' => 'An exception has been thrown.',
-					'BOX_MESSAGE' => $this->_message));
+					'BOX_MESSAGE' => $this->_message
+				)
+			);
 		}
 
 		$tpl->parse('LAYOUT', 'layout');
@@ -106,6 +108,7 @@ class iMSCP_Exception_Writer_Browser extends iMSCP_Exception_Writer
 		iMSCP_Events_Manager::getInstance()->dispatch(
 			iMSCP_Events::onExceptionToBrowserEnd, array('context' => $this, 'templateEngine' => $tpl)
 		);
+
 		$tpl->prnt();
 	}
 
@@ -169,7 +172,9 @@ class iMSCP_Exception_Writer_Browser extends iMSCP_Exception_Writer
 				'layout' => 'shared/layouts/simple.tpl',
 				'page' => $this->_templateFile,
 				'page_message' => 'layout',
-				'backlink_block' => 'page'));
+				'backlink_block' => 'page'
+			)
+		);
 
 		if (iMSCP_Registry::isRegistered('backButtonDestination')) {
 			$backButtonDestination = iMSCP_Registry::get('backButtonDestination');
@@ -179,18 +184,18 @@ class iMSCP_Exception_Writer_Browser extends iMSCP_Exception_Writer
 
 		$tpl->assign(
 			array(
-				'TR_PAGE_TITLE' => 'i-MSCP - internet Multi Server Control Panel - Exception',
+				'TR_PAGE_TITLE' => 'i-MSCP - internet Multi Server Control Panel - Fatal Error',
 				'CONTEXT_CLASS' => 'box_message',
 				'productLink' => 'http://www.i-mscp.net',
 				'productLongName' => 'internet Multi Server Control Panel',
 				'productCopyright' => '© 2010-2013 i-MSCP Team<br/>All Rights Reserved',
-				'THEME_COLOR_PATH' => '/themes/' . 'default',
-				'BOX_MESSAGE_TITLE' => 'An exception have been thrown',
+				'BOX_MESSAGE_TITLE' => 'An error has been encountered',
 				'PAGE_MESSAGE' => '',
 				'BOX_MESSAGE' => $this->_message,
-				'THEME_CHARSET' => 'UTF-8',
 				'BACK_BUTTON_DESTINATION' => $backButtonDestination,
-				'TR_BACK' => 'Back'));
+				'TR_BACK' => 'Back'
+			)
+		);
 
 		$tpl->parse('LAYOUT_CONTENT', 'page');
 

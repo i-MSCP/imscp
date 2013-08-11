@@ -90,7 +90,6 @@ if (isset($_POST['uaction']) && $_POST['uaction'] == 'apply') {
 $tpl->assign(
 	array(
 		'TR_PAGE_TITLE' => tr('Reseller / Customers / Lost Password Email'),
-		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => layout_getUserLogo()));
 
 generateNavigation($tpl);

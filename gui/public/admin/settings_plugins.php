@@ -176,6 +176,7 @@ function admin_pluginManagerTrStatus($rawPluginStatus)
 			return tr('Update in progress...');
 			break;
 		case 'touninstall':
+			return tr('Deletion in progress...');
 		case 'todisable':
 			return tr('Deactivation in progress...');
 		default:
@@ -317,12 +318,17 @@ function admin_pluginManagerDoAction($pluginManager, $pluginName, $action, $forc
 					'error'
 				);
 			} else {
-				if($action != 'delete' && $pluginManager->hasBackend($pluginName)) {
+				#if($action != 'delete' && $pluginManager->hasBackend($pluginName)) {
+				if($pluginManager->hasBackend($pluginName)) {
 					set_page_message(
 						tr(
 							'Plugin %s successfully scheduled for %s.',
 							"<strong>$pluginName</strong>",
-							($action == 'activate') ? tr('activation') : tr('deactivation')
+
+								($action == 'activate')
+									? tr('activation')
+									: (($action != 'delete') ? tr('deactivation') : tr('deletion'))
+
 						),
 						'success'
 					);
@@ -492,7 +498,6 @@ $tpl->define_dynamic(
 $tpl->assign(
 	array(
 		'TR_PAGE_TITLE' => tr('Admin / Settings / Plugins Management'),
-		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => layout_getUserLogo(),
 		'DATATABLE_TRANSLATIONS' => getDataTablesPluginTranslations(),
 		'TR_BULK_ACTIONS' => tr('Bulk Actions'),

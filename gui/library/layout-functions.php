@@ -228,7 +228,6 @@ function get_menu_vars($menu_link)
  * Returns available color set for current layout.
  *
  * @author Laurent Declercq <l.declercq@nuxwin.com>
- * @since i-MSCP 1.0.1.6
  * @return array
  */
 function layout_getAvailableColorSet()
@@ -247,37 +246,44 @@ function layout_getAvailableColorSet()
  */
 function layout_getUserLayoutColor($userId)
 {
-	$allowedColors = layout_getAvailableColorSet();
+	static $color = null;
 
-	$query = 'SELECT `layout_color` FROM `user_gui_props` WHERE `user_id` = ?';
-	$stmt = exec_query($query, (int)$userId);
+	if(null === $color) {
+		$allowedColors = layout_getAvailableColorSet();
 
-	if ($stmt->rowCount()) {
-		$color = $stmt->fields['layout_color'];
+		$query = 'SELECT `layout_color` FROM `user_gui_props` WHERE `user_id` = ?';
+		$stmt = exec_query($query, (int)$userId);
 
-		if (!$color || !in_array($color, $allowedColors)) {
+		if ($stmt->rowCount()) {
+			$color = $stmt->fields['layout_color'];
+
+			if (!$color || !in_array($color, $allowedColors)) {
+				$color = array_shift($allowedColors);
+			}
+		} else {
 			$color = array_shift($allowedColors);
 		}
-	} else {
-		$color = array_shift($allowedColors);
 	}
 
 	return $color;
 }
 
 /**
- * Set layout color.
+ * Init layout
  *
  * @author Laurent Declercq <l.declercq@nuxwin.com>
- * @since i-MSCP 1.0.1.6
  * @param iMSCP_Events_Event $event
  * @return void
  * @todo Use cookies to store user UI properties (Remember me implementation?)
  */
-function layout_setColor($event)
+function layout_init($event)
 {
 	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
+
+	$encoding = tr('encoding');
+
+	ini_set('default_charset', ($encoding !='encoding') ? $encoding : 'UTF-8');
 
 	if (isset($_SESSION['user_theme_color'])) {
 		$color = $_SESSION['user_theme_color'];
@@ -295,8 +301,11 @@ function layout_setColor($event)
 
 	$tpl->assign(
 		array(
-			'THEME_COLOR_PATH' => '/themes/' . $cfg->USER_INITIAL_THEME, // @TODO Move this statement
-			'THEME_COLOR' => $color));
+			'THEME_CHARSET' => ($encoding !='encoding') ? $encoding : 'UTF-8',
+			'THEME_COLOR_PATH' => '/themes/' . $cfg->USER_INITIAL_THEME,
+			'THEME_COLOR' => $color
+		)
+	);
 
 	$tpl->parse('LAYOUT', 'layout');
 }

@@ -96,7 +96,6 @@ class iMSCP_Bootstrap
 	protected function _run()
     {
 		$this->_loadInitializer();
-		iMSCP_Initializer::run('_setIncludePath');
 	}
 
 	/**

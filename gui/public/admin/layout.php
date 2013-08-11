@@ -159,7 +159,6 @@ $tpl->assign(
 		'TR_PAGE_TITLE' => tr('Admin / Profile / Layout'),
 		'ISP_LOGO' => $ispLogo,
 		'OWN_LOGO' => $ispLogo,
-		'THEME_CHARSET' => tr('encoding'),
 		'TR_UPLOAD_LOGO' => tr('Upload logo'),
 		'TR_LOGO_FILE' => tr('Logo file'),
         'TR_ENABLED' => tr('Enabled'),

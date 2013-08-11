@@ -232,7 +232,6 @@ generateNavigation($tpl);
 
 $tpl->assign(
 	array(
-		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => layout_getUserLogo(),
 		'TR_PAGE_TITLE' => tr('Admin / Users / Overview / Edit Admin'),
 		'TR_EMPTY_OR_WORNG_DATA' => tr('Empty data or wrong field.'),

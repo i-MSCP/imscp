@@ -249,9 +249,13 @@ sub _addAwstatsSection
 	my $self = shift;
 	my $content = shift;
 	my $filename = shift;
+
 	my $rs = 0;
 
 	if($filename =~ /domain.*tpl/) {
+		require Servers::httpd;
+		my $httpd = Servers::httpd->factory();
+
 		my $beginTag = "# SECTION addons BEGIN.\n";
 		my $endTag = "# SECTION addons END.\n";
 
@@ -263,7 +267,9 @@ sub _addAwstatsSection
 			{
 				AWSTATS_WEB_DIR => $main::imscpConfig{'AWSTATS_WEB_DIR'},
 				WEBSTATS_GROUP_AUTH => $main::imscpConfig{'WEBSTATS_GROUP_AUTH'},
-				WEBSTATS_RPATH => $main::imscpConfig{'WEBSTATS_RPATH'}
+				WEBSTATS_RPATH => $main::imscpConfig{'WEBSTATS_RPATH'},
+				HTACCESS_USERS_FILE_NAME => $httpd->{'apacheConfig'}->{'HTACCESS_USERS_FILE_NAME'},
+				HTACCESS_GROUPS_FILE_NAME => $httpd->{'apacheConfig'}->{'HTACCESS_GROUPS_FILE_NAME'}
 			},
 			$self->_getApacheConfSnippet()
 		);

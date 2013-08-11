@@ -292,7 +292,6 @@ function admin_generateCustomerAcountDeletionValidationPage($userId)
 	$tpl->assign(
 		array(
 			'TR_PAGE_TITLE' => tr('Admin / Users / Overview / Delete Customer'),
-			'THEME_CHARSET' => tr('encoding'),
 			'ISP_LOGO' => layout_getUserLogo(),
 			'TR_ACCOUNT_SUMMARY' => tr('Customer account summary'),
 			'TR_EMAILS' => tr('Emails'),

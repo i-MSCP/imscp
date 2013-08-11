@@ -152,7 +152,6 @@ if (isset($_GET['id']) || isset($_POST['id'])) {
 		$tpl->assign(
 			array(
 				'TR_MANAGE_SOFTWARE_PAGE_TITLE' => tr('i-MSCP - Software Management'),
-				'THEME_CHARSET' => tr('encoding'),
 				'ISP_LOGO' => layout_getUserLogo(),
 				'TR_DELETE_SEND_TO' => tr('Send message to'),
 				'TR_DELETE_MESSAGE_TEXT' => tr('Message'),

@@ -410,7 +410,6 @@ function client_generateView($verifiedData, $data)
 	$tpl->assign(
 		array(
 			'TR_PAGE_TITLE' => tr('Client / Email / External Mail Server / Edit External Mail Server for {DOMAIN_UTF8}'),
-			'THEME_CHARSET' => tr('encoding'),
 			'ISP_LOGO' => layout_getUserLogo(),
 			'TR_MX_TYPE' => tr('Type'),
 			'TR_DOMAIN' => tr('Domain'),
@@ -430,9 +429,9 @@ function client_generateView($verifiedData, $data)
 			'TR_UPDATE' => tr('Update'),
 			'TR_MX_TYPE_TOOLTIP' =>
 			tr('Domain: Setup an MX record to relay mail of your entire domain (including subdomains) to an external mail server.') .
-				htmlentities('<br /><br />') .
+				'<br /><br />' .
 				tr('Wildcard: Setup an MX record for inexistent subdomains, for which an external mail server can handle mail.') .
-				htmlentities('<br /><br />') .
+				'<br /><br />' .
 				tr('Note: You can mix these options.'),
 			'ITEM' => $verifiedData['item_id'] . ';' . $verifiedData['item_type']
 		)

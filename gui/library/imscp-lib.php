@@ -69,6 +69,14 @@ define('CACHE_PATH', GUI_ROOT_DIR .'/data/cache');
 // Define persistent directory path
 define('PERSISTENT_PATH', GUI_ROOT_DIR .'/data/persistent');
 
+// Set include path
+set_include_path(
+	implode(
+		PATH_SEPARATOR,
+		array_unique(array(LIBRARY_PATH, LIBRARY_PATH . '/vendor', DEFAULT_INCLUDE_PATH))
+	)
+);
+
 // Autoloader
 // TODO generate a classmap on first load and cache it for better performances
 require_once 'iMSCP/Loader/AutoloaderFactory.php';
@@ -84,16 +92,14 @@ iMSCP\Loader\AutoloaderFactory::factory(
 );
 
 /**
- * Attach the primary exception writer to write uncaught exceptions messages to the
- * client browser.
+ * Attach the primary exception writer to write uncaught exceptions messages to the client browser.
  *
- * The exception writer writes all exception messages to the client browser. In
- * production, all messages are replaced by a specific message to avoid revealing
- * important information about the i-MSCP application environment if the user is not
- * an administrator.
+ * The exception writer writes all exception messages to the client browser. In production, all messages are replaced by
+ * a specific message to avoid revealingimportant information about the i-MSCP application environment if the user is
+ * not an administrator.
  *
- * Another writers will be attached to this object during initialization process if
- * enabled in the application wide configuration file.
+ * Another writers will be attached to this object during initialization process if enabled in the application wide
+ * configuration file.
  */
 iMSCP_Exception_Handler::getInstance()->attach(new iMSCP_Exception_Writer_Browser('box.tpl'));
 

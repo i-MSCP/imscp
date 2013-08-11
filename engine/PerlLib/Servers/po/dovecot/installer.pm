@@ -106,11 +106,11 @@ sub askDovecot
 	my $dbPort = main::setupGetQuestion('DATABASE_PORT');
 	my $dbName = main::setupGetQuestion('DATABASE_NAME');
 
-	my $dbUser = $main::preseed{'DOVECOT_SQL_USER'} || $self::dovecotConfig{'DATABASE_USER'} ||
+	my $dbUser = main::setupGetQuestion('DOVECOT_SQL_USER', 'preseed') || $self::dovecotConfig{'DATABASE_USER'} ||
 		$self::dovecotOldConfig{'DATABASE_USER'} || 'dovecot_user';
 
-	my $dbPass = $main::preseed{'DOVECOT_SQL_PASSWORD'} || $self::dovecotConfig{'DATABASE_PASSWORD'} ||
-		$self::dovecotOldConfig{'DATABASE_PASSWORD'} || '';
+	my $dbPass = main::setupGetQuestion('DOVECOT_SQL_PASSWORD', 'preseed') ||
+		$self::dovecotConfig{'DATABASE_PASSWORD'} || $self::dovecotOldConfig{'DATABASE_PASSWORD'} || '';
 
 	my ($rs, $msg) = (0, '');
 
@@ -463,8 +463,7 @@ sub _buildConf
 	my $rs = 0;
 
 	require Servers::mta;
-
-	my $mta	= Servers::mta->factory($main::imscpConfig{'MTA_SERVER'});
+	my $mta = Servers::mta->factory();
 
 	my $cfg = {
 		DATABASE_TYPE => $main::imscpConfig{'DATABASE_TYPE'},
@@ -480,10 +479,10 @@ sub _buildConf
 		HOST_NAME => $main::imscpConfig{'SERVER_HOSTNAME'},
 		DOVECOT_SSL => ($main::imscpConfig{'SSL_ENABLED'} eq 'yes' ? 'yes' : 'no'),
 		COMMENT_SSL => ($main::imscpConfig{'SSL_ENABLED'} eq 'yes' ? '' : '#'),
-		MAIL_USER => $mta->{'MTA_MAILBOX_UID_NAME'},
-		MAIL_GROUP => $mta->{'MTA_MAILBOX_GID_NAME'},
-		vmailUID => scalar getpwnam($mta->{'MTA_MAILBOX_UID_NAME'}),
-		mailGID => scalar getgrnam($mta->{'MTA_MAILBOX_GID_NAME'}),
+		MAIL_USER => $mta->{'config'}->{'MTA_MAILBOX_UID_NAME'},
+		MAIL_GROUP =>$mta->{'config'}->{'MTA_MAILBOX_GID_NAME'},
+		vmailUID => scalar getpwnam($mta->{'config'}->{'MTA_MAILBOX_UID_NAME'}),
+		mailGID => scalar getgrnam($mta->{'config'}->{'MTA_MAILBOX_GID_NAME'}),
 		DOVECOT_CONF_DIR => $self::dovecotConfig{'DOVECOT_CONF_DIR'},
 		ENGINE_ROOT_DIR => $main::imscpConfig{'ENGINE_ROOT_DIR'}
 	};
@@ -519,7 +518,7 @@ sub _buildConf
 		$rs = $file->mode(0640);
 		return $rs if $rs;
 
-		$rs = $file->owner($main::imscpConfig{'ROOT_USER'}, $mta->{'MTA_MAILBOX_GID_NAME'});
+		$rs = $file->owner($main::imscpConfig{'ROOT_USER'}, $mta->{'config'}->{'MTA_MAILBOX_GID_NAME'});
 		return $rs if $rs;
 
 		$rs = $file->copyFile($self::dovecotConfig{'DOVECOT_CONF_DIR'});
@@ -598,8 +597,8 @@ sub _migrateFromCourier
 	require Servers::mta;
 	my $mta	= Servers::mta->factory();
 
-	my $binPath = "perl $main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlVendor/courier-dovecot-migrate.pl";
-	my $mailPath = "$mta->{'MTA_VIRTUAL_MAIL_DIR'}";
+	my $binPath = "$main::imscpConfig{'CMD_PERL'} $main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlVendor/courier-dovecot-migrate.pl";
+	my $mailPath = "$mta->{'config'}->{'MTA_VIRTUAL_MAIL_DIR'}";
 
 	# Converting all mailboxes to dovecot format
 

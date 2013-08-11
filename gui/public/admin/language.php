@@ -82,7 +82,6 @@ if (!empty($_POST)) {
 $tpl->assign(
 	array(
 		 'TR_PAGE_TITLE' => tr('Admin / Profile / Language'),
-		 'THEME_CHARSET' => tr('encoding'),
 		 'ISP_LOGO' => layout_getUserLogo(),
 		 'TR_LANGUAGE' => tr('Language'),
 		 'TR_CHOOSE_LANGUAGE' => tr('Choose your language'),

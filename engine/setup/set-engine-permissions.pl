@@ -86,29 +86,36 @@ sub process
 	debug('Setting backend base permissions');
 	print "Setting backend base permissions\t$totalItems\t$counter\n" if $main::execmode eq 'setup';
 
+	# eg. /etc/imscp/*
 	my $rs = setRights(
 		$confDir,
 		{ 'user' => $rootUName, 'group' => $rootGName, 'dirmode' => '0750', 'filemode' => '0640', 'recursive' => 1 }
 	);
 	return $rs if $rs;
 
+	# eg. /etc/imscp
 	$rs = setRights($confDir, { 'user' => $rootUName, 'group' => $masterGName } );
     return $rs if $rs;
 
+	# eg. /etc/imscp/imscp*
 	$rs = setRights("$confDir/imscp*", { 'user' => $rootUName, 'group' => $masterGName, 'mode' => '0640'} );
 	return $rs if $rs;
 
+	# eg. /var/www/imscp/engine
 	$rs = setRights(
 		"$rootDir/engine", { 'user' => $rootUName, 'group' => $masterGName, 'mode' => '0750', 'recursive' => 1 }
 	);
 	return $rs if $rs;
 
+	# eg. /var/log/imscp
 	$rs = setRights($logDir, { 'user' => $rootUName, 'group' => $masterGName, 'mode' => '0750'} );
 	return $rs if $rs;
 
 	$counter++;
 
 	# Set base permissions - ending
+
+	# Trigger the setEnginePermissions() method on all i-MSCP server packages implementing it
 
 	for(@servers) {
 		s/\.pm//;
@@ -129,6 +136,7 @@ sub process
 		$counter++;
 	}
 
+	# Trigger the setEnginePermissions() method on all i-MSCP addon packages implementing it
 	for(@addons) {
 		s/\.pm//;
 

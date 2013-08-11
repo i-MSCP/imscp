@@ -690,7 +690,6 @@ $tpl->assign(
 		'TR_PAGE_TITLE' => (!$dnsRecordId)
 			? tr("Client / Domains / Add Custom DNS record")
 			: tr("Client / Domain / Edit Custom DNS record"),
-		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => layout_getUserLogo(),
 		'ACTION_MODE' => (!$dnsRecordId) ? 'dns_add.php' : 'dns_edit.php?edit_id={ID}',
 		'TR_CUSTOM_DNS_RECORD_DATA' => tr('Custom DNS record data'),

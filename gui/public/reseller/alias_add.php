@@ -458,7 +458,6 @@ if (resellerHasFeature('domain_aliases') && resellerHasCustomers()) {
 
 		$tpl->assign(
 			array(
-				'THEME_CHARSET' => tr('encoding'),
 				'ISP_LOGO' => layout_getUserLogo(),
 				'TR_PAGE_TITLE' => tr('Reseller / Customers / Domain Aliases / Add Alias'),
 				'TR_ALIAS_DATA' => tr('Domain alias data'),

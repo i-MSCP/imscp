@@ -36,7 +36,6 @@ use iMSCP::Execute;
 use iMSCP::File;
 use iMSCP::Dir;
 use File::Basename;
-use Tie::File;
 use parent 'Common::SingletonClass';
 
 sub _init
@@ -55,8 +54,7 @@ sub _init
 
 	$self->{'commentChar'} = '#';
 
-	tie %self::postfixConfig, 'iMSCP::Config', 'fileName' => "$self->{'cfgDir'}/postfix.data";
-	$self->{$_} = $self::postfixConfig{$_} for keys %self::postfixConfig;
+	tie %{$self->{'config'}}, 'iMSCP::Config', 'fileName' => "$self->{'cfgDir'}/postfix.data";
 
 	$self->{'hooksManager'}->trigger(
 		'afterMtaInit', $self, 'postfix'
@@ -81,7 +79,7 @@ sub preinstall
 	my $self = shift;
 
 	require Servers::mta::postfix::installer;
-	Servers::mta::postfix::installer->getInstance(postfixConfig => \%self::postfixConfig)->preinstall();
+	Servers::mta::postfix::installer->getInstance()->preinstall();
 }
 
 sub install
@@ -89,7 +87,7 @@ sub install
 	my $self = shift;
 
 	require Servers::mta::postfix::installer;
-	Servers::mta::postfix::installer->getInstance(postfixConfig => \%self::postfixConfig)->install();
+	Servers::mta::postfix::installer->getInstance()->install();
 }
 
 sub uninstall
@@ -127,7 +125,7 @@ sub setEnginePermissions
 	my $self= shift;
 
 	require Servers::mta::postfix::installer;
-	Servers::mta::postfix::installer->getInstance(postfixConfig => \%self::postfixConfig)->setEnginePermissions();
+	Servers::mta::postfix::installer->getInstance()->setEnginePermissions();
 }
 
 sub restart
@@ -138,7 +136,7 @@ sub restart
 	return $rs if $rs;
 
 	my ($stdout, $stderr);
-	$rs = execute("$self->{'CMD_MTA'} restart", \$stdout, \$stderr);
+	$rs = execute("$self->{'config'}->{'CMD_MTA'} restart", \$stdout, \$stderr);
 	debug($stdout) if $stdout;
 	error($stderr) if $stderr && $rs;
 	return $rs if $rs;
@@ -149,18 +147,19 @@ sub restart
 sub postmap
 {
 	my $self = shift;
-	my $postmap	= shift;
+	my $filename = shift;
+	my $filetype = shift || 'hash';
 
-	my $rs = $self->{'hooksManager'}->trigger('beforeMtaPostmap', \$postmap);
+	my $rs = $self->{'hooksManager'}->trigger('beforeMtaPostmap', \$filename, \$filetype);
 	return $rs if $rs;
 
 	my ($stdout, $stderr);
-	$rs = execute("$self->{'CMD_POSTMAP'} $postmap", \$stdout, \$stderr);
+	$rs = execute("$self->{'config'}->{'CMD_POSTMAP'} $filetype:$filename", \$stdout, \$stderr);
 	debug($stdout) if $stdout;
 	error($stderr) if $stderr && $rs;
 	return $rs if $rs;
 
-	$self->{'hooksManager'}->trigger('afterMtaPostmap', $postmap);
+	$self->{'hooksManager'}->trigger('afterMtaPostmap', $filename, $filetype);
 }
 
 sub addDmn
@@ -178,8 +177,8 @@ sub addDmn
 
 		if($data->{'DOMAIN_TYPE'} eq 'Dmn') {
 			# Remove any previous entry of this domain from the Postfix relay_domains map
-        	$rs = $self->deleteFromRelayHash($data);
-        	return $rs if $rs;
+			$rs = $self->deleteFromRelayHash($data);
+			return $rs if $rs;
 
 			# Add the domain entry to the Postfix relay_domain map
 			$rs = $self->addToRelayHash($data);
@@ -229,12 +228,12 @@ sub addToRelayHash
 	}
 
 	$rs = iMSCP::File->new(
-		'filename' => $self->{'MTA_RELAY_HASH'}
-	)->copyFile( "$self->{'bkpDir'}/relay_domains.".time);
+		'filename' => $self->{'config'}->{'MTA_RELAY_HASH'}
+	)->copyFile("$self->{'bkpDir'}/relay_domains." . time);
 	return $rs if $rs;
 
 	my $file = iMSCP::File->new('filename' => "$self->{'wrkDir'}/relay_domains");
-	my $content	= $file->get();
+	my $content = $file->get();
 
 	if(! defined $content){
 		error("Unable to read $self->{'wrkDir'}/relay_domains");
@@ -255,10 +254,10 @@ sub addToRelayHash
 	$rs = $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
 	return $rs if $rs;
 
-	$rs = $file->copyFile($self->{'MTA_RELAY_HASH'} );
+	$rs = $file->copyFile($self->{'config'}->{'MTA_RELAY_HASH'});
 	return $rs if $rs;
 
-	$self->{'postmap'}->{$self->{'MTA_RELAY_HASH'}} = $data->{'DOMAIN_NAME'};
+	$self->{'postmap'}->{$self->{'config'}->{'MTA_RELAY_HASH'}} = $data->{'DOMAIN_NAME'};
 
 	$self->{'hooksManager'}->trigger('afterMtaAddToRelayHash', $data);
 }
@@ -274,8 +273,8 @@ sub deleteFromRelayHash
 	my $entry = "\.?$data->{'DOMAIN_NAME'}\t\t\tOK\n"; # Match both "domain.tld" and ".domain.tld" entries
 
 	$rs = iMSCP::File->new(
-		'filename' => $self->{'MTA_RELAY_HASH'}
-	)->copyFile("$self->{'bkpDir'}/relay_domains.".time);
+		'filename' => $self->{'config'}->{'MTA_RELAY_HASH'}
+	)->copyFile("$self->{'bkpDir'}/relay_domains." . time);
 	return $rs if $rs;
 
 	my $file= iMSCP::File->new('filename' => "$self->{'wrkDir'}/relay_domains");
@@ -300,10 +299,10 @@ sub deleteFromRelayHash
 	$rs = $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
 	return $rs if $rs;
 
-	$rs = $file->copyFile( $self->{'MTA_RELAY_HASH'} );
+	$rs = $file->copyFile($self->{'config'}->{'MTA_RELAY_HASH'});
 	return $rs if $rs;
 
-	$self->{'postmap'}->{$self->{'MTA_RELAY_HASH'}} = $data->{'DOMAIN_NAME'};
+	$self->{'postmap'}->{$self->{'config'}->{'MTA_RELAY_HASH'}} = $data->{'DOMAIN_NAME'};
 
 	$self->{'hooksManager'}->trigger('afterMtaDelFromRelayHash', $data);
 }
@@ -319,12 +318,12 @@ sub addToDomainHash
 	my $entry = "$data->{'DOMAIN_NAME'}\t\t\t$data->{'TYPE'}\n";
 
 	$rs = iMSCP::File->new(
-		'filename' => $self->{'MTA_VIRTUAL_DMN_HASH'}
-	)->copyFile( "$self->{'bkpDir'}/domains.".time );
+		'filename' => $self->{'config'}->{'MTA_VIRTUAL_DMN_HASH'}
+	)->copyFile( "$self->{'bkpDir'}/domains." . time );
 	return $rs if $rs;
 
 	my $file = iMSCP::File->new('filename' => "$self->{'wrkDir'}/domains");
-	my $content	= $file->get();
+	my $content = $file->get();
 
 	if(! defined $content){
 		error("Unable to read $self->{'wrkDir'}/domains");
@@ -345,15 +344,19 @@ sub addToDomainHash
 	$rs = $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
 	return $rs if $rs;
 
-	$rs = $file->copyFile( $self->{'MTA_VIRTUAL_DMN_HASH'} );
+	$rs = $file->copyFile($self->{'config'}->{'MTA_VIRTUAL_DMN_HASH'});
 	return $rs if $rs;
 
-	$self->{'postmap'}->{$self->{'MTA_VIRTUAL_DMN_HASH'}} = $data->{'DOMAIN_NAME'};
+	$self->{'postmap'}->{$self->{'config'}->{'MTA_VIRTUAL_DMN_HASH'}} = $data->{'DOMAIN_NAME'};
 
 	$rs = iMSCP::Dir->new(
-		'dirname' => "$self->{'MTA_VIRTUAL_MAIL_DIR'}/$data->{'DOMAIN_NAME'}"
+		'dirname' => "$self->{'config'}->{'MTA_VIRTUAL_MAIL_DIR'}/$data->{'DOMAIN_NAME'}"
 	)->make(
-		{ 'user' => $self->{'MTA_MAILBOX_UID_NAME'}, 'group' => $self->{'MTA_MAILBOX_GID_NAME'}, 'mode' => 0750 }
+		{
+			'user' => $self->{'config'}->{'MTA_MAILBOX_UID_NAME'},
+			'group' => $self->{'config'}->{'MTA_MAILBOX_GID_NAME'},
+			'mode' => 0750
+		}
 	);
 	return $rs if $rs;
 
@@ -371,7 +374,9 @@ sub deleteDmn
 	$rs = $self->disableDmn($data);
 	return $rs if $rs;
 
-	$rs = iMSCP::Dir->new('dirname' => "$self->{'MTA_VIRTUAL_MAIL_DIR'}/$data->{'DOMAIN_NAME'}")->remove();
+	$rs = iMSCP::Dir->new(
+		'dirname' => "$self->{'config'}->{'MTA_VIRTUAL_MAIL_DIR'}/$data->{'DOMAIN_NAME'}"
+	)->remove();
 	return $rs if $rs;
 
 	$rs = $self->{'hooksManager'}->trigger('afterMtaDelDmn', $data);
@@ -387,7 +392,9 @@ sub disableDmn
 
 	my $entry = "$data->{'DOMAIN_NAME'}\t\t\t$data->{'TYPE'}\n";
 
-	$rs = iMSCP::File->new('filename' => $self->{'MTA_VIRTUAL_DMN_HASH'})->copyFile("$self->{'bkpDir'}/domains." . time);
+	$rs = iMSCP::File->new(
+		'filename' => $self->{'config'}->{'MTA_VIRTUAL_DMN_HASH'}
+	)->copyFile("$self->{'bkpDir'}/domains." . time);
 	return $rs if $rs;
 
 	my $file = iMSCP::File->new('filename' => "$self->{'wrkDir'}/domains");
@@ -412,10 +419,10 @@ sub disableDmn
 	$rs = $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
 	return $rs if $rs;
 
-	$rs = $file->copyFile( $self->{'MTA_VIRTUAL_DMN_HASH'} );
+	$rs = $file->copyFile($self->{'config'}->{'MTA_VIRTUAL_DMN_HASH'});
 	return $rs if $rs;
 
-	$self->{'postmap'}->{$self->{'MTA_VIRTUAL_DMN_HASH'}} = $data->{'DOMAIN_NAME'};
+	$self->{'postmap'}->{$self->{'config'}->{'MTA_VIRTUAL_DMN_HASH'}} = $data->{'DOMAIN_NAME'};
 
 	if($data->{'DOMAIN_TYPE'} eq 'Dmn') {
 		$rs = $self->deleteFromRelayHash($data);
@@ -475,15 +482,19 @@ sub addMail
 	my $rs = $self->{'hooksManager'}->trigger('beforeMtaAddMail', $data);
 	return $rs if $rs;
 
-	for($self->{'MTA_VIRTUAL_MAILBOX_HASH'}, $self->{'MTA_VIRTUAL_ALIAS_HASH'}, $self->{'MTA_TRANSPORT_HASH'}) {
+	for(
+		$self->{'config'}->{'MTA_VIRTUAL_MAILBOX_HASH'},
+		$self->{'config'}->{'MTA_VIRTUAL_ALIAS_HASH'},
+		$self->{'config'}->{'MTA_TRANSPORT_HASH'}
+	) {
 		if(-f $_) {
 			my $file = iMSCP::File->new('filename' => $_);
 			my ($filename, $directories, $suffix) = fileparse($_);
 
-			$rs =	iMSCP::File->new(
+			$rs = iMSCP::File->new(
 				'filename' => $_
 			)->copyFile(
-				"$self->{'bkpDir'}/$filename$suffix.".time
+				"$self->{'bkpDir'}/$filename$suffix." . time
 			);
 			return $rs if $rs;
 		}
@@ -491,27 +502,31 @@ sub addMail
 
 	$rs = $self->addSaslData($data) if $data->{'MAIL_TYPE'} =~ m/_mail/;
 	return $rs if $rs;
+
 	$rs = $self->deleteSaslData($data) if $data->{'MAIL_TYPE'} !~ m/_mail/;
 	return $rs if $rs;
 
 	$rs = $self->addMailBox($data) if $data->{'MAIL_TYPE'} =~ m/_mail/;
 	return $rs if $rs;
+
 	$rs = $self->deleteMailBox($data) if $data->{'MAIL_TYPE'} !~ m/_mail/;
 	return $rs if $rs;
 
 	$rs = $self->addAutoRspnd($data) if $data->{'MAIL_HAS_AUTO_RSPND'}  eq 'yes';
 	return $rs if $rs;
+
 	$rs = $self->deleteAutoRspnd($data) if $data->{'MAIL_HAS_AUTO_RSPND'} eq 'no';
 	return $rs if $rs;
 
 	$rs = $self->addMailForward($data) if $data->{'MAIL_TYPE'} =~ m/_forward/;
 	return $rs if $rs;
+
 	$rs = $self->deleteMailForward($data) if $data->{'MAIL_TYPE'} !~ m/_forward/;
 	return $rs if $rs;
 
-
 	$rs = $self->addCatchAll($data) if $data->{'MAIL_HAS_CATCH_ALL'} eq 'yes';
 	return $rs if $rs;
+
 	$rs = $self->deleteCatchAll($data) if $data->{'MAIL_HAS_CATCH_ALL'} eq 'no';
 	return $rs if $rs;
 
@@ -527,14 +542,19 @@ sub deleteMail
 	my $rs = $self->{'hooksManager'}->trigger('beforeMtaDelMail', $data);
 	return $rs if $rs;
 
-	for($self->{'MTA_VIRTUAL_MAILBOX_HASH'}, $self->{'MTA_VIRTUAL_ALIAS_HASH'}, $self->{'MTA_TRANSPORT_HASH'}) {
+	for(
+		$self->{'config'}->{'MTA_VIRTUAL_MAILBOX_HASH'},
+		$self->{'config'}->{'MTA_VIRTUAL_ALIAS_HASH'},
+		$self->{'config'}->{'MTA_TRANSPORT_HASH'}
+	) {
 		if(-f $_) {
 			my $file = iMSCP::File->new('filename' => $_);
 			my ($filename, $directories, $suffix) = fileparse($_);
+
 			$rs = iMSCP::File->new(
 				'filename' => $_
 			)->copyFile(
-				"$self->{'bkpDir'}/$filename$suffix.".time
+				"$self->{'bkpDir'}/$filename$suffix." . time
 			);
 			return $rs if $rs;
 		}
@@ -566,14 +586,19 @@ sub disableMail
 	my $rs = $self->{'hooksManager'}->trigger('beforeMtaDisableMail', $data);
 	return $rs if $rs;
 
-	for($self->{'MTA_VIRTUAL_MAILBOX_HASH'}, $self->{'MTA_VIRTUAL_ALIAS_HASH'}, $self->{'MTA_TRANSPORT_HASH'}){
+	for(
+		$self->{'config'}->{'MTA_VIRTUAL_MAILBOX_HASH'},
+		$self->{'config'}->{'MTA_VIRTUAL_ALIAS_HASH'},
+		$self->{'config'}->{'MTA_TRANSPORT_HASH'}
+	){
 		if(-f $_) {
 			my $file = iMSCP::File->new('filename' => $_);
 			my ($filename, $directories, $suffix) = fileparse($_);
+
 			$rs = iMSCP::File->new(
 				'filename' => $_
 			)->copyFile(
-				"$self->{'bkpDir'}/$filename$suffix.".time
+				"$self->{'bkpDir'}/$filename$suffix." . time
 			);
 			return $rs if $rs;
 		}
@@ -610,30 +635,42 @@ sub deleteSaslData
 	my $mailBox = $data->{'MAIL_ADDR'};
 	$mailBox =~ s/\./\\\./g;
 
-	my $sasldb = iMSCP::File->new('filename' => $self->{'ETC_SASLDB_FILE'});
+	my $sasldb = iMSCP::File->new('filename' => $self->{'config'}->{'ETC_SASLDB_FILE'});
 
-	$rs = $sasldb->save() unless -f $self->{'ETC_SASLDB_FILE'};
+	$rs = $sasldb->save() unless -f $self->{'config'}->{'ETC_SASLDB_FILE'};
 	return $rs if $rs;
 
 	$rs = $sasldb->mode(0660);
 	return $rs if $rs;
 
-	$rs = $sasldb->owner($self->{'SASLDB_USER'}, $self->{'SASLDB_GROUP'});
+	$rs = $sasldb->owner($self->{'config'}->{'SASLDB_USER'}, $self->{'config'}->{'SASLDB_GROUP'});
 	return $rs if $rs;
 
-	$rs = execute("$self->{'CMD_SASLDB_LISTUSERS2'} -f $self->{'ETC_SASLDB_FILE'}", \$stdout, \$stderr);
+	$rs = execute(
+		"$self->{'config'}->{'CMD_SASLDB_LISTUSERS2'} -f $self->{'config'}->{'ETC_SASLDB_FILE'}", \$stdout, \$stderr
+	);
 	debug($stdout) if $stdout;
 	error($stderr) if $stderr && $rs;
 	return $rs if $rs;
 
 	if($stdout =~ m/^$mailBox:/mgi) {
-		$rs = execute("$self->{'CMD_SASLDB_PASSWD2'} -d -f $self->{'ETC_SASLDB_FILE'} -u $data->{'DOMAIN_NAME'} $data->{'MAIL_ACC'}", \$stdout, \$stderr);
+		$rs = execute(
+			"$self->{'config'}->{'CMD_SASLDB_PASSWD2'} -d -f $self->{'config'}->{'ETC_SASLDB_FILE'} " .
+			"-u $data->{'DOMAIN_NAME'} $data->{'MAIL_ACC'}",
+			\$stdout,
+			\$stderr
+		);
 		debug($stdout) if $stdout;
 		error($stderr) if $stderr && $rs;
 		return $rs if $rs;
 
-		if($self->{'ETC_SASLDB_FILE'} ne $self->{'MTA_SASLDB_FILE'}){
-			$rs = execute("$main::imscpConfig{'CMD_CP'} -fp $self->{'ETC_SASLDB_FILE'} $self->{'MTA_SASLDB_FILE'}", \$stdout, \$stderr);
+		if($self->{'config'}->{'ETC_SASLDB_FILE'} ne $self->{'config'}->{'MTA_SASLDB_FILE'}) {
+			$rs = execute(
+				"$main::imscpConfig{'CMD_CP'} -fp $self->{'config'}->{'ETC_SASLDB_FILE'} " .
+				"$self->{'config'}->{'MTA_SASLDB_FILE'}",
+				\$stdout,
+				\$stderr
+			);
 			debug($stdout) if $stdout;
 			error($stderr) if $stderr && $rs;
 			return $rs if $rs;
@@ -653,29 +690,33 @@ sub addSaslData
 
 	my ($stdout, $stderr);
 
-	my $mailBox	= $data->{'MAIL_ADDR'};
+	my $mailBox = $data->{'MAIL_ADDR'};
 	$mailBox =~ s/\./\\\./g;
 
-	my $sasldb = iMSCP::File->new('filename' => $self->{'ETC_SASLDB_FILE'});
+	my $sasldb = iMSCP::File->new('filename' => $self->{'config'}->{'ETC_SASLDB_FILE'});
 
-	$rs = $sasldb->save() unless(-f $self->{'ETC_SASLDB_FILE'});
+	$rs = $sasldb->save() unless -f $self->{'config'}->{'ETC_SASLDB_FILE'};
 	return $rs if $rs;
 
 	$rs = $sasldb->mode(0660);
 	return $rs if $rs;
 
-	$rs = $sasldb->owner($self->{'SASLDB_USER'}, $self->{'SASLDB_GROUP'});
+	$rs = $sasldb->owner($self->{'config'}->{'SASLDB_USER'}, $self->{'config'}->{'SASLDB_GROUP'});
 	return $rs if $rs;
 
-	$rs = execute("$self->{'CMD_SASLDB_LISTUSERS2'} -f $self->{'ETC_SASLDB_FILE'}", \$stdout, \$stderr);
+	$rs = execute(
+		"$self->{'config'}->{'CMD_SASLDB_LISTUSERS2'} -f $self->{'config'}->{'ETC_SASLDB_FILE'}", \$stdout, \$stderr
+	);
 	debug($stdout) if $stdout;
 	error($stderr) if $stderr && $rs;
 	return $rs if $rs;
 
 	if($stdout =~ m/^$mailBox:/mgi) {
 		$rs |= execute(
-			"$self->{'CMD_SASLDB_PASSWD2'} -d -f $self->{'ETC_SASLDB_FILE'} -u $data->{'DOMAIN_NAME'} $data->{'MAIL_ACC'}",
-			\$stdout, \$stderr
+			"$self->{'config'}->{'CMD_SASLDB_PASSWD2'} -d -f $self->{'config'}->{'ETC_SASLDB_FILE'} " .
+			"-u $data->{'DOMAIN_NAME'} $data->{'MAIL_ACC'}",
+			\$stdout,
+			\$stderr
 		);
 		debug($stdout) if $stdout;
 		error($stderr) if $stderr && $rs;
@@ -685,18 +726,21 @@ sub addSaslData
 	my $password = escapeShell($data->{'MAIL_PASS'});
 
 	$rs = execute(
-		"$main::imscpConfig{'CMD_ECHO'} $password | $self->{'CMD_SASLDB_PASSWD2'} -p -c -f $self->{'ETC_SASLDB_FILE'}" .
-		" -u $data->{'DOMAIN_NAME'} $data->{'MAIL_ACC'}",
-		\$stdout, \$stderr
+		"$main::imscpConfig{'CMD_ECHO'} $password | $self->{'config'}->{'CMD_SASLDB_PASSWD2'} -p -c " .
+		"-f $self->{'config'}->{'ETC_SASLDB_FILE'} -u $data->{'DOMAIN_NAME'} $data->{'MAIL_ACC'}",
+		\$stdout,
+		\$stderr
 	);
 	debug($stdout) if $stdout;
 	error($stderr) if $stderr && $rs;
 	return $rs if $rs;
 
-	if($self->{'ETC_SASLDB_FILE'} ne $self->{'MTA_SASLDB_FILE'}){
+	if($self->{'config'}->{'ETC_SASLDB_FILE'} ne $self->{'config'}->{'MTA_SASLDB_FILE'}) {
 		$rs = execute(
-			"$main::imscpConfig{'CMD_CP'} -fp $self->{'ETC_SASLDB_FILE'} $self->{'MTA_SASLDB_FILE'}",
-			\$stdout, \$stderr
+			"$main::imscpConfig{'CMD_CP'} -fp $self->{'config'}->{'ETC_SASLDB_FILE'} " .
+			"$self->{'config'}->{'MTA_SASLDB_FILE'}",
+			\$stdout,
+			\$stderr
 		);
 		debug($stdout) if $stdout;
 		error($stderr) if $stderr && $rs;
@@ -714,9 +758,10 @@ sub deleteAutoRspnd
 	my $rs = $self->{'hooksManager'}->trigger('beforeMtaDelAutoRspnd', $data);
 	return $rs if $rs;
 
-	my $mTrsptHshFile = $self->{'MTA_TRANSPORT_HASH'};
+	my $mTrsptHshFile = $self->{'config'}->{'MTA_TRANSPORT_HASH'};
 	my ($filename, $directories, $suffix) = fileparse($mTrsptHshFile);
-	my $wrkFileName	= "$self->{'wrkDir'}/$filename$suffix";
+	my $wrkFileName = "$self->{'wrkDir'}/$filename$suffix";
+
 	my $wrkFile = iMSCP::File->new('filename' => $wrkFileName);
 	my $wrkContent = $wrkFile->get();
 	return 1 unless defined $wrkContent;
@@ -740,7 +785,7 @@ sub deleteAutoRspnd
 	$rs = $wrkFile->copyFile($mTrsptHshFile);
 	return $rs if $rs;
 
-	$self->{'postmap'}->{$self->{'MTA_TRANSPORT_HASH'}} = $data->{'MAIL_ADDR'};
+	$self->{'postmap'}->{$self->{'config'}->{'MTA_TRANSPORT_HASH'}} = $data->{'MAIL_ADDR'};
 
 	$self->{'hooksManager'}->trigger('afterMtaDelAutoRspnd', $data);
 }
@@ -753,9 +798,10 @@ sub addAutoRspnd
 	my $rs = $self->{'hooksManager'}->trigger('beforeMtaAddAutoRspnd', $data);
 	return $rs if $rs;
 
-	my $mTrsptHshFile = $self->{'MTA_TRANSPORT_HASH'};
+	my $mTrsptHshFile = $self->{'config'}->{'MTA_TRANSPORT_HASH'};
 	my ($filename, $directories, $suffix) = fileparse($mTrsptHshFile);
 	my $wrkFileName = "$self->{'wrkDir'}/$filename$suffix";
+
 	my $wrkFile = iMSCP::File->new('filename' => $wrkFileName);
 	my $wrkContent = $wrkFile->get();
 	return 1 unless defined $wrkContent;
@@ -780,7 +826,7 @@ sub addAutoRspnd
 	$rs = $wrkFile->copyFile($mTrsptHshFile);
 	return $rs if $rs;
 
-	$self->{'postmap'}->{$self->{'MTA_TRANSPORT_HASH'}} = $data->{'MAIL_ADDR'};
+	$self->{'postmap'}->{$self->{'config'}->{'MTA_TRANSPORT_HASH'}} = $data->{'MAIL_ADDR'};
 
 	$self->{'hooksManager'}->trigger('afterMtaAddAutoRspnd', $data);
 }
@@ -793,9 +839,10 @@ sub deleteMailForward
 	my $rs = $self->{'hooksManager'}->trigger('beforeMtaDelMailForward', $data);
 	return $rs if $rs;
 
-	my $mFWDHshFile	= $self->{'MTA_VIRTUAL_ALIAS_HASH'};
+	my $mFWDHshFile = $self->{'config'}->{'MTA_VIRTUAL_ALIAS_HASH'};
 	my ($filename, $directories, $suffix) = fileparse($mFWDHshFile);
 	my $wrkFileName = "$self->{'wrkDir'}/$filename$suffix";
+
 	my $wrkFile = iMSCP::File->new('filename' => $wrkFileName);
 	my $wrkContent = $wrkFile->get();
 	return 1 unless defined $wrkContent;
@@ -804,14 +851,14 @@ sub deleteMailForward
 	$mailbox =~ s/\./\\\./g;
 	$wrkContent =~ s/^$mailbox\t[^\n]*\n//gmi;
 
-	# handle normal mail accounts entries for which auto-responder is active
+	# Handle normal mail accounts entries for which auto-responder is active
 	if($data->{'MAIL_STATUS'} ne 'todelete') {
 		my @line;
 
-		# if auto-responder is activated, we must add the recipient as address to keep local copy of any forwarded mail
+		# If auto-responder is activated, we must add the recipient as address to keep local copy of any forwarded mail
 		push(@line, $data->{'MAIL_ADDR'}) if $data->{'MAIL_AUTO_RSPND'} && $data->{'MAIL_TYPE'} =~ m/_mail/;
 
-		# if auto-responder is activated, we need an address such as user@imscp-arpl.domain.tld
+		# If auto-responder is activated, we need an address such as user@imscp-arpl.domain.tld
 		push(@line, "$data->{'MAIL_ACC'}\@imscp-arpl.$data->{'DOMAIN_NAME'}")
 			if $data->{'MAIL_AUTO_RSPND'} && $data->{'MAIL_TYPE'} =~ m/_mail/;
 
@@ -833,7 +880,7 @@ sub deleteMailForward
 	$rs = $wrkFile->copyFile($mFWDHshFile);
 	return $rs if $rs;
 
-	$self->{'postmap'}->{$self->{'MTA_VIRTUAL_ALIAS_HASH'}} = $data->{'MAIL_ADDR'};
+	$self->{'postmap'}->{$self->{'config'}->{'MTA_VIRTUAL_ALIAS_HASH'}} = $data->{'MAIL_ADDR'};
 
 	$self->{'hooksManager'}->trigger('afterMtaDelMailForward', $data);
 }
@@ -846,9 +893,10 @@ sub addMailForward
 	my $rs = $self->{'hooksManager'}->trigger('beforeMtaAddMailForward', $data);
 	return $rs if $rs;
 
-	my $mFWDHshFile = $self->{'MTA_VIRTUAL_ALIAS_HASH'};
+	my $mFWDHshFile = $self->{'config'}->{'MTA_VIRTUAL_ALIAS_HASH'};
 	my ($filename, $directories, $suffix) = fileparse($mFWDHshFile);
 	my $wrkFileName = "$self->{'wrkDir'}/$filename$suffix";
+
 	my $wrkFile = iMSCP::File->new('filename' => $wrkFileName);
 	my $wrkContent = $wrkFile->get();
 	return 1 unless defined $wrkContent;
@@ -859,13 +907,13 @@ sub addMailForward
 
 	my @line;
 
-	# for a normal+foward mail account, we must add the recipient as address to keep local copy of any forwarded mail
+	# For a normal+foward mail account, we must add the recipient as address to keep local copy of any forwarded mail
 	push(@line, $data->{'MAIL_ADDR'}) if $data->{'MAIL_TYPE'} =~ m/_mail/;
 
-	# add address(s) to which mail will be forwarded
+	# Add address(s) to which mail will be forwarded
 	push(@line, $data->{'MAIL_FORWARD'});
 
-	# if the auto-responder is activated, we must add an address such as user@imscp-arpl.domain.tld
+	# If the auto-responder is activated, we must add an address such as user@imscp-arpl.domain.tld
 	push(@line, "$data->{'MAIL_ACC'}\@imscp-arpl.$data->{'DOMAIN_NAME'}") if $data->{'MAIL_AUTO_RSPND'};
 
 	$wrkContent .= "$data->{'MAIL_ADDR'}\t" . join(',', @line) . "\n" if scalar @line;
@@ -885,7 +933,7 @@ sub addMailForward
 	$rs = $wrkFile->copyFile($mFWDHshFile);
 	return $rs if $rs;
 
-	$self->{'postmap'}->{$self->{'MTA_VIRTUAL_ALIAS_HASH'}} = $data->{'MAIL_ADDR'};
+	$self->{'postmap'}->{$self->{'config'}->{'MTA_VIRTUAL_ALIAS_HASH'}} = $data->{'MAIL_ADDR'};
 
 	$self->{'hooksManager'}->trigger('afterMtaAddMailForward', $data);
 }
@@ -903,7 +951,7 @@ sub deleteMailBox
 
 	return $rs if ! $data->{'MAIL_ACC'}; # catchall?
 
-	my $mailDir = "$self->{'MTA_VIRTUAL_MAIL_DIR'}/$data->{'DOMAIN_NAME'}/$data->{'MAIL_ACC'}";
+	my $mailDir = "$self->{'config'}->{'MTA_VIRTUAL_MAIL_DIR'}/$data->{'DOMAIN_NAME'}/$data->{'MAIL_ACC'}";
 
 	$rs = iMSCP::Dir->new('dirname' => $mailDir)->remove();
 	return $rs if $rs;
@@ -919,9 +967,10 @@ sub disableMailBox
 	my $rs = $self->{'hooksManager'}->trigger('beforeMtaDisableMailbox', $data);
 	return $rs if $rs;
 
-	my $mBoxHashFile = $self->{'MTA_VIRTUAL_MAILBOX_HASH'};
+	my $mBoxHashFile = $self->{'config'}->{'MTA_VIRTUAL_MAILBOX_HASH'};
 	my ($filename, $directories, $suffix) = fileparse($mBoxHashFile);
-	my $wrkFileName	= "$self->{'wrkDir'}/$filename$suffix";
+	my $wrkFileName = "$self->{'wrkDir'}/$filename$suffix";
+
 	my $wrkFile = iMSCP::File->new('filename' => $wrkFileName);
 	my $wrkContent = $wrkFile->get();
 	return 1 unless defined $wrkContent;
@@ -945,7 +994,7 @@ sub disableMailBox
 	$rs = $wrkFile->copyFile($mBoxHashFile);
 	return $rs if $rs;
 
-	$self->{'postmap'}->{$self->{'MTA_VIRTUAL_MAILBOX_HASH'}} = $data->{'MAIL_ADDR'};
+	$self->{'postmap'}->{$self->{'config'}->{'MTA_VIRTUAL_MAILBOX_HASH'}} = $data->{'MAIL_ADDR'};
 
 	$self->{'hooksManager'}->trigger('afterMtaDisableMailbox', $data);
 }
@@ -958,9 +1007,10 @@ sub addMailBox
 	my $rs = $self->{'hooksManager'}->trigger('beforeMtaAddMailbox', $data);
 	return $rs if $rs;
 
-	my $mBoxHashFile = $self->{'MTA_VIRTUAL_MAILBOX_HASH'};
+	my $mBoxHashFile = $self->{'config'}->{'MTA_VIRTUAL_MAILBOX_HASH'};
 	my ($filename, $directories, $suffix) = fileparse($mBoxHashFile);
 	my $wrkFileName = "$self->{'wrkDir'}/$filename$suffix";
+
 	my $wrkFile = iMSCP::File->new('filename' => $wrkFileName);
 	my $wrkContent = $wrkFile->get();
 	return 1 unless defined $wrkContent;
@@ -985,21 +1035,29 @@ sub addMailBox
 	$rs = $wrkFile->copyFile($mBoxHashFile);
 	return $rs if $rs;
 
-	$self->{'postmap'}->{$self->{'MTA_VIRTUAL_MAILBOX_HASH'}} = $data->{'MAIL_ADDR'};
+	$self->{'postmap'}->{$self->{'config'}->{'MTA_VIRTUAL_MAILBOX_HASH'}} = $data->{'MAIL_ADDR'};
 
-	my $mailDir = "$self->{'MTA_VIRTUAL_MAIL_DIR'}/$data->{'DOMAIN_NAME'}/$data->{'MAIL_ACC'}";
-	my $mailUidName = $self->{'MTA_MAILBOX_UID_NAME'};
-    my $mailGidName = $self->{'MTA_MAILBOX_GID_NAME'};
+	my $mailDir = "$self->{'config'}->{'MTA_VIRTUAL_MAIL_DIR'}/$data->{'DOMAIN_NAME'}/$data->{'MAIL_ACC'}";
+	my $mailUidName = $self->{'config'}->{'MTA_MAILBOX_UID_NAME'};
+    my $mailGidName = $self->{'config'}->{'MTA_MAILBOX_GID_NAME'};
 
 	# Creating maildir directory or only set its permissions if already exists
-	$rs = iMSCP::Dir->new('dirname' => $mailDir)->make(
-		{ 'user' => $self->{'MTA_MAILBOX_UID_NAME'}, 'group' => $self->{'MTA_MAILBOX_GID_NAME'}, 'mode' => 0750 }
+	$rs = iMSCP::Dir->new(
+		'dirname' => $mailDir
+	)->make(
+		{
+			'user' => $self->{'config'}->{'MTA_MAILBOX_UID_NAME'},
+			'group' => $self->{'config'}->{'MTA_MAILBOX_GID_NAME'},
+			'mode' => 0750
+		}
 	);
 	return $rs if $rs;
 
 	# Creating maildir sub folders (cur, new, tmp) or only set there permissions if they already exists
 	for('cur', 'new', 'tmp') {
-    	$rs = iMSCP::Dir->new('dirname' => "$mailDir/$_")->make(
+    	$rs = iMSCP::Dir->new(
+    		'dirname' => "$mailDir/$_"
+    	)->make(
     		{ 'user' => $mailUidName, 'group' => $mailGidName, 'mode' => 0750 }
     	);
     	return $rs if $rs;
@@ -1016,9 +1074,10 @@ sub addCatchAll
 	my $rs = $self->{'hooksManager'}->trigger('beforeMtaAddCatchAll', $data);
 	return $rs if $rs;
 
-	my $mFWDHshFile = $self->{'MTA_VIRTUAL_ALIAS_HASH'};
+	my $mFWDHshFile = $self->{'config'}->{'MTA_VIRTUAL_ALIAS_HASH'};
 	my ($filename, $directories, $suffix) = fileparse($mFWDHshFile);
-	my $wrkFileName	= "$self->{'wrkDir'}/$filename$suffix";
+	my $wrkFileName = "$self->{'wrkDir'}/$filename$suffix";
+
 	my $wrkFile = iMSCP::File->new('filename' => $wrkFileName);
 	my $wrkContent = $wrkFile->get();
 	return 1 unless defined $wrkContent;
@@ -1052,7 +1111,7 @@ sub addCatchAll
 	$rs = $wrkFile->copyFile($mFWDHshFile);
 	return $rs if $rs;
 
-	$self->{'postmap'}->{$self->{'MTA_VIRTUAL_ALIAS_HASH'}} = $data->{'MAIL_ADDR'};
+	$self->{'postmap'}->{$self->{'config'}->{'MTA_VIRTUAL_ALIAS_HASH'}} = $data->{'MAIL_ADDR'};
 
 	$self->{'hooksManager'}->trigger('afterMtaAddCatchAll', $data);
 }
@@ -1065,9 +1124,10 @@ sub deleteCatchAll
 	my $rs = $self->{'hooksManager'}->trigger('beforeMtaDelCatchAll', $data);
 	return $rs if $rs;
 
-	my $mFWDHshFile	= $self->{'MTA_VIRTUAL_ALIAS_HASH'};
+	my $mFWDHshFile = $self->{'config'}->{'MTA_VIRTUAL_ALIAS_HASH'};
 	my ($filename, $directories, $suffix) = fileparse($mFWDHshFile);
 	my $wrkFileName = "$self->{'wrkDir'}/$filename$suffix";
+
 	my $wrkFile = iMSCP::File->new('filename' => $wrkFileName);
 	my $wrkContent = $wrkFile->get();
 	return 1 unless defined $wrkContent;
@@ -1097,7 +1157,7 @@ sub deleteCatchAll
 	$rs = $wrkFile->copyFile($mFWDHshFile);
 	return $rs if $rs;
 
-	$self->{'postmap'}->{$self->{'MTA_VIRTUAL_ALIAS_HASH'}} = $data->{'MAIL_ADDR'};
+	$self->{'postmap'}->{$self->{'config'}->{'MTA_VIRTUAL_ALIAS_HASH'}} = $data->{'MAIL_ADDR'};
 
 	$self->{'hooksManager'}->trigger('afterMtaDelCatchAll', $data);
 }
@@ -1106,6 +1166,7 @@ sub getTraffic
 {
 	my $self = shift;
 	my $who = shift;
+
 	my $dbName = "$self->{'wrkDir'}/log.db";
 	my $logFile = "$main::imscpConfig{'TRAFF_LOG_DIR'}/mail.log";
 	my $wrkLogFile = "$main::imscpConfig{'LOG_DIR'}/mail.smtp.log";
@@ -1115,34 +1176,40 @@ sub getTraffic
 
 	# Only if files was not aleady parsed this session
 	unless($self->{'logDb'}) {
-		#use a small conf file to memorize last line readed and his content
-		tie %{$self->{'logDb'}}, 'iMSCP::Config','fileName' => $dbName, noerrors => 1;
-		##first use? we zero line and content
+		# Use a small conf file to memorize last line readed and his content
+		tie %{$self->{'logDb'}}, 'iMSCP::Config', 'fileName' => $dbName, 'noerrors' => 1;
+
+		# First use? we zero line and content
 		$self->{'logDb'}->{'line'} = 0 unless $self->{'logDb'}->{'line'};
 		$self->{'logDb'}->{'content'} = '' unless $self->{'logDb'}->{'content'};
 		my $lastLineNo = $self->{'logDb'}->{'line'};
 		my $lastLine = $self->{'logDb'}->{'content'};
 
-		# copy log file
+		# Copy log file
 		$rs = iMSCP::File->new('filename' => $logFile)->copyFile($wrkLogFile) if -f $logFile;
 		return 0 if $rs; # return 0 traffic if we fail
 
-		# link log file to array
+		# Link log file to array
+		require Tie::File;
 		tie my @content, 'Tie::File', $wrkLogFile or return 0;
 
 		# save last line
 		$self->{'logDb'}->{'line'} = $#content;
 		$self->{'logDb'}->{'content'} = $content[$#content];
 
-		# test for logratation
+		# Test for logratation
 		if($content[$lastLineNo] && $content[$lastLineNo] eq $lastLine) {
-			## No logratation ocure. We zero already readed files
+			# No logratation ocure. We zero already readed files
 			(tied @content)->defer;
 			@content = @content[$lastLineNo + 1 .. $#content];
 			(tied @content)->flush;
 		}
 
-		$rs = execute("$main::imscpConfig{'CMD_GREP'} 'postfix' $wrkLogFile | $self->{'CMD_PFLOGSUM'} standard", \$stdout, \$stderr);
+		$rs = execute(
+			"$main::imscpConfig{'CMD_GREP'} 'postfix' $wrkLogFile | $self->{'config'}->{'CMD_PFLOGSUM'} standard",
+			\$stdout,
+			\$stderr
+		);
 		error($stderr) if $stderr && $rs;
 		return 0 if $rs;
 
@@ -1168,12 +1235,13 @@ END
 	my $wrkLogFile = "$main::imscpConfig{'LOG_DIR'}/mail.smtp.log";
 	my $rs = 0;
 
+	# In any case we postmap if needed
+	for(keys %{$self->{'postmap'}}) {
+		$rs |= $self->postmap($_) if ! $rs;
+	}
+
 	if($self->{'restart'} && $self->{'restart'} eq 'yes') {
-		$rs = $self->restart();
-	} else {
-		for(keys %{$self->{'postmap'}}) {
-			$rs = $self->postmap($_) if ! $rs;
-		}
+		$rs |= $self->restart();
 	}
 
 	$rs |= iMSCP::File->new('filename' => $wrkLogFile)->delFile() if -f $wrkLogFile;

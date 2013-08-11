@@ -2141,7 +2141,7 @@ sub setupRebuildCustomerFiles
 				UPDATE
 					`plugin`
 				SET
-					`plugin_status` = 'tochange', `plugin_previous_status` = `plugin_status`
+					`plugin_previous_status` = `plugin_status`, `plugin_status` = 'tochange'
 				WHERE
 					`plugin_status` = 'enabled'
 				AND
@@ -2194,8 +2194,8 @@ sub setupRebuildCustomerFiles
 
 	$main::imscpConfig{'DEBUG'} = $debug;
 	$main::imscpConfig{'BACKTRACE'} = $backtrace;
-	error($stderr) if $stderr && $rs;
-	error("Error while rebuilding customers files.") if $rs && ! $stderr;
+	error("\n$stderr") if $stderr && $rs;
+	error("Error while rebuilding customers files") if $rs && ! $stderr;
 	return $rs if $rs;
 
 	iMSCP::HooksManager->getInstance()->trigger('afterSetupRebuildCustomersFiles');

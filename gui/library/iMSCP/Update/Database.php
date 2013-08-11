@@ -2198,4 +2198,19 @@ class iMSCP_Update_Database extends iMSCP_Update
 			$this->_dropIndex('sql_user', 'sqlu_name', 'sqlu_name')
 		);
 	}
+	
+	/**
+	 * Update domain_dns.domain_text column to 255 characters
+	 *
+	 * @return string SQL statement to be e executed
+	 */
+	protected  function _databaseUpdate_150()
+	{
+		return '
+			ALTER TABLE
+				`domain_dns`
+			CHANGE
+				`domain_text` `domain_text` VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL
+		';
+	}
 }

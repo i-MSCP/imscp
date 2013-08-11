@@ -206,9 +206,9 @@ sub addMail
 		# Retrieve needed data from MTA
 		require Servers::mta;
 		my $mta = Servers::mta->factory();
-		my $uid = scalar getpwnam($mta->{'MTA_MAILBOX_UID_NAME'});
-		my $gid = scalar getgrnam($mta->{'MTA_MAILBOX_GID_NAME'});
-		my $mailDir = $mta->{'MTA_VIRTUAL_MAIL_DIR'};
+		my $uid = scalar getpwnam($mta->{'config'}->{'MTA_MAILBOX_UID_NAME'});
+		my $gid = scalar getgrnam($mta->{'config'}->{'MTA_MAILBOX_GID_NAME'});
+		my $mailDir = $mta->{'config'}->{'MTA_VIRTUAL_MAIL_DIR'};
 
 		# Adding new entry in userdb file
 		$userdbWrkFileContent .=
@@ -267,9 +267,9 @@ sub postaddMail
 		require Servers::mta;
 		my $mta = Servers::mta->factory();
 
-		my $mailDir = "$mta->{'MTA_VIRTUAL_MAIL_DIR'}/$data->{'DOMAIN_NAME'}/$data->{'MAIL_ACC'}";
-		my $mailUidName =  $mta->{'MTA_MAILBOX_UID_NAME'};
-		my $mailGidName = $mta->{'MTA_MAILBOX_GID_NAME'};
+		my $mailDir = "$mta->{'config'}->{'MTA_VIRTUAL_MAIL_DIR'}/$data->{'DOMAIN_NAME'}/$data->{'MAIL_ACC'}";
+		my $mailUidName =  $mta->{'config'}->{'MTA_MAILBOX_UID_NAME'};
+		my $mailGidName = $mta->{'config'}->{'MTA_MAILBOX_GID_NAME'};
 
 		for ("$mailDir/.Drafts", "$mailDir/.Junk", "$mailDir/.Sent", "$mailDir/.Trash") {
 

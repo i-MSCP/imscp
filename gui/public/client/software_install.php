@@ -288,7 +288,6 @@ if (!empty($_POST)) {
 $tpl->assign(
 	array(
 		'TR_PAGE_TITLE' => tr('Client / Webtools / Software / Install'),
-		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => layout_getUserLogo(),
 		'TR_INSTALL_SOFTWARE' => tr('Install Software'),
 		'SOFTWARE_ID' => client_generatePage($tpl, $_SESSION['user_id']),

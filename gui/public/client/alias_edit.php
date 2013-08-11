@@ -55,7 +55,6 @@ $tpl->define_dynamic('page_message', 'layout');
 $tpl->assign(
 	array(
 		 'TR_PAGE_TITLE' => tr('Client / Domains / Overview / Edit Domain Alias'),
-		 'THEME_CHARSET' => tr('encoding'),
 		 'ISP_LOGO' => layout_getUserLogo()));
 
 $tpl->assign(

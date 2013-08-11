@@ -179,7 +179,6 @@ if (isset($_SESSION['sql_support']) && $_SESSION['sql_support'] == "no") {
 $tpl->assign(
 	array(
 		'TR_PAGE_TITLE' => tr('Client / Databases / Overview / Update SQL User Password'),
-		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => layout_getUserLogo()));
 
 $db_user_name = gen_page_data($tpl, $db_user_id);

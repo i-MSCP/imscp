@@ -452,7 +452,6 @@ function create_catchall_mail_account($id) {
 $tpl->assign(
 	array(
 		 'TR_CLIENT_CREATE_CATCHALL_PAGE_TITLE' => tr('i-MSCP - Client/Create CatchAll Mail Account'),
-		 'THEME_CHARSET' => tr('encoding'),
 		 'ISP_LOGO' => layout_getUserLogo()));
 
 gen_dynamic_page_data($tpl, $item_id);

@@ -67,7 +67,6 @@ if (isset($_GET['id'])){
 $tpl->assign(
 	array(
 		'TR_PAGE_TITLE' => tr('Admin / Software Management / Reseller Software'),
-		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => layout_getUserLogo()));
 
 $software_cnt = get_installed_res_software($tpl, $_GET['id']);

@@ -4,7 +4,7 @@
 # Newly created directories: 0750
 umask 027
 
-PHPRC="{PHP_STARTER_DIR}/{DOMAIN_NAME}/php5/"
+PHPRC="{PHP_STARTER_DIR}/{DOMAIN_NAME}/php{PHP_VERSION}/"
 export PHPRC
 
 PHP_FCGI_CHILDREN=2

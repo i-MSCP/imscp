@@ -43,7 +43,6 @@
  * Generate layout color form.
  *
  * @author Laurent Declercq <l.declerq@nuxwin.com>
- * @since iMSCP 1.0.1.6
  * @param $tpl iMSCP_pTemplate Template engine instance
  * @return void
  */
@@ -138,7 +137,6 @@ if (layout_isMainMenuLabelsVisible($userId)) {
 $tpl->assign(
 	array(
 		'TR_PAGE_TITLE' => tr('Client / Profile / Layout'),
-		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => layout_getUserLogo(),
 		'TR_LAYOUT_COLOR' => tr('Layout color'),
 		'TR_CHOOSE_LAYOUT_COLOR' =>  tr('Choose layout color'),

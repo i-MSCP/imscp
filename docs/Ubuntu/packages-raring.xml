@@ -111,7 +111,7 @@
         <package>php-gettext</package>
         <package>php5-intl</package>
         <package>php5-mcrypt</package>
-        <package>php5-mysql</package>
+        <package>php5-mysqlnd</package>
     </php>
     <perl>
         <package>perl</package>

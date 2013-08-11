@@ -133,7 +133,6 @@ $tpl->define_dynamic(
 $tpl->assign(
 	array(
 		'TR_PAGE_TITLE' => tr('Client / Webtools / Protected Areas / Manage Users and Groups / Add Group'),
-		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => layout_getUserLogo(),
 		'TR_HTACCESS_GROUP' => tr('Htaccess group'),
 		'TR_GROUPNAME' => tr('Group name'),

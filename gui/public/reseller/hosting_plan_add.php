@@ -533,7 +533,6 @@ if (isset($cfg->HOSTING_PLANS_LEVEL) && $cfg->HOSTING_PLANS_LEVEL == 'reseller')
 	$tpl->assign(
 		array(
 			'TR_PAGE_TITLE' => tr('Reseller / Hosting Plans / Add Hosting Plan'),
-			'THEME_CHARSET' => tr('encoding'),
 			'ISP_LOGO' => layout_getUserLogo(),
 
 			'TR_HOSTING_PLAN_PROPS' => tr('Hosting plan properties'),

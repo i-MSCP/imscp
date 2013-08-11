@@ -204,7 +204,6 @@ function update_reseller_owner() {
 $tpl->assign(
 	array(
 		'TR_PAGE_TITLE' => tr('Admin / Users / Resellers Assignment'),
-		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => layout_getUserLogo()));
 
 generateNavigation($tpl);

@@ -5,7 +5,7 @@
     ServerAlias www.{DOMAIN_NAME} {ALIAS}.{BASE_SERVER_VHOST}
 
     <IfModule mod_cband.c>
-        CBandUser {USER}
+    CBandUser {USER}
     </IfModule>
 
     Redirect / {FORWARD}

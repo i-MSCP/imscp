@@ -2,14 +2,14 @@
 <html>
 <head>
 	<title>{TR_PAGE_TITLE}</title>
-	<meta http-equiv='Content-Script-Type' content='text/javascript' />
-	<meta http-equiv='Content-Style-Type' content='text/css' />
-	<meta http-equiv='Content-Type' content='text/html; charset={THEME_CHARSET}' />
-	<meta name='copyright' content='i-MSCP' />
-	<meta name='owner' content='i-MSCP' />
-	<meta name='publisher' content='i-MSCP' />
-	<meta name='robots' content='nofollow, noindex' />
-	<meta name='title' content='{TR_PAGE_TITLE}' />
+	<meta http-equiv="Content-Script-Type" content="text/javascript" />
+	<meta http-equiv="Content-Style-Type" content="text/css" />
+	<meta http-equiv="Content-Type" content="text/html; charset={THEME_CHARSET}" />
+	<meta name="copyright" content="i-MSCP" />
+	<meta name="owner" content="i-MSCP" />
+	<meta name="publisher" content="i-MSCP" />
+	<meta name="robots" content="nofollow, noindex" />
+	<meta name="title" content="{TR_PAGE_TITLE}" />
 	<link href="{THEME_COLOR_PATH}/css/imscp.css" rel="stylesheet" type="text/css" />
 	<link href="{THEME_COLOR_PATH}/css/{THEME_COLOR}.css" rel="stylesheet" type="text/css" />
 	<link href="{THEME_COLOR_PATH}/css/jquery-ui-{THEME_COLOR}.css" rel="stylesheet" type="text/css" />

@@ -137,7 +137,6 @@ function client_generateView($tpl)
 	$tpl->assign(
 		array(
 			'TR_PAGE_TITLE' => tr('Client / Email / External Mail Server'),
-			'THEME_CHARSET' => tr('encoding'),
 			'ISP_LOGO' => layout_getUserLogo(),
 			'TR_DOMAIN' => tr('Domain'),
 			'TR_STATUS' => tr('Status'),

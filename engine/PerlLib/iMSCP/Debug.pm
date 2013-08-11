@@ -31,7 +31,7 @@ use warnings;
 
 use iMSCP::Log;
 use Text::Wrap;
-use parent 'Common::SingletonClass', 'Exporter';
+use parent 'Exporter';
 
 $Text::Wrap::columns = 80;
 $Text::Wrap::break = qr/[\s\n\|]/;
@@ -58,125 +58,185 @@ BEGIN
 	};
 }
 
+my $self = {
+	'silent' => 0,
+	'verbose' => 1,
+	'backtrace' => 0,
+	'debugCallBacks' => []
+};
+
+$self->{'prevLog'} = $self->{'curLog'} = $self->{'logs'}->{'default'} = iMSCP::Log->new();
+
+=item newDebug($logName)
+
+ Create a new log object using the given name and set it as current log
+
+ Return 0
+
+=cut
+
 sub newDebug
 {
-	my $self = __PACKAGE__->getInstance();
-	my $logFilePath = shift;
+	my $logName = shift;
 
-	push(@{$self->{'logLevels'}}, $self->{'lastLog'});
-	$self->{'lastLog'} = iMSCP::Log->new();
-	$self->{'log'}->{$logFilePath} = $self->{'lastLog'};
+	$self->{'logs'}->{$logName} = iMSCP::Log->new();
+	$self->{'prevLog'} = $self->{'curLog'};
+	$self->{'curLog'} = $self->{'logs'}->{$logName};
 
-	undef;
+	0;
 }
+
+=item endDebug()
+
+ Set current log to the previous
+
+ Return 0
+
+=cut
 
 sub endDebug
 {
-	my $self = __PACKAGE__->getInstance();
+	$self->{'curLog'} = $self->{'prevLog'};
 
-	if(@{$self->{'logLevels'}}) {
-		$self->{'lastLog'} = pop @{$self->{'logLevels'}};
-	}
-
-	undef;
+	0;
 }
+
+=item silent()
+
+ Enter in silent mode
+
+ Return 0
+
+=cut
 
 sub silent
 {
-	my $self = __PACKAGE__->getInstance();
+	$self->{'silent'} = int(shift || 0);
+	debug("Entering in silent mode") if $self->{'silent'};
 
-	my $silent = shift || 0;
-
-	$self->{'silent'} = int($silent);
-	debug("Entering in silent mode") if $silent;
-
-	undef;
+	0;
 }
+
+=item verbose()
+
+ set verbose
+
+ Return 0
+
+=cut
 
 sub verbose
 {
-	my $verbose = shift || 0;
+	$self->{'verbose'} = shift || 0;
 
-	unless($verbose) {
-		getMessageByType('debug', { 'remove' => 1 });
+	unless($self->{'verbose'}) {
+		getMessageByType('debug', { remove => 1 });
 		debug("Debug mode off");
 	}
 
-	__PACKAGE__->getInstance()->{'verbose'} = $verbose;
-
-	undef;
+	0;
 }
+
+=item backtrace
+
+ Set backtrace
+
+ Return void
+
+=cut
 
 sub backtrace
 {
-	my $backtrace = shift || 0;
+	$self->{'backtrace'} = shift || 0;
 
-	__PACKAGE__->getInstance()->{'backtrace'} = $backtrace;
-
-	undef;
+	0;
 }
 
+=item debug($message)
+
+ Log a debug message in the current log
+
+ Return 0
+
+=cut
 
 sub debug
 {
-	my $self = __PACKAGE__->getInstance();
-
 	if($self->{'verbose'}) {
 		my $caller = (caller(1))[3] ? (caller(1))[3] : 'main';
 		my $message = shift || '';
 
-		$self->{'lastLog'}->store(message => "$caller: $message", tag => 'debug', level => 'log');
+		$self->{'curLog'}->store(message => "$caller: $message", tag => 'debug', level => 'log');
 	}
 
-	undef;
+	0;
 }
+
+=item warning($message)
+
+ Log an error message in the current log and print it on STDERR if not in silent mode
+
+ Return 0
+
+=cut
 
 sub warning
 {
-	my $self = __PACKAGE__->getInstance();
 	my $caller = (caller(1))[3] ? (caller(1))[3] : 'main';
 	my $message = shift || '';
 	my $verbosity = shift or 1;
 
-	$self->{'lastLog'}->store(
+	$self->{'curLog'}->store(
 		message => "$caller: $message", tag => 'warn', level => $verbosity ? 'cluck' : 'log'
 	);
 
-    print STDERR output("$caller: $message", { mode => 'warn' }) unless $self->{'silent'};
+	print STDERR output("$caller: $message", { mode => 'warn' }) unless $self->{'silent'};
 
-    undef;
+	0;
 }
+
+=item debug($message)
+
+ Log an error message in the current log and print it on STDERR if not in silent mode
+
+ Return 0
+
+=cut
 
 sub error
 {
-	my $self = __PACKAGE__->getInstance();
 	my $caller = (caller(1))[3] ? (caller(1))[3] : 'main';
 	my $message = shift || '';
 	my $verbosity = shift or 1;
 
-	$self->{'lastLog'}->store(
+	$self->{'curLog'}->store(
 		message => "$caller: $message", tag => 'error', level => $verbosity ? 'cluck' : 'log'
 	);
 
-    print STDERR output("$caller: $message", { mode => 'error' }) unless $self->{'silent'};
+	print STDERR output("$caller: $message", { mode => 'error' }) unless $self->{'silent'};
 
-    undef;
+	0;
 }
+
+=item debug($message)
+
+ Log a fatal error message in the current log, print it on STDERR if not in silent mode and exit
+
+=cut
 
 sub fatal
 {
-	my $self = __PACKAGE__->getInstance();
 	my $caller = (caller(1))[3] ? (caller(1))[3] : 'main';
 	my $message = shift || '';
 	my $verbosity = shift or 1;
 
-	$self->{'lastLog'}->store(
+	$self->{'curLog'}->store(
 		message => "$caller: $message", tag => 'fatal error', level => $verbosity ? 'cluck' : 'log'
 	);
 
-    print STDERR output("$caller: $message", { mode => 'fatal' });
+	print STDERR output("$caller: $message", { mode => 'fatal' });
 
-    exit 1;
+	exit 1;
 }
 
 sub getLastError
@@ -186,103 +246,125 @@ sub getLastError
 
 sub getMessageByType
 {
-	my $self = __PACKAGE__->getInstance();
 	my $mode = shift;
 	my $opts = shift;
 
 	$opts = {} unless ref $opts eq 'HASH';
 
-	$mode = 'error' unless defined $mode && $mode ~~ ['debug', 'warn', 'error', 'fatal error'];
+	$mode = 'error' unless defined $mode && $mode ~~ ['debug', 'warn', 'error', 'fatal'];
 
 	$opts->{'amount'} = 0 unless defined $opts->{'amount'} && $opts->{'amount'} =~ /\d+/;
 	$opts->{'chrono'} = 1 unless defined $opts->{'chrono'} && $opts->{'chrono'} =~ /0|1/;
 	$opts->{'remove'} = 0 unless defined $opts->{'remove'} && $opts->{'remove'} =~ /0|1/;
 
-	my @logs = $self->{'lastLog'}->retrieve(
+	my @logs = $self->{'curLog'}->retrieve(
 		'tag' => qr/^$mode$/i,
 		'amount' => $opts->{'amount'},
 		'chrono' => $opts->{'chrono'},
 		'remove' => $opts->{'remove'}
 	);
 
-	my @messages = ();
-	push @messages, $_->{'message'} for @logs;
+	my @messages = map { $_->{'message'} } @logs;
 
-	(wantarray ? @messages : join "\n", @messages);
+	wantarray ? @messages : join "\n", @messages;
 }
+
+=item writeLogs($logName, $logFile)
+
+ Write all messages from the given log to into the given log file
+
+ Return 0
+
+=cut
 
 sub writeLogs
 {
-	my $self = __PACKAGE__->getInstance();
-	my $log = shift;
-	my $file = shift;
-	my $line = '';
+	my $logName = shift;
+	my $logFile = shift;
 
-	if ($log) {
-		$line = _getMessageLevel($log);
+	my $logs = _getMessagesFromLog($logName);
+
+	# Make error message free of any ANSI color and end of line codes
+	$logs =~ s/\x1B\[([0-9]{1,3}((;[0-9]{1,3})*)?)?[m|K]//g;
+
+	if(open(FH, '>', $logFile)) {
+		print FH $logs;
+		close FH;
 	} else {
-		for (keys %{$self->{'log'}}) {
-			$line .= _getMessageLevel($_);
-		}
+		print STDERR "Unable to open log file $logFile: $!";
 	}
 
-	if($file) {
-		if(open(FH, '>', $file)) {
-			print FH $line;
-			close (FH);
-		} else {
-			print STDERR "Unable to save log file $file";
-		}
-	}
-
-	$line;
+	0;
 }
 
-sub _getMessageLevel
+=item _getMessagesFromLog($logName)
+
+ Return all messages from the given log as a string.
+
+ Return string
+
+=cut
+
+sub _getMessagesFromLog
 {
-	my $self = __PACKAGE__->getInstance();
-	my $log = shift;
-	my $line = '';
+	my $logName = shift;
 
-	if ($self->{'log'}->{$log}) {
-		for ($self->{'log'}->{$log}->flush()) {
-			next unless defined $_;
+	my $buffer = '';
 
-			$line .= "[$_->{'when'}] [$_->{'tag'}] $_->{'message'}\n";
-			$line .= "Traces: $_->{'longmess'}\n\n" if $self->{'backtrace'};
+	if(exists $self->{'logs'}->{$logName}) {
+		for($self->{'logs'}->{$logName}->flush()) {
+			$buffer .= "[$_->{'when'}] [$_->{'tag'}] $_->{'message'}\n";
+			$buffer .= "Traces: $_->{'longmess'}\n\n" if $self->{'backtrace'};
 		}
 	}
 
-	$line;
+	$buffer;
 }
+
+=item output($text, $level)
+
+ Prepare the given text to be show on the console according the given level
+
+ Return string
+
+=cut
 
 sub output
 {
 	my $text = shift;
-	my $mode = shift;
+	my $level = shift;
 
 	my $output = '';
 
-	if($mode) {
-		if ($mode eq 'fatal') {
-			$output = "\n[\033[0;31m FATAL ERROR \033[0m]$text\n";
-		} elsif ($mode eq 'error') {
-			$output = "\n[\033[0;31m ERROR \033[0m]\n\n$text\n";
-		} elsif ($mode eq 'warn'){
-			$output = "\n[\033[0;33m WARN \033[0m]\n\n$text\n";
-		} elsif ($mode eq 'ok'){
-			$output = "\n[\033[0;32m OK \033[0m]\n\n$text\n";
+	if($level) {
+		if ($level eq 'fatal') {
+			$output = "\n[\033[0;31mFATAL ERROR\033[0m]\n\n$text\n";
+		} elsif ($level eq 'error') {
+			$output = "\n[\033[0;31mERROR\033[0m]\n\n$text\n";
+		} elsif ($level eq 'warn'){
+			$output = "\n[\033[0;33mWARN\033[0m]\n\n$text\n";
+		} elsif ($level eq 'ok'){
+			$output = "\n[\033[0;32mOK\033[0m] $text\n";
+		} else {
+			$output = "\n$text\n\n";
 		}
 	} else {
-		$output = "\n$text\n\n"
+		$output = "\n$text\n\n";
 	}
 
 	return wrap('', '', $output);
 }
 
+=item debugRegisterCallBack
+
+ Register the given callback, which will be triggered before log processing
+
+ Return 0;
+
+=cut
+
 sub debugRegisterCallBack
 {
-	my $self = __PACKAGE__->getInstance();
 	my $callback = shift;
 
 	push @{$self->{'debugCallBacks'}}, $callback;
@@ -290,55 +372,41 @@ sub debugRegisterCallBack
 	0;
 }
 
-sub _init
-{
-	my $self = shift;
-
-	$self->{'logLevels'} = [];
-	$self->{'log'} = {};
-	$self->{'lastLog'} = iMSCP::Log->new();
-	$self->{'silent'} = 0;
-	$self->{'verbose'} = 1;
-	$self->{'backtrace'} = 0;
-	$self->{'debugCallBacks'} = [];
-
-	$self;
-}
-
 END
 {
 	my $exitCode = $?;
 
-	my $self = __PACKAGE__->getInstance();
-
 	&$_ for @{$self->{'debugCallBacks'}};
 
-	if($exitCode) {
-		error("Exit code is $exitCode!");
-	} else {
-		debug("Exit code is $exitCode");
+	if(%{$self->{'logs'}}) {
+		if($exitCode) {
+			error("Exit code: $exitCode");
+		} else {
+			debug("Exit code: $exitCode");
+		}
+
+		system('clear') if $ENV{'TERM'};
+
+		my $logdir = $main::imscpConfig{'LOG_DIR'} || '/tmp';
+		my $msg = undef;
+
+		for(keys %{$self->{'logs'}}) {
+			next if $_ eq 'default';
+			$self->{'curLog'} = $self->{'logs'}->{$_};
+
+			my @warnings = getMessageByType('warn');
+			my @errors = getMessageByType('error');
+			my @fatals = getMessageByType('fatal');
+
+			$msg = output(join("\n", @warnings), 'warn') if @warnings;
+			$msg .= output(join("\n", @errors), 'error') if @errors;
+			$msg .= output(join("\n", @fatals), 'fatal') if @fatals;
+
+			writeLogs($_, "$logdir/$_");
+		}
+
+		print STDERR $msg if defined $msg;
 	}
-
-	system('clear') if $ENV{'TERM'};
-
-	my $logdir = $main::imscpConfig{'LOG_DIR'} || '/tmp';
-	my $msg;
-
-	for (keys %{$self->{'log'}}) {
-		next if $_ eq 'discard';
-
-		my @warnings = getMessageByType('warn');
-		my @errors = getMessageByType('error');
-		my @fatals = getMessageByType('fatal error');
-
-		$msg = output(join("\n", @warnings), 'warn') if @warnings;
-		$msg .= output(join("\n", @errors), 'error') if @errors;
-		$msg .= output(join("\n", @fatals), 'fatal') if @fatals;
-
-		writeLogs($_, "$logdir/$_");
-	}
-
-	print STDERR $msg if $msg;
 
 	$? = $exitCode;
 }

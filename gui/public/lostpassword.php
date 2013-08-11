@@ -73,7 +73,6 @@ $tpl->define_dynamic(
 $tpl->assign(
 	array(
 		'TR_PAGE_TITLE' => tr('i-MSCP - Multi Server Control Panel / Lost Password'),
-		'THEME_CHARSET' => tr('encoding'),
 		'CONTEXT_CLASS' => 'login',
 		'productLongName' => tr('internet Multi Server Control Panel'),
 		'productLink' => 'http://www.i-mscp.net',

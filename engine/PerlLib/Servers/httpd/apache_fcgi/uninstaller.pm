@@ -17,11 +17,11 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
-# @category		i-MSCP
-# @copyright	2010-2013 by i-MSCP | http://i-mscp.net
-# @author		Daniel Andreca <sci2tech@gmail.com>
-# @link			http://i-mscp.net i-MSCP Home Site
-# @license		http://www.gnu.org/licenses/gpl-2.0.html GPL v2
+# @category    i-MSCP
+# @copyright   2010-2013 by i-MSCP | http://i-mscp.net
+# @author      Daniel Andreca <sci2tech@gmail.com>
+# @link        http://i-mscp.net i-MSCP Home Site
+# @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
 package Servers::httpd::apache_fcgi::uninstaller;
 
@@ -29,6 +29,12 @@ use strict;
 use warnings;
 
 use iMSCP::Debug;
+use iMSCP::SystemUser;
+use iMSCP::SystemGroup;
+use iMSCP::Dir;
+use File::Basename;
+use iMSCP::File;
+use Servers::httpd::apache_fcgi;
 use parent 'Common::SingletonClass';
 
 sub _init
@@ -41,7 +47,7 @@ sub _init
 
 	my $conf = "$self->{'cfgDir'}/apache.data";
 
-	tie %self::apacheConfig, 'iMSCP::Config','fileName' => $conf;
+	tie %{$self->{'apacheConfig'}, 'iMSCP::Config','fileName' => $conf;
 
 	0;
 }
@@ -68,12 +74,11 @@ sub uninstall
 sub removeUsers
 {
 	my $self = shift;
+
 	my $rs = 0;
 	my ($panelGName, $panelUName);
 
 	# Panel user
-	use iMSCP::SystemUser;
-
 	$panelUName = iMSCP::SystemUser->new();
 	$panelUName->{'force'} = 'yes';
 
@@ -83,7 +88,6 @@ sub removeUsers
 	return $rs if $rs;
 
 	# Panel group
-	use iMSCP::SystemGroup;
 	$panelGName = iMSCP::SystemGroup->new();
 
 	$panelGName->delSystemGroup(
@@ -96,11 +100,9 @@ sub removeDirs
 	my $self = shift;
 	my $rs = 0;
 
-	use iMSCP::Dir;
-
 	for (
-		$self::apacheConfig{'APACHE_USERS_LOG_DIR'}, $self::apacheConfig{'APACHE_BACKUP_LOG_DIR'},
-		$self::apacheConfig{'APACHE_CUSTOM_SITES_CONFIG_DIR'}, $self::apacheConfig{'PHP_STARTER_DIR'}
+		$self->{'apacheConfig'}->{'APACHE_USERS_LOG_DIR'}, $self->{'apacheConfig'}->{'APACHE_BACKUP_LOG_DIR'},
+		$self->{'apacheConfig'}->{'APACHE_CUSTOM_SITES_CONFIG_DIR'}, $self->{'apacheConfig'}->{'PHP_STARTER_DIR'}
 	) {
 		$rs = iMSCP::Dir->new(dirname => $_)->remove() if -d $_;
 		return $rs if $rs;
@@ -114,11 +116,9 @@ sub restoreConf
 	my $self = shift;
 	my $rs = 0;
 
-	use File::Basename;
-
 	for (
 		"$main::imscpConfig{LOGROTATE_CONF_DIR}/apache2", "$main::imscpConfig{LOGROTATE_CONF_DIR}/apache",
-		"$self::apacheConfig{APACHE_CONF_DIR}/ports.conf"
+		"$self->{'apacheConfig'}->{APACHE_CONF_DIR}/ports.conf"
 	) {
 		my ($filename, $directories, $suffix) = fileparse($_);
 		$rs	= iMSCP::File->new(
@@ -134,20 +134,17 @@ sub fastcgiConf
 {
 	my $self = shift;
 
-	use iMSCP::File;
-	use Servers::httpd::apache_fcgi;
-
 	my $httpd = Servers::httpd::apache_fcgi->getInstance();
 
 	# try to disable but do not fail if do not exists
 	my $rs = 0;
 	for('fastcgi_imscp', 'fcgid_imscp') {
-		$rs = $httpd->disableMod($_) if -f "$self::apacheConfig{'APACHE_MODS_DIR'}/$_.load";
+		$rs = $httpd->disableMod($_) if -f "$self->{'apacheConfig'}->{'APACHE_MODS_DIR'}/$_.load";
 		return $rs if $rs;
 	}
 	
 	for ('fastcgi_imscp.conf', 'fastcgi_imscp.load', 'fcgid_imscp.conf', 'fcgid_imscp.load') {
-		$rs = iMSCP::File->new('filename' => "$self::apacheConfig{'APACHE_MODS_DIR'}/$_")->delFile() if -f "$self::apacheConfig{'APACHE_MODS_DIR'}/$_";
+		$rs = iMSCP::File->new('filename' => "$self->{'apacheConfig'}->{'APACHE_MODS_DIR'}/$_")->delFile() if -f "$self->{'apacheConfig'}->{'APACHE_MODS_DIR'}/$_";
 		return $rs if $rs;
 	}
 
@@ -158,9 +155,6 @@ sub vHostConf
 {
 	my $self = shift;
 
-	use iMSCP::File;
-	use Servers::httpd::apache_fcgi;
-
 	my $httpd = Servers::httpd::apache_fcgi->getInstance();
 	my $rs = 0;
 
@@ -169,9 +163,9 @@ sub vHostConf
 		$rs = $httpd->disableSite($_);
 		return $rs if $rs;
 
-		if(-f "$self::apacheConfig{'APACHE_SITES_DIR'}/$_") {
+		if(-f "$self->{'apacheConfig'}->{'APACHE_SITES_DIR'}/$_") {
 			$rs = iMSCP::File->new(
-				'filename' => "$self::apacheConfig{'APACHE_SITES_DIR'}/$_"
+				'filename' => "$self->{'apacheConfig'}->{'APACHE_SITES_DIR'}/$_"
 			)->delFile();
 			return $rs if $rs;
 		}

@@ -9,14 +9,13 @@
     Alias /errors {HOME_DIR}/errors/
 
     <IfModule mod_cband.c>
-        CBandUser {USER}
+    CBandUser {USER}
     </IfModule>
 
     <Directory {HOME_DIR}/domain_disable_page>
-        Options -Indexes Includes FollowSymLinks MultiViews
+        Options -Indexes +Includes +FollowSymLinks +MultiViews
         AllowOverride None
-        Order allow,deny
-        Allow from all
+        {AUTHZ_ALLOW_ALL}
     </Directory>
 
 </VirtualHost>

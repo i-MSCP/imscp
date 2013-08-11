@@ -160,11 +160,11 @@ sub askRoundcube($$)
 	my $dbHost = main::setupGetQuestion('DATABASE_HOST');
 	my $dbPort = main::setupGetQuestion('DATABASE_PORT');
 
-	my $dbUser = $main::preseed{'ROUNDCUBE_SQL_USER'} || $self::roundcubeConfig{'DATABASE_USER'} ||
+	my $dbUser = main::setupGetQuestion('ROUNDCUBE_SQL_USER', 'preseed') || $self::roundcubeConfig{'DATABASE_USER'} ||
 		$self::roundcubeOldConfig{'DATABASE_USER'} || 'roundcube_user';
 
-	my $dbPass = $main::preseed{'ROUNDCUBE_SQL_PASSWORD'} || $self::roundcubeConfig{'DATABASE_PASSWORD'} ||
-		$self::roundcubeOldConfig{'DATABASE_PASSWORD'} || '';
+	my $dbPass = main::setupGetQuestion('ROUNDCUBE_SQL_PASSWORD', 'preseed') ||
+		$self::roundcubeConfig{'DATABASE_PASSWORD'} || $self::roundcubeOldConfig{'DATABASE_PASSWORD'} || '';
 
 	my ($rs, $msg) = (0, '');
 
