@@ -112,8 +112,14 @@
 				</td>
 			</tr>
 			<tr>
-				<td>{TR_DOMAIN_IP}</td>
-				<td colspan="2">{DOMAIN_IP} {IP_DOMAIN}</td>
+				<td><label for="domain_ip_id">{TR_DOMAIN_IP}</label></td>
+				<td colspan="2">
+					<select id="domain_ip_id" name="domain_ip_id">
+						<!-- BDP: ip_entry -->
+						<option value="{IP_VALUE}" {IP_SELECTED}>{IP_NUM} ({IP_NAME})</option>
+						<!-- EDP: ip_entry -->
+					</select>
+				</td>
 			</tr>
 		</table>
 		<table class="firstColFixed">

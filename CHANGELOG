@@ -26,8 +26,10 @@ GUI:
 	- Fixed: Unable to delete plugin in some contexts
 
 Tickets:
+	- Fixed #579: Review - i18n issues
 	- Fixed #745: Defect - Disk detail in dovecot doesn't include aliases
 	- Fixed #779: Defect - When migrating from ispcp the reseller and admin logos are lost
+	- Fixed #791: Defect - Unable to change customer IP
 	- Fixed #834: Cosmetics - Ticket system menu names
 	- Fixed #835: Task - Migration script - ispCP - Remove old php5-fcgi-starter
 	- Fixed #838: Bug - Installer skips PHP INI Level dialog for apache fcgi
