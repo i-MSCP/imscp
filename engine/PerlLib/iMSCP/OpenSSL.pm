@@ -2,7 +2,7 @@
 
 =head1 NAME
 
-Modules::openssl - i-MSCP OpenSSL module
+iMSCP::OpenSSL - i-MSCP OpenSSL library
 
 =cut
 
@@ -29,7 +29,7 @@ Modules::openssl - i-MSCP OpenSSL module
 # @link        http://i-mscp.net i-MSCP Home Site
 # @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
-package Modules::openssl;
+package iMSCP::OpenSSL;
 
 use strict;
 use warnings;
@@ -43,9 +43,7 @@ use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
 
- This is the installer for the i-MSCP PhpMyAdmin addon.
-
- See Addons::phpmyadmin for more information.
+ Library allowing to check and export SSL certificates
 
 =head1 PUBLIC METHODS
 
@@ -85,7 +83,6 @@ sub ssl_check_key
 	$rs = $file->save();
 	return $rs if $rs;
 
-	#my $password = escapeShell($self->{'key_pass'});
 	my $cmd = "$self->{'openssl_path'} rsa -in $self->{'key_path'} -noout -passin file:" . $keyPaswordFile->filename;
 
 	my ($stdout, $stderr);
@@ -353,7 +350,7 @@ sub ssl_export_all
 
  Initialize instance.
 
- Return Modules::openssl
+ Return iMSCP::OpenSSL
 
 =cut
 

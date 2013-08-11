@@ -52,7 +52,7 @@ use iMSCP::Rights;
 use iMSCP::Templator;
 use iMSCP::SystemGroup;
 use iMSCP::SystemUser;
-use Modules::openssl;
+use iMSCP::OpenSSL;
 use Email::Valid;
 use iMSCP::Servers;
 use iMSCP::Addons;
@@ -958,7 +958,7 @@ sub setupAskSsl
 	my $certificatPath = setupGetQuestion('CERTIFICATE_PATH', "/root/");
 	my $baseServerVhostPrefix = setupGetQuestion('BASE_SERVER_VHOST_PREFIX', 'http://');
 
-	my $openSSL = Modules::openssl->getInstance();
+	my $openSSL = iMSCP::OpenSSL->getInstance();
 	$openSSL->{'openssl_path'} = $main::imscpConfig{'CMD_OPENSSL'};
 
 	my $rs = 0;
@@ -1791,7 +1791,7 @@ sub setupSsl
 	my $sslEnabled = setupGetQuestion('SSL_ENABLED');
 
 	if($sslEnabled eq 'yes' && setupGetQuestion('SETUP_SSL', 'yes') ne 'no') {
-		my $openSSL = Modules::openssl->getInstance();
+		my $openSSL = iMSCP::OpenSSL->getInstance();
 		$openSSL->{'openssl_path'} = $main::imscpConfig{'CMD_OPENSSL'};
 
 		# Setup library for new certificat

@@ -32,7 +32,7 @@ use iMSCP::Debug;
 use File::Temp;
 use iMSCP::File;
 use iMSCP::Dir;
-use Modules::openssl;
+use iMSCP::OpenSSL;
 use parent 'Modules::Abstract';
 
 sub _init
@@ -170,7 +170,7 @@ sub add
 {
 	my $self = shift;
 
-	my $openSSL = Modules::openssl->getInstance();
+	my $openSSL = iMSCP::OpenSSL->getInstance();
 
 	# Create temporary file for certificate
 	my $certFH = File::Temp->new();

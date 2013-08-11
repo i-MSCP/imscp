@@ -36,7 +36,7 @@ use iMSCP::Dir;
 use iMSCP::Database;
 use iMSCP::Rights;
 use iMSCP::Database;
-use Modules::openssl;
+use iMSCP::OpenSSL;
 use iMSCP::Ext2Attributes qw(clearImmutable);
 use Net::LibIDN qw/idn_to_unicode/;
 use parent 'Modules::Abstract';
@@ -532,7 +532,7 @@ sub testCert
 	my $domainName = shift;
 
 	my $certFile = "$main::imscpConfig{'GUI_ROOT_DIR'}/data/certs/$domainName.pem";
-	my $openSSL = Modules::openssl->getInstance();
+	my $openSSL = iMSCP::OpenSSL->getInstance();
 
 	$openSSL->{'openssl_path'} = $main::imscpConfig{'CMD_OPENSSL'};
 	$openSSL->{'cert_path'} = $certFile;
