@@ -87,7 +87,7 @@ $main::questions{'PHP_TIMEZONE'} = 'Europe/London'; # A valid timezone (see http
 $main::questions{'SSL_ENABLED'} = 'no'; # (yes|no)
 
 # Only relevant if SSL_ENABLED is set to 'yes'
-$main::questions{'SELFSIGNED_CERTIFICATE'} = 'no'; # (1 for selfsigned, 0 for own certificate)
+$main::questions{'SELFSIGNED_CERTIFICATE'} = 'no'; # ('yes' for selfsigned, 'no' for own certificate)
 
 # Only relevant if SSL_ENABLED is set to 'yes' and  SELFSIGNED_CERTIFICATE is set to 0
 $main::questions{'CERTIFICATE_KEY_PATH'} = ''; # Path to certificate key
