@@ -135,7 +135,7 @@ function clean_input($input, $htmlencode = false)
  */
 function tohtml($text)
 {
-	return htmlentities($text, ENT_QUOTES, "UTF-8");
+	return htmlentities($text, ENT_QUOTES, 'UTF-8', false);
 }
 
 /**
@@ -145,9 +145,8 @@ function tohtml($text)
  */
 function tojs($text)
 {
-	$result = htmlentities($text, ENT_COMPAT, "UTF-8");
 	$result = strtr(
-		$result,
+		$text,
 		array(
 			'\\' => '\\\\',
 			"'" => "\\'",

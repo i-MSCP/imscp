@@ -117,7 +117,7 @@ sub loadData
 		return 1
 	}
 
-	$self->{$_} = $rdata->{$self->{'pluginId'}}->{$_} for keys %{$rdata->{$self->{'pluginId'}}};
+	@{$self}{keys %{$rdata->{$self->{'pluginId'}}}} = values %{$rdata->{$self->{'pluginId'}}};
 
 	$toStatus{'toupdate'} = $self->{'plugin_previous_status'};
 	$toStatus{'tochange'} = $self->{'plugin_previous_status'};
@@ -160,7 +160,7 @@ sub process
 	} elsif($status eq 'todisable') {
 		$rs = $self->_executePlugin('disable');
 	} else {
-		error("Unknown status: $status");
+		error("Plugin $self->{'plugin_name'} has an unknown status: $status");
 		return 1;
 	}
 
@@ -221,8 +221,8 @@ sub _executePlugin($$)
 	my $pluginFile = "$main::imscpConfig{'ENGINE_ROOT_DIR'}/Plugins/$self->{'plugin_name'}.pm";
 	my $rs = 0;
 
-	# On both install and update actions, we copy the backend part of the plugin from
-	# the GUI plugins directory to the backend plugins directory
+	# On both install and update actions, we copy the backend part of the plugin from the GUI plugins directory to
+	# the backend plugins directory
 	if($action ~~ ['install', 'update']) {
 		my $guiPluginDir = "$main::imscpConfig{'GUI_ROOT_DIR'}/plugins";
 
@@ -239,37 +239,49 @@ sub _executePlugin($$)
 		}
 	}
 
-	# We trap any compilation error
+	# We trap any compile time error(s)
 	eval { require $pluginFile; };
 
-	if($@) {
+	if($@) { # We got an error due to compile time error(s) (including missing file error)
 		error($@);
 		return 1;
-	}
+	} else {
+		my $pluginClass = "Plugin::$self->{'plugin_name'}";
+		my $pluginInstance;
 
-	my $pluginClass = "Plugin::$self->{'plugin_name'}";
+		eval {
+			# Any backend plugin is a singleton, which receive an iMSCP::HooksManager instance
+			$pluginInstance = $pluginClass->getInstance('hooksManager' => $self->{'hooksManager'});
+		};
 
-	# Any backend plugin is a singleton, which receive an iMSCP::HooksManager instance
-	my $pluginInstance = $pluginClass->getInstance('hooksManager' => $self->{'hooksManager'});
-
-	# We execute the action on the plugin only if it implements it
-	if($pluginInstance->can($action)) {
-		$rs = $pluginInstance->$action();
-
-		# Return value from run() action is ignored by default. It's the responsability of the plugin to set error
-		# status for its items. In case the plugin doesn't manage any item, it can force return value by defining the
-		# FORCE_RETVAL attribute and set it to 'yes'
-		if($action ne 'run' || defined $pluginInstance->{'FORCE_RETVAL'} && $pluginInstance->{'FORCE_RETVAL'} eq 'yes') {
-			return $rs if $rs;
-		} else {
-			$rs = 0;
+		if($@) {
+			error("Plugin $self->{'plugin_name'} has an invalid package name. Should be: $pluginClass");
+			return 1;
 		}
-	}
 
-	# On uninstall action, we remove the backend part of the plugin from the backend plugins directory
-	if($action eq 'uninstall' && -f $pluginFile) {
-		my $file = iMSCP::File->new('filename' => $pluginFile);
-		$rs = $file->delFile();
+		# We execute the action on the plugin only if it implements it
+		if($pluginInstance->can($action)) {
+			$rs = $pluginInstance->$action();
+
+			# Return value from run() action is ignored by default because it's the responsability of the plugin to set
+			# error status for its items. In case the plugin doesn't manage any item, it can force return value by
+			# defining the FORCE_RETVAL attribute and set it to 'yes'
+			if(
+				$action ne 'run' || defined $pluginInstance->{'FORCE_RETVAL'} &&
+				$pluginInstance->{'FORCE_RETVAL'} eq 'yes'
+			) {
+				return $rs if $rs;
+			} else {
+				$rs = 0;
+			}
+		}
+
+		# On both disable and uninstall actions, we remove the backend part of the plugin from the backend plugins
+		# directory
+		if($action eq 'uninstall') {
+			my $file = iMSCP::File->new('filename' => $pluginFile);
+			$rs = $file->delFile();
+		}
 	}
 
 	$rs;

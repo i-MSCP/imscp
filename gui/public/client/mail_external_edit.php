@@ -429,9 +429,9 @@ function client_generateView($verifiedData, $data)
 			'TR_UPDATE' => tr('Update'),
 			'TR_MX_TYPE_TOOLTIP' =>
 			tr('Domain: Setup an MX record to relay mail of your entire domain (including subdomains) to an external mail server.') .
-				htmlentities('<br /><br />') .
+				'<br /><br />' .
 				tr('Wildcard: Setup an MX record for inexistent subdomains, for which an external mail server can handle mail.') .
-				htmlentities('<br /><br />') .
+				'<br /><br />' .
 				tr('Note: You can mix these options.'),
 			'ITEM' => $verifiedData['item_id'] . ';' . $verifiedData['item_type']
 		)
