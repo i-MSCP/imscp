@@ -381,12 +381,12 @@ sub deleteMail
 		return $rs if $rs;
 
 		# Copying new file in production directory (permissions are preserved)
-		$rs = $userdbWrkFile->copyFile("$self->{'config}->{'AUTHLIB_CONF_DIR'}/userdb");
+		$rs = $userdbWrkFile->copyFile("$self->{'config'}->{'AUTHLIB_CONF_DIR'}/userdb");
 		return $rs if $rs;
 
 		# Updating userdb.dat file from the contents of the new userdb file
 		my ($stdout, $stderr);
-		$rs = execute($self->{'config}->{'CMD_MAKEUSERDB'}, \$stdout, \$stderr);
+		$rs = execute($self->{'config'}->{'CMD_MAKEUSERDB'}, \$stdout, \$stderr);
 		debug($stdout) if $stdout;
 		error($stderr) if $stderr && $rs;
 		return $rs if $rs;
