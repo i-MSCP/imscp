@@ -18,8 +18,8 @@ Your i-MSCP Team
 
 See the **INSTALL** file of distribution you are using inside the docs directory.
 
-  For Debian: **./docs/Debian/INSTALL**.
-  For Ubuntu: **./docs/Debian/INSTALL.**
+  - For Debian: **./docs/Debian/INSTALL**
+  - For Ubuntu: **./docs/Debian/INSTALL**
 
 You have successfully installed i-MSCP on a non-listed distribution? Great, send us your install instructions.
 
