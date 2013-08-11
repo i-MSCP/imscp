@@ -50,6 +50,9 @@ iMSCP::Getopt->parse('Usage: perl imscp-setup [options]');
 # Get reconfigure option
 $main::reconfigure = iMSCP::Getopt->reconfigure;
 
+# Global variable that holds questions
+%main::questions = ();
+
 # Handle preseed option
 my $preseedFile = iMSCP::Getopt->preseed;
 if($preseedFile) {
@@ -59,8 +62,6 @@ if($preseedFile) {
 	$main::reconfigure = 'none';
 	undef $preseedFile;
 }
-
-%main::preseed = () if ! %main::preseed;
 
 # handle noprompt option
 $main::noprompt = iMSCP::Getopt->noprompt;

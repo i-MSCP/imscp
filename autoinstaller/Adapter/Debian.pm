@@ -40,6 +40,7 @@ use iMSCP::Execute;
 use iMSCP::Dialog;
 use iMSCP::File;
 use iMSCP::Stepper;
+use iMSCP::Getopt;
 use autoinstaller::Common 'checkCommandAvailability';
 use parent 'autoinstaller::Adapter::Abstract';
 
@@ -64,6 +65,7 @@ sub installPreRequiredPackages
 	my $self = shift;
 
 	my $command = 'apt-get';
+	my $preseed = iMSCP::Getopt->preseed;
 
 	fatal('Not a Debian like system') if checkCommandAvailability($command);
 
@@ -71,14 +73,14 @@ sub installPreRequiredPackages
 	my $rs = $self->_updatePackagesIndex();
 	return $rs if $rs;
 
-	if(! %main::preseed && ! $main::noprompt && ! checkCommandAvailability('debconf-apt-progress')) {
+	if(! $preseed && ! $main::noprompt && ! checkCommandAvailability('debconf-apt-progress')) {
 		$command = 'debconf-apt-progress --logstderr -- ' . $command;
 	}
 
 	my ($stdout, $stderr);
 	$rs = execute(
 		"$command -y install @{$self->{'preRequiredPackages'}}",
-		(%main::preseed || $main::noprompt) ? \$stdout : undef, \$stderr
+		($preseed || $main::noprompt) ? \$stdout : undef, \$stderr
 	);
 	debug($stdout) if $stdout;
 	error($stderr) if $stderr && $rs;
@@ -145,16 +147,17 @@ sub uninstallPackages
 	if(@{$self->{'packagesToUninstall'}}) {
 		my ($stdout, $stderr);
 		my $command = 'apt-get';
+		my $preseed = iMSCP::Getopt->preseed;
 
 		iMSCP::Dialog->factory()->endGauge();
 
-		if(! %main::preseed && ! $main::noprompt && ! checkCommandAvailability('debconf-apt-progress')) {
+		if(! $preseed && ! $main::noprompt && ! checkCommandAvailability('debconf-apt-progress')) {
 			$command = 'debconf-apt-progress --logstderr -- ' . $command;
 		}
 
 		my $rs = execute(
 			"$command -y remove @{$self->{'packagesToUninstall'}} --auto-remove --purge",
-			(%main::preseed || $main::noprompt) ? \$stdout : undef, \$stderr
+			($preseed || $main::noprompt) ? \$stdout : undef, \$stderr
 		);
 		debug($stdout) if $stdout;
 		error($stderr) if $stderr && $rs;
@@ -182,16 +185,17 @@ sub installPackages
 
 	my ($stdout, $stderr);
 	my $command = 'apt-get';
+	my $preseed = iMSCP::Getopt->preseed;
 
 	iMSCP::Dialog->factory()->endGauge();
 
-	if(! %main::preseed&& ! $main::noprompt && ! checkCommandAvailability('debconf-apt-progress')) {
+	if(! $preseed && ! $main::noprompt && ! checkCommandAvailability('debconf-apt-progress')) {
 		$command = 'debconf-apt-progress --logstderr -- ' . $command;
 	}
 
 	$rs = execute(
 		"$command -y -o DPkg::Options::='--force-confdef' install @{$self->{'packagesToInstall'}} --auto-remove --purge",
-		(%main::preseed || $main::noprompt) ? \$stdout : undef, \$stderr
+		($preseed || $main::noprompt) ? \$stdout : undef, \$stderr
 	);
 	debug($stdout) if $stdout;
 	error($stderr) if $stderr && $rs;
@@ -251,7 +255,7 @@ sub _init
 
 	$self->_updateAptSourceList() and fatal('Unable to configure APT packages manager') if ! $main::skippackages;
 
-	if(%main::preseed) {
+	if(iMSCP::Getopt->preseed) {
 		iMSCP::HooksManager->getInstance()->register('beforeInstallPackages', sub { _debconfSetSelections(); });
 	}
 
@@ -678,12 +682,13 @@ sub _updatePackagesIndex
 
 	my $command = 'apt-get';
 	my ($stdout, $stderr);
+	my $preseed = iMSCP::Getopt->preseed;
 
-	if(! %main::preseed && ! $main::noprompt && ! checkCommandAvailability('debconf-apt-progress')) {
+	if(! $preseed && ! $main::noprompt && ! checkCommandAvailability('debconf-apt-progress')) {
 		$command = 'debconf-apt-progress --logstderr -- ' . $command;
 	}
 
-	my $rs = execute("$command -y update", (%main::preseed || $main::noprompt) ? \$stdout : undef, \$stderr);
+	my $rs = execute("$command -y update", ($preseed || $main::noprompt) ? \$stdout : undef, \$stderr);
 	debug($stdout) if $stdout;
 	error($stderr) if $stderr && $rs;
 	error('Unable to update package index from remote repository') if $rs && ! $stderr;
@@ -703,8 +708,8 @@ sub _debconfSetSelections
 {
 	my $self = shift;
 
-	my $sqlServer = $main::preseed{'SERVERS'}->{'SQL_SERVER'} || undef;
-	my $poServer = $main::preseed{'SERVERS'}->{'PO_SERVER'} || undef;
+	my $sqlServer = $main::questions{'SERVERS'}->{'SQL_SERVER'} || undef;
+	my $poServer = $main::questions{'SERVERS'}->{'PO_SERVER'} || undef;
 	my $sqlServerPackageName = undef;
 
 	if(defined $sqlServer) {
@@ -720,11 +725,11 @@ sub _debconfSetSelections
 	}
 
 	my $selectionsFileContent = <<EOF;
-$sqlServerPackageName mysql-server/root_password password $main::preseed{'DATABASE_PASSWORD'}
-$sqlServerPackageName mysql-server/root_password_again password $main::preseed{'DATABASE_PASSWORD'}
+$sqlServerPackageName mysql-server/root_password password $main::questions{'DATABASE_PASSWORD'}
+$sqlServerPackageName mysql-server/root_password_again password $main::questions{'DATABASE_PASSWORD'}
 postfix postfix/main_mailer_type select Internet Site
-postfix postfix/destinations string $main::preseed{'SERVER_HOSTNAME'}, $main::preseed{'SERVER_HOSTNAME'}.local, localhost
-postfix	postfix/mailname string $main::preseed{'SERVER_HOSTNAME'}
+postfix postfix/destinations string $main::questions{'SERVER_HOSTNAME'}, $main::questions{'SERVER_HOSTNAME'}.local, localhost
+postfix	postfix/mailname string $main::questions{'SERVER_HOSTNAME'}
 proftpd-basic shared/proftpd/inetd_or_standalone select standalone
 EOF
 
