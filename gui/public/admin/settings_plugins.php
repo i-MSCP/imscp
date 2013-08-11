@@ -33,6 +33,8 @@
 /**
  * Upload plugin archive into the gui/plugins directory
  *
+ * Supported archives: zip tar.gz and tar.bz2
+ *
  * @param iMSCP_Plugin_Manager $pluginManager
  * @return bool TRUE on success, FALSE on failure
  */
@@ -193,16 +195,6 @@ function admin_pluginManagerTrStatus($rawPluginStatus)
  */
 function admin_pluginManagerGeneratePluginList($tpl, $pluginManager)
 {
-	$trAction = array(
-		'toinstall' => tr('activation'),
-		'toupdate' => tr('update'),
-		'touninstall' => tr('deletion'),
-		'toenable' => tr('activation'),
-		'todisable' => tr('deactivation'),
-		'todelete' => tr('deletion'),
-		'tochange' => tr('change')
-	);
-
 	$pluginList = $pluginManager->getPluginList('Action', false);
 
 	if (empty($pluginList)) {
@@ -238,10 +230,7 @@ function admin_pluginManagerGeneratePluginList($tpl, $pluginManager)
 				if($pluginManager->hasError($pluginName)) {
 					$tpl->assign(
 						'PLUGIN_STATUS_DETAILS',
-						tr(
-							'An unexpected error occured while plugin %s attempt: %s',
-							$trAction[$pluginStatus], '<br /><br />' . $pluginManager->getError($pluginName)
-						)
+						tr('An unexpected error occured: %s', '<br /><br />' . $pluginManager->getError($pluginName))
 					);
 					$tpl->parse('PLUGIN_STATUS_DETAILS_BLOCK', 'plugin_status_details_block');
 					$tpl->assign(array('PLUGIN_DEACTIVATE_LINK' => '', 'PLUGIN_ACTIVATE_LINK' => ''));
@@ -284,61 +273,74 @@ function admin_pluginManagerGeneratePluginList($tpl, $pluginManager)
  */
 function admin_pluginManagerDoAction($pluginManager, $pluginName, $action, $force = false)
 {
-	$trActions = array(
-		'activate' => tr('activate'),
-		'update' => tr('update'),
-		'change' => tr('change'),
-		'deactivate' => tr('deactivate'),
-		'delete' => tr('delete'),
-		'protect' => tr('protect'),
-
-		'activated' => tr('activated'),
-		'updated' => tr('updated'),
-		'deactivated' => tr('deactivated'),
-		'deleted' => tr('deleted'),
-		'protected' => tr('protected')
-	);
-
 	$pluginName = clean_input($pluginName);
 
 	if ($pluginManager->isKnown($pluginName)) {
 		if ($pluginManager->isProtected($pluginName)) {
-			set_page_message(tr('Plugin %s is protected.', "<strong>$pluginName</strong>"), 'warning');
+			set_page_message(tr('Plugin %s is protected.', "<strong>$pluginName</strong>"), 'error');
 		} elseif ($action == 'activate' && $pluginManager->isActivated($pluginName)) {
-			set_page_message(tr('Plugin %s is already activated.', "<strong>$pluginName</strong>"), 'warning');
+			set_page_message(tr('Plugin %s is already activated.', "<strong>$pluginName</strong>"), 'error');
 		} elseif ($action == 'deactivate' && $pluginManager->isDeactivated($pluginName)) {
-			set_page_message(tr('Plugin %s is already deactivated.', "<strong>$pluginName</strong>"), 'warning');
+			set_page_message(tr('Plugin %s is already deactivated.', "<strong>$pluginName</strong>"), 'error');
 		} else {
 			if (!$pluginManager->{$action}($pluginName, $force)) {
-				set_page_message(
-					tr(
-						'Plugin manager was unable to %s the %s plugin.', $trActions[$action],
-						"<strong>$pluginName</strong>"
-					),
-					'error'
-				);
+				switch($action) {
+					case 'activate':
+						$message = tr('Plugin manager was unable to activate the %s plugin.', "<strong>$pluginName</strong>");
+						break;
+					case 'update':
+						$message = tr('Plugin manager was unable to update the %s plugin.', "<strong>$pluginName</strong>");
+						break;
+					case 'change':
+						$message = tr('Plugin manager was unable to change the %s plugin.', "<strong>$pluginName</strong>");
+						break;
+					case 'deactivate':
+						$message = tr('Plugin manager was unable to deactivate the %s plugin.', "<strong>$pluginName</strong>");
+						break;
+					case 'delete':
+						$message = tr('Plugin manager was unable to delete the %s plugin.', "<strong>$pluginName</strong>");
+						break;
+					default:
+						$message = tr('Plugin manager was unable to protect the %s plugin.', "<strong>$pluginName</strong>");
+				}
+
+				set_page_message($message, 'error');
 			} else {
-				#if($action != 'delete' && $pluginManager->hasBackend($pluginName)) {
 				if($pluginManager->hasBackend($pluginName)) {
-					set_page_message(
-						tr(
-							'Plugin %s successfully scheduled for %s.',
-							"<strong>$pluginName</strong>",
+					switch($action) {
+						case 'activate':
+							$message = tr('Plugin %s successfully scheduled for activation.', "<strong>$pluginName</strong>");
+							break;
+						case 'update':
+							$message =  tr('Plugin %s successfully scheduled for update.', "<strong>$pluginName</strong>");
+							break;
+						case 'change':
+							$message = tr('Plugin %s successfully scheduled for change.', "<strong>$pluginName</strong>");
+							break;
+						case 'deactivate':
+							$message = tr('Plugin %s successfully scheduled for deactivation.', "<strong>$pluginName</strong>");
+							break;
+						default:
+							$message = tr('Plugin %s successfully scheduled for deletion.',"<strong>$pluginName</strong>");
+					}
 
-								($action == 'activate')
-									? tr('activation')
-									: (($action != 'delete') ? tr('deactivation') : tr('deletion'))
-
-						),
-						'success'
-					);
+					set_page_message($message, 'success');
 				} else {
-					set_page_message(
-						tr(
-							'Plugin %s successfully %s.', "<strong>$pluginName</strong>", $trActions[$action . 'd']
-						),
-						'success'
-					);
+					switch($action) {
+						case 'activate':
+							$message = tr('Plugin %s successfully activated.', "<strong>$pluginName</strong>");
+							break;
+						case 'update':
+							$message =  tr('Plugin %s successfully updated.', "<strong>$pluginName</strong>");
+							break;
+						case 'deactivate':
+							$message = tr('Plugin %s successfully deactivated.', "<strong>$pluginName</strong>");
+							break;
+						default:
+							$message = tr('Plugin %s successfully deleted.',"<strong>$pluginName</strong>");
+					}
+
+					set_page_message($message, 'success');
 				}
 			}
 		}
@@ -497,7 +499,7 @@ $tpl->define_dynamic(
 
 $tpl->assign(
 	array(
-		'TR_PAGE_TITLE' => tr('Admin / Settings / Plugins management'),
+		'TR_PAGE_TITLE' => tr('Admin / Settings / Plugin management'),
 		'ISP_LOGO' => layout_getUserLogo(),
 		'DATATABLE_TRANSLATIONS' => getDataTablesPluginTranslations(),
 		'TR_BULK_ACTIONS' => tr('Bulk Actions'),
@@ -509,15 +511,13 @@ $tpl->assign(
 		'TR_ACTIVATE_TOOLTIP' => tr('Activate this plugin.'),
 		'TR_DEACTIVATE_TOOLTIP' => tr('Deactivate this plugin.'),
 		'TR_DEACTIVATE' => tr('Deactivate'),
-		'TR_PROTECT' => tr('Protect'),
+		'TR_PROTECT' => tojs(tr('Protect', true)),
 		'TR_DELETE' => tr('Delete'),
 		'TR_DELETE_TOOLTIP' => ('Delete this plugin'),
 		'TR_PROTECT_TOOLTIP' => tr('Protect this plugin'),
-		'TR_PLUGIN_CONFIRMATION_TITLE' => tr('Confirmation for plugin protection'),
-		'TR_PROTECT_CONFIRMATION' => tr(
-			"If you protect a plugin, you'll no longer be able to deactivate it from the plugin management interface."
-		),
-		'TR_CANCEL' => tr('Cancel'),
+		'TR_PLUGIN_CONFIRMATION_TITLE' => tojs(tr('Confirmation for plugin protection', true)),
+		'TR_PROTECT_CONFIRMATION' => tr("If you protect a plugin, you'll no longer be able to deactivate it from the plugin management interface."),
+		'TR_CANCEL' => tojs(tr('Cancel', true)),
 		'TR_VERSION' => tr('Version'),
 		'TR_BY' => tr('By'),
 		'TR_VISIT_PLUGIN_SITE' => tr('Visit plugin site'),
@@ -529,9 +529,9 @@ $tpl->assign(
 		'TR_PLUGIN_ARCHIVE_TOOLTIP' => tr('Only tar.gz, tar.bz2 and zip archives are accepted.'),
 		'TR_PLUGIN_HINT' => tr('Plugins hook into i-MSCP to extend its functionality with custom features. Plugins are developed independently from the core i-MSCP application by thousands of developers all over the world. You can find new plugins to install by browsing the %s.', true, '<u><a href="http://plugins.i-mscp.net" target="_blank">' . tr('i-MSCP plugin repository') . '</a></u>'),
 		'TR_CLICK_FOR_MORE_DETAILS' => tr('Click here for more details'),
-		'TR_ERROR_DETAILS' => tr('Error details'),
-		'TR_FORCE_RETRY'  => tr('Force retry'),
-		'TR_CLOSE' => tr('Close')
+		'TR_ERROR_DETAILS' => tojs(tr('Error details', true)),
+		'TR_FORCE_RETRY' => tojs(tr('Force retry', true)),
+		'TR_CLOSE' => tojs(tr('Close', true))
 	)
 );
 
