@@ -52,6 +52,7 @@ ENGINE:
 	- Added config_readonly option in bootstrap
 	- Added cron job for deactivation of entities belonging to an expired account
 	- Fixed: Allow to get raw db connection
+	- Fixed: Access to i-MSCP server/addon parameters must be standardized
 	- Fixed: unable to remove htgroup
 	- Fixed: TERM environment variable not set (IMSCP::Debug library)
 	- Removed 'dnschange' status
