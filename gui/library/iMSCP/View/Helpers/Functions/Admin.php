@@ -37,6 +37,41 @@
  * template parts for admin interface.
  */
 
+ /**
+ * Returns Ip list.
+ *
+ * @param  iMSCP_pTemplate $tpl Template engine
+ * @return void
+ */
+function generate_ip_list($tpl)
+{
+	/** @var $cfg iMSCP_Config_Handler_File */
+	$cfg = iMSCP_Registry::get('config');
+
+	global $domainIp;
+
+	$query = "SELECT * FROM `server_ips`";
+
+	$stmt = execute_query($query);
+
+	while ($data = $stmt->fetchRow()) {
+		$ipId = $data['ip_id'];
+
+		$selected = ($domainIp === $ipId) ? $cfg->HTML_SELECTED : '';
+
+		$tpl->assign(
+			array(
+				'IP_NUM' => $data['ip_number'],
+				'IP_NAME' => tohtml($data['ip_domain']),
+				'IP_VALUE' => $ipId,
+				'IP_SELECTED' => $selected
+			)
+		);
+
+		$tpl->parse('IP_ENTRY', '.ip_entry');
+	}
+}
+ 
 /**
  * Helper function to generate admin list template part.
  *
