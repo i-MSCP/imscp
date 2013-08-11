@@ -1237,7 +1237,7 @@ END
 
 	# In any case we postmap if needed
 	for(keys %{$self->{'postmap'}}) {
-		$rs |= $self->postmap($_) if ! $rs;
+		$rs |= $self->postmap($_);
 	}
 
 	if($self->{'restart'} && $self->{'restart'} eq 'yes') {

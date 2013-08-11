@@ -110,7 +110,7 @@ sub askCgiModule($$)
 	my $dialog = shift;
 
 	my $rs = 0;
-	my $cgiModule = main::setupGetQuestion('PHP_FASTCGI', 'preseed') || $self->{'config'}->{'PHP_FASTCGI'} || '';
+	my $cgiModule = main::setupGetQuestion('PHP_FASTCGI') || $self->{'config'}->{'PHP_FASTCGI'} || '';
 
 	if($main::reconfigure ~~ ['httpd', 'servers', 'all', 'forced'] || $cgiModule !~ /^fcgid|fastcgi$/) {
 		($rs, $cgiModule) = $dialog->radiolist(
@@ -140,7 +140,7 @@ sub askForPhpIniLevel($$)
 	my $dialog = shift;
 
 	my $rs = 0;
-	my $phpiniLevel = main::setupGetQuestion('INI_LEVEL', 'preseed') || $self->{'config'}->{'INI_LEVEL'} || '';
+	my $phpiniLevel = main::setupGetQuestion('INI_LEVEL') || $self->{'config'}->{'INI_LEVEL'} || '';
 
 	if(
 		$main::reconfigure ~~ ['httpd', 'php', 'servers', 'all', 'forced'] ||
