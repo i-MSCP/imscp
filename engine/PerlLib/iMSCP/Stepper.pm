@@ -101,6 +101,7 @@ $text
 Error was:
 
 \\Z1$errorMessage \\Zn
+
 Please, post on http://i-mscp.net/forum to get any help.
 "
 		);

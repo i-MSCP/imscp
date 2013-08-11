@@ -1060,6 +1060,9 @@ sub setupAskSsl
 			iMSCP::Dialog->factory()->msgbox("Certificate is missing or invalid.");
 			goto SSL_DIALOG;
 		}
+
+		# In case the certificate is valid, we do not generate it again
+		setupSetQuestion('SETUP_SSL', 'no');
 	}
 
 	if($rs != 30) {
@@ -1787,7 +1790,7 @@ sub setupSsl
 	my $baseServerVhostPrefix = setupGetQuestion('BASE_SERVER_VHOST_PREFIX');
 	my $sslEnabled = setupGetQuestion('SSL_ENABLED');
 
-	if($sslEnabled eq 'yes') {
+	if($sslEnabled eq 'yes' && setupGetQuestion('SETUP_SSL', 'yes') ne 'no') {
 		my $openSSL = Modules::openssl->getInstance();
 		$openSSL->{'openssl_path'} = $main::imscpConfig{'CMD_OPENSSL'};
 
