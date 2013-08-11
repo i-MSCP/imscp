@@ -35,7 +35,6 @@ use iMSCP::Execute;
 use iMSCP::Dir;
 use iMSCP::Database;
 use iMSCP::Rights;
-use Servers::httpd;
 use iMSCP::Database;
 use Modules::openssl;
 use iMSCP::Ext2Attributes qw(clearImmutable);

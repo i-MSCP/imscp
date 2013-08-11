@@ -36,7 +36,6 @@ use iMSCP::Servers;
 use iMSCP::Addons;
 use iMSCP::Execute;
 use iMSCP::Dir;
-use Servers::httpd;
 use Modules::openssl;
 use Net::LibIDN qw/idn_to_unicode/;
 use parent 'Modules::Abstract';

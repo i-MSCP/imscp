@@ -78,12 +78,12 @@ sub quotaFiles
 			if ($^O =~ /bsd$/) {
 				@cmd = (
 					$main::imscpConfig{'CMD_DU'} . ' -I "backups/*" -I "logs/*.log" -d 0 ' . "$main::imscpConfig{'USER_WEB_DIR'}/$domainName",
-					$main::imscpConfig{'CMD_DU'} . ' -d 0 '."$mta->{'MTA_VIRTUAL_MAIL_DIR'}/$domainName"
+					$main::imscpConfig{'CMD_DU'} . ' -d 0 '."$mta->{'config'}->{'MTA_VIRTUAL_MAIL_DIR'}/$domainName"
 				);
 			} else {
 				@cmd = (
 					"$main::imscpConfig{'CMD_DU'} --exclude='backups/*' --exclude='logs/*.log' -s -B1 $main::imscpConfig{'USER_WEB_DIR'}/$domainName",
-					"$main::imscpConfig{'CMD_DU'} -s -B1 $mta->{'MTA_VIRTUAL_MAIL_DIR'}/$domainName"
+					"$main::imscpConfig{'CMD_DU'} -s -B1 $mta->{'config'}->{'MTA_VIRTUAL_MAIL_DIR'}/$domainName"
 				);
 			}
 			
@@ -93,7 +93,7 @@ sub quotaFiles
 			if (ref $rdataAlias eq 'HASH'){
 				for (keys %$rdataAlias) {
 					my $aliasName = $rdataAlias->{$_}->{'alias_name'};
-					my $aliasMailDir = "$mta->{'MTA_VIRTUAL_MAIL_DIR'}/$aliasName";
+					my $aliasMailDir = "$mta->{'config'}->{'MTA_VIRTUAL_MAIL_DIR'}/$aliasName";
 					if (-d $aliasMailDir) {
 						if ($^O =~ /bsd$/) {
 							push(@cmd, $main::imscpConfig{'CMD_DU'} . ' -d 0 '.$aliasMailDir);
