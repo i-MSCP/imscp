@@ -38,15 +38,16 @@ sub _init
 {
 	my $self = shift;
 
-	$self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/bind";
+	$self->{'named'} = Servers::named::bind->getInstance();
+
+	$self->{'cfgDir'} = $self->{'named'}->{'cfgDir'};
 	$self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
 	$self->{'wrkDir'} = "$self->{'cfgDir'}/working";
+	$self->{'vrlDir'} = "$self->{'cfgDir'}/imscp";
 
-	my $conf = "$self->{'cfgDir'}/bind.data";
+	$self->{'config'} = $self->{'named'}->{'config'};
 
-	tie %self::bindConfig, 'iMSCP::Config', 'fileName' => $conf, 'noerrors' => 1;
-
-	0;
+	$self;
 }
 
 sub uninstall
@@ -62,10 +63,10 @@ sub _restoreConfFiles
 	my $rs = 0;
 
 	for (
-		$self::bindConfig{'BIND_CONF_DEFAULT_FILE'},
-		$self::bindConfig{'BIND_CONF_FILE'},
-		$self::bindConfig{'BIND_LOCAL_CONF_FILE'},
-		$self::bindConfig{'BIND_OPTIONS_CONF_FILE'}
+		$self->{'config'}->{'BIND_CONF_DEFAULT_FILE'},
+		$self->{'config'}->{'BIND_CONF_FILE'},
+		$self->{'config'}->{'BIND_LOCAL_CONF_FILE'},
+		$self->{'config'}->{'BIND_OPTIONS_CONF_FILE'}
 	) {
 		next if !defined $_;
 		my $filename = fileparse($_);
@@ -74,7 +75,8 @@ sub _restoreConfFiles
 			$rs	= iMSCP::File->new(
 				'filename' => "$self->{'bkpDir'}/$filename.system"
 			)->copyFile($_);
-			# config file mode is incorrect after copy from backup, therefore set it right
+
+			# Config file mode is incorrect after copy from backup, therefore set it right
 			$rs |= iMSCP::File->new('filename' => $_)->mode(0644);
 			return $rs if $rs;
 		}

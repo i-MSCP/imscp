@@ -67,7 +67,7 @@ sub install
 	my $rs = $self->{'hooksManager'}->trigger('beforePoInstall', 'courier');
 	return $rs if $rs;
 
-	for('authdaemonrc', 'userdb', $self::courierConfig{'COURIER_IMAP_SSL'}, $self::courierConfig{'COURIER_POP_SSL'}) {
+	for('authdaemonrc', 'userdb', $self->{'config'}->{'COURIER_IMAP_SSL'}, $self->{'config'}->{'COURIER_POP_SSL'}) {
 		$rs = $self->_bkpConfFile($_);
 		return $rs if $rs;
 	}
@@ -113,24 +113,26 @@ sub _init
 
 	$self->{'hooksManager'} = iMSCP::HooksManager->getInstance();
 
+	$self->{'po'} = Servers::po::courier->getInstance();
+
 	$self->{'hooksManager'}->trigger(
 		'beforePodInitInstaller', $self, 'courier'
 	) and fatal('courier - beforePoInitInstaller hook has failed');
 
-	$self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/courier";
+	$self->{'cfgDir'} = $self->{'po'}->{'cfgDir'};
 	$self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
 	$self->{'wrkDir'} = "$self->{'cfgDir'}/working";
 
-	$self::courierConfig = $self->{'courierConfig'};
+	$self->{'config'}= $self->{'po'}->{'config'};
 
 	my $oldConf = "$self->{'cfgDir'}/courier.old.data";
 
 	if(-f $oldConf) {
-		tie %self::courierOldConfig, 'iMSCP::Config', 'fileName' => $oldConf, 'noerrors' => 1;
+		tie my %oldConfig, 'iMSCP::Config', 'fileName' => $oldConf, 'noerrors' => 1;
 
-		for(keys %self::courierOldConfig) {
-			if(exists $self::courierConfig{$_}) {
-				$self::courierConfig{$_} = $self::courierOldConfig{$_};
+		for(keys %oldConfig) {
+			if(exists $self->{'config'}->{$_}) {
+				$self->{'config'}->{$_} = $oldConfig{$_};
 			}
 		}
 	}
@@ -159,8 +161,8 @@ sub _bkpConfFile
 	$rs = $self->{'hooksManager'}->trigger('beforePoBkpConfFile', $cfgFile);
 	return $rs if $rs;
 
-	if(! $rs && -f "$self::courierConfig{'AUTHLIB_CONF_DIR'}/$cfgFile") {
-		my $file = iMSCP::File->new('filename' => "$self::courierConfig{'AUTHLIB_CONF_DIR'}/$cfgFile");
+	if(! $rs && -f "$self->{'config'}->{'AUTHLIB_CONF_DIR'}/$cfgFile") {
+		my $file = iMSCP::File->new('filename' => "$self->{'config'}->{'AUTHLIB_CONF_DIR'}/$cfgFile");
 
 		if(!-f "$self->{'bkpDir'}/$cfgFile.system") {
 			$rs = $file->copyFile("$self->{'bkpDir'}/$cfgFile.system");
@@ -225,7 +227,7 @@ sub _buildAuthdaemonrcFile
 	return $rs if $rs;
 
 	# Installing the new file in the production directory
-	$file->copyFile("$self::courierConfig{'AUTHLIB_CONF_DIR'}");
+	$file->copyFile("$self->{'config'}->{'AUTHLIB_CONF_DIR'}");
 }
 
 =item _buildUserdbFile()
@@ -259,10 +261,10 @@ sub _buildUserdbFile
 	return $rs if $rs;
 
 	# Installing the new file in the production directory
-	$rs = $file->copyFile("$self::courierConfig{'AUTHLIB_CONF_DIR'}");
+	$rs = $file->copyFile("$self->{'config'}->{'AUTHLIB_CONF_DIR'}");
 	return $rs if $rs;
 
-	$file = iMSCP::File->new('filename' => "$self::courierConfig{'AUTHLIB_CONF_DIR'}/userdb");
+	$file = iMSCP::File->new('filename' => "$self->{'config'}->{'AUTHLIB_CONF_DIR'}/userdb");
 
 	$rs = $file->mode(0600);
 	return $rs if $rs;
@@ -272,10 +274,10 @@ sub _buildUserdbFile
 
 	# Creating/Updating userdb.dat file from the contents of the userdb file
 	my ($stdout, $stderr);
-	$rs = execute($self::courierConfig{'CMD_MAKEUSERDB'}, \$stdout, \$stderr);
+	$rs = execute($self->{'config'}->{'CMD_MAKEUSERDB'}, \$stdout, \$stderr);
 	debug($stdout) if $stdout;
 	error($stderr) if $stderr && $rs;
-	error("Error while executing $self::courierConfig{'CMD_MAKEUSERDB'} returned status $rs") if $rs && ! $stderr;
+	error("Error while executing $self->{'config'}->{'CMD_MAKEUSERDB'} returned status $rs") if $rs && ! $stderr;
 	return $rs if $rs;
 
 	$self->{'hooksManager'}->trigger('afterPoBuildUserdbFile', 'userdb');
@@ -295,7 +297,7 @@ sub _buildSslConfFiles
 	my ($rdata, $file);
 	my $rs = 0;
 
-	for ($self::courierConfig{'COURIER_IMAP_SSL'}, $self::courierConfig{'COURIER_POP_SSL'}) {
+	for ($self->{'config'}->{'COURIER_IMAP_SSL'}, $self->{'config'}->{'COURIER_POP_SSL'}) {
 
 		# If ssl is not enabled
         last if lc($main::imscpConfig{'SSL_ENABLED'}) ne 'yes';
@@ -303,13 +305,13 @@ sub _buildSslConfFiles
 		$rs = $self->{'hooksManager'}->trigger('beforePoBuildSslConfFiles', $_);
 		return $rs if $rs;
 
-		$file = iMSCP::File->new('filename' => "$self::courierConfig{'AUTHLIB_CONF_DIR'}/$_") if ! $rs;
+		$file = iMSCP::File->new('filename' => "$self->{'config'}->{'AUTHLIB_CONF_DIR'}/$_") if ! $rs;
 
 		# read file exit if can not read
 		$rdata = $file->get();
 
 		unless (defined $rdata){
-			error("Unable to read $self::courierConfig{'AUTHLIB_CONF_DIR'}/$_");
+			error("Unable to read $self->{'config'}->{'AUTHLIB_CONF_DIR'}/$_");
 			return 1;
 		}
 
@@ -335,7 +337,7 @@ sub _buildSslConfFiles
 		return $rs if $rs;
 
 		# Installing the new file in the production directory
-		$rs = $file->copyFile("$self::courierConfig{'AUTHLIB_CONF_DIR'}");
+		$rs = $file->copyFile("$self->{'config'}->{'AUTHLIB_CONF_DIR'}");
 		return $rs if $rs;
 
 		$rs |= $self->{'hooksManager'}->trigger('afterPoBuildSslConfFiles', $_);

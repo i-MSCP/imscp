@@ -33,6 +33,7 @@ use iMSCP::Debug;
 use DBI;
 use iMSCP::Database::mysql::Result;
 use iMSCP::Execute;
+use POSIX ':signal_h';
 use parent 'Common::SingletonClass';
 
 sub _init
@@ -44,7 +45,7 @@ sub _init
 	$self->{'db'}->{'DATABASE_PORT'} = '';
 	$self->{'db'}->{'DATABASE_USER'} = '';
 	$self->{'db'}->{'DATABASE_PASSWORD'} = '';
-	$self->{'db'}->{'DATABASE_SETTINGS'} = { 'PrintError' => 0 };
+	$self->{'db'}->{'DATABASE_SETTINGS'} = { 'PrintError' => 0, 'RaiseError' => 1, 'mysql_auto_reconnect' => 1 };
 
 	# for internal use only
 	$self->{'_dsn'} = '';
@@ -87,17 +88,33 @@ sub connect
 		$self->{'connection'}->disconnect() if $self->{'connection'};
 		debug("Connecting with ($dsn, $self->{'db'}->{'DATABASE_USER'}, $self->{'db'}->{'DATABASE_PASSWORD'})");
 
-		$self->{'connection'} = DBI->connect(
-			$dsn, $self->{'db'}->{'DATABASE_USER'}, $self->{'db'}->{'DATABASE_PASSWORD'},
-			(
-				defined($self->{'db'}->{'DATABASE_SETTINGS'}) &&
-				ref $self->{'db'}->{'DATABASE_SETTINGS'} eq 'HASH' ? $self->{'db'}->{'DATABASE_SETTINGS'} : ()
-			)
-		) or return $DBI::errstr;
+		# Set connection timeout to 2 second
+		my $mask = POSIX::SigSet->new(SIGALRM);
+		my $action = POSIX::SigAction->new(sub { die "SQL database connection timeout\n" }, $mask);
+		my $oldaction = POSIX::SigAction->new();
+		sigaction(SIGALRM, $action, $oldaction);
+
+		eval {
+			alarm 2;
+			$self->{'connection'} = DBI->connect(
+				$dsn, $self->{'db'}->{'DATABASE_USER'}, $self->{'db'}->{'DATABASE_PASSWORD'},
+				(
+					defined($self->{'db'}->{'DATABASE_SETTINGS'}) &&
+					ref $self->{'db'}->{'DATABASE_SETTINGS'} eq 'HASH' ? $self->{'db'}->{'DATABASE_SETTINGS'} : ()
+				)
+			);
+			alarm 0;
+		};
+
+		alarm 0;
+		sigaction(SIGALRM, $oldaction);
+
+		return "$@" if $@;
 
 		$self->{'_dsn'} = $dsn;
 		$self->{'_currentUser'} = $self->{'db'}->{'DATABASE_USER'};
 		$self->{'_currentPassword'} = $self->{'db'}->{'DATABASE_PASSWORD'};
+		$self->{'connection'}->{'RaiseError'} = 0;
 	} else {
 		debug('Reusing previous SQL connection');
 	}

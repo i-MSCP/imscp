@@ -294,7 +294,7 @@ sub _preparePackagesList
 			my $serviceName = uc($service) . '_SERVER';
 
 			my $currentServer = exists $main::imscpConfig{$serviceName} ? $main::imscpConfig{$serviceName} : '';
-			my $newServer = exists $main::preseed{'SERVERS'} ? $main::preseed{'SERVERS'}->{$serviceName} : $currentServer;
+			my $newServer = main::setupGetQuestion($serviceName, $currentServer);
 
 			$newServer = '' if not $newServer ~~ @alternative;
 

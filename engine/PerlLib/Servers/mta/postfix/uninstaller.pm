@@ -23,7 +23,6 @@
 # @link        http://i-mscp.net i-MSCP Home Site
 # @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
-
 package Servers::mta::postfix::uninstaller;
 
 use strict;
@@ -33,22 +32,26 @@ use iMSCP::Debug;
 use iMSCP::Execute;
 use iMSCP::File;
 use iMSCP::Templator;
+use File::Basename;
+use iMSCP::File;
+use iMSCP::Dir;
+use iMSCP::SystemUser;
 use parent 'Common::SingletonClass';
 
 sub _init
 {
 	my $self = shift;
 
-	$self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/postfix";
+	$self->{'mta'} = Servers::mta::postfix->getInstance();
+
+	$self->{'cfgDir'} = $self->{'mta'}->{'cfgDir'};
 	$self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
 	$self->{'wrkDir'} = "$self->{'cfgDir'}/working";
 	$self->{'vrlDir'} = "$self->{'cfgDir'}/imscp";
 
-	my $conf = "$self->{'cfgDir'}/postfix.data";
+	$self->{'config'} = $self->{'mta'}->{'config'};
 
-	tie %self::config, 'iMSCP::Config','fileName' => $conf;
-
-	0;
+	$self;
 }
 
 sub uninstall
@@ -72,11 +75,7 @@ sub removeDirs
 	my $self = shift;
 	my $rs = 0;
 
-	use iMSCP::Dir;
-
-	debug('Creating postfix folders');
-
-	for ($self::config{'MTA_VIRTUAL_CONF_DIR'}, $self::config{'MTA_VIRTUAL_MAIL_DIR'}) {
+	for ($self->{'config'}->{'MTA_VIRTUAL_CONF_DIR'}, $self->{'config'}->{'MTA_VIRTUAL_MAIL_DIR'}) {
 		$rs = iMSCP::Dir->new('dirname' => $_)->remove();
 		return $rs if $rs;
 	}
@@ -86,14 +85,14 @@ sub removeDirs
 
 sub removeUsers
 {
+	my $self = shift;
 	my $rs = 0;
 
-	use iMSCP::SystemUser;
 	my $user = iMSCP::SystemUser->new();
 
 	$user->{'force'} = 'yes';
 
-	$user->delSystemUser($self::config{'MTA_MAILBOX_UID_NAME'});
+	$user->delSystemUser($self->{'config'}->{'MTA_MAILBOX_UID_NAME'});
 }
 
 sub buildAliasses
@@ -103,10 +102,10 @@ sub buildAliasses
 	my ($stdout, $stderr);
 
 	# Rebuilding the database for the mail aliases file - Begin
-	my $rs = execute("$self::config{'CMD_NEWALIASES'}", \$stdout, \$stderr);
-	debug($stdout);
+	my $rs = execute("$self->{'config'}->{'CMD_NEWALIASES'}", \$stdout, \$stderr);
+	debug($stdout) if $stdout;
 	error($stderr) if $stderr && $rs;
-	error("Error while executing $self::config{'CMD_NEWALIASES'}") if ! $stderr && $rs;
+	error("Error while executing $self->{'config'}->{'CMD_NEWALIASES'}") if ! $stderr && $rs;
 
 	$rs;
 }
@@ -116,14 +115,11 @@ sub restoreConfFile
 	my $self = shift;
 	my $rs = 0;
 
-	use File::Basename;
-	use iMSCP::File;
-
-	for ($self::config{'POSTFIX_CONF_FILE'}, $self::config{'POSTFIX_MASTER_CONF_FILE'}) {
+	for ($self->{'config'}->{'POSTFIX_CONF_FILE'}, $self->{'config'}->{'POSTFIX_MASTER_CONF_FILE'}) {
 		my ($filename, $directories, $suffix) = fileparse($_);
 
 		if(-f "$self->{bkpDir}/$filename$suffix.system"){
-			$rs	= iMSCP::File->new(
+			$rs = iMSCP::File->new(
 				'filename' => "$self->{bkpDir}/$filename$suffix.system"
 			)->copyFile(
 				$_

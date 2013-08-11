@@ -91,17 +91,17 @@ sub _init
 
 	$self->{'httpd'} = Servers::httpd::apache_php_fpm->getInstance();
 
-	$self->{'apacheCfgDir'} = "$main::imscpConfig{'CONF_DIR'}/apache";
+	$self->{'apacheCfgDir'} = $self->{'httpd'}->{'apachecCgDir'};
 	$self->{'apacheBkpDir'} = "$self->{'apacheCfgDir'}/backup";
 	$self->{'apacheWrkDir'} = "$self->{'apacheCfgDir'}/working";
 
-	tie %{$self->{'apacheConfig'}, 'iMSCP::Config','fileName' => "$self->{'apacheCfgDir'}/apache.data";
+	$self->{'config'} = $self->{'httpd'}->{'apacheConfig'};
 
-	$self->{'phpfpmCfgDir'} = "$main::imscpConfig{'CONF_DIR'}/php-fpm";
+	$self->{'phpfpmCfgDir'} = $self->{'httpd'}->{'phpfpmCfgDir'};
 	$self->{'phpfpmBkpDir'} = "$self->{'phpfpmCfgDir'}/backup";
 	$self->{'phpfpmWrkDir'} = "$self->{'phpfpmCfgDir'}/working";
 
-	tie %{$self->{'phpfpmConfig'}, 'iMSCP::Config','fileName' => "$self->{'phpfpmCfgDir'}/phpfpm.data";
+	$self->{'phpfpmConfig'} = $self->{'httpd'}->{'phpfpmConfig'};
 
 	$self;
 }
@@ -147,29 +147,29 @@ sub _restoreApacheConfig
 	my $self = shift;
 
 	my $rs = $self->{'httpd'}->disableMod('php_fpm_imscp')
-		if -f "$self->{'apacheConfig'}->{'APACHE_MODS_DIR'}/php_fpm_imscp.load";
+		if -f "$self->{'config'}->{'APACHE_MODS_DIR'}/php_fpm_imscp.load";
 	return $rs if $rs;
 
 	for ('php_fpm_imscp.conf', 'php_fpm_imscp.load') {
 		$rs = iMSCP::File->new(
-			'filename' => "$self->{'apacheConfig'}->{'APACHE_MODS_DIR'}/$_"
-		)->delFile() if -f "$self->{'apacheConfig'}->{'APACHE_MODS_DIR'}/$_";
+			'filename' => "$self->{'config'}->{'APACHE_MODS_DIR'}/$_"
+		)->delFile() if -f "$self->{'config'}->{'APACHE_MODS_DIR'}/$_";
 		return $rs if $rs;
 	}
 
 	for('00_nameserver.conf', '00_master_ssl.conf', '00_master.conf', '00_modcband.conf', '01_awstats.conf') {
-		if(-f "$self->{'apacheConfig'}->{'APACHE_SITES_DIR'}/$_") {
+		if(-f "$self->{'config'}->{'APACHE_SITES_DIR'}/$_") {
 			$rs = $self->{'httpd'}->disableSite($_);
 			return $rs if $rs;
 
-			$rs = iMSCP::File->new('filename' => "$self->{'apacheConfig'}->{'APACHE_SITES_DIR'}/$_")->delFile();
+			$rs = iMSCP::File->new('filename' => "$self->{'config'}->{'APACHE_SITES_DIR'}/$_")->delFile();
 			return $rs if $rs;
 		}
 	}
 
 	for (
 		"$main::imscpConfig{'LOGROTATE_CONF_DIR'}/apache2", "$main::imscpConfig{'LOGROTATE_CONF_DIR'}/apache",
-		"$self->{'apacheConfig'}->{'APACHE_CONF_DIR'}/ports.conf"
+		"$self->{'config'}->{'APACHE_CONF_DIR'}/ports.conf"
 	) {
 		my ($filename, $directories, $suffix) = fileparse($_);
 
@@ -180,15 +180,15 @@ sub _restoreApacheConfig
 	}
 
 	for (
-		$self->{'apacheConfig'}->{'APACHE_USERS_LOG_DIR'}, $self->{'apacheConfig'}->{'APACHE_BACKUP_LOG_DIR'},
-		$self->{'apacheConfig'}->{'APACHE_CUSTOM_SITES_CONFIG_DIR'}
+		$self->{'config'}->{'APACHE_USERS_LOG_DIR'}, $self->{'config'}->{'APACHE_BACKUP_LOG_DIR'},
+		$self->{'config'}->{'APACHE_CUSTOM_SITES_CONFIG_DIR'}
 	) {
 		$rs = iMSCP::Dir->new('dirname' => $_)->remove() if -d $_;
 		return $rs if $rs;
 	}
 
-	$rs = $self->{'httpd'}->enableSite('default') if -f "$self->{'apacheConfig'}->{'APACHE_SITES_DIR'}/default";
-	$rs = $self->{'httpd'}->enableSite('000-default') if -f "$self->{'apacheConfig'}->{'APACHE_SITES_DIR'}/000-default";
+	$rs = $self->{'httpd'}->enableSite('default') if -f "$self->{'config'}->{'APACHE_SITES_DIR'}/default";
+	$rs = $self->{'httpd'}->enableSite('000-default') if -f "$self->{'config'}->{'APACHE_SITES_DIR'}/000-default";
 
 	$rs;
 }

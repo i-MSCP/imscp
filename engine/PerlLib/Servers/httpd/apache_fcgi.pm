@@ -217,7 +217,7 @@ sub addUser($$)
 		$self->setData(
 			{
 				BWLIMIT_DISABLED => $data->{'BWLIMIT'} ? '' : '#',
-				SCOREBOARDS_DIR => $self->{'apacheConfig'}->{'SCOREBOARDS_DIR'}
+				SCOREBOARDS_DIR => $self->{'config'}->{'SCOREBOARDS_DIR'}
 			}
 		);
 
@@ -238,15 +238,15 @@ sub addUser($$)
 		return $rs if $rs;
 
 		if($data->{'BWLIMIT'}) {
-			unless( -f "$self->{'apacheConfig'}->{'SCOREBOARDS_DIR'}/$data->{'USER'}") {
+			unless( -f "$self->{'config'}->{'SCOREBOARDS_DIR'}/$data->{'USER'}") {
 				$rs = iMSCP::File->new(
-					'filename' => "$self->{'apacheConfig'}->{'SCOREBOARDS_DIR'}/$data->{'USER'}"
+					'filename' => "$self->{'config'}->{'SCOREBOARDS_DIR'}/$data->{'USER'}"
 				)->save();
 				return $rs if $rs;
 			}
-		} elsif(-f "$self->{'apacheConfig'}->{'SCOREBOARDS_DIR'}/$data->{'USER'}") {
+		} elsif(-f "$self->{'config'}->{'SCOREBOARDS_DIR'}/$data->{'USER'}") {
 			$rs = iMSCP::File->new(
-				'filename' => "$self->{'apacheConfig'}->{'SCOREBOARDS_DIR'}/$data->{'USER'}"
+				'filename' => "$self->{'config'}->{'SCOREBOARDS_DIR'}/$data->{'USER'}"
 			)->delFile();
 			return $rs if $rs;
 		}
@@ -324,9 +324,9 @@ sub deleteUser($$)
 		$rs = $self->enableSite('00_modcband.conf');
 		return $rs if $rs;
 
-		if( -f "$self->{'apacheConfig'}->{'SCOREBOARDS_DIR'}/$data->{'USER'}") {
+		if( -f "$self->{'config'}->{'SCOREBOARDS_DIR'}/$data->{'USER'}") {
 			$rs = iMSCP::File->new(
-				'filename' => "$self->{'apacheConfig'}->{'SCOREBOARDS_DIR'}/$data->{'USER'}"
+				'filename' => "$self->{'config'}->{'SCOREBOARDS_DIR'}/$data->{'USER'}"
 			)->delFile();
 			return $rs if $rs;
 		}
@@ -429,7 +429,7 @@ sub disableDmn($$)
 	$self->setData($data);
 	$self->setData(
 		{
-			AUTHZ_ALLOW_ALL => (version->new("v$self->{'apacheConfig'}->{'APACHE_VERSION'}") >= version->new('v2.4.0'))
+			AUTHZ_ALLOW_ALL => (version->new("v$self->{'config'}->{'APACHE_VERSION'}") >= version->new('v2.4.0'))
 				? 'Require all granted' : "Order allow,deny\n    Allow from all"
 		}
 	);
@@ -481,15 +481,15 @@ sub deleteDmn($$)
 
 	# Disable apache site files
 	for("$data->{'DOMAIN_NAME'}.conf", "$data->{'DOMAIN_NAME'}_ssl.conf") {
-		$rs = $self->disableSite($_) if -f "$self->{'apacheConfig'}->{'APACHE_SITES_DIR'}/$_";
+		$rs = $self->disableSite($_) if -f "$self->{'config'}->{'APACHE_SITES_DIR'}/$_";
 		return $rs if $rs;
 	}
 
 	# Remove apache site files
 	for(
-		"$self->{'apacheConfig'}->{'APACHE_SITES_DIR'}/$data->{'DOMAIN_NAME'}.conf",
-		"$self->{'apacheConfig'}->{'APACHE_SITES_DIR'}/$data->{'DOMAIN_NAME'}_ssl.conf",
-		"$self->{'apacheConfig'}->{'APACHE_CUSTOM_SITES_CONFIG_DIR'}/$data->{'DOMAIN_NAME'}.conf",
+		"$self->{'config'}->{'APACHE_SITES_DIR'}/$data->{'DOMAIN_NAME'}.conf",
+		"$self->{'config'}->{'APACHE_SITES_DIR'}/$data->{'DOMAIN_NAME'}_ssl.conf",
+		"$self->{'config'}->{'APACHE_CUSTOM_SITES_CONFIG_DIR'}/$data->{'DOMAIN_NAME'}.conf",
 		"$self->{'wrkDir'}/$data->{'DOMAIN_NAME'}.conf",
 		"$self->{'wrkDir'}/$data->{'DOMAIN_NAME'}_ssl.conf",
 	) {
@@ -577,7 +577,7 @@ sub deleteDmn($$)
 	}
 
 	# Remove fcgi directory if any
-	my $fcgiDir = "$self->{'apacheConfig'}->{'PHP_STARTER_DIR'}/$data->{'DOMAIN_NAME'}";
+	my $fcgiDir = "$self->{'config'}->{'PHP_STARTER_DIR'}/$data->{'DOMAIN_NAME'}";
 
 	$rs = iMSCP::Dir->new('dirname' => $fcgiDir)->remove() if -d $fcgiDir;
 	return $rs if $rs;
@@ -718,7 +718,7 @@ sub addHtuser($$)
 	fatal('Hash reference expected') if ref $data ne 'HASH';
 
 	my $webDir = $data->{'WEB_DIR'};
-	my $fileName = $self->{'apacheConfig'}->{'HTACCESS_USERS_FILE_NAME'};
+	my $fileName = $self->{'config'}->{'HTACCESS_USERS_FILE_NAME'};
 	my $filePath = "$webDir/$fileName";
 
 	# Unprotect root Web directory
@@ -772,7 +772,7 @@ sub deleteHtuser($$)
 	fatal('Hash reference expected') if ref $data ne 'HASH';
 
 	my $webDir = $data->{'WEB_DIR'};
-	my $fileName = $self->{'apacheConfig'}->{'HTACCESS_USERS_FILE_NAME'};
+	my $fileName = $self->{'config'}->{'HTACCESS_USERS_FILE_NAME'};
 	my $filePath = "$webDir/$fileName";
 
 	# Unprotect root Web directory
@@ -825,7 +825,7 @@ sub addHtgroup($$)
 	fatal('Hash reference expected') if ref $data ne 'HASH';
 
 	my $webDir = $data->{'WEB_DIR'};
-	my $fileName = $self->{'apacheConfig'}->{'HTACCESS_GROUPS_FILE_NAME'};
+	my $fileName = $self->{'config'}->{'HTACCESS_GROUPS_FILE_NAME'};
 	my $filePath = "$webDir/$fileName";
 
 	# Unprotect root Web directory
@@ -879,7 +879,7 @@ sub deleteHtgroup($$)
 	fatal('Hash reference expected') if ref $data ne 'HASH';
 
 	my $webDir = $data->{'WEB_DIR'};
-	my $fileName = $self->{'apacheConfig'}->{'HTACCESS_GROUPS_FILE_NAME'};
+	my $fileName = $self->{'config'}->{'HTACCESS_GROUPS_FILE_NAME'};
 	my $filePath = "$webDir/$fileName";
 
 	# Unprotect root Web directory
@@ -934,8 +934,8 @@ sub addHtaccess($$)
 	# Here we process only if AUTH_PATH directory exists
 	# Note: It's temporary fix for 1.1.0-rc2 (See #749)
 	if(-d $data->{'AUTH_PATH'}) {
-		my $fileUser = "$data->{'HOME_PATH'}/$self->{'apacheConfig'}->{'HTACCESS_USERS_FILE_NAME'}";
-		my $fileGroup = "$data->'{HOME_PATH'}/$self->{'apacheConfig'}->{'HTACCESS_GROUPS_FILE_NAME'}";
+		my $fileUser = "$data->{'HOME_PATH'}/$self->{'config'}->{'HTACCESS_USERS_FILE_NAME'}";
+		my $fileGroup = "$data->'{HOME_PATH'}/$self->{'config'}->{'HTACCESS_GROUPS_FILE_NAME'}";
 		my $filePath = "$data->{'AUTH_PATH'}/.htaccess";
 
 		my $file = iMSCP::File->new('filename' => $filePath);
@@ -995,8 +995,8 @@ sub deleteHtaccess($$)
 	# Here we process only if AUTH_PATH directory exists
 	# Note: It's temporary fix for 1.1.0-rc2 (See #749)
 	if(-d $data->{'AUTH_PATH'}) {
-		my $fileUser = "$data->{'HOME_PATH'}/$self->{'apacheConfig'}->{'HTACCESS_USERS_FILE_NAME'}";
-		my $fileGroup = "$data->'{HOME_PATH'}/$self->{'apacheConfig'}->{'HTACCESS_GROUPS_FILE_NAME'}";
+		my $fileUser = "$data->{'HOME_PATH'}/$self->{'config'}->{'HTACCESS_USERS_FILE_NAME'}";
+		my $fileGroup = "$data->'{HOME_PATH'}/$self->{'config'}->{'HTACCESS_GROUPS_FILE_NAME'}";
 		my $filePath = "$data->{'AUTH_PATH'}/.htaccess";
 
 		my $file = iMSCP::File->new('filename' => $filePath);
@@ -1072,7 +1072,7 @@ sub addIps($$)
 	$rs = $self->{'hooksManager'}->trigger('beforeHttpdAddIps', \$content, $data);
 	return $rs if $rs;
 
-	if(!(version->new("v$self->{'apacheConfig'}->{'APACHE_VERSION'}") >= version->new('v2.4.0'))) {
+	if(!(version->new("v$self->{'config'}->{'APACHE_VERSION'}") >= version->new('v2.4.0'))) {
 		$content =~ s/NameVirtualHost[^\n]+\n//gi;
 		$content.= "NameVirtualHost $_:443\n" for @{$data->{'SSLIPS'}};
 		$content.= "NameVirtualHost $_:80\n" for @{$data->{'IPS'}};
@@ -1260,7 +1260,7 @@ sub installConfFile($$;$)
 
 	$rs = $fileH->copyFile(
 		$options->{'destination'}
-			? $options->{'destination'} : "$self->{'apacheConfig'}->{'APACHE_SITES_DIR'}/$name$suffix"
+			? $options->{'destination'} : "$self->{'config'}->{'APACHE_SITES_DIR'}/$name$suffix"
 	);
 	return $rs if $rs;
 
@@ -1349,7 +1349,7 @@ sub getTraffic($$)
 	my $who = shift;
 
 	my $traff = 0;
-	my $trfDir = "$self->{'apacheConfig'}->{'APACHE_LOG_DIR'}/traff";
+	my $trfDir = "$self->{'config'}->{'APACHE_LOG_DIR'}/traff";
 	my ($rv, $rs, $stdout, $stderr);
 
 	$self->{'hooksManager'}->trigger('beforeHttpdGetTraffic', $who);
@@ -1409,9 +1409,9 @@ sub deleteOldLogs
 	my $rs = $self->{'hooksManager'}->trigger('beforeHttpdDelOldLogs');
 	return $rs if $rs;
 
-	my $logDir = $self->{'apacheConfig'}->{'APACHE_LOG_DIR'};
-	my $backupLogDir = $self->{'apacheConfig'}->{'APACHE_BACKUP_LOG_DIR'};
-	my $usersLogDir = $self->{'apacheConfig'}->{'APACHE_USERS_LOG_DIR'};
+	my $logDir = $self->{'config'}->{'APACHE_LOG_DIR'};
+	my $backupLogDir = $self->{'config'}->{'APACHE_BACKUP_LOG_DIR'};
+	my $usersLogDir = $self->{'config'}->{'APACHE_USERS_LOG_DIR'};
 	my ($stdout, $stderr);
 
 	for ($logDir, $backupLogDir, $usersLogDir) {
@@ -1445,16 +1445,16 @@ sub deleteTmp
 
 	# panel sessions gc
 
-	if(-d "$self->{'apacheConfig'}->{'PHP_STARTER_DIR'}/master") {
-		unless (-f "$self->{'apacheConfig'}->{'PHP_STARTER_DIR'}/master/php5/php.ini") {
-			error("$self->{'apacheConfig'}->{'PHP_STARTER_DIR'}/master/php5/php.ini doesn't exist");
+	if(-d "$self->{'config'}->{'PHP_STARTER_DIR'}/master") {
+		unless (-f "$self->{'config'}->{'PHP_STARTER_DIR'}/master/php5/php.ini") {
+			error("$self->{'config'}->{'PHP_STARTER_DIR'}/master/php5/php.ini doesn't exist");
 			return 1;
 		} else {
-			my $fileH = iMSCP::File->new('filename' => "$self->{'apacheConfig'}->{'PHP_STARTER_DIR'}/master/php5/php.ini");
+			my $fileH = iMSCP::File->new('filename' => "$self->{'config'}->{'PHP_STARTER_DIR'}/master/php5/php.ini");
 			my $file = $fileH->get();
 
 			unless (defined $file) {
-				error("Unable to read $self->{'apacheConfig'}->{'PHP_STARTER_DIR'}/master/php5/php.ini");
+				error("Unable to read $self->{'config'}->{'PHP_STARTER_DIR'}/master/php5/php.ini");
 				return 1;
 			} else {
 				my $max = 0;
@@ -1480,22 +1480,22 @@ sub deleteTmp
 	for (@domains){
 		my $dmn = $_;
 
-		if(-d "$self->{'apacheConfig'}->{'PHP_STARTER_DIR'}/$_") {
-			my $hPHPINI = iMSCP::Dir->new('dirname' => "$self->{'apacheConfig'}->{'PHP_STARTER_DIR'}/$dmn");
+		if(-d "$self->{'config'}->{'PHP_STARTER_DIR'}/$_") {
+			my $hPHPINI = iMSCP::Dir->new('dirname' => "$self->{'config'}->{'PHP_STARTER_DIR'}/$dmn");
 			my @phpInis = $hPHPINI->getDirs();
 			my $max = 0;
 
 			for(@phpInis) {
-				unless (-f "$self->{'apacheConfig'}->{'PHP_STARTER_DIR'}/$dmn/$_/php.ini") {
-					error("File $self->{'apacheConfig'}->{'PHP_STARTER_DIR'}/$dmn/$_/php.ini doesn't exist");
+				unless (-f "$self->{'config'}->{'PHP_STARTER_DIR'}/$dmn/$_/php.ini") {
+					error("File $self->{'config'}->{'PHP_STARTER_DIR'}/$dmn/$_/php.ini doesn't exist");
 					return $rs if $rs;
 				}
 
-				my $fileH = iMSCP::File->new('filename' => "$self->{'apacheConfig'}->{'PHP_STARTER_DIR'}/$dmn/$_/php.ini");
+				my $fileH = iMSCP::File->new('filename' => "$self->{'config'}->{'PHP_STARTER_DIR'}/$dmn/$_/php.ini");
 				my $file = $fileH->get();
 
 				unless (defined $file) {
-					error("Cannot read $self->{'apacheConfig'}->{'PHP_STARTER_DIR'}/$dmn/$_/php.ini");
+					error("Cannot read $self->{'config'}->{'PHP_STARTER_DIR'}/$dmn/$_/php.ini");
 					return $rs if $rs;
 				}
 
@@ -1529,7 +1529,7 @@ sub getRunningUser
 {
 	my $self = shift;
 
-	$self->{'apacheConfig'}->{'APACHE_USER'};
+	$self->{'config'}->{'APACHE_USER'};
 }
 
 =item getRunningUser()
@@ -1544,7 +1544,7 @@ sub getRunningGroup
 {
 	my $self = shift;
 
-	$self->{'apacheConfig'}->{'APACHE_GROUP'};
+	$self->{'config'}->{'APACHE_GROUP'};
 }
 
 =item enableSite($sites)
@@ -1567,8 +1567,8 @@ sub enableSite($$)
 	my ($stdout, $stderr);
 
 	for(split(' ', $sites)){
-		if(-f "$self->{'apacheConfig'}->{'APACHE_SITES_DIR'}/$_") {
-			$rs = execute("$self->{'apacheConfig'}->{'CMD_A2ENSITE'} $_", \$stdout, \$stderr);
+		if(-f "$self->{'config'}->{'APACHE_SITES_DIR'}/$_") {
+			$rs = execute("$self->{'config'}->{'CMD_A2ENSITE'} $_", \$stdout, \$stderr);
 			debug($stdout) if $stdout;
 			error($stderr) if $stderr && $rs;
 			return $rs if $rs;
@@ -1602,8 +1602,8 @@ sub disableSite($$)
 	my ($stdout, $stderr);
 
 	for(split(' ', $sites)) {
-		if(-f "$self->{'apacheConfig'}->{'APACHE_SITES_DIR'}/$_") {
-			$rs = execute("$self->{'apacheConfig'}->{'CMD_A2DISSITE'} $_", \$stdout, \$stderr);
+		if(-f "$self->{'config'}->{'APACHE_SITES_DIR'}/$_") {
+			$rs = execute("$self->{'config'}->{'CMD_A2DISSITE'} $_", \$stdout, \$stderr);
 			debug($stdout) if $stdout;
 			error($stderr) if $stderr && $rs;
 			return $rs if $rs;
@@ -1635,7 +1635,7 @@ sub enableMod($$)
 	return $rs if $rs;
 
 	my ($stdout, $stderr);
-	$rs = execute("$self->{'apacheConfig'}->{'CMD_A2ENMOD'} $modules", \$stdout, \$stderr);
+	$rs = execute("$self->{'config'}->{'CMD_A2ENMOD'} $modules", \$stdout, \$stderr);
 	debug($stdout) if $stdout;
 	error($stderr) if $stderr && $rs;
 	return $rs if $rs;
@@ -1663,7 +1663,7 @@ sub disableMod($$)
 	return $rs if $rs;
 
 	my ($stdout, $stderr);
-	$rs = execute("$self->{'apacheConfig'}->{'CMD_A2DISMOD'} $modules", \$stdout, \$stderr);
+	$rs = execute("$self->{'config'}->{'CMD_A2DISMOD'} $modules", \$stdout, \$stderr);
 	debug($stdout) if $stdout;
 	error($stderr) if $stderr && $rs;
 	return $rs if $rs;
@@ -1706,7 +1706,7 @@ sub start
 	return $rs if $rs;
 
 	my ($stdout, $stderr);
-	$rs = execute("$self->{'apacheConfig'}->{'CMD_HTTPD'} start", \$stdout, \$stderr);
+	$rs = execute("$self->{'config'}->{'CMD_HTTPD'} start", \$stdout, \$stderr);
 	debug($stdout) if $stdout;
 	warning($stderr) if $stderr && ! $rs;
 	error($stderr) if $stderr && $rs;
@@ -1732,7 +1732,7 @@ sub stop
 	return $rs if $rs;
 
 	my ($stdout, $stderr);
-	$rs = execute("$self->{'apacheConfig'}->{'CMD_HTTPD'} stop", \$stdout, \$stderr);
+	$rs = execute("$self->{'config'}->{'CMD_HTTPD'} stop", \$stdout, \$stderr);
 	debug($stdout) if $stdout;
 	debug($stderr) if $stderr && ! $rs;
 	error($stderr) if $stderr && $rs;
@@ -1759,7 +1759,7 @@ sub restart
 
 	my ($stdout, $stderr);
 	$rs = execute(
-		"$self->{'apacheConfig'}->{'CMD_HTTPD'} " . ($self->{'forceRestart'} ? 'restart' : 'reload'), \$stdout, \$stderr
+		"$self->{'config'}->{'CMD_HTTPD'} " . ($self->{'forceRestart'} ? 'restart' : 'reload'), \$stdout, \$stderr
 	);
 	debug($stdout) if $stdout;
 	warning($stderr) if $stderr && ! $rs;
@@ -1801,7 +1801,7 @@ sub _init
 	$self->{'wrkDir'} = "$self->{'cfgDir'}/working";
 	$self->{'tplDir'} = "$self->{'cfgDir'}/parts";
 
-	tie %{$self->{'apacheConfig'}}, 'iMSCP::Config', 'fileName' => "$self->{'cfgDir'}/apache.data";
+	tie %{$self->{'config'}}, 'iMSCP::Config', 'fileName' => "$self->{'cfgDir'}/apache.data";
 
 	$self->{'hooksManager'}->trigger(
 		'afterHttpdInit', $self, 'apache_fcgi'
@@ -1833,21 +1833,21 @@ sub _addCfg($$)
 
 	# Disable and backup Apache sites if any
 	for("$data->{'DOMAIN_NAME'}.conf", "$data->{'DOMAIN_NAME'}_ssl.conf") {
-		$rs = $self->disableSite($_) if -f "$self->{'apacheConfig'}->{'APACHE_SITES_DIR'}/$_";
+		$rs = $self->disableSite($_) if -f "$self->{'config'}->{'APACHE_SITES_DIR'}/$_";
 		return $rs if $rs;
 
 		$rs = iMSCP::File->new(
-			'filename' => "$self->{'apacheConfig'}->{'APACHE_SITES_DIR'}/$_"
+			'filename' => "$self->{'config'}->{'APACHE_SITES_DIR'}/$_"
 		)->copyFile(
 			"$self->{'bkpDir'}/$_." . time
-		) if -f "$self->{'apacheConfig'}->{'APACHE_SITES_DIR'}/$_";
+		) if -f "$self->{'config'}->{'APACHE_SITES_DIR'}/$_";
 		return $rs if $rs;
 	}
 
 	# Remove previous Apache sites if any
 	for(
-		"$self->{'apacheConfig'}->{'APACHE_SITES_DIR'}/$data->{'DOMAIN_NAME'}.conf",
-		"$self->{'apacheConfig'}->{'APACHE_SITES_DIR'}/$data->{'DOMAIN_NAME'}_ssl.conf",
+		"$self->{'config'}->{'APACHE_SITES_DIR'}/$data->{'DOMAIN_NAME'}.conf",
+		"$self->{'config'}->{'APACHE_SITES_DIR'}/$data->{'DOMAIN_NAME'}_ssl.conf",
 		"$self->{'wrkDir'}/$data->{'DOMAIN_NAME'}.conf",
 		"$self->{'wrkDir'}/$data->{'DOMAIN_NAME'}_ssl.conf"
 	) {
@@ -1868,7 +1868,7 @@ sub _addCfg($$)
 		$self->setData({ CERT => "$main::imscpConfig{'GUI_ROOT_DIR'}/data/certs/$data->{'DOMAIN_NAME'}.pem" });
 	}
 
-	my $phpiniLevel = $self->{'apacheConfig'}->{'INI_LEVEL'};
+	my $phpiniLevel = $self->{'config'}->{'INI_LEVEL'};
 
 	if($data->{'FORWARD'} eq 'no') {
 		if($phpiniLevel eq 'per_user') {
@@ -1885,10 +1885,10 @@ sub _addCfg($$)
 
 	$self->setData(
 		{
-			PHP_VERSION => $self->{'apacheConfig'}->{'PHP_VERSION'},
-			PHP_STARTER_DIR => $self->{'apacheConfig'}->{'PHP_STARTER_DIR'},
-			APACHE_CUSTOM_SITES_CONFIG_DIR => $self->{'apacheConfig'}->{'APACHE_CUSTOM_SITES_CONFIG_DIR'},
-			AUTHZ_ALLOW_ALL => (version->new("v$self->{'apacheConfig'}->{'APACHE_VERSION'}") >= version->new('v2.4.0'))
+			PHP_VERSION => $self->{'config'}->{'PHP_VERSION'},
+			PHP_STARTER_DIR => $self->{'config'}->{'PHP_STARTER_DIR'},
+			APACHE_CUSTOM_SITES_CONFIG_DIR => $self->{'config'}->{'APACHE_CUSTOM_SITES_CONFIG_DIR'},
+			AUTHZ_ALLOW_ALL => (version->new("v$self->{'config'}->{'APACHE_VERSION'}") >= version->new('v2.4.0'))
 				? 'Require all granted' : "Order allow,deny\n    Allow from all"
 		}
 	);
@@ -1911,7 +1911,7 @@ sub _addCfg($$)
 			) if $data->{'PHP_SUPPORT'} eq 'yes';
 			return $rs if $rs;
 
-			if($self->{'apacheConfig'}->{'PHP_FASTCGI'} eq 'fastcgi') {
+			if($self->{'config'}->{'PHP_FASTCGI'} eq 'fastcgi') {
 				$rs = $self->{'hooksManager'}->register(
 					'beforeHttpdBuildConfFile', sub { $self->removeSection('fcgid', @_) }
 				);
@@ -1949,8 +1949,8 @@ sub _addCfg($$)
 	# Build and install custom Apache configuration file
 	$rs = $self->buildConfFile(
 		"$self->{'tplDir'}/custom.conf.tpl",
-		{ 'destination' => "$self->{'apacheConfig'}->{'APACHE_CUSTOM_SITES_CONFIG_DIR'}/$data->{'DOMAIN_NAME'}.conf" }
-	) unless (-f "$self->{'apacheConfig'}->{'APACHE_CUSTOM_SITES_CONFIG_DIR'}/$data->{'DOMAIN_NAME'}.conf");
+		{ 'destination' => "$self->{'config'}->{'APACHE_CUSTOM_SITES_CONFIG_DIR'}/$data->{'DOMAIN_NAME'}.conf" }
+	) unless (-f "$self->{'config'}->{'APACHE_CUSTOM_SITES_CONFIG_DIR'}/$data->{'DOMAIN_NAME'}.conf");
 	return $rs if $rs;
 
 	# Enable all Apache sites
@@ -1983,8 +1983,8 @@ sub _dmnFolders($$)
 
 	$self->{'hooksManager'}->trigger('beforeHttpdDmnFolders', \@folders);
 
-	my $fcgiDir = "$self->{'apacheConfig'}->{'PHP_STARTER_DIR'}/$data->{'DOMAIN_NAME'}";
-	my $phpiniLevel = $self->{'apacheConfig'}->{'INI_LEVEL'};
+	my $fcgiDir = "$self->{'config'}->{'PHP_STARTER_DIR'}/$data->{'DOMAIN_NAME'}";
+	my $phpiniLevel = $self->{'config'}->{'INI_LEVEL'};
 
 	if(
 		$data->{'FORWARD'} eq 'no' &&
@@ -2183,7 +2183,7 @@ sub _addFiles($$)
 	# Build fcgi wrapper and php configuration files
 
 	my $domainType = $data->{'DOMAIN_TYPE'};
-	my $phpiniLevel = $self->{'apacheConfig'}->{'INI_LEVEL'};
+	my $phpiniLevel = $self->{'config'}->{'INI_LEVEL'};
 
 	if(
 		$data->{'FORWARD'} eq 'no' &&
@@ -2220,15 +2220,15 @@ sub _buildPHPini($$)
 
 	$self->setData(
 		{
-			PHP_VERSION => $self->{'apacheConfig'}->{'PHP_VERSION'},
-			PHP_STARTER_DIR => $self->{'apacheConfig'}->{'PHP_STARTER_DIR'},
-			PHP5_FASTCGI_BIN => $self->{'apacheConfig'}->{'PHP5_FASTCGI_BIN'}
+			PHP_VERSION => $self->{'config'}->{'PHP_VERSION'},
+			PHP_STARTER_DIR => $self->{'config'}->{'PHP_STARTER_DIR'},
+			PHP5_FASTCGI_BIN => $self->{'config'}->{'PHP5_FASTCGI_BIN'}
 		}
 	);
 
-	my $php5Dir = "$self->{'apacheConfig'}->{'PHP_STARTER_DIR'}/$data->{'DOMAIN_NAME'}";
+	my $php5Dir = "$self->{'config'}->{'PHP_STARTER_DIR'}/$data->{'DOMAIN_NAME'}";
 
-	if($self->{'apacheConfig'}->{'PHP_FASTCGI'} eq 'fcgid') {
+	if($self->{'config'}->{'PHP_FASTCGI'} eq 'fcgid') {
 		# Fcgid wrapper setup
 		my $fileSource = "$main::imscpConfig{'CONF_DIR'}/fcgi/parts/php5-fcgid-starter.tpl";
 		my $destFile = "$php5Dir/php5-fcgid-starter";
@@ -2243,7 +2243,7 @@ sub _buildPHPini($$)
 			$rs = iMSCP::File->new('filename' => "$php5Dir/php5-fastcgi-starter")->delFile();
 			return $rs if $rs;
 		}
-	} elsif($self->{'apacheConfig'}->{'PHP_FASTCGI'} eq 'fastcgi') {
+	} elsif($self->{'config'}->{'PHP_FASTCGI'} eq 'fastcgi') {
 		# fastCGI wrapper setup
 		my $fileSource = "$main::imscpConfig{'CONF_DIR'}/fcgi/parts/php5-fastcgi-starter.tpl";
 		my $destFile = "$php5Dir/php5-fastcgi-starter";
@@ -2290,7 +2290,7 @@ END
 {
 	my $exitCode = $?;
 	my $self = Servers::httpd::apache_fcgi->getInstance();
-	my $trafficDir = "$self->{'apacheConfig'}->{'APACHE_LOG_DIR'}/traff";
+	my $trafficDir = "$self->{'config'}->{'APACHE_LOG_DIR'}/traff";
 	my $rs = 0;
 
 	if($self->{'start'} && $self->{'start'} eq 'yes') {

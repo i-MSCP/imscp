@@ -23,12 +23,12 @@ Addons::policyd::installer - i-MSCP Policyd Weight configurator installer
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
-# @category		i-MSCP
-# @copyright	2010-2013 by i-MSCP | http://i-mscp.net
-# @author		Daniel Andreca <sci2tech@gmail.com>
-# @author		Laurent Declercq <l.declercq@nuxwin.com>
-# @link			http://i-mscp.net i-MSCP Home Site
-# @license		http://www.gnu.org/licenses/gpl-2.0.html GPL v2
+# @category    i-MSCP
+# @copyright   2010-2013 by i-MSCP | http://i-mscp.net
+# @author      Daniel Andreca <sci2tech@gmail.com>
+# @author      Laurent Declercq <l.declercq@nuxwin.com>
+# @link        http://i-mscp.net i-MSCP Home Site
+# @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
 package Addons::policyd::installer;
 
@@ -65,7 +65,6 @@ sub registerSetupHooks
 	my $self = shift;
 	my $hooksManager = shift;
 
-	# Add policyd installer dialog at end of list of setup dialogs
 	$hooksManager->register(
 		'beforeSetupDialog', sub { my $dialogStack = shift; push(@$dialogStack, sub { $self->askRBL(@_) }); 0; }
 	);
@@ -88,28 +87,26 @@ sub registerSetupHooks
 sub askRBL
 {
 	my ($self, $dialog, $rs) = (shift, shift, 0);
-	my $dnsblCheckOnly = main::setupGetQuestion('DNSBL_CHECKS_ONLY', 'preseed') ||
-		$self::policydConfig{'DNSBL_CHECKS_ONLY'} || $self::policydOldConfig{'DNSBL_CHECKS_ONLY'} || '';
+	my $dnsblCheckOnly = main::setupGetQuestion('DNSBL_CHECKS_ONLY') || $self->{'config'}->{'DNSBL_CHECKS_ONLY'} ||  '';
 
 	$dnsblCheckOnly = lc($dnsblCheckOnly);
 
 	if($main::reconfigure ~~ ['mailfilters', 'all', 'forced'] || $dnsblCheckOnly !~ /^yes|no$/i) {
 		($rs, $dnsblCheckOnly) = $dialog->radiolist(
-			"
-			\\Z4\\Zb\\Zui-MSCP Policyd Weight Addon\\Zn
+"
+\\Z4\\Zb\\Zui-MSCP Policyd Weight Addon\\Zn
 
-			Do you want to disable additional checks for MTA, HELO and domain?\n
+Do you want to disable additional checks for MTA, HELO and domain?\n
 
-			\\Z1Yes\\Zn: (may cause some spam messages to be accepted)
-			 \\Z4No\\Zn: (default, messages from misconfigured mail service providers
-			      will be treated as spam and rejected)
-			",
+\\Z1Yes\\Zn: (may cause some spam messages to be accepted)
+\\Z4No\\Zn: (default, messages from misconfigured mail service providers will be treated as spam and rejected)
+",
 			['yes', 'no'],
 			$dnsblCheckOnly ne 'yes' ? 'no' : 'yes'
 		);
 	}
 
-	$self::policydConfig{'DNSBL_CHECKS_ONLY'} = $dnsblCheckOnly if $rs != 30;
+	$self->{'config'}->{'DNSBL_CHECKS_ONLY'} = $dnsblCheckOnly if $rs != 30;
 
 	$rs;
 }
@@ -125,9 +122,8 @@ sub askRBL
 sub install
 {
 	my $self = shift;
-	my $rs = 0;
 
-	$rs = $self->_bkpConfFile($self::policydConfig{'POLICYD_CONF_FILE'});
+	my $rs = $self->_bkpConfFile($self->{'config'}->{'POLICYD_CONF_FILE'});
 	return $rs if $rs;
 
 	$rs = $self->_buildConf();
@@ -154,21 +150,22 @@ sub _init
 {
 	my $self = shift;
 
-	$self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/policyd";
+	$self->{'policyd'} = Addons::policyd->getInstance();
+
+	$self->{'cfgDir'} = $self->{'policyd'}->{'cfgDir'};
 	$self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
 	$self->{'wrkDir'} = "$self->{'cfgDir'}/working";
 
-	my $conf = "$self->{'cfgDir'}/policyd.data";
-	my $oldConf	= "$self->{'cfgDir'}/policyd.old.data";
+	$self->{'config'} = $self->{'policyd'}->{'config'};
 
-	tie %self::policydConfig, 'iMSCP::Config', 'fileName' => $conf, 'noerrors' => 1;
+	my $oldConf = "$self->{'cfgDir'}/policyd.old.data";
 
 	if(-f $oldConf) {
-		tie %self::policydOldConfig, 'iMSCP::Config', 'fileName' => $oldConf, 'noerrors' => 1;
+		tie %self::oldConfig, 'iMSCP::Config', 'fileName' => $oldConf, 'noerrors' => 1;
 
-		for(keys %self::policydOldConfig) {
-			if(exists $self::policydConfig{$_}) {
-				$self::policydConfig{$_} = $self::policydOldConfig{$_};
+		for(keys %self::oldConfig) {
+			if(exists $self->{'config'}->{$_}) {
+				$self->{'config'}->{$_} = $self::oldConfig{$_};
 			}
 		}
 	}
@@ -193,9 +190,8 @@ sub _bkpConfFile
 	my ($name, $path, $suffix) = fileparse($cfgFile);
 
 	if(-f $cfgFile) {
-		my $timestamp = time;
 		my $file = iMSCP::File->new('filename' => $cfgFile);
-		my $rs = $file->copyFile("$self->{'bkpDir'}/$name$suffix.$timestamp");
+		my $rs = $file->copyFile("$self->{'bkpDir'}/$name$suffix." . time);
 		return $rs if $rs;
 	}
 
@@ -215,31 +211,29 @@ sub _buildConf
 	my $self = shift;
 
 	my $rs = 0;
-	my $uName = $self::policydConfig{'POLICYD_USER'};
-	my $gName = $self::policydConfig{'POLICYD_GROUP'};
-	my ($name, $path, $suffix) = fileparse($self::policydConfig{'POLICYD_CONF_FILE'});
+	my $uName = $self->{'config'}->{'POLICYD_USER'};
+	my $gName = $self->{'config'}->{'POLICYD_GROUP'};
+	my $policydConffile = $self->{'config'}->{'POLICYD_CONF_FILE'};
+	my ($name, $path, $suffix) = fileparse($policydConffile);
 
-	unless (-f $self::policydConfig{'POLICYD_CONF_FILE'}) {
+	unless (-f $policydConffile) {
 		my ($stdout, $stderr);
-		$rs = execute(
-			"$self::policydConfig{'POLICYD_BIN_FILE'} defaults > $self::policydConfig{'POLICYD_CONF_FILE'}",
-			\$stdout, \$stderr
-		);
+		$rs = execute("$self->{'config'}->{'POLICYD_BIN_FILE'} defaults > $policydConffile", \$stdout, \$stderr);
 		debug($stdout) if $stdout;
 		warning($stderr) if ! $rs && $stderr;
 		error($stderr) if $rs && $stderr;
-		error("Unable to create  $self::policydConfig{'POLICYD_CONF_FILE'} configuration file") if $rs && ! $stderr;
+		error("Unable to create $policydConffile configuration file") if $rs && ! $stderr;
 		return $rs if $rs;
 	}
 
-	my $file = iMSCP::File->new('filename' => $self::policydConfig{'POLICYD_CONF_FILE'});
+	my $file = iMSCP::File->new('filename' => $policydConffile);
 	my $cfgTpl = $file->get();
 	unless(defined $cfgTpl) {
-		error("Unable to read $self::policydConfig{'POLICYD_CONF_FILE'} file");
+		error("Unable to read $policydConffile file");
 		return 1;
 	}
 
-	my $dnsblChecksOnly = $self::policydConfig{'DNSBL_CHECKS_ONLY'} =~ /^yes$/i ? 0 : 1;
+	my $dnsblChecksOnly = $self->{'config'}->{'DNSBL_CHECKS_ONLY'} =~ /^yes$/i ? 0 : 1;
 	$cfgTpl =~ s/^\s{0,}\$dnsbl_checks_only\s{0,}=.*$/\n   \$dnsbl_checks_only = $dnsblChecksOnly;          # 1: ON, 0: OFF (default)/mi;
 
 	$file = iMSCP::File->new('filename' => "$self->{'wrkDir'}/$name$suffix");
@@ -255,7 +249,7 @@ sub _buildConf
 	$rs = $file->owner($uName, $gName);
 	return $rs if $rs;
 
-	$file->copyFile($self::policydConfig{'POLICYD_CONF_FILE'});
+	$file->copyFile($policydConffile);
 }
 
 =item _saveConf()
@@ -269,13 +263,13 @@ sub _buildConf
 sub _saveConf
 {
 	my $self = shift;
-	my $rootUsr	= $main::imscpConfig{'ROOT_USER'};
-	my $rootGrp	= $main::imscpConfig{'ROOT_GROUP'};
-	my $rs = 0;
 
-	my $file = iMSCP::File->new(filename => "$self->{'cfgDir'}/policyd.data");
+	my $rootUname = $main::imscpConfig{'ROOT_USER'};
+	my $rootGname = $main::imscpConfig{'ROOT_GROUP'};
 
-	$rs = $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
+	my $file = iMSCP::File->new('filename' => "$self->{'cfgDir'}/policyd.data");
+
+	my $rs = $file->owner($rootUname, $rootGname);
 	return $rs if $rs;
 
 	$rs = $file->mode(0640);
@@ -295,7 +289,7 @@ sub _saveConf
 	$rs = $file->save();
 	return $rs if $rs;
 
-	$file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
+	$file->owner($rootUname, $rootGname);
 	return $rs if $rs;
 
 	$file->mode(0640);

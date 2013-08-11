@@ -23,11 +23,11 @@ Addons::filemanager::net2ftp::installer - i-MSCP Net2Ftp addon installer
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
-# @category		i-MSCP
-# @copyright	2010-2013 by i-MSCP | http://i-mscp.net
-# @author		Laurent Declercq <l.declercq@nuxwin.com>
-# @link			http://i-mscp.net i-MSCP Home Site
-# @license		http://www.gnu.org/licenses/gpl-2.0.html GPL v2
+# @category    i-MSCP
+# @copyright   2010-2013 by i-MSCP | http://i-mscp.net
+# @author      Laurent Declercq <l.declercq@nuxwin.com>
+# @link        http://i-mscp.net i-MSCP Home Site
+# @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
 package Addons::filemanager::net2ftp::installer;
 
@@ -35,6 +35,7 @@ use strict;
 use warnings;
 
 use iMSCP::Debug;
+use iMSCP::Addons::ComposerInstaller;
 use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
@@ -61,7 +62,6 @@ sub preinstall
 {
 	my $self = shift;
 
-	require iMSCP::Addons::ComposerInstaller;
 	iMSCP::Addons::ComposerInstaller->getInstance()->registerPackage('imscp/net2ftp');
 }
 
@@ -77,7 +77,7 @@ sub install
 {
 	my $self = shift;
 
-	$self->_installFiles();	# Install ajaxplorer files from local addon packages repository
+	$self->_installFiles(); # Install ajaxplorer files from local addon packages repository
 }
 
 =item setGuiPermissions()
@@ -91,20 +91,16 @@ sub install
 sub setGuiPermissions
 {
 	my $self = shift;
-	my $panelUName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} . $main::imscpConfig{'SYSTEM_USER_MIN_UID'};
-	my $panelGName = $panelUName;
-	my $rootDir = $main::imscpConfig{'ROOT_DIR'};
 
-	require Servers::httpd;
-	my $http = Servers::httpd->factory();
-	my $apacheGName = $http->can('getRunningGroup') ? $http->getRunningGroup() : $main::imscpConfig{'ROOT_GROUP'};
+	my $panelUName =
+	my $panelGName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} . $main::imscpConfig{'SYSTEM_USER_MIN_UID'};
 
 	require iMSCP::Rights;
 	iMSCP::Rights->import();
 
 	setRights(
-		"$rootDir/gui/public/tools/filemanager",
-		{ 'user' => $panelUName, 'group' => $apacheGName, 'dirmode' => '0550', 'filemode' => '0440', 'recursive' => 1 }
+		"$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/filemanager",
+		{ 'user' => $panelUName, 'group' => $panelGName, 'dirmode' => '0550', 'filemode' => '0440', 'recursive' => 1 }
 	);
 }
 
@@ -125,17 +121,19 @@ sub setGuiPermissions
 sub _installFiles
 {
 	my $self = shift;
+
 	my $repoDir = $main::imscpConfig{'ADDON_PACKAGES_CACHE_DIR'};
-	my ($stdout, $stderr);
 	my $rs = 0;
 
 	if(-d "$repoDir/vendor/imscp/net2ftp") {
+		my $guiPublicDir = $main::imscpConfig{'GUI_PUBLIC_DIR'};
+		my ($stdout, $stderr);
 
 		require iMSCP::Execute;
 		iMSCP::Execute->import();
 
 		$rs = execute(
-			"$main::imscpConfig{'CMD_CP'} -rTf $repoDir/vendor/imscp/net2ftp $main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/filemanager",
+			"$main::imscpConfig{'CMD_CP'} -rTf $repoDir/vendor/imscp/net2ftp $guiPublicDir/tools/filemanager",
 			\$stdout,
 			\$stderr
 		);
@@ -143,11 +141,7 @@ sub _installFiles
 		error($stderr) if $rs && $stderr;
 		return $rs if $rs;
 
-		$rs = execute(
-			"$main::imscpConfig{'CMD_RM'} -fR $main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/filemanager/.git",
-			\$stdout,
-			\$stderr
-		);
+		$rs = execute("$main::imscpConfig{'CMD_RM'} -fR $guiPublicDir/tools/filemanager/.git", \$stdout, \$stderr);
 		debug($stdout) if $stdout;
 		error($stderr) if $rs && $stderr;
 		return $rs if $rs;

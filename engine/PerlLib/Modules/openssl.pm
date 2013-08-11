@@ -1,5 +1,11 @@
 #!/usr/bin/perl
 
+=head1 NAME
+
+Modules::openssl - i-MSCP OpenSSL module
+
+=cut
+
 # i-MSCP - internet Multi Server Control Panel
 # Copyright (C) 2010-2013 by internet Multi Server Control Panel
 #
@@ -29,39 +35,58 @@ use strict;
 use warnings;
 
 use iMSCP::Debug;
+use iMSCP::File;
 use iMSCP::Execute;
+use File::Temp;
 use parent 'Common::SingletonClass';
 
-sub _init
-{
-	my $self = shift;
 
-	$self->{'openssl_path'} = undef;
-	$self->{'new_cert_path'} = undef;
-	$self->{'new_cert_name'} = undef;
-	$self->{'vhost_cert_name'} = undef;
-	$self->{'cert_selfsigned'} = 0;
-	$self->{'cert_path'} = '';
-	$self->{'intermediate_cert_path'} = '';
-	$self->{'key_path'} = '';
-	$self->{'key_pass'} = '';
-	$self->{'errors'} = '';
-	$self->{'last_error'} = '';
+=head1 DESCRIPTION
 
-	$self;
-}
+ This is the installer for the i-MSCP PhpMyAdmin addon.
+
+ See Addons::phpmyadmin for more information.
+
+=head1 PUBLIC METHODS
+
+=over 4
+
+=item
+
+ Check the SSL private key
+
+ Return int 0 on success, other on failure
+
+=cut
 
 sub ssl_check_key
 {
 	my $self = shift;
 
-	if ($self->{'key_path'} eq '' || ! -f $self->{'key_path'}) {
-		error("Key $self->{'key_path'} doesn't exist. Exiting...");
+	if ($self->{'key_path'} eq '') {
+		error("Path to SSL private key container file is not set.");
+		return 1;
+	} elsif(! -f $self->{'key_path'}) {
+		error("File $self->{'key_path'} doesn't exist.");
 		return -1;
 	}
 
-	my $password = escapeShell($self->{'key_pass'});
-	my $cmd = "$self->{'openssl_path'} rsa -in $self->{'key_path'} -noout -passin pass:$password";
+	my $keyPaswordFile = File::Temp->new();
+
+	# Writing the private key password into a temporary file to avoid to make it visible to some utilities (such as 'ps')
+	my $file = iMSCP::File->new('filename' => $keyPaswordFile->filename);
+
+	my $rs = $file->mode(0600);
+	return $rs if $rs;
+
+	$rs = $file->set(($self->{'key_pass'} ne '' ? $self->{'key_pass'} : 'dummypass'));
+	return $rs if $rs;
+
+	$rs = $file->save();
+	return $rs if $rs;
+
+	#my $password = escapeShell($self->{'key_pass'});
+	my $cmd = "$self->{'openssl_path'} rsa -in $self->{'key_path'} -noout -passin file:" . $keyPaswordFile->filename;
 
 	my ($stdout, $stderr);
 	my $rs = execute($cmd, \$stdout, \$stderr);
@@ -72,6 +97,14 @@ sub ssl_check_key
 
 	0;
 }
+
+=item
+
+ Check CA Bundle (intermediate(s) certificats)
+
+ Return int 0 on success, other on failure
+
+=cut
 
 sub ssl_check_intermediate_cert
 {
@@ -85,22 +118,35 @@ sub ssl_check_intermediate_cert
 	0;
 }
 
+=item
+
+ Check SSL certificat
+
+ Note: If a CA Bundle (intermediate(s) certificates) is set, the whole chain will be checked
+
+ Return int 0 on success, other on failure
+
+=cut
+
 sub ssl_check_cert
 {
 	my $self = shift;
 
-	if ($self->{'cert_path'} eq '' || ! -f $self->{'cert_path'}) {
-		error("SSL certificate $self->{'cert_path'} doesn't exist.");
+	if ($self->{'cert_path'} eq '') {
+		error("Path to SSL certificat container file is not set.");
+		return 1;
+	} elsif(! -f $self->{'cert_path'}) {
+		error("File $self->{'cert_path'} doesn't exist.");
 		return 1;
 	}
 
-	my $CAfile = '';
+	my $caBundle = '';
 
 	if ($self->{'intermediate_cert_path'} ne '' ) {
-		$CAfile = "-CAfile $self->{'intermediate_cert_path'}";
+		$caBundle = "-CAfile $self->{'intermediate_cert_path'}";
 	}
 
-	my $cmd = "$self->{'openssl_path'} verify $CAfile $self->{'cert_path'}";
+	my $cmd = "$self->{'openssl_path'} verify $caBundle $self->{'cert_path'}";
 
 	my ($stdout, $stderr);
 	my $rs = execute($cmd, \$stdout, \$stderr);
@@ -116,6 +162,13 @@ sub ssl_check_cert
 	0;
 }
 
+=item
+
+ Check all SSL objects (Private key, CA bundle, certificate)
+
+ Return int 0 on success, other on failure
+
+=cut
 
 sub ssl_check_all
 {
@@ -133,17 +186,36 @@ sub ssl_check_all
 	0;
 }
 
+=item
+
+ Export SSL private key into a new container (.pem file)
+
+ Return int 0 on success, other on failure
+
+=cut
+
 sub ssl_export_key
 {
 	my $self = shift;
 
-	# TODO Passing the password in such way is not really recommended since the password will appear
-	# in result of some commands such as PS
-	my $password = escapeShell($self->{'key_pass'});
+	my $keyPaswordFile = File::Temp->new();
+
+	# Writing the private key password into a temporary file to avoid to make it visible to some utilities (such as 'ps')
+	my $file = iMSCP::File->new('filename' => $keyPaswordFile->filename);
+
+	my $rs = $file->mode(0600);
+	return $rs if $rs;
+
+	$rs = $file->set(($self->{'key_pass'} ne '' ? $self->{'key_pass'} : 'dummypass'));
+	return $rs if $rs;
+
+	$rs = $file->save();
+	return $rs if $rs;
+
 	my $cmd =
 		"$self->{openssl_path} rsa -in $self->{'key_path'} " .
 		"-out $self->{'new_cert_path'}/$self->{'new_cert_name'}.pem " .
-		"-passin pass:$password";
+		"-passin file:" . $keyPaswordFile->filename;
 
 	my ($stdout, $stderr);
 	my $rs = execute($cmd, \$stdout, \$stderr);
@@ -153,6 +225,14 @@ sub ssl_export_key
 
 	0;
 }
+
+=item ssl_export_cert()
+
+ Export SSL certificat
+
+ Return int 0 on success, other on failure
+
+=cut
 
 sub ssl_export_cert
 {
@@ -171,6 +251,14 @@ sub ssl_export_cert
 
 	0;
 }
+
+=item ssl_export_intermediate_cert()
+
+ Export the CA Bundle
+
+ Return 0 on success, other on failure
+
+=cut
 
 sub ssl_export_intermediate_cert
 {
@@ -193,13 +281,24 @@ sub ssl_export_intermediate_cert
 	0;
 }
 
+=items ssl_generate_selsigned_cert($wildcardSSL = TRUE)
+
+ Generate a self-signed SSL certificate
+
+ Return int 0 on success, other on failure
+
+=cut
+
 sub ssl_generate_selsigned_cert
 {
 	my $self = shift;
+	my $wildcardSSL = shift || 1;
+
+	my $commonName = ($wildcardSSL) ? '*.' .  $self->{'common_name'} : $self->{'common_name'};
 
 	my $cmd =
 		"$self->{'openssl_path'} req -x509 -nodes -days 1825 " .
-		"-subj '/C=/ST=/L=/CN=*.$self->{'vhost_cert_name'}' " .
+		"-subj '/C=/ST=/L=/CN=$commonName' " .
 		"-newkey rsa:2048 " .
 		"-keyout $self->{'new_cert_path'}/$self->{'new_cert_name'}.pem " .
 		"-out $self->{'new_cert_path'}/$self->{'new_cert_name'}.pem";
@@ -214,12 +313,20 @@ sub ssl_generate_selsigned_cert
 	0;
 }
 
+=item
+
+ Export all SSL objects (Private key, CA Bundle, certificat) into one container (.pem file)
+
+ Return int 0 on success, other on failure
+
+=cut
+
 sub ssl_export_all
 {
 	my $self = shift;
 	my $rs = 0;
 
-	if($self->{'cert_selfsigned'}) {
+	if($self->{'cert_selfsigned'} eq 'yes') {
 		$rs = $self->ssl_generate_selsigned_cert();
 		return $rs if $rs;
 	} else {
@@ -235,5 +342,62 @@ sub ssl_export_all
 
 	0;
 }
+
+=back
+
+=head1 PRIVATE METHODS
+
+=over 4
+
+=item _init()
+
+ Initialize instance.
+
+ Return Modules::openssl
+
+=cut
+
+sub _init
+{
+	my $self = shift;
+
+	# Should contain the path to the openssl binary
+	$self->{'openssl_path'} = '';
+
+	# Directory path into which the new certificat must be stored
+	$self->{'new_cert_path'} = '';
+
+	# Name of new certificat file (exluding extension)
+	$self->{'new_cert_name'} = '';
+
+	# SSL common name (apply to self-signed certificat only)
+	$self->{'common_name'} = '';
+
+	# Tells whether or not we intend to generate a self-signed SSL certificat (no|yes)
+	$self->{'cert_selfsigned'} = 'no';
+
+	# Full path to the SSL certificat container file
+	$self->{'cert_path'} = '';
+
+	# Full path to the CA Bundle container file (Container which contain one or many intermediate certificates)
+	$self->{'intermediate_cert_path'} = '';
+
+	# Full path to the private key container file
+	$self->{'key_path'} = '';
+
+	# Private key password if any
+	$self->{'key_pass'} = '';
+
+	$self;
+}
+
+=back
+
+=head1 AUTHORS
+
+ Daniel Andreca <sci2tech@gmail.com>
+ Laurent Declercq <l.declercq@nuxwin.com>
+
+=cut
 
 1;

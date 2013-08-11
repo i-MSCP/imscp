@@ -37,15 +37,15 @@ sub _init
 {
 	my $self = shift;
 
-	$self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/courier";
+	$self->{'po'} = Servers::po::courier->getInstance();
+
+	$self->{'cfgDir'} = $self->{'po'}->{'cfgDir'};
 	$self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
 	$self->{'wrkDir'} = "$self->{'cfgDir'}/working";
 
-	my $conf = "$self->{'cfgDir'}/courier.data";
+	$self->{'config'} = $self->{'po'}->{'config'};
 
-	tie %self::courierConfig, 'iMSCP::Config','fileName' => $conf;
-
-	0;
+	$self;
 }
 
 sub uninstall
@@ -67,11 +67,11 @@ sub restoreConfFile
 	my $rs = 0;
 	my $file;
 
-	for ('authdaemonrc', 'userdb', $self::courierConfig{'COURIER_IMAP_SSL'}, $self::courierConfig{'COURIER_POP_SSL'}) {
+	for ('authdaemonrc', 'userdb', $self->{'config'}->{'COURIER_IMAP_SSL'}, $self->{'config'}->{'COURIER_POP_SSL'}) {
 		$rs	= iMSCP::File->new(
 			'filename' => "$self->{'bkpDir'}/$_.system"
 		)->copyFile(
-			"$self::courierConfig{'AUTHLIB_CONF_DIR'}/$_"
+			"$self->{'config'}->{'AUTHLIB_CONF_DIR'}/$_"
 		) if -f "$self->{'bkpDir'}/$_.system";
 		return $rs if $rs;
 	}
@@ -83,7 +83,7 @@ sub authDaemon
 {
 	my $self= shift;
 
-	my $file = iMSCP::File->new('filename' => "$self::courierConfig{'AUTHLIB_CONF_DIR'}/authdaemonrc");
+	my $file = iMSCP::File->new('filename' => "$self->{'config'}->{'AUTHLIB_CONF_DIR'}/authdaemonrc");
 
 	my $rs = $file->mode(0660);
 	return $rs if $rs;
@@ -95,7 +95,7 @@ sub userDB
 {
 	my $self = shift;
 
-	my $file = iMSCP::File->new('filename' => "$self::courierConfig{'AUTHLIB_CONF_DIR'}/userdb");
+	my $file = iMSCP::File->new('filename' => "$self->{'config'}->{'AUTHLIB_CONF_DIR'}/userdb");
 
 	my $rs = $file->mode(0600);
 	return $rs if $rs;
@@ -104,10 +104,10 @@ sub userDB
 	return $rs if $rs;
 
 	my ($stdout, $stderr);
-	$rs = execute($self::courierConfig{'CMD_MAKEUSERDB'}, \$stdout, \$stderr);
+	$rs = execute($self->{'config'}->{'CMD_MAKEUSERDB'}, \$stdout, \$stderr);
 	debug($stdout) if ($stdout);
 	error($stderr) if $stderr && $rs;
-	error("Error while executing $self::courierConfig{CMD_MAKEUSERDB} returned status $rs") if $rs && ! $stderr;
+	error("Error while executing $self->{'config'}->{CMD_MAKEUSERDB} returned status $rs") if $rs && ! $stderr;
 
 	$rs;
 }

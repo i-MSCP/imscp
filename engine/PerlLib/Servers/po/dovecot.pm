@@ -68,7 +68,7 @@ sub registerSetupHooks
 
 	require Servers::po::dovecot::installer;
 	Servers::po::dovecot::installer->getInstance(
-		dovecotConfig => \%self::dovecotConfig
+		config => \%self::config
 	)->registerSetupHooks($hooksManager);
 }
 
@@ -85,7 +85,7 @@ sub install
 	my $self = shift;
 
 	require Servers::po::dovecot::installer;
-	Servers::po::dovecot::installer->getInstance(dovecotConfig => \%self::dovecotConfig)->install();
+	Servers::po::dovecot::installer->getInstance(config => \%self::config)->install();
 }
 
 =item postinstall()
@@ -227,7 +227,7 @@ sub restart
 	return $rs if $rs;
 
 	my ($stdout, $stderr);
-	$rs = execute("$self::dovecotConfig{'CMD_DOVECOT'} restart", \$stdout, \$stderr);
+	$rs = execute("$self->{'config'}->{'CMD_DOVECOT'} restart", \$stdout, \$stderr);
 	debug($stdout) if $stdout;
 	error($stderr) if $stderr && $rs;
 	return $rs if $rs;
@@ -343,7 +343,7 @@ sub _init
 	$self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
 	$self->{'wrkDir'} = "$self->{'cfgDir'}/working";
 
-	tie %self::dovecotConfig, 'iMSCP::Config','fileName' => "$self->{'cfgDir'}/dovecot.data";
+	tie %{$self->{'config'}}, 'iMSCP::Config','fileName' => "$self->{'cfgDir'}/dovecot.data";
 
 	$self->{'hooksManager'}->trigger(
 		'afterPoInit', $self, 'dovecot'

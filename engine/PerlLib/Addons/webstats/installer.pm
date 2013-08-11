@@ -23,11 +23,11 @@ Addons::webstats::installer - i-MSCP Web File manager addon installer
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
-# @category		i-MSCP
-# @copyright	2010-2013 by i-MSCP | http://i-mscp.net
-# @author		Laurent Declercq <l.declercq@nuxwin.com>
-# @link			http://i-mscp.net i-MSCP Home Site
-# @license		http://www.gnu.org/licenses/gpl-2.0.html GPL v2
+# @category    i-MSCP
+# @copyright   2010-2013 by i-MSCP | http://i-mscp.net
+# @author      Laurent Declercq <l.declercq@nuxwin.com>
+# @link        http://i-mscp.net i-MSCP Home Site
+# @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
 package Addons::webstats::installer;
 
@@ -93,7 +93,7 @@ Choose 'No' if you do not want provide any Web statistics for your customers.
 		);
 	}
 
-	$main::questions{'WEBSTATS_ADDON'} = $webStatsAddon if $rs != 30;
+	main::setupSetQuestion('WEBSTATS_ADDON', $webStatsAddon) if $rs != 30;
 
 	if($rs != 30) {
 		if($webStatsAddon eq 'Awstats') {
@@ -174,6 +174,7 @@ sub install
 sub setGuiPermissions
 {
 	my $self = shift;
+
 	my $addon;
 	my $rs = 0;
 
@@ -205,6 +206,7 @@ sub setGuiPermissions
 sub setEnginePermissions
 {
 	my $self = shift;
+
 	my $addon;
 	my $rs = 0;
 

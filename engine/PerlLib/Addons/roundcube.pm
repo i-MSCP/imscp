@@ -23,11 +23,11 @@ Addons::roundcube - i-MSCP Roundcube addon
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
-# @category		i-MSCP
-# @copyright	2010-2013 by i-MSCP | http://i-mscp.net
-# @author		Laurent Declercq <l.declercq@nuxwin.com>
-# @link			http://i-mscp.net i-MSCP Home Site
-# @license		http://www.gnu.org/licenses/gpl-2.0.html GPL v2
+# @category    i-MSCP
+# @copyright   2010-2013 by i-MSCP | http://i-mscp.net
+# @author      Laurent Declercq <l.declercq@nuxwin.com>
+# @link        http://i-mscp.net i-MSCP Home Site
+# @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
 package Addons::roundcube;
 
@@ -153,12 +153,40 @@ sub deleteMail
 
 		# Restore connection to i-MSCP database
 		$database->set('DATABASE_NAME', $main::imscpConfig{'DATABASE_NAME'});
+
 		if($database->connect()) {
 			fatal("Unable to restore connection to i-MSCP database: $rs");
 		}
 	}
 
 	$rs;
+}
+
+=back
+
+=head1 PRIVATE METHODS
+
+=over 4
+
+=item _init()
+
+ Called by getInstance(). Initialize Roundcube addon instance.
+
+ Return Addons::roundcube
+
+=cut
+
+sub _init
+{
+	my $self = shift;
+
+	$self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/roundcube";
+	$self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
+	$self->{'wrkDir'} = "$self->{'cfgDir'}/working";
+
+	tie %{$self->{'config'}}, 'iMSCP::Config', 'fileName' => "$self->{'cfgDir'}/roundcube.data";
+
+	$self;
 }
 
 =back

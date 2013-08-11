@@ -16,6 +16,8 @@ SETUP:
 
 ENGINE:
 	- Added support for Apache 2.4.x branch
+	- Added database connection timeout
+	- Fixed: MySQL server has gone away
 	- Fixed: Plugin module is broken: Unable to disable, uninstall... any plugin
 	- Fixed: Plugin update must be triggered when plugin configuration is updated
 

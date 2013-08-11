@@ -58,9 +58,6 @@ use iMSCP::Servers;
 use iMSCP::Addons;
 use iMSCP::Getopt;
 
-# Global variable that holds some questions
-%main::questions = ();
-
 # Boot
 sub setupBoot
 {
@@ -174,28 +171,29 @@ sub setupTasks
 	my $rs;
 
 	my @steps = (
-		[\&setupSaveOldConfig,				'Saving old i-MSCP main configuration file'],
-		[\&setupWriteNewConfig,				'Write new i-MSCP main configuration file'],
-		[\&setupCreateMasterGroup,			'Creating i-MSCP system master group'],
-		[\&setupCreateSystemDirectories,	'Creating system directories'],
-		[\&setupServerHostname,				'Setting server hostname'],
-		[\&setupLocalResolver,				'Setting local resolver'],
-		[\&setupCreateDatabase,				'Creating/updating i-MSCP database'],
-		[\&setupSecureSqlInstallation,		'Securing SQL installation'],
-		[\&setupServerIps,					'Setting server ips'],
-		[\&setupDefaultAdmin, 				'Creating default admin'],
-		[\&setupPreInstallServers,			'Servers pre-installation'],
-		[\&setupPreInstallAddons,			'Addons pre-installation'],
-		[\&setupInstallServers,				'Servers installation'],
-		[\&setupInstallAddons,				'Addons installation'],
-		[\&setupPostInstallServers,			'Servers post-installation'],
-		[\&setupPostInstallAddons,			'Addons post-installation'],
-		[\&setupCron,						'Setup cron tasks'],
-		[\&setupInitScripts,				'Setting i-MSCP init scripts'],
-		[\&setupRebuildCustomerFiles,		'Rebuilding customers files'],
-		[\&setupSetPermissions,				'Setting permissions'],
-		[\&setupRestartServices,			'Restarting services'],
-		[\&setupAdditionalTasks,			'Processing additional tasks']
+		[\&setupSaveOldConfig,              'Saving old i-MSCP main configuration file'],
+		[\&setupWriteNewConfig,             'Write new i-MSCP main configuration file'],
+		[\&setupCreateMasterGroup,          'Creating i-MSCP system master group'],
+		[\&setupCreateSystemDirectories,    'Creating system directories'],
+		[\&setupServerHostname,             'Setting server hostname'],
+		[\&setupLocalResolver,              'Setting local resolver'],
+		[\&setupCreateDatabase,             'Creating/updating i-MSCP database'],
+		[\&setupSecureSqlInstallation,      'Securing SQL installation'],
+		[\&setupServerIps,                  'Setting server ips'],
+		[\&setupDefaultAdmin,               'Creating default admin'],
+		[\&setupSsl,                        'Setup SSL'],
+		[\&setupPreInstallServers,          'Servers pre-installation'],
+		[\&setupPreInstallAddons,           'Addons pre-installation'],
+		[\&setupInstallServers,             'Servers installation'],
+		[\&setupInstallAddons,              'Addons installation'],
+		[\&setupPostInstallServers,         'Servers post-installation'],
+		[\&setupPostInstallAddons,          'Addons post-installation'],
+		[\&setupCron,                       'Setup cron tasks'],
+		[\&setupInitScripts,                'Setting i-MSCP init scripts'],
+		[\&setupRebuildCustomerFiles,       'Rebuilding customers files'],
+		[\&setupSetPermissions,             'Setting permissions'],
+		[\&setupRestartServices,            'Restarting services'],
+		[\&setupAdditionalTasks,            'Processing additional tasks']
 	);
 
 	my $step = 1;
@@ -220,6 +218,7 @@ sub setupTasks
 sub setupAskServerHostname
 {
 	my $dialog = shift;
+
 	my $hostname = setupGetQuestion('SERVER_HOSTNAME');
 	my %options = ($main::imscpConfig{'DEBUG'} || iMSCP::Getopt->debug)
 		? (domain_private_tld => qr /^(?:bogus|test)$/) : ();
@@ -255,7 +254,7 @@ sub setupAskServerHostname
 		#$dialog->set('no-cancel', undef);
 	}
 
-	$main::questions{'SERVER_HOSTNAME'} = $hostname if $rs != 30;
+	setupSetQuestion('SERVER_HOSTNAME', $hostname) if $rs != 30;
 
 	$rs;
 }
@@ -264,6 +263,7 @@ sub setupAskServerHostname
 sub setupAskImscpVhost
 {
 	my $dialog = shift;
+
 	my $vhost = setupGetQuestion('BASE_SERVER_VHOST');
 	my %options = ($main::imscpConfig{'DEBUG'} || iMSCP::Getopt->debug)
 		? (domain_private_tld => qr /^(?:bogus|test)$/) : ();
@@ -290,7 +290,7 @@ sub setupAskImscpVhost
 		} while($rs != 30 && ! (@labels >= 3 && Data::Validate::Domain->new(%options)->is_domain($vhost)));
 	}
 
-	$main::questions{'BASE_SERVER_VHOST'} = $vhost if $rs != 30;
+	setupSetQuestion('BASE_SERVER_VHOST', $vhost) if $rs != 30;
 
 	$rs;
 }
@@ -300,7 +300,6 @@ sub setupAskLocalDnsResolver
 {
 	my $dialog = shift;
 	my $localDnsResolver = setupGetQuestion('LOCAL_DNS_RESOLVER');
-	$localDnsResolver = lc($localDnsResolver);
 	my $rs = 0;
 
 	if($main::reconfigure ~~ ['resolver', 'all', 'forced'] || $localDnsResolver !~ /^yes|no$/) {
@@ -311,7 +310,7 @@ sub setupAskLocalDnsResolver
 		);
 	}
 
-	$main::questions{'LOCAL_DNS_RESOLVER'} = $localDnsResolver if $rs != 30;
+	setupSetQuestion('LOCAL_DNS_RESOLVER', $localDnsResolver) if $rs != 30;
 
 	$rs;
 }
@@ -320,11 +319,12 @@ sub setupAskLocalDnsResolver
 sub setupAskServerIps
 {
 	my $dialog = shift;
+
 	my $baseServerIp = setupGetQuestion('BASE_SERVER_IP');
 	my $manualIp = 0;
 	my $serverIps = '';
 
-	my @serverIpsToAdd = setupGetQuestion('SERVER_IPS') ? @{setupGetQuestion('SERVER_IPS')} : ();
+	my $serverIpsToAdd = setupGetQuestion('SERVER_IPS', []);
 	my %serverIpsToDelete = ();
 	my %serverIpsReplMap = ();
 
@@ -355,10 +355,10 @@ sub setupAskServerIps
 			}
 		}
 
-		@serverIpsToAdd = (@serverIpsToAdd, keys %{$currentServerIps});
+		@{$serverIpsToAdd} = (@{$serverIpsToAdd}, keys %{$currentServerIps});
 	}
 
-	@serverIps = sort keys %{ { map { $_ => 1 } @serverIps, @serverIpsToAdd } };
+	@serverIps = sort keys %{ { map { $_ => 1 } @serverIps, @{$serverIpsToAdd} } };
 
 	if(
 		$main::reconfigure ~~ ['ips', 'all', 'forced'] ||
@@ -420,7 +420,7 @@ sub setupAskServerIps
 			delete $main::questions{'MANUAL_BASE_SERVER_IP'};
 		}
 
-		$main::questions{'MANUAL_BASE_SERVER_IP'} = $baseServerIp if $manualIp;
+		setupSetQuestion('MANUAL_BASE_SERVER_IP', $baseServerIp) if $manualIp;
 
 		# Handle additional IP addition / deletion
 		if($rs != 30) {
@@ -440,28 +440,29 @@ sub setupAskServerIps
 					($rs, $serverIps) = $dialog->checkbox(
 						"\nPlease, select the IP addresses to add into the database and deselect those to delete: $msg",
 						[@serverIps],
-						@serverIpsToAdd
+						@{$serverIpsToAdd}
 					);
 
 					$msg = '';
 
 					if(defined $sshConnectIp && $sshConnectIp ~~ @serverIps && $serverIps !~ /$sshConnectIp/) {
-						$msg = "\n\n\\Z1You cannot remove the IP '$sshConnectIp' to which you are currently connected (SSH).\\Zn\n\nPlease, try again:";
+						$msg = "\n\n\\Z1You cannot remove the IP '$sshConnectIp' to which you are currently connected " .
+						"(SSH).\\Zn\n\nPlease, try again:";
 					}
 
 				} while ($rs != 30 && $msg);
 
 				if($rs != 30) {
 					$serverIps =~ s/"//g;
-					@serverIpsToAdd = split ' ', $serverIps; # Retrieve list of IP to add into database
-					push @serverIpsToAdd, $baseServerIp; # Re-add base ip
+					@{$serverIpsToAdd} = split ' ', $serverIps; # Retrieve list of IP to add into database
+					push @{$serverIpsToAdd}, $baseServerIp; # Re-add base ip
 
 					if($database) {
 						# Get list of IP addresses to delete
 						%serverIpsToDelete = ();
 						for(@serverIps) {
 							$serverIpsToDelete{$currentServerIps->{$_}->{'ip_id'}} = $_
-								if(exists $currentServerIps->{$_} && not $_ ~~ @serverIpsToAdd);
+								if(exists $currentServerIps->{$_} && not $_ ~~ @{$serverIpsToAdd});
 						}
 
 						# Check for server IP addresses already in use and ask for replacement
@@ -484,7 +485,7 @@ sub setupAskServerIps
 "
 The IP address '$serverIpsToDelete{$_}' is already in use. Please, choose an IP to replace it:
 ",
-											[@serverIpsToAdd],
+											$serverIpsToAdd,
 											$baseServerIp
 										);
 									} while($rs != 30 && ! $ret);
@@ -506,10 +507,10 @@ The IP address '$serverIpsToDelete{$_}' is already in use. Please, choose an IP 
 	}
 
 	if($rs != 30) {
-		$main::questions{'BASE_SERVER_IP'} = $baseServerIp;
-		$main::questions{'SERVER_IPS'} = [@serverIpsToAdd];
-		$main::questions{'SERVER_IPS_TO_REPLACE'} = {%serverIpsReplMap};
-		$main::questions{'SERVER_IPS_TO_DELETE'} = [values %serverIpsToDelete];
+		setupSetQuestion('BASE_SERVER_IP', $baseServerIp);
+		setupSetQuestion('SERVER_IPS', $serverIpsToAdd);
+		setupSetQuestion('SERVER_IPS_TO_REPLACE', {%serverIpsReplMap});
+		setupSetQuestion('SERVER_IPS_TO_DELETE', [values %serverIpsToDelete]);
 	}
 
 	$rs;
@@ -519,15 +520,16 @@ The IP address '$serverIpsToDelete{$_}' is already in use. Please, choose an IP 
 sub setupAskSqlDsn
 {
 	my $dialog = shift;
+
 	my $dbType = setupGetQuestion('DATABASE_TYPE') || 'mysql';
 	my $dbHost = setupGetQuestion('DATABASE_HOST') || 'localhost';
 	my $dbPort = setupGetQuestion('DATABASE_PORT') || '3306';
 	my $dbUser = setupGetQuestion('DATABASE_USER') || 'root';
 
-	my $dbPass = '';
+	my $dbPass = setupGetQuestion('DATABASE_PASSWORD');
 
-	if(setupGetQuestion('DATABASE_PASSWORD', 'preseed')) {
-		$dbPass = setupGetQuestion('DATABASE_PASSWORD', 'preseed');
+	if(iMSCP::Getopt->preseed) {
+		$dbPass = setupGetQuestion('DATABASE_PASSWORD');
 	} else {
 		$dbPass = setupGetQuestion('DATABASE_PASSWORD')
 			? iMSCP::Crypt->getInstance()->decrypt_db_password(setupGetQuestion('DATABASE_PASSWORD')) : '';
@@ -542,7 +544,7 @@ sub setupAskSqlDsn
 		$main::reconfigure ~~ ['sql', 'servers', 'all', 'forced'] ||
 		! ($dbPass ne '' && ! setupCheckSqlConnect($dbType, '', $dbHost, $dbPort, $dbUser, $dbPass))
 	) {
-		my $msg = '';
+		my $msg = my $dbError = '';
 
 		do {
 			$dialog->msgbox($msg) if $msg;
@@ -597,8 +599,12 @@ sub setupAskSqlDsn
 			# Ask for SQL user password
 			if($rs != 30) {
 				do {
-					($rs, $dbPass) = $dialog->inputbox("\nPlease, enter a password for the '$dbUser' SQL user:", $dbPass);
+					($rs, $dbPass) = $dialog->passwordbox(
+						"\nPlease, enter a password for the '$dbUser' SQL user:", $dbPass
+					);
 				} while($rs != 30 && $dbPass eq '');
+
+				if(($dbError = setupCheckSqlConnect($dbType, '', $dbHost, $dbPort, $dbUser, $dbPass))) {
 
 				$msg =
 "
@@ -611,19 +617,22 @@ i-MSCP was unable to connect to the SQL server with the following data:
 \\Z4Username:\\Zn	$dbUser
 \\Z4Password:\\Zn	$dbPass
 
+Error was: $dbError
+
 Please, try again.
 ";
+				}
 			}
 
-		} while($rs != 30 && setupCheckSqlConnect($dbType, '', $dbHost, $dbPort, $dbUser, $dbPass));
+		} while($rs != 30 && $msg);
 	}
 
 	if($rs != 30) {
-		$main::questions{'DATABASE_TYPE'} = $dbType;
-		$main::questions{'DATABASE_HOST'} = $dbHost;
-		$main::questions{'DATABASE_PORT'} = $dbPort;
-		$main::questions{'DATABASE_USER'} = $dbUser;
-		$main::questions{'DATABASE_PASSWORD'} = iMSCP::Crypt->getInstance()->encrypt_db_password($dbPass);
+		setupSetQuestion('DATABASE_TYPE', $dbType);
+		setupSetQuestion('DATABASE_HOST', $dbHost);
+		setupSetQuestion('DATABASE_PORT', $dbPort);
+		setupSetQuestion('DATABASE_USER', $dbUser);
+		setupSetQuestion('DATABASE_PASSWORD', iMSCP::Crypt->getInstance()->encrypt_db_password($dbPass));
 	}
 
 	$rs;
@@ -641,8 +650,8 @@ sub setupAskSqlUserHost
 	if(
 		$main::reconfigure ~~ ['sql', 'servers', 'all', 'forced'] ||
 		(
-			$host ne 'localhost' && $host ne '127.0.0.1' && $host ne '%' &&
-			! $domain->is_domain($host) && ! $ip->isValidIp($host)
+			$host ne 'localhost' && $host ne '127.0.0.1' && $host ne '%' && ! $domain->is_domain($host) &&
+			! $ip->isValidIp($host)
 		)
 	) {
 		my $msg = '';
@@ -679,7 +688,7 @@ Allowed values are:
 		} while($rs != 30 && $msg);
 	}
 
-	$main::questions{'DATABASE_USER_HOST'} = $host if $rs != 30;
+	setupSetQuestion('DATABASE_USER_HOST', $host) if $rs != 30;
 
 	$rs;
 }
@@ -693,7 +702,7 @@ sub setupAskImscpDbName
 
 	if(
 		$main::reconfigure ~~ ['sql', 'servers', 'all', 'forced'] ||
-		(! setupGetQuestion('DATABASE_NAME', 'preseed') && ! setupIsImscpDb($dbName))
+		(! iMSCP::Getopt->preseed && ! setupIsImscpDb($dbName))
 	) {
 		my $msg = '';
 
@@ -726,8 +735,7 @@ Are you sure you want to create a new database?
 
 Keep in mind that the new database will be free of any reseller and customer data.
 
-\\Z4Note:\\Zn If the database you want to create already exists, nothing
-      will happen.
+\\Z4Note:\\Zn If the database you want to create already exists, nothing will happen.
 "
 				);
 
@@ -736,7 +744,7 @@ Keep in mind that the new database will be free of any reseller and customer dat
 		}
 	}
 
-	$main::questions{'DATABASE_NAME'} = $dbName if $rs != 30;
+	setupSetQuestion('DATABASE_NAME', $dbName) if $rs != 30;
 
 	$rs;
 }
@@ -780,8 +788,8 @@ Do you want use a prefix or suffix for customers's SQL databases?
 	}
 
 	if($rs != 30) {
-		$main::questions{'MYSQL_PREFIX'} = $prefix;
-		$main::questions{'MYSQL_PREFIX_TYPE'} = $prefixType;
+		setupSetQuestion('MYSQL_PREFIX', $prefix);
+		setupSetQuestion('MYSQL_PREFIX_TYPE', $prefixType);
 	}
 
 	$rs;
@@ -796,9 +804,9 @@ sub setupAskDefaultAdmin
 
 	my $database = setupGetSqlConnect(setupGetQuestion('DATABASE_NAME'));
 
-	if(setupGetQuestion('ADMIN_LOGIN_NAME', 'preseed')) {
-		$adminLoginName = setupGetQuestion('ADMIN_LOGIN_NAME', 'preseed');
-		$password = setupGetQuestion('ADMIN_PASSWORD', 'preseed');
+	if(iMSCP::Getopt->preseed) {
+		$adminLoginName = setupGetQuestion('ADMIN_LOGIN_NAME');
+		$password = setupGetQuestion('ADMIN_PASSWORD');
 		$adminLoginName = '' if $password eq '';
 	} elsif($database) {
 		my $defaultAdmin = $database->doQuery(
@@ -826,7 +834,7 @@ sub setupAskDefaultAdmin
 		}
 	}
 
-	$main::questions{'ADMIN_OLD_LOGIN_NAME'} = $adminLoginName;
+	setupSetQuestion('ADMIN_OLD_LOGIN_NAME', $adminLoginName);
 
 	if($main::reconfigure ~~ ['admin', 'all', 'forced'] || $adminLoginName eq '') {
 
@@ -866,7 +874,7 @@ sub setupAskDefaultAdmin
 			do {
 				# Ask for administrator password
 				do {
-					($rs, $password) = $dialog->inputbox("\nPlease, enter admin password: $msg", $password);
+					($rs, $password) = $dialog->passwordbox("\nPlease, enter admin password: $msg", $password);
 					$msg = '\n\n\\Z1The password must be at least 6 characters long.\\Zn\n\nPlease, try again:';
 				} while($rs != 30 && length $password < 6);
 
@@ -875,7 +883,7 @@ sub setupAskDefaultAdmin
 					$msg = '';
 
 					do {
-						($rs, $rpassword) = $dialog->inputbox("\nPlease, confirm admin password: $msg", '');
+						($rs, $rpassword) = $dialog->passwordbox("\nPlease, confirm admin password: $msg", '');
 						$msg = "\n\n\\Z1Passwords do not match.\\Zn\n\nPlease try again:";
 					} while($rs != 30 &&  $rpassword ne $password);
 				}
@@ -884,8 +892,8 @@ sub setupAskDefaultAdmin
 	}
 
 	if($rs != 30) {
-		$main::questions{'ADMIN_LOGIN_NAME'} = $adminLoginName;
-		$main::questions{'ADMIN_PASSWORD'} = $password;
+		setupSetQuestion('ADMIN_LOGIN_NAME', $adminLoginName);
+		setupSetQuestion('ADMIN_PASSWORD', $password);
 	}
 
 	$rs;
@@ -907,7 +915,7 @@ sub setupAskAdminEmail
 		} while( $rs != 30 && ! Email::Valid->address($adminEmail));
 	}
 
-	$main::questions{'DEFAULT_ADMIN_ADDRESS'} = $adminEmail if $rs != 30;
+	setupSetQuestion('DEFAULT_ADMIN_ADDRESS', $adminEmail) if $rs != 30;
 
 	$rs;
 }
@@ -916,24 +924,22 @@ sub setupAskAdminEmail
 sub setupAskPhpTimezone
 {
 	my $dialog = shift;
+
 	my $defaultTimezone = DateTime->new(year => 0, time_zone => 'local')->time_zone->name;
 	my $timezone = setupGetQuestion('PHP_TIMEZONE');
 	my $rs = 0;
 
-	if(
-		$main::reconfigure ~~ ['php', 'all', 'forced'] ||
-		! ($timezone && DateTime::TimeZone->is_valid_name($timezone))
-	) {
+	if($main::reconfigure ~~ ['php', 'all', 'forced'] || ! ($timezone && DateTime::TimeZone->is_valid_name($timezone))) {
 		$timezone = $defaultTimezone if ! $timezone;
 		my $msg = '';
 
 		do {
-			($rs, $timezone) = $dialog->inputbox("\nPlease enter timezone for PHP: $msg", $timezone);
+			($rs, $timezone) = $dialog->inputbox("\nPlease enter a timezone for PHP: $msg", $timezone);
 			$msg = "\n\n\\Z1'$timezone' is not a valid timezone.\\Zn\n\nPlease, try again:";
 		} while($rs != 30 && ! DateTime::TimeZone->is_valid_name($timezone));
 	}
 
-	$main::questions{'PHP_TIMEZONE'} = $timezone if $rs != 30;
+	setupSetQuestion('PHP_TIMEZONE', $timezone) if $rs != 30;
 
 	$rs;
 }
@@ -943,197 +949,131 @@ sub setupAskSsl
 {
 	my($dialog) = shift;
 
+	my $hostname =  setupGetQuestion('SERVER_HOSTNAME');
 	my $sslEnabled = setupGetQuestion('SSL_ENABLED');
-	my $cmdOpenSsl = $main::imscpConfig{'CMD_OPENSSL'};
+	my $selfSignedCertificate = setupGetQuestion('SELFSIGNED_CERTIFICATE', 'no');
+	my $certificatKeyPath = setupGetQuestion('CERTIFICATE_KEY_PATH', "/root/");
+	my $certificatKeyPassword = setupGetQuestion('CERTIFICATE_KEY_PASSWORD');
+	my $intermediateCertificatPath = setupGetQuestion('INTERMEDIATE_CERTIFICATE_PATH', '/root/');
+	my $certificatPath = setupGetQuestion('CERTIFICATE_PATH', "/root/");
+	my $baseServerVhostPrefix = setupGetQuestion('BASE_SERVER_VHOST_PREFIX', 'http://');
+
 	my $openSSL = Modules::openssl->getInstance();
+	$openSSL->{'openssl_path'} = $main::imscpConfig{'CMD_OPENSSL'};
 
 	my $rs = 0;
 
-	if($main::reconfigure ~~ ['ssl', 'all', 'forced'] || $sslEnabled !~ /^yes|no$/i) {
-		$openSSL->{'openssl_path'} = $cmdOpenSsl;
-		$rs = setupSslDialog($dialog);
-		return $rs if $rs;
+	if($main::reconfigure ~~ ['ssl', 'all', 'forced'] || $sslEnabled !~ /^yes|no$/) {
+		SSL_DIALOG:
 
-		$sslEnabled = setupGetQuestion('SSL_ENABLED');
-	} elsif(setupGetQuestion('SSL_ENABLED', 'preseed') eq 'yes') { # We are in preseed mode
-		$sslEnabled = 'yes';
+		# Ask for SSL
+		($rs, $sslEnabled) = $dialog->radiolist(
+			"\nDo you want to activate SSL for i-MSCP?", ['no', 'yes'], $sslEnabled eq 'yes' ? 'yes' : 'no'
+		);
 
-		$main::questions{'BASE_SERVER_VHOST_PREFIX'} =
-			(setupGetQuestion('BASE_SERVER_VHOST_PREFIX', 'preseed') eq 'https://') ? 'https://' : 'http://';
+		if($sslEnabled eq 'yes' && $rs != 30) {
+			# Ask for self-signed certificat
+			($rs, $selfSignedCertificate) = $dialog->radiolist(
+				"\nDo you have an SSL certificate?",
+				['yes', 'no'],
+				($selfSignedCertificate ~~ ['yes', 'no']) ? (($selfSignedCertificate eq 'yes') ? 'no' : 'yes') : 'no'
+			);
 
-		$openSSL->{'openssl_path'} = $cmdOpenSsl;
-		$openSSL->{'new_cert_path'} = $main::imscpConfig{'GUI_CERT_DIR'};
-		$openSSL->{'new_cert_name'} = setupGetQuestion('SERVER_HOSTNAME');
-		$openSSL->{'cert_selfsigned'} = setupGetQuestion('SELFSIGNED_CERTIFICATE');
+			$selfSignedCertificate = ($selfSignedCertificate eq 'no') ? 'yes' : 'no';
 
-		if(! $openSSL->{'cert_selfsigned'}) {
-			$openSSL->{'key_path'} = setupGetQuestion('CERTIFICATE_KEY_PATH');
-			$openSSL->{'key_pass'} = setupGetQuestion('CERTIFICATE_KEY_PASSWORD');
-			$openSSL->{'intermediate_cert_path'} = setupGetQuestion('INTERMEDIATE_CERTIFICATE_PATH');
-			$openSSL->{'cert_path'} = setupGetQuestion('CERTIFICATE_PATH');
+			if($selfSignedCertificate eq 'no' && $rs != 30) {
+				# Ask for certificat key
+				my $msg = '';
 
-			$rs = $openSSL->ssl_check_all();
-		} else {
-			$openSSL->{'vhost_cert_name'} = setupGetQuestion('SERVER_HOSTNAME')
-		}
+				do {
 
-		if($rs) { # In preseed mode, will cause fatal error and it's expected
-			$rs = setupSslDialog($dialog);
-			return $rs if $rs;
-		} else {
-			$rs = $openSSL->ssl_export_all();
-			return $rs if $rs;
-		}
-	} elsif($sslEnabled eq 'yes') {
-		my $hostname = setupGetQuestion('SERVER_HOSTNAME');
-		my $guiCertDir = $main::imscpConfig{'GUI_CERT_DIR'};
+					$rs = $dialog->msgbox("\n$msg\nPlease selects your private key in next dialog.");
 
-		$openSSL->{'openssl_path'} = $cmdOpenSsl;
-		$openSSL->{'key_path'} = "$guiCertDir/$hostname.pem";
-		$openSSL->{'cert_path'} = "$guiCertDir/$hostname.pem";
-		$openSSL->{'intermediate_cert_path'} = "$guiCertDir/$hostname.pem";
+					# Ask for private key path
+					do {
+						($rs, $certificatKeyPath) = $dialog->fselect($certificatKeyPath);
+					} while($rs != 30 && ! ($certificatKeyPath && -f $certificatKeyPath));
 
-		if($openSSL->ssl_check_all()){
-			iMSCP::Dialog->factory()->msgbox("Certificate is missing or corrupted. Starting recover");
-			$rs = setupSslDialog($dialog);
-			return $rs if $rs;
-		}
-	}
+					# FIXME: Detect if a passphrase is needed automatically
+					if($rs != 30) {
+						($rs, $certificatKeyPassword) = $dialog->passwordbox(
+							"\nPlease enter the password for your private key if any:", $certificatKeyPassword
+						);
 
-	$main::questions{'SSL_ENABLED'} = $sslEnabled;
-	$main::questions{'BASE_SERVER_VHOST_PREFIX'} = 'http://' if $sslEnabled eq 'no';
+						#$certificatKeyPassword =~ s/(["\$`\\])/\\$1/g;
+					}
 
-	$rs;
-}
+					if($rs != 30) {
+						$openSSL->{'key_pass'} = $certificatKeyPassword;
+						$openSSL->{'key_path'} = $certificatKeyPath;
 
-sub setupSslDialog
-{
-	my ($dialog, $rs, $ret) = (shift, 0, '');
+						if($openSSL->ssl_check_key()) {
+							$msg = "\\Z1Wrong private key or password. Please try again.\\Zn\n\n";
+						} else {
+							$msg = '';
+						}
+					}
+				} while($rs != 30 && $msg);
 
-	my $sslEnabled = setupGetQuestion('SSL_ENABLED') || 'no';
+				# Ask for CA bundle
+				if($rs != 30) {
+					$rs = $dialog->yesno("\nDo you have an intermediate certificate (CA Bundle)?");
 
-	($rs, $sslEnabled) = $dialog->radiolist(
-		"\nDo you want to activate SSL for i-MSCP?", ['no', 'yes'], lc($sslEnabled) eq 'yes' ? 'yes' : 'no'
-	);
+                	if($rs !=30) {
+						do {
+							($rs, $intermediateCertificatPath) = $dialog->fselect($intermediateCertificatPath);
+						} while($rs != 30 && ! ($intermediateCertificatPath && -f $intermediateCertificatPath));
 
-	if($rs != 30) {
-		$main::questions{'SSL_ENABLED'} = $sslEnabled;
-
-		if($sslEnabled eq 'yes') {
-			my $openSSL = Modules::openssl->getInstance();
-
-			$openSSL->{'new_cert_path'} = $main::imscpConfig{'GUI_CERT_DIR'};
-			$openSSL->{'new_cert_name'} = setupGetQuestion('SERVER_HOSTNAME');
-
-			# TODO determine default value here
-			($rs, $ret) = $dialog->radiolist( "\nDo you have an SSL certificate?", ['yes', 'no'], 'no');
-
-			if($rs != 30) {
-				$ret = $ret eq 'yes' ? 1 : 0;
-
-				$openSSL->{'cert_selfsigned'} = 1 if ! $ret;
-				$openSSL->{'vhost_cert_name'} = setupGetQuestion('SERVER_HOSTNAME') if ! $ret;
-
-				if(! $openSSL->{'cert_selfsigned'}) {
-					$rs = setupAskCertificateKeyPath($dialog);
-					$rs = setupAskIntermediateCertificatePath($dialog) if $rs != 30;
-					$rs = setupAskCertificatePath($dialog) if $rs != 30;
+						$openSSL->{'intermediate_cert_path'} = $intermediateCertificatPath if $rs != 30;
+                	}
 				}
 
 				if($rs != 30) {
-					$rs = $openSSL->ssl_export_all();
-					return $rs if $rs;
+					$dialog->msgbox("\nPlease selects your own certificate in next dialog.");
+
+					do {
+						do {
+							($rs, $certificatPath) = $dialog->fselect($certificatPath);
+						} while($rs != 30 && ! ($certificatPath && -f $certificatPath));
+
+						$openSSL->{'cert_path'} = $certificatPath if $rs != 30;
+					} while($rs != 30 && $openSSL->ssl_check_cert());
 				}
 			}
-		}
 
-		if($rs != 30 && $sslEnabled eq 'yes') {
-			my $httpPrefix = setupGetQuestion('BASE_SERVER_VHOST_PREFIX');
+			if($rs != 30 && $sslEnabled eq 'yes') {
+				($rs, $baseServerVhostPrefix) = $dialog->radiolist(
+					"\nPlease, choose the default HTTP access mode for i-MSCP",
+					['https', 'http'],
+					$baseServerVhostPrefix eq 'https://' ? 'https' : 'http'
+				);
 
-			($rs, $ret) = $dialog->radiolist(
-				"\nPlease, choose the default access mode for i-MSCP",
-				['https', 'http'],
-				lc($httpPrefix) eq 'https://' ? 'https' : 'http'
-
-			);
-
-			$main::questions{'BASE_SERVER_VHOST_PREFIX'} = "$ret://" if $rs != 30;
-		}
-	}
-
-	$rs;
-}
-
-sub setupAskCertificateKeyPath
-{
-	my ($dialog, $rs, $ret1, $ret2, $msg) = (shift, 0, '', '', '');
-
-	my $key = '/root/' . setupGetQuestion('SERVER_HOSTNAME') . '.key';
-	my $openSSL = Modules::openssl->getInstance();
-
-	do {
-		($rs, $ret1) = $dialog->passwordbox("\nPlease enter the password for your private key if needed:$msg", $ret1);
-
-		if($rs != 30) {
-			$ret1 =~ s/(["\$`\\])/\\$1/g;
-			$openSSL->{'key_pass'} = $ret1;
-
-			do {
-				($rs, $ret2) = $dialog->fselect($key);
-			} while($rs != 30 && ! ($ret2 && -f $ret2));
-
-			if($rs != 30) {
-				$openSSL->{'key_path'} = $ret2;
-				$key = $ret2;
+				$baseServerVhostPrefix .= '://'
 			}
 		}
+	} elsif($sslEnabled eq 'yes' && ! iMSCP::Getopt->preseed) {
+		$openSSL->{'key_path'} = "$main::imscpConfig{'GUI_CERT_DIR'}/$hostname.pem";
+		$openSSL->{'intermediate_cert_path'} = "$main::imscpConfig{'GUI_CERT_DIR'}/$hostname.pem";
+		$openSSL->{'cert_path'} = "$main::imscpConfig{'GUI_CERT_DIR'}/$hostname.pem";
 
-		if($openSSL->ssl_check_key()) {
-			$msg = "\n\n\\Z1Wrong private key or password.\\Zn\n\nPlease try again:";
-		} else {
-			$msg = '';
+		if($openSSL->ssl_check_all()){
+			iMSCP::Dialog->factory()->msgbox("Certificate is missing or invalid.");
+			goto SSL_DIALOG;
 		}
 
-	} while($rs != 30 && $msg);
+		# In case the certificate is valid, we do not generate it again
+		setupSetQuestion('SETUP_SSL', 'no');
+	}
 
-	$rs;
-}
-
-sub setupAskIntermediateCertificatePath
-{
-	my ($dialog, $cert, $rs, $ret) = (shift, '/root/', 0, '');
-
-	$rs = $dialog->yesno("\nDo you have an intermediate certificate?");
-	return 0 if $rs;
-
-	do {
-		($rs, $ret) = $dialog->fselect($cert);
-	} while($rs != 30 && ! ($ret && -f $ret));
-
-	Modules::openssl->getInstance()->{'intermediate_cert_path'} = $ret if $rs != 30;
-
-	$rs;
-}
-
-sub setupAskCertificatePath
-{
-	my ($dialog, $rs, $ret) = (shift, 0, '');
-
-	my $cert = '/root/' . setupGetQuestion('SERVER_HOSTNAME') . '.crt';
-	my $openSSL = Modules::openssl->getInstance();
-
-	$dialog->msgbox("\nPlease select your certificate:");
-
-	do {
-		do {
-			($rs, $ret) = $dialog->fselect($cert);
-		} while($rs != 30 && ! ($ret && -f $ret));
-
-		if($rs != 30) {
-			$openSSL->{'cert_path'} = $ret;
-			$cert = $ret;
-		}
-	} while($rs != 30 && $openSSL->ssl_check_cert());
+	if($rs != 30) {
+		setupSetQuestion('SSL_ENABLED', $sslEnabled);
+		setupSetQuestion('SELFSIGNED_CERTIFICATE', $selfSignedCertificate);
+		setupSetQuestion('CERTIFICATE_KEY_PATH', $certificatKeyPath);
+		setupSetQuestion('CERTIFICATE_KEY_PASSWORD', $certificatKeyPassword);
+		setupSetQuestion('INTERMEDIATE_CERTIFICATE_PATH', $intermediateCertificatPath);
+		setupSetQuestion('CERTIFICATE_PATH', $certificatPath);
+		setupSetQuestion('BASE_SERVER_VHOST_PREFIX', ($sslEnabled) ? $baseServerVhostPrefix : 'http://');
+	}
 
 	$rs;
 }
@@ -1142,8 +1082,8 @@ sub setupAskCertificatePath
 sub setupAskImscpBackup
 {
 	my $dialog = shift;
+
 	my $backupImscp = setupGetQuestion('BACKUP_IMSCP');
-	$backupImscp = lc($backupImscp);
 	my $rs = 0;
 
 	if($main::reconfigure ~~ ['backup', 'all', 'forced'] || $backupImscp !~ /^yes|no$/) {
@@ -1162,7 +1102,7 @@ activate this feature.
 		);
 	}
 
-	$main::questions{'BACKUP_IMSCP'} = $backupImscp if $rs != 30;
+	setupSetQuestion('BACKUP_IMSCP', $backupImscp) if $rs != 30;
 
 	$rs;
 }
@@ -1171,11 +1111,11 @@ activate this feature.
 sub setupAskDomainBackup
 {
 	my $dialog = shift;
+
 	my $backupDomains = setupGetQuestion('BACKUP_DOMAINS');
 	my $rs = 0;
 
 	if($main::reconfigure ~~ ['backup', 'all', 'forced'] || $backupDomains !~ /^yes|no$/) {
-
 		($rs, $backupDomains) = $dialog->radiolist(
 "
 \\Z4\\Zb\\ZuDomains Backup Feature\\Zn
@@ -1194,7 +1134,7 @@ This feature allows resellers to propose backup options to their customers such 
 		);
 	}
 
-	$main::questions{'BACKUP_DOMAINS'} = $backupDomains if $rs != 30;
+	setupSetQuestion('BACKUP_DOMAINS', $backupDomains) if $rs != 30;
 
 	$rs;
 }
@@ -1214,7 +1154,7 @@ sub setupSaveOldConfig
 
 	my $cfg = $file->get();
 	unless(defined $cfg) {
-		error("$main::imscpConfig{'CONF_DIR'}/imscp.conf");
+		error("Unable to read $main::imscpConfig{'CONF_DIR'}/imscp.conf");
 		return 1;
 	}
 
@@ -1267,7 +1207,7 @@ sub setupCreateSystemDirectories
 
 	my @systemDirectories  = (
 		#[$main::imscpConfig{'USER_WEB_DIR'}, $rootUName, $rootGName, 0555],
-		#[$main::imscpConfig{'LOG_DIR'}, $rootUName,	$rootGName, 0555],
+		#[$main::imscpConfig{'LOG_DIR'}, $rootUName, $rootGName, 0555],
 		[$main::imscpConfig{'BACKUP_FILE_DIR'}, $rootUName, $rootGName, 0750]
 	);
 
@@ -1546,7 +1486,7 @@ sub setupLocalResolver
 			return 1;
 		}
 
-		if(setupGetQuestion('LOCAL_DNS_RESOLVER') =~ /^yes$/i) {
+		if(setupGetQuestion('LOCAL_DNS_RESOLVER') =~ /^yes$/) {
 			if($content !~ /nameserver 127.0.0.1/i) {
 				$content =~ s/(nameserver.*)/nameserver 127.0.0.1\n$1/i;
 			}
@@ -1591,6 +1531,7 @@ sub setupCreateDatabase
 
 	if(! setupIsImscpDb($dbName)) {
 		my ($database, $errStr) = setupGetSqlConnect();
+
 		if(! $database) {
 			error("Unable to connect to SQL server: $errStr");
 			return 1;
@@ -1598,6 +1539,7 @@ sub setupCreateDatabase
 
 		my $qdbName = $database->quoteIdentifier($dbName);
 		my $rs = $database->doQuery('dummy', "CREATE DATABASE $qdbName CHARACTER SET utf8 COLLATE utf8_unicode_ci;");
+
 		if(ref $rs ne 'HASH') {
 			error("Unable to create the '$dbName' SQL database: $rs");
 			return 1;
@@ -1644,7 +1586,7 @@ sub setupImportSqlSchema
 
 	for (@queries) {
 		my $rs = $database->doQuery('dummy', $_);
-		if(ref $rs ne 'HASH') {
+		unless(ref $rs eq 'HASH') {
 			error("Unable to execute SQL query: $rs");
 			return 1;
 		}
@@ -1667,7 +1609,7 @@ sub setupUpdateDatabase
 
 	my $file = iMSCP::File->new('filename' => "$main::imscpConfig{'ROOT_DIR'}/engine/setup/updDB.php");
 
-	my $content	= $file->get();
+	my $content = $file->get();
 	unless(defined $content) {
 		error("Unable to read $main::imscpConfig{'ROOT_DIR'}/engine/setup/updDB.php");
 		return 1;
@@ -1834,6 +1776,51 @@ sub setupDefaultAdmin
 	}
 
 	iMSCP::HooksManager->getInstance()->trigger('afterSetupDefaultAdmin');
+}
+
+# Setup SSL
+sub setupSsl
+{
+	my $hostname =  setupGetQuestion('SERVER_HOSTNAME');
+	my $selfSignedCertificate = setupGetQuestion('SELFSIGNED_CERTIFICATE');
+	my $certificatKeyPath = setupGetQuestion('CERTIFICATE_KEY_PATH');
+	my $certificatKeyPassword = setupGetQuestion('CERTIFICATE_KEY_PASSWORD');
+	my $intermediateCertificatPath = setupGetQuestion('INTERMEDIATE_CERTIFICATE_PATH');
+	my $certificatPath = setupGetQuestion('CERTIFICATE_PATH');
+	my $baseServerVhostPrefix = setupGetQuestion('BASE_SERVER_VHOST_PREFIX');
+	my $sslEnabled = setupGetQuestion('SSL_ENABLED');
+
+	if($sslEnabled eq 'yes' && setupGetQuestion('SETUP_SSL', 'yes') ne 'no') {
+		my $openSSL = Modules::openssl->getInstance();
+		$openSSL->{'openssl_path'} = $main::imscpConfig{'CMD_OPENSSL'};
+
+		# Setup library for new certificat
+		$openSSL->{'key_path'} = $certificatKeyPath;
+		$openSSL->{'key_pass'} = $certificatKeyPassword;
+		$openSSL->{'intermediate_cert_path'} = $intermediateCertificatPath;
+		$openSSL->{'new_cert_name'} = $hostname;
+		$openSSL->{'cert_path'} = $certificatPath;
+		$openSSL->{'new_cert_path'} = $main::imscpConfig{'GUI_CERT_DIR'};
+		$openSSL->{'common_name'} = $hostname;
+		$openSSL->{'cert_selfsigned'} = $selfSignedCertificate;
+
+		# FIXME
+		#
+		# 1. Self-signed certificate
+		#
+		# - One for the panel, with the common name matching the domain name from which the panel will be reachable
+		# - One for the services managed by i-MSCP (MTA, FTPD) with common name matching the server hostname
+		#
+		# 2. User certificate
+		# - In case the panel domain name doesn't match the server hostname, we must ask the admin for both, the panel
+		#
+		# In both case, the wildcard SSL option should be discarded
+
+		my $rs = $openSSL->ssl_export_all();
+		return $rs if $rs;
+	}
+
+	0;
 }
 
 # Setup crontab
@@ -2448,7 +2435,7 @@ sub setupRestartServices
 		['CMD_IMSCPN', 'restart', 1],
 		['CMD_IMSCPD', 'restart', 1],
 		['CMD_POSTGREY', 'restart', 1],
-		['CMD_POLICYD_WEIGHT', 'reload', 0]
+		['CMD_POLICYD_WEIGHT', 'reload', 0] # FIXME This should be scheduled by the addon
 	);
 
 	my ($stdout, $stderr);
@@ -2519,29 +2506,31 @@ sub setupAdditionalTasks
 ## Low level subroutines
 #
 
-# Retrieve question answer by searching it in the given source or all sources
+# Retrieve question answer
 sub setupGetQuestion
 {
-	my $question = shift;
-	my $searchIn = shift;
+	my $qname = shift;
+	my $default = shift || '';
 
-	if(! $searchIn) {
-		return $main::questions{$question} if exists $main::questions{$question};
-		return $main::preseed{$question} if exists $main::preseed{$question};
-		return exists $main::imscpConfig{$question} ? $main::imscpConfig{$question} : '';
-	} elsif($searchIn eq 'questions') {
-		return exists $main::questions{$question} ? $main::questions{$question} : '';
-	} elsif($searchIn eq 'preseed') {
-		return exists $main::preseed{$question} ? $main::preseed{$question} : '';
-	} elsif($searchIn eq 'config') {
-		return exists $main::imscpConfig{$question} ? $main::imscpConfig{$question} : '';
-	} else {
-		fatal('Unknown question source stack');
-	}
+	return (exists $main::questions{$qname})
+		? $main::questions{$qname}
+		: (
+			(exists $main::imscpConfig{$qname} && $main::imscpConfig{$qname} ne '')
+				? $main::imscpConfig{$qname}
+				: $default
+		);
+}
+
+sub setupSetQuestion
+{
+	my $qname = shift;
+	my $qvalue = shift;
+
+	$main::questions{$qname} = $qvalue;
 }
 
 # Check SQL connection
-# Return int 0 on success, 1 on failure
+# Return int 0 on success, error string on failure
 sub setupCheckSqlConnect
 {
 	my ($dbType, $dbName, $dbHost, $dbPort, $dbUser, $dbPass) = (@_);
@@ -2553,7 +2542,7 @@ sub setupCheckSqlConnect
 	$database->set('DATABASE_USER', $dbUser);
 	$database->set('DATABASE_PASSWORD', $dbPass);
 
-	$database->connect() ? 1 : 0;
+	$database->connect();
 }
 
 # Return database connection
@@ -2581,6 +2570,8 @@ sub setupGetSqlConnect
 
 	wantarray ? ($ret, $errstr) : $ret;
 }
+
+
 
 # Return int - 1 if database exists and look like an i-MSCP database, 0 othewise
 sub setupIsImscpDb

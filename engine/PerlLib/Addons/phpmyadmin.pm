@@ -23,11 +23,11 @@ Addons::phpmyadmin - i-MSCP PhpMyAdmin addon
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
-# @category		i-MSCP
-# @copyright	2010-2013 by i-MSCP | http://i-mscp.net
-# @author		Laurent Declercq <l.declercq@nuxwin.com>
-# @link			http://i-mscp.net i-MSCP Home Site
-# @license		http://www.gnu.org/licenses/gpl-2.0.html GPL v2
+# @category    i-MSCP
+# @copyright   2010-2013 by i-MSCP | http://i-mscp.net
+# @author      Laurent Declercq <l.declercq@nuxwin.com>
+# @link        http://i-mscp.net i-MSCP Home Site
+# @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
 package Addons::phpmyadmin;
 
@@ -111,6 +111,33 @@ sub setGuiPermissions
 
 	require Addons::phpmyadmin::installer;
 	Addons::phpmyadmin::installer->getInstance()->setGuiPermissions();
+}
+
+=back
+
+=head1 PRIVATE METHODS
+
+=over 4
+
+=item _init()
+
+ Called by getInstance(). Initialize PhpMyAdmin addon instance.
+
+ Return Addons::phpmyadmin
+
+=cut
+
+sub _init
+{
+	my $self = shift;
+
+	$self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/pma";
+	$self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
+	$self->{'wrkDir'} = "$self->{'cfgDir'}/working";
+
+	tie %{$self->{'config'}}, 'iMSCP::Config', 'fileName' => "$self->{'cfgDir'}/phpmyadmin.data";
+
+	$self;
 }
 
 =back
