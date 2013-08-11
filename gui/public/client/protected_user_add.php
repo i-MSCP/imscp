@@ -63,7 +63,7 @@ function client_addHtaccessUser($domainId)
 			}
 
 			if ($_POST['pass'] !== $_POST['pass_rep']) {
-				set_page_message(tr("Passwords doesn't match."), 'error');
+				set_page_message(tr("Passwords do not match."), 'error');
 				return;
 			}
 
@@ -139,7 +139,7 @@ $tpl->define_dynamic(
 
 $tpl->assign(
 	array(
-		'TR_PAGE_TITLE' => tr('Client / Webtools / Protected areas / Manage Htusers And Groups / Add Htaccess User'),
+		'TR_PAGE_TITLE' => tr('Client / Webtools / Protected Areas / Manage Users and Groups / Add User'),
 		'ISP_LOGO' => layout_getUserLogo(),
 		'TR_HTACCESS_USER' => tr('Htaccess user'),
 		'TR_USERS' => tr('User'),

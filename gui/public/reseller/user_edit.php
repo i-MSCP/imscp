@@ -178,7 +178,7 @@ function reseller_updateUserData($adminId)
 		}
 
 		if ($_POST['userpassword'] != $_POST['userpassword_repeat']) {
-			set_page_message(tr("Passwords doesn't match."), 'error');
+			set_page_message(tr("Passwords do not match."), 'error');
 			redirectTo('user_edit.php?edit_id=' . $adminId);
 		}
 
@@ -251,7 +251,7 @@ if (isset($_REQUEST['edit_id'])) {
 
 	$tpl->assign(
 		array(
-			'TR_PAGE_TITLE' => tr('i-MSCP - Reseller / Manage Customers / Customers / Edit Customer'),
+			'TR_PAGE_TITLE' => tr('Reseller / Customers / Overview / Edit Customer'),
 			'ISP_LOGO' => layout_getUserLogo(),
 			'TR_CORE_DATA' => tr('Core data'),
 			'TR_USERNAME' => tr('Username'),

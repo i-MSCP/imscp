@@ -71,13 +71,13 @@
                             <title_class>domains</title_class>
                         </domain_edit_link>
                         <customer_edit_link>
-                            <label>Edit Customer</label>
+                            <label>Edit customer</label>
                             <uri>/reseller/user_edit.php</uri>
                             <visible>0</visible>
                             <title_class>user_blue</title_class>
                         </customer_edit_link>
                         <domain_delete_link>
-                            <label>Delete Customer - {DOMAIN_NAME}</label>
+                            <label>Delete customer - {DOMAIN_NAME}</label>
                             <uri>/reseller/user_delete.php</uri>
                             <visible>0</visible>
                             <title_class>domains</title_class>
@@ -131,12 +131,12 @@
                     </pages>
                 </manage_aliasses>
                 <welcome_mail>
-                    <label>Welcome mail</label>
+                    <label>Welcome email</label>
                     <uri>/reseller/settings_welcome_mail.php</uri>
                     <title_class>email</title_class>
                 </welcome_mail>
                 <lostpassword_mail>
-                    <label>Lost password mail</label>
+                    <label>Lost password email</label>
                     <uri>/reseller/settings_lostpassword.php</uri>
                     <title_class>email</title_class>
                 </lostpassword_mail>
@@ -150,7 +150,7 @@
         </customers>
 
         <hosting_plans>
-            <label>Hosting Plans</label>
+            <label>Hosting plans</label>
             <uri>/reseller/hosting_plan.php</uri>
             <class>hosting_plans</class>
             <pages>
@@ -212,22 +212,22 @@
             <privilege_callback name="resellerHasCustomers"/>
             <pages>
                 <tickets_open>
-                    <label>Open Tickets</label>
+                    <label>Open tickets</label>
                     <uri>/reseller/ticket_system.php</uri>
                     <title_class>support</title_class>
                 </tickets_open>
                 <tickets_closed>
-                    <label>Closed Tickets</label>
+                    <label>Closed tickets</label>
                     <uri>/reseller/ticket_closed.php</uri>
                     <title_class>support</title_class>
                 </tickets_closed>
                 <new_ticket>
-                    <label>New Ticket</label>
+                    <label>New ticket</label>
                     <uri>/reseller/ticket_create.php</uri>
                     <title_class>support</title_class>
                 </new_ticket>
                 <view_ticket>
-                    <label>View Ticket</label>
+                    <label>View ticket</label>
                     <uri>/reseller/ticket_view.php</uri>
                     <title_class>support</title_class>
                     <visible>0</visible>

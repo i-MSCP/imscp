@@ -84,7 +84,7 @@ function check_sql_permissions($tpl, $customerId, $databaseId, $sqlUserList)
 
 	if ($domainSqlUsersLimit != 0 && $limits[1] >= $domainSqlUsersLimit) {
 		if (!$sqlUserList) {
-			set_page_message(tr('SQL users limit reached.'), 'error');
+			set_page_message(tr('SQL user limit reached.'), 'error');
 			redirectTo('sql_manage.php');
 		} else {
 			$tpl->assign('CREATE_SQLUSER', '');
@@ -241,7 +241,7 @@ function add_sql_user($customerId, $databaseId)
 
 		if(! isset($_POST['Add_Exist'])) { // Add new SQL user as specified in input data
 			if (empty($_POST['user_name'])) {
-				set_page_message(tr('Please enter an username.'), 'error');
+				set_page_message(tr('Please enter a username.'), 'error');
 				return;
 			}
 
@@ -251,12 +251,12 @@ function add_sql_user($customerId, $databaseId)
 			}
 
 			if (! isset($_POST['pass_rep']) || $_POST['pass'] !== $_POST['pass_rep']) {
-				set_page_message(tr("Passwords doesn't match."), 'error');
+				set_page_message(tr("Passwords do not match."), 'error');
 				return;
 			}
 
 			if (!preg_match('/^[[:alnum:]:!*+#_.-]+$/', $_POST['pass'])) {
-				set_page_message(tr("Please, don't use special chars such as '@, $, %...' in the password."), 'error');
+				set_page_message(tr("Please don't use special chars such as '@, $, %...' in the password."), 'error');
 				return;
 			}
 
@@ -305,7 +305,7 @@ function add_sql_user($customerId, $databaseId)
 
 		// Ensure that SQL user doesn't already exists
 		if (!isset($_POST['Add_Exist']) && check_db_user($sqlUser)) {
-			set_page_message(tr('SQL username name already in use.'), 'error');
+			set_page_message(tr('SQL username already in use.'), 'error');
 			return;
 		}
 
@@ -442,7 +442,7 @@ $tpl->assign(
 		'TR_PASS_REP' => tr('Repeat password'),
 		'TR_SQL_USER_NAME' => tr('SQL users'),
 		'TR_ASSIGN_EXISTING_SQL_USER' => tr('Assign existing SQL user'),
-		'TR_NEW_SQL_USER_DATA' => tr('New Sql user data')));
+		'TR_NEW_SQL_USER_DATA' => tr('New SQL user data')));
 
 generatePageMessage($tpl);
 

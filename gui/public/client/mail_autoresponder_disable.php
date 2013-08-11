@@ -114,7 +114,7 @@ function client_deactivateAutoresponder($mailAccountId)
 		set_page_message(tr('Auto-responder successfully scheduled for deactivation.'), 'success');
 	} catch (iMSCP_Exception_Database $e) {
 		$db->rollBack();
-		set_page_message(tr('An unexpected error occured, please contact your reseller.'), 'error');
+		set_page_message(tr('An unexpected error occurred, please contact your reseller.'), 'error');
 	}
 }
 

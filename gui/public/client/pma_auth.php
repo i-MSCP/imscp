@@ -151,7 +151,7 @@ function client_pmaAuth($dbUserId)
 		redirectTo(_client_pmaSetLanguage($headers['Location']));
 	}
 
-	set_page_message(tr('An error occurred while the authentication attempt.'), 'error');
+	set_page_message(tr('An error occurred during authentication.'), 'error');
 	return false;
 }
 

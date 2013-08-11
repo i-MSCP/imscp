@@ -45,7 +45,7 @@ abstract class iMSCP_Update
     protected $_lastError = '';
 
     /**
-     * Returns last error occured.
+     * Returns last error that occurred.
      *
      * @return string Last error
      */

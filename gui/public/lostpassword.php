@@ -72,7 +72,7 @@ $tpl->define_dynamic(
 
 $tpl->assign(
 	array(
-		'TR_PAGE_TITLE' => tr('i-MSCP - Multi Server Control Panel / Lost password'),
+		'TR_PAGE_TITLE' => tr('i-MSCP - Multi Server Control Panel / Lost Password'),
 		'CONTEXT_CLASS' => 'login',
 		'productLongName' => tr('internet Multi Server Control Panel'),
 		'productLink' => 'http://www.i-mscp.net',
@@ -92,7 +92,7 @@ if (isset($_GET['key']) && $_GET['key'] != '') {
 
 	// Sending new password
 	if (sendPassword($_GET['key'])) {
-		set_page_message(tr('Your new password has been sent. Check your mail.'), 'success');
+		set_page_message(tr('Your new password has been sent. Check your email.'), 'success');
 		redirectTo('index.php');
 	} else {
 		set_page_message(tr('New password has not been sent. Ask your administrator.'), 'error');

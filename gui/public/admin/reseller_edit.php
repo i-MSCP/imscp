@@ -96,7 +96,7 @@ function &admin_getData($resellerId, $forUpdate = false)
 		if ($stmt->rowCount()) {
 			$data['server_ips'] = $stmt->fetchAll();
 		} else {
-			set_page_message(tr('Unable to get the IP addresses list. Please fix this problem.'), 'error');
+			set_page_message(tr('Unable to get the IP address list. Please fix this problem.'), 'error');
 			redirectTo('manage_users.php');
 		}
 
@@ -242,23 +242,23 @@ function _admin_generateLimitsForm($tpl, &$data)
 	$tpl->assign(
 		array(
 			'TR_ACCOUNT_LIMITS' => tr('Account limits'),
-			'TR_MAX_DMN_CNT' => tr('Domains limit<br/><i>(0 unlimited)</i>', true),
+			'TR_MAX_DMN_CNT' => tr('Domain limit') . '<br/><i>(0 ' . tr('unlimited') . ')</i>',
 			'MAX_DMN_CNT' => tohtml($data['max_dmn_cnt']),
-			'TR_MAX_SUB_CNT' => tr('Subdomains limit<br /><i>(-1 disabled, 0 unlimited)</i>', true),
+			'TR_MAX_SUB_CNT' => tr('Subdomain limit') . '<br /><i>(-1 ' . tr('disabled') . ', 0 ' . tr('unlimited') . ')</i>',
 			'MAX_SUB_CNT' => tohtml($data['max_sub_cnt']),
-			'TR_MAX_ALS_CNT' => tr('Domain aliases limit<br/><i>(-1 disabled, 0 unlimited)</i>', true),
+			'TR_MAX_ALS_CNT' => tr('Domain alias limit') . '<br/><i>(-1 ' . tr('disabled') . ', 0 ' . tr('unlimited') . ')</i>',
 			'MAX_ALS_CNT' => tohtml($data['max_als_cnt']),
-			'TR_MAX_MAIL_CNT' => tr('Mail accounts limit<br/><span class="italic">(-1 disabled, 0 unlimited)</i>', true),
+			'TR_MAX_MAIL_CNT' => tr('Email account limit') . '<br/><i>(-1 ' . tr('disabled') . ', 0 ' . tr('unlimited') . ')</i>',
 			'MAX_MAIL_CNT' => tohtml($data['max_mail_cnt']),
-			'TR_MAX_FTP_CNT' => tr('FTP accounts limit<br/><i>(-1 disabled, 0 unlimited)</i>', true),
+			'TR_MAX_FTP_CNT' => tr('FTP account limit') . '<br/><i>(-1 ' . tr('disabled') . ', 0 ' . tr('unlimited') . ')</i>',
 			'MAX_FTP_CNT' => tohtml($data['max_ftp_cnt']),
-			'TR_MAX_SQL_DB_CNT' => tr('SQL databases limit<br/><i>(-1 disabled, 0 unlimited)</i>', true),
+			'TR_MAX_SQL_DB_CNT' => tr('SQL database limit') . '<br/><i>(-1 ' . tr('disabled') . ', 0 ' . tr('unlimited') . ')</i>',
 			'MAX_SQL_DB_CNT' => tohtml($data['max_sql_db_cnt']),
-			'TR_MAX_SQL_USER_CNT' => tr('SQL users limit<br/><i>(-1 disabled, 0 unlimited)</i>', true),
+			'TR_MAX_SQL_USER_CNT' => tr('SQL user limit') . '<br/><i>(-1 ' . tr('disabled') . ', 0 ' . tr('unlimited') . ')</i>',
 			'MAX_SQL_USER_CNT' => tohtml($data['max_sql_user_cnt']),
-			'TR_MAX_TRAFF_AMNT' => tr('Monthly traffic limit [MiB]<br/><i>(0 unlimited)</i>', true),
+			'TR_MAX_TRAFF_AMNT' => tr('Monthly traffic limit [MiB]') . '<br/><i>(0 ' . tr('unlimited') . ')</i>',
 			'MAX_TRAFF_AMNT' => tohtml($data['max_traff_amnt']),
-			'TR_MAX_DISK_AMNT' => tr('Disk space limit [MiB]<br/><i>(0 unlimited)</i>', true),
+			'TR_MAX_DISK_AMNT' => tr('Disk space limit [MiB]') . '<br/><i>(0 ' . tr('unlimited') . ')</i>',
 			'MAX_DISK_AMNT' => tohtml($data['max_disk_amnt'])
 		)
 	);
@@ -337,7 +337,7 @@ function _admin_generateFeaturesForm($tpl, &$data)
 			'SUPPORT_SYSTEM_YES' => ($data['support_system'] == 'yes') ? $htmlChecked : '',
 			'SUPPORT_SYSTEM_NO' => ($data['support_system'] != 'yes') ? $htmlChecked : '',
 
-			'TR_PHP_INI_PERMISSION_HELP' => tr('If yes, means that the reseller can allow its customers to edit this directive'),
+			'TR_PHP_INI_PERMISSION_HELP' => tr('Yes means that the reseller can allow his customers to edit this directive'),
 			'TR_HELP' => tr('Help'),
 			'TR_YES' => tr('Yes'),
 			'TR_NO' => tr('No'),
@@ -456,7 +456,7 @@ function admin_checkAndUpdateData($resellerId)
 
 		if (!empty($data['password']) || !empty($data['pasword_confirmation'])) {
 			if ($data['password'] != $data['password_confirmation']) {
-				set_page_message(tr("Passwords doesn't match."), 'error');
+				set_page_message(tr("Passwords do not match."), 'error');
 			}
 
 			checkPasswordSyntax($data['password']);
@@ -538,7 +538,7 @@ function admin_checkAndUpdateData($resellerId)
 				tr('mail')
 			);
 		} else {
-			set_page_message(tr('Incorrect limit for %s.', tr('mail accounts')), 'error');
+			set_page_message(tr('Incorrect limit for %s.', tr('email accounts')), 'error');
 			$rs = false;
 		}
 
@@ -563,12 +563,12 @@ function admin_checkAndUpdateData($resellerId)
 		if (!$rs = imscp_limit_check($data['max_sql_db_cnt'])) {
 			set_page_message(tr('Incorrect limit for %s.', tr('SQL databases')), 'error');
 		} elseif ($data['max_sql_db_cnt'] == -1 && $data['max_sql_user_cnt'] != -1) {
-			set_page_message(tr('SQL databases limit is disabled but SQL users limit is not.'), 'error');
+			set_page_message(tr('SQL database limit is disabled but SQL user limit is not.'), 'error');
 			$rs = false;
 		} else {
 			$rs = admin_checkResellerLimit(
 				$data['max_sql_db_cnt'], $data['current_sql_db_cnt'], $data['nbSqlDatabases'],
-				$data['unlimitedSqlDatabases'], tr('Sql databases')
+				$data['unlimitedSqlDatabases'], tr('SQL databases')
 			);
 		}
 
@@ -579,12 +579,12 @@ function admin_checkAndUpdateData($resellerId)
 		if (!$rs = imscp_limit_check($data['max_sql_user_cnt'])) {
 			set_page_message(tr('Incorrect limit for %s.', tr('SQL users')), 'error');
 		} elseif ($data['max_sql_db_cnt'] != -1 && $data['max_sql_user_cnt'] == -1) {
-			set_page_message(tr('SQL users limit is disabled but SQL databases limit is not.'), 'error');
+			set_page_message(tr('SQL user limit is disabled but SQL database limit is not.'), 'error');
 			$rs = false;
 		} else {
 			$rs = admin_checkResellerLimit(
 				$data['max_sql_user_cnt'], $data['current_sql_user_cnt'], $data['nbSqlUsers'], $data['unlimitedSqlUsers'],
-				tr('Sql Users')
+				tr('SQL users')
 			);
 		}
 
@@ -648,7 +648,7 @@ function admin_checkAndUpdateData($resellerId)
 				!$phpEditor->setRePerm('phpiniMaxInputTime', $data['php_ini_max_max_input_time']) ||
 				!$phpEditor->setRePerm('phpiniMemoryLimit', $data['php_ini_max_memory_limit'])
 			) {
-				set_page_message(tr('Please, check the PHP Editor settings.'), 'error');
+				set_page_message(tr('Please check the PHP editor settings.'), 'error');
 			}
 		} else {
 			$phpEditor->loadReDefaultPerm();

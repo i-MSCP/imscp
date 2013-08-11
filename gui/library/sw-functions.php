@@ -468,7 +468,7 @@ function get_avail_softwaredepot($tpl)
 						set_page_message(tr('Your package is corrupt. Please correct it!'), 'error');
 					} elseif (preg_match('/double_depot_/i', $rs->fields['swstatus'])) {
 						$tpl->assign(array(
-										  'TR_NAME' => tr('Package already exist in the software depot!'),
+										  'TR_NAME' => tr('Package already exists in the software depot!'),
 										  'LINK_COLOR' => '#FF0000',
 										  'TR_VERSION' => '',
 										  'TR_LANGUAGE' => '',
@@ -486,10 +486,10 @@ function get_avail_softwaredepot($tpl)
 										  'TR_SOFTWARE_RIGHTS' => '',
 										  'SOFTWARE_RIGHTS_LINK' => ''));
 
-						set_page_message(tr('This package already exist in the software depot!'), 'warning');
+						set_page_message(tr('This package already exists in the software depot!'), 'warning');
 					} elseif (preg_match('/double_res_/i', $rs->fields['swstatus'])) {
 						$tpl->assign(array(
-										  'TR_NAME' => tr('Package already exist in the reseller depot!'),
+										  'TR_NAME' => tr('Package already exists in the reseller depot!'),
 										  'LINK_COLOR' => '#FF0000',
 										  'TR_VERSION' => '',
 										  'TR_LANGUAGE' => '',
@@ -523,7 +523,7 @@ function get_avail_softwaredepot($tpl)
 
 						set_page_message(
 							tr(
-								'This package already exist in the depot of the reseller "%1$s"!',
+								'This package already exists in the depot of the reseller "%1$s"!',
 								$rs_res->fields['resellername']
 							), 'warning');
 					}
@@ -860,7 +860,7 @@ function get_reseller_rights($tpl, $software_id)
 		$tpl->assign('NO_RESELLER_LIST', '');
 	} else {
 		$tpl->assign(array(
-						  'NO_RESELLER' => tr('No Reseller with permissions for this software found'),
+						  'NO_RESELLER' => tr('No reseller with permissions for this software found.'),
 						  'LIST_RESELLER' => ''));
 
 		$tpl->parse('NO_RESELLER_LIST', '.no_reseller_list');
@@ -927,7 +927,7 @@ function get_reseller_list($tpl, $software_id)
 			$tpl->assign('NO_SELECT_RESELLER', '');
 		} else {
 			$tpl->assign(array(
-							  'NO_RESELLER_AVAILABLE' => tr('No Reseller available to add the permissions'),
+							  'NO_RESELLER_AVAILABLE' => tr('No reseller available to add the permissions.'),
 							  'SELECT_RESELLER' => '',
 							  'RESELLER_ITEM' => ''));
 
@@ -935,7 +935,7 @@ function get_reseller_list($tpl, $software_id)
 		}
 	} else {
 		$tpl->assign(array(
-						  'NO_RESELLER_AVAILABLE' => tr('No Reseller available to add the permissions'),
+						  'NO_RESELLER_AVAILABLE' => tr('No reseller available to add the permissions.'),
 						  'SELECT_RESELLER' => '',
 						  'RESELLER_ITEM' => ''));
 
@@ -1128,7 +1128,7 @@ function get_avail_software_reseller($tpl, $user_id)
 						exec_query($updatequery, $rs->fields['id']);
 
 						send_new_sw_upload($user_id, $rs->fields['filename'] . ".tar.gz", $rs->fields['id']);
-						set_page_message(tr('Package installed successfully... Awaiting release from Admin!'), 'success');
+						set_page_message(tr('Package installed successfully... Awaiting release from admin!'), 'success');
 					}
 
 					$url = "software_delete.php?id=" . $rs->fields['id'];
@@ -1216,7 +1216,7 @@ function get_avail_software_reseller($tpl, $user_id)
 							set_page_message(tr('The package is corrupt. Please correct it.'), 'error');
 						} elseif (preg_match("/double_depot_/i", $rs->fields['swstatus'])) {
 							$tpl->assign(array(
-											  'SW_NAME' => tr('Package already exist in the software repository!'),
+											  'SW_NAME' => tr('Package already exists in the software repository!'),
 											  'LINK_COLOR' => '#FF0000',
 											  'SW_VERSION' => '',
 											  'SW_LANGUAGE' => '',
@@ -1226,10 +1226,10 @@ function get_avail_software_reseller($tpl, $user_id)
 											  'TR_DELETE' => '',
 											  'SW_STATUS' => tr('deleting'),
 											  'SOFTWARE_ICON' => 'disabled'));
-							set_page_message(tr('This package already exist in the administrator software repository.'), 'error');
+							set_page_message(tr('This package already exists in the administrator software repository.'), 'error');
 						} elseif (preg_match("/double_res_/i", $rs->fields['swstatus'])) {
 							$tpl->assign(array(
-											  'SW_NAME' => tr('Package already exist in your software repository!'),
+											  'SW_NAME' => tr('Package already exists in your software repository!'),
 											  'LINK_COLOR' => '#FF0000',
 											  'SW_VERSION' => '',
 											  'SW_LANGUAGE' => '',
@@ -1240,7 +1240,7 @@ function get_avail_software_reseller($tpl, $user_id)
 											  'SW_STATUS' => tr('deleting'),
 											  'SOFTWARE_ICON' => 'disabled'));
 
-							set_page_message(tr('This package already exist in your software repository.'), 'error');
+							set_page_message(tr('This package already exists in your software repository.'), 'error');
 						}
 
 						$del_path = $cfg->GUI_SOFTWARE_DIR . "/" . $rs->fields['resellerid'] . "/" . $rs->fields['filename'] . "-" . $rs->fields['id'] . ".tar.gz";
@@ -1344,12 +1344,12 @@ function gen_user_software_action($software_id, $dmn_id, $tpl)
 }
 
 /**
- * Generate available softwares list for a specific customer.
+ * Generate available software list for a specific customer.
  *
  * @param iMSCP_pTemplate $tpl Template engine instance
  * @param int $domainId Domain unique identifier
  * @param int $resellerId Reseller unique identifier
- * @return int Total number of available softwares
+ * @return int Total number of available software
  */
 function gen_software_list($tpl, $domainId, $resellerId)
 {
@@ -1569,9 +1569,9 @@ function check_is_installed($tpl, $dmn_id, $software_id)
 						  'SOFTWARE_INSTALL_PATH' => $is_inst->fields['path'],
 						  'SOFTWARE_INSTALL_DATABASE' => $is_inst->fields['db'],
 						  'TR_SOFTWARE_INFO' => tr('Installation details'),
-						  'TR_SOFTWARE_STATUS' => tr('Software status:'),
-						  'TR_SOFTWARE_INSTALL_PATH' => tr('Installation path:'),
-						  'TR_SOFTWARE_INSTALL_DATABASE' => tr('Used database:'),
+						  'TR_SOFTWARE_STATUS' => tr('Software status'),
+						  'TR_SOFTWARE_INSTALL_PATH' => tr('Installation path'),
+						  'TR_SOFTWARE_INSTALL_DATABASE' => tr('Used database'),
 						  'SOFTWARE_INSTALL' => ''));
 
 		$tpl->parse('INSTALLED_SOFTWARE_INFO', '.installed_software_info');

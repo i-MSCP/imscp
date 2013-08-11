@@ -134,7 +134,7 @@ class iMSCP_Plugin_Manager
 	/**
 	 * Sets plugins directory
 	 *
-	 * @throws iMSCP_Plugin_Exception When $pluginDirectory doesn't exists or is not readable.
+	 * @throws iMSCP_Plugin_Exception When $pluginDirectory doesn't exist or is not readable.
 	 * @param string $pluginDir Plugins directory path
 	 */
 	public function setDirectory($pluginDir)
@@ -143,10 +143,10 @@ class iMSCP_Plugin_Manager
 			$this->pluginsDirectory = $pluginDir;
 		} else {
 			write_log(
-				sprintf("Plugin manager: Directory %s doesn't exists or is not readable", $pluginDir), E_USER_ERROR
+				sprintf("Plugin manager: Directory %s doesn't exist or is not readable", $pluginDir), E_USER_ERROR
 			);
 
-			throw new iMSCP_Plugin_Exception(sprintf("Directory %s doesn't exists or is not readable", $pluginDir));
+			throw new iMSCP_Plugin_Exception(sprintf("Directory %s doesn't exist or is not readable", $pluginDir));
 		}
 	}
 
@@ -805,9 +805,9 @@ class iMSCP_Plugin_Manager
 					}
 				} else {
 					set_page_message(
-						tr("Plugin file %s doesn't exists or is not readable.", "<strong>$pluginFile</strong>"), 'error'
+						tr("Plugin file %s doesn't exist or is not readable.", "<strong>$pluginFile</strong>"), 'error'
 					);
-					write_log(sprintf("Plugin file %s doesn't exists or is not readable.", $pluginFile), E_USER_ERROR);
+					write_log(sprintf("Plugin file %s doesn't exist or is not readable.", $pluginFile), E_USER_ERROR);
 				}
 			}
 		}

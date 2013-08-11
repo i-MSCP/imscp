@@ -74,7 +74,7 @@ class iMSCP_PHPini
 	protected $_cfg;
 
 	/**
-	 * Flag that is set to TRUE if an error occur at {link setData()}.
+	 * Flag that is set to TRUE if an error occurs at {link setData()}.
 	 *
 	 * @var bool
 	 */
@@ -88,7 +88,7 @@ class iMSCP_PHPini
 	public $flagCustomIni;
 
 	/**
-	 *  Flag that is sets to TRUE if an error occur at setClPerm().
+	 *  Flag that is sets to TRUE if an error occurs at setClPerm().
 	 *
 	 * @var bool
 	 */

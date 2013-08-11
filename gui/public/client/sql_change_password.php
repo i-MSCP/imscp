@@ -83,7 +83,7 @@ function change_sql_user_pass($db_user_id, $db_user_name)
 	}
 
 	if ($_POST['pass'] !== $_POST['pass_rep']) {
-		set_page_message(tr("Passwords doesn't match."), 'error');
+		set_page_message(tr("Passwords do not match."), 'error');
 		return;
 	}
 
@@ -118,7 +118,7 @@ function change_sql_user_pass($db_user_id, $db_user_name)
 		$stmt = exec_query('SELECT `sqlu_pass` FROM `sql_user` WHERE `sqlu_name` = ? LIMIT 1', $db_user_name);
 
 		if(!$stmt->rowCount()) {
-			throw new iMSCP_Exception('SQL user to update no found.');
+			throw new iMSCP_Exception('SQL user to update not found.');
 		}
 
 		$oldPassword = $stmt->fields['sqlu_pass'];
@@ -178,7 +178,7 @@ if (isset($_SESSION['sql_support']) && $_SESSION['sql_support'] == "no") {
 
 $tpl->assign(
 	array(
-		'TR_PAGE_TITLE' => tr('Client / Database / Overview / Update SQL User Password'),
+		'TR_PAGE_TITLE' => tr('Client / Databases / Overview / Update SQL User Password'),
 		'ISP_LOGO' => layout_getUserLogo()));
 
 $db_user_name = gen_page_data($tpl, $db_user_id);

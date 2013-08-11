@@ -114,7 +114,7 @@ function generate_users_list($tpl, $resellerId)
 	if ($recordsCount == 0) {
 		if (isset($_SESSION['search_for'])) {
 			$tpl->assign(array(
-					'USR_MESSAGE' => tr('Not found records matching the search criteria.'),
+					'USR_MESSAGE' => tr('No records found matching the search criteria.'),
 					'USERS_LIST' => '',
 					'SCROLL_PREV' => '',
 					'SCROLL_NEXT' => '',
@@ -332,7 +332,7 @@ $tpl->define_dynamic(
 
 $tpl->assign(
 	array(
-		'TR_PAGE_TITLE' => tr('Reseller / Customer / Overview'),
+		'TR_PAGE_TITLE' => tr('Reseller / Customers / Overview'),
 		'ISP_LOGO' => layout_getUserLogo(),
 		'TR_USER_STATUS' => tr('Status'),
 		'TR_DETAILS' => tr('Details'),
@@ -344,8 +344,8 @@ $tpl->assign(
 		'TR_STAT' => tr('Stats'),
 		'VL_MONTH' => date('m'),
 		'VL_YEAR' => date('Y'),
-		'TR_EDIT_DOMAIN' => tr('Edit Domain'),
-		'TR_EDIT_USER' => tr('Edit User'),
+		'TR_EDIT_DOMAIN' => tr('Edit domain'),
+		'TR_EDIT_USER' => tr('Edit user'),
 		'TR_DISK_USAGE' => tr('Disk usage'),
 		'TR_PREVIOUS' => tr('Previous'),
 		'TR_NEXT' => tr('Next')

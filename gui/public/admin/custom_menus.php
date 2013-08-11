@@ -115,7 +115,7 @@ function admin_generateForm($tpl)
 		$stmt = exec_query($query, (int)$_GET['edit_id']);
 
 		if (!$stmt->rowCount()) {
-			set_page_message(tr("The menu you trying to edit doesn't exist."), 'error');
+			set_page_message(tr("The menu you are trying to edit doesn't exist."), 'error');
 			redirectTo('custom_menus.php');
 		}
 

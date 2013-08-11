@@ -189,7 +189,7 @@ class iMSCP_Database
     public static function getInstance($connection = 'default')
     {
         if (!isset(self::$_instances[$connection])) {
-            throw new iMSCP_Exception_Database(sprintf("The Database connection %s doesn't exists.", $connection));
+            throw new iMSCP_Exception_Database(sprintf("The Database connection %s doesn't exist.", $connection));
         }
 
         return self::$_instances[$connection];
@@ -206,7 +206,7 @@ class iMSCP_Database
     public static function getRawInstance($connection = 'default')
     {
         if (!isset(self::$_instances[$connection])) {
-            throw new iMSCP_Exception_Database(sprintf("The Database connection %s doesn't exists.", $connection));
+            throw new iMSCP_Exception_Database(sprintf("The Database connection %s doesn't exist.", $connection));
         }
 
         return self::$_instances[$connection]->_db;

@@ -551,7 +551,7 @@ function layout_deleteUserLogo($logoFilePath = null, $onlyFile = false)
  * @author Laurent Declercq <l.declercq@nuxwin.com>
  * @since i-MSCP 1.0.1.4
  * @param string $logoPath Logo path to match against
- * @return bool TRUE if $logoPath is an user's logo, FALSE otherwise
+ * @return bool TRUE if $logoPath is a user's logo, FALSE otherwise
  */
 function layout_isUserLogo($logoPath)
 {

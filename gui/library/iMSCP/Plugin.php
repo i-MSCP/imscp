@@ -160,7 +160,7 @@ abstract class iMSCP_Plugin
 				'version' => '0.0.0',
 				'date' => '0000-00-00',
 				'name' => $parts[2],
-				'desc' => tr('No provided'),
+				'desc' => tr('Not provided'),
 				'url' => ''
 			),
 			$info
@@ -232,7 +232,7 @@ abstract class iMSCP_Plugin
 	 * Returns given configuration parameter.
 	 *
 	 * @param string $paramName Configuration parameter name
-	 * @return mixed Configuration parameter value or NULL if $paramName no found
+	 * @return mixed Configuration parameter value or NULL if $paramName not found
 	 */
 	final public function getConfigParam($paramName = null)
 	{

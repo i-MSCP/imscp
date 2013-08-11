@@ -785,7 +785,7 @@ function client_generatePage($tpl, $userId)
 				)
 			);
 
-			set_page_message(tr('Mail accounts list is empty.'), 'info');
+			set_page_message(tr('Email account list is empty.'), 'info');
 		}
 	} else {
 		$tpl->assign('MAIL_FEATURE', '');
@@ -870,7 +870,7 @@ if (customerHasMailOrExtMailFeatures()) {
 
 	$tpl->assign(
 		array(
-			'TR_PAGE_TITLE' => tr('Client / Mail / Overview'),
+			'TR_PAGE_TITLE' => tr('Client / Email / Overview'),
 			'ISP_LOGO' => layout_getUserLogo(),
 			'TR_MAIL' => tr('Mail'),
 			'TR_DEL_ITEM' => tr('Mark all'),
@@ -898,7 +898,7 @@ if (customerHasMailOrExtMailFeatures()) {
 			$tpl->assign(
 				array(
 					'TR_DEFAULT_EMAILS_BUTTON' => (!isset($_POST['uaction']) || $_POST['uaction'] != 'show')
-						? tr('Show default E-Mail addresses') : tr('Hide default E-Mail Addresses'),
+						? tr('Show default email addresses') : tr('Hide default email addresses'),
 					'VL_DEFAULT_EMAILS_BUTTON' => (isset($_POST['uaction']) && $_POST['uaction'] == 'show') ? 'hide' : 'show'
 				)
 			);

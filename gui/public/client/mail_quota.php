@@ -69,7 +69,7 @@ function client_getMailAccountData($mailAccountId)
 		if ($stmt->rowCount()) {
 			$mailAccountData = $stmt->fetchRow();
 		} else {
-			set_page_message(tr('Mail account not found.'), 'error');
+			set_page_message(tr('Email account not found.'), 'error');
 			redirectTo('mail_accounts.php');
 		}
 
@@ -102,7 +102,7 @@ function client_UpdateMailAccount($mailAccountData)
 				$quotaUpdate = 1;
 				$quotaValue = $_POST['quota'] * 1024 * 1024;
 			} else {
-				set_page_message(tr('Quota must be number'), 'error');
+				set_page_message(tr('Quota must be a number'), 'error');
 				return false;
 			}
 		}
@@ -123,8 +123,8 @@ function client_UpdateMailAccount($mailAccountData)
 			iMSCP_Events::onAfterEditMail, array('mailId' => $mailAccountData['mail_id'])
 		);
 
-		set_page_message(tr('Mail account quota updated.'), 'success');
-		write_log("{$_SESSION['user_logged']}: updated mail quota: {$mailAccountData['mail_addr']}", E_USER_NOTICE);
+		set_page_message(tr('Email account quota updated.'), 'success');
+		write_log("{$_SESSION['user_logged']}: updated email quota: {$mailAccountData['mail_addr']}", E_USER_NOTICE);
 		return true;
 	}
 
@@ -145,7 +145,7 @@ function client_generateQuotaForm($tpl, $mailAccountData)
 		array(
 			'MAIL_ID_VAL' => $mailAccountData['mail_id'],
 			'MAIL_ADDRESS_VAL' => tohtml($mailAccountData['mail_addr']),
-			'TR_MAIL_ACCOUNT' => tr('Mail account'),
+			'TR_MAIL_ACCOUNT' => tr('Email account'),
 		)
 	);
 }
@@ -190,7 +190,7 @@ if (isset($_GET['id'])) {
 
 	$tpl->assign(
 		array(
-			'TR_PAGE_TITLE' => tr('Client / Mail / Overview /  Edit Mail Quota'),
+			'TR_PAGE_TITLE' => tr('Client / Email / Overview / Edit Email Quota'),
 			'ISP_LOGO' => layout_getUserLogo(),
 			'TR_QUOTA' => tr('Quota in MB (0 unlimited)'),
 			'QUOTA' => $quotaValue,

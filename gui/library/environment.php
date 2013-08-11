@@ -199,9 +199,9 @@ $config->LOG_LEVEL = E_USER_WARNING;
 // Creation of webmaster, postmaster and abuse forwarders when
 $config->CREATE_DEFAULT_EMAIL_ADDRESSES = 1;
 
-// Count default e-mail (abuse, postmaster, webmaster) in user limit
-// 1: default e-mail are counted
-// 0: default e-mail are NOT counted
+// Count default email accounts (abuse, postmaster, webmaster) in user limit
+// 1: default email accounts are counted
+// 0: default email accounts are NOT counted
 $config->COUNT_DEFAULT_EMAIL_ADDRESSES = 1;
 
 // Use hard mail suspension when suspending a domain:

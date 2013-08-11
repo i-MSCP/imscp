@@ -2194,7 +2194,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	{
 		return array(
 			$this->_addIndex('sql_database', 'sqld_name', 'UNIQUE', 'sqld_name'),
-			// Remove index added in old db update, which has been removed because an user can be shared
+			// Remove index added in old db update, which has been removed because a user can be shared
 			$this->_dropIndex('sql_user', 'sqlu_name', 'sqlu_name')
 		);
 	}

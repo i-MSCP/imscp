@@ -136,7 +136,7 @@ function admin_deleteUser($userId)
 			$userType == 'reseller' && is_dir($cfg->GUI_SOFTWARE_DIR . '/' . $userId) &&
 			@rmdir($cfg->GUI_SOFTWARE_DIR . '/' . $userId) == false
 		) {
-			write_log('Unable to remove reseller softwares directory: ' . $cfg->GUI_SOFTWARE_DIR . '/' .
+			write_log('Unable to remove reseller software directory: ' . $cfg->GUI_SOFTWARE_DIR . '/' .
 				$userId, E_USER_ERROR);
 		}
 
@@ -170,7 +170,7 @@ function admin_deleteUser($userId)
 }
 
 /**
- * Delete reseller softwares.
+ * Delete reseller software.
  *
  * @param int $userId Reseller unique identifier
  * @param array $swPackages Array that contains software package to remove
@@ -529,7 +529,7 @@ if (isset($_GET['delete_id']) && !empty($_GET['delete_id'])) { # admin/reseller 
 			$queryMessagePart = '';
 		}
 
-		set_page_message(tr('Unable to schedule deletion of the customer account. Please, consult admin logs or your mail for more information.'), 'error');
+		set_page_message(tr('Unable to schedule deletion of the customer account. Please consult admin logs or your mail for more information.'), 'error');
 		write_log(
 			sprintf("System was unable to schedule deletion of customer account with ID %s. Message was: %s.", $userId, $e->getMessage() . $queryMessagePart),
 			E_USER_ERROR

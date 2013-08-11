@@ -66,7 +66,7 @@ if (isset($_GET['id'])){
 
 $tpl->assign(
 	array(
-		'TR_PAGE_TITLE' => tr('Admin / Software Management / Reseller software'),
+		'TR_PAGE_TITLE' => tr('Admin / Software Management / Reseller Software'),
 		'ISP_LOGO' => layout_getUserLogo()));
 
 $software_cnt = get_installed_res_software($tpl, $_GET['id']);
@@ -77,7 +77,7 @@ $tpl->assign(
 		'RESELLER_ID' => $reseller_id,
 		'TR_SOFTWARE_INSTALLED' => tr('Installed on'),
 		'TR_SOFTWARE_RIGHTS' => tr('Permissions'),
-		'TR_SOFTWAREDEPOT_COUNT' => tr('Total Softwares'),
+		'TR_SOFTWAREDEPOT_COUNT' => tr('Total Software'),
 		'TR_SOFTWAREDEPOT_NUM' => $software_cnt,
 		'TR_AWAITING_ACTIVATION' => tr('Awaiting activation'),
 		'TR_ACTIVATED_SOFTWARE' => tr('Reseller list'),
@@ -90,7 +90,7 @@ $tpl->assign(
 		'TR_RESELLER_ACT_NUM' => $res_cnt,
 		'TR_RESELLER_COUNT_SWDEPOT' => tr('Software repository'),
 		'TR_RESELLER_COUNT_WAITING' => tr('Awaiting activation'),
-		'TR_RESELLER_COUNT_ACTIVATED' => tr('Activated softwares'),
+		'TR_RESELLER_COUNT_ACTIVATED' => tr('Activated software'),
 		'TR_RESELLER_SOFTWARE_IN_USE' => tr('Total installations'),
 		'TR_ADMIN_SOFTWARE_PAGE_TITLE' => tr('i-MSCP - Software Installer / Management')));
 

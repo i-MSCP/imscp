@@ -117,7 +117,7 @@ $tpl->define_dynamic(
 
 $tpl->assign(
 	array(
-		'TR_PAGE_TITLE' => tr('Admin / System tools / Database Update'),
+		'TR_PAGE_TITLE' => tr('Admin / System Tools / Database Update'),
 		'ISP_LOGO' => layout_getUserLogo(),
 	)
 );

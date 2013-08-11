@@ -248,7 +248,7 @@ sub detachIpFromNetCard
 		last unless $rs;
 	}
 
-	debug("Succesfully detached $ip ") unless $rs;
+	debug("Successfully detached $ip ") unless $rs;
 	error("Unable to detach $ip") if $rs;
 
 	$rs;

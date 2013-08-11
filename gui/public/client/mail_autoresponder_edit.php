@@ -122,7 +122,7 @@ function client_updateAutoresponder($mailAccountId, $autoresponderMessage)
 			set_page_message(tr('Auto-responder successfully scheduled for update.'), 'success');
 		} catch (iMSCP_Exception_Database $e) {
 			$db->rollBack();
-			set_page_message(tr('An unexpected error occured, please contact your reseller.'), 'error');
+			set_page_message(tr('An unexpected error occurred, please contact your reseller.'), 'error');
 		}
 	}
 }
@@ -171,9 +171,9 @@ if (customerHasFeature('mail') && (isset($_REQUEST['mail_account_id']) && is_num
 
 			$tpl->assign(
 				array(
-					'TR_PAGE_TITLE' => tr('Client / Mail / Overview / Edit Auto Responder'),
+					'TR_PAGE_TITLE' => tr('Client / Email / Overview / Edit Auto Responder'),
 					'ISP_LOGO' => layout_getUserLogo(),
-					'TR_AUTORESPONDER_MESSAGE' => tr('Please, enter your auto-responder message below'),
+					'TR_AUTORESPONDER_MESSAGE' => tr('Please enter your auto-responder message below'),
 					'TR_ACTION' => tr('Update'),
 					'TR_CANCEL' => tr('Cancel'),
 					'MAIL_ACCOUNT_ID' => $mailAccountId

@@ -595,7 +595,7 @@ sub savePersistentData
 		return $rs if $rs;
 	}
 
-	# Save softwares (older path ./gui/data/softwares) to new path (./gui/data/persistent/softwares)
+	# Save software (older path ./gui/data/softwares) to new path (./gui/data/persistent/softwares)
 	if(-d "$main::imscpConfig{'ROOT_DIR'}/gui/data/softwares") {
 		$rs = execute(
 			"$main::imscpConfig{'CMD_CP'} -TRf $main::imscpConfig{'ROOT_DIR'}/gui/data/softwares " .
@@ -737,7 +737,7 @@ sub _processXmlFile($)
 	my $file = shift;
 
 	unless(-f $file) {
-		error("$file doesn't exists");
+		error("$file doesn't exist");
 		return 1;
 	}
 

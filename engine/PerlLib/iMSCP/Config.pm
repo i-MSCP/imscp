@@ -58,7 +58,7 @@ use parent 'Common::SimpleClass';
  Optional arguments for the tie command are:
   - noerrors: Do not warn when trying to access to an inexistent configuration parameter
   - nocreate: Do not create file if it doesn't already exist (throws a fatal error instead)
-  - nofail: Do not throws fatal error in case configuration file doesn't exists
+  - nofail: Do not throws fatal error in case configuration file doesn't exist
   - readonly: Sets a read-only access on the tied configuration file
 
 =cut

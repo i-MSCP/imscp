@@ -238,7 +238,7 @@ function ftp_addAccount($mainDmnName)
 		}
 
 		if ($passwd !== $passwdRepeat) {
-			set_page_message(tr("Passwords doesn't match"), 'error');
+			set_page_message(tr("Passwords do not match"), 'error');
 			$ret = false;
 		} elseif (!checkPasswordSyntax($passwd)) {
 			$ret = false;
@@ -260,7 +260,7 @@ function ftp_addAccount($mainDmnName)
 				$vfs = new iMSCP_VirtualFileSystem($mainDmnName);
 
 				if (!$vfs->exists($homeDir)) {
-					set_page_message(tr("Home directory '%s' doesn't exists", $homeDir), 'error');
+					set_page_message(tr("Home directory '%s' doesn't exist", $homeDir), 'error');
 					$ret = false;
 				}
 			}
@@ -425,7 +425,7 @@ if (is_xhr() && isset($_POST['domain_type'])) {
 	$nbFtpAccounts = get_customer_running_ftp_acc_cnt($_SESSION['user_id']);
 
 	if ($ftpAccountLimit && $nbFtpAccounts >= $ftpAccountLimit) {
-		set_page_message(tr('FTP accounts limit reached.'), 'error');
+		set_page_message(tr('FTP account limit reached.'), 'error');
 		redirectTo('ftp_accounts.php');
 	}
 
@@ -450,7 +450,7 @@ $tpl->define_dynamic(
 
 $tpl->assign(
 	array(
-		'TR_PAGE_TITLE' => tr('Client / Ftp / Add Ftp Account'),
+		'TR_PAGE_TITLE' => tr('Client / FTP / Add FTP Account'),
 		'ISP_LOGO' => layout_getUserLogo(),
 		'TR_FTP_ACCOUNT_DATA' => tr('Ftp account data'),
 		'TR_DOMAIN_TYPE_LABEL' => tr('Domain type'),

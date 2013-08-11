@@ -97,7 +97,7 @@ sub ssl_check_intermediate_cert
 	my $self = shift;
 
 	if ($self->{'intermediate_cert_path'} ne '' && ! -f $self->{'intermediate_cert_path'}) {
-		error("Intermediate SSL certificate $self->{'intermediate_cert_path'} doesn't exists.");
+		error("Intermediate SSL certificate $self->{'intermediate_cert_path'} doesn't exist.");
 		return 1;
 	}
 

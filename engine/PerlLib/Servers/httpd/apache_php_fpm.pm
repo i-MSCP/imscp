@@ -1435,7 +1435,7 @@ sub deleteTmp
 	my $max = 1440;
 
 	unless(-f "$self->{'phpfpmConfig'}->{'PHP_FPM_CONF_DIR'}/php.ini") {
-		error("$self->{'phpfpmConfig'}->{'PHP_FPM_CONF_DIR'}/php.ini doesn't exists");
+		error("$self->{'phpfpmConfig'}->{'PHP_FPM_CONF_DIR'}/php.ini doesn't exist");
 		return $rs if $rs;
 	} else {
 		my $file = iMSCP::File->new('filename' => "$self->{'phpfpmConfig'}->{'PHP_FPM_CONF_DIR'}/php.ini");
@@ -1533,7 +1533,7 @@ sub enableSite($$)
 
 			$self->{'restart'} = 'yes';
 		} else {
-			warning("Site $_ doesn't exists");
+			warning("Site $_ doesn't exist");
 		}
 	}
 
@@ -1568,7 +1568,7 @@ sub disableSite($$)
 
 			$self->{'restart'} = 'yes';
 		} else {
-			warning("Site $_ doesn't exists");
+			warning("Site $_ doesn't exist");
 		}
 	}
 

@@ -60,7 +60,7 @@ function client_updateHtaccessUser(&$dmn_id, &$uuser_id)
 			}
 
 			if ($_POST['pass'] !== $_POST['pass_rep']) {
-				set_page_message(tr("Passwords doesn't match."), 'error');
+				set_page_message(tr("Passwords do not match."), 'error');
 				return;
 			}
 
@@ -200,7 +200,7 @@ if (isset($_GET['uname']) && $_GET['uname'] !== '' && is_numeric($_GET['uname'])
 
 $tpl->assign(
 	array(
-		'TR_PAGE_TITLE' => tr('Client / Webtools / Protected areas / Manage Htusers And Groups / Edit Htaccess User'),
+		'TR_PAGE_TITLE' => tr('Client / Webtools / Protected Areas / Manage Users and Groups / Edit User'),
 		'ISP_LOGO' => layout_getUserLogo(),
 		'TR_HTACCESS_USER' => tr('Htaccess user'),
 		'TR_USERS' => tr('User'),

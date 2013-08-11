@@ -71,7 +71,7 @@ if (isset($_POST['uaction']) && $_POST['uaction'] == 'email_setup') {
 
 $tpl->assign(
 	array(
-		'TR_PAGE_TITLE' => tr('Reseller / Customers / Welcome Mail'),
+		'TR_PAGE_TITLE' => tr('Reseller / Customers / Welcome Email'),
 		'ISP_LOGO' => layout_getUserLogo()));
 
 generateNavigation($tpl);
@@ -85,8 +85,8 @@ $tpl->assign(
 		'TR_MESSAGE_TEMPLATE' => tr('Message template'),
 		'TR_SUBJECT' => tr('Subject'),
 		'TR_MESSAGE' => tr('Message'),
-		'TR_SENDER_EMAIL' => tr('Senders email'),
-		'TR_SENDER_NAME' => tr('Senders name'),
+		'TR_SENDER_EMAIL' => tr('Sender email'),
+		'TR_SENDER_NAME' => tr('Sender name'),
 		'TR_UPDATE' => tr('Update'),
 		'TR_USERTYPE' => tr('User type (admin, reseller, user)'),
 		'TR_BASE_SERVER_VHOST' => tr('URL to this admin panel'),

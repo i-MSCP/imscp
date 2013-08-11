@@ -218,7 +218,7 @@ function add_domain_alias()
     if (imscp_domain_exists($alias_name, $_SESSION['user_id'])) {
         set_page_message(tr('Domain already registered on the system.'), 'error');
     } elseif (!validates_mpoint($mount_point)) {
-        set_page_message(tr('Incorrect mount point syntax'), 'error');
+        set_page_message(tr('Incorrect mount point syntax.'), 'error');
 	} elseif(!_reseller_isAllowedMountPoint($mount_point, $cr_user_id)) {
 		set_page_message(tr('This mount point is not allowed.'), 'error');
     } elseif ($_POST['status'] == 1) {
@@ -346,7 +346,7 @@ if (!is_xhr()) {
     $tpl->assign(
 		array(
 			'ISP_LOGO' => layout_getUserLogo(),
-			'TR_PAGE_TITLE' => tr('Reseller / Customers / Add Customer / Next Step'),
+			'TR_PAGE_TITLE' => tr('Reseller / Customers / Add Customer - Next Step'),
 			'TR_MANAGE_DOMAIN_ALIAS' => tr('Manage domain alias'),
 			'TR_ADD_ALIAS' => tr('Add domain alias'),
 			'TR_DOMAIN_NAME' => tr('Domain name'),

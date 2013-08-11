@@ -52,7 +52,7 @@ function reseller_checkData()
 	if (isset($_POST['dmn_name']) && $_POST['dmn_name'] != '') {
 		$dmnName = strtolower(trim($_POST['dmn_name']));
 	} else {
-		set_page_message(tr('Domain name must be filled.'), 'error');
+		set_page_message(tr('Domain name cannot be empty.'), 'error');
 		return;
 	}
 
@@ -250,13 +250,13 @@ $tpl->define_dynamic(
 
 $tpl->assign(
 	array(
-		'TR_PAGE_TITLE' => tr('Reseller / Customers / Add customer'),
+		'TR_PAGE_TITLE' => tr('Reseller / Customers / Add Customer'),
 		'ISP_LOGO' => layout_getUserLogo(),
 		'TR_ADD_USER' => tr('Add user'),
 		'TR_CORE_DATA' => tr('Core data'),
 		'TR_DOMAIN_NAME' => tr('Domain name'),
 		'TR_DOMAIN_EXPIRE' => tr('Domain expiration date'),
-		'TR_EXPIRE_CHECKBOX' => tr('Never expire'),
+		'TR_EXPIRE_CHECKBOX' => tr('Never'),
 		'TR_CHOOSE_HOSTING_PLAN' => tr('Choose hosting plan'),
 		'TR_PERSONALIZE_TEMPLATE' => tr('Personalise template'),
 		'TR_YES' => tr('yes'),

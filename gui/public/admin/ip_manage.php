@@ -324,7 +324,7 @@ $tpl->define_dynamic(
 
 $tpl->assign(
 	array(
-		'TR_PAGE_TITLE' => tr('Admin / Settings / IP management'),
+		'TR_PAGE_TITLE' => tr('Admin / Settings / IP Management'),
 		'ISP_LOGO' => layout_getUserLogo(),
 		'MANAGE_IPS' => tr('Manage IPs'),
 		'TR_IP' => tr('IP'),
@@ -337,7 +337,7 @@ $tpl->assign(
         'TR_CANCEL' => tr('Cancel'),
 		'TR_CONFIGURED_IPS' => tr('IP addresses configured'),
 		'TR_ADD_NEW_IP' => tr('Add new IP address'),
-		'TR_IP_DATA' => tr('IP addresse data'),
+		'TR_IP_DATA' => tr('IP address data'),
 		'TR_MESSAGE_DELETE' => json_encode(tr('Are you sure you want to delete this IP: %s?', true, '%s')),
 		'TR_MESSAGE_DENY_DELETE' => json_encode(tr('You cannot remove the %s IP address.', true, '%s')),
 		'ERR_FIELDS_STACK' => (iMSCP_Registry::isRegistered('errFieldsStack'))

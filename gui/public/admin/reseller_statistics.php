@@ -152,7 +152,7 @@ $tpl->define_dynamic(
 
 $tpl->assign(
 	array(
-		'TR_PAGE_TITLE' => tr("Admin / Statistics / Reseller statistics"),
+		'TR_PAGE_TITLE' => tr("Admin / Statistics / Reseller Statistics"),
 		'ISP_LOGO' => layout_getUserLogo(),
 		'TR_RESELLER_NAME' => tr('Reseller name'),
 		'TR_TRAFF' => tr('Traffic usage'),
@@ -160,7 +160,7 @@ $tpl->assign(
 		'TR_DOMAIN' => tr('Domains'),
 		'TR_SUBDOMAIN' => tr('Subdomains'),
 		'TR_ALIAS' => tr('Aliases'),
-		'TR_MAIL' => tr('Mail accounts'),
+		'TR_MAIL' => tr('Email accounts'),
 		'TR_FTP' => tr('FTP accounts'),
 		'TR_SQL_DB' => tr('SQL databases'),
 		'TR_SQL_USER' => tr('SQL users'),
