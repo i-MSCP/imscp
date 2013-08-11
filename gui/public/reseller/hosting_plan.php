@@ -82,7 +82,7 @@ function client_generatePage($tpl)
 			)
 		);
 
-		set_page_message(tr('No hosting plan available'), 'info');
+		set_page_message(tr('No hosting plan available.'), 'info');
 	} else {
 		$tpl->assign(
 			array(
@@ -146,7 +146,7 @@ $tpl->define_dynamic(
 
 $tpl->assign(
 	array(
-		'TR_PAGE_TITLE' => tr('i-MSCP - Reseller / Manage hosting Plans / Hosting plans'),
+		'TR_PAGE_TITLE' => tr('Reseller / Hosting Plans / Overview'),
 		'ISP_LOGO' => layout_getUserLogo()
 	)
 );

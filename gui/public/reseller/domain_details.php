@@ -70,7 +70,7 @@ function admin_generatePage($tpl, $domainId)
 	);
 
 	if (!$stmt->rowCount()) {
-		$domainIpAddr = tr('No found.');
+		$domainIpAddr = tr('Not found.');
 	} else {
 		$domainIpAddr = "{$stmt->fields['ip_number']} " . (
 			($stmt->fields['ip_domain']) ? "({$stmt->fields['ip_domain']})" : ''
@@ -195,7 +195,7 @@ $tpl->define_dynamic(
 
 $tpl->assign(
 	array(
-		'TR_PAGE_TITLE' => tr('Reseller / Customer / Overview / Domain Details'),
+		'TR_PAGE_TITLE' => tr('Reseller / Customers / Overview / Domain Details'),
 		'ISP_LOGO' => layout_getUserLogo(),
 		'TR_DOMAIN_DETAILS' => tr('Domain details'),
 		'TR_DOMAIN_NAME' => tr('Domain name'),
@@ -214,7 +214,7 @@ $tpl->assign(
 		'TR_LIMIT' => tr('Limit'),
 		'TR_SUBDOM_ACCOUNTS' => tr('Subdomains'),
 		'TR_DOMALIAS_ACCOUNTS' => tr('Domain aliases'),
-		'TR_MAIL_ACCOUNTS' => tr('Mail accounts'),
+		'TR_MAIL_ACCOUNTS' => tr('Email accounts'),
 		'TR_FTP_ACCOUNTS' => tr('FTP accounts'),
 		'TR_SQL_DB_ACCOUNTS' => tr('SQL databases'),
 		'TR_SQL_USER_ACCOUNTS' => tr('SQL users'),

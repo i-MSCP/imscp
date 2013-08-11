@@ -87,7 +87,7 @@ sub step($ $ $ $)
 
 		# Make error message free of any ANSI color and end of line codes
 		$errorMessage =~ s/\x1B\[([0-9]{1,3}((;[0-9]{1,3})*)?)?[m|K]//g;
-		$errorMessage = 'An unexpected error occured...' unless $errorMessage;
+		$errorMessage = 'An unexpected error occurred...' unless $errorMessage;
 
 		iMSCP::Dialog->factory()->endGauge() if iMSCP::Dialog->factory()->hasGauge();
 		iMSCP::Dialog->factory()->msgbox(

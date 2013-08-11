@@ -175,7 +175,7 @@ sub askPhpmyadmin
 		# Ask for the PhpMyAdmin restricted SQL username
 		do{
 			($rs, $dbUser) = iMSCP::Dialog->factory()->inputbox(
-				"\nPlease enter an username for the restricted PhpMyAdmin SQL user:$msg", $dbUser
+				"\nPlease enter a username for the restricted PhpMyAdmin SQL user:$msg", $dbUser
 			);
 
 			if($dbUser eq $main::imscpConfig{'DATABASE_USER'}) {
@@ -540,7 +540,7 @@ sub _setupDatabase
 		return 1;
 	}
 
-	# The PhpMyAdmin database doesn't exists, create it
+	# The PhpMyAdmin database doesn't exist, create it
 	unless(%$rs) {
 		my $qdbName = $database->quoteIdentifier($phpmyadminDbName);
 		$rs = $database->doQuery('dummy', "CREATE DATABASE $qdbName CHARACTER SET utf8 COLLATE utf8_unicode_ci;");

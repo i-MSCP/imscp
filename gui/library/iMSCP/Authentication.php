@@ -29,7 +29,7 @@
  * Authentication class
  *
  * This is the component responsible to authenticate users. By default, only one authentication handler allowing to
- * authenticate an user with its username and password is provided but since the authentication process is pluggable,
+ * authenticate a user with its username and password is provided but since the authentication process is pluggable,
  * any plugin can provide its own authentication handler by registering it on the onAuthentication event.
  *
  * Any authentication handler registered on the onAuthentication event should act only if the previous handler failed to
@@ -122,7 +122,7 @@ class iMSCP_Authentication
 	/**
 	 * User password authentication handler
 	 *
-	 * This is the default authentication handler that try to authenticate an user using it username and password.
+	 * This is the default authentication handler that try to authenticate a user using it username and password.
 	 *
 	 * @return iMSCP_Authentication_Result
 	 * @param iMSCP_Events_Event $event

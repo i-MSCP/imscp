@@ -124,7 +124,7 @@ sub askDovecot
 		# Ask for the dovecot restricted SQL username
 		do{
 			($rs, $dbUser) = iMSCP::Dialog->factory()->inputbox(
-				"\nPlease enter an username for the restricted dovecot SQL user:", $dbUser
+				"\nPlease enter a username for the restricted dovecot SQL user:", $dbUser
 			);
 
 			# i-MSCP SQL user cannot be reused

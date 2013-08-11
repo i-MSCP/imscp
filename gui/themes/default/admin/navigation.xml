@@ -253,17 +253,17 @@
             <privilege_callback name="systemHasResellers"/>
             <pages>
                 <open_tickets>
-                    <label>Open Tickets</label>
+                    <label>Open tickets</label>
                     <uri>/admin/ticket_system.php</uri>
                     <title_class>support</title_class>
                 </open_tickets>
                 <closed_tickets>
-                    <label>Closed Tickets</label>
+                    <label>Closed tickets</label>
                     <uri>/admin/ticket_closed.php</uri>
                     <title_class>support</title_class>
                 </closed_tickets>
                 <view_ticket>
-                    <label>View Ticket</label>
+                    <label>View ticket</label>
                     <uri>/admin/ticket_view.php</uri>
                     <title_class>support</title_class>
                     <visible>0</visible>
@@ -303,12 +303,12 @@
                     <title_class>traffic</title_class>
                 </server_traffic>
                 <welcome_mail>
-                    <label>Welcome mail</label>
+                    <label>Welcome email</label>
                     <uri>/admin/settings_welcome_mail.php</uri>
                     <title_class>email</title_class>
                 </welcome_mail>
                 <lostpassword_mail>
-                    <label>Lost password mail</label>
+                    <label>Lost password email</label>
                     <uri>/admin/settings_lostpassword.php</uri>
                     <title_class>email</title_class>
                 </lostpassword_mail>
@@ -318,12 +318,12 @@
                     <title_class>general</title_class>
                 </service_ports>
                 <softwares_management>
-                    <label>Softwares management</label>
+                    <label>Software management</label>
                     <uri>/admin/software_manage.php</uri>
                     <title_class>apps_installer</title_class>
                     <pages>
                         <softwares_permissions_link>
-                            <label>Softwares permissions</label>
+                            <label>Software permissions</label>
                             <uri>/admin/software_rights.php</uri>
                             <visible>0</visible>
                             <title_class>apps_installer</title_class>

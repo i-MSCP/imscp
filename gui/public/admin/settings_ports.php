@@ -423,7 +423,7 @@ $tpl->define_dynamic(
 
 $tpl->assign(
 	array(
-		'TR_PAGE_TITLE' => tr('Admin / Settings / Service ports'),
+		'TR_PAGE_TITLE' => tr('Admin / Settings / Service Ports'),
 		'ISP_LOGO' => layout_getUserLogo(),
 		'TR_ACTION' => tr('Action'),
 		'TR_UDP' => tr('udp'),

@@ -76,7 +76,7 @@ function validate_CNAME($record, &$errorString)
 	}
 
 	if (empty($record['dns_name'])) {
-		$errorString .= tr('Name must be filled.');
+		$errorString .= tr('Name cannot be empty.');
 		return false;
 	}
 
@@ -98,7 +98,7 @@ function validate_A($record, &$errorString)
 	}
 
 	if (empty($record['dns_name'])) {
-		$errorString .= tr('Name must be filled.');
+		$errorString .= tr('Name cannot be empty.');
 		return false;
 	}
 
@@ -120,7 +120,7 @@ function validate_AAAA($record, &$errorString)
 	}
 
 	if (empty($record['dns_name'])) {
-		$errorString .= tr('Name must be filled.');
+		$errorString .= tr('Name cannot be empty.');
 		return false;
 	}
 
@@ -224,7 +224,7 @@ function checkConflict($name, $type, &$errorString)
 	} catch(Net_DNS2_Exception $e) {
 		if($e->getCode() != Net_DNS2_Lookups::RCODE_NXDOMAIN) {
 
-			$errorString .= tr("DNS server unavailable. Please, contact your reseller.");
+			$errorString .= tr("DNS server unavailable. Please contact your reseller.");
 			write_log(
 				'System was unable to validate custom DNS record using the local DNS server: ' . $e->getMessage(),
 				E_USER_ERROR

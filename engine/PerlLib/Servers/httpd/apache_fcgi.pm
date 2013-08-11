@@ -1447,7 +1447,7 @@ sub deleteTmp
 
 	if(-d "$self->{'apacheConfig'}->{'PHP_STARTER_DIR'}/master") {
 		unless (-f "$self->{'apacheConfig'}->{'PHP_STARTER_DIR'}/master/php5/php.ini") {
-			error("$self->{'apacheConfig'}->{'PHP_STARTER_DIR'}/master/php5/php.ini doesn't exists");
+			error("$self->{'apacheConfig'}->{'PHP_STARTER_DIR'}/master/php5/php.ini doesn't exist");
 			return 1;
 		} else {
 			my $fileH = iMSCP::File->new('filename' => "$self->{'apacheConfig'}->{'PHP_STARTER_DIR'}/master/php5/php.ini");
@@ -1487,7 +1487,7 @@ sub deleteTmp
 
 			for(@phpInis) {
 				unless (-f "$self->{'apacheConfig'}->{'PHP_STARTER_DIR'}/$dmn/$_/php.ini") {
-					error("File $self->{'apacheConfig'}->{'PHP_STARTER_DIR'}/$dmn/$_/php.ini doesn't exists");
+					error("File $self->{'apacheConfig'}->{'PHP_STARTER_DIR'}/$dmn/$_/php.ini doesn't exist");
 					return $rs if $rs;
 				}
 
@@ -1575,7 +1575,7 @@ sub enableSite($$)
 
 			$self->{'restart'} = 'yes';
 		} else {
-			warning("Site $_ doesn't exists");
+			warning("Site $_ doesn't exist");
 		}
 	}
 
@@ -1610,7 +1610,7 @@ sub disableSite($$)
 
 			$self->{'restart'} = 'yes';
 		} else {
-			warning("Site $_ doesn't exists");
+			warning("Site $_ doesn't exist");
 		}
 	}
 

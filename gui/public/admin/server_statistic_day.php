@@ -160,7 +160,7 @@ if (isset($_GET['month']) && isset($_GET['year']) && isset($_GET['day'])) {
 
 $tpl->assign(
 	array(
-		'TR_PAGE_TITLE' => tr('Admin / Statistics / Server statistics / Day statistics'),
+		'TR_PAGE_TITLE' => tr('Admin / Statistics / Server Statistics / Day Statistics'),
 		'ISP_LOGO' => layout_getUserLogo(),
 		'TR_MONTH' => tr('Month'),
 		'TR_YEAR' => tr('Year'),

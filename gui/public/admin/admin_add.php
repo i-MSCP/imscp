@@ -54,7 +54,7 @@ $tpl->define_dynamic(
 
 $tpl->assign(
 	array(
-		'TR_PAGE_TITLE' => tr('Admin / User / Add Admin'),
+		'TR_PAGE_TITLE' => tr('Admin / Users / Add Admin'),
 		'ISP_LOGO' => layout_getUserLogo()
 	)
 );
@@ -69,7 +69,7 @@ function add_user($tpl)
     $cfg = iMSCP_Registry::get('config');
 
 	// Dispatches the request
-	if (is_xhr()) { // Passsword generation (AJAX request)
+	if (is_xhr()) { // Password generation (AJAX request)
 		header('Content-Type: text/plain; charset=utf-8');
 		header('Cache-Control: no-cache, private');
 		header('Pragma: no-cache');
@@ -216,7 +216,7 @@ function check_user_data()
     }
 
 	if ($_POST['password'] != $_POST['password_confirmation']) {
-		set_page_message(tr("Passwords doesn't match."), 'error');
+		set_page_message(tr("Passwords do not match."), 'error');
 		return false;
 	}
 
@@ -249,7 +249,7 @@ add_user($tpl);
 $tpl->assign(
 	array(
 		'TR_EMPTY_OR_WORNG_DATA' => tr('Empty data or wrong field.'),
-		'TR_PASSWORD_NOT_MATCH' => tr("Passwords doesn't match."),
+		'TR_PASSWORD_NOT_MATCH' => tr("Passwords do not match."),
 		'TR_ADD_ADMIN' => tr('Add admin'),
 		'TR_CORE_DATA' => tr('Core data'),
 		'TR_USERNAME' => tr('Username'),

@@ -72,7 +72,7 @@ sub boot
 		%main::imscpConfig,
 		'iMSCP::Config',
 		'fileName' => ($^O =~ /bsd$/ ? '/usr/local/etc/' : '/etc/') . 'imscp/imscp.conf',
-		'nocreate' => 1, # Do not create file if it doesn't exists (raise error instead)
+		'nocreate' => 1, # Do not create file if it doesn't exist (raise error instead)
 		'noerrors' => 1, # Do not raise error when attempting to access to an inexistent configuration parameter
 		'nofail' => $options->{'nofail'} && $options->{'nofail'} eq 'yes' ? 1 : 0,
 		'readonly' => $options->{'config_readonly'} && $options->{'config_readonly'} eq 'yes' ? 1 : 0;
@@ -205,7 +205,7 @@ sub _genKeys
 
 			close KEYFILE;
 		} else {
-			fatal("Destination path $main::imscpConfig{'CONF_DIR'} doesn't exists or is not a directory");
+			fatal("Destination path $main::imscpConfig{'CONF_DIR'} doesn't exist or is not a directory");
 		}
 
 		require "$keyFile";

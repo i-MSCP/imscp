@@ -82,7 +82,7 @@ $tpl->define_dynamic(
 
 $tpl->assign(
 	array(
-		'TR_PAGE_TITLE' => tr('Reseller / Support / Tickets Open'),
+		'TR_PAGE_TITLE' => tr('Reseller / Support / Open Tickets'),
 		'ISP_LOGO' => layout_getUserLogo(),
 		'TR_TICKET_STATUS' => tr('Status'),
 		'TR_TICKET_FROM' => tr('From'),
@@ -92,9 +92,9 @@ $tpl->assign(
 		'TR_TICKET_ACTIONS' => tr('Actions'),
 		'TR_TICKET_DELETE' => tr('Delete'),
 		'TR_TICKET_CLOSE' => tr('Close'),
-		'TR_TICKET_READ_LINK' => tr('Read the ticket'),
-		'TR_TICKET_DELETE_LINK' => tr('Delete the ticket'),
-		'TR_TICKET_CLOSE_LINK' => tr('Close the ticket'),
+		'TR_TICKET_READ_LINK' => tr('Read ticket'),
+		'TR_TICKET_DELETE_LINK' => tr('Delete ticket'),
+		'TR_TICKET_CLOSE_LINK' => tr('Close ticket'),
 		'TR_TICKET_DELETE_ALL' => tr('Delete all tickets'),
 		'TR_TICKETS_DELETE_MESSAGE' => tr("Are you sure you want to delete the '%s' ticket?", '%s'),
 		'TR_TICKETS_DELETE_ALL_MESSAGE' => tr('Are you sure you want to delete all tickets?'),

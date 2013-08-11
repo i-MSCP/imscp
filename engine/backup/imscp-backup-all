@@ -112,8 +112,8 @@ sub process
 				my $groupName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} .
 					($main::imscpConfig{'SYSTEM_USER_MIN_UID'} + $rdata->{$_}->{'domain_admin_id'});
 
-				if(! -d $homeDir) { # Skip backup if home directory doesn't exists
-					warning("Home directory $homeDir doesn't exists. Skipping backup...");
+				if(! -d $homeDir) { # Skip backup if home directory doesn't exist
+					warning("Home directory $homeDir doesn't exist. Skipping backup...");
 					iMSCP::Boot->getInstance()->unlock();
 					next
 				} elsif(! -d $bkpDir) { # Create backups directory if doesn't already exists

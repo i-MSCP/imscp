@@ -207,7 +207,7 @@ class iMSCP_Events
 	const onAfterAuthentication = 'onAfterAuthentication';
 
 	/**
-	 * The onBeforeSetIdentity event is triggered before an user identity is set (logged on).
+	 * The onBeforeSetIdentity event is triggered before a user identity is set (logged on).
 	 *
 	 * The listeners receive an iMSCP_Events_Event object with the following parameters:
 	 *
@@ -219,7 +219,7 @@ class iMSCP_Events
 	const onBeforeSetIdentity = 'onBeforeSetIdentity';
 
 	/**
-	 * The onAfterSetIdentity event is triggered after an user identity is set (logged on).
+	 * The onAfterSetIdentity event is triggered after a user identity is set (logged on).
 	 *
 	 * The listeners receive an iMSCP_Events_Event object with the following parameter:
 	 *
@@ -230,7 +230,7 @@ class iMSCP_Events
 	const  onAfterSetIdentity = 'onAfterSetIdentity';
 
 	/**
-	 * The onBeforeUnsetIdentity event is triggered before an user identity is unset (logout).
+	 * The onBeforeUnsetIdentity event is triggered before a user identity is unset (logout).
 	 *
 	 * The listeners receive an iMSCP_Events_Event object with the following parameter:
 	 *
@@ -241,7 +241,7 @@ class iMSCP_Events
 	const onBeforeUnsetIdentity = 'onBeforeUnsetIdentity';
 
 	/**
-	 * The onAfterUnsetIdentity event is triggered after an user identity is unset (logged on).
+	 * The onAfterUnsetIdentity event is triggered after a user identity is unset (logged on).
 	 *
 	 * The listeners receive an iMSCP_Events_Event object with the following parameter:
 	 *
@@ -268,7 +268,7 @@ class iMSCP_Events
 	const onAfterEditAdminGeneralSettings = 'onAfterEditAdminGeneralSettings';
 
 	/**
-	 * The onBeforeAddUser event is triggered before an user is created.
+	 * The onBeforeAddUser event is triggered before a user is created.
 	 *
 	 * The listeners receive an iMSCP_Events_Event object.
 	 *
@@ -277,7 +277,7 @@ class iMSCP_Events
 	const onBeforeAddUser = 'onBeforeAddUser';
 
 	/**
-	 * The onAfterAddUser event is triggered after an user is created.
+	 * The onAfterAddUser event is triggered after a user is created.
 	 *
 	 * The listeners receive an iMSCP_Events_Event object.
 	 *
@@ -286,7 +286,7 @@ class iMSCP_Events
 	const onAfterAddUser = 'onAfterAddUser';
 
 	/**
-	 * The onBeforeEditUser event is triggered before an user is edited.
+	 * The onBeforeEditUser event is triggered before a user is edited.
 	 *
 	 * The listeners receive an iMSCP_Events_Event object with the following parameter:
 	 *
@@ -297,7 +297,7 @@ class iMSCP_Events
 	const onBeforeEditUser = 'onBeforeEditUser';
 
 	/**
-	 * The onAfterEditUser event is triggered after an user is edited.
+	 * The onAfterEditUser event is triggered after a user is edited.
 	 *
 	 * The listeners receive an iMSCP_Events_Event object with the following parameter:
 	 *
@@ -308,7 +308,7 @@ class iMSCP_Events
 	const onAfterEditUser = 'onAfterEditUser';
 
 	/**
-	 * The onBeforeDeleteUser event is triggered before an user is deleted.
+	 * The onBeforeDeleteUser event is triggered before a user is deleted.
 	 *
 	 * The listeners receive an iMSCP_Events_Event object with the following parameter:
 	 *
@@ -319,7 +319,7 @@ class iMSCP_Events
 	const onBeforeDeleteUser = 'onBeforeDeleteUser';
 
 	/**
-	 * The onAfterDeleteUser event is triggered after an user is deleted.
+	 * The onAfterDeleteUser event is triggered after a user is deleted.
 	 *
 	 * The listeners receive an iMSCP_Events_Event object with the following parameter:
 	 *

@@ -612,7 +612,7 @@ if (isset($_GET['action'])) {
 	if ($_GET['action'] == 'run_engine') {
 		if ($rqstCount > 0) {
 			if(send_request()) {
-				set_page_message(tr('Daemon request successfull.'), 'success');
+				set_page_message(tr('Daemon request successful.'), 'success');
 			} else {
 				set_page_message(tr('Daemon request failed.'), 'error');
 			}
@@ -711,14 +711,14 @@ $tpl->assign(
 		'TR_PAGE_TITLE' => tr('Admin / System Tools / Debugger'),
 		'ISP_LOGO' => layout_getUserLogo(),
 
-		'TR_USER_ERRORS' => tr('Users errors'),
-		'TR_DMN_ERRORS' => tr('Domains errors'),
-		'TR_ALS_ERRORS' => tr('Domain aliasses errors'),
-		'TR_SUB_ERRORS' => tr('Subdomains errors'),
-		'TR_ALSSUB_ERRORS' => tr('Subdomain aliases errors'),
-		'TR_MAIL_ERRORS' => tr('Mail accounts errors'),
+		'TR_USER_ERRORS' => tr('User errors'),
+		'TR_DMN_ERRORS' => tr('Domain errors'),
+		'TR_ALS_ERRORS' => tr('Domain alias errors'),
+		'TR_SUB_ERRORS' => tr('Subdomain errors'),
+		'TR_ALSSUB_ERRORS' => tr('Subdomain alias errors'),
+		'TR_MAIL_ERRORS' => tr('Email account errors'),
 		'TR_HTACCESS_ERRORS' => tr('Htaccess errors'),
-		'TR_PLUGINS_ERRORS' => tr('Plugins errors'),
+		'TR_PLUGINS_ERRORS' => tr('Plugin errors'),
 
 		'TR_DAEMON_TOOLS' => tr('i-MSCP Daemon tools'),
 		'TR_EXEC_REQUESTS' => tr('Execute requests'),

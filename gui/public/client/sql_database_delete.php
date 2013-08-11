@@ -53,7 +53,7 @@ if (customerHasFeature('sql') && isset($_GET['id'])) {
 		iMSCP_Database::getInstance()->beginTransaction();
 
 		if (!delete_sql_database(get_user_domain_id($_SESSION['user_id']), $databaseId)) {
-			throw new iMSCP_Exception(sprintf('SQL database with ID %d no found in iMSCP database or not owned by customer with ID %d.', $_SESSION['user_id'], $databaseId));
+			throw new iMSCP_Exception(sprintf('SQL database with ID %d not found in iMSCP database or not owned by customer with ID %d.', $_SESSION['user_id'], $databaseId));
 		}
 
 		// Just for fun since an implicit commit is made before in the delete_sql_database() function

@@ -135,7 +135,7 @@ class iMSCP_Validate
     }
 
     /**
-     * Validates an username.
+     * Validates a username.
      *
      * @throws iMSCP_Exception Because not implemented yet
      * @param string $username Username to be validated.

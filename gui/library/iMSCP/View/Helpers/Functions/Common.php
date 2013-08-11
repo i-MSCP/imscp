@@ -105,7 +105,7 @@ function generateLoggedFrom($tpl)
 				'YOU_ARE_LOGGED_AS' => tr(
 					'%1$s you are now logged as %2$s', $_SESSION['logged_from'], decode_idna($_SESSION['user_logged'])
 				),
-				'TR_GO_BACK' => tr('Go back')));
+				'TR_GO_BACK' => tr('Back')));
 
 		$tpl->parse('LOGGED_FROM', 'logged_from');
 	} else {

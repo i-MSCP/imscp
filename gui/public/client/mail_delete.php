@@ -150,9 +150,9 @@ if ($delete_multi_email_acc === false) {
 	iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAfterDeleteMail, array('mailId' => $delete_id));
 
 	send_request();
-	set_page_message(tr('Mail account scheduled for deletion.'), 'success');
+	set_page_message(tr('Email account scheduled for deletion.'), 'success');
 	$admin_login = decode_idna($_SESSION['user_logged']);
-	write_log("$admin_login: deletes mail account: " . $mail_name, E_USER_NOTICE);
+	write_log("$admin_login: deletes email account: " . $mail_name, E_USER_NOTICE);
 
 } else {
 	$deleted_items_counter = 0;
@@ -227,12 +227,12 @@ if ($delete_multi_email_acc === false) {
 			#update_reseller_c_props(get_reseller_id($data['domain_id']));
 
 			$admin_login = decode_idna($_SESSION['user_logged']);
-			write_log("$admin_login: deletes mail account: " . $mail_name, E_USER_NOTICE);
+			write_log("$admin_login: deletes email account: " . $mail_name, E_USER_NOTICE);
 			$deleted_items_counter++;
 		}
 	}
 	if ($deleted_items_counter > 0) {
-		set_page_message(tr('Mail account scheduled for deletion.'), 'success');
+		set_page_message(tr('Email account scheduled for deletion.'), 'success');
 		send_request();
 	}
 }

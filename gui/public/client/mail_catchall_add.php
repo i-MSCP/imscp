@@ -84,7 +84,7 @@ function gen_dynamic_page_data($tpl, $id) {
 		$alssub_mail_acc_cnt) = get_domain_running_mail_acc_cnt($dmn_id);
 
 	if ($dmn_mailacc_limit != 0 && $mail_acc_cnt >= $dmn_mailacc_limit) {
-		set_page_message(tr('Mail accounts limit reached.'), 'error');
+		set_page_message(tr('Email account limit reached.'), 'error');
 		redirectTo('mail_catchall.php');
 	}
 
@@ -462,8 +462,8 @@ generateNavigation($tpl);
 
 $tpl->assign(
 	array(
-		 'TR_PAGE_TITLE' => tr('Client / Mail / Catchall / Add Catchall'),
-		 'TR_MAIL_LIST' => tr('Mail accounts list'),
+		 'TR_PAGE_TITLE' => tr('Client / Email / Catchall / Add Catchall'),
+		 'TR_MAIL_LIST' => tr('Email account list'),
 		 'TR_CREATE_CATCHALL' => tr('Create catch all'),
 		 'TR_FORWARD_MAIL' => tr('Forward mail'),
 		 'TR_FORWARD_TO' => tr('Forward to'),

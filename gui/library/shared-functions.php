@@ -114,7 +114,7 @@ function generate_user_props($domainId)
 	$alsMax = $rs->fields['domain_alias_limit'];
 
 	// Retrieves total number of mail accounts already consumed by the customer
-	// This works with the admin option (Count default E-Mail addresses)
+	// This works with the admin option (Count default email addresses)
 	if ($cfg->COUNT_DEFAULT_EMAIL_ADDRESSES) {
 		$mailConsumed = records_count('mail_users', "mail_type NOT RLIKE '_catchall' AND domain_id", $domainId);
 	} else {
@@ -1100,7 +1100,7 @@ function utils_uploadFile($inputFieldName, $destPath)
 				set_page_message(tr('A PHP extension stopped the file upload.'), 'error');
 				break;
 			default:
-				set_page_message(tr('An unknown error occured during file upload: %s', $_FILES[$inputFieldName]['error']), 'error');
+				set_page_message(tr('An unknown error occurred during file upload: %s', $_FILES[$inputFieldName]['error']), 'error');
 		}
 
 		return false;
@@ -1598,10 +1598,10 @@ function get_client_software_permission($tpl, $userId)
 					'T_SOFTWARE_SUPPORT' => '',
 					'T_SOFTWARE_MENU' => '',
 					'SOFTWARE_ITEM' => '',
-					'TR_INSTALLATION' => tr('You do not have permissions to install software yet'),
-					'TR_SOFTWARE_DESCRIPTION' => tr('You do not have permissions to install softwares yet'),
+					'TR_INSTALLATION' => tr('You do not have permission to install software yet'),
+					'TR_SOFTWARE_DESCRIPTION' => tr('You do not have permission to install software yet'),
 					'SW_MSG' => tr('Disabled'),
-					'SW_ALLOWED' => tr('Softwares installer')
+					'SW_ALLOWED' => tr('Software installer')
 				)
 			);
 		}
@@ -1628,7 +1628,7 @@ function get_reseller_software_permission($tpl, $resellerId)
 			$tpl->assign(
 				array(
 					'SOFTWARE_SUPPORT' => tr('yes'),
-					'SW_ALLOWED' => tr('Softwares installer'),
+					'SW_ALLOWED' => tr('Software installer'),
 					'SW_MSG' => tr('enabled')
 				)
 			);
@@ -1649,11 +1649,11 @@ function get_reseller_software_permission($tpl, $resellerId)
 }
 
 /**
- * Get all softwares installer options
+ * Get all software installer options
  *
  * @author Sascha Bay (TheCry) <sascha.bay@i-mscp.net>
  * @throws iMSCP_Exception in case software installer options cannot be retrieved
- * @return array An array containing softwares installer options
+ * @return array An array containing software installer options
  */
 function get_application_installer_conf()
 {

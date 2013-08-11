@@ -104,7 +104,7 @@ $tpl->define_dynamic(
 
 $tpl->assign(
 	array(
-		'TR_PAGE_TITLE' => tr('Client / Ftp / Overview'),
+		'TR_PAGE_TITLE' => tr('Client / FTP / Overview'),
 		'ISP_LOGO' => layout_getUserLogo(),
 		'TR_TOTAL_FTP_ACCOUNTS' => tr('FTPs total'),
 		'TR_FTP_USERS' => tr('FTP Users'),

@@ -70,15 +70,15 @@ $selected_off = '';
 
 if ($cfg->MAINTENANCEMODE) {
 	$selected_on = $cfg->HTML_SELECTED;
-	set_page_message(tr('Maintenance mode is activated. Under this mode, only administrators can login.'), 'info');
+	set_page_message(tr('Maintenance mode is activated. In this mode, only administrators can login.'), 'info');
 } else {
 	$selected_off = $cfg->HTML_SELECTED;
-	set_page_message(tr('Under maintenance mode, only administrators can login.'), 'info');
+	set_page_message(tr('In maintenance mode, only administrators can login.'), 'info');
 }
 
 $tpl->assign(
 	array(
-		'TR_PAGE_TITLE' => tr('Admin / System Tools / Maintenance settings'),
+		'TR_PAGE_TITLE' => tr('Admin / System Tools / Maintenance Settings'),
 		'ISP_LOGO' => layout_getUserLogo(),
 		'TR_MAINTENANCEMODE' => tr('Maintenance mode'),
 		'TR_MESSAGE' => tr('Message'),

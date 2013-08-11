@@ -51,17 +51,17 @@ function admin_updateServerTrafficSettings($trafficLimit, $trafficWarning)
 	$retVal = true;
 
 	if (!is_numeric($trafficLimit)) {
-		set_page_message(tr('Monthly traffic limit must be a digit.'), 'error');
+		set_page_message(tr('Monthly traffic limit must be a number.'), 'error');
 		$retVal = false;
 	}
 
 	if (!is_numeric($trafficWarning)) {
-		set_page_message(tr('Monthly traffic warning must be a digit.'), 'error');
+		set_page_message(tr('Monthly traffic warning must be a number.'), 'error');
 		$retVal = false;
 	}
 
 	if ($retVal && $trafficWarning > $trafficLimit) {
-		set_page_message(tr('Monhtly traffic warning cannot be bigger than monthly traffic limit.'), 'error');
+		set_page_message(tr('Monthly traffic warning cannot be bigger than monthly traffic limit.'), 'error');
 		$retVal = false;
 	}
 
@@ -151,7 +151,7 @@ $tpl->define_dynamic(
 
 $tpl->assign(
 	array(
-		'TR_PAGE_TITLE' => tr('Admin / Settings / Server traffic'),
+		'TR_PAGE_TITLE' => tr('Admin / Settings / Server Traffic'),
 		'ISP_LOGO' => layout_getUserLogo(),
 		'TR_SET_SERVER_TRAFFIC_SETTINGS' => tr('Server traffic settings'),
 		'TR_MAX_TRAFFIC' => tr('Max traffic'),

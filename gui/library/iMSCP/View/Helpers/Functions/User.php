@@ -86,7 +86,7 @@ function gen_client_mainmenu($tpl, $menuTemplateFile)
 	}
 
 	if (customerHasFeature('mail')) {
-		$tpl->assign('TR_MENU_MAIL_ACCOUNTS', 'Mail accounts');
+		$tpl->assign('TR_MENU_MAIL_ACCOUNTS', 'Email accounts');
 	} else {
 		$tpl->assign('MAIL_FEATURE', '');
 	}
@@ -200,8 +200,8 @@ function gen_client_menu($tpl, $menuTemplateFile)
 	if (customerHasFeature('mail')) {
 		$tpl->assign(
 			array(
-				 'TR_LMENU_EMAIL_ACCOUNTS' => tr('Email Accounts'),
-				 'TR_LMENU_ADD_MAIL_USER' => tr('Add mail user'),
+				 'TR_LMENU_EMAIL_ACCOUNTS' => tr('Email accounts'),
+				 'TR_LMENU_ADD_MAIL_USER' => tr('Add email user'),
 				 'TR_LMENU_MAIL_CATCH_ALL' => tr('Catch all'),
 				 'TR_LMENU_WEBMAIL' => tr('Webmail'),
 				 'WEBMAIL_PATH' => $cfg->WEBMAIL_PATH,

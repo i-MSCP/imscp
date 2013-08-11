@@ -148,7 +148,7 @@ function admin_isValidData()
 
 	if(!empty($_POST['password']) && !empty($_POST['password_confirmation'])) {
 		if ($_POST['password'] != $_POST['password_confirmation']) {
-			set_page_message(tr("Passwords doesn't match."), 'error');
+			set_page_message(tr("Passwords do not match."), 'error');
 		}
 
 		checkPasswordSyntax($_POST['password']);
@@ -178,7 +178,7 @@ $cfg = iMSCP_Registry::get('config');
 
 
 // Dispatches the request
-if (is_xhr()) { // Passsword generation (AJAX request)
+if (is_xhr()) { // Password generation (AJAX request)
 	header('Content-Type: text/plain; charset=utf-8');
 	header('Cache-Control: no-cache, private');
 	header('Pragma: no-cache');
@@ -235,7 +235,7 @@ $tpl->assign(
 		'ISP_LOGO' => layout_getUserLogo(),
 		'TR_PAGE_TITLE' => tr('Admin / Users / Overview / Edit Admin'),
 		'TR_EMPTY_OR_WORNG_DATA' => tr('Empty data or wrong field.'),
-		'TR_PASSWORD_NOT_MATCH' => tr("Passwords doesn't match."),
+		'TR_PASSWORD_NOT_MATCH' => tr("Passwords do not match."),
 		'TR_CORE_DATA' => tr('Core data'),
 		'TR_USERNAME' => tr('Username'),
 		'TR_PASSWORD' => tr('Password'),

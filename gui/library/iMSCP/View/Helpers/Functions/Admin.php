@@ -214,7 +214,7 @@ function gen_reseller_list($tpl)
 }
 
 /**
- * Helper function to generate an user list.
+ * Helper function to generate a user list.
  *
  * @param  iMSCP_pTemplate $tpl iMSCP_pTemplate instance
  * @return void
@@ -279,7 +279,7 @@ function gen_user_list($tpl){
 	if ($rs->recordCount() == 0) {
 		if (isset($_SESSION['search_for'])) {
 			$tpl->assign(array(
-							'USR_MESSAGE' => tr('Not found records matching the search criteria.'),
+							'USR_MESSAGE' => tr('No records found matching the search criteria.'),
 							'USR_LIST' => '',
 							'SCROLL_PREV' => '',
 							'SCROLL_NEXT' => '',

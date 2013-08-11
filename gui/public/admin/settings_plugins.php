@@ -230,7 +230,7 @@ function admin_pluginManagerGeneratePluginList($tpl, $pluginManager)
 				if($pluginManager->hasError($pluginName)) {
 					$tpl->assign(
 						'PLUGIN_STATUS_DETAILS',
-						tr('An unexpected error occured: %s', '<br /><br />' . $pluginManager->getError($pluginName))
+						tr('An unexpected error occurred: %s', '<br /><br />' . $pluginManager->getError($pluginName))
 					);
 					$tpl->parse('PLUGIN_STATUS_DETAILS_BLOCK', 'plugin_status_details_block');
 					$tpl->assign(array('PLUGIN_DEACTIVATE_LINK' => '', 'PLUGIN_ACTIVATE_LINK' => ''));
@@ -416,7 +416,7 @@ if(iMSCP_Registry::isRegistered('pluginManager')) {
 	/** @var iMSCP_Plugin_Manager $pluginManager */
 	$pluginManager = iMSCP_Registry::get('pluginManager');
 } else {
-	throw new iMSCP_Plugin_Exception('An unexpected error occured');
+	throw new iMSCP_Plugin_Exception('An unexpected error occurred');
 }
 
 // Dispatches the request
@@ -499,7 +499,7 @@ $tpl->define_dynamic(
 
 $tpl->assign(
 	array(
-		'TR_PAGE_TITLE' => tr('Admin / Settings / Plugin management'),
+		'TR_PAGE_TITLE' => tr('Admin / Settings / Plugin Management'),
 		'ISP_LOGO' => layout_getUserLogo(),
 		'DATATABLE_TRANSLATIONS' => getDataTablesPluginTranslations(),
 		'TR_BULK_ACTIONS' => tr('Bulk Actions'),

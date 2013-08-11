@@ -203,7 +203,7 @@ function update_reseller_owner() {
 
 $tpl->assign(
 	array(
-		'TR_PAGE_TITLE' => tr('Admin / Users / Resellers assignment'),
+		'TR_PAGE_TITLE' => tr('Admin / Users / Resellers Assignment'),
 		'ISP_LOGO' => layout_getUserLogo()));
 
 generateNavigation($tpl);

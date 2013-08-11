@@ -86,7 +86,7 @@ if (isset($_POST['uaction']) && $_POST['uaction'] == 'apply') {
 
 $tpl->assign(
 	array(
-		'TR_PAGE_TITLE' => tr('Admin / Settings / Lost password mail'),
+		'TR_PAGE_TITLE' => tr('Admin / Settings / Lost Password Email'),
 		'ISP_LOGO' => layout_getUserLogo()));
 
 generateNavigation($tpl);
@@ -94,7 +94,7 @@ generateLoggedFrom($tpl);
 
 $tpl->assign(
 	array(
-		'TR_LOSTPW_EMAIL' => tr('Lost password e-mail'),
+		'TR_LOSTPW_EMAIL' => tr('Lost password email'),
 		'TR_MESSAGE_TEMPLATE_INFO' => tr('Message template info'),
 		'TR_MESSAGE_TEMPLATE' => tr('Message template'),
 		'SUBJECT_VALUE1' => clean_input($data_1['subject'], true),
@@ -103,16 +103,16 @@ $tpl->assign(
 		'MESSAGE_VALUE2' => tohtml($data_2['message']),
 		'SENDER_EMAIL_VALUE' => tohtml($data_1['sender_email']),
 		'SENDER_NAME_VALUE' => tohtml($data_1['sender_name']),
-		'TR_ACTIVATION_EMAIL' => tr('Activation E-Mail'),
-		'TR_PASSWORD_EMAIL' => tr('Password E-Mail'),
+		'TR_ACTIVATION_EMAIL' => tr('Activation email'),
+		'TR_PASSWORD_EMAIL' => tr('Password email'),
 		'TR_USER_LOGIN_NAME' => tr('User login (system) name'),
 		'TR_USER_PASSWORD' => tr('User password'),
 		'TR_USER_REAL_NAME' => tr('User (first and last) name'),
 		'TR_LOSTPW_LINK' => tr('Lost password link'),
 		'TR_SUBJECT' => tr('Subject'),
 		'TR_MESSAGE' => tr('Message'),
-		'TR_SENDER_EMAIL' => tr('Senders email'),
-		'TR_SENDER_NAME' => tr('Senders name'),
+		'TR_SENDER_EMAIL' => tr('Sender email'),
+		'TR_SENDER_NAME' => tr('Sender name'),
 		'TR_APPLY_CHANGES' => tr('Apply changes'),
 		'TR_BASE_SERVER_VHOST' => tr('URL to this admin panel'),
 		'TR_BASE_SERVER_VHOST_PREFIX' => tr('URL protocol')));

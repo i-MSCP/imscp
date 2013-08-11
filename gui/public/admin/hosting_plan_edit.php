@@ -315,31 +315,31 @@ function admin_checkData($phpini)
 	if ($description == '') set_page_message(tr('Description cannot be empty.'), 'error');
 
 	if (!imscp_limit_check($sub, -1)) {
-		set_page_message(tr('Incorrect subdomains limit.'), 'error');
+		set_page_message(tr('Incorrect subdomain limit.'), 'error');
 	}
 
 	if (!imscp_limit_check($als, -1)) {
-		set_page_message(tr('Incorrect domain aliases limit.'), 'error');
+		set_page_message(tr('Incorrect domain alias limit.'), 'error');
 	}
 
 	if (!imscp_limit_check($mail, -1)) {
-		set_page_message(tr('Incorrect mail accounts limit.'), 'error');
+		set_page_message(tr('Incorrect email account limit.'), 'error');
 	}
 
 	if (!imscp_limit_check($ftp, -1)) {
-		set_page_message(tr('Incorrect FTP accounts limit.'), 'error');
+		set_page_message(tr('Incorrect FTP account limit.'), 'error');
 	}
 
 	if (!imscp_limit_check($sqld, -1)) {
-		set_page_message(tr('Incorrect SQL users limit.'), 'error');
+		set_page_message(tr('Incorrect SQL user limit.'), 'error');
 	} else if ($sqlu != -1 && $sqld == -1) {
-		set_page_message(tr('SQL users limit is <i>disabled</i>.'), 'error');
+		set_page_message(tr('SQL user limit is <i>disabled</i>.'), 'error');
 	}
 
 	if (!imscp_limit_check($sqlu, -1)) {
-		set_page_message(tr('Incorrect SQL databases limit.'), 'error');
+		set_page_message(tr('Incorrect SQL database limit.'), 'error');
 	} else if ($sqlu == -1 && $sqld != -1) {
-		set_page_message(tr('SQL databases limit is not <i>disabled</i>.'), 'error');
+		set_page_message(tr('SQL database limit is not <i>disabled</i>.'), 'error');
 	}
 
 	if (!imscp_limit_check($monthlyTraffic, null)) {
@@ -439,7 +439,7 @@ function admin_UpdateHostingPlan($phpini)
 	$stmt = exec_query($query, array($name, $id));
 
 	if ($stmt->rowCount()) {
-		set_page_message(tr('An hosting plan with same name already exists.'), 'error');
+		set_page_message(tr('A hosting plan with same name already exists.'), 'error');
 		return false;
 	}
 
@@ -506,25 +506,25 @@ if (isset($cfg->HOSTING_PLANS_LEVEL) && $cfg->HOSTING_PLANS_LEVEL == 'admin') {
 
 		$tpl->assign(
 			array(
-				'TR_PAGE_TITLE' => tr('Admin / Hosting Plans / Overview / Edit hosting plan'),
+				'TR_PAGE_TITLE' => tr('Admin / Hosting Plans / Overview / Edit Hosting Plan'),
 				'ISP_LOGO' => layout_getUserLogo(),
 				'TR_PROPERTIES' => tr('Hosting plan properties'),
 				'TR_NAME' => tr('Name'),
 				'TR_DESCRIPTON' => tr('Description'),
-				'TR_MAX_SUB' => tr('Max subdomains<br/><i>(-1 disabled, 0 unlimited)</i>'),
-				'TR_MAX_ALS' => tr('Max aliases<br/><i>(-1 disabled, 0 unlimited)</i>'),
-				'TR_MAX_MAIL' => tr('Mail accounts limit<br/><i>(-1 disabled, 0 unlimited)</i>'),
-				'TR_MAX_FTP' => tr('FTP accounts limit<br/><i>(-1 disabled, 0 unlimited)</i>'),
-				'TR_MAX_SQLD' => tr('SQL databases limit<br/><i>(-1 disabled, 0 unlimited)</i>'),
-				'TR_MAX_SQLU' => tr('SQL users limit<br/><i>(-1 disabled, 0 unlimited)</i>'),
-				'TR_MONTHLY_TRAFFIC' => tr('Monthly traffic limit [MiB]<br/><i>(0 unlimited)</i>'),
-				'TR_MAX_DISKSPACE' => tr('Disk space limit [MiB]<br/><i>(0 unlimited)</i>'),
+				'TR_MAX_SUB' => tr('Subdomain limit') . '<br/><i>(-1 ' . tr('disabled') . ', 0 ' . tr('unlimited') . ')</i>',
+				'TR_MAX_ALS' => tr('Domain alias limit') . '<br/><i>(-1 ' . tr('disabled') . ', 0 ' . tr('unlimited') . ')</i>',
+				'TR_MAX_MAIL' => tr('Email account limit') . '<br/><i>(-1 ' . tr('disabled') . ', 0 ' . tr('unlimited') . ')</i>',
+				'TR_MAX_FTP' => tr('FTP account limit') . '<br/><i>(-1 ' . tr('disabled') . ', 0 ' . tr('unlimited') . ')</i>',
+				'TR_MAX_SQLD' => tr('SQL database limit') . '<br/><i>(-1 ' . tr('disabled') . ', 0 ' . tr('unlimited') . ')</i>',
+				'TR_MAX_SQLU' => tr('SQL user limit') . '<br/><i>(-1 ' . tr('disabled') . ', 0 ' . tr('unlimited') . ')</i>',
+				'TR_MONTHLY_TRAFFIC' => tr('Monthly traffic limit [MiB]') . '<br/><i>(0 ' . tr('unlimited') . ')</i>',
+				'TR_MAX_DISKSPACE' => tr('Disk space limit [MiB]') . '<br/><i>(0 ' . tr('unlimited') . ')</i>',
 				'TR_PHP' => tr('PHP'),
 				'TR_CGI' => tr('CGI'),
 				'TR_DNS' => tr('Custom DNS records'),
 				'TR_BACKUP' => tr('Backup'),
 				'TR_BACKUP_DOMAIN' => tr('Domain'),
-				'TR_BACKUP_SQL' => tr('Sql'),
+				'TR_BACKUP_SQL' => tr('SQL'),
 				'TR_BACKUP_FULL' => tr('Full'),
 				'TR_BACKUP_NO' => tr('No'),
 				'TR_SOFTWARE_SUPP' => tr('Software installer'),

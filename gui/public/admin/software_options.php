@@ -45,7 +45,7 @@ $tpl->define_dynamic(
 
 $tpl->assign(
 	array(
-		'TR_PAGE_TITLE' => tr('Admin / Settings / Software options'),
+		'TR_PAGE_TITLE' => tr('Admin / Settings / Software Options'),
 		'ISP_LOGO' => layout_getUserLogo()));
 
 if(isset($_POST['uaction']) && $_POST['uaction'] == 'apply') {
@@ -57,7 +57,7 @@ if(isset($_POST['uaction']) && $_POST['uaction'] == 'apply') {
     if(strlen($webdepot_xml_url) > 0 && $use_webdepot === '1') {
         $xml_file = @file_get_contents($webdepot_xml_url);
         if (!strpos($xml_file, 'i-MSCP web software repositories list')) {
-            set_page_message(tr("Unable to read xml file for Web softwares."), 'error');
+            set_page_message(tr("Unable to read xml file for web software."), 'error');
             $error = 1;
         }
     }

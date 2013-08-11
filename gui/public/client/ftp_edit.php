@@ -82,7 +82,7 @@ function updateFtpAccount($userid, $mainDomainName)
 
 	if (!empty($_POST['password'])) {
 		if (empty($_POST['password_repeat']) || $_POST['password'] !== $_POST['password_repeat']) {
-			set_page_message(tr("Passwords doesn't match."), 'error');
+			set_page_message(tr("Passwords do not match."), 'error');
 			$ret = false;
 		}
 
@@ -112,7 +112,7 @@ function updateFtpAccount($userid, $mainDomainName)
 
 				// Check for directory existence
 				if (!$vfs->exists($homeDir)) {
-					set_page_message(tr("Home directory '%s' doesn't exists", $homeDir), 'error');
+					set_page_message(tr("Home directory '%s' doesn't exist", $homeDir), 'error');
 					$ret = false;
 				}
 			}
@@ -182,7 +182,7 @@ if (isset($_GET['id'])) {
 
 	$tpl->assign(
 		array(
-			'TR_PAGE_TITLE' => tr('Client / Ftp / Overview / Edit Ftp Account'),
+			'TR_PAGE_TITLE' => tr('Client / FTP / Overview / Edit FTP Account'),
 			'ISP_LOGO' => layout_getUserLogo(),
 			'TR_FTP_USER_DATA' => tr('Ftp account data'),
 			'TR_USERNAME' => tr('Username'),
