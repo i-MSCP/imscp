@@ -71,8 +71,22 @@ sub ssl_check_key
 		return -1;
 	}
 
-	my $password = escapeShell($self->{'key_pass'});
-	my $cmd = "$self->{'openssl_path'} rsa -in $self->{'key_path'} -noout -passin pass:$password";
+	my $keyPaswordFile = File::Temp->new();
+
+	# Writing the private key password into a temporary file to avoid to make it visible to some utilities (such as 'ps')
+	my $file = iMSCP::File->new('filename' => $keyPaswordFile->filename);
+
+	my $rs = $file->mode(0600);
+	return $rs if $rs;
+
+	$rs = $file->set(($self->{'key_pass'} ne '' ? $self->{'key_pass'} : 'dummypass'));
+	return $rs if $rs;
+
+	$rs = $file->save();
+	return $rs if $rs;
+
+	#my $password = escapeShell($self->{'key_pass'});
+	my $cmd = "$self->{'openssl_path'} rsa -in $self->{'key_path'} -noout -passin file:" . $keyPaswordFile->filename;
 
 	my ($stdout, $stderr);
 	my $rs = execute($cmd, \$stdout, \$stderr);
@@ -192,8 +206,8 @@ sub ssl_export_key
 	my $rs = $file->mode(0600);
 	return $rs if $rs;
 
-	$rs = $file->set($self->{'key_pass'});
-	return $rs if s;
+	$rs = $file->set(($self->{'key_pass'} ne '' ? $self->{'key_pass'} : 'dummypass'));
+	return $rs if $rs;
 
 	$rs = $file->save();
 	return $rs if $rs;
@@ -278,9 +292,9 @@ sub ssl_export_intermediate_cert
 sub ssl_generate_selsigned_cert
 {
 	my $self = shift;
-	my $wildcardSSL = shift || 1;
+	my $wildcardSSL = shift || 1;
 
-	my commonName = ($wildcardSSL) ? '*.' .  $self->{'common_name'} . $self->{'common_name'};
+	my $commonName = ($wildcardSSL) ? '*.' .  $self->{'common_name'} : $self->{'common_name'};
 
 	my $cmd =
 		"$self->{'openssl_path'} req -x509 -nodes -days 1825 " .
@@ -356,7 +370,7 @@ sub _init
 	# Name of new certificat file (exluding extension)
 	$self->{'new_cert_name'} = '';
 
-	# SSL commont name (apply to self-signed certificat only)
+	# SSL common name (apply to self-signed certificat only)
 	$self->{'common_name'} = '';
 
 	# Tells whether or not we intend to generate a self-signed SSL certificat (no|yes)

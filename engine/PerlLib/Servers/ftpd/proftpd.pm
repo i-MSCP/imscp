@@ -114,7 +114,7 @@ sub restart
 	return $rs if $rs;
 
 	my ($stdout, $stderr);
-	$rs = execute("$self->{'CMD_FTPD'} restart", \$stdout, \$stderr);
+	$rs = execute("$self->{'config'}->{'CMD_FTPD'} restart", \$stdout, \$stderr);
 	debug($stdout) if $stdout;
 	# Debug target is expected below
 	debug($stderr) if $stderr && ! $rs;

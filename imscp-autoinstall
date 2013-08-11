@@ -261,7 +261,8 @@ To complete the update, you must wait until the end of the process and follow th
 		[\&setupBoot,				'Setup bootstrapping'],
 		[\&setupRegisterHooks,		'Registering servers/addons setup hooks'],
 		[\&setupDialog,				'Processing i-MSCP setup dialog if any'],
-		[\&setupTasks,				'Processing i-MSCP setup tasks']
+		[\&setupTasks,				'Processing i-MSCP setup tasks'],
+		[\&removeTmp,				'Removing temporary files'],
 	);
 
 	iMSCP::HooksManager->getInstance()->trigger('beforeInstall', \@steps) and exit 1;
@@ -291,12 +292,6 @@ Please go to $main::imscpConfig{'BASE_SERVER_VHOST_PREFIX'}$main::imscpConfig{'B
 Thanks for using i-MSCP.
 "
 	);
-
-	iMSCP::Dialog->factory()->infobox("\nRemoving temporary files...");
-
-	$rs = removeTmp();
-
-	exit $rs;
 } else {
 
 	BUILDONLY:

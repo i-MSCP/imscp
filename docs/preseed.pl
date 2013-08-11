@@ -5,7 +5,7 @@
 # See documentation at http://wiki.i-mscp.net/doku.php?id=start:preseeding
 #
 # Author: Laurent Declercq <l.declercq@nuxwin.com>
-# Last update: 2013.08.08
+# Last update: 2013.08.11
 # Status: (Experimental)
 
 ## Autoinstall questions
@@ -87,7 +87,7 @@ $main::questions{'PHP_TIMEZONE'} = 'Europe/London'; # A valid timezone (see http
 $main::questions{'SSL_ENABLED'} = 'no'; # (yes|no)
 
 # Only relevant if SSL_ENABLED is set to 'yes'
-$main::questions{'SELFSIGNED_CERTIFICATE'} = 1; # (1 for selfsigned, 0 for own certificate)
+$main::questions{'SELFSIGNED_CERTIFICATE'} = 'no'; # (1 for selfsigned, 0 for own certificate)
 
 # Only relevant if SSL_ENABLED is set to 'yes' and  SELFSIGNED_CERTIFICATE is set to 0
 $main::questions{'CERTIFICATE_KEY_PATH'} = ''; # Path to certificate key

@@ -101,8 +101,9 @@ sub askForPhpFpmPoolsLevel
 {
 	my $self = shift;
 	my $dialog = shift;
+
 	my $rs = 0;
-	my $poolsLevel = main::setupGetQuestion('PHP_FPM_POOLS_LEVEL', 'preseed') ||
+	my $poolsLevel = main::setupGetQuestion('PHP_FPM_POOLS_LEVEL') ||
 		$self->{'phpfpmConfig'}->{'PHP_FPM_POOLS_LEVEL'} || '';
 
 	if(

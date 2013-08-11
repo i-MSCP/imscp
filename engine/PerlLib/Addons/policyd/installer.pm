@@ -156,7 +156,7 @@ sub _init
 	$self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
 	$self->{'wrkDir'} = "$self->{'cfgDir'}/working";
 
-	$self->{'config'} = $self->{'phpmyadmin'}->{'config'};
+	$self->{'config'} = $self->{'policyd'}->{'config'};
 
 	my $oldConf = "$self->{'cfgDir'}/policyd.old.data";
 

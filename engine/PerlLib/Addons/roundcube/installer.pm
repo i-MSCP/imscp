@@ -265,18 +265,16 @@ sub _init
 {
 	my $self = shift;
 
-	$self->{'phpmyadmin'} = Addons::roundcube->getInstance();
+	$self->{'roundcube'} = Addons::roundcube->getInstance();
 
-	$self->{'cfgDir'} = $self->{'phpmyadmin'}->{'cfgDir'};
+	$self->{'cfgDir'} = $self->{'roundcube'}->{'cfgDir'};
 	$self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
 	$self->{'wrkDir'} = "$self->{'cfgDir'}/working";
 	$self->{'newInstall'} = 1;
 
-	$self->{'config'} = $self->{'phpmyadmin'}->{'config'};
+	$self->{'config'} = $self->{'roundcube'}->{'config'};
 
 	my $oldConf = "$self->{'cfgDir'}/roundcube.old.data";
-
-	tie %config, 'iMSCP::Config', 'fileName' => $conf, 'noerrors' => 1;
 
 	if(-f $oldConf) {
 		tie my %oldConfig, 'iMSCP::Config', 'fileName' => $oldConf, 'noerrors' => 1;

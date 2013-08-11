@@ -181,7 +181,7 @@ sub setupTasks
 		[\&setupSecureSqlInstallation,		'Securing SQL installation'],
 		[\&setupServerIps,					'Setting server ips'],
 		[\&setupDefaultAdmin, 				'Creating default admin'],
-		[\&setupSsl,						'Setup SSL'
+		[\&setupSsl,						'Setup SSL'],
 		[\&setupPreInstallServers,			'Servers pre-installation'],
 		[\&setupPreInstallAddons,			'Addons pre-installation'],
 		[\&setupInstallServers,				'Servers installation'],
@@ -950,13 +950,13 @@ sub setupAskSsl
 	my($dialog) = shift;
 
 	my $hostname =  setupGetQuestion('SERVER_HOSTNAME');
-	my $selfSignedCertificate = setupGetQuestion('SELFSIGNED_CERTIFICATE');
-	my $certificatKeyPath = setupGetQuestion('CERTIFICATE_KEY_PATH', "/root/$hostname.key");
-	my $certificatKeyPassword = setupGetQuestion('CERTIFICATE_KEY_PASSWORD');
-	my $intermediateCertificatPath = setupGetQuestion('INTERMEDIATE_CERTIFICATE_PATH');
-	my $certificatPath = setupGetQuestion('CERTIFICATE_PATH', "/root/$hostname.crt");
-	my $baseServerVhostPrefix = setupGetQuestion('BASE_SERVER_VHOST_PREFIX', 'http://');
 	my $sslEnabled = setupGetQuestion('SSL_ENABLED');
+	my $selfSignedCertificate = setupGetQuestion('SELFSIGNED_CERTIFICATE', 'no');
+	my $certificatKeyPath = setupGetQuestion('CERTIFICATE_KEY_PATH', "/root/");
+	my $certificatKeyPassword = setupGetQuestion('CERTIFICATE_KEY_PASSWORD');
+	my $intermediateCertificatPath = setupGetQuestion('INTERMEDIATE_CERTIFICATE_PATH', '/root/');
+	my $certificatPath = setupGetQuestion('CERTIFICATE_PATH', "/root/");
+	my $baseServerVhostPrefix = setupGetQuestion('BASE_SERVER_VHOST_PREFIX', 'http://');
 
 	my $openSSL = Modules::openssl->getInstance();
 	$openSSL->{'openssl_path'} = $main::imscpConfig{'CMD_OPENSSL'};
@@ -976,24 +976,31 @@ sub setupAskSsl
 			($rs, $selfSignedCertificate) = $dialog->radiolist(
 				"\nDo you have an SSL certificate?",
 				['yes', 'no'],
-				($selfSignedCertificate ~~ ['yes', 'no']) ? $selfSignedCertificate : 'no'
+				($selfSignedCertificate ~~ ['yes', 'no']) ? (($selfSignedCertificate eq 'yes') ? 'no' : 'yes') : 'no'
 			);
 
-			if($selfSignedCertificate ne 'yes' && $rs != 30) {
+			$selfSignedCertificate = ($selfSignedCertificate eq 'no') ? 'yes' : 'no';
+
+			if($selfSignedCertificate eq 'no' && $rs != 30) {
 				# Ask for certificat key
 				my $msg = '';
 
 				do {
-					($rs, $certificatKeyPassword) = $dialog->passwordbox(
-						"\nPlease enter the password for your private key if needed:$msg", $certificatKeyPassword
-					);
 
+					$rs = $dialog->msgbox("\n$msg\nPlease selects your private key in next dialog.");
+
+					# Ask for private key path
+					do {
+                    	($rs, $certificatKeyPath) = $dialog->fselect($certificatKeyPath);
+                    } while($rs != 30 && ! ($certificatKeyPath && -f $certificatKeyPath));
+
+					# FIXME: Detect if a passphrase is needed automatically
 					if($rs != 30) {
-						$certificatKeyPassword =~ s/(["\$`\\])/\\$1/g;
+						($rs, $certificatKeyPassword) = $dialog->passwordbox(
+							"\nPlease enter the password for your private key if any:", $certificatKeyPassword
+						);
 
-						do {
-							($rs, $certificatKeyPath) = $dialog->fselect($certificatKeyPath);
-						} while($rs != 30 && ! ($certificatKeyPath && -f $certificatKeyPath));
+						#$certificatKeyPassword =~ s/(["\$`\\])/\\$1/g;
 					}
 
 					if($rs != 30) {
@@ -1001,7 +1008,7 @@ sub setupAskSsl
 						$openSSL->{'key_path'} = $certificatKeyPath;
 
 						if($openSSL->ssl_check_key()) {
-							$msg = "\n\n\\Z1Wrong private key or password.\\Zn\n\nPlease try again:";
+							$msg = "\\Z1Wrong private key or password. Please try again.\\Zn\n\n";
 						} else {
 							$msg = '';
 						}
@@ -1010,7 +1017,7 @@ sub setupAskSsl
 
 				# Ask for CA bundle
 				if($rs != 30) {
-					$rs = $dialog->yesno("\nDo you have an intermediate certificate?");
+					$rs = $dialog->yesno("\nDo you have an intermediate certificate (CA Bundle)?");
 
                 	if($rs !=30) {
 						do {
@@ -1022,14 +1029,14 @@ sub setupAskSsl
 				}
 
 				if($rs != 30) {
-					$dialog->msgbox("\nPlease select your certificate:");
+					$dialog->msgbox("\nPlease selects your own certificate in next dialog.");
 
 					do {
 						do {
-							($rs, $certificatKeyPath) = $dialog->fselect($certificatKeyPath);
-						} while($rs != 30 && ! ($certificatKeyPath && -f $certificatKeyPath));
+							($rs, $certificatPath) = $dialog->fselect($certificatPath);
+						} while($rs != 30 && ! ($certificatPath && -f $certificatPath));
 
-						$openSSL->{'cert_path'} = $certificatKeyPath if $rs != 30;
+						$openSSL->{'cert_path'} = $certificatPath if $rs != 30;
 					} while($rs != 30 && $openSSL->ssl_check_cert());
 				}
 			}
@@ -1040,9 +1047,11 @@ sub setupAskSsl
 					['https', 'http'],
 					$baseServerVhostPrefix eq 'https://' ? 'https' : 'http'
 				);
+
+				$baseServerVhostPrefix .= '://'
 			}
 		}
-	} elsif($sssEnabled eq 'yes' && ! iMSCP::Getopt->preseed) {
+	} elsif($sslEnabled eq 'yes' && ! iMSCP::Getopt->preseed) {
 		$openSSL->{'key_path'} = "$main::imscpConfig{'GUI_CERT_DIR'}/$hostname.pem";
 		$openSSL->{'intermediate_cert_path'} = "$main::imscpConfig{'GUI_CERT_DIR'}/$hostname.pem";
 		$openSSL->{'cert_path'} = "$main::imscpConfig{'GUI_CERT_DIR'}/$hostname.pem";
@@ -1060,7 +1069,7 @@ sub setupAskSsl
 		setupSetQuestion('CERTIFICATE_KEY_PASSWORD', $certificatKeyPassword);
 		setupSetQuestion('INTERMEDIATE_CERTIFICATE_PATH', $intermediateCertificatPath);
 		setupSetQuestion('CERTIFICATE_PATH', $certificatPath);
-		setupSetQuestion('BASE_SERVER_VHOST_PREFIX', ($sslEnabled) ? $baseServerVhostPrefix . '://' : 'http://');
+		setupSetQuestion('BASE_SERVER_VHOST_PREFIX', ($sslEnabled) ? $baseServerVhostPrefix : 'http://');
 	}
 
 	$rs;
@@ -1790,6 +1799,7 @@ sub setupSsl
 		$openSSL->{'cert_path'} = $certificatPath;
 		$openSSL->{'new_cert_path'} = $main::imscpConfig{'GUI_CERT_DIR'};
 		$openSSL->{'common_name'} = $hostname;
+		$openSSL->{'cert_selfsigned'} = $selfSignedCertificate;
 
 		# FIXME
 		#
@@ -2422,7 +2432,7 @@ sub setupRestartServices
 		['CMD_IMSCPN', 'restart', 1],
 		['CMD_IMSCPD', 'restart', 1],
 		['CMD_POSTGREY', 'restart', 1],
-		['CMD_POLICYD_WEIGHT', 'reload', 0]
+		['CMD_POLICYD_WEIGHT', 'reload', 0] # FIXME This should be scheduled by the addon
 	);
 
 	my ($stdout, $stderr);
@@ -2499,7 +2509,13 @@ sub setupGetQuestion
 	my $qname = shift;
 	my $default = shift || '';
 
-	return (exists $main::questions{$qname}) ? $main::questions{$qname} : $default;
+	return (exists $main::questions{$qname})
+		? $main::questions{$qname}
+		: (
+			(exists $main::imscpConfig{$qname} && $main::imscpConfig{$qname} ne '')
+				? $main::imscpConfig{$qname}
+				: $default
+		);
 }
 
 sub setupSetQuestion

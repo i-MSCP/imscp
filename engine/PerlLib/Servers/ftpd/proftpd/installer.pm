@@ -220,7 +220,7 @@ sub _setupDatabase
 	my $dbUserHost = main::setupGetQuestion('DATABASE_USER_HOST');
 	my $dbPass = $self->{'config'}->{'DATABASE_PASSWORD'};
 
-	my $rs = $self->{'hooksManager'}->trigger('beforeFtpdSetupDb', $dbUser, $dbPass, $dbOldUser);
+	my $rs = $self->{'hooksManager'}->trigger('beforeFtpdSetupDb', $dbUser, $dbPass);
 	return $rs if $rs;
 
 	# Remove old proftpd restricted SQL user and all it privileges (if any)
@@ -267,7 +267,7 @@ sub _setupDatabase
 		}
 	}
 
-	$self->{'hooksManager'}->trigger('afterFtpSetupDb', $dbUser, $dbPass,  $dbOldUser,);
+	$self->{'hooksManager'}->trigger('afterFtpSetupDb', $dbUser, $dbPass);
 }
 
 sub _buildConfigFile
