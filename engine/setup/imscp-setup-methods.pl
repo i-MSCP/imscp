@@ -171,29 +171,29 @@ sub setupTasks
 	my $rs;
 
 	my @steps = (
-		[\&setupSaveOldConfig,				'Saving old i-MSCP main configuration file'],
-		[\&setupWriteNewConfig,				'Write new i-MSCP main configuration file'],
-		[\&setupCreateMasterGroup,			'Creating i-MSCP system master group'],
-		[\&setupCreateSystemDirectories,	'Creating system directories'],
-		[\&setupServerHostname,				'Setting server hostname'],
-		[\&setupLocalResolver,				'Setting local resolver'],
-		[\&setupCreateDatabase,				'Creating/updating i-MSCP database'],
-		[\&setupSecureSqlInstallation,		'Securing SQL installation'],
-		[\&setupServerIps,					'Setting server ips'],
-		[\&setupDefaultAdmin, 				'Creating default admin'],
-		[\&setupSsl,						'Setup SSL'],
-		[\&setupPreInstallServers,			'Servers pre-installation'],
-		[\&setupPreInstallAddons,			'Addons pre-installation'],
-		[\&setupInstallServers,				'Servers installation'],
-		[\&setupInstallAddons,				'Addons installation'],
-		[\&setupPostInstallServers,			'Servers post-installation'],
-		[\&setupPostInstallAddons,			'Addons post-installation'],
-		[\&setupCron,						'Setup cron tasks'],
-		[\&setupInitScripts,				'Setting i-MSCP init scripts'],
-		[\&setupRebuildCustomerFiles,		'Rebuilding customers files'],
-		[\&setupSetPermissions,				'Setting permissions'],
-		[\&setupRestartServices,			'Restarting services'],
-		[\&setupAdditionalTasks,			'Processing additional tasks']
+		[\&setupSaveOldConfig,              'Saving old i-MSCP main configuration file'],
+		[\&setupWriteNewConfig,             'Write new i-MSCP main configuration file'],
+		[\&setupCreateMasterGroup,          'Creating i-MSCP system master group'],
+		[\&setupCreateSystemDirectories,    'Creating system directories'],
+		[\&setupServerHostname,             'Setting server hostname'],
+		[\&setupLocalResolver,              'Setting local resolver'],
+		[\&setupCreateDatabase,             'Creating/updating i-MSCP database'],
+		[\&setupSecureSqlInstallation,      'Securing SQL installation'],
+		[\&setupServerIps,                  'Setting server ips'],
+		[\&setupDefaultAdmin,               'Creating default admin'],
+		[\&setupSsl,                        'Setup SSL'],
+		[\&setupPreInstallServers,          'Servers pre-installation'],
+		[\&setupPreInstallAddons,           'Addons pre-installation'],
+		[\&setupInstallServers,             'Servers installation'],
+		[\&setupInstallAddons,              'Addons installation'],
+		[\&setupPostInstallServers,         'Servers post-installation'],
+		[\&setupPostInstallAddons,          'Addons post-installation'],
+		[\&setupCron,                       'Setup cron tasks'],
+		[\&setupInitScripts,                'Setting i-MSCP init scripts'],
+		[\&setupRebuildCustomerFiles,       'Rebuilding customers files'],
+		[\&setupSetPermissions,             'Setting permissions'],
+		[\&setupRestartServices,            'Restarting services'],
+		[\&setupAdditionalTasks,            'Processing additional tasks']
 	);
 
 	my $step = 1;
@@ -991,8 +991,8 @@ sub setupAskSsl
 
 					# Ask for private key path
 					do {
-                    	($rs, $certificatKeyPath) = $dialog->fselect($certificatKeyPath);
-                    } while($rs != 30 && ! ($certificatKeyPath && -f $certificatKeyPath));
+						($rs, $certificatKeyPath) = $dialog->fselect($certificatKeyPath);
+					} while($rs != 30 && ! ($certificatKeyPath && -f $certificatKeyPath));
 
 					# FIXME: Detect if a passphrase is needed automatically
 					if($rs != 30) {

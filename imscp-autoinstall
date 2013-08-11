@@ -187,17 +187,17 @@ my $distribution = iMSCP::LsbRelease->getInstance()->getId(1);
 
 # Process build steps
 my @steps = (
-	[\&preBuild,						'Processing preBuild tasks'],
-	[\&uninstallPackages,				"Uninstalling $distribution packages not longer needed by i-MSCP"],
-	[\&installPackages,					"Installing all $distribution packages for i-MSCP"],
-	[\&testRequirements,				'Testing i-MSCP requirements'],
-	[\&processDistroLayoutFile,			"Processing $distribution layout file"],
-	[\&processDistroInstallFiles,		"Processing $distribution install files"],
-	[\&buildImscpDaemon,				'Building i-MSCP daemon'],
-	[\&installEngine,					'Installing engine files in temporary directory'],
-	[\&installGui,						'Installing GUI files in temporary directory'],
-	[\&savePersistentData,				'Saving persistent data from previous installation if any'],
-	[\&postBuild,						'Processing postBuild tasks']
+	[\&preBuild,                    'Processing preBuild tasks'],
+	[\&uninstallPackages,           "Uninstalling $distribution packages not longer needed by i-MSCP"],
+	[\&installPackages,             "Installing all $distribution packages for i-MSCP"],
+	[\&testRequirements,            'Testing i-MSCP requirements'],
+	[\&processDistroLayoutFile,     "Processing $distribution layout file"],
+	[\&processDistroInstallFiles,   "Processing $distribution install files"],
+	[\&buildImscpDaemon,            'Building i-MSCP daemon'],
+	[\&installEngine,               'Installing engine files in temporary directory'],
+	[\&installGui,                  'Installing GUI files in temporary directory'],
+	[\&savePersistentData,          'Saving persistent data from previous installation if any'],
+	[\&postBuild,                   'Processing postBuild tasks']
 );
 
 # Remove the uninstall/install packages steps in case the --skippackages option is set to true
@@ -256,13 +256,13 @@ To complete the update, you must wait until the end of the process and follow th
 	#require "$FindBin::Bin/engine/setup/imscp-setup-methods.pl";
 
 	@steps = (
-		[\&doImscpBackup,			'Backup existing i-MSCP installation if any'],
-		[\&installTmp,				'Installing i-MSCP files on file system'],
-		[\&setupBoot,				'Setup bootstrapping'],
-		[\&setupRegisterHooks,		'Registering servers/addons setup hooks'],
-		[\&setupDialog,				'Processing i-MSCP setup dialog if any'],
-		[\&setupTasks,				'Processing i-MSCP setup tasks'],
-		[\&removeTmp,				'Removing temporary files'],
+		[\&doImscpBackup,       'Backup existing i-MSCP installation if any'],
+		[\&installTmp,          'Installing i-MSCP files on file system'],
+		[\&setupBoot,           'Setup bootstrapping'],
+		[\&setupRegisterHooks,  'Registering servers/addons setup hooks'],
+		[\&setupDialog,         'Processing i-MSCP setup dialog if any'],
+		[\&setupTasks,          'Processing i-MSCP setup tasks'],
+		[\&removeTmp,           'Removing temporary files'],
 	);
 
 	iMSCP::HooksManager->getInstance()->trigger('beforeInstall', \@steps) and exit 1;
