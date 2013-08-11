@@ -65,7 +65,7 @@ function reseller_generateSupportQuestionsMessage()
 	$nbQuestions = $stmt->fields['nbQuestions'];
 
 	if ($nbQuestions != 0) {
-		set_page_message(tr('You have received %s new support questions.', '<strong>' . $nbQuestions . '</strong>'), 'info');
+		set_page_message(tr('You have received %s new support ticket(s).', '<strong>' . $nbQuestions . '</strong>'), 'info');
 	}
 }
 

@@ -62,11 +62,11 @@ function admin_generateSupportQuestionsMessage()
     ";
 	$stmt = exec_query($query, $_SESSION['user_id']);
 
-	$nbQuestions = $stmt->fields('nbQuestions');
+	$nbQuestions = $stmt->fields['nbQuestions'];
 
 	if ($nbQuestions) {
 		set_page_message(
-			tr('You have received %d new support request.', '<b>' . $nbQuestions . '</b>'), 'info'
+			tr('You have received %s new support ticket(s).', '<strong>' . $nbQuestions . '</strong>'), 'info'
 		);
 	}
 }
