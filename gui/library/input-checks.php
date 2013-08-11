@@ -145,9 +145,8 @@ function tohtml($text)
  */
 function tojs($text)
 {
-	$result = htmlentities($text, ENT_COMPAT, "UTF-8");
 	$result = strtr(
-		$result,
+		$text,
 		array(
 			'\\' => '\\\\',
 			"'" => "\\'",
