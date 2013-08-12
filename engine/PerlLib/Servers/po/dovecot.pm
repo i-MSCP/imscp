@@ -67,9 +67,7 @@ sub registerSetupHooks
 	my $hooksManager = shift;
 
 	require Servers::po::dovecot::installer;
-	Servers::po::dovecot::installer->getInstance(
-		config => \%self::config
-	)->registerSetupHooks($hooksManager);
+	Servers::po::dovecot::installer->getInstance()->registerSetupHooks($hooksManager);
 }
 
 =item install()
@@ -85,7 +83,7 @@ sub install
 	my $self = shift;
 
 	require Servers::po::dovecot::installer;
-	Servers::po::dovecot::installer->getInstance(config => \%self::config)->install();
+	Servers::po::dovecot::installer->getInstance()->install();
 }
 
 =item postinstall()

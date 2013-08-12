@@ -280,7 +280,7 @@ sub _init
 		'beforePodInitInstaller', $self, 'dovecot'
 	) and fatal('dovecot - beforePoInitInstaller hook has failed');
 
-	$self->{'cfgDir'} = $self->{'po'}->{'cfgDir'};";
+	$self->{'cfgDir'} = $self->{'po'}->{'cfgDir'};
 	$self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
 	$self->{'wrkDir'} = "$self->{'cfgDir'}/working";
 
@@ -324,10 +324,10 @@ sub _getVersion
 	return $rs if $rs;
 
 	my ($stdout, $stderr);
-	$rs = execute('dovecot --version', \$stdout, \$stderr);
+	$rs = execute('/usr/sbin/dovecot --version', \$stdout, \$stderr);
 	debug($stdout) if $stdout;
 	error($stderr) if $stderr;
-	error("Unable to get dovecot version") if $rs && ! $stderr;
+	error('Unable to get dovecot version') if $rs && ! $stderr;
 	return $rs if $rs;
 
 	chomp($stdout);
@@ -413,7 +413,7 @@ sub _setupDb
 
 	# Get SQL connection with full privileges
 	my ($database, $errStr) = main::setupGetSqlConnect();
-	fatal('Unable to connect to SQL Server: $errStr') if ! $database;
+	fatal("Unable to connect to SQL Server: $errStr") if ! $database;
 
 	# Add new dovecot restricted SQL user with needed privileges
 
