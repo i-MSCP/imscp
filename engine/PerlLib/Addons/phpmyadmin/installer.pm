@@ -103,29 +103,35 @@ sub install
 	);
 	return $rs if $rs;
 
-	$rs = $self->_installFiles();				# Install phpmyadmin files from local addon packages repository
+	# Install phpmyadmin files from local addon packages repository
+	$rs = $self->_installFiles();
 	return $rs if $rs;
 
-	$rs = $self->_setupDatabase();				# Setup phpmyadmin database
-	return $rs if $rs;
-	
-	$rs = $self->_setupSqlUser();				# Setup phpmyadmin restricted SQL user
+	# Setup phpmyadmin database
+	$rs = $self->_setupDatabase();
 	return $rs if $rs;
 
-	$rs = $self->_generateBlowfishSecret();		# Generate Blowfish secret
+	# Setup phpmyadmin restricted SQL user
+	$rs = $self->_setupSqlUser();
 	return $rs if $rs;
 
-	$rs = $self->_buildConfig();				# Build new configuration files
+	# Generate Blowfish secret
+	$rs = $self->_generateBlowfishSecret();
 	return $rs if $rs;
-	
+
+	# Build new configuration files
+	$rs = $self->_buildConfig();
+	return $rs if $rs;
+
 	# Update phpMyAdmin database if needed (should be done after phpMyAdmin config files generation)
 	$rs = $self->_updateDatabase() unless $self->{'newInstall'};
 	return $rs if $rs;
 
-	$rs = $self->_setVersion();					# Set new phpMyAdmin version
+	# Set new phpMyAdmin version
+	$rs = $self->_setVersion();
 	return $rs if $rs;
 
-	$self->_saveConfig();						# Save configuration
+	$self->_saveConfig(); # Save configuration
 }
 
 =back
@@ -266,11 +272,11 @@ sub _init
 	my $oldConf	= "$self->{'cfgDir'}/phpmyadmin.old.data";
 
 	if(-f $oldConf) {
-		tie my %oldConfig, 'iMSCP::Config', 'fileName' => $oldConf, 'noerrors' => 1;
+		tie %{$self->{'oldConfig'}}, 'iMSCP::Config', 'fileName' => $oldConf, 'noerrors' => 1;
 
-		for(keys %oldConfig) {
+		for(keys %{$self->{'oldConfig'}}) {
 			if(exists $self->{'config'}->{$_}) {
-				$self->{'config'}->{$_} = $oldConfig{$_};
+				$self->{'config'}->{$_} = $self->{'oldConfig'}->{$_};
 			}
 		}
 	}
@@ -410,17 +416,24 @@ sub _setupSqlUser
 
 	my $imscpDbName = $main::imscpConfig{'DATABASE_NAME'};
 	my $phpmyadminDbName = $imscpDbName . '_pma';
+
 	my $dbUser = $self->{'config'}->{'DATABASE_USER'};
 	my $dbUserHost = main::setupGetQuestion('DATABASE_USER_HOST');
 	my $dbPass = $self->{'config'}->{'DATABASE_PASSWORD'};
+
+	my $dbOldUser = $self->{'oldConfig'}->{'DATABASE_USER'} || '';
+
 	my $rs = 0;
 
-	# Remove old phpmyadmin restricted SQL user and all it privileges (if any)
-	if($dbUser) {
+	# Remove any old phpmyadmin SQL user (including privileges)
+	for my $sqlUser ($dbOldUser, $dbUser) {
+		next if ! $sqlUser;
+
 		for($dbUserHost, $main::imscpOldConfig{'DATABASE_HOST'}, $main::imscpOldConfig{'BASE_SERVER_IP'}) {
-			next if $_ eq '';
-			$rs = main::setupDeleteSqlUser($dbUser, $_);
-			error("Unable to remove the old phpmyadmin '$dbUser\@$_' restricted SQL user") if $rs;
+			next if ! $_;
+
+			$rs = main::setupDeleteSqlUser($sqlUser, $_);
+			error("Unable to remove '$sqlUser\@$_' SQL user or one of its privileges") if $rs;
 			return 1 if $rs;
 		}
 	}
@@ -641,13 +654,12 @@ sub _generateBlowfishSecret
 {
 	my $self = shift;
 
-	unless($self->{'config'}->{'BLOWFISH_SECRET'}) { # FIXME: It is not better to regenerate on each update?
-		my $blowfishSecret = '';
-		my @allowedChars = ('A'..'Z', 'a'..'z', '0'..'9', '_');
+	my @allowedChars = ('A'..'Z', 'a'..'z', '0'..'9', '_', '+', '-', '^', '=', '*', '{', '}', '~');
 
-		$blowfishSecret .= $allowedChars[rand()*($#allowedChars + 1)] for (1..31);
-		$self->{'config'}->{'BLOWFISH_SECRET'} = $blowfishSecret;
-	}
+	my $blowfishSecret = '';
+	$blowfishSecret .= $allowedChars[rand @allowedChars] for 1..56;
+
+	$self->{'config'}->{'BLOWFISH_SECRET'} = $blowfishSecret;
 
 	0;
 }

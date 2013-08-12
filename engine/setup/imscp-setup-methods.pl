@@ -2614,7 +2614,7 @@ sub setupIsSqlUser($)
 	$$rs{1} ? 1 : 0;
 }
 
-# Delete an SQL user and all its privileges
+# Delete the give Sql user and all its privileges
 #
 # Return int 0 on success, 1 on error
 sub setupDeleteSqlUser
@@ -2627,41 +2627,42 @@ sub setupDeleteSqlUser
 
 	# Remove any columns privileges for the given user
 	$errstr = $database->doQuery('dummy', "DELETE FROM `columns_priv` WHERE `Host` = ? AND `User` = ?", $host, $user);
-	if(ref $errstr ne 'HASH') {
+	unless(ref $errstr eq 'HASH') {
 		error("Unable to delete columns privileges for the '$user\@$host' SQL user: $errstr");
 		return 1;
 	}
 
 	# Remove any tables privileges for the given user
 	$errstr = $database->doQuery('dummy', 'DELETE FROM `tables_priv` WHERE `Host` = ? AND `User` = ?', $host, $user);
-	if(ref $errstr ne 'HASH') {
+	unless(ref $errstr eq 'HASH') {
 		error("Unable to delete tables privileges for the '$user\@$host' SQL user: $errstr");
 		return 1;
 	}
 
 	# Remove any proc privileges for the given user
 	$errstr = $database->doQuery('dummy', 'DELETE FROM `procs_priv` WHERE `Host` = ? AND `User` = ?', $host, $user);
-	if(ref $errstr ne 'HASH') {
+	unless(ref $errstr eq 'HASH') {
 		error("Unable to delete procs privileges for the '$user\@$host' SQL user: $errstr");
 		return 1;
 	}
 
 	# Remove any database privileges for the given user
 	$errstr = $database->doQuery('dummy', 'DELETE FROM `db` WHERE `Host` = ? AND `User` = ?', $host, $user);
-	if(ref $errstr ne 'HASH') {
+	unless(ref $errstr eq 'HASH') {
 		error("Unable to delete database privileges from the '$user\@$host' SQL user: $errstr");
 		return 1;
 	}
 
 	# Remove any global privileges for the given user and the user itself
 	$errstr = $database->doQuery('dummy', "DELETE FROM `user` WHERE `Host` = ? AND `User` = ?", $host, $user);
-	if(ref $errstr ne 'HASH') {
+	unless(ref $errstr eq 'HASH') {
 		error("Unable to delete the '$user\@$host' SQL user: $errstr");
 		return 1;
 	}
 
+	# Reload privileges
 	$errstr = $database->doQuery('dummy','FLUSH PRIVILEGES');
-	if(ref $errstr ne 'HASH') {
+	unless(ref $errstr eq 'HASH') {
 		error("Unable to flush SQL privileges: $errstr");
 		return 1;
 	}

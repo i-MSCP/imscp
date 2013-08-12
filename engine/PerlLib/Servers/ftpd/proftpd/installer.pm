@@ -172,11 +172,11 @@ sub _init
 	my $oldConf = "$self->{'cfgDir'}/proftpd.old.data";
 
 	if(-f $oldConf) {
-		tie my %oldConfig, 'iMSCP::Config', 'fileName' => $oldConf, 'noerrors' => 1;
+		tie %{$self->{'oldConfig'}}, 'iMSCP::Config', 'fileName' => $oldConf, 'noerrors' => 1;
 
-		for(keys %oldConfig) {
+		for(keys %{$self->{'oldConfig'}}) {
 			if(exists $self->{'config'}->{$_}) {
-				$self->{'config'}->{$_} = $oldConfig{$_};
+				$self->{'config'}->{$_} = $self->{'oldConfig'}->{$_};
 			}
 		}
 	}
@@ -220,15 +220,20 @@ sub _setupDatabase
 	my $dbUserHost = main::setupGetQuestion('DATABASE_USER_HOST');
 	my $dbPass = $self->{'config'}->{'DATABASE_PASSWORD'};
 
+	my $dbOldUser = $self->{'oldConfig'}->{'DATABASE_USER'} || '';
+
 	my $rs = $self->{'hooksManager'}->trigger('beforeFtpdSetupDb', $dbUser, $dbPass);
 	return $rs if $rs;
 
-	# Remove old proftpd restricted SQL user and all it privileges (if any)
-	if($dbUser) {
+	# Remove any old proftpd SQL user (including privileges)
+	for my $sqlUser ($dbOldUser, $dbUser) {
+		next if ! $sqlUser;
+
 		for($dbUserHost, $main::imscpOldConfig{'DATABASE_HOST'}, $main::imscpOldConfig{'BASE_SERVER_IP'}) {
-			next if $_ eq '';
-			$rs = main::setupDeleteSqlUser($dbUser, $_);
-			error("Unable to remove old Proftpd '$dbUser\@$_' restricted SQL user") if $rs;
+			next if ! $_;
+
+			$rs = main::setupDeleteSqlUser($sqlUser, $_);
+			error("Unable to remove $sqlUser\@$_' SQL user or one of its privileges") if $rs;
 			return 1 if $rs;
 		}
 	}

@@ -277,11 +277,11 @@ sub _init
 	my $oldConf = "$self->{'cfgDir'}/roundcube.old.data";
 
 	if(-f $oldConf) {
-		tie my %oldConfig, 'iMSCP::Config', 'fileName' => $oldConf, 'noerrors' => 1;
+		tie %{$self->{'oldConfig'}}, 'iMSCP::Config', 'fileName' => $oldConf, 'noerrors' => 1;
 
-		for(keys %oldConfig) {
+		for(keys %{$self->{'oldConfig'}}) {
 			if(exists $self->{'config'}->{$_}) {
-				$self->{'config'}->{$_} = $oldConfig{$_};
+				$self->{'config'}->{$_} = $self->{'oldConfig'}->{$_};
 			}
 		}
 	}
@@ -377,6 +377,8 @@ sub _setupDatabase
 	my $dbUserHost = main::setupGetQuestion('DATABASE_USER_HOST');
 	my $dbPass = $self->{'config'}->{'DATABASE_PASSWORD'};
 
+	my $dbOldUser = $self->{'oldConfig'}->{'DATABASE_USER'} || '';
+
 	# Get SQL connection with full privileges
 	my ($database, $errStr) = main::setupGetSqlConnect();
 	if(! $database) {
@@ -387,7 +389,7 @@ sub _setupDatabase
 	# Check for Roundcube database existence
 	my $rs = $database->doQuery('1', 'SHOW DATABASES LIKE ?', $roundcubeDbName);
 	unless(ref $rs eq 'HASH') {
-		error("SQL query failed: $rs");
+		error($rs);
 		return 1;
 	}
 
@@ -402,6 +404,7 @@ sub _setupDatabase
 
 		# Connect to newly created Roundcube database
 		$database->set('DATABASE_NAME', $roundcubeDbName);
+
 		$rs = $database->connect();
 		if($rs) {
 			error("Unable to connect to the Roundcube '$roundcubeDbName' SQL database: $rs");
@@ -415,12 +418,17 @@ sub _setupDatabase
 		$self->{'newInstall'} = 0;
 	}
 
-	# Remove old Roundcube restricted SQL user and all it privileges (if any)
-	for($dbUserHost, $main::imscpOldConfig{'DATABASE_HOST'}, $main::imscpOldConfig{'BASE_SERVER_IP'}) {
-		next if $_ eq '';
-		$rs = main::setupDeleteSqlUser($dbUser, $_);
-		error("Unable to remove the old Roundcube '$dbUser\@$dbUserHost' restricted SQL user") if $rs;
-		return 1 if $rs;
+	# Remove any old roundcube SQL user (including privileges)
+	for my $sqlUser ($dbOldUser, $dbUser) {
+		next if ! $sqlUser;
+
+		for($dbUserHost, $main::imscpOldConfig{'DATABASE_HOST'}, $main::imscpOldConfig{'BASE_SERVER_IP'}) {
+			next if ! $_;
+
+			$rs = main::setupDeleteSqlUser($sqlUser, $_);
+			error("Unable to remove '$sqlUser\@$_' SQL user or one of its privileges") if $rs;
+			return 1 if $rs;
+		}
 	}
 
 	# Add new Roundcube restricted SQL user with needed privileges
@@ -461,13 +469,12 @@ sub _generateDESKey
 {
 	my $self = shift;
 
-	unless($self->{'config'}->{'DES_KEY'}) {
-		my $DESKey = '';
-		my @allowedChars = ('A'..'Z', 'a'..'z', '0'..'9', '_');
+	my @allowedChars = ('A'..'Z', 'a'..'z', '0'..'9', '_', '+', '-', '^', '=', '*', '{', '}', '~');
 
-		$DESKey .= $allowedChars[rand()*($#allowedChars + 1)] for (1..24);
-		$self->{'config'}->{'DES_KEY'} = $DESKey;
-	}
+	my $desKey = '';
+	$desKey .= $allowedChars[rand @allowedChars] for 1..24;
+
+	$self->{'config'}->{'DES_KEY'} = $desKey;
 
 	0;
 }

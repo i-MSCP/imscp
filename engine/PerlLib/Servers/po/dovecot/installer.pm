@@ -289,11 +289,11 @@ sub _init
 	my $oldConf = "$self->{'cfgDir'}/dovecot.old.data";
 
 	if(-f $oldConf) {
-		tie my %oldConfig, 'iMSCP::Config', 'fileName' => $oldConf, 'noerrors' => 1;
+		tie %{$self->{'oldConfig'}}, 'iMSCP::Config', 'fileName' => $oldConf, 'noerrors' => 1;
 
-		for(keys %oldConfig) {
+		for(keys %{$self->{'oldConfig'}}) {
 			if(exists $self->{'config'}->{$_}) {
-				$self->{'config'}->{$_} = $oldConfig{$_};
+				$self->{'config'}->{$_} = $self->{'oldConfig'}->{$_};
 			}
 		}
 	}
@@ -390,26 +390,26 @@ sub _setupDb
 	my $rs = 0;
 
 	my $dbUser = $self->{'config'}->{'DATABASE_USER'};
-	my $dbOldUser = $self::oldConfig{'DATABASE_USER'} || '';
+	my $dbUserHost = main::setupGetQuestion('DATABASE_USER_HOST');
 	my $dbPass = $self->{'config'}->{'DATABASE_PASSWORD'};
-	my $dbUserHost = $main::imscpConfig{'SQL_SERVER'} ne 'remote_server'
-		? $main::imscpConfig{'DATABASE_HOST'} : $main::imscpConfig{'BASE_SERVER_IP'};
+
+	my $dbOldUser = $self->{'oldConfig'}->{'DATABASE_USER'} || '';
 
 	$rs = $self->{'hooksManager'}->trigger('beforePoSetupDb', $dbUser, $dbOldUser, $dbPass, $dbUserHost);
 	return $rs if $rs;
 
-	# Remove old dovecot restricted SQL user and all it privileges (if any)
-	for($main::imscpOldConfig{'DATABASE_HOST'} || '', $main::imscpOldConfig{'BASE_SERVER_IP'} || '') {
-		next if $_ eq '' || $dbOldUser eq '';
-		$rs = main::setupDeleteSqlUser($dbOldUser, $_);
-		error("Unable to remove old dovecot '$dbOldUser' restricted SQL user") if $rs;
-		return 1 if $rs;
-	}
+	# Remove any old dovecot SQL user (including privileges)
+	for my $sqlUser ($dbOldUser, $dbUser) {
+		next if ! $sqlUser;
 
-	# Ensure new dovecot restricted SQL user do not already exists by removing it
-	$rs = main::setupDeleteSqlUser($dbUserHost, $dbUser);
-	error("Unable to delete dovecot '$dbUser' restricted SQL user") if $rs;
-	return 1 if $rs;
+		for($dbUserHost, $main::imscpOldConfig{'DATABASE_HOST'}, $main::imscpOldConfig{'BASE_SERVER_IP'}) {
+			next if ! $_;
+
+			$rs = main::setupDeleteSqlUser($sqlUser, $_);
+			error("Unable to remove '$sqlUser\@$_' SQL user or one of its privileges") if $rs;
+			return 1 if $rs;
+		}
+	}
 
 	# Get SQL connection with full privileges
 	my ($database, $errStr) = main::setupGetSqlConnect();

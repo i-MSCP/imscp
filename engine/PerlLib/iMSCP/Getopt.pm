@@ -92,11 +92,11 @@ EOF
 	# Do not load Getopt::Long if not needed
 	return unless grep { $_ =~ /^-/ } @ARGV;
 
-    local $SIG{__WARN__} = sub {
-    	my $error = shift;
-    	$error =~ s/(.*?) at.*/$1/;
-    	print STDERR output($error) if $error ne "Died\n";
-    };
+	local $SIG{__WARN__} = sub {
+		my $error = shift;
+		$error =~ s/(.*?) at.*/$1/;
+		print STDERR output($error) if $error ne "Died\n";
+	};
 
 	require Getopt::Long;
 
@@ -127,9 +127,9 @@ our $reconfigureItems = [
 
 =item reconfigure()
 
- Whether user asked for reconfiguration
+ reconfigure option
 
- Return int|string 0 or name of item to reconfigure
+ Return string Name of item to reconfigure or none
 
 =cut
 
@@ -158,7 +158,7 @@ sub reconfigure($;$)
 
 =item noprompt($;$)
 
- Whether user asked for non-interactive mode
+ noprompt option
 
  Return int 0 or 1
 
@@ -169,14 +169,14 @@ sub noprompt
 	my ($class, $value) = @_;
 
 	$options->{'noprompt'} = $value if defined $value;
-	$options->{'noprompt'} ? 1 : 0;
+	$options->{'noprompt'} // 0;
 }
 
 =item
 
- Preseed file path
+ preseed option
 
- Return SCALAR|undef Path to preseed file or undef
+ Return string Path to preseed file or empty string
 
 =cut
 
@@ -192,14 +192,14 @@ sub preseed($;$)
 		}
 	}
 
-	$options->{'preseed'};
+	$options->{'preseed'} // '';
 }
 
 =item
 
- Hook file path
+ hook-file option
 
- Return SCALAR|undef Path to hook file or undef
+ Return string Path to hook file or empty string
 
 =cut
 
@@ -215,12 +215,12 @@ sub hookFile($;$)
 		}
 	}
 
-	$options->{'hookFile'};
+	$options->{'hookFile'} // '';
 }
 
 =item
 
- Whether user asked for backtrace
+ backtrace option
 
  Return int 0 or 1
 
@@ -231,18 +231,20 @@ sub backtrace($;$)
 	my ($class, $value) = @_;
 
 	if(defined $value) {
-		$options->{'debug'} = 1;
+		$options->{'debug'} = 1; # The backtrace option imply debug option
 		$options->{'backtrace'} = 1;
 	}
 
-	$options->{'backtrace'} ? 1 : 0;
+	$options->{'backtrace'} // 0;
 }
 
 =back
 
 =head1 FIELDS
 
-Other fields can be accessed and set by calling class methods.
+ Mutator/Accessor for all other fields (which have not their own mutator/accessor methods)
+
+ Return mixed Field value if defined or empty string;
 
 =cut
 
@@ -251,9 +253,9 @@ sub AUTOLOAD
 	(my $field = our $AUTOLOAD) =~ s/.*://;
 	my $class = shift;
 
-	return $options->{$field} = shift if @_;
-	return $options->{$field} if defined $options->{$field};
-	return '';
+	$options->{$field} = shift if @_;
+
+	$options->{$field} // '';
 }
 
 =back
