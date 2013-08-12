@@ -131,7 +131,8 @@ sub install
 	$rs = $self->_setVersion();
 	return $rs if $rs;
 
-	$self->_saveConfig(); # Save configuration
+	# Save configuration
+	$self->_saveConfig();
 }
 
 =back
@@ -197,12 +198,14 @@ sub askPhpmyadmin
 
 			if($rs != 30) {
 				if(! $dbPass) {
-					$dbPass = '';
 					my @allowedChars = ('A'..'Z', 'a'..'z', '0'..'9', '_');
-					$dbPass .= $allowedChars[rand()*($#allowedChars + 1)]for (1..16);
+
+					$dbPass = '';
+					$dbPass .= $allowedChars[rand @allowedChars] for 1..16;
 				}
 
 				$dbPass =~ s/('|"|`|#|;|\/|\s|\||<|\?|\\)/_/g;
+
 				$dialog->msgbox("\nPassword for the restricted PhpMyAdmin SQL user set to: $dbPass");
 				$dialog->set('cancel-label');
 			}

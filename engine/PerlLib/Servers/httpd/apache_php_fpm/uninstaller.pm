@@ -35,12 +35,12 @@ use strict;
 use warnings;
 
 use iMSCP::Debug;
-use Servers::httpd::apache_php_fpm;
 use iMSCP::SystemUser;
 use iMSCP::SystemGroup;
 use iMSCP::Dir;
 use iMSCP::File;
 use File::Basename;
+use Servers::httpd::apache_php_fpm;
 
 use parent 'Common::SingletonClass';
 
@@ -91,11 +91,11 @@ sub _init
 
 	$self->{'httpd'} = Servers::httpd::apache_php_fpm->getInstance();
 
-	$self->{'apacheCfgDir'} = $self->{'httpd'}->{'apachecCgDir'};
+	$self->{'apacheCfgDir'} = $self->{'httpd'}->{'apacheCfgDir'};
 	$self->{'apacheBkpDir'} = "$self->{'apacheCfgDir'}/backup";
 	$self->{'apacheWrkDir'} = "$self->{'apacheCfgDir'}/working";
 
-	$self->{'config'} = $self->{'httpd'}->{'apacheConfig'};
+	$self->{'config'} = $self->{'httpd'}->{'config'};
 
 	$self->{'phpfpmCfgDir'} = $self->{'httpd'}->{'phpfpmCfgDir'};
 	$self->{'phpfpmBkpDir'} = "$self->{'phpfpmCfgDir'}/backup";
@@ -187,8 +187,10 @@ sub _restoreApacheConfig
 		return $rs if $rs;
 	}
 
-	$rs = $self->{'httpd'}->enableSite('default') if -f "$self->{'config'}->{'APACHE_SITES_DIR'}/default";
-	$rs = $self->{'httpd'}->enableSite('000-default') if -f "$self->{'config'}->{'APACHE_SITES_DIR'}/000-default";
+	for('000-default', 'default') {
+		$rs = $self->{'httpd'}->enableSite($_) if -f "$self->{'config'}->{'APACHE_SITES_DIR'}/$_";
+		return $rs if $rs;
+	}
 
 	$rs;
 }

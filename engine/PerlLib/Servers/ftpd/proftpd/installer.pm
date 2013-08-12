@@ -103,9 +103,10 @@ sub askProftpd
 
 			if($rs != 30) {
 				if(! $dbPass) {
-					$dbPass = '';
 					my @allowedChars = ('A'..'Z', 'a'..'z', '0'..'9', '_');
-					$dbPass .= $allowedChars[rand()*($#allowedChars + 1)]for (1..16);
+
+					$dbPass = '';
+					$dbPass .= $allowedChars[rand @allowedChars] for 1..16;
 				}
 
 				$dbPass =~ s/('|"|`|#|;|\/|\s|\||<|\?|\\)/_/g;
