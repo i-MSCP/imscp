@@ -20,6 +20,7 @@ ENGINE:
 	- Fixed: MySQL server has gone away
 	- Fixed: Plugin module is broken: Unable to disable, uninstall... any plugin
 	- Fixed: Plugin update must be triggered when plugin configuration is updated
+	- Fixed: Unable to uninstall with Apache FCGI
 
 GUI:
 	- Fixed: Plugin update must be triggered when plugin configuration is updated
