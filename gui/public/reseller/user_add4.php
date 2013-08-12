@@ -331,6 +331,7 @@ iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onResellerScriptStar
 
 check_login('reseller');
 
+/** @var iMSCP_Config_Handler_File $cfg */
 $cfg = iMSCP_Registry::get('config');
 
 if (!is_xhr()) {
@@ -394,7 +395,7 @@ if (!is_xhr()) {
             $dmn_status = $row['domain_status'];
 
             if ($dmn_status != $cfg->ITEM_OK_STATUS &&
-                $dmn_status != $cfg->ITEM_ADD_STATUS
+                $dmn_status != $cfg->ITEM_TOADD_STATUS
             ) {
                 set_page_message(tr('System error with Domain Id: %d', $domain_id));
                 redirectTo('users.php?psi=last');
