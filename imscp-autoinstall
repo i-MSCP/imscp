@@ -47,8 +47,6 @@ use iMSCP::Getopt;
 use iMSCP::Boot;
 use autoinstaller::Common;
 
-require "$FindBin::Bin/engine/setup/imscp-setup-methods.pl";
-
 newDebug('imscp-build.log');
 
 # Entering in silent mode
@@ -253,7 +251,7 @@ To complete the update, you must wait until the end of the process and follow th
 
 	## Setup steps
 
-	#require "$FindBin::Bin/engine/setup/imscp-setup-methods.pl";
+	require "$FindBin::Bin/engine/setup/imscp-setup-methods.pl";
 
 	@steps = (
 		[\&doImscpBackup,       'Backup existing i-MSCP installation if any'],
