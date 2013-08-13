@@ -77,7 +77,7 @@ specific action:
 
  - other status: No action
 
- The module will attempt to run theses actions on the plugin only if it implements it.
+ The module will attempt to run theses actions on the plugin only if it implements them.
 
  Note on 'install' action:
 
