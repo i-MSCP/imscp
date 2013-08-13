@@ -284,8 +284,12 @@ function reseller_addDomainAlias()
 
 		/** @var iMSCP_Database $db */
 		$db = iMSCP_Registry::get('db');
-
+		
 		try {
+		
+			iMSCP_Events_Manager::getInstance()->dispatch(
+				iMSCP_Events::onBeforeAddDomainAlias, array('domainId' => $customerDmnId, 'domainAliasName' => $asciiAlsName));
+			
 			$db->beginTransaction();
 
 			$customerId = who_owns_this($customerDmnId, 'dmn_id');
@@ -354,6 +358,16 @@ function reseller_addDomainAlias()
 			}
 
 			$db->commit();
+			
+			iMSCP_Events_Manager::getInstance()->dispatch(
+				iMSCP_Events::onAfterAddDomainAlias,
+				array(
+					'domainId' => $customerDmnId,
+					'domainAliasName' => $asciiAlsName,
+					'domainAliasId' => $alsId
+				)
+			);
+		
 		} catch (iMSCP_Exception_Database $e) {
 			$db->rollBack();
 			throw new iMSCP_Exception_Database($e->getMessage(), $e->getQuery(), $e->getCode(), $e);
