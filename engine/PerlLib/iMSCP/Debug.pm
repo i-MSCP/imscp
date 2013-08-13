@@ -132,7 +132,7 @@ sub verbose
 	unless($verbose) {
 		# Remove any debug message from the current log
 		getMessageByType('debug', { remove => 1 });
-		debug("Debug mode off");
+		debug('Debug mode off');
 	}
 
 	$self->{'verbose'} = $verbose;
@@ -392,10 +392,8 @@ END
 		system('clear') if $ENV{'TERM'};
 
 		my $logDir = ($main::imscpConfig{'LOG_DIR'} && -d $main::imscpConfig{'LOG_DIR'})
-			? $main::imscpConfig{'LOG_DIR'}
-			: '/tmp';
+			? $main::imscpConfig{'LOG_DIR'} : '/tmp';
 
-		my $logDir = '/tmp';
 		my $msg = undef;
 
 		for(keys %{$self->{'logs'}}) {
