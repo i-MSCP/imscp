@@ -79,6 +79,9 @@ if (isset($_GET['action']) && $_GET['action'] == "delete") {
 			$db = iMSCP_Registry::get('db');
 
 			try {
+				iMSCP_Events_Manager::getInstance()->dispatch(
+					iMSCP_Events::onBeforeAddDomainAlias, array('domainId' => $mainDmnId, 'domainAliasName' => $alsName));
+				
 				$db->beginTransaction();
 
 				$query = "UPDATE `domain_aliasses` SET `alias_status` = ? WHERE `alias_id` = ? AND `alias_status` = ?";
@@ -111,6 +114,15 @@ if (isset($_GET['action']) && $_GET['action'] == "delete") {
 
 				$db->commit();
 
+				iMSCP_Events_Manager::getInstance()->dispatch(
+					iMSCP_Events::onAfterAddDomainAlias,
+					array(
+						'domainId' => $mainDmnId,
+						'domainAliasName' => $alsName,
+						'domainAliasId' => $alsId
+					)
+				);
+			
 				send_request();
 				set_page_message(tr('Order successfully processed.'), 'success');
 				redirectTo('alias.php');
