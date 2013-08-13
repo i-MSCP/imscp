@@ -42,6 +42,8 @@ use iMSCP::Stepper;
 use iMSCP::Database;
 use iMSCP::SystemGroup;
 use iMSCP::Execute;
+use iMSCP::Servers;
+use iMSCP::Getopt;
 
 # Turn off localisation features to force any command output to be in english
 $ENV{'LC_MESSAGES'} = 'C';
@@ -54,6 +56,7 @@ silent(1);
 
 sub startUp
 {
+	iMSCP::Getopt->debug(1); # Enforce debug mode (logs)
 	iMSCP::Boot->getInstance()->boot();
 
 	0;
@@ -96,6 +99,8 @@ sub shutDown
 \\Z1Congratulations\\Zn
 
 iMSCP has been successfully uninstalled.
+
+You can find uninstallation logs at /tmp/imscp-uninstall.log
 "
 	);
 
@@ -104,23 +109,25 @@ iMSCP has been successfully uninstalled.
 
 sub _userDialog
 {
-	iMSCP::Dialog->factory()->set('yes-label','CONTINUE');
-	iMSCP::Dialog->factory()->set('no-label','EXIT');
+	iMSCP::Dialog->factory()->set('yes-label','Continue');
+	iMSCP::Dialog->factory()->set('no-label','Exit');
 	iMSCP::Dialog->factory()->set('defaultno', '');
 
 	if (iMSCP::Dialog->factory()->yesno(
 "
-Welcome to \\Z1i-MSCP version $main::imscpConfig{'Version'}\\Zn Uninstall Dialog.
+Welcome to the \\Z1i-MSCP version $main::imscpConfig{'Version'}\\Zn uninstaller dialog.
 
-This program will uninstall i-MSCP system from your server.
+This program will uninstall i-MSCP from your server.
 
 \\Zu\\Z1[WARNING]\\Zn
-All domain users and their accounts will be removed.
+
+All i-MSCP data will be removed.
 
 \\Zu\\Z4[NOTE]\\Zn
+
 During the uninstallation process some or all services might require to be shut down or restarted.
 
-To continue select \\Z1CONTINUE\\Z0 button
+To continue select \\Z1Continue\\Z0
 "
 
 	)) {
@@ -128,7 +135,7 @@ To continue select \\Z1CONTINUE\\Z0 button
 "\
 \\Z1[NOTICE]\\Zn
 
-The uninstall process has been aborted...
+Uninstallation process has been aborted...
 "
 		);
 
@@ -163,16 +170,7 @@ sub _removeCustomers
 			$aditionalCondition = ''
 		}
 
-		my $rdata = $database->doQuery(
-			'dummy',
-			"
-				UPDATE
-					`$table`
-				SET
-					`$field` = 'todelete'
-				$aditionalCondition
-			"
-		);
+		my $rdata = $database->doQuery('dummy', "UPDATE `$table` SET `$field` = 'todelete' $aditionalCondition");
 		unless(ref $rdata eq 'HASH') {
 			error($rdata);
 			return 1;
@@ -192,32 +190,33 @@ sub _removeCustomers
 
 	iMSCP::Boot->getInstance()->lock();
 
-	0
+	0;
 }
 
 sub _uninstallServers
 {
 	my ($rs, $file, $class, $server, $msg);
 
-	my $dir	= iMSCP::Dir->new('dirname' => "$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Servers");
-	my @servers = $dir->getFiles();
-
 	my $step = 1;
 
 	startDetail();
 
-	for(@servers) {
+	for(iMSCP::Servers->getInstance()->get()) {
 		s/\.pm//;
 		$file = "Servers/$_.pm";
 		$class = "Servers::$_";
 		require $file;
 
-		$server	= $class->factory();
-		$msg = "Performing uninstall tasks for the $_ server:" .
-			($main::imscpConfig{uc($_)."_SERVER"} ? ": " . $main::imscpConfig{uc($_) . "_SERVER"} : '');
+		$server = $class->factory();
 
-		$rs = step(sub{ $server->uninstall() }, $msg, scalar @servers, $step) if $server->can('uninstall');
-		return $rs if $rs;
+		if($server->can('uninstall')) {
+			$msg = "Performing uninstall tasks for the $_ server" .
+				($main::imscpConfig{uc($_) . '_SERVER'} ? ': ' . $main::imscpConfig{uc($_) . '_SERVER'} : '');
+
+			$rs = step(sub{ $server->uninstall() }, $msg, scalar @servers, $step);
+			return $rs if $rs;
+		}
+
 		$step++;
 	}
 
@@ -231,7 +230,6 @@ sub _uninstallDaemons
 	my ($rs, $stdout, $stderr);
 
 	for ($main::imscpConfig{'CMD_IMSCPN'}, $main::imscpConfig{'CMD_IMSCPD'}) {
-
 		my $filename = $_;
 		my ($serviceName) = /.*\/([^\/]*)$/;
 
@@ -268,6 +266,12 @@ sub _removeLogrotateFile
 	$rs;
 }
 
+# FIXME: Too many assumptions are made here. The names of sql users to remove must be based on the usernames as entered
+# by administrator during setup
+# FIXME: All SQL user as created by i-MSCP are not removed (roundcube sql user)
+# FIXME: localhost is not always the correct value
+#
+# FIXME: It is not better to add uninstaller for each addons and call them as we already do for the server implementations?
 sub _removeSqlData
 {
 	my $database = iMSCP::Database->factory();
@@ -279,7 +283,7 @@ sub _removeSqlData
 		return 1;
 	}
 
-	for (keys %$rdata) {
+	for (keys %{$rdata}) {
 		# We do not catch any error and it's expected
 		$database->doQuery('delete', "DROP USER ?@?", $rdata->{$_}->{'sqlu_name'}, 'localhost');
 		$database->doQuery('delete', "DROP USER ?@?", $rdata->{$_}->{'sqlu_name'}, '%');

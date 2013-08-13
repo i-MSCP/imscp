@@ -111,7 +111,8 @@ sub setupDialog
 {
 	my $dialogStack = [];
 
-	iMSCP::HooksManager->getInstance()->trigger('beforeSetupDialog', $dialogStack) and return 1;
+	my $rs = iMSCP::HooksManager->getInstance()->trigger('beforeSetupDialog', $dialogStack);
+	return $rs if $rs;
 
 	unshift(
 		@$dialogStack,
@@ -166,9 +167,8 @@ sub setupDialog
 # Process setup tasks
 sub setupTasks
 {
-	iMSCP::HooksManager->getInstance()->trigger('beforeSetupTasks') and return 1;
-
-	my $rs;
+	my $rs = iMSCP::HooksManager->getInstance()->trigger('beforeSetupTasks') and return 1;
+	return $rs if $rs;
 
 	my @steps = (
 		[\&setupSaveOldConfig,              'Saving old i-MSCP main configuration file'],
@@ -299,6 +299,7 @@ sub setupAskImscpVhost
 sub setupAskLocalDnsResolver
 {
 	my $dialog = shift;
+
 	my $localDnsResolver = setupGetQuestion('LOCAL_DNS_RESOLVER');
 	my $rs = 0;
 
@@ -344,7 +345,7 @@ sub setupAskServerIps
 
 	if(setupGetQuestion('DATABASE_NAME')) {
 		# We do not raise error in case we cannot get SQL connection since it's expected in some context
-    	$database = setupGetSqlConnect(setupGetQuestion('DATABASE_NAME'));
+		$database = setupGetSqlConnect(setupGetQuestion('DATABASE_NAME'));
 
 		if($database) {
 			$currentServerIps = $database->doQuery('ip_number', 'SELECT `ip_id`, `ip_number` FROM `server_ips`');
@@ -386,7 +387,7 @@ sub setupAskServerIps
 					$baseServerIp ne '127.0.0.1' && $baseServerIp ne $ips->normalize('::1') &&
 					$ips->isValidIp($baseServerIp)
 				)
-            );
+			);
 
 			if($rs != 30 && ! ($baseServerIp ~~ @serverIps)) {
 				my $networkCard = undef;
@@ -642,6 +643,7 @@ Please, try again.
 sub setupAskSqlUserHost
 {
 	my $dialog = shift;
+
 	my $host = setupGetQuestion('DATABASE_USER_HOST');
 	my $domain = Data::Validate::Domain->new();
 	my $ip = iMSCP::IP->new();
@@ -697,6 +699,7 @@ Allowed values are:
 sub setupAskImscpDbName
 {
 	my $dialog = shift;
+
 	my $dbName = setupGetQuestion('DATABASE_NAME') || 'imscp';
 	my $rs = 0;
 
@@ -753,6 +756,7 @@ Keep in mind that the new database will be free of any reseller and customer dat
 sub setupAskDbPrefixSuffix
 {
 	my $dialog = shift;
+
 	my $prefix = setupGetQuestion('MYSQL_PREFIX');
 	my $prefixType = setupGetQuestion('MYSQL_PREFIX_TYPE');
 	my $rs = 0;
@@ -799,6 +803,7 @@ Do you want use a prefix or suffix for customers's SQL databases?
 sub setupAskDefaultAdmin
 {
 	my $dialog = shift;
+
 	my ($adminLoginName, $password, $rpassword) = ('', '', '');
 	my ($rs, $msg) = (0, '');
 
@@ -903,6 +908,7 @@ sub setupAskDefaultAdmin
 sub setupAskAdminEmail
 {
 	my $dialog = shift;
+
 	my $adminEmail = setupGetQuestion('DEFAULT_ADMIN_ADDRESS');
 	my $rs = 0;
 
@@ -1019,13 +1025,13 @@ sub setupAskSsl
 				if($rs != 30) {
 					$rs = $dialog->yesno("\nDo you have an intermediate certificate (CA Bundle)?");
 
-                	if($rs !=30) {
+					if($rs !=30) {
 						do {
 							($rs, $intermediateCertificatPath) = $dialog->fselect($intermediateCertificatPath);
 						} while($rs != 30 && ! ($intermediateCertificatPath && -f $intermediateCertificatPath));
 
 						$openSSL->{'intermediate_cert_path'} = $intermediateCertificatPath if $rs != 30;
-                	}
+					}
 				}
 
 				if($rs != 30) {
@@ -1335,7 +1341,7 @@ sub setupServerIps
 	$rs = $ips->loadIPs();
 	return $rs if $rs;
 
-	# Process server IP addresses addition
+	# Process server IPs addition
 
 	my ($defaultNetcard) = $ips->getNetCards();
 
@@ -1385,7 +1391,7 @@ sub setupServerIps
 		return 1;
 	}
 
-	# Server ips replacement
+	# Server IPs replacement
 
 	if(%{$serverIpsToReplace}) {
 		# for each IP to replace
@@ -1964,7 +1970,6 @@ sub setupSetPermissions
 	my $rs = iMSCP::HooksManager->getInstance()->trigger('beforeSetupSetPermissions');
 	return $rs if $rs;
 
-
 	my $backtrace = $main::imscpConfig{'BACKTRACE'} || 0;
 	$main::imscpConfig{'BACKTRACE'} = (iMSCP::Getopt->backtrace) ? 1 : 0;
 
@@ -2170,7 +2175,12 @@ sub setupRebuildCustomerFiles
 
 	startDetail();
 
-	my $pid = open3(gensym, \*CATCHOUT, \*CATCHERR, "perl $main::imscpConfig{'ENGINE_ROOT_DIR'}/imscp-rqst-mngr setup");
+	my $pid = open3(
+		gensym,
+		\*CATCHOUT,
+		\*CATCHERR,
+		"$main::imscpConfig{'CMD_PERL'} $main::imscpConfig{'ENGINE_ROOT_DIR'}/imscp-rqst-mngr setup"
+	);
 
 	while(<CATCHOUT>) {
 		# "$type\t$status\t$name\t$id\t$total\t$i\n"
@@ -2200,9 +2210,7 @@ sub setupRebuildCustomerFiles
 # Call preinstall method on all i-MSCP server packages
 sub setupPreInstallServers
 {
-	my $rs = 0;
-
-	$rs = iMSCP::HooksManager->getInstance()->trigger('beforeSetupPreInstallServers');
+	my $rs = iMSCP::HooksManager->getInstance()->trigger('beforeSetupPreInstallServers');
 	return $rs if $rs;
 
 	my ($file, $class, $server, $msg);
@@ -2219,8 +2227,8 @@ sub setupPreInstallServers
 		$server	= $class->factory();
 
 		if($server->can('preinstall')) {
-			$msg = "Performing preinstall tasks for $_ server" .
-				($main::imscpConfig{uc($_)."_SERVER"} ? ": " . $main::imscpConfig{uc($_) . "_SERVER"} : '');
+			$msg = "Performing preinstall tasks for the $_ server" .
+				($main::imscpConfig{uc($_) . '_SERVER'} ? ': ' . $main::imscpConfig{uc($_) . '_SERVER'} : '');
 			$rs = step(sub{ $server->preinstall() }, $msg, scalar @servers, $step);
 			last if $rs;
 		}
@@ -2238,9 +2246,7 @@ sub setupPreInstallServers
 # Call preinstall method on all i-MSCP addon packages
 sub setupPreInstallAddons
 {
-	my $rs = 0;
-
-	$rs = iMSCP::HooksManager->getInstance()->trigger('beforeSetupPreInstallAddons');
+	my $rs = iMSCP::HooksManager->getInstance()->trigger('beforeSetupPreInstallAddons');
 	return $rs if $rs;
 
 	my ($file, $class, $addons, $msg);
@@ -2257,7 +2263,7 @@ sub setupPreInstallAddons
 		$addons = $class->getInstance();
 
 		if($addons->can('preinstall')) {
-			$msg = "Performing preinstall tasks for $_ addon";
+			$msg = "Performing preinstall tasks for the $_ addon";
 			$rs = step(sub{ $addons->preinstall() }, $msg, scalar @addons, $step);
 			last if $rs;
 		}
@@ -2275,9 +2281,7 @@ sub setupPreInstallAddons
 # Call install method on all i-MSCP server packages
 sub setupInstallServers
 {
-	my $rs = 0;
-
-	$rs = iMSCP::HooksManager->getInstance()->trigger('beforeSetupInstallServers');
+	my $rs = iMSCP::HooksManager->getInstance()->trigger('beforeSetupInstallServers');
 	return $rs if $rs;
 
 	my ($file, $class, $server, $msg);
@@ -2294,8 +2298,8 @@ sub setupInstallServers
 		$server = $class->factory();
 
 		if($server->can('install')) {
-			$msg = "Performing install tasks for $_ server" .
-				($main::imscpConfig{uc($_) . "_SERVER"} ? ": " . $main::imscpConfig{uc($_) . "_SERVER"} : '');
+			$msg = "Performing install tasks for the $_ server" .
+				($main::imscpConfig{uc($_) . '_SERVER'} ? ': ' . $main::imscpConfig{uc($_) . '_SERVER'} : '');
 			$rs = step(sub{ $server->install() }, $msg, scalar @servers, $step);
 			last if $rs;
 		}
@@ -2313,9 +2317,7 @@ sub setupInstallServers
 # Call install method on all i-MSCP addong packages
 sub setupInstallAddons
 {
-	my $rs = 0;
-
-	$rs = iMSCP::HooksManager->getInstance()->trigger('beforeSetupInstallAddons');
+	my $rs = iMSCP::HooksManager->getInstance()->trigger('beforeSetupInstallAddons');
 	return $rs if $rs;
 
 	my ($file, $class, $addons, $msg);
@@ -2332,7 +2334,7 @@ sub setupInstallAddons
 		$addons = $class->getInstance();
 
 		if($addons->can('install')) {
-			$msg = "Performing install tasks for $_ addon";
+			$msg = "Performing install tasks for the $_ addon";
 			$rs =step(sub{ $addons->install() }, $msg, scalar @addons, $step);
 			last if $rs;
 		}
@@ -2350,9 +2352,7 @@ sub setupInstallAddons
 # Call postinstall method on all i-MSCP server packages
 sub setupPostInstallServers
 {
-	my $rs = 0;
-
-	$rs = iMSCP::HooksManager->getInstance()->trigger('beforeSetupPostInstallServers');
+	my $rs = iMSCP::HooksManager->getInstance()->trigger('beforeSetupPostInstallServers');
 	return $rs if $rs;
 
 	my ($file, $class, $server, $msg);
@@ -2369,8 +2369,8 @@ sub setupPostInstallServers
 		$server = $class->factory();
 
 		if($server->can('postinstall')) {
-			$msg = "Performing postinstall tasks for $_ server" .
-				($main::imscpConfig{uc($_)."_SERVER"} ? ": " . $main::imscpConfig{uc($_) . "_SERVER"} : '');
+			$msg = "Performing postinstall tasks for the $_ server" .
+				($main::imscpConfig{uc($_) . '_SERVER'} ? ': ' . $main::imscpConfig{uc($_) . '_SERVER'} : '');
 			$rs = step(sub{ $server->postinstall() }, $msg, scalar @servers, $step);
 			last if $rs;
 		}
@@ -2388,9 +2388,7 @@ sub setupPostInstallServers
 # Call postinstall method on all i-MSCP addon packages
 sub setupPostInstallAddons
 {
-	my $rs = 0;
-
-	$rs = iMSCP::HooksManager->getInstance()->trigger('beforeSetupPostInstallAddons');
+	my $rs = iMSCP::HooksManager->getInstance()->trigger('beforeSetupPostInstallAddons');
 	return $rs if $rs;
 
 	my ($file, $class, $addons, $msg);
@@ -2407,7 +2405,7 @@ sub setupPostInstallAddons
 		$addons = $class->getInstance();
 
 		if($addons->can('postinstall')) {
-			$msg = "Performing postinstall tasks for $_ addon";
+			$msg = "Performing postinstall tasks for the $_ addon";
 			$rs = step(sub{ $addons->postinstall() }, $msg, scalar @addons, $step);
 			last if $rs;
 		}
@@ -2425,9 +2423,7 @@ sub setupPostInstallAddons
 # Restart all services needed by i-MSCP
 sub setupRestartServices
 {
-	my $rs = 0;
-
-	$rs = iMSCP::HooksManager->getInstance()->trigger('beforeSetupRestartServices');
+	my $rs = iMSCP::HooksManager->getInstance()->trigger('beforeSetupRestartServices');
 	return $rs if $rs;
 
 	my @services = (
@@ -2478,16 +2474,12 @@ sub setupRestartServices
 # Run all update additional task such as rkhunter configuration
 sub setupAdditionalTasks
 {
-	my $rs = 0;
-
-	$rs = iMSCP::HooksManager->getInstance()->trigger('beforeSetupAdditionalTasks');
+	my $rs = iMSCP::HooksManager->getInstance()->trigger('beforeSetupAdditionalTasks');
 	return $rs if $rs;
 
 	startDetail();
 
-	my @steps = (
-		[\&setupRkhunter, 'Setup Rkhunter']
-	);
+	my @steps = ( [\&setupRkhunter, 'Setup Rkhunter'] );
 
 	my $step = 1;
 
@@ -2577,12 +2569,11 @@ sub setupGetSqlConnect
 sub setupIsImscpDb
 {
 	my $dbName = shift;
-	my $rs;
 
 	my ($database, $errstr) = setupGetSqlConnect();
 	fatal("Unable to connect to the SQL Server: $errstr") if ! $database;
 
-	$rs = $database->doQuery('1', 'SHOW DATABASES LIKE ?', $dbName);
+	my $rs = $database->doQuery('1', 'SHOW DATABASES LIKE ?', $dbName);
 	fatal('SQL query failed: $rs') if ref $rs ne 'HASH';
 
 	return 0 if ! %$rs;
@@ -2609,7 +2600,7 @@ sub setupIsSqlUser($)
 	fatal("Unable to connect to the SQL Server: $errstr") if ! $database;
 
 	my $rs = $database->doQuery('1', 'SELECT EXISTS(SELECT 1 FROM `user` WHERE `user` = ?)', $sqlUser);
-	fatal("SQL query failed: $rs") if ref $rs ne 'HASH';
+	fatal($rs) if ref $rs ne 'HASH';
 
 	$$rs{1} ? 1 : 0;
 }

@@ -46,14 +46,14 @@ BEGIN
 	$SIG{__DIE__} = sub {
 		if(defined $^S && !$^S) {
 			debug('Developer dump:');
-			fatal("@_");
+			fatal(@_);
 		}
 	};
 
 	$SIG{__WARN__} = sub {
 		if(defined $^S && !$^S) {
 			debug('Developer dumps:');
-			error("@_");
+			error(@_);
 		}
 	};
 }
@@ -71,7 +71,7 @@ $self->{'prevLog'} = $self->{'curLog'} = $self->{'logs'}->{'default'} = iMSCP::L
 
  Create a new log object using the given name and set it as current log
 
- Return 0
+ Return int 0
 
 =cut
 
@@ -90,7 +90,7 @@ sub newDebug
 
  Set current log to the previous
 
- Return 0
+ Return int 0
 
 =cut
 
@@ -105,7 +105,7 @@ sub endDebug
 
  Enter in silent mode
 
- Return 0
+ Return int 0
 
 =cut
 
@@ -121,18 +121,21 @@ sub silent
 
  set verbose
 
- Return 0
+ Return int 0
 
 =cut
 
 sub verbose
 {
-	$self->{'verbose'} = shift || 0;
+	my $verbose = shift || 0;
 
-	unless($self->{'verbose'}) {
+	unless($verbose) {
+		# Remove any debug message from the current log
 		getMessageByType('debug', { remove => 1 });
 		debug("Debug mode off");
 	}
+
+	$self->{'verbose'} = $verbose;
 
 	0;
 }
@@ -141,7 +144,7 @@ sub verbose
 
  Set backtrace
 
- Return void
+ Return int 0
 
 =cut
 
@@ -156,7 +159,7 @@ sub backtrace
 
  Log a debug message in the current log
 
- Return 0
+ Return int 0
 
 =cut
 
@@ -176,7 +179,7 @@ sub debug
 
  Log an error message in the current log and print it on STDERR if not in silent mode
 
- Return 0
+ Return int 0
 
 =cut
 
@@ -195,11 +198,11 @@ sub warning
 	0;
 }
 
-=item debug($message)
+=item error($message)
 
  Log an error message in the current log and print it on STDERR if not in silent mode
 
- Return 0
+ Return int 0
 
 =cut
 
@@ -218,10 +221,11 @@ sub error
 	0;
 }
 
-=item debug($message)
+=item fatal($message)
 
  Log a fatal error message in the current log, print it on STDERR if not in silent mode and exit
 
+ Return void
 =cut
 
 sub fatal
@@ -273,7 +277,7 @@ sub getMessageByType
 
  Write all messages from the given log to into the given log file
 
- Return 0
+ Return int 0
 
 =cut
 
@@ -359,7 +363,7 @@ sub output
 
  Register the given callback, which will be triggered before log processing
 
- Return 0;
+ Return int 0;
 
 =cut
 
@@ -387,7 +391,11 @@ END
 
 		system('clear') if $ENV{'TERM'};
 
-		my $logdir = $main::imscpConfig{'LOG_DIR'} || '/tmp';
+		my $logDir = ($main::imscpConfig{'LOG_DIR'} && -d $main::imscpConfig{'LOG_DIR'})
+			? $main::imscpConfig{'LOG_DIR'}
+			: '/tmp';
+
+		my $logDir = '/tmp';
 		my $msg = undef;
 
 		for(keys %{$self->{'logs'}}) {
@@ -402,7 +410,7 @@ END
 			$msg .= output(join("\n", @errors), 'error') if @errors;
 			$msg .= output(join("\n", @fatals), 'fatal') if @fatals;
 
-			writeLogs($_, "$logdir/$_");
+			writeLogs($_, "$logDir/$_");
 		}
 
 		print STDERR $msg if defined $msg;

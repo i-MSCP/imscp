@@ -276,7 +276,10 @@ sub flush()
 {
 	my $self = shift;
 
-	splice @{$self->{'stack'}};
+	my @rv = grep { defined } @{$self->{'stack'}};
+	$self->{'stack'} = [];
+
+	@rv;
 }
 
 =back

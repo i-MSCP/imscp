@@ -110,7 +110,7 @@ Make sure you are logged in as root and MySQL is running.
 
 2.  Start the uninstall script
 
-	# perl imscp-uninstall -d
+	# perl imscp-uninstall
 
 3.  Clean up your system
 

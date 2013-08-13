@@ -89,7 +89,7 @@ sub removeDB
 		$err = $database->doQuery('delete', "DROP USER ?@?", $self->{'config'}->{'DATABASE_USER'}, '%');
 		$err = $database->doQuery('dummy', 'FLUSH PRIVILEGES');
 
-		if (ref $err ne 'HASH'){
+		unless (ref $err eq 'HASH'){
 			error($err);
 			$rs = 1;
 		}
