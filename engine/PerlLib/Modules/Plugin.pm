@@ -52,18 +52,32 @@ my %toStatus = (
 =head1 DESCRIPTION
 
  This module is responsible to run actions on a plugin according it current status. To each status can correspond a
-specific action, which is executed by the module:
+specific action:
 
  - toinstall: The 'toinstall' status correspond to the 'install' action. Next status should be 'enabled'.
+ 	The 'install' action is run on plugin first installation
+
  - tochange: The 'tochange' status correspond to the 'change' action. Next status should be set to previous status.
+ 	The 'change' action is run on every i-MSCP update (only if the plugin is enabled)
+
  - toupdate status: The 'toupdate' status correspond to the 'update' action. Next status should be set to previous status.
+ 	The 'update' action is run when a plugin is updated (new version or configuration update)
+
  - touninstall status: The 'touninstall' status correspond to the 'uninstall' action. Next status should be 'todelete'.
+	The 'uninstall' action is run when the plugin is uninstalled
+
  - todisable status: The 'todisable' status correspond to the 'disable' action. Next status should be 'disabled'.
+	The 'disable' action is run when a plugin is deactivated
+
  - toenable status: The 'toenable' status correspond to the 'enable' action. Next sttus should be 'enabled'.
+	The 'enable' action is triggered when the plugin is activated
+
  - enabled status: The 'enabled' status correspond to the 'run' action. Next status should be 'enabled'.
+	The 'run' action is run when the plugin is activated, each time a backend request is made
+
  - other status: No action
 
- The module will attempt to run the action on the plugin only if it implements it.
+ The module will attempt to run theses actions on the plugin only if it implements it.
 
  Note on 'install' action:
 

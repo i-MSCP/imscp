@@ -77,8 +77,7 @@ bsmtp     unix  -       n       n       -       -       pipe
 scalemail-backend unix	-	n	n	-	2	pipe
   flags=R user=scalemail argv=/usr/lib/scalemail/bin/scalemail-store ${nexthop} ${user} ${extension}
 mailman   unix  -       n       n       -       -       pipe
-  flags=FR user=list argv=/usr/lib/mailman/bin/postfix-to-mailman.py
-  ${nexthop} ${user}
+  flags=FR user=list argv=/usr/lib/mailman/bin/postfix-to-mailman.py ${nexthop} ${user}
 
 # i-MSCP autoresponder
 imscp-arpl unix  -      n       n       -       -       pipe

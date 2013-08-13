@@ -26,6 +26,7 @@ iMSCP::OpenSSL - i-MSCP OpenSSL library
 # @category    i-MSCP
 # @copyright   2010-2013 by i-MSCP | http://i-mscp.net
 # @author      Daniel Andreca <sci2tech@gmail.com>
+# @author      Laurent Declercq <l.declercq@nuxwin.com>
 # @link        http://i-mscp.net i-MSCP Home Site
 # @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
@@ -62,7 +63,7 @@ sub ssl_check_key
 	my $self = shift;
 
 	if ($self->{'key_path'} eq '') {
-		error("Path to SSL private key container file is not set.");
+		error('Path to SSL private key container file is not set.');
 		return 1;
 	} elsif(! -f $self->{'key_path'}) {
 		error("File $self->{'key_path'} doesn't exist.");
@@ -77,7 +78,7 @@ sub ssl_check_key
 	my $rs = $file->mode(0600);
 	return $rs if $rs;
 
-	$rs = $file->set(($self->{'key_pass'} ne '' ? $self->{'key_pass'} : 'dummypass'));
+	$rs = $file->set(($self->{'key_pass'} ne '') ? $self->{'key_pass'} : 'dummypass');
 	return $rs if $rs;
 
 	$rs = $file->save();
@@ -130,7 +131,7 @@ sub ssl_check_cert
 	my $self = shift;
 
 	if ($self->{'cert_path'} eq '') {
-		error("Path to SSL certificat container file is not set.");
+		error('Path to SSL certificat container file is not set.');
 		return 1;
 	} elsif(! -f $self->{'cert_path'}) {
 		error("File $self->{'cert_path'} doesn't exist.");
@@ -203,7 +204,7 @@ sub ssl_export_key
 	my $rs = $file->mode(0600);
 	return $rs if $rs;
 
-	$rs = $file->set(($self->{'key_pass'} ne '' ? $self->{'key_pass'} : 'dummypass'));
+	$rs = $file->set(($self->{'key_pass'} ne '') ? $self->{'key_pass'} : 'dummypass');
 	return $rs if $rs;
 
 	$rs = $file->save();
@@ -294,7 +295,7 @@ sub ssl_generate_selsigned_cert
 	my $commonName = ($wildcardSSL) ? '*.' .  $self->{'common_name'} : $self->{'common_name'};
 
 	my $cmd =
-		"$self->{'openssl_path'} req -x509 -nodes -days 1825 " .
+		"$self->{'openssl_path'} req -x509 -nodes -days 365 " .
 		"-subj '/C=/ST=/L=/CN=$commonName' " .
 		"-newkey rsa:2048 " .
 		"-keyout $self->{'new_cert_path'}/$self->{'new_cert_name'}.pem " .
