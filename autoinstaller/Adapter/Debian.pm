@@ -715,8 +715,8 @@ sub _debconfSetSelections
 {
 	my $self = shift;
 
-	my $sqlServer = $main::questions{'SERVERS'}->{'SQL_SERVER'} || undef;
-	my $poServer = $main::questions{'SERVERS'}->{'PO_SERVER'} || undef;
+	my $sqlServer = $main::questions{'SQL_SERVER'} || undef;
+	my $poServer = $main::questions{'PO_SERVER'} || undef;
 	my $sqlServerPackageName = undef;
 
 	if(defined $sqlServer) {
