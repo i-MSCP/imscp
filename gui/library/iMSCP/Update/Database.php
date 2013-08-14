@@ -2114,9 +2114,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	 */
 	protected function _databaseUpdate_143()
 	{
-		return array(
-			"UPDATE `hosting_plans` SET `props` = CONCAT(`props`, ';_no_')"
-		);
+		return array("UPDATE `hosting_plans` SET `props` = CONCAT(`props`, ';_no_')");
 	}
 
 	/**
@@ -2212,5 +2210,37 @@ class iMSCP_Update_Database extends iMSCP_Update
 			CHANGE
 				`domain_text` `domain_text` VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL
 		';
+	}
+
+	/**
+	 * Update domain_dns table to allow sharing between several components (core, plugins..)
+	 *
+	 * @return array Stack of SQL statements to be executed
+	 */
+	protected function _databaseUpdate_151()
+	{
+		$sqlUpd = array();
+
+		$stmt = exec_query("SHOW COLUMNS FROM `domain_dns` LIKE 'protected'");
+
+		if($stmt->rowCount()) {
+			$sqlUpd[] = "
+				ALTER TABLE
+					`domain_dns`
+				CHANGE
+					`protected` `owned_by` VARCHAR(255)
+				CHARACTER SET
+					utf8 COLLATE utf8_unicode_ci
+				NOT NULL DEFAULT
+					'custom_dns_feature'
+			";
+		};
+
+		$sqlUpd[] = "UPDATE `domain_dns` SET `owned_by` = 'custom_dns_feature' WHERE `owned_by` = 'no'";
+		$sqlUpd[] = "UPDATE `
+			domain_dns` SET `owned_by` = 'ext_mail_feature' WHERE `domain_type` = 'MX' AND `owned_by` = 'yes'
+		";
+
+		return $sqlUpd;
 	}
 }

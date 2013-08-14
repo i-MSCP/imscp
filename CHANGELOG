@@ -11,7 +11,8 @@ CONFIG:
 
 SETUP:
 	- Removed php5-adodb package from distribution packages files
-	- The i-MSCP apache_php_fpm server impl. is now the default choice for distributions  supporting it officialy
+	- The i-MSCP apache_php_fpm server impl. is now the default choice for distributions supporting it officialy
+	- Fixed: Do not ask for SQL user host names when the SQL server is hosted locally
 	- Fixed: Plugins which provide a backend end with unknown error after update
 
 ENGINE:
@@ -22,6 +23,7 @@ ENGINE:
 	- Fixed: Plugin update must be triggered when plugin configuration is updated
 
 GUI:
+	- Fixed: Allow to share domain_dns table between several components (core, plugins..)
 	- Fixed: Plugin update must be triggered when plugin configuration is updated
 	- Fixed: Unable to delete plugin in some contexts
 
@@ -38,6 +40,7 @@ Tickets:
 	- Fixed #861: Bug - SQLSTATE[42000]: Syntax error or access violation
 	- Fixed #867: Security issue - SSL - When exporting a private key, the password must not be visible from system utilities
 	- Fixed #870: Bug - Error indicator for new tickets
+	- Fixed #875: Review - Installer - Wildcard should be allowed as part of SQL user hostname
 
 ------------------------------------------------------------------------------------------------------------------------
 1.1.0-rc3

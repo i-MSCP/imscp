@@ -170,7 +170,7 @@ function client_addExternalMailServerEntries($item)
                     // Try to insert MX record into the domain_dns database table
                     $query = '
                       INSERT INTO `domain_dns` (
-                        `domain_id`, `alias_id`, `domain_dns`, `domain_class`, `domain_type`, `domain_text`, `protected`
+                        `domain_id`, `alias_id`, `domain_dns`, `domain_class`, `domain_type`, `domain_text`, `owned_by`
                       ) VALUES (
                         ?, ?, ?, ?, ?, ?, ?
                       )
@@ -184,7 +184,7 @@ function client_addExternalMailServerEntries($item)
                             'IN',
                             'MX',
                             "{$data['priority'][$index]}\t" . encode_idna($data['host'][$index]) . '.',
-                            'yes' // Protect the entry against deletion from the custom dns interface
+                            'ext_mail_feature'
                         )
                     );
 

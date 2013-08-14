@@ -227,7 +227,7 @@ function client_editExternalMailServerEntries($item)
 						$query = '
 							INSERT INTO `domain_dns` (
 								`domain_id`, `alias_id`, `domain_dns`, `domain_class`, `domain_type`, `domain_text`,
-								`protected`
+								`owned_by`
 							) VALUES (
 								?, ?, ?, ?, ?, ?, ?
 							)
@@ -241,7 +241,7 @@ function client_editExternalMailServerEntries($item)
 								'IN',
 								'MX',
 								"{$data['priority'][$index]}\t" . encode_idna($data['host'][$index]) . '.',
-								'yes' // Protect the entry against deletion from the custom DNS interface
+								'ext_mail_feature' // Protect the dns record against deletion from the custom DNS interface
 							)
 						);
 

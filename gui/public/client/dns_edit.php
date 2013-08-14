@@ -216,6 +216,7 @@ function checkConflict($name, $type, &$errorString)
 	$resolver = new Net_DNS2_Resolver(array('nameservers' => array('127.0.0.1')));
 
 	try {
+		/** @var Net_DNS2_Packet_Response $result */
 		$result = $resolver->query($name, $type);
 
 		if (count($result->answer) == 0) {
@@ -303,11 +304,11 @@ function decodeDnsRecordData($data)
 {
 	$address = $addressv6 = $srvName = $srvProto = $cname = $txt = $name = ''; $srvTTL = $srvPriority = $srvWeight =
 	$srvHost = $srvPost = '';
-	$protected = 'no';
+	$ownedBy = 'custom_dns_feature';
 
 	if (is_array($data)) {
 		$name = $data['domain_dns'];
-		$protected = $data['protected'];
+		$ownedBy = $data['owned_by'];
 
 		switch ($data['domain_type']) {
 			case 'A':
@@ -342,7 +343,7 @@ function decodeDnsRecordData($data)
 
 	return array(
 		$name, $address, $addressv6, $srvName, $srvProto, $srvTTL, $srvPriority, $srvWeight, $srvHost, $srvPost, $cname,
-		$txt, $protected
+		$txt, $ownedBy
 	);
 }
 
@@ -408,11 +409,11 @@ function generatePageData($tpl, $dnsRecordId)
 
 	list(
 		$name, $address, $addressv6, $srvName, $srvProto, $srvTTL, $srvPriority, $srvWeight, $srvHost, $srvPort, $cname,
-		$plain, $protected
+		$plain, $ownedBy
 	) = decodeDnsRecordData($data);
 
 	// Protection against edition (eg. for external mail MX record)
-	if($protected == 'yes') {
+	if($ownedBy != 'custom_dns_feature') {
 		showBadRequestErrorPage();
 	}
 
@@ -608,14 +609,17 @@ function saveDnsRecord($dnsRecordId)
 			try {
 				$query = "
 					INSERT INTO `domain_dns` (
-						`domain_id`, `alias_id`, `domain_dns`, `domain_class`, `domain_type`, `domain_text`
+						`domain_id`, `alias_id`, `domain_dns`, `domain_class`, `domain_type`, `domain_text`, `owned_by`
 					) VALUES (
-						?, ?, ?, ?, ?, ?
+						?, ?, ?, ?, ?, ?, ?
 					)
 				";
 				 exec_query(
 					$query,
-					 array($mainDomainId, $domainId, $dnsRecordName, $dnsRecordClass, $dnsRecordType, $dnsRecordText)
+					 array(
+						 $mainDomainId, $domainId, $dnsRecordName, $dnsRecordClass, $dnsRecordType,
+						 $dnsRecordText, 'custom_dns_feature'
+					 )
 				);
 			} catch (iMSCP_Exception_Database $e) {
 				if($e->getCode() == 23000) { // Duplicate entries

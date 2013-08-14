@@ -51,8 +51,8 @@ if (isset($_GET['id'])) {
 	$dnsRecordId = $_GET['id'];
 	$mainDomainId = get_user_domain_id($_SESSION['user_id']);
 
-	$query = "SELECT `alias_id` FROM `domain_dns` WHERE `domain_dns_id` = ? AND domain_id = ? AND protected <> ?";
-	$stmt = exec_query($query, array($dnsRecordId, $mainDomainId, 'yes'));
+	$query = "SELECT `alias_id` FROM `domain_dns` WHERE `domain_dns_id` = ? AND domain_id = ? AND `owned_by` = ?";
+	$stmt = exec_query($query, array($dnsRecordId, $mainDomainId, 'custom_dns_feature'));
 
 	if (!$stmt->rowCount()) {
 		showBadRequestErrorPage();

@@ -878,8 +878,8 @@ function admin_checkAndUpdateData($domainId)
 			// Support for custom DNS records is now disabled - We must delete all custom DNS entries
 			// (except those that are protected), and update the DNS zone file
 			if ($data['domain_dns'] != $data['fallback_domain_dns'] && $data['domain_dns'] == 'no') {
-				$query = 'DELETE FROM `domain_dns` WHERE `domain_id` = ? AND `protected` <> ?';
-				exec_query($query, array($domainId, 'yes'));
+				$query = 'DELETE FROM `domain_dns` WHERE `domain_id` = ? AND `owned_by` = ?';
+				exec_query($query, array($domainId, 'custom_dns_feature'));
 
 				$daemonRequest= true;
 			}

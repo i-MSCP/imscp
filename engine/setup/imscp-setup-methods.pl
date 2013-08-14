@@ -645,52 +645,28 @@ sub setupAskSqlUserHost
 	my $dialog = shift;
 
 	my $host = setupGetQuestion('DATABASE_USER_HOST');
-	my $domain = Data::Validate::Domain->new();
-	my $ip = iMSCP::IP->new();
 	my $rs = 0;
 
-	if(
-		$main::reconfigure ~~ ['sql', 'servers', 'all', 'forced'] ||
-		(
-			$host ne 'localhost' && $host ne '127.0.0.1' && $host ne '%' && ! $domain->is_domain($host) &&
-			! $ip->isValidIp($host)
-		)
-	) {
-		my $msg = '';
-
-		$host = (setupGetQuestion('SQL_SERVER') ne 'remote_server')
-			? 'localhost' : setupGetQuestion('BASE_SERVER_IP') if ! $host;
-
-		do {
-			($rs, $host) = $dialog->inputbox(
+	if(not setupGetQuestion('DATABASE_HOST') ~~ ['localhost', '127.0.0.1']) {
+		if($main::reconfigure ~~ ['sql', 'servers', 'all', 'forced'] || ! $host) {
+			do {
+				($rs, $host) = $dialog->inputbox(
 "
 Please, enter the host from which SQL users created by i-MSCP should be allowed to connect to your SQL server:
 
-Allowed values are:
+Important: No check is made on the entered value. Please refer to the following document for allowed values.
 
- - Fully qualified hostname or localhost
- - IPv4 or IPv6 addresses
- - The percent character '%' for any host
-
- This dialog is mostly for remote MySQL server usage. If you are using a local server, default value should be fine.
+	http://dev.mysql.com/doc/refman/5.5/en/account-names.html
 ",
-				$host
-			);
+					$host // setupGetQuestion('BASE_SERVER_IP')
+				);
+			} while($rs != 30);
+		}
 
-			$msg = '';
-
-			if($rs != 30) {
-				if(
-					$host ne 'localhost' && $host ne '127.0.0.1' && $host ne '%' && ! $domain->is_domain($host) &&
-					! $ip->isValidIp($host)
-				) {
-					$msg = "\n\n\\Z1 Invalid host found.\\z\n\n Please, try again:";
-				}
-			}
-		} while($rs != 30 && $msg);
+		setupSetQuestion('DATABASE_USER_HOST', $host) if $rs != 30;
+	} else {
+		setupSetQuestion('DATABASE_USER_HOST', 'localhost');
 	}
-
-	setupSetQuestion('DATABASE_USER_HOST', $host) if $rs != 30;
 
 	$rs;
 }

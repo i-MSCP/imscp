@@ -576,15 +576,18 @@ function client_generateCustomDnsRecordsList($tpl, $userId)
 					$actionScriptEdit
 				) = _client_generateCustomDnsRecordAction(
 					'edit',
-					($stmt->fields['protected'] == 'no')
+					($stmt->fields['owned_by'] === 'custom_dns_feature')
 						? $stmt->fields['domain_dns_id']
-						: $stmt->fields['domain_id'] . ';' . ($stmt->fields['alias_id'] ? 'alias' : 'normal' ),
+						: (
+							($stmt->fields['owned_by'] === 'ext_mail_feature')
+								? $stmt->fields['domain_id'] . ';' . ($stmt->fields['alias_id'] ? 'alias' : 'normal')
+								: null // FIXME Allow any component to provide it id for edit link
+						),
 					$stmt->fields['domain_status'],
-					($stmt->fields['protected'] == 'yes') ? true : false
-
+					$stmt->fields['owned_by']
 				);
 
-				if($stmt->fields['protected'] == 'yes') {
+				if($stmt->fields['owned_by'] !== 'custom_dns_feature') {
 					$tpl->assign('DNS_DELETE_LINK', '');
 				} else {
 					list(
@@ -637,24 +640,24 @@ function client_generateCustomDnsRecordsList($tpl, $userId)
  *
  * @access private
  * @param string $action Action
- * @param int $id Custom DNS record unique identifier
+ * @param string|null $id Custom DNS record unique identifier
  * @param string $status Custom DNS record status
- * @param bool $mxRecord Whether or not $id refer to a DNS MX record
+ * @param string $ownedBy Owner of the DNS record
  * @return array
  */
-function _client_generateCustomDnsRecordAction($action, $id, $status, $mxRecord = false)
+function _client_generateCustomDnsRecordAction($action, $id, $status, $ownedBy = 'custom_dns_feature')
 {
 	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
 
 	if($status == $cfg->ITEM_OK_STATUS) {
 		if($action == 'edit') {
-			if(!$mxRecord) {
+			if($ownedBy === 'custom_dns_feature') {
 				return array(tr('Edit'), tohtml("dns_edit.php?edit_id=$id"));
-			} else {
+			} elseif($ownedBy === 'ext_mail_feature') {
 				return array(tr('Edit'), tohtml("mail_external_edit.php?item=" . urlencode($id)));
 			}
-		} elseif(!$mxRecord) {
+		} elseif($ownedBy === 'custom_dns_feature') {
 			return array(tr('Delete'), tohtml("dns_delete.php?id=$id"));
 		}
 	}
