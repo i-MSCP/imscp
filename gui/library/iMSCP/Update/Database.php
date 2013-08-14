@@ -2237,9 +2237,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 		};
 
 		$sqlUpd[] = "UPDATE `domain_dns` SET `owned_by` = 'custom_dns_feature' WHERE `owned_by` = 'no'";
-		$sqlUpd[] = "UPDATE `
-			domain_dns` SET `owned_by` = 'ext_mail_feature' WHERE `domain_type` = 'MX' AND `owned_by` = 'yes'
-		";
+		$sqlUpd[] = "UPDATE `domain_dns` SET `owned_by` = 'ext_mail_feature' WHERE `domain_type` = 'MX' AND `owned_by` = 'yes'";
 
 		return $sqlUpd;
 	}
