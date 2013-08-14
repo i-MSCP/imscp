@@ -40,7 +40,7 @@ Tickets:
 	- Fixed #861: Bug - SQLSTATE[42000]: Syntax error or access violation
 	- Fixed #867: Security issue - SSL - When exporting a private key, the password must not be visible from system utilities
 	- Fixed #870: Bug - Error indicator for new tickets
-	- Fixed #875: Review - Installer - Wildcard should be allowed as part of SQL user hostname
+	- Fixed #876: Review - Installer - Wildcard should be allowed as part of SQL user hostname
 
 ------------------------------------------------------------------------------------------------------------------------
 1.1.0-rc3
