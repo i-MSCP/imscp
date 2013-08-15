@@ -776,7 +776,7 @@ $sqlServerPackageName mysql-server/root_password_again password $main::questions
 EOF
 	}
 
-	my $debconfSelectionsFile = File::Temp->new(UNLINK => 0);
+	my $debconfSelectionsFile = File::Temp->new();
 	print $debconfSelectionsFile $selectionsFileContent;
 
 	my ($stdout, $stderr);

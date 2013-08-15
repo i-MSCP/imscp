@@ -71,7 +71,7 @@ sub ssl_check_key
 	}
 
 	my $keyPassword = (($self->{'key_pass'} ne '') ? $self->{'key_pass'} : 'dummypass') . "\n";
-	my $keyPaswordFile = File::Temp->new(UNLINK => 0);
+	my $keyPaswordFile = File::Temp->new();
 
 	# Write key password into temporary file, which is only readable by root
 	print $keyPaswordFile $keyPassword;
@@ -189,7 +189,7 @@ sub ssl_export_key
 	my $self = shift;
 
 	my $keyPassword = (($self->{'key_pass'} ne '') ? $self->{'key_pass'} : 'dummypass') . "\n";
-	my $keyPaswordFile = File::Temp->new(UNLINK => 0);
+	my $keyPaswordFile = File::Temp->new();
 
 	# Write key password into temporary file, which is only readable by root
 	print $keyPaswordFile $keyPassword;
