@@ -529,7 +529,7 @@ class iMSCP_Plugin_Manager
 						$stmt = exec_query($query, $pluginName);
 
 						$pluginInfo = $stmt->fetchRow(PDO::FETCH_COLUMN);
-						$pluginInfo = json_decode($pluginInfo);
+						$pluginInfo = json_decode($pluginInfo, true);
 						$fromVersion = $pluginInfo['previous_version'];
 						$toVersion =  $pluginInfo['version'];
 					}
