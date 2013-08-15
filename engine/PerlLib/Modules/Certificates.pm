@@ -174,42 +174,27 @@ sub add
 
 	# Create temporary file for certificate
 	my $certFH = File::Temp->new();
-
 	# Write certificate from database into temporary file
-	my $file = iMSCP::File->new('filename' => $certFH->filename);
-	$file->set($self->{'cert'});
-	my $rs = $file->save();
-	return $rs if $rs;
-
+	print $certFH $self->{'cert'};
 	# Set certificate file path on openssl module
-	$openSSL->{'cert_path'} = $certFH->filename;
+	$openSSL->{'cert_path'} = $certFH;
 
 	# Create temporary file for private key
 	my $keyFH = File::Temp->new();
-
 	# Write private key from database into temporary file
-	$file = iMSCP::File->new('filename' => $keyFH->filename);
-	$file->set($self->{'key'});
-	$rs = $file->save();
-	return $rs if $rs;
-
+	print $keyFH $self->{'key'};
 	# Set key file path on openssl module
-	$openSSL->{'key_path'} = $keyFH->filename;
+	$openSSL->{'key_path'} = $keyFH;
 
 	my $caFH;
 
 	if($self->{'ca_cert'}) {
 		# Create temporary file for certificate authority
 		$caFH = File::Temp->new();
-
 		# Write certificate authority from database into temporary file
-		$file = iMSCP::File->new('filename' => $caFH->filename);
-		$file->set($self->{'ca_cert'});
-		$rs = $file->save();
-		return $rs if $rs;
-
+		print $caFH $self->{'ca_cert'};
 		# Set certificate authority file path on openssl module
-		$openSSL->{'intermediate_cert_path'} = $caFH->filename;
+		$openSSL->{'intermediate_cert_path'} = $caFH;
 	} else {
 		$openSSL->{'intermediate_cert_path'} = '';
 	}

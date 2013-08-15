@@ -926,7 +926,7 @@ sub setupAskPhpTimezone
 	$rs;
 }
 
-# Ask for i-MSCP ssl support
+# Ask for i-MSCP SSL
 sub setupAskSsl
 {
 	my($dialog) = shift;
@@ -968,8 +968,7 @@ sub setupAskSsl
 				my $msg = '';
 
 				do {
-
-					$rs = $dialog->msgbox("\n$msg\nPlease selects your private key in next dialog.");
+					$rs = $dialog->msgbox("$msg\nPlease selects your private key in next dialog.");
 
 					# Ask for private key path
 					do {
@@ -1039,7 +1038,7 @@ sub setupAskSsl
 		$openSSL->{'cert_path'} = "$main::imscpConfig{'GUI_CERT_DIR'}/$hostname.pem";
 
 		if($openSSL->ssl_check_all()){
-			iMSCP::Dialog->factory()->msgbox("Certificate is missing or invalid.");
+			iMSCP::Dialog->factory()->msgbox("\nYour SSL certificate is missing or invalid.");
 			goto SSL_DIALOG;
 		}
 

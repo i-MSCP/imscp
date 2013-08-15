@@ -70,24 +70,16 @@ sub ssl_check_key
 		return -1;
 	}
 
-	my $keyPaswordFile = File::Temp->new();
+	my $keyPassword = (($self->{'key_pass'} ne '') ? $self->{'key_pass'} : 'dummypass') . "\n";
+	my $keyPaswordFile = File::Temp->new(UNLINK => 0);
 
-	# Writing the private key password into a temporary file to avoid to make it visible to some utilities (such as 'ps')
-	my $file = iMSCP::File->new('filename' => $keyPaswordFile->filename);
-
-	my $rs = $file->mode(0600);
-	return $rs if $rs;
-
-	$rs = $file->set(($self->{'key_pass'} ne '') ? $self->{'key_pass'} : 'dummypass');
-	return $rs if $rs;
-
-	$rs = $file->save();
-	return $rs if $rs;
-
-	my $cmd = "$self->{'openssl_path'} rsa -in $self->{'key_path'} -noout -passin file:" . $keyPaswordFile->filename;
+	# Write key password into temporary file, which is only readable by root
+	print $keyPaswordFile $keyPassword;
 
 	my ($stdout, $stderr);
-	my $rs = execute($cmd, \$stdout, \$stderr);
+	my $rs = execute(
+		"$self->{'openssl_path'} rsa -in $self->{'key_path'} -noout -passin file:$keyPaswordFile", \$stdout, \$stderr
+	);
 	debug($stdout) if $stdout;
 	warning($stderr) if $stderr && ! $rs;
 	error("Invalid private key or password" . ($stderr ? ": $stderr" : '') . '.') if $rs;
@@ -196,24 +188,15 @@ sub ssl_export_key
 {
 	my $self = shift;
 
-	my $keyPaswordFile = File::Temp->new();
+	my $keyPassword = (($self->{'key_pass'} ne '') ? $self->{'key_pass'} : 'dummypass') . "\n";
+	my $keyPaswordFile = File::Temp->new(UNLINK => 0);
 
-	# Writing the private key password into a temporary file to avoid to make it visible to some utilities (such as 'ps')
-	my $file = iMSCP::File->new('filename' => $keyPaswordFile->filename);
-
-	my $rs = $file->mode(0600);
-	return $rs if $rs;
-
-	$rs = $file->set(($self->{'key_pass'} ne '') ? $self->{'key_pass'} : 'dummypass');
-	return $rs if $rs;
-
-	$rs = $file->save();
-	return $rs if $rs;
+	# Write key password into temporary file, which is only readable by root
+	print $keyPaswordFile $keyPassword;
 
 	my $cmd =
-		"$self->{openssl_path} rsa -in $self->{'key_path'} " .
-		"-out $self->{'new_cert_path'}/$self->{'new_cert_name'}.pem " .
-		"-passin file:" . $keyPaswordFile->filename;
+		"$self->{openssl_path} rsa -in $self->{'key_path'} -out $self->{'new_cert_path'}/$self->{'new_cert_name'}.pem" .
+		" -passin file:$keyPaswordFile";
 
 	my ($stdout, $stderr);
 	my $rs = execute($cmd, \$stdout, \$stderr);

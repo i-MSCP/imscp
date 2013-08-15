@@ -30,7 +30,6 @@ use strict;
 use warnings;
 
 use iMSCP::Debug;
-use File::Temp;
 use iMSCP::Database;
 use iMSCP::Servers;
 use iMSCP::Addons;

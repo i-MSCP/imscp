@@ -41,6 +41,7 @@ use iMSCP::Dialog;
 use iMSCP::File;
 use iMSCP::Stepper;
 use iMSCP::Getopt;
+use File::Temp;
 use autoinstaller::Common 'checkCommandAvailability';
 use parent 'autoinstaller::Adapter::Abstract';
 
@@ -101,6 +102,9 @@ sub preBuild
 {
 	my $self = shift;
 
+	my $rs = iMSCP::HooksManager->getInstance()->trigger('beforePreBuild');
+	return $rs if $rs;
+
 	unless($main::skippackages) {
 		iMSCP::Dialog->factory()->endGauge();
 
@@ -110,12 +114,12 @@ sub preBuild
 
 		my @steps = (
 			[sub { $self->_preparePackagesList() }, 'Generating list of packages to uninstall and install'],
+			[sub { $self->_debconfSetSelections() }, 'Pre-fill Debconf database'],
 			[sub { $self->_processExternalRepositories() }, 'Process external repositories if any'],
 			[sub { $self->_processAptPreferencesFile() }, 'Process APT preferences file if any'],
 			[sub { $self->_updatePackagesIndex() }, 'Updating packages index files']
 		);
 
-		my $rs = 0;
 		my $step = 1;
 		my $nbSteps = scalar @steps;
 
@@ -126,7 +130,7 @@ sub preBuild
 		}
 	}
 
-	0;
+	iMSCP::HooksManager->getInstance()->trigger('afterPreBuild');
 }
 
 =item uninstallPackages()
@@ -255,10 +259,6 @@ sub _init
 
 	$self->_updateAptSourceList() and fatal('Unable to configure APT packages manager') if ! $main::skippackages;
 
-	if(iMSCP::Getopt->preseed) {
-		iMSCP::HooksManager->getInstance()->register('beforeInstallPackages', sub { _debconfSetSelections(); });
-	}
-
 	$self;
 }
 
@@ -273,6 +273,7 @@ sub _init
 sub _preparePackagesList
 {
 	my $self = shift;
+
 	my $lsbRelease = iMSCP::LsbRelease->getInstance();
 	my $distribution = lc($lsbRelease->getId(1));
 	my $codename = lc($lsbRelease->getCodename(1));
@@ -367,6 +368,7 @@ Do you agree?
 			}
 
 			$self->{'userSelection'}->{$service} = $server eq 'Not used' ? 'no' : $server;
+			$main::questions{uc($service) . '_SERVER'} = $server eq 'Not used' ? 'no' : $server;
 
 			for(@alternative) {
 				# Remove unselected server
@@ -705,7 +707,7 @@ sub _updatePackagesIndex
 
 =item _debconfSetSelection()
 
- Pre-fill debconf database using values from i-MSCP preseed file
+ Pre-fill debconf database
 
  Return int 0 on success, other on failure
 
@@ -720,7 +722,7 @@ sub _debconfSetSelections
 	my $sqlServerPackageName = undef;
 
 	if(defined $sqlServer) {
-		if( $sqlServer =~ /^(mysql|mariadb)_(\d{1,2}\.\d)$/) {
+		if( $sqlServer =~ /^(mysql|mariadb)_(\d+\.\d+)$/) {
 			$sqlServerPackageName = "$1-server-$2";
 		} else {
 			error("Unknown SQL server package name: $sqlServer");
@@ -731,48 +733,57 @@ sub _debconfSetSelections
 		return 1;
 	}
 
+	# Most values below are not really important because i-MSCP will override them after package installation
+	my $mailname = `hostname --fqdn 2>/dev/null` || 'localdomain';
+	chomp $mailname;
+
+	my $hostname = ($mailname ne 'localdomain') ? $mailname : 'localhost';
+
+	my $domain = `hostname --domain 2>/dev/null` || 'localdomain';
+	chomp $domain;
+
+	# From postfix package postfix.config script
+	my $destinations;
+	if ($mailname eq $hostname) {
+		$destinations = join ", ", ($mailname, "localhost." . $domain, ", localhost");
+	} else {
+		$destinations = join ", ", ($mailname, $hostname, "localhost." . $domain . ", localhost");
+	}
+
 	my $selectionsFileContent = <<EOF;
-$sqlServerPackageName mysql-server/root_password password $main::questions{'DATABASE_PASSWORD'}
-$sqlServerPackageName mysql-server/root_password_again password $main::questions{'DATABASE_PASSWORD'}
 postfix postfix/main_mailer_type select Internet Site
-postfix postfix/destinations string $main::questions{'SERVER_HOSTNAME'}, $main::questions{'SERVER_HOSTNAME'}.local, localhost
-postfix	postfix/mailname string $main::questions{'SERVER_HOSTNAME'}
+postfix postfix/mailname string $mailname
+postfix postfix/destinations string $destinations
 proftpd-basic shared/proftpd/inetd_or_standalone select standalone
 EOF
 
 	if(defined $poServer) {
 		if($poServer eq 'courier') {
-			$selectionsFileContent .= "courier-base courier-base/webadmin-configmode boolean false\n";
-			$selectionsFileContent .= "courier-ssl courier-ssl/certnotice note\n";
+			$selectionsFileContent .= <<EOF;
+courier-base courier-base/webadmin-configmode boolean false
+courier-ssl courier-ssl/certnotice note
+EOF
 		}
 	} else {
 		error('Unable to retrieve PO server name in your preseed file');
 		return 1;
 	}
 
-	my $debconfSelectionsFile = iMSCP::File->new('filename' => '/tmp/imscp-debconf-selections');
+	if(iMSCP::Getopt->preseed) {
+		$selectionsFileContent .= <<EOF;
+$sqlServerPackageName mysql-server/root_password password $main::questions{'DATABASE_PASSWORD'}
+$sqlServerPackageName mysql-server/root_password_again password $main::questions{'DATABASE_PASSWORD'}
+EOF
+	}
 
-	my $rs= $debconfSelectionsFile->set($selectionsFileContent);
-	return $rs if $rs;
-
-	$rs = $debconfSelectionsFile->save();
-	return $rs if $rs;
-
-	$rs = $debconfSelectionsFile->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
-	return $rs if $rs;
-
-	$rs = $debconfSelectionsFile->mode('0600');
-	return $rs if $rs;
+	my $debconfSelectionsFile = File::Temp->new(UNLINK => 0);
+	print $debconfSelectionsFile $selectionsFileContent;
 
 	my ($stdout, $stderr);
-	$rs = execute('debconf-set-selections /tmp/imscp-debconf-selections', \$stdout, $stderr);
+	my $rs = execute("debconf-set-selections $debconfSelectionsFile", \$stdout, $stderr);
 	debug($stdout) if $stdout;
 	error($stderr) if $rs && $stderr;
 	error('Unable to insert entries in debconf database') if $rs && ! $stderr;
-
-	# In any case, the file must be deleted
-	$rs = $debconfSelectionsFile->delFile();
-	return $rs if $rs;
 
 	$rs;
 }

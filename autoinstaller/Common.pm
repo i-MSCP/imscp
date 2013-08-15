@@ -207,13 +207,7 @@ Thanks for using i-MSCP.
 
 sub preBuild
 {
-	my $rs = iMSCP::HooksManager->getInstance()->trigger('beforePreBuild');
-	return $rs if $rs;
-
-	$rs = _getDistroAdapter()->preBuild();
-	return $rs if $rs;
-
-	iMSCP::HooksManager->getInstance()->trigger('afterPreBuild');
+	_getDistroAdapter()->preBuild();
 }
 
 =item uninstallPackages()
@@ -226,14 +220,7 @@ sub preBuild
 
 sub uninstallPackages
 {
-	my $rs = iMSCP::HooksManager->getInstance()->trigger('beboreUninstallPackages');
-	return $rs if $rs;
-
-	$rs = _getDistroAdapter()->uninstallPackages();
-	return $rs if $rs;
-
-	iMSCP::HooksManager->getInstance()->trigger('afterUninstallPackages');
-
+	_getDistroAdapter()->uninstallPackages();
 }
 
 =item installPackages()
@@ -246,13 +233,7 @@ sub uninstallPackages
 
 sub installPackages
 {
-	my $rs = iMSCP::HooksManager->getInstance()->trigger('beboreInstallPackages');
-	return $rs if $rs;
-
-	$rs = _getDistroAdapter()->installPackages();
-	return $rs if $rs;
-
-	iMSCP::HooksManager->getInstance()->trigger('afterInstallPackages');
+	_getDistroAdapter()->installPackages();
 }
 
 =item testRequirements()
