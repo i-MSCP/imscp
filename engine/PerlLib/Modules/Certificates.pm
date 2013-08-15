@@ -206,12 +206,10 @@ sub add
 	$openSSL->{'key_pass'} = $self->{'password'};
 
 	# Check certificate, private key and certificate authority
-	$rs = $openSSL->ssl_check_all();
+	my $rs = $openSSL->ssl_check_all();
 	return $rs if $rs;
 
-	# Set directory path to which certificate should be exported
 	$openSSL->{'new_cert_path'} = $self->{'certsDir'};
-
 	$openSSL->{'new_cert_name'} = $self->{'name'};
 	$openSSL->{'cert_selfsigned'} = 0;
 
