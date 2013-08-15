@@ -835,7 +835,12 @@ class iMSCP_Plugin_Manager
 					$returnInfo['deleted']++;
 				}
 			} elseif(array_key_exists($pluginName, $toUpdatePlugins)) {
-				$this->update($pluginName, false, $toUpdatePlugins['from_version'], $toUpdatePlugins['to_version']);
+				$this->update(
+					$pluginName,
+					false,
+					$toUpdatePlugins[$pluginName]['from_version'],
+					$toUpdatePlugins[$pluginName]['to_version']
+				);
 			}
 		}
 
