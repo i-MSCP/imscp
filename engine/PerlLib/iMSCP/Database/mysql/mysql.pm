@@ -45,7 +45,9 @@ sub _init
 	$self->{'db'}->{'DATABASE_PORT'} = '';
 	$self->{'db'}->{'DATABASE_USER'} = '';
 	$self->{'db'}->{'DATABASE_PASSWORD'} = '';
-	$self->{'db'}->{'DATABASE_SETTINGS'} = { 'PrintError' => 0, 'RaiseError' => 1, 'mysql_auto_reconnect' => 1 };
+	$self->{'db'}->{'DATABASE_SETTINGS'} = {
+		'AutoCommit' => 1, 'PrintError' => 0, 'RaiseError' => 1, 'mysql_auto_reconnect' => 1
+	};
 
 	# for internal use only
 	$self->{'_dsn'} = '';
@@ -88,14 +90,14 @@ sub connect
 		$self->{'connection'}->disconnect() if $self->{'connection'};
 		debug("Connecting with ($dsn, $self->{'db'}->{'DATABASE_USER'}, $self->{'db'}->{'DATABASE_PASSWORD'})");
 
-		# Set connection timeout to 2 second
+		# Set connection timeout to 3 seconds
 		my $mask = POSIX::SigSet->new(SIGALRM);
 		my $action = POSIX::SigAction->new(sub { die "SQL database connection timeout\n" }, $mask);
 		my $oldaction = POSIX::SigAction->new();
 		sigaction(SIGALRM, $action, $oldaction);
 
 		eval {
-			alarm 2;
+			alarm 3;
 			$self->{'connection'} = DBI->connect(
 				$dsn, $self->{'db'}->{'DATABASE_USER'}, $self->{'db'}->{'DATABASE_PASSWORD'},
 				(
@@ -120,6 +122,33 @@ sub connect
 	}
 
 	0;
+}
+
+# Start transaction and return raw db connection
+sub startTransaction
+{
+	my $self = shift;
+
+	my $rawDb = $self->getRawDb();
+
+	$rawDb->{'AutoCommit'} = 0;
+	$rawDb->{'RaiseError'} = 1;
+
+	$rawDb;
+}
+
+# End transaction
+sub endTransaction
+{
+	my $self = shift;
+
+	my $rawDb = $self->getRawDb();
+
+	$rawDb->{'AutoCommit'} = 1;
+	$rawDb->{'RaiseError'} = 0;
+	$rawDb->{'mysql_auto_reconnect'} = 1;
+
+	undef;
 }
 
 # Return raw db connection

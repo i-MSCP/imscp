@@ -2093,10 +2093,7 @@ sub setupRebuildCustomerFiles
 		return 1;
 	}
 
-	# Enable transaction support
-	my $rawDb = $database->getRawDb();
-	$rawDb->{'AutoCommit'} = 0;
-	$rawDb->{'RaiseError'} = 1;
+	my $rawDb = $database->startTransaction();
 
 	eval {
 		my $aditionalCondition;
@@ -2134,11 +2131,9 @@ sub setupRebuildCustomerFiles
 		$rawDb->rollback();
 		error("Unable to execute SQL query: $@");
 		return 1;
-	} else {
-		# Disable transaction support
-		$rawDb->{'AutoCommit'} = 1;
-		$rawDb->{'RaiseError'} = 0;
 	}
+
+	$database->endTransaction();
 
 	iMSCP::Boot->getInstance()->unlock();
 

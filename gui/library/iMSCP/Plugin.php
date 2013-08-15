@@ -81,9 +81,11 @@ abstract class iMSCP_Plugin
 	 *
 	 * @throws iMSCP_Plugin_Exception
 	 * @param iMSCP_Plugin_Manager $pluginManager
+	 * @param string $fromVersion Version from which update is initiated
+	 * @param string $toVersion Version to which plugin is updated
 	 * @return void
 	 */
-	public function update(iMSCP_Plugin_Manager $pluginManager) {}
+	public function update(iMSCP_Plugin_Manager $pluginManager, $fromVersion, $toVersion) {}
 
 	/**
 	 * PLugin uninstallation

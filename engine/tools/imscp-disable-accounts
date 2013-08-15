@@ -86,11 +86,7 @@ sub process
 		return 1;
 	}
 
-	# Enable transaction support
-	my $rawDb = $db->getRawDb();
-	$rawDb->{'AutoCommit'} = 0;
-	$rawDb->{'RaiseError'} = 1;
-
+	my $rawDb = $db->startTransaction();
 	my $rs = 0;
 
 	if(%{$accounts}) {
@@ -165,6 +161,8 @@ sub process
 				$rs = 1;
 			}
 		}
+
+		$db->endTransaction();
 
 		# Run request manager to process all scheduled tasks
 		if(!$rs) {

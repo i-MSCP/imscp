@@ -501,9 +501,11 @@ class iMSCP_Plugin_Manager
 	 *
 	 * @param string $pluginName Plugin name
 	 * @param bool $force Force action
+	 * @param string|null $fromVersion Version to which plugin is updated
+	 * @param string|null $toVersion Version to which plugin is updated
 	 * @return bool TRUE on success, FALSE otherwise
 	 */
-	public function update($pluginName, $force = false)
+	public function update($pluginName, $force = false, $fromVersion = null, $toVersion = null)
 	{
 		if ($this->isKnown($pluginName)) {
 			if ($force || !in_array($this->getStatus($pluginName), array('uninstalled', 'toinstall'))) {
@@ -522,7 +524,17 @@ class iMSCP_Plugin_Manager
 						)
 					);
 
-					$pluginInstance->{'update'}($this);
+					if($force || $fromVersion === null || $toVersion === null) {
+						$query = 'SELECT `plugin_info`, FROM `plugin` WHERE `plugin_name`';
+						$stmt = exec_query($query, $pluginName);
+
+						$pluginInfo = $stmt->fetchRow(PDO::FETCH_COLUMN);
+						$pluginInfo = json_decode($pluginInfo);
+						$fromVersion = $pluginInfo['previous_version'];
+						$toVersion =  $pluginInfo['version'];
+					}
+
+					$pluginInstance->{'update'}($this, $fromVersion, $toVersion);
 
 					if ($this->hasBackend($pluginName)) {
 						$this->backendRequest = true;
@@ -759,15 +771,20 @@ class iMSCP_Plugin_Manager
 							$knownPluginInfo = json_decode($knownPluginsData[$pluginName]['plugin_info'], true);
 							$knownPluginsConfig = json_decode($knownPluginsData[$pluginName]['plugin_config'], true);
 
+							// Set previous version for later use
+							$pluginInfo['previous_version'] = $knownPluginInfo['version'];
+
 							// If the plugin has been already installed, schedule update if needed
+							$newVersion = version_compare($pluginVersion,  $knownPluginInfo['version'], '>');
+
 							if(
 								!in_array($pluginStatus, array('uninstalled', 'toinstall')) &&
-								(
-									version_compare($pluginVersion,  $knownPluginInfo['version'], '>') ||
-									$pluginConfig !== $knownPluginsConfig
-								)
+								($newVersion || $pluginConfig !== $knownPluginsConfig)
 							) {
-								$toUpdatePlugins[] = $pluginName;
+								$toUpdatePlugins[$pluginName] = array(
+									'from_version' => $pluginInfo['previous_version'],
+									'to_version' => $newVersion
+								);
 								$returnInfo['updated']++;
 							}
 						} else {
@@ -817,8 +834,8 @@ class iMSCP_Plugin_Manager
 				if ($this->deletePluginFromDatabase($pluginName)) {
 					$returnInfo['deleted']++;
 				}
-			} elseif(in_array($pluginName, $toUpdatePlugins)) {
-				$this->update($pluginName);
+			} elseif(array_key_exists($pluginName, $toUpdatePlugins)) {
+				$this->update($pluginName, false, $toUpdatePlugins['from_version'], $toUpdatePlugins['to_version']);
 			}
 		}
 

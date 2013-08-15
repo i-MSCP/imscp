@@ -7,18 +7,19 @@ Git Master
 CONFIG:
 	- Added packages file for Debian Jessie (testing)
 	- Replaced package php5-mysql by php5-mysqlnd (native driver)
+	- Removed php5-adodb package from distribution packages files
 	- Updated Apache templates to support 2.4.x branch
 
 SETUP:
-	- Removed php5-adodb package from distribution packages files
-	- The i-MSCP apache_php_fpm server impl. is now the default choice for distributions supporting it officialy
+	- i-MSCP apache_php_fpm server impl. is now the default choice for distributions supporting it officialy
 	- Fixed: Do not ask for SQL user host names when the SQL server is hosted locally
 	- Fixed: Plugins which provide a backend end with unknown error after update
 	- Fixed: Pre-fill Debconf database (Avoid postfix, proftpd and courier questions during installation)
 
 ENGINE:
 	- Added support for Apache 2.4.x branch
-	- Added database connection timeout
+	- Added database connection timeout (3 seconds)
+	- Added MySQL transaction routines
 	- Fixed: MySQL server has gone away
 	- Fixed: Plugin module is broken: Unable to disable, uninstall... any plugin
 	- Fixed: Plugin update must be triggered when plugin configuration is updated
@@ -27,6 +28,7 @@ GUI:
 	- Fixed: Allow to share domain_dns table between several components (core, plugins..)
 	- Fixed: Plugin update must be triggered when plugin configuration is updated
 	- Fixed: Unable to delete plugin in some contexts
+	- Updated plugin API
 
 Tickets:
 	- Fixed #579: Review - i18n issues
