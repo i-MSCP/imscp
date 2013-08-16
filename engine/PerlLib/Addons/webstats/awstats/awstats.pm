@@ -298,7 +298,7 @@ sub _getApacheConfSnippet
 	my $self = shift;
 
 	if($main::imscpConfig{'AWSTATS_MODE'}) { # static mode
-		return <<EOF;
+		<<EOF;
     Alias /awstatsicons "{AWSTATS_WEB_DIR}/icon/"
     Alias /{WEBSTATS_RPATH} "{HOME_DIR}/statistics/"
     <Directory "{HOME_DIR}/statistics">
@@ -316,7 +316,7 @@ sub _getApacheConfSnippet
     </Location>
 EOF
 	} else { # Dynamic mode
-		return <<EOF;
+		<<EOF;
     ProxyRequests Off
     ProxyPass /{WEBSTATS_RPATH} http://localhost/{WEBSTATS_RPATH}/{DOMAIN_NAME}
     ProxyPassReverse /{WEBSTATS_RPATH} http://localhost/{WEBSTATS_RPATH}/{DOMAIN_NAME}
@@ -366,7 +366,11 @@ sub _addAwstatsConfig
 		return 1;
 	}
 
+	require Servers::httpd;
+	my $httpd = Servers::httpd->factory();
+
 	my $tags = {
+		APACHE_LOG_DIR => $httpd->{'config'}->{'APACHE_LOG_DIR'},
 		DOMAIN_NAME => $data->{'DOMAIN_NAME'},
 		AWSTATS_CACHE_DIR => $main::imscpConfig{'AWSTATS_CACHE_DIR'},
 		AWSTATS_ENGINE_DIR => $main::imscpConfig{'AWSTATS_ENGINE_DIR'},
@@ -374,9 +378,6 @@ sub _addAwstatsConfig
 	};
 
 	$cfgFileContent = process($tags, $cfgFileContent);
-
-	require Servers::httpd;
-	$cfgFileContent = Servers::httpd->factory()->buildConf($cfgFileContent);
 
 	unless(defined $cfgFileContent) {
 		error("Error while building $cfgFile");

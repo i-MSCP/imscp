@@ -353,6 +353,10 @@ function change_domain_status($customerId, $action)
 		throw new iMSCP_Exception("Unable to found domain for user with ID $customerId");
 	}
 
+	iMSCP_Events_Manager::getInstance()->dispatch(
+		iMSCP_Events::onBeforeChangeDomainStatus, array('customerId' => $customerId, 'action' => $action)
+	);
+
 	$domainId = $stmt->fields['domain_id'];
 	$domainName = decode_idna($stmt->fields['domain_name']);
 
@@ -426,6 +430,10 @@ function change_domain_status($customerId, $action)
 		$db->rollBack();
 		throw new iMSCP_Exception_Database($e->getMessage(), $e->getQuery(), $e->getCode(), $e);
 	}
+
+	iMSCP_Events_Manager::getInstance()->dispatch(
+		iMSCP_Events::onAfterChangeDomainStatus, array('customerId' => $customerId, 'action' => $action)
+);
 
 	// Send request to i-MSCP daemon
 	send_request();

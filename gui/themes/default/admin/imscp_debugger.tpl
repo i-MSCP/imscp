@@ -34,11 +34,11 @@
 			<tr>
 				<td>
 					<p>
-						<span class="bold">{TR_DOMAIN_NAME}</span> - <a
+						<span class="bold">{TR_DMN_NAME}</span> - <a
 							href="imscp_debugger.php?action=change_status&amp;id={CHANGE_ID}&amp;type={CHANGE_TYPE}"
 							class="link">{TR_CHANGE_STATUS}</a>
 					</p>
-					<span style="color:red;">{TR_DOMAIN_ERROR}</span>
+					<span style="color:red;">{TR_DMN_ERROR}</span>
 				</td>
 			</tr>
 			<!-- EDP: dmn_list -->

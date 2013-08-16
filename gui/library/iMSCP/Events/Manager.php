@@ -104,7 +104,8 @@ class iMSCP_Events_Manager implements iMSCP_Events_Manager_Interface
 	 *
 	 * @throws iMSCP_Events_Manager_Exception When an listener is an object that do not implement the listener method
 	 *                                        or when the listener is not a valid PHP callback
-	 * @param string $eventName The name of the event to dispatch.
+	 * @param string|iMSCP_Events_Description $eventName The name of the event to dispatch or an
+	 *                                        iMSCP_Events_Description object.
 	 * @param array|ArrayAccess $arguments Array of arguments (eg. an associative array)
 	 * @return iMSCP_Events_Listeners_ResponseCollection
 	 */

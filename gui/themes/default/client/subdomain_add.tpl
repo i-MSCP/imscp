@@ -12,7 +12,7 @@
 							data: 'subdomain=' + subdmnName + '&uaction=toASCII',
 							datatype: 'text',
 							beforeSend: function(xhr){xhr.setRequestHeader('Accept','text/plain');},
-							success: function(r){$('#subdomain_mnt_pt').val(r);},
+							success: function(r){ $('#subdomain_mnt_pt').val(r); },
 							error: function(jqXHR, textStatus, errorThrown) {
 								if(jqXHR.status == 403) {
 									window.location = jqXHR.getResponseHeader('Location');

@@ -37,6 +37,11 @@
 class iMSCP_Plugin_Manager
 {
 	/**
+	 * @var string
+	 */
+	protected $pluginApiVersion = '0.1.0';
+
+	/**
 	 * @var string Plugins directory
 	 */
 	protected $pluginsDirectory;
@@ -148,6 +153,16 @@ class iMSCP_Plugin_Manager
 
 			throw new iMSCP_Plugin_Exception(sprintf("Directory %s doesn't exist or is not readable", $pluginDir));
 		}
+	}
+
+	/**
+	 * Returns plugin API version
+	 *
+	 * @return string
+	 */
+	public function getPluginApiVersion()
+	{
+		return $this->pluginApiVersion;
 	}
 
 	/**
@@ -394,23 +409,36 @@ class iMSCP_Plugin_Manager
 				$this->setStatus($pluginName, $statusTo[$pluginStatus][0]);
 
 				try {
-					iMSCP_Events_Manager::getInstance()->dispatch(
+					$responses = iMSCP_Events_Manager::getInstance()->dispatch(
 						iMSCP_Events::onBeforeActivatePlugin,
-						array('pluginManager' => $this, 'pluginName' => $pluginName)
+						array(
+							'pluginManager' => $this,
+							'pluginName' => $pluginName,
+							'action' => $statusTo[$pluginStatus][1]
+						)
 					);
 
-					$pluginInstance->{$statusTo[$pluginStatus][1]}($this);
+					if(! $responses->isStopped()) {
+						$pluginInstance->{$statusTo[$pluginStatus][1]}($this);
 
-					if($this->hasBackend($pluginName)) {
-						$this->backendRequest = true;
+						if($this->hasBackend($pluginName)) {
+							$this->backendRequest = true;
+						} else {
+							$this->setStatus($pluginName, 'enabled');
+						}
+
+						iMSCP_Events_Manager::getInstance()->dispatch(
+							iMSCP_Events::onAfterActivatePlugin,
+							array(
+								'pluginManager' => $this,
+								'pluginName' => $pluginName,
+								'action' => $statusTo[$pluginStatus][1]
+							)
+						);
 					} else {
-						$this->setStatus($pluginName, 'enabled');
+						// Sets plugin status to its initial value
+						$this->setStatus($pluginName, $pluginStatus);
 					}
-
-					iMSCP_Events_Manager::getInstance()->dispatch(
-						iMSCP_Events::onAfterActivatePlugin,
-						array('pluginManager' => $this, 'pluginName' => $pluginName)
-					);
 				} catch(iMSCP_Plugin_Exception $e) {
 					$this->setError($pluginName, sprintf('Plugin activation has failed: %s', $e->getMessage()));
 					write_log(sprintf('Plugin manager: %s plugin activation has failed', $pluginName), E_USER_ERROR);

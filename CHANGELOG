@@ -25,9 +25,12 @@ ENGINE:
 	- Fixed: Plugin update must be triggered when plugin configuration is updated
 
 GUI:
+	- Added onBeforeDomainChangeStatus and onAfterDomainChangeStatus events
 	- Fixed: Allow to share domain_dns table between several components (core, plugins..)
+	- Fixed: Plugins must be able to short-circuit execution of an event
 	- Fixed: Plugin update must be triggered when plugin configuration is updated
 	- Fixed: Unable to delete plugin in some contexts
+	- Fixed: Wrong placeholders in admin/imscp_debugger.php
 	- Updated plugin API
 
 Tickets:

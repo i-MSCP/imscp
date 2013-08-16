@@ -759,6 +759,7 @@ class iMSCP_Events
 	 * The listeners receive an iMSCP_Events_Event object with the following parameters:
 	 *
 	 *  - subdomainName: A string representing the name of the subdomain being added
+	 *  - subdomainType: A string representing the type of subdomain (als|dmn)
 	 *  - domainId: An integer representing the ID of the parent domain
 	 *  - customerId: An integer representing the ID of the customer for which the subdomain is added
 	 *
@@ -772,6 +773,7 @@ class iMSCP_Events
 	 * The listeners receive an iMSCP_Events_Event object with the following parameters:
 	 *
 	 *  - subdomainName: A string representing the name of the subdomain that has been added
+	 *  - subdomainType: A string representing the type of subdomain (als|dmn)
 	 *  - domainId: An integer representing the ID of the parent domain
 	 *  - customerId: An integer representing the ID of the customer for wich the subdomain has been added
 	 *  - subdomainId: An integer representing the ID of thesubdomain that has been added
@@ -1134,4 +1136,28 @@ class iMSCP_Events
      * @const string
      */
     const onAfterAddExternalMailServer = 'onAfterAddExternalMailServer';
+
+	/**
+	 * The onBeforeChangeDomainStatus event is triggered before an user account is being activated or deactivated
+	 *
+	 * The listeners receive an iMSCP_Events_Event object with the following parameters
+	 *
+	 *  - customerId: An integer representing the ID of the customer for wich the subdomain has been added
+	 *  - action: An string representing the action being processed (activate|deactivate)
+	 *
+	 * @const string
+	 */
+	const onBeforeChangeDomainStatus = 'onBeforeChangeDomainStatus';
+
+	/**
+	 * The onAfterChangeDomainStatus event is triggered before an user account get activated or deactivated
+	 *
+	 * The listeners receive an iMSCP_Events_Event object with the following parameters
+	 *
+	 * - customerId: An integer representing the ID of the customer for wich the subdomain has been added
+	 * - action: - action: An string representing the action that was processed (activate|deactivate)
+	 *
+	 * @const string
+	 */
+	const onAfterChangeDomainStatus = 'onAfterChangeDomainStatus';
 }

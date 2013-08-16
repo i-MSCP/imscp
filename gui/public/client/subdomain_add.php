@@ -315,11 +315,19 @@ function client_addSubdomain($userId, $domainId, $subdomainName, $subdomainMount
 	$db = iMSCP_Registry::get('db');
 
 	$statusAdd = $cfg->ITEM_TOADD_STATUS;
+	$subdomainType = $_POST['dmn_type'];
 
 	iMSCP_Events_Manager::getInstance()->dispatch(
 		iMSCP_Events::onBeforeAddSubdomain,
-		array('subdomainName' => $subdomainName, 'domainId' => $domainId, 'customerId' => $userId)
+		array(
+			'subdomainName' => $subdomainName,
+			'subdomainType' => $subdomainType,
+			'domainId' => $domainId,
+			'customerId' => $userId,
+		)
 	);
+
+
 
 	if ($_POST['dmn_type'] == 'als') {
 		$query = "
@@ -346,7 +354,10 @@ function client_addSubdomain($userId, $domainId, $subdomainName, $subdomainMount
 	iMSCP_Events_Manager::getInstance()->dispatch(
 		iMSCP_Events::onAfterAddSubdomain,
 		array(
-			'subdomainName' => $subdomainName, 'domainId' => $domainId, 'customerId' => $userId,
+			'subdomainName' => $subdomainName,
+			'subdomainType' => $subdomainType,
+			'domainId' => $domainId,
+			'customerId' => $userId,
 			'subdomainId' => $subdomain_id
 		)
 	);

@@ -51,7 +51,7 @@ my %toStatus = (
 
 =head1 DESCRIPTION
 
- This module is responsible to run actions on a plugin according it current status. To each status can correspond a
+ This module is responsible to run actions on the plugins according their current status. To each status correspond a
 specific action:
 
  - toinstall: The 'toinstall' status correspond to the 'install' action. Next status should be 'enabled'.
@@ -77,7 +77,9 @@ specific action:
 
  - other status: No action
 
- The module will attempt to run theses actions on the plugin only if it implements them.
+ The module will attempt to run these actions on the plugins only if they implement them. It's important to understand
+that all status described above belong to the plugins themselves, and not to their own items. In case where a plugin
+handle its own items it's its responsability to handle their status if any.
 
  Note on 'install' action:
 
@@ -92,6 +94,8 @@ subdirectory of plugin package:
  Note on 'uninstall' action:
 
  When the 'uninstall' action is run, the backend part of the plugin is removed from the backend plugins repository.
+
+
 
 =head1 PUBLIC METHODS
 
@@ -108,6 +112,7 @@ subdirectory of plugin package:
 sub loadData
 {
 	my $self = shift;
+	my $pluginId = shift;
 
 	my $rdata = iMSCP::Database->factory()->doQuery(
 		'plugin_id',
@@ -119,19 +124,19 @@ sub loadData
 			WHERE
 				`plugin_id` = ?
 		',
-		$self->{'pluginId'}
+		$pluginId
 	);
 	unless(ref $rdata eq 'HASH') {
 		error($rdata);
 		return 1;
 	}
 
-	unless(exists $rdata->{$self->{'pluginId'}}) {
-		error("No plugin has ID: $self->{'pluginId'}");
+	unless(exists $rdata->{$pluginId}) {
+		error("No plugin has ID: $pluginId");
 		return 1
 	}
 
-	@{$self}{keys %{$rdata->{$self->{'pluginId'}}}} = values %{$rdata->{$self->{'pluginId'}}};
+	@{$self}{keys %{$rdata->{$pluginId}}} = values %{$rdata->{$pluginId}};
 
 	$toStatus{'toupdate'} = $self->{'plugin_previous_status'};
 	$toStatus{'tochange'} = $self->{'plugin_previous_status'};
@@ -139,7 +144,7 @@ sub loadData
 	0;
 }
 
-=item process($$)
+=item process($pluginId)
 
  Process plugin action according it status
 
@@ -148,13 +153,12 @@ sub loadData
 
 =cut
 
-sub process
+sub process($$)
 {
 	my $self = shift;
+	my $pluginId = shift;
 
-	$self->{'pluginId'} = shift;
-
-	my $rs = $self->loadData();
+	my $rs = $self->loadData($pluginId);
 	return $rs if $rs;
 
 	my $status = $self->{'plugin_status'};
@@ -182,7 +186,7 @@ sub process
 
 	my @sql = (
 		"UPDATE `plugin` SET `$column` = ? WHERE `plugin_id` = ?",
-		($rs ? (scalar getMessageByType('error') || 'unknown error') : $toStatus{$status}), $self->{'pluginId'}
+		($rs ? (scalar getMessageByType('error') || 'unknown error') : $toStatus{$status}), $pluginId
 	);
 
 	my $rdata = iMSCP::Database->factory()->doQuery('dummy', @sql);
@@ -199,24 +203,6 @@ sub process
 =head1 PRIVATE METHODS
 
 =over 4
-
-=item _init()
-
- Initialize Modules::Plugin instance
-
- Return Modules::Plugin
-
-=cut
-
-sub _init
-{
-	my $self = shift;
-
-	$self->{$_} = $self->{'args'}->{$_} for keys %{$self->{'args'}};
-	$self->{'hooksManager'} = iMSCP::HooksManager->getInstance();
-
-	$self;
-}
 
 =item _executePlugin($action)
 
@@ -265,7 +251,7 @@ sub _executePlugin($$)
 
 		eval {
 			# Any backend plugin is a singleton, which receive an iMSCP::HooksManager instance
-			$pluginInstance = $pluginClass->getInstance('hooksManager' => $self->{'hooksManager'});
+			$pluginInstance = $pluginClass->getInstance('hooksManager' => iMSCP::HooksManager->getInstance());
 		};
 
 		if($@) {
