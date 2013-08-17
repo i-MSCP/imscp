@@ -606,7 +606,7 @@ sub _buildFastCgiConfFiles
 	# Disable/Enable Apache modules
 
 	my @toDisableModules = (
-		'fastcgi', 'fcgid', 'php4', 'php5', 'php5filter', 'php_fpm_imscp',
+		'fastcgi', 'fcgid', 'php4', 'php5', 'php5_cgi', 'php5filter', 'php_fpm_imscp',
 		($self->{'config'}->{'PHP_FASTCGI'} eq 'fastcgi' ? 'fcgid_imscp' : 'fastcgi_imscp')
 	);
 

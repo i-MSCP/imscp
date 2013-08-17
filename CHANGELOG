@@ -12,6 +12,7 @@ CONFIG:
 
 SETUP:
 	- i-MSCP apache_php_fpm server impl. is now the default choice for distributions supporting it officialy
+	- Fixed: Disable dummy php5_cgi Apache module if any
 	- Fixed: Do not ask for SQL user host names when the SQL server is hosted locally
 	- Fixed: Plugins which provide a backend end with unknown error after update
 	- Fixed: Pre-fill Debconf database (Avoid postfix, proftpd and courier questions during installation)

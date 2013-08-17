@@ -514,7 +514,9 @@ sub _buildFastCgiConfFiles
 
 	# Disable/Enable Apache modules
 
-	my @toDisableModules = ('fastcgi', 'fcgid', 'fastcgi_imscp', 'fcgid_imscp', 'php4', 'php5', 'php5filter', 'suexec');
+	my @toDisableModules = (
+		'fastcgi', 'fcgid', 'fastcgi_imscp', 'fcgid_imscp', 'php4', 'php5', 'php5_cgi', 'php5filter', 'suexec'
+);
 	my @toEnableModules = ('actions', 'php_fpm_imscp');
 
 	if((version->new("v$self->{'config'}->{'APACHE_VERSION'}") >= version->new('v2.4.0'))) {
