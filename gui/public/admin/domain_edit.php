@@ -272,7 +272,6 @@ function admin_generateForm($tpl, &$data)
 {
 	_admin_generateLimitsForm($tpl, $data);
 	_admin_generateFeaturesForm($tpl, $data);
-	_admin_generatePermissionsForm($tpl, $data);
 }
 
 /**
@@ -393,22 +392,21 @@ function _admin_generateFeaturesForm($tpl, &$data)
 
 	$tplVars = array();
 
-	$tplVars['TR_FEATURE'] = tr('Feature');
-	$tplVars['TR_STATUS'] = tr('Status');
+	$tplVars['TR_FEATURES'] = tr('Features');
 
 	// External mail support
 	if($data['max_mail_cnt'] == '-1') {
 		$tplVars['EXT_MAIL_BLOCK'] =  '';
 	} else {
 		$tplVars['TR_EXTMAIL'] = tr('External mail server');
-		$tplVars['EXTMAIL_YES'] = ($data['domain_external_mail'] == 'yes') ? $htmlSelected : '';
-		$tplVars['EXTMAIL_NO'] = ($data['domain_external_mail'] != 'yes') ? $htmlSelected : '';
+		$tplVars['EXTMAIL_YES'] = ($data['domain_external_mail'] == 'yes') ? $htmlChecked : '';
+		$tplVars['EXTMAIL_NO'] = ($data['domain_external_mail'] != 'yes') ? $htmlChecked : '';
 	}
 
 	// PHP support
 	$tplVars['TR_PHP'] = tr('PHP');
-	$tplVars['PHP_YES'] = ($data['domain_php'] == 'yes') ? $htmlSelected : '';
-	$tplVars['PHP_NO'] = ($data['domain_php'] != 'yes') ? $htmlSelected : '';
+	$tplVars['PHP_YES'] = ($data['domain_php'] == 'yes') ? $htmlChecked : '';
+	$tplVars['PHP_NO'] = ($data['domain_php'] != 'yes') ? $htmlChecked : '';
 
 	// PHP editor - begin
 	if ($data['reseller_php_ini_system'] == 'no') {
@@ -428,8 +426,8 @@ function _admin_generateFeaturesForm($tpl, &$data)
 		$tplVars['TR_MIB'] = tr('MiB');
 		$tplVars['TR_SEC'] = tr('Sec.');
 
-		$tplVars['PHP_EDITOR_YES'] = ($phpEditor->getClPermVal('phpiniSystem') == 'yes') ? $htmlSelected : '';
-		$tplVars['PHP_EDITOR_NO'] = ($phpEditor->getClPermVal('phpiniSystem') == 'no') ? $htmlSelected : '';
+		$tplVars['PHP_EDITOR_YES'] = ($phpEditor->getClPermVal('phpiniSystem') == 'yes') ? $htmlChecked : '';
+		$tplVars['PHP_EDITOR_NO'] = ($phpEditor->getClPermVal('phpiniSystem') == 'no') ? $htmlChecked : '';
 
 		$permissionsBlock = false;
 
@@ -496,67 +494,46 @@ function _admin_generateFeaturesForm($tpl, &$data)
 
 	// CGI support
 	$tplVars['TR_CGI'] = tr('CGI');
-	$tplVars['CGI_YES'] = ($data['domain_cgi'] == 'yes') ? $htmlSelected : '';
-	$tplVars['CGI_NO'] = ($data['domain_cgi'] != 'yes') ? $htmlSelected : '';
+	$tplVars['CGI_YES'] = ($data['domain_cgi'] == 'yes') ? $htmlChecked : '';
+	$tplVars['CGI_NO'] = ($data['domain_cgi'] != 'yes') ? $htmlChecked : '';
 
 	// Custom DNS records
 	$tplVars['TR_DNS'] = tr('Custom DNS records');
-	$tplVars['DNS_YES'] = ($data['domain_dns'] == 'yes') ? $htmlSelected : '';
-	$tplVars['DNS_NO'] = ($data['domain_dns'] != 'yes') ? $htmlSelected : '';
+	$tplVars['DNS_YES'] = ($data['domain_dns'] == 'yes') ? $htmlChecked : '';
+	$tplVars['DNS_NO'] = ($data['domain_dns'] != 'yes') ? $htmlChecked : '';
 
 	// APS support
 	if($data['software_allowed'] == 'no') {
 		$tplVars['APS_BLOCK'] =  '';
 	} else {
 		$tplVars['TR_APS'] = tr('Software installer');
-		$tplVars['APS_YES'] = ($data['domain_software_allowed'] == 'yes') ? $htmlSelected : '';
-		$tplVars['APS_NO'] = ($data['domain_software_allowed'] != 'yes') ? $htmlSelected : '';
+		$tplVars['APS_YES'] = ($data['domain_software_allowed'] == 'yes') ? $htmlChecked : '';
+		$tplVars['APS_NO'] = ($data['domain_software_allowed'] != 'yes') ? $htmlChecked : '';
 	}
 
 	// Backup support
 	if ($cfg->BACKUP_DOMAINS == 'yes') {
 		$tplVars['TR_BACKUP'] = tr('Backup');
 		$tplVars['TR_BACKUP_DOMAIN'] = tr('Domain');
-		$tplVars['BACKUP_DOMAIN'] = ($data['allowbackup'] == 'dmn') ? $htmlSelected : '';
+		$tplVars['BACKUP_DOMAIN'] = ($data['allowbackup'] == 'dmn') ? $htmlChecked : '';
 		$tplVars['TR_BACKUP_SQL'] = tr('SQL');
-		$tplVars['BACKUP_SQL'] = ($data['allowbackup'] == 'sql') ? $htmlSelected : '';
+		$tplVars['BACKUP_SQL'] = ($data['allowbackup'] == 'sql') ? $htmlChecked : '';
 		$tplVars['TR_BACKUP_FULL'] = tr('Full');
-		$tplVars['BACKUP_FULL'] = ($data['allowbackup'] == 'full') ? $htmlSelected : '';
+		$tplVars['BACKUP_FULL'] = ($data['allowbackup'] == 'full') ? $htmlChecked : '';
 		$tplVars['TR_BACKUP_NO'] = tr('No');
-		$tplVars['BACKUP_NO'] = ($data['allowbackup'] == 'no') ? $htmlSelected : '';
+		$tplVars['BACKUP_NO'] = ($data['allowbackup'] == 'no') ? $htmlChecked : '';
 	} else {
 		$tplVars['BACKUP_BLOCK'] = '';
 	}
 
-	// Shared strings
-	$tplVars['TR_YES'] = tr('Yes');
-	$tplVars['TR_NO'] = tr('No');
-
-	$tpl->assign($tplVars);
-}
-
-/**
- * Generates permissions form.
- *
- * @param iMSCP_pTemplate $tpl Template engine instance
- * @param array $data Domain data
- * @return void
- */
-function _admin_generatePermissionsForm($tpl, &$data)
-{
-	/** @var $cfg iMSCP_Config_Handler_File */
-	$cfg = iMSCP_Registry::get('config');
-
-	$htmlChecked = $cfg->HTML_CHECKED;
-
-	$tplVars = array();
-
-	// Web folder protection
-	$tplVars['TR_PERMISSIONS'] = tr('Permissions');
-	$tplVars['TR_PROTECT_WEB_FOLDERS'] = tr('Protect Web folders');
+	$tplVars['TR_WEB_FOLDER_PROTECTION'] = tr('Web folder protection');
 	$tplVars['TR_WEB_FOLDER_PROTECTION_HELP'] = tr("If set to 'yes', Web folders as provisioned by i-MSCP will be protected against deletion using the immutable flag (Extended attributes).");
 	$tplVars['WEB_FOLDER_PROTECTION_YES'] = ($data['web_folder_protection'] == 'yes') ? $htmlChecked : '';
 	$tplVars['WEB_FOLDER_PROTECTION_NO'] = ($data['web_folder_protection'] != 'yes') ? $htmlChecked : '';
+
+	// Shared strings
+	$tplVars['TR_YES'] = tr('Yes');
+	$tplVars['TR_NO'] = tr('No');
 
 	$tpl->assign($tplVars);
 }
@@ -1073,7 +1050,8 @@ $tpl->define_dynamic(
 		 'cgi_block' => 'page',
 		 'dns_block' => 'page',
 		 'aps_block' => 'page',
-		 'backup_block' => 'page'
+		 'backup_block' => 'page',
+		 'web_folder_protection_block' => 'page'
 	)
 );
 

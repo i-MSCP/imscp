@@ -2,7 +2,8 @@
 		/*<![CDATA[*/
 		$(document).ready(function() {
 			errFieldsStack = {ERR_FIELDS_STACK};
-			$.each(errFieldsStack, function(){$('#' + this).css('border-color', 'rgb(201, 29, 17');});
+
+			$.each(errFieldsStack, function(){ $('#' + this).css('border-color', 'rgb(201, 29, 17'); });
 			$('#domain_expires').datepicker();
 			$('#domain_never_expires').change(function(){
 				if($(this).is(':checked')) {
@@ -18,25 +19,26 @@
 			{
 				bgiframe:true,
 				hide:'blind', show:'slide', focus:false, autoOpen:false, width:'650', modal:true, dialogClass:'body',
-				buttons:{'{TR_CLOSE}':function(){$(this).dialog('close');}},
-				open: function(e){$('#php_editor_dialog :radio').blur();}
+				buttons: { '{TR_CLOSE}': function(){ $(this).dialog('close'); } },
+				open: function(e){ $('#php_editor_dialog :radio').blur();}
 			});
 
 			// Re-add the PHP Editor container to the form on submit
-			$('form').submit(function(){$('#php_editor_dialog').parent().appendTo($('#dialogContainer'));});
+			$('form').submit(function(){ $('#php_editor_dialog').parent().appendTo($('#dialogContainer')); });
 
 			// PHP Editor settings button
-			if($('#domain_php').val()=='no'){$('#php_editor_block').hide();}
-			$('#domain_php').change(function(){$('#php_editor_block').fadeToggle();});
+			if($('#php_no').is(':checked')){ $('#php_editor_block').hide(); }
 
-			$('#php_editor_dialog_open').button({icons:{primary:'ui-icon-gear'}}).click(function(e){
+				$('#php_yes,#php_no').change(function(){ $('#php_editor_block').fadeToggle(); });
+
+			$('#php_editor_dialog_open').button({ icons:{ primary:'ui-icon-gear' } }).click(function(e){
 				$('#php_editor_dialog').dialog('open');
 				return false;
 			});
 
 			// Do not show PHP Editor settings button if disabled
-			if($('#phpiniSystem').val()=='no'){$('#php_editor_dialog_open').hide();}
-			$('#phpiniSystem').change(function(){$('#php_editor_dialog_open').fadeToggle();});
+			if($('#phpiniSystemNo').is(':checked')){ $('#php_editor_dialog_open').hide(); }
+				$('#phpiniSystemYes,#phpiniSystemNo').change(function(){ $('#php_editor_dialog_open').fadeToggle(); });
 
 			// PHP Editor reseller max values
 			phpDirectivesResellerMaxValues = {PHP_DIRECTIVES_RESELLER_MAX_VALUES};
@@ -76,8 +78,7 @@
 						$(this).removeClass('ui-state-error');
 						_updateErrorMesssages(k);
 					}
-				});
-				$('#'+k).trigger('keyup');
+				}).trigger('keyup');
 			});
 			<!-- EDP: php_editor_js -->
 		});
@@ -239,28 +240,31 @@
 		</table>
 		<table class="firstColFixed">
 			<tr>
-				<th>{TR_FEATURE}</th>
-				<th>{TR_STATUS}</th>
+				<th colspan="2">{TR_FEATURES}</th>
 			</tr>
 			<!-- BDP: php_block -->
 			<tr>
-				<td><label for="domain_php">{TR_PHP}</label></td>
+				<td>{TR_PHP}</td>
 				<td>
-					<select id="domain_php" name="domain_php" style="vertical-align: middle">
-						<option value="yes" {PHP_YES}>{TR_YES}</option>
-						<option value="no" {PHP_NO}>{TR_NO}</option>
-					</select>
+					<div class="radio">
+						<input type="radio" id="php_yes" name="domain_php" value="yes" {PHP_YES} />
+						<label for="php_yes">{TR_YES}</label>
+						<input type="radio" id="php_no" name="domain_php"  value="no" {PHP_NO} />
+						<label for="php_no">{TR_NO}</label>
+					</div>
 				</td>
 			</tr>
 			<!-- BDP: php_editor_block -->
 			<tr id="php_editor_block">
 				<td><label for="phpiniSystem">{TR_PHP_EDITOR}</label></td>
 				<td id="dialogContainer" style="height: 30px;">
-					<select id="phpiniSystem" name="phpiniSystem" style="vertical-align: middle;">
-						<option value="yes" {PHP_EDITOR_YES}>{TR_YES}</option>
-						<option value="no" {PHP_EDITOR_NO}>{TR_NO}</option>
-					</select>
-					<button type="button" id="php_editor_dialog_open" style="vertical-align: middle;">{TR_SETTINGS}</button>
+					<div class="radio">
+						<input type="radio" name="phpiniSystem" id="phpiniSystemYes" value="yes" {PHP_EDITOR_YES}/>
+						<label for="phpiniSystemYes">{TR_YES}</label>
+						<input type="radio" name="phpiniSystem" id="phpiniSystemNo" value="no" {PHP_EDITOR_NO}/>
+						<label for="phpiniSystemNo">{TR_NO}</label>
+						<input type="button" name="php_editor_dialog_open" id="php_editor_dialog_open" value="{TR_SETTINGS}" />
+					</div>
 					<div style="margin:0" id="php_editor_dialog" title="{TR_PHP_EDITOR_SETTINGS}">
 						<div class="php_editor_error success">
 							<span id="msg_default">{TR_FIELDS_OK}</span>
@@ -355,67 +359,77 @@
 			<!-- EDP: php_block -->
 			<!-- BDP: cgi_block -->
 			<tr>
-				<td><label for="domain_cgi">{TR_CGI}</label></td>
+				<td>{TR_CGI}</td>
 				<td>
-					<select id="domain_cgi" name="domain_cgi">
-						<option value="yes" {CGI_YES}>{TR_YES}</option>
-						<option value="no" {CGI_NO}>{TR_NO}</option>
-					</select>
+					<div class="radio">
+						<input type="radio" id="domain_cgi_yes" name="domain_cgi" value="yes" {CGI_YES} />
+						<label for="domain_cgi_yes">{TR_YES}</label>
+						<input type="radio" id="domain_cgi_no" name="domain_cgi" value="no" {CGI_NO} />
+						<label for="domain_cgi_no">{TR_NO}</label>
+					</div>
 				</td>
 			</tr>
 			<!-- EDP: cgi_block -->
 			<!-- BDP: dns_block -->
 			<tr>
-				<td><label for="domain_dns">{TR_DNS}</label></td>
+				<td>{TR_DNS}</td>
 				<td>
-					<select id="domain_dns" name="domain_dns">
-						<option value="yes" {DNS_YES}>{TR_YES}</option>
-						<option value="no" {DNS_NO}>{TR_NO}</option>
-					</select>
+					<div class="radio">
+						<input type="radio" id="domain_dns_yes" name="domain_dns" value="yes" {DNS_YES} />
+						<label for="domain_dns_yes">{TR_YES}</label>
+						<input type="radio" id="domain_dns_no" name="domain_dns" value="no" {DNS_NO} />
+						<label for="domain_dns_no">{TR_NO}</label>
+					</div>
 				</td>
 			</tr>
 			<!-- EDP: dns_block -->
 			<!-- BDP: aps_block -->
 			<tr>
-				<td><label for="domain_software_allowed">{TR_APS}</label></td>
+				<td>{TR_APS}</td>
 				<td>
-					<select name="domain_software_allowed" id="domain_software_allowed">
-						<option value="yes" {APS_YES}>{TR_YES}</option>
-						<option value="no" {APS_NO}>{TR_NO}</option>
-					</select>
+					<div class="radio">
+						<input type="radio" name="domain_software_allowed" value="yes" id="domain_software_allowed_yes" {APS_YES}/>
+						<label for="domain_software_allowed_yes">{TR_YES}</label>
+						<input type="radio" name="domain_software_allowed" value="no" id="domain_software_allowed_no" {APS_NO}/>
+						<label for="domain_software_allowed_no">{TR_NO}</label>
+					</div>
 				</td>
 			</tr>
 			<!-- EDP: aps_block -->
 			<!-- BDP: ext_mail_block -->
 			<tr>
-				<td><label for="domain_external_mail">{TR_EXTMAIL}</label></td>
+				<td>{TR_EXTMAIL}</td>
 				<td>
-					<select id="domain_external_mail" name="domain_external_mail" style="vertical-align: middle">
-						<option value="yes" {EXTMAIL_YES}>{TR_YES}</option>
-						<option value="no" {EXTMAIL_NO}>{TR_NO}</option>
-					</select>
+					<div class="radio">
+						<input type="radio" id="extmail_yes" name="domain_external_mail" value="yes" {EXTMAIL_YES} />
+						<label for="extmail_yes">{TR_YES}</label>
+						<input type="radio" id="extmail_no" name="domain_external_mail"  value="no" {EXTMAIL_NO} />
+						<label for="extmail_no">{TR_NO}</label>
+					</div>
 				</td>
 			</tr>
 			<!-- EDP: ext_mail_block -->
 			<!-- BDP: backup_block -->
 			<tr>
-				<td><label for="allowbackup">{TR_BACKUP}</label></td>
+				<td>{TR_BACKUP}</td>
 				<td>
-					<select id="allowbackup" name="allowbackup">
-						<option value="dmn" {BACKUP_DOMAIN}>{TR_BACKUP_DOMAIN}</option>
-						<option value="sql" {BACKUP_SQL}>{TR_BACKUP_SQL}</option>
-						<option value="full" {BACKUP_FULL}>{TR_BACKUP_FULL}</option>
-						<option value="no" {BACKUP_NO}>{TR_BACKUP_NO}</option>
-					</select>
+					<div class="radio">
+						<input type="radio" id="backup_dmn" name="allowbackup"  value="dmn" {BACKUP_DOMAIN} />
+						<label for="backup_dmn">{TR_BACKUP_DOMAIN}</label>
+						<input type="radio" id="backup_sql" name="allowbackup" value="sql" {BACKUP_SQL} />
+						<label for="backup_sql">{TR_BACKUP_SQL}</label>
+						<input type="radio" id="backup_full" name="allowbackup" value="full" {BACKUP_FULL} />
+						<label for="backup_full">{TR_BACKUP_FULL}</label>
+						<input type="radio" id="backup_no" name="allowbackup" value="no" {BACKUP_NO} />
+						<label for="backup_no">{TR_BACKUP_NO}</label>
+					</div>
 				</td>
 			</tr>
 			<!-- EDP: backup_block -->
-			<tr>
-				<th colspan="2">{TR_PERMISSIONS}</th>
-			</tr>
+			<!-- BDP: web_folder_protection_block -->
 			<tr>
 				<td>
-					<label for="web_folder_protection">{TR_PROTECT_WEB_FOLDERS}</label>
+					<label for="web_folder_protection">{TR_WEB_FOLDER_PROTECTION}</label>
 					<span style="vertical-align:middle" class="icon i_help" id="web_folder_protection_help" title="{TR_WEB_FOLDER_PROTECTION_HELP}">{TR_HELP}</span>
 				</td>
 				<td>
@@ -427,6 +441,7 @@
 					</div>
 				</td>
 			</tr>
+			<!-- EDP: web_folder_protection_block -->
 		</table>
 		<div class="buttons">
 			<input name="submit" type="submit" value="{TR_UPDATE}"/>
