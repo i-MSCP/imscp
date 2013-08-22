@@ -198,6 +198,10 @@ function reseller_addCustomer($resellerId)
 	$street2 = clean_input($street2);
 	$customerId = clean_input($customerId);
 
+	if(!$cfg->WEB_FOLDER_PROTECTION) {
+		$webFolderProtection = 'no';
+	}
+
 	if (!validates_dname(decode_idna($dmnUsername))) {
 		return;
 	}

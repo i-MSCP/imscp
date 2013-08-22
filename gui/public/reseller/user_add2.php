@@ -102,8 +102,13 @@ function get_init_au2_page($tpl, $phpini)
 	$tplVars['VL_DNSN'] = ($dns == '_no_') ? $htmlChecked : '';
 	$tplVars['VL_SOFTWAREY'] = ($aps == '_yes_') ? $htmlChecked : '';
 	$tplVars['VL_SOFTWAREN'] = ($aps == '_no_') ? $htmlChecked : '';
-	$tplVars['VL_WEB_FOLDER_PROTECTION_YES'] = ($webFolderProtection == '_yes_') ? $htmlChecked : '';
-	$tplVars['VL_WEB_FOLDER_PROTECTION_NO'] = ($webFolderProtection == '_no_') ? $htmlChecked : '';
+
+	if($cfg->WEB_FOLDER_PROTECTION) {
+		$tplVars['VL_WEB_FOLDER_PROTECTION_YES'] = ($webFolderProtection == '_yes_') ? $htmlChecked : '';
+		$tplVars['VL_WEB_FOLDER_PROTECTION_NO'] = ($webFolderProtection == '_no_') ? $htmlChecked : '';
+	} else {
+		$tplVars['WEB_FOLDER_PROTECTION_FEATURE'] = '';
+	}
 
 	if ($phpini->getRePermVal('phpiniSystem') == 'yes') {
 		$tplVars['PHP_EDITOR_YES'] = ($phpini->getClPermVal('phpiniSystem') == 'yes') ? $htmlChecked : '';
@@ -203,6 +208,9 @@ function reseller_getHostingPlanData($hpid, $resellerId, $phpini)
 	global $hpName, $php, $cgi, $sub, $als, $mail, $ftp, $sqlDb, $sqlUser, $traffic, $diskSpace, $backup, $dns, $aps,
 		$extMailServer, $webFolderProtection;
 
+	/** @var iMSCP_Config_Handler_File $cfg */
+	$cfg = iMSCP_Registry::get('config');
+
 	if($hpid != 0) {
 		$query = 'SELECT `name`, `props` FROM `hosting_plans` WHERE `reseller_id` = ? AND `id` = ?';
 		$stmt = exec_query($query, array($resellerId, $hpid));
@@ -255,6 +263,9 @@ function check_user_data($phpini)
 	global $hpName, $php, $cgi, $sub, $als, $mail, $ftp, $sqlDb, $sqlUser, $traffic, $diskSpace, $hp_dmn, $backup,
 		$dns, $aps, $extMailServer, $webFolderProtection;
 
+	/** @var iMSCP_Config_Handler_File $cfg */
+	$cfg = iMSCP_Registry::get('config');
+
 	if (isset($_POST['template'])) {
 		$hpName = $_POST['template'];
 	}
@@ -281,10 +292,14 @@ function check_user_data($phpini)
 		}
 	}
 
-	if (isset($_POST['web_folder_protection'])) {
-		$webFolderProtection = $_POST['web_folder_protection'];
+	if($cfg->WEB_FOLDER_PROTECTION) {
+		if (isset($_POST['web_folder_protection'])) {
+			$webFolderProtection = $_POST['web_folder_protection'];
+		} else {
+			$webFolderProtection = '_yes_';
+		}
 	} else {
-		$webFolderProtection = '_yes_';
+		$webFolderProtection = '_no_';
 	}
 
 	if (isset($_POST['nreseller_max_ftp_cnt']) || $ftp == -1) {
@@ -473,7 +488,8 @@ $tpl->define_dynamic(
 		'php_editor_allow_url_fopen_block' => 'php_editor_permissions_block',
 		'php_editor_display_errors_block' => 'php_editor_permissions_block',
 		'php_editor_disable_functions_block' => 'php_editor_permissions_block',
-		'php_editor_default_values_block' => 'php_editor_block'
+		'php_editor_default_values_block' => 'php_editor_block',
+		'web_folder_protection_feature' => 'page'
 	)
 );
 
@@ -507,8 +523,7 @@ $tpl->assign(
 		'TR_NEXT_STEP' => tr('Next step'),
 		'TR_FEATURES' => tr('Features'),
 		'TR_LIMITS' => tr('Limits'),
-		'TR_PERMISSIONS' => tr('Permissions'),
-		'TR_PROTECT_WEB_FOLDERS' => tr('Protect Web folders'),
+		'TR_WEB_FOLDER_PROTECTION' => tr('Web folder protection'),
 		'TR_WEB_FOLDER_PROTECTION_HELP' => tr("If set to 'yes', Web folders as provisioned by i-MSCP will be protected against deletion using the immutable flag (Extended attributes)."),
 		'TR_HELP' => tr('Help'),
 		'TR_SOFTWARE_SUPP' => tr('Software installer')
@@ -581,6 +596,10 @@ if (!resellerHasFeature('aps')) {
 
 if (!resellerHasFeature('backup')) {
 	$tpl->assign('BACKUP_FEATURE', '');
+}
+
+if(!$cfg->WEB_FOLDER_PROTECTION) {
+	$tpl->assign('WEB_FOLDER_PROTECTION', '');
 }
 
 generatePageMessage($tpl);

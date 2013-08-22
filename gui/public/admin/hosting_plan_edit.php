@@ -195,14 +195,18 @@ function admin_generatePage($tpl, $id, $phpini)
 	if ($cfg->BACKUP_DOMAINS != 'no') {
 		$tpl->assign(
 			array(
-				'VL_BACKUPD' => '',
-				'VL_BACKUPS' => '',
-				'VL_BACKUPF' => '',
-				'VL_BACKUPN' => $checked,
+				'BACKUPD' => '',
+				'BACKUPS' => '',
+				'BACKUPF' => '',
+				'BACKUPN' => $checked,
 			)
 		);
 	} else {
 		$tpl->assign('BACKUP_FEATURE', '');
+	}
+
+	if(!$cfg->WEB_FOLDER_PROTECTION) {
+		$tpl->assign('WEB_FOLDER_PROTECTION_FEATURE', '');
 	}
 
 	_admin_generatePhpBlock($tpl, $phpini);
@@ -267,6 +271,10 @@ function admin_generateErrorPage($tpl, $phpini)
 		$tpl->assign('BACKUP_FEATURE', '');
 	}
 
+	if(!$cfg->WEB_FOLDER_PROTECTION) {
+		$tpl->assign('WEB_FOLDER_PROTECTION_FEATURE', '');
+	}
+
 	_admin_generatePhpBlock($tpl, $phpini);
 }
 
@@ -280,6 +288,9 @@ function admin_checkData($phpini)
 {
 	global $name, $description, $sub, $als, $mail, $ftp, $sqld, $sqlu, $monthlyTraffic, $diskspace, $php, $cgi, $dns,
 		   $bkp, $aps, $hpExtMail, $hpProtectedWebFolders, $status;
+
+	/** @var iMSCP_Config_Handler_File $cfg */
+	$cfg = iMSCP_Registry::get('config');
 
 	$name = isset($_POST['hp_name']) ? clean_input($_POST['hp_name']) : '';
 	$description = isset($_POST['hp_description']) ? clean_input($_POST['hp_description']) : '';
@@ -299,7 +310,12 @@ function admin_checkData($phpini)
 	$bkp = isset($_POST['hp_backup']) ? clean_input($_POST['hp_backup']) : '_no_';
 	$aps = isset($_POST['hp_softwares_installer']) ? clean_input($_POST['hp_softwares_installer']) : '_no_';
 	$hpExtMail = isset($_POST['hp_external_mail']) ? clean_input($_POST['hp_external_mail']) : '_no_';
-	$hpProtectedWebFolders = isset($_POST['hp_external_mail']) ? clean_input($_POST['hp_external_mail']) : '_no_';
+
+	if($cfg->WEB_FOLDER_PROTECTION) {
+		$hpProtectedWebFolders = isset($_POST['hp_external_mail']) ? clean_input($_POST['hp_external_mail']) : '_no_';
+	} else {
+		$hpProtectedWebFolders = '_no_';
+	}
 
 	$status = isset($_POST['hp_status']) ? clean_input($_POST['hp_status']) : '0';
 
@@ -480,7 +496,8 @@ if (isset($cfg->HOSTING_PLANS_LEVEL) && $cfg->HOSTING_PLANS_LEVEL == 'admin') {
 			'page' => 'shared/partials/forms/hosting_plan_edit.tpl',
 			'page_message' => 'layout',
 			'php_editor_disable_functions_block' => 'php_editor_feature',
-			'backup_feature' => 'page',
+			'web_folder_protection_feature' => 'page',
+			'backup_feature' => 'page'
 		)
 	);
 
@@ -508,9 +525,12 @@ if (isset($cfg->HOSTING_PLANS_LEVEL) && $cfg->HOSTING_PLANS_LEVEL == 'admin') {
 			array(
 				'TR_PAGE_TITLE' => tr('Admin / Hosting Plans / Overview / Edit Hosting Plan'),
 				'ISP_LOGO' => layout_getUserLogo(),
-				'TR_PROPERTIES' => tr('Hosting plan properties'),
+
+				'TR_HOSTING_PLAN' => tr('Hosting plan'),
 				'TR_NAME' => tr('Name'),
 				'TR_DESCRIPTON' => tr('Description'),
+
+				'TR_HOSTING_PLAN_LIMITS' => tr('Limits'),
 				'TR_MAX_SUB' => tr('Subdomain limit') . '<br/><i>(-1 ' . tr('disabled') . ', 0 ' . tr('unlimited') . ')</i>',
 				'TR_MAX_ALS' => tr('Domain alias limit') . '<br/><i>(-1 ' . tr('disabled') . ', 0 ' . tr('unlimited') . ')</i>',
 				'TR_MAX_MAIL' => tr('Email account limit') . '<br/><i>(-1 ' . tr('disabled') . ', 0 ' . tr('unlimited') . ')</i>',
@@ -519,6 +539,8 @@ if (isset($cfg->HOSTING_PLANS_LEVEL) && $cfg->HOSTING_PLANS_LEVEL == 'admin') {
 				'TR_MAX_SQLU' => tr('SQL user limit') . '<br/><i>(-1 ' . tr('disabled') . ', 0 ' . tr('unlimited') . ')</i>',
 				'TR_MONTHLY_TRAFFIC' => tr('Monthly traffic limit [MiB]') . '<br/><i>(0 ' . tr('unlimited') . ')</i>',
 				'TR_MAX_DISKSPACE' => tr('Disk space limit [MiB]') . '<br/><i>(0 ' . tr('unlimited') . ')</i>',
+
+				'TR_HOSTING_PLAN_FEATURES' => tr('Features'),
 				'TR_PHP' => tr('PHP'),
 				'TR_CGI' => tr('CGI'),
 				'TR_DNS' => tr('Custom DNS records'),
@@ -529,13 +551,15 @@ if (isset($cfg->HOSTING_PLANS_LEVEL) && $cfg->HOSTING_PLANS_LEVEL == 'admin') {
 				'TR_BACKUP_NO' => tr('No'),
 				'TR_SOFTWARE_SUPP' => tr('Software installer'),
 				'TR_EXTMAIL' => tr('External mail server'),
-				'TR_PROTECT_WEB_FOLDERS' => tr('Protect Web folders'),
+				'TR_WEB_FOLDER_PROTECTION' => tr('Web folder protection'),
+				'TR_WEB_FOLDER_PROTECTION_HELP' => tr("If set to 'yes', Web folders as provisioned by i-MSCP will be protected against deletion using the immutable flag (Extended attributes)."),
+
 				'TR_AVAILABILITY' => tr('Hosting plan availability'),
 				'TR_STATUS' => tr('Available'),
+
 				'TR_YES' => tr('yes'),
 				'TR_NO' => tr('no'),
-				'TR_UPDATE' => tr('Update'),
-				'TR_WEB_FOLDER_PROTECTION_HELP' => tr("If set to 'yes', Web folders as provisioned by i-MSCP will be protected against deletion using the immutable flag (Extended attributes).")
+				'TR_UPDATE' => tr('Update')
 			)
 		);
 

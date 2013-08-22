@@ -49,6 +49,7 @@ Tickets:
 	- Fixed #867: Security issue - SSL - When exporting a private key, the password must not be visible from system utilities
 	- Fixed #870: Bug - Error indicator for new tickets
 	- Fixed #876: Review - Installer - Wildcard should be allowed as part of SQL user hostname
+	- Fixed #883: Defect - Web folders protection option must be automatically disabled and hidden when the immutable flag is not available
 
 ------------------------------------------------------------------------------------------------------------------------
 1.1.0-rc3

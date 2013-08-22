@@ -152,7 +152,7 @@ class iMSCP_Validate
      * Validates a password.
      *
      * @throws iMSCP_Exception Because not implemented yet
-     * @param $password Password to be validated
+     * @param string $password Password to be validated
      * @return void
      */
     public function password($password)

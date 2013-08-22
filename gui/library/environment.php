@@ -31,104 +31,101 @@
  * @license     http://www.mozilla.org/MPL/ MPL 1.1
  */
 
-// Boot i-MSCP
-iMSCP_Bootstrap::boot();
-
 // Configuration parameters
 
 /** @var $config iMSCP_Config_Handler_File */
 $config = iMSCP_Config::getInstance();
 
 // Template root directory
-$config->ROOT_TEMPLATE_PATH = dirname(dirname(__FILE__)) . '/themes/' . $config->USER_INITIAL_THEME;
+$config->set('ROOT_TEMPLATE_PATH', dirname(dirname(__FILE__)) . '/themes/' . $config->USER_INITIAL_THEME);
 
 // Set the isp logos path
-$config->ISP_LOGO_PATH = '/ispLogos';
+$config->set('ISP_LOGO_PATH', '/ispLogos');
 
-$config->HTML_CHECKED = ' checked="checked"';
-$config->HTML_DISABLED = ' disabled="disabled"';
-$config->HTML_READONLY = ' readonly="readonly"';
-$config->HTML_SELECTED = ' selected="selected"';
+$config->set('HTML_CHECKED', ' checked="checked"');
+$config->set('HTML_DISABLED', ' disabled="disabled"');
+$config->set('HTML_READONLY', ' readonly="readonly"');
+$config->set('HTML_SELECTED', ' selected="selected"');
 
 // Default Language (if not overriden by admin)
-$config->USER_INITIAL_LANG = 'en_GB';
+$config->set('USER_INITIAL_LANG', 'en_GB');
 
 // Tell whether or not output must be compressed
-$config->COMPRESS_OUTPUT = 1;
+$config->set('COMPRESS_OUTPUT', 1);
 
 // show spGZIP compression information in HTML output
-$config->SHOW_COMPRESSION_SIZE = 1;
+$config->set('SHOW_COMPRESSION_SIZE', 1);
 
 // Session timeout in minutes
-$config->SESSION_TIMEOUT = 30;
+$config->set('SESSION_TIMEOUT', 30);
 
 // Item status
-$config->ITEM_OK_STATUS = 'ok';
-$config->ITEM_ENABLED_STATUS = 'enabled';
-$config->ITEM_DISABLED_STATUS = 'disabled';
-$config->ITEM_UNINSTALLED_STATUS = 'uninstalled';
-$config->ITEM_TOINSTALL_STATUS = 'toinstall';
-$config->ITEM_TOUPDATE_STATUS = 'toupdate';
-$config->ITEM_TOUNINSTALL_STATUS = 'touninstall';
-$config->ITEM_TOADD_STATUS = 'toadd';
-$config->ITEM_TOCHANGE_STATUS = 'tochange';
-$config->ITEM_TORESTORE_STATUS = 'torestore';
-$config->ITEM_TOENABLE_STATUS = 'toenable';
-$config->ITEM_TODISABLE_STATUS = 'todisable';
-$config->ITEM_TODELETE_STATUS = 'todelete';
+$config->set('ITEM_OK_STATUS', 'ok');
+$config->set('ITEM_ENABLED_STATUS', 'enabled');
+$config->set('ITEM_DISABLED_STATUS', 'disabled');
+$config->set('ITEM_UNINSTALLED_STATUS', 'uninstalled');
+$config->set('ITEM_TOINSTALL_STATUS', 'toinstall');
+$config->set('ITEM_TOUPDATE_STATUS', 'toupdate');
+$config->set('ITEM_TOUNINSTALL_STATUS', 'touninstall');
+$config->set('ITEM_TOADD_STATUS', 'toadd');
+$config->set('ITEM_TOCHANGE_STATUS', 'tochange');
+$config->set('ITEM_TORESTORE_STATUS', 'torestore');
+$config->set('ITEM_TOENABLE_STATUS', 'toenable');
+$config->set('ITEM_TODISABLE_STATUS', 'todisable');
+$config->set('ITEM_TODELETE_STATUS', 'todelete');
 
-$config->ITEM_ORDERED_STATUS = 'ordered';
+$config->set('ITEM_ORDERED_STATUS', 'ordered');
 
 // SQL variables
-$config->MAX_SQL_DATABASE_LENGTH = 64;
-$config->MAX_SQL_USER_LENGTH = 16;
-$config->MAX_SQL_PASS_LENGTH = 32;
+$config->set('MAX_SQL_DATABASE_LENGTH', 64);
+$config->set('MAX_SQL_USER_LENGTH', 16);
+$config->set('MAX_SQL_PASS_LENGTH', 32);
 
 /**
  * The following settings can be overridden via the control panel - (admin/settings.php)
  */
 
 // Domain rows pagination
-$config->DOMAIN_ROWS_PER_PAGE = 10;
+$config->set('DOMAIN_ROWS_PER_PAGE', 10);
 
 // 'admin': hosting plans are available only in admin level, the
 // reseller cannot make custom changes
 // 'reseller': hosting plans are available only in reseller level
-$config->HOSTING_PLANS_LEVEL = 'reseller';
+$config->set('HOSTING_PLANS_LEVEL', 'reseller');
 
 // TLD strict validation (according IANA database)
-$config->TLD_STRICT_VALIDATION = 0;
+$config->set('TLD_STRICT_VALIDATION', 0);
 
 // SLD strict validation (according IANA database)
-$config->SLD_STRICT_VALIDATION = 0;
+$config->set('SLD_STRICT_VALIDATION', 0);
 
 // Maximum number of labels for the domain names
 // and subdomains (excluding SLD and TLD)
-$config->MAX_DNAMES_LABELS = 1;
+$config->set('MAX_DNAMES_LABELS', 1);
 
 // Maximum number of labels for the subdomain names
-$config->MAX_SUBDNAMES_LABELS = 1;
+$config->set('MAX_SUBDNAMES_LABELS', 1);
 
 // Enable or disable support system
-$config->IMSCP_SUPPORT_SYSTEM = 1;
+$config->set('IMSCP_SUPPORT_SYSTEM', 1);
 
 // Enable or disable lost password support
-$config->LOSTPASSWORD = 1;
+$config->set('LOSTPASSWORD', 1);
 
 // Uniqkeytimeout in minutes
-$config->LOSTPASSWORD_TIMEOUT = 30;
+$config->set('LOSTPASSWORD_TIMEOUT', 30);
 
 // Captcha imagewidth
-$config->LOSTPASSWORD_CAPTCHA_WIDTH = 276;
+$config->set('LOSTPASSWORD_CAPTCHA_WIDTH', 276);
 
 // Captcha imagehigh
-$config->LOSTPASSWORD_CAPTCHA_HEIGHT = 30;
+$config->set('LOSTPASSWORD_CAPTCHA_HEIGHT', 30);
 
 // Captcha background color
-$config->LOSTPASSWORD_CAPTCHA_BGCOLOR = array(176,222,245);
+$config->set('LOSTPASSWORD_CAPTCHA_BGCOLOR', array(176,222,245));
 
 // Captcha text color
-$config->LOSTPASSWORD_CAPTCHA_TEXTCOLOR = array(1, 53, 920);
+$config->set('LOSTPASSWORD_CAPTCHA_TEXTCOLOR', array(1, 53, 920));
 
 /**
  * Captcha ttf fontfiles (have to be under compatible open source license)
@@ -149,41 +146,41 @@ $fonts = array(
 );
 
 // Set random captcha font file
-$config->LOSTPASSWORD_CAPTCHA_FONT = LIBRARY_PATH . '/fonts/' . $fonts[mt_rand(0, count($fonts)-1)];
+$config->set('LOSTPASSWORD_CAPTCHA_FONT', LIBRARY_PATH . '/fonts/' . $fonts[mt_rand(0, count($fonts)-1)]);
 
 // Enable or disable bruteforcedetection
-$config->BRUTEFORCE = 1;
+$config->set('BRUTEFORCE', 1);
 
 // Blocktime in minutes
-$config->BRUTEFORCE_BLOCK_TIME = 30;
+$config->set('BRUTEFORCE_BLOCK_TIME', 30);
 
 // Max login before block
-$config->BRUTEFORCE_MAX_LOGIN = 3;
+$config->set('BRUTEFORCE_MAX_LOGIN', 3);
 
 // Max login attempts before forced to wait
-$config->BRUTEFORCE_MAX_ATTEMPTS_BEFORE_WAIT=2;
+$config->set('BRUTEFORCE_MAX_ATTEMPTS_BEFORE_WAIT', 2);
 
 // Max captcha failed attempts before block
-$config->BRUTEFORCE_MAX_CAPTCHA = 5;
+$config->set('BRUTEFORCE_MAX_CAPTCHA', 5);
 
 // Enable or disable time between logins
-$config->BRUTEFORCE_BETWEEN = 1;
+$config->set('BRUTEFORCE_BETWEEN', 1);
 
 // Time between logins in seconds
-$config->BRUTEFORCE_BETWEEN_TIME = 30;
+$config->set('BRUTEFORCE_BETWEEN_TIME', 30);
 
 // Enable or disable maintenance mode
 // 1: Maintenance mode enabled
 // 0: Maintenance mode disabled
-$config->MAINTENANCEMODE = 0;
+$config->set('MAINTENANCEMODE', 0);
 
 // Minimum password chars
-$config->PASSWD_CHARS = 6;
+$config->set('PASSWD_CHARS', 6);
 
 // Enable or disable strong passwords
 // 1: Strong password not allowed
 // 0: Strong password allowed
-$config->PASSWD_STRONG = 1;
+$config->set('PASSWD_STRONG', 1);
 
 /**
  * Logging Mailer default level (messages sent to DEFAULT_ADMIN_ADDRESS)
@@ -194,59 +191,64 @@ $config->PASSWD_STRONG = 1;
  *
  * Note: PHP's E_USER_* constants are used for simplicity.
  */
-$config->LOG_LEVEL = E_USER_WARNING;
+$config->set('LOG_LEVEL', E_USER_WARNING);
 
 // Creation of webmaster, postmaster and abuse forwarders when
-$config->CREATE_DEFAULT_EMAIL_ADDRESSES = 1;
+$config->set('CREATE_DEFAULT_EMAIL_ADDRESSES', 1);
 
 // Count default email accounts (abuse, postmaster, webmaster) in user limit
 // 1: default email accounts are counted
 // 0: default email accounts are NOT counted
-$config->COUNT_DEFAULT_EMAIL_ADDRESSES = 1;
+$config->set('COUNT_DEFAULT_EMAIL_ADDRESSES', 1);
 
 // Use hard mail suspension when suspending a domain:
 // 1: email accounts are hard suspended (completely unreachable)
 // 0: email accounts are soft suspended (passwords are modified so
 // user can't access the accounts)
-$config->HARD_MAIL_SUSPENSION = 1;
+$config->set('HARD_MAIL_SUSPENSION', 1);
 
 // Prevent external login (i.e. check for valid local referer)
 // separated in admin, reseller and client
 // This option allows to use external login scripts
 // 1: prevent external login, check for referer, more secure
 // 0: allow external login, do not check for referer, less security (risky)
-$config->PREVENT_EXTERNAL_LOGIN_ADMIN = 1;
-$config->PREVENT_EXTERNAL_LOGIN_RESELLER = 1;
-$config->PREVENT_EXTERNAL_LOGIN_CLIENT = 1;
+$config->set('PREVENT_EXTERNAL_LOGIN_ADMIN', 1);
+$config->set('PREVENT_EXTERNAL_LOGIN_RESELLER', 1);
+$config->set('PREVENT_EXTERNAL_LOGIN_CLIENT', 1);
 
 // Automatic search for new version
-$config->CHECK_FOR_UPDATES = false;
-$config->ENABLE_SSL = false;
+$config->set('CHECK_FOR_UPDATES', false);
+$config->set('ENABLE_SSL', false);
 
-if(!$config->IMSCP_SUPPORT_SYSTEM_TARGET) {
-	$config->IMSCP_SUPPORT_SYSTEM_TARGET = '_self';
+if(!$config->get('IMSCP_SUPPORT_SYSTEM_TARGET')) {
+	$config->set('IMSCP_SUPPORT_SYSTEM_TARGET', '_self');
 }
 
 // Converting some possible IDN to ACE
-$config->DEFAULT_ADMIN_ADDRESS = encode_idna($config->DEFAULT_ADMIN_ADDRESS);
-$config->SERVER_HOSTNAME = encode_idna($config->SERVER_HOSTNAME);
-$config->BASE_SERVER_VHOST = encode_idna($config->BASE_SERVER_VHOST);
-$config->DATABASE_HOST = encode_idna($config->DATABASE_HOST);
+$config->set('DEFAULT_ADMIN_ADDRESS', encode_idna($config->get('DEFAULT_ADMIN_ADDRESS')));
+$config->set('SERVER_HOSTNAME', encode_idna($config->get('SERVER_HOSTNAME')));
+$config->set('BASE_SERVER_VHOST', encode_idna($config->get('BASE_SERVER_VHOST')));
+$config->set('DATABASE_HOST', encode_idna($config->get('DATABASE_HOST')));
 
 // Server traffic settings
-$config->SERVER_TRAFFIC_LIMIT = 0;
-$config->SERVER_TRAFFIC_WARN = 0;
+$config->set('SERVER_TRAFFIC_LIMIT', 0);
+$config->set('SERVER_TRAFFIC_WARN', 0);
 
 // Paths appended to the default PHP open_basedir directive of customers
-$config->PHPINI_OPEN_BASEDIR = '';
+$config->set('PHPINI_OPEN_BASEDIR', '');
+
+// Web folder protection
+$config->set('WEB_FOLDER_PROTECTION', 0);
 
 // Initialize the application
 iMSCP_Initializer::run($config);
 
 // Please: Don't move this statement before the initialization process
 if(PHP_SAPI != 'cli' && !isset(iMSCP_Registry::get('dbConfig')->MAINTENANCEMODE_MESSAGE)) {
-    $config->MAINTENANCEMODE_MESSAGE =
-        tr("We are sorry, but the system is currently under maintenance.\nPlease try again later.");
+    $config->set(
+		'MAINTENANCEMODE_MESSAGE',
+        tr("We are sorry, but the system is currently under maintenance.\nPlease try again later.")
+	);
 }
 
 // Removing useless variable

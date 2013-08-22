@@ -21,26 +21,21 @@
  * Portions created by the i-MSCP Team are Copyright (C) 2010-2013 by
  * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
  *
- * @category	i-MSCP
- * @package		iMSCP_SystemInfo
- * @copyright 	2006-2010 by ispCP | http://isp-control.net
- * @copyright 	2010-2013 by i-MSCP | http://i-mscp.net
- * @author 		Benedikt Heintel <benedikt.heintel@ispcp.net>
- * @link		http://i-mscp.net i-MSCP Home Site
- * @license		http://www.mozilla.org/MPL/ MPL 1.1
+ * @category    i-MSCP
+ * @package     iMSCP_SystemInfo
+ * @copyright   2006-2010 by ispCP | http://isp-control.net
+ * @copyright   2010-2013 by i-MSCP | http://i-mscp.net
+ * @link        http://i-mscp.net i-MSCP Home Site
+ * @license     http://www.mozilla.org/MPL/ MPL 1.1
  */
 
 /**
- * This class provides the functionality needed by {@see admin/system_info.php}
- * for Linux and BSD systems.
+ * This class provides the functionality needed by {@see admin/system_info.php} for Linux and BSD systems.
  *
- * @category    i-MSCP
- * @package		iMSCP_SystemInfo
- * @version     0.0.2
- * project without mention any source... 
+ * TODO: complete rewrite
  */
-class iMSCP_SystemInfo {
-
+class iMSCP_SystemInfo
+{
 	/**
 	 * Operating system name where PHP is run
 	 *
@@ -106,8 +101,8 @@ class iMSCP_SystemInfo {
 	/**
 	 * Constructor.
 	 */
-	public function __construct() {
-
+	public function __construct()
+	{
 		$this->_os = php_uname('s');
 		$this->cpu = $this->_getCPUInfo();
 		$this->filesystem = $this->_getFileSystemInfo();
@@ -119,19 +114,67 @@ class iMSCP_SystemInfo {
 	}
 
 	/**
+	 * Return info about partition to which the given file belong
+	 *
+	 * @param string $file Absolute path to either a file or directory
+	 * @return array
+	 */
+	public static function getFilePartitionInfo($file)
+	{
+		/** @var  $cfg iMSCP_Config_Handler_File */
+		$cfg = iMSCP_Registry::get('config');
+
+		$filePartitionInfo = array();
+
+		$descriptorSpec = array(
+			0 => array('pipe', 'r'), // stdin is a pipe that the child will read from
+			1 => array('pipe', 'w'), // stdout is a pipe that the child will write to
+			2 => array('pipe', 'a') // stderr is a pipe that he cild will write to
+		);
+
+		$pipes = array(); // satisfy warning
+
+		$proc = proc_open($cfg->CMD_DF . ' -TP ' . escapeshellarg($file), $descriptorSpec, $pipes);
+
+		if (is_resource($proc)) {
+			// Read data from stream (Pipe 1)
+			$stdout = stream_get_contents($pipes[1]);
+
+			// Close pipe and stream
+			fclose($pipes[1]);
+			proc_close($proc);
+
+			$filePartitionInfo = explode("\n", $stdout);
+
+			// Remove legend
+			array_shift($filePartitionInfo);
+
+			$filePartitionInfo = array_combine(
+				array('mount', 'fstype', 'size', 'used', 'free', 'percent', 'disk'),
+				preg_split('/\s+/', trim($filePartitionInfo[0]))
+			);
+
+			$filePartitionInfo['percent'] = str_replace('%', '', $filePartitionInfo['percent']);
+		}
+
+
+		return $filePartitionInfo;
+	}
+
+
+	/**
 	 * Reads /proc/cpuinfo and parses its content
 	 *
 	 * @return array Cpu Information
 	 */
-	private function _getCPUInfo() {
-
+	private function _getCPUInfo()
+	{
 		$cpu = array(
 			'model' => tr('N/A'), 'cpus' => tr('N/A'), 'cpuspeed' => tr('N/A'), 'cache' => tr('N/A'),
 			'bogomips' => tr('N/A')
 		);
 
 		if ($this->_os == 'FreeBSD' || $this->_os == 'OpenBSD' || $this->_os == 'NetBSD') {
-
 			$tmp = array();
 
 			$pattern = array(
@@ -141,16 +184,16 @@ class iMSCP_SystemInfo {
 			);
 
 			if ($cpu['model'] = $this->sysctl('hw.model')) {
-				$cpu["cpus"]  = $this->sysctl('hw.ncpu');
+				$cpu["cpus"] = $this->sysctl('hw.ncpu');
 
 				// Read dmesg bot log on reboot
 				$dmesg = $this->read('/var/run/dmesg.boot');
 
 				if (empty($this->_error)) {
-					$dmesg_arr = explode('rebooting', $dmesg);
-        			$dmesg_info = explode("\n", $dmesg_arr[count($dmesg_arr)-1]);
+					$dmesgArr = explode('rebooting', $dmesg);
+					$dmesgInfo = explode("\n", $dmesgArr[count($dmesgArr) - 1]);
 
-					foreach ($dmesg_info as $di) {
+					foreach ($dmesgInfo as $di) {
 						if (preg_match($pattern, $di, $tmp)) {
 							$cpu['cpuspeed'] = round($tmp[2]);
 							break;
@@ -159,11 +202,10 @@ class iMSCP_SystemInfo {
 				}
 			}
 		} else {
-			$cpu_raw = $this->read('/proc/cpuinfo');
+			$cpuRaw = $this->read('/proc/cpuinfo');
 			if (empty($this->_error)) {
-
 				// parse line for line
-				$cpu_info = explode("\n", $cpu_raw);
+				$cpu_info = explode("\n", $cpuRaw);
 
 				// initialize Values:
 				$cpu['cpus'] = 0;
@@ -176,7 +218,7 @@ class iMSCP_SystemInfo {
 					// that this list is complete. If there are any values
 					// missing, let us know about them. They will be added in a
 					// upcoming release.
-					switch($line[0]) {
+					switch ($line[0]) {
 						case 'model name':
 							$cpu['model'] = $line[1];
 							break;
@@ -248,7 +290,7 @@ class iMSCP_SystemInfo {
 					);
 
 					if (empty($this->_error) && !empty($raw)) {
-						$cpu['cache'] = base_convert($raw, 16, 10)/1024 . ' KB';
+						$cpu['cache'] = base_convert($raw, 16, 10) / 1024 . ' KB';
 					}
 				}
 
@@ -257,7 +299,7 @@ class iMSCP_SystemInfo {
 					foreach ($cpu_info as $ci) {
 						$line = preg_split('/\s+:\s+/', trim($ci));
 
-						switch($line[0]) {
+						switch ($line[0]) {
 							case 'Processor':
 								$cpu['cpus'] += 1;
 								$cpu['model'] = $line[1];
@@ -275,7 +317,7 @@ class iMSCP_SystemInfo {
 								break;
 						}
 					}
-					$cpu['cache'] = $cpu['cache']/1024 . ' KB';
+					$cpu['cache'] = $cpu['cache'] / 1024 . ' KB';
 				}
 			}
 		}
@@ -288,8 +330,8 @@ class iMSCP_SystemInfo {
 	 *
 	 * @return array File system information
 	 */
-	private function _getFileSystemInfo() {
-
+	private function _getFileSystemInfo()
+	{
 		/**
 		 * @var $cfg iMSCP_Config_Handler_File
 		 */
@@ -297,10 +339,10 @@ class iMSCP_SystemInfo {
 
 		$filesystem = array();
 
-		$descriptorspec = array(
+		$descriptorSpec = array(
 			0 => array('pipe', 'r'), // stdin is a pipe that the child will read from
 			1 => array('pipe', 'w'), // stdout is a pipe that the child will write to
-			2 => array('pipe', 'a')	 // stderr is a pipe that he cild will write to
+			2 => array('pipe', 'a') // stderr is a pipe that he cild will write to
 		);
 
 		/* Read output of df command from stdout
@@ -308,18 +350,18 @@ class iMSCP_SystemInfo {
 		 *	T: Show File System type
 		 *	P: Show in POSIX format
 		 */
-        $pipes = array(); // satisfy warning
-		$proc = proc_open($cfg->CMD_DF . ' -TP', $descriptorspec, $pipes);
+		$pipes = array(); // satisfy warning
+		$proc = proc_open($cfg->CMD_DF . ' -TP', $descriptorSpec, $pipes);
 
 		if (is_resource($proc)) {
 			// Read data from stream (Pipe 1)
-			$fs_raw = stream_get_contents($pipes[1]);
+			$fileSystemRaw = stream_get_contents($pipes[1]);
 
 			// Close pipe and stream
 			fclose($pipes[1]);
 			proc_close($proc);
 
-			$fs_info = explode("\n", $fs_raw);
+			$fs_info = explode("\n", $fileSystemRaw);
 			// First line only contains Legend
 			array_shift($fs_info);
 
@@ -330,13 +372,13 @@ class iMSCP_SystemInfo {
 
 					$i++;
 
-					$filesystem[$i]['mount'] 	= $line[0];
-					$filesystem[$i]['fstype'] 	= $line[1];
-					$filesystem[$i]['disk'] 	= $line[6];
-					$filesystem[$i]['percent'] 	= substr($line[5],0,-1); // Remove % from the end of the string
-					$filesystem[$i]['used'] 	= $line[3];
-					$filesystem[$i]['size'] 	= $line[2];
-					$filesystem[$i]['free'] 	= $line[4];
+					$filesystem[$i]['mount'] = $line[0];
+					$filesystem[$i]['fstype'] = $line[1];
+					$filesystem[$i]['disk'] = $line[6];
+					$filesystem[$i]['percent'] = substr($line[5], 0, -1); // Remove % from the end of the string
+					$filesystem[$i]['used'] = $line[3];
+					$filesystem[$i]['size'] = $line[2];
+					$filesystem[$i]['free'] = $line[4];
 				}
 			}
 		}
@@ -348,28 +390,26 @@ class iMSCP_SystemInfo {
 	/**
 	 * Reads /proc/version and parses its content
 	 *
-	 * @return string|Translated Kernel information
+	 * @return string Translated Kernel information
 	 */
-	private function _getKernelInfo() {
-
+	private function _getKernelInfo()
+	{
 		$kernel = tr('N/A');
 
 		if ($this->_os == 'FreeBSD' || $this->_os == 'OpenBSD' || $this->_os == 'NetBSD') {
-
-			if ($kernel_raw = $this->sysctl('kern.version')) {
-				$kernel_arr = explode(':', $kernel_raw);
-
-   				$kernel = $kernel_arr[0] . $kernel_arr[1] . ':' . $kernel_arr[2];
+			if ($kernelRaw = $this->sysctl('kern.version')) {
+				$kernel_arr = explode(':', $kernelRaw);
+				$kernel = $kernel_arr[0] . $kernel_arr[1] . ':' . $kernel_arr[2];
 			}
 		} else {
-			$kernel_raw = $this->read('/proc/version');
+			$kernelRaw = $this->read('/proc/version');
 			if (empty($this->_error)) {
-				if (preg_match('/version (.*?) /', $kernel_raw, $kernel_info)) {
-		        	$kernel = $kernel_info[1];
+				if (preg_match('/version (.*?) /', $kernelRaw, $kernel_info)) {
+					$kernel = $kernel_info[1];
 
-		        	if (strpos($kernel_raw, 'SMP') !== false) {
-		          		$kernel .= ' (SMP)';
-		        	}
+					if (strpos($kernelRaw, 'SMP') !== false) {
+						$kernel .= ' (SMP)';
+					}
 				}
 			}
 		}
@@ -383,26 +423,26 @@ class iMSCP_SystemInfo {
 	 *
 	 * @return array Load average
 	 */
-	private function _getLoadInfo() {
-
+	private function _getLoadInfo()
+	{
 		$load = array(tr('N/A'), tr('N/A'), tr('N/A'));
 
 		if ($this->_os == 'FreeBSD' || $this->_os == 'OpenBSD' || $this->_os == 'NetBSD') {
-
-			if ($load_raw = $this->sysctl('vm.loadavg')) {
-				$load_raw = preg_replace('/{\s/', '', $load_raw);
-    			$load_raw = preg_replace('/\s}/', '', $load_raw);
-   				$load = explode(' ', $load_raw);
+			if ($loadRaw = $this->sysctl('vm.loadavg')) {
+				$loadRaw = preg_replace('/{\s/', '', $loadRaw);
+				$loadRaw = preg_replace('/\s}/', '', $loadRaw);
+				$load = explode(' ', $loadRaw);
 			}
 		} else {
-			$load_raw = $this->read('/proc/loadavg');
+			$loadRaw = $this->read('/proc/loadavg');
 
 			if (empty($this->_error)) {
 				// $load[0] - Load 1 Min
 				// $load[1] - Load 5 Min
 				// $load[2] - Load 15 Min
 				// $load[3] - <running processes>/<total processes> <last PID>
-				$load = preg_split('/\s/', $load_raw, 4);
+				$load = preg_split('/\s/', $loadRaw, 4);
+
 				// Only load values are needed
 				unset($load[3]);
 			}
@@ -412,73 +452,71 @@ class iMSCP_SystemInfo {
 	}
 
 	/**
-	 * Reads /proc/meminfo and parses its content into Total, Used and Free
-	 * RAM
+	 * Reads /proc/meminfo and parses its content into Total, Used and Free Ram
 	 *
 	 * @return array Memory information
 	 */
-	private function _getRAMInfo() {
-
-		/**
-		 * @var $cfg iMSCP_Config_Handler_File
-		 */
+	private function _getRAMInfo()
+	{
+		/* @var $cfg iMSCP_Config_Handler_File */
 		$cfg = iMSCP_Registry::get('config');
 
 		$ram = array('total' => 0, 'free' => 0, 'used' => 0);
 
 		if ($this->_os == 'FreeBSD' || $this->_os == 'OpenBSD' || $this->_os == 'NetBSD') {
-			if ($ram_raw = $this->sysctl("hw.physmem")) {
-				$descriptorspec = array(
+			if ($ramRaw = $this->sysctl("hw.physmem")) {
+				$descriptorSpec = array(
 					0 => array('pipe', 'r'), // stdin is a pipe that the child will read from
 					1 => array('pipe', 'w'), // stdout is a pipe that the child will write to
 					2 => array('pipe', 'a')	 // stderr is a pipe that he cild will write to
 				);
 
 				$pipes = array();
-
-				$proc = proc_open(
-					$cfg->CMD_VMSTAT, $descriptorspec, $pipes
-				);
+				$proc = proc_open($cfg->CMD_VMSTAT, $descriptorSpec, $pipes);
 
 				if (is_resource($proc)) {
 					// Read data from stream (Pipe 1)
 					$raw = stream_get_contents($pipes[1]);
+
 					// Close pipe and stream
 					fclose($pipes[1]);
 					proc_close($proc);
-					// parse line for line
-					$ram_info = explode("\n", $raw);
-					// First line only contains Legend
-					array_shift($ram_info);
 
-					$line = preg_split('/\s+/', $ram_info[0], 19);
+					// parse line for line
+					$ramInfo = explode("\n", $raw);
+
+					// First line only contains Legend
+					array_shift($ramInfo);
+
+					$line = preg_split('/\s+/', $ramInfo[0], 19);
 					$ram['free'] = $line[5];
 				}
 
-				$ram['total'] = $ram_raw / 1024;
+				$ram['total'] = $ramRaw / 1024;
 				$ram['used']  = $ram['total'] - $ram['free'];
 			}
 		} else {
-			$ram_raw = $this->read('/proc/meminfo');
+			$ramRaw = $this->read('/proc/meminfo');
+
 			if (empty($this->_error)) {
 				// parse line for line
-				$ram_info = explode("\n", $ram_raw);
+				$ramInfo = explode("\n", $ramRaw);
 
-				foreach ($ram_info as $ri) {
+				foreach ($ramInfo as $ri) {
 					$line = preg_split('/:\s+/', trim($ri));
 
 					switch ($line[0]) {
 						case 'MemTotal':
-							$ram['total'] = $this->strstrb($line[1], ' kB');
+							$ram['total'] = strstr($line[1], ' kB', 2);
 							break;
 						case 'MemFree':
-							$ram['free'] = $this->strstrb($line[1], ' kB');
+							$ram['free'] = strstr($line[1], ' kB', 2);
 							break;
 						case 'Buffers':
-							$ram['buffers'] = $this->strstrb($line[1], ' kB');
+							$ram['buffers'] = strstr($line[1], ' kB', 2);
 							break;
 						case 'Cached':
-							$ram['cached'] = $this->strstrb($line[1], ' kB');
+							$ram['cached'] = strstr($line[1], ' kB', 2);
 							break;
 					}
 				}
@@ -498,22 +536,18 @@ class iMSCP_SystemInfo {
 	 *
 	 * @return array Swap information
 	 */
-	private function _getSwapInfo() {
-
-		/**
-		 * @var $cfg iMSCP_Config_Handler_File
-		 */
+	private function _getSwapInfo()
+	{
+		 /* @var $cfg iMSCP_Config_Handler_File */
 		$cfg = iMSCP_Registry::get('config');
 
 		$swap = array('total' => 0, 'free' => 0, 'used' => 0);
 
-		if ($this->_os == 'FreeBSD' || $this->_os == 'OpenBSD' ||
-			$this->_os == 'NetBSD') {
-
-			$descriptorspec = array(
+		if ($this->_os == 'FreeBSD' || $this->_os == 'OpenBSD' || $this->_os == 'NetBSD') {
+			$descriptorSpec = array(
 				0 => array('pipe', 'r'), // stdin is a pipe that the child will read from
 				1 => array('pipe', 'w'), // stdout is a pipe that the child will write to
-				2 => array('pipe', 'a')	 // stderr is a pipe that he cild will write to
+				2 => array('pipe', 'a') // stderr is a pipe that he cild will write to
 			);
 
 			if ($this->_os == 'OpenBSD' || $this->_os == 'NetBSD') {
@@ -524,7 +558,7 @@ class iMSCP_SystemInfo {
 
 			$pipes = array(); // satisfy warning
 
-			$proc = proc_open($cfg->CMD_SWAPCTL . $args, $descriptorspec, $pipes);
+			$proc = proc_open($cfg->CMD_SWAPCTL . $args, $descriptorSpec, $pipes);
 
 			if (is_resource($proc)) {
 				// Read data from stream (Pipe 1)
@@ -535,33 +569,33 @@ class iMSCP_SystemInfo {
 				proc_close($proc);
 
 				// parse line for line
-				$swap_info = explode("\n", $raw);
+				$swapInfo = explode("\n", $raw);
 
-				foreach ($swap_info as $si) {
+				foreach ($swapInfo as $si) {
 					if (!empty($si)) {
 						$line = preg_split('/\s+/', trim($si), 6);
 						if ($line[0] != 'Total') {
 							$swap['total'] += $line[1];
-							$swap['used']  += $line[2];
-							$swap['free']  += $line[3];
+							$swap['used'] += $line[2];
+							$swap['free'] += $line[3];
 						}
 					}
 				}
 
-				$line = preg_split('/\s+/', $swap_info[0], 19);
+				$line = preg_split('/\s+/', $swapInfo[0], 19);
 				$ram['free'] = $line[5];
 			}
 
 		} else {
-			$swap_raw = $this->read('/proc/swaps');
+			$stdout = $this->read('/proc/swaps');
 			if (empty($this->_error)) {
 				// parse line for line
-				$swap_info = explode("\n", $swap_raw);
+				$swapInfo = explode("\n", $stdout);
 
 				// First line only contains Legend
-				array_shift($swap_info);
+				array_shift($swapInfo);
 
-				foreach ($swap_info as $si) {
+				foreach ($swapInfo as $si) {
 					if (!empty($si)) {
 						$line = preg_split('/\s+/', trim($si));
 						$swap['total'] += $line[2];
@@ -581,77 +615,76 @@ class iMSCP_SystemInfo {
 	 * Reads /proc/uptime, parses its content and makes it human readable in
 	 * the format: # [[Day[s]] # Hour[s]] # Minute[s].
 	 *
-	 * @return string|Translated Uptime information
+	 * @return string Translated Uptime information
 	 */
-	private function _getUptime() {
-
-		$up = 0;
-		$uptime_str = tr('N/A');
+	private function _getUptime()
+	{
+		$uptime = 0;
 
 		if ($this->_os == 'FreeBSD' || $this->_os == 'OpenBSD' || $this->_os == 'NetBSD') {
-			if ($uptime_raw = $this->sysctl("kern.boottime")) {
+			if ($stdout = $this->sysctl("kern.boottime")) {
 				switch ($this->_os) {
 					case 'FreeBSD':
-						$up_arr = explode(' ', $uptime_raw);
-						$up_tmp = preg_replace('/{\s/', '', $up_arr[3]);
-						$up = time() - $up_tmp;
+						$uptimeArr = explode(' ', $stdout);
+						$uptimeTmp = preg_replace('/{\s/', '', $uptimeArr[3]);
+						$uptime = time() - $uptimeTmp;
 						break;
 					case 'OpenBSD':
 					case 'NetBSD':
-						$up = time() - $uptime_raw;
+					$uptime = time() - $stdout;
 						break;
 				}
 			}
 		} else {
-			$uptime_raw = $this->read('/proc/uptime');
+			$stdout = $this->read('/proc/uptime');
 
 			if (empty($this->_error)) {
-				$uptime = explode(' ', $uptime_raw);
+				$uptime = explode(' ', $stdout);
 
 				// $uptime[0] - Total System Uptime
 				// $uptime[1] - System Idle Time
-				$up = trim($uptime[0]);
+				$uptime = trim($uptime[0]);
 			}
 		}
 
-		$upMins  = $up / 60;
+		$upMins = $uptime / 60;
 		$upHours = $upMins / 60;
-		$upDays  = floor($upHours / 24);
+		$upDays = floor($upHours / 24);
 		$upHours = floor($upHours - ($upDays * 24));
-		$upMins  = floor($upMins - ($upHours * 60) - ($upDays * 24 * 60));
+		$upMins = floor($upMins - ($upHours * 60) - ($upDays * 24 * 60));
 
-		$uptime_str = '';
+		$uptimeStr = '';
 
 		if ($upDays == 1) {
-			$uptime_str .= $upDays . ' ' . tr('Day') . ' ';
+			$uptimeStr .= $upDays . ' ' . tr('Day') . ' ';
 		} else if ($upDays > 1) {
-			$uptime_str .= $upDays . ' ' . tr('Days') . ' ';
+			$uptimeStr .= $upDays . ' ' . tr('Days') . ' ';
 		}
 
 		if ($upHours == 1) {
-			$uptime_str .= ' ' . $upHours . ' ' . tr('Hour') . ' ';
+			$uptimeStr .= ' ' . $upHours . ' ' . tr('Hour') . ' ';
 		} else if ($upHours > 1) {
-			$uptime_str .= ' ' . $upHours . ' ' . tr('Hours') . ' ';
+			$uptimeStr .= ' ' . $upHours . ' ' . tr('Hours') . ' ';
 		}
 
 		if ($upMins == 1) {
-			$uptime_str .= ' ' . $upMins . ' ' . tr('Minute');
+			$uptimeStr .= ' ' . $upMins . ' ' . tr('Minute');
 		} else if ($upMins > 1) {
-			$uptime_str .= ' ' . $upMins . ' ' . tr('Minutes');
+			$uptimeStr .= ' ' . $upMins . ' ' . tr('Minutes');
 		}
 
-		return $uptime_str;
+		return $uptimeStr;
 	}
 
 	/**
 	 * Gets the content of a file if successful or and error otherwise.
 	 *
-	 * @param dtring $filename Path to file
+	 * @param string $filename Path to file
 	 * @return bool|string
 	 */
-	protected function read($filename) {
-
-		if(is_readable($filename)) {
+	protected function read($filename)
+	{
+		if (is_readable($filename)) {
 			$result = file_get_contents($filename);
 		} else {
 			$this->_error = tr(
@@ -668,50 +701,36 @@ class iMSCP_SystemInfo {
 	}
 
 	/**
-	 * This function emulates PHP 5.3's strstr behavior if used as strstr($haystack, $needle, true)
-	 *
-	 * @param $haystack
-	 * @param $needle
-	 * @return mixed
-	 */
-	protected function strstrb($haystack, $needle) {
-
-		return array_shift((explode($needle, $haystack, 2)));
-	}
-
-	/**
 	 * Execute sysctl on *BDS to receive system information
 	 *
 	 * @param string $args Arguments to call sysctl
-	 * @return string $raw Unformated sysctl output
+	 * @return string Unformated sysctl output
 	 */
-	protected function sysctl($args) {
-
-		/**
-		 * @var $cfg iMSCP_Config_Handler_File
-		 */
+	protected function sysctl($args)
+	{
+		/* @var $cfg iMSCP_Config_Handler_File */
 		$cfg = iMSCP_Registry::get('config');
 
-		$descriptorspec = array(
+		$descriptorSpec = array(
 			0 => array('pipe', 'r'), // stdin is a pipe that the child will read from
 			1 => array('pipe', 'w'), // stdout is a pipe that the child will write to
-			2 => array('pipe', 'a')	 // stderr is a pipe that he cild will write to
+			2 => array('pipe', 'a') // stderr is a pipe that he cild will write to
 		);
 
+		$stdout = '';
 		$pipes = array(); // satisfy warning
-
-		$proc = proc_open($cfg->CMD_SYSCTL . ' -n ' . $args, $descriptorspec, $pipes);
+		$proc = proc_open($cfg->CMD_SYSCTL . ' -n ' . $args, $descriptorSpec, $pipes);
 
 		if (is_resource($proc)) {
 			// Read data from stream (Pipe 1)
-			$raw = stream_get_contents($pipes[1]);
+			$stdout = stream_get_contents($pipes[1]);
 
 			// Close pipe and stream
 			fclose($pipes[1]);
 			proc_close($proc);
 		}
 
-		return $raw;
+		return $stdout;
 	}
 
 	/**
@@ -719,8 +738,8 @@ class iMSCP_SystemInfo {
 	 *
 	 * @return string Error
 	 */
-	public function getError() {
-
+	public function getError()
+	{
 		return $this->_error;
 	}
 }

@@ -263,8 +263,12 @@ function &reseller_getData($domainId, $forUpdate = false)
             $data['domain_external_mail'] = isset($_POST['domain_external_mail'])
                 ? clean_input($_POST['domain_external_mail']) : $data['domain_external_mail'];
 
-			$data['web_folder_protection'] = isset($_POST['web_folder_protection'])
-				? clean_input($_POST['web_folder_protection']) : $data['web_folder_protection'];
+			if($cfg->WEB_FOLDER_PROTECTION) {
+				$data['web_folder_protection'] = isset($_POST['web_folder_protection'])
+					? clean_input($_POST['web_folder_protection']) : $data['web_folder_protection'];
+			} else {
+				$data['web_folder_protection'] = 'no';
+			}
 		}
 	}
 
@@ -398,7 +402,6 @@ function _reseller_generateFeaturesForm($tpl, &$data)
 	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
 
-	$htmlSelected = $cfg->HTML_SELECTED;
 	$htmlChecked = $cfg->HTML_CHECKED;
 
 	$tplVars = array();
@@ -537,10 +540,14 @@ function _reseller_generateFeaturesForm($tpl, &$data)
 		$tplVars['BACKUP_BLOCK'] = '';
 	}
 
-	$tplVars['TR_WEB_FOLDER_PROTECTION'] = tr('Web folder protection');
-	$tplVars['TR_WEB_FOLDER_PROTECTION_HELP'] = tr("If set to 'yes', Web folders as provisioned by i-MSCP will be protected against deletion using the immutable flag (Extended attributes).");
-	$tplVars['WEB_FOLDER_PROTECTION_YES'] = ($data['web_folder_protection'] == 'yes') ? $htmlChecked : '';
-	$tplVars['WEB_FOLDER_PROTECTION_NO'] = ($data['web_folder_protection'] != 'yes') ? $htmlChecked : '';
+	if($cfg->WEB_FOLDER_PROTECTION) {
+		$tplVars['TR_WEB_FOLDER_PROTECTION'] = tr('Web folder protection');
+		$tplVars['TR_WEB_FOLDER_PROTECTION_HELP'] = tr("If set to 'yes', Web folders as provisioned by i-MSCP will be protected against deletion using the immutable flag (Extended attributes).");
+		$tplVars['WEB_FOLDER_PROTECTION_YES'] = ($data['web_folder_protection'] == 'yes') ? $htmlChecked : '';
+		$tplVars['WEB_FOLDER_PROTECTION_NO'] = ($data['web_folder_protection'] != 'yes') ? $htmlChecked : '';
+	} else {
+		$tplVars['WEB_FOLDER_PROTECTION_BLOCK'] = '';
+	}
 
 	// Shared strings
 	$tplVars['TR_YES'] = tr('Yes');

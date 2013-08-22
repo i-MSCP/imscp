@@ -331,12 +331,10 @@
 					</td>
 				</tr>
 				<!-- EDP: backup_feature -->
-				<tr>
-					<th colspan="2">{TR_PERMISSIONS}</th>
-				</tr>
+				<!-- BDP: web_folder_protection_feature -->
 				<tr>
 					<td>
-						<label for="web_folder_protection">{TR_PROTECT_WEB_FOLDERS}</label>
+						<label for="web_folder_protection">{TR_WEB_FOLDER_PROTECTION}</label>
 						<span style="vertical-align:middle" class="icon i_help" id="web_folder_protection_help" title="{TR_WEB_FOLDER_PROTECTION_HELP}">{TR_HELP}</span>
 					</td>
 					<td>
@@ -348,6 +346,7 @@
 						</div>
 					</td>
 				</tr>
+				<!-- EDP: web_folder_protection_feature -->
 			</table>
 			<div class="buttons">
 				<input type="hidden" name="uaction" value="user_add2_nxt"/>
