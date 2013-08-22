@@ -24,6 +24,7 @@ ENGINE:
 	- Fixed: MySQL server has gone away
 	- Fixed: Plugin module is broken: Unable to disable, uninstall... any plugin
 	- Fixed: Plugin update must be triggered when plugin configuration is updated
+	- Fixed: Set MySQL client connection charset to utf8 (Engine)
 
 GUI:
 	- Added onBeforeDomainChangeStatus and onAfterDomainChangeStatus events

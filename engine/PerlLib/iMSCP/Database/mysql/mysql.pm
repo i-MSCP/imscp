@@ -46,7 +46,7 @@ sub _init
 	$self->{'db'}->{'DATABASE_USER'} = '';
 	$self->{'db'}->{'DATABASE_PASSWORD'} = '';
 	$self->{'db'}->{'DATABASE_SETTINGS'} = {
-		'AutoCommit' => 1, 'PrintError' => 0, 'RaiseError' => 1, 'mysql_auto_reconnect' => 1
+		'AutoCommit' => 1, 'PrintError' => 0, 'RaiseError' => 1, 'mysql_auto_reconnect' => 1, 'mysql_enable_utf8' => 1
 	};
 
 	# for internal use only
@@ -106,6 +106,8 @@ sub connect
 				)
 			);
 			alarm 0;
+
+			$self->{'connection'}->do('SET NAMES utf8');
 		};
 
 		alarm 0;

@@ -1922,7 +1922,7 @@ sub _addFiles($$)
 
 	my $webDir = $data->{'WEB_DIR'};
 
-	# Build domain/subdomain Web directory tree using skeleton from (eg /etc/imscp/etc/skel) - BEGIN
+	# Build domain/subdomain Web directory tree using skeleton from (eg /etc/imscp/apache/skel) - BEGIN
 
 	my $skelDir;
 
@@ -1980,7 +1980,7 @@ sub _addFiles($$)
 		}
 	}
 
-	# Build domain/subdomain Web directory tree using skeleton from (eg /etc/imscp/etc/skel) - END
+	# Build domain/subdomain Web directory tree using skeleton from (eg /etc/imscp/apache/skel) - END
 
 	my $protectedParentDir = dirname($webDir);
 	$protectedParentDir = dirname($protectedParentDir) while(! -d $protectedParentDir);
