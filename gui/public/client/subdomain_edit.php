@@ -49,30 +49,32 @@ function _client_getSubdomainData($subdomainId, $subdomainType)
 		if ($subdomainType == 'dmn') {
 			$query = '
 				SELECT
-					`subdomain_name` `subdomain_name` , `subdomain_url_forward` `forward_url`
+					`subdomain_name` AS `subdomain_name` , `subdomain_url_forward` AS `forward_url`
 				FROM
 					`subdomain`
 				WHERE
-					`domain_id` = ?
-				AND
 					`subdomain_id` = ?
+				AND
+					`domain_id` = ?
+
 				';
 		} else {
 			$query = '
 				SELECT
-					`t1`.`subdomain_alias_name` `subdomain_name`, `t1`.`subdomain_alias_url_forward` `forward_url`,
+					`t1`.`subdomain_alias_name` AS `subdomain_name`, `t1`.`subdomain_alias_url_forward` AS `forward_url`,
 					`t2`.`alias_name` `aliasName`
 				FROM
 					`subdomain_alias` `t1`
 				INNER JOIN
 					`domain_aliasses` `t2` ON (`t1`.`alias_id` = `t2`.`alias_id`)
 				WHERE
-					`t1`.`domain_id` = ?
-				AND
 					`subdomain_alias_id` = ?
+				AND
+					`t2`.`domain_id` = ?
+
 			';
 		}
-		$stmt = exec_query($query, array($domainId, $subdomainId));
+		$stmt = exec_query($query, array($subdomainId, $domainId));
 
 		if (!$stmt->rowCount()) {
 			return false;
