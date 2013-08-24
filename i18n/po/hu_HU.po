@@ -11,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2013-08-11 18:57+0200\n"
-"PO-Revision-Date: 2013-08-11 16:57+0000\n"
+"POT-Creation-Date: 2013-08-24 11:32+0200\n"
+"PO-Revision-Date: 2013-08-24 09:32+0000\n"
 "Last-Translator: Torsten Widmann <info@goover.de>\n"
 "Language-Team: Hungarian (Hungary) (http://www.transifex.com/projects/p/i-MSCP/language/hu_HU/)\n"
 "MIME-Version: 1.0\n"
@@ -957,6 +957,19 @@ msgstr "Teljes forgalom"
 msgid "Allowed"
 msgstr "Engedélyezve"
 
+msgid ""
+"Allows to forward any request made to this subdomain to a specific URL."
+msgstr ""
+
+msgid ""
+"Allows to forward any request made to this subdomain to a specific URL. Be "
+"aware that when this option is in use, no Web folder is created for the "
+"subdomain."
+msgstr ""
+
+msgid "Allows to share the mount point of another domain."
+msgstr ""
+
 msgid "Already in use"
 msgstr "OK"
 
@@ -1357,11 +1370,11 @@ msgstr "Ügyfél / Domainek / Egyéni DNS rekord hozzáadása"
 msgid "Client / Domains / Add Subdomain"
 msgstr ""
 
+msgid "Client / Domains / Edit Subdomain"
+msgstr ""
+
 msgid "Client / Domains / Overview / Edit Domain Alias"
 msgstr "Ügyfél / Domainek / Áttekintés / Domain álnév szerkesztése"
-
-msgid "Client / Domains / Overview / Edit Subdomain"
-msgstr "Ügyfél / Domainek / Áttekintés / Aldomain szerkesztése"
 
 msgid "Client / Domains / PHP Settings"
 msgstr "Ügyfél / Domainek / PHP beállítások"
@@ -2440,6 +2453,10 @@ msgstr ""
 msgid "Forward URL"
 msgstr "Továbbítás webcíme"
 
+#, php-format
+msgid "Forward URL %s is not valid"
+msgstr ""
+
 msgid "Forward account"
 msgstr "Továbbítási fiók"
 
@@ -2572,9 +2589,6 @@ msgstr "Tárhely csomag sikeresen törölve"
 
 msgid "Hosting plan limits exceed reseller limits."
 msgstr "Tárhely csomag korlátai meghaladják a viszonteladóét"
-
-msgid "Hosting plan properties"
-msgstr "Tárhely csomag tulajdonságai"
 
 msgid "Hosting plan successfully added."
 msgstr "Tárhely csomag sikeresen hozzáadva"
@@ -2732,9 +2746,6 @@ msgstr "Havi adatforgalmi korlát hibás"
 
 msgid "Incorrect mount point syntax."
 msgstr "A csatolási pont formátuma hibás"
-
-msgid "Incorrect or is not allowed."
-msgstr "Helytelen vagy nem engedélyezett"
 
 msgid "Incorrect post code length or syntax!"
 msgstr ""
@@ -3060,9 +3071,6 @@ msgstr "Domain álnevek kezelése"
 msgid "Manage htaccess users and groups"
 msgstr "Védett területek, felhasználók és csoportok kezelése"
 
-msgid "Manage subdomain"
-msgstr "Aldomain kezelése"
-
 msgid "Manage users"
 msgstr "Felhasználók kezelése"
 
@@ -3258,9 +3266,6 @@ msgstr "Adminisztrátor nem található"
 msgid "No certificate found."
 msgstr "Nem található tanúsítvány"
 
-msgid "No corresponding subdomain found."
-msgstr "Nem található megfelelő aldomain"
-
 msgid "No custom menu found."
 msgstr "Nem található egyéni menü"
 
@@ -3347,9 +3352,6 @@ msgstr "Nem található felhasználó"
 
 msgid "No users found for this reseller."
 msgstr "Nincs felhasználója ennek a viszonteladónak"
-
-msgid "No valid alias domain selected."
-msgstr "Nincs kiválasztva érvényes domain álnév"
 
 msgid "No."
 msgstr "Sorszám"
@@ -3727,9 +3729,6 @@ msgstr "Adja meg az üzenet szövegét"
 msgid "Please specify a message subject."
 msgstr "Adja meg az üzenet tárgyát"
 
-msgid "Please specify subdomain name."
-msgstr "Adja meg az aldomain nevét"
-
 msgid "Please type database name."
 msgstr "Adja meg az adatbázis nevét"
 
@@ -3905,9 +3904,6 @@ msgstr "%d azonosítójú viszonteladó tulajdonságai nem találhatóak meg az 
 
 msgid "Protect"
 msgstr "Levédés"
-
-msgid "Protect Web folders"
-msgstr "Webes mappák védelme"
 
 msgid "Protect it"
 msgstr "Levédés"
@@ -4414,6 +4410,9 @@ msgstr "Beállítások"
 msgid "Settings saved."
 msgstr "Beállítások elmentve"
 
+msgid "Shared mount point"
+msgstr ""
+
 msgid "Show"
 msgstr "Megjelenítés"
 
@@ -4583,6 +4582,10 @@ msgstr "Utca 2"
 msgid "Subdomain"
 msgstr "Aldomain"
 
+#, php-format
+msgid "Subdomain %s already exist"
+msgstr ""
+
 msgid "Subdomain alias"
 msgstr "Aldomain álnevek"
 
@@ -4596,12 +4599,6 @@ msgid ""
 "Subdomain alias you are trying to remove has Ftp accounts. Remove them "
 "first."
 msgstr ""
-
-msgid "Subdomain already exists or is not allowed."
-msgstr "Aldomain már létezik vagy nem megengedett"
-
-msgid "Subdomain data"
-msgstr "Aldomain adatai"
 
 msgid "Subdomain errors"
 msgstr ""
@@ -4618,13 +4615,16 @@ msgstr "Továbbított aldomain email cím"
 msgid "Subdomain name"
 msgstr "Aldomain neve"
 
-msgid "Subdomain scheduled for update."
-msgstr "Aldomain frissítés beütemezve"
+msgid "Subdomain name is not valid"
+msgstr ""
 
-msgid "Subdomain successfully scheduled for addition."
-msgstr "Aldomain létrehozása beütemezve"
+msgid "Subdomain successfully scheduled for addition"
+msgstr ""
 
 msgid "Subdomain successfully scheduled for deletion."
+msgstr ""
+
+msgid "Subdomain successfully scheduled for update"
 msgstr ""
 
 msgid ""
@@ -5021,6 +5021,9 @@ msgstr "Típus"
 msgid "UP"
 msgstr "FUT"
 
+msgid "URL forwarding"
+msgstr ""
+
 msgid "URL protocol"
 msgstr "Webcím protokoll (például: http:// https://)"
 
@@ -5152,9 +5155,6 @@ msgstr "Ismeretlen kinézet szín"
 
 msgid "Unknown reason."
 msgstr "Ismeretlen okból."
-
-msgid "Unknown subdomain type."
-msgstr "Ismeretlen aldomain típus"
 
 msgid "Unknown type."
 msgstr "Ismeretlen típus"
@@ -5391,11 +5391,6 @@ msgstr "Figyelmeztetések és hibák"
 
 msgid ""
 "We are sorry but you have reached the maximum number of domain aliases "
-"allowed by your subscription. Contact to your reseller for more information."
-msgstr "Sajnáljuk, de elérte az előfizetés által megengedett domain álnevek maximális számát. További információért forduljon a viszonteladójához!"
-
-msgid ""
-"We are sorry but you have reached the maximum number of domain aliases "
 "allowed by your subscription. Contact your reseller for more information."
 msgstr "Sajnáljuk, de elérte az előfizetés által megengedett domain álnevek maximális számát. További információért forduljon a viszonteladójához!"
 
@@ -5409,6 +5404,9 @@ msgstr "Webes statisztikák"
 
 msgid "Web files only"
 msgstr "Csak webes fájlok"
+
+msgid "Web folder protection"
+msgstr ""
 
 msgid "Web in"
 msgstr "Web (bejövő)"
@@ -5528,9 +5526,6 @@ msgstr ""
 #, php-format
 msgid "Wrong label syntax: <b>%s</b>"
 msgstr "Hibás a címke szintaktikája: <b>%s</b>"
-
-msgid "Wrong redirect URL."
-msgstr "Hibás átirányítási webcím"
 
 msgid "Wrong request."
 msgstr "Hibás kérés"
@@ -5781,16 +5776,17 @@ msgstr "Nincsenek csoportok"
 msgid "You have no open tickets."
 msgstr ""
 
+msgid ""
+"You have reached the maximum number of subdomains allowed by your "
+"subscription."
+msgstr ""
+
 msgid "You have reached your domain limit.<br />You cannot add more domains."
 msgstr ""
 
 #, php-format
-msgid "You have received %d new support request."
-msgstr "Önnek %d új hibajegye érkezett"
-
-#, php-format
-msgid "You have received %s new support questions."
-msgstr "Önnek %s új támogatással kapcsolatos hibajegye érkezett"
+msgid "You have received %s new support ticket(s)."
+msgstr ""
 
 msgid "You have to choose between file-upload and wget-function."
 msgstr "Választania kell a fájl-feltöltés és wget-funkciók között"
@@ -5806,6 +5802,9 @@ msgstr ""
 
 msgid "You must enter a least one forward address."
 msgstr "Legalább egy továbbítási címet meg kell adnia"
+
+msgid "You must enter a subdomain name"
+msgstr ""
 
 msgid "You must first generate a password"
 msgstr "Először létre kell hozni egy jelszót"

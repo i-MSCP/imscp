@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2013-08-11 18:57+0200\n"
-"PO-Revision-Date: 2013-08-11 16:57+0000\n"
+"POT-Creation-Date: 2013-08-24 11:32+0200\n"
+"PO-Revision-Date: 2013-08-24 09:32+0000\n"
 "Last-Translator: Torsten Widmann <info@goover.de>\n"
 "Language-Team: Slovenian (http://www.transifex.com/projects/p/i-MSCP/language/sl/)\n"
 "MIME-Version: 1.0\n"
@@ -956,6 +956,19 @@ msgstr "Ves promet"
 msgid "Allowed"
 msgstr ""
 
+msgid ""
+"Allows to forward any request made to this subdomain to a specific URL."
+msgstr ""
+
+msgid ""
+"Allows to forward any request made to this subdomain to a specific URL. Be "
+"aware that when this option is in use, no Web folder is created for the "
+"subdomain."
+msgstr ""
+
+msgid "Allows to share the mount point of another domain."
+msgstr ""
+
 msgid "Already in use"
 msgstr ""
 
@@ -1356,10 +1369,10 @@ msgstr ""
 msgid "Client / Domains / Add Subdomain"
 msgstr ""
 
-msgid "Client / Domains / Overview / Edit Domain Alias"
+msgid "Client / Domains / Edit Subdomain"
 msgstr ""
 
-msgid "Client / Domains / Overview / Edit Subdomain"
+msgid "Client / Domains / Overview / Edit Domain Alias"
 msgstr ""
 
 msgid "Client / Domains / PHP Settings"
@@ -2439,6 +2452,10 @@ msgstr ""
 msgid "Forward URL"
 msgstr ""
 
+#, php-format
+msgid "Forward URL %s is not valid"
+msgstr ""
+
 msgid "Forward account"
 msgstr ""
 
@@ -2570,9 +2587,6 @@ msgid "Hosting plan has been successfully deleted."
 msgstr ""
 
 msgid "Hosting plan limits exceed reseller limits."
-msgstr ""
-
-msgid "Hosting plan properties"
 msgstr ""
 
 msgid "Hosting plan successfully added."
@@ -2730,9 +2744,6 @@ msgid "Incorrect monthly traffic limit."
 msgstr ""
 
 msgid "Incorrect mount point syntax."
-msgstr ""
-
-msgid "Incorrect or is not allowed."
 msgstr ""
 
 msgid "Incorrect post code length or syntax!"
@@ -3059,9 +3070,6 @@ msgstr ""
 msgid "Manage htaccess users and groups"
 msgstr ""
 
-msgid "Manage subdomain"
-msgstr ""
-
 msgid "Manage users"
 msgstr "Upravljavec uporabnikov"
 
@@ -3257,9 +3265,6 @@ msgstr ""
 msgid "No certificate found."
 msgstr ""
 
-msgid "No corresponding subdomain found."
-msgstr ""
-
 msgid "No custom menu found."
 msgstr ""
 
@@ -3345,9 +3350,6 @@ msgid "No user found."
 msgstr ""
 
 msgid "No users found for this reseller."
-msgstr ""
-
-msgid "No valid alias domain selected."
 msgstr ""
 
 msgid "No."
@@ -3726,9 +3728,6 @@ msgstr ""
 msgid "Please specify a message subject."
 msgstr ""
 
-msgid "Please specify subdomain name."
-msgstr ""
-
 msgid "Please type database name."
 msgstr ""
 
@@ -3903,9 +3902,6 @@ msgid "Properties for reseller with ID %d were not found in database."
 msgstr ""
 
 msgid "Protect"
-msgstr ""
-
-msgid "Protect Web folders"
 msgstr ""
 
 msgid "Protect it"
@@ -4413,6 +4409,9 @@ msgstr "Nastavitve"
 msgid "Settings saved."
 msgstr ""
 
+msgid "Shared mount point"
+msgstr ""
+
 msgid "Show"
 msgstr "Pokaži"
 
@@ -4582,6 +4581,10 @@ msgstr "Ulica 2"
 msgid "Subdomain"
 msgstr "Poddomena"
 
+#, php-format
+msgid "Subdomain %s already exist"
+msgstr ""
+
 msgid "Subdomain alias"
 msgstr ""
 
@@ -4594,12 +4597,6 @@ msgstr ""
 msgid ""
 "Subdomain alias you are trying to remove has Ftp accounts. Remove them "
 "first."
-msgstr ""
-
-msgid "Subdomain already exists or is not allowed."
-msgstr ""
-
-msgid "Subdomain data"
 msgstr ""
 
 msgid "Subdomain errors"
@@ -4617,13 +4614,16 @@ msgstr ""
 msgid "Subdomain name"
 msgstr ""
 
-msgid "Subdomain scheduled for update."
+msgid "Subdomain name is not valid"
 msgstr ""
 
-msgid "Subdomain successfully scheduled for addition."
+msgid "Subdomain successfully scheduled for addition"
 msgstr ""
 
 msgid "Subdomain successfully scheduled for deletion."
+msgstr ""
+
+msgid "Subdomain successfully scheduled for update"
 msgstr ""
 
 msgid ""
@@ -5020,6 +5020,9 @@ msgstr "tip"
 msgid "UP"
 msgstr ""
 
+msgid "URL forwarding"
+msgstr ""
+
 msgid "URL protocol"
 msgstr ""
 
@@ -5150,9 +5153,6 @@ msgid "Unknown layout color."
 msgstr ""
 
 msgid "Unknown reason."
-msgstr ""
-
-msgid "Unknown subdomain type."
 msgstr ""
 
 msgid "Unknown type."
@@ -5390,11 +5390,6 @@ msgstr "Opozorila in Napake"
 
 msgid ""
 "We are sorry but you have reached the maximum number of domain aliases "
-"allowed by your subscription. Contact to your reseller for more information."
-msgstr ""
-
-msgid ""
-"We are sorry but you have reached the maximum number of domain aliases "
 "allowed by your subscription. Contact your reseller for more information."
 msgstr ""
 
@@ -5407,6 +5402,9 @@ msgid "Web Statistics"
 msgstr ""
 
 msgid "Web files only"
+msgstr ""
+
+msgid "Web folder protection"
 msgstr ""
 
 msgid "Web in"
@@ -5526,9 +5524,6 @@ msgstr ""
 
 #, php-format
 msgid "Wrong label syntax: <b>%s</b>"
-msgstr ""
-
-msgid "Wrong redirect URL."
 msgstr ""
 
 msgid "Wrong request."
@@ -5780,15 +5775,16 @@ msgstr ""
 msgid "You have no open tickets."
 msgstr ""
 
+msgid ""
+"You have reached the maximum number of subdomains allowed by your "
+"subscription."
+msgstr ""
+
 msgid "You have reached your domain limit.<br />You cannot add more domains."
 msgstr ""
 
 #, php-format
-msgid "You have received %d new support request."
-msgstr ""
-
-#, php-format
-msgid "You have received %s new support questions."
+msgid "You have received %s new support ticket(s)."
 msgstr ""
 
 msgid "You have to choose between file-upload and wget-function."
@@ -5804,6 +5800,9 @@ msgid "You must confirm customer account deletion."
 msgstr ""
 
 msgid "You must enter a least one forward address."
+msgstr ""
+
+msgid "You must enter a subdomain name"
 msgstr ""
 
 msgid "You must first generate a password"

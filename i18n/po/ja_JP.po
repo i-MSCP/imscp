@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2013-08-11 18:57+0200\n"
-"PO-Revision-Date: 2013-08-11 16:57+0000\n"
+"POT-Creation-Date: 2013-08-24 11:32+0200\n"
+"PO-Revision-Date: 2013-08-24 09:32+0000\n"
 "Last-Translator: Torsten Widmann <info@goover.de>\n"
 "Language-Team: Japanese (Japan) (http://www.transifex.com/projects/p/i-MSCP/language/ja_JP/)\n"
 "MIME-Version: 1.0\n"
@@ -623,7 +623,7 @@ msgid "Add email account"
 msgstr "Eメールアカウント追加"
 
 msgid "Add email user"
-msgstr ""
+msgstr "Eメールユーザー追加"
 
 msgid "Add external mail server for {DOMAIN_UTF8}"
 msgstr "{DOMAIN UTF8}の外部メールサーバー追加"
@@ -686,7 +686,7 @@ msgid "Admin"
 msgstr "管理者"
 
 msgid "Admin / General / Admin Log"
-msgstr ""
+msgstr "管理者 / 一般 / 管理ログ"
 
 msgid "Admin / General / Overview"
 msgstr "管理者/一般/概要"
@@ -695,13 +695,13 @@ msgid "Admin / General / Services Status"
 msgstr "管理者 / 一般情報 / サーバーステータス"
 
 msgid "Admin / Hosting Plans / Add Hosting Plan"
-msgstr ""
+msgstr "管理者 / ホスティングプラン / ホスティングプラン追加"
 
 msgid "Admin / Hosting Plans / Overview"
 msgstr "管理者 / ホスティングプラン / 概要"
 
 msgid "Admin / Hosting Plans / Overview / Edit Hosting Plan"
-msgstr ""
+msgstr "管理者 / ホスティングプラン / 概要 / ホスティングプラン編集"
 
 msgid "Admin / Profile / Account Summary"
 msgstr "管理者 / プロファイル / アカウント要約"
@@ -722,57 +722,57 @@ msgid "Admin / Settings"
 msgstr "管理者 / 設定"
 
 msgid "Admin / Settings / IP Management"
-msgstr ""
+msgstr "管理者 / 設定 / IP管理"
 
 msgid "Admin / Settings / Languages"
 msgstr "管理者 / 設定 / 言語"
 
 msgid "Admin / Settings / Lost Password Email"
-msgstr ""
+msgstr "管理者 / 設定 / パスワード紛失Eメール"
 
 msgid "Admin / Settings / Plugin Management"
-msgstr ""
+msgstr "管理者 / 設定 / プラグイン管理"
 
 msgid "Admin / Settings / Server Traffic"
-msgstr ""
+msgstr "管理者 / 設定 / サーバトラフィック"
 
 msgid "Admin / Settings / Service Ports"
-msgstr ""
+msgstr "管理者 / 設定 / サービスポート"
 
 msgid "Admin / Settings / Software Management"
 msgstr "管理者 / 設定 / ソフトウェア管理"
 
 msgid "Admin / Settings / Software Options"
-msgstr ""
+msgstr "管理者 / 設定 / ソフトウェアオプション"
 
 msgid "Admin / Settings / Welcome Email"
-msgstr ""
+msgstr "管理者 / 設定 / ウェルカムEメール"
 
 msgid "Admin / Settings / {TR_DYNAMIC_TITLE}"
 msgstr "管理者 / 設定 / {TR_DYNAMIC_TITLE}"
 
 msgid "Admin / Software Management / Reseller Software"
-msgstr ""
+msgstr "管理者 / ソフトウェア管理 / 代理店ソフトウェア"
 
 msgid "Admin / Statistics / IP Usage"
 msgstr "管理者 / 統計 / IPアドレス使用"
 
 msgid "Admin / Statistics / Reseller Statistics"
-msgstr ""
+msgstr "管理者 / 統計 / 代理店統計"
 
 msgid "Admin / Statistics / Reseller Statistics / Customer Statistics"
-msgstr ""
+msgstr "管理者 / 統計 / 代理店統計 / 顧客統計"
 
 msgid ""
 "Admin / Statistics / Reseller Statistics / Customer Statistics / Domain "
 "Statistics"
-msgstr ""
+msgstr "管理者 / 統計 / 代理店統計 / 顧客統計 / ドメイン統計"
 
 msgid "Admin / Statistics / Server Statistics"
-msgstr ""
+msgstr "管理者 / 統計 / サーバ統計"
 
 msgid "Admin / Statistics / Server Statistics / Day Statistics"
-msgstr ""
+msgstr "管理者 / 統計 / サーバ統計 / 日統計"
 
 msgid "Admin / Support / Closed Tickets"
 msgstr "管理者 / サポート / クローズチケット"
@@ -781,19 +781,19 @@ msgid "Admin / Support / View Ticket"
 msgstr "管理者 / サポート / チケット表示"
 
 msgid "Admin / System Tools / Database Update"
-msgstr ""
+msgstr "管理者 / システムツール / データベース更新"
 
 msgid "Admin / System Tools / Debugger"
 msgstr "管理者 / システムツール / デバッガ"
 
 msgid "Admin / System Tools / Maintenance Settings"
-msgstr ""
+msgstr "管理者 / システムツール / メンテナンス設定"
 
 msgid "Admin / System Tools / Rootkit Logs"
 msgstr "管理者 / システムツール / ルートキットログ"
 
 msgid "Admin / System Tools / System Information"
-msgstr ""
+msgstr "管理者 / システムツール / システム情報"
 
 msgid "Admin / System Tools / Updates"
 msgstr "管理者 / システムツール / アップデート"
@@ -802,7 +802,7 @@ msgid "Admin / User / Overview / Domain Edit"
 msgstr "管理者 / ユーザー / 概要 / ドメイン編集"
 
 msgid "Admin / Users / Add Admin"
-msgstr ""
+msgstr "管理者 / ユーザー / 管理者追加"
 
 msgid "Admin / Users / Add Reseller"
 msgstr "管理者 / ユーザー / 代理店追加"
@@ -811,7 +811,7 @@ msgid "Admin / Users / Circular"
 msgstr "管理者 / ユーザー / 通達"
 
 msgid "Admin / Users / Customers Assignment"
-msgstr ""
+msgstr "管理者 / ユーザー / 顧客の割当"
 
 msgid "Admin / Users / Edit Reseller"
 msgstr "管理者 / ユーザー / 代理店編集"
@@ -829,7 +829,7 @@ msgid "Admin / Users / Overview / Edit Admin"
 msgstr "管理者 / ユーザー / 概要 / 管理者編集"
 
 msgid "Admin / Users / Resellers Assignment"
-msgstr ""
+msgstr "管理者 / ユーザー / 代理店の割当"
 
 msgid "Admin / Users / Sessions"
 msgstr "管理者 / ユーザー / セッション"
@@ -956,6 +956,19 @@ msgstr "すべてのトラフィック"
 msgid "Allowed"
 msgstr "許可"
 
+msgid ""
+"Allows to forward any request made to this subdomain to a specific URL."
+msgstr ""
+
+msgid ""
+"Allows to forward any request made to this subdomain to a specific URL. Be "
+"aware that when this option is in use, no Web folder is created for the "
+"subdomain."
+msgstr ""
+
+msgid "Allows to share the mount point of another domain."
+msgstr ""
+
 msgid "Already in use"
 msgstr "既に使用されています"
 
@@ -963,7 +976,7 @@ msgid "Alternative URL to reach your website"
 msgstr "代替URLはあなたのWebサイトへのアクセス"
 
 msgid "An error occurred during authentication."
-msgstr ""
+msgstr "認証中にエラーが発生した。"
 
 msgid "An error occurred. Please contact your administrator."
 msgstr ""
@@ -1327,7 +1340,7 @@ msgid ""
 msgstr "復元ボタンをクリックすると、その日の最後にバックアップした状態にシステムを復元します。"
 
 msgid "Client / Choose Directory"
-msgstr ""
+msgstr "クライアント / ディレクトリ選択"
 
 msgid "Client / Databases / Add SQL Database"
 msgstr "クライアント / SQLデータベース追加"
@@ -1339,7 +1352,7 @@ msgid "Client / Databases / Overview / Add SQL User"
 msgstr "クライアント / データベース / 概要 / SQLユーザー追加"
 
 msgid "Client / Databases / Overview / Update SQL User Password"
-msgstr ""
+msgstr "クライアント / データベース / 概要 / SQLユーザーパスワード更新"
 
 msgid "Client / Domain / Edit Custom DNS record"
 msgstr "クライアント / ドメイン / カスタムDNSレコード追加"
@@ -1348,62 +1361,62 @@ msgid "Client / Domains"
 msgstr "クライアント / ドメイン"
 
 msgid "Client / Domains / Add Alias"
-msgstr ""
+msgstr "クライアント / ドメイン / エイリアス追加"
 
 msgid "Client / Domains / Add Custom DNS record"
 msgstr "クライアント / ドメイン / カスタムDNSレコード追加"
 
 msgid "Client / Domains / Add Subdomain"
+msgstr "クライアント / ドメイン / サブドメイン追加"
+
+msgid "Client / Domains / Edit Subdomain"
 msgstr ""
 
 msgid "Client / Domains / Overview / Edit Domain Alias"
 msgstr "クライアント / ドメイン / 概要 / ドメインエイリアス編集"
 
-msgid "Client / Domains / Overview / Edit Subdomain"
-msgstr "クライアント / ドメイン / 概要 / サブドメイン編集"
-
 msgid "Client / Domains / PHP Settings"
 msgstr "クライアント / ドメイン / PHP設定"
 
 msgid "Client / Domains / SSL Certificates"
-msgstr ""
+msgstr "クライアント / ドメイン / SSL証明書"
 
 msgid "Client / Email / Add Email Account"
-msgstr ""
+msgstr "クライアント / Eメール / Eメールアカウント追加"
 
 msgid "Client / Email / Catchall"
-msgstr ""
+msgstr "クライアント / Eメール / キャッチオール"
 
 msgid "Client / Email / Catchall / Add Catchall"
-msgstr ""
+msgstr "クライアント / Eメール / キャッチオール / キャッチオール追加"
 
 msgid "Client / Email / External Mail Server"
-msgstr ""
+msgstr "クライアント / Eメール / 外部メールサーバー"
 
 msgid ""
 "Client / Email / External Mail Server / Add External Mail Server for "
 "{DOMAIN_UTF8}"
-msgstr ""
+msgstr "クライアント / Eメール / 外部メールサーバー / {DOMAIN_UTF8}の外部メールサーバー追加"
 
 msgid ""
 "Client / Email / External Mail Server / Edit External Mail Server for "
 "{DOMAIN_UTF8}"
-msgstr ""
+msgstr "クライアント / Eメール / 外部メールーサーバー / {DOMAIN_UTF8}の外部メールサーバー編集 "
 
 msgid "Client / Email / Overview"
-msgstr ""
+msgstr "クライアント / Eメール / 概要"
 
 msgid "Client / Email / Overview /  Edit Email Account"
-msgstr ""
+msgstr "クライアント / Eメール / 概要 /  Eメールアカウント編集"
 
 msgid "Client / Email / Overview / Edit Auto Responder"
-msgstr ""
+msgstr "クライアント / Eメール / 概要 / 自動応答編集"
 
 msgid "Client / Email / Overview / Edit Email Quota"
-msgstr ""
+msgstr "クライアント / Eメール / 概要 / Eメールクォータ編集"
 
 msgid "Client / Email / Overview / Enable Auto Responder"
-msgstr ""
+msgstr "クライアント / Eメール / 概要 / 自動応答有効"
 
 msgid "Client / FTP / Add FTP Account"
 msgstr ""
@@ -1460,11 +1473,11 @@ msgid "Client / Webtools / Protected Areas"
 msgstr "クライアント / Webツール / 保護領域"
 
 msgid "Client / Webtools / Protected Areas / Manage Users and Groups"
-msgstr ""
+msgstr "クライアント / Webツール / エリア保護 / ユーザーとグループ管理"
 
 msgid ""
 "Client / Webtools / Protected Areas / Manage Users and Groups / Add Group"
-msgstr ""
+msgstr "クライアント / Webツール / エリア保護 / ユーザーとグループ管理 / グループ追加"
 
 msgid ""
 "Client / Webtools / Protected Areas / Manage Users and Groups / Add User"
@@ -2439,6 +2452,10 @@ msgstr "強制的に再試行"
 msgid "Forward URL"
 msgstr "Forward URL"
 
+#, php-format
+msgid "Forward URL %s is not valid"
+msgstr ""
+
 msgid "Forward account"
 msgstr "フォワードアカウント"
 
@@ -2571,9 +2588,6 @@ msgstr "ホスティングプランが削除されました。"
 
 msgid "Hosting plan limits exceed reseller limits."
 msgstr "ホスティングプランの制限は、代理店の限界を超えています。"
-
-msgid "Hosting plan properties"
-msgstr "ホスティングプランの詳細"
 
 msgid "Hosting plan successfully added."
 msgstr "ホスティングプランが追加されました。"
@@ -2731,9 +2745,6 @@ msgstr "毎月のトラフィック制限に誤りがあります。"
 
 msgid "Incorrect mount point syntax."
 msgstr "マウント先の構文が誤っています。"
-
-msgid "Incorrect or is not allowed."
-msgstr "間違っているか、または許可されていません。"
 
 msgid "Incorrect post code length or syntax!"
 msgstr "郵便番号の長さや構文が正しくありません！"
@@ -3059,9 +3070,6 @@ msgstr "ドメインエイリアス管理"
 msgid "Manage htaccess users and groups"
 msgstr "htaccessユーザーとグループを管理"
 
-msgid "Manage subdomain"
-msgstr "サブドメイン管理"
-
 msgid "Manage users"
 msgstr "ユーザー管理"
 
@@ -3257,9 +3265,6 @@ msgstr "管理者アカウントが見つかりませんでした。"
 msgid "No certificate found."
 msgstr "証明書見つかりませんでした。"
 
-msgid "No corresponding subdomain found."
-msgstr "対応するサブドメインが見つかりませんでした。"
-
 msgid "No custom menu found."
 msgstr "カスタムメニューが見つかりません。"
 
@@ -3346,9 +3351,6 @@ msgstr "ユーザーが見つかりませんでした。"
 
 msgid "No users found for this reseller."
 msgstr "代理店のユーザーが見つかりません。"
-
-msgid "No valid alias domain selected."
-msgstr "有効なエイリアスドメインが選択されていません。"
 
 msgid "No."
 msgstr "No."
@@ -3697,7 +3699,7 @@ msgid "Please enter protected area path"
 msgstr "アクセス制限領域のパスを入力してください"
 
 msgid "Please enter your auto-responder message below"
-msgstr ""
+msgstr "下記に自動応答メッセージを入力してください"
 
 msgid "Please fill up both data fields for password."
 msgstr "パスワードを両方のデータ項目を入力してください。"
@@ -3725,9 +3727,6 @@ msgstr "メッセージの内容を指定してください。"
 
 msgid "Please specify a message subject."
 msgstr "メッセージの件名を指定してください。"
-
-msgid "Please specify subdomain name."
-msgstr "サブドメイン名を指定してください。"
 
 msgid "Please type database name."
 msgstr "データベース名を入力してください。"
@@ -3904,9 +3903,6 @@ msgstr "ID %d を持つ代理店のプロパティがデータベースに見つ
 
 msgid "Protect"
 msgstr "保護"
-
-msgid "Protect Web folders"
-msgstr "Webフォルダを保護する"
 
 msgid "Protect it"
 msgstr "保護する"
@@ -4413,6 +4409,9 @@ msgstr "設定"
 msgid "Settings saved."
 msgstr "設定を保存しました。"
 
+msgid "Shared mount point"
+msgstr ""
+
 msgid "Show"
 msgstr "表示"
 
@@ -4582,6 +4581,10 @@ msgstr "番地"
 msgid "Subdomain"
 msgstr "サブドメイン"
 
+#, php-format
+msgid "Subdomain %s already exist"
+msgstr ""
+
 msgid "Subdomain alias"
 msgstr "サブドメインエイリアス"
 
@@ -4595,12 +4598,6 @@ msgid ""
 "Subdomain alias you are trying to remove has Ftp accounts. Remove them "
 "first."
 msgstr "削除しようとしているサブドメインエイリアスは、FTPアカウントを持っています。それを最初に削除します。"
-
-msgid "Subdomain already exists or is not allowed."
-msgstr "サブドメインが既に存在するか、許可されていません。"
-
-msgid "Subdomain data"
-msgstr "サブドメイン情報"
 
 msgid "Subdomain errors"
 msgstr ""
@@ -4617,14 +4614,17 @@ msgstr "サブドメインメール"
 msgid "Subdomain name"
 msgstr "サブドメイン名"
 
-msgid "Subdomain scheduled for update."
-msgstr "サブドメインの更新が予定されました。"
+msgid "Subdomain name is not valid"
+msgstr ""
 
-msgid "Subdomain successfully scheduled for addition."
-msgstr "サブドメインの追加が予定されました。"
+msgid "Subdomain successfully scheduled for addition"
+msgstr ""
 
 msgid "Subdomain successfully scheduled for deletion."
 msgstr "サブドメインの削除が予定されました。"
+
+msgid "Subdomain successfully scheduled for update"
+msgstr ""
 
 msgid ""
 "Subdomain you are trying to remove has Ftp accounts. Remove them first."
@@ -5020,6 +5020,9 @@ msgstr "タイプ"
 msgid "UP"
 msgstr "UP"
 
+msgid "URL forwarding"
+msgstr ""
+
 msgid "URL protocol"
 msgstr "URLプロトコル"
 
@@ -5151,9 +5154,6 @@ msgstr "不明なレイアウトカラーが指定されました。"
 
 msgid "Unknown reason."
 msgstr "理由が不明。"
-
-msgid "Unknown subdomain type."
-msgstr "サブドメインタイプがありません。"
 
 msgid "Unknown type."
 msgstr "不明な種別が指定されました。"
@@ -5390,11 +5390,6 @@ msgstr "警告とエラー"
 
 msgid ""
 "We are sorry but you have reached the maximum number of domain aliases "
-"allowed by your subscription. Contact to your reseller for more information."
-msgstr "申し訳ありませんが、あなたのサブスクリプションで許可されているドメインエイリアスの最大数に達しました。詳細については、代理店にお問い合わせください。"
-
-msgid ""
-"We are sorry but you have reached the maximum number of domain aliases "
 "allowed by your subscription. Contact your reseller for more information."
 msgstr "申し訳ありませんが、サブスクリプションによって許可されたドメインエイリアスの最大数に達しました。詳細については、販売代理店にお問い合わせください。"
 
@@ -5408,6 +5403,9 @@ msgstr "Web 統計"
 
 msgid "Web files only"
 msgstr "Webファイルのみ"
+
+msgid "Web folder protection"
+msgstr ""
 
 msgid "Web in"
 msgstr "Web in"
@@ -5527,9 +5525,6 @@ msgstr ""
 #, php-format
 msgid "Wrong label syntax: <b>%s</b>"
 msgstr "ラベル構文に誤り：<b>%s</b>"
-
-msgid "Wrong redirect URL."
-msgstr "転送先URLに誤りがあります。"
 
 msgid "Wrong request."
 msgstr "要求に誤りがあります。"
@@ -5780,16 +5775,17 @@ msgstr "グループがありません。"
 msgid "You have no open tickets."
 msgstr "オープンチケットを持っていません。"
 
+msgid ""
+"You have reached the maximum number of subdomains allowed by your "
+"subscription."
+msgstr ""
+
 msgid "You have reached your domain limit.<br />You cannot add more domains."
 msgstr ""
 
 #, php-format
-msgid "You have received %d new support request."
-msgstr "あなたが %d 新しいサポート要求を受け取りました。"
-
-#, php-format
-msgid "You have received %s new support questions."
-msgstr "%s の新しいサポートの質問を受けています。"
+msgid "You have received %s new support ticket(s)."
+msgstr ""
 
 msgid "You have to choose between file-upload and wget-function."
 msgstr "ファイルアップロードとwget-機能を選ばなければなりません。"
@@ -5805,6 +5801,9 @@ msgstr "顧客アカウントの削除を確認する必要があります。"
 
 msgid "You must enter a least one forward address."
 msgstr "少なくとも一つのフォワードアドレスを入力する必要があります。"
+
+msgid "You must enter a subdomain name"
+msgstr ""
 
 msgid "You must first generate a password"
 msgstr "最初にパスワードを生成する必要があります"

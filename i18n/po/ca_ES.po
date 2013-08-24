@@ -18,8 +18,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2013-08-11 18:57+0200\n"
-"PO-Revision-Date: 2013-08-11 16:57+0000\n"
+"POT-Creation-Date: 2013-08-24 11:32+0200\n"
+"PO-Revision-Date: 2013-08-24 09:32+0000\n"
 "Last-Translator: Torsten Widmann <info@goover.de>\n"
 "Language-Team: Catalan (Spain) (http://www.transifex.com/projects/p/i-MSCP/language/ca_ES/)\n"
 "MIME-Version: 1.0\n"
@@ -964,6 +964,19 @@ msgstr "Tot el trànsit"
 msgid "Allowed"
 msgstr "Permès"
 
+msgid ""
+"Allows to forward any request made to this subdomain to a specific URL."
+msgstr ""
+
+msgid ""
+"Allows to forward any request made to this subdomain to a specific URL. Be "
+"aware that when this option is in use, no Web folder is created for the "
+"subdomain."
+msgstr ""
+
+msgid "Allows to share the mount point of another domain."
+msgstr ""
+
 msgid "Already in use"
 msgstr "En ús"
 
@@ -1364,10 +1377,10 @@ msgstr ""
 msgid "Client / Domains / Add Subdomain"
 msgstr ""
 
-msgid "Client / Domains / Overview / Edit Domain Alias"
+msgid "Client / Domains / Edit Subdomain"
 msgstr ""
 
-msgid "Client / Domains / Overview / Edit Subdomain"
+msgid "Client / Domains / Overview / Edit Domain Alias"
 msgstr ""
 
 msgid "Client / Domains / PHP Settings"
@@ -2447,6 +2460,10 @@ msgstr ""
 msgid "Forward URL"
 msgstr ""
 
+#, php-format
+msgid "Forward URL %s is not valid"
+msgstr ""
+
 msgid "Forward account"
 msgstr "Redirigir correu"
 
@@ -2579,9 +2596,6 @@ msgstr ""
 
 msgid "Hosting plan limits exceed reseller limits."
 msgstr ""
-
-msgid "Hosting plan properties"
-msgstr "Propietats del pla de hosting"
 
 msgid "Hosting plan successfully added."
 msgstr ""
@@ -2739,9 +2753,6 @@ msgstr ""
 
 msgid "Incorrect mount point syntax."
 msgstr "Sintaxis del punt de montatge incorrecte."
-
-msgid "Incorrect or is not allowed."
-msgstr "Incorrecta o no està permès."
 
 msgid "Incorrect post code length or syntax!"
 msgstr ""
@@ -3067,9 +3078,6 @@ msgstr "Administrar àlies de domini"
 msgid "Manage htaccess users and groups"
 msgstr "Administrar usuaris i grups htaccess "
 
-msgid "Manage subdomain"
-msgstr "Gestionar subdomini"
-
 msgid "Manage users"
 msgstr "Administrar Usuaris"
 
@@ -3265,9 +3273,6 @@ msgstr "No s'han trobat comptes d'administrador"
 msgid "No certificate found."
 msgstr "Certificat no trobat"
 
-msgid "No corresponding subdomain found."
-msgstr "No s'ha trobat el subdomini corresponent."
-
 msgid "No custom menu found."
 msgstr "Menú personalitzat no trobat"
 
@@ -3354,9 +3359,6 @@ msgstr "Usuari no trobat"
 
 msgid "No users found for this reseller."
 msgstr "No s'han trobat usuaris per aquest distribuidor."
-
-msgid "No valid alias domain selected."
-msgstr "No s'ha seleccionat un àlias de domini vàlid."
 
 msgid "No."
 msgstr "No."
@@ -3734,9 +3736,6 @@ msgstr "Introduïu el contingut del missatge."
 msgid "Please specify a message subject."
 msgstr "Introduïu l'assumpte pel missatge."
 
-msgid "Please specify subdomain name."
-msgstr "Siusplau especifica el nom del subdomini."
-
 msgid "Please type database name."
 msgstr "Siusplau introdueix el nom de la Base de Dades."
 
@@ -3912,9 +3911,6 @@ msgstr "Les propietats pel distribuïdor amb ID %d no s'han trobat a la Base de 
 
 msgid "Protect"
 msgstr "Protegir"
-
-msgid "Protect Web folders"
-msgstr ""
 
 msgid "Protect it"
 msgstr "Protegir"
@@ -4421,6 +4417,9 @@ msgstr "Paràmetres"
 msgid "Settings saved."
 msgstr "Ajustos guardats."
 
+msgid "Shared mount point"
+msgstr ""
+
 msgid "Show"
 msgstr "Mostrar"
 
@@ -4590,6 +4589,10 @@ msgstr "Carrer 2"
 msgid "Subdomain"
 msgstr "Subdomini"
 
+#, php-format
+msgid "Subdomain %s already exist"
+msgstr ""
+
 msgid "Subdomain alias"
 msgstr "Àlies del subdomini"
 
@@ -4603,12 +4606,6 @@ msgid ""
 "Subdomain alias you are trying to remove has Ftp accounts. Remove them "
 "first."
 msgstr ""
-
-msgid "Subdomain already exists or is not allowed."
-msgstr "El subdomini ja existeix o no està permès."
-
-msgid "Subdomain data"
-msgstr "Dades subdominis"
 
 msgid "Subdomain errors"
 msgstr ""
@@ -4625,13 +4622,16 @@ msgstr "Mail de subdomini"
 msgid "Subdomain name"
 msgstr "Nom subdomini"
 
-msgid "Subdomain scheduled for update."
-msgstr "S'ha programat l'actualització d'aquest subdomini."
+msgid "Subdomain name is not valid"
+msgstr ""
 
-msgid "Subdomain successfully scheduled for addition."
-msgstr "El subdomini ha estat programat per a ésser afegit."
+msgid "Subdomain successfully scheduled for addition"
+msgstr ""
 
 msgid "Subdomain successfully scheduled for deletion."
+msgstr ""
+
+msgid "Subdomain successfully scheduled for update"
 msgstr ""
 
 msgid ""
@@ -5028,6 +5028,9 @@ msgstr "Tipus"
 msgid "UP"
 msgstr "ACTIU"
 
+msgid "URL forwarding"
+msgstr ""
+
 msgid "URL protocol"
 msgstr "Protocol URL"
 
@@ -5159,9 +5162,6 @@ msgstr "Capa de color desconeguda."
 
 msgid "Unknown reason."
 msgstr ""
-
-msgid "Unknown subdomain type."
-msgstr "Tipus de subdomini desconegut."
 
 msgid "Unknown type."
 msgstr "Tipus desconegut."
@@ -5398,11 +5398,6 @@ msgstr "Alertes i Errors"
 
 msgid ""
 "We are sorry but you have reached the maximum number of domain aliases "
-"allowed by your subscription. Contact to your reseller for more information."
-msgstr ""
-
-msgid ""
-"We are sorry but you have reached the maximum number of domain aliases "
 "allowed by your subscription. Contact your reseller for more information."
 msgstr ""
 
@@ -5415,6 +5410,9 @@ msgid "Web Statistics"
 msgstr ""
 
 msgid "Web files only"
+msgstr ""
+
+msgid "Web folder protection"
 msgstr ""
 
 msgid "Web in"
@@ -5535,9 +5533,6 @@ msgstr ""
 #, php-format
 msgid "Wrong label syntax: <b>%s</b>"
 msgstr "Sintaxi d'etiqueta incorrecta: <b>%s</b>"
-
-msgid "Wrong redirect URL."
-msgstr "L'adreça URL de redirecció és incorrecte."
 
 msgid "Wrong request."
 msgstr "Petició incorrecta."
@@ -5788,16 +5783,17 @@ msgstr "No tens grups."
 msgid "You have no open tickets."
 msgstr ""
 
+msgid ""
+"You have reached the maximum number of subdomains allowed by your "
+"subscription."
+msgstr ""
+
 msgid "You have reached your domain limit.<br />You cannot add more domains."
 msgstr ""
 
 #, php-format
-msgid "You have received %d new support request."
+msgid "You have received %s new support ticket(s)."
 msgstr ""
-
-#, php-format
-msgid "You have received %s new support questions."
-msgstr "Has rebut %s noves peticions de suport."
 
 msgid "You have to choose between file-upload and wget-function."
 msgstr "Has d'escollir un arxiu per pujar o una direcció per descarregar"
@@ -5813,6 +5809,9 @@ msgstr ""
 
 msgid "You must enter a least one forward address."
 msgstr "Heu d'introduïr almenys una adreça receptora de la redirecció."
+
+msgid "You must enter a subdomain name"
+msgstr ""
 
 msgid "You must first generate a password"
 msgstr "En primer lloc, ha de generar una contrasenya"

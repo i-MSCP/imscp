@@ -15,8 +15,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2013-08-11 18:57+0200\n"
-"PO-Revision-Date: 2013-08-11 16:57+0000\n"
+"POT-Creation-Date: 2013-08-24 11:32+0200\n"
+"PO-Revision-Date: 2013-08-24 09:32+0000\n"
 "Last-Translator: Torsten Widmann <info@goover.de>\n"
 "Language-Team: Spanish (Spain) (http://www.transifex.com/projects/p/i-MSCP/language/es_ES/)\n"
 "MIME-Version: 1.0\n"
@@ -577,7 +577,7 @@ msgid "Add"
 msgstr "Añadir"
 
 msgid "Add FTP account"
-msgstr ""
+msgstr "Agregar cuenta FTP"
 
 msgid "Add FTP user"
 msgstr "Añadir usuario FTP"
@@ -694,7 +694,7 @@ msgid "Admin / General / Admin Log"
 msgstr ""
 
 msgid "Admin / General / Overview"
-msgstr ""
+msgstr "Admin / General / Vista general"
 
 msgid "Admin / General / Services Status"
 msgstr ""
@@ -712,7 +712,7 @@ msgid "Admin / Profile / Account Summary"
 msgstr ""
 
 msgid "Admin / Profile / Language"
-msgstr ""
+msgstr "i-MSCP - Admin / Perfil /  Idioma"
 
 msgid "Admin / Profile / Layout"
 msgstr ""
@@ -724,7 +724,7 @@ msgid "Admin / Profile / Personal Data"
 msgstr ""
 
 msgid "Admin / Settings"
-msgstr ""
+msgstr "Admin / Configuraciónes"
 
 msgid "Admin / Settings / IP Management"
 msgstr ""
@@ -960,6 +960,19 @@ msgstr "Todo el tráfico"
 
 msgid "Allowed"
 msgstr "Permitido"
+
+msgid ""
+"Allows to forward any request made to this subdomain to a specific URL."
+msgstr ""
+
+msgid ""
+"Allows to forward any request made to this subdomain to a specific URL. Be "
+"aware that when this option is in use, no Web folder is created for the "
+"subdomain."
+msgstr ""
+
+msgid "Allows to share the mount point of another domain."
+msgstr ""
 
 msgid "Already in use"
 msgstr "Ya en uso"
@@ -1350,7 +1363,7 @@ msgid "Client / Domain / Edit Custom DNS record"
 msgstr ""
 
 msgid "Client / Domains"
-msgstr ""
+msgstr "Cliente / Dominios"
 
 msgid "Client / Domains / Add Alias"
 msgstr ""
@@ -1361,14 +1374,14 @@ msgstr ""
 msgid "Client / Domains / Add Subdomain"
 msgstr ""
 
+msgid "Client / Domains / Edit Subdomain"
+msgstr ""
+
 msgid "Client / Domains / Overview / Edit Domain Alias"
 msgstr ""
 
-msgid "Client / Domains / Overview / Edit Subdomain"
-msgstr ""
-
 msgid "Client / Domains / PHP Settings"
-msgstr ""
+msgstr "Cliente / Dominios / Configuración PHP"
 
 msgid "Client / Domains / SSL Certificates"
 msgstr ""
@@ -1426,25 +1439,25 @@ msgid "Client / Profile / Account Summary"
 msgstr ""
 
 msgid "Client / Profile / Language"
-msgstr ""
+msgstr "Cliente / Perfil / Idioma"
 
 msgid "Client / Profile / Layout"
 msgstr ""
 
 msgid "Client / Profile / Password"
-msgstr ""
+msgstr "Cliente / Perfil / Contraseña"
 
 msgid "Client / Profile / Personal Data"
 msgstr ""
 
 msgid "Client / Statistics"
-msgstr ""
+msgstr "Cliente / Estadísticas"
 
 msgid "Client / Support / Closed Tickets"
 msgstr ""
 
 msgid "Client / Support / New Ticket"
-msgstr ""
+msgstr "Cliente / Soporte / Ticket nuevo"
 
 msgid "Client / Support / Open Tickets"
 msgstr ""
@@ -2444,6 +2457,10 @@ msgstr "Forzar reintento"
 msgid "Forward URL"
 msgstr "Redireccionar URL"
 
+#, php-format
+msgid "Forward URL %s is not valid"
+msgstr ""
+
 msgid "Forward account"
 msgstr "Cuenta de reenvio"
 
@@ -2576,9 +2593,6 @@ msgstr "El plan de Hosting se ha eliminado correctamente."
 
 msgid "Hosting plan limits exceed reseller limits."
 msgstr "Los límites del plan de hosting exceden los límites del revendedor."
-
-msgid "Hosting plan properties"
-msgstr "Propiedades del plan de hosting"
 
 msgid "Hosting plan successfully added."
 msgstr "Plan de Hosting añadido correctamente."
@@ -2736,9 +2750,6 @@ msgstr "Límite de tráfico mensual incorrecto."
 
 msgid "Incorrect mount point syntax."
 msgstr "Sintaxis de punto de montaje incorrecta."
-
-msgid "Incorrect or is not allowed."
-msgstr "Incorrecto o no está permitido."
 
 msgid "Incorrect post code length or syntax!"
 msgstr "Longitud de publicación de código incorrecta o de sintaxis!"
@@ -3064,9 +3075,6 @@ msgstr "Administrar alias de dominio"
 msgid "Manage htaccess users and groups"
 msgstr "Administrar usuarios y grupos htaccess"
 
-msgid "Manage subdomain"
-msgstr "Administrar subdominio"
-
 msgid "Manage users"
 msgstr "Administrar usuarios"
 
@@ -3262,9 +3270,6 @@ msgstr "No se han encontrado cuentas de administrador."
 msgid "No certificate found."
 msgstr "No se encontró certificado."
 
-msgid "No corresponding subdomain found."
-msgstr "Se ha encontrado un subdominio que no corresponde."
-
 msgid "No custom menu found."
 msgstr "No se encontró menú personalizado."
 
@@ -3351,9 +3356,6 @@ msgstr "No se encontró usuario."
 
 msgid "No users found for this reseller."
 msgstr "No se encontraron usuarios de este revendedor."
-
-msgid "No valid alias domain selected."
-msgstr "El alias de dominio seleccionado no es válido."
 
 msgid "No."
 msgstr "No."
@@ -3731,9 +3733,6 @@ msgstr "Por favor, especifica el contenido del mensaje."
 msgid "Please specify a message subject."
 msgstr "Por favor, especifica el asunto del mensaje."
 
-msgid "Please specify subdomain name."
-msgstr "Por favor, especifica el nombre del subdominio"
-
 msgid "Please type database name."
 msgstr "Por favor, teclee el nombre de la Base de Datos."
 
@@ -3909,9 +3908,6 @@ msgstr "No se encontraron las propiedades para el revendedor con ID %d en la Bas
 
 msgid "Protect"
 msgstr "Proteger"
-
-msgid "Protect Web folders"
-msgstr "Proteger carpetas Web"
 
 msgid "Protect it"
 msgstr "Proteger"
@@ -4418,6 +4414,9 @@ msgstr "Configuraciones"
 msgid "Settings saved."
 msgstr "Configuración guardada"
 
+msgid "Shared mount point"
+msgstr ""
+
 msgid "Show"
 msgstr "Mostrar"
 
@@ -4587,6 +4586,10 @@ msgstr "Domicilio 2"
 msgid "Subdomain"
 msgstr "Subdominio"
 
+#, php-format
+msgid "Subdomain %s already exist"
+msgstr ""
+
 msgid "Subdomain alias"
 msgstr "Alias del Subdominio"
 
@@ -4600,12 +4603,6 @@ msgid ""
 "Subdomain alias you are trying to remove has Ftp accounts. Remove them "
 "first."
 msgstr "El alias de Subdominio que está intentando eliminar tiene cuentas de FTP. Elimínelas primero."
-
-msgid "Subdomain already exists or is not allowed."
-msgstr "El subdominio ya existe o no está permitido."
-
-msgid "Subdomain data"
-msgstr "Datos del subdominio"
 
 msgid "Subdomain errors"
 msgstr ""
@@ -4622,14 +4619,17 @@ msgstr "Correo del subdominio"
 msgid "Subdomain name"
 msgstr "Nombre del subdominio"
 
-msgid "Subdomain scheduled for update."
-msgstr "Subdominio programado para su actualización."
+msgid "Subdomain name is not valid"
+msgstr ""
 
-msgid "Subdomain successfully scheduled for addition."
-msgstr "El subdominio ha sido programado para ser añadido."
+msgid "Subdomain successfully scheduled for addition"
+msgstr ""
 
 msgid "Subdomain successfully scheduled for deletion."
 msgstr "Subdominio programado correctamente para su eliminación."
+
+msgid "Subdomain successfully scheduled for update"
+msgstr ""
 
 msgid ""
 "Subdomain you are trying to remove has Ftp accounts. Remove them first."
@@ -5025,6 +5025,9 @@ msgstr "Tipo"
 msgid "UP"
 msgstr "ARRIBA"
 
+msgid "URL forwarding"
+msgstr ""
+
 msgid "URL protocol"
 msgstr "Protocolo de URL"
 
@@ -5156,9 +5159,6 @@ msgstr "Color de diseño desconocido."
 
 msgid "Unknown reason."
 msgstr "Razón desconocida"
-
-msgid "Unknown subdomain type."
-msgstr "Tipo de subdominio desconocido."
 
 msgid "Unknown type."
 msgstr "Tipo desconocido."
@@ -5395,11 +5395,6 @@ msgstr "Advertencias y Errores"
 
 msgid ""
 "We are sorry but you have reached the maximum number of domain aliases "
-"allowed by your subscription. Contact to your reseller for more information."
-msgstr "Lo sentimos, pero has alcanzado el número máximo de alias de dominio permitidos por tu suscripción. Contacte a su revendedor para más información."
-
-msgid ""
-"We are sorry but you have reached the maximum number of domain aliases "
 "allowed by your subscription. Contact your reseller for more information."
 msgstr "Lo sentimos, pero hemos alcanzado el número máximo de alias de dominio permitidos de su suscripción. Contacte a su revendedor para más información."
 
@@ -5413,6 +5408,9 @@ msgstr "Estadísticas web"
 
 msgid "Web files only"
 msgstr "Unicamente archivos Web"
+
+msgid "Web folder protection"
+msgstr ""
 
 msgid "Web in"
 msgstr "Web entrante"
@@ -5532,9 +5530,6 @@ msgstr ""
 #, php-format
 msgid "Wrong label syntax: <b>%s</b>"
 msgstr "Sintaxis de etiqueta incorrecta: <b>%s</b>"
-
-msgid "Wrong redirect URL."
-msgstr "Redirección URL incorrecta."
 
 msgid "Wrong request."
 msgstr "Peticion errónea."
@@ -5785,16 +5780,17 @@ msgstr "No tienes grupos."
 msgid "You have no open tickets."
 msgstr "No tienes tickets abiertos."
 
+msgid ""
+"You have reached the maximum number of subdomains allowed by your "
+"subscription."
+msgstr ""
+
 msgid "You have reached your domain limit.<br />You cannot add more domains."
 msgstr ""
 
 #, php-format
-msgid "You have received %d new support request."
-msgstr "Has recibido %d nueva solicitud de soporte."
-
-#, php-format
-msgid "You have received %s new support questions."
-msgstr "Has recibido %s nuevas peticiones de soporte."
+msgid "You have received %s new support ticket(s)."
+msgstr ""
 
 msgid "You have to choose between file-upload and wget-function."
 msgstr "Debes escoger entre file-upload y wget-function."
@@ -5810,6 +5806,9 @@ msgstr "Debe confirmar la eliminación de la cuenta del cliente."
 
 msgid "You must enter a least one forward address."
 msgstr "Debes entrar almenos una dirección de reenvio."
+
+msgid "You must enter a subdomain name"
+msgstr ""
 
 msgid "You must first generate a password"
 msgstr "Primero debes generar una contraseña."
