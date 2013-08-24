@@ -145,7 +145,7 @@ function client_generatePage($tpl)
 		);
 
 		if ($domain['type'] == 'dmn' || $domain['type'] == 'als') {
-			$tpl->parse('DOMAIN_OPTION', '.domain_option');
+			$tpl->parse('PARENT_DOMAIN', '.parent_domain');
 			$tpl->parse('SHARED_MOUNT_POINT_DOMAIN', '.shared_mount_point_domain');
 		} else {
 			$tpl->parse('SHARED_MOUNT_POINT_DOMAIN', '.shared_mount_point_domain');
@@ -347,7 +347,7 @@ if ($mainDmnProps['domain_subd_limit'] != 0 && $subdomainsCount >= $mainDmnProps
 			'layout' => 'shared/layouts/ui.tpl',
 			'page' => 'client/subdomain_add.tpl',
 			'page_message' => 'layout',
-			'domain_option' => 'page',
+			'parent_domain' => 'page',
 			'shared_mount_point_domain' => 'page'
 		)
 	);

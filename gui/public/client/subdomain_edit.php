@@ -256,8 +256,7 @@ if (!empty($_POST) && client_editSubdomain()) {
 		array(
 			'layout' => 'shared/layouts/ui.tpl',
 			'page' => 'client/subdomain_edit.tpl',
-			'page_message' => 'layout',
-			'domain_option' => 'page',
+			'page_message' => 'layout'
 		)
 	);
 
