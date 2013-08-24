@@ -90,6 +90,6 @@
 	</table>
 	<div class="buttons">
 		<input name="Submit" type="submit" value="{TR_ADD}"/>
-		<button><a href="domains_manage.php">{TR_CANCEL}</a></button>
+		<a href="domains_manage.php"><button type="button">{TR_CANCEL}</button></a>
 	</div>
 </form>

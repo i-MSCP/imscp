@@ -56,7 +56,6 @@ function _client_getSubdomainData($subdomainId, $subdomainType)
 					`subdomain_id` = ?
 				AND
 					`domain_id` = ?
-
 				';
 		} else {
 			$query = '
@@ -71,7 +70,6 @@ function _client_getSubdomainData($subdomainId, $subdomainType)
 					`subdomain_alias_id` = ?
 				AND
 					`t2`.`domain_id` = ?
-
 			';
 		}
 		$stmt = exec_query($query, array($subdomainId, $domainId));
