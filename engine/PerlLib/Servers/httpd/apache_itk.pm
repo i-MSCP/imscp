@@ -927,7 +927,7 @@ sub addHtaccess($$)
 	# Note: It's temporary fix for 1.1.0-rc2 (See #749)
 	if(-d $data->{'AUTH_PATH'}) {
 		my $fileUser = "$data->{'HOME_PATH'}/$self->{'config'}->{'HTACCESS_USERS_FILE_NAME'}";
-		my $fileGroup = "$data->'{HOME_PATH'}/$self->{'config'}->{'HTACCESS_GROUPS_FILE_NAME'}";
+		my $fileGroup = "$data->{'HOME_PATH'}/$self->{'config'}->{'HTACCESS_GROUPS_FILE_NAME'}";
 		my $filePath = "$data->{'AUTH_PATH'}/.htaccess";
 
 		my $file = iMSCP::File->new('filename' => $filePath);
@@ -988,7 +988,7 @@ sub deleteHtaccess($$)
 	# Note: It's temporary fix for 1.1.0-rc2 (See #749)
 	if(-d $data->{'AUTH_PATH'}) {
 		my $fileUser = "$data->{'HOME_PATH'}/$self->{'config'}->{'HTACCESS_USERS_FILE_NAME'}";
-		my $fileGroup = "$data->'{HOME_PATH'}/$self->{'config'}->{'HTACCESS_GROUPS_FILE_NAME'}";
+		my $fileGroup = "$data->{'HOME_PATH'}/$self->{'config'}->{'HTACCESS_GROUPS_FILE_NAME'}";
 		my $filePath = "$data->{'AUTH_PATH'}/.htaccess";
 
 		my $file = iMSCP::File->new('filename' => $filePath);
