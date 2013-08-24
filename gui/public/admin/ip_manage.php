@@ -96,8 +96,8 @@ function _client_generateIpsList($tpl)
 			$tpl->assign(
 				array(
 					 'IP' => $stmt->fields['ip_number'],
-					 'DOMAIN' => tohtml(idn_to_utf8($stmt->fields['ip_domain'])),
-					 'ALIAS' => tohtml(idn_to_utf8($stmt->fields['ip_alias'])),
+					 'DOMAIN' => tohtml(decode_idna($stmt->fields['ip_domain'])),
+					 'ALIAS' => tohtml(decode_idna($stmt->fields['ip_alias'])),
 					 'NETWORK_CARD' => ($stmt->fields['ip_card'] === NULL) ? '' : tohtml($stmt->fields['ip_card'])
 				)
 			);
@@ -203,7 +203,7 @@ function client_checkIpData($ipNumber, $domain, $alias, $netcard)
 		FROM
 			`server_ips`
 	";
-	$stmt = exec_query($query, array($ipNumber, idn_to_ascii($domain), idn_to_ascii($alias)));
+	$stmt = exec_query($query, array($ipNumber, encode_idna($domain), encode_idna($alias)));
 
 	if (filter_var($ipNumber, FILTER_VALIDATE_IP) === false) {
 		set_page_message(tr('Wrong IP address.'), 'error');
@@ -223,7 +223,7 @@ function client_checkIpData($ipNumber, $domain, $alias, $netcard)
 
 	if(
 		!iMSCP_Validate::getInstance()->hostname(
-			idn_to_ascii($alias), array('allow' => Zend_Validate_Hostname::ALLOW_LOCAL)
+			encode_idna($alias), array('allow' => Zend_Validate_Hostname::ALLOW_LOCAL)
 		) ||
 		strpos($alias, '.') !== false) {
 		set_page_message('Wrong alias syntax.', 'error');
@@ -271,7 +271,7 @@ function client_registerIp($ipNumber, $domain, $alias, $netcard)
 	";
 	exec_query(
 		$query,
-		array($ipNumber, idn_to_ascii($domain), idn_to_ascii($alias), $netcard, null, $cfg->ITEM_TOADD_STATUS)
+		array($ipNumber, encode_idna($domain), encode_idna($alias), $netcard, null, $cfg->ITEM_TOADD_STATUS)
 	);
 
 	send_request();

@@ -17,14 +17,13 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
- * @category	iMSCP
- * @package		iMSCP_Core
- * @subpackage	Uri
- * @copyright	2010-2013 by by i-MSCP team
- * @author		Laurent Declercq <l.declercq@i-mscp.net>
- * @version		0.0.1
- * @link		http://www.i-mscp.net i-MSCP Home Site
- * @license		http://www.gnu.org/licenses/gpl-2.0.html GPL v2
+ * @category    iMSCP
+ * @package     iMSCP_Core
+ * @subpackage  Uri
+ * @copyright   2010-2013 by by i-MSCP team
+ * @author      Laurent Declercq <l.declercq@i-mscp.net>
+ * @link        http://www.i-mscp.net i-MSCP Home Site
+ * @license	    http://www.gnu.org/licenses/gpl-2.0.html GPL v2
  */
 
 /** @see Zend_Uri_Http */
@@ -33,28 +32,25 @@ require_once 'Zend/Uri/Http.php';
 /**
  * Redirect URI handler (Like supported in i-MSCP engine)
  *
- * @category	iMSCP
- * @package		iMSCP_Core
- * @subpackage	Uri
- * @author		Laurent Declercq <l.declercq@i-mscp.net>
- * @version		0.0.1
+ * @category    iMSCP
+ * @package	    iMSCP_Core
+ * @subpackage  Uri
+ * @author      Laurent Declercq <l.declercq@i-mscp.net>
  */
 class iMSCP_Uri_Redirect extends Zend_Uri_Http
 {
 	/**
-	 * Creates a Zend_Uri_Http from the given string
+	 * Creates a iMSCP_Uri_Redirect from the given string
 	 *
-	 * @param  string $uri String to create URI from, must start with
-	 *					   'http://' or 'https://' or 'ftp://'
-	 * @throws InvalidArgumentException  When the given $uri is not a string or
-	 *								   does not start with http:// or https://
-	 * @throws iMSCP_Uri_Exception	   When the given $uri is invalid
+	 * @param  string $uri String to create URI from, must start with prefix http://, https:// or 'ftp://
+	 * @throws iMSCP_Uri_Exception When the given URI is not a string or is not valid
+	 * @throws Zend_Uri_Exception
 	 * @return iMSCP_Uri_Redirect
 	 */
 	public static function fromString($uri)
 	{
 		if (is_string($uri) === false) {
-			require_once 'Zend/Uri/Exception.php';
+			require_once 'iMSCP/Uri/Exception.php';
 			throw new Zend_Uri_Exception('$uri is not a string');
 		}
 
@@ -72,8 +68,8 @@ class iMSCP_Uri_Redirect extends Zend_Uri_Http
 	}
 
 	/**
-	 * Returns true if and only if the host string passes validation. If no host is passed,
-	 * then the host contained in the instance variable is used.
+	 * Returns true if and only if the host string passes validation. If no host is passed, then the host contained in
+	 * the instance variable is used.
 	 *
 	 * @param  string $host The HTTP host
 	 * @return boolean
@@ -95,7 +91,8 @@ class iMSCP_Uri_Redirect extends Zend_Uri_Http
 
 		// Check the host against the allowed values; delegated to Zend_Filter.
 		$validate = new Zend_Validate_Hostname(
-			Zend_Validate_Hostname::ALLOW_DNS, true, (bool) $cfg->TLD_STRICT_VALIDATION);
+			Zend_Validate_Hostname::ALLOW_DNS, true, (bool) $cfg->TLD_STRICT_VALIDATION
+		);
 
 		return $validate->isValid($host);
 	}

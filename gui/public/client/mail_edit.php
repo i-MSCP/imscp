@@ -43,23 +43,20 @@
  * Normalize forward email addresses list.
  *
  * @access private
- * @param string|array $forwardAddresses string that contains forward email addresses,
- * 										each separated by a line break, space or comma
- * 										or an indexed array where each value is an
- * 										forward email address
- *
- * @param string $convertTo Tell in which format the forward email addresses must be
- * 							converted (idn_to_utf8|idn_to_ascii)
+ * @throws iMSCP_Exception
+ * @param string|array $forwardAddresses String containings email forward addresses, each separated by a line break,
+ *                                       space or comma or an indexed array where each value is an email forward address
+ * @param string $convertTo Tell in which format the forward email addresses must be  converted (decode_idna|encode_idna)
  * @return array Forward email addresses
  */
-function _client_normalizeForwardAddresses($forwardAddresses, $convertTo = 'idn_to_utf8')
+function _client_normalizeForwardAddresses($forwardAddresses, $convertTo = 'decode_idna')
 {
 	if(!is_array($forwardAddresses)) {
 		$forwardAddresses  = array_unique(
 			preg_split('/[\n\s,]+/', trim($forwardAddresses), 0, PREG_SPLIT_NO_EMPTY));
 	}
 
-	if($convertTo != 'idn_to_utf8' && $convertTo != 'idn_to_ascii') {
+	if($convertTo != 'decode_idna' && $convertTo != 'encode_idna') {
 		throw new iMSCP_Exception('Wrong value for $convertTo argument.');
 	}
 
@@ -114,10 +111,10 @@ function client_getMailAccountData($mailAccountId)
 			// Forward addresses data
 			if (isset($_POST['forwardAccount']) || isset($_POST['forwardList'])) {
 				$mailAccountData['mail_forward_previous'] = _client_normalizeForwardAddresses(
-					$mailAccountData['mail_forward'], 'idn_to_ascii');
+					$mailAccountData['mail_forward'], 'encode_idna');
 
 					$mailAccountData['mail_forward'] = _client_normalizeForwardAddresses(
-						clean_input($_POST['forwardList']), 'idn_to_ascii');
+						clean_input($_POST['forwardList']), 'encode_idna');
 			} else {
 				$mailAccountData['mail_forward'] = '_no_';
 			}
@@ -165,7 +162,7 @@ function client_UpdateMailAccount($mailAccountData)
 		if(!empty($mailAccountData['mail_forward'])) {
 			foreach ($mailAccountData['mail_forward'] as $forwardAddress) {
 				if (!chk_email($forwardAddress)) {
-					set_page_message(tr('Wrong syntax for the %s forward email address.', '<strong>' . idn_to_utf8($forwardAddress) . '</strong>'), 'error');
+					set_page_message(tr('Wrong syntax for the %s forward email address.', '<strong>' . decode_idna($forwardAddress) . '</strong>'), 'error');
 				} elseif ($forwardAddress == $mailAccountData['mail_addr']) {
 					set_page_message(tr('You cannot forward %s on himself.', '<strong>' . $mailAccountData['mail_addr'] . '</strong>'), 'error');
 				}
@@ -268,7 +265,7 @@ function client_generateEditForm($tpl, $mailAccountData)
 			 'TR_MAIL_ACCOUNT' => tr('Email account'),
 			 'FORWARD_ACCOUNT_CHECKED' => ($mailAccountData['mail_forward'] != '_no_') ? $htmlChecked : '',
 			 'FORWARD_LIST_VAL' => ($mailAccountData['mail_forward'] != '_no_' && $mailAccountData['mail_forward'] != '')
-				 ? tohtml(implode("\n", _client_normalizeForwardAddresses($mailAccountData['mail_forward'], 'idn_to_utf8'))) : ''));
+				 ? tohtml(implode("\n", _client_normalizeForwardAddresses($mailAccountData['mail_forward'], 'decode_idna'))) : ''));
 }
 
 /************************************************************************************

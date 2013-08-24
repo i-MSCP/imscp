@@ -87,7 +87,7 @@ function client_generatePage($tpl, $domainId, $month, $year)
 		set_page_message(tr('Domain not found.'), 'error');
 		redirectTo('index.php');
 	} else {
-		$tpl->assign('DOMAIN_NAME', idn_to_utf8($stmt->fields['domain_name']));
+		$tpl->assign('DOMAIN_NAME', decode_idna($stmt->fields['domain_name']));
 	}
 
 	// Let see if we have any statistics available for the given periode

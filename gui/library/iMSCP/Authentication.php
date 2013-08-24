@@ -133,7 +133,7 @@ class iMSCP_Authentication
 		$result = $event->getParam('authResult', false);
 		if ($result && $result->isValid) return $result;
 
-		$username = idn_to_ascii(clean_input($event->getParam('username')));
+		$username = encode_idna(clean_input($event->getParam('username')));
 		$password = clean_input($event->getParam('password'));
 
 		if (empty($username) || empty($password)) {

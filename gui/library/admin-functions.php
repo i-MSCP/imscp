@@ -213,7 +213,7 @@ function gen_admin_domain_query(
         ";
 	} elseif ($search_for != '') {
 		if ($search_common == 'domain_name') {
-			$search_for = idn_to_ascii($search_for);
+			$search_for = encode_idna($search_for);
 			$add_query = " WHERE `admin_name` RLIKE '$search_for' %s";
 		} elseif ($search_common == 'customer_id') {
 			$add_query = " WHERE `customer_id` RLIKE '$search_for' %s";

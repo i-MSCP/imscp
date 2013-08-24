@@ -105,7 +105,7 @@ function ftp_getDomainList($mainDmnName, $mainDmnId, $dmnType = 'dmn')
 			while (!$stmt->EOF) {
 				$dmnList[] = array(
 					'domain_name_val' => $stmt->fields['name'],
-					'domain_name' => idn_to_utf8($stmt->fields['name'])
+					'domain_name' => decode_idna($stmt->fields['name'])
 				);
 
 				$stmt->moveNext();
@@ -201,7 +201,7 @@ function ftp_generatePageData($mainDmn, $mainDmnId, $tpl)
 		$tpl->assign(
 			array(
 				'DOMAIN_NAME_VAL' => tohtml($dmn['domain_name']),
-				'DOMAIN_NAME' => tohtml(idn_to_utf8($dmn['domain_name'])),
+				'DOMAIN_NAME' => tohtml(decode_idna($dmn['domain_name'])),
 				'DOMAIN_NAME_SELECTED' => (isset($_POST['domain_name']) && $_POST['domain_name'] == $dmn['domain_name'])
 					? $cfg->HTML_SELECTED : ''
 			)

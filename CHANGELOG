@@ -5,35 +5,38 @@ Git Master
 ------------------------------------------------------------------------------------------------------------------------
 
 CONFIG:
-	- Added packages file for Debian Jessie (testing)
-	- Replaced package php5-mysql by php5-mysqlnd (native driver)
-	- Removed php5-adodb package from distribution packages files
-	- Updated Apache templates to support 2.4.x branch
+	- Added: Packages file for Debian Jessie (testing)
+	- Changed: php5-mysql package to php5-mysqlnd (native driver) when available
+	- Removed: php5-adodb package
+	- Updated: Apache templates to support 2.4.x branch
 
 SETUP:
-	- i-MSCP apache_php_fpm server impl. is now the default choice for distributions supporting it officialy
+	- Changed: i-MSCP apache_php_fpm server impl. is now the default choice for distributions supporting it officialy
 	- Fixed: Disable dummy php5_cgi Apache module if any
 	- Fixed: Do not ask for SQL user host names when the SQL server is hosted locally
 	- Fixed: Plugins which provide a backend end with unknown error after update
 	- Fixed: Pre-fill Debconf database (Avoid postfix, proftpd and courier questions during installation)
 
 ENGINE:
-	- Added support for Apache 2.4.x branch
-	- Added database connection timeout (3 seconds)
-	- Added MySQL transaction routines
+	- Added: Support for Apache 2.4.x branch
+	- Added: Database connection timeout (3 seconds)
+	- Added: MySQL transaction routines
 	- Fixed: MySQL server has gone away
 	- Fixed: Plugin module is broken: Unable to disable, uninstall... any plugin
 	- Fixed: Plugin update must be triggered when plugin configuration is updated
-	- Fixed: Set MySQL client connection charset to utf8 (Engine)
+	- Fixed: Set MySQL client connection charset to utf8
 
 GUI:
-	- Added onBeforeDomainChangeStatus and onAfterDomainChangeStatus events
+	- Added: onBeforeDomainChangeStatus and onAfterDomainChangeStatus events
+	- Added: Option allowing a subdomain to share the mount point of another domain
+	- Changed: Customers can no longer set an arbitrary mount point for their subdomains
 	- Fixed: Allow to share domain_dns table between several components (core, plugins..)
 	- Fixed: Plugins must be able to short-circuit execution of an event
 	- Fixed: Plugin update must be triggered when plugin configuration is updated
 	- Fixed: Unable to delete plugin in some contexts
 	- Fixed: Wrong placeholders in admin/imscp_debugger.php
-	- Updated plugin API
+	- Readded: idna_convert class (more flexible because can operate on arbitrary strings)
+	- Updated: Plugin API
 
 Tickets:
 	- Fixed #579: Review - i18n issues
@@ -62,24 +65,24 @@ CONFIGS:
 	- Removed Amavis, ClamAV and SpamAssassin configuration (Such service must be provided as plugin)
 
 ENGINE:
-	- Added config_readonly option in bootstrap
-	- Added cron job for deactivation of entities belonging to an expired account
+	- Added: Config_readonly option in bootstrap
+	- Added: Cron job for deactivation of entities belonging to an expired account
 	- Fixed: Allow to get raw db connection
 	- Fixed: Access to i-MSCP server/addon parameters must be standardized
 	- Fixed: unable to remove htgroup
 	- Fixed: TERM environment variable not set (IMSCP::Debug library)
-	- Removed 'dnschange' status
-	- Updated 'change' status to 'tochange' and 'delete' status to 'todelete'
+	- Removed: 'dnschange' status
+	- Updated: 'change' status to 'tochange' and 'delete' status to 'todelete'
 
 GUI:
-	- Added plugin archive upload feature (tar.gz, tar.bz2 and zip)
-	- Updated plugin API (Several BC breaks expected)
-	- Removed 'dnschange' status
-	- Updated status: 'change' to 'tochange' and 'delete' to 'todelete'
-	- Added protected Web folders option to hosting plans
+	- Added: Plugin archive upload feature (tar.gz, tar.bz2 and zip)
+	- Added: Protected Web folders option to hosting plans
+	- Removed: 'dnschange' status
+	- Updated: Plugin API (Several BC breaks expected)
+	- Updated: status 'change' to 'tochange' and status 'delete' to 'todelete'
 
 SETUP:
-	- Items with status other than 'ok' and similar are not longer rebuilded on update
+	- Changed: Items with status other than 'ok' and similar are not longer rebuilded on update
 
 TOOLS:
 	- Fixed: Awstats - Forbidden access (Ubuntu Lucid)
@@ -134,8 +137,8 @@ GUI:
 	- Fixed: Custom DNS feature not working due to missing files
 
 VENDOR:
-	- Updated jQuery to v1.10.1
-	- Updated jQuery UI to v1.10.3
+	- Updated: jQuery to v1.10.1
+	- Updated: jQuery UI to v1.10.3
 
 Tickets:
 	Fixed #640: Bug - AliasSubdomain won't work when Alias is a redirect
@@ -150,19 +153,19 @@ i-MSCP 1.1.0-rc2.1
 	- RELEASE i-MSCP 1.1.0-rc2.1
 
 CONFIGS:
-	- Added MariaDb support
-	- Added named.conf.local and named.conf.options files
-	- Added skel directory for Web folder skeletons (Httpd server impls.)
+	- Added: MariaDb support
+	- Added: named.conf.local and named.conf.options files
+	- Added: Skel directory for Web folder skeletons (Httpd server impls.)
 	- Fixed: Useless section must be removed in generated Apache configuration files
 	- Fixed: diff package isn't available for Ubuntu > 12.04 (replaced by diffutils)
-	- Removed packages file for Ubuntu Oneiric Ocelot (EOL 20130509)
-	- Updated php.ini files
+	- Removed: packages file for Ubuntu Oneiric Ocelot (EOL 20130509)
+	- Updated: php.ini files
 
 ENGINE:
-	- Added hooks for user module
-	- Added hooks.d directory for storage of engine hook files
-	- Added support for Apache + PHP FPM
-	- Added option allowing to disable/enable IPv6 support (Bind9)
+	- Added: Hooks for user module
+	- Added: Hooks.d directory for storage of engine hook files
+	- Added: Support for Apache + PHP FPM
+	- Added: option allowing to disable/enable IPv6 support (Bind9)
 	- Fixed: Admin must be able to add custom data in named configuration files (Bind9)
 	- Fixed: DNS server must answer to queries only for zones for which it's authoritative (excepted for localhost)
 	- Fixed: DNS server must be protected against common attacks
@@ -175,9 +178,8 @@ ENGINE:
 	- Fixed: SPF record syntax
 
 GUI:
-	- Added option allowing to disconnect an user without removing its session
-	- Added option allowing to protect/unprotect Web folders
-	- Enhancement: Improved layout for admin/settings.php page
+	- Added: Option allowing to disconnect an user without removing its session
+	- Added: Option allowing to protect/unprotect Web folders
 	- Fixed: Allow idn for domain part of Ftp account username
 	- Fixed: Allow to trigger more than one privilege callback functions for navigation
 	- Fixed: External mail server option not implemented in admin/domain_edit.page
@@ -186,12 +188,13 @@ GUI:
 	- Fixed: Sessions not killed (admin/session_manage.php)
 	- Fixed: Unable to display the domain_edit.php/reseller_edit.php pages in some context (SQL queries too big)
 	- Removed both order panel and billing interfaces
-	- Rewritten Ftp account add page
+	- Rewritten: Ftp account add page
+	- Updated: admin/settings.php layout
 	- Updated iMSCP jQuery tooltip plugin according jQuery library changes
 
 SETUP:
-	- Added support for external repositories (Debian/Ubuntu)
-	- Added hooks.d directory for storage of installer hook files
+	- Added: Support for external repositories (Debian/Ubuntu)
+	- Added: hooks.d directory for storage of installer hook files
 	- Fixed: add-apt-repository - unknown -y option (Ubuntu Lucid Lynx)
 	- Fixed: APT packages manager must be configured before any package installation
 	- Fixed: All MySQL secure installation tasks are now done by the i-MSCP installer
@@ -203,10 +206,10 @@ SETUP:
 	- Fixed: Uninstall unneeded packages when switching to another server implementation
 
 VENDOR:
-	- Updated jQuery to v1.9.1
-	- Updated jQuery UI to v1.10.0
-	- Updated Net_DNS to Net_DNS2 (version 1.3.0)
-	- Updated Zend Framework to 1.12.3
+	- Updated: jQuery to v1.9.1
+	- Updated: jQuery UI to v1.10.0
+	- Updated: Net_DNS to Net_DNS2 (version 1.3.0)
+	- Updated: Zend Framework to 1.12.3
 
 Tickets:
 	- Fixed #064: Nice to have - PHP FPM
@@ -275,10 +278,10 @@ i-MSCP 1.1.0-rc1.4
 	- RELEASE i-MSCP 1.1.0-rc1.4
 
 DISTROS:
-	- Added package files for Ubuntu Quantal Quetzal and Ubuntu Raring Ringtail
+	- Added: Package files for Ubuntu Quantal Quetzal and Ubuntu Raring Ringtail
 
 CONFIGS:
-	- Updated fcgid configuration files for high-load sites
+	- Updated: Fcgid configuration files for high-load sites
 
 Tickets:
 	- Fixed #274: (reopened): Defect - Proftpd limits doesn't work
@@ -339,11 +342,11 @@ i-MSCP 1.1.0-rc1
 Features / Enhancements / Bugfixes:
 
 SETUP:
-	- Added backup feature for setup dialog (allow user to step back)
-	- Added base class for autoinstall adapters
-	- Added 'buildonly' and 'skippackages' command line options for autoinstall script
-	- Added composer installer for i-MSCP addons
-	- Added 'reconfigure', 'preseed', hook-file and 'debug' command line options for both autoinstall and setup scripts
+	- Added: Backup feature for setup dialog (allow user to step back)
+	- Added: Base class for autoinstall adapters
+	- Added: 'buildonly' and 'skippackages' command line options for autoinstall script
+	- Added: Composer installer for i-MSCP addons
+	- Added: 'reconfigure', 'preseed', hook-file and 'debug' command line options for both autoinstall and setup scripts
 	- Fixed: Allow IDN for hostname and base server vhost hostname
 	- Fixed: Allow to set ip as MySQL server hostname
 	- Fixed: Do not remove user defined variables in imscp.conf
@@ -352,38 +355,32 @@ SETUP:
 	- Fixed: iMSCP::Dialog::Dialog - Wrong synstax for the 'timeout' option
 	- Fixed: iMSCP::Dialog::Dialog - Allow both single and double quotes in dialog text boxes
 	- Fixed: iMSCP::Dialog::Dialog - Allow to set default choice for both radiolist and checklist dialog boxes
-	- Refactoring + cs fixes + doc
 
 ENGINE:
-	- Added i-MSCP own implementation of lsb_release command
-	- Added 'nocreate' and 'readonly' options for the iMSCP::Config package
-	- Added pbzip2 (parallel bzip2 file compressor) for bzip2 compression algorithm
-	- Added progress bar for Debian packages installation
-	- Added engine hooks manager
-	- Added several hooks in both addons and servers packages (still a lot to add...)
+	- Added: i-MSCP own implementation of lsb_release command
+	- Added: 'nocreate' and 'readonly' options for the iMSCP::Config package
+	- Added: pbzip2 (parallel bzip2 file compressor) for bzip2 compression algorithm
+	- Added: progress bar for Debian packages installation
+	- Added: engine hooks manager
+	- Added: several hooks in both addons and servers packages (still a lot to add...)
 	- Fixed: iMSCP::IP - Ips stack not flushed on reset
 	- Fixed: iMSCP::Boot - Do not create the imscp.conf file if do not exists, raise error instead
-	- Refactoring + cs fixes + doc
 
 GUI:
 	Core:
 		- Rewritten external mail interface
 
 	Tools:
-		- Moved Ajaxplorer to packagist.org (composer package)
-		- Moved PhpMyAdmin to packagist.org (composer package)
-		- Moved Roundcube to packagist.org (composer package)
-		- Updated AjaxPlorer addon to version 4.2.3
-		- Updated PhpMyAdmin addon to version 3.5.5
-		- Updated Roundcube addon to version 0.8.4
+		- Moved: Ajaxplorer to packagist.org (composer package)
+		- Moved: PhpMyAdmin to packagist.org (composer package)
+		- Moved: Roundcube to packagist.org (composer package)
 
 Tickets:
 	- Fixed #350: Defect - Setup - cancel doesn't work for some dialogs
 	- Fixed #437: Enhancement - Roundcube should use its own database
 	- Fixed #438: Enhancement - Add defaults switch to autoinstaller
 	- Fixed #482: Defect - Alias edit forward url not possible. Validation incorrect
-	- Fixed #499: When deleting a domain alias, the custom DNS records (including those related to external mail
-		server(s)) should be deleted
+	- Fixed #499: When deleting a domain alias, the custom DNS records (including those related to external mail server(s)) should be deleted
 	- Fixed #500: Mail quota edit link has wrong id for alias, subdomain and aliassubs mails.
 	- Fixed #501: Slow query and wrong traffic count in "Edit Domain"
 	- Fixed #503: Bug - DNS entries for subdomains are not re-added in db zone file
@@ -416,11 +413,11 @@ Features / Enhancements / Bugfixes:
 
 GUI:
 	Vendor:
-		- Updated Zend Framework to 1.11.12
+		- Updated: Zend Framework to 1.11.12
 
 	Tools:
-		- Updated PhpMyAdmin to version 3.5.3
-		- Updated Roundcube to 0.8.2
+		- Updated: PhpMyAdmin to version 3.5.3
+		- Updated: Roundcube to 0.8.2
 
 Tickets:
 	- Fixed #433: PHP directive editor: register_globals does not exist in php 5.4.0 and above
@@ -447,9 +444,9 @@ Features / Enhancements / Bugfixes:
 
 GUI:
 	Tools:
-		- Updated PhpMyAdmin to version 3.5.2
-		- Updated AjaxPlorer to 4.2.2
-		- Updated Roundcube to 0.7.2
+		- Updated: PhpMyAdmin to version 3.5.2
+		- Updated: AjaxPlorer to 4.2.2
+		- Updated: Roundcube to 0.7.2
 
 Tickets:
 	- Fixed #017: Feature - Send mail if quota reached

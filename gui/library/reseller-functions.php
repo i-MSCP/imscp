@@ -476,7 +476,7 @@ function gen_manage_domain_query(
 		";
 	} elseif ($searchFor != '') {
 		if ($searchCommon == 'domain_name') {
-			$searchFor = idn_to_ascii($searchFor);
+			$searchFor = encode_idna($searchFor);
 			$addQuery = "WHERE `admin_name` RLIKE '" . addslashes($searchFor) . "' %s";
 		} elseif ($searchCommon == 'customer_id') {
 			$addQuery = "WHERE `customer_id` RLIKE '" . addslashes($searchFor) . "' %s";

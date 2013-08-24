@@ -1,51 +1,59 @@
-
-		<script type="text/javascript">
-			/* <![CDATA[ */
-			function setForwardReadonly(obj){
-				if(obj.value == 1) {
-					document.getElementById('editFrm').elements['schemeSpecific'].readOnly = false;
-					document.getElementById('editFrm').elements['scheme'].disabled = false;
+<script language="JavaScript" type="text/JavaScript">
+	/*<![CDATA[*/
+	$(document).ready(function () {
+		$("input[name='url_forwarding']").change(
+			function () {
+				if ($("#url_forwarding_no").is(':checked')) {
+					$("#tr_url_forwarding_data").hide();
 				} else {
-					document.getElementById('editFrm').elements['schemeSpecific'].readOnly = true;
-					document.getElementById('editFrm').elements['schemeSpecific'].value = '';
-					document.getElementById('editFrm').elements['scheme'].disabled = true;
+					$("#tr_url_forwarding_data").show();
 				}
 			}
-			/* ]]> */
-		</script>
+		).trigger('change');
+	});
+	/*]]>*/
+</script>
 
-			<form action="subdomain_edit.php?id={SUBDOMAIN_ID}&type={SUBDOMAIN_TYPE}" method="post" id="editFrm">
-				<table>
-					<tr>
-						<td style="width:200px;">{TR_SUBDOMAIN_NAME}</td>
-						<td>{SUBDOMAIN_NAME}</td>
-					</tr>
-					<tr>
-						<td>{TR_REDIRECT}</td>
-						<td>
-							<input type="radio" name="urlRedirect" id="urlRedirectEnabled"{RADIO_ENABLED} value="1" onchange="setForwardReadonly(this);" />
-							<label for="urlRedirectEnabled">{TR_ENABLE}</label>
-							<input type="radio" name="urlRedirect" id="urlRedirectDisabled"{RADIO_DISABLED} value="0" onchange="setForwardReadonly(this);" />
-							<label for="urlRedirectDisabled">{TR_DISABLE}</label>
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<label for="scheme">{TR_REDIRECT_URL}</label>
-						</td>
-						<td>
-							<select name="scheme" id="scheme" style="vertical-align:middle"{SELECT_DISABLED}>
-								<!-- BDP: scheme_options -->
-								<option value="{SCHEME}"{SELECTED}>{SCHEME}</option>
-								<!-- EDP: scheme_options -->
-							</select>
-							<input name="schemeSpecific" type="text" id="schemeSpecific" value="{SCHEME_SPECIFIC}"{INPUT_READONLY} style="vertical-align:middle;width:300px;" />
-						</td>
-					</tr>
-				</table>
-				<input name="subdomainName" type="hidden" value="{SUBDOMAIN_NAME}" />
-				<div class="buttons">
-					<input name="update" type="submit" value="{TR_UPDATE}" />
-					<input name="cancel" type="submit" value="{TR_CANCEL}" />
+<form name="edit_subdomain_frm" method="post" action="subdomain_edit.php?id={SUBDOMAIN_ID}&amp;type={SUBDOMAIN_TYPE}">
+	<table class="firstColFixed">
+		<tr>
+			<th colspan="2">{TR_SUBDOMAIN}</th>
+		</tr>
+		<tr>
+			<td><label for="subdomain_name">{TR_SUBDOMAIN_NAME}</label></td>
+			<td>
+				<input type="text" name="subdomain_name" id="subdomain_name" value="{SUBDOMAIN_NAME}" readonly=readonly/>
+			</td>
+		</tr>
+		<tr>
+			<td>{TR_URL_FORWARDING} <span class="icon i_help" title="{TR_URL_FORWARDING_TOOLTIP}"></span></td>
+			<td>
+				<div class="radio">
+					<input type="radio" name="url_forwarding" id="url_forwarding_yes"{FORWARD_URL_YES} value="yes"/>
+					<label for="url_forwarding_yes">{TR_YES}</label>
+					<input type="radio" name="url_forwarding" id="url_forwarding_no"{FORWARD_URL_NO} value="no"/>
+					<label for="url_forwarding_no">{TR_NO}</label>
 				</div>
-			</form>
+			</td>
+		</tr>
+		<tr id="tr_url_forwarding_data">
+			<td>{TR_FORWARD_TO_URL}</td>
+			<td>
+				<label for="forward_url_scheme">
+					<select name="forward_url_scheme" id="forward_url_scheme">
+						<option value="http://"{HTTP_YES}>{TR_HTTP}</option>
+						<option value="https://"{HTTPS_YES}>{TR_HTTPS}</option>
+						<option value="ftp://"{FTP_YES}>{TR_FTP}</option>
+					</select>
+				</label>
+				<label>
+					<input name="forward_url" type="text" id="forward_url" value="{FORWARD_URL}"/>
+				</label>
+			</td>
+		</tr>
+	</table>
+	<div class="buttons">
+		<input name="Submit" type="submit" value="{TR_UPDATE}"/>
+		<button><a href="domains_manage.php">{TR_CANCEL}</a></button>
+	</div>
+</form>

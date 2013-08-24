@@ -1022,35 +1022,29 @@ function array_encode_idna($array, $asPath = false)
 }
 
 /**
- * Convert domain name to IDNA ASCII form.
+ * Convert the given string to IDNA ASCII form.
  *
  * @throws iMSCP_Exception When PHP intl extension is not loaded
- * @param  string $domain Domain to convert.
+ * @param  string String to convert
  * @return string Domain name encoded in ASCII-compatible form
  */
 function encode_idna($domain)
 {
-	if (extension_loaded('intl')) {
-		return idn_to_ascii($domain);
-	} else {
-		throw new iMSCP_Exception("PHP 'intl' extension is not loaded.");
-	}
+	$idn = new idna_convert();
+	return $idn->encode($domain);
 }
 
 /**
- * Convert domain name from IDNA ASCII to Unicode.
+ * Convert the given string from IDNA ASCII to Unicode.
  *
  * @throws iMSCP_Exception When PHP intl extension is not loaded
- * @param  string $domain Domain to convert in IDNA ASCII-compatible format.
+ * @param  string String to convert
  * @return string Domain name in Unicode.
  */
 function decode_idna($domain)
 {
-	if (extension_loaded('intl')) {
-		return idn_to_utf8($domain, IDNA_USE_STD3_RULES);
-	} else {
-		throw new iMSCP_Exception("PHP 'intl' extension is not loaded.");
-	}
+	$idn = new idna_convert();
+	return $idn->decode($domain);
 }
 
 /**

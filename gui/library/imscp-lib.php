@@ -106,6 +106,7 @@ iMSCP_Exception_Handler::getInstance()->attach(new iMSCP_Exception_Writer_Browse
 /**
  * Include i-MSCP common functions
  */
+require_once 'vendor/idna_convert/idna_convert.class.php';
 require_once 'shared-functions.php';
 
 /**

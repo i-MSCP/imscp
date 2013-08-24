@@ -77,7 +77,7 @@ function debugger_getUserErrors($tpl)
 			$tpl->assign(
 				array(
 					'USER_MESSAGE' => '',
-					'TR_USER_NAME' => tohtml(idn_to_utf8($row['admin_name'])),
+					'TR_USER_NAME' => tohtml(decode_idna($row['admin_name'])),
 					'TR_USER_ERROR' => tohtml($row['admin_status']),
 					'CHANGE_ID' => tohtml($row['admin_id']),
 					'CHANGE_TYPE' => 'user'
@@ -129,7 +129,7 @@ function debugger_getDmnErrors($tpl)
 			$tpl->assign(
 				array(
 					'DMN_MESSAGE' => '',
-					'TR_DMN_NAME' => tohtml(idn_to_utf8($row['domain_name'])),
+					'TR_DMN_NAME' => tohtml(decode_idna($row['domain_name'])),
 					'TR_DMN_ERROR' => tohtml($row['domain_status']),
 					'CHANGE_ID' => tohtml($row['domain_id']),
 					'CHANGE_TYPE' => 'domain'
@@ -181,7 +181,7 @@ function debugger_getAlsErrors($tpl)
 			$tpl->assign(
 				array(
 					'ALS_MESSAGE' => '',
-					'TR_ALS_NAME' => tohtml(idn_to_utf8($row['alias_name'])),
+					'TR_ALS_NAME' => tohtml(decode_idna($row['alias_name'])),
 					'TR_ALS_ERROR' => tohtml($row['alias_status']),
 					'CHANGE_ID' => $row['alias_id'],
 					'CHANGE_TYPE' => 'alias',
@@ -236,7 +236,7 @@ function debugger_getSubErrors($tpl)
 			$tpl->assign(
 				array(
 					'SUB_MESSAGE' => '',
-					'TR_SUB_NAME' => tohtml(idn_to_utf8($row['subdomain_name'] . '.' . $row['domain_name'])),
+					'TR_SUB_NAME' => tohtml(decode_idna($row['subdomain_name'] . '.' . $row['domain_name'])),
 					'TR_SUB_ERROR' => tohtml($row['subdomain_status']),
 					'CHANGE_ID' => $row['subdomain_id'],
 					'CHANGE_TYPE' => 'subdomain'
@@ -292,7 +292,7 @@ function debugger_getAlssubErrors($tpl)
 			$tpl->assign(
 				array(
 					'ALSSUB_MESSAGE' => '',
-					'TR_ALSSUB_NAME' => tohtml(idn_to_utf8($row['subdomain_alias_name'] . '.' . $row['alias_name'])),
+					'TR_ALSSUB_NAME' => tohtml(decode_idna($row['subdomain_alias_name'] . '.' . $row['alias_name'])),
 					'TR_ALSSUB_ERROR' => tohtml($row['subdomain_alias_status']),
 					'CHANGE_ID' => $row['subdomain_alias_id'],
 					'CHANGE_TYPE' => 'subdomain_alias'
@@ -487,7 +487,7 @@ function debugger_getMailsErrors($tpl)
 				array(
 					'MAIL_MESSAGE' => '',
 					'TR_MAIL_NAME' => tohtml(
-						$mailAcc . '@'. ($domainName == '' ?  ' ' . tr('orphan entry') : idn_to_utf8($domainName))
+						$mailAcc . '@'. ($domainName == '' ?  ' ' . tr('orphan entry') : decode_idna($domainName))
 					),
 					'TR_MAIL_ERROR' => tohtml($mailStatus),
 					'CHANGE_ID' => $mailId,

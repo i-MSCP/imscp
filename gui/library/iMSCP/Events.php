@@ -760,7 +760,9 @@ class iMSCP_Events
 	 *
 	 *  - subdomainName: A string representing the name of the subdomain being added
 	 *  - subdomainType: A string representing the type of subdomain (als|dmn)
-	 *  - domainId: An integer representing the ID of the parent domain
+	 *  - parentDomainId: An integer representing the ID of the parent domain
+	 *  - mountPoint: A string representing the mount point of the subdomain
+	 *  - forwardUrl: A string representing the forward URL or no in case Forward URL option is not used
 	 *  - customerId: An integer representing the ID of the customer for which the subdomain is added
 	 *
 	 * @const string
@@ -774,7 +776,9 @@ class iMSCP_Events
 	 *
 	 *  - subdomainName: A string representing the name of the subdomain that has been added
 	 *  - subdomainType: A string representing the type of subdomain (als|dmn)
-	 *  - domainId: An integer representing the ID of the parent domain
+	 *  - parentDomainId: An integer representing the ID of the parent domain
+	 *  - mountPoint: A string representing the mount point of the subdomain
+	 *  - forwardUrl: A string representing the forward URL or no in case Forward URL option is not used
 	 *  - customerId: An integer representing the ID of the customer for wich the subdomain has been added
 	 *  - subdomainId: An integer representing the ID of thesubdomain that has been added
 	 *

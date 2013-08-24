@@ -52,7 +52,7 @@ switch ($action) {
 			$adminName = $auth->getIdentity()->admin_name;
 			$auth->unsetIdentity();
 			set_page_message(tr('You have been successfully logged out.'), 'success');
-			write_log(sprintf("%s logged out", idn_to_utf8($adminName)), E_USER_NOTICE);
+			write_log(sprintf("%s logged out", decode_idna($adminName)), E_USER_NOTICE);
 		}
 		break;
 	case 'login':

@@ -427,9 +427,10 @@ th:last-child, tfoot td:last-child {border-right: 1px solid;}
 td:first-child {border-left: 1px solid;}
 td:last-child {border-right: 1px solid;}
 tr:last-child {border-bottom: 1px solid;}
-.firstColFixed td:first-child {width:300px;}
+.firstColFixed td:first-child {width:25%;}
 td {
-	padding: 0.5em;
+	padding: 3px 5px 3px 5px;
+    height: 36px;
 	vertical-align: middle;
 	border-top: 1px solid;
 	border-bottom: 1px solid;
