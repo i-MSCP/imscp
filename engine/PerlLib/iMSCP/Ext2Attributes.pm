@@ -2,7 +2,7 @@
 
 =head1 NAME
 
- iMSCP::Ext2Attributes - Package providing access to Linux Ext2/3/4 filesystem extended attributes
+ iMSCP::Ext2Attributes - Package providing access to Linux file system extended attributes
 
 =cut
 
@@ -64,7 +64,7 @@ BEGIN
 
 =head1 DESCRIPTION
 
- This package provides access to the Ext2, Ext3 and Ext4 filesystem extended attributes.
+ This package provides access to the Ext2, Ext3, Ext4 and reiserfs filesystem extended attributes.
 
 =cut
 

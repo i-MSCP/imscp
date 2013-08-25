@@ -2435,5 +2435,5 @@ function isImmutableFlagAvailable()
 
 	$filePartitionInfo = iMSCP_SystemInfo::getFilePartitionInfo($cfg->USER_WEB_DIR);
 
-	return (bool) preg_match('/^ext[2-4]$/', $filePartitionInfo['fstype']);
+	return (bool) preg_match('/^(?:ext[2-4]|reiserfs)$/', $filePartitionInfo['fstype']);
 }
