@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2013-08-24 11:32+0200\n"
-"PO-Revision-Date: 2013-08-24 09:32+0000\n"
+"POT-Creation-Date: 2013-08-25 19:55+0200\n"
+"PO-Revision-Date: 2013-08-25 17:55+0000\n"
 "Last-Translator: Torsten Widmann <info@goover.de>\n"
 "Language-Team: Czech (Czech Republic) (http://www.transifex.com/projects/p/i-MSCP/language/cs_CZ/)\n"
 "MIME-Version: 1.0\n"
@@ -953,7 +953,7 @@ msgstr ""
 msgid "All traffic"
 msgstr "Všechna přenesená data"
 
-msgid "Allowed"
+msgid "Allow URL fopen"
 msgstr ""
 
 msgid ""
@@ -1879,12 +1879,6 @@ msgstr ""
 msgid "Details"
 msgstr "Detaily"
 
-msgid "Directive name"
-msgstr ""
-
-msgid "Directive value"
-msgstr ""
-
 msgid "Directive values"
 msgstr ""
 
@@ -1903,7 +1897,7 @@ msgstr "Vypnout"
 msgid "Disabled"
 msgstr "Vypnuto"
 
-msgid "Disallowed"
+msgid "Disabled functions"
 msgstr ""
 
 msgid "Disconnect"
@@ -1922,6 +1916,9 @@ msgid "Disk usage"
 msgstr "Využití disku"
 
 msgid "Disk usage detail"
+msgstr ""
+
+msgid "Display errors"
 msgstr ""
 
 msgid "Do not show any error"
@@ -2301,6 +2298,9 @@ msgstr "Chyba v php.ini hodnotách."
 
 msgid "Error pages"
 msgstr "Chybové stránky"
+
+msgid "Error reporting"
+msgstr ""
 
 msgid "Error while trying to obtain list of network cards."
 msgstr "Chyba při pokusu o získání seznamu síťových karet."
@@ -3498,6 +3498,9 @@ msgstr ""
 msgid "PHP GD extension not loaded."
 msgstr "PHP GD rozšíření není načteno."
 
+msgid "PHP Settings"
+msgstr ""
+
 msgid "PHP Settings (system default)"
 msgstr ""
 
@@ -3566,9 +3569,6 @@ msgstr "Verze balíčku"
 
 msgid "Panel default language"
 msgstr "Výchozí jazyk panelu"
-
-msgid "Parameter"
-msgstr ""
 
 msgid "Parent directory"
 msgstr ""

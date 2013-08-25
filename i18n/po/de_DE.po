@@ -33,8 +33,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2013-08-24 11:32+0200\n"
-"PO-Revision-Date: 2013-08-24 09:32+0000\n"
+"POT-Creation-Date: 2013-08-25 19:55+0200\n"
+"PO-Revision-Date: 2013-08-25 17:55+0000\n"
 "Last-Translator: Torsten Widmann <info@goover.de>\n"
 "Language-Team: German (Germany) (http://www.transifex.com/projects/p/i-MSCP/language/de_DE/)\n"
 "MIME-Version: 1.0\n"
@@ -976,8 +976,8 @@ msgstr "Alle Reseller und Kunden"
 msgid "All traffic"
 msgstr "Gesamtverbrauch"
 
-msgid "Allowed"
-msgstr "Erlaubt"
+msgid "Allow URL fopen"
+msgstr ""
 
 msgid ""
 "Allows to forward any request made to this subdomain to a specific URL."
@@ -1902,12 +1902,6 @@ msgstr "Beschreibung darf nicht leer sein."
 msgid "Details"
 msgstr "Details"
 
-msgid "Directive name"
-msgstr "Direktiven-Name"
-
-msgid "Directive value"
-msgstr "Direktiven-Wert"
-
 msgid "Directive values"
 msgstr "Direktiven-Werte"
 
@@ -1926,8 +1920,8 @@ msgstr "Deaktivieren"
 msgid "Disabled"
 msgstr "Deaktiviert"
 
-msgid "Disallowed"
-msgstr "Nicht erlaubt"
+msgid "Disabled functions"
+msgstr ""
 
 msgid "Disconnect"
 msgstr "Trennen"
@@ -1946,6 +1940,9 @@ msgstr "Speicherplatzverbrauch"
 
 msgid "Disk usage detail"
 msgstr "Festplattenspeicher Detail"
+
+msgid "Display errors"
+msgstr ""
 
 msgid "Do not show any error"
 msgstr "Keinen Fehler anzeigen"
@@ -2324,6 +2321,9 @@ msgstr "Fehler in den php.ini-Werten."
 
 msgid "Error pages"
 msgstr "Fehlerseiten"
+
+msgid "Error reporting"
+msgstr ""
 
 msgid "Error while trying to obtain list of network cards."
 msgstr "Fehler beim Versuch, eine Liste der Netzwerkkarten zu erstellen."
@@ -3521,6 +3521,9 @@ msgstr "PHP-Editor Einstellungen"
 msgid "PHP GD extension not loaded."
 msgstr "PHP GD Erweiterung ist nicht geladen"
 
+msgid "PHP Settings"
+msgstr ""
+
 msgid "PHP Settings (system default)"
 msgstr "PHP-Einstellungen (Systemstandard)"
 
@@ -3589,9 +3592,6 @@ msgstr "Version des Pakets"
 
 msgid "Panel default language"
 msgstr "Standardsprache"
-
-msgid "Parameter"
-msgstr "Parameter"
 
 msgid "Parent directory"
 msgstr "Übergeordnetes Verzeichnis"
@@ -5044,7 +5044,7 @@ msgid "UP"
 msgstr "LÄUFT"
 
 msgid "URL forwarding"
-msgstr ""
+msgstr "URL Weiterleitung"
 
 msgid "URL protocol"
 msgstr "URL-Protokoll"
@@ -5826,7 +5826,7 @@ msgid "You must enter a least one forward address."
 msgstr "Sie müssen mindestens eine Weiterleitungs-Adresse angeben."
 
 msgid "You must enter a subdomain name"
-msgstr ""
+msgstr "Sie müssen einen Subdomain Namen eingeben"
 
 msgid "You must first generate a password"
 msgstr "Sie müssen erst ein Passwort generieren"

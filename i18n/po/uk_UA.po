@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2013-08-24 11:32+0200\n"
-"PO-Revision-Date: 2013-08-24 09:32+0000\n"
+"POT-Creation-Date: 2013-08-25 19:55+0200\n"
+"PO-Revision-Date: 2013-08-25 17:55+0000\n"
 "Last-Translator: Torsten Widmann <info@goover.de>\n"
 "Language-Team: Ukrainian (Ukraine) (http://www.transifex.com/projects/p/i-MSCP/language/uk_UA/)\n"
 "MIME-Version: 1.0\n"
@@ -955,8 +955,8 @@ msgstr ""
 msgid "All traffic"
 msgstr "Увесь трафік"
 
-msgid "Allowed"
-msgstr "Разрешено"
+msgid "Allow URL fopen"
+msgstr ""
 
 msgid ""
 "Allows to forward any request made to this subdomain to a specific URL."
@@ -1881,12 +1881,6 @@ msgstr ""
 msgid "Details"
 msgstr "Деталі"
 
-msgid "Directive name"
-msgstr "Имя директивы"
-
-msgid "Directive value"
-msgstr "Значение дерективы"
-
 msgid "Directive values"
 msgstr "Значения директивы"
 
@@ -1905,8 +1899,8 @@ msgstr "Відключити"
 msgid "Disabled"
 msgstr "Відключено"
 
-msgid "Disallowed"
-msgstr "Запрещено"
+msgid "Disabled functions"
+msgstr ""
 
 msgid "Disconnect"
 msgstr ""
@@ -1925,6 +1919,9 @@ msgstr "Использование диска"
 
 msgid "Disk usage detail"
 msgstr "Детали использования диска"
+
+msgid "Display errors"
+msgstr ""
 
 msgid "Do not show any error"
 msgstr "Не отображать ошибки"
@@ -2303,6 +2300,9 @@ msgstr "Ошибка значений php.ini"
 
 msgid "Error pages"
 msgstr "Сторінки помилок"
+
+msgid "Error reporting"
+msgstr ""
 
 msgid "Error while trying to obtain list of network cards."
 msgstr "Помилка при спробі отримання списку мережевих карт."
@@ -3500,6 +3500,9 @@ msgstr "Настройки редактора PHP"
 msgid "PHP GD extension not loaded."
 msgstr "PHP GD расширение не загружено."
 
+msgid "PHP Settings"
+msgstr ""
+
 msgid "PHP Settings (system default)"
 msgstr "Настройки PHP (по умолчанию)"
 
@@ -3568,9 +3571,6 @@ msgstr "Версія пакету"
 
 msgid "Panel default language"
 msgstr "Вибір мови панелі за замовчанням"
-
-msgid "Parameter"
-msgstr "Параметр"
 
 msgid "Parent directory"
 msgstr ""

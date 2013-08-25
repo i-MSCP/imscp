@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2013-08-24 11:32+0200\n"
-"PO-Revision-Date: 2013-08-24 09:32+0000\n"
+"POT-Creation-Date: 2013-08-25 19:55+0200\n"
+"PO-Revision-Date: 2013-08-25 17:55+0000\n"
 "Last-Translator: Torsten Widmann <info@goover.de>\n"
 "Language-Team: Finnish (Finland) (http://www.transifex.com/projects/p/i-MSCP/language/fi_FI/)\n"
 "MIME-Version: 1.0\n"
@@ -952,8 +952,8 @@ msgstr ""
 msgid "All traffic"
 msgstr "Kaikki liikenne"
 
-msgid "Allowed"
-msgstr "Sallittu"
+msgid "Allow URL fopen"
+msgstr ""
 
 msgid ""
 "Allows to forward any request made to this subdomain to a specific URL."
@@ -1878,12 +1878,6 @@ msgstr ""
 msgid "Details"
 msgstr "Tiedot"
 
-msgid "Directive name"
-msgstr ""
-
-msgid "Directive value"
-msgstr ""
-
 msgid "Directive values"
 msgstr ""
 
@@ -1902,8 +1896,8 @@ msgstr "Poista käytöstä"
 msgid "Disabled"
 msgstr "Ei käytössä"
 
-msgid "Disallowed"
-msgstr "Ei sallittu"
+msgid "Disabled functions"
+msgstr ""
 
 msgid "Disconnect"
 msgstr ""
@@ -1921,6 +1915,9 @@ msgid "Disk usage"
 msgstr "Levytilankäyttä"
 
 msgid "Disk usage detail"
+msgstr ""
+
+msgid "Display errors"
 msgstr ""
 
 msgid "Do not show any error"
@@ -2300,6 +2297,9 @@ msgstr "Virhe php.ini arvoissa."
 
 msgid "Error pages"
 msgstr "Virhesivut"
+
+msgid "Error reporting"
+msgstr ""
 
 msgid "Error while trying to obtain list of network cards."
 msgstr "Virhe luotaessa listaa verkkokorteista."
@@ -3497,6 +3497,9 @@ msgstr ""
 msgid "PHP GD extension not loaded."
 msgstr ""
 
+msgid "PHP Settings"
+msgstr ""
+
 msgid "PHP Settings (system default)"
 msgstr ""
 
@@ -3565,9 +3568,6 @@ msgstr "Paketin versio"
 
 msgid "Panel default language"
 msgstr "Paneelin oletuskieli"
-
-msgid "Parameter"
-msgstr ""
 
 msgid "Parent directory"
 msgstr ""

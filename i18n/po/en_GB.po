@@ -17,8 +17,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2013-08-24 11:32+0200\n"
-"PO-Revision-Date: 2013-08-24 09:32+0000\n"
+"POT-Creation-Date: 2013-08-25 19:55+0200\n"
+"PO-Revision-Date: 2013-08-25 17:55+0000\n"
 "Last-Translator: Torsten Widmann <info@goover.de>\n"
 "Language-Team: English (United Kingdom) (http://www.transifex.com/projects/p/i-MSCP/language/en_GB/)\n"
 "MIME-Version: 1.0\n"
@@ -960,8 +960,8 @@ msgstr "All resellers and customers"
 msgid "All traffic"
 msgstr "All traffic"
 
-msgid "Allowed"
-msgstr "Allowed"
+msgid "Allow URL fopen"
+msgstr ""
 
 msgid ""
 "Allows to forward any request made to this subdomain to a specific URL."
@@ -1886,12 +1886,6 @@ msgstr "Description cannot be empty."
 msgid "Details"
 msgstr "Details"
 
-msgid "Directive name"
-msgstr "Directive name"
-
-msgid "Directive value"
-msgstr "Directive value"
-
 msgid "Directive values"
 msgstr "Directive values"
 
@@ -1910,8 +1904,8 @@ msgstr "Disable"
 msgid "Disabled"
 msgstr "Disabled"
 
-msgid "Disallowed"
-msgstr "Disallowed"
+msgid "Disabled functions"
+msgstr ""
 
 msgid "Disconnect"
 msgstr "Disconnect"
@@ -1930,6 +1924,9 @@ msgstr "Disk usage"
 
 msgid "Disk usage detail"
 msgstr "Disk usage detail"
+
+msgid "Display errors"
+msgstr ""
 
 msgid "Do not show any error"
 msgstr "Do not show any error"
@@ -2308,6 +2305,9 @@ msgstr "Error in php.ini values."
 
 msgid "Error pages"
 msgstr "Error pages"
+
+msgid "Error reporting"
+msgstr ""
 
 msgid "Error while trying to obtain list of network cards."
 msgstr "Error while trying to obtain list of network cards."
@@ -3505,6 +3505,9 @@ msgstr "PHP Editor Settings"
 msgid "PHP GD extension not loaded."
 msgstr "PHP GD extension not loaded."
 
+msgid "PHP Settings"
+msgstr ""
+
 msgid "PHP Settings (system default)"
 msgstr "PHP Settings (system default)"
 
@@ -3573,9 +3576,6 @@ msgstr "Package version"
 
 msgid "Panel default language"
 msgstr "Panel default language"
-
-msgid "Parameter"
-msgstr "Parameter"
 
 msgid "Parent directory"
 msgstr "Parent directory"

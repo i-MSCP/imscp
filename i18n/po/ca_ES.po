@@ -18,8 +18,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2013-08-24 11:32+0200\n"
-"PO-Revision-Date: 2013-08-24 09:32+0000\n"
+"POT-Creation-Date: 2013-08-25 19:55+0200\n"
+"PO-Revision-Date: 2013-08-25 17:55+0000\n"
 "Last-Translator: Torsten Widmann <info@goover.de>\n"
 "Language-Team: Catalan (Spain) (http://www.transifex.com/projects/p/i-MSCP/language/ca_ES/)\n"
 "MIME-Version: 1.0\n"
@@ -961,8 +961,8 @@ msgstr ""
 msgid "All traffic"
 msgstr "Tot el trànsit"
 
-msgid "Allowed"
-msgstr "Permès"
+msgid "Allow URL fopen"
+msgstr ""
 
 msgid ""
 "Allows to forward any request made to this subdomain to a specific URL."
@@ -1887,12 +1887,6 @@ msgstr "La descripció no pot ser buida."
 msgid "Details"
 msgstr "Detalls"
 
-msgid "Directive name"
-msgstr "Nom de la directiva"
-
-msgid "Directive value"
-msgstr "Valor"
-
 msgid "Directive values"
 msgstr "Valors"
 
@@ -1911,8 +1905,8 @@ msgstr "Desactivar"
 msgid "Disabled"
 msgstr "Desactivat"
 
-msgid "Disallowed"
-msgstr "No permès"
+msgid "Disabled functions"
+msgstr ""
 
 msgid "Disconnect"
 msgstr "Desconnectar"
@@ -1931,6 +1925,9 @@ msgstr "Ús de disc"
 
 msgid "Disk usage detail"
 msgstr "Detall d'ús de disc"
+
+msgid "Display errors"
+msgstr ""
 
 msgid "Do not show any error"
 msgstr "No mostrar cap error."
@@ -2309,6 +2306,9 @@ msgstr "Error als valors de php.ini."
 
 msgid "Error pages"
 msgstr "Pàgines d'error"
+
+msgid "Error reporting"
+msgstr ""
 
 msgid "Error while trying to obtain list of network cards."
 msgstr "Hi ha hagut un error obtenint la llista de targetes de xarxa."
@@ -3506,6 +3506,9 @@ msgstr "Configuració de l'editor de PHP"
 msgid "PHP GD extension not loaded."
 msgstr "L'extensió GD del PHP no s'ha carregat"
 
+msgid "PHP Settings"
+msgstr ""
+
 msgid "PHP Settings (system default)"
 msgstr "Configuració de PHP ( predeterminat del sistema )"
 
@@ -3574,9 +3577,6 @@ msgstr "Versió"
 
 msgid "Panel default language"
 msgstr "Escolliu idioma per defecte"
-
-msgid "Parameter"
-msgstr "Paràmetre"
 
 msgid "Parent directory"
 msgstr ""

@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2013-08-24 11:32+0200\n"
-"PO-Revision-Date: 2013-08-24 09:32+0000\n"
+"POT-Creation-Date: 2013-08-25 19:55+0200\n"
+"PO-Revision-Date: 2013-08-25 17:55+0000\n"
 "Last-Translator: Torsten Widmann <info@goover.de>\n"
 "Language-Team: Portuguese (Portugal) (http://www.transifex.com/projects/p/i-MSCP/language/pt_PT/)\n"
 "MIME-Version: 1.0\n"
@@ -951,7 +951,7 @@ msgstr ""
 msgid "All traffic"
 msgstr "Todo o tráfego"
 
-msgid "Allowed"
+msgid "Allow URL fopen"
 msgstr ""
 
 msgid ""
@@ -1877,12 +1877,6 @@ msgstr ""
 msgid "Details"
 msgstr "Detalhes"
 
-msgid "Directive name"
-msgstr ""
-
-msgid "Directive value"
-msgstr ""
-
 msgid "Directive values"
 msgstr ""
 
@@ -1901,7 +1895,7 @@ msgstr "Desactivar"
 msgid "Disabled"
 msgstr "Desactivado"
 
-msgid "Disallowed"
+msgid "Disabled functions"
 msgstr ""
 
 msgid "Disconnect"
@@ -1920,6 +1914,9 @@ msgid "Disk usage"
 msgstr "Utilização de disco"
 
 msgid "Disk usage detail"
+msgstr ""
+
+msgid "Display errors"
 msgstr ""
 
 msgid "Do not show any error"
@@ -2299,6 +2296,9 @@ msgstr ""
 
 msgid "Error pages"
 msgstr "Páginas de erro"
+
+msgid "Error reporting"
+msgstr ""
 
 msgid "Error while trying to obtain list of network cards."
 msgstr ""
@@ -3496,6 +3496,9 @@ msgstr ""
 msgid "PHP GD extension not loaded."
 msgstr ""
 
+msgid "PHP Settings"
+msgstr ""
+
 msgid "PHP Settings (system default)"
 msgstr ""
 
@@ -3564,9 +3567,6 @@ msgstr ""
 
 msgid "Panel default language"
 msgstr "Língua pré-definida do painel"
-
-msgid "Parameter"
-msgstr ""
 
 msgid "Parent directory"
 msgstr ""

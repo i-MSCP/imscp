@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2013-08-24 11:32+0200\n"
-"PO-Revision-Date: 2013-08-24 09:32+0000\n"
+"POT-Creation-Date: 2013-08-25 19:55+0200\n"
+"PO-Revision-Date: 2013-08-25 17:55+0000\n"
 "Last-Translator: Torsten Widmann <info@goover.de>\n"
 "Language-Team: Swedish (Sweden) (http://www.transifex.com/projects/p/i-MSCP/language/sv_SE/)\n"
 "MIME-Version: 1.0\n"
@@ -952,21 +952,21 @@ msgstr "Alla återförsäljare och kunder"
 msgid "All traffic"
 msgstr "Allt trafik"
 
-msgid "Allowed"
-msgstr "Tilllåten"
+msgid "Allow URL fopen"
+msgstr ""
 
 msgid ""
 "Allows to forward any request made to this subdomain to a specific URL."
-msgstr ""
+msgstr "Beviljar att vidarebefordra begäran till denna subdomain till en specifik URL."
 
 msgid ""
 "Allows to forward any request made to this subdomain to a specific URL. Be "
 "aware that when this option is in use, no Web folder is created for the "
 "subdomain."
-msgstr ""
+msgstr "Beviljar att vidarebefordra begäran till denna subdomain till en specifik URL. Tänk på att när det här alternativet är i bruk, ingen Web-mappen skapas för subdomain."
 
 msgid "Allows to share the mount point of another domain."
-msgstr ""
+msgstr "Beviljar att dela monteringspunkten i en annan domän."
 
 msgid "Already in use"
 msgstr "Redan i bruk"
@@ -1369,7 +1369,7 @@ msgid "Client / Domains / Add Subdomain"
 msgstr "Kund / Domainer / Lägg till subdomain"
 
 msgid "Client / Domains / Edit Subdomain"
-msgstr ""
+msgstr "Client / Domains / Edit Subdomain"
 
 msgid "Client / Domains / Overview / Edit Domain Alias"
 msgstr "Kund / Domainer / Översikt / Redigerar Domain Alias"
@@ -1878,12 +1878,6 @@ msgstr "Beskrivningen får inte vara tom."
 msgid "Details"
 msgstr "Detaljer"
 
-msgid "Directive name"
-msgstr "Directive name"
-
-msgid "Directive value"
-msgstr "Directive value"
-
 msgid "Directive values"
 msgstr "Directive values"
 
@@ -1902,8 +1896,8 @@ msgstr "Inaktivera"
 msgid "Disabled"
 msgstr "Inaktiv"
 
-msgid "Disallowed"
-msgstr "Inte tillåten"
+msgid "Disabled functions"
+msgstr ""
 
 msgid "Disconnect"
 msgstr "Avbryta förbindelse "
@@ -1922,6 +1916,9 @@ msgstr "Diskanvändning"
 
 msgid "Disk usage detail"
 msgstr "Diskanvändning detaljer"
+
+msgid "Display errors"
+msgstr ""
 
 msgid "Do not show any error"
 msgstr "Visa inte fel"
@@ -2301,6 +2298,9 @@ msgstr "Fel i php.ini värden."
 msgid "Error pages"
 msgstr "Felsidor"
 
+msgid "Error reporting"
+msgstr ""
+
 msgid "Error while trying to obtain list of network cards."
 msgstr "Fel när man försöker få fram listan över nätverkskort."
 
@@ -2453,7 +2453,7 @@ msgstr "Vidarebefordra till URL"
 
 #, php-format
 msgid "Forward URL %s is not valid"
-msgstr ""
+msgstr "Framåt URL %s är inte giltigt"
 
 msgid "Forward account"
 msgstr "Framåt konto"
@@ -3497,6 +3497,9 @@ msgstr "PHP Editor Settings"
 msgid "PHP GD extension not loaded."
 msgstr "PHP GD inte aktivt."
 
+msgid "PHP Settings"
+msgstr ""
+
 msgid "PHP Settings (system default)"
 msgstr "PHP Settings (system default)"
 
@@ -3565,9 +3568,6 @@ msgstr "Paket version"
 
 msgid "Panel default language"
 msgstr "Panelens standardspråk"
-
-msgid "Parameter"
-msgstr "Parameter"
 
 msgid "Parent directory"
 msgstr "Föregående katalog"
@@ -4409,7 +4409,7 @@ msgid "Settings saved."
 msgstr "Settings saved."
 
 msgid "Shared mount point"
-msgstr ""
+msgstr "Delad monteringspunkt"
 
 msgid "Show"
 msgstr "Visa"
@@ -4582,7 +4582,7 @@ msgstr "Subdomän"
 
 #, php-format
 msgid "Subdomain %s already exist"
-msgstr ""
+msgstr "Subdomain %s finns redan"
 
 msgid "Subdomain alias"
 msgstr "Subdomänalias"
@@ -4614,16 +4614,16 @@ msgid "Subdomain name"
 msgstr "Namn på subdomänen"
 
 msgid "Subdomain name is not valid"
-msgstr ""
+msgstr "Subdomain namn är inte giltig"
 
 msgid "Subdomain successfully scheduled for addition"
-msgstr ""
+msgstr "Subdomain schemalagt för tillägg"
 
 msgid "Subdomain successfully scheduled for deletion."
 msgstr "Underdomän alias schemalagd för radering."
 
 msgid "Subdomain successfully scheduled for update"
-msgstr ""
+msgstr "Subdomain schemalagt för uppdatering"
 
 msgid ""
 "Subdomain you are trying to remove has Ftp accounts. Remove them first."
@@ -5020,7 +5020,7 @@ msgid "UP"
 msgstr "UPP"
 
 msgid "URL forwarding"
-msgstr ""
+msgstr "URL vidarebefordran"
 
 msgid "URL protocol"
 msgstr "URL-protokoll"
@@ -5404,7 +5404,7 @@ msgid "Web files only"
 msgstr "Web files only"
 
 msgid "Web folder protection"
-msgstr ""
+msgstr "Web-mappen skydd"
 
 msgid "Web in"
 msgstr "Webb inåt"
@@ -5777,14 +5777,14 @@ msgstr "Du har inga obesvarade tickets"
 msgid ""
 "You have reached the maximum number of subdomains allowed by your "
 "subscription."
-msgstr ""
+msgstr "Du har nått maximalt antal underdomäner tillåts av din prenumeration."
 
 msgid "You have reached your domain limit.<br />You cannot add more domains."
 msgstr "You have reached your domain limit.<br />You cannot add more domains."
 
 #, php-format
 msgid "You have received %s new support ticket(s)."
-msgstr ""
+msgstr "Du har fått %s nya biljett(er)."
 
 msgid "You have to choose between file-upload and wget-function."
 msgstr "Du har att välja mellan fil-uppladdning och wget-funktion."
@@ -5802,7 +5802,7 @@ msgid "You must enter a least one forward address."
 msgstr "Du måste ange minst en framåt-adress."
 
 msgid "You must enter a subdomain name"
-msgstr ""
+msgstr "Du måste ange en subdomain namn"
 
 msgid "You must first generate a password"
 msgstr "Du måste först skapa ett lösenord"

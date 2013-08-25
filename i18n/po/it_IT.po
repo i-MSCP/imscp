@@ -13,8 +13,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2013-08-24 11:32+0200\n"
-"PO-Revision-Date: 2013-08-24 09:32+0000\n"
+"POT-Creation-Date: 2013-08-25 19:55+0200\n"
+"PO-Revision-Date: 2013-08-25 17:55+0000\n"
 "Last-Translator: Torsten Widmann <info@goover.de>\n"
 "Language-Team: Italian (Italy) (http://www.transifex.com/projects/p/i-MSCP/language/it_IT/)\n"
 "MIME-Version: 1.0\n"
@@ -956,8 +956,8 @@ msgstr "Tutti i rivenditori e clienti"
 msgid "All traffic"
 msgstr "Tutto il traffico"
 
-msgid "Allowed"
-msgstr "Ammessi"
+msgid "Allow URL fopen"
+msgstr ""
 
 msgid ""
 "Allows to forward any request made to this subdomain to a specific URL."
@@ -1882,12 +1882,6 @@ msgstr "La descrizione non può essere vuota."
 msgid "Details"
 msgstr "Dettagli"
 
-msgid "Directive name"
-msgstr "Nome Direttiva"
-
-msgid "Directive value"
-msgstr "Valore Direttiva"
-
 msgid "Directive values"
 msgstr "Valori Direttiva"
 
@@ -1906,8 +1900,8 @@ msgstr "Disabilitare"
 msgid "Disabled"
 msgstr "Disabilitato"
 
-msgid "Disallowed"
-msgstr "Non consentito"
+msgid "Disabled functions"
+msgstr ""
 
 msgid "Disconnect"
 msgstr "Disconnetti"
@@ -1926,6 +1920,9 @@ msgstr "Utilizzo del disco"
 
 msgid "Disk usage detail"
 msgstr "Dettagli uso del disco"
+
+msgid "Display errors"
+msgstr ""
 
 msgid "Do not show any error"
 msgstr "Non mostrare alcun errore"
@@ -2304,6 +2301,9 @@ msgstr "Valore errato nel file php.ini."
 
 msgid "Error pages"
 msgstr "Pagine di errore"
+
+msgid "Error reporting"
+msgstr ""
 
 msgid "Error while trying to obtain list of network cards."
 msgstr "Si è verificato un errore cercando le schede di rete."
@@ -3501,6 +3501,9 @@ msgstr ""
 msgid "PHP GD extension not loaded."
 msgstr ""
 
+msgid "PHP Settings"
+msgstr ""
+
 msgid "PHP Settings (system default)"
 msgstr ""
 
@@ -3569,9 +3572,6 @@ msgstr "Versione del pacchetto"
 
 msgid "Panel default language"
 msgstr "Lingua di default del pannellol"
-
-msgid "Parameter"
-msgstr ""
 
 msgid "Parent directory"
 msgstr ""

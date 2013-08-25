@@ -27,8 +27,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2013-08-24 11:32+0200\n"
-"PO-Revision-Date: 2013-08-24 09:32+0000\n"
+"POT-Creation-Date: 2013-08-25 19:55+0200\n"
+"PO-Revision-Date: 2013-08-25 17:55+0000\n"
 "Last-Translator: Torsten Widmann <info@goover.de>\n"
 "Language-Team: French (France) (http://www.transifex.com/projects/p/i-MSCP/language/fr_FR/)\n"
 "MIME-Version: 1.0\n"
@@ -970,8 +970,8 @@ msgstr "Tous les revendeurs et clients"
 msgid "All traffic"
 msgstr "Tout trafic"
 
-msgid "Allowed"
-msgstr "Autorisé"
+msgid "Allow URL fopen"
+msgstr ""
 
 msgid ""
 "Allows to forward any request made to this subdomain to a specific URL."
@@ -1896,12 +1896,6 @@ msgstr "La description ne peut être vide"
 msgid "Details"
 msgstr "Détails"
 
-msgid "Directive name"
-msgstr "Nom de la directive"
-
-msgid "Directive value"
-msgstr "Valeur de la directive"
-
 msgid "Directive values"
 msgstr "Valeurs des directives"
 
@@ -1920,8 +1914,8 @@ msgstr "Désactiver"
 msgid "Disabled"
 msgstr "Désactivé"
 
-msgid "Disallowed"
-msgstr "Rejeté"
+msgid "Disabled functions"
+msgstr ""
 
 msgid "Disconnect"
 msgstr "Déconnecter"
@@ -1940,6 +1934,9 @@ msgstr "Utilisation du disque"
 
 msgid "Disk usage detail"
 msgstr "Utilisation de l'espace disque"
+
+msgid "Display errors"
+msgstr ""
 
 msgid "Do not show any error"
 msgstr "Afficher aucune erreur."
@@ -2318,6 +2315,9 @@ msgstr "Certaines valeurs du php.ini sont erronnées"
 
 msgid "Error pages"
 msgstr "Pages d'erreur"
+
+msgid "Error reporting"
+msgstr ""
 
 msgid "Error while trying to obtain list of network cards."
 msgstr "Une erreur est survenue pendant la tentative de récupération des cartes réseau."
@@ -3515,6 +3515,9 @@ msgstr "Paramètres de l'éditeur PHP"
 msgid "PHP GD extension not loaded."
 msgstr "L'extension PHP GD n'est pas chargée."
 
+msgid "PHP Settings"
+msgstr ""
+
 msgid "PHP Settings (system default)"
 msgstr "Réglages PHP (Réglages systèmes)"
 
@@ -3583,9 +3586,6 @@ msgstr "Version du paquet"
 
 msgid "Panel default language"
 msgstr "Langue par défaut du panel"
-
-msgid "Parameter"
-msgstr "Paramètre"
 
 msgid "Parent directory"
 msgstr ""

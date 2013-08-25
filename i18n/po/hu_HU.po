@@ -11,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2013-08-24 11:32+0200\n"
-"PO-Revision-Date: 2013-08-24 09:32+0000\n"
+"POT-Creation-Date: 2013-08-25 19:55+0200\n"
+"PO-Revision-Date: 2013-08-25 17:55+0000\n"
 "Last-Translator: Torsten Widmann <info@goover.de>\n"
 "Language-Team: Hungarian (Hungary) (http://www.transifex.com/projects/p/i-MSCP/language/hu_HU/)\n"
 "MIME-Version: 1.0\n"
@@ -954,8 +954,8 @@ msgstr "Összes viszonteladó és ügyfél"
 msgid "All traffic"
 msgstr "Teljes forgalom"
 
-msgid "Allowed"
-msgstr "Engedélyezve"
+msgid "Allow URL fopen"
+msgstr ""
 
 msgid ""
 "Allows to forward any request made to this subdomain to a specific URL."
@@ -1880,12 +1880,6 @@ msgstr "Leírás nem lehet üres."
 msgid "Details"
 msgstr "Részletek"
 
-msgid "Directive name"
-msgstr "Direktíva neve"
-
-msgid "Directive value"
-msgstr "Direktíva értéke"
-
 msgid "Directive values"
 msgstr "Direktíva értékei"
 
@@ -1904,8 +1898,8 @@ msgstr "Letiltás"
 msgid "Disabled"
 msgstr "Letiltva"
 
-msgid "Disallowed"
-msgstr "Nem engedélyezett"
+msgid "Disabled functions"
+msgstr ""
 
 msgid "Disconnect"
 msgstr "Lekapcsolódik"
@@ -1924,6 +1918,9 @@ msgstr "Tárhelyhasználat"
 
 msgid "Disk usage detail"
 msgstr "Tárhely használat részletesen "
+
+msgid "Display errors"
+msgstr ""
 
 msgid "Do not show any error"
 msgstr "Ne jelenjen meg minden hiba "
@@ -2302,6 +2299,9 @@ msgstr "Hiba php.ini-ben"
 
 msgid "Error pages"
 msgstr "Hibaoldalak"
+
+msgid "Error reporting"
+msgstr ""
 
 msgid "Error while trying to obtain list of network cards."
 msgstr "Hiba a hálózati eszközök beolvasásakor"
@@ -3499,6 +3499,9 @@ msgstr "PHP beállítások szerkesztése"
 msgid "PHP GD extension not loaded."
 msgstr "PHP GD kiterjesztés nincs betöltve"
 
+msgid "PHP Settings"
+msgstr ""
+
 msgid "PHP Settings (system default)"
 msgstr "PHP beállítások (alapértelmezett)"
 
@@ -3567,9 +3570,6 @@ msgstr "Verziója"
 
 msgid "Panel default language"
 msgstr "Kezelőfelület alapértelmezett nyelve"
-
-msgid "Parameter"
-msgstr "Paraméter"
 
 msgid "Parent directory"
 msgstr ""
