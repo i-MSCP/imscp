@@ -29,7 +29,9 @@ Linux Distros:      Debian Squeeze, Wheezy, Jessie (Wheezy recommended)
 1024 MiB RAM minimum - For heavily loaded servers or high flow is recommended at least 8 GiB
 2 GiB of available hard disk space (only for i-MSCP and services managed by it)
 Internet Access (100 Mbits/s recommended)
-A file system supporting extended attributes (eg. immutable flag) as ext2, ext3 and ext4.
+A file system supporting extended attributes (eg. immutable flag) as ext2, ext3, ext4 and reiserfs*.
+
+* See http://wiki.i-mscp.net/doku.php?id=start:howto:reiserfs
 
 All Squeeze required packages are listed in ./docs/Debian/debian-packages-squeeze.xml
 All Wheezy required packages are listed in ./docs/Debian/debian-packages-wheezy.xml
