@@ -317,7 +317,6 @@ h2 span, h3 span {
 /* Title icons */
 
 .body .adminlog { background-image: url(../images/content/table_icon_adminlog.png); }
-.body .billing { background-image: url(../images/content/table_icon_billing.png); }
 .body .debugger { background-image: url(../images/content/table_icon_debugger.png); }
 .body .diskusage { background-image: url(../images/content/table_icon_diskusage.png); }
 .body .doc { background-image: url(../images/content/table_icon_doc.png); }
@@ -335,7 +334,6 @@ h2 span, h3 span {
 .body .multilanguage { background-image: url(../images/content/table_icon_multilanguage.png); }
 .body .no { background-image: url(../images/content/table_icon_no.png); }
 .body .password { background-image: url(../images/content/table_icon_password.png); }
-.body .purchasing { background-image: url(../images/content/table_icon_purchasing.png); }
 .body .serverstatus { background-image: url(../images/content/table_icon_serverstatus.png); }
 .body .hosting_plans { background-image: url(../images/content/table_icon_hosting_plans.png); }
 .body .settings { background-image: url(../images/content/table_icon_settings.png); }
@@ -445,6 +443,10 @@ td {
 @-moz-document url-prefix() {legend { top: -1.5em; }}
 table .icon {float: none;}
 
+.radio {
+    display: inline;
+}
+
 /* Icons */
 .app_icon {
 	background-position: top left;
@@ -543,7 +545,6 @@ table .icon {float: none;}
 .i_appicon { background-image: url(../images/icons/appicon.png); }
 .i_open { background-image: url(../images/icons/open.png); }
 .i_close { background-image: url(../images/icons/close.png); }
-.i_purchase { background-image: url(../images/icons/purchase.png); }
 
 /* data tables */
 .dataTables_wrapper {

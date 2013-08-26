@@ -25,11 +25,11 @@ ns{NS_NUMBER}		IN	{NS_IP_TYPE}	{NS_IP}
 ; ns A SECTION END
 
 ; CNAME for mail transfer
-{MX}imap			IN 	CNAME 			mail
-{MX}pop				IN 	CNAME			mail
-{MX}pop3			IN 	CNAME			mail
-{MX}relay			IN 	CNAME			mail
-{MX}smtp			IN 	CNAME			mail
+{MX}imap			IN	CNAME 			mail
+{MX}pop				IN	CNAME			mail
+{MX}pop3			IN	CNAME			mail
+{MX}relay			IN	CNAME			mail
+{MX}smtp			IN	CNAME			mail
 ; CNAME for web transfer
 ftp					IN	CNAME			www
 

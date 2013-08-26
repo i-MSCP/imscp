@@ -51,14 +51,14 @@
 					<label for="shared_mount_point_yes">{TR_YES}</label>
 					<input type="radio" name="shared_mount_point" id="shared_mount_point_no" value="no"{SHARED_MOUNT_POINT_NO}/>
 					<label for="shared_mount_point_no">{TR_NO}</label>
-					<label for="shared_mount_point_domain">
-						<select name="shared_mount_point_domain" id="shared_mount_point_domain" style="vertical-align: middle">
-							<!-- BDP: shared_mount_point_domain -->
-							<option value="{DOMAIN_NAME}"{SHARED_MOUNT_POINT_DOMAIN_SELECTED}>{DOMAIN_NAME_UNICODE}</option>
-							<!-- EDP: shared_mount_point_domain -->
-						</select>
-					</label>
 				</div>
+				<label for="shared_mount_point_domain">
+					<select name="shared_mount_point_domain" id="shared_mount_point_domain">
+						<!-- BDP: shared_mount_point_domain -->
+						<option value="{DOMAIN_NAME}"{SHARED_MOUNT_POINT_DOMAIN_SELECTED}>{DOMAIN_NAME_UNICODE}</option>
+						<!-- EDP: shared_mount_point_domain -->
+					</select>
+				</label>
 			</td>
 		</tr>
 		<tr>
