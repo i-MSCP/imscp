@@ -14,17 +14,21 @@
 	<input name="submit" type="submit" value="{TR_CLEAR_LOG}"/>
 	<input type="hidden" name="uaction" value="clear_log"/>
 </form>
-<table>
+<table class="firstColFixed">
+	<thead>
 	<tr>
 		<th>{TR_DATE}</th>
 		<th>{TR_MESSAGE}</th>
 	</tr>
+	</thead>
+	<tbody>
 	<!-- BDP: log_row -->
 	<tr>
 		<td>{DATE}</td>
 		<td>{MESSAGE}</td>
 	</tr>
 	<!-- EDP: log_row -->
+	</tbody>
 </table>
 <div class="paginator">
 	<!-- BDP: scroll_next_gray -->

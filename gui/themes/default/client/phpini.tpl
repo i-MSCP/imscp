@@ -3,9 +3,12 @@
 <form name="editFrm" method="post" action="phpini.php">
 	<!-- BDP: php_editor_first_block -->
 	<table class="firstColFixed">
+		<thead>
 		<tr>
 			<th colspan="2">{TR_PHP_SETTINGS}</th>
 		</tr>
+		</thead>
+		<tbody>
 		<!-- BDP: allow_url_fopen_block -->
 		<tr>
 			<td><label for="allow_url_fopen">{TR_ALLOW_URL_FOPEN}</label></td>
@@ -13,7 +16,8 @@
 				<div class="radio">
 					<input type="radio" name="allow_url_fopen" id="allow_url_fopen_on" value="on"{ALLOW_URL_FOPEN_ON}>
 					<label for="allow_url_fopen_on">{TR_YES}</label>
-					<input type="radio" name="allow_url_fopen" id="allow_url_fopen_off" value="off"{ALLOW_URL_FOPEN_OFF}>
+					<input type="radio" name="allow_url_fopen" id="allow_url_fopen_off"
+						   value="off"{ALLOW_URL_FOPEN_OFF}>
 					<label for="allow_url_fopen_off">{TR_NO}</label>
 				</div>
 			</td>
@@ -80,16 +84,20 @@
 				<select name="error_reporting" id="error_reporting">
 					<option value="E_ALL &amp; ~E_NOTICE"{ERROR_REPORTING_0}>{TR_ERROR_REPORTING_DEFAULT}</option>
 					<option value="E_ALL | E_STRICT"{ERROR_REPORTING_1}>{TR_ERROR_REPORTING_DEVELOPEMENT}</option>
-					<option value="E_ALL &amp; ~E_DEPRECATED"{ERROR_REPORTING_2}>{TR_ERROR_REPORTING_PRODUCTION}</option>
+					<option
+						value="E_ALL &amp; ~E_DEPRECATED"{ERROR_REPORTING_2}>{TR_ERROR_REPORTING_PRODUCTION}</option>
 					<option value="0"{ERROR_REPORTING_3}>{TR_ERROR_REPORTING_NONE}</option>
 				</select>
 			</td>
 		</tr>
 		<!-- EDP: error_reporting_block -->
+		</tbody>
 	</table>
 	<!-- EDP: php_editor_first_block -->
 	<div class="buttons">
 		<input name="Submit" type="submit" value="{TR_UPDATE_DATA}"/>
-		<a href="domains_manage.php"><button type="button">{TR_CANCEL}</button></a>
+		<a href="domains_manage.php">
+			<button type="button">{TR_CANCEL}</button>
+		</a>
 	</div>
 </form>

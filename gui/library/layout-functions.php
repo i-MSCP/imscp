@@ -24,15 +24,15 @@
  * Portions created by the i-MSCP Team are Copyright (C) 2010-2013 by
  * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
  *
- * @category	iMSCP
- * @package		iMSCP_Core
- * @subpackage	Layout
- * @copyright	2001-2006 by moleSoftware GmbH
- * @copyright	2006-2010 by ispCP | http://isp-control.net
- * @copyright	2010-2013 by i-MSCP | http://i-mscp.net
- * @link		http://i-mscp.net
- * @author		ispCP Team
- * @author		i-MSCP Team
+ * @category    iMSCP
+ * @package     iMSCP_Core
+ * @subpackage  Layout
+ * @copyright   2001-2006 by moleSoftware GmbH
+ * @copyright   2006-2010 by ispCP | http://isp-control.net
+ * @copyright   2010-2013 by i-MSCP | http://i-mscp.net
+ * @link        http://i-mscp.net
+ * @author      ispCP Team
+ * @author      i-MSCP Team
  */
 
 /**
@@ -84,7 +84,9 @@ function generatePageMessage($tpl)
 					array(
 						'MESSAGE_CLS' => $level .
 							(($level == 'success') ? ' timeout' : ''),
-						'MESSAGE' => $namespace->{$level}));
+						'MESSAGE' => $namespace->{$level}
+					)
+				);
 
 				$tpl->parse('PAGE_MESSAGE', '.page_message');
 			}
@@ -154,13 +156,13 @@ function format_message($messages)
 /**
  * Gets menu variables.
  *
- * @param  string $menu_link Menu link
+ * @param  string $menuLink Menu link
  * @return mixed
  */
-function get_menu_vars($menu_link)
+function get_menu_vars($menuLink)
 {
-	if (strpos($menu_link, '}') === false || strpos($menu_link, '}') === false) {
-		return $menu_link;
+	if (strpos($menuLink, '}') === false || strpos($menuLink, '}') === false) {
+		return $menuLink;
 	}
 
 	$query = "
@@ -221,7 +223,7 @@ function get_menu_vars($menu_link)
 	$search [] = '{domain_name}';
 	$replace[] = $stmt->fields['domain_name'];
 
-	return str_replace($search, $replace, $menu_link);
+	return str_replace($search, $replace, $menuLink);
 }
 
 /**
@@ -232,15 +234,41 @@ function get_menu_vars($menu_link)
  */
 function layout_getAvailableColorSet()
 {
-	// TODO parse current layout directory to found available color set.
-	return array('black', 'blue', 'green', 'red', 'yellow');
+	static $colorSet = null;
+
+	if(null === $colorSet) {
+		/** @var iMSCP_Config_Handler_File $cfg */
+		$cfg = iMSCP_Registry::get('config');
+
+		if(file_exists($cfg->ROOT_TEMPLATE_PATH . '/info.php')) {
+			$themeInfo =  include_once($cfg->ROOT_TEMPLATE_PATH . '/info.php');
+
+			if(is_array($themeInfo)) {
+				$colorSet = (array) $themeInfo['theme_color_set'];
+			} else {
+				ini_set('display_errors', 1);
+				trigger_error(
+					sprintf(
+						"The 'theme_color'_set parameter is missing in the %s file",
+						$cfg->ROOT_TEMPLATE_PATH . '/info.php'
+					),
+					E_USER_ERROR
+				);
+			}
+		} else {
+			trigger_error(
+				sprintf("File %s is missing or not readable", $cfg->ROOT_TEMPLATE_PATH . '/info.php'), E_USER_ERROR
+			);
+		}
+	}
+
+	return $colorSet;
 }
 
 /**
  * Returns layout color for given user.
  *
  * @author Laurent Declercq <l.declercq@nuxwin.com>
- * @since i-MSCP 1.0.1.6
  * @param int $userId user unique identifier
  * @return string User layout color
  */
@@ -249,19 +277,23 @@ function layout_getUserLayoutColor($userId)
 	static $color = null;
 
 	if(null === $color) {
-		$allowedColors = layout_getAvailableColorSet();
+		if(isset($_SESSION['user_theme_color'])) {
+			$color = $_SESSION['user_theme_color'];
+		} else {
+			$allowedColors = layout_getAvailableColorSet();
 
-		$query = 'SELECT `layout_color` FROM `user_gui_props` WHERE `user_id` = ?';
-		$stmt = exec_query($query, (int)$userId);
+			$query = 'SELECT `layout_color` FROM `user_gui_props` WHERE `user_id` = ?';
+			$stmt = exec_query($query, (int)$userId);
 
-		if ($stmt->rowCount()) {
-			$color = $stmt->fields['layout_color'];
+			if ($stmt->rowCount()) {
+				$color = $stmt->fields['layout_color'];
 
-			if (!$color || !in_array($color, $allowedColors)) {
+				if (!$color || !in_array($color, $allowedColors)) {
+					$color = array_shift($allowedColors);
+				}
+			} else {
 				$color = array_shift($allowedColors);
 			}
-		} else {
-			$color = array_shift($allowedColors);
 		}
 	}
 
@@ -302,7 +334,7 @@ function layout_init($event)
 	$tpl->assign(
 		array(
 			'THEME_CHARSET' => ($encoding !='encoding') ? $encoding : 'UTF-8',
-			'THEME_COLOR_PATH' => '/themes/' . $cfg->USER_INITIAL_THEME,
+			'THEME_ASSETS_PATH' => '/themes/' . $cfg->USER_INITIAL_THEME .  '/assets',
 			'THEME_COLOR' => $color
 		)
 	);
@@ -314,7 +346,6 @@ function layout_init($event)
  * Sets given layout color for given user.
  *
  * @author Laurent Declercq <l.declercq@nuxwin.com>
- * @since i-MSCP 1.0.1.6
  * @param int $userId User unique identifier
  * @param string $color Layout color
  * @return bool TRUE on success false otherwise
@@ -357,14 +388,12 @@ function layout_setUserLayoutColor($userId, $color)
 /**
  * Get user logo path.
  *
- * Note: Only administrators and resellers can have their own logo. Search is done in
- * the following order: user logo -> user's creator logo -> theme logo --> isp logo.
+ * Note: Only administrators and resellers can have their own logo. Search is done in the following order:
+ * user logo -> user's creator logo -> theme logo --> isp logo.
  *
  * @author Laurent Declercq <l.declercq@nuxwin.com>
- * @since i-MSCP 1.0.1.4
- * @param bool $searchForCreator Tell whether or not search must be done for user's
- *							   creator in case no logo is found for user
- * @param bool $returnDefault	Tell whether or not default logo must be returned
+ * @param bool $searchForCreator Tell whether or not search must be done for user's creator in case no logo is found for user
+ * @param bool $returnDefault Tell whether or not default logo must be returned
  * @return string User logo path.
  * @todo cache issues
  */
@@ -372,7 +401,7 @@ function layout_getUserLogo($searchForCreator = true, $returnDefault = true)
 {
 	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
-
+	return '/themes/' . $_SESSION['user_theme'] . '/assets/images/imscp_logo.png';
 	// On switched level, we want show logo from logged user
 	if (isset($_SESSION['logged_from_id']) && $searchForCreator) {
 		$userId = $_SESSION['logged_from_id'];
@@ -401,16 +430,15 @@ function layout_getUserLogo($searchForCreator = true, $returnDefault = true)
 		$stmt = exec_query($query, $userId);
 	}
 
-	// No  user logo found
-	if (empty($stmt->fields['logo']) ||
-		!file_exists($cfg->GUI_ROOT_DIR . '/data/persistent/ispLogos/' . $stmt->fields['logo'])
+	// No user logo found
+	if (
+		empty($stmt->fields['logo']) ||
+		! file_exists($cfg->GUI_ROOT_DIR . '/data/persistent/ispLogos/' . $stmt->fields['logo'])
 	) {
 		if (!$returnDefault) {
 			return '';
-		} elseif (file_exists($cfg->GUI_ROOT_DIR . '/public/themes/' .
-			$_SESSION['user_theme'] . '/images/imscp_logo.png')
-		) {
-			return '../themes/' . $_SESSION['user_theme'] . '/images/imscp_logo.png';
+		} elseif (file_exists($cfg->ROOT_TEMPLATE_PATH. '/assets/images/imscp_logo.png')) {
+			return '/themes/' . $_SESSION['user_theme'] . '/assets/images/imscp_logo.png';
 		} else {
 			// no logo available, we are using default
 			return $cfg->ISP_LOGO_PATH . '/' . 'isp_logo.gif';
@@ -426,7 +454,6 @@ function layout_getUserLogo($searchForCreator = true, $returnDefault = true)
  * Note: Only administrators and resellers can have their own logo.
  *
  * @author Laurent Declercq <l.declercq@nuxwin.com>
- * @since i-MSCP 1.0.1.4
  * @return bool TRUE on success, FALSE otherwise
  */
 function layout_updateUserLogo()
@@ -502,7 +529,6 @@ function layout_updateUserLogo()
  * Deletes user logo.
  *
  * @author Laurent Declercq <l.declercq@nuxwin.com>
- * @since i-MSCP 1.0.1.4
  * @param string $logoFilePath OPTIONAL Logo file path
  * @param bool $onlyFile OPTIONAL Tell whether or not only logo file must be deleted
  * @return bool TRUE on success, FALSE otherwise
@@ -549,7 +575,6 @@ function layout_deleteUserLogo($logoFilePath = null, $onlyFile = false)
  * Is user logo?
  *
  * @author Laurent Declercq <l.declercq@nuxwin.com>
- * @since i-MSCP 1.0.1.4
  * @param string $logoPath Logo path to match against
  * @return bool TRUE if $logoPath is a user's logo, FALSE otherwise
  */
@@ -558,7 +583,8 @@ function layout_isUserLogo($logoPath)
 	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
 
-	if ($logoPath == '../themes/' . $_SESSION['user_theme'] . '/images/imscp_logo.png'
+	if (
+		$logoPath == '/themes/' . $_SESSION['user_theme'] . '/assets/images/imscp_logo.png'
 		|| $logoPath == $cfg->ISP_LOGO_PATH . '/' . 'isp_logo.gif'
 	) {
 		return false;

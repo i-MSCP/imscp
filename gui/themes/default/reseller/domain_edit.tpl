@@ -1,3 +1,2 @@
-
-		<!-- INCLUDE "../shared/partials/forms/domain_edit.tpl" -->
+<!-- INCLUDE "../shared/partials/forms/domain_edit.tpl" -->
 

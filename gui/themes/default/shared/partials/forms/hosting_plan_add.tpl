@@ -102,75 +102,87 @@
 
 <form id="hostingPlanAddFrm" name="hostingPlanAddFrm" method="post" action="hosting_plan_add.php">
 <table class="firstColFixed">
-<tr>
-	<th colspan="2">{TR_HOSTING_PLAN}</th>
-</tr>
-<tr>
-	<td><label for="hp_name">{TR_NAME}</label></td>
-	<td><input id="hp_name" type="text" name="hp_name" value="{HP_NAME_VALUE}" class="inputTitle"/></td>
-</tr>
-<tr>
-	<td><label for="hp_description">{TR_DESCRIPTON}</label></td>
-	<td><textarea id="hp_description" name="hp_description">{HP_DESCRIPTION_VALUE}</textarea></td>
-</tr>
+	<thead>
+	<tr>
+		<th colspan="2">{TR_HOSTING_PLAN}</th>
+	</tr>
+	</thead>
+	<tbody>
+	<tr>
+		<td><label for="hp_name">{TR_NAME}</label></td>
+		<td><input id="hp_name" type="text" name="hp_name" value="{HP_NAME_VALUE}" class="inputTitle"/></td>
+	</tr>
+	<tr>
+		<td><label for="hp_description">{TR_DESCRIPTON}</label></td>
+		<td><textarea id="hp_description" name="hp_description">{HP_DESCRIPTION_VALUE}</textarea></td>
+	</tr>
+	</tbody>
 </table>
 
 <table>
-<tr>
-	<th colspan="2">{TR_HOSTING_PLAN_LIMITS}</th>
-</tr>
-<!-- BDP: nb_subdomains -->
-<tr>
-	<td><label for="hp_sub">{TR_MAX_SUBDOMAINS}</label></td>
-	<td><input class="spinner" id="hp_sub" type="text" name="hp_sub" value="{TR_MAX_SUB_LIMITS}"/></td>
-</tr>
-<!-- EDP: nb_subdomains -->
-<!-- BDP: nb_domain_aliases -->
-<tr>
-	<td><label for="hp_als">{TR_MAX_ALIASES}</label></td>
-	<td><input class="spinner" id="hp_als" type="text" name="hp_als" value="{TR_MAX_ALS_VALUES}"/></td>
-</tr>
-<!-- EDP: nb_domain_aliases -->
-<!-- BDP: nb_mail -->
-<tr>
-	<td><label for="hp_mail">{TR_MAX_MAILACCOUNTS}</label>
-	</td>
-	<td><input class="spinner" id="hp_mail" type="text" name="hp_mail" value="{HP_MAIL_VALUE}"/></td>
-</tr>
-<!-- EDP: nb_mail -->
-<!-- BDP: nb_ftp -->
-<tr>
-	<td><label for="hp_ftp">{TR_MAX_FTP}</label></td>
-	<td><input class="spinner" id="hp_ftp" type="text" name="hp_ftp" value="{HP_FTP_VALUE}"/></td>
-</tr>
-<!-- EDP: nb_ftp -->
-<!-- BDP: nb_sqld -->
-<tr>
-	<td><label for="hp_sql_db">{TR_MAX_SQL}</label></td>
-	<td><input class="spinner" id="hp_sql_db" type="text" name="hp_sql_db" value="{HP_SQL_DB_VALUE}"/></td>
-</tr>
-<!-- EDP: nb_sqld -->
-<!-- BDP: nb_sqlu -->
-<tr>
-	<td><label for="hp_sql_user">{TR_MAX_SQL_USERS}</label></td>
-	<td><input class="spinner" id="hp_sql_user" type="text" name="hp_sql_user" value="{HP_SQL_USER_VALUE}"/></td>
-</tr>
-<!-- EDP: nb_sqlu -->
-<tr>
-	<td><label for="hp_traff">{TR_MAX_TRAFFIC}</label></td>
-	<td><input class="spinner" id="hp_traff" type="text" name="hp_traff" value="{HP_TRAFF_VALUE}"/></td>
-</tr>
-<tr>
-	<td><label for="hp_disk">{TR_DISK_LIMIT}</label></td>
-	<td><input class="spinner ui-autocomplete-input" id="hp_disk" type="text" name="hp_disk" value="{HP_DISK_VALUE}"/>
-	</td>
-</tr>
+	<thead>
+	<tr>
+		<th colspan="2">{TR_HOSTING_PLAN_LIMITS}</th>
+	</tr>
+	</thead>
+	<tbody>
+	<!-- BDP: nb_subdomains -->
+	<tr>
+		<td><label for="hp_sub">{TR_MAX_SUBDOMAINS}</label></td>
+		<td><input class="spinner" id="hp_sub" type="text" name="hp_sub" value="{TR_MAX_SUB_LIMITS}"/></td>
+	</tr>
+	<!-- EDP: nb_subdomains -->
+	<!-- BDP: nb_domain_aliases -->
+	<tr>
+		<td><label for="hp_als">{TR_MAX_ALIASES}</label></td>
+		<td><input class="spinner" id="hp_als" type="text" name="hp_als" value="{TR_MAX_ALS_VALUES}"/></td>
+	</tr>
+	<!-- EDP: nb_domain_aliases -->
+	<!-- BDP: nb_mail -->
+	<tr>
+		<td><label for="hp_mail">{TR_MAX_MAILACCOUNTS}</label>
+		</td>
+		<td><input class="spinner" id="hp_mail" type="text" name="hp_mail" value="{HP_MAIL_VALUE}"/></td>
+	</tr>
+	<!-- EDP: nb_mail -->
+	<!-- BDP: nb_ftp -->
+	<tr>
+		<td><label for="hp_ftp">{TR_MAX_FTP}</label></td>
+		<td><input class="spinner" id="hp_ftp" type="text" name="hp_ftp" value="{HP_FTP_VALUE}"/></td>
+	</tr>
+	<!-- EDP: nb_ftp -->
+	<!-- BDP: nb_sqld -->
+	<tr>
+		<td><label for="hp_sql_db">{TR_MAX_SQL}</label></td>
+		<td><input class="spinner" id="hp_sql_db" type="text" name="hp_sql_db" value="{HP_SQL_DB_VALUE}"/></td>
+	</tr>
+	<!-- EDP: nb_sqld -->
+	<!-- BDP: nb_sqlu -->
+	<tr>
+		<td><label for="hp_sql_user">{TR_MAX_SQL_USERS}</label></td>
+		<td><input class="spinner" id="hp_sql_user" type="text" name="hp_sql_user" value="{HP_SQL_USER_VALUE}"/></td>
+	</tr>
+	<!-- EDP: nb_sqlu -->
+	<tr>
+		<td><label for="hp_traff">{TR_MAX_TRAFFIC}</label></td>
+		<td><input class="spinner" id="hp_traff" type="text" name="hp_traff" value="{HP_TRAFF_VALUE}"/></td>
+	</tr>
+	<tr>
+		<td><label for="hp_disk">{TR_DISK_LIMIT}</label></td>
+		<td><input class="spinner ui-autocomplete-input" id="hp_disk" type="text" name="hp_disk"
+				   value="{HP_DISK_VALUE}"/>
+		</td>
+	</tr>
+	</tbody>
 </table>
 
 <table>
+<thead>
 <tr>
 	<th colspan="2">{TR_HOSTING_PLAN_FEATURES}</th>
 </tr>
+</thead>
+<tbody>
 <!-- BDP: php_feature -->
 <tr>
 	<td>{TR_PHP}</td>
@@ -209,9 +221,11 @@
 					<td>{TR_CAN_EDIT_ALLOW_URL_FOPEN}</td>
 					<td>
 						<div class="radio">
-							<input type="radio" name="phpini_perm_allow_url_fopen" id="phpiniAllowUrlFopenYes" value="yes"{ALLOW_URL_FOPEN_YES}/>
+							<input type="radio" name="phpini_perm_allow_url_fopen" id="phpiniAllowUrlFopenYes"
+								   value="yes"{ALLOW_URL_FOPEN_YES}/>
 							<label for="phpiniAllowUrlFopenYes">{TR_YES}</label>
-							<input type="radio" name="phpini_perm_allow_url_fopen" id="phpiniAllowUrlFopenNo" value="no"{ALLOW_URL_FOPEN_NO}/>
+							<input type="radio" name="phpini_perm_allow_url_fopen" id="phpiniAllowUrlFopenNo"
+								   value="no"{ALLOW_URL_FOPEN_NO}/>
 							<label for="phpiniAllowUrlFopenNo">{TR_NO}</label>
 						</div>
 					</td>
@@ -222,9 +236,11 @@
 					<td>{TR_CAN_EDIT_DISPLAY_ERRORS}</td>
 					<td>
 						<div class="radio">
-							<input type="radio" name="phpini_perm_display_errors" id="phpiniDisplayErrorsYes" value="yes"{DISPLAY_ERRORS_YES}/>
+							<input type="radio" name="phpini_perm_display_errors" id="phpiniDisplayErrorsYes"
+								   value="yes"{DISPLAY_ERRORS_YES}/>
 							<label for="phpiniDisplayErrorsYes">{TR_YES}</label>
-							<input type="radio" name="phpini_perm_display_errors" id="phpiniDisplayErrorsNo" value="no"{DISPLAY_ERRORS_NO}/>
+							<input type="radio" name="phpini_perm_display_errors" id="phpiniDisplayErrorsNo"
+								   value="no"{DISPLAY_ERRORS_NO}/>
 							<label for="phpiniDisplayErrorsNo">{TR_NO}</label>
 						</div>
 					</td>
@@ -235,11 +251,14 @@
 					<td>{TR_CAN_EDIT_DISABLE_FUNCTIONS}</td>
 					<td>
 						<div class="radio">
-							<input type="radio" name="phpini_perm_disable_functions" id="phpiniDisableFunctionsYes" value="yes"{DISABLE_FUNCTIONS_YES}/>
+							<input type="radio" name="phpini_perm_disable_functions" id="phpiniDisableFunctionsYes"
+								   value="yes"{DISABLE_FUNCTIONS_YES}/>
 							<label for="phpiniDisableFunctionsYes">{TR_YES}</label>
-							<input type="radio" name="phpini_perm_disable_functions" id="phpiniDisableFunctionsNo" value="no"{DISABLE_FUNCTIONS_NO}/>
+							<input type="radio" name="phpini_perm_disable_functions" id="phpiniDisableFunctionsNo"
+								   value="no"{DISABLE_FUNCTIONS_NO}/>
 							<label for="phpiniDisableFunctionsNo">{TR_NO}</label>
-							<input type="radio" name="phpini_perm_disable_functions" id="phpiniDisableFunctionsExec" value="exec"{DISABLE_FUNCTIONS_EXEC}/>
+							<input type="radio" name="phpini_perm_disable_functions" id="phpiniDisableFunctionsExec"
+								   value="exec"{DISABLE_FUNCTIONS_EXEC}/>
 							<label for="phpiniDisableFunctionsExec">{TR_ONLY_EXEC}</label>
 						</div>
 					</td>
@@ -268,7 +287,8 @@
 					<td><label for="max_execution_time">{TR_PHP_MAX_EXECUTION_TIME_DIRECTIVE}</label>
 					</td>
 					<td>
-						<input name="max_execution_time" id="max_execution_time" type="text" value="{MAX_EXECUTION_TIME}"/> <span>{TR_SEC}</span>
+						<input name="max_execution_time" id="max_execution_time" type="text"
+							   value="{MAX_EXECUTION_TIME}"/> <span>{TR_SEC}</span>
 					</td>
 				</tr>
 				<tr>
@@ -371,19 +391,25 @@
 	</td>
 	<td>
 		<div class="radio">
-			<input type="radio" name="hp_protected_webfolders" value="_yes_" id="hp_protected_webfolders_yes"{TR_PROTECT_WEB_FOLDERS_YES}/>
+			<input type="radio" name="hp_protected_webfolders" value="_yes_"
+				   id="hp_protected_webfolders_yes"{TR_PROTECT_WEB_FOLDERS_YES}/>
 			<label for="hp_protected_webfolders_yes">{TR_YES}</label>
-			<input type="radio" name="hp_protected_webfolders" value="_no_" id="hp_protected_webfolders_no"{TR_PROTECT_WEB_FOLDERS_NO}/>
+			<input type="radio" name="hp_protected_webfolders" value="_no_"
+				   id="hp_protected_webfolders_no"{TR_PROTECT_WEB_FOLDERS_NO}/>
 			<label for="hp_protected_webfolders_no">{TR_NO}</label>
 		</div>
 	</td>
 </tr>
 <!-- EDP: web_folder_protection_feature -->
+</tbody>
 </table>
 <table class="firstColFixed">
+	<thead>
 	<tr>
 		<th colspan="2">{TR_HP_AVAILABILITY}</th>
 	</tr>
+	</thead>
+	<tbody>
 	<tr>
 		<td>{TR_STATUS}</td>
 		<td>
@@ -395,6 +421,7 @@
 			</div>
 		</td>
 	</tr>
+	</tbody>
 </table>
 <!-- BDP: form -->
 <div class="buttons">
