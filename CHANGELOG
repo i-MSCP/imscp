@@ -6,6 +6,7 @@ Git Master
 
 CONFIG:
 	- Added: Packages file for Debian Jessie (testing)
+	- Added: Add SPF Resource Record Type in bind template
 	- Changed: php5-mysql package to php5-mysqlnd (native driver) when available
 	- Removed: php5-adodb package
 	- Updated: Apache templates to support 2.4.x branch
@@ -58,6 +59,7 @@ Tickets:
 	- Fixed #870: Bug - Error indicator for new tickets
 	- Fixed #876: Review - Installer - Wildcard should be allowed as part of SQL user hostname
 	- Fixed #883: Defect - Web folders protection option must be automatically disabled and hidden when the immutable flag is not available
+	- Fixed #886: Enhancement - Add SPF Resource Record Type in bind
 
 ------------------------------------------------------------------------------------------------------------------------
 1.1.0-rc3
