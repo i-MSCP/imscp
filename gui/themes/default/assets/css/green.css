@@ -95,14 +95,15 @@ thead th, tfoot td {
 th:first-child, tfoot td:first-child {border-left-color: rgb(0, 0, 0);}
 th:last-child, tfoot td:last-child {border-right-color: rgb(0, 0, 0);}
 
+/* dataTables */
+/*
 .datatable tfoot td:first-child {border-left-color: rgb(223, 223, 223);}
 .datatable tfoot td:last-child {border-right-color:rgb(223, 223, 223);}
 .datatable tfoot td {border-bottom-color:rgb(223, 223, 223);}
-
-/* dataTables */
 .datatable .sorting_asc { background: url('../images/green/datatable/asc.png') no-repeat center right; }
 .datatable .sorting_desc { background: url('../images/green/datatable/desc.png') no-repeat center right; }
 .datatable .sorting { background: url('../images/green/datatable/bg.png') no-repeat center right; }
+*/
 
 /* Form elements */
 

@@ -248,7 +248,7 @@ sub setGuiPermissions
 
 	$rs = setRights(
 		"$guiRootDir/plugins",
-		{ 'user' => $panelUName, 'group' => $panelGName, 'dirmode' => '0700', 'filemode' => '0600', 'recursive' => 1 }
+		{ 'user' => $panelUName, 'group' => $panelGName, 'dirmode' => '0750', 'filemode' => '0640', 'recursive' => 1 }
 	);
 	return $rs if $rs;
 
