@@ -10,36 +10,14 @@
 	<meta name="publisher" content="i-MSCP"/>
 	<meta name="robots" content="nofollow, noindex"/>
 	<meta name="title" content="{TR_PAGE_TITLE}"/>
-	<link href="{THEME_ASSETS_PATH}/css/imscp.css" rel="stylesheet" type="text/css"/>
-	<link href="{THEME_ASSETS_PATH}/css/{THEME_COLOR}.css" rel="stylesheet" type="text/css"/>
-	<link href="{THEME_ASSETS_PATH}/css/jquery-ui-{THEME_COLOR}.css" rel="stylesheet" type="text/css"/>
-	<script type="text/javascript" src="{THEME_ASSETS_PATH}/js/jquery.js"></script>
-	<script type="text/javascript" src="{THEME_ASSETS_PATH}/js/jquery.ui.js"></script>
-	<script type="text/javascript" src="{THEME_ASSETS_PATH}/js/jquery.dataTables.min.js"></script>
-	<script type="text/javascript" src="{THEME_ASSETS_PATH}/js/jquery.imscpTooltip-min.js"></script>
-	<script type="text/javascript" src="{THEME_ASSETS_PATH}/js/imscp.js"></script>
-	<!--[if IE 6]>
-	<script type="text/javascript" src="{THEME_ASSETS_PATH}/js/jquery.bgiframe-2.1.2.js"></script>
-	<script type="text/javascript" src="{THEME_ASSETS_PATH}/js/DD_belatedPNG_0.0.8a-min.js"></script>
-	<script type="text/javascript">
-		DD_belatedPNG.fix(
-			'.logo img, .custom_link, .database, .domains, .email, .ftp, .general, .hosting_plans, .manage_users,' +
-				'.purchasing, .settings, .statistics, .support, .webtools, .custom_link,' +
-				'.support, .profile, .webtools, .help, .logout, .backadmin, .adminlog, .billing, .debugger,.diskusage, .doc,' +
-				'.error, .flash, .hdd, .htaccess, .ip, .layout, .maintenancemode, .multilanguage, .no, .password,' +
-				'.serverstatus, .sql, .stats, .systeminfo, .tools, .traffic, .update,' +
-				'.user_blue, .user_green, .user_yellow, .user, .users, .users2, .apps_installer, .custom_link,' +
-				'.warning, .success2, .error, .info, .i_add_user, .i_awstatsicon, .i_backupicon, .i_bc_folder,' +
-				'.i_bc_locked, .i_bc_parent, .i_change_password, .i_close_interface, .i_database_small, .i_db_comit,' +
-				'.i_delete, .i_details, .i_disabled, .i_document, .i_domain_icon, .i_edit, .i_error, .i_error401,' +
-				'.i_error403, .i_error404, .i_error500, .i_error503, .i_errordocsicon, .i_filemanagericon,' +
-				'.i_ftp_account, .i_goto, .i_help, .i_hide_alias, .i_htaccessicon, .i_identity, .i_locale,' +
-				'.i_mail_icon, .i_next, .i_next_gray, .i_ok, .i_filemanager, .i_pma, .i_prev, .i_prev_gray,' +
-				'.i_reload, .i_show_alias, .i_stats, .i_user, .i_users, .i_webmailicon, .i_app_installer,' +
-				'i_app_installed, .i_app_download, .i_app_asc, .i_app_desc'
-		);
-	</script>
-	<![endif]-->
+	<link href="{THEME_ASSETS_PATH}/css/imscp.css?v={THEME_ASSETS_VERSION}" rel="stylesheet" type="text/css"/>
+	<link href="{THEME_ASSETS_PATH}/css/{THEME_COLOR}.css?v={THEME_ASSETS_VERSION}" rel="stylesheet" type="text/css"/>
+	<link href="{THEME_ASSETS_PATH}/css/jquery-ui-{THEME_COLOR}.css?v={THEME_ASSETS_VERSION}" rel="stylesheet" type="text/css"/>
+	<script type="text/javascript" src="{THEME_ASSETS_PATH}/js/jquery.js?v={THEME_ASSETS_VERSION}"></script>
+	<script type="text/javascript" src="{THEME_ASSETS_PATH}/js/jquery.ui.js?v={THEME_ASSETS_VERSION}"></script>
+	<script type="text/javascript" src="{THEME_ASSETS_PATH}/js/jquery.dataTables.min.js?v={THEME_ASSETS_VERSION}"></script>
+	<script type="text/javascript" src="{THEME_ASSETS_PATH}/js/jquery.imscpTooltip-min.js?v={THEME_ASSETS_VERSION}"></script>
+	<script type="text/javascript" src="{THEME_ASSETS_PATH}/js/imscp.js?v={THEME_ASSETS_VERSION}"></script>
 	<!--[if IE]>
 	<script type="text/javascript">
 		/*<![CDATA[*/

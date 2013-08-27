@@ -5,19 +5,12 @@
 	<meta name="robots" content="nofollow, noindex"/>
 	<meta http-equiv="Content-Type" content="text/html; charset={THEME_CHARSET}"/>
 	<meta http-equiv="Content-Script-Type" content="text/javascript"/>
-	<link href="{THEME_ASSETS_PATH}/css/imscp.css" rel="stylesheet" type="text/css"/>
-	<link href="{THEME_ASSETS_PATH}/css/{THEME_COLOR}.css" rel="stylesheet" type="text/css"/>
-	<link href="{THEME_ASSETS_PATH}/css/jquery-ui-{THEME_COLOR}.css" rel="stylesheet" type="text/css"/>
-	<script type="text/javascript" src="{THEME_ASSETS_PATH}/js/jquery.js"></script>
-	<script type="text/javascript" src="{THEME_ASSETS_PATH}/js/jquery.ui.js"></script>
-	<script type="text/javascript" src="{THEME_ASSETS_PATH}/js/jquery.imscpTooltip-min.js"></script>
-	<!--[if IE 6]>
-	<script type="text/javascript" src="{THEME_ASSETS_PATH}/js/jquery.bgiframe-2.1.2.js"></script>
-	<script type="text/javascript" src="/themes/default/js/DD_belatedPNG_0.0.8a-min.js"></script>
-	<script type="text/javascript">
-		DD_belatedPNG.fix('.login #logo, #loginBox, .webmail, .pma, .filemanager, .i_lock, .i_unlock, .error');
-	</script>
-	<![endif]-->
+	<link href="{THEME_ASSETS_PATH}/css/imscp.css?v={THEME_ASSETS_VERSION}" rel="stylesheet" type="text/css"/>
+	<link href="{THEME_ASSETS_PATH}/css/{THEME_COLOR}.css?v={THEME_ASSETS_VERSION}" rel="stylesheet" type="text/css"/>
+	<link href="{THEME_ASSETS_PATH}/css/jquery-ui-{THEME_COLOR}.css?v={THEME_ASSETS_VERSION}" rel="stylesheet" type="text/css"/>
+	<script type="text/javascript" src="{THEME_ASSETS_PATH}/js/jquery.js?v={THEME_ASSETS_VERSION}"></script>
+	<script type="text/javascript" src="{THEME_ASSETS_PATH}/js/jquery.ui.js?v={THEME_ASSETS_VERSION}"></script>
+	<script type="text/javascript" src="{THEME_ASSETS_PATH}/js/jquery.imscpTooltip-min.js?v={THEME_ASSETS_VERSION}"></script>
 	<script type="text/javascript">
 		/*<![CDATA[*/
 		$(document).ready(function () {

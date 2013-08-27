@@ -313,6 +313,12 @@ function layout_init($event)
 	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
 
+	if($cfg->DEBUG) {
+		$themesAssetsVersion = time();
+	} else {
+		$themesAssetsVersion = $cfg->THEME_ASSETS_VERSION;
+	}
+
 	$encoding = tr('encoding');
 
 	ini_set('default_charset', ($encoding !='encoding') ? $encoding : 'UTF-8');
@@ -335,6 +341,7 @@ function layout_init($event)
 		array(
 			'THEME_CHARSET' => ($encoding !='encoding') ? $encoding : 'UTF-8',
 			'THEME_ASSETS_PATH' => '/themes/' . $cfg->USER_INITIAL_THEME .  '/assets',
+			'THEME_ASSETS_VERSION' => $themesAssetsVersion,
 			'THEME_COLOR' => $color
 		)
 	);
