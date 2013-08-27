@@ -6,7 +6,7 @@ Git Master
 
 CONFIG:
 	- Added: Packages file for Debian Jessie (testing)
-	- Added: Add SPF Resource Record Type in bind template
+	- Added: SPF Resource Record Type in bind template
 	- Changed: php5-mysql package to php5-mysqlnd (native driver) when available
 	- Removed: php5-adodb package
 	- Updated: Apache templates to support 2.4.x branch
