@@ -25,7 +25,7 @@
 			$('select[name="bulkActions"] option[value=' + $(this).val() + ']').attr("selected", "selected");
 		});
 
-		$("th :checkbox").change(
+		$("thead :checkbox, tfoot :checkbox").change(
 			function ($e) {
 				$("table :checkbox").prop('checked', $(this).is(':checked'));
 			}
