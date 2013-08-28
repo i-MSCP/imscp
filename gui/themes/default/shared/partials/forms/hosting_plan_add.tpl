@@ -120,7 +120,7 @@
 	</tbody>
 </table>
 
-<table>
+<table class="firstColFixed">
 	<thead>
 	<tr>
 		<th colspan="2">{TR_HOSTING_PLAN_LIMITS}</th>
@@ -177,7 +177,7 @@
 	</tbody>
 </table>
 
-<table>
+<table class="firstColFixed">
 <thead>
 <tr>
 	<th colspan="2">{TR_HOSTING_PLAN_FEATURES}</th>
