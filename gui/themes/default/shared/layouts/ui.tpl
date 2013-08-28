@@ -18,28 +18,23 @@
 <script type="text/javascript" src="{THEME_ASSETS_PATH}/js/jquery.dataTables.min.js?v={THEME_ASSETS_VERSION}"></script>
 <script type="text/javascript" src="{THEME_ASSETS_PATH}/js/jquery.imscpTooltip-min.js?v={THEME_ASSETS_VERSION}"></script>
 <script type="text/javascript" src="{THEME_ASSETS_PATH}/js/imscp.js?v={THEME_ASSETS_VERSION}"></script>
-<!--[if IE]>
 <script type="text/javascript">
-	/*<![CDATA[*/
-	// css adjustement for IE browsers
-	$(window).load(function() {
-		$('tbody tr:odd').css('background-color', 'rgb(237, 237, 237)');
-		$('tbody tr:even').css('background-color', 'rgb(255, 255, 255)');
-	});
+/*<![CDATA[*/
+$(document).ready(function () {
+	$('tbody tr').on('change',
+		function() {
+			$('tbody tr:visible:odd').css('background-color', 'rgb(237, 237, 237)');
+			$('tbody tr:visible:even').css('background-color', 'rgb(255, 255, 255)');
+		}
+	).trigger('change');
+	$('.main_menu a').imscpTooltip();
+	$('.body a, .body span, .body input').imscpTooltip({ extraClass: "tooltip_icon tooltip_notice" });
+	$("input:submit, input:button, button").button();
+	$(".radio, .checkbox").buttonset();
+	$.fx.speeds._default = 500;
+	setTimeout(function () { $('.timeout').fadeOut(1000); }, 5000);
+});
 /*]]>*/
-</script>
-<![endif]-->
-<script type="text/javascript">
-	/*<![CDATA[*/
-	$(document).ready(function () {
-		$.fx.speeds._default = 500;
-		setTimeout(function () { $('.timeout').fadeOut(1000); }, 5000);
-		$('.main_menu a').imscpTooltip();
-		$('.body a, .body span, .body input').imscpTooltip({ extraClass: "tooltip_icon tooltip_notice" });
-		$("input:submit, input:button, button").button();
-		$(".radio, .checkbox").buttonset();
-	});
-	/*]]>*/
 </script>
 </head>
 <body>

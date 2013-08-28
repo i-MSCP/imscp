@@ -20,7 +20,7 @@
 		// PHP Editor settings button
 		if ($('#php_no').is(':checked')){ $('#php_editor_block').hide();}
 
-			$('#php_yes,#php_no').change(function (){ $('#php_editor_block').fadeToggle(); });
+			$('#php_yes,#php_no').change(function (){ $('#php_editor_block').toggle(); });
 
 		$('#php_editor_dialog_open').button({icons:{primary:'ui-icon-gear'}}).click(function (e) {
 			$('#php_editor_dialog').dialog('open');

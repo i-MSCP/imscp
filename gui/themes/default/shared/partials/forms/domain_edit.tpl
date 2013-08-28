@@ -41,7 +41,7 @@
 		}
 
 		$('#php_yes,#php_no').change(function () {
-			$('#php_editor_block').fadeToggle();
+			$('#php_editor_block').toggle();
 		});
 
 		$('#php_editor_dialog_open').button({ icons: { primary: 'ui-icon-gear' } }).click(function (e) {

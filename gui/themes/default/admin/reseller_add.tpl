@@ -65,7 +65,7 @@
 		});
 
 		// PHP Editor settings button
-		$('#php_editor_dialog_open').button({icons:{primary:'ui-icon-gear'}}).click(function (e) {
+		$('#php_editor_dialog_open').button({ icons:{ primary:'ui-icon-gear'} }).click(function (e) {
 			$('#php_editor_dialog').dialog('open');
 			return false;
 		});

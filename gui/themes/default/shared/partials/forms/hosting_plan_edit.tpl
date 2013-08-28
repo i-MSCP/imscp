@@ -36,7 +36,7 @@
 
 		$('#hp_php_yes,#hp_php_no').change(
 			function () {
-				$('#php_editor_block').fadeToggle();
+				$('#php_editor_block').toggle();
 			}
 		);
 
