@@ -23,7 +23,7 @@
 		// Create dialog box for some messages (password and notices)
 		$('#dialog_box').dialog({
 			modal: true, autoOpen: false, hide: 'blind', show: 'blind',
-			buttons: {Ok: function(){$(this).dialog('close');}}
+			buttons: { Ok: function(){ $(this).dialog('close'); }}
 		});
 
 		// Show generated password in specific dialog box

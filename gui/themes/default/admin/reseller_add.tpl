@@ -247,9 +247,12 @@
 					<span id="msg_default">{TR_FIELDS_OK}</span>
 				</div>
 				<table>
+					<thead>
 					<tr class="description">
 						<th colspan="2">{TR_PERMISSIONS}</th>
 					</tr>
+					</thead>
+					<tbody>
 					<tr>
 						<td>
 							{TR_PHP_INI_AL_ALLOW_URL_FOPEN}
@@ -303,9 +306,15 @@
 						</td>
 					</tr>
 					<!-- EDP: php_editor_disable_functions_block -->
+					</tbody>
+				</table>
+				<table>
+					<thead>
 					<tr class="description">
 						<th colspan="2">{TR_DIRECTIVES_VALUES}</th>
 					</tr>
+					</thead>
+					<tbody>
 					<tr>
 						<td><label for="php_ini_max_post_max_size">{TR_PHP_INI_MAX_POST_MAX_SIZE}</label></td>
 						<td>
@@ -342,6 +351,7 @@
 								   value="{PHP_INI_MAX_MEMORY_LIMIT}"/> <span>{TR_MIB}</span>
 						</td>
 					</tr>
+					</tbody>
 				</table>
 			</div>
 		</td>
