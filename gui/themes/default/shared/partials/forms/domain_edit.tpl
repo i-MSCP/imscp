@@ -121,11 +121,11 @@
 		<td>{TR_DOMAIN_NEW_EXPIRE_DATE}</td>
 		<td>
 			<div style="position:relative">
-						<span style="display:inline-block;">
-							<input type="text" id="domain_expires" name="domain_expires"
-								   value="{DOMAIN_NEW_EXPIRE_DATE}" {DOMAIN_NEW_EXPIRE_DATE_DISABLED} />
-							<label for="domain_expires" style="display:block;color:#999999;font-size: smaller;">(MM/DD/YYYY)</label>
-						</span>
+				<span style="display:inline-block;">
+					<input type="text" id="domain_expires" name="domain_expires"
+						   value="{DOMAIN_NEW_EXPIRE_DATE}" {DOMAIN_NEW_EXPIRE_DATE_DISABLED} />
+					<label for="domain_expires" style="display:block;color:#999999;font-size: smaller;">(MM/DD/YYYY)</label>
+				</span>
 			</div>
 		</td>
 		<td>
@@ -159,109 +159,62 @@
 	<!-- BDP: subdomain_limit_block -->
 	<tr>
 		<td><label for="domain_subd_limit">{TR_SUBDOMAINS_LIMIT}</label></td>
-		<td>
-			<input type="text" name="domain_subd_limit" id="domain_subd_limit" value="{SUBDOMAIN_LIMIT}"/>
-		</td>
-		<td>
-			<span style="font-size: smaller;">{TR_CUSTOMER_SUBDOMAINS_COMSUPTION}</span>
-		</td>
-		<td>
-			<span style="font-size: smaller;">{TR_RESELLER_SUBDOMAINS_COMSUPTION}</span>
-		</td>
+		<td><input type="text" name="domain_subd_limit" id="domain_subd_limit" value="{SUBDOMAIN_LIMIT}"/></td>
+		<td><span style="font-size: smaller;">{TR_CUSTOMER_SUBDOMAINS_COMSUPTION}</span></td>
+		<td><span style="font-size: smaller;">{TR_RESELLER_SUBDOMAINS_COMSUPTION}</span></td>
 	</tr>
 	<!-- EDP: subdomain_limit_block -->
 	<!-- BDP: domain_aliases_limit_block -->
 	<tr>
 		<td><label for="domain_alias_limit">{TR_ALIASSES_LIMIT}</label></td>
-		<td>
-			<input type="text" name="domain_alias_limit" id="domain_alias_limit" value="{DOMAIN_ALIASSES_LIMIT}"/>
-		</td>
-		<td>
-			<span style="font-size: smaller;">{TR_CUSTOMER_DOMAIN_ALIASSES_COMSUPTION}</span>
-		</td>
-		<td>
-			<span style="font-size: smaller;">{TR_RESELLER_DOMAIN_ALIASSES_COMSUPTION}</span>
-		</td>
+		<td><input type="text" name="domain_alias_limit" id="domain_alias_limit" value="{DOMAIN_ALIASSES_LIMIT}"/></td>
+		<td><span style="font-size: smaller;">{TR_CUSTOMER_DOMAIN_ALIASSES_COMSUPTION}</span></td>
+		<td><span style="font-size: smaller;">{TR_RESELLER_DOMAIN_ALIASSES_COMSUPTION}</span></td>
 	</tr>
 	<!-- EDP: domain_aliases_limit_block -->
 	<!-- BDP: mail_accounts_limit_block -->
 	<tr>
 		<td><label for="domain_mailacc_limit">{TR_MAIL_ACCOUNTS_LIMIT}</label></td>
-		<td>
-			<input type="text" name="domain_mailacc_limit" id="domain_mailacc_limit" value="{MAIL_ACCOUNTS_LIMIT}"/>
-		</td>
-		<td>
-			<span style="font-size: smaller;">{TR_CUSTOMER_MAIL_ACCOUNTS_COMSUPTION}</span>
-		</td>
-		<td>
-			<span style="font-size: smaller;">{TR_RESELLER_MAIL_ACCOUNTS_COMSUPTION}</span>
-		</td>
+		<td><input type="text" name="domain_mailacc_limit" id="domain_mailacc_limit" value="{MAIL_ACCOUNTS_LIMIT}"/></td>
+		<td><span style="font-size: smaller;">{TR_CUSTOMER_MAIL_ACCOUNTS_COMSUPTION}</span></td>
+		<td><span style="font-size: smaller;">{TR_RESELLER_MAIL_ACCOUNTS_COMSUPTION}</span></td>
 	</tr>
 	<!-- EDP: mail_accounts_limit_block -->
 	<!-- BDP: ftp_accounts_limit_block -->
 	<tr>
 		<td><label for="domain_ftpacc_limit">{TR_FTP_ACCOUNTS_LIMIT}</label></td>
-		<td>
-			<input type="text" name="domain_ftpacc_limit" id="domain_ftpacc_limit" value="{FTP_ACCOUNTS_LIMIT}"/>
-
-		</td>
-		<td>
-			<span style="font-size: smaller;">{TR_CUSTOMER_FTP_ACCOUNTS_COMSUPTION}</span>
-		</td>
-		<td>
-			<span style="font-size: smaller;">{TR_RESELLER_FTP_ACCOUNTS_COMSUPTION}</span>
-		</td>
+		<td><input type="text" name="domain_ftpacc_limit" id="domain_ftpacc_limit" value="{FTP_ACCOUNTS_LIMIT}"/></td>
+		<td><span style="font-size: smaller;">{TR_CUSTOMER_FTP_ACCOUNTS_COMSUPTION}</span></td>
+		<td><span style="font-size: smaller;">{TR_RESELLER_FTP_ACCOUNTS_COMSUPTION}</span></td>
 	</tr>
 	<!-- EDP: ftp_accounts_limit_block -->
 	<!-- BDP: sql_db_and_users_limit_block -->
 	<tr>
 		<td><label for="domain_sqld_limit">{TR_SQL_DATABASES_LIMIT}</label></td>
-		<td>
-			<input type="text" name="domain_sqld_limit" id="domain_sqld_limit" value="{SQL_DATABASES_LIMIT}"/>
-		</td>
-		<td>
-			<span style="font-size: smaller;">{TR_CUSTOMER_SQL_DATABASES_COMSUPTION}</span>
-		</td>
-		<td>
-			<span style="font-size: smaller;">{TR_RESELLER_SQL_DATABASES_COMSUPTION}</span>
-		</td>
+		<td><input type="text" name="domain_sqld_limit" id="domain_sqld_limit" value="{SQL_DATABASES_LIMIT}"/></td>
+		<td><span style="font-size: smaller;">{TR_CUSTOMER_SQL_DATABASES_COMSUPTION}</span></td>
+		<td><span style="font-size: smaller;">{TR_RESELLER_SQL_DATABASES_COMSUPTION}</span></td>
 	</tr>
 	<tr>
 		<td><label for="domain_sqlu_limit">{TR_SQL_USERS_LIMIT}</label></td>
-		<td>
-			<input type="text" name="domain_sqlu_limit" id="domain_sqlu_limit" value="{SQL_USERS_LIMIT}"/>
+		<td><input type="text" name="domain_sqlu_limit" id="domain_sqlu_limit" value="{SQL_USERS_LIMIT}"/>
 		</td>
-		<td>
-			<span style="font-size: smaller;">{TR_CUSTOMER_SQL_USERS_COMSUPTION}</span>
+		<td><span style="font-size: smaller;">{TR_CUSTOMER_SQL_USERS_COMSUPTION}</span>
 		</td>
-		<td>
-			<span style="font-size: smaller;">{TR_RESELLER_SQL_USERS_COMSUPTION}</span>
-		</td>
+		<td><span style="font-size: smaller;">{TR_RESELLER_SQL_USERS_COMSUPTION}</span></td>
 	</tr>
 	<!-- EDP: sql_db_and_users_limit_block -->
 	<tr>
 		<td><label for="domain_traffic_limit">{TR_TRAFFIC_LIMIT}</label></td>
-		<td>
-			<input type="text" name="domain_traffic_limit" id="domain_traffic_limit" value="{TRAFFIC_LIMIT}"/>
-		</td>
-		<td>
-			<span style="font-size: smaller;">{TR_CUSTOMER_TRAFFIC_COMSUPTION}</span>
-		</td>
-		<td>
-			<span style="font-size: smaller;">{TR_RESELLER_TRAFFIC_COMSUPTION}</span>
-		</td>
+		<td><input type="text" name="domain_traffic_limit" id="domain_traffic_limit" value="{TRAFFIC_LIMIT}"/></td>
+		<td><span style="font-size: smaller;">{TR_CUSTOMER_TRAFFIC_COMSUPTION}</span></td>
+		<td><span style="font-size: smaller;">{TR_RESELLER_TRAFFIC_COMSUPTION}</span></td>
 	</tr>
 	<tr>
 		<td><label for="domain_disk_limit">{TR_DISK_LIMIT}</label></td>
-		<td>
-			<input type="text" name="domain_disk_limit" id="domain_disk_limit" value="{DISK_LIMIT}"/>
-		</td>
-		<td>
-			<span style="font-size: smaller;">{TR_CUSTOMER_DISKPACE_COMSUPTION}</span>
-		</td>
-		<td>
-			<span style="font-size: smaller;">{TR_RESELLER_DISKPACE_COMSUPTION}</span>
-		</td>
+		<td><input type="text" name="domain_disk_limit" id="domain_disk_limit" value="{DISK_LIMIT}"/></td>
+		<td><span style="font-size: smaller;">{TR_CUSTOMER_DISKPACE_COMSUPTION}</span></td>
+		<td><span style="font-size: smaller;">{TR_RESELLER_DISKPACE_COMSUPTION}</span></td>
 	</tr>
 	</tbody>
 </table>
@@ -299,11 +252,14 @@
 			<div class="php_editor_error success">
 				<span id="msg_default">{TR_FIELDS_OK}</span>
 			</div>
+			<!-- BDP: php_editor_permissions_block -->
 			<table>
-				<!-- BDP: php_editor_permissions_block -->
+				<thead>
 				<tr class="description">
 					<th colspan="2">{TR_PERMISSIONS}</th>
 				</tr>
+				</thead>
+				<tbody>
 				<!-- BDP: php_editor_allow_url_fopen_block -->
 				<tr>
 					<td>{TR_CAN_EDIT_ALLOW_URL_FOPEN}</td>
@@ -352,11 +308,17 @@
 					</td>
 				</tr>
 				<!-- EDP: php_editor_disable_functions_block -->
-				<!-- EDP: php_editor_permissions_block -->
-				<!-- BDP: php_editor_default_values_block -->
+				</tbody>
+			</table>
+			<!-- EDP: php_editor_permissions_block -->
+			<!-- BDP: php_editor_default_values_block -->
+			<table>
+				<thead>
 				<tr class="description">
 					<th colspan="2">{TR_DIRECTIVES_VALUES}</th>
 				</tr>
+				</thead>
+				<tbody>
 				<tr>
 					<td><label for="post_max_size">{TR_PHP_POST_MAX_SIZE_DIRECTIVE}</label></td>
 					<td>
@@ -392,8 +354,9 @@
 						<span>{TR_MIB}</span>
 					</td>
 				</tr>
-				<!-- EDP: php_editor_default_values_block -->
+				</tbody>
 			</table>
+			<!-- EDP: php_editor_default_values_block -->
 		</div>
 	</td>
 </tr>

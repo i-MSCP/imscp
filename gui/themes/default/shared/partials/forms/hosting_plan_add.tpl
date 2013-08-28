@@ -212,11 +212,14 @@
 			<div class="php_editor_error success">
 				<span id="msg_default">{TR_FIELDS_OK}</span>
 			</div>
+			<!-- BDP: php_editor_permissions_block -->
 			<table>
-				<!-- BDP: php_editor_permissions_block -->
+				<thead>
 				<tr class="description">
 					<th colspan="2">{TR_PERMISSIONS}</th>
 				</tr>
+				</thead>
+				<tbody>
 				<!-- BDP: php_editor_allow_url_fopen_block -->
 				<tr>
 					<td>{TR_CAN_EDIT_ALLOW_URL_FOPEN}</td>
@@ -265,11 +268,17 @@
 					</td>
 				</tr>
 				<!-- EDP: php_editor_disable_functions_block -->
-				<!-- EDP: php_editor_permissions_block -->
-				<!-- BDP: php_editor_default_values_block -->
+				</tbody>
+			</table>
+			<!-- EDP: php_editor_permissions_block -->
+			<!-- BDP: php_editor_default_values_block -->
+			<table>
+				<thead>
 				<tr class="description">
 					<th colspan="2">{TR_DIRECTIVES_VALUES}</th>
 				</tr>
+				</thead>
+				<tbody>
 				<tr>
 					<td><label for="post_max_size">{TR_PHP_POST_MAX_SIZE_DIRECTIVE}</label></td>
 					<td>
@@ -278,7 +287,7 @@
 					</td>
 				</tr>
 				<tr>
-					<td><label for="upload_max_filesize">{PHP_UPLOAD_MAX_FILESIZE_DIRECTIVE}</label></td>
+					<td><label for="upload_max_filesize">{TR_PHP_UPLOAD_MAX_FILEZISE_DIRECTIVE}</label></td>
 					<td>
 						<input name="upload_max_filesize" id="upload_max_filesize" type="text"
 							   value="{UPLOAD_MAX_FILESIZE}"/> <span>{TR_MIB}</span>
@@ -306,8 +315,9 @@
 						<span>{TR_MIB}</span>
 					</td>
 				</tr>
-				<!-- EDP: php_editor_default_values_block -->
+				</tbody>
 			</table>
+			<!-- EDP: php_editor_default_values_block -->
 		</div>
 	</td>
 </tr>
