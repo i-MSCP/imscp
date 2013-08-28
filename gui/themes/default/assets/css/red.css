@@ -115,27 +115,22 @@ tbody {
     color: #222222;
 }
 
+
 tbody tr:nth-child(odd) {
-    background-color: rgb(237, 237, 237);
+    background-color: rgb(255, 255, 255);
 }
 
-.even {
-    background: rgb(255, 255, 255);
+tbody tr:nth-child(even) {
+    background-color: rgb(237, 237, 237);
 }
 
 .odd {
-    background-color: rgb(237, 237, 237);
+    background-color: rgb(255, 255, 255);
 }
 
-/* dataTables */
-/*
-.datatable tfoot td:first-child {border-left-color: rgb(223, 223, 223);}
-.datatable tfoot td:last-child {border-right-color:rgb(223, 223, 223);}
-.datatable tfoot td {border-bottom-color:rgb(223, 223, 223);}
-.datatable .sorting_asc { background: url('../images/red/datatable/asc.png') no-repeat center right; }
-.datatable .sorting_desc { background: url('../images/red/datatable/desc.png') no-repeat center right; }
-.datatable .sorting { background: url('../images/red/datatable/bg.png') no-repeat center right; }
-*/
+.even {
+    background-color: rgb(237, 237, 237);
+}
 
 /* Form elements */
 

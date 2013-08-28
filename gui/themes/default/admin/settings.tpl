@@ -22,7 +22,7 @@
 <div class="accordion">
 <h1><strong>{TR_UPDATES}</strong></h1>
 <div style="padding: 0">
-	<div class="even">
+	<div class="odd">
 		<div class="left"><label for="checkforupdate">{TR_CHECK_FOR_UPDATES}</label></div>
 		<div class="right">
 			<select name="checkforupdate" id="checkforupdate">
@@ -35,7 +35,7 @@
 <h1><strong>{TR_LOSTPASSWORD}</strong></h1>
 
 <div style="padding: 0">
-	<div class="even">
+	<div class="odd">
 		<div class="left"><label for="lostpassword">{TR_LOSTPASSWORD}</label></div>
 		<div class="right">
 			<select name="lostpassword" id="lostpassword">
@@ -44,7 +44,7 @@
 			</select>
 		</div>
 	</div>
-	<div class="odd">
+	<div class="even">
 		<div class="left">
 			<label for="lostpassword_timeout">{TR_LOSTPASSWORD_TIMEOUT}</label>
 		</div>
@@ -57,7 +57,7 @@
 <h1><strong>{TR_PASSWORD_SETTINGS}</strong></h1>
 
 <div style="padding: 0">
-	<div class="even">
+	<div class="odd">
 		<div class="left"><label for="passwd_strong">{TR_PASSWD_STRONG}</label></div>
 		<div class="right">
 			<select name="passwd_strong" id="passwd_strong">
@@ -65,7 +65,7 @@
 				<option value="1" {PASSWD_STRONG_ON}>{TR_ENABLED}</option>
 			</select>
 		</div>
-		<div class="odd" style="width: 100%">
+		<div class="even" style="width: 100%">
 			<div class="left"><label for="passwd_chars">{TR_PASSWD_CHARS}</label></div>
 			<div class="right">
 				<input type="text" name="passwd_chars" id="passwd_chars" value="{PASSWD_CHARS}" maxlength="2"/>
@@ -76,7 +76,7 @@
 <h1><strong>{TR_BRUTEFORCE}</strong></h1>
 
 <div style="padding: 0">
-	<div class="even">
+	<div class="odd">
 		<div class="left"><label for="bruteforce">{TR_BRUTEFORCE}</label></div>
 		<div class="right">
 			<select name="bruteforce" id="bruteforce">
@@ -85,7 +85,7 @@
 			</select>
 		</div>
 	</div>
-	<div class="odd">
+	<div class="even">
 		<div class="left"><label for="bruteforce_between">{TR_BRUTEFORCE_BETWEEN}</label></div>
 		<div class="right">
 			<select name="bruteforce_between" id="bruteforce_between">
@@ -94,28 +94,28 @@
 			</select>
 		</div>
 	</div>
-	<div class="even">
+	<div class="odd">
 		<div class="left"><label for="bruteforce_max_login">{TR_BRUTEFORCE_MAX_LOGIN}</label></div>
 		<div class="right">
 			<input type="text" name="bruteforce_max_login" id="bruteforce_max_login"
 				   value="{BRUTEFORCE_MAX_LOGIN_VALUE}" maxlength="3"/>
 		</div>
 	</div>
-	<div class="odd">
+	<div class="even">
 		<div class="left"><label for="bruteforce_block_time">{TR_BRUTEFORCE_BLOCK_TIME}</label></div>
 		<div class="right">
 			<input name="bruteforce_block_time" id="bruteforce_block_time" type="text"
 				   value="{BRUTEFORCE_BLOCK_TIME_VALUE}" maxlength="3"/>
 		</div>
 	</div>
-	<div class="even">
+	<div class="odd">
 		<div class="left"><label for="bruteforce_between_time">{TR_BRUTEFORCE_BETWEEN_TIME}</label></div>
 		<div class="right">
 			<input name="bruteforce_between_time" id="bruteforce_between_time" type="text"
 				   value="{BRUTEFORCE_BETWEEN_TIME_VALUE}" maxlength="3"/>
 		</div>
 	</div>
-	<div class="odd">
+	<div class="even">
 		<div class="left">
 			<label for="bruteforce_max_attempts_before_wait">{TR_BRUTEFORCE_MAX_ATTEMPTS_BEFORE_WAIT}</label>
 		</div>
@@ -124,7 +124,7 @@
 				   value="{BRUTEFORCE_MAX_ATTEMPTS_BEFORE_WAIT}" maxlength="3"/>
 		</div>
 	</div>
-	<div class="even">
+	<div class="odd">
 		<div class="left"><label for="bruteforce_max_capcha">{TR_BRUTEFORCE_MAX_CAPTCHA}</label></div>
 		<div class="right">
 			<input name="bruteforce_max_capcha" id="bruteforce_max_capcha" type="text" value="{BRUTEFORCE_MAX_CAPTCHA}"
@@ -135,7 +135,7 @@
 <h1><strong>{TR_DNAMES_VALIDATION_SETTINGS}</strong></h1>
 
 <div style="padding: 0">
-	<div class="even">
+	<div class="odd">
 		<div class="left">
 			<label for="tld_strict_validation">{TR_TLD_STRICT_VALIDATION}</label>
 			<span class="icon i_help" title="{TR_TLD_STRICT_VALIDATION_HELP}">{TR_HELP}</span>
@@ -147,7 +147,7 @@
 			</select>
 		</div>
 	</div>
-	<div class="odd">
+	<div class="even">
 		<div class="left">
 			<label for="sld_strict_validation">{TR_SLD_STRICT_VALIDATION}</label>
 			<span class="icon i_help" title="{TR_SLD_STRICT_VALIDATION_HELP}">{TR_HELP}</span>
@@ -159,7 +159,7 @@
 			</select>
 		</div>
 	</div>
-	<div class="even">
+	<div class="odd">
 		<div class="left"><label for="max_dnames_labels">{TR_MAX_DNAMES_LABELS}</label>
 		</div>
 		<div class="right">
@@ -167,7 +167,7 @@
 				   maxlength="2"/>
 		</div>
 	</div>
-	<div class="odd">
+	<div class="even">
 		<div class="left">
 			<label for="max_subdnames_labels">{TR_MAX_SUBDNAMES_LABELS}</label>
 		</div>
@@ -180,7 +180,7 @@
 <h1><strong>{TR_MAIL_SETTINGS}</strong></h1>
 
 <div style="padding: 0">
-	<div class="even">
+	<div class="odd">
 		<div class="left"><label for="create_default_email_addresses">{TR_CREATE_DEFAULT_EMAIL_ADDRESSES}</label></div>
 		<div class="right">
 			<select name="create_default_email_addresses" id="create_default_email_addresses">
@@ -189,7 +189,7 @@
 			</select>
 		</div>
 	</div>
-	<div class="odd">
+	<div class="even">
 		<div class="left"><label for="count_default_email_addresses">{TR_COUNT_DEFAULT_EMAIL_ADDRESSES}</label></div>
 		<div class="right">
 			<select name="count_default_email_addresses" id="count_default_email_addresses">
@@ -198,7 +198,7 @@
 			</select>
 		</div>
 	</div>
-	<div class="even">
+	<div class="odd">
 		<div class="left"><label for="hard_mail_suspension">{TR_HARD_MAIL_SUSPENSION}</label></div>
 		<div class="right">
 			<select name="hard_mail_suspension" id="hard_mail_suspension">
@@ -211,7 +211,7 @@
 <h1><strong>{TR_PHPINI_BASE_SETTINGS}</strong></h1>
 
 <div style="padding: 0">
-	<div class="even">
+	<div class="odd">
 		<div class="left"><label for="phpini_allow_url_fopen">{TR_PHPINI_ALLOW_URL_FOPEN}</label></div>
 		<div class="right">
 			<select name="phpini_allow_url_fopen" id="phpini_allow_url_fopen">
@@ -220,7 +220,7 @@
 			</select>
 		</div>
 	</div>
-	<div class="odd">
+	<div class="even">
 		<div class="left"><label for="phpini_display_errors">{TR_PHPINI_DISPLAY_ERRORS}</label></div>
 		<div class="right">
 			<select name="phpini_display_errors" id="phpini_display_errors">
@@ -229,7 +229,7 @@
 			</select>
 		</div>
 	</div>
-	<div class="even">
+	<div class="odd">
 		<div class="left"><label for="phpini_error_reporting">{TR_PHPINI_ERROR_REPORTING}</label></div>
 		<div class="right">
 			<select name="phpini_error_reporting" id="phpini_error_reporting">
@@ -243,14 +243,14 @@
 			</select>
 		</div>
 	</div>
-	<div class="odd">
+	<div class="even">
 		<div class="left"><label for="phpini_post_max_size">{TR_PHPINI_POST_MAX_SIZE}</label></div>
 		<div class="right">
 			<input name="phpini_post_max_size" id="phpini_post_max_size" type="text"
 				   value="{PHPINI_POST_MAX_SIZE}"/> {TR_MIB}
 		</div>
 	</div>
-	<div class="even">
+	<div class="odd">
 		<div class="left"><label for="phpini_upload_max_filesize">{TR_PHPINI_UPLOAD_MAX_FILESIZE}</label>
 		</div>
 		<div class="right">
@@ -258,7 +258,7 @@
 				   value="{PHPINI_UPLOAD_MAX_FILESIZE}"/> {TR_MIB}
 		</div>
 	</div>
-	<div class="odd">
+	<div class="even">
 		<div class="left">
 			<label for="phpini_max_execution_time">{TR_PHPINI_MAX_EXECUTION_TIME}</label>
 		</div>
@@ -267,21 +267,21 @@
 				   value="{PHPINI_MAX_EXECUTION_TIME}"/> {TR_SEC}
 		</div>
 	</div>
-	<div class="even">
+	<div class="odd">
 		<div class="left"><label for="phpini_max_input_time">{TR_PHPINI_MAX_INPUT_TIME}</label></div>
 		<div class="right">
 			<input name="phpini_max_input_time" id="phpini_max_input_time" type="text"
 				   value="{PHPINI_MAX_INPUT_TIME}"/> {TR_SEC}
 		</div>
 	</div>
-	<div class="odd">
+	<div class="even">
 		<div class="left"><label for="phpini_memory_limit">{TR_PHPINI_MEMORY_LIMIT}</label></div>
 		<div class="right">
 			<input name="phpini_memory_limit" id="phpini_memory_limit" type="text"
 				   value="{PHPINI_MEMORY_LIMIT}"/> {TR_MIB}
 		</div>
 	</div>
-	<div class="even">
+	<div class="odd">
 		<div class="left">
 			<label for="phpini_open_basedir">{TR_PHPINI_OPEN_BASEDIR}</label>
 			<span class="icon i_help" title={TR_PHPINI_OPEN_BASEDIR_TOOLTIP}>{TR_HELP}</span>
@@ -291,7 +291,7 @@
 		</div>
 	</div>
 	<!-- BDP: php_editor_disable_functions_block -->
-	<div class="odd">
+	<div class="even">
 		<div class="left"><label>{TR_PHPINI_DISABLE_FUNCTIONS}</label></div>
 		<div class="right">
 			<div class="radio">
@@ -319,7 +319,7 @@
 <h1><strong>{TR_OTHER_SETTINGS}</strong></h1>
 
 <div style="padding: 0">
-	<div class="even">
+	<div class="odd">
 		<div class="left"><label for="def_language">{TR_USER_INITIAL_LANG}</label></div>
 		<div class="right">
 			<select name="def_language" id="def_language">
@@ -329,7 +329,7 @@
 			</select>
 		</div>
 	</div>
-	<div class="odd">
+	<div class="even">
 		<div class="left"><label for="support_system">{TR_SUPPORT_SYSTEM}</label></div>
 		<div class="right">
 			<select name="support_system" id="support_system">
@@ -338,7 +338,7 @@
 			</select>
 		</div>
 	</div>
-	<div class="even">
+	<div class="odd">
 		<div class="left"><label for="compress_output">{TR_COMPRESS_OUTPUT}</label></div>
 		<div class="right">
 			<select name="compress_output" id="compress_output">
@@ -347,7 +347,7 @@
 			</select>
 		</div>
 	</div>
-	<div class="odd">
+	<div class="even">
 		<div class="left"><label for="show_compression_size">{TR_SHOW_COMPRESSION_SIZE}</label></div>
 		<div class="right">
 			<select name="show_compression_size" id="show_compression_size">
@@ -356,7 +356,7 @@
 			</select>
 		</div>
 	</div>
-	<div class="even">
+	<div class="odd">
 		<div class="left"><label for="hosting_plan_level">{TR_HOSTING_PLANS_LEVEL}</label></div>
 		<div class="right">
 			<select name="hosting_plan_level" id="hosting_plan_level">
@@ -365,14 +365,14 @@
 			</select>
 		</div>
 	</div>
-	<div class="odd">
+	<div class="even">
 		<div class="left"><label for="domain_rows_per_page">{TR_DOMAIN_ROWS_PER_PAGE}</label></div>
 		<div class="right">
 			<input name="domain_rows_per_page" id="domain_rows_per_page" type="text" value="{DOMAIN_ROWS_PER_PAGE}"
 				   maxlength="3"/>
 		</div>
 	</div>
-	<div class="even">
+	<div class="odd">
 		<div class="left"><label for="log_level">{TR_LOG_LEVEL}</label></div>
 		<div class="right">
 			<select name="log_level" id="log_level">
@@ -383,7 +383,7 @@
 			</select>
 		</div>
 	</div>
-	<div class="odd">
+	<div class="even">
 		<div class="left">
 			<label for="prevent_external_login_admin">{TR_PREVENT_EXTERNAL_LOGIN_ADMIN}</label>
 		</div>
@@ -394,7 +394,7 @@
 			</select>
 		</div>
 	</div>
-	<div class="even">
+	<div class="odd">
 		<div class="left">
 			<label for="prevent_external_login_reseller">{TR_PREVENT_EXTERNAL_LOGIN_RESELLER}</label>
 		</div>
@@ -405,7 +405,7 @@
 			</select>
 		</div>
 	</div>
-	<div class="odd">
+	<div class="even">
 		<div class="left">
 			<label for="prevent_external_login_client">{TR_PREVENT_EXTERNAL_LOGIN_CLIENT}</label>
 		</div>
@@ -416,7 +416,7 @@
 			</select>
 		</div>
 	</div>
-	<div class="even">
+	<div class="odd">
 		<div class="left"><label for="enableSSL">{TR_ENABLE_SSL}</label></div>
 		<div class="right">
 			<select name="enableSSL" id="enableSSL">

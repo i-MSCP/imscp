@@ -1472,7 +1472,7 @@ table .graph {
     vertical-align: middle;
 }
 
-.accordion .even, .accordion .odd {
+.accordion .odd, .accordion .even {
     width: 100%;
 }
 

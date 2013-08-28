@@ -22,17 +22,9 @@
 <script type="text/javascript">
 	/*<![CDATA[*/
 	// css adjustement for IE browsers
-	$(window).load(function(){
-		$('tr').each(function(index) {
-			if(index % 2) {
-				$(this).css('background-color', 'rgb(255, 255, 255)');
-			} else {
-				$(this).css('background-color', 'rgb(237, 237, 237)');
-			}
-		});
-			$("td:last-child").css('border-right','1px solid rgb(223, 223, 223)');
-		$("th:last-child, tfoot td:last-child").css('border-right','1px solid rgb(0, 0, 0)');
-		$(".datatable tfoot td:last-child").css('border-right','1px solid rgb(223, 223, 223)');
+	$(window).load(function() {
+		$('tbody tr:odd').css('background-color', 'rgb(237, 237, 237)');
+		$('tbody tr:even').css('background-color', 'rgb(255, 255, 255)');
 	});
 /*]]>*/
 </script>
@@ -41,17 +33,11 @@
 	/*<![CDATA[*/
 	$(document).ready(function () {
 		$.fx.speeds._default = 500;
-		setTimeout(function () {
-			$('.timeout').fadeOut(1000);
-		}, 5000);
+		setTimeout(function () { $('.timeout').fadeOut(1000); }, 5000);
 		$('.main_menu a').imscpTooltip();
-		$('.body a, .body span, .body input').imscpTooltip({extraClass:"tooltip_icon tooltip_notice"});
-			// Setup buttons
+		$('.body a, .body span, .body input').imscpTooltip({ extraClass: "tooltip_icon tooltip_notice" });
 		$("input:submit, input:button, button").button();
 		$(".radio, .checkbox").buttonset();
-		$(":radio, :checkbox").change(function () {
-			$(this).blur();
-		});
 	});
 	/*]]>*/
 </script>
