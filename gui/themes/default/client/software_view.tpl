@@ -1,3 +1,4 @@
+
 <!-- BDP: software_item -->
 <table class="firstColFixed">
 	<tr>
@@ -32,13 +33,13 @@
 		<td colspan="2">{TR_DESC}<br/><br/>
 			<table>
 				<tr>
-					<td style="text-align: justify">{SOFTWARE_DESC}</td>
+					<td>{SOFTWARE_DESC}</td>
 				</tr>
 			</table>
 		</td>
 	</tr>
 	<tr>
-		<td>{TR_LINK}:</td>
+		<td>{TR_LINK}</td>
 		<td><a href="{SOFTWARE_LINK}" target="_blank">{SOFTWARE_LINK}</a></td>
 	</tr>
 	<!-- BDP: installed_software_info -->

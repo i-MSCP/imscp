@@ -160,106 +160,111 @@ function generate_reseller_users_props($resellerId)
 }
 
 /**
- * Must be documented
+ * Generate query for user search form
  *
- * @param  $search_query
- * @param  $count_query
- * @param  $start_index
- * @param  $rows_per_page
- * @param  $search_for
- * @param  $search_common
- * @param  $search_status
+ * @param  string &$searchQuery
+ * @param  string &$countQuery
+ * @param  int $startIndex
+ * @param  int $rowsPerPage
+ * @param  string $searchFor
+ * @param  string $searchCommon
+ * @param  string $searchStatus
  * @return void
  */
 function gen_admin_domain_query(
-	&$search_query, &$count_query, $start_index, $rows_per_page, $search_for, $search_common, $search_status
+	&$searchQuery, &$countQuery, $startIndex, $rowsPerPage, $searchFor, $searchCommon, $searchStatus
 ) {
-	if ($search_for == 'n/a' && $search_common == 'n/a' && $search_status == 'n/a') {
+
+	$condition = '';
+
+	if ($searchFor == 'n/a' && $searchCommon == 'n/a' && $searchStatus == 'n/a') {
 		// We have pure list query;
-		$count_query = "SELECT COUNT(*) AS `cnt` FROM `domain`";
-
-		$search_query = "
+		$countQuery = "SELECT COUNT(*) AS `cnt` FROM `domain`";
+		$searchQuery = "
 			SELECT
 				*
 			FROM
-				`domain`
-			LEFT JOIN
-				`admin` ON (`domain_admin_id` = `admin_id`)
+				`domain` AS `t1`
+			INNER JOIN
+				`admin` AS `t2` ON (`t2`.`admin_id` = `t1`.`domain_admin_id`)
 			ORDER BY
-				`domain_name` ASC
+				`t1`.`domain_name` ASC
 			LIMIT
-				$start_index, $rows_per_page
-			;
+				$startIndex, $rowsPerPage
 		";
-	} elseif ($search_for == '' && $search_status != '') {
-		if ($search_status == 'all') {
-			$add_query = '';
-		} else {
-			$add_query = " WHERE `domain_status` = '$search_status'";
-		}
+	} else {
+		/** @var iMSCP_Database $db */
+		$db = iMSCP_Registry::get('db');
 
-		$count_query = "SELECT COUNT(*) AS `cnt` FROM `domain` $add_query";
-		$search_query = "
-			SELECT
-				*
-			FROM
-				`domain` $add_query
-			LEFT JOIN
-				`admin` ON (`domain_admin_id` = `admin_id`)
-			ORDER BY
-				`domain_name` ASC
-			LIMIT
-				$start_index, $rows_per_page
-        ";
-	} elseif ($search_for != '') {
-		if ($search_common == 'domain_name') {
-			$search_for = encode_idna($search_for);
-			$add_query = " WHERE `admin_name` RLIKE '$search_for' %s";
-		} elseif ($search_common == 'customer_id') {
-			$add_query = " WHERE `customer_id` RLIKE '$search_for' %s";
-		} elseif ($search_common == 'lname') {
-			$add_query = "WHERE (`lname` RLIKE '$search_for' OR `fname` RLIKE '$search_for') %s";
-		} elseif ($search_common == 'firm') {
-			$add_query = "WHERE `firm` RLIKE '$search_for' %s";
-		} elseif ($search_common == 'city') {
-			$add_query = "WHERE `city` RLIKE '$search_for' %s";
-		} elseif ($search_common == 'state') {
-			$add_query = "WHERE `state` ,RLIKE '$search_for' %s ";
-		} elseif ($search_common == 'country') {
-			$add_query = "WHERE `country` RLIKE '$search_for' %s";
-		}
+		$searchFor = str_replace(array('!', '_', '%'), array('!!', '!_', '!%'), $searchFor);;
+		$searchFor = $db->quote("%$searchFor%");
 
-		if (isset($add_query)) {
-			if ($search_status != 'all') {
-				$add_query = sprintf($add_query, " AND t2.`domain_status` = '$search_status'");
-
-				$count_query = "
-				    SELECT
-					    COUNT(*) AS `cnt`
-				    FROM
-					    `admin` AS t1, `domain` AS t2
-				        $add_query
-				    AND
-					    t1.`admin_id` = t2.`domain_admin_id`
-			    ";
-			} else {
-				$add_query = sprintf($add_query, ' ');
-				$count_query = "SELECT COUNT(*) AS cnt FROM `admin` $add_query";
+		if ($searchFor == '' && $searchStatus != '') {
+			if ($searchStatus != 'all') {
+				$condition = "WHERE `t1`.`domain_status` = '$searchStatus'";
 			}
 
-			$search_query = "
+			$countQuery = "SELECT COUNT(*) AS `cnt` FROM `domain` AS `t1` $condition";
+			$searchQuery = "
 				SELECT
-					t1.`admin_id`, t1.`admin_status`, t2.*
+					*
 				FROM
-					`admin` AS t1, `domain` AS t2
-				$add_query
-				AND
-					t1.`admin_id` = t2.`domain_admin_id`
+					`domain` AS `t1`
+				INNER JOIN
+					`admin` AS `t2` ON (`t2`.`admin_id` = `t1`.`domain_admin_id`)
+				$condition
 				ORDER BY
-					t2.`domain_name` ASC
+					`t1`.`domain_name` ASC
 				LIMIT
-					$start_index, $rows_per_page
-			";
+					$startIndex, $rowsPerPage
+        	";
+		} elseif ($searchFor != '') {
+			if ($searchCommon == 'domain_name') {
+				$searchFor = encode_idna($searchFor);
+				$condition = "WHERE `t1`.`domain_name` LIKE $searchFor ESCAPE '!'";
+			} elseif ($searchCommon == 'customer_id') {
+				$condition = "WHERE `t2`.`customer_id` LIKE $searchFor ESCAPE '!'";
+			} elseif ($searchCommon == 'lname') {
+				$condition = "WHERE (`t2`.`lname` LIKE $searchFor ESCAPE '=' OR `fname` LIKE $searchFor ESCAPE '!')";
+			} elseif ($searchCommon == 'firm') {
+				$condition = "WHERE `t2`.`firm` LIKE $searchFor ESCAPE '!'";
+			} elseif ($searchCommon == 'city') {
+				$condition = "WHERE `t2`.`city` LIKE $searchFor ESCAPE '!'";
+			} elseif ($searchCommon == 'state') {
+				$condition = "WHERE `t2`.`state` LIKE $searchFor ESCAPE '!'";
+			} elseif ($searchCommon == 'country') {
+				$condition = "WHERE `t2`.`country` LIKE $searchFor ESCAPE '!'";
+			}
+
+			if ($condition != '') {
+				if ($searchStatus != 'all') {
+					$condition .= " AND `t1`.`domain_status` = '$searchStatus'";
+				}
+
+				$countQuery = "
+					SELECT
+						COUNT(*) AS `cnt`
+				   	FROM
+						`domain` AS `t1`
+				    INNER JOIN
+						`admin` AS `t2` ON(`t2`.`admin_id` = `t1`.`domain_admin_id`)
+					$condition
+			    ";
+
+				$searchQuery = "
+					SELECT
+						`t2`.`admin_id`, `t2`.`admin_status`, `t1`.*
+					FROM
+						`domain` AS t1
+					INNER JOIN
+						`admin` AS t2 ON(`t2`.`admin_id` = `t1`.`domain_admin_id`)
+					$condition
+					ORDER BY
+						`t1`.`domain_name` ASC
+					LIMIT
+						$startIndex, $rowsPerPage
+				";
+			}
 		}
 	}
 }

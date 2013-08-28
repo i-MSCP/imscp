@@ -1,3 +1,4 @@
+
 <!-- BDP: layout_colors_block -->
 <form method="post" action="layout.php">
 	<table class="firstColFixed">

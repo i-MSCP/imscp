@@ -32,10 +32,6 @@
  * @author      i-MSCP Team
  */
 
-/**********************************************************************************************************************
- * This file contains view helpers functions that are responsible to generate template parts for reseller interface.
- */
-
 /**
  * Returns Ip list.
  *
@@ -45,22 +41,18 @@
  */
 function generate_ip_list($tpl, $resellerId)
 {
+	global $domainIp;
+
 	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
 
-	global $domainIp;
-
-	$query = "SELECT `reseller_ips` FROM `reseller_props` WHERE `reseller_id` = ?";
-
-	$stmt = exec_query($query, $resellerId);
+	$stmt = exec_query("SELECT `reseller_ips` FROM `reseller_props` WHERE `reseller_id` = ?", $resellerId);
 
 	$data = $stmt->fetchRow();
 
 	$resellerIps = $data['reseller_ips'];
 
-	$query = "SELECT * FROM `server_ips`";
-
-	$stmt = execute_query($query);
+	$stmt = execute_query("SELECT * FROM `server_ips`");
 
 	while ($data = $stmt->fetchRow()) {
 		$ipId = $data['ip_id'];
@@ -190,13 +182,9 @@ function gen_manage_domain_search_options($tpl, $searchFor, $searchCommon, $sear
 	}
 
 	if ($searchFor === 'n/a' || $searchFor === '') {
-		$tpl->assign(
-			array('SEARCH_FOR' => "")
-		);
+		$tpl->assign('SEARCH_FOR', '');
 	} else {
-		$tpl->assign(
-			array('SEARCH_FOR' => tohtml($searchFor))
-		);
+		$tpl->assign('SEARCH_FOR', tohtml($searchFor));
 	}
 
 	$tpl->assign(
@@ -208,12 +196,10 @@ function gen_manage_domain_search_options($tpl, $searchFor, $searchCommon, $sear
 			'M_CITY' => tr('City'),
 			'M_STATE' => tr('State/Province'),
 			'M_COUNTRY' => tr('Country'),
-
 			'M_ALL' => tr('All'),
 			'M_OK' => tr('OK'),
 			'M_SUSPENDED' => tr('Suspended'),
 			'M_ERROR' => tr('Error'),
-
 			'M_DOMAIN_NAME_SELECTED' => $domainSelected,
 			'M_CUSTOMER_ID_SELECTED' => $customerIdSelected,
 			'M_LAST_NAME_SELECTED' => $lastnameSelected,
@@ -221,7 +207,6 @@ function gen_manage_domain_search_options($tpl, $searchFor, $searchCommon, $sear
 			'M_CITY_SELECTED' => $citySelected,
 			'M_STATE_SELECTED' => $stateSelected,
 			'M_COUNTRY_SELECTED' => $countrySelected,
-
 			'M_ALL_SELECTED' => $allSelected,
 			'M_OK_SELECTED' => $okSelected,
 			'M_SUSPENDED_SELECTED' => $suspendedSelected,

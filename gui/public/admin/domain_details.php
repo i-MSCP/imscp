@@ -127,9 +127,6 @@ function admin_generatePage($tpl, $domainId)
 
 	# Features
 
-	$trEnabled = '<span style="color:green">' . tr('Enabled') . '</span>';
-	$trDisabled = '<span style="color:red">' . tr('Disabled') . '</span>';
-
 	$tpl->assign(
 		array(
 			'DOMAIN_ID' => $domainId,

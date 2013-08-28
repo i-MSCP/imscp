@@ -1,3 +1,4 @@
+
 <table class="firstColFixed">
 	<tr>
 		<td>{TR_DOMAIN_NAME}</td>

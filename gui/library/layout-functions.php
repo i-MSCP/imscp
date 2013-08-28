@@ -36,7 +36,7 @@
  */
 
 /**
- * Must be documented.
+ * Must be documented
  *
  * @param  $user_id
  * @return array
@@ -50,9 +50,7 @@ function get_user_gui_props($user_id)
 	$query = "SELECT `lang`, `layout` FROM `user_gui_props` WHERE `user_id` = ?";
 	$stmt = exec_query($query, $user_id);
 
-	if ($stmt->recordCount() == 0 ||
-		(empty($stmt->fields['lang']) && empty($stmt->fields['layout']))
-	) {
+	if ($stmt->recordCount() == 0 || (empty($stmt->fields['lang']) && empty($stmt->fields['layout']))) {
 		// values for user id, some default stuff
 		return array($cfg->USER_INITIAL_LANG, $cfg->USER_INITIAL_THEME);
 	} elseif (empty($stmt->fields['lang'])) {
@@ -65,7 +63,7 @@ function get_user_gui_props($user_id)
 }
 
 /**
- * Generates the page messages to display on client browser.
+ * Generates the page messages to display on client browser
  *
  * Note: The default level for message is sets to 'info'.
  * See the {@link set_page_message()} function for more information.
@@ -83,7 +81,7 @@ function generatePageMessage($tpl)
 				$tpl->assign(
 					array(
 						'MESSAGE_CLS' => $level .
-							(($level == 'success') ? ' timeout' : ''),
+						(($level == 'success') ? ' timeout' : ''),
 						'MESSAGE' => $namespace->{$level}
 					)
 				);
@@ -99,7 +97,7 @@ function generatePageMessage($tpl)
 }
 
 /**
- * Sets a page message to display on client browser.
+ * Sets a page message to display on client browser
  *
  * @throws iMSCP_Exception
  * @param string $message $message Message to display
@@ -154,7 +152,7 @@ function format_message($messages)
 }
 
 /**
- * Gets menu variables.
+ * Gets menu variables
  *
  * @param  string $menuLink Menu link
  * @return mixed
@@ -167,8 +165,8 @@ function get_menu_vars($menuLink)
 
 	$query = "
 		SELECT
-			`customer_id`, `fname`, `lname`, `firm`, `zip`, `city`, `state`,
-			`country`, `email`, `phone`, `fax`, `street1`, `street2`
+			`customer_id`, `fname`, `lname`, `firm`, `zip`, `city`, `state`, `country`, `email`, `phone`, `fax`,
+			`street1`, `street2`
 		FROM
 			`admin`
 		WHERE
@@ -210,14 +208,7 @@ function get_menu_vars($menuLink)
 	$search [] = '{street2}';
 	$replace[] = tohtml($stmt->fields['street2']);
 
-	$query = "
-		SELECT
-			`domain_name`, `domain_admin_id`
-		FROM
-			`domain`
-		WHERE
-			`domain_admin_id` = ?
-	";
+	$query = 'SELECT `domain_name`, `domain_admin_id` FROM `domain` WHERE `domain_admin_id` = ?';
 	$stmt = exec_query($query, $_SESSION['user_id']);
 
 	$search [] = '{domain_name}';
@@ -227,7 +218,7 @@ function get_menu_vars($menuLink)
 }
 
 /**
- * Returns available color set for current layout.
+ * Returns available color set for current layout
  *
  * @author Laurent Declercq <l.declercq@nuxwin.com>
  * @return array
@@ -236,15 +227,15 @@ function layout_getAvailableColorSet()
 {
 	static $colorSet = null;
 
-	if(null === $colorSet) {
+	if (null === $colorSet) {
 		/** @var iMSCP_Config_Handler_File $cfg */
 		$cfg = iMSCP_Registry::get('config');
 
-		if(file_exists($cfg->ROOT_TEMPLATE_PATH . '/info.php')) {
-			$themeInfo =  include_once($cfg->ROOT_TEMPLATE_PATH . '/info.php');
+		if (file_exists($cfg->ROOT_TEMPLATE_PATH . '/info.php')) {
+			$themeInfo = include_once($cfg->ROOT_TEMPLATE_PATH . '/info.php');
 
-			if(is_array($themeInfo)) {
-				$colorSet = (array) $themeInfo['theme_color_set'];
+			if (is_array($themeInfo)) {
+				$colorSet = (array)$themeInfo['theme_color_set'];
 			} else {
 				ini_set('display_errors', 1);
 				trigger_error(
@@ -266,7 +257,7 @@ function layout_getAvailableColorSet()
 }
 
 /**
- * Returns layout color for given user.
+ * Returns layout color for given user
  *
  * @author Laurent Declercq <l.declercq@nuxwin.com>
  * @param int $userId user unique identifier
@@ -276,8 +267,8 @@ function layout_getUserLayoutColor($userId)
 {
 	static $color = null;
 
-	if(null === $color) {
-		if(isset($_SESSION['user_theme_color'])) {
+	if (null === $color) {
+		if (isset($_SESSION['user_theme_color'])) {
 			$color = $_SESSION['user_theme_color'];
 		} else {
 			$allowedColors = layout_getAvailableColorSet();
@@ -313,7 +304,7 @@ function layout_init($event)
 	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
 
-	if($cfg->DEBUG) {
+	if ($cfg->DEBUG) {
 		$themesAssetsVersion = time();
 	} else {
 		$themesAssetsVersion = $cfg->THEME_ASSETS_VERSION;
@@ -321,7 +312,7 @@ function layout_init($event)
 
 	$encoding = tr('encoding');
 
-	ini_set('default_charset', ($encoding !='encoding') ? $encoding : 'UTF-8');
+	ini_set('default_charset', ($encoding != 'encoding') ? $encoding : 'UTF-8');
 
 	if (isset($_SESSION['user_theme_color'])) {
 		$color = $_SESSION['user_theme_color'];
@@ -339,8 +330,8 @@ function layout_init($event)
 
 	$tpl->assign(
 		array(
-			'THEME_CHARSET' => ($encoding !='encoding') ? $encoding : 'UTF-8',
-			'THEME_ASSETS_PATH' => '/themes/' . $cfg->USER_INITIAL_THEME .  '/assets',
+			'THEME_CHARSET' => ($encoding != 'encoding') ? $encoding : 'UTF-8',
+			'THEME_ASSETS_PATH' => '/themes/' . $cfg->USER_INITIAL_THEME . '/assets',
 			'THEME_ASSETS_VERSION' => $themesAssetsVersion,
 			'THEME_COLOR' => $color
 		)
@@ -350,7 +341,7 @@ function layout_init($event)
 }
 
 /**
- * Sets given layout color for given user.
+ * Sets given layout color for given user
  *
  * @author Laurent Declercq <l.declercq@nuxwin.com>
  * @param int $userId User unique identifier
@@ -393,7 +384,7 @@ function layout_setUserLayoutColor($userId, $color)
 }
 
 /**
- * Get user logo path.
+ * Get user logo path
  *
  * Note: Only administrators and resellers can have their own logo. Search is done in the following order:
  * user logo -> user's creator logo -> theme logo --> isp logo.
@@ -408,7 +399,7 @@ function layout_getUserLogo($searchForCreator = true, $returnDefault = true)
 {
 	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
-	return '/themes/' . $_SESSION['user_theme'] . '/assets/images/imscp_logo.png';
+
 	// On switched level, we want show logo from logged user
 	if (isset($_SESSION['logged_from_id']) && $searchForCreator) {
 		$userId = $_SESSION['logged_from_id'];
@@ -425,14 +416,14 @@ function layout_getUserLogo($searchForCreator = true, $returnDefault = true)
 	// No logo is found for the user, let see for it creator
 	if ($searchForCreator && $userId != 1 && empty($stmt->fields['logo'])) {
 		$query = '
-            SELECT
-                `b`.`logo`
-            FROM
-                `admin` `a`
-            LEFT JOIN
-                `user_gui_props` `b` ON (`b`.`user_id` = `a`.`created_by`)
-            WHERE
-                `a`.`admin_id`= ?
+			SELECT
+				`b`.`logo`
+			FROM
+				`admin` `a`
+			LEFT JOIN
+				`user_gui_props` `b` ON (`b`.`user_id` = `a`.`created_by`)
+			WHERE
+				`a`.`admin_id`= ?
         ';
 		$stmt = exec_query($query, $userId);
 	}
@@ -440,11 +431,11 @@ function layout_getUserLogo($searchForCreator = true, $returnDefault = true)
 	// No user logo found
 	if (
 		empty($stmt->fields['logo']) ||
-		! file_exists($cfg->GUI_ROOT_DIR . '/data/persistent/ispLogos/' . $stmt->fields['logo'])
+		!file_exists($cfg->GUI_ROOT_DIR . '/data/persistent/ispLogos/' . $stmt->fields['logo'])
 	) {
 		if (!$returnDefault) {
 			return '';
-		} elseif (file_exists($cfg->ROOT_TEMPLATE_PATH. '/assets/images/imscp_logo.png')) {
+		} elseif (file_exists($cfg->ROOT_TEMPLATE_PATH . '/assets/images/imscp_logo.png')) {
 			return '/themes/' . $_SESSION['user_theme'] . '/assets/images/imscp_logo.png';
 		} else {
 			// no logo available, we are using default
@@ -456,7 +447,7 @@ function layout_getUserLogo($searchForCreator = true, $returnDefault = true)
 }
 
 /**
- * Updates user logo.
+ * Updates user logo
  *
  * Note: Only administrators and resellers can have their own logo.
  *
@@ -471,16 +462,11 @@ function layout_updateUserLogo()
 	// closure that is run before move_uploaded_file() function - See the
 	// Utils_UploadFile() function for further information about implementation
 	// details
-	$beforeMove = function($cfg)
-	{
+	$beforeMove = function ($cfg) {
 		$tmpFilePath = $_FILES['logoFile']['tmp_name'];
 
 		// Checking file mime type
-		if (!($fileMimeType = checkMimeType($tmpFilePath, array('image/gif',
-			'image/jpeg',
-			'image/pjpeg',
-			'image/png')))
-		) {
+		if (!($fileMimeType = checkMimeType($tmpFilePath, array('image/gif', 'image/jpeg', 'image/pjpeg', 'image/png')))) {
 			set_page_message(tr('You can only upload images.'), 'error');
 			return false;
 		}
@@ -502,8 +488,7 @@ function layout_updateUserLogo()
 		}
 
 		// Building an unique file name
-		$fileName = sha1(utils_randomString(15) . '-' . $_SESSION['user_id']) .
-			'.' . $fileExtension;
+		$fileName = sha1(utils_randomString(15) . '-' . $_SESSION['user_id']) . '.' . $fileExtension;
 
 		// Return destination file path
 		return $cfg->GUI_ROOT_DIR . '/data/persistent/ispLogos/' . $fileName;
@@ -521,8 +506,7 @@ function layout_updateUserLogo()
 		// We must catch old logo before update
 		$oldLogoFile = layout_getUserLogo(false, false);
 
-		$query = "UPDATE `user_gui_props` SET `logo` = ? WHERE `user_id` = ?";
-		exec_query($query, array(basename($logoPath), $userId));
+		exec_query('UPDATE `user_gui_props` SET `logo` = ? WHERE `user_id` = ?', array(basename($logoPath), $userId));
 
 		// Deleting old logo (we are safe here) - We don't return FALSE on failure.
 		// The administrator will be warned through logs.
@@ -533,7 +517,7 @@ function layout_updateUserLogo()
 }
 
 /**
- * Deletes user logo.
+ * Deletes user logo
  *
  * @author Laurent Declercq <l.declercq@nuxwin.com>
  * @param string $logoFilePath OPTIONAL Logo file path
@@ -560,8 +544,7 @@ function layout_deleteUserLogo($logoFilePath = null, $onlyFile = false)
 	}
 
 	if (!$onlyFile) {
-		$query = "UPDATE `user_gui_props` SET `logo` = ? WHERE `user_id` = ?";
-		exec_query($query, array(null, $userId));
+		exec_query('UPDATE `user_gui_props` SET `logo` = ? WHERE `user_id` = ?', array(null, $userId));
 	}
 
 	if (strpos($logoFilePath, $cfg->ISP_LOGO_PATH) !== false) {
@@ -601,10 +584,9 @@ function layout_isUserLogo($logoPath)
 }
 
 /**
- * Load navigation file for current UI level.
+ * Load navigation file for current UI level
  *
  * @author Laurent Declercq <l.declercq@nuxwin.com>
- * @since i-MSCP 1.0.1.6
  * @param iMSCP_Events_Event $event
  * @return void
  */
@@ -642,18 +624,17 @@ function layout_LoadNavigation($event)
  */
 function layout_isMainMenuLabelsVisible($userId)
 {
-	$query = 'SELECT `show_main_menu_labels` FROM `user_gui_props` WHERE `user_id` = ?';
-	$stmt = exec_query($query, (int)$userId);
+	$stmt = exec_query('SELECT `show_main_menu_labels` FROM `user_gui_props` WHERE `user_id` = ?', $userId);
 
 	if ($stmt->rowCount()) {
-		return (bool) $stmt->fields['show_main_menu_labels'];
+		return (bool)$stmt->fields['show_main_menu_labels'];
 	}
 
 	return true;
 }
 
 /**
- * Sets main menu label visibility for the given user.
+ * Sets main menu label visibility for the given user
  *
  * @param int $userId User unique identifier
  * @param int $visibility (0|1)
@@ -661,26 +642,26 @@ function layout_isMainMenuLabelsVisible($userId)
  */
 function layout_setMainMenuLabelsVisibility($userId, $visibility)
 {
-	$visibility = (int) $visibility;
+	$visibility = (int)$visibility;
 
-    $query = 'UPDATE `user_gui_props` SET `show_main_menu_labels` = ? WHERE `user_id` = ?';
-    exec_query($query, array($visibility, (int)$userId));
+	$query = 'UPDATE `user_gui_props` SET `show_main_menu_labels` = ? WHERE `user_id` = ?';
+	exec_query($query, array($visibility, (int)$userId));
 
-    if (!isset($_SESSION['logged_from_id'])) {
-       $_SESSION['show_main_menu_labels'] = $visibility;
+	if (!isset($_SESSION['logged_from_id'])) {
+		$_SESSION['show_main_menu_labels'] = $visibility;
 	}
 }
 
 /**
- * Sets main menu visibility for current environment.
+ * Sets main menu visibility for current environment
  *
  * @param $event iMSCP_Events_Event
  * @return void
  */
 function layout_setMainMenuLabelsVisibilityEvt($event)
 {
-    if (!isset($_SESSION['show_main_menu_labels']) && isset($_SESSION['user_type'])) {
-        $userId = isset($_SESSION['logged_from_id']) ? $_SESSION['logged_from_id'] : $_SESSION['user_id'];
-        $_SESSION['show_main_menu_labels'] =  layout_isMainMenuLabelsVisible($userId);
-    }
+	if (!isset($_SESSION['show_main_menu_labels']) && isset($_SESSION['user_type'])) {
+		$userId = isset($_SESSION['logged_from_id']) ? $_SESSION['logged_from_id'] : $_SESSION['user_id'];
+		$_SESSION['show_main_menu_labels'] = layout_isMainMenuLabelsVisible($userId);
+	}
 }

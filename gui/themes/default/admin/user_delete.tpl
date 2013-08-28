@@ -1,3 +1,4 @@
+
 <form name="admin_delete_customer_frm" method="post" action="user_delete.php">
 	<table class="firstColFixed">
 		<thead>

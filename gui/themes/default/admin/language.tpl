@@ -1,3 +1,4 @@
+
 <form name="adminChangeLanguage" method="post" action="language.php">
 	<table class="firstColFixed">
 		<thead>

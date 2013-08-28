@@ -1,3 +1,4 @@
+
 <form action="settings_lostpassword.php" method="post" name="frmlostpassword" id="frmlostpassword">
 	<table class="firstColFixed">
 		<thead>

@@ -1,3 +1,4 @@
+
 <!-- BDP: tickets_list -->
 <form name="admin_email_setup" method="post" action="settings_welcome_mail.php">
 	<table class="firstColFixed">

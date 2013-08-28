@@ -1,3 +1,4 @@
+
 <div class="left_menu">
 	<ul>
 		<!-- BDP: left_menu_block -->

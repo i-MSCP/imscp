@@ -1,3 +1,4 @@
+
 <form name="error_edit" method="post" action="error_pages.php">
 	<textarea name="error" id="error">{ERROR}</textarea>
 	<div class="buttons">

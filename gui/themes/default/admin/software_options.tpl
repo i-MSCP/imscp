@@ -1,8 +1,12 @@
+
 <form action="software_options.php" method="post" name="appssettings" id="appssettings">
 	<table class="firstColFixed">
+		<thead>
 		<tr>
 			<th colspan="2">{TR_MAIN_OPTIONS}</th>
 		</tr>
+		</thead>
+		<tbody>
 		<tr>
 			<td><label for="use_webdepot">{TR_USE_WEBDEPOT}</label></td>
 			<td>
@@ -20,6 +24,7 @@
 			<td><label>{TR_WEBDEPOT_LAST_UPDATE}</label></td>
 			<td>{WEBDEPOT_LAST_UPDATE_VALUE}</td>
 		</tr>
+		</tbody>
 	</table>
 	<div class="buttons">
 		<input name="Submit" type="submit" class="button" value="{TR_APPLY_CHANGES}"/>

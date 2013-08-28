@@ -1,3 +1,4 @@
+
 <script language="JavaScript" type="text/JavaScript">
 	/*<![CDATA[*/
 	function openTree() {
@@ -98,8 +99,10 @@
 		</tr>
 		<tr>
 			<td><label for="install_password">{TR_INSTALL_PWD}</label></td>
-			<td><input type="password" name="install_password" id="install_password" value="{VAL_INSTALL_PASSWORD}"
-					   autocomplete="off"/></td>
+			<td>
+				<input type="password" name="install_password" id="install_password" value="{VAL_INSTALL_PASSWORD}"
+					   autocomplete="off"/>
+			</td>
 		</tr>
 		<tr>
 			<td><label for="install_email">{TR_INSTALL_EMAIL}</label></td>

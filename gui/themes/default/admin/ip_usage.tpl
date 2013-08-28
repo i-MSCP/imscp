@@ -1,3 +1,4 @@
+
 <!-- BDP: statistics -->
 <!-- BDP: ip_row -->
 <table class="firstColFixed">

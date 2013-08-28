@@ -1,3 +1,4 @@
+
 <script language="JavaScript" type="text/JavaScript">
 	/*<![CDATA[*/
 	function action_remove_right() {
@@ -45,8 +46,8 @@
 	<!-- EDP: select_reseller -->
 	<tr>
 		<th>{TR_RESELLER}</th>
-		<th align="center" width="180">{TR_ADDED_BY}</th>
-		<th align="center" width="80">{TR_REMOVE_RIGHTS}</th>
+		<th>{TR_ADDED_BY}</th>
+		<th>{TR_REMOVE_RIGHTS}</th>
 	</tr>
 	<!-- BDP: no_reseller_list -->
 	<tr>
@@ -59,9 +60,10 @@
 	<tr>
 		<td>{RESELLER}</td>
 		<td>{ADMINISTRATOR}</td>
-		<td align="center">
-			<span class="icon i_delete"><a href="{REMOVE_RIGHT_LINK}"
-										   onClick="return action_remove_right()">{TR_REMOVE_RIGHT}</a></span>
+		<td>
+			<span class="icon i_delete">
+				<a href="{REMOVE_RIGHT_LINK}" onClick="return action_remove_right()">{TR_REMOVE_RIGHT}</a>
+			</span>
 		</td>
 	</tr>
 	<!-- EDP: list_reseller -->

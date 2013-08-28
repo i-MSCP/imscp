@@ -310,7 +310,10 @@ $tpl->assign(
 		'TR_MESSAGE_IMPORT' => tr('Are you sure you want to import this package into the local software repository?', true),
 		'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete this package?', true),
 		'TR_MESSAGE_INSTALL' => tr('Are you sure you want to install this package from the Web software repository?', true),
-		'TR_ADMIN_SOFTWARE_PAGE_TITLE' => tr('i-MSCP / Software Installer / Management')));
+		'TR_ADMIN_SOFTWARE_PAGE_TITLE' => tr('i-MSCP / Software Installer / Management'),
+		'TR_SOFTWARE_UPDLOAD' => tr('Software upload')
+	)
+);
 
 generateNavigation($tpl);
 generatePageMessage($tpl);

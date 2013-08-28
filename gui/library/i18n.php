@@ -35,7 +35,7 @@
 require_once 'php-gettext/gettext.inc';
 
 /**
- * Translates a given message into the selected language, if exists.
+ * Translates a given message into the selected language, if exists
  *
  * @author Laurent Declercq (nuxwin) <l.declercq@nuxwin.com>
  * @author Raphael Geissert (2007)
@@ -56,9 +56,7 @@ function tr($msgid, $substitution = false)
 
 	// Detect comments and strip them if $msgid == $msgstr
 	// e.g. tr('_: This is just a comment\nReal message to translate here')
-	if (substr($msgid, 0, 3) == '_: ' && $msgid == $msgstr &&
-		count($l = explode("\n", $msgid)) > 1
-	) {
+	if (substr($msgid, 0, 3) == '_: ' && $msgid == $msgstr && count($l = explode("\n", $msgid)) > 1) {
 		unset($l[0]);
 		$msgstr = implode("\n", $l);
 	}
@@ -100,8 +98,8 @@ function replace_html($string)
 		'#&lt;[ ]*br[ ]*(/|)[ ]*&gt;#i');
 
 	$replacement = array(
-		'<b>', '</b>', '<strong>', '</strong>', '<em>', '</em>', '<i>', '</i>',
-		'<small>', '</small>', '<br />');
+		'<b>', '</b>', '<strong>', '</strong>', '<em>', '</em>', '<i>', '</i>', '<small>', '</small>', '<br />'
+	);
 
 	$string = preg_replace($pattern, $replacement, $string);
 
@@ -119,7 +117,6 @@ if (false) {
  * Note: Only the files that are readable will be processed.
  *
  * @author Laurent Declercq <l.declercq@nuxwin.com>
- * @since i-MSCP 1.0.1.4
  * @return void
  */
 function i18n_buildLanguageIndex()
@@ -127,14 +124,15 @@ function i18n_buildLanguageIndex()
 	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
 
-	$iterator = new RecursiveIteratorIterator(new RecursiveDirectoryIterator(
-			$cfg->GUI_ROOT_DIR . '/i18n/locales/', FilesystemIterator::SKIP_DOTS));
+	$iterator = new RecursiveIteratorIterator(
+		new RecursiveDirectoryIterator($cfg->GUI_ROOT_DIR . '/i18n/locales/', FilesystemIterator::SKIP_DOTS)
+	);
 
 	$availableLanguages = array();
 
 	/** @var $item SplFileInfo */
 	foreach ($iterator as $item) {
-		if(strlen($basename = $item->getBasename()) > 8) {
+		if (strlen($basename = $item->getBasename()) > 8) {
 			continue;
 		}
 
@@ -147,12 +145,12 @@ function i18n_buildLanguageIndex()
 				'locale' => $parser->getLanguage(),
 				'revision' => $poRevisionDate->format('Y-m-d H:i'),
 				'translatedStrings' => $parser->getNumberOfTranslatedStrings(),
-				'lastTranslator' => $parser->getLastTranslator());
+				'lastTranslator' => $parser->getLastTranslator()
+			);
 
 			// Getting localized language name
 			$translationTable = $parser->getTranslationTable();
-			$availableLanguages[$basename]['language'] =
-				$translationTable['_: Localised language'];
+			$availableLanguages[$basename]['language'] = $translationTable['_: Localised language'];
 		}
 	}
 
@@ -166,12 +164,11 @@ function i18n_buildLanguageIndex()
 }
 
 /**
- * Returns list of available languages with some informations.
+ * Returns list of available languages with some informations
  *
  * Note: For safe reasons, only the files that are readable will be indexed.
  *
  * @author Laurent Declercq <l.declercq@nuxwin.com>
- * @since i-MSCP 1.0.1.4
  * @return array Array that contains information about available languages
  */
 function i18n_getAvailableLanguages()
@@ -179,8 +176,7 @@ function i18n_getAvailableLanguages()
 	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
 
-	if (!isset($cfg->AVAILABLE_LANGUAGES) || !isSerialized($cfg->AVAILABLE_LANGUAGES)
-	) {
+	if (!isset($cfg->AVAILABLE_LANGUAGES) || !isSerialized($cfg->AVAILABLE_LANGUAGES)) {
 		i18n_buildLanguageIndex();
 	}
 
@@ -188,12 +184,11 @@ function i18n_getAvailableLanguages()
 }
 
 /**
- * Returns name of domain being used.
+ * Returns name of domain being used
  *
  * Note: See #130 for further explaination.
  *
  * @author Laurent Declercq <l.declercq@nuxwin.com>
- * @since i-MSCP 1.0.1.4
  * @throws iMSCP_Exception
  * @param string $upstreamDomain Upstream domain name
  * @return string Domain being used
@@ -205,19 +200,19 @@ function i18n_getDomain($upstreamDomain)
 
 	$domainDirectory = $cfg->GUI_ROOT_DIR . "/i18n/locales/$upstreamDomain/LC_MESSAGES";
 
-	if(file_exists($domainDirectory . "/$upstreamDomain.mo")) {
+	if (file_exists($domainDirectory . "/$upstreamDomain.mo")) {
 		$upstreamFileModificationTime = filemtime($domainDirectory . "/$upstreamDomain.mo");
 		$domain = $upstreamDomain . '_' . $upstreamFileModificationTime;
 	} else {
 		return $upstreamDomain;
 	}
 
-	if(!file_exists($domainDirectory . "/$domain.mo")) {
-		if(!@copy($domainDirectory . "/$upstreamDomain.mo", $domainDirectory . "/$domain.mo")) {
+	if (!file_exists($domainDirectory . "/$domain.mo")) {
+		if (!@copy($domainDirectory . "/$upstreamDomain.mo", $domainDirectory . "/$domain.mo")) {
 			write_log("i18n: Unable to create $domainDirectory/$domain.mo domain file for production", E_USER_ERROR);
 		} else {
 			write_log("i18n: Created new machine object file $domainDirectory/$domain.mo for production.", E_USER_NOTICE);
-			i18n_domainsGarbageCollector($domainDirectory,  $domain . '.mo');
+			i18n_domainsGarbageCollector($domainDirectory, $domain . '.mo');
 		}
 	}
 
@@ -225,12 +220,11 @@ function i18n_getDomain($upstreamDomain)
 }
 
 /**
- * Garbage collector for domains translation files.
+ * Garbage collector for domains translation files
  *
  * Note: See #130 for further explanations.
  *
  * @author Laurent Declercq <l.declercq@nuxwin.com>
- * @since i-MSCP 1.0.1.4
  * @param string $domainDirectory Current domain directory path
  * @param string $skipDomain Domain that must not be removed
  * @return void
@@ -240,9 +234,9 @@ function i18n_domainsGarbageCollector($domainDirectory, $skipDomain)
 	$currentDomainFilepath = $domainDirectory . '/' . $skipDomain;
 	$domainsFiles = glob($domainDirectory . '/*_*_*.mo');
 
-	foreach($domainsFiles as $file) {
-		if($file != $currentDomainFilepath) {
-			if(@unlink($file)) {
+	foreach ($domainsFiles as $file) {
+		if ($file != $currentDomainFilepath) {
+			if (@unlink($file)) {
 				write_log("i18n: Removed $file machine object production file.", E_USER_NOTICE);
 			} else {
 				write_log("i18n: Unable to remove $file machine object production file.", E_USER_ERROR);
@@ -255,122 +249,115 @@ function i18n_domainsGarbageCollector($domainDirectory, $skipDomain)
  * Import Machine object file in languages directory
  *
  * @author Laurent Declercq <l.declercq@nuxwin.com>
- * @since i-MSCP 1.0.1.4
  * @return bool TRUE on success, FALSE otherwise
  */
 function i18n_importMachineObjectFile()
 {
-    // closure that is run before move_uploaded_file() function - See the
-    // Utils_UploadFile() function for further information about implementation
-    // details
-    $beforeMove = function()
-    {
-        /** @var $cfg iMSCP_Config_Handler_File */
-        $cfg = iMSCP_Registry::get('config');
-        $localesDirectory = $cfg->GUI_ROOT_DIR . '/i18n/locales';
+	// closure that is run before move_uploaded_file() function - See the Utils_UploadFile() function for further
+	// information about implementation details
+	$beforeMove = function () {
+		/** @var $cfg iMSCP_Config_Handler_File */
+		$cfg = iMSCP_Registry::get('config');
+		$localesDirectory = $cfg->GUI_ROOT_DIR . '/i18n/locales';
 
-        $filePath = $_FILES['languageFile']['tmp_name'];
+		$filePath = $_FILES['languageFile']['tmp_name'];
 
-        if (!is_readable($filePath)) {
-            set_page_message(tr('File is not readable.'), 'error');
-            return false;
-        }
+		if (!is_readable($filePath)) {
+			set_page_message(tr('File is not readable.'), 'error');
+			return false;
+		}
 
-        try {
-            $parser = new iMSCP_I18n_Parser_Mo($filePath);
-            $encoding = $parser->getContentType();
-            $locale = $parser->getLanguage();
-            $revision = $parser->getPoRevisionDate();
-            $lastTranslator = $parser->getLastTranslator();
-            $translationTable = $parser->getTranslationTable();
-        } catch (iMSCP_Exception $e) {
-            set_page_message(tr('Only gettext Machine Object files (MO files) are accepted.'), 'error');
-            return false;
-        }
+		try {
+			$parser = new iMSCP_I18n_Parser_Mo($filePath);
+			$encoding = $parser->getContentType();
+			$locale = $parser->getLanguage();
+			$revision = $parser->getPoRevisionDate();
+			$lastTranslator = $parser->getLastTranslator();
+			$translationTable = $parser->getTranslationTable();
+		} catch (iMSCP_Exception $e) {
+			set_page_message(tr('Only gettext Machine Object files (MO files) are accepted.'), 'error');
+			return false;
+		}
 
-        if (isset($translationTable['_: Localised language'])) {
-            $language = $translationTable['_: Localised language'];
-        } else {
-            $language = '';
-        }
+		if (isset($translationTable['_: Localised language'])) {
+			$language = $translationTable['_: Localised language'];
+		} else {
+			$language = '';
+		}
 
-        if (empty($encoding) || empty($locale) || empty($revision) ||
-            empty($lastTranslator) || empty($language)
-        ) {
-            set_page_message(
-                tr("%s is not a valid i-MSCP language file.", tohtml($_FILES['languageFile']['name'])), 'error'
-            );
-            return false;
-        }
+		if (empty($encoding) || empty($locale) || empty($revision) || empty($lastTranslator) || empty($language)) {
+			set_page_message(
+				tr("%s is not a valid i-MSCP language file.", tohtml($_FILES['languageFile']['name'])), 'error'
+			);
+			return false;
+		}
 
-        if (!is_dir("$localesDirectory/$locale")) {
-            if (!@mkdir("$localesDirectory/$locale", 0700)) {
-                set_page_message(tr("Unable to create '%s' directory for language file.", tohtml($locale)), 'error');
-                return false;
-            }
-        }
+		if (!is_dir("$localesDirectory/$locale")) {
+			if (!@mkdir("$localesDirectory/$locale", 0700)) {
+				set_page_message(tr("Unable to create '%s' directory for language file.", tohtml($locale)), 'error');
+				return false;
+			}
+		}
 
-        if (!is_dir("$localesDirectory/$locale/LC_MESSAGES")) {
-            if (!@mkdir("$localesDirectory/$locale/LC_MESSAGES", 0700)) {
-                set_page_message(tr("Unable to create 'LC_MESSAGES' directory for language file."), 'error');
-                return false;
-            }
-        }
+		if (!is_dir("$localesDirectory/$locale/LC_MESSAGES")) {
+			if (!@mkdir("$localesDirectory/$locale/LC_MESSAGES", 0700)) {
+				set_page_message(tr("Unable to create 'LC_MESSAGES' directory for language file."), 'error');
+				return false;
+			}
+		}
 
-        // Return destination file path
-        return "$localesDirectory/$locale/LC_MESSAGES/$locale.mo";
-    };
+		// Return destination file path
+		return "$localesDirectory/$locale/LC_MESSAGES/$locale.mo";
+	};
 
-    if (utils_uploadFile('languageFile', array($beforeMove)) === false) {
-        return false;
-    }
+	if (utils_uploadFile('languageFile', array($beforeMove)) === false) {
+		return false;
+	}
 
-    // Rebuild language index
-    i18n_buildLanguageIndex();
-    return true;
+	// Rebuild language index
+	i18n_buildLanguageIndex();
+	return true;
 }
 
 /**
- * Change panel default language.
+ * Change panel default language
  *
  * @author Laurent Declercq <l.declercq@nuxwin.com>
- * @since i-MSCP 1.0.1.3
  * @return bool TRUE if language name is valid, FALSE otherwise
  */
 function i18n_changeDefaultLanguage()
 {
-    if (isset($_POST['defaultLanguage'])) {
-        /** @var $cfg iMSCP_Config_Handler_File */
-        $cfg = iMSCP_Registry::get('config');
+	if (isset($_POST['defaultLanguage'])) {
+		/** @var $cfg iMSCP_Config_Handler_File */
+		$cfg = iMSCP_Registry::get('config');
 
-        /** @var $dbConfig iMSCP_Config_Handler_Db */
-        $defaultLanguage = clean_input($_POST['defaultLanguage']);
+		/** @var $dbConfig iMSCP_Config_Handler_Db */
+		$defaultLanguage = clean_input($_POST['defaultLanguage']);
 		$availableLanguages = i18n_getAvailableLanguages();
 
 		// Check for language availability
 		$isValidLanguage = false;
-		foreach($availableLanguages as $languageDefinition) {
-			if($languageDefinition['locale'] == $defaultLanguage) {
+		foreach ($availableLanguages as $languageDefinition) {
+			if ($languageDefinition['locale'] == $defaultLanguage) {
 				$isValidLanguage = true;
 			}
 		}
 
-		if(!$isValidLanguage) return false;
+		if (!$isValidLanguage) return false;
 
-        /** @var $dbConfig iMSCP_Config_Handler_Db */
-        $dbConfig = iMSCP_Registry::get('dbConfig');
-        $dbConfig->USER_INITIAL_LANG = $defaultLanguage;
-        $cfg->USER_INITIAL_LANG = $defaultLanguage;
+		/** @var $dbConfig iMSCP_Config_Handler_Db */
+		$dbConfig = iMSCP_Registry::get('dbConfig');
+		$dbConfig->USER_INITIAL_LANG = $defaultLanguage;
+		$cfg->USER_INITIAL_LANG = $defaultLanguage;
 
-        // Ensures language change on next load for current user in case he has not yet
-        // his gui properties explicitly set (eg. for the first admin user when i-MSCP
-        // was just installed
-        $stmt = exec_query('SELECT `lang`  FROM `user_gui_props` WHERE `user_id` = ?', $_SESSION['user_id']);
+		// Ensures language change on next load for current user in case he has not yet his gui properties explicitly
+		// set (eg. for the first admin user when i-MSCP was just installed
+		$stmt = exec_query('SELECT `lang`  FROM `user_gui_props` WHERE `user_id` = ?', $_SESSION['user_id']);
 
-        if ($stmt->fields['lang'] == null) {
-            unset($_SESSION['user_def_lang']);
-        }
-    } else {
+		if ($stmt->fields['lang'] == null) {
+			unset($_SESSION['user_def_lang']);
+		}
+	} else {
 		return false;
 	}
 

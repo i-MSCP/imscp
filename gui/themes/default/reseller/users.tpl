@@ -1,3 +1,4 @@
+
 <script type="text/javascript">
 	/* <![CDATA[ */
 	function action_status(dom_id, dmn_name) {
@@ -11,25 +12,31 @@
 </script>
 <!-- BDP: users_search -->
 <form action="users.php" method="post" name="search_user" id="search_user">
-	<a class="icon i_show_alias" href="#"
-	   onclick="return sbmt_details(document.forms[0],'{SHOW_DETAILS}');">{TR_VIEW_DETAILS}</a>
-	<input name="search_for" type="text" value="{SEARCH_FOR}"/>
-	<select name="search_common">
-		<option value="domain_name" {M_DOMAIN_NAME_SELECTED}>{M_DOMAIN_NAME}</option>
-		<option value="customer_id" {M_CUSTOMER_ID_SELECTED}>{M_CUSTOMER_ID}</option>
-		<option value="lname" {M_LAST_NAME_SELECTED}>{M_LAST_NAME}</option>
-		<option value="firm" {M_COMPANY_SELECTED}>{M_COMPANY}</option>
-		<option value="city" {M_CITY_SELECTED}>{M_CITY}</option>
-		<option value="country" {M_COUNTRY_SELECTED}>{M_COUNTRY}</option>
-	</select>
-	<select name="search_status">
-		<option value="all" {M_ALL_SELECTED}>{M_ALL}</option>
-		<option value="ok" {M_OK_SELECTED}>{M_OK}</option>
-		<option value="disabled" {M_SUSPENDED_SELECTED}>{M_SUSPENDED}</option>
-	</select>
-	<input name="Submit" type="submit" value="{TR_SEARCH}"/>
-	<input type="hidden" name="uaction" value="go_search"/>
-	<input type="hidden" name="details" value=""/>
+	<div style="line-height:40px;vertical-align: middle; float: left">
+		<input name="search_for" type="text" value="{SEARCH_FOR}"/>
+		<select name="search_common">
+			<option value="domain_name" {M_DOMAIN_NAME_SELECTED}>{M_DOMAIN_NAME}</option>
+			<option value="customer_id" {M_CUSTOMER_ID_SELECTED}>{M_CUSTOMER_ID}</option>
+			<option value="lname" {M_LAST_NAME_SELECTED}>{M_LAST_NAME}</option>
+			<option value="firm" {M_COMPANY_SELECTED}>{M_COMPANY}</option>
+			<option value="city" {M_CITY_SELECTED}>{M_CITY}</option>
+			<option value="country" {M_COUNTRY_SELECTED}>{M_COUNTRY}</option>
+		</select>
+		<select name="search_status">
+			<option value="all" {M_ALL_SELECTED}>{M_ALL}</option>
+			<option value="ok" {M_OK_SELECTED}>{M_OK}</option>
+			<option value="disabled" {M_SUSPENDED_SELECTED}>{M_SUSPENDED}</option>
+		</select>
+		<input name="Submit" type="submit" value="{TR_SEARCH}"/>
+		<input type="hidden" name="uaction" value="go_search"/>
+		<input type="hidden" name="details" value=""/>
+	</div>
+	<div style="line-height:40px;vertical-align: middle; float: right">
+		<a class="icon i_show_alias" href="#" onclick="return sbmt_details(document.forms[0],'{SHOW_DETAILS}');">
+			{TR_VIEW_DETAILS}
+		</a>
+	</div>
+	<div style="clear: both"></div>
 </form>
 <!-- EDP: users_search -->
 <!-- BDP: usr_message -->
@@ -84,17 +91,17 @@
 	</tbody>
 </table>
 <div class="paginator">
-	<!-- BDP: scroll_next_gray -->
-	<a class="icon i_next_gray" href="#">&nbsp;</a>
-	<!-- EDP: scroll_next_gray -->
-	<!-- BDP: scroll_next -->
-	<a class="icon i_next" href="users.php?psi={NEXT_PSI}" title="{TR_NEXT}">{TR_NEXT}</a>
-	<!-- EDP: scroll_next -->
 	<!-- BDP: scroll_prev -->
 	<a class="icon i_prev" href="users.php?psi={PREV_PSI}" title="{TR_PREVIOUS}">{TR_PREVIOUS}</a>
 	<!-- EDP: scroll_prev -->
 	<!-- BDP: scroll_prev_gray -->
-	<a class="icon i_prev_gray" href="#">&nbsp;</a>
+	<a class="icon i_prev_gray" href="#"></a>
 	<!-- EDP: scroll_prev_gray -->
+	<!-- BDP: scroll_next_gray -->
+	<a class="icon i_next_gray" href="#"></a>
+	<!-- EDP: scroll_next_gray -->
+	<!-- BDP: scroll_next -->
+	<a class="icon i_next" href="users.php?psi={NEXT_PSI}" title="{TR_NEXT}">{TR_NEXT}</a>
+	<!-- EDP: scroll_next -->
 </div>
 <!-- EDP: users_list -->

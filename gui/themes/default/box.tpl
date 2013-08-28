@@ -1,3 +1,4 @@
+
 <div class="clearfix">
 	<div id="box">
 		<h1>{BOX_MESSAGE_TITLE}</h1>

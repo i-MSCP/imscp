@@ -1,3 +1,4 @@
+
 <form name="reseller_delete_customer_frm" method="post" action="user_delete.php">
 	<table>
 		<thead>

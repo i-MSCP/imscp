@@ -33,37 +33,36 @@
  * @author      i-MSCP Team
  */
 
-/************************************************************************************
- * This file contains view helpers functions that are responsible to generate
- * template parts for reseller interface such as the main and left menus.
- */
-
 /**
  * Helper function to generate main menu from partial template file.
  *
  * @param  iMSCP_pTemplate $tpl Template engine
- * @param  $menuTemplateFile Partial template file path
+ * @param  string $menuTemplateFile Partial template file path
  * @return void
  */
 function gen_client_mainmenu($tpl, $menuTemplateFile)
 {
 	$tpl->define_dynamic(
 		array(
-			 'main_menu' => $menuTemplateFile,
-			 'domain_feature' => 'main_menu',
-			 'ftp_feature' => 'main_menu',
-			 'sql_feature' => 'main_menu',
-			 'mail_feature' => 'main_menu',
-			 'support_feature' => 'main_menu',
-			 'custom_buttons_feature' => 'main_menu'));
+			'main_menu' => $menuTemplateFile,
+			'domain_feature' => 'main_menu',
+			'ftp_feature' => 'main_menu',
+			'sql_feature' => 'main_menu',
+			'mail_feature' => 'main_menu',
+			'support_feature' => 'main_menu',
+			'custom_buttons_feature' => 'main_menu'
+		)
+	);
 
 	$tpl->assign(
 		array(
-			 'TR_MENU_GENERAL_INFORMATION' => tr('General information'),
-			 'TR_MENU_STATISTICS' => tr('Statistics'),
-			 'TR_MENU_WEBTOOLS' => tr('Webtools'),
+			'TR_MENU_GENERAL_INFORMATION' => tr('General information'),
+			'TR_MENU_STATISTICS' => tr('Statistics'),
+			'TR_MENU_WEBTOOLS' => tr('Webtools'),
 
-			 'TR_MENU_LOGOUT' => tr('Logout')));
+			'TR_MENU_LOGOUT' => tr('Logout')
+		)
+	);
 
 	// Per feature menu -- begin
 
@@ -114,10 +113,13 @@ function gen_client_mainmenu($tpl, $menuTemplateFile)
 				$customMenuTarget = 'target="' . tohtml($customMenuTarget) . '"';
 			}
 
-			$tpl->assign(array(
-							  'BUTTON_LINK' => tohtml($stmt->fields['menu_link']),
-							  'BUTTON_NAME' => tohtml($stmt->fields['menu_name']),
-							  'BUTTON_TARGET' => $customMenuTarget));
+			$tpl->assign(
+				array(
+					'BUTTON_LINK' => tohtml($stmt->fields['menu_link']),
+					'BUTTON_NAME' => tohtml($stmt->fields['menu_name']),
+					'BUTTON_TARGET' => $customMenuTarget
+				)
+			);
 
 			$tpl->parse('CUSTOM_BUTTONS_FEATURE', '.custom_buttons_feature');
 			$stmt->moveNext();
@@ -132,7 +134,7 @@ function gen_client_mainmenu($tpl, $menuTemplateFile)
  * Helper function to generate client left menu from partial template file.
  *
  * @param  iMSCP_pTemplate $tpl Template engine
- * @param  $menuTemplateFile menu partial template file
+ * @param  string $menuTemplateFile menu partial template file
  * @return void
  */
 function gen_client_menu($tpl, $menuTemplateFile)
@@ -142,34 +144,37 @@ function gen_client_menu($tpl, $menuTemplateFile)
 
 	$tpl->define_dynamic(
 		array(
-			 'menu' => $menuTemplateFile,
-			 'subdomains_feature' => 'menu',
-			 'domain_aliases_features' => 'menu',
-			 'ftp_feature' => 'menu',
-			 'mail_feature' => 'menu',
-			 'sql_feature' => 'menu',
-			 'php_directives_editor_feature' => 'menu',
-			 'awstats_feature' => 'menu',
-			 'protected_areas_feature' => 'menu',
-			 'aps_feature' => 'menu',
-			 'support_system_feature' => 'menu',
-			 'backup_feature' => 'menu',
-			 'custom_dns_records_feature' => 'menu',
-			 'update_hosting_plan_feature' => 'menu'));
+			'menu' => $menuTemplateFile,
+			'subdomains_feature' => 'menu',
+			'domain_aliases_features' => 'menu',
+			'ftp_feature' => 'menu',
+			'mail_feature' => 'menu',
+			'sql_feature' => 'menu',
+			'php_directives_editor_feature' => 'menu',
+			'awstats_feature' => 'menu',
+			'protected_areas_feature' => 'menu',
+			'aps_feature' => 'menu',
+			'support_system_feature' => 'menu',
+			'backup_feature' => 'menu',
+			'custom_dns_records_feature' => 'menu',
+			'update_hosting_plan_feature' => 'menu'
+		)
+	);
 
 	$tpl->assign(
 		array(
-			 'TR_LMENU_OVERVIEW' => tr('Overview'),
-			 'TR_LMENU_CHANGE_PASSWORD' => tr('Password'),
-			 'TR_LMENU_CHANGE_PERSONAL_DATA' => tr('Personal data'),
-			 'TR_LMENU_LANGUAGE' => tr('Language'),
-			 'TR_LMENU_LAYOUT' => tr('Layout'),
-			 'TR_LMENU_UPDATE_HOSTING_PLAN' => tr('Update hosting plan'),
-
-			 // Todo move these entries tha don't really belong to the menu
-			 'VERSION' => tohtml($cfg->Version),
-			 'BUILDDATE' => tohtml($cfg->BuildDate),
-			 'CODENAME' => tohtml($cfg->CodeName)));
+			'TR_LMENU_OVERVIEW' => tr('Overview'),
+			'TR_LMENU_CHANGE_PASSWORD' => tr('Password'),
+			'TR_LMENU_CHANGE_PERSONAL_DATA' => tr('Personal data'),
+			'TR_LMENU_LANGUAGE' => tr('Language'),
+			'TR_LMENU_LAYOUT' => tr('Layout'),
+			'TR_LMENU_UPDATE_HOSTING_PLAN' => tr('Update hosting plan'),
+			// Todo move these entries tha don't really belong to the menu
+			'VERSION' => tohtml($cfg->Version),
+			'BUILDDATE' => tohtml($cfg->BuildDate),
+			'CODENAME' => tohtml($cfg->CodeName)
+		)
+	);
 
 	// Per feature left menu -- begin
 
@@ -188,11 +193,13 @@ function gen_client_menu($tpl, $menuTemplateFile)
 	if (customerHasFeature('ftp')) {
 		$tpl->assign(
 			array(
-				 'TR_LMENU_ADD_FTP_USER' => tr('Add FTP user'),
-				 'TR_LMENU_FILEMANAGER' => tr('FileManager'),
-				 'TR_LMENU_FTP_ACCOUNTS' => tr('FTP accounts'),
-				 'FILEMANAGER_PATH' => $cfg->FILEMANAGER_PATH,
-				 'FILEMANAGER_TARGET' => $cfg->FILEMANAGER_TARGET));
+				'TR_LMENU_ADD_FTP_USER' => tr('Add FTP user'),
+				'TR_LMENU_FILEMANAGER' => tr('FileManager'),
+				'TR_LMENU_FTP_ACCOUNTS' => tr('FTP accounts'),
+				'FILEMANAGER_PATH' => $cfg->FILEMANAGER_PATH,
+				'FILEMANAGER_TARGET' => $cfg->FILEMANAGER_TARGET
+			)
+		);
 	} else {
 		$tpl->assign('FTP_FEATURE', '');
 	}
@@ -200,22 +207,27 @@ function gen_client_menu($tpl, $menuTemplateFile)
 	if (customerHasFeature('mail')) {
 		$tpl->assign(
 			array(
-				 'TR_LMENU_EMAIL_ACCOUNTS' => tr('Email accounts'),
-				 'TR_LMENU_ADD_MAIL_USER' => tr('Add email user'),
-				 'TR_LMENU_MAIL_CATCH_ALL' => tr('Catch all'),
-				 'TR_LMENU_WEBMAIL' => tr('Webmail'),
-				 'WEBMAIL_PATH' => $cfg->WEBMAIL_PATH,
-				 'WEBMAIL_TARGET' => $cfg->WEBMAIL_TARGET));
+				'TR_LMENU_EMAIL_ACCOUNTS' => tr('Email accounts'),
+				'TR_LMENU_ADD_MAIL_USER' => tr('Add email user'),
+				'TR_LMENU_MAIL_CATCH_ALL' => tr('Catch all'),
+				'TR_LMENU_WEBMAIL' => tr('Webmail'),
+				'WEBMAIL_PATH' => $cfg->WEBMAIL_PATH,
+				'WEBMAIL_TARGET' => $cfg->WEBMAIL_TARGET
+			)
+		);
 	} else {
 		$tpl->assign('MAIL_FEATURE', '');
 	}
 
 	if (customerHasFeature('sql')) {
-		$tpl->assign(array(
-						  'TR_LMENU_ADD_SQL_DATABASE' => tr('Add SQL database'),
-						  'TR_LMENU_PMA' => tr('PhpMyAdmin'),
-						  'PMA_PATH' => $cfg->PMA_PATH,
-						  'PMA_TARGET' => $cfg->PMA_TARGET));
+		$tpl->assign(
+			array(
+				'TR_LMENU_ADD_SQL_DATABASE' => tr('Add SQL database'),
+				'TR_LMENU_PMA' => tr('PhpMyAdmin'),
+				'PMA_PATH' => $cfg->PMA_PATH,
+				'PMA_TARGET' => $cfg->PMA_TARGET
+			)
+		);
 	} else {
 		$tpl->assign('SQL_FEATURE', '');
 	}
@@ -238,9 +250,9 @@ function gen_client_menu($tpl, $menuTemplateFile)
 	if (customerHasFeature('awstats')) {
 		$tpl->assign(
 			array(
-				  'TR_LMENU_WEBSTATS' => tr('Web statistics'),
-				  'WEBSTATS_RPATH' => 'http://' . decode_idna($domainProperties['domain_name']) . '/' .  $cfg->WEBSTATS_RPATH,
-				  'WEBSTATS_TARGET' => $cfg->WEBSTATS_TARGET
+				'TR_LMENU_WEBSTATS' => tr('Web statistics'),
+				'WEBSTATS_RPATH' => 'http://' . decode_idna($domainProperties['domain_name']) . '/' . $cfg->WEBSTATS_RPATH,
+				'WEBSTATS_TARGET' => $cfg->WEBSTATS_TARGET
 			)
 		);
 	} else {
@@ -270,11 +282,13 @@ function gen_client_menu($tpl, $menuTemplateFile)
 	if (customerHasFeature('support')) {
 		$tpl->assign(
 			array(
-				 'TR_LMENU_OPEN_TICKETS' => tr('Open tickets'),
-				 'TR_LMENU_CLOSED_TICKETS' => tr('Closed tickets'),
-				 'TR_LMENU_NEW_TICKET' => tr('New ticket'),
-				 'SUPPORT_SYSTEM_PATH' => $cfg->IMSCP_SUPPORT_SYSTEM_PATH,
-				 'SUPPORT_SYSTEM_TARGET' => $cfg->IMSCP_SUPPORT_SYSTEM_TARGET));
+				'TR_LMENU_OPEN_TICKETS' => tr('Open tickets'),
+				'TR_LMENU_CLOSED_TICKETS' => tr('Closed tickets'),
+				'TR_LMENU_NEW_TICKET' => tr('New ticket'),
+				'SUPPORT_SYSTEM_PATH' => $cfg->IMSCP_SUPPORT_SYSTEM_PATH,
+				'SUPPORT_SYSTEM_TARGET' => $cfg->IMSCP_SUPPORT_SYSTEM_TARGET
+			)
+		);
 	} else {
 		$tpl->assign('SUPPORT_SYSTEM_FEATURE', '');
 	}
@@ -283,16 +297,7 @@ function gen_client_menu($tpl, $menuTemplateFile)
 	// Yes if hosting plan are managed by reseller and a least one hosting plan is
 	// available for update
 	if ($cfg->HOSTING_PLANS_LEVEL != 'admin') {
-		$query = "
-			SELECT
-				COUNT(`id`)`cnt`
-			FROM
-				`hosting_plans`
-			WHERE
-				`reseller_id` = ?
-			AND
-				`status` = '1'
-		";
+		$query = "SELECT COUNT(`id`)`cnt` FROM `hosting_plans` WHERE `reseller_id` = ? AND `status` = '1'";
 		$stmt = exec_query($query, $_SESSION['user_created_by']);
 
 		if ($stmt->fields['cnt'] > 0) {

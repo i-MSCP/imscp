@@ -1,3 +1,4 @@
+
 <!-- BDP: add_user -->
 <form name="addCustomerFrm3" method="post" action="user_add3.php">
 	<table class="firstColFixed">

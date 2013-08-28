@@ -1,3 +1,4 @@
+
 <form name="domain_statistics_frm" method="post" action="domain_statistics.php?domain_id={DOMAIN_ID}">
 	<label for="month">{TR_MONTH}</label>
 	<select id="month" name="month">

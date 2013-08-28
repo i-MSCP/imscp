@@ -24,15 +24,15 @@
  * Portions created by the i-MSCP Team are Copyright (C) 2010-2013 by
  * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
  *
- * @category	i-MSCP
- * @package		i-MSCP
- * @copyright	2006-2010 by ispCP | http://isp-control.net
- * @copyright	2010-2013 by i-MSCP | http://i-mscp.net
- * @author		ispCP Team
- * @author		i-MSCP Team
- * @author		Laurent Declercq <l.declercq@nuxwin.com>
- * @link		http://i-mscp.net i-MSCP Home Site
- * @license		http://www.mozilla.org/MPL/ MPL 1.1
+ * @category    i-MSCP
+ * @package	    i-MSCP
+ * @copyright   2006-2010 by ispCP | http://isp-control.net
+ * @copyright   2010-2013 by i-MSCP | http://i-mscp.net
+ * @author      ispCP Team
+ * @author      i-MSCP Team
+ * @author      Laurent Declercq <l.declercq@nuxwin.com>
+ * @link        http://i-mscp.net i-MSCP Home Site
+ * @license     http://www.mozilla.org/MPL/ MPL 1.1
  */
 
 /**
@@ -71,10 +71,7 @@ define('PERSISTENT_PATH', GUI_ROOT_DIR .'/data/persistent');
 
 // Set include path
 set_include_path(
-	implode(
-		PATH_SEPARATOR,
-		array_unique(array(LIBRARY_PATH, LIBRARY_PATH . '/vendor', DEFAULT_INCLUDE_PATH))
-	)
+	implode(PATH_SEPARATOR, array_unique(array(LIBRARY_PATH, LIBRARY_PATH . '/vendor', DEFAULT_INCLUDE_PATH)))
 );
 
 // Autoloader
@@ -160,6 +157,5 @@ require_once 'iMSCP/View/Helpers/Functions/Common.php';
 
 if (isset($_SESSION['user_type'])) {
 	$helperFileName = ucfirst(strtolower($_SESSION['user_type']));
-
 	require_once 'iMSCP/View/Helpers/Functions/' . $helperFileName . '.php';
 }

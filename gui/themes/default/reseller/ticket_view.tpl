@@ -1,3 +1,4 @@
+
 <h2 class="support"><span>{TR_VIEW_SUPPORT_TICKET}</span></h2>
 
 <!-- BDP: page_message -->

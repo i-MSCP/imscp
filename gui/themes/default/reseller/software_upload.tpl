@@ -1,3 +1,4 @@
+
 <script language="JavaScript" type="text/JavaScript">
 	/*<![CDATA[*/
 	function action_delete() {
@@ -17,36 +18,12 @@
 <table>
 	<thead>
 	<tr>
-		<th>
-			<div style="float:left">{TR_SOFTWARE_NAME}</div>
-			<div style="float:left">
-				<a href="{TR_SOFTWARE_NAME_ASC}" class="app_icon i_app_asc"></a>
-				<a href="{TR_SOFTWARE_NAME_DESC}" class="app_icon i_app_desc"></a>
-			</div>
-		</th>
-		<th width="100">{TR_SOFTWARE_VERSION}</th>
-		<th width="100">
-			<div style="float:left">{TR_SOFTWARE_LANGUAGE}</div>
-			<div style="float:left">
-				<a href="{TR_LANGUAGE_ASC}" class="app_icon i_app_asc"></a>
-				<a href="{TR_LANGUAGE_DESC}" class="app_icon i_app_desc"></a>
-			</div>
-		</th>
-		<th width="170">
-			<div style="float:left">{TR_SOFTWARE_STATUS}</div>
-			<div style="float:left">
-				<a href="{TR_SOFTWARE_STATUS_ASC}" class="app_icon i_app_asc"></a>
-				<a href="{TR_SOFTWARE_STATUS_DESC}" class="app_icon i_app_desc"></a>
-			</div>
-		</th>
-		<th width="120">
-			<div style="float:left">{TR_SOFTWARE_TYPE}</div>
-			<div style="float:left">
-				<a href="{TR_SOFTWARE_TYPE_ASC}" class="app_icon i_app_asc"></a>
-				<a href="{TR_SOFTWARE_TYPE_DESC}" class="app_icon i_app_desc"></a>
-			</div>
-		</th>
-		<th align="center" width="100">{TR_SOFTWARE_DELETE}</th>
+		<th>{TR_SOFTWARE_NAME}</th>
+		<th>{TR_SOFTWARE_VERSION}</th>
+		<th>{TR_SOFTWARE_LANGUAGE}</th>
+		<th>{TR_SOFTWARE_STATUS}</th>
+		<th>{TR_SOFTWARE_TYPE}</th>
+		<th>{TR_SOFTWARE_DELETE}</th>
 	</tr>
 	</thead>
 	<tbody>
@@ -72,90 +49,88 @@
 	</tr>
 	</tbody>
 </table>
+
 <br/>
+
 <h2 class="apps_installer"><span>{TR_UPLOAD_SOFTWARE}</span></h2>
-<table>
-	<tr>
-		<td>
-			<form action="software_upload.php" name="sw_upload_form" id="sw_upload_form" method="post"
-				  enctype="multipart/form-data">
-				<table>
-					<tr>
-						<td width="200">{TR_SOFTWARE_FILE}</td>
-						<td><input type="file" name="sw_file" id="sw_file" size="60"/></td>
-					</tr>
-					<tr>
-						<td width="200">{TR_SOFTWARE_URL}</td>
-						<td><input type="text" name="sw_wget" id="sw_wget" value="{VAL_WGET}" size="60"/></td>
-					</tr>
-					<tr>
-						<td colspan="2">
-							<div class="buttons">
-								<input type="button" class="button" value="{TR_UPLOAD_SOFTWARE_BUTTON}"
-									   onClick="javascript:document.getElementById('sw_upload_form').submit();"/>
-								<input name="upload" type="hidden" value="upload"/>
-								<input type="hidden" name="send_software_upload_token" id="send_software_upload_token"
-									   value="{SOFTWARE_UPLOAD_TOKEN}"/>
-							</div>
-						</td>
-					</tr>
-				</table>
-			</form>
-		</td>
-	</tr>
-</table>
+
+<form action="software_upload.php" name="sw_upload_form" id="sw_upload_form" method="post" enctype="multipart/form-data">
+	<table>
+		<thead>
+		<tr>
+			<th colspan="2">{TR_SOFTWARE_UPLOAD}</th>
+		</tr>
+		</thead>
+		<tbody>
+		<tr>
+			<td>{TR_SOFTWARE_FILE}</td>
+			<td><input type="file" name="sw_file" id="sw_file" size="60"/></td>
+		</tr>
+		<tr>
+			<td><label for="sw_wget">{TR_SOFTWARE_URL}<label</td>
+			<td><input type="text" name="sw_wget" id="sw_wget" value="{VAL_WGET}" size="60"/></td>
+		</tr>
+		</tbody>
+	</table>
+	<div class="buttons">
+		<input type="button" class="button" value="{TR_UPLOAD_SOFTWARE_BUTTON}"
+			   onClick="document.getElementById('sw_upload_form').submit();"/>
+		<input name="upload" type="hidden" value="upload"/>
+		<input type="hidden" name="send_software_upload_token" id="send_software_upload_token"
+			   value="{SOFTWARE_UPLOAD_TOKEN}"/>
+	</div>
+</form>
+
 <!-- BDP: webdepot_list -->
 <br/>
+
 <h2 class="apps_installer"><span>{TR_WEBDEPOT}</span></h2>
-<table>
-	<thead>
-	<tr>
-		<th>{TR_PACKAGE_TITLE}</th>
-		<th width="120">{TR_PACKAGE_INSTALL_TYPE}</th>
-		<th width="120">{TR_PACKAGE_VERSION}</th>
-		<th width="120">{TR_PACKAGE_LANGUAGE}</th>
-		<th width="120">{TR_PACKAGE_TYPE}</th>
-		<th width="120">{TR_PACKAGE_VENDOR_HP}</th>
-		<th width="180">{TR_PACKAGE_ACTION}</th>
-	</tr>
-	</thead>
-	<tbody>
-	<!-- BDP: no_webdepotsoftware_list -->
-	<tr>
-		<td colspan="7"><div class="info">{NO_WEBDEPOTSOFTWARE_AVAILABLE}</div></td>
-	</tr>
-	<!-- EDP: no_webdepotsoftware_list -->
-	<!-- BDP: list_webdepotsoftware -->
-	<tr>
-		<td><span class="icon i_app_installer" title="{TR_PACKAGE_TOOLTIP}">{TR_PACKAGE_NAME}</span></td>
-		<td align="center">{TR_PACKAGE_INSTALL_TYPE}</td>
-		<td align="center">{TR_PACKAGE_VERSION}</td>
-		<td align="center">{TR_PACKAGE_LANGUAGE}</td>
-		<td align="center">{TR_PACKAGE_TYPE}</td>
-		<td align="center">{TR_PACKAGE_VENDOR_HP}</td>
-		<!-- BDP: package_install_link -->
-		<td align="center">
-			<a href="#" onClick="return action_install('{PACKAGE_HTTP_URL}')">{TR_PACKAGE_INSTALL}</a>
-		</td>
-		<!-- EDP: package_install_link -->
-		<!-- BDP: package_info_link -->
-		<td align="left"><span class="icon i_help">Help</span>{TR_PACKAGE_INSTALL}</td>
-		<!-- EDP: package_info_link -->
-	</tr>
-	<!-- EDP: list_webdepotsoftware -->
-	<tr>
-		<td colspan="7">
-			<form action="software_upload.php" method="post" name="update_webdepot" id="update_webdepot">
-				<div class="buttons">
-					<input name="Submit" type="submit" class="button" value="{TR_APPLY_CHANGES}"/>
-					<input type="hidden" name="uaction" value="updatewebdepot"/>
-				</div>
-			</form>
-		</td>
-	</tr>
-	<tr>
-		<th colspan="7">{TR_WEBDEPOTSOFTWARE_COUNT}:&nbsp;{TR_WEBDEPOTSOFTWARE_ACT_NUM}</th>
-	</tr>
-	</tbody>
-</table>
+
+<form action="software_upload.php" method="post" name="update_webdepot" id="update_webdepot">
+	<table>
+		<thead>
+		<tr>
+			<th>{TR_PACKAGE_TITLE}</th>
+			<th>{TR_PACKAGE_INSTALL_TYPE}</th>
+			<th>{TR_PACKAGE_VERSION}</th>
+			<th>{TR_PACKAGE_LANGUAGE}</th>
+			<th>{TR_PACKAGE_TYPE}</th>
+			<th>{TR_PACKAGE_VENDOR_HP}</th>
+			<th>{TR_PACKAGE_ACTION}</th>
+		</tr>
+		</thead>
+		<tfoot>
+		<tr>
+			<td colspan="7">{TR_WEBDEPOTSOFTWARE_COUNT}:&nbsp;{TR_WEBDEPOTSOFTWARE_ACT_NUM}</td>
+		</tr>
+		</tfoot>
+		<tbody>
+		<!-- BDP: no_webdepotsoftware_list -->
+		<tr>
+			<td colspan="7"><div class="info">{NO_WEBDEPOTSOFTWARE_AVAILABLE}</div></td>
+		</tr>
+		<!-- EDP: no_webdepotsoftware_list -->
+		<!-- BDP: list_webdepotsoftware -->
+		<tr>
+			<td><span class="icon i_app_installer" title="{TR_PACKAGE_TOOLTIP}">{TR_PACKAGE_NAME}</span></td>
+			<td>{TR_PACKAGE_INSTALL_TYPE}</td>
+			<td>{TR_PACKAGE_VERSION}</td>
+			<td>{TR_PACKAGE_LANGUAGE}</td>
+			<td>{TR_PACKAGE_TYPE}</td>
+			<td>{TR_PACKAGE_VENDOR_HP}</td>
+			<!-- BDP: package_install_link -->
+			<td><a href="#" onClick="return action_install('{PACKAGE_HTTP_URL}')">{TR_PACKAGE_INSTALL}</a></td>
+			<!-- EDP: package_install_link -->
+			<!-- BDP: package_info_link -->
+			<td><span class="icon i_help">Help</span>{TR_PACKAGE_INSTALL}</td>
+			<!-- EDP: package_info_link -->
+		</tr>
+		<!-- EDP: list_webdepotsoftware -->
+		</tbody>
+	</table>
+	<div class="buttons">
+		<input name="Submit" type="submit" class="button" value="{TR_APPLY_CHANGES}"/>
+		<input type="hidden" name="uaction" value="updatewebdepot"/>
+	</div>
+</form>
 <!-- EDP: webdepot_list -->

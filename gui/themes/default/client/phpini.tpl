@@ -1,3 +1,4 @@
+
 <p class="hint" style="font-variant: small-caps;font-size: small;">{TR_PAGE_TEXT}</p>
 
 <form name="editFrm" method="post" action="phpini.php">

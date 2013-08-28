@@ -1,3 +1,4 @@
+
 <!-- BDP: languages_available -->
 <form name="client_change_language" method="post" action="language.php">
 	<table class="firstColFixed">

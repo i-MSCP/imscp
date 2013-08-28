@@ -391,7 +391,8 @@ function generateNavigation($tpl)
 						if ($subpage->isActive(true)) {
 							$tpl->assign(
 								array(
-									'TR_TITLE' => ($subpage->get('dynamic_title')) ? $subpage->get('dynamic_title') : tr($subpage->getLabel()),
+									'TR_TITLE' => ($subpage->get('dynamic_title'))
+										? $subpage->get('dynamic_title') : tr($subpage->getLabel()),
 									'TITLE_CLASS' => $subpage->get('title_class')
 								)
 							);

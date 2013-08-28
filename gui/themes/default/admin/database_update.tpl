@@ -1,3 +1,4 @@
+
 <!-- BDP: database_updates -->
 <form name='database_update' action='database_update.php' method='post'>
 	<table class="descriptions firstColFixed">

@@ -301,6 +301,7 @@ function _passgen()
 		do {
 			$z = mt_rand(42, 123);
 		} while ($z >= 91 && $z <= 96);
+
 		$password .= chr($z);
 	}
 

@@ -1,3 +1,4 @@
+
 <script type="text/javascript">
 	/* <![CDATA[ */
 	function action_delete(url, subject) {
@@ -62,13 +63,6 @@
 	</tbody>
 </table>
 <div class="paginator">
-	<!-- BDP: scroll_next_gray -->
-	<a class="icon i_next_gray" href="#" onclick="return false;">
-		&nbsp;</a>
-	<!-- EDP: scroll_next_gray -->
-	<!-- BDP: scroll_next -->
-	<a class="icon i_next" href="ticket_system.php?psi={NEXT_PSI}" title="{TR_NEXT}">{TR_NEXT}</a>
-	<!-- EDP: scroll_next -->
 	<!-- BDP: scroll_prev -->
 	<a class="icon i_prev" href="ticket_system.php?psi={PREV_PSI}" title="{TR_PREVIOUS}">{TR_PREVIOUS}</a>
 	<!-- EDP: scroll_prev -->
@@ -76,5 +70,12 @@
 	<a class="icon i_prev_gray" href="#" onclick="return false;">
 		&nbsp;</a>
 	<!-- EDP: scroll_prev_gray -->
+	<!-- BDP: scroll_next_gray -->
+	<a class="icon i_next_gray" href="#" onclick="return false;">
+		&nbsp;</a>
+	<!-- EDP: scroll_next_gray -->
+	<!-- BDP: scroll_next -->
+	<a class="icon i_next" href="ticket_system.php?psi={NEXT_PSI}" title="{TR_NEXT}">{TR_NEXT}</a>
+	<!-- EDP: scroll_next -->
 </div>
 <!-- EDP: tickets_list -->

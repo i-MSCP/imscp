@@ -1,3 +1,4 @@
+
 <form name="search_user" method="post" action="user_edit.php?edit_id={EDIT_ID}">
 	<table>
 		<thead>

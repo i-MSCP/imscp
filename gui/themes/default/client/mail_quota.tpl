@@ -1,3 +1,4 @@
+
 <form name="quotaFrm" method="post" action="mail_quota.php?id={MAIL_ID_VAL}">
 	<table class="firstColFixed">
 		<thead>

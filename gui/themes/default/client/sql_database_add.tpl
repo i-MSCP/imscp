@@ -1,3 +1,4 @@
+
 <form name="sql_add_database_frm" method="post" action="sql_database_add.php">
 	<table>
 		<thead>

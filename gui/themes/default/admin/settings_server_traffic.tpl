@@ -1,3 +1,4 @@
+
 <form action="settings_server_traffic.php" method="post" name="serverTrafficFrm">
 	<table class="firstColFixed">
 		<thead>

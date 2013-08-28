@@ -1,3 +1,4 @@
+
 <form name="cert_edit" method="post" action="cert_view.php?id={ID}&type={TYPE}">
 	<table class="firstColFixed">
 		<thead>

@@ -32,7 +32,7 @@
  */
 
 /**
- * Returns domain default properties.
+ * Returns domain default properties
  *
  * Note: For performance reasons, the data are retrieved once per request.
  *
@@ -48,11 +48,11 @@ function get_domain_default_props($domainAdminId)
 		$domainProperties = $stmt->fetchRow();
 	}
 
-    return $domainProperties;
+	return $domainProperties;
 }
 
 /**
- * Returns total number of subdomains that belong to a specific domain.
+ * Returns total number of subdomains that belong to a specific domain
  *
  * Note, this function doesn't make any differentiation between sub domains and the
  * aliasses subdomains. The result is simply the sum of both.
@@ -62,17 +62,10 @@ function get_domain_default_props($domainAdminId)
  */
 function get_domain_running_sub_cnt($domain_id)
 {
-    $query = "
-		SELECT
-			COUNT(*) AS `cnt`
-		FROM
-			`subdomain`
-		WHERE
-			`domain_id` = ?
-	";
-    $stmt1 = exec_query($query, $domain_id);
+	$query = "SELECT COUNT(*) AS `cnt` FROM `subdomain` WHERE `domain_id` = ?";
+	$stmt1 = exec_query($query, $domain_id);
 
-    $query = "
+	$query = "
 		SELECT
 			COUNT(`subdomain_alias_id`) AS `cnt`
 		FROM
@@ -80,13 +73,13 @@ function get_domain_running_sub_cnt($domain_id)
 		WHERE
 			`alias_id` IN (SELECT `alias_id` FROM `domain_aliasses` WHERE `domain_id` = ?)
 	";
-    $stmt2 = exec_query($query, $domain_id);
+	$stmt2 = exec_query($query, $domain_id);
 
-    return $stmt1->fields['cnt'] + $stmt2->fields['cnt'];
+	return $stmt1->fields['cnt'] + $stmt2->fields['cnt'];
 }
 
 /**
- * Returns number of domain aliases that belong to a specific domain.
+ * Returns number of domain aliases that belong to a specific domain
  *
  * @param  int $domain_id Domain unique identifier
  * @return int Total number of domain aliases
@@ -96,35 +89,25 @@ function get_domain_running_als_cnt($domain_id)
 	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
 
-    $query = "
-		SELECT
-			COUNT(`alias_id`) AS `cnt`
-		FROM
-			`domain_aliasses`
-		WHERE
-			`domain_id` = ?
-		AND
-			`alias_status` != ?
-	";
-    $stmt = exec_query($query, array($domain_id, $cfg->ITEM_ORDERED_STATUS));
+	$query = "SELECT COUNT(`alias_id`) AS `cnt` FROM `domain_aliasses` WHERE `domain_id` = ? AND `alias_status` != ?";
+	$stmt = exec_query($query, array($domain_id, $cfg->ITEM_ORDERED_STATUS));
 
-    return $stmt->fields['cnt'];
+	return $stmt->fields['cnt'];
 }
 
 /**
- * Returns information about number of mail account for a specific domain.
+ * Returns information about number of mail account for a specific domain
  *
- * @param  int $domain_id     Domain unique identifier
- * @return array              An array of values where the first item is the sum of
- *                            all other items, and where each other item represents
- *                            total number of a specific Mail account type
+ * @param  int $domainId  Domain unique identifier
+ * @return array          An array of values where the first item is the sum of all other items, and where each other
+ *                        item represents total number of a specific Mail account type
  */
-function get_domain_running_mail_acc_cnt($domain_id)
+function get_domain_running_mail_acc_cnt($domainId)
 {
-    /** @var $cfg iMSCP_Config_Handler_File */
-    $cfg = iMSCP_Registry::get('config');
+	/** @var $cfg iMSCP_Config_Handler_File */
+	$cfg = iMSCP_Registry::get('config');
 
-    $query = "
+	$query = "
 		SELECT
 			COUNT(`mail_id`) AS `cnt`
 		FROM
@@ -137,32 +120,33 @@ function get_domain_running_mail_acc_cnt($domain_id)
 			`domain_id` = ?
 	";
 
-    if ($cfg->COUNT_DEFAULT_EMAIL_ADDRESSES == 0) {
-        $query .=
-            "
+	if ($cfg->COUNT_DEFAULT_EMAIL_ADDRESSES == 0) {
+		$query .=
+			"
 			AND
 				`mail_acc` != 'abuse'
 			AND
 				`mail_acc` != 'postmaster'
 			AND
 				`mail_acc` != 'webmaster'
-		";
-    }
+			";
+	}
 
-    $stmt = exec_query($query, array('normal_', 'normal_catchall', $domain_id));
-    $dmn_mail_acc = $stmt->fields['cnt'];
+	$stmt = exec_query($query, array('normal_', 'normal_catchall', $domainId));
+	$dmnMailAcc = $stmt->fields['cnt'];
 
-    $stmt = exec_query($query, array('alias_', 'alias_catchall', $domain_id));
-    $als_mail_acc = $stmt->fields['cnt'];
+	$stmt = exec_query($query, array('alias_', 'alias_catchall', $domainId));
+	$alsMailAcc = $stmt->fields['cnt'];
 
-    $stmt = exec_query($query, array('subdom_', 'subdom_catchall', $domain_id));
-    $sub_mail_acc = $stmt->fields['cnt'];
+	$stmt = exec_query($query, array('subdom_', 'subdom_catchall', $domainId));
+	$subMailAcc = $stmt->fields['cnt'];
 
-    $stmt = exec_query($query, array('alssub_', 'alssub_catchall', $domain_id));
-    $alssub_mail_acc = $stmt->fields['cnt'];
+	$stmt = exec_query($query, array('alssub_', 'alssub_catchall', $domainId));
+	$alssubMailAcc = $stmt->fields['cnt'];
 
-    return array($dmn_mail_acc + $als_mail_acc + $sub_mail_acc + $alssub_mail_acc,
-                 $dmn_mail_acc, $als_mail_acc, $sub_mail_acc, $alssub_mail_acc);
+	return array(
+		$dmnMailAcc + $alsMailAcc + $subMailAcc + $alssubMailAcc, $dmnMailAcc, $alsMailAcc, $subMailAcc, $alssubMailAcc
+	);
 }
 
 /**
@@ -173,42 +157,33 @@ function get_domain_running_mail_acc_cnt($domain_id)
  */
 function get_customer_running_ftp_acc_cnt($customerId)
 {
-	$query = 'SELECT COUNT(`userid`) AS `count` FROM `ftp_users` WHERE `admin_id` = ?';
-	$stmt = exec_query($query, $customerId);
+	$stmt = exec_query('SELECT COUNT(`userid`) AS `count` FROM `ftp_users` WHERE `admin_id` = ?', $customerId);
 
 	return $stmt->fields['count'];
 }
 
 /**
- * Returns total number of databases that belong to a specific domain.
+ * Returns total number of databases that belong to a specific domain
  *
  * @param  int $domain_id Domain unique identifier
  * @return int Total number of databases for a specific domain
  */
 function get_domain_running_sqld_acc_cnt($domain_id)
 {
-    $query = "
-		SELECT
-			COUNT(*) AS `cnt`
-		FROM
-			`sql_database`
-		WHERE
-			`domain_id` = ?
-	";
-    $stmt = exec_query($query, $domain_id);
+	$stmt = exec_query('SELECT COUNT(*) AS `cnt` FROM `sql_database` WHERE `domain_id` = ?', $domain_id);
 
-    return $stmt->fields['cnt'];
+	return $stmt->fields['cnt'];
 }
 
 /**
- * Returns total number of SQL user that belong to a specific domain.
+ * Returns total number of SQL user that belong to a specific domain
  *
  * @param  int $domain_id Domain unique identifier
  * @return int Total number of SQL users for a specific domain
  */
 function get_domain_running_sqlu_acc_cnt($domain_id)
 {
-    $query = "
+	$query = "
 		SELECT DISTINCT
 			`t1`.`sqlu_name`
 		FROM
@@ -218,24 +193,23 @@ function get_domain_running_sqlu_acc_cnt($domain_id)
 		AND
 			`t2`.`sqld_id` = `t1`.`sqld_id`
 	";
-    $stmt = exec_query($query, $domain_id);
+	$stmt = exec_query($query, $domain_id);
 
-    return $stmt->recordCount();
+	return $stmt->recordCount();
 }
 
 /**
- * Returns both total number of database and SQL user that belong to a specific
- * domain.
+ * Returns both total number of database and SQL user that belong to a specific domain
  *
- * @param  int $domain_id     Domain unique identifier
- * @return array              An array where the first item is the Database total
- *                            number, and the second the SQL users total number.
+ * @param  int $domain_id Domain unique identifier
+ * @return array An array where the first item is the Database total number, and the second the SQL users total number.
  */
 function get_domain_running_sql_acc_cnt($domain_id)
 {
-    return array(
-        get_domain_running_sqld_acc_cnt($domain_id),
-        get_domain_running_sqlu_acc_cnt($domain_id));
+	return array(
+		get_domain_running_sqld_acc_cnt($domain_id),
+		get_domain_running_sqlu_acc_cnt($domain_id)
+	);
 }
 
 /**
@@ -246,109 +220,101 @@ function get_domain_running_sql_acc_cnt($domain_id)
  */
 function get_domain_running_props_cnt($domainId)
 {
-    $sub_cnt = get_domain_running_sub_cnt($domainId);
-    $als_cnt = get_domain_running_als_cnt($domainId);
+	$subCount = get_domain_running_sub_cnt($domainId);
+	$alsCount = get_domain_running_als_cnt($domainId);
 
-    list($mail_acc_cnt) = get_domain_running_mail_acc_cnt($domainId);
+	list($mailAccCount) = get_domain_running_mail_acc_cnt($domainId);
 
-	# Transitional query - Will be removed asap
+	// Transitional query - Will be removed asap
 	$query = "SELECT `domain_admin_id` FROM `domain` WHERE `domain_id` = ?";
 	$stmt = exec_query($query, $domainId);
 
-    $ftp_acc_cnt = get_customer_running_ftp_acc_cnt($stmt->fields['domain_admin_id']);
-    list($sqld_acc_cnt, $sqlu_acc_cnt) = get_domain_running_sql_acc_cnt($domainId);
+	$ftpAccCount = get_customer_running_ftp_acc_cnt($stmt->fields['domain_admin_id']);
+	list($sqlDbCount, $sqlUserCount) = get_domain_running_sql_acc_cnt($domainId);
 
-    return array($sub_cnt, $als_cnt, $mail_acc_cnt, $ftp_acc_cnt, $sqld_acc_cnt, $sqlu_acc_cnt);
+	return array($subCount, $alsCount, $mailAccCount, $ftpAccCount, $sqlDbCount, $sqlUserCount);
 }
 
 /**
- * Translate mail type.
+ * Translate mail type
  *
  * @param  string $mail_type
  * @return string Translated mail type
  */
 function user_trans_mail_type($mail_type)
 {
-    if ($mail_type === MT_NORMAL_MAIL) {
-        return tr('Domain mail');
-    } else if ($mail_type === MT_NORMAL_FORWARD) {
-        return tr('Email forward');
-    } else if ($mail_type === MT_ALIAS_MAIL) {
-        return tr('Alias mail');
-    } else if ($mail_type === MT_ALIAS_FORWARD) {
-        return tr('Alias forward');
-    } else if ($mail_type === MT_SUBDOM_MAIL) {
-        return tr('Subdomain mail');
-    } else if ($mail_type === MT_SUBDOM_FORWARD) {
-        return tr('Subdomain forward');
-    } else if ($mail_type === MT_ALSSUB_MAIL) {
-        return tr('Alias subdomain mail');
-    } else if ($mail_type === MT_ALSSUB_FORWARD) {
-        return tr('Alias subdomain forward');
-    } else if ($mail_type === MT_NORMAL_CATCHALL) {
-        return tr('Domain mail');
-    } else if ($mail_type === MT_ALIAS_CATCHALL) {
-        return tr('Domain mail');
-    } else {
-        return tr('Unknown type.');
-    }
+	if ($mail_type === MT_NORMAL_MAIL) {
+		return tr('Domain mail');
+	} else if ($mail_type === MT_NORMAL_FORWARD) {
+		return tr('Email forward');
+	} else if ($mail_type === MT_ALIAS_MAIL) {
+		return tr('Alias mail');
+	} else if ($mail_type === MT_ALIAS_FORWARD) {
+		return tr('Alias forward');
+	} else if ($mail_type === MT_SUBDOM_MAIL) {
+		return tr('Subdomain mail');
+	} else if ($mail_type === MT_SUBDOM_FORWARD) {
+		return tr('Subdomain forward');
+	} else if ($mail_type === MT_ALSSUB_MAIL) {
+		return tr('Alias subdomain mail');
+	} else if ($mail_type === MT_ALSSUB_FORWARD) {
+		return tr('Alias subdomain forward');
+	} else if ($mail_type === MT_NORMAL_CATCHALL) {
+		return tr('Domain mail');
+	} else if ($mail_type === MT_ALIAS_CATCHALL) {
+		return tr('Domain mail');
+	} else {
+		return tr('Unknown type.');
+	}
 }
 
 /**
- * Count SQL user by name.
+ * Count SQL user by name
  *
  * @param string $sqlu_name SQL user name to match against
  * @return int
  */
 function count_sql_user_by_name($sqlu_name)
 {
-    $query = "
-		SELECT
-			COUNT(*) AS `cnt`
-		FROM
-			`sql_user`
-		WHERE
-			`sqlu_name` = ?
-	";
-    $stmt = exec_query($query, $sqlu_name);
+	$stmt = exec_query('SELECT COUNT(*) AS `cnt` FROM `sql_user` WHERE `sqlu_name` = ?', $sqlu_name);
 
-    return $stmt->fields['cnt'];
+	return $stmt->fields['cnt'];
 }
 
 /**
- * Checks if a user has permissions on a specific SQL user.
+ * Checks if a user has permissions on a specific SQL user
  *
  * @param  int $db_user_id SQL user unique identifier.
  * @return bool TRUE if user have permission on SQL user, FALSE otherwise.
  */
 function check_user_sql_perms($db_user_id)
 {
-    if (who_owns_this($db_user_id, 'sqlu_id') != $_SESSION['user_id']) {
-        return false;
-    }
+	if (who_owns_this($db_user_id, 'sqlu_id') != $_SESSION['user_id']) {
+		return false;
+	}
 
-    return true;
+	return true;
 }
 
 /**
- * Checks if a user has permissions on  specific SQL Database.
+ * Checks if a user has permissions on  specific SQL Database
  *
  * @param  int $db_id Database unique identifier
  * @return bool TRUE if user have permission on SQL user, FALSE otherwise.
  */
 function check_db_sql_perms($db_id)
 {
-    if (who_owns_this($db_id, 'sqld_id') != $_SESSION['user_id']) {
-        return false;
-    }
+	if (who_owns_this($db_id, 'sqld_id') != $_SESSION['user_id']) {
+		return false;
+	}
 
-    return true;
+	return true;
 }
 
 /**
- * Deletes a SQL user.
+ * Deletes an SQL user
  *
- * Note: Please, be sure to execute this function inside a MySQL transaction to ensure data consistency.
+ * Note: Please be sure to execute this function inside a MySQL transaction to ensure data consistency.
  *
  * @param  int $domainId Domain unique identifier
  * @param  int $sqlUserId Sql user unique identifier
@@ -401,7 +367,7 @@ function sql_delete_user($domainId, $sqlUserId)
 }
 
 /**
- * Deletes the given SQL database.
+ * Deletes the given SQL database
  *
  * @throws iMSCP_Exception in case a SQL user linked to the given databsae cannot be removed
  * @param  int $domainId Domain unique identifier
@@ -461,7 +427,7 @@ function delete_sql_database($domainId, $databaseId)
 }
 
 /**
- * Returns translated gender code.
+ * Returns translated gender code
  *
  * @param string $code Gender code to be returned
  * @param bool $nullOnBad Tells whether or not null must be returned on unknow $code
@@ -469,20 +435,20 @@ function delete_sql_database($domainId, $databaseId)
  */
 function get_gender_by_code($code, $nullOnBad = false)
 {
-    switch (strtolower($code)) {
-        case 'm':
-        case 'M':
-            return tr('Male');
-        case 'f':
-        case 'F':
-            return tr('Female');
-        default:
-            return (!$nullOnBad) ? tr('Unknown') : null;
-    }
+	switch (strtolower($code)) {
+		case 'm':
+		case 'M':
+			return tr('Male');
+		case 'f':
+		case 'F':
+			return tr('Female');
+		default:
+			return (!$nullOnBad) ? tr('Unknown') : null;
+	}
 }
 
 /**
- * Checks if a mount point exists.
+ * Checks if a mount point exists
  *
  * @param  int $domain_id Domain unique identifier
  * @param  string $mnt_point mount point to check
@@ -490,48 +456,35 @@ function get_gender_by_code($code, $nullOnBad = false)
  */
 function mount_point_exists($domain_id, $mnt_point)
 {
-    $query = "
+	$query = "
 		SELECT
-			`t1`.`domain_id`, `t2`.`alias_mount`, `t3`.`subdomain_mount`,
-			`t4`.`subdomain_alias_mount`
+			`t1`.`domain_id`, `t2`.`alias_mount`, `t3`.`subdomain_mount`, `t4`.`subdomain_alias_mount`
 		FROM
 			`domain` AS `t1`
 		LEFT JOIN
-			(`domain_aliasses` AS `t2`)
-		ON
-			(`t1`.`domain_id` = `t2`.`domain_id`)
+			`domain_aliasses` AS `t2` ON (`t1`.`domain_id` = `t2`.`domain_id`)
 		LEFT JOIN
-			(`subdomain` AS `t3`)
-		ON
-			(`t1`.`domain_id` = `t3`.`domain_id`)
+			`subdomain` AS `t3` ON (`t1`.`domain_id` = `t3`.`domain_id`)
 		LEFT JOIN
-			(`subdomain_alias` AS `t4`)
-		ON
-			(`t2`.`alias_id` = `t4`.`alias_id`)
+			`subdomain_alias` AS `t4` ON (`t2`.`alias_id` = `t4`.`alias_id`)
 		WHERE
 			`t1`.`domain_id` = ?
 		AND
-			(
-				`alias_mount` = ?
-			OR
-				`subdomain_mount` = ?
-			OR
-				`subdomain_alias_mount` = ?
-			)
+			(`alias_mount` = ? OR `subdomain_mount` = ? OR `subdomain_alias_mount` = ?)
 	";
 
-    $stmt = exec_query($query,  array(
-                                     $domain_id, $mnt_point, $mnt_point, $mnt_point));
+	$stmt = exec_query($query, array(
+		$domain_id, $mnt_point, $mnt_point, $mnt_point));
 
-    if ($stmt->recordCount() != 0) {
-        return true;
-    }
+	if ($stmt->rowCount()) {
+		return true;
+	}
 
-    return false;
+	return false;
 }
 
 /**
- * Tells whether or not the current customer can access to the given feature(s).
+ * Tells whether or not the current customer can access to the given feature(s)
  *
  * @author Laurent Declercq <l.declercq@nuxwin.com>
  * @throws iMSCP_Exception When $featureName is not known
@@ -542,25 +495,25 @@ function mount_point_exists($domain_id, $mnt_point)
 function customerHasFeature($featureNames, $forceReload = false)
 {
 	static $availableFeatures = null;
-    static $debug = false;
+	static $debug = false;
 
 	if (null === $availableFeatures || $forceReload) {
 		/** @var $cfg iMSCP_Config_Handler_File */
 		$cfg = iMSCP_Registry::get('config');
-        $debug = (bool) $cfg->DEBUG;
+		$debug = (bool)$cfg->DEBUG;
 		$dmnProps = get_domain_default_props((int)$_SESSION['user_id']);
 
 		$availableFeatures = array(
 			'domain' => ($dmnProps['domain_alias_limit'] != '-1'
-						 || $dmnProps['domain_subd_limit'] != '-1'
-						 || $dmnProps['domain_dns'] == 'yes'
-						 || $dmnProps['phpini_perm_system'] == 'yes') ? true : false,
-            'external_mail' => ($dmnProps['domain_external_mail'] == 'yes') ? true : false,
+				|| $dmnProps['domain_subd_limit'] != '-1'
+				|| $dmnProps['domain_dns'] == 'yes'
+				|| $dmnProps['phpini_perm_system'] == 'yes') ? true : false,
+			'external_mail' => ($dmnProps['domain_external_mail'] == 'yes') ? true : false,
 			'php' => ($dmnProps['domain_php'] == 'yes') ? true : false,
 			'php_editor' => ($dmnProps['phpini_perm_system'] == 'yes' &&
-							 ($dmnProps['phpini_perm_allow_url_fopen'] == 'yes'
-							  || $dmnProps['phpini_perm_display_errors'] == 'yes'
-							  || in_array($dmnProps['phpini_perm_disable_functions'], array('yes', 'exec')))) ? true : false,
+				($dmnProps['phpini_perm_allow_url_fopen'] == 'yes'
+					|| $dmnProps['phpini_perm_display_errors'] == 'yes'
+					|| in_array($dmnProps['phpini_perm_disable_functions'], array('yes', 'exec')))) ? true : false,
 			'cgi' => ($dmnProps['domain_cgi'] == 'yes') ? true : false,
 			'ftp' => ($dmnProps['domain_ftpacc_limit'] != '-1') ? true : false,
 			'sql' => ($dmnProps['domain_sqld_limit'] != '-1') ? true : false,
@@ -572,7 +525,8 @@ function customerHasFeature($featureNames, $forceReload = false)
 			'backup' => ($cfg->BACKUP_DOMAINS != 'no' && $dmnProps['allowbackup'] != 'no') ? true : false,
 			'protected_areas' => true,
 			'custom_error_pages' => true,
-			'aps' => ($dmnProps['domain_software_allowed'] != 'no' && $dmnProps['domain_ftpacc_limit'] != '-1') ? true : false);
+			'aps' => ($dmnProps['domain_software_allowed'] != 'no' && $dmnProps['domain_ftpacc_limit'] != '-1') ? true : false
+		);
 
 		if (($cfg->IMSCP_SUPPORT_SYSTEM)) {
 			$query = "SELECT `support_system` FROM `reseller_props` WHERE `reseller_id` = ?";
@@ -583,19 +537,21 @@ function customerHasFeature($featureNames, $forceReload = false)
 		}
 	}
 
-    $canAccess = true;
-    foreach((array)$featureNames as $featureName) {
-        $featureName = strtolower($featureName);
+	$canAccess = true;
+	foreach ((array)$featureNames as $featureName) {
+		$featureName = strtolower($featureName);
 
-	    if ($debug && !array_key_exists($featureName, $availableFeatures)) {
-		    throw new iMSCP_Exception(sprintf("Feature %s is not known by the customerHasFeature() function.", $featureName));
-	    }
+		if ($debug && !array_key_exists($featureName, $availableFeatures)) {
+			throw new iMSCP_Exception(
+				sprintf("Feature %s is not known by the customerHasFeature() function.", $featureName)
+			);
+		}
 
-        if(!$availableFeatures[$featureName]) {
-            $canAccess = false;
-            break;
-        }
-    }
+		if (!$availableFeatures[$featureName]) {
+			$canAccess = false;
+			break;
+		}
+	}
 
 	return $canAccess;
 }
@@ -622,18 +578,12 @@ function customerHasDomain($domainName, $customerId)
 	$domainName = encode_idna($domainName);
 
 	// Check in domain table
-	$query = "
-		SELECT
-			'found'
-		FROM
-			`domain`
-		WHERE
-			`domain_admin_id` = ?
-		AND
-			`domain_name` = ?
-	";
+	$query = "SELECT 'found' FROM `domain` WHERE `domain_admin_id` = ? AND `domain_name` = ?";
 	$stmt = exec_query($query, array($customerId, $domainName));
-	if($stmt->rowCount()) return true;
+
+	if ($stmt->rowCount()) {
+		return true;
+	}
 
 	// Check in domain_aliasses table
 	$query = "
@@ -649,7 +599,10 @@ function customerHasDomain($domainName, $customerId)
 			`t2`.`alias_name` = ?
 	";
 	$stmt = exec_query($query, array($customerId, $domainName));
-	if($stmt->rowCount()) return true;
+
+	if ($stmt->rowCount()) {
+		return true;
+	}
 
 	// Check in subdomain table
 	$query = "
@@ -665,7 +618,10 @@ function customerHasDomain($domainName, $customerId)
 			CONCAT(`t2`.`subdomain_name`, '.', `t1`.`domain_name`) = ?
 	";
 	$stmt = exec_query($query, array($customerId, $domainName));
-	if($stmt->rowCount()) return true;
+
+	if ($stmt->rowCount()) {
+		return true;
+	}
 
 	// Check in subdomain_alias table
 	$query = "
@@ -683,7 +639,10 @@ function customerHasDomain($domainName, $customerId)
 			CONCAT(`t3`.`subdomain_alias_name`, '.', `t2`.`alias_name`) = ?
 	";
 	$stmt = exec_query($query, array($customerId, $domainName));
-	if($stmt->rowCount()) return true;
+
+	if ($stmt->rowCount()) {
+		return true;
+	}
 
 	return false;
 }

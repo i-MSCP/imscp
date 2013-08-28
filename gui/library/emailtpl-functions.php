@@ -33,7 +33,7 @@
  */
 
 /**
- * Returns email template data.
+ * Returns email template data
  *
  * @param int $userId User unique identifier
  * @param string $tplName Template name
@@ -41,8 +41,7 @@
  */
 function get_email_tpl_data($userId, $tplName)
 {
-	$query = "SELECT `fname`, `lname`, `firm`, `email` FROM `admin` WHERE `admin_id` = ?";
-	$stmt = exec_query($query, $userId);
+	$stmt = exec_query("SELECT `fname`, `lname`, `firm`, `email` FROM `admin` WHERE `admin_id` = ?", $userId);
 
 	$firstname = trim($stmt->fields('fname'));
 	$lastname = trim($stmt->fields('lname'));
@@ -84,7 +83,7 @@ function get_email_tpl_data($userId, $tplName)
 }
 
 /**
- * Sets or updates an email template in database.
+ * Sets or updates an email template in database
  *
  * @param int $userId User unique identifier
  * @param string $tplName Template name
@@ -97,13 +96,7 @@ function set_email_tpl_data($userId, $tplName, $data)
 	$stmt = exec_query($query, array($userId, $tplName));
 
 	if (!$stmt->rowCount()) {
-		$query = "
-			INSERT INTO `email_tpls` (
-				`subject`, `message`, `owner_id`, `name`
-			) VALUES (
-				?, ?, ?, ?
-			)
-		";
+		$query = "INSERT INTO `email_tpls` (`subject`, `message`, `owner_id`, `name`) VALUES (?, ?, ?, ?)";
 	} else {
 		$query = "UPDATE `email_tpls` SET `subject` = ?, `message` = ? WHERE `owner_id` = ? AND `name` = ?";
 	}
@@ -112,7 +105,7 @@ function set_email_tpl_data($userId, $tplName, $data)
 }
 
 /**
- * Generates and returns welcome email.
+ * Generates and returns welcome email
  *
  * @see get_email_tpl_data()
  * @param int $userId User unique identifier - Template owner
@@ -190,7 +183,7 @@ The i-MSCP Team
 }
 
 /**
- * Sets or updates the welcome mail parts for a specific user.
+ * Sets or updates the welcome mail parts for a specific user
  *
  * @see set_email_tpl_data()
  * @param  int $userId User unique identifier - Template owner
@@ -203,16 +196,16 @@ function set_welcome_email($userId, $data)
 }
 
 /**
- * Generates and returns lostpassword activation email.
+ * Generates and returns lostpassword activation email
  *
  * @see get_email_tpl_data
- * @param int $admin_id User unique identifier - Template owner
+ * @param int $adminId User unique identifier - Template owner
  * @return array An associative array where each key correspond to a specific email parts: sender_name,
  *               sender_name_email, subject, message
  */
-function get_lostpassword_activation_email($admin_id)
+function get_lostpassword_activation_email($adminId)
 {
-	$data = get_email_tpl_data($admin_id, 'lostpw-msg-1');
+	$data = get_email_tpl_data($adminId, 'lostpw-msg-1');
 
 	if (!$data['subject']) {
 		$data['subject'] = tr('Please activate your new i-MSCP password', true);
@@ -242,13 +235,13 @@ The i-MSCP Team
  * Sets or updates lostpassword activation email parts.
  *
  * @see set_email_tpl_data()
- * @param int $admin_id User unique identifier
+ * @param int $adminId User unique identifier
  * @param array $data An associative array where each key correspond to a specific email parts: subject, message
  * @return void
  */
-function set_lostpassword_activation_email($admin_id, $data)
+function set_lostpassword_activation_email($adminId, $data)
 {
-	set_email_tpl_data($admin_id, 'lostpw-msg-1', $data);
+	set_email_tpl_data($adminId, 'lostpw-msg-1', $data);
 }
 
 /**

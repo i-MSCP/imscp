@@ -1,9 +1,11 @@
+
 <script language="JavaScript">
 	/*<![CDATA[*/
 	function action_delete(url) {
 		if (!confirm("{TR_MESSAGE_DELETE}")) {
 			return false;
 		}
+
 		location = url;
 	}
 
@@ -11,6 +13,7 @@
 		if (!confirm("{TR_MESSAGE_INSTALL}")) {
 			return false;
 		}
+
 		location = url;
 	}
 
@@ -18,49 +21,38 @@
 		if (!confirm("{TR_RES_MESSAGE_DELETE}")) {
 			return false;
 		}
+
 		location = url;
 	}
 	/*]]>*/
 </script>
 <table>
+	<thead>
 	<tr>
-		<th>
-			<div style="float:left">{TR_SOFTWARE}</div>
-			<div style="float:left">
-				<a href="{TR_SOFTWARE_ASC}" class="app_icon i_app_asc"></a>
-				<a href="{TR_SOFTWARE_DESC}" class="app_icon i_app_desc"></a>
-			</div>
-		</th>
+		<th><{TR_SOFTWARE}</th>
 		<th>{TR_VERSION}</th>
-		<th>
-			<div style="float:left">{TR_LANGUAGE}</div>
-			<div style="float:left">
-				<a href="{TR_LANGUAGE_ASC}" class="app_icon i_app_asc"></a>
-				<a href="{TR_LANGUAGE_DESC}" class="app_icon i_app_desc"></a>
-			</div>
-		</th>
-		<th>
-			<div style="float:left">{TR_TYPE}</div>
-			<div style="float:left">
-				<a href="{TR_TYPE_ASC}" class="app_icon i_app_asc"></a>
-				<a href="{TR_TYPE_DESC}" class="app_icon i_app_desc"></a>
-			</div>
-		</th>
-		<th>
-			<div style="float:left">{TR_NEED_DATABASE}</div>
-			<div style="float:left">
-				<a href="{TR_NEED_DATABASE_ASC}" class="app_icon i_app_asc"></a>
-				<a href="{TR_NEED_DATABASE_DESC}" class="app_icon i_app_desc"></a>
-			</div>
-		</th>
+		<th>{TR_LANGUAGE}</th>
+		<th>{TR_TYPE}</th>
+		<th>{TR_NEED_DATABASE}</th>
 		<th>{TR_STATUS}</th>
 		<th>{TR_ACTION}</th>
 	</tr>
+	</thead>
+	<tfoot>
+	<!-- BDP: software_total -->
+	<tr>
+		<td colspan="7">{TR_SOFTWARE_AVAILABLE}: {TOTAL_SOFTWARE_AVAILABLE}</td>
+	</tr>
+	<!-- EDP: software_total -->
+	</tfoot>
+	<tbody>
 	<!-- BDP: t_software_support -->
 	<!-- BDP: software_item -->
 	<tr>
-		<td><a href="{VIEW_SOFTWARE_SCRIPT}" class="icon i_app_installer"
-			   title="{SOFTWARE_DESCRIPTION}">{SOFTWARE_NAME}</a></td>
+		<td>
+			<a href="{VIEW_SOFTWARE_SCRIPT}" class="icon i_app_installer"
+			   title="{SOFTWARE_DESCRIPTION}">{SOFTWARE_NAME}</a>
+		</td>
 		<td>{SOFTWARE_VERSION}</td>
 		<td>{SOFTWARE_LANGUAGE}</td>
 		<td>{SOFTWARE_TYPE}</td>
@@ -81,16 +73,9 @@
 	<!-- EDP: t_software_support -->
 	<!-- BDP: no_software_support -->
 	<tr>
-		<td colspan="7">
-			<div class="info">{NO_SOFTWARE_AVAIL}</div>
-		</td>
+		<td colspan="7"><div class="info">{NO_SOFTWARE_AVAIL}</div></td>
 	</tr>
 	<!-- EDP: no_software_support -->
-	<!-- BDP: software_total -->
-	<tr>
-		<th colspan="7">{TR_SOFTWARE_AVAILABLE}:&nbsp;{TOTAL_SOFTWARE_AVAILABLE}</th>
-	</tr>
-	<!-- EDP: software_total -->
 	<!-- BDP: del_software_support -->
 	<tr>
 		<th colspan="5">{TR_DEL_SOFTWARE}</th>
@@ -108,4 +93,5 @@
 	</tr>
 	<!-- EDP: del_software_item -->
 	<!-- EDP: del_software_support -->
+	</tbody>
 </table>
