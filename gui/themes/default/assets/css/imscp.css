@@ -293,7 +293,7 @@ a {
     height: 24px;
     line-height: 24px;
     padding-left: 197px;
-    z-index: 500;
+    z-index: 2;
 }
 
 /** Section */

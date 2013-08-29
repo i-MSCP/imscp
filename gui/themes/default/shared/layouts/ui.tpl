@@ -20,13 +20,17 @@
 <script type="text/javascript" src="{THEME_ASSETS_PATH}/js/imscp.js?v={THEME_ASSETS_VERSION}"></script>
 <script type="text/javascript">
 /*<![CDATA[*/
+$(window).load(function(){
+	$('tbody').on('change', function() {
+		$('tbody > tr:visible:odd').css('background-color', 'rgb(237, 237, 237)');
+		$('tbody > tr:visible:even').css('background-color', 'rgb(255, 255, 255)');
+	}).trigger('change');
+});
+/*]]>*/
+</script>
+<script type="text/javascript">
+/*<![CDATA[*/
 $(document).ready(function () {
-	$('tbody tr').on('change',
-		function() {
-			$('tbody tr:visible:odd').css('background-color', 'rgb(237, 237, 237)');
-			$('tbody tr:visible:even').css('background-color', 'rgb(255, 255, 255)');
-		}
-	).trigger('change');
 	$('.main_menu a').imscpTooltip();
 	$('.body a, .body span, .body input').imscpTooltip({ extraClass: "tooltip_icon tooltip_notice" });
 	$("input:submit, input:button, button").button();
