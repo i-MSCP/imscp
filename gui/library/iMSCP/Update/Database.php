@@ -2256,4 +2256,19 @@ class iMSCP_Update_Database extends iMSCP_Update
 				`domain_dns` `domain_dns` VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL
 		';
 	}
+	
+	/**
+	 * Update mail_users.quota column to BIGINT
+	 *
+	 * @return string SQL statement to be e executed
+	 */
+	protected  function _databaseUpdate_153()
+	{
+		return "
+			ALTER TABLE
+				`mail_users`
+			CHANGE
+				`quota` `quota` BIGINT(10)  NULL DEFAULT '104857600'
+		";
+	}
 }
