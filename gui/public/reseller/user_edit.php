@@ -281,7 +281,9 @@ if (isset($_REQUEST['edit_id'])) {
 			'TR_PASSWORD_GENERATE' => tr('Generate password')
 		)
 	);
-
+	
+	reseller_loadUserData($adminId);
+	
 	if (isset($_POST['genpass'])) {
 		$tpl->assign('VAL_PASSWORD', passgen());
 	} else {
@@ -292,7 +294,6 @@ if (isset($_REQUEST['edit_id'])) {
 		}
 	}
 
-	reseller_loadUserData($adminId);
 	generateNavigation($tpl);
 	reseller_generatePage($tpl);
 	generatePageMessage($tpl);

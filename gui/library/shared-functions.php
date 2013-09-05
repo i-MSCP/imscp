@@ -1551,9 +1551,11 @@ function send_add_user_auto_msg($adminId, $uname, $upass, $uemail, $ufname, $uln
 
 	$name = tohtml($name);
 	$fromName = tohtml($fromName);
+	
+	$logentry = (!$fromName) ? $fromEmail : "$fromName - $fromEmail";
 
 	write_log(
-		"$adminLogin: Auto Add User To: |$name <$uemail>|, From: |$fromName <$fromEmail>|, Status: |$mailStatus|!",
+		"$adminLogin: Auto Add User To: |$name - $uemail |, From: |$logentry|, Status: |$mailStatus|!",
 		E_USER_NOTICE
 	);
 }
