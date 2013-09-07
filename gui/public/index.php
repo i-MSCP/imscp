@@ -37,14 +37,6 @@
 // Include core library
 require 'imscp-lib.php';
 
-/*
-try {
-	execute_query("SELECT * FROM DUMMY WHERE dummy = 'dummy'");
-} catch(iMSCP_Exception_Database $e) {
-	throw new iMSCP_Exception($e->getMessage() .  "\n\n<strong>Query was:</strong>\n\n" . $e->getQuery(), $e->getCode(), $e);
-}
-*/
-
 // Purge expired sessions
 do_session_timeout();
 
