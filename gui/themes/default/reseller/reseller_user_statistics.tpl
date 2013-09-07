@@ -2,7 +2,7 @@
 <script type="text/javascript">
 	/*<![CDATA[*/
 	$(document).ready(function () {
-		$('.datatable').dataTable({"oLanguage": {DATATABLE_TRANSLATIONS}});
+		$('.datatable').dataTable({ "oLanguage": {DATATABLE_TRANSLATIONS} });
 	});
 	/*]]>*/
 </script>
@@ -51,14 +51,15 @@
 		</td>
 		<td>
 			<div class="graph">
-				<span style="width: {TRAFF_PERCENT}%"></span><strong>{TRAFF_PERCENT} %</strong>
+				<span style="width:{TRAFF_PERCENT}%"></span>
+				<strong>{TRAFF_PERCENT}%</strong>
 			</div>
 			{TRAFF_MSG}
 		</td>
 		<td>
 			<div class="graph">
-				<span style="width: {DISK_PERCENT}%"></span>
-				<strong>{DISK_PERCENT} %</strong>
+				<span style="width:{DISK_PERCENT}%"></span>
+				<strong>{DISK_PERCENT}%</strong>
 			</div>
 			{DISK_MSG}
 		</td>

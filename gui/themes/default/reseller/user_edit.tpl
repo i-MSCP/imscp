@@ -1,6 +1,6 @@
 
-<form name="search_user" method="post" action="user_edit.php?edit_id={EDIT_ID}">
-	<table>
+<form name="user_edit" method="post" action="user_edit.php?edit_id={EDIT_ID}" autocomplete="off">
+	<table class="firstColFixed">
 		<thead>
 		<tr>
 			<th colspan="2">{TR_CORE_DATA}</th>
@@ -8,19 +8,22 @@
 		</thead>
 		<tbody>
 		<tr>
-			<td style="width: 300px;">{TR_USERNAME}</td>
+			<td>{TR_USERNAME}</td>
 			<td>{VL_USERNAME}</td>
 		</tr>
 		<tr>
 			<td><label for="userpassword">{TR_PASSWORD}</label></td>
 			<td>
 				<input type="password" name="userpassword" id="userpassword" value="{VAL_PASSWORD}" autocomplete="off"/>
-				<input name="genpass" type="submit" value=" {TR_PASSWORD_GENERATE} " autocomplete="off"/>
+				<input name="genpass" type="submit" value="{TR_PASSWORD_GENERATE}"/>
 			</td>
 		</tr>
 		<tr>
 			<td><label for="userpassword_repeat">{TR_REP_PASSWORD}</label></td>
-			<td><input type="password" name="userpassword_repeat" id="userpassword_repeat" value="{VAL_PASSWORD}"/></td>
+			<td>
+				<input type="password" name="userpassword_repeat" id="userpassword_repeat" value="{VAL_PASSWORD}"
+					   autocomplete="off"/>
+			</td>
 		</tr>
 		<tr>
 			<td><label for="useremail">{TR_USREMAIL}</label></td>
@@ -28,6 +31,7 @@
 		</tr>
 		</tbody>
 	</table>
+
 	<table class="firstColFixed">
 		<thead>
 		<tr>
@@ -51,9 +55,9 @@
 			<td><label for="gender">{TR_GENDER}</label></td>
 			<td>
 				<select id="gender" name="gender">
-					<option value="M" {VL_MALE}>{TR_MALE}</option>
-					<option value="F" {VL_FEMALE}>{TR_FEMALE}</option>
-					<option value="F" {VL_UNKNOWN}>{TR_UNKNOWN}</option>
+					<option value="M"{VL_MALE}>{TR_MALE}</option>
+					<option value="F"{VL_FEMALE}>{TR_FEMALE}</option>
+					<option value="F"{VL_UNKNOWN}>{TR_UNKNOWN}</option>
 				</select>
 			</td>
 		</tr>
@@ -95,11 +99,12 @@
 		</tr>
 		</tbody>
 	</table>
+
 	<div class="buttons">
 		<input name="Submit" type="submit" value="{TR_UPDATE}"/>
-		<input type="checkbox" id="send_data" name="send_data" checked="checked"/>
+		<input type="checkbox" id="send_data" name="send_data"/>
 		<label for="send_data">{TR_SEND_DATA}</label>
+		<input type="hidden" name="uaction" value="save_changes"/>
+		<input type="hidden" name="edit_id" value="{EDIT_ID}"/>
 	</div>
-	<input type="hidden" name="uaction" value="save_changes"/>
-	<input type="hidden" name="edit_id" value="{EDIT_ID}"/>
 </form>

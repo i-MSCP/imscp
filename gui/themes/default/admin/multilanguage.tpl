@@ -2,10 +2,12 @@
 <script type="text/javascript">
 	/*<![CDATA[*/
 	$(document).ready(function () {
-		$('.datatable').dataTable({ "oLanguage": {DATATABLE_TRANSLATIONS}});
+		$('.datatable').dataTable({ "oLanguage": {DATATABLE_TRANSLATIONS} });
+		$('.dataTables_paginate div').imscpTooltip();
 	});
 	/*]]>*/
 </script>
+
 <form name="i18nFrm" action="multilanguage.php" method="post" enctype="multipart/form-data">
 	<!-- BDP: languages_block -->
 	<table class="datatable firstColFixed">
@@ -20,11 +22,11 @@
 		</thead>
 		<tfoot>
 		<tr>
-			<td colspan="5" class="buttons">
+			<td class="buttons" colspan="5" style="height:auto;padding:0;margin: 0">
 				<button name="rebuildIndex" type="submit"
 						onclick="$('#uaction').val('rebuildIndex')">{TR_REBUILD_INDEX}</button>
 				<button name="changeLanguage" type="submit"
-						onclick="$('#uaction').val('changeLanguage');">{TR_SAVE}</button>
+						onclick="$('#uaction').val('changeLanguage')">{TR_SAVE}</button>
 			</td>
 		</tr>
 		</tfoot>
@@ -36,14 +38,15 @@
 			<td>{LANGUAGE_REVISION}</td>
 			<td>{LAST_TRANSLATOR}</td>
 			<td>
-				<input type="radio" name="defaultLanguage" id="defaultLanguage_{LOCALE}"
-					   value="{LOCALE}" {LOCALE_CHECKED}/>
+				<input type="radio" name="defaultLanguage" id="defaultLanguage_{LOCALE}" value="{LOCALE}"
+					   {LOCALE_CHECKED}/>
 			</td>
 		</tr>
 		<!-- EDP: language_block -->
 		</tbody>
 	</table>
 	<!-- EDP: languages_block -->
+
 	<table class="firstColFixed">
 		<thead>
 		<tr>
@@ -52,19 +55,20 @@
 		</thead>
 		<tbody>
 		<tr>
-			<td>{TR_LANGUAGE_FILE} <span class="upload_help icon i_help" title="{TR_UPLOAD_HELP}"
-										 style="vertical-align: middle;">{TR_HELP}</span></td>
+			<td>
+				{TR_LANGUAGE_FILE}
+				<span class="upload_help icon i_help" title="{TR_UPLOAD_HELP}"></span>
+			</td>
 			<td>
 				<input type="file" name="languageFile"/>
-				<button name="uploadLanguage" type="submit" onclick="$('#uaction').val('uploadLanguage')"
-						class="frm-button">{TR_INSTALL}</button>
+				<button name="uploadLanguage" type="submit" onclick="$('#uaction').val('uploadLanguage')">{TR_INSTALL}</button>
 			</td>
 		</tr>
 		</tbody>
 	</table>
+
 	<div class="buttons">
 		<input type="hidden" name="uaction" id="uaction" value=""/>
-		<button name="cancel" type="button" onclick="location.href='settings.php'"
-				class="frm-button">{TR_CANCEL}</button>
+		<a class ="link_as_button" href="settings.php">{TR_CANCEL}</a>
 	</div>
 </form>

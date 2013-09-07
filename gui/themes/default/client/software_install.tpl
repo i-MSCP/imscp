@@ -13,6 +13,7 @@
 	}
 	/*]]>*/
 </script>
+
 <form method="post" action="{SOFTWARE_INSTALL_BUTTON}">
 	<table class="firstColFixed">
 		<tr>
@@ -63,9 +64,7 @@
 				</select>
 				<!-- EDP: select_installdb -->
 				<!-- BDP: create_db -->
-				<input name="Submit3" type="button"
-					   onClick="MM_goToURL('parent','{ADD_DB_LINK}');return document.MM_returnValue"
-					   value="{BUTTON_ADD_DB}"/>
+				<a class="link_as_button" href="{ADD_DB_LINK}">{BUTTON_ADD_DB}</a>
 				<!-- EDP: create_db -->
 			</td>
 		</tr>
@@ -110,9 +109,9 @@
 		</tr>
 		<!-- EDP: software_item -->
 	</table>
+
 	<div class="buttons">
-		<input type="button" onClick="MM_goToURL('parent','software.php');return document.MM_returnValue"
-			   value="{TR_BACK}"/>
+		<a class="link_as_button" href="software.php.php">{TR_BACK}</a>
 		<!-- BDP: software_install -->
 		<input name="submit" type="submit" value="{TR_INSTALL}"/>
 		<!-- EDP: software_install -->

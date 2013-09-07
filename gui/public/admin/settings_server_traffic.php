@@ -157,7 +157,7 @@ $tpl->assign(
 		'TR_MAX_TRAFFIC' => tr('Max traffic'),
 		'TR_WARNING' => tr('Warning traffic'),
 		'TR_MIB' => tr('MiB'),
-		'TR_MODIFY' => tr('Modify'),
+		'TR_UPDATE' => tr('Update'),
 	)
 );
 

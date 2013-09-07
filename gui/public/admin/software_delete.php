@@ -158,7 +158,7 @@ if (isset($_GET['id']) || isset($_POST['id'])) {
 				'TR_DELETE_SOFTWARE' => tr('Message to reseller before deleting the software'),
 				'TR_DELETE_RESELLER_SOFTWARE' => tr('Delete reseller software'),
 				'TR_DELETE_DATA' => tr('Reseller data'),
-				'TR_SEND_MESSAGE' => tr('Delete software and send message'),
+				'TR_DELETE' => tr('Delete'),
 				'SOFTWARE_ID' => $software_id,
 				'RESELLER_ID' => $rs->fields['reseller_id']));
 	}

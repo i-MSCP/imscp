@@ -66,13 +66,9 @@
 		<td colspan="2">
 			<form name="scriptActions" method="post" action="#">
 				<div class="buttons">
-					<input name="Submit" type="submit"
-						   onclick="MM_goToURL('parent','software.php');return document.MM_returnValue"
-						   value="{TR_BACK}"/>
+					<a class="link_as_button" href="software.php">{TR_BACK}</a>
 					<!-- BDP: software_install -->
-					<input name="Submit2" type="submit"
-						   onclick="MM_goToURL('parent','{SOFTWARE_INSTALL_BUTTON}');return document.MM_returnValue"
-						   value="{TR_INSTALL}"/>
+					<a class="link_as_button" href="{SOFTWARE_INSTALL_BUTTON}">{TR_INSTALL}</a>
 					<!-- EDP: software_install -->
 				</div>
 			</form>

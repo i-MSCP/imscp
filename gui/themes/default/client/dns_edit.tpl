@@ -19,6 +19,7 @@
 
 		var n = arr_possible.length;
 		var trname;
+
 		for (var i = 0; i < n; i++) {
 			trname = 'tr_dns_' + arr_possible[i];
 			o = document.getElementById(trname);
@@ -80,6 +81,7 @@
 	}
 	/* ]]> */
 </script>
+
 <form name="edit_dns_frm" method="post" action="{ACTION_MODE}">
 	<table class="firstColFixed">
 		<thead>
@@ -197,10 +199,10 @@
 		<input name="Submit" type="submit" value="{TR_ADD}"/>
 		<input type="hidden" name="uaction" value="add"/>
 		<!-- EDP: form_add_mode -->
-		<input name="Submit" type="submit"
-			   onclick="MM_goToURL('parent','domains_manage.php');return document.MM_returnValue" value="{TR_CANCEL}"/>
+		<a class ="link_as_button" href="domains_manage.php">{TR_CANCEL}</a>
 	</div>
 </form>
+
 <script type="text/javascript">
 	/* <![CDATA[ */
 	dns_type_changed(document.getElementById('dns_type').value);

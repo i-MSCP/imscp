@@ -7,7 +7,7 @@
 	</thead>
 	<tbody>
 	<tr>
-		<td style="width: 300px;">{DOMAINS}</td>
+		<td >{DOMAINS}</td>
 		<td>{DMN_MSG}</td>
 	</tr>
 	<tr>
@@ -36,6 +36,7 @@
 	</tr>
 	</tbody>
 </table>
+
 <table class="firstColFixed">
 	<thead>
 	<tr>
@@ -67,7 +68,7 @@
 <p>{TRAFFIC_USAGE_DATA}</p>
 
 <div class="graph">
-	<span style="width:{TRAFFIC_PERCENT}%">&nbsp;</span>
+	<span style="width:{TRAFFIC_PERCENT}%"></span>
 </div>
 
 <h2 class="diskusage"><span>{TR_DISK_USAGE}</span></h2>
@@ -79,5 +80,5 @@
 <p>{DISK_USAGE_DATA}</p>
 
 <div class="graph">
-	<span style="width:{DISK_PERCENT}%">&nbsp;</span>
+	<span style="width:{DISK_PERCENT}%"></span>
 </div>

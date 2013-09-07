@@ -16,15 +16,19 @@
 					<option value="{COLOR}" {SELECTED_COLOR}>{COLOR}</option>
 					<!-- EDP: layout_color_block -->
 				</select>
-				<input type="hidden" name="uaction" value="changeLayoutColor"/>
-				<input name="submit" type="submit" value="{TR_CHANGE}"/>
 			</td>
 		</tr>
 		</tbody>
 	</table>
+
+	<div class="buttons">
+		<input type="hidden" name="uaction" value="changeLayoutColor"/>
+		<input name="submit" type="submit" value="{TR_UPDATE}"/>
+	</div>
 </form>
 <!-- EDP: layout_colors_block -->
-<form name="otherSettings" method="post" action="layout.php">
+
+<form method="post" action="layout.php">
 	<table class="firstColFixed">
 		<thead>
 		<tr>
@@ -39,10 +43,13 @@
 					<option value="0"{MAIN_MENU_SHOW_LABELS_OFF}>{TR_DISABLED}</option>
 					<option value="1"{MAIN_MENU_SHOW_LABELS_ON}>{TR_ENABLED}</option>
 				</select>
-				<input type="hidden" name="uaction" value="changeShowLabels"/>
-				<input name="submit" type="submit" value="{TR_CHANGE}"/>
 			</td>
 		</tr>
 		</tbody>
 	</table>
+
+	<div class="buttons">
+		<input type="hidden" name="uaction" value="changeShowLabels"/>
+		<input name="submit" type="submit" value="{TR_UPDATE}"/>
+	</div>
 </form>

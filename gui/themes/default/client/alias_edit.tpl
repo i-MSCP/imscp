@@ -13,6 +13,7 @@
 	}
 	/* ]]> */
 </script>
+
 <form name="edit_alias_frm" method="post" action="alias_edit.php?edit_id={ID}">
 	<table>
 		<thead>
@@ -43,20 +44,22 @@
 				<label for="forward">{TR_FORWARD}</label>
 			</td>
 			<td>
-				<select name="forward_prefix" style="vertical-align:middle"{DISABLE_FORWARD}>
-					<option value="{TR_PREFIX_HTTP}"{HTTP_YES}>{TR_PREFIX_HTTP}</option>
-					<option value="{TR_PREFIX_HTTPS}"{HTTPS_YES}>{TR_PREFIX_HTTPS}</option>
-					<option value="{TR_PREFIX_FTP}"{FTP_YES}>{TR_PREFIX_FTP}</option>
-				</select>
+				<label>
+					<select name="forward_prefix"{DISABLE_FORWARD}>
+						<option value="{TR_PREFIX_HTTP}"{HTTP_YES}>{TR_PREFIX_HTTP}</option>
+						<option value="{TR_PREFIX_HTTPS}"{HTTPS_YES}>{TR_PREFIX_HTTPS}</option>
+						<option value="{TR_PREFIX_FTP}"{FTP_YES}>{TR_PREFIX_FTP}</option>
+					</select>
+				</label>
 				<input type="text" name="forward" id="forward" class="textinput" value="{FORWARD}"{READONLY_FORWARD} />
 			</td>
 		</tr>
 		</tbody>
 	</table>
+
 	<div class="buttons">
 		<input type="hidden" name="uaction" value="modify"/>
 		<input type="submit" name="update" value="{TR_MODIFY}"/>
-		<input type="submit" name="cancel"
-			   onclick="MM_goToURL('parent','domains_manage.php');return document.MM_returnValue" value="{TR_CANCEL}"/>
+		<a class ="link_as_button" href="domains_manage.php">{TR_CANCEL}</a>
 	</div>
 </form>

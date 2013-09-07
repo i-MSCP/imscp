@@ -7,7 +7,8 @@
 	}
 	/* ]]> */
 </script>
-<!-- BDP hosting_plans_js -->
+<!-- EDP hosting_plans_js -->
+
 <!-- BDP: hosting_plans -->
 <table class="firstColFixed">
 	<thead>

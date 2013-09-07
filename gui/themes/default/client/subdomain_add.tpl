@@ -24,6 +24,7 @@
 	});
 	/*]]>*/
 </script>
+
 <form name="add_subdomain_frm" method="post" action="subdomain_add.php">
 	<table class="firstColFixed">
 		<thead>
@@ -94,10 +95,9 @@
 		</tr>
 		</tbody>
 	</table>
+
 	<div class="buttons">
 		<input name="Submit" type="submit" value="{TR_ADD}"/>
-		<a href="domains_manage.php">
-			<button type="button">{TR_CANCEL}</button>
-		</a>
+		<a class ="link_as_button" href="domains_manage.php">{TR_CANCEL}</a>
 	</div>
 </form>

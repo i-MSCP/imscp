@@ -98,7 +98,7 @@ iMSCP\Loader\AutoloaderFactory::factory(
  * Another writers will be attached to this object during initialization process if enabled in the application wide
  * configuration file.
  */
-iMSCP_Exception_Handler::getInstance()->attach(new iMSCP_Exception_Writer_Browser('box.tpl'));
+iMSCP_Exception_Handler::getInstance()->attach(new iMSCP_Exception_Writer_Browser('message.tpl'));
 
 /**
  * Include i-MSCP common functions

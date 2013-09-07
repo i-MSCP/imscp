@@ -2,11 +2,11 @@
 <script type="text/javascript">
 	/*<![CDATA[*/
 	$(document).ready(function () {
-		errFieldsStack = {ERR_FIELDS_STACK};
-		$.each(errFieldsStack, function () {
-			$('#' + this).css('border-color', '#ca1d11');
-		});
-		$(".datatable").dataTable({oLanguage:{DATATABLE_TRANSLATIONS}});
+		var errFieldsStack = {ERR_FIELDS_STACK};
+
+		$.each(errFieldsStack, function () { $('#' + this).css('border-color', '#ca1d11'); });
+
+		$(".datatable").dataTable({ oLanguage:{ DATATABLE_TRANSLATIONS}});
 	});
 
 	function action_delete(url, subject) {
@@ -14,6 +14,7 @@
 	}
 	/*]]>*/
 </script>
+
 <!-- BDP: menus_list_block -->
 <table class="firstColFixed datatable">
 	<thead>
@@ -86,19 +87,22 @@
 		</tr>
 		</tbody>
 	</table>
+
 	<!-- BDP: add_menu -->
 	<div class="buttons">
 		<input name="addMenu" type="button" value="{TR_ADD}" onclick="return sbmt(document.forms[0], 'menu_add');"/>
-		<input name="cancel" type="button" value="{TR_CANCEL}" onclick="location.href='settings.php'"/>
+		<a class ="link_as_button" href="settings.php" tabindex="4">{TR_CANCEL}</a>
 	</div>
 	<!-- EDP: add_menu -->
+
 	<!-- BDP: edit_menu -->
 	<div class="buttons">
 		<input name="editMenu" type="button" value="{TR_UPDATE}"
 			   onclick="return sbmt(document.forms[0], 'menu_update');"/>
-		<input name="cancel" type="button" value="{TR_CANCEL}" onclick="location.href='custom_menus.php'"/>
+		<a class ="link_as_button" href="custom_menus.php">{TR_CANCEL}</a>
 		<input type="hidden" name="edit_id" value="{EDIT_ID}" /">
 	</div>
 	<!-- EDP: edit_menu -->
+
 	<input type="hidden" name="uaction" value=""/>
 </form>

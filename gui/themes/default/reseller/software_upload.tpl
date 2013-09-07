@@ -2,19 +2,22 @@
 <script language="JavaScript" type="text/JavaScript">
 	/*<![CDATA[*/
 	function action_delete() {
-		if (!confirm("{TR_MESSAGE_DELETE}")) {
-			return false;
-		}
+		return confirm("{TR_MESSAGE_DELETE}");
 	}
+
 	function action_install(url) {
 		if (!confirm("{TR_MESSAGE_INSTALL}")) {
 			return false;
 		}
+
 		document.getElementById('sw_wget').value = url;
 		document.getElementById('sw_upload_form').submit();
+
+		return true;
 	}
 	/*]]>*/
 </script>
+
 <table>
 	<thead>
 	<tr>
@@ -128,8 +131,9 @@
 		<!-- EDP: list_webdepotsoftware -->
 		</tbody>
 	</table>
+
 	<div class="buttons">
-		<input name="Submit" type="submit" class="button" value="{TR_APPLY_CHANGES}"/>
+		<input name="Submit" type="submit" value="{TR_APPLY_CHANGES}"/>
 		<input type="hidden" name="uaction" value="updatewebdepot"/>
 	</div>
 </form>

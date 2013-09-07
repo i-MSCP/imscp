@@ -43,6 +43,7 @@
 		</tr>
 		</tbody>
 	</table>
+
 	<table class="firstColFixed">
 		<thead>
 		<tr>
@@ -60,20 +61,30 @@
 		</tr>
 		<tr>
 			<td>{TR_SUBJECT}</td>
-			<td><input name="subject1" type="text" id="subject1" value="{SUBJECT_VALUE1}" class="inputTitle"/></td>
-			<td><input type="text" name="subject2" value="{SUBJECT_VALUE2}" class="inputTitle"/></td>
+			<td>
+				<label>
+					<input name="subject1" type="text" id="subject1" value="{SUBJECT_VALUE1}" class="inputTitle"/>
+				</label>
+			</td>
+			<td>
+				<label>
+					<input type="text" name="subject2" value="{SUBJECT_VALUE2}" class="inputTitle"/>
+				</label>
+			</td>
 		</tr>
 		<tr>
 			<td>{TR_MESSAGE}</td>
-			<td><textarea name="message1" id="message1">{MESSAGE_VALUE1}</textarea></td>
-			<td><textarea name="message2" id="message2">{MESSAGE_VALUE2}</textarea></td>
+			<td><label><textarea name="message1" id="message1">{MESSAGE_VALUE1}</textarea></label></td>
+			<td><label><textarea name="message2" id="message2">{MESSAGE_VALUE2}</textarea></label></td>
 		</tr>
 		</tbody>
 	</table>
+
 	<div class="buttons">
 		<input type="hidden" name="sender_email" value="{SENDER_EMAIL_VALUE}"/>
 		<input type="hidden" name="sender_name" value="{SENDER_NAME_VALUE}"/>
 		<input type="hidden" name="uaction" value="apply"/>
 		<input name="Submit" type="submit" value="{TR_UPDATE}"/>
+		<a class ="link_as_button" href="users.php">{TR_CANCEL}</a>
 	</div>
 </form>

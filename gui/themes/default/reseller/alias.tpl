@@ -6,17 +6,23 @@
 	}
 	/*]]>*/
 </script>
+
 <!-- BDP: search_form -->
 <form name="search_alias_frm" method="post" action="alias.php?psi={PSI}">
-	<input name="search_for" type="text" value="{SEARCH_FOR}"/>
-	<select name="search_common">
-		<option value="alias_name" {M_DOMAIN_NAME_SELECTED}>{M_ALIAS_NAME}</option>
-		<option value="account_name" {M_ACCOUN_NAME_SELECTED}>{M_ACCOUNT_NAME}</option>
-	</select>
-	<input name="Submit" type="submit" value="{TR_SEARCH}"/>
-	<input type="hidden" name="uaction" value="go_search"/>
+	<div style="line-height:40px;vertical-align: middle; float: left">
+		<label><input name="search_for" type="text" value="{SEARCH_FOR}"/></label>
+		<label>
+			<select name="search_common">
+				<option value="alias_name" {M_DOMAIN_NAME_SELECTED}>{M_ALIAS_NAME}</option>
+				<option value="account_name" {M_ACCOUN_NAME_SELECTED}>{M_ACCOUNT_NAME}</option>
+			</select>
+		</label>
+		<input name="Submit" type="submit" value="{TR_SEARCH}"/>
+		<input type="hidden" name="uaction" value="go_search"/>
+	</div>
 </form>
 <!-- EDP: search_form -->
+
 <!-- BDP: table_list -->
 <table>
 	<thead>
@@ -55,21 +61,22 @@
 	</tbody>
 </table>
 <!-- EDP: table_list -->
+
 <!-- BDP: als_add_button -->
 <div class="buttons">
-	<input name="Submit" type="submit" onclick="MM_goToURL('parent','alias_add.php');return document.MM_returnValue"
-		   value="{TR_ADD_ALIAS}"/>
+	<a class="link_as_button" href="alias_add.php">{TR_ADD_ALIAS}</a>
 </div>
 <!-- EDP: als_add_button -->
+
 <div class="paginator">
 	<!-- BDP: scroll_prev -->
 	<a class="icon i_prev" href="alias.php?psi={PREV_PSI}" title="{TR_PREVIOUS}">{TR_PREVIOUS}</a>
 	<!-- EDP: scroll_prev -->
 	<!-- BDP: scroll_prev_gray -->
-	<a class="icon i_prev_gray" href="#"></a>
+	<span class="icon i_prev_gray"></span>
 	<!-- EDP: scroll_prev_gray -->
 	<!-- BDP: scroll_next_gray -->
-	<a class="icon i_next_gray" href="#">&nbsp;</a>
+	<span class="icon i_next_gray"></span>
 	<!-- EDP: scroll_next_gray -->
 	<!-- BDP: scroll_next -->
 	<a class="icon i_next" href="alias.php?psi={NEXT_PSI}" title="{TR_NEXT}">{TR_NEXT}</a>

@@ -17,6 +17,7 @@
 		<!-- EDP: database_update -->
 		</tbody>
 	</table>
+
 	<div class="buttons">
 		<input type="hidden" name="uaction" id='execute' value="update"/>
 		<input type="submit" name="submit" value="{TR_PROCESS_UPDATES}"/>

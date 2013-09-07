@@ -27,7 +27,7 @@
 		</tbody>
 	</table>
 	<div class="buttons">
-		<input name="Submit" type="submit" class="button" value="{TR_APPLY_CHANGES}"/>
+		<input name="Submit" type="submit" value="{TR_APPLY_CHANGES}"/>
 		<input type="hidden" name="uaction" value="apply"/>
 	</div>
 </form>

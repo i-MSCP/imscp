@@ -28,11 +28,12 @@
 			</td>
 		</tr>
 		<tr>
-			<td style="vertical-align: top"><label for="msg_text">{TR_MESSAGE_TEXT}</label></td>
+			<td><label for="msg_text">{TR_MESSAGE_TEXT}</label></td>
 			<td><textarea name="msg_text" id="msg_text">{MESSAGE_TEXT}</textarea></td>
 		</tr>
 		</tbody>
 	</table>
+
 	<table class="firstColFixed">
 		<thead>
 		<tr>
@@ -50,6 +51,7 @@
 		</tr>
 		</tbody>
 	</table>
+
 	<div class="buttons">
 		<input name="submit" type="submit" value="{TR_SEND_MESSAGE}"/>
 		<input type="hidden" name="uaction" value="send_circular"/>

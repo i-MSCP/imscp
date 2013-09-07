@@ -23,7 +23,8 @@
 	});
 	/*]]>*/
 </script>
-<form name="add_ftp_account_frm" method="post" action="ftp_add.php" autocomplete="off">
+
+<form name="add_ftp_account_frm" method="post" action="ftp_add.php">
 	<table>
 		<thead>
 		<tr>
@@ -56,11 +57,14 @@
 		</tr>
 		<tr>
 			<td><label for="password">{TR_PASSWORD}</label></td>
-			<td><input type="password" id="password" name="password" value="{PASSWORD}"/></td>
+			<td><input type="password" id="password" name="password" value="{PASSWORD}" autocomplete="off"/></td>
 		</tr>
 		<tr>
 			<td><label for="password_repeat">{TR_PASSWORD_REPEAT}</label></td>
-			<td><input type="password" id="password_repeat" name="password_repeat" value="{PASSWORD_REPEAT}"/></td>
+			<td>
+				<input type="password" id="password_repeat" name="password_repeat" value="{PASSWORD_REPEAT}"
+					   autocomplete="off"/>
+			</td>
 		</tr>
 		<tr>
 			<td><label for="ftp_directory">{TR_HOME_DIR}</label></td>
@@ -71,9 +75,9 @@
 		</tr>
 		</tbody>
 	</table>
+
 	<div class="buttons">
 		<input name="submit" type="submit" value="{TR_ADD}"/>
-		<input name="Submit" type="submit"
-			   onclick="MM_goToURL('parent','ftp_accounts.php');return document.MM_returnValue" value="{TR_CANCEL}"/>
+		<a class ="link_as_button" href="ftp_accounts.php">{TR_CANCEL}</a>
 	</div>
 </form>

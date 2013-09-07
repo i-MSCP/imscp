@@ -20,13 +20,16 @@
 		</tr>
 		</tbody>
 	</table>
+
 	<div class="buttons">
 		<input name="Add_Exist" type="submit" id="Add_Exist" value="{TR_ADD_EXIST}" tabindex="1"/>
 	</div>
+
 	<br/>
+
 	<!-- EDP: show_sqluser_list -->
 	<!-- BDP: create_sqluser -->
-	<table>
+	<table class="firstColFixed">
 		<thead>
 		<tr>
 			<th colspan="2">{TR_NEW_SQL_USER_DATA}</th>
@@ -34,7 +37,7 @@
 		</thead>
 		<tbody>
 		<tr>
-			<td style="width: 300px;"><label for="user_name">{TR_USER_NAME}</label></td>
+			<td><label for="user_name">{TR_USER_NAME}</label></td>
 			<td><input type="text" id="user_name" name="user_name" value="{USER_NAME}"/></td>
 		</tr>
 		<tr>
@@ -48,10 +51,13 @@
 				{TR_USE_DMN_ID}
 			</td>
 			<td>
+				<label>
+					<select name="id_pos">
+						<option value="start"{START_ID_POS_CHECKED}>{TR_START_ID_POS}</option>
+						<option value="end"{START_ID_POS_CHECKED}>{TR_END_ID_POS}</option>
+					</select>
+				</label>
 				<!-- BDP: mysql_prefix_all -->
-				<input type="radio" name="id_pos" value="start" {START_ID_POS_CHECKED} />{TR_START_ID_POS}
-				<br/>
-				<input type="radio" name="id_pos" value="end" {END_ID_POS_CHECKED} />{TR_END_ID_POS}
 				<!-- EDP: mysql_prefix_all -->
 				<!-- BDP: mysql_prefix_infront -->
 				<input type="hidden" name="id_pos" value="start" checked="checked"/>{TR_START_ID_POS}
@@ -75,9 +81,8 @@
 	<div class="buttons">
 		<input type="hidden" name="uaction" value="add_user"/>
 		<input type="hidden" name="id" value="{ID}"/>
-		<input name="Add_New" type="submit" class="button" id="Add_New" value="{TR_ADD}"/>
-		<input type="button" name="Submit" value="{TR_CANCEL}" onclick="location.href = 'sql_manage.php'"
-			   class="button"/>
+		<input name="Add_New" type="submit" id="Add_New" value="{TR_ADD}"/>
+		<a class ="link_as_button" href="sql_manage.php">{TR_CANCEL}</a>
 	</div>
 	<!-- EDP: create_sqluser -->
 </form>

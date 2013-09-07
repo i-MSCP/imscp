@@ -5,19 +5,15 @@
 		$('#bruteforce').change(function () {
 			($(this).val() == '1') ? $('.display').show() : $('.display').hide();
 		}).trigger('change');
-	});
-	/*]]>*/
-</script>
 
-
-<script>
-	$(function () {
 		$(".accordion").accordion({
 			heightStyle: "content",
 			collapsible: true
 		});
 	});
+	/*]]>*/
 </script>
+
 <form action="settings.php" method="post" name="frmsettings" id="frmsettings">
 <div class="accordion">
 <h1><strong>{TR_UPDATES}</strong></h1>
@@ -138,7 +134,7 @@
 	<div class="odd">
 		<div class="left">
 			<label for="tld_strict_validation">{TR_TLD_STRICT_VALIDATION}</label>
-			<span class="icon i_help" title="{TR_TLD_STRICT_VALIDATION_HELP}">{TR_HELP}</span>
+			<span class="icon i_help" title="{TR_TLD_STRICT_VALIDATION_HELP}"></span>
 		</div>
 		<div class="right">
 			<select name="tld_strict_validation" id="tld_strict_validation">
@@ -150,7 +146,7 @@
 	<div class="even">
 		<div class="left">
 			<label for="sld_strict_validation">{TR_SLD_STRICT_VALIDATION}</label>
-			<span class="icon i_help" title="{TR_SLD_STRICT_VALIDATION_HELP}">{TR_HELP}</span>
+			<span class="icon i_help" title="{TR_SLD_STRICT_VALIDATION_HELP}"></span>
 		</div>
 		<div class="right">
 			<select name="sld_strict_validation" id="sld_strict_validation">
@@ -284,7 +280,7 @@
 	<div class="odd">
 		<div class="left">
 			<label for="phpini_open_basedir">{TR_PHPINI_OPEN_BASEDIR}</label>
-			<span class="icon i_help" title={TR_PHPINI_OPEN_BASEDIR_TOOLTIP}>{TR_HELP}</span>
+			<span class="icon i_help" title={TR_PHPINI_OPEN_BASEDIR_TOOLTIP}></span>
 		</div>
 		<div class="right">
 			<input name="phpini_open_basedir" id="phpini_open_basedir" type="text" value="{PHPINI_OPEN_BASEDIR}"/>
@@ -428,7 +424,7 @@
 </div>
 </div>
 <div class="buttons">
-	<input name="Submit" type="submit" class="button" value="{TR_APPLY_CHANGES}"/>
+	<input name="Submit" type="submit" value="{TR_UPDATE}"/>
 	<input type="hidden" name="uaction" value="apply"/>
 </div>
 </form>

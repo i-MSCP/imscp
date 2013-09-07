@@ -1,5 +1,5 @@
 
-<table>
+<table class="firstColFixed">
 	<thead>
 	<tr>
 		<th colspan="2">{TR_DOMAIN_ACCOUNT}</th>
@@ -7,7 +7,7 @@
 	</thead>
 	<tbody>
 	<tr>
-		<td style="width: 300px;">{TR_ACCOUNT_NAME} / {TR_DOMAIN_NAME}</td>
+		<td>{TR_ACCOUNT_NAME} / {TR_DOMAIN_NAME}</td>
 		<td>{DOMAIN_NAME}</td>
 	</tr>
 	<!-- BDP: domain_alternative_url -->
@@ -25,10 +25,10 @@
 	</tbody>
 </table>
 
-<table>
+<table class="firstColFixed">
 	<thead>
 	<tr>
-		<th style="width: 300px;">{TR_FEATURE}</th>
+		<th>{TR_FEATURE}</th>
 		<th>{TR_FEATURE_STATUS}</th>
 	</tr>
 	</thead>
@@ -114,7 +114,7 @@
 <div class="graph"><span style="width:{DISK_PERCENT}%">&nbsp;</span></div>
 <p style="margin-left:5px;font-size: smaller;">{DISK_USAGE_DATA}</p>
 
-<table>
+<table class="firstColFixed">
 	<thead>
 	<tr>
 		<th colspan="2">{TR_DISK_USAGE_DETAIL}</th>
@@ -122,7 +122,7 @@
 	</thead>
 	<tbody>
 	<tr>
-		<td style="width: 300px;">{TR_DISK_FILE_USAGE}</td>
+		<td>{TR_DISK_FILE_USAGE}</td>
 		<td>{DISK_FILESIZE}</td>
 	</tr>
 	<tr>

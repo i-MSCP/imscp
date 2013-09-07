@@ -25,25 +25,34 @@
 
 body {
     background: transparent url(../images/red/background/left_bg.jpg) repeat-y top left;
-    color: rgb(26, 26, 26);
+    color: #1a1a1a;
 }
 
 /* Links */
-a, .body th a, .body #loginBox a {
-    color: rgb(255, 255, 255);
+
+a {
+    color: #1a1a1a;
 }
 
-.body a {
-    color: rgb(89, 4, 5);
+.header a,
+.location a,
+.left_menu a,
+.link_as_button a {
+    color: #ffffff;
 }
 
-a:hover, .active a, .body th a:hover, .body #loginBox a:hover, #box a:hover, #toolbox li a:hover {
-    color: rgb(92, 186, 218);
+a:hover,
+.active a {
+    color: #5cbada;
+}
+
+a:hover.link_as_button {
+    color: #ffffff;
 }
 
 /* header */
 .header {
-    background: rgb(110, 14, 15) url(../images/red/background/top_bg.jpg) repeat-x top left;
+    background: #6e0e0f url(../images/red/background/top_bg.jpg) repeat-x top left;
 }
 
 /* logo */
@@ -60,7 +69,8 @@ a:hover, .active a, .body th a:hover, .body #loginBox a:hover, #box a:hover, #to
     background: transparent url(../images/red/background/mainmenu_bg.png) repeat-x top left;
 }
 
-.main_menu a:hover, .main_menu .active a {
+.main_menu a:hover,
+.main_menu .active a {
     background-color: rgba(255, 255, 255, 0.3);
 }
 
@@ -71,25 +81,26 @@ a:hover, .active a, .body th a:hover, .body #loginBox a:hover, #box a:hover, #to
 
 /* Section */
 .location-area h1 {
-    color: rgb(255, 255, 255);
+    color: #ffffff;
 }
 
 /* Breadcrumbs */
 .path {
-    color: rgb(255, 255, 255);
+    color: #ffffff;
 }
 
 /* Left menu */
 .left_menu {
     background: transparent url(../images/red/background/left_top_bg.jpg) no-repeat top;
-    color: rgb(255, 255, 255);
+    color: #ffffff;
 }
 
 .left_menu a {
     background: transparent url(../images/red/background/bullet.png) no-repeat center left;
 }
 
-.left_menu a:hover, .left_menu .active a {
+.left_menu a:hover,
+.left_menu .active a {
     background-image: url(../images/red/background/bullet_hover.png);
 }
 
@@ -98,8 +109,9 @@ a:hover, .active a, .body th a:hover, .body #loginBox a:hover, #box a:hover, #to
  */
 
 /* titles */
-h2 span, h3 span {
-    border-bottom-color: rgb(204, 204, 204);
+h2 span,
+h3 span {
+    border-bottom-color: #cccccc;
 }
 
 /* Tables */
@@ -119,35 +131,40 @@ tbody td {
     border-bottom: 1px solid #dfdfdf;
 }
 
-tbody tr:nth-child(odd) {
-    background-color: rgb(255, 255, 255);
-}
-
-tbody tr:nth-child(even) {
-    background-color: rgb(237, 237, 237);
-}
-
 .odd {
-    background-color: rgb(255, 255, 255);
+    background-color: #ffffff;
 }
 
 .even {
-    background-color: rgb(237, 237, 237);
+    background-color: #ededed;
 }
 
 /* Form elements */
 
-input[type="text"], input[type="password"], select, textarea {
-    background: rgb(255, 255, 255);
-    border-color: rgb(204, 204, 204);
+input[type="text"],
+input[type="password"],
+select,
+textarea {
+    background: #ffffff;
+    border-color: #cccccc;
 }
 
-input[type="text"]:focus, input[type="password"]:focus, select:focus, textarea:focus {
-    border-color: rgb(153, 153, 153);
+input[type="text"]:focus,
+input[type="password"]:focus,
+textarea:focus,
+select:focus {
+    border: 1px solid #6e0e0f;
+    -webkit-box-shadow: 0px 0px 10px #6e0e0f;
+    -moz-box-shadow: 0px 0px 10px #6e0e0f;
+    box-shadow: 0px 0px 10px #6e0e0f;
 }
 
-input[readonly="readonly"], input[type="text"]:disabled, input[type="password"]:disabled, select:disabled, textarea:disabled {
-    background: rgb(204, 204, 204) url('../images/background/stripe_0582bcfb31aaf8571dba1adb85ffc318.png') repeat;
+input[readonly="readonly"],
+input[type="text"]:disabled,
+input[type="password"]:disabled,
+select:disabled,
+textarea:disabled {
+    background: #cccccc url('../images/background/stripe_0582bcfb31aaf8571dba1adb85ffc318.png') repeat;
 }
 
 .buttons {
@@ -156,12 +173,12 @@ input[readonly="readonly"], input[type="text"]:disabled, input[type="password"]:
 
 /** Tooltips */
 #imscpTooltip {
-    background-color: rgb(89, 4, 5);
-    border-color: rgb(89, 4, 5);
+    background-color: #590405;
+    border-color: #590405;
 }
 
 #imscpTooltip .tooltipBody {
-    color: rgb(255, 255, 255);
+    color: #ffffff;
 }
 
 .tooltip_notice {
@@ -170,11 +187,11 @@ input[readonly="readonly"], input[type="text"]:disabled, input[type="password"]:
 
 /* services status */
 .up {
-    color: rgb(61, 122, 21);
+    color: #3d7a15;
 }
 
 .down {
-    color: rgb(202, 29, 17);
+    color: #ca1d11;
 }
 
 /**
@@ -182,75 +199,24 @@ input[readonly="readonly"], input[type="text"]:disabled, input[type="password"]:
  */
 
 .footer {
-    color: rgb(255, 255, 255);
-}
-
-/**
- * Login, lostpassword and box messages pages
- */
-
-.login	#header, .box_message #header {
-    background: rgb(110, 14, 15) url('../images/red/login/stripe.png') repeat-x left top;
-    border-bottom-color: rgb(82, 5, 5);
-}
-
-.login #logo span, .box_message #logo span {
-    color: rgb(255, 255, 255);
-}
-
-.login #copyright span a, .box_message #copyright span a {
-    color: rgb(255, 255, 255);
-}
-
-.login #copyright span a:hover, .box_message #copyright span a:hover {
-    color: rgb(92, 186, 218);
-}
-
-/* Specific to login and lostpassword pages */
-.login #loginBox {
-    background: transparent url('../images/red/login/form_box.png') no-repeat left top;
-}
-
-.login label span {
-    color: rgb(255, 255, 255);
-}
-
-.login button {
-    border-color: rgb(255, 255, 255);
-}
-
-.login #toolbox li a {
-    color: rgb(26, 26, 26);
-}
-
-.login #toolbox li a:hover {
-    color: rgb(92, 186, 218);
-}
-
-.login .i_lock {
-    background-image: url('../images/login/i_lock.png');
-}
-
-.login .i_unlock {
-    background-image: url('../images/login/i_unlock.png');
-}
-
-/* Specific to box message page */
-.box_message #box {
-    background: transparent url('../images/red/box/message_top.jpg') no-repeat top left;
-    border-color: rgb(204, 204, 204);
+    color: #ffffff;
 }
 
 /** Toogle on/off - override jQuery UI styles */
-.ui-widget-header .ui-buttonset .ui-state-default, .ui-widget-content .ui-buttonset .ui-state-default, .ui-buttonset .ui-state-default {
-    background-image: url("../images/red/background/ui-bg_glass_40_5a0505_1x400.png")
+.ui-widget-header .ui-buttonset .ui-state-default,
+.ui-widget-content .ui-buttonset .ui-state-default,
+.ui-buttonset .ui-state-default {
+    background-image: url("../images/red/background/ui-bg_glass_40_5a0505_1x400.png");
 }
 
-.ui-widget-header .ui-buttonset .ui-state-active, .ui-widget-content .ui-buttonset .ui-state-active, .ui-buttonset .ui-state-active {
-    background-image: url("../images/green/background/ui-bg_glass_40_055a0d_1x400.png")
+.ui-widget-header .ui-buttonset .ui-state-active,
+.ui-widget-content .ui-buttonset .ui-state-active,
+.ui-buttonset .ui-state-active {
+    background-image: url("../images/green/background/ui-bg_glass_40_055a0d_1x400.png");
 }
 
-.ui-widget-header .ui-buttonset .ui-state-hover, .ui-widget-content .ui-buttonset .ui-state-hover, .ui-buttonset .ui-state-hover {
-    background-image: url("../images/jquery-ui-common/ui-bg_glass_40_5cbada_1x400.png")
+.ui-widget-header .ui-buttonset .ui-state-hover,
+.ui-widget-content .ui-buttonset .ui-state-hover,
+.ui-buttonset .ui-state-hover {
+    background-image: url("../images/jquery-ui-common/ui-bg_glass_40_5cbada_1x400.png");
 }
-

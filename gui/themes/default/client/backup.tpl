@@ -1,12 +1,11 @@
 
 <script type="text/javascript">
 	/* <![CDATA[ */
-	function action_delete(url, subject) {
+	function action_delete(subject) {
 		return confirm(sprintf("{TR_MESSAGE_DELETE}", subject));
 	}
 	/* ]]> */
 </script>
-<!--<h2 class="hdd"><span>{TR_BACKUP}</span></h2>-->
 
 <h2>{TR_DOWNLOAD_DIRECTION}</h2>
 
@@ -15,9 +14,13 @@
 	<li>{TR_SWITCH_TO_BACKUP}</li>
 	<li>{TR_DOWNLOAD_FILE} {TR_USUALY_NAMED}</li>
 </ul>
+
 <br/>
+
 <h2>{TR_RESTORE_BACKUP}</h2>
+
 <p>{TR_RESTORE_DIRECTIONS}</p>
+
 <form action="backup.php" method="post" id="backup_frm" onsubmit="return confirm('{TR_CONFIRM_MESSAGE}');">
 	<div class="buttons">
 		<input type="hidden" name="uaction" value="bk_restore"/>

@@ -12,7 +12,7 @@
 		<option value="{VALUE}" {OPTION_SELECTED}>{HUMAN_VALUE}</option>
 		<!-- EDP: year_list -->
 	</select>
-	<input name="Submit" type="submit" class="button" value="{TR_SHOW}"/>
+	<input name="Submit" type="submit" value="{TR_SHOW}"/>
 	<input name="domain_id" type="hidden" value="{DOMAIN_ID}"/>
 </form>
 

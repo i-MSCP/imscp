@@ -1,7 +1,6 @@
 
 <script type="text/javascript">
 	/*<![CDATA[*/
-	/** @return boolean */
 	function copyFtpDir(ftpDir) {
 		$('#ftp_directory', window.parent.document).val(ftpDir);
 		window.parent.$("#dial_ftp_dir").dialog('close');
@@ -9,6 +8,7 @@
 	}
 	/*]]>*/
 </script>
+
 <!-- BDP: ftp_chooser -->
 <form>
 	<table class="firstColFixed">

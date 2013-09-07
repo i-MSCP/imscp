@@ -34,6 +34,7 @@
 	</tr>
 	</tbody>
 </table>
+
 <!-- BDP: layout_colors_block -->
 <form name="layoutColorFrm" method="post" action="layout.php">
 	<table class="firstColFixed">
@@ -59,6 +60,7 @@
 	</table>
 </form>
 <!-- EDP: layout_colors_block -->
+
 <form name="otherSettings" method="post" action="layout.php">
 	<table class="firstColFixed">
 		<thead>

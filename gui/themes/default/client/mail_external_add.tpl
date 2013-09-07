@@ -46,6 +46,7 @@
 	});
 	/* ]]> */
 </script>
+
 <form name="add_external_mail_server" method="post" action="mail_external_add.php">
 	<div>
 		<a href="#" class="trigger_add">{TR_ADD_NEW_ENTRY}</a> | <a href="#"
@@ -95,14 +96,16 @@
 		<!-- EDP: item_entries -->
 		</tbody>
 	</table>
+
 	<div style="float:left;">
 		<a href="#" class="trigger_add">{TR_ADD_NEW_ENTRY}</a> | <a href="#"
 																	class="trigger_remove">{TR_REMOVE_LAST_ENTRY}</a> |
 		<a href="#" class="trigger_reset">{TR_RESET_ENTRIES}</a>
 	</div>
+
 	<div class="buttons">
-		<input type="button" name="cancel" onclick="location='mail_external.php'" value="{TR_CANCEL}"/>
 		<input type="hidden" name="item" value="{ITEM}"/>
 		<input name="submit" type="submit" value="{TR_ADD}"/>
+		<a class ="link_as_button" href="mail_external.php">{TR_CANCEL}</a>
 	</div>
 </form>

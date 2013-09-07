@@ -18,7 +18,6 @@
 		</tbody>
 	</table>
 	<div class="buttons">
-		<input name="Submit" type="submit" value="{TR_MODIFY}"/>
+		<input name="Submit" type="submit" value="{TR_UPDATE}"/>
 	</div>
 </form>
-

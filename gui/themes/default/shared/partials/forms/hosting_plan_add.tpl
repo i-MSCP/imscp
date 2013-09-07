@@ -3,66 +3,41 @@
 <script type="text/javascript">
 	/*<![CDATA[*/
 	$(document).ready(function () {
-		$.fx.speeds._default = 500;
+		$('#php_editor_dialog').dialog({
+			bgiframe: true,
+			hide: 'blind',
+			show: 'slide',
+			focus: false,
+			autoOpen: false,
+			width: 700,
+			modal: true,
+			buttons: { '{TR_CLOSE}': function(){ $(this).dialog('close'); } }
+		});
 
-		// PHP Editor settings dialog
-		$('#php_editor_dialog').dialog(
-			{
-				hide: 'blind',
-				show: 'slide',
-				focus: false,
-				autoOpen: false,
-				width: 'auto',
-				modal: true,
-				dialogClass: 'body',
-				buttons: {
-					'{TR_CLOSE}': function () {
-						$(this).dialog('close');
-					}
-				}
-			});
+		$(window).scroll(function() {
+			$("#php_editor_dialog").dialog("option", "position", { my: "center", at: "center", of: window });
+		});
 
-		// Re-add the PHP Editor to the form
-		$('#hostingPlanAddFrm').submit(
-			function () {
-				$('#php_editor_dialog').parent().appendTo($(this));
-			}
-		);
+		$('#hostingPlanAddFrm').submit(function () { $('#php_editor_dialog').parent().appendTo($(this)); });
 
-		// PHP Editor settings button
-		if ($('#hp_php_no').is(':checked')) {
-			$('#php_editor_block').hide();
-		}
+		if ($('#hp_php_no').is(':checked')) { $('#php_editor_block').hide(); }
 
-		$('#hp_php_yes,#hp_php_no').change(
-			function () {
-				$('#php_editor_block').toggle();
-			}
-		);
+		$('#hp_php_yes,#hp_php_no').change(function () { $('#php_editor_block').toggle(); });
 
-		$('#php_editor_dialog_open').button({ icons:{ primary:'ui-icon-gear'} }).click(function (e) {
+		var php_editor_dialog_open = $('#php_editor_dialog_open');
+		php_editor_dialog_open.button({ icons:{ primary:'ui-icon-gear'} }).click(function (e) {
 			$('#php_editor_dialog').dialog('open');
 			return false;
 		});
 
-		// Do not show PHP Editor settings button if disabled
-		if ($('#phpiniSystemNo').is(':checked')) {
-			$('#php_editor_dialog_open').hide();
-		}
+		if ($('#phpiniSystemNo').is(':checked')) { php_editor_dialog_open.hide(); }
 
-		$('#phpiniSystemYes,#phpiniSystemNo').change(
-			function () {
-				$('#php_editor_dialog_open').fadeToggle();
-			}
-		);
+		$('#phpiniSystemYes,#phpiniSystemNo').change(function () { php_editor_dialog_open.fadeToggle(); });
 
-		// PHP Editor reseller max values
-		phpDirectivesMaxValues = {PHP_DIRECTIVES_MAX_VALUES};
+		var phpDirectivesMaxValues = {PHP_DIRECTIVES_MAX_VALUES};
 
-		// PHP Editor error message
-		errorMessages = $('.php_editor_error');
+		var errorMessages = $('.php_editor_error');
 
-		// Function to show a specific message when a PHP Editor setting value is wrong
 		function _updateErrorMesssages(k, t) {
 			if (t != undefined) {
 				if (!$('#err_' + k).length) {
@@ -80,8 +55,6 @@
 			}
 		}
 
-		// Adds an event on each PHP Editor settings input fields to display an
-		// error message when a value is wrong
 		$.each(phpDirectivesMaxValues, function (k, v) {
 			$('#' + k).keyup(function () {
 				var r = /^(0|[1-9]\d*)$/; // Regexp to check value syntax
@@ -130,49 +103,46 @@
 	<!-- BDP: nb_subdomains -->
 	<tr>
 		<td><label for="hp_sub">{TR_MAX_SUBDOMAINS}</label></td>
-		<td><input class="spinner" id="hp_sub" type="text" name="hp_sub" value="{TR_MAX_SUB_LIMITS}"/></td>
+		<td><input id="hp_sub" type="text" name="hp_sub" value="{TR_MAX_SUB_LIMITS}"/></td>
 	</tr>
 	<!-- EDP: nb_subdomains -->
 	<!-- BDP: nb_domain_aliases -->
 	<tr>
 		<td><label for="hp_als">{TR_MAX_ALIASES}</label></td>
-		<td><input class="spinner" id="hp_als" type="text" name="hp_als" value="{TR_MAX_ALS_VALUES}"/></td>
+		<td><input id="hp_als" type="text" name="hp_als" value="{TR_MAX_ALS_VALUES}"/></td>
 	</tr>
 	<!-- EDP: nb_domain_aliases -->
 	<!-- BDP: nb_mail -->
 	<tr>
-		<td><label for="hp_mail">{TR_MAX_MAILACCOUNTS}</label>
-		</td>
-		<td><input class="spinner" id="hp_mail" type="text" name="hp_mail" value="{HP_MAIL_VALUE}"/></td>
+		<td><label for="hp_mail">{TR_MAX_MAILACCOUNTS}</label></td>
+		<td><input id="hp_mail" type="text" name="hp_mail" value="{HP_MAIL_VALUE}"/></td>
 	</tr>
 	<!-- EDP: nb_mail -->
 	<!-- BDP: nb_ftp -->
 	<tr>
 		<td><label for="hp_ftp">{TR_MAX_FTP}</label></td>
-		<td><input class="spinner" id="hp_ftp" type="text" name="hp_ftp" value="{HP_FTP_VALUE}"/></td>
+		<td><input id="hp_ftp" type="text" name="hp_ftp" value="{HP_FTP_VALUE}"/></td>
 	</tr>
 	<!-- EDP: nb_ftp -->
 	<!-- BDP: nb_sqld -->
 	<tr>
 		<td><label for="hp_sql_db">{TR_MAX_SQL}</label></td>
-		<td><input class="spinner" id="hp_sql_db" type="text" name="hp_sql_db" value="{HP_SQL_DB_VALUE}"/></td>
+		<td><input id="hp_sql_db" type="text" name="hp_sql_db" value="{HP_SQL_DB_VALUE}"/></td>
 	</tr>
 	<!-- EDP: nb_sqld -->
 	<!-- BDP: nb_sqlu -->
 	<tr>
 		<td><label for="hp_sql_user">{TR_MAX_SQL_USERS}</label></td>
-		<td><input class="spinner" id="hp_sql_user" type="text" name="hp_sql_user" value="{HP_SQL_USER_VALUE}"/></td>
+		<td><input id="hp_sql_user" type="text" name="hp_sql_user" value="{HP_SQL_USER_VALUE}"/></td>
 	</tr>
 	<!-- EDP: nb_sqlu -->
 	<tr>
 		<td><label for="hp_traff">{TR_MAX_TRAFFIC}</label></td>
-		<td><input class="spinner" id="hp_traff" type="text" name="hp_traff" value="{HP_TRAFF_VALUE}"/></td>
+		<td><input id="hp_traff" type="text" name="hp_traff" value="{HP_TRAFF_VALUE}"/></td>
 	</tr>
 	<tr>
 		<td><label for="hp_disk">{TR_DISK_LIMIT}</label></td>
-		<td><input class="spinner ui-autocomplete-input" id="hp_disk" type="text" name="hp_disk"
-				   value="{HP_DISK_VALUE}"/>
-		</td>
+		<td><input id="hp_disk" type="text" name="hp_disk" value="{HP_DISK_VALUE}"/></td>
 	</tr>
 	</tbody>
 </table>
@@ -213,9 +183,9 @@
 				<span id="msg_default">{TR_FIELDS_OK}</span>
 			</div>
 			<!-- BDP: php_editor_permissions_block -->
-			<table>
+			<table class="firstColFixed">
 				<thead>
-				<tr class="description">
+				<tr>
 					<th colspan="2">{TR_PERMISSIONS}</th>
 				</tr>
 				</thead>
@@ -272,9 +242,9 @@
 			</table>
 			<!-- EDP: php_editor_permissions_block -->
 			<!-- BDP: php_editor_default_values_block -->
-			<table>
+			<table class="firstColFixed">
 				<thead>
-				<tr class="description">
+				<tr>
 					<th colspan="2">{TR_DIRECTIVES_VALUES}</th>
 				</tr>
 				</thead>
@@ -398,7 +368,7 @@
 	<td>
 		<label>{TR_WEB_FOLDER_PROTECTION}</label>
 		<span style="vertical-align:middle" class="icon i_help" id="web_folder_protection_help"
-			  title="{TR_WEB_FOLDER_PROTECTION_HELP}">{TR_HELP}</span>
+			  title="{TR_WEB_FOLDER_PROTECTION_HELP}"></span>
 	</td>
 	<td>
 		<div class="radio">
@@ -414,6 +384,7 @@
 <!-- EDP: web_folder_protection_feature -->
 </tbody>
 </table>
+
 <table class="firstColFixed">
 	<thead>
 	<tr>
@@ -434,6 +405,7 @@
 	</tr>
 	</tbody>
 </table>
+
 <!-- BDP: form -->
 <div class="buttons">
 	<input name="Submit" type="submit" value="{TR_ADD}"/>

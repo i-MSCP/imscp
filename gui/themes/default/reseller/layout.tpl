@@ -34,6 +34,7 @@
 	</tr>
 	</tbody>
 </table>
+
 <!-- BDP: layout_colors_block -->
 <form class="layoutColor" method="post" action="layout.php">
 	<table class="firstColFixed">
@@ -51,7 +52,7 @@
 					<option value="{COLOR}" {SELECTED_COLOR}>{COLOR}</option>
 					<!-- EDP: layout_color_block -->
 				</select>
-				<input name="submit" type="submit" class="button" value="{TR_CHANGE}"/>
+				<input name="submit" type="submit" value="{TR_CHANGE}"/>
 			</td>
 		</tr>
 		</tbody>
@@ -59,6 +60,7 @@
 	<input type="hidden" name="uaction" value="changeLayoutColor"/>
 </form>
 <!-- EDP: layout_colors_block -->
+
 <form name="otherSettings" method="post" action="layout.php">
 	<table class="firstColFixed">
 		<thead>

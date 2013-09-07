@@ -10,7 +10,7 @@
 <meta name="publisher" content="i-MSCP"/>
 <meta name="robots" content="nofollow, noindex"/>
 <meta name="title" content="{TR_PAGE_TITLE}"/>
-<link href="{THEME_ASSETS_PATH}/css/imscp.css?v={THEME_ASSETS_VERSION}" rel="stylesheet" type="text/css"/>
+<link href="{THEME_ASSETS_PATH}/css/ui.css?v={THEME_ASSETS_VERSION}" rel="stylesheet" type="text/css"/>
 <link href="{THEME_ASSETS_PATH}/css/{THEME_COLOR}.css?v={THEME_ASSETS_VERSION}" rel="stylesheet" type="text/css"/>
 <link href="{THEME_ASSETS_PATH}/css/jquery-ui-{THEME_COLOR}.css?v={THEME_ASSETS_VERSION}" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="{THEME_ASSETS_PATH}/js/jquery.js?v={THEME_ASSETS_VERSION}"></script>
@@ -21,22 +21,22 @@
 <script type="text/javascript">
 /*<![CDATA[*/
 $(window).load(function(){
-	$('tbody').on('change', function() {
-		$('tbody > tr:visible:odd').css('background-color', 'rgb(237, 237, 237)');
-		$('tbody > tr:visible:even').css('background-color', 'rgb(255, 255, 255)');
-	}).trigger('change');
+	$.each($("tbody"), function() {
+		$(this).find("tr:visible:odd td").removeClass("odd").addClass("even");
+		$(this).find("tr:visible:even td").removeClass("even").addClass("odd");
+	});
 });
 /*]]>*/
 </script>
 <script type="text/javascript">
 /*<![CDATA[*/
 $(document).ready(function () {
-	$('.main_menu a').imscpTooltip();
-	$('.body a, .body span, .body input').imscpTooltip({ extraClass: "tooltip_icon tooltip_notice" });
-	$("input:submit, input:button, button").button();
-	$(".radio, .checkbox").buttonset();
 	$.fx.speeds._default = 500;
 	setTimeout(function () { $('.timeout').fadeOut(1000); }, 5000);
+	$('.main_menu a').imscpTooltip();
+	$('.body a, .body span, .body input, .dataTables_paginate div').imscpTooltip({ extraClass: "tooltip_icon tooltip_notice" });
+	$("input:submit, input:button, button, .link_as_button").button();
+	$(".radio, .checkbox").buttonset();
 });
 /*]]>*/
 </script>
@@ -52,14 +52,10 @@ $(document).ready(function () {
 			<h1 class="{SECTION_TITLE_CLASS}">{TR_SECTION_TITLE}</h1>
 		</div>
 		<ul class="location-menu">
-		<!-- BDP: logged_from -->
-		<li>
-			<a class="backadmin" href="change_user_interface.php?action=go_back">{YOU_ARE_LOGGED_AS}</a>
-		</li>
-		<!-- EDP: logged_from -->
-		<li>
-			<a class="logout" href="../index.php?action=logout">{TR_MENU_LOGOUT}</a>
-		</li>
+			<!-- BDP: logged_from -->
+			<li><a class="backadmin" href="change_user_interface.php?action=go_back">{YOU_ARE_LOGGED_AS}</a></li>
+			<!-- EDP: logged_from -->
+			<li><a class="logout" href="../index.php?action=logout">{TR_MENU_LOGOUT}</a></li>
 		</ul>
 		<!-- INCLUDE "../partials/navigation/breadcrumbs.tpl" -->
 	</div>
@@ -68,14 +64,27 @@ $(document).ready(function () {
 		<h2 class="{TITLE_CLASS}"><span>{TR_TITLE}</span></h2>
 		<!-- BDP: page_message -->
 		<div class="{MESSAGE_CLS}">{MESSAGE}</div>
-			<!-- EDP: page_message -->
+		<!-- EDP: page_message -->
 			{LAYOUT_CONTENT}
-		</div>
 	</div>
-	<div class="footer">
-		i-MSCP {VERSION}<br/>
-		Build: {BUILDDATE}<br/>
-		Codename: {CODENAME}
-	</div>
+</div>
+<div class="footer">
+ i-MSCP {VERSION}<br/>
+ Build: {BUILDDATE}<br/>
+ Codename: {CODENAME}
+</div>
+
+<script type="text/javascript">
+/*<![CDATA[*/
+$(document).ready(function () {
+	$("tbody").on("change", function() {
+		$(this).find("tr:visible:odd td").removeClass("odd").addClass("even");
+		$(this).find("tr:visible:even td").removeClass("even").addClass("odd");
+	});
+	$("tbody tr:nth-child(odd)").removeClass('even').addClass('odd');
+	$("tbody tr:nth-child(even)").removeClass('odd').addClass('even');
+});
+/*]]>*/
+</script>
 </body>
 </html>

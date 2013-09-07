@@ -98,7 +98,7 @@ sub addDmn
 	return $rs if $rs;
 
 	if($main::imscpConfig{'AWSTATS_MODE'} eq '1') { # Static mode
-		# Create statistics directory if doesn't not exist - Set its permissions, owner and group
+		# Create statistics directory if it doesn't already exist - Set its permissions, owner and group in any case
 		$rs = iMSCP::Dir->new(
 			'dirname' => $userStatisticsDir
 		)->make(
@@ -177,7 +177,8 @@ sub deleteDmn
 
 		if(-d $userStatisticsDir) {
 			my @awstatsStaticFiles = iMSCP::Dir->new(
-				'dirname' => $userStatisticsDir, 'fileType' => '.html'
+				'dirname' => $userStatisticsDir,
+				'fileType' => '.html'
 			)->getFiles();
 
 			for(@awstatsStaticFiles) {

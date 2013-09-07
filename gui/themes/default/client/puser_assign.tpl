@@ -42,10 +42,8 @@
 	</table>
 
 	<div class="buttons">
-		<input name="Submit" type="submit" value="{TR_CANCEL}"
-			   onclick="MM_goToURL('parent','protected_user_manage.php');return document.MM_returnValue"/>
+		<a class ="link_as_button" href="protected_user_manage.php">{TR_CANCEL}</a>
+		<input type="hidden" name="nadmin_name" value="{UID}"/>
+		<input type="hidden" name="uaction" value=""/>
 	</div>
-
-	<input type="hidden" name="nadmin_name" value="{UID}"/>
-	<input type="hidden" name="uaction" value=""/>
 </form>

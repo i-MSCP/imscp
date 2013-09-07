@@ -22,6 +22,7 @@
 		</tbody>
 	</table>
 	<!-- EDP: reseller_list -->
+
 	<!-- BDP: select_admin -->
 	<div class="buttons">
 		<label for="toAdmin">{TR_TO_ADMIN}</label>

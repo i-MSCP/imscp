@@ -43,7 +43,8 @@
 		</tr>
 		</tbody>
 	</table>
-	<table>
+
+	<table class="firstColFixed">
 		<thead>
 		<tr>
 			<th colspan="3">{TR_MESSAGE_TEMPLATE}</th>
@@ -52,15 +53,15 @@
 		<tbody>
 		<tr>
 			<td><strong>{TR_SUBJECT}</strong></td>
-			<td><input name="subject1" type="text" id="subject1" class="inputTitle" value="{SUBJECT_VALUE1}"/></td>
-			<td><input type="text" name="subject2" class="inputTitle" value="{SUBJECT_VALUE2}"/></td>
+			<td><label><input name="subject1" type="text" id="subject1" class="inputTitle" value="{SUBJECT_VALUE1}"/></label></td>
+			<td><label><input type="text" name="subject2" class="inputTitle" value="{SUBJECT_VALUE2}"/></label></td>
 		</tr>
 		<tr>
 			<td><strong>{TR_MESSAGE}</strong></td>
-			<td><textarea name="message1" id="message1">{MESSAGE_VALUE1}</textarea></td>
-			<td><textarea name="message2" id="message2">{MESSAGE_VALUE2}</textarea></td>
+			<td><label><textarea name="message1" id="message1">{MESSAGE_VALUE1}</textarea></label></td>
+			<td><label><textarea name="message2" id="message2">{MESSAGE_VALUE2}</textarea></label></td>
 		</tr>
-		<tr style="display:none;">
+		<tr>
 			<td><strong>{TR_SENDER_EMAIL}</strong></td>
 			<td>{SENDER_EMAIL_VALUE}</td>
 			<td><input type="hidden" name="sender_email" value="{SENDER_EMAIL_VALUE}"/></td>
@@ -72,6 +73,7 @@
 		</tr>
 		</tbody>
 	</table>
+
 	<div class="buttons">
 		<input name="Submit" type="submit" value="{TR_APPLY_CHANGES}"/>
 		<input type="hidden" name="uaction" value="apply"/>

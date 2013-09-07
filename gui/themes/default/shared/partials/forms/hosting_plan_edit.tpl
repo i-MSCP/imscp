@@ -3,64 +3,40 @@
 <script type="text/javascript">
 	/*<![CDATA[*/
 	$(document).ready(function () {
-		$.fx.speeds._default = 500;
-
 		// PHP Editor settings dialog
-		$('#php_editor_dialog').dialog(
-			{
-				hide: 'blind',
-				show: 'slide',
-				focus: false,
-				autoOpen: false,
-				width: 'auto',
-				modal: true,
-				dialogClass: 'body',
-				buttons: {
-					'{TR_CLOSE}': function () {
-						$(this).dialog('close');
-					}
-				}
-			});
+		$('#php_editor_dialog').dialog({
+			bgiframe: true,
+			hide: 'blind',
+			show: 'slide',
+			focus: false,
+			autoOpen: false,
+			width: 700,
+			modal: true,
+			buttons: { '{TR_CLOSE}': function(){ $(this).dialog('close'); } }
+		});
 
-		// Re-add the PHP Editor to the form
-		$('#hostingPlanEditFrm').submit(
-			function () {
-				$('#php_editor_dialog').parent().appendTo($(this));
-			}
-		);
+		$(window).scroll(function() {
+			$("#php_editor_dialog").dialog("option", "position", { my: "center", at: "center", of: window });
+		});
 
-		// PHP Editor settings button
-		if ($('#hp_php_no').is(':checked')) {
-			$('#php_editor_block').hide();
-		}
+		$('form').submit(function () { $('#php_editor_dialog').parent().appendTo($(this)); });
 
-		$('#hp_php_yes,#hp_php_no').change(
-			function () {
-				$('#php_editor_block').toggle();
-			}
-		);
+		if ($('#hp_php_no').is(':checked')) { $('#php_editor_block').hide(); }
 
-		$('#php_editor_dialog_open').button({icons:{primary:'ui-icon-gear'}}).click(function (e) {
+		$('#hp_php_yes,#hp_php_no').change(function () { $('#php_editor_block').toggle(); });
+
+		var php_editor_dialog_open = $('#php_editor_dialog_open');
+		php_editor_dialog_open.button({ icons:{ primary:'ui-icon-gear'} }).click(function (e) {
 			$('#php_editor_dialog').dialog('open');
 			return false;
 		});
 
-		// Do not show PHP Editor settings button if disabled
-		if ($('#phpiniSystemNo').is(':checked')) {
-			$('#php_editor_dialog_open').hide();
-		}
+		if ($('#phpiniSystemNo').is(':checked')) { php_editor_dialog_open.hide(); }
 
-		$('#phpiniSystemYes,#phpiniSystemNo').change(
-			function () {
-				$('#php_editor_dialog_open').fadeToggle();
-			}
-		);
+		$('#phpiniSystemYes,#phpiniSystemNo').change(function () { php_editor_dialog_open.fadeToggle(); });
 
-		// PHP Editor reseller max values
-		phpDirectivesMaxValues = {PHP_DIRECTIVES_MAX_VALUES};
-
-		// PHP Editor error message
-		errorMessages = $('.php_editor_error');
+		var phpDirectivesMaxValues = {PHP_DIRECTIVES_MAX_VALUES};
+		var errorMessages = $('.php_editor_error');
 
 		// Function to show a specific message when a PHP Editor setting value is wrong
 		function _updateErrorMesssages(k, t) {
@@ -80,8 +56,6 @@
 			}
 		}
 
-		// Adds an event on each PHP Editor settings input fields to display an
-		// error message when a value is wrong
 		$.each(phpDirectivesMaxValues, function (k, v) {
 			$('#' + k).keyup(function () {
 				var r = /^(0|[1-9]\d*)$/; // Regexp to check value syntax
@@ -395,7 +369,7 @@
 	<td>
 		<label>{TR_WEB_FOLDER_PROTECTION}</label>
 		<span style="vertical-align:middle" class="icon i_help" id="web_folder_protection_help"
-			  title="{TR_WEB_FOLDER_PROTECTION_HELP}">{TR_HELP}</span>
+			  title="{TR_WEB_FOLDER_PROTECTION_HELP}"></span>
 	</td>
 	<td>
 		<div class="radio">
@@ -432,6 +406,7 @@
 	</tr>
 	</tbody>
 </table>
+
 <!-- BDP: submit_button -->
 <div class="buttons">
 	<input name="Submit" type="submit" value="{TR_UPDATE}"/>

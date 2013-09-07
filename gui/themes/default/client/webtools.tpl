@@ -2,7 +2,7 @@
 <table>
 	<thead>
 	<tr>
-		<th style="text-align: center">{TR_FEATURE}</th>
+		<th>{TR_FEATURE}</th>
 		<th>{TR_DESCRIPTION}</th>
 	</tr>
 	</thead>

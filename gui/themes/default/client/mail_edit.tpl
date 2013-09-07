@@ -16,6 +16,7 @@
 	});
 	/* ]]> */
 </script>
+
 <form name="editFrm" method="post" action="mail_edit.php?id={MAIL_ID_VAL}">
 	<table class="firstColFixed">
 		<thead>
@@ -44,15 +45,15 @@
 		<tr>
 			<td>
 				<label for="forwardList">{TR_FORWARD_TO}</label>
-				<span style="vertical-align: middle;"  class="icon i_help" id="fwd_help" title="{TR_FWD_HELP}">{TR_HELP}</span>
+				<span class="icon i_help" id="fwd_help" title="{TR_FWD_HELP}"></span>
 			</td>
 			<td><textarea name="forwardList" id="forwardList">{FORWARD_LIST_VAL}</textarea></td>
 		</tr>
 		</tbody>
 	</table>
+
 	<div class="buttons">
 		<input name="submit" type="submit" value="{TR_UPDATE}"/>
-		<input name="cancel" type="button"
-			   onclick="MM_goToURL('parent','mail_accounts.php');return document.MM_returnValue" value="{TR_CANCEL}"/>
+		<a class ="link_as_button" href="mail_accounts.php">{TR_CANCEL}</a>
 	</div>
 </form>

@@ -142,7 +142,7 @@ $tpl->assign(
 		'TR_CHOOSE_LAYOUT_COLOR' =>  tr('Choose layout color'),
         'TR_ENABLED' => tr('Enabled'),
         'TR_DISABLED' => tr('Disabled'),
-		'TR_CHANGE' => tr('Change'),
+		'TR_UPDATE' => tr('Update'),
         'TR_OTHER_SETTINGS' => tr('Other settings'),
         'TR_MAIN_MENU_SHOW_LABELS' => tr('Show labels for main menu links')));
 

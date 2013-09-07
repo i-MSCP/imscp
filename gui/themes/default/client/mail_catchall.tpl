@@ -12,6 +12,7 @@
 	}
 	/* ]]> */
 </script>
+
 <!-- BDP: catchall_message -->
 <div class="info">{CATCHALL_MSG}</div>
 <!-- EDP: catchall_message -->

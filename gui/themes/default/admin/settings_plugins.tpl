@@ -10,12 +10,8 @@
 			var href = $(this).attr("href");
 
 			$("#dialog_box").dialog("option", "buttons", {
-				"{TR_PROTECT}": function () {
-					window.location.href = href;
-				},
-				"{TR_CANCEL}": function () {
-					$(this).dialog("close");
-				}
+				"{TR_PROTECT}": function () { window.location.href = href; },
+				"{TR_CANCEL}": function () { $(this).dialog("close"); }
 			});
 
 			$("#dialog_box").dialog("open");
@@ -26,14 +22,10 @@
 		});
 
 		$("thead :checkbox, tfoot :checkbox").change(
-			function ($e) {
-				$("table :checkbox").prop('checked', $(this).is(':checked'));
-			}
+			function ($e) { $("table :checkbox").prop('checked', $(this).is(':checked')); }
 		);
 
-		$('button[name=updatePluginList]').click(function () {
-			document.location = "?updatePluginList=all";
-		});
+		$('button[name=updatePluginList]').click(function () { document.location = "?updatePluginList=all"; });
 
 		$(".plugin_error").click(function (e) {
 			var errDialog = $('<div>' + '<pre>' + $.trim($(this).html()) + '</pre>' + '</div>');
@@ -47,7 +39,6 @@
 					hide: "clip",
 					minHeight: 200,
 					minWidth: 500,
-					//width: 'auto',
 					buttons: [
 						{ text: "{TR_FORCE_RETRY}", click: function () {
 							window.location = "?retry=" + pluginName
@@ -67,6 +58,7 @@
 <!-- BDP: plugins_block -->
 
 <p class="hint" style="font-variant: small-caps;font-size: small;">{TR_PLUGIN_HINT}</p>
+
 <br/>
 
 <div id="dialog_box" title="{TR_PLUGIN_CONFIRMATION_TITLE}">
@@ -145,13 +137,14 @@
 </form>
 <!-- EDP: plugins_block -->
 
-<div class="buttons" style="margin: 0px;">
+<div class="buttons">
 	<button type="button" name="updatePluginList">{TR_UPDATE_PLUGIN_LIST}</button>
 </div>
 
-<br/><br/>
+<br/>
 
 <h2 class="plugin"><span>{TR_PLUGIN_UPLOAD}</span></h2>
+
 <form name="pluginsUploadFrm" action="settings_plugins.php" method="post" enctype="multipart/form-data">
 	<table class="firstColFixed">
 		<thead>
@@ -161,11 +154,13 @@
 		</thead>
 		<tbody>
 		<tr>
-			<td>{TR_PLUGIN_ARCHIVE}<span class="upload_help icon i_help" title="{TR_PLUGIN_ARCHIVE_TOOLTIP}"
-										 style="vertical-align: middle;">Help</span></td>
+			<td>
+				{TR_PLUGIN_ARCHIVE}
+				<span class="upload_help icon i_help" title="{TR_PLUGIN_ARCHIVE_TOOLTIP}"></span>
+			</td>
 			<td>
 				<input type="file" name="pluginArchive"/>
-				<input type="submit" class="frm-button" value="{TR_UPLOAD}"/>
+				<input type="submit" value="{TR_UPLOAD}"/>
 			</td>
 		</tr>
 		</tbody>

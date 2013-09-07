@@ -198,7 +198,10 @@ $tpl->assign(
 	array(
 		'TR_DOMAIN_STATISTICS' => tr('Domain statistics'),
 		'TR_IP_RESELLER_USAGE_STATISTICS' => tr('Reseller/IP usage statistics'),
-		'TR_DOMAIN_NAME' => tr('Domain Name')));
+		'TR_DOMAIN_NAME' => tr('Domain Name'),
+		'DATATABLE_TRANSLATIONS' => getDataTablesPluginTranslations()
+	)
+);
 
 generatePageMessage($tpl);
 

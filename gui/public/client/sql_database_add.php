@@ -91,15 +91,15 @@ function gen_page_post_data($tpl)
 			array(
 				'DB_NAME' => clean_input($_POST['db_name'], true),
 				'USE_DMN_ID' => (isset($_POST['use_dmn_id']) && $_POST['use_dmn_id'] === 'on') ? $cfg->HTML_CHECKED : '',
-				'START_ID_POS_CHECKED' => (isset($_POST['id_pos']) && $_POST['id_pos'] !== 'end') ? $cfg->HTML_CHECKED : '',
-				'END_ID_POS_CHECKED' => (isset($_POST['id_pos']) && $_POST['id_pos'] === 'end') ? $cfg->HTML_CHECKED : ''));
+				'START_ID_POS_SELECTED' => (isset($_POST['id_pos']) && $_POST['id_pos'] !== 'end') ? $cfg->HTML_SELECTED : '',
+				'END_ID_POS_SELECTED' => (isset($_POST['id_pos']) && $_POST['id_pos'] === 'end') ? $cfg->HTML_SELECTED : ''));
 	} else {
 		$tpl->assign(
 			array(
 				'DB_NAME' => '',
 				'USE_DMN_ID' => '',
-				'START_ID_POS_CHECKED' => $cfg->HTML_CHECKED,
-				'END_ID_POS_CHECKED' => ''));
+				'START_ID_POS_SELECTED' => $cfg->HTML_SELECTED,
+				'END_ID_POS_SELECTED' => ''));
 	}
 }
 
@@ -248,8 +248,8 @@ $tpl->assign(
 		'TR_DATABASE' => tr('Database'),
 		'TR_DB_NAME' => tr('Database name'),
 		'TR_USE_DMN_ID' => tr('Database prefix/suffix'),
-		'TR_START_ID_POS' => tr("Numeric prefix"),
-		'TR_END_ID_POS' => tr("Numeric suffix"),
+		'TR_START_ID_POS' => tr("In front"),
+		'TR_END_ID_POS' => tr("Behind"),
 		'TR_ADD' => tr('Add')));
 
 generatePageMessage($tpl);

@@ -17,9 +17,9 @@
 		<!-- EDP: quota_frm -->
 		</tbody>
 	</table>
+
 	<div class="buttons">
 		<input name="submit" type="submit" value="{TR_UPDATE}"/>
-		<input name="cancel" type="button"
-			   onclick="MM_goToURL('parent','mail_accounts.php');return document.MM_returnValue" value="{TR_CANCEL}"/>
+		<a class ="link_as_button" href="mail_accounts.php">{TR_CANCEL}</a>
 	</div>
 </form>

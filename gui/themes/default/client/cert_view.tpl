@@ -37,12 +37,12 @@
 		</tr>
 		</tbody>
 	</table>
+
 	<div class="buttons">
 		<!-- BDP: cert_enable -->
 		<input name="send" type="submit" value="{TR_SAVE}"/>
 		<!-- EDP: cert_enable -->
 		<input name="delete" type="submit" value="{TR_DELETE}"/>
-		<input name="cancel" type="button"
-			   onclick="MM_goToURL('parent','domains_manage.php');return document.MM_returnValue" value="{TR_CANCEL}"/>
+		<a class ="link_as_button" href="domains_manage.php">{TR_CANCEL}</a>
 	</div>
 </form>

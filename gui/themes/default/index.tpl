@@ -1,41 +1,32 @@
 
-<div class="clearfix">
-	<div id="loginBox">
-		<form name="loginFrm" action="index.php" method="post">
-			<label for="uname">
-				<span>{TR_USERNAME}</span><input type="text" name="uname" id="uname" tabindex="1" value="{UNAME}"/>
-			</label>
-			<label for="upass"><span>{TR_PASSWORD}</span>
-			<input type="password" name="upass" id="upass" tabindex="2"/></label>
-
-			<div class="buttons">
-				<!-- BDP: lost_password_support -->
-				<button name="lostpwd" type="button" tabindex="4" onclick="location.href='lostpassword.php'">
-					{TR_LOSTPW}
-				</button>
-				<!-- EDP: lost_password_support -->
-				<button name="login" type="submit" tabindex="3">{TR_LOGIN}</button>
-			</div>
+<div id="login">
+	<form name="login" action="index.php" method="post">
+		<table>
+			<tr>
+				<td class="left"><label for="uname">{TR_USERNAME}</label></td>
+				<td class="right"><input type="text" name="uname" id="uname" value="{UNAME}"/></td>
+			</tr>
+			<tr>
+				<td class="left" ><label for="upass">{TR_PASSWORD}</label></td>
+				<td class="right"><input type="password" name="upass" id="upass" value="" autocomplete="off"/></td>
+			</tr>
+			<tr>
+				<td colspan="2" class="right">
+					<!-- BDP: lost_password_support -->
+					<a class="link_as_button" href="lostpassword.php">{TR_LOSTPW}</a>
+					<!-- EDP: lost_password_support -->
+					<button type="submit" name="submit" tabindex="3">{TR_LOGIN}</button>
+				</td>
+			</tr>
 			<!-- BDP: ssl_support -->
-			<a style="float:none;" class="icon {SSL_IMAGE_CLASS}" href="{SSL_LINK}" title="{TR_SSL_DESCRIPTION}">
-				{TR_SSL}
-			</a>
+			<tr>
+				<td colspan="2">
+					<a class="icon {SSL_IMAGE_CLASS}" href="{SSL_LINK}" title="{TR_SSL_DESCRIPTION}">{TR_SSL}</a>
+				</td>
+			</tr>
 			<!-- EDP: ssl_support -->
-			<input type="hidden" name="action" value="login">
-		</form>
-	</div>
-</div>
-<div id="toolbox">
-	<ul>
-		<li>
-			<a class="icon_big pma" href="{TR_PMA_LINK}" target="blank" title="{TR_LOGIN_INTO_PMA}">{TR_PHPMYADMIN}</a>
-		</li>
-		<li>
-			<a class="icon_big filemanager" href="{TR_FTP_LINK}" target="blank" title="{TR_LOGIN_INTO_FMANAGER}">FileManager</a>
-		</li>
-		<li>
-			<a class="icon_big webmail" href="{TR_WEBMAIL_LINK}" target="blank"
-			   title="{TR_LOGIN_INTO_WEBMAIL}">{TR_WEBMAIL}</a>
-		</li>
-	</ul>
+		</table>
+
+		<input type="hidden" name="action" value="login">
+	</form>
 </div>

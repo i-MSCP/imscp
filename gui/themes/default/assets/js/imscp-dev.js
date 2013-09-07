@@ -151,18 +151,6 @@ function MM_swapImage() {
 	}
 }
 
-
-/**
- */
-function MM_goToURL() {
-	var args = MM_goToURL.arguments;
-	document.MM_returnValue = false;
-	for (var i = 0, len = args.length - 1; i < len; i += 2) {
-		window[args[i]].location = String(args[i+1]);
-	}
-}
-
-
 /**
  *
  * Javascript sprintf by http://jan.moesen.nu/

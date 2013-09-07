@@ -43,9 +43,7 @@
 <!-- EDP: users_block -->
 
 <div class="buttons">
-	<input name="Button" type="button"
-		   onclick="MM_goToURL('parent','protected_user_add.php');return document.MM_returnValue"
-		   value="{TR_ADD_USER}"/>
+	<a class="link_as_button" href="protected_user_add.php">{TR_ADD_USER}</a>
 </div>
 
 <h2 class="groups"><span>{TR_GROUPS}</span></h2>
@@ -81,6 +79,5 @@
 </table>
 <!-- EDP: groups_block -->
 <div class="buttons">
-	<input name="Button2" type="button" value="{TR_ADD_GROUP}"
-		   onclick="MM_goToURL('parent', 'protected_group_add.php');return document.MM_returnValue"/>
+	<a class="link_as_button" href="protected_group_add.php"><{TR_ADD_GROUP}</a>
 </div>

@@ -5,14 +5,17 @@
 		if (!confirm("{TR_MESSAGE_DELETE}"))
 			return false;
 	}
+
 	function action_activate() {
 		if (!confirm("{TR_MESSAGE_ACTIVATE}"))
 			return false;
 	}
+
 	function action_import() {
 		if (!confirm("{TR_MESSAGE_IMPORT}"))
 			return false;
 	}
+
 	function action_install(url) {
 		if (!confirm("{TR_MESSAGE_INSTALL}"))
 			return false;
@@ -39,7 +42,7 @@
 		</tr>
 	</table>
 	<div class="buttons">
-		<input type="button" class="button" value="{TR_UPLOAD_SOFTWARE_BUTTON}"
+		<input type="button" value="{TR_UPLOAD_SOFTWARE_BUTTON}"
 			   onClick="document.getElementById('sw_upload_form').submit();"/>
 		<input name="upload" type="hidden" value="upload"/>
 		<input type="hidden" name="send_software_upload_token" id="send_software_upload_token"
@@ -133,7 +136,7 @@
 		</tbody>
 	</table>
 	<div class="buttons">
-		<input name="Submit" type="submit" class="button" value="{TR_APPLY_CHANGES}"/>
+		<input name="Submit" type="submit" value="{TR_APPLY_CHANGES}"/>
 		<input type="hidden" name="uaction" value="updatewebdepot"/>
 	</div>
 </form>

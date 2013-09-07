@@ -30,6 +30,7 @@
 	}
 	/* ]]> */
 </script>
+
 <!-- BDP: add_form -->
 <form name="add_alias_frm" method="post" action="user_add4.php">
 	<!-- BDP: alias_list -->
@@ -52,6 +53,7 @@
 		</tbody>
 	</table>
 	<!-- EDP: alias_list -->
+
 	<table class="firstColFixed">
 		<thead>
 		<tr>
@@ -82,21 +84,23 @@
 		<tr>
 			<td><label for="forward">{TR_FORWARD}</label></td>
 			<td>
-				<select name="forward_prefix" style="vertical-align:middle"{DISABLE_FORWARD}>
-					<option value="{TR_PREFIX_HTTP}"{HTTP_YES}>{TR_PREFIX_HTTP}</option>
-					<option value="{TR_PREFIX_HTTPS}"{HTTPS_YES}>{TR_PREFIX_HTTPS}</option>
-					<option value="{TR_PREFIX_FTP}"{FTP_YES}>{TR_PREFIX_FTP}</option>
-				</select>
+				<label>
+					<select name="forward_prefix" style="vertical-align:middle"{DISABLE_FORWARD}>
+						<option value="{TR_PREFIX_HTTP}"{HTTP_YES}>{TR_PREFIX_HTTP}</option>
+						<option value="{TR_PREFIX_HTTPS}"{HTTPS_YES}>{TR_PREFIX_HTTPS}</option>
+						<option value="{TR_PREFIX_FTP}"{FTP_YES}>{TR_PREFIX_FTP}</option>
+					</select>
+				</label>
 				<input name="forward" type="text" class="textinput" id="forward" value="{FORWARD}"{READONLY_FORWARD} />
 			</td>
 		</tr>
 		</tbody>
 	</table>
+
 	<div class="buttons">
+		<input type="hidden" name="uaction" value="add_alias"/>
 		<input name="Submit" type="submit" value="{TR_ADD}"/>
-		<input name="Button" type="button" onclick="MM_goToURL('parent','users.php');return document.MM_returnValue"
-			   value="{TR_GO_USERS}"/>
+		<a class="link_as_button"href="users.php">{TR_GO_USERS}</a>
 	</div>
-	<input type="hidden" name="uaction" value="add_alias"/>
 </form>
 <!-- EDP: add_form -->

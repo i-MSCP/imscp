@@ -24,9 +24,9 @@
  * Portions created by the i-MSCP Team are Copyright (C) 2010-2013 by
  * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
  *
- * @category	i-MSCP
- * @package		iMSCP_Core
- * @subpackage	Admin
+ * @category    i-MSCP
+ * @package     iMSCP_Core
+ * @subpackage  Admin
  * @copyright   2001-2006 by moleSoftware GmbH
  * @copyright   2006-2010 by ispCP | http://isp-control.net
  * @copyright   2010-2013 by i-MSCP | http://i-mscp.net
@@ -35,8 +35,8 @@
  * @link        http://i-mscp.net
  */
 
-/************************************************************************************
- * Main script
+/***********************************************************************************************************************
+ * Main
  */
 
 // Include core library
@@ -51,38 +51,37 @@ $cfg = iMSCP_Registry::get('config');
 
 // Checks if support ticket system is activated
 if (!hasTicketSystem()) {
-    redirectTo('index.php');
+	redirectTo('index.php');
 }
 
 if (isset($_GET['ticket_id']) && !empty($_GET['ticket_id'])) {
-    $userId = $_SESSION['user_id'];
-    $ticketId = (int) $_GET['ticket_id'];
+	$userId = $_SESSION['user_id'];
+	$ticketId = (int)$_GET['ticket_id'];
 
-    $status = getTicketStatus($ticketId);
+	$status = getTicketStatus($ticketId);
 
-    if ($status == 1 || $status == 4) {
-        if(!changeTicketStatus($ticketId, 3)) {
-           redirectTo('ticket_system.php');
-        }
-    }
+	if ($status == 1 || $status == 4) {
+		if (!changeTicketStatus($ticketId, 3)) {
+			redirectTo('ticket_system.php');
+		}
+	}
 
-    if (isset($_POST['uaction'])) {
-        if ($_POST['uaction'] == 'close') {
-            closeTicket($ticketId);
-        } elseif(isset($_POST['user_message'])) {
-            if(empty($_POST['user_message'])) {
-                set_page_message(tr('Please type your message.'), 'error');
-            } else {
-                updateTicket($ticketId, $userId, $_POST['urgency'], $_POST['subject'],
-                         $_POST['user_message'], 2, 3);
-            }
-        }
+	if (isset($_POST['uaction'])) {
+		if ($_POST['uaction'] == 'close') {
+			closeTicket($ticketId);
+		} elseif (isset($_POST['user_message'])) {
+			if (empty($_POST['user_message'])) {
+				set_page_message(tr('Please type your message.'), 'error');
+			} else {
+				updateTicket($ticketId, $userId, $_POST['urgency'], $_POST['subject'], $_POST['user_message'], 2, 3);
+			}
+		}
 
-        redirectTo('ticket_system.php');
-    }
+		redirectTo('ticket_system.php');
+	}
 } else {
-    set_page_message(tr('Ticket not found.'), 'error');
-    redirectTo('ticket_system.php');
+	set_page_message(tr('Ticket not found.'), 'error');
+	redirectTo('ticket_system.php');
 	exit;
 }
 
@@ -93,7 +92,9 @@ $tpl->define_dynamic(
 		'page' => 'admin/ticket_view.tpl',
 		'page_message' => 'layout',
 		'tickets_list' => 'page',
-		'tickets_item' => 'tickets_list'));
+		'tickets_item' => 'tickets_list'
+	)
+);
 
 $tpl->assign(
 	array(
@@ -107,8 +108,11 @@ $tpl->assign(
 		'TR_TICKET_FROM' => tr('From'),
 		'TR_TICKET_DATE' => tr('Date'),
 		'TR_TICKET_CONTENT' => tr('Message'),
+		'TR_REPLY' => tr('Reply'),
 		'TR_TICKET_NEW_REPLY' => tr('Send new reply'),
-		'TR_TICKET_REPLY' => tr('Send reply')));
+		'TR_TICKET_REPLY' => tr('Send reply')
+	)
+);
 
 generateNavigation($tpl);
 showTicketContent($tpl, $ticketId, $userId);

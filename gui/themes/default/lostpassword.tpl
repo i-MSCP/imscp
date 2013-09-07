@@ -1,16 +1,26 @@
-<div class="clearfix">
-	<div id="loginBox">
-		<form name="lostpasswordFrm" action="lostpassword.php" method="post">
-			<span><a href="lostpassword.php" title="{GET_NEW_IMAGE}">{TR_IMGCAPCODE}</a></span>
-			<label for="capcode"><span>{TR_CAPCODE}</span><input type="text" name="capcode" id="capcode" tabindex="1"/></label>
-			<label for="uname">
-				<span>{TR_USERNAME}</span><input type="text" name="uname" id="uname" tabindex="2"/>
-			</label>
-			<div class="buttons">
-				<button name="lostpwd" type="button" onclick="location.href='index.php';"
-						tabindex="4">{TR_CANCEL}</button>
-				<button name="submit" type="submit" tabindex="3">{TR_SEND}</button>
-			</div>
-		</form>
-	</div>
+
+<div id="login">
+	<form name="lostpasswordFrm" action="lostpassword.php" method="post">
+		<table>
+			<tr>
+				<td colspan="2" class="center">
+					<a href="lostpassword.php" title="{GET_NEW_IMAGE}">{TR_IMGCAPCODE}</a>
+				</td>
+			</tr>
+			<tr>
+				<td class="left"><label for="uname">{TR_USERNAME}</label></td>
+				<td class="right"><input type="text" name="uname" id="uname" tabindex="1"/></td>
+			</tr>
+			<tr>
+				<td class="left"><label for="capcode">{TR_CAPCODE}</label></td>
+				<td class="right"><input type="text" name="capcode" id="capcode" tabindex="2"/></td>
+			</tr>
+			<tr>
+				<td colspan="2" class="right">
+					<button name="submit" type="submit" tabindex="3">{TR_SEND}</button>
+					<a class="link_as_button" href="index.php" tabindex="4">{TR_CANCEL}</a>
+				</td>
+			</tr>
+		</table>
+	</form>
 </div>

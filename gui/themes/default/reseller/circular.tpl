@@ -26,6 +26,7 @@
 		</tr>
 		</tbody>
 	</table>
+
 	<div class="buttons">
 		<input type="hidden" name="uaction" value="send_circular"/>
 		<input name="Submit" type="submit" value="{TR_SEND_MESSAGE}"/>

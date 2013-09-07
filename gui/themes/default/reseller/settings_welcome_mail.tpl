@@ -33,6 +33,7 @@
 		</tr>
 		</tbody>
 	</table>
+
 	<table class="firstColFixed">
 		<thead>
 		<tr>
@@ -59,6 +60,7 @@
 		</tr>
 		</tbody>
 	</table>
+
 	<div class="buttons">
 		<input type="hidden" name="uaction" value="email_setup"/>
 		<input name="Submit" type="submit" value="{TR_UPDATE}"/>

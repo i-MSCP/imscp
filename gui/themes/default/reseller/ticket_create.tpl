@@ -8,7 +8,7 @@
 		</thead>
 		<tbody>
 		<tr>
-			<td><label for="urgency"><strong>{TR_URGENCY}</strong></label></td>
+			<td><label for="urgency">{TR_URGENCY}</label></td>
 			<td>
 				<select id="urgency" name="urgency">
 					<option value="1"{OPT_URGENCY_1}>{TR_LOW}</option>
@@ -19,15 +19,16 @@
 			</td>
 		</tr>
 		<tr>
-			<td><label for="subject"><strong>{TR_SUBJECT}</strong></label></td>
+			<td><label for="subject">{TR_SUBJECT}</label></td>
 			<td><input class=inputTitle type="text" id="subject" name="subject" value="{SUBJECT}"/></td>
 		</tr>
 		<tr>
-			<td><label for="user_message"><strong>{TR_YOUR_MESSAGE}</strong></label></td>
+			<td><label for="user_message">{TR_YOUR_MESSAGE}</label></td>
 			<td><textarea id="user_message" name="user_message">{USER_MESSAGE}</textarea></td>
 		</tr>
 		</tbody>
 	</table>
+
 	<div class="buttons">
 		<input name="submit" type="submit" value="{TR_CREATE}"/>
 		<input name="uaction" type="hidden" value="send_msg"/>

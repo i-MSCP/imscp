@@ -1,21 +1,16 @@
 
 <script type="text/javascript">
 	/* <![CDATA[ */
-	function action_delete(url, subject) {
-		if (subject == 'all') {
-			if (confirm("{TR_TICKETS_DELETE_ALL_MESSAGE}")) {
-				document.location.href = url;
-			}
+	function action_delete(subject) {
+		if (subject == '#__all__#') {
+			return confirm("{TR_TICKETS_DELETE_ALL_MESSAGE}");
 		} else {
-			if (confirm(sprintf("{TR_TICKETS_DELETE_MESSAGE}", subject))) {
-				document.location.href = url;
-			}
+			return confirm(sprintf("{TR_TICKETS_DELETE_MESSAGE}", subject));
 		}
-
-		return false;
 	}
 	/* ]]> */
 </script>
+
 <!-- BDP: tickets_list -->
 <table>
 	<thead>
@@ -34,19 +29,17 @@
 		<td><strong>{TICKET_STATUS_VAL}</strong></td>
 		<td>{TICKET_FROM_VAL}</td>
 		<td>
-			<img src="{THEME_ASSETS_PATH}/images/icons/document.png" style="vertical-align:middle;" alt=""/>&nbsp;
-			<a href="ticket_view.php?ticket_id={TICKET_ID_VAL}" class="link"
+			<a href="ticket_view.php?ticket_id={TICKET_ID_VAL}" class="icon i_document"
 			   title="{TR_TICKET_READ_LINK}">{TICKET_SUBJECT_VAL}</a>
 		</td>
 		<td>{TICKET_URGENCY_VAL}</td>
 		<td>{TICKET_LAST_DATE_VAL}</td>
 		<td>
-			<img src="{THEME_ASSETS_PATH}/images/icons/delete.png" style="vertical-align:middle;" alt=""/>&nbsp;
-			<a href="#"
-			   onclick="return action_delete('ticket_delete.php?ticket_id={TICKET_ID_VAL}', '{TICKET_SUBJECT2_VAL}')"
-			   class="link" title="{TR_TICKET_DELETE_LINK}">{TR_TICKET_DELETE}</a>
-			<img src="{THEME_ASSETS_PATH}/images/icons/close.png" style="vertical-align:middle;" alt=""/>&nbsp;
-			<a href="ticket_system.php?ticket_id={TICKET_ID_VAL}" class="link"
+			<a href="ticket_delete.php?ticket_id={TICKET_ID_VAL}" class="icon i_delete"
+			   onclick="return action_delete('{TICKET_SUBJECT2_VAL}')"
+			   title="{TR_TICKET_DELETE_LINK}">{TR_TICKET_DELETE}</a>
+
+			<a href="ticket_system.php?ticket_id={TICKET_ID_VAL}" class="icon i_close"
 			   title="{TR_TICKET_CLOSE_LINK}">{TR_TICKET_CLOSE}</a>
 		</td>
 	</tr>
@@ -54,9 +47,8 @@
 	<tr>
 		<td colspan="6">
 			<div class="buttons">
-				<input name="submit" type="submit"
-					   onclick="return action_delete('ticket_delete.php?delete=open', 'all')"
-					   value="{TR_TICKET_DELETE_ALL}" style="float:left;"/>
+				<a class="link_as_button" href="ticket_delete.php?delete=open"
+				   onclick="return action_delete('#__all__#')">{TR_TICKET_DELETE_ALL}</a>
 			</div>
 		</td>
 	</tr>
@@ -67,10 +59,10 @@
 	<a class="icon i_prev" href="ticket_system.php?psi={PREV_PSI}" title="{TR_PREVIOUS}">{TR_PREVIOUS}</a>
 	<!-- EDP: scroll_prev -->
 	<!-- BDP: scroll_prev_gray -->
-	<a class="icon i_prev_gray" href="#" onclick="return false;"></a>
+	<span class="icon i_prev_gray"></span>
 	<!-- EDP: scroll_prev_gray -->
 	<!-- BDP: scroll_next_gray -->
-	<a class="icon i_next_gray" href="#" onclick="return false;"></a>
+	<span class="icon i_next_gray"></span>
 	<!-- EDP: scroll_next_gray -->
 	<!-- BDP: scroll_next -->
 	<a class="icon i_next" href="ticket_system.php?psi={NEXT_PSI}" title="{TR_NEXT}">{TR_NEXT}</a>

@@ -67,6 +67,7 @@
 		</tr>
 		</tbody>
 	</table>
+
 	<div class="buttons">
 		<input name="Submit" type="submit" value="{TR_UPDATE}"/>
 		<input type="hidden" name="uaction" value="updt_data"/>

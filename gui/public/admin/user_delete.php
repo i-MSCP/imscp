@@ -305,7 +305,8 @@ function admin_generateCustomerAcountDeletionValidationPage($userId)
 			),
 			'USER_ID' => $userId,
 			'TR_YES_DELETE_ACCOUNT' => tr('Yes, delete this account.'),
-			'TR_DELETE_ACCOUNT' => tr('Delete account')
+			'TR_DELETE' => tr('Delete'),
+			'TR_CANCEL' => tr('Cancel')
 		)
 	);
 

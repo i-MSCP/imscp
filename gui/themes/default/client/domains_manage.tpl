@@ -6,6 +6,7 @@
 	}
 	/*]]>*/
 </script>
+
 <h3 class="domains"><span>{TR_DOMAINS}</span></h3>
 
 <!-- BDP: domain_list -->

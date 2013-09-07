@@ -10,10 +10,13 @@
 	}
 	/* ]]> */
 </script>
+
 <h3 class="user_yellow"><span>{TR_ADMINISTRATORS}</span></h3>
+
 <!-- BDP: admin_message -->
 <div class="info">{ADMIN_MESSAGE}</div>
 <!-- EDP: admin_message -->
+
 <!-- BDP: admin_list -->
 <table>
 	<thead>
@@ -37,7 +40,7 @@
 			<!-- EDP: admin_delete_show -->
 
 			<!-- BDP: admin_delete_link -->
-			<a href="{URL_DELETE_ADMIN}" class="icon i_delete" onclick="action_delete('{ADMIN_USERNAME}')"
+			<a href="{URL_DELETE_ADMIN}" class="icon i_delete" onclick="return action_delete('{ADMIN_USERNAME}')"
 			   class="link">{TR_DELETE}</a>
 			<!-- EDP: admin_delete_link -->
 		</td>
@@ -46,10 +49,13 @@
 	</tbody>
 </table>
 <!-- EDP: admin_list -->
+
 <h3 class="user_green"><span>{TR_RESELLERS}</span></h3>
+
 <!-- BDP: rsl_message -->
 <div class="info">{RSL_MESSAGE}</div>
 <!-- EDP: rsl_message -->
+
 <!-- BDP: rsl_list -->
 <table>
 	<thead>
@@ -78,11 +84,14 @@
 	</tbody>
 </table>
 <!-- EDP: rsl_list -->
+
 <h3 class="user_blue"><span>{TR_CUSTOMERS}</span></h3>
+
 <!-- BDP: search_form -->
 <form action="manage_users.php" method="post" name="search_user" id="search_user">
 	<div style="line-height:40px;vertical-align: middle; float: left">
-		<input name="search_for" type="text" value="{SEARCH_FOR}"/>
+		<label><input name="search_for" type="text" value="{SEARCH_FOR}"/></label>
+		<label>
 		<select name="search_common">
 			<option value="domain_name" {M_DOMAIN_NAME_SELECTED}>{M_DOMAIN_NAME}</option>
 			<option value="customer_id" {M_CUSTOMER_ID_SELECTED}>{M_CUSTOMER_ID}</option>
@@ -92,11 +101,14 @@
 			<option value="state" {M_STATE_SELECTED}>{M_STATE}</option>
 			<option value="country" {M_COUNTRY_SELECTED}>{M_COUNTRY}</option>
 		</select>
+		</label>
+		<label>
 		<select name="search_status">
 			<option value="all" {M_ALL_SELECTED}>{M_ALL}</option>
 			<option value="ok" {M_OK_SELECTED}>{M_OK}</option>
 			<option value="disabled" {M_SUSPENDED_SELECTED}>{M_SUSPENDED}</option>
 		</select>
+		</label>
 		<input type="hidden" name="uaction" value="go_search"/>
 		<input type="hidden" name="details" value=""/>
 		<input name="Submit" type="submit" value="{TR_SEARCH}"/>
@@ -106,12 +118,14 @@
 			{TR_VIEW_DETAILS}
 		</a>
 	</div>
-	<div style="clear: both"></div>
+	<div style="clear:both"></div>
 </form>
 <!-- EDP: search_form -->
+
 <!-- BDP: usr_message -->
 <div class="info">{USR_MESSAGE}</div>
 <!-- EDP: usr_message -->
+
 <!-- BDP: usr_list -->
 <table>
 	<thead>
@@ -163,15 +177,16 @@
 	<!-- EDP: usr_item -->
 	</tbody>
 </table>
+
 <div class="paginator">
 	<!-- BDP: scroll_prev -->
 	<a class="icon i_prev" href="manage_users.php?psi={PREV_PSI}" title="{TR_PREVIOUS}">{TR_PREVIOUS}</a>
 	<!-- EDP: scroll_prev -->
 	<!-- BDP: scroll_prev_gray -->
-	<a class="icon i_prev_gray" href="#">&nbsp;</a>
+	<span class="icon i_prev_gray"></span>
 	<!-- EDP: scroll_prev_gray -->
 	<!-- BDP: scroll_next_gray -->
-	<a class="icon i_next_gray" href="#">&nbsp;</a>
+	<span class="icon i_next_gray"></span>
 	<!-- EDP: scroll_next_gray -->
 	<!-- BDP: scroll_next -->
 	<a class="icon i_next" href="manage_users.php?psi={NEXT_PSI}" title="{TR_NEXT}">{TR_NEXT}</a>

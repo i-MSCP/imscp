@@ -1,25 +1,24 @@
 
 <!-- BDP: ip_usage_statistics -->
+<!-- BDP: ip_row -->
 <table>
-	<!-- BDP: ip_row -->
+	<thead>
 	<tr>
-		<th colspan="5">{IP}</th>
+		<th colspan="2">{IP}</th>
 	</tr>
+	</thead>
+	<tfoot>
 	<tr>
-		<td>&nbsp;</td>
-		<td><b>{TR_DOMAIN_NAME}</b></td>
+		<td colspan="2">{RECORD_COUNT}</td>
 	</tr>
+	</tfoot>
+	<tbody>
 	<!-- BDP: domain_row -->
 	<tr>
-		<td width="25">&nbsp;</td>
 		<td>{DOMAIN_NAME}</td>
 	</tr>
 	<!-- EDP: domain_row -->
-	<tr>
-		<td>&nbsp;</td>
-		<td colspan="5"><b>{RECORD_COUNT}</b></td>
-	</tr>
-	<!-- EDP: ip_row -->
+	</tbody>
 </table>
+<!-- EDP: ip_row -->
 <!-- EDP: ip_usage_statistics -->
-

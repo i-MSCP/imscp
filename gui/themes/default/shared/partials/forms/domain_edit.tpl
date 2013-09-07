@@ -2,15 +2,13 @@
 <script type="text/javascript">
 	/*<![CDATA[*/
 	$(document).ready(function () {
-		errFieldsStack = {ERR_FIELDS_STACK};
+		var errFieldsStack = {ERR_FIELDS_STACK};
 
-		$.each(errFieldsStack, function () {
-			$('#' + this).css('border-color', 'rgb(201, 29, 17');
-		});
+		$.each(errFieldsStack, function () { $('#' + this).css('border-color', 'rgb(201, 29, 17');});
 		$('#domain_expires').datepicker();
 		$('#domain_never_expires').change(function () {
 			if ($(this).is(':checked')) {
-				$('#domain_expires').css('border-color', '#cccccc').attr('disabled', 'disabled')
+				$('#domain_expires').val("").css('border-color', '#dfdfdf').attr('disabled', 'disabled');
 			} else {
 				$('#domain_expires').removeAttr('disabled');
 			}
@@ -18,50 +16,40 @@
 
 		<!-- BDP: php_editor_js -->
 		// PHP Editor settings dialog
-		$('#php_editor_dialog').dialog(
-			{
-				bgiframe: true,
-				hide: 'blind', show: 'slide', focus: false, autoOpen: false, width: '650', modal: true, dialogClass: 'body',
-				buttons: { '{TR_CLOSE}': function () {
-					$(this).dialog('close');
-				} },
-				open: function (e) {
-					$('#php_editor_dialog :radio').blur();
-				}
-			});
-
-		// Re-add the PHP Editor container to the form on submit
-		$('form').submit(function () {
-			$('#php_editor_dialog').parent().appendTo($('#dialogContainer'));
+		$('#php_editor_dialog').dialog({
+			bgiframe: true,
+			hide: 'blind',
+			show: 'slide',
+			focus: false,
+			autoOpen: false,
+			width: 600,
+			modal: true,
+			buttons: { '{TR_CLOSE}': function(){ $(this).dialog('close'); } }
 		});
 
-		// PHP Editor settings button
-		if ($('#php_no').is(':checked')) {
-			$('#php_editor_block').hide();
-		}
-
-		$('#php_yes,#php_no').change(function () {
-			$('#php_editor_block').toggle();
+		$(window).scroll(function() {
+			$("#php_editor_dialog").dialog("option", "position", { my: "center", at: "center", of: window });
 		});
 
-		$('#php_editor_dialog_open').button({ icons: { primary: 'ui-icon-gear' } }).click(function (e) {
+		$('form').submit(function () { $('#php_editor_dialog').parent().appendTo($('#dialogContainer'));});
+
+		if ($('#php_no').is(':checked')) { $('#php_editor_block').hide(); }
+
+		$('#php_yes,#php_no').change(function () { $('#php_editor_block').toggle(); });
+
+		var php_editor_dialog_open = $('#php_editor_dialog_open');
+
+		php_editor_dialog_open.button({ icons: { primary: 'ui-icon-gear' } }).click(function (e) {
 			$('#php_editor_dialog').dialog('open');
 			return false;
 		});
 
-		// Do not show PHP Editor settings button if disabled
-		if ($('#phpiniSystemNo').is(':checked')) {
-			$('#php_editor_dialog_open').hide();
-		}
-		$('#phpiniSystemYes,#phpiniSystemNo').change(function () {
-			$('#php_editor_dialog_open').fadeToggle();
-		});
+		if ($('#phpiniSystemNo').is(':checked')) { php_editor_dialog_open.hide(); }
 
-		// PHP Editor reseller max values
-		phpDirectivesResellerMaxValues = {PHP_DIRECTIVES_RESELLER_MAX_VALUES};
+		$('#phpiniSystemYes, #phpiniSystemNo').change(function () { php_editor_dialog_open.fadeToggle(); });
 
-		// PHP Editor error message
-		errorMessages = $('.php_editor_error');
+		var phpDirectivesResellerMaxValues = {PHP_DIRECTIVES_RESELLER_MAX_VALUES};
+		var errorMessages = $('.php_editor_error');
 
 		// Function to show a specific message when a PHP Editor setting value is wrong
 		function _updateErrorMesssages(k, t) {
@@ -81,8 +69,6 @@
 			}
 		}
 
-		// Adds an event on each PHP Editor settings input fields to display an
-		// error message when a value is wrong
 		$.each(phpDirectivesResellerMaxValues, function (k, v) {
 			$('#' + k).keyup(function () {
 				var r = /^(0|[1-9]\d*)$/; // Regexp to check value syntax
@@ -101,7 +87,7 @@
 	});
 	/*]]>*/
 </script>
-<form name="editFrm" id="editFrm" method="post" action="domain_edit.php?edit_id={EDIT_ID}">
+<form name="editFrm" id="editFrm" method="post" action="domain_edit.php?edit_id={EDIT_ID}" autocomplete="off">
 <table class="firstColFixed">
 	<thead>
 	<tr>
@@ -118,20 +104,12 @@
 		<td colspan="2">{DOMAIN_EXPIRE_DATE}</td>
 	</tr>
 	<tr>
-		<td>{TR_DOMAIN_NEW_EXPIRE_DATE}</td>
+		<td><label for="domain_expires">{TR_DOMAIN_NEW_EXPIRE_DATE}</label></td>
 		<td>
-			<div style="position:relative">
-				<span style="display:inline-block;">
-					<input type="text" id="domain_expires" name="domain_expires"
-						   value="{DOMAIN_NEW_EXPIRE_DATE}" {DOMAIN_NEW_EXPIRE_DATE_DISABLED} />
-					<label for="domain_expires" style="display:block;color:#999999;font-size: smaller;">(MM/DD/YYYY)</label>
-				</span>
-			</div>
-		</td>
-		<td>
-			<input type="checkbox" name="domain_never_expires" id="domain_never_expires" {DOMAIN_NEVER_EXPIRES_CHECKED}
-				   style="vertical-align: middle;"/>
-			<label for="domain_never_expires" style="vertical-align: middle;">{TR_DOMAIN_NEVER_EXPIRES}</label>
+			<input type="text" id="domain_expires" name="domain_expires" value="{DOMAIN_NEW_EXPIRE_DATE}"
+				   {DOMAIN_NEW_EXPIRE_DATE_DISABLED} />
+			<input type="checkbox" name="domain_never_expires" id="domain_never_expires" {DOMAIN_NEVER_EXPIRES_CHECKED}/>
+			<label for="domain_never_expires">{TR_DOMAIN_NEVER_EXPIRES}</label>
 		</td>
 	</tr>
 	<tr>
@@ -218,6 +196,7 @@
 	</tr>
 	</tbody>
 </table>
+
 <table class="firstColFixed">
 <thead>
 <tr>
@@ -436,7 +415,7 @@
 	<td>
 		<label for="web_folder_protection">{TR_WEB_FOLDER_PROTECTION}</label>
 		<span style="vertical-align:middle" class="icon i_help" id="web_folder_protection_help"
-			  title="{TR_WEB_FOLDER_PROTECTION_HELP}">{TR_HELP}</span>
+			  title="{TR_WEB_FOLDER_PROTECTION_HELP}"></span>
 	</td>
 	<td>
 		<div class="radio">
@@ -454,7 +433,6 @@
 </table>
 <div class="buttons">
 	<input name="submit" type="submit" value="{TR_UPDATE}"/>
-	<input name="cancel" type="button"
-		   onclick="MM_goToURL('parent','/reseller/users.php');return document.MM_returnValue" value="{TR_CANCEL}"/>
+	<a class ="link_as_button" href="users.php">{TR_CANCEL}</a>
 </div>
 </form>

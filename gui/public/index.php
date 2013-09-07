@@ -37,6 +37,14 @@
 // Include core library
 require 'imscp-lib.php';
 
+/*
+try {
+	execute_query("SELECT * FROM DUMMY WHERE dummy = 'dummy'");
+} catch(iMSCP_Exception_Database $e) {
+	throw new iMSCP_Exception($e->getMessage() .  "\n\n<strong>Query was:</strong>\n\n" . $e->getQuery(), $e->getCode(), $e);
+}
+*/
+
 // Purge expired sessions
 do_session_timeout();
 
@@ -95,11 +103,11 @@ $tpl->assign(
 $cfg = iMSCP_Registry::get('config');
 
 if ($cfg->MAINTENANCEMODE && !isset($_REQUEST['admin'])) {
-	$tpl->define_dynamic('page', 'box.tpl');
+	$tpl->define_dynamic('page', 'message.tpl');
 	$tpl->assign(
 		array(
 			'TR_PAGE_TITLE' => tr('i-MSCP - Multi Server Control Panel / Maintenance'),
-			'CONTEXT_CLASS' => 'box_message',
+			'CONTEXT_CLASS' => 'no_header',
 			'BOX_MESSAGE_TITLE' => tr('System under maintenance'),
 			'BOX_MESSAGE' => nl2br(tohtml($cfg->MAINTENANCEMODE_MESSAGE)),
 			'TR_BACK' => tr('Administrator login'),
@@ -118,7 +126,7 @@ if ($cfg->MAINTENANCEMODE && !isset($_REQUEST['admin'])) {
 	$tpl->assign(
 		array(
 			'TR_PAGE_TITLE' => tr('i-MSCP - Multi Server Control Panel / Login'),
-			'CONTEXT_CLASS' => 'login',
+			'CONTEXT_CLASS' => '',
 			'TR_LOGIN' => tr('Login'),
 			'TR_USERNAME' => tr('Username'),
 			'UNAME' => isset($_REQUEST['uname']) ? stripslashes($_REQUEST['uname']) : '',

@@ -1,6 +1,6 @@
 
-<form style="margin:0" name="ticketFrm" method="post" action="ticket_create.php">
-	<table>
+<form name="ticketFrm" method="post" action="ticket_create.php">
+	<table class="firstColFixed">
 		<thead>
 		<tr>
 			<th colspan="2">{TR_NEW_TICKET}</th>
@@ -8,7 +8,7 @@
 		</thead>
 		<tbody>
 		<tr>
-			<td style="width:200px;"><label for="urgency"><strong>{TR_URGENCY}</strong></label></td>
+			<td><label for="urgency">{TR_URGENCY}</label></td>
 			<td>
 				<select id="urgency" name="urgency">
 					<option value="1"{OPT_URGENCY_1}>{TR_LOW}</option>
@@ -19,20 +19,18 @@
 			</td>
 		</tr>
 		<tr>
-			<td><label for="subject"><strong>{TR_SUBJECT}</strong></label></td>
+			<td><label for="subject">{TR_SUBJECT}</label></td>
 			<td><input type="text" id="subject" name="subject" value="{SUBJECT}"/></td>
 		</tr>
 		<tr>
-			<td><label for="user_message"><strong>{TR_YOUR_MESSAGE}</strong></label></td>
-			<td>
-				<textarea style="padding:5px" id="user_message" name="user_message" cols="80"
-						  rows="12">{USER_MESSAGE}</textarea>
-			</td>
+			<td><label for="user_message">{TR_YOUR_MESSAGE}</label></td>
+			<td><textarea id="user_message" name="user_message">{USER_MESSAGE}</textarea></td>
 		</tr>
 		</tbody>
 	</table>
+
 	<div class="buttons">
-		<input name="Submit" type="submit" class="button" value="{TR_SEND_MESSAGE}"/>
+		<input name="Submit" type="submit" value="{TR_SEND_MESSAGE}"/>
 		<input name="uaction" type="hidden" value="send_msg"/>
 	</div>
 </form>

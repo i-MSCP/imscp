@@ -40,6 +40,7 @@
 	}
 	/* ]]> */
 </script>
+
 <!-- BDP: delete_marked_mails_form_head -->
 <form action="mail_delete.php" method="post" id="delete_marked_mails">
 	<!-- EDP: delete_marked_mails_form_head -->
@@ -54,7 +55,7 @@
 			<th>
 				{TR_DEL_ITEM}
 				<!-- BDP: mark_all_mails_to_delete -->
-				<input type="checkbox" id="checkAll" name="checkAll"/>
+				<label><input type="checkbox" id="checkAll" name="checkAll"/></label>
 				<!-- EDP: mark_all_mails_to_delete -->
 			</th>
 		</tr>
@@ -94,12 +95,13 @@
 				<a href="{MAIL_QUOTA_SCRIPT}" title="{MAIL_QUOTA}" class="icon i_edit">{MAIL_QUOTA}</a>
 			</td>
 			<td style="width: 10px;">
-				<input type="checkbox" name="del_item[]" value="{DEL_ITEM}" {DISABLED_DEL_ITEM}/>
+				<label><input type="checkbox" name="del_item[]" value="{DEL_ITEM}" {DISABLED_DEL_ITEM}/></label>
 			</td>
 		</tr>
 		<!-- EDP: mail_item -->
 		</tbody>
 	</table>
+
 	<!-- BDP: delete_marked_mails_form_bottom -->
 	<div class="buttons">
 		<input type="hidden" name="uaction" value="delete_marked_mails"/>
@@ -107,6 +109,7 @@
 	</div>
 </form>
 <!-- EDP: delete_marked_mails_form_bottom -->
+
 <!-- BDP: default_mails_form -->
 <form action="mail_accounts.php" method="post" id="showdefault">
 	<div class="buttons">

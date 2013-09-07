@@ -689,7 +689,7 @@ $tpl->assign(
 		 'TR_SUPPORT_SYSTEM' => tr('Support system'),
 		 'TR_ENABLED' => tr('Enabled'),
 		 'TR_DISABLED' => tr('Disabled'),
-		 'TR_APPLY_CHANGES' => tr('Apply changes'),
+		 'TR_UPDATE' => tr('Update'),
 		 'TR_SERVERPORTS' => tr('Server ports'),
 		 'TR_HOSTING_PLANS_LEVEL' => tr('Hosting plans available for'),
 		 'TR_ADMIN' => tr('Admin'),

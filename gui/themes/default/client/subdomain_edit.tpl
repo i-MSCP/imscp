@@ -14,6 +14,7 @@
 	});
 	/*]]>*/
 </script>
+
 <form name="edit_subdomain_frm" method="post" action="subdomain_edit.php?id={SUBDOMAIN_ID}&amp;type={SUBDOMAIN_TYPE}">
 	<table class="firstColFixed">
 		<thead>
@@ -26,7 +27,7 @@
 			<td><label for="subdomain_name">{TR_SUBDOMAIN_NAME}</label></td>
 			<td>
 				<input type="text" name="subdomain_name" id="subdomain_name" value="{SUBDOMAIN_NAME}"
-					   readonly=readonly/>
+					   readonly="readonly"/>
 			</td>
 		</tr>
 		<tr>
@@ -57,10 +58,9 @@
 		</tr>
 		</tbody>
 	</table>
+
 	<div class="buttons">
 		<input name="Submit" type="submit" value="{TR_UPDATE}"/>
-		<a href="domains_manage.php">
-			<button type="button">{TR_CANCEL}</button>
-		</a>
+		<a class ="link_as_button" href="domains_manage.php">{TR_CANCEL}</a>
 	</div>
 </form>

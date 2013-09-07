@@ -17,8 +17,10 @@
 		</tr>
 		<tr>
 			<td><label for="password_repeat">{TR_PASSWORD_REPEAT}</label></td>
-			<td><input id="password_repeat" type="password" name="password_repeat" value="{PASSWORD_REPEAT}"
-					   autocomplete="off"/></td>
+			<td>
+				<input id="password_repeat" type="password" name="password_repeat" value="{PASSWORD_REPEAT}"
+					   autocomplete="off"/>
+			</td>
 		</tr>
 		<tr>
 			<td><label for="ftp_directory">{TR_HOME_DIR}</label></td>
@@ -29,9 +31,9 @@
 		</tr>
 		</tbody>
 	</table>
+
 	<div class="buttons">
 		<input name="submit" type="submit" value="{TR_CHANGE}"/>
-		<input name="Submit" type="submit"
-			   onclick="MM_goToURL('parent','ftp_accounts.php');return document.MM_returnValue" value="{TR_CANCEL}"/>
+		<a class ="link_as_button" href="ftp_accounts.php">{TR_CANCEL}</a>
 	</div>
 </form>

@@ -7,42 +7,42 @@
 			type: 'GET',
 			datatype: 'text',
 			beforeSend: function (xhr){xhr.setRequestHeader('Accept','text/plain');},
-			success: function (r) {
-				$('#password, #password_confirmation').val(r);
-			},
+			success: function (r) { $('#password, #password_confirmation').val(r); },
 			error: iMSCPajxError
 		});
 
-		$('#generate_password').click(function () {
-			$.ajax();
-		});
-		$('#reset_password').click(function () {
-			$('#password, #password_confirmation').val('');
-		});
+		$('#generate_password').click(function () { $.ajax(); });
+
+		$('#reset_password').click(function () { $('#password, #password_confirmation').val(''); });
 
 		// Create dialog box for some messages (password and notices)
 		$('#dialog_box').dialog({
-			modal: true, autoOpen: false, hide: 'blind', show: 'blind',
-			buttons: { Ok: function () {
-				$(this).dialog('close');
-			}}
+			modal: true,
+			autoOpen: false,
+			hide: 'blind',
+			show: 'blind',
+			buttons: { Ok: function () { $(this).dialog('close'); }}
 		});
 
 		// Show generated password in specific dialog box
 		$('#show_password').click(function () {
 			var password = $('#password').val();
+
 			if (password == '') {
 				password = '<br/>{TR_PASSWORD_GENERATION_NEEDED}';
 			} else {
 				password = '<br/>{TR_NEW_PASSWORD_IS}: <strong>' + $('#password').val() + '</strong>';
 			}
+
 			$('#dialog_box').dialog("option", "title", '{TR_PASSWORD}').html(password);
 			$('#dialog_box').dialog('open');
 		});
 	});
 	/*]]>*/
 </script>
+
 <div id="dialog_box"></div>
+
 <form name="admin_add_user" method="post" action="admin_add.php">
 	<!-- BDP: props_list -->
 	<table class="firstColFixed">
@@ -54,7 +54,9 @@
 		<tbody>
 		<tr>
 			<td><label for="username">{TR_USERNAME}</label></td>
-			<td colspan="2"><input type="text" name="username" id="username" value="{USERNAME}"/></td>
+			<td colspan="2">
+				<input type="text" name="username" id="username" value="{USERNAME}"/>
+			</td>
 		</tr>
 		<tr>
 			<td><label for="password">{TR_PASSWORD}</label></td>
@@ -144,6 +146,7 @@
 		</tbody>
 	</table>
 	<!-- EDP: props_list -->
+
 	<div class="buttons">
 		<input name="submit" type="submit" value="{TR_ADD}"/>
 		<input type="hidden" name="uaction" value="add_user"/>

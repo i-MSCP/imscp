@@ -27,6 +27,7 @@
 	}
 	/* ]]> */
 </script>
+
 <form name="mail_external_delete" action="mail_external_delete.php" method="post">
 	<table>
 		<thead>

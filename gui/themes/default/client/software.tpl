@@ -26,6 +26,7 @@
 	}
 	/*]]>*/
 </script>
+
 <table>
 	<thead>
 	<tr>

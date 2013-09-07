@@ -68,7 +68,8 @@ blockquote, q {
     quotes: none;
 }
 
-blockquote:before, blockquote:after,
+blockquote:before,
+blockquote:after,
 q:before, q:after {
     content: '';
     content: none;
@@ -459,7 +460,8 @@ a {
 }
 
 /* Titles */
-h2, h3 {
+h2,
+h3 {
     position: relative;
     width: 100%;;
     left: -33px;
@@ -646,11 +648,14 @@ p {
 }
 
 /* other */
-.bold, strong, b {
+.bold,
+strong,
+b {
     font-weight: bold;
 }
 
-.italic, i {
+.italic,
+i {
     font-style: italic;
 }
 
@@ -659,11 +664,13 @@ small {
 }
 
 /** Flash messages */
-.warning, .success, .error, .info {
+.warning,
+.success,
+.error,
+.info {
     margin: 0.5em 0 1.5em 0;
     border: 1px solid;
     padding: 15px 10px 15px 50px;
-    text-align: left;
     background-repeat: no-repeat;
     background-position: 10px center;
     -webkit-border-radius: 4px;
@@ -672,30 +679,30 @@ small {
 }
 
 .warning {
-    color: rgb(149, 74, 0);
-    border-color: rgb(149, 74, 0);
-    background-color: rgb(255, 236, 156);
+    color: #954a00;
+    border-color: #954a00;
+    background-color: #ffec9c;
     background-image: url(../images/messages/warning.png);
 }
 
 .success {
-    color: rgb(61, 122, 21);
-    border-color: rgb(61, 122, 21);
-    background-color: rgb(214, 241, 179);
+    color: #3d7a15;
+    border-color: #3d7a15;
+    background-color: #d6f1b3;
     background-image: url(../images/messages/success.png);
 }
 
 .error {
-    color: rgb(202, 29, 17);
-    border-color: rgb(202, 29, 17);
-    background-color: rgb(253, 191, 173);
+    color: #ca1d11;
+    border-color: #ca1d11;
+    background-color: #fdbfad;
     background-image: url(../images/messages/error.png);
 }
 
 .info {
-    color: rgb(15, 61, 135);
-    border-color: rgb(15, 61, 135);
-    background-color: rgb(176, 222, 245);
+    color: #0f3d87;
+    border-color: #0f3d87;
+    background-color: #b0def5;
     background-image: url(../images/messages/info.png);
 }
 
@@ -708,17 +715,22 @@ table {
     text-align: left;
 }
 
-table input, table select, table textarea, table button {
+table input,
+table select,
+table textarea,
+table button {
     font-family: Geneva, Arial, Helvetica, sans-serif;
     font-size: 1em;
 }
 
-thead, tfoot {
+thead,
+tfoot {
     border: 1px solid;
     font-weight: bold;
 }
 
-thead th, tfoot td {
+thead th,
+tfoot td {
     padding: 0.5em;
     white-space: nowrap;
     vertical-align: middle;
@@ -736,7 +748,7 @@ tbody td {
 }
 
 .firstColFixed td:first-child {
-    width: 25%;
+    width: 300px;
 }
 
 legend {
@@ -747,7 +759,7 @@ legend {
 }
 
 /* Hack to fix firefox's bad legend positioning */
-@-moz-document url-prefix() {legend { top: -1.5em; }}
+@-moz-document url-prefix() { legend { top: -1.5em; }}
 table .icon {
     float: none;
 }
@@ -773,14 +785,11 @@ table .icon {
     background-repeat: no-repeat;
     padding-left: 20px;
     height: 16px;
-    line-height: 16px;
-    display: -moz-inline-block;
-    display: inline-block;
     margin: 0 0 0 .5em;
 }
 
 .icon.big {
-    /*line-height: 44px;*/
+    line-height: 44px;
     height: 44px;
     padding-left: 48px;
 }
@@ -1043,7 +1052,8 @@ table .icon {
     text-align: right;
 }
 
-.dataTables_length, .dataTables_filter {
+.dataTables_length,
+.dataTables_filter {
     margin-bottom: 0.5em;
 }
 
@@ -1056,7 +1066,8 @@ table .icon {
     float: right;
 }
 
-.dataTables_info, .dataTables_paginate {
+.dataTables_info,
+.dataTables_paginate {
     margin-top: 0.5em;
 }
 
@@ -1099,20 +1110,35 @@ table input[type="text"], table input[type="password"] {
     min-width: 200px;
 }
 
-input[type="text"], input[type="password"], select, textarea {
+input, select, textarea {
+    vertical-align: middle;
+}
+
+input[type="text"],
+input[type="password"],
+select,
+textarea {
     padding: 4px;
     border: 1px solid;
     -webkit-border-radius: 4px;
     -moz-border-radius: 4px;
     border-radius: 4px;
+    vertical-align: middle;
 }
 
 /* Override border defined by jQuery UI css framework - .body selector is needed here to increase weight for this rule */
-.body input[type="submit"], .body input[type="button"], .body button {
+.body input[type="submit"],
+.body input[type="button"],
+.body button {
     border: 0 none;
 }
 
 textarea {
+    width: 100%;
+    height: 550px;
+}
+
+table textarea {
     width: 95%;
     height: 250px;
 }
@@ -1133,6 +1159,7 @@ textarea {
     width: 100%;
     margin-bottom: 0.5em;
     padding-right: 3px;
+    position : relative;
     overflow: hidden;
 }
 
@@ -1141,7 +1168,7 @@ textarea {
     min-width: 3px;
     height: 20px;
     background: url('../images/background/graph_full.png') no-repeat left top;
-    width: 0px;
+    width: 0;
 }
 
 .graph strong {
@@ -1227,226 +1254,6 @@ table .graph {
     display: none;
 }
 
-/**
- * Login, lostpassword and box message pages
- */
-
-.login, .box_message {
-    text-align: center;
-}
-
-.login #header, .box_message #header {
-    width: 100%;
-    height: 50px;
-    border-bottom: 3px solid;
-    overflow: hidden;
-}
-
-.login #logo, .box_message #logo {
-    background: transparent url('../images/imscp_logo32.png') no-repeat 5px center;
-    float: left;
-    height: 50px;
-    line-height: 50px;
-}
-
-.login #logo span, .box_message #logo span {
-    margin-left: 100px;
-    font-weight: bold;
-}
-
-.login #copyright, .box_message #copyright {
-    float: right;
-    text-align: right;
-    height: 50px;
-    padding-top: 12.5px;
-}
-
-.login #copyright span, .box_message #copyright span {
-    margin-right: 0.5em;
-}
-
-.login #copyright span a, .box_message #copyright span a {
-    float: left;
-    text-decoration: none;
-    font-weight: bold;
-}
-
-.login .body, .box_message .body {
-    position: relative;
-    width: 316px;
-    text-align: left;
-    margin: 0 auto;
-    padding: 0;
-}
-
-.clearfix:after {
-    content: ".";
-    display: block;
-    height: 0;
-    clear: both;
-    visibility: hidden;
-}
-
-.clearfix {
-    display: inline-block;
-}
-
-/* Hides from IE-mac \*/
-* html .clearfix {
-    height: 1%;
-}
-
-.clearfix {
-    display: block;
-}
-
-/* End hide from IE-mac */
-.login #messageContainer, .box_message #messageContainer {
-    position: relative;
-    height: 50px;
-    text-align: center;
-}
-
-.login #messageContainer #message, .box_message #message {
-    width: 400px;
-    margin: 0.5em auto;
-}
-
-/* Specific to the login and lostpassword pages */
-.login #loginBox {
-    height: 339px;
-    margin-top: 70px;
-}
-
-.login form {
-    position: relative;
-    padding: 150px 0 20px 20px;
-    text-align: left;
-    width: 276px;
-    height: 189px;
-}
-
-.login label {
-    position: relative;
-    display: block;
-    margin-top: 1em;
-    width: 276px;
-    height: 20px;
-}
-
-.login label span {
-    position: relative;
-    float: left;
-    width: 128px;
-    margin-right: 6px;
-    line-height: 20px;
-}
-
-.login label input {
-    position: relative;
-    float: left;
-    width: 132px;
-    height: 20px;
-    line-height: 20px;
-    border: 0 none;
-}
-
-.login .buttons {
-    margin: 20px 0;
-    text-align: right;
-}
-
-.login .buttons button {
-    margin-left: 0.5em;
-    border: 1px solid;
-}
-
-.login #toolbox {
-    clear: both;
-    width: 316px;
-    margin-top: 2em;
-    text-align: center;
-    overflow: hidden;
-}
-
-.login #toolbox li {
-    display: inline;
-}
-
-.login #toolbox li a {
-    display: block;
-    float: left;
-    width: 33%;
-    background-position: center top;
-    background-repeat: no-repeat;
-    padding-top: 40px;
-}
-
-.login #toolbox li a.pma {
-    background-image: url('../images/login/phpmyadmin.png');
-}
-
-.login #toolbox li a.filemanager {
-    background-image: url('../images/login/filemanager.png');
-}
-
-.login #toolbox li a.webmail {
-    background-image: url('../images/login/webmail.png');
-}
-
-/* specific to box message page */
-.box_message .body {
-    width: 453px;
-}
-
-.box_message #box {
-    margin-top: 100px;
-    padding: 80px 10px 10px 10px;
-    border: 1px solid;
-    border-top-width: 0;
-    -webkit-border-radius: 4px;
-    -moz-border-radius: 4px;
-    border-radius: 4px;
-    overflow: hidden;
-}
-
-.box_message h1 {
-    text-align: center;
-    font-size: 1.5em;
-    letter-spacing: 5px;
-}
-
-.box_message pre {
-    margin-top: 1em;
-    white-space: -moz-pre-wrap; /* Mozilla, supported since 1999 */
-    white-space: -pre-wrap; /* Opera */
-    white-space: -o-pre-wrap; /* Opera */
-    white-space: pre-wrap; /* CSS3 - Text module (Candidate Recommendation) http://www.w3.org/TR/css3-text/#white-space */
-    word-wrap: break-word; /* IE 5.5+ */
-}
-
-#box a {
-    display: block;
-    float: right;
-    margin-right: 10px;
-    color: rgb(0, 0, 0);
-    font-weight: bold;
-}
-
-#box a:hover {
-    text-decoration: underline;
-}
-
-/* ftp choose directory page */
-.ftp_choose_dir {
-    min-width: 0;
-}
-
-.ftp_choose_dir #messageContainer {
-    margin-top: 0.5em;
-    height: auto;
-}
-
 /* Accordion */
 
 #package_details {
@@ -1472,7 +1279,8 @@ table .graph {
     vertical-align: middle;
 }
 
-.accordion .odd, .accordion .even {
+.accordion .odd,
+.accordion .even {
     width: 100%;
 }
 

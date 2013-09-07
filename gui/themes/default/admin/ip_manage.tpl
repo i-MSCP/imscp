@@ -88,9 +88,8 @@
 		</tbody>
 	</table>
 	<div class="buttons">
-		<button name="submit" type="submit" class="frm-button">{TR_ADD}</button>
-		<button name="cancel" type="button" class="frm-button"
-				onclick="location.href='settings.php'">{TR_CANCEL}</button>
+		<button name="submit" type="submit">{TR_ADD}</button>
+		<a class ="link_as_button" href="settings.php">{TR_CANCEL}</a>
 	</div>
 </form>
 <!-- EDP: ip_address_form_block -->

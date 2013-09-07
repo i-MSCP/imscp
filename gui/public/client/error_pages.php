@@ -48,9 +48,13 @@ customerHasFeature('custom_error_pages') or showBadRequestErrorPage();
 $cfg = iMSCP_Registry::get('config');
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic('layout', 'shared/layouts/ui.tpl');
-$tpl->define_dynamic('page', 'client/error_pages.tpl');
-$tpl->define_dynamic('page_message', 'layout');
+$tpl->define_dynamic(
+	array(
+		'layout' => 'shared/layouts/ui.tpl',
+		'page' => 'client/error_pages.tpl',
+		'page_message' => 'layout'
+	)
+);
 
 // page functions.
 
@@ -100,11 +104,11 @@ generateNavigation($tpl);
 
 $tpl->assign(
 	array(
-		'TR_ERROR_401' => tr('Error 401 (unauthorised)'),
-		'TR_ERROR_403' => tr('Error 403 (forbidden)'),
-		'TR_ERROR_404' => tr('Error 404 (not found)'),
-		'TR_ERROR_500' => tr('Error 500 (internal server error)'),
-		'TR_ERROR_503' => tr('Error 503 (service unavailable)'),
+		'TR_ERROR_401' => tr('Unauthorized'),
+		'TR_ERROR_403' => tr('Forbidden'),
+		'TR_ERROR_404' => tr('Not Found'),
+		'TR_ERROR_500' => tr('Internal Server Error'),
+		'TR_ERROR_503' => tr('Service Unavailable'),
 		'TR_ERROR_PAGES' => tr('Custom error pages'),
 		'TR_EDIT' => tr('Edit'),
 		'TR_VIEW' => tr('View')));

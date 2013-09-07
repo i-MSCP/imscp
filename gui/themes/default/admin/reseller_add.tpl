@@ -2,87 +2,73 @@
 <script type="text/javascript">
 	/*<![CDATA[*/
 	$(document).ready(function () {
-		errFieldsStack = {ERR_FIELDS_STACK};
-		$.each(errFieldsStack, function () {
-			$('#' + this).css('border-color', '#ca1d11');
-		});
+		var errFieldsStack = {ERR_FIELDS_STACK};
+		$.each(errFieldsStack, function () { $('#' + this).css('border-color', '#ca1d11'); });
 
 		$.ajaxSetup({
 			url: $(location).attr('pathname'),
 			type: 'GET',
 			datatype: 'text',
 			beforeSend: function (xhr){xhr.setRequestHeader('Accept','text/plain');},
-			success: function (r) {
-				$('#password, #password_confirmation').val(r);
-			},
+			success: function (r) { $('#password, #password_confirmation').val(r); },
 			error: iMSCPajxError
 		});
 
-		$('#generate_password').click(function () {
-			$.ajax();
-		});
-		$('#reset_password').click(function () {
-			$('#password, #password_confirmation').val('');
-		});
+		$('#generate_password').click(function () { $.ajax(); });
+
+		$('#reset_password').click(function () { $('#password, #password_confirmation').val(''); });
 
 		// Create dialog box for some messages (password and notices)
 		$('#dialog_box').dialog({
-			modal: true, autoOpen: false, hide: 'blind', show: 'blind',
-			buttons: { Ok: function () {
-				$(this).dialog('close');
-			}}
+			modal: true,
+			autoOpen: false,
+			hide: 'blind',
+			show: 'blind',
+			buttons: { Ok: function () { $(this).dialog('close'); }}
 		});
 
 		// Show generated password in specific dialog box
 		$('#show_password').click(function () {
 			var password = $('#password').val();
+
 			if (password == '') {
 				password = '<br/>{TR_PASSWORD_GENERATION_NEEDED}';
 			} else {
 				password = '<br/>{TR_NEW_PASSWORD_IS}: <strong>' + $('#password').val() + '</strong>';
 			}
+
 			$('#dialog_box').dialog("option", "title", '{TR_PASSWORD}').html(password);
 			$('#dialog_box').dialog('open');
 		});
 
-		// PHP Editor settings dialog
 		$('#php_editor_dialog').dialog({
-			hide: 'blind', show: 'slide', focus: false, autoOpen: false, width: 'auto', modal: true, dialogClass: 'body',
-			buttons: { '{TR_CLOSE}': function () {
-				$(this).dialog('close');
-			}},
-			create: function () {
-				$('.ui-buttonset').buttonset();
-			},
-			open: function () {
-				$('input[type=radio]').blur()
-			}
+			bgiframe: true,
+			hide: 'blind',
+			show: 'slide',
+			focus: false,
+			autoOpen: false,
+			width: 700,
+			modal: true,
+			buttons:{ '{TR_CLOSE}': function(){ $(this).dialog('close'); } }
 		});
 
-		// Re-add the PHP Editor container to the form
-		$('form').submit(function () {
-			$('#php_editor_dialog').parent().appendTo($('#dialogContainer'));
+		$(window).scroll(function() {
+			$("#php_editor_dialog").dialog("option", "position", { my: "center", at: "center", of: window });
 		});
 
-		// PHP Editor settings button
+		$('form').submit(function () { $('#php_editor_dialog').parent().appendTo($('#dialogContainer')); });
+
 		$('#php_editor_dialog_open').button({ icons:{ primary:'ui-icon-gear'} }).click(function (e) {
 			$('#php_editor_dialog').dialog('open');
 			return false;
 		});
 
-		// Do not show PHP Editor settings button if disabled
-		if ($('#php_ini_system_no').is(':checked')) {
-			$('#php_editor_dialog_open').hide();
-		}
+		if ($('#php_ini_system_no').is(':checked')) { $('#php_editor_dialog_open').hide(); }
 
-		$('input[name="php_ini_system"]').change(function () {
-			$('#php_editor_dialog_open').fadeToggle();
-		});
+		$('input[name="php_ini_system"]').change(function () { $('#php_editor_dialog_open').fadeToggle(); });
 
-		// PHP Editor error message
-		errorMessages = $('.php_editor_error');
+		var errorMessages = $('.php_editor_error');
 
-		// Function to show a specific message when a PHP Editor setting value is wrong
 		function _updateErrorMesssages(k, t) {
 			if (t != undefined) {
 				if (!$('#err_' + k).length) {
@@ -100,8 +86,6 @@
 			}
 		}
 
-		// Adds an event on each PHP Editor settings input fields to display an
-		// error message when a value is wrong
 		$.each(['php_ini_max_post_max_size', 'php_ini_max_upload_max_filesize', 'php_ini_max_max_execution_time' ,
 			'php_ini_max_max_input_time', 'php_ini_max_memory_limit'], function () {
 			var k = this;
@@ -116,14 +100,14 @@
 					$(this).removeClass('ui-state-error');
 					_updateErrorMesssages(k);
 				}
-			});
-			$('#' + k).trigger('keyup');
+			}).trigger('keyup');
 		});
 
-		$('#reseller_ips_table').dataTable({"oLanguage": {DATATABLE_TRANSLATIONS}});
+		$('#reseller_ips_table').dataTable({ "oLanguage": {DATATABLE_TRANSLATIONS}});
 	});
 	/*]]>*/
 </script>
+
 <div id="dialog_box"></div>
 
 <form name="createFrm" method="post" action="reseller_add.php">
@@ -160,6 +144,7 @@
 	</tr>
 	</tbody>
 </table>
+
 <!-- BDP: ips_block -->
 <table id="reseller_ips_table" class="firstColFixed datatable">
 	<thead>
@@ -180,6 +165,7 @@
 	</tbody>
 </table>
 <!-- EDP: ips_block -->
+
 <table class="firstColFixed">
 	<thead>
 	<tr>
@@ -225,6 +211,7 @@
 	</tr>
 	</tbody>
 </table>
+
 <table class="firstColFixed">
 	<thead>
 	<tr>
@@ -235,7 +222,7 @@
 	<tr>
 		<td><label>{TR_PHP_EDITOR}</label></td>
 		<td colspan="3" id="dialogContainer" style="height: 30px;">
-			<div class="ui-buttonset">
+			<div class="radio">
 				<input type="radio" name="php_ini_system" id="php_ini_system_yes" value="yes" {PHP_INI_SYSTEM_YES} />
 				<label for="php_ini_system_yes">{TR_YES}</label>
 				<input type="radio" name="php_ini_system" id="php_ini_system_no" value="no" {PHP_INI_SYSTEM_NO} />
@@ -246,9 +233,9 @@
 				<div class="php_editor_error success">
 					<span id="msg_default">{TR_FIELDS_OK}</span>
 				</div>
-				<table>
+				<table class="firstColFixed">
 					<thead>
-					<tr class="description">
+					<tr>
 						<th colspan="2">{TR_PERMISSIONS}</th>
 					</tr>
 					</thead>
@@ -259,7 +246,7 @@
 							<span class="permission_help icon i_help" title="{TR_PHP_INI_PERMISSION_HELP}"></span>
 						</td>
 						<td>
-							<div class="ui-buttonset">
+							<div class="radio">
 								<input type="radio" name="php_ini_al_allow_url_fopen"
 									   id="php_ini_al_allow_url_fopen_yes"
 									   value="yes" {PHP_INI_AL_ALLOW_URL_FOPEN_YES}/>
@@ -276,7 +263,7 @@
 							<span class="permission_help icon i_help" title="{TR_PHP_INI_PERMISSION_HELP}"></span>
 						</td>
 						<td>
-							<div class="ui-buttonset">
+							<div class="radio">
 								<input type="radio" name="php_ini_al_display_errors" id="php_ini_al_display_errors_yes"
 									   value="yes" {PHP_INI_AL_DISPLAY_ERRORS_YES}/>
 								<label for="php_ini_al_display_errors_yes">{TR_YES}</label>
@@ -293,7 +280,7 @@
 							<span class="permission_help icon i_help" title="{TR_PHP_INI_PERMISSION_HELP}"></span>
 						</td>
 						<td>
-							<div class="ui-buttonset">
+							<div class="radio">
 								<input type="radio" name="php_ini_al_disable_functions"
 									   id="php_ini_al_disable_functions_yes"
 									   value="yes" {PHP_INI_AL_DISABLE_FUNCTIONS_YES}/>
@@ -308,9 +295,9 @@
 					<!-- EDP: php_editor_disable_functions_block -->
 					</tbody>
 				</table>
-				<table>
+				<table class="firstColFixed">
 					<thead>
-					<tr class="description">
+					<tr>
 						<th colspan="2">{TR_DIRECTIVES_VALUES}</th>
 					</tr>
 					</thead>
@@ -359,7 +346,7 @@
 	<tr>
 		<td>{TR_SOFTWARES_INSTALLER}</td>
 		<td>
-			<div class="ui-buttonset">
+			<div class="radio">
 				<input type="radio" name="software_allowed" id="software_allowed_yes"
 					   value="yes" {SOFTWARES_INSTALLER_YES} />
 				<label for="software_allowed_yes">{TR_YES}</label>
@@ -372,7 +359,7 @@
 	<tr>
 		<td>{TR_SOFTWARES_REPOSITORY}</td>
 		<td>
-			<div class="ui-buttonset">
+			<div class="radio">
 				<input type="radio" name="softwaredepot_allowed" id="softwaredepot_allowed_yes"
 					   value="yes" {SOFTWARES_REPOSITORY_YES} />
 				<label for="softwaredepot_allowed_yes">{TR_YES}</label>
@@ -385,7 +372,7 @@
 	<tr>
 		<td>{TR_WEB_SOFTWARES_REPOSITORY}</td>
 		<td>
-			<div class="ui-buttonset">
+			<div class="radio">
 				<input type="radio" name="websoftwaredepot_allowed" id="websoftwaredepot_allowed_yes"
 					   value="yes" {WEB_SOFTWARES_REPOSITORY_YES} />
 				<label for="websoftwaredepot_allowed_yes">{TR_YES}</label>
@@ -398,7 +385,7 @@
 	<tr>
 		<td>{TR_SUPPORT_SYSTEM}</td>
 		<td>
-			<div class="ui-buttonset">
+			<div class="radio">
 				<input type="radio" name="support_system" id="support_system_yes" value="yes" {SUPPORT_SYSTEM_YES} />
 				<label for="support_system_yes">{TR_YES}</label>
 				<input type="radio" name="support_system" id="support_system_no" value="no" {SUPPORT_SYSTEM_NO}/>
@@ -408,6 +395,7 @@
 	</tr>
 	</tbody>
 </table>
+
 <table class="firstColFixed">
 	<thead>
 	<tr>
@@ -475,9 +463,9 @@
 	</tr>
 	</tbody>
 </table>
+
 <div class="buttons">
-	<button name="submit" type="submit" class="frm-button">{TR_CREATE}</button>
-	<button name="cancel" type="button" class="frm-button"
-			onclick="location.href='manage_users.php'">{TR_CANCEL}</button>
+	<button name="submit" type="submit">{TR_CREATE}</button>
+	<a class ="link_as_button" href="manage_users.php">{TR_CANCEL}</a>
 </div>
 </form>

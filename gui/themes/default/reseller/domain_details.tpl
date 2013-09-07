@@ -55,6 +55,7 @@
 		</td>
 	</tr>
 </table>
+
 <table class="firstColFixed">
 	<thead>
 	<tr>
@@ -96,14 +97,10 @@
 	</tr>
 	</tbody>
 </table>
-<form name="buttons" method="post" action="?">
-	<div class="buttons">
-		<input name="submit" type="submit" onclick="MM_goToURL('parent','users.php');return document.MM_returnValue"
-			   value="{TR_BACK}"/>
-		<!-- BDP: edit_option -->
-		<input name="submit2" type="submit"
-			   onclick="MM_goToURL('parent','domain_edit.php?edit_id={DOMAIN_ID}');return document.MM_returnValue"
-			   value="{TR_EDIT}"/>
-		<!-- EDP: edit_option -->
-	</div>
-</form>
+
+<div class="buttons">
+	<!-- BDP: edit_option -->
+	<a class="link_as_button" href="domain_edit.php?edit_id={DOMAIN_ID}">{TR_EDIT}</a>
+	<!-- EDP: edit_option -->
+	<a class="link_as_button" href="users.php">{TR_BACK}</a>
+</div>

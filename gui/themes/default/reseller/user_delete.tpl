@@ -79,12 +79,13 @@
 			<td colspan="2">
 				<input type="hidden" name="id" value="{USER_ID}"/>
 				<p>{TR_REALLY_WANT_TO_DELETE_CUSTOMER_ACCOUNT}</p>
-				<input style="vertical-align: middle;" type="checkbox" value="1" name="delete" id="delete"/>
+				<input type="checkbox" value="1" name="delete" id="delete"/>
 				<label for="delete">{TR_YES_DELETE_ACCOUNT}</label>
 			</td>
 		</tr>
 		</tbody>
 	</table>
+
 	<div class="buttons">
 		<input type="submit" value="{TR_DELETE_ACCOUNT}"/>
 	</div>

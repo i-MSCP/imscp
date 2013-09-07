@@ -6,6 +6,7 @@
 	}
 	/*]]>*/
 </script>
+
 <!-- BDP: protected_areas -->
 <table>
 	<thead>
@@ -30,12 +31,9 @@
 	<!-- EDP: dir_item -->
 	</tbody>
 </table>
+
 <!-- EDP: protected_areas -->
 <div class="buttons">
-	<input name="Button" type="button"
-		   onclick="MM_goToURL('parent','protected_areas_add.php');return document.MM_returnValue"
-		   value="{TR_ADD_AREA}"/>
-	<input name="Button2" type="button"
-		   onclick="MM_goToURL('parent','protected_user_manage.php');return document.MM_returnValue"
-		   value="{TR_MANAGE_USRES}"/>
+	<a class="link_as_button" href="protected_areas_add.php">{TR_ADD_AREA}</a>
+	<a class="link_as_button" href="protected_user_manage.php">{TR_MANAGE_USRES}</a>
 </div>

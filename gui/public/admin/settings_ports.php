@@ -313,7 +313,7 @@ function admin_showServices($tpl)
 						'PORT_READONLY' => '',
 						'PROTOCOL_READONLY' => '',
 						'TR_DELETE' => tr('Delete'),
-						'URL_DELETE' => "?delete=$service",
+						'URL_DELETE' => "settings_ports.php?delete=$service",
 						'PORT_DELETE_SHOW' => '',
 						'NUM' => $index));
 
@@ -442,7 +442,10 @@ $tpl->assign(
 		'TR_ADD_NEW_SERVICE_PORT' => tr('Add new service port'),
 		'VAL_FOR_SUBMIT_ON_UPDATE' => tr('Update'),
 		'VAL_FOR_SUBMIT_ON_ADD' => tr('Add'),
-		'VAL_FOR_SUBMIT_ON_RESET' => tr('Reset')));
+		'VAL_FOR_SUBMIT_ON_RESET' => tr('Reset'),
+		'DATATABLE_TRANSLATIONS' => getDataTablesPluginTranslations()
+	)
+);
 
 generateNavigation($tpl);
 admin_showServices($tpl);

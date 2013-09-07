@@ -16,6 +16,7 @@
 	}
 	/* ]]> */
 </script>
+
 <form name="addProtectedAreaFrm" method="post" action="protected_areas_add.php">
 	<table class="firstColFixed">
 		<thead>
@@ -37,6 +38,7 @@
 		</tr>
 		</tbody>
 	</table>
+
 	<table class="firstColFixed">
 		<thead>
 		<tr>
@@ -59,22 +61,27 @@
 		</tr>
 		<tr>
 			<td>
-				<select name="users[]" multiple="multiple" size="5">
-					<!-- BDP: user_item -->
-					<option value="{USER_VALUE}" {USER_SELECTED}>{USER_LABEL}</option>
-					<!-- EDP: user_item -->
-				</select>
+				<label>
+					<select name="users[]" multiple="multiple" size="5">
+						<!-- BDP: user_item -->
+						<option value="{USER_VALUE}" {USER_SELECTED}>{USER_LABEL}</option>
+						<!-- EDP: user_item -->
+					</select>
+				</label>
 			</td>
 			<td>
-				<select name="groups[]" multiple="multiple" size="5">
-					<!-- BDP: group_item -->
-					<option value="{GROUP_VALUE}" {GROUP_SELECTED}>{GROUP_LABEL}</option>
-					<!-- EDP: group_item -->
-				</select>
+				<label>
+					<select name="groups[]" multiple="multiple" size="5">
+						<!-- BDP: group_item -->
+						<option value="{GROUP_VALUE}" {GROUP_SELECTED}>{GROUP_LABEL}</option>
+						<!-- EDP: group_item -->
+					</select>
+				</label>
 			</td>
 		</tr>
 		</tbody>
 	</table>
+
 	<div class="buttons">
 		<input type="hidden" name="use_other_dir"/>
 		<input type="hidden" name="sub" value="YES"/>
@@ -82,15 +89,12 @@
 		<input type="hidden" name="uaction" value=""/>
 		<input name="Button" type="button" value="{TR_PROTECT_IT}"
 			   onclick="return sbmt(document.forms[0],'protect_it');"/>
+
 		<!-- BDP: unprotect_it -->
-		<input name="Button" type="button"
-			   onclick="MM_goToURL('parent','protected_areas_delete.php?id={CDIR}');return document.MM_returnValue"
-			   value="{TR_UNPROTECT_IT}"/>
+		<a class ="link_as_button" href="protected_areas_delete.php?id={CDIR}">{TR_UNPROTECT_IT}</a>
 		<!-- EDP: unprotect_it -->
-		<input name="Button" type="button"
-			   onclick="MM_goToURL('parent','protected_user_manage.php');return document.MM_returnValue"
-			   value="{TR_MANAGE_USERS_AND_GROUPS}"/>
-		<input name="Button" type="button"
-			   onclick="MM_goToURL('parent','protected_areas.php');return document.MM_returnValue" value="{TR_CANCEL}"/>
+
+		<a class ="link_as_button" href="protected_user_manage.php">{TR_MANAGE_USERS_AND_GROUPS}</a>
+		<a class ="link_as_button" href="protected_areas.php">{TR_CANCEL}</a>
 	</div>
 </form>

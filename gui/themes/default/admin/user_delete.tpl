@@ -80,14 +80,16 @@
 		<tr>
 			<td colspan="2">
 				<p>{TR_REALLY_WANT_TO_DELETE_CUSTOMER_ACCOUNT}</p>
-				<input type="hidden" name="user_id" value="{USER_ID}"/>
-				<input type="checkbox" value="1" name="delete" id="delete" style="vertical-align: middle"/>
+				<input type="checkbox" value="1" name="delete" id="delete"/>
 				<label for="delete">{TR_YES_DELETE_ACCOUNT}</label>
 			</td>
 		</tr>
 		</tbody>
 	</table>
+
 	<div class="buttons">
-		<input type="submit" value="{TR_DELETE_ACCOUNT}"/>
+		<input type="hidden" name="user_id" value="{USER_ID}"/>
+		<input type="submit" value="{TR_DELETE}"/>
+		<a class ="link_as_button" href="manage_users.php">{TR_CANCEL}</a>
 	</div>
 </form>

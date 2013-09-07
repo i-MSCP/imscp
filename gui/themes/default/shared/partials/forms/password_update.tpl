@@ -52,13 +52,12 @@
 		<tr>
 			<td><label for="current_password">{TR_CURRENT_PASSWORD}</label></td>
 			<td colspan="2">
-				<input id="current_password" name="current_password" type="password" value=""
-					   autocomplete="off"/>
+				<input id="current_password" name="current_password" type="password" value="" autocomplete="off"/>
 			</td>
 		</tr>
 		<tr>
 			<td><label for="password">{TR_PASSWORD}</label></td>
-			<td style="width: 235px;"><input name="password" id="password" type="password" value="" autocomplete="off"/></td>
+			<td><input name="password" id="password" type="password" value="" autocomplete="off"/></td>
 			<td>
 				<button type="button" id="generate_password">{TR_GENERATE}</button>
 				<button type="button" id="show_password">{TR_SHOW}</button>

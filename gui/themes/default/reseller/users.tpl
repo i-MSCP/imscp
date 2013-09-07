@@ -10,38 +10,47 @@
 	}
 	/* ]]> */
 </script>
+
 <!-- BDP: users_search -->
 <form action="users.php" method="post" name="search_user" id="search_user">
-	<div style="line-height:40px;vertical-align: middle; float: left">
-		<input name="search_for" type="text" value="{SEARCH_FOR}"/>
-		<select name="search_common">
-			<option value="domain_name" {M_DOMAIN_NAME_SELECTED}>{M_DOMAIN_NAME}</option>
-			<option value="customer_id" {M_CUSTOMER_ID_SELECTED}>{M_CUSTOMER_ID}</option>
-			<option value="lname" {M_LAST_NAME_SELECTED}>{M_LAST_NAME}</option>
-			<option value="firm" {M_COMPANY_SELECTED}>{M_COMPANY}</option>
-			<option value="city" {M_CITY_SELECTED}>{M_CITY}</option>
-			<option value="country" {M_COUNTRY_SELECTED}>{M_COUNTRY}</option>
-		</select>
-		<select name="search_status">
-			<option value="all" {M_ALL_SELECTED}>{M_ALL}</option>
-			<option value="ok" {M_OK_SELECTED}>{M_OK}</option>
-			<option value="disabled" {M_SUSPENDED_SELECTED}>{M_SUSPENDED}</option>
-		</select>
+	<div style="width=100%;vertical-align: middle;">
+	<div style="display:inline;float:left;vertical-align: middle;line-height: 40px;">
+		<label><input name="search_for" type="text" value="{SEARCH_FOR}"/></label>
+		<label>
+			<select name="search_common">
+				<option value="domain_name"{M_DOMAIN_NAME_SELECTED}>{M_DOMAIN_NAME}</option>
+				<option value="customer_id"{M_CUSTOMER_ID_SELECTED}>{M_CUSTOMER_ID}</option>
+				<option value="lname"{M_LAST_NAME_SELECTED}>{M_LAST_NAME}</option>
+				<option value="firm"{M_COMPANY_SELECTED}>{M_COMPANY}</option>
+				<option value="city"{M_CITY_SELECTED}>{M_CITY}</option>
+				<option value="country"{M_COUNTRY_SELECTED}>{M_COUNTRY}</option>
+			</select>
+		</label>
+		<label>
+			<select name="search_status">
+				<option value="all"{M_ALL_SELECTED}>{M_ALL}</option>
+				<option value="ok"{M_OK_SELECTED}>{M_OK}</option>
+				<option value="disabled"{M_SUSPENDED_SELECTED}>{M_SUSPENDED}</option>
+			</select>
+		</label>
 		<input name="Submit" type="submit" value="{TR_SEARCH}"/>
 		<input type="hidden" name="uaction" value="go_search"/>
 		<input type="hidden" name="details" value=""/>
 	</div>
-	<div style="line-height:40px;vertical-align: middle; float: right">
+	<div style="display:inline;float:right;vertical-align: middle;line-height: 40px">
 		<a class="icon i_show_alias" href="#" onclick="return sbmt_details(document.forms[0],'{SHOW_DETAILS}');">
 			{TR_VIEW_DETAILS}
 		</a>
 	</div>
-	<div style="clear: both"></div>
+	</div>
+	<div style="clear:both"></div>
 </form>
 <!-- EDP: users_search -->
+
 <!-- BDP: usr_message -->
 <div class="info">{USR_MESSAGE}</div>
 <!-- EDP: usr_message -->
+
 <!-- BDP: users_list -->
 <table>
 	<thead>
@@ -53,6 +62,13 @@
 		<th>{TR_ACTION}</th>
 	</tr>
 	</thead>
+	<tfoot>
+		<!-- BDP: user_details -->
+		<tr>
+			<td colspan="5"><a href="http://www.{ALIAS_DOMAIN}/" target="_blank" class="icon i_goto">{ALIAS_DOMAIN}</a></td>
+		</tr>
+		<!-- EDP: user_details -->
+	</tfoot>
 	<tbody>
 	<!-- BDP: user_entry -->
 	<tr>
@@ -82,23 +98,19 @@
 			<a class="icon i_delete" href="user_delete.php?id={USER_ID}">{ACTION}</a>
 		</td>
 	</tr>
-	<!-- BDP: user_details -->
-	<tr>
-		<td colspan="5"><a href="http://www.{ALIAS_DOMAIN}/" target="_blank" class="icon i_goto">{ALIAS_DOMAIN}</a></td>
-	</tr>
-	<!-- EDP: user_details -->
 	<!-- EDP: user_entry -->
 	</tbody>
 </table>
+
 <div class="paginator">
 	<!-- BDP: scroll_prev -->
 	<a class="icon i_prev" href="users.php?psi={PREV_PSI}" title="{TR_PREVIOUS}">{TR_PREVIOUS}</a>
 	<!-- EDP: scroll_prev -->
 	<!-- BDP: scroll_prev_gray -->
-	<a class="icon i_prev_gray" href="#"></a>
+	<span class="icon i_prev_gray"></span>
 	<!-- EDP: scroll_prev_gray -->
 	<!-- BDP: scroll_next_gray -->
-	<a class="icon i_next_gray" href="#"></a>
+	<span class="icon i_next_gray"></span>
 	<!-- EDP: scroll_next_gray -->
 	<!-- BDP: scroll_next -->
 	<a class="icon i_next" href="users.php?psi={NEXT_PSI}" title="{TR_NEXT}">{TR_NEXT}</a>

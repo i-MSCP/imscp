@@ -2,8 +2,7 @@
 <script language="JavaScript" type="text/JavaScript">
 	/*<![CDATA[*/
 	function action_remove_right() {
-		if (!confirm("{TR_MESSAGE_REMOVE}"))
-			return false;
+		return confirm("{TR_MESSAGE_REMOVE}");
 	}
 	/*]]>*/
 </script>
@@ -22,18 +21,20 @@
 				<table>
 					<tr>
 						<td>
-							<select name="selected_reseller" id="selected_reseller">
-								<option value="all">{ALL_RESELLER_NAME}</option>
-								<!-- BDP: reseller_item -->
-								<option value="{RESELLER_ID}">{RESELLER_NAME}</option>
-								<!-- EDP: reseller_item -->
-							</select>
+							<label>
+								<select name="selected_reseller" id="selected_reseller">
+									<option value="all">{ALL_RESELLER_NAME}</option>
+									<!-- BDP: reseller_item -->
+									<option value="{RESELLER_ID}">{RESELLER_NAME}</option>
+									<!-- EDP: reseller_item -->
+								</select>
+							</label>
 						</td>
 					</tr>
 					<tr>
 						<td colspan="3">
 							<div class="buttons">
-								<input name="Button" type="submit" class="button" value="{TR_ADD_RIGHTS_BUTTON}"/>
+								<input name="Button" type="submit" value="{TR_ADD_RIGHTS_BUTTON}"/>
 								<input type="hidden" value="add" name="change"/>
 								<input type="hidden" value="{SOFTWARE_ID_VALUE}" name="id"/>
 							</div>
@@ -51,9 +52,7 @@
 	</tr>
 	<!-- BDP: no_reseller_list -->
 	<tr>
-		<td colspan="3">
-			<div class="info">{NO_RESELLER}</div>
-		</td>
+		<td colspan="3"><div class="info">{NO_RESELLER}</div></td>
 	</tr>
 	<!-- EDP: no_reseller_list -->
 	<!-- BDP: list_reseller -->
@@ -68,7 +67,6 @@
 	</tr>
 	<!-- EDP: list_reseller -->
 	<tr>
-		<th colspan="3">{TR_RESELLER_COUNT}:&nbsp;{TR_RESELLER_NUM}</th>
+		<th colspan="3">{TR_RESELLER_COUNT}: {TR_RESELLER_NUM}</th>
 	</tr>
 </table>
-<div class="paginator"></div>

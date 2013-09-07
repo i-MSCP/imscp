@@ -18,7 +18,7 @@
 		</tbody>
 	</table>
 	<div class="buttons">
-		<input name="Submit" type="submit" class="button" value="{TR_SEND_MESSAGE}"/>
+		<input name="Submit" type="submit" value="{TR_DELETE}"/>
 		<input type="hidden" name="uaction" value="send_delmessage"/>
 		<input type="hidden" name="id" value="{SOFTWARE_ID}"/>
 		<input type="hidden" name="reseller_id" value="{RESELLER_ID}"/>

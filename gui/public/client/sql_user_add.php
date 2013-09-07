@@ -402,15 +402,15 @@ function gen_page_post_data($tpl, $db_id) {
 			array(
 				'USER_NAME' => (isset($_POST['user_name'])) ? clean_html($_POST['user_name'], true) : '',
 				'USE_DMN_ID' => (isset($_POST['use_dmn_id']) && $_POST['use_dmn_id'] === 'on') ? $cfg->HTML_CHECKED : '',
-				'START_ID_POS_CHECKED' => (isset($_POST['id_pos']) && $_POST['id_pos'] !== 'end') ? $cfg->HTML_CHECKED : '',
-				'END_ID_POS_CHECKED' => (isset($_POST['id_pos']) && $_POST['id_pos'] === 'end') ? $cfg->HTML_CHECKED : ''));
+				'START_ID_POS_SELECTED' => (isset($_POST['id_pos']) && $_POST['id_pos'] !== 'end') ? $cfg->HTML_SELECTED : '',
+				'END_ID_POS_SELECTED' => (isset($_POST['id_pos']) && $_POST['id_pos'] === 'end') ? $cfg->HTML_SELECTED : ''));
 	} else {
 		$tpl->assign(
 			array(
 				'USER_NAME' => '',
 				'USE_DMN_ID' => '',
-				'START_ID_POS_CHECKED' => '',
-				'END_ID_POS_CHECKED' => $cfg->HTML_CHECKED));
+				'START_ID_POS_SELECTED' => '',
+				'END_ID_POS_SELECTED' => $cfg->HTML_CHECKED));
 	}
 
 	$tpl->assign('ID', $db_id);
@@ -432,9 +432,9 @@ $tpl->assign(
 	array(
 		'TR_ADD_SQL_USER' => tr('Add SQL user'),
 		'TR_USER_NAME' => tr('SQL user name'),
-		'TR_USE_DMN_ID' => tr('Use numeric ID'),
-		'TR_START_ID_POS' => tr('In front the name'),
-		'TR_END_ID_POS' => tr('Behind the name'),
+		'TR_USE_DMN_ID' => tr('SQL user prefix/suffix'),
+		'TR_START_ID_POS' => tr('In front'),
+		'TR_END_ID_POS' => tr('Behind'),
 		'TR_ADD' => tr('Add'),
 		'TR_CANCEL' => tr('Cancel'),
 		'TR_ADD_EXIST' => tr('Assign'),

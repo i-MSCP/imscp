@@ -12,11 +12,11 @@
 		<td colspan="2"><span class="bold">{RECORD_COUNT}</span></td>
 	</tr>
 	</tfoot>
+	<tbody>
 	<tr>
 		<td><span class="bold">{TR_DOMAIN_NAME}</span></td>
 		<td><span class="bold">{TR_RESELLER_NAME}</span></td>
 	</tr>
-	<tbody>
 	<!-- BDP: domain_row -->
 	<tr>
 		<td>{DOMAIN_NAME}</td>

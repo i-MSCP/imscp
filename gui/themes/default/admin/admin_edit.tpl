@@ -6,45 +6,43 @@
 			url: $(location).attr('pathname'),
 			type: 'GET',
 			datatype: 'text',
-			beforeSend: function (xhr) {
-				xhr.setRequestHeader('Accept', 'text/plain');
-			},
-			success: function (r) {
-				$('#password, #password_confirmation').val(r);
-			},
+			beforeSend: function (xhr) { xhr.setRequestHeader('Accept', 'text/plain'); },
+			success: function (r) { $('#password, #password_confirmation').val(r); },
 			error: iMSCPajxError
 		});
 
-		$('#generate_password').click(function () {
-			$.ajax();
-		});
-		$('#reset_password').click(function () {
-			$('#password, #password_confirmation').val('');
-		});
+		$('#generate_password').click(function () { $.ajax(); });
+
+		$('#reset_password').click(function () { $('#password, #password_confirmation').val(''); });
 
 		// Create dialog box for some messages (password and notices)
 		$('#dialog_box').dialog({
-			modal: true, autoOpen: false, hide: 'blind', show: 'blind',
-			buttons: { Ok: function () {
-				$(this).dialog('close');
-			}}
+			modal: true,
+			autoOpen: false,
+			hide: 'blind',
+			show: 'blind',
+			buttons: { Ok: function () { $(this).dialog('close'); }}
 		});
 
 		// Show generated password in specific dialog box
 		$('#show_password').click(function () {
 			var password = $('#password').val();
+
 			if (password == '') {
 				password = '<br/>{TR_PASSWORD_GENERATION_NEEDED}';
 			} else {
 				password = '<br/>{TR_NEW_PASSWORD_IS}: <strong>' + $('#password').val() + '</strong>';
 			}
+
 			$('#dialog_box').dialog("option", "title", '{TR_PASSWORD}').html(password);
 			$('#dialog_box').dialog('open');
 		});
 	});
 	/*]]>*/
 </script>
+
 <div id="dialog_box"></div>
+
 <form name="editCustomerFrm" method="post" action="admin_edit.php?edit_id={EDIT_ID}">
 	<table class="firstColFixed">
 		<thead>
@@ -59,9 +57,7 @@
 		</tr>
 		<tr>
 			<td><label for="password">{TR_PASSWORD}</label></td>
-			<td style="width: 235px;">
-				<input type="password" name="password" id="password" value="" autocomplete="off"/>
-			</td>
+			<td><input type="password" name="password" id="password" value="" autocomplete="off"/></td>
 			<td>
 				<button type="button" id="generate_password">{TR_GENERATE}</button>
 				<button type="button" id="show_password">{TR_SHOW}</button>
@@ -144,6 +140,7 @@
 		</tr>
 		</tbody>
 	</table>
+
 	<div class="buttons">
 		<input name="submit" type="submit" value="{TR_UPDATE}"/>
 		<input id="send_data" type="checkbox" name="send_data" {SEND_DATA_CHECKED}/>

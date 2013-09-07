@@ -6,6 +6,7 @@
 	});
 	/*]]>*/
 </script>
+
 <form action="manage_reseller_users.php" method="post" name="admin_user_assignment" id="admin_user_assignment">
 	<!-- BDP: src_reseller -->
 	<div class="buttons">
@@ -17,6 +18,7 @@
 		</select>
 	</div>
 	<!-- EDP: src_reseller -->
+
 	<!-- BDP: reseller_list -->
 	<table class="firstColFixed datatable">
 		<thead>
@@ -37,6 +39,7 @@
 		</tbody>
 	</table>
 	<!-- EDP: reseller_list -->
+
 	<!-- BDP: dst_reseller -->
 	<div class="buttons">
 		<label for="toReseller">{TR_TO_RESELLER}</label>

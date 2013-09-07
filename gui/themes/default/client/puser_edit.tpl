@@ -21,12 +21,11 @@
 		</tr>
 		</tbody>
 	</table>
+
 	<div class="buttons">
 		<input type="hidden" name="nadmin_name" value="{UID}"/>
 		<input type="hidden" name="uaction" value="modify_user"/>
 		<input name="Submit" type="submit" value="{TR_UPDATE}"/>
-		<input name="Button" type="button"
-			   onclick="MM_goToURL('parent','protected_user_manage.php');return document.MM_returnValue"
-			   value="{TR_CANCEL}"/>
+		<a class ="link_as_button" href="protected_user_manage.php">{TR_CANCEL}</a>
 	</div>
 </form>

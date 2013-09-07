@@ -23,6 +23,7 @@
 	});
 	/*]]>*/
 </script>
+
 <!-- BDP: add_customer_block -->
 <form name="reseller_add_users_first_frm" method="post" action="user_add1.php">
 	<table class="firstColFixed">
@@ -35,7 +36,7 @@
 		<tr>
 			<td>
 				<label for="dmn_name">{TR_DOMAIN_NAME}</label>
-				<span class="icon i_help" id="dmn_help" title="{TR_DMN_HELP}">{TR_HELP}</span>
+				<span class="icon i_help" id="dmn_help" title="{TR_DMN_HELP}"></span>
 			</td>
 			<td>
 				<input type="text" name="dmn_name" id="dmn_name" value="{DOMAIN_NAME_VALUE}"/>
@@ -43,11 +44,10 @@
 		</tr>
 		<tr>
 			<td><label for="datepicker">{TR_DOMAIN_EXPIRE}</label></td>
-			<td style="vertical-align: middle">
+			<td>
 				<input type="text" name="datepicker" id="datepicker" value="{DATEPICKER_VALUE}"/>
-				<small>(MM/DD/YYYY)</small>
-				<input type="checkbox" name="never_expire" id="never_expire" value="0" style="vertical-align: middle"/>
-				<label for="never_expire" style="vertical-align: middle">{TR_EXPIRE_CHECKBOX}</label>
+				<input type="checkbox" name="never_expire" id="never_expire" value="0"/>
+				<label for="never_expire">{TR_EXPIRE_CHECKBOX}</label>
 			</td>
 		</tr>
 		<!-- BDP: hosting_plan_entries_block -->
@@ -77,8 +77,9 @@
 		<!-- EDP: hosting_plan_entries_block -->
 		</tbody>
 	</table>
+
 	<div class="buttons">
-		<input name="Submit" type="submit" class="button" value="{TR_NEXT_STEP}"/>
+		<input name="Submit" type="submit" value="{TR_NEXT_STEP}"/>
 		<input type="hidden" name="uaction" value="user_add_next"/>
 	</div>
 </form>

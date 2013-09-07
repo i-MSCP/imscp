@@ -116,7 +116,10 @@ $tpl->assign(
 		'TR_SENDER_NAME' => tr('Sender name'),
 		'TR_UPDATE' => tr('Update'),
 		'TR_BASE_SERVER_VHOST' => tr('URL to this admin panel'),
-		'TR_BASE_SERVER_VHOST_PREFIX' => tr('URL protocol')));
+		'TR_BASE_SERVER_VHOST_PREFIX' => tr('URL protocol'),
+		'TR_CANCEL' => tr('Cancel')
+	)
+);
 
 generatePageMessage($tpl);
 

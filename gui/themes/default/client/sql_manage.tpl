@@ -16,8 +16,9 @@
 	}
 	/* ]]> */
 </script>
+
 <!-- BDP: sql_databases_users_list -->
-<table>
+<table class="firstColFixed">
 	<thead>
 	<tr>
 		<th>{TR_DATABASE}</th>
@@ -27,7 +28,7 @@
 	<tbody>
 	<!-- BDP: sql_databases_list -->
 	<tr>
-		<td style="width:250px;"><strong>{DB_NAME}</strong></td>
+		<td><strong>{DB_NAME}</strong></td>
 		<td>
 			<a href="sql_user_add.php?id={DB_ID}" class="icon i_add_user" title="{TR_ADD_USER}">{TR_ADD_USER}</a>
 			<a href="#" class="icon i_delete"
@@ -39,9 +40,9 @@
 		<td colspan="2">
 			<!-- BDP: sql_users_list -->
 			<table>
-				<tr style="border: none;">
-					<td style="border:none;width:260px;">{DB_USER}</td>
-					<td style="border:none;">
+				<tr>
+					<td>{DB_USER}</td>
+					<td>
 						<a href="pma_auth.php?id={USER_ID}" class="icon i_pma" target="{PMA_TARGET}"
 						   title="{TR_LOGIN_PMA}">{TR_PHPMYADMIN}</a>
 						<a href="sql_change_password.php?id={USER_ID}" class="icon i_change_password"

@@ -2,12 +2,11 @@
 <script language="JavaScript" type="text/JavaScript">
 	/*<![CDATA[*/
 	function action_import() {
-		if (!confirm("{TR_MESSAGE_IMPORT}"))
-			return false;
+		return confirm("{TR_MESSAGE_IMPORT}");
 	}
+
 	function action_delete() {
-		if (!confirm("{TR_MESSAGE_DELETE}"))
-			return false;
+		return confirm("{TR_MESSAGE_DELETE}");
 	}
 	/*]]>*/
 </script>
@@ -88,4 +87,3 @@
 	<!-- EDP: list_reseller -->
 	</tbody>
 </table>
-<div class="paginator"></div>

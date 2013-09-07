@@ -3,7 +3,8 @@
 	/*<![CDATA[*/
 	$(document).ready(function () {
 		$("input[name=ndomain_name]").bind("blur", function () {
-			dmnName = $("#ndomain_name").val();
+			var dmnName = $("#ndomain_name").val();
+
 			if (dmnName != "") {
 				$.ajaxSetup({
 					url: $(location).attr("pathname"),
@@ -11,7 +12,7 @@
 					data: "domain=" + dmnName + "&uaction=toASCII",
 					datatype: 'text',
 					beforeSend: function (xhr){xhr.setRequestHeader("Accept","text/plain");},
-					success: function (r){$("#ndomain_mpoint").val(r);},
+					success: function (r){ $("#ndomain_mpoint").val(r); },
 					error: iMSCPajxError
 				});
 				$.ajax();
@@ -31,6 +32,7 @@
 	}
 	/* ]]> */
 </script>
+
 <form name="add_alias_frm" method="post" action="alias_add.php">
 	<table class="firstColFixed">
 		<thead>
@@ -50,8 +52,10 @@
 			</td>
 		</tr>
 		<tr>
-			<td><label for="ndomain_name">{TR_DOMAIN_NAME}</label><span class="icon i_help" id="dmn_help"
-																		title="{TR_DMN_HELP}">Help</span></td>
+			<td>
+				<label for="ndomain_name">{TR_DOMAIN_NAME}</label>
+				<span class="icon i_help" id="dmn_help" title="{TR_DMN_HELP}">Help</span>
+			</td>
 			<td><input id="ndomain_name" name="ndomain_name" type="text" value="{DOMAIN}"/></td>
 		</tr>
 		<tr>
@@ -72,16 +76,20 @@
 		<tr>
 			<td><label for="forward">{TR_FORWARD}</label></td>
 			<td>
-				<select name="forward_prefix" style="vertical-align:middle"{DISABLE_FORWARD}>
-					<option value="{TR_PREFIX_HTTP}"{HTTP_YES}>{TR_PREFIX_HTTP}</option>
-					<option value="{TR_PREFIX_HTTPS}"{HTTPS_YES}>{TR_PREFIX_HTTPS}</option>
-					<option value="{TR_PREFIX_FTP}"{FTP_YES}>{TR_PREFIX_FTP}</option>
-				</select>
-				<input name="forward" type="text" class="textinput" id="forward" value="{FORWARD}"{READONLY_FORWARD} />
+				<label>
+					<select name="forward_prefix"{DISABLE_FORWARD}>
+						<option value="{TR_PREFIX_HTTP}"{HTTP_YES}>{TR_PREFIX_HTTP}</option>
+						<option value="{TR_PREFIX_HTTPS}"{HTTPS_YES}>{TR_PREFIX_HTTPS}</option>
+						<option value="{TR_PREFIX_FTP}"{FTP_YES}>{TR_PREFIX_FTP}</option>
+					</select>
+					<input name="forward" type="text" class="textinput" id="forward"
+						   value="{FORWARD}"{READONLY_FORWARD} />
+				</label>
 			</td>
 		</tr>
 		</tbody>
 	</table>
+
 	<div class="buttons">
 		<input type="hidden" name="uaction" value="add_alias"/>
 		<input name="submit" type="submit" value="{TR_ADD}"/>
