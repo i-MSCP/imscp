@@ -140,7 +140,6 @@ a:hover,
 #content {
     position: relative;
     padding-top: 90px;
-    width: 50%;
     margin: 0 auto;
 }
 
@@ -283,6 +282,61 @@ table td {
     padding: .5em 1em;
 }
 
+/*-----------FTP CHOOSER-----------*/
+
+.ftp_chooser {
+    margin: 0 auto;
+    width:50%;
+}
+
+.ftp_chooser table {
+    text-align: left;
+    width: 100%;
+}
+
+.ftp_chooser thead th {
+    padding: 0.5em;
+    white-space: nowrap;
+    vertical-align: middle;
+    font-weight: bold;
+}
+
+.ftp_chooser tbody {
+    border: 1px solid;
+}
+
+.ftp_chooser tbody td {
+    padding: 5px 5px 3px 5px;
+    height: 36px;
+    vertical-align: middle;
+    color: #1a1a1a;
+}
+
+.ftp_chooser thead, tfoot {
+    border-color: #000000;
+    background: #000000 url(../images/black/background/ui-bg_glass_40_000000_1x400.png) 50% 50% repeat-x;
+    color: #ffffff;
+}
+
+.ftp_chooser tbody {
+    border-color: #dfdfdf;
+    background: #ffffff url(../images/jquery-ui-common/ui-bg_flat_0_ffffff_40x100.png) 50% 50% repeat-x;
+    color: #222222;
+}
+
+.ftp_chooser tbody td {
+    border-bottom: 1px solid #dfdfdf;
+}
+
+.ftp_chooser a {
+    color: #1a1a1a;
+}
+
+.ftp_chooser a:hover,
+.ftp_chooser .active a {
+    color: #5cbada;
+}
+
 /*------------MESSAGES--------------*/
 
 #message_container {
@@ -364,6 +418,15 @@ textarea {
     padding: .5em;
 }
 
+/*-----------ODD/EVENT--------*/
+.odd {
+    background-color: #ffffff;
+}
+
+.even {
+    background-color: #ededed;
+}
+
 /*-----------ICONS-----------*/
 
 .icon {
@@ -379,4 +442,16 @@ textarea {
 
 .i_unlock {
     background-image: url('../images/login/i_unlock.png');
+}
+
+.i_bc_folder {
+    background-image: url(../images/icons/bc_folder.png);
+}
+
+.i_bc_locked {
+    background-image: url(../images/icons/bc_locked.png);
+}
+
+.i_bc_parent {
+    background-image: url(../images/icons/bc_parent.png);
 }

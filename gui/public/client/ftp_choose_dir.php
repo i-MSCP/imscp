@@ -194,8 +194,7 @@ $tpl->assign(
 		'productLink' => 'http://www.i-mscp.net',
 		'productCopyright' => tr('© 2010-2013 i-MSCP Team<br/>All Rights Reserved'),
 		'TR_DIRECTORY_TREE' => tr('Directory tree'),
-		'TR_DIRS' => tr('Directories'),
-		'TR_ACTION' => tr('Action'),
+		'TR_DIRECTORIES' => tr('Directories'),
 		'CHOOSE' => tr('Choose')
 	)
 );
