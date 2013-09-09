@@ -238,7 +238,7 @@ unless($main::buildonly) {
 
 	# Try to acquire backend lock but do not wait for it
 	if(! iMSCP::Boot->getInstance()->lock(undef, 1)) {
-		iMSCP::Dialog->factory()->infobox(
+		iMSCP::Dialog->factory()->msgbox(
 "
 A backend process is currently running (eg. daily backup). The setup will switch back to the build mode.
 
