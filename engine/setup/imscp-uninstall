@@ -201,7 +201,8 @@ sub _uninstallServers
 
 	startDetail();
 
-	for(iMSCP::Servers->getInstance()->get()) {
+	my @servers = iMSCP::Servers->getInstance()->get();
+	for(@servers) {
 		s/\.pm//;
 		$file = "Servers/$_.pm";
 		$class = "Servers::$_";
