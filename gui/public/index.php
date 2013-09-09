@@ -99,7 +99,7 @@ if ($cfg->MAINTENANCEMODE && !isset($_REQUEST['admin'])) {
 	$tpl->assign(
 		array(
 			'TR_PAGE_TITLE' => tr('i-MSCP - Multi Server Control Panel / Maintenance'),
-			'CONTEXT_CLASS' => 'no_header',
+			'CONTEXT_CLASS' => ' no_header',
 			'BOX_MESSAGE_TITLE' => tr('System under maintenance'),
 			'BOX_MESSAGE' => nl2br(tohtml($cfg->MAINTENANCEMODE_MESSAGE)),
 			'TR_BACK' => tr('Administrator login'),

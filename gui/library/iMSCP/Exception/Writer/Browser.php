@@ -185,7 +185,7 @@ class iMSCP_Exception_Writer_Browser extends iMSCP_Exception_Writer
 		$tpl->assign(
 			array(
 				'TR_PAGE_TITLE' => 'i-MSCP - internet Multi Server Control Panel - Fatal Error',
-				'CONTEXT_CLASS' => 'no_header',
+				'CONTEXT_CLASS' => ' no_header',
 				'productLink' => 'http://www.i-mscp.net',
 				'productLongName' => 'internet Multi Server Control Panel',
 				'productCopyright' => '© 2010-2013 i-MSCP Team<br/>All Rights Reserved',

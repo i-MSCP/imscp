@@ -34,14 +34,14 @@
 		<td>{ADMIN_CREATED_ON}</td>
 		<td>{ADMIN_CREATED_BY}</td>
 		<td>
-			<a href="{URL_EDIT_ADMIN}" class="icon i_user">{TR_EDIT}</a>
+			<a href="{URL_EDIT_ADMIN}" class="icon i_user" title="{TR_EDIT}">{TR_EDIT}</a>
 
 			<!-- BDP: admin_delete_show -->
 			<!-- EDP: admin_delete_show -->
 
 			<!-- BDP: admin_delete_link -->
 			<a href="{URL_DELETE_ADMIN}" class="icon i_delete" onclick="return action_delete('{ADMIN_USERNAME}')"
-			   class="link">{TR_DELETE}</a>
+			   class="link" title="{TR_DELETE}">{TR_DELETE}</a>
 			<!-- EDP: admin_delete_link -->
 		</td>
 	</tr>
@@ -75,8 +75,8 @@
 		<td>
 			<a class="icon i_details" href="{URL_CHANGE_INTERFACE}"
 			   title="{TR_CHANGE_USER_INTERFACE}">{GO_TO_USER_INTERFACE}</a>
-			<a href="{URL_EDIT_RSL}" class="icon i_user">{TR_EDIT}</a>
-			<a href="{URL_DELETE_RSL}" class="icon i_delete"
+			<a href="{URL_EDIT_RSL}" class="icon i_user" title="{TR_EDIT}">{TR_EDIT}</a>
+			<a href="{URL_DELETE_RSL}" class="icon i_delete" title="{TR_DELETE}"
 			   onclick="return action_delete('{RSL_USERNAME}')">{TR_DELETE}</a>
 		</td>
 	</tr>
@@ -114,9 +114,8 @@
 		<input name="Submit" type="submit" value="{TR_SEARCH}"/>
 	</div>
 	<div style="line-height:40px;vertical-align: middle; float: right">
-		<a class="icon i_show_alias" href="#" onclick="return sbmt_details(document.forms[0],'{SHOW_DETAILS}');">
-			{TR_VIEW_DETAILS}
-		</a>
+		<a class="icon i_show_alias" href="#" title="{TR_VIEW_DETAILS}"
+		   onclick="return sbmt_details(document.forms[0],'{SHOW_DETAILS}');">{TR_VIEW_DETAILS}</a>
 	</div>
 	<div style="clear:both"></div>
 </form>
@@ -142,7 +141,7 @@
 	<tr>
 		<td>
 			<a href="{URL_CHANGE_STATUS}" onclick="return action_status('{USR_USERNAME}')"
-			   class="icon i_{STATUS}">{TR_STATUS}</a>
+			   class="icon i_{STATUS}" title="{TR_STATUS}">{TR_STATUS}</a>
 		</td>
 		<td>
 			<!-- BDP: usr_status_reload_true -->
@@ -155,17 +154,17 @@
 		<td>{USER_CREATED_ON}</td>
 		<td>{USR_CREATED_BY}</td>
 		<td>
-			<a class="icon i_identity" href="domain_details.php?domain_id={DOMAIN_ID}">{TR_DETAILS}</a>
+			<a class="icon i_identity" href="domain_details.php?domain_id={DOMAIN_ID}" title="{TR_DETAILS}">{TR_DETAILS}</a>
 			<a class="icon i_details" href="{URL_CHANGE_INTERFACE}"
 			   title="{TR_CHANGE_USER_INTERFACE}">{GO_TO_USER_INTERFACE}</a>
 			<!-- BDP: edit_option -->
-			<a class="icon i_edit" href="domain_edit.php?edit_id={DOMAIN_ID}">{TR_EDIT_DOMAIN}</a>
+			<a class="icon i_edit" href="domain_edit.php?edit_id={DOMAIN_ID}" title="{TR_EDIT_DOMAIN}">{TR_EDIT_DOMAIN}</a>
 			<!-- EDP: edit_option -->
-			<a class="icon i_user" href="{URL_EDIT_USR}">{TR_EDIT_USR}</a>
+			<a class="icon i_user" href="{URL_EDIT_USR}" title="{TR_EDIT_USR}">{TR_EDIT_USR}</a>
 			<!-- BDP: usr_delete_show -->
 			<!-- EDP: usr_delete_show -->
 			<!-- BDP: usr_delete_link -->
-			<a class="icon i_delete" href="user_delete.php?user_id={USER_ID}">{TR_DELETE}</a>
+			<a class="icon i_delete" href="user_delete.php?user_id={USER_ID}" title="{TR_DELETE}">{TR_DELETE}</a>
 			<!-- EDP: usr_delete_link -->
 		</td>
 	</tr>

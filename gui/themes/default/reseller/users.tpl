@@ -65,7 +65,10 @@
 	<tfoot>
 		<!-- BDP: user_details -->
 		<tr>
-			<td colspan="5"><a href="http://www.{ALIAS_DOMAIN}/" target="_blank" class="icon i_goto">{ALIAS_DOMAIN}</a></td>
+			<td colspan="5">
+				<a href="http://www.{ALIAS_DOMAIN}/" target="_blank" class="icon i_goto"
+				   title=""{ALIAS_DOMAIN}>{ALIAS_DOMAIN}</a>
+			</td>
 		</tr>
 		<!-- EDP: user_details -->
 	</tfoot>
@@ -74,11 +77,11 @@
 	<tr>
 		<td>
 			<a href="#" onclick="action_status('{URL_CHANGE_STATUS}', '{NAME}'); return false;"
-			   class="icon i_{STATUS_ICON}">{STATUS_DOMAIN}</a>
+			   class="icon i_{STATUS_ICON}" title="{STATUS_DOMAIN}">{STATUS_DOMAIN}</a>
 		</td>
 		<td>
 			<!-- BDP: status_reload_true -->
-			<a href="http://{NAME}/" target="_blank" class="icon i_goto">{NAME}</a>
+			<a href="http://{NAME}/" target="_blank" class="icon i_goto" title="{NAME}">{NAME}</a>
 			<!-- EDP: status_reload_true -->
 			<!-- BDP: status_reload_false -->
 			<span class="icon i_goto">{NAME}</span>
@@ -87,15 +90,19 @@
 		<td>{CREATION_DATE}</td>
 		<td>{DISK_USAGE}</td>
 		<td>
-			<a class="icon i_identity" href="domain_details.php?domain_id={DOMAIN_ID}">{TR_DETAILS}</a>
+			<a class="icon i_identity" href="domain_details.php?domain_id={DOMAIN_ID}"
+			   title="{TR_DETAILS}">{TR_DETAILS}</a>
 			<!-- BDP: edit_option -->
-			<a class="icon i_edit" href="domain_edit.php?edit_id={DOMAIN_ID}">{TR_EDIT_DOMAIN}</a>
-			<a class="icon i_user" href="user_edit.php?edit_id={USER_ID}">{TR_EDIT_USER}</a>
+			<a class="icon i_edit" href="domain_edit.php?edit_id={DOMAIN_ID}"
+			   title="{TR_EDIT_DOMAIN}">{TR_EDIT_DOMAIN}</a>
+			<a class="icon i_user" href="user_edit.php?edit_id={USER_ID}" title="{TR_EDIT_USER}">{TR_EDIT_USER}</a>
 			<!-- EDP: edit_option -->
-			<a class="icon i_details" href="change_user_interface.php?to_id={USER_ID}">{CHANGE_INTERFACE}</a>
+			<a class="icon i_details" href="change_user_interface.php?to_id={USER_ID}"
+			   title="{CHANGE_INTERFACE}">{CHANGE_INTERFACE}</a>
 			<a class="icon i_stats"
-			   href="domain_statistics.php?month={VL_MONTH}&year={VL_YEAR}&domain_id={DOMAIN_ID}">{TR_STAT}</a>
-			<a class="icon i_delete" href="user_delete.php?id={USER_ID}">{ACTION}</a>
+			   href="domain_statistics.php?month={VL_MONTH}&year={VL_YEAR}&domain_id={DOMAIN_ID}"
+			   title="{TR_STAT}">{TR_STAT}</a>
+			<a class="icon i_delete" href="user_delete.php?id={USER_ID}" title="{ACTION}">{ACTION}</a>
 		</td>
 	</tr>
 	<!-- EDP: user_entry -->

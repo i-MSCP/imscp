@@ -140,6 +140,8 @@ a:hover,
 #content {
     position: relative;
     padding-top: 90px;
+    width: 50%;
+    margin: 0 auto;
 }
 
 /*------------NOTICES--------------*/

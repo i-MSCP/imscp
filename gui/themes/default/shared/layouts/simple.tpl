@@ -22,16 +22,18 @@
 	/*]]>*/
 </script>
 </head>
-<body class="{THEME_COLOR} {CONTEXT_CLASS}">
-<div id="header">
-	<div id="logo"><span>{productLongName}</span></div>
-	<div id="copyright"><span><a href="{productLink}" target="blank">{productCopyright}</a></span></div>
-</div>
-<div id="content">
-	<!-- BDP: page_message -->
-	<div id="notice" class="{MESSAGE_CLS}">{MESSAGE}</div>
-	<!-- EDP: page_message -->
-	{LAYOUT_CONTENT}
+<body class="{THEME_COLOR}">
+<div class="wrapper{CONTEXT_CLASS}">
+	<div id="header">
+		<div id="logo"><span>{productLongName}</span></div>
+		<div id="copyright"><span><a href="{productLink}" target="blank">{productCopyright}</a></span></div>
+	</div>
+	<div id="content">
+		<!-- BDP: page_message -->
+		<div id="notice" class="{MESSAGE_CLS}">{MESSAGE}</div>
+		<!-- EDP: page_message -->
+		{LAYOUT_CONTENT}
+	</div>
 </div>
 </body>
 </html>

@@ -7,7 +7,7 @@
 				<td class="right"><input type="text" name="uname" id="uname" value="{UNAME}"/></td>
 			</tr>
 			<tr>
-				<td class="left" ><label for="upass">{TR_PASSWORD}</label></td>
+				<td class="left"><label for="upass">{TR_PASSWORD}</label></td>
 				<td class="right"><input type="password" name="upass" id="upass" value="" autocomplete="off"/></td>
 			</tr>
 			<tr>
@@ -20,7 +20,7 @@
 			</tr>
 			<!-- BDP: ssl_support -->
 			<tr>
-				<td colspan="2">
+				<td colspan="2" class="center">
 					<a class="icon {SSL_IMAGE_CLASS}" href="{SSL_LINK}" title="{TR_SSL_DESCRIPTION}">{TR_SSL}</a>
 				</td>
 			</tr>

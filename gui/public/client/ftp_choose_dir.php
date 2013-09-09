@@ -189,7 +189,7 @@ $tpl->define_dynamic(
 $tpl->assign(
 	array(
 		'TR_PAGE_TITLE' => tr('Client / Choose Directory'),
-		'CONTEXT_CLASS' => 'no_header',
+		'CONTEXT_CLASS' => ' no_header',
 		'productLongName' => tr('internet Multi Server Control Panel'),
 		'productLink' => 'http://www.i-mscp.net',
 		'productCopyright' => tr('© 2010-2013 i-MSCP Team<br/>All Rights Reserved'),

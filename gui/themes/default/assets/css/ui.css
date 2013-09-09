@@ -783,9 +783,18 @@ table .icon {
 .icon {
     background-position: left center;
     background-repeat: no-repeat;
-    padding-left: 20px;
+    display: inline;
     height: 16px;
-    margin: 0 0 0 .5em;
+    padding-left: 20px;
+}
+
+.paginator .icon {
+    display: inline-block;
+    display: -moz-inline-block;
+    overflow: hidden;
+    width: 0;
+    height: 16px;
+    line-height: 32px;
 }
 
 .icon.big {
