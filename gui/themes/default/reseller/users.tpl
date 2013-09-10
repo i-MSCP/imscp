@@ -62,16 +62,6 @@
 		<th>{TR_ACTION}</th>
 	</tr>
 	</thead>
-	<tfoot>
-		<!-- BDP: user_details -->
-		<tr>
-			<td colspan="5">
-				<a href="http://www.{ALIAS_DOMAIN}/" target="_blank" class="icon i_goto"
-				   title=""{ALIAS_DOMAIN}>{ALIAS_DOMAIN}</a>
-			</td>
-		</tr>
-		<!-- EDP: user_details -->
-	</tfoot>
 	<tbody>
 	<!-- BDP: user_entry -->
 	<tr>
@@ -105,6 +95,14 @@
 			<a class="icon i_delete" href="user_delete.php?id={USER_ID}" title="{ACTION}">{ACTION}</a>
 		</td>
 	</tr>
+	<!-- BDP: user_details -->
+	<tr>
+		<td colspan="5">
+			<a href="http://www.{ALIAS_DOMAIN}/" target="_blank" class="icon i_goto"
+			   title=""{ALIAS_DOMAIN}>{ALIAS_DOMAIN}</a>
+		</td>
+	</tr>
+	<!-- EDP: user_details -->
 	<!-- EDP: user_entry -->
 	</tbody>
 </table>
