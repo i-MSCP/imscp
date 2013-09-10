@@ -46,7 +46,7 @@
 		<tr>
 			<td>
 				<label for="ndomain_name">{TR_DOMAIN_ALIAS_NAME}</label>
-				<span class="icon i_help" id="dmn_help" title="{TR_DMN_HELP}">Help</span>
+				<span class="icon i_help" id="dmn_help" title="{TR_DMN_HELP}"></span>
 			</td>
 			<td><input name="ndomain_name" id="ndomain_name" type="text" value="{DOMAIN}"/></td>
 		</tr>
