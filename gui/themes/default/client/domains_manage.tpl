@@ -164,7 +164,7 @@
 		<td>{DNS_NAME}</td>
 		<td>{DNS_CLASS}</td>
 		<td>{DNS_TYPE}</td>
-		<td>{DNS_DATA}</td>
+		<td><span title="{LONG_DNS_DATA}">{SHORT_DNS_DATA}</td>
 		<td>
 			<!-- BDP: dns_edit_link -->
 			<a class="icon i_edit" href="{DNS_ACTION_SCRIPT_EDIT}" title="{DNS_ACTION_EDIT}">{DNS_ACTION_EDIT}</a>

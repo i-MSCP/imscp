@@ -40,8 +40,10 @@ GUI:
 	- Fixed: Plugins must be able to short-circuit execution of an event
 	- Fixed: Plugin update must be triggered when plugin configuration is updated
 	- Fixed: Unable to delete plugin in some contexts
+	- Fixed: Show DNS record data as tooltip when their length is too big
 	- Fixed: Wrong placeholders in admin/imscp_debugger.php
 	- Removed: IE6 support
+	- Removed: Tool links from login page
 	- Readded: idna_convert class (more flexible because can operate on arbitrary strings
 	- Updated: Assets are now reachable through the /themes/<theme>/assets path
 	- Updated: Plugin API
