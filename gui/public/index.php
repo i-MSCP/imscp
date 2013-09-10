@@ -122,16 +122,7 @@ if ($cfg->MAINTENANCEMODE && !isset($_REQUEST['admin'])) {
 			'TR_LOGIN' => tr('Login'),
 			'TR_USERNAME' => tr('Username'),
 			'UNAME' => isset($_REQUEST['uname']) ? stripslashes($_REQUEST['uname']) : '',
-			'TR_PASSWORD' => tr('Password'),
-			'TR_PHPMYADMIN' => tr('phpMyAdmin'),
-			'TR_LOGIN_INTO_PMA' => tr('Login into phpMyAdmin'),
-			'TR_FILEMANAGER' => tr('FileManager'),
-			'TR_LOGIN_INTO_WEBMAIL' => tr('Login into the webmail'),
-			'TR_WEBMAIL' => tr('Webmail'),
-			'TR_WEBMAIL_LINK' => '/webmail',
-			'TR_LOGIN_INTO_FMANAGER' => tr('Login into the filemanager'),
-			'TR_FTP_LINK' => '/ftp',
-			'TR_PMA_LINK' => '/pma'
+			'TR_PASSWORD' => tr('Password')
 		)
 	);
 

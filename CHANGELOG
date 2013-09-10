@@ -62,6 +62,7 @@ Tickets:
 	- Fixed #876: Review - Installer - Wildcard should be allowed as part of SQL user hostname
 	- Fixed #883: Defect - Web folders protection option must be automatically disabled and hidden when the immutable flag is not available
 	- Fixed #886: Enhancement - Add SPF Resource Record Type in bind
+	- Fixed #896: Bug - Variable {USERNAME} is not parsed in password email
 
 ------------------------------------------------------------------------------------------------------------------------
 1.1.0-rc3
