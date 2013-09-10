@@ -142,6 +142,13 @@ sub process
 	$rs;
 }
 
+sub restore
+{
+	my $self = shift;
+
+	$self->Modules::Abstract::restore();
+}
+
 sub buildHTTPDData
 {
 	my $self = shift;

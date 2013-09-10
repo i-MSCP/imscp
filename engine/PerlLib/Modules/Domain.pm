@@ -239,7 +239,7 @@ sub restore
 		} elsif(/^.+?\.tar\.(bz2|gz|lzma|xz)$/) { # Restore domain files
 
 			# Since we are now using extended attribute to protect some folders, we must in order do the following to
-			# restore a backup:
+			# restore a backup archive:
 			#
 			# - Update status of sub, als and alssub, entities linked to the parent domain to 'torestore'
 			# - Un-protect user home dir (clear immutable flag recursively)

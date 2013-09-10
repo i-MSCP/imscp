@@ -63,6 +63,7 @@ Tickets:
 	- Fixed #883: Defect - Web folders protection option must be automatically disabled and hidden when the immutable flag is not available
 	- Fixed #886: Enhancement - Add SPF Resource Record Type in bind
 	- Fixed #896: Bug - Variable {USERNAME} is not parsed in password email
+	- Fixed #903: Bug - Domain restore feature is broken
 
 ------------------------------------------------------------------------------------------------------------------------
 1.1.0-rc3
