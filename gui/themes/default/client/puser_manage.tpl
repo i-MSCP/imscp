@@ -1,4 +1,3 @@
-
 <script type="text/javascript">
 	/*<![CDATA[*/
 	function action_delete(url, subject) {
@@ -79,5 +78,5 @@
 </table>
 <!-- EDP: groups_block -->
 <div class="buttons">
-	<a class="link_as_button" href="protected_group_add.php"><{TR_ADD_GROUP}</a>
+	<a class="link_as_button" href="protected_group_add.php">{TR_ADD_GROUP}</a>
 </div>
