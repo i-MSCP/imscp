@@ -360,6 +360,7 @@ sub buildADDONData
 		GROUP => $groupName,
 		HOME_DIR => $homeDir,
 		WEB_DIR => $webDir,
+		FORWARD => (defined $self->{'url_forward'} && $self->{'url_forward'} ne '') ? $self->{'url_forward'} : 'no',
 		WEB_FOLDER_PROTECTION => $self->{'web_folder_protection'}
 	};
 

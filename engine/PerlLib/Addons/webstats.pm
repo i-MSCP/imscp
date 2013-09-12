@@ -145,7 +145,7 @@ sub preaddDmn
 	my $webStatsAddon = $main::imscpConfig{'WEBSTATS_ADDON'};
 	my $rs = 0;
 
-	if($webStatsAddon eq 'Awstats') {
+	if($data->{'FORWARD'} eq 'no' && $webStatsAddon eq 'Awstats') {
 		require Addons::webstats::awstats::awstats;
 		$rs = Addons::webstats::awstats::awstats->getInstance()->preaddDmn($data);
 	}
@@ -169,7 +169,7 @@ sub addDmn
 	my $webStatsAddon = $main::imscpConfig{'WEBSTATS_ADDON'};
 	my $rs = 0;
 
-	if($webStatsAddon eq 'Awstats') {
+	if($data->{'FORWARD'} eq 'no' && $webStatsAddon eq 'Awstats') {
 		require Addons::webstats::awstats::awstats;
 		$rs = Addons::webstats::awstats::awstats->getInstance()->addDmn($data);
 	} else {

@@ -520,6 +520,7 @@ sub buildADDONData
 		GROUP => $groupName,
 		HOME_DIR => $homeDir,
 		WEB_DIR => $homeDir,
+		FORWARD => 'no',
 		WEB_FOLDER_PROTECTION => $self->{'web_folder_protection'}
 	};
 
