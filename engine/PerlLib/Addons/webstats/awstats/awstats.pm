@@ -205,6 +205,54 @@ sub deleteDmn
 	$self->_deleteAwstatsCronTask($data);
 }
 
+=item preaddSub($\data)
+
+ Schedule addition of Apache configuration snipped for Awstats.
+
+ Param HASH reference - A reference to a hash containing domain data
+ Return int - 0 on success, 1 on failure
+
+=cut
+
+sub preaddSub
+{
+	my $self = shift;
+
+	$self->preaddDmn(@_);
+}
+
+=item addSub(\$data)
+
+ Add Awstats configuration file and cron task.
+
+ Param HASH reference - A reference to a hash containing domain data
+ Return int - 0 on success, 1 on failure
+
+=cut
+
+sub addSub
+{
+	my $self = shift;
+
+	$self->addDmn(@_);
+}
+
+=item deleteSub(\$data)
+
+ Delete Awstats configuration.
+
+ Param HASH reference - A reference to a hash containing domain data
+ Return int - 0 on success, 1 on failure
+
+=cut
+
+sub deleteSub
+{
+	my $self = shift;
+
+	$self->deleteDmn(@_);
+}
+
 =back
 
 =head1 PRIVATE METHODS

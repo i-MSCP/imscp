@@ -321,6 +321,34 @@ sub buildNAMEDData
 	0;
 }
 
+sub buildADDONData
+{
+	my $self = shift;
+
+	my $groupName =
+	my $userName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} .
+		($main::imscpConfig{'SYSTEM_USER_MIN_UID'} + $self->{'domain_admin_id'});
+
+	my $homeDir = "$main::imscpConfig{'USER_WEB_DIR'}/$self->{'user_home'}";
+	$homeDir =~ s~/+~/~g;
+	$homeDir =~ s~/$~~g;
+
+	my $webDir = "$homeDir/$self->{'subdomain_alias_mount'}";
+	$webDir =~ s~/+~/~g;
+	$webDir =~ s~/$~~g;
+
+	$self->{'AddonsData'} = {
+		DOMAIN_NAME => $self->{'subdomain_alias_name'} . '.' . $self->{'alias_name'},
+		USER => $userName,
+		GROUP => $groupName,
+		HOME_DIR => $homeDir,
+		WEB_DIR => $homeDir,
+		WEB_FOLDER_PROTECTION => $self->{'web_folder_protection'}
+	};
+
+	0;
+}
+
 sub _getSharedMountPoints
 {
 	my $self = shift;

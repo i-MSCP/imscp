@@ -206,6 +206,51 @@ sub deleteDmn
 	$rs;
 }
 
+=item preaddSub(\$data)
+
+ Process preaddSub tasks.
+
+ Return int 0 on success, other on failure
+
+=cut
+
+sub preaddSub
+{
+	my $self = shift;
+
+	$self->preaddDmn(@_);
+}
+
+=item addSub(\$data)
+
+ Process addSub tasks.
+
+ Return int 0 on success, other on failure
+
+=cut
+
+sub addSub
+{
+	my $self = shift;
+
+	$self->addDmn(@_);
+}
+
+=item deleteSub(\$data)
+
+ Process deleteSub tasks.
+
+ Return int 0 on success, other on failure
+
+=cut
+
+sub deleteSub
+{
+	my $self = shift;
+
+	$self->deleteDmn(@_);
+}
+
 =back
 
 =head1 AUTHOR

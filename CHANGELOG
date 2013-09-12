@@ -22,6 +22,7 @@ ENGINE:
 	- Added: Support for Apache 2.4.x branch
 	- Added: Database connection timeout (3 seconds)
 	- Added: MySQL transaction routines
+	- Added: Webstats support for subodmains
 	- Fixed: Error 500 (Apache) after creation of any protected area
 	- Fixed: MySQL server has gone away
 	- Fixed: Plugin module is broken: Unable to disable, uninstall... any plugin
@@ -64,6 +65,7 @@ Tickets:
 	- Fixed #876: Review - Installer - Wildcard should be allowed as part of SQL user hostname
 	- Fixed #883: Defect - Web folders protection option must be automatically disabled and hidden when the immutable flag is not available
 	- Fixed #886: Enhancement - Add SPF Resource Record Type in bind
+	- Fixed #893: Defect - Webstats for subdomains are not available
 	- Fixed #896: Bug - Variable {USERNAME} is not parsed in password email
 	- Fixed #903: Bug - Domain restore feature is broken
 
