@@ -342,7 +342,7 @@ sub buildADDONData
 		USER => $userName,
 		GROUP => $groupName,
 		HOME_DIR => $homeDir,
-		WEB_DIR => $homeDir,
+		WEB_DIR => $webDir,
 		WEB_FOLDER_PROTECTION => $self->{'web_folder_protection'}
 	};
 
