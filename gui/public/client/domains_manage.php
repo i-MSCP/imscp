@@ -617,8 +617,8 @@ function client_generateCustomDnsRecordsList($tpl, $userId)
 						'DNS_CLASS' => tohtml($stmt->fields['domain_class']),
 						'DNS_TYPE' => tohtml($stmt->fields['domain_type']),
 						'LONG_DNS_DATA' => tohtml($stmt->fields['domain_text']),
-						'SHORT_DNS_DATA' => (strlen($stmt->fields['domain_text']) > 13) ?
-							substr($stmt->fields['domain_text'],0 , 10) . '...' : $stmt->fields['domain_text'],
+						'SHORT_DNS_DATA' => (strlen($stmt->fields['domain_text']) > 20) ?
+							substr($stmt->fields['domain_text'],0 , 17) . '...' : $stmt->fields['domain_text'],
 						'DNS_ACTION_SCRIPT_EDIT' => tohtml($actionScriptEdit),
 						'DNS_ACTION_EDIT' => $actionEdit
 					)
