@@ -165,7 +165,9 @@ sub deleteDmn
 	my $cfgFileName = "$main::imscpConfig{'AWSTATS_CONFIG_DIR'}/awstats.$data->{'DOMAIN_NAME'}.conf";
 	my $wrkFileName = "$self->{'wrkDir'}/awstats.$data->{'DOMAIN_NAME'}.conf";
 
-	my $rs = iMSCP::File->new('filename' => $cfgFileName)->delFile() if -f $cfgFileName;
+	my $rs = 0;
+
+	$rs = iMSCP::File->new('filename' => $cfgFileName)->delFile() if -f $cfgFileName;
 	return $rs if $rs;
 
 	$rs = iMSCP::File->new('filename' => $wrkFileName)->delFile() if -f $wrkFileName;
@@ -177,12 +179,11 @@ sub deleteDmn
 
 		if(-d $userStatisticsDir) {
 			my @awstatsStaticFiles = iMSCP::Dir->new(
-				'dirname' => $userStatisticsDir,
-				'fileType' => '.html'
+				'dirname' => $userStatisticsDir, 'fileType' => '.html'
 			)->getFiles();
 
 			for(@awstatsStaticFiles) {
-				if(/^awstats\.$data->{'DOMAIN_NAME'}\./) {
+				if(/^awstats\.$data->{'DOMAIN_NAME'}\..*?\.html$/) {
 					$rs = iMSCP::File->new('filename' => "$userStatisticsDir/$_")->delFile();
 					return $rs if $rs;
 				}
@@ -197,7 +198,8 @@ sub deleteDmn
 		my @awstatsCacheFiles = iMSCP::Dir->new('dirname' => $awstatsCacheDir, 'fileType' => '.txt')->getFiles();
 
 		for(@awstatsCacheFiles) {
-			$rs = iMSCP::File->new('filename' => "$awstatsCacheDir/$_")->delFile() if /$data->{'DOMAIN_NAME'}\.txt$/;
+			$rs = iMSCP::File->new('filename' => "$awstatsCacheDir/$_")->delFile()
+				if /(?:awstats[0-9]+|dnscachelastupdate)\.$data->{'DOMAIN_NAME'}\.txt$/;
 			return $rs if $rs;
 		}
 	}
@@ -404,8 +406,10 @@ sub _addAwstatsConfig
 	my $cfgFile = "$main::imscpConfig{'AWSTATS_CONFIG_DIR'}/$cfgFileName";
 	my $wrkFile = "$self->{'wrkDir'}/$cfgFileName";
 
+	my $rs = 0;
+
 	# Save current working file if any
-	my $rs = iMSCP::File->new('filename' => $wrkFile)->copyFile("$bkpFile." . time) if -f $wrkFile;
+	$rs = iMSCP::File->new('filename' => $wrkFile)->copyFile("$bkpFile." . time) if -f $wrkFile;
 	return $rs if $rs;
 
 	# Loading template file
