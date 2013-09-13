@@ -126,7 +126,7 @@ sub quotaFiles
 						`alias_status` = 'ok'
 					UNION
 					SELECT
-						CONCAT(`subdomain_name`, '.', `domain_name`) AS domain_name
+						CONCAT(`subdomain_name`, '.', `domain_name`) AS `domain_name`
 					FROM
 						`subdomain`
 					INNER JOIN
@@ -176,10 +176,10 @@ sub quotaFiles
 				if(defined $stdout) {
 					debug($stdout);
 
-					if(/$main::imscpConfig{'USER_WEB_DIR'}/) {
+					if("@{$_}" =~ /$main::imscpConfig{'USER_WEB_DIR'}/) {
 						$stdout =~ /^(\d+)/;
 						$webDiskUsage = ($bsdSystem)
-							? $1 * 1024 # *BSD specific
+							? $1 * 1024 # BSD specific
 							: $1 if $1;
 					} else {
 						$stdout =~ /^(\d+)/;
