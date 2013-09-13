@@ -23,6 +23,8 @@ ENGINE:
 	- Added: Database connection timeout (3 seconds)
 	- Added: MySQL transaction routines
 	- Added: Webstats support for subodmains
+	- Fixed: Both, the domain_disable_page directory and statistics directory must be excluded from disk quota accounting
+	- Fixed: Diskspace not counted for subdomain Maildirs (Disk quota script)
 	- Fixed: Error 500 (Apache) after creation of any protected area
 	- Fixed: MySQL server has gone away
 	- Fixed: Plugin module is broken: Unable to disable, uninstall... any plugin
