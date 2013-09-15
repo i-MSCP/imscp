@@ -1327,11 +1327,11 @@ sub removeSection($$$)
 	$self->{'hooksManager'}->trigger('afterHttpdRemoveSection', $sectionName, $cfgTpl);
 }
 
-=item getTraffic($who)
+=item getTraffic($domainName)
 
- Return traffic consumption for the given domain.
+ Get httpd traffic for the given domain name
 
- Param string $who Traffic log owner name
+ Param string $domainName Domain name for which traffic must be returned
  Return int Traffic in bytes
 
 =cut
@@ -1339,13 +1339,13 @@ sub removeSection($$$)
 sub getTraffic($$)
 {
 	my $self = shift;
-	my $who = shift;
+	my $domainName = shift;
 
-	my $traff = 0;
+	my $traffic = 0;
 	my $trfDir = "$self->{'config'}->{'APACHE_LOG_DIR'}/traff";
 	my ($rv, $rs, $stdout, $stderr);
 
-	$self->{'hooksManager'}->trigger('beforeHttpdGetTraffic', $who);
+	$self->{'hooksManager'}->trigger('beforeHttpdGetTraffic', $domainName);
 
 	unless($self->{'logDb'}) {
 		$self->{'logDb'} = 1;
@@ -1371,20 +1371,20 @@ sub getTraffic($$)
 		}
 	}
 
-	if(-d "$trfDir.old" && -f "$trfDir.old/$who-traf.log") {
-		my $content = iMSCP::File->new('filename' => "$trfDir.old/$who-traf.log")->get();
+	if(-d "$trfDir.old" && -f "$trfDir.old/$domainName-traf.log") {
+		my $content = iMSCP::File->new('filename' => "$trfDir.old/$domainName-traf.log")->get();
 
 		if($content) {
 			my @lines = split("\n", $content);
-			$traff += $_ for @lines;
+			$traffic += $_ for @lines;
 		} else {
-			error("Unable to read $trfDir.old/$who-traf.log");
+			error("Unable to read $trfDir.old/$domainName-traf.log");
 		}
 	}
 
-	$self->{'hooksManager'}->trigger('afterHttpdGetTraffic', $who, $traff);
+	$self->{'hooksManager'}->trigger('afterHttpdGetTraffic', $domainName);
 
-	$traff;
+	$traffic;
 }
 
 =item deleteOldLogs()

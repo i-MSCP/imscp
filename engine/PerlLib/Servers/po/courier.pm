@@ -479,10 +479,11 @@ sub restart
 	$self->{'hooksManager'}->trigger('afterPoRestart');
 }
 
-=item getTraffic()
+=item getTraffic($domainName)
 
- Get server traffic.
+ Get IMAP/POP traffic for the given domain name
 
+ Param string $domainName Domain name for which traffic must be returned
  Return int Server traffic, 0 on failure
 
 =cut
@@ -490,87 +491,85 @@ sub restart
 sub getTraffic
 {
 	my $self = shift;
-	my $who = shift;
+	my $domainName = shift;
+
 	my $dbName = "$self->{'wrkDir'}/log.db";
 	my $logFile = "$main::imscpConfig{'TRAFF_LOG_DIR'}/mail.log";
 	my $wrkLogFile = "$main::imscpConfig{'LOG_DIR'}/mail.po.log";
 	my ($rv, $rs, $stdout, $stderr);
 
-	$self->{'hooksManager'}->trigger('beforePoGetTraffic') and return 0;
+	$self->{'hooksManager'}->trigger('beforePoGetTraffic', $domainName) and return 0;
 
-	# only if files was not aleady parsed this session
+	# We process only if the file has not been aleady parsed during this session
 	unless($self->{'logDb'}) {
-		# use a small conf file to memorize last line readed and his content
+		# We are using a small file to memorize the number of the last line that has been read and his content
 		tie %{$self->{'logDb'}}, 'iMSCP::Config','fileName' => $dbName, noerrors => 1;
 
-		## first use? we zero line and content
 		$self->{'logDb'}->{'line'} = 0 unless $self->{'logDb'}->{'line'};
 		$self->{'logDb'}->{'content'} = '' unless $self->{'logDb'}->{'content'};
+
 		my $lastLineNo = $self->{'logDb'}->{'line'};
 		my $lastLine = $self->{'logDb'}->{'content'};
 
-		# copy log file
-		$rs = iMSCP::File->new(filename => $logFile)->copyFile($wrkLogFile) if -f $logFile;
-		# return 0 traffic if we fail
+		$rs = iMSCP::File->new('filename' => $logFile)->copyFile($wrkLogFile) if -f $logFile;
 		return 0 if $rs;
 
-		# link log file to array
 		require Tie::File;
 		tie my @content, 'Tie::File', $wrkLogFile or return 0;
 
-		# save last line
+		# Saving last line number and content from the current working file
 		$self->{'logDb'}->{'line'} = $#content;
 		$self->{'logDb'}->{'content'} = $content[$#content];
 
-		# test for logratation
+		# Test for logrotation
 		if($content[$lastLineNo] && $content[$lastLineNo] eq $lastLine){
-			## No logratation ocure. We zero already readed files
+			# No logrotation occured. We want parse only new lines so we skip those already processed
 			(tied @content)->defer;
 			@content = @content[$lastLineNo + 1 .. $#content];
 			(tied @content)->flush;
 		}
 
-		# Read log file
+		# Reading log file
 		my $content = iMSCP::File->new(filename => $wrkLogFile)->get() || '';
 
-		#IMAP
-		# Oct 15 12:56:42 daniel imapd: LOGOUT, user=ndmn@test1.eu.bogus, ip=[::ffff:192.168.1.2], headers=0, body=0, rcvd=172, sent=310, time=205
-		# 1   2     3      4      5      6         7                              8                  9         10       11        12        13
-		while($content =~ m/^.*(?:imapd|imapd\-ssl).*user=[^\@]*\@([^,]*),\sip=\[([^\]]+)\],\sheaders=(\d+),\sbody=(\d+),\srcvd=(\d+),\ssent=(\d+),.*$/mg){
-						# date time imap(-ssl)         mailfrom @ domain       ip             headers size      body size  received size   send size      etc
-						#                                             1         2                     3              4         5              6
-			if($2 !~ /localhost|127.0.0.1/) {
-					# $self->{traff}->{$1} += $3 + $4 + $5 + $6;
-					# Why we count only headers and body, not all traffic?!! to be checked
-					$self->{'traff'}->{$1} += $3 + $4
-						if $1 && defined $3 && defined $4 && ($3+$4);
-					debug("Traffic for $1 is $self->{traff}->{$1} (added IMAP traffic: ". ($3 + $4).")")
-						if $1 && defined $3 && defined $4 && ($3+$4);
+		# Important consideration for both IMAP and POP traffic accounting with courier
+		#
+		# Courier distinguishes header, body, received and sent bytes fields. Clearly, header and body fields can be zero
+		# while there is still some traffic. But more importantly, body gives only the bytes of messages sent.
+		#
+		# Here, we want count all traffic so we take sum of the received and sent bytes only.
+
+		# Getting IMAP traffic from working log file
+		#
+		# IMAP traffic line sample
+		#
+		# Oct 15 12:56:42 imscp imapd: LOGOUT, user=user@domain.tld, ip=[::ffff:192.168.1.2], headers=0, body=0, rcvd=172, sent=310, time=205
+		#
+		while($content =~ m/^.*(?:imapd|imapd\-ssl).*user=[^\@]*\@([^,]*),\sip=\[([^\]]+)\],\sheaders=\d+,\sbody=\d+,\srcvd=(\d+),\ssent=(\d+),.*$/gmi) {
+			if(not $2 ~~ ['localhost', '127.0.0.1', '::ffff:127.0.0.1']) {
+				$self->{'traffic'}->{$1} += $3 + $4;
 			}
 		}
 
-		# POP
-		# courierpop3login is for Debian. pop3d for Fedora.
-		# Oct 15 14:54:06 daniel pop3d:     LOGOUT, user=ndmn@test1.eu.bogus, ip=[::ffff:192.168.1.2], port=[41477], top=0, retr=0, rcvd=32, sent=147, time=0, stls=1
-		# Oct 15 14:51:12 daniel pop3d-ssl: LOGOUT, user=ndmn@test1.eu.bogus, ip=[::ffff:192.168.1.2], port=[41254], top=0, retr=496, rcvd=32, sent=672, time=0, stls=1
-		# 1   2     3      4      5           6         7                              8                  9          10       11        12        13
-		while($content =~ m/^.*(?:courierpop3login|pop3d|pop3d-ssl).*user=[^\@]*\@([^,]*),\sip=\[([^\]]+)\].*\stop=(\d+),\sretr=(\d+),\srcvd=(\d+),\ssent=(\d+),.*$/mg){
-						# date time imap(-ssl)                mailfrom @ domain                  ip           top size    retr size   received size   send size      etc
-						#                                              1                         2                3           4            5              6
-			if($2 !~ /localhost|127.0.0.1/) {
-					# $self->{traff}->{$1} += $3 + $4 + $5 + $6;
-					# Why we count some of fields, not all traffic?!! to be checked
-					$self->{'traff'}->{$1} += $4 + $5 + $6
-						if $1 && defined $4 && defined $5 && defined $6 && ($4+$5+$6);
-					debug("Traffic for $1 is $self->{'traff'}->{$1} (added POP traffic: ". ($4 + $5 + $6).")")
-						if $1 && defined $4 && defined $5 && defined $6 && ($4+$5+$6);
+		# Getting POP traffic from working log file
+		#
+		# POP traffic line sample
+		#
+		# Oct 15 14:54:06 imscp pop3d: LOGOUT, user=user@domain.tld, ip=[::ffff:192.168.1.2], port=[41477], top=0, retr=0, rcvd=32, sent=147, time=0, stls=1
+		# Oct 15 14:51:12 imscp pop3d-ssl: LOGOUT, user=user@domain.tld, ip=[::ffff:192.168.1.2], port=[41254], top=0, retr=496, rcvd=32, sent=672, time=0, stls=1
+		#
+		# Note: courierpop3login is for Debian. pop3d for Fedora.
+		#
+		while($content =~ m/^.*(?:courierpop3login|pop3d|pop3d-ssl).*user=[^\@]*\@([^,]*),\sip=\[([^\]]+)\].*\stop=\d+,\sretr=\d+,\srcvd=(\d+),\ssent=(\d+),.*$/gmi) {
+			if(not $2 ~~ ['localhost', '127.0.0.1', '::ffff:127.0.0.1']) {
+				$self->{'traffic'}->{$1} += $3 + $4;
 			}
 		}
 	}
 
-	$self->{'hooksManager'}->trigger('afterPoGetTraffic') and return 0;
+	$self->{'hooksManager'}->trigger('afterPoGetTraffic', $domainName) and return 0;
 
-	$self->{'traff'}->{$who} ? $self->{'traff'}->{$who} : 0;
+	(exists $self->{'traffic'}->{$domainName}) ? $self->{'traffic'}->{$domainName} : 0;
 }
 
 =back

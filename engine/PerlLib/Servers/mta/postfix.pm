@@ -1165,46 +1165,45 @@ sub deleteCatchAll
 sub getTraffic
 {
 	my $self = shift;
-	my $who = shift;
+	my $domainName = shift;
 
 	my $dbName = "$self->{'wrkDir'}/log.db";
 	my $logFile = "$main::imscpConfig{'TRAFF_LOG_DIR'}/mail.log";
 	my $wrkLogFile = "$main::imscpConfig{'LOG_DIR'}/mail.smtp.log";
 	my ($rs, $rv, $stdout, $stderr);
 
-	$self->{'hooksManager'}->trigger('beforeMtaGetTraffic') and return 0;
+	$self->{'hooksManager'}->trigger('beforeMtaGetTraffic', $domainName) and return 0;
 
-	# Only if files was not aleady parsed this session
+	# We process only if the file has not been aleady parsed during this session
 	unless($self->{'logDb'}) {
-		# Use a small conf file to memorize last line readed and his content
+		# We are using a small file to memorize the number of the last line that has been read and his content
 		tie %{$self->{'logDb'}}, 'iMSCP::Config', 'fileName' => $dbName, 'noerrors' => 1;
 
-		# First use? we zero line and content
 		$self->{'logDb'}->{'line'} = 0 unless $self->{'logDb'}->{'line'};
 		$self->{'logDb'}->{'content'} = '' unless $self->{'logDb'}->{'content'};
+
 		my $lastLineNo = $self->{'logDb'}->{'line'};
 		my $lastLine = $self->{'logDb'}->{'content'};
 
-		# Copy log file
 		$rs = iMSCP::File->new('filename' => $logFile)->copyFile($wrkLogFile) if -f $logFile;
-		return 0 if $rs; # return 0 traffic if we fail
+		return 0 if $rs;
 
-		# Link log file to array
 		require Tie::File;
 		tie my @content, 'Tie::File', $wrkLogFile or return 0;
 
-		# save last line
+		# Saving last line number and content from the current working file
 		$self->{'logDb'}->{'line'} = $#content;
 		$self->{'logDb'}->{'content'} = $content[$#content];
 
-		# Test for logratation
+		# Test for logrotation
 		if($content[$lastLineNo] && $content[$lastLineNo] eq $lastLine) {
-			# No logratation ocure. We zero already readed files
+			# No logrotation occured. We want parse only new lines so we skip those already processed
 			(tied @content)->defer;
 			@content = @content[$lastLineNo + 1 .. $#content];
 			(tied @content)->flush;
 		}
 
+		# Create working log file using the maillogconvert.pl utility script
 		$rs = execute(
 			"$main::imscpConfig{'CMD_GREP'} 'postfix' $wrkLogFile | $self->{'config'}->{'CMD_PFLOGSUM'} standard",
 			\$stdout,
@@ -1213,19 +1212,23 @@ sub getTraffic
 		error($stderr) if $stderr && $rs;
 		return 0 if $rs;
 
-		while($stdout =~ m/^[^\s]+\s[^\s]+\s[^\s\@]+\@([^\s]+)\s[^\s\@]+\@([^\s]+)\s([^\s]+)\s([^\s]+)\s[^\s]+\s[^\s]+\s[^\s]+\s(.*)$/mg){
-						 #  date    time    mailfrom @ domain   mailto   @ domain    relay_s   relay_r   SMTP  extinfo  code     size
-						 #                                1                  2         3         4                                 5
-			if($5 ne '?' && $4 !~ /virtual/ && !($3 =~ /localhost|127.0.0.1/ && $4 =~ /localhost|127.0.0.1/)){
-				$self->{'traff'}->{$1} += $5;
-				$self->{'traff'}->{$2} += $5;
+		# Getting SMTP traffic from working log file
+		#
+		# SMTP traffic line sample (as provided by the maillogconvert.pl utility script)
+		#
+		# 2013-09-14 13:23:35 from_user@domain.tld to_user@domain.tld host_from.domain.tld host_to.domain.tld SMTP - 1 626
+		#
+		while($stdout =~ /^[^\s]+\s[^\s]+\s[^\s\@]+\@([^\s]+)\s[^\s\@]+\@([^\s]+)\s([^\s]+)\s([^\s]+)\s[^\s]+\s[^\s]+\s[^\s]+\s(\d+)$/gmi) {
+			if($4 !~ /virtual/ && !($3 =~ /localhost|127.0.0.1/ && $4 =~ /localhost|127.0.0.1/)) {
+				$self->{'traffic'}->{$1} += $5;
+				$self->{'traffic'}->{$2} += $5;
 			}
 		}
 	}
 
-	$self->{'hooksManager'}->trigger('afterMtaGetTraffic') and return 0;
+	$self->{'hooksManager'}->trigger('afterMtaGetTraffic', $domainName) and return 0;
 
-	$self->{'traff'}->{$who} ? $self->{'traff'}->{$who} : 0;
+	(exists $self->{'traffic'}->{$domainName}) ? $self->{'traffic'}->{$domainName} : 0;
 }
 
 END

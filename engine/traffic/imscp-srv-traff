@@ -68,10 +68,10 @@ sub srv_traff_engine
 
 		push_el(\@main::el, 'srv_traff_engine()', 'Starting...');
 
-		$rs = sys_command("export COLUMNS=120;$main::cfg{CMD_IPTABLES} -nvxL IMSCP_INPUT 1>$input_log");
+		$rs = sys_command("export COLUMNS=120;$main::cfg{'CMD_IPTABLES'} -nvxL IMSCP_INPUT 1>$input_log");
 		return $rs if $rs;
 
-		$rs = sys_command("export COLUMNS=120;$main::cfg{CMD_IPTABLES} -nvxL IMSCP_OUTPUT 1>$output_log");
+		$rs = sys_command("export COLUMNS=120;$main::cfg{'CMD_IPTABLES'} -nvxL IMSCP_OUTPUT 1>$output_log");
 		return $rs if $rs;
 
 		my $input_line = get_file($input_log); my @input_rows = split(/\n/, $input_line);
@@ -129,21 +129,22 @@ sub srv_traff_engine
 		# server_traffic and domain_traffic the same
 		$timestamp -= ($timestamp % 1800);
 
-		my $sql = "
-			INSERT INTO `server_traffic` (
-				traff_time, bytes_in, bytes_out, bytes_mail_in, bytes_mail_out, bytes_pop_in, bytes_pop_out,
-				bytes_web_in, bytes_web_out
-			) VALUES (
-				$timestamp, $all_in, $all_out, $smtp_in, $smtp_out, $pop3_in, $pop3_out, $http_in, $http_out
-			)
-		";
-		($rs, $ref) = doSQL($sql);
+		($rs, $ref) = doSQL(
+			'
+				INSERT INTO `server_traffic` (
+					traff_time, bytes_in, bytes_out, bytes_mail_in, bytes_mail_out, bytes_pop_in, bytes_pop_out,
+					bytes_web_in, bytes_web_out
+				) VALUES (
+					$timestamp, $all_in, $all_out, $smtp_in, $smtp_out, $pop3_in, $pop3_out, $http_in, $http_out
+				)
+			'
+		);
 		return $rs if $rs;
 
-		$rs = sys_command("$main::cfg{CMD_IPTABLES} -Z IMSCP_INPUT");
+		$rs = sys_command("$main::cfg{'CMD_IPTABLES'} -Z IMSCP_INPUT");
 		return $rs if $rs;
 
-		$rs = sys_command("$main::cfg{CMD_IPTABLES} -Z IMSCP_OUTPUT");
+		$rs = sys_command("$main::cfg{'CMD_IPTABLES'} -Z IMSCP_OUTPUT");
 		return $rs if $rs;
 
 		push_el(\@main::el, 'srv_traff_engine()', 'Ending...');

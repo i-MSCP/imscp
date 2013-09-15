@@ -159,7 +159,10 @@ sub addUser
 sub getTraffic
 {
 	my $self = shift;
-	my $who = shift;
+	my $domainName = shift;
+
+	$self->{'hooksManager'}->trigger('beforeFtpdGetTraffic', $domainName) and return 0;
+
 	my $trfFile = "$main::imscpConfig{'TRAFF_LOG_DIR'}/$self->{'config'}->{'FTP_TRAFF_LOG'}";
 
 	unless(exists $self->{'logDb'}) {
@@ -173,13 +176,16 @@ sub getTraffic
 
 		if(-f "$trfFile.old") {
 			my $content = iMSCP::File->new('filename' => "$trfFile.old")->get();
-			while($content =~ /^(\d+)\s[^\@]+\@(.*)$/mg){
+
+			while($content =~ /^(\d+)\s[^\@]+\@(.*)$/gm){
 				$self->{'logDb'}->{$2} += $1 if (defined $2 && defined $1);
 			}
 		}
 	}
 
-	$self->{'logDb'}->{$who} ? $self->{'logDb'}->{$who} : 0;
+	$self->{'hooksManager'}->trigger('afterFtpdGetTraffic', $domainName) and return 0;
+
+	(exists $self->{'logDb'}->{$domainName}) ? $self->{'logDb'}->{$domainName} : 0;
 }
 
 END

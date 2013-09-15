@@ -1,11 +1,11 @@
 # Quota
 @daily root umask 027; {QUOTA_ROOT_DIR}/imscp-dsk-quota &>{LOG_DIR}/imscp-dsk-quota.log
 
-# Traffic
-0,30 * * * * root umask 027; {TRAFF_ROOT_DIR}/imscp-srv-traff &>{LOG_DIR}/imscp-srv-traff.log
-0,30 * * * * root umask 027; {TRAFF_ROOT_DIR}/imscp-vrl-traff &>{LOG_DIR}/imscp-vrl-traff.log
+# Traffic accounting
+0,15 * * * * root umask 027; {TRAFF_ROOT_DIR}/imscp-srv-traff &>{LOG_DIR}/imscp-srv-traff.log
+0,15 * * * * root umask 027; {TRAFF_ROOT_DIR}/imscp-vrl-traff &>{LOG_DIR}/imscp-vrl-traff.log
 
-# customer logs
+# Customer logs
 @daily root umask 027; {TOOLS_ROOT_DIR}/imscp-httpd-logs-mngr &>{LOG_DIR}/imscp-httpd-logs-mngr.log
 
 # Backup for all the customers' data depending of the domain properties

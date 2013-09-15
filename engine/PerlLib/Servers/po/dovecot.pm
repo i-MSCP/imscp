@@ -234,83 +234,86 @@ sub restart
 }
 
 
-=item getTraffic()
+=item getTraffic($domainName)
 
- Get server traffic.
+ Get IMAP/POP traffic for the given domain name.
 
- Return int Traffic amount, 0 on failure
+ Param string $domainName Domain name for which traffic must be returned
+ Return int Traffic amount (BytesIn+BytesOut) in bytes, 0 on failure
 
 =cut
 
 sub getTraffic
 {
 	my $self = shift;
-	my $who = shift;
+	my $domainName = shift;
+
 	my $dbName = "$self->{'wrkDir'}/log.db";
 	my $logFile = "$main::imscpConfig{'TRAFF_LOG_DIR'}/mail.log";
 	my $wrkLogFile = "$main::imscpConfig{'LOG_DIR'}/mail.po.log";
 	my ($rv, $rs, $stdout, $stderr);
 
-	$self->{'hooksManager'}->trigger('beforePoGetTraffic') and return 0;
+	$self->{'hooksManager'}->trigger('beforePoGetTraffic', $domainName) and return 0;
 
-	# only if files was not already parsed this session
-	unless($self->{'logDb'}){
-		# use a small conf file to memorize last line readed and his content
+	# We process only if the file has not been aleady parsed during this session
+	unless($self->{'logDb'}) {
+		# We are using a small file to memorize the number of the last line that has been read and his content
 		tie %{$self->{'logDb'}}, 'iMSCP::Config','fileName' => $dbName, noerrors => 1;
 
-		# first use? we zero line and content
 		$self->{'logDb'}->{'line'} = 0 unless $self->{'logDb'}->{'line'};
 		$self->{'logDb'}->{'content'} = '' unless $self->{'logDb'}->{'content'};
+
 		my $lastLineNo = $self->{'logDb'}->{'line'};
 		my $lastLine = $self->{'logDb'}->{'content'};
 
-		# copy log file
-		$rs = iMSCP::File->new(filename => $logFile)->copyFile($wrkLogFile) if -f $logFile;
-		# return 0 traffic if we fail
-		return 0 if $rs;
+		$rs = iMSCP::File->new('filename' => $logFile)->copyFile($wrkLogFile) if -f $logFile;
+		return 1 if $rs;
 
-		# link log file to array
 		tie my @content, 'Tie::File', $wrkLogFile or return 0;
 
-		# save last line
+		# Saving last line number and content from the current working file
 		$self->{'logDb'}->{'line'} = $#content;
 		$self->{'logDb'}->{'content'} = $content[$#content];
 
-		# test for logratation
+		# Test for logrotation
 		if($content[$lastLineNo] && $content[$lastLineNo] eq $lastLine){
-			## No logratation ocure. We zero already readed files
+			# No logrotation occured. We want parse only new lines so we skip those already processed
 			(tied @content)->defer;
 			@content = @content[$lastLineNo + 1 .. $#content];
 			(tied @content)->flush;
 		}
 
-		# Read log file
-		my $content = iMSCP::File->new(filename => $wrkLogFile)->get() || '';
+		# Reading log file
+		my $content = iMSCP::File->new('filename' => $wrkLogFile)->get() || '';
 
-		# IMAP
-		# Oct 15 13:50:31 daniel dovecot: imap(ndmn@test1.eu.bogus): Disconnected: Logged out bytes=235/1032
-		# 1   2     3      4      5                6                      7          8    9      10
-		while($content =~ m/^.*imap\([^\@]+\@([^\)]+).*Logged out bytes=(\d+)\/(\d+)$/mg){
-					# date time   mailfrom @ domain                    size / size
-					#                           1                       2       3
-			$self->{'traff'}->{$1} += $2 + $3 if $1 && defined $2 && defined $3 && ($2+$3);
-			debug("Traffic for $1 is $self->{'traff'}->{$1} (added IMAP traffic: ". ($2 + $3).")") if $1 && defined $2 && defined $3 && ($2+$3);
+		# Getting IMAP traffic from working log file
+		#
+		# IMAP traffic line sample (< Dovecot 1.2.1)
+		#
+		# Sep 13 20:11:27 imscp dovecot: IMAP(user@domain.tld): Disconnected: Logged out bytes=244/850
+		#
+		# IMAP traffuc line sample (>= Dovecot 1.2.1)
+		#
+		# Sep 13 22:06:09 imscp dovecot: imap(user@domain.tld): Disconnected: Logged out in=244 out=858
+		#
+		while($content =~ /^.*imap\([^\@]+\@([^\)]+)\):\sDisconnected:.*(?:bytes|in)=(\d+)(?:\/|\sout=)(\d+)$/gmi) {
+			$self->{'traffic'}->{$1} += $2 + $3;
 		}
 
-		# POP
-		# Oct 15 14:23:39 daniel dovecot: pop3(ndmn@test1.eu.bogus): Disconnected: Logged out top=0/0, retr=1/533, del=0/1, size=517
-		# 1   2     3      4      5                6                      7          8    9      10       11        12       13
-		while($content =~ m/^.*pop3\([^\@]+\@([^\)]+).*Logged out .* retr=(\d+)\/(\d+).*$/mg){
-					# date time   mailfrom @ domain                    size / size
-					#                           1                       2       3
-			$self->{'traff'}->{$1} += $2 + $3 if $1 && defined $2 && defined $3 && ($2+$3);
-			debug("Traffic for $1 is $self->{'traff'}->{$1} (added POP traffic: ". ($2 + $3).")") if $1 && defined $2 && defined $3 && ($2+$3);
+		# Getting POP traffic from working log file
+		#
+		# POP traffic Line sample
+		#
+		# Sep 13 20:14:16 imscp dovecot: POP3(user@domain.tld): Disconnected: Logged out top=1/3214, retr=0/0, del=0/1, size=27510
+		#
+		while($content =~ /^.*pop3\([^\@]+\@([^\)]+)\):\sDisconnected:.*retr=(\d+)\/(\d+).*$/gmi) {
+			$self->{'traffic'}->{$1} += $2 + $3;
 		}
 	}
 
-	$self->{'hooksManager'}->trigger('afterPoGetTraffic') and return 0;
+	$self->{'hooksManager'}->trigger('afterPoGetTraffic', $domainName) and return 0;
 
-	$self->{'traff'}->{$who} ? $self->{'traff'}->{$who} : 0;
+	(exists $self->{'traffic'}->{$domainName}) ? $self->{'traffic'}->{$domainName} : 0;
 }
 
 =back

@@ -17,11 +17,11 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
-# @category		i-MSCP
-# @copyright	2010-2013 by i-MSCP | http://i-mscp.net
-# @author		Daniel Andreca <sci2tech@gmail.com>
-# @link			http://i-mscp.net i-MSCP Home Site
-# @license		http://www.gnu.org/licenses/gpl-2.0.html GPL v2
+# @category    i-MSCP
+# @copyright   2010-2013 by i-MSCP | http://i-mscp.net
+# @author      Daniel Andreca <sci2tech@gmail.com>
+# @link        http://i-mscp.net i-MSCP Home Site
+# @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
 use strict;
 use warnings;
@@ -42,136 +42,164 @@ newDebug('imscp-vrl-traff.log');
 
 silent(1);
 
-sub traff_start_up
+sub startUp
 {
 	umask(027);
 
 	iMSCP::Boot->getInstance()->boot({ 'nolock' => 'yes', 'config_readonly' => 'yes' });
 
+	# Getting server list
 	@{$main::Servers} = iMSCP::Servers->getInstance()->get();
 
 	0;
 }
 
-sub traff_count
+sub process
 {
 	my $rs = 0;
 	my $timestamp = time;
-	my %traff;
+	my %traffic;
 
-	# timestamp has floor down for the last half'n our to make timestamps in
-	# server_traffic and domain_traffic the same
+	# timestamp has floor down for the last half'n our to make timestamps in server_traffic and domain_traffic the same
 	$timestamp = $timestamp - ($timestamp % 1800);
 
-	my $sql = "
-		SELECT `domain_id`, `domain_name`, 'domain' AS `type` FROM `domain`
-		UNION
-		SELECT `domain_id`, `alias_name`, 'domain_aliasses' AS `type` FROM `domain_aliasses`
-		UNION
-		SELECT `domain_id`, CONCAT(`subdomain_name`, '.', `domain_name`), 'subdomain' AS `type` FROM `subdomain` LEFT JOIN `domain` USING (`domain_id`)
-		UNION
-		SELECT `domain_id`, CONCAT(`subdomain_alias_name`, '.', `alias_name`), 'subdomain_alias' AS `type` FROM `subdomain_alias` LEFT JOIN `domain_aliasses` USING (`alias_id`)
-	";
-	my $rdata = iMSCP::Database->new()->factory()->doQuery('domain_name', $sql);
+	my $database = iMSCP::Database->new()->factory();
 
-	if (ref $rdata ne 'HASH'){
-		error($rdata);
-		iMSCP::Mail->new()->errmsg($rdata);
+	# Getting list of all domains (dmn|sub|als|alssub)
+	my $domains = $database->doQuery(
+		'domain_name',
+		"
+			SELECT
+				`domain_id`, `domain_name`
+			FROM
+				`domain`
+			UNION
+			SELECT
+				`domain_id`, `alias_name`
+			FROM
+				`domain_aliasses`
+			UNION
+			SELECT
+				`domain_id`, CONCAT(`subdomain_name`, '.', `domain_name`)
+			FROM
+				`subdomain`
+			LEFT JOIN
+				`domain` USING (`domain_id`)
+			UNION
+			SELECT
+				`domain_id`, CONCAT(`subdomain_alias_name`, '.', `alias_name`)
+			FROM
+				`subdomain_alias`
+			LEFT JOIN
+				`domain_aliasses` USING (`alias_id`)
+		"
+	);
+	unless (ref $domains eq 'HASH') {
+		error($domains);
+		iMSCP::Mail->new()->errmsg($domains);
 		$rs = 1;
-	} else {
+	} elsif(%{$domains}) {
+		# For each domain (dmn|sub|als|alssub)
+		for (keys %{$domains}) {
+			my $domainName = $_;
+			my $domainId = $domains->{$_}->{'domain_id'};
 
-		for (keys %$rdata) {
-
-			my $domain_name = $rdata->{$_}->{'domain_name'};
-			my $domain_id = $rdata->{$_}->{'domain_id'};
-			my $type = $rdata->{$_}->{'type'};
-			my $traffic = 0;
-
-			for(@{$main::Servers}) {
+			# For each server (ftpd|httpd|mta|po)
+			for (@{$main::Servers}) {
 				s/\.pm//;
 				my $file = "Servers/$_.pm";
 				my $class = "Servers::$_";
+
 				require $file;
 				my $instance = $class->factory();
-				if($instance->can('getTraffic')) {
-					debug("Calling the $_ server getTraffic() method for $domain_name");
-					$traff{$domain_id}->{$_} += $instance->getTraffic($domain_name);
-				} else {
-					debug("i-MSCP $_ server doesn't implement the getTraffic() method");
-				}
 
-				debug("Traffic for $type $domain_name for $_ is $traff{$domain_id}->{$_}") if exists $traff{$domain_id}->{$_};
+				if($instance->can('getTraffic')) {
+					debug("Calling $_\::getTraffic() method for $domainName");
+					$traffic{$domainId}->{$_} = $instance->getTraffic($domainName);
+
+					print "$_ traffic for $domainName is: $traffic{$domainId}->{$_} bytes\n";
+				}
 			}
 		}
-	}
 
-	for(keys %traff) {
-		next unless $traff{$_}->{'httpd'} || $traff{$_}->{'ftpd'} || $traff{$_}->{'mta'} || $traff{$_}->{'po'};
+		if(%traffic) {
+			for (keys %traffic) {
+				next unless
+					exists $traffic{$_}->{'httpd'} ||
+					exists $traffic{$_}->{'ftpd'} ||
+					exists $traffic{$_}->{'mta'} ||
+					exists $traffic{$_}->{'po'};
 
-		$sql = "
-			SELECT
-				`dtraff_id`
-			FROM
-				`domain_traffic`
-			WHERE
-				`domain_id` = ?
-			AND
-				`dtraff_time` >= UNIX_TIMESTAMP(CURRENT_DATE())
-			LIMIT 1
-		";
-		my $result = iMSCP::Database->new()->factory()->doQuery('dtraff_id', $sql, $_);
-
-		if (ref $result ne 'HASH'){
-			error($result);
-			iMSCP::Mail->new()->errmsg($result);
-			$rs = 1;
-		} else {
-			unless (scalar keys %{$result}) {
-				$sql = "
-					INSERT INTO
-						`domain_traffic`
-					(
-						`domain_id`, `dtraff_time`, `dtraff_web`, `dtraff_ftp`, `dtraff_mail`, `dtraff_pop`
-					) VALUES (
-						?, ?, ?, ?, ?, ?
-					)
-				";
-				$result = iMSCP::Database->new()->factory()->doQuery(
-					'update', $sql, $_, $timestamp,
-					exists $traff{$_}->{'httpd'} ? $traff{$_}->{'httpd'} : 0,
-					exists $traff{$_}->{'ftpd'} ? $traff{$_}->{'ftpd'} : 0,
-					exists $traff{$_}->{'mta'} ? $traff{$_}->{'mta'} : 0,
-					exists $traff{$_}->{'po'} ? $traff{$_}->{'po'} : 0
+				my $result = iMSCP::Database->new()->factory()->doQuery(
+					'dtraff_id',
+					'
+						SELECT
+							`dtraff_id`
+						FROM
+							`domain_traffic`
+						WHERE
+							`domain_id` = ?
+						AND
+							`dtraff_time` >= UNIX_TIMESTAMP(CURRENT_DATE())
+						LIMIT 1
+					',
+					$_
 				);
-				if (ref $result ne 'HASH'){
+				unless (ref $result eq 'HASH') {
 					error($result);
 					iMSCP::Mail->new()->errmsg($result);
 					$rs = 1;
-				}
-			} else {
-				$sql = "
-					UPDATE
-						`domain_traffic`
-					SET
-						`dtraff_web` = `dtraff_web` + ?, `dtraff_ftp` = `dtraff_ftp` + ?,
-						`dtraff_mail` = `dtraff_mail` + ?, `dtraff_pop` = `dtraff_pop` + ?, `dtraff_time` = ?
-					WHERE
-						`domain_id` = ?
-					AND
-						`dtraff_id` = ?
-				";
-				$result = iMSCP::Database->new()->factory()->doQuery(
-					'update', $sql,
-					exists $traff{$_}->{'httpd'} ? $traff{$_}->{'httpd'} : 0,
-					exists $traff{$_}->{'ftpd'} ? $traff{$_}->{'ftpd'} : 0,
-					exists $traff{$_}->{'mta'} ? $traff{$_}->{'mta'} : 0,
-					exists $traff{$_}->{'po'} ? $traff{$_}->{'po'} : 0,
-					$timestamp, $_, (keys %{$result})[0]
-				);
-				if (ref $result ne 'HASH'){
-					error($result);
-					iMSCP::Mail->new()->errmsg($result);
-					$rs = 1;
+				} else {
+					unless (%{$result}) {
+						$result = $database->doQuery(
+							'insert',
+							'
+								INSERT INTO `domain_traffic` (
+									`domain_id`, `dtraff_time`, `dtraff_web`, `dtraff_ftp`, `dtraff_mail`, `dtraff_pop`
+								) VALUES (
+									?, ?, ?, ?, ?, ?
+								)
+							',
+							$_,
+							$timestamp,
+							exists $traffic{$_}->{'httpd'} ? $traffic{$_}->{'httpd'} : 0,
+							exists $traffic{$_}->{'ftpd'} ? $traffic{$_}->{'ftpd'} : 0,
+							exists $traffic{$_}->{'mta'} ? $traffic{$_}->{'mta'} : 0,
+							exists $traffic{$_}->{'po'} ? $traffic{$_}->{'po'} : 0
+						);
+						unless (ref $result eq 'HASH'){
+							error($result);
+							iMSCP::Mail->new()->errmsg($result);
+							$rs = 1;
+						}
+					} else {
+						$result = $database->doQuery(
+							'update',
+							'
+								UPDATE
+									`domain_traffic`
+								SET
+									`dtraff_web` = `dtraff_web` + ?, `dtraff_ftp` = `dtraff_ftp` + ?,
+									`dtraff_mail` = `dtraff_mail` + ?, `dtraff_pop` = `dtraff_pop` + ?, `dtraff_time` = ?
+								WHERE
+									`domain_id` = ?
+								AND
+									`dtraff_id` = ?
+                        	',
+							exists $traffic{$_}->{'httpd'} ? $traffic{$_}->{'httpd'} : 0,
+							exists $traffic{$_}->{'ftpd'} ? $traffic{$_}->{'ftpd'} : 0,
+							exists $traffic{$_}->{'mta'} ? $traffic{$_}->{'mta'} : 0,
+							exists $traffic{$_}->{'po'} ? $traffic{$_}->{'po'} : 0,
+							$timestamp,
+							$_,
+							(keys %{$result})[0]
+						);
+						unless (ref $result eq 'HASH'){
+							error($result);
+							iMSCP::Mail->new()->errmsg($result);
+							$rs = 1;
+						}
+					}
 				}
 			}
 		}
@@ -180,7 +208,9 @@ sub traff_count
 	$rs;
 }
 
-my $rs = 0;
+# Main program
 
-exit 1 if traff_start_up();
-exit traff_count();
+my $rs = startUp();
+$rs ||= process();
+
+exit $rs;
