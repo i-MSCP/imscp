@@ -20,6 +20,7 @@
 # @category    i-MSCP
 # @copyright   2010-2013 by i-MSCP | http://i-mscp.net
 # @author      Daniel Andreca <sci2tech@gmail.com>
+# @author      Laurent Declercq <l.declercq@nuxwin.com>
 # @link        http://i-mscp.net i-MSCP Home Site
 # @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
@@ -114,10 +115,8 @@ sub process
 				my $instance = $class->factory();
 
 				if($instance->can('getTraffic')) {
-					debug("Calling $_\::getTraffic() method for $domainName");
+					debug("Calling Servers::$_\::getTraffic() method for $domainName");
 					$traffic{$domainId}->{$_} = $instance->getTraffic($domainName);
-
-					print "$_ traffic for $domainName is: $traffic{$domainId}->{$_} bytes\n";
 				}
 			}
 		}

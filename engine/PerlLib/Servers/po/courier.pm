@@ -481,7 +481,7 @@ sub restart
 
 =item getTraffic($domainName)
 
- Get IMAP/POP traffic for the given domain name
+ Get IMAP/POP traffic for the given domain name.
 
  Param string $domainName Domain name for which traffic must be returned
  Return int Server traffic, 0 on failure
