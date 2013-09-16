@@ -50,32 +50,30 @@ function client_getMailAccountData($mailAccountId)
 	static $mailAccountData = NULL;
 
 	if (null === $mailAccountData) {
-		$domainProperties = get_domain_default_props($_SESSION['user_id']);
+		$dmnProps = get_domain_default_props($_SESSION['user_id']);
 
 		$query = '
 			SELECT
 				`t1`.*, t2.`domain_id`
 			FROM
-				`mail_users` `t1`, `domain` `t2`
+				`mail_users` AS `t1`, `domain` AS `t2`
 			WHERE
 				`t1`.`mail_id` = ?
 			AND
 				`t2`.`domain_id` = t1.`domain_id`
 			AND
-				`t2`.`domain_name` = ?
+				`t2`.`domain_id` = ?
 		';
-		$stmt = exec_query($query, array($mailAccountId, $domainProperties['domain_name']));
+		$stmt = exec_query($query, array($mailAccountId, $dmnProps['domain_id']));
 
 		if ($stmt->rowCount()) {
 			$mailAccountData = $stmt->fetchRow();
 		} else {
-			set_page_message(tr('Email account not found.'), 'error');
-			redirectTo('mail_accounts.php');
+			showBadRequestErrorPage();
 		}
 
 		if (strpos($mailAccountData['mail_type'], '_mail') === false) {
-			set_page_message(tr('This type of account does not have quota.'), 'error');
-			redirectTo('mail_accounts.php');
+			showBadRequestErrorPage();
 		} else {
 			return $mailAccountData;
 		}
@@ -97,21 +95,21 @@ function client_UpdateMailAccount($mailAccountData)
 	$quotaUpdate = 0;
 
 	if (!empty($_POST['quota']) || $_POST['quota'] == 0) {
-		if ($_POST['quota'] != floor($mailAccountData['quota'] / 1024 / 1024)) {
-			if (is_numeric($_POST['quota'])) {
+		if(is_numeric($_POST['quota'])) {
+			if ($_POST['quota'] != floor($mailAccountData['quota'] / 1024 / 1024)) {
 				$quotaUpdate = 1;
 				$quotaValue = $_POST['quota'] * 1024 * 1024;
-			} else {
-				set_page_message(tr('Quota must be a number'), 'error');
-				return false;
 			}
+		} else {
+			set_page_message(tr('Quota must be a number'), 'error');
+			return false;
 		}
 	} else {
-		set_page_message(tr('Quota must have a value'), 'error');
+		set_page_message(tr('Missing value for quota field'), 'error');
 		return false;
 	}
 
-	if ($quotaUpdate != 0) {
+	if ($quotaUpdate) {
 		iMSCP_Events_Manager::getInstance()->dispatch(
 			iMSCP_Events::onBeforeEditMail, array('mailId' => $mailAccountData['mail_id'])
 		);
@@ -123,8 +121,8 @@ function client_UpdateMailAccount($mailAccountData)
 			iMSCP_Events::onAfterEditMail, array('mailId' => $mailAccountData['mail_id'])
 		);
 
-		set_page_message(tr('Email account quota updated.'), 'success');
-		write_log("{$_SESSION['user_logged']}: updated email quota: {$mailAccountData['mail_addr']}", E_USER_NOTICE);
+		set_page_message(tr('Quota successfully updated.'), 'success');
+		write_log("{$_SESSION['user_logged']} updated quota for: {$mailAccountData['mail_addr']}", E_USER_NOTICE);
 		return true;
 	}
 
@@ -145,7 +143,7 @@ function client_generateQuotaForm($tpl, $mailAccountData)
 		array(
 			'MAIL_ID_VAL' => $mailAccountData['mail_id'],
 			'MAIL_ADDRESS_VAL' => tohtml($mailAccountData['mail_addr']),
-			'TR_MAIL_ACCOUNT' => tr('Email account'),
+			'TR_MAIL_ACCOUNT' => tr('Email account')
 		)
 	);
 }
@@ -183,8 +181,12 @@ if (isset($_GET['id'])) {
 	);
 
 	client_generateQuotaForm($tpl, $mailAccountData);
-	//We have the data in db in MB, hence the conversion
-	$quotaValue = floor($mailAccountData['quota'] / 1024 / 1024);
+	if($mailAccountData['quota'] != 0) {
+		// Quota are stored in bytes in database. Convert to MiB
+		$quotaValue = floor($mailAccountData['quota'] / 1024 / 1024);
+	} else {
+		$quotaValue = $mailAccountData['quota'];
+	}
 
 	$tpl->assign(
 		array(
