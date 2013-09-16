@@ -1,6 +1,6 @@
 
 <form name="reseller_delete_customer_frm" method="post" action="user_delete.php">
-	<table>
+	<table class="firstColFixed">
 		<thead>
 		<tr>
 			<th colspan="2">{TR_ACCOUNT_SUMMARY}</th>
@@ -45,7 +45,7 @@
 		</tr>
 		<!-- BDP: mail_item -->
 		<tr>
-			<td style="width:300px">{MAIL_ADDR}</td>
+			<td>{MAIL_ADDR}</td>
 			<td>{MAIL_TYPE}</td>
 		</tr>
 		<!-- EDP: mail_item -->

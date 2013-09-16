@@ -1,6 +1,6 @@
 
 <form name="client_personal_change_frm" method="post" action="personal_change.php">
-	<table>
+	<table class="firstColFixed">
 		<thead>
 		<tr>
 			<th colspan="2">{TR_PERSONAL_DATA}</th>
@@ -8,7 +8,7 @@
 		</thead>
 		<tbody>
 		<tr>
-			<td style="width:300px;"><label for="fname">{TR_FIRST_NAME}</label></td>
+			<td><label for="fname">{TR_FIRST_NAME}</label></td>
 			<td><input id="fname" name="fname" type="text" value="{FIRST_NAME}"/></td>
 		</tr>
 		<tr>

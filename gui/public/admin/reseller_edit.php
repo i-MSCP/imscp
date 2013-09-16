@@ -338,7 +338,6 @@ function _admin_generateFeaturesForm($tpl, &$data)
 			'SUPPORT_SYSTEM_NO' => ($data['support_system'] != 'yes') ? $htmlChecked : '',
 
 			'TR_PHP_INI_PERMISSION_HELP' => tr('Yes means that the reseller can allow his customers to edit this directive'),
-			'TR_HELP' => tr('Help'),
 			'TR_YES' => tr('Yes'),
 			'TR_NO' => tr('No'),
 			'TR_MIB' => tr('MiB'),

@@ -1,7 +1,7 @@
 
 <form name="sql_add_user_frm" method="post" action="sql_user_add.php">
 	<!-- BDP: show_sqluser_list -->
-	<table>
+	<table class="firstColFixed">
 		<thead>
 		<tr>
 			<th colspan="2">{TR_ASSIGN_EXISTING_SQL_USER}</th>
@@ -9,7 +9,7 @@
 		</thead>
 		<tbody>
 		<tr>
-			<td style="width: 300px;"><label for="sqluser_id">{TR_SQL_USER_NAME}</label></td>
+			<td><label for="sqluser_id">{TR_SQL_USER_NAME}</label></td>
 			<td>
 				<select name="sqluser_id" id="sqluser_id">
 					<!-- BDP: sqluser_list -->
@@ -43,7 +43,7 @@
 		<tr>
 			<td>
 				<!-- BDP: mysql_prefix_yes -->
-				<input type="checkbox" name="use_dmn_id" {USE_DMN_ID} />
+				<label><input type="checkbox" name="use_dmn_id" {USE_DMN_ID} /></label>
 				<!-- EDP: mysql_prefix_yes -->
 				<!-- BDP: mysql_prefix_no -->
 				<input type="hidden" name="use_dmn_id" value="on"/>

@@ -22,7 +22,7 @@
 			show: 'slide',
 			focus: false,
 			autoOpen: false,
-			width: 600,
+			width: 650,
 			modal: true,
 			buttons: { '{TR_CLOSE}': function(){ $(this).dialog('close'); } }
 		});

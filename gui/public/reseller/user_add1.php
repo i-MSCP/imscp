@@ -161,56 +161,43 @@ function reseller_generateHostingPlanList($tpl, $resellerId)
 	if (isset($cfg->HOSTING_PLANS_LEVEL) && $cfg->HOSTING_PLANS_LEVEL == 'admin') {
 		$query = "
 			SELECT
-				`t1`.`id`, `t1`.`reseller_id`, `t1`.`name`, `t1`.`props`, `t1`.`status`, `t2`.`admin_id`,
-				`t2`.`admin_type`
+				`t1`.`id`, `t1`.`name`
 			FROM
-				`hosting_plans` `t1`, `admin` `t2`
+				`hosting_plans` AS `t1`
+			LEFT JOIN
+				`admin` AS `t2` ON(`t1`.`reseller_id` = `t2`.`admin_id`)
 			WHERE
 				`t2`.`admin_type` = ?
 			AND
-				`t1`.`reseller_id` = `t2`.`admin_id`
-			AND
-				`t1`.`status` = 1
+				`t1`.`status` = ?
 			ORDER BY
 				`t1`.`name`
 		";
-		$stmt = exec_query($query, 'admin');
+		$stmt = exec_query($query, array('admin', '1'));
 
-		$tpl->assign('CUSTOMIZE_HOSTING_PLAN_BLOCK', '');
+		$tpl->assign('CUSTOMIZE_HOSTING_PLAN_BLOCK', ''); // Hosting plan created by administrators can't be customized
 
 		if (!$stmt->rowCount()) {
 			set_page_message(tr('No hosting plan available. Please contact your administrator.'), 'error');
 			$tpl->assign('ADD_CUSTOMER_BLOCK', '');
 		}
 	} else {
-		$query = "SELECT `id`, `name`, `props`, `status` FROM `hosting_plans` WHERE `reseller_id` = ? ORDER BY `name`";
-		$stmt = exec_query($query, $resellerId);
+		$query = "SELECT `id`, `name` FROM `hosting_plans` WHERE `reseller_id` = ? AND `status` = ? ORDER BY `name`";
+		$stmt = exec_query($query, array($resellerId, '1'));
 	}
 
 	if ($stmt->rowCount()) {
-		$hasHostingPlan = false;
-
 		while (($data = $stmt->fetchRow())) {
-			list(, , , , , , , , , , , , $aps) = explode(';', $data['props']);
+			$hpId = isset($_POST['dmn_tpl']) ? $_POST['dmn_tpl'] : '';
+			$tpl->assign(
+				array(
+					'HP_NAME' => tohtml($data['name']),
+					'HP_ID' => $data['id'],
+					'HP_SELECTED' => ($data['id'] == $hpId) ? $cfg->HTML_SELECTED : ''
+				)
+			);
 
-			if ($aps == '_no_' || $aps == '' || ($aps == '_yes_' && resellerHasFeature('aps'))) {
-				$hasHostingPlan = true;
-				$hpId = isset($_POST['dmn_tpl']) ? $_POST['dmn_tpl'] : $data['id'];
-				$tpl->assign(
-					array(
-						'HP_NAME' => tohtml($data['name']),
-						'HP_ID' => $data['id'],
-						'HP_SELECTED' => ($data['id'] == $hpId) ? $cfg->HTML_SELECTED : ''
-					)
-				);
-
-				$tpl->parse('HOSTING_PLAN_ENTRY_BLOCK', '.hosting_plan_entry_block');
-			}
-		}
-
-		if (!$hasHostingPlan) {
-			set_page_message(tr('No hosting plan available. Please contact your administrator.'), 'error');
-			$tpl->assign('ADD_CUSTOMER_BLOCK', '');
+			$tpl->parse('HOSTING_PLAN_ENTRY_BLOCK', '.hosting_plan_entry_block');
 		}
 	} else {
 		$tpl->assign('HOSTING_PLAN_ENTRIES_BLOCK', '');
@@ -262,8 +249,7 @@ $tpl->assign(
 		'TR_YES' => tr('yes'),
 		'TR_NO' => tr('no'),
 		'TR_NEXT_STEP' => tr('Next step'),
-		'TR_DMN_HELP' => tr("You must omit 'www'. It will be added automatically."),
-		'TR_HELP' => tr('Help')
+		'TR_DMN_HELP' => tr("You must omit 'www'. It will be added automatically.")
 	)
 );
 

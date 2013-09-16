@@ -94,14 +94,21 @@ function get_init_au2_page($tpl, $phpini)
 	$tplVars['VL_PHPN'] = ($php == '_no_') ? $htmlChecked : '';
 	$tplVars['VL_CGIY'] = ($cgi == '_yes_') ? $htmlChecked : '';
 	$tplVars['VL_CGIN'] = ($cgi == '_no_') ? $htmlChecked : '';
-	$tplVars['VL_BACKUPD'] = ($backup == '_dmn_') ? $htmlChecked : '';
-	$tplVars['VL_BACKUPS'] = ($backup == '_sql_') ? $htmlChecked : '';
-	$tplVars['VL_BACKUPF'] = ($backup == '_full_') ? $htmlChecked : '';
-	$tplVars['VL_BACKUPN'] = ($backup == '_no_') ? $htmlChecked : '';
 	$tplVars['VL_DNSY'] = ($dns == '_yes_') ? $htmlChecked : '';
 	$tplVars['VL_DNSN'] = ($dns == '_no_') ? $htmlChecked : '';
-	$tplVars['VL_SOFTWAREY'] = ($aps == '_yes_') ? $htmlChecked : '';
-	$tplVars['VL_SOFTWAREN'] = ($aps == '_no_') ? $htmlChecked : '';
+
+
+	if(resellerHasFeature('aps')) {
+		$tplVars['VL_SOFTWAREY'] = ($aps == '_yes_') ? $htmlChecked : '';
+		$tplVars['VL_SOFTWAREN'] = ($aps == '_no_') ? $htmlChecked : '';
+	}
+
+	if(resellerHasFeature('backup')) {
+		$tplVars['VL_BACKUPD'] = ($backup == '_dmn_') ? $htmlChecked : '';
+		$tplVars['VL_BACKUPS'] = ($backup == '_sql_') ? $htmlChecked : '';
+		$tplVars['VL_BACKUPF'] = ($backup == '_full_') ? $htmlChecked : '';
+		$tplVars['VL_BACKUPN'] = ($backup == '_no_') ? $htmlChecked : '';
+	}
 
 	if($cfg->WEB_FOLDER_PROTECTION) {
 		$tplVars['VL_WEB_FOLDER_PROTECTION_YES'] = ($webFolderProtection == '_yes_') ? $htmlChecked : '';
@@ -208,9 +215,6 @@ function reseller_getHostingPlanData($hpid, $resellerId, $phpini)
 	global $hpName, $php, $cgi, $sub, $als, $mail, $ftp, $sqlDb, $sqlUser, $traffic, $diskSpace, $backup, $dns, $aps,
 		$extMailServer, $webFolderProtection;
 
-	/** @var iMSCP_Config_Handler_File $cfg */
-	$cfg = iMSCP_Registry::get('config');
-
 	if($hpid != 0) {
 		$query = 'SELECT `name`, `props` FROM `hosting_plans` WHERE `reseller_id` = ? AND `id` = ?';
 		$stmt = exec_query($query, array($resellerId, $hpid));
@@ -260,89 +264,115 @@ function reseller_getHostingPlanData($hpid, $resellerId, $phpini)
  */
 function check_user_data($phpini)
 {
-	global $hpName, $php, $cgi, $sub, $als, $mail, $ftp, $sqlDb, $sqlUser, $traffic, $diskSpace, $hp_dmn, $backup,
+	global $php, $cgi, $sub, $als, $mail, $ftp, $sqlDb, $sqlUser, $traffic, $diskSpace, $backup,
 		$dns, $aps, $extMailServer, $webFolderProtection;
 
 	/** @var iMSCP_Config_Handler_File $cfg */
 	$cfg = iMSCP_Registry::get('config');
 
-	if (isset($_POST['template'])) {
-		$hpName = $_POST['template'];
-	}
-
-	if (isset($_POST['nreseller_max_domain_cnt'])) {
-		$hp_dmn = clean_input($_POST['nreseller_max_domain_cnt']);
-	}
+	// Subdomains limit
 
 	if (isset($_POST['nreseller_max_subdomain_cnt'])) {
 		$sub = clean_input($_POST['nreseller_max_subdomain_cnt']);
 	}
 
+	if (!resellerHasFeature('subdomains')) {
+		$sub = '-1';
+	} elseif (!imscp_limit_check($sub, -1)) {
+		set_page_message(tr('Incorrect subdomain limit.'), 'error');
+	}
+
+	// Domain aliases limit
+
 	if (isset($_POST['nreseller_max_alias_cnt'])) {
 		$als = clean_input($_POST['nreseller_max_alias_cnt']);
 	}
 
+	if (!resellerHasFeature('domain_aliases')) {
+		$als = '-1';
+	} elseif (!imscp_limit_check($als, -1)) {
+		set_page_message(tr('Incorrect alias limit.'), 'error');
+	}
+
+	// Mail accounts limit
+
 	if (isset($_POST['nreseller_max_mail_cnt'])) {
 		$mail = clean_input($_POST['nreseller_max_mail_cnt']);
-
-		if (isset($_POST['external_mail'])) {
-			$extMailServer = $_POST['external_mail'];
-		} else {
-			$extMailServer = '_no_';
-		}
 	}
 
-	if($cfg->WEB_FOLDER_PROTECTION) {
-		if (isset($_POST['web_folder_protection'])) {
-			$webFolderProtection = $_POST['web_folder_protection'];
-		} else {
-			$webFolderProtection = '_yes_';
-		}
-	} else {
-		$webFolderProtection = '_no_';
+	if (!resellerHasFeature('mail')) {
+		$mail = '-1';
+	} elseif (!imscp_limit_check($mail, -1)) {
+		set_page_message(tr('Incorrect email account limit.'), 'error');
 	}
+
+	// Ftp accounts limit
 
 	if (isset($_POST['nreseller_max_ftp_cnt']) || $ftp == -1) {
 		$ftp = clean_input($_POST['nreseller_max_ftp_cnt']);
 	}
 
+	if (!resellerHasFeature('ftp')) {
+		$ftp = '-1';
+	} elseif (!imscp_limit_check($ftp, -1)) {
+		set_page_message(tr('Incorrect FTP account limit.'), 'error');
+	}
+
+	// SQL database limit
+
 	if (isset($_POST['nreseller_max_sql_db_cnt'])) {
 		$sqlDb = clean_input($_POST['nreseller_max_sql_db_cnt']);
 	}
+
+	if (!resellerHasFeature('sql_db')) {
+		$sqlDb = '-1';
+	} elseif (!imscp_limit_check($sqlDb, -1)) {
+		set_page_message(tr('Incorrect SQL database limit.'), 'error');
+	} elseif ($sqlUser != -1 && $sqlDb == -1) {
+		set_page_message(tr('SQL user limit is <i>disabled</i>.'), 'error');
+	}
+
+	// SQL users limit
 
 	if (isset($_POST['nreseller_max_sql_user_cnt'])) {
 		$sqlUser = clean_input($_POST['nreseller_max_sql_user_cnt']);
 	}
 
+	if (!resellerHasFeature('sql_user')) {
+		$sqlUser = '-1';
+	} elseif (!imscp_limit_check($sqlUser, -1)) {
+		set_page_message(tr('Incorrect SQL user limit.'), 'error');
+	} elseif ($sqlUser == -1 && $sqlDb != -1) {
+		set_page_message(tr('SQL database limit is not <i>disabled</i>.'), 'error');
+	}
+
+	// Monthly traffic limit
+
 	if (isset($_POST['nreseller_max_traffic'])) {
 		$traffic = clean_input($_POST['nreseller_max_traffic']);
 	}
+
+	if (!imscp_limit_check($traffic, null)) {
+		set_page_message(tr('Incorrect monthly traffic limit.'), 'error');
+	}
+
+	// Disk space limit
 
 	if (isset($_POST['nreseller_max_disk'])) {
 		$diskSpace = clean_input($_POST['nreseller_max_disk']);
 	}
 
+	if (!imscp_limit_check($diskSpace, null)) {
+		set_page_message(tr('Incorrect disk space limit.'), 'error');
+	}
+
+	// PHP feature
+
 	if (isset($_POST['php'])) {
 		$php = $_POST['php'];
 	}
 
-	if (isset($_POST['cgi'])) {
-		$cgi = $_POST['cgi'];
-	}
-
-	if (isset($_POST['backup'])) {
-		$backup = $_POST['backup'];
-	}
-
-	if (isset($_POST['dns'])) {
-		$dns = $_POST['dns'];
-	}
-
-	if (isset($_POST['software_allowed']) && resellerHasFeature('aps')) {
-		$aps = $_POST['software_allowed'];
-	} else {
-		$aps = 'no';
-	}
+	// PHP Editor feature
 
 	if ($phpini->checkRePerm('phpiniSystem') && isset($_POST['phpiniSystem'])) {
 		$phpini->setClPerm('phpiniSystem', clean_input($_POST['phpiniSystem']));
@@ -387,57 +417,56 @@ function check_user_data($phpini)
 		}
 	}
 
-	if (!resellerHasFeature('subdomains')) {
-		$sub = '-1';
-	} elseif (!imscp_limit_check($sub, -1)) {
-		set_page_message(tr('Incorrect subdomain limit.'), 'error');
+	// CGI feature
+
+	if (isset($_POST['cgi'])) {
+		$cgi = $_POST['cgi'];
+	} else {
+		$cgi = '_no_';
 	}
 
-	if (!resellerHasFeature('domain_aliases')) {
-		$als = '-1';
-	} elseif (!imscp_limit_check($als, -1)) {
-		set_page_message(tr('Incorrect alias limit.'), 'error');
+	// Custom DNS records feature
+
+	if (isset($_POST['dns'])) {
+		$dns = $_POST['dns'];
+	} else {
+		$dns = '_no';
 	}
 
-	if (!resellerHasFeature('mail')) {
-		$mail = '-1';
+	// External mail server feature
+
+	if (resellerHasFeature('external_mail') && isset($_POST['external_mail'])) {
+		$extMailServer = clean_input($_POST['external_mail']);
+	} else {
 		$extMailServer = '_no_';
-	} elseif (!imscp_limit_check($mail, -1)) {
-		set_page_message(tr('Incorrect email account limit.'), 'error');
 	}
 
-	if (!resellerHasFeature('ftp')) {
-		$ftp = '-1';
-	} elseif (!imscp_limit_check($ftp, -1)) {
-		set_page_message(tr('Incorrect FTP account limit.'), 'error');
+	// Backup feature
+
+	if (isset($_POST['backup']) && resellerHasFeature('backup')) {
+		$backup = $_POST['backup'];
+	} else {
+		$backup = '_no_';
 	}
 
-	if (!resellerHasFeature('sql_db')) {
-		$sqlDb = '-1';
-	} elseif (!imscp_limit_check($sqlDb, -1)) {
-		set_page_message(tr('Incorrect SQL database limit.'), 'error');
-	} elseif ($sqlUser != -1 && $sqlDb == -1) {
-		set_page_message(tr('SQL user limit is <i>disabled</i>.'), 'error');
-	}
+	// APS feature
 
-	if (!resellerHasFeature('sql_user')) {
-		$sqlUser = '-1';
-	} elseif (!imscp_limit_check($sqlUser, -1)) {
-		set_page_message(tr('Incorrect SQL user limit.'), 'error');
-	} elseif ($sqlUser == -1 && $sqlDb != -1) {
-		set_page_message(tr('SQL database limit is not <i>disabled</i>.'), 'error');
-	}
-
-	if (!imscp_limit_check($traffic, null)) {
-		set_page_message(tr('Incorrect monthly traffic limit.'), 'error');
-	}
-
-	if (!imscp_limit_check($diskSpace, null)) {
-		set_page_message(tr('Incorrect disk space limit.'), 'error');
+	if (isset($_POST['software_allowed']) && resellerHasFeature('aps')) {
+		$aps = $_POST['software_allowed'];
+	} else {
+		$aps = '_no_';
 	}
 
 	if ($php == '_no_' && $aps == '_yes_') {
-		set_page_message(tr('The software installer requires PHP.'), 'error');
+		set_page_message(tr('The software installer feature requires PHP.'), 'error');
+	}
+
+	// Web folders protection
+
+	if($cfg->WEB_FOLDER_PROTECTION && isset($_POST['web_folder_protection'])) {
+		$webFolderProtection = $_POST['web_folder_protection'];
+	} else {
+		$webFolderProtection = '_yes_';
 	}
 
 	if (!Zend_Session::namespaceIsset('pageMessages')) {
@@ -525,7 +554,6 @@ $tpl->assign(
 		'TR_LIMITS' => tr('Limits'),
 		'TR_WEB_FOLDER_PROTECTION' => tr('Web folder protection'),
 		'TR_WEB_FOLDER_PROTECTION_HELP' => tr("If set to 'yes', Web folders as provisioned by i-MSCP will be protected against deletion using the immutable flag (Extended attributes)."),
-		'TR_HELP' => tr('Help'),
 		'TR_SOFTWARE_SUPP' => tr('Software installer')
 	)
 );

@@ -4,7 +4,16 @@
 	$(document).ready(function () {
 		$('.datatable').dataTable({ "oLanguage": {DATATABLE_TRANSLATIONS}, "iDisplayLength": 5 });
 
-		$("#dialog_box").dialog({ modal: true, autoOpen: false, hide: "blind", show: "blind", width: "500" });
+		$("#dialog_box").dialog(
+			{
+				modal: true,
+				autoOpen: false,
+				hide: "blind",
+				show: "blind",
+				width: 650
+			}
+		);
+
 		$(".i_change_password").click(function (e) {
 			e.preventDefault();
 			var href = $(this).attr("href");

@@ -24,9 +24,9 @@
  * Portions created by the i-MSCP Team are Copyright (C) 2010-2013 by
  * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
  *
- * @category	i-MSCP
- * @package		iMSCP_Core
- * @subpackage	Client
+ * @category    i-MSCP
+ * @package     iMSCP_Core
+ * @subpackage  Client
  * @copyright   2001-2006 by moleSoftware GmbH
  * @copyright   2006-2010 by ispCP | http://isp-control.net
  * @copyright   2010-2013 by i-MSCP | http://i-mscp.net
@@ -35,7 +35,7 @@
  * @link        http://i-mscp.net
  */
 
-/************************************************************************************
+/***********************************************************************************************************************
  * script functions
  */
 
@@ -215,12 +215,16 @@ function client_UpdateMailAccount($mailAccountData)
 				WHERE
 					`mail_id` = ?
 			";
-			exec_query($query, array(
-									$mailAccountData['mail_pass'],
-									$mailAccountData['mail_forward'],
-									$mailAccountData['mail_type'],
-									$cfg->ITEM_TOCHANGE_STATUS,
-									$mailAccountData['mail_id']));
+			exec_query(
+				$query,
+				array(
+					$mailAccountData['mail_pass'],
+					$mailAccountData['mail_forward'],
+					$mailAccountData['mail_type'],
+					$cfg->ITEM_TOCHANGE_STATUS,
+					$mailAccountData['mail_id']
+				)
+			);
 
 			iMSCP_Events_Manager::getInstance()->dispatch(
 				iMSCP_Events::onAfterEditMail, array('mailId' => $mailAccountData['mail_id'])
@@ -265,11 +269,13 @@ function client_generateEditForm($tpl, $mailAccountData)
 			 'TR_MAIL_ACCOUNT' => tr('Email account'),
 			 'FORWARD_ACCOUNT_CHECKED' => ($mailAccountData['mail_forward'] != '_no_') ? $htmlChecked : '',
 			 'FORWARD_LIST_VAL' => ($mailAccountData['mail_forward'] != '_no_' && $mailAccountData['mail_forward'] != '')
-				 ? tohtml(implode("\n", _client_normalizeForwardAddresses($mailAccountData['mail_forward'], 'decode_idna'))) : ''));
+				 ? tohtml(implode("\n", _client_normalizeForwardAddresses($mailAccountData['mail_forward'], 'decode_idna'))) : ''
+		)
+	);
 }
 
-/************************************************************************************
- * Main script
+/***********************************************************************************************************************
+ * Main
  */
 
 // Include core library
@@ -301,7 +307,9 @@ $tpl->define_dynamic(
 		 'page' => 'client/mail_edit.tpl',
 		 'page_message' => 'layout',
 		 'logged_frm' => 'page',
-		 'password_frm' => 'page'));
+		 'password_frm' => 'page'
+	)
+);
 
 $tpl->assign(
 	array(
@@ -313,10 +321,11 @@ $tpl->assign(
 		 'TR_FORWARD_TO' => tr('Forward to'),
 		 'TR_YES' => tr('yes'),
 		 'TR_NO' => tr('no'),
-		 'TR_HELP' => tr('help'),
 		 'TR_FWD_HELP' => tr('Separate multiple email addresses with a space, a comma or a line-break.'),
 		 'TR_UPDATE' => tr('Update'),
-		 'TR_CANCEL' => tr('Cancel')));
+		 'TR_CANCEL' => tr('Cancel')
+	)
+);
 
 generateNavigation($tpl);
 client_generateEditForm($tpl, $mailAccountData);

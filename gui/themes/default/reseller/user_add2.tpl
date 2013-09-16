@@ -10,7 +10,7 @@
 			show: 'slide',
 			focus: false,
 			autoOpen: false,
-			width: 700,
+			width: 650,
 			modal: true,
 			buttons:{ '{TR_CLOSE}': function(){ $(this).dialog('close'); } }
 		});

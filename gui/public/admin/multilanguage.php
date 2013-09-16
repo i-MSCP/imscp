@@ -26,7 +26,7 @@
  * @license     http://www.gnu.org/licenses/gpl-2.0.txt GPL v2
  */
 
-/*******************************************************************************
+/***********************************************************************************************************************
  * Script functions
  */
 
@@ -63,8 +63,8 @@ function admin_generateLanguagesList($tpl)
     }
 }
 
-/*******************************************************************************
- * Main script
+/***********************************************************************************************************************
+ * Main
  */
 
 // Include needed libraries
@@ -105,7 +105,8 @@ $tpl->define_dynamic(
         'page' => 'admin/multilanguage.tpl',
         'page_message' => 'layout',
         'languages_block' => 'page',
-        'language_block' => 'languages_block'));
+        'language_block' => 'languages_block')
+);
 
 $tpl->assign(
     array(
@@ -123,9 +124,10 @@ $tpl->assign(
         'DATATABLE_TRANSLATIONS' => getDataTablesPluginTranslations(),
         'TR_REBUILD_INDEX' => tr('Rebuild languages index'),
         'TR_UPLOAD_HELP' => tr('Only gettext Machine Object files (MO files) are accepted.'),
-        'TR_HELP' => tr('Help'),
         'TR_INSTALL' => tr('Install'),
-        'TR_CANCEL' => tr('Cancel')));
+        'TR_CANCEL' => tr('Cancel')
+	)
+);
 
 generateNavigation($tpl);
 admin_generateLanguagesList($tpl);

@@ -175,10 +175,9 @@ function reseller_generatePage($tpl, $phpini)
 			'TR_DNS_YES' => '',
 			'TR_DNS_NO' => $checked,
 
-			'TR_SOFTWARE_YES' => '',
-			'TR_SOFTWARE_NO' => $checked,
 			'TR_EXTMAIL_YES' => '',
 			'TR_EXTMAIL_NO' => $checked,
+
 			'TR_PROTECT_WEB_FOLDERS_YES' => $checked,
 			'TR_PROTECT_WEB_FOLDERS_NO' => '',
 
@@ -189,6 +188,15 @@ function reseller_generatePage($tpl, $phpini)
 		)
 	);
 
+	if(resellerHasFeature('aps')) {
+		$tpl->assign(
+			array(
+				'TR_SOFTWARE_YES' => '',
+				'TR_SOFTWARE_NO' => $checked,
+			)
+		);
+	}
+
 	if (resellerHasFeature('backup')) {
 		$tpl->assign(
 			array(
@@ -198,8 +206,6 @@ function reseller_generatePage($tpl, $phpini)
 				'VL_BACKUPN' => $checked,
 			)
 		);
-	} else {
-		$tpl->assign('BACKUP_FEATURE', '');
 	}
 
 	if(!$cfg->WEB_FOLDER_PROTECTION) {
@@ -245,8 +251,6 @@ function reseller_generateErrorPage($tpl, $phpini)
 			'TR_CGI_NO' => ($cgi == '_no_') ? $checked : '',
 			'TR_DNS_YES' => ($dns == '_yes_') ? $checked : '',
 			'TR_DNS_NO' => ($dns == '_no_') ? $checked : '',
-			'TR_SOFTWARE_YES' => ($aps == '_yes_') ? $checked : '',
-			'TR_SOFTWARE_NO' => ($aps == '_no_') ? $checked : '',
 			'TR_EXTMAIL_YES' => ($extMail == '_yes_') ? $checked : '',
 			'TR_EXTMAIL_NO' => ($extMail == '_no_') ? $checked : '',
 			'TR_PROTECT_WEB_FOLDERS_YES' => ($webFolderProtection == '_yes_') ? $checked : '',
@@ -259,6 +263,15 @@ function reseller_generateErrorPage($tpl, $phpini)
 		)
 	);
 
+	if(resellerHasFeature('aps')) {
+		$tpl->assign(
+			array(
+				'TR_SOFTWARE_YES' => ($aps == '_yes_') ? $checked : '',
+				'TR_SOFTWARE_NO' => ($aps == '_no_') ? $checked : '',
+			)
+		);
+	}
+
 	if (resellerHasFeature('backup')) {
 		$tpl->assign(
 			array(
@@ -268,8 +281,6 @@ function reseller_generateErrorPage($tpl, $phpini)
 				'VL_BACKUPN' => ($backup == '_no_') ? $checked : '',
 			)
 		);
-	} else {
-		$tpl->assign('BACKUP_FEATURE', '');
 	}
 
 	if(!$cfg->WEB_FOLDER_PROTECTION) {
@@ -324,8 +335,8 @@ function reseller_checkData($phpini)
 	$php = ($php == '_yes_') ? '_yes_' : '_no_';
 	$cgi = ($cgi == '_yes_') ? '_yes_' : '_no_';
 	$dns = ($dns == '_yes_') ? '_yes_' : '_no_';
-	$backup = (in_array($backup, array('_full_', '_dmn_', '_sql_'))) ? $backup : '_no_';
-	$aps = ($aps == '_yes_') ? '_yes_' : '_no_';
+	$backup = (resellerHasFeature('backup') && in_array($backup, array('_full_', '_dmn_', '_sql_'))) ? $backup : '_no_';
+	$aps = (resellerHasFeature('aps') && $aps == '_yes_') ? '_yes_' : '_no_';
 	$extMail = ($extMail == '_yes_') ? '_yes_' : '_no_';
 	$webFolderProtection = ($webFolderProtection == '_yes_') ? '_yes_' : '_no_';
 
@@ -601,7 +612,7 @@ if (isset($cfg->HOSTING_PLANS_LEVEL) && $cfg->HOSTING_PLANS_LEVEL == 'reseller')
 	if (!resellerHasFeature('php_editor')) $tpl->assign('PHP_EDITOR_FEATURE', '');
 	if (!resellerHasFeature('cgi')) $tpl->assign('CGI_FEATURE', '');
 	if (!resellerHasFeature('custom_dns_records')) $tpl->assign('CUSTOM_DNS_FEATURE', '');
-	if (!resellerHasFeature('aps')) $tpl->assign('EXT_MAIL_FEATURE', '');
+	if (!resellerHasFeature('aps')) $tpl->assign('APS_FEATURE', '');
 	if (!resellerHasFeature('external_mail')) $tpl->assign('EXT_MAIL_FEATURE', '');
 	if (!resellerHasFeature('backup')) $tpl->assign('BACKUP_FEATURE', '');
 

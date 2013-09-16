@@ -144,9 +144,10 @@ function admin_generatePage($tpl, $id, $phpini)
 
 
 	list(
-		$php, $cgi, $sub, $als, $mail, $ftp, $sqld, $sqlu, $monthlyTraffic, $diskspace, $bkp, $dns, $aps, $phpEditor,
+		$php, $cgi, $sub, $als, $mail, $ftp, $sqld, $sqlu, $monthlyTraffic, $diskspace, $backup, $dns, $aps, $phpEditor,
 		$phpAllowUrlFopenPerm, $phpDisplayErrorsPerm, $phpDisableFunctionsPerm, $phpPostMaxSizeValue,
-		$phpUploadMaxFilesizeValue, $phpMaxExecutionTimeValue, $phpMaxInputTimeValue, $phpMemoryLimitValue, $hpExtMail, $hpProtectedWebFolders
+		$phpUploadMaxFilesizeValue, $phpMaxExecutionTimeValue, $phpMaxInputTimeValue, $phpMemoryLimitValue,
+		$hpExtMail, $hpProtectedWebFolders
 		) = explode(';', $data['props']);
 
 	$phpini->setClPerm('phpiniSystem', $phpEditor);
@@ -182,7 +183,7 @@ function admin_generatePage($tpl, $id, $phpini)
 			'DNS_YES' => ($dns == '_yes_') ? $checked : '',
 			'DNS_NO' => ($dns == '_no_') ? $checked : '',
 			'SOFTWARE_YES' => ($aps == '_yes_') ? $checked : '',
-			'SOFTWARE_NO' => ($aps == '_no_' || !$aps) ? $checked : '',
+			'SOFTWARE_NO' => ($aps == '_no_') ? $checked : '',
 			'EXTMAIL_YES' => ($hpExtMail == '_yes_') ? $checked : '',
 			'EXTMAIL_NO' => ($hpExtMail == '_no_') ? $checked : '',
 			'PROTECT_WEB_FOLDERS_YES' => ($hpProtectedWebFolders == '_yes_') ? $checked : '',
@@ -195,10 +196,10 @@ function admin_generatePage($tpl, $id, $phpini)
 	if ($cfg->BACKUP_DOMAINS != 'no') {
 		$tpl->assign(
 			array(
-				'BACKUPD' => '',
-				'BACKUPS' => '',
-				'BACKUPF' => '',
-				'BACKUPN' => $checked,
+				'BACKUPD' => ($backup == '_dmn_') ? $checked : '',
+				'BACKUPS' => ($backup == '_sql_') ? $checked : '',
+				'BACKUPF' => ($backup == '_full_') ? $checked : '',
+				'BACKUPN' => ($backup == '_no_') ? $checked : ''
 			)
 		);
 	} else {
@@ -222,7 +223,7 @@ function admin_generatePage($tpl, $id, $phpini)
 function admin_generateErrorPage($tpl, $phpini)
 {
 	global $id, $name, $description, $sub, $als, $mail, $ftp, $sqld, $sqlu, $monthlyTraffic, $diskspace, $php, $cgi,
-		   $bkp, $dns, $aps, $hpExtMail, $hpProtectedWebFolders, $status;
+		   $backup, $dns, $aps, $hpExtMail, $hpProtectedWebFolders, $status;
 
 	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
@@ -261,10 +262,10 @@ function admin_generateErrorPage($tpl, $phpini)
 	if ($cfg->BACKUP_DOMAINS != 'no') {
 		$tpl->assign(
 			array(
-				'BACKUPD' => ($bkp == '_dmn_') ? $checked : '',
-				'BACKUPS' => ($bkp == '_sql_') ? $checked : '',
-				'BACKUPF' => ($bkp == '_full_') ? $checked : '',
-				'BACKUPN' => ($bkp == '_no_') ? $checked : '',
+				'BACKUPD' => ($backup == '_dmn_') ? $checked : '',
+				'BACKUPS' => ($backup == '_sql_') ? $checked : '',
+				'BACKUPF' => ($backup == '_full_') ? $checked : '',
+				'BACKUPN' => ($backup == '_no_') ? $checked : '',
 			)
 		);
 	} else {
@@ -287,7 +288,7 @@ function admin_generateErrorPage($tpl, $phpini)
 function admin_checkData($phpini)
 {
 	global $name, $description, $sub, $als, $mail, $ftp, $sqld, $sqlu, $monthlyTraffic, $diskspace, $php, $cgi, $dns,
-		   $bkp, $aps, $hpExtMail, $hpProtectedWebFolders, $status;
+		   $backup, $aps, $hpExtMail, $hpProtectedWebFolders, $status;
 
 	/** @var iMSCP_Config_Handler_File $cfg */
 	$cfg = iMSCP_Registry::get('config');
@@ -307,7 +308,7 @@ function admin_checkData($phpini)
 	$php = isset($_POST['hp_php']) ? clean_input($_POST['hp_php']) : '_no_';
 	$cgi = isset($_POST['hp_cgi']) ? clean_input($_POST['hp_cgi']) : '_no_';
 	$dns = isset($_POST['hp_dns']) ? clean_input($_POST['hp_dns']) : '_no_';
-	$bkp = isset($_POST['hp_backup']) ? clean_input($_POST['hp_backup']) : '_no_';
+	$backup = isset($_POST['hp_backup']) ? clean_input($_POST['hp_backup']) : '_no_';
 	$aps = isset($_POST['hp_softwares_installer']) ? clean_input($_POST['hp_softwares_installer']) : '_no_';
 	$hpExtMail = isset($_POST['hp_external_mail']) ? clean_input($_POST['hp_external_mail']) : '_no_';
 
@@ -322,7 +323,7 @@ function admin_checkData($phpini)
 	$php = ($php == '_yes_') ? '_yes_' : '_no_';
 	$cgi = ($cgi == '_yes_') ? '_yes_' : '_no_';
 	$dns = ($dns == '_yes_') ? '_yes_' : '_no_';
-	$bkp = (in_array($bkp, array('_full_', '_dmn_', '_sql_'))) ? $bkp : '_no_';
+	$backup = ($cfg->BACKUP_DOMAINS != 'no' && in_array($backup, array('_full_', '_dmn_', '_sql_'))) ? $backup : '_no_';
 	$aps = ($aps == '_yes_') ? '_yes_' : '_no_';
 	$hpExtMail = ($hpExtMail == '_yes_') ? '_yes_' : '_no_';
 	$hpProtectedWebFolders = ($hpProtectedWebFolders == '_yes_') ? '_yes_' : '_no_';
@@ -437,7 +438,7 @@ function admin_checkData($phpini)
 function admin_UpdateHostingPlan($phpini)
 {
 	global $id, $name, $description, $sub, $als, $mail, $ftp, $sqld, $sqlu, $monthlyTraffic, $diskspace, $php, $cgi,
-		   $dns, $bkp, $aps, $hpExtMail, $hpProtectedWebFolders, $status;
+		   $dns, $backup, $aps, $hpExtMail, $hpProtectedWebFolders, $status;
 
 	$query = "
 		SELECT
@@ -459,7 +460,7 @@ function admin_UpdateHostingPlan($phpini)
 		return false;
 	}
 
-	$hpProps = "$php;$cgi;$sub;$als;$mail;$ftp;$sqld;$sqlu;$monthlyTraffic;$diskspace;$bkp;$dns;$aps";
+	$hpProps = "$php;$cgi;$sub;$als;$mail;$ftp;$sqld;$sqlu;$monthlyTraffic;$diskspace;$backup;$dns;$aps";
 	$hpProps .= ';' . $phpini->getClPermVal('phpiniSystem') . ';' . $phpini->getClPermVal('phpiniAllowUrlFopen');
 	$hpProps .= ';' . $phpini->getClPermVal('phpiniDisplayErrors') . ';' . $phpini->getClPermVal('phpiniDisableFunctions');
 	$hpProps .= ';' . $phpini->getDataVal('phpiniPostMaxSize') . ';' . $phpini->getDataVal('phpiniUploadMaxFileSize');
