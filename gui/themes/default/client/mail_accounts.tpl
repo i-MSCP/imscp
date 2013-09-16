@@ -1,50 +1,70 @@
-
 <!-- BDP: mail_feature -->
 <script type="text/javascript">
 	/* <![CDATA[ */
-	<!-- BDP: mark_all_mails_to_delete_jquery -->
 	$(document).ready(function () {
-		$("input[name='checkAll']").click(function () {
-			var checked = $(this).attr("checked") ? true : false;
+		var oTable = $('.datatable').dataTable(
+			{
+				"oLanguage": {DATATABLE_TRANSLATIONS},
+				"iDisplayLength": 5,
+				"bStateSave": true,
+				"aoColumnDefs": [ { "bSortable": false, "aTargets": [ 5 ] } ]
+			}
+		);
 
-			$("#delete_marked_mails input:checkbox").attr("checked", checked);
-			var count_checked = $('#delete_marked_mails input[name="del_item[]"]:checked').length;
-
-			if (count_checked > 0) {
-				$("#delete_marked_mails input[type=submit]").attr("disabled", false);
+		$(".dataTables_paginate").click(function () {
+			if ($("tbody :checkbox:checked").length == $("tbody :checkbox:not(':disabled')").length) {
+				$("thead :checkbox,tfoot :checkbox").prop('checked', true);
 			} else {
-				$("#delete_marked_mails input[type=submit]").attr("disabled", true);
+				$("thead :checkbox,tfoot :checkbox").prop('checked', false);
 			}
 		});
 
-		$('#delete_marked_mails input[name="del_item[]"]').click(function () {
-			var count_checked = $('#delete_marked_mails input[name="del_item[]"]:checked').length;
-
-			if (count_checked > 0) {
-				$("#delete_marked_mails input[type=submit]").attr("disabled", false);
+		$("tbody").on("click", ":checkbox:not(':disabled')", function () {
+			if ($("tbody :checkbox:checked").length == $("tbody :checkbox:not(':disabled')").length) {
+				$("thead :checkbox,tfoot :checkbox").prop('checked', true);
 			} else {
-				$("#delete_marked_mails input[type=submit]").attr("disabled", true);
+				$("thead :checkbox,tfoot :checkbox").prop('checked', false);
 			}
 		});
 
-		$("#delete_marked_mails input[type=submit]").attr("disabled", true);
+		$("thead :checkbox, tfoot :checkbox").click(function (e) {
+			if ($("tbody :checkbox:not(':disabled')").length != 0) {
+				$("table :checkbox:not(':disabled')").prop('checked', $(this).is(':checked'));
+			} else {
+				e.preventDefault();
+			}
+		});
+
+		$("input[type=submit]").click(function() {
+			var items = $(":checkbox:checked", oTable.fnGetNodes());
+
+			if(items.length > 0) {
+				if(confirm(sprintf("{TR_MESSAGE_DELETE_SELECTED_ITEMS}"))) {
+					imscp.AjaxCall(
+						{
+							type: "POST",
+							data: items,
+							success: function() { window.location.href = 'mail_accounts.php'; }
+						}
+					);
+				}
+			} else {
+				alert("{TR_MESSAGE_DELETE_SELECTED_ITEMS_ERR}");
+			}
+
+			return false;
+		});
 	});
 
-	function action_delete_marked() {
-		return confirm(sprintf("{TR_MESSAGE_DELETE_MARKED}"));
-	}
-	<!-- EDP: mark_all_mails_to_delete_jquery -->
-
-	function action_delete(url, subject) {
+	function action_delete(subject) {
 		return confirm(sprintf("{TR_MESSAGE_DELETE}", subject));
 	}
 	/* ]]> */
 </script>
 
-<!-- BDP: delete_marked_mails_form_head -->
-<form action="mail_delete.php" method="post" id="delete_marked_mails">
-	<!-- EDP: delete_marked_mails_form_head -->
-	<table>
+<!-- BDP: mail_items -->
+<form action="mail_delete.php" method="post">
+	<table class="datatable">
 		<thead>
 		<tr>
 			<th>{TR_MAIL}</th>
@@ -52,70 +72,48 @@
 			<th>{TR_STATUS}</th>
 			<th>{TR_QUOTA}</th>
 			<th>{TR_ACTIONS}</th>
-			<th>
-				{TR_DEL_ITEM}
-				<!-- BDP: mark_all_mails_to_delete -->
-				<label><input type="checkbox" id="checkAll" name="checkAll"/></label>
-				<!-- EDP: mark_all_mails_to_delete -->
-			</th>
+			<th style="width:21px"><label><input type="checkbox" /></label></th>
 		</tr>
 		</thead>
-		<!-- BDP: mails_total -->
 		<tfoot>
 		<tr>
-			<td colspan="6">
-				{TR_TOTAL_MAIL_ACCOUNTS}: <strong>{TOTAL_MAIL_ACCOUNTS}</strong>/{ALLOWED_MAIL_ACCOUNTS}
-			</td>
+			<td colspan="5">{TOTAL_MAIL_ACCOUNTS}</td>
+			<td style="width:21px"><label><input type="checkbox"/></label></td>
 		</tr>
 		</tfoot>
-		<!-- EDP: mails_total -->
 		<tbody>
 		<!-- BDP: mail_item -->
 		<tr>
-			<td style="width: 300px;">
+			<td>
 				<span class="icon i_mail_icon">{MAIL_ACC}</span>
-				<!-- BDP: auto_respond -->
-				<div style="display: {AUTO_RESPOND_VIS};">
-					<br/>
+				<!-- BDP: auto_respond_item -->
+				<div>
 					{TR_AUTORESPOND}:
-					[
-					<a href="{AUTO_RESPOND_DISABLE_SCRIPT}" class="icon i_reload">{AUTO_RESPOND_DISABLE}</a>
+					<a href="{AUTO_RESPOND_SCRIPT}" class="icon i_reload">{AUTO_RESPOND}</a>
+					<!-- BDP: auto_respond_edit_link -->
 					<a href="{AUTO_RESPOND_EDIT_SCRIPT}" class="icon i_edit">{AUTO_RESPOND_EDIT}</a>
-					]
+					<!-- EDP: auto_respond_edit_link -->
 				</div>
-				<!-- EDP: auto_respond -->
+				<!-- EDP: auto_respond_item -->
 			</td>
 			<td>{MAIL_TYPE}</td>
 			<td>{MAIL_STATUS}</td>
 			<td>{MAIL_QUOTA_VALUE}</td>
 			<td>
 				<a href="{MAIL_EDIT_SCRIPT}" title="{MAIL_EDIT}" class="icon i_edit">{MAIL_EDIT}</a>
-				<a href="{MAIL_DELETE_SCRIPT}" onclick="return action_delete('{MAIL_ACC}')" title="{MAIL_DELETE}"
-				   class="icon i_delete">{MAIL_DELETE}</a>
+				<a href="{MAIL_DELETE_SCRIPT}" onclick="return action_delete('{MAIL_ACC}')" title="{MAIL_DELETE}" class="icon i_delete">{MAIL_DELETE}</a>
+				<!-- BDP: quota_link -->
 				<a href="{MAIL_QUOTA_SCRIPT}" title="{MAIL_QUOTA}" class="icon i_edit">{MAIL_QUOTA}</a>
+				<!-- EDP: quota_link -->
 			</td>
-			<td style="width: 10px;">
-				<label><input type="checkbox" name="del_item[]" value="{DEL_ITEM}" {DISABLED_DEL_ITEM}/></label>
-			</td>
+			<td><label><input type="checkbox" name="id[]" value="{DEL_ITEM}"{DISABLED_DEL_ITEM} /></label></td>
 		</tr>
 		<!-- EDP: mail_item -->
 		</tbody>
 	</table>
-
-	<!-- BDP: delete_marked_mails_form_bottom -->
 	<div class="buttons">
-		<input type="hidden" name="uaction" value="delete_marked_mails"/>
-		<input type="submit" name="Submit" value="{TR_DELETE_MARKED_MAILS}" onclick="return action_delete_marked()"/>
+		<input type="submit" name="Submit" value="{TR_DELETE_SELECTED_ITEMS}"/>
 	</div>
 </form>
-<!-- EDP: delete_marked_mails_form_bottom -->
-
-<!-- BDP: default_mails_form -->
-<form action="mail_accounts.php" method="post" id="showdefault">
-	<div class="buttons">
-		<input type="hidden" name="uaction" value="{VL_DEFAULT_EMAILS_BUTTON}"/>
-		<input type="submit" name="Submit" value="{TR_DEFAULT_EMAILS_BUTTON}"/>
-	</div>
-</form>
-<!-- EDP: default_mails_form -->
+<!-- EDP: mail_items -->
 <!-- EDP: mail_feature -->

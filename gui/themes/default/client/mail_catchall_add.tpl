@@ -40,7 +40,7 @@
 				<label for="mail_type2">{TR_FORWARD_MAIL}</label>
 				<span class="icon i_help" title="{TR_FWD_HELP}"></span>
 			</td>
-			<td><<label>textarea name="forward_list" id="forward_list"></textarea></label></td>
+			<td><label><textarea name="forward_list" id="forward_list"></textarea></label></td>
 		</tr>
 	</table>
 
