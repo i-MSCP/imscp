@@ -3,18 +3,14 @@
 	<table class="firstColFixed">
 		<thead>
 		<tr>
-			<th colspan="2">
-				<span style="vertical-align: middle">{TR_MAIL_ACCOUNT} : {MAIL_ADDRESS_VAL}</span>
-			</th>
+			<th colspan="2">{TR_MAIL_ACCOUNT}: {MAIL_ADDRESS_VAL}</th>
 		</tr>
 		</thead>
 		<tbody>
-		<!-- BDP: quota_frm -->
 		<tr>
 			<td><label for="quota">{TR_QUOTA}</label></td>
-			<td><input name="quota" id="quota" type="quota" value="{QUOTA}"/></td>
+			<td><input name="quota" id="quota" type="text" value="{QUOTA}"/></td>
 		</tr>
-		<!-- EDP: quota_frm -->
 		</tbody>
 	</table>
 

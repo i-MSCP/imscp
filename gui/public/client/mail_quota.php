@@ -178,9 +178,7 @@ if (isset($_GET['id'])) {
 		array(
 			'layout' => 'shared/layouts/ui.tpl',
 			'page' => 'client/mail_quota.tpl',
-			'page_message' => 'layout',
-			'logged_frm' => 'page',
-			'quota_frm' => 'page'
+			'page_message' => 'layout'
 		)
 	);
 
@@ -192,9 +190,8 @@ if (isset($_GET['id'])) {
 		array(
 			'TR_PAGE_TITLE' => tr('Client / Email / Overview / Edit Email Quota'),
 			'ISP_LOGO' => layout_getUserLogo(),
-			'TR_QUOTA' => tr('Quota in MB (0 unlimited)'),
+			'TR_QUOTA' => tr('Quota in MiB (0 for unlimited)'),
 			'QUOTA' => $quotaValue,
-			'TR_HELP' => tr('help'),
 			'TR_UPDATE' => tr('Update'),
 			'TR_CANCEL' => tr('Cancel')
 		)
