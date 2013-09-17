@@ -68,89 +68,6 @@ function sbmt_details(form, uaction) {
 	return false;
 }
 
-
-/**
- * @todo remove JS image preloading/swapping und use CSS instead
- */
-function MM_preloadImages() {
-	var d = document;
-	if (d.images) {
-		if(!d.MM_p) {
-			d.MM_p = [];
-		}
-		var j = d.MM_p.length, a = MM_preloadImages.arguments;
-		for (var i = 0; i < a.length; i++) {
-			if (a[i].indexOf("#") !== 0) {
-				d.MM_p[j] = new Image();
-				d.MM_p[j++].src = a[i];
-			}
-		}
-	}
-}
-
-
-/**
- * @todo remove JS image preloading/swapping und use CSS instead
- */
-function MM_swapImgRestore() {
-	var x, a = document.MM_sr;
-	for (var i = 0; a && i < a.length && (x = a[i]) && x.oSrc; i++) {
-		x.src = x.oSrc;
-	}
-}
-
-
-/**
- * @usedby MM_swapImage()
- *
- * @todo remove JS image preloading/swapping und use CSS instead
- */
-function MM_findObj(n, d) {
-	var p, x;
-	if (!d) {
-		d = document;
-	}
-	if ((p = n.indexOf("?")) > 0 && parent.frames.length) {
-		d = parent.frames[n.substring(p+1)].document;
-		n = n.substring(0,p);
-	}
-	if (!(x = d[n]) && d.all) {
-		x = d.all[n];
-	}
-	for (var i = 0; !x && i < d.forms.length; i++) {
-		x = d.forms[i][n];
-	}
-	if (d.layers) {
-		for (i = 0; !x && i < d.layers.length; i++) {
-			x = MM_findObj(n, d.layers[i].document);
-		}
-	}
-	if (!x && d.getElementById) {
-		x = d.getElementById(n);
-	}
-	return x;
-}
-
-
-/**
- * @uses MM_findObj()
- *
- * @todo remove JS image preloading/swapping und use CSS instead
- */
-function MM_swapImage() {
-	var j = 0, x, a = MM_swapImage.arguments;
-	document.MM_sr = [];
-	for (var i = 0, len = a.length - 2; i < len; i += 3) {
-		if ((x = MM_findObj(a[i])) !== null) {
-			document.MM_sr[j++] = x;
-			if (!x.oSrc) {
-				x.oSrc = x.src;
-			}
-			x.src = a[i+2];
-		}
-	}
-}
-
 /**
  *
  * Javascript sprintf by http://jan.moesen.nu/
@@ -219,39 +136,8 @@ function sprintf() {
 	return str;
 }
 
-
 /**
- * show tooltip
- *
- * @todo try to merge with hideTip(), eventually with optional parameter
- */
-function showTip(id, e) {
-	var x, y, tip = document.getElementById(id);
-	if (window.event) {
-		x = window.event.x + document.body.scrollLeft;
-		y = window.event.y + document.body.scrollTop;
-	} else {
-		x = e.pageX;
-		y = e.pageY;
-	}
-	tip.style.left = (x + 10) + "px";
-	tip.style.top = (y + 10) + "px";
-	tip.style.display = "block";
-}
-
-
-/**
- * hide tooltip
- *
- * @todo try to merge with showTip(), eventually with optional parameter
- */
-function hideTip(id) {
-	document.getElementById(id).style.display = "none";
-}
-
-
-/**
- *
+ * showHideBlocks
  */
 function showHideBlocks(id) {
 	if (document.getElementById(id).style.display == "none") { // unhide
@@ -261,41 +147,40 @@ function showHideBlocks(id) {
 	}
 }
 
-
-/**
- * show/open file tree dialog pageY
- *
- * @return boolean prevent loading of new page on main page
- */
- /*
-function showFileTree() {
-	libwindow = window.open("ftp_choose_dir.php", "FileTreeDialogPage", "menubar=no,width=550,height=400,scrollbars=yes");
-	return false; // return false to prevent loading of new main page
-}
-*/
-
 /**
  * Display dialog box allowing to choose ftp directory
  *
  * @return false
  */
 function chooseFtpDir() {
-		var dialog1 = $('<div id="dial_ftp_dir"/>').append($("<iframe scrolling='auto' />").attr("src", "ftp_choose_dir.php")).dialog(
-		{
-			hide:'blind',
-			show:'slide',
-			focus:false,
-			width:900,
-			height:520,
-			autoOpen:false,
-			modal:true,
-			//title:"{TR_CHOOSE_DIR}",
-			close:function (e, ui) {
-				$(this).remove();
+		var dialog1 = $('<div id="dial_ftp_dir" style="overflow: hidden;"/>').append($('<iframe scrolling="auto" height="100%" style="overflow: hidden;"/>').
+			attr("src", "ftp_choose_dir.php")).dialog(
+			{
+				hide: 'blind',
+				show:'slide',
+				focus: false,
+				width: 650,
+				height:650,
+				autoOpen: false,
+				modal: true,
+				title: js_i18n_tr_ftp_directories,
+				buttons: [ {text: js_i18n_tr_close, click: function(){ $(this).dialog('close'); } } ],
+				close: function (e, ui) {
+					$(this).remove();
+				}
 			}
-		}
-	);
+		);
+
+		$(window).resize(function() {
+        	dialog1.dialog("option", "position", { my: "center", at: "center", of: window });
+        });
+
+		$(window).scroll(function() {
+			dialog1.dialog("option", "position", { my: "center", at: "center", of: window });
+		});
+
     dialog1.dialog('open');
+
     return false;
 }
 
@@ -327,41 +212,3 @@ function iMSCPajxError(xhr, settings, exception) {
 			alert('HTTP ERROR: An Unexpected HTTP Error occurred during the request');
 	}
 }
-
-/*
- * here are old moved unused/deprecated functions for archive
- * absolutly useless functions got removed completly, search repository
- * archive for more information
- */
-
-/*
-
-// eval is evil
-function MM_jumpMenu(targ,selObj,restore) {
-	eval(targ + ".location='" + selObj.options[selObj.selectedIndex].value + "'");
-	if (restore) {
-		selObj.selectedIndex = 0;
-	}
-}
-
-// copied from reseller/alias_add.tpl + client/alias_add.tpl
-var emptyData	= 'Empty data or wrong field.';
-var wdname		= 'Wrong domain name!';
-var mpointError	= 'Please write mount point!';
-
-function checkForm() {
-	var dname = document.forms[0].elements['ndomain_name'].value;
-	var dmount = document.forms[0].elements['ndomain_mpoint'].value;
-	var dd = new String(dmount);
-	if (dname == "" || dmount == "") {
-		alert(emptyData);
-	} else if (dname.indexOf('.') == -1) {
-		alert(wdname);
-	} else if (dd.length < 2) {
-		alert(mpointError);
-	} else {
-		document.forms[0].submit();
-	}
-}
-
-*/

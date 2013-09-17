@@ -24,7 +24,7 @@
  */
 
 body {
-    background: transparent url(../images/green/background/left_bg.jpg) repeat-y top left;
+    background: #ffffff url(../images/green/background/left_bg.jpg) repeat-y top left;
     color: #1a1a1a;
 }
 
@@ -108,8 +108,9 @@ a:hover.link_as_button {
  */
 
 /* titles */
-h2 span, h3 span {
-    border-bottom-color: #cccccc;
+h2 span,
+h3 span {
+    border-bottom-color: #dfdfdf;
 }
 
 /* Tables */
@@ -154,9 +155,9 @@ input[type="password"]:focus,
 textarea:focus,
 select:focus {
     border: 1px solid #0e6e0e;
-    -webkit-box-shadow: 0px 0px 10px #0e6e0e;
-    -moz-box-shadow: 0px 0px 10px #0e6e0e;
-    box-shadow: 0px 0px 10px #0e6e0e;
+    -webkit-box-shadow: 0 0 10px #0e6e0e;
+    -moz-box-shadow: 0 0 10px #0e6e0e;
+    box-shadow: 0 0 10px #0e6e0e;
 }
 
 input[readonly="readonly"],

@@ -98,8 +98,7 @@ body {
     min-width: 850px;
     position: relative;
     height: 100%;
-    font-family: Geneva, Arial, Helvetica, sans-serif;
-    font-size: .8em;
+    font: 12px/18px Arial, Helvetica, sans-serif;
 }
 
 .no_min_width {
@@ -783,15 +782,15 @@ table .icon {
 .icon {
     background-position: left center;
     background-repeat: no-repeat;
-    display: inline;
+    display: inline-block;
+    display: -moz-inline-block;
+    overflow: hidden;
     height: 16px;
+    line-height: 18px;
     padding-left: 20px;
 }
 
 .paginator .icon {
-    display: inline-block;
-    display: -moz-inline-block;
-    overflow: hidden;
     width: 0;
     height: 16px;
     line-height: 32px;

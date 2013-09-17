@@ -378,6 +378,8 @@ $tpl->assign(
 	array(
 		'TR_PAGE_TITLE' => tr('Client / Webtools / Protected Areas / {TR_DYNAMIC_TITLE}'),
 		'ISP_LOGO' => layout_getUserLogo(),
+		'TR_FTP_DIRECTORIES' => tojs(('Ftp directories')),
+		'TR_CLOSE' => tojs(tr('Close')),
 		'TR_DYNAMIC_TITLE' => isset($_GET['id']) ? tr('Edit protected area') : tr('Add protected area'),
 		'TR_PROTECTED_AREA' => tr('Protected areas'),
 		'TR_AREA_NAME' => tr('Area name'),

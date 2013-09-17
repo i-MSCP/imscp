@@ -1,7 +1,6 @@
 
 <script type="text/javascript">
 	/*<![CDATA[*/
-	/*<![CDATA[*/
 	$(document).ready(function(){
 		$("tbody tr:nth-child(odd)").removeClass('even').addClass('odd');
 		$("tbody tr:nth-child(even)").removeClass('odd').addClass('even');

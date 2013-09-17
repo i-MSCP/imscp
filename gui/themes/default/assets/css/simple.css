@@ -57,7 +57,7 @@ table {
 }
 
 body {
-    color: #1f1f1f;
+    color: #1a1a1a;
     background: #ffffff;
     font: 12px/18px Arial, Helvetica, sans-serif;
 }
@@ -72,7 +72,7 @@ strong {
 
 a,
 a:hover.link_as_button {
-    color: rgb(255, 255, 255);
+    color: #ffffff;
     text-decoration: none;
 }
 
@@ -86,7 +86,7 @@ a:hover,
 .wrapper {
     position: relative;
     width: 100%;
-    height: 100%
+    /*height: 100%*/
 }
 
 /*-----------HEADER-----------*/
@@ -225,7 +225,7 @@ a:hover,
 }
 
 #imscpTooltip .tooltipBody {
-    color: rgb(255, 255, 255);
+    color: #ffffff;
 }
 
 .tooltip_notice {
@@ -285,8 +285,9 @@ table td {
 /*-----------FTP CHOOSER-----------*/
 
 .ftp_chooser {
+    position: relative;
     margin: 0 auto;
-    width: 50%;
+    width: 90%;
 }
 
 .ftp_chooser table {
@@ -312,10 +313,33 @@ table td {
     color: #1a1a1a;
 }
 
-.ftp_chooser thead, tfoot {
-    border-color: #000000;
-    background: #000000 url(../images/black/background/ui-bg_glass_40_000000_1x400.png) 50% 50% repeat-x;
+.ftp_chooser thead, .ftp_chooser tfoot {
     color: #ffffff;
+}
+
+.black .ftp_chooser thead, .black .ftp_chooser tfoot {
+    background: #000000 url(../images/black/background/ui-bg_glass_40_000000_1x400.png) 50% 50% repeat-x;
+    border-color: #000000;
+}
+
+.blue .ftp_chooser thead, .black .ftp_chooser tfoot {
+    background: #151e72 url(../images/blue/background/ui-bg_glass_40_151e72_1x400.png) 50% 50% repeat-x;
+    border-color: #151e72;
+}
+
+.green .ftp_chooser thead, .black .ftp_chooser tfoot {
+    background: #055a0d url(../images/green/background/ui-bg_glass_40_055a0d_1x400.png) 50% 50% repeat-x;
+    border-color: #055a0d;
+}
+
+.red .ftp_chooser thead, .black .ftp_chooser tfoot {
+    background: #5a0505 url(../images/red/background/ui-bg_glass_40_5a0505_1x400.png) 50% 50% repeat-x;
+    border-color: #5a0505;
+}
+
+.yellow .ftp_chooser thead, .black .ftp_chooser tfoot {
+    background: #85742f url(../images/yellow/background/ui-bg_glass_40_85742f_1x400.png) 50% 50% repeat-x;
+    border-color: #85742f;
 }
 
 .ftp_chooser tbody {

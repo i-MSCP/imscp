@@ -63,7 +63,6 @@
 		});
 
 		$('#php_editor_dialog').dialog({
-			bgiframe: true,
 			hide: 'blind',
 			show: 'slide',
 			focus: false,

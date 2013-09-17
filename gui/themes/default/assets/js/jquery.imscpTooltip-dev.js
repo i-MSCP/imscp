@@ -21,7 +21,7 @@
  * @copyright   2010-2013 by i-MSCP | http://i-mscp.net
  * @link        http://i-mscp.net
  * @author      Laurent Declercq <l.declercq@nuxwin.com>
- * @version 0.0.3
+ * @version 0.0.4
  */
 (function ($) {
 
@@ -33,9 +33,7 @@
 		// timeout id for delayed tooltips
 		tooltipId,
 		// flag for mouse tracking
-		followCursor = true, // TODO Something goes wrong here
-		// IE 5.5 or 6
-		IE = $.support.cssFloat && /MSIE\s(5\.5|6\.)/.test(navigator.userAgent);
+		followCursor = true; // TODO Something goes wrong here
 
 	$.imscpTooltip = {
 		defaultsSettings:{ // Default getSettings
@@ -146,7 +144,7 @@
 	{
 		tooltipId = null;
 
-		if ((!IE || !$.fn.bgiframe) && getSettings(currentTooltip).fade) {
+		if (getSettings(currentTooltip).fade) {
 			if (tooltipElement.parent.is(":animated")) {
 				tooltipElement.parent.stop().show().fadeTo(getSettings(currentTooltip).fade, currentTooltip.tOpacity);
 			} else {
@@ -243,7 +241,7 @@
 			tooltipElement.parent.removeClass(tsettings.extraClass).hide().css("opacity", "");
 		}
 
-		if ((!IE || !$.fn.bgiframe) && tsettings.fade) {
+		if (tsettings.fade) {
 			if (tooltipElement.parent.is(':animated')) {
 				tooltipElement.parent.stop().fadeTo(tsettings.fade, 0, complete);
 			} else {

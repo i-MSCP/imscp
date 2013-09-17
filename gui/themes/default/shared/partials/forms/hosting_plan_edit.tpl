@@ -5,7 +5,6 @@
 	$(document).ready(function () {
 		// PHP Editor settings dialog
 		$('#php_editor_dialog').dialog({
-			bgiframe: true,
 			hide: 'blind',
 			show: 'slide',
 			focus: false,

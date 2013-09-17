@@ -1,4 +1,11 @@
 
+<script type="text/javascript">
+	/* <![CDATA[ */
+	var js_i18n_tr_ftp_directories = '{TR_FTP_DIRECTORIES}';
+	var js_i18n_tr_close = '{TR_CLOSE}';
+	/*]]>*/
+</script>
+
 <form name="edit_ftp_account_frm" method="post" action="ftp_edit.php?id={ID}">
 	<table>
 		<thead>

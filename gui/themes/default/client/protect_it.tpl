@@ -1,6 +1,10 @@
 
 <script type="text/javascript">
 	/* <![CDATA[ */
+
+	var js_i18n_tr_ftp_directories = '{TR_FTP_DIRECTORIES}';
+	var js_i18n_tr_close = '{TR_CLOSE}';
+
 	function action_delete(url, subject) {
 		return confirm(sprintf("{TR_MESSAGE_DELETE}", subject));
 	}

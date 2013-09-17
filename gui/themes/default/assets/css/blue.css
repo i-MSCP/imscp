@@ -24,7 +24,7 @@
  */
 
 body {
-    background: transparent url(../images/blue/background/left_bg.jpg) repeat-y top left;
+    background: #ffffff url(../images/blue/background/left_bg.jpg) repeat-y top left;
     color: #1a1a1a;
 }
 
@@ -110,11 +110,12 @@ a:hover.link_as_button {
 /* titles */
 h2 span,
 h3 span {
-    border-bottom-color: #cccccc;
+    border-bottom-color: #dfdfdf;
 }
 
 /* Tables */
-thead, tfoot {
+thead,
+tfoot {
     border-color: #151e72;
     background: #151e72 url(../images/blue/background/ui-bg_glass_40_151e72_1x400.png) 50% 50% repeat-x;
     color: #ffffff;
@@ -153,9 +154,9 @@ input[type="password"]:focus,
 textarea:focus,
 select:focus {
     border: 1px solid #1e288a;
-    -webkit-box-shadow: 0px 0px 10px #1e288a;
-    -moz-box-shadow: 0px 0px 10px #1e288a;
-    box-shadow: 0px 0px 10px #1e288a;
+    -webkit-box-shadow: 0 0 10px #1e288a;
+    -moz-box-shadow: 0 0 10px #1e288a;
+    box-shadow: 0 0 10px #1e288a;
 }
 
 input[readonly="readonly"],
