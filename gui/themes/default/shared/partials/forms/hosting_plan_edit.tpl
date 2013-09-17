@@ -115,9 +115,12 @@
 	<!-- EDP: nb_domain_aliases -->
 	<!-- BDP: nb_mail -->
 	<tr>
-		<td><label for="hp_mail">{TR_MAX_MAIL}</label>
-		</td>
+		<td><label for="hp_mail">{TR_MAX_MAIL}</label></td>
 		<td><input id="hp_mail" type="text" name="hp_mail" value="{MAX_MAIL}"{READONLY}/></td>
+	</tr>
+	<tr>
+		<td><label for="hp_mail_quota">{TR_MAIL_QUOTA}</label></td>
+		<td><input id="hp_mail_quota" type="text" name="hp_mail_quota" value="{MAIL_QUOTA}"/></td>
 	</tr>
 	<!-- EDP: nb_mail -->
 	<!-- BDP: nb_ftp -->

@@ -68,8 +68,8 @@ function get_pageone_param()
  */
 function get_init_au2_page($tpl, $phpini)
 {
-	global $hpName, $php, $cgi, $sub, $als, $mail, $ftp, $sqlDb, $sqlUser, $traffic, $diskSpace, $backup, $dns, $aps,
-		$extMailServer, $webFolderProtection;
+	global $hpName, $php, $cgi, $sub, $als, $mail, $mailQuota, $ftp, $sqlDb, $sqlUser, $traffic, $diskSpace, $backup,
+		   $dns, $aps, $extMailServer, $webFolderProtection;
 
 	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
@@ -83,6 +83,7 @@ function get_init_au2_page($tpl, $phpini)
 	$tplVars['MAX_SUBDMN_CNT'] = tohtml($sub);
 	$tplVars['MAX_DMN_ALIAS_CNT'] = tohtml($als);
 	$tplVars['MAX_MAIL_CNT'] = tohtml($mail);
+	$tplVars['MAIL_QUOTA'] = tohtml($mailQuota);
 	$tplVars['MAX_FTP_CNT'] = tohtml($ftp);
 	$tplVars['MAX_SQL_CNT'] = tohtml($sqlDb);
 	$tplVars['VL_MAX_SQL_USERS'] = tohtml($sqlUser);
@@ -212,8 +213,8 @@ function get_init_au2_page($tpl, $phpini)
  */
 function reseller_getHostingPlanData($hpid, $resellerId, $phpini)
 {
-	global $hpName, $php, $cgi, $sub, $als, $mail, $ftp, $sqlDb, $sqlUser, $traffic, $diskSpace, $backup, $dns, $aps,
-		$extMailServer, $webFolderProtection;
+	global $hpName, $php, $cgi, $sub, $als, $mail, $mailQuota, $ftp, $sqlDb, $sqlUser, $traffic, $diskSpace, $backup,
+		   $dns, $aps, $extMailServer, $webFolderProtection;
 
 	if($hpid != 0) {
 		$query = 'SELECT `name`, `props` FROM `hosting_plans` WHERE `reseller_id` = ? AND `id` = ?';
@@ -227,8 +228,10 @@ function reseller_getHostingPlanData($hpid, $resellerId, $phpini)
 				$php, $cgi, $sub, $als, $mail, $ftp, $sqlDb, $sqlUser, $traffic, $diskSpace, $backup, $dns, $aps,
 				$phpEditor, $phpiniAllowUrlFopen, $phpiniDisplayErrors, $phpiniDisableFunctions, $phpiniPostMaxSize,
 				$phpiniUploadMaxFileSize, $phpiniMaxExecutionTime, $phpiniMaxInputTime, $phpiniMemoryLimit,
-				$extMailServer, $webFolderProtection
+				$extMailServer, $webFolderProtection, $mailQuota
 			) = explode(';', $props);
+
+			$mailQuota = ($mailQuota != '0') ? $mailQuota / 1048576 : '0';
 
 			$hpName = $data['name'];
 
@@ -250,7 +253,7 @@ function reseller_getHostingPlanData($hpid, $resellerId, $phpini)
 		}
 	} else {
 		$hpName = 'Custom';
-		$sub = $als = $mail = $ftp = $sqlDb = $sqlUser = $traffic = $diskSpace = '0';
+		$sub = $als = $mail = $mailQuota = $ftp = $sqlDb = $sqlUser = $traffic = $diskSpace = '0';
 		$php = $cgi = $backup = $dns = $aps = $extMailServer = '_no_';
 		$webFolderProtection = '_yes_';
 	}
@@ -264,7 +267,7 @@ function reseller_getHostingPlanData($hpid, $resellerId, $phpini)
  */
 function check_user_data($phpini)
 {
-	global $php, $cgi, $sub, $als, $mail, $ftp, $sqlDb, $sqlUser, $traffic, $diskSpace, $backup,
+	global $php, $cgi, $sub, $als, $mail, $mailQuota, $ftp, $sqlDb, $sqlUser, $traffic, $diskSpace, $backup,
 		$dns, $aps, $extMailServer, $webFolderProtection;
 
 	/** @var iMSCP_Config_Handler_File $cfg */
@@ -364,6 +367,18 @@ function check_user_data($phpini)
 
 	if (!imscp_limit_check($diskSpace, null)) {
 		set_page_message(tr('Incorrect disk space limit.'), 'error');
+	}
+
+	if (isset($_POST['nreseller_mail_quota'])) {
+		$mailQuota = clean_input($_POST['nreseller_mail_quota']);
+
+		if(!imscp_limit_check($mailQuota, null)) {
+			set_page_message(tr('Incorrect mail quota value.'), 'error');
+		} elseif($diskSpace != '0' && $mailQuota > $diskSpace) {
+			set_page_message(tr('Mail quota value cannot be bigger than disk space limit.'), 'error');
+		} elseif($diskSpace != '0' && $mailQuota == '0') {
+			set_page_message(tr('Mail quota value cannot be unlimited. Max value is %s MiB.', $diskSpace), 'error');
+		}
 	}
 
 	// PHP feature
@@ -533,6 +548,7 @@ $tpl->assign(
 		'TR_MAX_SUBDOMAIN' => tr('Subdomain limit') . '<br/><i>(-1 ' . tr('disabled') . ', 0 ' . tr('unlimited') . ')</i>',
 		'TR_MAX_DOMAIN_ALIAS' => tr('Domain alias limit') . '<br/><i>(-1 ' . tr('disabled') . ', 0 ' . tr('unlimited') . ')</i>',
 		'TR_MAX_MAIL_COUNT' => tr('Email account limit') . '<br/><i>(-1 ' . tr('disabled') . ', 0 ' . tr('unlimited') . ')</i>',
+		'TR_MAIL_QUOTA' => tr('Mail quota [MiB]') . '<br/><i>(0 ' . tr('unlimited') . ')</i>',
 		'TR_MAX_FTP' => tr('FTP account limit') . '<br/><i>(-1 ' . tr('disabled') . ', 0 ' . tr('unlimited') . ')</i>',
 		'TR_MAX_SQL_DB' => tr('SQL database limit') . '<br/><i>(-1 ' . tr('disabled') . ', 0 ' . tr('unlimited') . ')</i>',
 		'TR_MAX_SQL_USERS' => tr('SQL user limit') . '<br/><i>(-1 ' . tr('disabled') . ', 0 ' . tr('unlimited') . ')</i>',
@@ -560,8 +576,8 @@ $tpl->assign(
 
 generateNavigation($tpl);
 
-global $dmnName, $dmnExpire, $php, $cgi, $sub, $als, $mail, $ftp, $sqlDb, $sqlUser, $traffic, $diskSpace, $backup, $dns,
-	$aps, $extMailServer, $webFolderProtection;
+global $dmnName, $dmnExpire, $php, $cgi, $sub, $als, $mail, $mailQuota, $ftp, $sqlDb, $sqlUser, $traffic, $diskSpace,
+	   $backup, $dns, $aps, $extMailServer, $webFolderProtection;
 
 if (!get_pageone_param()) {
 	set_page_message(tr('Domain data were been altered. Please try again.'), 'error');
@@ -583,7 +599,7 @@ if (isset($_POST['uaction']) && ('user_add2_nxt' == $_POST['uaction']) && (!isse
 			$phpini->getDataVal('phpiniMaxExecutionTime') . ';' .
 			$phpini->getDataVal('phpiniMaxInputTime') . ';' .
 			$phpini->getDataVal('phpiniMemoryLimit') . ';' .
-			$extMailServer . ';' . $webFolderProtection;
+			$extMailServer . ';' . $webFolderProtection . ';' . $mailQuota * 1048576;
 
 		if (reseller_limits_check($_SESSION['user_id'], $_SESSION['ch_hpprops'])) {
 			redirectTo('user_add3.php');

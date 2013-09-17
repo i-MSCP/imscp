@@ -118,6 +118,10 @@
 		<td><label for="nreseller_max_mail_cnt">{TR_MAX_MAIL_COUNT}</label></td>
 		<td><input id="nreseller_max_mail_cnt" type="text" name="nreseller_max_mail_cnt" value="{MAX_MAIL_CNT}"/></td>
 	</tr>
+	<tr>
+		<td><label for="nreseller_mail_quota">{TR_MAIL_QUOTA}</label></td>
+		<td><input id="nreseller_mail_quota" type="text" name="nreseller_mail_quota" value="{MAIL_QUOTA}"/></td>
+	</tr>
 	<!-- EDP: mail_feature -->
 	<!-- BDP: ftp_feature -->
 	<tr>
@@ -367,10 +371,10 @@
 	<td>
 		<div class="radio">
 			<input type="radio" id="web_folder_protection_yes" name="web_folder_protection"
-				   value="yes" {VL_WEB_FOLDER_PROTECTION_YES} />
+				   value="_yes_" {VL_WEB_FOLDER_PROTECTION_YES} />
 			<label for="web_folder_protection_yes">{TR_YES}</label>
 			<input type="radio" id="web_folder_protection_no" name="web_folder_protection"
-				   value="no" {VL_WEB_FOLDER_PROTECTION_NO} />
+				   value="_no_" {VL_WEB_FOLDER_PROTECTION_NO} />
 			<label for="web_folder_protection_no">{TR_NO}</label>
 		</div>
 	</td>

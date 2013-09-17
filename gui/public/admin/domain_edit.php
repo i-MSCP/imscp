@@ -71,7 +71,8 @@ function admin_getDomainProps($domainId)
 			`domain_subd_limit`, `domain_alias_limit`, `domain_mailacc_limit`, `domain_ftpacc_limit`,
 			`domain_sqld_limit`, `domain_sqlu_limit`, `domain_disk_limit`, `domain_disk_usage`, `domain_traffic_limit`,
 			`domain_php`, `domain_cgi`, `domain_dns`, `domain_software_allowed`, `allowbackup`,
-			`phpini_perm_system` AS `customer_php_ini_system`, `domain_external_mail`, `web_folder_protection`
+			`phpini_perm_system` AS `customer_php_ini_system`, `domain_external_mail`, `web_folder_protection`,
+			(`mail_quota` / 1048576) AS `mail_quota`
 		FROM
 			`domain`
 		WHERE
@@ -188,6 +189,7 @@ function &admin_getData($domainId, $forUpdate = false)
 		$data['fallback_allowbackup'] = $data['allowbackup'];
 		$data['fallback_domain_external_mail'] = $data['domain_external_mail'];
 		$data['fallback_web_folder_protection'] = $data['web_folder_protection'];
+		$data['fallback_mail_quota'] = $data['mail_quota'];
 
 		$data['domain_expires_ok'] = true;
 		$data['domain_never_expires'] = ($data['domain_expires'] == 0) ? 'on' : 'off';
@@ -206,11 +208,17 @@ function &admin_getData($domainId, $forUpdate = false)
 		}
 
 		if ($forUpdate) { // Post request
-			foreach (array(
-				'domain_subd_limit' => 'max_sub_cnt', 'domain_alias_limit' => 'max_als_cnt',
-				'domain_mailacc_limit' => 'max_mail_cnt', 'domain_ftpacc_limit' => 'max_ftp_cnt',
-				'domain_sqld_limit' => 'max_sql_db_cnt', 'domain_sqlu_limit' => 'max_sql_user_cnt',
-				'domain_traffic_limit' => 'max_traff_amnt', 'domain_disk_limit' => 'max_disk_amnt'
+			foreach (
+				array(
+					'domain_subd_limit' => 'max_sub_cnt',
+					'domain_alias_limit' => 'max_als_cnt',
+					'domain_mailacc_limit' => 'max_mail_cnt',
+					'mail_quota' => 'max_mail_cnt',
+					'domain_ftpacc_limit' => 'max_ftp_cnt',
+					'domain_sqld_limit' => 'max_sql_db_cnt',
+					'domain_sqlu_limit' => 'max_sql_user_cnt',
+					'domain_traffic_limit' => 'max_traff_amnt',
+					'domain_disk_limit' => 'max_disk_amnt'
 				) as $customerLimit => $resellerMaxLimit
 			) {
 				if (array_key_exists($customerLimit, $_POST) && $data[$resellerMaxLimit] != -1) {
@@ -324,6 +332,10 @@ function _admin_generateLimitsForm($tpl, &$data)
 		$tplVars['MAIL_ACCOUNTS_LIMIT'] = tohtml($data['domain_mailacc_limit']);
 		$tplVars['TR_CUSTOMER_MAIL_ACCOUNTS_COMSUPTION'] = ($data['fallback_domain_mailacc_limit'] != -1) ? tohtml($data['nbMailAccounts']) . ' / ' . (($data['fallback_domain_mailacc_limit'] != 0) ? tohtml($data['fallback_domain_mailacc_limit']) : tr('Unlimited')): tr('Disabled');
 		$tplVars['TR_RESELLER_MAIL_ACCOUNTS_COMSUPTION'] = tohtml($data['current_mail_cnt']) . ' / ' . (($data['max_mail_cnt'] != 0) ? tohtml($data['max_mail_cnt']) : tr('Unlimited'));
+
+		$tplVars['TR_MAIL_QUOTA'] = tr('Mail quota [MiB]') . '<br/><i>(0 ' . tr('unlimited') . ')</i>';
+		$tplVars['MAIL_QUOTA'] = ($data['mail_quota'] != 0) ? tohtml(floor($data['mail_quota'])) : '0';
+		$tplVars['TR_NO_AVAILABLE'] = tr('No available');
 	}
 
 	// Ftp accounts limit
@@ -685,6 +697,20 @@ function admin_checkAndUpdateData($domainId)
 			$errFieldsStack[] = 'domain_disk_limit';
 		}
 
+		// Check for mail quota
+		if (!imscp_limit_check($data['mail_quota'], null)) {
+			set_page_message(tr('Wrong syntax for the mail quota value.'), 'error');
+			$errFieldsStack[] = 'mail_quota';
+		} elseif ($data['domain_disk_limit'] != 0 && $data['mail_quota'] > $data['domain_disk_limit']) {
+			set_page_message(tr('Mail quota value cannot be bigger than disk space limit.'), 'error');
+			$errFieldsStack[] = 'mail_quota';
+		} elseif($data['domain_disk_limit'] != 0 && $data['mail_quota'] == 0) {
+			set_page_message(
+				tr('Mail quota value cannot be unlimited. Max value is %s MiB.', $data['domain_disk_limit']), 'error'
+			);
+			$errFieldsStack[] = 'mail_quota';
+		}
+
 		// Check for PHP support (we are safe here)
 		$data['domain_php'] = (in_array($data['domain_php'], array('no', 'yes')))
 			? $data['domain_php'] : $data['fallback_domain_php'];
@@ -875,12 +901,12 @@ function admin_checkAndUpdateData($domainId)
 				SET
 					`domain_expires` = ?, `domain_last_modified` = ?, `domain_mailacc_limit` = ?,
 					`domain_ftpacc_limit` = ?, `domain_traffic_limit` = ?, `domain_sqld_limit` = ?,
-					`domain_sqlu_limit` = ?, `domain_status` = ?, `domain_alias_limit` = ?,
-					`domain_subd_limit` = ?, `domain_disk_limit` = ?, `domain_php` = ?, `domain_cgi` = ?,
-					`allowbackup` = ?, `domain_dns` = ?,  `domain_software_allowed` = ?,
-					`phpini_perm_system` = ?, `phpini_perm_allow_url_fopen` = ?,
-					`phpini_perm_display_errors` = ?, `phpini_perm_disable_functions` = ?,
-					`domain_external_mail` = ?, `web_folder_protection` = ?, `domain_ip_id` = ?
+					`domain_sqlu_limit` = ?, `domain_status` = ?, `domain_alias_limit` = ?, `domain_subd_limit` = ?,
+					`domain_ip_id` = ?, `domain_disk_limit` = ?, `domain_php` = ?, `domain_cgi` = ?, `allowbackup` = ?,
+					`domain_dns` = ?,  `domain_software_allowed` = ?, `phpini_perm_system` = ?,
+					`phpini_perm_allow_url_fopen` = ?, `phpini_perm_display_errors` = ?,
+					`phpini_perm_disable_functions` = ?, `domain_external_mail` = ?, `web_folder_protection` = ?,
+					`mail_quota` = ?
 				WHERE
 					`domain_id` = ?
 			";
@@ -891,7 +917,7 @@ function admin_checkAndUpdateData($domainId)
 					$data['domain_ftpacc_limit'], $data['domain_traffic_limit'],
 					$data['domain_sqld_limit'], $data['domain_sqlu_limit'],
 					($daemonRequest) ? $cfg->ITEM_TOCHANGE_STATUS : $cfg->ITEM_OK_STATUS,
-					$data['domain_alias_limit'], $data['domain_subd_limit'],
+					$data['domain_alias_limit'], $data['domain_subd_limit'], $data['domain_ip_id'],
 					$data['domain_disk_limit'], $data['domain_php'], $data['domain_cgi'],
 					$data['allowbackup'], $data['domain_dns'],
 					$data['domain_software_allowed'], $phpEditor->getClPermVal('phpiniSystem'),
@@ -899,7 +925,7 @@ function admin_checkAndUpdateData($domainId)
 					$phpEditor->getClPermVal('phpiniDisplayErrors'),
 					$phpEditor->getClPermVal('phpiniDisableFunctions'),
 					$data['domain_external_mail'], $data['web_folder_protection'],
-					$data['domain_ip_id'], 
+					$data['mail_quota'] * 1048576,
 					$domainId
 				)
 			);

@@ -174,7 +174,7 @@ function reseller_addCustomer($resellerId)
 		$php, $cgi, $sub, $als, $mail, $ftp, $sql_db, $sql_user, $traff, $disk, $backup, $dns, $aps, $phpEditor,
 		$phpiniAllowUrlFopen, $phpiniDisplayErrors, $phpiniDisableFunctions, $phpiniPostMaxSize,
 		$phpiniUploadMaxFileSize, $phpiniMaxExecutionTime, $phpiniMaxInputTime, $phpiniMemoryLimit, $extMailServer,
-		$webFolderProtection
+		$webFolderProtection, $mailQuota
 	) = explode(';', $props);
 
 	$php = str_replace('_', '', $php);
@@ -245,22 +245,22 @@ function reseller_addCustomer($resellerId)
 			INSERT INTO `domain` (
 				`domain_name`, `domain_admin_id`, `domain_created_id`, `domain_created`, `domain_expires`,
 				`domain_mailacc_limit`, `domain_ftpacc_limit`, `domain_traffic_limit`, `domain_sqld_limit`,
-				`domain_sqlu_limit`, `domain_status`, `domain_subd_limit`, `domain_alias_limit`, `domain_ip_id`,
+				`domain_sqlu_limit`, `domain_status`, `domain_alias_limit`, `domain_subd_limit`, `domain_ip_id`,
 				`domain_disk_limit`, `domain_disk_usage`, `domain_php`, `domain_cgi`, `allowbackup`, `domain_dns`,
 				`domain_software_allowed`, `phpini_perm_system`, `phpini_perm_allow_url_fopen`,
 				`phpini_perm_display_errors`, `phpini_perm_disable_functions`, `domain_external_mail`,
-				`web_folder_protection`
+				`web_folder_protection`, `mail_quota`
 			) VALUES (
-				?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
+				?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
 			)
 		";
 		exec_query(
 			$query,
 			array(
 				$dmnName, $recordId, $resellerId, time(), $dmnExpire, $mail, $ftp, $traff, $sql_db, $sql_user,
-				$cfg->ITEM_TOADD_STATUS, $sub, $als, $domainIp, $disk, 0, $php, $cgi, $backup, $dns, $aps, $phpEditor,
+				$cfg->ITEM_TOADD_STATUS, $als, $sub, $domainIp, $disk, 0, $php, $cgi, $backup, $dns, $aps, $phpEditor,
 				$phpiniAllowUrlFopen, $phpiniDisplayErrors, $phpiniDisableFunctions, $extMailServer,
-				$webFolderProtection
+				$webFolderProtection, $mailQuota
 			)
 		);
 

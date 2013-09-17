@@ -126,9 +126,10 @@ function admin_generatePage($tpl, $phpini)
 			'HP_NAME_VALUE' => '',
 			'HP_DESCRIPTION_VALUE' => '',
 
-			'TR_MAX_SUB_LIMITS' => '0',
-			'TR_MAX_ALS_VALUES' => '0',
+			'HP_MAX_SUB_LIMITS' => '0',
+			'HP_MAX_ALS_VALUES' => '0',
 			'HP_MAIL_VALUE' => '0',
+			'HP_MAIL_QUOTA_VALUE' => '0',
 			'HP_FTP_VALUE' => '0',
 			'HP_SQL_DB_VALUE' => '0',
 			'HP_SQL_USER_VALUE' => '0',
@@ -182,8 +183,8 @@ function admin_generatePage($tpl, $phpini)
  */
 function admin_generateErrorPage($tpl, $phpini)
 {
-	global $name, $description, $sub, $als, $mail, $ftp, $sqld, $sqlu, $traffic, $diskSpace, $php, $cgi, $backup, $dns,
-		$aps, $extMail, $webFolderProtection, $status;
+	global $name, $description, $sub, $als, $mail, $mailQuota, $ftp, $sqld, $sqlu, $traffic, $diskSpace, $php, $cgi,
+		   $backup, $dns, $aps, $extMail, $webFolderProtection, $status;
 
 	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
@@ -194,9 +195,10 @@ function admin_generateErrorPage($tpl, $phpini)
 			'HP_NAME_VALUE' => tohtml($name),
 			'HP_DESCRIPTION_VALUE' => tohtml($description),
 
-			'TR_MAX_SUB_LIMITS' => tohtml($sub),
-			'TR_MAX_ALS_VALUES' => tohtml($als),
+			'HP_MAX_SUB_LIMITS' => tohtml($sub),
+			'HP_MAX_ALS_VALUES' => tohtml($als),
 			'HP_MAIL_VALUE' => tohtml($mail),
+			'HP_MAIL_QUOTA_VALUE' => tohtml($mailQuota),
 			'HP_FTP_VALUE' => tohtml($ftp),
 			'HP_SQL_DB_VALUE' => tohtml($sqld),
 			'HP_SQL_USER_VALUE' => tohtml($sqlu),
@@ -250,8 +252,8 @@ function admin_generateErrorPage($tpl, $phpini)
  */
 function admin_checkData($phpini)
 {
-	global $name, $description, $sub, $als, $mail, $ftp, $sqld, $sqlu, $traffic, $diskSpace, $php, $cgi, $dns, $backup,
-		$aps, $extMail, $webFolderProtection, $status;
+	global $name, $description, $sub, $als, $mail, $mailQuota, $ftp, $sqld, $sqlu, $traffic, $diskSpace, $php, $cgi,
+		   $dns, $backup, $aps, $extMail, $webFolderProtection, $status;
 
 	/** @var iMSCP_Config_Handler_File $cfg */
 	$cfg = iMSCP_Registry::get('config');
@@ -262,6 +264,7 @@ function admin_checkData($phpini)
 	$sub = isset($_POST['hp_sub']) ? clean_input($_POST['hp_sub']) : '-1';
 	$als = isset($_POST['hp_als']) ? clean_input($_POST['hp_als']) : '-1';
 	$mail = isset($_POST['hp_mail']) ? clean_input($_POST['hp_mail']) : '-1';
+	$mailQuota = isset($_POST['hp_mail_quota']) ? clean_input($_POST['hp_mail_quota']) : '';
 	$ftp = isset($_POST['hp_ftp']) ? clean_input($_POST['hp_ftp']) : '-1';
 	$sqld = isset($_POST['hp_sql_db']) ? clean_input($_POST['hp_sql_db']) : '-1';
 	$sqlu = isset($_POST['hp_sql_user']) ? clean_input($_POST['hp_sql_user']) : '-1';
@@ -329,6 +332,17 @@ function admin_checkData($phpini)
 
 	if (!imscp_limit_check($diskSpace, null)) {
 		set_page_message(tr('Incorrect disk space limit.'), 'error');
+	}
+
+	// Check for mail quota
+	if (!imscp_limit_check($mailQuota, null)) {
+		set_page_message(tr('Wrong syntax for the mail quota value.'), 'error');
+	} elseif ($diskSpace != 0 && $mailQuota > $diskSpace) {
+		set_page_message(tr('Mail quota value cannot be bigger than disk space limit.'), 'error');
+	} elseif($diskSpace != 0 && $mailQuota == 0) {
+		set_page_message(
+			tr('Mail quota value cannot be unlimited. Max value is %s MiB.', $diskSpace), 'error'
+		);
 	}
 
 	if (isset($_POST['phpiniSystem'])) {
@@ -402,8 +416,8 @@ function admin_checkData($phpini)
  */
 function admin_addHostingPlan($adminId, $phpini)
 {
-	global $name, $description, $sub, $als, $mail, $ftp, $sqld, $sqlu, $traffic, $diskSpace, $php, $cgi, $dns, $backup,
-		$aps, $extMail, $webFolderProtection, $status;
+	global $name, $description, $sub, $als, $mail, $mailQuota, $ftp, $sqld, $sqlu, $traffic, $diskSpace, $php, $cgi,
+		   $dns, $backup, $aps, $extMail, $webFolderProtection, $status;
 
 	$query = "
 		SELECT
@@ -429,6 +443,7 @@ function admin_addHostingPlan($adminId, $phpini)
 	$hpProps .= ';' . $phpini->getDataVal('phpiniPostMaxSize') . ';' . $phpini->getDataVal('phpiniUploadMaxFileSize');
 	$hpProps .= ';' . $phpini->getDataVal('phpiniMaxExecutionTime') . ';' . $phpini->getDataVal('phpiniMaxInputTime');
 	$hpProps .= ';' . $phpini->getDataVal('phpiniMemoryLimit') . ';' . $extMail . ';' . $webFolderProtection;
+	$hpProps .= ';' . $mailQuota * 1048576;
 
 	$query = "
 		INSERT INTO `hosting_plans`(
@@ -496,6 +511,7 @@ if (isset($cfg->HOSTING_PLANS_LEVEL) && $cfg->HOSTING_PLANS_LEVEL == 'admin') {
 			'TR_MAX_SUBDOMAINS' => tr('Subdomain limit') . '<br/><i>(-1 ' . tr('disabled') . ', 0 ' . tr('unlimited') . ')</i>',
 			'TR_MAX_ALIASES' => tr('Domain alias limit') . '<br/><i>(-1 ' . tr('disabled') . ', 0 ' . tr('unlimited') . ')</i>',
 			'TR_MAX_MAILACCOUNTS' => tr('Email account limit') . '<br/><i>(-1 ' . tr('disabled') . ', 0 ' . tr('unlimited') . ')</i>',
+			'TR_MAIL_QUOTA' => tr('Mail quota [MiB]') . '<br/><i>(0 ' . tr('unlimited') . ')</i>',
 			'TR_MAX_FTP' => tr('FTP account limit') . '<br/><i>(-1 ' . tr('disabled') . ', 0 ' . tr('unlimited') . ')</i>',
 			'TR_MAX_SQL' => tr('SQL database limit') . '<br/><i>(-1 ' . tr('disabled') . ', 0 ' . tr('unlimited') . ')</i>',
 			'TR_MAX_SQL_USERS' => tr('SQL user limit') . '<br/><i>(-1 ' . tr('disabled') . ', 0 ' . tr('unlimited') . ')</i>',

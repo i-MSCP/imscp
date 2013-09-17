@@ -40,6 +40,7 @@ GUI:
 	- Changed: Customers can no longer set an arbitrary mount point for their subdomains
 	- Changed: Default email accounts cannot longer be hidden
 	- Enhancement: Email accounts are now filterable
+	- Enhancement: Allow administrators and resellers to set mail quota for customers
 	- Fixed: Allow to share domain_dns table between several components (core, plugins..)
 	- Fixed: Allow plugins to provide their own assets throught the path /<plugin>/themes/<theme>/assets path
 	- Fixed: Plugins must be able to short-circuit execution of an event
@@ -54,6 +55,7 @@ GUI:
 	- Updated: Plugin API
 
 Tickets:
+	- Fixed #460: Nice To Have - Admin/Reseller should be able to set mail quota for customers
 	- Fixed #469: Defect - Quota field in mail_users table should accept big values
 	- Fixed #579: Review - i18n issues
 	- Fixed #745: Defect - Disk detail in dovecot doesn't include aliases
@@ -62,6 +64,7 @@ Tickets:
 	- Fixed #834: Cosmetics - Ticket system menu names
 	- Fixed #835: Task - Migration script - ispCP - Remove old php5-fcgi-starter
 	- Fixed #838: Bug - Installer skips PHP INI Level dialog for apache fcgi
+	- Fixed #846: Defect - Any customer can set his own mail quota
 	- Fixed #852: Bug - Software installer - Unable to install any software
 	- Fixed #854: Bug - Gui - Mail accounts - Mass deletion feature is broken
 	- Fixed #858: Task - Remove php5-adodb package

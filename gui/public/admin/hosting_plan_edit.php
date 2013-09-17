@@ -147,8 +147,10 @@ function admin_generatePage($tpl, $id, $phpini)
 		$php, $cgi, $sub, $als, $mail, $ftp, $sqld, $sqlu, $monthlyTraffic, $diskspace, $backup, $dns, $aps, $phpEditor,
 		$phpAllowUrlFopenPerm, $phpDisplayErrorsPerm, $phpDisableFunctionsPerm, $phpPostMaxSizeValue,
 		$phpUploadMaxFilesizeValue, $phpMaxExecutionTimeValue, $phpMaxInputTimeValue, $phpMemoryLimitValue,
-		$hpExtMail, $hpProtectedWebFolders
+		$hpExtMail, $hpProtectedWebFolders, $mailQuota
 		) = explode(';', $data['props']);
+
+	$mailQuota = $mailQuota / 1048576;
 
 	$phpini->setClPerm('phpiniSystem', $phpEditor);
 	$phpini->setClPerm('phpiniAllowUrlFopen', $phpAllowUrlFopenPerm);
@@ -171,6 +173,7 @@ function admin_generatePage($tpl, $id, $phpini)
 			'MAX_SUB' => tohtml($sub),
 			'MAX_ALS' => tohtml($als),
 			'MAX_MAIL' => tohtml($mail),
+			'MAIL_QUOTA' => tohtml($mailQuota),
 			'MAX_FTP' => tohtml($ftp),
 			'MAX_SQLD' => tohtml($sqld),
 			'MAX_SQLU' => tohtml($sqlu),
@@ -222,8 +225,8 @@ function admin_generatePage($tpl, $id, $phpini)
  */
 function admin_generateErrorPage($tpl, $phpini)
 {
-	global $id, $name, $description, $sub, $als, $mail, $ftp, $sqld, $sqlu, $monthlyTraffic, $diskspace, $php, $cgi,
-		   $backup, $dns, $aps, $hpExtMail, $hpProtectedWebFolders, $status;
+	global $id, $name, $description, $sub, $als, $mail, $mailQuota, $ftp, $sqld, $sqlu, $monthlyTraffic, $diskspace,
+		   $php, $cgi, $backup, $dns, $aps, $hpExtMail, $hpProtectedWebFolders, $status;
 
 	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
@@ -232,11 +235,12 @@ function admin_generateErrorPage($tpl, $phpini)
 	$tpl->assign(
 		array(
 			'ID' => tohtml($id),
-			'HNAME' => tohtml($name),
+			'NAME' => tohtml($name),
 			'DESCRIPTION' => tohtml($description),
 			'MAX_SUB' => tohtml($sub),
 			'MAX_ALS' => tohtml($als),
 			'MAX_MAIL' => tohtml($mail),
+			'MAIL_QUOTA' => tohtml($mailQuota),
 			'MAX_FTP' => tohtml($ftp),
 			'MAX_SQLD' => tohtml($sqld),
 			'MAX_SQLU' => tohtml($sqlu),
@@ -287,8 +291,8 @@ function admin_generateErrorPage($tpl, $phpini)
  */
 function admin_checkData($phpini)
 {
-	global $name, $description, $sub, $als, $mail, $ftp, $sqld, $sqlu, $monthlyTraffic, $diskspace, $php, $cgi, $dns,
-		   $backup, $aps, $hpExtMail, $hpProtectedWebFolders, $status;
+	global $name, $description, $sub, $als, $mail, $mailQuota, $ftp, $sqld, $sqlu, $monthlyTraffic, $diskspace, $php,
+		   $cgi, $dns, $backup, $aps, $hpExtMail, $hpProtectedWebFolders, $status;
 
 	/** @var iMSCP_Config_Handler_File $cfg */
 	$cfg = iMSCP_Registry::get('config');
@@ -299,6 +303,7 @@ function admin_checkData($phpini)
 	$sub = isset($_POST['hp_sub']) ? clean_input($_POST['hp_sub']) : '-1';
 	$als = isset($_POST['hp_als']) ? clean_input($_POST['hp_als']) : '-1';
 	$mail = isset($_POST['hp_mail']) ? clean_input($_POST['hp_mail']) : '-1';
+	$mailQuota = isset($_POST['hp_mail_quota']) ? clean_input($_POST['hp_mail_quota']) : '';
 	$ftp = isset($_POST['hp_ftp']) ? clean_input($_POST['hp_ftp']) : '-1';
 	$sqld = isset($_POST['hp_sql_db']) ? clean_input($_POST['hp_sql_db']) : '-1';
 	$sqlu = isset($_POST['hp_sql_user']) ? clean_input($_POST['hp_sql_user']) : '-1';
@@ -365,6 +370,17 @@ function admin_checkData($phpini)
 
 	if (!imscp_limit_check($diskspace, null)) {
 		set_page_message(tr('Incorrect disk space limit.'), 'error');
+	}
+
+	// Check for mail quota
+	if (!imscp_limit_check($mailQuota, null)) {
+		set_page_message(tr('Wrong syntax for the mail quota value.'), 'error');
+	} elseif ($diskspace != 0 && $mailQuota > $diskspace) {
+		set_page_message(tr('Mail quota value cannot be bigger than disk space limit.'), 'error');
+	} elseif($diskspace != 0 && $mailQuota == 0) {
+		set_page_message(
+			tr('Mail quota value cannot be unlimited. Max value is %s MiB.', $diskspace), 'error'
+		);
 	}
 
 	if (isset($_POST['phpiniSystem'])) {
@@ -437,8 +453,8 @@ function admin_checkData($phpini)
  */
 function admin_UpdateHostingPlan($phpini)
 {
-	global $id, $name, $description, $sub, $als, $mail, $ftp, $sqld, $sqlu, $monthlyTraffic, $diskspace, $php, $cgi,
-		   $dns, $backup, $aps, $hpExtMail, $hpProtectedWebFolders, $status;
+	global $id, $name, $description, $sub, $als, $mail, $mailQuota, $ftp, $sqld, $sqlu, $monthlyTraffic, $diskspace,
+		   $php, $cgi, $dns, $backup, $aps, $hpExtMail, $hpProtectedWebFolders, $status;
 
 	$query = "
 		SELECT
@@ -466,6 +482,7 @@ function admin_UpdateHostingPlan($phpini)
 	$hpProps .= ';' . $phpini->getDataVal('phpiniPostMaxSize') . ';' . $phpini->getDataVal('phpiniUploadMaxFileSize');
 	$hpProps .= ';' . $phpini->getDataVal('phpiniMaxExecutionTime') . ';' . $phpini->getDataVal('phpiniMaxInputTime');
 	$hpProps .= ';' . $phpini->getDataVal('phpiniMemoryLimit') . ';' . $hpExtMail . ';' . $hpProtectedWebFolders;
+	$hpProps .= ';' . $mailQuota * 1048576;
 
 	$query = "UPDATE `hosting_plans` SET `name` = ?, `description` = ?, `props` = ?, `status` = ? WHERE `id` = ?";
 	exec_query($query, array($name, $description, $hpProps, $status, $id));
@@ -535,6 +552,7 @@ if (isset($cfg->HOSTING_PLANS_LEVEL) && $cfg->HOSTING_PLANS_LEVEL == 'admin') {
 				'TR_MAX_SUB' => tr('Subdomain limit') . '<br/><i>(-1 ' . tr('disabled') . ', 0 ' . tr('unlimited') . ')</i>',
 				'TR_MAX_ALS' => tr('Domain alias limit') . '<br/><i>(-1 ' . tr('disabled') . ', 0 ' . tr('unlimited') . ')</i>',
 				'TR_MAX_MAIL' => tr('Email account limit') . '<br/><i>(-1 ' . tr('disabled') . ', 0 ' . tr('unlimited') . ')</i>',
+				'TR_MAIL_QUOTA' => tr('Mail quota [MiB]') . '<br/><i>(0 ' . tr('unlimited') . ')</i>',
 				'TR_MAX_FTP' => tr('FTP account limit') . '<br/><i>(-1 ' . tr('disabled') . ', 0 ' . tr('unlimited') . ')</i>',
 				'TR_MAX_SQLD' => tr('SQL database limit') . '<br/><i>(-1 ' . tr('disabled') . ', 0 ' . tr('unlimited') . ')</i>',
 				'TR_MAX_SQLU' => tr('SQL user limit') . '<br/><i>(-1 ' . tr('disabled') . ', 0 ' . tr('unlimited') . ')</i>',
@@ -560,7 +578,10 @@ if (isset($cfg->HOSTING_PLANS_LEVEL) && $cfg->HOSTING_PLANS_LEVEL == 'admin') {
 
 				'TR_YES' => tr('yes'),
 				'TR_NO' => tr('no'),
-				'TR_UPDATE' => tr('Update')
+				'TR_UPDATE' => tr('Update'),
+
+				'READONLY' => '',
+				'DISABLED' => ''
 			)
 		);
 

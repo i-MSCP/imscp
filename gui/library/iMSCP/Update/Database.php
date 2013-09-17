@@ -2114,7 +2114,23 @@ class iMSCP_Update_Database extends iMSCP_Update
 	 */
 	protected function _databaseUpdate_143()
 	{
-		return array("UPDATE `hosting_plans` SET `props` = CONCAT(`props`, ';_no_')");
+		$sqlUpd = array();
+
+		$stmt = execute_query('SELECT `id`, `props` FROM `hosting_plans`');
+
+		if($stmt->rowCount()) {
+			while($data = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
+				$props = explode(';', $data['props']);
+
+				if(sizeof($props) < 24) {
+					$sqlUpd[] = "
+						UPDATE `hosting_plans` SET `props` = CONCAT(`props`,';_no_') WHERE `id` = {$data['id']}
+					";
+				}
+			}
+		}
+
+		return $sqlUpd;
 	}
 
 	/**
@@ -2270,5 +2286,53 @@ class iMSCP_Update_Database extends iMSCP_Update
 			CHANGE
 				`quota` `quota` BIGINT(20) UNSIGNED  NOT NULL DEFAULT '104857600'
 		";
+	}
+
+	/**
+	 * Add domain.mail_quota column
+	 *
+	 * @return string SQL statement to be e executed
+	 */
+	protected  function _databaseUpdate_155()
+	{
+		return $this->_addColumn('domain', 'mail_quota', 'BIGINT(20) UNSIGNED NOT NULL');
+	}
+
+	/**
+	 * Sync mail quota values
+	 *
+	 * @return array Stack of SQL statements to be executed
+	 */
+	protected function _databaseUpdate_156()
+	{
+		$sqlUpd = array();
+
+		$stmt = execute_query('SELECT `id`, `props` FROM `hosting_plans`');
+
+		if($stmt->rowCount()) {
+			while($data = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
+				$props = explode(';', $data['props']);
+
+				if(sizeof($props) < 25) {
+					list(,,,,,,,,,$diskspace) = $props;
+					$diskspace = $diskspace * 1048576;
+
+					$sqlUpd[] = "
+						UPDATE
+							`hosting_plans`
+						SET
+							`props` = CONCAT(`props`,';$diskspace')
+						WHERE
+							`id` = {$data['id']}
+					";
+				}
+			}
+		}
+
+		if(!empty($sqlUpd)) {
+			$sqlUpd[] = "UPDATE `domain` SET `mail_quota` = (`domain_disk_limit` * 1048576)";
+		}
+
+		return $sqlUpd;
 	}
 }

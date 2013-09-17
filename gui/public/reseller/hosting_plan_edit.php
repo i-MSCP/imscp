@@ -193,8 +193,10 @@ function reseller_generatePage($tpl, $id, $resellerId, $phpini)
 		$php, $cgi, $sub, $als, $mail, $ftp, $sqld, $sqlu, $monthlyTraffic, $diskspace, $backup, $dns, $aps, $phpEditor,
 		$phpAllowUrlFopenPerm, $phpDisplayErrorsPerm, $phpDisableFunctionsPerm, $phpPostMaxSizeValue,
 		$phpUploadMaxFilesizeValue, $phpMaxExecutionTimeValue, $phpMaxInputTimeValue, $phpMemoryLimitValue, $hpExtMail,
-		$hpWebFolderProtection
+		$hpWebFolderProtection, $mailQuota
 	) = explode(';', $data['props']);
+
+	$mailQuota = $mailQuota / 1048576;
 
 	$phpini->setClPerm('phpiniSystem', $phpEditor);
 	$phpini->setClPerm('phpiniAllowUrlFopen', $phpAllowUrlFopenPerm);
@@ -217,6 +219,7 @@ function reseller_generatePage($tpl, $id, $resellerId, $phpini)
 			'MAX_SUB' => tohtml($sub),
 			'MAX_ALS' => tohtml($als),
 			'MAX_MAIL' => tohtml($mail),
+			'MAIL_QUOTA' => tohtml($mailQuota),
 			'MAX_FTP' => tohtml($ftp),
 			'MAX_SQLD' => tohtml($sqld),
 			'MAX_SQLU' => tohtml($sqlu),
@@ -268,8 +271,8 @@ function reseller_generatePage($tpl, $id, $resellerId, $phpini)
  */
 function reseller_generateErrorPage($tpl, $phpini)
 {
-	global $id, $name, $description, $sub, $als, $mail, $ftp, $sqld, $sqlu, $monthlyTraffic, $diskspace, $php, $cgi,
-		$backup, $dns, $aps, $hpExtMail, $hpWebFolderProtection, $status;
+	global $id, $name, $description, $sub, $als, $mail, $mailQuota, $ftp, $sqld, $sqlu, $monthlyTraffic, $diskspace,
+		   $php, $cgi, $backup, $dns, $aps, $hpExtMail, $hpWebFolderProtection, $status;
 
 	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
@@ -283,6 +286,7 @@ function reseller_generateErrorPage($tpl, $phpini)
 			'MAX_SUB' => tohtml($sub),
 			'MAX_ALS' => tohtml($als),
 			'MAX_MAIL' => tohtml($mail),
+			'MAIL_QUOTA' => tohtml($mailQuota),
 			'MAX_FTP' => tohtml($ftp),
 			'MAX_SQLD' => tohtml($sqld),
 			'MAX_SQLU' => tohtml($sqlu),
@@ -333,8 +337,8 @@ function reseller_generateErrorPage($tpl, $phpini)
  */
 function reseller_checkData($phpini)
 {
-	global $name, $description, $sub, $als, $mail, $ftp, $sqld, $sqlu, $monthlyTraffic, $diskspace, $php, $cgi, $dns,
-		   $backup, $aps, $hpExtMail, $hpWebFolderProtection, $status;
+	global $name, $description, $sub, $als, $mail, $mailQuota, $ftp, $sqld, $sqlu, $monthlyTraffic, $diskspace, $php,
+		   $cgi, $dns, $backup, $aps, $hpExtMail, $hpWebFolderProtection, $status;
 
 	/** @var iMSCP_Config_Handler_File $cfg */
 	$cfg = iMSCP_Registry::get('config');
@@ -345,6 +349,7 @@ function reseller_checkData($phpini)
 	$sub = isset($_POST['hp_sub']) ? clean_input($_POST['hp_sub']) : '-1';
 	$als = isset($_POST['hp_als']) ? clean_input($_POST['hp_als']) : '-1';
 	$mail = isset($_POST['hp_mail']) ? clean_input($_POST['hp_mail']) : '-1';
+	$mailQuota = isset($_POST['hp_mail_quota']) ? clean_input($_POST['hp_mail_quota']) : '';
 	$ftp = isset($_POST['hp_ftp']) ? clean_input($_POST['hp_ftp']) : '-1';
 	$sqld = isset($_POST['hp_sql_db']) ? clean_input($_POST['hp_sql_db']) : '-1';
 	$sqlu = isset($_POST['hp_sql_user']) ? clean_input($_POST['hp_sql_user']) : '-1';
@@ -425,6 +430,17 @@ function reseller_checkData($phpini)
 		set_page_message(tr('Incorrect disk space limit.'), 'error');
 	}
 
+	// Check for mail quota
+	if (!imscp_limit_check($mailQuota, null)) {
+		set_page_message(tr('Wrong syntax for the mail quota value.'), 'error');
+	} elseif ($diskspace != 0 && $mailQuota > $diskspace) {
+		set_page_message(tr('Mail quota value cannot be bigger than disk space limit.'), 'error');
+	} elseif($diskspace != 0 && $mailQuota == 0) {
+		set_page_message(
+			tr('Mail quota value cannot be unlimited. Max value is %s MiB.', $diskspace), 'error'
+		);
+	}
+
 	if ($phpini->checkRePerm('phpiniSystem') && isset($_POST['phpiniSystem'])) {
 		$phpini->setClPerm('phpiniSystem', clean_input($_POST['phpiniSystem']));
 
@@ -497,8 +513,8 @@ function reseller_checkData($phpini)
  */
 function reseller_UpdateHostingPlan($phpini)
 {
-	global $id, $name, $description, $sub, $als, $mail, $ftp, $sqld, $sqlu, $monthlyTraffic, $diskspace, $php, $cgi,
-		$dns, $backup, $aps, $hpExtMail, $hpWebFolderProtection, $status;
+	global $id, $name, $description, $sub, $als, $mail, $mailQuota, $ftp, $sqld, $sqlu, $monthlyTraffic, $diskspace,
+		   $php, $cgi, $dns, $backup, $aps, $hpExtMail, $hpWebFolderProtection, $status;
 
 	$hpProps = "$php;$cgi;$sub;$als;$mail;$ftp;$sqld;$sqlu;$monthlyTraffic;$diskspace;$backup;$dns;$aps";
 	$hpProps .= ';' . $phpini->getClPermVal('phpiniSystem') . ';' . $phpini->getClPermVal('phpiniAllowUrlFopen');
@@ -506,6 +522,7 @@ function reseller_UpdateHostingPlan($phpini)
 	$hpProps .= ';' . $phpini->getDataVal('phpiniPostMaxSize') . ';' . $phpini->getDataVal('phpiniUploadMaxFileSize');
 	$hpProps .= ';' . $phpini->getDataVal('phpiniMaxExecutionTime') . ';' . $phpini->getDataVal('phpiniMaxInputTime');
 	$hpProps .= ';' . $phpini->getDataVal('phpiniMemoryLimit') . ';' . $hpExtMail . ';' . $hpWebFolderProtection;
+	$hpProps .= ';' . $mailQuota * 1048576;
 
 	if (reseller_limits_check($_SESSION['user_id'], $hpProps)) {
 		$query = "UPDATE `hosting_plans` SET `name` = ?, `description` = ?, `props` = ?, `status` = ? WHERE `id` = ?";
@@ -559,7 +576,7 @@ $tpl->define_dynamic(
 		'aps_feature' => 'page',
 		'backup_feature' => 'page',
 		'web_folder_protection_feature' => 'page',
-		'submit_button' => 'page',
+		'submit_button' => 'page'
 	)
 );
 
@@ -603,6 +620,7 @@ if (isset($_GET['id'])) {
 			'TR_MAX_SUB' => tr('Subdomain limit') . '<br/><i>(-1 ' . tr('disabled') . ', 0 ' . tr('unlimited') . ')</i>',
 			'TR_MAX_ALS' => tr('Domain alias limit') . '<br/><i>(-1 ' . tr('disabled') . ', 0 ' . tr('unlimited') . ')</i>',
 			'TR_MAX_MAIL' => tr('Email account limit') . '<br/><i>(-1 ' . tr('disabled') . ', 0 ' . tr('unlimited') . ')</i>',
+			'TR_MAIL_QUOTA' => tr('Mail quota [MiB]') . '<br/><i>(0 ' . tr('unlimited') . ')</i>',
 			'TR_MAX_FTP' => tr('FTP account limit') . '<br/><i>(-1 ' . tr('disabled') . ', 0 ' . tr('unlimited') . ')</i>',
 			'TR_MAX_SQLD' => tr('SQL database limit') . '<br/><i>(-1 ' . tr('disabled') . ', 0 ' . tr('unlimited') . ')</i>',
 			'TR_MAX_SQLU' => tr('SQL user limit') . '<br/><i>(-1 ' . tr('disabled') . ', 0 ' . tr('unlimited') . ')</i>',

@@ -96,9 +96,29 @@ function client_UpdateMailAccount($mailAccountData)
 
 	if (!empty($_POST['quota']) || $_POST['quota'] == 0) {
 		if(is_numeric($_POST['quota'])) {
-			if ($_POST['quota'] != floor($mailAccountData['quota'] / 1024 / 1024)) {
+			if ($_POST['quota'] != floor($mailAccountData['quota'] / 1048576)) {
 				$quotaUpdate = 1;
-				$quotaValue = $_POST['quota'] * 1024 * 1024;
+				$quotaValue = $_POST['quota'] * 1048576;
+
+				$dmnProps = get_domain_default_props($_SESSION['user_id']);
+
+				if($dmnProps['mail_quota'] != '0' && $quotaValue > $dmnProps['mail_quota']) {
+					set_page_message(
+						tr('Mail quota value cannot be bigger than %s MiB.', $dmnProps['mail_quota'] / 1048576), 'error'
+					);
+
+					return false;
+				} elseif($dmnProps['mail_quota'] != '0' && $quotaValue == '0') {
+					set_page_message(
+						tr(
+							'Mail quota value cannot be unlimited. Max value is %s MiB.',
+							$dmnProps['mail_quota'] / 1048576
+						),
+						'error'
+					);
+
+					return false;
+				}
 			}
 		} else {
 			set_page_message(tr('Quota must be a number'), 'error');
@@ -183,7 +203,7 @@ if (isset($_GET['id'])) {
 	client_generateQuotaForm($tpl, $mailAccountData);
 	if($mailAccountData['quota'] != 0) {
 		// Quota are stored in bytes in database. Convert to MiB
-		$quotaValue = floor($mailAccountData['quota'] / 1024 / 1024);
+		$quotaValue = floor($mailAccountData['quota'] / 1048576);
 	} else {
 		$quotaValue = $mailAccountData['quota'];
 	}

@@ -76,7 +76,7 @@ function gen_al_page($tpl)
 
     $stmt = exec_query($query, $dmn_id);
 
-    if ($stmt->recordCount() === 0) {
+    if (!$stmt->rowCount()) {
         $tpl->assign('ALIAS_LIST', '');
     } else {
         while (!$stmt->EOF) {

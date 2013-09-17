@@ -103,19 +103,23 @@
 	<!-- BDP: nb_subdomains -->
 	<tr>
 		<td><label for="hp_sub">{TR_MAX_SUBDOMAINS}</label></td>
-		<td><input id="hp_sub" type="text" name="hp_sub" value="{TR_MAX_SUB_LIMITS}"/></td>
+		<td><input id="hp_sub" type="text" name="hp_sub" value="{HP_MAX_SUB_LIMITS}"/></td>
 	</tr>
 	<!-- EDP: nb_subdomains -->
 	<!-- BDP: nb_domain_aliases -->
 	<tr>
 		<td><label for="hp_als">{TR_MAX_ALIASES}</label></td>
-		<td><input id="hp_als" type="text" name="hp_als" value="{TR_MAX_ALS_VALUES}"/></td>
+		<td><input id="hp_als" type="text" name="hp_als" value="{HP_MAX_ALS_VALUES}"/></td>
 	</tr>
 	<!-- EDP: nb_domain_aliases -->
 	<!-- BDP: nb_mail -->
 	<tr>
 		<td><label for="hp_mail">{TR_MAX_MAILACCOUNTS}</label></td>
 		<td><input id="hp_mail" type="text" name="hp_mail" value="{HP_MAIL_VALUE}"/></td>
+	</tr>
+	<tr>
+		<td><label for="hp_mail_quota">{TR_MAIL_QUOTA}</label></td>
+		<td><input id="hp_mail_quota" type="text" name="hp_mail_quota" value="{HP_MAIL_QUOTA_VALUE}"/></td>
 	</tr>
 	<!-- EDP: nb_mail -->
 	<!-- BDP: nb_ftp -->
