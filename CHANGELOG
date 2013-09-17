@@ -54,6 +54,7 @@ GUI:
 	- Updated: Plugin API
 
 Tickets:
+	- Fixed #469: Defect - Quota field in mail_users table should accept big values
 	- Fixed #579: Review - i18n issues
 	- Fixed #745: Defect - Disk detail in dovecot doesn't include aliases
 	- Fixed #779: Defect - When migrating from ispcp the reseller and admin logos are lost

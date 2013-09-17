@@ -2262,13 +2262,13 @@ class iMSCP_Update_Database extends iMSCP_Update
 	 *
 	 * @return string SQL statement to be e executed
 	 */
-	protected  function _databaseUpdate_153()
+	protected  function _databaseUpdate_154()
 	{
 		return "
 			ALTER TABLE
 				`mail_users`
 			CHANGE
-				`quota` `quota` BIGINT(10)  NULL DEFAULT '104857600'
+				`quota` `quota` BIGINT(20) UNSIGNED  NOT NULL DEFAULT '104857600'
 		";
 	}
 }

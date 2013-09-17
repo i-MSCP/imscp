@@ -82,7 +82,7 @@ INSERT IGNORE INTO `config` (`name`, `value`) VALUES
 ('PREVENT_EXTERNAL_LOGIN_ADMIN', '1'),
 ('PREVENT_EXTERNAL_LOGIN_RESELLER', '1'),
 ('PREVENT_EXTERNAL_LOGIN_CLIENT', '1'),
-('DATABASE_REVISION', '153'),
+('DATABASE_REVISION', '154'),
 ('PHPINI_ALLOW_URL_FOPEN', 'off'),
 ('PHPINI_DISPLAY_ERRORS', 'off'),
 ('PHPINI_UPLOAD_MAX_FILESIZE', '10'),
@@ -387,7 +387,7 @@ CREATE TABLE IF NOT EXISTS `mail_users` (
   `status` varchar(255) collate utf8_unicode_ci default NULL,
   `mail_auto_respond` tinyint(1) NOT NULL default '0',
   `mail_auto_respond_text` text collate utf8_unicode_ci,
-  `quota` int(10) default '104857600',
+  `quota` bigint(20) unsigned NOT NULL default '104857600',
   `mail_addr` varchar(254) collate utf8_unicode_ci default NULL,
   PRIMARY KEY (`mail_id`),
   KEY `domain_id` (`domain_id`)
