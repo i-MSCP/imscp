@@ -375,9 +375,9 @@ function check_user_data($phpini)
 		if(!imscp_limit_check($mailQuota, null)) {
 			set_page_message(tr('Incorrect mail quota value.'), 'error');
 		} elseif($diskSpace != '0' && $mailQuota > $diskSpace) {
-			set_page_message(tr('Mail quota value cannot be bigger than disk space limit.'), 'error');
+			set_page_message(tr('Email quota value cannot be bigger than disk space limit.'), 'error');
 		} elseif($diskSpace != '0' && $mailQuota == '0') {
-			set_page_message(tr('Mail quota value cannot be unlimited. Max value is %s MiB.', $diskSpace), 'error');
+			set_page_message(tr('Email quota value cannot be unlimited. Max value is %s MiB.', $diskSpace), 'error');
 		}
 	}
 
@@ -548,7 +548,7 @@ $tpl->assign(
 		'TR_MAX_SUBDOMAIN' => tr('Subdomain limit') . '<br/><i>(-1 ' . tr('disabled') . ', 0 ' . tr('unlimited') . ')</i>',
 		'TR_MAX_DOMAIN_ALIAS' => tr('Domain alias limit') . '<br/><i>(-1 ' . tr('disabled') . ', 0 ' . tr('unlimited') . ')</i>',
 		'TR_MAX_MAIL_COUNT' => tr('Email account limit') . '<br/><i>(-1 ' . tr('disabled') . ', 0 ' . tr('unlimited') . ')</i>',
-		'TR_MAIL_QUOTA' => tr('Mail quota [MiB]') . '<br/><i>(0 ' . tr('unlimited') . ')</i>',
+		'TR_MAIL_QUOTA' => tr('Email quota [MiB]') . '<br/><i>(0 ' . tr('unlimited') . ')</i>',
 		'TR_MAX_FTP' => tr('FTP account limit') . '<br/><i>(-1 ' . tr('disabled') . ', 0 ' . tr('unlimited') . ')</i>',
 		'TR_MAX_SQL_DB' => tr('SQL database limit') . '<br/><i>(-1 ' . tr('disabled') . ', 0 ' . tr('unlimited') . ')</i>',
 		'TR_MAX_SQL_USERS' => tr('SQL user limit') . '<br/><i>(-1 ' . tr('disabled') . ', 0 ' . tr('unlimited') . ')</i>',

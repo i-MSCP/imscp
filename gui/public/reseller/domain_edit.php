@@ -344,7 +344,7 @@ function _reseller_generateLimitsForm($tpl, &$data)
 		$tplVars['TR_CUSTOMER_MAIL_ACCOUNTS_COMSUPTION'] = ($data['fallback_domain_mailacc_limit'] != -1) ? tohtml($data['nbMailAccounts']) . ' / ' . (($data['fallback_domain_mailacc_limit'] != 0) ? tohtml($data['fallback_domain_mailacc_limit']) : tr('Unlimited')): tr('Disabled');
 		$tplVars['TR_RESELLER_MAIL_ACCOUNTS_COMSUPTION'] = tohtml($data['current_mail_cnt']) . ' / ' . (($data['max_mail_cnt'] != 0) ? tohtml($data['max_mail_cnt']) : tr('Unlimited'));
 
-		$tplVars['TR_MAIL_QUOTA'] = tr('Mail quota [MiB]') . '<br/><i>(0 ' . tr('unlimited') . ')</i>';
+		$tplVars['TR_MAIL_QUOTA'] = tr('Email quota [MiB]') . '<br/><i>(0 ' . tr('unlimited') . ')</i>';
 		$tplVars['MAIL_QUOTA'] = ($data['mail_quota'] != 0) ? tohtml(floor($data['mail_quota'])) : '0';
 		$tplVars['TR_NO_AVAILABLE'] = tr('No available');
 	}
@@ -714,11 +714,11 @@ function reseller_checkAndUpdateData($domainId, $recoveryMode = false)
 			set_page_message(tr('Wrong syntax for the mail quota value.'), 'error');
 			$errFieldsStack[] = 'mail_quota';
 		} elseif ($data['domain_disk_limit'] != 0 && $data['mail_quota'] > $data['domain_disk_limit']) {
-			set_page_message(tr('Mail quota value cannot be bigger than disk space limit.'), 'error');
+			set_page_message(tr('Email quota value cannot be bigger than disk space limit.'), 'error');
 			$errFieldsStack[] = 'mail_quota';
 		} elseif($data['domain_disk_limit'] != 0 && $data['mail_quota'] == 0) {
 			set_page_message(
-				tr('Mail quota value cannot be unlimited. Max value is %s MiB.', $data['domain_disk_limit']), 'error'
+				tr('Email quota value cannot be unlimited. Max value is %s MiB.', $data['domain_disk_limit']), 'error'
 			);
 			$errFieldsStack[] = 'mail_quota';
 		}

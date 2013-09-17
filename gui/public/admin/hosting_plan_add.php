@@ -338,10 +338,10 @@ function admin_checkData($phpini)
 	if (!imscp_limit_check($mailQuota, null)) {
 		set_page_message(tr('Wrong syntax for the mail quota value.'), 'error');
 	} elseif ($diskSpace != 0 && $mailQuota > $diskSpace) {
-		set_page_message(tr('Mail quota value cannot be bigger than disk space limit.'), 'error');
+		set_page_message(tr('Email quota value cannot be bigger than disk space limit.'), 'error');
 	} elseif($diskSpace != 0 && $mailQuota == 0) {
 		set_page_message(
-			tr('Mail quota value cannot be unlimited. Max value is %s MiB.', $diskSpace), 'error'
+			tr('Email quota value cannot be unlimited. Max value is %s MiB.', $diskSpace), 'error'
 		);
 	}
 
@@ -511,7 +511,7 @@ if (isset($cfg->HOSTING_PLANS_LEVEL) && $cfg->HOSTING_PLANS_LEVEL == 'admin') {
 			'TR_MAX_SUBDOMAINS' => tr('Subdomain limit') . '<br/><i>(-1 ' . tr('disabled') . ', 0 ' . tr('unlimited') . ')</i>',
 			'TR_MAX_ALIASES' => tr('Domain alias limit') . '<br/><i>(-1 ' . tr('disabled') . ', 0 ' . tr('unlimited') . ')</i>',
 			'TR_MAX_MAILACCOUNTS' => tr('Email account limit') . '<br/><i>(-1 ' . tr('disabled') . ', 0 ' . tr('unlimited') . ')</i>',
-			'TR_MAIL_QUOTA' => tr('Mail quota [MiB]') . '<br/><i>(0 ' . tr('unlimited') . ')</i>',
+			'TR_MAIL_QUOTA' => tr('Email quota [MiB]') . '<br/><i>(0 ' . tr('unlimited') . ')</i>',
 			'TR_MAX_FTP' => tr('FTP account limit') . '<br/><i>(-1 ' . tr('disabled') . ', 0 ' . tr('unlimited') . ')</i>',
 			'TR_MAX_SQL' => tr('SQL database limit') . '<br/><i>(-1 ' . tr('disabled') . ', 0 ' . tr('unlimited') . ')</i>',
 			'TR_MAX_SQL_USERS' => tr('SQL user limit') . '<br/><i>(-1 ' . tr('disabled') . ', 0 ' . tr('unlimited') . ')</i>',

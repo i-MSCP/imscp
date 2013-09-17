@@ -104,14 +104,14 @@ function client_UpdateMailAccount($mailAccountData)
 
 				if($dmnProps['mail_quota'] != '0' && $quotaValue > $dmnProps['mail_quota']) {
 					set_page_message(
-						tr('Mail quota value cannot be bigger than %s MiB.', $dmnProps['mail_quota'] / 1048576), 'error'
+						tr('Email quota value cannot be bigger than %s MiB.', $dmnProps['mail_quota'] / 1048576), 'error'
 					);
 
 					return false;
 				} elseif($dmnProps['mail_quota'] != '0' && $quotaValue == '0') {
 					set_page_message(
 						tr(
-							'Mail quota value cannot be unlimited. Max value is %s MiB.',
+							'Email quota value cannot be unlimited. Max value is %s MiB.',
 							$dmnProps['mail_quota'] / 1048576
 						),
 						'error'
