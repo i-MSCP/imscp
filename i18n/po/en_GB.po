@@ -17,8 +17,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2013-08-25 19:55+0200\n"
-"PO-Revision-Date: 2013-08-25 17:55+0000\n"
+"POT-Creation-Date: 2013-09-17 20:34+0200\n"
+"PO-Revision-Date: 2013-09-17 18:34+0000\n"
 "Last-Translator: Torsten Widmann <info@goover.de>\n"
 "Language-Team: English (United Kingdom) (http://www.transifex.com/projects/p/i-MSCP/language/en_GB/)\n"
 "MIME-Version: 1.0\n"
@@ -166,6 +166,10 @@ msgid " was deleted by {ADMIN}!"
 msgstr " was deleted by {ADMIN}!"
 
 #, php-format
+msgid "%1$d / %2$d"
+msgstr ""
+
+#, php-format
 msgid "%1$d / %2$d of %3$d"
 msgstr "%1$d / %2$d of %3$d"
 
@@ -200,6 +204,10 @@ msgstr "%1$s - (Softwaredepot)"
 #, php-format
 msgid "%1$s - (Version: %2$s, Language: %3$s)"
 msgstr "%1$s - (Version: %2$s, Language: %3$s)"
+
+#, php-format
+msgid "%1$s / %2$s"
+msgstr ""
 
 #, php-format
 msgid "%1$s / %2$s of %3$s"
@@ -238,6 +246,10 @@ msgid "%d %s remaining until account expiration"
 msgstr "%d %s remaining until account expiration"
 
 #, php-format
+msgid "%d / unlimited"
+msgstr ""
+
+#, php-format
 msgid "%d Service(s) port was successfully updated"
 msgstr "%d Service(s) port was successfully updated"
 
@@ -254,12 +266,12 @@ msgid "%d of %s"
 msgstr "%d of %s"
 
 #, php-format
-msgid "%d of unlimited"
-msgstr "%d of unlimited"
-
-#, php-format
 msgid "%d strings translated"
 msgstr "%d strings translated"
+
+#, php-format
+msgid "%s / unlimited"
+msgstr ""
 
 #, php-format
 msgid "%s Errors in database"
@@ -988,6 +1000,9 @@ msgstr "An error occurred during authentication."
 msgid "An error occurred. Please contact your administrator."
 msgstr "An error occurred. Please contact your administrator."
 
+msgid "An unexpected error occured. Please contact your administrator"
+msgstr ""
+
 msgid "An unexpected error occured. Please retry"
 msgstr "An unexpected error occured. Please retry"
 
@@ -1055,8 +1070,8 @@ msgstr "Are you sure you want to delete %s?"
 msgid "Are you sure you want to delete all closed tickets?"
 msgstr "Are you sure you want to delete all closed tickets?"
 
-msgid "Are you sure you want to delete all marked emails?"
-msgstr "Are you sure you want to delete all marked emails?"
+msgid "Are you sure you want to delete all selected items?"
+msgstr ""
 
 msgid "Are you sure you want to delete all tickets?"
 msgstr "Are you sure you want to delete all tickets?"
@@ -1122,8 +1137,8 @@ msgstr "At first you must create a database!"
 msgid "Auto email template data updated!"
 msgstr "Auto email template data updated!"
 
-msgid "Auto respond"
-msgstr "Auto respond"
+msgid "Auto responder"
+msgstr ""
 
 msgid "Auto-responder message cannot be empty."
 msgstr "Auto-responder message cannot be empty."
@@ -1170,8 +1185,8 @@ msgstr "Backup has been successfully scheduled for restoration."
 msgid "Bad password."
 msgstr "Bad password."
 
-msgid "Behind the name"
-msgstr "Behind the name"
+msgid "Behind"
+msgstr ""
 
 msgid "Being enabled"
 msgstr "Being enabled"
@@ -1189,6 +1204,9 @@ msgstr "Blocking time between logins and captcha attempts"
 msgid "Blocktime <small>(in minutes)</small>"
 msgstr "Blocktime <small>(in minutes)</small>"
 
+msgid "Bogomips"
+msgstr ""
+
 msgid "Both source and destination are identical."
 msgstr "Both source and destination are identical."
 
@@ -1204,20 +1222,11 @@ msgstr "By"
 msgid "CGI"
 msgstr "CGI"
 
-msgid "CPU MHz"
-msgstr "CPU MHz"
+msgid "CPU Information"
+msgstr ""
 
-msgid "CPU bogomips"
-msgstr "CPU bogomips"
-
-msgid "CPU cache"
-msgstr "CPU cache"
-
-msgid "CPU model"
-msgstr "CPU model"
-
-msgid "CPU system Info"
-msgstr "CPU system Info"
+msgid "Cache"
+msgstr ""
 
 #, php-format
 msgid "Can edit the PHP %s directive"
@@ -1506,6 +1515,9 @@ msgstr "Client / Webtools / Software / Install"
 msgid "Client / Webtools / Software / View"
 msgstr "Client / Webtools / Software / View"
 
+msgid "Clock speed (MHz)"
+msgstr ""
+
 msgid "Close"
 msgstr "Close"
 
@@ -1532,6 +1544,9 @@ msgstr "Confirmation for plugin protection"
 
 msgid "Core data"
 msgstr "Core data"
+
+msgid "Cores"
+msgstr ""
 
 msgid "Could not upload file."
 msgstr "Could not upload file."
@@ -1850,17 +1865,14 @@ msgstr "Delete customer - {DOMAIN_NAME}"
 msgid "Delete from log:"
 msgstr "Delete from log:"
 
-msgid "Delete marked mails"
-msgstr "Delete marked mails"
-
 msgid "Delete order"
 msgstr "Delete order"
 
 msgid "Delete reseller software"
 msgstr "Delete reseller software"
 
-msgid "Delete software and send message"
-msgstr "Delete software and send message"
+msgid "Delete selected items"
+msgstr ""
 
 msgid "Delete ticket"
 msgstr "Delete ticket"
@@ -2199,20 +2211,11 @@ msgstr "Email account limit reached."
 msgid "Email account list"
 msgstr "Email account list"
 
-msgid "Email account list is empty."
-msgstr "Email account list is empty."
-
 msgid "Email account not found."
 msgstr "Email account not found."
 
-msgid "Email account quota updated."
-msgstr "Email account quota updated."
-
 msgid "Email account scheduled for addition."
 msgstr "Email account scheduled for addition."
-
-msgid "Email account scheduled for deletion."
-msgstr "Email account scheduled for deletion."
 
 msgid "Email account scheduled for update."
 msgstr "Email account scheduled for update."
@@ -2228,6 +2231,20 @@ msgstr "Email address"
 
 msgid "Email forward"
 msgstr "Email forward"
+
+msgid "Email quota [MiB]"
+msgstr ""
+
+#, php-format
+msgid "Email quota value cannot be bigger than %s MiB."
+msgstr ""
+
+msgid "Email quota value cannot be bigger than disk space limit."
+msgstr ""
+
+#, php-format
+msgid "Email quota value cannot be unlimited. Max value is %s MiB."
+msgstr ""
 
 msgid "Email settings"
 msgstr "Email settings"
@@ -2282,21 +2299,6 @@ msgstr "Entries associated to your external mail servers were not found. A Resyn
 msgid "Error"
 msgstr "Error"
 
-msgid "Error 401 (unauthorised)"
-msgstr "Error 401 (unauthorised)"
-
-msgid "Error 403 (forbidden)"
-msgstr "Error 403 (forbidden)"
-
-msgid "Error 404 (not found)"
-msgstr "Error 404 (not found)"
-
-msgid "Error 500 (internal server error)"
-msgstr "Error 500 (internal server error)"
-
-msgid "Error 503 (service unavailable)"
-msgstr "Error 503 (service unavailable)"
-
 msgid "Error details"
 msgstr "Error details"
 
@@ -2329,6 +2331,9 @@ msgstr "Error: Wrong value for show entry."
 
 msgid "Errors"
 msgstr "Errors"
+
+msgid "Excl. default mails"
+msgstr ""
 
 msgid "Execute requests"
 msgstr "Execute requests"
@@ -2453,6 +2458,9 @@ msgstr "First name"
 msgid "First name cannot have more than 200 characters."
 msgstr "First name cannot have more than 200 characters."
 
+msgid "Forbidden"
+msgstr ""
+
 msgid "Force retry"
 msgstr "Force retry"
 
@@ -2556,14 +2564,8 @@ msgstr "Groups"
 msgid "HTTP traffic"
 msgstr "HTTP traffic"
 
-msgid "Help"
-msgstr "Help"
-
 msgid "Hide aliases"
 msgstr "Hide aliases"
-
-msgid "Hide default email addresses"
-msgstr "Hide default email addresses"
 
 msgid "High"
 msgstr "High"
@@ -2706,8 +2708,8 @@ msgid ""
 "from today."
 msgstr "In case domain expiration date is 'N/A', the expiration date will be set from today."
 
-msgid "In front the name"
-msgstr "In front the name"
+msgid "In front"
+msgstr ""
 
 msgid "In maintenance mode, only administrators can login."
 msgstr "In maintenance mode, only administrators can login."
@@ -2718,6 +2720,9 @@ msgid ""
 "domain account (including subdomains and domain aliases). Of course some "
 "values can be modified through the PHP ini_set() function."
 msgstr "In this page, you can configure some of the aspects of PHP's behavior. You must note that for now, the directives defined here apply to your entire domain account (including subdomains and domain aliases). Of course some values can be modified through the PHP ini_set() function."
+
+msgid "Incl. default mails"
+msgstr ""
 
 msgid "Incorrect FTP account limit."
 msgstr "Incorrect FTP account limit."
@@ -2746,6 +2751,9 @@ msgstr "Incorrect email length or syntax."
 #, php-format
 msgid "Incorrect limit for %s."
 msgstr "Incorrect limit for %s."
+
+msgid "Incorrect mail quota value."
+msgstr ""
 
 msgid "Incorrect monthly traffic limit."
 msgstr "Incorrect monthly traffic limit."
@@ -2806,6 +2814,9 @@ msgstr "Instructions to download today's backup"
 
 msgid "Intermediate certificate"
 msgstr "Intermediate certificate"
+
+msgid "Internal Server Error"
+msgstr ""
 
 msgid "Internationalization"
 msgstr "Internationalization"
@@ -2971,12 +2982,6 @@ msgstr "Login data successfully sent to %s."
 msgid "Login into phpMyAdmin"
 msgstr "Login into phpMyAdmin"
 
-msgid "Login into the filemanager"
-msgstr "Login into the filemanager"
-
-msgid "Login into the webmail"
-msgstr "Login into the webmail"
-
 msgid "Login password"
 msgstr "Login password"
 
@@ -3022,6 +3027,13 @@ msgstr "Mail"
 msgid "Mail Log Level"
 msgstr "Mail Log Level"
 
+#, php-format
+msgid "Mail account %s successfully scheduled for deletion."
+msgstr ""
+
+msgid "Mail accounts list is empty."
+msgstr ""
+
 msgid "Mail feature is disabled."
 msgstr "Mail feature is disabled."
 
@@ -3036,9 +3048,6 @@ msgstr "Mail usage"
 
 msgid "Mailformat of an address in your forward list is incorrect."
 msgstr "Mailformat of an address in your forward list is incorrect."
-
-msgid "Mails total"
-msgstr "Mails total"
 
 msgid "Main menu labels visibility successfully updated."
 msgstr "Main menu labels visibility successfully updated."
@@ -3089,9 +3098,6 @@ msgstr "Manage your protected areas, users and groups."
 msgid "Mark"
 msgstr "Mark"
 
-msgid "Mark all"
-msgstr "Mark all"
-
 msgid "Mass email successfully sent."
 msgstr "Mass email successfully sent."
 
@@ -3137,8 +3143,8 @@ msgstr "Medium"
 msgid "Member of group"
 msgstr "Member of group"
 
-msgid "Memory system info"
-msgstr "Memory system info"
+msgid "Memory information"
+msgstr ""
 
 msgid "Message"
 msgstr "Message"
@@ -3178,6 +3184,12 @@ msgstr "Minutes"
 
 msgid "Missing domain"
 msgstr "Missing domain"
+
+msgid "Missing value for quota field"
+msgstr ""
+
+msgid "Model"
+msgstr ""
 
 msgid "Modification in progress"
 msgstr "Modification in progress"
@@ -3268,6 +3280,9 @@ msgstr "No IP statistics to be shown."
 
 msgid "No administrator accounts found."
 msgstr "No administrator accounts found."
+
+msgid "No available"
+msgstr ""
 
 msgid "No certificate found."
 msgstr "No certificate found."
@@ -3374,6 +3389,9 @@ msgstr "Normal mail"
 msgid "Normal users"
 msgstr "Normal users"
 
+msgid "Not Found"
+msgstr ""
+
 msgid "Not Set"
 msgstr "Not Set"
 
@@ -3406,15 +3424,6 @@ msgstr "Nothing to do. Daemon request has been canceled."
 
 msgid "Notices, Warnings and Errors"
 msgstr "Notices, Warnings and Errors"
-
-msgid "Number of CPU Cores"
-msgstr "Number of CPU Cores"
-
-msgid "Numeric prefix"
-msgstr "Numeric prefix"
-
-msgid "Numeric suffix"
-msgstr "Numeric suffix"
 
 msgid "OK"
 msgstr "OK"
@@ -3458,6 +3467,10 @@ msgstr "Open ticket"
 
 msgid "Open tickets"
 msgstr "Open tickets"
+
+#, php-format
+msgid "Operatio canceled: %s"
+msgstr ""
 
 msgid "Optional"
 msgstr "Optional"
@@ -3680,13 +3693,6 @@ msgid ""
 "/>Refresh your site to see the new status!"
 msgstr "Please contact the administrator!<br />Ask him for the permissions to use this package.<br />It is not allowed to upload this packet two times.<br />Refresh your site to see the new status!"
 
-#, php-format
-msgid "Please delete first CatchAll account for the email %s."
-msgstr "Please delete first CatchAll account for the email %s."
-
-msgid "Please delete first CatchAll account for this email."
-msgstr "Please delete first CatchAll account for this email."
-
 msgid "Please don't use special chars such as '@, $, %...' in the password."
 msgstr "Please don't use special chars such as '@, $, %...' in the password."
 
@@ -3710,6 +3716,9 @@ msgstr "Please enter your auto-responder message below"
 
 msgid "Please fill up both data fields for password."
 msgstr "Please fill up both data fields for password."
+
+msgid "Please first, delete all catchall linked to this email."
+msgstr ""
 
 msgid "Please select a valid SQL user for the database."
 msgstr "Please select a valid SQL user for the database."
@@ -3743,9 +3752,6 @@ msgstr "Please type user password."
 
 msgid "Please type your message."
 msgstr "Please type your message."
-
-msgid "Please wait for update"
-msgstr "Please wait for update"
 
 msgid "Please write mount point!"
 msgstr "Please write mount point!"
@@ -3898,6 +3904,9 @@ msgstr "Priority: %s\n"
 msgid "Process update"
 msgstr "Process update"
 
+msgid "Processor data"
+msgstr ""
+
 msgid "Profile"
 msgstr "Profile"
 
@@ -3944,14 +3953,14 @@ msgstr "Protocol"
 msgid "Quota"
 msgstr "Quota"
 
-msgid "Quota in MB (0 unlimited)"
-msgstr "Quota in MB (0 unlimited)"
+msgid "Quota in MiB (0 for unlimited)"
+msgstr ""
 
 msgid "Quota must be a number"
 msgstr "Quota must be a number"
 
-msgid "Quota must have a value"
-msgstr "Quota must have a value"
+msgid "Quota successfully updated."
+msgstr ""
 
 msgid "RAM"
 msgstr "RAM"
@@ -4010,6 +4019,9 @@ msgstr "Reopen ticket"
 
 msgid "Repeat password"
 msgstr "Repeat password"
+
+msgid "Reply"
+msgstr ""
 
 msgid "Request from foreign host was blocked."
 msgstr "Request from foreign host was blocked."
@@ -4269,6 +4281,9 @@ msgstr "SQL user not found."
 msgid "SQL user password successfully updated."
 msgstr "SQL user password successfully updated."
 
+msgid "SQL user prefix/suffix"
+msgstr ""
+
 msgid "SQL user successfully added."
 msgstr "SQL user successfully added."
 
@@ -4383,6 +4398,9 @@ msgstr "Server traffic settings successfully updated."
 msgid "Service"
 msgstr "Service"
 
+msgid "Service Unavailable"
+msgstr ""
+
 msgid "Service must be filled."
 msgstr "Service must be filled."
 
@@ -4437,9 +4455,6 @@ msgid ""
 "Show all errors, warnings and notices including coding standards "
 "(Development)"
 msgstr "Show all errors, warnings and notices including coding standards (Development)"
-
-msgid "Show default email addresses"
-msgstr "Show default email addresses"
 
 msgid "Show detailed statistics for this domain"
 msgstr "Show detailed statistics for this domain"
@@ -4674,6 +4689,9 @@ msgstr "Switch to user interface"
 msgid "System"
 msgstr "System"
 
+msgid "System data"
+msgstr ""
+
 msgid "System error - custom error page was not updated."
 msgstr "System error - custom error page was not updated."
 
@@ -4840,11 +4858,11 @@ msgid ""
 "/>Remove them first."
 msgstr "The reseller you want to remove has one or more customers accounts.<br />Remove them first."
 
+msgid "The software installer feature requires PHP."
+msgstr ""
+
 msgid "The software installer require the PHP support."
 msgstr "The software installer require the PHP support."
-
-msgid "The software installer requires PHP."
-msgstr "The software installer requires PHP."
 
 msgid "The uploaded file was only partially uploaded."
 msgstr "The uploaded file was only partially uploaded."
@@ -4925,9 +4943,6 @@ msgstr "This package is not installed yet"
 msgid "This software is installed on following domain(s):"
 msgstr "This software is installed on following domain(s):"
 
-msgid "This type of account does not have quota."
-msgstr "This type of account does not have quota."
-
 msgid ""
 "This user has domain record.<br/>First remove the domain from the system."
 msgstr "This user has domain record.<br/>First remove the domain from the system."
@@ -5002,6 +5017,10 @@ msgstr "Total Web software repositories"
 
 msgid "Total installations"
 msgstr "Total installations"
+
+#, php-format
+msgid "Total mails: %s of %s (%s)"
+msgstr ""
 
 msgid "Total packages in Web software repository"
 msgstr "Total packages in Web software repository"
@@ -5125,6 +5144,9 @@ msgstr "Unable to upload file. Max. upload filesize (%1$d MB) reached?"
 msgid "Unable to write the %s file for protected plugins."
 msgstr "Unable to write the %s file for protected plugins."
 
+msgid "Unauthorized"
+msgstr ""
+
 msgid "Unavailable"
 msgstr "Unavailable"
 
@@ -5174,9 +5196,6 @@ msgstr "Unlimited"
 msgid "Unprotect it"
 msgstr "Unprotect it"
 
-msgid "Up time"
-msgstr "Up time"
-
 msgid "Update"
 msgstr "Update"
 
@@ -5224,6 +5243,9 @@ msgstr "Upload logo"
 msgid "Upload now"
 msgstr "Upload now"
 
+msgid "Uptime"
+msgstr ""
+
 msgid "Usage of disallowed character in CNAME"
 msgstr "Usage of disallowed character in CNAME"
 
@@ -5232,9 +5254,6 @@ msgstr "Usage status"
 
 msgid "Use normal connection (No SSL)"
 msgstr "Use normal connection (No SSL)"
-
-msgid "Use numeric ID"
-msgstr "Use numeric ID"
 
 msgid "Use secure connection (SSL)"
 msgstr "Use secure connection (SSL)"
@@ -5385,9 +5404,6 @@ msgstr "View ticket"
 
 msgid "Visit plugin site"
 msgstr "Visit plugin site"
-
-msgid "Vital system info"
-msgstr "Vital system info"
 
 msgid "Warning traffic"
 msgstr "Warning traffic"
@@ -5561,6 +5577,12 @@ msgstr "Wrong syntax for the %s forward email address."
 #, php-format
 msgid "Wrong syntax for the %s limit."
 msgstr "Wrong syntax for the %s limit."
+
+msgid "Wrong syntax for the Email quota value."
+msgstr ""
+
+msgid "Wrong syntax for the mail quota value."
+msgstr ""
 
 msgid "Wrong syntax in forward URL."
 msgstr "Wrong syntax in forward URL."
@@ -5830,6 +5852,12 @@ msgstr "You must select a file to upload/download."
 msgid "You must select a least one item to deactivate."
 msgstr "You must select a least one item to deactivate."
 
+msgid "You must select a least one item to delete"
+msgstr ""
+
+msgid "You must select a least one mail account to delete."
+msgstr ""
+
 msgid "You must select a network card."
 msgstr "You must select a network card."
 
@@ -5977,9 +6005,6 @@ msgid ""
 "getInfo() not implemented in %s and %s not found. <br /> This is a bug in "
 "the %s plugin and should be reported to the plugin author."
 msgstr "getInfo() not implemented in %s and %s not found. <br /> This is a bug in the %s plugin and should be reported to the plugin author."
-
-msgid "help"
-msgstr "help"
 
 msgid "i-MSCP - Application Management (Permissions)"
 msgstr "i-MSCP - Application Management (Permissions)"

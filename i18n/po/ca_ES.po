@@ -11,6 +11,7 @@
 # Joan Juvanteny <jjuvan@grn.cat>, 2008, 2009, 2010, 2011
 # kilburn <shadow+transifex@la3.org>, 2011-2012
 # aseques <sacoo2@hotmail.com>, 2013
+# aseques <sacoo2@hotmail.com>, 2013
 # Sagi Roca <sagi@canbasis.com>, 2012
 # Sagi Roca <sagi@canbasis.com>, 2012
 # kilburn <shadow+transifex@la3.org>, 2011, 2012
@@ -18,8 +19,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2013-08-25 19:55+0200\n"
-"PO-Revision-Date: 2013-08-25 17:55+0000\n"
+"POT-Creation-Date: 2013-09-17 20:34+0200\n"
+"PO-Revision-Date: 2013-09-17 18:34+0000\n"
 "Last-Translator: Torsten Widmann <info@goover.de>\n"
 "Language-Team: Catalan (Spain) (http://www.transifex.com/projects/p/i-MSCP/language/ca_ES/)\n"
 "MIME-Version: 1.0\n"
@@ -53,7 +54,7 @@ msgid ""
 "___________________________\n"
 "The i-MSCP Team\n"
 "\n"
-msgstr "\n\nBenvolgut {NAME}!\n\nS'ha creat un nou compte al panell de control.\n\nLa informació del vostre compte:\n\nTipus d'usuari: {USERTYPE}\nUsuari: {USERNAME}\nContrasenya: {PASSWORD}\n\nRecordeu de canviar sovint la contrasenya d'accés i també la primera vegada que accediu al sistema.\n\nPodeu entrar ara mateix a través de  {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}\n\nEstadístiques: http://{USERNAME}/{WEBSTATS_RPATH}\n(el mateix usuaris i contrasenya que a sobre)\n\nGràcies per fer servir els nostres serveis.\n\n___________________________\nL'equip de ispCP.\n\n"
+msgstr "\n\nBenvolgut {NAME},\n\nS'ha creat un nou compte al panell de control.\n\nLa informació del vostre compte:\n\nTipus d'usuari: {USERTYPE}\nUsuari: {USERNAME}\nContrasenya: {PASSWORD}\n\nRecordeu canviar sovint la contrasenya d'accés i també la primera vegada que accediu al sistema.\n\nPodeu entrar ara mateix a través de  {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}\n\nEstadístiques: http://{USERNAME}/{WEBSTATS_RPATH}\n(el mateix usuari i contrasenya que a sobre)\n\nGràcies per fer servir els nostres serveis.\n\n___________________________\nL'equip de i-MSCP\n\n"
 
 msgid ""
 "\n"
@@ -77,7 +78,7 @@ msgid ""
 "___________________________\n"
 "The i-MSCP Team\n"
 "\n"
-msgstr "\n\nBenvolgut{NAME},\n\nS`ha creat un nou compte i-MSCP per a tu.\n\nInformació del teu compte:\n\nTipus d'usuari: {USERTYPE}\nNom d'usuari: {USERNAME}\nContrasenya: {PASSWORD}\n\nRecorda de canviar la teva contrasenya sovint i la primera vegada que iniciis sessió.\n\nPots entrar ara mateix a {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}\n\n\nGràcies per utilitzar els serveis d'i-MSCP.\n\n___________________________\nL'equip de i-MSCP\n\n"
+msgstr "\n\nBenvolgut {NAME},\n\nS'ha creat un nou compte i-MSCP per a tu.\n\nInformació del teu compte:\n\nTipus d'usuari: {USERTYPE}\nNom d'usuari: {USERNAME}\nContrasenya: {PASSWORD}\n\nRecorda canviar la teva contrasenya sovint i la primera vegada que iniciïs sessió.\n\nPots entrar ara mateix a {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}\n\n\nGràcies per utilitzar els serveis d'i-MSCP.\n\n___________________________\nL'equip de i-MSCP\n"
 
 msgid ""
 "\n"
@@ -100,7 +101,7 @@ msgid ""
 "___________________________\n"
 "The i-MSCP Team\n"
 "\n"
-msgstr ""
+msgstr "\n\nBenvolgut {NAME},\n\nAquest és un confirmació automàtica de la comanda del domini:\n\n{DOMAIN}\n\nHeu de fer click en el següent enllaç per confirmar la comanda.\n\n{ACTIVATION_LINK}\n\nSi no confirmeu l'enllaç abans de {EXPIRE_DATE}, es\ncancel·larà automàticament.\n\nGràcies per fer servir el servei de i-MSCP.\n\n___________________________\nL'equip de i-MSCP\n\n"
 
 msgid ""
 "\n"
@@ -134,7 +135,7 @@ msgid ""
 "___________________________\n"
 "The i-MSCP Team\n"
 "\n"
-msgstr ""
+msgstr "\n\nBenvolgut {RESELLER},\n\nEl vostre client {CUSTOMER} està esperant l'aprovació del seu nou alias de domini:\n\n{ALIAS}\n\nUn cop entreu, podeu activar el seu nou alias a {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}/reseller/alias.php\n\nGràcies per fer servir el serives de i-MSCP.\n\n___________________________\nL'equip de i-MSCP\n\n"
 
 msgid ""
 "\n"
@@ -154,10 +155,10 @@ msgid ""
 msgstr "\n\nHola {NAME},\n\nEl teu nom d'usuari és: {USERNAME}\nLa teva contrasenya és: {PASSWORD}\n\nPots iniciar sessió a  {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}\n\nGràcies per utilitzar els serveis d'i-MSCP.\n\n___________________________\nL'equip de i-MSCP\n\n"
 
 msgid " Admin / Support / Open Tickets"
-msgstr ""
+msgstr " Admin / Suport / Obrir tiquets"
 
 msgid " Client / Webtools / Custom Error Pages / Edit Custom Error Page"
-msgstr ""
+msgstr " Client / Eines web / Pàgines personalitzades d'error / Editar pàgina personalitzada d'error"
 
 msgid ""
 " Show all errors, except for warnings about deprecated code (Production)"
@@ -165,6 +166,10 @@ msgstr " Mostrar tots els errors, excepte el avisos de codi obsolet (Producció)
 
 msgid " was deleted by {ADMIN}!"
 msgstr " ha estat esborrat per  {ADMIN}!"
+
+#, php-format
+msgid "%1$d / %2$d"
+msgstr ""
 
 #, php-format
 msgid "%1$d / %2$d of %3$d"
@@ -203,6 +208,10 @@ msgid "%1$s - (Version: %2$s, Language: %3$s)"
 msgstr "%1$s - (Versió: %2$s, Idioma: %3$s)"
 
 #, php-format
+msgid "%1$s / %2$s"
+msgstr ""
+
+#, php-format
 msgid "%1$s / %2$s of %3$s"
 msgstr "%1$s / %2$s de %3$s"
 
@@ -216,7 +225,7 @@ msgstr "%1$s de %2$s"
 
 #, php-format
 msgid "%1$s of <b>unlimited</b>"
-msgstr ""
+msgstr "%1$s de <b>il·limitat</b>"
 
 #, php-format
 msgid "%1$s you are now logged as %2$s"
@@ -239,6 +248,10 @@ msgid "%d %s remaining until account expiration"
 msgstr "queden %d %s fins a l'expiració del compte"
 
 #, php-format
+msgid "%d / unlimited"
+msgstr ""
+
+#, php-format
 msgid "%d Service(s) port was successfully updated"
 msgstr "%d ports actualitzats correctament"
 
@@ -255,12 +268,12 @@ msgid "%d of %s"
 msgstr "%d de %s"
 
 #, php-format
-msgid "%d of unlimited"
-msgstr "%d de il·limitat"
-
-#, php-format
 msgid "%d strings translated"
 msgstr "%d cadenes traduïdes"
+
+#, php-format
+msgid "%s / unlimited"
+msgstr ""
 
 #, php-format
 msgid "%s Errors in database"
@@ -304,7 +317,7 @@ msgstr "%s no existeix o és buit"
 
 #, php-format
 msgid "%s id is invalid! You cannot add email accounts."
-msgstr ""
+msgstr "%s id no és vàlid! No podeu afegir adreçes de correu."
 
 #, php-format
 msgid "%s is not a valid i-MSCP language file."
@@ -312,12 +325,12 @@ msgstr "%s no és un fitxer d'idioma vàlid per i-MSCP."
 
 #, php-format
 msgid "%s list is empty! You cannot add email accounts."
-msgstr ""
+msgstr "%s id de llista és buit! No podeu afegir adreces de correu."
 
 #, php-format
 msgid ""
 "%s new plugin(s) found, %s plugin(s) updated, and %s plugin(s) deleted."
-msgstr ""
+msgstr "%s nous plugin(s) trobats, %s plugin(s) actualitzats, i %s plugin(s) esborrats."
 
 #, php-format
 msgid "%s of %s"
@@ -514,7 +527,7 @@ msgid "A PHP extension stopped the file upload."
 msgstr "Una extensió de PHP ha detingut la càrrega d'arxius."
 
 msgid "A hosting plan with same name already exists."
-msgstr ""
+msgstr "Ja existeix un pla de hosting amb aquest nom."
 
 msgid ""
 "ACE labels are not allowed. Please use the ToUnicode equivalent.<br "
@@ -559,19 +572,19 @@ msgid "Activate"
 msgstr "Activar"
 
 msgid "Activate this plugin."
-msgstr ""
+msgstr "Activar aquest plugin."
 
 msgid "Activated"
 msgstr "Activat"
 
 msgid "Activated software"
-msgstr ""
+msgstr "Software activat"
 
 msgid "Activation email"
-msgstr ""
+msgstr "Correu d'activació"
 
 msgid "Activation in progress..."
-msgstr ""
+msgstr "Activació en progrés..."
 
 msgid "Activation link expire time <small>(In minutes)</small>"
 msgstr "Temps d'expiració de l'enllaç d'activació <small>(In minutes)</small>"
@@ -580,7 +593,7 @@ msgid "Add"
 msgstr "Afegir"
 
 msgid "Add FTP account"
-msgstr ""
+msgstr "Afegir un compte FTP"
 
 msgid "Add FTP user"
 msgstr "Afegir usuari FTP"
@@ -631,10 +644,10 @@ msgid "Add email account"
 msgstr "Afegir compte de correu"
 
 msgid "Add email user"
-msgstr ""
+msgstr "Afegir un usuari de correu"
 
 msgid "Add external mail server for {DOMAIN_UTF8}"
-msgstr ""
+msgstr "Afegir un servidor de correu extenr per {DOMAIN_UTF8}"
 
 msgid "Add group"
 msgstr "Afegir grup"
@@ -694,153 +707,153 @@ msgid "Admin"
 msgstr "Admin"
 
 msgid "Admin / General / Admin Log"
-msgstr ""
+msgstr "Admin / General / Registre d'admin"
 
 msgid "Admin / General / Overview"
-msgstr ""
+msgstr "Admin / General / Vista General"
 
 msgid "Admin / General / Services Status"
-msgstr ""
+msgstr "Admin / General / Estat dels serveis"
 
 msgid "Admin / Hosting Plans / Add Hosting Plan"
-msgstr ""
+msgstr "Admin / Plans de hosting / Afegir pla de hosting"
 
 msgid "Admin / Hosting Plans / Overview"
-msgstr ""
+msgstr "Admin / Plans de hosting / Vista General"
 
 msgid "Admin / Hosting Plans / Overview / Edit Hosting Plan"
-msgstr ""
+msgstr "Admin / Plans de hosting / Vista General / Editar pla de hosting"
 
 msgid "Admin / Profile / Account Summary"
-msgstr ""
+msgstr "Admin / Perfil / Resum del compte"
 
 msgid "Admin / Profile / Language"
-msgstr ""
+msgstr "Admin / Perfil / Idioma"
 
 msgid "Admin / Profile / Layout"
-msgstr ""
+msgstr "Admin / Perfil / Format"
 
 msgid "Admin / Profile / Password"
-msgstr ""
+msgstr "Admin / Perfil / Contrasenya"
 
 msgid "Admin / Profile / Personal Data"
-msgstr ""
+msgstr "Admin / Perfil / Dades Personals"
 
 msgid "Admin / Settings"
-msgstr ""
+msgstr "Admin / Paràmetres"
 
 msgid "Admin / Settings / IP Management"
-msgstr ""
+msgstr "Admin / Paràmetres / Gestió de IPs"
 
 msgid "Admin / Settings / Languages"
-msgstr ""
+msgstr "Admin / Paràmetres / Idiomes"
 
 msgid "Admin / Settings / Lost Password Email"
-msgstr ""
+msgstr "Admin / Paràmetres / Recuperació de contrasenya"
 
 msgid "Admin / Settings / Plugin Management"
-msgstr ""
+msgstr "Admin / Paràmetres / Gestió de plugins"
 
 msgid "Admin / Settings / Server Traffic"
-msgstr ""
+msgstr "Admin / Paràmetres / Trànsit del servidor"
 
 msgid "Admin / Settings / Service Ports"
-msgstr ""
+msgstr "Admin / Paràmetres / Ports dels serveis"
 
 msgid "Admin / Settings / Software Management"
-msgstr ""
+msgstr "Admin / Paràmetres / Gestió de software"
 
 msgid "Admin / Settings / Software Options"
-msgstr ""
+msgstr "Admin / Paràmetres / Opcions de software"
 
 msgid "Admin / Settings / Welcome Email"
-msgstr ""
+msgstr "Admin / Paràmetres / Correu de benvinguda"
 
 msgid "Admin / Settings / {TR_DYNAMIC_TITLE}"
-msgstr ""
+msgstr "Admin / Paràmetres / {TR_DYNAMIC_TITLE}"
 
 msgid "Admin / Software Management / Reseller Software"
-msgstr ""
+msgstr "Admin / Gestió de Software / Software de distribuïdor"
 
 msgid "Admin / Statistics / IP Usage"
-msgstr ""
+msgstr "Admin / Estadístiques / us de IPs"
 
 msgid "Admin / Statistics / Reseller Statistics"
-msgstr ""
+msgstr "Admin / Estadístiques / Estadístiques de distribuïdor"
 
 msgid "Admin / Statistics / Reseller Statistics / Customer Statistics"
-msgstr ""
+msgstr "Admin / Estadístiques / Estadístiques de distribuïdor / Estadístiques de client"
 
 msgid ""
 "Admin / Statistics / Reseller Statistics / Customer Statistics / Domain "
 "Statistics"
-msgstr ""
+msgstr "Admin / Estadístiques / Estadístiques de distribuïdor / Estadístiques de client / Estadístiques de domini"
 
 msgid "Admin / Statistics / Server Statistics"
-msgstr ""
+msgstr "Admin / Estadístiques / Estadístiques de servidor"
 
 msgid "Admin / Statistics / Server Statistics / Day Statistics"
-msgstr ""
+msgstr "Admin / Estadístiques / Estadístiques de servidor / Estadístiques diàries"
 
 msgid "Admin / Support / Closed Tickets"
-msgstr ""
+msgstr "Admin / Suport / Tiquets tancats"
 
 msgid "Admin / Support / View Ticket"
-msgstr ""
+msgstr "Admin / Suport / Veure tiquet"
 
 msgid "Admin / System Tools / Database Update"
-msgstr ""
+msgstr "Admin / Eines de sistema / Actualització de Base dades"
 
 msgid "Admin / System Tools / Debugger"
-msgstr ""
+msgstr "Admin / Eines de sistema / Depuració"
 
 msgid "Admin / System Tools / Maintenance Settings"
-msgstr ""
+msgstr "Admin / Eines de sistema / Paràmetres de manteniment"
 
 msgid "Admin / System Tools / Rootkit Logs"
-msgstr ""
+msgstr "Admin / Eines de sistema / Registre de rootkits"
 
 msgid "Admin / System Tools / System Information"
-msgstr ""
+msgstr "Admin / Eines de sistema / Informació del sistema"
 
 msgid "Admin / System Tools / Updates"
-msgstr ""
+msgstr "Admin / Eines de sistema / Actualitzacions"
 
 msgid "Admin / User / Overview / Domain Edit"
-msgstr ""
+msgstr "Admin / Usuari / Vista General / Editar domini"
 
 msgid "Admin / Users / Add Admin"
-msgstr ""
+msgstr "Admin / Usuaris / Afegir administrador"
 
 msgid "Admin / Users / Add Reseller"
-msgstr ""
+msgstr "Admin / Usuaris / Afegir distribuïdor"
 
 msgid "Admin / Users / Circular"
-msgstr ""
+msgstr "Admin / Usuaris / Circular"
 
 msgid "Admin / Users / Customers Assignment"
-msgstr ""
+msgstr "Admin / Usuaris / Assignació de clients"
 
 msgid "Admin / Users / Edit Reseller"
-msgstr ""
+msgstr "Admin / Usuaris / Editar distribuïdor"
 
 msgid "Admin / Users / Overview"
-msgstr ""
+msgstr "Admin / Usuaris / Vista General"
 
 msgid "Admin / Users / Overview / Delete Customer"
-msgstr ""
+msgstr "Admin / Usuaris / Vista General / Esborrar client"
 
 msgid "Admin / Users / Overview / Domain Details"
-msgstr ""
+msgstr "Admin / Usuaris / Vista General / Detalls de domini"
 
 msgid "Admin / Users / Overview / Edit Admin"
-msgstr ""
+msgstr "Admin / Usuaris / Vista General / Editar administrador"
 
 msgid "Admin / Users / Resellers Assignment"
-msgstr ""
+msgstr "Admin / Usuaris / Assignació de distribuïdor"
 
 msgid "Admin / Users / Sessions"
-msgstr ""
+msgstr "Admin / Usuaris / Sessions"
 
 msgid "Admin Log"
 msgstr "Registre d'admin"
@@ -923,13 +936,13 @@ msgid "All"
 msgstr "Tots"
 
 msgid "All administrators"
-msgstr ""
+msgstr "Tots els administradors"
 
 msgid "All closed tickets were successfully deleted."
 msgstr "Tots els tiquets tancats s'han eliminat correctament."
 
 msgid "All customers"
-msgstr ""
+msgstr "Tots els clients"
 
 msgid "All fields are required."
 msgstr "Necessitem tots els camps."
@@ -956,17 +969,17 @@ msgid "All resellers"
 msgstr "Tots els distribuïdors"
 
 msgid "All resellers and customers"
-msgstr ""
+msgstr "Tots els distribuïdors i clients"
 
 msgid "All traffic"
 msgstr "Tot el trànsit"
 
 msgid "Allow URL fopen"
-msgstr ""
+msgstr "Permetre URL fopen"
 
 msgid ""
 "Allows to forward any request made to this subdomain to a specific URL."
-msgstr ""
+msgstr "Permet reenviar una petició fet a aquest subdomini cap a una URL especifica."
 
 msgid ""
 "Allows to forward any request made to this subdomain to a specific URL. Be "
@@ -975,7 +988,7 @@ msgid ""
 msgstr ""
 
 msgid "Allows to share the mount point of another domain."
-msgstr ""
+msgstr "Permetre compartir el punt de muntatge de un altre domini."
 
 msgid "Already in use"
 msgstr "En ús"
@@ -984,24 +997,27 @@ msgid "Alternative URL to reach your website"
 msgstr "URL alternativa per arribar a la teva web"
 
 msgid "An error occurred during authentication."
-msgstr ""
+msgstr "Hi ha hagut un error durant l'autenticació"
 
 msgid "An error occurred. Please contact your administrator."
+msgstr "Hi ha hagut un error. Contacteu amb l'administrador."
+
+msgid "An unexpected error occured. Please contact your administrator"
 msgstr ""
 
 msgid "An unexpected error occured. Please retry"
-msgstr ""
+msgstr "Hi ha hagut un error inesperat. Torneu-ho a intentar"
 
 msgid "An unexpected error occurred, please contact your reseller."
-msgstr ""
+msgstr "Hi ha hagut un error inesperat, contacteu amb el distribuïdor."
 
 #, php-format
 msgid "An unexpected error occurred: %s"
-msgstr ""
+msgstr "Hi ha hagut un error inesperat: %s"
 
 #, php-format
 msgid "An unknown error occurred during file upload: %s"
-msgstr ""
+msgstr "Hi ha hagut un error durant la pujada del fitxer: %s"
 
 msgid "Anti-Rootkits Tools Log Checker"
 msgstr "Registre dels anàlisi de les eines Anti-Rootkits"
@@ -1056,8 +1072,8 @@ msgstr "Estàs segur que vols esborrar %s?"
 msgid "Are you sure you want to delete all closed tickets?"
 msgstr "Esteu segurs d'esborrar tots aquests tiquets tancats?"
 
-msgid "Are you sure you want to delete all marked emails?"
-msgstr "Estas segur de voler eliminar tos els emails marcats?"
+msgid "Are you sure you want to delete all selected items?"
+msgstr ""
 
 msgid "Are you sure you want to delete all tickets?"
 msgstr "Esteu segurs que voleu eliminar tots els tiquets?"
@@ -1123,8 +1139,8 @@ msgstr "Primerament has de crear una Base de Dades!"
 msgid "Auto email template data updated!"
 msgstr "Plantilla automàtica de correu actualitzada!"
 
-msgid "Auto respond"
-msgstr "Autoresposta"
+msgid "Auto responder"
+msgstr ""
 
 msgid "Auto-responder message cannot be empty."
 msgstr "El missatge d'auto-resposta no pot ser buit."
@@ -1139,13 +1155,13 @@ msgid "Auto-responder successfully scheduled for update."
 msgstr "L'auto-resposta està programada per actualitzar-se."
 
 msgid "Available"
-msgstr ""
+msgstr "Disponible"
 
 msgid "Available i-MSCP updates"
 msgstr "Actualitzacions i-MSCP disponibles"
 
 msgid "Available software"
-msgstr ""
+msgstr "Software disponible"
 
 msgid "Awaiting activation"
 msgstr "Esperant activació"
@@ -1166,13 +1182,13 @@ msgid "Backup and restore settings."
 msgstr "Opcions de còpia de seguretat i restauració."
 
 msgid "Backup has been successfully scheduled for restoration."
-msgstr ""
+msgstr "La copia s'ha programat correctament per la restauració."
 
 msgid "Bad password."
 msgstr "Contrasenya incorrecta."
 
-msgid "Behind the name"
-msgstr "Darrera del nom"
+msgid "Behind"
+msgstr ""
 
 msgid "Being enabled"
 msgstr "Estar habilitat"
@@ -1190,6 +1206,9 @@ msgstr "Temps de bloqueig entre temptatives de inici de sessió i captcha."
 msgid "Blocktime <small>(in minutes)</small>"
 msgstr "Temps de bloqueig <small>(en minuts)</small>"
 
+msgid "Bogomips"
+msgstr ""
+
 msgid "Both source and destination are identical."
 msgstr "Ambdós, origen i destí, són idèntics."
 
@@ -1205,20 +1224,11 @@ msgstr "Per"
 msgid "CGI"
 msgstr "CGI"
 
-msgid "CPU MHz"
-msgstr "CPU MHz"
+msgid "CPU Information"
+msgstr ""
 
-msgid "CPU bogomips"
-msgstr "CPU bogomips"
-
-msgid "CPU cache"
-msgstr "Cache CPU"
-
-msgid "CPU model"
-msgstr "Model de CPU"
-
-msgid "CPU system Info"
-msgstr "Informació de la CPU del sistema"
+msgid "Cache"
+msgstr ""
 
 #, php-format
 msgid "Can edit the PHP %s directive"
@@ -1229,7 +1239,7 @@ msgstr "Cancel·lar"
 
 #, php-format
 msgid "Cannot validate %s record: %s"
-msgstr ""
+msgstr "No podem validar %s registre: %s"
 
 msgid "Canonical name"
 msgstr "Nom canonic"
@@ -1268,7 +1278,7 @@ msgid "Certificate successfully scheduled for addition or modification."
 msgstr "S'ha programat l'edició del certificat."
 
 msgid "Certificate successfully scheduled for deletion."
-msgstr ""
+msgstr "S'ha programat l'eliminació del certificat."
 
 msgid "Change"
 msgstr "Canviar"
@@ -1277,7 +1287,7 @@ msgid "Change SQL user password"
 msgstr "Canviar contrasenya usuari SQL"
 
 msgid "Change in progress..."
-msgstr ""
+msgstr "Canvi en progrés..."
 
 msgid "Change password"
 msgstr "Canviar contrasenya"
@@ -1317,7 +1327,7 @@ msgstr "Escollir directori"
 
 #, php-format
 msgid "Choose file (Max: %1$d MiB)"
-msgstr ""
+msgstr "Trieu el fitxer (Max: %1$d MiB)"
 
 msgid "Choose hosting plan"
 msgstr "Escollir pla de hosting"
@@ -1341,20 +1351,20 @@ msgid "Clear log"
 msgstr "Esborrar registre"
 
 msgid "Click here for more details"
-msgstr ""
+msgstr "Feu click aquí per més detalls"
 
 msgid ""
 "Click the Restore button and the system will restore the last daily backup"
 msgstr "Faci click sobre Restaurar i el sistema restaurarà el darrer backup diari"
 
 msgid "Client / Choose Directory"
-msgstr ""
+msgstr "Client / Trieu el directori"
 
 msgid "Client / Databases / Add SQL Database"
-msgstr ""
+msgstr "Client / Bases de dades / Afegir una base de dades SQL"
 
 msgid "Client / Databases / Overview"
-msgstr ""
+msgstr "Client / Bases de dades / Vista General"
 
 msgid "Client / Databases / Overview / Add SQL User"
 msgstr ""
@@ -1507,6 +1517,9 @@ msgstr ""
 msgid "Client / Webtools / Software / View"
 msgstr ""
 
+msgid "Clock speed (MHz)"
+msgstr ""
+
 msgid "Close"
 msgstr "Tancar"
 
@@ -1533,6 +1546,9 @@ msgstr "Confirmació per protecció de plugin"
 
 msgid "Core data"
 msgstr "Dades principals"
+
+msgid "Cores"
+msgstr ""
 
 msgid "Could not upload file."
 msgstr "No s'ha pogut pujar el fitxer."
@@ -1851,17 +1867,14 @@ msgstr ""
 msgid "Delete from log:"
 msgstr "Esborrar del registre:"
 
-msgid "Delete marked mails"
-msgstr "Eliminar correus marcats"
-
 msgid "Delete order"
 msgstr "Eliminar comanda"
 
 msgid "Delete reseller software"
 msgstr "Eliminar aplicació del distribuïdor"
 
-msgid "Delete software and send message"
-msgstr "Eliminar l'aplicació i enviar el missatge"
+msgid "Delete selected items"
+msgstr ""
 
 msgid "Delete ticket"
 msgstr ""
@@ -2200,19 +2213,10 @@ msgstr ""
 msgid "Email account list"
 msgstr ""
 
-msgid "Email account list is empty."
-msgstr ""
-
 msgid "Email account not found."
 msgstr ""
 
-msgid "Email account quota updated."
-msgstr ""
-
 msgid "Email account scheduled for addition."
-msgstr ""
-
-msgid "Email account scheduled for deletion."
 msgstr ""
 
 msgid "Email account scheduled for update."
@@ -2229,6 +2233,20 @@ msgstr "Adreça d'email"
 
 msgid "Email forward"
 msgstr "Reenviament d'email"
+
+msgid "Email quota [MiB]"
+msgstr ""
+
+#, php-format
+msgid "Email quota value cannot be bigger than %s MiB."
+msgstr ""
+
+msgid "Email quota value cannot be bigger than disk space limit."
+msgstr ""
+
+#, php-format
+msgid "Email quota value cannot be unlimited. Max value is %s MiB."
+msgstr ""
 
 msgid "Email settings"
 msgstr ""
@@ -2283,21 +2301,6 @@ msgstr ""
 msgid "Error"
 msgstr "Error"
 
-msgid "Error 401 (unauthorised)"
-msgstr "Error 401 (no autoritzat)"
-
-msgid "Error 403 (forbidden)"
-msgstr "Error 403 (prohibit)"
-
-msgid "Error 404 (not found)"
-msgstr "Error 404 (no trobat)"
-
-msgid "Error 500 (internal server error)"
-msgstr "Error 500 (error intern del servidor)"
-
-msgid "Error 503 (service unavailable)"
-msgstr "Error 503 (servei no disponible)"
-
 msgid "Error details"
 msgstr ""
 
@@ -2330,6 +2333,9 @@ msgstr "Error: Valor incorrecte per mostrar l'entrada."
 
 msgid "Errors"
 msgstr "Errors"
+
+msgid "Excl. default mails"
+msgstr ""
 
 msgid "Execute requests"
 msgstr "Executar consultes"
@@ -2454,6 +2460,9 @@ msgstr "Nom"
 msgid "First name cannot have more than 200 characters."
 msgstr ""
 
+msgid "Forbidden"
+msgstr ""
+
 msgid "Force retry"
 msgstr ""
 
@@ -2557,13 +2566,7 @@ msgstr "Grups"
 msgid "HTTP traffic"
 msgstr ""
 
-msgid "Help"
-msgstr "Ajuda"
-
 msgid "Hide aliases"
-msgstr ""
-
-msgid "Hide default email addresses"
 msgstr ""
 
 msgid "High"
@@ -2707,8 +2710,8 @@ msgid ""
 "from today."
 msgstr ""
 
-msgid "In front the name"
-msgstr "Davant del nom"
+msgid "In front"
+msgstr ""
 
 msgid "In maintenance mode, only administrators can login."
 msgstr ""
@@ -2719,6 +2722,9 @@ msgid ""
 "domain account (including subdomains and domain aliases). Of course some "
 "values can be modified through the PHP ini_set() function."
 msgstr "En aquesta pàgina, podeu configurar alguns dels aspectes del comportament de PHP. Vostè ha de notar que, per ara, les directives definides aquí s'apliquen al seu compte de domini complet (inclosos els subdominis i àlies de domini). Per descomptat, alguns valors poden ser modificats a través de la funció ini_set () de PHP."
+
+msgid "Incl. default mails"
+msgstr ""
 
 msgid "Incorrect FTP account limit."
 msgstr ""
@@ -2747,6 +2753,9 @@ msgstr "La sintaxi o longitud del correu no són valides."
 #, php-format
 msgid "Incorrect limit for %s."
 msgstr "Límit incorrecte per a %s."
+
+msgid "Incorrect mail quota value."
+msgstr ""
 
 msgid "Incorrect monthly traffic limit."
 msgstr ""
@@ -2806,6 +2815,9 @@ msgid "Instructions to download today's backup"
 msgstr "Instruccions per descarregar el backup diari"
 
 msgid "Intermediate certificate"
+msgstr ""
+
+msgid "Internal Server Error"
 msgstr ""
 
 msgid "Internationalization"
@@ -2972,12 +2984,6 @@ msgstr "Les dades de connexió han estat enviades a %s."
 msgid "Login into phpMyAdmin"
 msgstr ""
 
-msgid "Login into the filemanager"
-msgstr "Entrar al gestor d'arxius web"
-
-msgid "Login into the webmail"
-msgstr "Entrar al correu web"
-
 msgid "Login password"
 msgstr "Usuari"
 
@@ -3023,6 +3029,13 @@ msgstr "Correu"
 msgid "Mail Log Level"
 msgstr "Nivell de registre (log) de mail"
 
+#, php-format
+msgid "Mail account %s successfully scheduled for deletion."
+msgstr ""
+
+msgid "Mail accounts list is empty."
+msgstr ""
+
 msgid "Mail feature is disabled."
 msgstr ""
 
@@ -3037,9 +3050,6 @@ msgstr ""
 
 msgid "Mailformat of an address in your forward list is incorrect."
 msgstr "El format d'una adreça d'email a la vostra llista de reenviament és incorrecte."
-
-msgid "Mails total"
-msgstr "Total de correus"
 
 msgid "Main menu labels visibility successfully updated."
 msgstr "Visibilitat de les etiquetes del menú principal s'ha actualitzat correctament."
@@ -3090,9 +3100,6 @@ msgstr "Gestionar les seves àrees protegides, usuaris i grups."
 msgid "Mark"
 msgstr "Marca"
 
-msgid "Mark all"
-msgstr "Marcar tots"
-
 msgid "Mass email successfully sent."
 msgstr ""
 
@@ -3138,8 +3145,8 @@ msgstr "Mitjana"
 msgid "Member of group"
 msgstr ""
 
-msgid "Memory system info"
-msgstr "Informació de la memòria del sistema"
+msgid "Memory information"
+msgstr ""
 
 msgid "Message"
 msgstr "Missatge"
@@ -3179,6 +3186,12 @@ msgstr "Minuts"
 
 msgid "Missing domain"
 msgstr "Falta el domini"
+
+msgid "Missing value for quota field"
+msgstr ""
+
+msgid "Model"
+msgstr ""
 
 msgid "Modification in progress"
 msgstr "Modificació en progres"
@@ -3269,6 +3282,9 @@ msgstr ""
 
 msgid "No administrator accounts found."
 msgstr "No s'han trobat comptes d'administrador"
+
+msgid "No available"
+msgstr ""
 
 msgid "No certificate found."
 msgstr "Certificat no trobat"
@@ -3375,6 +3391,9 @@ msgstr "Correu normal"
 msgid "Normal users"
 msgstr "Usuaris normals"
 
+msgid "Not Found"
+msgstr ""
+
 msgid "Not Set"
 msgstr "No definit"
 
@@ -3407,15 +3426,6 @@ msgstr ""
 
 msgid "Notices, Warnings and Errors"
 msgstr "Notificacions, Alertes i Errors"
-
-msgid "Number of CPU Cores"
-msgstr "Número de núclis de CPU"
-
-msgid "Numeric prefix"
-msgstr ""
-
-msgid "Numeric suffix"
-msgstr ""
 
 msgid "OK"
 msgstr "OK"
@@ -3459,6 +3469,10 @@ msgstr "Obrir tiquet"
 
 msgid "Open tickets"
 msgstr "Tiquets oberts"
+
+#, php-format
+msgid "Operatio canceled: %s"
+msgstr ""
 
 msgid "Optional"
 msgstr "Opcional"
@@ -3681,13 +3695,6 @@ msgid ""
 "/>Refresh your site to see the new status!"
 msgstr "Siusplau contacta amb l'administrador!<br />Pregunta-li pels permisos per usar aquest paquet.<br />no està permés carregar aquest paquet dues vegades.<br />Refresca el teu lloc per a veure el nou estat!"
 
-#, php-format
-msgid "Please delete first CatchAll account for the email %s."
-msgstr "Si us plau, elimina primer el compte CatchAll pel correu %s."
-
-msgid "Please delete first CatchAll account for this email."
-msgstr "Siusplau, primer cal esborrar el compte Catch-all per aquest email."
-
 msgid "Please don't use special chars such as '@, $, %...' in the password."
 msgstr ""
 
@@ -3711,6 +3718,9 @@ msgstr ""
 
 msgid "Please fill up both data fields for password."
 msgstr "Si us plau ompliu els dos camps de la contrasenya."
+
+msgid "Please first, delete all catchall linked to this email."
+msgstr ""
 
 msgid "Please select a valid SQL user for the database."
 msgstr ""
@@ -3744,9 +3754,6 @@ msgstr "Siusplau intrudueix la contrasenya d'usuari."
 
 msgid "Please type your message."
 msgstr "Introduïu el vostre missatge."
-
-msgid "Please wait for update"
-msgstr "Si us plau espereu per l'actualització"
 
 msgid "Please write mount point!"
 msgstr "Si us plau especifiqueu el punt de muntatge!"
@@ -3899,6 +3906,9 @@ msgstr "Prioritat: %s\n"
 msgid "Process update"
 msgstr ""
 
+msgid "Processor data"
+msgstr ""
+
 msgid "Profile"
 msgstr "Perfil"
 
@@ -3945,14 +3955,14 @@ msgstr "Protocol"
 msgid "Quota"
 msgstr "Quota"
 
-msgid "Quota in MB (0 unlimited)"
-msgstr "Quota en MB (0 il.limitat)"
+msgid "Quota in MiB (0 for unlimited)"
+msgstr ""
 
 msgid "Quota must be a number"
 msgstr ""
 
-msgid "Quota must have a value"
-msgstr "La Quota ha de tenir un valor"
+msgid "Quota successfully updated."
+msgstr ""
 
 msgid "RAM"
 msgstr "RAM"
@@ -4011,6 +4021,9 @@ msgstr ""
 
 msgid "Repeat password"
 msgstr "Repeteix la contrasenya"
+
+msgid "Reply"
+msgstr ""
 
 msgid "Request from foreign host was blocked."
 msgstr "La sol.licitut provinent d'un servidor extern ha estat bloquejada."
@@ -4270,6 +4283,9 @@ msgstr ""
 msgid "SQL user password successfully updated."
 msgstr "Contrasenya d'usuari SQL actualitzada correctament."
 
+msgid "SQL user prefix/suffix"
+msgstr ""
+
 msgid "SQL user successfully added."
 msgstr "Usuari SQL afegit correctament."
 
@@ -4384,6 +4400,9 @@ msgstr "Configuració del tràfic de servidor actualitzada."
 msgid "Service"
 msgstr "Servei"
 
+msgid "Service Unavailable"
+msgstr ""
+
 msgid "Service must be filled."
 msgstr "S'ha d'omplir el servei"
 
@@ -4438,9 +4457,6 @@ msgid ""
 "Show all errors, warnings and notices including coding standards "
 "(Development)"
 msgstr "Mostrar tots els errors, advertències i avisos incloent les d'estil (Desenvolupament)"
-
-msgid "Show default email addresses"
-msgstr ""
 
 msgid "Show detailed statistics for this domain"
 msgstr "Mostrar estadístiques detallades per aquest domini"
@@ -4675,6 +4691,9 @@ msgstr "Canviar a la interfície d'usuari"
 msgid "System"
 msgstr "Sistema"
 
+msgid "System data"
+msgstr ""
+
 msgid "System error - custom error page was not updated."
 msgstr "No s'ha actualitzat la pàgina d'error personalitzada per un error de sistema. Toneu-ho a intentar o contacteu amb l'administrador."
 
@@ -4841,10 +4860,10 @@ msgid ""
 "/>Remove them first."
 msgstr ""
 
-msgid "The software installer require the PHP support."
+msgid "The software installer feature requires PHP."
 msgstr ""
 
-msgid "The software installer requires PHP."
+msgid "The software installer require the PHP support."
 msgstr ""
 
 msgid "The uploaded file was only partially uploaded."
@@ -4926,9 +4945,6 @@ msgstr "Aquest paquet encara no està instal.lat"
 msgid "This software is installed on following domain(s):"
 msgstr "Aquest programari està instal.lat en el(s) següent(s) domini(s):"
 
-msgid "This type of account does not have quota."
-msgstr "Aquest tipus de compte no te quota."
-
 msgid ""
 "This user has domain record.<br/>First remove the domain from the system."
 msgstr ""
@@ -5003,6 +5019,10 @@ msgstr ""
 
 msgid "Total installations"
 msgstr "Total d'instal·lacions"
+
+#, php-format
+msgid "Total mails: %s of %s (%s)"
+msgstr ""
 
 msgid "Total packages in Web software repository"
 msgstr ""
@@ -5126,6 +5146,9 @@ msgstr ""
 msgid "Unable to write the %s file for protected plugins."
 msgstr ""
 
+msgid "Unauthorized"
+msgstr ""
+
 msgid "Unavailable"
 msgstr ""
 
@@ -5175,9 +5198,6 @@ msgstr "Il·limitat"
 msgid "Unprotect it"
 msgstr "Desprotegir"
 
-msgid "Up time"
-msgstr "Uptime"
-
 msgid "Update"
 msgstr "Actualitzar"
 
@@ -5225,6 +5245,9 @@ msgstr "Carregar logo"
 msgid "Upload now"
 msgstr "Pujar"
 
+msgid "Uptime"
+msgstr ""
+
 msgid "Usage of disallowed character in CNAME"
 msgstr "Us de caracters no permesos al CNAME"
 
@@ -5233,9 +5256,6 @@ msgstr "Estadística d'us"
 
 msgid "Use normal connection (No SSL)"
 msgstr "Utilitzar connexió normal (Sense SSL)"
-
-msgid "Use numeric ID"
-msgstr "Utilitzeu ID numèrics"
 
 msgid "Use secure connection (SSL)"
 msgstr "Utilitzar connexió segura (SSL)"
@@ -5387,9 +5407,6 @@ msgstr "Veure Ticket"
 msgid "Visit plugin site"
 msgstr "Visitar el lloc dels plugins"
 
-msgid "Vital system info"
-msgstr "Informació vital del sistema"
-
 msgid "Warning traffic"
 msgstr "Advertència del tràfic"
 
@@ -5449,7 +5466,7 @@ msgid "Welcome email"
 msgstr ""
 
 msgid "Welcome {USERNAME} to i-MSCP"
-msgstr "Benvingut {USERNAME} al i-MSCP"
+msgstr "Benvingut {USERNAME} a i-MSCP"
 
 msgid ""
 "When allowed, scripts can call the PHP exec() function. This function is "
@@ -5562,6 +5579,12 @@ msgstr "Sintaxis per la redirecció del correu '%s'."
 #, php-format
 msgid "Wrong syntax for the %s limit."
 msgstr "Sintaxi errònia pel limit de %s."
+
+msgid "Wrong syntax for the Email quota value."
+msgstr ""
+
+msgid "Wrong syntax for the mail quota value."
+msgstr ""
 
 msgid "Wrong syntax in forward URL."
 msgstr "URL de destinació incorrecte."
@@ -5831,6 +5854,12 @@ msgstr "Has d'escollir un arxiu a pujar"
 msgid "You must select a least one item to deactivate."
 msgstr ""
 
+msgid "You must select a least one item to delete"
+msgstr ""
+
+msgid "You must select a least one mail account to delete."
+msgstr ""
+
 msgid "You must select a network card."
 msgstr "Heu de triar una targeta de xarxa."
 
@@ -5978,9 +6007,6 @@ msgid ""
 "getInfo() not implemented in %s and %s not found. <br /> This is a bug in "
 "the %s plugin and should be reported to the plugin author."
 msgstr "getInfo() no implementat a %s i %s no trobat. <br /> Hi ha un 'bug' al plugin %s  i s'ha d'informar a l'autor del plugin."
-
-msgid "help"
-msgstr "ajuda"
 
 msgid "i-MSCP - Application Management (Permissions)"
 msgstr "i-MSCP - Repositori d'aplicacions (Permisos)"
@@ -6131,4 +6157,4 @@ msgid "{RESELLER} uploaded a new software package"
 msgstr "{RESELLER} ha carregat un nou paquet de programari"
 
 msgid "© 2010-2013 i-MSCP Team<br/>All Rights Reserved"
-msgstr ""
+msgstr "© 2010-2013 l'equip de i-MSCP<br/>Tots els drets reservats"
