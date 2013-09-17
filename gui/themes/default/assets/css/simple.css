@@ -286,7 +286,7 @@ table td {
 
 .ftp_chooser {
     margin: 0 auto;
-    width:50%;
+    width: 50%;
 }
 
 .ftp_chooser table {
@@ -340,7 +340,6 @@ table td {
 /*------------MESSAGES--------------*/
 
 #message_container {
-    background: transparent url('../images/black/box/message_top.jpg') no-repeat top left;
     position: relative;
     width: 453px;
     margin: 0 auto;
@@ -351,6 +350,26 @@ table td {
     -moz-border-radius: 4px;
     border-radius: 4px;
     text-align: center;
+}
+
+.black #message_container {
+    background: transparent url('../images/black/box/message_top.jpg') no-repeat top left;
+}
+
+.blue #message_container {
+    background: transparent url('../images/blue/box/message_top.jpg') no-repeat top left;
+}
+
+.green #message_container {
+    background: transparent url('../images/green/box/message_top.jpg') no-repeat top left;
+}
+
+.red #message_container {
+    background: transparent url('../images/red/box/message_top.jpg') no-repeat top left;
+}
+
+.yellow #message_container {
+    background: transparent url('../images/yellow/box/message_top.jpg') no-repeat top left;
 }
 
 #message_container h1 {
