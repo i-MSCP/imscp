@@ -2657,7 +2657,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	}
 
 	/**
-	 * Remove possible orhan entries in quota_dovecot table
+	 * Remove possible orphan entries in quota_dovecot table
 	 *
 	 * @return string SQL statement to be executed
 	 */
