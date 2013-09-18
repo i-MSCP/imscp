@@ -524,7 +524,7 @@ class iMSCP_Config_Handler_Db extends iMSCP_Config_Handler implements iterator
 	 */
 	public function offsetExists($offset)
 	{
-		return array_key_exists($this->_parameters, $offset);
+		return array_key_exists($offset, $this->_parameters);
 	}
 
 	/**

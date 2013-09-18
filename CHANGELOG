@@ -75,6 +75,7 @@ Tickets:
 	- Fixed #880: Defect - Dovecot - IMAP traffic not counted
 	- Fixed #883: Defect - Web folders protection option must be automatically disabled and hidden when the immutable flag is not available
 	- Fixed #886: Enhancement - Add SPF Resource Record Type in bind
+	- Fixed #891: Bug - Error when migrating from ispCP
 	- Fixed #893: Defect - Webstats for subdomains are not available
 	- Fixed #896: Bug - Variable {USERNAME} is not parsed in password email
 	- Fixed #903: Bug - Domain restore feature is broken

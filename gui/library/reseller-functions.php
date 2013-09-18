@@ -775,7 +775,7 @@ function client_mail_add_default_accounts($domainId, $userEmail, $domainPart, $d
 			$query,
 			array(
 				'webmaster', '_no_', $userEmail, $domainId, $forwardType, $subId, $cfg->ITEM_TOADD_STATUS, '_no_',
-				10485760, 'webmaster@' . $domainPart
+				NULL, 'webmaster@' . $domainPart
 			)
 		);
 
@@ -784,7 +784,7 @@ function client_mail_add_default_accounts($domainId, $userEmail, $domainPart, $d
 			$query,
 			array(
 				'postmaster', '_no_', $_SESSION['user_email'], $domainId, $forwardType, $subId, $cfg->ITEM_TOADD_STATUS,
-				'_no_', 10485760, 'postmaster@' . $domainPart
+				'_no_', NULL, 'postmaster@' . $domainPart
 			)
 		);
 
@@ -793,7 +793,7 @@ function client_mail_add_default_accounts($domainId, $userEmail, $domainPart, $d
 			$query,
 			array(
 				'abuse', '_no_', $_SESSION['user_email'], $domainId, $forwardType, $subId, $cfg->ITEM_TOADD_STATUS,
-				'_no_', 10485760, 'abuse@' . $domainPart
+				'_no_', NULL, 'abuse@' . $domainPart
 			)
 		);
 	}

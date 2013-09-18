@@ -61,7 +61,7 @@ sub loadData
 			`t3`.`mail_addr` LIKE concat("%", substr(`t1`.`mail_addr`, locate("@", `t1`.`mail_addr`)))
 		WHERE
 			`t1`.`mail_id` = ?
-		';
+	';
 
 	my $rdata = iMSCP::Database->factory()->doQuery('mail_id', $sql, $self->{'mailId'});
 

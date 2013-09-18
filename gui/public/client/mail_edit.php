@@ -51,17 +51,17 @@
  */
 function _client_normalizeForwardAddresses($forwardAddresses, $convertTo = 'decode_idna')
 {
-	if(!is_array($forwardAddresses)) {
-		$forwardAddresses  = array_unique(
+	if (!is_array($forwardAddresses)) {
+		$forwardAddresses = array_unique(
 			preg_split('/[\n\s,]+/', trim($forwardAddresses), 0, PREG_SPLIT_NO_EMPTY));
 	}
 
-	if($convertTo != 'decode_idna' && $convertTo != 'encode_idna') {
+	if ($convertTo != 'decode_idna' && $convertTo != 'encode_idna') {
 		throw new iMSCP_Exception('Wrong value for $convertTo argument.');
 	}
 
 	foreach ($forwardAddresses as &$forwardAddress) {
-		if(($pos = strrpos($forwardAddress, '@')) !== false) {
+		if (($pos = strrpos($forwardAddress, '@')) !== false) {
 			$forwardAddress = substr($forwardAddress, 0, $pos + 1) .
 				$convertTo(substr($forwardAddress, $pos + 1));
 		}
@@ -113,14 +113,14 @@ function client_getMailAccountData($mailAccountId)
 				$mailAccountData['mail_forward_previous'] = _client_normalizeForwardAddresses(
 					$mailAccountData['mail_forward'], 'encode_idna');
 
-					$mailAccountData['mail_forward'] = _client_normalizeForwardAddresses(
-						clean_input($_POST['forwardList']), 'encode_idna');
+				$mailAccountData['mail_forward'] = _client_normalizeForwardAddresses(
+					clean_input($_POST['forwardList']), 'encode_idna');
 			} else {
 				$mailAccountData['mail_forward'] = '_no_';
 			}
 
 			// Password data
-			if($mailAccountData['mail_pass'] != '_no_' &&
+			if ($mailAccountData['mail_pass'] != '_no_' &&
 				(!empty($_POST['password']) || !empty($_POST['passwordConfirmation']))
 			) {
 				$mailAccountData['mail_pass'] = clean_input($_POST['password']);
@@ -141,13 +141,13 @@ function client_getMailAccountData($mailAccountId)
 function client_UpdateMailAccount($mailAccountData)
 {
 	/** @var $cfg iMSCP_Config_Handler_File */
-	$cfg =iMSCP_Registry::get('config');
+	$cfg = iMSCP_Registry::get('config');
 
 	$passwordUpdate = $forwardAddressesUpdate = false;
 
 	// Password validation
-	if($mailAccountData['mail_pass'] != '_no_' && (!empty($_POST['password']) || !empty($_POST['passwordConfirmation']))) {
-		if($mailAccountData['mail_pass'] !== $mailAccountData['mail_pass_confirmation']) {
+	if ($mailAccountData['mail_pass'] != '_no_' && (!empty($_POST['password']) || !empty($_POST['passwordConfirmation']))) {
+		if ($mailAccountData['mail_pass'] != $mailAccountData['mail_pass_confirmation']) {
 			set_page_message(tr("Passwords do not match."), 'error');
 		}
 
@@ -156,10 +156,10 @@ function client_UpdateMailAccount($mailAccountData)
 	}
 
 	// Forward addresses validation
-	if($mailAccountData['mail_forward'] != '_no_' &&
-	   $mailAccountData['mail_forward'] !== $mailAccountData['mail_forward_previous']
+	if ($mailAccountData['mail_forward'] != '_no_' &&
+		$mailAccountData['mail_forward'] !== $mailAccountData['mail_forward_previous']
 	) {
-		if(!empty($mailAccountData['mail_forward'])) {
+		if (!empty($mailAccountData['mail_forward'])) {
 			foreach ($mailAccountData['mail_forward'] as $forwardAddress) {
 				if (!chk_email($forwardAddress)) {
 					set_page_message(tr('Wrong syntax for the %s forward email address.', '<strong>' . decode_idna($forwardAddress) . '</strong>'), 'error');
@@ -187,8 +187,8 @@ function client_UpdateMailAccount($mailAccountData)
 		$forwardAddressesUpdate = true;
 	}
 
-	if($mailAccountData['mail_forward'] == '_no_') {
-		if(strpos($mailAccountData['mail_type'], '_forward') !== false) {
+	if ($mailAccountData['mail_forward'] == '_no_') {
+		if (strpos($mailAccountData['mail_type'], '_forward') !== false) {
 			// Check if mail type was a forward type and remove it
 			$mailAccountData['mail_type'] = preg_replace(
 				'/,[a-z]+_forward$/', '', $mailAccountData['mail_type']);
@@ -254,9 +254,9 @@ function client_UpdateMailAccount($mailAccountData)
 function client_generateEditForm($tpl, $mailAccountData)
 {
 	/** @var $cfg iMSCP_Config_Handler_File */
-	$cfg =iMSCP_Registry::get('config');
+	$cfg = iMSCP_Registry::get('config');
 
-	if($mailAccountData['mail_pass'] == '_no_') { // Forward only mail account
+	if ($mailAccountData['mail_pass'] == '_no_') { // Forward only mail account
 		$tpl->assign('PASSWORD_FRM', '');
 	}
 
@@ -264,12 +264,13 @@ function client_generateEditForm($tpl, $mailAccountData)
 
 	$tpl->assign(
 		array(
-			 'MAIL_ID_VAL' => $mailAccountData['mail_id'],
-			 'MAIL_ADDRESS_VAL' => tohtml($mailAccountData['mail_addr']),
-			 'TR_MAIL_ACCOUNT' => tr('Email account'),
-			 'FORWARD_ACCOUNT_CHECKED' => ($mailAccountData['mail_forward'] != '_no_') ? $htmlChecked : '',
-			 'FORWARD_LIST_VAL' => ($mailAccountData['mail_forward'] != '_no_' && $mailAccountData['mail_forward'] != '')
-				 ? tohtml(implode("\n", _client_normalizeForwardAddresses($mailAccountData['mail_forward'], 'decode_idna'))) : ''
+			'MAIL_ID_VAL' => $mailAccountData['mail_id'],
+			'MAIL_ADDRESS_VAL' => tohtml($mailAccountData['mail_addr']),
+			'TR_MAIL_ACCOUNT' => tr('Email account'),
+			'FORWARD_ACCOUNT_CHECKED' => ($mailAccountData['mail_forward'] != '_no_') ? $htmlChecked : '',
+			'FORWARD_LIST_VAL' => ($mailAccountData['mail_forward'] != '_no_' && $mailAccountData['mail_forward'] != '')
+				? tohtml(implode("\n", _client_normalizeForwardAddresses($mailAccountData['mail_forward'], 'decode_idna')))
+				: ''
 		)
 	);
 }
@@ -290,40 +291,40 @@ customerHasFeature('mail') or showBadRequestErrorPage();
 /** @var $cfg iMSCP_Config_Handler_File */
 $cfg = iMSCP_Registry::get('config');
 
-if(isset($_GET['id'])) {
-	$mailAccountData = client_getMailAccountData((int) $_GET['id']);
+if (isset($_GET['id'])) {
+	$mailAccountData = client_getMailAccountData((int)$_GET['id']);
 } else {
 	showBadRequestErrorPage();
 }
 
-if(!empty($_POST) && client_updateMailAccount($mailAccountData)) {
+if (!empty($_POST) && client_updateMailAccount($mailAccountData)) {
 	redirectTo('mail_accounts.php');
 }
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic('layout', 'shared/layouts/ui.tpl');
 $tpl->define_dynamic(
 	array(
-		 'page' => 'client/mail_edit.tpl',
-		 'page_message' => 'layout',
-		 'logged_frm' => 'page',
-		 'password_frm' => 'page'
+		'layout' => 'shared/layouts/ui.tpl',
+		'page' => 'client/mail_edit.tpl',
+		'page_message' => 'layout',
+		'logged_frm' => 'page',
+		'password_frm' => 'page'
 	)
 );
 
 $tpl->assign(
 	array(
-		 'TR_PAGE_TITLE' => tr('Client / Email / Overview /  Edit Email Account'),
-		 'ISP_LOGO' => layout_getUserLogo(),
-		 'TR_PASSWORD' => tr('Password'),
-		 'TR_PASSWORD_CONFIRMATION' => tr('Password confirmation'),
-		 'TR_FORWARD_ACCOUNT' => tr('Forward account'),
-		 'TR_FORWARD_TO' => tr('Forward to'),
-		 'TR_YES' => tr('yes'),
-		 'TR_NO' => tr('no'),
-		 'TR_FWD_HELP' => tr('Separate multiple email addresses with a space, a comma or a line-break.'),
-		 'TR_UPDATE' => tr('Update'),
-		 'TR_CANCEL' => tr('Cancel')
+		'TR_PAGE_TITLE' => tr('Client / Email / Overview /  Edit Email Account'),
+		'ISP_LOGO' => layout_getUserLogo(),
+		'TR_PASSWORD' => tr('Password'),
+		'TR_PASSWORD_CONFIRMATION' => tr('Password confirmation'),
+		'TR_FORWARD_ACCOUNT' => tr('Forward account'),
+		'TR_FORWARD_TO' => tr('Forward to'),
+		'TR_YES' => tr('yes'),
+		'TR_NO' => tr('no'),
+		'TR_FWD_HELP' => tr('Separate multiple email addresses with a space, a comma or a line-break.'),
+		'TR_UPDATE' => tr('Update'),
+		'TR_CANCEL' => tr('Cancel')
 	)
 );
 

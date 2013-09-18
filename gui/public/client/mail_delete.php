@@ -136,6 +136,11 @@ function client_deleteMail($mailId, $dmnProps)
 
 		iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onBeforeDeleteMail, array('mailId' => $mailId));
 
+		if($cfg->PO_SERVER == 'dovecot') {
+			$query = 'DELETE FROM `quota_dovecot` WHERE `username` = ?';
+			exec_query($query, $mailAddr);
+		}
+
 		$query = "UPDATE `mail_users` SET `status` = ? WHERE `mail_id` = ?";
 		exec_query($query, array($cfg->ITEM_TODELETE_STATUS, $mailId));
 
