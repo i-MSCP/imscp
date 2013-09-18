@@ -45,78 +45,13 @@
  */
 function client_deleteMail($mailId, $dmnProps)
 {
-	$query = "
-		SELECT
-			`t1`.`mail_id`, `t2`.`domain_id`, `t2`.`domain_name`
-		FROM
-			`mail_users` AS `t1`, `domain` AS `t2`
-		WHERE
-			`t1`.`mail_id` = ?
-		AND
-			`t1`.`domain_id` = t2.`domain_id`
-		AND
-			`t2`.`domain_id` = ?
-	";
+	$query = "SELECT `mail_addr` FROM `mail_users` WHERE `mail_id` = ? AND `domain_id` = ?";
 	$stmt = exec_query($query, array($mailId, $dmnProps['domain_id']));
 
 	if ($stmt->rowCount()) {
+		$mailAddr = $stmt->fields['mail_addr'];
+
 		// Check for catchall
-		$query = "SELECT `mail_acc`, `domain_id`, `sub_id`, `mail_type` FROM `mail_users` WHERE `mail_id` = ?";
-		$stmt = exec_query($query, $mailId);
-		$data = $stmt->fetchRow();
-
-		if (
-			strpos($data['mail_type'], MT_NORMAL_MAIL) !== false ||
-			strpos($data['mail_type'], MT_NORMAL_FORWARD) !== false
-		) { // Mail to dmn
-			$mailAddr = $data['mail_acc'] . '@' . $dmnProps['domain_name'];
-		} elseif (
-			strpos($data['mail_type'], MT_ALIAS_MAIL) !== false ||
-			strpos($data['mail_type'], MT_ALIAS_FORWARD) !== false
-		) { // mail to als
-			$stmt = exec_query("SELECT `alias_name` FROM `domain_aliasses` WHERE `alias_id` = ?", $data['sub_id']);
-
-			if ($stmt->rowCount()) {
-				$mailAddr = $data['mail_acc'] . '@' . $stmt->fields['alias_name'];
-			} else {
-				throw new iMSCP_Exception('Mail account data not found', 500);
-			}
-		} elseif (
-			strpos($data['mail_type'], MT_SUBDOM_MAIL) !== false ||
-			strpos($data['mail_type'], MT_SUBDOM_FORWARD) !== false
-		) { // mail to sub
-			$stmt = exec_query("SELECT `subdomain_name` FROM `subdomain` WHERE `subdomain_id` = ?", $data['sub_id']);
-
-			if ($stmt->rowCount()) {
-				$mailAddr = $data['mail_acc'] . '@' . $stmt->fields['subdomain_name'] . '.' . $dmnProps['domain_name'];
-			} else {
-				throw new iMSCP_Exception('Mail account data not found', 500);
-			}
-		} elseif (
-			strpos($data['mail_type'], MT_ALSSUB_MAIL) !== false ||
-			strpos($data['mail_type'], MT_ALSSUB_FORWARD) !== false
-		) { // mail to als
-			$query = '
-				SELECT
-					`subdomain_alias_name`, `alias_name`
-				FROM
-					`subdomain_alias` AS `t1`, `domain_aliasses` AS `t2`
-				WHERE
-					`t1`.`alias_id` = t2.`alias_id`
-				AND
-					`subdomain_alias_id` = ?
-			';
-			$stmt = exec_query($query, $data['sub_id']);
-
-			if ($stmt->rowCount()) {
-				$mailAddr = $data['mail_acc'] . '@' . $stmt->fields['subdomain_alias_name'] . '.' . $stmt->fields['alias_name'];
-			} else {
-				throw new iMSCP_Exception('Mail account data not found', 500);
-			}
-		} else {
-			throw new iMSCP_Exception(sprintf('Type of mail with ID %d has not been found.', $mailId), 500);
-		}
-
 		$query = '
 			SELECT
 				`mail_id`
@@ -124,11 +59,13 @@ function client_deleteMail($mailId, $dmnProps)
 				`mail_users`
 			WHERE
 				`mail_acc` = ? OR `mail_acc` LIKE ? OR `mail_acc` LIKE ? OR `mail_acc` LIKE ?
+			LIMIT
+				1
 		';
 		$stmt = exec_query($query, array($mailAddr, "$mailAddr,%", "%,$mailAddr,%", "%,$mailAddr"));
 
 		if ($stmt->rowCount()) {
-			throw new iMSCP_Exception(tr('Please first, delete all catchall linked to this email.', 403));
+			throw new iMSCP_Exception(tr('Please first, delete all catchall linked to this Email account.'), 403);
 		}
 
 		/** @var iMSCP_Config_Handler_File $cfg */
@@ -136,13 +73,13 @@ function client_deleteMail($mailId, $dmnProps)
 
 		iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onBeforeDeleteMail, array('mailId' => $mailId));
 
-		if(isset($cfg['PO_SERVER']) && $cfg['PO_SERVER'] == 'dovecot') {
+		$query = "UPDATE `mail_users` SET `status` = ? WHERE `mail_id` = ?";
+		exec_query($query, array($cfg->ITEM_TODELETE_STATUS, $mailId));
+
+		if (isset($cfg['PO_SERVER']) && $cfg['PO_SERVER'] == 'dovecot') {
 			$query = 'DELETE FROM `quota_dovecot` WHERE `username` = ?';
 			exec_query($query, $mailAddr);
 		}
-
-		$query = "UPDATE `mail_users` SET `status` = ? WHERE `mail_id` = ?";
-		exec_query($query, array($cfg->ITEM_TODELETE_STATUS, $mailId));
 
 		delete_autoreplies_log_entries($mailAddr);
 
@@ -165,11 +102,11 @@ iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptStart)
 
 check_login('user');
 
-if(customerHasFeature('mail') && isset($_REQUEST['id'])) {
+if (customerHasFeature('mail') && isset($_REQUEST['id'])) {
 	$mainDmnProps = get_domain_default_props($_SESSION['user_id']);
 
 	$nbDeletedMails = 0;
-	$mailIds = (array) $_REQUEST['id'];
+	$mailIds = (array)$_REQUEST['id'];
 
 	if (!empty($mailIds)) {
 		$db = iMSCP_Database::getRawInstance();
@@ -206,7 +143,7 @@ if(customerHasFeature('mail') && isset($_REQUEST['id'])) {
 			);
 
 			if ($code == 403) {
-				set_page_message(tr('Operatio canceled: %s', $errorMessage), 'warning');
+				set_page_message(tr('Operation canceled: %s', $errorMessage), 'warning');
 			} elseif ($e->getCode() == 400) {
 				showBadRequestErrorPage();
 			} else {
@@ -217,7 +154,7 @@ if(customerHasFeature('mail') && isset($_REQUEST['id'])) {
 		set_page_message(tr('You must select a least one mail account to delete.'), 'error');
 	}
 
-	if(!is_xhr()) {
+	if (!is_xhr()) {
 		redirectTo('mail_accounts.php');
 	}
 } else {
