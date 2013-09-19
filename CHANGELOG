@@ -79,6 +79,7 @@ Tickets:
 	- Fixed #893: Defect - Webstats for subdomains are not available
 	- Fixed #896: Bug - Variable {USERNAME} is not parsed in password email
 	- Fixed #903: Bug - Domain restore feature is broken
+	- Fixed #913: Bug - Traffic on admin panel not counted
 
 ------------------------------------------------------------------------------------------------------------------------
 1.1.0-rc3
