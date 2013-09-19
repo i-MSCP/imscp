@@ -336,7 +336,7 @@ sub setupAskServerIps
 	# Retrieve list of all configured IP addresses
 	my @serverIps = $ips->getIPs();
 	if(! @serverIps) {
-		error('Unable to retrieve servers ips');
+		error('Unable to retrieve servers IPs');
 		return 1;
 	}
 
@@ -350,8 +350,8 @@ sub setupAskServerIps
 		if($database) {
 			$currentServerIps = $database->doQuery('ip_number', 'SELECT `ip_id`, `ip_number` FROM `server_ips`');
 
-			if(ref $currentServerIps ne 'HASH') {
-				error('Cannot retrieve current server ips');
+			unless(ref $currentServerIps eq 'HASH') {
+				error("Unable to retrieve server IPs: $currentServerIps");
 				return 1
 			}
 		}

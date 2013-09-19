@@ -24,15 +24,277 @@
  * Portions created by the i-MSCP Team are Copyright (C) 2010-2013 by
  * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
  *
- * @category	i-MSCP
- * @package		iMSCP_Core
- * @subpackage	Client
+ * @category    i-MSCP
+ * @package     iMSCP_Core
+ * @subpackage  Client
  * @copyright   2001-2006 by moleSoftware GmbH
  * @copyright   2006-2010 by ispCP | http://isp-control.net
  * @copyright   2010-2013 by i-MSCP | http://i-mscp.net
  * @author      ispCP Team
  * @author      i-MSCP Team
  * @link        http://i-mscp.net
+ */
+
+/***********************************************************************************************************************
+ * Functions
+ */
+
+/**
+ * Generate action
+ *
+ * @param int $mailId
+ * @param string $mailStatus Mail account status
+ * @return array|null
+ */
+function client_generateAction($mailId, $mailStatus)
+{
+
+	/** @var $cfg iMSCP_Config_Handler_File */
+	$cfg = iMSCP_Registry::get('config');
+
+	if ($mailStatus == $cfg->ITEM_TOADD_STATUS) {
+		return array(tr('N/A'), '#');
+	} else if ($mailStatus == $cfg->ITEM_OK_STATUS) {
+		return array(tr('Delete CatchAll'), "mail_catchall_delete.php?id=$mailId");
+	} else if ($mailStatus == $cfg->ITEM_TOCHANGE_STATUS) {
+		return array(tr('N/A'), '#');
+	} else if ($mailStatus == $cfg->ITEM_TODELETE_STATUS) {
+		return array(tr('N/A'), '#');
+	} else {
+		return null;
+	}
+}
+
+/**
+ * Generate catchall item
+ *
+ * @param iMSCP_pTemplate $tpl
+ * @param string $action Action
+ * @param int $dmnId Domain unique identifier
+ * @param string $dmnName Domain name
+ * @param int $mailId Mail unique identifier
+ * @param string $mailAcc Mail account
+ * @param string $mailStatus Mail account status
+ * @param string $catchallType Catchall type
+ * @return void
+ */
+function client_generateCatchallItem($tpl, $action, $dmnId, $dmnName, $mailId, $mailAcc, $mailStatus, $catchallType)
+{
+	$showDmnName = decode_idna($dmnName);
+
+	if ($action == 'create') {
+		$tpl->assign(
+			array(
+				'CATCHALL_DOMAIN' => tohtml($showDmnName),
+				'CATCHALL_ACC' => tr('None'),
+				'TR_CATCHALL_STATUS' => tr('N/A'),
+				'TR_CATCHALL_ACTION' => tr('Create catch all'),
+				'CATCHALL_ACTION' => $action,
+				'CATCHALL_ACTION_SCRIPT' => "mail_catchall_add.php?id=$dmnId;$catchallType",
+				'DEL_ICON' => ''
+			)
+		);
+	} else {
+		list($catchallAction, $catchallActionScript) = client_generateAction($mailId, $mailStatus);
+
+		$showDmnName = decode_idna($dmnName);
+		$showMailAcc = decode_idna($mailAcc);
+
+		$tpl->assign(
+			array(
+				'CATCHALL_DOMAIN' => tohtml($showDmnName),
+				'CATCHALL_ACC' => tohtml($showMailAcc),
+				'TR_CATCHALL_STATUS' => translate_dmn_status($mailStatus),
+				'TR_CATCHALL_ACTION' => $catchallAction,
+				'CATCHALL_ACTION' => $catchallAction,
+				'CATCHALL_ACTION_SCRIPT' => $catchallActionScript
+			)
+		);
+
+		if($catchallActionScript == '#') {
+			$tpl->assign('DEL_ICON', '');
+		}
+	}
+}
+
+/**
+ * Generate catchall list
+ *
+ * @param iMSCP_pTemplate $tpl
+ * @param int $dmnId Domain unique identifier
+ * @param string $dmnName Domain Name
+ */
+function client_generateCatchallList($tpl, $dmnId, $dmnName)
+{
+	/** @var iMSCP_Config_Handler_File $cfg */
+	$cfg = iMSCP_Registry::get('config');
+
+	$statusOk = $cfg->ITEM_OK_STATUS;
+
+	$query = "
+		SELECT
+			`mail_id`, `mail_acc`, `status`
+		FROM
+			`mail_users`
+		WHERE
+			`domain_id` = ?
+		AND
+			`sub_id` = ?
+		AND
+			`mail_type` = ?
+	";
+	$stmt = exec_query($query, array($dmnId, 0, 'normal_catchall'));
+
+	if (!$stmt->rowCount()) {
+		client_generateCatchallItem($tpl, 'create', $dmnId, $dmnName, '', '', '', 'normal');
+	} else {
+		client_generateCatchallItem(
+			$tpl, 'delete', $dmnId, $dmnName, $stmt->fields['mail_id'], $stmt->fields['mail_acc'],
+			$stmt->fields['status'], 'normal'
+		);
+	}
+
+	$tpl->parse('CATCHALL_ITEM', 'catchall_item');
+
+	$query = "SELECT `alias_id`, `alias_name` FROM `domain_aliasses` WHERE `domain_id` = ? AND `alias_status` = ?";
+	$stmt = exec_query($query, array($dmnId, $statusOk));
+
+	while ($data = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
+		$alsId = $data['alias_id'];
+		$alsName = $data['alias_name'];
+
+		$query = "
+			SELECT
+				`mail_id`, `mail_acc`, `status`
+			FROM
+				`mail_users`
+			WHERE
+				`domain_id` = ?
+			AND
+				`sub_id` = ?
+			AND
+				`mail_type` = ?
+		";
+		$stmtAls = exec_query($query, array($dmnId, $alsId, 'alias_catchall'));
+
+		if (!$stmtAls->rowCount()) {
+			client_generateCatchallItem($tpl, 'create', $alsId, $alsName, '', '', '', 'alias');
+		} else {
+			client_generateCatchallItem(
+				$tpl, 'delete', $alsId, $alsName, $stmtAls->fields['mail_id'], $stmtAls->fields['mail_acc'],
+				$stmtAls->fields['status'], 'alias'
+			);
+		}
+
+		$tpl->parse('CATCHALL_ITEM', '.catchall_item');
+	}
+
+	$query = "
+		SELECT
+			`t1`.`subdomain_alias_id`, CONCAT(`t1`.`subdomain_alias_name`, '.', `t2`.`alias_name`) AS `subdomain_name`
+		FROM
+			`subdomain_alias` AS `t1`, `domain_aliasses` AS `t2`
+		WHERE
+			`t2`.`alias_id` IN (SELECT `alias_id` FROM `domain_aliasses` WHERE `domain_id` = ?)
+		AND
+			`t1`.`alias_id` = `t2`.`alias_id`
+		AND
+			`t1`.`subdomain_alias_status` = ?
+	";
+	$stmt = exec_query($query, array($dmnId, $statusOk));
+
+	while ($data = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
+		$alsId = $data['subdomain_alias_id'];
+		$alsName = $data['subdomain_name'];
+
+		$query = "
+			SELECT
+				`mail_id`, `mail_acc`, `status`
+			FROM
+				`mail_users`
+			WHERE
+				`domain_id` = ?
+			AND
+				`sub_id` = ?
+			AND
+				`mail_type` = ?
+		";
+		$stmtAls = exec_query($query, array($dmnId, $alsId, 'alssub_catchall'));
+
+		if (!$stmtAls->rowCount()) {
+			client_generateCatchallItem($tpl, 'create', $alsId, $alsName, '', '', '', 'alssub');
+		} else {
+			client_generateCatchallItem(
+				$tpl, 'delete', $alsId, $alsName, $stmtAls->fields['mail_id'], $stmtAls->fields['mail_acc'],
+				$stmtAls->fields['status'], 'alssub'
+			);
+		}
+
+		$tpl->parse('CATCHALL_ITEM', '.catchall_item');
+	}
+
+	$query = "
+		SELECT
+			`t1`.`subdomain_id`, CONCAT(`t1`.`subdomain_name`, '.', `t2`.`domain_name`) AS `subdomain_name`
+		FROM
+			`subdomain` AS `t1`, `domain` AS `t2`
+		WHERE
+			`t1`.`domain_id` = ?
+		AND
+			`t1`.`domain_id` = `t2`.`domain_id`
+		AND
+			`t1`.`subdomain_status` = ?
+	";
+	$stmt = exec_query($query, array($dmnId, $statusOk));
+
+	while ($data = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
+		$alsId = $data['subdomain_id'];
+		$alsName = $data['subdomain_name'];
+
+		$query = "
+			SELECT
+				`mail_id`, `mail_acc`, `status`
+			FROM
+				`mail_users`
+			WHERE
+				`domain_id` = ?
+			AND
+				`sub_id` = ?
+			AND
+				`mail_type` = ?
+		";
+		$stmtAls = exec_query($query, array($dmnId, $alsId, 'subdom_catchall'));
+
+		if (!$stmtAls->rowCount()) {
+			client_generateCatchallItem($tpl, 'create', $alsId, $alsName, '', '', '', 'subdom');
+		} else {
+			client_generateCatchallItem($tpl,
+				'delete', $alsId, $alsName, $stmtAls->fields['mail_id'], $stmtAls->fields['mail_acc'],
+				$stmtAls->fields['status'], 'subdom'
+			);
+		}
+
+		$tpl->parse('CATCHALL_ITEM', '.catchall_item');
+	}
+}
+
+/**
+ * Generate page
+ *
+ * @param iMSCP_pTemplate $tpl
+ * @param int $customerId Customer unique identifier
+ */
+function client_generatePage($tpl, $customerId)
+{
+	$domainProps = get_domain_default_props($customerId);
+	$dmnId = $domainProps['domain_id'];
+	$dmnName = $domainProps['domain_name'];
+
+	client_generateCatchallList($tpl, $dmnId, $dmnName);
+}
+
+/***********************************************************************************************************************
+ * Main
  */
 
 // Include core library
@@ -48,322 +310,33 @@ customerHasFeature('mail') or showBadRequestErrorPage();
 $cfg = iMSCP_Registry::get('config');
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic('layout', 'shared/layouts/ui.tpl');
-$tpl->define_dynamic('page', 'client/mail_catchall.tpl');
-$tpl->define_dynamic('page_message', 'layout');
-$tpl->define_dynamic('catchall_message', 'page');
-$tpl->define_dynamic('catchall_item', 'page');
-
-/**
- * @param $mail_id
- * @param $mail_status
- * @return array
- */
-function gen_user_mail_action($mail_id, $mail_status) {
-
-	/** @var $cfg iMSCP_Config_Handler_File */
-	$cfg = iMSCP_Registry::get('config');
-
-	if ($mail_status === $cfg->ITEM_OK_STATUS) {
-		return array(tr('Delete'), "mail_delete.php?id=$mail_id", "mail_edit.php?id=$mail_id");
-	} else {
-		return array(tr('N/A'), '#', '#');
-	}
-}
-
-/**
- * @param $mail_id
- * @param $mail_status
- * @return array|null
- */
-function gen_user_catchall_action($mail_id, $mail_status) {
-
-	/** @var $cfg iMSCP_Config_Handler_File */
-	$cfg = iMSCP_Registry::get('config');
-
-	if ($mail_status === $cfg->ITEM_TOADD_STATUS) {
-		return array(tr('N/A'), '#'); // Addition in progress
-	} else if ($mail_status === $cfg->ITEM_OK_STATUS) {
-		return array(tr('Delete CatchAll'), "mail_catchall_delete.php?id=$mail_id");
-	} else if ($mail_status === $cfg->ITEM_TOCHANGE_STATUS) {
-		return array(tr('N/A'), '#');
-	} else if ($mail_status === $cfg->ITEM_TODELETE_STATUS) {
-		return array(tr('N/A'), '#');
-	} else {
-		return null;
-	}
-}
-
-/**
- * @param $tpl
- * @param $action
- * @param $dmn_id
- * @param $dmn_name
- * @param $mail_id
- * @param $mail_acc
- * @param $mail_status
- * @param $ca_type
- * @return void
- */
-function gen_catchall_item(&$tpl, $action, $dmn_id, $dmn_name, $mail_id, $mail_acc,
-	$mail_status, $ca_type)
-{
-	$show_dmn_name = decode_idna($dmn_name);
-
-	if ($action === 'create') {
-		$tpl->assign(
-			array(
-				'CATCHALL_DOMAIN' => tohtml($show_dmn_name),
-				'CATCHALL_ACC' => tr('None'),
-				'CATCHALL_STATUS' => tr('N/A'),
-				'CATCHALL_ACTION' => tr('Create catch all'),
-				'CATCHALL_ACTION_SCRIPT' => "mail_catchall_add.php?id=$dmn_id;$ca_type"));
-	} else {
-		list($catchall_action, $catchall_action_script) = gen_user_catchall_action($mail_id, $mail_status);
-
-		$show_dmn_name = decode_idna($dmn_name);
-		$show_mail_acc = decode_idna($mail_acc);
-
-		$tpl->assign(
-			array(
-				'CATCHALL_DOMAIN' => tohtml($show_dmn_name),
-				'CATCHALL_ACC' => tohtml($show_mail_acc),
-				'CATCHALL_STATUS' => translate_dmn_status($mail_status),
-				'CATCHALL_ACTION' => $catchall_action,
-				'CATCHALL_ACTION_SCRIPT' => $catchall_action_script));
-	}
-}
-
-/**
- * @param $tpl
- * @param $dmn_id
- * @param $dmn_name
- */
-function gen_page_catchall_list($tpl, $dmn_id, $dmn_name) {
-
-	$tpl->assign('CATCHALL_MESSAGE', '');
-
-		$query = "
-			SELECT
-				`mail_id`, `mail_acc`, `status`
-			FROM
-				`mail_users`
-			WHERE
-				`domain_id` = '$dmn_id'
-			AND
-				`sub_id` = 0
-			AND
-				`mail_type` = 'normal_catchall'
-		";
-
-		$rs = execute_query($query);
-
-		if ($rs->recordCount() == 0) {
-			gen_catchall_item($tpl, 'create', $dmn_id, $dmn_name, '', '', '', 'normal');
-		} else {
-			gen_catchall_item(
-				$tpl,
-				'delete',
-				$dmn_id,
-				$dmn_name,
-				$rs->fields['mail_id'],
-				$rs->fields['mail_acc'],
-				$rs->fields['status'], 'normal');
-		}
-
-		$tpl->parse('CATCHALL_ITEM', 'catchall_item');
-
-		$query = "
-			SELECT
-				`alias_id`, `alias_name`
-			FROM
-				`domain_aliasses`
-			WHERE
-				`domain_id` = '$dmn_id'
-			AND
-				`alias_status` = 'ok'
-		";
-
-		$rs = execute_query($query);
-
-		while (!$rs->EOF) {
-			$als_id = $rs->fields['alias_id'];
-			$als_name = $rs->fields['alias_name'];
-
-			$query = "
-				SELECT
-					`mail_id`, `mail_acc`, `status`
-				FROM
-					`mail_users`
-				WHERE
-					`domain_id` = '$dmn_id'
-				AND
-					`sub_id` = '$als_id'
-				AND
-					`mail_type` = 'alias_catchall'
-			";
-
-			$rs_als = execute_query($query);
-
-			if ($rs_als->recordCount() == 0) {
-				gen_catchall_item($tpl, 'create', $als_id, $als_name, '', '', '', 'alias');
-			} else {
-				gen_catchall_item(
-					$tpl,
-					'delete',
-					$als_id,
-					$als_name,
-					$rs_als->fields['mail_id'],
-					$rs_als->fields['mail_acc'],
-					$rs_als->fields['status'], 'alias'
-				);
-			}
-
-			$tpl->parse('CATCHALL_ITEM', '.catchall_item');
-
-			$rs->moveNext();
-		}
-
-		$query = "
-			SELECT
-				a.`subdomain_alias_id`, CONCAT(a.`subdomain_alias_name`,'.',b.`alias_name`) AS `subdomain_name`
-			FROM
-				`subdomain_alias` AS a, `domain_aliasses` AS b
-			WHERE
-				b.`alias_id` IN (SELECT `alias_id` FROM `domain_aliasses` WHERE `domain_id` = '$dmn_id')
-			AND
-				a.`alias_id` = b.`alias_id`
-			AND
-				a.`subdomain_alias_status` = 'ok'
-		";
-
-		$rs = execute_query($query);
-
-		while (!$rs->EOF) {
-			$als_id = $rs->fields['subdomain_alias_id'];
-			$als_name = $rs->fields['subdomain_name'];
-
-			$query = "
-				SELECT
-					`mail_id`, `mail_acc`, `status`
-				FROM
-					`mail_users`
-				WHERE
-					`domain_id` = '$dmn_id'
-				AND
-					`sub_id` = '$als_id'
-				AND
-					`mail_type` = 'alssub_catchall'
-			";
-
-			$rs_als = execute_query($query);
-
-			if ($rs_als->recordCount() == 0) {
-				gen_catchall_item($tpl, 'create', $als_id, $als_name, '', '', '', 'alssub');
-			} else {
-				gen_catchall_item(
-					$tpl,
-					'delete',
-					$als_id,
-					$als_name,
-					$rs_als->fields['mail_id'],
-					$rs_als->fields['mail_acc'],
-					$rs_als->fields['status'], 'alssub'
-				);
-			}
-
-			$tpl->parse('CATCHALL_ITEM', '.catchall_item');
-
-			$rs->moveNext();
-		}
-
-		$query = "
-			SELECT
-				a.`subdomain_id`, CONCAT(a.`subdomain_name`,'.',b.`domain_name`) AS `subdomain_name`
-			FROM
-				`subdomain` AS a, `domain` AS b
-			WHERE
-				a.`domain_id` = '$dmn_id'
-			AND
-				a.`domain_id` = b.`domain_id`
-			AND
-				a.`subdomain_status` = 'ok'
-		";
-		$rs = execute_query($query);
-
-		while (!$rs->EOF) {
-			$als_id = $rs->fields['subdomain_id'];
-			$als_name = $rs->fields['subdomain_name'];
-
-			$query = "
-				SELECT
-					`mail_id`, `mail_acc`, `status`
-				FROM
-					`mail_users`
-				WHERE
-					`domain_id` = '$dmn_id'
-				AND
-					`sub_id` = '$als_id'
-				AND
-					`mail_type` = 'subdom_catchall'
-			";
-
-			$rs_als = execute_query($query);
-
-			if ($rs_als->recordCount() == 0) {
-				gen_catchall_item($tpl, 'create', $als_id, $als_name, '', '', '', 'subdom');
-			} else {
-				gen_catchall_item($tpl,
-					'delete',
-					$als_id,
-					$als_name,
-					$rs_als->fields['mail_id'],
-					$rs_als->fields['mail_acc'],
-					$rs_als->fields['status'], 'subdom');
-			}
-
-			$tpl->parse('CATCHALL_ITEM', '.catchall_item');
-
-			$rs->moveNext();
-		}
-}
-
-/**
- * @param $tpl
- * @param $user_id
- */
-function gen_page_lists($tpl, $user_id)
-{
-    $domainProps = get_domain_default_props($user_id);
-    $dmn_id = $domainProps['domain_id'];
-    $dmn_name = $domainProps['domain_name'];
-
-	gen_page_catchall_list($tpl, $dmn_id, $dmn_name);
-}
-
-// common page data.
+$tpl->define_dynamic(
+	array(
+		'layout' => 'shared/layouts/ui.tpl',
+		'page' => 'client/mail_catchall.tpl',
+		'page_message' => 'layout',
+		'catchall_item' => 'page',
+		'del_icon' => 'catchall_item'
+	)
+);
 
 $tpl->assign(
 	array(
-		 'TR_PAGE_TITLE' => tr('Client / Email / Catchall'),
-		 'ISP_LOGO' => layout_getUserLogo()));
+		'TR_PAGE_TITLE' => tr('Client / Email / Catchall'),
+		'ISP_LOGO' => layout_getUserLogo(),
+		'TR_STATUS' => tr('Status'),
+		'TR_ACTION' => tr('Action'),
+		'TR_TITLE_CATCHALL_MAIL_USERS' => tr('Catch all'),
+		'TR_DOMAIN' => tr('Domain'),
+		'TR_CATCHALL' => tr('Catch all'),
+		'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete the %s catch all?', true, '%s'),
+		'DATATABLE_TRANSLATIONS' => getDataTablesPluginTranslations(),
+		'TR_CANCEL' => tr('Cancel')
+	)
+);
 
-if (isset($_SESSION['email_support']) && $_SESSION['email_support'] == "no") {
-	$tpl->assign('NO_MAILS', '');
-}
-
-gen_page_lists($tpl, $_SESSION['user_id']);
+client_generatePage($tpl, $_SESSION['user_id']);
 generateNavigation($tpl);
-
-$tpl->assign(
-	array(
-		 'TR_STATUS' => tr('Status'),
-		 'TR_ACTION' => tr('Action'),
-		 'TR_TITLE_CATCHALL_MAIL_USERS' => tr('Catch all'),
-		 'TR_DOMAIN' => tr('Domain'),
-		 'TR_CATCHALL' => tr('Catch all'),
-		 'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete the %s catch all?', true, '%s')));
-
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');

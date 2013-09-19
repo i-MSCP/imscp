@@ -567,10 +567,6 @@ class iMSCP_Update_Database extends iMSCP_Update
 		/** @var $dbConfig iMSCP_Config_Handler_Db */
 		$dbConfig = iMSCP_Registry::get('dbConfig');
 		$dbConfig['PORT_IMSCP_DAEMON'] = '9876;tcp;i-MSCP-Daemon;1;0;127.0.0.1';
-
-		/** @var iMSCP_Config_Handler_File $config */
-		$config = iMSCP_Registry::get('config');
-		$config->replaceWith($dbConfig);
 	}
 
 	/**
@@ -778,10 +774,6 @@ class iMSCP_Update_Database extends iMSCP_Update
 
 		if (isset($dbConfig['USER_INITIAL_LANG'])) {
 			$dbConfig['USER_INITIAL_LANG'] = str_replace('lang_', '', $dbConfig['USER_INITIAL_LANG']);
-
-			/** @var iMSCP_Config_Handler_File $config */
-			$config = iMSCP_Registry::get('config');
-			$config->replaceWith($dbConfig);
 		}
 
 		// Second step: Removing all database languages tables
@@ -795,7 +787,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 			}
 		}
 
-		// third step: Update users language property
+		// Third step: Update users language property
 
 		$languagesMap = array(
 			'Arabic' => 'ar', 'Azerbaijani' => 'az_AZ', 'BasqueSpain' => 'eu_ES',
@@ -1077,10 +1069,6 @@ class iMSCP_Update_Database extends iMSCP_Update
 		$dbConfig['PHPINI_MAX_EXECUTION_TIME'] = '30';
 		$dbConfig['PHPINI_ERROR_REPORTING'] = 'E_ALL & ~E_NOTICE';
 		$dbConfig['PHPINI_DISABLE_FUNCTIONS'] = 'show_source,system,shell_exec,passthru,exec,phpinfo,shell,symlink';
-
-		/** @var iMSCP_Config_Handler_File $config */
-		$config = iMSCP_Registry::get('config');
-		$config->replaceWith($dbConfig);
 	}
 
 	/**
@@ -1383,10 +1371,6 @@ class iMSCP_Update_Database extends iMSCP_Update
 
 		if (isset($dbConfig['PORT_SSH'])) {
 			$dbConfig['PORT_SSH'] = '22;tcp;SSH;1;1;';
-
-			/** @var iMSCP_Config_Handler_File $config */
-			$config = iMSCP_Registry::get('config');
-			$config->replaceWith($dbConfig);
 		}
 	}
 
@@ -1502,10 +1486,6 @@ class iMSCP_Update_Database extends iMSCP_Update
 
 		if (!isset($dbConfig['PHPINI_OPEN_BASEDIR'])) {
 			$dbConfig['PHPINI_OPEN_BASEDIR'] = '';
-
-			/** @var iMSCP_Config_Handler_File $config */
-			$config = iMSCP_Registry::get('config');
-			$config->replaceWith($dbConfig);
 		}
 	}
 
@@ -1542,9 +1522,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 			$dbConfig->del('MAIN_MENU_SHOW_LABELS');
 		}
 
-		return array(
-			$this->_addColumn('user_gui_props', 'show_main_menu_labels', "tinyint(1) NOT NULL DEFAULT '1'"),
-		);
+		return array($this->_addColumn('user_gui_props', 'show_main_menu_labels', "tinyint(1) NOT NULL DEFAULT '1'"));
 	}
 
 	/**
@@ -1886,10 +1864,6 @@ class iMSCP_Update_Database extends iMSCP_Update
 		$dbConfig['PHPINI_ALLOW_URL_FOPEN'] = 'off';
 		$dbConfig['PHPINI_DISPLAY_ERRORS'] = 'off';
 
-		/** @var iMSCP_Config_Handler_File $config */
-		$config = iMSCP_Registry::get('config');
-		$config->replaceWith($dbConfig);
-
 		return array(
 			"UPDATE `php_ini` SET `allow_url_fopen` = 'on' WHERE `allow_url_fopen` = 'On'",
 			"UPDATE `php_ini` SET `allow_url_fopen` = 'off' WHERE `allow_url_fopen` = 'Off'",
@@ -1905,7 +1879,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	 */
 	protected function _databaseUpdate_120()
 	{
-		$sqlQueries = array();
+		$sqlUpd = array();
 
 		$constantToInteger = array(
 			'E_ALL & ~E_NOTICE & ~E_WARNING' => '30711', // Switch to E_ALL & ~E_NOTICE
@@ -1915,19 +1889,15 @@ class iMSCP_Update_Database extends iMSCP_Update
 		);
 
 		foreach ($constantToInteger as $c => $i) {
-			$sqlQueries[] = "UPDATE `config` SET `value` = '$i' WHERE `name` = 'PHPINI_ERROR_REPORTING' AND `value` ='$c'";
-			$sqlQueries[] = "UPDATE `php_ini` SET `error_reporting` = '$i' WHERE `error_reporting` = '$c'";
+			$sqlUpd[] = "UPDATE `config` SET `value` = '$i' WHERE `name` = 'PHPINI_ERROR_REPORTING' AND `value` ='$c'";
+			$sqlUpd[] = "UPDATE `php_ini` SET `error_reporting` = '$i' WHERE `error_reporting` = '$c'";
 		}
 
 		/** @var iMSCP_Config_Handler_Db $dbConfig */
 		$dbConfig = iMSCP_Registry::get('dbConfig');
 		$dbConfig->forceReload();
 
-		/** @var iMSCP_Config_Handler_File $config */
-		$config = iMSCP_Registry::get('config');
-		$config->replaceWith($dbConfig);
-
-		return $sqlQueries;
+		return $sqlUpd;
 	}
 
 	/**
@@ -2530,8 +2500,8 @@ class iMSCP_Update_Database extends iMSCP_Update
 		);
 
 		if ($stmt->rowCount()) {
-			/** @var $dbConfig iMSCP_Config_Handler_File */
-			$config = iMSCP_Registry::get('config');
+			/** @var $dbConfig iMSCP_Config_Handler_Db */
+			$dbConfig = iMSCP_Registry::get('dbConfig');
 
 			while ($row = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
 				$propsArr = explode(';', rtrim($row['props'], ';'));
@@ -2554,11 +2524,11 @@ class iMSCP_Update_Database extends iMSCP_Update
 					14 => array('no', array('yes', 'no')), // Allow URL fopen
 					15 => array('no', array('yes', 'no')), // Display errors
 					16 => array('no', array('yes', 'no', 'exec')), // Disable funtions
-					17 => array(min($row['post_max_size'], $config['PHPINI_POST_MAX_SIZE']), 'NUM'),
-					18 => array(min($row['upload_max_filesize'], $config['PHPINI_UPLOAD_MAX_FILESIZE']), 'NUM'),
-					19 => array(min($row['max_execution_time'], $config['PHPINI_MAX_EXECUTION_TIME']), 'NUM'),
-					20 => array(min($row['max_input_time'], $config['PHPINI_MAX_INPUT_TIME']), 'NUM'),
-					21 => array(min($row['memory_limit'], $config['PHPINI_MEMORY_LIMIT']), 'NUM'),
+					17 => array(min($row['post_max_size'], $dbConfig['PHPINI_POST_MAX_SIZE']), 'NUM'),
+					18 => array(min($row['upload_max_filesize'], $dbConfig['PHPINI_UPLOAD_MAX_FILESIZE']), 'NUM'),
+					19 => array(min($row['max_execution_time'], $dbConfig['PHPINI_MAX_EXECUTION_TIME']), 'NUM'),
+					20 => array(min($row['max_input_time'], $dbConfig['PHPINI_MAX_INPUT_TIME']), 'NUM'),
+					21 => array(min($row['memory_limit'], $dbConfig['PHPINI_MEMORY_LIMIT']), 'NUM'),
 					22 => array('_no_', array('_yes_', '_no_')), // External Mail Server Feature
 					23 => array('_no_', array('_yes_', '_no_')), // Web folder protection
 					24 => array(is_number($propsArr[9]) ? $propsArr[9] : '0', 'NUM') // Email quota

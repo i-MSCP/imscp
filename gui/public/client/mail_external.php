@@ -133,16 +133,17 @@ function _client_generateItemList($tpl, $domainId, $domainName)
  */
 function client_generateView($tpl)
 {
-	//$tpl = iMSCP_Registry::get('templateEngine');
 	$tpl->assign(
 		array(
 			'TR_PAGE_TITLE' => tr('Client / Email / External Mail Server'),
 			'ISP_LOGO' => layout_getUserLogo(),
+			'DATATABLE_TRANSLATIONS' => getDataTablesPluginTranslations(),
 			'TR_DOMAIN' => tr('Domain'),
 			'TR_STATUS' => tr('Status'),
 			'TR_ACTION' => tr('Action'),
 			'TR_DEACTIVATE_MESSAGE' => tr("Are you sure you want to deactivate the external mail server(s) for the '%s' domain?", true, '%s'),
-			'TR_DEACTIVATE_SELECTED_ITEMS' => tr('Deactivate selected items')
+			'TR_DEACTIVATE_SELECTED_ITEMS' => tr('Deactivate selected items'),
+			'TR_CANCEL' => tr('Cancel')
 		)
 	);
 

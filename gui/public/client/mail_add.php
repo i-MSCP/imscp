@@ -679,23 +679,10 @@ $tpl->define_dynamic(
 	)
 );
 
-
-if (isset($_SESSION['email_support']) && $_SESSION['email_support'] == "no") {
-	redirectTo('index.php');
-}
-
 $tpl->assign(
 	array(
 		'TR_PAGE_TITLE' => tr('Client / Email / Add Email Account'),
-		'ISP_LOGO' => layout_getUserLogo()
-	)
-);
-
-client_generatePage($tpl, $_SESSION['user_id']);
-generateNavigation($tpl);
-
-$tpl->assign(
-	array(
+		'ISP_LOGO' => layout_getUserLogo(),
 		'TR_ADD_MAIL_USER' => tr('Add mail users'),
 		'TR_USERNAME' => tr('Username'),
 		'TR_TO_MAIN_DOMAIN' => tr('To main domain'),
@@ -710,10 +697,13 @@ $tpl->assign(
 		'TR_FWD_HELP' => tr('Separate multiple email addresses with a line-break.'),
 		'TR_ADD' => tr('Add'),
 		'TR_EMPTY_DATA' => tr('You did not fill all required fields'),
-		'TR_MAIl_ACCOUNT_DATA' => tr('Email account data')
+		'TR_MAIl_ACCOUNT_DATA' => tr('Email account data'),
+		'TR_CANCEL' => tr('Cancel')
 	)
 );
 
+client_generatePage($tpl, $_SESSION['user_id']);
+generateNavigation($tpl);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');

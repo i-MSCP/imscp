@@ -10,76 +10,46 @@
 			document.forms[0].pass_rep.disabled = true;
 		}
 
-		if (document.forms[0].elements['mail_type_forward'].checked == true) {
-			document.forms[0].forward_list.disabled = false;
-		} else {
-			document.forms[0].forward_list.disabled = true;
-		}
+		document.forms[0].forward_list.disabled = document.forms[0].elements['mail_type_forward'].checked != true;
 	}
 
 	function begin_js() {
 		if (document.getElementsByName('als_id').length !== 0) {
-			if (document.getElementById('dmn_type2').checked) {
-				document.forms[0].als_id.disabled = false;
-			} else {
-				document.forms[0].als_id.disabled = true;
-			}
+			document.forms[0].als_id.disabled = !document.getElementById('dmn_type2').checked;
 		}
 
 		if (document.getElementsByName('sub_id').length !== 0) {
-			if (document.getElementById('dmn_type3').checked) {
-				document.forms[0].sub_id.disabled = false;
-			} else {
-				document.forms[0].sub_id.disabled = true;
-			}
+			document.forms[0].sub_id.disabled = !document.getElementById('dmn_type3').checked;
 		}
 
 		if (document.getElementsByName('als_sub_id').length !== 0) {
-			if (document.getElementById('dmn_type4').checked) {
-				document.forms[0].als_sub_id.disabled = false;
-			} else {
-				document.forms[0].als_sub_id.disabled = true;
-			}
+			document.forms[0].als_sub_id.disabled = !document.getElementById('dmn_type4').checked;
 		}
 
-		// document.forms[0].pass.disabled = false;
-		// document.forms[0].pass_rep.disabled = false;
-		// document.forms[0].forward_list.disabled = true;
 		changeType();
 		document.forms[0].username.focus();
 	}
 
 	function changeDom(what) {
 		if (document.getElementsByName('als_id').length !== 0) {
-			if (what == "alias") {
-				document.forms[0].als_id.disabled = false;
-			} else {
-				document.forms[0].als_id.disabled = true;
-			}
+			document.forms[0].als_id.disabled = what != "alias";
 		}
 
 		if (document.getElementsByName('sub_id').length !== 0) {
-			if (what == "subdom") {
-				document.forms[0].sub_id.disabled = false;
-			} else {
-				document.forms[0].sub_id.disabled = true;
-			}
+			document.forms[0].sub_id.disabled = what != "subdom";
 		}
 
 		if (document.getElementsByName('als_sub_id').length !== 0) {
-			if (what == "als_subdom") {
-				document.forms[0].als_sub_id.disabled = false;
-			} else {
-				document.forms[0].als_sub_id.disabled = true;
-			}
+			document.forms[0].als_sub_id.disabled = what != "als_subdom";
 		}
 	}
 
-	$(window).load(function (){begin_js();});
+	$(window).load(function (){ begin_js(); });
 	/* ]]> */
 </script>
+
 <form name="client_mail_add" action="mail_add.php" method="post" id="client_mail_add">
-	<table>
+	<table class="firstColFixed">
 		<thead>
 		<tr>
 			<th colspan="2">{TR_MAIl_ACCOUNT_DATA}</th>
@@ -106,11 +76,13 @@
 				<label for="dmn_type2">{TR_TO_DMN_ALIAS}</label>
 			</td>
 			<td>
-				<select name="als_id">
-					<!-- BDP: als_list -->
-					<option value="{ALS_ID}" {ALS_SELECTED}>{ALS_NAME}</option>
-					<!-- EDP: als_list -->
-				</select>
+				<label>
+					<select name="als_id">
+						<!-- BDP: als_list -->
+						<option value="{ALS_ID}"{ALS_SELECTED}>{ALS_NAME}</option>
+						<!-- EDP: als_list -->
+					</select>
+				</label>
 			</td>
 		</tr>
 		<!-- EDP: to_alias_domain -->
@@ -122,11 +94,13 @@
 				<label for="dmn_type3">{TR_TO_SUBDOMAIN}</label>
 			</td>
 			<td>
-				<select name="sub_id">
-					<!-- BDP: sub_list -->
-					<option value="{SUB_ID}" {SUB_SELECTED}>{SUB_NAME}</option>
-					<!-- EDP: sub_list -->
-				</select>
+				<label>
+					<select name="sub_id">
+						<!-- BDP: sub_list -->
+						<option value="{SUB_ID}"{SUB_SELECTED}>{SUB_NAME}</option>
+						<!-- EDP: sub_list -->
+					</select>
+				</label>
 			</td>
 		</tr>
 		<!-- EDP: to_subdomain -->
@@ -138,18 +112,20 @@
 				<label for="dmn_type4">{TR_TO_ALS_SUBDOMAIN}</label>
 			</td>
 			<td>
-				<select name="als_sub_id">
-					<!-- BDP: als_sub_list -->
-					<option value="{ALS_SUB_ID}" {ALS_SUB_SELECTED}>{ALS_SUB_NAME}</option>
-					<!-- EDP: als_sub_list -->
-				</select>
+				<label>
+					<select name="als_sub_id">
+						<!-- BDP: als_sub_list -->
+						<option value="{ALS_SUB_ID}"{ALS_SUB_SELECTED}>{ALS_SUB_NAME}</option>
+						<!-- EDP: als_sub_list -->
+					</select>
+				</label>
 			</td>
 		</tr>
 		<!-- EDP: to_alias_subdomain -->
 		<tr>
 			<td colspan="2">
-				<input type="checkbox" name="mail_type_normal" value="1"
-					   onclick="changeType();" {NORMAL_MAIL_CHECKED} />{TR_NORMAL_MAIL}
+				<label><input type="checkbox" name="mail_type_normal" value="1"
+					   onclick="changeType();"{NORMAL_MAIL_CHECKED} />{TR_NORMAL_MAIL}</label>
 			</td>
 		</tr>
 		<tr>
@@ -162,8 +138,8 @@
 		</tr>
 		<tr>
 			<td colspan="2">
-				<input type="checkbox" name="mail_type_forward" value="1" {FORWARD_MAIL_CHECKED}
-					   onclick="changeType();"/>{TR_FORWARD_MAIL}
+				<label><input type="checkbox" name="mail_type_forward" value="1"{FORWARD_MAIL_CHECKED}
+					   onclick="changeType();"/>{TR_FORWARD_MAIL}</label>
 			</td>
 		</tr>
 		<tr>
@@ -175,8 +151,10 @@
 		</tr>
 		</tbody>
 	</table>
+
 	<div class="buttons">
 		<input type="hidden" name="uaction" value="add_user"/>
 		<input type="submit" name="submit" value="{TR_ADD}"/>
+		<a href="mail_accounts.php" class="link_as_button">{TR_CANCEL}</a>
 	</div>
 </form>

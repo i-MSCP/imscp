@@ -2,6 +2,14 @@
 <script type="text/javascript">
 	/* <![CDATA[ */
 	$(document).ready(function () {
+		$('.datatable').dataTable(
+			{
+				"oLanguage": {DATATABLE_TRANSLATIONS},
+				"iDisplayLength": 5,
+				"bStateSave": true
+			}
+		);
+
 		var i = $("tbody :checkbox:not(':disabled')").change(
 			function () {
 				if ($("tbody :checkbox:checked").length == i) {
@@ -29,7 +37,7 @@
 </script>
 
 <form name="mail_external_delete" action="mail_external_delete.php" method="post">
-	<table>
+	<table class="firstColFixed datatable">
 		<thead>
 		<tr>
 			<th style="width:21px;"><label><input type="checkbox"/></label></th>
@@ -70,5 +78,9 @@
 		<!-- EDP: item -->
 		</tbody>
 	</table>
-	<label><input type="submit" name="submit" value="{TR_DEACTIVATE_SELECTED_ITEMS}"/></label>
+	<div class=buttons>
+		<input type="submit" name="submit" value="{TR_DEACTIVATE_SELECTED_ITEMS}"/>
+		<a href="mail_accounts.php" class="link_as_button">{TR_CANCEL}</a>
+	</div>
+
 </form>
