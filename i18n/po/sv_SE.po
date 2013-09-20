@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2013-09-17 20:34+0200\n"
-"PO-Revision-Date: 2013-09-17 18:34+0000\n"
+"POT-Creation-Date: 2013-09-20 03:32+0200\n"
+"PO-Revision-Date: 2013-09-20 01:32+0000\n"
 "Last-Translator: Torsten Widmann <info@goover.de>\n"
 "Language-Team: Swedish (Sweden) (http://www.transifex.com/projects/p/i-MSCP/language/sv_SE/)\n"
 "MIME-Version: 1.0\n"
@@ -159,7 +159,7 @@ msgstr " was deleted by {ADMIN}!"
 
 #, php-format
 msgid "%1$d / %2$d"
-msgstr ""
+msgstr "%1$d / %2$d"
 
 #, php-format
 msgid "%1$d / %2$d of %3$d"
@@ -199,7 +199,7 @@ msgstr "%1$s - (Version:%2$s, Språk:%3$s)"
 
 #, php-format
 msgid "%1$s / %2$s"
-msgstr ""
+msgstr "%1$s / %2$s"
 
 #, php-format
 msgid "%1$s / %2$s of %3$s"
@@ -239,7 +239,7 @@ msgstr "%d %s återstår till kontot utgångsdatum"
 
 #, php-format
 msgid "%d / unlimited"
-msgstr ""
+msgstr "%d / obegränsad"
 
 #, php-format
 msgid "%d Service(s) port was successfully updated"
@@ -263,7 +263,7 @@ msgstr "%d strängar översatt"
 
 #, php-format
 msgid "%s / unlimited"
-msgstr ""
+msgstr "%s / obegränsad"
 
 #, php-format
 msgid "%s Errors in database"
@@ -310,12 +310,16 @@ msgid "%s id is invalid! You cannot add email accounts."
 msgstr "%s ID är ogiltigt! Du kan inte lägga på postkonton."
 
 #, php-format
+msgid "%s id is invalid. You cannot add email accounts."
+msgstr ""
+
+#, php-format
 msgid "%s is not a valid i-MSCP language file."
 msgstr "%s är inte ett giltigt i-MSCP språkfil."
 
 #, php-format
-msgid "%s list is empty! You cannot add email accounts."
-msgstr "%s lista är tom! Du kan inte lägga på postkonton."
+msgid "%s list is empty. You cannot add email accounts."
+msgstr ""
 
 #, php-format
 msgid ""
@@ -986,6 +990,9 @@ msgstr "Redan i bruk"
 msgid "Alternative URL to reach your website"
 msgstr "Alternativ URL för att nå din webbplats"
 
+msgid "An error has been found in mail forward list."
+msgstr ""
+
 msgid "An error occurred during authentication."
 msgstr "Ett fel uppstod vid autentisering."
 
@@ -993,7 +1000,7 @@ msgid "An error occurred. Please contact your administrator."
 msgstr "Ett fel inträffade, var god och kontaktar administratören-"
 
 msgid "An unexpected error occured. Please contact your administrator"
-msgstr ""
+msgstr "Ett fel inträffade, var god och kontaktar administratören-"
 
 msgid "An unexpected error occured. Please retry"
 msgstr "Ett oväntat fel uppstod, vänligen prova igen."
@@ -1063,7 +1070,7 @@ msgid "Are you sure you want to delete all closed tickets?"
 msgstr "Är du säker på att du vill ta bort alla stängda tickets?"
 
 msgid "Are you sure you want to delete all selected items?"
-msgstr ""
+msgstr "Är du säker på att du vill ta bort alla markerade ?"
 
 msgid "Are you sure you want to delete all tickets?"
 msgstr "Är du säker på att du vill ta bort alla tickets?"
@@ -1130,7 +1137,7 @@ msgid "Auto email template data updated!"
 msgstr "Automatisk e-postmall uppdaterad!"
 
 msgid "Auto responder"
-msgstr ""
+msgstr "Automatiskt svar"
 
 msgid "Auto-responder message cannot be empty."
 msgstr "Auto-responder meddelande får inte vara tomt."
@@ -1178,7 +1185,7 @@ msgid "Bad password."
 msgstr "Felaktigt lösenord."
 
 msgid "Behind"
-msgstr ""
+msgstr "Bakom"
 
 msgid "Being enabled"
 msgstr "Being enabled"
@@ -1197,7 +1204,7 @@ msgid "Blocktime <small>(in minutes)</small>"
 msgstr "Tid för blockering <small>(i minuter)</small>"
 
 msgid "Bogomips"
-msgstr ""
+msgstr "Bogomips"
 
 msgid "Both source and destination are identical."
 msgstr "Both source and destination are identical."
@@ -1215,10 +1222,10 @@ msgid "CGI"
 msgstr "CGI"
 
 msgid "CPU Information"
-msgstr ""
+msgstr "CPU Information"
 
 msgid "Cache"
-msgstr ""
+msgstr "Cache"
 
 #, php-format
 msgid "Can edit the PHP %s directive"
@@ -1240,11 +1247,11 @@ msgstr "Captcha fontfil hittades inte."
 msgid "Catch all"
 msgstr "Catch-all"
 
-msgid "Catch all account scheduled for creation."
-msgstr "Fånga alla konto planerad till skapelsen."
+msgid "Catch all successfully scheduled for addition."
+msgstr ""
 
-msgid "Catch all account scheduled for deletion."
-msgstr "Fånga alla konto planerad för radering."
+msgid "Catch all successfully scheduled for deletion."
+msgstr ""
 
 msgid "Catchall"
 msgstr "Catchall"
@@ -1508,7 +1515,7 @@ msgid "Client / Webtools / Software / View"
 msgstr "Kund / Webtools / Softwares / View"
 
 msgid "Clock speed (MHz)"
-msgstr ""
+msgstr "Clock speed (MHz)"
 
 msgid "Close"
 msgstr "Stäng"
@@ -1538,7 +1545,7 @@ msgid "Core data"
 msgstr "Kärndata"
 
 msgid "Cores"
-msgstr ""
+msgstr "Cores"
 
 msgid "Could not upload file."
 msgstr "Kunde inte ladda upp filen."
@@ -1864,7 +1871,7 @@ msgid "Delete reseller software"
 msgstr "Radera återförsäljare programvara"
 
 msgid "Delete selected items"
-msgstr ""
+msgstr "Ta bort markerade"
 
 msgid "Delete ticket"
 msgstr "Ta bort ticket"
@@ -2197,8 +2204,8 @@ msgstr "E-postkontofel"
 msgid "Email account limit"
 msgstr "Email account limit"
 
-msgid "Email account limit reached."
-msgstr "Postkonton max. antal nådd."
+msgid "Email account limit is reached."
+msgstr ""
 
 msgid "Email account list"
 msgstr "E-postkontolista"
@@ -2206,11 +2213,11 @@ msgstr "E-postkontolista"
 msgid "Email account not found."
 msgstr "Mail-konto hittades inte."
 
-msgid "Email account scheduled for addition."
-msgstr "Mail-konto planerad till uppdatering."
-
 msgid "Email account scheduled for update."
 msgstr "Mail-konto planerad till uppdatering."
+
+msgid "Email account successfully scheduled for addition."
+msgstr ""
 
 msgid "Email accounts"
 msgstr "E-postkonton"
@@ -2225,18 +2232,18 @@ msgid "Email forward"
 msgstr "Email forward"
 
 msgid "Email quota [MiB]"
-msgstr ""
+msgstr "Email quota [MiB]"
 
 #, php-format
 msgid "Email quota value cannot be bigger than %s MiB."
-msgstr ""
+msgstr "E-mail kvot värde kan inte vara större än %s MiB."
 
 msgid "Email quota value cannot be bigger than disk space limit."
-msgstr ""
+msgstr "E-mail kvot värde kan inte vara större än diskplats gränsen."
 
 #, php-format
 msgid "Email quota value cannot be unlimited. Max value is %s MiB."
-msgstr ""
+msgstr "E-mail kvot värde kan inte vara obegränsat. Max värde är %s MiB."
 
 msgid "Email settings"
 msgstr "E-postinställningar"
@@ -2325,7 +2332,7 @@ msgid "Errors"
 msgstr "Fel"
 
 msgid "Excl. default mails"
-msgstr ""
+msgstr "Exkl. standard e-mail"
 
 msgid "Execute requests"
 msgstr "systemfrågor att utföra"
@@ -2451,7 +2458,7 @@ msgid "First name cannot have more than 200 characters."
 msgstr "First name cannot have more than 200 characters."
 
 msgid "Forbidden"
-msgstr ""
+msgstr "Förbjudet"
 
 msgid "Force retry"
 msgstr "Force retry"
@@ -2701,7 +2708,7 @@ msgid ""
 msgstr "När det gäller domän utgångsdatumet är \"N/A\" utgångsdatum kommer då blir dagens datum."
 
 msgid "In front"
-msgstr ""
+msgstr "framtill"
 
 msgid "In maintenance mode, only administrators can login."
 msgstr "Under maintenance mode, endast administratörer kan logga in."
@@ -2714,7 +2721,7 @@ msgid ""
 msgstr "På denna sida kan du konfigurera några av de aspekter av PHP beteende. Du måste konstatera att just nu, de direktiv som anges här gäller för hela domänen konto (inklusive underdomäner och alias domän). Visst vissa värden kan ändras med hjälp av PHP ini_set () funktionen."
 
 msgid "Incl. default mails"
-msgstr ""
+msgstr "Inkl. standard e-mail"
 
 msgid "Incorrect FTP account limit."
 msgstr "Felaktig FTP konton gräns."
@@ -2745,7 +2752,7 @@ msgid "Incorrect limit for %s."
 msgstr "Felaktig gräns för%s."
 
 msgid "Incorrect mail quota value."
-msgstr ""
+msgstr "Felaktig mail kvotvärde."
 
 msgid "Incorrect monthly traffic limit."
 msgstr "Felaktig månadsvis trafikgränsen."
@@ -2808,7 +2815,7 @@ msgid "Intermediate certificate"
 msgstr "Intermediate certificate"
 
 msgid "Internal Server Error"
-msgstr ""
+msgstr "Internal Server Error"
 
 msgid "Internationalization"
 msgstr "Internationalisering"
@@ -3021,19 +3028,16 @@ msgstr "Mail Log Level"
 
 #, php-format
 msgid "Mail account %s successfully scheduled for deletion."
-msgstr ""
+msgstr "Mail-kontot %s har planerats för radering."
 
 msgid "Mail accounts list is empty."
-msgstr ""
+msgstr "Postkonton listan är tom."
 
 msgid "Mail feature is disabled."
 msgstr "Mail feature is disabled."
 
-msgid "Mail forward list empty."
-msgstr "Framåt Listan är tom."
-
-msgid "Mail forward list error!"
-msgstr "Fel i listan för e-postvidarebefordring!"
+msgid "Mail forward list is empty."
+msgstr ""
 
 msgid "Mail usage"
 msgstr "Mail usage"
@@ -3136,7 +3140,7 @@ msgid "Member of group"
 msgstr "Member of group"
 
 msgid "Memory information"
-msgstr ""
+msgstr "Memory information"
 
 msgid "Message"
 msgstr "Meddelande"
@@ -3178,10 +3182,10 @@ msgid "Missing domain"
 msgstr "Saknade domän"
 
 msgid "Missing value for quota field"
-msgstr ""
+msgstr "Saknas värde för fältet kvot"
 
 msgid "Model"
-msgstr ""
+msgstr "Model"
 
 msgid "Modification in progress"
 msgstr "Ändring pågår"
@@ -3274,7 +3278,7 @@ msgid "No administrator accounts found."
 msgstr "Inga administratörskonton hittats."
 
 msgid "No available"
-msgstr ""
+msgstr "Inte tillgänglig"
 
 msgid "No certificate found."
 msgstr "Inget cert. hittades."
@@ -3382,7 +3386,7 @@ msgid "Normal users"
 msgstr "Normala användare"
 
 msgid "Not Found"
-msgstr ""
+msgstr "Hittades inte"
 
 msgid "Not Set"
 msgstr "Ej definierad"
@@ -3461,7 +3465,7 @@ msgid "Open tickets"
 msgstr "Öppna supportärenden"
 
 #, php-format
-msgid "Operatio canceled: %s"
+msgid "Operation canceled: %s"
 msgstr ""
 
 msgid "Optional"
@@ -3709,7 +3713,7 @@ msgstr "Ange ditt auto-responder meddelande nedan"
 msgid "Please fill up both data fields for password."
 msgstr "Fyll upp båda datafält för lösenord."
 
-msgid "Please first, delete all catchall linked to this email."
+msgid "Please first, delete all catchall linked to this Email account."
 msgstr ""
 
 msgid "Please select a valid SQL user for the database."
@@ -3897,7 +3901,7 @@ msgid "Process update"
 msgstr "Process update"
 
 msgid "Processor data"
-msgstr ""
+msgstr "Processor data"
 
 msgid "Profile"
 msgstr "Profile"
@@ -3946,13 +3950,13 @@ msgid "Quota"
 msgstr "Kvot"
 
 msgid "Quota in MiB (0 for unlimited)"
-msgstr ""
+msgstr "Kvoten i MiB (0 för unlimited)"
 
 msgid "Quota must be a number"
 msgstr "Quota must be a number"
 
 msgid "Quota successfully updated."
-msgstr ""
+msgstr "Kvoten har uppdaterats."
 
 msgid "RAM"
 msgstr "RAM"
@@ -4013,7 +4017,7 @@ msgid "Repeat password"
 msgstr "Upprepa lösenord"
 
 msgid "Reply"
-msgstr ""
+msgstr "Svara"
 
 msgid "Request from foreign host was blocked."
 msgstr "Begäran från värd var blockerad."
@@ -4274,7 +4278,7 @@ msgid "SQL user password successfully updated."
 msgstr "SQL användarens lösenord uppdaterades."
 
 msgid "SQL user prefix/suffix"
-msgstr ""
+msgstr "SQL-användare prefix/suffix"
 
 msgid "SQL user successfully added."
 msgstr "SQL användare skapades."
@@ -4391,7 +4395,7 @@ msgid "Service"
 msgstr "Tjänst"
 
 msgid "Service Unavailable"
-msgstr ""
+msgstr "Tjänsten är inte tillgänglig"
 
 msgid "Service must be filled."
 msgstr "Tjänst måste fyllas i."
@@ -4682,7 +4686,7 @@ msgid "System"
 msgstr "System"
 
 msgid "System data"
-msgstr ""
+msgstr "System data"
 
 msgid "System error - custom error page was not updated."
 msgstr "Systemfel - anpassad felsida uppdateras inte."
@@ -4851,7 +4855,7 @@ msgid ""
 msgstr "The reseller you want to remove has one or more customers accounts.<br />Remove them first."
 
 msgid "The software installer feature requires PHP."
-msgstr ""
+msgstr "Installationsprogrammet kräver PHP."
 
 msgid "The software installer require the PHP support."
 msgstr "Installationsprogrammet kräver PHP-stöd."
@@ -5012,7 +5016,7 @@ msgstr "Totalt installationer"
 
 #, php-format
 msgid "Total mails: %s of %s (%s)"
-msgstr ""
+msgstr "Total mails: %s of %s (%s)"
 
 msgid "Total packages in Web software repository"
 msgstr "Antal paket i Web programvaruförråd"
@@ -5137,7 +5141,7 @@ msgid "Unable to write the %s file for protected plugins."
 msgstr "Unable to write the %s file for protected plugins."
 
 msgid "Unauthorized"
-msgstr ""
+msgstr "Obehörig"
 
 msgid "Unavailable"
 msgstr "Unavailable"
@@ -5236,7 +5240,7 @@ msgid "Upload now"
 msgstr "Ladda upp nu"
 
 msgid "Uptime"
-msgstr ""
+msgstr "Uptime"
 
 msgid "Usage of disallowed character in CNAME"
 msgstr "Usage of disallowed character in CNAME"
@@ -5282,6 +5286,10 @@ msgstr "Användardata uppdaterades inte."
 
 msgid "User data were successfully updated."
 msgstr "Användarinformation har uppdaterats."
+
+msgid ""
+"User do not exist or you do not have permission to access this interface"
+msgstr ""
 
 msgid ""
 "User does not exist or you do not have permission to access this interface"
@@ -5571,10 +5579,10 @@ msgid "Wrong syntax for the %s limit."
 msgstr "Wrong syntax for the %s limit."
 
 msgid "Wrong syntax for the Email quota value."
-msgstr ""
+msgstr "Fel syntax för Email-kvot värde"
 
 msgid "Wrong syntax for the mail quota value."
-msgstr ""
+msgstr "Fel syntax för e-post kvotvärde."
 
 msgid "Wrong syntax in forward URL."
 msgstr "Fel syntax i framåt URL."
@@ -5845,10 +5853,10 @@ msgid "You must select a least one item to deactivate."
 msgstr "Du måste välja minst ett alternativ för att avaktivera."
 
 msgid "You must select a least one item to delete"
-msgstr ""
+msgstr "Du måste välja minst ett objekt som du vill ta bort"
 
 msgid "You must select a least one mail account to delete."
-msgstr ""
+msgstr "Du måste välja minst ett mail konto som ska tas bort."
 
 msgid "You must select a network card."
 msgstr "Du måste välja ett nätverkskort."

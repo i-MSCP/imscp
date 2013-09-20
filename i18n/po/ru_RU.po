@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2013-09-17 20:34+0200\n"
-"PO-Revision-Date: 2013-09-17 18:34+0000\n"
+"POT-Creation-Date: 2013-09-20 03:32+0200\n"
+"PO-Revision-Date: 2013-09-20 01:32+0000\n"
 "Last-Translator: Torsten Widmann <info@goover.de>\n"
 "Language-Team: Russian (Russia) (http://www.transifex.com/projects/p/i-MSCP/language/ru_RU/)\n"
 "MIME-Version: 1.0\n"
@@ -313,12 +313,16 @@ msgid "%s id is invalid! You cannot add email accounts."
 msgstr "%s id неверен! Вы не можете создать учетную запись почты."
 
 #, php-format
+msgid "%s id is invalid. You cannot add email accounts."
+msgstr ""
+
+#, php-format
 msgid "%s is not a valid i-MSCP language file."
 msgstr "%s неверный языковой файл i-MSCP."
 
 #, php-format
-msgid "%s list is empty! You cannot add email accounts."
-msgstr "%s список пуст! Вы не можете создать учетные записи почты."
+msgid "%s list is empty. You cannot add email accounts."
+msgstr ""
 
 #, php-format
 msgid ""
@@ -989,6 +993,9 @@ msgstr "Уже используется"
 msgid "Alternative URL to reach your website"
 msgstr "Альтернативный URL для доступа к сайту"
 
+msgid "An error has been found in mail forward list."
+msgstr ""
+
 msgid "An error occurred during authentication."
 msgstr "При попытке аутентификации обнаружена ошибка."
 
@@ -1243,11 +1250,11 @@ msgstr "Файл шрифтов каптчи не найден."
 msgid "Catch all"
 msgstr "Catch all"
 
-msgid "Catch all account scheduled for creation."
-msgstr "Отобразить все учетные записи, отмеченные для создания."
+msgid "Catch all successfully scheduled for addition."
+msgstr ""
 
-msgid "Catch all account scheduled for deletion."
-msgstr "Отобразить все учетные записи, отмеченные для удаления."
+msgid "Catch all successfully scheduled for deletion."
+msgstr ""
 
 msgid "Catchall"
 msgstr "Перенаправление"
@@ -2200,8 +2207,8 @@ msgstr "Ошибки почтовых ящиков"
 msgid "Email account limit"
 msgstr "Ограничение учетных записей почты."
 
-msgid "Email account limit reached."
-msgstr "Лимит почтовых ящиков исчерпан."
+msgid "Email account limit is reached."
+msgstr ""
 
 msgid "Email account list"
 msgstr "Список почтовых ящиков"
@@ -2209,11 +2216,11 @@ msgstr "Список почтовых ящиков"
 msgid "Email account not found."
 msgstr "Почтовый ящик не найден"
 
-msgid "Email account scheduled for addition."
-msgstr "Почтовый ящик помечен для добавления."
-
 msgid "Email account scheduled for update."
 msgstr "Почтовый ящик помечен для обновления."
+
+msgid "Email account successfully scheduled for addition."
+msgstr ""
 
 msgid "Email accounts"
 msgstr "Почтовые ящики"
@@ -3032,11 +3039,8 @@ msgstr ""
 msgid "Mail feature is disabled."
 msgstr "Почта отключена"
 
-msgid "Mail forward list empty."
-msgstr "Список перенаправления почты пуст."
-
-msgid "Mail forward list error!"
-msgstr "Ошибка списка перенаправления почты!"
+msgid "Mail forward list is empty."
+msgstr ""
 
 msgid "Mail usage"
 msgstr "Использование почты"
@@ -3464,7 +3468,7 @@ msgid "Open tickets"
 msgstr "Открытые тикеты"
 
 #, php-format
-msgid "Operatio canceled: %s"
+msgid "Operation canceled: %s"
 msgstr ""
 
 msgid "Optional"
@@ -3712,7 +3716,7 @@ msgstr "Пожалуйста, введите сообщение для авто�
 msgid "Please fill up both data fields for password."
 msgstr "Пожалуйста, заполните оба поля для пароля."
 
-msgid "Please first, delete all catchall linked to this email."
+msgid "Please first, delete all catchall linked to this Email account."
 msgstr ""
 
 msgid "Please select a valid SQL user for the database."
@@ -5285,6 +5289,10 @@ msgstr "Данные пользователя не были обновлены."
 
 msgid "User data were successfully updated."
 msgstr "Данные были успешно обновлены."
+
+msgid ""
+"User do not exist or you do not have permission to access this interface"
+msgstr ""
 
 msgid ""
 "User does not exist or you do not have permission to access this interface"

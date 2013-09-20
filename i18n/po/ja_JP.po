@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2013-09-17 20:34+0200\n"
-"PO-Revision-Date: 2013-09-17 18:34+0000\n"
+"POT-Creation-Date: 2013-09-20 03:32+0200\n"
+"PO-Revision-Date: 2013-09-20 01:32+0000\n"
 "Last-Translator: Torsten Widmann <info@goover.de>\n"
 "Language-Team: Japanese (Japan) (http://www.transifex.com/projects/p/i-MSCP/language/ja_JP/)\n"
 "MIME-Version: 1.0\n"
@@ -311,12 +311,16 @@ msgid "%s id is invalid! You cannot add email accounts."
 msgstr "%sIDが無効です！Eメールアカウントを追加できません。"
 
 #, php-format
+msgid "%s id is invalid. You cannot add email accounts."
+msgstr ""
+
+#, php-format
 msgid "%s is not a valid i-MSCP language file."
 msgstr "%sは、有効なi-MSCP言語ファイルでありません。"
 
 #, php-format
-msgid "%s list is empty! You cannot add email accounts."
-msgstr "%sのリストが空です！Eメールアカウントを追加できません。"
+msgid "%s list is empty. You cannot add email accounts."
+msgstr ""
 
 #, php-format
 msgid ""
@@ -987,6 +991,9 @@ msgstr "既に使用されています"
 msgid "Alternative URL to reach your website"
 msgstr "代替URLはあなたのWebサイトへのアクセス"
 
+msgid "An error has been found in mail forward list."
+msgstr ""
+
 msgid "An error occurred during authentication."
 msgstr "認証中にエラーが発生した。"
 
@@ -1241,11 +1248,11 @@ msgstr "キャプチャフォントファイルが見つかりません。"
 msgid "Catch all"
 msgstr "全て対象"
 
-msgid "Catch all account scheduled for creation."
-msgstr "作成のために予定されるアカウントをすべてつかんでください。"
+msgid "Catch all successfully scheduled for addition."
+msgstr ""
 
-msgid "Catch all account scheduled for deletion."
-msgstr "削除のために予定されるアカウントをすべてつかんでください。"
+msgid "Catch all successfully scheduled for deletion."
+msgstr ""
 
 msgid "Catchall"
 msgstr "ごみ箱"
@@ -2198,8 +2205,8 @@ msgstr "Eメールアカウントエラー"
 msgid "Email account limit"
 msgstr "Eメールアカウント制限"
 
-msgid "Email account limit reached."
-msgstr "Eメールアカウントの上限に達しました。"
+msgid "Email account limit is reached."
+msgstr ""
 
 msgid "Email account list"
 msgstr "Eメールアカウントリスト"
@@ -2207,11 +2214,11 @@ msgstr "Eメールアカウントリスト"
 msgid "Email account not found."
 msgstr "Eメールアカウントが見つかりません。"
 
-msgid "Email account scheduled for addition."
-msgstr "Eメールアカウントの追加が予定されました。"
-
 msgid "Email account scheduled for update."
 msgstr "Eメールアカウントの更新が予定されました。"
+
+msgid "Email account successfully scheduled for addition."
+msgstr ""
 
 msgid "Email accounts"
 msgstr "Eメールアカウント"
@@ -3030,11 +3037,8 @@ msgstr ""
 msgid "Mail feature is disabled."
 msgstr "メール機能が無効"
 
-msgid "Mail forward list empty."
-msgstr "メール転送一覧が空です。"
-
-msgid "Mail forward list error!"
-msgstr "メールアカウント管理でエラーが発生しました"
+msgid "Mail forward list is empty."
+msgstr ""
 
 msgid "Mail usage"
 msgstr "メールの使用"
@@ -3462,7 +3466,7 @@ msgid "Open tickets"
 msgstr "未解決のチケット"
 
 #, php-format
-msgid "Operatio canceled: %s"
+msgid "Operation canceled: %s"
 msgstr ""
 
 msgid "Optional"
@@ -3710,7 +3714,7 @@ msgstr "下記に自動応答メッセージを入力してください"
 msgid "Please fill up both data fields for password."
 msgstr "パスワードを両方のデータ項目を入力してください。"
 
-msgid "Please first, delete all catchall linked to this email."
+msgid "Please first, delete all catchall linked to this Email account."
 msgstr ""
 
 msgid "Please select a valid SQL user for the database."
@@ -5283,6 +5287,10 @@ msgstr "ユーザーデータは更新されませんでした。"
 
 msgid "User data were successfully updated."
 msgstr "ユーザーデータが更新されました。"
+
+msgid ""
+"User do not exist or you do not have permission to access this interface"
+msgstr ""
 
 msgid ""
 "User does not exist or you do not have permission to access this interface"

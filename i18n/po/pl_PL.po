@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2013-09-17 20:34+0200\n"
-"PO-Revision-Date: 2013-09-17 18:34+0000\n"
+"POT-Creation-Date: 2013-09-20 03:32+0200\n"
+"PO-Revision-Date: 2013-09-20 01:32+0000\n"
 "Last-Translator: Torsten Widmann <info@goover.de>\n"
 "Language-Team: Polish (Poland) (http://www.transifex.com/projects/p/i-MSCP/language/pl_PL/)\n"
 "MIME-Version: 1.0\n"
@@ -313,11 +313,15 @@ msgid "%s id is invalid! You cannot add email accounts."
 msgstr ""
 
 #, php-format
+msgid "%s id is invalid. You cannot add email accounts."
+msgstr ""
+
+#, php-format
 msgid "%s is not a valid i-MSCP language file."
 msgstr "%s nie jest poprawnym formatem pliku tłumaczenia i-MSCP."
 
 #, php-format
-msgid "%s list is empty! You cannot add email accounts."
+msgid "%s list is empty. You cannot add email accounts."
 msgstr ""
 
 #, php-format
@@ -989,6 +993,9 @@ msgstr "Już w użyciu"
 msgid "Alternative URL to reach your website"
 msgstr "Alternatywny adres URL dla twojej strony"
 
+msgid "An error has been found in mail forward list."
+msgstr ""
+
 msgid "An error occurred during authentication."
 msgstr "Wystąpił błąd podczas uwierzytelniania."
 
@@ -1243,11 +1250,11 @@ msgstr "Plik  fontfile captcha nie znaleźiony."
 msgid "Catch all"
 msgstr "Przechwyć wszystkie"
 
-msgid "Catch all account scheduled for creation."
-msgstr "Konto catch all zaplanowane do założenia"
+msgid "Catch all successfully scheduled for addition."
+msgstr ""
 
-msgid "Catch all account scheduled for deletion."
-msgstr "Konto catch all zaplanowane do skasowania"
+msgid "Catch all successfully scheduled for deletion."
+msgstr ""
 
 msgid "Catchall"
 msgstr "Catchall"
@@ -2200,7 +2207,7 @@ msgstr ""
 msgid "Email account limit"
 msgstr ""
 
-msgid "Email account limit reached."
+msgid "Email account limit is reached."
 msgstr ""
 
 msgid "Email account list"
@@ -2209,10 +2216,10 @@ msgstr ""
 msgid "Email account not found."
 msgstr ""
 
-msgid "Email account scheduled for addition."
+msgid "Email account scheduled for update."
 msgstr ""
 
-msgid "Email account scheduled for update."
+msgid "Email account successfully scheduled for addition."
 msgstr ""
 
 msgid "Email accounts"
@@ -3032,11 +3039,8 @@ msgstr ""
 msgid "Mail feature is disabled."
 msgstr "Funkcja poczty jest wyłączona."
 
-msgid "Mail forward list empty."
-msgstr "Lista forwardów pocztowych jest pusta."
-
-msgid "Mail forward list error!"
-msgstr "Błąd listy przekierowań pocztowych!"
+msgid "Mail forward list is empty."
+msgstr ""
 
 msgid "Mail usage"
 msgstr "Użycie poczty"
@@ -3464,7 +3468,7 @@ msgid "Open tickets"
 msgstr "Otwarte zgłoszenia"
 
 #, php-format
-msgid "Operatio canceled: %s"
+msgid "Operation canceled: %s"
 msgstr ""
 
 msgid "Optional"
@@ -3712,7 +3716,7 @@ msgstr ""
 msgid "Please fill up both data fields for password."
 msgstr "Proszę wypełnić oba pola hasłem."
 
-msgid "Please first, delete all catchall linked to this email."
+msgid "Please first, delete all catchall linked to this Email account."
 msgstr ""
 
 msgid "Please select a valid SQL user for the database."
@@ -5285,6 +5289,10 @@ msgstr "Dane klientów nie zostały zmodyfikowane."
 
 msgid "User data were successfully updated."
 msgstr "Dane użytkownika zostały zaktualizowane."
+
+msgid ""
+"User do not exist or you do not have permission to access this interface"
+msgstr ""
 
 msgid ""
 "User does not exist or you do not have permission to access this interface"

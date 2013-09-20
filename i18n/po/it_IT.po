@@ -5,6 +5,7 @@
 # Translators:
 # Ste <stefano@cortile.it>, 2011
 # axitio <giuseppe.pannullo@gmail.com>, 2013
+# axitio <giuseppe.pannullo@gmail.com>, 2013
 # Ste <stefano@cortile.it>, 2013
 # Ste <stefano@cortile.it>, 2011
 # Ste <stefano@cortile.it>, 2011,2013
@@ -14,8 +15,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2013-09-17 20:34+0200\n"
-"PO-Revision-Date: 2013-09-17 18:34+0000\n"
+"POT-Creation-Date: 2013-09-20 03:32+0200\n"
+"PO-Revision-Date: 2013-09-20 01:32+0000\n"
 "Last-Translator: Torsten Widmann <info@goover.de>\n"
 "Language-Team: Italian (Italy) (http://www.transifex.com/projects/p/i-MSCP/language/it_IT/)\n"
 "MIME-Version: 1.0\n"
@@ -164,7 +165,7 @@ msgstr "è stato cancellato da {ADMIN}!"
 
 #, php-format
 msgid "%1$d / %2$d"
-msgstr ""
+msgstr "%1$d / %2$d"
 
 #, php-format
 msgid "%1$d / %2$d of %3$d"
@@ -204,7 +205,7 @@ msgstr "%1$s - (Versione: %2$s, Lingua: %3$s)"
 
 #, php-format
 msgid "%1$s / %2$s"
-msgstr ""
+msgstr "%1$s / %2$s"
 
 #, php-format
 msgid "%1$s / %2$s of %3$s"
@@ -244,7 +245,7 @@ msgstr "%d %s rimanenti prima che l'account scada"
 
 #, php-format
 msgid "%d / unlimited"
-msgstr ""
+msgstr "%d / illimitato"
 
 #, php-format
 msgid "%d Service(s) port was successfully updated"
@@ -268,7 +269,7 @@ msgstr "%d stringhe tradotte"
 
 #, php-format
 msgid "%s / unlimited"
-msgstr ""
+msgstr "%s / illimitato"
 
 #, php-format
 msgid "%s Errors in database"
@@ -315,12 +316,16 @@ msgid "%s id is invalid! You cannot add email accounts."
 msgstr "%s id è non valido! Non puoi aggiungere caselle di posta."
 
 #, php-format
+msgid "%s id is invalid. You cannot add email accounts."
+msgstr ""
+
+#, php-format
 msgid "%s is not a valid i-MSCP language file."
 msgstr "il file %s non contiene una lingua valida per i-MSCP."
 
 #, php-format
-msgid "%s list is empty! You cannot add email accounts."
-msgstr "%s lista è vuota! Non puoi aggiungere caselle di posta."
+msgid "%s list is empty. You cannot add email accounts."
+msgstr ""
 
 #, php-format
 msgid ""
@@ -991,6 +996,9 @@ msgstr "Già in uso"
 msgid "Alternative URL to reach your website"
 msgstr "URL alternativo per raggiungere il tuo sito"
 
+msgid "An error has been found in mail forward list."
+msgstr ""
+
 msgid "An error occurred during authentication."
 msgstr "Un errore è occorso durante l'autenticazione."
 
@@ -998,7 +1006,7 @@ msgid "An error occurred. Please contact your administrator."
 msgstr "Un errore è occorso. Per piacere contatta il tuo amministratore."
 
 msgid "An unexpected error occured. Please contact your administrator"
-msgstr ""
+msgstr "Si è verificato un errore inaspettato. Contatto il tuo amministratore"
 
 msgid "An unexpected error occured. Please retry"
 msgstr "Un errore inaspettato è occorso. Per piacere riprova"
@@ -1068,7 +1076,7 @@ msgid "Are you sure you want to delete all closed tickets?"
 msgstr "Sicuro di voler eliminare tutti i ticket chiusi?"
 
 msgid "Are you sure you want to delete all selected items?"
-msgstr ""
+msgstr "Sicuro di voler cancellare tutti gli oggetti selezionati?"
 
 msgid "Are you sure you want to delete all tickets?"
 msgstr "Sicuro di voler eliminare tutti i ticket?"
@@ -1135,7 +1143,7 @@ msgid "Auto email template data updated!"
 msgstr "Impaginazione automatica delle email aggiornata!"
 
 msgid "Auto responder"
-msgstr ""
+msgstr "Auto risponditore"
 
 msgid "Auto-responder message cannot be empty."
 msgstr "Il messaggio di Auto-risposta non può essere vuoto."
@@ -1183,7 +1191,7 @@ msgid "Bad password."
 msgstr "Password errata."
 
 msgid "Behind"
-msgstr ""
+msgstr "Dietro"
 
 msgid "Being enabled"
 msgstr "Essendo abilitato"
@@ -1202,7 +1210,7 @@ msgid "Blocktime <small>(in minutes)</small>"
 msgstr "Tempo di blocco <small>(in minuti)</small>"
 
 msgid "Bogomips"
-msgstr ""
+msgstr "Bogomips"
 
 msgid "Both source and destination are identical."
 msgstr "L'origine e la destinazione sono identici."
@@ -1220,10 +1228,10 @@ msgid "CGI"
 msgstr "CGI"
 
 msgid "CPU Information"
-msgstr ""
+msgstr "Informazione CPU"
 
 msgid "Cache"
-msgstr ""
+msgstr "Cache"
 
 #, php-format
 msgid "Can edit the PHP %s directive"
@@ -1245,11 +1253,11 @@ msgstr "File dei caratteri di Captcha non trovato."
 msgid "Catch all"
 msgstr "Catch all"
 
-msgid "Catch all account scheduled for creation."
-msgstr "L'account Catchall è stato schedulato per la creazione."
+msgid "Catch all successfully scheduled for addition."
+msgstr ""
 
-msgid "Catch all account scheduled for deletion."
-msgstr "L'account Catchall è stato schedulato per l'eliminazione."
+msgid "Catch all successfully scheduled for deletion."
+msgstr ""
 
 msgid "Catchall"
 msgstr "Catchall"
@@ -1513,7 +1521,7 @@ msgid "Client / Webtools / Software / View"
 msgstr "Cliente / Strumenti Web / Software / Visualizza"
 
 msgid "Clock speed (MHz)"
-msgstr ""
+msgstr "Velocità di clock (MHz)"
 
 msgid "Close"
 msgstr "Chiudi"
@@ -1543,7 +1551,7 @@ msgid "Core data"
 msgstr "Dati principali"
 
 msgid "Cores"
-msgstr ""
+msgstr "Core"
 
 msgid "Could not upload file."
 msgstr "Impossibile caricare i file."
@@ -1869,7 +1877,7 @@ msgid "Delete reseller software"
 msgstr "Elimina software rivenditore"
 
 msgid "Delete selected items"
-msgstr ""
+msgstr "Cancella gli oggetti selezionati."
 
 msgid "Delete ticket"
 msgstr "Elimina ticket"
@@ -2202,8 +2210,8 @@ msgstr "Errori account email"
 msgid "Email account limit"
 msgstr "Limite account email"
 
-msgid "Email account limit reached."
-msgstr "Limite di account email raggiunto."
+msgid "Email account limit is reached."
+msgstr ""
 
 msgid "Email account list"
 msgstr "Elenco account email"
@@ -2211,11 +2219,11 @@ msgstr "Elenco account email"
 msgid "Email account not found."
 msgstr "Account email non trovato."
 
-msgid "Email account scheduled for addition."
-msgstr "Account email schedato per l'aggiunta."
-
 msgid "Email account scheduled for update."
 msgstr "Account email schedato per l'aggiornamento."
+
+msgid "Email account successfully scheduled for addition."
+msgstr ""
 
 msgid "Email accounts"
 msgstr "Account Email"
@@ -2230,18 +2238,18 @@ msgid "Email forward"
 msgstr "Inoltro email"
 
 msgid "Email quota [MiB]"
-msgstr ""
+msgstr "Email quota [MiB]"
 
 #, php-format
 msgid "Email quota value cannot be bigger than %s MiB."
-msgstr ""
+msgstr "La quota email non può essere superiore a %s MiB."
 
 msgid "Email quota value cannot be bigger than disk space limit."
-msgstr ""
+msgstr "Il valore della quota email non può essere superiore del limite di spazio disco."
 
 #, php-format
 msgid "Email quota value cannot be unlimited. Max value is %s MiB."
-msgstr ""
+msgstr "Valore di quota email non può essere illimitato. Valore massimo è %s MiB."
 
 msgid "Email settings"
 msgstr "Settaggi email"
@@ -2330,7 +2338,7 @@ msgid "Errors"
 msgstr "Errori"
 
 msgid "Excl. default mails"
-msgstr ""
+msgstr "Escludi email di default"
 
 msgid "Execute requests"
 msgstr "Esegui richieste"
@@ -2456,7 +2464,7 @@ msgid "First name cannot have more than 200 characters."
 msgstr "Il Nome non può avere più di 200 caratteri."
 
 msgid "Forbidden"
-msgstr ""
+msgstr "Proibito"
 
 msgid "Force retry"
 msgstr "Forza nuovo tentativo"
@@ -2706,7 +2714,7 @@ msgid ""
 msgstr "Nel caso la data di scadenza del dominio è 'N/A', la data di scadenza sarà dettata da domani."
 
 msgid "In front"
-msgstr ""
+msgstr "Davanti"
 
 msgid "In maintenance mode, only administrators can login."
 msgstr "In modalità di manutenzione, solo l'amministratore può loggarsi."
@@ -2719,7 +2727,7 @@ msgid ""
 msgstr "In questa pagina, è possibile configurare alcuni aspetti del comportamento di PHP. È necessario notare che, per ora, le direttive definite si applicano a tutto l'account di dominio (compresi i sottodomini e alias di dominio). Naturalmente alcuni valori possono essere modificati tramite la funzione ini_set () di PHP."
 
 msgid "Incl. default mails"
-msgstr ""
+msgstr "Includi mail di default"
 
 msgid "Incorrect FTP account limit."
 msgstr "Limite account FTP errato."
@@ -2750,7 +2758,7 @@ msgid "Incorrect limit for %s."
 msgstr "Limite per %s non corretto."
 
 msgid "Incorrect mail quota value."
-msgstr ""
+msgstr "Valore quota di posta non corretto."
 
 msgid "Incorrect monthly traffic limit."
 msgstr "Limite traffico mensile non corretto."
@@ -2813,7 +2821,7 @@ msgid "Intermediate certificate"
 msgstr "Certificato intermedio"
 
 msgid "Internal Server Error"
-msgstr ""
+msgstr "Errore interno di sistema"
 
 msgid "Internationalization"
 msgstr "Internazionalizzazione"
@@ -3026,19 +3034,16 @@ msgstr "Livello Log Mail"
 
 #, php-format
 msgid "Mail account %s successfully scheduled for deletion."
-msgstr ""
+msgstr "L'account di posta %s è stato schedato con successo per la cancellazione."
 
 msgid "Mail accounts list is empty."
-msgstr ""
+msgstr "La list account di posta è quota."
 
 msgid "Mail feature is disabled."
 msgstr "Funzione Mail disabilitata."
 
-msgid "Mail forward list empty."
-msgstr "Lista inoltro Mail vuota."
-
-msgid "Mail forward list error!"
-msgstr "Errore lista inoltro della Mail!"
+msgid "Mail forward list is empty."
+msgstr ""
 
 msgid "Mail usage"
 msgstr "Utilizzo Mail"
@@ -3141,7 +3146,7 @@ msgid "Member of group"
 msgstr "Membro del gruppo"
 
 msgid "Memory information"
-msgstr ""
+msgstr "Informazioni memoria"
 
 msgid "Message"
 msgstr "Messaggio"
@@ -3183,10 +3188,10 @@ msgid "Missing domain"
 msgstr "Dominio mancante"
 
 msgid "Missing value for quota field"
-msgstr ""
+msgstr "Omesso valore per il campo quota"
 
 msgid "Model"
-msgstr ""
+msgstr "Modello"
 
 msgid "Modification in progress"
 msgstr "Modifica in corso"
@@ -3279,7 +3284,7 @@ msgid "No administrator accounts found."
 msgstr "Nessun account amministratore trovato."
 
 msgid "No available"
-msgstr ""
+msgstr "No disponibile"
 
 msgid "No certificate found."
 msgstr "Nessun certificato trovato."
@@ -3387,7 +3392,7 @@ msgid "Normal users"
 msgstr "Utenti normali"
 
 msgid "Not Found"
-msgstr ""
+msgstr "Non trovato"
 
 msgid "Not Set"
 msgstr "Non impostato"
@@ -3466,7 +3471,7 @@ msgid "Open tickets"
 msgstr "Tickets aperti"
 
 #, php-format
-msgid "Operatio canceled: %s"
+msgid "Operation canceled: %s"
 msgstr ""
 
 msgid "Optional"
@@ -3714,7 +3719,7 @@ msgstr "Inserisci il tuo messaggio automatico sotto"
 msgid "Please fill up both data fields for password."
 msgstr "Compilare entrambi i campi della password."
 
-msgid "Please first, delete all catchall linked to this email."
+msgid "Please first, delete all catchall linked to this Email account."
 msgstr ""
 
 msgid "Please select a valid SQL user for the database."
@@ -3902,7 +3907,7 @@ msgid "Process update"
 msgstr "Aggiorna processo"
 
 msgid "Processor data"
-msgstr ""
+msgstr "Dati processore"
 
 msgid "Profile"
 msgstr "Profilo"
@@ -3951,13 +3956,13 @@ msgid "Quota"
 msgstr "Quota"
 
 msgid "Quota in MiB (0 for unlimited)"
-msgstr ""
+msgstr "Quota in MiB (0 per illimitato)"
 
 msgid "Quota must be a number"
 msgstr "La quota deve essere un numero"
 
 msgid "Quota successfully updated."
-msgstr ""
+msgstr "La Quota è stata aggiornata con successo."
 
 msgid "RAM"
 msgstr "RAM"
@@ -4018,7 +4023,7 @@ msgid "Repeat password"
 msgstr "Ripeti la Password"
 
 msgid "Reply"
-msgstr ""
+msgstr "Rispondi"
 
 msgid "Request from foreign host was blocked."
 msgstr "La richiesta effettuata dall'host esterno è stato bloccata."
@@ -4279,7 +4284,7 @@ msgid "SQL user password successfully updated."
 msgstr "Password dell'utente SQL aggiornata con successo."
 
 msgid "SQL user prefix/suffix"
-msgstr ""
+msgstr "SQL user prefisso/suffisso"
 
 msgid "SQL user successfully added."
 msgstr "Utente SQL aggiunto con successo."
@@ -4396,7 +4401,7 @@ msgid "Service"
 msgstr "Servizio"
 
 msgid "Service Unavailable"
-msgstr ""
+msgstr "Servizio non disponibile"
 
 msgid "Service must be filled."
 msgstr "Il servizio deve essere compilato."
@@ -4687,7 +4692,7 @@ msgid "System"
 msgstr "Info di sistema"
 
 msgid "System data"
-msgstr ""
+msgstr "Dati di Sistema"
 
 msgid "System error - custom error page was not updated."
 msgstr "Errore di sistema - la pagina di errore personalizzata non è stato aggiornata."
@@ -4856,7 +4861,7 @@ msgid ""
 msgstr "Il rivenditore che desiderate rimuovere ha uno o più account clienti. <br /> Si prega di rimuovere prima i clienti."
 
 msgid "The software installer feature requires PHP."
-msgstr ""
+msgstr "Le funzionalità del software di installazione richiede PHP."
 
 msgid "The software installer require the PHP support."
 msgstr "Il programma di installazione richiede il supporto PHP."
@@ -5017,7 +5022,7 @@ msgstr "Installazioni totali"
 
 #, php-format
 msgid "Total mails: %s of %s (%s)"
-msgstr ""
+msgstr "Totale mail: %s of %s (%s)"
 
 msgid "Total packages in Web software repository"
 msgstr "Totale dei pacchetti nel repository software del Web"
@@ -5142,7 +5147,7 @@ msgid "Unable to write the %s file for protected plugins."
 msgstr "Impossibile scrivere il file %s per i plugin protetti."
 
 msgid "Unauthorized"
-msgstr ""
+msgstr "Non autorizzato"
 
 msgid "Unavailable"
 msgstr "Non disponibile"
@@ -5241,7 +5246,7 @@ msgid "Upload now"
 msgstr "Carica file adesso"
 
 msgid "Uptime"
-msgstr ""
+msgstr "Tempo di attività"
 
 msgid "Usage of disallowed character in CNAME"
 msgstr "Utilizzo di carattare non consentito in CNAME"
@@ -5287,6 +5292,10 @@ msgstr "I dati utente non sono stati aggiornati."
 
 msgid "User data were successfully updated."
 msgstr "I dati utente sono stati aggiornati con successo."
+
+msgid ""
+"User do not exist or you do not have permission to access this interface"
+msgstr ""
 
 msgid ""
 "User does not exist or you do not have permission to access this interface"
@@ -5576,10 +5585,10 @@ msgid "Wrong syntax for the %s limit."
 msgstr "Sintassi sbagliata per il limite %s."
 
 msgid "Wrong syntax for the Email quota value."
-msgstr ""
+msgstr "Sintassi sbagliata per il valore di quote email."
 
 msgid "Wrong syntax for the mail quota value."
-msgstr ""
+msgstr "Sintassi sbagliata per il valore di quota posta."
 
 msgid "Wrong syntax in forward URL."
 msgstr "Sintassi errata nel forward URL."
@@ -5850,10 +5859,10 @@ msgid "You must select a least one item to deactivate."
 msgstr "È necessario selezionare almeno un elemento da disattivare."
 
 msgid "You must select a least one item to delete"
-msgstr ""
+msgstr "È necessario selezionare un almeno un elemento da eliminare"
 
 msgid "You must select a least one mail account to delete."
-msgstr ""
+msgstr "È necessario selezionare un almeno una casella di posta da eliminare."
 
 msgid "You must select a network card."
 msgstr "È necessario selezionare una scheda di rete."

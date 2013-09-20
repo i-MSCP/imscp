@@ -19,8 +19,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2013-09-17 20:34+0200\n"
-"PO-Revision-Date: 2013-09-17 18:34+0000\n"
+"POT-Creation-Date: 2013-09-20 03:32+0200\n"
+"PO-Revision-Date: 2013-09-20 01:32+0000\n"
 "Last-Translator: Torsten Widmann <info@goover.de>\n"
 "Language-Team: Catalan (Spain) (http://www.transifex.com/projects/p/i-MSCP/language/ca_ES/)\n"
 "MIME-Version: 1.0\n"
@@ -320,12 +320,16 @@ msgid "%s id is invalid! You cannot add email accounts."
 msgstr "%s id no és vàlid! No podeu afegir adreçes de correu."
 
 #, php-format
+msgid "%s id is invalid. You cannot add email accounts."
+msgstr ""
+
+#, php-format
 msgid "%s is not a valid i-MSCP language file."
 msgstr "%s no és un fitxer d'idioma vàlid per i-MSCP."
 
 #, php-format
-msgid "%s list is empty! You cannot add email accounts."
-msgstr "%s id de llista és buit! No podeu afegir adreces de correu."
+msgid "%s list is empty. You cannot add email accounts."
+msgstr ""
 
 #, php-format
 msgid ""
@@ -996,6 +1000,9 @@ msgstr "En ús"
 msgid "Alternative URL to reach your website"
 msgstr "URL alternativa per arribar a la teva web"
 
+msgid "An error has been found in mail forward list."
+msgstr ""
+
 msgid "An error occurred during authentication."
 msgstr "Hi ha hagut un error durant l'autenticació"
 
@@ -1250,11 +1257,11 @@ msgstr "No s'ha trobat la font per el Captcha"
 msgid "Catch all"
 msgstr "Catch all"
 
-msgid "Catch all account scheduled for creation."
-msgstr "Compte catch-all programat per a ésser creat."
+msgid "Catch all successfully scheduled for addition."
+msgstr ""
 
-msgid "Catch all account scheduled for deletion."
-msgstr "Compte catch-all programat per a ésser esborrat."
+msgid "Catch all successfully scheduled for deletion."
+msgstr ""
 
 msgid "Catchall"
 msgstr "Catchall"
@@ -2207,7 +2214,7 @@ msgstr ""
 msgid "Email account limit"
 msgstr ""
 
-msgid "Email account limit reached."
+msgid "Email account limit is reached."
 msgstr ""
 
 msgid "Email account list"
@@ -2216,10 +2223,10 @@ msgstr ""
 msgid "Email account not found."
 msgstr ""
 
-msgid "Email account scheduled for addition."
+msgid "Email account scheduled for update."
 msgstr ""
 
-msgid "Email account scheduled for update."
+msgid "Email account successfully scheduled for addition."
 msgstr ""
 
 msgid "Email accounts"
@@ -3039,11 +3046,8 @@ msgstr ""
 msgid "Mail feature is disabled."
 msgstr ""
 
-msgid "Mail forward list empty."
-msgstr "La llista de reenviament d'emails és buida."
-
-msgid "Mail forward list error!"
-msgstr "Error en la llista de reenviament!"
+msgid "Mail forward list is empty."
+msgstr ""
 
 msgid "Mail usage"
 msgstr ""
@@ -3471,7 +3475,7 @@ msgid "Open tickets"
 msgstr "Tiquets oberts"
 
 #, php-format
-msgid "Operatio canceled: %s"
+msgid "Operation canceled: %s"
 msgstr ""
 
 msgid "Optional"
@@ -3719,7 +3723,7 @@ msgstr ""
 msgid "Please fill up both data fields for password."
 msgstr "Si us plau ompliu els dos camps de la contrasenya."
 
-msgid "Please first, delete all catchall linked to this email."
+msgid "Please first, delete all catchall linked to this Email account."
 msgstr ""
 
 msgid "Please select a valid SQL user for the database."
@@ -5292,6 +5296,10 @@ msgstr "No s'han canviat les dades de l'usuari."
 
 msgid "User data were successfully updated."
 msgstr "Les dades d'usuari han estat actualitzades."
+
+msgid ""
+"User do not exist or you do not have permission to access this interface"
+msgstr ""
 
 msgid ""
 "User does not exist or you do not have permission to access this interface"

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.0.1.6\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2013-09-17 20:34+0200\n"
+"POT-Creation-Date: 2013-09-20 03:32+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -310,11 +310,15 @@ msgid "%s id is invalid! You cannot add email accounts."
 msgstr ""
 
 #, php-format
+msgid "%s id is invalid. You cannot add email accounts."
+msgstr ""
+
+#, php-format
 msgid "%s is not a valid i-MSCP language file."
 msgstr ""
 
 #, php-format
-msgid "%s list is empty! You cannot add email accounts."
+msgid "%s list is empty. You cannot add email accounts."
 msgstr ""
 
 #, php-format
@@ -982,6 +986,9 @@ msgstr ""
 msgid "Alternative URL to reach your website"
 msgstr ""
 
+msgid "An error has been found in mail forward list."
+msgstr ""
+
 msgid "An error occurred during authentication."
 msgstr ""
 
@@ -1236,10 +1243,10 @@ msgstr ""
 msgid "Catch all"
 msgstr ""
 
-msgid "Catch all account scheduled for creation."
+msgid "Catch all successfully scheduled for addition."
 msgstr ""
 
-msgid "Catch all account scheduled for deletion."
+msgid "Catch all successfully scheduled for deletion."
 msgstr ""
 
 msgid "Catchall"
@@ -2193,7 +2200,7 @@ msgstr ""
 msgid "Email account limit"
 msgstr ""
 
-msgid "Email account limit reached."
+msgid "Email account limit is reached."
 msgstr ""
 
 msgid "Email account list"
@@ -2202,10 +2209,10 @@ msgstr ""
 msgid "Email account not found."
 msgstr ""
 
-msgid "Email account scheduled for addition."
+msgid "Email account scheduled for update."
 msgstr ""
 
-msgid "Email account scheduled for update."
+msgid "Email account successfully scheduled for addition."
 msgstr ""
 
 msgid "Email accounts"
@@ -3025,10 +3032,7 @@ msgstr ""
 msgid "Mail feature is disabled."
 msgstr ""
 
-msgid "Mail forward list empty."
-msgstr ""
-
-msgid "Mail forward list error!"
+msgid "Mail forward list is empty."
 msgstr ""
 
 msgid "Mail usage"
@@ -3457,7 +3461,7 @@ msgid "Open tickets"
 msgstr ""
 
 #, php-format
-msgid "Operatio canceled: %s"
+msgid "Operation canceled: %s"
 msgstr ""
 
 msgid "Optional"
@@ -3705,7 +3709,7 @@ msgstr ""
 msgid "Please fill up both data fields for password."
 msgstr ""
 
-msgid "Please first, delete all catchall linked to this email."
+msgid "Please first, delete all catchall linked to this Email account."
 msgstr ""
 
 msgid "Please select a valid SQL user for the database."
@@ -5275,6 +5279,10 @@ msgid "User data were not updated."
 msgstr ""
 
 msgid "User data were successfully updated."
+msgstr ""
+
+msgid ""
+"User do not exist or you do not have permission to access this interface"
 msgstr ""
 
 msgid ""

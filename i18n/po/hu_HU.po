@@ -11,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2013-09-17 20:34+0200\n"
-"PO-Revision-Date: 2013-09-17 18:34+0000\n"
+"POT-Creation-Date: 2013-09-20 03:32+0200\n"
+"PO-Revision-Date: 2013-09-20 01:32+0000\n"
 "Last-Translator: Torsten Widmann <info@goover.de>\n"
 "Language-Team: Hungarian (Hungary) (http://www.transifex.com/projects/p/i-MSCP/language/hu_HU/)\n"
 "MIME-Version: 1.0\n"
@@ -312,11 +312,15 @@ msgid "%s id is invalid! You cannot add email accounts."
 msgstr ""
 
 #, php-format
+msgid "%s id is invalid. You cannot add email accounts."
+msgstr ""
+
+#, php-format
 msgid "%s is not a valid i-MSCP language file."
 msgstr "%s nem érvényes i-MSCP nyelvi fájl"
 
 #, php-format
-msgid "%s list is empty! You cannot add email accounts."
+msgid "%s list is empty. You cannot add email accounts."
 msgstr ""
 
 #, php-format
@@ -988,6 +992,9 @@ msgstr "OK"
 msgid "Alternative URL to reach your website"
 msgstr "Alternatív webcím a weboldal eléréséhez"
 
+msgid "An error has been found in mail forward list."
+msgstr ""
+
 msgid "An error occurred during authentication."
 msgstr ""
 
@@ -1242,11 +1249,11 @@ msgstr "Captcha betűtípus nem található"
 msgid "Catch all"
 msgstr "Catch-all funkció"
 
-msgid "Catch all account scheduled for creation."
-msgstr "Gyűjtő email fiók létrehozása beütemezve"
+msgid "Catch all successfully scheduled for addition."
+msgstr ""
 
-msgid "Catch all account scheduled for deletion."
-msgstr "Gyűjtő email fiók törlése beütemezve"
+msgid "Catch all successfully scheduled for deletion."
+msgstr ""
 
 msgid "Catchall"
 msgstr "Catch-all funkció"
@@ -2199,7 +2206,7 @@ msgstr ""
 msgid "Email account limit"
 msgstr ""
 
-msgid "Email account limit reached."
+msgid "Email account limit is reached."
 msgstr ""
 
 msgid "Email account list"
@@ -2208,10 +2215,10 @@ msgstr ""
 msgid "Email account not found."
 msgstr ""
 
-msgid "Email account scheduled for addition."
+msgid "Email account scheduled for update."
 msgstr ""
 
-msgid "Email account scheduled for update."
+msgid "Email account successfully scheduled for addition."
 msgstr ""
 
 msgid "Email accounts"
@@ -3031,11 +3038,8 @@ msgstr ""
 msgid "Mail feature is disabled."
 msgstr "Email szolgáltatások nem engedélyezettek"
 
-msgid "Mail forward list empty."
-msgstr "Email továbbítási lista üres"
-
-msgid "Mail forward list error!"
-msgstr "Email továbbítási lista hiba!"
+msgid "Mail forward list is empty."
+msgstr ""
 
 msgid "Mail usage"
 msgstr "Levelezés tárhely foglaltsága"
@@ -3463,7 +3467,7 @@ msgid "Open tickets"
 msgstr "Nyitott hibajegyek"
 
 #, php-format
-msgid "Operatio canceled: %s"
+msgid "Operation canceled: %s"
 msgstr ""
 
 msgid "Optional"
@@ -3711,7 +3715,7 @@ msgstr ""
 msgid "Please fill up both data fields for password."
 msgstr "Kérjük töltse ki mindkét jelszómezőt"
 
-msgid "Please first, delete all catchall linked to this email."
+msgid "Please first, delete all catchall linked to this Email account."
 msgstr ""
 
 msgid "Please select a valid SQL user for the database."
@@ -5284,6 +5288,10 @@ msgstr "Felhasználói adatok nem változtak"
 
 msgid "User data were successfully updated."
 msgstr "Felhasználó személyes adatainak frissítése sikeresen megtörtént"
+
+msgid ""
+"User do not exist or you do not have permission to access this interface"
+msgstr ""
 
 msgid ""
 "User does not exist or you do not have permission to access this interface"
