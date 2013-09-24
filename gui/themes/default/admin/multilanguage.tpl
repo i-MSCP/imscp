@@ -2,16 +2,7 @@
 <script type="text/javascript">
 	/*<![CDATA[*/
 	$(document).ready(function () {
-		$('.datatable').dataTable(
-			{
-				"oLanguage": {DATATABLE_TRANSLATIONS},
-				"fnInitComplete": function($r) {
-					//$("tbody tr:nth-child(odd)").removeClass('even').addClass('odd');
-					//$("tbody tr:nth-child(even)").removeClass('odd').addClass('even');
-				}
-			}
-		);
-
+		$('.datatable').dataTable({ "oLanguage": {DATATABLE_TRANSLATIONS} });
 		$('.dataTables_paginate div').imscpTooltip();
 	});
 	/*]]>*/
