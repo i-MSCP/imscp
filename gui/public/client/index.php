@@ -39,6 +39,7 @@
  * Script functions
  */
 
+
 /**
  * Generates limit.
  *
@@ -54,6 +55,27 @@ function gen_num_limit_msg($num, $limit)
 		return $num . ' / ' . tr('Unlimited');
 	} else {
 		return $num . ' / ' . $limit;
+	}
+}
+
+/**
+ * Generate mail quota limit msg
+ *
+ * @return string
+ */
+function gen_mail_quota_limit_mgs()
+{
+	$mainDmnProps = get_domain_default_props($_SESSION['user_id']);
+
+	$stmt = exec_query(
+		'SELECT SUM(`quota`) AS `quota` FROM `mail_users` WHERE `domain_id` = ? AND `quota` IS NOT NULL',
+		$mainDmnProps['domain_id']
+	);
+
+	if ($mainDmnProps['mail_quota'] == 0) {
+		return bytesHuman($stmt->fields['quota']) . ' / ' . tr('Unlimited');
+	} else {
+		return bytesHuman($stmt->fields['quota']) . ' / ' . bytesHuman($mainDmnProps['mail_quota']);
 	}
 }
 
@@ -325,9 +347,9 @@ $cfg = iMSCP_Registry::get('config');
 check_login('user', $cfg->PREVENT_EXTERNAL_LOGIN_CLIENT);
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic('layout', 'shared/layouts/ui.tpl');
 $tpl->define_dynamic(
 	array(
+		 'layout' => 'shared/layouts/ui.tpl',
 		 'page' => 'client/index.tpl',
 		 'page_message' => 'layout',
 		 'alternative_domain_url' => 'page',
@@ -394,6 +416,8 @@ $tpl->assign(
 		 'FTP_ACCOUNTS_FEATURE_STATUS' => gen_num_limit_msg($ftpAccountsCount, $domainProperties['domain_ftpacc_limit']),
 		 'TR_MAIL_ACCOUNTS_FEATURE' => tr('Email accounts'),
 		 'MAIL_ACCOUNTS_FEATURE_STATUS' => gen_num_limit_msg($mailAccountsCount, $domainProperties['domain_mailacc_limit']),
+		 'TR_MAIL_QUOTA' => tr('Email quota'),
+		 'EMAIL_QUOTA_STATUS' => gen_mail_quota_limit_mgs(),
 		 'TR_SQL_DATABASES_FEATURE' => tr('SQL databases'),
 		 'SQL_DATABASE_FEATURE_STATUS' => gen_num_limit_msg($sqlDatabasesCount, $domainProperties['domain_sqld_limit']),
 		 'TR_SQL_USERS_FEATURE' => tr('SQL users'),

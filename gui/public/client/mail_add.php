@@ -1,38 +1,29 @@
 <?php
 /**
  * i-MSCP - internet Multi Server Control Panel
+ * Copyright (C) 2010-2013 by i-MSCP Team
  *
- * The contents of this file are subject to the Mozilla Public License
- * Version 1.1 (the "License"); you may not use this file except in
- * compliance with the License. You may obtain a copy of the License at
- * http://www.mozilla.org/MPL/
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
  *
- * Software distributed under the License is distributed on an "AS IS"
- * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
- * License for the specific language governing rights and limitations
- * under the License.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- * The Original Code is "VHCS - Virtual Hosting Control System".
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
- * The Initial Developer of the Original Code is moleSoftware GmbH.
- * Portions created by Initial Developer are Copyright (C) 2001-2006
- * by moleSoftware GmbH. All Rights Reserved.
- *
- * Portions created by the ispCP Team are Copyright (C) 2006-2010 by
- * isp Control Panel. All Rights Reserved.
- *
- * Portions created by the i-MSCP Team are Copyright (C) 2010-2013 by
- * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
- *
- * @category    i-MSCP
+ * @category    iMSCP
  * @package     iMSCP_Core
- * @subpackage  Client
- * @copyright   2001-2006 by moleSoftware GmbH
- * @copyright   2006-2010 by ispCP | http://isp-control.net
- * @copyright   2010-2013 by i-MSCP | http://i-mscp.net
- * @author      ispCP Team
- * @author      i-MSCP Team
- * @link        http://i-mscp.net
+ * @subpackage  client
+ * @copyright   2010-2013 by i-MSCP Team
+ * @author      Laurent Declercq <l.declercq@nuxwin.com>
+ * @link        http://www.i-mscp.net i-MSCP Home Site
+ * @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
  */
 
 /***********************************************************************************************************************
@@ -40,611 +31,339 @@
  */
 
 /**
- * Generate page data
+ * Get domain list
  *
- * @param iMSCP_pTemplate $tpl
- * @param string $dmnName Domain name
- * @param string $postCheck POST check
- * @return void
+ * @return array Domain list
  */
-function client_generatePageData($tpl, $dmnName, $postCheck)
+function _client_getDomainList()
 {
-	/** @var $cfg iMSCP_Config_Handler_File */
-	$cfg = iMSCP_Registry::get('config');
+	static $domainList = null;
 
-	$dmnName = decode_idna($dmnName);
+	if (null === $domainList) {
+		$mainDmnProps = get_domain_default_props($_SESSION['user_id']);
 
-	if ($postCheck == 'no') {
-		$tpl->assign(
+		/** @var iMSCP_Config_Handler_File $cfg */
+		$cfg = iMSCP_Registry::get('config');
+
+		$domainList = array(
 			array(
-				'USERNAME' => '',
-				'DOMAIN_NAME' => tohtml($dmnName),
-				'MAIL_DMN_CHECKED' => $cfg->HTML_CHECKED,
-				'MAIL_ALS_CHECKED' => '',
-				'MAIL_SUB_CHECKED' => '',
-				'MAIL_ALS_SUB_CHECKED' => '',
-				'NORMAL_MAIL_CHECKED' => $cfg->HTML_CHECKED,
-				'FORWARD_MAIL_CHECKED' => '',
-				'FORWARD_LIST' => ''
-			)
-		);
-	} else {
-		if (!isset($_POST['forward_list'])) {
-			$forwardList = '';
-		} else {
-			$forwardList = $_POST['forward_list'];
-		}
-
-		$tpl->assign(
-			array(
-				'USERNAME' => clean_input($_POST['username'], true),
-				'DOMAIN_NAME' => tohtml($dmnName),
-				'MAIL_DMN_CHECKED' => ($_POST['dmn_type'] === 'dmn') ? $cfg->HTML_CHECKED : '',
-				'MAIL_ALS_CHECKED' => ($_POST['dmn_type'] === 'als') ? $cfg->HTML_CHECKED : '',
-				'MAIL_SUB_CHECKED' => ($_POST['dmn_type'] === 'sub') ? $cfg->HTML_CHECKED : '',
-				'MAIL_ALS_SUB_CHECKED' => ($_POST['dmn_type'] === 'als_sub') ? $cfg->HTML_CHECKED : '',
-				'NORMAL_MAIL_CHECKED' => (isset($_POST['mail_type_normal'])) ? $cfg->HTML_CHECKED : '',
-				'FORWARD_MAIL_CHECKED' => (isset($_POST['mail_type_forward'])) ? $cfg->HTML_CHECKED : '',
-				'FORWARD_LIST' => $forwardList
-			)
-		);
-	}
-}
-
-/**
- * Generate domain alias list
- *
- * @param iMSCP_pTemplate $tpl
- * @param int $dmnId Domain unique identifier
- * @param string $postCheck POST check
- * @return void
- */
-function client_generateAlsList($tpl, $dmnId, $postCheck)
-{
-
-	/** @var $cfg iMSCP_Config_Handler_File */
-	$cfg = iMSCP_Registry::get('config');
-
-	$ok_status = $cfg->ITEM_OK_STATUS;
-
-	$query = '
-		SELECT
-			`alias_id`, `alias_name`
-		FROM
-			`domain_aliasses`
-		WHERE
-			`domain_id` = ?
-		AND
-			`alias_status` = ?
-		ORDER BY
-			`alias_name`
-	';
-	$stmt = exec_query($query, array($dmnId, $ok_status));
-
-	if (!$stmt->rowCount()) {
-		$tpl->assign(
-			array(
-				'ALS_ID' => '0',
-				'ALS_SELECTED' => $cfg->HTML_SELECTED,
-				'ALS_NAME' => tr('Empty list')
+				'name' => $mainDmnProps['domain_name'],
+				'id' => $mainDmnProps['domain_id'],
+				'type' => 'dmn'
 			)
 		);
 
-		$tpl->parse('ALS_LIST', 'als_list');
-		$tpl->assign('TO_ALIAS_DOMAIN', '');
-	} else {
-		$firstPassed = false;
-
-		while ($data = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
-			if ($postCheck === 'yes') {
-				if (!isset($_POST['als_id'])) {
-					$alsId = '';
-				} else {
-					$alsId = $_POST['als_id'];
-				}
-
-				if ($alsId == $data['alias_id']) {
-					$alsSelected = $cfg->HTML_SELECTED;
-				} else {
-					$alsSelected = '';
-				}
-			} else {
-				if (!$firstPassed) {
-					$alsSelected = $cfg->HTML_SELECTED;
-				} else {
-					$alsSelected = '';
-				}
-			}
-
-			$alsName = decode_idna($data['alias_name']);
-			$tpl->assign(
-				array(
-					'ALS_ID' => $data['alias_id'],
-					'ALS_SELECTED' => $alsSelected,
-					'ALS_NAME' => tohtml($alsName)
-				)
-			);
-
-			$tpl->parse('ALS_LIST', '.als_list');
-
-			if (!$firstPassed) {
-				$firstPassed = true;
-			}
-		}
-	}
-}
-
-/**
- * Generate dmn subdomain list
- *
- * @param iMSCP_pTemplate $tpl
- * @param int $dmnId Domain unique identifier
- * @param string $dmnName Domain name
- * @param string $postCheck POST check
- * @return void
- */
-function client_generateDmnSubList($tpl, $dmnId, $dmnName, $postCheck)
-{
-	/** @var $cfg iMSCP_Config_Handler_File */
-	$cfg = iMSCP_Registry::get('config');
-
-	$okStatus = $cfg->ITEM_OK_STATUS;
-
-	$query = '
-		SELECT
-			`subdomain_id` AS `sub_id`, `subdomain_name` AS `sub_name`
-		FROM
-			`subdomain`
-		WHERE
-			`domain_id` = ?
-		AND
-			`subdomain_status` = ?
-		ORDER BY
-			`subdomain_name`
-	';
-
-	$stmt = exec_query($query, array($dmnId, $okStatus));
-
-	if (!$stmt->rowCount()) {
-		$tpl->assign(
-			array(
-				'SUB_ID' => '0',
-				'SUB_SELECTED' => $cfg->HTML_SELECTED,
-				'SUB_NAME' => tr('Empty list')
-			)
-		);
-
-		$tpl->parse('SUB_LIST', 'sub_list');
-		$tpl->assign('TO_SUBDOMAIN', '');
-	} else {
-		$firstPassed = false;
-
-		while ($data = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
-			if ($postCheck === 'yes') {
-				if (!isset($_POST['sub_id'])) {
-					$subId = '';
-				} else {
-					$subId = $_POST['sub_id'];
-				}
-
-				if ($subId == $data['sub_id']) {
-					$subSelected = $cfg->HTML_SELECTED;
-				} else {
-					$subSelected = '';
-				}
-			} else {
-				if (!$firstPassed) {
-					$subSelected = $cfg->HTML_SELECTED;
-				} else {
-					$subSelected = '';
-				}
-			}
-
-			$subName = decode_idna($data['sub_name']);
-			$dmnName = decode_idna($dmnName);
-			$tpl->assign(
-				array(
-					'SUB_ID' => $data['sub_id'],
-					'SUB_SELECTED' => $subSelected,
-					'SUB_NAME' => tohtml($subName . '.' . $dmnName
-					)
-				)
-			);
-
-			$tpl->parse('SUB_LIST', '.sub_list');
-
-			if (!$firstPassed) {
-				$firstPassed = true;
-			}
-		}
-	}
-}
-
-/**
- * Generate als subdomain list
- *
- * @param iMSCP_pTemplate $tpl
- * @param int $dmnId Domain unique identifier
- * @param string $postCheck POST check
- * @return void
- */
-function client_generateAlsSubList($tpl, $dmnId, $postCheck)
-{
-	/** @var $cfg iMSCP_Config_Handler_File */
-	$cfg = iMSCP_Registry::get('config');
-
-	$okStatus = $cfg->ITEM_OK_STATUS;
-
-	$query = '
-		SELECT
-			`t1`.`subdomain_alias_id` AS `als_sub_id`,
-			`t1`.`subdomain_alias_name` AS `als_sub_name`, `t2`.`alias_name` AS `als_name`
-		FROM
-			`subdomain_alias` AS `t1`
-		LEFT JOIN
-			`domain_aliasses` AS `t2` ON (t1.`alias_id` = `t2`.`alias_id`)
-		WHERE
-			`t1`.`alias_id` IN (SELECT `alias_id` FROM `domain_aliasses` WHERE `domain_id` = ?)
-		AND
-			`t1`.`subdomain_alias_status` = ?
-		ORDER BY
-			`t1`.`subdomain_alias_name`
-	';
-	$stmt = exec_query($query, array($dmnId, $okStatus));
-
-	if (!$stmt->rowCount()) {
-		$tpl->assign(
-			array(
-				'ALS_SUB_ID' => '0',
-				'ALS_SUB_SELECTED' => $cfg->HTML_SELECTED,
-				'ALS_SUB_NAME' => tr('Empty list')
-			)
-		);
-
-		$tpl->parse('ALS_SUB_LIST', 'sub_list');
-		$tpl->assign('TO_ALIAS_SUBDOMAIN', '');
-	} else {
-		$firstPassed = false;
-
-		while ($data = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
-			if ($postCheck === 'yes') {
-				if (!isset($_POST['als_sub_id'])) {
-					$alsSubId = '';
-				} else {
-					$alsSubId = $_POST['als_sub_id'];
-				}
-
-				if ($alsSubId == $data['als_sub_id']) {
-					$alsSubSelected = $cfg->HTML_SELECTED;
-				} else {
-					$alsSubSelected = '';
-				}
-			} else {
-				if (!$firstPassed) {
-					$alsSubSelected = $cfg->HTML_SELECTED;
-				} else {
-					$alsSubSelected = '';
-				}
-			}
-
-			$alsSubName = decode_idna($data['als_sub_name']);
-			$alsName = decode_idna($data['als_name']);
-			$tpl->assign(
-				array(
-					'ALS_SUB_ID' => $data['als_sub_id'],
-					'ALS_SUB_SELECTED' => $alsSubSelected,
-					'ALS_SUB_NAME' => tohtml($alsSubName . '.' . $alsName)
-				)
-			);
-
-			$tpl->parse('ALS_SUB_LIST', '.als_sub_list');
-
-			if (!$firstPassed) {
-				$firstPassed = true;
-			}
-		}
-	}
-}
-
-/**
- * Schedule addition of mail account
- *
- * @param int $dmnId Domain unique identifier
- * @param string $dmnName Domain name
- * @param string $mailAccount Mail account to add
- * @return bool
- */
-function schedule_mail_account($dmnId, $dmnName, $mailAccount)
-{
-	/** @var $cfg iMSCP_Config_Handler_File */
-	$cfg = iMSCP_Registry::get('config');
-
-	/** @var $db iMSCP_Database */
-	$db = iMSCP_Registry::get('db');
-
-	$dmnProps = get_domain_default_props($_SESSION['user_id']);
-
-	$mailAutoRespond = false;
-	$mailAutoRespondText = '';
-	$mailAddr = $mailAccount . '@' . decode_idna($dmnName);
-
-	// Init variables
-	$mailType = array();
-	$subId = $mailPassword = $mailForward = '';
-
-	if (array_key_exists('mail_type_normal', $_POST)) {
-		$mailPassword = $_POST['pass'];
-		$mailForward = '_no_';
-
-		if ($_POST['dmn_type'] == 'dmn') {
-			$mailType[] = MT_NORMAL_MAIL;
-			$subId = '0';
-		} else if ($_POST['dmn_type'] == 'sub') {
-			$mailType[] = MT_SUBDOM_MAIL;
-			$subId = $_POST['sub_id'];
-		} else if ($_POST['dmn_type'] == 'als_sub') {
-			$mailType[] = MT_ALSSUB_MAIL;
-			$subId = $_POST['als_sub_id'];
-		} else if ($_POST['dmn_type'] == 'als') {
-			$mailType[] = MT_ALIAS_MAIL;
-			$subId = $_POST['als_id'];
-		} else {
-			set_page_message(tr('Unknown domain type.'), 'error');
-			return false;
-		}
-	}
-
-	if (array_key_exists('mail_type_forward', $_POST)) {
-		if ($_POST['dmn_type'] == 'dmn') {
-			$mailType[] = MT_NORMAL_FORWARD;
-			$subId = '0';
-		} else if ($_POST['dmn_type'] == 'sub') {
-			$mailType[] = MT_SUBDOM_FORWARD;
-			$subId = $_POST['sub_id'];
-		} else if ($_POST['dmn_type'] == 'als_sub') {
-			$mailType[] = MT_ALSSUB_FORWARD;
-			$subId = $_POST['als_sub_id'];
-		} else if ($_POST['dmn_type'] == 'als') {
-			$mailType[] = MT_ALIAS_FORWARD;
-			$subId = $_POST['als_id'];
-		} else {
-			set_page_message(tr('Unknown domain type.'), 'error');
-			return false;
-		}
-
-		if (!isset($_POST['mail_type_normal'])) {
-			$mailPassword = '_no_';
-		}
-
-		$mailForward = $_POST['forward_list'];
-		$farray = preg_split("/[\n,]+/", $mailForward);
-		$mailAccounts = array();
-
-		foreach ($farray as $value) {
-			$value = trim($value);
-
-			if (!chk_email($value) && $value != '') {
-				// @todo ERROR .. strange :) not email in this line - warning
-				set_page_message(tr('Mailformat of an address in your forward list is incorrect.'), 'error');
-				return false;
-			} else if ($value == '') {
-				set_page_message(tr('Mail forward list is empty.'), 'info');
-				return false;
-			} else if ($mailAccount . '@' . decode_idna($dmnName) == $value) {
-				set_page_message(tr('Forward to same address is not allowed.'), 'error');
-				return false;
-			}
-
-			$mailAccounts[] = $value;
-		}
-
-		$mailForward = implode(',', $mailAccounts);
-	}
-
-	$mailType = implode(',', $mailType);
-	list($dmnType) = explode('_', $mailType, 2);
-
-	$checkAccountQuery = "
-		SELECT
-			COUNT(`mail_id`) AS `cnt`
-		FROM
-			`mail_users`
-		WHERE
-			`mail_acc` = ?
-		AND
-			`domain_id` = ?
-		AND
-			`sub_id` = ?
-		AND
-			LEFT (`mail_type`, LOCATE('_', `mail_type`)-1) = ?
-	";
-	$stmt = exec_query($checkAccountQuery, array($mailAccount, $dmnId, $subId, $dmnType));
-
-	if ($stmt->fields['cnt'] > 0) {
-		set_page_message(tr('Email account already exists.'), 'error');
-		return false;
-	}
-
-	iMSCP_Events_Manager::getInstance()->dispatch(
-		iMSCP_Events::onBeforeAddMail, array('mailUsername' => $mailAccount, 'MailAddress' => $mailAddr)
-	);
-
-	$query = '
-		INSERT INTO `mail_users` (
-			`mail_acc`, `mail_pass`, `mail_forward`, `domain_id`, `mail_type`, `sub_id`, `status`, `mail_auto_respond`,
-			`mail_auto_respond_text`, `quota`, `mail_addr`
-		) VALUES
-			(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-	';
-
-	exec_query(
-		$query,
-		array(
-			$mailAccount, $mailPassword, $mailForward, $dmnId, $mailType, $subId, $cfg->ITEM_TOADD_STATUS,
-			$mailAutoRespond, $mailAutoRespondText, $dmnProps['mail_quota'], $mailAccount . '@' . $dmnName
-		)
-	);
-
-	iMSCP_Events_Manager::getInstance()->dispatch(
-		iMSCP_Events::onAfterAddMail,
-		array('mailUsername' => $mailAccount, 'mailAddress' => $mailAddr, 'mailId' => $db->insertId())
-	);
-
-	send_request();
-
-	write_log(
-		"{$_SESSION['user_logged']}: added new email account: " . (!empty($mailAddr) ? $mailAddr : $mailAccount),
-		E_USER_NOTICE
-	);
-	set_page_message(tr('Email account successfully scheduled for addition.'), 'success');
-
-	redirectTo('mail_accounts.php');
-	exit;
-}
-
-/**
- * Check mail account
- *
- * @param int $dmnId Domain unique identifier
- * @param string $dmnName Domain name
- * @return bool
- */
-function client_checkMailAccount($dmnId, $dmnName)
-{
-	$mailTypeNormal = isset($_POST['mail_type_normal']) ? $_POST['mail_type_normal'] : false;
-	$mailTypeForward = isset($_POST['mail_type_forward']) ? $_POST['mail_type_forward'] : false;
-
-	if (($mailTypeNormal == false) && ($mailTypeForward == false)) {
-		set_page_message(tr('Please select at least one mail type.'), 'error');
-		return false;
-	}
-
-	$mailPassword = $mailPasswordConfirmation = '';
-
-	if ($mailTypeNormal) {
-		$mailPassword = clean_input($_POST['pass']);
-		$mailPasswordConfirmation = clean_input($_POST['pass_rep']);
-	}
-
-	if (!isset($_POST['username']) || $_POST['username'] == '') {
-		set_page_message(tr('Please enter email account username.'), 'error');
-		return false;
-	}
-
-	$mailAccount = strtolower(clean_input($_POST['username']));
-
-	if (!imscp_check_local_part($mailAccount)) {
-		set_page_message(tr('Invalid email local part.'), 'error');
-		return false;
-	}
-
-	if ($mailTypeNormal) {
-		if (trim($mailPassword) == '' || trim($mailPasswordConfirmation) == '') {
-			set_page_message(tr('Password data is missing.'), 'error');
-			return false;
-		} else if ($mailPassword !== $mailPasswordConfirmation) {
-			set_page_message(tr("Passwords do not match."), 'error');
-			return false;
-		} else if (!checkPasswordSyntax($mailPassword, "/[`\xb4'\"\\\\\x01-\x1f\015\012|<>^$]/i")) {
-			return false;
-		}
-	}
-
-	if ($_POST['dmn_type'] == 'sub') {
-		$id = 'sub_id';
 		$query = "
 			SELECT
-				CONCAT(`t1`.`subdomain_name`, '.', `t2`.`domain_name`) AS `name`
+				CONCAT(`t1`.`subdomain_name`, '.', `t2`.`domain_name`) AS `name`, `t1`.`subdomain_id` AS `id`,
+				'sub' AS `type`
 			FROM
-				`subdomain` AS `t1`,`domain` AS `t2`
+				`subdomain` AS `t1`
+			INNER JOIN
+				`domain` AS `t2` ON(`t2`.`domain_id` = `t1`.`domain_id`)
 			WHERE
-				`t1`.`domain_id` = `t2`.`domain_id`
+				`t1`.`domain_id` = :domain_id
 			AND
-				`t1`.`subdomain_id` = ?
-			AND
-				`t1`.`domain_id` = ?
-		";
-		$type = tr('Subdomain');
-	} elseif ($_POST['dmn_type'] == 'als_sub') {
-		$id = 'als_sub_id';
-		$query = "
+				`t1`.`subdomain_status` = :status_ok
+			UNION
 			SELECT
-				CONCAT(`t1`.`subdomain_alias_name`, '.', `t2`.`alias_name`) AS `name`
+				`alias_name` AS `name`, `alias_id` AS `id`, 'als' AS `type`
+			FROM
+				`domain_aliasses`
+			WHERE
+				`domain_id` = :domain_id
+			AND
+				`alias_status` = :status_ok
+			UNION
+			SELECT
+				CONCAT(`t1`.`subdomain_alias_name`, '.', `t2`.`alias_name`) AS `name`, `t1`.`subdomain_alias_id` AS `id`,
+				'alssub' AS `type`
 			FROM
 				`subdomain_alias` AS `t1`
-			LEFT JOIN
-				`domain_aliasses` AS `t2` ON (`t1`.`alias_id` = `t2`.`alias_id`)
-			LEFT JOIN
-				`domain` AS `t3` ON (`t2`.`domain_id` = `t3`.`domain_id`)
+			INNER JOIN
+				`domain_aliasses` AS `t2` ON(`t2`.`alias_id` = `t1`.`alias_id` AND `t2`.`domain_id` = :domain_id)
 			WHERE
-				`t1`.`subdomain_alias_id` = ?
-			AND
-				`t3`.`domain_id` = ?
+				`subdomain_alias_status` = :status_ok
 		";
-		$type = tr('Subdomain alias');
-	} elseif ($_POST['dmn_type'] == 'als') {
-		$id = 'als_id';
-		$query = 'SELECT `alias_name` AS `name` FROM `domain_aliasses` WHERE `alias_id` = ? AND `domain_id` = ?';
-		$type = tr('Alias');
+		$stmt = exec_query($query, array('domain_id' => $mainDmnProps['domain_id'], 'status_ok' => $cfg->ITEM_OK_STATUS));
+
+		if($stmt->rowCount()) {
+			$domains = $stmt->fetchAll(PDO::FETCH_ASSOC);
+			$domainList = array_merge($domainList, $domains);
+		}
+
+		sort($domainList);
 	}
 
-	if (isset($id) && isset($type) && isset($query)) {
-		if (!isset($_POST[$id])) {
-			set_page_message(sprintf(tr('%s list is empty. You cannot add email accounts.'), $type), 'error');
+	return $domainList;
+}
+
+/**
+ * Add mail account
+ *
+ * @return bool TRUE on success, FALSE otherwise
+ */
+function client_addMailAccount()
+{
+	if(
+		isset($_POST['username']) && isset($_POST['domain_name']) && isset($_POST['password']) &&
+		isset($_POST['password_rep']) && isset($_POST['quota']) && isset($_POST['forward_list'])
+	) {
+		$mainDmnProps = get_domain_default_props($_SESSION['user_id']);
+		$password  =  $forwardList = '_no_';
+		$mailType = $subId = '';
+		$quota = null;
+
+		$mailTypeNormal = (isset($_POST['account_type']) && in_array($_POST['account_type'], array('1', '3')));
+		$mailTypeForward = (isset($_POST['account_type']) && in_array($_POST['account_type'], array('2', '3')));
+
+		if(!$mailTypeNormal && !$mailTypeForward) {
+			showBadRequestErrorPage();
+		}
+
+		// Check for username
+		$username = strtolower(clean_input($_POST['username']));
+
+		if ($_POST['username'] == '' || !imscp_check_local_part($username)) {
+			set_page_message(tr('Invalid Email username.'), 'error');
 			return false;
 		}
 
-		if (!is_numeric($_POST[$id])) {
-			set_page_message(sprintf(tr('%s id is invalid. You cannot add email accounts.'), $type), 'error');
-			return false;
+		// Check for domain existence and owner
+		$domainName = clean_input($_POST['domain_name']);
+		$domainType = null;
+		$domainId = null;
+
+		foreach (_client_getDomainList() as $domain) {
+			if ($domain['name'] == $domainName) {
+				$domainType = $domain['type'];
+				$domainId = $domain['id'];
+				$subId = ($domainType != 'dmn') ? $domainId : '0';
+			}
 		}
 
-		$stmt = exec_query($query, array($_POST[$id], $dmnId));
+		if (null !== $domainType) {
+			$mailAddr = $username . '@' . $domainName;
 
-		if ($stmt->fields['name'] == '') {
-			set_page_message(sprintf(tr('%s id is invalid! You cannot add email accounts.'), $type), 'error');
-			return false;
+			if ($mailTypeNormal) {
+				// Check for pasword
+				$password = clean_input($_POST['password']);
+				$password_rep = clean_input($_POST['password_rep']);
+
+				if ($password == '') {
+					set_page_message(tr('Password is missing.'), 'error');
+					return false;
+				} elseif($password_rep == '') {
+					set_page_message(tr('You must confirm your password.'), 'error');
+					return false;
+				} elseif ($password !== $password_rep) {
+					set_page_message(tr("Passwords do not match."), 'error');
+					return false;
+				} elseif (!checkPasswordSyntax($password, "/[`\xb4'\"\\\\\x01-\x1f\015\012|<>^$]/i")) {
+					return false;
+				}
+
+				// Check for quota
+				$quota = clean_input($_POST['quota']);
+
+				if(is_number($quota)) {
+					$quota *= 1048576; // MiB to Bytes
+
+					if($mainDmnProps['mail_quota'] != '0') {
+						if($quota == '0') {
+							set_page_message(tr('Incorrect Email quota.'), 'error');
+							return false;
+						}
+
+						$stmt = exec_query(
+							'SELECT SUM(`quota`) AS `quota` FROM `mail_users` WHERE `domain_id` = ? AND `quota` IS NOT NULL',
+							$mainDmnProps['domain_id']
+						);
+
+						$quotaLimit = floor($mainDmnProps['mail_quota'] - ($stmt->fields['quota']));
+
+						if($quota > $quotaLimit) {
+							set_page_message(
+								tr('Email quota cannot be bigger than %s', bytesHuman($quotaLimit, 'MiB')), 'error'
+							);
+							return false;
+						}
+					}
+				} else {
+					set_page_message(tr('Email quota must be a number.'), 'error');
+					return false;
+				}
+
+				switch($domainType) {
+					case 'dmn':
+						$mailType = MT_NORMAL_MAIL;
+						break;
+					case 'sub':
+						$mailType = MT_SUBDOM_MAIL;
+						break;
+					case 'als':
+						$mailType = MT_ALIAS_MAIL;
+						break;
+					case 'alssub':
+						$mailType = MT_ALSSUB_MAIL;
+				}
+			}
+
+			if ($mailTypeForward) {
+				// Check forward list
+				$forwardList = clean_input($_POST['forward_list']);
+
+				if ($forwardList == '') {
+					set_page_message(tr('Forward list is empty.'), 'error');
+					return false;
+				}
+
+				$forwardList = preg_split("/[\n,]+/", $forwardList);
+
+				foreach ($forwardList as $key => &$forwardEmailAddr) {
+					$forwardEmailAddr = encode_idna(trim($forwardEmailAddr));
+
+					if($forwardEmailAddr == '') {
+						unset($forwardList[$key]);
+					} elseif (!chk_email($forwardEmailAddr)) {
+						set_page_message(tr('Wrong mail syntax in forward list.'), 'error');
+						return false;
+					} elseif ($forwardEmailAddr == $mailAddr) {
+						set_page_message(tr('You cannot forward %s on itself.', $mailAddr), 'error');
+						return false;
+					}
+				}
+
+				$forwardList = implode(',', array_unique($forwardList));
+
+				switch($domainType) {
+					case 'dmn':
+						$mailType .= (($mailType != '') ? ',' : '') . MT_NORMAL_FORWARD;
+						break;
+					case 'sub':
+						$mailType .= (($mailType != '') ? ',' : '') . MT_SUBDOM_FORWARD;
+						break;
+					case 'als':
+						$mailType .= (($mailType != '') ? ',' : '') . MT_ALIAS_FORWARD;
+						break;
+					case 'alssub':
+						$mailType .= (($mailType != '') ? ',' : '') . MT_ALSSUB_FORWARD;
+				}
+			}
+
+			// Check for mail account existence
+			$stmt = exec_query("SELECT `mail_id` FROM `mail_users` WHERE `mail_addr` = ?", $mailAddr);
+
+			if($stmt->rowCount()) {
+				set_page_message(tr('Email account already exists.'), 'error');
+				return false;
+			}
+
+			// Add mail account into database
+
+			/** @var $db iMSCP_Database */
+			$db = iMSCP_Registry::get('db');
+
+			iMSCP_Events_Manager::getInstance()->dispatch(
+				iMSCP_Events::onBeforeAddMail, array('mailUsername' => $username, 'MailAddress' => $mailAddr)
+			);
+
+			/** @var iMSCP_Config_Handler_File $cfg */
+			$cfg = iMSCP_Registry::get('config');
+
+			$query = '
+				INSERT INTO `mail_users` (
+					`mail_acc`, `mail_pass`, `mail_forward`, `domain_id`, `mail_type`, `sub_id`, `status`,
+					`mail_auto_respond`, `mail_auto_respond_text`, `quota`, `mail_addr`
+				) VALUES
+					(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+			';
+			exec_query(
+				$query,
+				array(
+					$username, $password, $forwardList, $mainDmnProps['domain_id'], $mailType, $subId,
+					$cfg->ITEM_TOADD_STATUS, '0', NULL, $quota, $mailAddr
+				)
+			);
+
+			iMSCP_Events_Manager::getInstance()->dispatch(
+				iMSCP_Events::onAfterAddMail,
+				array('mailUsername' => $username, 'mailAddress' => $mailAddr, 'mailId' => $db->insertId())
+			);
+
+			// Schedule mail account addition
+			send_request();
+
+			write_log("{$_SESSION['user_logged']}: added new Email account: $mailAddr", E_USER_NOTICE);
+			set_page_message(tr('Email account successfully scheduled for addition.'), 'success');
+		} else {
+			showBadRequestErrorPage();
 		}
-
-		$dmnName = $stmt->fields['name'];
+	} else {
+		showBadRequestErrorPage();
 	}
 
-	if ($mailTypeForward && empty($_POST['forward_list'])) {
-		set_page_message(tr('Forward list is empty.'), 'info');
-		return false;
-	}
-
-	schedule_mail_account($dmnId, $dmnName, $mailAccount);
 	return true;
 }
 
 /**
+ * Generate page
  *
  * @param iMSCP_pTemplate $tpl
- * @param int $customerId Customer unique identifier
- * @return void
  */
-function client_generatePage($tpl, $customerId)
+function client_generatePage($tpl)
 {
-	$dmnProps = get_domain_default_props($customerId);
-	$dmnId = $dmnProps['domain_id'];
-	$dmnName = $dmnProps['domain_name'];
-	$dmnMailAccountLimit = $dmnProps['domain_mailacc_limit'];
+	$mainDmnProps = get_domain_default_props($_SESSION['user_id']);
 
-	list($nbMailAccounts) = get_domain_running_mail_acc_cnt($dmnId);
+	$stmt = exec_query(
+		'SELECT SUM(`quota`) AS `quota` FROM `mail_users` WHERE `domain_id` = ? AND `quota` IS NOT NULL',
+		$mainDmnProps['domain_id']
+	);
 
-	if ($dmnMailAccountLimit != 0 && $nbMailAccounts >= $dmnMailAccountLimit) {
-		set_page_message(tr('Email account limit is reached.'), 'error');
-		redirectTo('mail_accounts.php');
+	$quota = $stmt->fields['quota'];
+
+	if($mainDmnProps['mail_quota'] != '0' && $quota >= $mainDmnProps['mail_quota']) {
+		set_page_message(
+			'You cannot add new Email account. You have already assigned all your Email quota to other mailboxes. Please first, review your quota assignments.',
+			'warning'
+		);
+		$tpl->assign('MAIL_ACCOUNT', '');
 	} else {
-		$postCheck = isset($_POST['uaction']) ? 'yes' : 'no';
-		client_generatePageData($tpl, $dmnName, $postCheck);
-		client_generateAlsList($tpl, $dmnId, $postCheck);
-		client_generateDmnSubList($tpl, $dmnId, $dmnName, $postCheck);
-		client_generateAlsSubList($tpl, $dmnId, $postCheck);
+		/** @var iMSCP_Config_Handler_File $cfg */
+		$cfg = iMSCP_Registry::get('config');
 
-		if (isset($_POST['uaction']) && $_POST['uaction'] == 'add_user') {
-			client_checkMailAccount($dmnId, $dmnName);
+		$checked = $cfg->HTML_CHECKED;
+		$selected = $cfg->HTML_SELECTED;
+
+		$tpl->assign(
+			array(
+				'USERNAME' => isset($_POST['username']) ? tohtml($_POST['username']) : '',
+				'NORMAL_CHECKED' => (isset($_POST['account_type']) && $_POST['account_type'] == '1')
+					? $checked : ((empty($_POST)) ? $checked : ''),
+				'FORWARD_CHECKED' => (isset($_POST['account_type']) && $_POST['account_type'] == '2') ? $checked : '',
+				'NORMAL_FORWARD_CHECKED' => (isset($_POST['account_type']) && $_POST['account_type'] == '3')
+					? $checked : '',
+				'PASSWORD' => isset($_POST['password']) ? tohtml($_POST['password']) : '',
+				'PASSWORD_REP' => isset($_POST['password_rep']) ? tohtml($_POST['password_rep']) : '',
+				'TR_QUOTA' => ($mainDmnProps['mail_quota'] == '0')
+					? tr('Quota in MiB (0 for unlimited)')
+					: tr('Quota in MiB (Max: %s)', bytesHuman($mainDmnProps['mail_quota'] - $quota, 'MiB')),
+				'QUOTA' => isset($_POST['quota']) ? tohtml($_POST['quota']) : '',
+				'FORWARD_LIST' => isset($_POST['forward_list']) ? tohtml($_POST['forward_list']) : '',
+			)
+		);
+
+		foreach (_client_getDomainList() as $domain) {
+			$tpl->assign(
+				array(
+					'DOMAIN_NAME' => tohtml($domain['name']),
+					'DOMAIN_NAME_UNICODE' => tohtml(decode_idna($domain['name'])),
+					'DOMAIN_NAME_SELECTED' => (isset($_POST['domain_name']) && $_POST['domain_name'] == $domain['name'])
+						? $selected : '',
+				)
+			);
+
+			$tpl->parse('DOMAIN_NAME_ITEM', '.domain_name_item');
 		}
 	}
 }
@@ -652,6 +371,7 @@ function client_generatePage($tpl, $customerId)
 /***********************************************************************************************************************
  * Main
  */
+
 // Include core library
 require 'imscp-lib.php';
 
@@ -661,8 +381,25 @@ check_login('user');
 
 customerHasFeature('mail') or showBadRequestErrorPage();
 
-/** @var $cfg iMSCP_Config_Handler_File */
-$cfg = iMSCP_Registry::get('config');
+$dmnProps = get_domain_default_props($_SESSION['user_id']);
+$emailAccountsLimit = $dmnProps['domain_mailacc_limit'];
+
+// Check for mail accounts limit
+
+if ($emailAccountsLimit != '0') {
+	list($nbEmailAccounts) = get_domain_running_mail_acc_cnt($dmnProps['domain_id']);
+
+	if($nbEmailAccounts >= $emailAccountsLimit) {
+		set_page_message(tr('Email account limit is reached.'), 'error');
+		redirectTo('mail_accounts.php');
+	}
+}
+
+if(!empty($_POST)) {
+	if(client_addMailAccount()) {
+		redirectTo('mail_accounts.php');
+	}
+}
 
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic(
@@ -670,12 +407,8 @@ $tpl->define_dynamic(
 		'layout' => 'shared/layouts/ui.tpl',
 		'page' => 'client/mail_add.tpl',
 		'page_message' => 'layout',
-		'als_list' => 'page',
-		'sub_list' => 'page',
-		'als_sub_list' => 'page',
-		'to_alias_domain' => 'page',
-		'to_subdomain' => 'page',
-		'to_alias_subdomain' => 'page'
+		'mail_account' => 'page',
+		'domain_name_item' => 'mail_account'
 	)
 );
 
@@ -683,21 +416,18 @@ $tpl->assign(
 	array(
 		'TR_PAGE_TITLE' => tr('Client / Email / Add Email Account'),
 		'ISP_LOGO' => layout_getUserLogo(),
-		'TR_ADD_MAIL_USER' => tr('Add mail users'),
-		'TR_USERNAME' => tr('Username'),
-		'TR_TO_MAIN_DOMAIN' => tr('To main domain'),
-		'TR_TO_DMN_ALIAS' => tr('To domain alias'),
-		'TR_TO_SUBDOMAIN' => tr('To subdomain'),
-		'TR_TO_ALS_SUBDOMAIN' => tr('To alias subdomain'),
-		'TR_NORMAL_MAIL' => tr('Normal mail'),
-		'TR_PASSWORD' => tr('Password'),
-		'TR_PASSWORD_REPEAT' => tr('Repeat password'),
-		'TR_FORWARD_MAIL' => tr('Forward mail'),
-		'TR_FORWARD_TO' => tr('Forward to'),
-		'TR_FWD_HELP' => tr('Separate multiple email addresses with a line-break.'),
-		'TR_ADD' => tr('Add'),
-		'TR_EMPTY_DATA' => tr('You did not fill all required fields'),
 		'TR_MAIl_ACCOUNT_DATA' => tr('Email account data'),
+		'TR_USERNAME' => tr('Username'),
+		'TR_DOMAIN_NAME' => tr('Domain name'),
+		'TR_MAIL_ACCOUNT_TYPE' => tr('Mail account type'),
+		'TR_NORMAL_MAIL' => tr('Normal'),
+		'TR_FORWARD_MAIL' => tr('Forward'),
+		'TR_FORWARD_NORMAL_MAIL' => tr('Normal + Forward'),
+		'TR_PASSWORD' => tr('Password'),
+		'TR_PASSWORD_REPEAT' => tr('Password confirmation'),
+		'TR_FORWARD_TO' => tr('Forward to'),
+		'TR_FWD_HELP' => tr('Separate multiple email addresses by comma or a line-break.'),
+		'TR_ADD' => tr('Add'),
 		'TR_CANCEL' => tr('Cancel')
 	)
 );

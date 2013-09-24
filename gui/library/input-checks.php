@@ -121,7 +121,7 @@ function clean_input($input, $htmlencode = false)
 	}
 
 	if ($htmlencode) {
-		return htmlentities($input, ENT_QUOTES, 'UTF-8');
+		return htmlentities($input, ENT_QUOTES, 'UTF-8', false);
 	} else {
 		return $input;
 	}

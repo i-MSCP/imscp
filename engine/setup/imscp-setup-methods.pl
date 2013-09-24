@@ -1111,7 +1111,7 @@ This feature allows resellers to propose backup options to their customers such 
  - None (no backup)
 ",
 			['yes', 'no'],
-			$backupDomains ne 'yes' ? 'no' : 'yes'
+			$backupDomains ne 'no' ? 'yes' : 'no'
 		);
 	}
 

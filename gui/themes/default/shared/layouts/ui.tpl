@@ -21,15 +21,11 @@
 <script type="text/javascript">
 /*<![CDATA[*/
 $(window).load(function(){
-	$.each($("tbody"), function() {
-		$(this).find("tr:visible:odd td").removeClass("odd").addClass("even");
-		$(this).find("tr:visible:even td").removeClass("even").addClass("odd");
-	});
+	$("table:not('.datatable')").on("change", function() {
+		$(this).find("tbody tr:visible:odd td").removeClass("odd").addClass("even");
+		$(this).find("tbody tr:visible:even td").removeClass("even").addClass("odd");
+	}).trigger('change');
 });
-/*]]>*/
-</script>
-<script type="text/javascript">
-/*<![CDATA[*/
 $(document).ready(function () {
 	$.fx.speeds._default = 500;
 	setTimeout(function () { $('.timeout').fadeOut(1000); }, 5000);
@@ -37,6 +33,11 @@ $(document).ready(function () {
 	$('.body a, .body span, .body input, .dataTables_paginate div').imscpTooltip({ extraClass: "tooltip_icon tooltip_notice" });
 	$("input:submit, input:button, button, .link_as_button").button();
 	$(".radio, .checkbox").buttonset();
+
+	$("table:not('.datatable')").on("change", function() {
+		$(this).find("tbody tr:not(:visible):odd td").removeClass("odd").addClass("even");
+		$(this).find("tbody tr:not(:visible):even td").removeClass("even").addClass("odd");
+	});
 });
 /*]]>*/
 </script>
@@ -65,7 +66,7 @@ $(document).ready(function () {
 		<!-- BDP: page_message -->
 		<div class="{MESSAGE_CLS}">{MESSAGE}</div>
 		<!-- EDP: page_message -->
-			{LAYOUT_CONTENT}
+		{LAYOUT_CONTENT}
 	</div>
 </div>
 <div class="footer">
@@ -73,18 +74,5 @@ $(document).ready(function () {
  Build: {BUILDDATE}<br/>
  Codename: {CODENAME}
 </div>
-
-<script type="text/javascript">
-/*<![CDATA[*/
-$(document).ready(function () {
-	$("tbody").on("change", function() {
-		$(this).find("tr:visible:odd td").removeClass("odd").addClass("even");
-		$(this).find("tr:visible:even td").removeClass("even").addClass("odd");
-	});
-	$("tbody tr:nth-child(odd)").removeClass('even').addClass('odd');
-	$("tbody tr:nth-child(even)").removeClass('odd').addClass('even');
-});
-/*]]>*/
-</script>
 </body>
 </html>

@@ -41,7 +41,7 @@
  */
 
 /**
- * Returns user name matching identifier.
+ * Returns user name matching identifier
  *
  * @param  int $user_id User unique identifier
  * @return string Username
@@ -59,7 +59,7 @@ function get_user_name($user_id)
  */
 
 /**
- * Return main domain unique identifier of the given customer.
+ * Return main domain unique identifier of the given customer
  *
  * @throws iMSCP_Exception in case the domain id cannot be found
  * @param int $customeId Customer unique identifier
@@ -84,7 +84,7 @@ function get_user_domain_id($customeId)
 }
 
 /**
- * Returns the total number of consumed and max available items for the given customer.
+ * Returns the total number of consumed and max available items for the given customer
  *
  * @param  int $domainId Domain unique identifier
  * @return array
@@ -174,7 +174,7 @@ function generate_user_props($domainId)
 }
 
 /**
- * Returns translated item status.
+ * Returns translated item status
  *
  * @param string $status Item status to translate
  * @return string Translated status
@@ -207,15 +207,15 @@ function translate_dmn_status($status)
 }
 
 /**
- * Updates customer limits/features.
+ * Updates customer limits/features
  *
  * @param int $domainId Domain unique identifier
  * @param string $props String that contain new properties values
  * @return void
  */
+/*
 function update_user_props($domainId, $props)
 {
-	/** @var $cfg iMSCP_Config_Handler_File $cfg * */
 	$cfg = iMSCP_Registry::get('config');
 
 	list(
@@ -312,21 +312,24 @@ function update_user_props($domainId, $props)
 		);
 	}
 }
+*/
 
 /**
- * Updates dommain expiration date.
+ * Updates dommain expiration date
  *
  * @param  int $user_id User unique identifier
  * @param  int $domain_new_expire New expiration date
  * @return void
  */
+/*
 function update_expire_date($user_id, $domain_new_expire)
 {
 	exec_query("UPDATE `domain` SET `domain_expires` = ? WHERE `domain_id` = ?", array($domain_new_expire, $user_id));
 }
+*/
 
 /**
- * Activate or deactivate the given customer account.
+ * Activate or deactivate the given customer account
  *
  * @throws iMSCP_Exception|iMSCP_Exception_Database
  * @param int $customerId Customer unique identifier
@@ -448,7 +451,7 @@ function change_domain_status($customerId, $action)
 }
 
 /**
- * Deletes the given customer.
+ * Deletes the given customer
  *
  * @throws iMSCP_Exception
  * @param integer $customerId Customer unique identifier
@@ -492,7 +495,7 @@ function deleteCustomer($customerId, $checkCreatedBy = false)
 	$customerName = $stmt->fields['admin_name'];
 	$mainDomainId = $stmt->fields['domain_id'];
 	$resellerId = $stmt->fields['created_by'];
-	$deleteStatus = $cfg->ITEM_TODELETE_STATUS;
+	$deleteStatus = $cfg['ITEM_TODELETE_STATUS'];
 
 	try {
 		// First, remove customer sessions to prevent any problems
@@ -567,6 +570,19 @@ function deleteCustomer($customerId, $checkCreatedBy = false)
 		// Schedule mail accounts deletion
 		exec_query('UPDATE `mail_users` SET `status` = ? WHERE `domain_id` = ?', array($deleteStatus, $mainDomainId));
 
+		// Delete dovecot quota accounting
+		if(isset($cfg['PO_SERVER']) && $cfg['PO_SERVER'] == 'dovecot') {
+			exec_query(
+				'
+					DELETE FROM
+						`quota_dovecot`
+					WHERE
+						`username` = (SELECT `mail_addr` FROM `mail_users` WHERE `domain_id` = ?)
+				',
+				$mainDomainId
+			);
+		}
+
 		// Schedule subdomain's aliasses deletion
 		$query = "
 			UPDATE
@@ -606,29 +622,29 @@ function deleteCustomer($customerId, $checkCreatedBy = false)
 				UPDATE
 					`ssl_certs` SET `status` = ?
 				WHERE
-					`type` = 'als'
+					`type` = ?
 				AND
 					`id` IN (SELECT `alias_id` FROM `domain_aliasses` WHERE `domain_id` = ?)
 			",
-			array($deleteStatus, $mainDomainId)
+			array($deleteStatus, 'als', $mainDomainId)
 		);
 		exec_query(
 			"
 				UPDATE
 					`ssl_certs` SET `status` = ?
 				WHERE
-					`type` = 'sub'
+					`type` = ?
 				AND
 					`id` IN (SELECT `subdomain_id` FROM `subdomain` WHERE `domain_id` = ?)
 			",
-			array($deleteStatus, $mainDomainId)
+			array($deleteStatus, 'sub', $mainDomainId)
 		);
 		exec_query(
 			"
 				UPDATE
 					`ssl_certs` SET `status` = ?
 				WHERE
-					`type` = 'alssub'
+					`type` = ?
 				AND
 					`id` IN (
 						SELECT
@@ -639,7 +655,7 @@ function deleteCustomer($customerId, $checkCreatedBy = false)
 							`alias_id` IN (SELECT `alias_id` FROM `domain_aliasses` WHERE `domain_id` = ?)
 					)
 			",
-			array($deleteStatus, $mainDomainId)
+			array($deleteStatus, 'alssub', $mainDomainId)
 		);
 
 		// Delegated tasks to the engine - end
@@ -783,7 +799,7 @@ function sub_records_rlike_count($field, $table, $where, $value, $subfield, $sub
  */
 
 /**
- * Returns properties for the given reseller.
+ * Returns properties for the given reseller
  *
  * @throws iMSCP_Exception When reseller properties are not found
  * @param int $resellerId Reseller unique identifier
@@ -810,7 +826,7 @@ function imscp_getResellerProperties($resellerId, $forceReload = false)
 }
 
 /**
- * Update reseller properties.
+ * Update reseller properties
  *
  * @param  int $reseller_id Reseller unique identifier.
  * @param  array $props Array that contain new properties values
@@ -853,13 +869,14 @@ function update_reseller_props($reseller_id, $props)
 }
 
 /**
- * Synchronize hosting plans of the given reseller according its limits and permissions.
+ * Synchronize hosting plans of the given reseller according its limits and permissions
  *
  * @author Laurent Declercq <l.declercq@nuxwin.com>
  * @param int $resellerId Reseller unique identifier
  * @return void
  * TODO integrate (not tested/used yet)
  */
+/*
 function syncHostingPlans($resellerId)
 {
 	$query = "SELECT `props` FROM `hosting_plans` WHERE `reseller_id` = ?";
@@ -919,13 +936,14 @@ function syncHostingPlans($resellerId)
 		}
 	}
 }
+*/
 
 /***********************************************************************************************************************
  * Mail functions
  */
 
 /**
- * Encode a string to be valid as mail header.
+ * Encode a string to be valid as mail header
  *
  * @source php.net/manual/en/function.mail.php
  *
@@ -965,12 +983,75 @@ function encode($string, $charset = 'UTF-8')
 	return $string;
 }
 
+/**
+ * Synchronizes mailboxes quota that belong to the given domain using the given quota limit
+ *
+ * Algorythm:
+ *
+ * 1. In case the new quota limit is 0 (unlimited), equal or bigger than the sum of current quotas, we do nothing
+ * 2. We have a running total, which start at zero
+ * 3. We divide the quota of each mailbox by the sum of current quotas, then we multiply the result by the new quota limit
+ * 4. We store the original value of the running total elsewhere, then we add the amount we have just calculated in #3
+ * 5. We ensure that new quota is a least 1 MiB (each mailbox must have 1 MiB minimum quota)
+ * 5. We round both old value and new value of the running total to integers, and take the difference
+ * 6. We update the mailbox quota result calculated in step 5
+ * 7. We repeat steps 3-6 for each quota
+ *
+ * This algorythm guarantees to have the total amount prorated equal to the sum of all quota after update. It also
+ * ensure that each mailboxes has 1 MiB quota minimum.
+ *
+ * Note:  For the sum calculation of current quotas, we consider that a mailbox with a value equal to 0 (unlimited) is
+ * equal to the new quota limit.
+ *
+ * @author Laurent Declercq <l.declercq@nuxwin.com>
+ * @param int $domainId Customer main domain unique identifier
+ * @param int $newQuota New quota limit in bytes
+ * @return void
+ */
+function sync_mailboxes_quota($domainId, $newQuota)
+{
+	if ($newQuota != 0) {
+		$stmt = exec_query(
+			'SELECT `mail_id`, `quota` FROM `mail_users` WHERE `domain_id` = ? AND `quota` IS NOT NULL', $domainId
+		);
+
+		if($stmt->rowCount()) {
+			$mailboxes = $stmt->fetchAll(PDO::FETCH_ASSOC);
+			$totalQuota = 0;
+
+			foreach ($mailboxes as $mailbox) {
+				$totalQuota += ($mailbox['quota'] == 0) ? $newQuota : $mailbox['quota'];
+			}
+
+			$totalQuota /= 1048576;
+			$newQuota /= 1048576;
+
+			if ($newQuota < $totalQuota || $totalQuota == 0) {
+				$db = iMSCP_Database::getRawInstance();
+				$stmt = $db->prepare('UPDATE `mail_users` SET `quota` = ? WHERE `mail_id` = ?');
+				$result = 0;
+
+				foreach ($mailboxes as $mailbox) {
+					$oldResult = $result;
+					$result += $newQuota * ($mailbox['quota'] / 1048576) / $totalQuota;
+
+					if($result < 1) {
+						$result = 1;
+					}
+
+					$stmt->execute(array(((int)$result - (int)$oldResult) * 1048576, $mailbox['mail_id']));
+				}
+			}
+		}
+	}
+}
+
 /***********************************************************************************************************************
  * Utils functions
  */
 
 /**
- * Redirect to the given location.
+ * Redirect to the given location
  *
  * @param string $location URL to redirect to
  * @return void
@@ -1002,7 +1083,7 @@ function array_decode_idna($array, $asPath = false)
 }
 
 /**
- * Must be documented.
+ * Must be documented
  *
  * @param array $array Indexed array that containt
  * @param bool $asPath
@@ -1022,7 +1103,7 @@ function array_encode_idna($array, $asPath = false)
 }
 
 /**
- * Convert the given string to IDNA ASCII form.
+ * Convert the given string to IDNA ASCII form
  *
  * @throws iMSCP_Exception When PHP intl extension is not loaded
  * @param  string String to convert
@@ -1035,7 +1116,7 @@ function encode_idna($domain)
 }
 
 /**
- * Convert the given string from IDNA ASCII to Unicode.
+ * Convert the given string from IDNA ASCII to Unicode
  *
  * @throws iMSCP_Exception When PHP intl extension is not loaded
  * @param  string String to convert
@@ -1048,10 +1129,9 @@ function decode_idna($domain)
 }
 
 /**
- * Utils function to upload file.
+ * Utils function to upload file
  *
  * @author Laurent Declercq <l.declercq@nuxwin.com>
- * @version i-MSCP 1.0.1.4
  * @param string $inputFieldName upload input field name
  * @param string|Array $destPath Destination path string or an array where the first item is an anonymous function to
  *                               run before moving file and any other items the arguments passed to the anonymous
@@ -1112,7 +1192,7 @@ function utils_uploadFile($inputFieldName, $destPath)
 }
 
 /**
- * Generates a random string.
+ * Generates a random string
  *
  * @param int $length random string length
  * @return array|string
@@ -1215,7 +1295,7 @@ function utils_removeDir($directory)
  */
 
 /**
- * Checks if all of the characters in the provided string are numerical.
+ * Checks if all of the characters in the provided string are numerical
  *
  * @param string $number string to be checked
  * @return bool TRUE if all characters are numerical, FALSE otherwise
@@ -1284,7 +1364,7 @@ function isSerialized($data)
 }
 
 /**
- * Check if the given string look like json data.
+ * Check if the given string look like json data
  *
  * @author Laurent Declercq (nuxwin) <l.declercq@nuxwin.com>
  * @param $string $string $string to be checked
@@ -1301,7 +1381,7 @@ function isJson($string)
  */
 
 /**
- * Return usage in percent.
+ * Return usage in percent
  *
  * @param  int $amount Current value
  * @param  int $total (0 = unlimited)
@@ -1309,15 +1389,11 @@ function isJson($string)
  */
 function make_usage_vals($amount, $total)
 {
-	if (!$total) {
-		return 0; // Avoid to divide by zero
-	}
-
-	return sprintf('%.2f', (($percent = ($amount / $total) * 100)) > 100 ? 100 : $percent);
+	return ($total) ? sprintf('%.2f', (($percent = ($amount / $total) * 100)) > 100 ? 100 : $percent) : 0;
 }
 
 /**
- * Generates user traffic.
+ * Generates user traffic
  *
  * @param  int $domainId Domain unique identifier
  * @return array An array that contains traffic usage information
@@ -1412,7 +1488,7 @@ function calc_bar_value($value, $value_max, $bar_width)
  */
 
 /**
- * Writes a log message in the database and sends it to the administrator by email according log level.
+ * Writes a log message in the database and sends it to the administrator by email according log level
  *
  * @param string $msg Message to log
  * @param int $logLevel Log level Loggin level from which log is sent via mail
@@ -2019,13 +2095,13 @@ function send_request()
  */
 
 /**
- * Decrypte database password.
+ * Decrypte the given password using the iMSCP secret key and vector.
  *
  * @throws iMSCP_Exception
- * @param  string $password Encrypted database password
- * @return string Decrypted database password
+ * @param  string $password Blowfish (CBC) encrypted password
+ * @return string Decrypted password
  */
-function decrypt_db_password($password)
+function decryptBlowfishCbcPassword($password)
 {
 	if ($password == '') return '';
 

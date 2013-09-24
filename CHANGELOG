@@ -7,6 +7,7 @@ Git Master
 CONFIG:
 	- Added: Packages file for Debian Jessie (testing)
 	- Added: SPF Resource Record Type in bind template
+	- Added: php5-imap package (required by i-MSCP frontEnd)
 	- Changed: php5-mysql package to php5-mysqlnd (native driver) when available
 	- Removed: php5-adodb package
 	- Updated: Apache templates to support 2.4.x branch
@@ -48,9 +49,11 @@ GUI:
 	- Fixed: Unable to delete plugin in some contexts
 	- Fixed: Show DNS record data as tooltip when their length is too big
 	- Fixed: Wrong placeholders in admin/imscp_debugger.php
-	- Removed: IE6 support
-	- Removed: Tool links from login page
 	- Readded: idna_convert class (more flexible because can operate on arbitrary strings)
+	- Removed: IE6 support
+	- Removed: mail_quota action script
+	- Removed: Tool links from login page
+	- Rewritten: Mail interface
 	- Updated: Assets are now reachable through the /themes/<theme>/assets path
 	- Updated: Plugin API
 

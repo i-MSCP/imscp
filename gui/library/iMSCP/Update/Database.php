@@ -668,7 +668,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 					UPDATE
 						`mail_users`
 					SET
-						`mail_pass`= " . $db->quote(decrypt_db_password($data['mail_pass'])) . ", `status` = '$status'
+						`mail_pass`= " . $db->quote(decryptBlowfishCbcPassword($data['mail_pass'])) . ", `status` = '$status'
 					WHERE
 						`mail_id` = '{$data['mail_id']}'
 				";
@@ -685,7 +685,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 					UPDATE
 						`sql_user`
 					SET
-						`sqlu_pass` = " . $db->quote(decrypt_db_password($data['sqlu_pass'])) . "
+						`sqlu_pass` = " . $db->quote(decryptBlowfishCbcPassword($data['sqlu_pass'])) . "
 					WHERE
 						`sqlu_id` = '{$data['sqlu_id']}'
 				";
@@ -702,7 +702,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 					UPDATE
 						`ftp_users`
 					SET
-						`rawpasswd` = " . $db->quote(decrypt_db_password($data['passwd'])) . "
+						`rawpasswd` = " . $db->quote(decryptBlowfishCbcPassword($data['passwd'])) . "
 					WHERE
 						`userid` = '{$data['userid']}'
 				";
@@ -914,16 +914,6 @@ class iMSCP_Update_Database extends iMSCP_Update
 				PRIMARY KEY (`username`)
 			) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 		";
-	}
-
-	/**
-	 * #58: Increases mail quota value from 10 Mio to 100 Mio
-	 *
-	 * @return string SQL statement to be executed
-	 */
-	protected function _databaseUpdate_75()
-	{
-		return "UPDATE `mail_users` SET `quota` = '104857600' WHERE `quota` = '10485760'";
 	}
 
 	/**
@@ -2435,7 +2425,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	}
 
 	/**
-	 * Sync mail quota values
+	 * Synchronize mail quota values
 	 *
 	 * @return array Stack of SQL statements to be executed
 	 */
@@ -2451,22 +2441,18 @@ class iMSCP_Update_Database extends iMSCP_Update
 
 				if (sizeof($props) == 24) {
 					list(, , , , , , , , , $diskspace) = $props;
-					$diskspace = $diskspace * 1048576;
+					$diskspace = $diskspace * 1048576; // MiB to bytes
 
 					$sqlUpd[] = "
 						UPDATE
 							`hosting_plans`
 						SET
-							`props` = CONCAT(`props`,';$diskspace')
+							`props` = CONCAT(`props`, ';$diskspace')
 						WHERE
 							`id` = {$data['id']}
 					";
 				}
 			}
-		}
-
-		if (!empty($sqlUpd)) {
-			$sqlUpd[] = "UPDATE `domain` SET `mail_quota` = (`domain_disk_limit` * 1048576)";
 		}
 
 		return $sqlUpd;
@@ -2581,7 +2567,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	 *
 	 * @return string
 	 */
-	protected function _databaseUpdate_160()
+	protected function _databaseUpdate_163()
 	{
 		return "
 			UPDATE
@@ -2594,45 +2580,74 @@ class iMSCP_Update_Database extends iMSCP_Update
 	}
 
 	/**
-	 * Sync mail_users.quota field with domain.mail_quota field
-	 *
-	 * @return array SQL statements to be e executed
-	 */
-	protected function _databaseUpdate_161()
-	{
-		$sqlUpd = array();
-
-		$stmt = execute_query(
-			"
-				SELECT
-					`domain_id`, `quota`, `mail_quota`
-				FROM
-					`mail_users`
-				INNER JOIN
-					`domain` USING(`domain_id`)
-				WHERE
-					`quota` IS NOT NULL
-			"
-		);
-
-		if ($stmt->rowCount()) {
-			while ($data = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
-				if ($data['mail_quota'] != '0' && $data['quota'] > $data['mail_quota']) {
-					$sqlUpd[] = "UPDATE `mail_users` SET `quota` = {$data['mail_quota']}";
-				}
-			}
-		}
-
-		return $sqlUpd;
-	}
-
-	/**
 	 * Remove possible orphan entries in quota_dovecot table
 	 *
 	 * @return string SQL statement to be executed
 	 */
-	protected function _databaseUpdate_162()
+	protected function _databaseUpdate_164()
 	{
 		return "DELETE FROM `quota_dovecot` WHERE `username` NOT IN(SELECT `mail_addr` FROM `mail_users`)";
+	}
+
+	/**
+	 * Update domain.mail_quota and domain.domain_disk_limit fields according the number of existent mailboxes for which
+	 * a quota is appliable
+	 *
+	 * @return array SQL statements to be executed
+	 */
+	protected function _databaseUpdate_165()
+	{
+		return array(
+			'
+				UPDATE
+					`domain` AS `t1`
+				JOIN (
+					SELECT
+						COUNT(`mail_id`) AS `nb_mailboxes`, `domain_id`
+					FROM
+						`mail_users`
+					WHERE
+						`quota` IS NOT NULL
+				) AS `t2` USING(`domain_id`)
+				SET
+					`t1`.`domain_disk_limit` = `t2`.`nb_mailboxes`
+				WHERE
+					`t1`.`domain_disk_limit` <> 0
+				AND
+					`t1`.`domain_disk_limit` < `t2`.`nb_mailboxes`
+			',
+			'
+				UPDATE
+					`domain` AS `t1`
+				JOIN (
+					SELECT
+						COUNT(`mail_id`) AS `nb_mailboxes`, `domain_id`
+					FROM
+						`mail_users`
+					WHERE
+						`quota` IS NOT NULL
+				) AS `t2` USING(`domain_id`)
+				SET
+					`t1`.`mail_quota` = `t2`.`nb_mailboxes`
+				WHERE
+					`t1`.`mail_quota` <> 0
+				AND
+					`t1`.`mail_quota` < `t2`.`nb_mailboxes`
+			'
+		);
+	}
+
+	/**
+	 * Synchronize mailboxes quota
+	 *
+	 * @return void
+	 */
+	protected function _databaseUpdate_166()
+	{
+		$stmt = exec_query('SELECT `domain_id`, `mail_quota` FROM `domain`');
+
+		while($data = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
+			sync_mailboxes_quota($data['domain_id'], $data['mail_quota']);
+		}
 	}
 }

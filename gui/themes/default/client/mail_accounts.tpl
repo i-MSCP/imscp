@@ -85,7 +85,7 @@
 		<!-- BDP: mail_item -->
 		<tr>
 			<td>
-				<span class="icon i_mail_icon">{MAIL_ACC}</span>
+				<span class="icon i_mail_icon">{MAIL_ADDR}</span>
 				<!-- BDP: auto_respond_item -->
 				<div>
 					{TR_AUTORESPOND}:
@@ -101,10 +101,8 @@
 			<td>{MAIL_QUOTA_VALUE}</td>
 			<td>
 				<a href="{MAIL_EDIT_SCRIPT}" title="{MAIL_EDIT}" class="icon i_edit">{MAIL_EDIT}</a>
-				<a href="{MAIL_DELETE_SCRIPT}" onclick="return action_delete('{MAIL_ACC}')" title="{MAIL_DELETE}" class="icon i_delete">{MAIL_DELETE}</a>
-				<!-- BDP: quota_link -->
-				<a href="{MAIL_QUOTA_SCRIPT}" title="{MAIL_QUOTA}" class="icon i_edit">{MAIL_QUOTA}</a>
-				<!-- EDP: quota_link -->
+				<a href="{MAIL_DELETE_SCRIPT}" onclick="return action_delete('{MAIL_ADDR}')" title="{MAIL_DELETE}"
+				   class="icon i_delete">{MAIL_DELETE}</a>
 			</td>
 			<td><label><input type="checkbox" name="id[]" value="{DEL_ITEM}"{DISABLED_DEL_ITEM} /></label></td>
 		</tr>

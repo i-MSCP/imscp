@@ -18,7 +18,7 @@
 <!-- EDP: admin_message -->
 
 <!-- BDP: admin_list -->
-<table>
+<table class="firstColFixed">
 	<thead>
 	<tr>
 		<th>{TR_ADMIN_USERNAME}</th>
@@ -57,7 +57,7 @@
 <!-- EDP: rsl_message -->
 
 <!-- BDP: rsl_list -->
-<table>
+<table class="firstColFixed">
 	<thead>
 	<tr>
 		<th>{TR_RSL_USERNAME}</th>

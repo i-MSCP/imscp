@@ -198,7 +198,6 @@ function mebibyteHuman($value, $unit = null)
  */
 function translate_limit_value($value, $autosize = false, $to = null)
 {
-
 	$trEnabled = '<span style="color:green">' . tr('Enabled') . '</span>';
 	$trDisabled = '<span style="color:red">' . tr('Disabled') . '</span>';
 
@@ -213,12 +212,12 @@ function translate_limit_value($value, $autosize = false, $to = null)
 		case '_no_':
 		case 'no':
 			return $trDisabled;
-		case '_full_':
-			return tr('Domain and SQL databases');
-		case '_dmn_':
-			return tr('Web files only');
-		case '_sql_':
-			return tr('SQL databases only');
+		case 'full':
+			return '<span style="color:green">' . tr('Domain and SQL databases') . '</span>';
+		case 'dmn':
+			return '<span style="color:green">' . tr('Web files only') . '</span>';
+		case 'sql':
+			return '<span style="color:green">' . tr('SQL databases only') . '</span>';
 		default:
 			return (!$autosize) ? $value : mebibyteHuman($value, $to);
 	}

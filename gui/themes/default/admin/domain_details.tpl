@@ -88,6 +88,11 @@
 		<td>{VL_MAIL_ACCOUNTS_LIMIT}</td>
 	</tr>
 	<tr>
+		<td>{TR_MAIL_QUOTA}</td>
+		<td>{VL_MAIL_QUOTA_USED}</td>
+		<td>{VL_MAIL_QUOTA_LIMIT}</td>
+	</tr>
+	<tr>
 		<td>{TR_FTP_ACCOUNTS}</td>
 		<td>{VL_FTP_ACCOUNTS_USED}</td>
 		<td>{VL_FTP_ACCOUNTS_LIMIT}</td>

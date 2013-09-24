@@ -54,6 +54,10 @@
 		<td>{MAIL_ACCOUNTS_FEATURE_STATUS}</td>
 	</tr>
 	<tr>
+		<td>{TR_MAIL_QUOTA}</td>
+		<td>{EMAIL_QUOTA_STATUS}</td>
+	</tr>
+	<tr>
 		<td>{TR_SQL_DATABASES_FEATURE}</td>
 		<td>{SQL_DATABASE_FEATURE_STATUS}</td>
 	</tr>

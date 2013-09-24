@@ -45,41 +45,38 @@
  */
 function client_deleteMail($mailId, $dmnProps)
 {
-	$query = "SELECT `mail_addr` FROM `mail_users` WHERE `mail_id` = ? AND `domain_id` = ?";
-	$stmt = exec_query($query, array($mailId, $dmnProps['domain_id']));
+	$stmt = exec_query(
+		'SELECT `mail_addr` FROM `mail_users` WHERE `mail_id` = ? AND `domain_id` = ?',
+		array($mailId, $dmnProps['domain_id'])
+	);
 
 	if ($stmt->rowCount()) {
 		$mailAddr = $stmt->fields['mail_addr'];
 
-		// Check for catchall
-		$query = '
-			SELECT
-				`mail_id`
-			FROM
-				`mail_users`
-			WHERE
-				`mail_acc` = ? OR `mail_acc` LIKE ? OR `mail_acc` LIKE ? OR `mail_acc` LIKE ?
-			LIMIT
-				1
-		';
-		$stmt = exec_query($query, array($mailAddr, "$mailAddr,%", "%,$mailAddr,%", "%,$mailAddr"));
-
-		if ($stmt->rowCount()) {
-			throw new iMSCP_Exception(tr('Please first, delete all catchall linked to this Email account.'), 403);
-		}
-
 		/** @var iMSCP_Config_Handler_File $cfg */
 		$cfg = iMSCP_Registry::get('config');
+		$toDeleteStatus = $cfg['ITEM_TODELETE_STATUS'];
 
 		iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onBeforeDeleteMail, array('mailId' => $mailId));
 
-		$query = "UPDATE `mail_users` SET `status` = ? WHERE `mail_id` = ?";
-		exec_query($query, array($cfg->ITEM_TODELETE_STATUS, $mailId));
+		exec_query('UPDATE `mail_users` SET `status` = ? WHERE `mail_id` = ?', array($toDeleteStatus, $mailId));
 
 		if (isset($cfg['PO_SERVER']) && $cfg['PO_SERVER'] == 'dovecot') {
-			$query = 'DELETE FROM `quota_dovecot` WHERE `username` = ?';
-			exec_query($query, $mailAddr);
+			exec_query('DELETE FROM `quota_dovecot` WHERE `username` = ?', $mailAddr);
 		}
+
+		// Schedule deletetion of all catchall which belong to the mail account
+		exec_query(
+			'
+				UPDATE
+					`mail_users`
+				SET
+					`status` = ?
+				WHERE
+					`mail_acc` = ? OR `mail_acc` LIKE ? OR `mail_acc` LIKE ? OR `mail_acc` LIKE ?
+			',
+			array($toDeleteStatus, $mailAddr, "$mailAddr,%", "%,$mailAddr,%", "%,$mailAddr")
+		);
 
 		delete_autoreplies_log_entries($mailAddr);
 
@@ -147,7 +144,7 @@ if (customerHasFeature('mail') && isset($_REQUEST['id'])) {
 			} elseif ($e->getCode() == 400) {
 				showBadRequestErrorPage();
 			} else {
-				set_page_message(tr('An unexpected error occured. Please contact your administrator'), 'error');
+				set_page_message(tr('An unexpected error occured. Please contact your reseller.'), 'error');
 			}
 		}
 	} else {

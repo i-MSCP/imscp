@@ -1,276 +1,315 @@
 <?php
 /**
  * i-MSCP - internet Multi Server Control Panel
+ * Copyright (C) 2010-2013 by i-MSCP Team
  *
- * The contents of this file are subject to the Mozilla Public License
- * Version 1.1 (the "License"); you may not use this file except in
- * compliance with the License. You may obtain a copy of the License at
- * http://www.mozilla.org/MPL/
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
  *
- * Software distributed under the License is distributed on an "AS IS"
- * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
- * License for the specific language governing rights and limitations
- * under the License.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- * The Original Code is "VHCS - Virtual Hosting Control System".
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
- * The Initial Developer of the Original Code is moleSoftware GmbH.
- * Portions created by Initial Developer are Copyright (C) 2001-2006
- * by moleSoftware GmbH. All Rights Reserved.
- *
- * Portions created by the ispCP Team are Copyright (C) 2006-2010 by
- * isp Control Panel. All Rights Reserved.
- *
- * Portions created by the i-MSCP Team are Copyright (C) 2010-2013 by
- * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
- *
- * @category    i-MSCP
+ * @category    iMSCP
  * @package     iMSCP_Core
- * @subpackage  Client
- * @copyright   2001-2006 by moleSoftware GmbH
- * @copyright   2006-2010 by ispCP | http://isp-control.net
- * @copyright   2010-2013 by i-MSCP | http://i-mscp.net
- * @author      ispCP Team
- * @author      i-MSCP Team
- * @link        http://i-mscp.net
+ * @subpackage  client
+ * @copyright   2010-2013 by i-MSCP Team
+ * @author      Laurent Declercq <l.declercq@nuxwin.com>
+ * @link        http://www.i-mscp.net i-MSCP Home Site
+ * @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
  */
 
 /***********************************************************************************************************************
- * script functions
+ * Functions
  */
 
 /**
- * Normalize forward email addresses list.
+ * Get email account data
  *
- * @access private
- * @throws iMSCP_Exception
- * @param string|array $forwardAddresses String containings email forward addresses, each separated by a line break,
- *                                       space or comma or an indexed array where each value is an email forward address
- * @param string $convertTo Tell in which format the forward email addresses must be  converted (decode_idna|encode_idna)
- * @return array Forward email addresses
+ * @param int $mailId Mail account unique identifier
+ * @return mixed
  */
-function _client_normalizeForwardAddresses($forwardAddresses, $convertTo = 'decode_idna')
+function client_getEmailAccountData($mailId)
 {
-	if (!is_array($forwardAddresses)) {
-		$forwardAddresses = array_unique(
-			preg_split('/[\n\s,]+/', trim($forwardAddresses), 0, PREG_SPLIT_NO_EMPTY));
-	}
+	static $mailData = null;
 
-	if ($convertTo != 'decode_idna' && $convertTo != 'encode_idna') {
-		throw new iMSCP_Exception('Wrong value for $convertTo argument.');
-	}
+	if (null === $mailData) {
+		$mainDmnProps = get_domain_default_props($_SESSION['user_id']);
 
-	foreach ($forwardAddresses as &$forwardAddress) {
-		if (($pos = strrpos($forwardAddress, '@')) !== false) {
-			$forwardAddress = substr($forwardAddress, 0, $pos + 1) .
-				$convertTo(substr($forwardAddress, $pos + 1));
+		$stmt = exec_query(
+			'SELECT * FROM mail_users WHERE mail_id = ? AND domain_id = ?', array($mailId, $mainDmnProps['domain_id'])
+		);
+
+		if (!$stmt->rowCount()) {
+			showBadRequestErrorPage();
 		}
+
+		$mailData = $stmt->fetchRow(PDO::FETCH_ASSOC);
 	}
 
-	return $forwardAddresses;
+	return $mailData;
 }
 
 /**
- * Gets mail account data.
+ * Edit mail account
  *
- * Note: For performance reasons, the data are retrieved once.
- *
- * @param int $mailAccountId Mail account unique identifier
- * @return array Mail account data
- */
-function client_getMailAccountData($mailAccountId)
-{
-	static $mailAccountData = null;
-
-	if (null === $mailAccountData) {
-		$domainProperties = get_domain_default_props($_SESSION['user_id']);
-
-		$query = '
-			SELECT
-				`t1`.*, t2.`domain_id`
-			FROM
-				`mail_users` `t1`, `domain` `t2`
-			WHERE
-				`t1`.`mail_id` = ?
-			AND
-				`t2`.`domain_id` = t1.`domain_id`
-			AND
-				`t2`.`domain_name` = ?
-		';
-		$stmt = exec_query($query, array($mailAccountId, $domainProperties['domain_name']));
-
-		if ($stmt->rowCount()) {
-			$mailAccountData = $stmt->fetchRow();
-		} else {
-			set_page_message(tr('Email account not found.'), 'error');
-			redirectTo('mail_accounts.php');
-			exit; // Useless but avoid IDE warning about possible undefined variable
-		}
-
-		if (!empty($_POST)) {
-			// Forward addresses data
-			if (isset($_POST['forwardAccount']) || isset($_POST['forwardList'])) {
-				$mailAccountData['mail_forward_previous'] = _client_normalizeForwardAddresses(
-					$mailAccountData['mail_forward'], 'encode_idna');
-
-				$mailAccountData['mail_forward'] = _client_normalizeForwardAddresses(
-					clean_input($_POST['forwardList']), 'encode_idna');
-			} else {
-				$mailAccountData['mail_forward'] = '_no_';
-			}
-
-			// Password data
-			if ($mailAccountData['mail_pass'] != '_no_' &&
-				(!empty($_POST['password']) || !empty($_POST['passwordConfirmation']))
-			) {
-				$mailAccountData['mail_pass'] = clean_input($_POST['password']);
-				$mailAccountData['mail_pass_confirmation'] = clean_input($_POST['passwordConfirmation']);
-			}
-		}
-	}
-
-	return $mailAccountData;
-}
-
-/**
- * Update mail account.
- *
- * @param array $mailAccountData Mail account data
  * @return bool TRUE on success, FALSE otherwise
  */
-function client_UpdateMailAccount($mailAccountData)
+function client_editMailAccount()
 {
-	/** @var $cfg iMSCP_Config_Handler_File */
-	$cfg = iMSCP_Registry::get('config');
-
-	$passwordUpdate = $forwardAddressesUpdate = false;
-
-	// Password validation
-	if ($mailAccountData['mail_pass'] != '_no_' && (!empty($_POST['password']) || !empty($_POST['passwordConfirmation']))) {
-		if ($mailAccountData['mail_pass'] != $mailAccountData['mail_pass_confirmation']) {
-			set_page_message(tr("Passwords do not match."), 'error');
-		}
-
-		checkPasswordSyntax($mailAccountData['mail_pass'], "/[`\xb4'\"\\\\\x01-\x1f\015\012|<>^$]/i");
-		$passwordUpdate = true;
-	}
-
-	// Forward addresses validation
-	if ($mailAccountData['mail_forward'] != '_no_' &&
-		$mailAccountData['mail_forward'] !== $mailAccountData['mail_forward_previous']
+	if (
+		isset($_POST['password']) && isset($_POST['password_rep']) && isset($_POST['quota']) &&
+		isset($_POST['forward_list'])
 	) {
-		if (!empty($mailAccountData['mail_forward'])) {
-			foreach ($mailAccountData['mail_forward'] as $forwardAddress) {
-				if (!chk_email($forwardAddress)) {
-					set_page_message(tr('Wrong syntax for the %s forward email address.', '<strong>' . decode_idna($forwardAddress) . '</strong>'), 'error');
-				} elseif ($forwardAddress == $mailAccountData['mail_addr']) {
-					set_page_message(tr('You cannot forward %s on himself.', '<strong>' . $mailAccountData['mail_addr'] . '</strong>'), 'error');
-				}
-			}
+		$mailData = client_getEmailAccountData(clean_input($_GET['id']));
+		$mainDmnProps = get_domain_default_props($_SESSION['user_id']);
+		$password = $forwardList = '_no_';
+		$mailType = '';
+		$quota = null;
 
-			// Check if the mail type doesn't contain xxx_forward and append it if needed
-			if (strpos($mailAccountData['mail_type'], '_forward') === false) {
-				if ($mailAccountData['mail_type'] == MT_NORMAL_MAIL) {
-					$mailAccountData['mail_type'] .= ',' . MT_NORMAL_FORWARD;
-				} elseif ($mailAccountData['mail_type'] == MT_ALIAS_MAIL) {
-					$mailAccountData['mail_type'] .= ',' . MT_ALIAS_FORWARD;
-				} elseif ($mailAccountData['mail_type'] == MT_SUBDOM_MAIL) {
-					$mailAccountData['mail_type'] .= ',' . MT_SUBDOM_FORWARD;
-				} elseif ($mailAccountData['mail_type'] == MT_ALSSUB_MAIL) {
-					$mailAccountData['mail_type'] .= ',' . MT_ALSSUB_FORWARD;
-				}
-			}
+		if(preg_match('/^(.*?)_(?:mail|forward)/', $mailData['mail_type'], $match)) {
+			$domainType = $match[1];
 		} else {
-			set_page_message(tr('You must enter a least one forward address.'), 'error');
+			throw new iMSCP_Exception('Unable to determine mail type');
 		}
 
-		$forwardAddressesUpdate = true;
-	}
+		$mailTypeNormal = (isset($_POST['account_type']) && in_array($_POST['account_type'], array('1', '3')));
+		$mailTypeForward = (isset($_POST['account_type']) && in_array($_POST['account_type'], array('2', '3')));
 
-	if ($mailAccountData['mail_forward'] == '_no_') {
-		if (strpos($mailAccountData['mail_type'], '_forward') !== false) {
-			// Check if mail type was a forward type and remove it
-			$mailAccountData['mail_type'] = preg_replace(
-				'/,[a-z]+_forward$/', '', $mailAccountData['mail_type']);
-
-			$forwardAddressesUpdate = true;
+		if (!$mailTypeNormal && !$mailTypeForward) {
+			showBadRequestErrorPage();
 		}
+
+		$mailAddr = $mailData['mail_addr'];
+
+		if ($mailTypeNormal) {
+			// Check for pasword
+			$password = clean_input($_POST['password']);
+			$password_rep = clean_input($_POST['password_rep']);
+
+			if ($mailData['mail_pass'] == '_no_' || $password != '' || $password_rep != '') {
+				if ($password == '') {
+					set_page_message(tr('Password is missing.'), 'error');
+					return false;
+				} elseif ($password_rep == '') {
+					set_page_message(tr('You must confirm your password.'), 'error');
+					return false;
+				} elseif ($password !== $password_rep) {
+					set_page_message(tr("Passwords do not match."), 'error');
+					return false;
+				} elseif (!checkPasswordSyntax($password, "/[`\xb4'\"\\\\\x01-\x1f\015\012|<>^$]/i")) {
+					return false;
+				}
+			} else {
+				$password = $mailData['mail_pass'];
+			}
+
+			// Check for quota
+			$quota = clean_input($_POST['quota']);
+
+			if (is_number($quota)) {
+				$quota *= 1048576; // MiB to Bytes
+
+				if ($mainDmnProps['mail_quota'] != '0') {
+					if ($quota == '0') {
+						set_page_message(tr('Incorrect Email quota.'), 'error');
+						return false;
+					}
+
+					$stmt = exec_query(
+						'SELECT SUM(`quota`) AS `quota` FROM `mail_users` WHERE `domain_id` = ? AND `quota` IS NOT NULL',
+						$mainDmnProps['domain_id']
+					);
+
+					$quotaLimit = floor($mainDmnProps['mail_quota'] - ($stmt->fields['quota'] - $mailData['quota']));
+
+					if ($quota > $quotaLimit) {
+						set_page_message(
+							tr('Email quota cannot be bigger than %s', bytesHuman($quotaLimit, 'MiB')), 'error'
+						);
+						return false;
+					}
+				}
+			} else {
+				set_page_message(tr('Email quota must be a number.'), 'error');
+				return false;
+			}
+
+			switch ($domainType) {
+				case 'normal':
+					$mailType = MT_NORMAL_MAIL;
+					break;
+				case 'subdom':
+					$mailType = MT_SUBDOM_MAIL;
+					break;
+				case 'alias':
+					$mailType = MT_ALIAS_MAIL;
+					break;
+				case 'alssub':
+					$mailType = MT_ALSSUB_MAIL;
+			}
+		}
+
+		if ($mailTypeForward) {
+			// Check forward list
+			$forwardList = clean_input($_POST['forward_list']);
+
+			if ($forwardList == '') {
+				set_page_message(tr('Forward list is empty.'), 'error');
+				return false;
+			}
+
+			$forwardList = preg_split("/[\n,]+/", $forwardList);
+
+			foreach ($forwardList as $key => &$forwardEmailAddr) {
+				$forwardEmailAddr = encode_idna(trim($forwardEmailAddr));
+
+				if ($forwardEmailAddr == '') {
+					unset($forwardList[$key]);
+				} elseif (!chk_email($forwardEmailAddr)) {
+					set_page_message(tr('Wrong mail syntax in forward list.'), 'error');
+					return false;
+				} elseif ($forwardEmailAddr == $mailAddr) {
+					set_page_message(tr('You cannot forward %s on itself.', $mailAddr), 'error');
+					return false;
+				}
+			}
+
+			$forwardList = implode(',', array_unique($forwardList));
+
+			switch($domainType) {
+				case 'normal':
+					$mailType .= (($mailType != '') ? ',' : '') . MT_NORMAL_FORWARD;
+					break;
+				case 'subdom':
+					$mailType .= (($mailType != '') ? ',' : '') . MT_SUBDOM_FORWARD;
+					break;
+				case 'alias':
+					$mailType .= (($mailType != '') ? ',' : '') . MT_ALIAS_FORWARD;
+					break;
+				case 'alssub':
+					$mailType .= (($mailType != '') ? ',' : '') . MT_ALSSUB_FORWARD;
+			}
+		}
+
+		// Update mail account into database
+
+		iMSCP_Events_Manager::getInstance()->dispatch(
+			iMSCP_Events::onBeforeEditMail, array('mailId' => $mailData['mail_id'])
+		);
+
+		/** @var iMSCP_Config_Handler_File $cfg */
+		$cfg = iMSCP_Registry::get('config');
+
+		$query = '
+			UPDATE
+				`mail_users`
+			SET
+				`mail_pass` = ?, `mail_forward` = ?, `mail_type` = ?, `status` = ?, `quota` = ?
+			WHERE
+				`mail_id` = ?
+		';
+		exec_query(
+			$query, array($password, $forwardList, $mailType, $cfg->ITEM_TOCHANGE_STATUS, $quota, $mailData['mail_id'])
+		);
+
+		iMSCP_Events_Manager::getInstance()->dispatch(
+			iMSCP_Events::onAfterEditMail, array('mailId' => $mailData['mail_id'])
+		);
+
+		// Schedule mail account addition
+		send_request();
+
+		write_log("{$_SESSION['user_logged']}: Updated Email account: $mailAddr", E_USER_NOTICE);
+		set_page_message(tr('Email account successfully scheduled for update.'), 'success');
 	} else {
-		// Prepare data for database insertion
-		$mailAccountData['mail_forward'] = implode(',', $mailAccountData['mail_forward']);
+		showBadRequestErrorPage();
 	}
 
-	if (!Zend_Session::namespaceIsset('pageMessages')) {
-		if ($passwordUpdate || $forwardAddressesUpdate) {
-
-			iMSCP_Events_Manager::getInstance()->dispatch(
-				iMSCP_Events::onBeforeEditMail, array('mailId' => $mailAccountData['mail_id'])
-			);
-
-			$query = "
-				UPDATE
-					`mail_users`
-				SET
-					`mail_pass` = ?, `mail_forward` = ?, `mail_type` = ?, `status` = ?
-				WHERE
-					`mail_id` = ?
-			";
-			exec_query(
-				$query,
-				array(
-					$mailAccountData['mail_pass'],
-					$mailAccountData['mail_forward'],
-					$mailAccountData['mail_type'],
-					$cfg->ITEM_TOCHANGE_STATUS,
-					$mailAccountData['mail_id']
-				)
-			);
-
-			iMSCP_Events_Manager::getInstance()->dispatch(
-				iMSCP_Events::onAfterEditMail, array('mailId' => $mailAccountData['mail_id'])
-			);
-
-			// Sending request to the i-MSCP daemon for backend process
-			send_request();
-			set_page_message(tr('Email account scheduled for update.'), 'success');
-			write_log("{$_SESSION['user_logged']}: updated email account: {$mailAccountData['mail_addr']}", E_USER_NOTICE);
-		} else {
-			set_page_message(tr("Nothing has been changed."), 'info');
-		}
-
-		return true;
-	}
-
-	return false;
+	return true;
 }
 
 /**
- * Generates edit form.
+ * Generate page
  *
- * @param iMSCP_pTemplate $tpl Template engine
- * @param array $mailAccountData Mail account data
- * @return void
+ * @param iMSCP_pTemplate $tpl
  */
-function client_generateEditForm($tpl, $mailAccountData)
+function client_generatePage($tpl)
 {
-	/** @var $cfg iMSCP_Config_Handler_File */
+	$mailId = clean_input($_GET['id']);
+	$mainDmnProps = get_domain_default_props($_SESSION['user_id']);
+	$mailData = client_getEmailAccountData($mailId);
+	list($username, $domainName) = explode('@', $mailData['mail_addr']);
+
+	$stmt = exec_query(
+		'SELECT SUM(`quota`) AS `quota` FROM `mail_users` WHERE `domain_id` = ? AND `quota` IS NOT NULL',
+		$mainDmnProps['domain_id']
+	);
+
+	$quota = $stmt->fields['quota'];
+
+	/** @var iMSCP_Config_Handler_File $cfg */
 	$cfg = iMSCP_Registry::get('config');
 
-	if ($mailAccountData['mail_pass'] == '_no_') { // Forward only mail account
-		$tpl->assign('PASSWORD_FRM', '');
+	$checked = $cfg->HTML_CHECKED;
+	$selected = $cfg->HTML_SELECTED;
+
+	$mailType = '1';
+
+	if (strpos($mailData['mail_type'], MT_NORMAL_MAIL) !== false) {
+		$mailType = '1';
+	} elseif (strpos($mailData['mail_type'], MT_SUBDOM_MAIL) !== false) {
+		$mailType = '1';
+	} elseif (strpos($mailData['mail_type'], MT_ALIAS_MAIL) !== false) {
+		$mailType = '1';
+	} elseif (strpos($mailData['mail_type'], MT_ALSSUB_MAIL) !== false) {
+		$mailType = '1';
 	}
 
-	$htmlChecked = $cfg->HTML_CHECKED;
+	if (strpos($mailData['mail_type'], MT_NORMAL_FORWARD) !== false) {
+		$mailType = ($mailType != '') ? '3' : '2';
+	} elseif (strpos($mailData['mail_type'], MT_SUBDOM_FORWARD) !== false) {
+		$mailType = ($mailType != '') ? '3' : '2';
+	} elseif (strpos($mailData['mail_type'], MT_ALIAS_FORWARD) !== false) {
+		$mailType = ($mailType != '') ? '3' : '2';
+	} elseif (strpos($mailData['mail_type'], MT_ALSSUB_FORWARD) !== false) {
+		$mailType = ($mailType != '') ? '3' : '2';
+	}
 
 	$tpl->assign(
 		array(
-			'MAIL_ID_VAL' => $mailAccountData['mail_id'],
-			'MAIL_ADDRESS_VAL' => tohtml($mailAccountData['mail_addr']),
-			'TR_MAIL_ACCOUNT' => tr('Email account'),
-			'FORWARD_ACCOUNT_CHECKED' => ($mailAccountData['mail_forward'] != '_no_') ? $htmlChecked : '',
-			'FORWARD_LIST_VAL' => ($mailAccountData['mail_forward'] != '_no_' && $mailAccountData['mail_forward'] != '')
-				? tohtml(implode("\n", _client_normalizeForwardAddresses($mailAccountData['mail_forward'], 'decode_idna')))
-				: ''
+			'MAIL_ID' => tohtml($mailId),
+			'USERNAME' => isset($_POST['username']) ? tohtml($_POST['username']) : tohtml($username),
+			'NORMAL_CHECKED' => (isset($_POST['account_type']) && $_POST['account_type'] == '1')
+				? $checked : (($mailType == '1') ? $checked : ''),
+			'FORWARD_CHECKED' => (isset($_POST['account_type']) && $_POST['account_type'] == '2')
+				? $checked : (($mailType == '2') ? $checked : ''),
+			'NORMAL_FORWARD_CHECKED' => (isset($_POST['account_type']) && $_POST['account_type'] == '3')
+				? $checked : (($mailType == '3') ? $checked : ''),
+			'PASSWORD' => isset($_POST['password']) ? tohtml($_POST['password']) : '',
+			'PASSWORD_REP' => isset($_POST['password_rep']) ? tohtml($_POST['password_rep']) : '',
+			'TR_QUOTA' => ($mainDmnProps['mail_quota'] == '0')
+				? tr('Quota in MiB (0 for unlimited)')
+				: tr('Quota in MiB (Max: %s)', bytesHuman($mainDmnProps['mail_quota'] - ($quota - $mailData['quota']), 'MiB')),
+			'QUOTA' => isset($_POST['quota']) ? tohtml($_POST['quota']) : ($quota !== NULL ? floor($mailData['quota'] / 1048576) : ''),
+			'FORWARD_LIST' => isset($_POST['forward_list'])
+				? tohtml($_POST['forward_list'])
+				: ($mailData['mail_forward'] != '_no_' ? tohtml($mailData['mail_forward']) : '')
+		)
+	);
+
+	$tpl->assign(
+		array(
+			'DOMAIN_NAME' => tohtml($domainName),
+			'DOMAIN_NAME_UNICODE' => tohtml(decode_idna($domainName)),
+			'DOMAIN_NAME_SELECTED' => $selected,
 		)
 	);
 }
@@ -280,60 +319,57 @@ function client_generateEditForm($tpl, $mailAccountData)
  */
 
 // Include core library
-require_once 'imscp-lib.php';
+require 'imscp-lib.php';
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
 
 check_login('user');
 
-customerHasFeature('mail') or showBadRequestErrorPage();
+if (isset($_GET['id']) && customerHasFeature('mail')) {
+	if (!empty($_POST)) {
+		if (client_editMailAccount()) {
+			redirectTo('mail_accounts.php');
+		}
+	}
 
-/** @var $cfg iMSCP_Config_Handler_File */
-$cfg = iMSCP_Registry::get('config');
+	$tpl = new iMSCP_pTemplate();
+	$tpl->define_dynamic(
+		array(
+			'layout' => 'shared/layouts/ui.tpl',
+			'page' => 'client/mail_edit.tpl',
+			'page_message' => 'layout'
+		)
+	);
 
-if (isset($_GET['id'])) {
-	$mailAccountData = client_getMailAccountData((int)$_GET['id']);
+	$tpl->assign(
+		array(
+			'TR_PAGE_TITLE' => tr('Client / Email / Edit Email Account'),
+			'ISP_LOGO' => layout_getUserLogo(),
+			'TR_MAIl_ACCOUNT_DATA' => tr('Email account data'),
+			'TR_USERNAME' => tr('Username'),
+			'TR_DOMAIN_NAME' => tr('Domain name'),
+			'TR_MAIL_ACCOUNT_TYPE' => tr('Mail account type'),
+			'TR_NORMAL_MAIL' => tr('Normal'),
+			'TR_FORWARD_MAIL' => tr('Forward'),
+			'TR_FORWARD_NORMAL_MAIL' => tr('Normal + Forward'),
+			'TR_PASSWORD' => tr('Password'),
+			'TR_PASSWORD_REPEAT' => tr('Password confirmation'),
+			'TR_FORWARD_TO' => tr('Forward to'),
+			'TR_FWD_HELP' => tr('Separate multiple email addresses by comma or a line-break.'),
+			'TR_UPDATE' => tr('Update'),
+			'TR_CANCEL' => tr('Cancel')
+		)
+	);
+
+	client_generatePage($tpl, $_SESSION['user_id']);
+	generateNavigation($tpl);
+	generatePageMessage($tpl);
+
+	$tpl->parse('LAYOUT_CONTENT', 'page');
+
+	iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, array('templateEngine' => $tpl));
+
+	$tpl->prnt();
 } else {
 	showBadRequestErrorPage();
 }
-
-if (!empty($_POST) && client_updateMailAccount($mailAccountData)) {
-	redirectTo('mail_accounts.php');
-}
-
-$tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic(
-	array(
-		'layout' => 'shared/layouts/ui.tpl',
-		'page' => 'client/mail_edit.tpl',
-		'page_message' => 'layout',
-		'logged_frm' => 'page',
-		'password_frm' => 'page'
-	)
-);
-
-$tpl->assign(
-	array(
-		'TR_PAGE_TITLE' => tr('Client / Email / Overview /  Edit Email Account'),
-		'ISP_LOGO' => layout_getUserLogo(),
-		'TR_PASSWORD' => tr('Password'),
-		'TR_PASSWORD_CONFIRMATION' => tr('Password confirmation'),
-		'TR_FORWARD_ACCOUNT' => tr('Forward account'),
-		'TR_FORWARD_TO' => tr('Forward to'),
-		'TR_YES' => tr('yes'),
-		'TR_NO' => tr('no'),
-		'TR_FWD_HELP' => tr('Separate multiple email addresses with a space, a comma or a line-break.'),
-		'TR_UPDATE' => tr('Update'),
-		'TR_CANCEL' => tr('Cancel')
-	)
-);
-
-generateNavigation($tpl);
-client_generateEditForm($tpl, $mailAccountData);
-generatePageMessage($tpl);
-
-$tpl->parse('LAYOUT_CONTENT', 'page');
-
-iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, array('templateEngine' => $tpl));
-
-$tpl->prnt();

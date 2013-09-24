@@ -40,6 +40,27 @@
  */
 
 /**
+ * Generate mail quota limit msg
+ *
+ * @return array
+ */
+function reseller_gen_mail_quota_limit_mgs()
+{
+	$mainDmnProps = get_domain_default_props($_SESSION['user_id']);
+
+	$stmt = exec_query(
+		'SELECT SUM(`quota`) AS `quota` FROM `mail_users` WHERE `domain_id` = ? AND `quota` IS NOT NULL',
+		$mainDmnProps['domain_id']
+	);
+
+	if ($mainDmnProps['mail_quota'] == 0) {
+		return array(bytesHuman($stmt->fields['quota']), tr('Unlimited'));
+	} else {
+		return array(bytesHuman($stmt->fields['quota']), bytesHuman($mainDmnProps['mail_quota']));
+	}
+}
+
+/**
  * Generates page
  *
  * @param iMSCP_pTemplate $tpl Template instance engine
@@ -124,6 +145,9 @@ function admin_generatePage($tpl, $domainId)
 	$trafficUsagePercent = make_usage_vals($trafficUsageBytes, $trafficLimitBytes);
 	$diskspaceUsagePercent = make_usage_vals($domainProperties['domain_disk_usage'], $diskspaceLimitBytes);
 
+	// Get Email quota info
+	list($quota, $quotaLimit) = reseller_gen_mail_quota_limit_mgs($domainId);
+
 	# Features
 
 	$trEnabled = '<span style="color:green">' . tr('Enabled') . '</span>';
@@ -150,6 +174,8 @@ function admin_generatePage($tpl, $domainId)
 			'VL_DISK_LIMIT' => bytesHuman($diskspaceLimitBytes),
 			'VL_MAIL_ACCOUNTS_USED' => get_domain_running_mail_acc_cnt($domainId),
 			'VL_MAIL_ACCOUNTS_LIMIT' => translate_limit_value($domainProperties['domain_mailacc_limit']),
+			'VL_MAIL_QUOTA_USED' => $quota,
+			'VL_MAIL_QUOTA_LIMIT' => $quotaLimit,
 			'VL_FTP_ACCOUNTS_USED' => get_customer_running_ftp_acc_cnt($domainAdminId),
 			'VL_FTP_ACCOUNTS_LIMIT' => translate_limit_value($domainProperties['domain_ftpacc_limit']),
 			'VL_SQL_DB_ACCOUNTS_USED' => get_domain_running_sqld_acc_cnt($domainId),
@@ -215,6 +241,7 @@ $tpl->assign(
 		'TR_SUBDOM_ACCOUNTS' => tr('Subdomains'),
 		'TR_DOMALIAS_ACCOUNTS' => tr('Domain aliases'),
 		'TR_MAIL_ACCOUNTS' => tr('Email accounts'),
+		'TR_MAIL_QUOTA' => tr('Email quota'),
 		'TR_FTP_ACCOUNTS' => tr('FTP accounts'),
 		'TR_SQL_DB_ACCOUNTS' => tr('SQL databases'),
 		'TR_SQL_USER_ACCOUNTS' => tr('SQL users'),

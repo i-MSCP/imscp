@@ -12,6 +12,7 @@
 			}
 		}).trigger('change');
 	});
+	/* ]]> */
 </script>
 
 <form name="create_catchall_frm" method="post" action="mail_catchall_add.php">

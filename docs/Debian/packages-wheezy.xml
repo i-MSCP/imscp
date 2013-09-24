@@ -107,6 +107,7 @@
         <package>php-pear</package>
         <package>php5-gd</package>
         <package>php-gettext</package>
+        <package>php5-imap</package>
         <package>php5-intl</package>
         <package>php5-mcrypt</package>
         <package>php5-mysql</package>

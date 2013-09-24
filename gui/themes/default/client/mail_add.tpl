@@ -1,54 +1,35 @@
 
 <script type="text/javascript">
 	/* <![CDATA[ */
-	function changeType() {
-		if (document.forms[0].elements['mail_type_normal'].checked == true) {
-			document.forms[0].pass.disabled = false;
-			document.forms[0].pass_rep.disabled = false;
-		} else {
-			document.forms[0].pass.disabled = true;
-			document.forms[0].pass_rep.disabled = true;
-		}
-
-		document.forms[0].forward_list.disabled = document.forms[0].elements['mail_type_forward'].checked != true;
-	}
-
-	function begin_js() {
-		if (document.getElementsByName('als_id').length !== 0) {
-			document.forms[0].als_id.disabled = !document.getElementById('dmn_type2').checked;
-		}
-
-		if (document.getElementsByName('sub_id').length !== 0) {
-			document.forms[0].sub_id.disabled = !document.getElementById('dmn_type3').checked;
-		}
-
-		if (document.getElementsByName('als_sub_id').length !== 0) {
-			document.forms[0].als_sub_id.disabled = !document.getElementById('dmn_type4').checked;
-		}
-
-		changeType();
-		document.forms[0].username.focus();
-	}
-
-	function changeDom(what) {
-		if (document.getElementsByName('als_id').length !== 0) {
-			document.forms[0].als_id.disabled = what != "alias";
-		}
-
-		if (document.getElementsByName('sub_id').length !== 0) {
-			document.forms[0].sub_id.disabled = what != "subdom";
-		}
-
-		if (document.getElementsByName('als_sub_id').length !== 0) {
-			document.forms[0].als_sub_id.disabled = what != "als_subdom";
-		}
-	}
-
-	$(window).load(function (){ begin_js(); });
+	$(document).ready(function () {
+		$("#normal, #forward, #normal_forward").on('change', function() {
+			if($(this).val() == '1') {
+				if($(this).is(':checked')) {
+					$("#tr_password, #tr_password_rep, #tr_quota").show();
+					$("#tr_forward_list").hide();
+				} else {
+					$("#tr_password, #tr_password_rep, #tr_quota").hide();
+				}
+			} else if($(this).val() == '2') {
+				if($(this).is(":checked")) {
+					$("#tr_forward_list").show();
+					$("#tr_password, #tr_password_rep, #tr_quota").hide();
+				} else {
+					$("#tr_forward_list").hide();
+				}
+			} else {
+				if($(this).is(':checked')) {
+					$("#tr_password, #tr_password_rep, #tr_quota").show();
+					$("#tr_forward_list").show();
+				}
+			}
+		}).trigger('change');
+	});
 	/* ]]> */
 </script>
 
-<form name="client_mail_add" action="mail_add.php" method="post" id="client_mail_add">
+<!-- BDP: mail_account -->
+<form name="client_mail_add" action="mail_add.php" method="post">
 	<table class="firstColFixed">
 		<thead>
 		<tr>
@@ -57,92 +38,47 @@
 		</thead>
 		<tbody>
 		<tr>
+			<td>{TR_MAIL_ACCOUNT_TYPE}</td>
+			<td>
+				<div class="radio">
+					<input type="radio" name="account_type" id="normal" value="1"{NORMAL_CHECKED}/>
+					<label for="normal">{TR_NORMAL_MAIL}</label>
+					<input type="radio" name="account_type" id="forward" value="2"{FORWARD_CHECKED}/>
+					<label for="forward">{TR_FORWARD_MAIL}</label>
+					<input type="radio" name="account_type" id="normal_forward" value="3"{NORMAL_FORWARD_CHECKED}/>
+					<label for="normal_forward">{TR_FORWARD_NORMAL_MAIL}</label>
+				</div>
+			</td>
+		</tr>
+		<tr>
 			<td><label for="username">{TR_USERNAME}</label></td>
 			<td><input type="text" name="username" id="username" value="{USERNAME}"/></td>
 		</tr>
 		<tr>
+			<td><label for="domain_name">{TR_DOMAIN_NAME}</label></td>
 			<td>
-				<input type="radio" name="dmn_type" id="dmn_type1" value="dmn" {MAIL_DMN_CHECKED}
-					   onclick="changeDom('real');"/>
-				<label for="dmn_type1">{TR_TO_MAIN_DOMAIN}</label>
+				<select name="domain_name" id="domain_name">
+					<!-- BDP: domain_name_item -->
+					<option value="{DOMAIN_NAME}"{DOMAIN_NAME_SELECTED}>{DOMAIN_NAME_UNICODE}</option>
+					<!-- EDP: domain_name_item -->
+				</select>
 			</td>
-			<td>{DOMAIN_NAME}</td>
 		</tr>
-		<!-- BDP: to_alias_domain -->
-		<tr>
+		<tr id="tr_password">
+			<td><label for="password">{TR_PASSWORD}</label></td>
+			<td><input id="password" type="password" name="password" value="{PASSWORD}" autocomplete="off"/></td>
+		</tr>
+		<tr id="tr_password_rep">
+			<td><label for="password_rep">{TR_PASSWORD_REPEAT}</label></td>
 			<td>
-				<input type="radio" name="dmn_type" id="dmn_type2" value="als" {MAIL_ALS_CHECKED}
-					   onclick="changeDom('alias');"/>
-				<label for="dmn_type2">{TR_TO_DMN_ALIAS}</label>
-			</td>
-			<td>
-				<label>
-					<select name="als_id">
-						<!-- BDP: als_list -->
-						<option value="{ALS_ID}"{ALS_SELECTED}>{ALS_NAME}</option>
-						<!-- EDP: als_list -->
-					</select>
-				</label>
+				<input id="password_rep" type="password" name="password_rep" value="{PASSWORD_REP}" autocomplete="off"/>
 			</td>
 		</tr>
-		<!-- EDP: to_alias_domain -->
-		<!-- BDP: to_subdomain -->
-		<tr>
-			<td>
-				<input type="radio" name="dmn_type" id="dmn_type3" value="sub" {MAIL_SUB_CHECKED}
-					   onclick="changeDom('subdom');"/>
-				<label for="dmn_type3">{TR_TO_SUBDOMAIN}</label>
-			</td>
-			<td>
-				<label>
-					<select name="sub_id">
-						<!-- BDP: sub_list -->
-						<option value="{SUB_ID}"{SUB_SELECTED}>{SUB_NAME}</option>
-						<!-- EDP: sub_list -->
-					</select>
-				</label>
-			</td>
+		<tr id="tr_quota">
+			<td><label for="quota">{TR_QUOTA}</label></td>
+			<td><input name="quota" id="quota" type="text" value="{QUOTA}"/></td>
 		</tr>
-		<!-- EDP: to_subdomain -->
-		<!-- BDP: to_alias_subdomain -->
-		<tr>
-			<td>
-				<input type="radio" name="dmn_type" id="dmn_type4" value="als_sub" {MAIL_ALS_SUB_CHECKED}
-					   onclick="changeDom('als_subdom');"/>
-				<label for="dmn_type4">{TR_TO_ALS_SUBDOMAIN}</label>
-			</td>
-			<td>
-				<label>
-					<select name="als_sub_id">
-						<!-- BDP: als_sub_list -->
-						<option value="{ALS_SUB_ID}"{ALS_SUB_SELECTED}>{ALS_SUB_NAME}</option>
-						<!-- EDP: als_sub_list -->
-					</select>
-				</label>
-			</td>
-		</tr>
-		<!-- EDP: to_alias_subdomain -->
-		<tr>
-			<td colspan="2">
-				<label><input type="checkbox" name="mail_type_normal" value="1"
-					   onclick="changeType();"{NORMAL_MAIL_CHECKED} />{TR_NORMAL_MAIL}</label>
-			</td>
-		</tr>
-		<tr>
-			<td><label for="pass">{TR_PASSWORD}</label></td>
-			<td><input id="pass" type="password" name="pass" value="" autocomplete="off"/></td>
-		</tr>
-		<tr>
-			<td><label for="pass_rep">{TR_PASSWORD_REPEAT}</label></td>
-			<td><input id="pass_rep" type="password" name="pass_rep" value="" autocomplete="off"/></td>
-		</tr>
-		<tr>
-			<td colspan="2">
-				<label><input type="checkbox" name="mail_type_forward" value="1"{FORWARD_MAIL_CHECKED}
-					   onclick="changeType();"/>{TR_FORWARD_MAIL}</label>
-			</td>
-		</tr>
-		<tr>
+		<tr id="tr_forward_list">
 			<td>
 				<label for="forward_list">{TR_FORWARD_TO}</label>
 				<span class="icon i_help" id="fwd_help" title="{TR_FWD_HELP}"></span>
@@ -153,8 +89,8 @@
 	</table>
 
 	<div class="buttons">
-		<input type="hidden" name="uaction" value="add_user"/>
 		<input type="submit" name="submit" value="{TR_ADD}"/>
 		<a href="mail_accounts.php" class="link_as_button">{TR_CANCEL}</a>
 	</div>
 </form>
+<!-- EDP: mail_account -->

@@ -338,10 +338,10 @@ function admin_checkData($phpini)
 	if (!imscp_limit_check($mailQuota, null)) {
 		set_page_message(tr('Wrong syntax for the mail quota value.'), 'error');
 	} elseif ($diskSpace != 0 && $mailQuota > $diskSpace) {
-		set_page_message(tr('Email quota value cannot be bigger than disk space limit.'), 'error');
+		set_page_message(tr('Email quota cannot be bigger than disk space limit.'), 'error');
 	} elseif($diskSpace != 0 && $mailQuota == 0) {
 		set_page_message(
-			tr('Email quota value cannot be unlimited. Max value is %s MiB.', $diskSpace), 'error'
+			tr('Email quota cannot be unlimited. Max value is %d MiB.', $diskSpace), 'error'
 		);
 	}
 

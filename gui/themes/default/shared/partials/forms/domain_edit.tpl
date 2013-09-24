@@ -159,7 +159,7 @@
 	<tr>
 		<td><label for="mail_quota">{TR_MAIL_QUOTA}</label></td>
 		<td><input type="text" name="mail_quota" id="mail_quota" value="{MAIL_QUOTA}"/></td>
-		<td><span style="font-size: smaller;">{TR_NO_AVAILABLE}</span></td>
+		<td><span style="font-size: smaller;">{TR_CUSTOMER_MAIL_QUOTA_COMSUPTION}</span></td>
 		<td><span style="font-size: smaller;">{TR_NO_AVAILABLE}</span></td>
 	</tr>
 	<!-- EDP: mail_accounts_limit_block -->

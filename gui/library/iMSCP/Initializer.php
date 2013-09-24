@@ -316,7 +316,7 @@ class iMSCP_Initializer
 
 				$connection = iMSCP_Database::connect(
 					$this->_config->DATABASE_USER,
-					decrypt_db_password($this->_config->DATABASE_PASSWORD),
+					decryptBlowfishCbcPassword($this->_config->DATABASE_PASSWORD),
 					$this->_config->DATABASE_TYPE,
 					$this->_config->DATABASE_HOST,
 					$this->_config->DATABASE_NAME

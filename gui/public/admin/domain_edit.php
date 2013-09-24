@@ -34,6 +34,47 @@
  */
 
 /**
+ * Get mail data
+ *
+ * @param int $domainId Domain id
+ * @param int $mailQuota Mail quota limit
+ * @return array
+ */
+function reseller_getMailData($domainId, $mailQuota)
+{
+	static $mailData = null;
+	if(null === $mailData) {
+		$stmt = exec_query(
+			'
+				SELECT
+					SUM(`quota`) AS `quota`, COUNT(`mail_id`) AS `nb_mailboxes`
+				FROM
+					`mail_users`
+				WHERE
+					`domain_id` = ? AND `quota` IS NOT NULL
+			',
+			$domainId
+		);
+
+		if ($mailQuota == 0) {
+			$mailData = array(
+				'quota_sum' => bytesHuman($stmt->fields['quota']),
+				'quota_limit' => tr('Unlimited'),
+				'nb_mailboxes' => $stmt->fields['nb_mailboxes']
+			);
+		} else {
+			$mailData = array(
+				'quota_sum' => bytesHuman($stmt->fields['quota']),
+				'quota_limit' => bytesHuman($mailQuota * 1048576),
+				'nb_mailboxes' => $stmt->fields['nb_mailboxes']
+			);
+		}
+	}
+
+	return $mailData;
+}
+
+/**
  * Return properties for the given reseller.
  *
  * @param int $resellerId Reseller id
@@ -328,6 +369,8 @@ function _admin_generateLimitsForm($tpl, &$data)
 	if ($data['max_mail_cnt'] == -1) { // Reseller has no permissions on this service
 		$tplVars['MAIL_ACCOUNTS_LIMIT_BLOCK'] = '';
 	} else {
+		$mailData = reseller_getMailData($data['domain_id'], $data['fallback_mail_quota']);
+
 		$tplVars['TR_MAIL_ACCOUNTS_LIMIT'] = tr('Email account limit') . '<br/><i>(-1 ' . tr('disabled') . ', 0 ' . tr('unlimited') . ')</i>';
 		$tplVars['MAIL_ACCOUNTS_LIMIT'] = tohtml($data['domain_mailacc_limit']);
 		$tplVars['TR_CUSTOMER_MAIL_ACCOUNTS_COMSUPTION'] = ($data['fallback_domain_mailacc_limit'] != -1) ? tohtml($data['nbMailAccounts']) . ' / ' . (($data['fallback_domain_mailacc_limit'] != 0) ? tohtml($data['fallback_domain_mailacc_limit']) : tr('Unlimited')): tr('Disabled');
@@ -335,6 +378,7 @@ function _admin_generateLimitsForm($tpl, &$data)
 
 		$tplVars['TR_MAIL_QUOTA'] = tr('Email quota [MiB]') . '<br/><i>(0 ' . tr('unlimited') . ')</i>';
 		$tplVars['MAIL_QUOTA'] = ($data['mail_quota'] != 0) ? tohtml(floor($data['mail_quota'])) : '0';
+		$tplVars['TR_CUSTOMER_MAIL_QUOTA_COMSUPTION'] = $mailData['quota_sum'] . ' / ' . $mailData['quota_limit'];
 		$tplVars['TR_NO_AVAILABLE'] = tr('No available');
 	}
 
@@ -702,13 +746,26 @@ function admin_checkAndUpdateData($domainId)
 			set_page_message(tr('Wrong syntax for the mail quota value.'), 'error');
 			$errFieldsStack[] = 'mail_quota';
 		} elseif ($data['domain_disk_limit'] != 0 && $data['mail_quota'] > $data['domain_disk_limit']) {
-			set_page_message(tr('Email quota value cannot be bigger than disk space limit.'), 'error');
+			set_page_message(tr('Email quota cannot be bigger than disk space limit.'), 'error');
 			$errFieldsStack[] = 'mail_quota';
 		} elseif($data['domain_disk_limit'] != 0 && $data['mail_quota'] == 0) {
 			set_page_message(
-				tr('Email quota value cannot be unlimited. Max value is %s MiB.', $data['domain_disk_limit']), 'error'
+				tr('Email quota cannot be unlimited. Max value is %d MiB.', $data['domain_disk_limit']), 'error'
 			);
 			$errFieldsStack[] = 'mail_quota';
+		} else {
+			$mailData = reseller_getMailData($data['domain_id'], $data['fallback_mail_quota']);
+
+			if($data['mail_quota'] != 0 && $data['mail_quota'] < $mailData['nb_mailboxes']) {
+				set_page_message(
+					tr(
+						'Email quota cannot be lower than %d. Each mailbox should have a least 1 MiB quota.',
+						$mailData['nb_mailboxes']
+					),
+					'error'
+				);
+				$errFieldsStack[] = 'mail_quota';
+			}
 		}
 
 		// Check for PHP support (we are safe here)
@@ -929,7 +986,14 @@ function admin_checkAndUpdateData($domainId)
 					$domainId
 				)
 			);
-			
+
+			// Sync mailboxes quota if needed
+			if($data['fallback_mail_quota'] != ($data['mail_quota'] * 1048576)) {
+				sync_mailboxes_quota($domainId, $data['mail_quota'] * 1048576);
+			}
+
+			$db->rollBack();
+
 			// Update domain alias IP if needed
 			if ($data['domain_ip_id'] != $data['fallback_domain_ip_id']) {
 				if($data['domain_alias_limit'] != '-1') {

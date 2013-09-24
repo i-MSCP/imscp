@@ -432,12 +432,12 @@ function reseller_checkData($phpini)
 
 	// Check for mail quota
 	if (!imscp_limit_check($mailQuota, null)) {
-		set_page_message(tr('Wrong syntax for the Email quota value.'), 'error');
+		set_page_message(tr('Incorrect Email quota.'), 'error');
 	} elseif ($diskspace != 0 && $mailQuota > $diskspace) {
-		set_page_message(tr('Email quota value cannot be bigger than disk space limit.'), 'error');
+		set_page_message(tr('Email quota cannot be bigger than disk space limit.'), 'error');
 	} elseif($diskspace != 0 && $mailQuota == 0) {
 		set_page_message(
-			tr('Email quota value cannot be unlimited. Max value is %s MiB.', $diskspace), 'error'
+			tr('Email quota cannot be unlimited. Max value is %d MiB.', $diskspace), 'error'
 		);
 	}
 
