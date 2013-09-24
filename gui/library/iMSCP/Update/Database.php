@@ -1201,10 +1201,9 @@ class iMSCP_Update_Database extends iMSCP_Update
 						UPDATE
 							`hosting_plans`
 						SET
-							`props` = ''
+							`props` = ';no;no;no;no;no;8;2;30;60;128'
 						WHERE
-							`id` = ';no;no;no;no;no;8;2;30;60;128'
-						{$data['id']}
+							`id` = {$data['id']}
 					";
 				}
 			}
