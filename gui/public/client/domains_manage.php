@@ -247,7 +247,7 @@ function _client_generateDomainAliasRedirect($id, $status, $redirectUrl)
 
 	if ($redirectUrl == 'no') {
 		if ($status == $cfg->ITEM_OK_STATUS) {
-			return array('-', tohtml("alias_edit.php?edit_id=$id"), tr('Edit'));
+			return array('-', tohtml("alias_edit.php?id=$id"), tr('Edit'));
 		} elseif ($status == $cfg->ITEM_ORDERED_STATUS) {
 			return array('-', '#', tr('N/A'));
 		} else {
@@ -255,7 +255,7 @@ function _client_generateDomainAliasRedirect($id, $status, $redirectUrl)
 		}
 	} else {
 		if ($status == $cfg->ITEM_OK_STATUS) {
-			return array($redirectUrl, tohtml("alias_edit.php?edit_id=$id"), tr('Edit'));
+			return array($redirectUrl, tohtml("alias_edit.php?id=$id"), tr('Edit'));
 		} elseif ($status == $cfg->ITEM_ORDERED_STATUS) {
 			return array($redirectUrl, '#', tr('N/A'));
 		} else {

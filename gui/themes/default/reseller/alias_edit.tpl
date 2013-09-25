@@ -56,6 +56,6 @@
 	<div class="buttons">
 		<input type="hidden" name="uaction" value="modify"/>
 		<input name="submit" type="submit" value="{TR_MODIFY}"/>
-		<a class ="link_as_button" href="alias.php.php">{TR_CANCEL}</a>
+		<a class ="link_as_button" href="alias.php">{TR_CANCEL}</a>
 	</div>
 </form>

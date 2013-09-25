@@ -1,89 +1,96 @@
 
-<!-- BDP: domain_alias_add_js -->
-<script type="text/javascript">
-	/* <![CDATA[ */
+<script language="JavaScript" type="text/JavaScript">
+	/*<![CDATA[*/
 	$(document).ready(function () {
-		$('input[name=ndomain_name]').blur(function () {
-			var dmnName = $('#ndomain_name').val();
+		$("input[name='shared_mount_point']").change(
+			function () {
+				if ($("#shared_mount_point_no").is(':checked')) {
+					$("#shared_mount_point_domain").hide();
+				} else {
+					$("#shared_mount_point_domain").show();
+				}
+			}
+		).trigger('change');
 
-			$.ajaxSetup({
-				url: $(location).attr('pathname'),
-				type: 'POST',
-				data: 'domain=' + dmnName + '&uaction=toASCII',
-				datatype: 'text',
-				beforeSend: function (xhr){xhr.setRequestHeader('Accept','text/plain');},
-				success: function (r){ $('#ndomain_mpoint').val(r); },
-				error: iMSCPajxError
-			});
-
-			$.ajax();
-		});
+		$("input[name='url_forwarding']").change(
+			function () {
+				if ($("#url_forwarding_no").is(':checked')) {
+					$("#tr_url_forwarding_data").hide();
+				} else {
+					$("#tr_url_forwarding_data").show();
+				}
+			}
+		).trigger('change');
 	});
-
-	function setForwardReadonly(obj) {
-		if (obj.value == 1) {
-			document.forms[0].elements['forward'].readOnly = false;
-			document.forms[0].elements['forward_prefix'].disabled = false;
-		} else {
-			document.forms[0].elements['forward'].readOnly = true;
-			document.forms[0].elements['forward'].value = '';
-			document.forms[0].elements['forward_prefix'].disabled = true;
-		}
-	}
-	/* ]]> */
+	/*]]>*/
 </script>
-<!-- EDP: domain_alias_add_js -->
 
-<!-- BDP: domain_alias_add_form -->
-<form name="add_alias_frm" method="post" action="alias_add.php">
+<form name="add_domain_alias_frm" method="post" action="alias_add.php">
 	<table class="firstColFixed">
 		<thead>
 		<tr>
-			<th colspan="3">{TR_DOMAIN_ALIAS_DATA}</th>
+			<th colspan="2">{TR_DOMAIN_ALIAS}</th>
 		</tr>
 		</thead>
 		<tbody>
 		<tr>
 			<td>
-				<label for="ndomain_name">{TR_DOMAIN_ALIAS_NAME}</label>
-				<span class="icon i_help" id="dmn_help" title="{TR_DMN_HELP}"></span>
+				<label for="domain_alias_name">{TR_DOMAIN_ALIAS_NAME}</label>
+				<span class="icon i_help" id="domain_alias_name_tooltip" title="{TR_DOMAIN_ALIAS_NAME_TOOLTIP}"></span>
 			</td>
-			<td><input name="ndomain_name" id="ndomain_name" type="text" value="{DOMAIN}"/></td>
+			<td><input type="text" name="domain_alias_name" id="domain_alias_name" value="{DOMAIN_ALIAS_NAME}"/></td>
 		</tr>
 		<tr>
-			<td><label for="ndomain_mpoint">{TR_MOUNT_POINT}</label></td>
-			<td><input name="ndomain_mpoint" type="text" id="ndomain_mpoint" value="{MP}"/></td>
-		</tr>
-		<tr>
-			<td>{TR_ENABLE_FWD}</td>
+			<td>{TR_SHARED_MOUNT_POINT}<span class="icon i_help" title="{TR_SHARED_MOUNT_POINT_TOOLTIP}"></span></td>
 			<td>
-				<input type="radio" name="status" id="redirectEnabled" {CHECK_EN} value="1"
-					   onchange='setForwardReadonly(this);'/>
-				<label for="redirectEnabled">{TR_ENABLE}</label>
-				<input type="radio" name="status" id="redirectDisabled" {CHECK_DIS} value="0"
-					   onchange='setForwardReadonly(this);'/>
-				<label for="redirectDisabled">{TR_DISABLE}</label>
-			</td>
-		</tr>
-		<tr>
-			<td><label for="forward">{TR_FORWARD}</label></td>
-			<td colspan="2">
-				<label>
-					<select name="forward_prefix" id="forward_prefix"{DISABLE_FORWARD}>
-						<option value="{TR_PREFIX_HTTP}"{HTTP_YES}>{TR_PREFIX_HTTP}</option>
-						<option value="{TR_PREFIX_HTTPS}"{HTTPS_YES}>{TR_PREFIX_HTTPS}</option>
-						<option value="{TR_PREFIX_FTP}"{FTP_YES}>{TR_PREFIX_FTP}</option>
+				<div class="radio">
+					<input type="radio" name="shared_mount_point" id="shared_mount_point_yes"
+						   value="yes"{SHARED_MOUNT_POINT_YES}/>
+					<label for="shared_mount_point_yes">{TR_YES}</label>
+					<input type="radio" name="shared_mount_point" id="shared_mount_point_no"
+						   value="no"{SHARED_MOUNT_POINT_NO}/>
+					<label for="shared_mount_point_no">{TR_NO}</label>
+				</div>
+				<label for="shared_mount_point_domain">
+					<select name="shared_mount_point_domain" id="shared_mount_point_domain">
+						<!-- BDP: shared_mount_point_domain -->
+						<option value="{DOMAIN_NAME}"{SHARED_MOUNT_POINT_DOMAIN_SELECTED}>{DOMAIN_NAME_UNICODE}</option>
+						<!-- EDP: shared_mount_point_domain -->
 					</select>
 				</label>
-				<input name="forward" type="text" class="textinput" id="forward" value="{FORWARD}"{READONLY_FORWARD} />
+			</td>
+		</tr>
+		<tr>
+			<td>{TR_URL_FORWARDING} <span class="icon i_help" title="{TR_URL_FORWARDING_TOOLTIP}"></span></td>
+			<td>
+				<div class="radio">
+					<input type="radio" name="url_forwarding" id="url_forwarding_yes"{FORWARD_URL_YES} value="yes"/>
+					<label for="url_forwarding_yes">{TR_YES}</label>
+					<input type="radio" name="url_forwarding" id="url_forwarding_no"{FORWARD_URL_NO} value="no"/>
+					<label for="url_forwarding_no">{TR_NO}</label>
+				</div>
+			</td>
+		</tr>
+		<tr id="tr_url_forwarding_data">
+			<td>{TR_FORWARD_TO_URL}</td>
+			<td>
+				<label for="forward_url_scheme">
+					<select name="forward_url_scheme" id="forward_url_scheme">
+						<option value="http://"{HTTP_YES}>{TR_HTTP}</option>
+						<option value="https://"{HTTPS_YES}>{TR_HTTPS}</option>
+						<option value="ftp://"{FTP_YES}>{TR_FTP}</option>
+					</select>
+				</label>
+				<label>
+					<input name="forward_url" type="text" id="forward_url" value="{FORWARD_URL}"/>
+				</label>
 			</td>
 		</tr>
 		</tbody>
 	</table>
 
 	<div class="buttons">
-		<input type="hidden" name="uaction" value="add_alias"/>
-		<input type="submit" name="add" value="{TR_ADD}"/>
+		<input name="Submit" type="submit" value="{TR_ADD}"/>
+		<a class ="link_as_button" href="domains_manage.php">{TR_CANCEL}</a>
 	</div>
 </form>
-<!-- EDP: domain_alias_add_form -->

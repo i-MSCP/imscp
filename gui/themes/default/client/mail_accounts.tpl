@@ -39,14 +39,8 @@
 			var items = $(":checkbox:checked", oTable.fnGetNodes());
 
 			if(items.length > 0) {
-				if(confirm(sprintf("{TR_MESSAGE_DELETE_SELECTED_ITEMS}"))) {
-					imscp.AjaxCall(
-						{
-							type: "POST",
-							data: items,
-							success: function() { window.location.href = 'mail_accounts.php'; }
-						}
-					);
+				if(confirm("{TR_MESSAGE_DELETE_SELECTED_ITEMS}")) {
+					return true;
 				}
 			} else {
 				alert("{TR_MESSAGE_DELETE_SELECTED_ITEMS_ERR}");

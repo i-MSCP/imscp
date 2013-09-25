@@ -53,6 +53,7 @@ GUI:
 	- Removed: IE6 support
 	- Removed: mail_quota action script
 	- Removed: Tool links from login page
+	- Rewritten: Alias interface (add|edit)
 	- Rewritten: Mail interface
 	- Updated: Assets are now reachable through the /themes/<theme>/assets path
 	- Updated: Plugin API

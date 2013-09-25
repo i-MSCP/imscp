@@ -168,11 +168,11 @@ function admin_generatePageData($tpl)
 				$logMessage = $stmt->fields['log_message'];
 
 				$replaces = array(
-					'/[^a-zA-Z](deactivated|delete[sd]?|failed)[^a-zA-Z]/i' => ' <strong style="color:#FF0000">\\1</strong> ',
+					'/[^a-zA-Z](deactivated|delete[sd]?|deletion|deactivation|failed)[^a-zA-Z]/i' => ' <strong style="color:#FF0000">\\1</strong> ',
 					'/[^a-zA-Z](remove[sd]?)[^a-zA-Z]/i' => ' <strong style="color:#FF0000">\\1</strong> ',
 					'/[^a-zA-Z](unable?)[^a-zA-Z]/i' => ' <strong style="color:#FF0000">\\1</strong> ',
-					'/[^a-zA-Z](activated|add(s|ed)?|switched)[^a-zA-Z]/i' => ' <strong style="color:#33CC66">\\1</strong> ',
-					'/[^a-zA-Z](created)[^a-zA-Z]/i' => ' <strong style="color:#3300FF">\\1</strong> ',
+					'/[^a-zA-Z](activated|activation|addition|add(s|ed)?|switched)[^a-zA-Z]/i' => ' <strong style="color:#33CC66">\\1</strong> ',
+					'/[^a-zA-Z](created|ordered)[^a-zA-Z]/i' => ' <strong style="color:#3300FF">\\1</strong> ',
 					'/[^a-zA-Z](update[sd]?)[^a-zA-Z]/i' => ' <strong style="color:#3300FF">\\1</strong> ',
 					'/[^a-zA-Z](edit(s|ed)?)[^a-zA-Z]/i' => ' <strong style="color:#33CC66">\\1</strong> ',
 					'/[^a-zA-Z](unknown)[^a-zA-Z]/i' => ' <strong style="color:#CC00FF">\\1</strong> ',

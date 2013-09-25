@@ -18,7 +18,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
  * @category    iMSCP
- * @package     Client_Domains
+ * @package     Client_Subdomains
  * @copyright   2010-2013 by i-MSCP team
  * @author      Laurent Declercq <l.declercq@nuxwin.com>
  * @link        http://www.i-mscp.net i-MSCP Home Site
@@ -42,6 +42,9 @@ function _client_getSubdomainData($subdomainId, $subdomainType)
 	static $subdomainData = null;
 
 	if (null === $subdomainData) {
+		/** @var iMSCP_Config_Handler_File $cfg */
+		$cfg = iMSCP_Registry::get('config');
+
 		$mainDmnProps = get_domain_default_props($_SESSION['user_id']);
 		$domainId = $mainDmnProps['domain_id'];
 		$domainName = $mainDmnProps['domain_name'];
@@ -56,23 +59,28 @@ function _client_getSubdomainData($subdomainId, $subdomainType)
 					`subdomain_id` = ?
 				AND
 					`domain_id` = ?
-				';
+				AND
+					`subdomain_status` = ?
+			';
 		} else {
 			$query = '
 				SELECT
 					`t1`.`subdomain_alias_name` AS `subdomain_name`, `t1`.`subdomain_alias_url_forward` AS `forward_url`,
 					`t2`.`alias_name` `aliasName`
 				FROM
-					`subdomain_alias` `t1`
+					`subdomain_alias` AS `t1`
 				INNER JOIN
-					`domain_aliasses` `t2` ON (`t1`.`alias_id` = `t2`.`alias_id`)
+					`domain_aliasses` AS `t2` USING(`alias_id`)
 				WHERE
 					`subdomain_alias_id` = ?
 				AND
 					`t2`.`domain_id` = ?
+				AND
+					`t1`.`subdomain_alias_status` = ?
 			';
 		}
-		$stmt = exec_query($query, array($subdomainId, $domainId));
+
+		$stmt = exec_query($query, array($subdomainId, $domainId, $cfg->ITEM_OK_STATUS));
 
 		if (!$stmt->rowCount()) {
 			return false;
@@ -82,8 +90,10 @@ function _client_getSubdomainData($subdomainId, $subdomainType)
 
 		if ($subdomainType == 'dmn') {
 			$subdomainData['subdomain_name'] .= '.' . $domainName;
+			$subdomainData['subdomain_name_utf8'] = decode_idna($subdomainData['subdomain_name']);
 		} else {
 			$subdomainData['subdomain_name'] .= '.' . $subdomainData['aliasName'];
+			$subdomainData['subdomain_name_utf8'] = decode_idna($subdomainData['subdomain_name']);
 		}
 	}
 
@@ -133,7 +143,7 @@ function client_generatePage($tpl)
 			array(
 				'SUBDOMAIN_ID' => $subdomainId,
 				'SUBDOMAIN_TYPE' => $subdomainType,
-				'SUBDOMAIN_NAME' => tohtml(decode_idna($subdomainData['subdomain_name'])),
+				'SUBDOMAIN_NAME' => tohtml($subdomainData['subdomain_name_utf8']),
 				'FORWARD_URL_YES' => ($urlForwarding) ? $checked : '',
 				'FORWARD_URL_NO' => ($urlForwarding) ? '' : $checked,
 				'HTTP_YES' => ($forwardUrlScheme == 'http://') ? $selected : '',
@@ -155,78 +165,88 @@ function client_generatePage($tpl)
 function client_editSubdomain()
 {
 	if (isset($_GET['id']) && isset($_GET['type']) && ($_GET['type'] == 'dmn' || $_GET['type'] == 'als')) {
-
 		$subdomainId = clean_input($_GET['id']);
 		$subdomainType = clean_input($_GET['type']);
 
 		if (!($subdomainData = _client_getSubdomainData($subdomainId, $subdomainType))) {
+			// Check for URL forwarding option
+			$forwardUrl = 'no';
+
+			if (isset($_POST['url_forwarding']) && $_POST['url_forwarding'] == 'yes') { // We are safe here
+				if (isset($_POST['forward_url_scheme']) && isset($_POST['forward_url'])) {
+					$forwardUrl = clean_input($_POST['forward_url_scheme']) . clean_input($_POST['forward_url']);
+
+					try {
+						$uri = iMSCP_Uri_Redirect::fromString($forwardUrl);
+
+						if (!$uri->valid()) {
+							throw new iMSCP_Exception(tr('Forward URL %s is not valid.', "<strong>$forwardUrl</strong>"));
+						} else {
+							$uri->setHost(encode_idna($uri->getHost()));
+
+							if ($uri->getHost() == $subdomainData['subdomain_name'] && $uri->getPath() == '/') {
+								throw new iMSCP_Exception(
+									tr('Forward URL %s is not valid.', "<strong>$forwardUrl</strong>") . ' ' .
+									tr(
+										'Subdomain %s cannot be forwarded on itself.',
+										"<strong>{$subdomainData['subdomain_name_utf8']}</strong>"
+									)
+								);
+							}
+						}
+
+						$forwardUrl = $uri->getUri();
+					} catch (Exception $e) {
+						set_page_message($e->getMessage(), 'error');
+						return false;
+					}
+				} else {
+					showBadRequestErrorPage();
+				}
+			}
+
+			/** @var $cfg iMSCP_Config_Handler_File */
+			$cfg = iMSCP_Registry::get('config');
+
+			iMSCP_Events_Manager::getInstance()->dispatch(
+				iMSCP_Events::onBeforeEditSubdomain, array('subdomainId' => $subdomainId)
+			);
+
+			if ($subdomainType == 'dmn') {
+				$query = '
+					UPDATE
+						`subdomain`
+					SET
+						`subdomain_url_forward` = ?, `subdomain_status` = ?
+					WHERE
+						`subdomain_id` = ?
+				';
+			} else {
+				$query = '
+					UPDATE
+						`subdomain_alias`
+					SET
+						`subdomain_alias_url_forward` = ?, `subdomain_alias_status` = ?
+					WHERE
+						`subdomain_alias_id` = ?
+				';
+			}
+
+			exec_query($query, array($forwardUrl, $cfg->ITEM_TOCHANGE_STATUS, $subdomainId));
+
+			iMSCP_Events_Manager::getInstance()->dispatch(
+				iMSCP_Events::onAfterEditSubdomain, array('subdomainId' => $subdomainId)
+			);
+
+			send_request();
+
+			write_log(
+				"{$_SESSION['user_logged']}: scheduled update of subdomain: {$subdomainData['subdomain_name_utf8']}.",
+				E_USER_NOTICE
+			);
+		} else {
 			showBadRequestErrorPage();
 		}
-
-		// Check for URL forwarding option
-
-		$forwardUrl = 'no';
-
-		if (isset($_POST['url_forwarding']) && $_POST['url_forwarding'] == 'yes') { // We are safe here
-			if (isset($_POST['forward_url_scheme']) && isset($_POST['forward_url'])) {
-				$forwardUrl = clean_input($_POST['forward_url_scheme']) . clean_input($_POST['forward_url']);
-
-				try {
-					$uri = iMSCP_Uri_Redirect::fromString($forwardUrl);
-
-					if (!$uri->valid()) {
-						throw new iMSCP_Exception('Invalid URI');
-					}
-
-					$uri->setHost(encode_idna($uri->getHost()));
-					$forwardUrl = $uri->getUri();
-				} catch (Exception $e) {
-					set_page_message(tr('Forward URL %s is not valid', "<strong>$forwardUrl</strong>"), 'error');
-					return false;
-				}
-			} else {
-				showBadRequestErrorPage();
-			}
-		}
-
-		/** @var $cfg iMSCP_Config_Handler_File */
-		$cfg = iMSCP_Registry::get('config');
-
-		iMSCP_Events_Manager::getInstance()->dispatch(
-			iMSCP_Events::onBeforeEditSubdomain, array('subdomainId' => $subdomainId)
-		);
-
-		if ($subdomainType == 'dmn') {
-			$query = '
-				UPDATE
-					`subdomain`
-				SET
-					`subdomain_url_forward` = ?, `subdomain_status` = ?
-				WHERE
-					`subdomain_id` = ?
-			';
-		} else {
-			$query = '
-				UPDATE
-					`subdomain_alias`
-				SET
-					`subdomain_alias_url_forward` = ?, `subdomain_alias_status` = ?
-				WHERE
-					`subdomain_alias_id` = ?
-			';
-		}
-
-		exec_query($query, array($forwardUrl, $cfg->ITEM_TOCHANGE_STATUS, $subdomainId));
-
-		iMSCP_Events_Manager::getInstance()->dispatch(
-			iMSCP_Events::onAfterEditSubdomain, array('subdomainId' => $subdomainId)
-		);
-
-		write_log(
-			 "{$_SESSION['user_logged']}: scheduled update of subdomain: " . decode_idna($subdomainData['subdomain_name']),
-			E_USER_NOTICE
-		);
-		send_request();
 	} else {
 		showBadRequestErrorPage();
 	}

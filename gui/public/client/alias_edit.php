@@ -1,38 +1,214 @@
 <?php
 /**
  * i-MSCP - internet Multi Server Control Panel
+ * Copyright (C) 2010-2013 by i-MSCP Team
  *
- * The contents of this file are subject to the Mozilla Public License
- * Version 1.1 (the "License"); you may not use this file except in
- * compliance with the License. You may obtain a copy of the License at
- * http://www.mozilla.org/MPL/
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
  *
- * Software distributed under the License is distributed on an "AS IS"
- * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
- * License for the specific language governing rights and limitations
- * under the License.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- * The Original Code is "VHCS - Virtual Hosting Control System".
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
- * The Initial Developer of the Original Code is moleSoftware GmbH.
- * Portions created by Initial Developer are Copyright (C) 2001-2006
- * by moleSoftware GmbH. All Rights Reserved.
+ * @category    iMSCP
+ * @package     Client_Domains_Aliases
+ * @copyright   2010-2013 by i-MSCP team
+ * @author      Laurent Declercq <l.declercq@nuxwin.com>
+ * @link        http://www.i-mscp.net i-MSCP Home Site
+ * @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
+ */
+
+/***********************************************************************************************************************
+ * Functions
+ */
+
+/**
+ * Get domain alias data
  *
- * Portions created by the ispCP Team are Copyright (C) 2006-2010 by
- * isp Control Panel. All Rights Reserved.
+ * @access private
+ * @param int $domainAliasId Subdomain unique identifier
+ * @return array Subdomain data. If any error occurs FALSE is returned
+ */
+function _client_getSubdomainData($domainAliasId)
+{
+	static $domainAliasData = null;
+
+	if (null === $domainAliasData) {
+		/** @var iMSCP_Config_Handler_File $cfg */
+		$cfg = iMSCP_Registry::get('config');
+
+		$mainDmnProps = get_domain_default_props($_SESSION['user_id']);
+		$domainId = $mainDmnProps['domain_id'];
+
+		$query = "
+			SELECT
+				`alias_name`, `url_forward` AS `forward_url`
+			FROM
+				`domain_aliasses`
+			WHERE
+				`alias_id` = ?
+			AND
+				`domain_id` = ?
+			AND
+				`alias_status` = ?
+		";
+		$stmt = exec_query($query, array($domainAliasId, $domainId, $cfg->ITEM_OK_STATUS));
+
+		if (!$stmt->rowCount()) {
+			return false;
+		}
+
+		$domainAliasData = $stmt->fetchRow(PDO::FETCH_ASSOC);
+		$domainAliasData['alias_name_utf8'] = decode_idna($domainAliasData['alias_name']);
+	}
+
+	return $domainAliasData;
+}
+
+/**
+ * Generate page
  *
- * Portions created by the i-MSCP Team are Copyright (C) 2010-2013 by
- * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
+ * @param $tpl iMSCP_pTemplate
+ * @return void
+ */
+function client_generatePage($tpl)
+{
+	if (isset($_GET['id'])) {
+		$domainAliasId = clean_input($_GET['id']);
+
+		if (!($domainAliasData = _client_getSubdomainData($domainAliasId))) {
+			showBadRequestErrorPage();
+		}
+
+		if (empty($_POST)) {
+			if ($domainAliasData['forward_url'] != 'no') {
+				$urlForwarding = true;
+				$uri = iMSCP_Uri_Redirect::fromString($domainAliasData['forward_url']);
+				$forwardUrlScheme = $uri->getScheme();
+				$forwardUrl = substr($uri->getUri(), strlen($forwardUrlScheme) + 3);
+			} else {
+				$urlForwarding = false;
+				$forwardUrlScheme = 'http://';
+				$forwardUrl = '';
+			}
+		} else {
+			$urlForwarding = (isset($_POST['url_forwarding']) && $_POST['url_forwarding'] == 'yes') ? true : false;
+			$forwardUrlScheme = (isset($_POST['forward_url_scheme'])) ? $_POST['forward_url_scheme'] : 'http://';
+			$forwardUrl = isset($_POST['forward_url']) ? $_POST['forward_url'] : '';
+		}
+
+		/** @var iMSCP_Config_Handler_File $cfg */
+		$cfg = iMSCP_Registry::get('config');
+
+		$checked = $cfg->HTML_CHECKED;
+		$selected = $cfg->HTML_SELECTED;
+
+		$tpl->assign(
+			array(
+				'DOMAIN_ALIAS_ID' => $domainAliasId,
+				'DOMAIN_ALIAS_NAME' => tohtml($domainAliasData['alias_name_utf8']),
+				'FORWARD_URL_YES' => ($urlForwarding) ? $checked : '',
+				'FORWARD_URL_NO' => ($urlForwarding) ? '' : $checked,
+				'HTTP_YES' => ($forwardUrlScheme == 'http://') ? $selected : '',
+				'HTTPS_YES' => ($forwardUrlScheme == 'https://') ? $selected : '',
+				'FTP_YES' => ($forwardUrlScheme == 'ftp://') ? $selected : '',
+				'FORWARD_URL' => tohtml(decode_idna($forwardUrl))
+			)
+		);
+	} else {
+		showBadRequestErrorPage();
+	}
+}
+
+/**
+ * Edit domain alias
  *
- * @category	i-MSCP
- * @package		iMSCP_Core
- * @subpackage	Client
- * @copyright   2001-2006 by moleSoftware GmbH
- * @copyright   2006-2010 by ispCP | http://isp-control.net
- * @copyright   2010-2013 by i-MSCP | http://i-mscp.net
- * @author      ispCP Team
- * @author      i-MSCP Team
- * @link        http://i-mscp.net
+ * @return bool TRUE on success, FALSE on failure
+ */
+function client_editDomainAlias()
+{
+	if (isset($_GET['id'])) {
+		$domainAliasId = clean_input($_GET['id']);
+
+		if (($domainAliasData = _client_getSubdomainData($domainAliasId))) {
+			// Check for URL forwarding option
+
+			$forwardUrl = 'no';
+
+			if (isset($_POST['url_forwarding']) && $_POST['url_forwarding'] == 'yes') { // We are safe here
+				if (isset($_POST['forward_url_scheme']) && isset($_POST['forward_url'])) {
+					$forwardUrl = clean_input($_POST['forward_url_scheme']) . clean_input($_POST['forward_url']);
+
+					try {
+						$uri = iMSCP_Uri_Redirect::fromString($forwardUrl);
+
+						if (!$uri->valid()) {
+							throw new iMSCP_Exception(tr('Forward URL %s is not valid.', "<strong>$forwardUrl</strong>"));
+						} else {
+							$uri->setHost(encode_idna($uri->getHost()));
+
+							if ($uri->getHost() == $domainAliasData['alias_name'] && $uri->getPath() == '/') {
+								throw new iMSCP_Exception(
+									tr('Forward URL %s is not valid.', "<strong>$forwardUrl</strong>") . ' ' .
+									tr(
+										'Domain alias %s cannot be forwarded on itself.',
+										"<strong>{$domainAliasData['alias_name_utf8']}</strong>"
+									)
+								);
+							}
+						}
+
+						$forwardUrl = $uri->getUri();
+					} catch (Exception $e) {
+						set_page_message($e->getMessage(), 'error');
+						return false;
+					}
+				} else {
+					showBadRequestErrorPage();
+				}
+			}
+
+			/** @var $cfg iMSCP_Config_Handler_File */
+			$cfg = iMSCP_Registry::get('config');
+
+			iMSCP_Events_Manager::getInstance()->dispatch(
+				iMSCP_Events::onBeforeEditDomainAlias, array('domainAliasId' => $domainAliasId)
+			);
+
+			exec_query(
+				'UPDATE `domain_aliasses` SET `url_forward` = ?, `alias_status` = ? WHERE `alias_id` = ?',
+				array($forwardUrl, $cfg->ITEM_TOCHANGE_STATUS, $domainAliasId)
+			);
+
+			iMSCP_Events_Manager::getInstance()->dispatch(
+				iMSCP_Events::onAfterEditDomainALias, array('domainAliasId' => $domainAliasId)
+			);
+
+			send_request();
+
+			write_log(
+				"{$_SESSION['user_logged']}: scheduled update of domain alias: {$domainAliasData['alias_name_utf8']}.",
+				E_USER_NOTICE
+			);
+		} else {
+			showBadRequestErrorPage();
+		}
+	} else {
+		showBadRequestErrorPage();
+	}
+
+	return true;
+}
+
+/***********************************************************************************************************************
+ * Main
  */
 
 // Include core library
@@ -44,269 +220,47 @@ check_login('user');
 
 customerHasFeature('domain_aliases') or showBadRequestErrorPage();
 
-/** @var $cfg iMSCP_Config_Handler_File */
-$cfg = iMSCP_Registry::get('config');
-
-$tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic('layout', 'shared/layouts/ui.tpl');
-$tpl->define_dynamic('page', 'client/alias_edit.tpl');
-$tpl->define_dynamic('page_message', 'layout');
-
-$tpl->assign(
-	array(
-		 'TR_PAGE_TITLE' => tr('Client / Domains / Overview / Edit Domain Alias'),
-		 'ISP_LOGO' => layout_getUserLogo()));
-
-$tpl->assign(
-	array(
-		'TR_ALIAS_NAME' => tr('Alias name'),
-		'TR_DOMAIN_IP' => tr('Domain IP'),
-		'TR_FORWARD' => tr('Forward to URL'),
-		'TR_MOUNT_POINT' => tr('Mount point'),
-		'TR_MODIFY' => tr('Modify'),
-		'TR_CANCEL' => tr('Cancel'),
-		'TR_ENABLE_FWD' => tr("Enable Forward"),
-		'TR_ENABLE' => tr("Enable"),
-		'TR_DISABLE' => tr("Disable"),
-		'TR_PREFIX_HTTP' => 'http://',
-		'TR_PREFIX_HTTPS' => 'https://',
-		'TR_PREFIX_FTP' => 'ftp://',
-		'TR_DOMAIN_ALIAS_DATA' => tr('Domain alias data')));
-
-generateNavigation($tpl);
-
-// "Modify" button has been pressed
-if (isset($_POST['uaction']) && ($_POST['uaction'] == 'modify')) {
-	if (isset($_GET['edit_id'])) {
-		$editid = $_GET['edit_id'];
-	} else if (isset($_SESSION['edit_ID'])) {
-		$editid = $_SESSION['edit_ID'];
-	} else {
-		unset($_SESSION['edit_ID']);
-
-		//$_SESSION['aledit'] = '_no_';
-		showBadRequestErrorPage();
-	}
-
-	// Save data to db
-	if (check_fwd_data($tpl, $editid)) {
-		//$_SESSION['aledit'] = "_yes_";
-		set_page_message(tr('Domain alias scheduled for update.'), 'success');
-		redirectTo('domains_manage.php');
-	}
+if (!empty($_POST) && client_editDomainAlias()) {
+	set_page_message(tr('Domain alias successfully scheduled for update'), 'success');
+	redirectTo('domains_manage.php');
 } else {
-	// Get user id that comes for edit
-	if (isset($_GET['edit_id'])) {
-		$editid = $_GET['edit_id'];
-	}
-
-	$_SESSION['edit_ID'] = $editid;
-}
-
-gen_editalias_page($tpl, $editid);
-generatePageMessage($tpl);
-
-$tpl->parse('LAYOUT_CONTENT', 'page');
-
-iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, array('templateEngine' => $tpl));
-
-$tpl->prnt();
-
-unsetMessages();
-
-
-/**
- * @param iMSCP_pTemplate $tpl Template engine
- * @param int $edit_id
- * @return void
- */
-function gen_editalias_page(&$tpl, $edit_id) {
-
-	/** @var $cfg iMSCP_Config_Handler_File */
-	$cfg = iMSCP_Registry::get('config');
-
-	// Get data from sql
-	$domainProps = get_domain_default_props($_SESSION['user_id']);
-    $domain_id = $domainProps['domain_id'];
-
-	$res = exec_query("SELECT * FROM `domain_aliasses` WHERE `alias_id` = ? AND `domain_id` = ?", array($edit_id, $domain_id));
-
-	if ($res->recordCount() <= 0) {
-		$_SESSION['aledit'] = '_no_';
-		redirectTo('domains_manage.php');
-	}
-	$data = $res->fetchRow();
-	// Get IP data
-	$ipres = exec_query("SELECT * FROM `server_ips` WHERE `ip_id` = ?", $data['alias_ip_id']);
-	$ipdat = $ipres->fetchRow();
-	$ip_data = $ipdat['ip_number'] . ' (' . $ipdat['ip_alias'] . ')';
-
-	if (isset($_POST['uaction']) && ($_POST['uaction'] == 'modify')) {
-		$url_forward = strtolower(clean_input($_POST['forward']));
-	} else {
-		$url_forward = decode_idna(preg_replace("(ftp://|https://|http://)", "", $data['url_forward']));
-
-		if ($data["url_forward"] == "no") {
-			$check_en = '';
-			$check_dis = $cfg->HTML_CHECKED;
-			$url_forward = '';
-			$tpl->assign(
-				array(
-					'READONLY_FORWARD'	=> $cfg->HTML_READONLY,
-					'DISABLE_FORWARD'	=> $cfg->HTML_DISABLED,
-					'HTTP_YES'			=> '',
-					'HTTPS_YES'			=> '',
-					'FTP_YES'			=> ''
-				)
-			);
-		} else {
-			$check_en = $cfg->HTML_CHECKED;
-			$check_dis = '';
-			$tpl->assign(
-				array(
-					'READONLY_FORWARD'	=> '',
-					'DISABLE_FORWARD'	=> '',
-					'HTTP_YES'			=> (preg_match("/http:\/\//", $data['url_forward'])) ? $cfg->HTML_SELECTED : '',
-					'HTTPS_YES'			=> (preg_match("/https:\/\//", $data['url_forward'])) ? $cfg->HTML_SELECTED : '',
-					'FTP_YES'			=> (preg_match("/ftp:\/\//", $data['url_forward'])) ? $cfg->HTML_SELECTED : ''
-				)
-			);
-		}
-		$tpl->assign(
-			array(
-				'CHECK_EN' => $check_en,
-				'CHECK_DIS' => $check_dis
-			)
-		);
-	}
-	// Fill in the fields
-	$tpl->assign(
+	$tpl = new iMSCP_pTemplate();
+	$tpl->define_dynamic(
 		array(
-			'ALIAS_NAME' => tohtml(decode_idna($data['alias_name'])),
-			'DOMAIN_IP' => $ip_data,
-			'FORWARD' => tohtml($url_forward),
-			'MOUNT_POINT' => tohtml($data['alias_mount']),
-			'ID' => $edit_id
+			'layout' => 'shared/layouts/ui.tpl',
+			'page' => 'client/alias_edit.tpl',
+			'page_message' => 'layout'
 		)
 	);
-} // End of gen_editalias_page()
 
-/**
- * Check input data
- *
- * @param iMSCP_pTemplate $tpl Template engine
- * @param int $alias_id
- * @return bool
- */
-function check_fwd_data($tpl, $alias_id) {
+	$tpl->assign(
+		array(
+			'TR_PAGE_TITLE' => tr('Client / Domains / Edit Domain Alias'),
+			'ISP_LOGO' => layout_getUserLogo(),
+			'TR_DOMAIN_ALIAS' => tr('Domain alias'),
+			'TR_DOMAIN_ALIAS_NAME' => tr('Domain alias name'),
+			'TR_URL_FORWARDING' => tr('URL forwarding'),
+			'TR_FORWARD_TO_URL' => tr('Forward to URL'),
+			'TR_URL_FORWARDING_TOOLTIP' => tr('Allows to forward any request made to this domain alias to a specific URL.'),
+			'TR_YES' => tr('Yes'),
+			'TR_NO' => tr('No'),
+			'TR_HTTP' => 'http://',
+			'TR_HTTPS' => 'https://',
+			'TR_FTP' => 'ftp://',
+			'TR_UPDATE' => tr('Update'),
+			'TR_CANCEL' => tr('Cancel')
+		)
+	);
 
-	/** @var $cfg iMSCP_Config_Handler_File */
-	$cfg = iMSCP_Registry::get('config');
+	generateNavigation($tpl);
+	client_generatePage($tpl);
+	generatePageMessage($tpl);
 
-	if (isset($_POST['status']) && $_POST['status'] == 1) {
+	$tpl->parse('LAYOUT_CONTENT', 'page');
 
-		$forward_prefix = clean_input($_POST['forward_prefix']);
-		$forward = strtolower(clean_input($_POST['forward']));
-        $aurl = @parse_url($forward_prefix . $forward);
+	iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, array('templateEngine' => $tpl));
 
-        if ($aurl === false) {
-            set_page_message(tr('Wrong address in forward URL.'), 'error');
-        } else {
-            $domain = $aurl['host'];
+	$tpl->prnt();
 
-            if (substr_count($domain, '.') <= 2) {
-                $ret = validates_dname($domain);
-            } else {
-                $ret = validates_dname($domain, true);
-            }
-
-            if (!$ret) {
-                set_page_message(tr('Wrong domain part in forward URL.', 'error'));
-            } else {
-                $domain = encode_idna($aurl['host']);
-                $forward = $aurl['scheme'] . '://';
-
-                if (isset($aurl['user'])) {
-                    $forward .= $aurl['user'] . (isset($aurl['pass']) ? ':' . $aurl['pass'] : '') . '@';
-                }
-
-                $forward .= $domain;
-
-                if (isset($aurl['port'])) {
-                    $forward .= ':' . $aurl['port'];
-                }
-
-                if (isset($aurl['path'])) {
-                    $forward .= $aurl['path'];
-                } else {
-                    $forward .= '/';
-                }
-
-                if (isset($aurl['query'])) {
-                    $forward .= '?' . $aurl['query'];
-                }
-
-                if (isset($aurl['fragment'])) {
-                    $forward .= '#' . $aurl['fragment'];
-                }
-            }
-        }
-
-		$check_en = $cfg->HTML_CHECKED;
-		$check_dis = '';
-		$tpl->assign(
-			array(
-				'FORWARD'			=> tohtml($forward),
-				'HTTP_YES'			=> ($forward_prefix === 'http://') ? $cfg->HTML_SELECTED : '',
-				'HTTPS_YES'			=> ($forward_prefix === 'https://') ? $cfg->HTML_SELECTED : '',
-				'FTP_YES'			=> ($forward_prefix === 'ftp://') ? $cfg->HTML_SELECTED : '',
-				'CHECK_EN'			=> $check_en,
-				'CHECK_DIS'			=> $check_dis,
-				'DISABLE_FORWARD'	=>	'',
-				'READONLY_FORWARD'	=>	''
-			)
-		);
-	} else {
-		$check_en = '';
-		$check_dis = $cfg->HTML_CHECKED;
-		$forward = 'no';
-		$tpl->assign(
-			array(
-				'READONLY_FORWARD' => $cfg->HTML_READONLY,
-				'DISABLE_FORWARD' => $cfg->HTML_DISABLED,
-				'CHECK_EN' => $check_en,
-				'CHECK_DIS' => $check_dis,
-			)
-		);
-	}
-
-	if (!Zend_Session::namespaceIsset('pageMessages')) {
-
-		iMSCP_Events_Manager::getInstance()->dispatch(
-			iMSCP_Events::onBeforeEditDomainAlias, array('domainAliasId' => $alias_id)
-		);
-
-		$query = "UPDATE `domain_aliasses` SET `url_forward` = ?, `alias_status` = ? WHERE `alias_id` = ?";
-		exec_query($query, array($forward, $cfg->ITEM_TOCHANGE_STATUS, $alias_id));
-
-		$query = "UPDATE `subdomain_alias` SET `subdomain_alias_status` = ? WHERE `alias_id` = ?";
-		exec_query($query, array($cfg->ITEM_TOCHANGE_STATUS, $alias_id));
-
-		iMSCP_Events_Manager::getInstance()->dispatch(
-			iMSCP_Events::onAfterEditDomainALias, array('domainAliasId' => $alias_id)
-		);
-
-		send_request();
-
-		$admin_login = $_SESSION['user_logged'];
-
-		$rs = exec_query("SELECT `alias_name` FROM `domain_aliasses` WHERE `alias_id` = ?", $alias_id );
-
-		write_log("$admin_login: change domain alias forward: " . $rs->fields['alias_name'], E_USER_NOTICE);
-		unset($_SESSION['edit_ID']);
-		return true;
-
-	} else {
-		return false;
-	}
-} // End of check_user_data()
+	unsetMessages();
+}

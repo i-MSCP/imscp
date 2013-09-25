@@ -18,8 +18,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
  * @category    iMSCP
- * @package     iMSCP_Core
- * @subpackage  client
+ * @package     Client_Mail
  * @copyright   2010-2013 by i-MSCP Team
  * @author      Laurent Declercq <l.declercq@nuxwin.com>
  * @link        http://www.i-mscp.net i-MSCP Home Site
@@ -60,7 +59,7 @@ function _client_getDomainList()
 			FROM
 				`subdomain` AS `t1`
 			INNER JOIN
-				`domain` AS `t2` ON(`t2`.`domain_id` = `t1`.`domain_id`)
+				`domain` AS `t2` USING(`domain_id`)
 			WHERE
 				`t1`.`domain_id` = :domain_id
 			AND
@@ -81,18 +80,20 @@ function _client_getDomainList()
 			FROM
 				`subdomain_alias` AS `t1`
 			INNER JOIN
-				`domain_aliasses` AS `t2` ON(`t2`.`alias_id` = `t1`.`alias_id` AND `t2`.`domain_id` = :domain_id)
+				`domain_aliasses` AS `t2` USING(`alias_id`)
 			WHERE
+				`t2`.`domain_id` = :domain_id
+			AND
 				`subdomain_alias_status` = :status_ok
 		";
 		$stmt = exec_query($query, array('domain_id' => $mainDmnProps['domain_id'], 'status_ok' => $cfg->ITEM_OK_STATUS));
 
-		if($stmt->rowCount()) {
-			$domains = $stmt->fetchAll(PDO::FETCH_ASSOC);
-			$domainList = array_merge($domainList, $domains);
+		if ($stmt->rowCount()) {
+			$domainList = array_merge($domainList, $stmt->fetchAll(PDO::FETCH_ASSOC));
+			usort($domainList, function ($a, $b) {
+				return strnatcmp(decode_idna($a['name']), decode_idna($b['name']));
+			});
 		}
-
-		sort($domainList);
 	}
 
 	return $domainList;
@@ -105,19 +106,19 @@ function _client_getDomainList()
  */
 function client_addMailAccount()
 {
-	if(
+	if (
 		isset($_POST['username']) && isset($_POST['domain_name']) && isset($_POST['password']) &&
 		isset($_POST['password_rep']) && isset($_POST['quota']) && isset($_POST['forward_list'])
 	) {
 		$mainDmnProps = get_domain_default_props($_SESSION['user_id']);
-		$password  =  $forwardList = '_no_';
+		$password = $forwardList = '_no_';
 		$mailType = $subId = '';
 		$quota = null;
 
 		$mailTypeNormal = (isset($_POST['account_type']) && in_array($_POST['account_type'], array('1', '3')));
 		$mailTypeForward = (isset($_POST['account_type']) && in_array($_POST['account_type'], array('2', '3')));
 
-		if(!$mailTypeNormal && !$mailTypeForward) {
+		if (!$mailTypeNormal && !$mailTypeForward) {
 			showBadRequestErrorPage();
 		}
 
@@ -153,7 +154,7 @@ function client_addMailAccount()
 				if ($password == '') {
 					set_page_message(tr('Password is missing.'), 'error');
 					return false;
-				} elseif($password_rep == '') {
+				} elseif ($password_rep == '') {
 					set_page_message(tr('You must confirm your password.'), 'error');
 					return false;
 				} elseif ($password !== $password_rep) {
@@ -166,11 +167,11 @@ function client_addMailAccount()
 				// Check for quota
 				$quota = clean_input($_POST['quota']);
 
-				if(is_number($quota)) {
+				if (is_number($quota)) {
 					$quota *= 1048576; // MiB to Bytes
 
-					if($mainDmnProps['mail_quota'] != '0') {
-						if($quota == '0') {
+					if ($mainDmnProps['mail_quota'] != '0') {
+						if ($quota == '0') {
 							set_page_message(tr('Incorrect Email quota.'), 'error');
 							return false;
 						}
@@ -182,7 +183,7 @@ function client_addMailAccount()
 
 						$quotaLimit = floor($mainDmnProps['mail_quota'] - ($stmt->fields['quota']));
 
-						if($quota > $quotaLimit) {
+						if ($quota > $quotaLimit) {
 							set_page_message(
 								tr('Email quota cannot be bigger than %s', bytesHuman($quotaLimit, 'MiB')), 'error'
 							);
@@ -194,7 +195,7 @@ function client_addMailAccount()
 					return false;
 				}
 
-				switch($domainType) {
+				switch ($domainType) {
 					case 'dmn':
 						$mailType = MT_NORMAL_MAIL;
 						break;
@@ -223,7 +224,7 @@ function client_addMailAccount()
 				foreach ($forwardList as $key => &$forwardEmailAddr) {
 					$forwardEmailAddr = encode_idna(trim($forwardEmailAddr));
 
-					if($forwardEmailAddr == '') {
+					if ($forwardEmailAddr == '') {
 						unset($forwardList[$key]);
 					} elseif (!chk_email($forwardEmailAddr)) {
 						set_page_message(tr('Wrong mail syntax in forward list.'), 'error');
@@ -236,7 +237,7 @@ function client_addMailAccount()
 
 				$forwardList = implode(',', array_unique($forwardList));
 
-				switch($domainType) {
+				switch ($domainType) {
 					case 'dmn':
 						$mailType .= (($mailType != '') ? ',' : '') . MT_NORMAL_FORWARD;
 						break;
@@ -254,7 +255,7 @@ function client_addMailAccount()
 			// Check for mail account existence
 			$stmt = exec_query("SELECT `mail_id` FROM `mail_users` WHERE `mail_addr` = ?", $mailAddr);
 
-			if($stmt->rowCount()) {
+			if ($stmt->rowCount()) {
 				set_page_message(tr('Email account already exists.'), 'error');
 				return false;
 			}
@@ -322,7 +323,7 @@ function client_generatePage($tpl)
 
 	$quota = $stmt->fields['quota'];
 
-	if($mainDmnProps['mail_quota'] != '0' && $quota >= $mainDmnProps['mail_quota']) {
+	if ($mainDmnProps['mail_quota'] != '0' && $quota >= $mainDmnProps['mail_quota']) {
 		set_page_message(
 			'You cannot add new Email account. You have already assigned all your Email quota to other mailboxes. Please first, review your quota assignments.',
 			'warning'
@@ -389,14 +390,14 @@ $emailAccountsLimit = $dmnProps['domain_mailacc_limit'];
 if ($emailAccountsLimit != '0') {
 	list($nbEmailAccounts) = get_domain_running_mail_acc_cnt($dmnProps['domain_id']);
 
-	if($nbEmailAccounts >= $emailAccountsLimit) {
-		set_page_message(tr('Email account limit is reached.'), 'error');
+	if ($nbEmailAccounts >= $emailAccountsLimit) {
+		set_page_message(tr('You have reached the maximum number of Email accounts allowed by your subscription.'), 'warning');
 		redirectTo('mail_accounts.php');
 	}
 }
 
-if(!empty($_POST)) {
-	if(client_addMailAccount()) {
+if (!empty($_POST)) {
+	if (client_addMailAccount()) {
 		redirectTo('mail_accounts.php');
 	}
 }

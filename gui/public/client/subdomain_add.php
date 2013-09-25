@@ -18,7 +18,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
  * @category    iMSCP
- * @package     Client_Domains
+ * @package     Client_Subdomains
  * @copyright   2010-2013 by i-MSCP team
  * @author      Laurent Declercq <l.declercq@nuxwin.com>
  * @link        http://www.i-mscp.net i-MSCP Home Site
@@ -60,16 +60,12 @@ function _client_getDomainList()
 			FROM
 				`subdomain` AS `t1`
 			INNER JOIN
-				`domain` AS `t2` ON(`t2`.`domain_id` = `t1`.`domain_id`)
+				`domain` AS `t2` USING(`domain_id`)
 			WHERE
 				`t1`.`domain_id` = :domain_id
 			AND
 				`t1`.`subdomain_status` = :status_ok
-		";
-		$stmt = exec_query($query, array('domain_id' => $mainDmnProps['domain_id'], 'status_ok' => $cfg->ITEM_OK_STATUS));
-		$sub = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-		$query = "
+			UNION
 			SELECT
 				`alias_name` AS `name`, `alias_id` AS `id`, 'als' AS `type`, `alias_mount` AS `mount_point`
 			FROM
@@ -78,27 +74,27 @@ function _client_getDomainList()
 				`domain_id` = :domain_id
 			AND
 				`alias_status` = :status_ok
-		";
-		$stmt = exec_query($query, array('domain_id' => $mainDmnProps['domain_id'], 'status_ok' => $cfg->ITEM_OK_STATUS));
-		$als = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-		$query = "
+			UNION
 			SELECT
 				CONCAT(`t1`.`subdomain_alias_name`, '.', `t2`.`alias_name`) AS `name`, `t1`.`subdomain_alias_id` AS `id`,
 				'alssub' AS `type`, `t1`.`subdomain_alias_mount` AS `mount_point`
 			FROM
 				`subdomain_alias` AS `t1`
 			INNER JOIN
-				`domain_aliasses` AS `t2` ON(`t2`.`alias_id` = `t1`.`alias_id` AND `t2`.`domain_id` = :domain_id)
+				`domain_aliasses` AS `t2` USING(`alias_id`)
 			WHERE
+				`t2`.`domain_id` = :domain_id
+			AND
 				`subdomain_alias_status` = :status_ok
 		";
 		$stmt = exec_query($query, array('domain_id' => $mainDmnProps['domain_id'], 'status_ok' => $cfg->ITEM_OK_STATUS));
-		$alssub = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-		$domainList = array_merge($domainList, $sub, $als, $alssub);
-
-		sort($domainList);
+		if ($stmt->rowCount()) {
+			$domainList = array_merge($domainList, $stmt->fetchAll(PDO::FETCH_ASSOC));
+			usort($domainList, function ($a, $b) {
+				return strnatcmp(decode_idna($a['name']), decode_idna($b['name']));
+			});
+		}
 	}
 
 	return $domainList;
@@ -121,13 +117,18 @@ function client_generatePage($tpl)
 	$tpl->assign(
 		array(
 			'SUBDOMAIN_NAME' => (isset($_POST['subdomain_name'])) ? tohtml($_POST['subdomain_name']) : '',
-			'SHARED_MOUNT_POINT_YES' => (isset($_POST['shared_mount_point']) && $_POST['shared_mount_point'] == 'yes') ? $checked : '',
-			'SHARED_MOUNT_POINT_NO' => (isset($_POST['shared_mount_point']) && $_POST['shared_mount_point'] == 'yes') ? '' : $checked,
+			'SHARED_MOUNT_POINT_YES' => (isset($_POST['shared_mount_point']) && $_POST['shared_mount_point'] == 'yes')
+				? $checked : '',
+			'SHARED_MOUNT_POINT_NO' => (isset($_POST['shared_mount_point']) && $_POST['shared_mount_point'] == 'yes')
+				? '' : $checked,
 			'FORWARD_URL_YES' => (isset($_POST['url_forwarding']) && $_POST['url_forwarding'] == 'yes') ? $checked : '',
 			'FORWARD_URL_NO' => (isset($_POST['url_forwarding']) && $_POST['url_forwarding'] == 'yes') ? '' : $checked,
-			'HTTP_YES' => (isset($_POST['forward_url_scheme']) && $_POST['forward_url_scheme'] == 'http://') ? $selected : '',
-			'HTTPS_YES' => (isset($_POST['forward_url_scheme']) && $_POST['forward_url_scheme'] == 'https://') ? $selected : '',
-			'FTP_YES' => (isset($_POST['forward_url_scheme']) && $_POST['forward_url_scheme'] == 'ftp://') ? $selected : '',
+			'HTTP_YES' => (isset($_POST['forward_url_scheme']) && $_POST['forward_url_scheme'] == 'http://')
+				? $selected : '',
+			'HTTPS_YES' => (isset($_POST['forward_url_scheme']) && $_POST['forward_url_scheme'] == 'https://')
+				? $selected : '',
+			'FTP_YES' => (isset($_POST['forward_url_scheme']) && $_POST['forward_url_scheme'] == 'ftp://')
+				? $selected : '',
 			'FORWARD_URL' => (isset($_POST['forward_url'])) ? tohtml(decode_idna($_POST['forward_url'])) : ''
 		)
 	);
@@ -139,8 +140,11 @@ function client_generatePage($tpl)
 			array(
 				'DOMAIN_NAME' => tohtml($domain['name']),
 				'DOMAIN_NAME_UNICODE' => tohtml(decode_idna($domain['name'])),
-				'DOMAIN_NAME_SELECTED' => (isset($_POST['domain_name']) && $_POST['domain_name'] == $domain['name']) ? $selected : '',
-				'SHARED_MOUNT_POINT_DOMAIN_SELECTED' => (isset($_POST['domain_mount_point']) && $_POST['domain_mount_point'] == $domain['name']) ? $selected : ''
+				'DOMAIN_NAME_SELECTED' => (isset($_POST['domain_name']) && $_POST['domain_name'] == $domain['name'])
+					? $selected : '',
+				'SHARED_MOUNT_POINT_DOMAIN_SELECTED' =>
+				(isset($_POST['domain_mount_point']) && $_POST['domain_mount_point'] == $domain['name'])
+					? $selected : ''
 			)
 		);
 
@@ -160,10 +164,10 @@ function client_generatePage($tpl)
  */
 function client_addSubdomain()
 {
-	// Basic checks
+	// Basic check
 
 	if (empty($_POST['subdomain_name'])) {
-		set_page_message(tr('You must enter a subdomain name'), 'error');
+		set_page_message(tr('You must enter a subdomain name.'), 'error');
 		return false;
 	} elseif (empty($_POST['domain_name'])) {
 		showBadRequestErrorPage();
@@ -178,11 +182,9 @@ function client_addSubdomain()
 	$domainList = _client_getDomainList();
 
 	foreach ($domainList as $domain) {
-		if ($domain['type'] == 'dmn' || $domain['type'] == 'als') {
-			if ($domain['name'] == $domainName) {
-				$domainType = $domain['type'];
-				$domainId = $domain['id'];
-			}
+		if (($domain['type'] == 'dmn' || $domain['type'] == 'als') && $domain['name'] == $domainName) {
+			$domainType = $domain['type'];
+			$domainId = $domain['id'];
 		}
 	}
 
@@ -190,30 +192,31 @@ function client_addSubdomain()
 		showBadRequestErrorPage();
 	}
 
-	// Check for sudomain existence
-
-	$subLabel = clean_input(encode_idna(strtolower($_POST['subdomain_name'])));
+	$subLabel = clean_input((strtolower($_POST['subdomain_name'])));
 	$subdomainName = $subLabel . '.' . $domainName;
-
-	foreach ($domainList as $domain) {
-		if ($domain['name'] == $subdomainName) {
-			set_page_message(
-				tr('Subdomain %s already exist', '<strong>' . decode_idna($subdomainName)   . '</strong>'), 'error'
-			);
-			return false;
-		}
-	}
 
 	// Check for subdomain syntax
 
 	if (!iMSCP_Validate::getInstance()->subdomainName($subdomainName)) {
 		set_page_message(iMSCP_Validate::getInstance()->getLastValidationMessages(), 'error');
-		set_page_message(tr('Subdomain name is not valid'), 'error');
+		set_page_message(tr('Subdomain name is not valid.'), 'error');
 		return false;
 	}
 
-	// Set default mount point according parent domain type
-	$mountPoint = ($domainType == 'dmn') ? "/$subLabel" : "/$domainName/$subLabel";
+	$subLabelAscii = clean_input(encode_idna(strtolower($_POST['subdomain_name'])));
+	$subdomainNameAscii = encode_idna($subdomainName);
+
+	// Check for sudomain existence
+
+	foreach ($domainList as $domain) {
+		if ($domain['name'] == $subdomainNameAscii) {
+			set_page_message(tr('Subdomain %s already exist.', "<strong>$subdomainName</strong>"), 'error');
+			return false;
+		}
+	}
+
+	// Set default mount point
+	$mountPoint = ($domainType == 'dmn') ? "/$subLabelAscii" : "/$domainName/$subLabelAscii";
 
 	// Check for shared mount point option
 
@@ -244,13 +247,21 @@ function client_addSubdomain()
 				$uri = iMSCP_Uri_Redirect::fromString($forwardUrl);
 
 				if (!$uri->valid()) {
-					throw new iMSCP_Exception('Invalid URI');
+					throw new iMSCP_Exception(tr('Forward URL %s is not valid.', "<strong>$forwardUrl</strong>"));
+				} else {
+					$uri->setHost(encode_idna($uri->getHost()));
+
+					if ($uri->getHost() == $subdomainNameAscii && $uri->getPath() == '/') {
+						throw new iMSCP_Exception(
+							tr('Forward URL %s is not valid.', "<strong>$forwardUrl</strong>") . ' ' .
+							tr('Subdomain %s cannot be forwarded on itself.', "<strong>$subdomainName</strong>")
+						);
+					}
 				}
 
-				$uri->setHost(encode_idna($uri->getHost()));
 				$forwardUrl = $uri->getUri();
 			} catch (Exception $e) {
-				set_page_message(tr('Forward URL %s is not valid', "<strong>$forwardUrl</strong>"), 'error');
+				set_page_message($e->getMessage(), 'error');
 				return false;
 			}
 		} else {
@@ -264,8 +275,6 @@ function client_addSubdomain()
 	/** @var $db iMSCP_Database */
 	$db = iMSCP_Registry::get('db');
 
-	$subdomainName = decode_idna($subdomainName);
-
 	iMSCP_Events_Manager::getInstance()->dispatch(
 		iMSCP_Events::onBeforeAddSubdomain,
 		array(
@@ -274,7 +283,7 @@ function client_addSubdomain()
 			'parentDomainId' => $domainId,
 			'mountPoint' => $mountPoint,
 			'forwardUrl' => $forwardUrl,
-			'customerId' => $_SESSION['user_id'],
+			'customerId' => $_SESSION['user_id']
 		)
 	);
 
@@ -297,7 +306,7 @@ function client_addSubdomain()
 		";
 	}
 
-	exec_query($query, array($domainId, $subLabel, $mountPoint, $forwardUrl, $cfg->ITEM_TOADD_STATUS));
+	exec_query($query, array($domainId, $subLabelAscii, $mountPoint, $forwardUrl, $cfg->ITEM_TOADD_STATUS));
 
 	iMSCP_Events_Manager::getInstance()->dispatch(
 		iMSCP_Events::onAfterAddSubdomain,
@@ -312,8 +321,9 @@ function client_addSubdomain()
 		)
 	);
 
-	write_log($_SESSION['user_logged'] . ": scheduled addition of subdomain: " . $subdomainName, E_USER_NOTICE);
 	send_request();
+
+	write_log($_SESSION['user_logged'] . ": scheduled addition of subdomain: $subdomainName.", E_USER_NOTICE);
 
 	return true;
 }
@@ -338,7 +348,7 @@ if ($mainDmnProps['domain_subd_limit'] != 0 && $subdomainsCount >= $mainDmnProps
 	set_page_message(tr('You have reached the maximum number of subdomains allowed by your subscription.'), 'warning');
 	redirectTo('domains_manage.php');
 } elseif (!empty($_POST) && client_addSubdomain()) {
-	set_page_message(tr('Subdomain successfully scheduled for addition'), 'success');
+	set_page_message(tr('Subdomain successfully scheduled for addition.'), 'success');
 	redirectTo('domains_manage.php');
 } else {
 	$tpl = new iMSCP_pTemplate();

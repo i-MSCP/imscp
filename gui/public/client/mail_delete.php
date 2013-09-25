@@ -1,49 +1,39 @@
 <?php
 /**
  * i-MSCP - internet Multi Server Control Panel
+ * Copyright (C) 2010-2013 by i-MSCP Team
  *
- * The contents of this file are subject to the Mozilla Public License
- * Version 1.1 (the "License"); you may not use this file except in
- * compliance with the License. You may obtain a copy of the License at
- * http://www.mozilla.org/MPL/
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
  *
- * Software distributed under the License is distributed on an "AS IS"
- * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
- * License for the specific language governing rights and limitations
- * under the License.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- * The Original Code is "VHCS - Virtual Hosting Control System".
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
- * The Initial Developer of the Original Code is moleSoftware GmbH.
- * Portions created by Initial Developer are Copyright (C) 2001-2006
- * by moleSoftware GmbH. All Rights Reserved.
- *
- * Portions created by the ispCP Team are Copyright (C) 2006-2010 by
- * isp Control Panel. All Rights Reserved.
- *
- * Portions created by the i-MSCP Team are Copyright (C) 2010-2013 by
- * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
- *
- * @category    i-MSCP
- * @package     iMSCP_Core
- * @subpackage  Client
- * @copyright   2001-2006 by moleSoftware GmbH
- * @copyright   2006-2010 by ispCP | http://isp-control.net
- * @copyright   2010-2013 by i-MSCP | http://i-mscp.net
- * @author      ispCP Team
- * @author      i-MSCP Team
- * @link        http://i-mscp.net
+ * @category    iMSCP
+ * @package     Client_Mail
+ * @copyright   2010-2013 by i-MSCP Team
+ * @author      Laurent Declercq <l.declercq@nuxwin.com>
+ * @link        http://www.i-mscp.net i-MSCP Home Site
+ * @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
  */
 
 /**
  * Schedule deletion of the given mail account
  *
  * @throws iMSCP_Exception on error
- * @param int $mailId Mail unique identifier
+ * @param int $mailId Mail account unique identifier
  * @param array $dmnProps Main domain properties
  * @return void
  */
-function client_deleteMail($mailId, $dmnProps)
+function client_deleteMailAccount($mailId, $dmnProps)
 {
 	$stmt = exec_query(
 		'SELECT `mail_addr` FROM `mail_users` WHERE `mail_id` = ? AND `domain_id` = ?',
@@ -82,7 +72,13 @@ function client_deleteMail($mailId, $dmnProps)
 
 		iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAfterDeleteMail, array('mailId' => $mailId));
 
-		set_page_message(tr('Mail account %s successfully scheduled for deletion.', $mailAddr), 'success');
+		set_page_message(
+			tr(
+				'Mail account %s successfully scheduled for deletion.',
+				'<strong>' . decode_idna($mailAddr) .'</strong>'
+			),
+			'success'
+		);
 	} else {
 		throw new iMSCP_Exception('Bad request.', 400);
 	}
@@ -113,7 +109,7 @@ if (customerHasFeature('mail') && isset($_REQUEST['id'])) {
 
 			foreach ($mailIds as $mailId) {
 				$mailId = clean_input($mailId);
-				client_deleteMail($mailId, $mainDmnProps);
+				client_deleteMailAccount($mailId, $mainDmnProps);
 				$nbDeletedMails++;
 			}
 
@@ -132,7 +128,7 @@ if (customerHasFeature('mail') && isset($_REQUEST['id'])) {
 
 			write_log(
 				sprintf(
-					'An unexpected error occurred while attempting to delete mail account with ID $%d: %s',
+					'An unexpected error occurred while attempting to delete mail account with ID %s: %s',
 					$mailId,
 					$errorMessage
 				),
@@ -151,9 +147,7 @@ if (customerHasFeature('mail') && isset($_REQUEST['id'])) {
 		set_page_message(tr('You must select a least one mail account to delete.'), 'error');
 	}
 
-	if (!is_xhr()) {
-		redirectTo('mail_accounts.php');
-	}
+	redirectTo('mail_accounts.php');
 } else {
 	showBadRequestErrorPage();
 }
