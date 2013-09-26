@@ -117,13 +117,13 @@
                     <privilege_callback name="resellerHasCustomers"/>
                     <pages>
                         <add_alias>
-                            <label>Add alias</label>
+                            <label>Add domain alias</label>
                             <uri>/reseller/alias_add.php</uri>
                             <visible>0</visible>
                             <title_class>domains</title_class>
                         </add_alias>
                         <edit_alias>
-                            <label>Edit alias</label>
+                            <label>Edit domain alias</label>
                             <uri>/reseller/alias_edit.php</uri>
                             <visible>0</visible>
                             <title_class>domains</title_class>

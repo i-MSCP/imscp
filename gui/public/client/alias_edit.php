@@ -147,22 +147,22 @@ function client_editDomainAlias()
 					$forwardUrl = clean_input($_POST['forward_url_scheme']) . clean_input($_POST['forward_url']);
 
 					try {
-						$uri = iMSCP_Uri_Redirect::fromString($forwardUrl);
-
-						if (!$uri->valid()) {
+						try {
+							$uri = iMSCP_Uri_Redirect::fromString($forwardUrl);
+						} catch(Zend_Uri_Exception $e) {
 							throw new iMSCP_Exception(tr('Forward URL %s is not valid.', "<strong>$forwardUrl</strong>"));
-						} else {
-							$uri->setHost(encode_idna($uri->getHost()));
+						}
 
-							if ($uri->getHost() == $domainAliasData['alias_name'] && $uri->getPath() == '/') {
-								throw new iMSCP_Exception(
-									tr('Forward URL %s is not valid.', "<strong>$forwardUrl</strong>") . ' ' .
-									tr(
-										'Domain alias %s cannot be forwarded on itself.',
-										"<strong>{$domainAliasData['alias_name_utf8']}</strong>"
-									)
-								);
-							}
+						$uri->setHost(encode_idna($uri->getHost()));
+
+						if ($uri->getHost() == $domainAliasData['alias_name'] && $uri->getPath() == '/') {
+							throw new iMSCP_Exception(
+								tr('Forward URL %s is not valid.', "<strong>$forwardUrl</strong>") . ' ' .
+								tr(
+									'Domain alias %s cannot be forwarded on itself.',
+									"<strong>{$domainAliasData['alias_name_utf8']}</strong>"
+								)
+							);
 						}
 
 						$forwardUrl = $uri->getUri();
@@ -221,7 +221,7 @@ check_login('user');
 customerHasFeature('domain_aliases') or showBadRequestErrorPage();
 
 if (!empty($_POST) && client_editDomainAlias()) {
-	set_page_message(tr('Domain alias successfully scheduled for update'), 'success');
+	set_page_message(tr('Domain alias successfully scheduled for update.'), 'success');
 	redirectTo('domains_manage.php');
 } else {
 	$tpl = new iMSCP_pTemplate();

@@ -1,61 +1,66 @@
 
 <script language="JavaScript" type="text/JavaScript">
 	/*<![CDATA[*/
-	function setForwardReadonly(obj) {
-		if (obj.value == 1) {
-			document.forms[0].elements['forward'].readOnly = false;
-			document.forms[0].elements['forward_prefix'].disabled = false;
-		} else {
-			document.forms[0].elements['forward'].readOnly = true;
-			document.forms[0].elements['forward'].value = '';
-			document.forms[0].elements['forward_prefix'].disabled = true;
-		}
-	}
+	$(document).ready(function () {
+		$("input[name='url_forwarding']").change(
+			function () {
+				if ($("#url_forwarding_no").is(':checked')) {
+					$("#tr_url_forwarding_data").hide();
+				} else {
+					$("#tr_url_forwarding_data").show();
+				}
+			}
+		).trigger('change');
+	});
 	/*]]>*/
 </script>
 
-<form name="edit_alias_frm" method="post" action="alias_edit.php?edit_id={ID}">
+<form name="edit_domain_alias_frm" method="post" action="alias_edit.php?id={DOMAIN_ALIAS_ID}">
 	<table class="firstColFixed">
 		<thead>
 		<tr>
-			<th colspan="2">{TR_ALIAS_DATA}</th>
+			<th colspan="2">{TR_DOMAIN_ALIAS}</th>
 		</tr>
 		</thead>
 		<tbody>
 		<tr>
-			<td>{TR_ALIAS_NAME}</td>
-			<td>{ALIAS_NAME}</td>
-		</tr>
-		<tr>
-			<td>{TR_ENABLE_FWD}</td>
+			<td><label for="domain_alias_name">{TR_DOMAIN_ALIAS_NAME}</label></td>
 			<td>
-				<input type="radio" name="status" id="status_enable"{CHECK_EN} value="1"
-					   onchange="setForwardReadonly(this);"/>
-				<label for="status_enable">{TR_ENABLE}</label><br/>
-				<input type="radio" name="status" id="status_disable"{CHECK_DIS} value="0"
-					   onchange="setForwardReadonly(this);"/>
-				<label for="status_disable">{TR_DISABLE}</label><br/>
+				<input type="text" name="domain_alias_name" id="domain_alias_name" value="{DOMAIN_ALIAS_NAME}"
+					   readonly="readonly"/>
 			</td>
 		</tr>
 		<tr>
-			<td><label for="forward">{TR_FORWARD}</label></td>
+			<td>{TR_URL_FORWARDING} <span class="icon i_help" title="{TR_URL_FORWARDING_TOOLTIP}"></span></td>
 			<td>
-				<label>
-					<select name="forward_prefix"{DISABLE_FORWARD}>
-						<option value="{TR_PREFIX_HTTP}"{HTTP_YES}>{TR_PREFIX_HTTP}</option>
-						<option value="{TR_PREFIX_HTTPS}"{HTTPS_YES}>{TR_PREFIX_HTTPS}</option>
-						<option value="{TR_PREFIX_FTP}"{FTP_YES}>{TR_PREFIX_FTP}</option>
-				</select>
+				<div class="radio">
+					<input type="radio" name="url_forwarding" id="url_forwarding_yes"{FORWARD_URL_YES} value="yes"/>
+					<label for="url_forwarding_yes">{TR_YES}</label>
+					<input type="radio" name="url_forwarding" id="url_forwarding_no"{FORWARD_URL_NO} value="no"/>
+					<label for="url_forwarding_no">{TR_NO}</label>
+				</div>
+			</td>
+		</tr>
+		<tr id="tr_url_forwarding_data">
+			<td>{TR_FORWARD_TO_URL}</td>
+			<td>
+				<label for="forward_url_scheme">
+					<select name="forward_url_scheme" id="forward_url_scheme">
+						<option value="http://"{HTTP_YES}>{TR_HTTP}</option>
+						<option value="https://"{HTTPS_YES}>{TR_HTTPS}</option>
+						<option value="ftp://"{FTP_YES}>{TR_FTP}</option>
+					</select>
 				</label>
-				<input name="forward" type="text" class="textinput" id="forward" value="{FORWARD}"{READONLY_FORWARD} />
+				<label>
+					<input name="forward_url" type="text" id="forward_url" value="{FORWARD_URL}"/>
+				</label>
 			</td>
 		</tr>
 		</tbody>
 	</table>
 
 	<div class="buttons">
-		<input type="hidden" name="uaction" value="modify"/>
-		<input name="submit" type="submit" value="{TR_MODIFY}"/>
+		<input name="Submit" type="submit" value="{TR_UPDATE}"/>
 		<a class ="link_as_button" href="alias.php">{TR_CANCEL}</a>
 	</div>
 </form>

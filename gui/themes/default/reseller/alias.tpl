@@ -9,7 +9,8 @@
 
 <!-- BDP: search_form -->
 <form name="search_alias_frm" method="post" action="alias.php?psi={PSI}">
-	<div style="line-height:40px;vertical-align: middle; float: left">
+
+	<div style="line-height:40px;vertical-align: middle;">
 		<label><input name="search_for" type="text" value="{SEARCH_FOR}"/></label>
 		<label>
 			<select name="search_common">
@@ -19,6 +20,12 @@
 		</label>
 		<input name="Submit" type="submit" value="{TR_SEARCH}"/>
 		<input type="hidden" name="uaction" value="go_search"/>
+
+		<!-- BDP: als_add_button -->
+		<div style="float:right;">
+			<a class="link_as_button" href="alias_add.php">{TR_ADD_DOMAIN_ALIAS}</a>
+		</div>
+		<!-- EDP: als_add_button -->
 	</div>
 </form>
 <!-- EDP: search_form -->
@@ -62,12 +69,6 @@
 </table>
 <!-- EDP: table_list -->
 
-<!-- BDP: als_add_button -->
-<div class="buttons">
-	<a class="link_as_button" href="alias_add.php">{TR_ADD_ALIAS}</a>
-</div>
-<!-- EDP: als_add_button -->
-
 <div class="paginator">
 	<!-- BDP: scroll_prev -->
 	<a class="icon i_prev" href="alias.php?psi={PREV_PSI}" title="{TR_PREVIOUS}">{TR_PREVIOUS}</a>
@@ -82,3 +83,5 @@
 	<a class="icon i_next" href="alias.php?psi={NEXT_PSI}" title="{TR_NEXT}">{TR_NEXT}</a>
 	<!-- EDP: scroll_next -->
 </div>
+
+

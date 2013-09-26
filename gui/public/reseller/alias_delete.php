@@ -46,8 +46,8 @@ iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onResellerScriptStar
 
 check_login('reseller');
 
-if (resellerHasFeature('domain_aliases') && isset($_GET['del_id'])) {
-	$alsId = clean_input($_GET['del_id']);
+if (resellerHasFeature('domain_aliases') && isset($_GET['id'])) {
+	$alsId = clean_input($_GET['id']);
 
 	$query = "
 		SELECT

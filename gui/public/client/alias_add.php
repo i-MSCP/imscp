@@ -141,10 +141,9 @@ function client_generatePage($tpl)
 			array(
 				'DOMAIN_NAME' => tohtml($domain['name']),
 				'DOMAIN_NAME_UNICODE' => tohtml(decode_idna($domain['name'])),
-				'DOMAIN_NAME_SELECTED' => (isset($_POST['domain_name']) && $_POST['domain_name'] == $domain['name'])
-					? $selected : '',
 				'SHARED_MOUNT_POINT_DOMAIN_SELECTED' =>
-				(isset($_POST['domain_mount_point']) && $_POST['domain_mount_point'] == $domain['name']) ? $selected : ''
+				(isset($_POST['shared_mount_point_domain']) && $_POST['shared_mount_point_domain'] == $domain['name'])
+					? $selected : ''
 			)
 		);
 
@@ -216,19 +215,19 @@ function client_addDomainAlias()
 			$forwardUrl = clean_input($_POST['forward_url_scheme']) . clean_input($_POST['forward_url']);
 
 			try {
-				$uri = iMSCP_Uri_Redirect::fromString($forwardUrl);
-
-				if (!$uri->valid()) {
+				try {
+					$uri = iMSCP_Uri_Redirect::fromString($forwardUrl);
+				} catch(Zend_Uri_Exception $e) {
 					throw new iMSCP_Exception(tr('Forward URL %s is not valid.', "<strong>$forwardUrl</strong>"));
-				} else {
-					$uri->setHost(encode_idna($uri->getHost()));
+				}
 
-					if ($uri->getHost() == $domainAliasNameAscii && $uri->getPath() == '/') {
-						throw new iMSCP_Exception(
-							tr('Forward URL %s is not valid.', "<strong>$forwardUrl</strong>") . ' ' .
-							tr('Domain alias %s cannot be forwarded on itself.', "<strong>$domainAliasName</strong>")
-						);
-					}
+				$uri->setHost(encode_idna($uri->getHost()));
+
+				if ($uri->getHost() == $domainAliasNameAscii && $uri->getPath() == '/') {
+					throw new iMSCP_Exception(
+						tr('Forward URL %s is not valid.', "<strong>$forwardUrl</strong>") . ' ' .
+						tr('Domain alias %s cannot be forwarded on itself.', "<strong>$domainAliasName</strong>")
+					);
 				}
 
 				$forwardUrl = $uri->getUri();

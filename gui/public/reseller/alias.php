@@ -277,8 +277,8 @@ function reseller_generateAlsList($tpl, $resellerId)
 		$alsIpName = $alsIpD['ip_domain'];
 
 		if ($alsStatus === $cfg->ITEM_OK_STATUS) {
-			$deleteLink = "alias_delete.php?del_id=" . $alsId;
-			$editLink = "alias_edit.php?edit_id=" . $alsId;
+			$deleteLink = "alias_delete.php?id=" . $alsId;
+			$editLink = "alias_edit.php?id=" . $alsId;
 			$actionText = tr('Delete');
 			$editText = tr('Edit');
 			$statusBool = true;
@@ -389,7 +389,7 @@ $tpl->assign(
 		'TR_STATUS' => tr('Status'),
 		'TR_OWNER' => tr('Owner'),
 		'TR_ACTION' => tr('Actions'),
-		'TR_ADD_ALIAS' => tr('Add'),
+		'TR_ADD_DOMAIN_ALIAS' => tr('Add domain alias'),
 		'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete %s?', true, '%s'),
 		'TR_PREVIOUS' => tr('Previous'),
 		'TR_NEXT' => tr('Next')
