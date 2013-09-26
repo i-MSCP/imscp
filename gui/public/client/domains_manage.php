@@ -364,7 +364,6 @@ function client_generateSubdomainsList($tpl, $userId)
 
 				$tpl->assign(
 					array(
-						//'SUB_NAME' => tohtml($name),
 						'SUB_MOUNT' => tohtml($subMountPoint),
 						'SUB_REDIRECT' => $redirectUrl,
 						'SUB_STATUS' => translate_dmn_status($subStatus),
@@ -613,12 +612,12 @@ function client_generateCustomDnsRecordsList($tpl, $userId)
 				$tpl->assign(
 					array(
 						'DNS_DOMAIN' => tohtml(decode_idna($stmt->fields['domain_name'])),
-						'DNS_NAME' => tohtml($stmt->fields['domain_dns']),
+						'DNS_NAME' => tohtml(decode_idna($stmt->fields['domain_dns'])),
 						'DNS_CLASS' => tohtml($stmt->fields['domain_class']),
 						'DNS_TYPE' => tohtml($stmt->fields['domain_type']),
-						'LONG_DNS_DATA' => tohtml($stmt->fields['domain_text']),
-						'SHORT_DNS_DATA' => (strlen($stmt->fields['domain_text']) > 20) ?
-							substr($stmt->fields['domain_text'],0 , 17) . '...' : $stmt->fields['domain_text'],
+						'LONG_DNS_DATA' => tohtml(decode_idna($stmt->fields['domain_text'])),
+						'SHORT_DNS_DATA' => decode_idna((strlen($stmt->fields['domain_text']) > 20) ?
+							substr($stmt->fields['domain_text'],0 , 17) . '...' : $stmt->fields['domain_text']),
 						'DNS_ACTION_SCRIPT_EDIT' => tohtml($actionScriptEdit),
 						'DNS_ACTION_EDIT' => $actionEdit
 					)
@@ -655,7 +654,7 @@ function _client_generateCustomDnsRecordAction($action, $id, $status, $ownedBy =
 	if($status == $cfg->ITEM_OK_STATUS) {
 		if($action == 'edit') {
 			if($ownedBy === 'custom_dns_feature') {
-				return array(tr('Edit'), tohtml("dns_edit.php?edit_id=$id"));
+				return array(tr('Edit'), tohtml("dns_edit.php?id=$id"));
 			} elseif($ownedBy === 'ext_mail_feature') {
 				return array(tr('Edit'), tohtml("mail_external_edit.php?item=" . urlencode($id)));
 			}

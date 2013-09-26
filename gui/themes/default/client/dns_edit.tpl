@@ -86,7 +86,7 @@
 	<table class="firstColFixed">
 		<thead>
 		<tr>
-			<th colspan="2">{TR_CUSTOM_DNS_RECORD_DATA}</th>
+			<th colspan="2">{TR_CUSTOM_DNS_RECORD}</th>
 		</tr>
 		</thead>
 		<tbody>
@@ -193,11 +193,9 @@
 	<div class="buttons">
 		<!-- BDP: form_edit_mode -->
 		<input name="Submit" type="submit" value="{TR_UPDATE}"/>
-		<input type="hidden" name="uaction" value="update"/>
 		<!-- EDP: form_edit_mode -->
 		<!-- BDP: form_add_mode -->
 		<input name="Submit" type="submit" value="{TR_ADD}"/>
-		<input type="hidden" name="uaction" value="add"/>
 		<!-- EDP: form_add_mode -->
 		<a class ="link_as_button" href="domains_manage.php">{TR_CANCEL}</a>
 	</div>

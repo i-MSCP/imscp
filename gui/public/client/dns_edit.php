@@ -46,7 +46,7 @@
  * @param string $defaultValue Value returned in case Data has not been found in $_POST
  * @return string
  */
-function getPost($id, $defaultValue)
+function client_getPost($id, $defaultValue = '')
 {
 	if (array_key_exists($id, $_POST)) {
 		return clean_input($_POST[$id]);
@@ -56,27 +56,79 @@ function getPost($id, $defaultValue)
 }
 
 /**
- * Validate CNAME DNS record
+ * Validate Name of DNS record
  *
- * @param array $record DNS record data
- * @param string &$errorString Reference to variable, which contain error string
- * @return bool TRUE if the record is valid, FALSE otherwise
+ * @param string $name Name
+ * @param string $domainName Domain name
+ * @param string &$errorString Error string
+ * @return bool TRUE if name is valid, FALSE otherwise
  */
-function validate_CNAME($record, &$errorString)
+function client_validate_NAME($name, $domainName, &$errorString)
 {
-	if(substr($record['dns_cname'], -1) == '.') {
-		$cnameRecord = rtrim($record['dns_cname'], '.');
-	} else {
-		$cnameRecord = $record['dns_cname'];
-	}
-
-	if(!iMSCP_Validate::getInstance()->domainName($cnameRecord, array('tld' => false))) {
-		$errorString .= tr('Usage of disallowed character in CNAME');
+	if (empty($name) || $name == '.') {
+		$errorString .= tr('NAME field is empty or invalid.');
 		return false;
 	}
 
-	if (empty($record['dns_name'])) {
-		$errorString .= tr('Name cannot be empty.');
+	if (substr($name, -1) == '.') {
+		$entry = rtrim($name, '.');
+	} else {
+		$entry = $name;
+	}
+
+	if (strpos($entry, '.') === false) {
+		$entry .= $domainName;
+	}
+
+	if (!iMSCP_Validate::getInstance()->domainName($entry, array('tld' => false))) {
+		$errorString .= tr('Invalid NAME.');
+		return false;
+	}
+
+	if (preg_match('/\.$/', $name)) {
+		if (!preg_match('/' . str_replace('.', '\.', $domainName) . '\.$/', $name)) {
+			$errorString .= sprintf(
+				tr(
+					'%s is not part of domain %s.',
+					"<strong>$name</strong>",
+					'<strong>' . decode_idna($domainName) . '</strong>'
+				)
+			);
+
+			return false;
+		}
+	}
+
+	return true;
+}
+
+/**
+ * Validate CNAME DNS record
+ *
+ * @param string $cname Cname
+ * @param string $domainName Domain name
+ * @param string &$errorString Error string
+ * @return bool TRUE if cname is valid, FALSE otherwise
+ */
+function client_validate_CNAME($cname, $domainName, &$errorString)
+{
+	if (empty($cname) || $cname == '.') {
+		$errorString .= tr('CNAME field is empty or invalid.');
+		return false;
+	}
+
+	if (substr($cname, -1) == '.') {
+		$cnameRecord = rtrim($cname, '.');
+	} else {
+		$cnameRecord = $cname;
+	}
+
+	if (strpos($cnameRecord, '.') === false) {
+		$cnameRecord .= $domainName;
+	}
+
+	if (!iMSCP_Validate::getInstance()->domainName($cnameRecord, array('tld' => false))) {
+		$errorString .= tr('Invalid CNAME');
 		return false;
 	}
 
@@ -86,19 +138,17 @@ function validate_CNAME($record, &$errorString)
 /**
  * Validate A DNS record
  *
- * @param array $record DNS record data
- * @param string &$errorString Reference to variable, which contain error string
- * @return bool TRUE if the record is valid, FALSE otherwise
+ * @param string $ip IPv4 address
+ * @param string &$errorString Error string
+ * @return bool
  */
-function validate_A($record, &$errorString)
+function client_validate_A($ip, &$errorString)
 {
-	if (filter_var($record['dns_A_address'], FILTER_VALIDATE_IP, FILTER_FLAG_IPV4) === false) {
-		$errorString .= sprintf(tr('Wrong IPv4 address ("%s")'), $record['dns_A_address']);
+	if (empty($ip)) {
+		$errorString .= tr('IP address field is empty or invalid.');
 		return false;
-	}
-
-	if (empty($record['dns_name'])) {
-		$errorString .= tr('Name cannot be empty.');
+	} elseif (filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4) === false) {
+		$errorString .= tr('Invalid IPv4 address.');
 		return false;
 	}
 
@@ -108,19 +158,17 @@ function validate_A($record, &$errorString)
 /**
  * Validate AAAA DNS record
  *
- * @param array $record DNS record data
+ * @param array $ip IPv6 address
  * @param string &$errorString Reference to variable, which contain error string
  * @return bool TRUE if the record is valid, FALSE otherwise
  */
-function validate_AAAA($record, &$errorString)
+function client_validate_AAAA($ip, &$errorString)
 {
-	if (filter_var($record['dns_AAAA_address'], FILTER_VALIDATE_IP, FILTER_FLAG_IPV6) === false) {
-		$errorString .= sprintf(tr('Wrong IPv6 address ("%s")'), $record['dns_AAAA_address']);
+	if (empty($ip)) {
+		$errorString .= tr('IPv6 address field is empty or invalid.');
 		return false;
-	}
-
-	if (empty($record['dns_name'])) {
-		$errorString .= tr('Name cannot be empty.');
+	} elseif (filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6) === false) {
+		$errorString .= tr('Invalid IPv6 address.');
 		return false;
 	}
 
@@ -134,15 +182,13 @@ function validate_AAAA($record, &$errorString)
  * @param string &$errorString Reference to variable, which contain error string
  * @return bool TRUE if the record is valid, FALSE otherwise
  */
-function validate_TXT($record, &$errorString)
+function client_validate_TXT($record, &$errorString)
 {
-	if (!preg_match('/^([a-zA-Z0-9\+\?\-\*_~=:. \/])+$/', str_replace('"', '', $record['dns_txt_data']))) {
-		$errorString .= sprintf(tr('Invalid characters in TXT data ("%s")'), str_replace('"', '', $record['dns_txt_data']));
-		return false;
-	}
-
 	if (empty($record['dns_txt_data'])) {
-		$errorString .= tr('TXT data must be filled.');
+		$errorString .= tr('TXT field is empty or invalid.');
+		return false;
+	} elseif (!preg_match('/^([a-zA-Z0-9\+\?\-\*_~=:. \/])+$/', str_replace('"', '', $record['dns_txt_data']))) {
+		$errorString .= tr('Invalid TXT data');
 		return false;
 	}
 
@@ -158,35 +204,47 @@ function validate_TXT($record, &$errorString)
  * @param string $text
  * @return bool TRUE if the record is valid, FALSE otherwise
  */
-function validate_SRV($record, &$errorString, &$dns, &$text)
+function client_validate_SRV($record, &$errorString, &$dns, &$text)
 {
-	if (!preg_match('~^([\d]+)$~', $record['dns_srv_port'])) {
+	if (empty($record['dns_srv_port'])) {
+		$errorString .= tr('%s field is empty or invalid.', tr('Target port'));
+		return false;
+	} elseif (!is_number($record['dns_srv_port'])) {
 		$errorString .= tr('Port must be a number.');
 		return false;
 	}
 
-	if (!preg_match('~^([\d]+)$~', $record['dns_srv_ttl'])) {
+	if (empty($record['dns_srv_ttl'])) {
+		$errorString .= tr('%sfield is empty or invalid.', tr('TTL'));
+		return false;
+	} elseif (!is_number($record['dns_srv_ttl'])) {
 		$errorString .= tr('TTL must be a number.');
 		return false;
 	}
 
-	if (!preg_match('~^([\d]+)$~', $record['dns_srv_prio'])) {
+	if (empty($record['dns_srv_prio'])) {
+		$errorString .= tr('%s field is empty or invalid.', tr('Priority'));
+		return false;
+	} elseif (!is_number($record['dns_srv_prio'])) {
 		$errorString .= tr('Priority must be a number.');
 		return false;
 	}
 
-	if (!preg_match('~^([\d]+)$~', $record['dns_srv_weight'])) {
+	if (empty($record['dns_srv_weight'])) {
+		$errorString .= tr('%s field is empty or invalid.', tr('Relative weight'));
+		return false;
+	} elseif (!is_number($record['dns_srv_weight'])) {
 		$errorString .= tr('Relative weight must be a number.');
 		return false;
 	}
 
 	if (empty($record['dns_srv_name'])) {
-		$errorString .= tr('Service must be filled.');
+		$errorString .= tr('%s field is empty or invalid.', tr('Service name'));
 		return false;
 	}
 
 	if (empty($record['dns_srv_host'])) {
-		$errorString .= tr('Host must be filled.');
+		$errorString .= tr('%s host field is empty or invalid.', tr('Target host'));
 		return false;
 	}
 
@@ -194,7 +252,7 @@ function validate_SRV($record, &$errorString, &$dns, &$text)
 
 	$text = sprintf(
 		"%d\t%d\t%d\t%s", $record['dns_srv_prio'], $record['dns_srv_weight'], $record['dns_srv_port'],
-		$record['dns_srv_host']
+		encode_idna($record['dns_srv_host'])
 	);
 
 	return true;
@@ -209,21 +267,27 @@ function validate_SRV($record, &$errorString, &$dns, &$text)
  * @param string &$errorString Reference to variable, which contain error string
  * @return bool TRUE if not conflict is found, FALSE otherwise
  */
-function checkConflict($name, $type, &$errorString)
+function client_checkConflict($name, $type, &$errorString)
 {
-	$type = strtoupper($type);
-
 	$resolver = new Net_DNS2_Resolver(array('nameservers' => array('127.0.0.1')));
+	$type = strtoupper($type);
 
 	try {
 		/** @var Net_DNS2_Packet_Response $result */
-		$result = $resolver->query($name, $type);
+		$result = $resolver->query($name, strtoupper($type));
 
 		if (count($result->answer) == 0) {
 			return true;
+		} elseif(client_getPost('type') != 'CNAME') {
+			if(
+				($type == 'A' && $result->answer[0]->address != client_getPost('dns_A_address')) ||
+				($type == 'AAAA' && inet_pton($result->answer[0]->address) != inet_pton(client_getPost('dns_AAAA_address')))
+			) {
+				return true;
+			}
 		}
-	} catch(Net_DNS2_Exception $e) {
-		if($e->getCode() != Net_DNS2_Lookups::RCODE_NXDOMAIN) {
+	} catch (Net_DNS2_Exception $e) {
+		if ($e->getCode() != Net_DNS2_Lookups::RCODE_NXDOMAIN) {
 
 			$errorString .= tr("DNS server unavailable. Please contact your reseller.");
 			write_log(
@@ -238,47 +302,19 @@ function checkConflict($name, $type, &$errorString)
 		return true;
 	}
 
-	$errorString .= tr("conflict with $type record");
+	$errorString .= tr("Conflict with an existent %s record.", "<strong>$type</strong>");
 
 	return false;
 }
 
 /**
- * Validate name of DNS record
+ * Create HTML option elements
  *
- * @param array $domain DNS record data
- * @param string &$errorString Reference to variable, which contain error string or NULL
- * @return bool TRUE if the record is valid, FALSE otherwise
- */
-function validate_NAME($domain, &$errorString)
-{
-	if(strpos($domain['name'], '.') === false) {
-		$entry = $domain['name'] . '.dummy';
-	} else {
-		$entry = $domain['name'];
-	}
-
-	if(!iMSCP_Validate::getInstance()->domainName($entry, array('tld' => false))) {
-		$errorString .= tr('Invalid NAME');
-		return false;
-	}
-
-	if (preg_match('/\.$/', $domain['name'])) {
-		if (!preg_match('/'.str_replace('.', '\.', $domain['domain']) . '\.$/', $domain['name'])) {
-			$errorString .= sprintf(tr('Record "%s" is not part of domain "%s".', $domain['name'], $domain['domain']));
-			return false;
-		}
-	}
-
-	return true;
-}
-
-/**
  * @param array $data Options data
- * @param null $value
+ * @param null|string $value
  * @return string
  */
-function create_options($data, $value = null)
+function client_create_options($data, $value = null)
 {
 	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
@@ -288,7 +324,9 @@ function create_options($data, $value = null)
 
 	foreach ($data as $item) {
 		$options .=
-			'<option value="' . $item . '"' . (($item == $value) ? $cfg->HTML_SELECTED : '') . '>' . $item . '</option>';
+			'<option value="' . $item . '"' . (($item == $value) ? $cfg->HTML_SELECTED : '') . '>' .
+			$item .
+			'</option>';
 	}
 
 	return $options;
@@ -300,9 +338,10 @@ function create_options($data, $value = null)
  * @param array|null $data DNS record data or NULL
  * @return array
  */
-function decodeDnsRecordData($data)
+function client_decodeDnsRecordData($data)
 {
-	$address = $addressv6 = $srvName = $srvProto = $cname = $txt = $name = ''; $srvTTL = $srvPriority = $srvWeight =
+	$address = $addressv6 = $srvName = $srvProto = $cname = $txt = $name = '';
+	$srvTTL = $srvPriority = $srvWeight =
 	$srvHost = $srvPost = '';
 	$ownedBy = 'custom_dns_feature';
 
@@ -322,6 +361,7 @@ function decodeDnsRecordData($data)
 				break;
 			case 'SRV':
 				$name = '';
+
 				if (preg_match('~_([^\.]+)\._([^\s]+)[\s]+([\d]+)~', $data['domain_dns'], $srv)) {
 					$srvName = $srv[1];
 					$srvProto = $srv[2];
@@ -348,13 +388,13 @@ function decodeDnsRecordData($data)
 }
 
 /**
- * Generate page data
+ * Generate page
  *
  * @param iMSCP_pTemplate $tpl
  * @param int $dnsRecordId DNS record unique identifier (0 for new record)
  * @return void
  */
-function generatePageData($tpl, $dnsRecordId)
+function client_generatePage($tpl, $dnsRecordId)
 {
 	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
@@ -362,8 +402,6 @@ function generatePageData($tpl, $dnsRecordId)
 	$mainDomainId = get_user_domain_id($_SESSION['user_id']);
 
 	if (!$dnsRecordId) { // Add DNS record
-		$data = null;
-
 		$query = "
 			SELECT
 				'0' AS `domain_id`, `domain_name`
@@ -383,61 +421,66 @@ function generatePageData($tpl, $dnsRecordId)
 		";
 		$stmt = exec_query($query, array($mainDomainId, $mainDomainId, $cfg->ITEM_ORDERED_STATUS));
 
-		$domainId = getPost('domain_id', '0');
+		$domainId = client_getPost('domain_id', '0');
+		$selected = $cfg->HTML_SELECTED;
 		$selectOptions = '';
 
-		while ($row = $stmt->fetchRow()) {
+		while ($data = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
 			$selectOptions .=
-				'<option value="' . $row['domain_id'] . '"' . (($row['domain_id'] == $domainId) ? $cfg->HTML_SELECTED : '') . '>' .
-					decode_idna($row['domain_name']) .
+				'<option value="' . $data['domain_id'] . '"' . (($data['domain_id'] == $domainId) ? $selected : '') . '>' .
+					decode_idna($data['domain_name']) .
 				'</option>';
 		}
 
 		$tpl->assign('SELECT_DOMAINS', $selectOptions);
-
 	} else { // Edit DNS record
 		$query = "SELECT * FROM `domain_dns` WHERE `domain_dns_id` = ? AND `domain_id` = ?";
 		$stmt = exec_query($query, array($dnsRecordId, $mainDomainId));
 
-		if (!$stmt->recordCount()) {
+		if (!$stmt->rowCount()) {
 			showBadRequestErrorPage();
 		}
 
-		$data = $stmt->fetchRow();
+		$data = $stmt->fetchRow(PDO::FETCH_ASSOC);
 		$tpl->assign('ADD_RECORD', '');
 	}
 
 	list(
 		$name, $address, $addressv6, $srvName, $srvProto, $srvTTL, $srvPriority, $srvWeight, $srvHost, $srvPort, $cname,
 		$plain, $ownedBy
-	) = decodeDnsRecordData($data);
+		) = client_decodeDnsRecordData($data);
 
 	// Protection against edition (eg. for external mail MX record)
-	if($ownedBy != 'custom_dns_feature') {
+	if ($ownedBy != 'custom_dns_feature') {
 		showBadRequestErrorPage();
 	}
 
-	$dnsTypes = create_options(array('A', 'AAAA', 'SRV', 'CNAME', 'TXT'), getPost('type', $data['domain_type']));
-	$dnsClasses = create_options(array('IN'), getPost('class', $data['domain_class']));
+	$dnsTypes = client_create_options(
+		array('A', 'AAAA', 'SRV', 'CNAME', 'TXT'), client_getPost('type', $data['domain_type'])
+	);
+
+	$dnsClasses = client_create_options(array('IN'), client_getPost('class', $data['domain_class']));
 
 	$tpl->assign(
 		array(
 			'SELECT_DNS_TYPE' => $dnsTypes,
 			'SELECT_DNS_CLASS' => $dnsClasses,
-			'DNS_NAME' => tohtml(getPost('dns_name', $name)),
-			'DNS_ADDRESS' => tohtml(getPost('dns_A_address', $address)),
-			'DNS_ADDRESS_V6' => tohtml(getPost('dns_AAAA_address', $addressv6)),
-			'SELECT_DNS_SRV_PROTOCOL' => create_options(array('tcp', 'udp'), getPost('srv_proto', $srvProto)),
-			'DNS_SRV_NAME' => tohtml(getPost('dns_srv_name', $srvName)),
-			'DNS_SRV_TTL' => tohtml(getPost('dns_srv_ttl', $srvTTL)),
-			'DNS_SRV_PRIO' => tohtml(getPost('dns_srv_prio', $srvPriority)),
-			'DNS_SRV_WEIGHT' => tohtml(getPost('dns_srv_weight', $srvWeight)),
-			'DNS_SRV_HOST' => tohtml(getPost('dns_srv_host', $srvHost)),
-			'DNS_SRV_PORT' => tohtml(getPost('dns_srv_port', $srvPort)),
-			'DNS_CNAME' => tohtml(getPost('dns_cname', $cname)),
-			'DNS_PLAIN' => tohtml(getPost('dns_plain_data', $plain)),
-			'DNS_TXT_DATA' => tohtml(getPost('dns_txt_data', $plain)),
-			'ID' => $dnsRecordId
+			'DNS_NAME' => tohtml(client_getPost('dns_name', decode_idna($name))),
+			'DNS_ADDRESS' => tohtml(client_getPost('dns_A_address', $address)),
+			'DNS_ADDRESS_V6' => tohtml(client_getPost('dns_AAAA_address', $addressv6)),
+			'SELECT_DNS_SRV_PROTOCOL' => client_create_options(
+				array('tcp', 'udp'), client_getPost('srv_proto', $srvProto)
+			),
+			'DNS_SRV_NAME' => tohtml(client_getPost('dns_srv_name', decode_idna($srvName))),
+			'DNS_SRV_TTL' => tohtml(client_getPost('dns_srv_ttl', $srvTTL)),
+			'DNS_SRV_PRIO' => tohtml(client_getPost('dns_srv_prio', $srvPriority)),
+			'DNS_SRV_WEIGHT' => tohtml(client_getPost('dns_srv_weight', $srvWeight)),
+			'DNS_SRV_HOST' => tohtml(client_getPost('dns_srv_host', $srvHost)),
+			'DNS_SRV_PORT' => tohtml(client_getPost('dns_srv_port', $srvPort)),
+			'DNS_CNAME' => tohtml(client_getPost('dns_cname', decode_idna($cname))),
+			'DNS_PLAIN' => tohtml(client_getPost('dns_plain_data', $plain)),
+			'DNS_TXT_DATA' => tohtml(client_getPost('dns_txt_data', $plain)),
+			'ID' => tohtml($dnsRecordId)
 		)
 	);
 }
@@ -449,48 +492,42 @@ function generatePageData($tpl, $dnsRecordId)
  * @param int $dnsRecordId DNS record unique identifier (0 for new record)
  * @return bool TRUE on success, FALSE otherwise
  */
-function saveDnsRecord($dnsRecordId)
+function client_saveDnsRecord($dnsRecordId)
 {
 	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
 
-	$mainDomainId = get_user_domain_id($_SESSION['user_id']);
+	$mainDmnProps = get_domain_default_props($_SESSION['user_id']);
+	$mainDmnId = $mainDmnProps['domain_id'];
 
 	$errorString = '';
-	$dnsRecordClass = clean_input($_POST['class']);
-	$dnsRecordType = clean_input($_POST['type']);
-	$dnsRecordText = '';
+	$dnsRecordName = '';
+	$dnsRecordClass = client_getPost('class');
+	$dnsRecordType = client_getPost('type');
+
+	if ($dnsRecordClass != 'IN' || !in_array($dnsRecordType, array('A', 'AAAA', 'CNAME', 'SRV', 'TXT'))) {
+		showBadRequestErrorPage();
+	}
+
+	$dnsRecordData = '';
 
 	if (!$dnsRecordId) {
-		$query = "
-			SELECT
-				*
-			FROM (
-				SELECT
-					'0' AS `domain_id`, `domain_name`
-				FROM
-					`domain`
-				WHERE
-					`domain_id` = ?
-				UNION
-				SELECT
-					`alias_id` AS `domain_id`, `alias_name` AS `domain_name`
-				FROM
-					`domain_aliasses`
-				WHERE
-					`domain_id` = ?
-			) AS `result`
-			WHERE
-				IFNULL(`result`.`domain_id`, 0) = ?
-		";
-		$stmt = exec_query($query, array($mainDomainId, $mainDomainId, $_POST['domain_id']));
+		if ($_POST['domain_id'] == 0) {
+			$domainName = $mainDmnProps['domain_name'];
+			$domainId = 0;
+			$domainType = 'dmn';
+		} else {
+			$query = "SELECT `alias_id`, `alias_name` FROM `domain_aliasses` WHERE `alias_id` = ? AND `domain_id` = ?";
+			$stmt = exec_query($query, array($_POST['domain_id'], $mainDmnId));
 
-		if (!$stmt->rowCount()) {
-			showBadRequestErrorPage();
+			if (!$stmt->rowCount()) {
+				showBadRequestErrorPage();
+			}
+
+			$domainName = $stmt->fields['alias_name'];
+			$domainId = $stmt->fields['alias_id'];
+			$domainType = 'als';
 		}
-
-		$domainName = $stmt->fields['domain_name'];
-		$domainId = $stmt->fields['domain_id'];
 	} else {
 		$query = "
 			SELECT
@@ -500,160 +537,181 @@ function saveDnsRecord($dnsRecordId)
 			FROM
 				`domain_dns` AS `t1`
 			LEFT JOIN
-				`domain` AS `t2` ON (`t2`.`domain_id` = `t1`.`domain_id`)
+				`domain` AS `t2` USING(`domain_id`)
 			LEFT JOIN
-				`domain_aliasses` AS `t3` ON (`t3`.`alias_id` = `t1`.`alias_id`)
+				`domain_aliasses` AS `t3` USING (`alias_id`)
 			WHERE
 				`domain_dns_id` = ?
 			AND
 				`t1`.`domain_id` = ?
 		";
-		$stmt = exec_query($query, array($dnsRecordId, $mainDomainId));
+		$stmt = exec_query($query, array($dnsRecordId, $mainDmnId));
 
 		if (!$stmt->rowCount()) {
 			showBadRequestErrorPage();
 		}
 
-		$domainId = $stmt->fields['domain_id'];
+		$domainId = ($stmt->fields['alias_id']) ? $stmt->fields['alias_id'] : $stmt->fields['domain_id'];
 		$domainName = $stmt->fields['domain_name'];
 		$dnsRecordName = $stmt->fields['domain_dns'];
+		$domainType = ($stmt->fields['alias_id']) ? 'als' : 'dmn';
 	}
 
 	$nameValidationError = '';
 
-	if(in_array($_POST['type'], array('A', 'AAAA', 'CNAME'))) {
-		if(!validate_NAME(array('name' => $_POST['dns_name'], 'domain' => $domainName), $nameValidationError)) {
-			set_page_message(
-				sprintf(tr("Cannot validate %s record: %s"), $dnsRecordType, $nameValidationError), 'error'
-			);
+	if (in_array($dnsRecordType, array('A', 'AAAA', 'CNAME'))) {
+		if (!client_validate_NAME(client_getPost('dns_name'), $domainName, $nameValidationError)) {
+			set_page_message(sprintf(tr("Cannot validate record: %s"), $nameValidationError), 'error');
 		}
 	}
 
-	switch ($_POST['type']) {
-		case 'CNAME':
-			if (!validate_CNAME($_POST, $errorString)) {
-				set_page_message(
-					sprintf(tr("Cannot validate %s record: %s"), $dnsRecordType, $errorString), 'error'
-				);
-			} elseif (!checkConflict($_POST['dns_name'] . '.' .  $domainName, 'CNAME', $errorString)) {
-				set_page_message(
-					sprintf(tr("Cannot validate %s record: %s"), $dnsRecordType, $errorString), 'error'
-				);
-			} elseif (!checkConflict($_POST['dns_name'] . '.' .  $domainName, 'A', $errorString)) {
-				set_page_message(
-					sprintf(tr("Cannot validate %s record: %s"), $dnsRecordType, $errorString), 'error'
-				);
-			} elseif (!checkConflict($_POST['dns_name'] . '.' .  $domainName, 'AAAA', $errorString)) {
-				set_page_message(
-					sprintf(tr("Cannot validate %s record: %s"), $dnsRecordType, $errorString), 'error'
-				);
-			}
-
-			$dnsRecordText = encode_idna($_POST['dns_cname']);
-			$dnsRecordName = $_POST['dns_name'];
-			break;
-		case 'A':
-			if (!validate_A($_POST, $errorString)) {
-				set_page_message(
-					sprintf(tr("Cannot validate %s record: %s"), $dnsRecordType, $errorString), 'error'
-				);
-			} elseif (!checkConflict($_POST['dns_name'] . '.' . $domainName, 'CNAME', $errorString)) {
-				set_page_message(
-					sprintf(tr("Cannot validate %s record: %s"), $dnsRecordType, $errorString), 'error'
-				);
-			}
-
-			$dnsRecordText = $_POST['dns_A_address'];
-			$dnsRecordName = $_POST['dns_name'];
-			break;
-		case 'AAAA':
-			if (!validate_AAAA($_POST, $errorString)) {
-				set_page_message(
-					sprintf(tr("Cannot validate %s record: %s"), $dnsRecordType, $errorString), 'error'
-				);
-			} elseif (!checkConflict($_POST['dns_name'] . '.' .  $domainName, 'CNAME', $errorString)) {
-				set_page_message(
-					sprintf(tr("Cannot validate %s record: %s"), $dnsRecordType, $errorString), 'error'
-				);
-			}
-
-			$dnsRecordText = $_POST['dns_AAAA_address'];
-			$dnsRecordName = $_POST['dns_name'];
-			break;
-		case 'SRV':
-			if (!validate_SRV($_POST, $errorString, $dnsRecordName, $dnsRecordText)) {
-				set_page_message(
-					sprintf(tr("Cannot validate %s record: %s"), $dnsRecordType, $errorString), 'error'
-				);
-			}
-
-			break;
-		case 'TXT':
-			if (!validate_TXT($_POST, $errorString)) {
-				set_page_message(
-					sprintf(tr("Cannot validate %s record: %s"), $dnsRecordType, $errorString), 'error'
-				);
-			}
-
-			$dnsRecordText = '"' . str_replace('"', '', $_POST['dns_txt_data']) . '"';
-			$dnsRecordName = $domainName . '.';
-
-			break;
-		default :
-			showBadRequestErrorPage();
-			exit;
-	}
-
 	if (!Zend_Session::namespaceIsset('pageMessages')) {
-		if (!$dnsRecordId) {
+		switch ($dnsRecordType) {
+			case 'CNAME':
+				$cname = client_getPost('dns_cname');
+				$newName = encode_idna(
+					(substr(client_getPost('dns_name'), -1) == '.')
+						? client_getPost('dns_name') : client_getPost('dns_name') . '.' . $domainName
+				);
+				$oldName = ($dnsRecordName != '') ? ((substr($dnsRecordName, -1) == '.')
+					? $dnsRecordName : $dnsRecordName . '.' . $domainName) : '';
+
+				if (!client_validate_CNAME($cname, $domainName, $errorString)) {
+					set_page_message(sprintf(tr("Cannot validate record: %s"), $errorString), 'error');
+				} elseif ($newName != $oldName && !client_checkConflict($newName, 'CNAME', $errorString)) {
+					set_page_message(sprintf(tr("Cannot validate record: %s"), $errorString), 'error');
+				} elseif ($newName != $oldName && !client_checkConflict($newName, 'A', $errorString)) {
+					set_page_message(sprintf(tr("Cannot validate record: %s"), $errorString), 'error');
+				} elseif ($newName != $oldName && !client_checkConflict($newName, 'AAAA', $errorString)) {
+					set_page_message(sprintf(tr("Cannot validate record: %s"), $errorString), 'error');
+				}
+
+				$dnsRecordName = encode_idna(client_getPost('dns_name'));
+				$dnsRecordData = encode_idna($cname);
+				break;
+			case 'A':
+				$ip = client_getPost('dns_A_address');
+				$newName = encode_idna(
+					(substr(client_getPost('dns_name'), -1) == '.')
+						? client_getPost('dns_name') : client_getPost('dns_name') . '.' . $domainName
+				);
+
+				if (!client_validate_A($ip, $errorString)) {
+					set_page_message(sprintf(tr("Cannot validate record: %s"), $errorString), 'error');
+				} elseif (!client_checkConflict($newName, 'CNAME', $errorString)) {
+					set_page_message(sprintf(tr("Cannot validate record: %s"), $errorString), 'error');
+				} elseif (!client_checkConflict($newName, 'A', $errorString)) {
+					set_page_message(sprintf(tr("Cannot validate record: %s"), $errorString), 'error');
+				}
+
+				$dnsRecordName = encode_idna(client_getPost('dns_name'));
+				$dnsRecordData = $ip;
+				break;
+			case 'AAAA':
+				$ip = client_getPost('dns_AAAA_address');
+				$newName = encode_idna(
+					(substr(client_getPost('dns_name'), -1) == '.')
+						? client_getPost('dns_name') : client_getPost('dns_name') . '.' . $domainName
+				);
+
+				if (!client_validate_AAAA(client_getPost('dns_AAAA_address'), $errorString)) {
+					set_page_message(sprintf(tr("Cannot validate record: %s"), $errorString), 'error');
+				} elseif (!client_checkConflict($newName, 'CNAME', $errorString)) {
+					set_page_message(sprintf(tr("Cannot validate %s record: %s"), $errorString), 'error');
+				} elseif (!client_checkConflict($newName, 'AAAA', $errorString)) {
+					set_page_message(sprintf(tr("Cannot validate record: %s"), $errorString), 'error');
+				}
+
+				$dnsRecordName = encode_idna(client_getPost('dns_name'));
+				$dnsRecordData = $ip;
+				break;
+			case 'SRV':
+				if (!client_validate_SRV($_POST, $errorString, $dnsRecordName, $dnsRecordData)) {
+					set_page_message(sprintf(tr("Cannot validate record: %s"), $errorString), 'error');
+				}
+
+				break;
+			case 'TXT':
+				if (!client_validate_TXT($_POST, $errorString)) {
+					set_page_message(sprintf(tr("Cannot validate record: %s"), $errorString), 'error');
+				}
+
+				$dnsRecordData = '"' . str_replace('"', '', $_POST['dns_txt_data']) . '"';
+				$dnsRecordName = $domainName . '.';
+
+				break;
+			default :
+				showBadRequestErrorPage();
+				exit;
+		}
+
+		if (!Zend_Session::namespaceIsset('pageMessages')) {
+			/** @var iMSCP_Database $db */
+			$db = iMSCP_Registry::get('db');
+
 			try {
-				$query = "
-					INSERT INTO `domain_dns` (
-						`domain_id`, `alias_id`, `domain_dns`, `domain_class`, `domain_type`, `domain_text`, `owned_by`
-					) VALUES (
-						?, ?, ?, ?, ?, ?, ?
-					)
-				";
-				 exec_query(
-					$query,
-					 array(
-						 $mainDomainId, $domainId, $dnsRecordName, $dnsRecordClass, $dnsRecordType,
-						 $dnsRecordText, 'custom_dns_feature'
-					 )
+				$db->beginTransaction();
+
+				if (!$dnsRecordId) {
+					$query = '
+						INSERT INTO `domain_dns` (
+							`domain_id`, `alias_id`, `domain_dns`, `domain_class`, `domain_type`, `domain_text`,
+							`owned_by`
+						) VALUES (
+							?, ?, ?, ?, ?, ?, ?
+						)
+					';
+					exec_query(
+						$query,
+						array(
+							$mainDmnId, $domainId, $dnsRecordName, $dnsRecordClass, $dnsRecordType, $dnsRecordData,
+							'custom_dns_feature'
+						)
+					);
+				} else {
+					$query = '
+						UPDATE
+							`domain_dns`
+						SET
+							`domain_dns` = ?, `domain_class` = ?, `domain_type` = ?, `domain_text` = ?
+						WHERE
+							`domain_dns_id` = ?
+					';
+					exec_query(
+						$query,
+						array($dnsRecordName, $dnsRecordClass, $dnsRecordType, $dnsRecordData, $dnsRecordId)
+					);
+				}
+
+				if ($domainType == 'dmn') {
+					$query = 'UPDATE `domain` SET `domain_status` = ? WHERE `domain_id` = ?';
+					exec_query($query, array($cfg->ITEM_TOCHANGE_STATUS, $mainDmnId));
+				} else {
+					$query = 'UPDATE `domain_aliasses` SET `alias_status` = ? WHERE `domain_id` = ? AND `alias_id` = ?';
+					exec_query($query, array($cfg->ITEM_TOCHANGE_STATUS, $mainDmnId, $domainId));
+				}
+
+				$db->commit();
+
+				send_request();
+
+				write_log(
+					"{$_SESSION['user_logged']} scheduled ". ((!$dnsRecordId) ? 'addition' : 'update') .
+					' of custom DNS record'
 				);
 			} catch (iMSCP_Exception_Database $e) {
-				if($e->getCode() == 23000) { // Duplicate entries
+				$db->rollBack();
+
+				if ($e->getCode() == 23000) { // Duplicate entries
 					set_page_message(tr('DNS record already exist.'), 'error');
 					return false;
 				}
 
 				throw new iMSCP_Exception_Database($e->getMessage(), $e->getQuery(), $e->getCode(), $e);
 			}
-		} else {
-			$query = "
-				UPDATE
-					`domain_dns`
-				SET
-					`domain_dns` = ?, `domain_class` = ?, `domain_type` = ?, `domain_text` = ?
-				WHERE
-					`domain_dns_id` = ?
-			";
-			exec_query($query, array($dnsRecordName, $dnsRecordClass, $dnsRecordType, $dnsRecordText, $dnsRecordId));
-		}
 
-		if (!$domainId) {
-			$query = "UPDATE `domain` SET `domain_status` = ? WHERE `domain_id` = ?";
-			exec_query($query, array($cfg->ITEM_TOCHANGE_STATUS, $mainDomainId));
-		} else {
-			$query = "UPDATE `domain_aliasses` SET `alias_status` = ? WHERE `domain_id` = ? AND`alias_id` = ?";
-			exec_query($query, array($cfg->ITEM_TOCHANGE_STATUS, $mainDomainId, $domainId));
+			return true;
 		}
-
-		send_request();
-		write_log(
-			$_SESSION['user_logged'] . ((!$dnsRecordId) ? 'added new' : ' updated') . " DNS record.", E_USER_NOTICE
-		);
-		return true;
 	}
 
 	return false;
@@ -674,8 +732,19 @@ check_login('user');
 // If the feature is disabled, redirects in silent way
 customerHasFeature('custom_dns_records') or showBadRequestErrorPage();
 
-/** @var $cfg iMSCP_Config_Handler_File */
-$cfg = iMSCP_Registry::get('config');
+$dnsRecordId = isset($_GET['id']) ? clean_input($_GET['id']) : 0;
+
+if(!empty($_POST)) {
+	if (client_saveDnsRecord($dnsRecordId)) {
+		if($dnsRecordId) {
+			set_page_message(tr('Custom DNS record successfully scheduled for update.'), 'success');
+		} else {
+			set_page_message(tr('Custom DNS record successfully scheduled for addition.'), 'success');
+		}
+
+		redirectTo('domains_manage.php');
+	}
+}
 
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic(
@@ -687,16 +756,14 @@ $tpl->define_dynamic(
 	)
 );
 
-$dnsRecordId = isset($_GET['edit_id']) ? clean_input($_GET['edit_id']) : 0;
-
 $tpl->assign(
 	array(
 		'TR_PAGE_TITLE' => (!$dnsRecordId)
 			? tr("Client / Domains / Add Custom DNS record")
 			: tr("Client / Domain / Edit Custom DNS record"),
 		'ISP_LOGO' => layout_getUserLogo(),
-		'ACTION_MODE' => (!$dnsRecordId) ? 'dns_add.php' : 'dns_edit.php?edit_id={ID}',
-		'TR_CUSTOM_DNS_RECORD_DATA' => tr('Custom DNS record data'),
+		'ACTION_MODE' => (!$dnsRecordId) ? 'dns_add.php' : 'dns_edit.php?id={ID}',
+		'TR_CUSTOM_DNS_RECORD' => tr('Custom DNS record'),
 		'TR_DOMAIN' => tr('Domain'),
 		'TR_DNS_TYPE' => tr('Type'),
 		'TR_DNS_CLASS' => tr('Class'),
@@ -718,27 +785,10 @@ $tpl->assign(
 	)
 );
 
-generateNavigation($tpl);
-
 $tpl->assign((!$dnsRecordId) ? 'FORM_EDIT_MODE' : 'FORM_ADD_MODE', '');
 
-if (isset($_POST['uaction']) && ($_POST['uaction'] == 'update')) {
-	if (!$dnsRecordId) {
-		showBadRequestErrorPage();
-	}
-
-	if (saveDnsRecord($dnsRecordId)) {
-		set_page_message(tr('Custom DNS record successfully scheduled for update.'), 'success');
-		redirectTo('domains_manage.php');
-	}
-} elseif (isset($_POST['uaction']) && ($_POST['uaction'] == 'add')) {
-	if (saveDnsRecord($dnsRecordId)) {
-		set_page_message(tr('Custom DNS record successfully scheduled for addition.'), 'success');
-		redirectTo('domains_manage.php');
-	}
-}
-
-generatePageData($tpl, $dnsRecordId);
+generateNavigation($tpl);
+client_generatePage($tpl, $dnsRecordId);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');

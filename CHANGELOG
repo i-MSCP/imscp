@@ -40,14 +40,15 @@ GUI:
 	- Changed: Both header and footer backgrounds for tables and location bar are now provided by the jQuery UI theme
 	- Changed: Customers can no longer set an arbitrary mount point for their subdomains
 	- Changed: Default email accounts cannot longer be hidden
-	- Enhancement: Email accounts are now filterable
 	- Enhancement: Allow administrators and resellers to set mail quota for customers
-	- Fixed: Allow to share domain_dns table between several components (core, plugins..)
+	- Enhancement: Email accounts are now filterable
+	- Enhancement: Custom DNS feature - IDN support
 	- Fixed: Allow plugins to provide their own assets throught the path /<plugin>/themes/<theme>/assets path
+	- Fixed: Allow to share domain_dns table between several components (core, plugins..)
 	- Fixed: Plugins must be able to short-circuit execution of an event
 	- Fixed: Plugin update must be triggered when plugin configuration is updated
-	- Fixed: Unable to delete plugin in some contexts
 	- Fixed: Show DNS record data as tooltip when their length is too big
+	- Fixed: Unable to delete plugin in some contexts
 	- Fixed: Wrong placeholders in admin/imscp_debugger.php
 	- Readded: idna_convert class (more flexible because can operate on arbitrary strings)
 	- Removed: IE6 support
@@ -84,6 +85,7 @@ Tickets:
 	- Fixed #896: Bug - Variable {USERNAME} is not parsed in password email
 	- Fixed #903: Bug - Domain restore feature is broken
 	- Fixed #913: Bug - Traffic on admin panel not counted
+	- Fixed #914: Bug - Unable to add/edit Custom DNS record (depending of domain type)
 
 ------------------------------------------------------------------------------------------------------------------------
 1.1.0-rc3
