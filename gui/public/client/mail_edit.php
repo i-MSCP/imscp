@@ -59,6 +59,7 @@ function client_getEmailAccountData($mailId)
 /**
  * Edit mail account
  *
+ * @throws iMSCP_Exception
  * @return bool TRUE on success, FALSE otherwise
  */
 function client_editMailAccount()

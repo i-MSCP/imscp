@@ -36,7 +36,7 @@
  * @param int $domainAliasId Subdomain unique identifier
  * @return array Subdomain data. If any error occurs FALSE is returned
  */
-function _client_getSubdomainData($domainAliasId)
+function _client_getAliasData($domainAliasId)
 {
 	static $domainAliasData = null;
 
@@ -83,7 +83,7 @@ function client_generatePage($tpl)
 	if (isset($_GET['id'])) {
 		$domainAliasId = clean_input($_GET['id']);
 
-		if (!($domainAliasData = _client_getSubdomainData($domainAliasId))) {
+		if (!($domainAliasData = _client_getAliasData($domainAliasId))) {
 			showBadRequestErrorPage();
 		}
 
@@ -137,7 +137,7 @@ function client_editDomainAlias()
 	if (isset($_GET['id'])) {
 		$domainAliasId = clean_input($_GET['id']);
 
-		if (($domainAliasData = _client_getSubdomainData($domainAliasId))) {
+		if (($domainAliasData = _client_getAliasData($domainAliasId))) {
 			// Check for URL forwarding option
 
 			$forwardUrl = 'no';

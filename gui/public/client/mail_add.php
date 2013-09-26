@@ -30,11 +30,11 @@
  */
 
 /**
- * Get domain list
+ * Get domains list
  *
  * @return array Domain list
  */
-function _client_getDomainList()
+function _client_getDomainsList()
 {
 	static $domainList = null;
 
@@ -135,7 +135,7 @@ function client_addMailAccount()
 		$domainType = null;
 		$domainId = null;
 
-		foreach (_client_getDomainList() as $domain) {
+		foreach (_client_getDomainsList() as $domain) {
 			if ($domain['name'] == $domainName) {
 				$domainType = $domain['type'];
 				$domainId = $domain['id'];
@@ -354,7 +354,7 @@ function client_generatePage($tpl)
 			)
 		);
 
-		foreach (_client_getDomainList() as $domain) {
+		foreach (_client_getDomainsList() as $domain) {
 			$tpl->assign(
 				array(
 					'DOMAIN_NAME' => tohtml($domain['name']),

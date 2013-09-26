@@ -30,11 +30,11 @@
  */
 
 /**
- * Get domain list
+ * Get domains list
  *
  * @return array Domain list
  */
-function _client_getDomainList()
+function _client_getDomainsList()
 {
 	static $domainList = null;
 
@@ -134,7 +134,7 @@ function client_generatePage($tpl)
 		)
 	);
 
-	$domainList = _client_getDomainList();
+	$domainList = _client_getDomainsList();
 
 	foreach ($domainList as $domain) {
 		$tpl->assign(
@@ -176,7 +176,7 @@ function client_addDomainAlias()
 	}
 
 	$domainAliasNameAscii = encode_idna($domainAliasName);
-	$domainList = _client_getDomainList();
+	$domainList = _client_getDomainsList();
 
 	// Check for domain alias existence
 
