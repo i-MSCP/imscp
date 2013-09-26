@@ -36,11 +36,12 @@ GUI:
 	- Added: Assets cache busting
 	- Added: info.php file for i-MSCP default theme (file which contain theme metadata)
 	- Added: onBeforeDomainChangeStatus and onAfterDomainChangeStatus events
+	- Added: Option allowing a domain alias to share the mount point of another domain
 	- Added: Option allowing a subdomain to share the mount point of another domain
 	- Changed: Both header and footer backgrounds for tables and location bar are now provided by the jQuery UI theme
 	- Changed: Customers can no longer set an arbitrary mount point for their subdomains
-	- Changed: Default email accounts cannot longer be hidden
-	- Enhancement: Allow administrators and resellers to set mail quota for customers
+	- Changed: Default Email accounts cannot longer be hidden
+	- Enhancement: Allow both administrators and resellers to set mail quota for customers
 	- Enhancement: Email accounts are now filterable
 	- Enhancement: Custom DNS feature - IDN support
 	- Fixed: Allow plugins to provide their own assets throught the path /<plugin>/themes/<theme>/assets path
@@ -54,7 +55,7 @@ GUI:
 	- Removed: IE6 support
 	- Removed: mail_quota action script
 	- Removed: Tool links from login page
-	- Rewritten: Alias interface (add|edit)
+	- Rewritten: Domain aliases interface (add|edit)
 	- Rewritten: Mail interface
 	- Updated: Assets are now reachable through the /themes/<theme>/assets path
 	- Updated: Plugin API
