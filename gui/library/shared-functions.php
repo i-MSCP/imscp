@@ -489,7 +489,7 @@ function deleteCustomer($customerId, $checkCreatedBy = false)
 					DELETE FROM
 						`quota_dovecot`
 					WHERE
-						`username` = (SELECT `mail_addr` FROM `mail_users` WHERE `domain_id` = ?)
+						`username` IN(SELECT `mail_addr` FROM `mail_users` WHERE `domain_id` = ?)
 				',
 				$mainDomainId
 			);
