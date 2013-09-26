@@ -34,10 +34,9 @@
  * Generate page and return software unique identifier.
  *
  * @param iMSCP_pTemplate $tpl Template engine instance
- * @param int $customerId Customer unique identifier
  * @return int software unique identifier
  */
-function client_generatePage($tpl, $customerId)
+function client_generatePage($tpl)
 {
 	if (!isset($_GET['id']) || $_GET['id'] === '' || !is_numeric($_GET['id'])) {
 		showBadRequestErrorPage();
@@ -46,7 +45,7 @@ function client_generatePage($tpl, $customerId)
 		$software_id = intval($_GET['id']);
 	}
 
-	$domainProperties = get_domain_default_props($customerId);
+	$domainProperties = get_domain_default_props($_SESSION['user_id']);
 
 	get_software_props (
 		$tpl, $domainProperties['domain_id'], $software_id, $domainProperties['domain_created_id'],
@@ -83,7 +82,7 @@ $tpl->define_dynamic(
 		'software_item' => 'page',
 		'no_software' => 'page'));
 
-$software_id = client_generatePage($tpl, $_SESSION['user_id']);
+$software_id = client_generatePage($tpl);
 
 $tpl->assign(
 	array(

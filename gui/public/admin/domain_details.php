@@ -42,11 +42,12 @@
 /**
  * Generate mail quota limit msg
  *
+ * @param int $customerId Customer unique identifier
  * @return array
  */
-function admin_gen_mail_quota_limit_mgs()
+function admin_gen_mail_quota_limit_mgs($customerId)
 {
-	$mainDmnProps = get_domain_default_props($_SESSION['user_id']);
+	$mainDmnProps = get_domain_default_props($customerId);
 
 	$stmt = exec_query(
 		'SELECT SUM(`quota`) AS `quota` FROM `mail_users` WHERE `domain_id` = ? AND `quota` IS NOT NULL',
@@ -69,19 +70,15 @@ function admin_gen_mail_quota_limit_mgs()
  */
 function admin_generatePage($tpl, $domainId)
 {
-	$domainId = (int)$domainId;
-
-	$query = "SELECT `domain_admin_id` FROM `domain` WHERE `domain_id` = ?";
-	$stmt = exec_query($query, $domainId);
+	$stmt = exec_query('SELECT `domain_admin_id` FROM `domain` WHERE `domain_id` = ?', $domainId);
 
 	if (!$stmt->rowCount()) {
-		set_page_message(tr('Domain not found.'), 'error');
-		redirectTo('manage_users.php');
+		showBadRequestErrorPage();
 	}
 
 	$domainAdminId = $stmt->fields['domain_admin_id'];
 
-	$domainProperties = get_domain_default_props($stmt->fields['domain_admin_id']);
+	$domainProperties = get_domain_default_props($domainAdminId);
 
 	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
@@ -147,7 +144,7 @@ function admin_generatePage($tpl, $domainId)
 	$diskspaceUsagePercent = make_usage_vals($domainProperties['domain_disk_usage'], $diskspaceLimitBytes);
 
 	// Get Email quota info
-	list($quota, $quotaLimit) = admin_gen_mail_quota_limit_mgs($domainId);
+	list($quota, $quotaLimit) = admin_gen_mail_quota_limit_mgs($domainAdminId);
 
 	# Features
 

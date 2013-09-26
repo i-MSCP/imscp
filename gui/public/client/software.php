@@ -34,12 +34,11 @@
  * client_generatePageLists.
  *
  * @param iMSCP_pTemplate $tpl Template engine instance
- * @param int $customerId Customer unique identifier
  * @return void
  */
-function client_generatePageLists($tpl, $customerId)
+function client_generatePageLists($tpl)
 {
-    $domainProperties = get_domain_default_props($customerId);
+    $domainProperties = get_domain_default_props($_SESSION['user_id']);
     $software_poss = gen_software_list($tpl, $domainProperties['domain_id'], $domainProperties['domain_created_id']);
     $tpl->assign('TOTAL_SOFTWARE_AVAILABLE', $software_poss);
 }
@@ -102,7 +101,7 @@ $tpl->assign(
 		 'TR_LANGUAGE_DESC' => 'software.php?sortby=language&order=desc'));
 
 generateNavigation($tpl);
-client_generatePageLists($tpl, $_SESSION['user_id']);
+client_generatePageLists($tpl);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');

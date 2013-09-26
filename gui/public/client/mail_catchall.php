@@ -281,11 +281,10 @@ function client_generateCatchallList($tpl, $dmnId, $dmnName)
  * Generate page
  *
  * @param iMSCP_pTemplate $tpl
- * @param int $customerId Customer unique identifier
  */
-function client_generatePage($tpl, $customerId)
+function client_generatePage($tpl)
 {
-	$domainProps = get_domain_default_props($customerId);
+	$domainProps = get_domain_default_props($_SESSION['user_id']);
 	$dmnId = $domainProps['domain_id'];
 	$dmnName = $domainProps['domain_name'];
 
@@ -334,7 +333,7 @@ $tpl->assign(
 	)
 );
 
-client_generatePage($tpl, $_SESSION['user_id']);
+client_generatePage($tpl);
 generateNavigation($tpl);
 generatePageMessage($tpl);
 

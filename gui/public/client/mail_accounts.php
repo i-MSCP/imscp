@@ -162,7 +162,7 @@ function _client_generateMailAccountsList($tpl, $mainDmnId)
 	if (!$rowCount) {
 		return 0;
 	} else {
-		$mainDmnProps = get_domain_default_props($mainDmnId);
+		$mainDmnProps = get_domain_default_props($_SESSION['user_id']);
 		$mailQuotaLimit  = bytesHuman($mainDmnProps['mail_quota']);
 		imap_timeout(IMAP_OPENTIMEOUT, 1);
 

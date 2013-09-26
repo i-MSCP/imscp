@@ -36,15 +36,15 @@
  */
 function _client_getDomainsList()
 {
-	static $domainList = null;
+	static $domainsList = null;
 
-	if (null === $domainList) {
+	if (null === $domainsList) {
 		$mainDmnProps = get_domain_default_props($_SESSION['user_id']);
 
 		/** @var iMSCP_Config_Handler_File $cfg */
 		$cfg = iMSCP_Registry::get('config');
 
-		$domainList = array(
+		$domainsList = array(
 			array(
 				'name' => $mainDmnProps['domain_name'],
 				'id' => $mainDmnProps['domain_id'],
@@ -86,17 +86,19 @@ function _client_getDomainsList()
 			AND
 				`subdomain_alias_status` = :status_ok
 		";
-		$stmt = exec_query($query, array('domain_id' => $mainDmnProps['domain_id'], 'status_ok' => $cfg->ITEM_OK_STATUS));
+		$stmt = exec_query(
+			$query, array('domain_id' => $mainDmnProps['domain_id'], 'status_ok' => $cfg->ITEM_OK_STATUS)
+		);
 
 		if ($stmt->rowCount()) {
-			$domainList = array_merge($domainList, $stmt->fetchAll(PDO::FETCH_ASSOC));
-			usort($domainList, function ($a, $b) {
+			$domainsList = array_merge($domainsList, $stmt->fetchAll(PDO::FETCH_ASSOC));
+			usort($domainsList, function ($a, $b) {
 				return strnatcmp(decode_idna($a['name']), decode_idna($b['name']));
 			});
 		}
 	}
 
-	return $domainList;
+	return $domainsList;
 }
 
 /**

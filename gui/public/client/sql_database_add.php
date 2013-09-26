@@ -214,12 +214,13 @@ function add_sql_database($user_id)
 // common page data.
 
 /**
- * @param $user_id
+ * Check SQL permissions
+ *
  * @return void
  */
-function check_sql_permissions($user_id) {
+function check_sql_permissions() {
 
-    $domainProps = get_domain_default_props($user_id);
+    $domainProps = get_domain_default_props($_SESSION['user_id']);
     $dmn_id = $domainProps['domain_id'];
     $dmn_sqld_limit = $domainProps['domain_sqld_limit'];
 
@@ -237,7 +238,7 @@ $tpl->assign(
 		'TR_PAGE_TITLE' => tr('Client / Databases / Add SQL Database'),
 		'ISP_LOGO' => layout_getUserLogo()));
 
-check_sql_permissions($_SESSION['user_id']);
+check_sql_permissions();
 gen_page_post_data($tpl);
 add_sql_database($_SESSION['user_id']);
 generateNavigation($tpl);

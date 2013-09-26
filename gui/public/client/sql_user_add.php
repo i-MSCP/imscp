@@ -69,15 +69,14 @@ if (isset($_GET['id'])) {
 }
 
 /**
- *
+ * Check SQL permissions
  * @param iMSCP_pTemplate $tpl
- * @param int $customerId Customer unique identifier
  * @param int $databaseId Database unique identifier
  * @param array $sqlUserList
  */
-function check_sql_permissions($tpl, $customerId, $databaseId, $sqlUserList)
+function check_sql_permissions($tpl, $databaseId, $sqlUserList)
 {
-	$domainProperties = get_domain_default_props($customerId);
+	$domainProperties = get_domain_default_props($_SESSION['user_id']);
 	$domainSqlUsersLimit = $domainProperties['domain_sqlu_limit'];
 
 	$limits =  get_domain_running_sql_acc_cnt($domainProperties['domain_id']);
@@ -423,7 +422,7 @@ $tpl->assign(
 
 
 $sqluser_available = gen_sql_user_list($tpl, $_SESSION['user_id'], $db_id);
-check_sql_permissions($tpl, $_SESSION['user_id'], $db_id, $sqluser_available);
+check_sql_permissions($tpl, $db_id, $sqluser_available);
 gen_page_post_data($tpl, $db_id);
 add_sql_user($_SESSION['user_id'], $db_id);
 generateNavigation($tpl);

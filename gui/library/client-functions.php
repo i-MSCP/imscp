@@ -32,26 +32,6 @@
  */
 
 /**
- * Returns domain default properties
- *
- * Note: For performance reasons, the data are retrieved once per request.
- *
- * @param int $domainAdminId Customer unique identifier
- * @return array Returns an associative array where each key is a domain propertie name.
- */
-function get_domain_default_props($domainAdminId)
-{
-	static $domainProperties = null;
-
-	if (null === $domainProperties) {
-		$stmt = exec_query("SELECT * FROM `domain` WHERE `domain_admin_id` = ?", $domainAdminId);
-		$domainProperties = $stmt->fetchRow();
-	}
-
-	return $domainProperties;
-}
-
-/**
  * Returns total number of subdomains that belong to a specific domain
  *
  * Note, this function doesn't make any differentiation between sub domains and the
@@ -501,7 +481,7 @@ function customerHasFeature($featureNames, $forceReload = false)
 		/** @var $cfg iMSCP_Config_Handler_File */
 		$cfg = iMSCP_Registry::get('config');
 		$debug = (bool)$cfg->DEBUG;
-		$dmnProps = get_domain_default_props((int)$_SESSION['user_id']);
+		$dmnProps = get_domain_default_props($_SESSION['user_id']);
 
 		$availableFeatures = array(
 			'domain' => ($dmnProps['domain_alias_limit'] != '-1'

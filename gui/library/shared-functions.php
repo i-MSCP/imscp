@@ -59,6 +59,40 @@ function get_user_name($user_id)
  */
 
 /**
+ * Returns domain default properties
+ *
+ * Note: For performance reasons, the data are retrieved once per request.
+ *
+ * @param int $domainAdminId Customer unique identifier
+ * @param int|null $createdBy OPTIONAL reseller unique identifier
+ * @return array Returns an associative array where each key is a domain propertie name.
+ */
+function get_domain_default_props($domainAdminId, $createdBy = null)
+{
+	static $domainProperties = null;
+
+	if (null === $domainProperties) {
+		$query = 'SELECT * FROM `domain` WHERE `domain_admin_id` = ?';
+		$params[] = $domainAdminId;
+
+		if(null !== $createdBy) {
+			$query .= ' AND `domain_created_id` = ?';
+			$params[] = $createdBy;
+		}
+
+		$stmt = exec_query($query, $params);
+
+		if(!$stmt->rowCount()) {
+			showBadRequestErrorPage();
+		}
+
+		$domainProperties = $stmt->fetchRow();
+	}
+
+	return $domainProperties;
+}
+
+/**
  * Return main domain unique identifier of the given customer
  *
  * @throws iMSCP_Exception in case the domain id cannot be found
