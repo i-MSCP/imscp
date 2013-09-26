@@ -30,10 +30,10 @@
  */
 
 /**
- * Get email account data
+ * Get Email account data
  *
  * @param int $mailId Mail account unique identifier
- * @return mixed
+ * @return array Email account data
  */
 function client_getEmailAccountData($mailId)
 {

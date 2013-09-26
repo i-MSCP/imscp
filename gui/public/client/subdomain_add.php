@@ -32,7 +32,7 @@
 /**
  * Get domains list
  *
- * @return array Domain list
+ * @return array Domains list
  */
 function _client_getDomainsList()
 {

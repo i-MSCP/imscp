@@ -32,7 +32,7 @@
 /**
  * Get customers list
  *
- * @return array Domain list
+ * @return array Domains list
  */
 function _reseller_getCustomersList()
 {

@@ -34,7 +34,7 @@
  *
  * @access private
  * @param int $domainAliasId Subdomain unique identifier
- * @return array Subdomain data. If any error occurs FALSE is returned
+ * @return array Domain alias data. If any error occurs FALSE is returned
  */
 function _client_getAliasData($domainAliasId)
 {
