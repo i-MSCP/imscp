@@ -730,66 +730,6 @@ function imscp_limit_check($data, $extra = -1)
 }
 
 /**
- * Validates a mount point.
- *
- * @author Laurent Declercq <l.declercq@nuxwin.com>
- * @param string $mpoint mount point to validate
- * @param int|null $max_token_char number of max. chars by token. Set as null for no limit
- * @return boolean True if the mount point is valid, FALSE otherwise
- */
-function validates_mpoint($mpoint, $max_token_char = null)
-{
-	if ($mpoint != '/') {
-		$tokens = preg_split('@/@', $mpoint, -1, PREG_SPLIT_NO_EMPTY);
-
-		foreach ($tokens as $token) {
-			if (!_validates_mpoint_token($token, $max_token_char)) {
-				return false;
-			}
-		}
-	}
-
-	return true;
-}
-
-/**
- * Validates a mount point token.
- *
- * This function checks syntax of mount point token.
- * The characters allowed are all alphanumeric in
- * upper or lower case, the hyphen , the low dash
- * and  the dot, the three latter  being banned at
- * the beginning and end of token.
- *
- * Successive instances of a dot or underscore are prohibited
- *
- * @author Laurent Declercq <l.declercq@nuxwin.com>
- * @param string $token token of mount point to validate
- * @param int|null $max_char number of max. chars. Set as NULL for no limit
- * return bool True if the token is valid, FALSE otherwise
- * @return bool
- */
-function _validates_mpoint_token($token, $max_char = null)
-{
-	$pattern = '@^[[:alnum:]](?:(?<![-_])(?:-*|[_.])?(?![-_])[[:alnum:]]*)*?(?<![-_.])$@';
-
-	return (bool)(preg_match($pattern, $token) && (is_null($max_char) || strlen($token) <= $max_char));
-}
-
-/**
- * @param  $value
- * @return null
- */
-function get_session($value)
-{
-	if (array_key_exists($value, $_SESSION)) {
-		return $_SESSION[$value];
-	} else {
-		return null;
-	}
-}
-
-/**
  * All in one function to check who owns what.
  *
  * @throws iMSCP_Exception

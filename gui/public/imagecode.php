@@ -35,6 +35,7 @@
  */
 
 // Include core library
-require 'imscp-lib.php';
+require_once 'imscp-lib.php';
+require_once 'lostpassword-functions.php';
 
 createImage('image');

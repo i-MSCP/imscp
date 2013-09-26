@@ -41,6 +41,7 @@
 
 // Include core library
 require_once 'imscp-lib.php';
+require_once 'tickets-function.php';
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
 

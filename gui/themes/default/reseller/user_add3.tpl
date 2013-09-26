@@ -39,12 +39,6 @@
 			<td><label for="useremail">{TR_USREMAIL}</label></td>
 			<td><input type="text" name="useremail" id="useremail" value="{VL_MAIL}"/></td>
 		</tr>
-		<!-- BDP: alias_feature -->
-		<tr>
-			<td><label for="add_alias">{TR_ADD_ALIASES}</label></td>
-			<td><input name="add_alias" type="checkbox" id="add_alias" value="on"/></td>
-		</tr>
-		<!-- EDP: alias_feature -->
 		</tbody>
 	</table>
 

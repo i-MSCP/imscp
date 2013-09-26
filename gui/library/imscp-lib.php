@@ -136,11 +136,8 @@ require_once 'client-functions.php';
  * Some others shared libraries
  */
 require_once 'input-checks.php';
-require_once 'calc-functions.php';
-require_once 'lostpassword-functions.php';
 require_once 'emailtpl-functions.php';
 require_once 'layout-functions.php';
-require_once 'functions.ticket_system.php';
 
 /**
  * Bootstrap the i-MSCP environment, and default configuration

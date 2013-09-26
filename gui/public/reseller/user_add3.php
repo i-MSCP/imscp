@@ -320,15 +320,9 @@ function reseller_addCustomer($resellerId)
 		send_request();
 
 		write_log("{$_SESSION['user_logged']} added new customer: $dmnUsername", E_USER_NOTICE);
+		set_page_message(tr('Customer account successfully scheduled for creation.'), 'success');
 
-		if (isset($_POST['add_alias']) && $_POST['add_alias'] == 'on') {
-			$_SESSION['dmn_id'] = $dmnId;
-			$_SESSION['dmn_ip'] = $domainIp;
-			redirectTo('user_add4.php');
-		} else {
-			set_page_message(tr('Customer account successfully scheduled for creation.'), 'success');
-			redirectTo('users.php');
-		}
+		redirectTo('users.php');
 	} catch (iMSCP_Exception_Database $e) {
 		$db->rollBack();
 		throw new iMSCP_Exception_Database($e->getMessage(), $e->getQuery(), $e->getCode(), $e);
@@ -405,7 +399,6 @@ $tpl->assign(
 		'TR_PHONE' => tr('Phone'),
 		'TR_FAX' => tr('Fax'),
 		'TR_BTN_ADD_USER' => tr('Add user'),
-		'TR_ADD_ALIASES' => tr('Add other domains to this account'),
 		'VL_USR_PASS' => passgen()
 	)
 );

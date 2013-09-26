@@ -114,8 +114,8 @@ function createImage($strSessionVar){
 /**
  * Generate random string.
  *
- * @param  $length Desired random string length
- * @param  $strSessionVar
+ * @param int $length Desired random string length
+ * @param  string $strSessionVar
  * @return string A random string
  */
 function strRandom($length, $strSessionVar){

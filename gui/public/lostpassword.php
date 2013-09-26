@@ -35,7 +35,8 @@
  */
 
 // Include core library
-require 'imscp-lib.php';
+require_once 'imscp-lib.php';
+require_once 'lostpassword-functions.php';
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onLostPasswordScriptStart);
 
