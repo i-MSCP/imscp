@@ -42,11 +42,12 @@
 /**
  * Generate mail quota limit msg
  *
+ * @param int $customerId Customer unique identifier
  * @return array
  */
-function reseller_gen_mail_quota_limit_mgs()
+function reseller_gen_mail_quota_limit_mgs($customerId)
 {
-	$mainDmnProps = get_domain_default_props($_SESSION['user_id']);
+	$mainDmnProps = get_domain_default_props($customerId, $_SESSION['user_id']);
 
 	$stmt = exec_query(
 		'SELECT SUM(`quota`) AS `quota` FROM `mail_users` WHERE `domain_id` = ? AND `quota` IS NOT NULL',
@@ -67,10 +68,8 @@ function reseller_gen_mail_quota_limit_mgs()
  * @param int $domainId Domain unique identifier
  * @return void
  */
-function admin_generatePage($tpl, $domainId)
+function reseller_generatePage($tpl, $domainId)
 {
-	$domainId = (int)$domainId;
-
 	$query = "SELECT `domain_admin_id` FROM `domain` WHERE `domain_id` = ? AND `domain_created_id` = ?";
 	$stmt = exec_query($query, array($domainId, $_SESSION['user_id']));
 
@@ -80,7 +79,7 @@ function admin_generatePage($tpl, $domainId)
 
 	$domainAdminId = $stmt->fields['domain_admin_id'];
 
-	$domainProperties = get_domain_default_props($domainAdminId);
+	$domainProperties = get_domain_default_props($domainAdminId, $_SESSION['user_id']);
 
 	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
@@ -146,7 +145,7 @@ function admin_generatePage($tpl, $domainId)
 	$diskspaceUsagePercent = make_usage_vals($domainProperties['domain_disk_usage'], $diskspaceLimitBytes);
 
 	// Get Email quota info
-	list($quota, $quotaLimit) = reseller_gen_mail_quota_limit_mgs($domainId);
+	list($quota, $quotaLimit) = reseller_gen_mail_quota_limit_mgs($domainAdminId);
 
 	# Features
 
@@ -257,7 +256,7 @@ if (isset($cfg->HOSTING_PLANS_LEVEL) && $cfg->HOSTING_PLANS_LEVEL != 'reseller')
 }
 
 generateNavigation($tpl);
-admin_generatePage($tpl, $_GET['domain_id']);
+reseller_generatePage($tpl, $_GET['domain_id']);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
