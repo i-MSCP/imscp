@@ -33,8 +33,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2013-09-29 10:21+0200\n"
-"PO-Revision-Date: 2013-09-29 08:22+0000\n"
+"POT-Creation-Date: 2013-09-29 14:33+0200\n"
+"PO-Revision-Date: 2013-09-29 08:39+0000\n"
 "Last-Translator: Torsten Widmann <info@goover.de>\n"
 "Language-Team: German (Germany) (http://www.transifex.com/projects/p/i-MSCP/language/de_DE/)\n"
 "MIME-Version: 1.0\n"
@@ -287,7 +287,7 @@ msgstr "%d Strings übersetzt"
 
 #, php-format
 msgid "%s / %s of %s"
-msgstr ""
+msgstr "%s / %s von %s"
 
 #, php-format
 msgid "%s / unlimited"
@@ -1580,7 +1580,7 @@ msgid "Core data"
 msgstr "Stammdaten"
 
 msgid "Cores"
-msgstr ""
+msgstr "Kerne"
 
 msgid "Could not upload file."
 msgstr "Konnte Datei nicht hochladen."
@@ -1675,7 +1675,7 @@ msgid "Customer ID cannot have more than 200 characters"
 msgstr "Kunden-ID kann nicht mehr als 200 Zeichen enthalten."
 
 msgid "Customer account"
-msgstr ""
+msgstr "Kunden Account"
 
 msgid "Customer account successfully scheduled for activation."
 msgstr "Kundenkonto wurde erfolgreich zur Aktivierung vorgemerkt."
@@ -2867,10 +2867,10 @@ msgid "Invalid MX priority."
 msgstr "Falsche MX Priorität."
 
 msgid "Invalid NAME."
-msgstr ""
+msgstr "Ungültiger Name"
 
 msgid "Invalid TXT data"
-msgstr ""
+msgstr "Ungültige TXT Daten"
 
 msgid "Invalid URL."
 msgstr "Ungültige URL."
