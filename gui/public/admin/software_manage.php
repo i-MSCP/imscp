@@ -49,10 +49,13 @@ $tpl->define_dynamic(
 		'no_reseller_list' => 'page',
 		'list_reseller' => 'page',
 		'webdepot_list' => 'page',
-		'list_webdepotsoftware' => 'page',
 		'no_webdepotsoftware_list' => 'page',
+		'web_software_repository' => 'page',
+		'list_webdepotsoftware' => 'web_software_repository',
 		'package_install_link' => 'page',
-		'package_info_link' => 'page'));
+		'package_info_link' => 'page'
+	)
+);
 
 list($use_webdepot, $webdepot_xml_url, $webdepot_last_update) = get_application_installer_conf();
 

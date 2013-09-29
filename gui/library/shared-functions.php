@@ -1926,11 +1926,15 @@ function get_webdepot_software_list($tpl, $userId)
 			$tpl->parse('LIST_WEBDEPOTSOFTWARE', '.list_webdepotsoftware');
 			$stmt->moveNext();
 		}
+
 		$tpl->assign('NO_WEBDEPOTSOFTWARE_LIST', '');
 	} else {
-		$tpl->assign('NO_WEBDEPOTSOFTWARE_AVAILABLE', tr('No software in Web repository found!'));
-		$tpl->parse('NO_WEBDEPOTSOFTWARE_LIST', '.no_webdepotsoftware_list');
-		$tpl->assign('LIST_WEBDEPOTSOFTWARE', '');
+		$tpl->assign(
+			array(
+				'NO_WEBDEPOTSOFTWARE_AVAILABLE' => tr('No software in Web repository found!'),
+				'WEB_SOFTWARE_REPOSITORY' => ''
+			)
+		);
 	}
 
 	return $stmt->recordCount();

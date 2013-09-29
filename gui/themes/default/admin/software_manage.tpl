@@ -102,7 +102,16 @@
 
 <h2 class="apps_installer"><span>{TR_WEBDEPOT}</span></h2>
 
+<!-- BDP: no_webdepotsoftware_lists -->
+<tr>
+	<td colspan="7">
+		<div class="info">{NO_WEBDEPOTSOFTWARE_AVAILABLE}</div>
+	</td>
+</tr>
+<!-- EDP: no_webdepotsoftware_list -->
+
 <form action="software_manage.php" method="post" name="update_webdepot" id="update_webdepot">
+	<!-- BDP: web_software_repository -->
 	<table class="datatable">
 		<thead>
 		<tr>
@@ -117,17 +126,10 @@
 		</thead>
 		<tfoot>
 		<tr>
-			<td colspan="7">{TR_WEBDEPOTSOFTWARE_COUNT}:&nbsp;{TR_WEBDEPOTSOFTWARE_ACT_NUM}</td>
+			<td colspan="7">{TR_WEBDEPOTSOFTWARE_COUNT}: {TR_WEBDEPOTSOFTWARE_ACT_NUM}</td>
 		</tr>
 		</tfoot>
 		<tbody>
-		<!-- BDP: no_webdepotsoftware_list -->
-		<tr>
-			<td colspan="7">
-				<div class="info">{NO_WEBDEPOTSOFTWARE_AVAILABLE}</div>
-			</td>
-		</tr>
-		<!-- EDP: no_webdepotsoftware_list -->
 		<!-- BDP: list_webdepotsoftware -->
 		<tr>
 			<td><span class="icon i_app_installer" title="{TR_PACKAGE_TOOLTIP}">{TR_PACKAGE_NAME}</span></td>
@@ -146,6 +148,8 @@
 		<!-- EDP: list_webdepotsoftware -->
 		</tbody>
 	</table>
+	<!-- EDP: web_software_repository -->
+
 	<div class="buttons">
 		<input name="Submit" type="submit" value="{TR_APPLY_CHANGES}"/>
 		<input type="hidden" name="uaction" value="updatewebdepot"/>
@@ -171,7 +175,7 @@
 	</thead>
 	<tfoot>
 	<tr>
-		<td colspan="9">{TR_SOFTWARE_ACT_COUNT}:&nbsp;{TR_SOFTWARE_ACT_NUM}</td>
+		<td colspan="9">{TR_SOFTWARE_ACT_COUNT}: {TR_SOFTWARE_ACT_NUM}</td>
 	</tr>
 	</tfoot>
 	<tbody>
@@ -212,7 +216,7 @@
 	</thead>
 	<tfoot>
 	<tr>
-		<td colspan="5">{TR_RESELLER_ACT_COUNT}:&nbsp;{TR_RESELLER_ACT_NUM}</td>
+		<td colspan="5">{TR_RESELLER_ACT_COUNT}: {TR_RESELLER_ACT_NUM}</td>
 	</tr>
 	</tfoot>
 	<tbody>
