@@ -1,4 +1,5 @@
 
+<!-- BDP: alias_js -->
 <script type="text/javascript">
 	/*<![CDATA[*/
 	function delete_account(name) {
@@ -6,11 +7,11 @@
 	}
 	/*]]>*/
 </script>
+<!-- EDP: alias_js -->
 
-<!-- BDP: search_form -->
-<form name="search_alias_frm" method="post" action="alias.php?psi={PSI}">
-
-	<div style="line-height:40px;vertical-align: middle;">
+<div style="line-height:40px;vertical-align: middle;">
+	<!-- BDP: search_form -->
+	<form style="display: inline;" name="search_alias_frm" method="post" action="alias.php?psi={PSI}">
 		<label><input name="search_for" type="text" value="{SEARCH_FOR}"/></label>
 		<label>
 			<select name="search_common">
@@ -20,17 +21,16 @@
 		</label>
 		<input name="Submit" type="submit" value="{TR_SEARCH}"/>
 		<input type="hidden" name="uaction" value="go_search"/>
-
-		<!-- BDP: als_add_button -->
-		<div style="float:right;">
-			<a class="link_as_button" href="alias_add.php">{TR_ADD_DOMAIN_ALIAS}</a>
-		</div>
-		<!-- EDP: als_add_button -->
+	</form>
+	<!-- EDP: search_form -->
+	<!-- BDP: als_add_button -->
+	<div style="float:right;">
+		<a class="link_as_button" href="alias_add.php">{TR_ADD_DOMAIN_ALIAS}</a>
 	</div>
-</form>
-<!-- EDP: search_form -->
+	<!-- EDP: als_add_button -->
+</div>
 
-<!-- BDP: table_list -->
+<!-- BDP: alias_list -->
 <table>
 	<thead>
 	<tr>
@@ -43,7 +43,7 @@
 	</tr>
 	</thead>
 	<tbody>
-	<!-- BDP: table_item -->
+	<!-- BDP: alias_item -->
 	<tr>
 		<td>
 			<!-- BDP: status_reload_true -->
@@ -64,10 +64,9 @@
 			   title="{DELETE}">{DELETE}</a>
 		</td>
 	</tr>
-	<!-- EDP: table_item -->
+	<!-- EDP: alias_item -->
 	</tbody>
 </table>
-<!-- EDP: table_list -->
 
 <div class="paginator">
 	<!-- BDP: scroll_prev -->
@@ -83,5 +82,4 @@
 	<a class="icon i_next" href="alias.php?psi={NEXT_PSI}" title="{TR_NEXT}">{TR_NEXT}</a>
 	<!-- EDP: scroll_next -->
 </div>
-
-
+<!-- EDP: alias_list -->
