@@ -1,10 +1,14 @@
 AUTHLIB_CONF_DIR = /etc/courier
 
+AUTHLIB_SOCKET_DIR = /var/run/courier/authdaemon
+
+AUTHDAEMON_USER = daemon
+
+AUTHDAEMON_GROUP = daemon
+
 COURIER_IMAP_SSL = imapd-ssl
 
 COURIER_POP_SSL = pop3d-ssl
-
-CMD_MAKEUSERDB = /usr/sbin/makeuserdb
 
 CMD_AUTHD = /etc/init.d/courier-authdaemon
 
@@ -12,6 +16,16 @@ CMD_IMAP = /etc/init.d/courier-imap
 
 CMD_IMAP_SSL = /etc/init.d/courier-imap-ssl
 
+CMD_MAILDIRMAKE = /usr/bin/maildirmake
+
 CMD_POP = /etc/init.d/courier-pop
 
 CMD_POP_SSL = /etc/init.d/courier-pop-ssl
+
+DATABASE_USER =
+
+DATABASE_PASSWORD =
+
+MAILDROP_MDA_PATH = /usr/bin/maildrop
+
+QUOTA_WARN_MSG_PATH = /etc/quotawarnmsg

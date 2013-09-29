@@ -65,10 +65,8 @@ sub registerSetupHooks
 	my $self = shift;
 	my $hooksManager = shift;
 
-	my $rs = $hooksManager->trigger('beforePoRegisterSetupHooks', $hooksManager, 'courier');
-	return $rs if $rs;
-
-	$hooksManager->trigger('afterPoRegisterSetupHooks', $hooksManager, 'courier');
+	require Servers::po::courier::installer;
+	Servers::po::courier::installer->getInstance()->registerSetupHooks($hooksManager);
 }
 
 =item preinstall()
@@ -105,7 +103,7 @@ sub install
 	my $self = shift;
 
 	require Servers::po::courier::installer;
-	Servers::po::courier::installer->getInstance(config => \%self::config)->install();
+	Servers::po::courier::installer->getInstance()->install();
 }
 
 =item postinstall()
@@ -155,101 +153,25 @@ sub uninstall
 	$self->{'hooksManager'}->trigger('afterPoUninstall', 'courier');
 }
 
-=item addMail()
+=item setEnginePermissions()
 
- Add mail account.
+ Set permissions.
 
  Return int 0 on success, other on failure
 
 =cut
 
-sub addMail
+sub setEnginePermissions
 {
-	my $self = shift;
-	my $data = shift;
-	my $rs = 0;
+	my $self= shift;
 
-	if($data->{'MAIL_TYPE'} =~ /_mail/) {
-		$rs = $self->{'hooksManager'}->trigger('beforePoAddMail');
-		return $rs if $rs;
-
-		# Backup current working file if any
-		if(-f "$self->{'wrkDir'}/userdb"){
-			$rs = iMSCP::File->new(
-				'filename' => "$self->{'wrkDir'}/userdb"
-			)->copyFile(
-				"$self->{'bkpDir'}/userdb." . time
-			);
-			return $rs if $rs;
-		}
-
-		my $userdbWrkFile = -f "$self->{'wrkDir'}/userdb" ? "$self->{'wrkDir'}/userdb" : "$self->{'cfgDir'}/userdb";
-
-		# Getting userdb working file content
-		$userdbWrkFile = iMSCP::File->new('filename' => $userdbWrkFile);
-		my $userdbWrkFileContent = $userdbWrkFile->get();
-		return 1 unless defined $userdbWrkFileContent;
-
-		# Ensuring that the new entry doesn't already exists
-		my $mailbox = $data->{'MAIL_ADDR'};
-		$mailbox =~ s/\./\\\./g;
-		$userdbWrkFileContent =~ s/^$mailbox\t[^\n]*\n//gmi;
-
-		# Encrypt password
-		require Crypt::PasswdMD5;
-		Crypt::PasswdMD5->import();
-		my @rand_data = ('A'..'Z', 'a'..'z', '0'..'9', '.', '/');
-		my $rand;
-		$rand .= $rand_data[rand()*($#rand_data + 1)] for('1'..'8');
-		my $password = unix_md5_crypt($data->{'MAIL_PASS'}, $rand);
-
-		# Retrieve needed data from MTA
-		require Servers::mta;
-		my $mta = Servers::mta->factory();
-		my $uid = scalar getpwnam($mta->{'config'}->{'MTA_MAILBOX_UID_NAME'});
-		my $gid = scalar getgrnam($mta->{'config'}->{'MTA_MAILBOX_GID_NAME'});
-		my $mailDir = $mta->{'config'}->{'MTA_VIRTUAL_MAIL_DIR'};
-
-		# Adding new entry in userdb file
-		$userdbWrkFileContent .=
-			"$data->{'MAIL_ADDR'}\tuid=$uid|gid=$gid|home=$mailDir/$data->{'DOMAIN_NAME'}/$data->{'MAIL_ACC'}|" .
-			"shell=/bin/false|systempw=$password|mail=$mailDir/$data->{'DOMAIN_NAME'}/$data->{'MAIL_ACC'}\n";
-
-		# Writing the new userdb working file
-		$userdbWrkFile->{'filename'} = "$self->{'wrkDir'}/userdb";
-
-		$rs = $userdbWrkFile->set($userdbWrkFileContent);
-		return $rs if $rs;
-
-		$rs = $userdbWrkFile->save();
-		return $rs if $rs;
-
-		# Setting permissions on userdb working file
-		$rs = $userdbWrkFile->mode(0600);
-		return $rs if $rs;
-
-		$rs = $userdbWrkFile->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
-		return $rs if $rs;
-
-		# Copying new file in production directory (permissions are preserved)
-		$rs = $userdbWrkFile->copyFile("$self->{'config'}->{'AUTHLIB_CONF_DIR'}/userdb");
-		return $rs if $rs;
-
-		# Updating userdb.dat file from the contents of the new userdb file
-		my ($stdout, $stderr);
-		$rs = execute($self->{'config'}->{'CMD_MAKEUSERDB'}, \$stdout, \$stderr);
-		debug($stdout) if $stdout;
-		error($stderr) if $stderr && $rs;
-		return $rs if $rs;
-
-		$rs = $self->{'hooksManager'}->trigger('afterPoAddMail');
-		return $rs if $rs;
-	}
+	require Servers::po::courier::installer;
+	Servers::po::courier::installer->getInstance()->setEnginePermissions();
 }
 
 =item postaddMail()
 
- Create maildir folders and subscription file.
+ Create maildir folders, subscription and maildirsize files.
 
  Return int 0 on success, other on failure
 
@@ -259,10 +181,8 @@ sub postaddMail
 {
 	my $self = shift;
 	my $data = shift;
-	my $rs = 0;
 
 	if($data->{'MAIL_TYPE'} =~ /_mail/) {
-
 		# Getting i-MSCP MTA server implementation instance
 		require Servers::mta;
 		my $mta = Servers::mta->factory();
@@ -274,14 +194,14 @@ sub postaddMail
 		for ("$mailDir/.Drafts", "$mailDir/.Junk", "$mailDir/.Sent", "$mailDir/.Trash") {
 
 			# Creating maildir directory or only set its permissions if already exists
-			$rs = iMSCP::Dir->new('dirname' => $_)->make(
+			my $rs = iMSCP::Dir->new('dirname' => $_)->make(
 				{ 'user' => $mailUidName, 'group' => $mailGidName , 'mode' => 0750 }
 			);
 			return $rs if $rs;
 
 			# Creating maildir sub folders (cur, new, tmp) or only set there permissions if they already exists
 			for my $subdir ('cur', 'new', 'tmp') {
-				$rs = iMSCP::Dir->new('dirname' => "$_/$subdir")->make(
+				my $rs = iMSCP::Dir->new('dirname' => "$_/$subdir")->make(
 					{ 'user' => $mailUidName, 'group' => $mailGidName, 'mode' => 0750 }
 				);
 				return $rs if $rs;
@@ -308,7 +228,7 @@ sub postaddMail
 			}
 		}
 
-		$rs = $courierimapsubscribedFile->set((join "\n", @subscribedFolders) . "\n");
+		my $rs = $courierimapsubscribedFile->set((join "\n", @subscribedFolders) . "\n");
 		return $rs if $rs;
 
 		$rs = $courierimapsubscribedFile->save();
@@ -319,80 +239,24 @@ sub postaddMail
 
 		$rs = $courierimapsubscribedFile->owner($mailUidName, $mailGidName);
 		return $rs if $rs;
-	}
 
-	0;
-}
+		my @maildirmakeCmdArgs = (escapeShell("$data->{'MAIL_QUOTA'}S"), escapeShell("$mailDir"));
 
-=item deleteMail()
-
- Delete mail account.
-
- Return int 0 on success, other on failure
-
-=cut
-
-sub deleteMail
-{
-	my $self = shift;
-	my $data = shift;
-	my $rs = 0;
-
-	if($data->{'MAIL_TYPE'} =~ /_mail/) {
-
-		$rs = $self->{'hooksManager'}->trigger('beforePoDelMail');
-		return $rs if $rs;
-
-		if(-f "$self->{'wrkDir'}/userdb"){
-			$rs = iMSCP::File->new(
-				'filename' => "$self->{'wrkDir'}/userdb"
-			)->copyFile(
-				"$self->{'bkpDir'}/userdb." . time
-			);
-			return $rs if $rs;
-		}
-
-		my $userdbWrkFile = -f "$self->{'wrkDir'}/userdb" ? "$self->{'wrkDir'}/userdb" : "$self->{'cfgDir'}/userdb";
-
-		# Getting userdb working file content
-		$userdbWrkFile = iMSCP::File->new('filename' => $userdbWrkFile);
-		my $userdbWrkFileContent = $userdbWrkFile->get();
-		return 1 unless defined $userdbWrkFileContent;
-
-		# Removing entry in userdb working file
-		my $mailbox = $data->{'MAIL_ADDR'};
-		$mailbox =~ s/\./\\\./g;
-		$userdbWrkFileContent =~ s/^$mailbox\t[^\n]*\n//gmi;
-
-		# Writing the new userdb working file
-		$userdbWrkFile->{'filename'} = "$self->{'wrkDir'}/userdb";
-
-		$rs = $userdbWrkFile->set($userdbWrkFileContent);
-		return $rs if $rs;
-
-		$rs = $userdbWrkFile->save();
-		return $rs if $rs;
-
-		# Setting permissions on userdb working file
-		$rs = $userdbWrkFile->mode(0600);
-		return $rs if $rs;
-
-		$rs = $userdbWrkFile->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
-		return $rs if $rs;
-
-		# Copying new file in production directory (permissions are preserved)
-		$rs = $userdbWrkFile->copyFile("$self->{'config'}->{'AUTHLIB_CONF_DIR'}/userdb");
-		return $rs if $rs;
-
-		# Updating userdb.dat file from the contents of the new userdb file
-		my ($stdout, $stderr);
-		$rs = execute($self->{'config'}->{'CMD_MAKEUSERDB'}, \$stdout, \$stderr);
+		my($stdout, $stderr);
+		$rs = execute("$self->{'config'}->{'CMD_MAILDIRMAKE'} -q @maildirmakeCmdArgs", \$stdout, $stderr);
 		debug($stdout) if $stdout;
 		error($stderr) if $stderr && $rs;
 		return $rs if $rs;
 
-		$rs = $self->{'hooksManager'}->trigger('afterPoDelMail');
-		return $rs if $rs;
+		if(-f "$mailDir/maildirsize") {
+			my $file = iMSCP::File->new('filename' => "$mailDir/maildirsize");
+
+			$rs = $file->owner($mailUidName, $mailGidName);
+			return $rs if $rs;
+
+			$rs = $file->mode(0640);
+			return $rs if $rs;
+		}
 	}
 
 	0;
@@ -613,7 +477,7 @@ sub _init
 
  Code triggered at the very end of script execution.
 
--  Start or restart server if needed
+ - Start or restart server if needed
  - Remove old traffic logs file if exists
 
  Return int Exit code

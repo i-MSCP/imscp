@@ -1,13 +1,5 @@
-auth_mechanisms = plain login digest-md5
-base_dir = /var/run/dovecot
-
-dict {
-	quotadict = mysql:/etc/dovecot/dovecot-dict-sql.conf
-}
-
-disable_plaintext_auth = no
-mail_location = maildir:%h
-mail_privileged_group = mail
+# Mailbox locations and namespaces
+mail_location = maildir:~/
 
 namespace inbox {
 	separator = .
@@ -15,6 +7,21 @@ namespace inbox {
 	inbox = yes
 	type = private
 }
+
+# Plugins
+
+mail_plugins = quota
+
+plugin {
+	quota = maildir:User quota
+	quota_rule = *:storage=1GB
+	quota_warning = storage=95%% quota-warning 95 %u
+	quota_warning2 = storage=80%% quota-warning 80 %u
+}
+
+# Authentication
+
+auth_mechanisms = plain login digest-md5
 
 passdb {
 	args = {DOVECOT_CONF_DIR}/dovecot-sql.conf
@@ -25,61 +32,59 @@ userdb {
 	driver = prefetch
 }
 
+# userdb used only by LDA
 userdb {
 	args = {DOVECOT_CONF_DIR}/dovecot-sql.conf
 	driver = sql
 }
 
-plugin {
-	global_script_path = {DOVECOT_CONF_DIR}/sieve/dovecot.sieve
-	quota = dict:user::proxy::quotadict
-	quota_rule = *:bytes=1G
-        quota_warning = storage=85%% {ENGINE_ROOT_DIR}/quota/imscp-dovecot-quota 85
-        quota_warning2 = storage=90%% {ENGINE_ROOT_DIR}/quota/imscp-dovecot-quota 90
-}
-
-protocols = imap pop3
-
 service auth {
-	unix_listener /var/spool/postfix/private/auth {
-		group = postfix
-		mode = 0660
-		user = postfix
-	}
+	# Master authentication socket for LDA
 	unix_listener auth-master {
-		group = {MAIL_GROUP}
-		mode = 0660
-		user = {MAIL_USER}
+		mode = 0600
+		user = {MTA_MAILBOX_UID_NAME}
 	}
-	user = root
-}
 
-service dict {
-	extra_groups = {MAIL_GROUP}
-	unix_listener dict {
-		group = {MAIL_GROUP}
+	# Client authentication socket for SASL
+	unix_listener {DOVECOT_SASL_SOCKET_PATH} {
 		mode = 0660
+		user = {POSTFIX_USER}
+		group = {POSTFIX_GROUP}
 	}
 }
 
-ssl = {DOVECOT_SSL}
-{COMMENT_SSL}ssl_cert =<{GUI_CERT_DIR}/{HOST_NAME}.pem
-{COMMENT_SSL}ssl_key =<{GUI_CERT_DIR}/{HOST_NAME}.pem
+# Quota Warning service
+
+service quota-warning {
+	executable = script {ENGINE_ROOT_DIR}/quota/imscp-dovecot-quota.sh
+	group = {MASTER_GROUP}
+
+	unix_listener quota-warning {
+		mode = 0600
+		user = {MTA_MAILBOX_UID_NAME}
+	}
+}
+
+# Protocols
+
+!include_try /usr/share/dovecot/protocols.d/*.protocol
 
 protocol imap {
-	mail_plugins = quota imap_quota
+	mail_plugins = $mail_plugins imap_quota
 }
 
 protocol pop3 {
-	mail_plugins = quota
 	pop3_uidl_format = %u-%v
 }
 
-# Should automatically created mailboxes be also automatically subscribed?
-lda_mailbox_autosubscribe = yes
-
 protocol lda {
-	auth_socket_path = /var/run/dovecot/auth-master
-	mail_plugins = quota sieve
+	auth_socket_path = {DOVECOT_AUTH_SOCKET_PATH}
+	mail_plugins = $mail_plugins
 	postmaster_address = postmaster@{HOST_NAME}
 }
+
+# SSL
+
+ssl = {DOVECOT_SSL}
+{COMMENT_SSL}ssl_cert = <{GUI_CERT_DIR}/{HOST_NAME}.pem
+{COMMENT_SSL}ssl_key = <{GUI_CERT_DIR}/{HOST_NAME}.pem

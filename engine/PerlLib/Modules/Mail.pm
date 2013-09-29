@@ -189,6 +189,7 @@ sub buildPOData
 		MAIL_ADDR => $mail,
 		MAIL_PASS => $self->{'mail_pass'},
 		MAIL_TYPE => $self->{'mail_type'},
+		MAIL_QUOTA => $self->{'quota'}
 	};
 
 	0;
@@ -206,7 +207,7 @@ sub buildADDONData
 		MAIL_ACC => (split('@', $mail))[0],
 		MAIL_ADDR => $mail,
 		MAIL_PASS => $self->{'mail_pass'},
-		MAIL_TYPE => $self->{'mail_type'},
+		MAIL_TYPE => $self->{'mail_type'}
 	};
 
 	0;

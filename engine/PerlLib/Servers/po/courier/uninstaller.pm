@@ -20,6 +20,7 @@
 # @category     i-MSCP
 # @copyright    2010-2013 by i-MSCP | http://i-mscp.net
 # @author       Daniel Andreca <sci2tech@gmail.com>
+# @author       Laurent Declercq <l.declercq@nuxwin.com>
 # @link         http://i-mscp.net i-MSCP Home Site
 # @license      http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
@@ -58,17 +59,15 @@ sub uninstall
 	$rs = $self->authDaemon();
 	return $rs if $rs;
 
-	$self->userDB();
+	$self->_deleteQuotaWarning();
 }
 
-sub restoreConfFile
+sub _restoreConfFile
 {
 	my $self = shift;
-	my $rs = 0;
-	my $file;
 
-	for ('authdaemonrc', 'userdb', $self->{'config'}->{'COURIER_IMAP_SSL'}, $self->{'config'}->{'COURIER_POP_SSL'}) {
-		$rs	= iMSCP::File->new(
+	for ('authdaemonrc', 'authmysqlrc', $self->{'config'}->{'COURIER_IMAP_SSL'}, $self->{'config'}->{'COURIER_POP_SSL'}) {
+		my $rs = iMSCP::File->new(
 			'filename' => "$self->{'bkpDir'}/$_.system"
 		)->copyFile(
 			"$self->{'config'}->{'AUTHLIB_CONF_DIR'}/$_"
@@ -79,7 +78,7 @@ sub restoreConfFile
 	0;
 }
 
-sub authDaemon
+sub _authDaemon
 {
 	my $self= shift;
 
@@ -88,28 +87,18 @@ sub authDaemon
 	my $rs = $file->mode(0660);
 	return $rs if $rs;
 
-	$file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
+	$file->owner($self->{'config'}->{'AUTHDAEMON_USER'}, $self->{'config'}->{'AUTHDAEMON_GROUP');
 }
 
-sub userDB
+sub _deleteQuotaWarning
 {
 	my $self = shift;
 
-	my $file = iMSCP::File->new('filename' => "$self->{'config'}->{'AUTHLIB_CONF_DIR'}/userdb");
-
-	my $rs = $file->mode(0600);
-	return $rs if $rs;
-
-	$rs = $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
-	return $rs if $rs;
-
-	my ($stdout, $stderr);
-	$rs = execute($self->{'config'}->{'CMD_MAKEUSERDB'}, \$stdout, \$stderr);
-	debug($stdout) if ($stdout);
-	error($stderr) if $stderr && $rs;
-	error("Error while executing $self->{'config'}->{CMD_MAKEUSERDB} returned status $rs") if $rs && ! $stderr;
-
-	$rs;
+	if(-f $self->{'config'}->{'QUOTA_WARN_MSG_PATH'}) {
+		iMSCP::File->new('filename' => "$self->{'config'}->{'QUOTA_WARN_MSG_PATH'}")->delFile();
+	} else {
+		0;
+	}
 }
 
 1;

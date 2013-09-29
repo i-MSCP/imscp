@@ -1,7 +1,13 @@
-DOVECOT_CONF_DIR = /etc/dovecot
-
 CMD_DOVECOT	= /etc/init.d/dovecot
 
 DATABASE_USER =
 
 DATABASE_PASSWORD =
+
+DOVECOT_CONF_DIR = /etc/dovecot
+
+DOVECOT_AUTH_SOCKET_PATH = /var/run/dovecot/auth-master
+
+DOVECOT_LDA_PATH = /usr/lib/dovecot/dovecot-lda
+
+DOVECOT_SASL_SOCKET_PATH = /var/spool/postfix/private/auth

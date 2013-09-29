@@ -1,0 +1,9 @@
+#!/bin/sh
+PERCENT=$1
+USER=$2
+cat << EOF | {DOVECOT_LDA_PATH} -d $USER -o "plugin/quota=maildir:User quota:noenforcing"
+From: postmaster@{HOST_NAME}
+Subject: i-MSCP Quota Warning
+
+You are using $PERCENT% of the space assigned to your mailbox.
+EOF

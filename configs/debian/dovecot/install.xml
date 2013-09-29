@@ -7,6 +7,7 @@
     <copy_config>${SYSTEM_CONF}/dovecot/dovecot.data</copy_config>
     <copy_config>${SYSTEM_CONF}/dovecot/dovecot.conf.1</copy_config>
     <copy_config>${SYSTEM_CONF}/dovecot/dovecot.conf.2</copy_config>
-    <copy_config>${SYSTEM_CONF}/dovecot/dovecot-dict-sql.conf</copy_config>
     <copy_config>${SYSTEM_CONF}/dovecot/dovecot-sql.conf</copy_config>
+    <copy_config>${SYSTEM_CONF}/dovecot/quota-warning.1</copy_config>
+    <copy_config>${SYSTEM_CONF}/dovecot/quota-warning.2</copy_config>
 </install>

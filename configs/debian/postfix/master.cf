@@ -57,12 +57,6 @@ scache    unix  -       -       -       -       1       scache
 # and other message envelope options.
 # ====================================================================
 #
-# maildrop. See the Postfix MAILDROP_README file for details.
-# Also specify in main.cf: maildrop_destination_recipient_limit=1
-#
-maildrop  unix  -       n       n       -       -       pipe
-  flags=DRhu user=vmail argv=/usr/bin/maildrop -d ${recipient}
-#
 # See the Postfix UUCP_README file for configuration details.
 #
 uucp      unix  -       n       n       -       -       pipe
@@ -81,4 +75,4 @@ mailman   unix  -       n       n       -       -       pipe
 
 # i-MSCP autoresponder
 imscp-arpl unix  -      n       n       -       -       pipe
-  flags=O user={ARPL_USER}:{ARPL_GROUP} argv={ARPL_PATH} $recipient
+  flags=O user={MTA_MAILBOX_UID_NAME}:{IMSCP_GROUP} argv={ARPL_PATH} $recipient

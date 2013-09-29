@@ -1,0 +1,9 @@
+From: Mail Delivery System <postmaster@{HOST_NAME}>
+Reply-To: postmaster@{HOST_NAME}
+To: Valued Customer:;
+Subject: i-MSCP - Mail quota warning
+Mime-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Transfer-Encoding: 7bit
+
+You are using more than 90% of the space assigned to your mailbox.

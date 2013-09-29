@@ -900,23 +900,6 @@ class iMSCP_Update_Database extends iMSCP_Update
 	}
 
 	/**
-	 * #166: Adds dovecot quota table
-	 *
-	 * @return string SQL statement to be executed
-	 */
-	protected function _databaseUpdate_73()
-	{
-		return "
-			CREATE TABLE IF NOT EXISTS `quota_dovecot` (
-				`username` VARCHAR(200) COLLATE utf8_unicode_ci NOT NULL,
-				`bytes` BIGINT(20) NOT NULL DEFAULT '0',
-				`messages` INT(11) NOT NULL DEFAULT '0',
-				PRIMARY KEY (`username`)
-			) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-		";
-	}
-
-	/**
 	 * Adds unique index on user_gui_props.user_id column
 	 *
 	 * @return array Stack of SQL statements to be executed
@@ -2542,16 +2525,6 @@ class iMSCP_Update_Database extends iMSCP_Update
 	}
 
 	/**
-	 * Table quota_dovecot is still MyISAM than innoDB
-	 *
-	 * @return string SQL Statement
-	 */
-	protected function _databaseUpdate_158()
-	{
-		return 'ALTER TABLE `quota_dovecot` ENGINE=InnoDB';
-	}
-
-	/**
 	 * Update mail_users.quota columns
 	 *
 	 * @return string
@@ -2576,16 +2549,6 @@ class iMSCP_Update_Database extends iMSCP_Update
 			WHERE
 				`mail_type` NOT RLIKE '^(normal_mail|alias_mail|subdom_mail|alssub_mail)'
 		";
-	}
-
-	/**
-	 * Remove possible orphan entries in quota_dovecot table
-	 *
-	 * @return string SQL statement to be executed
-	 */
-	protected function _databaseUpdate_164()
-	{
-		return "DELETE FROM `quota_dovecot` WHERE `username` NOT IN(SELECT `mail_addr` FROM `mail_users`)";
 	}
 
 	/**
@@ -2648,5 +2611,15 @@ class iMSCP_Update_Database extends iMSCP_Update
 		while($data = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
 			sync_mailboxes_quota($data['domain_id'], $data['mail_quota']);
 		}
+	}
+
+	/**
+	 * #908: Review - Dovecot - Quota - Switch to maildir quota backend
+	 *
+	 * @return string SQL statement to be executed
+	 */
+	protected function _databaseUpdate_167()
+	{
+		return 'DROP TABLE IF EXISTS `quota_dovecot`';
 	}
 }

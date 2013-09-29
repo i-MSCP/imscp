@@ -5,12 +5,15 @@ Git Master
 ------------------------------------------------------------------------------------------------------------------------
 
 CONFIG:
+	- Added specific quota warning script for Dovecot 2.x.x branch
 	- Added: Packages file for Debian Jessie (testing)
 	- Added: SPF Resource Record Type in bind template
 	- Added: php5-imap package (required by i-MSCP frontEnd)
 	- Changed: php5-mysql package to php5-mysqlnd (native driver) when available
 	- Removed: php5-adodb package
+	- Removed Dovecot sieve plugin configuration (Such parameter must be provided as plugin)
 	- Updated: Apache templates to support 2.4.x branch
+	- Updated: Dovecot configuration files
 
 SETUP:
 	- Changed: i-MSCP apache_php_fpm server impl. is now the default choice for distributions supporting it officialy
@@ -85,8 +88,11 @@ Tickets:
 	- Fixed #893: Defect - Webstats for subdomains are not available
 	- Fixed #896: Bug - Variable {USERNAME} is not parsed in password email
 	- Fixed #903: Bug - Domain restore feature is broken
+	- Fixed #908: Review - Dovecot - Quota - Switch to maildir quota backend
+	- Fixed #909: Enhancement - Courier - Quotas support using maildrop MDA
 	- Fixed #913: Bug - Traffic on admin panel not counted
 	- Fixed #914: Bug - Unable to add/edit Custom DNS record (depending of domain type)
+	- Fixed #917: Defect - Unable to switch from Dovecot to Courier
 
 ------------------------------------------------------------------------------------------------------------------------
 1.1.0-rc3

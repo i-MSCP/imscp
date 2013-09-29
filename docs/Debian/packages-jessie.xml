@@ -22,6 +22,7 @@
     <po>
         <alternative default="courier">
             <courier>
+                <package>courier-authlib-mysql</package>
                 <package>courier-imap</package>
                 <package>courier-imap-ssl</package>
                 <package>courier-pop</package>
@@ -30,9 +31,9 @@
                 <package>maildrop</package>
             </courier>
             <dovecot>
+                <package>dovecot-core</package>
                 <package>dovecot-imapd</package>
                 <package>dovecot-pop3d</package>
-                <package>dovecot-sieve</package>
                 <package>dovecot-mysql</package>
             </dovecot>
         </alternative>

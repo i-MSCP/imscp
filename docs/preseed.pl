@@ -5,7 +5,7 @@
 # See documentation at http://wiki.i-mscp.net/doku.php?id=start:preseeding
 #
 # Author: Laurent Declercq <l.declercq@nuxwin.com>
-# Last update: 2013.08.11
+# Last update: 2013.09.16
 # Status: (Experimental)
 
 ## Autoinstall questions
@@ -128,6 +128,12 @@ $main::questions{'PRIMARY_DNS'} = ''; # List of IP addresses, each separated by 
 # Allow to indicate IP addresses of your slave DNS server(s)
 # Only relevant if you set BIND_MODE to 'master'
 $main::questions{'SECONDARY_DNS'} = 'no'; # (no|list of addresses IP, each separated by semicolon)
+
+# Authdaemon SQL user (only relevant if you set PO_SERVER to 'courier'
+$main::questions{'AUTHDAEMON_SQL_USER'} = 'authdaemon_user';
+
+# Authdaemon SQL user (only relevant if you set  PO_SERVER to 'courier'
+$main::questions{'AUTHDAEMON_SQL_PASSWORD'} = '<password>'; # Password shouldn't be empty
 
 # Dovecot SQL user (only relevant if you set PO_SERVER to 'dovecot'
 $main::questions{'DOVECOT_SQL_USER'} = 'dovecot_user';

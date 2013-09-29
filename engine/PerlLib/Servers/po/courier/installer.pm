@@ -23,12 +23,12 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
-# @category		i-MSCP
-# @copyright	2010-2013 by i-MSCP | http://i-mscp.net
-# @author		Daniel Andreca <sci2tech@gmail.com>
-# @author		Laurent Declercq <l.declercq@nuxwin.com>
-# @link			http://i-mscp.net i-MSCP Home Site
-# @license		http://www.gnu.org/licenses/gpl-2.0.html GPL v2
+# @category    i-MSCP
+# @copyright   2010-2013 by i-MSCP | http://i-mscp.net
+# @author      Daniel Andreca <sci2tech@gmail.com>
+# @author      Laurent Declercq <l.declercq@nuxwin.com>
+# @link        http://i-mscp.net i-MSCP Home Site
+# @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
 package Servers::po::courier::installer;
 
@@ -38,10 +38,12 @@ use warnings;
 use iMSCP::Debug;
 use iMSCP::HooksManager;
 use iMSCP::Config;
+use iMSCP::Rights;
 use iMSCP::File;
 use iMSCP::Dir;
 use iMSCP::Execute;
 use iMSCP::Templator;
+use File::Basename;
 use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
@@ -51,6 +53,106 @@ use parent 'Common::SingletonClass';
 =head1 PUBLIC METHODS
 
 =over 4
+
+=item registerSetupHooks($hooksManager)
+
+ Register setup hooks.
+
+ Param iMSCP::HooksManager $hooksManager Hooks manager instance
+ Return int 0 on success, other on failure
+
+=cut
+
+sub registerSetupHooks
+{
+	my $self = shift;
+	my $hooksManager = shift;
+
+	if(defined $main::imscpConfig{'MTA_SERVER'} && lc($main::imscpConfig{'MTA_SERVER'}) eq 'postfix') {
+		my $rs = $hooksManager->trigger('beforePoRegisterSetupHooks', $hooksManager, 'courier');
+		return $rs if $rs;
+
+		$rs = $hooksManager->register(
+			'beforeSetupDialog', sub { my $dialogStack = shift; push(@$dialogStack, sub { $self->askCourier(@_) }); 0; }
+		);
+		return $rs if $rs;
+
+		$rs = $hooksManager->register('beforeMtaBuildMainCfFile', sub { $self->buildPostfixConf(@_); });
+		return $rs if $rs;
+
+		$rs = $hooksManager->register('beforeMtaBuildMasterCfFile', sub { $self->buildPostfixConf(@_); });
+		return $rs if $rs;
+
+		$hooksManager->trigger('afterPoRegisterSetupHooks', $hooksManager, 'courier');
+	} else {
+		$main::imscpConfig{'PO_SERVER'} = 'no';
+    	warning('i-MSCP Courier PO server require the Postfix MTA. Installation skipped...');
+
+    	0;
+    }
+}
+
+=item askCourier($dialog)
+
+ Ask user for authdaemon restricted SQL user.
+
+ Param iMSCP::Dialog::Dialog $dialog Dialog instance
+ Return int 0 on success, other on failure
+
+=cut
+
+sub askCourier
+{
+	my $self = shift;
+	my $dialog = shift;
+
+	my $dbUser = main::setupGetQuestion('AUTHDAEMON_SQL_USER') || $self->{'config'}->{'DATABASE_USER'} || 'authdaemon_user';
+	my $dbPass = main::setupGetQuestion('AUTHDAEMON_SQL_PASSWORD') || $self->{'config'}->{'DATABASE_PASSWORD'} || '';
+
+	my ($rs, $msg) = (0, '');
+
+	if($main::reconfigure ~~ ['po', 'servers', 'all', 'forced'] || ! ($dbUser && $dbPass)) {
+		# Ask for the authdaemon restricted SQL username
+		do{
+			($rs, $dbUser) = iMSCP::Dialog->factory()->inputbox(
+				"\nPlease enter a username for the restricted authdaemon SQL user:", $dbUser
+			);
+
+			# i-MSCP SQL user cannot be reused
+			if($dbUser eq main::setupGetQuestion('DATABASE_USER')) {
+				$msg = "\n\n\\Z1You cannot reuse the i-MSCP SQL user '$dbUser'.\\Zn\n\nPlease, try again:";
+				$dbUser = '';
+			}
+		} while ($rs != 30 && ! $dbUser);
+
+		if($rs != 30) {
+			# Ask for the authdaemon restricted SQL user password
+			($rs, $dbPass) = $dialog->inputbox(
+				'\nPlease, enter a password for the restricted authdaemon SQL user (blank for autogenerate):', $dbPass
+			);
+
+			if($rs != 30) {
+				if(! $dbPass) {
+					my @allowedChars = ('A'..'Z', 'a'..'z', '0'..'9', '_');
+
+					$dbPass = '';
+					$dbPass .= $allowedChars[rand @allowedChars] for 1..16;
+				}
+
+				$dbPass =~ s/('|"|`|#|;|\/|\s|\||<|\?|\\)/_/g;
+				$dialog->msgbox("\nPassword for the restricted authdaemon SQL user set to: $dbPass");
+				$dialog->set('cancel-label');
+			}
+		}
+	}
+
+	if($rs != 30) {
+		$self->{'config'}->{'DATABASE_USER'} = $dbUser;
+		$self->{'config'}->{'DATABASE_PASSWORD'} = $dbPass;
+	}
+
+	$rs;
+}
 
 =item install()
 
@@ -67,30 +169,119 @@ sub install
 	my $rs = $self->{'hooksManager'}->trigger('beforePoInstall', 'courier');
 	return $rs if $rs;
 
-	for('authdaemonrc', 'userdb', $self->{'config'}->{'COURIER_IMAP_SSL'}, $self->{'config'}->{'COURIER_POP_SSL'}) {
+	for('authdaemonrc', 'authmysqlrc', $self->{'config'}->{'COURIER_IMAP_SSL'}, $self->{'config'}->{'COURIER_POP_SSL'}) {
 		$rs = $self->_bkpConfFile($_);
 		return $rs if $rs;
 	}
 
-	$rs = $self->_buildAuthdaemonrcFile();
+	$rs = $self->_setupSqlUser();
 	return $rs if $rs;
 
-	$rs = $self->_buildUserdbFile();
+	$rs = $self->_buildConf();
 	return $rs if $rs;
 
-	$rs = $self->_buildSslConfFiles();
-	return $rs if $rs;
+	#$rs = $self->_buildUserdbFile();
+	#return $rs if $rs;
 
 	$rs = $self->_saveConf();
 	return $rs if $rs;
 
 	# Migrate from dovecot if needed
-    if(defined $main::imscpOldConfig{'PO_SERVER'} && $main::imscpOldConfig{'PO_SERVER'} eq 'dovecot') {
-    	$rs = $self->_migrateFromDovecot();
-    	return $rs if $rs;
-    }
+	if(defined $main::imscpOldConfig{'PO_SERVER'} && $main::imscpOldConfig{'PO_SERVER'} eq 'dovecot') {
+		$rs = $self->_migrateFromDovecot();
+		return $rs if $rs;
+	}
 
 	$self->{'hooksManager'}->trigger('afterPoInstall', 'courier');
+}
+
+=item setEnginePermissions()
+
+ Set permissions.
+
+ Return int 0 on success, other on failure
+
+=cut
+
+sub setEnginePermissions
+{
+	my $self = shift;
+
+	my $rs = $self->{'hooksManager'}->trigger('beforePoSetEnginePermissions');
+	return $rs if $rs;
+
+	require Servers::mta;
+	my $mta = Servers::mta->factory();
+
+	$rs = setRights(
+		$self->{'config'}->{'AUTHLIB_SOCKET_DIR'},
+		{
+			'user' => $mta->{'config'}->{'MTA_MAILBOX_UID_NAME'},
+			'group' => $self->{'config'}->{'AUTHDAEMON_GROUP'},
+			'mode' => '0750'
+		}
+	);
+	return $rs if $rs;
+
+	$self->{'hooksManager'}->trigger('afterPoSetEnginePermissions');
+
+	0;
+}
+
+=head1 HOOK FUNCTIONS
+
+=over 4
+
+=item buildPostfixConf()
+
+ Add maildrop MDA in Postfix configuration files.
+
+ Filter hook function acting on the following hooks
+  - beforeMtaBuildMainCfFile
+  - beforeMtaBuildMasterCfFile
+
+ This filter hook function is reponsible to add the maildrop deliver in Postfix configuration files.
+
+ Return int 0 on success, other on failure
+
+=cut
+
+sub buildPostfixConf
+{
+	my $self = shift;
+	my $content = shift;
+	my $filename = shift;
+
+	if($filename eq 'main.cf') {
+		$$content .= <<EOF
+
+virtual_transport = maildrop
+maildrop_destination_concurrency_limit = 2
+maildrop_destination_recipient_limit = 1
+EOF
+
+	} elsif($filename eq 'master.cf') {
+		my $configSnippet = <<EOF;
+
+maildrop  unix  -       n       n       -       -       pipe
+ flags=DRhu user={MTA_MAILBOX_UID_NAME}:{MTA_MAILBOX_GID_NAME} argv={MAILDROP_MDA_PATH} -w 90 -d \${user}@\${nexthop} \${extension} \${recipient}
+ \${user} \${nexthop} \${sender}
+EOF
+
+		require Servers::mta;
+		my $mta = Servers::mta->factory();
+
+		$$content .= iMSCP::Templator::process(
+			{
+				MTA_MAILBOX_UID_NAME => $mta->{'config'}-> {'MTA_MAILBOX_UID_NAME'},
+				MTA_MAILBOX_GID_NAME => $mta->{'config'}-> {'MTA_MAILBOX_GID_NAME'},
+				MAILDROP_MDA_PATH => $self->{'config'}->{'MAILDROP_MDA_PATH'}
+			},
+			$configSnippet
+		);
+	}
+
+	0;
 }
 
 =back
@@ -156,15 +347,14 @@ sub _bkpConfFile
 {
 	my $self = shift;
 	my $cfgFile = shift;
-	my $rs = 0;
 
-	$rs = $self->{'hooksManager'}->trigger('beforePoBkpConfFile', $cfgFile);
+	my $rs = $self->{'hooksManager'}->trigger('beforePoBkpConfFile', $cfgFile);
 	return $rs if $rs;
 
-	if(! $rs && -f "$self->{'config'}->{'AUTHLIB_CONF_DIR'}/$cfgFile") {
+	if(-f "$self->{'config'}->{'AUTHLIB_CONF_DIR'}/$cfgFile") {
 		my $file = iMSCP::File->new('filename' => "$self->{'config'}->{'AUTHLIB_CONF_DIR'}/$cfgFile");
 
-		if(!-f "$self->{'bkpDir'}/$cfgFile.system") {
+		if(! -f "$self->{'bkpDir'}/$cfgFile.system") {
 			$rs = $file->copyFile("$self->{'bkpDir'}/$cfgFile.system");
 			return $rs if $rs;
 		} else {
@@ -175,6 +365,151 @@ sub _bkpConfFile
 	}
 
 	$self->{'hooksManager'}->trigger('afterPoBkpConfFile', $cfgFile);
+}
+
+=item _setupSqlUser()
+
+ Setup SQL user.
+
+ Return int 0 on success, other on failure
+
+=cut
+
+sub _setupSqlUser
+{
+	my $self = shift;
+
+	my $dbUser = $self->{'config'}->{'DATABASE_USER'};
+	my $dbUserHost = main::setupGetQuestion('DATABASE_USER_HOST');
+	my $dbPass = $self->{'config'}->{'DATABASE_PASSWORD'};
+	my $dbOldUser = $self->{'oldConfig'}->{'DATABASE_USER'} || '';
+
+	my $rs = $self->{'hooksManager'}->trigger('beforePoSetupDb', $dbUser, $dbOldUser, $dbPass, $dbUserHost);
+	return $rs if $rs;
+
+	# Remove any old authdaemon SQL user (including privileges)
+	for my $sqlUser ($dbOldUser, $dbUser) {
+		next if ! $sqlUser;
+
+		for($dbUserHost, $main::imscpOldConfig{'DATABASE_HOST'}, $main::imscpOldConfig{'BASE_SERVER_IP'}) {
+			next if ! $_;
+
+			$rs = main::setupDeleteSqlUser($sqlUser, $_);
+			error("Unable to remove '$sqlUser\@$_' SQL user or one of its privileges") if $rs;
+			return 1 if $rs;
+		}
+	}
+
+	# Get SQL connection with full privileges
+	my ($database, $errStr) = main::setupGetSqlConnect();
+	fatal("Unable to connect to SQL Server: $errStr") if ! $database;
+
+	# Add new authdaemon restricted SQL user with needed privileges
+
+	$rs = $database->doQuery(
+		'dummy',
+		"GRANT SELECT ON `$main::imscpConfig{'DATABASE_NAME'}`.`mail_users` TO ?@? IDENTIFIED BY ?",
+		$dbUser,
+		$dbUserHost,
+		$dbPass
+	);
+	unless(ref $rs eq 'HASH') {
+		error(
+			"Unable to add privileges on the `$main::imscpConfig{'DATABASE_NAME'}`.`mail_users` table for the '$dbUser'" .
+			" SQL user: $rs"
+		);
+		return 1;
+	}
+
+	$self->{'hooksManager'}->trigger('afterPoSetupDb');
+}
+
+=item _buildConf()
+
+ Build courier configuration files.
+
+ Return int 0 on success, other on failure
+
+=cut
+
+sub _buildConf
+{
+	my $self = shift;
+
+	my $rs = $self->_buildAuthdaemonrcFile();
+	return $rs if $rs;
+
+	$rs = $self->_buildSslConfFiles();
+	return $rs if $rs;
+
+	require Servers::mta;
+	my $mta = Servers::mta->factory();
+
+	my $cfg = {
+		DATABASE_HOST => $main::imscpConfig{'DATABASE_HOST'},
+		DATABASE_PORT => $main::imscpConfig{'DATABASE_PORT'},
+		DATABASE_USER => $self->{'config'}->{'DATABASE_USER'},
+		DATABASE_PASSWORD => $self->{'config'}->{'DATABASE_PASSWORD'},
+		DATABASE_NAME => $main::imscpConfig{'DATABASE_NAME'},
+		HOST_NAME => $main::imscpConfig{'SERVER_HOSTNAME'},
+		MTA_MAILBOX_UID => scalar getpwnam($mta->{'config'}->{'MTA_MAILBOX_UID_NAME'}),
+		MTA_MAILBOX_GID => scalar getgrnam($mta->{'config'}->{'MTA_MAILBOX_GID_NAME'}),
+		MTA_VIRTUAL_MAIL_DIR => $mta->{'config'}->{'MTA_VIRTUAL_MAIL_DIR'}
+	};
+
+	my %cfgFiles = (
+		'authmysqlrc' => [
+			"$self->{'config'}->{'AUTHLIB_CONF_DIR'}/authmysqlrc", # Destpath
+			$self->{'config'}->{'AUTHDAEMON_USER'}, # Owner
+			$self->{'config'}->{'AUTHDAEMON_GROUP'}, # Group
+			0660 # Permissions
+		],
+		'quota-warning' => [
+			$self->{'config'}->{'QUOTA_WARN_MSG_PATH'}, # Destpath
+			$mta->{'config'}->{'MTA_MAILBOX_UID_NAME'}, # Owner
+			$main::imscpConfig{'ROOT_GROUP'}, # Group
+			0640 # Permissions
+		]
+	);
+
+	for (keys %cfgFiles) {
+		# Get configuration template content
+		my $file = iMSCP::File->new('filename' => "$self->{'cfgDir'}/$_");
+		my $cfgTpl = $file->get();
+		return 1 if ! defined $cfgTpl;
+
+		my $rs = $self->{'hooksManager'}->trigger('beforePoBuildConf', \$cfgTpl, $_);
+		return $rs if $rs;
+
+		# Replace placeholders
+		$cfgTpl = iMSCP::Templator::process($cfg, $cfgTpl);
+		return 1 if ! defined $cfgTpl;
+
+		$rs = $self->{'hooksManager'}->trigger('afterPoBuildConf', \$cfgTpl, $_);
+		return $rs if $rs;
+
+		# Retrieve filename
+		my $filename = fileparse($cfgFiles{$_}->[0]);
+
+		# Store file in working directory
+		$file = iMSCP::File->new('filename' => "$self->{'wrkDir'}/$filename");
+
+		$rs = $file->set($cfgTpl);
+		return $rs if $rs;
+
+		$rs = $file->save();
+		return $rs if $rs;
+
+		$rs = $file->owner($cfgFiles{$_}->[1], $cfgFiles{$_}->[2]);
+		return $rs if $rs;
+
+		$rs = $file->mode($cfgFiles{$_}->[3]);
+		return $rs if $rs;
+
+		# Install file in production directory
+		$rs = $file->copyFile($cfgFiles{$_}->[0]);
+		return $rs if $rs;
+	}
 }
 
 =item _buildAuthdaemonrcFile()
@@ -188,30 +523,28 @@ sub _bkpConfFile
 sub _buildAuthdaemonrcFile
 {
 	my $self = shift;
-	my ($rdata, $file);
-	my $rs = 0;
 
 	# Loading the system file from /etc/imscp/backup
-	$file = iMSCP::File->new('filename' => "$self->{'bkpDir'}/authdaemonrc.system");
-	$rdata = $file->get();
+	my $file = iMSCP::File->new('filename' => "$self->{'bkpDir'}/authdaemonrc.system");
+	my $rdata = $file->get();
 
 	unless (defined $rdata) {
 		error("Unable to read $self->{'bkpDir'}/authdaemonrc.system file");
 		return 1;
 	}
 
-	$rs = $self->{'hooksManager'}->trigger('beforePoBuildAuthdaemonrcFile', \$rdata, 'authdaemonrc');
+	my $rs = $self->{'hooksManager'}->trigger('beforePoBuildAuthdaemonrcFile', \$rdata, 'authdaemonrc');
 	return $rs if $rs;
 
-	# Building the new file (Adding the authuserdb module if needed)
-	if($rdata !~ /^\s*authmodulelist="(?:.*)?authuserdb.*"$/gm) {
-		$rdata =~ s/(authmodulelist=")/$1authuserdb /gm;
+	# Building new file (Adding the authmysql module if needed)
+	if($rdata !~ /^\s*authmodulelist="(?:.*)?authmysql.*"$/gm) {
+		$rdata =~ s/(authmodulelist=")/$1authmysql /gm;
 	}
 
 	$rs = $self->{'hooksManager'}->trigger('afterPoBuildAuthdaemonrcFile', \$rdata, 'authdaemonrc');
 	return $rs if $rs;
 
-	# Storing the new file in the working directory
+	# Storing new file in the working directory
 	$file = iMSCP::File->new('filename' => "$self->{'wrkDir'}/authdaemonrc");
 
 	$rs = $file->set($rdata);
@@ -220,67 +553,27 @@ sub _buildAuthdaemonrcFile
 	$rs = $file->save();
 	return $rs if $rs;
 
-	$rs = $file->mode(0660);
+	$rs = $file->owner($self->{'config'}->{'AUTHDAEMON_USER'}, $self->{'config'}->{'AUTHDAEMON_GROUP'});
 	return $rs if $rs;
 
-	$rs = $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
+	$rs = $file->mode(0660);
 	return $rs if $rs;
 
 	# Installing the new file in the production directory
 	$file->copyFile("$self->{'config'}->{'AUTHLIB_CONF_DIR'}");
 }
 
-=item _buildUserdbFile()
+=item buildAuthmysqlrcFile()
 
- Build the userdb file.
+ Build the authmysqlrc file.
 
  Return int 0 on success, other on failure
 
 =cut
 
-sub _buildUserdbFile
+sub buildAuthmysqlrcFile
 {
-	my $self = shift;
-	my $rs = 0;
-
-	$rs = $self->{'hooksManager'}->trigger('beforePoBuildUserdbFile', 'userdb');
-	return $rs if $rs;
-
-	# Storing the new file in the working directory
-	$rs = iMSCP::File->new('filename' => "$self->{'cfgDir'}/userdb")->copyFile("$self->{'wrkDir'}");
-	return $rs if $rs;
-
-	# After build this file is world readable which is is bad
-	# Permissions are inherited by production file
-	my $file = iMSCP::File->new('filename' => "$self->{'wrkDir'}/userdb");
-
-	$rs = $file->mode(0600);
-	return $rs if $rs;
-
-	$rs = $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
-	return $rs if $rs;
-
-	# Installing the new file in the production directory
-	$rs = $file->copyFile("$self->{'config'}->{'AUTHLIB_CONF_DIR'}");
-	return $rs if $rs;
-
-	$file = iMSCP::File->new('filename' => "$self->{'config'}->{'AUTHLIB_CONF_DIR'}/userdb");
-
-	$rs = $file->mode(0600);
-	return $rs if $rs;
-
-	$rs = $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
-	return $rs if $rs;
-
-	# Creating/Updating userdb.dat file from the contents of the userdb file
-	my ($stdout, $stderr);
-	$rs = execute($self->{'config'}->{'CMD_MAKEUSERDB'}, \$stdout, \$stderr);
-	debug($stdout) if $stdout;
-	error($stderr) if $stderr && $rs;
-	error("Error while executing $self->{'config'}->{'CMD_MAKEUSERDB'} returned status $rs") if $rs && ! $stderr;
-	return $rs if $rs;
-
-	$self->{'hooksManager'}->trigger('afterPoBuildUserdbFile', 'userdb');
+	0;
 }
 
 =item _buildSslConfFiles()
@@ -294,34 +587,28 @@ sub _buildUserdbFile
 sub _buildSslConfFiles
 {
 	my $self = shift;
-	my ($rdata, $file);
-	my $rs = 0;
 
 	for ($self->{'config'}->{'COURIER_IMAP_SSL'}, $self->{'config'}->{'COURIER_POP_SSL'}) {
+		last if lc($main::imscpConfig{'SSL_ENABLED'}) ne 'yes';
 
-		# If ssl is not enabled
-        last if lc($main::imscpConfig{'SSL_ENABLED'}) ne 'yes';
-
-		$rs = $self->{'hooksManager'}->trigger('beforePoBuildSslConfFiles', $_);
+		my $rs = $self->{'hooksManager'}->trigger('beforePoBuildSslConfFiles', $_);
 		return $rs if $rs;
 
-		$file = iMSCP::File->new('filename' => "$self->{'config'}->{'AUTHLIB_CONF_DIR'}/$_") if ! $rs;
+		my $file = iMSCP::File->new('filename' => "$self->{'config'}->{'AUTHLIB_CONF_DIR'}/$_");
 
-		# read file exit if can not read
-		$rdata = $file->get();
-
-		unless (defined $rdata){
+		my $rdata = $file->get();
+		unless (defined $rdata) {
 			error("Unable to read $self->{'config'}->{'AUTHLIB_CONF_DIR'}/$_");
 			return 1;
 		}
 
-		# If ssl conf not in place we add if
-		if($rdata =~ m/^TLS_CERTFILE=/msg){
-			$rdata =~ s!^TLS_CERTFILE=.*$!TLS_CERTFILE=$main::imscpConfig{'GUI_CERT_DIR'}/$main::imscpConfig{'SERVER_HOSTNAME'}.pem!mg;
+		if($rdata =~ m/^TLS_CERTFILE=/msg) {
+			$rdata =~ s!^TLS_CERTFILE=.*$!TLS_CERTFILE=$main::imscpConfig{'GUI_CERT_DIR'}/$main::imscpConfig{'SERVER_HOSTNAME'}.pem!gm;
 		} else {
 			$rdata .= "TLS_CERTFILE=$main::imscpConfig{'GUI_CERT_DIR'}/$main::imscpConfig{'SERVER_HOSTNAME'}.pem";
 		}
 
+		# Store file in working directory
 		$file = iMSCP::File->new('filename' => "$self->{'wrkDir'}/$_");
 
 		$rs = $file->set($rdata);
@@ -336,11 +623,11 @@ sub _buildSslConfFiles
 		$rs = $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
 		return $rs if $rs;
 
-		# Installing the new file in the production directory
+		# Install file in production directory
 		$rs = $file->copyFile("$self->{'config'}->{'AUTHLIB_CONF_DIR'}");
 		return $rs if $rs;
 
-		$rs |= $self->{'hooksManager'}->trigger('afterPoBuildSslConfFiles', $_);
+		$rs = $self->{'hooksManager'}->trigger('afterPoBuildSslConfFiles', $_);
 		return $rs if $rs;
 	}
 
@@ -358,11 +645,10 @@ sub _buildSslConfFiles
 sub _saveConf
 {
 	my $self = shift;
-	my $rs = 0;
 
 	my $file = iMSCP::File->new('filename' => "$self->{'cfgDir'}/courier.data");
 
-	$rs = $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
+	my $rs = $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
 	return $rs if $rs;
 
 	$rs = $file->mode(0640);
@@ -377,7 +663,7 @@ sub _saveConf
 	$rs = $self->{'hooksManager'}->trigger('beforePoSaveConf', \$cfg, 'courier.old.data');
 	return $rs if $rs;
 
-	$file = iMSCP::File->new('filename' => "$self->{'cfgDir'}/courier.old.data") if ! $rs;
+	$file = iMSCP::File->new('filename' => "$self->{'cfgDir'}/courier.old.data");
 
 	$rs = $file->set($cfg);
 	return $rs if $rs;
@@ -405,14 +691,13 @@ sub _saveConf
 sub _migrateFromDovecot
 {
 	my $self = shift;
-	my $rs = 0;
 
-	$rs = $self->{'hooksManager'}->trigger('beforePoMigrateFromDovecot');
+	my $rs = $self->{'hooksManager'}->trigger('beforePoMigrateFromDovecot');
 	return $rs if $rs;
 
 	# Getting i-MSCP MTA server implementation instance
 	require Servers::mta;
-	my $mta	= Servers::mta->factory();
+	my $mta = Servers::mta->factory();
 
 	my $binPath = "$main::imscpConfig{'CMD_PERL'} $main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlVendor/courier-dovecot-migrate.pl";
 	my $mailPath = "$mta->{'config'}->{'MTA_VIRTUAL_MAIL_DIR'}";
@@ -432,13 +717,10 @@ sub _migrateFromDovecot
 	my $domainDirs = iMSCP::Dir->new('dirname' => $mailPath);
 
 	for($domainDirs->getDirs()) {
-
 		my $mailboxesDirs = iMSCP::Dir->new('dirname' => "$mailPath/$_");
 
 		for my $mailDir($mailboxesDirs->getDirs()) {
-
 			if(-f "$mailPath/$_/$mailDir/subscriptions") {
-
 				my $subscriptionsFile = iMSCP::File->new('filename' => "$mailPath/$_/$mailDir/subscriptions");
 
 				$rs = $subscriptionsFile->copyFile("$mailPath/$_/$mailDir/courierimapsubscribed");

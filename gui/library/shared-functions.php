@@ -241,6 +241,128 @@ function translate_dmn_status($status)
 }
 
 /**
+ * Updates customer limits/features
+ *
+ * @param int $domainId Domain unique identifier
+ * @param string $props String that contain new properties values
+ * @return void
+ */
+/*
+function update_user_props($domainId, $props)
+{
+	$cfg = iMSCP_Registry::get('config');
+
+	list(
+		, $maxSubLimit, , $maxAlsLimit, , $maxMailLimit, , $maxFtpLimit, , $maxSqlDbLimit, , $maxSqlUserLimit,
+		$maxMonthlyTraffic, $maxDiskspace, $phpSupport, $cgiSupport, , $customDnsSupport, $softwareInstallerSupport
+	) = explode(';', $props);
+
+	$domainLastModified = time();
+
+	// We must check previous values for features (eg. php, cgi, dns, software installer) to determine if we must send a
+	// request to the ispCP daemon
+	$query = "
+		SELECT
+			`domain_name`
+		FROM
+			`domain`
+		WHERE
+			`domain_id` = ?
+		AND
+			`domain_php` = ?
+		AND
+			`domain_cgi` = ?
+		AND
+			`domain_dns` = ?
+		AND
+			`domain_software_allowed` = ?
+	";
+	$stmt = exec_query($query, array($domainId, $phpSupport, $cgiSupport, $customDnsSupport, $softwareInstallerSupport));
+
+	// No record found. That mean that a least one value was changed
+	if (!$stmt->rowCount()) {
+		$updateStatus = $cfg->ITEM_TOCHANGE_STATUS;
+
+		// Update customer limits/features and schedule domain update
+		$query = "
+			UPDATE
+				`domain`
+			SET
+				`domain_last_modified` = ?, `domain_mailacc_limit` = ?, `domain_ftpacc_limit` = ?,
+				`domain_traffic_limit` = ?, `domain_sqld_limit` = ?, `domain_sqlu_limit` = ?, `domain_status` = ?,
+				`domain_alias_limit` = ?, `domain_subd_limit` = ?, `domain_disk_limit` = ?, `domain_php` = ?,
+				`domain_cgi` = ?, `domain_dns` = ?, `domain_software_allowed` = ?
+			WHERE
+				`domain_id` = ?
+		";
+		exec_query(
+			$query,
+			array(
+				$domainLastModified, $maxMailLimit, $maxFtpLimit, $maxMonthlyTraffic, $maxSqlDbLimit, $maxSqlUserLimit,
+				$updateStatus, $maxAlsLimit, $maxSubLimit, $maxDiskspace, $phpSupport, $cgiSupport, $customDnsSupport,
+				$softwareInstallerSupport, $domainId
+			)
+		);
+
+		// Schedule als update
+		$query = "UPDATE `domain_aliasses` SET `alias_status` = ? WHERE `domain_id` = ?";
+		exec_query($query, array($updateStatus, $domainId));
+
+		// Schedule sub update
+		$query = "UPDATE `subdomain` SET `subdomain_status` = ? WHERE `domain_id` = ?";
+		exec_query($query, array($updateStatus, $domainId));
+
+		// Let's update subals update
+		$query = "
+			UPDATE
+				`subdomain_alias`
+			SET
+				`subdomain_alias_status` = ?
+			WHERE
+				`alias_id` IN (SELECT `alias_id` FROM `domain_aliasses` WHERE `domain_id` = ?)
+		";
+		exec_query($query, array($updateStatus, $domainId));
+
+		// Send a request to the i-MSCP daemon
+		send_request();
+	} else {
+		// We do not have changes for any feature. We have to update only customer limits.
+		$query = "
+			UPDATE
+				`domain`
+			SET
+				`domain_last_modified` = ?, `domain_subd_limit` = ?, `domain_alias_limit` = ?, `domain_mailacc_limit` = ?,
+				`domain_ftpacc_limit` = ?, `domain_sqld_limit` = ?, `domain_sqlu_limit` = ?, `domain_traffic_limit` = ?,
+				`domain_disk_limit` = ?
+			WHERE
+				domain_id = ?
+		";
+		exec_query(
+			$query,
+			array(
+				$domainLastModified, $maxSubLimit, $maxAlsLimit, $maxMailLimit, $maxFtpLimit, $maxSqlDbLimit,
+				$maxSqlUserLimit, $maxMonthlyTraffic, $maxDiskspace, $domainId
+			)
+		);
+	}
+}
+*/
+
+/**
+ * Updates dommain expiration date
+ *
+ * @param  int $user_id User unique identifier
+ * @param  int $domain_new_expire New expiration date
+ * @return void
+ */
+/*
+function update_expire_date($user_id, $domain_new_expire)
+{
+	exec_query("UPDATE `domain` SET `domain_expires` = ? WHERE `domain_id` = ?", array($domain_new_expire, $user_id));
+}
+*/
+
+/**
  * Activate or deactivate the given customer account
  *
  * @throws iMSCP_Exception|iMSCP_Exception_Database
@@ -481,19 +603,6 @@ function deleteCustomer($customerId, $checkCreatedBy = false)
 
 		// Schedule mail accounts deletion
 		exec_query('UPDATE `mail_users` SET `status` = ? WHERE `domain_id` = ?', array($deleteStatus, $mainDomainId));
-
-		// Delete dovecot quota accounting
-		if(isset($cfg['PO_SERVER']) && $cfg['PO_SERVER'] == 'dovecot') {
-			exec_query(
-				'
-					DELETE FROM
-						`quota_dovecot`
-					WHERE
-						`username` IN(SELECT `mail_addr` FROM `mail_users` WHERE `domain_id` = ?)
-				',
-				$mainDomainId
-			);
-		}
 
 		// Schedule subdomain's aliasses deletion
 		$query = "

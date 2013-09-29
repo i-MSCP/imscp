@@ -4,6 +4,8 @@ POSTFIX_CONF_FILE = /etc/postfix/main.cf
 
 POSTFIX_MASTER_CONF_FILE = /etc/postfix/master.cf
 
+POSTFIX_SENDMAIL_PATH = /usr/sbin/sendmail
+
 MTA_VIRTUAL_CONF_DIR = /etc/postfix/imscp
 
 CMD_MTA = /etc/init.d/postfix

@@ -11,7 +11,7 @@ Content-Type: text/plain; charset="UTF-8"
 
 You are using $PERCENT% of the space assigned to your mailbox." >> $qwf
 
-cat $qwf | /usr/sbin/sendmail -f $FROM "$USER"
+cat $qwf | {POSTFIX_SENDMAIL_PATH} -f $FROM "$USER"
 rm -f $qwf
 
 exit 0

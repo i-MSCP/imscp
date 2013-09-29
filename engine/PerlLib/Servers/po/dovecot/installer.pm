@@ -42,6 +42,7 @@ use iMSCP::File;
 use iMSCP::Dir;
 use iMSCP::Execute;
 use iMSCP::Templator;
+use File::Basename;
 use version;
 use parent 'Common::SingletonClass';
 
@@ -67,24 +68,28 @@ sub registerSetupHooks
 	my $self = shift;
 	my $hooksManager = shift;
 
-	my $rs = $hooksManager->trigger('beforePoRegisterSetupHooks', $hooksManager, 'dovecot');
-    return $rs if $rs;
-
-	# Add installer dialog in setup dialog stack
-	$rs = $hooksManager->register(
-		'beforeSetupDialog', sub { my $dialogStack = shift; push(@$dialogStack, sub { $self->askDovecot(@_) }); 0; }
-	);
-	return $rs if $rs;
-
 	if(defined $main::imscpConfig{'MTA_SERVER'} && lc($main::imscpConfig{'MTA_SERVER'}) eq 'postfix') {
+		my $rs = $hooksManager->trigger('beforePoRegisterSetupHooks', $hooksManager, 'dovecot');
+    	return $rs if $rs;
+
+		$rs = $hooksManager->register(
+			'beforeSetupDialog', sub { my $dialogStack = shift; push(@$dialogStack, sub { $self->askDovecot(@_) }); 0; }
+		);
+		return $rs if $rs;
+
 		$rs = $hooksManager->register('beforeMtaBuildMainCfFile', sub { $self->buildPostfixConf(@_); });
 		return $rs if $rs;
 
 		$rs = $hooksManager->register('beforeMtaBuildMasterCfFile', sub { $self->buildPostfixConf(@_); });
 		return $rs if $rs;
-	}
 
-	$hooksManager->trigger('afterPoRegisterSetupHooks', $hooksManager, 'dovecot');
+		$hooksManager->trigger('afterPoRegisterSetupHooks', $hooksManager, 'dovecot');
+	} else {
+		$main::imscpConfig{'PO_SERVER'} = 'no';
+		warning('i-MSCP Dovecot PO server require the Postfix MTA. Installation skipped...');
+
+		0;
+	}
 }
 
 =item askDovecot($dialog)
@@ -101,24 +106,12 @@ sub askDovecot
 	my $self = shift;
 	my $dialog = shift;
 
-	my $dbType = main::setupGetQuestion('DATABASE_TYPE');
-	my $dbHost = main::setupGetQuestion('DATABASE_HOST');
-	my $dbPort = main::setupGetQuestion('DATABASE_PORT');
-	my $dbName = main::setupGetQuestion('DATABASE_NAME');
-
 	my $dbUser = main::setupGetQuestion('DOVECOT_SQL_USER') || $self->{'config'}->{'DATABASE_USER'} || 'dovecot_user';
-
 	my $dbPass = main::setupGetQuestion('DOVECOT_SQL_PASSWORD') || $self->{'config'}->{'DATABASE_PASSWORD'} || '';
 
 	my ($rs, $msg) = (0, '');
 
-	if(
-		$main::reconfigure ~~ ['po', 'servers', 'all', 'forced'] || ! ($dbUser && $dbPass)
-		#(
-		#	! $main::preseed{'DOVECOT_SQL_USER'} &&
-		#	main::setupCheckSqlConnect($dbType, '', $dbHost, $dbPort, $dbUser, $dbPass)
-		#)
-	) {
+	if($main::reconfigure ~~ ['po', 'servers', 'all', 'forced'] || ! ($dbUser && $dbPass)) {
 		# Ask for the dovecot restricted SQL username
 		do{
 			($rs, $dbUser) = iMSCP::Dialog->factory()->inputbox(
@@ -179,7 +172,7 @@ sub install
 	$rs = $self->_bkpConfFile($_) for ('dovecot.conf', 'dovecot-sql.conf');
 	return $rs if $rs;
 
-	$rs = $self->_setupDb();
+	$rs = $self->_setupSqlUser();
 	return $rs if $rs;
 
 	$rs = $self->_buildConf();
@@ -205,7 +198,7 @@ sub install
 
 =item buildPostfixConf()
 
- Build Dovecot SASL and LDA parameters for Postfix.
+ Add Dovecot SASL and LDA parameters for Postfix.
 
  Filter hook function acting on the following hooks
   - beforeMtaBuildMainCfFile
@@ -241,13 +234,22 @@ EOF
 
 	} elsif($filename eq 'master.cf') {
 		# LDA part
-		my $configSnippet .= <<EOF;
+		my $configSnippet = <<EOF;
 
 dovecot   unix  -       n       n       -       -       pipe
-  flags=DRhu user={ARPL_USER} argv=/usr/lib/dovecot/deliver -f \${sender} -d \${recipient} {SFLAG}
+  flags=DRhu user={MTA_MAILBOX_UID_NAME}:{MTA_MAILBOX_GID_NAME} argv={DOVECOT_LDA_PATH} -f \${sender} -d \${recipient} {SFLAG}
 EOF
+
+		require Servers::mta;
+		my $mta = Servers::mta->factory();
+
 		$$content .= iMSCP::Templator::process(
-			{ SFLAG => (version->new($self->{'version'}) < version->new('2.0.0') ? '-s' : '') },
+			{
+				MTA_MAILBOX_UID_NAME => $mta->{'config'}-> {'MTA_MAILBOX_UID_NAME'},
+				MTA_MAILBOX_GID_NAME => $mta->{'config'}-> {'MTA_MAILBOX_GID_NAME'},
+				DOVECOT_LDA_PATH => $self->{'config'}->{'DOVECOT_LDA_PATH'},
+				SFLAG => (version->new($self->{'version'}) < version->new('2.0.0') ? '-s' : '')
+			},
 			$configSnippet
 		);
 	}
@@ -299,7 +301,7 @@ sub _init
 		}
 	}
 
-	$self->_getVersion() and fatal('Unable to get dovecot version');
+	$self->_getVersion() and fatal('Unable to get Dovecot version');
 
 	$self->{'hooksManager'}->trigger(
 		'afterPodInitInstaller', $self, 'dovecot'
@@ -319,9 +321,8 @@ sub _init
 sub _getVersion
 {
 	my $self = shift;
-	my $rs = 0;
 
-	$rs = $self->{'hooksManager'}->trigger('beforePoGetVersion');
+	my $rs = $self->{'hooksManager'}->trigger('beforePoGetVersion');
 	return $rs if $rs;
 
 	my ($stdout, $stderr);
@@ -337,7 +338,7 @@ sub _getVersion
 	if($1) {
 		$self->{'version'} = $1;
 	} else {
-		error("Unable to find dovecot version");
+		error("Unable to find Dovecot version");
 		return 1;
 	}
 
@@ -356,9 +357,8 @@ sub _bkpConfFile
 {
 	my $self = shift;
 	my $cfgFile = shift;
-	my $rs = 0;
 
-	$rs = $self->{'hooksManager'}->trigger('beforePoBkpConfFile', $cfgFile);
+	my $rs = $self->{'hooksManager'}->trigger('beforePoBkpConfFile', $cfgFile);
 	return $rs if $rs;
 
 	if(-f "$self->{'config'}->{'DOVECOT_CONF_DIR'}/$cfgFile") {
@@ -377,26 +377,24 @@ sub _bkpConfFile
 	$self->{'hooksManager'}->trigger('afterPoBkpConfFile', $cfgFile);
 }
 
-=item _getVersion()
+=item _setupSqlUser()
 
- Setup database for dovecot.
+ Setup SQL user.
 
  Return int 0 on success, other on failure
 
 =cut
 
-sub _setupDb
+sub _setupSqlUser
 {
 	my $self = shift;
-	my $rs = 0;
 
 	my $dbUser = $self->{'config'}->{'DATABASE_USER'};
 	my $dbUserHost = main::setupGetQuestion('DATABASE_USER_HOST');
 	my $dbPass = $self->{'config'}->{'DATABASE_PASSWORD'};
-
 	my $dbOldUser = $self->{'oldConfig'}->{'DATABASE_USER'} || '';
 
-	$rs = $self->{'hooksManager'}->trigger('beforePoSetupDb', $dbUser, $dbOldUser, $dbPass, $dbUserHost);
+	my $rs = $self->{'hooksManager'}->trigger('beforePoSetupDb', $dbUser, $dbOldUser, $dbPass, $dbUserHost);
 	return $rs if $rs;
 
 	# Remove any old dovecot SQL user (including privileges)
@@ -420,29 +418,15 @@ sub _setupDb
 
 	$rs = $database->doQuery(
 		'dummy',
-		"GRANT SELECT ON `$main::imscpConfig{'DATABASE_NAME'}`.* TO ?@? IDENTIFIED BY ?",
+		"GRANT SELECT ON `$main::imscpConfig{'DATABASE_NAME'}`.`mail_users` TO ?@? IDENTIFIED BY ?",
 		$dbUser,
 		$dbUserHost,
 		$dbPass
 	);
-	if(ref $rs ne 'HASH') {
+	unless(ref $rs eq 'HASH') {
 		error(
-			"Unable to add privileges on the '$main::imscpConfig{'DATABASE_NAME'}' tables for the '$dbUser'" .
+			"Unable to add privileges on the `$main::imscpConfig{'DATABASE_NAME'}`.`mail_users` table for the '$dbUser'" .
 			" SQL user: $rs"
-		);
-		return 1;
-	}
-
-	$rs = $database->doQuery(
-		'dummy',
-		"GRANT SELECT, INSERT, UPDATE, DELETE ON `$main::imscpConfig{'DATABASE_NAME'}`.`quota_dovecot` TO ?@?",
-		$dbUser,
-		$dbUserHost
-	);
-	if(ref $rs ne 'HASH') {
-		error(
-			"Unable to add privileges on the '$main::imscpConfig{'DATABASE_NAME'}.quota_dovecot' table for the " .
-			" '$dbUser' SQL user: $rs"
 		);
 		return 1;
 	}
@@ -461,18 +445,17 @@ sub _setupDb
 sub _buildConf
 {
 	my $self = shift;
-	my $rs = 0;
 
 	require Servers::mta;
 	my $mta = Servers::mta->factory();
 
 	my $cfg = {
 		DATABASE_TYPE => $main::imscpConfig{'DATABASE_TYPE'},
-		DATABASE_HOST => (
-			$main::imscpConfig{'DATABASE_PORT'} && $main::imscpConfig{'DATABASE_PORT'} ne 'localhost'
+		DATABASE_HOST =>
+			($main::imscpConfig{'DATABASE_PORT'} && $main::imscpConfig{'DATABASE_PORT'} ne 'localhost')
 				? "$main::imscpConfig{'DATABASE_HOST'} port=$main::imscpConfig{'DATABASE_PORT'}"
 				: $main::imscpConfig{'DATABASE_HOST'}
-		),
+		,
 		DATABASE_USER => $self->{'config'}->{'DATABASE_USER'},
 		DATABASE_PASSWORD => $self->{'config'}->{'DATABASE_PASSWORD'},
 		DATABASE_NAME => $main::imscpConfig{'DATABASE_NAME'},
@@ -480,35 +463,68 @@ sub _buildConf
 		HOST_NAME => $main::imscpConfig{'SERVER_HOSTNAME'},
 		DOVECOT_SSL => ($main::imscpConfig{'SSL_ENABLED'} eq 'yes' ? 'yes' : 'no'),
 		COMMENT_SSL => ($main::imscpConfig{'SSL_ENABLED'} eq 'yes' ? '' : '#'),
-		MAIL_USER => $mta->{'config'}->{'MTA_MAILBOX_UID_NAME'},
-		MAIL_GROUP =>$mta->{'config'}->{'MTA_MAILBOX_GID_NAME'},
-		vmailUID => scalar getpwnam($mta->{'config'}->{'MTA_MAILBOX_UID_NAME'}),
-		mailGID => scalar getgrnam($mta->{'config'}->{'MTA_MAILBOX_GID_NAME'}),
+		MASTER_GROUP => $main::imscpConfig{'MASTER_GROUP'},
+		MTA_MAILBOX_UID_NAME => $mta->{'config'}->{'MTA_MAILBOX_UID_NAME'},
+		MTA_MAILBOX_GID_NAME => $mta->{'config'}->{'MTA_MAILBOX_GID_NAME'},
+		MTA_MAILBOX_UID => scalar getpwnam($mta->{'config'}->{'MTA_MAILBOX_UID_NAME'}),
+		MTA_MAILBOX_GID => scalar getgrnam($mta->{'config'}->{'MTA_MAILBOX_GID_NAME'}),
+		POSTFIX_USER => $mta->{'config'}->{'POSTFIX_USER'},
+		POSTFIX_GROUP => $mta->{'config'}->{'POSTFIX_GROUP'},
+		POSTFIX_SENDMAIL_PATH => $mta->{'config'}->{'POSTFIX_SENDMAIL_PATH'},
 		DOVECOT_CONF_DIR => $self->{'config'}->{'DOVECOT_CONF_DIR'},
+		DOVECOT_LDA_PATH => $self->{'config'}->{'DOVECOT_LDA_PATH'},
+		DOVECOT_SASL_SOCKET_PATH => $self->{'config'}->{'DOVECOT_SASL_SOCKET_PATH'},
+		DOVECOT_AUTH_SOCKET_PATH => $self->{'config'}->{'DOVECOT_AUTH_SOCKET_PATH'},
 		ENGINE_ROOT_DIR => $main::imscpConfig{'ENGINE_ROOT_DIR'}
 	};
 
-	my $cfgFiles = {
-		'dovecot.conf' =>(version->new($self->{'version'}) < version->new('2.0.0') ? 'dovecot.conf.1' : 'dovecot.conf.2'),
-		'dovecot-sql.conf' => 'dovecot-sql.conf',
-		'dovecot-dict-sql.conf' => 'dovecot-dict-sql.conf'
-	};
+	# Transitional code (should be removed in later version
+	if(-f "$self->{'config'}->{'DOVECOT_CONF_DIR'}/dovecot-dict-sql.conf") {
+		iMSCP::File->new('filename' => "$self->{'config'}->{'DOVECOT_CONF_DIR'}/dovecot-dict-sql.conf")->delFile();
+	}
 
-	for (keys %{$cfgFiles}) {
-		my $file = iMSCP::File->new('filename' => "$self->{'cfgDir'}/$cfgFiles->{$_}");
+	my %cfgFiles = (
+		((version->new($self->{'version'}) < version->new('2.0.0')) ? 'dovecot.conf.1' : 'dovecot.conf.2') => [
+			"$self->{'config'}->{'DOVECOT_CONF_DIR'}/dovecot.conf", # Destpath
+			$main::imscpConfig{'ROOT_USER'}, # Owner
+			$mta->{'config'}->{'MTA_MAILBOX_GID_NAME'}, # Group
+			0640 # Permissions
+		],
+		'dovecot-sql.conf' => [
+		"$self->{'config'}->{'DOVECOT_CONF_DIR'}/dovecot-sql.conf", # Destpath
+			$main::imscpConfig{'ROOT_USER'}, # owner
+			$mta->{'config'}->{'MTA_MAILBOX_GID_NAME'}, # Group
+			0644 # Permissions
+		],
+		((version->new($self->{'version'}) < version->new('2.0.0')) ? 'quota-warning.1' : 'quota-warning.2') => [
+			"$main::imscpConfig{'ENGINE_ROOT_DIR'}/quota/imscp-dovecot-quota.sh", # Destpath
+			$mta->{'config'}->{'MTA_MAILBOX_UID_NAME'}, # Owner
+			$mta->{'config'}->{'MTA_MAILBOX_GID_NAME'}, # Group
+			0750 # Permissions
+		]
+	);
+
+	for (keys %cfgFiles) {
+		# Get configuration template content
+		my $file = iMSCP::File->new('filename' => "$self->{'cfgDir'}/$_");
 		my $cfgTpl = $file->get();
 		return 1 if ! defined $cfgTpl;
 
-		$rs = $self->{'hooksManager'}->trigger('beforePoBuildConf', \$cfgTpl, $_);
+		my $rs = $self->{'hooksManager'}->trigger('beforePoBuildConf', \$cfgTpl, $_);
 		return $rs if $rs;
 
+		# Replace placeholders
 		$cfgTpl = iMSCP::Templator::process($cfg, $cfgTpl);
 		return 1 if ! defined $cfgTpl;
 
 		$rs = $self->{'hooksManager'}->trigger('afterPoBuildConf', \$cfgTpl, $_);
 		return $rs if $rs;
 
-		$file = iMSCP::File->new('filename' => "$self->{'wrkDir'}/$_");
+		# Retrieve filename
+		my $filename = fileparse($cfgFiles{$_}->[0]);
+
+		# Store file in working directory
+		$file = iMSCP::File->new('filename' => "$self->{'wrkDir'}/$filename");
 
 		$rs = $file->set($cfgTpl);
 		return $rs if $rs;
@@ -516,19 +532,16 @@ sub _buildConf
 		$rs = $file->save();
 		return $rs if $rs;
 
-		$rs = $file->mode(0640);
+		$rs = $file->owner($cfgFiles{$_}->[1], $cfgFiles{$_}->[2]);
 		return $rs if $rs;
 
-		$rs = $file->owner($main::imscpConfig{'ROOT_USER'}, $mta->{'config'}->{'MTA_MAILBOX_GID_NAME'});
+		$rs = $file->mode($cfgFiles{$_}->[3]);
 		return $rs if $rs;
 
-		$rs = $file->copyFile($self->{'config'}->{'DOVECOT_CONF_DIR'});
+		# Install file in production directory
+		$rs = $file->copyFile($cfgFiles{$_}->[0]);
 		return $rs if $rs;
 	}
-
-	my $file = iMSCP::File->new('filename' => "$self->{'config'}->{'DOVECOT_CONF_DIR'}/dovecot.conf");
-
-	$file->mode(0644);
 }
 
 =item _saveConf()
@@ -542,11 +555,10 @@ sub _buildConf
 sub _saveConf
 {
 	my $self = shift;
-	my $rs = 0;
 
 	my $file = iMSCP::File->new('filename' => "$self->{'cfgDir'}/dovecot.data");
 
-	$rs = $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
+	my $rs = $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
 	return $rs if $rs;
 
 	$rs = $file->mode(0640);
@@ -589,9 +601,8 @@ sub _saveConf
 sub _migrateFromCourier
 {
 	my $self = shift;
-	my $rs = 0;
 
-	$rs = $self->{'hooksManager'}->trigger('beforePoMigrateFromCourier');
+	my $rs = $self->{'hooksManager'}->trigger('beforePoMigrateFromCourier');
 	return $rs if $rs;
 
 	# Getting i-MSCP MTA server implementation instance
@@ -616,11 +627,9 @@ sub _migrateFromCourier
 	my $domainDirs = iMSCP::Dir->new('dirname' => $mailPath);
 
 	for($domainDirs->getDirs()) {
-
 		my $mailboxesDirs = iMSCP::Dir->new('dirname' => "$mailPath/$_");
 
 		for my $mailDir($mailboxesDirs->getDirs()) {
-
 			if(-f "$mailPath/$_/$mailDir/courierimapsubscribed") {
 
 				my $courierimapsubscribedFile = iMSCP::File->new(

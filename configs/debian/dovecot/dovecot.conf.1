@@ -1,13 +1,5 @@
-auth_mechanisms = plain login digest-md5
-base_dir = /var/run/dovecot
-
-dict {
-	quotadict = mysql:{DOVECOT_CONF_DIR}/dovecot-dict-sql.conf
-}
-
-disable_plaintext_auth = no
-mail_location = maildir:%h
-mail_privileged_group = mail
+# Mailbox locations and namespaces
+mail_location = maildir:~/
 
 namespace private {
 	separator = .
@@ -15,18 +7,19 @@ namespace private {
 	prefix = INBOX.
 }
 
+# Plugins
+
 plugin {
-	global_script_path = /etc/dovecot/sieve/dovecot.sieve
-	quota = dict:user::proxy::quotadict
-	quota_rule = *:bytes=1G
-	quota_warning = storage=85%% {ENGINE_ROOT_DIR}/quota/imscp-dovecot-quota 85
-	quota_warning2 = storage=90%% {ENGINE_ROOT_DIR}/quota/imscp-dovecot-quota 90
+	quota = maildir:User quota
+	quota_rule = *:storage=1GB
+	quota_warning2 = storage=95%% {ENGINE_ROOT_DIR}/quota/imscp-dovecot-quota.sh 95
+	quota_warning = storage=80%% {ENGINE_ROOT_DIR}/quota/imscp-dovecot-quota.sh 80
 }
 
-protocols = imap pop3 managesieve
-{COMMENT_SSL}protocols = imap pop3 imaps pop3s managesieve
+# Authentication
 
 auth default {
+	mechanisms = plain login digest-md5
 
 	passdb sql {
 		args = {DOVECOT_CONF_DIR}/dovecot-sql.conf
@@ -40,31 +33,26 @@ auth default {
 	}
 
 	socket listen {
-		client {
-			path = /var/spool/postfix/private/auth
-			mode = 0660
-			user = postfix
-			group = postfix
-		}
-
+		# Master authentication socket for LDA
 		master {
-			path = /var/run/dovecot/auth-master
+    		path = {DOVECOT_AUTH_SOCKET_PATH}
+    		mode = 0600
+    		user = {MTA_MAILBOX_UID_NAME}
+    	}
+
+		# Client authentication socket for SASL
+		client {
+			path = {DOVECOT_SASL_SOCKET_PATH}
 			mode = 0660
-			user = {MAIL_USER}
-			group = {MAIL_GROUP}
+			user = {POSTFIX_USER}
+			group = {POSTFIX_GROUP}
 		}
 	}
-
-	user = root
 }
 
-ssl = {DOVECOT_SSL}
-{COMMENT_SSL}ssl_cert_file = {GUI_CERT_DIR}/{HOST_NAME}.pem
-{COMMENT_SSL}ssl_key_file = {GUI_CERT_DIR}/{HOST_NAME}.pem
+# Protocols
 
-protocol managesieve {
-	listen = localhost:2000
-}
+protocols = imap pop3
 
 protocol imap {
 	mail_plugins = quota imap_quota
@@ -76,7 +64,13 @@ protocol pop3 {
 }
 
 protocol lda {
-	auth_socket_path = /var/run/dovecot/auth-master
-	mail_plugins = quota sieve
+	auth_socket_path = {DOVECOT_AUTH_SOCKET_PATH}
+	mail_plugins = quota
 	postmaster_address = postmaster@{HOST_NAME}
 }
+
+# SSL
+
+ssl = {DOVECOT_SSL}
+{COMMENT_SSL}ssl_cert_file = {GUI_CERT_DIR}/{HOST_NAME}.pem
+{COMMENT_SSL}ssl_key_file = {GUI_CERT_DIR}/{HOST_NAME}.pem

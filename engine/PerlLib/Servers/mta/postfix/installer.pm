@@ -572,8 +572,8 @@ sub buildMasterCfFile
 
 	$cfgTpl = iMSCP::Templator::process(
 		{
-			ARPL_USER => $self->{'config'}->{'MTA_MAILBOX_UID_NAME'},
-			ARPL_GROUP => $main::imscpConfig{'MASTER_GROUP'},
+			MTA_MAILBOX_UID_NAME => $self->{'config'}->{'MTA_MAILBOX_UID_NAME'},
+			IMSCP_GROUP => $main::imscpConfig{'MASTER_GROUP'},
 			ARPL_PATH => $main::imscpConfig{'ROOT_DIR'}."/engine/messenger/imscp-arpl-msgr"
 		},
 		$cfgTpl

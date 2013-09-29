@@ -20,6 +20,7 @@
 # @category    i-MSCP
 # @copyright   2010-2013 by i-MSCP | http://i-mscp.net
 # @author      Daniel Andreca <sci2tech@gmail.com>
+# @author      Laurent Declercq <l.declercq@nuxwin.com>
 # @link        http://i-mscp.net i-MSCP Home Site
 # @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
@@ -31,7 +32,19 @@ use warnings;
 use iMSCP::Debug;
 use iMSCP::File;
 use iMSCP::Execute;
+use iMSCP::Database;
+use Servers::mta;
 use parent 'Common::SingletonClass';
+
+sub uninstall
+{
+	my $self = shift;
+
+	my $rs = $self->_restoreConfFile();
+	return $rs if $rs;
+
+	$self->_dropSqlUser();
+}
 
 sub _init
 {
@@ -48,24 +61,14 @@ sub _init
 	$self;
 }
 
-sub uninstall
+sub _restoreConfFile
 {
 	my $self = shift;
 
-	my $rs = $self->restoreConfFile();
-	return $rs if $rs;
-
-	$self->removeSQL();
-}
-
-sub restoreConfFile
-{
-	my $self = shift;
 	my $rs = 0;
-	my $file;
 
 	for ('dovecot.conf', 'dovecot-sql.conf') {
-		$rs	= iMSCP::File->new(
+		$rs = iMSCP::File->new(
 			'filename' => "$self->{bkpDir}/$_.system"
 		)->copyFile(
 			"$self->{'config'}->{'DOVECOT_CONF_DIR'}/$_"
@@ -73,33 +76,28 @@ sub restoreConfFile
 		return $rs if $rs;
 	}
 
-	use Servers::mta;
-	my $mta	= Servers::mta->factory();
+	my $mta = Servers::mta->factory();
 
-	for ('dovecot-sql.conf', 'dovecot-dict-sql.conf') {
-		$file = iMSCP::File->new('filename' => "$self->{'config'}->{'DOVECOT_CONF_DIR'}/$_");
+	my $file = iMSCP::File->new('filename' => "$self->{'config'}->{'DOVECOT_CONF_DIR'}/dovecot-sql.conf");
 
-		$rs = $file->mode(0640);
-		return $rs if $rs;
+	$rs = $file->mode(0644);
+	return $rs if $rs;
 
-		$rs = $file->owner($main::imscpConfig{'ROOT_USER'}, $mta->{'MTA_MAILBOX_GID_NAME'});
-		return $rs if $rs;
-	}
-
-	$file= iMSCP::File->new('filename' => "$self->{'config'}->{'DOVECOT_CONF_DIR'}/dovecot.conf");
-
-	$file->mode(0644);
+	$file->owner($main::imscpConfig{'ROOT_USER'}, $mta->{'MTA_MAILBOX_GID_NAME'});
 }
 
-sub removeSQL
+sub _dropSqlUser
 {
 	my $self = shift;
 
 	if($self->{'config'}->{'DATABASE_USER'}) {
 		my $database = iMSCP::Database->new()->factory();
 
-		$database->doQuery('delete', "DROP USER ?@?", $self->{'config'}->{'DATABASE_USER'}, 'localhost');
-		$database->doQuery('delete', "DROP USER ?@?", $self->{'config'}->{'DATABASE_USER'}, '%');
+		$database->doQuery('delete', 'DROP USER ?@?', $self->{'config'}->{'DATABASE_USER'}, 'localhost');
+		$database->doQuery('delete', 'DROP USER ?@?', $self->{'config'}->{'DATABASE_USER'}, '%');
+		$database->doQuery(
+			'delete', 'DROP USER ?@?', $self->{'config'}->{'DATABASE_USER'}, $main::imscpConfig{'DATABASE_USER_HOST'}
+		);
 		$database->doQuery('dummy', 'FLUSH PRIVILEGES');
 
 	}

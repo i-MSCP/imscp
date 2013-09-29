@@ -51,10 +51,6 @@ function client_deleteMailAccount($mailId, $dmnProps)
 
 		exec_query('UPDATE `mail_users` SET `status` = ? WHERE `mail_id` = ?', array($toDeleteStatus, $mailId));
 
-		if (isset($cfg['PO_SERVER']) && $cfg['PO_SERVER'] == 'dovecot') {
-			exec_query('DELETE FROM `quota_dovecot` WHERE `username` = ?', $mailAddr);
-		}
-
 		// Schedule deletetion of all catchall which belong to the mail account
 		exec_query(
 			'

@@ -82,7 +82,7 @@ INSERT IGNORE INTO `config` (`name`, `value`) VALUES
 ('PREVENT_EXTERNAL_LOGIN_ADMIN', '1'),
 ('PREVENT_EXTERNAL_LOGIN_RESELLER', '1'),
 ('PREVENT_EXTERNAL_LOGIN_CLIENT', '1'),
-('DATABASE_REVISION', '166'),
+('DATABASE_REVISION', '167'),
 ('PHPINI_ALLOW_URL_FOPEN', 'off'),
 ('PHPINI_DISPLAY_ERRORS', 'off'),
 ('PHPINI_UPLOAD_MAX_FILESIZE', '10'),
@@ -471,19 +471,6 @@ CREATE TABLE IF NOT EXISTS `quotatallies` (
   `files_out_used` int(10) unsigned NOT NULL DEFAULT '0',
   `files_xfer_used` int(10) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`name`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `quota_dovecot`
---
-
-CREATE TABLE IF NOT EXISTS `quota_dovecot` (
-  `username` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
-  `bytes` bigint(20) NOT NULL DEFAULT '0',
-  `messages` int(11) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`username`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
