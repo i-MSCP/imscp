@@ -722,11 +722,13 @@ sub _debconfSetSelections
 	my $sqlServerPackageName = undef;
 
 	if(defined $sqlServer) {
-		if( $sqlServer =~ /^(mysql|mariadb)_(\d+\.\d+)$/) {
-			$sqlServerPackageName = "$1-server-$2";
-		} else {
-			error("Unknown SQL server package name: $sqlServer");
-			return 1;
+		if($sqlServer ne 'remote_server') {
+			if( $sqlServer =~ /^(mysql|mariadb)_(\d+\.\d+)$/) {
+				$sqlServerPackageName = "$1-server-$2";
+			} else {
+				error("Unknown SQL server package name: $sqlServer");
+				return 1;
+			}
 		}
 	} else {
 		error('Unable to retrieve SQL server name in your preseed file');
@@ -769,7 +771,7 @@ EOF
 		return 1;
 	}
 
-	if(iMSCP::Getopt->preseed) {
+	if(iMSCP::Getopt->preseed && $sqlServer ne 'remote_server') {
 		$selectionsFileContent .= <<EOF;
 $sqlServerPackageName mysql-server/root_password password $main::questions{'DATABASE_PASSWORD'}
 $sqlServerPackageName mysql-server/root_password_again password $main::questions{'DATABASE_PASSWORD'}
