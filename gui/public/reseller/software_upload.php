@@ -93,7 +93,8 @@ if (ask_reseller_is_allowed_web_depot($_SESSION['user_id']) == "yes") {
 				'TR_PACKAGE_VENDOR_HP' => tr('Package vendor HP'),
 				'TR_PACKAGE_ACTION' => tr('Package actions'),
 				'TR_WEBDEPOTSOFTWARE_COUNT' => tr('Web software depot packages total'),
-				'TR_WEBDEPOTSOFTWARE_ACT_NUM' => $packages_cnt
+				'TR_WEBDEPOTSOFTWARE_ACT_NUM' => $packages_cnt,
+				'DATATABLE_TRANSLATIONS' => getDataTablesPluginTranslations()
 			)
 		);
 
@@ -167,10 +168,10 @@ if (isset($_POST['upload']) && $_SESSION['software_upload_token'] == $_POST['sen
 		$sw_id = $db->insertId();
 
 		if ($file == 0) {
-			$dest_dir = $cfg->GUI_SOFTWARE_DIR . '/' . $user_id . '/' . $filename . '-' . $sw_id . $extension;
+			$dest_dir = $cfg->GUI_APS_DIR . '/' . $user_id . '/' . $filename . '-' . $sw_id . $extension;
 
-			if (!is_dir($cfg->GUI_SOFTWARE_DIR . '/' . $user_id)) {
-				@mkdir($cfg->GUI_SOFTWARE_DIR . '/' . $user_id, 0755, true);
+			if (!is_dir($cfg->GUI_APS_DIR . '/' . $user_id)) {
+				@mkdir($cfg->GUI_APS_DIR . '/' . $user_id, 0755, true);
 			}
 
 			if (!move_uploaded_file($_FILES['sw_file']['tmp_name'], $dest_dir)) {
@@ -189,7 +190,7 @@ if (isset($_POST['upload']) && $_SESSION['software_upload_token'] == $_POST['sen
 		}
 		if ($file == 1) {
 			$sw_wget = $_POST['sw_wget'];
-			$dest_dir = $cfg->GUI_SOFTWARE_DIR . '/' . $user_id . '/' . $filename . '-' . $sw_id . $extension;
+			$dest_dir = $cfg->GUI_APS_DIR . '/' . $user_id . '/' . $filename . '-' . $sw_id . $extension;
 
 			// Reading Filesize
 			$parts = parse_url($sw_wget);

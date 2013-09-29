@@ -528,7 +528,7 @@ function get_avail_softwaredepot($tpl)
 							), 'warning');
 					}
 
-					$del_path = $cfg->GUI_SOFTWARE_DEPOT_DIR . '/' . $rs->fields['filename'] . '-' .
+					$del_path = $cfg->GUI_APS_DEPOT_DIR . '/' . $rs->fields['filename'] . '-' .
 								$rs->fields['id'] . '.tar.gz';
 
 					@unlink($del_path);
@@ -1243,7 +1243,7 @@ function get_avail_software_reseller($tpl, $user_id)
 							set_page_message(tr('This package already exists in your software repository.'), 'error');
 						}
 
-						$del_path = $cfg->GUI_SOFTWARE_DIR . "/" . $rs->fields['resellerid'] . "/" . $rs->fields['filename'] . "-" . $rs->fields['id'] . ".tar.gz";
+						$del_path = $cfg->GUI_APS_DIR . "/" . $rs->fields['resellerid'] . "/" . $rs->fields['filename'] . "-" . $rs->fields['id'] . ".tar.gz";
 						@unlink($del_path);
 
 						$delete = "DELETE FROM `web_software` WHERE `software_id` = ?";

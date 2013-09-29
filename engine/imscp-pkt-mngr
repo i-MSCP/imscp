@@ -72,8 +72,8 @@ sub pkt_mngr_engine
 
 	my ($rs);
 	my $sw_src_path = '';
-	my $gui_software_dir = $main::cfg{'GUI_SOFTWARE_DIR'};
-	my $gui_softwaredepot_dir = $main::cfg{'GUI_SOFTWARE_DEPOT_DIR'};
+	my $gui_software_dir = $main::cfg{'GUI_APS_DIR'};
+	my $gui_softwaredepot_dir = $main::cfg{'GUI_APS_DEPOT_DIR'};
 	my $software_tmp_dir = $main::cfg{'SOFTWARE_TMP_DIR'};
 
 	if ($sw_software_depot eq 'yes') {

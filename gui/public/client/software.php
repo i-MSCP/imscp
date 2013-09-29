@@ -89,16 +89,9 @@ $tpl->assign(
 		 'TR_STATUS' => tr('Status'),
 		 'TR_ACTION' => tr('Action'),
 		 'TR_SOFTWARE_AVAILABLE' => tr('Available software'),
-		 'TR_SOFTWARE_ASC' => 'software.php?sortby=name&order=asc',
-		 'TR_SOFTWARE_DESC' => 'software.php?sortby=name&order=desc',
-		 'TR_TYPE_ASC' => 'software.php?sortby=type&order=asc',
-		 'TR_TYPE_DESC' => 'software.php?sortby=type&order=desc',
-		 'TR_NEED_DATABASE_ASC' => 'software.php?sortby=database&order=asc',
-		 'TR_NEED_DATABASE_DESC' => 'software.php?sortby=database&order=desc',
-		 'TR_STATUS_ASC' => 'software.php?sortby=status&order=asc',
-		 'TR_STATUS_DESC' => 'software.php?sortby=status&order=desc',
-		 'TR_LANGUAGE_ASC' => 'software.php?sortby=language&order=asc',
-		 'TR_LANGUAGE_DESC' => 'software.php?sortby=language&order=desc'));
+		'DATATABLE_TRANSLATIONS' => getDataTablesPluginTranslations()
+	)
+);
 
 generateNavigation($tpl);
 client_generatePageLists($tpl);

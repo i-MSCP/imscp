@@ -52,9 +52,9 @@ if (isset($_GET['id']) AND is_numeric($_GET['id'])) {
 	$rs = exec_query($query, $_GET['id']);
 
 	if($rs->fields['software_depot'] == "yes") {
-		$filename = $cfg->GUI_SOFTWARE_DEPOT_DIR."/".$rs->fields['software_archive']."-".$rs->fields['software_id'].".tar.gz";
+		$filename = $cfg->GUI_APS_DEPOT_DIR."/".$rs->fields['software_archive']."-".$rs->fields['software_id'].".tar.gz";
 	}else{
-		$filename = $cfg->GUI_SOFTWARE_DIR."/".$rs->fields['reseller_id']."/".$rs->fields['software_archive']."-".$rs->fields['software_id'].".tar.gz";
+		$filename = $cfg->GUI_APS_DIR."/".$rs->fields['reseller_id']."/".$rs->fields['software_archive']."-".$rs->fields['software_id'].".tar.gz";
 	}
 
 	if (file_exists($filename)) {

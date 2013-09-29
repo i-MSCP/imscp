@@ -1,6 +1,16 @@
 
 <script language="JavaScript" type="text/JavaScript">
 	/*<![CDATA[*/
+	$(document).ready(function () {
+		$('.datatable').dataTable(
+			{
+				"oLanguage": {DATATABLE_TRANSLATIONS},
+				"iDisplayLength": 5,
+				"bStateSave": true
+			}
+		);
+	});
+
 	function action_delete() {
 		return confirm("{TR_MESSAGE_DELETE}");
 	}
@@ -29,6 +39,11 @@
 		<th>{TR_SOFTWARE_DELETE}</th>
 	</tr>
 	</thead>
+	<tfoot>
+		<tr>
+			<td colspan="6">{TR_SOFTWARE_COUNT}: {TR_SOFTWARE_NUM}</td>
+		</tr>
+	</tfoot>
 	<tbody>
 	<!-- BDP: no_software_list -->
 	<tr>
@@ -47,9 +62,6 @@
 		<td><a href="{DELETE}" class="icon i_{SOFTWARE_ICON}" onclick="return action_delete()">{TR_DELETE}</a></td>
 	</tr>
 	<!-- EDP: list_software -->
-	<tr>
-		<th colspan="6">{TR_SOFTWARE_COUNT}:&nbsp;{TR_SOFTWARE_NUM}</th>
-	</tr>
 	</tbody>
 </table>
 
@@ -90,7 +102,7 @@
 <h2 class="apps_installer"><span>{TR_WEBDEPOT}</span></h2>
 
 <form action="software_upload.php" method="post" name="update_webdepot" id="update_webdepot">
-	<table>
+	<table class="datatable">
 		<thead>
 		<tr>
 			<th>{TR_PACKAGE_TITLE}</th>

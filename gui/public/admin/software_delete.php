@@ -98,7 +98,7 @@ if (isset($_GET['id']) || isset($_POST['id'])) {
 	$rs_res = exec_query($query_res, $rs->fields['reseller_id']);
 	$tpl->assign('DELETE_SOFTWARE_RESELLER', tr('%1$s (%2$s)', $rs_res->fields['admin_name'], $rs_res->fields['email']));
 	if($rs->fields['software_depot'] == "yes") {
-		$del_path = $cfg->GUI_SOFTWARE_DEPOT_DIR ."/". $rs->fields['software_archive']."-".$rs->fields['software_id'].".tar.gz";
+		$del_path = $cfg->GUI_APS_DEPOT_DIR ."/". $rs->fields['software_archive']."-".$rs->fields['software_id'].".tar.gz";
 		@unlink($del_path);
 		$update = "
 			UPDATE 
@@ -133,7 +133,7 @@ if (isset($_GET['id']) || isset($_POST['id'])) {
 				update_existing_client_installations_res_upload(
 			        $rs->fields['software_id'], $rs->fields['reseller_id'], $rs->fields['software_id'], TRUE
 		        );
-                $del_path = $cfg->GUI_SOFTWARE_DIR."/".$rs->fields['reseller_id']."/".$rs->fields['software_archive']."-".$rs->fields['software_id'].".tar.gz";
+                $del_path = $cfg->GUI_APS_DIR."/".$rs->fields['reseller_id']."/".$rs->fields['software_archive']."-".$rs->fields['software_id'].".tar.gz";
 				@unlink($del_path);
 				$delete="
 					DELETE FROM

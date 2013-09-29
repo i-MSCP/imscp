@@ -224,8 +224,6 @@ sub setEnginePermissions
 	return $rs if $rs;
 
 	$self->{'hooksManager'}->trigger('afterPoSetEnginePermissions');
-
-	0;
 }
 
 =head1 HOOK FUNCTIONS

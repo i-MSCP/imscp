@@ -1,12 +1,24 @@
 
 <script language="JavaScript">
 	/*<![CDATA[*/
+	$(document).ready(function () {
+		$('.datatable').dataTable(
+			{
+				"oLanguage": {DATATABLE_TRANSLATIONS},
+				"iDisplayLength": 5,
+				"bStateSave": true
+			}
+		);
+	});
+
 	function action_delete(url) {
 		if (!confirm("{TR_MESSAGE_DELETE}")) {
 			return false;
 		}
 
 		location = url;
+
+		return true;
 	}
 
 	function action_install(url) {
@@ -15,6 +27,8 @@
 		}
 
 		location = url;
+
+		return true;
 	}
 
 	function action_res_delete(url) {
@@ -23,14 +37,16 @@
 		}
 
 		location = url;
+
+		return true;
 	}
 	/*]]>*/
 </script>
 
-<table>
+<table class="datatable">
 	<thead>
 	<tr>
-		<th><{TR_SOFTWARE}</th>
+		<th>{TR_SOFTWARE}</th>
 		<th>{TR_VERSION}</th>
 		<th>{TR_LANGUAGE}</th>
 		<th>{TR_TYPE}</th>

@@ -607,8 +607,8 @@ function admin_checkAndCreateResellerAccount()
 			$db->commit();
 
 			// Creating Software repository for reseller if needed
-			if( $data['software_allowed'] == 'yes' && !@mkdir($cfg->GUI_SOFTWARE_DIR . '/' . $resellerId, 0750, true)) {
-				write_log("System was unable to create the '{$cfg->GUI_SOFTWARE_DIR}/{$resellerId} directory for reseller software repository", E_USER_ERROR);
+			if( $data['software_allowed'] == 'yes' && !@mkdir($cfg->GUI_APS_DIR . '/' . $resellerId, 0750, true)) {
+				write_log("System was unable to create the '{$cfg->GUI_APS_DIR}/{$resellerId} directory for reseller software repository", E_USER_ERROR);
 			}
 
 			iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAfterAddUser);

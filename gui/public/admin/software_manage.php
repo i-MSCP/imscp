@@ -86,7 +86,10 @@ if ($use_webdepot) {
 			'TR_PACKAGE_VENDOR_HP' => tr('Package vendor HP'),
 			'TR_PACKAGE_ACTION' => tr('Package actions'),
 			'TR_WEBDEPOTSOFTWARE_COUNT' => tr('Total packages in Web software repository'),
-			'TR_WEBDEPOTSOFTWARE_ACT_NUM' => $packages_cnt));
+			'TR_WEBDEPOTSOFTWARE_ACT_NUM' => $packages_cnt,
+			'DATATABLE_TRANSLATIONS' => getDataTablesPluginTranslations()
+		)
+	);
 
 	$tpl->parse('WEBDEPOT_LIST', '.webdepot_list');
 } else {
@@ -163,10 +166,10 @@ if (isset($_POST['upload']) && $_SESSION['software_upload_token'] == $_POST['sen
 		$sw_id = $db->insertId();
 
 		if ($file == 0) {
-			$dest_dir = $cfg->GUI_SOFTWARE_DEPOT_DIR . '/' . $filename . '-' . $sw_id . $extension;
+			$dest_dir = $cfg->GUI_APS_DEPOT_DIR . '/' . $filename . '-' . $sw_id . $extension;
 
-			if (!is_dir($cfg->GUI_SOFTWARE_DEPOT_DIR)) {
-				@mkdir($cfg->GUI_SOFTWARE_DEPOT_DIR, 0755, true);
+			if (!is_dir($cfg->GUI_APS_DEPOT_DIR)) {
+				@mkdir($cfg->GUI_APS_DEPOT_DIR, 0755, true);
 			}
 
 			if (!move_uploaded_file($_FILES['sw_file']['tmp_name'], $dest_dir)) {
@@ -190,7 +193,7 @@ if (isset($_POST['upload']) && $_SESSION['software_upload_token'] == $_POST['sen
 
 		if ($file == 1) {
 			$sw_wget = $_POST['sw_wget'];
-			$dest_dir = $cfg->GUI_SOFTWARE_DEPOT_DIR . '/' . $filename . '-' . $sw_id . $extension;
+			$dest_dir = $cfg->GUI_APS_DEPOT_DIR . '/' . $filename . '-' . $sw_id . $extension;
 
 			// Reading filesize
 			$parts = parse_url($sw_wget);
@@ -287,7 +290,7 @@ $tpl->assign(
 		'TR_SOFTWARE_URL' => tr('or remote file (Max: %s)', bytesHuman($cfg->APS_MAX_REMOTE_FILESIZE)),
 		'TR_UPLOAD_SOFTWARE_BUTTON' => tr('Upload now'),
 		'TR_AWAITING_ACTIVATION' => tr('Awaiting activation'),
-		'TR_ACTIVATED_SOFTWARE' => tr('Reseller software list'),
+		'TR_RESELLER_SOFTWARES_LIST' => tr('Reseller software list'),
 		'TR_SOFTWARE_NAME' => tr('Software name'),
 		'TR_SOFTWARE_VERSION' => tr('Version'),
 		'TR_SOFTWARE_LANGUAGE' => tr('Language'),

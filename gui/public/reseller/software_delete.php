@@ -58,7 +58,7 @@ if (isset($_GET['id']) AND is_numeric($_GET['id'])) {
 		redirectTo('software_upload.php');
 	} else {
 		if ($rs->fields['software_depot'] == "no") {
-			$del_path = $cfg->GUI_SOFTWARE_DIR."/".$_SESSION['user_id']."/".$rs->fields['software_archive']."-".$rs->fields['software_id'].".tar.gz";
+			$del_path = $cfg->GUI_APS_DIR."/".$_SESSION['user_id']."/".$rs->fields['software_archive']."-".$rs->fields['software_id'].".tar.gz";
 			@unlink($del_path);
 		}
 

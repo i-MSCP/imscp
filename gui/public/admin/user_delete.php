@@ -133,10 +133,10 @@ function admin_deleteUser($userId)
 		if (isset($swPackages) && !empty($swPackages)) {
 			_admin_deleteResellerSwPackages($userId, $swPackages);
 		} elseif (
-			$userType == 'reseller' && is_dir($cfg->GUI_SOFTWARE_DIR . '/' . $userId) &&
-			@rmdir($cfg->GUI_SOFTWARE_DIR . '/' . $userId) == false
+			$userType == 'reseller' && is_dir($cfg->GUI_APS_DIR . '/' . $userId) &&
+			@rmdir($cfg->GUI_APS_DIR . '/' . $userId) == false
 		) {
-			write_log('Unable to remove reseller software directory: ' . $cfg->GUI_SOFTWARE_DIR . '/' .
+			write_log('Unable to remove reseller software directory: ' . $cfg->GUI_APS_DIR . '/' .
 				$userId, E_USER_ERROR);
 		}
 
@@ -183,7 +183,7 @@ function _admin_deleteResellerSwPackages($userId, array $swPackages)
 
 	// Remove all reseller's software packages if any
 	foreach ($swPackages as $package) {
-		$packagePath = $cfg->GUI_SOFTWARE_DIR . '/' . $userId . '/' .
+		$packagePath = $cfg->GUI_APS_DIR . '/' . $userId . '/' .
 			$package['software_archive'] . '-' .
 			$package['software_id'] . '.tar.gz';
 
@@ -194,7 +194,7 @@ function _admin_deleteResellerSwPackages($userId, array $swPackages)
 	}
 
 	// Remove reseller software installer local repository directory
-	$resellerSwDirectory = $cfg->GUI_SOFTWARE_DIR . '/' . $userId;
+	$resellerSwDirectory = $cfg->GUI_APS_DIR . '/' . $userId;
 
 	if (is_dir($resellerSwDirectory) && @rmdir($resellerSwDirectory) == false) {
 		write_log('Unable to remove reseller software repository: ' . $resellerSwDirectory, E_USER_ERROR);

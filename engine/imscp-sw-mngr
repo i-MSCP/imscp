@@ -156,8 +156,8 @@ sub sw_mngr_engine
 	}
 
 	my $sw_src_path = '';
-	my $gui_software_dir = $main::cfg{'GUI_SOFTWARE_DIR'};
-	my $gui_software_depot_dir = $main::cfg{'GUI_SOFTWARE_DEPOT_DIR'};
+	my $gui_software_dir = $main::cfg{'GUI_APS_DIR'};
+	my $gui_software_depot_dir = $main::cfg{'GUI_APS_DEPOT_DIR'};
 	my $apache_www_dir = $main::cfg{'USER_WEB_DIR'};
 	my $software_tmp_dir = $main::cfg{'SOFTWARE_TMP_DIR'};
 
@@ -426,7 +426,7 @@ sub _sw_del_data
 				return $rs if $rs;
 			}
 
-			if (-d "sw_dest_path/images.installer_bak") {
+			if (-d "$sw_dest_path/images.installer_bak") {
 				$rs = sys_command_rs("$main::cfg{'CMD_MV'} $sw_dest_path/images.installer_bak $sw_dest_path/images");
 				return $rs if $rs;
 			}

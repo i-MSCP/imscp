@@ -1,26 +1,37 @@
 
 <script language="JavaScript" type="text/JavaScript">
 	/*<![CDATA[*/
+	$(document).ready(function () {
+		$('.datatable').dataTable(
+			{
+				"oLanguage": {DATATABLE_TRANSLATIONS},
+				"iDisplayLength": 5,
+				"bStateSave": true
+			}
+		);
+	});
+
 	function action_delete() {
-		if (!confirm("{TR_MESSAGE_DELETE}"))
-			return false;
+		return confirm("{TR_MESSAGE_DELETE}");
 	}
 
 	function action_activate() {
-		if (!confirm("{TR_MESSAGE_ACTIVATE}"))
-			return false;
+		return confirm("{TR_MESSAGE_ACTIVATE}");
 	}
 
 	function action_import() {
-		if (!confirm("{TR_MESSAGE_IMPORT}"))
-			return false;
+		return confirm("{TR_MESSAGE_IMPORT}");
 	}
 
 	function action_install(url) {
-		if (!confirm("{TR_MESSAGE_INSTALL}"))
+		if (!confirm("{TR_MESSAGE_INSTALL}")) {
 			return false;
+		}
+
 		document.getElementById('sw_wget').value = url;
 		document.getElementById('sw_upload_form').submit();
+
+		return true;
 	}
 	/*]]>*/
 </script>
@@ -64,7 +75,7 @@
 	</thead>
 	<tfoot>
 	<tr>
-		<td colspan="8">{TR_SOFTWAREDEPOT_COUNT}:&nbsp;{TR_SOFTWAREDEPOT_NUM}</td>
+		<td colspan="8">{TR_SOFTWAREDEPOT_COUNT}: {TR_SOFTWAREDEPOT_NUM}</td>
 	</tr>
 	</tfoot>
 	<!-- BDP: no_softwaredepot_list -->
@@ -92,7 +103,7 @@
 <h2 class="apps_installer"><span>{TR_WEBDEPOT}</span></h2>
 
 <form action="software_manage.php" method="post" name="update_webdepot" id="update_webdepot">
-	<table>
+	<table class="datatable">
 		<thead>
 		<tr>
 			<th>{TR_PACKAGE_TITLE}</th>
@@ -187,7 +198,7 @@
 	</tbody>
 </table>
 
-<h2 class="apps_installer"><span>{TR_ACTIVATED_SOFTWARE}</span></h2>
+<h2 class="apps_installer"><span>{TR_RESELLER_SOFTWARES_LIST}</span></h2>
 
 <table>
 	<thead>

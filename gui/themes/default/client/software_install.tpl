@@ -16,9 +16,12 @@
 
 <form method="post" action="{SOFTWARE_INSTALL_BUTTON}">
 	<table class="firstColFixed">
+		<thead>
 		<tr>
 			<th colspan="2">{TR_INSTALLATION}</th>
 		</tr>
+		</thead>
+		<tbody>
 		<!-- BDP: software_item -->
 		<tr>
 			<td>{TR_NAME}</td>
@@ -86,12 +89,17 @@
 				<!-- EDP: softwaredbuser_message -->
 			</td>
 		</tr>
+		<!-- EDP: require_installdb -->
+		</tbody>
 	</table>
-	<!-- EDP: require_installdb -->
+
 	<table class="firstColFixed">
+		<thead>
 		<tr>
 			<th colspan="2">{TR_INSTALLATION_INFORMATION}</th>
 		</tr>
+		</thead>
+		<tbody>
 		<tr>
 			<td><label for="install_username">{TR_INSTALL_USER}</label></td>
 			<td><input type="text" name="install_username" id="install_username" value="{VAL_INSTALL_USERNAME}"/></td>
@@ -108,6 +116,7 @@
 			<td><input type="text" name="install_email" id="install_email" value="{VAL_INSTALL_EMAIL}"/></td>
 		</tr>
 		<!-- EDP: software_item -->
+		</tbody>
 	</table>
 
 	<div class="buttons">
