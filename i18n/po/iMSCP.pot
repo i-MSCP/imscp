@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.0.1.6\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2013-09-20 03:32+0200\n"
+"POT-Creation-Date: 2013-09-29 10:21+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -262,6 +262,10 @@ msgid "%d strings translated"
 msgstr ""
 
 #, php-format
+msgid "%s / %s of %s"
+msgstr ""
+
+#, php-format
 msgid "%s / unlimited"
 msgstr ""
 
@@ -306,11 +310,11 @@ msgid "%s doesn't exist or is empty"
 msgstr ""
 
 #, php-format
-msgid "%s id is invalid! You cannot add email accounts."
+msgid "%s field is empty or invalid."
 msgstr ""
 
 #, php-format
-msgid "%s id is invalid. You cannot add email accounts."
+msgid "%s host field is empty or invalid."
 msgstr ""
 
 #, php-format
@@ -318,7 +322,7 @@ msgid "%s is not a valid i-MSCP language file."
 msgstr ""
 
 #, php-format
-msgid "%s list is empty. You cannot add email accounts."
+msgid "%s is not part of domain %s."
 msgstr ""
 
 #, php-format
@@ -364,6 +368,10 @@ msgstr ""
 
 #, php-format
 msgid "%s: You cannot disable a service already sold to reseller's customers."
+msgstr ""
+
+#, php-format
+msgid "%sfield is empty or invalid."
 msgstr ""
 
 msgid ""
@@ -610,9 +618,6 @@ msgstr ""
 msgid "Add admin"
 msgstr ""
 
-msgid "Add alias"
-msgstr ""
-
 msgid "Add catchall"
 msgstr ""
 
@@ -646,9 +651,6 @@ msgstr ""
 msgid "Add hosting plan"
 msgstr ""
 
-msgid "Add mail users"
-msgstr ""
-
 msgid "Add new IP address"
 msgstr ""
 
@@ -662,9 +664,6 @@ msgid "Add new protected area"
 msgstr ""
 
 msgid "Add new service port"
-msgstr ""
-
-msgid "Add other domains to this account"
 msgstr ""
 
 msgid "Add permissions"
@@ -899,9 +898,6 @@ msgstr ""
 msgid "Alias already assigned to another IP address."
 msgstr ""
 
-msgid "Alias awaiting for activation."
-msgstr ""
-
 msgid "Alias forward"
 msgstr ""
 
@@ -909,9 +905,6 @@ msgid "Alias mail"
 msgstr ""
 
 msgid "Alias name"
-msgstr ""
-
-msgid "Alias scheduled for addition."
 msgstr ""
 
 msgid "Alias subdomain forward"
@@ -968,6 +961,16 @@ msgstr ""
 msgid "Allow URL fopen"
 msgstr ""
 
+msgid ""
+"Allows to forward any request made to this domain alias to a specific URL."
+msgstr ""
+
+msgid ""
+"Allows to forward any request made to this domain alias to a specific URL. "
+"Be aware that when this option is in use, no Web folder is created for the "
+"domain alias."
+msgstr ""
+
 msgid "Allows to forward any request made to this subdomain to a specific URL."
 msgstr ""
 
@@ -995,7 +998,7 @@ msgstr ""
 msgid "An error occurred. Please contact your administrator."
 msgstr ""
 
-msgid "An unexpected error occured. Please contact your administrator"
+msgid "An unexpected error occured. Please contact your reseller."
 msgstr ""
 
 msgid "An unexpected error occured. Please retry"
@@ -1217,6 +1220,9 @@ msgstr ""
 msgid "CGI"
 msgstr ""
 
+msgid "CNAME field is empty or invalid."
+msgstr ""
+
 msgid "CPU Information"
 msgstr ""
 
@@ -1232,6 +1238,10 @@ msgstr ""
 
 #, php-format
 msgid "Cannot validate %s record: %s"
+msgstr ""
+
+#, php-format
+msgid "Cannot validate record: %s"
 msgstr ""
 
 msgid "Canonical name"
@@ -1371,19 +1381,19 @@ msgstr ""
 msgid "Client / Domains"
 msgstr ""
 
-msgid "Client / Domains / Add Alias"
+msgid "Client / Domains / Add Custom DNS record"
 msgstr ""
 
-msgid "Client / Domains / Add Custom DNS record"
+msgid "Client / Domains / Add Domain Alias"
 msgstr ""
 
 msgid "Client / Domains / Add Subdomain"
 msgstr ""
 
-msgid "Client / Domains / Edit Subdomain"
+msgid "Client / Domains / Edit Domain Alias"
 msgstr ""
 
-msgid "Client / Domains / Overview / Edit Domain Alias"
+msgid "Client / Domains / Edit Subdomain"
 msgstr ""
 
 msgid "Client / Domains / PHP Settings"
@@ -1399,6 +1409,9 @@ msgid "Client / Email / Catchall"
 msgstr ""
 
 msgid "Client / Email / Catchall / Add Catchall"
+msgstr ""
+
+msgid "Client / Email / Edit Email Account"
 msgstr ""
 
 msgid "Client / Email / External Mail Server"
@@ -1417,13 +1430,7 @@ msgstr ""
 msgid "Client / Email / Overview"
 msgstr ""
 
-msgid "Client / Email / Overview /  Edit Email Account"
-msgstr ""
-
 msgid "Client / Email / Overview / Edit Auto Responder"
-msgstr ""
-
-msgid "Client / Email / Overview / Edit Email Quota"
 msgstr ""
 
 msgid "Client / Email / Overview / Enable Auto Responder"
@@ -1537,6 +1544,10 @@ msgstr ""
 msgid "Confirmation for plugin protection"
 msgstr ""
 
+#, php-format
+msgid "Conflict with an existent %s record."
+msgstr ""
+
 msgid "Core data"
 msgstr ""
 
@@ -1587,7 +1598,7 @@ msgstr ""
 msgid "Current password is invalid."
 msgstr ""
 
-msgid "Custom DNS record data"
+msgid "Custom DNS record"
 msgstr ""
 
 msgid "Custom DNS record scheduled for deletion."
@@ -1633,6 +1644,9 @@ msgid "Customer ID"
 msgstr ""
 
 msgid "Customer ID cannot have more than 200 characters"
+msgstr ""
+
+msgid "Customer account"
 msgstr ""
 
 msgid "Customer account successfully scheduled for activation."
@@ -1899,9 +1913,6 @@ msgstr ""
 msgid "Directories"
 msgstr ""
 
-msgid "Directory mount point"
-msgstr ""
-
 msgid "Directory tree"
 msgstr ""
 
@@ -1968,7 +1979,12 @@ msgstr ""
 msgid "Domain alias"
 msgstr ""
 
-msgid "Domain alias data"
+#, php-format
+msgid "Domain alias %s already exist."
+msgstr ""
+
+#, php-format
+msgid "Domain alias %s cannot be forwarded on itself."
 msgstr ""
 
 msgid "Domain alias errors"
@@ -1977,25 +1993,22 @@ msgstr ""
 msgid "Domain alias limit"
 msgstr ""
 
-msgid "Domain alias limit reached."
-msgstr ""
-
 msgid "Domain alias name"
 msgstr ""
 
-msgid "Domain alias scheduled for creation."
+msgid "Domain alias name is not valid."
 msgstr ""
 
-msgid "Domain alias scheduled for update."
+msgid "Domain alias successfully ordered."
 msgstr ""
 
-msgid "Domain alias successfully scheduled for addition"
+msgid "Domain alias successfully scheduled for addition."
 msgstr ""
 
 msgid "Domain alias successfully scheduled for deletion."
 msgstr ""
 
-msgid "Domain alias successfully updated"
+msgid "Domain alias successfully scheduled for update."
 msgstr ""
 
 msgid ""
@@ -2084,9 +2097,6 @@ msgstr ""
 msgid "Domain type"
 msgstr ""
 
-msgid "Domain with same name already exists."
-msgstr ""
-
 msgid ""
 "Domain: Setup an MX record to relay mail of your entire domain (including "
 "subdomains) to an external mail server."
@@ -2123,9 +2133,6 @@ msgid "Edit SSL certificate"
 msgstr ""
 
 msgid "Edit admin"
-msgstr ""
-
-msgid "Edit alias"
 msgstr ""
 
 msgid "Edit auto responder"
@@ -2185,9 +2192,6 @@ msgstr ""
 msgid "Email"
 msgstr ""
 
-msgid "Email account"
-msgstr ""
-
 msgid "Email account already exists."
 msgstr ""
 
@@ -2206,13 +2210,10 @@ msgstr ""
 msgid "Email account list"
 msgstr ""
 
-msgid "Email account not found."
-msgstr ""
-
-msgid "Email account scheduled for update."
-msgstr ""
-
 msgid "Email account successfully scheduled for addition."
+msgstr ""
+
+msgid "Email account successfully scheduled for update."
 msgstr ""
 
 msgid "Email accounts"
@@ -2227,18 +2228,30 @@ msgstr ""
 msgid "Email forward"
 msgstr ""
 
+msgid "Email quota"
+msgstr ""
+
 msgid "Email quota [MiB]"
 msgstr ""
 
 #, php-format
-msgid "Email quota value cannot be bigger than %s MiB."
+msgid "Email quota cannot be bigger than %s"
 msgstr ""
 
-msgid "Email quota value cannot be bigger than disk space limit."
+msgid "Email quota cannot be bigger than disk space limit."
 msgstr ""
 
 #, php-format
-msgid "Email quota value cannot be unlimited. Max value is %s MiB."
+msgid ""
+"Email quota cannot be lower than %d. Each mailbox should have a least 1 MiB "
+"quota."
+msgstr ""
+
+#, php-format
+msgid "Email quota cannot be unlimited. Max value is %d MiB."
+msgstr ""
+
+msgid "Email quota must be a number."
 msgstr ""
 
 msgid "Email settings"
@@ -2256,13 +2269,7 @@ msgstr ""
 msgid "Empty data or wrong field."
 msgstr ""
 
-msgid "Empty list"
-msgstr ""
-
 msgid "Enable"
-msgstr ""
-
-msgid "Enable Forward"
 msgstr ""
 
 msgid "Enable SSL"
@@ -2459,14 +2466,14 @@ msgstr ""
 msgid "Force retry"
 msgstr ""
 
+msgid "Forward"
+msgstr ""
+
 msgid "Forward URL"
 msgstr ""
 
 #, php-format
-msgid "Forward URL %s is not valid"
-msgstr ""
-
-msgid "Forward account"
+msgid "Forward URL %s is not valid."
 msgstr ""
 
 msgid "Forward list is empty."
@@ -2479,9 +2486,6 @@ msgid "Forward to"
 msgstr ""
 
 msgid "Forward to URL"
-msgstr ""
-
-msgid "Forward to same address is not allowed."
 msgstr ""
 
 msgid "Free"
@@ -2578,9 +2582,6 @@ msgstr ""
 msgid "Host"
 msgstr ""
 
-msgid "Host must be filled."
-msgstr ""
-
 msgid "Hosting plan"
 msgstr ""
 
@@ -2661,6 +2662,9 @@ msgstr ""
 msgid "IP address data"
 msgstr ""
 
+msgid "IP address field is empty or invalid."
+msgstr ""
+
 msgid "IP address scheduled for addition."
 msgstr ""
 
@@ -2674,6 +2678,9 @@ msgid "IP usage"
 msgstr ""
 
 msgid "IPv6 address"
+msgstr ""
+
+msgid "IPv6 address field is empty or invalid."
 msgstr ""
 
 msgid ""
@@ -2719,6 +2726,12 @@ msgstr ""
 msgid "Incl. default mails"
 msgstr ""
 
+msgid "Incorrect Email quota"
+msgstr ""
+
+msgid "Incorrect Email quota."
+msgstr ""
+
 msgid "Incorrect FTP account limit."
 msgstr ""
 
@@ -2747,13 +2760,7 @@ msgstr ""
 msgid "Incorrect limit for %s."
 msgstr ""
 
-msgid "Incorrect mail quota value."
-msgstr ""
-
 msgid "Incorrect monthly traffic limit."
-msgstr ""
-
-msgid "Incorrect mount point syntax."
 msgstr ""
 
 msgid "Incorrect post code length or syntax!"
@@ -2816,23 +2823,31 @@ msgstr ""
 msgid "Internationalization"
 msgstr ""
 
+msgid "Invalid CNAME"
+msgstr ""
+
+msgid "Invalid Email username."
+msgstr ""
+
+msgid "Invalid IPv4 address."
+msgstr ""
+
+msgid "Invalid IPv6 address."
+msgstr ""
+
 msgid "Invalid MX priority."
 msgstr ""
 
-msgid "Invalid NAME"
+msgid "Invalid NAME."
+msgstr ""
+
+msgid "Invalid TXT data"
 msgstr ""
 
 msgid "Invalid URL."
 msgstr ""
 
 msgid "Invalid certificate."
-msgstr ""
-
-#, php-format
-msgid "Invalid characters in TXT data (\"%s\")"
-msgstr ""
-
-msgid "Invalid email local part."
 msgstr ""
 
 msgid "Invalid expiration date."
@@ -3026,19 +3041,16 @@ msgstr ""
 msgid "Mail account %s successfully scheduled for deletion."
 msgstr ""
 
+msgid "Mail account type"
+msgstr ""
+
 msgid "Mail accounts list is empty."
 msgstr ""
 
 msgid "Mail feature is disabled."
 msgstr ""
 
-msgid "Mail forward list is empty."
-msgstr ""
-
 msgid "Mail usage"
-msgstr ""
-
-msgid "Mailformat of an address in your forward list is incorrect."
 msgstr ""
 
 msgid "Main menu labels visibility successfully updated."
@@ -3070,9 +3082,6 @@ msgid "Manage IPs"
 msgstr ""
 
 msgid "Manage SQL"
-msgstr ""
-
-msgid "Manage domain alias"
 msgstr ""
 
 msgid "Manage htaccess users and groups"
@@ -3177,16 +3186,10 @@ msgstr ""
 msgid "Missing domain"
 msgstr ""
 
-msgid "Missing value for quota field"
-msgstr ""
-
 msgid "Model"
 msgstr ""
 
 msgid "Modification in progress"
-msgstr ""
-
-msgid "Modify"
 msgstr ""
 
 msgid "Month"
@@ -3213,9 +3216,6 @@ msgstr ""
 msgid "Mount point"
 msgstr ""
 
-msgid "Mount point already in use."
-msgstr ""
-
 msgid "Move"
 msgstr ""
 
@@ -3223,6 +3223,9 @@ msgid "Moving aborted."
 msgstr ""
 
 msgid "N/A"
+msgstr ""
+
+msgid "NAME field is empty or invalid."
 msgstr ""
 
 msgid "Name"
@@ -3372,10 +3375,13 @@ msgstr ""
 msgid "None"
 msgstr ""
 
-msgid "Normal connection"
+msgid "Normal"
 msgstr ""
 
-msgid "Normal mail"
+msgid "Normal + Forward"
+msgstr ""
+
+msgid "Normal connection"
 msgstr ""
 
 msgid "Normal users"
@@ -3606,10 +3612,10 @@ msgstr ""
 msgid "Password data"
 msgstr ""
 
-msgid "Password data is missing."
+msgid "Password email"
 msgstr ""
 
-msgid "Password email"
+msgid "Password is missing."
 msgstr ""
 
 #, php-format
@@ -3697,9 +3703,6 @@ msgstr ""
 msgid "Please enter a username."
 msgstr ""
 
-msgid "Please enter email account username."
-msgstr ""
-
 msgid "Please enter protected area path"
 msgstr ""
 
@@ -3709,17 +3712,11 @@ msgstr ""
 msgid "Please fill up both data fields for password."
 msgstr ""
 
-msgid "Please first, delete all catchall linked to this Email account."
-msgstr ""
-
 msgid "Please select a valid SQL user for the database."
 msgstr ""
 
 #, php-format
 msgid "Please select another directory. %s (%s) is installed there."
-msgstr ""
-
-msgid "Please select at least one mail type."
 msgstr ""
 
 msgid "Please select at least one user."
@@ -3743,9 +3740,6 @@ msgid "Please type user password."
 msgstr ""
 
 msgid "Please type your message."
-msgstr ""
-
-msgid "Please write mount point!"
 msgstr ""
 
 msgid "Plugin"
@@ -3948,10 +3942,8 @@ msgstr ""
 msgid "Quota in MiB (0 for unlimited)"
 msgstr ""
 
-msgid "Quota must be a number"
-msgstr ""
-
-msgid "Quota successfully updated."
+#, php-format
+msgid "Quota in MiB (Max: %s)"
 msgstr ""
 
 msgid "RAM"
@@ -3963,17 +3955,10 @@ msgstr ""
 msgid "Rebuild languages index"
 msgstr ""
 
-#, php-format
-msgid "Record \"%s\" is not part of domain \"%s\"."
-msgstr ""
-
 msgid "Record data"
 msgstr ""
 
 msgid "Redirect"
-msgstr ""
-
-msgid "Redirect to URL"
 msgstr ""
 
 msgid "Registration date"
@@ -4036,12 +4021,6 @@ msgstr ""
 msgid "Reseller / Customers / Domain Aliases"
 msgstr ""
 
-msgid "Reseller / Customers / Domain Aliases / Add Alias"
-msgstr ""
-
-msgid "Reseller / Customers / Domain Aliases / Edit Alias"
-msgstr ""
-
 msgid "Reseller / Customers / Lost Password Email"
 msgstr ""
 
@@ -4061,6 +4040,12 @@ msgid "Reseller / Customers / Overview / Edit Domain"
 msgstr ""
 
 msgid "Reseller / Customers / Welcome Email"
+msgstr ""
+
+msgid "Reseller / Domains / Add Domain Alias"
+msgstr ""
+
+msgid "Reseller / Domains / Edit Domain Alias"
 msgstr ""
 
 msgid "Reseller / General / Overview"
@@ -4362,11 +4347,10 @@ msgstr ""
 msgid "Sender name is missing."
 msgstr ""
 
-msgid "Separate multiple email addresses with a line-break."
+msgid "Separate multiple email addresses by comma or a line-break."
 msgstr ""
 
-msgid ""
-"Separate multiple email addresses with a space, a comma or a line-break."
+msgid "Separate multiple email addresses with a line-break."
 msgstr ""
 
 msgid "Server ports"
@@ -4391,9 +4375,6 @@ msgid "Service"
 msgstr ""
 
 msgid "Service Unavailable"
-msgstr ""
-
-msgid "Service must be filled."
 msgstr ""
 
 msgid "Service name"
@@ -4596,7 +4577,11 @@ msgid "Subdomain"
 msgstr ""
 
 #, php-format
-msgid "Subdomain %s already exist"
+msgid "Subdomain %s already exist."
+msgstr ""
+
+#, php-format
+msgid "Subdomain %s cannot be forwarded on itself."
 msgstr ""
 
 msgid "Subdomain alias"
@@ -4627,10 +4612,10 @@ msgstr ""
 msgid "Subdomain name"
 msgstr ""
 
-msgid "Subdomain name is not valid"
+msgid "Subdomain name is not valid."
 msgstr ""
 
-msgid "Subdomain successfully scheduled for addition"
+msgid "Subdomain successfully scheduled for addition."
 msgstr ""
 
 msgid "Subdomain successfully scheduled for deletion."
@@ -4685,10 +4670,6 @@ msgstr ""
 msgid "System error - custom error page was not updated."
 msgstr ""
 
-#, php-format
-msgid "System error with Domain Id: %d"
-msgstr ""
-
 msgid "System information"
 msgstr ""
 
@@ -4729,7 +4710,7 @@ msgstr ""
 msgid "TXT data"
 msgstr ""
 
-msgid "TXT data must be filled."
+msgid "TXT field is empty or invalid."
 msgstr ""
 
 msgid "Target"
@@ -4896,16 +4877,10 @@ msgid ""
 "another database. Are you sure you want to delete the '%s' database?"
 msgstr ""
 
-msgid "This domain is not allowed."
-msgstr ""
-
 msgid "This htaccess group already exists."
 msgstr ""
 
 msgid "This htaccess user already exist."
-msgstr ""
-
-msgid "This mount point is not allowed."
 msgstr ""
 
 msgid "This package already exists in the administrator software repository."
@@ -4968,19 +4943,7 @@ msgstr ""
 msgid "To Admin"
 msgstr ""
 
-msgid "To alias subdomain"
-msgstr ""
-
-msgid "To domain alias"
-msgstr ""
-
-msgid "To main domain"
-msgstr ""
-
 msgid "To reseller"
-msgstr ""
-
-msgid "To subdomain"
 msgstr ""
 
 #, php-format
@@ -5009,7 +4972,7 @@ msgid "Total installations"
 msgstr ""
 
 #, php-format
-msgid "Total mails: %s of %s (%s)"
+msgid "Total mails: %s / %s %s"
 msgstr ""
 
 msgid "Total packages in Web software repository"
@@ -5159,9 +5122,6 @@ msgstr ""
 msgid "Unknown action: %s"
 msgstr ""
 
-msgid "Unknown domain type."
-msgstr ""
-
 msgid "Unknown error"
 msgstr ""
 
@@ -5236,9 +5196,6 @@ msgstr ""
 msgid "Uptime"
 msgstr ""
 
-msgid "Usage of disallowed character in CNAME"
-msgstr ""
-
 msgid "Usage status"
 msgstr ""
 
@@ -5263,9 +5220,6 @@ msgstr ""
 msgid "User (first and last) name"
 msgstr ""
 
-msgid "User account"
-msgstr ""
-
 msgid "User assignment"
 msgstr ""
 
@@ -5287,9 +5241,6 @@ msgstr ""
 
 msgid ""
 "User does not exist or you do not have permission to access this interface"
-msgstr ""
-
-msgid "User does not exist."
 msgstr ""
 
 msgid "User errors"
@@ -5405,11 +5356,6 @@ msgid "Warnings and Errors"
 msgstr ""
 
 msgid ""
-"We are sorry but you have reached the maximum number of domain aliases "
-"allowed by your subscription. Contact your reseller for more information."
-msgstr ""
-
-msgid ""
 "We are sorry, but the system is currently under maintenance.\n"
 "Please try again later."
 msgstr ""
@@ -5482,14 +5428,6 @@ msgstr ""
 msgid "Wrong IP address."
 msgstr ""
 
-#, php-format
-msgid "Wrong IPv4 address (\"%s\")"
-msgstr ""
-
-#, php-format
-msgid "Wrong IPv6 address (\"%s\")"
-msgstr ""
-
 msgid "Wrong SQL user identifier."
 msgstr ""
 
@@ -5509,9 +5447,6 @@ msgstr ""
 msgid "Wrong Top Level Domain syntax: <b>%s</b>"
 msgstr ""
 
-msgid "Wrong address in forward URL."
-msgstr ""
-
 msgid "Wrong customer ID."
 msgstr ""
 
@@ -5521,17 +5456,8 @@ msgstr ""
 msgid "Wrong domain name syntax or number of labels"
 msgstr ""
 
-msgid "Wrong domain name!"
-msgstr ""
-
 #, php-format
 msgid "Wrong domain name: <b>%s</b> is reserved!"
-msgstr ""
-
-msgid "Wrong domain part in forward URL."
-msgstr ""
-
-msgid "Wrong hostname in forward URL."
 msgstr ""
 
 #, php-format
@@ -5540,6 +5466,9 @@ msgstr ""
 
 #, php-format
 msgid "Wrong label syntax: <b>%s</b>"
+msgstr ""
+
+msgid "Wrong mail syntax in forward list."
 msgstr ""
 
 msgid "Wrong request."
@@ -5564,20 +5493,10 @@ msgid "Wrong syntax for new expire date."
 msgstr ""
 
 #, php-format
-msgid "Wrong syntax for the %s forward email address."
-msgstr ""
-
-#, php-format
 msgid "Wrong syntax for the %s limit."
 msgstr ""
 
-msgid "Wrong syntax for the Email quota value."
-msgstr ""
-
 msgid "Wrong syntax for the mail quota value."
-msgstr ""
-
-msgid "Wrong syntax in forward URL."
 msgstr ""
 
 msgid "Wrong user level provided."
@@ -5660,7 +5579,7 @@ msgid "You cannot delete the last active IP address."
 msgstr ""
 
 #, php-format
-msgid "You cannot forward %s on himself."
+msgid "You cannot forward %s on itself."
 msgstr ""
 
 #, php-format
@@ -5686,9 +5605,6 @@ msgid "You cannot set expire date in past."
 msgstr ""
 
 msgid "You cannot unassign an IP address already in use."
-msgstr ""
-
-msgid "You did not fill all required fields"
 msgstr ""
 
 msgid "You do not have FTP accounts."
@@ -5725,9 +5641,6 @@ msgid "You do not have subdomains."
 msgstr ""
 
 msgid "You do not have sufficient permissions to perform this operation."
-msgstr ""
-
-msgid "You do not need 'www.' i-MSCP will add it automatically."
 msgstr ""
 
 #, php-format
@@ -5798,6 +5711,16 @@ msgid "You have no open tickets."
 msgstr ""
 
 msgid ""
+"You have reached the maximum number of Email accounts allowed by your "
+"subscription."
+msgstr ""
+
+msgid ""
+"You have reached the maximum number of domain aliasses allowed by your "
+"subscription."
+msgstr ""
+
+msgid ""
 "You have reached the maximum number of subdomains allowed by your "
 "subscription."
 msgstr ""
@@ -5821,10 +5744,13 @@ msgstr ""
 msgid "You must confirm customer account deletion."
 msgstr ""
 
-msgid "You must enter a least one forward address."
+msgid "You must confirm your password."
 msgstr ""
 
-msgid "You must enter a subdomain name"
+msgid "You must enter a domain alias name."
+msgstr ""
+
+msgid "You must enter a subdomain name."
 msgstr ""
 
 msgid "You must first generate a password"

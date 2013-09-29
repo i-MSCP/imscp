@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2013-09-20 03:32+0200\n"
-"PO-Revision-Date: 2013-09-20 01:32+0000\n"
+"POT-Creation-Date: 2013-09-29 10:21+0200\n"
+"PO-Revision-Date: 2013-09-29 08:22+0000\n"
 "Last-Translator: Torsten Widmann <info@goover.de>\n"
 "Language-Team: Polish (Poland) (http://www.transifex.com/projects/p/i-MSCP/language/pl_PL/)\n"
 "MIME-Version: 1.0\n"
@@ -265,6 +265,10 @@ msgid "%d strings translated"
 msgstr "%d fraz przetłumaczonych"
 
 #, php-format
+msgid "%s / %s of %s"
+msgstr ""
+
+#, php-format
 msgid "%s / unlimited"
 msgstr ""
 
@@ -309,11 +313,11 @@ msgid "%s doesn't exist or is empty"
 msgstr "%s nie istnieje lub jest pusty!"
 
 #, php-format
-msgid "%s id is invalid! You cannot add email accounts."
+msgid "%s field is empty or invalid."
 msgstr ""
 
 #, php-format
-msgid "%s id is invalid. You cannot add email accounts."
+msgid "%s host field is empty or invalid."
 msgstr ""
 
 #, php-format
@@ -321,7 +325,7 @@ msgid "%s is not a valid i-MSCP language file."
 msgstr "%s nie jest poprawnym formatem pliku tłumaczenia i-MSCP."
 
 #, php-format
-msgid "%s list is empty. You cannot add email accounts."
+msgid "%s is not part of domain %s."
 msgstr ""
 
 #, php-format
@@ -368,6 +372,10 @@ msgstr ""
 
 #, php-format
 msgid "%s: You cannot disable a service already sold to reseller's customers."
+msgstr ""
+
+#, php-format
+msgid "%sfield is empty or invalid."
 msgstr ""
 
 msgid ""
@@ -616,9 +624,6 @@ msgstr "Dodaj nowy wpis"
 msgid "Add admin"
 msgstr "Dodaj administratora"
 
-msgid "Add alias"
-msgstr "Dodaj alias"
-
 msgid "Add catchall"
 msgstr "Ustaw catchall"
 
@@ -652,9 +657,6 @@ msgstr "Dodaj grupę"
 msgid "Add hosting plan"
 msgstr "Dodaj plan hostingowy"
 
-msgid "Add mail users"
-msgstr "Dodaj użytkowników poczty"
-
 msgid "Add new IP address"
 msgstr "Dodaj adres IP"
 
@@ -669,9 +671,6 @@ msgstr "Dodaj nowy obszar chroniony"
 
 msgid "Add new service port"
 msgstr "Dodaj nowy port usługi"
-
-msgid "Add other domains to this account"
-msgstr "Dodaj inne domeny do tego konta"
 
 msgid "Add permissions"
 msgstr "Dodaj uprawnienia"
@@ -905,9 +904,6 @@ msgstr "Alias"
 msgid "Alias already assigned to another IP address."
 msgstr "Alias już został dodany do innego adresu IP."
 
-msgid "Alias awaiting for activation."
-msgstr "Alias oczekuje na aktywacje."
-
 msgid "Alias forward"
 msgstr "Alias przekierowania"
 
@@ -916,9 +912,6 @@ msgstr "Alias pocztowy"
 
 msgid "Alias name"
 msgstr "Nazwa aliasu"
-
-msgid "Alias scheduled for addition."
-msgstr "Alias oczekuje na dodanie."
 
 msgid "Alias subdomain forward"
 msgstr "Alias przekierowania subdomeny"
@@ -975,6 +968,16 @@ msgid "Allow URL fopen"
 msgstr ""
 
 msgid ""
+"Allows to forward any request made to this domain alias to a specific URL."
+msgstr ""
+
+msgid ""
+"Allows to forward any request made to this domain alias to a specific URL. "
+"Be aware that when this option is in use, no Web folder is created for the "
+"domain alias."
+msgstr ""
+
+msgid ""
 "Allows to forward any request made to this subdomain to a specific URL."
 msgstr ""
 
@@ -1002,7 +1005,7 @@ msgstr "Wystąpił błąd podczas uwierzytelniania."
 msgid "An error occurred. Please contact your administrator."
 msgstr "Wystąpił błąd. Skontaktuj się z administratorem."
 
-msgid "An unexpected error occured. Please contact your administrator"
+msgid "An unexpected error occured. Please contact your reseller."
 msgstr ""
 
 msgid "An unexpected error occured. Please retry"
@@ -1224,6 +1227,9 @@ msgstr "Przez"
 msgid "CGI"
 msgstr "CGI"
 
+msgid "CNAME field is empty or invalid."
+msgstr ""
+
 msgid "CPU Information"
 msgstr ""
 
@@ -1239,6 +1245,10 @@ msgstr "Anuluj"
 
 #, php-format
 msgid "Cannot validate %s record: %s"
+msgstr ""
+
+#, php-format
+msgid "Cannot validate record: %s"
 msgstr ""
 
 msgid "Canonical name"
@@ -1378,20 +1388,20 @@ msgstr "Klient / Domeny / Edycja Rekordów DNS Użytkownika"
 msgid "Client / Domains"
 msgstr "Klient / Domeny"
 
-msgid "Client / Domains / Add Alias"
-msgstr ""
-
 msgid "Client / Domains / Add Custom DNS record"
 msgstr "Klient / Domeny / Dodawanie Rekordu DNS Użytkownika"
+
+msgid "Client / Domains / Add Domain Alias"
+msgstr ""
 
 msgid "Client / Domains / Add Subdomain"
 msgstr ""
 
-msgid "Client / Domains / Edit Subdomain"
+msgid "Client / Domains / Edit Domain Alias"
 msgstr ""
 
-msgid "Client / Domains / Overview / Edit Domain Alias"
-msgstr "Klient / Domeny / Przegląd / Edycja Aliasu Domeny"
+msgid "Client / Domains / Edit Subdomain"
+msgstr ""
 
 msgid "Client / Domains / PHP Settings"
 msgstr "Client / Domeny / Ustawienia PHP"
@@ -1406,6 +1416,9 @@ msgid "Client / Email / Catchall"
 msgstr ""
 
 msgid "Client / Email / Catchall / Add Catchall"
+msgstr ""
+
+msgid "Client / Email / Edit Email Account"
 msgstr ""
 
 msgid "Client / Email / External Mail Server"
@@ -1424,13 +1437,7 @@ msgstr ""
 msgid "Client / Email / Overview"
 msgstr ""
 
-msgid "Client / Email / Overview /  Edit Email Account"
-msgstr ""
-
 msgid "Client / Email / Overview / Edit Auto Responder"
-msgstr ""
-
-msgid "Client / Email / Overview / Edit Email Quota"
 msgstr ""
 
 msgid "Client / Email / Overview / Enable Auto Responder"
@@ -1544,6 +1551,10 @@ msgstr "Potwierdzenie zamówienia domeny {DOMAIN}"
 msgid "Confirmation for plugin protection"
 msgstr "Potwierdzenie dla zabezpieczenia rozszerzenia"
 
+#, php-format
+msgid "Conflict with an existent %s record."
+msgstr ""
+
 msgid "Core data"
 msgstr "Treść wiadomości"
 
@@ -1594,8 +1605,8 @@ msgstr "Obecne hasło"
 msgid "Current password is invalid."
 msgstr "Obecne hasło jest nieprawidłowe."
 
-msgid "Custom DNS record data"
-msgstr "Dane niestandardowego rekordu DNS"
+msgid "Custom DNS record"
+msgstr ""
 
 msgid "Custom DNS record scheduled for deletion."
 msgstr "Rekord DNS zakolejkowany do usunięcia."
@@ -1641,6 +1652,9 @@ msgstr "ID Użytkownika"
 
 msgid "Customer ID cannot have more than 200 characters"
 msgstr "ID użytkownika nie może być dłuższe niż 200 znaków"
+
+msgid "Customer account"
+msgstr ""
 
 msgid "Customer account successfully scheduled for activation."
 msgstr ""
@@ -1906,9 +1920,6 @@ msgstr "Wartości dyrektywy"
 msgid "Directories"
 msgstr "Katalogi"
 
-msgid "Directory mount point"
-msgstr "Punkt montowania katalogu"
-
 msgid "Directory tree"
 msgstr "Drzewo katalogu"
 
@@ -1975,8 +1986,13 @@ msgstr "Dodaj konto email"
 msgid "Domain alias"
 msgstr "Alias domeny"
 
-msgid "Domain alias data"
-msgstr "Dane aliasu domeny"
+#, php-format
+msgid "Domain alias %s already exist."
+msgstr ""
+
+#, php-format
+msgid "Domain alias %s cannot be forwarded on itself."
+msgstr ""
 
 msgid "Domain alias errors"
 msgstr ""
@@ -1984,26 +2000,23 @@ msgstr ""
 msgid "Domain alias limit"
 msgstr ""
 
-msgid "Domain alias limit reached."
-msgstr "Osiągnięto limit aliasów domen."
-
 msgid "Domain alias name"
 msgstr "Nazwa aliasu domeny"
 
-msgid "Domain alias scheduled for creation."
-msgstr "Alias domeny zakolejkowany do dodania."
+msgid "Domain alias name is not valid."
+msgstr ""
 
-msgid "Domain alias scheduled for update."
-msgstr "Alias zaplanowany do zaktualizowania."
+msgid "Domain alias successfully ordered."
+msgstr ""
 
-msgid "Domain alias successfully scheduled for addition"
-msgstr "Alias domeny pomyślnie zakolejkowany do dodania."
+msgid "Domain alias successfully scheduled for addition."
+msgstr ""
 
 msgid "Domain alias successfully scheduled for deletion."
 msgstr "Alias domeny pomyślnie zakolejkowany do usunięcia."
 
-msgid "Domain alias successfully updated"
-msgstr "Alias domeny został zaktualizowany"
+msgid "Domain alias successfully scheduled for update."
+msgstr ""
 
 msgid ""
 "Domain alias you are trying to remove has Ftp accounts. Remove them first."
@@ -2091,9 +2104,6 @@ msgstr "Domena poprawnie zmodyfikowana."
 msgid "Domain type"
 msgstr "Typ domeny"
 
-msgid "Domain with same name already exists."
-msgstr "Domena o podanej nazwie już istnieje w systemie."
-
 msgid ""
 "Domain: Setup an MX record to relay mail of your entire domain (including "
 "subdomains) to an external mail server."
@@ -2131,9 +2141,6 @@ msgstr "Edytuj certyfikat SSL"
 
 msgid "Edit admin"
 msgstr "Edytuj administratora"
-
-msgid "Edit alias"
-msgstr "Edytuj alias"
 
 msgid "Edit auto responder"
 msgstr "Ustaw auto responder"
@@ -2192,9 +2199,6 @@ msgstr "EiB"
 msgid "Email"
 msgstr "Poczta"
 
-msgid "Email account"
-msgstr ""
-
 msgid "Email account already exists."
 msgstr ""
 
@@ -2213,13 +2217,10 @@ msgstr ""
 msgid "Email account list"
 msgstr ""
 
-msgid "Email account not found."
-msgstr ""
-
-msgid "Email account scheduled for update."
-msgstr ""
-
 msgid "Email account successfully scheduled for addition."
+msgstr ""
+
+msgid "Email account successfully scheduled for update."
 msgstr ""
 
 msgid "Email accounts"
@@ -2234,18 +2235,30 @@ msgstr "Adres e-mail"
 msgid "Email forward"
 msgstr "Przekierowanie emaila"
 
+msgid "Email quota"
+msgstr ""
+
 msgid "Email quota [MiB]"
 msgstr ""
 
 #, php-format
-msgid "Email quota value cannot be bigger than %s MiB."
+msgid "Email quota cannot be bigger than %s"
 msgstr ""
 
-msgid "Email quota value cannot be bigger than disk space limit."
+msgid "Email quota cannot be bigger than disk space limit."
 msgstr ""
 
 #, php-format
-msgid "Email quota value cannot be unlimited. Max value is %s MiB."
+msgid ""
+"Email quota cannot be lower than %d. Each mailbox should have a least 1 MiB "
+"quota."
+msgstr ""
+
+#, php-format
+msgid "Email quota cannot be unlimited. Max value is %d MiB."
+msgstr ""
+
+msgid "Email quota must be a number."
 msgstr ""
 
 msgid "Email settings"
@@ -2263,14 +2276,8 @@ msgstr "Emaile"
 msgid "Empty data or wrong field."
 msgstr "Brak danych lub niepoprawne pole."
 
-msgid "Empty list"
-msgstr "Wyczyść listę"
-
 msgid "Enable"
 msgstr "Włącz"
-
-msgid "Enable Forward"
-msgstr "Włącz przekierowanie"
 
 msgid "Enable SSL"
 msgstr "Włącz SSL"
@@ -2466,15 +2473,15 @@ msgstr ""
 msgid "Force retry"
 msgstr "Wymuś ponownie"
 
+msgid "Forward"
+msgstr ""
+
 msgid "Forward URL"
 msgstr "Adres URL przekierowania"
 
 #, php-format
-msgid "Forward URL %s is not valid"
+msgid "Forward URL %s is not valid."
 msgstr ""
-
-msgid "Forward account"
-msgstr "Przekierowanie konta"
 
 msgid "Forward list is empty."
 msgstr "Lista forwardowa jest pusta."
@@ -2487,9 +2494,6 @@ msgstr "Przekieruj do"
 
 msgid "Forward to URL"
 msgstr "Przekieruj do adresu URL"
-
-msgid "Forward to same address is not allowed."
-msgstr "Przekierowywanie do tego samego adresu jest zabronione."
 
 msgid "Free"
 msgstr "Wolne"
@@ -2585,9 +2589,6 @@ msgstr "Strona główna"
 msgid "Host"
 msgstr "Host"
 
-msgid "Host must be filled."
-msgstr "Pole 'Host' musi być wypełnione"
-
 msgid "Hosting plan"
 msgstr "Plan hostingowy"
 
@@ -2668,6 +2669,9 @@ msgstr "IP jest już znane przez system"
 msgid "IP address data"
 msgstr ""
 
+msgid "IP address field is empty or invalid."
+msgstr ""
+
 msgid "IP address scheduled for addition."
 msgstr "Limit domen"
 
@@ -2682,6 +2686,9 @@ msgstr "Użyte IP"
 
 msgid "IPv6 address"
 msgstr "Adres IPv6"
+
+msgid "IPv6 address field is empty or invalid."
+msgstr ""
 
 msgid ""
 "If set to 'yes', Web folders as provisioned by i-MSCP will be protected "
@@ -2726,6 +2733,12 @@ msgstr "Na tej stronie, możesz skonfigurować ustawienia PHP. Musisz wiedzieć,
 msgid "Incl. default mails"
 msgstr ""
 
+msgid "Incorrect Email quota"
+msgstr ""
+
+msgid "Incorrect Email quota."
+msgstr ""
+
 msgid "Incorrect FTP account limit."
 msgstr ""
 
@@ -2754,14 +2767,8 @@ msgstr "Nieprawidłowa długość emaila lub składnia."
 msgid "Incorrect limit for %s."
 msgstr "Nieprawidłowy limit dla %s."
 
-msgid "Incorrect mail quota value."
-msgstr ""
-
 msgid "Incorrect monthly traffic limit."
 msgstr ""
-
-msgid "Incorrect mount point syntax."
-msgstr "Nieprawidłowa składnia punktu montowania"
 
 msgid "Incorrect post code length or syntax!"
 msgstr "Nieprawidłowa długość lub składnia kodu pocztowego!"
@@ -2823,24 +2830,32 @@ msgstr ""
 msgid "Internationalization"
 msgstr "Tłumaczenie"
 
+msgid "Invalid CNAME"
+msgstr ""
+
+msgid "Invalid Email username."
+msgstr ""
+
+msgid "Invalid IPv4 address."
+msgstr ""
+
+msgid "Invalid IPv6 address."
+msgstr ""
+
 msgid "Invalid MX priority."
 msgstr "Zły priorytet MX."
 
-msgid "Invalid NAME"
-msgstr "Niepoprawna NAZWA"
+msgid "Invalid NAME."
+msgstr ""
+
+msgid "Invalid TXT data"
+msgstr ""
 
 msgid "Invalid URL."
 msgstr "Niepoprawny URL."
 
 msgid "Invalid certificate."
 msgstr "Niepoprawny certyfikat."
-
-#, php-format
-msgid "Invalid characters in TXT data (\"%s\")"
-msgstr "Niedozwolone znaki w danych TXT  (\"%s\")"
-
-msgid "Invalid email local part."
-msgstr ""
 
 msgid "Invalid expiration date."
 msgstr "Niepoprawna data ekspiracji."
@@ -3033,20 +3048,17 @@ msgstr "Poziom logów"
 msgid "Mail account %s successfully scheduled for deletion."
 msgstr ""
 
+msgid "Mail account type"
+msgstr ""
+
 msgid "Mail accounts list is empty."
 msgstr ""
 
 msgid "Mail feature is disabled."
 msgstr "Funkcja poczty jest wyłączona."
 
-msgid "Mail forward list is empty."
-msgstr ""
-
 msgid "Mail usage"
 msgstr "Użycie poczty"
-
-msgid "Mailformat of an address in your forward list is incorrect."
-msgstr "Format maila do przekierowania jest niepoprawny."
 
 msgid "Main menu labels visibility successfully updated."
 msgstr "Widoczność etykiet głównego menu została zaktualizowana."
@@ -3078,9 +3090,6 @@ msgstr "Zarządzaj adresami IP"
 
 msgid "Manage SQL"
 msgstr "Zarządzaj bazami SQL"
-
-msgid "Manage domain alias"
-msgstr "Zarządzaj aliasami domen"
 
 msgid "Manage htaccess users and groups"
 msgstr "Zarządzaj użytkownikami i grupami htaccess"
@@ -3184,17 +3193,11 @@ msgstr "Minuty"
 msgid "Missing domain"
 msgstr "Brakuje domeny"
 
-msgid "Missing value for quota field"
-msgstr ""
-
 msgid "Model"
 msgstr ""
 
 msgid "Modification in progress"
 msgstr "Modyfikacja w trakcie "
-
-msgid "Modify"
-msgstr "Modyfikuj"
 
 msgid "Month"
 msgstr "Miesiąc"
@@ -3220,9 +3223,6 @@ msgstr "Montowanie"
 msgid "Mount point"
 msgstr "Punkt montowania"
 
-msgid "Mount point already in use."
-msgstr "Punkt montowania już w użyciu. "
-
 msgid "Move"
 msgstr "Przenieś"
 
@@ -3231,6 +3231,9 @@ msgstr "Przenoszenie anulowane."
 
 msgid "N/A"
 msgstr "N/D"
+
+msgid "NAME field is empty or invalid."
+msgstr ""
 
 msgid "Name"
 msgstr "Nazwa"
@@ -3379,11 +3382,14 @@ msgstr "Nie."
 msgid "None"
 msgstr "Brak"
 
+msgid "Normal"
+msgstr ""
+
+msgid "Normal + Forward"
+msgstr ""
+
 msgid "Normal connection"
 msgstr "Normalne połączenie"
-
-msgid "Normal mail"
-msgstr "Zwykła poczta"
 
 msgid "Normal users"
 msgstr "Zwykli użytkownicy"
@@ -3613,10 +3619,10 @@ msgstr ""
 msgid "Password data"
 msgstr "Dane hasła"
 
-msgid "Password data is missing."
-msgstr "Hasło nie zostało wprowadzone."
-
 msgid "Password email"
+msgstr ""
+
+msgid "Password is missing."
 msgstr ""
 
 #, php-format
@@ -3704,9 +3710,6 @@ msgstr "Wprowadź hasło."
 msgid "Please enter a username."
 msgstr ""
 
-msgid "Please enter email account username."
-msgstr ""
-
 msgid "Please enter protected area path"
 msgstr "Podaj scieżkę obszaru chronionego"
 
@@ -3716,18 +3719,12 @@ msgstr ""
 msgid "Please fill up both data fields for password."
 msgstr "Proszę wypełnić oba pola hasłem."
 
-msgid "Please first, delete all catchall linked to this Email account."
-msgstr ""
-
 msgid "Please select a valid SQL user for the database."
 msgstr ""
 
 #, php-format
 msgid "Please select another directory. %s (%s) is installed there."
 msgstr "Wskaż inny folder. %s (%s) jest tu zainstalowany."
-
-msgid "Please select at least one mail type."
-msgstr "Wybierz przynajmniej jeden typ maila."
 
 msgid "Please select at least one user."
 msgstr ""
@@ -3751,9 +3748,6 @@ msgstr "Podaj hasło użytkownika."
 
 msgid "Please type your message."
 msgstr "Podaj swoją wiadomość."
-
-msgid "Please write mount point!"
-msgstr "Proszę zapisać punk montowania!"
 
 msgid "Plugin"
 msgstr "Rozszerzenie"
@@ -3955,10 +3949,8 @@ msgstr "Quota"
 msgid "Quota in MiB (0 for unlimited)"
 msgstr ""
 
-msgid "Quota must be a number"
-msgstr ""
-
-msgid "Quota successfully updated."
+#, php-format
+msgid "Quota in MiB (Max: %s)"
 msgstr ""
 
 msgid "RAM"
@@ -3970,18 +3962,11 @@ msgstr ""
 msgid "Rebuild languages index"
 msgstr "Przebuduj indeks języków."
 
-#, php-format
-msgid "Record \"%s\" is not part of domain \"%s\"."
-msgstr "Rekord \"%s\" nie jest częścią domeny \"%s\"."
-
 msgid "Record data"
 msgstr "Dane rekordu"
 
 msgid "Redirect"
 msgstr "Przekieruj"
-
-msgid "Redirect to URL"
-msgstr "Przekieruj na URL"
 
 msgid "Registration date"
 msgstr "Data rejestracji"
@@ -4043,12 +4028,6 @@ msgstr "Reseller / Klienci / Roześlij email"
 msgid "Reseller / Customers / Domain Aliases"
 msgstr "Reseller / Klienci / Aliasy Domeny"
 
-msgid "Reseller / Customers / Domain Aliases / Add Alias"
-msgstr "Reseller / Klienci / Aliasy Domeny / Dodawanie Aliasu"
-
-msgid "Reseller / Customers / Domain Aliases / Edit Alias"
-msgstr "Reseller / Klienci / Aliasy Domen / Edycja Aliasu"
-
 msgid "Reseller / Customers / Lost Password Email"
 msgstr "Reseller / Klienci / Email Przypomnienie Hasła"
 
@@ -4068,6 +4047,12 @@ msgid "Reseller / Customers / Overview / Edit Domain"
 msgstr "Reseller / Klienci / Przegląd / Edycja Domeny"
 
 msgid "Reseller / Customers / Welcome Email"
+msgstr ""
+
+msgid "Reseller / Domains / Add Domain Alias"
+msgstr ""
+
+msgid "Reseller / Domains / Edit Domain Alias"
 msgstr ""
 
 msgid "Reseller / General / Overview"
@@ -4369,12 +4354,11 @@ msgstr "Nazwa nadawcy"
 msgid "Sender name is missing."
 msgstr ""
 
+msgid "Separate multiple email addresses by comma or a line-break."
+msgstr ""
+
 msgid "Separate multiple email addresses with a line-break."
 msgstr "Oddziel poszczególne adresy mailowe 'enterem'."
-
-msgid ""
-"Separate multiple email addresses with a space, a comma or a line-break."
-msgstr "Oddziel adresy mailowe spacją, przecinkiem lub nową linią."
 
 msgid "Server ports"
 msgstr "Porty serwera"
@@ -4399,9 +4383,6 @@ msgstr "Usługa"
 
 msgid "Service Unavailable"
 msgstr ""
-
-msgid "Service must be filled."
-msgstr "Pole \"Usługa\" musi być wypełnione."
 
 msgid "Service name"
 msgstr "Nazwa usługi"
@@ -4603,7 +4584,11 @@ msgid "Subdomain"
 msgstr "Subdomena"
 
 #, php-format
-msgid "Subdomain %s already exist"
+msgid "Subdomain %s already exist."
+msgstr ""
+
+#, php-format
+msgid "Subdomain %s cannot be forwarded on itself."
 msgstr ""
 
 msgid "Subdomain alias"
@@ -4635,10 +4620,10 @@ msgstr "Poczta subdomeny"
 msgid "Subdomain name"
 msgstr "Nazwa subdomeny"
 
-msgid "Subdomain name is not valid"
+msgid "Subdomain name is not valid."
 msgstr ""
 
-msgid "Subdomain successfully scheduled for addition"
+msgid "Subdomain successfully scheduled for addition."
 msgstr ""
 
 msgid "Subdomain successfully scheduled for deletion."
@@ -4694,10 +4679,6 @@ msgstr ""
 msgid "System error - custom error page was not updated."
 msgstr "Błąd systemowy - strona nie została zaktualizowana."
 
-#, php-format
-msgid "System error with Domain Id: %d"
-msgstr "Błąd systemu z Domeną o Identyfikatorze: %d"
-
 msgid "System information"
 msgstr "Informacje o systemie"
 
@@ -4738,8 +4719,8 @@ msgstr "TTL musi być liczbą."
 msgid "TXT data"
 msgstr "dane TXT"
 
-msgid "TXT data must be filled."
-msgstr "Pole TXT musi być wypełnione."
+msgid "TXT field is empty or invalid."
+msgstr ""
 
 msgid "Target"
 msgstr "Cel"
@@ -4905,17 +4886,11 @@ msgid ""
 "another database. Are you sure you want to delete the '%s' database?"
 msgstr "Baza danych zostanie permanentnie usunięta. Procesu nie można cofnąć. Wszyscy użytkownicy podpięci do tej bazy zostaną również usunięci jeśli nie są podpięci do innej bazy. Czy na pewno chcesz usunąć bazę '%s'?"
 
-msgid "This domain is not allowed."
-msgstr "Ta domena nie jest dozwolona."
-
 msgid "This htaccess group already exists."
 msgstr "Grupa htaccess już istnieje"
 
 msgid "This htaccess user already exist."
 msgstr "Użytkownik htaccess już istnieje."
-
-msgid "This mount point is not allowed."
-msgstr "Niedozowlony punkt montowania."
 
 msgid "This package already exists in the administrator software repository."
 msgstr ""
@@ -4977,20 +4952,8 @@ msgstr "Zgłoszenie o ID '%d' nie zostało znalezione."
 msgid "To Admin"
 msgstr "Do Administratora"
 
-msgid "To alias subdomain"
-msgstr "Do aliasu subdomeny"
-
-msgid "To domain alias"
-msgstr "Do aliasu domeny"
-
-msgid "To main domain"
-msgstr "Do domeny głównej"
-
 msgid "To reseller"
 msgstr "Do resellera"
-
-msgid "To subdomain"
-msgstr "Do subdomeny"
 
 #, php-format
 msgid "To unprotect this plugin, you must edit the %s file"
@@ -5018,7 +4981,7 @@ msgid "Total installations"
 msgstr "Wszystkich instalacji"
 
 #, php-format
-msgid "Total mails: %s of %s (%s)"
+msgid "Total mails: %s / %s %s"
 msgstr ""
 
 msgid "Total packages in Web software repository"
@@ -5168,9 +5131,6 @@ msgstr "Nastąpiła nieokreślona akcja."
 msgid "Unknown action: %s"
 msgstr "Nieokreślona akcja: %s"
 
-msgid "Unknown domain type."
-msgstr "Nieznany typ domeny."
-
 msgid "Unknown error"
 msgstr "Nieznany błąd"
 
@@ -5245,9 +5205,6 @@ msgstr "Wyślij teraz"
 msgid "Uptime"
 msgstr ""
 
-msgid "Usage of disallowed character in CNAME"
-msgstr "Korzystanie z niedozwolonych znaków w CNAME"
-
 msgid "Usage status"
 msgstr "Statystyki zużycia"
 
@@ -5272,9 +5229,6 @@ msgstr "Użytkownik"
 msgid "User (first and last) name"
 msgstr "Imię i nazwisko"
 
-msgid "User account"
-msgstr "Konto użytkownika"
-
 msgid "User assignment"
 msgstr "Przypisanie użytkownika"
 
@@ -5297,9 +5251,6 @@ msgstr ""
 msgid ""
 "User does not exist or you do not have permission to access this interface"
 msgstr "Użytkownik nie istnieje lub nie masz uprawnień do dostępu do tego interfejsu."
-
-msgid "User does not exist."
-msgstr "Użytkownik nie istnieje."
 
 msgid "User errors"
 msgstr ""
@@ -5415,11 +5366,6 @@ msgid "Warnings and Errors"
 msgstr "Ostrzeżenia i Błędy"
 
 msgid ""
-"We are sorry but you have reached the maximum number of domain aliases "
-"allowed by your subscription. Contact your reseller for more information."
-msgstr "Przepraszamy, ale osiągnąłeś maksymalną liczbę aliasów domeny dozwoloną w Twoim abonamencie. Skontaktuj się z obsługą, aby otrzymać więcej informacji."
-
-msgid ""
 "We are sorry, but the system is currently under maintenance.\n"
 "Please try again later."
 msgstr "Przepraszamy, system jest w trakcie prac konserwacyjnych,\nProszę spróbować później."
@@ -5492,14 +5438,6 @@ msgstr "Wildcardy takie jak %% oraz ? są niedozwolone."
 msgid "Wrong IP address."
 msgstr "Zły adres IP."
 
-#, php-format
-msgid "Wrong IPv4 address (\"%s\")"
-msgstr "Zły adres IPv4 (\"%s\")"
-
-#, php-format
-msgid "Wrong IPv6 address (\"%s\")"
-msgstr "Zły adres IPv6 (\"%s\")"
-
 msgid "Wrong SQL user identifier."
 msgstr "Niepoprawny identyfikator SQL."
 
@@ -5519,9 +5457,6 @@ msgstr ""
 msgid "Wrong Top Level Domain syntax: <b>%s</b>"
 msgstr "Błędna składnia domeny pierwszego poziomu: <b>%s</b>"
 
-msgid "Wrong address in forward URL."
-msgstr "Zły adres w URL przekierowania."
-
 msgid "Wrong customer ID."
 msgstr "Nieprawidłowe ID użytkownika."
 
@@ -5531,18 +5466,9 @@ msgstr ""
 msgid "Wrong domain name syntax or number of labels"
 msgstr "Błędna składnia domeny lub liczba składowych nazw!"
 
-msgid "Wrong domain name!"
-msgstr "Niepoprawna składnia nazwy domeny!"
-
 #, php-format
 msgid "Wrong domain name: <b>%s</b> is reserved!"
 msgstr "Błędna nazwa domeny: <b>%s</b> jest zarezerwowana!"
-
-msgid "Wrong domain part in forward URL."
-msgstr "Niepoprawna część domeny w URL przekierowania."
-
-msgid "Wrong hostname in forward URL."
-msgstr "Zła naswa hosta w forward URL."
 
 #, php-format
 msgid "Wrong label length: <b>%s</b>"
@@ -5551,6 +5477,9 @@ msgstr ""
 #, php-format
 msgid "Wrong label syntax: <b>%s</b>"
 msgstr "Błędna składnia nazwy: <b>%s</b>"
+
+msgid "Wrong mail syntax in forward list."
+msgstr ""
 
 msgid "Wrong request."
 msgstr "Nieprawidłowe żądanie."
@@ -5574,21 +5503,11 @@ msgid "Wrong syntax for new expire date."
 msgstr "Niepoprawna składnia nowej daty wygaśnięcia."
 
 #, php-format
-msgid "Wrong syntax for the %s forward email address."
-msgstr "Zła składnia w przekierowaniu adresu email %s "
-
-#, php-format
 msgid "Wrong syntax for the %s limit."
 msgstr "Niepoprawna składnia dla limitu %s."
 
-msgid "Wrong syntax for the Email quota value."
-msgstr ""
-
 msgid "Wrong syntax for the mail quota value."
 msgstr ""
-
-msgid "Wrong syntax in forward URL."
-msgstr "Zła składnia w przekierowaniu URL."
 
 msgid "Wrong user level provided."
 msgstr "Nieprawidłowy poziom użytkownika."
@@ -5670,8 +5589,8 @@ msgid "You cannot delete the last active IP address."
 msgstr "Nie można usunąć ostatniego aktywnego adresu IP."
 
 #, php-format
-msgid "You cannot forward %s on himself."
-msgstr "Nie możesz przekazywać %s na siebie."
+msgid "You cannot forward %s on itself."
+msgstr ""
 
 #, php-format
 msgid ""
@@ -5697,9 +5616,6 @@ msgstr "Nie można ustawić daty wygaśnięcia w przeszłości."
 
 msgid "You cannot unassign an IP address already in use."
 msgstr "Nie możesz odłączyć adresu IP będącego w użyciu."
-
-msgid "You did not fill all required fields"
-msgstr "Nie wypełniłeś wszystkich wymaganych pól"
 
 msgid "You do not have FTP accounts."
 msgstr "Nie posiadasz kont FTP."
@@ -5736,9 +5652,6 @@ msgstr "Nie posiadzasz subdomen."
 
 msgid "You do not have sufficient permissions to perform this operation."
 msgstr "Nie masz uprawnień do wykonania tej operacji."
-
-msgid "You do not need 'www.' i-MSCP will add it automatically."
-msgstr "Nie musisz wpisywać 'www.' i-MSCP doda to automatycznie."
 
 #, php-format
 msgid "You have %d new domain alias %s."
@@ -5808,6 +5721,16 @@ msgid "You have no open tickets."
 msgstr "Nie masz otwartych zgłoszeń."
 
 msgid ""
+"You have reached the maximum number of Email accounts allowed by your "
+"subscription."
+msgstr ""
+
+msgid ""
+"You have reached the maximum number of domain aliasses allowed by your "
+"subscription."
+msgstr ""
+
+msgid ""
 "You have reached the maximum number of subdomains allowed by your "
 "subscription."
 msgstr ""
@@ -5831,10 +5754,13 @@ msgstr ""
 msgid "You must confirm customer account deletion."
 msgstr "Musisz potwierdzić usunięcie konta użytkownika."
 
-msgid "You must enter a least one forward address."
-msgstr "Musisz wprowadzić przynajmniej jeden adres przekierowania."
+msgid "You must confirm your password."
+msgstr ""
 
-msgid "You must enter a subdomain name"
+msgid "You must enter a domain alias name."
+msgstr ""
+
+msgid "You must enter a subdomain name."
 msgstr ""
 
 msgid "You must first generate a password"

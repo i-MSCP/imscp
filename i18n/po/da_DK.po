@@ -11,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2013-09-20 03:32+0200\n"
-"PO-Revision-Date: 2013-09-20 01:32+0000\n"
+"POT-Creation-Date: 2013-09-29 10:21+0200\n"
+"PO-Revision-Date: 2013-09-29 08:21+0000\n"
 "Last-Translator: Torsten Widmann <info@goover.de>\n"
 "Language-Team: Danish (Denmark) (http://www.transifex.com/projects/p/i-MSCP/language/da_DK/)\n"
 "MIME-Version: 1.0\n"
@@ -264,6 +264,10 @@ msgid "%d strings translated"
 msgstr "%d strenge oversat"
 
 #, php-format
+msgid "%s / %s of %s"
+msgstr ""
+
+#, php-format
 msgid "%s / unlimited"
 msgstr "%s / ubegrænset"
 
@@ -308,11 +312,11 @@ msgid "%s doesn't exist or is empty"
 msgstr "%s findes ikke eller er tom"
 
 #, php-format
-msgid "%s id is invalid! You cannot add email accounts."
-msgstr "%s id er ugyldig! Du kan ikke tilføje e-mail-konti."
+msgid "%s field is empty or invalid."
+msgstr ""
 
 #, php-format
-msgid "%s id is invalid. You cannot add email accounts."
+msgid "%s host field is empty or invalid."
 msgstr ""
 
 #, php-format
@@ -320,7 +324,7 @@ msgid "%s is not a valid i-MSCP language file."
 msgstr "%s er ikke en gyldig i-MSCP sprogfil."
 
 #, php-format
-msgid "%s list is empty. You cannot add email accounts."
+msgid "%s is not part of domain %s."
 msgstr ""
 
 #, php-format
@@ -368,6 +372,10 @@ msgstr "%s: Du kan ikke deaktivere en service allerede forbrugt af forhandler's 
 #, php-format
 msgid "%s: You cannot disable a service already sold to reseller's customers."
 msgstr "%s: Du kan ikke deaktivere en tjeneste allerede solgt til forhandler's kunder."
+
+#, php-format
+msgid "%sfield is empty or invalid."
+msgstr ""
 
 msgid ""
 "'%hostname%' does not appear to have a valid MX record for the email address"
@@ -615,9 +623,6 @@ msgstr "Tilføj en ny post"
 msgid "Add admin"
 msgstr "Tilføj admin"
 
-msgid "Add alias"
-msgstr "Tilføj alias"
-
 msgid "Add catchall"
 msgstr "Tilføj catchall"
 
@@ -651,9 +656,6 @@ msgstr "Tilføj gruppe"
 msgid "Add hosting plan"
 msgstr "Tilføj hosting plan"
 
-msgid "Add mail users"
-msgstr "Tilføj email adresser"
-
 msgid "Add new IP address"
 msgstr "Tilføj ny IP adresse"
 
@@ -668,9 +670,6 @@ msgstr "Tilføj nyt beskyttet område"
 
 msgid "Add new service port"
 msgstr "Tilføj ny service port"
-
-msgid "Add other domains to this account"
-msgstr "Tilføj andre domæner til denne konto"
 
 msgid "Add permissions"
 msgstr "Tilføj tilladelse"
@@ -904,9 +903,6 @@ msgstr "Alias"
 msgid "Alias already assigned to another IP address."
 msgstr "Alias allerede tildelt en anden IP-adresse."
 
-msgid "Alias awaiting for activation."
-msgstr "Alias afventer aktivering."
-
 msgid "Alias forward"
 msgstr "Alias forward"
 
@@ -915,9 +911,6 @@ msgstr "Alias mail"
 
 msgid "Alias name"
 msgstr "Alias navn"
-
-msgid "Alias scheduled for addition."
-msgstr "Alias planlagt for tilføjelse."
 
 msgid "Alias subdomain forward"
 msgstr "Alias underdomæne forward"
@@ -974,6 +967,16 @@ msgid "Allow URL fopen"
 msgstr "Tillad URL fopen"
 
 msgid ""
+"Allows to forward any request made to this domain alias to a specific URL."
+msgstr ""
+
+msgid ""
+"Allows to forward any request made to this domain alias to a specific URL. "
+"Be aware that when this option is in use, no Web folder is created for the "
+"domain alias."
+msgstr ""
+
+msgid ""
 "Allows to forward any request made to this subdomain to a specific URL."
 msgstr "Gør det muligt at videresende en anmodning til dette subdomæne til en bestemt webadresse."
 
@@ -993,7 +996,7 @@ msgid "Alternative URL to reach your website"
 msgstr "Alternativ URL til at nå dit website"
 
 msgid "An error has been found in mail forward list."
-msgstr ""
+msgstr "En fejl er blevet fundet i mail forward listen."
 
 msgid "An error occurred during authentication."
 msgstr "Der opstod en fejl i forbindelse med godkendelse."
@@ -1001,8 +1004,8 @@ msgstr "Der opstod en fejl i forbindelse med godkendelse."
 msgid "An error occurred. Please contact your administrator."
 msgstr "Der opstod en fejl. Kontakt venligst din administrator."
 
-msgid "An unexpected error occured. Please contact your administrator"
-msgstr "En uventet fejl opstod. Du skal kontakte din administrator"
+msgid "An unexpected error occured. Please contact your reseller."
+msgstr ""
 
 msgid "An unexpected error occured. Please retry"
 msgstr "En uventet fejl opstod. Forsøg igen"
@@ -1223,6 +1226,9 @@ msgstr "Af"
 msgid "CGI"
 msgstr "CGI"
 
+msgid "CNAME field is empty or invalid."
+msgstr ""
+
 msgid "CPU Information"
 msgstr "CPU Information"
 
@@ -1240,6 +1246,10 @@ msgstr "Anullér"
 msgid "Cannot validate %s record: %s"
 msgstr "Kan ikke validere %s rekord. Årsag: '%s'."
 
+#, php-format
+msgid "Cannot validate record: %s"
+msgstr ""
+
 msgid "Canonical name"
 msgstr "Canonical navn"
 
@@ -1250,10 +1260,10 @@ msgid "Catch all"
 msgstr "FangAlle"
 
 msgid "Catch all successfully scheduled for addition."
-msgstr ""
+msgstr "Catch all succesfuldt planlagt til tilføjelse."
 
 msgid "Catch all successfully scheduled for deletion."
-msgstr ""
+msgstr "Catch all succesfuldt planlagt til sletning."
 
 msgid "Catchall"
 msgstr "Catchall"
@@ -1377,20 +1387,20 @@ msgstr "Klient / Domæne / Rediger brugerdefineret DNS record"
 msgid "Client / Domains"
 msgstr "Klient / Domæner"
 
-msgid "Client / Domains / Add Alias"
-msgstr "Klient / Domæner / Tilføj Alias"
-
 msgid "Client / Domains / Add Custom DNS record"
 msgstr "Klient / Domæner / Tilføj brugerdefineret DNS record"
+
+msgid "Client / Domains / Add Domain Alias"
+msgstr ""
 
 msgid "Client / Domains / Add Subdomain"
 msgstr "Klient / Domæner / Tilføj subdomæne"
 
+msgid "Client / Domains / Edit Domain Alias"
+msgstr ""
+
 msgid "Client / Domains / Edit Subdomain"
 msgstr "Klient / Domæner / Rediger subdomæne"
-
-msgid "Client / Domains / Overview / Edit Domain Alias"
-msgstr "Klient / Domæner / Oversigt / Rediger Domæne Alias"
 
 msgid "Client / Domains / PHP Settings"
 msgstr "Klient / Domæner / PHP Indstillinger"
@@ -1406,6 +1416,9 @@ msgstr "Klient / E-mail / Catchall"
 
 msgid "Client / Email / Catchall / Add Catchall"
 msgstr "Klient / E-mail / Catchall / Tilføj Catchall"
+
+msgid "Client / Email / Edit Email Account"
+msgstr ""
 
 msgid "Client / Email / External Mail Server"
 msgstr " Klient / E-mail / Ekstern Mail server"
@@ -1423,14 +1436,8 @@ msgstr " Klient / E-mail / Ekstern Mail Server / Rediger Ekstern Mail Server for
 msgid "Client / Email / Overview"
 msgstr "Klient / E-mail / Oversigt"
 
-msgid "Client / Email / Overview /  Edit Email Account"
-msgstr "Klient / E-mail / Oversigt / Rediger E-mail Konto"
-
 msgid "Client / Email / Overview / Edit Auto Responder"
 msgstr "Klient / E-mail / Oversigt / Rediger Autosvar"
-
-msgid "Client / Email / Overview / Edit Email Quota"
-msgstr "Klient / E-mail / Oversigt / Rediger E-mail Quota"
 
 msgid "Client / Email / Overview / Enable Auto Responder"
 msgstr "Klient / E-mail / Oversigt / Aktiver Autosvar"
@@ -1543,6 +1550,10 @@ msgstr "Bekræftelse for domæne ordre {DOMAIN}"
 msgid "Confirmation for plugin protection"
 msgstr "Bekræftelse for plugin beskyttelse"
 
+#, php-format
+msgid "Conflict with an existent %s record."
+msgstr ""
+
 msgid "Core data"
 msgstr "Hoved Data"
 
@@ -1593,8 +1604,8 @@ msgstr "Nuværende adgangskode"
 msgid "Current password is invalid."
 msgstr "Nuværende adgangskode er ugyldig."
 
-msgid "Custom DNS record data"
-msgstr "Brugerdefineret DNS record data"
+msgid "Custom DNS record"
+msgstr ""
 
 msgid "Custom DNS record scheduled for deletion."
 msgstr "Brugerdefineret DNS record planlagt til sletning."
@@ -1640,6 +1651,9 @@ msgstr "Kunde nummer (ID)"
 
 msgid "Customer ID cannot have more than 200 characters"
 msgstr "Kunde ID kan ikke have mere end 200 karakterer"
+
+msgid "Customer account"
+msgstr ""
 
 msgid "Customer account successfully scheduled for activation."
 msgstr "Kundekonto succesfuldt planlagt til aktivering."
@@ -1905,9 +1919,6 @@ msgstr "Direktiv værdier"
 msgid "Directories"
 msgstr "Mapper"
 
-msgid "Directory mount point"
-msgstr "Mapper Monterings punkt"
-
 msgid "Directory tree"
 msgstr "Mappe træ"
 
@@ -1974,8 +1985,13 @@ msgstr "Domain konti"
 msgid "Domain alias"
 msgstr "Domænealias"
 
-msgid "Domain alias data"
-msgstr "Domænealias data"
+#, php-format
+msgid "Domain alias %s already exist."
+msgstr ""
+
+#, php-format
+msgid "Domain alias %s cannot be forwarded on itself."
+msgstr ""
 
 msgid "Domain alias errors"
 msgstr "Domæne alias fejl"
@@ -1983,26 +1999,23 @@ msgstr "Domæne alias fejl"
 msgid "Domain alias limit"
 msgstr "Domæne alias grænse"
 
-msgid "Domain alias limit reached."
-msgstr "Maksimum antal domæne alias nået."
-
 msgid "Domain alias name"
 msgstr "Domænealias navn"
 
-msgid "Domain alias scheduled for creation."
-msgstr "Domæne alias planlagt til oprettelse."
+msgid "Domain alias name is not valid."
+msgstr ""
 
-msgid "Domain alias scheduled for update."
-msgstr "Domæne alias planlagt til opdatering."
+msgid "Domain alias successfully ordered."
+msgstr ""
 
-msgid "Domain alias successfully scheduled for addition"
-msgstr "Domæne alias planlagt for tilføjelse."
+msgid "Domain alias successfully scheduled for addition."
+msgstr ""
 
 msgid "Domain alias successfully scheduled for deletion."
 msgstr "Domæne alias planlagt for sletning."
 
-msgid "Domain alias successfully updated"
-msgstr "Domæne alias blevet succesfuldt opdateret"
+msgid "Domain alias successfully scheduled for update."
+msgstr ""
 
 msgid ""
 "Domain alias you are trying to remove has Ftp accounts. Remove them first."
@@ -2090,9 +2103,6 @@ msgstr "Domæne blevet opdateret."
 msgid "Domain type"
 msgstr "Domæne type"
 
-msgid "Domain with same name already exists."
-msgstr "Domæne med samme navn findes allerede."
-
 msgid ""
 "Domain: Setup an MX record to relay mail of your entire domain (including "
 "subdomains) to an external mail server."
@@ -2130,9 +2140,6 @@ msgstr "Rediger SSL certifikat"
 
 msgid "Edit admin"
 msgstr "Rediger Admin"
-
-msgid "Edit alias"
-msgstr "Rediger alias"
 
 msgid "Edit auto responder"
 msgstr "Rediger auto responder"
@@ -2191,9 +2198,6 @@ msgstr "EiB"
 msgid "Email"
 msgstr "E-mail"
 
-msgid "Email account"
-msgstr "E-mail konto"
-
 msgid "Email account already exists."
 msgstr "E-mail konto eksisterer allerede."
 
@@ -2207,18 +2211,15 @@ msgid "Email account limit"
 msgstr "E-mail konti grænse"
 
 msgid "Email account limit is reached."
-msgstr ""
+msgstr "E-mail konto grænsen er nået."
 
 msgid "Email account list"
 msgstr "E-mail konti liste"
 
-msgid "Email account not found."
-msgstr "E-mail konto ikke fundet."
-
-msgid "Email account scheduled for update."
-msgstr "E-mail konto planlagt til opdatering."
-
 msgid "Email account successfully scheduled for addition."
+msgstr "Mail-konto succesfuldt planlagt til tilføjelse."
+
+msgid "Email account successfully scheduled for update."
 msgstr ""
 
 msgid "Email accounts"
@@ -2233,19 +2234,31 @@ msgstr "E-mail-adresse"
 msgid "Email forward"
 msgstr "E-mail forward"
 
+msgid "Email quota"
+msgstr ""
+
 msgid "Email quota [MiB]"
 msgstr "Email kvote [MiB]"
 
 #, php-format
-msgid "Email quota value cannot be bigger than %s MiB."
-msgstr "Email kvote værdi kan ikke være større end %s MiB."
+msgid "Email quota cannot be bigger than %s"
+msgstr ""
 
-msgid "Email quota value cannot be bigger than disk space limit."
-msgstr "Email kvote værdi kan ikke være større end diskplads grænse."
+msgid "Email quota cannot be bigger than disk space limit."
+msgstr ""
 
 #, php-format
-msgid "Email quota value cannot be unlimited. Max value is %s MiB."
-msgstr "Email kvote værdi kan ikke være ubegrænset. Max-værdien er %s MiB."
+msgid ""
+"Email quota cannot be lower than %d. Each mailbox should have a least 1 MiB "
+"quota."
+msgstr ""
+
+#, php-format
+msgid "Email quota cannot be unlimited. Max value is %d MiB."
+msgstr ""
+
+msgid "Email quota must be a number."
+msgstr ""
 
 msgid "Email settings"
 msgstr "E-mail indstillinger"
@@ -2262,14 +2275,8 @@ msgstr "Emails"
 msgid "Empty data or wrong field."
 msgstr "Tomme data eller forkert felt."
 
-msgid "Empty list"
-msgstr "Tom liste"
-
 msgid "Enable"
 msgstr "Aktiver"
-
-msgid "Enable Forward"
-msgstr "Aktivere Videresend"
 
 msgid "Enable SSL"
 msgstr "Aktivere SSL"
@@ -2465,15 +2472,15 @@ msgstr "Forbudt"
 msgid "Force retry"
 msgstr "Tving forsøge igen"
 
+msgid "Forward"
+msgstr ""
+
 msgid "Forward URL"
 msgstr "Videresendelses URL"
 
 #, php-format
-msgid "Forward URL %s is not valid"
-msgstr "Forward URL %s er ikke gyldig"
-
-msgid "Forward account"
-msgstr "Videresende konto"
+msgid "Forward URL %s is not valid."
+msgstr ""
 
 msgid "Forward list is empty."
 msgstr "Videresende liste er tom."
@@ -2486,9 +2493,6 @@ msgstr "Videresend til"
 
 msgid "Forward to URL"
 msgstr "Videresend til URL"
-
-msgid "Forward to same address is not allowed."
-msgstr "Videresende til samme adresse er ikke tilladt."
 
 msgid "Free"
 msgstr "Fri"
@@ -2584,9 +2588,6 @@ msgstr "Hjemmeside"
 msgid "Host"
 msgstr "Host"
 
-msgid "Host must be filled."
-msgstr "Vært skal udfyldes."
-
 msgid "Hosting plan"
 msgstr "Hosting Plan"
 
@@ -2667,6 +2668,9 @@ msgstr "IP-adresse allerede kendt af systemet."
 msgid "IP address data"
 msgstr "IP adresse data"
 
+msgid "IP address field is empty or invalid."
+msgstr ""
+
 msgid "IP address scheduled for addition."
 msgstr "IP-adresse planlagt til tilføjelse."
 
@@ -2681,6 +2685,9 @@ msgstr "IP brug"
 
 msgid "IPv6 address"
 msgstr "IPv6 adresse"
+
+msgid "IPv6 address field is empty or invalid."
+msgstr ""
 
 msgid ""
 "If set to 'yes', Web folders as provisioned by i-MSCP will be protected "
@@ -2725,6 +2732,12 @@ msgstr "På denne side kan du konfigurere nogle af aspekterne af PHP adfærd. Du
 msgid "Incl. default mails"
 msgstr "Inkl. standard mails"
 
+msgid "Incorrect Email quota"
+msgstr ""
+
+msgid "Incorrect Email quota."
+msgstr ""
+
 msgid "Incorrect FTP account limit."
 msgstr "Forkert FTP konti grænse."
 
@@ -2753,14 +2766,8 @@ msgstr "Forkert email længde eller syntaks."
 msgid "Incorrect limit for %s."
 msgstr "Forkert grænse for %s."
 
-msgid "Incorrect mail quota value."
-msgstr "Forkert mail kvote værdi."
-
 msgid "Incorrect monthly traffic limit."
 msgstr "Forkert månedlige trafik grænse."
-
-msgid "Incorrect mount point syntax."
-msgstr "Forkert mount point syntaks."
 
 msgid "Incorrect post code length or syntax!"
 msgstr "Forkert post kode længde eller syntaks!"
@@ -2822,24 +2829,32 @@ msgstr "Intern Serverfejl"
 msgid "Internationalization"
 msgstr "Internationalisering"
 
+msgid "Invalid CNAME"
+msgstr ""
+
+msgid "Invalid Email username."
+msgstr ""
+
+msgid "Invalid IPv4 address."
+msgstr ""
+
+msgid "Invalid IPv6 address."
+msgstr ""
+
 msgid "Invalid MX priority."
 msgstr "Ugyldig MX prioritet."
 
-msgid "Invalid NAME"
-msgstr "Ugyldig NAVN"
+msgid "Invalid NAME."
+msgstr ""
+
+msgid "Invalid TXT data"
+msgstr ""
 
 msgid "Invalid URL."
 msgstr "Ugyldig URL."
 
 msgid "Invalid certificate."
 msgstr "Ugyldig certifikat"
-
-#, php-format
-msgid "Invalid characters in TXT data (\"%s\")"
-msgstr "Ugyldige tegn i TXT data (\"%s\")"
-
-msgid "Invalid email local part."
-msgstr "Ugyldig e-mail lokal del."
 
 msgid "Invalid expiration date."
 msgstr "Ugyldig udløbsdato."
@@ -3032,20 +3047,17 @@ msgstr "Mail Log Level"
 msgid "Mail account %s successfully scheduled for deletion."
 msgstr "Mail-konto %s succesfuldt planlagt til sletning."
 
+msgid "Mail account type"
+msgstr ""
+
 msgid "Mail accounts list is empty."
 msgstr "Mail-konti liste er tom."
 
 msgid "Mail feature is disabled."
 msgstr "Mail funktioner er deaktiveret."
 
-msgid "Mail forward list is empty."
-msgstr ""
-
 msgid "Mail usage"
 msgstr "Mail anvendelse"
-
-msgid "Mailformat of an address in your forward list is incorrect."
-msgstr "Mailformat af en adresse i din videresendelses liste er forkert."
 
 msgid "Main menu labels visibility successfully updated."
 msgstr "Hovedmenu labels synlighed korrekt opdateret."
@@ -3077,9 +3089,6 @@ msgstr "Håndtér IP'er"
 
 msgid "Manage SQL"
 msgstr "Håndtér SQL"
-
-msgid "Manage domain alias"
-msgstr "Håndtér domænealias"
 
 msgid "Manage htaccess users and groups"
 msgstr "Administrer htaccess brugere og grupper"
@@ -3183,17 +3192,11 @@ msgstr "Minutter"
 msgid "Missing domain"
 msgstr "Manglende domæne"
 
-msgid "Missing value for quota field"
-msgstr "Manglende værdi for kvoter felt"
-
 msgid "Model"
 msgstr "Model"
 
 msgid "Modification in progress"
 msgstr "Ændring i gang"
-
-msgid "Modify"
-msgstr "Redigér"
 
 msgid "Month"
 msgstr "Måned"
@@ -3219,9 +3222,6 @@ msgstr "Montering"
 msgid "Mount point"
 msgstr "Monterings punkt"
 
-msgid "Mount point already in use."
-msgstr "Monter point allerede i brug."
-
 msgid "Move"
 msgstr "Flyt"
 
@@ -3230,6 +3230,9 @@ msgstr "Flytning afbrudt."
 
 msgid "N/A"
 msgstr "Ikke Tilgængelig"
+
+msgid "NAME field is empty or invalid."
+msgstr ""
 
 msgid "Name"
 msgstr "Navn"
@@ -3378,11 +3381,14 @@ msgstr "Nr."
 msgid "None"
 msgstr "Ingen"
 
+msgid "Normal"
+msgstr ""
+
+msgid "Normal + Forward"
+msgstr ""
+
 msgid "Normal connection"
 msgstr "Normal tilslutning"
-
-msgid "Normal mail"
-msgstr "Normal mail"
 
 msgid "Normal users"
 msgstr "Normal brugere"
@@ -3468,7 +3474,7 @@ msgstr "Åbne support tickets"
 
 #, php-format
 msgid "Operation canceled: %s"
-msgstr ""
+msgstr "Operation annulleret: %s"
 
 msgid "Optional"
 msgstr "Valgfri"
@@ -3612,11 +3618,11 @@ msgstr "Password indeholder ikke tilladte tegn."
 msgid "Password data"
 msgstr "Adgangskode data"
 
-msgid "Password data is missing."
-msgstr "Password data mangler."
-
 msgid "Password email"
 msgstr "Password e-mail"
+
+msgid "Password is missing."
+msgstr ""
 
 #, php-format
 msgid "Password is shorter than %s characters."
@@ -3703,9 +3709,6 @@ msgstr "Angiv et password."
 msgid "Please enter a username."
 msgstr "Indtast venligst et brugernavn."
 
-msgid "Please enter email account username."
-msgstr "Indtast e-mail konto brugernavn."
-
 msgid "Please enter protected area path"
 msgstr "Indtast sti til beskyttet område"
 
@@ -3715,18 +3718,12 @@ msgstr "Indtast venligst din autosvar besked nedenfor"
 msgid "Please fill up both data fields for password."
 msgstr "Udfyld venligst begge datafelter til password."
 
-msgid "Please first, delete all catchall linked to this Email account."
-msgstr ""
-
 msgid "Please select a valid SQL user for the database."
 msgstr "Vælg en gyldig SQL bruger til databasen."
 
 #, php-format
 msgid "Please select another directory. %s (%s) is installed there."
 msgstr "Vælg et andet bibliotek. %s (%s) er installeret der."
-
-msgid "Please select at least one mail type."
-msgstr "Vælg mindst én mail type."
 
 msgid "Please select at least one user."
 msgstr "Vælg mindst én bruger."
@@ -3750,9 +3747,6 @@ msgstr "Angiv bruger password."
 
 msgid "Please type your message."
 msgstr "Indtast din meddelelse."
-
-msgid "Please write mount point!"
-msgstr "Skriv venligst monterings målet!"
 
 msgid "Plugin"
 msgstr "Plugin"
@@ -3954,11 +3948,9 @@ msgstr "Kvote"
 msgid "Quota in MiB (0 for unlimited)"
 msgstr "Kvote i MiB (0 for ubegrænset)"
 
-msgid "Quota must be a number"
-msgstr "Kvote skal være et tal"
-
-msgid "Quota successfully updated."
-msgstr "Kvote blevet opdateret med succes."
+#, php-format
+msgid "Quota in MiB (Max: %s)"
+msgstr ""
 
 msgid "RAM"
 msgstr "RAM"
@@ -3969,18 +3961,11 @@ msgstr "Læs ticket"
 msgid "Rebuild languages index"
 msgstr "Genopbyg sprog index"
 
-#, php-format
-msgid "Record \"%s\" is not part of domain \"%s\"."
-msgstr "Post \"%s\" er ikke en del af domænet \"%s\"."
-
 msgid "Record data"
 msgstr "Record Data"
 
 msgid "Redirect"
 msgstr "Omdiriger"
-
-msgid "Redirect to URL"
-msgstr "Omdiriger til URL"
 
 msgid "Registration date"
 msgstr "Registreringsdato"
@@ -4042,12 +4027,6 @@ msgstr "Forhandler / Kunder / "
 msgid "Reseller / Customers / Domain Aliases"
 msgstr "Forhandler / Kunder / Domæne Aliases"
 
-msgid "Reseller / Customers / Domain Aliases / Add Alias"
-msgstr "Forhandler / Kunder / Domæne Aliases / Tilføj Alias"
-
-msgid "Reseller / Customers / Domain Aliases / Edit Alias"
-msgstr "Forhandler / Kunder / Domæne Aliases / Rediger Alias"
-
 msgid "Reseller / Customers / Lost Password Email"
 msgstr "Forhandler / Kunder / Glemt Kodeord E-mail"
 
@@ -4068,6 +4047,12 @@ msgstr "Forhandler / Kunder / Oversigt / Rediger Domæne"
 
 msgid "Reseller / Customers / Welcome Email"
 msgstr "Forhandler / Kunder / Velkomst e-mail"
+
+msgid "Reseller / Domains / Add Domain Alias"
+msgstr ""
+
+msgid "Reseller / Domains / Edit Domain Alias"
+msgstr ""
 
 msgid "Reseller / General / Overview"
 msgstr "Forhandler / General / Oversigt"
@@ -4368,12 +4353,11 @@ msgstr "Afsenders navn"
 msgid "Sender name is missing."
 msgstr "Afsenders navn mangler."
 
+msgid "Separate multiple email addresses by comma or a line-break."
+msgstr ""
+
 msgid "Separate multiple email addresses with a line-break."
 msgstr "Adskild flere email adresser med et linie skift."
-
-msgid ""
-"Separate multiple email addresses with a space, a comma or a line-break."
-msgstr "Adskil flere e-mail adresser med et mellemrum, et komma eller et line-break."
 
 msgid "Server ports"
 msgstr "Server porte"
@@ -4398,9 +4382,6 @@ msgstr "Service"
 
 msgid "Service Unavailable"
 msgstr "Service Ikke tilgængelig"
-
-msgid "Service must be filled."
-msgstr "Servicen skal udfyldet."
 
 msgid "Service name"
 msgstr "Service navn"
@@ -4602,8 +4583,12 @@ msgid "Subdomain"
 msgstr "Subdomæne"
 
 #, php-format
-msgid "Subdomain %s already exist"
-msgstr "Subdomæne %s eksisterer allerede"
+msgid "Subdomain %s already exist."
+msgstr ""
+
+#, php-format
+msgid "Subdomain %s cannot be forwarded on itself."
+msgstr ""
 
 msgid "Subdomain alias"
 msgstr "Subdomæne alias"
@@ -4634,11 +4619,11 @@ msgstr "Subdomain mail"
 msgid "Subdomain name"
 msgstr "Subdomæne navn"
 
-msgid "Subdomain name is not valid"
-msgstr "Subdomæne navn er ikke gyldigt"
+msgid "Subdomain name is not valid."
+msgstr ""
 
-msgid "Subdomain successfully scheduled for addition"
-msgstr "Subdomæne succesfuldt planlagt til tilføjelse."
+msgid "Subdomain successfully scheduled for addition."
+msgstr ""
 
 msgid "Subdomain successfully scheduled for deletion."
 msgstr "Subdomæne succesfuldt planlagt til sletning."
@@ -4693,10 +4678,6 @@ msgstr "System data"
 msgid "System error - custom error page was not updated."
 msgstr "Systemfejl - brugerdefineret fejl side blev ikke opdateret."
 
-#, php-format
-msgid "System error with Domain Id: %d"
-msgstr "Systemfejl med Domæne Id: %d"
-
 msgid "System information"
 msgstr "System information"
 
@@ -4737,8 +4718,8 @@ msgstr "TTL skal være et tal."
 msgid "TXT data"
 msgstr "TXT data"
 
-msgid "TXT data must be filled."
-msgstr "TXT data skal udfyldes."
+msgid "TXT field is empty or invalid."
+msgstr ""
 
 msgid "Target"
 msgstr "Mål"
@@ -4904,17 +4885,11 @@ msgid ""
 "another database. Are you sure you want to delete the '%s' database?"
 msgstr "Denne database vil blive slettet permanent. Denne proces kan ikke gendannes. Alle brugere der er knyttet til denne database vil også blive slettet, hvis de ikke er knyttet til en anden database. Er du sikker på du vil slette '%s' database?"
 
-msgid "This domain is not allowed."
-msgstr "Dette domæne er ikke tilladt."
-
 msgid "This htaccess group already exists."
 msgstr "Denne htaccess gruppe findes allerede."
 
 msgid "This htaccess user already exist."
 msgstr "Denne htaccess bruger eksisterer allerede."
-
-msgid "This mount point is not allowed."
-msgstr "Dette mount point er ikke tilladt."
 
 msgid "This package already exists in the administrator software repository."
 msgstr "Denne pakke findes allerede i administratorens softwarearkiv."
@@ -4976,20 +4951,8 @@ msgstr "Ticket med Id '%d' blev ikke fundet."
 msgid "To Admin"
 msgstr "Til Administrator"
 
-msgid "To alias subdomain"
-msgstr "Til alias subdomæne"
-
-msgid "To domain alias"
-msgstr "Til domæne alias"
-
-msgid "To main domain"
-msgstr "Til hoved domæne"
-
 msgid "To reseller"
 msgstr "Til Forhandler"
-
-msgid "To subdomain"
-msgstr "Til subdomæne"
 
 #, php-format
 msgid "To unprotect this plugin, you must edit the %s file"
@@ -5017,8 +4980,8 @@ msgid "Total installations"
 msgstr "Total antal installationer"
 
 #, php-format
-msgid "Total mails: %s of %s (%s)"
-msgstr "Total emails: %s af %s (%s)"
+msgid "Total mails: %s / %s %s"
+msgstr ""
 
 msgid "Total packages in Web software repository"
 msgstr "Total antal pakker i Web softwarearkivet"
@@ -5167,9 +5130,6 @@ msgstr "Ukendt action anmodet."
 msgid "Unknown action: %s"
 msgstr "Ukendt action: %s"
 
-msgid "Unknown domain type."
-msgstr "Ukendt domæne type."
-
 msgid "Unknown error"
 msgstr "Ukendt fejl"
 
@@ -5244,9 +5204,6 @@ msgstr "Upload nu"
 msgid "Uptime"
 msgstr "Oppetid"
 
-msgid "Usage of disallowed character in CNAME"
-msgstr "Brug af ikke tilladt karakter i CNAME"
-
 msgid "Usage status"
 msgstr "Anvendelsesstatus"
 
@@ -5271,9 +5228,6 @@ msgstr "Bruger"
 msgid "User (first and last) name"
 msgstr "Bruger (for og efter) navn"
 
-msgid "User account"
-msgstr "Bruger konto"
-
 msgid "User assignment"
 msgstr "Bruger tildeling"
 
@@ -5291,14 +5245,11 @@ msgstr "Brugerdata blev opdateret."
 
 msgid ""
 "User do not exist or you do not have permission to access this interface"
-msgstr ""
+msgstr "Bruger eksistere ikke, eller du har ikke adgang til dette interface!"
 
 msgid ""
 "User does not exist or you do not have permission to access this interface"
 msgstr "Bruger eksisterer ikke eller du har ikke tilladelse til at adgang til dette interface"
-
-msgid "User does not exist."
-msgstr "Bruger findes ikke."
 
 msgid "User errors"
 msgstr "Bruger fejl"
@@ -5414,11 +5365,6 @@ msgid "Warnings and Errors"
 msgstr "Advarsler og fejl"
 
 msgid ""
-"We are sorry but you have reached the maximum number of domain aliases "
-"allowed by your subscription. Contact your reseller for more information."
-msgstr "Vi beklager, men du har nået det maksimale antal domæne aliasser tilladt af dit abonnement. Kontakt din forhandler for at få flere oplysninger."
-
-msgid ""
 "We are sorry, but the system is currently under maintenance.\n"
 "Please try again later."
 msgstr "Vi beklager, men systemet er i øjeblikket under vedligeholdelse.\nPrøv venligst igen senere."
@@ -5491,14 +5437,6 @@ msgstr "Jokertegn såsom %% og ? er ikke tilladt."
 msgid "Wrong IP address."
 msgstr "Forkert IP-adresse."
 
-#, php-format
-msgid "Wrong IPv4 address (\"%s\")"
-msgstr "Forkert IPv4 adresse (\"%s\")"
-
-#, php-format
-msgid "Wrong IPv6 address (\"%s\")"
-msgstr "Forkert IPv6 adresse (\"%s\")"
-
 msgid "Wrong SQL user identifier."
 msgstr "Forkert SQL bruger identifikator."
 
@@ -5518,9 +5456,6 @@ msgstr "Forkert Top Level Domæne længde: <b>%s</b>"
 msgid "Wrong Top Level Domain syntax: <b>%s</b>"
 msgstr "Forkert topdomæne syntaks: <b>%s</b>"
 
-msgid "Wrong address in forward URL."
-msgstr "Forkert adresse i forward URL."
-
 msgid "Wrong customer ID."
 msgstr "Forkert kunde ID."
 
@@ -5530,18 +5465,9 @@ msgstr "Forkert domænenavn længde!"
 msgid "Wrong domain name syntax or number of labels"
 msgstr "Forkert domænenavn syntaks eller antal labels"
 
-msgid "Wrong domain name!"
-msgstr "Forkert domæne navn!"
-
 #, php-format
 msgid "Wrong domain name: <b>%s</b> is reserved!"
 msgstr "Forkert domænenavn: <b>%s</b> er reserveret!"
-
-msgid "Wrong domain part in forward URL."
-msgstr "Forkert domæne part i forward URL."
-
-msgid "Wrong hostname in forward URL."
-msgstr "Forkert hostname i forward URL."
 
 #, php-format
 msgid "Wrong label length: <b>%s</b>"
@@ -5550,6 +5476,9 @@ msgstr "Forkert label længde: <b>%s</b>"
 #, php-format
 msgid "Wrong label syntax: <b>%s</b>"
 msgstr "Forkert label syntaks: <b>%s</b>"
+
+msgid "Wrong mail syntax in forward list."
+msgstr ""
 
 msgid "Wrong request."
 msgstr "Forkert anmodning."
@@ -5573,21 +5502,11 @@ msgid "Wrong syntax for new expire date."
 msgstr "Forkert syntaks for ny udløbsdato."
 
 #, php-format
-msgid "Wrong syntax for the %s forward email address."
-msgstr "Forkert syntaks for %s forward email adresse."
-
-#, php-format
 msgid "Wrong syntax for the %s limit."
 msgstr "Forkert syntaks for %s grænsen."
 
-msgid "Wrong syntax for the Email quota value."
-msgstr "Forkert syntaks for Email kvote værdi."
-
 msgid "Wrong syntax for the mail quota value."
 msgstr "Forkert syntaks for Email kvote værdi."
-
-msgid "Wrong syntax in forward URL."
-msgstr "Forkert syntaks i forward URL."
 
 msgid "Wrong user level provided."
 msgstr "Forkert brugerniveau opgivet."
@@ -5669,8 +5588,8 @@ msgid "You cannot delete the last active IP address."
 msgstr "Du kan ikke slette den sidste aktive IP adresse."
 
 #, php-format
-msgid "You cannot forward %s on himself."
-msgstr "Du kan ikke forwarde %s til sig selv."
+msgid "You cannot forward %s on itself."
+msgstr ""
 
 #, php-format
 msgid ""
@@ -5696,9 +5615,6 @@ msgstr "Du kan ikke indstille udløbsdato i fortiden."
 
 msgid "You cannot unassign an IP address already in use."
 msgstr "Du kan ikke fjerne tildelingen af en IP adresse der allerede er i brug."
-
-msgid "You did not fill all required fields"
-msgstr "Du har ikke udfylde alle obligatoriske felter"
 
 msgid "You do not have FTP accounts."
 msgstr "Du har ikke FTP konti."
@@ -5735,9 +5651,6 @@ msgstr "Du har ingen subdomæne."
 
 msgid "You do not have sufficient permissions to perform this operation."
 msgstr "Du har ikke tilstrækkelige rettigheder til at udføre denne operation."
-
-msgid "You do not need 'www.' i-MSCP will add it automatically."
-msgstr "Du behøver ikke \"www.\" i-MSCP vil tilføje det automatisk."
 
 #, php-format
 msgid "You have %d new domain alias %s."
@@ -5807,6 +5720,16 @@ msgid "You have no open tickets."
 msgstr "Du har ingen åbne tickets."
 
 msgid ""
+"You have reached the maximum number of Email accounts allowed by your "
+"subscription."
+msgstr ""
+
+msgid ""
+"You have reached the maximum number of domain aliasses allowed by your "
+"subscription."
+msgstr ""
+
+msgid ""
 "You have reached the maximum number of subdomains allowed by your "
 "subscription."
 msgstr "Du har nået det maksimale antal subdomæner tilladt af dit abonnement."
@@ -5830,11 +5753,14 @@ msgstr "Du skal vælge mellem lokal og remote upload."
 msgid "You must confirm customer account deletion."
 msgstr "Du skal bekræfte kundekonto sletning."
 
-msgid "You must enter a least one forward address."
-msgstr "Du skal angive mindst én forward adresse."
+msgid "You must confirm your password."
+msgstr ""
 
-msgid "You must enter a subdomain name"
-msgstr "Du skal indtaste et subdomæne navn"
+msgid "You must enter a domain alias name."
+msgstr ""
+
+msgid "You must enter a subdomain name."
+msgstr ""
 
 msgid "You must first generate a password"
 msgstr "Du skal først oprette et password"
