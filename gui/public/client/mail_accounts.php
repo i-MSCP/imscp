@@ -163,7 +163,7 @@ function _client_generateMailAccountsList($tpl, $mainDmnId)
 		return 0;
 	} else {
 		$mainDmnProps = get_domain_default_props($_SESSION['user_id']);
-		$mailQuotaLimit  = bytesHuman($mainDmnProps['mail_quota']);
+		$mailQuotaLimit  = ($mainDmnProps['mail_quota']) ? bytesHuman($mainDmnProps['mail_quota']) : '';
 		imap_timeout(IMAP_OPENTIMEOUT, 1);
 
 		while ($row = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
@@ -210,7 +210,9 @@ function _client_generateMailAccountsList($tpl, $mainDmnId)
 					$quotaMax = bytesHuman($quotaMax);
 				}
 
-				$txtQuota = tr('%s / %s of %s', bytesHuman($quotaUsage), $quotaMax, $mailQuotaLimit);
+				$txtQuota = ($mailQuotaLimit) ?
+					tr('%s / %s of %s', bytesHuman($quotaUsage), $quotaMax, $mailQuotaLimit)
+					: sprintf('%s / %s', bytesHuman($quotaUsage), $quotaMax);
 			} else {
 				$txtQuota = '---';
 			}

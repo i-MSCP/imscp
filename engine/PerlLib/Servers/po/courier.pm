@@ -240,21 +240,26 @@ sub postaddMail
 		$rs = $courierimapsubscribedFile->owner($mailUidName, $mailGidName);
 		return $rs if $rs;
 
-		my @maildirmakeCmdArgs = (escapeShell("$data->{'MAIL_QUOTA'}S"), escapeShell("$mailDir"));
+		if(defined($data->{'MAIL_QUOTA'}) && $data->{'MAIL_QUOTA'} != 0) {
+			my @maildirmakeCmdArgs = (escapeShell("$data->{'MAIL_QUOTA'}S"), escapeShell("$mailDir"));
 
-		my($stdout, $stderr);
-		$rs = execute("$self->{'config'}->{'CMD_MAILDIRMAKE'} -q @maildirmakeCmdArgs", \$stdout, $stderr);
-		debug($stdout) if $stdout;
-		error($stderr) if $stderr && $rs;
-		return $rs if $rs;
-
-		if(-f "$mailDir/maildirsize") {
-			my $file = iMSCP::File->new('filename' => "$mailDir/maildirsize");
-
-			$rs = $file->owner($mailUidName, $mailGidName);
+			my($stdout, $stderr);
+			$rs = execute("$self->{'config'}->{'CMD_MAILDIRMAKE'} -q @maildirmakeCmdArgs", \$stdout, $stderr);
+			debug($stdout) if $stdout;
+			error($stderr) if $stderr && $rs;
 			return $rs if $rs;
 
-			$rs = $file->mode(0640);
+			if(-f "$mailDir/maildirsize") {
+				my $file = iMSCP::File->new('filename' => "$mailDir/maildirsize");
+
+				$rs = $file->owner($mailUidName, $mailGidName);
+				return $rs if $rs;
+
+				$rs = $file->mode(0640);
+				return $rs if $rs;
+			}
+		} elsif(-f "$mailDir/maildirsize") {
+			$rs = iMSCP::File->new('filename' => "$mailDir/maildirsize")->delFile();
 			return $rs if $rs;
 		}
 	}
