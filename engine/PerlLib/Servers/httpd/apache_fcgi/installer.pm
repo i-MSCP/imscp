@@ -947,6 +947,37 @@ sub _buildMasterVhostFiles
 	);
 	return $rs if $rs;
 
+	# Force HTTPS if needed
+	if($main::imscpConfig{'BASE_SERVER_VHOST_PREFIX'} eq 'https://') {
+		$rs = $self->{'hooksManager'}->register(
+			'afterHttpdBuildConfFile',
+			sub {
+				my $fileContent = shift;
+				my $fileName = shift;
+
+				if($fileName eq '00_master.conf') {
+					require iMSCP::Templator;
+					iMSCP::Templator->import();
+
+					my $customTagBegin = "    # SECTION custom BEGIN.\n";
+					my $customTagEnding = "    # SECTION custom END.\n";
+					my $customBlock =
+						$customTagBegin .
+						getBloc($customTagBegin, $customTagEnding, $$fileContent) .
+							"    RewriteEngine On\n" .
+							"    RewriteCond %{HTTPS} off\n" .
+							"    RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI}\n" .
+						$customTagEnding;
+
+						$$fileContent = replaceBloc($customTagBegin, $customTagEnding, $customBlock, $$fileContent);
+				}
+
+				0;
+			}
+		);
+		return $rs if $rs;
+	}
+
 	# Build file using apache/00_master.conf template
 	$rs = $self->{'httpd'}->buildConfFile("$self->{'cfgDir'}/00_master.conf");
 	return $rs if $rs;

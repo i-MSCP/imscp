@@ -13,6 +13,7 @@ ENGINE:
 	- Fixed: PHP allow_url_fopen feature must be explicitly enabled in composer package installer
 
 Tickets:
+	- Fixed #810: Bug - https default access redirect mode not working for base server url
 	- Fixed #918: Bug - Courier - Unlimited quota doesn't works
 	- Fixed #919: Bug - Preseed feature is broken - A template has not been found
 

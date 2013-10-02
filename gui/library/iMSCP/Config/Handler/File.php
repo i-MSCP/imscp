@@ -158,6 +158,7 @@ require_once  'iMSCP/Config/Handler.php';
  * @property string USER_WEB_DIR Directory which holds i-MSCP customer user Web directories
  * @property int WEB_FOLDER_PROTECTION Whether or not the Web folder protection is available
  * @property int THEME_ASSETS_VERSION unique string used for assets cache busting
+ * @property string SSL_ENABLED Whether or not SSL is enabled for the panel
  *
  * @category    iMSCP
  * @package     iMSCP_Core
