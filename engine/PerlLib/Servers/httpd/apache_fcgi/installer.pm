@@ -964,12 +964,12 @@ sub _buildMasterVhostFiles
 					my $customBlock =
 						$customTagBegin .
 						getBloc($customTagBegin, $customTagEnding, $$fileContent) .
-							"    RewriteEngine On\n" .
-							"    RewriteCond %{HTTPS} off\n" .
-							"    RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI}\n" .
+						"    RewriteEngine On\n" .
+						"    RewriteCond %{HTTPS} off\n" .
+						"    RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI}\n" .
 						$customTagEnding;
 
-						$$fileContent = replaceBloc($customTagBegin, $customTagEnding, $customBlock, $$fileContent);
+					$$fileContent = replaceBloc($customTagBegin, $customTagEnding, $customBlock, $$fileContent);
 				}
 
 				0;
