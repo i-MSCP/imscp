@@ -5,8 +5,16 @@
 Git Master
 ------------------------------------------------------------------------------------------------------------------------
 
+DOCS:
+	- Updated: Preseed template file
+
+ENGINE:
+	- Fixed: Bind server impl. - Unable to handle subdomains when DNS server mode is set to 'slave'
+	- Fixed: PHP allow_url_fopen feature must be explicitly enabled in composer package installer
+
 Tickets:
 	- Fixed #918: Bug - Courier - Unlimited quota doesn't works
+	- Fixed #919: Bug - Preseed feature is broken - A template has not been found
 
 ------------------------------------------------------------------------------------------------------------------------
 1.1.0-rc4.1

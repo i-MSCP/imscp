@@ -61,7 +61,7 @@ use parent 'Common::SingletonClass';
 
 =cut
 
-sub registerPackage($;$)
+sub registerPackage($$;$)
 {
 	my $self = shift;
 	my $package = shift;
@@ -92,7 +92,9 @@ sub _init
 
 	$self->{'toInstall'} = [];
 	$self->{'cacheDir'} = $main::imscpConfig{'ADDON_PACKAGES_CACHE_DIR'};
-	$self->{'phpCmd'} = "$main::imscpConfig{'CMD_PHP'} -d suhosin.executor.include.whitelist=phar";
+	$self->{'phpCmd'} = $main::imscpConfig{'CMD_PHP'} .
+		' -d memory_limit=512M -d allow_url_fopen=1' .
+		' -d suhosin.executor.include.whitelist=phar';
 
 	if(! iMSCP::Getopt->skipAddonsUpdate || ! -d $self->{'cacheDir'}) {
 		iMSCP::Dir->new(
@@ -134,11 +136,11 @@ sub _installPackages
 	return $rs if $rs;
 
 	iMSCP::Dialog->factory()->infobox(
-"
+'
 Getting composer addon packages from packagist.org.
 
 Please wait, this may take a few minutes...
-"
+'
 	);
 
 	# The update option is used here but composer will automatically fallback to install mode when needed
@@ -164,7 +166,6 @@ Please wait, this may take a few minutes...
 sub _buildComposerFile
 {
 	my $self = shift;
-	my $rs = 0;
 
 	iMSCP::Dialog->factory()->infobox("\nBuilding composer.json file for addon packages...");
 
@@ -174,7 +175,7 @@ sub _buildComposerFile
 
 	my $file = iMSCP::File->new('filename' => "$self->{'cacheDir'}/composer.json");
 
-	$file->set($composerJsonFile);
+	my $rs = $file->set($composerJsonFile);
 	return $rs if $rs;
 
 	$file->save();
@@ -191,6 +192,7 @@ sub _buildComposerFile
 sub _getComposer
 {
 	my $self = shift;
+
 	my ($stdout, $stderr);
 	my $curDir = getcwd();
 	my $rs = 0;
@@ -210,11 +212,14 @@ Please wait, this may take a few seconds...
 		);
 
 		$rs = execute(
-			"$main::imscpConfig{'CMD_CURL'} -s 'http://getcomposer.org/installer' | $self->{'phpCmd'}", \$stdout, \$stderr
+			"$main::imscpConfig{'CMD_CURL'} -s http://getcomposer.org/installer | $self->{'phpCmd'}",
+			\$stdout,
+			\$stderr
 		);
 		debug($stdout) if $stdout;
 		error($stderr) if $stderr && $rs;
-		error('Unable to get composer installer from http://getcomposer.org') if $rs && ! $stderr;
+		error($stdout) if ! $stderr && $stdout && $rs;
+		error('Unable to get composer installer from http://getcomposer.org') if $rs && ! $stdout && ! $stderr;
 
 		unless(chdir($curDir)) {
 		error("Unable to change working directory to $curDir: $!");
@@ -254,15 +259,13 @@ Please wait, this may take a few seconds...
 
  Get composer.json template.
 
- Return string composer.json template file
+ Return string composer.json template file content
 
 =cut
 
 sub _getComposerFileTpl
 {
-	my $self = shift;
-
-	my $json = <<EOF;
+	<<EOF;
 {
 	"name":"imscp/addons",
 	"description":"i-MSCP addons composer file",
@@ -273,8 +276,6 @@ sub _getComposerFileTpl
 	"minimum-stability":"dev"
 }
 EOF
-
-	$json;
 }
 
 =item _cleanCacheDir()
@@ -288,6 +289,7 @@ EOF
 sub _cleanCacheDir
 {
 	my $self = shift;
+
 	my $rs = 0;
 
 	if(-d $self->{'cacheDir'}) {
@@ -296,7 +298,6 @@ sub _cleanCacheDir
 		debug($stdout) if $stdout;
 		error($stderr) if $stderr && $rs;
 		error('Unable to clean addon cache directory') if $rs && ! $stderr;
-
 	}
 
 	$rs;

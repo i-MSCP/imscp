@@ -144,7 +144,8 @@ sub fastcgiConf
 	}
 	
 	for ('fastcgi_imscp.conf', 'fastcgi_imscp.load', 'fcgid_imscp.conf', 'fcgid_imscp.load') {
-		$rs = iMSCP::File->new('filename' => "$self->{'config'}->{'APACHE_MODS_DIR'}/$_")->delFile() if -f "$self->{'config'}->{'APACHE_MODS_DIR'}/$_";
+		$rs = iMSCP::File->new('filename' => "$self->{'config'}->{'APACHE_MODS_DIR'}/$_")->delFile()
+			if -f "$self->{'config'}->{'APACHE_MODS_DIR'}/$_";
 		return $rs if $rs;
 	}
 

@@ -1,5 +1,11 @@
 #!/usr/bin/perl
 
+=head1 NAME
+
+ Servers::named::bind::uninstaller - i-MSCP Bind9 Server implementation
+
+=cut
+
 # i-MSCP - internet Multi Server Control Panel
 # Copyright (C) 2010-2013 by internet Multi Server Control Panel
 #
@@ -32,7 +38,48 @@ use warnings;
 use iMSCP::Debug;
 use File::Basename;
 use iMSCP::File;
+use iMSCP::Execute;
 use parent 'Common::SingletonClass';
+
+=head1 DESCRIPTION
+
+ Uninstaller for the i-MSCP Bind9 Server implementation.
+
+=head1 PUBLIC METHODS
+
+=over 4
+
+=item uninstall()
+
+ Process uninstall tasks.
+
+ Return int 0 on success, other on failure
+
+=cut
+
+sub uninstall
+{
+	my $self = shift;
+
+	my $rs = $self->_restoreConfFiles();
+	return $rs if $rs;
+
+	$self->_deleteDbFiles();
+}
+
+=back
+
+=head1 PRIVATE METHODS
+
+=over 4
+
+=item _init()
+
+ Called by getInstance(). Initialize instance.
+
+ Return Servers::named::bind::uninstaller
+
+=cut
 
 sub _init
 {
@@ -50,39 +97,70 @@ sub _init
 	$self;
 }
 
-sub uninstall
-{
-	my $self = shift;
+=item _restoreConfFiles()
 
-	$self->_restoreConfFiles();
-}
+ Restore system configuration files.
+
+ Return int 0 on success, other on failure
+
+=cut
 
 sub _restoreConfFiles
 {
 	my $self = shift;
-	my $rs = 0;
 
 	for (
-		$self->{'config'}->{'BIND_CONF_DEFAULT_FILE'},
-		$self->{'config'}->{'BIND_CONF_FILE'},
-		$self->{'config'}->{'BIND_LOCAL_CONF_FILE'},
-		$self->{'config'}->{'BIND_OPTIONS_CONF_FILE'}
+		$self->{'config'}->{'BIND_CONF_DEFAULT_FILE'}, $self->{'config'}->{'BIND_CONF_FILE'},
+		$self->{'config'}->{'BIND_LOCAL_CONF_FILE'}, $self->{'config'}->{'BIND_OPTIONS_CONF_FILE'}
 	) {
-		next if !defined $_;
+		next if ! defined $_;
 		my $filename = fileparse($_);
 
 		if(-f "$self->{'bkpDir'}/$filename.system"){
-			$rs	= iMSCP::File->new(
+			my $rs = iMSCP::File->new(
 				'filename' => "$self->{'bkpDir'}/$filename.system"
 			)->copyFile($_);
 
 			# Config file mode is incorrect after copy from backup, therefore set it right
-			$rs |= iMSCP::File->new('filename' => $_)->mode(0644);
+			$rs = iMSCP::File->new('filename' => $_)->mode(0644);
 			return $rs if $rs;
 		}
 	}
 
 	0;
 }
+
+=item _deleteDbFiles()
+
+ Delete i-MSCP db files.
+
+ Return int 0 on success, other on failure
+
+=cut
+
+sub _deleteDbFiles
+{
+	my $self = shift;
+
+	my $rs = execute("$main::imscpConfig{'CMD_RM'} -f $self->{'config'}->{'BIND_DB_DIR'}/*.db", \$stdout, \$stderr);
+	debug($stdout) if $stdout;
+	error($stderr) if $stderr && $rs;
+	return $rs;
+
+	$rs = iMSCP::Dir->new('dirname' => "$self->{'config'}->{'BIND_DB_DIR'}/slave")->remove()
+		if -d "$self->{'config'}->{'BIND_DB_DIR'}/slave";
+	return $rs if $rs;
+
+	0;
+}
+
+=back
+
+=head1 AUTHORS
+
+ Daniel Andreca <sci2tech@gmail.com>
+ Laurent Declercq <l.declercq@nuxwin.com>
+
+=cut
 
 1;

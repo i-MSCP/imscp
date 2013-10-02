@@ -1285,7 +1285,7 @@ sub setupServerIps
 	my $oldIptoIdMap = {};
 
 	my @serverIps = (
-		$main::imscpConfig{'BASE_SERVER_IP'},
+		$baseServerIp,
 		$main::questions{'SERVER_IPS'} ? @{$main::questions{'SERVER_IPS'}} : ()
 	);
 

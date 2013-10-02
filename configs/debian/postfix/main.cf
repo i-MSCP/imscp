@@ -98,11 +98,3 @@ smtpd_data_restrictions = reject_multi_recipient_bounce,
 {SSL}smtpd_tls_key_file = {GUI_CERT_DIR}/{MTA_HOSTNAME}.pem
 {SSL}smtpd_tls_auth_only = no
 {SSL}smtpd_tls_received_header = yes
-
-# Quota support; activate, if available/used
-#virtual_create_maildirsize = yes
-#virtual_mailbox_extended = yes
-#virtual_mailbox_limit_maps = mysql:/etc/postfix/mysql_virtual_mailbox_limit_maps.cf
-#virtual_mailbox_limit_override = yes
-#virtual_maildir_limit_message = "The user you're trying to reach is over mailbox quota."
-#virtual_overquota_bounce = yes

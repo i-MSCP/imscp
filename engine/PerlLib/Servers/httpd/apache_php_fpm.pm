@@ -1891,7 +1891,7 @@ sub phpfpmBkpConfFile($$;$$)
 
 =over 4
 
-=item
+=item _init()
 
  Called by getInstance(). Initialize instance.
 
