@@ -19,6 +19,7 @@ Tickets:
 	- Fixed #810: Bug - https default access redirect mode not working for base server url
 	- Fixed #918: Bug - Courier - Unlimited quota doesn't works
 	- Fixed #919: Bug - Preseed feature is broken - A template has not been found
+	- Fixed #924: Defect - After Update from RC3 to RC4.1 pop3-ssl and imap-ssl don't work (dovecot 1.2.15)
 
 ------------------------------------------------------------------------------------------------------------------------
 1.1.0-rc4.1
