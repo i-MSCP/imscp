@@ -8,6 +8,9 @@ Git Master
 DOCS:
 	- Updated: Preseed template file
 
+CONFIG:
+	- Fixed: Packages file for Debian Jessie (testing)
+
 ENGINE:
 	- Fixed: Bind server impl. - Unable to handle subdomains when DNS server mode is set to 'slave'
 	- Fixed: PHP allow_url_fopen feature must be explicitly enabled in composer package installer

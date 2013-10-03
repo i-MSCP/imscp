@@ -89,7 +89,7 @@
     <perl>
         <package>perl</package>
         <package>perl-base</package>
-        <package>libperl5.14</package>
+        <package>libperl5.18</package>
         <package>libberkeleydb-perl</package>
         <package>libcrypt-blowfish-perl</package>
         <package>libcrypt-cbc-perl</package>
