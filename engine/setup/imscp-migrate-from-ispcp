@@ -391,7 +391,7 @@ sub deleteUsers
 	my @errors;
 	my $rs = 0;
 
-	my $userH = iMSCP::SystemUser->new('force' => 'yes');
+	my $userH = iMSCP::SystemUser->new();
 	my $groupH = iMSCP::SystemGroup->getInstance();
 
 	# Master unix user/group
@@ -406,12 +406,11 @@ sub deleteUsers
 	push(@errors, "Unable to delete $groupName unix group") if $rs;
 
 	# Customer unix users/groups
-	my $query = 'SELECT * FROM `domain`';
 	my $database = iMSCP::Database->new(db => 'mysql')->factory();
-	my $result = $database->doQuery('domain_gid', $query);
+	my $result = $database->doQuery('domain_uid', 'SELECT `domain_uid`, `domain_gid` FROM `domain`');
 
 	if (ref $result ne 'HASH'){
-		push(@errors, "$query produced the following error: $result");
+		push(@errors, "$result");
 	} else {
 		if (keys %{$result}) {
 			for(values %{$result}) {

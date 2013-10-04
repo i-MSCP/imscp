@@ -20,6 +20,7 @@
 # @category    i-MSCP
 # @copyright   2010-2013 by i-MSCP | http://i-mscp.net
 # @author      Daniel Andreca <sci2tech@gmail.com>
+# @author      Laurent Declercq <l.declercq@nuxwin.com>
 # @link        http://i-mscp.net i-MSCP Home Site
 # @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
@@ -42,7 +43,7 @@ sub _init
 	$self;
 }
 
-# Add unix user
+# Add the given unix user
 sub addSystemUser
 {
 	my $self = shift;
@@ -86,10 +87,9 @@ sub addSystemUser
 			'-s', escapeShell($shell),						# shell
 			($^O !~ /bsd$/ ? escapeShell($userName) : '')	# username linux way
 		);
-
 	} else { # Modify existent user
 		@cmd = (
-			'/usr/bin/skill -KILL -vu ' . escapeShell($userName) . '; ',
+			"$main::imscpConfig{'CMD_SKILL'} -KILL -vu " . escapeShell($userName) . '; ',
 			$main::imscpConfig{'CMD_USERMOD'},
 			($^O =~ /bsd$/ ? escapeShell($userName) : ''),	# username bsd way
 			$password,										# Password
@@ -111,7 +111,7 @@ sub addSystemUser
 	0;
 }
 
-# Delete unix user
+# Delete the given unix user
 sub delSystemUser
 {
 	my $self = shift;
@@ -128,12 +128,14 @@ sub delSystemUser
 
 	if(getpwnam($userName)) {
 		my  @cmd = (
-			"$main::imscpConfig{'CMD_USERDEL'}",
+			"$main::imscpConfig{'CMD_SKILL'} -KILL -vu " . escapeShell($userName) . '; ',
+			$main::imscpConfig{'CMD_USERDEL'},
 			($^O =~ /bsd$/ ? escapeShell($userName) : ''),
 			'-r',
 			($self->{'force'} ? '-f' : ''),
 			($^O !~ /bsd$/ ? escapeShell($userName) : '')
 		);
+
 		my ($stdout, $stderr);
 		my $rs = execute("@cmd", \$stdout, \$stderr);
 		debug($stdout) if $stdout;
@@ -145,7 +147,7 @@ sub delSystemUser
 	0;
 }
 
-# Add unix user to a specific group
+# Add the given unix user to the given unix group
 sub addToGroup
 {
 	my $self = shift;
@@ -169,57 +171,44 @@ sub addToGroup
 	}
 
 	if(getgrnam($groupName) && getpwnam($userName)) {
-		$self->getUserGroups($userName);
+		my (@cmd, $rs, $stdout, $stderr);
 
-		if(! exists $self->{'userGroups'}->{$groupName}) {
-			delete $self->{'userGroups'}->{$userName};
+		if($^O =~ /bsd$/) { # bsd way
+			$self->getUserGroups($userName);
 
-			my $newGroups = join(',', keys %{$self->{'userGroups'}});
-			$newGroups = ($newGroups ne '') ? "$newGroups,$groupName" : $groupName;
+			if(! exists $self->{'userGroups'}->{$groupName}) {
+				delete $self->{'userGroups'}->{$userName};
 
-			my  @cmd = (
-				$main::imscpConfig{'CMD_USERMOD'},
-				($^O =~ /bsd$/ ? escapeShell($userName) : ''),	# bsd way
-				'-G', escapeShell($newGroups),
-				($^O !~ /bsd$/ ? escapeShell($userName) : ''),	# linux way
-			);
-			my ($stdout, $stderr);
-			my $rs = execute("@cmd", \$stdout, \$stderr);
+				my $newGroups = join(',', keys %{$self->{'userGroups'}});
+				$newGroups = ($newGroups ne '') ? "$newGroups,$groupName" : $groupName;
+
+				@cmd = (
+					$main::imscpConfig{'CMD_USERMOD'},
+					escapeShell($userName),
+					'-G', escapeShell($newGroups)
+				);
+
+				$rs = execute("@cmd", \$stdout, \$stderr);
+				debug($stdout) if $stdout;
+				error($stderr) if $stderr && $rs;
+				debug($stderr) if $stderr && ! $rs;
+				return $rs if $rs;
+			}
+		} else { # Linux way
+			@cmd = ($main::imscpConfig{'CMD_GPASSWD'}, '-a', escapeShell($userName), escapeShell($groupName));
+
+			$rs = execute("@cmd", \$stdout, \$stderr);
 			debug($stdout) if $stdout;
-			error($stderr) if $stderr && $rs;
-			warning($stderr) if $stderr && ! $rs;
-
-			return $rs if $rs;
+			error($stderr) if $stderr && $rs && $rs != 3;
+			debug($stderr) if $stderr && ! $rs;
+			return $rs if $rs && $rs != 3;
 		}
 	}
 
 	0;
 }
 
-# Retrieve list of all groups to which unix user is part
-sub getUserGroups
-{
-	my $self = shift;
-
-	fatal('Please use only instance of class not static calls', 1) if ref $self ne __PACKAGE__;
-
-	my $userName = shift || $self->{'username'} || undef;
-	$self->{'username'} = $userName;
-
-	my ($rs, $stdout, $stderr);
-
-	$rs = execute('/usr/bin/id -nG ' . escapeShell($userName), \$stdout, \$stderr);
-	debug($stdout) if $stdout;
-	error($stderr) if $stderr && $rs;
-	warning($stderr) if $stderr && ! $rs;
-	return $rs if $rs;
-
-	%{$self->{'userGroups'}} = map { $_ => 1 } split ' ', $stdout;
-
-	0;
-}
-
-# Remote unix user from a specific group
+# Remove the given unix user from the given unix group
 sub removeFromGroup
 {
 	my $self = shift;
@@ -242,27 +231,61 @@ sub removeFromGroup
 		return 1;
 	}
 
-	if(getpwnam($userName)) {
-		my ($rs, $stdout, $stderr);
+	if(getpwnam($userName) && getgrnam($groupName)) {
+		my (@cmd, $rs, $stdout, $stderr);
 
-		$self->getUserGroups($userName);
-		delete $self->{'userGroups'}->{$groupName};
+		if($^O =~ /bsd$/) { # bsd way
+			$self->getUserGroups($userName);
 
-		my $newGroups =  join(',', keys %{$self->{'userGroups'}});
-		my  @cmd = (
-			'/usr/bin/skill -KILL -vu ' . $userName . '; ',
-			"$main::imscpConfig{'CMD_USERMOD'}",
-			($^O =~ /bsd$/ ? escapeShell($userName) : ''),	# bsd way
-			'-G', escapeShell($newGroups),
-			($^O !~ /bsd$/ ? escapeShell($userName) : ''),	# linux way
-		);
-		$rs = execute("@cmd", \$stdout, \$stderr);
-		debug($stdout) if $stdout;
-		error($stderr) if $stderr && $rs;
-		warning($stderr) if $stderr && ! $rs;
+			delete $self->{'userGroups'}->{$groupName};
+			delete $self->{'userGroups'}->{$userName};
 
-		return $rs if $rs;
+			my $newGroups =  join(',', keys %{$self->{'userGroups'}});
+
+			@cmd = (
+				$main::imscpConfig{'CMD_USERMOD'},
+				escapeShell($userName),
+				'-G', escapeShell($newGroups)
+			);
+
+			$rs = execute("@cmd", \$stdout, \$stderr);
+			debug($stdout) if $stdout;
+			error($stderr) if $stderr && $rs;
+			debug($stderr) if $stderr && ! $rs;
+			return $rs if $rs;
+		} else {
+			@cmd = ($main::imscpConfig{'CMD_GPASSWD'}, '-d', escapeShell($userName), escapeShell($groupName));
+
+			$rs = execute("@cmd", \$stdout, \$stderr);
+			debug($stdout) if $stdout;
+			error($stderr) if $stderr && $rs && $rs != 3;
+			debug($stderr) if $stderr && ! $rs;
+			return $rs if $rs && $rs != 3;
+		}
 	}
+
+	0;
+}
+
+# Retrieve list of all groups to which unix user is part
+sub getUserGroups
+{
+	my $self = shift;
+
+	fatal('Please use only instance of class not static calls', 1) if ref $self ne __PACKAGE__;
+
+	my $userName = shift || $self->{'username'} || undef;
+	$self->{'username'} = $userName;
+
+	my ($rs, $stdout, $stderr);
+
+	$rs = execute("$main::imscpConfig{'CMD_ID'} -nG " . escapeShell($userName), \$stdout, \$stderr);
+	debug($stdout) if $stdout;
+	error($stderr) if $stderr && $rs;
+	debug($stderr) if $stderr && ! $rs;
+	return $rs if $rs;
+
+	%{$self->{'userGroups'}} = map { $_ => 1 } split ' ', $stdout;
 
 	0;
 }

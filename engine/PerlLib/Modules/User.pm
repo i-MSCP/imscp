@@ -152,7 +152,7 @@ sub add
 	my $oldUserName;
 
 	if(($oldUserName = getpwuid($self->{'admin_sys_uid'})) && $oldUserName ne $userName) {
-		$rs = iMSCP::SystemUser->new('force' => 'yes')->delSystemUser($oldUserName);
+		$rs = iMSCP::SystemUser->new()->delSystemUser($oldUserName);
 		return $rs if $rs;
 	}
 
