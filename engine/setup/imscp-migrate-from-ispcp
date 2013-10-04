@@ -391,10 +391,10 @@ sub deleteUsers
 	my @errors;
 	my $rs = 0;
 
-	# Master unix user/group
-
+	my $userH = iMSCP::SystemUser->new('force' => 'yes');
 	my $groupH = iMSCP::SystemGroup->getInstance();
-	my $userH = iMSCP::SystemUser->new();
+
+	# Master unix user/group
 
 	my $userName = $main::ispcpConfig{'APACHE_SUEXEC_USER_PREF'} . $main::ispcpConfig{'APACHE_SUEXEC_MIN_UID'};
 	$rs = $userH->delSystemUser($userName);
