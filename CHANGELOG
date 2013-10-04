@@ -14,6 +14,7 @@ CONFIG:
 ENGINE:
 	- Fixed: Bind server impl. - Unable to handle subdomains when DNS server mode is set to 'slave'
 	- Fixed: PHP allow_url_fopen feature must be explicitly enabled in composer package installer
+	- Fixed: Bind uninstall fail
 
 Tickets:
 	- Fixed #810: Bug - https default access redirect mode not working for base server url

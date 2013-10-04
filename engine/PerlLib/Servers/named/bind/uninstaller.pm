@@ -141,6 +141,8 @@ sub _restoreConfFiles
 sub _deleteDbFiles
 {
 	my $self = shift;
+	my $stdout;
+	my $stderr;
 
 	my $rs = execute("$main::imscpConfig{'CMD_RM'} -f $self->{'config'}->{'BIND_DB_DIR'}/*.db", \$stdout, \$stderr);
 	debug($stdout) if $stdout;
