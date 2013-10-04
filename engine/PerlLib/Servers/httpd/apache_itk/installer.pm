@@ -364,29 +364,65 @@ sub _addUser
 	my $userName =
 	my $groupName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} . $main::imscpConfig{'SYSTEM_USER_MIN_UID'};
 
-	# Creating panel group
-	$rs = iMSCP::SystemGroup->new('groupname' => $groupName)->addSystemGroup();
-	return $rs if $rs;
+	my ($database, $errStr) = main::setupGetSqlConnect($main::imscpConfig{'DATABASE_NAME'});
+	if(! $database) {
+		error("Unable to connect to SQL server: $errStr");
+		return 1;
+	}
 
-	# Creating panel user
+	my $rdata = $database->doQuery(
+		'admin_sys_uid',
+		'SELECT `admin_sys_uid` FROM `admin` WHERE `admin_type` = ? AND `created_by` = ? LIMIT 1',
+		'admin',
+		'0'
+	);
+
+	unless(ref $rdata eq 'HASH') {
+		error($rdata);
+		return 1;
+	} elsif(! %{$rdata}) {
+		error('Unable to find system admin user');
+		return 1;
+	}
+
+	my $oldUserName;
+
+    if(($oldUserName = getpwuid((%{$rdata})[0])) && $oldUserName ne $userName) {
+    	$rs = iMSCP::SystemUser->new('force' => 'yes')->delSystemUser($oldUserName);
+    	return $rs if $rs;
+    }
+
+	# Creating panel user/group
 	my $panelUName = iMSCP::SystemUser->new(
 		'username' => $userName,
 		'comment' => 'iMSCP master virtual user',
 		'home' => $main::imscpConfig{'GUI_ROOT_DIR'},
-		'skipCreateHome' => 'yes',
-		'group' => $groupName
+		'skipCreateHome' => 1
 	);
 
 	$rs = $panelUName->addSystemUser();
 	return $rs if $rs;
 
-	# Adding panel user in the i-MSCP master group
+	my $panelUuid = scalar getpwnam($userName);
+	my $panelUgid = scalar getgrnam($groupName);
+
+	# Updating admin.admin_sys_uid and admin.admin_sys_gid columns
+	$rdata = $database->doQuery(
+		'update',
+		'UPDATE `admin` SET `admin_sys_uid` = ?, `admin_sys_gid` = ? WHERE `admin_type` = ?',
+		$panelUuid, $panelUgid, 'admin'
+	);
+	unless(ref $rdata eq 'HASH') {
+		error($rdata);
+		return 1;
+	}
+
+	# Adding panel user in i-MSCP master group
 	$rs = $panelUName->addToGroup($main::imscpConfig{'MASTER_GROUP'});
 	return $rs if $rs;
 
 	# Adding Apache user in panel user group
-	my $apacheUName = iMSCP::SystemUser->new('username' => $self->{'config'}->{'APACHE_USER'});
-	$rs = $apacheUName->addToGroup($groupName);
+	my $rs = iMSCP::SystemUser->new('username' => $self->{'config'}->{'APACHE_USER'})->addToGroup($groupName);
 	return $rs if $rs;
 
 	$self->{'hooksManager'}->trigger('afterHttpdAddUser');

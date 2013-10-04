@@ -17,11 +17,11 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
-# @category		i-MSCP
-# @copyright	2010-2013 by i-MSCP | http://i-mscp.net
-# @author		Daniel Andreca <sci2tech@gmail.com>
-# @link			http://i-mscp.net i-MSCP Home Site
-# @license      http://www.gnu.org/licenses/gpl-2.0.html GPL v2
+# @category    i-MSCP
+# @copyright   2010-2013 by i-MSCP | http://i-mscp.net
+# @author      Daniel Andreca <sci2tech@gmail.com>
+# @link        http://i-mscp.net i-MSCP Home Site
+# @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 #
 
 use strict;
@@ -38,7 +38,7 @@ use iMSCP::Debug;
 use iMSCP::Requirements;
 use Data::Dumper;
 
-# Turn off localisation features to force any command output to be in english
+# Turn off localisation features to force any command output to be in English
 $ENV{'LC_MESSAGES'} = 'C';
 
 umask(027);
@@ -64,7 +64,7 @@ sub setup_engine
 		[\&checkISPCPVersion, 'Test if is a supported version: '],
 		[\&checkDbPass, 'Do we have a database password?: '],
 		[\&databaseIntegrityTest, 'Is database usable?: '],
-		[\&userTest, 'System users are in place?: '],
+		[\&deleteUsers, 'Delete unix users: '],
 		[\&systemConfigTest, 'Save system config files if exists: '],
 		[\&confSave, 'Save system configuration: '],
 		[\&dbUpgrade, 'Upgrade database: '],
@@ -111,18 +111,21 @@ sub welcome
 	$dialog->set('title', 'Upgrade to iMSCP');
 	$dialog->set('backtitle', "iMSCP internet Multi Server Control Panel");
 
-	$dialog->set('yes-label','CONTINUE');
-	$dialog->set('no-label','EXIT');
+	$dialog->set('yes-label','Continue');
+	$dialog->set('no-label','Abort');
 	exit 0 if ($dialog->yesno(
 "
-Welcome to \\Z1iMSCP internet Multi Server Control Panel v$main::imscpConfig{'Version'}\\Z0 Upgrade Dialog.
-This program will upgrade your ispCP system to iMSCP.
+Welcome to the i-MSCP \\Z4($main::imscpConfig{'Version'})\\Z0 migration dialog.
 
-\\ZuPlease make sure you have a backup of your server data\\Zn.
+This program will migrate your server from ispCP to i-MSCP.
 
-NOTE: During the migration process some or all services might require to be shut down or restarted.\n\n
-You can stop this process by pushing \\Z1EXIT\\Z0 button
-To proceed select \\Z1CONTINUE\\Z0 button
+\\ZuPlease make sure you have a backup of your server data.\\Zn
+
+\\Z4NOTE:\\Z0 During the migration process some or all services might require to be shut down or restarted.
+
+
+You can stop this process by pushing \\Z4Abort\\Z0 button.
+To proceed select \\Z4Continue\\Z0 button.
 "
 
 		)
@@ -378,29 +381,48 @@ join("\n\n", @errors) .
 	0;
 }
 
-sub userTest
+sub deleteUsers
 {
 	use iMSCP::Database;
 	use iMSCP::Dialog;
+	use iMSCP::SystemGroup;
+	use iMSCP::SystemUser;
 
 	my @errors;
+	my $rs = 0;
 
-	# CLIENT USER
+	# Master unix user/group
+
+	my $groupH = iMSCP::SystemGroup->getInstance();
+	my $userH = iMSCP::SystemUser->new();
+
+	my $userName = $main::ispcpConfig{'APACHE_SUEXEC_USER_PREF'} . $main::ispcpConfig{'APACHE_SUEXEC_MIN_UID'};
+	$rs = $userH->delSystemUser($userName);
+	push(@errors, "Unable to delete $userName unix user") if $rs;
+
+	# Only needed to cover the case where the admin added other users to the unix group
+	my $groupName = $main::ispcpConfig{'APACHE_SUEXEC_USER_PREF'} . $main::ispcpConfig{'APACHE_SUEXEC_MIN_GID'};
+	$rs = $groupH->delSystemGroup($groupName);
+	push(@errors, "Unable to delete $groupName unix group") if $rs;
+
+	# Customer unix users/groups
 	my $query = 'SELECT * FROM `domain`';
 	my $database = iMSCP::Database->new(db => 'mysql')->factory();
 	my $result = $database->doQuery('domain_gid', $query);
+
 	if (ref $result ne 'HASH'){
 		push(@errors, "$query produced the following error: $result");
 	} else {
 		if (keys %{$result}) {
-			local $Data::Dumper::Terse = 1;
-			for my $row (values %{$result}) {
-				push(@errors, "No system user has group id $row->{domain_gid}") if(!getgrgid($row->{'domain_gid'}));
-				push(@errors, "No such group ".$main::ispcpConfig{'APACHE_SUEXEC_USER_PREF'}.$row->{'domain_gid'})
-					if(!getgrnam($main::ispcpConfig{'APACHE_SUEXEC_USER_PREF'}.$row->{'domain_gid'}));
-				push(@errors, "No system user has user id = $row->{domain_uid}") if(!getpwuid($row->{'domain_uid'}));
-				push(@errors, "No such user ".$main::ispcpConfig{'APACHE_SUEXEC_USER_PREF'}.$row->{'domain_uid'})
-					if(!getpwnam($main::ispcpConfig{'APACHE_SUEXEC_USER_PREF'}.$row->{'domain_uid'}));
+			for(values %{$result}) {
+				my $userName = getpwuid($_->{'domain_uid'});
+				$rs = $userH->delSystemUser($userName) if $userName;
+				push(@errors, "Unable to delete $userName unix user") if $rs;
+
+				# Only needed to cover the case where the admin added other users to the unix group
+				my $groupName = getgrgid($_->{'domain_gid'});
+				$rs = $groupH->delSystemGroup($groupName) if $groupName;
+				push(@errors, "Unable to delete $groupName unix group") if $rs;
 			}
 		}
 	}
@@ -410,7 +432,7 @@ sub userTest
 "
 \\Z1\\ZuispCP user records are missing or corrupt!\\Zn\n
 Please fix the following:\n\n" .
-join("\n\n", @errors)
+join("\n", @errors)
 ."\n\nFix this and try again.
 "
 	);

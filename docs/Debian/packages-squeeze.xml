@@ -20,6 +20,7 @@
                     repository_key_uri="http://www.dotdeb.org/dotdeb.gpg"
                     >
                 <package>apache2</package>
+                <package>apache2-suexec</package>
                 <package>apache2-mpm-worker</package>
                 <package>libapache2-mod-fastcgi</package>
                 <package>php5-fpm</package>

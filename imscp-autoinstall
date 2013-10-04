@@ -105,16 +105,16 @@ debugRegisterCallBack(
 		if($?) { # We exit with status 5 from iMSCP::Dialog::Dialog in noninteractive mode
 			if($? == 5) {
 				if(iMSCP::Getopt->preseed) {
-					print STDERR output ("Noninteractive mode: Missing or bad entry found in your preseed file.", 'fatal');
+					print STDERR output ('Noninteractive mode: Missing or bad entry found in your preseed file.', 'fatal');
 				} else {
 					print STDERR output("Noninteractive mode: Missing or bad entry found in configuration file.", 'fatal');
 				}
 			}
 		} else {
 			if(!$main::buildonly) {
-				print STDERR output("i-MSCP $main::imscpConfig{'Version'} has been successfully installed/updated.", 'ok');
+				print STDOUT output("i-MSCP $main::imscpConfig{'Version'} has been successfully installed/updated.", 'ok');
 			} else {
-				print STDERR output("i-MSCP $main::imscpConfig{'Version'} has been successfully built.", 'ok');
+				print STDOUTR output("i-MSCP $main::imscpConfig{'Version'} has been successfully built.", 'ok');
 			}
 
 			exit 0;

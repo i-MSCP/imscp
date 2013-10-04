@@ -1171,10 +1171,7 @@ sub setupCreateMasterGroup
 	my $rs = iMSCP::HooksManager->getInstance()->trigger('beforeSetupCreateMasterGroup');
 	return $rs if $rs;
 
-	my $group = iMSCP::SystemGroup->new();
-
-	$group->{'system'} = 'yes';
-	$rs = $group->addSystemGroup($main::imscpConfig{'MASTER_GROUP'});
+	$rs = iMSCP::SystemGroup->getInstance()->addSystemGroup($main::imscpConfig{'MASTER_GROUP'}, 1);
 	return $rs if $rs;
 
 	iMSCP::HooksManager->getInstance()->trigger('afterSetupCreateMasterGroup');
@@ -2183,23 +2180,23 @@ sub setupPreInstallServers
 	my $rs = iMSCP::HooksManager->getInstance()->trigger('beforeSetupPreInstallServers');
 	return $rs if $rs;
 
-	my ($file, $class, $server, $msg);
 	my @servers = iMSCP::Servers->getInstance()->get();
-
+	my $nbServers = scalar @servers;
 	my $step = 1;
+
 	startDetail();
 
 	for(@servers) {
 		s/\.pm//;
-		$file = "Servers/$_.pm";
-		$class = "Servers::$_";
+		my $file = "Servers/$_.pm";
+		my $class = "Servers::$_";
 		require $file;
-		$server	= $class->factory();
+		my $server	= $class->factory();
 
 		if($server->can('preinstall')) {
-			$msg = "Performing preinstall tasks for the $_ server" .
-				($main::imscpConfig{uc($_) . '_SERVER'} ? ': ' . $main::imscpConfig{uc($_) . '_SERVER'} : '');
-			$rs = step(sub{ $server->preinstall() }, $msg, scalar @servers, $step);
+			$rs = step(
+				sub { $server->preinstall }, sprintf("Running %s preinstall tasks...", ref $server), $nbServers, $step
+			);
 			last if $rs;
 		}
 
@@ -2219,22 +2216,23 @@ sub setupPreInstallAddons
 	my $rs = iMSCP::HooksManager->getInstance()->trigger('beforeSetupPreInstallAddons');
 	return $rs if $rs;
 
-	my ($file, $class, $addons, $msg);
 	my @addons = iMSCP::Addons->getInstance()->get();
-
+	my $nbAddons = scalar @addons;
 	my $step = 1;
+
 	startDetail();
 
 	for(@addons) {
 		s/\.pm//;
-		$file = "Addons/$_.pm";
-		$class = "Addons::$_";
+		my $file = "Addons/$_.pm";
+		my $class = "Addons::$_";
 		require $file;
-		$addons = $class->getInstance();
+		my $addon = $class->getInstance();
 
-		if($addons->can('preinstall')) {
-			$msg = "Performing preinstall tasks for the $_ addon";
-			$rs = step(sub{ $addons->preinstall() }, $msg, scalar @addons, $step);
+		if($addon->can('preinstall')) {
+			$rs = step(
+				sub { $addon->preinstall }, sprintf("Running %s addon preinstall tasks...", ref $addon), $nbAddons, $step
+			);
 			last if $rs;
 		}
 
@@ -2254,23 +2252,23 @@ sub setupInstallServers
 	my $rs = iMSCP::HooksManager->getInstance()->trigger('beforeSetupInstallServers');
 	return $rs if $rs;
 
-	my ($file, $class, $server, $msg);
 	my @servers = iMSCP::Servers->getInstance()->get();
-
+	my $nbServers = scalar @servers;
 	my $step = 1;
+
 	startDetail();
 
 	for(@servers) {
 		s/\.pm//;
-		$file = "Servers/$_.pm";
-		$class = "Servers::$_";
+		my $file = "Servers/$_.pm";
+		my $class = "Servers::$_";
 		require $file;
-		$server = $class->factory();
+		my $server = $class->factory();
 
 		if($server->can('install')) {
-			$msg = "Performing install tasks for the $_ server" .
-				($main::imscpConfig{uc($_) . '_SERVER'} ? ': ' . $main::imscpConfig{uc($_) . '_SERVER'} : '');
-			$rs = step(sub{ $server->install() }, $msg, scalar @servers, $step);
+			$rs = step(
+				sub { $server->install }, sprintf("Running %s install tasks...", ref $server), $nbServers, $step
+			);
 			last if $rs;
 		}
 
@@ -2290,22 +2288,23 @@ sub setupInstallAddons
 	my $rs = iMSCP::HooksManager->getInstance()->trigger('beforeSetupInstallAddons');
 	return $rs if $rs;
 
-	my ($file, $class, $addons, $msg);
 	my @addons = iMSCP::Addons->getInstance()->get();
-
+	my $nbAddons = scalar @addons;
 	my $step = 1;
+
 	startDetail();
 
 	for(@addons) {
 		s/\.pm//;
-		$file = "Addons/$_.pm";
-		$class = "Addons::$_";
+		my $file = "Addons/$_.pm";
+		my $class = "Addons::$_";
 		require $file;
-		$addons = $class->getInstance();
+		my $addon = $class->getInstance();
 
-		if($addons->can('install')) {
-			$msg = "Performing install tasks for the $_ addon";
-			$rs =step(sub{ $addons->install() }, $msg, scalar @addons, $step);
+		if($addon->can('install')) {
+			$rs = step(
+				sub { $addon->install }, sprintf("Running %s addon install tasks...", ref $addon), $nbAddons, $step
+			);
 			last if $rs;
 		}
 
@@ -2325,23 +2324,24 @@ sub setupPostInstallServers
 	my $rs = iMSCP::HooksManager->getInstance()->trigger('beforeSetupPostInstallServers');
 	return $rs if $rs;
 
-	my ($file, $class, $server, $msg);
 	my @servers = iMSCP::Servers->getInstance()->get();
-
+	my $nbServers = scalar @servers;
 	my $step = 1;
+
 	startDetail();
 
 	for(@servers) {
 		s/\.pm//;
-		$file = "Servers/$_.pm";
-		$class = "Servers::$_";
+		my $file = "Servers/$_.pm";
+		my $class = "Servers::$_";
 		require $file;
-		$server = $class->factory();
+		my $server = $class->factory();
 
 		if($server->can('postinstall')) {
-			$msg = "Performing postinstall tasks for the $_ server" .
-				($main::imscpConfig{uc($_) . '_SERVER'} ? ': ' . $main::imscpConfig{uc($_) . '_SERVER'} : '');
-			$rs = step(sub{ $server->postinstall() }, $msg, scalar @servers, $step);
+			$rs = step(
+				sub { $server->postinstall }, sprintf("Running %s postinstall tasks...", ref $server), scalar @servers,
+				$step
+			);
 			last if $rs;
 		}
 
@@ -2361,22 +2361,24 @@ sub setupPostInstallAddons
 	my $rs = iMSCP::HooksManager->getInstance()->trigger('beforeSetupPostInstallAddons');
 	return $rs if $rs;
 
-	my ($file, $class, $addons, $msg);
 	my @addons = iMSCP::Addons->getInstance()->get();
-
+	my $nbAddons = scalar @addons;
 	my $step = 1;
+
 	startDetail();
 
 	for(@addons) {
 		s/\.pm//;
-		$file = "Addons/$_.pm";
-		$class = "Addons::$_";
+		my $file = "Addons/$_.pm";
+		my $class = "Addons::$_";
 		require $file;
-		$addons = $class->getInstance();
+		my $addon = $class->getInstance();
 
-		if($addons->can('postinstall')) {
-			$msg = "Performing postinstall tasks for the $_ addon";
-			$rs = step(sub{ $addons->postinstall() }, $msg, scalar @addons, $step);
+		if($addon->can('postinstall')) {
+			$rs = step(
+				sub { $addon->postinstall }, sprintf("Running %s addon postinstall tasks...", ref $addon), $nbAddons,
+				$step
+			);
 			last if $rs;
 		}
 

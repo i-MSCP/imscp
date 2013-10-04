@@ -70,15 +70,15 @@ debugRegisterCallBack(
 		if($?) { # We exit with status 5 from iMSCP::Dialog::Dialog in noninteractive mode
 			if($? == 5) {
 				if(iMSCP::Getopt->preseed) {
-					print STDERR output ("Noninteractive mode: Missing or bad entry found in your preseed file.");
+					print STDERR output('Noninteractive mode: Missing or bad entry found in your preseed file.', 'fatal');
 				} else {
-					print STDERR output("Noninteractive mode: Missing or bad entry found in configuration file.");
+					print STDERR output('Noninteractive mode: Missing or bad entry found in configuration file.', 'fatal');
 				}
 			}
 			fatal(iMSCP::Debug::getLastError());
 			exit $?;
 		}
-		print STDERR output("i-MSCP $main::imscpConfig{'Version'} has been successfully installed/updated");
+		print STDOUT output("i-MSCP $main::imscpConfig{'Version'} has been successfully installed/updated", 'ok');
 		exit 0;
 	}
 ) if $main::noprompt;
@@ -121,7 +121,7 @@ sub setupProcess
 "
 Welcome to \\Z1i-MSCP version $main::imscpConfig{'Version'}\\Zn setup dialog.
 
-This program will install/update i-MSCP on your system. This dialog is your last chance to abort without do any change on your system.
+This program will install/update i-MSCP on your system.
 
 \\Z3Warning:\\Zn Make sure you have read and performed all steps from the
          \\Zbdocs/$distribution/INSTALL\\Zn file.
@@ -142,7 +142,7 @@ This program will install/update i-MSCP on your system. This dialog is your last
 	return $rs if $rs;
 
 	# Process setup tasks
-	setupTasks();
+	$rs = setupTasks();
 	return $rs if $rs;
 
 	iMSCP::HooksManager->getInstance()->trigger('afterSetup');

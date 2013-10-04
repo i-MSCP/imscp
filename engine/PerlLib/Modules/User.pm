@@ -62,7 +62,8 @@ sub loadData
 		'admin_id',
 		'
 			SELECT
-				`admin_id`, `admin_name`, `admin_status`, `domain_name`, domain_traffic_limit
+				`admin_id`, `admin_name`, `admin_sys_uid`, `admin_sys_gid`, `admin_status`, `domain_name`,
+				`domain_traffic_limit`
 			FROM
 				`admin`
 			LEFT JOIN
@@ -132,12 +133,11 @@ sub add
 {
 	my $self = shift;
 
-	my $groupName =
-	my $userName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} .
+	my $userName =
+	my $groupName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} .
 		($main::imscpConfig{'SYSTEM_USER_MIN_UID'} + $self->{'admin_id'});
 	my $password = '';
 	my $comment = 'iMSCP virtual user';
-	# TODO change to  "$main::imscpConfig{'USER_HOME_DIR'}/$userName";
 	my $home = "$main::imscpConfig{'USER_WEB_DIR'}/$self->{'domain_name'}";
 	my $skeletonPath = $self->{'skeletonPath'} || '/dev/null';
 	my $shell = '/bin/false';
@@ -147,27 +147,39 @@ sub add
 	);
 	return $rs if $rs;
 
-	# Creating i-MSCP unix user group
-	$rs = iMSCP::SystemGroup->new()->addSystemGroup($groupName);
-	return $rs if $rs;
-
 	clearImmutable($home) if -d $home; # Transitional code - Will be removed ASAP
+
+	my $oldUserName;
+
+	if(($oldUserName = getpwuid($self->{'admin_sys_uid'})) && $oldUserName ne $userName) {
+		$rs = iMSCP::SystemUser->new('force' => 'yes')->delSystemUser($oldUserName);
+		return $rs if $rs;
+	}
+
+	my $oldGroupName;
+
+	if(($oldGroupName = getgrgid($self->{'admin_sys_gid'})) && $oldGroupName ne $groupName) {
+		$rs = iMSCP::SystemGroup->getInstance()->delSystemGroup($groupName);
+		return $rs if $rs;
+	}
 
 	# Creating i-MSCP unix user
 	$rs = iMSCP::SystemUser->new(
-		'password' => $password, 'comment' => $comment, 'home' => $home, 'skeletonPath' => $skeletonPath,
-		'group' => $groupName, 'shell' => $shell
-	)->addSystemUser(
-		$userName
-	);
+		'password' => $password,
+		'comment' => $comment,
+		'home' => $home,
+		'skeletonPath' => $skeletonPath,
+		'shell' => $shell
+	)->addSystemUser($userName);
 	return $rs if $rs;
 
-	my $uid = scalar getpwnam($userName);
-	my $gid = scalar getgrnam($groupName);
+	my $userUid = scalar getpwnam($userName);
+	my $userGid = scalar getgrnam($groupName);
 
 	# Updating admin.admin_sys_uid and admin.admin_sys_gid columns
 	my @sql = (
-		"UPDATE `admin` SET `admin_sys_uid` = ?, `admin_sys_gid` = ? WHERE `admin_id` = ?", $uid, $gid, $self->{'userId'}
+		"UPDATE `admin` SET `admin_sys_uid` = ?, `admin_sys_gid` = ? WHERE `admin_id` = ?",
+		$userUid, $userGid, $self->{'userId'}
 	);
 	my $rdata = iMSCP::Database->factory()->doQuery('update', @sql);
 	unless(ref $rdata eq 'HASH') {
@@ -175,8 +187,12 @@ sub add
 		return 1;
 	}
 
+	$self->{'admin_sys_uid'} = $userUid;
+	$self->{'admin_sys_gid'} = $userGid;
+
 	$self->{'hooksManager'}->trigger(
-		'onAfterAddImscpUnixUser', $userName, $password, $groupName, $comment, $home, $skeletonPath, $shell
+		'onAfterAddImscpUnixUser', $userName, $password, $groupName, $comment, $home, $skeletonPath, $shell,
+		$userUid, $userGid
 	);
 
 	# Run the preaddUser(), addUser() and postaddUser() methods on servers/addons that implement them
@@ -188,20 +204,22 @@ sub delete
 {
 	my $self = shift;
 
-	my $userName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} .
+	my $userName =
+	my $groupName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} .
 		($main::imscpConfig{'SYSTEM_USER_MIN_UID'} + $self->{'admin_id'});
 
 	my $rs = $self->{'hooksManager'}->trigger('onBeforeDeleteImscpUnixUser', $userName);
 	return $rs if $rs;
 
-	# Run the predelUser(), delUser() and postdelUser() methods on servers/addons that implement them
+	# Run the predeleteUser(), deleteUser() and postdeleteUser() methods on servers/addons that implement them
 	$rs = $self->SUPER::delete();
 	return $rs if $rs;
 
-	my $user = iMSCP::SystemUser->new();
-	$user->{'force'} = 'yes';
+	$rs = iMSCP::SystemUser->new('force' => 'yes')->delSystemUser($userName);
+	return $rs if $rs;
 
-	$rs = $user->delSystemUser($userName);
+	# Only needed to cover the case where the admin added other users to the unix group
+	$rs = iMSCP::SystemGroup->getInstance()->delSystemGroup($groupName);
 	return $rs if $rs;
 
 	$self->{'hooksManager'}->trigger('onAfterDeleteImscpUnixUser', $userName);
@@ -236,6 +254,8 @@ sub buildFTPDData
 
 	$self->{'ftpd'} = {
 		USER_ID => $self->{'admin_id'},
+		USER_SYS_UID => $self->{'admin_sys_uid'},
+		USER_SYS_GID => $self->{'admin_sys_gid'},
 		USERNAME => $self->{'admin_name'},
 		USER => $userName,
 		GROUP => $groupName

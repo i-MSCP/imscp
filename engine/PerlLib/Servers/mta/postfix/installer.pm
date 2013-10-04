@@ -268,11 +268,10 @@ sub addUsersAndGroups
 	return $rs if $rs;
 
 	# Create groups
-	for(@groups) {
-		my $systemGroup = iMSCP::SystemGroup->new();
-		$systemGroup->{'system'} = 'yes' if $_->[1] eq 'yes';
+	my $systemGroup = iMSCP::SystemGroup->getInstance();
 
-		$rs = $systemGroup->addSystemGroup($_->[0]);
+	for(@groups) {
+		$rs = $systemGroup->addSystemGroup($_->[0], ($_->[1] eq 'yes') ? 1 : 0);
 		return $rs if $rs;
 	}
 

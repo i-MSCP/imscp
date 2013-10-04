@@ -163,15 +163,7 @@ sub askRoundcube($$)
 
 	my ($rs, $msg) = (0, '');
 
-	if(
-		$main::reconfigure ~~ ['webmail', 'all', 'forced'] || ! ($dbUser && $dbPass)
-		# In any case, sql user will be reseted so...
-		#||
-		#(
-		#	! ($main::preseed{'ROUNDCUBE_SQL_USER'} && $main::preseed{'ROUNDCUBE_SQL_PASSWORD'}) &&
-		#	main::setupCheckSqlConnect($dbType, '', $dbHost, $dbPort, $dbUser, $dbPass)
-		#)
-	) {
+	if($main::reconfigure ~~ ['webmail', 'all', 'forced'] || ! ($dbUser && $dbPass)) {
 		# Ask for the roundcube restricted SQL username
 		do{
 

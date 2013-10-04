@@ -118,18 +118,14 @@ sub _removeUserAndGroup
 {
 	my $self = shift;
 
-	# Remove panel user
-	my $panelUName = iMSCP::SystemUser->new();
-	$panelUName->{'force'} = 'yes';
-
-	my $rs = $panelUName->delSystemUser(
+	# Panel user
+	$rs  = iMSCP::SystemUser->new('force' => 'yes')->delSystemUser(
 		$main::imscpConfig{'SYSTEM_USER_PREFIX'} . $main::imscpConfig{'SYSTEM_USER_MIN_UID'}
 	);
 	return $rs if $rs;
 
 	# Remove panel group
-	my $panelGName = iMSCP::SystemGroup->new();
-	$panelGName->delSystemGroup(
+	iMSCP::SystemGroup->getInstance()->delSystemGroup(
 		$main::imscpConfig{'SYSTEM_USER_PREFIX'} . $main::imscpConfig{'SYSTEM_USER_MIN_UID'}
 	);
 }

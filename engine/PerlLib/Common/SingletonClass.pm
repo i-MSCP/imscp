@@ -45,6 +45,7 @@ use warnings;
 =item getInstance([%args])
 
  Implement singleton design pattern. Return instance of this class.
+
  Param hash|hash_ref OPTIONAL hash representing class attributes
  Return Common::SingletonClass
 

@@ -166,15 +166,7 @@ sub askPhpmyadmin
 
 	my ($rs, $msg) = (0, '');
 
-	if(
-		$main::reconfigure ~~ ['sqlmanager', 'all', 'forced'] || ! ($dbUser && $dbPass)
-		# In any case, sql user will be reseted so...
-		#||
-		#(
-		#	! ($main::preseed{'PHPMYADMIN_SQL_USER'} && $main::preseed{'PHPMYADMIN_SQL_PASSWORD'}) &&
-		#	main::setupCheckSqlConnect($dbType, '', $dbHost, $dbPort, $dbUser, $dbPass)
-		#)
-	) {
+	if($main::reconfigure ~~ ['sqlmanager', 'all', 'forced'] || ! ($dbUser && $dbPass)) {
 		# Ask for the PhpMyAdmin restricted SQL username
 		do{
 			($rs, $dbUser) = iMSCP::Dialog->factory()->inputbox(

@@ -5,22 +5,25 @@
 Git Master
 ------------------------------------------------------------------------------------------------------------------------
 
-DOCS:
-	- Updated: Preseed template file
-
 CONFIG:
 	- Fixed: Packages file for Debian Jessie (testing)
 
+DOCS:
+	- Updated: Preseed template file
+
 ENGINE:
 	- Fixed: Bind server impl. - Unable to handle subdomains when DNS server mode is set to 'slave'
-	- Fixed: PHP allow_url_fopen feature must be explicitly enabled in composer package installer
 	- Fixed: Bind uninstall fail
+	- Fixed: Debug library - output() function called with wrong parameters
+	- Fixed: PHP allow_url_fopen feature must be explicitly enabled in composer package installer
 
 Tickets:
 	- Fixed #810: Bug - https default access redirect mode not working for base server url
+	- Fixed #902: Bug - User UID/GID mismatch after updating the SYSTEM_USER_PREFIX and/or SYSTEM_USER_MIN_UID parameters
 	- Fixed #918: Bug - Courier - Unlimited quota doesn't works
 	- Fixed #919: Bug - Preseed feature is broken - A template has not been found
 	- Fixed #924: Defect - After Update from RC3 to RC4.1 pop3-ssl and imap-ssl don't work (dovecot 1.2.15)
+	- Fixed #926: Security Issue - apache_php_fpm - suexec must be enabled
 
 ------------------------------------------------------------------------------------------------------------------------
 1.1.0-rc4.1
@@ -46,13 +49,6 @@ CONFIG:
 	- Removed Dovecot sieve plugin configuration (Such parameter must be provided as plugin)
 	- Updated: Apache templates to support 2.4.x branch
 	- Updated: Dovecot configuration files
-
-SETUP:
-	- Changed: i-MSCP apache_php_fpm server impl. is now the default choice for distributions supporting it officialy
-	- Fixed: Disable dummy php5_cgi Apache module if any
-	- Fixed: Do not ask for SQL user host names when the SQL server is hosted locally
-	- Fixed: Plugins which provide a backend end with unknown error after update
-	- Fixed: Pre-fill Debconf database (Avoid postfix, proftpd and courier questions during installation)
 
 ENGINE:
 	- Added: Support for Apache 2.4.x branch
@@ -94,6 +90,13 @@ GUI:
 	- Rewritten: Mail interface
 	- Updated: Assets are now reachable through the /themes/<theme>/assets path
 	- Updated: Plugin API
+
+SETUP:
+	- Changed: i-MSCP apache_php_fpm server impl. is now the default choice for distributions supporting it officialy
+	- Fixed: Disable dummy php5_cgi Apache module if any
+	- Fixed: Do not ask for SQL user host names when the SQL server is hosted locally
+	- Fixed: Plugins which provide a backend end with unknown error after update
+	- Fixed: Pre-fill Debconf database (Avoid postfix, proftpd and courier questions during installation)
 
 Tickets:
 	- Fixed #460: Nice To Have - Admin/Reseller should be able to set mail quota for customers

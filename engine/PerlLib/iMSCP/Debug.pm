@@ -193,7 +193,7 @@ sub warning
 		message => "$caller: $message", tag => 'warn', level => $verbosity ? 'cluck' : 'log'
 	);
 
-	print STDERR output("$caller: $message", { mode => 'warn' }) unless $self->{'silent'};
+	print STDERR output("$caller: $message", 'warn') unless $self->{'silent'};
 
 	0;
 }
@@ -216,7 +216,7 @@ sub error
 		message => "$caller: $message", tag => 'error', level => $verbosity ? 'cluck' : 'log'
 	);
 
-	print STDERR output("$caller: $message", { mode => 'error' }) unless $self->{'silent'};
+	print STDERR output("$caller: $message", 'error') unless $self->{'silent'};
 
 	0;
 }
@@ -238,7 +238,7 @@ sub fatal
 		message => "$caller: $message", tag => 'fatal error', level => $verbosity ? 'cluck' : 'log'
 	);
 
-	print STDERR output("$caller: $message", { mode => 'fatal' });
+	print STDERR output("$caller: $message", 'fatal');
 
 	exit 1;
 }

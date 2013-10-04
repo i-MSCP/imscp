@@ -71,15 +71,7 @@ sub askProftpd
 
 	my ($rs, $msg) = (0, '');
 
-	if(
-		$main::reconfigure ~~ ['ftpd', 'servers', 'all', 'forced'] || ! ($dbUser && $dbPass)
-		# In any case, sql user will be reseted so...
-		#||
-		#(
-		#	! ($main::preseed{'FTPD_SQL_USER'} && $main::preseed{'FTPD_SQL_PASSWORD'}) && # If we are not in preseed mode
-		#	main::setupCheckSqlConnect($dbType, '', $dbHost, $dbPort, $dbUser, $dbPass)
-		#)
-	) {
+	if($main::reconfigure ~~ ['ftpd', 'servers', 'all', 'forced'] || ! ($dbUser && $dbPass)) {
 		# Ask for the proftpd restricted SQL username
 		do{
 			($rs, $dbUser) = iMSCP::Dialog->factory()->inputbox(

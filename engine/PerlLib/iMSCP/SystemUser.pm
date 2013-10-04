@@ -171,11 +171,14 @@ sub addToGroup
 	if(getgrnam($groupName) && getpwnam($userName)) {
 		$self->getUserGroups($userName);
 
-		if(! $self->{'userGroups'}->{$groupName}) {
-			my $newGroups = join(',', keys %{$self->{'userGroups'}}) . ",$groupName";
+		if(! exists $self->{'userGroups'}->{$groupName}) {
+			delete $self->{'userGroups'}->{$userName};
+
+			my $newGroups = join(',', keys %{$self->{'userGroups'}});
+			$newGroups = ($newGroups ne '') ? "$newGroups,$groupName" : $groupName;
+
 			my  @cmd = (
-				'/usr/bin/skill -KILL -vu ' . escapeShell($userName) . '; ',
-				"$main::imscpConfig{'CMD_USERMOD'}",
+				$main::imscpConfig{'CMD_USERMOD'},
 				($^O =~ /bsd$/ ? escapeShell($userName) : ''),	# bsd way
 				'-G', escapeShell($newGroups),
 				($^O !~ /bsd$/ ? escapeShell($userName) : ''),	# linux way

@@ -211,7 +211,7 @@ sub _uninstallServers
 		$server = $class->factory();
 
 		if($server->can('uninstall')) {
-			$msg = "Performing uninstall tasks for the $_ server" .
+			$msg = "Running uninstall tasks for the $_ server" .
 				($main::imscpConfig{uc($_) . '_SERVER'} ? ': ' . $main::imscpConfig{uc($_) . '_SERVER'} : '');
 
 			$rs = step(sub{ $server->uninstall() }, $msg, scalar @servers, $step);
@@ -318,7 +318,7 @@ sub _removeSqlData
 
 sub _removeiMSCPSystemGroup
 {
-	iMSCP::SystemGroup->new()->delSystemGroup($main::imscpConfig{'MASTER_GROUP'});
+	iMSCP::SystemGroup->getInstance()->delSystemGroup($main::imscpConfig{'MASTER_GROUP'});
 }
 
 sub _removeFiles

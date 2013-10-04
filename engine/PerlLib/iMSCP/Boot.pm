@@ -127,7 +127,6 @@ sub lock
 	my $rs = 1;
 
 	unless(defined $self->{'locks'}->{$lockFile}) {
-
 		debug("Acquire exclusive lock on $lockFile");
 
 		fatal('Unable to open lock file') unless open($self->{'locks'}->{$lockFile}, '>', $lockFile);
@@ -152,7 +151,6 @@ sub unlock
 	my $lockFile = shift || '/tmp/imscp.lock';
 
 	if(defined $self->{'locks'}->{$lockFile}) {
-
 		debug("Release exclusive lock on $lockFile");
 
 		fatal('Unable to release lock') if ! flock($self->{'locks'}->{$lockFile}, LOCK_UN);
@@ -189,7 +187,6 @@ sub _genKeys
 	require "$keyFile" if -f $keyFile;
 
 	if ($db_pass_key eq '{KEY}' || $db_pass_iv eq '{IV}') {
-
 		debug('Generating database keys...');
 
 		if(-d $main::imscpConfig{'CONF_DIR'}) {
