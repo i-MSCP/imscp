@@ -67,9 +67,14 @@ sub _restoreConfFile
 {
 	my $self = shift;
 
+	my $rs = iMSCP::File->new('filename' => "$self->{'bkpDir'}/courier-authdaemon.system")->copyFile(
+		$self->{'config'}->{'CMD_AUTHDAEMON'}
+	) if -f "$self->{'bkpDir'}/courier-authdaemon.system";
+	return $rs if $rs;
+
 	for ('authdaemonrc', 'authmysqlrc', $self->{'config'}->{'COURIER_IMAP_SSL'}, $self->{'config'}->{'COURIER_POP_SSL'}) {
-		my $rs = iMSCP::File->new(
-			'filename' => "$self->{'bkpDir'}/$_.system"
+		$rs = iMSCP::File->new(
+			'filename' => "$self->{'bkpDir'}//courier-authdaemon.system"
 		)->copyFile(
 			"$self->{'config'}->{'AUTHLIB_CONF_DIR'}/$_"
 		) if -f "$self->{'bkpDir'}/$_.system";
