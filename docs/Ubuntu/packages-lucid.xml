@@ -31,7 +31,6 @@
                 <package>dovecot-common</package>
                 <package>dovecot-imapd</package>
                 <package>dovecot-pop3d</package>
-                <package>dovecot-mysql</package>
             </dovecot>
         </alternative>
     </po>

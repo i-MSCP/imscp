@@ -7,6 +7,7 @@ Git Master
 
 CONFIG:
 	- Fixed: Packages file for Debian Jessie (testing)
+	- Fixed: Package dovecot-mysql is not available for Ubuntu Lucid
 
 DOCS:
 	- Updated: Preseed template file
