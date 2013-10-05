@@ -174,7 +174,7 @@ function reseller_generatePage($tpl, $domainId)
 			'VL_MAIL_ACCOUNTS_USED' => get_domain_running_mail_acc_cnt($domainId),
 			'VL_MAIL_ACCOUNTS_LIMIT' => translate_limit_value($domainProperties['domain_mailacc_limit']),
 			'VL_MAIL_QUOTA_USED' => $quota,
-			'VL_MAIL_QUOTA_LIMIT' => $quotaLimit,
+			'VL_MAIL_QUOTA_LIMIT' => ($domainProperties['domain_mailacc_limit'] != '-1') ? $quotaLimit : tr('Disabled'),
 			'VL_FTP_ACCOUNTS_USED' => get_customer_running_ftp_acc_cnt($domainAdminId),
 			'VL_FTP_ACCOUNTS_LIMIT' => translate_limit_value($domainProperties['domain_ftpacc_limit']),
 			'VL_SQL_DB_ACCOUNTS_USED' => get_domain_running_sqld_acc_cnt($domainId),

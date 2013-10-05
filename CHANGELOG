@@ -28,6 +28,7 @@ Tickets:
 	- Fixed #924: Defect - After Update from RC3 to RC4.1 pop3-ssl and imap-ssl don't work (dovecot 1.2.15)
 	- Fixed #926: Security Issue - apache_php_fpm - suexec must be enabled
 	- Fixed #928: Defect - Courier/Maildrop - Wrong permissions after reboot
+	- Fixed #929: Malfunction - User limits not changeable if Reseller's Email account limit is set to -1
 
 ------------------------------------------------------------------------------------------------------------------------
 1.1.0-rc4.1

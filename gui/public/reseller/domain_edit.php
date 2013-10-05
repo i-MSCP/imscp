@@ -754,30 +754,34 @@ function reseller_checkAndUpdateData($domainId, $recoveryMode = false)
 		}
 
 		// Check for mail quota
-		if (!imscp_limit_check($data['mail_quota'], null)) {
-			set_page_message(tr('Wrong syntax for the mail quota value.'), 'error');
-			$errFieldsStack[] = 'mail_quota';
-		} elseif ($data['domain_disk_limit'] != 0 && $data['mail_quota'] > $data['domain_disk_limit']) {
-			set_page_message(tr('Email quota cannot be bigger than disk space limit.'), 'error');
-			$errFieldsStack[] = 'mail_quota';
-		} elseif($data['domain_disk_limit'] != 0 && $data['mail_quota'] == 0) {
-			set_page_message(
-				tr('Email quota cannot be unlimited. Max value is %d MiB.', $data['domain_disk_limit']), 'error'
-			);
-			$errFieldsStack[] = 'mail_quota';
-		} else {
-			$mailData = reseller_getMailData($data['domain_id'], $data['fallback_mail_quota']);
-
-			if($data['mail_quota'] != 0 && $data['mail_quota'] < $mailData['nb_mailboxes']) {
+		if ($data["fallback_domain_mailacc_limit"] != -1) {
+			if (!imscp_limit_check($data['mail_quota'], null)) {
+				set_page_message(tr('Wrong syntax for the mail quota value.'), 'error');
+				$errFieldsStack[] = 'mail_quota';
+			} elseif ($data['domain_disk_limit'] != 0 && $data['mail_quota'] > $data['domain_disk_limit']) {
+				set_page_message(tr('Email quota cannot be bigger than disk space limit.'), 'error');
+				$errFieldsStack[] = 'mail_quota';
+			} elseif ($data['domain_disk_limit'] != 0 && $data['mail_quota'] == 0) {
 				set_page_message(
-					tr(
-						'Email quota cannot be lower than %d. Each mailbox should have a least 1 MiB quota.',
-						$mailData['nb_mailboxes']
-					),
-					'error'
+					tr('Email quota cannot be unlimited. Max value is %d MiB.', $data['domain_disk_limit']), 'error'
 				);
 				$errFieldsStack[] = 'mail_quota';
+			} else {
+				$mailData = reseller_getMailData($data['domain_id'], $data['fallback_mail_quota']);
+
+				if ($data['mail_quota'] != 0 && $data['mail_quota'] < $mailData['nb_mailboxes']) {
+					set_page_message(
+						tr(
+							'Email quota cannot be lower than %d. Each mailbox should have a least 1 MiB quota.',
+							$mailData['nb_mailboxes']
+						),
+						'error'
+					);
+					$errFieldsStack[] = 'mail_quota';
+				}
 			}
+		} else {
+			$data['mail_quota'] = 0;
 		}
 
 		// Check for PHP support (we are safe here)
