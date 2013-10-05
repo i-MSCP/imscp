@@ -284,7 +284,7 @@ sub start
 
 	my ($stdout, $stderr);
 
-	for('CMD_AUTHD', 'CMD_POP', 'CMD_IMAP', 'CMD_POP_SSL', 'CMD_IMAP_SSL') {
+	for('CMD_AUTHDAEMON', 'CMD_POP', 'CMD_IMAP', 'CMD_POP_SSL', 'CMD_IMAP_SSL') {
 		$rs = execute("$self->{'config'}->{$_} start", \$stdout, \$stderr);
 		debug($stdout) if $stdout;
 		error($stderr) if $stderr && $rs;
@@ -311,7 +311,7 @@ sub stop
 
 	my ($stdout, $stderr);
 
-	for('CMD_AUTHD', 'CMD_POP', 'CMD_IMAP', 'CMD_POP_SSL', 'CMD_IMAP_SSL') {
+	for('CMD_AUTHDAEMON', 'CMD_POP', 'CMD_IMAP', 'CMD_POP_SSL', 'CMD_IMAP_SSL') {
 		$rs = execute("$self->{'config'}->{$_} stop", \$stdout, \$stderr);
 		debug($stdout) if $stdout;
 		error($stderr) if $stderr && $rs;
@@ -338,7 +338,7 @@ sub restart
 
 	my ($stdout, $stderr);
 
-	for('CMD_AUTHD', 'CMD_POP', 'CMD_IMAP', 'CMD_POP_SSL', 'CMD_IMAP_SSL') {
+	for('CMD_AUTHDAEMON', 'CMD_POP', 'CMD_IMAP', 'CMD_POP_SSL', 'CMD_IMAP_SSL') {
 		$rs = execute("$self->{'config'}->{$_} restart", \$stdout, \$stderr);
 		debug($stdout) if $stdout;
 		error($stderr) if $stderr && $rs;

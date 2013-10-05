@@ -86,10 +86,10 @@ sub registerSetupHooks
 		$hooksManager->trigger('afterPoRegisterSetupHooks', $hooksManager, 'courier');
 	} else {
 		$main::imscpConfig{'PO_SERVER'} = 'no';
-    	warning('i-MSCP Courier PO server require the Postfix MTA. Installation skipped...');
+		warning('i-MSCP Courier PO server require the Postfix MTA. Installation skipped...');
 
-    	0;
-    }
+		0;
+	}
 }
 
 =item askCourier($dialog)
@@ -169,7 +169,10 @@ sub install
 	my $rs = $self->{'hooksManager'}->trigger('beforePoInstall', 'courier');
 	return $rs if $rs;
 
-	for('authdaemonrc', 'authmysqlrc', $self->{'config'}->{'COURIER_IMAP_SSL'}, $self->{'config'}->{'COURIER_POP_SSL'}) {
+	for(
+		$self->{'config'}->{'CMD_AUTHDAEMON'}, 'authdaemonrc', 'authmysqlrc', $self->{'config'}->{'COURIER_IMAP_SSL'},
+		$self->{'config'}->{'COURIER_POP_SSL'}
+	) {
 		$rs = $self->_bkpConfFile($_);
 		return $rs if $rs;
 	}
@@ -177,11 +180,11 @@ sub install
 	$rs = $self->_setupSqlUser();
 	return $rs if $rs;
 
-	$rs = $self->_buildConf();
+	$rs = $self->_overrideAuthdaemonInitScript();
 	return $rs if $rs;
 
-	#$rs = $self->_buildUserdbFile();
-	#return $rs if $rs;
+	$rs = $self->_buildConf();
+	return $rs if $rs;
 
 	$rs = $self->_saveConf();
 	return $rs if $rs;
@@ -422,6 +425,47 @@ sub _setupSqlUser
 	$self->{'hooksManager'}->trigger('afterPoSetupDb');
 }
 
+=item _overrideAuthdaemonInitScript()
+
+ Override courier-authdaemon init script
+
+ Return int 0 on success, other on failure
+
+=cut
+
+sub _overrideAuthdaemonInitScript
+{
+	my $self = shift;
+
+	my $file = iMSCP::File->new('filename' => $self->{'config'}->{'CMD_AUTHDAEMON'});
+
+	my $fileContent = $file->get();
+	unless($fileContent) {
+		error("Unable to read $self->{'config'}->{'CMD_AUTHDAEMON'} file");
+		return 1;
+	}
+
+	require Servers::mta;
+	my $mta = Servers::mta->factory();
+
+	my $mailUser = $mta->{'config'}->{'MTA_MAILBOX_UID_NAME'};
+	my $authdaemonUser = $self->{'config'}->{'AUTHDAEMON_USER'};
+	my $authdaemonGroup = $self->{'config'}->{'AUTHDAEMON_GROUP'};
+
+	$fileContent =~ s/$authdaemonUser:$authdaemonGroup\s+\$rundir$/$mailUser:$authdaemonGroup \$rundir/m;
+
+	my $rs = $file->set($fileContent);
+	return $rs if $rs;
+
+	$rs = $file->save();
+	return $rs if $rs;
+
+	$rs = $file->mode(0755);
+	return $rs if $rs;
+
+	$file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'})
+}
+
 =item _buildConf()
 
  Build courier configuration files.
@@ -498,10 +542,10 @@ sub _buildConf
 		$rs = $file->save();
 		return $rs if $rs;
 
-		$rs = $file->owner($cfgFiles{$_}->[1], $cfgFiles{$_}->[2]);
+		$rs = $file->mode($cfgFiles{$_}->[3]);
 		return $rs if $rs;
 
-		$rs = $file->mode($cfgFiles{$_}->[3]);
+		$rs = $file->owner($cfgFiles{$_}->[1], $cfgFiles{$_}->[2]);
 		return $rs if $rs;
 
 		# Install file in production directory
@@ -551,10 +595,10 @@ sub _buildAuthdaemonrcFile
 	$rs = $file->save();
 	return $rs if $rs;
 
-	$rs = $file->owner($self->{'config'}->{'AUTHDAEMON_USER'}, $self->{'config'}->{'AUTHDAEMON_GROUP'});
+	$rs = $file->mode(0660);
 	return $rs if $rs;
 
-	$rs = $file->mode(0660);
+	$rs = $file->owner($self->{'config'}->{'AUTHDAEMON_USER'}, $self->{'config'}->{'AUTHDAEMON_GROUP'});
 	return $rs if $rs;
 
 	# Installing the new file in the production directory
