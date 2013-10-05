@@ -418,7 +418,7 @@ sub _addUser
 	my $oldUserUid = $rdata->{(%{$rdata})[0]}->{'admin_sys_uid'} // 0;
 	my $oldUserName;
 
-	if($oldUserUid != 0 && ($oldUserName = getpwuid($oldUserUid) && $oldUserName ne $userName)) {
+	if($oldUserUid != 0 && ($oldUserName = getpwuid($oldUserUid)) && $oldUserName ne $userName) {
 		$rs = iMSCP::SystemUser->new('keepHome' => 'yes')->delSystemUser($oldUserName);
 		return $rs if $rs;
 	}

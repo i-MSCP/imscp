@@ -126,14 +126,12 @@ sub delSystemUser
 		return 1;
 	}
 
-	my $keepHome = $self->{'keepHome'} ? '' : '-r'; # Prevent deletion of user home directory if any
-
 	if(getpwnam($userName)) {
 		my  @cmd = (
 			($self->{'force'} ? '' : "$main::imscpConfig{'CMD_PKILL'} -KILL " . escapeShell($userName) . '; '),
 			$main::imscpConfig{'CMD_USERDEL'},
 			($^O =~ /bsd$/ ? escapeShell($userName) : ''),
-			$keepHome, # Keep home directory
+			($self->{'keepHome'} ? '' : '-r'),
 			($self->{'force'} ? '-f' : ''),
 			($^O !~ /bsd$/ ? escapeShell($userName) : '')
 		);
