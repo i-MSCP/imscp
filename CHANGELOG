@@ -26,7 +26,7 @@ Tickets:
 	- Fixed #919: Bug - Preseed feature is broken - A template has not been found
 	- Fixed #924: Defect - After Update from RC3 to RC4.1 pop3-ssl and imap-ssl don't work (dovecot 1.2.15)
 	- Fixed #926: Security Issue - apache_php_fpm - suexec must be enabled
-	- Fixed #98: Defect - Courier/Maildrop - Wrong permissions after reboot
+	- Fixed #928: Defect - Courier/Maildrop - Wrong permissions after reboot
 
 ------------------------------------------------------------------------------------------------------------------------
 1.1.0-rc4.1
