@@ -12,9 +12,11 @@ DOCS:
 	- Updated: Preseed template file
 
 ENGINE:
+	- Changed: skill command to pkill command (portability issues)
 	- Fixed: Bind server impl. - Unable to handle subdomains when DNS server mode is set to 'slave'
 	- Fixed: Bind uninstall fail
 	- Fixed: Debug library - output() function called with wrong parameters
+	- Fixed: iMSCP::SystemUser::delSystemUser() - Added 'keepHome' option allowing to kept user home directory
 	- Fixed: PHP allow_url_fopen feature must be explicitly enabled in composer package installer
 
 Tickets:

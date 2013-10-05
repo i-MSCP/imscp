@@ -149,17 +149,19 @@ sub add
 
 	clearImmutable($home) if -d $home; # Transitional code - Will be removed ASAP
 
+	my $oldUserUid = $self->{'admin_sys_uid'} // 0;
 	my $oldUserName;
 
-	if(($oldUserName = getpwuid($self->{'admin_sys_uid'})) && $oldUserName ne $userName) {
-		$rs = iMSCP::SystemUser->new()->delSystemUser($oldUserName);
+	if($oldUserUid != 0 && ($oldUserName = getpwuid($oldUserUid)) && $oldUserName ne $userName) {
+		$rs = iMSCP::SystemUser->new('keepHome' => 'yes')->delSystemUser($oldUserName);
 		return $rs if $rs;
 	}
 
+	my $oldUserGid = $self->{'admin_sys_gid'} // 0;
 	my $oldGroupName;
 
-	if(($oldGroupName = getgrgid($self->{'admin_sys_gid'})) && $oldGroupName ne $groupName) {
-		$rs = iMSCP::SystemGroup->getInstance()->delSystemGroup($groupName);
+	if($oldUserGid != 0 && ($oldGroupName = getgrgid($oldUserGid)) && $oldGroupName ne $groupName) {
+		$rs = iMSCP::SystemGroup->getInstance()->delSystemGroup($oldGroupName);
 		return $rs if $rs;
 	}
 

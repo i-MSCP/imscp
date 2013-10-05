@@ -89,7 +89,7 @@ sub addSystemUser
 		);
 	} else { # Modify existent user
 		@cmd = (
-			"$main::imscpConfig{'CMD_SKILL'} -KILL -vu " . escapeShell($userName) . '; ',
+			"$main::imscpConfig{'CMD_PKILL'} -KILL " . escapeShell($userName) . '; ',
 			$main::imscpConfig{'CMD_USERMOD'},
 			($^O =~ /bsd$/ ? escapeShell($userName) : ''),	# username bsd way
 			$password,										# Password
@@ -126,12 +126,14 @@ sub delSystemUser
 		return 1;
 	}
 
+	my $keepHome = $self->{'keepHome'} ? '' : '-r'; # Prevent deletion of user home directory if any
+
 	if(getpwnam($userName)) {
 		my  @cmd = (
-			"$main::imscpConfig{'CMD_SKILL'} -KILL -vu " . escapeShell($userName) . '; ',
+			($self->{'force'} ? '' : "$main::imscpConfig{'CMD_PKILL'} -KILL " . escapeShell($userName) . '; '),
 			$main::imscpConfig{'CMD_USERDEL'},
 			($^O =~ /bsd$/ ? escapeShell($userName) : ''),
-			'-r',
+			$keepHome, # Keep home directory
 			($self->{'force'} ? '-f' : ''),
 			($^O !~ /bsd$/ ? escapeShell($userName) : '')
 		);

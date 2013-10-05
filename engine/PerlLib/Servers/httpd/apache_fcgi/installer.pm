@@ -468,7 +468,7 @@ sub _addUser
 
 	my $rdata = $database->doQuery(
 		'admin_sys_uid',
-		'SELECT `admin_sys_uid` FROM `admin` WHERE `admin_type` = ? AND `created_by` = ? LIMIT 1',
+		'SELECT `admin_sys_uid`, `admin_sys_gid` FROM `admin` WHERE `admin_type` = ? AND `created_by` = ? LIMIT 1',
 		'admin',
 		'0'
 	);
@@ -481,12 +481,21 @@ sub _addUser
 		return 1;
 	}
 
+	my $oldUserUid = $rdata->{(%{$rdata})[0]}->{'admin_sys_uid'} // 0;
 	my $oldUserName;
 
-    if(($oldUserName = getpwuid((%{$rdata})[0])) && $oldUserName ne $userName) {
-    	$rs = iMSCP::SystemUser->new()->delSystemUser($oldUserName);
-    	return $rs if $rs;
-    }
+	if($oldUserUid != 0 && ($oldUserName = getpwuid($oldUserUid)) && $oldUserName ne $userName) {
+		$rs = iMSCP::SystemUser->new('keepHome' => 'yes')->delSystemUser($oldUserName);
+		return $rs if $rs;
+	}
+
+	my $oldUserGid = $rdata->{(%{$rdata})[0]}->{'admin_sys_gid'} // 0;
+	my $oldGroupName;
+
+	if($oldUserGid != 0 && ($oldGroupName = getgrgid($oldUserGid)) && $oldGroupName ne $groupName) {
+		$rs = iMSCP::SystemGroup->getInstance()->delSystemGroup($oldGroupName);
+		return $rs if $rs;
+	}
 
 	# Creating panel user/group
 	my $panelUName = iMSCP::SystemUser->new(
