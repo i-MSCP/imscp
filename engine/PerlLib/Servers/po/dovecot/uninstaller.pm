@@ -33,7 +33,8 @@ use iMSCP::Debug;
 use iMSCP::File;
 use iMSCP::Execute;
 use iMSCP::Database;
-use Servers::mta;
+use Servers::po::dovecot;
+use Servers::mta::postfix;
 use parent 'Common::SingletonClass';
 
 sub uninstall
@@ -51,6 +52,7 @@ sub _init
 	my $self = shift;
 
 	$self->{'po'} = Servers::po::dovecot->getInstance();
+	$self->{'mta'} = Servers::mta::postfix->getInstance();
 
 	$self->{'cfgDir'} = $self->{'po'}->{'cfgDir'};
 	$self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
@@ -76,14 +78,12 @@ sub _restoreConfFile
 		return $rs if $rs;
 	}
 
-	my $mta = Servers::mta->factory();
-
 	my $file = iMSCP::File->new('filename' => "$self->{'config'}->{'DOVECOT_CONF_DIR'}/dovecot-sql.conf");
 
 	$rs = $file->mode(0644);
 	return $rs if $rs;
 
-	$file->owner($main::imscpConfig{'ROOT_USER'}, $mta->{'MTA_MAILBOX_GID_NAME'});
+	$file->owner($main::imscpConfig{'ROOT_USER'}, $self->{'mta'}->{'MTA_MAILBOX_GID_NAME'});
 }
 
 sub _dropSqlUser

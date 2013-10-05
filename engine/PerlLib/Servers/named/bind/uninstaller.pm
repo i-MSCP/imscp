@@ -39,6 +39,7 @@ use iMSCP::Debug;
 use File::Basename;
 use iMSCP::File;
 use iMSCP::Execute;
+use Servers::named::bind;
 use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION

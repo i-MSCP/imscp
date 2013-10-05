@@ -37,6 +37,7 @@ use iMSCP::Dir;
 use iMSCP::Templator;
 use iMSCP::HooksManager;
 use File::Basename;
+use Servers::ftpd::proftpd;
 use parent 'Common::SingletonClass';
 
 sub registerSetupHooks

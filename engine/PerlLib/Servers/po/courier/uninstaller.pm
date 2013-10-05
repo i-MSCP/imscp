@@ -32,6 +32,7 @@ use warnings;
 use iMSCP::Debug;
 use iMSCP::File;
 use iMSCP::Execute;
+use Servers::po::courier;
 use parent 'Common::SingletonClass';
 
 sub _init

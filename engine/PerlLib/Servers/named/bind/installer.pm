@@ -44,6 +44,7 @@ use iMSCP::Dir;
 use File::Basename;
 use iMSCP::Templator;
 use iMSCP::Execute;
+use Servers::named::bind;
 use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION

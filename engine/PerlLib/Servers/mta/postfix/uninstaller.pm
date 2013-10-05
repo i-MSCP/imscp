@@ -36,6 +36,7 @@ use File::Basename;
 use iMSCP::File;
 use iMSCP::Dir;
 use iMSCP::SystemUser;
+use Servers::mta::postfix;
 use parent 'Common::SingletonClass';
 
 sub _init

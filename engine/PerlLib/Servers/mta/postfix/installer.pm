@@ -40,6 +40,7 @@ use iMSCP::Rights;
 use iMSCP::SystemUser;
 use iMSCP::SystemGroup;
 use File::Basename;
+use Servers::mta::postfix;
 use parent 'Common::SingletonClass';
 
 sub _init
