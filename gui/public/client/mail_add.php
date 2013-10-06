@@ -338,14 +338,15 @@ function client_generatePage($tpl)
 		$checked = $cfg->HTML_CHECKED;
 		$selected = $cfg->HTML_SELECTED;
 
+		$mailType = (isset($_POST['account_type']) && in_array($_POST['account_type'], array('1', '2', '3')))
+			? $_POST['account_type'] : '1';
+
 		$tpl->assign(
 			array(
 				'USERNAME' => isset($_POST['username']) ? tohtml($_POST['username']) : '',
-				'NORMAL_CHECKED' => (isset($_POST['account_type']) && $_POST['account_type'] == '1')
-					? $checked : ((empty($_POST)) ? $checked : ''),
-				'FORWARD_CHECKED' => (isset($_POST['account_type']) && $_POST['account_type'] == '2') ? $checked : '',
-				'NORMAL_FORWARD_CHECKED' => (isset($_POST['account_type']) && $_POST['account_type'] == '3')
-					? $checked : '',
+				'NORMAL_CHECKED' => ($mailType == '1') ? $checked : '',
+				'FORWARD_CHECKED' => ($mailType == '2') ? $checked : '',
+				'NORMAL_FORWARD_CHECKED' => ($mailType == '3') ? $checked : '',
 				'PASSWORD' => isset($_POST['password']) ? tohtml($_POST['password']) : '',
 				'PASSWORD_REP' => isset($_POST['password_rep']) ? tohtml($_POST['password_rep']) : '',
 				'TR_QUOTA' => ($mainDmnProps['mail_quota'] == '0')
