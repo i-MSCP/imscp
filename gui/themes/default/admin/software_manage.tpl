@@ -86,7 +86,7 @@
 	<!-- EDP: no_softwaredepot_list -->
 	<!-- BDP: list_softwaredepot -->
 	<tr>
-		<td><span class="icon i_app_installer" title="{TR_TOOLTIP}">{TR_NAME}</span></td>
+		<td><span class="tips icon i_app_installer" title="{TR_TOOLTIP}">{TR_NAME}</span></td>
 		<td>{TR_VERSION}</td>
 		<td>{TR_LANGUAGE}</td>
 		<td>{TR_TYPE}</td>
@@ -128,7 +128,7 @@
 		<tbody>
 		<!-- BDP: list_webdepotsoftware -->
 		<tr>
-			<td><span class="icon i_app_installer" title="{TR_PACKAGE_TOOLTIP}">{TR_PACKAGE_NAME}</span></td>
+			<td><span class="tips icon i_app_installer" title="{TR_PACKAGE_TOOLTIP}">{TR_PACKAGE_NAME}</span></td>
 			<td>{TR_PACKAGE_INSTALL_TYPE}</td>
 			<td>{TR_PACKAGE_VERSION}</td>
 			<td>{TR_PACKAGE_LANGUAGE}</td>
@@ -184,7 +184,7 @@
 	<!-- EDP: no_software_list -->
 	<!-- BDP: list_software -->
 	<tr>
-		<td><span class="icon i_app_installer" title="{TR_TOOLTIP}">{TR_NAME}</span></td>
+		<td><span class="tips icon i_app_installer" title="{TR_TOOLTIP}">{TR_NAME}</span></td>
 		<td>{TR_VERSION}</td>
 		<td>{TR_LANGUAGE}</td>
 		<td>{TR_TYPE}</td>

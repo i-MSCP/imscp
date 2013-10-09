@@ -54,10 +54,10 @@
 	<!-- EDP: no_software_list -->
 	<!-- BDP: list_software -->
 	<tr>
-		<td><span class="icon i_app_installer" title="{SW_DESCRIPTION}">{SW_NAME}</span></td>
+		<td><span class="tips icon i_app_installer" title="{SW_DESCRIPTION}">{SW_NAME}</span></td>
 		<td>{SW_VERSION}</td>
 		<td>{SW_LANGUAGE}</td>
-		<td><span class="icon i_app_installed" title="{SW_INSTALLED}">{SW_STATUS}</span></td>
+		<td><span class="tips icon i_app_installed" title="{SW_INSTALLED}">{SW_STATUS}</span></td>
 		<td>{SW_TYPE}</td>
 		<td><a href="{DELETE}" class="icon i_{SOFTWARE_ICON}" onclick="return action_delete()">{TR_DELETE}</a></td>
 	</tr>
@@ -127,7 +127,7 @@
 		<tbody>
 		<!-- BDP: list_webdepotsoftware -->
 		<tr>
-			<td><span class="icon i_app_installer" title="{TR_PACKAGE_TOOLTIP}">{TR_PACKAGE_NAME}</span></td>
+			<td><span class="tips icon i_app_installer" title="{TR_PACKAGE_TOOLTIP}">{TR_PACKAGE_NAME}</span></td>
 			<td>{TR_PACKAGE_INSTALL_TYPE}</td>
 			<td>{TR_PACKAGE_VERSION}</td>
 			<td>{TR_PACKAGE_LANGUAGE}</td>

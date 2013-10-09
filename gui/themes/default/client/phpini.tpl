@@ -66,7 +66,7 @@
 		<tr>
 			<td>
 				<label>{TR_DISABLE_FUNCTIONS_EXEC}</label>
-				<span style="vertical-align: middle;" class="icon i_help" id="exec_help" title="{TR_EXEC_HELP}"></span>
+				<span style="vertical-align: middle;" class="tips icon i_help" id="exec_help" title="{TR_EXEC_HELP}"></span>
 			</td>
 			<td>
 				<div class="radio">

@@ -65,12 +65,12 @@
 		<tr>
 			<td>
 				<label for="domain_alias_name">{TR_DOMAIN_ALIAS_NAME}</label>
-				<span class="icon i_help" id="domain_alias_name_tooltip" title="{TR_DOMAIN_ALIAS_NAME_TOOLTIP}"></span>
+				<span class="tips icon i_help" id="domain_alias_name_tooltip" title="{TR_DOMAIN_ALIAS_NAME_TOOLTIP}"></span>
 			</td>
 			<td><input type="text" name="domain_alias_name" id="domain_alias_name" value="{DOMAIN_ALIAS_NAME}"/></td>
 		</tr>
 		<tr>
-			<td>{TR_SHARED_MOUNT_POINT}<span class="icon i_help" title="{TR_SHARED_MOUNT_POINT_TOOLTIP}"></span></td>
+			<td>{TR_SHARED_MOUNT_POINT}<span class="tips icon i_help" title="{TR_SHARED_MOUNT_POINT_TOOLTIP}"></span></td>
 			<td>
 				<div class="radio">
 					<input type="radio" name="shared_mount_point" id="shared_mount_point_yes"
@@ -90,7 +90,7 @@
 			</td>
 		</tr>
 		<tr>
-			<td>{TR_URL_FORWARDING} <span class="icon i_help" title="{TR_URL_FORWARDING_TOOLTIP}"></span></td>
+			<td>{TR_URL_FORWARDING} <span class="tips icon i_help" title="{TR_URL_FORWARDING_TOOLTIP}"></span></td>
 			<td>
 				<div class="radio">
 					<input type="radio" name="url_forwarding" id="url_forwarding_yes"{FORWARD_URL_YES} value="yes"/>

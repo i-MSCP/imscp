@@ -134,7 +134,7 @@
 	<div class="odd">
 		<div class="left">
 			<label for="tld_strict_validation">{TR_TLD_STRICT_VALIDATION}</label>
-			<span class="icon i_help" title="{TR_TLD_STRICT_VALIDATION_HELP}"></span>
+			<span class="tips icon i_help" title="{TR_TLD_STRICT_VALIDATION_HELP}"></span>
 		</div>
 		<div class="right">
 			<select name="tld_strict_validation" id="tld_strict_validation">
@@ -146,7 +146,7 @@
 	<div class="even">
 		<div class="left">
 			<label for="sld_strict_validation">{TR_SLD_STRICT_VALIDATION}</label>
-			<span class="icon i_help" title="{TR_SLD_STRICT_VALIDATION_HELP}"></span>
+			<span class="tips icon i_help" title="{TR_SLD_STRICT_VALIDATION_HELP}"></span>
 		</div>
 		<div class="right">
 			<select name="sld_strict_validation" id="sld_strict_validation">
@@ -280,7 +280,7 @@
 	<div class="odd">
 		<div class="left">
 			<label for="phpini_open_basedir">{TR_PHPINI_OPEN_BASEDIR}</label>
-			<span class="icon i_help" title={TR_PHPINI_OPEN_BASEDIR_TOOLTIP}></span>
+			<span class="tips icon i_help" title={TR_PHPINI_OPEN_BASEDIR_TOOLTIP}></span>
 		</div>
 		<div class="right">
 			<input name="phpini_open_basedir" id="phpini_open_basedir" type="text" value="{PHPINI_OPEN_BASEDIR}"/>

@@ -31,7 +31,7 @@
 		<!-- EDP: domain_status_reload_true -->
 		<!-- BDP: domain_status_reload_false -->
 		<td>
-			<span class="icon i_domain_icon" title="{DOMAIN_NAME}">{DOMAIN_NAME}</span>
+			<span class="tips icon i_domain_icon" title="{DOMAIN_NAME}">{DOMAIN_NAME}</span>
 		</td>
 		<!-- EDP: domain_status_reload_false -->
 		<td>{DOMAIN_CREATE_DATE}</td>
@@ -72,7 +72,7 @@
 		</td>
 		<!-- EDP: als_status_reload_true -->
 		<!-- BDP: als_status_reload_false -->
-		<td><span class="icon i_domain_icon" title="{ALS_NAME}">{ALS_NAME}</span></td>
+		<td><span class="tips icon i_domain_icon" title="{ALS_NAME}">{ALS_NAME}</span></td>
 		<!-- EDP: als_status_reload_false -->
 		<td>{ALS_MOUNT}</td>
 		<td>{ALS_REDIRECT}</td>
@@ -120,7 +120,7 @@
 		</td>
 		<!-- EDP: sub_status_reload_true -->
 		<!-- BDP: sub_status_reload_false -->
-		<td><span class="icon i_domain_icon" title="{SUB_NAME}.{SUB_ALIAS_NAME}">{SUB_NAME}.{SUB_ALIAS_NAME}</span></td>
+		<td><span class="tips icon i_domain_icon" title="{SUB_NAME}.{SUB_ALIAS_NAME}">{SUB_NAME}.{SUB_ALIAS_NAME}</span></td>
 		<!-- EDP: sub_status_reload_false -->
 		<td>{SUB_MOUNT}</td>
 		<td>{SUB_REDIRECT}</td>
@@ -164,7 +164,7 @@
 		<td>{DNS_NAME}</td>
 		<td>{DNS_CLASS}</td>
 		<td>{DNS_TYPE}</td>
-		<td><span title="{LONG_DNS_DATA}">{SHORT_DNS_DATA}</span></td>
+		<td><span class="tips" title="{LONG_DNS_DATA}">{SHORT_DNS_DATA}</span></td>
 		<td>
 			<!-- BDP: dns_edit_link -->
 			<a class="icon i_edit" href="{DNS_ACTION_SCRIPT_EDIT}" title="{DNS_ACTION_EDIT}">{DNS_ACTION_EDIT}</a>

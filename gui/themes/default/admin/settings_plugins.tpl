@@ -165,7 +165,7 @@
 		<tr>
 			<td>
 				{TR_PLUGIN_ARCHIVE}
-				<span class="upload_help icon i_help" title="{TR_PLUGIN_ARCHIVE_TOOLTIP}"></span>
+				<span class="tips icon i_help" title="{TR_PLUGIN_ARCHIVE_TOOLTIP}"></span>
 			</td>
 			<td>
 				<input type="file" name="pluginArchive"/>
