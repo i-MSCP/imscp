@@ -24,28 +24,28 @@
  * Portions created by the i-MSCP Team are Copyright (C) 2010-2013 by
  * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
  *
- * @category	i-MSCP
- * @package		iMSCP_Core
- * @subpackage	Admin
- * @copyright	2001-2006 by moleSoftware GmbH
- * @copyright	2006-2010 by ispCP | http://isp-control.net
- * @copyright	2010-2013 by i-MSCP | http://i-mscp.net
- * @author		ispCP Team
- * @author		i-MSCP Team
- * @link		http://i-mscp.net
+ * @category    i-MSCP
+ * @package     iMSCP_Core
+ * @subpackage  Admin
+ * @copyright   2001-2006 by moleSoftware GmbH
+ * @copyright   2006-2010 by ispCP | http://isp-control.net
+ * @copyright   2010-2013 by i-MSCP | http://i-mscp.net
+ * @author      ispCP Team
+ * @author      i-MSCP Team
+ * @link        http://i-mscp.net
  */
 
-/******************************************************************************
+/***********************************************************************************************************************
  * Script functions
  */
 
 /**
- * Update user personal data.
+ * Update user data
  *
  * @param int $userId Customer unique identifier
  * @return void
  */
-function admin_updateUserPersonalData($userId)
+function admin_updateUserData($userId)
 {
 	iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onBeforeEditUser, array('userId' => $userId));
 
@@ -127,21 +127,16 @@ function admin_updateUserPersonalData($userId)
 
 		set_page_message(tr('Login data successfully sent to %s.', $userName), 'success');
 	}
-
-	//$_SESSION['user_updated'] = 1;
 }
 
 /**
- * Check data.
+ * Validate input data
  *
  * @access private
  * @return bool TRUE if data are valid, FALSE otherwise
  */
 function admin_isValidData()
 {
-	/** @var $cfg iMSCP_Config_Handler_File */
-	$cfg = iMSCP_Registry::get('config');
-
 	if (!chk_email($_POST['email'])) {
 		set_page_message(tr("Incorrect email length or syntax."), 'error');
 	}
@@ -162,7 +157,7 @@ function admin_isValidData()
 	return true;
 }
 
-/******************************************************************************
+/***********************************************************************************************************************
  * Main script
  */
 
@@ -175,7 +170,6 @@ check_login('admin');
 
 /** @var $cfg iMSCP_Config_Handler_File */
 $cfg = iMSCP_Registry::get('config');
-
 
 // Dispatches the request
 if (is_xhr()) { // Password generation (AJAX request)
@@ -194,8 +188,8 @@ if (isset($_GET['edit_id'])) {
 }
 
 if(!empty($_POST) && admin_isValidData()) {
-	admin_updateUserPersonalData($userId);
-	set_page_message(tr('User personal data successfully updated.'), 'success');
+	admin_updateUserData($userId);
+	set_page_message(tr('User data successfully updated.'), 'success');
 	redirectTo('manage_users.php');
 }
 
