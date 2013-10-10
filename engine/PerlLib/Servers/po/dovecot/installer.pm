@@ -241,14 +241,14 @@ EOF
 		my $configSnippet = <<EOF;
 
 dovecot   unix  -       n       n       -       -       pipe
-  flags=DRhu user={MTA_MAILBOX_UID_NAME}:{MTA_MAILBOX_GID_NAME} argv={DOVECOT_LDA_PATH} -f \${sender} -d \${recipient} {SFLAG}
+  flags=DRhu user={MTA_MAILBOX_UID_NAME}:{MTA_MAILBOX_GID_NAME} argv={DOVECOT_DELIVER_PATH} -f \${sender} -d \${recipient} {SFLAG}
 EOF
 
 		$$fileContent .= iMSCP::Templator::process(
 			{
 				MTA_MAILBOX_UID_NAME => $self->{'mta'}->{'config'}-> {'MTA_MAILBOX_UID_NAME'},
 				MTA_MAILBOX_GID_NAME => $self->{'mta'}->{'config'}-> {'MTA_MAILBOX_GID_NAME'},
-				DOVECOT_LDA_PATH => $self->{'config'}->{'DOVECOT_LDA_PATH'},
+				DOVECOT_DELIVER_PATH => $self->{'config'}->{'DOVECOT_DELIVER_PATH'},
 				SFLAG => (version->new($self->{'version'}) < version->new('2.0.0') ? '-s' : '')
 			},
 			$configSnippet
@@ -472,7 +472,7 @@ sub _buildConf
 		POSTFIX_GROUP => $self->{'mta'}->{'config'}->{'POSTFIX_GROUP'},
 		POSTFIX_SENDMAIL_PATH => $self->{'mta'}->{'config'}->{'POSTFIX_SENDMAIL_PATH'},
 		DOVECOT_CONF_DIR => $self->{'config'}->{'DOVECOT_CONF_DIR'},
-		DOVECOT_LDA_PATH => $self->{'config'}->{'DOVECOT_LDA_PATH'},
+		DOVECOT_DELIVER_PATH => $self->{'config'}->{'DOVECOT_DELIVER_PATH'},
 		DOVECOT_SASL_SOCKET_PATH => $self->{'config'}->{'DOVECOT_SASL_SOCKET_PATH'},
 		DOVECOT_AUTH_SOCKET_PATH => $self->{'config'}->{'DOVECOT_AUTH_SOCKET_PATH'},
 		ENGINE_ROOT_DIR => $main::imscpConfig{'ENGINE_ROOT_DIR'}
