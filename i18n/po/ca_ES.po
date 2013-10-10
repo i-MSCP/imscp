@@ -19,9 +19,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2013-09-29 19:07+0200\n"
-"PO-Revision-Date: 2013-09-29 08:22+0000\n"
-"Last-Translator: Torsten Widmann <info@goover.de>\n"
+"POT-Creation-Date: 2013-10-11 00:08+0200\n"
+"PO-Revision-Date: 2013-10-10 22:09+0000\n"
+"Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Catalan (Spain) (http://www.transifex.com/projects/p/i-MSCP/language/ca_ES/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -804,6 +804,9 @@ msgstr "Admin / Suport / Tiquets tancats"
 msgid "Admin / Support / View Ticket"
 msgstr "Admin / Suport / Veure tiquet"
 
+msgid "Admin / System Tools / Anti-Rootkits Logs"
+msgstr ""
+
 msgid "Admin / System Tools / Database Update"
 msgstr "Admin / Eines de sistema / Actualització de Base dades"
 
@@ -812,9 +815,6 @@ msgstr "Admin / Eines de sistema / Depuració"
 
 msgid "Admin / System Tools / Maintenance Settings"
 msgstr "Admin / Eines de sistema / Paràmetres de manteniment"
-
-msgid "Admin / System Tools / Rootkit Logs"
-msgstr "Admin / Eines de sistema / Registre de rootkits"
 
 msgid "Admin / System Tools / System Information"
 msgstr "Admin / Eines de sistema / Informació del sistema"
@@ -1029,8 +1029,8 @@ msgstr "Hi ha hagut un error inesperat: %s"
 msgid "An unknown error occurred during file upload: %s"
 msgstr "Hi ha hagut un error durant la pujada del fitxer: %s"
 
-msgid "Anti-Rootkits Tools Log Checker"
-msgstr "Registre dels anàlisi de les eines Anti-Rootkits"
+msgid "Anti-Rootkits Logs"
+msgstr ""
 
 msgid "Application installer"
 msgstr "Instal·lador d'aplicacions"
@@ -3290,6 +3290,9 @@ msgstr ""
 msgid "No administrator accounts found."
 msgstr "No s'han trobat comptes d'administrador"
 
+msgid "No anti-rootkits logs"
+msgstr ""
+
 msgid "No available"
 msgstr ""
 
@@ -4205,9 +4208,6 @@ msgstr ""
 
 msgid "Rights successfully removed."
 msgstr ""
-
-msgid "Rootkit logs"
-msgstr "Registre d'anti-rootkits"
 
 msgid "SMTP in"
 msgstr "SMTP entrada"
@@ -5245,6 +5245,9 @@ msgstr "Autentificació per usuari"
 msgid "User data successfully updated"
 msgstr ""
 
+msgid "User data successfully updated."
+msgstr ""
+
 msgid "User data were not updated."
 msgstr "No s'han canviat les dades de l'usuari."
 
@@ -5276,9 +5279,6 @@ msgstr "Nom d'usuari massa llarg!"
 
 msgid "User password"
 msgstr "Contrasenya d'usuari"
-
-msgid "User personal data successfully updated."
-msgstr "Les dades personals d'usuari s'han actualitzat."
 
 msgid "User real (first and last) name"
 msgstr "Nom real de l'usuari (nom i cognoms)"

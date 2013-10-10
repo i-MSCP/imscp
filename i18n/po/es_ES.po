@@ -15,9 +15,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2013-09-29 19:07+0200\n"
-"PO-Revision-Date: 2013-09-29 08:22+0000\n"
-"Last-Translator: Torsten Widmann <info@goover.de>\n"
+"POT-Creation-Date: 2013-10-11 00:08+0200\n"
+"PO-Revision-Date: 2013-10-10 22:09+0000\n"
+"Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Spanish (Spain) (http://www.transifex.com/projects/p/i-MSCP/language/es_ES/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -800,6 +800,9 @@ msgstr "Administrador / Soporte / Tickets Cerrados"
 msgid "Admin / Support / View Ticket"
 msgstr "Administrador / Soporte / Ver Tickets"
 
+msgid "Admin / System Tools / Anti-Rootkits Logs"
+msgstr ""
+
 msgid "Admin / System Tools / Database Update"
 msgstr "Administrador / Herramientas del Sistema / Actualización de Base de Datos"
 
@@ -808,9 +811,6 @@ msgstr "Administrador / Herramientas del Sistema / Depurador"
 
 msgid "Admin / System Tools / Maintenance Settings"
 msgstr "Administrador / Herramientas del Sistema / Configuración de Mantenimiento"
-
-msgid "Admin / System Tools / Rootkit Logs"
-msgstr "Administrador / Herramientas del sistema / Rootkit Logs"
 
 msgid "Admin / System Tools / System Information"
 msgstr "Administrador / Herramientas del sistema / Información del sistema"
@@ -1025,8 +1025,8 @@ msgstr "Ha ocurrido un error inesperado: %s"
 msgid "An unknown error occurred during file upload: %s"
 msgstr "Ha ocurrido un error desconocido mientras se subia el fichero: %s"
 
-msgid "Anti-Rootkits Tools Log Checker"
-msgstr "Analizar el Log de las Herramientas Anti-Rootkits"
+msgid "Anti-Rootkits Logs"
+msgstr ""
 
 msgid "Application installer"
 msgstr "Instalador de aplicación"
@@ -3286,6 +3286,9 @@ msgstr "No hay estadísticas IP para mostrar."
 msgid "No administrator accounts found."
 msgstr "No se han encontrado cuentas de administrador."
 
+msgid "No anti-rootkits logs"
+msgstr ""
+
 msgid "No available"
 msgstr "No disponible"
 
@@ -4201,9 +4204,6 @@ msgstr "Derechos añadidos correctamente."
 
 msgid "Rights successfully removed."
 msgstr "Derechos eliminados correctamente."
-
-msgid "Rootkit logs"
-msgstr "Registro de rootkits"
 
 msgid "SMTP in"
 msgstr "SMTP entrante"
@@ -5241,6 +5241,9 @@ msgstr "Autenticación de usuario"
 msgid "User data successfully updated"
 msgstr "Los datos de usuario se han actualizado con éxito"
 
+msgid "User data successfully updated."
+msgstr ""
+
 msgid "User data were not updated."
 msgstr "Los datos de usuario no han sido actualizados."
 
@@ -5272,9 +5275,6 @@ msgstr "¡El nombre del usuario es demasiado largo!"
 
 msgid "User password"
 msgstr "Contraseña de usuario"
-
-msgid "User personal data successfully updated."
-msgstr "Los datos personales de usuario han sido actualizados correctamente."
 
 msgid "User real (first and last) name"
 msgstr "Nombre y apellidos del usuario real"

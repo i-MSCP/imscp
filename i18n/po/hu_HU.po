@@ -11,9 +11,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2013-09-29 19:07+0200\n"
-"PO-Revision-Date: 2013-09-29 08:22+0000\n"
-"Last-Translator: Torsten Widmann <info@goover.de>\n"
+"POT-Creation-Date: 2013-10-11 00:08+0200\n"
+"PO-Revision-Date: 2013-10-10 22:09+0000\n"
+"Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Hungarian (Hungary) (http://www.transifex.com/projects/p/i-MSCP/language/hu_HU/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -46,7 +46,7 @@ msgid ""
 "___________________________\n"
 "The i-MSCP Team\n"
 "\n"
-msgstr "\n\nKedves {NAME},\n\nTárhelye sikeresen elkészült a következő beállításokkal:⏎\n\nAz Ön hozzáférési adatai:\n\nFelhasználói szint:  {USERTYPE}\nFelhasználó neve:  {USERNAME}\nJelszava:                {PASSWORD}\n\nKérjük, változtassa meg ideiglenes jelszavát az első bejelentkezéskor!⏎\n\nA következő oldalon tud belépni: {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}\n\nStatisztika elérése: http://{USERNAME}/{WEBSTATS_RPATH}\n(A belépési adatok megegyeznek  a megadott felhasználónévvel és jelszóval)\n\nKöszönjük, hogy minket választott.\n\n___________________________\nThe i-MSCP Team\n"
+msgstr "\n\nKedves {NAME},\n\nTárhelye sikeresen elkészült a következő beállításokkal:\n\nAz Ön hozzáférési adatai:\n\nFelhasználói szint:  {USERTYPE}\nFelhasználó neve:  {USERNAME}\nJelszava:                {PASSWORD}\n\nKérjük, változtassa meg ideiglenes jelszavát az első bejelentkezéskor!\n\nA következő oldalon tud belépni: {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}\n\nStatisztika elérése: http://{USERNAME}/{WEBSTATS_RPATH}\n(A belépési adatok megegyeznek  a megadott felhasználónévvel és jelszóval)\n\nKöszönjük, hogy minket választott.\n\n___________________________\nThe i-MSCP Team\n"
 
 msgid ""
 "\n"
@@ -796,6 +796,9 @@ msgstr ""
 msgid "Admin / Support / View Ticket"
 msgstr ""
 
+msgid "Admin / System Tools / Anti-Rootkits Logs"
+msgstr ""
+
 msgid "Admin / System Tools / Database Update"
 msgstr ""
 
@@ -803,9 +806,6 @@ msgid "Admin / System Tools / Debugger"
 msgstr ""
 
 msgid "Admin / System Tools / Maintenance Settings"
-msgstr ""
-
-msgid "Admin / System Tools / Rootkit Logs"
 msgstr ""
 
 msgid "Admin / System Tools / System Information"
@@ -1021,8 +1021,8 @@ msgstr ""
 msgid "An unknown error occurred during file upload: %s"
 msgstr ""
 
-msgid "Anti-Rootkits Tools Log Checker"
-msgstr "Rootkit-védelem naplójának elemzése"
+msgid "Anti-Rootkits Logs"
+msgstr ""
 
 msgid "Application installer"
 msgstr "Alkalmazás telepítő"
@@ -2320,7 +2320,7 @@ msgid "Error reporting"
 msgstr ""
 
 msgid "Error while trying to obtain list of network cards."
-msgstr "Hiba a hálózati eszközök beolvasásakor"
+msgstr "Hiba a hálózati eszközök beolvasásakor!"
 
 msgid "Error: Remote File not found!"
 msgstr "Hiba: Letöltendő fájl nem található"
@@ -2622,10 +2622,10 @@ msgid "Hosting plans available for"
 msgstr "Elérhető tárhely csomagok"
 
 msgid "Hour"
-msgstr "ora"
+msgstr "óra"
 
 msgid "Hours"
-msgstr "ora"
+msgstr "óra"
 
 msgid "Htaccess errors"
 msgstr ""
@@ -3281,6 +3281,9 @@ msgstr "Nincs megjeleníthető IP statisztika"
 
 msgid "No administrator accounts found."
 msgstr "Adminisztrátor nem található"
+
+msgid "No anti-rootkits logs"
+msgstr ""
 
 msgid "No available"
 msgstr ""
@@ -4197,9 +4200,6 @@ msgstr ""
 
 msgid "Rights successfully removed."
 msgstr ""
-
-msgid "Rootkit logs"
-msgstr "Rootkit naplók"
 
 msgid "SMTP in"
 msgstr "SMTP (bejövő)"
@@ -5237,6 +5237,9 @@ msgstr "Felhasználó azonosítása"
 msgid "User data successfully updated"
 msgstr "Felhasználó személyes adatainak frissítése sikeresen megtörtént"
 
+msgid "User data successfully updated."
+msgstr ""
+
 msgid "User data were not updated."
 msgstr "Felhasználói adatok nem változtak"
 
@@ -5268,9 +5271,6 @@ msgstr "Felhasználó neve túl hosszú"
 
 msgid "User password"
 msgstr "Felhasználó jelszava"
-
-msgid "User personal data successfully updated."
-msgstr "Felhasználó személyes adatainak frissítése sikeresen megtörtént"
 
 msgid "User real (first and last) name"
 msgstr "Felhasználó teljes (vezeték és kereszt) neve"

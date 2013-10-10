@@ -33,9 +33,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2013-09-29 19:07+0200\n"
-"PO-Revision-Date: 2013-09-29 08:39+0000\n"
-"Last-Translator: Torsten Widmann <info@goover.de>\n"
+"POT-Creation-Date: 2013-10-11 00:08+0200\n"
+"PO-Revision-Date: 2013-10-10 22:09+0000\n"
+"Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: German (Germany) (http://www.transifex.com/projects/p/i-MSCP/language/de_DE/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -818,6 +818,9 @@ msgstr "Admin / Support / Geschlossene Tickets"
 msgid "Admin / Support / View Ticket"
 msgstr "Admin / Support / Ticket anzeigen"
 
+msgid "Admin / System Tools / Anti-Rootkits Logs"
+msgstr ""
+
 msgid "Admin / System Tools / Database Update"
 msgstr "Admin / System Werkzeuge / Datenbank Update"
 
@@ -826,9 +829,6 @@ msgstr "Admin / System Tools / Debugger"
 
 msgid "Admin / System Tools / Maintenance Settings"
 msgstr "Admin / System Werkzeuge / Wartungseinstellungen"
-
-msgid "Admin / System Tools / Rootkit Logs"
-msgstr "Admin / System Tools / Rootkit Logs"
 
 msgid "Admin / System Tools / System Information"
 msgstr "Admin / System Werkzeuge / System Information"
@@ -1043,8 +1043,8 @@ msgstr "Ein unerwarteter Fehler ist aufgetreten: %s"
 msgid "An unknown error occurred during file upload: %s"
 msgstr "Beim Hochladen der Datei ist ein unbekannter Fehler aufgetreten: %s"
 
-msgid "Anti-Rootkits Tools Log Checker"
-msgstr "Anti-Rootkits Tools-Logchecker"
+msgid "Anti-Rootkits Logs"
+msgstr ""
 
 msgid "Application installer"
 msgstr "Anwendungsinstaller"
@@ -3304,6 +3304,9 @@ msgstr "Keine IP-Statistiken vorhanden."
 msgid "No administrator accounts found."
 msgstr "Keine Administratorkonten gefunden."
 
+msgid "No anti-rootkits logs"
+msgstr ""
+
 msgid "No available"
 msgstr ""
 
@@ -4219,9 +4222,6 @@ msgstr "Rechte erfolgreich hinzugefügt."
 
 msgid "Rights successfully removed."
 msgstr "Rechte erfolgreich entfernt."
-
-msgid "Rootkit logs"
-msgstr "Rootkit Logs"
 
 msgid "SMTP in"
 msgstr "SMTP (in)"
@@ -5259,6 +5259,9 @@ msgstr "Erlaubte Benutzer"
 msgid "User data successfully updated"
 msgstr "Benutzerdaten erfolgreich aktualisiert"
 
+msgid "User data successfully updated."
+msgstr ""
+
 msgid "User data were not updated."
 msgstr " Benutzerdaten wurden nicht aktualisiert."
 
@@ -5290,9 +5293,6 @@ msgstr "Benutzername ist zu lang!"
 
 msgid "User password"
 msgstr "Benutzerpasswort"
-
-msgid "User personal data successfully updated."
-msgstr "Persönliche Benutzerdaten erfolgreich aktualisiert."
 
 msgid "User real (first and last) name"
 msgstr "Richtiger (Vor- und Nachname) des Benutzer"

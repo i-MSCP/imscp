@@ -9,9 +9,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2013-09-29 19:07+0200\n"
-"PO-Revision-Date: 2013-09-29 09:28+0000\n"
-"Last-Translator: Cool <barni@telia.com>\n"
+"POT-Creation-Date: 2013-10-11 00:08+0200\n"
+"PO-Revision-Date: 2013-10-10 22:09+0000\n"
+"Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Swedish (Sweden) (http://www.transifex.com/projects/p/i-MSCP/language/sv_SE/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -794,6 +794,9 @@ msgstr "Admin / Support / Closed Tickets"
 msgid "Admin / Support / View Ticket"
 msgstr "Admin / Support / View Ticket"
 
+msgid "Admin / System Tools / Anti-Rootkits Logs"
+msgstr ""
+
 msgid "Admin / System Tools / Database Update"
 msgstr "Admin / System Tools / Database Update"
 
@@ -802,9 +805,6 @@ msgstr "Admin / System Tools / Debugger"
 
 msgid "Admin / System Tools / Maintenance Settings"
 msgstr "Admin / System Tools / Maintenance Settings"
-
-msgid "Admin / System Tools / Rootkit Logs"
-msgstr "Admin / System Tools / Rootkit Logs"
 
 msgid "Admin / System Tools / System Information"
 msgstr "Admin / System Tools / System Information"
@@ -1019,8 +1019,8 @@ msgstr "Ett oväntat fel uppstod: %s"
 msgid "An unknown error occurred during file upload: %s"
 msgstr "An unknown error occured during file upload: %s"
 
-msgid "Anti-Rootkits Tools Log Checker"
-msgstr "Loggvisare för anti-rootkitverktyg"
+msgid "Anti-Rootkits Logs"
+msgstr ""
 
 msgid "Application installer"
 msgstr "Programinstallerare"
@@ -3280,6 +3280,9 @@ msgstr "Inga IP-statistik som ska visas."
 msgid "No administrator accounts found."
 msgstr "Inga administratörskonton hittats."
 
+msgid "No anti-rootkits logs"
+msgstr ""
+
 msgid "No available"
 msgstr "Inte tillgänglig"
 
@@ -4195,9 +4198,6 @@ msgstr "Rättigheter lagts till."
 
 msgid "Rights successfully removed."
 msgstr "Rättigheter har tagits bort."
-
-msgid "Rootkit logs"
-msgstr "Rootkit logs"
 
 msgid "SMTP in"
 msgstr "SMTP inåt"
@@ -5235,6 +5235,9 @@ msgstr "Användarverifiering"
 msgid "User data successfully updated"
 msgstr "User data successfully updated"
 
+msgid "User data successfully updated."
+msgstr ""
+
 msgid "User data were not updated."
 msgstr "Användardata uppdaterades inte."
 
@@ -5266,9 +5269,6 @@ msgstr "Användarnamnet är för långt!"
 
 msgid "User password"
 msgstr "Användarlösenord"
-
-msgid "User personal data successfully updated."
-msgstr "Personligt data för användare uppdaterad"
 
 msgid "User real (first and last) name"
 msgstr "Användares riktiga (första och sista) namn"

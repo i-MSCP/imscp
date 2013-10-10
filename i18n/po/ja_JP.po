@@ -10,9 +10,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2013-09-29 19:07+0200\n"
-"PO-Revision-Date: 2013-09-29 08:22+0000\n"
-"Last-Translator: Torsten Widmann <info@goover.de>\n"
+"POT-Creation-Date: 2013-10-11 00:08+0200\n"
+"PO-Revision-Date: 2013-10-10 22:09+0000\n"
+"Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Japanese (Japan) (http://www.transifex.com/projects/p/i-MSCP/language/ja_JP/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -795,6 +795,9 @@ msgstr "管理者 / サポート / クローズチケット"
 msgid "Admin / Support / View Ticket"
 msgstr "管理者 / サポート / チケット表示"
 
+msgid "Admin / System Tools / Anti-Rootkits Logs"
+msgstr ""
+
 msgid "Admin / System Tools / Database Update"
 msgstr "管理者 / システムツール / データベース更新"
 
@@ -803,9 +806,6 @@ msgstr "管理者 / システムツール / デバッガ"
 
 msgid "Admin / System Tools / Maintenance Settings"
 msgstr "管理者 / システムツール / メンテナンス設定"
-
-msgid "Admin / System Tools / Rootkit Logs"
-msgstr "管理者 / システムツール / ルートキットログ"
 
 msgid "Admin / System Tools / System Information"
 msgstr "管理者 / システムツール / システム情報"
@@ -1020,8 +1020,8 @@ msgstr "予期しないエラーが発生しました：%s"
 msgid "An unknown error occurred during file upload: %s"
 msgstr "原因不明のエラーは、ファイルアップロードの間に発生しました： %s"
 
-msgid "Anti-Rootkits Tools Log Checker"
-msgstr "アンチルートキットのログチェック"
+msgid "Anti-Rootkits Logs"
+msgstr ""
 
 msgid "Application installer"
 msgstr "アプリケーションインストーラー"
@@ -1226,7 +1226,7 @@ msgid "CGI"
 msgstr "CGI"
 
 msgid "CNAME field is empty or invalid."
-msgstr ""
+msgstr "CNAMEフィールドが空または無効です。"
 
 msgid "CPU Information"
 msgstr "CPU情報"
@@ -1390,13 +1390,13 @@ msgid "Client / Domains / Add Custom DNS record"
 msgstr "クライアント / ドメイン / カスタムDNSレコード追加"
 
 msgid "Client / Domains / Add Domain Alias"
-msgstr ""
+msgstr "クライアント / ドメイン / ドメインエイリアス追加"
 
 msgid "Client / Domains / Add Subdomain"
 msgstr "クライアント / ドメイン / サブドメイン追加"
 
 msgid "Client / Domains / Edit Domain Alias"
-msgstr ""
+msgstr "クライアント / ドメイン / ドメインエイリアス編集"
 
 msgid "Client / Domains / Edit Subdomain"
 msgstr "クライアント / ドメイン / サブドメイン編集"
@@ -1417,7 +1417,7 @@ msgid "Client / Email / Catchall / Add Catchall"
 msgstr "クライアント / Eメール / キャッチオール / キャッチオール追加"
 
 msgid "Client / Email / Edit Email Account"
-msgstr ""
+msgstr "クライアント / Eメール / Eメールアカウント編集"
 
 msgid "Client / Email / External Mail Server"
 msgstr "クライアント / Eメール / 外部メールサーバー"
@@ -1604,7 +1604,7 @@ msgid "Current password is invalid."
 msgstr "現在のパスワードは無効です。"
 
 msgid "Custom DNS record"
-msgstr ""
+msgstr "カスタムDNSレコード"
 
 msgid "Custom DNS record scheduled for deletion."
 msgstr "カスタムDNSレコードの削除を予定されました。"
@@ -1652,7 +1652,7 @@ msgid "Customer ID cannot have more than 200 characters"
 msgstr "顧客IDは、200文字以内です"
 
 msgid "Customer account"
-msgstr ""
+msgstr "顧客アカウント"
 
 msgid "Customer account successfully scheduled for activation."
 msgstr "顧客アカウントの有効化が予定されました。"
@@ -2002,19 +2002,19 @@ msgid "Domain alias name"
 msgstr "ドメインエイリアス名"
 
 msgid "Domain alias name is not valid."
-msgstr ""
+msgstr "ドメインエイリアス名が有効ではありません。"
 
 msgid "Domain alias successfully ordered."
-msgstr ""
+msgstr "ドメインエイリアスが注文されました。"
 
 msgid "Domain alias successfully scheduled for addition."
-msgstr ""
+msgstr "ドメインエイリアスの追加が予定されました。"
 
 msgid "Domain alias successfully scheduled for deletion."
 msgstr "ドメインエイリアスの削除が予定されました。"
 
 msgid "Domain alias successfully scheduled for update."
-msgstr ""
+msgstr "ドメインエイリアスの更新が予定されました。"
 
 msgid ""
 "Domain alias you are trying to remove has Ftp accounts. Remove them first."
@@ -2219,7 +2219,7 @@ msgid "Email account successfully scheduled for addition."
 msgstr "Eメールアカウントの追加が予定されました。"
 
 msgid "Email account successfully scheduled for update."
-msgstr ""
+msgstr "Eメールアカウントの更新が予定されました。"
 
 msgid "Email accounts"
 msgstr "Eメールアカウント"
@@ -2234,17 +2234,17 @@ msgid "Email forward"
 msgstr "Email forward"
 
 msgid "Email quota"
-msgstr ""
+msgstr "Eメールクオータ"
 
 msgid "Email quota [MiB]"
 msgstr "Eメール容量制限[MiB]"
 
 #, php-format
 msgid "Email quota cannot be bigger than %s"
-msgstr ""
+msgstr "Eメールクォータは、%sより大きくすることはできません"
 
 msgid "Email quota cannot be bigger than disk space limit."
-msgstr ""
+msgstr "Eメールクォータは、ディスク容量の制限よりも大きくすることはできません。"
 
 #, php-format
 msgid ""
@@ -2257,7 +2257,7 @@ msgid "Email quota cannot be unlimited. Max value is %d MiB."
 msgstr ""
 
 msgid "Email quota must be a number."
-msgstr ""
+msgstr "Ｅメールクォータは数値でなければなりません。"
 
 msgid "Email settings"
 msgstr "Eメールの設定"
@@ -2472,7 +2472,7 @@ msgid "Force retry"
 msgstr "強制的に再試行"
 
 msgid "Forward"
-msgstr ""
+msgstr "フォワード"
 
 msgid "Forward URL"
 msgstr "Forward URL"
@@ -2668,7 +2668,7 @@ msgid "IP address data"
 msgstr "IPアドレスデータ"
 
 msgid "IP address field is empty or invalid."
-msgstr ""
+msgstr "IPアドレスフィールドが空または無効です。"
 
 msgid "IP address scheduled for addition."
 msgstr "IPアドレスの追加が予定しました。"
@@ -2686,7 +2686,7 @@ msgid "IPv6 address"
 msgstr "IPv6アドレス"
 
 msgid "IPv6 address field is empty or invalid."
-msgstr ""
+msgstr "IPv6アドレスフィールドが空または無効です。"
 
 msgid ""
 "If set to 'yes', Web folders as provisioned by i-MSCP will be protected "
@@ -2732,10 +2732,10 @@ msgid "Incl. default mails"
 msgstr "Incl. デフォルトメール"
 
 msgid "Incorrect Email quota"
-msgstr ""
+msgstr "間違ったEメールクォータ"
 
 msgid "Incorrect Email quota."
-msgstr ""
+msgstr "間違ったEメールクォータです。"
 
 msgid "Incorrect FTP account limit."
 msgstr "不正なFTPアカウントの制限。"
@@ -2829,25 +2829,25 @@ msgid "Internationalization"
 msgstr "国際化"
 
 msgid "Invalid CNAME"
-msgstr ""
+msgstr "無効なCNAMEです"
 
 msgid "Invalid Email username."
-msgstr ""
+msgstr "無効なEメールユーザ名です。"
 
 msgid "Invalid IPv4 address."
-msgstr ""
+msgstr "無効なIPv4アドレスです。"
 
 msgid "Invalid IPv6 address."
-msgstr ""
+msgstr "無効なIPv6アドレスです。"
 
 msgid "Invalid MX priority."
 msgstr "無効なMXの優先度。"
 
 msgid "Invalid NAME."
-msgstr ""
+msgstr "無効なNAMEです。"
 
 msgid "Invalid TXT data"
-msgstr ""
+msgstr "無効なTXTデータです"
 
 msgid "Invalid URL."
 msgstr "無効なURL。"
@@ -3047,7 +3047,7 @@ msgid "Mail account %s successfully scheduled for deletion."
 msgstr "メールアカウント %sの削除が予定されました。"
 
 msgid "Mail account type"
-msgstr ""
+msgstr "メールアカウント種別"
 
 msgid "Mail accounts list is empty."
 msgstr "メールアカウントリストが空です。"
@@ -3231,7 +3231,7 @@ msgid "N/A"
 msgstr "利用不可"
 
 msgid "NAME field is empty or invalid."
-msgstr ""
+msgstr "NAMEフィールドが空または無効です。"
 
 msgid "Name"
 msgstr "ネーム"
@@ -3280,6 +3280,9 @@ msgstr "No IP 統計は表示されません。"
 
 msgid "No administrator accounts found."
 msgstr "管理者アカウントが見つかりませんでした。"
+
+msgid "No anti-rootkits logs"
+msgstr ""
 
 msgid "No available"
 msgstr "使用不可"
@@ -3381,10 +3384,10 @@ msgid "None"
 msgstr "なし"
 
 msgid "Normal"
-msgstr ""
+msgstr "ノーマル"
 
 msgid "Normal + Forward"
-msgstr ""
+msgstr "ノーマル+フォワード"
 
 msgid "Normal connection"
 msgstr "通常接続"
@@ -3621,7 +3624,7 @@ msgid "Password email"
 msgstr "パスワードEメール"
 
 msgid "Password is missing."
-msgstr ""
+msgstr "パスワードが欠落しています。"
 
 #, php-format
 msgid "Password is shorter than %s characters."
@@ -4048,10 +4051,10 @@ msgid "Reseller / Customers / Welcome Email"
 msgstr "代理店 / 顧客 / 歓迎メール"
 
 msgid "Reseller / Domains / Add Domain Alias"
-msgstr ""
+msgstr "代理店 / ドメイン / ドメインエイリアス追加"
 
 msgid "Reseller / Domains / Edit Domain Alias"
-msgstr ""
+msgstr "代理店 / ドメイン / ドメインエイリアス編集"
 
 msgid "Reseller / General / Overview"
 msgstr "代理店 / 一般 / 概要"
@@ -4196,9 +4199,6 @@ msgstr "権利が追加されました。"
 
 msgid "Rights successfully removed."
 msgstr "権利を削除しました。"
-
-msgid "Rootkit logs"
-msgstr "ルートキットログ"
 
 msgid "SMTP in"
 msgstr "SMTP in"
@@ -4353,7 +4353,7 @@ msgid "Sender name is missing."
 msgstr "送信者名がありません。"
 
 msgid "Separate multiple email addresses by comma or a line-break."
-msgstr ""
+msgstr "コンマまたは改行によって複数の電子メール・アドレスを切り離してください。"
 
 msgid "Separate multiple email addresses with a line-break."
 msgstr "改行で複数のEメールアドレスを切り離してください"
@@ -4619,10 +4619,10 @@ msgid "Subdomain name"
 msgstr "サブドメイン名"
 
 msgid "Subdomain name is not valid."
-msgstr ""
+msgstr "サブドメイン名が有効ではありません。"
 
 msgid "Subdomain successfully scheduled for addition."
-msgstr ""
+msgstr "サブドメインが追加が予定されました。"
 
 msgid "Subdomain successfully scheduled for deletion."
 msgstr "サブドメインの削除が予定されました。"
@@ -4718,7 +4718,7 @@ msgid "TXT data"
 msgstr "TXT データ"
 
 msgid "TXT field is empty or invalid."
-msgstr ""
+msgstr "TXTフィールドが空または無効です。"
 
 msgid "Target"
 msgstr "ターゲット"
@@ -5236,6 +5236,9 @@ msgstr "ユーザー認証"
 msgid "User data successfully updated"
 msgstr "ユーザー·データは更新されました"
 
+msgid "User data successfully updated."
+msgstr ""
+
 msgid "User data were not updated."
 msgstr "ユーザーデータは更新されませんでした。"
 
@@ -5267,9 +5270,6 @@ msgstr "ユーザー名が長すぎます"
 
 msgid "User password"
 msgstr "ユーザーパスワード"
-
-msgid "User personal data successfully updated."
-msgstr "ユーザーの個人情報が更新されました。"
 
 msgid "User real (first and last) name"
 msgstr "ユーザーの本当の名前（姓と名）"
@@ -5477,7 +5477,7 @@ msgid "Wrong label syntax: <b>%s</b>"
 msgstr "ラベル構文に誤り：<b>%s</b>"
 
 msgid "Wrong mail syntax in forward list."
-msgstr ""
+msgstr "転送リストに間違ったメール構文があります。"
 
 msgid "Wrong request."
 msgstr "要求に誤りがあります。"
@@ -5721,12 +5721,12 @@ msgstr "オープンチケットを持っていません。"
 msgid ""
 "You have reached the maximum number of Email accounts allowed by your "
 "subscription."
-msgstr ""
+msgstr "サブスクリプションで許可されているメールアカウントの最大数に達しました。"
 
 msgid ""
 "You have reached the maximum number of domain aliasses allowed by your "
 "subscription."
-msgstr ""
+msgstr "サブスクリプションによって許可されたドメインエイリアスの最大数に達しました。"
 
 msgid ""
 "You have reached the maximum number of subdomains allowed by your "
@@ -5753,13 +5753,13 @@ msgid "You must confirm customer account deletion."
 msgstr "顧客アカウントの削除を確認する必要があります。"
 
 msgid "You must confirm your password."
-msgstr ""
+msgstr "パスワードを確認しなければなりません。"
 
 msgid "You must enter a domain alias name."
-msgstr ""
+msgstr "ドメインエイリアス名を入力する必要があります。"
 
 msgid "You must enter a subdomain name."
-msgstr ""
+msgstr "サブドメイン名を入力する必要があります。"
 
 msgid "You must first generate a password"
 msgstr "最初にパスワードを生成する必要があります"
