@@ -444,7 +444,7 @@ sub _overrideAuthdaemonInitScript
 	my $file = iMSCP::File->new('filename' => $self->{'config'}->{'CMD_AUTHDAEMON'});
 
 	my $fileContent = $file->get();
-	unless($fileContent) {
+	unless(defined $fileContent) {
 		error("Unable to read $self->{'config'}->{'CMD_AUTHDAEMON'} file");
 		return 1;
 	}
@@ -628,47 +628,47 @@ sub _buildSslConfFiles
 {
 	my $self = shift;
 
-	for ($self->{'config'}->{'COURIER_IMAP_SSL'}, $self->{'config'}->{'COURIER_POP_SSL'}) {
-		last if lc($main::imscpConfig{'SSL_ENABLED'}) ne 'yes';
+	if($main::imscpConfig{'SSL_ENABLED'} eq 'yes') {
+		for ($self->{'config'}->{'COURIER_IMAP_SSL'}, $self->{'config'}->{'COURIER_POP_SSL'}) {
+			my $rs = $self->{'hooksManager'}->trigger('beforePoBuildSslConfFiles', $_);
+			return $rs if $rs;
 
-		my $rs = $self->{'hooksManager'}->trigger('beforePoBuildSslConfFiles', $_);
-		return $rs if $rs;
+			my $file = iMSCP::File->new('filename' => "$self->{'config'}->{'AUTHLIB_CONF_DIR'}/$_");
 
-		my $file = iMSCP::File->new('filename' => "$self->{'config'}->{'AUTHLIB_CONF_DIR'}/$_");
+			my $rdata = $file->get();
+			unless (defined $rdata) {
+				error("Unable to read $self->{'config'}->{'AUTHLIB_CONF_DIR'}/$_ file");
+				return 1;
+			}
 
-		my $rdata = $file->get();
-		unless (defined $rdata) {
-			error("Unable to read $self->{'config'}->{'AUTHLIB_CONF_DIR'}/$_");
-			return 1;
+			if($rdata =~ m/^TLS_CERTFILE=/msg) {
+				$rdata =~ s!^TLS_CERTFILE=.*$!TLS_CERTFILE=$main::imscpConfig{'GUI_CERT_DIR'}/$main::imscpConfig{'SERVER_HOSTNAME'}.pem!gm;
+			} else {
+				$rdata .= "TLS_CERTFILE=$main::imscpConfig{'GUI_CERT_DIR'}/$main::imscpConfig{'SERVER_HOSTNAME'}.pem";
+			}
+
+			# Store file in working directory
+			$file = iMSCP::File->new('filename' => "$self->{'wrkDir'}/$_");
+
+			$rs = $file->set($rdata);
+			return $rs if $rs;
+
+			$rs = $file->save();
+			return $rs if $rs;
+
+			$rs = $file->mode(0644);
+			return $rs if $rs;
+
+			$rs = $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
+			return $rs if $rs;
+
+			# Install file in production directory
+			$rs = $file->copyFile("$self->{'config'}->{'AUTHLIB_CONF_DIR'}");
+			return $rs if $rs;
+
+			$rs = $self->{'hooksManager'}->trigger('afterPoBuildSslConfFiles', $_);
+			return $rs if $rs;
 		}
-
-		if($rdata =~ m/^TLS_CERTFILE=/msg) {
-			$rdata =~ s!^TLS_CERTFILE=.*$!TLS_CERTFILE=$main::imscpConfig{'GUI_CERT_DIR'}/$main::imscpConfig{'SERVER_HOSTNAME'}.pem!gm;
-		} else {
-			$rdata .= "TLS_CERTFILE=$main::imscpConfig{'GUI_CERT_DIR'}/$main::imscpConfig{'SERVER_HOSTNAME'}.pem";
-		}
-
-		# Store file in working directory
-		$file = iMSCP::File->new('filename' => "$self->{'wrkDir'}/$_");
-
-		$rs = $file->set($rdata);
-		return $rs if $rs;
-
-		$rs = $file->save();
-		return $rs if $rs;
-
-		$rs = $file->mode(0644);
-		return $rs if $rs;
-
-		$rs = $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
-		return $rs if $rs;
-
-		# Install file in production directory
-		$rs = $file->copyFile("$self->{'config'}->{'AUTHLIB_CONF_DIR'}");
-		return $rs if $rs;
-
-		$rs = $self->{'hooksManager'}->trigger('afterPoBuildSslConfFiles', $_);
-		return $rs if $rs;
 	}
 
 	0;
@@ -743,7 +743,7 @@ sub _migrateFromDovecot
 	my ($stdout, $stderr);
 	$rs = execute("$binPath --to-courier --convert --recursive $mailPath", \$stdout, \$stderr);
 	debug($stdout) if $stdout;
-	warning($stderr) if $stderr && ! $rs;
+	debug($stderr) if $stderr && ! $rs;
 	error($stderr) if $stderr && $rs;
 	error('Error while converting mails') if ! $stderr && $rs;
 	return $rs if $rs;

@@ -2,7 +2,7 @@
 
 =head1 NAME
 
-Addons::policyd::installer - i-MSCP Policyd Weight configurator installer
+Addons::Policyd::Installer - i-MSCP Policyd Weight configurator installer
 
 =cut
 
@@ -30,7 +30,7 @@ Addons::policyd::installer - i-MSCP Policyd Weight configurator installer
 # @link        http://i-mscp.net i-MSCP Home Site
 # @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
-package Addons::policyd::installer;
+package Addons::Policyd::Installer;
 
 use strict;
 use warnings;
@@ -43,15 +43,15 @@ use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
 
-This is the installer for the Policyd Weight configurator addon.
+ This is the installer for the Policyd Weight configurator addon.
 
-See Addons::policyd for more information.
+ See Addons::Policyd for more information.
 
 =head1 PUBLIC METHODS
 
 =over 4
 
-=item registerSetupHooks($hooksManager)
+=item registerSetupHooks(\%hooksManager)
 
  Register setup hook functions.
 
@@ -60,31 +60,25 @@ See Addons::policyd for more information.
 
 =cut
 
-sub registerSetupHooks
+sub registerSetupHooks($$)
 {
-	my $self = shift;
-	my $hooksManager = shift;
+	my ($self, $hooksManager) = @_;
 
 	$hooksManager->register(
-		'beforeSetupDialog', sub { my $dialogStack = shift; push(@$dialogStack, sub { $self->askRBL(@_) }); 0; }
+		'beforeSetupDialog', sub { my $dialogStack = shift; push(@$dialogStack, sub { $self->showDialog(@_) }); 0; }
 	);
 }
 
-=back
-
-=head1 HOOK FUNCTIONS
-
-=over 4
-
-=item askRBL()
+=item showDialog(\%dialog)
 
  Ask user about RBL.
 
- Return int 0;
+ Param iMSCP::Dialog::Dialog|iMSCP::Dialog::Whiptail $dialog
+ Return int 0 or 30;
 
 =cut
 
-sub askRBL
+sub showDialog($$)
 {
 	my ($self, $dialog, $rs) = (shift, shift, 0);
 	my $dnsblCheckOnly = main::setupGetQuestion('DNSBL_CHECKS_ONLY') || $self->{'config'}->{'DNSBL_CHECKS_ONLY'} ||  '';
@@ -113,7 +107,7 @@ Do you want to disable additional checks for MTA, HELO and domain?\n
 
 =item install()
 
- Process policyd addon install tasks.
+ Process Policyd addon install tasks.
 
  Return int 0 on success, other on failure
 
@@ -140,9 +134,9 @@ sub install
 
 =item _init()
 
- Called by getInstance(). Initialize Addons::policyd::installer instance.
+ Called by getInstance(). Initialize Addons::Policyd::Installer instance.
 
- Return Addons::policyd::installer
+ Return Addons::Policyd::Installer
 
 =cut
 
@@ -150,7 +144,7 @@ sub _init
 {
 	my $self = shift;
 
-	$self->{'policyd'} = Addons::policyd->getInstance();
+	$self->{'policyd'} = Addons::Policyd->getInstance();
 
 	$self->{'cfgDir'} = $self->{'policyd'}->{'cfgDir'};
 	$self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
@@ -182,16 +176,15 @@ sub _init
 
 =cut
 
-sub _bkpConfFile
+sub _bkpConfFile($$)
 {
-	my $self = shift;
-	my $cfgFile = shift;
-
-	my ($name, $path, $suffix) = fileparse($cfgFile);
+	my ($self, $cfgFile) = @_;
 
 	if(-f $cfgFile) {
+		my $filename = fileparse($cfgFile);
+
 		my $file = iMSCP::File->new('filename' => $cfgFile);
-		my $rs = $file->copyFile("$self->{'bkpDir'}/$name$suffix." . time);
+		my $rs = $file->copyFile("$self->{'bkpDir'}/$filename." . time);
 		return $rs if $rs;
 	}
 

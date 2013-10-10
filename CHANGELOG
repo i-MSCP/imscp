@@ -6,22 +6,29 @@ Git Master
 ------------------------------------------------------------------------------------------------------------------------
 
 CONFIG:
+	- Changed: MASTER_GROUP parameter become IMSCP_GROUP
 	- Fixed: Packages file for Debian Jessie (testing)
 	- Fixed: Package dovecot-mysql is not available for Ubuntu Lucid
 	- Fixed: Dovecot - Wrong path for delivery agent
+	- Removed: Cron templates
+	- Removed: Packages awstats, chkrootkit and rkhunter from global packages file
 
 DOCS:
 	- Updated: Preseed template file
 
 ENGINE:
+	- Changed: Both Chkrootkit and Rkhunter anti-rootkits as now provided as addons
 	- Changed: skill command to pkill command (portability issues)
+	- Fixed: Apache logrotate conffile shouldn't know about awstats addon
 	- Fixed: Bind server impl. - Unable to handle subdomains when DNS server mode is set to 'slave'
 	- Fixed: Bind uninstall fail
-	- Fixed: Debug library - output() function called with wrong parameters
+	- Fixed: iMSCP::Debug library - output() function called with wrong parameters
 	- Fixed: iMSCP::SystemUser::delSystemUser() - Added 'keepHome' option allowing to kept user home directory
 	- Fixed: PHP allow_url_fopen feature must be explicitly enabled in composer package installer
+	- Updated: ispCP migration script
 
 Tickets:
+	- Fixed #636: Bug - Rkhunter - Unreadable log file
 	- Fixed #810: Bug - https default access redirect mode not working for base server url
 	- Fixed #902: Bug - User UID/GID mismatch after updating the SYSTEM_USER_PREFIX and/or SYSTEM_USER_MIN_UID parameters
 	- Fixed #918: Bug - Courier - Unlimited quota doesn't works

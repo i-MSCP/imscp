@@ -318,7 +318,7 @@ sub _removeSqlData
 
 sub _removeiMSCPSystemGroup
 {
-	iMSCP::SystemGroup->getInstance()->delSystemGroup($main::imscpConfig{'MASTER_GROUP'});
+	iMSCP::SystemGroup->getInstance()->delSystemGroup($main::imscpConfig{'IMSCP_GROUP'});
 }
 
 sub _removeFiles

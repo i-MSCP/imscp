@@ -280,7 +280,7 @@ To complete the update, you must wait until the end of the process and follow th
 
 	iMSCP::Dialog->factory()->msgbox(
 "
-\\Z1Congratulations!!!\\Zn
+\\Z1Congratulations\\Zn
 
 i-MSCP $main::imscpConfig{'Version'} has been successfully installed/updated.
 

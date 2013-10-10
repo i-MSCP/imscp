@@ -120,7 +120,7 @@ sub radiolist
  Param STRING $text - Text to show
  Param ARRAY REFERENCE \$choices Reference to an array containing list of choices
  Param STRING $default OPTIONAL Default choices
- Return STRING|ARRAY Dialog output or array containing both dialog exit code and dialog output
+ Return array_ref Reference to an array of choices or array containing both dialog exit code and array of choices
 
 =cut
 
@@ -136,7 +136,11 @@ sub checkbox
 
 	push @init, (escapeShell($_), "''", $values{$_} ? 'on' : 'off') for @choices;
 
-	$self->_textbox($text, 'checklist', @choices . " @init");
+	my ($exitCode, $choices) = $self->_textbox($text, 'checklist', @choices . " @init");
+	$choices =~ s/"//g;
+	@choices = split ' ', $choices;
+
+	wantarray ? ($exitCode, \@choices) : \@choices;
 }
 
 =item tailbox($file)

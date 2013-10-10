@@ -35,7 +35,7 @@ use iMSCP::Boot;
 use iMSCP::Servers;
 use iMSCP::Addons;
 
-# Turn off localisation features to force any command output to be in english
+# Turn off localisation features to force any command output to be in English
 $ENV{'LC_MESSAGES'} = 'C';
 
 umask(027);

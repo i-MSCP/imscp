@@ -71,7 +71,7 @@ sub process
 {
 	my $rootUName = $main::imscpConfig{'ROOT_USER'};
 	my $rootGName = $main::imscpConfig{'ROOT_GROUP'};
-	my $masterGName = $main::imscpConfig{'MASTER_GROUP'};
+	my $imscpGName = $main::imscpConfig{'IMSCP_GROUP'};
 	my $confDir = $main::imscpConfig{'CONF_DIR'};
 	my $rootDir = $main::imscpConfig{'ROOT_DIR'};
 	my $logDir = $main::imscpConfig{'LOG_DIR'};
@@ -94,21 +94,21 @@ sub process
 	return $rs if $rs;
 
 	# eg. /etc/imscp
-	$rs = setRights($confDir, { 'user' => $rootUName, 'group' => $masterGName } );
+	$rs = setRights($confDir, { 'user' => $rootUName, 'group' => $imscpGName } );
     return $rs if $rs;
 
 	# eg. /etc/imscp/imscp*
-	$rs = setRights("$confDir/imscp*", { 'user' => $rootUName, 'group' => $masterGName, 'mode' => '0640'} );
+	$rs = setRights("$confDir/imscp*", { 'user' => $rootUName, 'group' => $imscpGName, 'mode' => '0640'} );
 	return $rs if $rs;
 
 	# eg. /var/www/imscp/engine
 	$rs = setRights(
-		"$rootDir/engine", { 'user' => $rootUName, 'group' => $masterGName, 'mode' => '0750', 'recursive' => 1 }
+		"$rootDir/engine", { 'user' => $rootUName, 'group' => $imscpGName, 'mode' => '0750', 'recursive' => 1 }
 	);
 	return $rs if $rs;
 
 	# eg. /var/log/imscp
-	$rs = setRights($logDir, { 'user' => $rootUName, 'group' => $masterGName, 'mode' => '0750'} );
+	$rs = setRights($logDir, { 'user' => $rootUName, 'group' => $imscpGName, 'mode' => '0750'} );
 	return $rs if $rs;
 
 	$counter++;

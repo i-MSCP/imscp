@@ -43,9 +43,9 @@ sub _init
 
 	$self->{'httpd'} = Servers::httpd::apache_fcgi->getInstance();
 
-	$self->{'cfgDir'} = $self->{'httpd'}->{'cfgDir'};
-	$self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
-	$self->{'wrkDir'} = "$self->{'cfgDir'}/working";
+	$self->{'apacheCfgDir'} = $self->{'httpd'}->{'apacheCfgDir'};
+	$self->{'apacheBkpDir'} = "$self->{'apacheCfgDir'}/backup";
+	$self->{'apacheWrkDir'} = "$self->{'apacheCfgDir'}/working";
 
 	$self->{'config'} = $self->{'httpd'}->{'config'};
 
@@ -108,10 +108,7 @@ sub restoreConf
 
 	my $rs = 0;
 
-	for (
-		"$main::imscpConfig{LOGROTATE_CONF_DIR}/apache2", "$main::imscpConfig{LOGROTATE_CONF_DIR}/apache",
-		"$self->{'config'}->{APACHE_CONF_DIR}/ports.conf"
-	) {
+	for ("$main::imscpConfig{LOGROTATE_CONF_DIR}/apache2", "$self->{'config'}->{APACHE_CONF_DIR}/ports.conf") {
 		my ($filename, $directories, $suffix) = fileparse($_);
 		$rs	= iMSCP::File->new(
 			'filename' => "$self->{bkpDir}/$filename$suffix.system"
@@ -128,7 +125,7 @@ sub vHostConf
 	my $httpd = Servers::httpd::apache_itk->getInstance();
 	my $rs = 0;
 
-	for('00_nameserver.conf', '00_master_ssl.conf', '00_master.conf', '00_modcband.conf', '01_awstats.conf') {
+	for('00_nameserver.conf', '00_master_ssl.conf', '00_master.conf', '00_modcband.conf') {
 
 		$rs = $httpd->disableSite($_);
 		return $rs if $rs;

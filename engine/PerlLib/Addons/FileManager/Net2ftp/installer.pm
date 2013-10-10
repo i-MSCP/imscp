@@ -2,7 +2,7 @@
 
 =head1 NAME
 
-Addons::filemanager::ajaxplorer::installer - i-MSCP AjaxPlorer addon installer
+Addons::FileManager::Net2ftp::Installer - i-MSCP Net2ftp addon installer
 
 =cut
 
@@ -29,7 +29,7 @@ Addons::filemanager::ajaxplorer::installer - i-MSCP AjaxPlorer addon installer
 # @link        http://i-mscp.net i-MSCP Home Site
 # @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
-package Addons::filemanager::ajaxplorer::installer;
+package Addons::FileManager::Net2ftp::Installer;
 
 use strict;
 use warnings;
@@ -40,12 +40,11 @@ use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
 
- This is the installer for the i-MSCP AjaxPlorer addon.
+ This is the installer for the i-MSCP Net2ftp addon.
 
- AjaXplorer is a software that can turn any web server into a powerfull file management system and an alternative to
-mainstream cloud storage providers.
+ Net2ftp is a web-based FTP client written in PHP.
 
- Project homepage: http://ajaxplorer.info/
+ Project homepage: http://www.net2ftp.com/
 
 =head1 PUBLIC METHODS
 
@@ -53,7 +52,7 @@ mainstream cloud storage providers.
 
 =item preinstall()
 
- Register AjaxPlorer composer package for installation.
+ Register Net2ftp composer package for installation.
 
  Return int 0 on success, other on failure
 
@@ -61,14 +60,12 @@ mainstream cloud storage providers.
 
 sub preinstall
 {
-	my $self = shift;
-
-	iMSCP::Addons::ComposerInstaller->getInstance()->registerPackage('imscp/ajaxplorer');
+	iMSCP::Addons::ComposerInstaller->getInstance()->registerPackage('imscp/net2ftp');
 }
 
 =item install()
 
- Process AjaxPlorer addon install tasks.
+ Process Net2ftp addon install tasks.
 
  Return int 0 on success, 1 on failure
 
@@ -78,12 +75,12 @@ sub install
 {
 	my $self = shift;
 
-	$self->_installFiles(); # Install AjaxPlorer files from local addon packages repository
+	$self->_installFiles(); # Install AjaXplorer files from local addon packages repository
 }
 
 =item setGuiPermissions()
 
- Set AjaxPlorer files permissions.
+ Set Net2ftp files permissions.
 
  Return int 0 on success, other on failure
 
@@ -91,25 +88,15 @@ sub install
 
 sub setGuiPermissions
 {
-	my $self = shift;
-
 	my $panelUName =
 	my $panelGName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} . $main::imscpConfig{'SYSTEM_USER_MIN_UID'};
-	my $guiPublicDir = $main::imscpConfig{'GUI_PUBLIC_DIR'};
-	my $rs = 0;
 
 	require iMSCP::Rights;
 	iMSCP::Rights->import();
 
-	$rs = setRights(
-		"$guiPublicDir/tools/filemanager",
-		{ 'user' => $panelUName, 'group' => $panelGName, 'dirmode' => '0550', 'filemode' => '0440', 'recursive' => 1 }
-	);
-	return $rs if $rs;
-
 	setRights(
-		"$guiPublicDir/tools/filemanager/data",
-		{ 'user' => $panelUName, 'group' => $panelGName, 'dirmode' => '0700', 'filemode' => '0600', 'recursive' => 1 }
+		"$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/filemanager",
+		{ 'user' => $panelUName, 'group' => $panelGName, 'dirmode' => '0550', 'filemode' => '0440', 'recursive' => 1 }
 	);
 }
 
@@ -121,7 +108,7 @@ sub setGuiPermissions
 
 =item _installFiles()
 
- Install AjaxPlorer files in production directory.
+ Install Net2ftp files in production directory.
 
  Return int 0 on success, other on failure
 
@@ -129,12 +116,10 @@ sub setGuiPermissions
 
 sub _installFiles
 {
-	my $self = shift;
-
 	my $repoDir = $main::imscpConfig{'ADDON_PACKAGES_CACHE_DIR'};
 	my $rs = 0;
 
-	if(-d "$repoDir/vendor/imscp/ajaxplorer") {
+	if(-d "$repoDir/vendor/imscp/net2ftp") {
 		my $guiPublicDir = $main::imscpConfig{'GUI_PUBLIC_DIR'};
 		my ($stdout, $stderr);
 
@@ -142,7 +127,7 @@ sub _installFiles
 		iMSCP::Execute->import();
 
 		$rs = execute(
-			"$main::imscpConfig{'CMD_CP'} -rTf $repoDir/vendor/imscp/ajaxplorer $guiPublicDir/tools/filemanager",
+			"$main::imscpConfig{'CMD_CP'} -rTf $repoDir/vendor/imscp/net2ftp $guiPublicDir/tools/filemanager",
 			\$stdout,
 			\$stderr
 		);
@@ -155,7 +140,7 @@ sub _installFiles
 		error($stderr) if $rs && $stderr;
 		return $rs if $rs;
 	} else {
-		error("Couldn't find the imscp/ajaxplorer package into the local repository");
+		error("Couldn't find the imscp/net2ftp package into the local repository");
 		$rs = 1;
 	}
 

@@ -5,7 +5,7 @@
 # See documentation at http://wiki.i-mscp.net/doku.php?id=start:preseeding
 #
 # Author: Laurent Declercq <l.declercq@nuxwin.com>
-# Last update: 2013.10.02
+# Last update: 2013.10.07
 # Status: (Experimental)
 
 # Server to use for the HTTP service
@@ -139,13 +139,13 @@ $main::questions{'BACKUP_IMSCP'} = 'yes'; # 'yes' or 'no' - It's recommended to 
 $main::questions{'BACKUP_DOMAINS'} = 'yes'; # 'yes' or 'no'
 
 # Webstats addon
-$main::questions{'WEBSTATS_ADDON'} = 'No'; # 'Awstats' or 'No'
+$main::questions{'WEBSTATS_ADDONS'} = 'Awstats'; # 'Awstats' or 'No'
 
-# Only relevant if WEBSTATS_ADDON is set to 'Awstats'
-$main::questions{'AWSTATS_MODE'} = ''; # Empty value if WEBSTATS_ADDON is set to 'No', 0 for dynamic or 1 for static
+# Only relevant if WEBSTATS_ADDONS is set to 'Awstats'
+$main::questions{'AWSTATS_MODE'} = ''; # Empty value if WEBSTATS_ADDONS is set to 'No', 0 for dynamic or 1 for static
 
 # Ftp Web file manager
-$main::questions{'FILEMANAGER_ADDON'} = 'AjaxPlorer'; # Name of the filemanager addon, eg: AjaxPlorer|Net2ftp
+$main::questions{'FILEMANAGER_ADDON'} = 'AjaXplorer'; # AjaXplorer or Net2ftp
 
 # Phpmyadmin addon restricted SQL user
 $main::questions{'PHPMYADMIN_SQL_USER'} = 'pma';
@@ -154,5 +154,8 @@ $main::questions{'PHPMYADMIN_SQL_PASSWORD'} = '<password>'; # Password must not 
 # Roundcube addon restricted SQL user
 $main::questions{'ROUNDCUBE_SQL_USER'} = 'roundcube_user';
 $main::questions{'ROUNDCUBE_SQL_PASSWORD'} = '<password>'; # Password must not be empty
+
+# Anti-Rootkits addons
+$main::questions{'ANTI_ROOTKITS_ADDONS'} = 'Chkrootkit,Rkhunter' # 'Chkrootkit' and/or 'Rkhunter' or 'No', each value comma separated
 
 1;

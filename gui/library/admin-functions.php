@@ -349,3 +349,30 @@ function systemHasManyAdmins()
 
 	return $hasManyAdmins;
 }
+
+/**
+ * Whether or not system has anti-rootkits
+ *
+ * @return bool
+ */
+function systemHasAntiRootkits()
+{
+	$config = iMSCP_Registry::get('config');
+
+	if (
+		(
+			isset($config['ANTI_ROOTKITS_ADDONS']) && $config['ANTI_ROOTKITS_ADDONS'] != 'No' &&
+			$config['ANTI_ROOTKITS_ADDONS'] != '' &&
+			(
+				(isset($config['CHKROOTKIT_LOG']) && $config['CHKROOTKIT_LOG'] != '') ||
+				(isset($config['RKHUNTER_LOG']) && $config['RKHUNTER_LOG'] != '')
+			)
+		)
+		||
+		isset($config['OTHER_ROOTKIT_LOG']) && $config['OTHER_ROOTKIT_LOG'] != ''
+	) {
+		return true;
+	}
+
+	return false;
+}

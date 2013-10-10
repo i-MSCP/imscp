@@ -58,7 +58,7 @@ service auth {
 
 service quota-warning {
 	executable = script {ENGINE_ROOT_DIR}/quota/imscp-dovecot-quota.sh
-	group = {MASTER_GROUP}
+	group = {IMSCP_GROUP}
 
 	unix_listener quota-warning {
 		mode = 0600

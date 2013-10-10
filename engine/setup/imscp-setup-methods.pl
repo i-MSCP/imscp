@@ -182,18 +182,17 @@ sub setupTasks
 		[\&setupServerIps,                  'Setting server ips'],
 		[\&setupDefaultAdmin,               'Creating default admin'],
 		[\&setupSsl,                        'Setup SSL'],
+		[\&setupCron,                       'Setup cron tasks'],
 		[\&setupPreInstallServers,          'Servers pre-installation'],
 		[\&setupPreInstallAddons,           'Addons pre-installation'],
 		[\&setupInstallServers,             'Servers installation'],
 		[\&setupInstallAddons,              'Addons installation'],
 		[\&setupPostInstallServers,         'Servers post-installation'],
 		[\&setupPostInstallAddons,          'Addons post-installation'],
-		[\&setupCron,                       'Setup cron tasks'],
 		[\&setupInitScripts,                'Setting i-MSCP init scripts'],
 		[\&setupRebuildCustomerFiles,       'Rebuilding customers files'],
 		[\&setupSetPermissions,             'Setting permissions'],
-		[\&setupRestartServices,            'Restarting services'],
-		[\&setupAdditionalTasks,            'Processing additional tasks']
+		[\&setupRestartServices,            'Restarting services']
 	);
 
 	my $step = 1;
@@ -344,7 +343,7 @@ sub setupAskServerIps
 	my $database = '';
 
 	if(setupGetQuestion('DATABASE_NAME')) {
-		# We do not raise error in case we cannot get SQL connection since it's expected in some context
+		# We do not raise error in case we cannot get SQL connection since it's expected in some contexts
 		$database = setupGetSqlConnect(setupGetQuestion('DATABASE_NAME'));
 
 		if($database) {
@@ -446,7 +445,7 @@ sub setupAskServerIps
 
 					$msg = '';
 
-					if(defined $sshConnectIp && $sshConnectIp ~~ @serverIps && $serverIps !~ /$sshConnectIp/) {
+					if(defined $sshConnectIp && $sshConnectIp ~~ @serverIps && not $sshConnectIp ~~ $serverIps) {
 						$msg = "\n\n\\Z1You cannot remove the IP '$sshConnectIp' to which you are currently connected " .
 						"(SSH).\\Zn\n\nPlease, try again:";
 					}
@@ -454,13 +453,15 @@ sub setupAskServerIps
 				} while ($rs != 30 && $msg);
 
 				if($rs != 30) {
-					$serverIps =~ s/"//g;
-					@{$serverIpsToAdd} = split ' ', $serverIps; # Retrieve list of IP to add into database
+					#$serverIps =~ s/"//g;
+					#@{$serverIpsToAdd} = split ' ', $serverIps; # Retrieve list of IP to add into database
+					@{$serverIpsToAdd} = @{$serverIps}; # Retrieve list of IP to add into database
 					push @{$serverIpsToAdd}, $baseServerIp; # Re-add base ip
 
 					if($database) {
 						# Get list of IP addresses to delete
 						%serverIpsToDelete = ();
+
 						for(@serverIps) {
 							$serverIpsToDelete{$currentServerIps->{$_}->{'ip_id'}} = $_
 								if(exists $currentServerIps->{$_} && not $_ ~~ @{$serverIpsToAdd});
@@ -1171,7 +1172,7 @@ sub setupCreateMasterGroup
 	my $rs = iMSCP::HooksManager->getInstance()->trigger('beforeSetupCreateMasterGroup');
 	return $rs if $rs;
 
-	$rs = iMSCP::SystemGroup->getInstance()->addSystemGroup($main::imscpConfig{'MASTER_GROUP'}, 1);
+	$rs = iMSCP::SystemGroup->getInstance()->addSystemGroup($main::imscpConfig{'IMSCP_GROUP'}, 1);
 	return $rs if $rs;
 
 	iMSCP::HooksManager->getInstance()->trigger('afterSetupCreateMasterGroup');
@@ -1802,7 +1803,6 @@ sub setupSsl
 }
 
 # Setup crontab
-# TODO: awstats part should be done via awstats installer
 sub setupCron
 {
 	my $rs = iMSCP::HooksManager->getInstance()->trigger('beforeSetupCron');
@@ -1810,16 +1810,11 @@ sub setupCron
 
 	my ($cfgTpl, $err);
 
-	my $awstats = '';
-	my ($rkhunter, $chkrootkit);
-
 	# Directories paths
 	my $cfgDir = $main::imscpConfig{'CONF_DIR'} . '/cron.d';
 	my $bkpDir = $cfgDir . '/backup';
 	my $wrkDir = $cfgDir . '/working';
-
-	# Retrieving production directory path
-	my $prodDir = ($^O =~ /bsd$/ ? '/usr/local/etc/cron.daily/imscp' : '/etc/cron.d');
+	my $prodDir = "$main::imscpConfig{'CRON_D_DIR'}";
 
 	# Saving the current production file if it exists
 	if(-f "$prodDir/imscp") {
@@ -1827,7 +1822,7 @@ sub setupCron
 		return $rs if $rs;
 	}
 
-	## Building new configuration file
+	# Building new configuration file
 
 	# Loading the template from /etc/imscp/cron.d/imscp
 	$cfgTpl = iMSCP::File->new('filename' => "$cfgDir/imscp")->get();
@@ -1835,16 +1830,6 @@ sub setupCron
 		error("Unable to read $cfgDir/imscp");
 		return 1;
 	}
-
-	# Awstats cron task preparation (On|Off) according status in imscp.conf
-	if ($main::imscpConfig{'WEBSTATS_ADDON'} ne 'Awstats' || $main::imscpConfig{'AWSTATS_MODE'} eq '1') {
-		$awstats = '#';
-	}
-
-	# Search and cleaning path for rkhunter and chkrootkit programs
-	# @todo review this s...
-	($rkhunter = `which rkhunter`) =~ s/\s$//g;
-	($chkrootkit = `which chkrootkit`) =~ s/\s$//g;
 
 	# Building the new file
 	$cfgTpl = iMSCP::Templator::process(
@@ -1854,16 +1839,7 @@ sub setupCron
 			'QUOTA_ROOT_DIR' => $main::imscpConfig{'QUOTA_ROOT_DIR'},
 			'TRAFF_ROOT_DIR' => $main::imscpConfig{'TRAFF_ROOT_DIR'},
 			'TOOLS_ROOT_DIR' => $main::imscpConfig{'TOOLS_ROOT_DIR'},
-			'BACKUP_ROOT_DIR' => $main::imscpConfig{'BACKUP_ROOT_DIR'},
-			'RKHUNTER_LOG' => $main::imscpConfig{'RKHUNTER_LOG'},
-			'CHKROOTKIT_LOG' => $main::imscpConfig{'CHKROOTKIT_LOG'},
-			'AWSTATS_ROOT_DIR' => $main::imscpConfig{'AWSTATS_ROOT_DIR'},
-			'AWSTATS_ENGINE_DIR' => $main::imscpConfig{'AWSTATS_ENGINE_DIR'},
-			'AW-ENABLED' => $awstats,
-			'RK-ENABLED' => ! length($rkhunter) ? '#' : '',
-			'RKHUNTER' => $rkhunter,
-			'CR-ENABLED' => ! length($chkrootkit) ? '#' : '',
-			'CHKROOTKIT' => $chkrootkit
+			'BACKUP_ROOT_DIR' => $main::imscpConfig{'BACKUP_ROOT_DIR'}
 		},
 		$cfgTpl
 	);
@@ -1885,7 +1861,7 @@ sub setupCron
 	return $rs if $rs;
 
 	# Install new file in production directory
-	$rs = $file->copyFile("$prodDir/");
+	$rs = $file->copyFile("$prodDir/imscp");
 	return $rs if $rs;
 
 	iMSCP::HooksManager->getInstance()->trigger('afterSetupCron');
@@ -1976,93 +1952,6 @@ sub setupSetPermissions
 	$main::imscpConfig{'DEBUG'} = $debug;
 
 	iMSCP::HooksManager->getInstance()->trigger('afterSetupSetPermissions');
-}
-
-# TODO should be an addon
-sub setupRkhunter
-{
-	my $rs = iMSCP::HooksManager->getInstance()->trigger('beforeSetupRkhunter');
-	return $rs if $rs;
-
-	my $rdata;
-
-	# Deleting any existent log files
-	my $file = iMSCP::File->new ('filename' => $main::imscpConfig{'RKHUNTER_LOG'});
-
-	$rs = $file->set('');
-	return $rs if $rs;
-
-	$rs = $file->save();
-	return $rs if $rs;
-
-	$rs = $file->owner('root', 'adm');
-	return $rs if $rs;
-
-	$rs = $file->mode(0644);
-	return $rs if $rs;
-
-	# Updates the rkhunter configuration provided by Debian like distributions
-	# to disable the default cron task (i-MSCP provides its own cron job for rkhunter)
-	if(-f '/etc/default/rkhunter') {
-		# Get the file as a string
-		$file = iMSCP::File->new ('filename' => '/etc/default/rkhunter');
-		$rdata = $file->get();
-		unless(defined $rdata) {
-			error("Unable to read /etc/default/rkhunter");
-			return 1;
-		}
-
-		# Disable default cron task
-		$rdata =~ s/CRON_DAILY_RUN="(yes)?"/CRON_DAILY_RUN="no"/gmi;
-
-		$rs = $file->set($rdata);
-		return $rs if $rs;
-
-		$rs = $file->save();
-		return $rs if $rs;
-	}
-
-	# Updates the logrotate configuration provided by Debian like distributions to modify rights
-	if(-f '/etc/logrotate.d/rkhunter') {
-		# Get the file as a string
-		$file = iMSCP::File->new ('filename' => '/etc/logrotate.d/rkhunter');
-		$rdata = $file->get();
-		unless(defined $rdata) {
-			error("Unable to read /etc/logrotate.d/rkhunter");
-			return 1;
-		}
-
-		# Disable cron task default
-		$rdata =~ s/create 640 root adm/create 644 root adm/gmi;
-
-		$rs = $file->set($rdata);
-		return $rs if $rs;
-
-		$rs = $file->save();
-		return $rs if $rs;
-	}
-
-	# Update weekly cron task provided by Debian like distributions to avoid creation of unreadable log file
-	if(-f '/etc/cron.weekly/rkhunter') {
-		# Get the rkhunter file content
-		$file = iMSCP::File->new('filename' => '/etc/cron.weekly/rkhunter');
-		$rdata = $file->get();
-		unless(defined $rdata) {
-			error("Unable to read /etc/cron.weekly/rkhunter");
-			return 1;
-		}
-
-		# Adds `--nolog`option to avoid unreadable log file
-		$rdata =~ s/(--versioncheck\s+|--update\s+)(?!--nolog)/$1--nolog /g;
-
-		$rs = $file->set($rdata);
-		return $rs if $rs;
-
-		$rs = $file->save();
-		return $rs if $rs;
-	}
-
-	iMSCP::HooksManager->getInstance()->trigger('afterSetupRkhunter');
 }
 
 # Rebuild all customers's configuration files
@@ -2441,29 +2330,6 @@ sub setupRestartServices
 	endDetail();
 
 	iMSCP::HooksManager->getInstance()->trigger('afterSetupRestartServices');
-}
-
-# Run all update additional task such as rkhunter configuration
-sub setupAdditionalTasks
-{
-	my $rs = iMSCP::HooksManager->getInstance()->trigger('beforeSetupAdditionalTasks');
-	return $rs if $rs;
-
-	startDetail();
-
-	my @steps = ( [\&setupRkhunter, 'Setup Rkhunter'] );
-
-	my $step = 1;
-
-	for (@steps) {
-		$rs = step($_->[0], $_->[1], scalar @steps, $step);
-		return $rs if $rs;
-		$step++;
-	}
-
-	endDetail();
-
-	iMSCP::HooksManager->getInstance()->trigger('afterSetupAdditionalTasks');
 }
 
 #

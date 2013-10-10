@@ -2,7 +2,7 @@
 
 =head1 NAME
 
-Addons::phpmyadmin - i-MSCP PhpMyAdmin addon
+Addons::PhpMyAdmin - i-MSCP PhpMyAdmin addon
 
 =cut
 
@@ -29,12 +29,11 @@ Addons::phpmyadmin - i-MSCP PhpMyAdmin addon
 # @link        http://i-mscp.net i-MSCP Home Site
 # @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
-package Addons::phpmyadmin;
+package Addons::PhpMyAdmin;
 
 use strict;
 use warnings;
 
-use iMSCP::Debug;
 use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
@@ -49,7 +48,7 @@ use parent 'Common::SingletonClass';
 
 =over 4
 
-=item registerSetupHooks($hooksManager)
+=item registerSetupHooks(\%hooksManager)
 
  Register setup hook functions.
 
@@ -58,13 +57,12 @@ use parent 'Common::SingletonClass';
 
 =cut
 
-sub registerSetupHooks
+sub registerSetupHooks($$)
 {
-	my $self = shift;
-	my $hooksManager = shift;
+	my ($self, $hooksManager) = @_;
 
-	require Addons::phpmyadmin::installer;
-	Addons::phpmyadmin::installer->getInstance()->registerSetupHooks($hooksManager);
+	require Addons::PhpMyAdmin::Installer;
+	Addons::PhpMyAdmin::Installer->getInstance()->registerSetupHooks($hooksManager);
 }
 
 =item preinstall()
@@ -75,10 +73,8 @@ sub registerSetupHooks
 
 sub preinstall
 {
-	my $self = shift;
-
-	require Addons::phpmyadmin::installer;
-	Addons::phpmyadmin::installer->getInstance()->preinstall();
+	require Addons::PhpMyAdmin::Installer;
+	Addons::PhpMyAdmin::Installer->getInstance()->preinstall();
 }
 
 =item install()
@@ -91,10 +87,8 @@ sub preinstall
 
 sub install
 {
-	my $self = shift;
-
-	require Addons::phpmyadmin::installer;
-	Addons::phpmyadmin::installer->getInstance()->install();
+	require Addons::PhpMyAdmin::Installer;
+	Addons::PhpMyAdmin::Installer->getInstance()->install();
 }
 
 =item setGuiPermissions()
@@ -107,10 +101,8 @@ sub install
 
 sub setGuiPermissions
 {
-	my $self = shift;
-
-	require Addons::phpmyadmin::installer;
-	Addons::phpmyadmin::installer->getInstance()->setGuiPermissions();
+	require Addons::PhpMyAdmin::Installer;
+	Addons::PhpMyAdmin::Installer->getInstance()->setGuiPermissions();
 }
 
 =back
@@ -123,7 +115,7 @@ sub setGuiPermissions
 
  Called by getInstance(). Initialize PhpMyAdmin addon instance.
 
- Return Addons::phpmyadmin
+ Return Addons::PhpMyAdmin
 
 =cut
 

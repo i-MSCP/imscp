@@ -456,8 +456,8 @@ sub _addUser
 		return 1;
 	}
 
-	# Adding panel user in i-MSCP master group
-	$rs = $panelUName->addToGroup($main::imscpConfig{'MASTER_GROUP'});
+	# Adding panel user in i-MSCP group
+	$rs = $panelUName->addToGroup($main::imscpConfig{'IMSCP_GROUP'});
 	return $rs if $rs;
 
 	# Adding Apache user in panel user group

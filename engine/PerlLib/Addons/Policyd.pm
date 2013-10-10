@@ -2,7 +2,7 @@
 
 =head1 NAME
 
-Addons::policyd - i-MSCP Policyd Weight configurator addon
+Addons::Policyd - i-MSCP Policyd Weight configurator addon
 
 =cut
 
@@ -30,7 +30,7 @@ Addons::policyd - i-MSCP Policyd Weight configurator addon
 # @link        http://i-mscp.net i-MSCP Home Site
 # @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
-package Addons::policyd;
+package Addons::Policyd;
 
 use strict;
 use warnings;
@@ -53,7 +53,7 @@ improved blocking of spam and virus mails. policyd-weight caches the most freque
 =head1 PUBLIC METHODS
 
 
-=item registerSetupHooks($hooksManager)
+=item registerSetupHooks(\%hooksManager)
 
  Register setup hook functions.
 
@@ -62,13 +62,12 @@ improved blocking of spam and virus mails. policyd-weight caches the most freque
 
 =cut
 
-sub registerSetupHooks
+sub registerSetupHooks($$)
 {
-	my $self = shift;
-	my $hooksManager = shift;
+	my ($self, $hooksManager) = @_;
 
-	require Addons::policyd::installer;
-    Addons::policyd::installer->getInstance()->registerSetupHooks($hooksManager);
+	require Addons::Policyd::Installer;
+    Addons::Policyd::Installer->getInstance()->registerSetupHooks($hooksManager);
 }
 
 =item install()
@@ -81,10 +80,8 @@ sub registerSetupHooks
 
 sub install
 {
-	my $self = shift;
-
-	require Addons::policyd::installer;
-	Addons::policyd::installer->getInstance()->install();
+	require Addons::Policyd::Installer;
+	Addons::Policyd::Installer->getInstance()->install();
 }
 
 =back
@@ -95,9 +92,9 @@ sub install
 
 =item _init()
 
- Called by getInstance(). Initialize PhpMyAdmin addon instance.
+ Called by getInstance(). Initialize Policyd addon instance.
 
- Return Addons::phpmyadmin
+ Return Addons::Policyd
 
 =cut
 

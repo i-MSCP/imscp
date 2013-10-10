@@ -2,7 +2,7 @@
 
 =head1 NAME
 
-Addons::roundcube - i-MSCP Roundcube addon
+Addons::Roundcube - i-MSCP Roundcube addon
 
 =cut
 
@@ -29,7 +29,7 @@ Addons::roundcube - i-MSCP Roundcube addon
 # @link        http://i-mscp.net i-MSCP Home Site
 # @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
-package Addons::roundcube;
+package Addons::Roundcube;
 
 use strict;
 use warnings;
@@ -53,7 +53,7 @@ filters.
 
 =over 4
 
-=item registerSetupHooks($hooksManager)
+=item registerSetupHooks(\%hooksManager)
 
  Register setup hook functions.
 
@@ -62,13 +62,12 @@ filters.
 
 =cut
 
-sub registerSetupHooks
+sub registerSetupHooks($$)
 {
-	my $self = shift;
-	my $hooksManager = shift;
+	my ($self, $hooksManager) = @_;
 
-	require Addons::roundcube::installer;
-	Addons::roundcube::installer->getInstance()->registerSetupHooks($hooksManager);
+	require Addons::Roundcube::Installer;
+	Addons::Roundcube::Installer->getInstance()->registerSetupHooks($hooksManager);
 }
 
 =item preinstall()
@@ -81,10 +80,8 @@ sub registerSetupHooks
 
 sub preinstall
 {
-	my $self = shift;
-
-	require Addons::roundcube::installer;
-	Addons::roundcube::installer->getInstance()->preinstall();
+	require Addons::Roundcube::Installer;
+	Addons::Roundcube::Installer->getInstance()->preinstall();
 }
 
 =item install()
@@ -97,10 +94,8 @@ sub preinstall
 
 sub install
 {
-	my $self = shift;
-
-	require Addons::roundcube::installer;
-	Addons::roundcube::installer->getInstance()->install();
+	require Addons::Roundcube::Installer;
+	Addons::Roundcube::Installer->getInstance()->install();
 }
 
 =item setGuiPermissions()
@@ -113,24 +108,22 @@ sub install
 
 sub setGuiPermissions
 {
-	my $self = shift;
-
-	require Addons::roundcube::installer;
-	Addons::roundcube::installer->getInstance()->setGuiPermissions();
+	require Addons::Roundcube::Installer;
+	Addons::Roundcube::Installer->getInstance()->setGuiPermissions();
 }
 
-=item deleteMail()
+=item deleteMail(\%data)
 
  Delete mail user from i-MSCP database.
 
+ Param hash_ref $data A reference to a hash containing mail data
  Return int 0 on success, other on failure
 
 =cut
 
-sub deleteMail
+sub deleteMail($$)
 {
-	my $self = shift;
-	my $data = shift;
+	my ($self, $data) = @_;
 
 	my $roundcubeDbName = $main::imscpConfig{'DATABASE_NAME'} . '_roundcube';
 	my $rs = 0;
@@ -172,7 +165,7 @@ sub deleteMail
 
  Called by getInstance(). Initialize Roundcube addon instance.
 
- Return Addons::roundcube
+ Return Addons::Roundcube
 
 =cut
 

@@ -184,8 +184,6 @@
         <package>bash</package>
         <package>pbzip2</package>
         <package>bzip2</package>
-        <package>awstats</package>
-        <package>chkrootkit</package>
         <package>dialog</package>
         <package>diff</package>
         <package>dnsutils</package>
@@ -208,7 +206,6 @@
         <package>policyd-weight</package>
         <package>postgrey</package>
         <package>procmail</package>
-        <package>rkhunter</package>
         <package>sasl2-bin</package>
         <package>ssh</package>
         <package>tar</package>

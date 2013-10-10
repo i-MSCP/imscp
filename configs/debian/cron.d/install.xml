@@ -5,5 +5,4 @@
     <folders>${SYSTEM_CONF}/cron.d/backup</folders>
     <folders>${SYSTEM_CONF}/cron.d/working</folders>
     <copy_config>${SYSTEM_CONF}/cron.d/imscp</copy_config>
-    <copy_config>${SYSTEM_CONF}/cron.d/parts</copy_config>
 </install>

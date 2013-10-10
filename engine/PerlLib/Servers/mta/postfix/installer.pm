@@ -144,7 +144,7 @@ sub setEnginePermissions
 
 	my $rootUName = $main::imscpConfig{'ROOT_USER'};
 	my $rootGName = $main::imscpConfig{'ROOT_GROUP'};
-	my $masterGName = $main::imscpConfig{'MASTER_GROUP'};
+	my $imscpGName = $main::imscpConfig{'IMSCP_GROUP'};
 	my $mtaUName = $self->{'config'}->{'MTA_MAILBOX_UID_NAME'};
 	my $mtaGName = $self->{'config'}->{'MTA_MAILBOX_GID_NAME'};
 	my $mtaCfg = $self->{'config'}->{'MTA_VIRTUAL_CONF_DIR'};
@@ -165,7 +165,7 @@ sub setEnginePermissions
 	# eg. /var/www/imscp/engine/messenger
 	$rs = setRights(
 		"$imscpRootDir/engine/messenger",
-		{ 'user' => $rootUName, 'group' => $masterGName, 'dirmode' => '0750', 'filemode' => '0750', 'recursive' => 1 }
+		{ 'user' => $rootUName, 'group' => $imscpGName, 'dirmode' => '0750', 'filemode' => '0750', 'recursive' => 1 }
 	);
 	return $rs if $rs;
 
@@ -254,7 +254,7 @@ sub addUsersAndGroups
 			'vmail_user', # Comment
 			$self->{'config'}->{'MTA_VIRTUAL_MAIL_DIR'}, # User homedir
 			'yes', # Whether it's a system user
-			[$main::imscpConfig{'MASTER_GROUP'}] # Additional user group(s)
+			[$main::imscpConfig{'IMSCP_GROUP'}] # Additional user group(s)
 		]
 	);
 
@@ -573,7 +573,7 @@ sub buildMasterCfFile
 	$cfgTpl = iMSCP::Templator::process(
 		{
 			MTA_MAILBOX_UID_NAME => $self->{'config'}->{'MTA_MAILBOX_UID_NAME'},
-			IMSCP_GROUP => $main::imscpConfig{'MASTER_GROUP'},
+			IMSCP_GROUP => $main::imscpConfig{'IMSCP_GROUP'},
 			ARPL_PATH => $main::imscpConfig{'ROOT_DIR'}."/engine/messenger/imscp-arpl-msgr"
 		},
 		$cfgTpl

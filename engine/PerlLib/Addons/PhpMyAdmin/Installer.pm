@@ -2,7 +2,7 @@
 
 =head1 NAME
 
-Addons::phpmyadmin::installer - i-MSCP PhpMyAdmin addon installer
+Addons::PhpMyAdmin::Installer - i-MSCP PhpMyAdmin addon installer
 
 =cut
 
@@ -29,13 +29,13 @@ Addons::phpmyadmin::installer - i-MSCP PhpMyAdmin addon installer
 # @link        http://i-mscp.net i-MSCP Home Site
 # @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
-package Addons::phpmyadmin::installer;
+package Addons::PhpMyAdmin::Installer;
 
 use strict;
 use warnings;
 
 use iMSCP::Debug;
-use Addons::phpmyadmin;
+use Addons::PhpMyAdmin;
 use iMSCP::Addons::ComposerInstaller;
 use parent 'Common::SingletonClass';
 
@@ -45,13 +45,13 @@ our $VERSION = '0.2.0';
 
  This is the installer for the i-MSCP PhpMyAdmin addon.
 
- See Addons::phpmyadmin for more information.
+ See Addons::PhpMyAdmin for more information.
 
 =head1 PUBLIC METHODS
 
 =over 4
 
-=item registerSetupHooks(HooksManager)
+=item registerSetupHooks(\%hooksManager)
 
  Register PhpMyAdmin setup hook functions.
 
@@ -60,88 +60,16 @@ our $VERSION = '0.2.0';
 
 =cut
 
-sub registerSetupHooks
+sub registerSetupHooks($$)
 {
-	my $self = shift;
-	my $hooksManager = shift;
+	my ($self, $hooksManager) = @_;
 
 	$hooksManager->register(
-		'beforeSetupDialog', sub { my $dialogStack = shift; push(@$dialogStack, sub { $self->askPhpmyadmin(@_) }); 0; }
+		'beforeSetupDialog', sub { my $dialogStack = shift; push(@$dialogStack, sub { $self->showDialog(@_) }); 0; }
 	);
 }
 
-=item preinstall()
-
- Register PhpMyAdmin composer package for installation.
-
- Return int 0 on success, other on failure
-
-=cut
-
-sub preinstall
-{
-	my $self = shift;
-
-	iMSCP::Addons::ComposerInstaller->getInstance()->registerPackage('imscp/phpmyadmin', "$VERSION.*\@dev");
-}
-
-=item install()
-
- Process PhpMyAdmin addon install tasks.
-
- Return int 0 on success, 1 on failure
-
-=cut
-
-sub install
-{
-	my $self = shift;
-
-	# Backup current configuration file if it exists (only relevant when running imscp-setup)
-	my $rs = $self->_backupConfigFile(
-		"$main::imscpConfig{'GUI_PUBLIC_DIR'}/$self->{'config'}->{'PHPMYADMIN_CONF_DIR'}/config.inc.php"
-	);
-	return $rs if $rs;
-
-	# Install phpmyadmin files from local addon packages repository
-	$rs = $self->_installFiles();
-	return $rs if $rs;
-
-	# Setup phpmyadmin database
-	$rs = $self->_setupDatabase();
-	return $rs if $rs;
-
-	# Setup phpmyadmin restricted SQL user
-	$rs = $self->_setupSqlUser();
-	return $rs if $rs;
-
-	# Generate Blowfish secret
-	$rs = $self->_generateBlowfishSecret();
-	return $rs if $rs;
-
-	# Build new configuration files
-	$rs = $self->_buildConfig();
-	return $rs if $rs;
-
-	# Update phpMyAdmin database if needed (should be done after phpMyAdmin config files generation)
-	$rs = $self->_updateDatabase() unless $self->{'newInstall'};
-	return $rs if $rs;
-
-	# Set new phpMyAdmin version
-	$rs = $self->_setVersion();
-	return $rs if $rs;
-
-	# Save configuration
-	$self->_saveConfig();
-}
-
-=back
-
-=head1 HOOK FUNCTIONS
-
-=over 4
-
-=item askPhpmyadmin()
+=item showDialog(\%dialog)
 
  Show PhpMyAdmin questions.
 
@@ -152,10 +80,9 @@ sub install
 
 =cut
 
-sub askPhpmyadmin
+sub showDialog($$)
 {
-	my $self = shift;
-	my $dialog = shift;
+	my ($self, $dialog) = @_;
 
 	my $dbType = main::setupGetQuestion('DATABASE_TYPE');
 	my $dbHost = main::setupGetQuestion('DATABASE_HOST');
@@ -212,6 +139,69 @@ sub askPhpmyadmin
 	$rs;
 }
 
+=item preinstall()
+
+ Register PhpMyAdmin composer package for installation.
+
+ Return int 0
+
+=cut
+
+sub preinstall
+{
+	iMSCP::Addons::ComposerInstaller->getInstance()->registerPackage('imscp/phpmyadmin', "$VERSION.*\@dev");
+}
+
+=item install()
+
+ Process PhpMyAdmin addon install tasks.
+
+ Return int 0 on success, 1 on failure
+
+=cut
+
+sub install
+{
+	my $self = shift;
+
+	# Backup current configuration file if it exists (only relevant when running imscp-setup)
+	my $rs = $self->_backupConfigFile(
+		"$main::imscpConfig{'GUI_PUBLIC_DIR'}/$self->{'config'}->{'PHPMYADMIN_CONF_DIR'}/config.inc.php"
+	);
+	return $rs if $rs;
+
+	# Install phpmyadmin files from local addon packages repository
+	$rs = $self->_installFiles();
+	return $rs if $rs;
+
+	# Setup phpmyadmin database
+	$rs = $self->_setupDatabase();
+	return $rs if $rs;
+
+	# Setup phpmyadmin restricted SQL user
+	$rs = $self->_setupSqlUser();
+	return $rs if $rs;
+
+	# Generate Blowfish secret
+	$rs = $self->_generateBlowfishSecret();
+	return $rs if $rs;
+
+	# Build new configuration files
+	$rs = $self->_buildConfig();
+	return $rs if $rs;
+
+	# Update phpMyAdmin database if needed (should be done after phpMyAdmin config files generation)
+	$rs = $self->_updateDatabase() unless $self->{'newInstall'};
+	return $rs if $rs;
+
+	# Set new phpMyAdmin version
+	$rs = $self->_setVersion();
+	return $rs if $rs;
+
+	# Save configuration
+	$self->_saveConfig();
+}
+
 =item setGuiPermissions()
 
  Set PhpMyAdmin files permissions.
@@ -222,8 +212,6 @@ sub askPhpmyadmin
 
 sub setGuiPermissions
 {
-	my $self = shift;
-
 	my $panelUName =
 	my $panelGName =
 		$main::imscpConfig{'SYSTEM_USER_PREFIX'} . $main::imscpConfig{'SYSTEM_USER_MIN_UID'};
@@ -247,7 +235,7 @@ sub setGuiPermissions
 
  Called by getInstance(). Initialize PhpMyAdmin addon installer instance.
 
- Return Addons::phpmyadmin::installer
+ Return Addons::PhpMyAdmin::Installer
 
 =cut
 
@@ -255,7 +243,7 @@ sub _init
 {
 	my $self = shift;
 
-	$self->{'phpmyadmin'} = Addons::phpmyadmin->getInstance();
+	$self->{'phpmyadmin'} = Addons::PhpMyAdmin->getInstance();
 
 	$self->{'cfgDir'} = $self->{'phpmyadmin'}->{'cfgDir'};
 	$self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
@@ -287,21 +275,20 @@ sub _init
 
 =cut
 
-sub _backupConfigFile
+sub _backupConfigFile($$)
 {
-	my $self = shift;
-	my $cfgFile = shift;
-
-	require File::Basename;
-	File::Basename->import();
-
-	my ($name, $path, $suffix) = fileparse($cfgFile);
+	my ($self, $cfgFile) = @_;
 
 	if(-f $cfgFile) {
+		require File::Basename;
+		File::Basename->import();
+
+		my $filename = fileparse($cfgFile);
+
 		require iMSCP::File;
 
 		my $file = iMSCP::File->new('filename' => $cfgFile);
-		my $rs = $file->copyFile("$self->{'bkpDir'}/$name$suffix." . time);
+		my $rs = $file->copyFile("$self->{'bkpDir'}/$filename." . time);
 
 		return $rs if $rs;
 	}
@@ -319,8 +306,6 @@ sub _backupConfigFile
 
 sub _installFiles
 {
-	my $self = shift;
-
 	my $repoDir = $main::imscpConfig{'ADDON_PACKAGES_CACHE_DIR'};
 	my $rs = 0;
 

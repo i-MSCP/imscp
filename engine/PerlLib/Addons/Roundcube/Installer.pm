@@ -2,7 +2,7 @@
 
 =head1 NAME
 
-Addons::roundcube::installer - i-MSCP Roundcube addon installer
+Addons::Roundcube::Installer - i-MSCP Roundcube addon installer
 
 =cut
 
@@ -29,7 +29,7 @@ Addons::roundcube::installer - i-MSCP Roundcube addon installer
 # @link        http://i-mscp.net i-MSCP Home Site
 # @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
-package Addons::roundcube::installer;
+package Addons::Roundcube::Installer;
 
 use strict;
 use warnings;
@@ -46,13 +46,13 @@ our $VERSION = '0.3.0';
 
  This is the installer for the i-MSCP Roundcube addon.
 
- See Addons::roundcube for more information.
+ See Addons::Roundcube for more information.
 
 =head1 PUBLIC METHODS
 
 =over 4
 
-=item registerSetupHooks($hooksManager)
+=item registerSetupHooks(\%hooksManager)
 
  Register Roundcube setup hook functions.
 
@@ -63,96 +63,25 @@ our $VERSION = '0.3.0';
 
 sub registerSetupHooks($$)
 {
-	my $self = shift;
-	my $hooksManager = shift;
+	my ($self, $hooksManager) = @_;
 
 	$hooksManager->register(
-		'beforeSetupDialog', sub { my $dialogStack = shift; push(@$dialogStack, sub { $self->askRoundcube(@_) }); 0; }
+		'beforeSetupDialog', sub { my $dialogStack = shift; push(@$dialogStack, sub { $self->showDialog(@_) }); 0; }
 	);
 }
 
-=item preinstall()
+=item showDialog(\%dialog)
 
- Register Roundcube addon package for installation.
+ Show Roundcube installer questions.
 
- Return int 0 on success, other on failure
-
-=cut
-
-sub preinstall
-{
-	my $self = shift;
-
-	iMSCP::Addons::ComposerInstaller->getInstance()->registerPackage('imscp/roundcube', "$VERSION.*\@dev");
-
-	0;
-}
-
-=item install()
-
- Process Roundcube addon install tasks.
-
- Return int 0 on success, other on failure
-
-=cut
-
-sub install
-{
-	my $self = shift;
-
-	my $rs = 0;
-
-	# Backup current configuration files if they exists (only relevant when running imscp-setup)
-	for (
-		"$main::imscpConfig{'GUI_PUBLIC_DIR'}/$self->{'config'}->{'ROUNDCUBE_CONF_DIR'}/db.inc.php",
-		"$main::imscpConfig{'GUI_PUBLIC_DIR'}/$self->{'config'}->{'ROUNDCUBE_CONF_DIR'}/main.inc.php",
-		"$main::imscpConfig{'GUI_PUBLIC_DIR'}/$self->{'config'}->{'ROUNDCUBE_PWCHANGER_DIR'}/config.inc.php"
-	) {
-		$rs = $self->_backupConfigFile($_);
-		return $rs if $rs;
-	}
-
-	# Install Roundcube files from local addon packages repository
-	$rs = $self->_installFiles();
-	return $rs if $rs;
-
-	# Setup Roundcube database (database, user)
-	$rs = $self->_setupDatabase();
-	return $rs if $rs;
-
-	# Generate Roundcube DES key
-	$rs = $self->_generateDESKey();
-	return $rs if $rs;
-
-	# Build new Roundcube configuration files
-	$rs = $self->_buildConfig();
-	return $rs if $rs;
-
-	# Update Roundcube database if needed (should be done after roundcube config files generation)
-	$rs = $self->_updateDatabase() unless $self->{'newInstall'};
-	return $rs if $rs;
-
-	# Set new Roundcube version
-	$rs = $self->_setVersion();
-	return $rs if $rs;
-
-	# Save Roundcube addon configuration file
-	$self->_saveConfig();
-}
-
-=item askRoundcube($hooksManager)
-
- Show roundcube installer questions.
-
- Param iMSCP::Dialog
+ Param iMSCP::Dialog::Dialog|iMSCP::Dialog::Whiptail $dialog
  Return int 0 or 30
 
 =cut
 
-sub askRoundcube($$)
+sub showDialog($$)
 {
-	my $self = shift;
-	my $dialog = shift;
+	my ($self, $dialog) = @_;
 
 	my $dbType = main::setupGetQuestion('DATABASE_TYPE');
 	my $dbHost = main::setupGetQuestion('DATABASE_HOST');
@@ -209,6 +138,71 @@ sub askRoundcube($$)
 	$rs;
 }
 
+=item preinstall()
+
+ Register Roundcube addon package for installation.
+
+ Return int 0
+
+=cut
+
+sub preinstall
+{
+	iMSCP::Addons::ComposerInstaller->getInstance()->registerPackage('imscp/roundcube', "$VERSION.*\@dev");
+}
+
+=item install()
+
+ Process Roundcube addon install tasks.
+
+ Return int 0 on success, other on failure
+
+=cut
+
+sub install
+{
+	my $self = shift;
+
+	my $rs = 0;
+
+	# Backup current configuration files if they exists (only relevant when running imscp-setup)
+	for (
+		"$main::imscpConfig{'GUI_PUBLIC_DIR'}/$self->{'config'}->{'ROUNDCUBE_CONF_DIR'}/db.inc.php",
+		"$main::imscpConfig{'GUI_PUBLIC_DIR'}/$self->{'config'}->{'ROUNDCUBE_CONF_DIR'}/main.inc.php",
+		"$main::imscpConfig{'GUI_PUBLIC_DIR'}/$self->{'config'}->{'ROUNDCUBE_PWCHANGER_DIR'}/config.inc.php"
+	) {
+		$rs = $self->_backupConfigFile($_);
+		return $rs if $rs;
+	}
+
+	# Install Roundcube files from local addon packages repository
+	$rs = $self->_installFiles();
+	return $rs if $rs;
+
+	# Setup Roundcube database (database, user)
+	$rs = $self->_setupDatabase();
+	return $rs if $rs;
+
+	# Generate Roundcube DES key
+	$rs = $self->_generateDESKey();
+	return $rs if $rs;
+
+	# Build new Roundcube configuration files
+	$rs = $self->_buildConfig();
+	return $rs if $rs;
+
+	# Update Roundcube database if needed (should be done after roundcube config files generation)
+	$rs = $self->_updateDatabase() unless $self->{'newInstall'};
+	return $rs if $rs;
+
+	# Set new Roundcube version
+	$rs = $self->_setVersion();
+	return $rs if $rs;
+
+	# Save Roundcube addon configuration file
+	$self->_saveConfig();
+}
+
 =item setGuiPermissions()
 
  Set Roundcube files permissions.
@@ -219,8 +213,6 @@ sub askRoundcube($$)
 
 sub setGuiPermissions
 {
-	my $self = shift;
-
 	my $panelUName =
 	my $panelGName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} . $main::imscpConfig{'SYSTEM_USER_MIN_UID'};
 	my $guiPublicDir = $main::imscpConfig{'GUI_PUBLIC_DIR'};
@@ -250,7 +242,7 @@ sub setGuiPermissions
 
  Called by getInstance(). Initialize Roundcube addon installer instance.
 
- Return Addons::roundcube::installer
+ Return Addons::Roundcube::Installer
 
 =cut
 
@@ -258,7 +250,7 @@ sub _init
 {
 	my $self = shift;
 
-	$self->{'roundcube'} = Addons::roundcube->getInstance();
+	$self->{'roundcube'} = Addons::Roundcube->getInstance();
 
 	$self->{'cfgDir'} = $self->{'roundcube'}->{'cfgDir'};
 	$self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
@@ -293,8 +285,7 @@ sub _init
 
 sub _backupConfigFile($$)
 {
-	my $self = shift;
-	my $cfgFile = shift;
+	my ($self, $cfgFile) = @_;
 
 	if(-f $cfgFile) {
 		my $filename = fileparse($cfgFile);
@@ -317,8 +308,6 @@ sub _backupConfigFile($$)
 
 sub _installFiles
 {
-	my $self = shift;
-
 	my $repoDir = $main::imscpConfig{'ADDON_PACKAGES_CACHE_DIR'};
 	my $rs = 0;
 

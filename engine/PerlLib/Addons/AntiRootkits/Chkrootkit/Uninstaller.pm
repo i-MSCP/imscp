@@ -2,7 +2,7 @@
 
 =head1 NAME
 
-Addons::filemanager - i-MSCP filemanager addon
+Addons::AntiRootkits::Chkrootkit::Uninstaller - i-MSCP Chkrootkit Anti-Rootkits addon uninstaller
 
 =cut
 
@@ -29,88 +29,76 @@ Addons::filemanager - i-MSCP filemanager addon
 # @link        http://i-mscp.net i-MSCP Home Site
 # @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
-package Addons::filemanager;
+package Addons::AntiRootkits::Chkrootkit::Uninstaller;
 
 use strict;
 use warnings;
 
-use iMSCP::Debug;
+use iMSCP::File;
 use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
 
- Filemanager addon for i-MSCP.
-
- This addon provide Web Ftp client for i-MSCP. For now only Ajaxplorer and Net2Ftp are available.
+ This is the uninstaller for the i-MSCP Chkrootkit Anti-Rootkits addon.
 
 =head1 PUBLIC METHODS
 
 =over 4
 
-=item registerSetupHooks($hooksManager)
+=item uninstall()
 
- Register setup hook functions.
+ Process Chkrootkit Anti-Rootkits addon uninstall tasks.
 
- Param iMSCP::HooksManager instance
+ Return int 0 on success, other on failure
+
+=cut
+
+sub uninstall
+{
+	my $self = shift;
+
+	$self->_restoreDebianConfig();
+}
+
+=item getPackages()
+
+ Get list of packages to uninstall.
+
+ Return array_ref An array containing list of packages to uninstall
+
+=cut
+
+sub getPackages
+{
+	['chkrootkit'];
+}
+
+=back
+
+=head1 PRIVATE METHODS
+
+=over 4
+
+=item _disableDebianConfig()
+
+ Restore default configuration as provided by the chkrootkit Debian package
+
  Return int - 0 on success, 1 on failure
 
 =cut
 
-sub registerSetupHooks
+sub _restoreDebianConfig
 {
-	my $self = shift;
-	my $hooksManager = shift;
+	my $rs = 0;
 
-	require Addons::filemanager::installer;
-	Addons::filemanager::installer->getInstance()->registerSetupHooks($hooksManager);
-}
+	# Restore daily cron task
+	$rs = iMSCP::File->new(
+		'filename' => '/etc/cron.daily/chkrootkit.disabled'
+	)->moveFile(
+		'/etc/cron.daily/chkrootkit'
+	) if -f '/etc/cron.daily/chkrootkit.disabled';
 
-=item preinstall()
-
- Run the preinstall method on the filemanager addon installer.
-
- Return int 0 on success, other on failure
-
-=cut
-
-sub preinstall
-{
-	my $self = shift;
-
-	require Addons::filemanager::installer;
-	Addons::filemanager::installer->getInstance()->preinstall();
-}
-
-=item install()
-
- Run the install method on the filemanager addon installer.
-
- Return int 0 on success, 1 on failure
-
-=cut
-
-sub install
-{
-	my $self = shift;
-
-	require Addons::filemanager::installer;
-	Addons::filemanager::installer->getInstance()->install();
-}
-
-=item setGuiPermissions()
-
- Set filemanager files permissions.
-
- Return int 0 on success, other on failure
-
-=cut
-
-sub setGuiPermissions
-{
-	my $self = shift;
-
-	require Addons::filemanager::installer;
-	Addons::filemanager::installer->getInstance()->setGuiPermissions();
+	$rs;
 }
 
 =back

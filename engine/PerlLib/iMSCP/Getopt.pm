@@ -122,7 +122,7 @@ EOF
 
 our $reconfigureItems = [
 	'all', 'servers', 'httpd', 'mta', 'mailfilters', 'po', 'ftpd', 'named', 'sql', 'hostname', 'resolver', 'ips',
-	'admin', 'php', 'ssl', 'backup', 'webstats', 'sqlmanager', 'webmail', 'filemanager'
+	'admin', 'php', 'ssl', 'backup', 'webstats', 'sqlmanager', 'webmail', 'filemanager', 'antirootkits'
 ];
 
 =item reconfigure()
