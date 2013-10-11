@@ -40,12 +40,14 @@ our ($CarpLevel, $MaxArgNums, $MaxEvalLen, $MaxArgLen, $Verbose);
 
 BEGIN
 {
-	if("$]" >= 5.015002 || ("$]" >= 5.014002 && "$]" < 5.015) || ("$]" >= 5.012005 && "$]" < 5.013)) {
-		*CALLER_OVERRIDE_CHECK_OK = sub () { 1 };
-    } else {
-		*CALLER_OVERRIDE_CHECK_OK = sub () { 0 };
-    }
-}
+	if("$]" < 5.018001) {
+		if("$]" >= 5.015002 || ("$]" >= 5.014002 && "$]" < 5.015) || ("$]" >= 5.012005 && "$]" < 5.013)) {
+			*CALLER_OVERRIDE_CHECK_OK = sub () { 1 };
+		} else {
+			*CALLER_OVERRIDE_CHECK_OK = sub () { 0 };
+		}
+	}
+ }
 
 delete $Carp::Heavy::{'_cgc'};
 *_cgc = *_cgc_real;
