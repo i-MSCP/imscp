@@ -156,6 +156,6 @@ $main::questions{'ROUNDCUBE_SQL_USER'} = 'roundcube_user';
 $main::questions{'ROUNDCUBE_SQL_PASSWORD'} = '<password>'; # Password must not be empty
 
 # Anti-Rootkits addons
-$main::questions{'ANTI_ROOTKITS_ADDONS'} = 'Chkrootkit,Rkhunter' # 'Chkrootkit' and/or 'Rkhunter' or 'No', each value comma separated
+$main::questions{'ANTI_ROOTKITS_ADDONS'} = 'Chkrootkit,Rkhunter'; # 'Chkrootkit' and/or 'Rkhunter' or 'No', each value comma separated
 
 1;
