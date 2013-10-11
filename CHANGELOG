@@ -6,16 +6,19 @@ Git Master
 ------------------------------------------------------------------------------------------------------------------------
 
 ADDONS:
-		- Fixed: Net2ftp installer is broken
+	- Fixed: Net2ftp installer is broken
 
 DOCS:
-		- Fixed: Preseed template file is broken (compile time error)
+	- Fixed: Preseed template file is broken (compile time error)
 
 SETUP:
-		- Fixed: ispCP migration script is broken (many compile time errors)
+	- Fixed: ispCP migration script is broken (many compile time errors)
 
 GUI:
-		- Fixed: Unable to view ticket (reseller level)
+	- Fixed: Unable to view ticket (reseller level)
+
+Tickets:
+	- Fixed #936: Bug - Awstats addon - Failed to open directory /var/cache/awstats
 
 ------------------------------------------------------------------------------------------------------------------------
 1.1.0-rc4.2

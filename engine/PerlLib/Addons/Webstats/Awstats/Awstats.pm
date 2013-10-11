@@ -116,6 +116,20 @@ sub uninstall
 	Addons::Webstats::Awstats::Uninstaller->uninstall();
 }
 
+=item setEnginePermissions()
+
+ Set files permissions.
+
+ Return int 0 on success, other on failure
+
+=cut
+
+sub setEnginePermissions
+{
+	require Addons::Webstats::Awstats::Installer;
+	Addons::Webstats::Awstats::Installer->setEnginePermissions();
+}
+
 =item getPackages()
 
  Get list of Debian packages to which this addon depends.

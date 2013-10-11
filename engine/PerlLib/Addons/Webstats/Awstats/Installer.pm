@@ -128,7 +128,7 @@ sub install
 
 =item setEnginePermissions()
 
- Set Rkhunter permissions.
+ Set files permissions.
 
  Return int 0 on success, other on failure
 
@@ -157,12 +157,16 @@ sub setEnginePermissions
 		}
 	);
 
+	my $httpd = Servers::httpd->factory();
+
 	$rs = setRights(
 		$main::imscpConfig{'AWSTATS_CACHE_DIR'},
 		{
 			'user' => $main::imscpConfig{'ROOT_USER'},
-			'group' => $main::imscpConfig{'ROOT_USER'},
-			'mode' => '0750'
+			'group' => $httpd->getRunningGroup(),
+			'dirmode' => '02750',
+			'filemode' => '0640',
+			'recursive' => 1
 		}
 	);
 
@@ -228,9 +232,7 @@ sub _makeCacheDir
 	iMSCP::Dir->new(
 		'dirname' => $main::imscpConfig{'AWSTATS_CACHE_DIR'}
 	)->make(
-		#{ 'user' => $httpd->getRunningUser(), 'group' => $httpd->getRunningGroup(), 'mode' => 0750 }
-		{ 'user' => $main::imscpConfig{'ROOT_USER'}, 'group' => $main::imscpConfig{'ROOT_GROUP'}, 'mode' => 0750 }
-
+		{ 'user' => $main::imscpConfig{'ROOT_USER'}, 'group' => $httpd->getRunningGroup(), 'mode' => 02750 }
 	);
 }
 
