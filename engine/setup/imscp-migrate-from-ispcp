@@ -150,16 +150,16 @@ sub removeIspcpFiles
 			push @errors, $stderr if $stderr && $rs;
 
 			# The service wasn't stopped for unknown reason, we try to kill it using pkill
-			if($rs)
+			if($rs) {
 				# Getting daemon name
-				$daemonName = fileparse($_);
+				my $daemonName = fileparse($_);
 
 				$rs = execute("$main::imscpConfig{'CMD_PKILL'} -KILL $daemonName", \$stdout, \$stderr);
 				debug($stdout) if $stdout;
 				push @errors, $stderr if $stderr && $rs > 1; # See man pkill for exit status list
 
 				# In such case, we must delete the pidfile manually if any
-				if(-f "/var/run/$daemonName") {
+				if(-f "/var/run/$daemonName") {
 					unlink "/var/run/$daemonName" or push @errors, "Unable to delete /var/run/$daemonName file: $!";
             	}
 			}
