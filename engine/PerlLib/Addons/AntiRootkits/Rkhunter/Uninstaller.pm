@@ -39,7 +39,7 @@ use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
 
- This is the uninstaller for the i-MSCP Rkhunter Anti-Rootkits addon.
+ Rkhunter addon uninstaller.
 
 =head1 PUBLIC METHODS
 
@@ -47,7 +47,7 @@ use parent 'Common::SingletonClass';
 
 =item uninstall()
 
- Process Rkhunter Anti-Rootkits addon uninstall tasks.
+ Process uninstall tasks.
 
  Return int 0 on success, other on failure
 
@@ -60,19 +60,6 @@ sub uninstall
 	$self->_restoreDebianConfig();
 }
 
-=item getPackages()
-
- Get list of packages to install.
-
- Return array_ref An array containing list of packages to uninstall
-
-=cut
-
-sub getPackages
-{
-	['rkhunter'];
-}
-
 =back
 
 =head1 PRIVATE METHODS
@@ -83,7 +70,7 @@ sub getPackages
 
  Restore default configuration as provided by the rkhunter Debian package
 
- Return int - 0 on success, 1 on failure
+ Return int 0 on success, 1 on failure
 
 =cut
 

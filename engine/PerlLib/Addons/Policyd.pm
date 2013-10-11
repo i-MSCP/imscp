@@ -72,7 +72,7 @@ sub registerSetupHooks($$)
 
 =item install()
 
- Run the install method on the policyd addon installer.
+ Process install tasks.
 
  Return int 0 on success, 1 on failure
 
@@ -92,7 +92,7 @@ sub install
 
 =item _init()
 
- Called by getInstance(). Initialize Policyd addon instance.
+ Called by getInstance(). Initialize instance.
 
  Return Addons::Policyd
 

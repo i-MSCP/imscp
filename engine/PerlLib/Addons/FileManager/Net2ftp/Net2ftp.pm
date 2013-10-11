@@ -2,7 +2,7 @@
 
 =head1 NAME
 
-Addons::AntiRootkits::Chkrootkit::Uninstaller - i-MSCP Chkrootkit addon uninstaller
+Addons::FileManager::Net2ftp::Net2ftp - i-MSCP addon
 
 =cut
 
@@ -29,63 +29,66 @@ Addons::AntiRootkits::Chkrootkit::Uninstaller - i-MSCP Chkrootkit addon uninstal
 # @link        http://i-mscp.net i-MSCP Home Site
 # @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
-package Addons::AntiRootkits::Chkrootkit::Uninstaller;
+package Addons::FileManager::Net2ftp::Net2ftp;
 
 use strict;
 use warnings;
 
-use iMSCP::File;
+use iMSCP::Debug;
 use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
 
- Chkrootkit addon uninstaller.
+ i-MSCP  addon.
+
+  is a web-based FTP client written in PHP.
+
+ Project homepage: http://www..com/
 
 =head1 PUBLIC METHODS
 
 =over 4
 
-=item uninstall()
+=item preinstall()
 
- Process uninstall tasks.
+ Process preinstall tasks.
 
  Return int 0 on success, other on failure
 
 =cut
 
-sub uninstall
+sub preinstall
 {
-	my $self = shift;
-
-	$self->_restoreDebianConfig();
+	require Addons::FileManager::Net2ftp::Installer;
+	Addons::FileManager::Net2ftp::Installer->preinstall();
 }
 
-=back
+=item install()
 
-=head1 PRIVATE METHODS
+ Process install tasks.
 
-=over 4
-
-=item _disableDebianConfig()
-
- Restore default configuration as provided by the chkrootkit Debian package
-
- Return int - 0 on success, 1 on failure
+ Return int 0 on success, 1 on failure
 
 =cut
 
-sub _restoreDebianConfig
+sub install
 {
-	my $rs = 0;
+	require Addons::FileManager::Net2ftp::Installer;
+	Addons::FileManager::Net2ftp::Installer->install();
+}
 
-	# Restore daily cron task
-	$rs = iMSCP::File->new(
-		'filename' => '/etc/cron.daily/chkrootkit.disabled'
-	)->moveFile(
-		'/etc/cron.daily/chkrootkit'
-	) if -f '/etc/cron.daily/chkrootkit.disabled';
+=item setGuiPermissions()
 
-	$rs;
+ Set file permissions.
+
+ Return int 0 on success, other on failure
+
+=cut
+
+sub setGuiPermissions
+{
+	require Addons::FileManager::Net2ftp::Installer;
+	Addons::FileManager::Net2ftp::Installer->setGuiPermissions();
 }
 
 =back

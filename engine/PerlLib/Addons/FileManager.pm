@@ -39,9 +39,8 @@ use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
 
- Filemanager addon for i-MSCP.
-
- This addon provide Web Ftp client for i-MSCP. For now only Ajaxplorer and Net2Ftp are available.
+ i-MSCP FileManager addon. This is a wrapper that handle all available FileManager addons found in the FileManager
+directory.
 
 =head1 PUBLIC METHODS
 
@@ -49,7 +48,7 @@ use parent 'Common::SingletonClass';
 
 =item registerSetupHooks(\%$hooksManager)
 
- Register FileManager setup hook functions.
+ Register setup hook functions.
 
  Param iMSCP::HooksManager instance
  Return int 0 on success, 1 on failure
@@ -67,7 +66,7 @@ sub registerSetupHooks($$)
 
 =item showDialog(\%dialog)
 
- Show FileManager addon question.
+ Show dialog.
 
  Param iMSCP::Dialog::Dialog|iMSCP::Dialog::Whiptail $dialog
  Return int 0 or 30
@@ -76,24 +75,24 @@ sub registerSetupHooks($$)
 
 sub showDialog($$)
 {
-	my ($self, $dialog, $rs) = (shift, shift, 0);
+	my ($self, $dialog, $rs) = (@_, 0);
 
 	my $addon = main::setupGetQuestion('FILEMANAGER_ADDON');
 
 	if(
-		$main::reconfigure ~~ ['filemanager', 'all', 'forced'] || ! $addon || not $addon ~~ ['AjaXplorer', 'Net2ftp']
+		$main::reconfigure ~~ ['filemanager', 'all', 'forced'] || ! $addon || not $addon ~~ @{$self->{'ADDONS'}}
 	) {
 		($rs, $addon) = $dialog->radiolist(
 			"\nPlease, select the Ftp Web file manager addon you want install:",
-			['AjaXplorer', 'Net2ftp'],
-			($addon ne  '' && $addon ~~ ['AjaXplorer', 'Net2ftp'] ) ? $addon : 'AjaXplorer'
+			$self->{'ADDONS'},
+			($addon ne  '' && $addon ~~ $self->{'ADDONS'} ) ? $addon : @{$self->{'ADDONS'}}[0]
 		);
 	}
 
 	if($rs != 30) {
 		main::setupSetQuestion('FILEMANAGER_ADDON', $addon);
 
-		$addon = "Addons::FileManager::${addon}::Installer";
+		$addon = "Addons::FileManager::${addon}::${addon}";
 		eval "require $addon";
 
 		if(! $@) {
@@ -111,9 +110,7 @@ sub showDialog($$)
 
 =item preinstall()
 
- Process FileManager addon preinstall tasks.
-
- Note: This method also trigger uninstallation of unselected FileManager addons.
+ Process preinstall tasks.
 
  Return int 0 on success, other on failure
 
@@ -121,9 +118,9 @@ sub showDialog($$)
 
 sub preinstall
 {
-	my $addon = $main::imscpConfig{'FILEMANAGER_ADDON'};
+	my $addon = main::setupGetQuestion('FILEMANAGER_ADDON');
 
-	my $addon = "Addons::FileManager::${addon}::Installer";
+	my $addon = "Addons::FileManager::${addon}::${addon}";
 	eval "require $addon";
 
 	if(! $@) {
@@ -140,7 +137,7 @@ sub preinstall
 
 =item install()
 
- Process Webstats addon install tasks.
+ Process install tasks.
 
  Return int 0 on success, other on failure
 
@@ -148,9 +145,9 @@ sub preinstall
 
 sub install
 {
-	my $addon = $main::imscpConfig{'FILEMANAGER_ADDON'};
+	my $addon = main::setupGetQuestion('FILEMANAGER_ADDON');
 
-	my $addon = "Addons::FileManager::${addon}::Installer";
+	my $addon = "Addons::FileManager::${addon}::${addon}";
 	eval "require $addon";
 
 	if(! $@) {
@@ -167,7 +164,7 @@ sub install
 
 =item setGuiPermissions()
 
- Set Webstats addon files permissions.
+ Set file permissions.
 
  Return int 0 on success, other on failure
 
@@ -175,21 +172,51 @@ sub install
 
 sub setGuiPermissions
 {
+	my $self = shift;
+
 	my $addon = $main::imscpConfig{'FILEMANAGER_ADDON'};
 
-	my $addon = "Addons::FileManager::${addon}::Installer";
-	eval "require $addon";
+	if($addon ~~ @{$self->{'ADDONS'}}) {
+		my $addon = "Addons::FileManager::${addon}::${addon}";
+		eval "require $addon";
 
-	if(! $@) {
-		$addon = $addon->getInstance();
-		my $rs = $addon->setGuiPermissions() if $addon->can('setGuiPermissions');
-		return $rs if $rs;
-	} else {
-		error($@);
-		return 1;
+		if(! $@) {
+			$addon = $addon->getInstance();
+			my $rs = $addon->setGuiPermissions() if $addon->can('setGuiPermissions');
+			return $rs if $rs;
+		} else {
+			error($@);
+			return 1;
+		}
 	}
 
 	0;
+}
+
+=back
+
+=head1 PRIVATE METHODS
+
+=over 4
+
+=item init()
+
+ Initialize object - Called by getInstance().
+
+ Return Addons::AntiRootkits
+
+=cut
+
+sub _init()
+{
+	my $self = shift;
+
+	# Find list of available FileManager addons
+	@{$self->{'ADDONS'}} = iMSCP::Dir->new(
+		'dirname' => "$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Addons/FileManager"
+	)->getDirs();
+
+	$self;
 }
 
 =back

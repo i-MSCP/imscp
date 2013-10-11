@@ -33,17 +33,17 @@ use lib "$FindBin::Bin/..";
 use lib "$FindBin::Bin/../PerlLib";
 
 use iMSCP::Debug;
+use iMSCP::Getopt;
 use iMSCP::Boot;
 use iMSCP::Dialog;
 use iMSCP::Dir;
 use iMSCP::File;
-use iMSCP::Dialog;
 use iMSCP::Stepper;
 use iMSCP::Database;
 use iMSCP::SystemGroup;
 use iMSCP::Execute;
 use iMSCP::Servers;
-use iMSCP::Getopt;
+use File::Basename;
 
 # Turn off localisation features to force any command output to be in english
 $ENV{'LC_MESSAGES'} = 'C';
@@ -68,6 +68,7 @@ sub process
 
 	my @steps = (
 		[\&_removeCustomers, 'Removing i-MSCP customers'],
+		[\&_uninstallAddons, 'Uninstalling i-MSCP addons'],
 		[\&_uninstallServers, 'Uninstalling i-MSCP servers'],
 		[\&_uninstallDaemons, 'Uninstalling i-MSCP daemons'],
 		[\&_removeCrontabFile, 'Removing i-MSCP crontab file'],
@@ -193,15 +194,49 @@ sub _removeCustomers
 	0;
 }
 
+sub _uninstallAddons
+{
+	my ($rs, $file, $class, $server, $msg);
+
+	startDetail();
+
+	my @addons = iMSCP::Addons->getInstance()->get();
+	my $nbServer = scalar @addons;
+	my $step = 1;
+
+	for(@addons) {
+		s/\.pm//;
+		$file = "Addons/$_.pm";
+		$class = "Addons::$_";
+		require $file;
+
+		$addon = $class->factory();
+
+		if($addon->can('uninstall')) {
+			$rs = step(
+				sub { $addon->uninstall }, sprintf("Running %s uninstall tasks...", ref $addon), $nbAddons, $step
+			);
+			last if $rs;
+		}
+
+		$step++;
+	}
+
+	endDetail();
+
+	$rs;
+}
+
 sub _uninstallServers
 {
 	my ($rs, $file, $class, $server, $msg);
 
-	my $step = 1;
-
 	startDetail();
 
 	my @servers = iMSCP::Servers->getInstance()->get();
+	my $nbServer = scalar @servers;
+	my $step = 1;
+
 	for(@servers) {
 		s/\.pm//;
 		$file = "Servers/$_.pm";
@@ -211,11 +246,10 @@ sub _uninstallServers
 		$server = $class->factory();
 
 		if($server->can('uninstall')) {
-			$msg = "Running uninstall tasks for the $_ server" .
-				($main::imscpConfig{uc($_) . '_SERVER'} ? ': ' . $main::imscpConfig{uc($_) . '_SERVER'} : '');
-
-			$rs = step(sub{ $server->uninstall() }, $msg, scalar @servers, $step);
-			return $rs if $rs;
+			$rs = step(
+				sub { $server->uninstall }, sprintf("Running %s uninstall tasks...", ref $server), $nbServers, $step
+			);
+			last if $rs;
 		}
 
 		$step++;
@@ -223,7 +257,7 @@ sub _uninstallServers
 
 	endDetail();
 
-	0;
+	$rs;
 }
 
 sub _uninstallDaemons
@@ -231,10 +265,9 @@ sub _uninstallDaemons
 	my ($rs, $stdout, $stderr);
 
 	for ($main::imscpConfig{'CMD_IMSCPN'}, $main::imscpConfig{'CMD_IMSCPD'}) {
-		my $filename = $_;
-		my ($serviceName) = /.*\/([^\/]*)$/;
+		if(-f $_) {
+			my $serviceName = fileparse($_);
 
-		if(-f $filename) {
 			# Removing services  (Debian, Ubuntu)
 			$rs = execute("/usr/sbin/update-rc.d -f $serviceName remove", \$stdout, \$stderr);
 			debug($stdout) if $stdout;

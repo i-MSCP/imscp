@@ -129,7 +129,7 @@ sub askCourier($$)
 
 		if($rs != 30) {
 			# Ask for the authdaemon restricted SQL user password
-			($rs, $dbPass) = $dialog->inputbox(
+			($rs, $dbPass) = $dialog->passwordbox(
 				'\nPlease, enter a password for the restricted authdaemon SQL user (blank for autogenerate):', $dbPass
 			);
 

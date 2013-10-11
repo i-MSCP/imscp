@@ -72,7 +72,7 @@ sub registerSetupHooks($$)
 
 =item preinstall()
 
- Run the install method on the Roundcube addon installer.
+ Process preinstall tasks.
 
  Return int 0 on success, other on failure
 
@@ -86,7 +86,7 @@ sub preinstall
 
 =item install()
 
- Run the install method on the Roundcube addon installer.
+ Process install tasks.
 
  Return int 0 on success, other on failure
 
@@ -100,7 +100,7 @@ sub install
 
 =item setGuiPermissions()
 
- Set Roundcube files permissions.
+ Set file permissions.
 
  Return int 0 on success, other on failure
 
@@ -114,7 +114,7 @@ sub setGuiPermissions
 
 =item deleteMail(\%data)
 
- Delete mail user from i-MSCP database.
+ Process deleteMail tasks.
 
  Param hash_ref $data A reference to a hash containing mail data
  Return int 0 on success, other on failure
@@ -163,7 +163,7 @@ sub deleteMail($$)
 
 =item _init()
 
- Called by getInstance(). Initialize Roundcube addon instance.
+ Called by getInstance(). Initialize instance.
 
  Return Addons::Roundcube
 

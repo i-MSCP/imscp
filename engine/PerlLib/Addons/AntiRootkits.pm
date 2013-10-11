@@ -37,11 +37,13 @@ use warnings;
 use iMSCP::Debug;
 use iMSCP::Getopt;
 use iMSCP::Execute;
+use iMSCP::Dir;
 use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
 
- i-MSCP Anti-Rootkits addon.
+ i-MSCP Anti-Rootkits addon. This is a wrapper that handle all available Anti-Rootkits addons found in the AntiRootkits
+directory.
 
 =head1 PUBLIC METHODS
 
@@ -49,7 +51,7 @@ use parent 'Common::SingletonClass';
 
 =item registerSetupHooks(\%hooksManager)
 
- Register Anti-Rootkits setup hook functions.
+ Register setup hook functions.
 
  Param iMSCP::HooksManager instance
  Return int 0 on success, 1 on failure
@@ -67,7 +69,7 @@ sub registerSetupHooks($$)
 
 =item askAntiRootkits(\%dialog)
 
- Show Anti-Rootkits addon question.
+ Show dialog.
 
  Param iMSCP::Dialog::Dialog|iMSCP::Dialog::Whiptail $dialog
  Return int 0 or 30
@@ -76,18 +78,18 @@ sub registerSetupHooks($$)
 
 sub showDialog($$)
 {
-	my ($self, $dialog, $rs) = (shift, shift, 0);
+	my ($self, $dialog, $rs) = (@_, 0);
 
 	my $addons = [split ',', main::setupGetQuestion('ANTI_ROOTKITS_ADDONS')];
 
 	if(
 		$main::reconfigure ~~ ['antirootkits', 'all', 'forced'] || ! @{$addons} ||
-		grep { not $_ ~~ ['Chkrootkit', 'Rkhunter', 'No'] } @{$addons}
+		grep { not $_ ~~ [$self->{'ADDONS'}, 'No'] } @{$addons}
 	) {
 		($rs, $addons) = $dialog->checkbox(
 			"\nPlease, select the Anti-Rootkits addons you want install:",
-			['Chkrootkit', 'Rkhunter'],
-			(@{$addons} ~~ 'No') ? () : (@{$addons} ? @{$addons} : ('Chkrootkit', 'Rkhunter'))
+			$self->{'ADDONS'},
+			(@{$addons} ~~ 'No') ? () : (@{$addons} ? @{$addons} : @{$self->{'ADDONS'}})
 		);
 	}
 
@@ -96,7 +98,7 @@ sub showDialog($$)
 
 		if(not 'No' ~~ @{$addons}) {
 			for(@{$addons}) {
-				my $addon = "Addons::AntiRootkits::${_}::Installer";
+				my $addon = "Addons::AntiRootkits::${_}::${_}";
 				eval "require $addon";
 
 				if(! $@) {
@@ -116,7 +118,7 @@ sub showDialog($$)
 
 =item preinstall()
 
- Process Anti-Rootkits addon preinstall tasks.
+ Process preinstall tasks.
 
  Note: This method also trigger uninstallation of unselected Anti-Rootkits addons.
 
@@ -131,13 +133,13 @@ sub preinstall
 	my $rs = 0;
 	my @addons = split ',', main::setupGetQuestion('ANTI_ROOTKITS_ADDONS');
 	my $addonsToInstall = [grep { $_ ne 'No'} @addons];
-	my $addonsToUninstall = [grep { not $_ ~~  @{$addonsToInstall}} ('Chkrootkit', 'Rkhunter')];
+	my $addonsToUninstall = [grep { not $_ ~~  @{$addonsToInstall}} @{$self->{'ADDONS'}}];
 
 	if(@{$addonsToUninstall}) {
 		my $packages = [];
 
 		for(@{$addonsToUninstall}) {
-			my $addon = "Addons::AntiRootkits::${_}::Uninstaller";
+			my $addon = "Addons::AntiRootkits::${_}::${_}";
 			eval "require $addon";
 
 			if(! $@) {
@@ -160,7 +162,7 @@ sub preinstall
 		my $packages = [];
 
 		for(@{$addonsToInstall}) {
-			my $addon = "Addons::AntiRootkits::${_}::Installer";
+			my $addon = "Addons::AntiRootkits::${_}::${_}";
 			eval "require $addon";
 
 			if(! $@) {
@@ -184,7 +186,7 @@ sub preinstall
 
 =item install()
 
- Process Anti-Rootkits addon install tasks.
+ Process install tasks.
 
  Return int 0 on success, other on failure
 
@@ -196,7 +198,7 @@ sub install
 
 	if(not 'No' ~~ @addons) {
 		for(@addons) {
-			my $addon = "Addons::AntiRootkits::${_}::Installer";
+			my $addon = "Addons::AntiRootkits::${_}::${_}";
 			eval "require $addon";
 
 			if(! $@) {
@@ -213,9 +215,42 @@ sub install
 	0;
 }
 
+=item uninstall()
+
+ Process uninstall tasks.
+
+ Return int 0 on success, other on failure
+
+=cut
+
+sub uninstall
+{
+	my $self = shift;
+
+	my @addons = split ',',$main::imscpConfig{'ANTI_ROOTKITS_ADDONS'};
+
+	for(@addons) {
+		if($_ ~~ @{$self->{'ADDONS'}}) {
+			my $addon = "Addons::AntiRootkits::${_}::${_}";
+			eval "require $addon";
+
+			if(! $@) {
+				$addon = $addon->getInstance();
+				my $rs = $addon->uninstall(); # Mandatory method;
+				return $rs if $rs;
+			} else {
+				error($@);
+				return 1;
+			}
+		}
+	}
+
+	0;
+}
+
 =item setEnginePermissions()
 
- Set Anti-Rootkits addon files permissions.
+ Set file permissions.
 
  Return int 0 on success, other on failure
 
@@ -223,11 +258,13 @@ sub install
 
 sub _setEnginePermissions
 {
+	my $self = shift;
+
 	my @addons = split ',', $main::imscpConfig{'ANTI_ROOTKITS_ADDONS'};
 
-	if(not 'No' ~~ @addons) {
-		for(@addons) {
-			my $addon = "Addons::AntiRootkits::${_}::Installer";
+	for(@addons) {
+		if($_ ~~ @{$self->{'ADDONS'}}) {
+			my $addon = "Addons::AntiRootkits::${_}::${_}";
 			eval "require $addon";
 
 			if(! $@) {
@@ -250,9 +287,29 @@ sub _setEnginePermissions
 
 =over 4
 
+=item init()
+
+ Initialize object - Called by getInstance().
+
+ Return Addons::AntiRootkits
+
+=cut
+
+sub _init()
+{
+	my $self = shift;
+
+	# Find list of available AntiRootkits addons
+	@{$self->{'ADDONS'}} = iMSCP::Dir->new(
+		'dirname' => "$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Addons/AntiRootkits"
+	)->getDirs();
+
+	$self;
+}
+
 =item _installPackages(\@packages)
 
- Install Anti-Rootkits addon packages.
+ Install packages.
 
  Param array_ref $packages List of packages to install
  Return int 0 on success, other on failure
@@ -284,7 +341,7 @@ sub _installPackages($$)
 
 =item _removePackages(\@packages)
 
- Remove Anti-Rootkits addon packages.
+ Remove packages.
 
  Param array_ref $packages List of packages to remove
  Return int 0 on success, other on failure

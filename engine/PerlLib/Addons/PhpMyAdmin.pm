@@ -53,7 +53,7 @@ use parent 'Common::SingletonClass';
  Register setup hook functions.
 
  Param iMSCP::HooksManager instance
- Return int - 0 on success, 1 on failure
+ Return int 0 on success, 1 on failure
 
 =cut
 
@@ -67,7 +67,7 @@ sub registerSetupHooks($$)
 
 =item preinstall()
 
- Run the install method on the PhpMyAdmin addon installer.
+ Process preinstall tasks.
 
 =cut
 
@@ -79,9 +79,9 @@ sub preinstall
 
 =item install()
 
- Run the install method on the PhpMyAdmin addon installer.
+ Process install tasks.
 
- Return int - 0 on success, 1 on failure
+ Return int 0 on success, 1 on failure
 
 =cut
 
@@ -93,9 +93,9 @@ sub install
 
 =item setGuiPermissions()
 
- Set PhpMyAdmin files permissions.
+ Set file permissions.
 
- Return int - 0 on success, other on failure
+ Return int 0 on success, other on failure
 
 =cut
 
@@ -113,7 +113,7 @@ sub setGuiPermissions
 
 =item _init()
 
- Called by getInstance(). Initialize PhpMyAdmin addon instance.
+ Called by getInstance(). Initialize instance.
 
  Return Addons::PhpMyAdmin
 

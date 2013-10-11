@@ -129,7 +129,7 @@ sub askDovecot($$)
 
 		if($rs != 30) {
 			# Ask for the dovecot restricted SQL user password
-			($rs, $dbPass) = $dialog->inputbox(
+			($rs, $dbPass) = $dialog->passwordbox(
 				'\nPlease, enter a password for the restricted dovecot SQL user (blank for autogenerate):', $dbPass
 			);
 

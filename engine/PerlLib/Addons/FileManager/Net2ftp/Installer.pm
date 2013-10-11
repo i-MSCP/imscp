@@ -40,11 +40,7 @@ use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
 
- This is the installer for the i-MSCP Net2ftp addon.
-
- Net2ftp is a web-based FTP client written in PHP.
-
- Project homepage: http://www.net2ftp.com/
+ i-MSCP Net2ftp addon installer.
 
 =head1 PUBLIC METHODS
 
@@ -52,7 +48,7 @@ use parent 'Common::SingletonClass';
 
 =item preinstall()
 
- Register Net2ftp composer package for installation.
+ Process preinstall tasks.
 
  Return int 0 on success, other on failure
 
@@ -65,7 +61,7 @@ sub preinstall
 
 =item install()
 
- Process Net2ftp addon install tasks.
+ Process install tasks.
 
  Return int 0 on success, 1 on failure
 
@@ -80,7 +76,7 @@ sub install
 
 =item setGuiPermissions()
 
- Set Net2ftp files permissions.
+ Set file permissions.
 
  Return int 0 on success, other on failure
 

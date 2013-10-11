@@ -23,11 +23,11 @@ Addons::AntiRootkits::Chkrootkit::Installer - i-MSCP Chkrootkit addon installer
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
-# @category		i-MSCP
-# @copyright	2010-2013 by i-MSCP | http://i-mscp.net
-# @author		Laurent Declercq <l.declercq@nuxwin.com>
-# @link			http://i-mscp.net i-MSCP Home Site
-# @license		http://www.gnu.org/licenses/gpl-2.0.html GPL v2
+# @category    i-MSCP
+# @copyright   2010-2013 by i-MSCP | http://i-mscp.net
+# @author      Laurent Declercq <l.declercq@nuxwin.com>
+# @link        http://i-mscp.net i-MSCP Home Site
+# @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
 package Addons::AntiRootkits::Chkrootkit::Installer;
 
@@ -35,7 +35,6 @@ use strict;
 use warnings;
 
 use iMSCP::Debug;
-use iMSCP::HooksManager;
 use iMSCP::File;
 use Servers::cron;
 use parent 'Common::SingletonClass';
@@ -43,9 +42,6 @@ use parent 'Common::SingletonClass';
 =head1 DESCRIPTION
 
  Chkrootkit addon installer.
-
- The chkrootkit security scanner searches the local system for signs that it is infected with a 'rootkit'. Rootkits are
-set of programs and hacks designed to take control of a target machine by using known security flaws.
 
 =head1 PUBLIC METHODS
 
@@ -84,19 +80,6 @@ sub install
 	$self->_scheduleCheck();
 }
 
-=item getPackages()
-
- Get list of packages to install.
-
- Return array_ref An array containing list of packages to install
-
-=cut
-
-sub getPackages
-{
-	['chkrootkit'];
-}
-
 =back
 
 =head1 PRIVATE METHODS
@@ -107,7 +90,7 @@ sub getPackages
 
  Disable default configuration as provided by the chkrootkit Debian package
 
- Return int - 0 on success, 1 on failure
+ Return int 0 on success, 1 on failure
 
 =cut
 
@@ -127,9 +110,9 @@ sub _disableDebianConfig
 
 =item _addCronTask()
 
- Add Chkrootkit cron task.
+ Add cron task.
 
- Return int - 0 on success, 1 on failure
+ Return int 0 on success, 1 on failure
 
 =cut
 
@@ -152,7 +135,7 @@ sub _addCronTask
 
 =item _scheduleCheck()
 
- Schedule Chkrootkit check if log file doesn't exist or is empty
+ Schedule check if log file doesn't exist or is empty
 
  Return int 0 on success, other on failure
 
@@ -180,7 +163,7 @@ sub _scheduleCheck
 		);
 		debug($stdout) if $stdout;
 		error($stderr) if $stderr && $rs;
-		error("Unable to schedule Rkhunter check") if $rs && ! $stderr;
+		error("Unable to schedule Chkrootkit check") if $rs && ! $stderr;
 		return $rs if $rs;
 	}
 

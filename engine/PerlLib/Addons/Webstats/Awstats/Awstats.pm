@@ -57,6 +57,78 @@ robots, broken links and more.
 
 =over 4
 
+=item showDialog(\%dialog)
+
+ Show dialog.
+
+ Param iMSCP::Dialog::Dialog|iMSCP::Dialog::Whiptail $dialog
+ Return int 0 or 30
+
+=cut
+
+sub showDialog($$)
+{
+	my ($self, $dialog) = @_;
+
+	require Addons::Webstats::Awstats::Installer;
+	Addons::Webstats::Awstats::Installer->showDialog($dialog);
+}
+
+=item preinstall()
+
+ Process preinstall tasks.
+
+ Return int 0 on success, other on failure
+
+=cut
+
+sub preinstall
+{
+	require Addons::Webstats::Awstats::Installer;
+	Addons::Webstats::Awstats::Installer->preinstall();
+}
+
+=item install()
+
+ Process install tasks.
+
+ Return int 0 on success, other on failure
+
+=cut
+
+sub install
+{
+	require Addons::Webstats::Awstats::Installer;
+	Addons::Webstats::Awstats::Installer->install();
+}
+
+=item uninstall()
+
+ Process uninstall tasks.
+
+ Return int 0 on success, other on failure
+
+=cut
+
+sub uninstall
+{
+	require Addons::Webstats::Awstats::Uninstaller;
+	Addons::Webstats::Awstats::Uninstaller->uninstall();
+}
+
+=item getPackages()
+
+ Get list of Debian packages to which this addon depends.
+
+ Return array_ref An array containing list of packages
+
+=cut
+
+sub getPackages
+{
+	['awstats'];
+}
+
 =item preaddDmn(\%data)
 
  Schedule addition of Apache configuration snipped for AWStats.

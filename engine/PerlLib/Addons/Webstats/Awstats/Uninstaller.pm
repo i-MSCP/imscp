@@ -71,19 +71,6 @@ sub uninstall
 	$self->_restoreDebianConfig();
 }
 
-=item getPackages()
-
- Get list of packages to uninstall.
-
- Return array_ref An array containing list of packages to uninstall
-
-=cut
-
-sub getPackages
-{
-	['awstats'];
-}
-
 =back
 
 =head1 PRIVATE METHODS

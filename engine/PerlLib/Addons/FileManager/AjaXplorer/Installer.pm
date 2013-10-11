@@ -40,12 +40,7 @@ use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
 
- This is the installer for the i-MSCP AjaXplorer addon.
-
- AjaXplorer is a software that can turn any web server into a powerfull file management system and an alternative to
-mainstream cloud storage providers.
-
- Project homepage: http://ajaxplorer.info/
+ i-MSCP AjaXplorer addon installer.
 
 =head1 PUBLIC METHODS
 
@@ -53,7 +48,7 @@ mainstream cloud storage providers.
 
 =item preinstall()
 
- Register AjaXplorer composer package for installation.
+ Process preinstall tasks.
 
  Return int 0 on success, other on failure
 
@@ -66,7 +61,7 @@ sub preinstall
 
 =item install()
 
- Process AjaXplorer addon install tasks.
+ Process install tasks.
 
  Return int 0 on success, 1 on failure
 
@@ -81,7 +76,7 @@ sub install
 
 =item setGuiPermissions()
 
- Set AjaXplorer files permissions.
+ Set file permissions.
 
  Return int 0 on success, other on failure
 

@@ -2,7 +2,7 @@
 
 =head1 NAME
 
-Addons::AntiRootkits::Chkrootkit::Uninstaller - i-MSCP Chkrootkit addon uninstaller
+Addons::AntiRootkits::Chkrootkit::Chkrootkit - i-MSCP Chkrootkit addon
 
 =cut
 
@@ -24,26 +24,56 @@ Addons::AntiRootkits::Chkrootkit::Uninstaller - i-MSCP Chkrootkit addon uninstal
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
 # @category    i-MSCP
-# @copyright   2010-2013 by i-MSCP | http://i-mscp.net
+# @copyrigh    2010-2013 by i-MSCP | http://i-mscp.net
 # @author      Laurent Declercq <l.declercq@nuxwin.com>
 # @link        http://i-mscp.net i-MSCP Home Site
 # @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
-package Addons::AntiRootkits::Chkrootkit::Uninstaller;
-
 use strict;
 use warnings;
 
-use iMSCP::File;
+package Addons::AntiRootkits::Chkrootkit::Chkrootkit;
+
 use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
 
- Chkrootkit addon uninstaller.
+ i-MSCP Chkrootkit addon.
+
+ The chkrootkit security scanner searches the local system for signs that it is infected with a 'rootkit'. Rootkits are
+set of programs and hacks designed to take control of a target machine by using known security flaws.
 
 =head1 PUBLIC METHODS
 
 =over 4
+
+=item preinstall()
+
+ Process preinstall tasks.
+
+ Return int 0 on success, other on failure
+
+=cut
+
+sub preinstall
+{
+	require Addons::AntiRootkits::Chkrootkit::Installer;
+	Addons::AntiRootkits::Chkrootkit::Installer->preinstall();
+}
+
+=item install()
+
+ Process install tasks.
+
+ Return int 0 on success, other on failure
+
+=cut
+
+sub install
+{
+	require Addons::AntiRootkits::Chkrootkit::Installer;
+	Addons::AntiRootkits::Chkrootkit::Installer->install();
+}
 
 =item uninstall()
 
@@ -55,45 +85,21 @@ use parent 'Common::SingletonClass';
 
 sub uninstall
 {
-	my $self = shift;
-
-	$self->_restoreDebianConfig();
+	require Addons::AntiRootkits::Chkrootkit::Uninstaller;
+	Addons::AntiRootkits::Chkrootkit::Uninstaller->uninstall();
 }
 
-=back
+=item getPackages()
 
-=head1 PRIVATE METHODS
+ Get list of Debian packages to which this addon depends.
 
-=over 4
-
-=item _disableDebianConfig()
-
- Restore default configuration as provided by the chkrootkit Debian package
-
- Return int - 0 on success, 1 on failure
+ Return array_ref An array containing list of packages
 
 =cut
 
-sub _restoreDebianConfig
+sub getPackages
 {
-	my $rs = 0;
-
-	# Restore daily cron task
-	$rs = iMSCP::File->new(
-		'filename' => '/etc/cron.daily/chkrootkit.disabled'
-	)->moveFile(
-		'/etc/cron.daily/chkrootkit'
-	) if -f '/etc/cron.daily/chkrootkit.disabled';
-
-	$rs;
+	['chkrootkit'];
 }
-
-=back
-
-=head1 AUTHOR
-
- Laurent Declercq <l.declercq@nuxwin.com>
-
-=cut
 
 1;

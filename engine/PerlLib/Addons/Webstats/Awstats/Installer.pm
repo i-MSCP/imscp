@@ -126,17 +126,47 @@ sub install
 	$rs;
 }
 
-=item getPackages()
+=item setEnginePermissions()
 
- Get list of packages to install.
+ Set Rkhunter permissions.
 
- Return array_ref An array containing list of packages to install
+ Return int 0 on success, other on failure
 
 =cut
 
-sub getPackages
+sub setEnginePermissions
 {
-	['awstats'];
+	require iMSCP::Rights;
+	iMSCP::Rights->import();
+
+	my $rs = setRights(
+		"$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Addons/Webstats/Awstats/Scripts/awstats_buildstaticpages.pl",
+		{
+			'user' => $main::imscpConfig{'ROOT_USER'},
+			'group' => $main::imscpConfig{'ROOT_USER'},
+			'mode' => '0700'
+		}
+	);
+
+	$rs = setRights(
+		"$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Addons/Webstats/Awstats/Scripts/awstats_updateall.pl",
+		{
+			'user' => $main::imscpConfig{'ROOT_USER'},
+			'group' => $main::imscpConfig{'ROOT_USER'},
+			'mode' => '0700'
+		}
+	);
+
+	$rs = setRights(
+		$main::imscpConfig{'AWSTATS_CACHE_DIR'},
+		{
+			'user' => $main::imscpConfig{'ROOT_USER'},
+			'group' => $main::imscpConfig{'ROOT_USER'},
+			'mode' => '0750'
+		}
+	);
+
+	$rs;
 }
 
 =back
@@ -198,7 +228,9 @@ sub _makeCacheDir
 	iMSCP::Dir->new(
 		'dirname' => $main::imscpConfig{'AWSTATS_CACHE_DIR'}
 	)->make(
-		{ 'user' => $httpd->getRunningUser(), 'group' => $httpd->getRunningGroup(), 'mode' => 0750 }
+		#{ 'user' => $httpd->getRunningUser(), 'group' => $httpd->getRunningGroup(), 'mode' => 0750 }
+		{ 'user' => $main::imscpConfig{'ROOT_USER'}, 'group' => $main::imscpConfig{'ROOT_GROUP'}, 'mode' => 0750 }
+
 	);
 }
 

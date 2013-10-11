@@ -43,7 +43,7 @@ use parent 'Common::SingletonClass';
 
  Webstats addon for i-MSCP.
 
- This addon provide Web statistics for i-MSCP customers. For now only AWStats is available.
+ i-MSCP Webstats addon. This is a wrapper that handle all available Webstats addons found in the Webstats directory.
 
 =head1 PUBLIC METHODS
 
@@ -51,7 +51,7 @@ use parent 'Common::SingletonClass';
 
 =item registerSetupHooks(\%hooksManager)
 
- Register Webstats setup hook functions.
+ Register setup hook functions.
 
  Param iMSCP::HooksManager instance
  Return int 0 on success, 1 on failure
@@ -69,7 +69,7 @@ sub registerSetupHooks($$)
 
 =item showDialog(\%dialog)
 
- Show Webstats addon question.
+ Show dialog.
 
  Param iMSCP::Dialog::Dialog|iMSCP::Dialog::Whiptail $dialog
  Return int 0 or 30
@@ -78,31 +78,31 @@ sub registerSetupHooks($$)
 
 sub showDialog($$)
 {
-	my ($self, $dialog, $rs) = (shift, shift, 0);
+	my ($self, $dialog, $rs) = (@_, 0);
 
 	my $addons = [split ',', main::setupGetQuestion('WEBSTATS_ADDONS')];
 
 	if(
 		$main::reconfigure ~~ ['webstats', 'all', 'forced'] || ! @{$addons} ||
-		grep { not $_ ~~ ['Awstats', 'No'] } @{$addons}
+		grep { not $_ ~~ [$self->{'ADDONS'}, 'No'] } @{$addons}
 	) {
 		($rs, $addons) = $dialog->checkbox(
-			"\nPlease, select the Webstats addon you want install:",
-			['Awstats'],
-			('No' ~~ @{$addons}) ? () : (@{$addons} ? @{$addons} : ('Awstats'))
+			"\nPlease, select the Webstats addons you want install:",
+			$self->{'ADDONS'},
+			(@{$addons} ~~ 'No') ? () : (@{$addons} ? @{$addons} : @{$self->{'ADDONS'}})
 		);
 	}
 
 	if($rs != 30) {
-		main::setupSetQuestion('WEBSTATS_ADDONS', (@{$addons}) ? join ',', @{$addons} : 'No');
+		main::setupSetQuestion('WEBSTATS_ADDONS', @{$addons} ? join ',', @{$addons} : 'No');
 
 		if(not 'No' ~~ @{$addons}) {
 			for(@{$addons}) {
-				my $addon = "Addons::Webstats::${_}::Installer";
+				my $addon = "Addons::Webstats::${_}::${_}";
 				eval "require $addon";
 
 				if(! $@) {
-					$addon =  $addon->getInstance();
+					$addon = $addon->getInstance();
 					$rs = $addon->showDialog($dialog) if $addon->can('showDialog');
 					last if $rs;
 				} else {
@@ -118,7 +118,7 @@ sub showDialog($$)
 
 =item preinstall()
 
- Process Webstats addon preinstall tasks.
+ Process preinstall tasks.
 
  Note: This method also trigger uninstallation of unselected Webstats addons.
 
@@ -133,13 +133,13 @@ sub preinstall
 	my $rs = 0;
 	my @addons = split ',', main::setupGetQuestion('WEBSTATS_ADDONS');
 	my $addonsToInstall = [grep { $_ ne 'No'} @addons];
-	my $addonsToUninstall = [grep { not $_ ~~  @{$addonsToInstall}} ('Awstats')];
+	my $addonsToUninstall = [grep { not $_ ~~  @{$addonsToInstall}} @{$self->{'ADDONS'}}];
 
 	if(@{$addonsToUninstall}) {
 		my $packages = [];
 
 		for(@{$addonsToUninstall}) {
-			my $addon = "Addons::Webstats::${_}::Uninstaller";
+			my $addon = "Addons::Webstats::${_}::${_}";
 			eval "require $addon";
 
 			if(! $@) {
@@ -163,7 +163,7 @@ sub preinstall
 
 		for(@{$addonsToInstall}) {
 
-			my $addon = "Addons::Webstats::${_}::Installer";
+			my $addon = "Addons::Webstats::${_}::${_}";
 			eval "require $addon";
 
 			if(! $@) {
@@ -187,7 +187,7 @@ sub preinstall
 
 =item install()
 
- Process Webstats addon install tasks.
+ Process install tasks.
 
  Return int 0 on success, other on failure
 
@@ -199,7 +199,7 @@ sub install
 
 	if(not 'No' ~~ @addons) {
 		for(@addons) {
-			my $addon = "Addons::Webstats::${_}::Installer";
+			my $addon = "Addons::Webstats::${_}::${_}";
 			eval "require $addon";
 
 			if(! $@) {
@@ -216,26 +216,28 @@ sub install
 	0;
 }
 
-=item setGuiPermissions()
+=item uninstall()
 
- Set Webstats addon files permissions.
+ Process uninstall tasks.
 
  Return int 0 on success, other on failure
 
 =cut
 
-sub setGuiPermissions
+sub uninstall
 {
+	my $self = shift;
+
 	my @addons = split ',', $main::imscpConfig{'WEBSTATS_ADDONS'};
 
-	if(not 'No' ~~ @addons) {
-		for(@addons) {
-			my $addon = "Addons::Webstats::${_}::Installer";
+	for(@addons) {
+		if($_ ~~ @{$self->{'ADDONS'}}) {
+			my $addon = "Addons::AntiRootkits::${_}::${_}";
 			eval "require $addon";
 
 			if(! $@) {
 				$addon = $addon->getInstance();
-				my $rs = $addon->setGuiPermissions() if $addon->can('setGuiPermissions');
+				my $rs = $addon->uninstall(); # Mandatory method;
 				return $rs if $rs;
 			} else {
 				error($@);
@@ -249,7 +251,7 @@ sub setGuiPermissions
 
 =item setEnginePermissions()
 
- Set Webstats addon files permissions.
+ Set file permissions.
 
  Return int 0 on success, other on failure
 
@@ -257,11 +259,13 @@ sub setGuiPermissions
 
 sub setEnginePermissions
 {
+	my $self = shift;
+
 	my @addons = split ',', $main::imscpConfig{'WEBSTATS_ADDONS'};
 
-	if(not 'No' ~~ @addons) {
-		for(@addons) {
-			my $addon = "Addons::Webstats::${_}::Installer";
+	for(@addons) {
+		if($_ ~~ @{$self->{'ADDONS'}}) {
+			my $addon = "Addons::Webstats::${_}::${_}";
 			eval "require $addon";
 
 			if(! $@) {
@@ -294,9 +298,9 @@ sub preaddDmn($$)
 	if($data->{'FORWARD'} eq 'no') {
 		my @addons = split ',', $main::imscpConfig{'WEBSTATS_ADDONS'};
 
-		if(not 'No' ~~ @addons) {
-			for(@addons) {
-				my $addon = "Addons::Webstats::${_}::Awstats";
+		for(@addons) {
+			if($_ ~~ @{$self->{'ADDONS'}}) {
+				my $addon = "Addons::Webstats::${_}::${_}";
 				eval "require $addon";
 
 				if(! $@) {
@@ -326,12 +330,12 @@ sub addDmn($$)
 {
 	my ($self, $data) = @_;
 
-	my @addons = split ',', $main::imscpConfig{'WEBSTATS_ADDONS'};
+	if($data->{'FORWARD'} eq 'no') {
+		my @addons = split ',', $main::imscpConfig{'WEBSTATS_ADDONS'};
 
-	if(not 'No' ~~ @addons) {
-		if($data->{'FORWARD'} eq 'no') {
-			for(@addons) {
-				my $addon = "Addons::Webstats::${_}::Awstats";
+		for(@addons) {
+			if($_ ~~ @{$self->{'ADDONS'}}) {
+				my $addon = "Addons::Webstats::${_}::${_}";
 				eval "require $addon";
 
 				if(! $@) {
@@ -361,12 +365,12 @@ sub deleteDmn($$)
 {
 	my ($self, $data) = @_;
 
-	my @addons = split ',', $main::imscpConfig{'WEBSTATS_ADDONS'};
+	if($data->{'FORWARD'} eq 'no') {
+		my @addons = split ',', $main::imscpConfig{'WEBSTATS_ADDONS'};
 
-	if(not 'No' ~~ @addons) {
-		if($data->{'FORWARD'} eq 'no') {
-			for(@addons) {
-				my $addon = "Addons::Webstats::${_}::Awstats";
+		for(@addons) {
+			if($_ ~~ @{$self->{'ADDONS'}}) {
+				my $addon = "Addons::Webstats::${_}::${_}";
 				eval "require $addon";
 
 				if(! $@) {
@@ -435,9 +439,29 @@ sub deleteSub($$)
 
 =over 4
 
+=item init()
+
+ Called by getInstance(). Initialize instance.
+
+ Return Addons::Webstats
+
+=cut
+
+sub _init()
+{
+	my $self = shift;
+
+	# Find list of available Webstats addons
+	@{$self->{'ADDONS'}} = iMSCP::Dir->new(
+		'dirname' => "$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Addons/Webstats"
+	)->getDirs();
+
+	$self;
+}
+
 =item _installPackages(\@packages)
 
- Install AWStats addon packages.
+ Install packages.
 
  Param array_ref $packages List of packages to install
  Return int 0 on success, other on failure
@@ -469,7 +493,7 @@ sub _installPackages($$)
 
 =item _removePackages(\@packages)
 
- Remove AWStats addon packages.
+ Remove packages.
 
  Param array_ref $packages List of packages to remove
  Return int 0 on success, other on failure

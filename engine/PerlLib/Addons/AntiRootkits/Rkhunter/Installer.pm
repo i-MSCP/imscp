@@ -35,7 +35,6 @@ use strict;
 use warnings;
 
 use iMSCP::Debug;
-use iMSCP::HooksManager;
 use iMSCP::File;
 use iMSCP::Templator;
 use iMSCP::Execute;
@@ -45,16 +44,6 @@ use parent 'Common::SingletonClass';
 =head1 DESCRIPTION
 
  Rkhunter addon installer.
-
- Rootkit Hunter scans systems for known and unknown rootkits, backdoors, sniffers and exploits.
-
- It checks for:
- * MD5 hash changes;
- * files commonly created by rootkits;
- * executables with anomalous file permissions;
- * suspicious strings in kernel modules;
- * hidden files in system directories;
- and can optionally scan within files.
 
 =head1 PUBLIC METHODS
 
@@ -95,7 +84,7 @@ sub install
 
 =item setEnginePermissions()
 
- Set Rkhunter addon file permissions.
+ Set file permissions.
 
  Return int 0 on success, other on failure
 
@@ -103,11 +92,20 @@ sub install
 
 sub setEnginePermissions
 {
-	if(-f $main::imscpConfig{'RKHUNTER_LOG'}) {
-		require iMSCP::Rights;
-		iMSCP::Rights->import();
+	require iMSCP::Rights;
+	iMSCP::Rights->import();
 
-		setRights(
+	my $rs = setRights(
+		"$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Addons/AntiRootkits/Rkhunter/Cron.pl",
+		{
+			'user' => $main::imscpConfig{'ROOT_USER'},
+			'group' => $main::imscpConfig{'ROOT_USER'},
+			'mode' => '0700'
+		}
+	);
+
+	if(-f $main::imscpConfig{'RKHUNTER_LOG'}) {
+		$rs = setRights(
 			$main::imscpConfig{'RKHUNTER_LOG'},
 			{
 				'user' => $main::imscpConfig{'ROOT_USER'},
@@ -115,22 +113,9 @@ sub setEnginePermissions
 				'mode' => '0640'
 			}
 		);
-	} else {
-		0;
 	}
-}
 
-=item getPackages()
-
- Get list of packages to install.
-
- Return array_ref An array containing list of packages to install
-
-=cut
-
-sub getPackages
-{
-	['rkhunter'];
+	$rs;
 }
 
 =back
@@ -143,7 +128,7 @@ sub getPackages
 
  Disable default configuration as provided by the rkhunter Debian package
 
- Return int - 0 on success, 1 on failure
+ Return int 0 on success, 1 on failure
 
 =cut
 
@@ -153,9 +138,10 @@ sub _disableDebianConfig
 
 	if(-f '/etc/default/rkhunter') {
 		my $file = iMSCP::File->new ('filename' => '/etc/default/rkhunter');
+
 		my $rdata = $file->get();
 		unless(defined $rdata) {
-			error("Unable to read /etc/default/rkhunter");
+			error("Unable to read $file->{'filename'} file");
 			return 1;
 		}
 
@@ -185,7 +171,7 @@ sub _disableDebianConfig
 	) if -f '/etc/cron.weekly/rkhunter';
 	return $rs if $rs;
 
-	# disable logrotate task
+	# Disable logrotate task
 	$rs = iMSCP::File->new(
 		'filename' => '/etc/logrotate.d/rkhunter'
 	)->moveFile(
@@ -197,9 +183,9 @@ sub _disableDebianConfig
 
 =item _addCronTask()
 
- Add Rkhunter cron task.
+ Add cron task.
 
- Return int - 0 on success, 1 on failure
+ Return int 0 on success, 1 on failure
 
 =cut
 
@@ -250,7 +236,7 @@ sub _addCronTask
 
 =item _scheduleCheck()
 
- Schedule Rkhunter check if log file doesn't exist or is empty
+ Schedule check if log file doesn't exist or is empty
 
  Return int 0 on success, other on failure
 
