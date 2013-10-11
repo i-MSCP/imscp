@@ -8,6 +8,12 @@ Git Master
 ADDONS:
 		- Fixed: Net2ftp installer is broken
 
+DOCS:
+		- Fixed: Preseed template file is broken (compile time error)
+
+SETUP:
+		- Fixed: ispCP migration script is broken (many compile time errors)
+
 ------------------------------------------------------------------------------------------------------------------------
 1.1.0-rc4.2
 ------------------------------------------------------------------------------------------------------------------------
