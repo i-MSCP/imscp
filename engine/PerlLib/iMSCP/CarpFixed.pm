@@ -38,6 +38,7 @@ use parent 'Carp::Heavy', 'Exporter';
 
 our ($CarpLevel, $MaxArgNums, $MaxEvalLen, $MaxArgLen, $Verbose);
 
+#TODO: fix this ugly thing
 BEGIN
 {
 	if("$]" < 5.018001) {
