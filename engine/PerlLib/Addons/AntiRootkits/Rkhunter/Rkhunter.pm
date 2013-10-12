@@ -86,6 +86,20 @@ sub uninstall
 	Addons::AntiRootkits::Rkhunter::Uninstaller->uninstall();
 }
 
+=item setEnginePermissions()
+
+ Set files permissions.
+
+ Return int 0 on success, other on failure
+
+=cut
+
+sub setEnginePermissions
+{
+	require Addons::AntiRootkits::Rkhunter::Installer;
+	Addons::AntiRootkits::Rkhunter::Installer->setEnginePermissions();
+}
+
 =item getPackages()
 
  Get list of Debian packages to which this addon depends.
