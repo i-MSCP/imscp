@@ -75,7 +75,7 @@ sub loadData
 		return 1;
 	}
 
-	%{$self} = ( %{$self}, %{$rdata->{$self->{'mailId'}}});
+	%{$self} = (%{$self}, %{$rdata->{$self->{'mailId'}}});
 
 	0;
 }

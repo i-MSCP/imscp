@@ -112,7 +112,7 @@ sub loadData
 		return 1;
 	}
 
-	%{$self} = ( %{$self}, %{$rdata->{$self->{'htaccessId'}}});
+	%{$self} = (%{$self}, %{$rdata->{$self->{'htaccessId'}}});
 
 	0;
 }

@@ -102,7 +102,7 @@ sub loadData
 		return 1;
 	}
 
-	%{$self} = ( %{$self}, %{$rdata->{$self->{'htgroupId'}}});
+	%{$self} = (%{$self}, %{$rdata->{$self->{'htgroupId'}}});
 
 	0;
 }

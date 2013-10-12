@@ -98,7 +98,7 @@ sub loadData
 		return 1;
 	}
 
-	%{$self} = ( %{$self}, %{$rdata->{$self->{'dmnId'}}});
+	%{$self} = (%{$self}, %{$rdata->{$self->{'dmnId'}}});
 
 	0;
 }
