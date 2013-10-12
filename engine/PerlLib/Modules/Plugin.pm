@@ -132,11 +132,11 @@ sub loadData
 	}
 
 	unless(exists $rdata->{$pluginId}) {
-		error("No plugin has ID: $pluginId");
+		error("Plugin record with ID '$pluginId' has not been found in database");
 		return 1
 	}
 
-	@{$self}{keys %{$rdata->{$pluginId}}} = values %{$rdata->{$pluginId}};
+	%{$self} = (%{$self}, %{$rdata->{$pluginId}});
 
 	$toStatus{'toupdate'} = $self->{'plugin_previous_status'};
 	$toStatus{'tochange'} = $self->{'plugin_previous_status'};

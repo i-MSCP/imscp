@@ -88,17 +88,17 @@ sub loadData
 	";
 
 	my $rdata = iMSCP::Database->factory()->doQuery('domain_id', $sql, $self->{'dmnId'});
-	if(ref $rdata ne 'HASH') {
+	unless(ref $rdata eq 'HASH') {
 		error($rdata);
 		return 1;
 	}
 
-	unless($rdata->{$self->{'dmnId'}}) {
-		error("No domain has id = $self->{'dmnId'}");
-		return 1
+	unless(exists $rdata->{$self->{'dmnId'}}) {
+		error("Domain record with ID '$self->{'dmnId'}' has not been found in database");
+		return 1;
 	}
 
-	$self->{$_} = $rdata->{$self->{'dmnId'}}->{$_} for keys %{$rdata->{$self->{'dmnId'}}};
+	%{$self} = ( %{$self}, %{$rdata->{$self->{'dmnId'}}});
 
 	0;
 }

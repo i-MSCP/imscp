@@ -71,17 +71,17 @@ sub loadData
 	";
 
 	my $rdata = iMSCP::Database->factory()->doQuery('subdomain_alias_id', $sql, $self->{'subId'}, $self->{'subId'});
-	if(ref $rdata ne 'HASH') {
+	unless(ref $rdata eq 'HASH') {
 		error($rdata);
 		return 1;
 	}
 
 	unless(exists $rdata->{$self->{'subId'}}) {
-		error("No alias subdomain has id = $self->{'subId'}");
+		error("Subdomain alias with ID '$self->{'subId'}' has not been found in database");
 		return 1;
 	}
 
-	$self->{$_} = $rdata->{$self->{'subId'}}->{$_} for keys %{$rdata->{$self->{'subId'}}};
+	%{$self} = ( %{$self}, %{$rdata->{$self->{'subId'}}});
 
 	0;
 }

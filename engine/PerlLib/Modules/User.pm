@@ -78,12 +78,12 @@ sub loadData
 		return 1;
 	}
 
-	unless($rdata->{$self->{'userId'}}) {
-		error("No such user $self->{'userId'}");
+	unless(exists $rdata->{$self->{'userId'}}) {
+		error("User record with ID '$self->{'userId'}' has not been found in database");
 		return 1
 	}
 
-	$self->{$_} = $rdata->{$self->{'userId'}}->{$_} for keys %{$rdata->{$self->{'userId'}}};
+	%{$self} = ( %{$self}, %{$rdata->{$self->{'userId'}}});
 
 	0;
 }

@@ -38,14 +38,18 @@ sub process
 
 	my ($stdour, $stderr);
 	my $rs = execute(
-		"perl $main::imscpConfig{'ENGINE_ROOT_DIR'}/tools/imscp-net-interfaces-mngr stop", \$stdour, \$stderr
+		"$main::imscpConfig{'CMD_PERL'} $main::imscpConfig{'ENGINE_ROOT_DIR'}/tools/imscp-net-interfaces-mngr stop",
+		\$stdour,
+		\$stderr
 	);
 	debug($stdour) if $stdour;
 	error($stderr) if $stderr && $rs;
 	return $rs if $rs;
 
 	$rs = execute(
-		"perl $main::imscpConfig{'ENGINE_ROOT_DIR'}/tools/imscp-net-interfaces-mngr start", \$stdour, \$stderr
+		"$main::imscpConfig{'CMD_PERL'} $main::imscpConfig{'ENGINE_ROOT_DIR'}/tools/imscp-net-interfaces-mngr start",
+		\$stdour,
+		\$stderr
 	);
 	debug($stdour) if $stdour;
 	error($stderr) if $stderr && $rs;
