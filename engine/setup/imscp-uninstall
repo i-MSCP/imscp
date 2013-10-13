@@ -43,6 +43,7 @@ use iMSCP::Database;
 use iMSCP::SystemGroup;
 use iMSCP::Execute;
 use iMSCP::Servers;
+use iMSCP::Addons;
 use File::Basename;
 
 # Turn off localisation features to force any command output to be in english
