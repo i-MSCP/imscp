@@ -232,7 +232,7 @@ sub uninstall
 
 	for(@addons) {
 		if($_ ~~ @{$self->{'ADDONS'}}) {
-			my $addon = "Addons::AntiRootkits::${_}::${_}";
+			my $addon = "Addons::Webstats::${_}::${_}";
 			eval "require $addon";
 
 			if(! $@) {
