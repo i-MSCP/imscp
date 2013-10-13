@@ -36,6 +36,7 @@ use warnings;
 
 use iMSCP::Debug;
 use iMSCP::File;
+use iMSCP::Execute;
 use Servers::cron;
 use parent 'Common::SingletonClass';
 
