@@ -119,7 +119,7 @@ sub _removeUserAndGroup
 	my $self = shift;
 
 	# Panel user
-	$rs  = iMSCP::SystemUser->new('force' => 'yes')->delSystemUser(
+	my $rs  = iMSCP::SystemUser->new('force' => 'yes')->delSystemUser(
 		$main::imscpConfig{'SYSTEM_USER_PREFIX'} . $main::imscpConfig{'SYSTEM_USER_MIN_UID'}
 	);
 	return $rs if $rs;
