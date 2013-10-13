@@ -211,7 +211,7 @@ sub _uninstallAddons
 		$class = "Addons::$_";
 		require $file;
 
-		my $addon = $class->factory();
+		my $addon = $class->getInstance();
 
 		if($addon->can('uninstall')) {
 			$rs = step(
