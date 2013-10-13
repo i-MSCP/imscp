@@ -43,9 +43,10 @@ use iMSCP::File;
 use iMSCP::Dir;
 use iMSCP::Ext2Attributes qw(setImmutable clearImmutable isImmutable);
 use iMSCP::Rights;
+use POSIX;
 use File::Temp;
 use File::Basename;
-use POSIX;
+
 use version;
 use parent 'Common::SingletonClass';
 

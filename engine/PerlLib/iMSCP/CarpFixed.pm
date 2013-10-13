@@ -40,13 +40,13 @@ our ($CarpLevel, $MaxArgNums, $MaxEvalLen, $MaxArgLen, $Verbose);
 
 BEGIN
 {
-	#if("$]" < 5.018001) {
-	#	if("$]" >= 5.015002 || ("$]" >= 5.014002 && "$]" < 5.015) || ("$]" >= 5.012005 && "$]" < 5.013)) {
-	#		*CALLER_OVERRIDE_CHECK_OK = sub () { 1 };
-	#	} else {
-	#		*CALLER_OVERRIDE_CHECK_OK = sub () { 0 };
-	#	}
-	#}
+	if("$]" < 5.018001) {
+		if("$]" >= 5.015002 || ("$]" >= 5.014002 && "$]" < 5.015) || ("$]" >= 5.012005 && "$]" < 5.013)) {
+			*CALLER_OVERRIDE_CHECK_OK = sub () { 1 };
+		} else {
+			*CALLER_OVERRIDE_CHECK_OK = sub () { 0 };
+		}
+	}
  }
 
 delete $Carp::Heavy::{'_cgc'};
@@ -111,11 +111,12 @@ sub caller_info_sassign_fixed
 			} || '';
 			@args = "** Incomplete caller override detected$where; \@DB::args were not set **";
 		} else {
-			@args = map {
-    			local $@;
-				my $tmp = eval { Carp::format_arg($_) };
-				defined($tmp) ? $tmp : 'unknown';
-			} @DB::args;
+			# TODO fix this
+			#@args = map {
+    		#	local $@;
+			#	my $tmp = eval { Carp::format_arg($_) };
+			#	defined($tmp) ? $tmp : 'unknown';
+			#} @DB::args;
         }
 
 		if ($MaxArgNums and @args > $MaxArgNums ) { # More than we want to show?
