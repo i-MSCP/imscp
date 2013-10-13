@@ -201,7 +201,7 @@ sub _uninstallAddons
 	startDetail();
 
 	my @addons = iMSCP::Addons->getInstance()->get();
-	my $nbServer = scalar @addons;
+	my $nbAddons = scalar @addons;
 	my $step = 1;
 
 	for(@addons) {
@@ -210,7 +210,7 @@ sub _uninstallAddons
 		$class = "Addons::$_";
 		require $file;
 
-		$addon = $class->factory();
+		my $addon = $class->factory();
 
 		if($addon->can('uninstall')) {
 			$rs = step(
@@ -234,7 +234,7 @@ sub _uninstallServers
 	startDetail();
 
 	my @servers = iMSCP::Servers->getInstance()->get();
-	my $nbServer = scalar @servers;
+	my $nbServers = scalar @servers;
 	my $step = 1;
 
 	for(@servers) {
@@ -274,7 +274,7 @@ sub _uninstallDaemons
 			error($stderr) if $stderr && $rs;
 			return $rs if $rs;
 
-			$rs = iMSCP::File->new('filename' => $filename)->delFile();
+			$rs = iMSCP::File->new('filename' => $_)->delFile();
 			return $rs if $rs;
 		}
 	}
