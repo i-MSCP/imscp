@@ -120,7 +120,7 @@ sub preinstall
 {
 	my $addon = main::setupGetQuestion('FILEMANAGER_ADDON');
 
-	my $addon = "Addons::FileManager::${addon}::${addon}";
+	$addon = "Addons::FileManager::${addon}::${addon}";
 	eval "require $addon";
 
 	if(! $@) {
@@ -147,7 +147,7 @@ sub install
 {
 	my $addon = main::setupGetQuestion('FILEMANAGER_ADDON');
 
-	my $addon = "Addons::FileManager::${addon}::${addon}";
+	$addon = "Addons::FileManager::${addon}::${addon}";
 	eval "require $addon";
 
 	if(! $@) {

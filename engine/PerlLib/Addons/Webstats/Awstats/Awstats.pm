@@ -295,7 +295,7 @@ sub deleteDmn($$)
 		)->getFiles();
 
 		if(@awstatsCacheFiles) {
-			my $file = iMSCP::File->new()->delFile();
+			my $file = iMSCP::File->new();
 
 			for(@awstatsCacheFiles) {
 				$file->{'filename'} = "$awstatsCacheDir/$_";
