@@ -231,6 +231,7 @@ sub uninstall
 	my @addons = split ',', $main::imscpConfig{'WEBSTATS_ADDONS'};
 
 	my $packages = [];
+	my $rs = 0;
 
 	for(@addons) {
 		if($_ ~~ @{$self->{'ADDONS'}}) {
@@ -239,7 +240,7 @@ sub uninstall
 
 			if(! $@) {
 				$addon = $addon->getInstance();
-				my $rs = $addon->uninstall(); # Mandatory method;
+				$rs = $addon->uninstall(); # Mandatory method;
 				return $rs if $rs;
 
 				@{$packages} = (@{$packages}, @{$addon->getPackages()}) if $addon->can('getPackages');
@@ -250,9 +251,9 @@ sub uninstall
 		}
 	}
 
-	$self->_removePackages($packages) if @${packages};
+	$rs = $self->_removePackages($packages) if @${packages};
 
-	0;
+	$rs;
 }
 
 =item setEnginePermissions()

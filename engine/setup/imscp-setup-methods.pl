@@ -1632,14 +1632,14 @@ sub setupSecureSqlInstallation
 	}
 
 	# Remove anonymous users
-	$errStr = $database->doQuery('dummy', "DELETE FROM `mysql`.`user` WHERE `User` = '';");
+	$errStr = $database->doQuery('dummy', "DELETE FROM `mysql`.`user` WHERE `User` = ''");
 	unless(ref $errStr eq 'HASH') {
 		error("Unable to delete anonymous users: $errStr");
 		return 1;
 	}
 
 	# Remove user without password set
-	my $rdata = $database->doQuery('User', "SELECT `User`, `Host` FROM `mysql`.`user` WHERE `Password` = '';");
+	my $rdata = $database->doQuery('User', "SELECT `User`, `Host` FROM `mysql`.`user` WHERE `Password` = ''");
 
 	for (keys %{$rdata}) {
 		$errStr = $database->doQuery('dummy', "DROP USER ?@?", $_, $rdata->{$_}->{'Host'});
@@ -1650,16 +1650,16 @@ sub setupSecureSqlInstallation
 	}
 
 	# Remove test database if any
-	$errStr = $database->doQuery('dummy', 'DROP DATABASE IF EXISTS `test`;');
+	$errStr = $database->doQuery('dummy', 'DROP DATABASE IF EXISTS `test`');
 	unless(ref $errStr eq 'HASH'){
 		error("Unable to remove database test : $errStr"); # Not critical, keep moving...
 		return 1;
 	}
 
 	# Remove privileges on test database
-	$errStr = $database->doQuery('dummy', "DELETE FROM `mysql`.`db` WHERE `Db` = 'test' OR `Db` = 'test\\_%';");
+	$errStr = $database->doQuery('dummy', "DELETE FROM `mysql`.`db` WHERE `Db` = 'test' OR `Db` = 'test\\_%'");
 	unless(ref $errStr eq 'HASH') {
-		error("Unable to remove privilege on test database (not critical): $errStr");
+		error("Unable to remove privileges on test database: $errStr");
 		return 1;
 	}
 
@@ -1670,13 +1670,13 @@ sub setupSecureSqlInstallation
 			"DELETE FROM `mysql`.`user` WHERE `User` = 'root' AND `Host` NOT IN ('localhost', '127.0.0.1', '::1');"
 		);
 		unless(ref $errStr eq 'HASH'){
-			error("Unable to remove remote root user: $errStr");
+			error("Unable to remove remote root users: $errStr");
 			return 1;
 		}
 	}
 
 	# Reload privilege tables
-	$errStr = $database->doQuery('dummy', 'FLUSH PRIVILEGES;');
+	$errStr = $database->doQuery('dummy', 'FLUSH PRIVILEGES');
 	unless(ref $errStr eq 'HASH') {
 		debug("Unable to reload privileges tables: $errStr");
 		return 1;
