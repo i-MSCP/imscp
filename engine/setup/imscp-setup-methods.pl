@@ -145,7 +145,7 @@ sub setupDialog
 
 	# Implements a simple state machine (backup capability)
 	# Any dialog subroutine *should* allow user to step back by returning 30 when 'back' button is pushed
-	my ($state, $nbDialog, $rs) = (0, scalar @$dialogStack, 0);
+	my ($state, $nbDialog) = (0, scalar @$dialogStack);
 
 	while($state != $nbDialog) {
 		$rs = $$dialogStack[$state]->($dialog);
@@ -1918,9 +1918,6 @@ sub setupSetPermissions
 	my $rs = iMSCP::HooksManager->getInstance()->trigger('beforeSetupSetPermissions');
 	return $rs if $rs;
 
-	my $backtrace = $main::imscpConfig{'BACKTRACE'} || 0;
-	$main::imscpConfig{'BACKTRACE'} = (iMSCP::Getopt->backtrace) ? 1 : 0;
-
 	my $debug = $main::imscpConfig{'DEBUG'} || 0;
 	$main::imscpConfig{'DEBUG'} = (iMSCP::Getopt->debug) ? 1 : 0;
 
@@ -1948,7 +1945,6 @@ sub setupSetPermissions
 		return $rs if $rs;
 	}
 
-	$main::imscpConfig{'BACKTRACE'} = $backtrace;
 	$main::imscpConfig{'DEBUG'} = $debug;
 
 	iMSCP::HooksManager->getInstance()->trigger('afterSetupSetPermissions');
@@ -2023,9 +2019,6 @@ sub setupRebuildCustomerFiles
 
 	iMSCP::Boot->getInstance()->unlock();
 
-	my $backtrace = $main::imscpConfig{'BACKTRACE'} || 0;
-	$main::imscpConfig{'BACKTRACE'} = (iMSCP::Getopt->backtrace) ? 1 : 0;
-
 	my $debug = $main::imscpConfig{'DEBUG'} || 0;
 	$main::imscpConfig{'DEBUG'} = (iMSCP::Getopt->debug) ? 1 : 0;
 
@@ -2055,7 +2048,7 @@ sub setupRebuildCustomerFiles
 	iMSCP::Boot->getInstance()->lock();
 
 	$main::imscpConfig{'DEBUG'} = $debug;
-	$main::imscpConfig{'BACKTRACE'} = $backtrace;
+
 	error("\n$stderr") if $stderr && $rs;
 	error("Error while rebuilding customers files") if $rs && ! $stderr;
 	return $rs if $rs;
@@ -2080,7 +2073,7 @@ sub setupPreInstallServers
 		my $file = "Servers/$_.pm";
 		my $class = "Servers::$_";
 		require $file;
-		my $server	= $class->factory();
+		my $server = $class->factory();
 
 		if($server->can('preinstall')) {
 			$rs = step(

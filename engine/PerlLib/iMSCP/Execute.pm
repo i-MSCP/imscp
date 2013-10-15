@@ -64,9 +64,7 @@ our @EXPORT = qw/execute escapeShell getExitCode/;
 
 sub execute($;$$)
 {
-	my $command = shift;
-	my $stdout = shift;
-	my $stderr = shift;
+	my ($command, $stdout, $stderr) = @_;
 
 	fatal('$stdout must be a scalar reference') if $stdout && ref $stdout ne 'SCALAR';
 	fatal('$stderr must be a scalar reference') if $stderr && ref $stderr ne 'SCALAR';

@@ -461,7 +461,7 @@ sub _addUser
 	return $rs if $rs;
 
 	# Adding Apache user in panel user group
-	my $rs = iMSCP::SystemUser->new('username' => $self->{'config'}->{'APACHE_USER'})->addToGroup($groupName);
+	$rs = iMSCP::SystemUser->new('username' => $self->{'config'}->{'APACHE_USER'})->addToGroup($groupName);
 	return $rs if $rs;
 
 	$self->{'hooksManager'}->trigger('afterHttpdAddUser');

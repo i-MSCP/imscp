@@ -35,7 +35,6 @@ use strict;
 use warnings;
 
 use Params::Check qw[check];
-use iMSCP::CarpFixed ();
 
 local $Params::Check::VERBOSE = 1;
 
@@ -90,10 +89,6 @@ sub new
 
 The tag to add to this message. If not provided, default tag 'none' will be used.
 
-=item level
-
-The level at which this message should be handled. If not provided, iMSCP::Log will use 'log'.
-
 =back
 
 Return true upon success and undef upon failure, as well as issue a warning as to why it failed.
@@ -111,10 +106,7 @@ sub store
 			'strict_type' => 1,
 			'required' => 1
 		},
-		'tag' => { 'default' => 'none' },
-		'level' => { 'default' => 'log' },
-		'shortmess' => { 'default' => _clean(Carp::shortmess()) },
-		'longmess' => { 'default' => _clean(Carp::longmess()) }
+		'tag' => { 'default' => 'none' }
 	};
 
 	if( @_ == 1 ) {
@@ -130,19 +122,14 @@ sub store
 
 	my $item = {
 		'when' => scalar localtime,
-		'parent' => $self,
 		'id' => scalar @{$self->{'stack'}},
 		'message' => $args->{'message'},
-		'tag' => $args->{'tag'},
-		'level' => $args->{'level'},
-		'shortmess' => $args->{'shortmess'},
-		'longmess' => $args->{'longmess'}
+		'tag' => $args->{'tag'}
 	};
 
 	push @{$self->{'stack'}}, $item;
 
-	my $sub = "_$args->{'level'}";
-	$self->$sub($item);
+	$self->_log($item);
 
 	1;
 }
@@ -214,7 +201,6 @@ sub retrieve
 
 	my @list =
 		grep { $_->{'tag'} =~ /$args->{'tag'}/ ? 1 : 0 }
-		grep { $_->{'level'} =~ /$args->{'level'}/ ? 1 : 0 }
 		grep { $_->{'message'} =~ /$args->{'message'}/ ? 1 : 0 }
 		grep { defined }
 		$args->{'chrono'} ? @{$self->{'stack'}} : reverse @{$self->{'stack'}};
@@ -306,105 +292,6 @@ sub _clean
 sub _log
 {
 	1;
-}
-
-=item _carp
-
-Will carp (see the Carp manpage) with the error, and add the timestamp of when it occurred.
-
-=cut
-
-sub _carp
-{
-	my $self = shift;
-	my $item = shift;
-
-	warn join " ", $item->{'message'}, $item->{'shortmess'}, 'at', $item->{'when'}, "\n";
-}
-
-=item _croak
-
- Will croak (see the Carp manpage) with the error, and add the timestamp of when it occurred.
-
-=cut
-
-sub _croak
-{
-	my $self = shift;
-	my $item = shift;
-
-	die join " ", $item->{'message'}, $item->{'shortmess'}, 'at', $item->{'when'}, "\n";
-}
-
-=item _cluck
-
- Will cluck (see the Carp manpage) with the error, and add the timestamp of when it occurred.
-
-=cut
-
-sub _cluck
-{
-	my $self = shift;
-	my $item = shift;
-
-	warn join " ", $item->{'message'}, $item->{'longmess'}, 'at', $item->{'when'}, "\n";
-}
-
-=item confess
-
- Will confess (see the Carp manpage) with the error, and add the timestamp of when it occurred
-
-=cut
-
-sub _confess
-{
-	my $self = shift;
-	my $item = shift;
-
-	die join " ", $item->{'message'}, $item->{'longmess'}, 'at', $item->{'when'}, "\n";
-}
-
-=item _die
-
-Will simply die with the error message of the item
-
-=cut
-
-sub _die
-{
-	my $self = shift;
-	my $item = shift;
-
-	die $item->{'message'};
-}
-
-=item _warn
-
- Will simply warn with the error message of the item
-
-=cut
-
-sub _warn
-{
-	my $self = shift;
-	my $item = shift;
-
-	warn $item->{'message'};
-}
-
-=item _trace
-
- Will provide a traceback of this error item back to the first one that occurred, clucking with every item as it comes
-across it.
-
-=cut
-
-sub _trace
-{
-	my $self = shift;
-	my $item = shift;
-
-	$_->cluck for $item->{'parent'}->retrieve('chrono' => 0);
 }
 
 =back

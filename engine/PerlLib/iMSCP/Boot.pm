@@ -80,9 +80,6 @@ sub boot
 	# Set verbose mode
 	verbose(iMSCP::Getopt->debug || $main::imscpConfig{'DEBUG'} || 0);
 
-	# Whether or not backtrace should be added in log files (implies debug option)
-	backtrace(iMSCP::Getopt->backtrace || $main::imscpConfig{'BACKTRACE'} || 0);
-
 	iMSCP::Requirements->new()->test(
 		$mode eq 'setup' ? 'all' : 'user'
 	) unless($options->{'norequirements'} && $options->{'norequirements'} eq 'yes');

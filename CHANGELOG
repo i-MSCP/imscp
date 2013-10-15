@@ -11,6 +11,9 @@ ADDONS:
 DOCS:
 	- Fixed: Preseed template file is broken (compile time error)
 
+ENGINE
+	- Removed: Backtrace routines, which cause segfault on Debian Jessie (issues with Carp module)
+
 SETUP:
 	- Fixed: ispCP migration script is broken (many compile time errors)
 

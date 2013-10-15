@@ -496,12 +496,12 @@ sub _addAwstatsConfig
 {
 	my ($self, $data) = @_;
 
-	my $tplFile = "$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Addons/Webstats/Awstats/Config/awstats.imscp_tpl.conf";
-
 	# Loading template file
-	my $tplFileContent = iMSCP::File->new('filename' => $tplFile)->get();
+	my $tplFileContent = iMSCP::File->new(
+		'filename' => "$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Addons/Webstats/Awstats/Config/awstats.imscp_tpl.conf"
+	)->get();
 	unless(defined $tplFileContent) {
-		error("Unable to read $tplFile");
+		error("Unable to read $tplFileContent->{'filename'}");
 		return 1;
 	}
 

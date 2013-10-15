@@ -79,7 +79,7 @@ verbose(iMSCP::Getopt->debug || $main::imscpConfig{'DEBUG'} || 0);
 $main::reconfigure = iMSCP::Getopt->reconfigure;
 
 # Global variable that holds questions
-%main::questions = ();
+%main::questions = () if ! %main::questions;
 
 # Handle the preseed option
 my $preseedFile = iMSCP::Getopt->preseed;
@@ -114,7 +114,7 @@ debugRegisterCallBack(
 			if(!$main::buildonly) {
 				print STDOUT output("i-MSCP $main::imscpConfig{'Version'} has been successfully installed/updated.", 'ok');
 			} else {
-				print STDOUTR output("i-MSCP $main::imscpConfig{'Version'} has been successfully built.", 'ok');
+				print STDOUT output("i-MSCP $main::imscpConfig{'Version'} has been successfully built.", 'ok');
 			}
 
 			exit 0;

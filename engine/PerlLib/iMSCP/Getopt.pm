@@ -36,7 +36,7 @@ use warnings;
 
 use iMSCP::HooksManager;
 use iMSCP::Debug qw /error debugRegisterCallBack output /;
-use fields qw / reconfigure noprompt preseed hookFile cleanAddons skipAddonsUpdate debug backtrace /;
+use fields qw / reconfigure noprompt preseed hookFile cleanAddons skipAddonsUpdate debug /;
 our $options = fields::new('iMSCP::Getopt');
 
 our $optionHelp = '';
@@ -80,7 +80,6 @@ $usage
  -c     --clean-addons         Cleanup local addon packages repository.
  -a     --skip-addons-update   Skip addons update
  -d,    --debug                Force debug mode.
- -t,    --backtrace            Enable backtrace (implies debug option).
  -?,    --help                 Show this help.
 
  $optionHelp
@@ -111,7 +110,6 @@ EOF
 			'clean-addons|c', sub { $options->{'cleanAddons'} = 1 },
 			'skip-addons-update|a', sub { $options->{'skipAddonsUpdate'} = 1 },
 			'debug|d', sub { $options->{'debug'} = 1 },
-			'backtrace|t', sub { shift; $class->backtrace(shift) },
 			'help|?', sub { $showUsage->() },
 			@_,
 		) || $showUsage->(1);
@@ -216,26 +214,6 @@ sub hookFile($;$)
 	}
 
 	$options->{'hookFile'} // '';
-}
-
-=item
-
- backtrace option
-
- Return int 0 or 1
-
-=cut
-
-sub backtrace($;$)
-{
-	my ($class, $value) = @_;
-
-	if(defined $value) {
-		$options->{'debug'} = 1; # The backtrace option imply debug option
-		$options->{'backtrace'} = 1;
-	}
-
-	$options->{'backtrace'} // 0;
 }
 
 =back
