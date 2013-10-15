@@ -42,6 +42,28 @@ use parent 'Common::SingletonClass';
 
  PhpMyAdmin allows administering of MySQL with a web interface.
 
+ It allows administrators to:
+ * browse through databases and tables;
+ * create, copy, rename, alter and drop databases;
+ * create, copy, rename, alter and drop tables;
+ * perform table maintenance;
+ * add, edit and drop fields;
+ * execute any SQL-statement, even multiple queries;
+ * create, alter and drop indexes;
+ * load text files into tables;
+ * create and read dumps of tables or databases;
+ * export data to SQL, CSV, XML, Word, Excel, PDF and LaTeX formats;
+ * administer multiple servers;
+ * manage MySQL users and privileges;
+ * check server settings and runtime information with configuration hints;
+ * check referential integrity in MyISAM tables;
+ * create complex queries using Query-by-example (QBE), automatically connecting required tables;
+ * create PDF graphics of database layout;
+ * search globally in a database or a subset of it;
+ * transform stored data into any format using a set of predefined functions, such as displaying BLOB-data as image or download-link;
+ * manage InnoDB tables and foreign keys;
+ and is fully internationalized and localized in dozens of languages.
+
  Project homepage: : http://www.phpmyadmin.net/
 
 =head1 PUBLIC METHODS
@@ -89,6 +111,20 @@ sub install
 {
 	require Addons::PhpMyAdmin::Installer;
 	Addons::PhpMyAdmin::Installer->getInstance()->install();
+}
+
+=item uninstall()
+
+ Process uninstall tasks.
+
+ Return int 0 on success, other on failure
+
+=cut
+
+sub uninstall
+{
+	require Addons::PhpMyAdmin::Uninstaller;
+	Addons::PhpMyAdmin::Uninstaller->getInstance()->uninstall();
 }
 
 =item setGuiPermissions()

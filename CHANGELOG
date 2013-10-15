@@ -6,16 +6,17 @@ Git Master
 ------------------------------------------------------------------------------------------------------------------------
 
 ADDONS:
-	- Fixed: Net2ftp installer is broken
+	- Fixed: Net2ftp addon installer is broken
 
 DOCS:
 	- Fixed: Preseed template file is broken (compile time error)
 
 ENGINE
-	- Removed: Backtrace routines, which cause segfault on Debian Jessie (issues with Carp module)
+	- Removed: Backtrace routines, which cause segfault on Debian Jessie (issues with Carp package)
 
 SETUP:
 	- Fixed: ispCP migration script is broken (many compile time errors)
+	- Fixed: Uninstaller - Several compile time errors + missing tasks
 
 GUI:
 	- Fixed: Unable to view ticket (reseller level)

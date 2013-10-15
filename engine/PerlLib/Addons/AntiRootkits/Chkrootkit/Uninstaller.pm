@@ -35,6 +35,7 @@ use strict;
 use warnings;
 
 use iMSCP::File;
+use Addons::AntiRootkits::Chkrootkit::Chkrootkit;
 use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION

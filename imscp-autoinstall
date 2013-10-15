@@ -162,8 +162,8 @@ if(! $main::buildonly && ! $main::noprompt && $main::reconfigure eq 'none') {
 
 	iMSCP::Dialog->factory()->set('cancel-label', 'Abort');
 	my $rs;
-	($rs, $main::buildonly) = iMSCP::Dialog->factory()->radiolist(
-"
+	($rs, $main::buildonly) = iMSCP::Dialog->factory()->radiolist(<<EOF, ['install', 'build'], 'install');
+
 \\Z4\\Zb\\ZuInstaller Options\\Zn
 
 Please, choose an option:
@@ -171,9 +171,9 @@ Please, choose an option:
 \\Z4Install:\\Zn Choose this option if you want install or update i-MSCP.
   \\Z4Build:\\Zn Choose this option if you want install i-MSCP manually or if you
          want migrate from ispCP (>= 1.0.7).
-",
-			['install', 'build'], 'install'
-	);
+EOF
+
+
 
 	exit if $rs == 1 || $rs == 255; # (CANCEL, ESC)
 	$main::buildonly = $main::buildonly eq 'build' ? 1 : 0;
@@ -238,13 +238,12 @@ unless($main::buildonly) {
 
 	# Try to acquire backend lock but do not wait for it
 	if(! iMSCP::Boot->getInstance()->lock(undef, 1)) {
-		iMSCP::Dialog->factory()->msgbox(
-"
+		iMSCP::Dialog->factory()->msgbox(<<EOF);
+
 A backend process is currently running (eg. daily backup). The setup will switch back to the build mode.
 
 To complete the update, you must wait until the end of the process and follow the instructions as shown in the following dialog.
-"
-		);
+EOF
 
 		goto BUILDONLY;
 	}
@@ -278,57 +277,51 @@ To complete the update, you must wait until the end of the process and follow th
 
 	iMSCP::HooksManager->getInstance()->trigger('afterInstall') and exit 1;
 
-	iMSCP::Dialog->factory()->msgbox(
-"
+	iMSCP::Dialog->factory()->msgbox(<<EOF);
+
 \\Z1Congratulations\\Zn
 
 i-MSCP $main::imscpConfig{'Version'} has been successfully installed/updated.
 
 Please go to $main::imscpConfig{'BASE_SERVER_VHOST_PREFIX'}$main::imscpConfig{'BASE_SERVER_VHOST'} and log in with your administrator account.
 
-
 Thanks for using i-MSCP.
-"
-	);
+EOF
 } else {
 
 	BUILDONLY:
 
-	my $msg =
-"
+	my $msg = <<EOF;
+
 \\Z4\\ZuBuild Step Successful\\Zn
 
-To complete the process, run the following commands from your console:
-";
+Please run the following commands from your console:
+EOF
 
-$msg .=
-"
-\\ZbMigrate from ispCP\\Zn
+if ($main::buildonly && (-f '/etc/ispcp/ispcp.conf' || -f '/usr/local/etc/ispcp/ispcp.conf')) {
+	$msg .= <<EOF
 
 	# cp -fR /tmp/imscp/* /
 	# cd $main::imscpConfig{'ROOT_DIR'}/engine/setup
 	# perl imscp-migrate-from-ispcp
 	# perl imscp-setup
-" if $main::buildonly;
-
-$msg .=
-"
-\\Zbi-MSCP install/Update\\Zn
+EOF
+} else {
+	$msg .= <<EOF;
 
 	# rm -fR $main::imscpConfig{'ROOT_DIR'}/{daemon,engine,gui}
 	# cp -fR $main::{'INST_PREF'}/imscp/* /
 	# rm -fR $main::{'INST_PREF'}/imscp
-	# cd $main::imscpConfig{'ROOT_DIR'}/engine/setup
-	# perl imscp-setup
-";
+	# perl $main::imscpConfig{'ROOT_DIR'}/engine/setup/imscp-setup --debug
+EOF
+}
 
-$msg .=
-"
+$msg .= <<EOF;
 
 If you get no error, all went good; if you get one, look at http://forum.i-mscp.net to solve the problem.
 
 Thank you for using i-MSCP.
-";
+EOF
 
 	iMSCP::Dialog->factory()->msgbox($msg);
 

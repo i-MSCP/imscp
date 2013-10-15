@@ -43,9 +43,7 @@ our $VERSION = '0.2.0';
 
 =head1 DESCRIPTION
 
- This is the installer for the i-MSCP PhpMyAdmin addon.
-
- See Addons::PhpMyAdmin for more information.
+ i-MSCP PhpMyAdmin addon installer.
 
 =head1 PUBLIC METHODS
 
@@ -311,13 +309,13 @@ sub _installFiles
 
 	if(-d "$repoDir/vendor/imscp/phpmyadmin") {
 		my $guiPublicDir = $main::imscpConfig{'GUI_PUBLIC_DIR'};
-		my ($stdout, $stderr);
 
 		require iMSCP::Execute;
 		iMSCP::Execute->import();
 
+		my ($stdout, $stderr);
 		$rs = execute(
-			"$main::imscpConfig{'CMD_CP'} -rTf $repoDir/vendor/imscp/phpmyadmin $guiPublicDir/tools/pma",
+			"$main::imscpConfig{'CMD_CP'} -fR $repoDir/vendor/imscp/phpmyadmin $guiPublicDir/tools/pma",
 			\$stdout,
 			\$stderr
 		);

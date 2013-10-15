@@ -51,7 +51,7 @@ iMSCP::Getopt->parse('Usage: perl imscp-setup [options]');
 $main::reconfigure = iMSCP::Getopt->reconfigure;
 
 # Global variable that holds questions
-%main::questions = ();
+%main::questions = () if ! %main::questions;
 
 # Handle preseed option
 my $preseedFile = iMSCP::Getopt->preseed;
@@ -117,9 +117,9 @@ sub setupProcess
 		$dialog->set('yes-label', 'Continue');
 		$dialog->set('no-label', 'Abort');
 
-		if ($dialog->yesno(
-"
-Welcome to \\Z1i-MSCP version $main::imscpConfig{'Version'}\\Zn setup dialog.
+		if ($dialog->yesno(<<EOF)) {
+
+Welcome to the \\Z1i-MSCP $main::imscpConfig{'Version'}\\Zn setup dialog.
 
 This program will install/update i-MSCP on your system.
 
@@ -129,9 +129,8 @@ This program will install/update i-MSCP on your system.
    \\Z4Note:\\Zn During the setup process some or all services might require
          to be shutdown or restarted. Only services that are not set as
          '\\Zbno\\Zn' in your imscp.conf file will be processed by this program.
-"
-		)
-		) {
+EOF
+
 			$dialog->msgbox("\nSetup process has been aborted...");
 			exit 0;
 		}
@@ -152,18 +151,16 @@ sub setupShutDown
 {
 	return 0 if $main::noprompt;
 
-	iMSCP::Dialog->factory()->msgbox(
-"
-\\Z1!!! Congratulation !!!\\Zn
+	iMSCP::Dialog->factory()->msgbox(<<EOF);
+
+\\Z1Congratulation\\Zn
 
 i-MSCP '$main::imscpConfig{'Version'}' has been successfully updated.
 
 Please go to $main::imscpConfig{'BASE_SERVER_VHOST_PREFIX'}$main::imscpConfig{'BASE_SERVER_VHOST'} and log in with your administrator account.
 
-
 Thanks for using i-MSCP.
-"
-	);
+EOF
 
 	0;
 }

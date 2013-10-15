@@ -1617,7 +1617,7 @@ sub setupUpdateDatabase
 # Basically, this method do same job as the mysql_secure_installation script
 # - Remove anonymous users
 # - Remove users without password set
-# - Remove remote sql root user
+# - Remove remote sql root user (only for local server)
 # - Remove test database if any
 # - Reload privileges tables
 sub setupSecureSqlInstallation
@@ -1633,7 +1633,7 @@ sub setupSecureSqlInstallation
 
 	# Remove anonymous users
 	$errStr = $database->doQuery('dummy', "DELETE FROM `mysql`.`user` WHERE `User` = '';");
-	if(ref $errStr ne 'HASH') {
+	unless(ref $errStr eq 'HASH') {
 		error("Unable to delete anonymous users: $errStr");
 		return 1;
 	}
@@ -1643,22 +1643,24 @@ sub setupSecureSqlInstallation
 
 	for (keys %{$rdata}) {
 		$errStr = $database->doQuery('dummy', "DROP USER ?@?", $_, $rdata->{$_}->{'Host'});
-		if(ref $errStr ne 'HASH') {
+		unless(ref $errStr eq 'HASH') {
 			error("Unable to remove SQL user $_\\@$rdata->{$_}->{'Host'}: $errStr");
 			return 1;
 		}
 	}
 
 	# Remove test database if any
-	$errStr = $database->doQuery('dummy', 'DROP DATABASE `test`;');
-	if(ref $errStr ne 'HASH'){
-		debug("Unable to remove database test (not critical): $errStr"); # Not critical, keep moving...
+	$errStr = $database->doQuery('dummy', 'DROP DATABASE IF EXISTS `test`;');
+	unless(ref $errStr eq 'HASH'){
+		error("Unable to remove database test : $errStr"); # Not critical, keep moving...
+		return 1;
 	}
 
 	# Remove privileges on test database
 	$errStr = $database->doQuery('dummy', "DELETE FROM `mysql`.`db` WHERE `Db` = 'test' OR `Db` = 'test\\_%';");
-	if(ref $errStr ne 'HASH'){
-		debug("Unable to remove privilege on test database (not critical): $errStr"); # Not critical, keep moving...
+	unless(ref $errStr eq 'HASH') {
+		error("Unable to remove privilege on test database (not critical): $errStr");
+		return 1;
 	}
 
 	# Disallow remote root login
@@ -1667,7 +1669,7 @@ sub setupSecureSqlInstallation
 			'dummy',
 			"DELETE FROM `mysql`.`user` WHERE `User` = 'root' AND `Host` NOT IN ('localhost', '127.0.0.1', '::1');"
 		);
-		if(ref $errStr ne 'HASH'){
+		unless(ref $errStr eq 'HASH'){
 			error("Unable to remove remote root user: $errStr");
 			return 1;
 		}
@@ -1675,7 +1677,7 @@ sub setupSecureSqlInstallation
 
 	# Reload privilege tables
 	$errStr = $database->doQuery('dummy', 'FLUSH PRIVILEGES;');
-	if(ref $errStr ne 'HASH') {
+	unless(ref $errStr eq 'HASH') {
 		debug("Unable to reload privileges tables: $errStr");
 		return 1;
 	}

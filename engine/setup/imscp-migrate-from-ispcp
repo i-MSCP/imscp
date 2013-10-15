@@ -213,6 +213,7 @@ sub removeIspcpFiles
 		my $errors = join "\n", @errors;
 
 		iMSCP::Dialog->factory()->msgbox(<<EOF);
+
 \\Z1\\ZuErrors were detected\\Zn
 
 The following errors occured:
@@ -260,6 +261,7 @@ sub saveIspLogo
 		my $errors = join "\n", @errors;
 
 		iMSCP::Dialog->factory()->msgbox(<<EOF);
+
 \\Z1\\ZuErrors were detected\\Zn
 
 The following errors occured:
@@ -308,6 +310,7 @@ sub dbUpgrade
 		my $errors = join "\n", @errors;
 
 		iMSCP::Dialog->factory()->msgbox(<<EOF);
+
 \\Z1\\ZuErrors were detected\\Zn
 
 The following errors occured while database upgrade:
@@ -397,6 +400,7 @@ sub saveIspcpConfigFiles
 		my $errors = join "\n", @errors;
 
 		iMSCP::Dialog->factory()->msgbox(<<EOF);
+
 \\Z1\\ZuErrors while saving system files\\Zn
 
 Please fix the following errors and try again:
@@ -454,6 +458,7 @@ sub deleteIspCPunixUsers
 		my $errors = join "\n", @errors;
 
 		iMSCP::Dialog->factory()->msgbox(<<EOF);
+
 \\Z1\\ZuUnable to delete ispCP unix user/group\\Zn
 
 Please fix the following errors and try again:
@@ -673,6 +678,7 @@ sub databaseIntegrityTests
 		my $errors = join "\n", @errors;
 
 		iMSCP::Dialog->factory()->msgbox(<<EOF);
+
 \\Z1\\ZuispCP database is corrupted\\Zn
 
 Please fix the following errors and try again:
@@ -767,6 +773,7 @@ sub checkIspcpVersion
 			iMSCP::Dialog->factory()->set('defaultno', '');
 
 			if(iMSCP::Dialog->factory()->yesno(<<EOF)) {
+
 \\Z1\\ZuMigration from ispCP version $1 is not supported\\Zn
 
 \\Z1WARNING:\\Zu
@@ -781,6 +788,7 @@ EOF
 		}
 	} else {
 		iMSCP::Dialog->factory()->msgbox(<<EOF);
+
 \\Z1\\ZuUnable to retrieve i-MSCP version\\Zn
 
 The migration script was unable to retrieve your ispCP version.
@@ -804,6 +812,7 @@ sub welcomeMessage
 	$dialog->set('no-label','Abort');
 
 	exit 0 if $dialog->yesno(<<EOF);
+
 Welcome to the i-MSCP \\Z4($main::imscpConfig{'Version'})\\Z0 migration dialog.
 
 This program will migrate your ispCP control panel to i-MSCP.
@@ -858,6 +867,7 @@ sub processMigration
 	iMSCP::Dialog->factory()->endGauge() if iMSCP::Dialog->factory()->hasGauge();
 
 	iMSCP::Dialog->factory()->msgbox(<<EOF);
+
 \\Z1Migration successful\\Zn
 
 Your ispCP control panel has been successfuly migrated to i-MSCP $main::imscpConfig{'Version'}.

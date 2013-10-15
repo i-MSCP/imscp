@@ -230,6 +230,8 @@ sub uninstall
 
 	my @addons = split ',', $main::imscpConfig{'WEBSTATS_ADDONS'};
 
+	my $packages = [];
+
 	for(@addons) {
 		if($_ ~~ @{$self->{'ADDONS'}}) {
 			my $addon = "Addons::Webstats::${_}::${_}";
@@ -239,12 +241,16 @@ sub uninstall
 				$addon = $addon->getInstance();
 				my $rs = $addon->uninstall(); # Mandatory method;
 				return $rs if $rs;
+
+				@{$packages} = (@{$packages}, @{$addon->getPackages()}) if $addon->can('getPackages');
 			} else {
 				error($@);
 				return 1;
 			}
 		}
 	}
+
+	$self->_removePackages($packages) if @${packages};
 
 	0;
 }

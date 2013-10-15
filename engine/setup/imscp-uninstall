@@ -115,31 +115,27 @@ sub _userDialog
 	iMSCP::Dialog->factory()->set('no-label','Exit');
 	iMSCP::Dialog->factory()->set('defaultno', '');
 
-	if (iMSCP::Dialog->factory()->yesno(
-"
-Welcome to the \\Z1i-MSCP version $main::imscpConfig{'Version'}\\Zn uninstaller dialog.
+	if (iMSCP::Dialog->factory()->yesno(<<EOF)) {
+
+Welcome to the \\Z4i-MSCP $main::imscpConfig{'Version'}\\Zn uninstaller dialog.
 
 This program will uninstall i-MSCP from your server.
 
-\\Zu\\Z1[WARNING]\\Zn
+\\Z1WARNING\\Zn
 
 All i-MSCP data will be removed.
 
-\\Zu\\Z4[NOTE]\\Zn
+\\Z4NOTE\\Zn
 
 During the uninstallation process some or all services might require to be shut down or restarted.
 
-To continue select \\Z1Continue\\Z0
-"
+To continue select \\Z4Continue\\Z0
+EOF
 
-	)) {
-		iMSCP::Dialog->factory()->msgbox(
-"\
-\\Z1[NOTICE]\\Zn
+	iMSCP::Dialog->factory()->msgbox(<<EOF);
 
 Uninstallation process has been aborted...
-"
-		);
+EOF
 
 		exit 0;
 	}
@@ -301,18 +297,15 @@ sub _removeLogrotateFile
 	$rs;
 }
 
-# FIXME: Too many assumptions are made here. The names of sql users to remove must be based on the usernames as entered
-# by administrator during setup
-# FIXME: All SQL user as created by i-MSCP are not removed (roundcube sql user)
 # FIXME: localhost is not always the correct value
-#
-# FIXME: It is not better to add uninstaller for each addons and call them as we already do for the server implementations?
 sub _removeSqlData
 {
 	my $database = iMSCP::Database->factory();
 
-	my $rdata = $database->doQuery('sqlu_name', 'SELECT DISTINCT(`sqlu_name`) FROM `sql_user`');
 
+	# Remove customer's sql users
+
+	my $rdata = $database->doQuery('sqlu_name', 'SELECT DISTINCT(`sqlu_name`) FROM `sql_user`');
 	unless(ref $rdata eq 'HASH') {
 		error($rdata);
 		return 1;
@@ -321,19 +314,9 @@ sub _removeSqlData
 	for (keys %{$rdata}) {
 		# We do not catch any error and it's expected
 		$database->doQuery('delete', "DROP USER ?@?", $rdata->{$_}->{'sqlu_name'}, 'localhost');
+		$database->doQuery('delete', "DROP USER ?@?", $rdata->{$_}->{'sqlu_name'}, '127.0.0.1');
 		$database->doQuery('delete', "DROP USER ?@?", $rdata->{$_}->{'sqlu_name'}, '%');
 	}
-
-	$rdata = $database->doQuery('sqld_name', 'SELECT `sqld_name` FROM `sql_database`');
-	unless(ref $rdata eq 'HASH') {
-		error($rdata);
-		return 1;
-	}
-
-	# We do not catch any error and it's expected
-	$database->doQuery('delete', "DROP DATABASE $rdata->{$_}->{'sqld_name'}") for keys %$rdata;
-	$database->doQuery('delete', "DROP USER ?@?", 'pma', 'localhost');
-	$database->doQuery('delete', "DROP USER ?@?", 'pma', '%');
 
 	$rdata = $database->doQuery('dummy', 'FLUSH PRIVILEGES');
 	unless(ref $rdata eq 'HASH') {
@@ -341,7 +324,19 @@ sub _removeSqlData
 		return 1;
 	}
 
-	$database->doQuery('delete', "DROP DATABASE $main::imscpConfig{'DATABASE_NAME'}");
+	# Remove customer's sql datatabases
+
+	$rdata = $database->doQuery('sqld_name', 'SELECT `sqld_name` FROM `sql_database`');
+	unless(ref $rdata eq 'HASH') {
+		error($rdata);
+		return 1;
+	}
+
+	$database->doQuery('delete', "DROP DATABASE IF EXISTS `$rdata->{$_}->{'sqld_name'}`") for keys %{$rdata};
+
+	# Remove i-MSCP sql database
+
+	$database->doQuery('delete', "DROP DATABASE IF EXISTS `$main::imscpConfig{'DATABASE_NAME'}`");
 	unless(ref $rdata eq 'HASH') {
 		error($rdata);
 		return 1;

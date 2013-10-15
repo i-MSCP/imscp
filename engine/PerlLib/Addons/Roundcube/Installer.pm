@@ -312,22 +312,22 @@ sub _installFiles
 	my $rs = 0;
 
 	if(-d "$repoDir/vendor/imscp/roundcube") {
+		my $guiPublicDir = $main::imscpConfig{'GUI_PUBLIC_DIR'};
+
 		require iMSCP::Execute;
 		iMSCP::Execute->import();
 
 		my ($stdout, $stderr);
 		$rs = execute(
-			"$main::imscpConfig{'CMD_CP'} -rTf $repoDir/vendor/imscp/roundcube $main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/webmail",
-			\$stdout, \$stderr
+			"$main::imscpConfig{'CMD_CP'} -fR $repoDir/vendor/imscp/roundcube $guiPublicDir/tools/webmail",
+			\$stdout,
+			\$stderr
 		);
 		debug($stdout) if $stdout;
 		error($stderr) if $rs && $stderr;
 		return $rs if $rs;
 
-		$rs = execute(
-			"$main::imscpConfig{'CMD_RM'} -rf $main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/webmail/.git",
-			\$stdout, \$stderr
-		);
+		$rs = execute("$main::imscpConfig{'CMD_RM'} -rf $guiPublicDir/tools/webmail/.git", \$stdout, \$stderr);
 		debug($stdout) if $stdout;
 		error($stderr) if $rs && $stderr;
 		return $rs if $rs;

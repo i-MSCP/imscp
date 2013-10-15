@@ -98,6 +98,20 @@ sub install
 	Addons::Roundcube::Installer->getInstance()->install();
 }
 
+=item uninstall()
+
+ Process uninstall tasks.
+
+ Return int 0 on success, other on failure
+
+=cut
+
+sub uninstall
+{
+	require Addons::Roundcube::Uninstaller;
+	Addons::Roundcube::Uninstaller->getInstance()->uninstall();
+}
+
 =item setGuiPermissions()
 
  Set file permissions.
