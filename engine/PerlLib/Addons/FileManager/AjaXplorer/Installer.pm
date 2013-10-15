@@ -131,7 +131,7 @@ sub _installFiles
 
 		my ($stdout, $stderr);
 		$rs = execute(
-			"$main::imscpConfig{'CMD_CP'} -fR $repoDir/vendor/imscp/ajaxplorer $guiPublicDir/tools/filemanager",
+			"$main::imscpConfig{'CMD_CP'} -fRT $repoDir/vendor/imscp/ajaxplorer $guiPublicDir/tools/filemanager",
 			\$stdout,
 			\$stderr
 		);

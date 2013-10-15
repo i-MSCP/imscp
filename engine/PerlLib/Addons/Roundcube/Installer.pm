@@ -319,7 +319,7 @@ sub _installFiles
 
 		my ($stdout, $stderr);
 		$rs = execute(
-			"$main::imscpConfig{'CMD_CP'} -fR $repoDir/vendor/imscp/roundcube $guiPublicDir/tools/webmail",
+			"$main::imscpConfig{'CMD_CP'} -fRT $repoDir/vendor/imscp/roundcube $guiPublicDir/tools/webmail",
 			\$stdout,
 			\$stderr
 		);
@@ -502,7 +502,7 @@ sub _buildConfig
 	for (keys %{$cfgFiles}) {
 		my $cfgTpl = iMSCP::File->new('filename' => "$confDir/$_")->get();
 		unless(defined $cfgTpl) {
-			error("Unable to read $cfgTpl");
+			error("Unable to read $confDir/$_");
 			return 1;
 		}
 

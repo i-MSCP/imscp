@@ -315,7 +315,7 @@ sub _installFiles
 
 		my ($stdout, $stderr);
 		$rs = execute(
-			"$main::imscpConfig{'CMD_CP'} -fR $repoDir/vendor/imscp/phpmyadmin $guiPublicDir/tools/pma",
+			"$main::imscpConfig{'CMD_CP'} -fRT $repoDir/vendor/imscp/phpmyadmin $guiPublicDir/tools/pma",
 			\$stdout,
 			\$stderr
 		);

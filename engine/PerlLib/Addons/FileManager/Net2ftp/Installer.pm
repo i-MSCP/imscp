@@ -123,7 +123,7 @@ sub _installFiles
 		iMSCP::Execute->import();
 
 		$rs = execute(
-			"$main::imscpConfig{'CMD_CP'} -fR $repoDir/vendor/imscp/net2ftp $guiPublicDir/tools/filemanager",
+			"$main::imscpConfig{'CMD_CP'} -fRT $repoDir/vendor/imscp/net2ftp $guiPublicDir/tools/filemanager",
 			\$stdout,
 			\$stderr
 		);
