@@ -69,8 +69,6 @@ sub uninstall
 	$self->_removeFiles();
 }
 
-# Private methods
-
 =back
 
 =head1 PRIVATE METHODS

@@ -125,13 +125,13 @@ sub _installFiles
 
 	if(-d "$repoDir/vendor/imscp/ajaxplorer") {
 		my $guiPublicDir = $main::imscpConfig{'GUI_PUBLIC_DIR'};
-		my ($stdout, $stderr);
 
 		require iMSCP::Execute;
 		iMSCP::Execute->import();
 
+		my ($stdout, $stderr);
 		$rs = execute(
-			"$main::imscpConfig{'CMD_CP'} -rTf $repoDir/vendor/imscp/ajaxplorer $guiPublicDir/tools/filemanager",
+			"$main::imscpConfig{'CMD_CP'} -fR $repoDir/vendor/imscp/ajaxplorer $guiPublicDir/tools/filemanager",
 			\$stdout,
 			\$stderr
 		);
