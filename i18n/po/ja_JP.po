@@ -10,9 +10,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2013-10-11 00:08+0200\n"
-"PO-Revision-Date: 2013-10-10 22:09+0000\n"
-"Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
+"POT-Creation-Date: 2013-10-17 13:31+0200\n"
+"PO-Revision-Date: 2013-10-14 13:04+0000\n"
+"Last-Translator: kazuo <kazu.nito@gmail.com>\n"
 "Language-Team: Japanese (Japan) (http://www.transifex.com/projects/p/i-MSCP/language/ja_JP/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -264,7 +264,7 @@ msgstr "%d の文字列を翻訳"
 
 #, php-format
 msgid "%s / %s of %s"
-msgstr ""
+msgstr "%s / %s の %s"
 
 #, php-format
 msgid "%s / unlimited"
@@ -312,11 +312,11 @@ msgstr "%s が存在しないか、空です"
 
 #, php-format
 msgid "%s field is empty or invalid."
-msgstr ""
+msgstr "%s フィールドが空又は無効です。"
 
 #, php-format
 msgid "%s host field is empty or invalid."
-msgstr ""
+msgstr "%s ホストフィールドが空又は無効です。"
 
 #, php-format
 msgid "%s is not a valid i-MSCP language file."
@@ -324,7 +324,7 @@ msgstr "%sは、有効なi-MSCP言語ファイルでありません。"
 
 #, php-format
 msgid "%s is not part of domain %s."
-msgstr ""
+msgstr "%sは、ドメイン%sの一部ではありません。"
 
 #, php-format
 msgid ""
@@ -374,7 +374,7 @@ msgstr "%s: 既に代理店の顧客への販売サービスを無効にする�
 
 #, php-format
 msgid "%sfield is empty or invalid."
-msgstr ""
+msgstr "%s フィールドが空又は無効です。"
 
 msgid ""
 "'%hostname%' does not appear to have a valid MX record for the email address"
@@ -796,7 +796,7 @@ msgid "Admin / Support / View Ticket"
 msgstr "管理者 / サポート / チケット表示"
 
 msgid "Admin / System Tools / Anti-Rootkits Logs"
-msgstr ""
+msgstr "管理者 / システムツール / アンチルートキットログ"
 
 msgid "Admin / System Tools / Database Update"
 msgstr "管理者 / システムツール / データベース更新"
@@ -967,13 +967,13 @@ msgstr "URLのfopenを許可"
 
 msgid ""
 "Allows to forward any request made to this domain alias to a specific URL."
-msgstr ""
+msgstr "特定のURLにドメインエイリアスに行われたすべての要求を転送することができます。"
 
 msgid ""
 "Allows to forward any request made to this domain alias to a specific URL. "
 "Be aware that when this option is in use, no Web folder is created for the "
 "domain alias."
-msgstr ""
+msgstr "特定のURLにドメインエイリアスに行われたすべての要求を転送することができます。このオプションが使用されているときに、Webフォルダはドメインエイリアス用に作成されていないことに注意してください。"
 
 msgid ""
 "Allows to forward any request made to this subdomain to a specific URL."
@@ -1004,7 +1004,7 @@ msgid "An error occurred. Please contact your administrator."
 msgstr "エラーが発生しました。管理者に連絡してください。"
 
 msgid "An unexpected error occured. Please contact your reseller."
-msgstr ""
+msgstr "予期しないエラーが発生しました。代理店にお問い合わせください。"
 
 msgid "An unexpected error occured. Please retry"
 msgstr "予期しないエラーが発生しました。再試行してください"
@@ -1021,7 +1021,7 @@ msgid "An unknown error occurred during file upload: %s"
 msgstr "原因不明のエラーは、ファイルアップロードの間に発生しました： %s"
 
 msgid "Anti-Rootkits Logs"
-msgstr ""
+msgstr "アンチルートキットログ"
 
 msgid "Application installer"
 msgstr "アプリケーションインストーラー"
@@ -1247,7 +1247,7 @@ msgstr "%s レコードは検証できません: %s"
 
 #, php-format
 msgid "Cannot validate record: %s"
-msgstr ""
+msgstr "レコードを検証することはできません：%s"
 
 msgid "Canonical name"
 msgstr "正式な名前"
@@ -1551,7 +1551,7 @@ msgstr "プラグインの保護の確認"
 
 #, php-format
 msgid "Conflict with an existent %s record."
-msgstr ""
+msgstr "既存の%sレコードと競合。"
 
 msgid "Core data"
 msgstr "基本情報"
@@ -1986,11 +1986,11 @@ msgstr "ドメインエイリアス"
 
 #, php-format
 msgid "Domain alias %s already exist."
-msgstr ""
+msgstr "ドメインエイリアス%sは既に存在している。"
 
 #, php-format
 msgid "Domain alias %s cannot be forwarded on itself."
-msgstr ""
+msgstr "ドメインエイリアス%s自体に転送することはできません。"
 
 msgid "Domain alias errors"
 msgstr "ドメインエイリアスエラー"
@@ -2177,7 +2177,7 @@ msgid "Edit mail account"
 msgstr "メールアカウント編集"
 
 msgid "Edit mail quota"
-msgstr "Eメール容量制限の編集"
+msgstr "Eメール容量の編集"
 
 msgid "Edit protected area"
 msgstr "アクセス制限領域を編集"
@@ -2234,30 +2234,30 @@ msgid "Email forward"
 msgstr "Email forward"
 
 msgid "Email quota"
-msgstr "Eメールクオータ"
+msgstr "Eメール容量"
 
 msgid "Email quota [MiB]"
-msgstr "Eメール容量制限[MiB]"
+msgstr "Eメール容量[MiB]"
 
 #, php-format
 msgid "Email quota cannot be bigger than %s"
-msgstr "Eメールクォータは、%sより大きくすることはできません"
+msgstr "Eメール容量は、%sより大きくすることはできません"
 
 msgid "Email quota cannot be bigger than disk space limit."
-msgstr "Eメールクォータは、ディスク容量の制限よりも大きくすることはできません。"
+msgstr "Eメール容量は、ディスク容量の制限よりも大きくすることはできません。"
 
 #, php-format
 msgid ""
 "Email quota cannot be lower than %d. Each mailbox should have a least 1 MiB "
 "quota."
-msgstr ""
+msgstr "メール割当は%dより小さくなることはありません。各メールボックスには、少なくとも1MiB容量を持っている必要があります。"
 
 #, php-format
 msgid "Email quota cannot be unlimited. Max value is %d MiB."
-msgstr ""
+msgstr "Eメール容量は無制限にすることはできません。最大値は%dMiBです。"
 
 msgid "Email quota must be a number."
-msgstr "Ｅメールクォータは数値でなければなりません。"
+msgstr "Ｅメール容量は数値でなければなりません。"
 
 msgid "Email settings"
 msgstr "Eメールの設定"
@@ -2479,7 +2479,7 @@ msgstr "Forward URL"
 
 #, php-format
 msgid "Forward URL %s is not valid."
-msgstr ""
+msgstr "転送URL%sは有効ではありません。"
 
 msgid "Forward list is empty."
 msgstr "フォワードリストは空です。"
@@ -2732,10 +2732,10 @@ msgid "Incl. default mails"
 msgstr "Incl. デフォルトメール"
 
 msgid "Incorrect Email quota"
-msgstr "間違ったEメールクォータ"
+msgstr "間違ったEメール容量"
 
 msgid "Incorrect Email quota."
-msgstr "間違ったEメールクォータです。"
+msgstr "間違ったEメール容量です。"
 
 msgid "Incorrect FTP account limit."
 msgstr "不正なFTPアカウントの制限。"
@@ -3282,7 +3282,7 @@ msgid "No administrator accounts found."
 msgstr "管理者アカウントが見つかりませんでした。"
 
 msgid "No anti-rootkits logs"
-msgstr ""
+msgstr "アンチルートキットログはありません"
 
 msgid "No available"
 msgstr "使用不可"
@@ -3945,14 +3945,14 @@ msgid "Protocol"
 msgstr "プロトコル"
 
 msgid "Quota"
-msgstr "容量制限"
+msgstr "容量"
 
 msgid "Quota in MiB (0 for unlimited)"
-msgstr "容量制限MiB(無制限の場合は0)"
+msgstr "容量MiB(無制限の場合は0)"
 
 #, php-format
 msgid "Quota in MiB (Max: %s)"
-msgstr ""
+msgstr "容量MiB(最大：%s)"
 
 msgid "RAM"
 msgstr "メモリ"
@@ -4583,11 +4583,11 @@ msgstr "サブドメイン"
 
 #, php-format
 msgid "Subdomain %s already exist."
-msgstr ""
+msgstr "サブドメイン%sが既に存在している。"
 
 #, php-format
 msgid "Subdomain %s cannot be forwarded on itself."
-msgstr ""
+msgstr "サブドメイン%s自体に転送することはできません。"
 
 msgid "Subdomain alias"
 msgstr "サブドメインエイリアス"
@@ -4980,7 +4980,7 @@ msgstr "インストール合計"
 
 #, php-format
 msgid "Total mails: %s / %s %s"
-msgstr ""
+msgstr "総メール： %s / %s %s"
 
 msgid "Total packages in Web software repository"
 msgstr "Webソフトウェアリポジトリ内のパッケージ合計"
@@ -5237,7 +5237,7 @@ msgid "User data successfully updated"
 msgstr "ユーザー·データは更新されました"
 
 msgid "User data successfully updated."
-msgstr ""
+msgstr "ユーザデータを更新しました。"
 
 msgid "User data were not updated."
 msgstr "ユーザーデータは更新されませんでした。"
@@ -5588,7 +5588,7 @@ msgstr "あなたは最後のアクティブなIPアドレスを削除するこ�
 
 #, php-format
 msgid "You cannot forward %s on itself."
-msgstr ""
+msgstr "それ自体に%sを転送することはできません。"
 
 #, php-format
 msgid ""
