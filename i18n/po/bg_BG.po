@@ -7,9 +7,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2013-09-29 14:33+0200\n"
-"PO-Revision-Date: 2013-09-29 08:21+0000\n"
-"Last-Translator: Torsten Widmann <info@goover.de>\n"
+"POT-Creation-Date: 2013-10-17 13:31+0200\n"
+"PO-Revision-Date: 2013-10-10 22:09+0000\n"
+"Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Bulgarian (Bulgaria) (http://www.transifex.com/projects/p/i-MSCP/language/bg_BG/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -792,6 +792,9 @@ msgstr ""
 msgid "Admin / Support / View Ticket"
 msgstr ""
 
+msgid "Admin / System Tools / Anti-Rootkits Logs"
+msgstr ""
+
 msgid "Admin / System Tools / Database Update"
 msgstr ""
 
@@ -799,9 +802,6 @@ msgid "Admin / System Tools / Debugger"
 msgstr ""
 
 msgid "Admin / System Tools / Maintenance Settings"
-msgstr ""
-
-msgid "Admin / System Tools / Rootkit Logs"
 msgstr ""
 
 msgid "Admin / System Tools / System Information"
@@ -1017,8 +1017,8 @@ msgstr ""
 msgid "An unknown error occurred during file upload: %s"
 msgstr ""
 
-msgid "Anti-Rootkits Tools Log Checker"
-msgstr "Анти-шпионски инструмент за проврка на Логовете"
+msgid "Anti-Rootkits Logs"
+msgstr ""
 
 msgid "Application installer"
 msgstr ""
@@ -3278,6 +3278,9 @@ msgstr ""
 msgid "No administrator accounts found."
 msgstr ""
 
+msgid "No anti-rootkits logs"
+msgstr ""
+
 msgid "No available"
 msgstr ""
 
@@ -4192,9 +4195,6 @@ msgid "Rights successfully added."
 msgstr ""
 
 msgid "Rights successfully removed."
-msgstr ""
-
-msgid "Rootkit logs"
 msgstr ""
 
 msgid "SMTP in"
@@ -5233,6 +5233,9 @@ msgstr "Право потребител"
 msgid "User data successfully updated"
 msgstr ""
 
+msgid "User data successfully updated."
+msgstr ""
+
 msgid "User data were not updated."
 msgstr ""
 
@@ -5264,9 +5267,6 @@ msgstr "Потребителското име е твърде дълго!"
 
 msgid "User password"
 msgstr "Потребителска парола"
-
-msgid "User personal data successfully updated."
-msgstr ""
 
 msgid "User real (first and last) name"
 msgstr "Настоящо Име и Фамилия на потребител"

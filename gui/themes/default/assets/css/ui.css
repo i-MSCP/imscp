@@ -1216,7 +1216,7 @@ table .graph {
 }
 
 #imscpTooltip.tooltip_icon {
-    width: 250px;
+    max-width: 600px;
     padding: 15px 5px 15px 45px;
 }
 
@@ -1224,6 +1224,10 @@ table .graph {
     font-size: 0.90em;
     font-weight: bold;
     text-align: left;
+}
+
+.tips {
+    cursor: pointer;
 }
 
 .icon.i_help {

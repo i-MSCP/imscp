@@ -31,7 +31,6 @@
                 <package>dovecot-common</package>
                 <package>dovecot-imapd</package>
                 <package>dovecot-pop3d</package>
-                <package>dovecot-mysql</package>
             </dovecot>
         </alternative>
     </po>
@@ -163,8 +162,6 @@
         <package>bash</package>
         <package>pbzip2</package>
         <package>bzip2</package>
-        <package>awstats</package>
-        <package>chkrootkit</package>
         <package>dialog</package>
         <package>diffutils</package>
         <package>dnsutils</package>
@@ -187,7 +184,6 @@
         <package>policyd-weight</package>
         <package>postgrey</package>
         <package>procmail</package>
-        <package>rkhunter</package>
         <package>sasl2-bin</package>
         <package>ssh</package>
         <package>tar</package>

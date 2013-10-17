@@ -189,9 +189,10 @@
                     <title_class>debugger</title_class>
                 </debugger>
                 <rootkits_log>
-                    <label>Rootkit logs</label>
+                    <label>Anti-Rootkits Logs</label>
                     <uri>/admin/rootkit_log.php</uri>
                     <title_class>general</title_class>
+                    <privilege_callback name="systemHasAntiRootkits"/>
                 </rootkits_log>
             </pages>
         </system_tools>

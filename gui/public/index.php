@@ -94,14 +94,14 @@ $tpl->assign(
 /** @var $cfg iMSCP_Config_Handler_File */
 $cfg = iMSCP_Registry::get('config');
 
-if ($cfg->MAINTENANCEMODE && !isset($_REQUEST['admin'])) {
+if ($cfg['MAINTENANCEMODE'] && !isset($_REQUEST['admin'])) {
 	$tpl->define_dynamic('page', 'message.tpl');
 	$tpl->assign(
 		array(
 			'TR_PAGE_TITLE' => tr('i-MSCP - Multi Server Control Panel / Maintenance'),
 			'CONTEXT_CLASS' => ' no_header',
 			'BOX_MESSAGE_TITLE' => tr('System under maintenance'),
-			'BOX_MESSAGE' => nl2br(tohtml($cfg->MAINTENANCEMODE_MESSAGE)),
+			'BOX_MESSAGE' => nl2br(tohtml($cfg['MAINTENANCEMODE_MESSAGE'])),
 			'TR_BACK' => tr('Administrator login'),
 			'BACK_BUTTON_DESTINATION' => '/index.php?admin=1'
 		)
@@ -126,7 +126,7 @@ if ($cfg->MAINTENANCEMODE && !isset($_REQUEST['admin'])) {
 		)
 	);
 
-	if ($cfg->exists('SSL_ENABLED') && $cfg->SSL_ENABLED == 'yes') {
+	if ($cfg->exists('SSL_ENABLED') && $cfg['SSL_ENABLED'] == 'yes' && $cfg['BASE_SERVER_VHOST_PREFIX'] != 'https://') {
 		$tpl->assign(
 			array(
 				'SSL_LINK' => isset($_SERVER['HTTPS']) ? 'http://' . tohtml($_SERVER['HTTP_HOST']) : 'https://' . tohtml($_SERVER['HTTP_HOST']),
@@ -139,7 +139,7 @@ if ($cfg->MAINTENANCEMODE && !isset($_REQUEST['admin'])) {
 		$tpl->assign('SSL_SUPPORT', '');
 	}
 
-	if ($cfg->LOSTPASSWORD) {
+	if ($cfg['LOSTPASSWORD']) {
 		$tpl->assign('TR_LOSTPW', tr('Lost password'));
 	} else {
 		$tpl->assign('LOST_PASSWORD_SUPPORT', '');

@@ -31,9 +31,9 @@ use warnings;
 use iMSCP::Debug;
 use iMSCP::SystemUser;
 use iMSCP::SystemGroup;
+use iMSCP::File;
 use iMSCP::Dir;
 use File::Basename;
-use iMSCP::File;
 use Servers::httpd::apache_itk;
 use parent 'Common::SingletonClass';
 
@@ -43,9 +43,9 @@ sub _init
 
 	$self->{'httpd'} = Servers::httpd::apache_fcgi->getInstance();
 
-	$self->{'cfgDir'} = $self->{'httpd'}->{'cfgDir'};
-	$self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
-	$self->{'wrkDir'} = "$self->{'cfgDir'}/working";
+	$self->{'apacheCfgDir'} = $self->{'httpd'}->{'apacheCfgDir'};
+	$self->{'apacheBkpDir'} = "$self->{'apacheCfgDir'}/backup";
+	$self->{'apacheWrkDir'} = "$self->{'apacheCfgDir'}/working";
 
 	$self->{'config'} = $self->{'httpd'}->{'config'};
 
@@ -73,18 +73,14 @@ sub removeUsers
 	my $self = shift;
 
 	# Panel user
-	my $panelUName = iMSCP::SystemUser->new();
-	$panelUName->{'force'} = 'yes';
-
-	my $rs = $panelUName->delSystemUser(
+	my $rs  = iMSCP::SystemUser->new('force' => 'yes')->delSystemUser(
 		$main::imscpConfig{'SYSTEM_USER_PREFIX'} . $main::imscpConfig{'SYSTEM_USER_MIN_UID'}
 	);
 	return $rs if $rs;
 
 	# Panel group
-	my $panelGName = iMSCP::SystemGroup->new();
-	$panelGName->delSystemGroup(
-		$main::imscpConfig{'SYSTEM_USER_PREFIX'} . $main::imscpConfig{'SYSTEM_USER_MIN_UID'}
+	iMSCP::SystemGroup->getInstance()->delSystemGroup(
+		'groupname' => $main::imscpConfig{'SYSTEM_USER_PREFIX'} . $main::imscpConfig{'SYSTEM_USER_MIN_UID'}
 	);
 }
 
@@ -93,11 +89,10 @@ sub removeDirs
 	my $self = shift;
 
 	my $rs = 0;
-	my $phpdir = $self->{'config'}->{'PHP_STARTER_DIR'};
 
 	for (
 		$self->{'config'}->{'APACHE_USERS_LOG_DIR'}, $self->{'config'}->{'APACHE_BACKUP_LOG_DIR'},
-		$self->{'config'}->{'APACHE_CUSTOM_SITES_CONFIG_DIR'}, $phpdir
+		$self->{'config'}->{'APACHE_CUSTOM_SITES_CONFIG_DIR'}, $self->{'config'}->{'SCOREBOARDS_DIR'}
 	) {
 		$rs = iMSCP::Dir->new('dirname' => $_)->remove() if -d $_;
 		return $rs if $rs;
@@ -112,14 +107,12 @@ sub restoreConf
 
 	my $rs = 0;
 
-	for (
-		"$main::imscpConfig{LOGROTATE_CONF_DIR}/apache2", "$main::imscpConfig{LOGROTATE_CONF_DIR}/apache",
-		"$self->{'config'}->{APACHE_CONF_DIR}/ports.conf"
-	) {
-		my ($filename, $directories, $suffix) = fileparse($_);
+	for ("$main::imscpConfig{LOGROTATE_CONF_DIR}/apache2", "$self->{'config'}->{APACHE_CONF_DIR}/ports.conf") {
+		my $filename = fileparse($_);
+
 		$rs	= iMSCP::File->new(
-			'filename' => "$self->{bkpDir}/$filename$suffix.system"
-		)->copyFile($_) if(-f "$self->{bkpDir}/$filename$suffix.system");
+			'filename' => "$self->{bkpDir}/$filename.system"
+		)->copyFile($_) if -f "$self->{bkpDir}/$filename.system";
 		return $rs if $rs;
 	}
 
@@ -129,12 +122,11 @@ sub restoreConf
 sub vHostConf
 {
 	my $self = shift;
-	my $httpd = Servers::httpd::apache_itk->getInstance();
+
 	my $rs = 0;
 
-	for('00_nameserver.conf', '00_master_ssl.conf', '00_master.conf', '00_modcband.conf', '01_awstats.conf') {
-
-		$rs = $httpd->disableSite($_);
+	for('00_nameserver.conf', '00_master_ssl.conf', '00_master.conf', '00_modcband.conf') {
+		$rs = $self->{'httpd'}->disableSite($_);
 		return $rs if $rs;
 
 		if(-f "$self->{'config'}->{'APACHE_SITES_DIR'}/$_") {
@@ -145,7 +137,12 @@ sub vHostConf
 		}
 	}
 
-	$httpd->enableSite('default');
+	for('000-default', 'default') {
+		$rs = $self->{'httpd'}->enableSite($_) if -f "$self->{'config'}->{'APACHE_SITES_DIR'}/$_";
+		return $rs if $rs;
+	}
+
+	0;
 }
 
 1;

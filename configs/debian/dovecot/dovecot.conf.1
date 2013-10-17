@@ -18,6 +18,8 @@ plugin {
 
 # Authentication
 
+disable_plaintext_auth = no
+
 auth default {
 	mechanisms = plain login digest-md5
 
@@ -52,7 +54,7 @@ auth default {
 
 # Protocols
 
-protocols = imap pop3
+protocols = imap imaps pop3 pop3s
 
 protocol imap {
 	mail_plugins = quota imap_quota

@@ -168,7 +168,7 @@ function client_editSubdomain()
 		$subdomainId = clean_input($_GET['id']);
 		$subdomainType = clean_input($_GET['type']);
 
-		if (!($subdomainData = _client_getSubdomainData($subdomainId, $subdomainType))) {
+		if (($subdomainData = _client_getSubdomainData($subdomainId, $subdomainType))) {
 			// Check for URL forwarding option
 			$forwardUrl = 'no';
 

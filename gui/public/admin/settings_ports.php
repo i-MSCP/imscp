@@ -48,7 +48,7 @@
 /**
  * get Protocol data fro $_POST array.
  * @param integer $index
- * @return protocol
+ * @return string protocol
  */
 function getProtocol($index) {
 
@@ -72,7 +72,7 @@ function getProtocol($index) {
  * Prepare and put data in session on error(s).
  *
  * @author Laurent Declercq <l.declercq@nuxwin.com>
- * @param boolean TRUE on add, FALSE otherwise
+ * @param bool $mode TRUE on add, FALSE otherwise
  * @return void
  */
 function toSession($mode) {
@@ -179,7 +179,7 @@ function admin_validatesService($name, $ip, $port, $protocol, $show, $index = ''
 /**
  * Adds or updates services ports
  *
- * @since 1.0.7 (ispCP)
+ * @throws iMSCP_Exception
  * @author Laurent Declercq <l.declercq@nuxwin.com>
  * @param string $mode Mode in witch act (add or update)
  * @return void
@@ -298,8 +298,7 @@ function admin_showServices($tpl)
 				$tpl->assign(
 					array(
 						'SERVICE' => tohtml($name) . '<input name="name[]" type="hidden" id="name' . $index . '" value="' . tohtml($name) . '" />',
-						'PORT_READONLY' => $cfg->HTML_READONLY,
-						'PROTOCOL_READONLY' => $cfg->HTML_DISABLED,
+						'DISABLED' => $cfg->HTML_DISABLED,
 						'TR_DELETE' => '-',
 						'PORT_DELETE_LINK' => '',
 						'NUM' => $index));
@@ -310,8 +309,7 @@ function admin_showServices($tpl)
 					array(
 						'SERVICE' => '<input name="name[]" type="text" id="name' . $index . '" value="' . tohtml($name) . '" class="textinput" maxlength="25" />',
 						'NAME' => tohtml($name),
-						'PORT_READONLY' => '',
-						'PROTOCOL_READONLY' => '',
+						'DISABLED' => '',
 						'TR_DELETE' => tr('Delete'),
 						'URL_DELETE' => "settings_ports.php?delete=$service",
 						'PORT_DELETE_SHOW' => '',

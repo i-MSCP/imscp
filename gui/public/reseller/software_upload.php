@@ -53,8 +53,9 @@ $tpl->define_dynamic(
 		'list_software' => 'page',
 		'no_software_list' => 'page',
 		'webdepot_list' => 'page',
-		'list_webdepotsoftware' => 'page',
 		'no_webdepotsoftware_list' => 'page',
+		'web_software_repository' => 'page',
+		'list_webdepotsoftware' => 'web_software_repository',
 		'package_install_link' => 'page',
 		'package_info_link' => 'page'
 	)
@@ -307,15 +308,9 @@ $tpl->assign(
 		'TR_UPLOAD_SOFTWARE_BUTTON' => tr('Upload now'),
 		'TR_UPLOAD_SOFTWARE_PAGE_TITLE' => tr('i-MSCP - Sofware Management'),
 		'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete this package?', true),
-		'TR_MESSAGE_INSTALL' => tr('Are you sure to install this package from the webdepot?', true),
-		'TR_SOFTWARE_NAME_ASC' => 'software_upload.php?sortby=name&order=asc',
-		'TR_SOFTWARE_NAME_DESC' => 'software_upload.php?sortby=name&order=desc',
-		'TR_SOFTWARE_TYPE_ASC' => 'software_upload.php?sortby=type&order=asc',
-		'TR_SOFTWARE_TYPE_DESC' => 'software_upload.php?sortby=type&order=desc',
-		'TR_SOFTWARE_STATUS_ASC' => 'software_upload.php?sortby=status&order=asc',
-		'TR_SOFTWARE_STATUS_DESC' => 'software_upload.php?sortby=status&order=desc',
-		'TR_LANGUAGE_ASC' => 'software_upload.php?sortby=language&order=asc',
-		'TR_LANGUAGE_DESC' => 'software_upload.php?sortby=language&order=desc'));
+		'TR_MESSAGE_INSTALL' => tr('Are you sure to install this package from the webdepot?', true)
+	)
+);
 
 generateNavigation($tpl);
 generatePageMessage($tpl);

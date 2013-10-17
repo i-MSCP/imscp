@@ -32,7 +32,7 @@ use iMSCP::Debug;
 use iMSCP::Execute;
 use File::Basename;
 use iMSCP::File;
-#use iMSCP::Dir;
+use Servers::ftpd::proftpd;
 use parent 'Common::SingletonClass';
 
 sub _init

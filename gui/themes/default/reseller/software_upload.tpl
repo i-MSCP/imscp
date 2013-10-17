@@ -54,10 +54,10 @@
 	<!-- EDP: no_software_list -->
 	<!-- BDP: list_software -->
 	<tr>
-		<td><span class="icon i_app_installer" title="{SW_DESCRIPTION}">{SW_NAME}</span></td>
+		<td><span class="tips icon i_app_installer" title="{SW_DESCRIPTION}">{SW_NAME}</span></td>
 		<td>{SW_VERSION}</td>
 		<td>{SW_LANGUAGE}</td>
-		<td><span class="icon i_app_installed" title="{SW_INSTALLED}">{SW_STATUS}</span></td>
+		<td><span class="tips icon i_app_installed" title="{SW_INSTALLED}">{SW_STATUS}</span></td>
 		<td>{SW_TYPE}</td>
 		<td><a href="{DELETE}" class="icon i_{SOFTWARE_ICON}" onclick="return action_delete()">{TR_DELETE}</a></td>
 	</tr>
@@ -101,7 +101,12 @@
 
 <h2 class="apps_installer"><span>{TR_WEBDEPOT}</span></h2>
 
+<!-- BDP: no_webdepotsoftware_list -->
+<div class="info">{NO_WEBDEPOTSOFTWARE_AVAILABLE}</div>
+<!-- EDP: no_webdepotsoftware_list -->
+
 <form action="software_upload.php" method="post" name="update_webdepot" id="update_webdepot">
+	<!-- BDP: web_software_repository -->
 	<table class="datatable">
 		<thead>
 		<tr>
@@ -116,18 +121,13 @@
 		</thead>
 		<tfoot>
 		<tr>
-			<td colspan="7">{TR_WEBDEPOTSOFTWARE_COUNT}:&nbsp;{TR_WEBDEPOTSOFTWARE_ACT_NUM}</td>
+			<td colspan="7">{TR_WEBDEPOTSOFTWARE_COUNT}: {TR_WEBDEPOTSOFTWARE_ACT_NUM}</td>
 		</tr>
 		</tfoot>
 		<tbody>
-		<!-- BDP: no_webdepotsoftware_list -->
-		<tr>
-			<td colspan="7"><div class="info">{NO_WEBDEPOTSOFTWARE_AVAILABLE}</div></td>
-		</tr>
-		<!-- EDP: no_webdepotsoftware_list -->
 		<!-- BDP: list_webdepotsoftware -->
 		<tr>
-			<td><span class="icon i_app_installer" title="{TR_PACKAGE_TOOLTIP}">{TR_PACKAGE_NAME}</span></td>
+			<td><span class="tips icon i_app_installer" title="{TR_PACKAGE_TOOLTIP}">{TR_PACKAGE_NAME}</span></td>
 			<td>{TR_PACKAGE_INSTALL_TYPE}</td>
 			<td>{TR_PACKAGE_VERSION}</td>
 			<td>{TR_PACKAGE_LANGUAGE}</td>
@@ -143,6 +143,7 @@
 		<!-- EDP: list_webdepotsoftware -->
 		</tbody>
 	</table>
+	<!-- EDP: web_software_repository -->
 
 	<div class="buttons">
 		<input name="Submit" type="submit" value="{TR_APPLY_CHANGES}"/>

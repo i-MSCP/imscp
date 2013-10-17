@@ -71,11 +71,11 @@ sub loadData
 	}
 
 	unless(exists $rdata->{$self->{'mailId'}}) {
-		error("No mail has id = $self->{'mailId'}");
+		error("Mail record with ID '$self->{'mailId'}' has not been found in database");
 		return 1;
 	}
 
-	$self->{$_} = $rdata->{$self->{'mailId'}}->{$_} for keys %{$rdata->{$self->{'mailId'}}};
+	%{$self} = (%{$self}, %{$rdata->{$self->{'mailId'}}});
 
 	0;
 }

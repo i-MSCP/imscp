@@ -55,17 +55,17 @@
 			</td>
 			<td>
 				<label>
-					<input name="ip[]" type="text" id="ip{NUM}" value="{IP}" maxlength="15" {PORT_READONLY} />
+					<input name="ip[]" type="text" id="ip{NUM}" value="{IP}" maxlength="15" {DISABLED} />
 				</label>
 			</td>
 			<td>
 				<label>
-					<input name="port[]" type="text" id="port{NUM}" value="{PORT}" maxlength="5" {PORT_READONLY} />
+					<input name="port[]" type="text" id="port{NUM}" value="{PORT}" maxlength="5" {DISABLED} />
 				</label>
 			</td>
 			<td>
 				<label>
-					<select name="port_type[]" id="port_type{NUM}" {PROTOCOL_READONLY}>
+					<select name="port_type[]" id="port_type{NUM}" {DISABLED}>
 						<option value="udp" {SELECTED_UDP}>{TR_UDP}</option>
 						<option value="tcp" {SELECTED_TCP}>{TR_TCP}</option>
 					</select>

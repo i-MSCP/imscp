@@ -12,9 +12,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2013-09-29 14:33+0200\n"
-"PO-Revision-Date: 2013-09-29 08:22+0000\n"
-"Last-Translator: Torsten Widmann <info@goover.de>\n"
+"POT-Creation-Date: 2013-10-17 13:31+0200\n"
+"PO-Revision-Date: 2013-10-10 22:09+0000\n"
+"Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Polish (Poland) (http://www.transifex.com/projects/p/i-MSCP/language/pl_PL/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -797,6 +797,9 @@ msgstr "Admin / Wsparcie / Zamknięte Zgłoszenia"
 msgid "Admin / Support / View Ticket"
 msgstr "Admin / Wsparcie / Podgląd Zgłoszenia"
 
+msgid "Admin / System Tools / Anti-Rootkits Logs"
+msgstr ""
+
 msgid "Admin / System Tools / Database Update"
 msgstr "Admin / Narzędzia Systemowe / Aktualizacja Bazy Danych"
 
@@ -805,9 +808,6 @@ msgstr "Admin / Narzędzia Systemowe / Debugger"
 
 msgid "Admin / System Tools / Maintenance Settings"
 msgstr ""
-
-msgid "Admin / System Tools / Rootkit Logs"
-msgstr "Admin / Narzędzia Systemowe / Logi Rootkit'a"
 
 msgid "Admin / System Tools / System Information"
 msgstr "Admin / Narzędzia Systemowe / Informacje o Systemie"
@@ -1022,8 +1022,8 @@ msgstr ""
 msgid "An unknown error occurred during file upload: %s"
 msgstr ""
 
-msgid "Anti-Rootkits Tools Log Checker"
-msgstr "Kontrola logu narzędzi przeciwko rootkit-om"
+msgid "Anti-Rootkits Logs"
+msgstr ""
 
 msgid "Application installer"
 msgstr "Instalator aplikacji."
@@ -3283,6 +3283,9 @@ msgstr "Brak statystyk IP do wyświetlenia."
 msgid "No administrator accounts found."
 msgstr "Nie znaleziono kont administratora."
 
+msgid "No anti-rootkits logs"
+msgstr ""
+
 msgid "No available"
 msgstr ""
 
@@ -4198,9 +4201,6 @@ msgstr ""
 
 msgid "Rights successfully removed."
 msgstr ""
-
-msgid "Rootkit logs"
-msgstr "Logi rootkit"
 
 msgid "SMTP in"
 msgstr "SMTP przychodząca"
@@ -5238,6 +5238,9 @@ msgstr "Autoryzacja użytkownika"
 msgid "User data successfully updated"
 msgstr "Dane użytkownika zostały zaktualizowane."
 
+msgid "User data successfully updated."
+msgstr ""
+
 msgid "User data were not updated."
 msgstr "Dane klientów nie zostały zmodyfikowane."
 
@@ -5269,9 +5272,6 @@ msgstr "Nazwa użytkownika jest za długa!"
 
 msgid "User password"
 msgstr "Hasło użytkownika"
-
-msgid "User personal data successfully updated."
-msgstr "Dane personalne użytkownika zaktualizowane pomyślnie"
 
 msgid "User real (first and last) name"
 msgstr "Prawdziwe imię i nazwisko użytkownika"

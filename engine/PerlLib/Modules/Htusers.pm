@@ -64,11 +64,11 @@ sub loadData
 	}
 
 	unless(exists $rdata->{$self->{'htuserId'}}) {
-		error("No user in table htaccess_users has id = $self->{'htuserId'}");
+		error("Htuser record with ID '$self->{'htuserId'}' has not been found in database");
 		return 1;
 	}
 
-	unless($rdata->{$self->{'htuserId'}}->{'domain_name'}) {
+	unless(exists $rdata->{$self->{'htuserId'}}->{'domain_name'}) {
 		require Data::Dumper;
 		Data::Dumper->import();
 
@@ -85,7 +85,7 @@ sub loadData
 		return 1;
 	}
 
-	$self->{$_} = $rdata->{$self->{'htuserId'}}->{$_} for keys %{$rdata->{$self->{'htuserId'}}};
+	%{$self} = (%{$self}, %{$rdata->{$self->{'htuserId'}}});
 
 	0;
 }

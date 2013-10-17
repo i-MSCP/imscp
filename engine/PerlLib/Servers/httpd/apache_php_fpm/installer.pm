@@ -394,29 +394,74 @@ sub _addUser
 	my $userName =
 	my $groupName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} . $main::imscpConfig{'SYSTEM_USER_MIN_UID'};
 
-	# Creating panel group
-	$rs = iMSCP::SystemGroup->new('groupname' => $groupName)->addSystemGroup();
-	return $rs if $rs;
+	my ($database, $errStr) = main::setupGetSqlConnect($main::imscpConfig{'DATABASE_NAME'});
+	if(! $database) {
+		error("Unable to connect to SQL server: $errStr");
+		return 1;
+	}
 
-	# Creating panel user
+	my $rdata = $database->doQuery(
+		'admin_sys_uid',
+		'SELECT `admin_sys_uid`, `admin_sys_gid` FROM `admin` WHERE `admin_type` = ? AND `created_by` = ? LIMIT 1',
+		'admin',
+		'0'
+	);
+
+	unless(ref $rdata eq 'HASH') {
+		error($rdata);
+		return 1;
+	} elsif(! %{$rdata}) {
+		error('Unable to find system admin user');
+		return 1;
+	}
+
+	my $oldUserUid = $rdata->{(%{$rdata})[0]}->{'admin_sys_uid'} // 0;
+	my $oldUserName;
+
+	if($oldUserUid != 0 && ($oldUserName = getpwuid($oldUserUid)) && $oldUserName ne $userName) {
+		$rs = iMSCP::SystemUser->new('keepHome' => 'yes')->delSystemUser($oldUserName);
+		return $rs if $rs;
+	}
+
+	my $oldUserGid = $rdata->{(%{$rdata})[0]}->{'admin_sys_gid'} // 0;
+	my $oldGroupName;
+
+	if($oldUserGid != 0 && ($oldGroupName = getgrgid($oldUserGid)) && $oldGroupName ne $groupName) {
+		$rs = iMSCP::SystemGroup->getInstance()->delSystemGroup($oldGroupName);
+		return $rs if $rs;
+	}
+
+	# Creating panel user/group
 	my $panelUName = iMSCP::SystemUser->new(
 		'username' => $userName,
 		'comment' => 'iMSCP master virtual user',
 		'home' => $main::imscpConfig{'GUI_ROOT_DIR'},
-		'skipCreateHome' => 'yes',
-		'group' => $groupName
+		'skipCreateHome' => 1
 	);
 
 	$rs = $panelUName->addSystemUser();
 	return $rs if $rs;
 
-	# Adding panel user in the i-MSCP master group
-	$rs = $panelUName->addToGroup($main::imscpConfig{'MASTER_GROUP'});
+	my $panelUuid = scalar getpwnam($userName);
+	my $panelUgid = scalar getgrnam($groupName);
+
+	# Updating admin.admin_sys_uid and admin.admin_sys_gid columns
+	$rdata = $database->doQuery(
+		'update',
+		'UPDATE `admin` SET `admin_sys_uid` = ?, `admin_sys_gid` = ? WHERE `admin_type` = ?',
+		$panelUuid, $panelUgid, 'admin'
+	);
+	unless(ref $rdata eq 'HASH') {
+		error($rdata);
+		return 1;
+	}
+
+	# Adding panel user in i-MSCP group
+	$rs = $panelUName->addToGroup($main::imscpConfig{'IMSCP_GROUP'});
 	return $rs if $rs;
 
 	# Adding Apache user in panel user group
-	my $apacheUName = iMSCP::SystemUser->new('username' => $self->{'config'}->{'APACHE_USER'});
-	$rs = $apacheUName->addToGroup($groupName);
+	$rs = iMSCP::SystemUser->new('username' => $self->{'config'}->{'APACHE_USER'})->addToGroup($groupName);
 	return $rs if $rs;
 
 	$self->{'hooksManager'}->trigger('afterHttpdAddUser');
@@ -515,9 +560,9 @@ sub _buildFastCgiConfFiles
 	# Disable/Enable Apache modules
 
 	my @toDisableModules = (
-		'fastcgi', 'fcgid', 'fastcgi_imscp', 'fcgid_imscp', 'php4', 'php5', 'php5_cgi', 'php5filter', 'suexec'
-);
-	my @toEnableModules = ('actions', 'php_fpm_imscp');
+		'fastcgi', 'fcgid', 'fastcgi_imscp', 'fcgid_imscp', 'php4', 'php5', 'php5_cgi', 'php5filter'
+	);
+	my @toEnableModules = ('actions', 'php_fpm_imscp', 'suexec');
 
 	if((version->new("v$self->{'config'}->{'APACHE_VERSION'}") >= version->new('v2.4.0'))) {
 		push (@toDisableModules, ('mpm_event', 'mpm_itk', 'mpm_prefork'));
@@ -808,6 +853,37 @@ sub _buildMasterVhostFiles
 		'beforeHttpdBuildConfFile', sub { $self->{'httpd'}->removeSection('itk', @_) }
 	);
 	return $rs if $rs;
+
+	# Force HTTPS if needed
+	if($main::imscpConfig{'BASE_SERVER_VHOST_PREFIX'} eq 'https://') {
+		$rs = $self->{'hooksManager'}->register(
+			'afterHttpdBuildConfFile',
+			sub {
+				my $fileContent = shift;
+				my $fileName = shift;
+
+				if($fileName eq '00_master.conf') {
+					require iMSCP::Templator;
+					iMSCP::Templator->import();
+
+					my $customTagBegin = "    # SECTION custom BEGIN.\n";
+					my $customTagEnding = "    # SECTION custom END.\n";
+					my $customBlock =
+						$customTagBegin .
+						getBloc($customTagBegin, $customTagEnding, $$fileContent) .
+						"    RewriteEngine On\n" .
+						"    RewriteCond %{HTTPS} off\n" .
+						"    RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]\n" .
+						$customTagEnding;
+
+					$$fileContent = replaceBloc($customTagBegin, $customTagEnding, $customBlock, $$fileContent);
+				}
+
+				0;
+			}
+		);
+		return $rs if $rs;
+	}
 
 	$rs = $self->{'httpd'}->buildConfFile('00_master.conf');
 	return $rs if $rs;

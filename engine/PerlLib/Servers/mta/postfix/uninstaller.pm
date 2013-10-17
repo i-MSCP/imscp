@@ -36,6 +36,7 @@ use File::Basename;
 use iMSCP::File;
 use iMSCP::Dir;
 use iMSCP::SystemUser;
+use Servers::mta::postfix;
 use parent 'Common::SingletonClass';
 
 sub _init
@@ -86,22 +87,16 @@ sub removeDirs
 sub removeUsers
 {
 	my $self = shift;
-	my $rs = 0;
 
-	my $user = iMSCP::SystemUser->new();
-
-	$user->{'force'} = 'yes';
-
-	$user->delSystemUser($self->{'config'}->{'MTA_MAILBOX_UID_NAME'});
+	iMSCP::SystemUser->new('force' => 'yes')->delSystemUser($self->{'config'}->{'MTA_MAILBOX_UID_NAME'});
 }
 
 sub buildAliasses
 {
 	my $self = shift;
 
-	my ($stdout, $stderr);
-
 	# Rebuilding the database for the mail aliases file - Begin
+	my ($stdout, $stderr);
 	my $rs = execute("$self->{'config'}->{'CMD_NEWALIASES'}", \$stdout, \$stderr);
 	debug($stdout) if $stdout;
 	error($stderr) if $stderr && $rs;

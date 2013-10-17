@@ -72,9 +72,12 @@ $tpl->define_dynamic(
 		'software_total' => 'page',
 		'no_software' => 'page',
 		'no_software_support' => 'page',
-		'del_software_support' => 'page',
-		'del_software_item' => 'page',
-		't_software_support' => 'page'));
+		'software_list' => 'page',
+		'del_software_support' => 'software_list',
+		'del_software_item' => 'software_list',
+		't_software_support' => 'software_list'
+	)
+);
 
 
 $tpl->assign(

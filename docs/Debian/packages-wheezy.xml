@@ -16,6 +16,7 @@
             </apache_itk>
             <apache_php_fpm>
                 <package>apache2</package>
+                <package>apache2-suexec</package>
                 <package>apache2-mpm-worker</package>
                 <package>libapache2-mod-fastcgi</package>
                 <package>php5-fpm</package>
@@ -156,8 +157,6 @@
         <package>bash</package>
         <package>pbzip2</package>
         <package>bzip2</package>
-        <package>awstats</package>
-        <package>chkrootkit</package>
         <package>dialog</package>
         <package>diffutils</package>
         <package>dnsutils</package>
@@ -180,7 +179,6 @@
         <package>policyd-weight</package>
         <package>postgrey</package>
         <package>procmail</package>
-        <package>rkhunter</package>
         <package>sasl2-bin</package>
         <package>ssh</package>
         <package>tar</package>

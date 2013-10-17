@@ -74,17 +74,17 @@ sub loadData
 	";
 
 	my $rdata = iMSCP::Database->factory()->doQuery('alias_id', $sql, $self->{'alsId'}, $self->{'alsId'});
-	if(ref $rdata ne 'HASH') {
+	unless(ref $rdata eq 'HASH') {
 		error($rdata);
 		return 1;
 	}
 
 	unless(exists $rdata->{$self->{'alsId'}}) {
-		error("No alias has id = $self->{'alsId'}");
+		error("Domain alias record with ID '$self->{'alsId'}' has not been found in database");
 		return 1;
 	}
 
-	$self->{$_} = $rdata->{$self->{'alsId'}}->{$_} for keys %{$rdata->{$self->{'alsId'}}};
+	%{$self} = (%{$self}, %{$rdata->{$self->{'alsId'}}});
 
 	0;
 }

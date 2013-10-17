@@ -63,11 +63,11 @@ sub loadData
 	}
 
 	unless(exists $certData->{$self->{'cert_id'}}) {
-		error("No record in table cert_ssl has id = $self->{'cert_id'}");
+		error("SSL certificate record with ID '$self->{'cert_id'}' has not been found in database");
 		return 1;
 	}
 
-	$self->{$_} = $certData->{$self->{'cert_id'}}->{$_} for keys %{$certData->{$self->{'cert_id'}}};
+	%{$self} = (%{$self}, %{$certData->{$self->{'cert_id'}}});
 
 	if($self->{'type'} eq 'dmn') {
 		$sql = 'SELECT `domain_name` AS `name`, `domain_id` AS `id` FROM `domain` WHERE `domain_id` = ?';
@@ -79,7 +79,7 @@ sub loadData
 				CONCAT(`subdomain_name`, '.', `domain_name`) AS `name`, `subdomain_id` AS `id`
 			FROM
 				`subdomain`
-			LEFT JOIN
+			INNER JOIN
 				`domain` USING(`domain_id`)
 			WHERE
 				`subdomain_id` = ?
@@ -90,7 +90,7 @@ sub loadData
 				CONCAT(`subdomain_alias_name`, '.', `alias_name`) AS `name`, `subdomain_alias_id` AS `id`
 			FROM
 				`subdomain_alias`
-			LEFT JOIN
+			INNER JOIN
 				`domain_aliasses` USING(`alias_id`)
 			WHERE
 				`subdomain_alias_id` = ?
@@ -104,22 +104,14 @@ sub loadData
 	}
 
 	unless(exists $rdata->{$self->{'id'}}) {
-		error("No record in table $self->{'type'} has id = $self->{'id'}");
-		return 1;
-	}
+		error("Domain record of type '$self->{'type'}' with ID '$self->{'id'}' has not been found in database");
+		error("SSL certificate record with ID '$self->{'cert_id'}' is orphaned in database.");
 
-	unless($rdata->{$self->{'id'}}->{'name'}) {
-		require Data::Dumper;
-		Data::Dumper->import();
-		local $Data::Dumper::Terse = 1;
-		error('Orphan entry: ' . Dumper($certData->{$self->{'cert_id'}}));
-
-		my @sql = (
-			"UPDATE `ssl_certs` SET `status` = ? WHERE `cert_id` = ?",
-			'Orphan entry: ' . Dumper($rdata->{$self->{'cert_id'}}), $self->{'cert_id'}
+		# Update the status of the SSL certificate which is orphaned. If the installer is run again, it will be skipped
+		my $rdata = iMSCP::Database->factory()->doQuery(
+			'update', 'UPDATE `ssl_certs` SET `status` = ? WHERE `cert_id` = ?', 'Error: Orphaned entry'
 		);
 
-		my $rdata = iMSCP::Database->factory()->doQuery('update', @sql);
 		return 1;
 	}
 
@@ -139,7 +131,7 @@ sub process
 
 	my @sql;
 
-	if($self->{'status'} =~ /^toadd|tochange/) {
+	if($self->{'status'} =~ /^toadd|tochange$/) {
 		$rs = $self->add();
 		@sql = (
 			"UPDATE `ssl_certs` SET `status` = ? WHERE `cert_id` = ?",

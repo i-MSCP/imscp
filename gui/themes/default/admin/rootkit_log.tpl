@@ -1,6 +1,6 @@
 
-<!-- BDP: props_list -->
-<table class="firstColFixed">
+<!-- BDP: antirootkits_log -->
+<table>
 	<thead>
 	<tr>
 		<th>{FILENAME}</th>
@@ -12,4 +12,4 @@
 	</tr>
 	</tbody>
 </table>
-<!-- EDP: props_list -->
+<!-- EDP: antirootkits_log -->

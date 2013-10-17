@@ -35,7 +35,7 @@ use iMSCP::Boot;
 use iMSCP::Servers;
 use iMSCP::Addons;
 
-# Turn off localisation features to force any command output to be in english
+# Turn off localisation features to force any command output to be in English
 $ENV{'LC_MESSAGES'} = 'C';
 
 umask(027);
@@ -46,7 +46,12 @@ silent(1);
 
 sub startUp
 {
-	iMSCP::Boot->getInstance()->boot({ 'nolock' => 'yes', 'config_readonly' => 'yes' });
+	iMSCP::Boot->getInstance()->boot(
+		{
+			'nolock' => 'yes', 'norequirements' => 'yes', 'nokeys' => 'yes', 'nodatabase' => 'yes',
+			'config_readonly' => 'yes'
+		}
+	);
 
 	0;
 }

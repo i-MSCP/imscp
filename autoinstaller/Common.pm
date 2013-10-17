@@ -561,7 +561,7 @@ sub savePersistentData
 	# save isp logos
 	if(-d "$main::imscpConfig{'ROOT_DIR'}/gui/data/ispLogos") {
 		$rs = execute(
-			"$main::imscpConfig{'CMD_CP'} -TRf $main::imscpConfig{'ROOT_DIR'}/gui/data/ispLogos " .
+			"$main::imscpConfig{'CMD_CP'} -fRT $main::imscpConfig{'ROOT_DIR'}/gui/data/ispLogos " .
 			"$destdir$main::imscpConfig{'ROOT_DIR'}/gui/data/persistent/ispLogos", \$stdout, \$stderr
 		);
 		debug($stdout) if $stdout;
@@ -572,7 +572,7 @@ sub savePersistentData
 	# Save software (older path ./gui/data/softwares) to new path (./gui/data/persistent/softwares)
 	if(-d "$main::imscpConfig{'ROOT_DIR'}/gui/data/softwares") {
 		$rs = execute(
-			"$main::imscpConfig{'CMD_CP'} -TRf $main::imscpConfig{'ROOT_DIR'}/gui/data/softwares " .
+			"$main::imscpConfig{'CMD_CP'} -fRT $main::imscpConfig{'ROOT_DIR'}/gui/data/softwares " .
 			"$destdir$main::imscpConfig{'ROOT_DIR'}/gui/data/persistent/softwares", \$stdout, \$stderr
 		);
 		debug($stdout) if $stdout;

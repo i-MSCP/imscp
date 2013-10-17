@@ -1,5 +1,11 @@
 #!/usr/bin/perl
 
+=head1 NAME
+
+ iMSCP::SystemGroup - i-MSCP library allowing to add and delete UNIX groups
+
+=cut
+
 # i-MSCP - internet Multi Server Control Panel
 # Copyright (C) 2010-2013 by internet Multi Server Control Panel
 #
@@ -17,11 +23,12 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
-# @category		i-MSCP
-# @copyright	2010-2013 by i-MSCP | http://i-mscp.net
-# @author		Daniel Andreca <sci2tech@gmail.com>
-# @link			http://i-mscp.net i-MSCP Home Site
-# @license		http://www.gnu.org/licenses/gpl-2.0.html GPL v2
+# @category    i-MSCP
+# @copyright   2010-2013 by i-MSCP | http://i-mscp.net
+# @author      Daniel Andreca <sci2tech@gmail.com>
+# @author      Laurent Declercq <l.declercq@nuxwin.com>
+# @link        http://i-mscp.net i-MSCP Home Site
+# @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
 package iMSCP::SystemGroup;
 
@@ -30,67 +37,64 @@ use warnings;
 
 use iMSCP::Debug;
 use iMSCP::Execute;
-use parent 'Common::SimpleClass';
+use parent 'Common::SingletonClass';
 
-# Initialize instance
-sub _init
+=head1 DESCRIPTION
+
+ i-MSCP library allowing to add and delete UNIX groups.
+
+=head1 PUBLIC METHODS
+
+=over 4
+
+=item addSystemGroup($groupname, [$systemGroup = 0])
+
+ Add group.
+
+ Param string $groupname Group name
+ Param int $systemGroup Whether or not a system group must be created
+ Return int 0 on success, other on failure
+
+=cut
+
+sub addSystemGroup($$;$)
 {
 	my $self = shift;
-
-	$self->{$_} = $self->{'args'}->{$_} for keys %{$self->{'args'}};
-
-	$self;
-}
-
-# Add unix group
-sub addSystemGroup
-{
-	my $self = shift;
-
-	fatal('Please use only instance of class not static calls', 1) if ref $self ne __PACKAGE__;
-
-	my $groupName = shift || $self->{'groupname'};
-	$self->{'groupname'} = $groupName;
-
-	if(! $groupName) {
-		error('No group name was provided');
-		return 1;
-	}
+	my $groupName = shift;
+	my $systemGroup = shift || 0;
 
 	if(! getgrnam($groupName)) {
-		my $systemGroup = $self->{'system'} ? '-r' : '';
+		$systemGroup = ($systemGroup) ? '-r' : '';
 
 		my  @cmd = (
 			"$main::imscpConfig{'CMD_GROUPADD'}",
-			($^O !~ /bsd$/ ? $systemGroup : ''),	# system group
-			escapeShell($groupName)					# group name
+			($^O !~ /bsd$/ ? $systemGroup : ''), # System group
+			escapeShell($groupName) # Group name
 		);
 		my ($stdout, $stderr);
 		my $rs = execute("@cmd", \$stdout, \$stderr);
 		debug($stdout) if $stdout;
 		error($stderr) if $stderr && $rs;
 		warning($stderr) if $stderr && ! $rs;
-
 		return $rs if $rs;
 	}
 
 	0;
 }
 
-# Delete unix group
-sub delSystemGroup
+=item delSystemGroup($groupname)
+
+ Delete group.
+
+ Param string $groupname Group name
+ Return int 0 on success, other on failure
+
+=cut
+
+sub delSystemGroup($$)
 {
 	my $self = shift;
-
-	fatal('Please use only instance of class not static calls', 1) if ref $self ne __PACKAGE__;
-
-	my $groupName = shift || $self->{'groupname'};
-	$self->{'groupname'} = $groupName;
-
-	if(! $groupName) {
-		error('No group name was provided');
-		return 1;
-	}
+	my $groupName = shift;
 
 	if(getgrnam($groupName)) {
 		my ($stdout, $stderr);
@@ -98,11 +102,19 @@ sub delSystemGroup
 		debug($stdout) if $stdout;
 		error($stderr) if $stderr && $rs;
 		warning($stderr) if $stderr && ! $rs;
-
 		return $rs if $rs;
 	}
 
 	0;
 }
+
+=back
+
+=head1 AUTHORS
+
+ Daniel Andreca <sci2tech@gmail.com>
+ Laurent Declercq <l.declercq@nuxwin.com>
+
+=cut
 
 1;

@@ -1,5 +1,80 @@
 ﻿i-MSCP ChangeLog
 ~~~~~~~~~~~~~~~~
+
+------------------------------------------------------------------------------------------------------------------------
+1.1.0-rc4.3
+------------------------------------------------------------------------------------------------------------------------
+
+2013-10-17: Torsten Widmann
+	- RELEASE i-MSCP 1.1.0-rc4.3
+
+ADDONS:
+	- Fixed: Net2ftp addon installer is broken
+
+DOCS:
+	- Fixed: Preseed template file is broken (compile time error)
+
+ENGINE
+	- Removed: Backtrace routines, which cause segfault on Debian Jessie (issues with Carp package)
+
+SETUP:
+	- Fixed: ispCP migration script is broken (many compile time errors)
+	- Fixed: Uninstaller - Several compile time errors + missing tasks
+
+GUI:
+	- Fixed: Unable to view ticket (reseller level)
+
+Tickets:
+	- Fixed #936: Bug - Awstats addon - Failed to open directory /var/cache/awstats
+
+------------------------------------------------------------------------------------------------------------------------
+1.1.0-rc4.2
+------------------------------------------------------------------------------------------------------------------------
+
+2013-10-10: Laurent Declercq
+	- RELEASE i-MSCP 1.1.0-rc4.2
+
+CONFIG:
+	- Changed: MASTER_GROUP parameter become IMSCP_GROUP
+	- Fixed: Packages file for Debian Jessie (testing)
+	- Fixed: Package dovecot-mysql is not available for Ubuntu Lucid
+	- Fixed: Dovecot - Wrong path for delivery agent
+	- Removed: Cron templates
+	- Removed: Packages awstats, chkrootkit and rkhunter from global packages file
+
+DOCS:
+	- Updated: Preseed template file
+
+ENGINE:
+	- Changed: Both Chkrootkit and Rkhunter anti-rootkits as now provided as addons
+	- Changed: skill command to pkill command (portability issues)
+	- Fixed: Apache logrotate conffile shouldn't know about awstats addon
+	- Fixed: Bind server impl. - Unable to handle subdomains when DNS server mode is set to 'slave'
+	- Fixed: Bind uninstall fail
+	- Fixed: iMSCP::Debug library - output() function called with wrong parameters
+	- Fixed: iMSCP::SystemUser::delSystemUser() - Added 'keepHome' option allowing to kept user home directory
+	- Fixed: PHP allow_url_fopen feature must be explicitly enabled in composer package installer
+	- Updated: ispCP migration script
+
+Tickets:
+	- Fixed #636: Bug - Rkhunter - Unreadable log file
+	- Fixed #810: Bug - https default access redirect mode not working for base server url
+	- Fixed #902: Bug - User UID/GID mismatch after updating the SYSTEM_USER_PREFIX and/or SYSTEM_USER_MIN_UID parameters
+	- Fixed #918: Bug - Courier - Unlimited quota doesn't works
+	- Fixed #919: Bug - Preseed feature is broken - A template has not been found
+	- Fixed #924: Defect - After Update from RC3 to RC4.1 pop3-ssl and imap-ssl don't work (dovecot 1.2.15)
+	- Fixed #926: Security Issue - apache_php_fpm - suexec must be enabled
+	- Fixed #928: Defect - Courier/Maildrop - Wrong permissions after reboot
+	- Fixed #929: Malfunction - User limits not changeable if Reseller's Email account limit is set to -1
+	- Fixed #932: Bug - Unable to switch from a redirected subdomain to normal subdomain
+
+------------------------------------------------------------------------------------------------------------------------
+1.1.0-rc4.1
+------------------------------------------------------------------------------------------------------------------------
+
+2013-09-29: Torsten Widmann
+	- RELEASE i-MSCP 1.1.0-rc4.1 (Fast bugfixes release)
+
 ------------------------------------------------------------------------------------------------------------------------
 Git Master
 ------------------------------------------------------------------------------------------------------------------------
@@ -21,13 +96,6 @@ CONFIG:
 	- Removed Dovecot sieve plugin configuration (Such parameter must be provided as plugin)
 	- Updated: Apache templates to support 2.4.x branch
 	- Updated: Dovecot configuration files
-
-SETUP:
-	- Changed: i-MSCP apache_php_fpm server impl. is now the default choice for distributions supporting it officialy
-	- Fixed: Disable dummy php5_cgi Apache module if any
-	- Fixed: Do not ask for SQL user host names when the SQL server is hosted locally
-	- Fixed: Plugins which provide a backend end with unknown error after update
-	- Fixed: Pre-fill Debconf database (Avoid postfix, proftpd and courier questions during installation)
 
 ENGINE:
 	- Added: Support for Apache 2.4.x branch
@@ -69,6 +137,13 @@ GUI:
 	- Rewritten: Mail interface
 	- Updated: Assets are now reachable through the /themes/<theme>/assets path
 	- Updated: Plugin API
+
+SETUP:
+	- Changed: i-MSCP apache_php_fpm server impl. is now the default choice for distributions supporting it officialy
+	- Fixed: Disable dummy php5_cgi Apache module if any
+	- Fixed: Do not ask for SQL user host names when the SQL server is hosted locally
+	- Fixed: Plugins which provide a backend end with unknown error after update
+	- Fixed: Pre-fill Debconf database (Avoid postfix, proftpd and courier questions during installation)
 
 Tickets:
 	- Fixed #460: Nice To Have - Admin/Reseller should be able to set mail quota for customers

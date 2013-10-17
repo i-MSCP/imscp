@@ -12,9 +12,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2013-09-29 14:33+0200\n"
-"PO-Revision-Date: 2013-09-29 08:22+0000\n"
-"Last-Translator: Torsten Widmann <info@goover.de>\n"
+"POT-Creation-Date: 2013-10-17 13:31+0200\n"
+"PO-Revision-Date: 2013-10-10 22:09+0000\n"
+"Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Ukrainian (Ukraine) (http://www.transifex.com/projects/p/i-MSCP/language/uk_UA/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -797,6 +797,9 @@ msgstr ""
 msgid "Admin / Support / View Ticket"
 msgstr ""
 
+msgid "Admin / System Tools / Anti-Rootkits Logs"
+msgstr ""
+
 msgid "Admin / System Tools / Database Update"
 msgstr ""
 
@@ -804,9 +807,6 @@ msgid "Admin / System Tools / Debugger"
 msgstr ""
 
 msgid "Admin / System Tools / Maintenance Settings"
-msgstr ""
-
-msgid "Admin / System Tools / Rootkit Logs"
 msgstr ""
 
 msgid "Admin / System Tools / System Information"
@@ -1022,8 +1022,8 @@ msgstr ""
 msgid "An unknown error occurred during file upload: %s"
 msgstr ""
 
-msgid "Anti-Rootkits Tools Log Checker"
-msgstr "Провірка журналу інструментів боротьби з руткітами"
+msgid "Anti-Rootkits Logs"
+msgstr ""
 
 msgid "Application installer"
 msgstr "Установка приложений"
@@ -3283,6 +3283,9 @@ msgstr "Нет статистики IP для отображения."
 msgid "No administrator accounts found."
 msgstr "Не найдено учетных записей администраторов."
 
+msgid "No anti-rootkits logs"
+msgstr ""
+
 msgid "No available"
 msgstr ""
 
@@ -4198,9 +4201,6 @@ msgstr ""
 
 msgid "Rights successfully removed."
 msgstr ""
-
-msgid "Rootkit logs"
-msgstr "Логи руткитов"
 
 msgid "SMTP in"
 msgstr "SMTP вх"
@@ -5238,6 +5238,9 @@ msgstr "Аутентификация пользователя"
 msgid "User data successfully updated"
 msgstr ""
 
+msgid "User data successfully updated."
+msgstr ""
+
 msgid "User data were not updated."
 msgstr "Данные пользователя не были обновлены."
 
@@ -5269,9 +5272,6 @@ msgstr "Имя пользователя слишком длинное!"
 
 msgid "User password"
 msgstr "Пароль користувача"
-
-msgid "User personal data successfully updated."
-msgstr "Личные данные пользователя успешно обновлены"
 
 msgid "User real (first and last) name"
 msgstr "Справжні ім'я та прізвище користувача"

@@ -82,11 +82,11 @@ sub loadData
 	}
 
 	unless(exists $rdata->{$self->{'htgroupId'}}) {
-		error("No group in table htaccess_groups has id = $self->{'htgroupId'}");
+		error("Htgroup record with ID '$self->{'htgroupId'}' has not been found in database");
 		return 1;
 	}
 
-	unless($rdata->{$self->{'htgroupId'}}->{'domain_name'}) {
+	unless(exists $rdata->{$self->{'htgroupId'}}->{'domain_name'}) {
 		require Data::Dumper;
 		Data::Dumper->import();
 		local $Data::Dumper::Terse = 1;
@@ -102,7 +102,7 @@ sub loadData
 		return 1;
 	}
 
-	$self->{$_} = $rdata->{$self->{'htgroupId'}}->{$_} for keys %{$rdata->{$self->{'htgroupId'}}};
+	%{$self} = (%{$self}, %{$rdata->{$self->{'htgroupId'}}});
 
 	0;
 }

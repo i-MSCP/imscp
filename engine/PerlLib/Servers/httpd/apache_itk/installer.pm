@@ -98,10 +98,7 @@ sub install
 	return $rs if $rs;
 
 	# Saving all system configuration files if they exists
-	for (
-		"$main::imscpConfig{'LOGROTATE_CONF_DIR'}/apache2", "$main::imscpConfig{'LOGROTATE_CONF_DIR'}/apache",
-		"$self->{'config'}->{'APACHE_CONF_DIR'}/ports.conf"
-	) {
+	for ("$main::imscpConfig{'LOGROTATE_CONF_DIR'}/apache2", "$self->{'config'}->{'APACHE_CONF_DIR'}/ports.conf") {
 		$rs = $self->_bkpConfFile($_);
 		return $rs if $rs;
 	}
@@ -256,13 +253,13 @@ sub _init
 		'beforeHttpdInitInstaller', $self, 'apache_itk'
 	) and fatal('apache_itk - beforeHttpdInitInstaller hook has failed');
 
-	$self->{'cfgDir'} = $self->{'httpd'}->{'cfgDir'};
-	$self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
-	$self->{'wrkDir'} = "$self->{'cfgDir'}/working";
+	$self->{'apacheCfgDir'} = $self->{'httpd'}->{'apacheCfgDir'};
+	$self->{'apacheBkpDir'} = "$self->{'apacheCfgDir'}/backup";
+	$self->{'apacheWrkDir'} = "$self->{'apacheCfgDir'}/working";
 
 	$self->{'config'} = $self->{'httpd'}->{'config'};
 
-	my $oldConf = "$self->{'cfgDir'}/apache.old.data";
+	my $oldConf = "$self->{'apacheCfgDir'}/apache.old.data";
 
 	if(-f $oldConf) {
 		tie my %oldConfig, 'iMSCP::Config', 'fileName' => $oldConf, 'noerrors' => 1;
@@ -304,11 +301,11 @@ sub _bkpConfFile($$)
 		my $file = iMSCP::File->new('filename' => $cfgFile );
 		my ($filename, $directories, $suffix) = fileparse($cfgFile);
 
-		if(! -f "$self->{'bkpDir'}/$filename$suffix.system") {
-			$rs = $file->copyFile("$self->{'bkpDir'}/$filename$suffix.system");
+		if(! -f "$self->{'apacheBkpDir'}/$filename$suffix.system") {
+			$rs = $file->copyFile("$self->{'apacheBkpDir'}/$filename$suffix.system");
 			return $rs if $rs;
 		} else {
-			$rs = $file->copyFile("$self->{'bkpDir'}/$filename$suffix.$timestamp");
+			$rs = $file->copyFile("$self->{'apacheBkpDir'}/$filename$suffix.$timestamp");
 			return $rs if $rs;
 		}
 	}
@@ -364,29 +361,74 @@ sub _addUser
 	my $userName =
 	my $groupName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} . $main::imscpConfig{'SYSTEM_USER_MIN_UID'};
 
-	# Creating panel group
-	$rs = iMSCP::SystemGroup->new('groupname' => $groupName)->addSystemGroup();
-	return $rs if $rs;
+	my ($database, $errStr) = main::setupGetSqlConnect($main::imscpConfig{'DATABASE_NAME'});
+	if(! $database) {
+		error("Unable to connect to SQL server: $errStr");
+		return 1;
+	}
 
-	# Creating panel user
+	my $rdata = $database->doQuery(
+		'admin_sys_uid',
+		'SELECT `admin_sys_uid`, `admin_sys_gid` FROM `admin` WHERE `admin_type` = ? AND `created_by` = ? LIMIT 1',
+		'admin',
+		'0'
+	);
+
+	unless(ref $rdata eq 'HASH') {
+		error($rdata);
+		return 1;
+	} elsif(! %{$rdata}) {
+		error('Unable to find system admin user');
+		return 1;
+	}
+
+	my $oldUserUid = $rdata->{(%{$rdata})[0]}->{'admin_sys_uid'} // 0;
+	my $oldUserName;
+
+	if($oldUserUid != 0 && ($oldUserName = getpwuid($oldUserUid)) && $oldUserName ne $userName) {
+		$rs = iMSCP::SystemUser->new('keepHome' => 'yes')->delSystemUser($oldUserName);
+		return $rs if $rs;
+	}
+
+	my $oldUserGid = $rdata->{(%{$rdata})[0]}->{'admin_sys_gid'} // 0;
+	my $oldGroupName;
+
+	if($oldUserGid != 0 && ($oldGroupName = getgrgid($oldUserGid)) && $oldGroupName ne $groupName) {
+		$rs = iMSCP::SystemGroup->getInstance()->delSystemGroup($oldGroupName);
+		return $rs if $rs;
+	}
+
+	# Creating panel user/group
 	my $panelUName = iMSCP::SystemUser->new(
 		'username' => $userName,
 		'comment' => 'iMSCP master virtual user',
 		'home' => $main::imscpConfig{'GUI_ROOT_DIR'},
-		'skipCreateHome' => 'yes',
-		'group' => $groupName
+		'skipCreateHome' => 1
 	);
 
 	$rs = $panelUName->addSystemUser();
 	return $rs if $rs;
 
-	# Adding panel user in the i-MSCP master group
-	$rs = $panelUName->addToGroup($main::imscpConfig{'MASTER_GROUP'});
+	my $panelUuid = scalar getpwnam($userName);
+	my $panelUgid = scalar getgrnam($groupName);
+
+	# Updating admin.admin_sys_uid and admin.admin_sys_gid columns
+	$rdata = $database->doQuery(
+		'update',
+		'UPDATE `admin` SET `admin_sys_uid` = ?, `admin_sys_gid` = ? WHERE `admin_type` = ?',
+		$panelUuid, $panelUgid, 'admin'
+	);
+	unless(ref $rdata eq 'HASH') {
+		error($rdata);
+		return 1;
+	}
+
+	# Adding panel user in i-MSCP group
+	$rs = $panelUName->addToGroup($main::imscpConfig{'IMSCP_GROUP'});
 	return $rs if $rs;
 
 	# Adding Apache user in panel user group
-	my $apacheUName = iMSCP::SystemUser->new('username' => $self->{'config'}->{'APACHE_USER'});
-	$rs = $apacheUName->addToGroup($groupName);
+	$rs = iMSCP::SystemUser->new('username' => $self->{'config'}->{'APACHE_USER'})->addToGroup($groupName);
 	return $rs if $rs;
 
 	$self->{'hooksManager'}->trigger('afterHttpdAddUser');
@@ -460,14 +502,14 @@ sub _buildPhpConfFiles
 
 	# Build file using template from apache/parts/php5.itk.ini
 	$rs = $self->{'httpd'}->buildConfFile(
-		$self->{'cfgDir'} . '/parts/php' . $self->{'config'}->{'PHP_VERSION'} . '.itk.ini',
-		{ 'destination' => "$self->{'wrkDir'}/php.ini", 'mode' => 0644, 'user' => $rootUName, 'group' => $rootGName }
+		$self->{'apacheCfgDir'} . '/parts/php' . $self->{'config'}->{'PHP_VERSION'} . '.itk.ini',
+		{ 'destination' => "$self->{'apacheWrkDir'}/php.ini", 'mode' => 0644, 'user' => $rootUName, 'group' => $rootGName }
 	);
 	return $rs if $rs;
 
 	# Install new file in production directory
 	$rs = iMSCP::File->new(
-		'filename' => "$self->{'wrkDir'}/php.ini"
+		'filename' => "$self->{'apacheWrkDir'}/php.ini"
 	)->copyFile(
 		$self->{'config'}->{"ITK_PHP$self->{'config'}->{'PHP_VERSION'}_PATH"}
 	);
@@ -542,10 +584,10 @@ sub _buildApacheConfFiles
 
 	# Backup, build, store and install 00_nameserver.conf file
 
-	if(-f "$self->{'wrkDir'}/00_nameserver.conf") {
+	if(-f "$self->{'apacheWrkDir'}/00_nameserver.conf") {
 		$rs = iMSCP::File->new(
-			'filename' => "$self->{'wrkDir'}/00_nameserver.conf"
-		)->copyFile("$self->{'bkpDir'}/00_nameserver.conf." . time);
+			'filename' => "$self->{'apacheWrkDir'}/00_nameserver.conf"
+		)->copyFile("$self->{'apacheBkpDir'}/00_nameserver.conf." . time);
 		return $rs if $rs;
 	}
 
@@ -569,12 +611,12 @@ sub _buildApacheConfFiles
 
 	# Build new file
 	$rs = $self->{'httpd'}->buildConfFile(
-		"$self->{'cfgDir'}/00_nameserver.conf", { 'destination' => "$self->{'wrkDir'}/00_nameserver.conf" }
+		"$self->{'apacheCfgDir'}/00_nameserver.conf", { 'destination' => "$self->{'apacheWrkDir'}/00_nameserver.conf" }
 	);
 	return $rs if $rs;
 
 	# Install new file in production directory
-	my $file = iMSCP::File->new('filename' => "$self->{'wrkDir'}/00_nameserver.conf");
+	my $file = iMSCP::File->new('filename' => "$self->{'apacheWrkDir'}/00_nameserver.conf");
 	$rs = $file->copyFile($self->{'config'}->{'APACHE_SITES_DIR'});
 	return $rs if $rs;
 
@@ -657,13 +699,44 @@ sub _buildMasterVhostFiles
 	);
 	return $rs if $rs;
 
+	# Force HTTPS if needed
+	if($main::imscpConfig{'BASE_SERVER_VHOST_PREFIX'} eq 'https://') {
+		$rs = $self->{'hooksManager'}->register(
+			'afterHttpdBuildConfFile',
+			sub {
+				my $fileContent = shift;
+				my $fileName = shift;
+
+				if($fileName eq '00_master.conf') {
+					require iMSCP::Templator;
+					iMSCP::Templator->import();
+
+					my $customTagBegin = "    # SECTION custom BEGIN.\n";
+					my $customTagEnding = "    # SECTION custom END.\n";
+					my $customBlock =
+						$customTagBegin .
+						getBloc($customTagBegin, $customTagEnding, $$fileContent) .
+						"    RewriteEngine On\n" .
+						"    RewriteCond %{HTTPS} off\n" .
+						"    RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]\n" .
+						$customTagEnding;
+
+					$$fileContent = replaceBloc($customTagBegin, $customTagEnding, $customBlock, $$fileContent);
+				}
+
+				0;
+			}
+		);
+		return $rs if $rs;
+	}
+
 	# Build file using apache/00_master.conf template
-	$rs = $self->{'httpd'}->buildConfFile("$self->{'cfgDir'}/00_master.conf");
+	$rs = $self->{'httpd'}->buildConfFile("$self->{'apacheCfgDir'}/00_master.conf");
 	return $rs if $rs;
 
 	# Install new file in production directory
 	$rs = iMSCP::File->new(
-		'filename' => "$self->{'wrkDir'}/00_master.conf"
+		'filename' => "$self->{'apacheWrkDir'}/00_master.conf"
 	)->copyFile(
 		"$self->{'config'}->{'APACHE_SITES_DIR'}/00_master.conf"
 	);
@@ -699,11 +772,11 @@ sub _buildMasterVhostFiles
 		);
 		return $rs if $rs;
 
-		$rs = $self->{'httpd'}->buildConfFile("$self->{'cfgDir'}/00_master_ssl.conf");
+		$rs = $self->{'httpd'}->buildConfFile("$self->{'apacheCfgDir'}/00_master_ssl.conf");
 		return $rs if $rs;
 
 		$rs = iMSCP::File->new(
-			'filename' => "$self->{'wrkDir'}/00_master_ssl.conf"
+			'filename' => "$self->{'apacheWrkDir'}/00_master_ssl.conf"
 		)->copyFile(
 			"$self->{'config'}->{'APACHE_SITES_DIR'}/00_master_ssl.conf"
 		);
@@ -718,7 +791,7 @@ sub _buildMasterVhostFiles
 		return $rs if $rs;
 
 		for(
-			"$self->{'wrkDir'}/00_master_ssl.conf",
+			"$self->{'apacheWrkDir'}/00_master_ssl.conf",
 			"$self->{'config'}->{'APACHE_SITES_DIR'}/00_master_ssl.conf"
 		) {
 			$rs = iMSCP::File->new('filename' => $_)->delFile() if -f $_;
@@ -776,7 +849,7 @@ sub _saveConf
 {
 	my $self = shift;
 
-	my $file = iMSCP::File->new('filename' => "$self->{'cfgDir'}/apache.data");
+	my $file = iMSCP::File->new('filename' => "$self->{'apacheCfgDir'}/apache.data");
 
 	my $rs = $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
 	return $rs if $rs;
@@ -786,14 +859,14 @@ sub _saveConf
 
 	my $cfg = $file->get();
 	unless(defined $cfg) {
-		error("Unable to read $self->{'cfgDir'}/apache.data");
+		error("Unable to read $self->{'apacheCfgDir'}/apache.data");
 		return 1;
 	}
 
-	$rs = $self->{'hooksManager'}->trigger('beforeHttpdBkpConfFile', \$cfg, "$self->{'cfgDir'}/apache.data");
+	$rs = $self->{'hooksManager'}->trigger('beforeHttpdBkpConfFile', \$cfg, "$self->{'apacheCfgDir'}/apache.data");
 	return $rs if $rs;
 
-	$file = iMSCP::File->new('filename' => "$self->{'cfgDir'}/apache.old.data");
+	$file = iMSCP::File->new('filename' => "$self->{'apacheCfgDir'}/apache.old.data");
 
 	$rs = $file->set($cfg);
 	return $rs if $rs;
@@ -807,7 +880,7 @@ sub _saveConf
 	$rs = $file->mode(0640);
 	return $rs if $rs;
 
-	$self->{'hooksManager'}->trigger('afterHttpdBkpConfFile', "$self->{'cfgDir'}/apache.data");
+	$self->{'hooksManager'}->trigger('afterHttpdBkpConfFile', "$self->{'apacheCfgDir'}/apache.data");
 }
 
 =item _oldEngineCompatibility()

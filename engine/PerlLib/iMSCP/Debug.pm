@@ -38,7 +38,7 @@ $Text::Wrap::break = qr/[\s\n\|]/;
 
 our @EXPORT = qw/
 	debug warning error fatal newDebug endDebug getMessage getLastError getMessageByType silent verbose
-	backtrace debugRegisterCallBack output
+	debugRegisterCallBack output
 /;
 
 BEGIN
@@ -61,7 +61,6 @@ BEGIN
 my $self = {
 	'silent' => 0,
 	'verbose' => 1,
-	'backtrace' => 0,
 	'debugCallBacks' => []
 };
 
@@ -140,21 +139,6 @@ sub verbose
 	0;
 }
 
-=item backtrace
-
- Set backtrace
-
- Return int 0
-
-=cut
-
-sub backtrace
-{
-	$self->{'backtrace'} = shift || 0;
-
-	0;
-}
-
 =item debug($message)
 
  Log a debug message in the current log
@@ -169,7 +153,7 @@ sub debug
 		my $caller = (caller(1))[3] ? (caller(1))[3] : 'main';
 		my $message = shift || '';
 
-		$self->{'curLog'}->store(message => "$caller: $message", tag => 'debug', level => 'log');
+		$self->{'curLog'}->store(message => "$caller: $message", tag => 'debug');
 	}
 
 	0;
@@ -189,11 +173,9 @@ sub warning
 	my $message = shift || '';
 	my $verbosity = shift or 1;
 
-	$self->{'curLog'}->store(
-		message => "$caller: $message", tag => 'warn', level => $verbosity ? 'cluck' : 'log'
-	);
+	$self->{'curLog'}->store(message => "$caller: $message", tag => 'warn');
 
-	print STDERR output("$caller: $message", { mode => 'warn' }) unless $self->{'silent'};
+	print STDERR output("$caller: $message", 'warn') unless $self->{'silent'};
 
 	0;
 }
@@ -212,11 +194,9 @@ sub error
 	my $message = shift || '';
 	my $verbosity = shift or 1;
 
-	$self->{'curLog'}->store(
-		message => "$caller: $message", tag => 'error', level => $verbosity ? 'cluck' : 'log'
-	);
+	$self->{'curLog'}->store(message => "$caller: $message", tag => 'error');
 
-	print STDERR output("$caller: $message", { mode => 'error' }) unless $self->{'silent'};
+	print STDERR output("$caller: $message", 'error') unless $self->{'silent'};
 
 	0;
 }
@@ -234,11 +214,9 @@ sub fatal
 	my $message = shift || '';
 	my $verbosity = shift or 1;
 
-	$self->{'curLog'}->store(
-		message => "$caller: $message", tag => 'fatal error', level => $verbosity ? 'cluck' : 'log'
-	);
+	$self->{'curLog'}->store(message => "$caller: $message", tag => 'fatal error');
 
-	print STDERR output("$caller: $message", { mode => 'fatal' });
+	print STDERR output("$caller: $message", 'fatal');
 
 	exit 1;
 }
@@ -318,7 +296,6 @@ sub _getMessagesFromLog
 	if(exists $self->{'logs'}->{$logName}) {
 		for($self->{'logs'}->{$logName}->flush()) {
 			$buffer .= "[$_->{'when'}] [$_->{'tag'}] $_->{'message'}\n";
-			$buffer .= "Traces: $_->{'longmess'}\n\n" if $self->{'backtrace'};
 		}
 	}
 

@@ -44,9 +44,9 @@ use iMSCP::File;
 use iMSCP::Dir;
 use iMSCP::Ext2Attributes qw(setImmutable clearImmutable isImmutable);
 use iMSCP::Rights;
+#use POSIX;
 use File::Temp;
 use File::Basename;
-use POSIX;
 use version;
 use parent 'Common::SingletonClass';
 
@@ -185,15 +185,15 @@ sub addUser($$)
 	# START MOD CBAND SECTION
 
 	$rs = iMSCP::File->new(
-		'filename' => "$self->{'wrkDir'}/00_modcband.conf"
+		'filename' => "$self->{'apacheWrkDir'}/00_modcband.conf"
 	)->copyFile(
-		"$self->{'bkpDir'}/00_modcband.conf." . time
-	) if (-f "$self->{'wrkDir'}/00_modcband.conf");
+		"$self->{'apacheBkpDir'}/00_modcband.conf." . time
+	) if (-f "$self->{'apacheWrkDir'}/00_modcband.conf");
 	return $rs if $rs;
 
 	my $filename = (
-		-f "$self->{'wrkDir'}/00_modcband.conf"
-			? "$self->{'wrkDir'}/00_modcband.conf" : "$self->{'cfgDir'}/00_modcband.conf"
+		-f "$self->{'apacheWrkDir'}/00_modcband.conf"
+			? "$self->{'apacheWrkDir'}/00_modcband.conf" : "$self->{'apacheCfgDir'}/00_modcband.conf"
 	);
 
 	my $file = iMSCP::File->new('filename' => $filename);
@@ -224,7 +224,7 @@ sub addUser($$)
 		$entry = $self->buildConf("    $bTag$entry    $eTag");
 		$content = replaceBloc($bTag, $eTag, $entry, $content, 'preserve');
 
-		$file = iMSCP::File->new('filename' => "$self->{'wrkDir'}/00_modcband.conf");
+		$file = iMSCP::File->new('filename' => "$self->{'apacheWrkDir'}/00_modcband.conf");
 		$rs = $file->set($content);
 		return $rs if $rs;
 
@@ -255,8 +255,7 @@ sub addUser($$)
 	# END MOD CBAND SECTION
 
 	# Adding Apache user into i-MSCP virtual user group
-	my $apacheUName = iMSCP::SystemUser->new('username' => $self->getRunningUser());
-	$rs = $apacheUName->addToGroup($data->{'GROUP'});
+	$rs = iMSCP::SystemUser->new('username' => $self->getRunningUser())->addToGroup($data->{'GROUP'});
 	return $rs if $rs;
 
 	$self->{'restart'} = 'yes';
@@ -286,15 +285,15 @@ sub deleteUser($$)
 	# START MOD CBAND SECTION
 
 	$rs = iMSCP::File->new(
-		'filename' => "$self->{'wrkDir'}/00_modcband.conf"
+		'filename' => "$self->{'apacheWrkDir'}/00_modcband.conf"
 	)->copyFile(
-		"$self->{'bkpDir'}/00_modcband.conf." . time
-	) if -f "$self->{'wrkDir'}/00_modcband.conf";
+		"$self->{'apacheBkpDir'}/00_modcband.conf." . time
+	) if -f "$self->{'apacheWrkDir'}/00_modcband.conf";
 	return $rs if $rs;
 
 	my $filename = (
-		-f "$self->{'wrkDir'}/00_modcband.conf"
-			? "$self->{'wrkDir'}/00_modcband.conf" : "$self->{'cfgDir'}/00_modcband.conf"
+		-f "$self->{'apacheWrkDir'}/00_modcband.conf"
+			? "$self->{'apacheWrkDir'}/00_modcband.conf" : "$self->{'apacheCfgDir'}/00_modcband.conf"
 	);
 
 	my $file = iMSCP::File->new('filename' => $filename);
@@ -309,7 +308,7 @@ sub deleteUser($$)
 
 		$content = replaceBloc($bUTag, $eUTag, '', $content);
 
-		$file = iMSCP::File->new('filename' => "$self->{'wrkDir'}/00_modcband.conf");
+		$file = iMSCP::File->new('filename' => "$self->{'apacheWrkDir'}/00_modcband.conf");
 		$rs = $file->set($content);
 		return $rs if $rs;
 
@@ -333,8 +332,7 @@ sub deleteUser($$)
 	# END MOD CBAND SECTION
 
 	# Removing Apache user from i-MSCP virtual user group
-	my $apacheUName = iMSCP::SystemUser->new('username' => $self->getRunningUser());
-	$rs = $apacheUName->removeFromGroup($data->{'GROUP'});
+	$rs = iMSCP::SystemUser->new('username' => $self->getRunningUser())->removeFromGroup($data->{'GROUP'});
 	return $rs if $rs;
 
 	$self->{'restart'} = 'yes';
@@ -433,15 +431,15 @@ sub disableDmn($$)
 	);
 
 	iMSCP::File->new(
-		'filename' => "$self->{'wrkDir'}/$data->{'DOMAIN_NAME'}.conf"
+		'filename' => "$self->{'apacheWrkDir'}/$data->{'DOMAIN_NAME'}.conf"
 	)->copyFile(
-		"$self->{'bkpDir'}/$data->{'DOMAIN_NAME'}.conf". time
-	) if -f "$self->{'wrkDir'}/$data->{'DOMAIN_NAME'}.conf";
+		"$self->{'apacheBkpDir'}/$data->{'DOMAIN_NAME'}.conf". time
+	) if -f "$self->{'apacheWrkDir'}/$data->{'DOMAIN_NAME'}.conf";
 	return $rs if $rs;
 
 	$rs = $self->buildConfFile(
 		"$self->{'tplDir'}/domain_disabled.tpl",
-		{ 'destination' => "$self->{'wrkDir'}/$data->{'DOMAIN_NAME'}.conf" }
+		{ 'destination' => "$self->{'apacheWrkDir'}/$data->{'DOMAIN_NAME'}.conf" }
 	);
 	return $rs if $rs;
 
@@ -488,8 +486,8 @@ sub deleteDmn($$)
 		"$self->{'config'}->{'APACHE_SITES_DIR'}/$data->{'DOMAIN_NAME'}.conf",
 		"$self->{'config'}->{'APACHE_SITES_DIR'}/$data->{'DOMAIN_NAME'}_ssl.conf",
 		"$self->{'config'}->{'APACHE_CUSTOM_SITES_CONFIG_DIR'}/$data->{'DOMAIN_NAME'}.conf",
-		"$self->{'wrkDir'}/$data->{'DOMAIN_NAME'}.conf",
-		"$self->{'wrkDir'}/$data->{'DOMAIN_NAME'}_ssl.conf",
+		"$self->{'apacheWrkDir'}/$data->{'DOMAIN_NAME'}.conf",
+		"$self->{'apacheWrkDir'}/$data->{'DOMAIN_NAME'}_ssl.conf",
 	) {
 		$rs = iMSCP::File->new('filename' => $_)->delFile() if -f $_;
 		return $rs if $rs;
@@ -524,11 +522,11 @@ sub deleteDmn($$)
 				my $skelDir;
 
 				if($data->{'DOMAIN_TYPE'} eq 'dmn') {
-					$skelDir = "$self->{'cfgDir'}/skel/domain";
+					$skelDir = "$self->{'apacheCfgDir'}/skel/domain";
 				} elsif($data->{'DOMAIN_TYPE'} eq 'als') {
-					$skelDir = "$self->{'cfgDir'}/skel/alias";
+					$skelDir = "$self->{'apacheCfgDir'}/skel/alias";
 				} else {
-					$skelDir = "$self->{'cfgDir'}/skel/subdomain";
+					$skelDir = "$self->{'apacheCfgDir'}/skel/subdomain";
 				}
 
 				for(iMSCP::Dir->new('dirname' => $skelDir)->getAll()) {
@@ -1043,13 +1041,13 @@ sub addIps($$)
 
 	fatal('Hash reference expected') if ref $data ne 'HASH';
 
-	my $wrkFile = "$self->{'wrkDir'}/00_nameserver.conf";
+	my $wrkFile = "$self->{'apacheWrkDir'}/00_nameserver.conf";
 
 	# Backup current working file if any
 	my $rs = iMSCP::File->new(
 		'filename' => $wrkFile
 	)->copyFile(
-		"$self->{'bkpDir'}/00_nameserver.conf.". time
+		"$self->{'apacheBkpDir'}/00_nameserver.conf.". time
 	) if -f $wrkFile;
 	return $rs if $rs;
 
@@ -1161,7 +1159,7 @@ sub buildConf($$$)
 
  Build the given configuration file.
 
- Param string $file Absolute path to config file or config filename relative to the $self->{'cfgDir'} directory
+ Param string $file Absolute path to config file or config filename relative to the $self->{'apacheCfgDir'} directory
  Param hash_ref $options Reference to a hash containing options such as destination, mode, user and group for final file
  Return int 0 on success, other on failure
 
@@ -1177,7 +1175,7 @@ sub buildConfFile($$;$)
 
 	my ($name, $path, $suffix) = fileparse($file);
 
-	$file = "$self->{'cfgDir'}/$file" unless -d $path && $path ne './';
+	$file = "$self->{'apacheCfgDir'}/$file" unless -d $path && $path ne './';
 
 	my $fileH = iMSCP::File->new('filename' => $file);
 	my $cfgTpl = $fileH->get();
@@ -1198,7 +1196,7 @@ sub buildConfFile($$;$)
 	return $rs if $rs;
 
 	$fileH = iMSCP::File->new(
-		'filename' => ($options->{'destination'} ? $options->{'destination'} : "$self->{'wrkDir'}/$name$suffix")
+		'filename' => ($options->{'destination'} ? $options->{'destination'} : "$self->{'apacheWrkDir'}/$name$suffix")
 	);
 
 	$rs = $fileH->set($cfgTpl);
@@ -1239,7 +1237,7 @@ sub installConfFile($$;$)
 	my $rs = $self->{'hooksManager'}->trigger('beforeHttpdInstallConfFile', "$name$suffix", $options);
 	return $rs if $rs;
 
-	$file = "$self->{'wrkDir'}/$file" unless -d $path && $path ne './';
+	$file = "$self->{'apacheWrkDir'}/$file" unless -d $path && $path ne './';
 
 	my $fileH = iMSCP::File->new('filename' => $file);
 
@@ -1730,12 +1728,12 @@ sub _init
 		'beforeHttpdInit', $self, 'apache_itk'
 	) and fatal('apache_itk - beforeHttpdInit hook has failed');
 
-	$self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/apache";
-	$self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
-	$self->{'wrkDir'} = "$self->{'cfgDir'}/working";
-	$self->{'tplDir'} = "$self->{'cfgDir'}/parts";
+	$self->{'apacheCfgDir'} = "$main::imscpConfig{'CONF_DIR'}/apache";
+	$self->{'apacheBkpDir'} = "$self->{'apacheCfgDir'}/backup";
+	$self->{'apacheWrkDir'} = "$self->{'apacheCfgDir'}/working";
+	$self->{'tplDir'} = "$self->{'apacheCfgDir'}/parts";
 
-	tie %{$self->{'config'}}, 'iMSCP::Config', 'fileName' => "$self->{'cfgDir'}/apache.data";
+	tie %{$self->{'config'}}, 'iMSCP::Config', 'fileName' => "$self->{'apacheCfgDir'}/apache.data";
 
 	$self->{'hooksManager'}->trigger(
 		'afterHttpdInit', $self, 'apache_itk'
@@ -1773,7 +1771,7 @@ sub _addCfg($$)
 		$rs = iMSCP::File->new(
 			'filename' => "$self->{'config'}->{'APACHE_SITES_DIR'}/$_"
 		)->copyFile(
-			"$self->{'bkpDir'}/$_." . time
+			"$self->{'apacheBkpDir'}/$_." . time
 		) if -f "$self->{'config'}->{'APACHE_SITES_DIR'}/$_";
 		return $rs if $rs;
 	}
@@ -1782,8 +1780,8 @@ sub _addCfg($$)
 	for(
 		"$self->{'config'}->{'APACHE_SITES_DIR'}/$data->{'DOMAIN_NAME'}.conf",
 		"$self->{'config'}->{'APACHE_SITES_DIR'}/$data->{'DOMAIN_NAME'}_ssl.conf",
-		"$self->{'wrkDir'}/$data->{'DOMAIN_NAME'}.conf",
-		"$self->{'wrkDir'}/$data->{'DOMAIN_NAME'}_ssl.conf"
+		"$self->{'apacheWrkDir'}/$data->{'DOMAIN_NAME'}.conf",
+		"$self->{'apacheWrkDir'}/$data->{'DOMAIN_NAME'}_ssl.conf"
 	) {
 		$rs = iMSCP::File->new('filename' => $_)->delFile() if -f $_;
 		return $rs if $rs;
@@ -1852,7 +1850,7 @@ sub _addCfg($$)
 		$rs = $self->buildConfFile(
 			$data->{'FORWARD'} eq 'no'
 				? "$self->{'tplDir'}/$configs{$_}->{'normal'}" : "$self->{'tplDir'}/$configs{$_}->{'redirect'}",
-			{ 'destination' => "$self->{'wrkDir'}/$_" }
+			{ 'destination' => "$self->{'apacheWrkDir'}/$_" }
 		);
 		return $rs if $rs;
 
@@ -1927,11 +1925,11 @@ sub _addFiles($$)
 	my $skelDir;
 
 	if($data->{'DOMAIN_TYPE'} eq 'dmn') {
-		$skelDir = "$self->{'cfgDir'}/skel/domain";
+		$skelDir = "$self->{'apacheCfgDir'}/skel/domain";
 	} elsif($data->{'DOMAIN_TYPE'} eq 'als') {
-		$skelDir = "$self->{'cfgDir'}/skel/alias";
+		$skelDir = "$self->{'apacheCfgDir'}/skel/alias";
 	} else {
-		$skelDir = "$self->{'cfgDir'}/skel/subdomain";
+		$skelDir = "$self->{'apacheCfgDir'}/skel/subdomain";
 	}
 
 	my ($tmpDir, $stdout, $stderr);

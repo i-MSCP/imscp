@@ -14,6 +14,7 @@
             </apache_itk>
             <apache_php_fpm>
                 <package>apache2</package>
+                <package>apache2-suexec-pristine</package>
                 <package>libapache2-mod-fastcgi</package>
                 <package>php5-fpm</package>
             </apache_php_fpm>
@@ -89,7 +90,7 @@
     <perl>
         <package>perl</package>
         <package>perl-base</package>
-        <package>libperl5.14</package>
+        <package>libperl5.18</package>
         <package>libberkeleydb-perl</package>
         <package>libcrypt-blowfish-perl</package>
         <package>libcrypt-cbc-perl</package>
@@ -129,8 +130,6 @@
         <package>bash</package>
         <package>pbzip2</package>
         <package>bzip2</package>
-        <package>awstats</package>
-        <package>chkrootkit</package>
         <package>dialog</package>
         <package>diffutils</package>
         <package>dnsutils</package>
@@ -153,7 +152,6 @@
         <package>policyd-weight</package>
         <package>postgrey</package>
         <package>procmail</package>
-        <package>rkhunter</package>
         <package>sasl2-bin</package>
         <package>ssh</package>
         <package>tar</package>

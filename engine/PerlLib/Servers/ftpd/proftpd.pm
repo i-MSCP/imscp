@@ -132,13 +132,13 @@ sub addUser
 	my $rs = $self->{'hooksManager'}->trigger('beforeFtpdAddUser', $data);
 	return $rs if $rs;
 
-	my $uid = scalar getpwnam($data->{'USER'});
-	my $gid = scalar getgrnam($data->{'GROUP'});
-
 	my $database = iMSCP::Database->factory();
 
 	# Updating ftp_users.uid and ftp_users.gid columns
-	my @sql = ("UPDATE `ftp_users` SET `uid` = ?, `gid` = ? WHERE `admin_id` = ?", $uid, $gid, $data->{'USER_ID'});
+	my @sql = (
+		"UPDATE `ftp_users` SET `uid` = ?, `gid` = ? WHERE `admin_id` = ?",
+		$data->{'USER_SYS_UID'}, $data->{'USER_SYS_GID'}, $data->{'USER_ID'}
+	);
 	my $rdata = $database->doQuery('update', @sql);
 	unless(ref $rdata eq 'HASH') {
 		error($rdata);
@@ -146,7 +146,7 @@ sub addUser
 	}
 
 	# Updating ftp_group.gid column
-	@sql = ('UPDATE `ftp_group` SET `gid` = ? WHERE `groupname` = ?', $gid, $data->{'USERNAME'});
+	@sql = ('UPDATE `ftp_group` SET `gid` = ? WHERE `groupname` = ?', $data->{'USER_SYS_GID'}, $data->{'USERNAME'});
 	$rdata = $database->doQuery('update', @sql);
 	unless(ref $rdata eq 'HASH') {
 		error($rdata);

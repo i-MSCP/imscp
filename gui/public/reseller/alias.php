@@ -201,8 +201,8 @@ function reseller_generateAlsList($tpl, $resellerId)
 		if (isset($_SESSION['search_for']) && $_SESSION['search_for'] != '') {
 			$tpl->assign(
 				array(
-					'TABLE_LIST' => '',
-					'USERS_LIST' => '',
+					'ALIAS_JS' => '',
+					'ALIAS_LIST' => '',
 					'SCROLL_PREV' => '',
 					'SCROLL_NEXT' => '',
 					'M_DOMAIN_NAME_SELECTED' => '',
@@ -212,10 +212,9 @@ function reseller_generateAlsList($tpl, $resellerId)
 		} else {
 			$tpl->assign(
 				array(
+					'ALIAS_JS' => '',
 					'SEARCH_FORM' => '',
-					'TABLE_LIST' => '',
-					'TABLE_HEADER' => '',
-					'USERS_LIST' => '',
+					'ALIAS_LIST' => '',
 					'SCROLL_PREV' => '',
 					'SCROLL_PREV_GRAY' => '',
 					'SCROLL_NEXT' => '',
@@ -338,7 +337,7 @@ function reseller_generateAlsList($tpl, $resellerId)
 			)
 		);
 
-		$tpl->parse('TABLE_ITEM', '.table_item');
+		$tpl->parse('ALIAS_ITEM', '.alias_item');
 		$stmt->moveNext();
 	}
 }
@@ -367,15 +366,15 @@ $tpl->define_dynamic(
 		'layout' => 'shared/layouts/ui.tpl',
 		'page' => 'reseller/alias.tpl',
 		'page_message' => 'layout',
-		'table_list' => 'page',
-		'table_header' => 'page',
-		'table_item' => 'table_list',
-		'status_reload_true' => 'table_list',
-		'status_reload_false' => 'table_list',
-		'scroll_prev' => 'page',
-		'scroll_next_gray' => 'page',
-		'scroll_next' => 'page',
-		'als_add_button' => 'page'
+		'alias_js' => 'page',
+		'alias_list' => 'page',
+		'alias_item' => 'alias_list',
+		'status_reload_true' => 'alias_item',
+		'status_reload_false' => 'alias_item',
+		'scroll_prev' => 'alias_list',
+		'scroll_next_gray' => 'alias_list',
+		'scroll_next' => 'alias_list',
+		'als_add_button' => 'alias_list'
 	)
 );
 

@@ -92,11 +92,11 @@ sub loadData
 	}
 
 	unless(exists $rdata->{$self->{'htaccessId'}}) {
-		error("No record in table htaccess has id = $self->{'htaccessId'}");
+		error("Htaccess record with ID '$self->{'htaccessId'}' has not been found in database");
 		return 1;
 	}
 
-	unless($rdata->{$self->{'htaccessId'}}->{'domain_name'}) {
+	unless(exists $rdata->{$self->{'htaccessId'}}->{'domain_name'}) {
 		require Data::Dumper;
 		Data::Dumper->import();
 		local $Data::Dumper::Terse = 1;
@@ -112,7 +112,7 @@ sub loadData
 		return 1;
 	}
 
-	$self->{$_} = $rdata->{$self->{'htaccessId'}}->{$_} for keys %{$rdata->{$self->{'htaccessId'}}};
+	%{$self} = (%{$self}, %{$rdata->{$self->{'htaccessId'}}});
 
 	0;
 }

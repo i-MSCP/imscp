@@ -1,5 +1,11 @@
 #!/usr/bin/perl
 
+=head1 NAME
+
+Servers::cron - i-MSCP Cron server implementation
+
+=cut
+
 # i-MSCP - internet Multi Server Control Panel
 # Copyright (C) 2010-2013 by internet Multi Server Control Panel
 #
@@ -20,6 +26,7 @@
 # @category    i-MSCP
 # @copyright   2010-2013 by i-MSCP | http://i-mscp.net
 # @author      Daniel Andreca <sci2tech@gmail.com>
+# @author      Laurent Declercq <l.declercq@nuxwin.com>
 # @link        http://i-mscp.net i-MSCP Home Site
 # @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
@@ -34,34 +41,48 @@ use iMSCP::File;
 use iMSCP::Templator;
 use parent 'Common::SingletonClass';
 
-sub _init
-{
-	my $self = shift;
+=head1 DESCRIPTION
 
-	$self->{'hooksManager'} = iMSCP::HooksManager->getInstance();
+ i-MSCP i-MSCP Cron server implementation.
 
-	$self->{'hooksManager'}->trigger(
-		'beforeCronInit', $self, 'cron'
-	) and fatal('cron - beforeCronInit hook has failed');
+=head1 PUBLIC METHODS
 
-	$self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/cron.d";
-	$self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
-	$self->{'wrkDir'} = "$self->{'cfgDir'}/working";
-	$self->{'tplDir'} = "$self->{'cfgDir'}/parts";
+=over 4
 
-	$self->{'hooksManager'}->trigger(
-		'afterCronInit', $self, 'cron'
-	) and fatal('cron - afterCronInit hook has failed');
+=item factory()
 
-	$self;
-}
+ Return an instance of this server
+
+ Return Servers::cron
+
+=cut
 
 sub factory
 {
 	Servers::cron->getInstance();
 }
 
-sub addTask
+=item addTask(\%data)
+
+ Add a new cron task.
+
+ Param hash_ref $data A reference to a hash describing the cron task
+  - TASKID Arbitrary string used as unique identifier by i-MSCP for the cron task
+  - MINUTE Minute time field
+  - HOUR Hour time field
+  - DAY Day of month date field
+  - MONTH Month date field
+  - DWEEK Day of week date field
+  - USER user under which the command must be run
+  - COMMAND Command
+
+  See crontab(5) for more information about allowed values
+
+  Return int 0 on success, other on failure
+
+=cut
+
+sub addTask($$)
 {
 	my $self = shift;
 	my $data = shift;
@@ -77,7 +98,6 @@ sub addTask
 	$data->{'MONTH'} = 1 unless exists $data->{'MONTH'};
 	$data->{'DWEEK'} = 1 unless exists $data->{'DWEEK'};
 	$data->{'USER'} = $main::imscpConfig{'ROOT_USER'} unless exists $data->{'USER'};
-	$data->{'LOG_DIR'} = $main::imscpConfig{'LOG_DIR'};
 
 	unless(exists $data->{'COMMAND'} && exists $data->{'TASKID'}) {
 		error('Missing command or task ID');
@@ -96,21 +116,28 @@ sub addTask
 	my $wrkFileContent = $file->get();
 
 	unless(defined $wrkFileContent){
-		error("Unable to read $self->{'wrkDir'}/imscp");
+		error("Unable to read $self->{'wrkDir'}/imscp file");
 		return 1;
 	} else {
-		my $cleanBTag = iMSCP::File->new('filename' => "$self->{'tplDir'}/task_b.tpl")->get();
-		my $cleanTag = iMSCP::File->new('filename' => "$self->{'tplDir'}/task_entry.tpl")->get();
-		my $cleanETag = iMSCP::File->new('filename' => "$self->{'tplDir'}/task_e.tpl")->get();
+		my $cleanBTag = "# [{TASKID}] task START.\n";
+		my $cleanETag = "# [{TASKID}] task END.\n";
+
 		my $bTag = process({ TASKID => $data->{'TASKID'} }, $cleanBTag);
 		my $eTag = process({ TASKID => $data->{'TASKID'} }, $cleanETag);
-		my $tag = process($data, $cleanTag);
+
+		my $tag = sprintf(
+			"%s %s %s %s %s %s %s\n",
+			$data->{'MINUTE'}, $data->{'HOUR'}, $data->{'DAY'}, $data->{'MONTH'}, $data->{'DWEEK'}, $data->{'USER'},
+			$data->{'COMMAND'}
+		);
+
+		$tag =~ s/ +/ /;
 
 		$wrkFileContent = replaceBloc($bTag, $eTag, '', $wrkFileContent);
 		$wrkFileContent = replaceBloc($cleanBTag, $cleanETag, "$bTag$tag$eTag", $wrkFileContent, 'preserve');
 
-		# Store the file in the working directory
-		my $file = iMSCP::File->new('filename' =>"$self->{'wrkDir'}/imscp");
+		# Store the file in working directory
+		my $file = iMSCP::File->new('filename' => "$self->{'wrkDir'}/imscp");
 
 		$rs = $file->set($wrkFileContent);
 		return $rs if $rs;
@@ -132,7 +159,17 @@ sub addTask
 	$self->{'hooksManager'}->trigger('afterCronAddTask', $data);
 }
 
-sub deleteTask
+=item deleteTask(\%data)
+
+ Delete a cron task.
+
+ Param array_ref A reference to a hash containing the TASKID key, which represent the unique identifier of the cron task
+
+ Return int 0 on success, other on failure
+
+=cut
+
+sub deleteTask($$)
 {
 	my $self = shift;
 	my $data = shift;
@@ -162,8 +199,9 @@ sub deleteTask
 		error("Unable to read $self->{'wrkDir'}/imscp");
 		return 1;
 	} else {
-		my $cleanBTag = iMSCP::File->new('filename' => "$self->{'tplDir'}/task_b.tpl")->get();
-		my $cleanETag = iMSCP::File->new('filename' => "$self->{'tplDir'}/task_e.tpl")->get();
+		my $cleanBTag = "# [{TASKID}] task START.\n";
+		my $cleanETag = "# [{TASKID}] task END.\n";
+
 		my $bTag = process({ TASKID => $data->{'TASKID'} }, $cleanBTag);
 		my $eTag = process({ TASKID => $data->{'TASKID'} }, $cleanETag);
 
@@ -191,5 +229,77 @@ sub deleteTask
 
 	$self->{'hooksManager'}->trigger('afterCronDelTask', $data);
 }
+
+=item setEnginePermissions()
+
+ Set engine permissions.
+
+ Return int 0 on success, other on failure
+
+=cut
+
+sub setEnginePermissions
+{
+	if(-f "$main::imscpConfig{'CRON_D_DIR'}/imscp") {
+		require iMSCP::Rights;
+		iMSCP::Rights->import();
+
+		setRights(
+			"$main::imscpConfig{'CRON_D_DIR'}/imscp",
+			{
+				'user' => $main::imscpConfig{'ROOT_USER'},
+				'group' => $main::imscpConfig{'ROOT_GROUP'},
+				'mode' => '0644'
+			}
+		);
+	} else {
+		0;
+	}
+}
+
+=back
+
+=head1 PRIVATE METHODS
+
+=over 4
+
+=item _init()
+
+ Called by getInstance(). Initialize instance.
+
+ Return Servers::cron
+
+=cut
+
+sub _init
+{
+	my $self = shift;
+
+	$self->{'hooksManager'} = iMSCP::HooksManager->getInstance();
+
+	$self->{'hooksManager'}->trigger(
+		'beforeCronInit', $self, 'cron'
+	) and fatal('cron - beforeCronInit hook has failed');
+
+	$self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/cron.d";
+	$self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
+	$self->{'wrkDir'} = "$self->{'cfgDir'}/working";
+	$self->{'tplDir'} = "$self->{'cfgDir'}/parts";
+
+	$self->{'hooksManager'}->trigger(
+		'afterCronInit', $self, 'cron'
+	) and fatal('cron - afterCronInit hook has failed');
+
+	$self;
+}
+
+=back
+
+=head1 AUTHORS
+
+ Daniel Andreca <sci2tech@gmail.com>
+ Laurent Declercq <l.declercq@nuxwin.com>
+
+=cut
 
 1;

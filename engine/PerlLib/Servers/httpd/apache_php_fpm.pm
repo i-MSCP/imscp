@@ -43,9 +43,10 @@ use iMSCP::File;
 use iMSCP::Dir;
 use iMSCP::Ext2Attributes qw(setImmutable clearImmutable isImmutable);
 use iMSCP::Rights;
+#use POSIX;
 use File::Temp;
 use File::Basename;
-use POSIX;
+
 use version;
 use parent 'Common::SingletonClass';
 
@@ -259,8 +260,7 @@ sub addUser($$)
 	# END MOD CBAND SECTION
 
 	# Adding Apache user into i-MSCP virtual user group
-	my $apacheUName = iMSCP::SystemUser->new('username' => $self->getRunningUser());
-	$rs = $apacheUName->addToGroup($data->{'GROUP'});
+	$rs = iMSCP::SystemUser->new('username' => $self->getRunningUser())->addToGroup($data->{'GROUP'});
 	return $rs if $rs;
 
 	$self->{'restart'} = 'yes';
@@ -336,8 +336,7 @@ sub deleteUser($$)
 	# END MOD CBAND SECTION
 
 	# Removing Apache user from i-MSCP virtual user group
-	my $apacheUName = iMSCP::SystemUser->new('username' => $self->getRunningUser());
-	$rs = $apacheUName->removeFromGroup($data->{'GROUP'});
+	$rs = iMSCP::SystemUser->new('username' => $self->getRunningUser())->removeFromGroup($data->{'GROUP'});
 	return $rs if $rs;
 
 	$self->{'restart'} = 'yes';
@@ -1891,7 +1890,7 @@ sub phpfpmBkpConfFile($$;$$)
 
 =over 4
 
-=item
+=item _init()
 
  Called by getInstance(). Initialize instance.
 
@@ -2014,22 +2013,22 @@ sub _addCfg($$)
 		if($data->{'FORWARD'} eq 'no') {
 			$rs = $self->{'hooksManager'}->register(
 				'beforeHttpdBuildConfFile', sub { $self->removeSection('suexec', @_) }
-			);
+			) unless $data->{'CGI_SUPPORT'} eq 'yes';
 			return $rs if $rs;
 
 			$rs = $self->{'hooksManager'}->register(
 				'beforeHttpdBuildConfFile', sub { $self->removeSection('cgi_support', @_) }
-			) unless ($data->{'CGI_SUPPORT'} eq 'yes');
+			) unless $data->{'CGI_SUPPORT'} eq 'yes';
 			return $rs if $rs;
 
 			$rs = $self->{'hooksManager'}->register(
 				'beforeHttpdBuildConfFile', sub { $self->removeSection('php_enabled', @_) }
-			) unless ($data->{'PHP_SUPPORT'} eq 'yes');
+			) unless $data->{'PHP_SUPPORT'} eq 'yes';
 			return $rs if $rs;
 
 			$rs = $self->{'hooksManager'}->register(
 				'beforeHttpdBuildConfFile', sub { $self->removeSection('php_disabled', @_) }
-			) if ($data->{'PHP_SUPPORT'} eq 'yes');
+			) if $data->{'PHP_SUPPORT'} eq 'yes';
 			return $rs if $rs;
 
 			$rs = $self->{'hooksManager'}->register(

@@ -10,7 +10,7 @@ COURIER_IMAP_SSL = imapd-ssl
 
 COURIER_POP_SSL = pop3d-ssl
 
-CMD_AUTHD = /etc/init.d/courier-authdaemon
+CMD_AUTHDAEMON = /etc/init.d/courier-authdaemon
 
 CMD_IMAP = /etc/init.d/courier-imap
 

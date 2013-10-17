@@ -242,7 +242,7 @@
 					<tr>
 						<td>
 							{TR_PHP_INI_AL_ALLOW_URL_FOPEN}
-							<span class="permission_help icon i_help" title="{TR_PHP_INI_PERMISSION_HELP}"></span>
+							<span class="tips icon i_help" title="{TR_PHP_INI_PERMISSION_HELP}"></span>
 						</td>
 						<td>
 							<div class="radio">
@@ -259,7 +259,7 @@
 					<tr>
 						<td>
 							{TR_PHP_INI_AL_DISPLAY_ERRORS}
-							<span class="permission_help icon i_help" title="{TR_PHP_INI_PERMISSION_HELP}"></span>
+							<span class="tips icon i_help" title="{TR_PHP_INI_PERMISSION_HELP}"></span>
 						</td>
 						<td>
 							<div class="radio">
@@ -276,7 +276,7 @@
 					<tr>
 						<td>
 							{TR_PHP_INI_AL_DISABLE_FUNCTIONS}
-							<span class="permission_help icon i_help" title="{TR_PHP_INI_PERMISSION_HELP}"></span>
+							<span class="tips icon i_help" title="{TR_PHP_INI_PERMISSION_HELP}"></span>
 						</td>
 						<td>
 							<div class="radio">

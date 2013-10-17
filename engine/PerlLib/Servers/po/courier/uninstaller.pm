@@ -32,6 +32,8 @@ use warnings;
 use iMSCP::Debug;
 use iMSCP::File;
 use iMSCP::Execute;
+use iMSCP::Database;
+use Servers::po::courier;
 use parent 'Common::SingletonClass';
 
 sub _init
@@ -53,18 +55,61 @@ sub uninstall
 {
 	my $self = shift;
 
-	my $rs = $self->restoreConfFile();
+	my $rs = $self->_removeSqlUser();
 	return $rs if $rs;
 
-	$rs = $self->authDaemon();
+	$rs = $self->_restoreConfFile();
+	return $rs if $rs;
+
+	$rs = $self->_authDaemon();
 	return $rs if $rs;
 
 	$self->_deleteQuotaWarning();
 }
 
+=item _removeSqlUser()
+
+ Remove any authdaemon SQL user.
+
+ Return int 0
+
+=cut
+
+sub _removeSqlUser
+{
+	my $self = shift;
+
+	my $database = iMSCP::Database->factory();
+
+	# We do not catch any error here - It's expected
+	for($main::imscpConfig{'DATABASE_USER_HOST'}, $main::imscpConfig{'BASE_SERVER_IP'}, 'localhost', '127.0.0.1', '%') {
+		next if ! $_;
+		$database->doQuery('dummy', "DROP USER ?@?", $self->{'config'}->{'DATABASE_USER'}, $_);
+	}
+
+	$database->doQuery('dummy', 'FLUSH PRIVILEGES');
+
+	0;
+}
+
 sub _restoreConfFile
 {
 	my $self = shift;
+
+	if(-f "$self->{'bkpDir'}/courier-authdaemon.system") {
+		my $file = iMSCP::File->new('filename' => "$self->{'bkpDir'}/courier-authdaemon.system");
+
+		my $rs = $file->copyFile($self->{'config'}->{'CMD_AUTHDAEMON'});
+		return $rs if $rs;
+
+		$file->{'filename'} = $self->{'config'}->{'CMD_AUTHDAEMON'};
+
+		$rs = $file->mode(0755);
+		return $rs if $rs;
+
+		$rs = $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
+		return $rs if $rs;
+	}
 
 	for ('authdaemonrc', 'authmysqlrc', $self->{'config'}->{'COURIER_IMAP_SSL'}, $self->{'config'}->{'COURIER_POP_SSL'}) {
 		my $rs = iMSCP::File->new(
@@ -87,7 +132,7 @@ sub _authDaemon
 	my $rs = $file->mode(0660);
 	return $rs if $rs;
 
-	$file->owner($self->{'config'}->{'AUTHDAEMON_USER'}, $self->{'config'}->{'AUTHDAEMON_GROUP');
+	$file->owner($self->{'config'}->{'AUTHDAEMON_USER'}, $self->{'config'}->{'AUTHDAEMON_GROUP'});
 }
 
 sub _deleteQuotaWarning
@@ -95,7 +140,7 @@ sub _deleteQuotaWarning
 	my $self = shift;
 
 	if(-f $self->{'config'}->{'QUOTA_WARN_MSG_PATH'}) {
-		iMSCP::File->new('filename' => "$self->{'config'}->{'QUOTA_WARN_MSG_PATH'}")->delFile();
+		iMSCP::File->new('filename' => $self->{'config'}->{'QUOTA_WARN_MSG_PATH'})->delFile();
 	} else {
 		0;
 	}

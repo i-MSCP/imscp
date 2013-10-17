@@ -43,6 +43,11 @@
 	/*]]>*/
 </script>
 
+<!-- BDP: no_software_support -->
+<div class="info">{NO_SOFTWARE_AVAIL}</div>
+<!-- EDP: no_software_support -->
+
+<!-- BDP: software_list -->
 <table class="datatable">
 	<thead>
 	<tr>
@@ -88,11 +93,6 @@
 	</tr>
 	<!-- EDP: software_item -->
 	<!-- EDP: t_software_support -->
-	<!-- BDP: no_software_support -->
-	<tr>
-		<td colspan="7"><div class="info">{NO_SOFTWARE_AVAIL}</div></td>
-	</tr>
-	<!-- EDP: no_software_support -->
 	<!-- BDP: del_software_support -->
 	<tr>
 		<th colspan="5">{TR_DEL_SOFTWARE}</th>
@@ -104,11 +104,12 @@
 		<td colspan="5">{SOFTWARE_DEL_RES_MESSAGE}</td>
 		<td>{DEL_SOFTWARE_STATUS}</td>
 		<td>
-			<img src="{THEME_ASSETS_PATH}/images/icons/delete.png" width="16" height="16" border="0" align="middle"/>
-			<a href="#" onclick="return action_res_delete('{DEL_SOFTWARE_ACTION_SCRIPT}')">{DEL_SOFTWARE_ACTION}</a>
+			<a href="#" class="icon i_delete"
+			   onclick="return action_res_delete('{DEL_SOFTWARE_ACTION_SCRIPT}')">{DEL_SOFTWARE_ACTION}</a>
 		</td>
 	</tr>
 	<!-- EDP: del_software_item -->
 	<!-- EDP: del_software_support -->
 	</tbody>
 </table>
+<!-- EDP: software_list -->

@@ -17,12 +17,12 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
-# @category		i-MSCP
-# @copyright	2010-2013 by i-MSCP | http://i-mscp.net
-# @author		Daniel Andreca <sci2tech@gmail.com>
-# @link			http://i-mscp.net i-MSCP Home Site
-# @license      http://www.gnu.org/licenses/gpl-2.0.html GPL v2
-#
+# @category    i-MSCP
+# @copyright   2010-2013 by i-MSCP | http://i-mscp.net
+# @author      Daniel Andreca <sci2tech@gmail.com>
+# @author      Laurent Declercq <l.declercq@nuxwin.com>
+# @link        http://i-mscp.net i-MSCP Home Site
+# @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
 use strict;
 use warnings;
@@ -30,15 +30,859 @@ use warnings;
 use FindBin;
 use lib "$FindBin::Bin/..";
 use lib "$FindBin::Bin/../PerlLib";
-use lib "$FindBin::Bin/../PerlVendor";
-
-use version;
 
 use iMSCP::Debug;
+use iMSCP::Config;
+use iMSCP::Boot;
 use iMSCP::Requirements;
+use iMSCP::Dialog;
+use iMSCP::Stepper;
+use iMSCP::Database;
+use iMSCP::Crypt;
+use iMSCP::File;
+use iMSCP::Dir;
+use iMSCP::SystemUser;
+use iMSCP::SystemGroup;
+use iMSCP::Execute;
+use iMSCP::Templator;
+use File::Basename;
 use Data::Dumper;
+use version;
 
-# Turn off localisation features to force any command output to be in english
+########################################################################################################################
+# Subroutines
+#
+
+# Re-encrypt the given password with i-MSCP database key
+sub _reencryptPassword
+{
+	my $tableName = shift;
+	my $idFieldName = shift;
+	my $pwdFieldName = shift;
+	my $row = shift;
+	my $errors = shift;
+
+	my $crypt = iMSCP::Crypt->getInstance();
+
+	# Switch to ispCP database key
+
+	$crypt->set('key', $main::ispcpDBKey);
+	$crypt->set('iv', $main::ispcpDBiv);
+
+	# Decrypt password using ispCP database key
+	my $password = $crypt->decrypt_db_password($row->{$pwdFieldName});
+
+	# Switch to i-MSCP database keys
+	$crypt->set('key', $main::imscpDBKey);
+	$crypt->set('iv', $main::imscpDBiv);
+
+	# Encrypt password using i-MSCP database key
+	my $password = $crypt->encrypt_db_password($password);
+
+	my $database = iMSCP::Database->new(db => 'mysql')->factory();
+
+	my $result = $database->doQuery(
+		'dummy', "UPDATE `$tableName` SET `$pwdFieldName` = ? WHERE `$idFieldName` = ?", $password, $row->{$idFieldName}
+	);
+	unless(ref $result eq 'HASH'){
+		push @{$errors}, $result;
+	}
+
+	undef;
+}
+
+# Connect to the ispCP database
+sub _ispCPdbConnect
+{
+	my $crypt = iMSCP::Crypt->getInstance();
+	$crypt->set('key', $main::ispcpDBKey);
+	$crypt->set('iv', $main::ispcpDBiv);
+
+	my $database = iMSCP::Database->new('db' => 'mysql')->factory();
+
+	$database->set('DATABASE_NAME', $main::ispcpConfig{'DATABASE_NAME'});
+	$database->set('DATABASE_HOST', $main::ispcpConfig{'DATABASE_HOST'});
+	$database->set('DATABASE_USER', $main::ispcpConfig{'DATABASE_USER'});
+	$database->set('DATABASE_PASSWORD', $crypt->decrypt_db_password($main::ispcpConfig{'DATABASE_PASSWORD'}));
+
+	$database->connect();
+}
+
+# Remove any ispCP file (including daemons)
+sub removeIspcpFiles
+{
+	my ($rs, $stdout, $stderr, @errors);
+
+	# Disabling ispCP fcgid and fastcgi modules
+	if(-x '/usr/sbin/a2enmod') {
+		$rs = execute("/usr/sbin/a2dismod fastcgi_ispcp fcgid_ispcp", \$stdout, \$stderr);
+		debug($stdout) if $stdout;
+		push @errors, $stderr if $stderr && $rs;
+	}
+
+	# Deleting ispCP Apache module files
+	for (qw/fastcgi_ispcp.conf fastcgi_ispcp.load fcgid_ispcp.conf fcgid_ispcp.load/) {
+		if(-f "$main::ispcpConfig{'APACHE_MODS_DIR'}/$_") {
+			unlink "$main::ispcpConfig{'APACHE_MODS_DIR'}/$_" or push
+				@errors, "Unable to delete $main::ispcpConfig{'APACHE_MODS_DIR'}/$_ file: $!";
+		}
+	}
+
+	# Disabling ispcp.conf Apache configuration file
+	if(-f "$main::ispcpConfig{'APACHE_SITES_DIR'}/ispcp.conf") {
+		if(-x '/usr/sbin/a2dissite') {
+			$rs = execute("/usr/sbin/a2dissite ispcp.conf", \$stdout, \$stderr);
+			debug($stdout) if $stdout;
+			push @errors, $stderr if $stderr && $rs;
+		}
+
+		# Deleting ispcp.conf Apache configuration file
+		unlink "$main::ispcpConfig{'APACHE_SITES_DIR'}/ispcp.conf" or push
+			@errors, "Unable to delete $main::ispcpConfig{'APACHE_SITES_DIR'}/ispcp.conf file: $!";
+	}
+
+	# Remove ispCP daemons
+	for ($main::ispcpConfig{'CMD_ISPCPD'}, $main::ispcpConfig{'CMD_ISPCPN'}) {
+		if(-f $_) {
+			# Stopping daemon using init script
+			$rs = execute("$_ stop", \$stdout, \$stderr);
+			debug($stdout) if $stdout;
+			push @errors, $stderr if $stderr && $rs;
+
+			# The service wasn't stopped for unknown reason, we try to kill it using pkill
+			if($rs) {
+				# Getting daemon name
+				my $daemonName = fileparse($_);
+
+				$rs = execute("$main::imscpConfig{'CMD_PKILL'} -KILL $daemonName", \$stdout, \$stderr);
+				debug($stdout) if $stdout;
+				push @errors, $stderr if $stderr && $rs > 1; # See man pkill for exit status list
+
+				# In such case, we must delete the pidfile manually if any
+				if(-f "/var/run/$daemonName") {
+					unlink "/var/run/$daemonName" or push @errors, "Unable to delete /var/run/$daemonName file: $!";
+            	}
+			}
+
+			# Remove init script links
+			if(-x '/usr/sbin/update-rc.d') {
+				$rs = execute("/usr/sbin/update-rc.d -f $_ remove", \$stdout, \$stderr);
+				debug($stdout) if $stdout;
+				push @errors, $stderr if $stderr && $rs;
+			}
+
+			# Remove daemon init script
+			unlink $_ or push @errors, "Unable to delete $_ file: $!";
+		}
+	}
+
+	# Remove ispCP directories
+	for(
+		$main::ispcpConfig{'CONF_DIR'}, # eg. /etc/ispcp
+		$main::ispcpConfig{'LOG_DIR'}, # eg. /var/log/ispcp
+		$main::ispcpConfig{'ROOT_DIR'}, # eg. /var/www/ispcp
+		$main::ispcpConfig{'APACHE_CUSTOM_SITES_CONFIG_DIR'}, # eg. /etc/apache2/ispcp
+		$main::ispcpConfig{'MTA_VIRTUAL_CONF_DIR'} # eg. /etc/postfix/ispcp
+	) {
+		if(-d) {
+			my $dir = iMSCP::Dir->new('dirname' => $_);
+			push @errors, getLastError() if $dir->remove();
+		}
+	}
+
+	# Remove ispCP files
+	for(
+		($^O =~ /bsd$/ ? '/usr/local/etc/' : '/etc/') . 'cron.d/ispcp', #/etc/cron.d/ispcp
+		($^O =~ /bsd$/ ? '/usr/local/etc/' : '/etc/') . 'logrotate.d/ispcp', #/etc/logrotate.d/ispcp
+	) {
+		if(-f $_) {
+			unlink $_ or push @errors, "Unable to delete $_ file: $!";
+		}
+	}
+
+	# Remmove ispCP PHP starter directory content
+	$rs = execute(
+		"$main::imscpConfig{'CMD_RM'} -fR $main::ispcpConfig{'PHP_STARTER_DIR'}/*",
+		\$stdout,
+		\$stderr
+	);
+	debug($stdout) if $stdout;
+	push @errors, $stderr if $stderr && $rs;
+
+	if (@errors) {
+		my $errors = join "\n", @errors;
+
+		iMSCP::Dialog->factory()->msgbox(<<EOF);
+
+\\Z1\\ZuErrors were detected\\Zn
+
+The following errors occured:
+
+$errors
+
+These errors are not fatal. However, it's greatly recommended to fix them before running the i-MSCP setup script.
+EOF
+
+		warning("\n$errors");
+	}
+
+	0;
+}
+
+# Save ISP logo (Admin and reseller GUI logo)
+sub saveIspLogo
+{
+	my @errors;
+	my $database = iMSCP::Database->new('db' => 'mysql')->factory();
+
+	my $result = $database->doQuery(
+		'logo', "SELECT DISTINCT `logo` FROM `user_gui_props` WHERE logo <> '0' AND logo <> ''"
+	);
+	unless (ref $result eq 'HASH') {
+		push @errors, $result;
+	} else {
+		for (keys %$result) {
+			my $fileName = $result->{$_}->{'logo'};
+			my $filePath = "$main::ispcpConfig{'GUI_ROOT_DIR'}/themes/user_logos/$fileName";
+
+			if(-f $filePath) {
+				my $ispcpFile = iMSCP::File->new('filename' => $filePath);
+
+				if ($ispcpFile->copyFile("$main::imscpConfig{'GUI_ROOT_DIR'}/data/persistent/ispLogos/$fileName")) {
+					push @errors, getLastError();
+				}
+			} else {
+				push @errors, "File $filePath not found";
+			}
+		}
+	}
+
+	if (@errors) {
+		my $errors = join "\n", @errors;
+
+		iMSCP::Dialog->factory()->msgbox(<<EOF);
+
+\\Z1\\ZuErrors were detected\\Zn
+
+The following errors occured:
+
+$errors
+
+These errors are not fatal. However, be aware that some ISP logos can be missing.
+EOF
+
+		warning("\n$errors");
+	}
+
+	0;
+}
+
+# Process some db updates
+sub dbUpgrade
+{
+	my @errors;
+	my $database = iMSCP::Database->new('db' => 'mysql')->factory();
+
+	my $result = $database->doQuery(
+		'mail_id', "UPDATE `config` SET `value` = '47' WHERE `config`.`name` = 'DATABASE_REVISION' AND `value` > '47'"
+	);
+	unless(ref $result eq 'HASH') {
+		push @errors, $result;
+	}
+
+	$result = $database->doQuery(
+		'mail_id', "SELECT `mail_id`, `mail_pass` FROM `mail_users` WHERE `mail_pass` != '_no_'"
+	);
+	unless (ref $result eq 'HASH'){
+		push @errors, $result;
+	} elsif (%{$result}) {
+		_reencryptPassword('mail_users', 'mail_id', 'mail_pass', $_, \@errors) for values %{$result};
+	}
+
+	$result = $database->doQuery('sqlu_id', 'SELECT `sqlu_id`, `sqlu_pass` FROM `sql_user`');
+	unless (ref $result eq 'HASH') {
+		push @errors, $result;
+	} elsif (%{$result}) {
+		_reencryptPassword('sql_user', 'sqlu_id', 'sqlu_pass', $_, \@errors) for values %{$result};
+	}
+
+	if (@errors) {
+		my $errors = join "\n", @errors;
+
+		iMSCP::Dialog->factory()->msgbox(<<EOF);
+
+\\Z1\\ZuErrors were detected\\Zn
+
+The following errors occured while database upgrade:
+
+$errors
+
+These errors are not fatal. However, be aware that some mail and sql passwords might be corrupted and need to be updated.
+EOF
+
+		warning("\n$errors");
+	}
+
+	0;
+}
+
+# Save ispCP main configuration parameters
+sub saveIspcpMainConfiguration
+{
+	my $crypt = iMSCP::Crypt->getInstance();
+	my $password = $crypt->decrypt_db_password($main::ispcpConfig{'DATABASE_PASSWORD'});
+
+	$crypt->set('key', $main::imscpDBKey);
+	$crypt->set('iv', $main::imscpDBiv);
+	$main::imscpConfig{'DATABASE_PASSWORD'} = $crypt->encrypt_db_password($password);
+
+	for(
+		qw/
+			DEFAULT_ADMIN_ADDRESS SERVER_HOSTNAME BASE_SERVER_IP BASE_SERVER_VHOST DATABASE_TYPE DATABASE_HOST
+			DATABASE_NAME DATABASE_USER DATABASE_UTF8 ZIP
+		/
+	) {
+		$main::imscpConfig{$_} = $main::ispcpConfig{$_};
+	}
+
+	$main::imscpConfig{'SYSTEM_USER_PREFIX'} = $main::ispcpConfig{'APACHE_SUEXEC_USER_PREF'};
+	$main::imscpConfig{'SYSTEM_USER_MIN_UID'} = $main::ispcpConfig{'APACHE_SUEXEC_MIN_UID'};
+
+	0;
+}
+
+# Save needed configuration files
+sub saveIspcpConfigFiles
+{
+	my ($stdout, $stderr, @errors);
+
+	my $rs = execute("find $main::ispcpConfig{'CONF_DIR'} -type f -name '*.system'", \$stdout, \$stderr);
+	debug($stdout) if $stdout;
+	push  @errors, $stderr if $stderr && $rs;
+
+	my @files = split "\n", $stdout;
+
+	for (@files){
+		my $fileName = fileparse($_);
+		$rs = execute("$main::imscpConfig{'CMD_CP'} -f $_ $main::imscpConfig{'CONF_DIR'}/$fileName", \$stdout, \$stderr);
+		debug($stdout) if $stdout;
+		push @errors, $stderr if $stderr && $rs;
+	}
+
+	my $result = iMSCP::Database->new('db' => 'mysql')->factory()->doQuery(
+		'name',
+		"
+			SELECT `domain_name` AS 'name' FROM `domain`
+			UNION
+			SELECT `alias_name` AS 'name' FROM `domain_aliasses`
+		"
+	);
+	unless (ref $result eq 'HASH') {
+		push @errors, $result;
+	} elsif (%{$result}){
+		local $Data::Dumper::Terse = 1;
+
+		for (values %{$result}){
+			if (-f "$main::ispcpConfig{'BIND_DB_DIR'}/$_->{'name'}.db") {
+				$rs = execute(
+					"$main::imscpConfig{'CMD_CP'} -f $main::ispcpConfig{'BIND_DB_DIR'}/$_->{'name'}.db " .
+					"$main::imscpConfig{'CONF_DIR'}/bind/working/",
+					\$stdout,
+					\$stderr
+				);
+				debug($stdout) if $stdout;
+				push @errors, $stderr if $stderr && $rs;
+			}
+		}
+	}
+
+	if (@errors) {
+		my $errors = join "\n", @errors;
+
+		iMSCP::Dialog->factory()->msgbox(<<EOF);
+
+\\Z1\\ZuErrors while saving system files\\Zn
+
+Please fix the following errors and try again:
+
+$errors
+EOF
+
+		error("\n$errors");
+		return 1;
+	}
+
+	0;
+}
+
+# Delete all ispCP unix users and groups (They will be recreated by i-MSCP)
+sub deleteIspCPunixUsers
+{
+	my @errors;
+	my $rs = 0;
+
+	my $userH = iMSCP::SystemUser->new();
+	my $groupH = iMSCP::SystemGroup->getInstance();
+
+	# Master unix user/group
+
+	my $userName = $main::ispcpConfig{'APACHE_SUEXEC_USER_PREF'} . $main::ispcpConfig{'APACHE_SUEXEC_MIN_UID'};
+	$rs = $userH->delSystemUser($userName);
+	push @errors, "Unable to delete $userName unix user" if $rs;
+
+	# Only needed to cover the case where the admin added other users to the unix group
+	my $groupName = $main::ispcpConfig{'APACHE_SUEXEC_USER_PREF'} . $main::ispcpConfig{'APACHE_SUEXEC_MIN_GID'};
+	$rs = $groupH->delSystemGroup($groupName);
+	push @errors, "Unable to delete $groupName unix group" if $rs;
+
+	# Customer unix users/groups
+	my $database = iMSCP::Database->new('db' => 'mysql')->factory();
+
+	my $result = $database->doQuery('domain_uid', 'SELECT `domain_uid`, `domain_gid` FROM `domain`');
+	unless (ref $result eq 'HASH'){
+		push @errors, $result;
+	} elsif (%{$result}) {
+		for(values %{$result}) {
+			my $userName = getpwuid($_->{'domain_uid'});
+			$rs = $userH->delSystemUser($userName) if $userName;
+			push @errors, "Unable to delete $userName unix user" if $rs;
+
+			# Only needed to cover the case where the admin added other users to the unix group
+			my $groupName = getgrgid($_->{'domain_gid'});
+			$rs = $groupH->delSystemGroup($groupName) if $groupName;
+			push @errors, "Unable to delete $groupName unix group" if $rs;
+		}
+	}
+
+	if (@errors) {
+		my $errors = join "\n", @errors;
+
+		iMSCP::Dialog->factory()->msgbox(<<EOF);
+
+\\Z1\\ZuUnable to delete ispCP unix user/group\\Zn
+
+Please fix the following errors and try again:
+
+$errors
+EOF
+
+		error("\n$errors");
+		return 1;
+	}
+
+	0;
+}
+
+# Check ispCP database integrity
+sub databaseIntegrityTests
+{
+	# Check broken dependencies
+	my $query = '
+		SELECT
+			`t1`.*
+		FROM
+			`%s` AS `t1`
+		LEFT JOIN
+			`%s` AS `t2` ON `t1`.`%s` = `t2`.`%s`
+		WHERE
+			`t2`.`%s` IS NULL %s
+	';
+
+	my @tests = (
+		{
+			group => 'admin_id', childTable => 'admin', parentTable => 'admin', childField => 'created_by',
+			parentField => 'admin_id', limit => "AND t1.`admin_type` = 'user'"
+		},
+		{
+			group => 'admin_id', childTable => 'admin', parentTable => 'admin', childField => 'created_by',
+			parentField => 'admin_id', limit => "AND t1.`admin_type` = 'reseller'"},
+		{
+			group => 'admin_id', childTable => 'admin', parentTable => 'domain', childField => 'admin_id',
+			parentField => 'domain_admin_id', limit => "AND t1.`admin_type` = 'user'"},
+		{
+			group => 'domain_id', childTable => 'domain', parentTable => 'admin', childField => 'domain_admin_id',
+			parentField => 'admin_id', limit => ''
+		},
+		{
+			group => 'domain_id', childTable => 'domain', parentTable => 'server_ips', childField => 'domain_ip_id',
+			parentField => 'ip_id', limit => ''
+		},
+		{
+			group => 'alias_id', childTable => 'domain_aliasses', parentTable => 'domain', childField => 'domain_id',
+			parentField => 'domain_id', limit => ''
+		},
+		{
+			group => 'domain_dns_id', childTable => 'domain_dns', parentTable => 'domain', childField => 'domain_id',
+			parentField => 'domain_id', limit => ''
+		},
+		{
+			group => 'domain_dns_id', childTable => 'domain_dns', parentTable => 'domain_aliasses',
+			childField => 'alias_id', parentField => 'alias_id', limit => "AND t1.`alias_id` != 0"
+		},
+		{
+			group => 'userid', childTable => 'ftp_users', parentTable => 'domain', childField => 'uid',
+			parentField => 'domain_uid', limit => ''
+		},
+		{
+			group => 'userid', childTable => 'ftp_users', parentTable => 'domain', childField => 'gid',
+			parentField => 'domain_gid', limit => ''
+		},
+		{
+			group => 'id', childTable => 'htaccess', parentTable => 'domain', childField => 'dmn_id',
+			parentField => 'domain_id', limit => ''
+		},
+		{
+			group => 'id', childTable => 'htaccess', parentTable => 'htaccess_users', childField => 'user_id',
+			parentField => 'id', limit => 'AND t1.`user_id` != 0'
+		},
+		{
+			group => 'id', childTable => 'htaccess', parentTable => 'htaccess_groups', childField => 'group_id',
+			parentField => 'id', limit => 'AND t1.`group_id` != 0'
+		},
+		{
+			group => 'id', childTable => 'htaccess_groups', parentTable => 'domain', childField => 'dmn_id',
+			parentField => 'domain_id', limit => ''
+		},
+		{
+			group => 'id', childTable => 'htaccess_users', parentTable => 'domain', childField => 'dmn_id',
+			parentField => 'domain_id', limit => ''
+		},
+		{
+			group => 'mail_id', childTable => 'mail_users', parentTable => 'domain', childField => 'domain_id',
+			parentField => 'domain_id', limit => ''
+		},
+		{
+			group => 'mail_id', childTable => 'mail_users', parentTable => 'domain_aliasses', childField => 'sub_id',
+			parentField => 'alias_id', limit => "AND t1.`mail_type` LIKE  'alias_%'"
+		},
+		{
+			group => 'mail_id', childTable => 'mail_users', parentTable => 'subdomain', childField => 'sub_id',
+			parentField => 'subdomain_id', limit => "AND t1.`mail_type` LIKE  'subdom_%'"
+		},
+		{
+			group => 'mail_id', childTable => 'mail_users', parentTable => 'subdomain_alias', childField => 'sub_id',
+			parentField => 'subdomain_alias_id', limit => "AND t1.`mail_type` LIKE  'alssub_%'"
+		},
+		{
+			group => 'subdomain_id', childTable => 'subdomain', parentTable => 'domain', childField => 'domain_id',
+			parentField => 'domain_id', limit => ''
+		},
+		{
+			group => 'subdomain_alias_id', childTable => 'subdomain_alias', parentTable => 'domain_aliasses',
+			childField => 'alias_id', parentField => 'alias_id', limit => ''
+		},
+		{
+			group => 'groupname', childTable => 'ftp_group', parentTable => 'domain', childField => 'gid',
+			parentField => 'domain_gid', limit => ''
+		},
+		{
+			group => 'name', childTable => 'quotalimits', parentTable => 'domain', childField => 'name',
+			parentField => 'domain_name', limit => ''
+		},
+		{
+			group => 'name', childTable => 'quotatallies', parentTable => 'domain', childField => 'name',
+			parentField => 'domain_name', limit => ''
+		},
+		{
+			group => 'sqld_id', childTable => 'sql_database', parentTable => 'domain', childField => 'domain_id',
+			parentField => 'domain_id', limit => ''
+		},
+		{
+			group => 'sqlu_id', childTable => 'sql_user', parentTable => 'sql_database', childField => 'sqld_id',
+			parentField => 'sqld_id', limit => ''
+		}
+	);
+
+	my $database = iMSCP::Database->new('db' => 'mysql')->factory();
+
+	my @errors = ();
+	local $Data::Dumper::Terse = 1;
+
+	for my $test (@tests) {
+		my $pQuery =  sprintf(
+			$query, $test->{'childTable'}, $test->{'parentTable'}, $test->{'childField'}, $test->{'parentField'},
+			$test->{'parentField'}, $test->{'limit'}
+		);
+
+		my $result = $database->doQuery($test->{'group'}, $pQuery);
+
+		unless (ref $result eq 'HASH') {
+			push @errors, $result;
+		} elsif (%{$result}) {
+			for (values %{$result}) {
+				push @errors, "Orphaned entry found in table $test->{'childTable'}: ". (Dumper $_);
+			}
+		}
+	}
+
+	# Check for entities status
+	@tests = (
+		{ group => 'domain_id',	table => 'domain', statusField => 'domain_status' },
+		{ group => 'alias_id', table => 'domain_aliasses', statusField => 'alias_status' },
+		{ group => 'id', table => 'htaccess', statusField => 'status' },
+		{ group => 'id', table => 'htaccess_groups', statusField => 'status' },
+		{ group => 'id', table => 'htaccess_users',	statusField => 'status' },
+		{ group => 'mail_id', table => 'mail_users', statusField => 'status' },
+		{ group => 'ip_id', table => 'server_ips', statusField => 'ip_status' },
+		{ group => 'subdomain_id', table => 'subdomain', statusField => 'subdomain_status' },
+		{ group => 'subdomain_alias_id', table => 'subdomain_alias', statusField => 'subdomain_alias_status' }
+	);
+
+	for my $test (@tests) {
+		my $query =  sprintf("SELECT * FROM `%s` WHERE `%s` != 'ok'", $test->{'table'}, $test->{'statusField'});
+		my $result = $database->doQuery($test->{group}, $query);
+
+		unless (ref $result eq 'HASH') {
+			push @errors, $result;
+		} elsif (%{$result}) {
+			for (values %{$result}) {
+				push @errors, "Wrong status for the $test->{'table'} database table: " . (Dumper $_);
+			}
+		}
+	}
+
+	# Test for databases and SQL users
+	my $result = $database->doQuery(
+		'sqlu_id', 'SELECT * FROM `sql_user` AS `t1` LEFT JOIN `sql_database` AS `t2` ON `t1`.`sqld_id` = `t2`.`sqld_id`'
+	);
+
+	unless (ref $result eq 'HASH') {
+		push @errors, $result;
+	} else {
+		my $crypt = iMSCP::Crypt->getInstance();
+		$crypt->set('key', $main::ispcpDBKey);
+		$crypt->set('iv', $main::ispcpDBiv);
+
+		if (%{$result}) {
+			for (values %{$result}) {
+				$database->set('DATABASE_USER', $_->{'sqlu_name'});
+				$database->set('DATABASE_PASSWORD', $crypt->decrypt_db_password($_->{'sqlu_pass'}));
+				$database->set('DATABASE_NAME', '');
+
+				my $dbConnect = $database->connect();
+
+				if($dbConnect) { # Cannot connect to the SQL server with the given user
+					push @errors, $dbConnect;
+				} else {
+					$database->set('DATABASE_NAME', $_->{'sqld_name'});
+					$dbConnect = $database->connect();
+
+					# Cannot connect to the given database using the given user
+					push @errors, $dbConnect if $dbConnect;
+				}
+			}
+		}
+	}
+
+	if (@errors) {
+		my $errors = join "\n", @errors;
+
+		iMSCP::Dialog->factory()->msgbox(<<EOF);
+
+\\Z1\\ZuispCP database is corrupted\\Zn
+
+Please fix the following errors and try again:
+
+$errors
+EOF
+
+		error("\n$errors");
+		return 1;
+	}
+
+	_ispCPdbConnect(); # Restore conection to the ispCP datavase
+
+	0;
+}
+
+# Check ispCP database password using ispCP database key files
+sub checkDbPassword
+{
+	my @keyFilePaths = (
+		$main::ispcpConfig{'CONF_DIR'} . '/ispcp-keys.conf',
+		$main::ispcpConfig{'ROOT_DIR'} . '/engine/ispcp-db-keys.pl',
+		$main::ispcpConfig{'ROOT_DIR'} . '/engine/messenger/ispcp-db-keys.pl',
+		$main::ispcpConfig{'GUI_ROOT_DIR'} . '/include/ispcp-db-keys.php'
+	);
+
+	my @existentKeyFiles;
+	my @errors;
+
+	for (@keyFilePaths) {
+		next if ! -f $_;
+
+		push @existentKeyFiles, $_;
+
+		my $fileContent = iMSCP::File->new('filename' => $_)->get();
+		push @errors, 'Unable to read $_ file' unless defined $fileContent;
+
+		if($fileContent =~ /db_pass_key\s=\s'(.+)'/ || $fileContent =~ /DB_PASS_KEY=(.+)/i) {
+			$main::ispcpDBKey = $1;
+
+			if( $fileContent =~ /db_pass_iv\s=\s'(.+)'/ || $fileContent =~ /DB_PASS_IV=(.+)/i) {
+				$main::ispcpDBiv = $1;
+
+				my $dbConnection = _ispCPdbConnect();
+				unless(!$dbConnection) {
+					push @errors, "Unable to connect to the ispCP database using the $_ file";
+				} else {
+					return 0;
+				}
+			}
+		}
+	}
+
+	if(@existentKeyFiles) {
+		my $keyFiles = join "\n", @existentKeyFiles;
+
+		iMSCP::Dialog->factory()->msgbox(<<EOF);
+
+\\Z1\\ZuAll ispCP database key files are corrupted\\Zn
+
+The migration script was unable to connect to the ispCP database using the following key files:
+
+$keyFiles
+
+Please fix this issue and try again.
+EOF
+	} else {
+		my $keyFiles = join "\n", @keyFilePaths;
+
+		iMSCP::Dialog->factory()->msgbox(<<EOF);
+
+\\Z1\\ZuAll Unable to find any ispCP database key file\\Zn
+
+The migration script was unable to find an ispCP database key file. The following paths were checked:
+
+$keyFiles
+
+Please fix this issue and try again.
+EOF
+	}
+
+	error("\n" . join "\n", @errors);
+
+	1;
+}
+
+# Check ispCP version
+sub checkIspcpVersion
+{
+	if($main::ispcpConfig{'Version'} =~ /([\d.]+)/) {
+		if(version->new($1) < version->new('1.0.7')) {
+			iMSCP::Dialog->factory()->set('defaultno', '');
+
+			if(iMSCP::Dialog->factory()->yesno(<<EOF)) {
+
+\\Z1\\ZuMigration from ispCP version $1 is not supported\\Zn
+
+\\Z1WARNING:\\Zu
+
+Only migration from ispCP 1.0.7 or a newest is supported.
+
+By pressing the 'continue' button you can ignore this warning. Be warned that if you continue, your data might be corrupted.
+EOF
+			error('Only migration from ispCP version 1.0.7 or newer is supported');
+			return 1;
+			}
+		}
+	} else {
+		iMSCP::Dialog->factory()->msgbox(<<EOF);
+
+\\Z1\\ZuUnable to retrieve i-MSCP version\\Zn
+
+The migration script was unable to retrieve your ispCP version.
+
+Please fix this issue and try again.
+EOF
+		return 1;
+	}
+
+	0;
+}
+
+# Show migration script welcome message
+sub welcomeMessage
+{
+	my $dialog = iMSCP::Dialog->factory();
+	$dialog->set('title', "i-MSCP $main::imscpConfig{'Version'} migration dialog");
+	$dialog->set('backtitle', 'i-MSCP - internet Multi Server Control Panel');
+
+	$dialog->set('yes-label','Continue');
+	$dialog->set('no-label','Abort');
+
+	exit 0 if $dialog->yesno(<<EOF);
+
+Welcome to the i-MSCP \\Z4($main::imscpConfig{'Version'})\\Z0 migration dialog.
+
+This program will migrate your ispCP control panel to i-MSCP.
+
+\\ZuPlease make sure you have a backup of your data before continue.\\Zn
+
+\\Z4NOTE:\\Z0 During the migration process some or all services might require to be shut down or restarted.
+
+You can stop this process by pressing the \\Z4Abort\\Z0 button.
+
+To continue, press the \\Z4Continue\\Z0 button.
+EOF
+
+	0;
+}
+
+# Process all migration steps
+sub processMigration
+{
+	my $configDir = ($^O =~ /bsd$/ ? '/usr/local/etc' : '/etc');
+
+	if(! -f "$configDir/ispcp/ispcp.conf") {
+		fatal("File $configDir/ispcp/ispcp.conf is unreadable or doesn't exist");
+	}
+
+	# Load ispCP configuration file
+	tie %main::ispcpConfig, 'iMSCP::Config', 'fileName' => "$configDir/ispcp/ispcp.conf";
+
+	my @steps = (
+		[\&welcomeMessage, 'Welcome message'],
+		[\&checkIspcpVersion, 'Checking for ispCP version'],
+		[\&checkDbPassword, 'Checking for database password'],
+		[\&databaseIntegrityTests, 'Checking for database integrity'],
+		[\&deleteIspCPunixUsers, 'Deleting ispCP unix users'],
+		[\&saveIspcpConfigFiles, 'saving system configuration files'],
+		[\&saveIspcpMainConfiguration, 'Saving main ispCP configuration parameters'],
+		[\&dbUpgrade, 'Database upgrade'],
+		[\&saveIspLogo, 'Saving ISP logos'],
+		[\&removeIspcpFiles, 'Remove ispCP files']
+	);
+
+	my $step = 1;
+	my $nbSteps = @steps;
+
+	# Process all migration steps
+	for (@steps) {
+		my $rs = step($_->[0], $_->[1], $nbSteps, $step);
+		return $rs if $rs;
+		$step++;
+	}
+
+	iMSCP::Dialog->factory()->endGauge() if iMSCP::Dialog->factory()->hasGauge();
+
+	iMSCP::Dialog->factory()->msgbox(<<EOF);
+
+\\Z1Migration successful\\Zn
+
+Your ispCP control panel has been successfuly migrated to i-MSCP $main::imscpConfig{'Version'}.
+
+You can now finish the i-MSCP installation by running the i-MSCP setup script.
+EOF
+
+	0;
+}
+
+########################################################################################################################
+# Main
+#
+
+# Turn off localisation features to force any command output to be in English
 $ENV{'LC_MESSAGES'} = 'C';
 
 umask(027);
@@ -49,859 +893,4 @@ silent(1);
 
 iMSCP::Boot->getInstance()->boot({ 'mode' => 'setup', 'nodatabase' => 'yes' });
 
-loadConfigs();
-
-exit 1 if setup_engine();
-exit 0;
-
-
-sub setup_engine
-{
-	use iMSCP::Stepper;
-
-	my @steps = (
-		[\&welcome, 'Just say Hello World: '],
-		[\&checkISPCPVersion, 'Test if is a supported version: '],
-		[\&checkDbPass, 'Do we have a database password?: '],
-		[\&databaseIntegrityTest, 'Is database usable?: '],
-		[\&userTest, 'System users are in place?: '],
-		[\&systemConfigTest, 'Save system config files if exists: '],
-		[\&confSave, 'Save system configuration: '],
-		[\&dbUpgrade, 'Upgrade database: '],
-		[\&copyLogos, 'Copy logos: '],
-		[\&otherMessCleanup, 'Some system cleaning: '],
-		[\&daemonRemove, 'Remove imscp daemon: '],
-		[\&removeDirs, 'Delete ispcp directories: '],
-		[\&removeFile, 'Delete ispcp files: '],
-		[\&removePhpFcgiStarter, 'Delte ispcp PHP FCGI Starters: ']
-	);
-
-	my $step = 1;
-
-	for (@steps){
-		exit 1 if step($_->[0], $_->[1], scalar @steps, $step);
-		$step++;
-	}
-
-	iMSCP::Dialog->factory()->endGauge() if iMSCP::Dialog->factory()->hasGauge();
-
-	systemSetup();
-
-	0;
-}
-
-sub loadConfigs
-{
-	use iMSCP::Config;
-
-	my $path = ($^O =~ /bsd$/ ? '/usr/local/etc/' : '/etc/');
-
-	fatal('ispcp.conf files not found') if(! -f $path.'ispcp/ispcp.conf' || ! -f $path.'imscp/imscp.conf');
-
-	tie %main::ispcpConfig, 'iMSCP::Config','fileName' => $path.'ispcp/ispcp.conf';
-
-	0;
-}
-
-sub welcome
-{
-	use iMSCP::Dialog;
-
-	my $dialog = iMSCP::Dialog->factory();
-	$dialog->set('title', 'Upgrade to iMSCP');
-	$dialog->set('backtitle', "iMSCP internet Multi Server Control Panel");
-
-	$dialog->set('yes-label','CONTINUE');
-	$dialog->set('no-label','EXIT');
-	exit 0 if ($dialog->yesno(
-"
-Welcome to \\Z1iMSCP internet Multi Server Control Panel v$main::imscpConfig{'Version'}\\Z0 Upgrade Dialog.
-This program will upgrade your ispCP system to iMSCP.
-
-\\ZuPlease make sure you have a backup of your server data\\Zn.
-
-NOTE: During the migration process some or all services might require to be shut down or restarted.\n\n
-You can stop this process by pushing \\Z1EXIT\\Z0 button
-To proceed select \\Z1CONTINUE\\Z0 button
-"
-
-		)
-	);
-
-	0;
-}
-
-sub checkISPCPVersion
-{
-	use iMSCP::Dialog;
-
-	$main::ispcpConfig{'Version'} =~ m!([\d.]+)!;
-
-	if(version->new($1) < version->new('1.0.7')) {
-		error('Only migration from ispCP version 1.0.7 or newer is supported');
-		iMSCP::Dialog->factory()->set('defaultno', '');
-		exit 1 if iMSCP::Dialog->factory()->yesno(
-"
-\\Z1\\ZuispCP $1 is not supported!\\Zn
-
-We only support migration from ispCP 1.0.7 and later!
-
-By selecting the CONTINUE button you can ignore this!
-
-\\Z1WARNING: \\ZuDATA might be corrupted if you proceed forward\\Zn!!
-"
-		);
-	}
-
-	0;
-}
-
-sub checkDbPass
-{
-	use iMSCP::File;
-	use iMSCP::Dialog;
-
-	my @paths = (
-		$main::ispcpConfig{'CONF_DIR'}.'/ispcp-keys.conf',
-		$main::ispcpConfig{'ROOT_DIR'}.'/engine/ispcp-db-keys.pl',
-		$main::ispcpConfig{'ROOT_DIR'}.'/engine/messenger/ispcp-db-keys.pl',
-		$main::ispcpConfig{'GUI_ROOT_DIR'}.'/include/ispcp-db-keys.php'
-	);
-
-	my ($dbkey, $dbiv, $pass);
-
-	for my $keyfile (@paths) {
-
-		debug("\n\n\nTesting $keyfile");
-
-		next if! -f $keyfile;
-
-		my $file = iMSCP::File->new('filename' => "$keyfile")->get();
-
-		if($file =~ m!db_pass_key\s=\s'(.+)'! || $file =~ m!DB_PASS_KEY=(.+)!i) {
-			$main::ispcpDBKey = $1;
-			debug($main::ispcpDBKey);
-
-			if( $file =~ m!db_pass_iv\s=\s'(.+)'! || $file =~ m!DB_PASS_IV=(.+)!) {
-				$main::ispcpDBiv = $1;
-				debug($main::ispcpDBiv);
-				my $error = connectispCPDb();
-
-				if(!$error) {
-					return 0;
-				}
-
-				error($error);
-			}
-		}
-	}
-
-	iMSCP::Dialog->factory()->msgbox(
-"
-\\Z1\\ZuispCP database keys are corrupt!\\Zn
-
-We tried to use the following keys" . join("\n							", @paths) . "
-
-but all seem to be corrupt!
-
-Fix this and restart.
-"
-	);
-
-	error("ispCP database keys are corrupted! We tried to use the following keys\n" . join("\n", @paths));
-
-	1;
-}
-
-sub connectispCPDb
-{
-	use iMSCP::Crypt;
-
-	my $crypt = iMSCP::Crypt->getInstance();
-	$crypt->set('key', $main::ispcpDBKey);
-	$crypt->set('iv', $main::ispcpDBiv);
-	my $pass = $crypt->decrypt_db_password($main::ispcpConfig{'DATABASE_PASSWORD'});
-	my $database = iMSCP::Database->new(db => 'mysql')->factory();
-	$database->set('DATABASE_NAME', $main::ispcpConfig{'DATABASE_NAME'});
-	$database->set('DATABASE_HOST', $main::ispcpConfig{'DATABASE_HOST'});
-	$database->set('DATABASE_USER', $main::ispcpConfig{'DATABASE_USER'});
-	$database->set('DATABASE_PASSWORD', $pass);
-
-	return $database->connect();
-}
-
-sub databaseIntegrityTest
-{
-	use iMSCP::Crypt;
-	use iMSCP::Database;
-	use iMSCP::Dialog;
-
-	# broken dependencies
-	my $query = "SELECT t1.* FROM `%s` as t1 LEFT JOIN `%s` as t2 ON t1.`%s` = t2.`%s` WHERE t2.`%s` is null %s";
-	my @tests = (
-		{group => 'admin_id', childTable => 'admin', parentTable=>'admin', childField => 'created_by', parentField => 'admin_id', limit => "AND t1.`admin_type` = 'user'"},
-		{group => 'admin_id', childTable => 'admin', parentTable=>'admin', childField => 'created_by', parentField => 'admin_id', limit => "AND t1.`admin_type` = 'reseller'"},
-		{group => 'admin_id', childTable => 'admin', parentTable=>'domain', childField => 'admin_id', parentField => 'domain_admin_id', limit => "AND t1.`admin_type` = 'user'"},
-		{group => 'domain_id', childTable => 'domain', parentTable=>'admin', childField => 'domain_admin_id', parentField => 'admin_id', limit => ""},
-		{group => 'domain_id', childTable => 'domain', parentTable=>'server_ips', childField => 'domain_ip_id', parentField => 'ip_id', limit => ""},
-		{group => 'alias_id', childTable => 'domain_aliasses', parentTable=>'domain', childField => 'domain_id', parentField => 'domain_id', limit => ""},
-		{group => 'domain_dns_id', childTable => 'domain_dns', parentTable=>'domain', childField => 'domain_id', parentField => 'domain_id', limit => ""},
-		{group => 'domain_dns_id', childTable => 'domain_dns', parentTable=>'domain_aliasses', childField => 'alias_id', parentField => 'alias_id', limit => "AND t1.`alias_id` != 0"},
-		{group => 'userid', childTable => 'ftp_users', parentTable=>'domain', childField => 'uid', parentField => 'domain_uid', limit => ""},
-		{group => 'userid', childTable => 'ftp_users', parentTable=>'domain', childField => 'gid', parentField => 'domain_gid', limit => ""},
-		{group => 'id', childTable => 'htaccess', parentTable=>'domain', childField => 'dmn_id', parentField => 'domain_id', limit => ""},
-		{group => 'id', childTable => 'htaccess', parentTable=>'htaccess_users', childField => 'user_id', parentField => 'id', limit => "AND t1.`user_id` != 0"},
-		{group => 'id', childTable => 'htaccess', parentTable=>'htaccess_groups', childField => 'group_id', parentField => 'id', limit => "AND t1.`group_id` != 0"},
-		{group => 'id', childTable => 'htaccess_groups', parentTable=>'domain', childField => 'dmn_id', parentField => 'domain_id', limit => ""},
-		#{group => 'id', childTable => 'htaccess_groups', parentTable=>'htaccess_users', childField => 'members', parentField => 'id', limit => ""},
-		{group => 'id', childTable => 'htaccess_users', parentTable=>'domain', childField => 'dmn_id', parentField => 'domain_id', limit => ""},
-		{group => 'mail_id', childTable => 'mail_users', parentTable=>'domain', childField => 'domain_id', parentField => 'domain_id', limit => ""},
-		{group => 'mail_id', childTable => 'mail_users', parentTable=>'domain_aliasses', childField => 'sub_id', parentField => 'alias_id', limit => "AND t1.`mail_type` LIKE  'alias_%'"},
-		{group => 'mail_id', childTable => 'mail_users', parentTable=>'subdomain', childField => 'sub_id', parentField => 'subdomain_id', limit => "AND t1.`mail_type` LIKE  'subdom_%'"},
-		{group => 'mail_id', childTable => 'mail_users', parentTable=>'subdomain_alias', childField => 'sub_id', parentField => 'subdomain_alias_id', limit => "AND t1.`mail_type` LIKE  'alssub_%'"},
-		{group => 'subdomain_id', childTable => 'subdomain', parentTable=>'domain', childField => 'domain_id', parentField => 'domain_id', limit => ""},
-		{group => 'subdomain_alias_id', childTable => 'subdomain_alias', parentTable=>'domain_aliasses', childField => 'alias_id', parentField => 'alias_id', limit => ""},
-		{group => 'groupname', childTable => 'ftp_group', parentTable=>'domain', childField => 'gid', parentField => 'domain_gid', limit => ""},
-		#{group => '', childTable => '', parentTable=>'', childField => '', parentField => '', limit => ""},
-		{group => 'name', childTable => 'quotalimits', parentTable=>'domain', childField => 'name', parentField => 'domain_name', limit => ""},
-		{group => 'name', childTable => 'quotatallies', parentTable=>'domain', childField => 'name', parentField => 'domain_name', limit => ""},
-		{group => 'sqld_id', childTable => 'sql_database', parentTable=>'domain', childField => 'domain_id', parentField => 'domain_id', limit => ""},
-		{group => 'sqlu_id', childTable => 'sql_user', parentTable=>'sql_database', childField => 'sqld_id', parentField => 'sqld_id', limit => ""},
-		#{group => '', childTable => '', parentTable=>'', childField => '', parentField => '', limit => ""},
-	);
-
-	my @errors = ();
-	local $Data::Dumper::Terse = 1;
-
-	for my $test (@tests) {
-		my $preparedQuery =  sprintf(
-			$query, $test->{'childTable'}, $test->{'parentTable'}, $test->{'childField'}, $test->{'parentField'},
-			$test->{'parentField'}, $test->{'limit'}
-		);
-		my $database = iMSCP::Database->new(db => 'mysql')->factory();
-		my $result = $database->doQuery($test->{'group'}, $preparedQuery);
-
-		if (ref $result ne 'HASH'){
-			error($preparedQuery);
-		} else {
-			if (keys %{$result}) {
-				for my $row (values %{$result}){
-					push(@errors, "Table $test->{'childTable'} has orphan entry: ". (Dumper $row));
-				}
-
-			}
-		}
-	}
-
-	#check if all status is ok
-	$query = "SELECT * FROM `%s` WHERE `%s` != 'ok'";
-	@tests = (
-		{ group => 'domain_id',				table => 'domain',			statusField => 'domain_status' },
-		{ group => 'alias_id',				table => 'domain_aliasses',	statusField => 'alias_status' },
-		{ group => 'id',					table => 'htaccess',		statusField => 'status' },
-		{ group => 'id',					table => 'htaccess_groups',	statusField => 'status' },
-		{ group => 'id',					table => 'htaccess_users',	statusField => 'status' },
-		{ group => 'mail_id',				table => 'mail_users',		statusField => 'status' },
-		{ group => 'ip_id',					table => 'server_ips',		statusField => 'ip_status' },
-		{ group => 'subdomain_id',			table => 'subdomain',		statusField => 'subdomain_status' },
-		{ group => 'subdomain_alias_id',	table => 'subdomain_alias',	statusField => 'subdomain_alias_status' }
-	);
-
-	for my $test (@tests) {
-		my $preparedQuery =  sprintf($query, $test->{'table'}, $test->{'statusField'});
-		my $database = iMSCP::Database->new(db => 'mysql')->factory();
-		my $result = $database->doQuery($test->{group}, $preparedQuery);
-
-		if (ref $result ne 'HASH'){
-			error($preparedQuery);
-		} else {
-			if (keys %{$result}) {
-				for my $row (values %{$result}) {
-					push(@errors, "Table $test->{'table'} has records that have status different then ok: ". (Dumper $row));
-				}
-			}
-		}
-	}
-
-	# test databases and sql users
-	$query = 'SELECT * FROM `sql_user` as t1 LEFT JOIN `sql_database` AS t2 ON t1.`sqld_id` = t2.`sqld_id`';
-	my $database = iMSCP::Database->new(db => 'mysql')->factory();
-	my $result = $database->doQuery('sqlu_id', $query);
-
-	if (ref $result ne 'HASH') {
-		error($query);
-	} else {
-		if (keys %{$result}) {
-			for my $row (values %{$result}) {
-				$database->set('DATABASE_USER', $row->{'sqlu_name'});
-				my $crypt = iMSCP::Crypt->getInstance();
-				$crypt->set('key', $main::ispcpDBKey);
-				$crypt->set('iv', $main::ispcpDBiv);
-				$database->set('DATABASE_PASSWORD', $crypt->decrypt_db_password($row->{'sqlu_pass'}));
-				$database->set('DATABASE_NAME', '');
-				my $rt = $database->connect();
-
-				if($rt) {
-					chomp($rt);
-					$rt = "User $row->{'sqlu_name'} access denied: $rt". Dumper $row;
-					push(@errors, $rt) if($rt);
-				} else {
-					$database->set('DATABASE_NAME', $row->{'sqld_name'});
-					my $rt = $database->connect();
-
-					if($rt) {
-						chomp($rt);
-						$rt = "User $row->{'sqlu_name'} cannot connect to database $row->{'sqld_name'}: $rt". Dumper $row;
-						push(@errors, $rt);
-					}
-				}
-			}
-		}
-	}
-
-	if (@errors) {
-		iMSCP::Dialog->factory()->msgbox(
-"
-\\Z1\\ZuispCP database records are corrupted!\\Zn\n
-Please fix the following:\n\n" .
-
-join("\n\n", @errors) .
-"\nFix this and try again.
-"
-	);
-		error("" . join("\n", @errors));
-		return 1;
-	}
-
-	connectispCPDb(); # restore conection
-
-	0;
-}
-
-sub userTest
-{
-	use iMSCP::Database;
-	use iMSCP::Dialog;
-
-	my @errors;
-
-	# CLIENT USER
-	my $query = 'SELECT * FROM `domain`';
-	my $database = iMSCP::Database->new(db => 'mysql')->factory();
-	my $result = $database->doQuery('domain_gid', $query);
-	if (ref $result ne 'HASH'){
-		push(@errors, "$query produced the following error: $result");
-	} else {
-		if (keys %{$result}) {
-			local $Data::Dumper::Terse = 1;
-			for my $row (values %{$result}) {
-				push(@errors, "No system user has group id $row->{domain_gid}") if(!getgrgid($row->{'domain_gid'}));
-				push(@errors, "No such group ".$main::ispcpConfig{'APACHE_SUEXEC_USER_PREF'}.$row->{'domain_gid'})
-					if(!getgrnam($main::ispcpConfig{'APACHE_SUEXEC_USER_PREF'}.$row->{'domain_gid'}));
-				push(@errors, "No system user has user id = $row->{domain_uid}") if(!getpwuid($row->{'domain_uid'}));
-				push(@errors, "No such user ".$main::ispcpConfig{'APACHE_SUEXEC_USER_PREF'}.$row->{'domain_uid'})
-					if(!getpwnam($main::ispcpConfig{'APACHE_SUEXEC_USER_PREF'}.$row->{'domain_uid'}));
-			}
-		}
-	}
-
-	if (@errors){
-		iMSCP::Dialog->factory()->msgbox(
-"
-\\Z1\\ZuispCP user records are missing or corrupt!\\Zn\n
-Please fix the following:\n\n" .
-join("\n\n", @errors)
-."\n\nFix this and try again.
-"
-	);
-		error("\n".join("\n", @errors));
-		return 1;
-	}
-
-	0;
-}
-
-sub systemConfigTest{
-
-	use iMSCP::Execute;
-	use iMSCP::Dialog;
-	use iMSCP::Database;
-
-	my ($stdout, $stderr, @errors);
-	my $rv = execute("find $main::ispcpConfig{'CONF_DIR'} -type f -name '*.system'", \$stdout, \$stderr);
-	debug($stdout) if $stdout;
-	push (@errors, $stderr) if $stderr && $rv;
-
-	my @files = split("\n", $stdout);
-
-	for my $file (@files){
-		my $destination = $file;
-		$destination =~ s/$main::ispcpConfig{'CONF_DIR'}/$main::imscpConfig{'CONF_DIR'}/g;
-		$rv = execute("$main::imscpConfig{'CMD_CP'} -f $file $destination", \$stdout, \$stderr);
-		debug($stdout) if $stdout;
-		push (@errors, $stderr) if $stderr && $rv;
-	}
-
-	my $database = iMSCP::Database->new(db => 'mysql')->factory();
-	my $query = "
-		SELECT `domain_name` AS 'name' FROM `domain`
-		UNION
-		SELECT `alias_name` AS 'name' FROM `domain_aliasses`
-	";
-	my $result = $database->doQuery('name', $query);
-
-	if (ref $result ne 'HASH'){
-		push(@errors, "$query produced the following error: $result");
-	} else {
-		if (keys %{$result}){
-			local $Data::Dumper::Terse = 1;
-			for my $row (values %{$result}){
-				if (-f "$main::ispcpConfig{'BIND_DB_DIR'}/$row->{'name'}.db") {
-					$rv = execute("$main::imscpConfig{'CMD_CP'} -f $main::ispcpConfig{'BIND_DB_DIR'}/$row->{'name'}.db $main::imscpConfig{'CONF_DIR'}/bind/working/", \$stdout, \$stderr);
-					debug($stdout) if $stdout;
-					push (@errors, $stderr) if $stderr && $rv;
-				}
-			}
-		}
-
-	}
-
-	$rv = 0;
-	if (@errors) {
-		if(
-			iMSCP::Dialog->factory()->msgbox(
-"
-\\Z1\\ZuErrors while saving system files!\\Zn:\n\n
-" . join("\n", @errors) ."\n
-Fix this and try again
-"
-			)
-		) {
-			$rv = 1;
-			warning("\n" . join("\n", @errors));
-		}
-	}
-
-	return ( $rv ? join("\n\n", @errors) : $rv);
-}
-
-sub confSave
-{
-	use iMSCP::Crypt;
-	use iMSCP::Boot;
-
-	my $crypt = iMSCP::Crypt->getInstance();
-	my $pass = $crypt->decrypt_db_password($main::ispcpConfig{'DATABASE_PASSWORD'});
-
-	$crypt->set('key', $main::imscpDBKey);
-	$crypt->set('iv', $main::imscpDBiv);
-	$main::imscpConfig{'DATABASE_PASSWORD'} = $crypt->encrypt_db_password($pass);
-
-	for(qw/
-		DEFAULT_ADMIN_ADDRESS
-		SERVER_HOSTNAME
-		BASE_SERVER_IP
-		BASE_SERVER_VHOST
-		DATABASE_TYPE
-		DATABASE_HOST
-		DATABASE_NAME
-		DATABASE_USER
-		DATABASE_UTF8
-		ZIP
-		/
-	) {
-		$main::imscpConfig{$_} = $main::ispcpConfig{$_};
-	}
-
-	0;
-}
-
-sub savePass
-{
-	my $table = shift;
-	my $field_id = shift;
-	my $field_pass = shift;
-	my $values = shift;
-	my $errors = shift;
-
-	# switch key
-	my $crypt = iMSCP::Crypt->getInstance();
-	$crypt->set('key', $main::ispcpDBKey);
-	$crypt->set('iv', $main::ispcpDBiv);
-
-	my $pass =  $crypt->decrypt_db_password($values->{$field_pass});
-
-	# restore keys
-	$crypt->set('key', $main::imscpDBKey);
-	$crypt->set('iv', $main::imscpDBiv);
-
-	$pass = $crypt->encrypt_db_password($pass);
-
-	my $database = iMSCP::Database->new(db => 'mysql')->factory();
-	my $query = "UPDATE `$table` SET `$field_pass` = ? WHERE `$field_id` = ?";
-	my $error = $database->doQuery('dummy', $query, $pass, $values->{$field_id});
-
-	if (ref $error ne 'HASH'){
-		push(@{$errors}, "$query produced the following error: $error");
-	}
-
-	0;
-}
-
-sub dbUpgrade
-{
-	my @errors;
-
-	my $query = 'UPDATE `config` SET `value` = \'47\' WHERE `config`.`name` = \'DATABASE_REVISION\' AND `value` > \'47\'';
-	my $database = iMSCP::Database->new(db => 'mysql')->factory();
-	my $result = $database->doQuery('mail_id', $query);
-
-	if (ref $result ne 'HASH') {
-		push(@errors, "$query produced the following error: $result");
-	}
-
-	$query = 'SELECT `mail_id`, `mail_pass` FROM `mail_users` WHERE `mail_pass` != \'_no_\'';
-	$database = iMSCP::Database->new(db => 'mysql')->factory();
-	$result = $database->doQuery('mail_id', $query);
-
-	if (ref $result ne 'HASH'){
-		push(@errors, "$query produced the following error: $result");
-	} else {
-		if (keys %{$result}) {
-			for my $row (values %{$result}) {
-				savePass('mail_users', 'mail_id', 'mail_pass', $row, \@errors);
-			}
-		}
-	}
-
-	$query = 'SELECT `sqlu_id`, `sqlu_pass` FROM `sql_user`';
-	$database = iMSCP::Database->new(db => 'mysql')->factory();
-	$result = $database->doQuery('sqlu_id', $query);
-
-	if (ref $result ne 'HASH') {
-		push(@errors, "$query produced the following error: $result");
-	} else {
-		if (keys %{$result}) {
-			for my $row (values %{$result}) {
-				savePass('sql_user', 'sqlu_id', 'sqlu_pass', $row, \@errors);
-			}
-		}
-	}
-
-	if (@errors) {
-		error("\n".join("\n", @errors));
-		exit 0 if iMSCP::Dialog->factory()->msgbox(
-"
-\\Z1\\ZuWARNING\\Zn\n
-Please fix the following:\n\n" .
-join("\n\n", @errors)
-."\n
-These errors are not fatal so we can proceed forward.
-Be aware that some passwords must be changed before the login works again.
-"
-		);
-	}
-
-	0;
-}
-
-
-sub copyLogos
-{
-	use iMSCP::File;
-	my @errors;
-
-	my $panelUName = $main::imscpConfig{'SYSTEM_USER_PREFIX'}.$main::imscpConfig{'SYSTEM_USER_MIN_UID'};
-	my $panelGName = $main::imscpConfig{'SYSTEM_USER_PREFIX'}.$main::imscpConfig{'SYSTEM_USER_MIN_UID'};
-	
-	my $database = iMSCP::Database->new(db => 'mysql')->factory();
-	my $query = "SELECT DISTINCT `logo` FROM `user_gui_props` WHERE logo <> '0' AND logo <> ''";
-	my $result = $database->doQuery('logo', $query);
-
-	if (ref $result ne 'HASH') {
-		push(@errors, "$query produced the following error: $result");
-	} else {
-		for (keys %$result) {
-			my $logoName = $result->{$_}->{'logo'};
-			my $ispcpLogoFileName = "$main::ispcpConfig{'GUI_ROOT_DIR'}/themes/user_logos/$logoName";
-			if(-f $ispcpLogoFileName) {
-				# if the logo exists, copy it to the i-MSCP folder
-				my $ispcpFile = iMSCP::File->new(filename => $ispcpLogoFileName);
-				if ($ispcpFile->copyFile("$main::imscpConfig{'GUI_ROOT_DIR'}/data/persistent/ispLogos/$logoName")) {
-					push(@errors, getLastError());
-				}
-			}
-			else {
-				push(@errors, "Logo file $ispcpLogoFileName not found");
-			}
-		}
-	}
-
-	if (@errors) {
-	iMSCP::Dialog->factory()->msgbox(
-"
-\\Z1\\ZuWARNING\\Zn\n
-The following errors occurred:\n".
-join("\n", @errors)
-."\n
-These errors are not fatal so we can proceed forward.
-"
-	);
-	warning("\n".join("\n", @errors));
-	}
-
-	0;
-}
-
-
-sub otherMessCleanup
-{
-	use iMSCP::Templator;
-	use iMSCP::File;
-	use iMSCP::Execute;
-
-	my ($startTag, $endTag, $file, $rs, $stdout, $stderr, @errors);
-
-	# named.conf make sure does not contain wrong tags
-	$startTag = iMSCP::File->new(filename => "$main::ispcpConfig{'CONF_DIR'}/bind/parts/cfg_dta_b.tpl")->get();
-	push(@errors, "Unable to read $main::ispcpConfig{'CONF_DIR'}/bind/parts/cfg_dta_b.tpl") if !$startTag;
-	$endTag = iMSCP::File->new(filename => "$main::ispcpConfig{'CONF_DIR'}/bind/parts/cfg_dta_e.tpl")->get();
-	push(@errors, "Unable to read $main::ispcpConfig{'CONF_DIR'}/bind/parts/cfg_dta_e.tpl") if !$endTag;
-
-	$file = iMSCP::File->new(filename => $main::ispcpConfig{'BIND_CONF_FILE'});
-	my $bind = $file->get();
-	push(@errors, "Unable to read $main::ispcpConfig{'BIND_CONF_FILE'}") if ! $bind;
-
-	$bind = replaceBloc($startTag, $endTag, ' ', $bind) if $bind && $startTag && $endTag;
-
-	if($bind) {
-		$file->set($bind) and push(@errors, getLastError());
-		$file->save() and push(@errors, getLastError());
-	}
-
-	$file = iMSCP::File->new(filename => "$main::imscpConfig{'CONF_DIR'}/bind/backup/named.conf.system");
-	my $bkbind = $file->get();
-	push(@errors, "Unable to read $main::imscpConfig{'CONF_DIR'}/bind/backup/named.conf.system") if !$bkbind;
-
-	if($bkbind && $startTag && $endTag) {
-		$bkbind = replaceBloc($startTag, $endTag, ' ', $bkbind);
-	}
-
-	if ($bkbind) {
-		$file->set($bkbind) and push(@errors, getLastError());
-		$file->save() and push(@errors, getLastError());
-	}
-
-	# fcgi / fastcgi cleanup
-	if(! -e '/etc/SuSE-release' && -e '/usr/sbin/a2enmod') {
-		$rs = execute("/usr/sbin/a2dismod fastcgi_ispcp fcgid_ispcp", \$stdout, \$stderr);
-		debug($stdout) if $stdout;
-		push(@errors, $stderr) if $stderr && $rs;
-	}
-	for (qw/fastcgi_ispcp.conf fastcgi_ispcp.load fcgid_ispcp.conf fcgid_ispcp.load/) {
-		if(-e "$main::ispcpConfig{'APACHE_MODS_DIR'}/$_") {
-			unlink "$main::ispcpConfig{'APACHE_MODS_DIR'}/$_" or push(@errors, ": Delete $main::ispcpConfig{'APACHE_MODS_DIR'}/$_ failed: $!");
-		}
-	}
-
-	# apache ispcp.conf
-	if(! -f '/etc/SuSE-release' && -e '/usr/sbin/a2dissite') {
-		$rs = execute("/usr/sbin/a2dissite ispcp.conf", \$stdout, \$stderr);
-		debug($stdout) if $stdout;
-		push(@errors, $stderr) if $stderr && $rs;
-	}
-
-	if(-f "$main::ispcpConfig{'APACHE_SITES_DIR'}/ispcp.conf") {
-		unlink "$main::ispcpConfig{'APACHE_SITES_DIR'}/ispcp.conf" or push(@errors, ": Delete $main::ispcpConfig{'APACHE_SITES_DIR'}/ispcp.conf failed: $!");
-	}
-
-	# logrotate
-	for ('apache', 'apache2') {
-		next if(! -e "$main::imscpConfig{'CONF_DIR'}/apache/backup/$_.system");
-
-		$file = iMSCP::File->new(filename => "$main::imscpConfig{'CONF_DIR'}/apache/backup/$_.system");
-		my $content = $file->get();
-		push(@errors, "Can not read $main::imscpConfig{'CONF_DIR'}/apache/backup/$_.system") if !$content;
-
-		$content =~ s/sharedscripts\n\tprerotate\n\t\t$main::ispcpConfig{'AWSTATS_ROOT_DIR'}\/awstats_updateall.pl now -awstatsprog=$main::ispcpConfig{'AWSTATS_ENGINE_DIR'}\/awstats.pl &> \/dev\/null\n\tendscript/sharedscripts/gi;
-
-		if($content){
-			$file->set($content) and push(@errors, getLastError());
-			$file->save() and push(@errors, getLastError());
-		}
-	}
-
-	for ('/etc/logrotate.d/apache', '/etc/logrotate.d/apache2') {
-		next if(! -e $_);
-		$file = iMSCP::File->new(filename => $_);
-		my $content = $file->get();
-		push(@errors, "Unable to read $main::imscpConfig{'CONF_DIR'}/apache/backup/$_.system") if ! $content;
-
-		$content =~ s/sharedscripts\n\tprerotate\n\t\t$main::ispcpConfig{'AWSTATS_ROOT_DIR'}\/awstats_updateall.pl now -awstatsprog=$main::ispcpConfig{'AWSTATS_ENGINE_DIR'}\/awstats.pl &> \/dev\/null\n\tendscript/sharedscripts/gi;
-
-		if($content) {
-			$file->set($content) and push(@errors, getLastError());
-			$file->save() and push(@errors, getLastError());
-		}
-	}
-
-	if (@errors) {
-		warning("\n" . join("\n", @errors));
-		exit 0 if iMSCP::Dialog->factory()->msgbox(
-"
-\\Z1\\ZuWARNING\\Zn\n
-Please fix the following:\n" . join("\n\n", @errors) . "\n
-These errors are not fatal so we can proceed forward.
-Be aware that we do not guarantee that the migration will succeed.
-"
-		);
-	}
-
-	0;
-}
-
-sub daemonRemove
-{
-	use iMSCP::Execute;
-	my ($rs, $stdout, $stderr, @errors);
-
-	for ($main::ispcpConfig{'CMD_ISPCPD'}, $main::ispcpConfig{'CMD_ISPCPN'}) {
-		$rs = execute("$_ stop", \$stdout, \$stderr);
-		debug($stdout) if $stdout;
-		push(@errors, $stderr) if $stderr && $rs;
-
-		if($rs && $_ eq $main::ispcpConfig{'CMD_ISPCPD'}){
-			$rs = execute("/bin/kill -9 `/bin/pidof ispcp_daemon`", \$stdout, \$stderr);
-			debug($stdout) if $stdout;
-			push(@errors, $stderr) if $stderr && $rs;
-		}
-
-		if(-x '/usr/sbin/update-rc.d') {
-			$rs = execute("/usr/sbin/update-rc.d -f $_ remove", \$stdout, \$stderr);
-			debug($stdout) if $stdout;
-			push(@errors, $stderr) if $stderr && $rs;
-		} elsif(-x '/usr/lib/lsb/install_initd') {
-			$rs = execute("/usr/lib/lsb/remove_initd $_", \$stdout, \$stderr);
-			debug($stdout) if $stdout;
-			push(@errors, $stderr) if $stderr && $rs;
-		}
-
-		if(-e $_) {
-			unlink $_ or push(@errors, ": Delete $_ failed: $!");
-		}
-	}
-
-	if (@errors){
-		warning("\n".join("\n", @errors));
-		exit 0 if iMSCP::Dialog->factory()->msgbox(
-"
-\\Z1\\ZuWARNING\\Zn\n
-Please fix the following:\n" . join("\n\n", @errors) . "\n
-These errors are not fatal so we can proceed forward.
-Be aware that we do not guarantee that the migration will succeed.
-"
-		);
-	}
-
-	0;
-}
-
-sub removeDirs
-{
-	use iMSCP::Dir;
-	my $dir;
-	my $errors	= '';
-
-	for(
-		$main::ispcpConfig{'CONF_DIR'},							# /etc/ispcp
-		$main::ispcpConfig{'LOG_DIR'},							# /var/log/ispcp
-		$main::ispcpConfig{'ROOT_DIR'},							# /var/www/ispcp
-		$main::ispcpConfig{'APACHE_CUSTOM_SITES_CONFIG_DIR'},	# /etc/apache2/ispcp
-		$main::ispcpConfig{'MTA_VIRTUAL_CONF_DIR'}				# /etc/postfix/ispcp
-	) {
-		$dir = iMSCP::Dir->new('dirname' => $_);
-		$errors .= getLastError() if $dir->remove();
-	}
-
-	 if ($errors) {
-		iMSCP::Dialog->factory()->msgbox(
-"
-\\Z1\\ZuWARNING\\Zn\n
-Please fix the following:\n" .
-$errors
-."\n
-These errors are not fatal so we can proceed forward.
-Be aware that we do not guarantee that the migration will succeed.
-"
-		);
-		warning("\n$errors\n");
-	};
-
-	0;
-}
-
-sub removeFile
-{
-	use iMSCP::File;
-	my $file;
-	my $errors;
-
-	for(
-		($^O =~ /bsd$/ ? '/usr/local/etc/' : '/etc/').'cron.d/ispcp',		#/etc/cron.d/ispcp
-		($^O =~ /bsd$/ ? '/usr/local/etc/' : '/etc/').'logrotate.d/ispcp',	#/etc/logrotate.d/ispcp
-	){
-		$file = iMSCP::File->new(filename => $_);
-		$errors .= getLastError() if ($file->delFile());
-	}
-
-	if ($errors) {
-		iMSCP::Dialog->factory()->msgbox(
-"
-\\Z1\\ZuWARNING\\Zn\n
-Please fix the following:\n".
-$errors
-."\n
-These errors are not fatal so we can proceed forward.
-Be aware that we do not guarantee that the migration will succeed.
-"
-		);
-		warning("\n$errors\n");
-	}
-
-	0;
-}
-
-sub removePhpFcgiStarter
-{
-	my($stdout, $stderr);
-
-	my $rs = execute("$main::imscpConfig{'CMD_RM'} -f $main::ispcpConfig{'PHP_STARTER_DIR'}/*/php5-fcgi-starter", \$stdout, \$stderr);
-	
-	debug($stdout) if $stdout;
-	if ($stderr && $rs) {
-
-		iMSCP::Dialog->factory()->msgbox(
-"
-\\Z1\\ZuWARNING\\Zn\n
-The following errors occurred:\n".
-$stderr
-."\n
-These errors are not fatal so we can proceed forward.
-"
-		);
-		warning("\n$stderr\n");
-	}
-	0;
-}
-
-sub systemSetup{
-
-	iMSCP::Dialog->factory()->msgbox(
-"
-\\Z1SUCCESS\\Zn\n\n
-You can now install iMSCP. Type \\Z4./imscp-setup\\Zn
-"
-	);
-
-	0;
-}
+exit processMigration();

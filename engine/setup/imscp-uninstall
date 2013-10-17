@@ -33,17 +33,18 @@ use lib "$FindBin::Bin/..";
 use lib "$FindBin::Bin/../PerlLib";
 
 use iMSCP::Debug;
+use iMSCP::Getopt;
 use iMSCP::Boot;
 use iMSCP::Dialog;
 use iMSCP::Dir;
 use iMSCP::File;
-use iMSCP::Dialog;
 use iMSCP::Stepper;
 use iMSCP::Database;
 use iMSCP::SystemGroup;
 use iMSCP::Execute;
 use iMSCP::Servers;
-use iMSCP::Getopt;
+use iMSCP::Addons;
+use File::Basename;
 
 # Turn off localisation features to force any command output to be in english
 $ENV{'LC_MESSAGES'} = 'C';
@@ -68,6 +69,7 @@ sub process
 
 	my @steps = (
 		[\&_removeCustomers, 'Removing i-MSCP customers'],
+		[\&_uninstallAddons, 'Uninstalling i-MSCP addons'],
 		[\&_uninstallServers, 'Uninstalling i-MSCP servers'],
 		[\&_uninstallDaemons, 'Uninstalling i-MSCP daemons'],
 		[\&_removeCrontabFile, 'Removing i-MSCP crontab file'],
@@ -113,31 +115,27 @@ sub _userDialog
 	iMSCP::Dialog->factory()->set('no-label','Exit');
 	iMSCP::Dialog->factory()->set('defaultno', '');
 
-	if (iMSCP::Dialog->factory()->yesno(
-"
-Welcome to the \\Z1i-MSCP version $main::imscpConfig{'Version'}\\Zn uninstaller dialog.
+	if (iMSCP::Dialog->factory()->yesno(<<EOF)) {
+
+Welcome to the \\Z4i-MSCP $main::imscpConfig{'Version'}\\Zn uninstaller dialog.
 
 This program will uninstall i-MSCP from your server.
 
-\\Zu\\Z1[WARNING]\\Zn
+\\Z1WARNING\\Zn
 
 All i-MSCP data will be removed.
 
-\\Zu\\Z4[NOTE]\\Zn
+\\Z4NOTE\\Zn
 
 During the uninstallation process some or all services might require to be shut down or restarted.
 
-To continue select \\Z1Continue\\Z0
-"
+To continue select \\Z4Continue\\Z0
+EOF
 
-	)) {
-		iMSCP::Dialog->factory()->msgbox(
-"\
-\\Z1[NOTICE]\\Zn
+	iMSCP::Dialog->factory()->msgbox(<<EOF);
 
 Uninstallation process has been aborted...
-"
-		);
+EOF
 
 		exit 0;
 	}
@@ -193,15 +191,49 @@ sub _removeCustomers
 	0;
 }
 
+sub _uninstallAddons
+{
+	my ($rs, $file, $class, $server, $msg);
+
+	startDetail();
+
+	my @addons = iMSCP::Addons->getInstance()->get();
+	my $nbAddons = scalar @addons;
+	my $step = 1;
+
+	for(@addons) {
+		s/\.pm//;
+		$file = "Addons/$_.pm";
+		$class = "Addons::$_";
+		require $file;
+
+		my $addon = $class->getInstance();
+
+		if($addon->can('uninstall')) {
+			$rs = step(
+				sub { $addon->uninstall }, sprintf("Running %s uninstall tasks...", ref $addon), $nbAddons, $step
+			);
+			last if $rs;
+		}
+
+		$step++;
+	}
+
+	endDetail();
+
+	$rs;
+}
+
 sub _uninstallServers
 {
 	my ($rs, $file, $class, $server, $msg);
 
-	my $step = 1;
-
 	startDetail();
 
 	my @servers = iMSCP::Servers->getInstance()->get();
+	my $nbServers = scalar @servers;
+	my $step = 1;
+
 	for(@servers) {
 		s/\.pm//;
 		$file = "Servers/$_.pm";
@@ -211,11 +243,10 @@ sub _uninstallServers
 		$server = $class->factory();
 
 		if($server->can('uninstall')) {
-			$msg = "Performing uninstall tasks for the $_ server" .
-				($main::imscpConfig{uc($_) . '_SERVER'} ? ': ' . $main::imscpConfig{uc($_) . '_SERVER'} : '');
-
-			$rs = step(sub{ $server->uninstall() }, $msg, scalar @servers, $step);
-			return $rs if $rs;
+			$rs = step(
+				sub { $server->uninstall }, sprintf("Running %s uninstall tasks...", ref $server), $nbServers, $step
+			);
+			last if $rs;
 		}
 
 		$step++;
@@ -223,7 +254,7 @@ sub _uninstallServers
 
 	endDetail();
 
-	0;
+	$rs;
 }
 
 sub _uninstallDaemons
@@ -231,17 +262,16 @@ sub _uninstallDaemons
 	my ($rs, $stdout, $stderr);
 
 	for ($main::imscpConfig{'CMD_IMSCPN'}, $main::imscpConfig{'CMD_IMSCPD'}) {
-		my $filename = $_;
-		my ($serviceName) = /.*\/([^\/]*)$/;
+		if(-f $_) {
+			my $serviceName = fileparse($_);
 
-		if(-f $filename) {
 			# Removing services  (Debian, Ubuntu)
 			$rs = execute("/usr/sbin/update-rc.d -f $serviceName remove", \$stdout, \$stderr);
 			debug($stdout) if $stdout;
 			error($stderr) if $stderr && $rs;
 			return $rs if $rs;
 
-			$rs = iMSCP::File->new('filename' => $filename)->delFile();
+			$rs = iMSCP::File->new('filename' => $_)->delFile();
 			return $rs if $rs;
 		}
 	}
@@ -267,18 +297,15 @@ sub _removeLogrotateFile
 	$rs;
 }
 
-# FIXME: Too many assumptions are made here. The names of sql users to remove must be based on the usernames as entered
-# by administrator during setup
-# FIXME: All SQL user as created by i-MSCP are not removed (roundcube sql user)
 # FIXME: localhost is not always the correct value
-#
-# FIXME: It is not better to add uninstaller for each addons and call them as we already do for the server implementations?
 sub _removeSqlData
 {
 	my $database = iMSCP::Database->factory();
 
-	my $rdata = $database->doQuery('sqlu_name', 'SELECT DISTINCT(`sqlu_name`) FROM `sql_user`');
 
+	# Remove customer's sql users
+
+	my $rdata = $database->doQuery('sqlu_name', 'SELECT DISTINCT(`sqlu_name`) FROM `sql_user`');
 	unless(ref $rdata eq 'HASH') {
 		error($rdata);
 		return 1;
@@ -287,19 +314,9 @@ sub _removeSqlData
 	for (keys %{$rdata}) {
 		# We do not catch any error and it's expected
 		$database->doQuery('delete', "DROP USER ?@?", $rdata->{$_}->{'sqlu_name'}, 'localhost');
+		$database->doQuery('delete', "DROP USER ?@?", $rdata->{$_}->{'sqlu_name'}, '127.0.0.1');
 		$database->doQuery('delete', "DROP USER ?@?", $rdata->{$_}->{'sqlu_name'}, '%');
 	}
-
-	$rdata = $database->doQuery('sqld_name', 'SELECT `sqld_name` FROM `sql_database`');
-	unless(ref $rdata eq 'HASH') {
-		error($rdata);
-		return 1;
-	}
-
-	# We do not catch any error and it's expected
-	$database->doQuery('delete', "DROP DATABASE $rdata->{$_}->{'sqld_name'}") for keys %$rdata;
-	$database->doQuery('delete', "DROP USER ?@?", 'pma', 'localhost');
-	$database->doQuery('delete', "DROP USER ?@?", 'pma', '%');
 
 	$rdata = $database->doQuery('dummy', 'FLUSH PRIVILEGES');
 	unless(ref $rdata eq 'HASH') {
@@ -307,7 +324,19 @@ sub _removeSqlData
 		return 1;
 	}
 
-	$database->doQuery('delete', "DROP DATABASE $main::imscpConfig{'DATABASE_NAME'}");
+	# Remove customer's sql datatabases
+
+	$rdata = $database->doQuery('sqld_name', 'SELECT `sqld_name` FROM `sql_database`');
+	unless(ref $rdata eq 'HASH') {
+		error($rdata);
+		return 1;
+	}
+
+	$database->doQuery('delete', "DROP DATABASE IF EXISTS `$rdata->{$_}->{'sqld_name'}`") for keys %{$rdata};
+
+	# Remove i-MSCP sql database
+
+	$database->doQuery('delete', "DROP DATABASE IF EXISTS `$main::imscpConfig{'DATABASE_NAME'}`");
 	unless(ref $rdata eq 'HASH') {
 		error($rdata);
 		return 1;
@@ -318,7 +347,7 @@ sub _removeSqlData
 
 sub _removeiMSCPSystemGroup
 {
-	iMSCP::SystemGroup->new()->delSystemGroup($main::imscpConfig{'MASTER_GROUP'});
+	iMSCP::SystemGroup->getInstance()->delSystemGroup($main::imscpConfig{'IMSCP_GROUP'});
 }
 
 sub _removeFiles

@@ -3,14 +3,15 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
+# Damian Axel Xavier <dax@barrio-maritimo.com.ar>, 2013
 # Damian Axel Xavier <dax@barrio-maritimo.com.ar>, 2011, 2012
 msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2013-09-29 14:33+0200\n"
-"PO-Revision-Date: 2013-09-29 08:22+0000\n"
-"Last-Translator: Torsten Widmann <info@goover.de>\n"
+"POT-Creation-Date: 2013-10-17 13:31+0200\n"
+"PO-Revision-Date: 2013-10-10 22:09+0000\n"
+"Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Spanish (Argentina) (http://www.transifex.com/projects/p/i-MSCP/language/es_AR/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -793,6 +794,9 @@ msgstr ""
 msgid "Admin / Support / View Ticket"
 msgstr ""
 
+msgid "Admin / System Tools / Anti-Rootkits Logs"
+msgstr ""
+
 msgid "Admin / System Tools / Database Update"
 msgstr ""
 
@@ -800,9 +804,6 @@ msgid "Admin / System Tools / Debugger"
 msgstr ""
 
 msgid "Admin / System Tools / Maintenance Settings"
-msgstr ""
-
-msgid "Admin / System Tools / Rootkit Logs"
 msgstr ""
 
 msgid "Admin / System Tools / System Information"
@@ -1018,8 +1019,8 @@ msgstr ""
 msgid "An unknown error occurred during file upload: %s"
 msgstr ""
 
-msgid "Anti-Rootkits Tools Log Checker"
-msgstr "Herramienta Anti-Rootkits  Log Checker"
+msgid "Anti-Rootkits Logs"
+msgstr ""
 
 msgid "Application installer"
 msgstr ""
@@ -1118,7 +1119,7 @@ msgid ""
 msgstr ""
 
 msgid "Are you sure you want to restore the backup?"
-msgstr ""
+msgstr "¿Estás seguto que deseas restaurar el respaldo?"
 
 msgid "Area name"
 msgstr "Nombre de area"
@@ -1361,7 +1362,7 @@ msgstr ""
 
 msgid ""
 "Click the Restore button and the system will restore the last daily backup"
-msgstr ""
+msgstr "Pulsa en el botón Restaurar y el sistema restaurará el último respaldo diario"
 
 msgid "Client / Choose Directory"
 msgstr ""
@@ -2815,7 +2816,7 @@ msgid "Installing your uploaded package. Please refresh this page."
 msgstr ""
 
 msgid "Instructions to download today's backup"
-msgstr ""
+msgstr "Instrucciones para descargar el backup de hoy"
 
 msgid "Intermediate certificate"
 msgstr ""
@@ -3277,6 +3278,9 @@ msgid "No IP statistics to be shown."
 msgstr ""
 
 msgid "No administrator accounts found."
+msgstr ""
+
+msgid "No anti-rootkits logs"
 msgstr ""
 
 msgid "No available"
@@ -4193,9 +4197,6 @@ msgid "Rights successfully added."
 msgstr ""
 
 msgid "Rights successfully removed."
-msgstr ""
-
-msgid "Rootkit logs"
 msgstr ""
 
 msgid "SMTP in"
@@ -5234,6 +5235,9 @@ msgstr "Autenticación de usuario"
 msgid "User data successfully updated"
 msgstr ""
 
+msgid "User data successfully updated."
+msgstr ""
+
 msgid "User data were not updated."
 msgstr ""
 
@@ -5265,9 +5269,6 @@ msgstr "El nombre del usuario es demasiado largo!"
 
 msgid "User password"
 msgstr "Contraseña de usuario"
-
-msgid "User personal data successfully updated."
-msgstr ""
 
 msgid "User real (first and last) name"
 msgstr "Nombre (nombre y apellido) real del usuario"

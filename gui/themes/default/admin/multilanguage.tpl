@@ -57,7 +57,7 @@
 		<tr>
 			<td>
 				{TR_LANGUAGE_FILE}
-				<span class="upload_help icon i_help" title="{TR_UPLOAD_HELP}"></span>
+				<span class="tips icon i_help" title="{TR_UPLOAD_HELP}"></span>
 			</td>
 			<td>
 				<input type="file" name="languageFile"/>

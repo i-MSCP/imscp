@@ -38,7 +38,7 @@ use iMSCP::Mail;
 use iMSCP::Database;
 use iMSCP::Execute;
 
-# Turn off localisation features to force any command output to be in english
+# Turn off localisation features to force any command output to be in English
 $ENV{'LC_MESSAGES'} = 'C';
 
 newDebug('imscp-net-interfaces-mngr.log');

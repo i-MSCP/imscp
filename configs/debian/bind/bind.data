@@ -18,8 +18,6 @@ CMD_NAMED = /etc/init.d/bind9
 
 CMD_NAMED_COMPILEZONE = /usr/sbin/named-compilezone
 
-BIND_IPV6 =
-
 # Mode in which the server should acts (master|slave)
 BIND_MODE =
 
@@ -30,3 +28,5 @@ PRIMARY_DNS =
 # List of IP addresses for slave server(s)
 # Only relevant in master mode
 SECONDARY_DNS =
+
+BIND_IPV6 =

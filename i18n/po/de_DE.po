@@ -33,9 +33,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2013-09-29 14:33+0200\n"
-"PO-Revision-Date: 2013-09-29 08:39+0000\n"
-"Last-Translator: Torsten Widmann <info@goover.de>\n"
+"POT-Creation-Date: 2013-10-17 13:31+0200\n"
+"PO-Revision-Date: 2013-10-12 23:45+0000\n"
+"Last-Translator: bomas <thomasbjoh@gmx.de>\n"
 "Language-Team: German (Germany) (http://www.transifex.com/projects/p/i-MSCP/language/de_DE/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -183,7 +183,7 @@ msgstr "wurde gelöscht von {ADMIN}!"
 
 #, php-format
 msgid "%1$d / %2$d"
-msgstr ""
+msgstr "%1$d / %2$d"
 
 #, php-format
 msgid "%1$d / %2$d of %3$d"
@@ -223,7 +223,7 @@ msgstr "%1$s - (Version: %2$s, Sprache: %3$s)"
 
 #, php-format
 msgid "%1$s / %2$s"
-msgstr ""
+msgstr "%1$s / %2$s"
 
 #, php-format
 msgid "%1$s / %2$s of %3$s"
@@ -263,7 +263,7 @@ msgstr "%d%s noch bis Konto-Ablaufdatum"
 
 #, php-format
 msgid "%d / unlimited"
-msgstr ""
+msgstr "%d / unbegrenzt"
 
 #, php-format
 msgid "%d Service(s) port was successfully updated"
@@ -291,7 +291,7 @@ msgstr "%s / %s von %s"
 
 #, php-format
 msgid "%s / unlimited"
-msgstr ""
+msgstr "%s / unbegrenzt"
 
 #, php-format
 msgid "%s Errors in database"
@@ -818,6 +818,9 @@ msgstr "Admin / Support / Geschlossene Tickets"
 msgid "Admin / Support / View Ticket"
 msgstr "Admin / Support / Ticket anzeigen"
 
+msgid "Admin / System Tools / Anti-Rootkits Logs"
+msgstr "Admin / System Tools / Anti-Rootkits Logs"
+
 msgid "Admin / System Tools / Database Update"
 msgstr "Admin / System Werkzeuge / Datenbank Update"
 
@@ -826,9 +829,6 @@ msgstr "Admin / System Tools / Debugger"
 
 msgid "Admin / System Tools / Maintenance Settings"
 msgstr "Admin / System Werkzeuge / Wartungseinstellungen"
-
-msgid "Admin / System Tools / Rootkit Logs"
-msgstr "Admin / System Tools / Rootkit Logs"
 
 msgid "Admin / System Tools / System Information"
 msgstr "Admin / System Werkzeuge / System Information"
@@ -1043,8 +1043,8 @@ msgstr "Ein unerwarteter Fehler ist aufgetreten: %s"
 msgid "An unknown error occurred during file upload: %s"
 msgstr "Beim Hochladen der Datei ist ein unbekannter Fehler aufgetreten: %s"
 
-msgid "Anti-Rootkits Tools Log Checker"
-msgstr "Anti-Rootkits Tools-Logchecker"
+msgid "Anti-Rootkits Logs"
+msgstr "Anti-Rootkits Logs"
 
 msgid "Application installer"
 msgstr "Anwendungsinstaller"
@@ -1097,7 +1097,7 @@ msgid "Are you sure you want to delete all closed tickets?"
 msgstr "Sind Sie sicher, dass Sie alle geschlossenen Tickets löschen wollen?"
 
 msgid "Are you sure you want to delete all selected items?"
-msgstr ""
+msgstr "Sind Sie sicher das Sie alle markierten Elemente löschen wollen?"
 
 msgid "Are you sure you want to delete all tickets?"
 msgstr "Sind Sie sicher, dass Sie alle Tickets löschen wollen?"
@@ -1231,7 +1231,7 @@ msgid "Blocktime <small>(in minutes)</small>"
 msgstr "Sperrzeit <small>(in Minuten)</small>"
 
 msgid "Bogomips"
-msgstr ""
+msgstr "Bogomips"
 
 msgid "Both source and destination are identical."
 msgstr "Quelle und Ziel sind identisch."
@@ -1252,10 +1252,10 @@ msgid "CNAME field is empty or invalid."
 msgstr ""
 
 msgid "CPU Information"
-msgstr ""
+msgstr "CPU Informationen"
 
 msgid "Cache"
-msgstr ""
+msgstr "Cache"
 
 #, php-format
 msgid "Can edit the PHP %s directive"
@@ -1546,7 +1546,7 @@ msgid "Client / Webtools / Software / View"
 msgstr "Kunde / Webwerkzeuge / Software / Ansehen"
 
 msgid "Clock speed (MHz)"
-msgstr ""
+msgstr "Taktrate (MHz)"
 
 msgid "Close"
 msgstr "Schliessen"
@@ -1909,7 +1909,7 @@ msgid "Delete reseller software"
 msgstr "Lösche Reseller Software"
 
 msgid "Delete selected items"
-msgstr ""
+msgstr "Lösche markierte Elemente"
 
 msgid "Delete ticket"
 msgstr "Ticket löschen"
@@ -2257,10 +2257,10 @@ msgid "Email forward"
 msgstr "E-Mail-Weiterleitung"
 
 msgid "Email quota"
-msgstr ""
+msgstr "Email Quota"
 
 msgid "Email quota [MiB]"
-msgstr ""
+msgstr "Email Quota [MB]"
 
 #, php-format
 msgid "Email quota cannot be bigger than %s"
@@ -2489,7 +2489,7 @@ msgid "First name cannot have more than 200 characters."
 msgstr "Vorname kann nicht mehr als 200 Zeichen enthalten."
 
 msgid "Forbidden"
-msgstr ""
+msgstr "Verboten"
 
 msgid "Force retry"
 msgstr "Wiederholung erzwingen"
@@ -2846,7 +2846,7 @@ msgid "Intermediate certificate"
 msgstr "Intermediate Zertifikat"
 
 msgid "Internal Server Error"
-msgstr ""
+msgstr "Interner Serverfehler"
 
 msgid "Internationalization"
 msgstr "Sprache"
@@ -3067,13 +3067,13 @@ msgstr "Mail-Protokollebene"
 
 #, php-format
 msgid "Mail account %s successfully scheduled for deletion."
-msgstr ""
+msgstr "Mail Account %s erfolgreich zur Löschung vorgemerkt."
 
 msgid "Mail account type"
 msgstr ""
 
 msgid "Mail accounts list is empty."
-msgstr ""
+msgstr "Mail Accountliste is leer."
 
 msgid "Mail feature is disabled."
 msgstr "Das Mail Feature ist deaktiviert."
@@ -3173,7 +3173,7 @@ msgid "Member of group"
 msgstr "Mitglied der Gruppe"
 
 msgid "Memory information"
-msgstr ""
+msgstr "Speicherinformationen"
 
 msgid "Message"
 msgstr "Meldung"
@@ -3215,7 +3215,7 @@ msgid "Missing domain"
 msgstr "Fehlende Domain"
 
 msgid "Model"
-msgstr ""
+msgstr "Model"
 
 msgid "Modification in progress"
 msgstr "Änderung in Bearbeitung"
@@ -3304,8 +3304,11 @@ msgstr "Keine IP-Statistiken vorhanden."
 msgid "No administrator accounts found."
 msgstr "Keine Administratorkonten gefunden."
 
+msgid "No anti-rootkits logs"
+msgstr "keine Anti-Rootkits Logs"
+
 msgid "No available"
-msgstr ""
+msgstr "Nicht verfügbar"
 
 msgid "No certificate found."
 msgstr "Kein Zertifikat gefunden."
@@ -3404,10 +3407,10 @@ msgid "None"
 msgstr "keine"
 
 msgid "Normal"
-msgstr ""
+msgstr "Normal"
 
 msgid "Normal + Forward"
-msgstr ""
+msgstr "Normal + Forward"
 
 msgid "Normal connection"
 msgstr "Normale Verbindung"
@@ -3416,7 +3419,7 @@ msgid "Normal users"
 msgstr "Benutzer"
 
 msgid "Not Found"
-msgstr ""
+msgstr "Nicht gefunden."
 
 msgid "Not Set"
 msgstr "Nicht gesetzt"
@@ -3919,7 +3922,7 @@ msgid "Process update"
 msgstr "Update ausführen"
 
 msgid "Processor data"
-msgstr ""
+msgstr "Prozessor Daten"
 
 msgid "Profile"
 msgstr "Profil"
@@ -3968,11 +3971,11 @@ msgid "Quota"
 msgstr "Quota"
 
 msgid "Quota in MiB (0 for unlimited)"
-msgstr ""
+msgstr "Quota in MB (0 für unbegrenzt)"
 
 #, php-format
 msgid "Quota in MiB (Max: %s)"
-msgstr ""
+msgstr "Quota in MB (Max: %s)"
 
 msgid "RAM"
 msgstr "RAM"
@@ -4026,7 +4029,7 @@ msgid "Repeat password"
 msgstr "Passwort wiederholen"
 
 msgid "Reply"
-msgstr ""
+msgstr "Antwort"
 
 msgid "Request from foreign host was blocked."
 msgstr "Anfragen von einem fremden Server wurden geblockt."
@@ -4220,9 +4223,6 @@ msgstr "Rechte erfolgreich hinzugefügt."
 msgid "Rights successfully removed."
 msgstr "Rechte erfolgreich entfernt."
 
-msgid "Rootkit logs"
-msgstr "Rootkit Logs"
-
 msgid "SMTP in"
 msgstr "SMTP (in)"
 
@@ -4287,7 +4287,7 @@ msgid "SQL user password successfully updated."
 msgstr "SQL-Benutzerpasswort erfolgreich aktualisiert."
 
 msgid "SQL user prefix/suffix"
-msgstr ""
+msgstr "SQL Benutzer Prefix/Suffix"
 
 msgid "SQL user successfully added."
 msgstr "SQL-Benutzer erfolgreich hinzugefügt."
@@ -4403,7 +4403,7 @@ msgid "Service"
 msgstr "Dienst"
 
 msgid "Service Unavailable"
-msgstr ""
+msgstr "Dienst nicht verfügbar"
 
 msgid "Service name"
 msgstr "Name des Dienstes"
@@ -4695,7 +4695,7 @@ msgid "System"
 msgstr "System"
 
 msgid "System data"
-msgstr ""
+msgstr "System Daten"
 
 msgid "System error - custom error page was not updated."
 msgstr "Systemfehler - eigene Fehlerseite konnte nicht aktualisiert werden."
@@ -5224,7 +5224,7 @@ msgid "Upload now"
 msgstr "Jetzt hochladen"
 
 msgid "Uptime"
-msgstr ""
+msgstr "Uptime"
 
 msgid "Usage status"
 msgstr "Verbrauchsstatus"
@@ -5259,6 +5259,9 @@ msgstr "Erlaubte Benutzer"
 msgid "User data successfully updated"
 msgstr "Benutzerdaten erfolgreich aktualisiert"
 
+msgid "User data successfully updated."
+msgstr "Benutzerdaten erfolgreich aktualisiert."
+
 msgid "User data were not updated."
 msgstr " Benutzerdaten wurden nicht aktualisiert."
 
@@ -5290,9 +5293,6 @@ msgstr "Benutzername ist zu lang!"
 
 msgid "User password"
 msgstr "Benutzerpasswort"
-
-msgid "User personal data successfully updated."
-msgstr "Persönliche Benutzerdaten erfolgreich aktualisiert."
 
 msgid "User real (first and last) name"
 msgstr "Richtiger (Vor- und Nachname) des Benutzer"
@@ -5528,7 +5528,7 @@ msgid "Wrong syntax for the %s limit."
 msgstr "Falscher Syntax für das %s Limit."
 
 msgid "Wrong syntax for the mail quota value."
-msgstr ""
+msgstr "Falscher Syntax für den Mail Quota Wert."
 
 msgid "Wrong user level provided."
 msgstr "Falsche Benutzerebene bereitgestellt."

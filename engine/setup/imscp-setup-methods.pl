@@ -145,7 +145,7 @@ sub setupDialog
 
 	# Implements a simple state machine (backup capability)
 	# Any dialog subroutine *should* allow user to step back by returning 30 when 'back' button is pushed
-	my ($state, $nbDialog, $rs) = (0, scalar @$dialogStack, 0);
+	my ($state, $nbDialog) = (0, scalar @$dialogStack);
 
 	while($state != $nbDialog) {
 		$rs = $$dialogStack[$state]->($dialog);
@@ -182,18 +182,17 @@ sub setupTasks
 		[\&setupServerIps,                  'Setting server ips'],
 		[\&setupDefaultAdmin,               'Creating default admin'],
 		[\&setupSsl,                        'Setup SSL'],
+		[\&setupCron,                       'Setup cron tasks'],
 		[\&setupPreInstallServers,          'Servers pre-installation'],
 		[\&setupPreInstallAddons,           'Addons pre-installation'],
 		[\&setupInstallServers,             'Servers installation'],
 		[\&setupInstallAddons,              'Addons installation'],
 		[\&setupPostInstallServers,         'Servers post-installation'],
 		[\&setupPostInstallAddons,          'Addons post-installation'],
-		[\&setupCron,                       'Setup cron tasks'],
 		[\&setupInitScripts,                'Setting i-MSCP init scripts'],
 		[\&setupRebuildCustomerFiles,       'Rebuilding customers files'],
 		[\&setupSetPermissions,             'Setting permissions'],
-		[\&setupRestartServices,            'Restarting services'],
-		[\&setupAdditionalTasks,            'Processing additional tasks']
+		[\&setupRestartServices,            'Restarting services']
 	);
 
 	my $step = 1;
@@ -344,7 +343,7 @@ sub setupAskServerIps
 	my $database = '';
 
 	if(setupGetQuestion('DATABASE_NAME')) {
-		# We do not raise error in case we cannot get SQL connection since it's expected in some context
+		# We do not raise error in case we cannot get SQL connection since it's expected in some contexts
 		$database = setupGetSqlConnect(setupGetQuestion('DATABASE_NAME'));
 
 		if($database) {
@@ -446,7 +445,7 @@ sub setupAskServerIps
 
 					$msg = '';
 
-					if(defined $sshConnectIp && $sshConnectIp ~~ @serverIps && $serverIps !~ /$sshConnectIp/) {
+					if(defined $sshConnectIp && $sshConnectIp ~~ @serverIps && not $sshConnectIp ~~ $serverIps) {
 						$msg = "\n\n\\Z1You cannot remove the IP '$sshConnectIp' to which you are currently connected " .
 						"(SSH).\\Zn\n\nPlease, try again:";
 					}
@@ -454,13 +453,15 @@ sub setupAskServerIps
 				} while ($rs != 30 && $msg);
 
 				if($rs != 30) {
-					$serverIps =~ s/"//g;
-					@{$serverIpsToAdd} = split ' ', $serverIps; # Retrieve list of IP to add into database
+					#$serverIps =~ s/"//g;
+					#@{$serverIpsToAdd} = split ' ', $serverIps; # Retrieve list of IP to add into database
+					@{$serverIpsToAdd} = @{$serverIps}; # Retrieve list of IP to add into database
 					push @{$serverIpsToAdd}, $baseServerIp; # Re-add base ip
 
 					if($database) {
 						# Get list of IP addresses to delete
 						%serverIpsToDelete = ();
+
 						for(@serverIps) {
 							$serverIpsToDelete{$currentServerIps->{$_}->{'ip_id'}} = $_
 								if(exists $currentServerIps->{$_} && not $_ ~~ @{$serverIpsToAdd});
@@ -1171,10 +1172,7 @@ sub setupCreateMasterGroup
 	my $rs = iMSCP::HooksManager->getInstance()->trigger('beforeSetupCreateMasterGroup');
 	return $rs if $rs;
 
-	my $group = iMSCP::SystemGroup->new();
-
-	$group->{'system'} = 'yes';
-	$rs = $group->addSystemGroup($main::imscpConfig{'MASTER_GROUP'});
+	$rs = iMSCP::SystemGroup->getInstance()->addSystemGroup($main::imscpConfig{'IMSCP_GROUP'}, 1);
 	return $rs if $rs;
 
 	iMSCP::HooksManager->getInstance()->trigger('afterSetupCreateMasterGroup');
@@ -1285,7 +1283,7 @@ sub setupServerIps
 	my $oldIptoIdMap = {};
 
 	my @serverIps = (
-		$main::imscpConfig{'BASE_SERVER_IP'},
+		$baseServerIp,
 		$main::questions{'SERVER_IPS'} ? @{$main::questions{'SERVER_IPS'}} : ()
 	);
 
@@ -1619,7 +1617,7 @@ sub setupUpdateDatabase
 # Basically, this method do same job as the mysql_secure_installation script
 # - Remove anonymous users
 # - Remove users without password set
-# - Remove remote sql root user
+# - Remove remote sql root user (only for local server)
 # - Remove test database if any
 # - Reload privileges tables
 sub setupSecureSqlInstallation
@@ -1634,33 +1632,35 @@ sub setupSecureSqlInstallation
 	}
 
 	# Remove anonymous users
-	$errStr = $database->doQuery('dummy', "DELETE FROM `mysql`.`user` WHERE `User` = '';");
-	if(ref $errStr ne 'HASH') {
+	$errStr = $database->doQuery('dummy', "DELETE FROM `mysql`.`user` WHERE `User` = ''");
+	unless(ref $errStr eq 'HASH') {
 		error("Unable to delete anonymous users: $errStr");
 		return 1;
 	}
 
 	# Remove user without password set
-	my $rdata = $database->doQuery('User', "SELECT `User`, `Host` FROM `mysql`.`user` WHERE `Password` = '';");
+	my $rdata = $database->doQuery('User', "SELECT `User`, `Host` FROM `mysql`.`user` WHERE `Password` = ''");
 
 	for (keys %{$rdata}) {
 		$errStr = $database->doQuery('dummy', "DROP USER ?@?", $_, $rdata->{$_}->{'Host'});
-		if(ref $errStr ne 'HASH') {
+		unless(ref $errStr eq 'HASH') {
 			error("Unable to remove SQL user $_\\@$rdata->{$_}->{'Host'}: $errStr");
 			return 1;
 		}
 	}
 
 	# Remove test database if any
-	$errStr = $database->doQuery('dummy', 'DROP DATABASE `test`;');
-	if(ref $errStr ne 'HASH'){
-		debug("Unable to remove database test (not critical): $errStr"); # Not critical, keep moving...
+	$errStr = $database->doQuery('dummy', 'DROP DATABASE IF EXISTS `test`');
+	unless(ref $errStr eq 'HASH'){
+		error("Unable to remove database test : $errStr"); # Not critical, keep moving...
+		return 1;
 	}
 
 	# Remove privileges on test database
-	$errStr = $database->doQuery('dummy', "DELETE FROM `mysql`.`db` WHERE `Db` = 'test' OR `Db` = 'test\\_%';");
-	if(ref $errStr ne 'HASH'){
-		debug("Unable to remove privilege on test database (not critical): $errStr"); # Not critical, keep moving...
+	$errStr = $database->doQuery('dummy', "DELETE FROM `mysql`.`db` WHERE `Db` = 'test' OR `Db` = 'test\\_%'");
+	unless(ref $errStr eq 'HASH') {
+		error("Unable to remove privileges on test database: $errStr");
+		return 1;
 	}
 
 	# Disallow remote root login
@@ -1669,15 +1669,15 @@ sub setupSecureSqlInstallation
 			'dummy',
 			"DELETE FROM `mysql`.`user` WHERE `User` = 'root' AND `Host` NOT IN ('localhost', '127.0.0.1', '::1');"
 		);
-		if(ref $errStr ne 'HASH'){
-			error("Unable to remove remote root user: $errStr");
+		unless(ref $errStr eq 'HASH'){
+			error("Unable to remove remote root users: $errStr");
 			return 1;
 		}
 	}
 
 	# Reload privilege tables
-	$errStr = $database->doQuery('dummy', 'FLUSH PRIVILEGES;');
-	if(ref $errStr ne 'HASH') {
+	$errStr = $database->doQuery('dummy', 'FLUSH PRIVILEGES');
+	unless(ref $errStr eq 'HASH') {
 		debug("Unable to reload privileges tables: $errStr");
 		return 1;
 	}
@@ -1805,7 +1805,6 @@ sub setupSsl
 }
 
 # Setup crontab
-# TODO: awstats part should be done via awstats installer
 sub setupCron
 {
 	my $rs = iMSCP::HooksManager->getInstance()->trigger('beforeSetupCron');
@@ -1813,16 +1812,11 @@ sub setupCron
 
 	my ($cfgTpl, $err);
 
-	my $awstats = '';
-	my ($rkhunter, $chkrootkit);
-
 	# Directories paths
 	my $cfgDir = $main::imscpConfig{'CONF_DIR'} . '/cron.d';
 	my $bkpDir = $cfgDir . '/backup';
 	my $wrkDir = $cfgDir . '/working';
-
-	# Retrieving production directory path
-	my $prodDir = ($^O =~ /bsd$/ ? '/usr/local/etc/cron.daily/imscp' : '/etc/cron.d');
+	my $prodDir = "$main::imscpConfig{'CRON_D_DIR'}";
 
 	# Saving the current production file if it exists
 	if(-f "$prodDir/imscp") {
@@ -1830,7 +1824,7 @@ sub setupCron
 		return $rs if $rs;
 	}
 
-	## Building new configuration file
+	# Building new configuration file
 
 	# Loading the template from /etc/imscp/cron.d/imscp
 	$cfgTpl = iMSCP::File->new('filename' => "$cfgDir/imscp")->get();
@@ -1838,16 +1832,6 @@ sub setupCron
 		error("Unable to read $cfgDir/imscp");
 		return 1;
 	}
-
-	# Awstats cron task preparation (On|Off) according status in imscp.conf
-	if ($main::imscpConfig{'WEBSTATS_ADDON'} ne 'Awstats' || $main::imscpConfig{'AWSTATS_MODE'} eq '1') {
-		$awstats = '#';
-	}
-
-	# Search and cleaning path for rkhunter and chkrootkit programs
-	# @todo review this s...
-	($rkhunter = `which rkhunter`) =~ s/\s$//g;
-	($chkrootkit = `which chkrootkit`) =~ s/\s$//g;
 
 	# Building the new file
 	$cfgTpl = iMSCP::Templator::process(
@@ -1857,16 +1841,7 @@ sub setupCron
 			'QUOTA_ROOT_DIR' => $main::imscpConfig{'QUOTA_ROOT_DIR'},
 			'TRAFF_ROOT_DIR' => $main::imscpConfig{'TRAFF_ROOT_DIR'},
 			'TOOLS_ROOT_DIR' => $main::imscpConfig{'TOOLS_ROOT_DIR'},
-			'BACKUP_ROOT_DIR' => $main::imscpConfig{'BACKUP_ROOT_DIR'},
-			'RKHUNTER_LOG' => $main::imscpConfig{'RKHUNTER_LOG'},
-			'CHKROOTKIT_LOG' => $main::imscpConfig{'CHKROOTKIT_LOG'},
-			'AWSTATS_ROOT_DIR' => $main::imscpConfig{'AWSTATS_ROOT_DIR'},
-			'AWSTATS_ENGINE_DIR' => $main::imscpConfig{'AWSTATS_ENGINE_DIR'},
-			'AW-ENABLED' => $awstats,
-			'RK-ENABLED' => ! length($rkhunter) ? '#' : '',
-			'RKHUNTER' => $rkhunter,
-			'CR-ENABLED' => ! length($chkrootkit) ? '#' : '',
-			'CHKROOTKIT' => $chkrootkit
+			'BACKUP_ROOT_DIR' => $main::imscpConfig{'BACKUP_ROOT_DIR'}
 		},
 		$cfgTpl
 	);
@@ -1888,7 +1863,7 @@ sub setupCron
 	return $rs if $rs;
 
 	# Install new file in production directory
-	$rs = $file->copyFile("$prodDir/");
+	$rs = $file->copyFile("$prodDir/imscp");
 	return $rs if $rs;
 
 	iMSCP::HooksManager->getInstance()->trigger('afterSetupCron');
@@ -1945,9 +1920,6 @@ sub setupSetPermissions
 	my $rs = iMSCP::HooksManager->getInstance()->trigger('beforeSetupSetPermissions');
 	return $rs if $rs;
 
-	my $backtrace = $main::imscpConfig{'BACKTRACE'} || 0;
-	$main::imscpConfig{'BACKTRACE'} = (iMSCP::Getopt->backtrace) ? 1 : 0;
-
 	my $debug = $main::imscpConfig{'DEBUG'} || 0;
 	$main::imscpConfig{'DEBUG'} = (iMSCP::Getopt->debug) ? 1 : 0;
 
@@ -1975,97 +1947,9 @@ sub setupSetPermissions
 		return $rs if $rs;
 	}
 
-	$main::imscpConfig{'BACKTRACE'} = $backtrace;
 	$main::imscpConfig{'DEBUG'} = $debug;
 
 	iMSCP::HooksManager->getInstance()->trigger('afterSetupSetPermissions');
-}
-
-# TODO should be an addon
-sub setupRkhunter
-{
-	my $rs = iMSCP::HooksManager->getInstance()->trigger('beforeSetupRkhunter');
-	return $rs if $rs;
-
-	my $rdata;
-
-	# Deleting any existent log files
-	my $file = iMSCP::File->new ('filename' => $main::imscpConfig{'RKHUNTER_LOG'});
-
-	$rs = $file->set('');
-	return $rs if $rs;
-
-	$rs = $file->save();
-	return $rs if $rs;
-
-	$rs = $file->owner('root', 'adm');
-	return $rs if $rs;
-
-	$rs = $file->mode(0644);
-	return $rs if $rs;
-
-	# Updates the rkhunter configuration provided by Debian like distributions
-	# to disable the default cron task (i-MSCP provides its own cron job for rkhunter)
-	if(-f '/etc/default/rkhunter') {
-		# Get the file as a string
-		$file = iMSCP::File->new ('filename' => '/etc/default/rkhunter');
-		$rdata = $file->get();
-		unless(defined $rdata) {
-			error("Unable to read /etc/default/rkhunter");
-			return 1;
-		}
-
-		# Disable default cron task
-		$rdata =~ s/CRON_DAILY_RUN="(yes)?"/CRON_DAILY_RUN="no"/gmi;
-
-		$rs = $file->set($rdata);
-		return $rs if $rs;
-
-		$rs = $file->save();
-		return $rs if $rs;
-	}
-
-	# Updates the logrotate configuration provided by Debian like distributions to modify rights
-	if(-f '/etc/logrotate.d/rkhunter') {
-		# Get the file as a string
-		$file = iMSCP::File->new ('filename' => '/etc/logrotate.d/rkhunter');
-		$rdata = $file->get();
-		unless(defined $rdata) {
-			error("Unable to read /etc/logrotate.d/rkhunter");
-			return 1;
-		}
-
-		# Disable cron task default
-		$rdata =~ s/create 640 root adm/create 644 root adm/gmi;
-
-		$rs = $file->set($rdata);
-		return $rs if $rs;
-
-		$rs = $file->save();
-		return $rs if $rs;
-	}
-
-	# Update weekly cron task provided by Debian like distributions to avoid creation of unreadable log file
-	if(-f '/etc/cron.weekly/rkhunter') {
-		# Get the rkhunter file content
-		$file = iMSCP::File->new('filename' => '/etc/cron.weekly/rkhunter');
-		$rdata = $file->get();
-		unless(defined $rdata) {
-			error("Unable to read /etc/cron.weekly/rkhunter");
-			return 1;
-		}
-
-		# Adds `--nolog`option to avoid unreadable log file
-		$rdata =~ s/(--versioncheck\s+|--update\s+)(?!--nolog)/$1--nolog /g;
-
-		$rs = $file->set($rdata);
-		return $rs if $rs;
-
-		$rs = $file->save();
-		return $rs if $rs;
-	}
-
-	iMSCP::HooksManager->getInstance()->trigger('afterSetupRkhunter');
 }
 
 # Rebuild all customers's configuration files
@@ -2137,9 +2021,6 @@ sub setupRebuildCustomerFiles
 
 	iMSCP::Boot->getInstance()->unlock();
 
-	my $backtrace = $main::imscpConfig{'BACKTRACE'} || 0;
-	$main::imscpConfig{'BACKTRACE'} = (iMSCP::Getopt->backtrace) ? 1 : 0;
-
 	my $debug = $main::imscpConfig{'DEBUG'} || 0;
 	$main::imscpConfig{'DEBUG'} = (iMSCP::Getopt->debug) ? 1 : 0;
 
@@ -2169,7 +2050,7 @@ sub setupRebuildCustomerFiles
 	iMSCP::Boot->getInstance()->lock();
 
 	$main::imscpConfig{'DEBUG'} = $debug;
-	$main::imscpConfig{'BACKTRACE'} = $backtrace;
+
 	error("\n$stderr") if $stderr && $rs;
 	error("Error while rebuilding customers files") if $rs && ! $stderr;
 	return $rs if $rs;
@@ -2183,23 +2064,23 @@ sub setupPreInstallServers
 	my $rs = iMSCP::HooksManager->getInstance()->trigger('beforeSetupPreInstallServers');
 	return $rs if $rs;
 
-	my ($file, $class, $server, $msg);
 	my @servers = iMSCP::Servers->getInstance()->get();
-
+	my $nbServers = scalar @servers;
 	my $step = 1;
+
 	startDetail();
 
 	for(@servers) {
 		s/\.pm//;
-		$file = "Servers/$_.pm";
-		$class = "Servers::$_";
+		my $file = "Servers/$_.pm";
+		my $class = "Servers::$_";
 		require $file;
-		$server	= $class->factory();
+		my $server = $class->factory();
 
 		if($server->can('preinstall')) {
-			$msg = "Performing preinstall tasks for the $_ server" .
-				($main::imscpConfig{uc($_) . '_SERVER'} ? ': ' . $main::imscpConfig{uc($_) . '_SERVER'} : '');
-			$rs = step(sub{ $server->preinstall() }, $msg, scalar @servers, $step);
+			$rs = step(
+				sub { $server->preinstall }, sprintf("Running %s preinstall tasks...", ref $server), $nbServers, $step
+			);
 			last if $rs;
 		}
 
@@ -2219,22 +2100,23 @@ sub setupPreInstallAddons
 	my $rs = iMSCP::HooksManager->getInstance()->trigger('beforeSetupPreInstallAddons');
 	return $rs if $rs;
 
-	my ($file, $class, $addons, $msg);
 	my @addons = iMSCP::Addons->getInstance()->get();
-
+	my $nbAddons = scalar @addons;
 	my $step = 1;
+
 	startDetail();
 
 	for(@addons) {
 		s/\.pm//;
-		$file = "Addons/$_.pm";
-		$class = "Addons::$_";
+		my $file = "Addons/$_.pm";
+		my $class = "Addons::$_";
 		require $file;
-		$addons = $class->getInstance();
+		my $addon = $class->getInstance();
 
-		if($addons->can('preinstall')) {
-			$msg = "Performing preinstall tasks for the $_ addon";
-			$rs = step(sub{ $addons->preinstall() }, $msg, scalar @addons, $step);
+		if($addon->can('preinstall')) {
+			$rs = step(
+				sub { $addon->preinstall }, sprintf("Running %s addon preinstall tasks...", ref $addon), $nbAddons, $step
+			);
 			last if $rs;
 		}
 
@@ -2254,23 +2136,23 @@ sub setupInstallServers
 	my $rs = iMSCP::HooksManager->getInstance()->trigger('beforeSetupInstallServers');
 	return $rs if $rs;
 
-	my ($file, $class, $server, $msg);
 	my @servers = iMSCP::Servers->getInstance()->get();
-
+	my $nbServers = scalar @servers;
 	my $step = 1;
+
 	startDetail();
 
 	for(@servers) {
 		s/\.pm//;
-		$file = "Servers/$_.pm";
-		$class = "Servers::$_";
+		my $file = "Servers/$_.pm";
+		my $class = "Servers::$_";
 		require $file;
-		$server = $class->factory();
+		my $server = $class->factory();
 
 		if($server->can('install')) {
-			$msg = "Performing install tasks for the $_ server" .
-				($main::imscpConfig{uc($_) . '_SERVER'} ? ': ' . $main::imscpConfig{uc($_) . '_SERVER'} : '');
-			$rs = step(sub{ $server->install() }, $msg, scalar @servers, $step);
+			$rs = step(
+				sub { $server->install }, sprintf("Running %s install tasks...", ref $server), $nbServers, $step
+			);
 			last if $rs;
 		}
 
@@ -2290,22 +2172,23 @@ sub setupInstallAddons
 	my $rs = iMSCP::HooksManager->getInstance()->trigger('beforeSetupInstallAddons');
 	return $rs if $rs;
 
-	my ($file, $class, $addons, $msg);
 	my @addons = iMSCP::Addons->getInstance()->get();
-
+	my $nbAddons = scalar @addons;
 	my $step = 1;
+
 	startDetail();
 
 	for(@addons) {
 		s/\.pm//;
-		$file = "Addons/$_.pm";
-		$class = "Addons::$_";
+		my $file = "Addons/$_.pm";
+		my $class = "Addons::$_";
 		require $file;
-		$addons = $class->getInstance();
+		my $addon = $class->getInstance();
 
-		if($addons->can('install')) {
-			$msg = "Performing install tasks for the $_ addon";
-			$rs =step(sub{ $addons->install() }, $msg, scalar @addons, $step);
+		if($addon->can('install')) {
+			$rs = step(
+				sub { $addon->install }, sprintf("Running %s addon install tasks...", ref $addon), $nbAddons, $step
+			);
 			last if $rs;
 		}
 
@@ -2325,23 +2208,24 @@ sub setupPostInstallServers
 	my $rs = iMSCP::HooksManager->getInstance()->trigger('beforeSetupPostInstallServers');
 	return $rs if $rs;
 
-	my ($file, $class, $server, $msg);
 	my @servers = iMSCP::Servers->getInstance()->get();
-
+	my $nbServers = scalar @servers;
 	my $step = 1;
+
 	startDetail();
 
 	for(@servers) {
 		s/\.pm//;
-		$file = "Servers/$_.pm";
-		$class = "Servers::$_";
+		my $file = "Servers/$_.pm";
+		my $class = "Servers::$_";
 		require $file;
-		$server = $class->factory();
+		my $server = $class->factory();
 
 		if($server->can('postinstall')) {
-			$msg = "Performing postinstall tasks for the $_ server" .
-				($main::imscpConfig{uc($_) . '_SERVER'} ? ': ' . $main::imscpConfig{uc($_) . '_SERVER'} : '');
-			$rs = step(sub{ $server->postinstall() }, $msg, scalar @servers, $step);
+			$rs = step(
+				sub { $server->postinstall }, sprintf("Running %s postinstall tasks...", ref $server), scalar @servers,
+				$step
+			);
 			last if $rs;
 		}
 
@@ -2361,22 +2245,24 @@ sub setupPostInstallAddons
 	my $rs = iMSCP::HooksManager->getInstance()->trigger('beforeSetupPostInstallAddons');
 	return $rs if $rs;
 
-	my ($file, $class, $addons, $msg);
 	my @addons = iMSCP::Addons->getInstance()->get();
-
+	my $nbAddons = scalar @addons;
 	my $step = 1;
+
 	startDetail();
 
 	for(@addons) {
 		s/\.pm//;
-		$file = "Addons/$_.pm";
-		$class = "Addons::$_";
+		my $file = "Addons/$_.pm";
+		my $class = "Addons::$_";
 		require $file;
-		$addons = $class->getInstance();
+		my $addon = $class->getInstance();
 
-		if($addons->can('postinstall')) {
-			$msg = "Performing postinstall tasks for the $_ addon";
-			$rs = step(sub{ $addons->postinstall() }, $msg, scalar @addons, $step);
+		if($addon->can('postinstall')) {
+			$rs = step(
+				sub { $addon->postinstall }, sprintf("Running %s addon postinstall tasks...", ref $addon), $nbAddons,
+				$step
+			);
 			last if $rs;
 		}
 
@@ -2439,29 +2325,6 @@ sub setupRestartServices
 	endDetail();
 
 	iMSCP::HooksManager->getInstance()->trigger('afterSetupRestartServices');
-}
-
-# Run all update additional task such as rkhunter configuration
-sub setupAdditionalTasks
-{
-	my $rs = iMSCP::HooksManager->getInstance()->trigger('beforeSetupAdditionalTasks');
-	return $rs if $rs;
-
-	startDetail();
-
-	my @steps = ( [\&setupRkhunter, 'Setup Rkhunter'] );
-
-	my $step = 1;
-
-	for (@steps) {
-		$rs = step($_->[0], $_->[1], scalar @steps, $step);
-		return $rs if $rs;
-		$step++;
-	}
-
-	endDetail();
-
-	iMSCP::HooksManager->getInstance()->trigger('afterSetupAdditionalTasks');
 }
 
 #

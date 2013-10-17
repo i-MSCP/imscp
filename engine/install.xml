@@ -2,7 +2,6 @@
 
 <install>
     <folders export="SYSTEM_ENGINE_ROOT">${SYSTEM_ROOT}/engine</folders>
-    <folders>${SYSTEM_ENGINE_ROOT}/awstats</folders>
     <folders>${SYSTEM_ENGINE_ROOT}/backup</folders>
     <folders>${SYSTEM_ENGINE_ROOT}/messenger</folders>
     <folders>${SYSTEM_ENGINE_ROOT}/quota</folders>

@@ -178,6 +178,11 @@ sub postaddMail
 
 		$rs = $subscriptionsFile->owner($mailUidName, $mailGidName);
 		return $rs if $rs;
+
+		if(-f "$mailDir/maildirsize") {
+			$rs = iMSCP::File->new('filename' => "$mailDir/maildirsize")->delFile();
+			return $rs if $rs;
+		}
 	}
 
 	0;

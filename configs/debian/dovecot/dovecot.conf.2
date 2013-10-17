@@ -22,6 +22,7 @@ plugin {
 # Authentication
 
 auth_mechanisms = plain login digest-md5
+disable_plaintext_auth = no
 
 passdb {
 	args = {DOVECOT_CONF_DIR}/dovecot-sql.conf
@@ -57,7 +58,7 @@ service auth {
 
 service quota-warning {
 	executable = script {ENGINE_ROOT_DIR}/quota/imscp-dovecot-quota.sh
-	group = {MASTER_GROUP}
+	group = {IMSCP_GROUP}
 
 	unix_listener quota-warning {
 		mode = 0600

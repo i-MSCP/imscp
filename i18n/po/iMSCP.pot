@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.0.1.6\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2013-09-29 14:33+0200\n"
+"POT-Creation-Date: 2013-10-17 13:31+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -791,6 +791,9 @@ msgstr ""
 msgid "Admin / Support / View Ticket"
 msgstr ""
 
+msgid "Admin / System Tools / Anti-Rootkits Logs"
+msgstr ""
+
 msgid "Admin / System Tools / Database Update"
 msgstr ""
 
@@ -798,9 +801,6 @@ msgid "Admin / System Tools / Debugger"
 msgstr ""
 
 msgid "Admin / System Tools / Maintenance Settings"
-msgstr ""
-
-msgid "Admin / System Tools / Rootkit Logs"
 msgstr ""
 
 msgid "Admin / System Tools / System Information"
@@ -1015,7 +1015,7 @@ msgstr ""
 msgid "An unknown error occurred during file upload: %s"
 msgstr ""
 
-msgid "Anti-Rootkits Tools Log Checker"
+msgid "Anti-Rootkits Logs"
 msgstr ""
 
 msgid "Application installer"
@@ -3276,6 +3276,9 @@ msgstr ""
 msgid "No administrator accounts found."
 msgstr ""
 
+msgid "No anti-rootkits logs"
+msgstr ""
+
 msgid "No available"
 msgstr ""
 
@@ -4190,9 +4193,6 @@ msgid "Rights successfully added."
 msgstr ""
 
 msgid "Rights successfully removed."
-msgstr ""
-
-msgid "Rootkit logs"
 msgstr ""
 
 msgid "SMTP in"
@@ -5229,6 +5229,9 @@ msgstr ""
 msgid "User data successfully updated"
 msgstr ""
 
+msgid "User data successfully updated."
+msgstr ""
+
 msgid "User data were not updated."
 msgstr ""
 
@@ -5259,9 +5262,6 @@ msgid "User name too long!"
 msgstr ""
 
 msgid "User password"
-msgstr ""
-
-msgid "User personal data successfully updated."
 msgstr ""
 
 msgid "User real (first and last) name"

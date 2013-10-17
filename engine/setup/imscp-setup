@@ -51,7 +51,7 @@ iMSCP::Getopt->parse('Usage: perl imscp-setup [options]');
 $main::reconfigure = iMSCP::Getopt->reconfigure;
 
 # Global variable that holds questions
-%main::questions = ();
+%main::questions = () if ! %main::questions;
 
 # Handle preseed option
 my $preseedFile = iMSCP::Getopt->preseed;
@@ -70,15 +70,15 @@ debugRegisterCallBack(
 		if($?) { # We exit with status 5 from iMSCP::Dialog::Dialog in noninteractive mode
 			if($? == 5) {
 				if(iMSCP::Getopt->preseed) {
-					print STDERR output ("Noninteractive mode: Missing or bad entry found in your preseed file.");
+					print STDERR output('Noninteractive mode: Missing or bad entry found in your preseed file.', 'fatal');
 				} else {
-					print STDERR output("Noninteractive mode: Missing or bad entry found in configuration file.");
+					print STDERR output('Noninteractive mode: Missing or bad entry found in configuration file.', 'fatal');
 				}
 			}
 			fatal(iMSCP::Debug::getLastError());
 			exit $?;
 		}
-		print STDERR output("i-MSCP $main::imscpConfig{'Version'} has been successfully installed/updated");
+		print STDOUT output("i-MSCP $main::imscpConfig{'Version'} has been successfully installed/updated", 'ok');
 		exit 0;
 	}
 ) if $main::noprompt;
@@ -117,11 +117,11 @@ sub setupProcess
 		$dialog->set('yes-label', 'Continue');
 		$dialog->set('no-label', 'Abort');
 
-		if ($dialog->yesno(
-"
-Welcome to \\Z1i-MSCP version $main::imscpConfig{'Version'}\\Zn setup dialog.
+		if ($dialog->yesno(<<EOF)) {
 
-This program will install/update i-MSCP on your system. This dialog is your last chance to abort without do any change on your system.
+Welcome to the \\Z1i-MSCP $main::imscpConfig{'Version'}\\Zn setup dialog.
+
+This program will install/update i-MSCP on your system.
 
 \\Z3Warning:\\Zn Make sure you have read and performed all steps from the
          \\Zbdocs/$distribution/INSTALL\\Zn file.
@@ -129,9 +129,8 @@ This program will install/update i-MSCP on your system. This dialog is your last
    \\Z4Note:\\Zn During the setup process some or all services might require
          to be shutdown or restarted. Only services that are not set as
          '\\Zbno\\Zn' in your imscp.conf file will be processed by this program.
-"
-		)
-		) {
+EOF
+
 			$dialog->msgbox("\nSetup process has been aborted...");
 			exit 0;
 		}
@@ -142,7 +141,7 @@ This program will install/update i-MSCP on your system. This dialog is your last
 	return $rs if $rs;
 
 	# Process setup tasks
-	setupTasks();
+	$rs = setupTasks();
 	return $rs if $rs;
 
 	iMSCP::HooksManager->getInstance()->trigger('afterSetup');
@@ -152,18 +151,16 @@ sub setupShutDown
 {
 	return 0 if $main::noprompt;
 
-	iMSCP::Dialog->factory()->msgbox(
-"
-\\Z1!!! Congratulation !!!\\Zn
+	iMSCP::Dialog->factory()->msgbox(<<EOF);
+
+\\Z1Congratulation\\Zn
 
 i-MSCP '$main::imscpConfig{'Version'}' has been successfully updated.
 
 Please go to $main::imscpConfig{'BASE_SERVER_VHOST_PREFIX'}$main::imscpConfig{'BASE_SERVER_VHOST'} and log in with your administrator account.
 
-
 Thanks for using i-MSCP.
-"
-	);
+EOF
 
 	0;
 }

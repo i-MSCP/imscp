@@ -261,38 +261,27 @@ function client_generatePage($tpl)
 	$checked = $cfg->HTML_CHECKED;
 	$selected = $cfg->HTML_SELECTED;
 
-	$mailType = '1';
+	$mailType = '';
 
-	if (strpos($mailData['mail_type'], MT_NORMAL_MAIL) !== false) {
-		$mailType = '1';
-	} elseif (strpos($mailData['mail_type'], MT_SUBDOM_MAIL) !== false) {
-		$mailType = '1';
-	} elseif (strpos($mailData['mail_type'], MT_ALIAS_MAIL) !== false) {
-		$mailType = '1';
-	} elseif (strpos($mailData['mail_type'], MT_ALSSUB_MAIL) !== false) {
-		$mailType = '1';
-	}
+	if(!isset($_POST['account_type']) || !in_array($_POST['account_type'], array('1', '2', '3'))) {
+		if(preg_match('/_mail/', $mailData['mail_type'])) {
+			$mailType = '1';
+		}
 
-	if (strpos($mailData['mail_type'], MT_NORMAL_FORWARD) !== false) {
-		$mailType = ($mailType != '') ? '3' : '2';
-	} elseif (strpos($mailData['mail_type'], MT_SUBDOM_FORWARD) !== false) {
-		$mailType = ($mailType != '') ? '3' : '2';
-	} elseif (strpos($mailData['mail_type'], MT_ALIAS_FORWARD) !== false) {
-		$mailType = ($mailType != '') ? '3' : '2';
-	} elseif (strpos($mailData['mail_type'], MT_ALSSUB_FORWARD) !== false) {
-		$mailType = ($mailType != '') ? '3' : '2';
+		if(preg_match('/_forward/', $mailData['mail_type'])) {
+			$mailType = ($mailType == '1') ? '3' : '2';
+		}
+	} else {
+		$mailType = $_POST['account_type'];
 	}
 
 	$tpl->assign(
 		array(
 			'MAIL_ID' => tohtml($mailId),
-			'USERNAME' => isset($_POST['username']) ? tohtml($_POST['username']) : tohtml($username),
-			'NORMAL_CHECKED' => (isset($_POST['account_type']) && $_POST['account_type'] == '1')
-				? $checked : (($mailType == '1') ? $checked : ''),
-			'FORWARD_CHECKED' => (isset($_POST['account_type']) && $_POST['account_type'] == '2')
-				? $checked : (($mailType == '2') ? $checked : ''),
-			'NORMAL_FORWARD_CHECKED' => (isset($_POST['account_type']) && $_POST['account_type'] == '3')
-				? $checked : (($mailType == '3') ? $checked : ''),
+			'USERNAME' => tohtml($username),
+			'NORMAL_CHECKED' => ($mailType == '1') ? $checked : '',
+			'FORWARD_CHECKED' => ($mailType == '2') ? $checked : '',
+			'NORMAL_FORWARD_CHECKED' => ($mailType == '3') ? $checked : '',
 			'PASSWORD' => isset($_POST['password']) ? tohtml($_POST['password']) : '',
 			'PASSWORD_REP' => isset($_POST['password_rep']) ? tohtml($_POST['password_rep']) : '',
 			'TR_QUOTA' => ($mainDmnProps['mail_quota'] == '0')

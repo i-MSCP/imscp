@@ -1,5 +1,11 @@
 #!/usr/bin/perl
 
+=head1 NAME
+
+ Servers::named::bind::installer - i-MSCP Bind9 Server implementation
+
+=cut
+
 # i-MSCP - internet Multi Server Control Panel
 # Copyright (C) 2010-2013 by internet Multi Server Control Panel
 #
@@ -38,9 +44,27 @@ use iMSCP::Dir;
 use File::Basename;
 use iMSCP::Templator;
 use iMSCP::Execute;
+use Servers::named::bind;
 use parent 'Common::SingletonClass';
 
-sub registerSetupHooks
+=head1 DESCRIPTION
+
+ Installer for the i-MSCP Bind9 Server implementation.
+
+=head1 PUBLIC METHODS
+
+=over 4
+
+=item registerSetupHooks($hooksManager)
+
+ Register setup hooks.
+
+ Param iMSCP::HooksManager $hooksManager Hooks manager instance
+ Return int 0 on success, other on failure
+
+=cut
+
+sub registerSetupHooks($$)
 {
 	my $self = shift;
 	my $hooksManager = shift;
@@ -50,154 +74,155 @@ sub registerSetupHooks
 
 	# Adding bind installer dialog in setup dialog stack
 	$rs = $hooksManager->register(
-		'beforeSetupDialog', sub { my $dialogStack = shift; push(@$dialogStack, sub { $self->askMode(@_) }); 0; }
+		'beforeSetupDialog',
+		sub { my $dialogStack = shift; push(@$dialogStack, sub { $self->askDnsServerMode(@_) }); 0; }
 	);
 	return $rs if $rs;
 
 	$rs = $hooksManager->register(
-		'beforeSetupDialog', sub { my $dialogStack = shift; push(@$dialogStack, sub { $self->askIPv6(@_) }); 0; }
+		'beforeSetupDialog',
+		sub { my $dialogStack = shift; push(@$dialogStack, sub { $self->askIPv6Support(@_) }); 0; }
     );
     return $rs if $rs;
 
 	$hooksManager->trigger('afterNamedRegisterSetupHooks', $hooksManager, 'bind');
 }
 
-sub askMode
+=item askDnsServerMode($dialog)
+
+ Ask user for DNS server mode.
+
+ Param iMSCP::Dialog::Dialog $dialog Dialog instance
+ Return int 0 on success, other on failure
+
+=cut
+
+sub askDnsServerMode($$)
 {
 	my $self = shift;
 	my $dialog = shift;
 
-	my $mode = main::setupGetQuestion('BIND_MODE') || $self->{'config'}->{'BIND_MODE'};
+	my $dnsServerMode = main::setupGetQuestion('BIND_MODE') || $self->{'config'}->{'BIND_MODE'};
 
-	my $primaryDnsIps = ($mode eq 'slave')
-		? main::setupGetQuestion('PRIMARY_DNS') || $self->{'config'}->{'PRIMARY_DNS'}
-		: $main::imscpConfig{'BASE_SERVER_IP'};
-
-	my $secondaryDnsIps = ($mode eq 'master')
-		? main::setupGetQuestion('SECONDARY_DNS') || $self->{'config'}->{'SECONDARY_DNS'} : 'no';
-
-	my $ip = iMSCP::IP->new();
-	my @ips = ();
 	my $rs = 0;
 
-	# Retrieving master DNS server ips if any
-	@ips = (@ips, split(';', $primaryDnsIps)) if $primaryDnsIps;
-
-	# Retrieving slave DNS server ips if any
-	@ips = (@ips, split(';', $secondaryDnsIps)) if $secondaryDnsIps && $secondaryDnsIps ne 'no';
-
-	# In case slave mode is selected, we must have a least one IP address in the stack.
-	# If it's not the case, we force dialog to be show
-	$mode = '' if $mode eq 'slave' && ! @ips;
-
-	# Check each IP address. If one is invalid, we force dialog to be show
-	for (@ips) {
-		if($_ && $_ ne 'no' && ! $ip->isValidIp($_)) {
-			debug("$_ is invalid ip");
-
-			$mode = 'dummy';
-			$self->{'config'}->{'BIND_MODE'} = '';
-			$self->{'config'}->{'PRIMARY_DNS'} = '';
-			$self->{'config'}->{'SECONDARY_DNS'} = '';
-
-			last;
-		}
-	}
-
-	if($main::reconfigure ~~ ['named', 'servers', 'all', 'forced'] || $mode !~ /^master|slave$/) {
-		($rs, $mode) = $dialog->radiolist(
-			"\nSelect bind mode", ['master', 'slave'], $mode eq 'slave' ? 'slave' : 'master'
+	if($main::reconfigure ~~ ['named', 'servers', 'all', 'forced'] || not $dnsServerMode ~~ ['master', 'slave']) {
+		($rs, $dnsServerMode) = $dialog->radiolist(
+			"\nSelect bind mode", ['master', 'slave'], $dnsServerMode eq 'slave' ? 'slave' : 'master'
 		);
-
-		if($rs != 30) {
-			$self->{'config'}->{'BIND_MODE'} = $mode;
-			$rs = $self->askOtherDns($dialog);
-		}
-	}
-
-	$rs;
-}
-
-sub askOtherDns
-{
-	my $self = shift;
-	my $dialog = shift;
-
-	my $mode = $self->{'config'}->{'BIND_MODE'};
-	my $primaryDnsIps = ($mode eq 'slave')
-		? ($self->{'config'}->{'PRIMARY_DNS'} ne $main::imscpConfig{'BASE_SERVER_IP'})
-			? $self->{'config'}->{'PRIMARY_DNS'}
-			: ''
-		: $main::imscpConfig{'BASE_SERVER_IP'};
-
-	my $secondaryDnsIps = ($mode eq 'master') ? $self->{'config'}->{'SECONDARY_DNS'} : 'no';
-
-	my ($rs, $out) = (0, '');
-
-	if($mode eq 'master') {
-		($rs, $out) = $dialog->radiolist(
-			"\nDo you want add slave DNS server(s)?", ['no', 'yes'], $secondaryDnsIps eq 'yes' ? 'yes' : 'no'
-		);
-
-		if($rs != 30 && $out eq 'no') {
-			$self->{'config'}->{'PRIMARY_DNS'} = $primaryDnsIps;
-			$self->{'config'}->{'SECONDARY_DNS'} = 'no';
-			return 0;
-		}
 	}
 
 	if($rs != 30) {
-		my @ips = ();
-		my $ip = iMSCP::IP->new();
-		my $msg = '';
+		$self->{'config'}->{'BIND_MODE'} = $dnsServerMode;
+		$rs = $self->askDnsServerIps($dialog);
+	}
 
-		my $trMode = ($mode eq 'slave') ? 'master' : 'slave';
+	$rs;
+}
 
-		do {
-			my $ips = $mode eq 'slave'
-				? $primaryDnsIps
-				: $secondaryDnsIps ne 'no' ? $secondaryDnsIps : '';
+=item askDnsServerMode($dialog)
 
-			@ips = split ';', $ips if $ips;
+ Ask user for DNS server IPs.
 
-			($rs, $_) = $dialog->inputbox(
-				"\nPlease, enter IP address(es) for $trMode DNS server(s), each separated by space: $msg", "@ips"
+ Param iMSCP::Dialog::Dialog $dialog Dialog instance
+ Return int 0 on success, other on failure
+
+=cut
+
+sub askDnsServerIps($$)
+{
+	my $self = shift;
+	my $dialog = shift;
+
+	my $dnsServerMode = $self->{'config'}->{'BIND_MODE'};
+
+	my $masterDnsIps = main::setupGetQuestion('PRIMARY_DNS') || $self->{'config'}->{'PRIMARY_DNS'};
+	$masterDnsIps =~ s/;/ /g;
+	my @masterDnsIps = split ' ', $masterDnsIps;
+
+	my $slaveDnsIps = main::setupGetQuestion('SECONDARY_DNS') || $self->{'config'}->{'SECONDARY_DNS'};
+	$slaveDnsIps =~ s/;/ /g;
+	my @slaveDnsIps = split ' ', $slaveDnsIps;
+
+	my ($rs, $answer, $msg) = (0, '', '');
+
+	if($dnsServerMode eq 'master') {
+		if(
+			$main::reconfigure ~~ ['named', 'servers', 'all', 'forced'] || ! $slaveDnsIps ||
+			($slaveDnsIps ne 'no' && ! $self->_checkIps(\@slaveDnsIps))
+		) {
+			($rs, $answer) = $dialog->radiolist(
+				"\nDo you want add slave DNS servers?", ['no', 'yes'], ("@slaveDnsIps" ~~ ['', 'no']) ? 'no' : 'yes'
 			);
 
-			$msg = '';
-			@ips = split;
+			if($rs != 30 && $answer eq 'yes') {
+				@slaveDnsIps = () if $slaveDnsIps eq 'no';
 
-			if($rs != 30) {
-				if("@ips" eq '') {
-					$msg = "\n\n\\Z1You must enter a least one IP address.\\Zn\n\nPlease, try again:";
-				} else {
-					for(@ips) {
-						$rs = 1 if ! $ip->isValidIp($_) || $_ eq '127.0.0.1';
+				do {
+					($rs, $answer) = $dialog->inputbox(
+						"\nPlease enter slave DNS server IP addresses, each separated by space: $msg", "@slaveDnsIps"
+					);
 
-						if($rs) {
+					if($rs != 30) {
+						@slaveDnsIps = split ' ', $answer;
+
+						if("@slaveDnsIps" eq '') {
+							$msg = "\n\n\\Z1You must enter a least one IP address.\\Zn\n\nPlease, try again:";
+						} elsif(! $self->_checkIps(\@slaveDnsIps)) {
 							$msg = "\n\n\\Z1Wrong IP address found.\\Zn\n\nPlease, try again:";
-							last;
 						}
 					}
+				} while($rs != 30 && $msg);
+			} else {
+				@slaveDnsIps = ('no');
+			}
+		}
+	} elsif(
+		$main::reconfigure ~~ ['named', 'servers', 'all', 'forced'] || $masterDnsIps ~~ ['', 'no'] ||
+		! $self->_checkIps(\@masterDnsIps)
+	) {
+		@masterDnsIps = () if $masterDnsIps eq 'no';
+
+		do {
+			($rs, $answer) = $dialog->inputbox(
+				"\nPlease enter master DNS server IP addresses, each separated by space: $msg", "@masterDnsIps"
+			);
+
+			if($rs != 30) {
+				@masterDnsIps = split ' ', $answer;
+
+				if("@masterDnsIps" eq '') {
+					$msg = "\n\n\\Z1You must enter a least one IP address.\\Zn\n\nPlease, try again:";
+				} elsif(! $self->_checkIps(\@masterDnsIps)) {
+					$msg = "\n\n\\Z1Wrong IP address found.\\Zn\n\nPlease, try again:";
 				}
 			}
 		} while($rs != 30 && $msg);
+	}
 
-		if($rs != 30) {
-			if($mode eq 'master') {
-				$self->{'config'}->{'PRIMARY_DNS'} = $primaryDnsIps;
-				$self->{'config'}->{'SECONDARY_DNS'} = join ';', @ips;
-			} else { # Only slave server
-				$self->{'config'}->{'PRIMARY_DNS'} = join ';', @ips;
-        		$self->{'config'}->{'SECONDARY_DNS'} = 'no';
-			}
+	if($rs != 30) {
+		if($dnsServerMode eq 'master') {
+			$self->{'config'}->{'PRIMARY_DNS'} = 'no';
+			$self->{'config'}->{'SECONDARY_DNS'} = ("@slaveDnsIps" ne 'no') ? join ';', @slaveDnsIps : 'no';
+		} else {
+			$self->{'config'}->{'PRIMARY_DNS'} = join ';', @masterDnsIps;
+			$self->{'config'}->{'SECONDARY_DNS'} = 'no';
 		}
 	}
 
 	$rs;
 }
 
-sub askIPv6
+=item askIPv6Support($dialog)
+
+ Ask user for DNS server IPv6 support.
+
+ Param iMSCP::Dialog::Dialog $dialog Dialog instance
+ Return int 0 on success, other on failure
+
+=cut
+
+sub askIPv6Support($$)
 {
 	my $self = shift;
 	my $dialog = shift;
@@ -217,6 +242,14 @@ sub askIPv6
 
 	$rs;
 }
+
+=item install()
+
+ Process install tasks.
+
+ Return int 0 on success, other on failure
+
+=cut
 
 sub install
 {
@@ -247,6 +280,20 @@ sub install
 
 	$self->{'hooksManager'}->trigger('afterNamedInstall', 'bind');
 }
+
+=back
+
+=head1 PRIVATE METHODS
+
+=over 4
+
+=item _init()
+
+ Called by getInstance(). Initialize instance.
+
+ Return Servers::named::bind::installer
+
+=cut
 
 sub _init
 {
@@ -285,7 +332,16 @@ sub _init
 	$self;
 }
 
-sub _bkpConfFile
+=item _bkpConfFile($cfgFile)
+
+ Backup configuration file.
+
+ Param string $cfgFile Configuration file path
+ Return int 0 on success, other on failure
+
+=cut
+
+sub _bkpConfFile($$)
 {
 	my $self = shift;
 	my $cfgFile = shift;
@@ -309,15 +365,22 @@ sub _bkpConfFile
 	$self->{'hooksManager'}->trigger('afterNamedBkpConfFile', $cfgFile);
 }
 
+=item _switchTasks($cfgFile)
+
+ Process switch tasks.
+
+ Return int 0 on success, other on failure
+
+=cut
+
 sub _switchTasks
 {
 	my $self = shift;
-	my $rs = 0;
 
 	my $slaveDbDir = iMSCP::Dir->new('dirname' => "$self->{'config'}->{'BIND_DB_DIR'}/slave");
 
 	if($self->{'config'}->{'BIND_MODE'} eq 'slave') {
-		$rs = $slaveDbDir->make(
+		my $rs = $slaveDbDir->make(
 			{
 				'user' => $main::imscpConfig{'ROOT_USER'},
 				'group' => $self->{'config'}->{'BIND_GROUP'},
@@ -336,21 +399,26 @@ sub _switchTasks
 		$rs = execute("$main::imscpConfig{'CMD_RM'} -f $self->{'config'}->{'BIND_DB_DIR'}/*.db", \$stdout, \$stderr);
 		debug($stdout) if $stdout;
 		error($stderr) if $stderr && $rs;
-		return $rs if $rs;
+		return $rs;
 	} else {
-		$rs = $slaveDbDir->remove() if -d "$self->{'config'}->{'BIND_DB_DIR'}/slave";
+		my $rs = $slaveDbDir->remove() if -d "$self->{'config'}->{'BIND_DB_DIR'}/slave";
+		return $rs;
 	}
-
-	$rs;
 }
+
+=item _buildConf()
+
+ Build configuration file.
+
+ Return int 0 on success, other on failure
+
+=cut
 
 sub _buildConf
 {
 	my $self = shift;
-	my $rs = 0;
 
 	for('BIND_CONF_FILE', 'BIND_LOCAL_CONF_FILE', 'BIND_OPTIONS_CONF_FILE') {
-
 		# Handle case where the file is not provided by specfic distribution
 		next unless defined $self->{'config'}->{$_} && $self->{'config'}->{$_} ne '';
 
@@ -364,7 +432,7 @@ sub _buildConf
 			return 1;
 		}
 
-		$rs = $self->{'hooksManager'}->trigger('beforeNamedBuildConf', \$cfgTpl, $filename);
+		my $rs = $self->{'hooksManager'}->trigger('beforeNamedBuildConf', \$cfgTpl, $filename);
 		return $rs if $rs;
 
 		# Re-add custom bind data snippet
@@ -391,7 +459,6 @@ sub _buildConf
 		if($_ eq 'BIND_CONF_FILE' && ! -f "$self->{'config'}->{'BIND_CONF_DIR'}/bind.keys") {
 			$cfgTpl =~ s%include "$self->{'config'}->{'BIND_CONF_DIR'}/bind.keys";\n%%;
 		} elsif($_ eq 'BIND_OPTIONS_CONF_FILE') {
-
 			$cfgTpl =~ s/listen-on-v6 { any; };/listen-on-v6 { none; };/
 				unless $self->{'config'}->{'BIND_IPV6'} eq 'yes';
 
@@ -400,7 +467,6 @@ sub _buildConf
 				-f $self->{'config'}->{'BIND_CONF_DEFAULT_FILE'}
 			) {
 				my $filename = fileparse($self->{'config'}->{'BIND_CONF_DEFAULT_FILE'});
-
 				my $file = iMSCP::File->new('filename' => $self->{'config'}->{'BIND_CONF_DEFAULT_FILE'});
 
 				my $fileContent = $file->get();
@@ -462,8 +528,16 @@ sub _buildConf
 		return $rs if $rs;
 	}
 
-	$rs;
+	0;
 }
+
+=item _addMasterZone()
+
+ Add master zone file.
+
+ Return int 0 on success, other on failure
+
+=cut
 
 sub _addMasterZone
 {
@@ -485,6 +559,14 @@ sub _addMasterZone
 
 	$self->{'hooksManager'}->trigger('afterNamedAddMasterZone');
 }
+
+=item _saveConf()
+
+ Save bind.data configuration file.
+
+ Return int 0 on success, other on failure
+
+=cut
 
 sub _saveConf
 {
@@ -523,5 +605,37 @@ sub _saveConf
 
 	$self->{'hooksManager'}->trigger('afterNamedSaveConf', 'bind.old.data');
 }
+
+=item _checkIps(\@ips)
+
+ Check IP addresses.
+
+ Param array_ref $ips Reference to an array containing IP addresses to check
+ Return int 1 if all IPs are valid, 0 otherwise
+
+=cut
+
+sub _checkIps($$)
+{
+	my $self = shift;
+	my $ips = shift;
+
+	my $ip = iMSCP::IP->new();
+
+	for(@{$ips}) {
+		return 0 if $_ eq '127.0.0.1' || ! $ip->isValidIp($_);
+	}
+
+	1;
+}
+
+=back
+
+=head1 AUTHORS
+
+ Daniel Andreca <sci2tech@gmail.com>
+ Laurent Declercq <l.declercq@nuxwin.com>
+
+=cut
 
 1;
