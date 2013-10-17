@@ -16,27 +16,24 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
- * @category	iMSCP
- * @package		iMSCP_Core
- * @subpackage	Client_Ftp
- * @copyright	2010-2013 by i-MSCP team
- * @author		iMSCP Team
- * @author		Laurent Declercq <l.declercq@nuxwin.com>
- * @link		http://www.i-mscp.net i-MSCP Home Site
- * @license		http://www.gnu.org/licenses/gpl-2.0.txt GPL v2
+ * @category    iMSCP
+ * @package     iMSCP_Core
+ * @subpackage  Client_Ftp
+ * @copyright   2010-2013 by i-MSCP team
+ * @author      iMSCP Team
+ * @author      Laurent Declercq <l.declercq@nuxwin.com>
+ * @link        http://www.i-mscp.net i-MSCP Home Site
+ * @license     http://www.gnu.org/licenses/gpl-2.0.txt GPL v2
  */
 
-/************************************************************************************
+/***********************************************************************************************************************
  * Script short description:
  *
  * This script allows AjaxPlorer authentication from i-MSCP (onClick login)
  *
  */
 
-// TODO since we are providing many filemanager addons, we must such authentication layer as plugin, which should be
-// installed by the addon installer
-
-/************************************************************************************
+/***********************************************************************************************************************
  *  Script functions
  */
 
@@ -95,6 +92,10 @@ function _ajaxplorerCreateCookies($cookies)
  */
 function _ajaxplorerAuth($userId)
 {
+	if(file_exists(GUI_ROOT_DIR . '/data/tmp/failedAJXP.log')) {
+		@unlink(GUI_ROOT_DIR . '/data/tmp/failedAJXP.log');
+	}
+
 	$credentials = _getLoginCredentials($userId);
 
 	if ($credentials) {
@@ -179,7 +180,7 @@ function _ajaxplorerAuth($userId)
 	return true;
 }
 
-/************************************************************************************
+/***********************************************************************************************************************
  * Main script
  */
 
@@ -194,7 +195,7 @@ check_login('user');
 /** @var $cg iMSCP_Config_Handler_File */
 $cfg = iMSCP_Registry::get('config');
 
-if(!(isset($cfg->FILEMANAGER_ADDON) && $cfg->FILEMANAGER_ADDON == 'AjaxPlorer')) {
+if(!customerHasFeature('ftp') || !(isset($cfg->FILEMANAGER_ADDON) && $cfg->FILEMANAGER_ADDON == 'AjaXplorer')) {
 	showBadRequestErrorPage();
 }
 
