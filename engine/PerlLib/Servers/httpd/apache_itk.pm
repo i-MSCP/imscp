@@ -1698,7 +1698,7 @@ sub restart
 	warning($stderr) if $stderr && ! $rs;
 	error($stderr) if $stderr && $rs;
 	error($stdout) if $stdout && ! $stderr && $rs;
-	error("Error while " . ($self->{'forceRestart'} ? 'restarting' : 'reloading')) if $rs && ! $stderr && !stdout;
+	error("Error while " . ($self->{'forceRestart'} ? 'restarting' : 'reloading')) if $rs && ! $stderr && ! $stdout;
 	return $rs if $rs;
 
 	$self->{'hooksManager'}->trigger('afterHttpdRestart');
