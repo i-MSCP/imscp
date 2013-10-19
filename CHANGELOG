@@ -28,6 +28,7 @@ SETUP:
 	- Fixed: Uninstaller - Several compile time errors + missing tasks
 
 GUI:
+	- Allow plugins to provide their own router
 	- Fixed: Unable to view ticket (reseller level)
 
 Tickets:

@@ -26,27 +26,32 @@
  * @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
  */
 
-// TODO Should be replaced by a true router
-
 // Include core library
 require_once 'imscp-lib.php';
 
-if(iMSCP_Registry::isRegistered('pluginManager')) {
+if (iMSCP_Registry::isRegistered('pluginManager')) {
 	iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onBeforePluginsRoute);
 
 	/** @var iMSCP_Plugin_Manager $pluginManager */
 	$pluginManager = iMSCP_Registry::get('pluginManager');
 	$plugins = $pluginManager->getLoadedPlugins('Action');
 	$actionScript = null;
+	$urlComponents = parse_url($_SERVER['REQUEST_URI']);
 
-	if(!empty($plugins)) {
+	if (!empty($plugins)) {
 		/** @var $plugin iMSCP_Plugin_Action */
-		foreach($plugins as $plugin) {
+		foreach ($plugins as $plugin) {
+			if (is_callable(array($plugin, 'route'))) {
+				if ($plugin->route($urlComponents, $actionScript)) {
+					break;
+				}
+			}
+
 			$pluginRoutes = $plugin->getRoutes();
 
-			if(!empty($pluginRoutes)) {
-				foreach($pluginRoutes as $pluginRoute => $pluginActionScript) {
-					if($pluginRoute == parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH)) {
+			if (!empty($pluginRoutes)) {
+				foreach ($pluginRoutes as $pluginRoute => $pluginActionScript) {
+					if ($pluginRoute == $urlComponents['path']) {
 						$actionScript = $pluginActionScript;
 						$_SERVER['SCRIPT_NAME'] = $pluginRoute;
 						break;
@@ -58,7 +63,7 @@ if(iMSCP_Registry::isRegistered('pluginManager')) {
 
 	iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAfterPluginsRoute);
 
-	if($actionScript !== null) {
+	if ($actionScript !== null) {
 		require $actionScript;
 	} else {
 		showNotFoundErrorPage();
