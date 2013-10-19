@@ -91,10 +91,12 @@ table {
 
 html {
     position: relative;
-    height: 100%
+    height: 100%;
 }
 
 body {
+    display: inline-table;
+    width:100%;
     min-width: 850px;
     position: relative;
     height: 100%;
@@ -1042,7 +1044,7 @@ table .icon {
     position: relative;
     width: 100%;
     clear: both;
-    white-space: nowrap;
+    /*white-space: nowrap;*/
     margin: 0.5em 0;
     overflow-y: hidden;
     overflow-x: auto;
@@ -1232,7 +1234,7 @@ table .graph {
 
 .icon.i_help {
     position: relative;
-    width: 0px;
+    width: 0;
     vertical-align: middle;
     margin-left: 0.5em;
     overflow: hidden;
@@ -1245,7 +1247,7 @@ table .graph {
 }
 
 .paginator .icon {
-    width: 0px;
+    width: 0;
     overflow: hidden;
     height: 20px;
     margin: 0;
@@ -1299,7 +1301,7 @@ table .graph {
 iframe {
     width: 100%;
     height: 100%;
-    margin: 0px;
-    padding: 0px;
-    border: 0px;
+    margin: 0;
+    padding: 0;
+    border: 0;
 }
