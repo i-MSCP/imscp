@@ -294,7 +294,7 @@
                     <title_class>custom_link</title_class>
                 </custom_menus>
                 <ip_management>
-                    <label>Ip management</label>
+                    <label>IP management</label>
                     <uri>/admin/ip_manage.php</uri>
                     <title_class>ip</title_class>
                 </ip_management>
