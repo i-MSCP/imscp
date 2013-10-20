@@ -30,6 +30,7 @@ SETUP:
 GUI:
 	- Allow plugins to provide their own router
 	- Fixed: Unable to view ticket (reseller level)
+	- Fixed: Unable to edit domain (admin level)
 
 Tickets:
 	- Fixed #936: Bug - Awstats addon - Failed to open directory /var/cache/awstats

@@ -996,8 +996,6 @@ function admin_checkAndUpdateData($domainId)
 				sync_mailboxes_quota($domainId, $data['mail_quota'] * 1048576);
 			}
 
-			$db->rollBack();
-
 			// Update domain alias IP if needed
 			if ($data['domain_ip_id'] != $data['fallback_domain_ip_id']) {
 				if($data['domain_alias_limit'] != '-1') {
