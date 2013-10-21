@@ -4,6 +4,13 @@
 Git Master
 ------------------------------------------------------------------------------------------------------------------------
 
+ENGINE
+	- Fixed: Can't use an undefined value as a HASH reference
+
+GUI:
+	- Allow plugins to provide their own router
+	- Fixed: Unable to edit domain (admin level)
+
 Tickets:
 	- Fixed #938: Bug - Ftp - Login as link is missing
 
@@ -21,7 +28,6 @@ DOCS:
 	- Fixed: Preseed template file is broken (compile time error)
 
 ENGINE
-	- Fixed: Can't use an undefined value as a HASH reference
 	- Removed: Backtrace routines, which cause segfault on Debian Jessie (issues with Carp package)
 
 SETUP:
@@ -29,9 +35,7 @@ SETUP:
 	- Fixed: Uninstaller - Several compile time errors + missing tasks
 
 GUI:
-	- Allow plugins to provide their own router
 	- Fixed: Unable to view ticket (reseller level)
-	- Fixed: Unable to edit domain (admin level)
 
 Tickets:
 	- Fixed #936: Bug - Awstats addon - Failed to open directory /var/cache/awstats
