@@ -103,6 +103,7 @@ sub loadConfig
 		$main::imscpConfig{'Version'} = $imscpNewConfig{'Version'};
 		$main::imscpConfig{'CodeName'} = $imscpNewConfig{'CodeName'};
 		$main::imscpConfig{'DistName'} = $imscpNewConfig{'DistName'};
+		$main::imscpConfig{'THEME_ASSETS_VERSION'} = $imscpNewConfig{'THEME_ASSETS_VERSION'};
 	} else { # No conffile found, assumption is made that it's a new install
 		%main::imscpOldConfig = ();
 	}
