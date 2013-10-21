@@ -21,6 +21,7 @@ DOCS:
 	- Fixed: Preseed template file is broken (compile time error)
 
 ENGINE
+	- Fixed: Can't use an undefined value as a HASH reference
 	- Removed: Backtrace routines, which cause segfault on Debian Jessie (issues with Carp package)
 
 SETUP:

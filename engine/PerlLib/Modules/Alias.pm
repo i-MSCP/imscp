@@ -239,7 +239,7 @@ sub buildHTTPDData
 		ALLOW_URL_FOPEN => (exists $phpiniData->{$self->{'domain_id'}})
 			? $phpiniData->{$self->{'domain_id'}}->{'allow_url_fopen'}
 			: $rdata->{'PHPINI_ALLOW_URL_FOPEN'}->{'value'},
-		PHPINI_OPEN_BASEDIR => (exists $phpiniData->{$self->{'domain_id'}}->{'PHPINI_OPEN_BASEDIR'})
+		PHPINI_OPEN_BASEDIR => (exists $phpiniData->{$self->{'domain_id'}})
 			? ':'.$phpiniData->{$self->{'domain_id'}}->{'PHPINI_OPEN_BASEDIR'}
 			: $rdata->{'PHPINI_OPEN_BASEDIR'}->{'value'} ? ':' . $rdata->{'PHPINI_OPEN_BASEDIR'}->{'value'} : ''
 	};
