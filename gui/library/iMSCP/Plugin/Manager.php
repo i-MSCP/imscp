@@ -1059,7 +1059,10 @@ class iMSCP_Plugin_Manager
 				unset($this->plugins[$pluginName]);
 			} else {
 				write_log(sprintf('Plugin manager: Unable to delete the %s plugin', $pluginName), E_USER_ERROR);
-				set_page_message(tr('Unable to delete the %s plugin. Please, remove it manually.', "<strong>$pluginName</strong>"), 'error');
+				set_page_message(
+					tr('Unable to delete the %s plugin. Please, remove it manually.', "<strong>$pluginName</strong>"),
+					'error'
+				);
 			}
 		}
 	}

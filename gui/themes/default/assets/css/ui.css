@@ -735,6 +735,7 @@ tfoot td {
     padding: 0.5em;
     white-space: nowrap;
     vertical-align: middle;
+    text-align: left;
 }
 
 tbody {
@@ -1257,7 +1258,6 @@ table .graph {
  * Footer
  */
 .footer {
-
     position: absolute;
     bottom: 0;
     text-align: center;

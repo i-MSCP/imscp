@@ -1,11 +1,12 @@
 ﻿i-MSCP ChangeLog
 ~~~~~~~~~~~~~~~~
+
 ------------------------------------------------------------------------------------------------------------------------
 Git Master
 ------------------------------------------------------------------------------------------------------------------------
 
 ENGINE
-	- Fixed: Can't use an undefined value as a HASH reference
+	- Fixed: Can't use an undefined value as a HASH reference...
 
 GUI:
 	- Allow plugins to provide their own router
