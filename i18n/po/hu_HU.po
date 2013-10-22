@@ -3,6 +3,7 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
+# kajla <adamradovits12@hotmail.com>, 2013
 # Zoltán Balázs <balazsz@citromail.hu>, 2011-2012
 # knorbi555 <k.norbi555@gmail.com>, 2012
 # Zoltán Balázs <balazsz@citromail.hu>, 2012-2013
@@ -11,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2013-10-17 13:31+0200\n"
-"PO-Revision-Date: 2013-10-10 22:09+0000\n"
+"POT-Creation-Date: 2013-10-22 13:35+0200\n"
+"PO-Revision-Date: 2013-10-22 11:36+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Hungarian (Hungary) (http://www.transifex.com/projects/p/i-MSCP/language/hu_HU/)\n"
 "MIME-Version: 1.0\n"
@@ -585,7 +586,7 @@ msgid "Activated software"
 msgstr ""
 
 msgid "Activation email"
-msgstr ""
+msgstr "Aktiváló e-mail"
 
 msgid "Activation in progress..."
 msgstr ""
@@ -597,7 +598,7 @@ msgid "Add"
 msgstr "Létrehozás"
 
 msgid "Add FTP account"
-msgstr ""
+msgstr "FTP fiók hozzáadása"
 
 msgid "Add FTP user"
 msgstr "FTP felhasználó hozzáadása"
@@ -645,7 +646,7 @@ msgid "Add email account"
 msgstr "Email fiók hozzáadása"
 
 msgid "Add email user"
-msgstr ""
+msgstr "E-mail felhasználó hozzáadása"
 
 msgid "Add external mail server for {DOMAIN_UTF8}"
 msgstr "Külső levelező szerver hozzáadása a {DOMAIN_UTF8} -hez"
@@ -714,7 +715,7 @@ msgid "Admin / Hosting Plans / Add Hosting Plan"
 msgstr ""
 
 msgid "Admin / Hosting Plans / Overview"
-msgstr ""
+msgstr "Adminisztrátor / Hoszting tervek / Áttekintés"
 
 msgid "Admin / Hosting Plans / Overview / Edit Hosting Plan"
 msgstr ""
@@ -765,13 +766,13 @@ msgid "Admin / Settings / Welcome Email"
 msgstr ""
 
 msgid "Admin / Settings / {TR_DYNAMIC_TITLE}"
-msgstr ""
+msgstr "Adminisztrátor / Beállítások / {TR_DYNAMIC_TITLE}"
 
 msgid "Admin / Software Management / Reseller Software"
 msgstr ""
 
 msgid "Admin / Statistics / IP Usage"
-msgstr ""
+msgstr "Adminisztrátor / Statisztika / IP használat"
 
 msgid "Admin / Statistics / Reseller Statistics"
 msgstr ""
@@ -1788,13 +1789,13 @@ msgid "Deactivate selected items"
 msgstr "Kijelölt elemek felfüggesztése (kikapcsolása)"
 
 msgid "Deactivate this plugin."
-msgstr ""
+msgstr "Bővítőmodul (plugin) deaktiválása."
 
 msgid "Deactivated"
 msgstr "Felfüggesztett"
 
 msgid "Deactivation in progress..."
-msgstr ""
+msgstr "Deaktiválás folyamatban..."
 
 #, php-format
 msgid ""
@@ -2308,7 +2309,7 @@ msgid "Error"
 msgstr "Hiba"
 
 msgid "Error details"
-msgstr ""
+msgstr "Hiba részletei"
 
 msgid "Error in php.ini values."
 msgstr "Hiba php.ini-ben"
@@ -2424,7 +2425,7 @@ msgstr ""
 
 #, php-format
 msgid "File %s is missing in plugin directory."
-msgstr ""
+msgstr "%s fájl hiányzik a plugin könyvtárból."
 
 #, php-format
 msgid "File does not exist. %1$s.tar.gz"
@@ -2628,7 +2629,7 @@ msgid "Hours"
 msgstr "óra"
 
 msgid "Htaccess errors"
-msgstr ""
+msgstr "Htaccess hibák"
 
 msgid "Htaccess group"
 msgstr "Védett csoport"
@@ -2679,6 +2680,9 @@ msgstr "IP-cím törlése sikeresen beütemezve"
 
 msgid "IP addresses configured"
 msgstr "Beállított IP-címek"
+
+msgid "IP management"
+msgstr ""
 
 msgid "IP usage"
 msgstr "IP-cím használata"
@@ -2896,9 +2900,6 @@ msgstr "%s IP-cím blokkolva %s percre"
 #, php-format
 msgid "Ip %s is waiting %s seconds."
 msgstr "%s IP-címnek várnia kell %s másodpercet"
-
-msgid "Ip management"
-msgstr "IP-címek kezelése"
 
 msgid "Kernel Version"
 msgstr "Kernel verziója"
@@ -3858,7 +3859,7 @@ msgid "Plugin successfully uploaded."
 msgstr ""
 
 msgid "Plugins Upload"
-msgstr ""
+msgstr "Bővítőmodul feltöltése"
 
 #, php-format
 msgid ""
@@ -3969,6 +3970,9 @@ msgstr "Rekord adatai"
 
 msgid "Redirect"
 msgstr "Átirányítás"
+
+msgid "Redistribute unused quota across existing mailboxes"
+msgstr ""
 
 msgid "Registration date"
 msgstr "Regisztráció dátuma"
@@ -4626,7 +4630,7 @@ msgid "Subdomain successfully scheduled for addition."
 msgstr ""
 
 msgid "Subdomain successfully scheduled for deletion."
-msgstr ""
+msgstr "Aldomain törlése beütemezve."
 
 msgid "Subdomain successfully scheduled for update"
 msgstr ""
@@ -5754,7 +5758,7 @@ msgid "You must confirm customer account deletion."
 msgstr ""
 
 msgid "You must confirm your password."
-msgstr ""
+msgstr "Meg kell erősítened a jelszavad."
 
 msgid "You must enter a domain alias name."
 msgstr ""

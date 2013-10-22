@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.0.1.6\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2013-10-17 13:31+0200\n"
+"POT-Creation-Date: 2013-10-22 13:35+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -2674,6 +2674,9 @@ msgstr ""
 msgid "IP addresses configured"
 msgstr ""
 
+msgid "IP management"
+msgstr ""
+
 msgid "IP usage"
 msgstr ""
 
@@ -2889,9 +2892,6 @@ msgstr ""
 
 #, php-format
 msgid "Ip %s is waiting %s seconds."
-msgstr ""
-
-msgid "Ip management"
 msgstr ""
 
 msgid "Kernel Version"
@@ -3962,6 +3962,9 @@ msgid "Record data"
 msgstr ""
 
 msgid "Redirect"
+msgstr ""
+
+msgid "Redistribute unused quota across existing mailboxes"
 msgstr ""
 
 msgid "Registration date"

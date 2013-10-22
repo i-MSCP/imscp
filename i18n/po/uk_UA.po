@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2013-10-17 13:31+0200\n"
-"PO-Revision-Date: 2013-10-10 22:09+0000\n"
+"POT-Creation-Date: 2013-10-22 13:35+0200\n"
+"PO-Revision-Date: 2013-10-22 11:36+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Ukrainian (Ukraine) (http://www.transifex.com/projects/p/i-MSCP/language/uk_UA/)\n"
 "MIME-Version: 1.0\n"
@@ -2681,6 +2681,9 @@ msgstr ""
 msgid "IP addresses configured"
 msgstr "Сконфигурированные IP адреса"
 
+msgid "IP management"
+msgstr ""
+
 msgid "IP usage"
 msgstr "Використання IP"
 
@@ -2897,9 +2900,6 @@ msgstr "IP %s заблокирован на %s минут."
 #, php-format
 msgid "Ip %s is waiting %s seconds."
 msgstr "IP %s ожидает %s секунд."
-
-msgid "Ip management"
-msgstr "Управление IP"
 
 msgid "Kernel Version"
 msgstr "Версія ядра"
@@ -3970,6 +3970,9 @@ msgstr "Дані записи"
 
 msgid "Redirect"
 msgstr "Редирект"
+
+msgid "Redistribute unused quota across existing mailboxes"
+msgstr ""
 
 msgid "Registration date"
 msgstr "Дата регистрации"

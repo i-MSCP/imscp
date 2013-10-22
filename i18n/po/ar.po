@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2013-10-17 13:31+0200\n"
-"PO-Revision-Date: 2013-10-10 22:09+0000\n"
+"POT-Creation-Date: 2013-10-22 13:35+0200\n"
+"PO-Revision-Date: 2013-10-22 11:36+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Arabic (http://www.transifex.com/projects/p/i-MSCP/language/ar/)\n"
 "MIME-Version: 1.0\n"
@@ -2678,6 +2678,9 @@ msgstr ""
 msgid "IP addresses configured"
 msgstr ""
 
+msgid "IP management"
+msgstr ""
+
 msgid "IP usage"
 msgstr "استخدام الأى بى"
 
@@ -2893,9 +2896,6 @@ msgstr ""
 
 #, php-format
 msgid "Ip %s is waiting %s seconds."
-msgstr ""
-
-msgid "Ip management"
 msgstr ""
 
 msgid "Kernel Version"
@@ -3966,6 +3966,9 @@ msgid "Record data"
 msgstr ""
 
 msgid "Redirect"
+msgstr ""
+
+msgid "Redistribute unused quota across existing mailboxes"
 msgstr ""
 
 msgid "Registration date"

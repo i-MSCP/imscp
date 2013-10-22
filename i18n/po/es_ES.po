@@ -15,8 +15,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2013-10-17 13:31+0200\n"
-"PO-Revision-Date: 2013-10-10 22:09+0000\n"
+"POT-Creation-Date: 2013-10-22 13:35+0200\n"
+"PO-Revision-Date: 2013-10-22 11:36+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Spanish (Spain) (http://www.transifex.com/projects/p/i-MSCP/language/es_ES/)\n"
 "MIME-Version: 1.0\n"
@@ -2684,6 +2684,9 @@ msgstr "Dirección IP correctamente programada para eliminación."
 msgid "IP addresses configured"
 msgstr "Dirección IP configurada"
 
+msgid "IP management"
+msgstr ""
+
 msgid "IP usage"
 msgstr "Uso de IP"
 
@@ -2900,9 +2903,6 @@ msgstr "La IP %s está bloqueada por %s minutos."
 #, php-format
 msgid "Ip %s is waiting %s seconds."
 msgstr "La IP %s está esperando %s segundos."
-
-msgid "Ip management"
-msgstr "Administración de IP"
 
 msgid "Kernel Version"
 msgstr "Versión del Kernel"
@@ -3973,6 +3973,9 @@ msgstr "Guardar datos"
 
 msgid "Redirect"
 msgstr "Redireccionar"
+
+msgid "Redistribute unused quota across existing mailboxes"
+msgstr ""
 
 msgid "Registration date"
 msgstr "Fecha de registro"

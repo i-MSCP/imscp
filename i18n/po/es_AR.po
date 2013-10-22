@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2013-10-17 13:31+0200\n"
-"PO-Revision-Date: 2013-10-10 22:09+0000\n"
+"POT-Creation-Date: 2013-10-22 13:35+0200\n"
+"PO-Revision-Date: 2013-10-22 11:36+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Spanish (Argentina) (http://www.transifex.com/projects/p/i-MSCP/language/es_AR/)\n"
 "MIME-Version: 1.0\n"
@@ -303,7 +303,7 @@ msgstr ""
 
 #, php-format
 msgid "%s doesn't exist"
-msgstr ""
+msgstr "%s no existe"
 
 #, php-format
 msgid "%s doesn't exist or is empty"
@@ -344,7 +344,7 @@ msgstr ""
 
 #, php-format
 msgid "%s record"
-msgstr ""
+msgstr "%s registros"
 
 #, php-format
 msgid ""
@@ -568,7 +568,7 @@ msgid "Action"
 msgstr "Acción"
 
 msgid "Actions"
-msgstr ""
+msgstr "Acciones"
 
 msgid "Activate"
 msgstr "Activar"
@@ -991,7 +991,7 @@ msgid "Already in use"
 msgstr ""
 
 msgid "Alternative URL to reach your website"
-msgstr ""
+msgstr "URL alternativa para llegar a tu página web"
 
 msgid "An error has been found in mail forward list."
 msgstr ""
@@ -1249,7 +1249,7 @@ msgid "Cannot validate record: %s"
 msgstr ""
 
 msgid "Canonical name"
-msgstr ""
+msgstr "Nombre Canónico"
 
 msgid "Captcha fontfile not found."
 msgstr "Archivo fuente de Captcha no encontrado"
@@ -1346,13 +1346,13 @@ msgid "Choose your language"
 msgstr ""
 
 msgid "Circular"
-msgstr ""
+msgstr "Circular"
 
 msgid "City"
 msgstr "Ciudad"
 
 msgid "Class"
-msgstr ""
+msgstr "Clase"
 
 msgid "Clear log"
 msgstr "Borrar log"
@@ -1723,10 +1723,10 @@ msgid "Data were been altered. Please try again."
 msgstr ""
 
 msgid "Database"
-msgstr ""
+msgstr "Base de Datos"
 
 msgid "Database Name and Users"
-msgstr ""
+msgstr "Nombre de Base de Datos y Usuarios"
 
 msgid "Database Update Revision"
 msgstr ""
@@ -1741,13 +1741,13 @@ msgid "Database name is too long."
 msgstr ""
 
 msgid "Database prefix"
-msgstr ""
+msgstr "Prefijo de Base de Datos"
 
 msgid "Database prefix/suffix"
 msgstr ""
 
 msgid "Database required"
-msgstr ""
+msgstr "Base de Datos requerida"
 
 msgid "Database update"
 msgstr ""
@@ -2010,7 +2010,7 @@ msgid "Domain alias successfully scheduled for addition."
 msgstr ""
 
 msgid "Domain alias successfully scheduled for deletion."
-msgstr ""
+msgstr "El alias de dominio ha sido programado para ser eliminado"
 
 msgid "Domain alias successfully scheduled for update."
 msgstr ""
@@ -2185,7 +2185,7 @@ msgid "Edit reseller"
 msgstr "Editar revendedor"
 
 msgid "Edit subdomain"
-msgstr ""
+msgstr "Editar subdominio"
 
 msgid "Edit user"
 msgstr "Editar usuario"
@@ -2581,7 +2581,7 @@ msgid "Home directory '%s' doesn't exist"
 msgstr ""
 
 msgid "Homepage"
-msgstr ""
+msgstr "Página de Inicio"
 
 msgid "Host"
 msgstr "Host"
@@ -2658,7 +2658,7 @@ msgid "IP"
 msgstr "IP"
 
 msgid "IP address"
-msgstr ""
+msgstr "Dirección IP"
 
 msgid "IP address already known by the system."
 msgstr ""
@@ -2678,11 +2678,14 @@ msgstr ""
 msgid "IP addresses configured"
 msgstr ""
 
+msgid "IP management"
+msgstr ""
+
 msgid "IP usage"
 msgstr "Uso de IP"
 
 msgid "IPv6 address"
-msgstr ""
+msgstr "Dirección IPv6"
 
 msgid "IPv6 address field is empty or invalid."
 msgstr ""
@@ -2783,13 +2786,13 @@ msgid "Install"
 msgstr "Instalar"
 
 msgid "Install Software"
-msgstr ""
+msgstr "Instalar Software"
 
 msgid "Install in progress"
 msgstr ""
 
 msgid "Install path"
-msgstr ""
+msgstr "Ruta de instalación"
 
 msgid "Install various Web applications with a few clicks."
 msgstr ""
@@ -2858,7 +2861,7 @@ msgid "Invalid expiration date."
 msgstr ""
 
 msgid "Invalid group name!"
-msgstr ""
+msgstr "¡Nombre de grupo inválido!"
 
 msgid "Invalid home directory."
 msgstr ""
@@ -2893,9 +2896,6 @@ msgstr ""
 
 #, php-format
 msgid "Ip %s is waiting %s seconds."
-msgstr ""
-
-msgid "Ip management"
 msgstr ""
 
 msgid "Kernel Version"
@@ -2972,7 +2972,7 @@ msgid "Link"
 msgstr ""
 
 msgid "Link to authors homepage"
-msgstr ""
+msgstr "Enlace a página del Autor"
 
 msgid "Load (1 Min, 5 Min, 15 Min)"
 msgstr "Carga (1 Min, 5 Min, 15 Min)"
@@ -2987,7 +2987,7 @@ msgid "Login"
 msgstr "Iniciar sesión"
 
 msgid "Login As"
-msgstr ""
+msgstr "Iniciar sesión como"
 
 #, php-format
 msgid "Login data successfully sent to %s."
@@ -3263,7 +3263,7 @@ msgid "New ticket"
 msgstr "Nuevo ticket"
 
 msgid "Next"
-msgstr ""
+msgstr "Siguiente"
 
 msgid "Next step"
 msgstr "Siguiente paso"
@@ -3882,7 +3882,7 @@ msgid "Prevent external login for resellers"
 msgstr "Impedir acceso externo para los revendedores"
 
 msgid "Previous"
-msgstr ""
+msgstr "Previo"
 
 msgid "Priority"
 msgstr "Prioridad"
@@ -3963,9 +3963,12 @@ msgid "Rebuild languages index"
 msgstr ""
 
 msgid "Record data"
-msgstr ""
+msgstr "Guardar datos"
 
 msgid "Redirect"
+msgstr ""
+
+msgid "Redistribute unused quota across existing mailboxes"
 msgstr ""
 
 msgid "Registration date"
@@ -4167,7 +4170,7 @@ msgid "Reseller's layout color successfully updated."
 msgstr ""
 
 msgid "Reseller/IP usage statistics"
-msgstr ""
+msgstr "Revendedor/Estadísticas Uso de IP"
 
 msgid "Resellers"
 msgstr "Revendedores"
@@ -4302,13 +4305,13 @@ msgid "Security code"
 msgstr "Código de seguridad"
 
 msgid "Select Domain"
-msgstr ""
+msgstr "Seleccionar Dominio"
 
 msgid "Select all entries for deletion."
 msgstr ""
 
 msgid "Select database"
-msgstr ""
+msgstr "Seleccionar Base de Datos"
 
 msgid "Select group"
 msgstr ""
@@ -4382,7 +4385,7 @@ msgid "Service Unavailable"
 msgstr ""
 
 msgid "Service name"
-msgstr ""
+msgstr "Nombre del Servicio"
 
 msgid "Service port was successfully added"
 msgstr "Puerto de servicio añadido satisfactoriamente"
@@ -4394,7 +4397,7 @@ msgid "Service ports"
 msgstr ""
 
 msgid "Service protocol"
-msgstr ""
+msgstr "Protocolo de Servicio"
 
 msgid "Services status"
 msgstr "Estado de los servicios"
@@ -4461,13 +4464,13 @@ msgid "Size"
 msgstr "Tamaño"
 
 msgid "Software"
-msgstr ""
+msgstr "Software"
 
 msgid "Software Description"
 msgstr ""
 
 msgid "Software available"
-msgstr ""
+msgstr "Software disponible"
 
 msgid "Software deleted."
 msgstr ""
@@ -4476,7 +4479,7 @@ msgid "Software depot upload"
 msgstr "Subir a repositorio de software"
 
 msgid "Software details"
-msgstr ""
+msgstr "Detalles del Software"
 
 msgid "Software has been deleted."
 msgstr ""
@@ -4488,7 +4491,7 @@ msgid "Software in repository"
 msgstr ""
 
 msgid "Software installation"
-msgstr ""
+msgstr "Instalación de Software"
 
 msgid "Software installer"
 msgstr ""
@@ -4524,13 +4527,13 @@ msgid "Software scheduled for deletion."
 msgstr ""
 
 msgid "Software status"
-msgstr ""
+msgstr "Estado del Software"
 
 msgid "Software total"
 msgstr "Total software"
 
 msgid "Software upload"
-msgstr ""
+msgstr "Subir Software"
 
 msgid "Software was activated."
 msgstr "Aplicación activada."
@@ -4589,7 +4592,7 @@ msgid "Subdomain %s cannot be forwarded on itself."
 msgstr ""
 
 msgid "Subdomain alias"
-msgstr ""
+msgstr "Alias de Subdominio"
 
 msgid "Subdomain alias errors"
 msgstr ""
@@ -4708,7 +4711,7 @@ msgid "TB"
 msgstr ""
 
 msgid "TTL"
-msgstr ""
+msgstr "TTL"
 
 msgid "TTL must be a number."
 msgstr ""
@@ -4723,10 +4726,10 @@ msgid "Target"
 msgstr ""
 
 msgid "Target host"
-msgstr ""
+msgstr "Anfitrión Destino"
 
 msgid "Target port"
-msgstr ""
+msgstr "Puerto del Anfitrión"
 
 msgid "Template for Auto email successfully updated."
 msgstr ""
@@ -5324,7 +5327,7 @@ msgid "Vendor hompage"
 msgstr ""
 
 msgid "Version"
-msgstr ""
+msgstr "Versión"
 
 msgid "Very high"
 msgstr "Muy alto"
@@ -5633,7 +5636,7 @@ msgid "You do not have databases."
 msgstr ""
 
 msgid "You do not have domain aliases."
-msgstr ""
+msgstr "No tienes alias de dominio"
 
 msgid "You do not have permission to install software yet"
 msgstr ""

@@ -9,9 +9,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2013-10-17 13:31+0200\n"
-"PO-Revision-Date: 2013-10-11 08:05+0000\n"
-"Last-Translator: Cool <barni@telia.com>\n"
+"POT-Creation-Date: 2013-10-22 13:35+0200\n"
+"PO-Revision-Date: 2013-10-22 11:36+0000\n"
+"Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Swedish (Sweden) (http://www.transifex.com/projects/p/i-MSCP/language/sv_SE/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -2678,6 +2678,9 @@ msgstr "IP planeras för radering."
 msgid "IP addresses configured"
 msgstr "IP adr. konfigurerat."
 
+msgid "IP management"
+msgstr ""
+
 msgid "IP usage"
 msgstr "IP-användning"
 
@@ -2894,9 +2897,6 @@ msgstr "Ip %s is blocked for %s minutes."
 #, php-format
 msgid "Ip %s is waiting %s seconds."
 msgstr "Ip %s is waiting %s seconds."
-
-msgid "Ip management"
-msgstr "Ip management"
 
 msgid "Kernel Version"
 msgstr "Kernel Version"
@@ -3967,6 +3967,9 @@ msgstr "Postdata"
 
 msgid "Redirect"
 msgstr "Redirect"
+
+msgid "Redistribute unused quota across existing mailboxes"
+msgstr ""
 
 msgid "Registration date"
 msgstr "Registrations datum"
