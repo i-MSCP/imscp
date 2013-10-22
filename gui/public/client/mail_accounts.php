@@ -189,7 +189,9 @@ function _client_generateMailAccountsList($tpl, $mainDmnId)
 			}
 
 			if ($isMailbox && $row['status'] == $cfg->ITEM_OK_STATUS) {
-				if(($imapStream = @imap_open("{localhost/notls}", $mailAddr, $row['mail_pass'], OP_HALFOPEN))) {
+				$quotaMax = $row['quota'];
+
+				if($quotaMax && ($imapStream = @imap_open("{localhost/notls}", $mailAddr, $row['mail_pass'], OP_HALFOPEN))) {
 					$quotaUsage = imap_get_quotaroot($imapStream, 'INBOX');
 					imap_close($imapStream);
 
@@ -198,21 +200,15 @@ function _client_generateMailAccountsList($tpl, $mainDmnId)
 					} else {
 						$quotaUsage = 0;
 					}
-				} else {
-					$quotaUsage = 0;
-				}
 
-				$quotaMax = $row['quota'];
-
-				if ($quotaMax == 0) {
-					$quotaMax = tr('unlimited');
-				} else {
 					$quotaMax = bytesHuman($quotaMax);
-				}
 
-				$txtQuota = ($mailQuotaLimit) ?
-					tr('%s / %s of %s', bytesHuman($quotaUsage), $quotaMax, $mailQuotaLimit)
-					: sprintf('%s / %s', bytesHuman($quotaUsage), $quotaMax);
+					$txtQuota = ($mailQuotaLimit) ?
+						tr('%s / %s of %s', bytesHuman($quotaUsage), $quotaMax, $mailQuotaLimit)
+						: sprintf('%s / %s', bytesHuman($quotaUsage), $quotaMax);
+				} else {
+					$txtQuota = tr('unlimited');
+				}
 			} else {
 				$txtQuota = '---';
 			}

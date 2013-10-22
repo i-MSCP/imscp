@@ -1032,6 +1032,9 @@ function encode($string, $charset = 'UTF-8')
 function sync_mailboxes_quota($domainId, $newQuota)
 {
 	if ($newQuota != 0) {
+		/** @var iMSCP_Config_Handler_File $cfg */
+		$cfg = iMSCP_Registry::get('config');
+
 		$stmt = exec_query(
 			'SELECT `mail_id`, `quota` FROM `mail_users` WHERE `domain_id` = ? AND `quota` IS NOT NULL', $domainId
 		);
@@ -1047,19 +1050,19 @@ function sync_mailboxes_quota($domainId, $newQuota)
 			$totalQuota /= 1048576;
 			$newQuota /= 1048576;
 
-			if ($newQuota < $totalQuota || $totalQuota == 0) {
+			if (
+				$newQuota < $totalQuota || (isset($cfg['EMAIL_QUOTA_SYNC_MODE']) && $cfg['EMAIL_QUOTA_SYNC_MODE']) ||
+				$totalQuota == 0
+			) {
 				$db = iMSCP_Database::getRawInstance();
 				$stmt = $db->prepare('UPDATE `mail_users` SET `quota` = ? WHERE `mail_id` = ?');
 				$result = 0;
 
 				foreach ($mailboxes as $mailbox) {
 					$oldResult = $result;
-					$result += $newQuota * ($mailbox['quota'] / 1048576) / $totalQuota;
-
-					if($result < 1) {
-						$result = 1;
-					}
-
+					$mailboxQuota = (($mailbox['quota']) ? $mailbox['quota'] / 1048576  : $newQuota);
+					$result += $newQuota * $mailboxQuota / $totalQuota;
+					if($result < 1) $result = 1;
 					$stmt->execute(array(((int)$result - (int)$oldResult) * 1048576, $mailbox['mail_id']));
 				}
 			}

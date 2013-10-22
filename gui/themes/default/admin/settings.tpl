@@ -203,6 +203,15 @@
 			</select>
 		</div>
 	</div>
+	<div class="even">
+		<div class="left"><label for="email_quota_sync_mode">{TR_EMAIL_QUOTA_SYNC_MODE}</label></div>
+		<div class="right">
+			<select name="email_quota_sync_mode" id="email_quota_sync_mode">
+				<option value="0" {REDISTRIBUTE_EMAIl_QUOTA_NO}>{TR_NO}</option>
+				<option value="1" {REDISTRIBUTE_EMAIl_QUOTA_YES}>{TR_YES}</option>
+			</select>
+		</div>
+	</div>
 </div>
 <h1><strong>{TR_PHPINI_BASE_SETTINGS}</strong></h1>
 

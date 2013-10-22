@@ -52,6 +52,7 @@
 function reseller_getMailData($domainId, $mailQuota)
 {
 	static $mailData = null;
+
 	if(null === $mailData) {
 		$stmt = exec_query(
 			'
@@ -1004,7 +1005,7 @@ function reseller_checkAndUpdateData($domainId, $recoveryMode = false)
 			);
 
 			// Sync mailboxes quota if needed
-			if($data['fallback_mail_quota'] != $data['mail_quota']) {
+			if($data['fallback_mail_quota'] != ($data['mail_quota'] * 1048576)) {
 				sync_mailboxes_quota($domainId, $data['mail_quota'] * 1048576);
 			}
 			

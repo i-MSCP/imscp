@@ -9,11 +9,14 @@ ENGINE
 	- Fixed: Can't use an undefined value as a HASH reference...
 
 GUI:
+	- Added: Option allowing to set Email quota synchronization mode
 	- Allow plugins to provide their own router
+	- Fixed: Do not show any quota information for mailboxes which have the quota limit set to 0 (unlimited)
 	- Fixed: Unable to edit domain (admin level)
 
 Tickets:
 	- Fixed #938: Bug - Ftp - Login as link is missing
+	- Fixed #942: Bug - Mailboxes quota synchronization is broken
 
 ------------------------------------------------------------------------------------------------------------------------
 1.1.0-rc4.3

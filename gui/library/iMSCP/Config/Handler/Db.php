@@ -50,6 +50,7 @@ require_once 'iMSCP/Config/Handler.php';
  * @property string USER_INITIAL_LANG User initial language
  * @property string PHPINI_OPEN_BASEDIR PHP open_basedir
  * @property int DATABASE_REVISION Database revision
+ * @property  int EMAIL_QUOTA_SYNC_MODE Email quota sync mode
  *
  * @package     iMSCP_Config
  * @subpackage  Handler

@@ -70,6 +70,7 @@ if (isset($_POST['uaction']) && $_POST['uaction'] == 'apply') {
 	$createDefaultEmails = $_POST['create_default_email_addresses'];
 	$countDefaultEmails = $_POST['count_default_email_addresses'];
 	$hardMailSuspension = $_POST['hard_mail_suspension'];
+	$emailQuotaSyncMode = $_POST['email_quota_sync_mode'];
 	$userInitialLang = $_POST['def_language'];
 	$supportSystem = $_POST['support_system'];
 	$hostingPlanLevel = $_POST['hosting_plan_level'];
@@ -118,12 +119,17 @@ if (isset($_POST['uaction']) && $_POST['uaction'] == 'apply') {
 
 	if(!is_scalar($phpini_open_basedir)) { // No more check here - Admin must know what he do...
 		set_page_message(tr('Wrong value for the PHP open_basedir directive.'), 'error');
-	} elseif ((!is_number($lostPasswdTimeout))
-		|| (!is_number($passwdChars)) || (!is_number($bruteforce_max_login))
-		|| (!is_number($bruteforce_block_time)) || (!is_number($bruteforce_between_time))
-		|| (!is_number($bruteforce_max_capcha)) || (!is_number($bruteforce_max_attempts_before_wait))
-		|| (!is_number($domainRowsPerPage)) || (!is_number($maxDnamesLabels))
-		|| (!is_number($maxSubdnamesLabels))
+	} elseif (
+		! is_number($lostPasswdTimeout) ||
+		! is_number($passwdChars) ||
+		! is_number($bruteforce_max_login) ||
+		! is_number($bruteforce_block_time) ||
+		! is_number($bruteforce_between_time) ||
+		! is_number($bruteforce_max_capcha) ||
+		! is_number($bruteforce_max_attempts_before_wait) ||
+		! is_number($domainRowsPerPage) ||
+		! is_number($maxDnamesLabels) ||
+		! is_number($maxSubdnamesLabels)
 	) {
 		set_page_message(tr('Only positive numbers are allowed.'), 'error');
 	} elseif ($domainRowsPerPage < 1) {
@@ -152,6 +158,7 @@ if (isset($_POST['uaction']) && $_POST['uaction'] == 'apply') {
 		$dbCfg->CREATE_DEFAULT_EMAIL_ADDRESSES = $createDefaultEmails;
 		$dbCfg->COUNT_DEFAULT_EMAIL_ADDRESSES = $countDefaultEmails;
 		$dbCfg->HARD_MAIL_SUSPENSION = $hardMailSuspension;
+		$dbCfg->EMAIL_QUOTA_SYNC_MODE = $emailQuotaSyncMode;
 		$dbCfg->USER_INITIAL_LANG = $userInitialLang;
 		$dbCfg->IMSCP_SUPPORT_SYSTEM = $supportSystem;
 		$dbCfg->HOSTING_PLANS_LEVEL = $hostingPlanLevel;
@@ -381,6 +388,22 @@ if ($cfg->HARD_MAIL_SUSPENSION) {
 		array(
 			 'HARD_MAIL_SUSPENSION_ON' => '',
 			 'HARD_MAIL_SUSPENSION_OFF' => $htmlSelected
+		)
+	);
+}
+
+if (isset($cfg['EMAIL_QUOTA_SYNC_MODE']) && $cfg['EMAIL_QUOTA_SYNC_MODE']) {
+	$tpl->assign(
+		array(
+			'REDISTRIBUTE_EMAIl_QUOTA_YES' => $htmlSelected,
+			'REDISTRIBUTE_EMAIl_QUOTA_NO' => ''
+		)
+	);
+} else {
+	$tpl->assign(
+		array(
+			'REDISTRIBUTE_EMAIl_QUOTA_YES' => '',
+			'REDISTRIBUTE_EMAIl_QUOTA_NO' => $htmlSelected
 		)
 	);
 }
@@ -647,92 +670,95 @@ switch ($cfg->LOG_LEVEL) {
 
 $tpl->assign(
 	array(
-		 'TR_PAGE_TITLE' => tr('Admin / Settings'),
-		 'ISP_LOGO' => layout_getUserLogo(),
-		 'TR_UPDATES' => tr('Updates'),
-		 'LOSTPASSWORD_TIMEOUT_VALUE' => $cfg->LOSTPASSWORD_TIMEOUT,
-		 'PASSWD_CHARS' => $cfg->PASSWD_CHARS,
-		 'BRUTEFORCE_MAX_LOGIN_VALUE' => $cfg->BRUTEFORCE_MAX_LOGIN,
-		 'BRUTEFORCE_BLOCK_TIME_VALUE' => $cfg->BRUTEFORCE_BLOCK_TIME,
-		 'BRUTEFORCE_BETWEEN_TIME_VALUE' => $cfg->BRUTEFORCE_BETWEEN_TIME,
-		 'BRUTEFORCE_MAX_CAPTCHA' => $cfg->BRUTEFORCE_MAX_CAPTCHA,
-		 'BRUTEFORCE_MAX_ATTEMPTS_BEFORE_WAIT' => $cfg->BRUTEFORCE_MAX_ATTEMPTS_BEFORE_WAIT,
-		 'DOMAIN_ROWS_PER_PAGE' => $cfg->DOMAIN_ROWS_PER_PAGE,
-		 'MAX_DNAMES_LABELS_VALUE' => $cfg->MAX_DNAMES_LABELS,
-		 'MAX_SUBDNAMES_LABELS_VALUE' => $cfg->MAX_SUBDNAMES_LABELS,
-		 'PHPINI_POST_MAX_SIZE' => $phpini->getDataVal('phpiniPostMaxSize'),
-		 'PHPINI_UPLOAD_MAX_FILESIZE' => $phpini->getDataVal('phpiniUploadMaxFileSize'),
-		 'PHPINI_MAX_EXECUTION_TIME' => $phpini->getDataVal('phpiniMaxExecutionTime'),
-		 'PHPINI_MAX_INPUT_TIME' => $phpini->getDataVal('phpiniMaxInputTime'),
-		 'PHPINI_MEMORY_LIMIT' => $phpini->getDataVal('phpiniMemoryLimit'),
-		 'PHPINI_OPEN_BASEDIR' => $cfg->PHPINI_OPEN_BASEDIR,
-		 'TR_SETTINGS' => tr('Settings'),
-		 'TR_MESSAGE' => tr('Message'),
-		 'TR_LOSTPASSWORD' => tr('Lost password'),
-		 'TR_LOSTPASSWORD_TIMEOUT' => tr('Activation link expire time <small>(In minutes)</small>'),
-		 'TR_PASSWORD_SETTINGS' => tr('Password settings'),
-		 'TR_PASSWD_STRONG' => tr('Use strong Passwords'),
-		 'TR_PASSWD_CHARS' => tr('Password length'),
-		 'TR_BRUTEFORCE' => tr('Bruteforce detection'),
-		 'TR_BRUTEFORCE_BETWEEN' => tr('Blocking time between logins and captcha attempts'),
-		 'TR_BRUTEFORCE_MAX_LOGIN' => tr('Max number of login attempts'),
-		 'TR_BRUTEFORCE_BLOCK_TIME' => tr('Blocktime <small>(in minutes)</small>'),
-		 'TR_BRUTEFORCE_BETWEEN_TIME' => tr('Blocking time between login/captcha attempts <small>(In seconds)</small>'),
-		 'TR_BRUTEFORCE_MAX_CAPTCHA' => tr('Maximum number of captcha validation attempts'),
-		 'TR_BRUTEFORCE_MAX_ATTEMPTS_BEFORE_WAIT' => tr('Maximum number of validation attempts before waiting restriction intervenes'),
-		 'TR_OTHER_SETTINGS' => tr('Other settings'),
-		 'TR_MAIL_SETTINGS' => tr('Email settings'),
-		 'TR_CREATE_DEFAULT_EMAIL_ADDRESSES' => tr('Create default email addresses'),
-		 'TR_COUNT_DEFAULT_EMAIL_ADDRESSES' => tr('Count default email addresses'),
-		 'TR_HARD_MAIL_SUSPENSION' => tr('Email accounts are hard suspended'),
-		 'TR_USER_INITIAL_LANG' => tr('Panel default language'),
-		 'TR_SUPPORT_SYSTEM' => tr('Support system'),
-		 'TR_ENABLED' => tr('Enabled'),
-		 'TR_DISABLED' => tr('Disabled'),
-		 'TR_UPDATE' => tr('Update'),
-		 'TR_SERVERPORTS' => tr('Server ports'),
-		 'TR_HOSTING_PLANS_LEVEL' => tr('Hosting plans available for'),
-		 'TR_ADMIN' => tr('Admin'),
-		 'TR_RESELLER' => tr('Reseller'),
-		 'TR_DOMAIN_ROWS_PER_PAGE' => tr('Domains per page'),
-		 'TR_LOG_LEVEL' => tr('Mail Log Level'),
-		 'TR_E_USER_OFF' => tr('Disabled'),
-		 'TR_E_USER_NOTICE' => tr('Notices, Warnings and Errors'),
-		 'TR_E_USER_WARNING' => tr('Warnings and Errors'),
-		 'TR_E_USER_ERROR' => tr('Errors'),
-		 'TR_CHECK_FOR_UPDATES' => tr('Check for update'),
-		 'TR_ENABLE_SSL' => tr('Enable SSL'),
-		 'TR_SSL_HELP' => tr('Defines whether or not customers can add/change SSL certificates for their domains.'),
-		 'TR_COMPRESS_OUTPUT' => tr('Compress HTML output'),
-		 'TR_SHOW_COMPRESSION_SIZE' => tr('Show HTML output compression size comment'),
-		 'TR_PREVENT_EXTERNAL_LOGIN_ADMIN' => tr('Prevent external login for admins'),
-		 'TR_PREVENT_EXTERNAL_LOGIN_RESELLER' => tr('Prevent external login for resellers'),
-		 'TR_PREVENT_EXTERNAL_LOGIN_CLIENT' => tr('Prevent external login for clients'),
-		 'TR_DNAMES_VALIDATION_SETTINGS' => tr('Domain names validation'),
-		 'TR_TLD_STRICT_VALIDATION' => tr('Top Level Domain name strict validation'),
-		 'TR_TLD_STRICT_VALIDATION_HELP' => tr('Only Top Level Domains (TLD) listed in IANA root zone database can be used.'),
-		 'TR_SLD_STRICT_VALIDATION' => tr('Second Level Domain name strict validation'),
-		 'TR_SLD_STRICT_VALIDATION_HELP' => tr('Single letter Second Level Domains (SLD) are not allowed under the most Top Level Domains (TLD). There is a small list of exceptions, e.g. the TLD .de.'),
-		 'TR_MAX_DNAMES_LABELS' => tr('Maximal number of labels for domain names (<small>Excluding SLD & TLD</small>)'),
-		 'TR_MAX_SUBDNAMES_LABELS' => tr('Maximum number of labels for subdomains'),
-		 'TR_PHPINI_BASE_SETTINGS' => tr('PHP Settings (system default)'),
-		 'TR_PHPINI_ALLOW_URL_FOPEN' => tr('Value for the %s directive', true, '<b>allow_url_fopen</b>'),
-		 'TR_PHPINI_DISPLAY_ERRORS' => tr('Value for the %s directive', true, '<b>display_errors</b>'),
-		 'TR_PHPINI_ERROR_REPORTING' => tr('Value for the %s directive', true, '<b>error_reporting</b>'),
-		 'TR_PHPINI_ERROR_REPORTING_DEFAULT' => tr('Show all errors, except for notices and coding standards warnings (Default)'),
-		 'TR_PHPINI_ERROR_REPORTING_DEVELOPEMENT' => tr('Show all errors, warnings and notices including coding standards (Development)'),
-		 'TR_PHPINI_ERROR_REPORTING_PRODUCTION' => tr(' Show all errors, except for warnings about deprecated code (Production)'),
-		 'TR_PHPINI_ERROR_REPORTING_NONE' => tr('Do not show any error'),
-		 'TR_PHPINI_POST_MAX_SIZE' => tr('Value for the %s directive', true, '<b>post_max_size</b>'),
-		 'TR_PHPINI_UPLOAD_MAX_FILESIZE' => tr('Value for the %s directive', true, '<b>upload_max_filesize</b>'),
-		 'TR_PHPINI_MAX_EXECUTION_TIME' => tr('Value for the %s directive', true, '<b>max_execution_time</b>'),
-		 'TR_PHPINI_MAX_INPUT_TIME' => tr('Value for the %s directive', true, '<b>max_input_time</b>'),
-		 'TR_PHPINI_MEMORY_LIMIT' => tr('Value for the %s directive', true, '<b>memory_limit</b>'),
-		 'TR_PHPINI_OPEN_BASEDIR' => tr('Value for the %s directive', true, '<b>open_basedir</b>'),
-		 'TR_PHPINI_OPEN_BASEDIR_TOOLTIP' => json_encode(tr('Paths are appended to the default PHP open_basedir directive of customers. Each of them must be separated by PATH_SEPARATOR. See the PHP documentation for more information.')),
-		 'TR_PHPINI_DISABLE_FUNCTIONS' => tr('Value for the %s directive', true, '<b>disable_functions</b>'),
-		 'TR_MIB' => tr('MiB'),
-		 'TR_SEC' => tr('Sec.')
+		'TR_PAGE_TITLE' => tr('Admin / Settings'),
+		'ISP_LOGO' => layout_getUserLogo(),
+		'TR_UPDATES' => tr('Updates'),
+		'LOSTPASSWORD_TIMEOUT_VALUE' => $cfg->LOSTPASSWORD_TIMEOUT,
+		'PASSWD_CHARS' => $cfg->PASSWD_CHARS,
+		'BRUTEFORCE_MAX_LOGIN_VALUE' => $cfg->BRUTEFORCE_MAX_LOGIN,
+		'BRUTEFORCE_BLOCK_TIME_VALUE' => $cfg->BRUTEFORCE_BLOCK_TIME,
+		'BRUTEFORCE_BETWEEN_TIME_VALUE' => $cfg->BRUTEFORCE_BETWEEN_TIME,
+		'BRUTEFORCE_MAX_CAPTCHA' => $cfg->BRUTEFORCE_MAX_CAPTCHA,
+		'BRUTEFORCE_MAX_ATTEMPTS_BEFORE_WAIT' => $cfg->BRUTEFORCE_MAX_ATTEMPTS_BEFORE_WAIT,
+		'DOMAIN_ROWS_PER_PAGE' => $cfg->DOMAIN_ROWS_PER_PAGE,
+		'MAX_DNAMES_LABELS_VALUE' => $cfg->MAX_DNAMES_LABELS,
+		'MAX_SUBDNAMES_LABELS_VALUE' => $cfg->MAX_SUBDNAMES_LABELS,
+		'PHPINI_POST_MAX_SIZE' => $phpini->getDataVal('phpiniPostMaxSize'),
+		'PHPINI_UPLOAD_MAX_FILESIZE' => $phpini->getDataVal('phpiniUploadMaxFileSize'),
+		'PHPINI_MAX_EXECUTION_TIME' => $phpini->getDataVal('phpiniMaxExecutionTime'),
+		'PHPINI_MAX_INPUT_TIME' => $phpini->getDataVal('phpiniMaxInputTime'),
+		'PHPINI_MEMORY_LIMIT' => $phpini->getDataVal('phpiniMemoryLimit'),
+		'PHPINI_OPEN_BASEDIR' => $cfg->PHPINI_OPEN_BASEDIR,
+		'TR_SETTINGS' => tr('Settings'),
+		'TR_MESSAGE' => tr('Message'),
+		'TR_LOSTPASSWORD' => tr('Lost password'),
+		'TR_LOSTPASSWORD_TIMEOUT' => tr('Activation link expire time <small>(In minutes)</small>'),
+		'TR_PASSWORD_SETTINGS' => tr('Password settings'),
+		'TR_PASSWD_STRONG' => tr('Use strong Passwords'),
+		'TR_PASSWD_CHARS' => tr('Password length'),
+		'TR_BRUTEFORCE' => tr('Bruteforce detection'),
+		'TR_BRUTEFORCE_BETWEEN' => tr('Blocking time between logins and captcha attempts'),
+		'TR_BRUTEFORCE_MAX_LOGIN' => tr('Max number of login attempts'),
+		'TR_BRUTEFORCE_BLOCK_TIME' => tr('Blocktime <small>(in minutes)</small>'),
+		'TR_BRUTEFORCE_BETWEEN_TIME' => tr('Blocking time between login/captcha attempts <small>(In seconds)</small>'),
+		'TR_BRUTEFORCE_MAX_CAPTCHA' => tr('Maximum number of captcha validation attempts'),
+		'TR_BRUTEFORCE_MAX_ATTEMPTS_BEFORE_WAIT' => tr('Maximum number of validation attempts before waiting restriction intervenes'),
+		'TR_OTHER_SETTINGS' => tr('Other settings'),
+		'TR_MAIL_SETTINGS' => tr('Email settings'),
+		'TR_CREATE_DEFAULT_EMAIL_ADDRESSES' => tr('Create default email addresses'),
+		'TR_COUNT_DEFAULT_EMAIL_ADDRESSES' => tr('Count default email addresses'),
+		'TR_HARD_MAIL_SUSPENSION' => tr('Email accounts are hard suspended'),
+		'TR_EMAIL_QUOTA_SYNC_MODE' => tr('Redistribute unused quota across existing mailboxes'),
+		'TR_USER_INITIAL_LANG' => tr('Panel default language'),
+		'TR_SUPPORT_SYSTEM' => tr('Support system'),
+		'TR_ENABLED' => tr('Enabled'),
+		'TR_DISABLED' => tr('Disabled'),
+		'TR_YES' => tr('Yes'),
+		'TR_NO' => tr('No'),
+		'TR_UPDATE' => tr('Update'),
+		'TR_SERVERPORTS' => tr('Server ports'),
+		'TR_HOSTING_PLANS_LEVEL' => tr('Hosting plans available for'),
+		'TR_ADMIN' => tr('Admin'),
+		'TR_RESELLER' => tr('Reseller'),
+		'TR_DOMAIN_ROWS_PER_PAGE' => tr('Domains per page'),
+		'TR_LOG_LEVEL' => tr('Mail Log Level'),
+		'TR_E_USER_OFF' => tr('Disabled'),
+		'TR_E_USER_NOTICE' => tr('Notices, Warnings and Errors'),
+		'TR_E_USER_WARNING' => tr('Warnings and Errors'),
+		'TR_E_USER_ERROR' => tr('Errors'),
+		'TR_CHECK_FOR_UPDATES' => tr('Check for update'),
+		'TR_ENABLE_SSL' => tr('Enable SSL'),
+		'TR_SSL_HELP' => tr('Defines whether or not customers can add/change SSL certificates for their domains.'),
+		'TR_COMPRESS_OUTPUT' => tr('Compress HTML output'),
+		'TR_SHOW_COMPRESSION_SIZE' => tr('Show HTML output compression size comment'),
+		'TR_PREVENT_EXTERNAL_LOGIN_ADMIN' => tr('Prevent external login for admins'),
+		'TR_PREVENT_EXTERNAL_LOGIN_RESELLER' => tr('Prevent external login for resellers'),
+		'TR_PREVENT_EXTERNAL_LOGIN_CLIENT' => tr('Prevent external login for clients'),
+		'TR_DNAMES_VALIDATION_SETTINGS' => tr('Domain names validation'),
+		'TR_TLD_STRICT_VALIDATION' => tr('Top Level Domain name strict validation'),
+		'TR_TLD_STRICT_VALIDATION_HELP' => tr('Only Top Level Domains (TLD) listed in IANA root zone database can be used.'),
+		'TR_SLD_STRICT_VALIDATION' => tr('Second Level Domain name strict validation'),
+		'TR_SLD_STRICT_VALIDATION_HELP' => tr('Single letter Second Level Domains (SLD) are not allowed under the most Top Level Domains (TLD). There is a small list of exceptions, e.g. the TLD .de.'),
+		'TR_MAX_DNAMES_LABELS' => tr('Maximal number of labels for domain names (<small>Excluding SLD & TLD</small>)'),
+		'TR_MAX_SUBDNAMES_LABELS' => tr('Maximum number of labels for subdomains'),
+		'TR_PHPINI_BASE_SETTINGS' => tr('PHP Settings (system default)'),
+		'TR_PHPINI_ALLOW_URL_FOPEN' => tr('Value for the %s directive', true, '<b>allow_url_fopen</b>'),
+		'TR_PHPINI_DISPLAY_ERRORS' => tr('Value for the %s directive', true, '<b>display_errors</b>'),
+		'TR_PHPINI_ERROR_REPORTING' => tr('Value for the %s directive', true, '<b>error_reporting</b>'),
+		'TR_PHPINI_ERROR_REPORTING_DEFAULT' => tr('Show all errors, except for notices and coding standards warnings (Default)'),
+		'TR_PHPINI_ERROR_REPORTING_DEVELOPEMENT' => tr('Show all errors, warnings and notices including coding standards (Development)'),
+		'TR_PHPINI_ERROR_REPORTING_PRODUCTION' => tr(' Show all errors, except for warnings about deprecated code (Production)'),
+		'TR_PHPINI_ERROR_REPORTING_NONE' => tr('Do not show any error'),
+		'TR_PHPINI_POST_MAX_SIZE' => tr('Value for the %s directive', true, '<b>post_max_size</b>'),
+		'TR_PHPINI_UPLOAD_MAX_FILESIZE' => tr('Value for the %s directive', true, '<b>upload_max_filesize</b>'),
+		'TR_PHPINI_MAX_EXECUTION_TIME' => tr('Value for the %s directive', true, '<b>max_execution_time</b>'),
+		'TR_PHPINI_MAX_INPUT_TIME' => tr('Value for the %s directive', true, '<b>max_input_time</b>'),
+		'TR_PHPINI_MEMORY_LIMIT' => tr('Value for the %s directive', true, '<b>memory_limit</b>'),
+		'TR_PHPINI_OPEN_BASEDIR' => tr('Value for the %s directive', true, '<b>open_basedir</b>'),
+		'TR_PHPINI_OPEN_BASEDIR_TOOLTIP' => json_encode(tr('Paths are appended to the default PHP open_basedir directive of customers. Each of them must be separated by PATH_SEPARATOR. See the PHP documentation for more information.')),
+		'TR_PHPINI_DISABLE_FUNCTIONS' => tr('Value for the %s directive', true, '<b>disable_functions</b>'),
+		'TR_MIB' => tr('MiB'),
+		'TR_SEC' => tr('Sec.')
 	)
 );
 
