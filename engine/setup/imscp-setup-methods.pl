@@ -946,12 +946,12 @@ sub setupAskSsl
 
 	my $rs = 0;
 
-	if($main::reconfigure ~~ ['ssl', 'all', 'forced'] || $sslEnabled !~ /^yes|no$/) {
+	if($main::reconfigure ~~ ['ssl', 'all', 'forced'] || not $sslEnabled ~~ ['yes', 'no']) {
 		SSL_DIALOG:
 
 		# Ask for SSL
 		($rs, $sslEnabled) = $dialog->radiolist(
-			"\nDo you want to activate SSL for i-MSCP?", ['no', 'yes'], $sslEnabled eq 'yes' ? 'yes' : 'no'
+			"\nDo you want to activate SSL for i-MSCP?", ['no', 'yes'], ($sslEnabled eq 'yes') ? 'yes' : 'no'
 		);
 
 		if($sslEnabled eq 'yes' && $rs != 30) {
@@ -969,28 +969,25 @@ sub setupAskSsl
 				my $msg = '';
 
 				do {
-					$rs = $dialog->msgbox("$msg\nPlease selects your private key in next dialog.");
+					$dialog->msgbox("$msg\nPlease selects your private key in next dialog.");
 
 					# Ask for private key path
 					do {
 						($rs, $certificatKeyPath) = $dialog->fselect($certificatKeyPath);
 					} while($rs != 30 && ! ($certificatKeyPath && -f $certificatKeyPath));
 
-					# FIXME: Detect if a passphrase is needed automatically
 					if($rs != 30) {
 						($rs, $certificatKeyPassword) = $dialog->passwordbox(
 							"\nPlease enter the password for your private key if any:", $certificatKeyPassword
 						);
-
-						#$certificatKeyPassword =~ s/(["\$`\\])/\\$1/g;
 					}
 
 					if($rs != 30) {
-						$openSSL->{'key_pass'} = $certificatKeyPassword;
 						$openSSL->{'key_path'} = $certificatKeyPath;
+						$openSSL->{'key_pass'} = $certificatKeyPassword;
 
 						if($openSSL->ssl_check_key()) {
-							$msg = "\\Z1Wrong private key or password. Please try again.\\Zn\n\n";
+							$msg = "\n\\Z1Wrong private key or password. Please try again.\\Zn\n\n";
 						} else {
 							$msg = '';
 						}
@@ -999,21 +996,30 @@ sub setupAskSsl
 
 				# Ask for CA bundle
 				if($rs != 30) {
+					# The codes used for "Yes" and "No" match those used for "OK" and "Cancel", internally no
+					# distinction is made... Therefore, we override the Cancel value temporarly
+					$ENV{'DIALOG_CANCEL'} = 1;
 					$rs = $dialog->yesno("\nDo you have an intermediate certificate (CA Bundle)?");
 
-					if($rs !=30) {
+					if(! $rs) { # backup feature still available through ESC
 						do {
 							($rs, $intermediateCertificatPath) = $dialog->fselect($intermediateCertificatPath);
 						} while($rs != 30 && ! ($intermediateCertificatPath && -f $intermediateCertificatPath));
 
 						$openSSL->{'intermediate_cert_path'} = $intermediateCertificatPath if $rs != 30;
 					}
+
+					$ENV{'DIALOG_CANCEL'} = 30;
 				}
 
 				if($rs != 30) {
 					$dialog->msgbox("\nPlease selects your own certificate in next dialog.");
 
+					$rs = 1;
+
 					do {
+						$dialog->msgbox("\n\\Z1Wrong SSL certificate. Please try again.\\Zn\n\n") if ! $rs;
+
 						do {
 							($rs, $certificatPath) = $dialog->fselect($certificatPath);
 						} while($rs != 30 && ! ($certificatPath && -f $certificatPath));
@@ -1054,7 +1060,7 @@ sub setupAskSsl
 		setupSetQuestion('CERTIFICATE_KEY_PASSWORD', $certificatKeyPassword);
 		setupSetQuestion('INTERMEDIATE_CERTIFICATE_PATH', $intermediateCertificatPath);
 		setupSetQuestion('CERTIFICATE_PATH', $certificatPath);
-		setupSetQuestion('BASE_SERVER_VHOST_PREFIX', ($sslEnabled) ? $baseServerVhostPrefix : 'http://');
+		setupSetQuestion('BASE_SERVER_VHOST_PREFIX', ($sslEnabled eq 'yes') ? $baseServerVhostPrefix : 'http://');
 	}
 
 	$rs;

@@ -5,6 +5,10 @@
 Git Master
 ------------------------------------------------------------------------------------------------------------------------
 
+SETUP:
+	- Fixed: Base server vhost prefix not updated when disabling SSL (panel)
+	- Fixed: Unable to setup SSL without CA bundle (panel)
+
 Tickets:
 
 ------------------------------------------------------------------------------------------------------------------------
