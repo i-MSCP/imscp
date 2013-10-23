@@ -17,20 +17,20 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
- * @category	iMSCP
- * @package		iMSCP_Events
- * @copyright	2010-2013 by i-MSCP team
- * @author		Laurent Declercq <l.declercq@nuxwin.com>
- * @link		http://www.i-mscp.net i-MSCP Home Site
- * @license		http://www.gnu.org/licenses/gpl-2.0.html GPL v2
+ * @category    iMSCP
+ * @package     iMSCP_Events
+ * @copyright   2010-2013 by i-MSCP team
+ * @author      Laurent Declercq <l.declercq@nuxwin.com>
+ * @link        http://www.i-mscp.net i-MSCP Home Site
+ * @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
  */
 
 /**
  * Describes all events triggered in the iMSCP core code.
  *
- * @category	iMSCP
- * @package		iMSCP_Events
- * @author		Laurent Declercq <l.declercq@nuxwin.com>
+ * @category    iMSCP
+ * @package     iMSCP_Events
+ * @author      Laurent Declercq <l.declercq@nuxwin.com>
  */
 class iMSCP_Events
 {
@@ -46,18 +46,6 @@ class iMSCP_Events
 	const onAfterInitialize = 'onAfterInitialize';
 
 	/**
-	 * The 'onRestRequest' event is triggered in the rest.php action script when the 'X-Requested-With" header contains
-	 * "RestHttpRequest".
-	 *
-	 * The listener receive an iMSCP_Events_Event object with the following parameter:
-	 *
-	 * - request: The request data (for now, it's a copy of $_REQUEST)
-	 *
-	 * @const string
-	 */
-	const onRestRequest = 'onRestRequest';
-
-	/**
 	 * The onLoginScriptStart event is triggered at the very beginning of Login script.
 	 *
 	 * The listeners receive an iMSCP_Events_Event object.
@@ -71,7 +59,7 @@ class iMSCP_Events
 	 *
 	 * The listeners receive an iMSCP_Events_Event object with the following parameter:
 	 *
-	 *  - templateEngine: An iMSCP_pTemplate object
+	 * - templateEngine: An iMSCP_pTemplate object
 	 *
 	 * @const string
 	 */
@@ -91,7 +79,7 @@ class iMSCP_Events
 	 *
 	 * The listeners receive an iMSCP_Events_Event object with the following parameter:
 	 *
-	 *  - templateEngine: An iMSCP_pTemplate object
+	 * - templateEngine: An iMSCP_pTemplate object
 	 *
 	 * @const string
 	 */
@@ -111,7 +99,7 @@ class iMSCP_Events
 	 *
 	 * The listeners receive an iMSCP_Events_Event object with the following parameter:
 	 *
-	 *  - templateEngine: An iMSCP_pTemplate object
+	 * - templateEngine: An iMSCP_pTemplate object
 	 *
 	 * @const string
 	 */
@@ -131,7 +119,7 @@ class iMSCP_Events
 	 *
 	 * The listeners receive an iMSCP_Events_Event object with the following parameter:
 	 *
-	 *  - templateEngine: An iMSCP_pTemplate object
+	 * - templateEngine: An iMSCP_pTemplate object
 	 *
 	 * @const string
 	 */
@@ -151,7 +139,7 @@ class iMSCP_Events
 	 *
 	 * The listeners receive an iMSCP_Events_Event object with the following parameter:
 	 *
-	 *  - templateEngine: An iMSCP_pTemplate object
+	 * - templateEngine: An iMSCP_pTemplate object
 	 *
 	 * @const string
 	 */
@@ -162,7 +150,7 @@ class iMSCP_Events
 	 *
 	 * The listeners receive an iMSCP_Envents_Event object with the following parameter:
 	 *
-	 *   - context: An iMSCP_Exception_Writer_Browser object, the context in which the event is triggered
+	 * - context: An iMSCP_Exception_Writer_Browser object, the context in which the event is triggered
 	 *
 	 * @const string
 	 */
@@ -173,8 +161,8 @@ class iMSCP_Events
 	 *
 	 * The listeners receive an iMSCP_Events_Event object with the following parameter:
 	 *
-	 *  - context: An iMSCP_Exception_Writer_Browser object, the context in which the event is triggered
-	 *  - templateEngine: An iMSCP_pTemplate object
+	 * - context: An iMSCP_Exception_Writer_Browser object, the context in which the event is triggered
+	 * - templateEngine: An iMSCP_pTemplate object
 	 *
 	 * @const string
 	 */
@@ -186,12 +174,22 @@ class iMSCP_Events
 	 * The listeners receive an iMSCP_Events_Event object with the following parameter:
 	 *
 	 * - context: An iMSCP_Authentication object, the context in which the event is triggered
+	 *
+	 * @const string
 	 */
 	const onBeforeAuthentication = 'onBeforeAuthentication';
 
-    /**
-     *
-     */
+	/**
+	 * The onAuthentication event is triggered on authentication process.
+	 *
+	 * The listeners receive an iMSCP_Events_Event object with the following parameters:
+	 *
+	 * - context: An iMSCP_Authentication object, the context in which the event is triggered
+	 * - username: Username
+	 * - password: Password
+	 *
+	 * @const string
+	 */
     const onAuthentication = 'onAuthentication';
 
 	/**
@@ -234,7 +232,7 @@ class iMSCP_Events
 	 *
 	 * The listeners receive an iMSCP_Events_Event object with the following parameter:
 	 *
-	 *  - context: An iMSCP_Authentication object, the context in which the event is triggered
+	 * - context: An iMSCP_Authentication object, the context in which the event is triggered
 	 *
 	 * @const string
 	 */
@@ -245,7 +243,7 @@ class iMSCP_Events
 	 *
 	 * The listeners receive an iMSCP_Events_Event object with the following parameter:
 	 *
-	 *  - context: An iMSCP_Authentication object, the context in which the event is triggered
+	 * - context: An iMSCP_Authentication object, the context in which the event is triggered
 	 *
 	 * @const string
 	 */
@@ -255,6 +253,8 @@ class iMSCP_Events
 	 * The onBeforeEditAdminGeneralSettings event is triggered before the admin general settings are editied.
 	 *
 	 * The listeners receive an iMSCP_Events_Event object.
+	 *
+	 * @const string
 	 */
 	const onBeforeEditAdminGeneralSettings = 'onBeforeEditAdminGeneralSettings';
 
@@ -290,7 +290,7 @@ class iMSCP_Events
 	 *
 	 * The listeners receive an iMSCP_Events_Event object with the following parameter:
 	 *
-	 *  - userId: An integer representing the ID of user being edited.
+	 * - userId: An integer representing the ID of user being edited.
 	 *
 	 * @const string
 	 */
@@ -301,7 +301,7 @@ class iMSCP_Events
 	 *
 	 * The listeners receive an iMSCP_Events_Event object with the following parameter:
 	 *
-	 *  - userId: An integer representing the ID of user that has been edited
+	 * - userId: An integer representing the ID of user that has been edited
 	 *
 	 * @const string
 	 */
@@ -345,7 +345,7 @@ class iMSCP_Events
 	 *
 	 * The listeners receive an iMSCP_Events_Event object with the following parameter:
 	 *
-	 *  - customerId: An integer representing the ID of customer that has been deleted
+	 * - customerId: An integer representing the ID of customer that has been deleted
 	 *
 	 * @const string
 	 */
@@ -390,7 +390,7 @@ class iMSCP_Events
 	 *
 	 * The listeners receive an iMSCP_Events_Event object with the following parameter:
 	 *
-	 *  - ftpUserId: A string representing Ftp account username being edited
+	 * - ftpUserId: A string representing Ftp account username being edited
 	 *
 	 * @const string
 	 */
@@ -401,7 +401,7 @@ class iMSCP_Events
 	 *
 	 * The listeners receive an iMSCP_Events_Event object with the following parameter:
 	 *
-	 *  - ftpUserId: A string representing Ftp account username that has been edited
+	 * - ftpUserId: A string representing Ftp account username that has been edited
 	 *
 	 * @const string
 	 */
@@ -412,7 +412,7 @@ class iMSCP_Events
 	 *
 	 * The listeners receive an iMSCP_Events_Event object with the following parameter:
 	 *
-	 *  - ftpUserId: A string representing Ftp account username being deleted
+	 * - ftpUserId: A string representing Ftp account username being deleted
 	 *
 	 * @const string
 	 */
@@ -423,7 +423,7 @@ class iMSCP_Events
 	 *
 	 * The listeners receive an iMSCP_Events_Event object with the following parameter:
 	 *
-	 *  - ftpUserId: A string representing Ftp account username that has been deleted
+	 * - ftpUserId: A string representing Ftp account username that has been deleted
 	 *
 	 * @const string
 	 */
@@ -452,7 +452,7 @@ class iMSCP_Events
 	 *
 	 * The listeners receive an iMSCP_Events_Event object with the following parameter:
 	 *
-	 *  - sqlUserId: An integer representing the ID of Sql user being edited
+	 * - sqlUserId: An integer representing the ID of Sql user being edited
 	 *
 	 * @const string
 	 */
@@ -463,7 +463,7 @@ class iMSCP_Events
 	 *
 	 * The listeners receive an iMSCP_Events_Event object with the following parameter:
 	 *
-	 *  - sqlUserId: An integer representing the ID of Sql user that has been edited
+	 * - sqlUserId: An integer representing the ID of Sql user that has been edited
 	 *
 	 * @const string
 	 */
@@ -474,7 +474,7 @@ class iMSCP_Events
 	 *
 	 * The listeners receive an iMSCP_Events_Event object with the following parameter:
 	 *
-	 *  - sqlUserId: An integer representing the ID of Sql user being deleted
+	 * - sqlUserId: An integer representing the ID of Sql user being deleted
 	 *
 	 * @const string
 	 */
@@ -485,7 +485,7 @@ class iMSCP_Events
 	 *
 	 * The listeners receive an iMSCP_Events_Event object with the following parameter:
 	 *
-	 *  - sqlUserId: An integer representing the ID of Sql user that has been deleted
+	 * - sqlUserId: An integer representing the ID of Sql user that has been deleted
 	 *
 	 * @const string
 	 */
@@ -514,7 +514,7 @@ class iMSCP_Events
 	 *
 	 * The listeners receive an iMSCP_Events_Event object with the following parameter:
 	 *
-	 *  - sqlDbId: An integer representing the ID of Sql database being deleted
+	 * - sqlDbId: An integer representing the ID of Sql database being deleted
 	 *
 	 * @const string
 	 */
@@ -525,7 +525,7 @@ class iMSCP_Events
 	 *
 	 * The listeners receive an iMSCP_Events_Event object with the following parameter:
 	 *
-	 *  - sqlDbId: An integer representing the ID of Sql database that has been deleted
+	 * - sqlDbId: An integer representing the ID of Sql database that has been deleted
 	 *
 	 * @const string
 	 */
@@ -545,7 +545,7 @@ class iMSCP_Events
 	 *
 	 * The listeners receive an iMSCP_Events_Event object.
 	 *
-	 *  @const string
+	 * @const string
 	 */
 	const onAfterPluginsRoute = 'onAfterPluginsRoute';
 
@@ -554,7 +554,7 @@ class iMSCP_Events
 	 *
 	 * The listeners receive an iMSCP_Envents_Event object with the following parameter:
 	 *
-	 *  - pluginManager: An iMSCP_Plugin_Manager instance
+	 * - pluginManager: An iMSCP_Plugin_Manager instance
 	 *
 	 * @const string
 	 */
@@ -565,8 +565,8 @@ class iMSCP_Events
 	 *
 	 * The listeners receive an iMSCP_Envents_Event object with the following parameter:
 	 *
-	 *  - pluginManager: An iMSCP_Plugin_Manager instance
-	 *  - pluginInstance: An iMSCP_Plugin instance
+	 * - pluginManager: An iMSCP_Plugin_Manager instance
+	 * - pluginInstance: An iMSCP_Plugin instance
 	 *
 	 * @const string
 	 */
@@ -577,9 +577,9 @@ class iMSCP_Events
 	 *
 	 * The listeners receive an iMSCP_Envents_Event object with the following parameters:
 	 *
-	 *  - pluginManager: An iMSCP_Plugin_Manager instance
-	 *  - pluginName: Plugin name
-	 *  - pluginInstance: An iMSCP_Plugin instance
+	 * - pluginManager: An iMSCP_Plugin_Manager instance
+	 * - pluginName: Plugin name
+	 * - pluginInstance: An iMSCP_Plugin instance
 	 *
 	 * @const string
 	 */
@@ -590,9 +590,9 @@ class iMSCP_Events
 	 *
 	 * The listeners receive an iMSCP_Envents_Event object with the following parameters:
 	 *
-	 *  - pluginManager: An iMSCP_Plugin_Manager instance
-	 *  - pluginName: Plugin name
-	 *  - pluginInstance: An iMSCP_Plugin instance
+	 * - pluginManager: An iMSCP_Plugin_Manager instance
+	 * - pluginName: Plugin name
+	 * - pluginInstance: An iMSCP_Plugin instance
 	 *
 	 * @const string
 	 */
@@ -603,9 +603,9 @@ class iMSCP_Events
 	 *
 	 * The listeners receive an iMSCP_Envents_Event object with the following parameters:
 	 *
-	 *  - pluginManager: An iMSCP_Plugin_Manager instance
-	 *  - pluginName: Plugin name
-	 *  - pluginInstance: An iMSCP_Plugin instance
+	 * - pluginManager: An iMSCP_Plugin_Manager instance
+	 * - pluginName: Plugin name
+	 * - pluginInstance: An iMSCP_Plugin instance
 	 *
 	 * @const string
 	 */
@@ -616,9 +616,9 @@ class iMSCP_Events
 	 *
 	 * The listeners receive an iMSCP_Envents_Event object with the following parameters:
 	 *
-	 *  - pluginManager: An iMSCP_Plugin_Manager instance
-	 *  - pluginName: Plugin name
-	 *  - pluginInstance: An iMSCP_Plugin instance
+	 * - pluginManager: An iMSCP_Plugin_Manager instance
+	 * - pluginName: Plugin name
+	 * - pluginInstance: An iMSCP_Plugin instance
 	 *
 	 * @const string
 	 */
@@ -629,9 +629,9 @@ class iMSCP_Events
 	 *
 	 * The listeners receive an iMSCP_Envents_Event object with the following parameters:
 	 *
-	 *  - pluginManager: An iMSCP_Plugin_Manager instance
-	 *  - pluginName: Plugin name
-	 *  - pluginInstance: An iMSCP_Plugin instance
+	 * - pluginManager: An iMSCP_Plugin_Manager instance
+	 * - pluginName: Plugin name
+	 * - pluginInstance: An iMSCP_Plugin instance
 	 *
 	 * @const string
 	 */
@@ -642,9 +642,9 @@ class iMSCP_Events
 	 *
 	 * The listeners receive an iMSCP_Envents_Event object with the following parameters:
 	 *
-	 *  - pluginManager: An iMSCP_Plugin_Manager instance
-	 *  - pluginName: Plugin name
-	 *  - pluginInstance: An iMSCP_Plugin instance
+	 * - pluginManager: An iMSCP_Plugin_Manager instance
+	 * - pluginName: Plugin name
+	 * - pluginInstance: An iMSCP_Plugin instance
 	 *
 	 * @const string
 	 */
@@ -655,9 +655,9 @@ class iMSCP_Events
 	 *
 	 * The listeners receive an iMSCP_Envents_Event object with the following parameters:
 	 *
-	 *  - pluginManager: An iMSCP_Plugin_Manager instance
-	 *  - pluginName: Plugin name
-	 *  - pluginInstance: An iMSCP_Plugin instance
+	 * - pluginManager: An iMSCP_Plugin_Manager instance
+	 * - pluginName: Plugin name
+	 * - pluginInstance: An iMSCP_Plugin instance
 	 *
 	 * @const string
 	 */
@@ -668,9 +668,9 @@ class iMSCP_Events
 	 *
 	 * The listeners receive an iMSCP_Envents_Event object with the following parameters:
 	 *
-	 *  - pluginManager: An iMSCP_Plugin_Manager instance
-	 *  - pluginName: Plugin name
-	 *  - pluginInstance: An iMSCP_Plugin instance
+	 * - pluginManager: An iMSCP_Plugin_Manager instance
+	 * - pluginName: Plugin name
+	 * - pluginInstance: An iMSCP_Plugin instance
 	 *
 	 * @const string
 	 */
@@ -681,9 +681,9 @@ class iMSCP_Events
 	 *
 	 * The listeners receive an iMSCP_Envents_Event object with the following parameters:
 	 *
-	 *  - pluginManager: An iMSCP_Plugin_Manager instance
-	 *  - pluginName: Plugin name
-	 *  - pluginInstance: An iMSCP_Plugin instance
+	 * - pluginManager: An iMSCP_Plugin_Manager instance
+	 * - pluginName: Plugin name
+	 * - pluginInstance: An iMSCP_Plugin instance
 	 *
 	 * @const string
 	 */
@@ -694,9 +694,9 @@ class iMSCP_Events
 	 *
 	 * The listeners receive an iMSCP_Envents_Event object with the following parameters:
 	 *
-	 *  - pluginManager: An iMSCP_Plugin_Manager instance
-	 *  - pluginName: Plugin name
-	 *  - pluginInstance: An iMSCP_Plugin instance
+	 * - pluginManager: An iMSCP_Plugin_Manager instance
+	 * - pluginName: Plugin name
+	 * - pluginInstance: An iMSCP_Plugin instance
 	 *
 	 * @const string
 	 */
@@ -707,10 +707,10 @@ class iMSCP_Events
 	 *
 	 * The listeners receive an iMSCP_Events_Event object with the following parameters:
 	 *
-	 *  - domainName: A string representing the name of the domain being created
-	 *  - createdBy: An integer representing the ID of the reseller that adds the domain
-	 *  - customerId: An integer representitng the ID of the customer for which the domain is added
-	 *  - customerEmail: A string representing the email of the customer for which the domain is added
+	 * - domainName: A string representing the name of the domain being created
+	 * - createdBy: An integer representing the ID of the reseller that adds the domain
+	 * - customerId: An integer representitng the ID of the customer for which the domain is added
+	 * - customerEmail: A string representing the email of the customer for which the domain is added
 	 *
 	 * @const string
 	 */
@@ -721,11 +721,11 @@ class iMSCP_Events
 	 *
 	 * The listeners receive an iMSCP_Events_Event object with the following parameters:
 	 *
-	 *  - domainName: A string representing the name of a the domain that has been added
-	 *  - createdBy: An integer representing the ID of the reseller that added the domain
-	 *  - customerId: An integer representing the ID of the customer for which the domain has been added
-	 *  - customerEmail: A string representing the email of customer for which the domain has been added
-	 *  - domainId: An integer representing the ID of the domain that has been added
+	 * - domainName: A string representing the name of a the domain that has been added
+	 * - createdBy: An integer representing the ID of the reseller that added the domain
+	 * - customerId: An integer representing the ID of the customer for which the domain has been added
+	 * - customerEmail: A string representing the email of customer for which the domain has been added
+	 * - domainId: An integer representing the ID of the domain that has been added
 	 *
 	 * @const string
 	 */
@@ -736,7 +736,7 @@ class iMSCP_Events
 	 *
 	 * The listeners receive an iMSCP_Events_Event object with the following parameter:
 	 *
-	 *  - domainId: An integer representing the ID of the domain being edited
+	 * - domainId: An integer representing the ID of the domain being edited
 	 *
 	 * @const string
 	 */
@@ -747,7 +747,7 @@ class iMSCP_Events
 	 *
 	 * The listeners receive an iMSCP_Events_Event object with the following parameter:
 	 *
-	 *  - domainId: An integer reprensenting the ID of the domain that has been edited
+	 * - domainId: An integer reprensenting the ID of the domain that has been edited
 	 *
 	 * @const string
 	 */
@@ -758,12 +758,12 @@ class iMSCP_Events
 	 *
 	 * The listeners receive an iMSCP_Events_Event object with the following parameters:
 	 *
-	 *  - subdomainName: A string representing the name of the subdomain being added
-	 *  - subdomainType: A string representing the type of subdomain (als|dmn)
-	 *  - parentDomainId: An integer representing the ID of the parent domain
-	 *  - mountPoint: A string representing the mount point of the subdomain
-	 *  - forwardUrl: A string representing the forward URL or no in case Forward URL option is not used
-	 *  - customerId: An integer representing the ID of the customer for which the subdomain is added
+	 * - subdomainName: A string representing the name of the subdomain being added
+	 * - subdomainType: A string representing the type of subdomain (als|dmn)
+	 * - parentDomainId: An integer representing the ID of the parent domain
+	 * - mountPoint: A string representing the mount point of the subdomain
+	 * - forwardUrl: A string representing the forward URL or no in case Forward URL option is not used
+	 * - customerId: An integer representing the ID of the customer for which the subdomain is added
 	 *
 	 * @const string
 	 */
@@ -774,13 +774,13 @@ class iMSCP_Events
 	 *
 	 * The listeners receive an iMSCP_Events_Event object with the following parameters:
 	 *
-	 *  - subdomainName: A string representing the name of the subdomain that has been added
-	 *  - subdomainType: A string representing the type of subdomain (als|dmn)
-	 *  - parentDomainId: An integer representing the ID of the parent domain
-	 *  - mountPoint: A string representing the mount point of the subdomain
-	 *  - forwardUrl: A string representing the forward URL or no in case Forward URL option is not used
-	 *  - customerId: An integer representing the ID of the customer for wich the subdomain has been added
-	 *  - subdomainId: An integer representing the ID of thesubdomain that has been added
+	 * - subdomainName: A string representing the name of the subdomain that has been added
+	 * - subdomainType: A string representing the type of subdomain (als|dmn)
+	 * - parentDomainId: An integer representing the ID of the parent domain
+	 * - mountPoint: A string representing the mount point of the subdomain
+	 * - forwardUrl: A string representing the forward URL or no in case Forward URL option is not used
+	 * - customerId: An integer representing the ID of the customer for wich the subdomain has been added
+	 * - subdomainId: An integer representing the ID of thesubdomain that has been added
 	 *
 	 * @const string
 	 */
@@ -791,7 +791,7 @@ class iMSCP_Events
 	 *
 	 * The listeners receive an iMSCP_Events_Event object with the following parameter:
 	 *
-	 *  - subdomainId: An integer representing the ID of the subdomain being edited
+	 * - subdomainId: An integer representing the ID of the subdomain being edited
 	 *
 	 * @const string
 	 */
@@ -802,7 +802,7 @@ class iMSCP_Events
 	 *
 	 * The listeners receive an iMSCP_Events_Event object with the following parameter:
 	 *
-	 *  - subdomainId: An integer representing the ID of the subdomain that has been edited
+	 * - subdomainId: An integer representing the ID of the subdomain that has been edited
 	 *
 	 * @const string
 	 */
@@ -813,8 +813,8 @@ class iMSCP_Events
 	 *
 	 * The listeners receive an iMSCP_Events_Event object with the following parameter:
 	 *
-	 *  - subdomainId: An integer representing the ID of the subdomain being deleted
-	 *  - type: A string representing the type of subdomain (sub|alssub)
+	 * - subdomainId: An integer representing the ID of the subdomain being deleted
+	 * - type: A string representing the type of subdomain (sub|alssub)
 	 *
 	 * @const string
 	 */
@@ -825,8 +825,9 @@ class iMSCP_Events
 	 *
 	 * The listeners receive an iMSCP_Events_Event object with the following parameter:
 	 *
-	 *  - subdomainId: An integer representing the ID of the subdomain that has been deleted
-	 *  - type: A string representing the type of subdomain (sub|alssub)
+	 * - subdomainId: An integer representing the ID of the subdomain that has been deleted
+	 * - type: A string representing the type of subdomain (sub|alssub)
+	 *
 	 * @const string
 	 */
 	const onAfterDeleteSubdomain = 'onAfterDeleteSubdomain';
@@ -836,8 +837,8 @@ class iMSCP_Events
 	 *
 	 * The listeners receive an iMSCP_Events_Event object with the following parameters:
 	 *
-	 *  - domainId: An integer representing the ID of the parent domain
-	 *  - domainAliasName: A string representing the name of the domain alias being added
+	 * - domainId: An integer representing the ID of the parent domain
+	 * - domainAliasName: A string representing the name of the domain alias being added
 	 *
 	 * @const string
 	 */
@@ -848,9 +849,9 @@ class iMSCP_Events
 	 *
 	 * The listeners receive an iMSCP_Events_Event object with the following parameters:
 	 *
-	 *  - domainId: An integer representing the ID of the parent domain
-	 *  - domainAliasName: A string representing the name of the domain alias that has been added
-	 *  - domainAliasId: An integer representing the ID of the domain alias that has been added
+	 * - domainId: An integer representing the ID of the parent domain
+	 * - domainAliasName: A string representing the name of the domain alias that has been added
+	 * - domainAliasId: An integer representing the ID of the domain alias that has been added
 	 *
 	 * @const string
 	 */
@@ -861,7 +862,7 @@ class iMSCP_Events
 	 *
 	 * The listeners receive an iMSCP_Events_Event object with the following parameter:
 	 *
-	 *  - domainAliasId: An integer representing the ID of the domain alias being edited
+	 * - domainAliasId: An integer representing the ID of the domain alias being edited
 	 *
 	 * @const string
 	 */
@@ -872,7 +873,7 @@ class iMSCP_Events
 	 *
 	 * The listeners receive an iMSCP_Events_Event object with the following parameter:
 	 *
-	 *  - domainAliasId: An integer representing the ID of the domain alias that has been edited
+	 * - domainAliasId: An integer representing the ID of the domain alias that has been edited
 	 *
 	 * @const string
 	 */
@@ -883,7 +884,7 @@ class iMSCP_Events
 	 *
 	 * The listeners receive an iMSCP_Events_Event object with the following parameter:
 	 *
-	 *  - domainAliasId: An integer representing the  ID of the domain alias being deleted
+	 * - domainAliasId: An integer representing the  ID of the domain alias being deleted
 	 *
 	 * @const string
 	 */
@@ -894,7 +895,7 @@ class iMSCP_Events
 	 *
 	 * The listeners receive an iMSCP_Events_Event object with the following parameter:
 	 *
-	 *  - domainAliasId: An integer representing the ID of the domain alias that has been deleted
+	 * - domainAliasId: An integer representing the ID of the domain alias that has been deleted
 	 *
 	 * @const string
 	 */
@@ -905,8 +906,8 @@ class iMSCP_Events
 	 *
 	 * The listeners receive an iMSCP_Events_Event object with the following parameters:
 	 *
-	 *  - mailUsername: A string representing the local part of the email account being added
-	 *  - mailAddress: A string representing the complete email address of the mail account being added
+	 * - mailUsername: A string representing the local part of the email account being added
+	 * - mailAddress: A string representing the complete email address of the mail account being added
 	 *
 	 * @const string
 	 */
@@ -917,9 +918,9 @@ class iMSCP_Events
 	 *
 	 * The listeners receive an iMSCP_Events_Event object with the following parameters:
 	 *
-	 *  - mailUsername: A string representing the local part of the email account that has been added
-	 *  - mailAddress: A string representing the complete address of the mail account that has been added
-	 *  - mailId: An integer representing the ID of the email account that has been added
+	 * - mailUsername: A string representing the local part of the email account that has been added
+	 * - mailAddress: A string representing the complete address of the mail account that has been added
+	 * - mailId: An integer representing the ID of the email account that has been added
 	 *
 	 * @const string
 	 */
@@ -930,7 +931,7 @@ class iMSCP_Events
 	 *
 	 * The listeners receive an iMSCP_Events_Event object with the following parameter:
 	 *
-	 *  - mailId: An integer representing the ID of the mail account being edited
+	 * - mailId: An integer representing the ID of the mail account being edited
 	 *
 	 * @const string
 	 */
@@ -941,7 +942,7 @@ class iMSCP_Events
 	 *
 	 * The listeners receive an iMSCP_Events_Event object with the following parameter:
 	 *
-	 *  - mailId: An integer representing the ID of the mail account that has been edited
+	 * - mailId: An integer representing the ID of the mail account that has been edited
 	 *
 	 * @const string
 	 */
@@ -952,7 +953,7 @@ class iMSCP_Events
 	 *
 	 * The listeners receive an iMSCP_Events_Event object with the following parameter:
 	 *
-	 *  - mailId: An integer representing the ID of the mail account being deleted
+	 * - mailId: An integer representing the ID of the mail account being deleted
 	 *
 	 * @const string
 	 */
@@ -963,7 +964,7 @@ class iMSCP_Events
 	 *
 	 * The listeners receive an iMSCP_Events_Event object with the following parameter:
 	 *
-	 *  - mailId: An integer representing the ID of the mail account that has been deleted
+	 * - mailId: An integer representing the ID of the mail account that has been deleted
 	 *
 	 * @const string
 	 */
@@ -1008,8 +1009,8 @@ class iMSCP_Events
 	 *
 	 * The listeners receive an iMSCP_Database_Events_Statement instance with the following parameters:
 	 *
-	 *  - context: An iMSCP_Database object, the context in which the event is triggered
-	 *  - statement: A PDOStatement object that represent the prepared statement
+	 * - context: An iMSCP_Database object, the context in which the event is triggered
+	 * - statement: A PDOStatement object that represent the prepared statement
 	 *
 	 * @const string
 	 */
@@ -1020,16 +1021,16 @@ class iMSCP_Events
 	 *
 	 * The listeners receive either :
 	 *
-	 *	 - an iMSCP_Database_Events_Statement instance with the following parameters:
+	 *  an iMSCP_Database_Events_Statement instance with the following parameters:
 	 *
-	 *		 - context: An iMSCP_Database object, the context in which the event is triggered
-	 *		 - statement: A PDOStatement object that represent the prepared statement
+	 *   - context: An iMSCP_Database object, the context in which the event is triggered
+	 *   - statement: A PDOStatement object that represent the prepared statement
 	 * Or
 	 *
-	 *	 - an iMSCP_Database_Events_Database instance with the following arguments:
+	 *  an iMSCP_Database_Events_Database instance with the following arguments:
 	 *
-	 *		 - context: An iMSCP_Database object, the context in which the event is triggered
-	 *		 - query: The SQL statement being prepared and executed (PDO::query())
+	 *   - context: An iMSCP_Database object, the context in which the event is triggered
+	 *   - query: The SQL statement being prepared and executed (PDO::query())
 	 *
 	 * @const string
 	 */
@@ -1052,8 +1053,8 @@ class iMSCP_Events
 	 *
 	 * The listeners receive an iMSCP_Events_Event object with the following parameters
 	 *
-	 *  - context: An iMSCP_pTemplate object, the context in which the event is triggered
-	 *  - templatePath: The filepath of the template being loaded
+	 * - context: An iMSCP_pTemplate object, the context in which the event is triggered
+	 * - templatePath: The filepath of the template being loaded
 	 *
 	 * @const string
 	 */
@@ -1076,8 +1077,8 @@ class iMSCP_Events
 	 *
 	 * The listeners receive an iMSCP_Events_Event object with the following parameters
 	 *
-	 *  - context: An iMSCP_pTemplate object, the context in which the event is triggered
-	 *  - templatePath: The filepath of the template being loaded
+	 * - context: An iMSCP_pTemplate object, the context in which the event is triggered
+	 * - templatePath: The filepath of the template being loaded
 	 *
 	 * @const string
 	 */
@@ -1106,7 +1107,6 @@ class iMSCP_Events
 	 */
 	const onBeforeGenerateNavigation = 'onBeforeGenerateNavigation';
 
-
 	/**
 	 * The onAfterGenerateNavigation event is triggered after the navigation is generated.
 	 *
@@ -1119,35 +1119,35 @@ class iMSCP_Events
 	 */
 	const onAfterGenerateNavigation = 'onAfterGenerateNavigation';
 
-    /**
-     * The onBeforeAddExternalMailServer event is triggered before addition of external mail server entries in database
-     * 
-     * The listeners receive an iMSCP_Events_Event object with the following parameter:
-     * 
-     *  - externalMailServerEntries: A reference to an array containing all external mail entries
-     * 
-     * @const string
-     */
-    const onBeforeAddExternalMailServer = 'onBeforeAddExternalMailServer';
+	/**
+	 * The onBeforeAddExternalMailServer event is triggered before addition of external mail server entries in database
+	 *
+	 * The listeners receive an iMSCP_Events_Event object with the following parameter:
+	 *
+	 * - externalMailServerEntries: A reference to an array containing all external mail entries
+	 *
+	 * @const string
+	 */
+	const onBeforeAddExternalMailServer = 'onBeforeAddExternalMailServer';
 
-    /**
-     * The onAfterAddExternalMailServer event is triggered after addition of external mail server entries in database
-     * 
-     * The listeners receive an iMSCP_Events_Event object with the following parameter:
-     * 
-     *  - externalMailServerEntries: A reference to an array containing all external mail entries
-     * 
-     * @const string
-     */
-    const onAfterAddExternalMailServer = 'onAfterAddExternalMailServer';
+	/**
+	 * The onAfterAddExternalMailServer event is triggered after addition of external mail server entries in database
+	 *
+	 * The listeners receive an iMSCP_Events_Event object with the following parameter:
+	 *
+	 * - externalMailServerEntries: A reference to an array containing all external mail entries
+	 *
+	 * @const string
+	 */
+	const onAfterAddExternalMailServer = 'onAfterAddExternalMailServer';
 
 	/**
 	 * The onBeforeChangeDomainStatus event is triggered before an user account is being activated or deactivated
 	 *
 	 * The listeners receive an iMSCP_Events_Event object with the following parameters
 	 *
-	 *  - customerId: An integer representing the ID of the customer for wich the subdomain has been added
-	 *  - action: An string representing the action being processed (activate|deactivate)
+	 * - customerId: An integer representing the ID of the customer for wich the subdomain has been added
+	 * - action: An string representing the action being processed (activate|deactivate)
 	 *
 	 * @const string
 	 */
