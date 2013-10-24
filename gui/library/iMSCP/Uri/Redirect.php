@@ -77,9 +77,6 @@ class iMSCP_Uri_Redirect extends Zend_Uri_Http
 	 */
 	public function validateHost($host = null)
 	{
-		/** @var $cfg iMSCP_Config_Handler_File */
-		$cfg = iMSCP_Registry::get('config');
-
 		if ($host === null) {
 			$host = $this->_host;
 		}
@@ -89,11 +86,6 @@ class iMSCP_Uri_Redirect extends Zend_Uri_Http
 			return false;
 		}
 
-		// Check the host against the allowed values; delegated to Zend_Filter.
-		$validate = new Zend_Validate_Hostname(
-			Zend_Validate_Hostname::ALLOW_DNS, true, (bool) $cfg->TLD_STRICT_VALIDATION
-		);
-
-		return $validate->isValid($host);
+		return isValidDomainName($host);
 	}
 }

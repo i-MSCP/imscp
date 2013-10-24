@@ -128,51 +128,7 @@
 		</div>
 	</div>
 </div>
-<h1><strong>{TR_DNAMES_VALIDATION_SETTINGS}</strong></h1>
 
-<div style="padding: 0">
-	<div class="odd">
-		<div class="left">
-			<label for="tld_strict_validation">{TR_TLD_STRICT_VALIDATION}</label>
-			<span class="tips icon i_help" title="{TR_TLD_STRICT_VALIDATION_HELP}"></span>
-		</div>
-		<div class="right">
-			<select name="tld_strict_validation" id="tld_strict_validation">
-				<option value="0" {TLD_STRICT_VALIDATION_OFF}>{TR_DISABLED}</option>
-				<option value="1" {TLD_STRICT_VALIDATION_ON}>{TR_ENABLED}</option>
-			</select>
-		</div>
-	</div>
-	<div class="even">
-		<div class="left">
-			<label for="sld_strict_validation">{TR_SLD_STRICT_VALIDATION}</label>
-			<span class="tips icon i_help" title="{TR_SLD_STRICT_VALIDATION_HELP}"></span>
-		</div>
-		<div class="right">
-			<select name="sld_strict_validation" id="sld_strict_validation">
-				<option value="0" {SLD_STRICT_VALIDATION_OFF}>{TR_DISABLED}</option>
-				<option value="1" {SLD_STRICT_VALIDATION_ON}>{TR_ENABLED}</option>
-			</select>
-		</div>
-	</div>
-	<div class="odd">
-		<div class="left"><label for="max_dnames_labels">{TR_MAX_DNAMES_LABELS}</label>
-		</div>
-		<div class="right">
-			<input name="max_dnames_labels" id="max_dnames_labels" type="text" value="{MAX_DNAMES_LABELS_VALUE}"
-				   maxlength="2"/>
-		</div>
-	</div>
-	<div class="even">
-		<div class="left">
-			<label for="max_subdnames_labels">{TR_MAX_SUBDNAMES_LABELS}</label>
-		</div>
-		<div class="right">
-			<input name="max_subdnames_labels" id="max_subdnames_labels" type="text"
-				   value="{MAX_SUBDNAMES_LABELS_VALUE}" maxlength="2"/>
-		</div>
-	</div>
-</div>
 <h1><strong>{TR_MAIL_SETTINGS}</strong></h1>
 
 <div style="padding: 0">

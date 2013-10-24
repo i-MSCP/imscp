@@ -135,43 +135,15 @@ class iMSCP_Validate
     }
 
     /**
-     * Validates a username.
-     *
-     * @throws iMSCP_Exception Because not implemented yet
-     * @param string $username Username to be validated.
-     * @return bool TRUE if username is valid, FALSE otherwise
-     */
-    public function username($username)
-    {
-        // TODO: Implement username() method.
-        require_once 'iMSCP/Exception.php';
-        throw new iMSCP_Exception(__CLASS__ . '::username() is not implemented yet.');
-    }
-
-    /**
-     * Validates a password.
-     *
-     * @throws iMSCP_Exception Because not implemented yet
-     * @param string $password Password to be validated
-     * @return void
-     */
-    public function password($password)
-    {
-        // TODO: Implement password() method.
-        require_once 'iMSCP/Exception.php';
-        throw new iMSCP_Exception(__CLASS__ . '::password() is not implemented yet.');
-    }
-
-    /**
      * Validates an email address.
      *
      * The following option keys are supported:
-     * 'hostname'        => A hostname validator, see Zend_Validate_Hostname
-     * 'allow'            => Options for the hostname validator, see Zend_Validate_Hostname::ALLOW_*
-     * 'mx'                => If MX check should be enabled, boolean
-     * 'deep'            => If a deep MX check should be done, boolean
-     * 'domain'            => If hostname validation must be disabled but not global pass check must be disabled, boolean
-     * 'onlyLocalPart'    => If hostname validation and global pass check must be disabled, boolean
+     * 'hostname'      => A hostname validator, see Zend_Validate_Hostname
+     * 'allow'         => Options for the hostname validator, see Zend_Validate_Hostname::ALLOW_*
+     * 'mx'            => If MX check should be enabled, boolean
+     * 'deep'          => If a deep MX check should be done, boolean
+     * 'domain'        => If hostname validation must be disabled but not global pass check must be disabled, boolean
+     * 'onlyLocalPart' => If hostname validation and global pass check must be disabled, boolean
      *
      * @param string $email email address to be validated
      * @param array $options Validator options OPTIONAL
@@ -199,39 +171,11 @@ class iMSCP_Validate
      */
     public function hostname($hostname, $options = array())
     {
-        if (!$this->_config->TLD_STRICT_VALIDATION && !array_key_exists('tld', $options)) {
+        if (!array_key_exists('tld', $options)) {
             $options['tld'] = false;
         }
 
         return $this->_processValidation('Hostname', $hostname, $options);
-    }
-
-    /**
-     * Validates a domain name.
-     *
-     * @see iMSCP_Validate::hostname()
-     * @param string $domainName Domain name to be validated
-     * @param array $options Validator options OPTIONAL
-     * @return bool TRUE if domain name is valid, FALSE otherwise
-     */
-    public function domainName($domainName, $options = array())
-    {
-        $this->_overrideMessagesFor = 'domain';
-        return $this->hostname($domainName, $options);
-    }
-
-    /**
-     * Validates a subdomain name.
-     *
-     * @see iMSCP_Validate::hostname()
-     * @param string $subdomainName Subdomain to be validated.
-     * @param array $options Validator options OPTIONAL
-     * @return bool TRUE if subdomain name is valid, FALSE otherwise
-     */
-    public function subdomainName($subdomainName, $options = array())
-    {
-        $this->_overrideMessagesFor = 'subdomain';
-        return $this->hostname($subdomainName, $options);
     }
 
     /**

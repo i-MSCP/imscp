@@ -73,7 +73,7 @@ function getPreviousPageData()
 
 	$dmnUsername = $dmnName;
 
-	if (!validates_dname(decode_idna($dmnName)) || $hpId == '') {
+	if (!isValidDomainName($dmnName) || $hpId == '') {
 		return false;
 	}
 
@@ -202,7 +202,7 @@ function reseller_addCustomer($resellerId)
 		$webFolderProtection = 'no';
 	}
 
-	if (!validates_dname(decode_idna($dmnUsername))) {
+	if (!isValidDomainName($dmnUsername)) {
 		return;
 	}
 

@@ -2622,4 +2622,31 @@ class iMSCP_Update_Database extends iMSCP_Update
 	{
 		return 'DROP TABLE IF EXISTS `quota_dovecot`';
 	}
+
+	/**
+	 * Remove deprecated Domain name parameters
+	 *
+	 * @return void
+	 */
+	protected function _databaseUpdate_168()
+	{
+		/** @var $dbConfig iMSCP_Config_Handler_Db */
+		$dbConfig = iMSCP_Registry::get('dbConfig');
+
+		if (isset($dbConfig['TLD_STRICT_VALIDATION'])) {
+			unset($dbConfig['TLD_STRICT_VALIDATION']);
+		}
+
+		if (isset($dbConfig['SLD_STRICT_VALIDATION'])) {
+			unset($dbConfig['SLD_STRICT_VALIDATION']);
+		}
+
+		if (isset($dbConfig['MAX_DNAMES_LABELS'])) {
+			unset($dbConfig['MAX_DNAMES_LABELS']);
+		}
+
+		if (isset($dbConfig['MAX_SUBDNAMES_LABELS'])) {
+			unset($dbConfig['MAX_SUBDNAMES_LABELS']);
+		}
+	}
 }

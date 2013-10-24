@@ -213,8 +213,10 @@ function client_checkIpData($ipNumber, $domain, $alias, $netcard)
 		$errFieldsStack[] = 'ip_number';
 	}
 
-	if(!iMSCP_Validate::getInstance()->domainName($domain)) {
-		set_page_message('Wrong domain syntax.', 'error');
+	global $dmnNameValidationErrMsg;
+
+	if(!isValidDomainName($domain)) {
+		set_page_message($dmnNameValidationErrMsg, 'error');
 		$errFieldsStack[] = 'domain';
 	} elseif($stmt->fields['isAssignedDomain']) {
 		set_page_message(tr('Domain already assigned to another IP address.'), 'error');

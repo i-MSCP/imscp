@@ -64,10 +64,14 @@ function _client_validateDnsMxRecord($name, $priority, $host, $verifiedData)
 			$verifiedData['item_name'],
 			encode_idna($host),
 			tr('The mail host must not be equal to the domain name for which you add it.')
-		) ||
-		!$validator->hostname($host, array('tld' => false))
+		)
 	) {
 		set_page_message($validator->getLastValidationMessages(), 'error');
+		return false;
+	}
+
+	if(!isValidDomainName($host)) {
+		set_page_message(tr('Mail host is not valid.'), 'error');
 		return false;
 	}
 

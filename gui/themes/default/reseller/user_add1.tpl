@@ -39,6 +39,7 @@
 				<span class="tips icon i_help" id="dmn_help" title="{TR_DMN_HELP}"></span>
 			</td>
 			<td>
+				<span class="bold">www .</span>
 				<input type="text" name="dmn_name" id="dmn_name" value="{DOMAIN_NAME_VALUE}"/>
 			</td>
 		</tr>

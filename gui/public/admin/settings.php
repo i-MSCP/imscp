@@ -82,10 +82,6 @@ if (isset($_POST['uaction']) && $_POST['uaction'] == 'apply') {
 	$prevExtLoginAdmin = $_POST['prevent_external_login_admin'];
 	$prevExtLoginReseller = $_POST['prevent_external_login_reseller'];
 	$prevExtLoginClient = $_POST['prevent_external_login_client'];
-	$tldStrictValidation = $_POST['tld_strict_validation'];
-	$sldStrictValidation = $_POST['sld_strict_validation'];
-	$maxDnamesLabels = clean_input($_POST['max_dnames_labels']);
-	$maxSubdnamesLabels = clean_input($_POST['max_subdnames_labels']);
 	$logLevel = defined($_POST['log_level']) ? constant($_POST['log_level']) : false;
 	$phpini->setData('phpiniAllowUrlFopen', clean_input($_POST['phpini_allow_url_fopen']));
 	$phpini->setData('phpiniDisplayErrors', clean_input($_POST['phpini_display_errors']));
@@ -171,10 +167,6 @@ if (isset($_POST['uaction']) && $_POST['uaction'] == 'apply') {
 		$dbCfg->PREVENT_EXTERNAL_LOGIN_ADMIN = $prevExtLoginAdmin;
 		$dbCfg->PREVENT_EXTERNAL_LOGIN_RESELLER = $prevExtLoginReseller;
 		$dbCfg->PREVENT_EXTERNAL_LOGIN_CLIENT = $prevExtLoginClient;
-		$dbCfg->TLD_STRICT_VALIDATION = $tldStrictValidation;
-		$dbCfg->SLD_STRICT_VALIDATION = $sldStrictValidation;
-		$dbCfg->MAX_DNAMES_LABELS = $maxDnamesLabels;
-		$dbCfg->MAX_SUBDNAMES_LABELS = $maxSubdnamesLabels;
 		$dbCfg->PHPINI_ALLOW_URL_FOPEN = $phpini->getDataVal('phpiniAllowUrlFopen');
 		$dbCfg->PHPINI_DISPLAY_ERRORS = $phpini->getDataVal('phpiniDisplayErrors');
 		$dbCfg->PHPINI_ERROR_REPORTING = $phpini->getDataVal('phpiniErrorReporting');
@@ -308,38 +300,6 @@ if ($cfg->IMSCP_SUPPORT_SYSTEM) {
 		array(
 			 'SUPPORT_SYSTEM_SELECTED_ON' => '',
 			 'SUPPORT_SYSTEM_SELECTED_OFF' => $htmlSelected
-		)
-	);
-}
-
-if ($cfg->TLD_STRICT_VALIDATION) {
-	$tpl->assign(
-		array(
-			 'TLD_STRICT_VALIDATION_ON' => $htmlSelected,
-			 'TLD_STRICT_VALIDATION_OFF' => ''
-		)
-	);
-} else {
-	$tpl->assign(
-		array(
-			 'TLD_STRICT_VALIDATION_ON' => '',
-			 'TLD_STRICT_VALIDATION_OFF' => $htmlSelected
-		)
-	);
-}
-
-if ($cfg->SLD_STRICT_VALIDATION) {
-	$tpl->assign(
-		array(
-			 'SLD_STRICT_VALIDATION_ON' => $htmlSelected,
-			 'SLD_STRICT_VALIDATION_OFF' => ''
-		)
-	);
-} else {
-	$tpl->assign(
-		array(
-			 'SLD_STRICT_VALIDATION_ON' => '',
-			 'SLD_STRICT_VALIDATION_OFF' => $htmlSelected
 		)
 	);
 }
@@ -681,8 +641,6 @@ $tpl->assign(
 		'BRUTEFORCE_MAX_CAPTCHA' => $cfg->BRUTEFORCE_MAX_CAPTCHA,
 		'BRUTEFORCE_MAX_ATTEMPTS_BEFORE_WAIT' => $cfg->BRUTEFORCE_MAX_ATTEMPTS_BEFORE_WAIT,
 		'DOMAIN_ROWS_PER_PAGE' => $cfg->DOMAIN_ROWS_PER_PAGE,
-		'MAX_DNAMES_LABELS_VALUE' => $cfg->MAX_DNAMES_LABELS,
-		'MAX_SUBDNAMES_LABELS_VALUE' => $cfg->MAX_SUBDNAMES_LABELS,
 		'PHPINI_POST_MAX_SIZE' => $phpini->getDataVal('phpiniPostMaxSize'),
 		'PHPINI_UPLOAD_MAX_FILESIZE' => $phpini->getDataVal('phpiniUploadMaxFileSize'),
 		'PHPINI_MAX_EXECUTION_TIME' => $phpini->getDataVal('phpiniMaxExecutionTime'),
@@ -734,13 +692,6 @@ $tpl->assign(
 		'TR_PREVENT_EXTERNAL_LOGIN_ADMIN' => tr('Prevent external login for admins'),
 		'TR_PREVENT_EXTERNAL_LOGIN_RESELLER' => tr('Prevent external login for resellers'),
 		'TR_PREVENT_EXTERNAL_LOGIN_CLIENT' => tr('Prevent external login for clients'),
-		'TR_DNAMES_VALIDATION_SETTINGS' => tr('Domain names validation'),
-		'TR_TLD_STRICT_VALIDATION' => tr('Top Level Domain name strict validation'),
-		'TR_TLD_STRICT_VALIDATION_HELP' => tr('Only Top Level Domains (TLD) listed in IANA root zone database can be used.'),
-		'TR_SLD_STRICT_VALIDATION' => tr('Second Level Domain name strict validation'),
-		'TR_SLD_STRICT_VALIDATION_HELP' => tr('Single letter Second Level Domains (SLD) are not allowed under the most Top Level Domains (TLD). There is a small list of exceptions, e.g. the TLD .de.'),
-		'TR_MAX_DNAMES_LABELS' => tr('Maximal number of labels for domain names (<small>Excluding SLD & TLD</small>)'),
-		'TR_MAX_SUBDNAMES_LABELS' => tr('Maximum number of labels for subdomains'),
 		'TR_PHPINI_BASE_SETTINGS' => tr('PHP Settings (system default)'),
 		'TR_PHPINI_ALLOW_URL_FOPEN' => tr('Value for the %s directive', true, '<b>allow_url_fopen</b>'),
 		'TR_PHPINI_DISPLAY_ERRORS' => tr('Value for the %s directive', true, '<b>display_errors</b>'),

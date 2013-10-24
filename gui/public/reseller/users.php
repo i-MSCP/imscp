@@ -231,7 +231,7 @@ function generate_users_list($tpl, $resellerId)
 				$tpl->parse('STATUS_RELOAD_FALSE', 'status_reload_false');
 			} else {
 				$tpl->assign('STATUS_RELOAD_FALSE', '');
-				$tpl->assign('NAME', tohtml($adminName));
+				$tpl->assign('NAME', $adminName);
 				$tpl->parse('STATUS_RELOAD_TRUE', 'status_reload_true');
 			}
 
@@ -251,7 +251,11 @@ function generate_users_list($tpl, $resellerId)
 					'USER_ID' => $stmt->fields['domain_admin_id'],
 					'CHANGE_INTERFACE' => tr('Switch'),
 					'DISK_USAGE' => ($stmt->fields['domain_disk_limit'])
-						? tr('%1$s of %2$s', bytesHuman($stmt->fields['domain_disk_usage']), mebibyteHuman($stmt->fields['domain_disk_limit']))
+						? tr(
+							'%1$s of %2$s',
+							bytesHuman($stmt->fields['domain_disk_usage']),
+							mebibyteHuman($stmt->fields['domain_disk_limit'])
+						)
 						: tr('%1$s of <b>unlimited</b>', bytesHuman($stmt->fields['domain_disk_usage']))
 				)
 			);

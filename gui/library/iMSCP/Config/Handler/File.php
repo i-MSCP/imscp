@@ -75,10 +75,6 @@ require_once  'iMSCP/Config/Handler.php';
  * @property int MAX_SQL_PASS_LENGTH Max. length for Sql password
  * @property int DOMAIN_ROWS_PER_PAGE Number for domain displayed per page
  * @property string HOSTING_PLANS_LEVEL Hosting plan level (admin|reseller)
- * @property bool TLD_STRICT_VALIDATION If TRUE, Only TLD from iana database are usable
- * @property bool SLD_STRICT_VALIDATION If TRUE, only restricted tld list can have sld with a single character
- * @property int MAX_DNAMES_LABELS Maximum number of labels for a domain name
- * @property int MAX_SUBDNAMES_LABELS Maximum number of labels for a subdomain
  * @property bool IMSCP_SUPPORT_SYSTEM If TRUE, support system is available
  * @property bool LOSTPASSWORD If TRUE lost password is available
  * @property int LOSTPASSWORD_TIMEOUT Timeout for lost password

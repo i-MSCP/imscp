@@ -26,6 +26,7 @@
 		<tr>
 			<td><label for="domain_alias_name">{TR_DOMAIN_ALIAS_NAME}</label></td>
 			<td>
+				<span class="bold">www .</span>
 				<input type="text" name="domain_alias_name" id="domain_alias_name" value="{DOMAIN_ALIAS_NAME}"
 					   readonly="readonly"/>
 			</td>

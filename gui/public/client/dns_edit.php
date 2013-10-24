@@ -80,7 +80,7 @@ function client_validate_NAME($name, $domainName, &$errorString)
 		$entry .= $domainName;
 	}
 
-	if (!iMSCP_Validate::getInstance()->domainName($entry, array('tld' => false))) {
+	if (!isValidDomainName($entry)) {
 		$errorString .= tr('Invalid NAME.');
 		return false;
 	}
@@ -127,7 +127,7 @@ function client_validate_CNAME($cname, $domainName, &$errorString)
 		$cnameRecord .= $domainName;
 	}
 
-	if (!iMSCP_Validate::getInstance()->domainName($cnameRecord, array('tld' => false))) {
+	if (!isValidDomainName($cnameRecord)) {
 		$errorString .= tr('Invalid CNAME');
 		return false;
 	}

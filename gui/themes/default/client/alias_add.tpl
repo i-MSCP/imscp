@@ -38,7 +38,10 @@
 				<label for="domain_alias_name">{TR_DOMAIN_ALIAS_NAME}</label>
 				<span class="tips icon i_help" id="domain_alias_name_tooltip" title="{TR_DOMAIN_ALIAS_NAME_TOOLTIP}"></span>
 			</td>
-			<td><input type="text" name="domain_alias_name" id="domain_alias_name" value="{DOMAIN_ALIAS_NAME}"/></td>
+			<td>
+				<span class="bold">www .</span>
+				<input type="text" name="domain_alias_name" id="domain_alias_name" value="{DOMAIN_ALIAS_NAME}"/>
+			</td>
 		</tr>
 		<tr>
 			<td>{TR_SHARED_MOUNT_POINT}<span class="tips icon i_help" title="{TR_SHARED_MOUNT_POINT_TOOLTIP}"></span></td>

@@ -93,19 +93,6 @@ $config->set('DOMAIN_ROWS_PER_PAGE', 10);
 // 'reseller': hosting plans are available only in reseller level
 $config->set('HOSTING_PLANS_LEVEL', 'reseller');
 
-// TLD strict validation (according IANA database)
-$config->set('TLD_STRICT_VALIDATION', 0);
-
-// SLD strict validation (according IANA database)
-$config->set('SLD_STRICT_VALIDATION', 0);
-
-// Maximum number of labels for the domain names
-// and subdomains (excluding SLD and TLD)
-$config->set('MAX_DNAMES_LABELS', 1);
-
-// Maximum number of labels for the subdomain names
-$config->set('MAX_SUBDNAMES_LABELS', 1);
-
 // Enable or disable support system
 $config->set('IMSCP_SUPPORT_SYSTEM', 1);
 

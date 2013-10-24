@@ -1127,29 +1127,59 @@ function array_encode_idna($array, $asPath = false)
 }
 
 /**
- * Convert the given string to IDNA ASCII form
+ * Convert a domain name or email to IDNA ASCII form
  *
- * @throws iMSCP_Exception When PHP intl extension is not loaded
  * @param  string String to convert
- * @return string Domain name encoded in ASCII-compatible form
+ * @return bool|string String encoded in ASCII-compatible form or FALSE on failure
  */
-function encode_idna($domain)
+function encode_idna($string)
 {
-	$idn = new idna_convert();
-	return $idn->encode($domain);
+	if(function_exists('idn_to_ascii') && defined('IDNA_NONTRANSITIONAL_TO_ASCII')) {
+		if(strpos($string, '@') !== false) {
+			$parts =  explode('@', $string);
+
+			foreach($parts as &$part) {
+				if(($part = idn_to_ascii($part, IDNA_NONTRANSITIONAL_TO_ASCII, INTL_IDNA_VARIANT_UTS46)) === false) {
+					return false;
+				}
+			}
+
+			return implode('@', $parts);
+		} else {
+			return idn_to_ascii($string, IDNA_NONTRANSITIONAL_TO_ASCII, INTL_IDNA_VARIANT_UTS46);
+		}
+	} else {
+		$idn = new idna_convert(array('idn_version' => '2008'));
+		return $idn->encode($string);
+	}
 }
 
 /**
- * Convert the given string from IDNA ASCII to Unicode
+ * Convert a domain name or email from IDNA ASCII to Unicode
  *
- * @throws iMSCP_Exception When PHP intl extension is not loaded
  * @param  string String to convert
- * @return string Domain name in Unicode.
+ * @return bool|string Unicode string or FALSE on failure.
  */
-function decode_idna($domain)
+function decode_idna($string)
 {
-	$idn = new idna_convert();
-	return $idn->decode($domain);
+	if(function_exists('idn_to_utf8') && defined('IDNA_NONTRANSITIONAL_TO_UNICODE')) {
+		if(strpos($string, '@') !== false) {
+			$parts =  explode('@', $string);
+
+			foreach($parts as &$part) {
+				if(($part = idn_to_utf8($part, IDNA_NONTRANSITIONAL_TO_UNICODE, INTL_IDNA_VARIANT_UTS46)) === false) {
+					return false;
+				}
+			}
+
+			return implode('@', $parts);
+		} else {
+			return idn_to_utf8($string, IDNA_NONTRANSITIONAL_TO_UNICODE, INTL_IDNA_VARIANT_UTS46);
+		}
+	} else {
+		$idn = new idna_convert(array('idn_version' => '2008'));
+		return $idn->decode($string);
+	}
 }
 
 /**

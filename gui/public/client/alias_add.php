@@ -169,8 +169,10 @@ function client_addDomainAlias()
 
 	// Check for domain alias name syntax
 
-	if (!iMSCP_Validate::getInstance()->domainName($domainAliasName)) {
-		set_page_message(tr('Domain alias name is not valid.'), 'error');
+	global $dmnNameValidationErrMsg;
+
+	if (!isValidDomainName($domainAliasName)) {
+		set_page_message($dmnNameValidationErrMsg, 'error');
 		return false;
 	}
 

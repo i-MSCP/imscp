@@ -9,7 +9,11 @@ SETUP:
 	- Fixed: Base server vhost prefix not updated when disabling SSL (panel)
 	- Fixed: Unable to setup SSL without CA bundle (panel)
 
+GUI:
+	- Removed: Domain name related parameters
+
 Tickets:
+	Fixed #945: Bug - impossible to create top-level-domains .рф (russian federation zone)
 
 ------------------------------------------------------------------------------------------------------------------------
 1.1.0-rc4.4

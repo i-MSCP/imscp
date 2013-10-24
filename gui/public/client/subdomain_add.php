@@ -197,8 +197,7 @@ function client_addSubdomain()
 
 	// Check for subdomain syntax
 
-	if (!iMSCP_Validate::getInstance()->subdomainName($subdomainName)) {
-		set_page_message(iMSCP_Validate::getInstance()->getLastValidationMessages(), 'error');
+	if (!isValidDomainName($subdomainName)) {
 		set_page_message(tr('Subdomain name is not valid.'), 'error');
 		return false;
 	}

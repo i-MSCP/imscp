@@ -56,9 +56,10 @@ function reseller_checkData()
 		return;
 	}
 
-	if (!validates_dname($dmnName)) {
-		global $validation_err_msg;
-		set_page_message($validation_err_msg, 'error');
+	global $dmnNameValidationErrMsg;
+
+	if (!isValidDomainName($dmnName)) {
+		set_page_message($dmnNameValidationErrMsg, 'error');
 		return;
 	}
 
