@@ -426,8 +426,8 @@ a {
     left: 0;
     width: 197px;
     height: 70%;
-    overflow: hidden;
     font-weight: bold;
+    overflow: visible;
 }
 
 .left_menu ul {
