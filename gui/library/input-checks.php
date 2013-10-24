@@ -321,9 +321,9 @@ function isValidDomainName($domainName)
 	} elseif (($asciiDomainName = encode_idna($domainName)) !== false) {
 		$asciiDomainName = strtolower($asciiDomainName);
 
-		if ($asciiDomainName > 253) {
+		if ($asciiDomainName > 255) {
 			$dmnNameValidationErrMsg = tr(
-				'Length of domain name (in it ASCII form) cannot be greater than 253 characters.'
+				'Domain name (in it ASCII form) cannot be greater than 255 characters.'
 			);
 			return false;
 		}
@@ -341,7 +341,7 @@ function isValidDomainName($domainName)
 		if (sizeof($labels) > 1) {
 			foreach ($labels as $label) {
 				if (strlen($label) > 63) {
-					$dmnNameValidationErrMsg = tr('Domain name labels cannot bu greater than 63 characters', $label);
+					$dmnNameValidationErrMsg = tr('Domain name labels cannot bu greater than 63 characters.');
 					return false;
 				} elseif (preg_match('/([^a-z0-9\-])/', $label, $m)) {
 					$dmnNameValidationErrMsg = tr(
