@@ -150,6 +150,18 @@ textarea {
     border-color: #cccccc;
 }
 
+input[readonly="readonly"],
+input[type="text"]:disabled,
+input[type="password"]:disabled,
+select:disabled,
+textarea:disabled {
+    background: #cccccc url('../images/background/stripe_0582bcfb31aaf8571dba1adb85ffc318.png') repeat;
+    border-color: #cccccc!important;
+    -webkit-box-shadow:none!important;
+    -moz-box-shadow: none!important;
+    box-shadow: none!important;
+}
+
 input[type="text"]:focus,
 input[type="password"]:focus,
 textarea:focus,
@@ -160,12 +172,6 @@ select:focus {
     box-shadow: 0 0 10px #000000;
 }
 
-input[readonly="readonly"],
-input[type="text"]:disabled,
-input[type="password"]:disabled,
-select:disabled, textarea:disabled {
-    background: #cccccc url('../images/background/stripe_0582bcfb31aaf8571dba1adb85ffc318.png') repeat;
-}
 
 .buttons {
     background: transparent;
