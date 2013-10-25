@@ -25,7 +25,9 @@ Tickets:
 	- RELEASE i-MSCP 1.1.0-rc4.4
 
 ENGINE
+	- Added: beforeDispatchRequest and afterDispatchRequest events
 	- Fixed: Can't use an undefined value as a HASH reference...
+	- Fixed: Engine - End transaction on error
 
 GUI:
 	- Added: Option allowing to set Email quota synchronization mode

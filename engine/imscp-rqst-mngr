@@ -34,6 +34,7 @@ use lib "$FindBin::Bin/PerlVendor";
 
 use iMSCP::Debug;
 use iMSCP::Boot;
+use iMSCP::HooksManager;
 use iMSCP::Execute;
 use MIME::Base64;
 
@@ -76,6 +77,9 @@ sub engine
 			`plugin_backend` = 'yes'
 	";
 	$rs = _process('Plugin', $sql);
+	return $rs if $rs;
+
+	$rs =  iMSCP::HooksManager->getInstance()->trigger("beforeDispatchRequest");
 	return $rs if $rs;
 
 	# Process toadd|tochange SSL certificates tasks
@@ -375,7 +379,6 @@ sub engine
 	newDebug('imscp_pkt_mngr_engine.log') if $count;
 
 	for (keys %$rdata) {
-
 		my (
 			$sw_software_id, $sw_reseller_id, $sw_software_archive, $sw_software_status, $sw_software_depot
 		) = (
@@ -408,7 +411,7 @@ sub engine
 
 	endDebug() if $count;
 
-	$rs;
+	iMSCP::HooksManager->getInstance()->trigger("afterDispatchRequest");
 }
 
 sub _process

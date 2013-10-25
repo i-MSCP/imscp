@@ -157,6 +157,7 @@ sub process
 
 			if($@) {
 				$rawDb->rollback();
+				$db->endTransaction();
 				error("Unable to schedule deactivation of customer with ID $accounts->{$_}->{'domain_admin_id'}: $@");
 				$rs = 1;
 			}

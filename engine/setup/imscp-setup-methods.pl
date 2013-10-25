@@ -2019,6 +2019,7 @@ sub setupRebuildCustomerFiles
 
 	if($@) {
 		$rawDb->rollback();
+		$database->endTransaction();
 		error("Unable to execute SQL query: $@");
 		return 1;
 	}
