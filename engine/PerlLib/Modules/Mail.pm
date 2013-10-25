@@ -93,12 +93,14 @@ sub process
 
 	if($self->{'status'} =~ /^toadd|tochange|toenable$/) {
 		$rs = $self->add();
+
 		@sql = (
 			"UPDATE `mail_users` SET `status` = ? WHERE `mail_id` = ?",
 			($rs ? scalar getMessageByType('error') : 'ok'), $self->{'mail_id'}
 		);
 	} elsif($self->{'status'} eq 'todelete') {
 		$rs = $self->delete();
+
 		if($rs){
 			@sql = (
 				"UPDATE `mail_users` SET `status` = ? WHERE `mail_id` = ?",
@@ -109,6 +111,7 @@ sub process
 		}
 	} elsif($self->{'status'} eq 'todisable') {
 		$rs = $self->disable();
+
 		@sql = (
 			"UPDATE `mail_users` SET `status` = ? WHERE `mail_id` = ?",
 			($rs ? scalar getMessageByType('error') : 'disabled'), $self->{'mail_id'}

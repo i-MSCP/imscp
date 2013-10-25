@@ -456,7 +456,7 @@ function debugger_getMailsErrors($tpl)
 			$tpl->assign(
 				array(
 					'MAIL_MESSAGE' => '',
-					'TR_MAIL_NAME' => tohtml(
+					'MAIL_NAME' => tohtml(
 						$mailAcc . '@' . ($domainName == '' ? ' ' . tr('orphan entry') : decode_idna($domainName))
 					),
 					'MAIL_ERROR' => tohtml($mailStatus),

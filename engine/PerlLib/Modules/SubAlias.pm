@@ -254,17 +254,13 @@ sub buildMTAData
 {
 	my $self = shift;
 
-	if(
-		$self->{'action'} ne 'add' || defined $self->{'mail_on_domain'} && $self->{'mail_on_domain'} > 0 ||
-		defined $self->{'domain_mailacc_limit'} && $self->{'domain_mailacc_limit'} >= 0
-	) {
-		$self->{'mta'} = {
-			DOMAIN_NAME => $self->{'subdomain_alias_name'} . '.' . $self->{'alias_name'},
-			DOMAIN_TYPE => $self->{'type'},
-			TYPE => 'valssub_entry',
-			EXTERNAL_MAIL => $self->{'external_mail'}
-		};
-	}
+	$self->{'mta'} = {
+		DOMAIN_NAME => $self->{'subdomain_alias_name'} . '.' . $self->{'alias_name'},
+		DOMAIN_TYPE => $self->{'type'},
+		TYPE => 'valssub_entry',
+		EXTERNAL_MAIL => $self->{'external_mail'},
+		MAIL_ENABLED => ($self->{'mail_on_domain'} || $self->{'domain_mailacc_limit'} >= 0) ? 1 : 0
+	};
 
 	0;
 }
@@ -280,12 +276,11 @@ sub buildNAMEDData
 		DOMAIN_NAME => $self->{'subdomain_alias_name'} . '.' . $self->{'alias_name'},
 		PARENT_DOMAIN_NAME => $self->{'alias_name'},
 		DOMAIN_IP => $self->{'ip_number'},
-		USER_NAME => $userName . 'alssub' . $self->{'subdomain_alias_id'},
+		USER_NAME => $userName . 'alssub' . $self->{'subdomain_alias_id'}
 	};
 
-	# only no wildcard MX (NOT LIKE '*.%') must be add to existent subdomains
+	# Only no wildcard MX (NOT LIKE '*.%') must be add to existent subdomains
 	if($self->{'external_mail'} eq 'on') {
-
 		my $sql = "
 			SELECT
 				`domain_dns_id`, `domain_text`
@@ -305,17 +300,14 @@ sub buildNAMEDData
 		my $rdata = iMSCP::Database->factory()->doQuery(
 			'domain_dns_id', $sql, $self->{'domain_id'}, $self->{'alias_id'}, 'MX', 'ext_mail_feature'
 		);
-		if(ref $rdata ne 'HASH') {
+		unless(ref $rdata eq 'HASH') {
 			error($rdata);
 			return 1;
 		}
 
-		($self->{'named'}->{'MX'}->{$_}->{'domain_text'}) = ($rdata->{$_}->{'domain_text'} =~ /(.*)\.$/) for keys %$rdata;
-
+		($self->{'named'}->{'MX'}->{$_}->{'domain_text'}) = ($rdata->{$_}->{'domain_text'} =~ /(.*)\.$/) for keys %{$rdata};
 	} elsif($self->{'mail_on_domain'} || $self->{'domain_mailacc_limit'} >= 0) {
-
 		$self->{'named'}->{'MX'}->{1}->{'domain_text'} = "10\tmail.$self->{'alias_name'}";
-
 	}
 
 	0;

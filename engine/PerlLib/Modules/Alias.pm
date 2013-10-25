@@ -261,17 +261,13 @@ sub buildMTAData
 {
 	my $self = shift;
 
-	if(
-		$self->{'action'} ne 'add' || defined $self->{'mail_on_domain'} && $self->{'mail_on_domain'} > 0 ||
-		defined $self->{'domain_mailacc_limit'} && $self->{'domain_mailacc_limit'} >= 0
-	) {
-		$self->{'mta'} = {
-			DOMAIN_NAME => $self->{'alias_name'},
-			DOMAIN_TYPE => $self->{'type'},
-			TYPE => 'vals_entry',
-			EXTERNAL_MAIL => $self->{'external_mail'}
-		};
-	}
+	$self->{'mta'} = {
+		DOMAIN_NAME => $self->{'alias_name'},
+		DOMAIN_TYPE => $self->{'type'},
+		TYPE => 'vals_entry',
+		EXTERNAL_MAIL => $self->{'external_mail'},
+		MAIL_ENABLED => ($self->{'mail_on_domain'} || $self->{'domain_mailacc_limit'} >= 0) ? 1 : 0
+	};
 
 	0;
 }
@@ -280,61 +276,48 @@ sub buildNAMEDData
 {
 	my $self = shift;
 
-	# Both features custom dns and external mail share the same table but are independent
-	if($self->{'action'} eq 'add' && ($self->{'domain_dns'} eq 'yes' || $self->{'external_mail'} eq 'on')) {
-		my $sql = "
-			SELECT
-				*
-			FROM
-				`domain_dns`
-			WHERE
-				`domain_dns`.`domain_id` = ?
-			AND
-				`domain_dns`.`alias_id` = ?
-		";
+	my $userName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} .
+		($main::imscpConfig{'SYSTEM_USER_MIN_UID'} + $self->{'domain_admin_id'});
 
-		my $database = iMSCP::Database->factory();
-		my $rdata = $database->doQuery('domain_dns_id', $sql, $self->{'domain_id'}, $self->{'alias_id'});
+	$self->{'named'} = {
+		DOMAIN_NAME => $self->{'alias_name'},
+		DOMAIN_IP => $self->{'ip_number'},
+		USER_NAME => $userName . 'als' . $self->{'alias_id'},
+		MX => (
+			($self->{'mail_on_domain'} || $self->{'domain_mailacc_limit'} >= 0) && ($self->{'external_mail'} eq 'off')
+		) ? '' : ';'
+	};
+
+	if($self->{'action'} eq 'add') {
+		# Get DNS resource record added by 3rd party components (custom dns feature, mail feature, plugins...)
+		my $db = iMSCP::Database->factory();
+
+		my $sql = 'SELECT * FROM `domain_dns` WHERE `domain_dns`.`domain_id` = ? AND `domain_dns`.`alias_id` = ?';
+		my $rdata = $db->doQuery('domain_dns_id', $sql, $self->{'domain_id'}, $self->{'alias_id'});
 		if(ref $rdata ne 'HASH') {
 			error($rdata);
 			return 1;
 		}
 
-		$self->{'named'}->{'DMN_CUSTOM'}->{$_} = $rdata->{$_} for keys %$rdata;
+		$self->{'named'}->{'DMN_CUSTOM'}->{$_} = $rdata->{$_} for keys %{$rdata};
 
-		# We must trigger the module subalias whatever the number of entries
-		# found in the 'domain_dns' table to ensure that sub alias DNS entries will
-		# be re-added into the db zone file. (It's a temporary fix for #503)
-		#if(scalar keys %$rdata){
-			$sql = "
-				UPDATE
-					`subdomain_alias`
-				SET
-					`subdomain_alias_status` = ?
-				WHERE
-					`subdomain_alias_status` = ?
-				AND
-					`alias_id` = ?
-			";
-
-			$rdata = iMSCP::Database->factory()->doQuery('update', $sql, 'tochange', 'ok', $self->{'alias_id'});
-			if(ref $rdata ne 'HASH') {
-				error($rdata);
-				return 1;
-			}
-		#}
+		# We must trigger the module subalias whatever the number of entries - See #503
+		$sql = '
+			UPDATE
+				`subdomain_alias`
+			SET
+				`subdomain_alias_status` = ?
+			WHERE
+				`subdomain_alias_status` = ?
+			AND
+				`alias_id` = ?
+		';
+		$rdata = $db->doQuery('update', $sql, 'tochange', 'ok', $self->{'alias_id'});
+		unless(ref $rdata eq 'HASH') {
+			error($rdata);
+			return 1;
+		}
 	}
-
-	my $userName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} .
-		($main::imscpConfig{'SYSTEM_USER_MIN_UID'} + $self->{'domain_admin_id'});
-
-	$self->{'named'}->{'DOMAIN_NAME'} = $self->{'alias_name'};
-	$self->{'named'}->{'DOMAIN_IP'} = $self->{'ip_number'};
-	$self->{'named'}->{'USER_NAME'} = $userName . 'als' . $self->{'alias_id'};
-	$self->{'named'}->{'MX'} = (
-		($self->{'mail_on_domain'} || $self->{'domain_mailacc_limit'} >= 0) && ($self->{'external_mail'} ne 'on')
-		? '' : ';'
-	);
 
 	0;
 }

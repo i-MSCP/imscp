@@ -136,7 +136,7 @@ function client_addExternalMailServerEntries($item)
         $data['host'] = (isset($_POST['host'])) ? $_POST['host'] : array();
 
         iMSCP_Events_Manager::getInstance()->dispatch(
-            iMSCP_Events::onBeforeAddExternalMailServer, array('externalMailServerEntries' => &$data)
+            iMSCP_Events::onBeforeAddExternalMailServer, array('externalMailServerEntries' => $data)
         );
 
         $entriesCount = count($data['name']);
@@ -233,7 +233,7 @@ function client_addExternalMailServerEntries($item)
                 $db->commit(); // Commit the transaction - All data will be now added into the database
 
                 iMSCP_Events_Manager::getInstance()->dispatch(
-                    iMSCP_Events::onAfterAddExternalMailServer, array('externalMailServerEntries' => &$data)
+                    iMSCP_Events::onAfterAddExternalMailServer, array('externalMailServerEntries' => $data)
                 );
 
                 send_request(); // Ask the daemon to trigger backend dispatcher

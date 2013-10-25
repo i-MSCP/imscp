@@ -263,17 +263,13 @@ sub buildMTAData
 {
 	my $self = shift;
 
-	if(
-		$self->{'action'} ne 'add' || defined $self->{'mail_on_domain'} && $self->{'mail_on_domain'} > 0 ||
-		defined $self->{'domain_mailacc_limit'} && $self->{'domain_mailacc_limit'} >= 0
-	) {
-		$self->{'mta'} = {
-			DOMAIN_NAME => $self->{'subdomain_name'} . '.' . $self->{'user_home'},
-			DOMAIN_TYPE => $self->{'type'},
-			TYPE => 'vsub_entry',
-			EXTERNAL_MAIL => $self->{'external_mail'}
-		};
-	}
+	$self->{'mta'} = {
+		DOMAIN_NAME => $self->{'subdomain_name'} . '.' . $self->{'user_home'},
+		DOMAIN_TYPE => $self->{'type'},
+		TYPE => 'vsub_entry',
+		EXTERNAL_MAIL => $self->{'external_mail'},
+		MAIL_ENABLED => ($self->{'mail_on_domain'} || $self->{'domain_mailacc_limit'} >= 0) ? 1 : 0
+	};
 
 	0;
 }
@@ -281,6 +277,7 @@ sub buildMTAData
 sub buildNAMEDData
 {
 	my $self = shift;
+
 	my $userName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} .
 		($main::imscpConfig{'SYSTEM_USER_MIN_UID'} + $self->{'domain_admin_id'});
 
@@ -288,11 +285,10 @@ sub buildNAMEDData
 		DOMAIN_NAME => $self->{'subdomain_name'} . '.' . $self->{'user_home'},
 		PARENT_DOMAIN_NAME	=> $self->{'user_home'},
 		DOMAIN_IP => $self->{'ip_number'},
-		USER_NAME => $userName.'sub'.$self->{'subdomain_id'},
+		USER_NAME => $userName.'sub'.$self->{'subdomain_id'}
 	};
 
 	if($self->{'external_mail'} eq 'on') {
-
 		# only no wildcard MX (NOT LIKE '*.%') must be add to existent subdomains
 		my $sql = "
 			SELECT
@@ -310,21 +306,17 @@ sub buildNAMEDData
 			AND
 				`domain_dns`.`owned_by` = ?
 		";
-
 		my $rdata = iMSCP::Database->factory()->doQuery(
 			'domain_dns_id', $sql, $self->{'domain_id'}, 0, 'MX', 'ext_mail_feature'
 		);
-		if(ref $rdata ne 'HASH') {
+		unless(ref $rdata eq 'HASH') {
 			error($rdata);
 			return 1;
 		}
 
-		($self->{'named'}->{'MX'}->{$_}->{'domain_text'}) = ($rdata->{$_}->{'domain_text'} =~ /(.*)\.$/) for keys %$rdata;
-
+		($self->{'named'}->{'MX'}->{$_}->{'domain_text'}) = ($rdata->{$_}->{'domain_text'} =~ /(.*)\.$/) for keys %{$rdata};
 	} elsif($self->{'mail_on_domain'} || $self->{'domain_mailacc_limit'} >= 0) {
-
 		$self->{'named'}->{'MX'}->{1}->{'domain_text'} = "10\tmail.$self->{'user_home'}";
-
 	}
 
 	0;
