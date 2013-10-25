@@ -143,10 +143,12 @@ abstract class iMSCP_Plugin
 	 *
 	 * Note: *MUST* be implemented by any plugin which manage its own items.
 	 *
-	 * @param int $itemId Plugin item unique identifier
+	 * @param string $table Table name
+	 * @param string $field Status field name
+	 * @param int $itemId item unique identifier
 	 * @return void
 	 */
-	public function changeItemStatus($itemId)
+	public function changeItemStatus($table, $field, $itemId)
 	{
 	}
 

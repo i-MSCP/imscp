@@ -1,4 +1,3 @@
-
 <table>
 	<thead>
 	<tr>
@@ -16,7 +15,7 @@
 		<td>
 			<p>
 				<span class="bold">{USER_NAME}</span> - <a
-					href="imscp_debugger.php?action=change_status&amp;id={CHANGE_ID}&amp;type={CHANGE_TYPE}"
+					href="imscp_debugger.php?action=change&amp;id={CHANGE_ID}&amp;type={CHANGE_TYPE}"
 					class="link">{TR_CHANGE_STATUS}</a>
 			</p>
 			<span style="color:red;">{USER_ERROR}</span>
@@ -42,7 +41,7 @@
 		<td>
 			<p>
 				<span class="bold">{DMN_NAME}</span> - <a
-					href="imscp_debugger.php?action=change_status&amp;id={CHANGE_ID}&amp;type={CHANGE_TYPE}"
+					href="imscp_debugger.php?action=change&amp;id={CHANGE_ID}&amp;type={CHANGE_TYPE}"
 					class="link">{TR_CHANGE_STATUS}</a>
 			</p>
 			<span style="color:red;">{DMN_ERROR}</span>
@@ -67,7 +66,7 @@
 	<tr>
 		<td>
 			<span class="bold">{ALS_NAME}</span> - <a
-				href="imscp_debugger.php?action=change_status&amp;id={CHANGE_ID}&amp;type={CHANGE_TYPE}"
+				href="imscp_debugger.php?action=change&amp;id={CHANGE_ID}&amp;type={CHANGE_TYPE}"
 				class="link">{TR_CHANGE_STATUS}</a>
 			<span style="color:red;">{ALS_ERROR}</span>
 		</td>
@@ -92,7 +91,7 @@
 		<td>
 			<p>
 				<span class="bold">{SUB_NAME}</span> - <a
-					href="imscp_debugger.php?action=change_status&amp;id={CHANGE_ID}&amp;type={CHANGE_TYPE}"
+					href="imscp_debugger.php?action=change&amp;id={CHANGE_ID}&amp;type={CHANGE_TYPE}"
 					class="link">{TR_CHANGE_STATUS}</a>
 			</p>
 			<span style="color:red;">{SUB_ERROR}</span>
@@ -118,7 +117,7 @@
 		<td>
 			<p>
 				<span class="bold">{ALSSUB_NAME}</span> - <a
-					href="imscp_debugger.php?action=change_status&amp;id={CHANGE_ID}&amp;type={CHANGE_TYPE}"
+					href="imscp_debugger.php?action=change&amp;id={CHANGE_ID}&amp;type={CHANGE_TYPE}"
 					class="link">{TR_CHANGE_STATUS}</a>
 			</p>
 			<span style="color:red;">{ALSSUB_ERROR}</span>
@@ -145,7 +144,7 @@
 		<td>
 			<p>
 				<span class="bold">{HTACCESS_NAME}</span> - <a
-					href="imscp_debugger.php?action=change_status&amp;id={CHANGE_ID}&amp;type={CHANGE_TYPE}"
+					href="imscp_debugger.php?action=change&amp;id={CHANGE_ID}&amp;type={CHANGE_TYPE}"
 					class="link">{TR_CHANGE_STATUS}</a>
 			</p>
 			<span style="color:red;">{HTACCESS_ERROR}</span></td>
@@ -170,7 +169,7 @@
 		<td>
 			<p>
 				<span class="bold">{MAIL_NAME}</span> - <a
-					href="imscp_debugger.php?action=change_status&amp;id={CHANGE_ID}&amp;type={CHANGE_TYPE}"
+					href="imscp_debugger.php?action=change&amp;id={CHANGE_ID}&amp;type={CHANGE_TYPE}"
 					class="link">{TR_CHANGE_STATUS}</a>
 			</p>
 			<span style="color:red;">{MAIL_ERROR}</span></td>
@@ -196,7 +195,7 @@
 		<td>
 			<p>
 				<span class="bold">{PLUGIN_NAME}</span> - <a
-					href="imscp_debugger.php?action=change_status&amp;id={CHANGE_ID}&amp;type={CHANGE_TYPE}"
+					href="imscp_debugger.php?action=change&amp;id={CHANGE_ID}&amp;type={CHANGE_TYPE}"
 					class="link">{TR_CHANGE_STATUS}</a>
 			</p>
 			<span style="color:red;">{PLUGIN_ERROR}</span></td>
@@ -222,7 +221,7 @@
 		<td>
 			<p>
 				<span class="bold">{PLUGIN_NAME}</span> - <a
-					href="imscp_debugger.php?action=change_status&amp;id={CHANGE_ID}&amp;type={CHANGE_TYPE}"
+					href="imscp_debugger.php?action=change&amp;id={CHANGE_ID}&amp;type={CHANGE_TYPE}&amp;table={TABLE}&amp;field={FIELD}"
 					class="link">{TR_CHANGE_STATUS}</a>
 			</p>
 			<span style="color:red;">{PLUGIN_ITEM_ERROR}</span></td>
@@ -239,7 +238,7 @@
 	</thead>
 	<tbody>
 	<tr>
-		<td><a href="imscp_debugger.php?action=run_engine" class="link">{EXEC_COUNT} {TR_EXEC_REQUESTS}</a></td>
+		<td><a href="imscp_debugger.php?action=run" class="link">{EXEC_COUNT} {TR_EXEC_REQUESTS}</a></td>
 	</tr>
 	</tbody>
 </table>

@@ -546,7 +546,9 @@ function debugger_getPluginItemErrors($tpl)
 						'PLUGIN_NAME' => tohtml($plugin->getName()) . ' (' . tohtml($item['item_name']) . ')',
 						'PLUGIN_ITEM_ERROR' => tohtml($item['status']),
 						'CHANGE_ID' => $item['item_id'],
-						'CHANGE_TYPE' => tohtml($plugin->getName())
+						'CHANGE_TYPE' => tohtml($plugin->getName()),
+						'TABLE' => tohtml($item['table']),
+						'FIELD' => tohtml($item['field'])
 					)
 				);
 
@@ -565,16 +567,18 @@ function debugger_getPluginItemErrors($tpl)
  * Change plugin item status
  *
  * @param string $pluginName Plugin name
- * @param int $itemId Plugin item unique identifier
+ * @param string $table Table name
+ * @param string $field Status field name
+ * @param int $itemId item unique identifier
  * @return bool
  */
-function debugger_setPluginItemToChange($pluginName, $itemId)
+function debugger_setPluginItemToChange($pluginName, $table, $field, $itemId)
 {
 	/** @var iMSCP_Plugin_Manager $pluginManager */
 	$pluginManager = iMSCP_Registry::get('pluginManager');
 
 	if ($pluginManager->isLoadedPlugin($pluginName)) {
-		$pluginManager->getPlugin($pluginName)->changeItemStatus($itemId);
+		$pluginManager->getPlugin($pluginName)->changeItemStatus($table, $field, $itemId);
 
 		return true;
 	}
@@ -656,7 +660,7 @@ $rqstCount += debugger_countRequests('plugin_status', 'plugin');
 $rqstCount += debugger_countRequests();
 
 if (isset($_GET['action'])) {
-	if ($_GET['action'] == 'run_engine') {
+	if ($_GET['action'] == 'run') {
 		if ($rqstCount > 0) {
 			if (send_request()) {
 				set_page_message(tr('Daemon request successful.'), 'success');
@@ -667,7 +671,7 @@ if (isset($_GET['action'])) {
 			set_page_message(tr('Nothing to do. Daemon request has been canceled.'), 'warning');
 		}
 		redirectTo('imscp_debugger.php');
-	} elseif ($_GET['action'] == 'change_status' && (isset($_GET['id']) && isset($_GET['type']))) {
+	} elseif ($_GET['action'] == 'change' && (isset($_GET['id']) && isset($_GET['type']))) {
 		/** @var iMSCP_Config_Handler_File $cfg */
 		$cfg = iMSCP_Registry::get('config');
 
@@ -699,10 +703,14 @@ if (isset($_GET['action'])) {
 				$query = "UPDATE `plugin` SET `plugin_status` = ? WHERE `plugin_id` = ?";
 				break;
 			default:
-				if (!debugger_setPluginItemToChange($_GET['type'], $_GET['id'])) {
-					set_page_message(tr('Unknown type.'), 'error');
+				if(isset($_GET['table']) && isset($_GET['field'])) {
+					if (!debugger_setPluginItemToChange($_GET['type'], $_GET['table'], $_GET['field'], $_GET['id'])) {
+						set_page_message(tr('Unknown type.'), 'error');
+					} else {
+						set_page_message(tr('Done'), 'success');
+					}
 				} else {
-					set_page_message(tr('Done'), 'success');
+					showBadRequestErrorPage();
 				}
 
 				redirectTo('imscp_debugger.php');
