@@ -39,7 +39,7 @@ class iMSCP_Plugin_Manager
 	/**
 	 * @var string
 	 */
-	protected $pluginApiVersion = '0.1.0';
+	protected $pluginApiVersion = '0.1.1';
 
 	/**
 	 * @var string Plugins directory
