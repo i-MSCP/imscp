@@ -35,8 +35,6 @@
  * @link        http://i-mscp.net
  */
 
-// TODO Plugin items's related errors
-
 /***********************************************************************************************************************
  * Functions
  */
@@ -45,7 +43,7 @@
  * Get user errors
  *
  * @param  iMSCP_pTemplate $tpl Template engine instance
- * @return int
+ * @return void
  */
 function debugger_getUserErrors($tpl)
 {
@@ -67,9 +65,7 @@ function debugger_getUserErrors($tpl)
 		array($cfg->ITEM_OK_STATUS, $cfg->ITEM_TOADD_STATUS, $cfg->ITEM_TOCHANGE_STATUS, $cfg->ITEM_TODELETE_STATUS)
 	);
 
-	$errors = $stmt->rowCount();
-
-	if (!$errors) {
+	if (!$stmt->rowCount()) {
 		$tpl->assign(array('USER_LIST' => '', 'TR_USER_MESSAGE' => tr('No errors')));
 		$tpl->parse('USER_MESSAGE', 'user_message');
 	} else {
@@ -77,8 +73,8 @@ function debugger_getUserErrors($tpl)
 			$tpl->assign(
 				array(
 					'USER_MESSAGE' => '',
-					'TR_USER_NAME' => tohtml(decode_idna($row['admin_name'])),
-					'TR_USER_ERROR' => tohtml($row['admin_status']),
+					'USER_NAME' => tohtml(decode_idna($row['admin_name'])),
+					'USER_ERROR' => tohtml($row['admin_status']),
 					'CHANGE_ID' => tohtml($row['admin_id']),
 					'CHANGE_TYPE' => 'user'
 				)
@@ -87,15 +83,13 @@ function debugger_getUserErrors($tpl)
 			$tpl->parse('USER_LIST', '.user_list');
 		}
 	}
-
-	return $errors;
 }
 
 /**
  * Get domain errors
  *
  * @param  iMSCP_pTemplate $tpl Template engine instance
- * @return int
+ * @return void
  */
 function debugger_getDmnErrors($tpl)
 {
@@ -119,9 +113,7 @@ function debugger_getDmnErrors($tpl)
 		)
 	);
 
-	$errors = $stmt->rowCount();
-
-	if (!$errors) {
+	if (!$stmt->rowCount()) {
 		$tpl->assign(array('DMN_LIST' => '', 'TR_DMN_MESSAGE' => tr('No errors')));
 		$tpl->parse('DMN_MESSAGE', 'dmn_message');
 	} else {
@@ -129,8 +121,8 @@ function debugger_getDmnErrors($tpl)
 			$tpl->assign(
 				array(
 					'DMN_MESSAGE' => '',
-					'TR_DMN_NAME' => tohtml(decode_idna($row['domain_name'])),
-					'TR_DMN_ERROR' => tohtml($row['domain_status']),
+					'DMN_NAME' => tohtml(decode_idna($row['domain_name'])),
+					'DMN_ERROR' => tohtml($row['domain_status']),
 					'CHANGE_ID' => tohtml($row['domain_id']),
 					'CHANGE_TYPE' => 'domain'
 				)
@@ -139,15 +131,13 @@ function debugger_getDmnErrors($tpl)
 			$tpl->parse('DMN_LIST', '.dmn_list');
 		}
 	}
-
-	return $errors;
 }
 
 /**
  * Get domain aliases errors
  *
  * @param  iMSCP_pTemplate $tpl Template engine instance
- * @return int
+ * @return void
  */
 function debugger_getAlsErrors($tpl)
 {
@@ -171,9 +161,7 @@ function debugger_getAlsErrors($tpl)
 		)
 	);
 
-	$errors = $stmt->rowCount();
-
-	if (!$errors) {
+	if (!$stmt->rowCount()) {
 		$tpl->assign(array('ALS_LIST' => '', 'TR_ALS_MESSAGE' => tr('No errors')));
 		$tpl->parse('ALS_MESSAGE', 'als_message');
 	} else {
@@ -181,8 +169,8 @@ function debugger_getAlsErrors($tpl)
 			$tpl->assign(
 				array(
 					'ALS_MESSAGE' => '',
-					'TR_ALS_NAME' => tohtml(decode_idna($row['alias_name'])),
-					'TR_ALS_ERROR' => tohtml($row['alias_status']),
+					'ALS_NAME' => tohtml(decode_idna($row['alias_name'])),
+					'ALS_ERROR' => tohtml($row['alias_status']),
 					'CHANGE_ID' => $row['alias_id'],
 					'CHANGE_TYPE' => 'alias',
 				)
@@ -191,15 +179,13 @@ function debugger_getAlsErrors($tpl)
 			$tpl->parse('ALS_LIST', '.als_list');
 		}
 	}
-
-	return $errors;
 }
 
 /**
  * Get subdomains errors
  *
  * @param  iMSCP_pTemplate $tpl Template engine instance
- * @return int
+ * @return void
  */
 function debugger_getSubErrors($tpl)
 {
@@ -226,9 +212,7 @@ function debugger_getSubErrors($tpl)
 		)
 	);
 
-	$errors = $stmt->rowCount();
-
-	if (!$errors) {
+	if (!$stmt->rowCount()) {
 		$tpl->assign(array('SUB_LIST' => '', 'TR_SUB_MESSAGE' => tr('No errors')));
 		$tpl->parse('SUB_MESSAGE', 'sub_message');
 	} else {
@@ -236,8 +220,8 @@ function debugger_getSubErrors($tpl)
 			$tpl->assign(
 				array(
 					'SUB_MESSAGE' => '',
-					'TR_SUB_NAME' => tohtml(decode_idna($row['subdomain_name'] . '.' . $row['domain_name'])),
-					'TR_SUB_ERROR' => tohtml($row['subdomain_status']),
+					'SUB_NAME' => tohtml(decode_idna($row['subdomain_name'] . '.' . $row['domain_name'])),
+					'SUB_ERROR' => tohtml($row['subdomain_status']),
 					'CHANGE_ID' => $row['subdomain_id'],
 					'CHANGE_TYPE' => 'subdomain'
 				)
@@ -246,15 +230,13 @@ function debugger_getSubErrors($tpl)
 			$tpl->parse('SUB_LIST', '.sub_list');
 		}
 	}
-
-	return $errors;
 }
 
 /**
  * Get subdomain aliases errors
  *
  * @param  iMSCP_pTemplate $tpl Template engine instance
- * @return int
+ * @return void
  */
 function debugger_getAlssubErrors($tpl)
 {
@@ -280,20 +262,16 @@ function debugger_getAlssubErrors($tpl)
 		)
 	);
 
-	$errors = $stmt->rowCount();
-
-	if (!$errors) {
-		$tpl->assign(
-			array('ALSSUB_LIST' => '', 'TR_ALSSUB_MESSAGE' => tr('No errors'))
-		);
+	if (!$stmt->rowCount()) {
+		$tpl->assign(array('ALSSUB_LIST' => '', 'TR_ALSSUB_MESSAGE' => tr('No errors')));
 		$tpl->parse('ALSSUB_MESSAGE', 'alssub_message');
 	} else {
 		while ($row = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
 			$tpl->assign(
 				array(
 					'ALSSUB_MESSAGE' => '',
-					'TR_ALSSUB_NAME' => tohtml(decode_idna($row['subdomain_alias_name'] . '.' . $row['alias_name'])),
-					'TR_ALSSUB_ERROR' => tohtml($row['subdomain_alias_status']),
+					'ALSSUB_NAME' => tohtml(decode_idna($row['subdomain_alias_name'] . '.' . $row['alias_name'])),
+					'ALSSUB_ERROR' => tohtml($row['subdomain_alias_status']),
 					'CHANGE_ID' => $row['subdomain_alias_id'],
 					'CHANGE_TYPE' => 'subdomain_alias'
 				)
@@ -302,15 +280,13 @@ function debugger_getAlssubErrors($tpl)
 			$tpl->parse('ALSSUB_LIST', '.alssub_list');
 		}
 	}
-
-	return $errors;
 }
 
 /**
  * Gets htaccess errors
  *
  * @param iMSCP_pTemplate $tpl Template engine instance
- * @return int
+ * @return void
  */
 function debugger_getHtaccessErrors($tpl)
 {
@@ -353,9 +329,7 @@ function debugger_getHtaccessErrors($tpl)
 		)
 	);
 
-	$errors = $stmt->rowCount();
-
-	if (!$errors) {
+	if (!$stmt->rowCount()) {
 		$tpl->assign(array('HTACCESS_LIST' => '', 'TR_HTACCESS_MESSAGE' => tr('No errors')));
 		$tpl->parse('HTACCESS_MESSAGE', 'htaccess_message');
 	} else {
@@ -363,9 +337,9 @@ function debugger_getHtaccessErrors($tpl)
 			$tpl->assign(
 				array(
 					'HTACCESS_MESSAGE' => '',
-					'TR_HTACCESS_NAME' => ($row['domain_name'] == null)
+					'HTACCESS_NAME' => ($row['domain_name'] == null)
 						? tr('Missing domain') : tohtml($row['domain_name']),
-					'TR_HTACCESS_ERROR' => tohtml($row['status']),
+					'HTACCESS_ERROR' => tohtml($row['status']),
 					'CHANGE_ID' => $row['id'],
 					'CHANGE_TYPE' => $row['type']
 				)
@@ -374,8 +348,6 @@ function debugger_getHtaccessErrors($tpl)
 			$tpl->parse('HTACCESS_LIST', '.htaccess_list');
 		}
 	}
-
-	return $errors;
 }
 
 /**
@@ -383,7 +355,7 @@ function debugger_getHtaccessErrors($tpl)
  *
  * @throws iMSCP_Exception
  * @param iMSCP_pTemplate $tpl Template engine instance
- * @return int
+ * @return void
  */
 function debugger_getMailsErrors($tpl)
 {
@@ -407,9 +379,7 @@ function debugger_getMailsErrors($tpl)
 		)
 	);
 
-	$errors = $stmt->rowCount();
-
-	if (!$errors) {
+	if (!$stmt->rowCount()) {
 		$tpl->assign(array('MAIL_LIST' => '', 'TR_MAIL_MESSAGE' => tr('No errors')));
 		$tpl->parse('MAIL_MESSAGE', 'mail_message');
 	} else {
@@ -450,7 +420,7 @@ function debugger_getMailsErrors($tpl)
 						SELECT
 							CONCAT(
 								'@', `t1`.`subdomain_alias_name`, '.', IF(`t2`.`alias_name` IS NULL,'" .
-								tr('missing alias') . "',`t2`.`alias_name`)
+						tr('missing alias') . "',`t2`.`alias_name`)
 							) AS `domain_name`
 						FROM
 							`subdomain_alias` AS `t1`
@@ -487,9 +457,9 @@ function debugger_getMailsErrors($tpl)
 				array(
 					'MAIL_MESSAGE' => '',
 					'TR_MAIL_NAME' => tohtml(
-						$mailAcc . '@'. ($domainName == '' ?  ' ' . tr('orphan entry') : decode_idna($domainName))
+						$mailAcc . '@' . ($domainName == '' ? ' ' . tr('orphan entry') : decode_idna($domainName))
 					),
-					'TR_MAIL_ERROR' => tohtml($mailStatus),
+					'MAIL_ERROR' => tohtml($mailStatus),
 					'CHANGE_ID' => $mailId,
 					'CHANGE_TYPE' => 'mail'
 				)
@@ -498,8 +468,6 @@ function debugger_getMailsErrors($tpl)
 			$tpl->parse('MAIL_LIST', '.mail_list');
 		}
 	}
-
-	return $errors;
 }
 
 /**
@@ -508,7 +476,7 @@ function debugger_getMailsErrors($tpl)
  * Note: There are only errors related to the plugin itself, not to the plugin items
  *
  * @param  iMSCP_pTemplate $tpl Template engine instance
- * @return int
+ * @return void
  */
 function debugger_getPluginsErrors($tpl)
 {
@@ -532,9 +500,7 @@ function debugger_getPluginsErrors($tpl)
 		)
 	);
 
-	$errors = $stmt->rowCount();
-
-	if (!$errors) {
+	if (!$stmt->rowCount()) {
 		$tpl->assign(array('PLUGIN_LIST' => '', 'TR_PLUGIN_MESSAGE' => tr('No errors')));
 		$tpl->parse('PLUGIN_MESSAGE', 'plugin_message');
 	} else {
@@ -542,8 +508,8 @@ function debugger_getPluginsErrors($tpl)
 			$tpl->assign(
 				array(
 					'PLUGIN_MESSAGE' => '',
-					'TR_PLUGIN_NAME' => tohtml($row['plugin_name']),
-					'TR_PLUGIN_ERROR' => tohtml($row['plugin_status']),
+					'PLUGIN_NAME' => tohtml($row['plugin_name']),
+					'PLUGIN_ERROR' => tohtml($row['plugin_status']),
 					'CHANGE_ID' => $row['plugin_id'],
 					'CHANGE_TYPE' => 'plugin')
 			);
@@ -551,33 +517,113 @@ function debugger_getPluginsErrors($tpl)
 			$tpl->parse('PLUGIN_LIST', '.plugin_list');
 		}
 	}
+}
 
-	return $errors;
+/**
+ * Get plugin items errors
+ *
+ * @param iMSCP_pTemplate $tpl
+ * @return void
+ */
+function debugger_getPluginItemErrors($tpl)
+{
+	/** @var iMSCP_Plugin_Manager $pluginManager */
+	$pluginManager = iMSCP_Registry::get('pluginManager');
+
+	/** @var iMSCP_Plugin[] $plugins */
+	$plugins = $pluginManager->getLoadedPlugins();
+
+	$itemFound = false;
+	foreach ($plugins as $plugin) {
+		$items = $plugin->getItemWithErrorStatus();
+
+		if (!empty($items)) {
+			$itemFound = true;
+			foreach ($items as $item) {
+				$tpl->assign(
+					array(
+						'PLUGIN_ITEM_MESSAGE' => '',
+						'PLUGIN_NAME' => tohtml($plugin->getName()) . ' (' . tohtml($item['item_name']) . ')',
+						'PLUGIN_ITEM_ERROR' => tohtml($item['status']),
+						'CHANGE_ID' => $item['item_id'],
+						'CHANGE_TYPE' => tohtml($plugin->getName())
+					)
+				);
+
+				$tpl->parse('PLUGIN_ITEM_LIST', '.plugin_item_list');
+			}
+		}
+	}
+
+	if (!$itemFound) {
+		$tpl->assign(array('PLUGIN_ITEM_LIST' => '', 'TR_PLUGIN_ITEM_MESSAGE' => tr('No errors')));
+		$tpl->parse('PLUGIN_ITEM_MESSAGE', 'plugin_item_message');
+	}
+}
+
+/**
+ * Change plugin item status
+ *
+ * @param string $pluginName Plugin name
+ * @param int $itemId Plugin item unique identifier
+ * @return bool
+ */
+function debugger_setPluginItemToChange($pluginName, $itemId)
+{
+	/** @var iMSCP_Plugin_Manager $pluginManager */
+	$pluginManager = iMSCP_Registry::get('pluginManager');
+
+	if ($pluginManager->isLoadedPlugin($pluginName)) {
+		$pluginManager->getPlugin($pluginName)->changeItemStatus($itemId);
+
+		return true;
+	}
+
+	return false;
 }
 
 /**
  * Returns the number of requests that still to run.
  *
+ * Note: Without any argument, this function will trigger the getCountRequests() method on all enabled plugins
+ *
  * @param string $statusField status database field name
  * @param  string $tableName i-MSCP database table name
  * @return int Number of request
  */
-function debugger_countRequests($statusField, $tableName)
+function debugger_countRequests($statusField = null, $tableName = null)
 {
-	/** @var $cfg iMSCP_Config_Handler_File */
-	$cfg = iMSCP_Registry::get('config');
+	if ($statusField && $tableName) {
+		/** @var $cfg iMSCP_Config_Handler_File */
+		$cfg = iMSCP_Registry::get('config');
 
-	$query = "SELECT `$statusField` FROM `$tableName` WHERE `$statusField` IN (?, ?, ?, ?, ?, ?, ?, ?, ?)";
-	$stmt = exec_query(
-		$query,
-		array(
-			$cfg->ITEM_TOINSTALL_STATUS, $cfg->ITEM_TOUPDATE_STATUS, $cfg->ITEM_TOUNINSTALL_STATUS,
-			$cfg->ITEM_TOADD_STATUS, $cfg->ITEM_TOCHANGE_STATUS, $cfg->ITEM_TORESTORE_STATUS,
-			$cfg->ITEM_TOENABLE_STATUS, $cfg->ITEM_TODISABLE_STATUS, $cfg->ITEM_TODELETE_STATUS,
-		)
-	);
+		$query = "SELECT `$statusField` FROM `$tableName` WHERE `$statusField` IN (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+		$stmt = exec_query(
+			$query,
+			array(
+				$cfg->ITEM_TOINSTALL_STATUS, $cfg->ITEM_TOUPDATE_STATUS, $cfg->ITEM_TOUNINSTALL_STATUS,
+				$cfg->ITEM_TOADD_STATUS, $cfg->ITEM_TOCHANGE_STATUS, $cfg->ITEM_TORESTORE_STATUS,
+				$cfg->ITEM_TOENABLE_STATUS, $cfg->ITEM_TODISABLE_STATUS, $cfg->ITEM_TODELETE_STATUS,
+			)
+		);
 
-	return $stmt->rowCount();
+		return $stmt->rowCount();
+	} else {
+		/** @var iMSCP_Plugin_Manager $pluginManager */
+		$pluginManager = iMSCP_Registry::get('pluginManager');
+
+		/** @var iMSCP_Plugin[] $plugins */
+		$plugins = $pluginManager->getLoadedPlugins();
+		$nbRequests = 0;
+
+		if (!empty($plugins)) {
+			foreach ($plugins as $plugin) {
+				$nbRequests += $plugin->getCountRequests();
+			}
+		}
+
+		return $nbRequests;
+	}
 }
 
 /***********************************************************************************************************************
@@ -607,11 +653,12 @@ $rqstCount += debugger_countRequests('status', 'htaccess');
 $rqstCount += debugger_countRequests('status', 'htaccess_groups');
 $rqstCount += debugger_countRequests('status', 'htaccess_users');
 $rqstCount += debugger_countRequests('plugin_status', 'plugin');
+$rqstCount += debugger_countRequests();
 
 if (isset($_GET['action'])) {
 	if ($_GET['action'] == 'run_engine') {
 		if ($rqstCount > 0) {
-			if(send_request()) {
+			if (send_request()) {
 				set_page_message(tr('Daemon request successful.'), 'success');
 			} else {
 				set_page_message(tr('Daemon request failed.'), 'error');
@@ -652,7 +699,12 @@ if (isset($_GET['action'])) {
 				$query = "UPDATE `plugin` SET `plugin_status` = ? WHERE `plugin_id` = ?";
 				break;
 			default:
-				set_page_message(tr('Unknown type.'), 'error');
+				if (!debugger_setPluginItemToChange($_GET['type'], $_GET['id'])) {
+					set_page_message(tr('Unknown type.'), 'error');
+				} else {
+					set_page_message(tr('Done'), 'success');
+				}
+
 				redirectTo('imscp_debugger.php');
 		}
 
@@ -674,7 +726,6 @@ $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic(
 	array(
 		'layout' => 'shared/layouts/ui.tpl',
-
 		'page' => 'admin/imscp_debugger.tpl',
 		'page_message' => 'layout',
 		'user_message' => 'page',
@@ -692,25 +743,26 @@ $tpl->define_dynamic(
 		'mail_message' => 'page',
 		'mail_list' => 'page',
 		'plugin_message' => 'page',
-		'plugin_list' => 'page'
-
+		'plugin_list' => 'page',
+		'plugin_item_message' => 'page',
+		'plugin_item_list' => 'page'
 	)
 );
 
-$errors = debugger_getUserErrors($tpl);
-$errors += debugger_getDmnErrors($tpl);
-$errors += debugger_getAlsErrors($tpl);
-$errors += debugger_getSubErrors($tpl);
-$errors += debugger_getAlssubErrors($tpl);
-$errors += debugger_getMailsErrors($tpl);
-$errors += debugger_getHtaccessErrors($tpl);
-$errors += debugger_getPluginsErrors($tpl);
+debugger_getUserErrors($tpl);
+debugger_getDmnErrors($tpl);
+debugger_getAlsErrors($tpl);
+debugger_getSubErrors($tpl);
+debugger_getAlssubErrors($tpl);
+debugger_getMailsErrors($tpl);
+debugger_getHtaccessErrors($tpl);
+debugger_getPluginsErrors($tpl);
+debugger_getPluginItemErrors($tpl);
 
 $tpl->assign(
 	array(
 		'TR_PAGE_TITLE' => tr('Admin / System Tools / Debugger'),
 		'ISP_LOGO' => layout_getUserLogo(),
-
 		'TR_USER_ERRORS' => tr('User errors'),
 		'TR_DMN_ERRORS' => tr('Domain errors'),
 		'TR_ALS_ERRORS' => tr('Domain alias errors'),
@@ -719,12 +771,11 @@ $tpl->assign(
 		'TR_MAIL_ERRORS' => tr('Email account errors'),
 		'TR_HTACCESS_ERRORS' => tr('Htaccess errors'),
 		'TR_PLUGINS_ERRORS' => tr('Plugin errors'),
-
+		'TR_PLUGIN_ITEM_ERRORS' => tr('Plugin item errors'),
 		'TR_DAEMON_TOOLS' => tr('i-MSCP Daemon tools'),
 		'TR_EXEC_REQUESTS' => tr('Execute requests'),
 		'TR_CHANGE_STATUS' => tr("Set status to 'tochange'"),
-		'EXEC_COUNT' => $rqstCount,
-		'TR_ERRORS' => tr('%s Errors in database', $errors)
+		'EXEC_COUNT' => $rqstCount
 	)
 );
 

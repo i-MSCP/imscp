@@ -65,7 +65,9 @@ abstract class iMSCP_Plugin
 	 * Allow plugin initialization.
 	 * return void
 	 */
-	public function init() {}
+	public function init()
+	{
+	}
 
 	/**
 	 * Plugin installation
@@ -74,7 +76,9 @@ abstract class iMSCP_Plugin
 	 * @param iMSCP_Plugin_Manager $pluginManager
 	 * @return void
 	 */
-	public function install(iMSCP_Plugin_Manager $pluginManager) {}
+	public function install(iMSCP_Plugin_Manager $pluginManager)
+	{
+	}
 
 	/**
 	 * Plugin update
@@ -85,7 +89,9 @@ abstract class iMSCP_Plugin
 	 * @param string $toVersion Version to which plugin is updated
 	 * @return void
 	 */
-	public function update(iMSCP_Plugin_Manager $pluginManager, $fromVersion, $toVersion) {}
+	public function update(iMSCP_Plugin_Manager $pluginManager, $fromVersion, $toVersion)
+	{
+	}
 
 	/**
 	 * PLugin uninstallation
@@ -94,7 +100,9 @@ abstract class iMSCP_Plugin
 	 * @param iMSCP_Plugin_Manager $pluginManager
 	 * @return void
 	 */
-	public function uninstall(iMSCP_Plugin_Manager $pluginManager) {}
+	public function uninstall(iMSCP_Plugin_Manager $pluginManager)
+	{
+	}
 
 	/**
 	 * Plugin activation
@@ -103,7 +111,9 @@ abstract class iMSCP_Plugin
 	 * @param iMSCP_Plugin_Manager $pluginManager
 	 * @return void
 	 */
-	public function enable(iMSCP_Plugin_Manager $pluginManager) {}
+	public function enable(iMSCP_Plugin_Manager $pluginManager)
+	{
+	}
 
 	/**
 	 * Plugin deactivation
@@ -112,7 +122,45 @@ abstract class iMSCP_Plugin
 	 * @param iMSCP_Plugin_Manager $pluginManager
 	 * @return void
 	 */
-	public function disable(iMSCP_Plugin_Manager $pluginManager) {}
+	public function disable(iMSCP_Plugin_Manager $pluginManager)
+	{
+	}
+
+	/**
+	 * Get plugin item with error status
+	 *
+	 * Note: *MUST* be implemented by any plugin which manage its own items.
+	 *
+	 * @return array
+	 */
+	public function getItemWithErrorStatus()
+	{
+		return array();
+	}
+
+	/**
+	 * Set status of the given plugin item to 'tochange'
+	 *
+	 * Note: *MUST* be implemented by any plugin which manage its own items.
+	 *
+	 * @param int $itemId Plugin item unique identifier
+	 * @return void
+	 */
+	public function changeItemStatus($itemId)
+	{
+	}
+
+	/**
+	 * Return count of request in progress
+	 *
+	 * Note: *MUST* be implemented by any plugin which manage its own items.
+	 *
+	 * @return int
+	 */
+	public function getCountRequests()
+	{
+		return 0;
+	}
 
 	/**
 	 * Returns plugin general information.
@@ -137,10 +185,10 @@ abstract class iMSCP_Plugin
 
 		$info = array();
 
-		if(is_readable($infoFile)) {
+		if (is_readable($infoFile)) {
 			$info = include $infoFile;
 		} else {
-			if(!file_exists($infoFile)) {
+			if (!file_exists($infoFile)) {
 				set_page_message(
 					tr(
 						'getInfo() not implemented in %s and %s not found. <br /> This is a bug in the %s plugin and should be reported to the plugin author.',
@@ -217,7 +265,7 @@ abstract class iMSCP_Plugin
 		$configFile = iMSCP_Registry::get('pluginManager')->getPluginDirectory() . '/' . $this->getName() . '/config.php';
 		$config = array();
 
-		if(file_exists($configFile)) {
+		if (file_exists($configFile)) {
 			if (is_readable($configFile)) {
 				$config = include $configFile;
 			} else {
@@ -258,7 +306,7 @@ abstract class iMSCP_Plugin
 	{
 		$stmt = exec_query('SELECT `plugin_config` FROM `plugin` WHERE `plugin_name` = ?', $this->getName());
 
-		if($stmt->rowCount()) {
+		if ($stmt->rowCount()) {
 			$this->_config = json_decode($stmt->fetchRow(PDO::FETCH_COLUMN), true);
 		} else {
 			$this->_config = array();

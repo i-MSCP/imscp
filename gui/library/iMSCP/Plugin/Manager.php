@@ -104,7 +104,7 @@ class iMSCP_Plugin_Manager
 			$this->setDirectory($pluginDir); // Set plugin directory
 			$this->eventManager = iMSCP_Events_Manager::getInstance();
 			$this->init(); // Initialize plugin manager
-			spl_autoload_register(array($this, '_autoload'));  // Setup autoloader for plugins
+			spl_autoload_register(array($this, '_autoload')); // Setup autoloader for plugins
 		} else {
 			write_log(sprintf('Plugin manager: Invalid plugin directory: %s', $pluginDir), E_USER_ERROR);
 			throw new iMSCP_Plugin_Exception(sprintf('Invalid plugin directory: %s', $pluginDir));
@@ -118,7 +118,7 @@ class iMSCP_Plugin_Manager
 	 */
 	public function __destruct()
 	{
-		if($this->backendRequest) {
+		if ($this->backendRequest) {
 			send_request();
 		}
 	}
@@ -193,9 +193,12 @@ class iMSCP_Plugin_Manager
 	{
 		if ($type == 'all') {
 			return array_keys(
-				$onlyEnabled
-					? array_filter($this->plugins, function ($status) { return ($status['current_status'] == 'enabled'); })
-					: $this->plugins
+				$onlyEnabled ? array_filter(
+					$this->plugins,
+					function ($status) {
+						return ($status['current_status'] == 'enabled');
+					}
+				) : $this->plugins
 			);
 		} elseif (isset($this->pluginsByType[$type])) {
 			$plugins = $this->plugins;
@@ -206,8 +209,7 @@ class iMSCP_Plugin_Manager
 					function ($pluginName) use ($plugins) {
 						return ($plugins[$pluginName]['current_status'] == 'enabled');
 					}
-				)
-				: $this->pluginsByType[$type];
+				) : $this->pluginsByType[$type];
 		}
 
 		return array();
@@ -223,7 +225,7 @@ class iMSCP_Plugin_Manager
 	 */
 	public function load($pluginName, $newInstance = false, $loadEnabledOnly = true)
 	{
-		if ($loadEnabledOnly && ! $this->isActivated($pluginName)) {
+		if ($loadEnabledOnly && !$this->isActivated($pluginName)) {
 			return null;
 		}
 
@@ -254,6 +256,39 @@ class iMSCP_Plugin_Manager
 	}
 
 	/**
+	 * Whether or not the given plugin is loaded
+	 *
+	 * @param string $pluginName Plugin name
+	 * @return bool TRUE if the given plugin is loaded, FALSE otherwise
+	 */
+	public function isLoadedPlugin($pluginName)
+	{
+		if (isset($this->loadedPlugins[$pluginName])) {
+			return true;
+		}
+
+		return false;
+	}
+
+	/**
+	 * Get plugin instance
+	 *
+	 * Note, the plugin must be already loaded (enabled)
+	 *
+	 * @throws iMSCP_Plugin_Exception in case the given plugin is not loaded
+	 * @param string $pluginName Plugin name
+	 * @return iMSCP_Plugin
+	 */
+	public function getPlugin($pluginName)
+	{
+		if ($this->isLoadedPlugin($pluginName)) {
+			return $this->loadedPlugins[$pluginName];
+		}
+
+		throw new iMSCP_Plugin_Exception(sprintf('Plugin manager: Plugin %s is not loaded', $pluginName));
+	}
+
+	/**
 	 * Returns loaded plugins
 	 *
 	 * @param string $type Type of loaded plugins to return
@@ -261,9 +296,9 @@ class iMSCP_Plugin_Manager
 	 */
 	public function getLoadedPlugins($type = 'all')
 	{
-		if($type == 'all') {
+		if ($type == 'all') {
 			return $this->loadedPlugins;
-		} elseif(isset($this->pluginsByType[$type])) {
+		} elseif (isset($this->pluginsByType[$type])) {
 			return array_intersect_key($this->loadedPlugins, array_flip($this->pluginsByType[$type]));
 		}
 
@@ -279,7 +314,7 @@ class iMSCP_Plugin_Manager
 	 */
 	public function getStatus($pluginName)
 	{
-		if($this->isKnown($pluginName)) {
+		if ($this->isKnown($pluginName)) {
 			return $this->plugins[$pluginName]['current_status'];
 		} else {
 			write_log(sprintf('Plugin manager: Unknown plugin %s', $pluginName), E_USER_ERROR);
@@ -297,14 +332,14 @@ class iMSCP_Plugin_Manager
 	 */
 	public function setStatus($pluginName, $pluginStatus)
 	{
-		if($this->isKnown($pluginName)) {
+		if ($this->isKnown($pluginName)) {
 			$currentPluginStatus = $this->getStatus($pluginName);
 			$previousStatus = ($currentPluginStatus != $pluginStatus)
 				? $currentPluginStatus
 				: $this->plugins[$pluginName]['previous_status'];
 
 			exec_query(
-				"UPDATE `plugin` SET `plugin_status` = ?, `plugin_previous_status` = ? WHERE `plugin_name` = ?",
+				'UPDATE `plugin` SET `plugin_status` = ?, `plugin_previous_status` = ? WHERE `plugin_name` = ?',
 				array($pluginStatus, $previousStatus, $pluginName)
 			);
 
@@ -325,7 +360,7 @@ class iMSCP_Plugin_Manager
 	 */
 	public function getError($pluginName)
 	{
-		if($this->isKnown($pluginName)) {
+		if ($this->isKnown($pluginName)) {
 			return $this->pluginsError[$pluginName];
 		} else {
 			write_log(sprintf('Plugin manager: Unknown plugin %s', $pluginName), E_USER_ERROR);
@@ -343,9 +378,9 @@ class iMSCP_Plugin_Manager
 	 */
 	public function setError($pluginName, $pluginError)
 	{
-		if($this->isKnown($pluginName)) {
+		if ($this->isKnown($pluginName)) {
 			exec_query(
-				"UPDATE `plugin` SET `plugin_error` = ? WHERE `plugin_name` = ?",
+				'UPDATE `plugin` SET `plugin_error` = ? WHERE `plugin_name` = ?',
 				array($pluginError, $pluginName)
 			);
 
@@ -365,7 +400,7 @@ class iMSCP_Plugin_Manager
 	 */
 	public function hasError($pluginName)
 	{
-		if($this->isKnown($pluginName)) {
+		if ($this->isKnown($pluginName)) {
 			return ($this->pluginsError[$pluginName] !== null);
 		} else {
 			write_log(sprintf('Plugin manager: Unknown plugin %s', $pluginName), E_USER_ERROR);
@@ -382,7 +417,7 @@ class iMSCP_Plugin_Manager
 	 */
 	public function isActivated($pluginName)
 	{
-		if($this->isKnown($pluginName)) {
+		if ($this->isKnown($pluginName)) {
 			return ($this->getStatus($pluginName) == 'enabled');
 		} else {
 			write_log(sprintf('Plugin manager: Unknown plugin %s', $pluginName), E_USER_ERROR);
@@ -414,7 +449,6 @@ class iMSCP_Plugin_Manager
 				$pluginInstance->register($this->eventManager);
 
 				$this->setError($pluginName, null);
-				$this->setStatus($pluginName, $statusTo[$pluginStatus][0]);
 
 				try {
 					$responses = $this->eventManager->dispatch(
@@ -426,10 +460,11 @@ class iMSCP_Plugin_Manager
 						)
 					);
 
-					if(! $responses->isStopped()) {
+					if (!$responses->isStopped()) {
+						$this->setStatus($pluginName, $statusTo[$pluginStatus][0]);
 						$pluginInstance->{$statusTo[$pluginStatus][1]}($this);
 
-						if($this->hasBackend($pluginName)) {
+						if ($this->hasBackend($pluginName)) {
 							$this->backendRequest = true;
 						} else {
 							$this->setStatus($pluginName, 'enabled');
@@ -444,11 +479,9 @@ class iMSCP_Plugin_Manager
 							)
 						);
 					} else {
-						// Sets plugin status to its initial value
-						$this->setStatus($pluginName, $pluginStatus);
 						return false;
 					}
-				} catch(iMSCP_Plugin_Exception $e) {
+				} catch (iMSCP_Plugin_Exception $e) {
 					$this->setError($pluginName, sprintf('Plugin activation has failed: %s', $e->getMessage()));
 					write_log(sprintf('Plugin manager: %s plugin activation has failed', $pluginName), E_USER_ERROR);
 					return false;
@@ -470,7 +503,7 @@ class iMSCP_Plugin_Manager
 	 */
 	public function isDeactivated($pluginName)
 	{
-		if($this->isKnown($pluginName)) {
+		if ($this->isKnown($pluginName)) {
 			return in_array($this->getStatus($pluginName), array('uninstalled', 'disabled'));
 		} else {
 			write_log(sprintf('Plugin manager: Unknown plugin %s', $pluginName), E_USER_ERROR);
@@ -494,7 +527,6 @@ class iMSCP_Plugin_Manager
 				$pluginInstance->register($this->eventManager);
 
 				$this->setError($pluginName, null);
-				$this->setStatus($pluginName, 'todisable');
 
 				try {
 					$responses = $this->eventManager->dispatch(
@@ -506,10 +538,11 @@ class iMSCP_Plugin_Manager
 						)
 					);
 
-					if(! $responses->isStopped()) {
+					if (!$responses->isStopped()) {
+						$this->setStatus($pluginName, 'todisable');
 						$pluginInstance->{'disable'}($this);
 
-						if($this->hasBackend($pluginName)) {
+						if ($this->hasBackend($pluginName)) {
 							$this->backendRequest = true;
 						} else {
 							$this->setStatus($pluginName, 'disabled');
@@ -524,11 +557,9 @@ class iMSCP_Plugin_Manager
 							)
 						);
 					} else {
-						// Sets plugin status to its initial value
-						$this->setStatus($pluginName, 'enabled');
 						return false;
 					}
-				} catch(iMSCP_Plugin_Exception $e) {
+				} catch (iMSCP_Plugin_Exception $e) {
 					$this->setError($pluginName, sprintf('Plugin deactivation has failed: %s', $e->getMessage()));
 					write_log(sprintf('Plugin manager: %s plugin deactivation has failed', $pluginName), E_USER_ERROR);
 					return false;
@@ -561,7 +592,6 @@ class iMSCP_Plugin_Manager
 				$pluginInstance->register($this->eventManager);
 
 				$this->setError($pluginName, null);
-				$this->setStatus($pluginName, 'toupdate');
 
 				try {
 					$responses = $this->eventManager->dispatch(
@@ -574,15 +604,17 @@ class iMSCP_Plugin_Manager
 						)
 					);
 
-					if(! $responses->isStopped()) {
-						if($force || $fromVersion === null || $toVersion === null) {
+					if (!$responses->isStopped()) {
+						$this->setStatus($pluginName, 'toupdate');
+
+						if ($force || $fromVersion === null || $toVersion === null) {
 							$query = 'SELECT `plugin_info`, FROM `plugin` WHERE `plugin_name`';
 							$stmt = exec_query($query, $pluginName);
 
 							$pluginInfo = $stmt->fetchRow(PDO::FETCH_COLUMN);
 							$pluginInfo = json_decode($pluginInfo, true);
 							$fromVersion = $pluginInfo['previous_version'];
-							$toVersion =  $pluginInfo['version'];
+							$toVersion = $pluginInfo['version'];
 						}
 
 						$pluginInstance->{'update'}($this, $fromVersion, $toVersion);
@@ -601,10 +633,8 @@ class iMSCP_Plugin_Manager
 								'PluginInstance' => $pluginInstance,
 								'action' => 'update'
 							)
-					);
+						);
 					} else {
-						// Sets plugin status to its initial value
-						$this->setStatus($pluginName, $pluginStatus);
 						return false;
 					}
 				} catch (iMSCP_Plugin_Exception $e) {
@@ -630,7 +660,7 @@ class iMSCP_Plugin_Manager
 	public function change($pluginName, $force)
 	{
 		if ($this->isKnown($pluginName) && $this->hasBackend($pluginName)) {
-			if ($force || ! in_array($this->getStatus($pluginName), array('uninstalled', 'toinstall'))) {
+			if ($force || !in_array($this->getStatus($pluginName), array('uninstalled', 'toinstall'))) {
 				$this->setError($pluginName, null);
 				$this->setStatus($pluginName, 'tochange');
 				$this->backendRequest = true;
@@ -660,7 +690,6 @@ class iMSCP_Plugin_Manager
 				$pluginInstance->register($this->eventManager);
 
 				$this->setError($pluginName, null);
-				$this->setStatus($pluginName, 'touninstall');
 
 				try {
 					$responses = $this->eventManager->dispatch(
@@ -673,10 +702,11 @@ class iMSCP_Plugin_Manager
 						)
 					);
 
-					if(! $responses->isStopped()) {
+					if (!$responses->isStopped()) {
+						$this->setStatus($pluginName, 'touninstall');
 						$pluginInstance->{'uninstall'}($this);
 
-						if($this->hasBackend($pluginName) && $pluginStatus != 'uninstalled') {
+						if ($this->hasBackend($pluginName) && $pluginStatus != 'uninstalled') {
 							$this->backendRequest = true;
 						} else {
 							$this->setStatus($pluginName, 'todelete');
@@ -692,11 +722,9 @@ class iMSCP_Plugin_Manager
 							)
 						);
 					} else {
-						// Sets plugin status to its initial value
-						$this->setStatus($pluginName, $pluginStatus);
 						return false;
 					}
-				} catch(iMSCP_Plugin_Exception $e) {
+				} catch (iMSCP_Plugin_Exception $e) {
 					$this->setError($pluginName, sprintf('Plugin deletion has failed: %s', $e->getMessage()));
 					write_log(sprintf('Plugin manager: %s plugin deletion has failed', $pluginName), E_USER_ERROR);
 					return false;
@@ -718,7 +746,7 @@ class iMSCP_Plugin_Manager
 	 */
 	public function isProtected($pluginName)
 	{
-		if($this->isKnown($pluginName)) {
+		if ($this->isKnown($pluginName)) {
 			if (!$this->isLoadedProtectedPluginsList) {
 				$file = PERSISTENT_PATH . '/protected_plugins.php';
 				$protectedPlugins = array();
@@ -745,7 +773,6 @@ class iMSCP_Plugin_Manager
 	public function protect($pluginName)
 	{
 		if ($this->isActivated($pluginName) && !$this->isProtected($pluginName)) {
-
 			$this->eventManager->dispatch(
 				iMSCP_Events::onBeforeProtectPlugin, array('pluginManager' => $this, 'pluginName' => $pluginName)
 			);
@@ -753,7 +780,7 @@ class iMSCP_Plugin_Manager
 			$protectedPlugins = $this->protectedPlugins;
 			$this->protectedPlugins[] = $pluginName;
 
-			if($this->updateProtectFile()) {
+			if ($this->updateProtectFile()) {
 				$this->eventManager->dispatch(
 					iMSCP_Events::onAfterProtectPlugin, array('pluginManager' => $this, 'pluginName' => $pluginName)
 				);
@@ -787,7 +814,7 @@ class iMSCP_Plugin_Manager
 	 */
 	public function hasBackend($pluginName)
 	{
-		if(isset($this->pluginsBackend[$pluginName])) {
+		if (isset($this->pluginsBackend[$pluginName])) {
 			return ($this->pluginsBackend[$pluginName] == 'yes');
 		} else {
 			write_log(sprintf('Plugin manager: Unknown plugin %s', $pluginName), E_USER_ERROR);
@@ -811,7 +838,7 @@ class iMSCP_Plugin_Manager
 		$stmt = execute_query($query);
 
 		if ($stmt->rowCount()) {
-			$knownPluginsData = $stmt->fetchAll(PDO::FETCH_UNIQUE|PDO::FETCH_ASSOC);
+			$knownPluginsData = $stmt->fetchAll(PDO::FETCH_UNIQUE | PDO::FETCH_ASSOC);
 		}
 
 		/** @var $fileInfo SplFileInfo */
@@ -833,7 +860,7 @@ class iMSCP_Plugin_Manager
 						$pluginConfig = $pluginInstance->getConfigFromFile();
 
 						// Is a plugin already known by plugin manager?
-						if(isset($knownPluginsData[$pluginName])) {
+						if (isset($knownPluginsData[$pluginName])) {
 							$pluginStatus = $knownPluginsData[$pluginName]['plugin_status'];
 							$knownPluginInfo = json_decode($knownPluginsData[$pluginName]['plugin_info'], true);
 							$knownPluginsConfig = json_decode($knownPluginsData[$pluginName]['plugin_config'], true);
@@ -842,9 +869,9 @@ class iMSCP_Plugin_Manager
 							$pluginInfo['previous_version'] = $knownPluginInfo['version'];
 
 							// If the plugin has been already installed, schedule update if needed
-							$newVersion = version_compare($pluginVersion,  $knownPluginInfo['version'], '>');
+							$newVersion = version_compare($pluginVersion, $knownPluginInfo['version'], '>');
 
-							if(
+							if (
 								!in_array($pluginStatus, array('uninstalled', 'toinstall')) &&
 								($newVersion || $pluginConfig !== $knownPluginsConfig)
 							) {
@@ -901,7 +928,7 @@ class iMSCP_Plugin_Manager
 				if ($this->deletePluginFromDatabase($pluginName)) {
 					$returnInfo['deleted']++;
 				}
-			} elseif(array_key_exists($pluginName, $toUpdatePlugins)) {
+			} elseif (array_key_exists($pluginName, $toUpdatePlugins)) {
 				$this->update(
 					$pluginName,
 					false,
@@ -928,7 +955,7 @@ class iMSCP_Plugin_Manager
 		$pluginsTodelete = array();
 
 		while ($plugin = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
-			if($plugin['plugin_status'] != 'todelete') {
+			if ($plugin['plugin_status'] != 'todelete') {
 				$this->plugins[$plugin['plugin_name']] = array(
 					'previous_status' => $plugin['plugin_previous_status'],
 					'current_status' => $plugin['plugin_status']
@@ -945,7 +972,7 @@ class iMSCP_Plugin_Manager
 			}
 		}
 
-		if(!empty($pluginsTodelete)) $this->deletePlugins($pluginsTodelete);
+		if (!empty($pluginsTodelete)) $this->deletePlugins($pluginsTodelete);
 	}
 
 	/**
@@ -969,12 +996,12 @@ class iMSCP_Plugin_Manager
 
 			if (@file_put_contents($file, "$content\n", LOCK_EX) === false) {
 				set_page_message(tr('Unable to write the %s file for protected plugins.', $file), 'error');
-				write_log(sprintf('Plugin manager: Unable to write the %s file.', $file));
+				write_log(sprintf('Plugin manager has not been able to write the %s file.', $file));
 				return false;
 			}
 		} elseif (is_writable($file)) {
 			if (!@unlink($file)) {
-				write_log(sprintf('Plugin manager: Unable to remove the %s file'), $file, E_USER_WARNING);
+				write_log(sprintf('Plugin manager has not been able to remove the %s file'), $file, E_USER_WARNING);
 				return false;
 			}
 		}
@@ -1053,16 +1080,23 @@ class iMSCP_Plugin_Manager
 	 */
 	protected function deletePlugins(array $pluginNames)
 	{
-		foreach($pluginNames as $pluginName) {
-			if(utils_removeDir($this->pluginsDirectory . '/' . $pluginName)) {
-				$this->deletePluginFromDatabase($pluginName);
-				unset($this->plugins[$pluginName]);
-			} else {
-				write_log(sprintf('Plugin manager: Unable to delete the %s plugin', $pluginName), E_USER_ERROR);
-				set_page_message(
-					tr('Unable to delete the %s plugin. Please, remove it manually.', "<strong>$pluginName</strong>"),
-					'error'
-				);
+		foreach ($pluginNames as $pluginName) {
+			$this->deletePluginFromDatabase($pluginName);
+			unset($this->plugins[$pluginName]);
+
+			$pluginDir = $this->pluginsDirectory . '/' . $pluginName;
+
+			if (is_dir($pluginDir)) {
+				if (!utils_removeDir($pluginDir)) {
+					write_log(sprintf('Plugin manager: Unable to delete the %s plugin files', $pluginName), E_USER_ERROR);
+					set_page_message(
+						tr(
+							'Plugin manager has not been able to delete the %s plugin files. Please, remove them manually.',
+							"<strong>$pluginName</strong>"
+						),
+						'warning'
+					);
+				}
 			}
 		}
 	}

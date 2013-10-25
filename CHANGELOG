@@ -10,6 +10,8 @@ SETUP:
 	- Fixed: Unable to setup SSL without CA bundle (panel)
 
 GUI:
+	- Added: Event Manager - Method allowing to unregister any listener which listen to a particular event
+	- Fixed: Plugin items with errors must be shown in debugger and the admin must be able to change their status
 	- Removed: Domain name related parameters
 
 Tickets:

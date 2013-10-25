@@ -189,6 +189,27 @@ class iMSCP_Events_Manager implements iMSCP_Events_Manager_Interface
 	}
 
 	/**
+	 * Unregister all listeners which listen on the given event.
+	 *
+	 * Note: For now, it's only possible to remove a listener implemented as object.
+	 *
+	 * @throws iMSCP_Events_Exception If $eventName is not a string
+	 * @param  string $eventName The event for which any event must be removed.
+	 * @return void
+	 */
+	public function unregisterListeners($eventName)
+	{
+		if (is_string($eventName)) {
+			unset($this->_events[$eventName]);
+		} else {
+			throw new iMSCP_Events_Exception(
+				sprintf(__CLASS__ . '::' . __FUNCTION__ . '() expects a string, %s given.', gettype($eventName)
+				)
+			);
+		}
+	}
+
+	/**
 	 * Unregister an event listener from the given event.
 	 *
 	 * Note: For now, it's only possible to remove a listener implemented as object.
