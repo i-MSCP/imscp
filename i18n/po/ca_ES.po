@@ -19,8 +19,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2013-10-22 13:35+0200\n"
-"PO-Revision-Date: 2013-10-22 11:36+0000\n"
+"POT-Creation-Date: 2013-10-26 19:08+0200\n"
+"PO-Revision-Date: 2013-10-26 17:09+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Catalan (Spain) (http://www.transifex.com/projects/p/i-MSCP/language/ca_ES/)\n"
 "MIME-Version: 1.0\n"
@@ -280,10 +280,6 @@ msgid "%s / unlimited"
 msgstr "%s / il·limitat"
 
 #, php-format
-msgid "%s Errors in database"
-msgstr "%s Errors a la base de dades"
-
-#, php-format
 msgid "%s account successfully deleted."
 msgstr "compte %s eliminat correctament."
 
@@ -540,12 +536,6 @@ msgstr "Una extensió de PHP ha detingut la càrrega d'arxius."
 
 msgid "A hosting plan with same name already exists."
 msgstr "Ja existeix un pla de hosting amb aquest nom."
-
-msgid ""
-"ACE labels are not allowed. Please use the ToUnicode equivalent.<br "
-"/><small>Example: for ACE label <b>xn--bcher-kva</b> use <b>bücher</b> "
-"instead</small>."
-msgstr "No estan permeses les etiquetes ACE. Siusplau use l'equivalent ToUnicode.<br/><small>Exemple: per etiqueta ACE usar <b>bücher</b> en lloc de <b>xn--bcher-kva</b></small>."
 
 msgid "Access your domain statistics through the Web interface."
 msgstr "Accediu a les estadístiques del vostre domini a través de la interfície web."
@@ -2010,9 +2000,6 @@ msgstr ""
 msgid "Domain alias name"
 msgstr "Nom de l'àlies de domini"
 
-msgid "Domain alias name is not valid."
-msgstr ""
-
 msgid "Domain alias successfully ordered."
 msgstr ""
 
@@ -2078,11 +2065,28 @@ msgstr "Mail de domini"
 msgid "Domain name"
 msgstr "Nom del domini"
 
+msgid "Domain name (in it ASCII form) cannot be greater than 255 characters."
+msgstr ""
+
 msgid "Domain name cannot be empty."
 msgstr ""
 
-msgid "Domain names validation"
-msgstr "Validació del nom del domini"
+msgid "Domain name cannot start nor end with dot."
+msgstr ""
+
+#, php-format
+msgid "Domain name contains an invalid character: %s"
+msgstr ""
+
+#, php-format
+msgid "Domain name label '%s' contain an invalid character: %s"
+msgstr ""
+
+msgid "Domain name labels cannot bu greater than 63 characters."
+msgstr ""
+
+msgid "Domain name labels cannot start nor end with hyphen."
+msgstr ""
 
 msgid "Domain new expiration date"
 msgstr ""
@@ -2867,6 +2871,9 @@ msgstr "Adreça URL incorrecte."
 msgid "Invalid certificate."
 msgstr "Certificat invàlid."
 
+msgid "Invalid domain name."
+msgstr ""
+
 msgid "Invalid expiration date."
 msgstr "Data d'expiració invàlida."
 
@@ -2916,10 +2923,6 @@ msgstr "Eliminar sessió"
 
 msgid "Label"
 msgstr "Etiqueta"
-
-#, php-format
-msgid "Label not allowed: <b>%s</b>"
-msgstr "Etiqueta no permesa: <b>%s</b>"
 
 msgid "Language"
 msgstr "Idioma"
@@ -3064,6 +3067,9 @@ msgstr ""
 msgid "Mail feature is disabled."
 msgstr ""
 
+msgid "Mail host is not valid."
+msgstr ""
+
 msgid "Mail usage"
 msgstr ""
 
@@ -3137,16 +3143,8 @@ msgstr ""
 msgid "Max. remote filesize (%s) is reached. Your remote file is %s"
 msgstr ""
 
-msgid ""
-"Maximal number of labels for domain names (<small>Excluding SLD & "
-"TLD</small>)"
-msgstr ""
-
 msgid "Maximum number of captcha validation attempts"
 msgstr "Nombre màxim de temptatives de validació de captcha"
-
-msgid "Maximum number of labels for subdomains"
-msgstr "Nivell màxim de subdomini permès per als subdominis<br/><small>(0 indica que només es permeten dominis de primer nivell com \"domini.tdl\")</small>"
 
 msgid ""
 "Maximum number of validation attempts before waiting restriction intervenes"
@@ -3451,10 +3449,6 @@ msgstr "Hi ha una o més actualitzacions de base de dades disponibles. Vegeu els
 
 msgid "Only 'tar.gz' archives are accepted."
 msgstr ""
-
-msgid ""
-"Only Top Level Domains (TLD) listed in IANA root zone database can be used."
-msgstr "Només els dominis d'alt nivell (TLD) definits a la zona arrel de IANA es poden fer servir."
 
 msgid "Only administrators can login when maintenance mode is activated."
 msgstr "Només poden iniciar sessió els administradors quan està activat el mode de manteniment."
@@ -3829,6 +3823,9 @@ msgstr ""
 msgid "Plugin file %s doesn't exist or is not readable."
 msgstr ""
 
+msgid "Plugin item errors"
+msgstr ""
+
 msgid "Plugin list is empty."
 msgstr ""
 
@@ -3836,6 +3833,12 @@ msgid "Plugin list successfully updated."
 msgstr ""
 
 msgid "Plugin management"
+msgstr ""
+
+#, php-format
+msgid ""
+"Plugin manager has not been able to delete the %s plugin files. Please, "
+"remove them manually."
 msgstr ""
 
 #, php-format
@@ -4305,9 +4308,6 @@ msgstr "Buscar"
 msgid "Sec."
 msgstr "Seg."
 
-msgid "Second Level Domain name strict validation"
-msgstr "Validació estricta dominis de segon nivell"
-
 msgid "Secure connection"
 msgstr "Connexió segura"
 
@@ -4464,11 +4464,6 @@ msgstr "Mostrant del %s al %s de %s registres"
 
 msgid "Showing 0 to 0 of 0 records"
 msgstr "Mostrant del 0 al 0 de 0 registres"
-
-msgid ""
-"Single letter Second Level Domains (SLD) are not allowed under the most Top "
-"Level Domains (TLD). There is a small list of exceptions, e.g. the TLD .de."
-msgstr "Els dominis de segon nivell d'una sola lletra (SLD) no es permeten en la majoria de dominis de primer nivell (TLD). Hi ha una petita llista d'excepcions, e.g. el TLD .de"
 
 msgid "Size"
 msgstr "Mida"
@@ -4972,9 +4967,6 @@ msgstr "Per a desprotegir aquest plugin, cal que editis l'arxiu %s "
 msgid "Too long user password."
 msgstr "Contrasenya d'usuari massa llarga."
 
-msgid "Top Level Domain name strict validation"
-msgstr "Validació estricta del domini d'alt nivell"
-
 msgid "Total"
 msgstr "Total"
 
@@ -5041,10 +5033,6 @@ msgstr "No ha sigut possible crear el directori %s per el fitxer d'idioma."
 
 msgid "Unable to create 'LC_MESSAGES' directory for language file."
 msgstr "No s'ha pogut crear el directori 'LC_MESSAGES' per el fitxer d'idioma."
-
-#, php-format
-msgid "Unable to delete the %s plugin. Please, remove it manually."
-msgstr ""
 
 #, php-format
 msgid "Unable to delete user with Id: %d"
@@ -5213,6 +5201,9 @@ msgid "Upload now"
 msgstr "Pujar"
 
 msgid "Uptime"
+msgstr ""
+
+msgid "Usage of dot in domain name labels is prohibited."
 msgstr ""
 
 msgid "Usage status"
@@ -5451,42 +5442,8 @@ msgstr "Adreça IP errònia."
 msgid "Wrong SQL user identifier."
 msgstr "Identificador d'usuari SQL erroni."
 
-#, php-format
-msgid "Wrong Second Level Domain length: <b>%s</b>"
-msgstr ""
-
-#, php-format
-msgid "Wrong Second Level Domain syntax: <b>%s</b>"
-msgstr "Sintaxi del Domini de Segon Nivell errònia:<b>%s</b>"
-
-#, php-format
-msgid "Wrong Top Level Domain length: <b>%s</b>"
-msgstr ""
-
-#, php-format
-msgid "Wrong Top Level Domain syntax: <b>%s</b>"
-msgstr "Sintaxi del Domini de Primer Nivell errònia:<b>%s</b>"
-
 msgid "Wrong customer ID."
 msgstr ""
-
-msgid "Wrong domain name length!"
-msgstr ""
-
-msgid "Wrong domain name syntax or number of labels"
-msgstr "Sintaxi de Nom de Domini o nombre d'etiquetes erroni"
-
-#, php-format
-msgid "Wrong domain name: <b>%s</b> is reserved!"
-msgstr "Nom de domini erroni:<b>%s</b> està reservat!"
-
-#, php-format
-msgid "Wrong label length: <b>%s</b>"
-msgstr ""
-
-#, php-format
-msgid "Wrong label syntax: <b>%s</b>"
-msgstr "Sintaxi d'etiqueta incorrecta: <b>%s</b>"
 
 msgid "Wrong mail syntax in forward list."
 msgstr ""
@@ -5502,12 +5459,6 @@ msgstr "Codi de seguretat incorrecte"
 
 msgid "Wrong software id."
 msgstr "Identificador d'aplicació incorrecte"
-
-msgid "Wrong subdomain length!"
-msgstr ""
-
-msgid "Wrong subdomain syntax or number of labels!"
-msgstr "Sintaxi de subdomini o nombre d'etiquetes incorrecte!"
 
 msgid "Wrong syntax for new expire date."
 msgstr "Sintaxi errònia per nova data de caducitat."

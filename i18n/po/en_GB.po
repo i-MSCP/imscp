@@ -17,8 +17,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2013-10-22 13:35+0200\n"
-"PO-Revision-Date: 2013-10-22 11:36+0000\n"
+"POT-Creation-Date: 2013-10-26 19:08+0200\n"
+"PO-Revision-Date: 2013-10-26 17:09+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: English (United Kingdom) (http://www.transifex.com/projects/p/i-MSCP/language/en_GB/)\n"
 "MIME-Version: 1.0\n"
@@ -278,10 +278,6 @@ msgid "%s / unlimited"
 msgstr ""
 
 #, php-format
-msgid "%s Errors in database"
-msgstr "%s Errors in database"
-
-#, php-format
 msgid "%s account successfully deleted."
 msgstr "%s account successfully deleted."
 
@@ -538,12 +534,6 @@ msgstr "A PHP extension stopped the file upload."
 
 msgid "A hosting plan with same name already exists."
 msgstr "A hosting plan with same name already exists."
-
-msgid ""
-"ACE labels are not allowed. Please use the ToUnicode equivalent.<br "
-"/><small>Example: for ACE label <b>xn--bcher-kva</b> use <b>bücher</b> "
-"instead</small>."
-msgstr "ACE labels are not allowed. Please use the ToUnicode equivalent.<br /><small>Example: for ACE label <b>xn--bcher-kva</b> use <b>bücher</b> instead</small>."
 
 msgid "Access your domain statistics through the Web interface."
 msgstr "Access your domain statistics through the Web interface."
@@ -2008,9 +1998,6 @@ msgstr "Domain alias limit"
 msgid "Domain alias name"
 msgstr "Domain alias name"
 
-msgid "Domain alias name is not valid."
-msgstr ""
-
 msgid "Domain alias successfully ordered."
 msgstr ""
 
@@ -2076,11 +2063,28 @@ msgstr "Domain mail"
 msgid "Domain name"
 msgstr "Domain name"
 
+msgid "Domain name (in it ASCII form) cannot be greater than 255 characters."
+msgstr ""
+
 msgid "Domain name cannot be empty."
 msgstr "Domain name cannot be empty."
 
-msgid "Domain names validation"
-msgstr "Domain names validation"
+msgid "Domain name cannot start nor end with dot."
+msgstr ""
+
+#, php-format
+msgid "Domain name contains an invalid character: %s"
+msgstr ""
+
+#, php-format
+msgid "Domain name label '%s' contain an invalid character: %s"
+msgstr ""
+
+msgid "Domain name labels cannot bu greater than 63 characters."
+msgstr ""
+
+msgid "Domain name labels cannot start nor end with hyphen."
+msgstr ""
 
 msgid "Domain new expiration date"
 msgstr "Domain new expiration date"
@@ -2865,6 +2869,9 @@ msgstr "Invalid URL."
 msgid "Invalid certificate."
 msgstr "Invalid certificate."
 
+msgid "Invalid domain name."
+msgstr ""
+
 msgid "Invalid expiration date."
 msgstr "Invalid expiration date."
 
@@ -2914,10 +2921,6 @@ msgstr "Kill session"
 
 msgid "Label"
 msgstr "Label"
-
-#, php-format
-msgid "Label not allowed: <b>%s</b>"
-msgstr "Label not allowed: <b>%s</b>"
 
 msgid "Language"
 msgstr "Language"
@@ -3062,6 +3065,9 @@ msgstr ""
 msgid "Mail feature is disabled."
 msgstr "Mail feature is disabled."
 
+msgid "Mail host is not valid."
+msgstr ""
+
 msgid "Mail usage"
 msgstr "Mail usage"
 
@@ -3135,16 +3141,8 @@ msgstr "Max. remote filesize (%s) has been reached. Your remote file is %s"
 msgid "Max. remote filesize (%s) is reached. Your remote file is %s"
 msgstr "Max. remote filesize (%s) is reached. Your remote file is %s"
 
-msgid ""
-"Maximal number of labels for domain names (<small>Excluding SLD & "
-"TLD</small>)"
-msgstr "Maximal number of labels for domain names (<small>Excluding SLD & TLD</small>)"
-
 msgid "Maximum number of captcha validation attempts"
 msgstr "Maximum number of captcha validation attempts"
-
-msgid "Maximum number of labels for subdomains"
-msgstr "Maximum number of labels for subdomains"
 
 msgid ""
 "Maximum number of validation attempts before waiting restriction intervenes"
@@ -3449,10 +3447,6 @@ msgstr "One or more database updates are now available. See the details below."
 
 msgid "Only 'tar.gz' archives are accepted."
 msgstr "Only 'tar.gz' archives are accepted."
-
-msgid ""
-"Only Top Level Domains (TLD) listed in IANA root zone database can be used."
-msgstr "Only Top Level Domains (TLD) listed in IANA root zone database can be used."
 
 msgid "Only administrators can login when maintenance mode is activated."
 msgstr "Only administrators can login when maintenance mode is activated."
@@ -3827,6 +3821,9 @@ msgstr "Plugin errors"
 msgid "Plugin file %s doesn't exist or is not readable."
 msgstr "Plugin file %s doesn't exist or is not readable."
 
+msgid "Plugin item errors"
+msgstr ""
+
 msgid "Plugin list is empty."
 msgstr "Plugin list is empty."
 
@@ -3835,6 +3832,12 @@ msgstr "Plugin list successfully updated."
 
 msgid "Plugin management"
 msgstr "Plugin management"
+
+#, php-format
+msgid ""
+"Plugin manager has not been able to delete the %s plugin files. Please, "
+"remove them manually."
+msgstr ""
 
 #, php-format
 msgid "Plugin manager was unable to activate the %s plugin."
@@ -4303,9 +4306,6 @@ msgstr "Search"
 msgid "Sec."
 msgstr "Sec."
 
-msgid "Second Level Domain name strict validation"
-msgstr "Second Level Domain name strict validation"
-
 msgid "Secure connection"
 msgstr "Secure connection"
 
@@ -4462,11 +4462,6 @@ msgstr "Showing %s to %s of %s records"
 
 msgid "Showing 0 to 0 of 0 records"
 msgstr "Showing 0 to 0 of 0 records"
-
-msgid ""
-"Single letter Second Level Domains (SLD) are not allowed under the most Top "
-"Level Domains (TLD). There is a small list of exceptions, e.g. the TLD .de."
-msgstr "Single letter Second Level Domains (SLD) are not allowed under the most Top Level Domains (TLD). There is a small list of exceptions, e.g. the TLD .de."
 
 msgid "Size"
 msgstr "Size"
@@ -4970,9 +4965,6 @@ msgstr "To unprotect this plugin, you must edit the %s file"
 msgid "Too long user password."
 msgstr "Too long user password."
 
-msgid "Top Level Domain name strict validation"
-msgstr "Top Level Domain name strict validation"
-
 msgid "Total"
 msgstr "Total"
 
@@ -5039,10 +5031,6 @@ msgstr "Unable to create '%s' directory for language file."
 
 msgid "Unable to create 'LC_MESSAGES' directory for language file."
 msgstr "Unable to create 'LC_MESSAGES' directory for language file."
-
-#, php-format
-msgid "Unable to delete the %s plugin. Please, remove it manually."
-msgstr "Unable to delete the %s plugin. Please, remove it manually."
 
 #, php-format
 msgid "Unable to delete user with Id: %d"
@@ -5211,6 +5199,9 @@ msgid "Upload now"
 msgstr "Upload now"
 
 msgid "Uptime"
+msgstr ""
+
+msgid "Usage of dot in domain name labels is prohibited."
 msgstr ""
 
 msgid "Usage status"
@@ -5449,42 +5440,8 @@ msgstr "Wrong IP address."
 msgid "Wrong SQL user identifier."
 msgstr "Wrong SQL user identifier."
 
-#, php-format
-msgid "Wrong Second Level Domain length: <b>%s</b>"
-msgstr "Wrong Second Level Domain length: <b>%s</b>"
-
-#, php-format
-msgid "Wrong Second Level Domain syntax: <b>%s</b>"
-msgstr "Wrong Second Level Domain syntax: <b>%s</b>"
-
-#, php-format
-msgid "Wrong Top Level Domain length: <b>%s</b>"
-msgstr "Wrong Top Level Domain length: <b>%s</b>"
-
-#, php-format
-msgid "Wrong Top Level Domain syntax: <b>%s</b>"
-msgstr "Wrong Top Level Domain syntax: <b>%s</b>"
-
 msgid "Wrong customer ID."
 msgstr "Wrong customer ID."
-
-msgid "Wrong domain name length!"
-msgstr "Wrong domain name length!"
-
-msgid "Wrong domain name syntax or number of labels"
-msgstr "Wrong domain name syntax or number of labels"
-
-#, php-format
-msgid "Wrong domain name: <b>%s</b> is reserved!"
-msgstr "Wrong domain name: <b>%s</b> is reserved!"
-
-#, php-format
-msgid "Wrong label length: <b>%s</b>"
-msgstr "Wrong label length: <b>%s</b>"
-
-#, php-format
-msgid "Wrong label syntax: <b>%s</b>"
-msgstr "Wrong label syntax: <b>%s</b>"
 
 msgid "Wrong mail syntax in forward list."
 msgstr ""
@@ -5500,12 +5457,6 @@ msgstr "Wrong security code"
 
 msgid "Wrong software id."
 msgstr "Wrong software id."
-
-msgid "Wrong subdomain length!"
-msgstr "Wrong subdomain length!"
-
-msgid "Wrong subdomain syntax or number of labels!"
-msgstr "Wrong subdomain syntax or number of labels!"
 
 msgid "Wrong syntax for new expire date."
 msgstr "Wrong syntax for new expire date."

@@ -30,8 +30,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2013-10-22 13:35+0200\n"
-"PO-Revision-Date: 2013-10-22 11:36+0000\n"
+"POT-Creation-Date: 2013-10-26 19:08+0200\n"
+"PO-Revision-Date: 2013-10-26 17:09+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: French (France) (http://www.transifex.com/projects/p/i-MSCP/language/fr_FR/)\n"
 "MIME-Version: 1.0\n"
@@ -291,10 +291,6 @@ msgid "%s / unlimited"
 msgstr "%s / illimité"
 
 #, php-format
-msgid "%s Errors in database"
-msgstr "%s erreurs dans la base de données"
-
-#, php-format
 msgid "%s account successfully deleted."
 msgstr "%s compte supprimé(s) avec succès."
 
@@ -551,12 +547,6 @@ msgstr "Une extension PHP a stoppé le téléversement du fichier."
 
 msgid "A hosting plan with same name already exists."
 msgstr "Un plan d'hébergement avec le même nom existe déjà."
-
-msgid ""
-"ACE labels are not allowed. Please use the ToUnicode equivalent.<br "
-"/><small>Example: for ACE label <b>xn--bcher-kva</b> use <b>bücher</b> "
-"instead</small>."
-msgstr "Les labels ACE ne sont pas autorisés. Veuillez utiliser l'équivalent ToUnicode.<br /><small>Exemple : pour le label ACE <b>xn--bcher-kva</b>, utilisez <b>bücher</b> à la place</small>."
 
 msgid "Access your domain statistics through the Web interface."
 msgstr "Accédez aux statistiques de votre domaine via l'interface Web."
@@ -2021,9 +2011,6 @@ msgstr "Limite d'alias de domaine"
 msgid "Domain alias name"
 msgstr "Nom de l'alias du domaine"
 
-msgid "Domain alias name is not valid."
-msgstr "Le nom de l'alias de domaine est invalide."
-
 msgid "Domain alias successfully ordered."
 msgstr "Alias de domaine correctement commandé."
 
@@ -2089,11 +2076,28 @@ msgstr "E-mail du domaine"
 msgid "Domain name"
 msgstr "Nom du domaine"
 
+msgid "Domain name (in it ASCII form) cannot be greater than 255 characters."
+msgstr ""
+
 msgid "Domain name cannot be empty."
 msgstr "Le nom du domaine ne peut être vide."
 
-msgid "Domain names validation"
-msgstr "Validation des noms de domaine"
+msgid "Domain name cannot start nor end with dot."
+msgstr ""
+
+#, php-format
+msgid "Domain name contains an invalid character: %s"
+msgstr ""
+
+#, php-format
+msgid "Domain name label '%s' contain an invalid character: %s"
+msgstr ""
+
+msgid "Domain name labels cannot bu greater than 63 characters."
+msgstr ""
+
+msgid "Domain name labels cannot start nor end with hyphen."
+msgstr ""
 
 msgid "Domain new expiration date"
 msgstr "Nouvelle date d'expiration du compte"
@@ -2700,7 +2704,7 @@ msgid "IP addresses configured"
 msgstr "Adresses IP configurées"
 
 msgid "IP management"
-msgstr ""
+msgstr "Gestion des adresses IP"
 
 msgid "IP usage"
 msgstr "Utilisation des adresses IP"
@@ -2878,6 +2882,9 @@ msgstr "URL invalide."
 msgid "Invalid certificate."
 msgstr "Certificat invalide."
 
+msgid "Invalid domain name."
+msgstr ""
+
 msgid "Invalid expiration date."
 msgstr "Date d'expiration invalide."
 
@@ -2927,10 +2934,6 @@ msgstr "Tuer la session"
 
 msgid "Label"
 msgstr "Label"
-
-#, php-format
-msgid "Label not allowed: <b>%s</b>"
-msgstr "Label non autorisé : <b>%s</b>"
 
 msgid "Language"
 msgstr "Langue"
@@ -3075,6 +3078,9 @@ msgstr "La liste de compte e-mail est vide."
 msgid "Mail feature is disabled."
 msgstr "La fonctionnalité e-mail est désactivée."
 
+msgid "Mail host is not valid."
+msgstr ""
+
 msgid "Mail usage"
 msgstr "Utilisation des e-mails"
 
@@ -3148,16 +3154,8 @@ msgstr "La taille maximale du fichier distant (%s) a été atteinte. Votre fichi
 msgid "Max. remote filesize (%s) is reached. Your remote file is %s"
 msgstr "La taille maximale du fichier distant (%s) est atteinte. Votre fichier distant est %s"
 
-msgid ""
-"Maximal number of labels for domain names (<small>Excluding SLD & "
-"TLD</small>)"
-msgstr "Nombre maximum de labels pour les noms de domaine (<small>Excluant SLD & TLD</small>)"
-
 msgid "Maximum number of captcha validation attempts"
 msgstr "Nombre maximum de tentatives de validation du captcha"
-
-msgid "Maximum number of labels for subdomains"
-msgstr "Nombre maximum de labels pour les sous-domaines"
 
 msgid ""
 "Maximum number of validation attempts before waiting restriction intervenes"
@@ -3462,10 +3460,6 @@ msgstr "Une ou plusieurs mise à jour pour la base de données sont disponibles.
 
 msgid "Only 'tar.gz' archives are accepted."
 msgstr "Seuls les archives 'tar.gz' sont acceptées."
-
-msgid ""
-"Only Top Level Domains (TLD) listed in IANA root zone database can be used."
-msgstr "Seuls les domaines de premier niveau (TLD) listés dans la base de données IANA sont autorisés."
 
 msgid "Only administrators can login when maintenance mode is activated."
 msgstr "Seuls les administrateurs peuvent se connecter quand la maintenance est activée."
@@ -3840,6 +3834,9 @@ msgstr "Erreurs liées aux plugins"
 msgid "Plugin file %s doesn't exist or is not readable."
 msgstr "Le fichier %s du plugin n'existe pas ou n'est pas accessible en lecture."
 
+msgid "Plugin item errors"
+msgstr ""
+
 msgid "Plugin list is empty."
 msgstr "La liste des plugins est vide."
 
@@ -3848,6 +3845,12 @@ msgstr "La liste des plugins a été mise à jour avec succès."
 
 msgid "Plugin management"
 msgstr "Gestion des plugins"
+
+#, php-format
+msgid ""
+"Plugin manager has not been able to delete the %s plugin files. Please, "
+"remove them manually."
+msgstr ""
 
 #, php-format
 msgid "Plugin manager was unable to activate the %s plugin."
@@ -3990,7 +3993,7 @@ msgid "Redirect"
 msgstr "Redirection"
 
 msgid "Redistribute unused quota across existing mailboxes"
-msgstr ""
+msgstr "Redistribuer le quota non utilisé entre les boîtes e-mails existantes"
 
 msgid "Registration date"
 msgstr "Date d'enregistrement"
@@ -4316,9 +4319,6 @@ msgstr "Rechercher"
 msgid "Sec."
 msgstr "Sec."
 
-msgid "Second Level Domain name strict validation"
-msgstr "Validation strict des domaines de second niveau"
-
 msgid "Secure connection"
 msgstr "Connexion sécurisée"
 
@@ -4475,11 +4475,6 @@ msgstr "Affichage %s à %s sur %s enregistrements"
 
 msgid "Showing 0 to 0 of 0 records"
 msgstr "Affichage de 0 à 0 sur 0 enregistrements"
-
-msgid ""
-"Single letter Second Level Domains (SLD) are not allowed under the most Top "
-"Level Domains (TLD). There is a small list of exceptions, e.g. the TLD .de."
-msgstr "Les domaines de second niveau (SLD) d'un seul caractère ne sont pas autorisés pour la plupart des domaines de premier niveau (TLD). Il y a une petite liste d'exception (e.g, le TLD . de)."
 
 msgid "Size"
 msgstr "Taille"
@@ -4983,9 +4978,6 @@ msgstr "Pour dé-protéger ce plugin, vous devez éditer le fichier %s"
 msgid "Too long user password."
 msgstr "Le mot de passe utilisateur est trop long."
 
-msgid "Top Level Domain name strict validation"
-msgstr "Validation stricte des noms de domaine de premier niveau"
-
 msgid "Total"
 msgstr "Total"
 
@@ -5052,10 +5044,6 @@ msgstr "Impossible de créer le répertoire '%s'  pour le fichier langue."
 
 msgid "Unable to create 'LC_MESSAGES' directory for language file."
 msgstr "Impossible de créer le répertoire 'LC_MESSAGE' pour le fichier langue."
-
-#, php-format
-msgid "Unable to delete the %s plugin. Please, remove it manually."
-msgstr "Impossible de supprimer le plugin %s. Veuillez le supprimer manuellement."
 
 #, php-format
 msgid "Unable to delete user with Id: %d"
@@ -5225,6 +5213,9 @@ msgstr "Téléverser"
 
 msgid "Uptime"
 msgstr "Durée de fonctionnement (Uptime)"
+
+msgid "Usage of dot in domain name labels is prohibited."
+msgstr ""
 
 msgid "Usage status"
 msgstr "Utilisation"
@@ -5462,42 +5453,8 @@ msgstr "Mauvais adresse IP."
 msgid "Wrong SQL user identifier."
 msgstr "Identifiant SQL erroné."
 
-#, php-format
-msgid "Wrong Second Level Domain length: <b>%s</b>"
-msgstr "Longueur du domaine de second niveau incorrecte : <b>%s</b>"
-
-#, php-format
-msgid "Wrong Second Level Domain syntax: <b>%s</b>"
-msgstr "Syntaxe du domaine de second niveau incorrecte : <b>%s</b>"
-
-#, php-format
-msgid "Wrong Top Level Domain length: <b>%s</b>"
-msgstr "Longueur du domaine de premier niveau incorrecte : <b>%s</b>"
-
-#, php-format
-msgid "Wrong Top Level Domain syntax: <b>%s</b>"
-msgstr "Syntaxe du domaine de premier niveau incorrecte : <b>%s</b>"
-
 msgid "Wrong customer ID."
 msgstr "Identifiant d'utilisateur incorrect."
-
-msgid "Wrong domain name length!"
-msgstr "Longueur du nom de domaine incorrecte !"
-
-msgid "Wrong domain name syntax or number of labels"
-msgstr "Syntaxe du nom de domaine ou nombre de labels incorrectes"
-
-#, php-format
-msgid "Wrong domain name: <b>%s</b> is reserved!"
-msgstr "Nom de domaine incorrect : <b>%s</b> est réservé !"
-
-#, php-format
-msgid "Wrong label length: <b>%s</b>"
-msgstr "Longueur du label incorrecte : <b>%s</b>"
-
-#, php-format
-msgid "Wrong label syntax: <b>%s</b>"
-msgstr "Syntaxe du label incorrecte : <b>%s</b>"
 
 msgid "Wrong mail syntax in forward list."
 msgstr "Syntaxe e-mail invalide dans la liste de transfert."
@@ -5513,12 +5470,6 @@ msgstr "Code de sécurité erroné"
 
 msgid "Wrong software id."
 msgstr "Mauvais ID de logiciel."
-
-msgid "Wrong subdomain length!"
-msgstr "Longueur du sous-domaine incorrecte !"
-
-msgid "Wrong subdomain syntax or number of labels!"
-msgstr "Syntaxe du sous-domaine ou nombre de labels incorrectes !"
 
 msgid "Wrong syntax for new expire date."
 msgstr "Syntaxe incorrect pour la nouvelle date d'expiration."

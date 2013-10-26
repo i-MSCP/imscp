@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2013-10-22 13:35+0200\n"
-"PO-Revision-Date: 2013-10-22 11:36+0000\n"
+"POT-Creation-Date: 2013-10-26 19:08+0200\n"
+"PO-Revision-Date: 2013-10-26 17:09+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Swedish (Sweden) (http://www.transifex.com/projects/p/i-MSCP/language/sv_SE/)\n"
 "MIME-Version: 1.0\n"
@@ -270,10 +270,6 @@ msgid "%s / unlimited"
 msgstr "%s / obegränsad"
 
 #, php-format
-msgid "%s Errors in database"
-msgstr "%s Fel i databas"
-
-#, php-format
 msgid "%s account successfully deleted."
 msgstr "%s konto raderades."
 
@@ -530,12 +526,6 @@ msgstr "A PHP extension stopped the file upload."
 
 msgid "A hosting plan with same name already exists."
 msgstr "Ett webbhotell-plan med samma namn finns redan"
-
-msgid ""
-"ACE labels are not allowed. Please use the ToUnicode equivalent.<br "
-"/><small>Example: for ACE label <b>xn--bcher-kva</b> use <b>bücher</b> "
-"instead</small>."
-msgstr "ACE labels are not allowed. Please use the ToUnicode equivalent.<br /><small>Example: for ACE label <b>xn--bcher-kva</b> use <b>bücher</b> instead</small>."
 
 msgid "Access your domain statistics through the Web interface."
 msgstr "Tillgång till din domän statistik via webbgränssnittet."
@@ -2000,9 +1990,6 @@ msgstr "Domänalias limit"
 msgid "Domain alias name"
 msgstr "Domänalias namn"
 
-msgid "Domain alias name is not valid."
-msgstr "Alias domän namn är inte giltig."
-
 msgid "Domain alias successfully ordered."
 msgstr "Domän alias har beställts."
 
@@ -2068,11 +2055,28 @@ msgstr "Domain mail"
 msgid "Domain name"
 msgstr "Domännamn"
 
+msgid "Domain name (in it ASCII form) cannot be greater than 255 characters."
+msgstr ""
+
 msgid "Domain name cannot be empty."
 msgstr "Namnet får inte vara tomt."
 
-msgid "Domain names validation"
-msgstr "Domännamnsvalidering"
+msgid "Domain name cannot start nor end with dot."
+msgstr ""
+
+#, php-format
+msgid "Domain name contains an invalid character: %s"
+msgstr ""
+
+#, php-format
+msgid "Domain name label '%s' contain an invalid character: %s"
+msgstr ""
+
+msgid "Domain name labels cannot bu greater than 63 characters."
+msgstr ""
+
+msgid "Domain name labels cannot start nor end with hyphen."
+msgstr ""
 
 msgid "Domain new expiration date"
 msgstr "Domän nytt utgångsdatum"
@@ -2679,7 +2683,7 @@ msgid "IP addresses configured"
 msgstr "IP adr. konfigurerat."
 
 msgid "IP management"
-msgstr ""
+msgstr "IP förwaltning"
 
 msgid "IP usage"
 msgstr "IP-användning"
@@ -2857,6 +2861,9 @@ msgstr "Invalid URL."
 msgid "Invalid certificate."
 msgstr "Invalid certificate."
 
+msgid "Invalid domain name."
+msgstr ""
+
 msgid "Invalid expiration date."
 msgstr "Ogiltigt förfallodatum."
 
@@ -2906,10 +2913,6 @@ msgstr "Döda session"
 
 msgid "Label"
 msgstr "Etikett"
-
-#, php-format
-msgid "Label not allowed: <b>%s</b>"
-msgstr "Label not allowed: <b>%s</b>"
 
 msgid "Language"
 msgstr "Språk"
@@ -3054,6 +3057,9 @@ msgstr "Postkonton listan är tom."
 msgid "Mail feature is disabled."
 msgstr "Mail feature is disabled."
 
+msgid "Mail host is not valid."
+msgstr ""
+
 msgid "Mail usage"
 msgstr "Mail usage"
 
@@ -3127,16 +3133,8 @@ msgstr "Max. fjärr filstorlek (%s) är nådd. Din fjärrfilen är %s."
 msgid "Max. remote filesize (%s) is reached. Your remote file is %s"
 msgstr "Max. fjärr filstorlek (%s) är nådd. Din fjärr fil är %s"
 
-msgid ""
-"Maximal number of labels for domain names (<small>Excluding SLD & "
-"TLD</small>)"
-msgstr "Maximalt antal etiketter för domännamn (<small>Excluding SLD & TLD</small>)"
-
 msgid "Maximum number of captcha validation attempts"
 msgstr "Maximum number of captcha validation attempts"
-
-msgid "Maximum number of labels for subdomains"
-msgstr "Maximalt antal etiketter för underdomäner"
 
 msgid ""
 "Maximum number of validation attempts before waiting restriction intervenes"
@@ -3441,10 +3439,6 @@ msgstr "En eller flera uppdateringar av databasen finns nu tillgängliga. Se inf
 
 msgid "Only 'tar.gz' archives are accepted."
 msgstr "Endast 'tar.gz-arkiv är tillåten."
-
-msgid ""
-"Only Top Level Domains (TLD) listed in IANA root zone database can be used."
-msgstr "Bara toppnivådomäner (TLD) som finns i IANA's rotzondatabas kan användas."
 
 msgid "Only administrators can login when maintenance mode is activated."
 msgstr "Only administrators can login when maintenance mode is activated."
@@ -3819,6 +3813,9 @@ msgstr "Plugin errors"
 msgid "Plugin file %s doesn't exist or is not readable."
 msgstr "Plugin file %s doesn't exist or is not readable."
 
+msgid "Plugin item errors"
+msgstr ""
+
 msgid "Plugin list is empty."
 msgstr "Plugin list is empty."
 
@@ -3827,6 +3824,12 @@ msgstr "Plugin list successfully updated."
 
 msgid "Plugin management"
 msgstr "Plugin management"
+
+#, php-format
+msgid ""
+"Plugin manager has not been able to delete the %s plugin files. Please, "
+"remove them manually."
+msgstr ""
 
 #, php-format
 msgid "Plugin manager was unable to activate the %s plugin."
@@ -3969,7 +3972,7 @@ msgid "Redirect"
 msgstr "Redirect"
 
 msgid "Redistribute unused quota across existing mailboxes"
-msgstr ""
+msgstr "Omfördelar outnyttjade kvoter över befintliga brevlådor"
 
 msgid "Registration date"
 msgstr "Registrations datum"
@@ -4295,9 +4298,6 @@ msgstr "Sök"
 msgid "Sec."
 msgstr "Sek."
 
-msgid "Second Level Domain name strict validation"
-msgstr "Strikt validering av huvuddomän"
-
 msgid "Secure connection"
 msgstr "Säker anslutning"
 
@@ -4454,11 +4454,6 @@ msgstr "Showing %s to %s of %s records"
 
 msgid "Showing 0 to 0 of 0 records"
 msgstr "Showing 0 to 0 of 0 records"
-
-msgid ""
-"Single letter Second Level Domains (SLD) are not allowed under the most Top "
-"Level Domains (TLD). There is a small list of exceptions, e.g. the TLD .de."
-msgstr "Huvuddomäner (SLD) med ett tecken är inte tillåtna under de flesta toppdomäner (TLD). Det finns en liten lista med undantag, t ex. toppdomänen .de"
 
 msgid "Size"
 msgstr "Storlek"
@@ -4962,9 +4957,6 @@ msgstr "To unprotect this plugin, you must edit the %s file"
 msgid "Too long user password."
 msgstr "För lång användarens lösenord."
 
-msgid "Top Level Domain name strict validation"
-msgstr "Strikt validering av toppdomän"
-
 msgid "Total"
 msgstr "Totalt"
 
@@ -5031,10 +5023,6 @@ msgstr "Kunde inte skapa%s katalog för språk-fil."
 
 msgid "Unable to create 'LC_MESSAGES' directory for language file."
 msgstr "Det går inte att skapa 'LC_MESSAGES' katalog för språk-fil."
-
-#, php-format
-msgid "Unable to delete the %s plugin. Please, remove it manually."
-msgstr "Unable to delete the %s plugin. Please, remove it manually."
 
 #, php-format
 msgid "Unable to delete user with Id: %d"
@@ -5204,6 +5192,9 @@ msgstr "Ladda upp nu"
 
 msgid "Uptime"
 msgstr "Uptime"
+
+msgid "Usage of dot in domain name labels is prohibited."
+msgstr ""
 
 msgid "Usage status"
 msgstr "Usage status"
@@ -5441,42 +5432,8 @@ msgstr "Fel IP adr."
 msgid "Wrong SQL user identifier."
 msgstr "Fel SQL användar indentifiering"
 
-#, php-format
-msgid "Wrong Second Level Domain length: <b>%s</b>"
-msgstr "Wrong Second Level Domain length: <b>%s</b>"
-
-#, php-format
-msgid "Wrong Second Level Domain syntax: <b>%s</b>"
-msgstr "Fel huvuddomänen syntax: <b>%s</b>"
-
-#, php-format
-msgid "Wrong Top Level Domain length: <b>%s</b>"
-msgstr "Wrong Top Level Domain length: <b>%s</b>"
-
-#, php-format
-msgid "Wrong Top Level Domain syntax: <b>%s</b>"
-msgstr "Fel toppdomän syntax: <b>%s</b>"
-
 msgid "Wrong customer ID."
 msgstr "Fel Kund ID"
-
-msgid "Wrong domain name length!"
-msgstr "Wrong domain name length!"
-
-msgid "Wrong domain name syntax or number of labels"
-msgstr "Fel domännamn syntax eller antal etiketter"
-
-#, php-format
-msgid "Wrong domain name: <b>%s</b> is reserved!"
-msgstr "Wrong domain name: <b>%s</b> is reserved!"
-
-#, php-format
-msgid "Wrong label length: <b>%s</b>"
-msgstr "Wrong label length: <b>%s</b>"
-
-#, php-format
-msgid "Wrong label syntax: <b>%s</b>"
-msgstr "Wrong label syntax: <b>%s</b>"
 
 msgid "Wrong mail syntax in forward list."
 msgstr "Fel syntax i framåt-lista."
@@ -5492,12 +5449,6 @@ msgstr "Fel säkerhetskod"
 
 msgid "Wrong software id."
 msgstr "Fel mjukvara ID."
-
-msgid "Wrong subdomain length!"
-msgstr "Wrong subdomain length!"
-
-msgid "Wrong subdomain syntax or number of labels!"
-msgstr "Fel subdomain syntax eller antal etiketter!"
 
 msgid "Wrong syntax for new expire date."
 msgstr "Wrong syntax for new expire date."

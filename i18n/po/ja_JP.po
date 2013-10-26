@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2013-10-22 13:35+0200\n"
-"PO-Revision-Date: 2013-10-22 11:36+0000\n"
+"POT-Creation-Date: 2013-10-26 19:08+0200\n"
+"PO-Revision-Date: 2013-10-26 17:09+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Japanese (Japan) (http://www.transifex.com/projects/p/i-MSCP/language/ja_JP/)\n"
 "MIME-Version: 1.0\n"
@@ -271,10 +271,6 @@ msgid "%s / unlimited"
 msgstr "%s / 無制限"
 
 #, php-format
-msgid "%s Errors in database"
-msgstr "データベースの%sエラー"
-
-#, php-format
 msgid "%s account successfully deleted."
 msgstr "%s のアカウントは削除されました。"
 
@@ -531,12 +527,6 @@ msgstr "PHP拡張モジュールは、ファイルのアップロードを停止
 
 msgid "A hosting plan with same name already exists."
 msgstr "同じ名前のホスティングプランは既に存在します。"
-
-msgid ""
-"ACE labels are not allowed. Please use the ToUnicode equivalent.<br "
-"/><small>Example: for ACE label <b>xn--bcher-kva</b> use <b>bücher</b> "
-"instead</small>."
-msgstr "ACEラベルは許可されていません。ToUnicode同等のものを使用してください。<br /><small>例：ACEラベルは、<b>xn--bcher-kva</b>ではなく、<b>bücher</b>を使用しています。</small>."
 
 msgid "Access your domain statistics through the Web interface."
 msgstr "Webインターフェイスを介してドメインの統計情報にアクセスします。"
@@ -2001,9 +1991,6 @@ msgstr "ドメインエイリアス制限"
 msgid "Domain alias name"
 msgstr "ドメインエイリアス名"
 
-msgid "Domain alias name is not valid."
-msgstr "ドメインエイリアス名が有効ではありません。"
-
 msgid "Domain alias successfully ordered."
 msgstr "ドメインエイリアスが注文されました。"
 
@@ -2069,11 +2056,28 @@ msgstr "ドメインメール"
 msgid "Domain name"
 msgstr "ドメイン名"
 
+msgid "Domain name (in it ASCII form) cannot be greater than 255 characters."
+msgstr ""
+
 msgid "Domain name cannot be empty."
 msgstr "ドメイン名を空にすることはできません。"
 
-msgid "Domain names validation"
-msgstr "ドメイン名の確認"
+msgid "Domain name cannot start nor end with dot."
+msgstr ""
+
+#, php-format
+msgid "Domain name contains an invalid character: %s"
+msgstr ""
+
+#, php-format
+msgid "Domain name label '%s' contain an invalid character: %s"
+msgstr ""
+
+msgid "Domain name labels cannot bu greater than 63 characters."
+msgstr ""
+
+msgid "Domain name labels cannot start nor end with hyphen."
+msgstr ""
 
 msgid "Domain new expiration date"
 msgstr "ドメインの新しい有効期限"
@@ -2680,7 +2684,7 @@ msgid "IP addresses configured"
 msgstr "IPアドレスが設定された"
 
 msgid "IP management"
-msgstr ""
+msgstr "IP管理"
 
 msgid "IP usage"
 msgstr "IPアドレス使用"
@@ -2858,6 +2862,9 @@ msgstr "無効なURL。"
 msgid "Invalid certificate."
 msgstr "証明書が無効です。"
 
+msgid "Invalid domain name."
+msgstr ""
+
 msgid "Invalid expiration date."
 msgstr "無効な有効期限。"
 
@@ -2907,10 +2914,6 @@ msgstr "セッションの切断"
 
 msgid "Label"
 msgstr "ラベル"
-
-#, php-format
-msgid "Label not allowed: <b>%s</b>"
-msgstr "許可されないラベル： <b>%s</b>"
 
 msgid "Language"
 msgstr "言語"
@@ -3055,6 +3058,9 @@ msgstr "メールアカウントリストが空です。"
 msgid "Mail feature is disabled."
 msgstr "メール機能が無効"
 
+msgid "Mail host is not valid."
+msgstr ""
+
 msgid "Mail usage"
 msgstr "メールの使用"
 
@@ -3128,16 +3134,8 @@ msgstr "最大リモートファイルサイズ（％s）に達します。あ�
 msgid "Max. remote filesize (%s) is reached. Your remote file is %s"
 msgstr "最大リモートファイルサイズ（％s）に達しました。あなたのリモートファイルは％sです"
 
-msgid ""
-"Maximal number of labels for domain names (<small>Excluding SLD & "
-"TLD</small>)"
-msgstr "ドメイン名のラベルの最大数 (<small>SLD＆TLDを除く</small>)"
-
 msgid "Maximum number of captcha validation attempts"
 msgstr "キャプチャのバリテーションの最大試行回数"
-
-msgid "Maximum number of labels for subdomains"
-msgstr "サブドメインのラベルの最大数"
 
 msgid ""
 "Maximum number of validation attempts before waiting restriction intervenes"
@@ -3442,10 +3440,6 @@ msgstr "1つ以上のデータベース更新が利用可能です。詳細は�
 
 msgid "Only 'tar.gz' archives are accepted."
 msgstr "唯一 'tar.gz'形式のアーカイブが受け入れられます。"
-
-msgid ""
-"Only Top Level Domains (TLD) listed in IANA root zone database can be used."
-msgstr "IANAにルートゾーンのデータベースに記載されている、トップレベルドメイン（TLD）のみが使用することができます。"
 
 msgid "Only administrators can login when maintenance mode is activated."
 msgstr "メンテナンスモードが有効にされたときは、管理者のみがログインすることができます。"
@@ -3820,6 +3814,9 @@ msgstr "プラグインエラー"
 msgid "Plugin file %s doesn't exist or is not readable."
 msgstr "プラグインファイル%sが存在しないか、読み込めません。"
 
+msgid "Plugin item errors"
+msgstr ""
+
 msgid "Plugin list is empty."
 msgstr "プラグインリストは空です。"
 
@@ -3828,6 +3825,12 @@ msgstr "プラグインリストは更新されました。"
 
 msgid "Plugin management"
 msgstr "プラグイン管理"
+
+#, php-format
+msgid ""
+"Plugin manager has not been able to delete the %s plugin files. Please, "
+"remove them manually."
+msgstr ""
 
 #, php-format
 msgid "Plugin manager was unable to activate the %s plugin."
@@ -3970,7 +3973,7 @@ msgid "Redirect"
 msgstr "リダイレクト"
 
 msgid "Redistribute unused quota across existing mailboxes"
-msgstr ""
+msgstr "既存のメールボックス全体で、未使用クォータを再配分"
 
 msgid "Registration date"
 msgstr "登録日"
@@ -4296,9 +4299,6 @@ msgstr "検索"
 msgid "Sec."
 msgstr "秒。"
 
-msgid "Second Level Domain name strict validation"
-msgstr "セカンドレベルドメイン名の厳密な確認"
-
 msgid "Secure connection"
 msgstr "安全な接続"
 
@@ -4455,11 +4455,6 @@ msgstr " %s 件のレコードの %s から %s 件を表示"
 
 msgid "Showing 0 to 0 of 0 records"
 msgstr "0件のレコードの0から0件を表示"
-
-msgid ""
-"Single letter Second Level Domains (SLD) are not allowed under the most Top "
-"Level Domains (TLD). There is a small list of exceptions, e.g. the TLD .de."
-msgstr "１文字でのセカンドレベルドメイン(SLD)は、ほとんどのトップレベルドメイン (TLD)では許可されていません。少ないですが、例えは、トップレベルドメイン .de　など例外もあります。"
 
 msgid "Size"
 msgstr "サイズ"
@@ -4963,9 +4958,6 @@ msgstr "このプラグインを解除するには、 %s ファイルを編集�
 msgid "Too long user password."
 msgstr "ユーザーのパスワードが長すぎます。"
 
-msgid "Top Level Domain name strict validation"
-msgstr "トップレベルドメイン名の厳密な確認"
-
 msgid "Total"
 msgstr "合計"
 
@@ -5032,10 +5024,6 @@ msgstr "言語ファイルのための'%s' ディレクトリを作成できま�
 
 msgid "Unable to create 'LC_MESSAGES' directory for language file."
 msgstr "言語ファイルのための\"LC_MESSAGES\"ディレクトリを作成できません。"
-
-#, php-format
-msgid "Unable to delete the %s plugin. Please, remove it manually."
-msgstr "%sプラグインを削除できません。 手動で削除してください。"
 
 #, php-format
 msgid "Unable to delete user with Id: %d"
@@ -5205,6 +5193,9 @@ msgstr "アップロード開始"
 
 msgid "Uptime"
 msgstr "稼働時間"
+
+msgid "Usage of dot in domain name labels is prohibited."
+msgstr ""
 
 msgid "Usage status"
 msgstr "利用状況"
@@ -5442,42 +5433,8 @@ msgstr "IPアドレスに誤りがあります"
 msgid "Wrong SQL user identifier."
 msgstr "SQLユーザー識別子に誤りがあります。"
 
-#, php-format
-msgid "Wrong Second Level Domain length: <b>%s</b>"
-msgstr "間違った長さのセカンドレベルドメイン：<b>%s</b>"
-
-#, php-format
-msgid "Wrong Second Level Domain syntax: <b>%s</b>"
-msgstr "セカンドレベルドメインの構文に誤り：<b>%s</b>"
-
-#, php-format
-msgid "Wrong Top Level Domain length: <b>%s</b>"
-msgstr "間違った長さのトップレベルドメイン：<b>%s</b>"
-
-#, php-format
-msgid "Wrong Top Level Domain syntax: <b>%s</b>"
-msgstr "トップレベルドメインの構文に誤り：<b>%s</b>"
-
 msgid "Wrong customer ID."
 msgstr "間違った顧客ID。"
-
-msgid "Wrong domain name length!"
-msgstr "間違った長さのドメイン名！"
-
-msgid "Wrong domain name syntax or number of labels"
-msgstr "ドメイン名の構文またはラベルの数に誤りがあります"
-
-#, php-format
-msgid "Wrong domain name: <b>%s</b> is reserved!"
-msgstr "ドメイン名に誤り：<b>%s</b>は予約済です！"
-
-#, php-format
-msgid "Wrong label length: <b>%s</b>"
-msgstr "間違った長さのラベル：<b>%s</b>"
-
-#, php-format
-msgid "Wrong label syntax: <b>%s</b>"
-msgstr "ラベル構文に誤り：<b>%s</b>"
 
 msgid "Wrong mail syntax in forward list."
 msgstr "転送リストに間違ったメール構文があります。"
@@ -5493,12 +5450,6 @@ msgstr "暗証番号に誤りがあります"
 
 msgid "Wrong software id."
 msgstr "ソフトウェアIDに誤りがあります。"
-
-msgid "Wrong subdomain length!"
-msgstr "間違った長さのサブドメイン！"
-
-msgid "Wrong subdomain syntax or number of labels!"
-msgstr "サブドメインの構文またはラベル番号に誤りがあります！"
 
 msgid "Wrong syntax for new expire date."
 msgstr "新しい有効期限の構文に誤りがあります。"
