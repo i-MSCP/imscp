@@ -123,17 +123,11 @@ if (isset($_POST['uaction']) && $_POST['uaction'] == 'apply') {
 		! is_number($bruteforce_between_time) ||
 		! is_number($bruteforce_max_capcha) ||
 		! is_number($bruteforce_max_attempts_before_wait) ||
-		! is_number($domainRowsPerPage) ||
-		! is_number($maxDnamesLabels) ||
-		! is_number($maxSubdnamesLabels)
+		! is_number($domainRowsPerPage)
 	) {
 		set_page_message(tr('Only positive numbers are allowed.'), 'error');
 	} elseif ($domainRowsPerPage < 1) {
 		$domainRowsPerPage = 1;
-	} elseif ($maxDnamesLabels < 1) {
-		$maxDnamesLabels = 1;
-	} elseif ($maxSubdnamesLabels < 1) {
-		$maxSubdnamesLabels = 1;
 	} elseif ($phpini->flagValueError) { // if a php value was out of range or simple wrong type
 		set_page_message(tr('Error in php.ini values.'), 'error');
 	} else {
