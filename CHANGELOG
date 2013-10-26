@@ -6,7 +6,7 @@ Git Master
 ------------------------------------------------------------------------------------------------------------------------
 
 ENGINE:
-	- Added: beforeDispatchRequest and afterDispatchRequest events.
+	- Added: beforeDispatchRequest and afterDispatchRequest events
 	- Fixed: Engine - End transaction on error
 
 SETUP:
@@ -29,7 +29,7 @@ Tickets:
 2013-10-22: Laurent Declercq
 	- RELEASE i-MSCP 1.1.0-rc4.4
 
-ENGINE
+ENGINE:
 	- Fixed: Can't use an undefined value as a HASH reference...
 
 GUI:
@@ -55,7 +55,7 @@ ADDONS:
 DOCS:
 	- Fixed: Preseed template file is broken (compile time error)
 
-ENGINE
+ENGINE:
 	- Removed: Backtrace routines, which cause segfault on Debian Jessie (issues with Carp package)
 
 SETUP:
@@ -114,14 +114,7 @@ Tickets:
 ------------------------------------------------------------------------------------------------------------------------
 
 2013-09-29: Torsten Widmann
-	- RELEASE i-MSCP 1.1.0-rc4.1 (Fast bugfixes release)
-
-------------------------------------------------------------------------------------------------------------------------
-1.1.0-rc4.4
-------------------------------------------------------------------------------------------------------------------------
-
-2013-10-22: Laurent Declercq
-	- RELEASE i-MSCP 1.1.0-rc4.4
+	- RELEASE i-MSCP 1.1.0-rc4.1
 
 ------------------------------------------------------------------------------------------------------------------------
 1.1.0-rc4
@@ -505,8 +498,6 @@ i-MSCP 1.1.0-rc1
 2012-12-24: Laurent Declercq
 	- RELEASE i-MSCP 1.1.0-rc1
 
-Features / Enhancements / Bugfixes:
-
 SETUP:
 	- Added: Backup feature for setup dialog (allow user to step back)
 	- Added: Base class for autoinstall adapters
@@ -575,8 +566,6 @@ i-MSCP 1.1.0-beta2
 2012-09-14: Torsten Widmann
 	- RELEASE i-MSCP 1.1.0-beta2
 
-Features / Enhancements / Bugfixes:
-
 GUI:
 	Vendor:
 		- Updated: Zend Framework to 1.11.12
@@ -605,8 +594,6 @@ i-MSCP 1.1.0-beta1
 
 2012-07-01: Torsten Widmann
 	- RELEASE i-MSCP 1.1.0-beta1
-
-Features / Enhancements / Bugfixes:
 
 GUI:
 	Tools:
