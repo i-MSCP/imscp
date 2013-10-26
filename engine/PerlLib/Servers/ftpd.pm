@@ -32,9 +32,10 @@ sub factory
 {
 	my $self = shift;
 	my $server = shift || $main::imscpConfig{'FTPD_SERVER'};
+
 	my ($file, $class);
 
-	if(lc($server) eq 'no') {
+	if($server eq 'no') {
 		$file = 'Servers/noserver.pm';
 		$class = 'Servers::noserver';
 	} else {
