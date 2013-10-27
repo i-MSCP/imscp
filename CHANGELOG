@@ -5,6 +5,10 @@
 Git Master
 ------------------------------------------------------------------------------------------------------------------------
 
+ENGINE:
+	Removed: Apache cband module configuration (Should be provided as plugin)
+	Fixed: Several 'Can't use an undefined value as a HASH reference...' errors
+
 GUI:
 	Fixed: Unable to change admin settings
 

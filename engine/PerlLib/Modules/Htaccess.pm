@@ -62,7 +62,7 @@ sub loadData
 							)
 						) GROUP BY `dmn_id`
 					), '') AS `users`
-				) AS t1,
+				) AS `t1`,
 				(
 					SELECT IFNULL(
 					(
@@ -74,9 +74,9 @@ sub loadData
 							)
 						) GROUP BY `dmn_id`
 					), '') AS `groups`
-				) AS t2
-			) AS t3
-		LEFT JOIN
+				) AS `t2`
+			) AS `t3`
+		INNER JOIN
 			`domain` AS `t4` ON (`t3`.`dmn_id` = `t4`.`domain_id`)
 		WHERE
 			`t3`.`id` = ?
@@ -107,8 +107,8 @@ sub loadData
 			'Orphan entry: ' . Dumper($rdata->{$self->{'htaccessId'}}),
 			$self->{'htaccessId'}
 		);
-
 		my $rdata = iMSCP::Database->factory()->doQuery('update', @sql);
+
 		return 1;
 	}
 
@@ -130,6 +130,7 @@ sub process
 
 	if($self->{'status'} =~ /^toadd|tochange$/) {
 		$rs = $self->add();
+
 		@sql = (
 			"UPDATE `htaccess` SET `status` = ? WHERE `id` = ?",
 			($rs ? scalar getMessageByType('error') : 'ok'),
@@ -137,6 +138,7 @@ sub process
 		);
 	} elsif($self->{'status'} eq 'todelete') {
 		$rs = $self->delete();
+
 		if($rs) {
 			@sql = (
 				"UPDATE `htaccess` SET `status` = ? WHERE `id` = ?",
@@ -180,8 +182,7 @@ sub buildHTTPDData
 		HOME_PATH => $hDir,
 		DOMAIN_NAME => $self->{'domain_name'},
 		HTUSERS => $self->{'users'},
-		HTGROUPS => $self->{'groups'},
-
+		HTGROUPS => $self->{'groups'}
 	};
 
 	0;

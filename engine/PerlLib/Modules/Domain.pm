@@ -56,10 +56,10 @@ sub loadData
 
 	my $sql = "
 		SELECT
-			`domain`.*, `ips`.`ip_number`, `mail_count`.`mail_on_domain`, `ips_count`.`domains_on_ip`
+			`domain`.*, `ips`.`ip_number`, `mail_count`.`mail_on_domain`
 		FROM
 			`domain` AS `domain`
-		LEFT JOIN
+		INNER JOIN
 			`server_ips` AS `ips` ON (`domain`.`domain_ip_id` = `ips`.`ip_id`)
 		LEFT JOIN
 			(
@@ -72,21 +72,9 @@ sub loadData
 			) AS `mail_count`
 		ON
 			(`domain`.`domain_id` = `mail_count`.`id`)
-		LEFT JOIN
-			(
-				SELECT
-					`domain_ip_id` AS `ip_id`, COUNT( `domain_ip_id` ) AS `domains_on_ip`
-				FROM
-					`domain` WHERE `domain_status` != 'todelete'
-				GROUP BY
-					`domain_ip_id`
-			) AS `ips_count`
-		ON
-			(`domain`.`domain_ip_id` = `ips_count`.`ip_id`)
 		WHERE
 			`domain_id` = ?
 	";
-
 	my $rdata = iMSCP::Database->factory()->doQuery('domain_id', $sql, $self->{'dmnId'});
 	unless(ref $rdata eq 'HASH') {
 		error($rdata);
@@ -94,7 +82,7 @@ sub loadData
 	}
 
 	unless(exists $rdata->{$self->{'dmnId'}}) {
-		error("Domain record with ID '$self->{'dmnId'}' has not been found in database");
+		error("Domain with ID '$self->{'dmnId'}' has not been found or is in an inconsistent state");
 		return 1;
 	}
 
@@ -115,6 +103,7 @@ sub process
 
 	if($self->{'domain_status'} =~ /^toadd|tochange|toenable$/) {
 		$rs = $self->add();
+
 		@sql = (
 			"UPDATE `domain` SET `domain_status` = ? WHERE `domain_id` = ?",
 			($rs ? scalar getMessageByType('error') : 'ok'),
@@ -122,6 +111,7 @@ sub process
 		);
 	} elsif($self->{'domain_status'} eq 'todelete') {
 		$rs = $self->delete();
+
 		if($rs) {
 			@sql = (
 				"UPDATE `domain` SET `domain_status` = ? WHERE `domain_id` = ?",
@@ -133,6 +123,7 @@ sub process
 		}
 	} elsif($self->{'domain_status'} eq 'todisable') {
 		$rs = $self->disable();
+
 		@sql = (
 			"UPDATE `domain` SET `domain_status` = ? WHERE `domain_id` = ?",
 			($rs ? scalar getMessageByType('error') : 'disabled'),
@@ -140,6 +131,7 @@ sub process
 		);
 	} elsif($self->{'domain_status'} eq 'torestore') {
 		$rs = $self->restore();
+
 		@sql = (
 			"UPDATE `domain` SET `domain_status` = ? WHERE `domain_id` = ?",
 			($rs ? scalar getMessageByType('error') : 'ok'),
@@ -164,7 +156,7 @@ sub restore
 
 	my $dmnDir = "$main::imscpConfig{'USER_WEB_DIR'}/$self->{'domain_name'}";
 	my $dmnBkpdir = "$dmnDir/backups";
-    my ($cmd, $rdata, $stdout, $stderr);
+	my ($cmd, $rdata, $stdout, $stderr);
 	my $rs = 0;
 
 	my @bkpFiles = iMSCP::Dir->new('dirname' => $dmnBkpdir)->getFiles();
@@ -237,7 +229,6 @@ sub restore
 				return $rs if $rs;
 			}
 		} elsif(/^.+?\.tar\.(bz2|gz|lzma|xz)$/) { # Restore domain files
-
 			# Since we are now using extended attribute to protect some folders, we must in order do the following to
 			# restore a backup archive:
 			#
@@ -337,23 +328,25 @@ sub buildHTTPDData
 	$homeDir =~ s~/+~/~g;
 	$homeDir =~ s~/$~~g;
 
+	my $db = iMSCP::Database->factory();
+
 	my $sql = "SELECT * FROM `config` WHERE `name` LIKE 'PHPINI%'";
-	my $rdata = iMSCP::Database->factory()->doQuery('name', $sql);
-	if(ref $rdata ne 'HASH') {
+	my $rdata = $db->doQuery('name', $sql);
+	unless(ref $rdata eq 'HASH') {
 		error($rdata);
 		return 1;
 	}
 
 	$sql = "SELECT * FROM `php_ini` WHERE `domain_id` = ?";
-	my $phpiniData = iMSCP::Database->factory()->doQuery('domain_id', $sql, $self->{'domain_id'});
-	if(ref $phpiniData ne 'HASH') {
+	my $phpiniData = $db->doQuery('domain_id', $sql, $self->{'domain_id'});
+	unless(ref $phpiniData eq 'HASH') {
 		error($phpiniData);
 		return 1;
 	}
 
 	$sql = "SELECT * FROM `ssl_certs` WHERE `id` = ? AND `type` = ? AND `status` = ?";
-	my $certData = iMSCP::Database->factory()->doQuery('id', $sql, $self->{'domain_id'}, 'dmn', 'ok');
-	if(ref $certData ne 'HASH') {
+	my $certData = $db->doQuery('id', $sql, $self->{'domain_id'}, 'dmn', 'ok');
+	unless(ref $certData eq 'HASH') {
 		error($certData);
 		return 1;
 	}
@@ -383,7 +376,6 @@ sub buildHTTPDData
 		WEB_FOLDER_PROTECTION => $self->{'web_folder_protection'},
 		SSL_SUPPORT => $haveCert,
 		BWLIMIT => $self->{'domain_traffic_limit'},
-		IP_ON_DOMAIN => defined $self->{'domains_on_ip'} ? $self->{'domains_on_ip'} : 0,
 		ALIAS => $userName,
 		FORWARD => 'no',
 		DISABLE_FUNCTIONS => (exists $phpiniData->{$self->{'domain_id'}})
@@ -413,9 +405,8 @@ sub buildHTTPDData
 		ALLOW_URL_FOPEN => (exists $phpiniData->{$self->{'domain_id'}})
 			? $phpiniData->{$self->{'domain_id'}}->{'allow_url_fopen'}
 			: $rdata->{'PHPINI_ALLOW_URL_FOPEN'}->{value},
-		PHPINI_OPEN_BASEDIR => (exists $phpiniData->{$self->{'domain_id'}})
-			? ':' . $phpiniData->{$self->{'domain_id'}}->{'PHPINI_OPEN_BASEDIR'}
-			: $rdata->{'PHPINI_OPEN_BASEDIR'}->{'value'} ? ':' . $rdata->{'PHPINI_OPEN_BASEDIR'}->{'value'} : ''
+		PHPINI_OPEN_BASEDIR => ($rdata->{'PHPINI_OPEN_BASEDIR'}->{'value'})
+			? ':' . $rdata->{'PHPINI_OPEN_BASEDIR'}->{'value'} : ''
 	};
 
 	0;
@@ -458,7 +449,7 @@ sub buildNAMEDData
 
 		my $sql = 'SELECT * FROM `domain_dns` WHERE `domain_dns`.`domain_id` = ? AND `domain_dns`.`alias_id` = ?';
 		my $rdata = $db->doQuery('domain_dns_id', $sql, $self->{'domain_id'}, 0);
-		if(ref $rdata ne 'HASH') {
+		unless(ref $rdata eq 'HASH') {
 			error($rdata);
 			return 1;
 		}

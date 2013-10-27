@@ -12,7 +12,6 @@
     <copy_config>${SYSTEM_CONF}/apache/skel</copy_config>
     <copy_config>${SYSTEM_CONF}/apache/00_master.conf</copy_config>
     <copy_config>${SYSTEM_CONF}/apache/00_master_ssl.conf</copy_config>
-    <copy_config>${SYSTEM_CONF}/apache/00_modcband.conf</copy_config>
     <copy_config>${SYSTEM_CONF}/apache/00_nameserver.conf</copy_config>
     <copy_config>${SYSTEM_CONF}/apache/apache.data</copy_config>
     <copy_config>${SYSTEM_CONF}/apache/fastcgi_imscp.conf</copy_config>

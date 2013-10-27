@@ -57,7 +57,6 @@ sub loadData
 	";
 
 	my $rdata = iMSCP::Database->factory()->doQuery('id', $sql, $self->{'htuserId'});
-
 	unless(ref $rdata eq 'HASH') {
 		error($rdata);
 		return 1;
@@ -80,8 +79,8 @@ sub loadData
 			'Orphan entry: ' . Dumper($rdata->{$self->{'htuserId'}}),
 			$self->{'htuserId'}
 		);
-
 		my $rdata = iMSCP::Database->factory()->doQuery('update', @sql);
+
 		return 1;
 	}
 
@@ -103,6 +102,7 @@ sub process
 
 	if($self->{'status'} =~ /^toadd|tochange$/) {
 		$rs = $self->add();
+
 		@sql = (
 			"UPDATE `htaccess_users` SET `status` = ? WHERE `id` = ?",
 			($rs ? scalar getMessageByType('error') : 'ok'),
@@ -110,6 +110,7 @@ sub process
 		);
 	} elsif($self->{'status'} eq 'todelete') {
 		$rs = $self->delete();
+
 		if($rs) {
 			@sql = (
 				"UPDATE `htaccess_users` SET `status` = ? WHERE `id` = ?",
@@ -122,7 +123,6 @@ sub process
 	}
 
 	my $rdata = iMSCP::Database->factory()->doQuery('dummy', @sql);
-
 	unless(ref $rdata eq 'HASH') {
 		error($rdata);
 		return 1;

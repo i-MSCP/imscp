@@ -8,10 +8,6 @@
 
     Alias /errors {HOME_DIR}/errors/
 
-    <IfModule mod_cband.c>
-    CBandUser {USER}
-    </IfModule>
-
     <Directory {HOME_DIR}/domain_disable_page>
         Options -Indexes +Includes +FollowSymLinks +MultiViews
         AllowOverride None

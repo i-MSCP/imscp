@@ -182,78 +182,6 @@ sub addUser($$)
 
 	$self->setData($data);
 
-	# START MOD CBAND SECTION
-
-	$rs = iMSCP::File->new(
-		'filename' => "$self->{'apacheWrkDir'}/00_modcband.conf"
-	)->copyFile(
-		"$self->{'apacheBkpDir'}/00_modcband.conf." . time
-	) if (-f "$self->{'apacheWrkDir'}/00_modcband.conf");
-	return $rs if $rs;
-
-	my $filename = (
-		-f "$self->{'apacheWrkDir'}/00_modcband.conf"
-			? "$self->{'apacheWrkDir'}/00_modcband.conf" : "$self->{'apacheCfgDir'}/00_modcband.conf"
-	);
-
-	my $file = iMSCP::File->new('filename' => $filename);
-	my $content = $file->get();
-
-	unless(defined $content) {
-		error("Unable to read $filename");
-		return $rs if $rs;
-	} else {
-		my $bTag = "## SECTION {USER} BEGIN.\n";
-		my $eTag = "## SECTION {USER} END.\n";
-		my $bUTag = "## SECTION $data->{'USER'} BEGIN.\n";
-		my $eUTag = "## SECTION $data->{'USER'} END.\n";
-
-		my $entry = getBloc($bTag, $eTag, $content);
-		$entry =~ s/#//g;
-
-		$content = replaceBloc($bUTag, $eUTag, '', $content);
-
-		 # Set needed data
-		$self->setData(
-			{
-				BWLIMIT_DISABLED => $data->{'BWLIMIT'} ? '' : '#',
-				SCOREBOARDS_DIR => $self->{'config'}->{'SCOREBOARDS_DIR'}
-			}
-		);
-
-		$entry = $self->buildConf("    $bTag$entry    $eTag");
-		$content = replaceBloc($bTag, $eTag, $entry, $content, 'preserve');
-
-		$file = iMSCP::File->new('filename' => "$self->{'apacheWrkDir'}/00_modcband.conf");
-		$rs = $file->set($content);
-		return $rs if $rs;
-
-		$rs = $file->save();
-		return $rs if $rs;
-
-		$rs = $self->installConfFile('00_modcband.conf');
-		return $rs if $rs;
-
-		$rs = $self->enableSite('00_modcband.conf');
-		return $rs if $rs;
-
-		if($data->{'BWLIMIT'}) {
-			unless(-f "$self->{'config'}->{'SCOREBOARDS_DIR'}/$data->{'USER'}") {
-				$rs = iMSCP::File->new(
-					'filename' => "$self->{'config'}->{'SCOREBOARDS_DIR'}/$data->{'USER'}"
-				)->save();
-				return $rs if $rs;
-			}
-		} elsif(-f "$self->{'config'}->{'SCOREBOARDS_DIR'}/$data->{'USER'}") {
-			$rs = iMSCP::File->new(
-				'filename' => "$self->{'config'}->{'SCOREBOARDS_DIR'}/$data->{'USER'}"
-			)->delFile();
-			return $rs if $rs;
-		}
-	}
-
-	# END MOD CBAND SECTION
-
 	# Adding Apache user into i-MSCP virtual user group
 	$rs = iMSCP::SystemUser->new('username' => $self->getRunningUser())->addToGroup($data->{'GROUP'});
 	return $rs if $rs;
@@ -281,55 +209,6 @@ sub deleteUser($$)
 
 	my $rs = $self->{'hooksManager'}->trigger('beforeHttpdDelUser', $data);
 	return $rs if $rs;
-
-	# START MOD CBAND SECTION
-
-	$rs = iMSCP::File->new(
-		'filename' => "$self->{'apacheWrkDir'}/00_modcband.conf"
-	)->copyFile(
-		"$self->{'apacheBkpDir'}/00_modcband.conf." . time
-	) if -f "$self->{'apacheWrkDir'}/00_modcband.conf";
-	return $rs if $rs;
-
-	my $filename = (
-		-f "$self->{'apacheWrkDir'}/00_modcband.conf"
-			? "$self->{'apacheWrkDir'}/00_modcband.conf" : "$self->{'apacheCfgDir'}/00_modcband.conf"
-	);
-
-	my $file = iMSCP::File->new('filename' => $filename);
-	my $content = $file->get();
-
-	unless(defined $content) {
-		error("Unable to read $filename");
-		return $rs if $rs;
-	} else {
-		my $bUTag = "## SECTION $data->{'USER'} BEGIN.\n";
-		my $eUTag = "## SECTION $data->{'USER'} END.\n";
-
-		$content = replaceBloc($bUTag, $eUTag, '', $content);
-
-		$file = iMSCP::File->new('filename' => "$self->{'apacheWrkDir'}/00_modcband.conf");
-		$rs = $file->set($content);
-		return $rs if $rs;
-
-		$rs = $file->save();
-		return $rs if $rs;
-
-		$rs = $self->installConfFile('00_modcband.conf');
-		return $rs if $rs;
-
-		$rs = $self->enableSite('00_modcband.conf');
-		return $rs if $rs;
-
-		if( -f "$self->{'config'}->{'SCOREBOARDS_DIR'}/$data->{'USER'}") {
-			$rs = iMSCP::File->new(
-				'filename' => "$self->{'config'}->{'SCOREBOARDS_DIR'}/$data->{'USER'}"
-			)->delFile();
-			return $rs if $rs;
-		}
-	}
-
-	# END MOD CBAND SECTION
 
 	# Removing Apache user from i-MSCP virtual user group
 	$rs = iMSCP::SystemUser->new('username' => $self->getRunningUser())->removeFromGroup($data->{'GROUP'});

@@ -188,7 +188,6 @@ sub process($$)
 		"UPDATE `plugin` SET `$column` = ? WHERE `plugin_id` = ?",
 		($rs ? (scalar getMessageByType('error') || 'unknown error') : $toStatus{$status}), $pluginId
 	);
-
 	my $rdata = iMSCP::Database->factory()->doQuery('dummy', @sql);
 	unless(ref $rdata eq 'HASH') {
 		error($rdata);

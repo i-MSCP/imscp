@@ -125,7 +125,7 @@ sub vHostConf
 
 	my $rs = 0;
 
-	for('00_nameserver.conf', '00_master_ssl.conf', '00_master.conf', '00_modcband.conf') {
+	for('00_nameserver.conf', '00_master_ssl.conf', '00_master.conf') {
 		$rs = $self->{'httpd'}->disableSite($_);
 		return $rs if $rs;
 

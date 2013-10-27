@@ -48,28 +48,28 @@ sub loadData
 			`web_folder_protection`, `ips`.`ip_number`, `mail_count`.`mail_on_domain`
 		FROM
 			`subdomain_alias` AS `sub`
-		LEFT JOIN
-			`domain_aliasses` as `alias` ON (`sub`.`alias_id` = `alias`.`alias_id`)
-		LEFT JOIN
+		INNER JOIN
+			`domain_aliasses` AS `alias` ON (`sub`.`alias_id` = `alias`.`alias_id`)
+		INNER JOIN
 			`domain` ON (`alias`.`domain_id` = `domain`.`domain_id`)
-		LEFT JOIN
+		INNER JOIN
 			`server_ips` AS `ips` ON (`alias`.`alias_ip_id` = `ips`.`ip_id`)
-		LEFT JOIN (
-			SELECT
-				`sub_id` AS `id`, COUNT( `sub_id` ) AS `mail_on_domain`
-			FROM
-				`mail_users`
-			WHERE
-				`sub_id`= ? AND `mail_type` IN ('alssub_mail', 'alssub_forward', 'alssub_mail,alssub_forward', 'alssub_catchall')
-			GROUP BY
-				`sub_id`
-		) AS `mail_count`
+		LEFT JOIN
+			(
+				SELECT
+					`sub_id` AS `id`, COUNT( `sub_id` ) AS `mail_on_domain`
+				FROM
+					`mail_users`
+				WHERE
+					`sub_id`= ? AND `mail_type` IN ('alssub_mail', 'alssub_forward', 'alssub_mail,alssub_forward', 'alssub_catchall')
+				GROUP BY
+					`sub_id`
+			) AS `mail_count`
 		ON
 			(`sub`.`subdomain_alias_id` = `mail_count`.`id`)
 		WHERE
 			`sub`.`subdomain_alias_id` = ?
 	";
-
 	my $rdata = iMSCP::Database->factory()->doQuery('subdomain_alias_id', $sql, $self->{'subId'}, $self->{'subId'});
 	unless(ref $rdata eq 'HASH') {
 		error($rdata);
@@ -77,7 +77,7 @@ sub loadData
 	}
 
 	unless(exists $rdata->{$self->{'subId'}}) {
-		error("Subdomain alias with ID '$self->{'subId'}' has not been found in database");
+		error("Subdomain alias with ID '$self->{'subId'}' has not been found or is in an inconsistent state");
 		return 1;
 	}
 
@@ -98,6 +98,7 @@ sub process
 
 	if($self->{'subdomain_alias_status'} =~ /^toadd|tochange|toenable$/) {
 		$rs = $self->add();
+
 		@sql = (
 			"UPDATE `subdomain_alias` SET `subdomain_alias_status` = ? WHERE `subdomain_alias_id` = ?",
 			($rs ? scalar getMessageByType('error') : 'ok'),
@@ -105,17 +106,19 @@ sub process
 		);
 	} elsif($self->{'subdomain_alias_status'} eq 'todelete') {
 		$rs = $self->delete();
+
 		if($rs) {
 			@sql = (
 				"UPDATE `subdomain_alias` SET `subdomain_alias_status` = ? WHERE `subdomain_alias_id` = ?",
 				scalar getMessageByType('error'),
 				$self->{'subdomain_alias_id'}
 			);
-		}else {
+		} else {
 			@sql = ("DELETE FROM `subdomain_alias` WHERE `subdomain_alias_id` = ?", $self->{'subdomain_alias_id'});
 		}
 	} elsif($self->{'subdomain_alias_status'} eq 'todisable') {
 		$rs = $self->disable();
+
 		@sql = (
 			"UPDATE `subdomain_alias` SET `subdomain_alias_status` = ? WHERE `subdomain_alias_id` = ?",
 			($rs ? scalar getMessageByType('error') : 'disabled'),
@@ -123,6 +126,7 @@ sub process
 		);
 	} elsif($self->{'subdomain_alias_status'} eq 'torestore') {
 		$rs = $self->restore();
+
 		@sql = (
 			"UPDATE `subdomain_alias` SET `subdomain_alias_status` = ? WHERE `subdomain_alias_id` = ?",
 			($rs ? scalar getMessageByType('error') : 'ok'),
@@ -131,7 +135,7 @@ sub process
 	}
 
 	my $rdata = iMSCP::Database->factory()->doQuery('dummy', @sql);
-	if(ref $rdata ne 'HASH') {
+	unless(ref $rdata eq 'HASH') {
 		error($rdata);
 		return 1;
 	}
@@ -154,23 +158,25 @@ sub buildHTTPDData
 	$webDir =~ s~/+~/~g;
 	$webDir =~ s~/$~~g;
 
+	my $db = iMSCP::Database->factory();
+
 	my $sql = "SELECT * FROM `config` WHERE `name` LIKE 'PHPINI%'";
-	my $rdata = iMSCP::Database->factory()->doQuery('name', $sql);
-	if(ref $rdata ne 'HASH') {
+	my $rdata = $db->doQuery('name', $sql);
+	unless(ref $rdata eq 'HASH') {
 		error($rdata);
 		return 1;
 	}
 
 	$sql = "SELECT * FROM `php_ini` WHERE `domain_id` = ?";
-	my $phpiniData = iMSCP::Database->factory()->doQuery('domain_id', $sql, $self->{'domain_id'});
-	if(ref $phpiniData ne 'HASH') {
+	my $phpiniData = $db->doQuery('domain_id', $sql, $self->{'domain_id'});
+	unless(ref $phpiniData eq 'HASH') {
 		error($phpiniData);
 		return 1;
 	}
 
 	$sql = "SELECT * FROM `ssl_certs` WHERE `id` = ? AND `type` = ? AND `status` = ?";
-	my $certData = iMSCP::Database->factory()->doQuery('id', $sql, $self->{'subdomain_alias_id'}, 'alssub', 'ok');
-	if(ref $certData ne 'HASH') {
+	my $certData = $db->doQuery('id', $sql, $self->{'subdomain_alias_id'}, 'alssub', 'ok');
+	unless(ref $certData eq 'HASH') {
 		error($certData);
 		return 1;
 	}
@@ -201,10 +207,9 @@ sub buildHTTPDData
 		WEB_FOLDER_PROTECTION => $self->{'web_folder_protection'},
 		SSL_SUPPORT => $haveCert,
 		BWLIMIT => $self->{'domain_traffic_limit'},
-		ALIAS => $userName.'subals' . $self->{'subdomain_alias_id'},
+		ALIAS => $userName . 'subals' . $self->{'subdomain_alias_id'},
 		FORWARD => (defined $self->{'subdomain_alias_url_forward'} && $self->{'subdomain_alias_url_forward'} ne '')
-			? $self->{'subdomain_alias_url_forward'}
-			: 'no',
+			? $self->{'subdomain_alias_url_forward'} : 'no',
 		DISABLE_FUNCTIONS => (exists $phpiniData->{$self->{'domain_id'}})
 			? $phpiniData->{$self->{'domain_id'}}->{'disable_functions'}
 			: $rdata->{'PHPINI_DISABLE_FUNCTIONS'}->{'value'},
@@ -232,9 +237,8 @@ sub buildHTTPDData
 		ALLOW_URL_FOPEN => (exists $phpiniData->{$self->{'domain_id'}})
 			? $phpiniData->{$self->{'domain_id'}}->{'allow_url_fopen'}
 			: $rdata->{'PHPINI_ALLOW_URL_FOPEN'}->{'value'},
-		PHPINI_OPEN_BASEDIR => (exists $phpiniData->{$self->{'domain_id'}})
-			? ':' . $phpiniData->{$self->{'domain_id'}}->{'PHPINI_OPEN_BASEDIR'}
-			: $rdata->{'PHPINI_OPEN_BASEDIR'}->{'value'} ? ':' . $rdata->{'PHPINI_OPEN_BASEDIR'}->{'value'} : ''
+		PHPINI_OPEN_BASEDIR => ($rdata->{'PHPINI_OPEN_BASEDIR'}->{'value'})
+			? ':' . $rdata->{'PHPINI_OPEN_BASEDIR'}->{'value'} : ''
 	};
 
 	if($self->{'subdomain_alias_status'} eq 'todelete') {
@@ -394,11 +398,9 @@ sub _getSharedMountPoints
 		$self->{'subdomain_alias_id'},
 		$self->{'domain_id'},
 		$regexp
-
 	);
-
 	my $rdata = iMSCP::Database->factory()->doQuery('mount_point', @sql);
-	if(ref $rdata ne 'HASH') {
+	unless(ref $rdata eq 'HASH') {
 		error($rdata);
 		return 1;
 	}

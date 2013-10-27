@@ -66,16 +66,15 @@ sub loadData
 							) GROUP BY
 								`dmn_id`
 					), '') AS `users`
-				) AS t1
-			) AS t2
-		LEFT JOIN
+				) AS `t1`
+			) AS `t2`
+		INNER JOIN
 			`domain` AS `t3` ON (`t2`.`dmn_id` = `t3`.`domain_id`)
 		WHERE
 			`id` = ?
 	";
 
 	my $rdata = iMSCP::Database->factory()->doQuery('id', $sql, $self->{'htgroupId'}, $self->{'htgroupId'});
-
 	unless(ref $rdata eq 'HASH') {
 		error($rdata);
 		return 1;
@@ -120,6 +119,7 @@ sub process
 
 	if($self->{'status'} =~ /^toadd|tochange$/) {
 		$rs = $self->add();
+
 		@sql = (
 			"UPDATE `htaccess_groups` SET `status` = ? WHERE `id` = ?",
 			($rs ? scalar getMessageByType('error') : 'ok'),
@@ -127,6 +127,7 @@ sub process
 		);
 	} elsif($self->{'status'} eq 'todelete') {
 		$rs = $self->delete();
+
 		if($rs) {
 			@sql = (
 				"UPDATE `htaccess_groups` SET `status` = ? WHERE `id` = ?",

@@ -62,9 +62,7 @@ sub loadData
 		WHERE
 			`t1`.`mail_id` = ?
 	';
-
 	my $rdata = iMSCP::Database->factory()->doQuery('mail_id', $sql, $self->{'mailId'});
-
 	unless(ref $rdata eq 'HASH') {
 		error($rdata);
 		return 1;
@@ -119,7 +117,6 @@ sub process
 	}
 
 	my $rdata = iMSCP::Database->factory()->doQuery('dummy', @sql);
-
 	unless(ref $rdata eq 'HASH') {
 		error($rdata);
 		return 1;
@@ -167,7 +164,6 @@ sub buildMTAData
 				`mail_auto_respond` = 0
 		";
 		my $rdata = iMSCP::Database->factory()->doQuery('mail_addr', $sql);
-
 		unless(ref $rdata eq 'HASH') {
 			error($rdata);
 			return 1;

@@ -133,12 +133,14 @@ sub process
 
 	if($self->{'status'} =~ /^toadd|tochange$/) {
 		$rs = $self->add();
+
 		@sql = (
 			"UPDATE `ssl_certs` SET `status` = ? WHERE `cert_id` = ?",
 			($rs ? scalar getMessageByType('error') : 'ok'), $self->{'cert_id'}
 		);
 	} elsif($self->{'status'} eq 'todelete') {
 		$rs = $self->delete();
+
 		if($rs) {
 			@sql = (
 				"UPDATE `ssl_certs` SET `status` = ? WHERE `cert_id` = ?",

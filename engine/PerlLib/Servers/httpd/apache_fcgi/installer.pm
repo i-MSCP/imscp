@@ -1177,7 +1177,7 @@ sub _saveConf
 
 =item _oldEngineCompatibility()
 
- Remove old imscp.conf file if any.
+ Remove old files.
 
  Return int 0 on success, other on failure
 
@@ -1190,12 +1190,14 @@ sub _oldEngineCompatibility
 	my $rs = $self->{'hooksManager'}->trigger('beforeHttpdOldEngineCompatibility');
 	return $rs if $rs;
 
-	if(-f "$self->{'config'}->{'APACHE_SITES_DIR'}/imscp.conf") {
-		$rs = $self->{'httpd'}->disableSite('imscp.conf');
-		return $rs if $rs;
+	for('imscp.conf', '00_modcband.conf') {
+		if(-f "$self->{'config'}->{'APACHE_SITES_DIR'}/$_") {
+			$rs = $self->{'httpd'}->disableSite($_);
+			return $rs if $rs;
 
-		$rs = iMSCP::File->new('filename' => "$self->{'config'}->{'APACHE_SITES_DIR'}/imscp.conf")->delFile();
-		return $rs if $rs;
+			$rs = iMSCP::File->new('filename' => "$self->{'config'}->{'APACHE_SITES_DIR'}/$_")->delFile();
+			return $rs if $rs;
+		}
 	}
 
 	$self->{'hooksManager'}->trigger('afterHttpdOldEngineCompatibility');

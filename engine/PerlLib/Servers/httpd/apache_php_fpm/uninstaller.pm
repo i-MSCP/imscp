@@ -181,7 +181,7 @@ sub _restoreApacheConfig
 		return $rs if $rs;
 	}
 
-	for('00_nameserver.conf', '00_master_ssl.conf', '00_master.conf', '00_modcband.conf') {
+	for('00_nameserver.conf', '00_master_ssl.conf', '00_master.conf') {
 		if(-f "$self->{'config'}->{'APACHE_SITES_DIR'}/$_") {
 			$rs = $self->{'httpd'}->disableSite($_);
 			return $rs if $rs;

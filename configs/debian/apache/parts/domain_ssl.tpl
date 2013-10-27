@@ -23,10 +23,6 @@
     RewriteEngine on
     RewriteOptions inherit
 
-    <IfModule mod_cband.c>
-    CBandUser {USER}
-    </IfModule>
-
     # SECTION cgi_support BEGIN.
     ScriptAlias /cgi-bin/ {WEB_DIR}/cgi-bin/
 

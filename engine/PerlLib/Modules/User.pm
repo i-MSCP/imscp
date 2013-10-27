@@ -57,17 +57,13 @@ sub loadData
 {
 	my $self = shift;
 
-	# TODO User module shouldn't known about domain table
 	my $rdata = iMSCP::Database->factory()->doQuery(
 		'admin_id',
 		'
 			SELECT
-				`admin_id`, `admin_name`, `admin_sys_uid`, `admin_sys_gid`, `admin_status`, `domain_name`,
-				`domain_traffic_limit`
+				`admin_id`, `admin_name`, `admin_sys_uid`, `admin_sys_gid`, `admin_status`
 			FROM
 				`admin`
-			LEFT JOIN
-				`domain` ON (`domain_admin_id` = `admin_id`)
 			WHERE
 				admin_id = ?
 		',
@@ -98,16 +94,17 @@ sub process
 	return $rs if $rs;
 
 	my @sql;
-	my $rdata;
 
 	if($self->{'admin_status'} =~ /^(toadd|tochange)$/) {
 		$rs = $self->add();
+
 		@sql = (
 			"UPDATE `admin` SET `admin_status` = ? WHERE `admin_id` = ?",
 			($rs ? scalar getMessageByType('error') : 'ok'), $self->{'userId'}
 		);
 	} elsif($self->{'admin_status'} eq 'todelete') {
 		$rs = $self->delete();
+
 		if($rs) {
 			@sql = (
 				"UPDATE `admin` SET `admin_status` = ? WHERE `admin_id` = ?",
@@ -119,7 +116,7 @@ sub process
 	}
 
 	if(@sql) {
-		$rdata = iMSCP::Database->factory()->doQuery('dummy', @sql);
+		my $rdata = iMSCP::Database->factory()->doQuery('dummy', @sql);
 		unless(ref $rdata eq 'HASH') {
 			error($rdata);
 			return 1;
@@ -138,7 +135,7 @@ sub add
 		($main::imscpConfig{'SYSTEM_USER_MIN_UID'} + $self->{'admin_id'});
 	my $password = '';
 	my $comment = 'iMSCP virtual user';
-	my $home = "$main::imscpConfig{'USER_WEB_DIR'}/$self->{'domain_name'}";
+	my $home = "$main::imscpConfig{'USER_WEB_DIR'}/$self->{'admin_name'}";
 	my $skeletonPath = $self->{'skeletonPath'} || '/dev/null';
 	my $shell = '/bin/false';
 
@@ -198,8 +195,7 @@ sub add
 	);
 
 	# Run the preaddUser(), addUser() and postaddUser() methods on servers/addons that implement them
-	$rs = $self->SUPER::add();
-	return $rs if $rs;
+	$self->SUPER::add();
 }
 
 sub delete
@@ -227,6 +223,7 @@ sub delete
 	$self->{'hooksManager'}->trigger('onAfterDeleteImscpUnixUser', $userName);
 }
 
+
 sub buildHTTPDData
 {
 	my $self = shift;
@@ -238,9 +235,6 @@ sub buildHTTPDData
 	$self->{'httpd'} = {
 		USER => $userName,
 		GROUP => $groupName,
-		BASE_SERVER_VHOST_PREFIX => $main::imscpConfig{'BASE_SERVER_VHOST_PREFIX'},
-		BASE_SERVER_VHOST => $main::imscpConfig{'BASE_SERVER_VHOST'},
-		BWLIMIT => $self->{'domain_traffic_limit'}
 	};
 
 	0;
