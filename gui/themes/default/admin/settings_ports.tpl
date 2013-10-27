@@ -20,8 +20,14 @@
 	var error_fields_ids = {ERROR_FIELDS_IDS};
 
 	$(document).ready(function () {
-
-		$('.datatable').dataTable({ "oLanguage": {DATATABLE_TRANSLATIONS}, "iDisplayLength": 5 });
+		$('.datatable').dataTable(
+			{
+				"oLanguage": {DATATABLE_TRANSLATIONS},
+				"iDisplayLength": 5,
+				"bStateSave": true,
+				"bFilter": false
+			}
+		);
 
 		$.each(error_fields_ids, function () {
 			$('#' + this).css({ 'border': '1px solid red', 'font-weight': 'bolder'});
@@ -51,7 +57,6 @@
 			<td>
 				<label for="name{NUM}">{SERVICE}</label>
 				<input name="var_name[]" type="hidden" id="var_name{NUM}" value="{VAR_NAME}"/>
-				<input name="custom[]" type="hidden" id="custom{NUM}" value="{CUSTOM}"/>
 			</td>
 			<td>
 				<label>
@@ -80,9 +85,6 @@
 				</label>
 			</td>
 			<td>
-				<!-- BDP: port_delete_show -->
-				{TR_DELETE}
-				<!-- EDP: port_delete_show -->
 				<!-- BDP: port_delete_link -->
 				<a href="{URL_DELETE}" class="icon i_delete" onclick="return action_delete('{NAME}')">{TR_DELETE}</a>
 				<!-- EDP: port_delete_link -->

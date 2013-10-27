@@ -2,7 +2,12 @@
 <script type="text/javascript">
 	/*<![CDATA[*/
 	$(document).ready(function () {
-		$('.datatable').dataTable({ "oLanguage": {DATATABLE_TRANSLATIONS} });
+		$('.datatable').dataTable(
+			{
+				"oLanguage": { DATATABLE_TRANSLATIONS },
+				"bStateSave": true
+			}
+		);
 	});
 	/*]]>*/
 </script>

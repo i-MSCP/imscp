@@ -2649,4 +2649,32 @@ class iMSCP_Update_Database extends iMSCP_Update
 			unset($dbConfig['MAX_SUBDNAMES_LABELS']);
 		}
 	}
+
+	/**
+	 * Update service ports
+	 *
+	 * @return void
+	 */
+	protected function _databaseUpdate_169()
+	{
+		$dbConfig = iMSCP_Registry::get('dbConfig');
+		$services = array_filter(
+			array_keys($dbConfig->toArray()),
+			function($name) {
+				return (strlen($name) > 5 && substr($name, 0, 5) == 'PORT_');
+			}
+		);
+
+		foreach($services as $name) {
+			$values = explode(';', $dbConfig[$name]);
+
+			if($values[5] == '') {
+				$values[5] = '0.0.0.0';
+			}
+
+			unset($values[4]); // All port are now editable - We remove custom port field
+
+			$dbConfig[$name] = implode(';', $values);
+		}
+	}
 }

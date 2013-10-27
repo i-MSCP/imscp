@@ -8,7 +8,12 @@
 		});
 		$('<img>').attr({src:'{THEME_ASSETS_PATH}/images/ajax/small-spinner.gif'}).addClass('small-spinner').
 			insertAfter($('#password, #password_confirmation'));
-		$('.datatable').dataTable({ "oLanguage": {DATATABLE_TRANSLATIONS} });
+		$('.datatable').dataTable(
+			{
+				"oLanguage": { DATATABLE_TRANSLATIONS },
+				"bStateSave": true
+			}
+		);
 		$.ajaxSetup({
 			url: $(location).attr('pathname'),
 			type: 'GET',

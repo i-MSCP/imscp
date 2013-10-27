@@ -6,7 +6,12 @@
 		$.each(errFieldsStack, function () {
 			$("#" + this).css('border-color', '#ca1d11');
 		});
-		$('.datatable').dataTable({"oLanguage": {DATATABLE_TRANSLATIONS}});
+		$('.datatable').dataTable(
+				{
+					"oLanguage": { DATATABLE_TRANSLATIONS },
+					"bStateSave": true
+				}
+		);
 
 		$('table a').replaceWith(function () {
 			var href = $(this).attr('href');

@@ -6,11 +6,14 @@ Git Master
 ------------------------------------------------------------------------------------------------------------------------
 
 ENGINE:
-	Removed: Apache cband module configuration (Should be provided as plugin)
-	Fixed: Several 'Can't use an undefined value as a HASH reference...' errors
+	- Removed: Apache cband module configuration (Should be provided as plugin)
+	- Fixed: Several 'Can't use an undefined value as a HASH reference...' errors
 
 GUI:
-	Fixed: Unable to change admin settings
+	- Added IPv6 service status support
+	- Changed: Any service port become editable
+	- Fixed: Service ports interface is broken
+	- Fixed: Unable to change admin settings
 
 Tickets:
 

@@ -2,7 +2,13 @@
 <script type="text/javascript">
 	/* <![CDATA[ */
 	$(document).ready(function () {
-		$('.datatable').dataTable({ "oLanguage": {DATATABLE_TRANSLATIONS}, "iDisplayLength": 5 });
+		$('.datatable').dataTable(
+			{
+				"oLanguage": {DATATABLE_TRANSLATIONS},
+				"iDisplayLength": 5,
+				"bStateSave": true
+			}
+		);
 
 		$("#dialog_box").dialog(
 			{

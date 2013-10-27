@@ -24,15 +24,19 @@
  * Portions created by the i-MSCP Team are Copyright (C) 2010-2013 by
  * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
  *
- * @category	i-MSCP
- * @package		iMSCP_Core
- * @subpackage	Admin
+ * @category    i-MSCP
+ * @package     iMSCP_Core
+ * @subpackage  Admin
  * @copyright   2001-2006 by moleSoftware GmbH
  * @copyright   2006-2010 by ispCP | http://isp-control.net
  * @copyright   2010-2013 by i-MSCP | http://i-mscp.net
  * @author      ispCP Team
  * @author      i-MSCP Team
  * @link        http://i-mscp.net
+ */
+
+/***********************************************************************************************************************
+ * Main
  */
 
 // Include needed libraries
@@ -52,22 +56,25 @@ $tpl->define_dynamic(
 		'layout' => 'shared/layouts/ui.tpl',
 		'page' => 'admin/server_status.tpl',
 		'page_message' => 'layout',
-		'service_status' => 'page'));
+		'service_status' => 'page'
+	)
+);
 
 $tpl->assign(
 	array(
 		'TR_PAGE_TITLE' => tr('Admin / General / Services Status'),
-		'ISP_LOGO' => layout_getUserLogo()));
+		'ISP_LOGO' => layout_getUserLogo(),
+		'TR_SERVICE' => tr('Service Name'),
+		'TR_IP' => tr('IP Address'),
+		'TR_PORT' => tr('Port'),
+		'TR_STATUS' => tr('Status'),
+		'TR_SERVER_STATUS' => tr('Server status'),
+		'DATATABLE_TRANSLATIONS' => getDataTablesPluginTranslations()
+	)
+);
 
 generateNavigation($tpl);
 generatePageMessage($tpl);
-
-$tpl->assign(
-	array(
-		'TR_HOST' => tr('Host'),
-		'TR_SERVICE' => tr('Service'),
-		'TR_STATUS' => tr('Status'),
-		'TR_SERVER_STATUS' => tr('Server status')));
 
 // Services status string
 $running = tr('UP');
@@ -75,19 +82,21 @@ $down = tr('DOWN');
 
 $services = new iMSCP_Services();
 
-foreach($services as $service) {
+foreach ($services as $service) {
 	$services->setService($services->key($services), false);
 
-	if($services->isVisible()) {
+	if ($services->isVisible()) {
 		$serviceState = $services->isRunning();
 
 		$tpl->assign(
 			array(
-				'HOST' =>  $services->getIp(),
-				'PORT' => $services->getPort(),
-				'SERVICE' => $services->getName(),
+				'SERVICE' => tohtml($services->getName()),
+				'IP' => tohtml($services->getIp()),
+				'PORT' => tohtml($services->getPort()),
 				'STATUS' => $serviceState ? "<b>$running</b>" : $down,
-				'CLASS' => $serviceState ? 'up' : 'down'));
+				'CLASS' => $serviceState ? 'up' : 'down'
+			)
+		);
 
 		$tpl->parse('SERVICE_STATUS', '.service_status');
 	}

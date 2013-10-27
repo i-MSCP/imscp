@@ -24,21 +24,15 @@
  * Portions created by the i-MSCP Team are Copyright (C) 2010-2013 by
  * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
  *
- * @category	i-MSCP
- * @package		iMSCP_Core
- * @subpackage	Admin
+ * @category    i-MSCP
+ * @package     iMSCP_Core
+ * @subpackage  Admin
  * @copyright   2001-2006 by moleSoftware GmbH
  * @copyright   2006-2010 by ispCP | http://isp-control.net
  * @copyright   2010-2013 by i-MSCP | http://i-mscp.net
  * @author      ispCP Team
  * @author      i-MSCP Team
  * @link        http://i-mscp.net
- */
-
-/***********************************************************************************************************************
- * Script short description
- *
- * This script allow to add/update/remove services port properties
  */
 
 /***********************************************************************************************************************
@@ -59,15 +53,17 @@ function getProtocol($index) {
 		$protocol = $_POST['port_type'][$index];
 	} else {
 		try{
-			$sData = $dbConfig->{$_POST['var_name'][$index]};
+			$sData = $dbConfig[$_POST['var_name'][$index]];
 			$sData = explode(';', $sData);
 			$protocol = $sData[1];
 		} catch(Exception $e){
 			$protocol = 'notexistingone';
 		}
 	}
+
 	return $protocol;
 }
+
 /**
  * Prepare and put data in session on error(s).
  *
@@ -75,39 +71,32 @@ function getProtocol($index) {
  * @param bool $mode TRUE on add, FALSE otherwise
  * @return void
  */
-function toSession($mode) {
-
-	/** @var $dbConfig iMSCP_Config_Handler_Db */
-	$dbConfig = iMSCP_Registry::get('dbConfig');
-
+function toSession($mode)
+{
 	// Get a reference to the array that contain all error fields ids
 	$errorFieldsIds = &iMSCP_Registry::get('errorFieldsIds');
 
-	// Create a json object that will be used by client browser for fields
-	// highlighting
+	// Create a json object that will be used by client browser for fields highlighting
 	$_SESSION['errorFieldsIds'] = json_encode($errorFieldsIds);
 
-	// Data for error on add
-	if($mode == 'add') {
+	if($mode == 'add') { // Data for error on add
 		$values = array(
 			'name_new' => $_POST['name_new'],
 			'ip_new' => $_POST['ip_new'],
 			'port_new' => $_POST['port_new'],
 			'port_type_new' => $_POST['port_type_new'],
-			'show_val_new' => $_POST['show_val_new']);
+			'show_val_new' => $_POST['show_val_new']
+		);
 
 		$_SESSION['error_on_add'] = $values;
-
-	// Data for error on update
-	} else {
+	} else { // Data for error on update
 		foreach($_POST['var_name'] as $index => $service) {
 			$port = $_POST['port'][$index];
 			$protocol = getProtocol($index);
 			$name = $_POST['name'][$index];
 			$show = $_POST['show_val'][$index];
-			$custom = $_POST['custom'][$index];
 			$ip = $_POST['ip'][$index];
-			$values[$service] = "$port;$protocol;$name;$show;$custom;$ip";
+			$values[$service] = "$port;$protocol;$name;$show;$ip";
 			$_SESSION['error_on_updt'] = $values;
 		}
 	}
@@ -116,7 +105,6 @@ function toSession($mode) {
 /**
  * Validates a service port and sets an appropriate message on error.
  *
- * @author Laurent Declercq <l.declercq@nuxwin.com>
  * @param string $name Service name
  * @param string $ip Ip address
  * @param int $port Port
@@ -133,44 +121,39 @@ function admin_validatesService($name, $ip, $port, $protocol, $show, $index = ''
 	// Get a reference to the array that contain all error fields ids
 	$errorFieldsIds = &iMSCP_Registry::get('errorFieldsIds');
 
-	// Todo check for ipv6
 	$dbServiceName = "PORT_$name";
 	$ip = ($ip == 'localhost') ? '127.0.0.1' : $ip;
 
 	// Check for service name syntax
 	if (!is_basicString($name)) {
-		set_page_message(tr("Error with '$name': Only letters, numbers, dash and underscore are allowed for services names."), 'error');
+		set_page_message(
+			tr("Error with '$name': Only letters, numbers, dash and underscore are allowed for services names."),
+			'error'
+		);
 		$errorFieldsIds[] = "name$index";
 	}
 
 	// Check for IP syntax
-	if(filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4) === false) {
-		set_page_message(tr('Error: Wrong Ip number.'), 'error');
+	if(filter_var($ip, FILTER_VALIDATE_IP) === false) {
+		set_page_message(tr(' Wrong IP address.'), 'error');
 		$errorFieldsIds[] = "ip$index";
 	}
 
 	// Check for port syntax
-	if(!is_number($port) || $port <= 0) {
-		set_page_message(tr('Only positive numbers are allowed for services ports.'), 'error');
+	if(!is_number($port) || $port < 1 || $port > 65535) {
+		set_page_message(tr('Only numbers in range from 0 to 65535 are allowed.'), 'error');
 		$errorFieldsIds[] = "port$index";
 	}
 
 	// Check for service port existences
-	if(!is_int($index) && isset($dbConfig->$dbServiceName)) {
-		set_page_message(tr('Error: Service port with same name already exists.'), 'error');
+	if(!is_int($index) && isset($dbConfig[$dbServiceName])) {
+		set_page_message(tr('Service name already exists.'), 'error');
 		$errorFieldsIds[] = "name$index";
 	}
 
-	// Check for protocol
-	if($protocol != 'tcp' && $protocol != 'udp') {
-		set_page_message(tr('Error: Unallowed protocol.'), 'error');
-		$errorFieldsIds[] = "port_type$index";
-	}
-
-	// Check for show entry
-	if($show != '0' && $show != '1') {
-		set_page_message(tr('Error: Wrong value for show entry.'), 'error');
-		$errorFieldsIds[] = "show_val$index";
+	// Check for protocol and show option
+	if(($protocol != 'tcp' && $protocol != 'udp') || ($show != '0' && $show != '1')) {
+		showBadRequestErrorPage();
 	}
 
 	return (Zend_Session::namespaceIsset('pageMessages')) ? false : true;
@@ -180,7 +163,6 @@ function admin_validatesService($name, $ip, $port, $protocol, $show, $index = ''
  * Adds or updates services ports
  *
  * @throws iMSCP_Exception
- * @author Laurent Declercq <l.declercq@nuxwin.com>
  * @param string $mode Mode in witch act (add or update)
  * @return void
  */
@@ -192,8 +174,7 @@ function admin_addUpdateServices($mode = 'add')
 	// Create a pool for error fields ids and gets a reference to him
 	$errorFieldsIds = &iMSCP_Registry::set('errorFieldsIds', array());
 
-	// Adds a service port
-	if($mode == 'add') {
+	if($mode == 'add') { // Adds a service port
 		$port = $_POST['port_new'];
 		$protocol = $_POST['port_type_new'];
 		$name = strtoupper($_POST['name_new']);
@@ -202,12 +183,10 @@ function admin_addUpdateServices($mode = 'add')
 
 		if(admin_validatesService($name, $ip, $port, $protocol, $show)) {
 			$dbServiceName = "PORT_$name";
-			$dbConfig->$dbServiceName = "$port;$protocol;$name;$show;1;$ip";
+			$dbConfig[$dbServiceName] = "$port;$protocol;$name;$show;$ip";
 			write_log($_SESSION['user_logged'] . ": Added service port $name ($port)!", E_USER_NOTICE);
 		}
-
-	// Updates one or more services ports
-	} elseif($mode == 'update') {
+	} elseif($mode == 'update') { // Updates one or more services ports
 		// Reset counter of update queries
 		$dbConfig->resetQueriesCounter('update');
 
@@ -216,12 +195,11 @@ function admin_addUpdateServices($mode = 'add')
 			$protocol = getProtocol($index);
 			$name = strtoupper($name);
 			$show = $_POST['show_val'][$index];
-			$custom = $_POST['custom'][$index];
 			$ip = $_POST['ip'][$index];
 
 			if(admin_validatesService($name, $ip, $port, $protocol, $show, $index)) {
 				$dbServiceName = $_POST['var_name'][$index];
-				$dbConfig->$dbServiceName = "$port;$protocol;$name;$show;$custom;$ip";
+				$dbConfig[$dbServiceName] = "$port;$protocol;$name;$show;$ip";
 			}
 		}
 	} else {
@@ -231,12 +209,12 @@ function admin_addUpdateServices($mode = 'add')
 	if(!empty($errorFieldsIds)) {
 		toSession($mode);
 	} elseif($mode == 'add') {
-		set_page_message(tr('Service port was successfully added'), 'success');
+		set_page_message(tr('Service port successfully addeds'), 'success');
 	} else {
 		$updateCount = $dbConfig->countQueries('update');
 
 		if($updateCount > 0) {
-			set_page_message(tr('%d Service(s) port was successfully updated', $updateCount), 'success');
+			set_page_message(tr('%d Service(s) port successfully updateds', $updateCount), 'success');
 		} else {
 			set_page_message(tr('Nothing has been changed.'), 'info');
 		}
@@ -248,8 +226,6 @@ function admin_addUpdateServices($mode = 'add')
  *
  * This function is used for generation of both pages (show page and error page)
  *
- * @since 1.0.7 (ispCP)
- * @author Laurent Declercq <l.declercq@nuxwin.com>
  * @param iMSCP_pTemplate $tpl iMSCP_pTemplate instance
  * @return void;
  */
@@ -265,11 +241,13 @@ function admin_showServices($tpl)
 	} else {
 		$values = iMSCP_Registry::get('dbConfig');
 
-		// Filter function to get only the services ports names
-		$filter = create_function('$value', 'if(substr($value, 0, 5) == \'PORT_\') return $value;');
-
 		// Gets list of services port names
-		$services = array_filter(array_keys($values->toArray()), $filter);
+		$services = array_filter(
+			array_keys($values->toArray()),
+			function($name) {
+				return (strlen($name) > 5 && substr($name, 0, 5) == 'PORT_');
+			}
+		);
 
 		if(isset($_SESSION['errorOnAdd'])) {
 			$errorOnAdd = new iMSCP_Config_Handler($_SESSION['errorOnAdd']);
@@ -279,13 +257,12 @@ function admin_showServices($tpl)
 
 	if(empty($services)) {
 		$tpl->assign('SERVICE_PORTS', '');
-		set_page_message(tr('You have no custom service ports defined.'), 'info');
+		set_page_message(tr('You have not service ports defined.'), 'info');
 	} else {
 		sort($services);
 
 		foreach($services as $index => $service) {
-			$v = (count(explode(';', $values->$service)) < 6) ? $values->$service . ';' : $values->$service;
-			list($port, $protocol, $name, $status, $custom, $ip) = explode(';', $v);
+			list($port, $protocol, $name, $status, $ip) = explode(';', $values->$service);
 
 			$htmlSelected = $cfg->HTML_SELECTED;
 
@@ -294,54 +271,49 @@ function admin_showServices($tpl)
 			$selectedOn = $status == '1' ? $htmlSelected : '';
 			$selectedOff = $status == '1' ? '' : $htmlSelected;
 
-			if ($custom == 0) {
-				$tpl->assign(
-					array(
-						'SERVICE' => tohtml($name) . '<input name="name[]" type="hidden" id="name' . $index . '" value="' . tohtml($name) . '" />',
-						'DISABLED' => $cfg->HTML_DISABLED,
-						'TR_DELETE' => '-',
-						'PORT_DELETE_LINK' => '',
-						'NUM' => $index));
+			$tpl->assign(
+				array(
+					'SERVICE' => '<input name="name[]" type="text" id="name' . $index .
+						'" value="' . tohtml($name) . '" class="textinput" maxlength="25" />',
+					'NAME' => tohtml($name),
+					'DISABLED' => '',
+					'TR_DELETE' => tr('Delete'),
+					'URL_DELETE' => "?delete=$service",
+					'NUM' => $index
+				)
+			);
 
-				$tpl->parse('PORT_DELETE_SHOW', '');
-			} else {
-				$tpl->assign(
-					array(
-						'SERVICE' => '<input name="name[]" type="text" id="name' . $index . '" value="' . tohtml($name) . '" class="textinput" maxlength="25" />',
-						'NAME' => tohtml($name),
-						'DISABLED' => '',
-						'TR_DELETE' => tr('Delete'),
-						'URL_DELETE' => "settings_ports.php?delete=$service",
-						'PORT_DELETE_SHOW' => '',
-						'NUM' => $index));
-
-				$tpl->parse('PORT_DELETE_LINK', 'port_delete_link');
-			}
+			$tpl->parse('PORT_DELETE_LINK', 'port_delete_link');
 
 			$tpl->assign(
 				array(
-					'CUSTOM' => tohtml($custom),
 					'VAR_NAME' => tohtml($service),
-					'IP' => (($ip == '127.0.0.1') ? 'localhost' : (empty($ip) ? $cfg->BASE_SERVER_IP : tohtml($ip))),
-					'PORT' => $port,
+					'IP' => ($ip == 'localhost') ? '127.0.0.1' : (! $ip ? '0.0.0.0' : tohtml($ip)),
+					'PORT' => tohtml($port),
 					'SELECTED_UDP' => $selectedUdp,
 					'SELECTED_TCP' => $selectedTcp,
 					'SELECTED_ON' => $selectedOn,
-					'SELECTED_OFF' => $selectedOff));
+					'SELECTED_OFF' => $selectedOff
+				)
+			);
 
 			$tpl->parse('SERVICE_PORTS', '.service_ports');
 		}
 
 		// Add fields
 		$tpl->assign(
-			isset($errorOnAdd) ? array(
-				'VAL_FOR_NAME_NEW' =>  $errorOnAdd['name_new'],
-				'VAL_FOR_IP_NEW' => $errorOnAdd['ip_new'],
-				'VAL_FOR_PORT_NEW' => $errorOnAdd['port_new']
-			) : array(
-				'VAL_FOR_NAME_NEW' => '',
-				'VAL_FOR_IP_NEW' => '',
-				'VAL_FOR_PORT_NEW' => ''));
+			isset($errorOnAdd)
+				? array(
+					'VAL_FOR_NAME_NEW' =>  $errorOnAdd['name_new'],
+					'VAL_FOR_IP_NEW' => $errorOnAdd['ip_new'],
+					'VAL_FOR_PORT_NEW' => $errorOnAdd['port_new']
+				)
+				: array(
+					'VAL_FOR_NAME_NEW' => '',
+					'VAL_FOR_IP_NEW' => '',
+					'VAL_FOR_PORT_NEW' => ''
+				)
+		);
 
 		// Error fields ids
 		$tpl->assign('ERROR_FIELDS_IDS', isset($_SESSION['errorFieldsIds']) ? $_SESSION['errorFieldsIds'] : '[]');
@@ -361,29 +333,21 @@ function deleteService($serviceName)
 	/** @var $dbConfig iMSCP_Config_Handler_Db */
 	$dbConfig = iMSCP_Registry::get('dbConfig');
 
-	if (!isset($dbConfig->$serviceName)) {
-		set_page_message(tr("Unknown service name '$serviceName'."), 'error');
+	if (!isset($dbConfig[$serviceName])) {
+		set_page_message(tr("Unknown service name '%s'.", $serviceName), 'error');
 		return false;
 	}
 
-	$values = (count(explode(';', $dbConfig->$serviceName)) < 6) ? $dbConfig->$serviceName . ';' : $dbConfig->$serviceName;
-	list(,,,,$custom) = explode(';', $values);
-
-	if($custom == 1) {
-		// Remove the service port from the database
-		unset($dbConfig->$serviceName);
-		write_log($_SESSION['user_logged'] . ": Removed port for '$serviceName'.", E_USER_NOTICE);
-		set_page_message(tr('Service port was successfully removed.'), 'success');
-	} else {
-		set_page_message(tr('You are not allowed to remove this service port entry.'), 'error');
-		return false;
-	}
+	// Remove service port from the database
+	unset($dbConfig[$serviceName]);
+	write_log($_SESSION['user_logged'] . ": Removed port for '$serviceName'.", E_USER_NOTICE);
+	set_page_message(tr('Service port successfully removed.'), 'success');
 
 	return true;
 }
 
 /***********************************************************************************************************************
- * Main script
+ * Main
  */
 
 // Include core library
@@ -393,10 +357,6 @@ iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAdminScriptStart);
 
 // Check for login
 check_login('admin');
-
-/**
- * Dispatches the request
- */
 
 // Adds a service port or updates one or more services ports
 if (isset($_POST['uaction']) && $_POST['uaction'] != 'reset') {
@@ -416,8 +376,9 @@ $tpl->define_dynamic(
 		'page' => 'admin/settings_ports.tpl',
 		'page_message' => 'layout',
 		'service_ports' => 'page',
-		'port_delete_link' => 'service_ports',
-		'port_delete_show' => 'service_ports'));
+		'port_delete_link' => 'service_ports'
+	)
+);
 
 $tpl->assign(
 	array(
@@ -429,14 +390,13 @@ $tpl->assign(
 		'TR_ENABLED' => tr('Yes'),
 		'TR_DISABLED' => tr('No'),
 		'TR_SERVERPORTS' => tr('Server ports'),
-		'TR_SERVICE' => tr('Service'),
-		'TR_IP' => tr('IP'),
+		'TR_SERVICE' => tr('Service Name'),
+		'TR_IP' => tr('IP address'),
 		'TR_PORT' => tr('Port'),
 		'TR_PROTOCOL' => tr('Protocol'),
 		'TR_SHOW' => tr('Show'),
 		'TR_DELETE' => tr('Delete'),
 		'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete %s service port ?', true, '%s'),
-		'TR_SHOW_UPDATE_SERVICE_PORT' => tr('View / Update service(s) port'),
 		'TR_ADD_NEW_SERVICE_PORT' => tr('Add new service port'),
 		'VAL_FOR_SUBMIT_ON_UPDATE' => tr('Update'),
 		'VAL_FOR_SUBMIT_ON_ADD' => tr('Add'),

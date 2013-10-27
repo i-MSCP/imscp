@@ -56,29 +56,18 @@ class iMSCP_Services implements iterator, countable
 	 */
 	public function __construct()
 	{
-		/** @var $cfg iMSCP_Config_Handler_File */
-		$cfg = iMSCP_Registry::get('config');
+		$values = iMSCP_Registry::get('dbConfig')->toArray();
 
-		/** @var $dbConfig iMSCP_Config_Handler_Db */
-		$dbConfig = iMSCP_Registry::get('dbConfig');
-
-		if (filter_var($cfg->BASE_SERVER_IP, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6)) {
-			$baseServerIp = "[{$cfg->BASE_SERVER_IP}]";
-		} else {
-			$baseServerIp = $cfg->BASE_SERVER_IP;
-		}
-
-		// Retrieve all services properties
-		foreach ($dbConfig as $service => $serviceProperties) {
-			if (substr($service, 0, 5) == 'PORT_') {
-				$this->_services[$service] = explode(';', $serviceProperties);
-
-				if ($this->_services[$service][5] == '') {
-					$this->_services[$service][5] = $baseServerIp;
-				} elseif ($this->_services[$service][5] == '127.0.0.1') {
-					$this->_services[$service][5] = 'localhost';
-				}
+		// Gets list of services port names
+		$services = array_filter(
+			array_keys($values),
+			function($name) {
+				return (strlen($name) > 5 && substr($name, 0, 5) == 'PORT_');
 			}
+		);
+
+		foreach($services as $name) {
+			$this->_services[$name] = explode(';', $values[$name]);
 		}
 
 		ksort($this->_services);
@@ -104,7 +93,7 @@ class iMSCP_Services implements iterator, countable
 		if (array_key_exists($normalizedServiceName, $this->_services)) {
 			$this->_queriedService = $normalizedServiceName;
 		} else {
-			throw new iMSCP_Exception("Unknown Service '$serviceName'!");
+			throw new iMSCP_Exception("Unknown Service '$serviceName'");
 		}
 	}
 
@@ -154,36 +143,6 @@ class iMSCP_Services implements iterator, countable
 	}
 
 	/**
-	 * Get service IP
-	 *
-	 * @param  string $serviceName Service name
-	 * @return array
-	 */
-	public function getIp($serviceName = null)
-	{
-		if (!is_null($serviceName)) {
-			$this->setService($serviceName);
-		}
-
-		return $this->_getProperty($this->_queriedService, 5);
-	}
-
-	/**
-	 * Check if the service is read only
-	 *
-	 * @param string $serviceName Service name
-	 * @return bool TRUE if the service is read only, FALSE otherwise
-	 */
-	public function isReadOnly($serviceName = null)
-	{
-		if (!is_null($serviceName)) {
-			$this->setService($serviceName);
-		}
-
-		return (bool)(!$this->_getProperty($this->_queriedService, 4));
-	}
-
-	/**
 	 * Check if the service is visible
 	 *
 	 * @param string $serviceName Service name
@@ -196,6 +155,21 @@ class iMSCP_Services implements iterator, countable
 		}
 
 		return (bool)$this->_getProperty($this->_queriedService, 3);
+	}
+
+	/**
+	 * Get service IP
+	 *
+	 * @param  string $serviceName Service name
+	 * @return array
+	 */
+	public function getIp($serviceName = null)
+	{
+		if (!is_null($serviceName)) {
+			$this->setService($serviceName);
+		}
+
+		return $this->_getProperty($this->_queriedService, 4);
 	}
 
 	/**
@@ -296,7 +270,7 @@ class iMSCP_Services implements iterator, countable
 		if (!is_null($this->_queriedService)) {
 			return $this->_services[$this->_queriedService][$index];
 		} else {
-			throw new iMSCP_Exception('Service name to be queried is not set!');
+			throw new iMSCP_Exception('Service name to be queried is not set');
 		}
 	}
 
@@ -309,9 +283,13 @@ class iMSCP_Services implements iterator, countable
 	{
 		ini_set('default_socket_timeout', 3);
 
-		if (($fp = @fsockopen($this->getProtocol() . '://' . $this->getIp(), $this->getPort()))
-		) {
-			//fgets($fp);
+		$ip = $this->getIp();
+
+		if(filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6)) {
+			$ip = "[$ip]";
+		}
+
+		if (($fp = @fsockopen($this->getProtocol() . '://' . $ip, $this->getPort()))) {
 			fclose($fp);
 
 			return true;
