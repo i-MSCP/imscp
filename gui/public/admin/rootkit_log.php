@@ -116,6 +116,8 @@ if (!empty($antiRootkitLogFiles)) {
 				$replace[] = '<span style="color:green">$0</span>';
 				$search [] = '/Not found/i';
 				$replace[] = '<span style="color:blue">$0</span>';
+				$search [] = '/None found/i';
+				$replace[] = '<span style="color:magenta">$0</span>';
 				$search [] = '/Skipped/i';
 				$replace[] = '<span style="color:blue">$0</span>';
 				$search [] = '/unknown[^)]/i';
@@ -126,8 +128,6 @@ if (!empty($antiRootkitLogFiles)) {
 				$replace[] = '<strong style="color:red">$0</strong>';
 				$search [] = '/0[ \t]+vulnerable/i';
 				$replace[] = '<span style="color:green">$0</span>';
-				$search [] = '#(\[[0-9]{2}:[[0-9]{2}:[[0-9]{2}\][ \t]+-{20,35}[ \t]+)([a-zA-Z0-9 ]+)([ \t]+-{20,35})<br />#e';
-				$replace[] = '"</div><a href=\"#\" onclick=\"$(\'#rkhuntb" . $blocksCount . "\').toggle();return false;\">$1<b>$2</b>$3</a><br /><div id=\"rkhuntb" . $blocksCount++ . "\">"';
 
 				$contents = preg_replace($search, $replace, $contents);
 			} elseif ($antiRootkit == 'Chkrootkit') {
@@ -161,7 +161,7 @@ if (!empty($antiRootkitLogFiles)) {
 		$tpl->assign(
 			array(
 				'LOG' => $contents,
-				'FILENAME' => tohtml($logFile)
+				'FILENAME' => $logFile
 			)
 		);
 
