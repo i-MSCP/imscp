@@ -4,7 +4,7 @@
 	$(document).ready(function () {
 		$('.datatable').dataTable(
 			{
-				"oLanguage": { DATATABLE_TRANSLATIONS },
+				"oLanguage": {DATATABLE_TRANSLATIONS},
 				"bStateSave": true
 			}
 		);

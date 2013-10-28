@@ -102,7 +102,12 @@
 			}).trigger('keyup');
 		});
 
-		$('#reseller_ips_table').dataTable({ "oLanguage": {DATATABLE_TRANSLATIONS}});
+		$('#reseller_ips_table').dataTable(
+			{
+				"oLanguage": {DATATABLE_TRANSLATIONS},
+				"bStateSave": true
+			}
+		);
 	});
 	/*]]>*/
 </script>
