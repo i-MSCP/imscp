@@ -17,8 +17,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2013-10-26 19:08+0200\n"
-"PO-Revision-Date: 2013-10-26 17:09+0000\n"
+"POT-Creation-Date: 2013-10-28 11:50+0100\n"
+"PO-Revision-Date: 2013-10-28 10:52+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: English (United Kingdom) (http://www.transifex.com/projects/p/i-MSCP/language/en_GB/)\n"
 "MIME-Version: 1.0\n"
@@ -162,6 +162,9 @@ msgid ""
 " Show all errors, except for warnings about deprecated code (Production)"
 msgstr " Show all errors, except for warnings about deprecated code (Production)"
 
+msgid " Wrong IP address."
+msgstr ""
+
 msgid " was deleted by {ADMIN}!"
 msgstr " was deleted by {ADMIN}!"
 
@@ -250,8 +253,8 @@ msgid "%d / unlimited"
 msgstr ""
 
 #, php-format
-msgid "%d Service(s) port was successfully updated"
-msgstr "%d Service(s) port was successfully updated"
+msgid "%d Service(s) port successfully updateds"
+msgstr ""
 
 #, php-format
 msgid "%d configuration parameter(s) have/has been created."
@@ -2335,18 +2338,6 @@ msgstr "Error while trying to obtain list of network cards."
 msgid "Error: Remote File not found!"
 msgstr "Error: Remote File not found!"
 
-msgid "Error: Service port with same name already exists."
-msgstr "Error: Service port with same name already exists."
-
-msgid "Error: Unallowed protocol."
-msgstr "Error: Unallowed protocol."
-
-msgid "Error: Wrong Ip number."
-msgstr "Error: Wrong Ip number."
-
-msgid "Error: Wrong value for show entry."
-msgstr "Error: Wrong value for show entry."
-
 msgid "Errors"
 msgstr "Errors"
 
@@ -2595,9 +2586,6 @@ msgstr "Home directory '%s' doesn't exist"
 msgid "Homepage"
 msgstr "Homepage"
 
-msgid "Host"
-msgstr "Host"
-
 msgid "Hosting plan"
 msgstr "Hosting plan"
 
@@ -2668,6 +2656,9 @@ msgstr "Http traffic"
 
 msgid "IP"
 msgstr "IP"
+
+msgid "IP Address"
+msgstr ""
 
 msgid "IP address"
 msgstr "IP address"
@@ -3457,8 +3448,8 @@ msgstr "Only exec"
 msgid "Only gettext Machine Object files (MO files) are accepted."
 msgstr "Only gettext Machine Object files (MO files) are accepted."
 
-msgid "Only positive numbers are allowed for services ports."
-msgstr "Only positive numbers are allowed for services ports."
+msgid "Only numbers in range from 0 to 65535 are allowed."
+msgstr ""
 
 msgid "Only positive numbers are allowed."
 msgstr "Only positive numbers are allowed."
@@ -4386,8 +4377,8 @@ msgstr "Server traffic settings"
 msgid "Server traffic settings successfully updated."
 msgstr "Server traffic settings successfully updated."
 
-msgid "Service"
-msgstr "Service"
+msgid "Service Name"
+msgstr ""
 
 msgid "Service Unavailable"
 msgstr ""
@@ -4395,11 +4386,14 @@ msgstr ""
 msgid "Service name"
 msgstr "Service name"
 
-msgid "Service port was successfully added"
-msgstr "Service port was successfully added"
+msgid "Service name already exists."
+msgstr ""
 
-msgid "Service port was successfully removed."
-msgstr "Service port was successfully removed."
+msgid "Service port successfully addeds"
+msgstr ""
+
+msgid "Service port successfully removed."
+msgstr ""
 
 msgid "Service ports"
 msgstr "Service ports"
@@ -5139,6 +5133,10 @@ msgstr "Unknown layout color."
 msgid "Unknown reason."
 msgstr "Unknown reason."
 
+#, php-format
+msgid "Unknown service name '%s'."
+msgstr ""
+
 msgid "Unknown type."
 msgstr "Unknown type."
 
@@ -5334,9 +5332,6 @@ msgstr "Very high"
 msgid "View"
 msgstr "View"
 
-msgid "View / Update service(s) port"
-msgstr "View / Update service(s) port"
-
 msgid "View SSL certificate"
 msgstr "View SSL certificate"
 
@@ -5529,9 +5524,6 @@ msgstr "You are exceeding your subdomain limit."
 msgid "You are not allowed to act on your own session."
 msgstr "You are not allowed to act on your own session."
 
-msgid "You are not allowed to remove this service port entry."
-msgstr "You are not allowed to remove this service port entry."
-
 msgid "You are not allowed to update a protected plugin."
 msgstr "You are not allowed to update a protected plugin."
 
@@ -5670,14 +5662,14 @@ msgstr "You have disabled SQL databases for this user.<br />You cannot have SQL 
 msgid "You have no closed tickets."
 msgstr "You have no closed tickets."
 
-msgid "You have no custom service ports defined."
-msgstr "You have no custom service ports defined."
-
 msgid "You have no groups."
 msgstr "You have no groups."
 
 msgid "You have no open tickets."
 msgstr "You have no open tickets."
+
+msgid "You have not service ports defined."
+msgstr ""
 
 msgid ""
 "You have reached the maximum number of Email accounts allowed by your "

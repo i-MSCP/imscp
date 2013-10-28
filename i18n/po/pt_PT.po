@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2013-10-26 19:08+0200\n"
-"PO-Revision-Date: 2013-10-26 17:09+0000\n"
+"POT-Creation-Date: 2013-10-28 11:50+0100\n"
+"PO-Revision-Date: 2013-10-28 10:52+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Portuguese (Portugal) (http://www.transifex.com/projects/p/i-MSCP/language/pt_PT/)\n"
 "MIME-Version: 1.0\n"
@@ -153,6 +153,9 @@ msgid ""
 " Show all errors, except for warnings about deprecated code (Production)"
 msgstr ""
 
+msgid " Wrong IP address."
+msgstr ""
+
 msgid " was deleted by {ADMIN}!"
 msgstr ""
 
@@ -241,7 +244,7 @@ msgid "%d / unlimited"
 msgstr ""
 
 #, php-format
-msgid "%d Service(s) port was successfully updated"
+msgid "%d Service(s) port successfully updateds"
 msgstr ""
 
 #, php-format
@@ -2326,18 +2329,6 @@ msgstr ""
 msgid "Error: Remote File not found!"
 msgstr ""
 
-msgid "Error: Service port with same name already exists."
-msgstr ""
-
-msgid "Error: Unallowed protocol."
-msgstr ""
-
-msgid "Error: Wrong Ip number."
-msgstr ""
-
-msgid "Error: Wrong value for show entry."
-msgstr ""
-
 msgid "Errors"
 msgstr "Erros"
 
@@ -2586,9 +2577,6 @@ msgstr ""
 msgid "Homepage"
 msgstr ""
 
-msgid "Host"
-msgstr "Máquina"
-
 msgid "Hosting plan"
 msgstr "Plano de hospedagem"
 
@@ -2659,6 +2647,9 @@ msgstr ""
 
 msgid "IP"
 msgstr "IP"
+
+msgid "IP Address"
+msgstr ""
 
 msgid "IP address"
 msgstr "Endereço IP"
@@ -3448,7 +3439,7 @@ msgstr ""
 msgid "Only gettext Machine Object files (MO files) are accepted."
 msgstr ""
 
-msgid "Only positive numbers are allowed for services ports."
+msgid "Only numbers in range from 0 to 65535 are allowed."
 msgstr ""
 
 msgid "Only positive numbers are allowed."
@@ -4377,8 +4368,8 @@ msgstr "Definições de tráfego do servidor"
 msgid "Server traffic settings successfully updated."
 msgstr ""
 
-msgid "Service"
-msgstr "Serviço"
+msgid "Service Name"
+msgstr ""
 
 msgid "Service Unavailable"
 msgstr ""
@@ -4386,10 +4377,13 @@ msgstr ""
 msgid "Service name"
 msgstr "Nome do Serviço"
 
-msgid "Service port was successfully added"
+msgid "Service name already exists."
 msgstr ""
 
-msgid "Service port was successfully removed."
+msgid "Service port successfully addeds"
+msgstr ""
+
+msgid "Service port successfully removed."
 msgstr ""
 
 msgid "Service ports"
@@ -5130,6 +5124,10 @@ msgstr ""
 msgid "Unknown reason."
 msgstr ""
 
+#, php-format
+msgid "Unknown service name '%s'."
+msgstr ""
+
 msgid "Unknown type."
 msgstr ""
 
@@ -5325,9 +5323,6 @@ msgstr "Muito alto"
 msgid "View"
 msgstr "Ver"
 
-msgid "View / Update service(s) port"
-msgstr ""
-
 msgid "View SSL certificate"
 msgstr ""
 
@@ -5520,9 +5515,6 @@ msgstr ""
 msgid "You are not allowed to act on your own session."
 msgstr ""
 
-msgid "You are not allowed to remove this service port entry."
-msgstr ""
-
 msgid "You are not allowed to update a protected plugin."
 msgstr ""
 
@@ -5661,13 +5653,13 @@ msgstr ""
 msgid "You have no closed tickets."
 msgstr ""
 
-msgid "You have no custom service ports defined."
-msgstr ""
-
 msgid "You have no groups."
 msgstr ""
 
 msgid "You have no open tickets."
+msgstr ""
+
+msgid "You have not service ports defined."
 msgstr ""
 
 msgid ""

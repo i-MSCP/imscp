@@ -33,8 +33,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2013-10-26 19:08+0200\n"
-"PO-Revision-Date: 2013-10-26 17:09+0000\n"
+"POT-Creation-Date: 2013-10-28 11:50+0100\n"
+"PO-Revision-Date: 2013-10-28 10:52+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: German (Germany) (http://www.transifex.com/projects/p/i-MSCP/language/de_DE/)\n"
 "MIME-Version: 1.0\n"
@@ -178,6 +178,9 @@ msgid ""
 " Show all errors, except for warnings about deprecated code (Production)"
 msgstr "Zeige alle Fehlermeldungen mit Ausnahme von Warnungen über veralteten Funktionen (Produktion)"
 
+msgid " Wrong IP address."
+msgstr ""
+
 msgid " was deleted by {ADMIN}!"
 msgstr "wurde gelöscht von {ADMIN}!"
 
@@ -266,8 +269,8 @@ msgid "%d / unlimited"
 msgstr "%d / unbegrenzt"
 
 #, php-format
-msgid "%d Service(s) port was successfully updated"
-msgstr "%d Service-Port(s) wurde(n) erfolgreich aktualisiert"
+msgid "%d Service(s) port successfully updateds"
+msgstr ""
 
 #, php-format
 msgid "%d configuration parameter(s) have/has been created."
@@ -2351,18 +2354,6 @@ msgstr "Fehler beim Versuch, eine Liste der Netzwerkkarten zu erstellen."
 msgid "Error: Remote File not found!"
 msgstr "Fehler: Remotedatei nicht gefunden!"
 
-msgid "Error: Service port with same name already exists."
-msgstr "Fehler: Service-Port mit gleichem Namen existiert bereits."
-
-msgid "Error: Unallowed protocol."
-msgstr "Fehler: Unerlaubtes Protokoll"
-
-msgid "Error: Wrong Ip number."
-msgstr "Fehler: Falsche IP Nummer"
-
-msgid "Error: Wrong value for show entry."
-msgstr "Fehler: Falscher Wert für Eintragsanzeige."
-
 msgid "Errors"
 msgstr "Fehler"
 
@@ -2611,9 +2602,6 @@ msgstr "Heimatverzeichnis '%s' existiert nicht"
 msgid "Homepage"
 msgstr "Homepage"
 
-msgid "Host"
-msgstr "Host"
-
 msgid "Hosting plan"
 msgstr "Tarif"
 
@@ -2684,6 +2672,9 @@ msgstr "HTTP-Traffic"
 
 msgid "IP"
 msgstr "IP"
+
+msgid "IP Address"
+msgstr ""
 
 msgid "IP address"
 msgstr "IP-Adresse"
@@ -3473,8 +3464,8 @@ msgstr "Nur Exec"
 msgid "Only gettext Machine Object files (MO files) are accepted."
 msgstr "Nur gettext Maschine Object-Dateien (MO-Dateien) werden akzeptiert."
 
-msgid "Only positive numbers are allowed for services ports."
-msgstr "Nur positive Nummern für Dienst-Ports sind erlaubt."
+msgid "Only numbers in range from 0 to 65535 are allowed."
+msgstr ""
 
 msgid "Only positive numbers are allowed."
 msgstr "Nur positive Zahlen sind erlaubt."
@@ -4402,8 +4393,8 @@ msgstr "Server Traffic Einstellungen"
 msgid "Server traffic settings successfully updated."
 msgstr "Einstellungen für Server-Datenverkehr erfolgreich aktualisiert."
 
-msgid "Service"
-msgstr "Dienst"
+msgid "Service Name"
+msgstr ""
 
 msgid "Service Unavailable"
 msgstr "Dienst nicht verfügbar"
@@ -4411,11 +4402,14 @@ msgstr "Dienst nicht verfügbar"
 msgid "Service name"
 msgstr "Name des Dienstes"
 
-msgid "Service port was successfully added"
-msgstr "Service-Port wurde erfolgreich hinzugefügt"
+msgid "Service name already exists."
+msgstr ""
 
-msgid "Service port was successfully removed."
-msgstr "Dienst-Port wurde erfolgreich gelöscht."
+msgid "Service port successfully addeds"
+msgstr ""
+
+msgid "Service port successfully removed."
+msgstr ""
 
 msgid "Service ports"
 msgstr "Dienst-Ports"
@@ -5155,6 +5149,10 @@ msgstr "Unbekannte Layout-Farbe."
 msgid "Unknown reason."
 msgstr "Unbekannter Grund."
 
+#, php-format
+msgid "Unknown service name '%s'."
+msgstr ""
+
 msgid "Unknown type."
 msgstr "Unbekannter Typ."
 
@@ -5350,9 +5348,6 @@ msgstr "Sehr hoch"
 msgid "View"
 msgstr "Anzeigen"
 
-msgid "View / Update service(s) port"
-msgstr "Service-Port(s) ansehen / ändern"
-
 msgid "View SSL certificate"
 msgstr "SSL-Zertifikat anzeigen"
 
@@ -5545,9 +5540,6 @@ msgstr "Sie überschreiten Ihr Subdomain Limit."
 msgid "You are not allowed to act on your own session."
 msgstr "Es ist Ihnen nicht erlaubt auf Ihre eigene Sitzung Einfluß zu nehmen."
 
-msgid "You are not allowed to remove this service port entry."
-msgstr "Ihnen ist es nicht erlaubt den Service-Port-Eintrag zu löschen."
-
 msgid "You are not allowed to update a protected plugin."
 msgstr "Es ist ihnen nicht erlaubt ein geschütztes Plugin zu aktualisieren."
 
@@ -5686,14 +5678,14 @@ msgstr "Sie haben SQL-Datenbanken für diesen Account deaktiviert.<br />Sie kön
 msgid "You have no closed tickets."
 msgstr "Sie haben keine geschlossenen Tickets."
 
-msgid "You have no custom service ports defined."
-msgstr "Sie haben keine eigenen Service-Ports definiert."
-
 msgid "You have no groups."
 msgstr "Sie haben keine Gruppen."
 
 msgid "You have no open tickets."
 msgstr "Sie haben keine offenen Tickets."
+
+msgid "You have not service ports defined."
+msgstr ""
 
 msgid ""
 "You have reached the maximum number of Email accounts allowed by your "

@@ -15,8 +15,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2013-10-26 19:08+0200\n"
-"PO-Revision-Date: 2013-10-26 17:09+0000\n"
+"POT-Creation-Date: 2013-10-28 11:50+0100\n"
+"PO-Revision-Date: 2013-10-28 10:52+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Spanish (Spain) (http://www.transifex.com/projects/p/i-MSCP/language/es_ES/)\n"
 "MIME-Version: 1.0\n"
@@ -160,6 +160,9 @@ msgid ""
 " Show all errors, except for warnings about deprecated code (Production)"
 msgstr "Mostrar todos los errores, a excepción de las advertencias sobre código obsoleto (Producción)"
 
+msgid " Wrong IP address."
+msgstr ""
+
 msgid " was deleted by {ADMIN}!"
 msgstr " fue eliminado por {ADMIN}!"
 
@@ -248,8 +251,8 @@ msgid "%d / unlimited"
 msgstr "%d de ilimitado"
 
 #, php-format
-msgid "%d Service(s) port was successfully updated"
-msgstr "Se ha/han actualizado %d puerto(s) de servicio"
+msgid "%d Service(s) port successfully updateds"
+msgstr ""
 
 #, php-format
 msgid "%d configuration parameter(s) have/has been created."
@@ -2062,27 +2065,27 @@ msgid "Domain name"
 msgstr "Nombre del dominio"
 
 msgid "Domain name (in it ASCII form) cannot be greater than 255 characters."
-msgstr ""
+msgstr "Nombre de dominio (en el mismo formato ASCII) no puede ser mayor a 255 caracteres."
 
 msgid "Domain name cannot be empty."
 msgstr "El nombre de dominio no puede estar vacío."
 
 msgid "Domain name cannot start nor end with dot."
-msgstr ""
+msgstr "El nombre de dominio no puede empezar ni terminar con un punto."
 
 #, php-format
 msgid "Domain name contains an invalid character: %s"
-msgstr ""
+msgstr "El Nombre de dominio contiene un carácter inválido: %s"
 
 #, php-format
 msgid "Domain name label '%s' contain an invalid character: %s"
-msgstr ""
+msgstr "La etiqueta '%s' del nombre de dominio contiene un carácter inválido: %s"
 
 msgid "Domain name labels cannot bu greater than 63 characters."
-msgstr ""
+msgstr "Las etiquetas del nombre de dominio no pueden ser superiores a 63 caracteres."
 
 msgid "Domain name labels cannot start nor end with hyphen."
-msgstr ""
+msgstr "Las etiquetas del nombre de dominio no puede empezar ni terminar con un guión."
 
 msgid "Domain new expiration date"
 msgstr "Nueva fecha de expiración del dominio"
@@ -2333,18 +2336,6 @@ msgstr "Error mientras se intentaba obtener la lista de las tarjetas de red."
 msgid "Error: Remote File not found!"
 msgstr "Error: Archivo Remoto no encontrado!"
 
-msgid "Error: Service port with same name already exists."
-msgstr "Error: Ya existe un puerto de servicio con el mismo nombre."
-
-msgid "Error: Unallowed protocol."
-msgstr "Error: Protocolo no permitido"
-
-msgid "Error: Wrong Ip number."
-msgstr "Error: Número de IP incorrecto."
-
-msgid "Error: Wrong value for show entry."
-msgstr "Error: Valor incorrecto para mostrar la entrada."
-
 msgid "Errors"
 msgstr "Errores"
 
@@ -2593,9 +2584,6 @@ msgstr "El directorio de inicio '%s' no existe"
 msgid "Homepage"
 msgstr "Página de inicio"
 
-msgid "Host"
-msgstr "Host"
-
 msgid "Hosting plan"
 msgstr "Plan de hosting"
 
@@ -2666,6 +2654,9 @@ msgstr "Tráfico Http"
 
 msgid "IP"
 msgstr "IP"
+
+msgid "IP Address"
+msgstr ""
 
 msgid "IP address"
 msgstr "Dirección IP"
@@ -2868,7 +2859,7 @@ msgid "Invalid certificate."
 msgstr "Certificado inválido"
 
 msgid "Invalid domain name."
-msgstr ""
+msgstr "Nombre de dominio inválido."
 
 msgid "Invalid expiration date."
 msgstr "Fecha de expiración no válida."
@@ -3064,7 +3055,7 @@ msgid "Mail feature is disabled."
 msgstr "La característica de correo está desactivada."
 
 msgid "Mail host is not valid."
-msgstr ""
+msgstr "El Host Mail no es válido."
 
 msgid "Mail usage"
 msgstr "Uso de Correos"
@@ -3455,8 +3446,8 @@ msgstr "Solo exec"
 msgid "Only gettext Machine Object files (MO files) are accepted."
 msgstr "Solo se aceptan archivos gettex Machine Object (Archivos MO)."
 
-msgid "Only positive numbers are allowed for services ports."
-msgstr "Solo estan permitidos numeros positivos para los puertos de servicios."
+msgid "Only numbers in range from 0 to 65535 are allowed."
+msgstr ""
 
 msgid "Only positive numbers are allowed."
 msgstr "Solo se admiten números positivos."
@@ -3820,7 +3811,7 @@ msgid "Plugin file %s doesn't exist or is not readable."
 msgstr "El archivo de Plugin %s no existe o no se puede leer."
 
 msgid "Plugin item errors"
-msgstr ""
+msgstr "Errores del elemento Plugin"
 
 msgid "Plugin list is empty."
 msgstr "La Lista de Plugins esta vacia."
@@ -3835,7 +3826,7 @@ msgstr "Administración de Plugins"
 msgid ""
 "Plugin manager has not been able to delete the %s plugin files. Please, "
 "remove them manually."
-msgstr ""
+msgstr "Administrador de Plugins no ha sido capaz de borrar los archivos de plugins %s. Por favor, eliminelo manualmente."
 
 #, php-format
 msgid "Plugin manager was unable to activate the %s plugin."
@@ -4384,8 +4375,8 @@ msgstr "Configuraciones del tráfico del servidor"
 msgid "Server traffic settings successfully updated."
 msgstr "La configuración del tráfico del servidor se ha actualizado correctamente."
 
-msgid "Service"
-msgstr "Servicio"
+msgid "Service Name"
+msgstr ""
 
 msgid "Service Unavailable"
 msgstr "Servicio no disponible"
@@ -4393,11 +4384,14 @@ msgstr "Servicio no disponible"
 msgid "Service name"
 msgstr "Nombre del servicio"
 
-msgid "Service port was successfully added"
-msgstr "Se ha añadido correctamente un puerto de servicio."
+msgid "Service name already exists."
+msgstr ""
 
-msgid "Service port was successfully removed."
-msgstr "El puerto de servicio ha sido eliminado correctamente."
+msgid "Service port successfully addeds"
+msgstr ""
+
+msgid "Service port successfully removed."
+msgstr ""
 
 msgid "Service ports"
 msgstr "Puertos de servicio"
@@ -5137,6 +5131,10 @@ msgstr "Color de diseño desconocido."
 msgid "Unknown reason."
 msgstr "Razón desconocida"
 
+#, php-format
+msgid "Unknown service name '%s'."
+msgstr ""
+
 msgid "Unknown type."
 msgstr "Tipo desconocido."
 
@@ -5200,7 +5198,7 @@ msgid "Uptime"
 msgstr "Tiempo de Funcionamiento"
 
 msgid "Usage of dot in domain name labels is prohibited."
-msgstr ""
+msgstr "El uso de puntos en las etiquetas de nombres de dominio esta prohibido."
 
 msgid "Usage status"
 msgstr "Estado de utilización"
@@ -5331,9 +5329,6 @@ msgstr "Muy alto"
 
 msgid "View"
 msgstr "Ver"
-
-msgid "View / Update service(s) port"
-msgstr "Ver / Actualizar puerto(s) de servicio(s)"
 
 msgid "View SSL certificate"
 msgstr "Ver certificado SSL"
@@ -5527,9 +5522,6 @@ msgstr "Estas excediendo tu límite de subdominios."
 msgid "You are not allowed to act on your own session."
 msgstr "No está permitido actuar en tu sesión."
 
-msgid "You are not allowed to remove this service port entry."
-msgstr "No tienes permiso para eliminar esta entrada de puerto de servicio."
-
 msgid "You are not allowed to update a protected plugin."
 msgstr "No estás autorizado para actualizar un plugin protegido."
 
@@ -5668,14 +5660,14 @@ msgstr "Tienes desactivado bases de datos SQL para este usuario. <br /> No se pu
 msgid "You have no closed tickets."
 msgstr "No tienes tickets cerrados."
 
-msgid "You have no custom service ports defined."
-msgstr "No tienes puertos de servicio personalizados definidos."
-
 msgid "You have no groups."
 msgstr "No tienes grupos."
 
 msgid "You have no open tickets."
 msgstr "No tienes tickets abiertos."
+
+msgid "You have not service ports defined."
+msgstr ""
 
 msgid ""
 "You have reached the maximum number of Email accounts allowed by your "

@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2013-10-26 19:08+0200\n"
-"PO-Revision-Date: 2013-10-26 17:09+0000\n"
+"POT-Creation-Date: 2013-10-28 11:50+0100\n"
+"PO-Revision-Date: 2013-10-28 10:52+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Swedish (Sweden) (http://www.transifex.com/projects/p/i-MSCP/language/sv_SE/)\n"
 "MIME-Version: 1.0\n"
@@ -154,6 +154,9 @@ msgid ""
 " Show all errors, except for warnings about deprecated code (Production)"
 msgstr "Visa alla fel, förutom varningar om föråldrat kod (Production)"
 
+msgid " Wrong IP address."
+msgstr ""
+
 msgid " was deleted by {ADMIN}!"
 msgstr " was deleted by {ADMIN}!"
 
@@ -242,8 +245,8 @@ msgid "%d / unlimited"
 msgstr "%d / obegränsad"
 
 #, php-format
-msgid "%d Service(s) port was successfully updated"
-msgstr "%d Service(s)-porten har uppdaterats"
+msgid "%d Service(s) port successfully updateds"
+msgstr ""
 
 #, php-format
 msgid "%d configuration parameter(s) have/has been created."
@@ -2056,27 +2059,27 @@ msgid "Domain name"
 msgstr "Domännamn"
 
 msgid "Domain name (in it ASCII form) cannot be greater than 255 characters."
-msgstr ""
+msgstr "Domännamn (i ASCII-format) får inte vara större än 255 tecken."
 
 msgid "Domain name cannot be empty."
 msgstr "Namnet får inte vara tomt."
 
 msgid "Domain name cannot start nor end with dot."
-msgstr ""
+msgstr "Domännamn får inte börja eller sluta med dot."
 
 #, php-format
 msgid "Domain name contains an invalid character: %s"
-msgstr ""
+msgstr "Domännamnet innehåller ett ogiltigt tecken: %s"
 
 #, php-format
 msgid "Domain name label '%s' contain an invalid character: %s"
-msgstr ""
+msgstr "Domännamnet etiketten ' %s' innehåller ett ogiltigt tecken: %s"
 
 msgid "Domain name labels cannot bu greater than 63 characters."
-msgstr ""
+msgstr "Domännamn etiketter inte var större än 63 tecken."
 
 msgid "Domain name labels cannot start nor end with hyphen."
-msgstr ""
+msgstr "Domännamn etiketter får inte börja eller sluta med bindestreck."
 
 msgid "Domain new expiration date"
 msgstr "Domän nytt utgångsdatum"
@@ -2327,18 +2330,6 @@ msgstr "Fel när man försöker få fram listan över nätverkskort."
 msgid "Error: Remote File not found!"
 msgstr "Fel: Remote File not found!"
 
-msgid "Error: Service port with same name already exists."
-msgstr "Fel: en service port med samma namn existerar redan."
-
-msgid "Error: Unallowed protocol."
-msgstr "Fel: otillåtet protokoll."
-
-msgid "Error: Wrong Ip number."
-msgstr "Fel: fel Ip nummer."
-
-msgid "Error: Wrong value for show entry."
-msgstr "Fel: fel värde för visa rubrik."
-
 msgid "Errors"
 msgstr "Fel"
 
@@ -2587,9 +2578,6 @@ msgstr "Home directory '%s' finns inte"
 msgid "Homepage"
 msgstr "Hemsida"
 
-msgid "Host"
-msgstr "Värd"
-
 msgid "Hosting plan"
 msgstr "Webbhotellsplan"
 
@@ -2660,6 +2648,9 @@ msgstr "Http traffic"
 
 msgid "IP"
 msgstr "IP-adress"
+
+msgid "IP Address"
+msgstr ""
 
 msgid "IP address"
 msgstr "IP-adress"
@@ -2862,7 +2853,7 @@ msgid "Invalid certificate."
 msgstr "Invalid certificate."
 
 msgid "Invalid domain name."
-msgstr ""
+msgstr "Ogiltigt domännamn."
 
 msgid "Invalid expiration date."
 msgstr "Ogiltigt förfallodatum."
@@ -3058,7 +3049,7 @@ msgid "Mail feature is disabled."
 msgstr "Mail feature is disabled."
 
 msgid "Mail host is not valid."
-msgstr ""
+msgstr "E-postvärdens är inte giltig."
 
 msgid "Mail usage"
 msgstr "Mail usage"
@@ -3449,8 +3440,8 @@ msgstr "Bara exec"
 msgid "Only gettext Machine Object files (MO files) are accepted."
 msgstr "Endast gettext Machine Object-filer (MO-filer) accepteras."
 
-msgid "Only positive numbers are allowed for services ports."
-msgstr "Bara pos. nr. tillåten för service port."
+msgid "Only numbers in range from 0 to 65535 are allowed."
+msgstr ""
 
 msgid "Only positive numbers are allowed."
 msgstr "Endast positiva tal är tillåtna."
@@ -3814,7 +3805,7 @@ msgid "Plugin file %s doesn't exist or is not readable."
 msgstr "Plugin file %s doesn't exist or is not readable."
 
 msgid "Plugin item errors"
-msgstr ""
+msgstr "Plugin item errors"
 
 msgid "Plugin list is empty."
 msgstr "Plugin list is empty."
@@ -3829,7 +3820,7 @@ msgstr "Plugin management"
 msgid ""
 "Plugin manager has not been able to delete the %s plugin files. Please, "
 "remove them manually."
-msgstr ""
+msgstr "Plugin manager har inte kunnat ta bort %s plugin filerna. Vänligen, ta bort dem manuellt."
 
 #, php-format
 msgid "Plugin manager was unable to activate the %s plugin."
@@ -4378,8 +4369,8 @@ msgstr "Servertrafikinställningar"
 msgid "Server traffic settings successfully updated."
 msgstr "Server trafik inställningar har uppdaterats."
 
-msgid "Service"
-msgstr "Tjänst"
+msgid "Service Name"
+msgstr ""
 
 msgid "Service Unavailable"
 msgstr "Tjänsten är inte tillgänglig"
@@ -4387,11 +4378,14 @@ msgstr "Tjänsten är inte tillgänglig"
 msgid "Service name"
 msgstr "Tjänstnamn"
 
-msgid "Service port was successfully added"
-msgstr "Serviceport har lagts till"
+msgid "Service name already exists."
+msgstr ""
 
-msgid "Service port was successfully removed."
-msgstr "Service port har tagits bort."
+msgid "Service port successfully addeds"
+msgstr ""
+
+msgid "Service port successfully removed."
+msgstr ""
 
 msgid "Service ports"
 msgstr "Service ports"
@@ -5131,6 +5125,10 @@ msgstr "Okänt layout färg."
 msgid "Unknown reason."
 msgstr "Okänd orsak."
 
+#, php-format
+msgid "Unknown service name '%s'."
+msgstr ""
+
 msgid "Unknown type."
 msgstr "Okänd typ."
 
@@ -5194,7 +5192,7 @@ msgid "Uptime"
 msgstr "Uptime"
 
 msgid "Usage of dot in domain name labels is prohibited."
-msgstr ""
+msgstr "Användning av punkten i domännamn etiketter är förbjudet."
 
 msgid "Usage status"
 msgstr "Usage status"
@@ -5325,9 +5323,6 @@ msgstr "Mycket hög"
 
 msgid "View"
 msgstr "Visa"
-
-msgid "View / Update service(s) port"
-msgstr "Visa / Uppdatera tjänst(er) porten"
 
 msgid "View SSL certificate"
 msgstr "View SSL certificate"
@@ -5521,9 +5516,6 @@ msgstr "You are exceeding your subdomain limit."
 msgid "You are not allowed to act on your own session."
 msgstr "Du får inte gör det på din egen session."
 
-msgid "You are not allowed to remove this service port entry."
-msgstr "You are not allowed to remove this service port entry."
-
 msgid "You are not allowed to update a protected plugin."
 msgstr "You are not allowed to update a protected plugin."
 
@@ -5662,14 +5654,14 @@ msgstr "You have disabled SQL databases for this user.<br />You cannot have SQL 
 msgid "You have no closed tickets."
 msgstr "You have no closed tickets."
 
-msgid "You have no custom service ports defined."
-msgstr "You have no custom service ports defined."
-
 msgid "You have no groups."
 msgstr "Du har inga grupper."
 
 msgid "You have no open tickets."
 msgstr "Du har inga obesvarade tickets"
+
+msgid "You have not service ports defined."
+msgstr ""
 
 msgid ""
 "You have reached the maximum number of Email accounts allowed by your "

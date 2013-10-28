@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2013-10-26 19:08+0200\n"
-"PO-Revision-Date: 2013-10-26 17:09+0000\n"
+"POT-Creation-Date: 2013-10-28 11:50+0100\n"
+"PO-Revision-Date: 2013-10-28 10:52+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Japanese (Japan) (http://www.transifex.com/projects/p/i-MSCP/language/ja_JP/)\n"
 "MIME-Version: 1.0\n"
@@ -155,6 +155,9 @@ msgid ""
 " Show all errors, except for warnings about deprecated code (Production)"
 msgstr "非推奨のコードについての警告を除いて、全てのエラーを表示する（生産）"
 
+msgid " Wrong IP address."
+msgstr ""
+
 msgid " was deleted by {ADMIN}!"
 msgstr "{ADMIN} が削除された！"
 
@@ -243,8 +246,8 @@ msgid "%d / unlimited"
 msgstr "%d / 無制限"
 
 #, php-format
-msgid "%d Service(s) port was successfully updated"
-msgstr "%d のサービスポートが更新されました"
+msgid "%d Service(s) port successfully updateds"
+msgstr ""
 
 #, php-format
 msgid "%d configuration parameter(s) have/has been created."
@@ -2328,18 +2331,6 @@ msgstr "ネットワークカードのリストを取得中にエラーが発生
 msgid "Error: Remote File not found!"
 msgstr "エラー：リモートファイルが見つかりません！"
 
-msgid "Error: Service port with same name already exists."
-msgstr "エラー：同じ名前のサービスポートが既に存在しています。"
-
-msgid "Error: Unallowed protocol."
-msgstr "エラー：許可されないプロトコルです。"
-
-msgid "Error: Wrong Ip number."
-msgstr "エラー：IP番号に誤りがあります。"
-
-msgid "Error: Wrong value for show entry."
-msgstr "エラー：表示されたエントリの値に誤があります。"
-
 msgid "Errors"
 msgstr "エラー"
 
@@ -2588,9 +2579,6 @@ msgstr "ホームディレクトリ '%s'は存在しません"
 msgid "Homepage"
 msgstr "ホームページ"
 
-msgid "Host"
-msgstr "ホスト"
-
 msgid "Hosting plan"
 msgstr "ホスティングプラン"
 
@@ -2661,6 +2649,9 @@ msgstr "Http トラフィック"
 
 msgid "IP"
 msgstr "IPアドレス"
+
+msgid "IP Address"
+msgstr ""
 
 msgid "IP address"
 msgstr "IPアドレス"
@@ -3450,8 +3441,8 @@ msgstr "実行のみ"
 msgid "Only gettext Machine Object files (MO files) are accepted."
 msgstr "gettext Machine Objectファイル（MOファイル）だけは、受け入れられます。"
 
-msgid "Only positive numbers are allowed for services ports."
-msgstr "正の数値のみが、サービスポートに対して許可されています。"
+msgid "Only numbers in range from 0 to 65535 are allowed."
+msgstr ""
 
 msgid "Only positive numbers are allowed."
 msgstr "正の数値のみが許可されます。"
@@ -4379,8 +4370,8 @@ msgstr "サーバのトラフィック設定"
 msgid "Server traffic settings successfully updated."
 msgstr "サーバトラフィックが正常に更新されました。"
 
-msgid "Service"
-msgstr "サービス"
+msgid "Service Name"
+msgstr ""
 
 msgid "Service Unavailable"
 msgstr "サービスは利用できません"
@@ -4388,11 +4379,14 @@ msgstr "サービスは利用できません"
 msgid "Service name"
 msgstr "サービス名"
 
-msgid "Service port was successfully added"
-msgstr "サービスポートは追加されました"
+msgid "Service name already exists."
+msgstr ""
 
-msgid "Service port was successfully removed."
-msgstr "サービスポートが削除されました。"
+msgid "Service port successfully addeds"
+msgstr ""
+
+msgid "Service port successfully removed."
+msgstr ""
 
 msgid "Service ports"
 msgstr "サービスポート"
@@ -5132,6 +5126,10 @@ msgstr "不明なレイアウトカラーが指定されました。"
 msgid "Unknown reason."
 msgstr "理由が不明。"
 
+#, php-format
+msgid "Unknown service name '%s'."
+msgstr ""
+
 msgid "Unknown type."
 msgstr "不明な種別が指定されました。"
 
@@ -5327,9 +5325,6 @@ msgstr "緊急"
 msgid "View"
 msgstr "表示"
 
-msgid "View / Update service(s) port"
-msgstr "表示/更新　サービスポート"
-
 msgid "View SSL certificate"
 msgstr "SSL証明書を表示する"
 
@@ -5522,9 +5517,6 @@ msgstr "サブドメイン数の制限を超えています。"
 msgid "You are not allowed to act on your own session."
 msgstr "自分のセッションに基づいて行動することは許されません。"
 
-msgid "You are not allowed to remove this service port entry."
-msgstr "このサービスポートのエントリを削除することはできません。"
-
 msgid "You are not allowed to update a protected plugin."
 msgstr "保護されたプラグインの更新が許可されていません。"
 
@@ -5663,14 +5655,14 @@ msgstr "このユーザーのSQLデータベースを無効にしました。<br
 msgid "You have no closed tickets."
 msgstr "閉じたチケットを持っていません。"
 
-msgid "You have no custom service ports defined."
-msgstr "カスタムサービスポートが定義されていません。"
-
 msgid "You have no groups."
 msgstr "グループがありません。"
 
 msgid "You have no open tickets."
 msgstr "オープンチケットを持っていません。"
+
+msgid "You have not service ports defined."
+msgstr ""
 
 msgid ""
 "You have reached the maximum number of Email accounts allowed by your "

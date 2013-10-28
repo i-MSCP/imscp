@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2013-10-26 19:08+0200\n"
-"PO-Revision-Date: 2013-10-26 17:09+0000\n"
+"POT-Creation-Date: 2013-10-28 11:50+0100\n"
+"PO-Revision-Date: 2013-10-28 10:52+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Ukrainian (Ukraine) (http://www.transifex.com/projects/p/i-MSCP/language/uk_UA/)\n"
 "MIME-Version: 1.0\n"
@@ -157,6 +157,9 @@ msgid ""
 " Show all errors, except for warnings about deprecated code (Production)"
 msgstr "Показывать все ошибки, кроме ошибок о б устаревшем коде (Рекомендуется)"
 
+msgid " Wrong IP address."
+msgstr ""
+
 msgid " was deleted by {ADMIN}!"
 msgstr "было удалено {ADMIN}!"
 
@@ -245,8 +248,8 @@ msgid "%d / unlimited"
 msgstr ""
 
 #, php-format
-msgid "%d Service(s) port was successfully updated"
-msgstr "%d Порти служб бувло успішно оновлено"
+msgid "%d Service(s) port successfully updateds"
+msgstr ""
 
 #, php-format
 msgid "%d configuration parameter(s) have/has been created."
@@ -2330,18 +2333,6 @@ msgstr "Помилка при спробі отримання списку ме�
 msgid "Error: Remote File not found!"
 msgstr "Помилка: Віддалений файл не знайдено!"
 
-msgid "Error: Service port with same name already exists."
-msgstr "Ошибка: Порт службы с таким именем уже существует."
-
-msgid "Error: Unallowed protocol."
-msgstr "Ошибка: Неразрешенный протокол."
-
-msgid "Error: Wrong Ip number."
-msgstr "Ошибка: Неверный номер IP."
-
-msgid "Error: Wrong value for show entry."
-msgstr "Ошибка: Неверное значение для показа записи."
-
 msgid "Errors"
 msgstr "Помилки"
 
@@ -2590,9 +2581,6 @@ msgstr ""
 msgid "Homepage"
 msgstr "Домашняя страница"
 
-msgid "Host"
-msgstr "Вузол"
-
 msgid "Hosting plan"
 msgstr "Хостинг-план"
 
@@ -2663,6 +2651,9 @@ msgstr "HTTP трафик"
 
 msgid "IP"
 msgstr "IP"
+
+msgid "IP Address"
+msgstr ""
 
 msgid "IP address"
 msgstr "IP адреса"
@@ -3452,8 +3443,8 @@ msgstr "Только запустить"
 msgid "Only gettext Machine Object files (MO files) are accepted."
 msgstr "Допустимы только файлы gettext Machine Object files (MO files)."
 
-msgid "Only positive numbers are allowed for services ports."
-msgstr "Портами служб могут быть только положительные числа."
+msgid "Only numbers in range from 0 to 65535 are allowed."
+msgstr ""
 
 msgid "Only positive numbers are allowed."
 msgstr "Разрешены только положительные числа"
@@ -4381,8 +4372,8 @@ msgstr "Налаштування трафіку сервера"
 msgid "Server traffic settings successfully updated."
 msgstr "Настройки трафика сервера успешно обновлены."
 
-msgid "Service"
-msgstr "Служба"
+msgid "Service Name"
+msgstr ""
 
 msgid "Service Unavailable"
 msgstr ""
@@ -4390,11 +4381,14 @@ msgstr ""
 msgid "Service name"
 msgstr "Ім'я служби"
 
-msgid "Service port was successfully added"
-msgstr "Порт служб був успішно доданий"
+msgid "Service name already exists."
+msgstr ""
 
-msgid "Service port was successfully removed."
-msgstr "Порт служб был успешно удален"
+msgid "Service port successfully addeds"
+msgstr ""
+
+msgid "Service port successfully removed."
+msgstr ""
 
 msgid "Service ports"
 msgstr "Порты служб"
@@ -5134,6 +5128,10 @@ msgstr "Неизвестный цвед подложки."
 msgid "Unknown reason."
 msgstr "Неизвестная причина."
 
+#, php-format
+msgid "Unknown service name '%s'."
+msgstr ""
+
 msgid "Unknown type."
 msgstr "Неизвестный тип."
 
@@ -5329,9 +5327,6 @@ msgstr "Очень высокий"
 msgid "View"
 msgstr "Перегляд"
 
-msgid "View / Update service(s) port"
-msgstr "Перегляд/Оновлення портів служб"
-
 msgid "View SSL certificate"
 msgstr "Просмотреть SSL сертификат"
 
@@ -5524,9 +5519,6 @@ msgstr ""
 msgid "You are not allowed to act on your own session."
 msgstr ""
 
-msgid "You are not allowed to remove this service port entry."
-msgstr "Вам не разрешено удалять эту запись порта служб."
-
 msgid "You are not allowed to update a protected plugin."
 msgstr ""
 
@@ -5665,13 +5657,13 @@ msgstr "Вы отключили базы данных SQL для этого по
 msgid "You have no closed tickets."
 msgstr ""
 
-msgid "You have no custom service ports defined."
-msgstr "У Вас нет заданных портов служб."
-
 msgid "You have no groups."
 msgstr "У вас нет групп."
 
 msgid "You have no open tickets."
+msgstr ""
+
+msgid "You have not service ports defined."
 msgstr ""
 
 msgid ""

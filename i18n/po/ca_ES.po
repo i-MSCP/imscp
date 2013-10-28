@@ -19,8 +19,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2013-10-26 19:08+0200\n"
-"PO-Revision-Date: 2013-10-26 17:09+0000\n"
+"POT-Creation-Date: 2013-10-28 11:50+0100\n"
+"PO-Revision-Date: 2013-10-28 10:52+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Catalan (Spain) (http://www.transifex.com/projects/p/i-MSCP/language/ca_ES/)\n"
 "MIME-Version: 1.0\n"
@@ -164,6 +164,9 @@ msgid ""
 " Show all errors, except for warnings about deprecated code (Production)"
 msgstr " Mostrar tots els errors, excepte el avisos de codi obsolet (Producció)"
 
+msgid " Wrong IP address."
+msgstr ""
+
 msgid " was deleted by {ADMIN}!"
 msgstr " ha estat esborrat per  {ADMIN}!"
 
@@ -252,8 +255,8 @@ msgid "%d / unlimited"
 msgstr "%d / il·limitat"
 
 #, php-format
-msgid "%d Service(s) port was successfully updated"
-msgstr "%d ports actualitzats correctament"
+msgid "%d Service(s) port successfully updateds"
+msgstr ""
 
 #, php-format
 msgid "%d configuration parameter(s) have/has been created."
@@ -2337,18 +2340,6 @@ msgstr "Hi ha hagut un error obtenint la llista de targetes de xarxa."
 msgid "Error: Remote File not found!"
 msgstr "Error: Arxiu remot no trobat"
 
-msgid "Error: Service port with same name already exists."
-msgstr "Error: Ja existeix un \"service port\" amb el mateix nom."
-
-msgid "Error: Unallowed protocol."
-msgstr "Error: Protocol no acceptat."
-
-msgid "Error: Wrong Ip number."
-msgstr "Error: Número lp incorrecte."
-
-msgid "Error: Wrong value for show entry."
-msgstr "Error: Valor incorrecte per mostrar l'entrada."
-
 msgid "Errors"
 msgstr "Errors"
 
@@ -2597,9 +2588,6 @@ msgstr ""
 msgid "Homepage"
 msgstr "Inici"
 
-msgid "Host"
-msgstr "Host"
-
 msgid "Hosting plan"
 msgstr "Pla de Hosting"
 
@@ -2670,6 +2658,9 @@ msgstr "Tràfic Http"
 
 msgid "IP"
 msgstr "IP"
+
+msgid "IP Address"
+msgstr ""
 
 msgid "IP address"
 msgstr "Adreça IP"
@@ -3459,8 +3450,8 @@ msgstr "Només exec"
 msgid "Only gettext Machine Object files (MO files) are accepted."
 msgstr "Només s'accepten els fitxers Machine Object (fitxers MO)."
 
-msgid "Only positive numbers are allowed for services ports."
-msgstr "Només es permeten números positius per als ports de serveis."
+msgid "Only numbers in range from 0 to 65535 are allowed."
+msgstr ""
 
 msgid "Only positive numbers are allowed."
 msgstr "Només s'accepten nombres positius."
@@ -4388,8 +4379,8 @@ msgstr "Paràmetres de trànsit del servidor"
 msgid "Server traffic settings successfully updated."
 msgstr "Configuració del tràfic de servidor actualitzada."
 
-msgid "Service"
-msgstr "Servei"
+msgid "Service Name"
+msgstr ""
 
 msgid "Service Unavailable"
 msgstr ""
@@ -4397,11 +4388,14 @@ msgstr ""
 msgid "Service name"
 msgstr "Nom del servei"
 
-msgid "Service port was successfully added"
-msgstr "Port actualitzat correctament"
+msgid "Service name already exists."
+msgstr ""
 
-msgid "Service port was successfully removed."
-msgstr "Port de servei eliminat."
+msgid "Service port successfully addeds"
+msgstr ""
+
+msgid "Service port successfully removed."
+msgstr ""
 
 msgid "Service ports"
 msgstr "Ports dels serveis"
@@ -5141,6 +5135,10 @@ msgstr "Capa de color desconeguda."
 msgid "Unknown reason."
 msgstr ""
 
+#, php-format
+msgid "Unknown service name '%s'."
+msgstr ""
+
 msgid "Unknown type."
 msgstr "Tipus desconegut."
 
@@ -5336,9 +5334,6 @@ msgstr "Molt alta"
 msgid "View"
 msgstr "Veure"
 
-msgid "View / Update service(s) port"
-msgstr "Veure / Actualitzar port(s) de servei(s)"
-
 msgid "View SSL certificate"
 msgstr "Veure el certificat SSL"
 
@@ -5531,9 +5526,6 @@ msgstr ""
 msgid "You are not allowed to act on your own session."
 msgstr ""
 
-msgid "You are not allowed to remove this service port entry."
-msgstr "No tens permís per eliminar aquesta entrada de port de servei."
-
 msgid "You are not allowed to update a protected plugin."
 msgstr ""
 
@@ -5672,13 +5664,13 @@ msgstr "Tens desactivades les Bases de Dades SQL per aquest usuari.<br />No pots
 msgid "You have no closed tickets."
 msgstr ""
 
-msgid "You have no custom service ports defined."
-msgstr "No hi ha definits  ports de serveis personalitzats."
-
 msgid "You have no groups."
 msgstr "No tens grups."
 
 msgid "You have no open tickets."
+msgstr ""
+
+msgid "You have not service ports defined."
 msgstr ""
 
 msgid ""
