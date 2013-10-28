@@ -36,8 +36,8 @@ GUI:
 	- Removed: Domain name related parameters
 
 Tickets:
-	Fixed #447: Defect - External mail server feature is broken, when mail account limit is set to -1 (reopened)
-	Fixed #945: Bug - impossible to create top-level-domains .рф (russian federation zone)
+	- Fixed #447: Defect - External mail server feature is broken, when mail account limit is set to -1 (reopened)
+	- Fixed #945: Bug - impossible to create top-level-domains .рф (russian federation zone)
 
 ------------------------------------------------------------------------------------------------------------------------
 1.1.0-rc4.4
