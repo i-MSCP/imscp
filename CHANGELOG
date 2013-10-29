@@ -16,6 +16,9 @@ ENGINE:
 	- Removed: Apache cband module configuration (Should be provided as plugin)
 	- Fixed: Several 'Can't use an undefined value as a HASH reference...' errors
 
+TOOLS:
+	- Fixed: ispCP migration script must not delete Web data while deleting unix users
+
 GUI:
 	- Added IPv6 service status support
 	- Changed: Any service port become editable

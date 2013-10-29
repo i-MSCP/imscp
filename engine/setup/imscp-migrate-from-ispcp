@@ -421,7 +421,7 @@ sub deleteIspCPunixUsers
 	my @errors;
 	my $rs = 0;
 
-	my $userH = iMSCP::SystemUser->new();
+	my $userH = iMSCP::SystemUser->new('keepHome' => 'yes');
 	my $groupH = iMSCP::SystemGroup->getInstance();
 
 	# Master unix user/group
