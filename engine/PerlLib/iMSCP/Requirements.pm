@@ -200,6 +200,8 @@ sub _programVersions
 	if($regexp) {
 		$stdout =~ m!$regexp!;
 		$stdout = $1;
+	} else {
+		fatal("Unable to find $program version. Output was: $stdout");
 	}
 
 	my $result = $self->checkVersion($stdout, $minversion);
