@@ -186,27 +186,26 @@ sub _externalProgram
 # @param string $program program name
 # @param string $regexp regular expression to find the program version
 # @param string $minversion program minimum version required
-# @return void
+# @return mixed 0 on success, error string on error
 sub _programVersions
 {
 	my ($self, $program, $regexp, $minversion) = @_;
-	my ($stdout, $stderr);
 
+	my ($stdout, $stderr);
 	execute($program, \$stdout, \$stderr);
 	debug($stdout) if $stdout;
-	debug($stderr) if $stderr;
+	debug($stderr) if $stderr && $rs;
 	fatal('Unable to find $program version: No output') if ! $stdout;
 
 	if($regexp) {
-		$stdout =~ m!$regexp!;
-		$stdout = $1;
-	} else {
-		fatal("Unable to find $program version. Output was: $stdout");
+		if($stdout =~ m!$regexp!) {
+			$stdout = $1;
+		} else {
+			fatal("Unable to find $program version. Output was: $stdout");
+		}
 	}
 
-	my $result = $self->checkVersion($stdout, $minversion);
-
-	$result;
+	$self->checkVersion($stdout, $minversion);
 }
 
 # Checks for version.
