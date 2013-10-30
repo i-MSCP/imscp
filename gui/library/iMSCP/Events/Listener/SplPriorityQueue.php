@@ -19,25 +19,39 @@
  *
  * @category    iMSCP
  * @package     iMSCP_Core
- * @subpackage  Events
+ * @subpackage  Events_Listener
  * @copyright   2010-2013 by i-MSCP team
- * @author      Laurent Declercq <l.declercq@nuxwin.com>
+ * @author      Laurent Declercq <l.declercq@i-mscp.net>
  * @link        http://www.i-mscp.net i-MSCP Home Site
  * @license     http://www.gnu.org/licenses/gpl-2.0.txt GPL v2
  */
 
-/** @see iMSCP_Exception */
-require_once 'iMSCP/Exception.php';
-
 /**
- * Events Exception class.
+ * Class iMSCP_Events_Listener_SplPriorityQueue
+ *
+ * Allows to keep order for listeners with same priority (FIFO order).
  *
  * @category    iMSCP
  * @package     iMSCP_Core
- * @subpackage  Events
+ * @subpackage  Events_Listener
  * @author      Laurent Declercq <l.declercq@nuxwin.com>
  */
-class iMSCP_Events_Exception extends iMSCP_Exception
+class iMSCP_Events_Listener_SplPriorityQueue extends SplPriorityQueue
 {
+	/**
+	 * @var int Seed used to ensure queue order for listeners whith same priority
+	 */
+	protected $seed = PHP_INT_MAX;
 
+	/**
+	 * Insert a value with a given priority
+	 *
+	 * @param mixed $listener Listener to insert in the queue
+	 * @param mixed $priority Item priority
+	 * @return void
+	 */
+	public function insert($listener, $priority)
+	{
+		parent::insert($listener, array($priority, $this->seed--));
+	}
 }

@@ -219,7 +219,7 @@ class iMSCP_Authentication
 
 		if (!$response->isStopped()) {
 			// Registers the default authentication handler (user,password)
-			$em->registerListener(iMSCP_Events::onAuthentication, array($this, 'authenticateUserPassword'), 10);
+			$em->registerListener(iMSCP_Events::onAuthentication, array($this, 'authenticateUserPassword'), -10);
 
 			// Process authentication through available handlers
 			$response = $em->dispatch(

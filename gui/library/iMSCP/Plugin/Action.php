@@ -52,6 +52,7 @@ abstract class iMSCP_Plugin_Action extends iMSCP_Plugin
 	 * Register a callback for the given event(s).
 	 *
 	 * @param iMSCP_Events_Manager_Interface $controller
+	 * @return void
 	 */
 	public function register(iMSCP_Events_Manager_Interface $controller)
 	{
@@ -61,12 +62,12 @@ abstract class iMSCP_Plugin_Action extends iMSCP_Plugin
 	/**
 	 * Return events controller.
 	 *
-	 * @return null|iMSCP_Events_Manager
+	 * @return iMSCP_Events_Manager
 	 */
 	public function getController()
 	{
 		if(!isset($this->_controller)) {
-			trigger_error(sprintf('Controller is not registered in %s', get_class($this)), E_USER_WARNING);
+			$this->_controller = iMSCP_Events_Manager::getInstance();
 		}
 
 		return $this->_controller;

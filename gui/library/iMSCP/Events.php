@@ -579,6 +579,7 @@ class iMSCP_Events
 	 *
 	 * - pluginManager: An iMSCP_Plugin_Manager instance
 	 * - pluginName: Plugin name
+	 * - pluginVersion: Plugin version
 	 * - pluginInstance: An iMSCP_Plugin instance
 	 *
 	 * @const string
@@ -592,6 +593,7 @@ class iMSCP_Events
 	 *
 	 * - pluginManager: An iMSCP_Plugin_Manager instance
 	 * - pluginName: Plugin name
+	 * - pluginVersion: Plugin version
 	 * - pluginInstance: An iMSCP_Plugin instance
 	 *
 	 * @const string
@@ -605,6 +607,7 @@ class iMSCP_Events
 	 *
 	 * - pluginManager: An iMSCP_Plugin_Manager instance
 	 * - pluginName: Plugin name
+	 * - pluginVersion: Plugin version
 	 * - pluginInstance: An iMSCP_Plugin instance
 	 *
 	 * @const string
@@ -618,6 +621,7 @@ class iMSCP_Events
 	 *
 	 * - pluginManager: An iMSCP_Plugin_Manager instance
 	 * - pluginName: Plugin name
+	 * - pluginVersion: Plugin version
 	 * - pluginInstance: An iMSCP_Plugin instance
 	 *
 	 * @const string
@@ -631,6 +635,7 @@ class iMSCP_Events
 	 *
 	 * - pluginManager: An iMSCP_Plugin_Manager instance
 	 * - pluginName: Plugin name
+	 * - pluginVersion: Plugin version
 	 * - pluginInstance: An iMSCP_Plugin instance
 	 *
 	 * @const string
@@ -644,6 +649,7 @@ class iMSCP_Events
 	 *
 	 * - pluginManager: An iMSCP_Plugin_Manager instance
 	 * - pluginName: Plugin name
+	 * - pluginVersion: Plugin version
 	 * - pluginInstance: An iMSCP_Plugin instance
 	 *
 	 * @const string
@@ -657,6 +663,7 @@ class iMSCP_Events
 	 *
 	 * - pluginManager: An iMSCP_Plugin_Manager instance
 	 * - pluginName: Plugin name
+	 * - pluginVersion: Plugin version
 	 * - pluginInstance: An iMSCP_Plugin instance
 	 *
 	 * @const string
@@ -670,6 +677,7 @@ class iMSCP_Events
 	 *
 	 * - pluginManager: An iMSCP_Plugin_Manager instance
 	 * - pluginName: Plugin name
+	 * - pluginVersion: Plugin version
 	 * - pluginInstance: An iMSCP_Plugin instance
 	 *
 	 * @const string

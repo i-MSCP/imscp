@@ -229,7 +229,10 @@ class iMSCP_Initializer
 
 		if (!isset($_SESSION['user_logged'])) {
 			$eventManager->registerListener(
-				iMSCP_Events::onAfterSetIdentity, function($event) { unset($_SESSION['user_theme_color']); }
+				iMSCP_Events::onAfterSetIdentity,
+				function($event) {
+					unset($_SESSION['user_theme_color']);
+				}
 			);
 		}
 	}
@@ -506,7 +509,9 @@ class iMSCP_Initializer
 	{
 		iMSCP_Events_Manager::getInstance()->registerListener(
 			array(
-				iMSCP_Events::onAdminScriptStart, iMSCP_Events::onResellerScriptStart, iMSCP_Events::onClientScriptStart
+				iMSCP_Events::onAdminScriptStart,
+				iMSCP_Events::onResellerScriptStart,
+				iMSCP_Events::onClientScriptStart
 			),
 			'layout_loadNavigation'
 		);

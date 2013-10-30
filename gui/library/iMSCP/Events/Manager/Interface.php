@@ -26,6 +26,9 @@
  * @license     http://www.gnu.org/licenses/gpl-2.0.txt GPL v2
  */
 
+/** @see iMSCP_Events_Manager_Interface */
+require_once 'iMSCP/Events/Listener.php';
+
 /**
  * Events Manager interface.
  *
@@ -52,7 +55,7 @@ interface iMSCP_Events_Manager_Interface
 	 * @param string $eventName The name of the event to dispatch.
 	 * @param mixed $arguments OPTIONAL The data to pass to the event listener method.
 	 *
-	 * @return iMSCP_Events_Listeners_ResponseCollection
+	 * @return iMSCP_Events_Listener_ResponseCollection
 	 */
 	public function dispatch($eventName, $arguments = array());
 
@@ -60,31 +63,46 @@ interface iMSCP_Events_Manager_Interface
 	 * Registers an event listener that listens on the specified events.
 	 *
 	 * @abstract
-	 * @param  string|array $eventNames The event(s) to listen on.
-	 * @param  callable|object $listener Listener callback or listener object.
+	 * @param  string|array $event The event(s) to listen on.
+	 * @param  callable|object $listener PHP callback or object which implement method with same name as event.
 	 * @param  int $priority The higher this value, the earlier an event listener will be triggered in the chain.
 	 * @return iMSCP_Events_Manager_Interface Provide fluent interface, returns self
 	 */
-	public function registerListener($eventNames, $listener, $priority = 1);
+	public function registerListener($event, $listener, $priority = 1);
 
 	/**
-	 * Unregister an event listener from the given event.
+	 * Unregister an event listener from an event.
 	 *
-	 * @abstract
-	 * @param  string $eventName The event to remove a listener from.
-	 * @param  callable|object $listener The listener callback or object to remove.
+	 * @param iMSCP_Listener $listener The listener object to remove.
 	 * @return bool TRUE if $listener is found and unregistered, FALSE otherwise
 	 */
-	public function unregisterListener($eventName, $listener);
+	public function unregisterListener(iMSCP_Listener $listener);
 
 	/**
-	 * Returns the listeners for the given event or all listeners.
+	 * Retrieve all registered events
 	 *
 	 * @abstract
-	 * @param  string|null $eventName The name of the event.
-	 * @return array The event listeners for the specified event, or all event listeners by event name if $event is NULL.
+	 * @return array
 	 */
-	public function getListeners($eventName = null);
+	public function getEvents();
+
+	/**
+	 * Retrieve all listener which listen to a particular event.
+	 *
+	 * @abstract
+	 * @param  string|null $event Event name
+	 * @return SplPriorityQueue
+	 */
+	public function getListeners($event);
+
+	/**
+	 * Clear all listeners for a given event
+	 *
+	 * @abstract
+	 * @param string $event Event name
+	 * @return void
+	 */
+	public function clearListeners($event);
 
 	/**
 	 * Checks whether an event has any registered listeners.

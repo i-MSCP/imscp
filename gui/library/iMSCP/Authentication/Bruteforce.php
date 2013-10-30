@@ -196,8 +196,9 @@ class iMSCP_Authentication_Bruteforce extends iMSCP_Plugin_Action
 	 */
 	public function register(iMSCP_Events_Manager_Interface $controller)
 	{
-		$controller->registerListener(iMSCP_Events::onBeforeAuthentication, $this, 900);
-		$controller->registerListener(iMSCP_Events::onBeforeSetIdentity, $this, 900);
+		$controller->registerListener(
+			array(iMSCP_Events::onBeforeAuthentication, iMSCP_Events::onBeforeSetIdentity), $this, -999
+		);
 
 		$this->_controller = $controller;
 	}
@@ -206,7 +207,7 @@ class iMSCP_Authentication_Bruteforce extends iMSCP_Plugin_Action
 	 * Implements the onBeforeAuthentication listener method.
 	 *
 	 * @param iMSCP_Events_Event $event Represent an onBeforeAuthentication event that is triggered in the
-	 *									 iMSCP_Authentication component.
+	 *									iMSCP_Authentication component.
 	 * @return null|string
 	 */
 	public function onBeforeAuthentication($event)

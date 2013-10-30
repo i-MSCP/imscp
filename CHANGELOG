@@ -5,6 +5,10 @@
 Git Master
 ------------------------------------------------------------------------------------------------------------------------
 
+GUI:
+	- Changed: EventsManager - Replaced Listener stack by a priority queue (Performance issues)
+	- Updated plugin API (version 0.1.2)
+
 SETUP:
 	- Fixed: ispCP migration script must not delete Web data while deleting unix users
 

@@ -39,7 +39,7 @@ class iMSCP_Plugin_Manager
 	/**
 	 * @var string
 	 */
-	protected $pluginApiVersion = '0.1.1';
+	protected $pluginApiVersion = '0.1.2';
 
 	/**
 	 * @var string Plugins directory
@@ -448,6 +448,8 @@ class iMSCP_Plugin_Manager
 				$pluginInstance = $this->load($pluginName, false, false);
 				$pluginInstance->register($this->eventManager);
 
+				$pluginInfo = $pluginInstance->getInfo();
+
 				$this->setError($pluginName, null);
 
 				try {
@@ -456,6 +458,7 @@ class iMSCP_Plugin_Manager
 						array(
 							'pluginManager' => $this,
 							'pluginName' => $pluginName,
+							'pluginVersion' => $pluginInfo['version'],
 							'action' => $statusTo[$pluginStatus][1]
 						)
 					);
@@ -475,6 +478,7 @@ class iMSCP_Plugin_Manager
 							array(
 								'pluginManager' => $this,
 								'pluginName' => $pluginName,
+								'pluginVersion' => $pluginInfo['version'],
 								'action' => $statusTo[$pluginStatus][1]
 							)
 						);
@@ -526,6 +530,8 @@ class iMSCP_Plugin_Manager
 				$pluginInstance = $this->load($pluginName, false, false);
 				$pluginInstance->register($this->eventManager);
 
+				$pluginInfo = $pluginInstance->getInfo();
+
 				$this->setError($pluginName, null);
 
 				try {
@@ -534,6 +540,7 @@ class iMSCP_Plugin_Manager
 						array(
 							'pluginManager' => $this,
 							'pluginName' => $pluginName,
+							'pluginVersion' => $pluginInfo['version'],
 							'PluginInstance' => $pluginInstance
 						)
 					);
@@ -553,6 +560,7 @@ class iMSCP_Plugin_Manager
 							array(
 								'pluginManager' => $this,
 								'pluginName' => $pluginName,
+								'pluginVersion' => $pluginInfo['version'],
 								'PluginInstance' => $pluginInstance
 							)
 						);
@@ -591,6 +599,8 @@ class iMSCP_Plugin_Manager
 				$pluginInstance = $this->load($pluginName, false, false);
 				$pluginInstance->register($this->eventManager);
 
+				$pluginInfo = $pluginInstance->getInfo();
+
 				$this->setError($pluginName, null);
 
 				try {
@@ -599,6 +609,7 @@ class iMSCP_Plugin_Manager
 						array(
 							'pluginManager' => $this,
 							'pluginName' => $pluginName,
+							'pluginVersion' => $pluginInfo['version'],
 							'PluginInstance' => $pluginInstance,
 							'action' => 'update'
 						)
@@ -630,6 +641,7 @@ class iMSCP_Plugin_Manager
 							array(
 								'pluginManager' => $this,
 								'pluginName' => $pluginName,
+								'pluginVersion' => $pluginInfo['version'],
 								'PluginInstance' => $pluginInstance,
 								'action' => 'update'
 							)
@@ -689,6 +701,8 @@ class iMSCP_Plugin_Manager
 				$pluginInstance = $this->load($pluginName, false, false);
 				$pluginInstance->register($this->eventManager);
 
+				$pluginInfo = $pluginInstance->getInfo();
+
 				$this->setError($pluginName, null);
 
 				try {
@@ -697,6 +711,7 @@ class iMSCP_Plugin_Manager
 						array(
 							'pluginManager' => $this,
 							'pluginName' => $pluginName,
+							'pluginVersion' => $pluginInfo['version'],
 							'PluginInstance' => $pluginInstance,
 							'action' => 'delete'
 						)
@@ -717,6 +732,7 @@ class iMSCP_Plugin_Manager
 							array(
 								'pluginManager' => $this,
 								'pluginName' => $pluginName,
+								'pluginVersion' => $pluginInfo['version'],
 								'PluginInstance' => $pluginInstance,
 								'action' => 'delete'
 							)
@@ -834,8 +850,7 @@ class iMSCP_Plugin_Manager
 		$toUpdatePlugins = array();
 		$returnInfo = array('new' => 0, 'updated' => 0, 'deleted' => 0);
 
-		$query = 'SELECT `plugin_name`, `plugin_info`, `plugin_config`, `plugin_status` FROM `plugin`';
-		$stmt = execute_query($query);
+		$stmt = execute_query('SELECT `plugin_name`, `plugin_info`, `plugin_config`, `plugin_status` FROM `plugin`');
 
 		if ($stmt->rowCount()) {
 			$knownPluginsData = $stmt->fetchAll(PDO::FETCH_UNIQUE | PDO::FETCH_ASSOC);
@@ -972,7 +987,9 @@ class iMSCP_Plugin_Manager
 			}
 		}
 
-		if (!empty($pluginsTodelete)) $this->deletePlugins($pluginsTodelete);
+		if (!empty($pluginsTodelete)) {
+			$this->deletePlugins($pluginsTodelete);
+		}
 	}
 
 	/**

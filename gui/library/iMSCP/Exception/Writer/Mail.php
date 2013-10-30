@@ -118,11 +118,15 @@ class iMSCP_Exception_Writer_Mail extends iMSCP_Exception_Writer
 			$this->_to = $to;
 		}
 
+
+
+		$em = iMSCP_Events_Manager::getInstance();
+
 		// Set Mail body footprints expiry time
+		$em->registerListener(iMSCP_Events::onAfterInitialize, array($this, 'setExpiryTime'));
+
 		// Delete expired mail body footprints
-		iMSCP_Events_Manager::getInstance()
-			->registerListener(iMSCP_Events::onAfterInitialize, array($this, 'setExpiryTime'))
-			->registerListener(iMSCP_Events::onAfterInitialize, array($this, 'cleanCache'));
+		$em->registerListener(iMSCP_Events::onAfterInitialize, array($this, 'cleanCache'));
 	}
 
 	/**
