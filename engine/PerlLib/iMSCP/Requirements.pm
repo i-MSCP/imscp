@@ -194,7 +194,7 @@ sub _programVersions
 	my ($stdout, $stderr);
 	execute($program, \$stdout, \$stderr);
 	debug($stdout) if $stdout;
-	debug($stderr) if $stderr && $rs;
+	debug($stderr) if $stderr;
 	fatal('Unable to find $program version: No output') if ! $stdout;
 
 	if($regexp) {
