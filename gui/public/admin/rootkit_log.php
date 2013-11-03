@@ -78,20 +78,15 @@ $antiRootkitLogFiles = array(
 );
 
 foreach ($antiRootkitLogFiles as $antiRootkit => $logVar) {
-	if (
-		!in_array($antiRootkit, $antiRootkits) || ! isset($config[$antiRootkitLogFiles[$antiRootkit]]) ||
-		$config[$antiRootkitLogFiles[$antiRootkit]] == ''
-	) {
+	if (!in_array($antiRootkit, $antiRootkits) || !isset($config[$logVar]) || $config[$logVar] == '') {
 		unset($antiRootkitLogFiles[$antiRootkit]);
 	}
 }
 
 if (!empty($antiRootkitLogFiles)) {
 	$blocksCount = 0;
-	foreach ($antiRootkitLogFiles AS $antiRootkit => $logFile) {
-		$logFile = $config[$logFile];
-
-		$contents = '';
+	foreach ($antiRootkitLogFiles AS $antiRootkit => $logVar) {
+		$logFile = $config[$logVar];
 
 		if (@file_exists($logFile) && is_readable($logFile) && filesize($logFile) > 0) {
 			$handle = fopen($logFile, 'r');
@@ -100,8 +95,8 @@ if (!empty($antiRootkitLogFiles)) {
 
 			fclose($handle);
 
-			$contents = nl2br(tohtml($log));
-			$contents = '<div>' . $contents . '</div>';
+			$content = nl2br(tohtml($log));
+			$content = '<div>' . $content . '</div>';
 
 			$search = array();
 			$replace = array();
@@ -128,8 +123,6 @@ if (!empty($antiRootkitLogFiles)) {
 				$replace[] = '<strong style="color:red">$0</strong>';
 				$search [] = '/0[ \t]+vulnerable/i';
 				$replace[] = '<span style="color:green">$0</span>';
-
-				$contents = preg_replace($search, $replace, $contents);
 			} elseif ($antiRootkit == 'Chkrootkit') {
 				// chkrootkit-like log colouring
 				$search [] = '/([^a-z][ \t]+)(INFECTED)/i';
@@ -150,17 +143,16 @@ if (!empty($antiRootkitLogFiles)) {
 				$replace[] = '<span style="color:green">$0</span>';
 				$search [] = '/([0-9]+) process(|es) hidden/i';
 				$replace[] = '<span style="color:#cfcf00">$0</span>';
-
-				$contents = preg_replace($search, $replace, $contents);
 			}
+
+			$content = preg_replace($search, $replace, $content);
 		} else {
-			$logFile = $config[$logFile];
-			$contents = '<strong style="color:red">' . tr("%s doesn't exist or is empty", $logFile) . '</strong>';
+			$content = '<strong style="color:red">' . tr("%s doesn't exist or is empty.", $logFile) . '</strong>';
 		}
 
 		$tpl->assign(
 			array(
-				'LOG' => $contents,
+				'LOG' => $content,
 				'FILENAME' => $logFile
 			)
 		);
