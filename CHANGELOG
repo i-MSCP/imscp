@@ -8,6 +8,7 @@ Git Master
 GUI:
 	- Added: Option allowing to keep postfix configuration even when using external mail server
 	- Changed: EventsManager - Replaced Listener stack by a priority queue (Performance issues)
+	- Fixed: Identity garbage on session timeout
 	- Updated plugin API (version 0.1.2)
 
 SETUP:

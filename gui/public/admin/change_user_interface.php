@@ -24,15 +24,15 @@
  * Portions created by the i-MSCP Team are Copyright (C) 2010-2013 by
  * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
  *
- * @category	i-MSCP
- * @package		iMSCP_Core
- * @subpackage	Admin
- * @copyright	2001-2006 by moleSoftware GmbH
- * @copyright	2006-2010 by ispCP | http://isp-control.net
- * @copyright	2010-2013 by i-MSCP | http://i-mscp.net
- * @author		ispCP Team
- * @author		i-MSCP Team
- * @link		http://i-mscp.net
+ * @category    i-MSCP
+ * @package     iMSCP_Core
+ * @subpackage  Admin
+ * @copyright   2001-2006 by moleSoftware GmbH
+ * @copyright   2006-2010 by ispCP | http://isp-control.net
+ * @copyright   2010-2013 by i-MSCP | http://i-mscp.net
+ * @author      ispCP Team
+ * @author      i-MSCP Team
+ * @link        http://i-mscp.net
  */
 
 // Include core library
@@ -45,5 +45,5 @@ check_login('admin');
 if (isset($_SESSION['user_id']) && isset($_GET['to_id'])) {
 	change_user_interface($_SESSION['user_id'], intval($_GET['to_id']));
 } else {
-	showBadRequestErrorPage();;
+	showBadRequestErrorPage();
 }
