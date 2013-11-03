@@ -158,9 +158,11 @@ sub _backupDatabase
 		my ($stdout, $stderr);
 		$rs = execute($compressCmd, \$stdout, \$stderr);
 		debug($stdout) if $stdout;
-		error($stderr) if $stderr && $rs;
-		error("Unable to compress $sqlFName database dump file") if $rs && ! $stderr;
-		return $rs if $rs;
+		if($rs > 1) { # Tar exit with status 1 only if some files were changed while being read. We want ignore this.
+			error($stderr) if $stderr;
+			error("Unable to compress $sqlFName database dump file") if ! $stderr;
+			return $rs if $rs;
+		}
 	}
 
 	0;

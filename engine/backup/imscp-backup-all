@@ -77,7 +77,7 @@ sub process
 	my $database = iMSCP::Database->new()->factory();
 	my $canDumpDatabases = $database->can('dumpdb');
 	my $cmdTar = $main::imscpConfig{'CMD_TAR'};
-	my $algoryhtm = lc($main::imscpConfig{'ZIP'});
+	my $algorithm = lc($main::imscpConfig{'ZIP'});
 
 	my $sql = "
 		SELECT
@@ -105,7 +105,6 @@ sub process
 			iMSCP::Boot->getInstance()->lock();
 
 			if ($rdata->{$_}->{'allowbackup'} ne 'no') {
-
 				my $homeDir = "$main::imscpConfig{'USER_WEB_DIR'}/$rdata->{$_}->{'domain_name'}";
 				my $bkpDir = "$homeDir/backups";
 				my $userName =
@@ -138,7 +137,7 @@ sub process
 				debug($stdout) if $stdout;
 				error($stderr) if $stderr && $rs;
 
-				my $ext = $command->{$algoryhtm}->{'extension'};
+				my $ext = $command->{$algorithm}->{'extension'};
 				my $date = strftime "%Y.%m.%d-%H-%M", localtime;
 
 				if ($rdata->{$_}->{'allowbackup'} =~ /^full|dmn$/) {
@@ -146,7 +145,7 @@ sub process
 						$cmdTar,
 						"--create",										# Create new archive
 						"--directory=$homeDir",							# Change to directory
-						'--use-compress-program=' . lc($algoryhtm),		# Compress archive with given program
+						'--use-compress-program=' . lc($algorithm),		# Compress archive with given program
 						"--file=$bkpDir/$_-backup-$date.tar.$ext",		# use archive file
 						'--exclude=logs',								# exclude logs directory from archive
 						'--exclude=phptmp',								# exclude phptmp directory from archive
@@ -155,9 +154,14 @@ sub process
 						'.'												# pathname
 					);
 
-					$rs |= execute("@cmd", \$stdout, \$stderr);
+					my $trs = execute("@cmd", \$stdout, \$stderr);
 					debug($stdout) if $stdout;
-					error($stderr) if $stderr && $rs;
+					# Tar exit with status 1 only if some files were changed while being read. We want ignore this.
+					if($trs > 1) {
+						error($stderr) if $stderr;
+						error("Unable to backup $homeDir") if ! $stderr;
+						$rs |= $trs;
+					}
 
 					my $file = iMSCP::File->new('filename' => "$bkpDir/$_-backup-$date.tar.$ext");
 					$rs |= $file->mode(0644);
@@ -166,13 +170,11 @@ sub process
 
 				# Backup all customer databases
 				if ($canDumpDatabases && $rdata->{$_}->{'allowbackup'} =~ /^full|sql$/) {
-
 					my $dbData = $database->doQuery(
 						'sqld_name',
 						"SELECT `sqld_id`, `sqld_name` FROM `sql_database` WHERE `domain_id` = ?",
 						$rdata->{$_}->{'domain_id'}
 					);
-
 					unless (ref $dbData eq 'HASH') {
 						error($dbData);
 						$rs |= 1;
@@ -191,7 +193,7 @@ sub process
 						$rs |= $file->mode(0644);
 						$rs |= $file->owner($userName, $groupName);
 
-						my $cmd = $main::imscpConfig{$command->{$algoryhtm}->{'command'}} . ' --force ' .
+						my $cmd = $main::imscpConfig{$command->{$algorithm}->{'command'}} . ' --force ' .
 							escapeShell("$bkpDir/$_.sql");
 
 						$rs = execute($cmd, \$stdout, \$stderr);

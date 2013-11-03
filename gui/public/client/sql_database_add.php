@@ -24,9 +24,9 @@
  * Portions created by the i-MSCP Team are Copyright (C) 2010-2013 by
  * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
  *
- * @category	i-MSCP
- * @package		iMSCP_Core
- * @subpackage	Client
+ * @category    i-MSCP
+ * @package     iMSCP_Core
+ * @subpackage  Client
  * @copyright   2001-2006 by moleSoftware GmbH
  * @copyright   2006-2010 by ispCP | http://isp-control.net
  * @copyright   2010-2013 by i-MSCP | http://i-mscp.net
@@ -35,42 +35,25 @@
  * @link        http://i-mscp.net
  */
 
-// Include core library
-require_once 'imscp-lib.php';
-
-iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
-
-check_login('user');
-
-customerHasFeature('sql') or showBadRequestErrorPage();
-
-/** @var $cfg iMSCP_Config_Handler_File */
-$cfg = iMSCP_Registry::get('config');
-
-$tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic('layout', 'shared/layouts/ui.tpl');
-$tpl->define_dynamic('page', 'client/sql_database_add.tpl');
-$tpl->define_dynamic('page_message', 'layout');
-$tpl->define_dynamic('mysql_prefix_no', 'page');
-$tpl->define_dynamic('mysql_prefix_yes', 'page');
-$tpl->define_dynamic('mysql_prefix_infront', 'page');
-$tpl->define_dynamic('mysql_prefix_behind', 'page');
-$tpl->define_dynamic('mysql_prefix_all', 'page');
-
+/***********************************************************************************************************************
+ * Functions
+ */
 
 /**
+ * Generate page
+ *
  * @param iMSCP_pTemplate $tpl
  * @return void
  */
-function gen_page_post_data($tpl)
+function client_generatePage($tpl)
 {
 	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
 
-	if ($cfg->MYSQL_PREFIX === 'yes') {
+	if ($cfg['MYSQL_PREFIX'] === 'yes') {
 		$tpl->assign('MYSQL_PREFIX_YES', '');
 
-		if ($cfg->MYSQL_PREFIX_TYPE === 'behind') {
+		if ($cfg['MYSQL_PREFIX_TYPE'] === 'behind') {
 			$tpl->assign('MYSQL_PREFIX_INFRONT', '');
 			$tpl->parse('MYSQL_PREFIX_BEHIND', 'mysql_prefix_behind');
 			$tpl->assign('MYSQL_PREFIX_ALL', '');
@@ -86,173 +69,209 @@ function gen_page_post_data($tpl)
 		$tpl->parse('MYSQL_PREFIX_ALL', 'mysql_prefix_all');
 	}
 
-	if (isset($_POST['uaction']) && $_POST['uaction'] === 'add_db') {
+	if (isset($_POST['uaction']) && $_POST['uaction'] == 'add_db') {
 		$tpl->assign(
 			array(
 				'DB_NAME' => clean_input($_POST['db_name'], true),
-				'USE_DMN_ID' => (isset($_POST['use_dmn_id']) && $_POST['use_dmn_id'] === 'on') ? $cfg->HTML_CHECKED : '',
-				'START_ID_POS_SELECTED' => (isset($_POST['id_pos']) && $_POST['id_pos'] !== 'end') ? $cfg->HTML_SELECTED : '',
-				'END_ID_POS_SELECTED' => (isset($_POST['id_pos']) && $_POST['id_pos'] === 'end') ? $cfg->HTML_SELECTED : ''));
+				'USE_DMN_ID' => (isset($_POST['use_dmn_id']) && $_POST['use_dmn_id'] == 'on') ? $cfg->HTML_CHECKED : '',
+				'START_ID_POS_SELECTED' => (isset($_POST['id_pos']) && $_POST['id_pos'] != 'end') ? $cfg->HTML_SELECTED : '',
+				'END_ID_POS_SELECTED' => (isset($_POST['id_pos']) && $_POST['id_pos'] == 'end') ? $cfg->HTML_SELECTED : ''
+			)
+		);
 	} else {
 		$tpl->assign(
 			array(
 				'DB_NAME' => '',
 				'USE_DMN_ID' => '',
 				'START_ID_POS_SELECTED' => $cfg->HTML_SELECTED,
-				'END_ID_POS_SELECTED' => ''));
+				'END_ID_POS_SELECTED' => ''
+			)
+		);
 	}
 }
 
 /**
- * Check if a database with same name already exists
+ * Whether or not the given database already exists
  *
- * @param  string $db_name database name to be checked
+ * @param  string $dbName database name to be checked
  * @return boolean TRUE if database exists, false otherwise
  */
-function check_db_name($db_name) {
+function client_dbExits($dbName)
+{
+	$stmt = exec_query('SHOW DATABASES');
 
-	$rs = exec_query('SHOW DATABASES');
-
-	while (!$rs->EOF) {
-		if ($db_name == $rs->fields['Database']) {
+	while ($data = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
+		if ($dbName == $data->fields['Database']) {
 			return true;
 		}
-
-		$rs->moveNext();
 	}
 
 	return false;
 }
 
 /**
- * @param $user_id
- * @return
+ * Add SQL database
+ *
+ * @param int $userId
+ * @return void
  */
-function add_sql_database($user_id)
+function client_addSqlDb($userId)
 {
 	if (!isset($_POST['uaction'])) return;
 
-	iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onBeforeAddSqlDb);
-
 	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
-
-	// let's generate database name.
 
 	if (empty($_POST['db_name'])) {
 		set_page_message(tr('Please type database name.'), 'error');
 		return;
 	}
 
-	$dmn_id = get_user_domain_id($user_id);
+	$mainDmnId = get_user_domain_id($userId);
 
 	if (isset($_POST['use_dmn_id']) && $_POST['use_dmn_id'] === 'on') {
-
 		// we'll use domain_id in the name of the database;
 		if (isset($_POST['id_pos']) && $_POST['id_pos'] === 'start') {
-			$db_name = $dmn_id . "_" . clean_input($_POST['db_name']);
+			$dbName = $mainDmnId . "_" . clean_input($_POST['db_name']);
 		} else if (isset($_POST['id_pos']) && $_POST['id_pos'] === 'end') {
-			$db_name = clean_input($_POST['db_name']) . "_" . $dmn_id;
+			$dbName = clean_input($_POST['db_name']) . "_" . $mainDmnId;
 		} else { // position of id is not defined - should normally never occurs but... - just fallback to dbname without id
-			$db_name = clean_input($_POST['db_name']);
+			$dbName = clean_input($_POST['db_name']);
 		}
 	} else {
-		$db_name = clean_input($_POST['db_name']);
+		$dbName = clean_input($_POST['db_name']);
 	}
 
-	if (strlen($db_name) > $cfg->MAX_SQL_DATABASE_LENGTH) {
+	if ($dbName == 'test') {
+		set_page_message(tr('Unallowed database name.'), 'error');
+		return;
+	}
+
+	if (strlen($dbName) > $cfg['MAX_SQL_DATABASE_LENGTH']) {
 		set_page_message(tr('Database name is too long.'), 'error');
 		return;
 	}
 
-	// have we such database in the system!?
-	if (check_db_name($db_name)) {
+	if (client_dbExits($dbName)) {
 		set_page_message(tr('Specified database name already exists.'), 'error');
 		return;
 	}
-	// are wildcards used?
-	if (preg_match("/[%|\?]+/", $db_name)) {
+
+	// Are wildcards used?
+	if (preg_match("/[%|\?]+/", $dbName)) {
 		set_page_message(tr('Wildcards such as %% and ? are not allowed.'), 'error');
 		return;
 	}
 
-	// Here we cannot start transaction before the CREATE DATABABSE statement because its cause an implicit commit
-	try {
+	$responses = iMSCP_Events_Manager::getInstance()->dispatch(
+		iMSCP_Events::onBeforeAddSqlDb, array('dbName' => $dbName)
+	);
 
+	if (!$responses->isStopped()) {
+		// Here we cannot start transaction before the CREATE DATABABSE statement because its cause an implicit commit
 		$dbCreated = false;
 
-		execute_query('CREATE DATABASE IF NOT EXISTS ' . quoteIdentifier($db_name));
+		try {
+			execute_query('CREATE DATABASE IF NOT EXISTS ' . quoteIdentifier($dbName));
 
-		$dbCreated = true;
+			$dbCreated = true;
 
-		iMSCP_Database::getInstance()->beginTransaction();
+			iMSCP_Database::getInstance()->beginTransaction();
 
-		$query = "INSERT INTO `sql_database` (`domain_id`, `sqld_name`) VALUES (?, ?)";
-		exec_query($query, array($dmn_id, $db_name));
+			$query = "INSERT INTO `sql_database` (`domain_id`, `sqld_name`) VALUES (?, ?)";
+			exec_query($query, array($mainDmnId, $dbName));
 
-		iMSCP_Database::getInstance()->commit();
+			iMSCP_Database::getInstance()->commit();
 
-		iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAfterAddSqlDb);
+			iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAfterAddSqlDb, array('dbName' => $dbName));
 
-		set_page_message(tr('SQL database successfully added.'), 'success');
-		write_log($_SESSION['user_logged'] . ": added new SQL database: " . tohtml($db_name), E_USER_NOTICE);
+			set_page_message(tr('SQL database successfully added.'), 'success');
+			write_log($_SESSION['user_logged'] . ": added new SQL database: " . tohtml($dbName), E_USER_NOTICE);
+		} catch (iMSCP_Exception_Database $e) {
+			if ($dbCreated) { // Our transaction failed so we rollback and we remove the database previously created
+				iMSCP_Database::getInstance()->rollBack();
+				execute_query('DROP DATABASE IF EXISTS ' . quoteIdentifier($dbName));
+			}
 
-	} catch (iMSCP_Exception_Database $e) {
-		if($dbCreated) { // Our transaction failed so we rollback and we remove the database previously created
-			iMSCP_Database::getInstance()->rollBack();
-			execute_query('DROP DATABASE IF EXISTS ' . quoteIdentifier($db_name));
+			set_page_message(tr('System was unable to add the SQL database.'), 'error');
+			write_log(
+				sprintf("System was unable to add the '%s' SQL database. Message was: %s", $dbName, $e->getMessage()),
+				E_USER_ERROR
+			);
 		}
-
-		set_page_message(tr('System was unable to add the SQL database.'), 'error');
-		write_log(sprintf("System was unable to add the '%s' SQL database. Message was: %s", $db_name, $e->getMessage()), E_USER_ERROR);
 	}
 
 
 	redirectTo('sql_manage.php');
 }
 
-// common page data.
-
 /**
  * Check SQL permissions
  *
  * @return void
  */
-function check_sql_permissions() {
+function client_checkSqlDbLimit()
+{
+	$mainDmnProps = get_domain_default_props($_SESSION['user_id']);
+	$mainDmnId = $mainDmnProps['domain_id'];
+	$sqlDatabaseLimit = $mainDmnProps['domain_sqld_limit'];
 
-    $domainProps = get_domain_default_props($_SESSION['user_id']);
-    $dmn_id = $domainProps['domain_id'];
-    $dmn_sqld_limit = $domainProps['domain_sqld_limit'];
+	list($nbSqlDb) = get_domain_running_sql_acc_cnt($mainDmnId);
 
-
-	list($sqld_acc_cnt) = get_domain_running_sql_acc_cnt($dmn_id);
-
-	if ($dmn_sqld_limit != 0 && $sqld_acc_cnt >= $dmn_sqld_limit) {
-		set_page_message(tr('SQL account limit reached.'), 'error');
+	if ($sqlDatabaseLimit != 0 && $nbSqlDb >= $sqlDatabaseLimit) {
+		set_page_message(tr('SQL database limit reached.'), 'error');
 		redirectTo('sql_manage.php');
 	}
 }
 
+/***********************************************************************************************************************
+ * Main
+ */
+
+// Include core library
+require_once 'imscp-lib.php';
+
+iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
+
+check_login('user');
+
+customerHasFeature('sql') or showBadRequestErrorPage();
+client_checkSqlDbLimit();
+
+client_addSqlDb($_SESSION['user_id']);
+
+/** @var $cfg iMSCP_Config_Handler_File */
+$cfg = iMSCP_Registry::get('config');
+
+$tpl = new iMSCP_pTemplate();
+$tpl->define_dynamic(
+	array(
+		'layout' => 'shared/layouts/ui.tpl',
+		'page' => 'client/sql_database_add.tpl',
+		'page_message' => 'layout',
+		'mysql_prefix_no' => 'page',
+		'mysql_prefix_yes' => 'page',
+		'mysql_prefix_infront' => 'page',
+		'mysql_prefix_behind' => 'page',
+		'mysql_prefix_all' => 'page'
+	)
+);
+
 $tpl->assign(
 	array(
 		'TR_PAGE_TITLE' => tr('Client / Databases / Add SQL Database'),
-		'ISP_LOGO' => layout_getUserLogo()));
-
-check_sql_permissions();
-gen_page_post_data($tpl);
-add_sql_database($_SESSION['user_id']);
-generateNavigation($tpl);
-
-$tpl->assign(
-	array(
-		'TR_TITLE_ADD_DATABASE' => tr('Add SQL database'),
+		'ISP_LOGO' => layout_getUserLogo(),
 		'TR_DATABASE' => tr('Database'),
 		'TR_DB_NAME' => tr('Database name'),
 		'TR_USE_DMN_ID' => tr('Database prefix/suffix'),
 		'TR_START_ID_POS' => tr("In front"),
 		'TR_END_ID_POS' => tr("Behind"),
-		'TR_ADD' => tr('Add')));
+		'TR_ADD' => tr('Add')
+	)
+);
 
+client_generatePage($tpl);
+generateNavigation($tpl);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');

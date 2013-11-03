@@ -494,7 +494,9 @@ class iMSCP_Events
 	/**
 	 * The onBeforeAddSqlDb event is triggered before a Sql database is created.
 	 *
-	 * The listeners receive an iMSCP_Events_Event object.
+	 * The listeners receive an iMSCP_Events_Event object with the following parameter:
+	 *
+	 * - dbName: Name of database being added
 	 *
 	 * @const string
 	 */
@@ -503,7 +505,9 @@ class iMSCP_Events
 	/**
 	 * The onAfterAddSqlDb event is triggered after a Sql database is created.
 	 *
-	 * The listeners receive an iMSCP_Events_Event object.
+	 * The listeners receive an iMSCP_Events_Event object with the following parameter:
+	 *
+	 * - dbName: Name of database that was added
 	 *
 	 * @const string
 	 */
