@@ -126,9 +126,9 @@ function client_deleteExternalMailServers($items, $postRequest)
             send_request(); // Ask the daemon to trigger the backend dispatcher
 
             if ($numberDeletedEntries > 0) {
-                set_page_message(tr('External mail server entries successfully scheduled for deletion.'), 'success');
+                set_page_message(tr('External mail server successfully scheduled for deactivation.'), 'success');
             } else {
-                set_page_message(tr('Nothing has been scheduled for deletion.'), 'error');
+                set_page_message(tr('Nothing has been scheduled for deactivation.'), 'error');
             }
         } catch (iMSCP_Exception_Database $e) {
             $db->rollBack();

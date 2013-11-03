@@ -291,7 +291,7 @@ sub buildNAMEDData
 		USER_NAME => $userName . 'sub' . $self->{'subdomain_id'}
 	};
 
-	if($self->{'external_mail'} eq 'on') {
+	if($self->{'external_mail'} ~~ ['domain', 'filter']) {
 		# only no wildcard MX (NOT LIKE '*.%') must be add to existent subdomains
 		my $sql = "
 			SELECT

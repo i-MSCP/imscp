@@ -1,5 +1,11 @@
 #!/usr/bin/perl
 
+=head1 NAME
+
+ Servers::mta::postfix::installer - i-MSCP Postfix MTA server installer implementation
+
+=cut
+
 # i-MSCP - internet Multi Server Control Panel
 # Copyright (C) 2010-2013 by internet Multi Server Control Panel
 #
@@ -41,63 +47,48 @@ use iMSCP::SystemUser;
 use iMSCP::SystemGroup;
 use File::Basename;
 use Servers::mta::postfix;
+use version;
 use parent 'Common::SingletonClass';
 
-sub _init
-{
-	my $self = shift;
+=head1 DESCRIPTION
 
-	$self->{'hooksManager'} = iMSCP::HooksManager->getInstance();
+ i-MSCP Postfix MTA server installer implementation.
 
-	$self->{'mta'} = Servers::mta::postfix->getInstance();
+=head1 PUBLIC METHODS
 
-	$self->{'hooksManager'}->trigger(
-		'beforeMtaInitInstaller', $self, 'postfix'
-	) and fatal('postfix - beforeMtaInitInstaller hook has failed');
+=over 4
 
-	$self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/postfix";
-	$self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
-	$self->{'wrkDir'} = "$self->{'cfgDir'}/working";
-	$self->{'vrlDir'} = "$self->{'cfgDir'}/imscp";
+=item preinstall()
 
-	$self->{'config'} = $self->{'mta'}->{'config'};
+ Process preinstall tasks
 
-	my $oldConf = "$self->{'cfgDir'}/postfix.old.data";
+ Return in 0 on success, other on failure
 
-	if(-f $oldConf) {
-		tie my %oldConfig, 'iMSCP::Config', 'fileName' => $oldConf, 'noerrors' => 1;
+=cut
 
-		for(keys %oldConfig) {
-			if(exists $self->{'config'}->{$_}) {
-				$self->{'config'}->{$_} = $oldConfig{$_};
-			}
-		}
-	}
-
-	$self->{'hooksManager'}->trigger(
-		'afterMtaInitInstaller', $self, 'postfix'
-	) and fatal('postfix - afterMtaInitInstaller hook has failed');
-
-	$self;
-}
-
-# Process Mta preinstall tasks
 sub preinstall
 {
 	my $self = shift;
 
 	my $rs = $self->{'hooksManager'}->trigger('beforeMtaPreInstall', 'postfix');
 
-	$rs = $self->addUsersAndGroups();
+	$rs = $self->_addUsersAndGroups();
 	return $rs if $rs;
 
-	$rs = $self->makeDirs();
+	$rs = $self->_makeDirs();
 	return $rs if $rs;
 
 	$self->{'hooksManager'}->trigger('afterMtaPreInstall', 'postfix');
 }
 
-# Process install Mta install tasks
+=item install()
+
+ Process install tasks
+
+ Return in 0 on success, other on failure
+
+=cut
+
 sub install
 {
 	my $self = shift;
@@ -105,39 +96,29 @@ sub install
 	my $rs = $self->{'hooksManager'}->trigger('beforeMtaInstall', 'postfix');
 	return $rs if $rs;
 
-	for (
-		$self->{'config'}->{'POSTFIX_CONF_FILE'},
-		$self->{'config'}->{'POSTFIX_MASTER_CONF_FILE'},
-		$self->{'config'}->{'MTA_VIRTUAL_CONF_DIR'} . '/aliases',
-		$self->{'config'}->{'MTA_VIRTUAL_CONF_DIR'} . '/domains',
-		$self->{'config'}->{'MTA_VIRTUAL_CONF_DIR'} . '/mailboxes',
-		$self->{'config'}->{'MTA_VIRTUAL_CONF_DIR'} . '/transport',
-		$self->{'config'}->{'MTA_VIRTUAL_CONF_DIR'} . '/sender-access',
-		$self->{'config'}->{'MTA_VIRTUAL_CONF_DIR'} . '/relay_domains'
-	) {
-		$rs = $self->bkpConfFile($_);
-		return $rs if $rs;
-	}
-
-	$rs = $self->buildConf();
+	$rs = $self->_buildConf();
 	return $rs if $rs;
 
-	$rs = $self->buildLookupTables();
+	$rs = $self->_buildLookupTables();
 	return $rs if $rs;
 
-	$rs = $self->buildAliasesDb();
+	$rs = $self->_buildAliasesDb();
 	return $rs if $rs;
 
-	$rs = $self->arplSetup();
-	return $rs if $rs;
-
-	$rs = $self->saveConf();
+	$rs = $self->_saveConf();
 	return $rs if $rs;
 
 	$self->{'hooksManager'}->trigger('afterMtaInstall', 'postfix');
 }
 
-# Set Mta files and directories permissions
+=item setEnginePermissions()
+
+ Set engine permissions
+
+ Return in 0 on success, other on failure
+
+=cut
+
 sub setEnginePermissions
 {
 	my $self = shift;
@@ -192,53 +173,69 @@ sub setEnginePermissions
 	$self->{'hooksManager'}->trigger('afterMtaSetEnginePermissions');
 }
 
-# Create needed directories
-sub makeDirs
+=back
+
+=head1 PRIVATE METHODS
+
+=over 4
+
+=item _init()
+
+ Called by getInstance(). Initialize instance of this class.
+
+ Return Servers::mta::postfix::installer
+
+=cut
+
+sub _init
 {
 	my $self = shift;
-	my $rs = 0;
 
-	my @directories = (
-		[
-			$self->{'config'}->{'MTA_VIRTUAL_CONF_DIR'}, # eg. /etc/postfix/imscp
-			$main::imscpConfig{'ROOT_USER'},
-			$main::imscpConfig{'ROOT_GROUP'},
-			0755
-		],
-		[
-			$self->{'config'}->{'MTA_VIRTUAL_MAIL_DIR'}, # eg. /var/mail/virtual
-			$self->{'config'}->{'MTA_MAILBOX_UID_NAME'},
-			$self->{'config'}->{'MTA_MAILBOX_GID_NAME'},
-			0750
-		],
-		[
-			$main::imscpConfig{'LOG_DIR'} . '/imscp-arpl-msgr', # eg /var/log/imscp/imscp-arpl-msgr
-			$self->{'config'}->{'MTA_MAILBOX_UID_NAME'},
-			$self->{'config'}->{'MTA_MAILBOX_GID_NAME'},
-			0750
-		]
-	);
+	$self->{'hooksManager'} = iMSCP::HooksManager->getInstance();
 
-	$rs = $self->{'hooksManager'}->trigger('beforeMtaMakeDirs', \@directories);
-	return $rs if $rs;
+	$self->{'mta'} = Servers::mta::postfix->getInstance();
 
-	for(@directories) {
-		$rs = iMSCP::Dir->new(
-			'dirname' => $_->[0]
-		)->make(
-			{ 'user' => $_->[1], 'group' => $_->[2], 'mode' => $_->[3] }
-		);
-		return $rs if $rs;
+	$self->{'hooksManager'}->trigger(
+		'beforeMtaInitInstaller', $self, 'postfix'
+	) and fatal('postfix - beforeMtaInitInstaller hook has failed');
+
+	$self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/postfix";
+	$self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
+	$self->{'wrkDir'} = "$self->{'cfgDir'}/working";
+	$self->{'lkptsDir'} = "$self->{'cfgDir'}/imscp";
+
+	$self->{'config'} = $self->{'mta'}->{'config'};
+
+	my $oldConf = "$self->{'cfgDir'}/postfix.old.data";
+
+	if(-f $oldConf) {
+		tie my %oldConfig, 'iMSCP::Config', 'fileName' => $oldConf, 'noerrors' => 1;
+
+		for(keys %oldConfig) {
+			if(exists $self->{'config'}->{$_}) {
+				$self->{'config'}->{$_} = $oldConfig{$_};
+			}
+		}
 	}
 
-	$self->{'hooksManager'}->trigger('afterMtaMakeDirs');
+	$self->{'hooksManager'}->trigger(
+		'afterMtaInitInstaller', $self, 'postfix'
+	) and fatal('postfix - afterMtaInitInstaller hook has failed');
+
+	$self;
 }
 
-# Add needed users and groups for MTA
-sub addUsersAndGroups
+=item _addUsersAndGroups()
+
+ Add users and groups
+
+ Return in 0 on success, other on failure
+
+=cut
+
+sub _addUsersAndGroups
 {
 	my $self = shift;
-	my $rs = 0;
 
 	my @groups = (
 		[
@@ -265,7 +262,7 @@ sub addUsersAndGroups
 		]
 	);
 
-	$rs = $self->{'hooksManager'}->trigger('beforeMtaAddUsersAndGroups', \@groups, \@users, \@userToGroups);
+	my $rs = $self->{'hooksManager'}->trigger('beforeMtaAddUsersAndGroups', \@groups, \@users, \@userToGroups);
 	return $rs if $rs;
 
 	# Create groups
@@ -310,18 +307,135 @@ sub addUsersAndGroups
 	$self->{'hooksManager'}->trigger('afterMtaAddUsersAndGroups');
 }
 
-# Build Mta aliases db
-sub buildAliasesDb
+=item _makeDirs()
+
+ Create directories
+
+ Return in 0 on success, other on failure
+
+=cut
+
+sub _makeDirs
 {
 	my $self = shift;
-	my $rs = 0;
 
-	$rs = $self->{'hooksManager'}->trigger('beforeMtaBuildAliases');
+	my @directories = (
+		[
+			$self->{'config'}->{'MTA_VIRTUAL_CONF_DIR'}, # eg. /etc/postfix/imscp
+			$main::imscpConfig{'ROOT_USER'},
+			$main::imscpConfig{'ROOT_GROUP'},
+			0755
+		],
+		[
+			$self->{'config'}->{'MTA_VIRTUAL_MAIL_DIR'}, # eg. /var/mail/virtual
+			$self->{'config'}->{'MTA_MAILBOX_UID_NAME'},
+			$self->{'config'}->{'MTA_MAILBOX_GID_NAME'},
+			0750
+		],
+		[
+			$main::imscpConfig{'LOG_DIR'} . '/imscp-arpl-msgr', # eg /var/log/imscp/imscp-arpl-msgr
+			$self->{'config'}->{'MTA_MAILBOX_UID_NAME'},
+			$self->{'config'}->{'MTA_MAILBOX_GID_NAME'},
+			0750
+		]
+	);
+
+	my $rs = $self->{'hooksManager'}->trigger('beforeMtaMakeDirs', \@directories);
 	return $rs if $rs;
 
-	# Rebuilding the database for the mail aliases file - Begin
+	for(@directories) {
+		$rs = iMSCP::Dir->new(
+			'dirname' => $_->[0]
+		)->make(
+			{ 'user' => $_->[1], 'group' => $_->[2], 'mode' => $_->[3] }
+		);
+		return $rs if $rs;
+	}
+
+	$self->{'hooksManager'}->trigger('afterMtaMakeDirs');
+}
+
+=item _buildConf()
+
+ Build configuration file
+
+ Return in 0 on success, other on failure
+
+=cut
+
+sub _buildConf
+{
+	my $self = shift;
+
+	my $rs = $self->{'hooksManager'}->trigger('beforeMtaBuildConf');
+	return $rs if $rs;
+
+	$rs = $self->_buildMainCfFile();
+	return $rs if $rs;
+
+	$rs = $self->_buildMasterCfFile();
+	return $rs if $rs;
+
+	$self->{'hooksManager'}->trigger('afterMtaBuildConf');
+}
+
+=item _buildLookupTables()
+
+ Build lookup tables
+
+ Return in 0 on success, other on failure
+
+=cut
+
+sub _buildLookupTables
+{
+	my $self = shift;
+
+	my $dir = iMSCP::Dir->new('dirname' => $self->{'lkptsDir'});
+	my @lookupTables = $dir->getFiles();
+
+	my $rs = $self->{'hooksManager'}->trigger('beforeMtaBuildLookupTables', \@lookupTables);
+	return $rs if $rs;
+
+	for(@lookupTables) {
+		# Backup current lookup table if any
+		$rs = $self->_bkpConfFile("self->{'config'}->{'MTA_VIRTUAL_CONF_DIR'}/$_");
+		return $rs if $rs;
+
+		my $file = iMSCP::File->new('filename' => "$self->{'lkptsDir'}/$_");
+
+		# Copy lookup table in working directory
+		$rs = $file->copyFile($self->{'wrkDir'});
+		return $rs if $rs;
+
+		# Copy lookup table in production directory
+		$rs = $file->copyFile("$self->{'config'}->{'MTA_VIRTUAL_CONF_DIR'}");
+		return $rs if $rs;
+
+		# Schedule lookup table postmap
+		$self->{'mta'}->{'postmap'}->{"$self->{'config'}->{'MTA_VIRTUAL_CONF_DIR'}/$_"} = 'installer';
+	}
+
+	$self->{'hooksManager'}->trigger('afterMtaBuildLookupTables', \@lookupTables);
+}
+
+=item _buildAliasesDb()
+
+ Build aliases database
+
+ Return in 0 on success, other on failure
+
+=cut
+
+sub _buildAliasesDb
+{
+	my $self = shift;
+
+	my $rs = $self->{'hooksManager'}->trigger('beforeMtaBuildAliases');
+	return $rs if $rs;
+
 	my ($stdout, $stderr);
-	$rs = execute("$self->{'config'}->{'CMD_NEWALIASES'}", \$stdout, \$stderr);
+	$rs = execute($self->{'config'}->{'CMD_NEWALIASES'}, \$stdout, \$stderr);
 	debug($stdout) if $stdout;
 	error($stderr) if $stderr && $rs;
 	error("Error while executing $self->{'config'}->{'CMD_NEWALIASES'}") if ! $stderr && $rs;
@@ -330,96 +444,15 @@ sub buildAliasesDb
 	$self->{'hooksManager'}->trigger('afterMtaBuildAliases');
 }
 
-# Setup auto-responder
-sub arplSetup
-{
-	my $self = shift;
+=item _saveConf()
 
-	my $file;
-	my $rs = 0;
+ Save main configuration file
 
-	$rs = $self->{'hooksManager'}->trigger('beforeMtaArplSetup');
-	return $rs if $rs;
+ Return in 0 on success, other on failure
 
-	$file = iMSCP::File->new('filename' => "$main::imscpConfig{'ROOT_DIR'}/engine/messenger/imscp-arpl-msgr");
+=cut
 
-	$rs = $file->mode(0755);
-	return $rs if $rs;
-
-	$rs = $file->owner(
-		$self->{'config'}->{'MTA_MAILBOX_UID_NAME'}, $self->{'config'}->{'MTA_MAILBOX_GID_NAME'}
-	);
-	return $rs if $rs;
-
-	$self->{'hooksManager'}->trigger('afterMtaArplSetup');
-}
-
-# Build and install Mta lookup tables
-sub buildLookupTables
-{
-	my $self = shift;
-	my $rs = 0;
-	my ($stdout, $stderr, $file);
-
-	my @lookupTables = qw/aliases domains mailboxes transport sender-access relay_domains/;
-
-	$rs = $self->{'hooksManager'}->trigger('beforeMtaBuildLookupTables', \@lookupTables);
-	return $rs if $rs;
-
-	for (@lookupTables) {
-		# Storing the new files in the working directory
-		$file = iMSCP::File->new('filename' => "$self->{'vrlDir'}/$_");
-
-		$rs = $file->copyFile("$self->{'wrkDir'}");
-		return $rs if $rs;
-
-		# Install the files in the production directory
-		$rs = $file->copyFile("$self->{'config'}->{'MTA_VIRTUAL_CONF_DIR'}");
-		return $rs if $rs;
-
-		# Creating/updating databases for all lookup tables
-		my $rs = execute(
-			"$self->{'config'}->{'CMD_POSTMAP'} $self->{'config'}->{'MTA_VIRTUAL_CONF_DIR'}/$_",
-			\$stdout,
-			\$stderr
-		);
-		debug($stdout) if $stdout;
-		error($stderr) if $stderr && $rs;
-		return $rs if $rs;
-	}
-
-	$self->{'hooksManager'}->trigger('afterMtaBuildLookupTables', \@lookupTables);
-}
-
-# Backup the given Mta configuration file
-sub bkpConfFile
-{
-	my $self = shift;
-	my $cfgFile = shift;
-
-	my $timestamp = time;
-
-	my $rs = $self->{'hooksManager'}->trigger('beforeMtaBkpConfFile', $cfgFile);
-	return $rs if $rs;
-
-	if(-f $cfgFile) {
-		my $file = iMSCP::File->new('filename' => $cfgFile);
-		my ($filename, $directories, $suffix) = fileparse($cfgFile);
-
-		if(! -f "$self->{'bkpDir'}/$filename$suffix.system") {
-			$rs = $file->copyFile("$self->{'bkpDir'}/$filename$suffix.system");
-			return $rs if $rs;
-		} else {
-			$rs = $file->copyFile("$self->{'bkpDir'}/$filename$suffix.$timestamp");
-			return $rs if $rs;
-		}
-	}
-
-	$self->{'hooksManager'}->trigger('afterMtaBkpConfFile', $cfgFile);
-}
-
-# Save Postfix data file
-sub saveConf
+sub _saveConf
 {
 	my $self = shift;
 
@@ -431,18 +464,18 @@ sub saveConf
 	$rs = $file->mode(0640);
 	return $rs if $rs;
 
-	my $cfg = $file->get();
-	unless(defined $cfg) {
-		error("Unable to read $self->{'cfgDir'}/postfix.data");
+	my $content = $file->get();
+	unless(defined $content) {
+		error("Unable to read $file->{'filename'}");
 		return 1;
 	}
 
-	$rs = $self->{'hooksManager'}->trigger('beforeMtaSaveConf', \$cfg, 'postfix.old.data');
+	$rs = $self->{'hooksManager'}->trigger('beforeMtaSaveConf', \$content, 'postfix.old.data');
 	return $rs if $rs;
 
 	$file = iMSCP::File->new('filename' => "$self->{'cfgDir'}/postfix.old.data");
 
-	$rs = $file->set($cfg);
+	$rs = $file->set($content);
 	return $rs if $rs;
 
 	$rs = $file->save;
@@ -457,42 +490,73 @@ sub saveConf
 	$self->{'hooksManager'}->trigger('afterMtaSaveConf', 'postfix.old.data');
 }
 
-# Build both master.cf and main.cf Postfix configuration files
-sub buildConf
+=item _bkpConfFile($cfgFile)
+
+ Backup configuration file
+
+ Return in 0 on success, other on failure
+
+=cut
+
+sub _bkpConfFile($$)
 {
 	my $self = shift;
+	my $cfgFile = shift;
 
-	my $rs = $self->{'hooksManager'}->trigger('beforeMtaBuildConf');
+	my $rs = $self->{'hooksManager'}->trigger('beforeMtaBkpConfFile', $cfgFile);
 	return $rs if $rs;
 
-	$rs = $self->buildMainCfFile();
-	return $rs if $rs;
+	if(-f $cfgFile) {
+		my $file = iMSCP::File->new('filename' => $cfgFile);
+		my $filename = fileparse($cfgFile);
+		my $timestamp = time;
 
-	$rs = $self->buildMasterCfFile();
-	return $rs if $rs;
+		if(! -f "$self->{'bkpDir'}/$filename.system") {
+			$rs = $file->copyFile("$self->{'bkpDir'}/$filename.system");
+			return $rs if $rs;
+		} else {
+			$rs = $file->copyFile("$self->{'bkpDir'}/$filename.$timestamp");
+			return $rs if $rs;
+		}
+	}
 
-	$self->{'hooksManager'}->trigger('afterMtaBuildConf');
+	$self->{'hooksManager'}->trigger('afterMtaBkpConfFile', $cfgFile);
 }
 
-# Build and install Postfix main.cf configuration file
-sub buildMainCfFile
+=item _buildMainCfFile()
+
+ Build main.cf file
+
+ Return in 0 on success, other on failure
+
+=cut
+
+sub _buildMainCfFile
 {
 	my $self = shift;
 
-	# Loading the template from /etc/imscp/postfix/
-	my $file = iMSCP::File->new('filename' => "$self->{'cfgDir'}/main.cf");
-	my $cfgTpl = $file->get();
-	return 1 if ! defined $cfgTpl;
+	# Backup current file if any
+	my $rs = $self->_bkpConfFile("self->{'config'}->{'MTA_VIRTUAL_CONF_DIR'}/main.cf");
+	return $rs if $rs;
 
-	# Building the file
+	# Load template
+	my $file = iMSCP::File->new('filename' => "$self->{'cfgDir'}/main.cf");
+
+	my $content = $file->get();
+	unless(defined $content) {
+		error("Unable to read $file->{'filename'}");
+		return 1;
+	}
+
+	# Build new file
 	my $hostname = $main::imscpConfig{'SERVER_HOSTNAME'};
 	my $gid = getgrnam($self->{'config'}->{'MTA_MAILBOX_GID_NAME'});
 	my $uid = getpwnam($self->{'config'}->{'MTA_MAILBOX_UID_NAME'});
 
-	my $rs = $self->{'hooksManager'}->trigger('beforeMtaBuildMainCfFile', \$cfgTpl, 'main.cf');
+	$rs = $self->{'hooksManager'}->trigger('beforeMtaBuildMainCfFile', \$content, 'main.cf');
 	return $rs if $rs;
 
-	$cfgTpl = iMSCP::Templator::process(
+	$content = iMSCP::Templator::process(
 		{
 			MTA_HOSTNAME => $hostname,
 			MTA_LOCAL_DOMAIN => "$hostname.local",
@@ -512,9 +576,12 @@ sub buildMainCfFile
 			GUI_CERT_DIR => $main::imscpConfig{'GUI_CERT_DIR'},
 			SSL => ($main::imscpConfig{'SSL_ENABLED'} eq 'yes' ? '' : '#')
 		},
-		$cfgTpl
+		$content
 	);
-	return 1 if ! defined $cfgTpl;
+	unless(defined $content) {
+		error('Unable to build main.cf file');
+		return 1;
+	}
 
 	# Fix for #790
 	my ($stdout, $stderr);
@@ -524,25 +591,24 @@ sub buildMainCfFile
 	error($stderr) if $stderr && $rs;
 	return 1 if $rs;
 
-	if(defined $stdout) {
-		chomp($stdout);
-		require version;
-
-		if(version->parse($stdout) >= version->parse('2.10.0')) {
-			$cfgTpl =~ s/smtpd_recipient_restrictions/smtpd_relay_restrictions =\n\nsmtpd_recipient_restrictions/;
-		}
-	} else {
+	unless(defined $stdout) {
 		error('Unable to find Postfix version');
 		return 1;
 	}
 
-	$rs = $self->{'hooksManager'}->trigger('afterMtaBuildMainCfFile', \$cfgTpl, 'main.cf');
+	chomp($stdout);
+
+	if(version->parse($stdout) >= version->parse('2.10.0')) {
+		$content =~ s/smtpd_recipient_restrictions/smtpd_relay_restrictions =\n\nsmtpd_recipient_restrictions/;
+	}
+
+	$rs = $self->{'hooksManager'}->trigger('afterMtaBuildMainCfFile', \$content, 'main.cf');
 	return $rs if $rs;
 
-	# Storing the new file in working directory
+	# Store file in working directory
 	$file = iMSCP::File->new('filename' => "$self->{'wrkDir'}/main.cf");
 
-	$rs = $file->set($cfgTpl);
+	$rs = $file->set($content);
 	return $rs if $rs;
 
 	$rs = $file->save();
@@ -554,38 +620,58 @@ sub buildMainCfFile
 	$rs = $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
 	return $rs if $rs;
 
-	# Installing the new file in production directory
+	# Copy file in production directory
 	$file->copyFile($self->{'config'}->{'POSTFIX_CONF_FILE'});
 }
 
-# Build and install Postfix master.cf configuration file
-sub buildMasterCfFile
+=item _buildMasterCfFile()
+
+ Build master.cf file
+
+ Return in 0 on success, other on failure
+
+=cut
+
+sub _buildMasterCfFile
 {
 	my $self = shift;
 
-	my $file = iMSCP::File->new('filename' => "$self->{'cfgDir'}/master.cf");
-	my $cfgTpl = $file->get();
-	return 1 if ! defined $cfgTpl;
-
-	my $rs = $self->{'hooksManager'}->trigger('beforeMtaBuildMasterCfFile', \$cfgTpl, 'master.cf');
+	# Backup current file if any
+	my $rs = $self->_bkpConfFile("self->{'config'}->{'MTA_VIRTUAL_CONF_DIR'}/master.cf");
 	return $rs if $rs;
 
-	$cfgTpl = iMSCP::Templator::process(
+	# Load template
+	my $file = iMSCP::File->new('filename' => "$self->{'cfgDir'}/master.cf");
+
+	my $content = $file->get();
+	unless(defined $content) {
+		error("Unable to read $file->{'filename'}");
+		return 1;
+	}
+
+	$rs = $self->{'hooksManager'}->trigger('beforeMtaBuildMasterCfFile', \$content, 'master.cf');
+	return $rs if $rs;
+
+	$content = iMSCP::Templator::process(
 		{
 			MTA_MAILBOX_UID_NAME => $self->{'config'}->{'MTA_MAILBOX_UID_NAME'},
 			IMSCP_GROUP => $main::imscpConfig{'IMSCP_GROUP'},
 			ARPL_PATH => $main::imscpConfig{'ROOT_DIR'}."/engine/messenger/imscp-arpl-msgr"
 		},
-		$cfgTpl
+		$content
 	);
-	return 1 if ! defined $cfgTpl;
+	unless(defined $content) {
+		error('Unable to build master.cf file');
+		return 1;
+	}
 
-	$rs = $self->{'hooksManager'}->trigger('afterMtaBuildMasterCfFile', \$cfgTpl, 'master.cf');
+	$rs = $self->{'hooksManager'}->trigger('afterMtaBuildMasterCfFile', \$content, 'master.cf');
 	return $rs if $rs;
 
+	# Store file in working directory
 	$file = iMSCP::File->new('filename' => "$self->{'wrkDir'}/master.cf");
 
-	$rs = $file->set($cfgTpl);
+	$rs = $file->set($content);
 	return $rs if $rs;
 
 	$rs = $file->save();
@@ -597,8 +683,17 @@ sub buildMasterCfFile
 	$rs = $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
 	return $rs if $rs;
 
-	# Installing the new file in the production dir
+	# Copy file in production directory
 	$file->copyFile($self->{'config'}->{'POSTFIX_MASTER_CONF_FILE'});
 }
+
+=back
+
+=head1 AUTHORS
+
+ Daniel Andreca <sci2tech@gmail.com>
+ Laurent Declercq <l.declercq@nuxwin.com>
+
+=cut
 
 1;

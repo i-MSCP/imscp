@@ -355,12 +355,13 @@ class iMSCP_Validate
      *
      * @param mixed $value value
      * @param array $stack Value stack
+	 * @param bool $strict Whether the check should be made in strict mode
      * @param array|string $messages OPTIONAL Error message(s)
      * @return bool
      */
-    public function assertContains($value, array $stack, $messages = null)
+    public function assertContains($value, array $stack, $strict = true, $messages = null)
     {
-        if ((!in_array($value, $stack, true))) {
+        if ((!in_array($value, $stack, $strict))) {
             if (null === $messages) {
                 $messages = tr('The value has not been found in the stack');
             }

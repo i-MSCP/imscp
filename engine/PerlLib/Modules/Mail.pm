@@ -46,8 +46,8 @@ sub loadData
 
 	my $sql = '
 		SELECT
-			if(isnull(`t2`.`mail_addr`), "no", "yes") AS `hasCatchAll`,
-			if(count(`t3`.`mail_addr`) <> 0, "yes", "no") AS `hasAutoResponder`,
+			if(ISNULL(`t2`.`mail_addr`), "no", "yes") AS `hasCatchAll`,
+			if(COUNT(`t3`.`mail_addr`) <> 0, "yes", "no") AS `hasAutoResponder`,
 			`t1`.*
 		FROM
 			`mail_users` AS `t1`

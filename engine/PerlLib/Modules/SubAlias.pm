@@ -284,7 +284,7 @@ sub buildNAMEDData
 	};
 
 	# Only no wildcard MX (NOT LIKE '*.%') must be add to existent subdomains
-	if($self->{'external_mail'} eq 'on') {
+	if($self->{'external_mail'} ~~ ['domain', 'filter']) {
 		my $sql = "
 			SELECT
 				`domain_dns_id`, `domain_text`

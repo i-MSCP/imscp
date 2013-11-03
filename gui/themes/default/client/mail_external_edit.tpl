@@ -1,80 +1,80 @@
 
 <script type="text/javascript">
-	/* <![CDATA[ */
-	$(document).ready(function () {
-		var i = $("tbody :checkbox").change(
-			function () {
-				if ($(this).is(':checked') && $("tbody :checkbox:checked").length == i) {
-					$("th :checkbox").prop('checked', true);
-					alert('{TR_SELECT_ALL_ENTRIES_ALERT}');
-				} else {
-					$("th :checkbox").prop('checked', false);
+/* <![CDATA[ */
+$(document).ready(function () {
+	var extMailTable = $("#ext_mail_table");
+	var entries = extMailTable.find('.entry');
+	var initialEntries = entries.clone();
+	var type = '';
+	extMailTable.on("change", "select[name=type\\[\\]]", function () {
+		type = $(this).val();
+		if (type == "filter" || type == "domain") {
+			$(".entry select[name=type\\[\\]]").each(function () {
+				if ($(this).val() != "wildcard") {
+					$(this).find("option").each(function () {
+						if ($(this).val() == type) {
+							$(this).prop("selected", true);
+						}
+					});
 				}
-			}
-		).length;
-		$("th :checkbox").change(
-			function () {
-				$("table :checkbox:not(':disabled')").prop('checked', $(this).is(':checked'));
-				if ($(this).is(':checked') && $("tbody :checkbox:checked").length == i) {
-					alert('{TR_SELECT_ALL_ENTRIES_ALERT}');
-				}
-			}
-		);
-		$('.trigger_add').click(
-			function () {
-				var str_mx = '<tr>';
-				str_mx += '	<td>';
-				str_mx += '		<label><input type="checkbox" name="to_delete[]" value="" disabled="disabled" /></label>';
-				str_mx += '	</td>';
-				str_mx += '	<td>';
-				str_mx += '		<select name="name[]" id="name_' + i + '">';
-				str_mx += '			<option value="{DOMAIN}">{TR_DOMAIN}</option>';
-				str_mx += '			<option value="{WILDCARD}">{TR_WILDCARD}</option>';
-				str_mx += '		</select>';
-				str_mx += '	</td>';
-				str_mx += '	<td>';
-				str_mx += '		<select name="priority[]" id="priority_' + i + '">';
-				str_mx += '			<option value="10" selected>10</option>';
-				str_mx += '			<option value="15">15</option>';
-				str_mx += '			<option value="20">20</option>';
-				str_mx += '			<option value="25">25</option>';
-				str_mx += '			<option value="30">30</option>';
-				str_mx += '		</select>';
-				str_mx += '	</td>';
-				str_mx += '	<td>';
-				str_mx += '		<label><input type="text" name="host[]" id="host_' + i + '" value="" /></label>';
-				str_mx += '	</td>';
-				str_mx += '</tr>';
-				$("tbody").append(str_mx);
-				i++;
-			}
-		);
-		$('.trigger_remove').click(function () {
-			if (i > 1) {
-				var item = $("tbody tr:last");
-
-				if (item.find(":checkbox").is(":disabled")) {
-					$(item).remove();
-				} else {
-					$(item).find(':checkbox').prop('checked', true);
-					$(item).hide();
-				}
-
-				i--;
-			} else {
-				alert('{TR_TRIGGER_REMOVE_ALERT}');
-			}
-		});
+			});
+		}
 	});
-	/* ]]> */
+	extMailTable.find("thead :checkbox, tfoot :checkbox").click(function () {
+		var checked = $(this).is(":checked");
+		extMailTable.find(":checkbox:not(':disabled')").prop("checked", checked);
+		if (checked && $('.entry').find(':checkbox:disabled').length == 0) alert('{TR_SELECT_ALL_ENTRIES_ALERT}');
+	});
+	entries.on("click", ":checkbox", function () {
+		if (entries.find(":checkbox:checked:visible").length == entries.find(":checkbox:visible").length) {
+			$("thead :checkbox,tfoot :checkbox").prop("checked", true);
+			alert('{TR_SELECT_ALL_ENTRIES_ALERT}');
+		} else {
+			$("thead :checkbox,tfoot :checkbox").prop("checked", false);
+		}
+	});
+	$(".add").click(function () {
+		var entry = entries.first().clone();
+		entry.find("input[type=text]").val('');
+		entry.find("input[type=hidden]").remove();
+		entry.find(":checkbox").prop("checked", false).prop("disabled", true);
+		entry.find("select option[value='" + type + "']").prop("selected", true);
+		entry.appendTo("#ext_mail_table tbody");
+	});
+	$(".remove").click(function () {
+		var entries = $(".entry").filter(":visible");
+		var nbEl = entries.length;
+		var item = entries.last();
+		var checkbox = item.find(":checkbox");
+		if (nbEl > 1) {
+			if (checkbox.is(":disabled")) {
+				item.remove();
+			} else {
+				checkbox.prop("checked", true);
+				item.hide();
+			}
+			nbEl--;
+		} else {
+			if (!checkbox.is(":checked")) checkbox.trigger("click");
+		}
+	});
+	$(".reset").click(function () {
+		$('.entry').remove();
+		initialEntries.clone().appendTo("tbody");
+		extMailTable.find(":checkbox").prop('checked', false);
+
+	});
+});
+/* ]]> */
 </script>
 
-<form name="edit_external_mail_server" method="post" action="mail_external_edit.php">
+<form name="edit_external_mail_server" method="post" action="mail_external_edit.php?item={ITEM}">
 	<div>
-		<a href="#" class="trigger_add">{TR_ADD_NEW_ENTRY}</a> | <a href="#"
-																	class="trigger_remove">{TR_REMOVE_LAST_ENTRY}</a>
+		<span class="add clickable" title="{TR_ADD_NEW_ENTRY}">{TR_ADD_NEW_ENTRY}</span> |
+		<span class="remove clickable" title="{TR_REMOVE_LAST_ENTRY}">{TR_REMOVE_LAST_ENTRY}</span> |
+		<span class="reset clickable" title="{TR_RESET_ENTRIES}">{TR_RESET_ENTRIES}</span>
 	</div>
-	<table>
+	<table id="ext_mail_table">
 		<thead>
 		<tr>
 			<th style="width:21px;">
@@ -97,7 +97,7 @@
 		</tfoot>
 		<tbody>
 		<!-- BDP: item_entries -->
-		<tr>
+		<tr class="entry">
 			<td>
 				<a href="#" title="{TR_SELECT_ENTRY_MESSAGE}">
 					<label><input type="checkbox" name="to_delete[{INDEX}]" value="{ENTRY_ID}"/></label>
@@ -106,35 +106,35 @@
 			</td>
 			<td>
 				<label>
-					<select name="name[{INDEX}]" id="name_{INDEX}">
-						<!-- BDP: name_options -->
+					<select name="type[]">
+						<!-- BDP: type_options -->
 						<option value="{OPTION_VALUE}"{SELECTED}>{OPTION_NAME}</option>
-						<!-- EDP: name_options -->
+						<!-- EDP: type_options -->
 					</select>
 				</label>
 			</td>
 			<td>
 				<label>
-					<select name="priority[{INDEX}]" id="priority_{INDEX}">
+					<select name="priority[{INDEX}]">
 						<!-- BDP: priority_options -->
 						<option value="{OPTION_VALUE}"{SELECTED}>{OPTION_NAME}</option>
 						<!-- EDP: priority_options -->
 					</select>
 				</label>
 			</td>
-			<td><label><input type="text" name="host[{INDEX}]" id="host_{INDEX}" value="{HOST}"/></label></td>
+			<td><label><input type="text" name="host[{INDEX}]" value="{HOST}"/></label></td>
 		</tr>
 		<!-- EDP: item_entries -->
 		</tbody>
 	</table>
 
 	<div style="float:left;">
-		<a href="#" class="trigger_add">{TR_ADD_NEW_ENTRY}</a> | <a href="#"
-																	class="trigger_remove">{TR_REMOVE_LAST_ENTRY}</a>
+		<span class="add clickable" title="{TR_ADD_NEW_ENTRY}">{TR_ADD_NEW_ENTRY}</span> |
+		<span class="remove clickable" title="{TR_REMOVE_LAST_ENTRY}">{TR_REMOVE_LAST_ENTRY}</span> |
+		<span class="reset clickable" title="{TR_RESET_ENTRIES}">{TR_RESET_ENTRIES}</span>
 	</div>
 
 	<div class="buttons">
-		<input type="hidden" name="item" value="{ITEM}"/>
 		<input name="submit" type="submit" value="{TR_UPDATE}"/>
 		<a class ="link_as_button" href="mail_external.php">{TR_CANCEL}</a>
 	</div>

@@ -234,7 +234,7 @@
                     </pages>
                 </catchall>
                 <external_mail_servers>
-                    <label>External mail server</label>
+                    <label>External mail servers</label>
                     <uri>/client/mail_external.php</uri>
                     <title_class>email</title_class>
                     <privilege_callback name="customerHasFeature" param="external_mail"/>

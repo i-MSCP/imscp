@@ -2677,4 +2677,17 @@ class iMSCP_Update_Database extends iMSCP_Update
 			$dbConfig[$name] = implode(';', $values);
 		}
 	}
+
+	/**
+	 * Update external mail server parameter
+	 *
+	 * @return array SQL statement to be executed
+	 */
+	protected function _databaseUpdate_170()
+	{
+		return array(
+			"UPDATE `domain` SET `external_mail` = 'domain' WHERE `external_mail` = 'on'",
+			"UPDATE `domain_aliasses` SET `external_mail` = 'domain' WHERE `external_mail` = 'on'"
+		);
+	}
 }

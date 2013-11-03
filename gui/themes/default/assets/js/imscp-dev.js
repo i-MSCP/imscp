@@ -137,17 +137,6 @@ function sprintf() {
 }
 
 /**
- * showHideBlocks
- */
-function showHideBlocks(id) {
-	if (document.getElementById(id).style.display == "none") { // unhide
-		document.getElementById(id).style.display = "block";
-	} else { // hide
-		document.getElementById(id).style.display = "none";
-	}
-}
-
-/**
  * Display dialog box allowing to choose ftp directory
  *
  * @return false
@@ -212,3 +201,18 @@ function iMSCPajxError(xhr, settings, exception) {
 			alert('HTTP ERROR: An Unexpected HTTP Error occurred during the request');
 	}
 }
+
+
+// Override some built-in jQuery method to trigger the i-MSCP updateTable event
+(function($) {
+	var origShow = $.fn.show;
+	var origHide = $.fn.hide;
+	var origAppendTo = $.fn.appendTo;
+	var origPrependTo = $.fn.prependTo;
+	var origHtml = $.fn.html;
+	$.fn.show = function () { return origShow.apply(this, arguments).trigger("updateTable");};
+	$.fn.hide = function () { return origHide.apply(this, arguments).trigger("updateTable");};
+	$.fn.appendTo = function () { return origAppendTo.apply(this, arguments).trigger("updateTable");};
+	$.fn.prependTo = function () { return origPrependTo.apply(this, arguments).trigger("updateTable");};
+	$.fn.html = function () { var ret = origHtml.apply(this, arguments); $('tbody').trigger("updateTable"); return ret;};
+})(jQuery);

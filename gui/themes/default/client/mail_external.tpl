@@ -1,39 +1,41 @@
 
 <script type="text/javascript">
-	/* <![CDATA[ */
-	$(document).ready(function () {
-		$('.datatable').dataTable(
-			{
-				"oLanguage": {DATATABLE_TRANSLATIONS},
-				"iDisplayLength": 5,
-				"bStateSave": true
-			}
-		);
-
-		var i = $("tbody :checkbox:not(':disabled')").change(
-			function () {
-				if ($("tbody :checkbox:checked").length == i) {
-					$("th :checkbox").prop('checked', true);
-				} else {
-					$("th :checkbox").prop('checked', false);
-				}
-			}
-		).length;
-		$("th :checkbox").click(
-			function (e) {
-				if ($("tbody :checkbox:not(':disabled')").length != 0) {
-					$("table :checkbox:not(':disabled')").prop('checked', $(this).is(':checked'));
-				} else {
-					e.preventDefault();
-				}
-			}
-		);
+/* <![CDATA[ */
+$(document).ready(function () {
+	$('.datatable').dataTable(
+		{
+			"oLanguage": {DATATABLE_TRANSLATIONS},
+			"iDisplayLength": 5,
+			"bStateSave": true
+		}
+	);
+	$(".dataTables_paginate").click(function () {
+		if ($("tbody :checkbox:checked").length == $("tbody :checkbox:not(':disabled')").length) {
+			$("thead :checkbox,tfoot :checkbox").prop('checked', true);
+		} else {
+			$("thead :checkbox,tfoot :checkbox").prop('checked', false);
+		}
 	});
+	$("tbody").on("click", ":checkbox:not(':disabled')", function () {
+		if ($("tbody :checkbox:checked").length == $("tbody :checkbox:not(':disabled')").length) {
+			$("thead :checkbox,tfoot :checkbox").prop('checked', true);
+		} else {
+			$("thead :checkbox,tfoot :checkbox").prop('checked', false);
+		}
+	});
+	$("thead :checkbox, tfoot :checkbox").click(function (e) {
+		if ($("tbody :checkbox:not(':disabled')").length != 0) {
+			$("table :checkbox:not(':disabled')").prop('checked', $(this).is(':checked'));
+		} else {
+			e.preventDefault();
+		}
+	});
+});
 
-	function onclick_action(url, domain) {
-		return (url.indexOf('delete') == -1 || confirm(sprintf("{TR_DEACTIVATE_MESSAGE}", domain)));
-	}
-	/* ]]> */
+function onclick_action(url, domain) {
+	return (url.indexOf('delete') == -1 || confirm(sprintf("{TR_DEACTIVATE_MESSAGE}", domain)));
+}
+/* ]]> */
 </script>
 
 <form name="mail_external_delete" action="mail_external_delete.php" method="post">
@@ -82,5 +84,4 @@
 		<input type="submit" name="submit" value="{TR_DEACTIVATE_SELECTED_ITEMS}"/>
 		<a href="mail_accounts.php" class="link_as_button">{TR_CANCEL}</a>
 	</div>
-
 </form>

@@ -20,12 +20,6 @@
 <script type="text/javascript" src="{THEME_ASSETS_PATH}/js/imscp.js?v={THEME_ASSETS_VERSION}"></script>
 <script type="text/javascript">
 /*<![CDATA[*/
-$(window).load(function(){
-	$("table:not('.datatable')").on("change", function() {
-		$(this).find("tbody tr:visible:odd td").removeClass("odd").addClass("even");
-		$(this).find("tbody tr:visible:even td").removeClass("even").addClass("odd");
-	}).trigger('change');
-});
 $(document).ready(function () {
 	$.fx.speeds._default = 500;
 	setTimeout(function () { $('.timeout').fadeOut(1000); }, 5000);
@@ -33,11 +27,12 @@ $(document).ready(function () {
 	$('.body a, .body span, .body input, .dataTables_paginate div').imscpTooltip({ extraClass: "tooltip_icon tooltip_notice" });
 	$("input:submit, input:button, button, .link_as_button").button();
 	$(".radio, .checkbox").buttonset();
-
-	$("table:not('.datatable')").on("change", function() {
-		$(this).find("tbody tr:not(:visible):odd td").removeClass("odd").addClass("even");
-		$(this).find("tbody tr:not(:visible):even td").removeClass("even").addClass("odd");
+	$('body').on("updateTable", "tbody", function() {
+		$(this).find("tr:visible:odd").removeClass("odd").addClass("even");
+		$(this).find("tr:visible:even").removeClass("even").addClass("odd");
+		$(this).find('th').parent().removeClass("even odd");
 	});
+	$("tbody").trigger('updateTable');
 });
 /*]]>*/
 </script>
@@ -56,7 +51,7 @@ $(document).ready(function () {
 			<!-- BDP: logged_from -->
 			<li><a class="backadmin" href="change_user_interface.php?action=go_back">{YOU_ARE_LOGGED_AS}</a></li>
 			<!-- EDP: logged_from -->
-			<li><a class="logout" href="../index.php?action=logout">{TR_MENU_LOGOUT}</a></li>
+			<li><a class="logout" href="/index.php?action=logout">{TR_MENU_LOGOUT}</a></li>
 		</ul>
 		<!-- INCLUDE "../partials/navigation/breadcrumbs.tpl" -->
 	</div>

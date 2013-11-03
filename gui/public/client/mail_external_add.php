@@ -33,47 +33,60 @@
  * Validate the given DNS MX record
  *
  * @access private
- * @param string &$name Name
+ * @param string $type MX type
  * @param int $priority MX preference
  * @param string $host Mail host
  * @param $verifiedData
  * @return bool TRUE if the given MX DNS record is valid, FALSE otherwise
  */
-function _client_validateDnsMxRecord($name, $priority, $host, $verifiedData)
+function _client_validateDnsMxRecord($type, $priority, $host, $verifiedData)
 {
-    $validator = iMSCP_Validate::getInstance();
+	$validator = iMSCP_Validate::getInstance();
 
-    // Should never occurs since we are using options stack in HTML form
-    $nameTmp = (strpos($name, '*') === 0) ? substr($name, 2) : $name; // strip out the wildcard part (*.) in any
-    if (!$validator->assertEquals($verifiedData['item_name'], $nameTmp, tr('Invalid type detected.'))) {
-        set_page_message($validator->getLastValidationMessages(), 'error');
-        return false;
-    }
+	$mxTypes = array('domain', 'wildcard');
 
-    //  // Should never occurs since we are using options stack in HTML form
-    if (!$validator->assertContains($priority, array('10', '15', '20', '25', '30'), tr('Invalid MX priority.'))) {
-        set_page_message($validator->getLastValidationMessages(), 'error');
-        return false;
-    }
+	if(customerHasFeature('mail')) {
+		$mxTypes[] = 'filter';
+	}
 
-    // Mail host must not be equal to the domain for which it's added
-    if (
-        !$validator->assertNotEquals(
-            $verifiedData['item_name'],
-			encode_idna($host),
-			tr('The mail host must not be equal to the domain name for which you add it.')
-        )
-    ) {
-        set_page_message($validator->getLastValidationMessages(), 'error');
-        return false;
-    }
+	// Should never occurs since we are using options stack in HTML form
+	if (!$validator->assertContains($type, $mxTypes, true, tr('Invalid MX type.'))) {
+		if($type == 'filter') {
+			showBadRequestErrorPage();
+		} else {
+			set_page_message($validator->getLastValidationMessages(), 'error');
+			return false;
+		}
+	}
 
-	if(!isValidDomainName($host)) {
-		set_page_message(tr('Mail host is not valid.'), 'error');
+	// Should never occurs since we are using options stack in HTML form
+	if (!$validator->assertContains($priority, range(5, 50, 5), false, tr('Invalid MX priority.'))) {
+		set_page_message($validator->getLastValidationMessages(), 'error');
 		return false;
 	}
 
-    return true;
+	// Mail host must not be equal to the domain for which it's added
+	if (
+		!$validator->assertNotEquals(
+			$verifiedData['item_name'],
+			encode_idna($host),
+			tr('Mailhost must not be equal to the domain name for which you add it.')
+
+		)
+	) {
+		set_page_message($validator->getLastValidationMessages(), 'error');
+		return false;
+	}
+
+	if($host == '') {
+		set_page_message(tr('Mailhost cannot be empty.'), 'error');
+		return false;
+	} elseif (!isValidDomainName($host)) {
+		set_page_message(tr("Mailhost %s is not valid.", "<strong>$host</strong>"), 'error');
+		return false;
+	}
+
+	return true;
 }
 
 /**
@@ -86,36 +99,35 @@ function _client_validateDnsMxRecord($name, $priority, $host, $verifiedData)
  */
 function _client_getVerifiedData($itemId, $itemType)
 {
-    $domainProps = get_domain_default_props($_SESSION['user_id']);
-    $domainId = $domainProps['domain_id'];
+	$domainProps = get_domain_default_props($_SESSION['user_id']);
+	$domainId = $domainProps['domain_id'];
 
-    if ($itemType === 'normal') {
-        $query = 'SELECT `domain_id`, `domain_name` AS `name` FROM `domain` WHERE `domain_id` = ?';
-        $stmt = exec_query($query, $domainId);
+	if ($itemType === 'normal') {
+		$stmt = exec_query('SELECT `domain_id`, `domain_name` AS `name` FROM `domain` WHERE `domain_id` = ?', $domainId);
 
-        if (!$stmt->rowCount() || $stmt->fields['domain_id'] !== $itemId) {
-            set_page_message(tr('Your are not the owner of this domain.'), 'error');
-            redirectTo('mail_external.php');
-        }
-    } elseif ($itemType === 'alias') {
-        $query = "SELECT `domain_id`, `alias_name` AS `name` FROM `domain_aliasses` WHERE `alias_id` = ? AND `domain_id` = ?";
-        $stmt = exec_query($query, array($itemId, $domainId));
+		if (!$stmt->rowCount() || $stmt->fields['domain_id'] !== $itemId) {
+			showBadRequestErrorPage();
+		}
+	} elseif ($itemType === 'alias') {
+		$stmt = exec_query(
+			'SELECT `domain_id`, `alias_name` AS `name` FROM `domain_aliasses` WHERE `alias_id` = ? AND `domain_id` = ?',
+			array($itemId, $domainId)
+		);
 
-        if (!$stmt->rowCount()) {
-            set_page_message(tr('Your are not the owner of this domain alias.'), 'error');
-            redirectTo('mail_external.php');
-        }
-    } else {
+		if (!$stmt->rowCount()) {
+			showBadRequestErrorPage();
+		}
+	} else {
 		showBadRequestErrorPage();
-        exit; // Only to make some IDE happy
-    }
+		exit; // Only to make some IDE happy
+	}
 
-    return array(
-        'domain_id' => $domainId,
-        'item_id' => $itemId,
-        'item_name' => $stmt->fields['name'],
-        'item_type' => $itemType
-    );
+	return array(
+		'domain_id' => $domainId,
+		'item_id' => $itemId,
+		'item_name' => $stmt->fields['name'],
+		'item_type' => $itemType
+	);
 }
 
 /**
@@ -127,141 +139,149 @@ function _client_getVerifiedData($itemId, $itemType)
  */
 function client_addExternalMailServerEntries($item)
 {
-    $verifiedData = _client_getVerifiedData($item[0], $item[1]);
+	$verifiedData = _client_getVerifiedData($item[0], $item[1]);
 
-    if (!empty($_POST)) {
-        // Preparing entries stack
-        $data['name'] = (isset($_POST['name'])) ? $_POST['name'] : array();
-        $data['priority'] = (isset($_POST['priority'])) ? $_POST['priority'] : array();
-        $data['host'] = (isset($_POST['host'])) ? $_POST['host'] : array();
+	if (!empty($_POST)) {
+		// Preparing entries stack
+		$data['type'] = (isset($_POST['type'])) ? $_POST['type'] : array();
+		$data['priority'] = (isset($_POST['priority'])) ? $_POST['priority'] : array();
+		$data['host'] = (isset($_POST['host'])) ? $_POST['host'] : array();
 
-        iMSCP_Events_Manager::getInstance()->dispatch(
-            iMSCP_Events::onBeforeAddExternalMailServer, array('externalMailServerEntries' => $data)
-        );
+		$responses = iMSCP_Events_Manager::getInstance()->dispatch(
+			iMSCP_Events::onBeforeAddExternalMailServer, array('externalMailServerEntries' => $data)
+		);
 
-        $entriesCount = count($data['name']);
-        $wildcardMxOnly = true;
-        $error = false;
+		if(!$responses->isStopped()) {
+			$entriesCount = count($data['type']);
+			$error = false;
 
-        // Validate all entries
-        for ($index = 0; $index < $entriesCount; $index++) {
-            if (isset($data['name'][$index]) && isset($data['priority'][$index]) && isset($data['host'][$index])) {
-                $data['host'][$index] = strtolower(rtrim($data['host'][$index], '.'));
+			# Spam Filter (filter) MX type has highter precedence
+			$spamFilterMX = false;
+			$wildcardMxOnly = true;
 
-                if (!_client_validateDnsMxRecord(
-                    $data['name'][$index], $data['priority'][$index], $data['host'][$index], $verifiedData)
-                ) {
-                    $error = true;
-                }
+			// Validate all entries
+			for ($index = 0; $index < $entriesCount; $index++) {
+				if (isset($data['type'][$index]) && isset($data['priority'][$index]) && isset($data['host'][$index])) {
+					$data['host'][$index] = strtolower(rtrim($data['host'][$index], '.'));
 
-                if(strpos($data['name'][$index], '*') === false) {
-                    $wildcardMxOnly = false;
-                }
-            } else { // Not all expected data were received
-				showBadRequestErrorPage();
-            }
-        }
+					if(
+						!_client_validateDnsMxRecord(
+							$data['type'][$index], $data['priority'][$index], $data['host'][$index], $verifiedData
+						)
+					) {
+						$error = true;
+					}
 
-        // Add DNS entries into database
-        if (!$error) {
-            /** @var $db iMSCP_Database */
-            $db = iMSCP_Registry::get('db');
-            $db->beginTransaction(); // All successfully inserted or nothing
+					if($data['type'][$index] == 'filter') {
+						$spamFilterMX = true;
+						$wildcardMxOnly = false;
+					} elseif($data['type'][$index] == 'domain') {
+						$wildcardMxOnly = false;
+					}
+				} else { // Not all expected data were received
+					showBadRequestErrorPage();
+				}
+			}
 
-            try {
-                $dnsEntriesIds = '';
-                for ($index = 0; $index < $entriesCount; $index++) {
-                    // Try to insert MX record into the domain_dns database table
-                    $query = '
-                      INSERT INTO `domain_dns` (
-                        `domain_id`, `alias_id`, `domain_dns`, `domain_class`, `domain_type`, `domain_text`, `owned_by`
-                      ) VALUES (
-                        ?, ?, ?, ?, ?, ?, ?
-                      )
-                    ';
-                    exec_query(
-                        $query,
-                        array(
-                            $verifiedData['domain_id'],
-                            ($verifiedData['item_type'] == 'alias') ? $verifiedData['item_id'] : 0,
-                            $data['name'][$index] . '.',
-                            'IN',
-                            'MX',
-                            "{$data['priority'][$index]}\t" . encode_idna($data['host'][$index]) . '.',
-                            'ext_mail_feature'
-                        )
-                    );
+			// Add DNS entries into database
+			if (!$error) {
+				/** @var $db iMSCP_Database */
+				$db = iMSCP_Registry::get('db');
+				$db->beginTransaction(); // All successfully inserted or nothing
 
-                    $dnsEntriesIds .= ',' . $db->insertId();
-                }
+				try {
+					$dnsEntriesIds = '';
 
-                /** @var $cfg iMSCP_Config_Handler_File */
-                $cfg = iMSCP_Registry::get('config');
+					for ($index = 0; $index < $entriesCount; $index++) {
+						// Try to insert MX record into the domain_dns database table
+						exec_query(
+							'
+								INSERT INTO `domain_dns` (
+									`domain_id`, `alias_id`, `domain_dns`, `domain_class`, `domain_type`, `domain_text`,
+									`owned_by`
+								) VALUES (
+									?, ?, ?, ?, ?, ?, ?
+								)
+							',
+							array(
+								$verifiedData['domain_id'],
+								($verifiedData['item_type'] == 'alias') ? $verifiedData['item_id'] : 0,
+								($data['type'][$index] != 'wildcard')
+									? $verifiedData['item_name'] . '.' : '*.' . $verifiedData['item_name'] . '.',
+								'IN',
+								'MX',
+								"{$data['priority'][$index]}\t" . encode_idna($data['host'][$index]) . '.',
+								'ext_mail_feature'
+							)
+						);
 
-                if ($verifiedData['item_type'] == 'normal') {
-                    $query = '
-                      UPDATE
-                        `domain` SET `external_mail` = ?, `domain_status` = ?, `external_mail_dns_ids` = ?
-                      WHERE
-                        `domain_id` = ?
-                    ';
-                    exec_query(
-                        $query,
-                        array(
-                            ($wildcardMxOnly) ? 'wildcard' : 'on',
-                            $cfg->ITEM_TOCHANGE_STATUS,
-                            ltrim($dnsEntriesIds, ','),
-                            $verifiedData['item_id'])
-                    );
-                } else {
-                    $query = '
-                      UPDATE
-                        `domain_aliasses` SET `external_mail` = ?, `alias_status` = ?, `external_mail_dns_ids` = ?
-                      WHERE
-                        `alias_id` = ?
-                    ';
-                    exec_query(
-                        $query,
-                        array(
-                            ($wildcardMxOnly) ? 'wildcard' : 'on',
-                            $cfg->ITEM_TOCHANGE_STATUS,
-                            ltrim($dnsEntriesIds, ','),
-                            $verifiedData['item_id'])
-                    );
-                }
+						$dnsEntriesIds .= ',' . $db->insertId();
+					}
 
-                $db->commit(); // Commit the transaction - All data will be now added into the database
+					/** @var $cfg iMSCP_Config_Handler_File */
+					$cfg = iMSCP_Registry::get('config');
 
-                iMSCP_Events_Manager::getInstance()->dispatch(
-                    iMSCP_Events::onAfterAddExternalMailServer, array('externalMailServerEntries' => $data)
-                );
+					if ($verifiedData['item_type'] == 'normal') {
+						exec_query(
+							'
+								UPDATE
+									`domain` SET `external_mail` = ?, `domain_status` = ?, `external_mail_dns_ids` = ?
+								WHERE
+									`domain_id` = ?
+							',
+							array(
+								($spamFilterMX) ? 'filter' : (($wildcardMxOnly) ? 'wildcard' : 'domain'),
+								$cfg->ITEM_TOCHANGE_STATUS,
+								ltrim($dnsEntriesIds, ','),
+								$verifiedData['item_id']
+							)
+						);
+					} else {
+						exec_query(
+							'
+					  			UPDATE
+									`domain_aliasses` SET `external_mail` = ?, `alias_status` = ?,
+									`external_mail_dns_ids` = ?
+					  			WHERE
+									`alias_id` = ?
+							',
+							array(
+								($spamFilterMX) ? 'filter' : (($wildcardMxOnly) ? 'wildcard' : 'domain'),
+								$cfg->ITEM_TOCHANGE_STATUS,
+								ltrim($dnsEntriesIds, ','),
+								$verifiedData['item_id'])
+						);
+					}
 
-                send_request(); // Ask the daemon to trigger backend dispatcher
-                set_page_message(tr('External mail server entries successfully scheduled for addition.'), 'success');
-                redirectTo('mail_external.php');
-            } catch (iMSCP_Exception_Database $e) {
-                $db->rollBack();
+					$db->commit(); // Commit the transaction - All data will be now added into the database
 
-                if ($e->getCode() === 23000) { // Entry already exists in domain_dns table or is defined twice in entries stack?
-                    set_page_message(
-                        tr(
-                            'The entry %s already exists or is defined twice below.',
-                            "<strong>{$data['name'][$index]} IN MX {$data['priority'][$index]} {$data['host'][$index]}</strong>"
-                        ),
-                        'error'
-                    );
-                } else { // Another error?
-                    throw new iMSCP_Exception_Database($e->getMessage(), $e->getQuery(), $e->getCode(), $e);
-                }
-            }
-        }
-    } else {
-        $data['name'][] = $verifiedData['item_name'];
-        $data['priority'][] = '10';
-        $data['host'][] = '';
-    }
+					iMSCP_Events_Manager::getInstance()->dispatch(
+						iMSCP_Events::onAfterAddExternalMailServer, array('externalMailServerEntries' => $data)
+					);
 
-    client_generateView($verifiedData, $data);
+					send_request(); // Ask the daemon to trigger backend dispatcher
+					set_page_message(tr('External mail server successfully scheduled for addition.'), 'success');
+					redirectTo('mail_external.php');
+				} catch (iMSCP_Exception_Database $e) {
+					$db->rollBack();
+
+					if ($e->getCode() === 23000) { // Entry already exists in domain_dns table or is defined twice in entries stack?
+						set_page_message(tr('An entry is defined twice below.'), 'error');
+					} else { // Another error?
+						throw new iMSCP_Exception_Database($e->getMessage(), $e->getQuery(), $e->getCode(), $e);
+					}
+				}
+			}
+		} else {
+			redirectTo('mail_external.php');
+		}
+	} else {
+		$data['type'][] = 'domain';
+		$data['priority'][] = '5';
+		$data['host'][] = '';
+	}
+
+	client_generateView($verifiedData, $data);
 }
 
 /**
@@ -273,82 +293,85 @@ function client_addExternalMailServerEntries($item)
  */
 function client_generateView($verifiedData, $data)
 {
-    /** @var $tpl iMSCP_pTemplate */
-    $tpl = iMSCP_Registry::get('templateEngine');
-    /** @var $cfg iMSCP_Config_Handler_File */
-    $cfg = iMSCP_Registry::get('config');
-    $selectedOption = $cfg->HTML_SELECTED;
-    $idnItemName = $verifiedData['item_name'];
-    $entriesCount = isset($data['name']) ? count($data['name']) : 0;
-    $domainMx = tr('Domain');
-    $wildcardMx = tr('Wildcard');
+	/** @var $tpl iMSCP_pTemplate */
+	$tpl = iMSCP_Registry::get('templateEngine');
 
-    $tpl->assign(
-        array(
-            'TR_PAGE_TITLE' => tr('Client / Email / External Mail Server / Add External Mail Server for {DOMAIN_UTF8}'),
-            'ISP_LOGO' => layout_getUserLogo(),
-            'TR_MX_TYPE' => tr('Type'),
-            'TR_DOMAIN' => tr('Domain'),
-            'DOMAIN_UTF8' => decode_idna($idnItemName),
-            'DOMAIN' => $idnItemName,
-            'TR_WILDCARD' => tr('Wildcard'),
-            'WILDCARD' => "*.$idnItemName",
-            'TR_PRIORITY' => tr('Priority'),
-            'TR_HOST' => tr('External Mail Host'),
-            'TR_ADD_NEW_ENTRY' => tr('Add a new entry'),
-            'TR_REMOVE_LAST_ENTRY' => tr('Remove last entry'),
-            'TR_TRIGGER_REMOVE_ALERT' => tr('You cannot remove this entry.'),
-            'TR_RESET_ENTRIES' => tr('Reset entries'),
-            'TR_CANCEL' => tr('Cancel'),
-            'TR_ADD' => tr('Add'),
-            'TR_MX_TYPE_TOOLTIP' =>
-            tr('Domain: Setup an MX record to relay mail of your entire domain (including subdomains) to an external mail server.') .
-                '<br /><br />' .
-                tr('Wildcard: Setup an MX record for inexistent subdomains, for which an external mail server can handle mail.') .
-                '<br /><br />' .
-                tr('Note: You can mix these options.'),
-            'ITEM' => $verifiedData['item_id'] . ';' . $verifiedData['item_type']
-        )
-    );
+	/** @var $cfg iMSCP_Config_Handler_File */
+	$cfg = iMSCP_Registry::get('config');
 
-    for ($index = 0; $index < $entriesCount; $index++) {
-        // Generates html option elements for the names
-        foreach (array($domainMx => $idnItemName, $wildcardMx => "*.$idnItemName") as $optionName => $optionValue) {
-            $tpl->assign(
-                array(
-                    'INDEX' => $index,
-                    'OPTION_VALUE' => $optionValue,
-                    'SELECTED' => ($optionValue == $data['name'][$index]) ? $selectedOption : '',
-                    'OPTION_NAME' => $optionName
-                )
-            );
-            $tpl->parse('NAME_OPTIONS', '.name_options');
-        }
+	$selectedOption = $cfg['HTML_SELECTED'];
+	$idnItemName = $verifiedData['item_name'];
+	$entriesCount = isset($data['type']) ? count($data['type']) : 0;
 
-        // Generates html option elements for the MX priority
-        foreach (array('10', '15', '20', '25', '30') as $option) {
-            $tpl->assign(
-                array(
-                    'INDEX' => $index,
-                    'OPTION_VALUE' => $option,
-                    'SELECTED' => ($option == $data['priority'][$index]) ? $selectedOption : '',
-                    'OPTION_NAME' => $option
-                )
-            );
-            $tpl->parse('PRIORITY_OPTIONS', '.priority_options');
-        }
+	$mxTypes = array(
+		tr('Domain') => 'domain',
+		tr('wildcard') => 'wildcard'
+	);
 
-        $tpl->assign(
-            array(
-                'INDEX' => $index,
-                'HOST' => $data['host'][$index],
-            )
-        );
+	if(customerHasFeature('mail')) {
+		$mxTypes[tr('Spam Filter')] = 'filter';
+	}
 
-        $tpl->parse('ITEM_ENTRIES', '.item_entries');
-        $tpl->assign('NAME_OPTIONS', ''); // Reset name options stack for next record
-        $tpl->assign('PRIORITY_OPTIONS', ''); // Reset priority options stack for next record
-    }
+	$tpl->assign(
+		array(
+			'TR_PAGE_TITLE' => tr('Client / Email / External Mail Server / Add External Mail Server for {DOMAIN_UTF8}'),
+			'ISP_LOGO' => layout_getUserLogo(),
+			'TR_MX_TYPE' => tr('Type'),
+			'DOMAIN_UTF8' => decode_idna($idnItemName),
+			'TR_PRIORITY' => tr('Priority'),
+			'TR_HOST' => tr('External Mail Host'),
+			'TR_ADD_NEW_ENTRY' => tr('Add a new entry'),
+			'TR_REMOVE_LAST_ENTRY' => tr('Remove last entry'),
+			'TR_TRIGGER_REMOVE_ALERT' => tr('You cannot remove this entry.'),
+			'TR_RESET_ENTRIES' => tr('Reset entries'),
+			'TR_CANCEL' => tr('Cancel'),
+			'TR_ADD' => tr('Add'),
+			'TR_MX_TYPE_TOOLTIP' =>
+				tr('Domain: Setup a DNS MX record to relay mail of your entire domain, including subdomains.') .
+				'<br /><br />' .
+				(
+					(customerHasFeature('mail'))
+						? tr('Wildcard: Setup a DNS MX record to relay mail for inexistent subdomains.') . '<br /><br />'
+						: ''
+				) .
+				tr('Spam Filter: Setup a DNS MX record to relay mail of your entire domain, including subdomains, but retains our server as final mailhost.') .
+				'<br /><br />' .
+				tr('Note: You cannot mix Spam filter and domain options'),
+			'ITEM' => $verifiedData['item_id'] . ';' . $verifiedData['item_type']
+		)
+	);
+
+	for ($index = 0; $index < $entriesCount; $index++) {
+		// Generates html option elements for the names
+		foreach ($mxTypes as $optionName => $optionValue) {
+			$tpl->assign(
+				array(
+					'OPTION_VALUE' => $optionValue,
+					'SELECTED' => ($optionValue == $data['type'][$index]) ? $selectedOption : '',
+					'OPTION_NAME' => $optionName
+				)
+			);
+			$tpl->parse('TYPE_OPTIONS', '.type_options');
+		}
+
+		// Generates html option elements for the MX priority
+		foreach (range(5, 50, 5) as $option) {
+			$tpl->assign(
+				array(
+					'OPTION_VALUE' => $option,
+					'SELECTED' => ($option == $data['priority'][$index]) ? $selectedOption : '',
+					'OPTION_NAME' => $option
+				)
+			);
+			$tpl->parse('PRIORITY_OPTIONS', '.priority_options');
+		}
+
+		$tpl->assign('HOST', $data['host'][$index]);
+
+		$tpl->parse('ITEM_ENTRIES', '.item_entries');
+		$tpl->assign('TYPE_OPTIONS', ''); // Reset name options stack for next record
+		$tpl->assign('PRIORITY_OPTIONS', ''); // Reset priority options stack for next record
+	}
 }
 
 /***********************************************************************************************************************
@@ -363,29 +386,29 @@ iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptStart)
 check_login('user');
 
 if (customerHasFeature('external_mail')) {
-    if (isset($_REQUEST['item']) && count($item = explode(';', $_REQUEST['item'], 2)) == 2) {
-        $tpl = iMSCP_Registry::set('templateEngine', new iMSCP_pTemplate());
-        $tpl->define_dynamic(
-            array(
-                'layout' => 'shared/layouts/ui.tpl',
-                'page' => 'client/mail_external_add.tpl',
-                'page_message' => 'layout',
-                'item_entries' => 'page',
-                'name_options' => 'item_entries',
-                'priority_options' => 'item_entries',
-            )
-        );
+	if (isset($_REQUEST['item']) && count($item = explode(';', $_REQUEST['item'], 2)) == 2) {
+		$tpl = iMSCP_Registry::set('templateEngine', new iMSCP_pTemplate());
+		$tpl->define_dynamic(
+			array(
+				'layout' => 'shared/layouts/ui.tpl',
+				'page' => 'client/mail_external_add.tpl',
+				'page_message' => 'layout',
+				'item_entries' => 'page',
+				'type_options' => 'item_entries',
+				'priority_options' => 'item_entries'
+			)
+		);
 
-        generateNavigation($tpl);
-        client_addExternalMailServerEntries($item);
-        generatePageMessage($tpl);
-        $tpl->parse('LAYOUT_CONTENT', 'page');
-        iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, array('templateEngine' => $tpl));
-        $tpl->prnt();
-        unsetMessages();
-    } else {
+		generateNavigation($tpl);
+		client_addExternalMailServerEntries($item);
+		generatePageMessage($tpl);
+		$tpl->parse('LAYOUT_CONTENT', 'page');
+		iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, array('templateEngine' => $tpl));
+		$tpl->prnt();
+		unsetMessages();
+	} else {
 		showBadRequestErrorPage();
-    }
+	}
 } else {
-    showBadRequestErrorPage();
+	showBadRequestErrorPage();
 }

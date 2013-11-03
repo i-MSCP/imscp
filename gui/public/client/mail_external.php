@@ -66,12 +66,11 @@ function _client_generateItem($tpl, $externalMail, $domainId, $domainName, $stat
 		);
 
 		$tpl->parse('ACTIVATE_LINK', 'activate_link');
-	} elseif ($externalMail == 'on' || $externalMail == 'wildcard') {
+	} elseif (in_array($externalMail, array('domain', 'wildcard', 'filter'))) {
 		$tpl->assign(
 			array(
 				'DOMAIN' => $idnDomainName,
-				'STATUS' => ($status == $statusOk) ?
-					($externalMail == 'on') ? tr('Activated') : tr('Wildcard MX only') : translate_dmn_status($status),
+				'STATUS' => ($status == $statusOk) ? tr('Activated') : translate_dmn_status($status),
 				'DISABLED' => ($status == $statusOk) ? '' : $htmlDisabled,
 				'ITEM_TYPE' => $type,
 				'ITEM_ID' => $domainId,
@@ -99,27 +98,25 @@ function _client_generateItem($tpl, $externalMail, $domainId, $domainName, $stat
  */
 function _client_generateItemList($tpl, $domainId, $domainName)
 {
-	$query = 'SELECT `domain_status`, `external_mail` FROM `domain` WHERE `domain_id` = ?';
-	$stmt = exec_query($query, $domainId);
+	$stmt = exec_query('SELECT `domain_status`, `external_mail` FROM `domain` WHERE `domain_id` = ?', $domainId);
+	$data = $stmt->fetchRow(PDO::FETCH_ASSOC);
 
-	_client_generateItem(
-		$tpl, $stmt->fields['external_mail'], $domainId, $domainName, $stmt->fields['domain_status'], 'normal'
-	);
+	_client_generateItem($tpl, $data['external_mail'], $domainId, $domainName, $data['domain_status'], 'normal');
 
 	$tpl->parse('ITEM', '.item');
 
-	$query = 'SELECT `alias_id`, `alias_name`, `alias_status`, `external_mail` FROM `domain_aliasses` WHERE `domain_id` = ?';
-	$stmt = exec_query($query, $domainId);
+	$stmt = exec_query(
+		'SELECT `alias_id`, `alias_name`, `alias_status`, `external_mail` FROM `domain_aliasses` WHERE `domain_id` = ?',
+		$domainId
+	);
 
 	if ($stmt->rowCount()) {
-		while (!$stmt->EOF) {
+		while ($data = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
 			_client_generateItem(
-				$tpl, $stmt->fields['external_mail'], $stmt->fields['alias_id'], $stmt->fields['alias_name'],
-				$stmt->fields['alias_status'], 'alias'
+				$tpl, $data['external_mail'], $data['alias_id'], $data['alias_name'], $data['alias_status'], 'alias'
 			);
 
 			$tpl->parse('ITEM', '.item');
-			$stmt->moveNext();
 		}
 	}
 }
@@ -140,7 +137,9 @@ function client_generateView($tpl)
 			'TR_DOMAIN' => tr('Domain'),
 			'TR_STATUS' => tr('Status'),
 			'TR_ACTION' => tr('Action'),
-			'TR_DEACTIVATE_MESSAGE' => tr("Are you sure you want to deactivate the external mail server(s) for the '%s' domain?", true, '%s'),
+			'TR_DEACTIVATE_MESSAGE' => tr(
+				"Are you sure you want to deactivate the external mail server(s) for the '%s' domain?", true, '%s'
+			),
 			'TR_DEACTIVATE_SELECTED_ITEMS' => tr('Deactivate selected items'),
 			'TR_CANCEL' => tr('Cancel')
 		)
@@ -164,7 +163,6 @@ iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptStart)
 check_login('user');
 
 if (customerHasFeature('external_mail')) {
-	//$tpl = iMSCP_Registry::set('templateEngine', new iMSCP_pTemplate());
 	$tpl = new iMSCP_pTemplate();
 	$tpl->define_dynamic(
 		array(

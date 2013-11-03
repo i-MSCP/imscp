@@ -1,85 +1,88 @@
 
 <script type="text/javascript">
-	/* <![CDATA[ */
-	function in_array(needle, haystack) {
-		var n = haystack.length;
+/* <![CDATA[ */
+function in_array(needle, haystack) {
+	var n = haystack.length;
 
-		for (var i = 0; i < n; i++) {
-			if (haystack[i] == needle) return true;
-		}
-
-		return false;
+	for (var i = 0; i < n; i++) {
+		if (haystack[i] == needle) return true;
 	}
 
-	function dns_show_rows(arr_show) {
-		var arr_possible = new Array(
-			'name', 'ip_address', 'ip_address_v6', 'srv_name', 'srv_protocol', 'srv_ttl', 'srv_prio', 'srv_weight',
-			'srv_host', 'srv_port', 'cname', 'txt_data'
-		);
+	return false;
+}
 
-		var n = arr_possible.length;
-		var trname;
+function dns_show_rows(arr_show) {
+	var arr_possible = new Array(
+		'name', 'ip_address', 'ip_address_v6', 'srv_name', 'srv_protocol', 'srv_ttl', 'srv_prio', 'srv_weight',
+		'srv_host', 'srv_port', 'cname', 'txt_data'
+	);
 
-		for (var i = 0; i < n; i++) {
-			trname = 'tr_dns_' + arr_possible[i];
-			o = document.getElementById(trname);
-			if (o) {
-				if (in_array(arr_possible[i], arr_show)) {
-					o.style.display = 'table-row';
-				} else {
-					o.style.display = 'none';
-				}
+	var n = arr_possible.length;
+	var trname;
+
+	for (var i = 0; i < n; i++) {
+		trname = 'tr_dns_' + arr_possible[i];
+		//o = document.getElementById(trname);
+		o = $('#' + trname);
+		if (o) {
+			if (in_array(arr_possible[i], arr_show)) {
+				//o.style.display = 'table-row';
+				o.show();
 			} else {
-				alert('Not found: ' + trname);
+				//o.style.display = 'none';
+				o.hide();
 			}
-		}
-	}
-
-	function dns_type_changed(value) {
-		if (value == 'A') {
-			dns_show_rows(new Array('name', 'ip_address'));
-		} else if (value == 'AAAA') {
-			dns_show_rows(new Array('name', 'ip_address_v6'));
-		} else if (value == 'SRV') {
-			dns_show_rows(
-				new Array('srv_name', 'srv_protocol', 'srv_ttl', 'srv_prio', 'srv_weight', 'srv_host', 'srv_port')
-			);
-		} else if (value == 'CNAME') {
-			dns_show_rows(new Array('name', 'cname'));
-		} else if (value == 'TXT') {
-			dns_show_rows(new Array('txt_data'));
-		}
-	}
-
-	var IPADDRESS = "[0-9\.]";
-	var IPv6ADDRESS = "[0-9a-f:A-F]";
-	var NUMBERS = "[0-9]";
-
-	function filterChars(e, allowed) {
-		var keynum;
-		if (window.event) {
-			keynum = window.event.keyCode;
-			e = window.event;
-		} else if (e) {
-			keynum = e.which;
 		} else {
-			return true;
+			alert('Not found: ' + trname);
 		}
-
-		if ((keynum == 8) || (keynum == 0)) {
-			return true;
-		}
-
-		var keychar = String.fromCharCode(keynum);
-
-		if (e.ctrlKey && ((keychar == "C") || (keychar == "c") || (keychar == "V") || (keychar == "v"))) {
-			return true;
-		}
-
-		var re = new RegExp(allowed);
-		return re.test(keychar);
 	}
-	/* ]]> */
+}
+
+function dns_type_changed(value) {
+	if (value == 'A') {
+		dns_show_rows(new Array('name', 'ip_address'));
+	} else if (value == 'AAAA') {
+		dns_show_rows(new Array('name', 'ip_address_v6'));
+	} else if (value == 'SRV') {
+		dns_show_rows(
+			new Array('srv_name', 'srv_protocol', 'srv_ttl', 'srv_prio', 'srv_weight', 'srv_host', 'srv_port')
+		);
+	} else if (value == 'CNAME') {
+		dns_show_rows(new Array('name', 'cname'));
+	} else if (value == 'TXT') {
+		dns_show_rows(new Array('txt_data'));
+	}
+}
+
+var IPADDRESS = "[0-9\.]";
+var IPv6ADDRESS = "[0-9a-f:A-F]";
+var NUMBERS = "[0-9]";
+
+function filterChars(e, allowed) {
+	var keynum;
+	if (window.event) {
+		keynum = window.event.keyCode;
+		e = window.event;
+	} else if (e) {
+		keynum = e.which;
+	} else {
+		return true;
+	}
+
+	if ((keynum == 8) || (keynum == 0)) {
+		return true;
+	}
+
+	var keychar = String.fromCharCode(keynum);
+
+	if (e.ctrlKey && ((keychar == "C") || (keychar == "c") || (keychar == "V") || (keychar == "v"))) {
+		return true;
+	}
+
+	var re = new RegExp(allowed);
+	return re.test(keychar);
+}
+/* ]]> */
 </script>
 
 <form name="edit_dns_frm" method="post" action="{ACTION_MODE}">

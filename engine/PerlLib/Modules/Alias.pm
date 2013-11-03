@@ -288,7 +288,8 @@ sub buildNAMEDData
 		DOMAIN_IP => $self->{'ip_number'},
 		USER_NAME => $userName . 'als' . $self->{'alias_id'},
 		MX => (
-			($self->{'mail_on_domain'} || $self->{'domain_mailacc_limit'} >= 0) && ($self->{'external_mail'} eq 'off')
+			($self->{'mail_on_domain'} || $self->{'domain_mailacc_limit'} >= 0) &&
+			($self->{'external_mail'} ~~ ['wildcard', 'off'])
 		) ? '' : ';'
 	};
 

@@ -50,6 +50,11 @@ a:hover.link_as_button {
     color: #ffffff;
 }
 
+span.clickable:hover {
+    color:#5cbada;
+    cursor: pointer;
+}
+
 /* header */
 .header {
     background: #0e6e0e url(../images/green/background/top_bg.jpg) repeat-x top left;
