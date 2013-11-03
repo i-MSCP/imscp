@@ -88,7 +88,7 @@ if (!empty($antiRootkitLogFiles)) {
 	foreach ($antiRootkitLogFiles AS $antiRootkit => $logVar) {
 		$logFile = $config[$logVar];
 
-		if (@file_exists($logFile) && is_readable($logFile) && filesize($logFile) > 0) {
+		if (@is_readable($logFile) && @filesize($logFile) > 0) {
 			$handle = fopen($logFile, 'r');
 
 			$log = fread($handle, filesize($logFile));
