@@ -1176,4 +1176,32 @@ class iMSCP_Events
 	 * @const string
 	 */
 	const onAfterChangeDomainStatus = 'onAfterChangeDomainStatus';
+
+	/**
+	 * The onBeforeSendCircular event is triggered before an admin or reseller send a circular
+	 *
+	 * The listeners receive an iMSCP_Events_Event object with the following parameters
+	 *
+	 * - sender_name Sender name
+	 * - sender_email Sender email
+	 * - rcpt_to recipient type (all_users, aministrator_resellers, administrators_customers, resellers_customers,
+	 *  administrators, resellers, customers)
+	 * - subject Circular subject
+	 * - body Circular body
+	 */
+	const onBeforeSendCircular = 'onBeforeSendCircular';
+
+	/**
+	 * The onAfterSendCircular event is triggered after an admin or reseller has sent a circular
+
+	 * The listeners receive an iMSCP_Events_Event object with the following parameters
+	 *
+	 * - sender_name Sender name
+	 * - sender_email Sender email
+	 * - rcpt_to recipient type (all_users, aministrator_resellers, administrators_customers, resellers_customers,
+	 *  administrators, resellers, customers)
+	 * - subject Circular subject
+	 * - body Circular body
+	 */
+	const onAfterSendCircular = 'onAfterSendCircular';
 }

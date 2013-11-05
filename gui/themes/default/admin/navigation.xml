@@ -122,7 +122,7 @@
                     <label>Circular</label>
                     <uri>/admin/circular.php</uri>
                     <title_class>email</title_class>
-                    <privilege_callback name="systemHasResellersOrCustomers"/>
+                    <privilege_callback name="systemHasAdminsOrResellersOrCustomers"/>
                 </circular>
                 <sessions_management>
                     <label>Sessions</label>

@@ -6,11 +6,13 @@ Git Master
 ------------------------------------------------------------------------------------------------------------------------
 
 GUI:
+	- Added: onBeforeSendCircular and onAfterSendCircular events
 	- Added: Option allowing to keep postfix configuration even when using external mail server
-	- Changed: EventsManager - Replaced Listener stack by a priority queue (Performance issues)
+	- Changed: EventsManager - listener stack become a priority queue (Performance issues)
 	- Fixed: Configuration variable `/var/log/rkhunter.log` is missing
 	- Fixed: Identity garbage on session timeout
-	- Updated plugin API (version 0.1.2)
+	- Rewritten: Circular interface (admin and reseller levels)
+	- Updated: plugin API (version 0.1.2)
 
 SETUP:
 	- Fixed: ispCP migration script must not delete Web data while deleting unix users
@@ -18,6 +20,7 @@ SETUP:
 Tickets:
 	- Fixed #935: Enhancement - Add option to keep the postfix configuration even when using external mail server
 	- Fixed #952: Bug - Backup script - several issues
+	- Fixed #954: Bug - Mass mail is not working (admin and reseller interfaces)
 
 ------------------------------------------------------------------------------------------------------------------------
 1.1.0-rc4.6
@@ -31,7 +34,7 @@ ENGINE:
 	- Fixed: Several 'Can't use an undefined value as a HASH reference...' errors
 
 GUI:
-	- Added IPv6 service status support
+	- Added: IPv6 service status support
 	- Changed: Any service port become editable
 	- Fixed: Service ports interface is broken
 	- Fixed: Unable to change admin settings
@@ -72,7 +75,7 @@ ENGINE:
 
 GUI:
 	- Added: Option allowing to set Email quota synchronization mode
-	- Allow plugins to provide their own router
+	- Added: Per plugin router support
 	- Fixed: Do not show any quota information for mailboxes which have the quota limit set to 0 (unlimited)
 	- Fixed: Unable to edit domain (admin level)
 
@@ -162,13 +165,13 @@ Tickets:
 	- RELEASE i-MSCP 1.1.0-rc4
 
 CONFIG:
-	- Added specific quota warning script for Dovecot 2.x.x branch
+	- Added: Specific quota warning script for Dovecot 2.x.x branch
 	- Added: Packages file for Debian Jessie (testing)
 	- Added: SPF Resource Record Type in bind template
 	- Added: php5-imap package (required by i-MSCP frontEnd)
 	- Changed: php5-mysql package to php5-mysqlnd (native driver) when available
 	- Removed: php5-adodb package
-	- Removed Dovecot sieve plugin configuration (Such parameter must be provided as plugin)
+	- Removed: Dovecot sieve plugin configuration (Such parameter must be provided as plugin)
 	- Updated: Apache templates to support 2.4.x branch
 	- Updated: Dovecot configuration files
 
@@ -352,7 +355,7 @@ i-MSCP 1.1.0-rc2.1
 CONFIGS:
 	- Added: MariaDb support
 	- Added: named.conf.local and named.conf.options files
-	- Added: Skel directory for Web folder skeletons (Httpd server impls.)
+	- Added: Web folder skeletons (Httpd server impls.)
 	- Fixed: Useless section must be removed in generated Apache configuration files
 	- Fixed: diff package isn't available for Ubuntu > 12.04 (replaced by diffutils)
 	- Removed: packages file for Ubuntu Oneiric Ocelot (EOL 20130509)

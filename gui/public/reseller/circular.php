@@ -1,43 +1,29 @@
 <?php
 /**
  * i-MSCP - internet Multi Server Control Panel
+ * Copyright (C) 2010-2013 by i-MSCP Team
  *
- * The contents of this file are subject to the Mozilla Public License
- * Version 1.1 (the "License"); you may not use this file except in
- * compliance with the License. You may obtain a copy of the License at
- * http://www.mozilla.org/MPL/
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
  *
- * Software distributed under the License is distributed on an "AS IS"
- * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
- * License for the specific language governing rights and limitations
- * under the License.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- * The Original Code is "VHCS - Virtual Hosting Control System".
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
- * The Initial Developer of the Original Code is moleSoftware GmbH.
- * Portions created by Initial Developer are Copyright (C) 2001-2006
- * by moleSoftware GmbH. All Rights Reserved.
- *
- * Portions created by the ispCP Team are Copyright (C) 2006-2010 by
- * isp Control Panel. All Rights Reserved.
- *
- * Portions created by the i-MSCP Team are Copyright (C) 2010-2013 by
- * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
- *
- * @category    i-MSCP
+ * @category    iMSCP
  * @package     iMSCP_Core
- * @subpackage  Reseller
- * @copyright   2001-2006 by moleSoftware GmbH
- * @copyright   2006-2010 by ispCP | http://isp-control.net
- * @copyright   2010-2013 by i-MSCP | http://i-mscp.net
- * @author      ispCP Team
- * @author      i-MSCP Team
- * @link        http://i-mscp.net
- */
-
-/***********************************************************************************************************************
- * TODO: Using the PHP mail function to send mass emails is an error (as stated by the PHP documentation).
- * We must solve this by using a specific library such as phpmailer that is really more efficient in such context.
+ * @subpackage  Admin_Plugin
+ * @copyright   2010-2013 by i-MSCP Team
+ * @author      Laurent Declercq <l.declercq@nuxwin.com>
+ * @link        http://www.i-mscp.net i-MSCP Home Site
+ * @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
  */
 
 /***********************************************************************************************************************
@@ -45,132 +31,163 @@
  */
 
 /**
- * Send the given email.
+ * Send email
  *
- * @param string $to receivers of the mail
- * @param string $from Sender of the mail
- * @param string $subject Message subject
- * @param string $message Message body
- * @return void
+ * @param string $senderName Sender name
+ * @param string $senderEmail Sender email
+ * @param string $subject Subject
+ * @param string $body Body
+ * @param array $rcptToData Recipient data
  */
-function sendEmail($to, $from, $subject, $message)
+function reseller_sendEmail($senderName, $senderEmail, $subject, $body, $rcptToData)
 {
-	$headers = "MIME-Version: 1.0\r\n";
-	$headers .= "Content-Type: text/plain; charset=utf-8\r\n";
-	$headers .= "Content-Transfer-Encoding: 8bit\r\n";
-	$headers .= "From: $from\r\n";
-	$headers .= "X-Mailer: i-MSCP mailer\r\n";
-
-	mail($to, $subject, $message, $headers);
-}
-
-/**
- * Send email to all customers of the given reseller.
- *
- * @param int $resellerId Reseller unique identifier
- * @return void
- */
-function sendEmailToResellerCustomers($resellerId)
-{
-	global $messageSubject, $messageBody,  $senderName, $senderEmail;
-
-	$query = '
-		SELECT
-			`admin_name`, `fname`, `lname`, `email`
-		FROM
-			`admin`
-		WHERE
-			`admin_type` = ?
-		AND
-			`created_by` = ?
-		GROUP BY
-			`email`
-	';
-	$stmt = exec_query($query, array('user', $resellerId));
-
-	while (!$stmt->EOF) {
-		if($stmt->fields['fname'] == '' &&  $stmt->fields['lname'] == '') {
-			$to = encode(decode_idna($stmt->fields['admin_name']));
+	if ($rcptToData['email'] != '') {
+		if (!empty($rcptToData['fname']) && !empty($rcptToData['lname'])) {
+			$to = $rcptToData['fname'] . ' ' . $rcptToData['lname'];
+		} elseif (!empty($rcptToData['fname'])) {
+			$to = $rcptToData['fname'];
+		} elseif (!empty($rcptToData['lname'])) {
+			$to = $rcptToData['lname'];
 		} else {
-			$to = trim("{$stmt->fields['fname']} {$stmt->fields['lname']}");
+			$to = $rcptToData['admin_name'];
 		}
 
-		$to = encode($to . "<{$stmt->fields['email']}>");
-		$from = encode(trim($senderName)) . " <$senderEmail>";
+		$from = '"' . encode($senderName) . '"' . " <$senderEmail>";
+		$to = '"' . encode($to) . '"' . " <{$rcptToData['email']}>";
 
-		sendEmail($to, $from, encode($messageSubject), $messageBody);
-		$stmt->moveNext();
+		$headers = "MIME-Version: 1.0\r\n";
+		$headers .= "Content-Type: text/plain; charset=utf-8\r\n";
+		$headers .= "Content-Transfer-Encoding: 8bit\r\n";
+		$headers .= "From: $from\r\n";
+		$headers .= "X-Mailer: i-MSCP mailer";
+
+		mail($to, $subject, $body, $headers, "-f $senderEmail");
 	}
 }
 
 /**
- * Check email data.
+ * Send circular to customers
  *
- * @return bool TRUE if all data are valid, FALSE otherwise
+ * @param string $senderName Sender name
+ * @param string $senderEmail Sender email
+ * @param string $subject Subject
+ * @param string $body Body
  */
-function checkEmailData()
+function reseller_sendToCustomers($senderName, $senderEmail, $subject, $body)
 {
-	global $messageSubject, $messageBody, $senderEmail, $senderName;
+	if (resellerHasCustomers()) {
+		$stmt = exec_query(
+			'SELECT `admin_name`, `fname`, `lname`, `email` FROM `admin` WHERE `created_by` = ?', $_SESSION['user_id']
+		);
 
-	if(
-		isset($_POST['rcpt_to']) && isset($_POST['msg_subject']) && isset($_POST['msg_text']) &&
-		isset($_POST['sender_email']) && isset($_POST['sender_name'])
+		while ($rcptToData = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
+			reseller_sendEmail($senderName, $senderEmail, $subject, $body, $rcptToData);
+		}
+	}
+}
+
+/**
+ * Validate circular
+ *
+ * @param string $senderName Sender name
+ * @param string $senderEmail Sender Email
+ * @param string $subject Subject
+ * @param string $body Body
+ * @return bool TRUE if circular is valid, FALSE otherwise
+ */
+function reseller_isValidCircular($senderName, $senderEmail, $subject, $body)
+{
+	$ret = true;
+
+	if ($senderName == '') {
+		set_page_message(tr('Sender name is missing.'), 'error');
+		$ret = false;
+	}
+
+	if ($senderEmail == '') {
+		set_page_message(tr('Sender email is missing.'), 'error');
+		$ret = false;
+	} elseif (!chk_email($senderEmail)) {
+		set_page_message(tr("Incorrect email length or syntax."), 'error');
+		$ret = false;
+	}
+
+	if ($subject == '') {
+		set_page_message(tr('Subject is missing.'), 'error');
+		$ret = false;
+	}
+
+	if ($body == '') {
+		set_page_message(tr('Body is missing.'), 'error');
+		$ret = false;
+	}
+
+	return $ret;
+}
+
+/**
+ * Send circular
+ *
+ * @return bool TRUE on success, FALSE otherwise
+ */
+function reseller_sendCircular()
+{
+	if (
+		isset($_POST['sender_name']) && isset($_POST['sender_email']) && isset($_POST['subject']) &&
+		isset($_POST['body'])
 	) {
+		$senderName = clean_input($_POST['sender_name']);
+		$senderEmail = clean_input($_POST['sender_email']);
+		$subject = clean_input($_POST['subject'], false);
+		$body = clean_input($_POST['body'], false);
 
-		$messageSubject = clean_input($_POST['msg_subject'], false);
-		$messageBody = clean_input($_POST['msg_text'], false);
-		$senderEmail = clean_input($_POST['sender_email'], false);
-		$senderName =  clean_input($_POST['sender_name'], false);
+		if (reseller_isValidCircular($senderName, $senderEmail, $subject, $body)) {
+			$responses = iMSCP_Events_Manager::getInstance()->dispatch(
+				iMSCP_Events::onBeforeSendCircular,
+				array(
+					'sender_name' => $senderName, 'sender_email' => $senderEmail, 'rcpt_to' => 'customers',
+					'subject' => $subject, 'body' => $body
+				)
+			);
 
-		if ($messageSubject == '') {
-			set_page_message(tr('Message subject is missing.'), 'error');
-		}
+			if (!$responses->isStopped()) {
+				reseller_sendToCustomers($senderName, $senderEmail, $subject, $body);
 
-		if ($messageBody == '') {
-			set_page_message(tr('Message body is missing.'), 'error');
-		}
+				iMSCP_Events_Manager::getInstance()->dispatch(
+					iMSCP_Events::onAfterSendCircular,
+					array(
+						'sender_name' => $senderName, 'sender_email' => $senderEmail, 'rcpt_to' => 'customers',
+						'subject' => $subject, 'body' => $body
+					)
+				);
 
-		if ($senderName == '') {
-			set_page_message(tr('Sender name is missing.'), 'error');
-		}
-
-		if ($senderEmail == '') {
-			set_page_message(tr('Sender email is missing.'), 'error');
-		} elseif (!chk_email($senderEmail)) {
-			set_page_message(tr("Incorrect email length or syntax."), 'error');
-		}
-
-		if (Zend_Session::namespaceIsset('pageMessages')) {
+				set_page_message(tr('Circular successfully sent.'), 'success');
+				write_log('A circular has been sent by reseller: ' . tohtml("$senderName <$senderEmail>"), E_USER_NOTICE);
+			}
+		} else {
 			return false;
 		}
-
-		return true;
 	} else {
 		showBadRequestErrorPage();
-		exit;
 	}
+
+	return true;
 }
 
 /**
- * Generate page  data.
+ * Generate page data
  *
  * @param iMSCP_pTemplate $tpl
  * @return void
  */
-function generatePageData($tpl)
+function reseller_generatePageData($tpl)
 {
-	global $messageSubject, $messageBody, $senderEmail, $senderName;
+	$senderName = isset($_POST['sender_name']) ? $_POST['sender_name'] : '';
+	$senderEmail = isset($_POST['sender_email']) ? $_POST['sender_email'] : '';
+	$subject = isset($_POST['subject']) ? $_POST['subject'] : '';
+	$body = isset($_POST['body']) ? $_POST['body'] : '';
 
-	if (isset($_POST['uaction']) && $_POST['uaction'] === 'send_circular') {
-		$tpl->assign(
-			array(
-				'MESSAGE_SUBJECT' => tohtml($messageSubject),
-				'MESSAGE_TEXT' => tohtml($messageBody),
-				'SENDER_EMAIL' => tohtml($senderEmail),
-				'SENDER_NAME' => tohtml($senderName)
-			)
-		);
-	} else {
+	if ($senderName == '' && $senderEmail == '') {
 		$query = 'SELECT `admin_name`, `fname`, `lname`, `email` FROM `admin` WHERE `admin_id` = ?';
 		$stmt = exec_query($query, $_SESSION['user_id']);
 		$data = $stmt->fetchRow();
@@ -185,34 +202,27 @@ function generatePageData($tpl)
 			$senderName = $data['admin_name'];
 		}
 
-		$tpl->assign(
-			array(
-				'MESSAGE_SUBJECT' => '',
-				'MESSAGE_TEXT' => '',
-				'SENDER_EMAIL' => tohtml($data['email']),
-				'SENDER_NAME' => tohtml($senderName)
-			)
-		);
-	}
-}
+		if ($data['email'] != '') {
+			$senderEmail = $data['email'];
+		} else {
+			$config = iMSCP_Registry::get('config');
 
-/**
- * Send circular.
- *
- * @return void
- */
-function sendCircular()
-{
-	global $senderName, $senderEmail;
-
-	if (isset($_POST['uaction']) && $_POST['uaction'] == 'send_circular' && isset($_POST['rcpt_to'])) {
-		if (checkEmailData()) {
-			sendEmailToResellerCustomers($_SESSION['user_id']);
-			set_page_message(tr('Mass email successfully sent.'), 'success');
-			write_log('Mass email has been sent from Reseller ' . tohtml("$senderName <$senderEmail"), E_USER_NOTICE);
-			redirectTo('users.php');
+			if (isset($config['DEFAULT_ADMIN_ADDRESS']) && $config['DEFAULT_ADMIN_ADDRESS'] != '') {
+				$senderEmail = $config['DEFAULT_ADMIN_ADDRESS'];
+			} else {
+				$senderEmail = 'webmaster@' . $config['BASE_SERVER_VHOST'];
+			}
 		}
 	}
+
+	$tpl->assign(
+		array(
+			'SENDER_NAME' => tohtml($senderName),
+			'SENDER_EMAIL' => tohtml($senderEmail),
+			'SUBJECT' => tohtml($subject),
+			'BODY' => tohtml($body)
+		)
+	);
 }
 
 /***********************************************************************************************************************
@@ -226,41 +236,46 @@ iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onResellerScriptStar
 
 check_login('reseller');
 
-if(!resellerHasCustomers()) {
+if (!resellerHasCustomers()) {
 	showBadRequestErrorPage();
 }
 
-$tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic(
-	array(
-		'layout' => 'shared/layouts/ui.tpl',
-		'page' => 'reseller/circular.tpl',
-		'page_message' => 'layout'
-	)
-);
+if (!(!empty($_POST) && reseller_sendCircular())) {
+	$tpl = new iMSCP_pTemplate();
+	$tpl->define_dynamic(
+		array(
+			'layout' => 'shared/layouts/ui.tpl',
+			'page' => 'reseller/circular.tpl',
+			'page_message' => 'layout'
+		)
+	);
 
-$tpl->assign(
-	array(
-		'TR_PAGE_TITLE' => tr('Reseller / Customers / Circular'),
-		'ISP_LOGO' => layout_getUserLogo(),
-		'TR_CIRCULAR' => tr('Circular'),
-		'TR_MESSAGE_SUBJECT' => tr('Message subject'),
-		'TR_MESSAGE_TEXT' => tr('Message body'),
-		'TR_SENDER_EMAIL' => tr('Sender email'),
-		'TR_SENDER_NAME' => tr('Sender name'),
-		'TR_SEND_MESSAGE' => tr('Send message')
-	)
-);
+	$tpl->assign(
+		array(
+			'TR_PAGE_TITLE' => tr('Reseller / Customers / Circular'),
+			'ISP_LOGO' => layout_getUserLogo(),
+			'TR_CIRCULAR' => tr('Circular'),
+			'TR_SEND_TO' => tr('Send to'),
+			'TR_SUBJECT' => tr('Subject'),
+			'TR_BODY' => tr('Body'),
+			'TR_SENDER_EMAIL' => tr('Sender email'),
+			'TR_SENDER_NAME' => tr('Sender name'),
+			'TR_SEND_CIRCULAR' => tr('Send circular'),
+			'TR_CANCEL' => tr('Cancel')
+		)
+	);
 
-sendCircular();
-generateNavigation($tpl);
-generatePageData($tpl);
-generatePageMessage($tpl);
+	generateNavigation($tpl);
+	generatePageMessage($tpl);
+	reseller_generatePageData($tpl);
 
-$tpl->parse('LAYOUT_CONTENT', 'page');
+	$tpl->parse('LAYOUT_CONTENT', 'page');
 
-iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onResellerScriptEnd, array('templateEngine' => $tpl));
+	iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onResellerScriptEnd, array('templateEngine' => $tpl));
 
-$tpl->prnt();
+	$tpl->prnt();
 
-unsetMessages();
+	unsetMessages();
+} else {
+	redirectTo('users.php');
+}

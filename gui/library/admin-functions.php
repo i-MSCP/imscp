@@ -315,6 +315,20 @@ function systemHasCustomers($minNbCustomers = 1)
 }
 
 /**
+ * Whether or not system has registered admins (many), resellers or customers.
+ *
+ * @return bool
+ */
+function systemHasAdminsOrResellersOrCustomers()
+{
+	if(systemHasManyAdmins() || systemHasResellers() || systemHasCustomers()) {
+		return true;
+	}
+
+	return false;
+}
+
+/**
  * Whether or not system has registered resellers or customers.
  *
  * @return bool

@@ -984,18 +984,15 @@ function encode($string, $charset = 'UTF-8')
 		$start = '=?' . $charset . '?B?';
 		$spacer = $end . "\r\n " . $start;
 
-		// determine length of encoded text within chunks
-		// and ensure length is even
+		// Determine length of encoded text withing chunks and ensure length is even
 		$length = 75 - strlen($start) - strlen($end);
 		$length = floor($length / 4) * 4;
 
-		// encode the string and split it into chunks
-		// with spacers after each chunk
+		// Encode the string and split it into chunks with spacers after each chunk
 		$string = base64_encode($string);
 		$string = chunk_split($string, $length, $spacer);
 
-		// remove trailing spacer and
-		// add start and end delimiters
+		// Remove trailing spacer and add start and end delimiters
 		$spacer = preg_quote($spacer);
 		$string = preg_replace('/' . $spacer . '$/', '', $string);
 		$string = $start . $string . $end;
