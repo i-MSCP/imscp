@@ -39,6 +39,6 @@
 	</table>
 	<div class="buttons">
 		<input name="submit" type="submit" value="{TR_SEND_CIRCULAR}"/>
-		<a class ="link_as_button" href="manage_users.php">{TR_CANCEL}</a>
+		<a class="link_as_button" href="manage_users.php">{TR_CANCEL}</a>
 	</div>
 </form>
