@@ -20,6 +20,7 @@
 # @category    i-MSCP
 # @copyright   2010-2013 by i-MSCP | http://i-mscp.net
 # @author      Daniel Andreca <sci2tech@gmail.com>
+# @author      Laurent Declercq <l.declercq@nuxwin.com>
 # @link        http://i-mscp.net i-MSCP Home Site
 # @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
@@ -29,14 +30,13 @@ use warnings;
 use FindBin;
 use lib "$FindBin::Bin/..";
 use lib "$FindBin::Bin/../PerlLib";
-use lib "$FindBin::Bin/../PerlVendor";
 
 use iMSCP::Debug;
 use iMSCP::Boot;
 use Mail::Address;
 use MIME::Entity;
 use Email::Simple;
-use Encode;
+use open OUT => ':utf8';
 
 # Turn off localisation features to force any command output to be in english
 $ENV{'LC_MESSAGES'} = 'C';
@@ -55,97 +55,95 @@ sub startUp
 sub process
 {
 	my $from = $ARGV[0];
+
 	$from =~ s/imscp-arpl\.//gim;
 
-	my @msg = <STDIN>;
+	my $message = do { local $/; <STDIN> };
 
 	my $database = iMSCP::Database->factory();
 
-	my $sql = "DELETE FROM `autoreplies_log` WHERE ADDTIME(`time`, '24:00:00') < NOW()";
-
-	my $rdata = $database->doQuery('delete', $sql);
+	my $rdata = $database->doQuery('delete', "DELETE FROM `autoreplies_log` WHERE ADDTIME(`time`, '24:00:00') < NOW()");
 	unless(ref $rdata eq 'HASH') {
 		error($rdata);
+		return 1;
 	}
 
-	my $mail = Email::Simple->new(join('', @msg));
-	my ($to) = Mail::Address->parse($mail->header("From"));
+	my $mail = Email::Simple->new($message);
+	my ($to) = Mail::Address->parse($mail->header('From'));
 
 	if (not $to) {
-		error("Couldn't parse a From address");
+		error("Unable to parse From header");
 		return 0;
 	}
 
 	$to = lc($to->address);
 
 	if(
-		$mail->header('X-Mailer') && $mail->header('X-Mailer') =~ m/Autoreply Manager/i ||
-		$mail->header('Auto-Submitted') && $mail->header('Auto-Submitted') =~ m/auto-replied/i ||
-		$mail->header('Sender') && $mail->header('Sender') =~ m/autoresponder/i ||
+		$mail->header('X-Mailer') && $mail->header('X-Mailer') =~ /Auto-Reply Mailer/i ||
+		$mail->header('Auto-Submitted') && $mail->header('Auto-Submitted') =~ /auto-replied/i ||
+		$mail->header('Sender') && $mail->header('Sender') =~ /autoresponder/i ||
 		$mail->header('X-Autoresponse-From')
 	) {
 		return 0;
 	}
 
-	$sql = "SELECT `time` FROM `autoreplies_log` WHERE `from` = ? AND `to` = ? AND ADDTIME(`time`, '24:00:00') > NOW()";
-	$rdata = $database->doQuery('time', $sql, $from, $to);
+	$rdata = $database->doQuery(
+		'time',
+		"SELECT `time` FROM `autoreplies_log` WHERE `from` = ? AND `to` = ? AND ADDTIME(`time`, '24:00:00') > NOW()",
+		$from,
+		$to
+	);
 	unless(ref $rdata eq 'HASH') {
-		error($rdata);;
+		error($rdata);
+		return 1;
 	}
 
-	return 0 if(scalar keys %{$rdata});
+	return 0 unless ! %{$rdata};
 
-	$sql = "
-		SELECT
-			CONVERT(`mail_auto_respond_text` using utf8) as `text`
-		FROM
-			`mail_users`
-		WHERE
-			`mail_addr` = ?
-		AND
-			`mail_auto_respond` = 1
-	";
-
-	$rdata = iMSCP::Database->factory()->doQuery('text', $sql, $from);
+	$rdata = iMSCP::Database->factory()->doQuery(
+		'mail_auto_respond_text',
+		'SELECT `mail_auto_respond_text` FROM `mail_users` WHERE `mail_addr` = ? AND `mail_auto_respond` = 1',
+		$from
+	);
 	unless(ref $rdata eq 'HASH'){
 		error($rdata);
 		return 1;
 	}
 
-	return 0 unless(scalar keys %{$rdata});
+	return 0 unless %{$rdata};
 
-	my $text = (keys %{$rdata})[0];
 	my $out = new MIME::Entity;
 
 	$out->build(
 		From => $from,
 		To => $to,
-		Subject => '[Autoreply] ' . $mail->header('Subject'),
+		Subject => '[Auto-Reply] ' . $mail->header('Subject'),
 		Type => 'multipart/mixed; charset=utf-8',
 		'X-Autoresponse-From' => $from,
-		'X-Mailer' => "i-MSCP $main::imscpConfig{'Version'} Autoreply Manager"
+		'X-Mailer' => "i-MSCP Auto-Reply Mailer"
 	);
 
 	$out->attach(
 		Type => 'text/plain; charset=utf-8',
 		Encoding => '8bit',
-		Description => 'Mail User Autoreply Message',
-		Data => Encode::encode('UTF-8', $text)
+		Description => 'Mail User Auto-Reply Message',
+		Data => (keys %{$rdata})[0]
 	);
 
 	$out->attach(
 		Type => 'message/rfc822',
 		Description => "Original Message",
-		Data => join('', @msg)
+		Data => $message
 	);
 
-	open MAIL, '| /usr/sbin/sendmail -t -oi';
+	open MAIL, '|-', '/usr/sbin/sendmail -t -oi' // fatal("Unable to send auto-reply message: $!");
 	$out->print(\*MAIL);
 	close MAIL;
 
-	# Log the autoreply
-	$sql = "INSERT INTO `autoreplies_log` (`time`, `from`, `to`) VALUES (NOW(), ?, ?)";
-	$rdata = $database->doQuery('insert', $sql, $from, $to);
+	# Log autoreply
+	$rdata = $database->doQuery(
+		'insert', 'INSERT INTO `autoreplies_log` (`time`, `from`, `to`) VALUES (NOW(), ?, ?)', $from, $to
+	);
 	unless(ref $rdata eq 'HASH'){
 		error($rdata);
 		return 1;
@@ -154,9 +152,7 @@ sub process
 	0;
 }
 
-my $rs = 0;
-
-$rs = startUp();
+my $rs = startUp();
 $rs ||= process();
 
 exit $rs;
