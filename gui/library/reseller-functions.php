@@ -697,11 +697,11 @@ function send_alias_order_email($aliasName)
 	$subject = $data['subject'];
 	$message = $data['message'];
 
-	$to = ($toName) ? '"' . encode($toName) . "\" <" . $toEmail . ">" : $toEmail;
+	$to = ($toName) ? encode_mime_header($toName) . " <$toEmail>" : $toEmail;
 
 	if ($userFirstname && $userLastname) {
 		$fromName = "$userFirstname $userLastname";
-		$from = '"' . encode($fromName) . "\" <" . $userEmail . ">";
+		$from = encode_mime_header($fromName) . " <$userEmail>";
 	} else {
 		if ($userFirstname) {
 			$fromName = $userFirstname;
@@ -710,6 +710,7 @@ function send_alias_order_email($aliasName)
 		} else {
 			$fromName = $userEmail;
 		}
+
 		$from = $userEmail;
 	}
 
@@ -730,15 +731,15 @@ function send_alias_order_email($aliasName)
 	$subject = str_replace($search, $replace, $subject);
 	$message = str_replace($search, $replace, $message);
 
-	$subject = encode($subject);
+	$subject = encode_mime_header($subject);
 
-	$headers = "From: " . $from . "\n";
-	$headers .= "MIME-Version: 1.0\n";
-	$headers .= "Content-Type: text/plain; charset=utf-8\n";
-	$headers .= "Content-Transfer-Encoding: 8bit\n";
-	$headers .= "X-Mailer: i-MSCP {$cfg->Version} Service Mailer";
+	$headers = "From: $from\r\n";
+	$headers .= "MIME-Version: 1.0\r\n";
+	$headers .= "Content-Type: text/plain; charset=utf-8\r\n";
+	$headers .= "Content-Transfer-Encoding: 8bit\r\n";
+	$headers .= "X-Mailer: i-MSCP Mailer";
 
-	mail($to, $subject, $message, $headers);
+	mail($to, $subject, $message, $headers, "-f $userEmail");
 }
 
 /**

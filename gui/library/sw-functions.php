@@ -102,8 +102,7 @@ function update_existing_client_installations_res_upload($software_id, $reseller
  * @param int $reseller_id
  * @return void
  */
-function update_existing_client_installations_sw_depot($software_id,
-	$software_master_id, $reseller_id)
+function update_existing_client_installations_sw_depot($software_id, $software_master_id, $reseller_id)
 {
 	$query = "
         SELECT
@@ -115,10 +114,10 @@ function update_existing_client_installations_sw_depot($software_id,
         AND
             `domain_created_id` = ?
      ";
-	$res = exec_query($query, $reseller_id);
+	$stmt = exec_query($query, $reseller_id);
 
-	if ($res->RecordCount() > 0) {
-		while (!$res->EOF) {
+	if ($stmt->rowCount() > 0) {
+		while (!$stmt->EOF) {
 			$update_query = "
 				UPDATE
 					`web_software_inst`
@@ -131,9 +130,9 @@ function update_existing_client_installations_sw_depot($software_id,
 				AND
 					`domain_id` = ?
 			";
-			exec_query($update_query, array($software_id, $software_master_id,
-										   $res->fields['domain_id']));
-			$res->MoveNext();
+			exec_query($update_query, array($software_id, $software_master_id, $stmt->fields['domain_id']));
+
+			$stmt->MoveNext();
 		}
 	}
 }
@@ -148,44 +147,28 @@ function update_existing_client_installations_sw_depot($software_id,
  */
 function send_activated_sw($reseller_id, $file_name, $sw_id)
 {
-	/** @var $cfg iMSCP_Config_Handler_File */
-	$cfg = iMSCP_Registry::get('config');
+	$query = "SELECT `admin_name` as `reseller`, `created_by`, `email` as `res_email` FROM `admin` WHERE `admin_id` = ?";
+	$stmt = exec_query($query, $reseller_id);
 
-	$query = "
-        SELECT
-            `admin_name` as `reseller`, `created_by`, `email` as `res_email`
-        FROM
-            `admin`
-        WHERE
-            `admin_id` = ?;
-    ";
-	$res = exec_query($query, $reseller_id);
+	$to_name = $stmt->fields['reseller'];
+	$to_email = $stmt->fields['res_email'];
+	$admin_id = $stmt->fields['created_by'];
 
-	$to_name = $res->fields['reseller'];
-	$to_email = $res->fields['res_email'];
-	$admin_id = $res->fields['created_by'];
+	$query = "SELECT `email` as adm_email, `admin_name` as `admin` FROM `admin` WHERE `admin_id` = ?";
+	$stmt = exec_query($query, $admin_id);
 
-	$query = "
-        SELECT
-            `email` as adm_email, `admin_name` as `admin`
-        FROM
-            `admin`
-        WHERE
-            `admin_id` = ?
-    ";
-	$res = exec_query($query, $admin_id);
-
-	$from_name = $res->fields['admin'];
-	$from_email = $res->fields['adm_email'];
+	$from_name = $stmt->fields['admin'];
+	$from_email = $stmt->fields['adm_email'];
 
 	if ($from_name) {
-		$from = "\"" . encode($from_name) . "\" <" . $from_email . ">";
+		$from = encode_mime_header($from_name) . " <$from_email>";
 	} else {
 		$from = $from_email;
 	}
 
 	$search = array();
 	$replace = array();
+
 	$search [] = '{ADMIN}';
 	$replace[] = $from_name;
 	$search [] = '{SOFTWARE}';
@@ -195,10 +178,11 @@ function send_activated_sw($reseller_id, $file_name, $sw_id)
 	$search [] = '{RESELLER}';
 	$replace[] = $to_name;
 
-	$headers = "From: " . $from . "\n";
-	$headers .= "MIME-Version: 1.0\n" . "Content-Type: text/plain; charset=utf-8\n" .
-				"Content-Transfer-Encoding: 8bit\n" . "X-Mailer: i-MSCP " .
-				$cfg['Version'] . " Service Mailer";
+	$headers = "From: $from\r\n";
+	$headers .= "MIME-Version: 1.0\r\n";
+	$headers .= "Content-Type: text/plain; charset=utf-8\r\n";
+	$headers .= "Content-Transfer-Encoding: 8bit\r\n";
+	$headers .= "X-Mailer: i-MSCP Mailer";
 
 	$subject = tr('{ADMIN} activated your software package');
 	$message = tr('Dear {RESELLER},
@@ -212,8 +196,10 @@ function send_activated_sw($reseller_id, $file_name, $sw_id)
 
 	$subject = str_replace($search, $replace, $subject);
 	$message = str_replace($search, $replace, $message);
-	$subject = encode($subject);
-	mail($to_email, $subject, $message, $headers);
+
+	$subject = encode_mime_header($subject);
+
+	mail($to_email, $subject, $message, $headers, "-f $from_email");
 }
 
 /**
@@ -226,40 +212,23 @@ function send_activated_sw($reseller_id, $file_name, $sw_id)
  * @param string $message_input
  * @return void
  */
-function send_deleted_sw($reseller_id, $file_name, $sw_id, $subject_input,
-	$message_input)
+function send_deleted_sw($reseller_id, $file_name, $sw_id, $subject_input, $message_input)
 {
-	/** @var $cfg iMSCP_Config_Handler_File */
-	$cfg = iMSCP_Registry::get('config');
+	$query = "SELECT  `admin_name` as reseller, `created_by`, `email` as res_email FROM `admin` WHERE `admin_id` = ?";
+	$stmt = exec_query($query, $reseller_id);
 
-	$query = "
-        SELECT
-            `admin_name` as reseller, `created_by`, `email` as res_email
-        FROM
-            `admin`
-        WHERE `admin_id` = ?
-    ";
-	$res = exec_query($query, $reseller_id);
+	$to_name = $stmt->fields['reseller'];
+	$to_email = $stmt->fields['res_email'];
+	$admin_id = $stmt->fields['created_by'];
 
-	$to_name = $res->fields['reseller'];
-	$to_email = $res->fields['res_email'];
-	$admin_id = $res->fields['created_by'];
+	$query = "SELECT `email` as adm_email, `admin_name` as admin FROM `admin` WHERE `admin_id` = ?";
+	$stmt = exec_query($query, $admin_id);
 
-	$query = "
-        SELECT
-            `email` as adm_email, `admin_name` as admin
-        FROM
-            `admin`
-        WHERE
-            `admin_id` = ?
-    ";
-	$res = exec_query($query, $admin_id);
-
-	$from_name = $res->fields['admin'];
-	$from_email = $res->fields['adm_email'];
+	$from_name = $stmt->fields['admin'];
+	$from_email = $stmt->fields['adm_email'];
 
 	if ($from_name) {
-		$from = "\"" . encode($from_name) . "\" <" . $from_email . ">";
+		$from = encode_mime_header($from_name) . " <$from_email>";
 	} else {
 		$from = $from_email;
 	}
@@ -275,10 +244,11 @@ function send_deleted_sw($reseller_id, $file_name, $sw_id, $subject_input,
 	$search [] = '{RESELLER}';
 	$replace[] = $to_name;
 
-	$headers = "From: " . $from . "\n";
-	$headers .= "MIME-Version: 1.0\n" . "Content-Type: text/plain; charset=utf-8\n" .
-				"Content-Transfer-Encoding: 8bit\n" . "X-Mailer: i-MSCP " .
-				$cfg['Version'] . " Service Mailer";
+	$headers = "From: $from\r\n";
+	$headers .= "MIME-Version: 1.0\r\n";
+	$headers .= "Content-Type: text/plain; charset=utf-8\r\n";
+	$headers .= "Content-Transfer-Encoding: 8bit\r\n";
+	$headers .= "X-Mailer: i-MSCP Mailer";
 
 	// lets send mail to the reseller => new order
 	$subject = tr($subject_input . ' was deleted by {ADMIN}!');
@@ -294,8 +264,10 @@ function send_deleted_sw($reseller_id, $file_name, $sw_id, $subject_input,
 
 	$subject = str_replace($search, $replace, $subject);
 	$message = str_replace($search, $replace, $message);
-	$subject = encode($subject);
-	mail($to_email, $subject, $message, $headers);
+
+	$subject = encode_mime_header($subject);
+
+	mail($to_email, $subject, $message, $headers, "-f $from_email");
 }
 
 /**
@@ -958,38 +930,21 @@ function get_reseller_list($tpl, $software_id)
  */
 function send_new_sw_upload($reseller_id, $file_name, $sw_id)
 {
-	/** @var $cfg iMSCP_Config_Handler_File */
-	$cfg = iMSCP_Registry::get('config');
-
-	$query = "
-		SELECT
-			`admin_name` as reseller, `created_by`, `email` as res_email
-		FROM
-			`admin`
-		WHERE
-			`admin_id` = ?
-	";
+	$query = 'SELECT `admin_name` as reseller, `created_by`, `email` as res_email FROM `admin` WHERE `admin_id` = ?';
 	$stmt = exec_query($query, $reseller_id);
 
 	$from_name = $stmt->fields['reseller'];
 	$from_email = $stmt->fields['res_email'];
 	$admin_id = $stmt->fields['created_by'];
 
-	$query = "
-		SELECT
-			`email` as adm_email, `admin_name` as admin
-		FROM
-			`admin`
-		WHERE
-			`admin_id` = ?
-	";
+	$query = 'SELECT `email` as adm_email, `admin_name` as admin FROM `admin` WHERE `admin_id` = ?';
 	$stmt = exec_query($query, $admin_id);
 
 	$to_name = $stmt->fields['admin'];
 	$to_email = $stmt->fields['adm_email'];
 
 	if ($from_name) {
-		$from = "\"" . encode($from_name) . "\" <" . $from_email . ">";
+		$from = encode_mime_header($from_name) . " <$from_email>";
 	} else {
 		$from = $from_email;
 	}
@@ -1007,10 +962,11 @@ function send_new_sw_upload($reseller_id, $file_name, $sw_id)
 	$search [] = '{RESELLER_ID}';
 	$replace[] = $reseller_id;
 
-	$headers = "From: " . $from . "\n";
-	$headers .= "MIME-Version: 1.0\n" . "Content-Type: text/plain; charset=utf-8\n" .
-				"Content-Transfer-Encoding: 8bit\n" . "X-Mailer: i-MSCP " .
-				$cfg['Version'] . " Service Mailer";
+	$headers = "From: $from\r\n";
+	$headers .= "MIME-Version: 1.0\r\n";
+	$headers .= "Content-Type: text/plain; charset=utf-8\r\n";
+	$headers .= "Content-Transfer-Encoding: 8bit\r\n";
+	$headers .= "X-Mailer: i-MSCP Mailer";
 
 	$subject = tr('{RESELLER} uploaded a new software package');
 	$message = tr('Dear {ADMIN},
@@ -1025,9 +981,10 @@ function send_new_sw_upload($reseller_id, $file_name, $sw_id)
 
 	$subject = str_replace($search, $replace, $subject);
 	$message = str_replace($search, $replace, $message);
-	$subject = encode($subject);
 
-	mail($to_email, $subject, $message, $headers);
+	$subject = encode_mime_header($subject);
+
+	mail($to_email, $subject, $message, $headers, "-f $from_email");
 }
 
 /**
@@ -1513,7 +1470,6 @@ function gen_software_list($tpl, $domainId, $resellerId)
  */
 function check_software_avail($software_id, $dmn_created_id)
 {
-
 	$check_avail = "
 			SELECT
 				`reseller_id` AS reseller
@@ -1524,9 +1480,9 @@ function check_software_avail($software_id, $dmn_created_id)
 			AND
 				`reseller_id` = ?
 	";
-	$sa = exec_query($check_avail, array($software_id, $dmn_created_id));
+	$stmt = exec_query($check_avail, array($software_id, $dmn_created_id));
 
-	if ($sa->recordCount() == 0) {
+	if (!$stmt->rowCount()) {
 		return false;
 	} else {
 		return true;
@@ -1553,24 +1509,30 @@ function check_is_installed($tpl, $dmn_id, $software_id)
 		AND
 			`software_id` = ?
 	";
-	$is_inst = exec_query($is_installed, array($dmn_id, $software_id));
+	$stmt = exec_query($is_installed, array($dmn_id, $software_id));
 
-	if ($is_inst->recordCount() == 0) {
-		$tpl->assign(array(
-						  'INSTALLED_SOFTWARE_INFO' => '',
-						  'SOFTWARE_INSTALL_BUTTON' => 'software_install.php?id=' . $software_id));
+	if (!$stmt->rowCount()) {
+		$tpl->assign(
+			array(
+				'INSTALLED_SOFTWARE_INFO' => '',
+				'SOFTWARE_INSTALL_BUTTON' => 'software_install.php?id=' . $software_id
+			)
+		);
 		$tpl->parse('SOFTWARE_INSTALL', '.software_install');
 	} else {
-		$tpl->assign(array(
-						  'SOFTWARE_INSTALL_BUTTON' => '',
-						  'SOFTWARE_STATUS' => tr('installed'),
-						  'SOFTWARE_INSTALL_PATH' => $is_inst->fields['path'],
-						  'SOFTWARE_INSTALL_DATABASE' => $is_inst->fields['db'],
-						  'TR_SOFTWARE_INFO' => tr('Installation details'),
-						  'TR_SOFTWARE_STATUS' => tr('Software status'),
-						  'TR_SOFTWARE_INSTALL_PATH' => tr('Installation path'),
-						  'TR_SOFTWARE_INSTALL_DATABASE' => tr('Used database'),
-						  'SOFTWARE_INSTALL' => ''));
+		$tpl->assign(
+			array(
+				'SOFTWARE_INSTALL_BUTTON' => '',
+				'SOFTWARE_STATUS' => tr('installed'),
+				'SOFTWARE_INSTALL_PATH' => $stmt->fields['path'],
+				'SOFTWARE_INSTALL_DATABASE' => $stmt->fields['db'],
+				'TR_SOFTWARE_INFO' => tr('Installation details'),
+				'TR_SOFTWARE_STATUS' => tr('Software status'),
+				'TR_SOFTWARE_INSTALL_PATH' => tr('Installation path'),
+				'TR_SOFTWARE_INSTALL_DATABASE' => tr('Used database'),
+				'SOFTWARE_INSTALL' => ''
+			)
+		);
 
 		$tpl->parse('INSTALLED_SOFTWARE_INFO', '.installed_software_info');
 	}

@@ -971,31 +971,33 @@ function syncHostingPlans($resellerId)
  * @param string $string String to be encoded [should be in the $charset charset]
  * @param string $charset OPTIONAL charset in that string will be encoded
  * @return string encoded string
- *
- * @todo need to check emails with ? and space in subject - some probs can occur
  */
-function encode($string, $charset = 'UTF-8')
+function encode_mime_header($string, $charset = 'UTF-8')
 {
 	$string = (string)$string;
 
 	if ($string && $charset) {
-		// define start delimiter, end delimiter and spacer
-		$end = '?=';
-		$start = '=?' . $charset . '?B?';
-		$spacer = $end . "\r\n " . $start;
+		if(function_exists('mb_encode_mimeheader')) {
+			$string = mb_encode_mimeheader($string, $charset, 'Q', "\r\n", 8);
+		} elseif ($string && $charset) {
+			// define start delimiter, end delimiter and spacer
+			$end = '?=';
+			$start = '=?' . $charset . '?B?';
+			$spacer = $end . "\r\n " . $start;
 
-		// Determine length of encoded text withing chunks and ensure length is even
-		$length = 75 - strlen($start) - strlen($end);
-		$length = floor($length / 4) * 4;
+			// Determine length of encoded text withing chunks and ensure length is even
+			$length = 75 - strlen($start) - strlen($end);
+			$length = floor($length / 4) * 4;
 
-		// Encode the string and split it into chunks with spacers after each chunk
-		$string = base64_encode($string);
-		$string = chunk_split($string, $length, $spacer);
+			// Encode the string and split it into chunks with spacers after each chunk
+			$string = base64_encode($string);
+			$string = chunk_split($string, $length, $spacer);
 
-		// Remove trailing spacer and add start and end delimiters
-		$spacer = preg_quote($spacer);
-		$string = preg_replace('/' . $spacer . '$/', '', $string);
-		$string = $start . $string . $end;
+			// Remove trailing spacer and add start and end delimiters
+			$spacer = preg_quote($spacer);
+			$string = preg_replace('/' . $spacer . '$/', '', $string);
+			$string = $start . $string . $end;
+		}
 	}
 
 	return $string;
@@ -1601,7 +1603,7 @@ AUTO_LOG_MSG;
 		$headers = "From: \"i-MSCP Logging Mailer\" <" . $to . ">\n";
 		$headers .= "MIME-Version: 1.0\nContent-Type: text/plain; charset=utf-8\n";
 		$headers .= "Content-Transfer-Encoding: 7bit\n";
-		$headers .= "X-Mailer: i-MSCP $version Logging Mailer";
+		$headers .= "X-Mailer: i-MSCP Mailer";
 
 		if (!mail($to, $subject, $message, $headers)) {
 			$log_message = "Logging Mailer Mail To: |$to|, From: |$to|, Status: |NOT OK|!";
@@ -1635,13 +1637,13 @@ function send_add_user_auto_msg($adminId, $uname, $upass, $uemail, $ufname, $uln
 	$baseVhost = $cfg->BASE_SERVER_VHOST;
 
 	if ($fromName) {
-		$from = '"' . encode($fromName) . "\" <" . $fromEmail . ">";
+		$from = encode_mime_header($fromName) . " <$fromEmail>";
 	} else {
 		$from = $fromEmail;
 	}
 
 	if ($ufname && $ulname) {
-		$to = '"' . encode($ufname . ' ' . $ulname) . "\" <" . $uemail . ">";
+		$to = encode_mime_header($ufname . ' ' . $ulname) . " <$uemail>";
 		$name = "$ufname $ulname";
 	} else {
 		$name = $uname;
@@ -1667,14 +1669,19 @@ function send_add_user_auto_msg($adminId, $uname, $upass, $uemail, $ufname, $uln
 	$replace[] = $cfg->BASE_SERVER_VHOST_PREFIX;
 	$search[] = '{WEBSTATS_RPATH}';
 	$replace[] = $cfg->WEBSTATS_RPATH;
+
 	$subject = str_replace($search, $replace, $subject);
 	$message = str_replace($search, $replace, $message);
-	$subject = encode($subject);
-	$headers = "From: " . $from . "\n";
-	$headers .= "MIME-Version: 1.0\nContent-Type: text/plain; charset=utf-8\nContent-Transfer-Encoding: 8bit\n";
-	$headers .= "X-Mailer: i-MSCP {$cfg->Version} Service Mailer";
 
-	$mailStatus = (mail($to, $subject, $message, $headers, "-f $fromEmail")) ? 'OK' : 'NOT OK';
+	$subject = encode_mime_header($subject);
+
+	$headers = "From: $from\r\n";
+	$headers .= "MIME-Version: 1.0\r\n";
+	$headers .= "Content-Type: text/plain; charset=utf-8\r\n";
+	$headers .= "Content-Transfer-Encoding: 8bit\r\n";
+	$headers .= "X-Mailer: i-MSCP Mailer";
+
+	$mailStatus = (mail($to, encode_mime_header($subject), $message, $headers, "-f $fromEmail")) ? 'OK' : 'NOT OK';
 
 	$name = tohtml($name);
 	$fromName = tohtml($fromName);

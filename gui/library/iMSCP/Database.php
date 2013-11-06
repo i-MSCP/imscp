@@ -105,7 +105,7 @@ class iMSCP_Database
     {
         $this->events()->dispatch(iMSCP_Events::onBeforeDatabaseConnection, array('context' => $this));
 
-        $this->_db = new PDO($type . ':host=' . $host . ';dbname=' . $name, $user,$pass, $driver_options);
+        $this->_db = new PDO($type . ':host=' . $host . ';dbname=' . $name, $user, $pass, $driver_options);
 
 		$this->events()->dispatch(iMSCP_Events::onAfterDatabaseConnection, array('context' => $this));
 
@@ -315,7 +315,7 @@ class iMSCP_Database
      *
      * @internal param array $object        OPTIONAL parameter for SQL statements only. Can be an array that contains
 	 * 										constructor arguments. (See PDO::FETCH_CLASS)
-     * @return false|iMSCP_Database_ResultSet
+     * @return bool|iMSCP_Database_ResultSet
      */
     public function execute($stmt, $parameters = null)
     {

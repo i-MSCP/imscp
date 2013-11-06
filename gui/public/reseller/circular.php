@@ -42,6 +42,8 @@
 function reseller_sendEmail($senderName, $senderEmail, $subject, $body, $rcptToData)
 {
 	if ($rcptToData['email'] != '') {
+		$senderEmail = encode_idna($senderEmail);
+
 		if (!empty($rcptToData['fname']) && !empty($rcptToData['lname'])) {
 			$to = $rcptToData['fname'] . ' ' . $rcptToData['lname'];
 		} elseif (!empty($rcptToData['fname'])) {
@@ -52,16 +54,16 @@ function reseller_sendEmail($senderName, $senderEmail, $subject, $body, $rcptToD
 			$to = $rcptToData['admin_name'];
 		}
 
-		$from = '"' . encode($senderName) . '"' . " <$senderEmail>";
-		$to = '"' . encode($to) . '"' . " <{$rcptToData['email']}>";
+		$from = encode_mime_header($senderName) .  " <$senderEmail>";
+		$to = encode_mime_header($to) . " <{$rcptToData['email']}>";
 
-		$headers = "MIME-Version: 1.0\r\n";
+		$headers = "From: $from\r\n";
+		$headers .= "MIME-Version: 1.0\r\n";
 		$headers .= "Content-Type: text/plain; charset=utf-8\r\n";
 		$headers .= "Content-Transfer-Encoding: 8bit\r\n";
-		$headers .= "From: $from\r\n";
 		$headers .= "X-Mailer: i-MSCP mailer";
 
-		mail($to, $subject, $body, $headers, "-f $senderEmail");
+		mail($to, encode_mime_header($subject), $body, $headers, "-f $senderEmail");
 	}
 }
 

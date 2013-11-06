@@ -760,7 +760,7 @@ function _sendTicketNotification($toId, $fromId, $ticketSubject, $ticketMessage,
 
 	// Format addresses
 	if ($fromFname && $fromLname) {
-		$from = '"' . encode($fromFname . ' ' . $fromLname) . '" <' . $fromEmail . '>';
+		$from = encode_mime_header($fromFname . ' ' . $fromLname) . " <$fromEmail>";
 		$fromname = "$fromFname $fromLname";
 	} else {
 		$from = $fromEmail;
@@ -768,7 +768,7 @@ function _sendTicketNotification($toId, $fromId, $ticketSubject, $ticketMessage,
 	}
 
 	if ($toFname && $toLname) {
-		$to = '"' . encode($toFname . ' ' . $toLname) . '" <' . $toEmail . '>';
+		$to = '"' . encode_mime_header($toFname . ' ' . $toLname) . " <$toEmail>";
 		$toname = "$toFname $toLname";
 	} else {
 		$toname = $toUname;
@@ -794,12 +794,14 @@ function _sendTicketNotification($toId, $fromId, $ticketSubject, $ticketMessage,
 	$message = str_replace($search, $replace, $message);
 
 	$message = html_entity_decode($message, ENT_QUOTES, 'UTF-8');
-	$headers = 'From: ' . $from . "\n" .
-		"MIME-Version: 1.0\nContent-Type: text/plain;" .
-		"charset=utf-8\nContent-Transfer-Encoding: 8bit\n" .
-		'X-Mailer: i-MSCP ' . $cfg->Version . ' Support Ticket System Mailer';
 
-	$mail_result = mail($to, encode($subject), $message, $headers);
+	$headers = "From: $from\r\n";
+	$headers .= "MIME-Version: 1.0\r\n";
+	$headers .= "Content-Type: text/plain; charset=utf-8\r\n";
+	$headers .= "Content-Transfer-Encoding: 8bit\r\n";
+	$headers .= 'X-Mailer: i-MSCP Mailer';
+
+	$mail_result = mail($to, encode_mime_header($subject), $message, $headers);
 	$mail_status = ($mail_result) ? 'OK' : 'NOT OK';
 
 	$toname = tohtml($toname);

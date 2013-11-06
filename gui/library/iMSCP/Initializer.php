@@ -130,6 +130,7 @@ class iMSCP_Initializer
 	 */
 	protected function _processAll()
 	{
+		$this->_setInternalEncoding();
 		$this->_setDisplayErrors();
 		$this->_initializeLayout();
 		$this->_setExceptionWriters();
@@ -161,6 +162,19 @@ class iMSCP_Initializer
 		$this->_processConfiguration();
 
 		self::$_initialized = true;
+	}
+
+	/**
+	 * Set internal encoding
+	 *
+	 * @return void
+	 */
+	protected function _setInternalEncoding()
+	{
+		if (extension_loaded('mbstring')) {
+			mb_internal_encoding('UTF-8');
+			@mb_regex_encoding('UTF-8');
+		}
 	}
 
 	/**
@@ -325,16 +339,13 @@ class iMSCP_Initializer
 					$this->_config->DATABASE_NAME
 				);
 
-				// Switch optionally to utf8 based communication with the database
-				if (isset($this->_config->DATABASE_UTF8) && $this->_config->DATABASE_UTF8 == 'yes') {
-					if (!$connection->execute('SET NAMES `utf8`')) {
-						throw new iMSCP_Exception(
-							sprintf(
-								'Unable to set charset for database communication. SQL returned: %s',
-								$connection->errorMsg()
-							)
-						);
-					}
+				if (!$connection->execute('SET NAMES `utf8`')) {
+					throw new iMSCP_Exception(
+						sprintf(
+							'Unable to set charset for database communication. SQL returned: %s',
+							$connection->errorMsg()
+						)
+					);
 				}
 			} else {
 				throw new iMSCP_Exception('Database key and/or initialization vector was not generated.');

@@ -113,7 +113,6 @@ require_once  'iMSCP/Config/Handler.php';
  * @property string BASE_SERVER_IP Base server IP
  * @property string PORT_POSTGREY Posgrey port
  * @property int BuildDate i-MSCP package Build date
- * @property string DATABASE_UTF8 tell whether or not use UTF-8 for database communication
  * @property string PHP_TIMEZONE PHP timezone
  * @property int DEBUG Debug mode
  * @property string DEFAULT_ADMIN_ADDRESS Default mail address for administrator

@@ -301,7 +301,7 @@ function sendPassword($uniqueKey){
 		$headers = 'From: ' . $from . "\n";
 		$headers .= "MIME-Version: 1.0\nContent-Type: text/plain; charset=utf-8\n";
 		$headers .= "Content-Transfer-Encoding: 7bit\n";
-		$headers .= 'X-Mailer: i-MSCP lostpassword mailer';
+		$headers .= 'X-Mailer: i-MSCP mailer';
 
 		$mailResult = mail($to, $subject, $message, $headers);
 		$mailStatus = ($mailResult) ? 'OK' : 'NOT OK';
@@ -326,17 +326,10 @@ function requestPassword($adminName){
 	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
 
-	$query = '
-		SELECT
-			`created_by`, `fname`, `lname`, `email`
-		FROM
-			`admin`
-		WHERE
-			`admin_name` = ?
-	';
+	$query = 'SELECT `created_by`, `fname`, `lname`, `email` FROM `admin` WHERE `admin_name` = ?';
 	$stmt = exec_query($query, $adminName);
 
-	if (!$stmt->recordCount()) {
+	if (!$stmt->rowCount()) {
 		return false;
 	}
 
@@ -355,7 +348,6 @@ function requestPassword($adminName){
 		$createdBy = 1;
 	}
 
-
 	$data = get_lostpassword_activation_email($createdBy);
 	$fromName = $data['sender_name'];
 	$fromEmail = $data['sender_email'];
@@ -365,7 +357,7 @@ function requestPassword($adminName){
 	$baseVhostPrefix = $cfg->BASE_SERVER_VHOST_PREFIX;
 
 	if ($fromName) {
-		$from = '"' . $fromName . "\" <" . $fromEmail . ">";
+		$from =  encode_mime_header($fromName) . " <$fromEmail>";
 	} else {
 		$from = $fromEmail;
 	}
@@ -390,12 +382,13 @@ function requestPassword($adminName){
 	$subject = str_replace($search, $replace, $subject);
 	$message = str_replace($search, $replace, $message);
 
-	$headers = 'From: ' . $from . "\n";
-	$headers .= "MIME-Version: 1.0\nContent-Type: text/plain; charset=utf-8\n";
-	$headers .= "Content-Transfer-Encoding: 8bit\n";
-	$headers .= 'X-Mailer: i-MSCP lostpassword mailer';
+	$headers = "From: $from\r\n";
+	$headers .= "MIME-Version: 1.0\r\n";
+	$headers .= "Content-Type: text/plain; charset=utf-8\r\n";
+	$headers .= "Content-Transfer-Encoding: 8bit\r\n";
+	$headers .= 'X-Mailer: i-MSCP Mailer';
 
-	$mailResult = mail($to, encode($subject), $message, $headers);
+	$mailResult = mail($to, encode_mime_header($subject), $message, $headers, "-f $fromEmail");
 
 	$mailStatus = ($mailResult) ? 'OK' : 'NOT OK';
 

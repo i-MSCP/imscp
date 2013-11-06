@@ -5,6 +5,9 @@
 Git Master
 ------------------------------------------------------------------------------------------------------------------------
 
+CONFIG:
+	- Removed: DATABASE_UTF8 parameter
+
 ENGINE:
 	- Fixed: Plugin (backend part) must be re-installed if missing
 	- Fixed: Plugin (backend part) must be removed on compile time error
@@ -16,6 +19,8 @@ GUI:
 	- Added: Option allowing to keep postfix configuration even when using external mail server
 	- Changed: EventsManager - listener stack become a priority queue (Performance issues)
 	- Fixed: Configuration variable `/var/log/rkhunter.log` is missing
+	- Fixed: Set internal encoding to UTF-8
+	- Fixed: Use mb_encode_mimeheader() to encode MIME header when available
 	- Fixed: Identity garbage on session timeout
 	- Rewritten: Circular interface (admin and reseller levels)
 	- Updated: plugin API (version 0.1.2)
