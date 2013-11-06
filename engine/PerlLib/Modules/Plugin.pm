@@ -61,41 +61,47 @@ specific action:
  	The 'change' action is run on every i-MSCP update (only if the plugin is enabled).
 
  - toupdate status: The 'toupdate' status correspond to the 'update' action. Next status should be set to previous status.
- 	The 'update' action is run when a plugin is updated (new version or configuration update).
+ 	The 'update' action is run when a plugin is being updated (new version or configuration update).
 
  - touninstall status: The 'touninstall' status correspond to the 'uninstall' action. Next status should be 'todelete'.
-	The 'uninstall' action is run when the plugin is uninstalled.
+	The 'uninstall' action is run when the plugin is being uninstalled.
 
  - todisable status: The 'todisable' status correspond to the 'disable' action. Next status should be 'disabled'.
-	The 'disable' action is run when a plugin is deactivated.
+	The 'disable' action is run when a plugin is being deactivated.
 
  - toenable status: The 'toenable' status correspond to the 'enable' action. Next status should be 'enabled'.
-	The 'enable' action is triggered when the plugin is activated
+	The 'enable' action is triggered when the plugin is being activated
 
  - enabled status: The 'enabled' status correspond to the 'run' action. Next status should be 'enabled'.
 	The 'run' action is run when the plugin is activated, each time a backend request is made.
 
+	Because the 'run' action is run on every backend request without any constraint, you must pay attention to not bind
+all your plugin logic on it. For instance, if you have a plugin which provides statistical graphs, you *should* never
+rely only on that action to build the graphs. Instead, you should either register a cron task, or provide some datums
+allowing your plugin to know when it should build new graphs.
+
+	Return value from the 'run' action is ignored by default because it's the responsability of the plugins to set error
+status for their items. In case a plugin doesn't manage any item, it can force return value by defining the FORCE_RETVAL
+attribute in its init() method and set it to 'yes'.
+
  - other status: No action
 
+	This module will not handle any other status than those described above. Any other status should be considered as
+corrupted.
+
  The module will attempt to run these actions on the plugins only if they implement them. It's important to understand
-that all status described above belong to the plugins themselves, and not to their own items. In case where a plugin
-handle its own items it's its responsability to handle their status if any.
+that all status described above belong to the plugins themselves, and not to their own items if any. In case where a
+plugin handle its own items it's its responsability to handle their status.
 
- Note on 'install' action:
+ Note on 'install', 'update' and 'enable' actions:
 
- When the 'install' action is run, the backend part of the plugin is installed from the plugin package into the
-imscp/engine/Plugins directory, which is the plugins backend repository. The plugin file must be located in a specific
-subdirectory of plugin package:
+ When these actions are run, the backend part of the plugin is installed from the plugin package into the
+imscp/engine/Plugins directory, which is the plugins backend repository. The file is searched in a specific
+subdirectory of plugin package: <PluginName>/backend/<PluginName>.pm
 
- <PluginName>/backend/<PluginName>.pm
+ Note on 'uninstall' and 'disable' action:
 
- Plugin packages are located under the imscp/gui/plugins directory.
-
- Note on 'uninstall' action:
-
- When the 'uninstall' action is run, the backend part of the plugin is removed from the backend plugins repository.
-
-
+ When these actions are run, the backend part of the plugin is removed from the backend plugins repository.
 
 =head1 PUBLIC METHODS
 
@@ -214,15 +220,15 @@ sub process($$)
 
 sub _executePlugin($$)
 {
-	my $self = shift;
-	my $action = shift;
+	my ($self, $action) = @_;
 
 	my $pluginFile = "$main::imscpConfig{'ENGINE_ROOT_DIR'}/Plugins/$self->{'plugin_name'}.pm";
 	my $rs = 0;
 
-	# On both install and update actions, we copy the backend part of the plugin from the GUI plugins directory to
-	# the backend plugins directory
-	if($action ~~ ['install', 'update']) {
+	# When these actions are run, we install the backend part of the plugin into the backend plugins directory
+	if($action ~~ ['install', 'update', 'enable']) {
+		INSTALL_PLUGIN_BACKEND:
+
 		my $guiPluginDir = "$main::imscpConfig{'GUI_ROOT_DIR'}/plugins";
 
 		if(-f "$guiPluginDir/$self->{'plugin_name'}/backend/$self->{'plugin_name'}.pm") {
@@ -241,7 +247,14 @@ sub _executePlugin($$)
 	# We trap any compile time error(s)
 	eval { require $pluginFile; };
 
-	if($@) { # We got an error due to compile time error(s) (including missing file error)
+	if($@) { # We got an error due to a compile time error or missing file
+		if(-f $pluginFile) {
+			# Compile time error, we remove the file to force re-installation on next run
+			iMSCP::File->new('filename' => $pluginFile)->delFile() if -f $pluginFile;
+		} else {
+			goto INSTALL_PLUGIN_BACKEND; # File not found, we try to reinstall it from the plugin package
+		}
+
 		error($@);
 		return 1;
 	} else {
@@ -262,8 +275,8 @@ sub _executePlugin($$)
 		if($pluginInstance->can($action)) {
 			$rs = $pluginInstance->$action();
 
-			# Return value from run() action is ignored by default because it's the responsability of the plugin to set
-			# error status for its items. In case the plugin doesn't manage any item, it can force return value by
+			# Return value from run() action is ignored by default because it's the responsability of the plugins to set
+			# error status for their items. In case a plugin doesn't manage any item, it can force return value by
 			# defining the FORCE_RETVAL attribute and set it to 'yes'
 			if(
 				$action ne 'run' || defined $pluginInstance->{'FORCE_RETVAL'} &&
@@ -277,7 +290,7 @@ sub _executePlugin($$)
 
 		# On both disable and uninstall actions, we remove the backend part of the plugin from the backend plugins
 		# directory
-		if($action eq 'uninstall') {
+		if($action ~~ ['disable', 'uninstall']) {
 			my $file = iMSCP::File->new('filename' => $pluginFile);
 			$rs = $file->delFile();
 		}
@@ -290,7 +303,7 @@ sub _executePlugin($$)
 
 =head1 AUTHOR
 
-Laurent Declercq <l.declercq@nuxwin.com>
+ Laurent Declercq <l.declercq@nuxwin.com>
 
 =cut
 
