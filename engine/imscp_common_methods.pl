@@ -158,14 +158,21 @@ sub doSQL
 	}
 
 	if (!defined $main::db || ! ref $main::db) {
-		$main::db = DBI->connect(@main::db_connect, { PrintError => 0 });
+		$main::db = DBI->connect(
+			@main::db_connect,
+			{
+				'PrintError' => 0,
+				'mysql_auto_reconnect' => 1,
+				'mysql_enable_utf8' => 1
+			}
+		);
 
 		if (!defined $main::db) {
 			push_el(
 				\@main::el, 'doSQL()', "[ERROR] Unable to connect to SQL server with current DSN: @main::db_connect"
 			);
 			return (-1, '');
-		} elsif ($main::cfg{'DATABASE_UTF8'} eq 'yes' ) {
+		} else { # FIXME: It is really necessary with the mysql_enable_utf8 option?
 			$qr = $main::db->do("SET NAMES 'utf8';");
 		}
 	}
