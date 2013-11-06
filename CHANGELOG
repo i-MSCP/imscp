@@ -9,6 +9,7 @@ ENGINE:
 	- Fixed: Plugin (backend part) must be re-installed if missing
 	- Fixed: Plugin (backend part) must be removed on compile time error
 	- Fixed: Plugin (backend part) must be removed when a plugin is being deactivated
+	- Removed: iMSCP::Database::mysql::Result
 
 GUI:
 	- Added: onBeforeSendCircular and onAfterSendCircular events

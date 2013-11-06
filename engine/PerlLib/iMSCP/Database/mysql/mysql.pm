@@ -31,7 +31,6 @@ use warnings;
 
 use iMSCP::Debug;
 use DBI;
-use iMSCP::Database::mysql::Result;
 use iMSCP::Execute;
 use POSIX ':signal_h';
 use parent 'Common::SingletonClass';
@@ -46,10 +45,14 @@ sub _init
 	$self->{'db'}->{'DATABASE_USER'} = '';
 	$self->{'db'}->{'DATABASE_PASSWORD'} = '';
 	$self->{'db'}->{'DATABASE_SETTINGS'} = {
-		'AutoCommit' => 1, 'PrintError' => 0, 'RaiseError' => 1, 'mysql_auto_reconnect' => 1, 'mysql_enable_utf8' => 1
+		'AutoCommit' => 1,
+		'PrintError' => 0,
+		'RaiseError' => 1,
+		'mysql_auto_reconnect' => 1,
+		'mysql_enable_utf8' => 1
 	};
 
-	# for internal use only
+	# For internal use only
 	$self->{'_dsn'} = '';
 	$self->{'_currentUser'} = '';
 	$self->{'_currentPassword'} = '';
@@ -150,7 +153,7 @@ sub endTransaction
 	$rawDb->{'RaiseError'} = 0;
 	$rawDb->{'mysql_auto_reconnect'} = 1;
 
-	undef;
+	$self->{'connection'};
 }
 
 # Return raw db connection
@@ -176,23 +179,19 @@ sub doQuery
 	my $self = shift;
 	my $key = shift;
 	my $query = shift || error('No query provided');
-	my @subs = @_;
+	my @bindValues = @_;
 
-	debug("$query" . (@subs ? ' with: ' . join(', ', @subs) : ''));
+	debug("$query" . ((@bindValues) ? ' with: ' . join(', ', @bindValues) : ''));
 
 	$self->{'sth'} = $self->{'connection'}->prepare($query) || return "Error while preparing query: $DBI::errstr $key|$query";
 
-	if(@subs) {
-		return "Error while executing query: $DBI::errstr" unless $self->{'sth'}->execute(@subs);
+	if(@bindValues) {
+		return "Error while executing query: $DBI::errstr" unless $self->{'sth'}->execute(@bindValues);
 	} else {
 		return "Error while executing query: $DBI::errstr" unless $self->{'sth'}->execute();
 	}
 
-	my $href = $self->{'sth'}->fetchall_hashref(eval "[ qw/$key/ ]");
-
-	tie my %href , 'iMSCP::Database::mysql::Result', 'result' => $href;
-
-	\%href;
+	($self->{'sth'}->{'NUM_OF_FIELDS'}) ? $self->{'sth'}->fetchall_hashref($key) : {};
 }
 
 # Return tables for the current database (see DATABASE_NAME attribute)
@@ -217,7 +216,7 @@ sub getDBTables
 
 	my $href = $self->{'sth'}->fetchall_hashref('TABLE_NAME');
 
-	my @tables = keys %$href;
+	my @tables = keys %{$href};
 
 	\@tables;
 }
@@ -247,9 +246,9 @@ sub getTableColumns($ $)
 
 	my $href = $self->{'sth'}->fetchall_hashref('COLUMN_NAME');
 
-	my @columns = keys %$href;
+	my @columns = keys %{$href};
 
-	return  \@columns;
+	\@columns;
 }
 
 # Dump the given database in the given filename
@@ -314,10 +313,7 @@ sub quoteIdentifier
 
 	$identifier = join(', ', $identifier) if ref $identifier eq 'ARRAY';
 
-	my $rs = $self->{'connection'}->quote_identifier($identifier);
-	debug("Quote identifier: |$rs|");
-
-	return $rs;
+	$self->{'connection'}->quote_identifier($identifier);
 }
 
 sub quote
