@@ -250,9 +250,9 @@ sub _executePlugin($$)
 	if($@) { # We got an error due to a compile time error or missing file
 		if(-f $pluginFile) {
 			# Compile time error, we remove the file to force re-installation on next run
-			iMSCP::File->new('filename' => $pluginFile)->delFile() if -f $pluginFile;
+			iMSCP::File->new('filename' => $pluginFile)->delFile();
 		} else {
-			goto INSTALL_PLUGIN_BACKEND; # File not found, we try to reinstall it from the plugin package
+			goto INSTALL_PLUGIN_BACKEND; # File not found, we try to re-install it from the plugin package
 		}
 
 		error($@);
