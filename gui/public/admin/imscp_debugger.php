@@ -471,55 +471,6 @@ function debugger_getMailsErrors($tpl)
 }
 
 /**
- * Get plugins errors
- *
- * Note: There are only errors related to the plugin itself, not to the plugin items
- *
- * @param  iMSCP_pTemplate $tpl Template engine instance
- * @return void
- */
-function debugger_getPluginsErrors($tpl)
-{
-	/** @var $cfg iMSCP_Config_Handler_File */
-	$cfg = iMSCP_Registry::get('config');
-
-	$query = "
-		SELECT
-			`plugin_id`, `plugin_name`, `plugin_status`
-		FROM
-			`plugin`
-		WHERE
-			`plugin_status` NOT IN (?, ?, ?, ?, ?, ?, ?, ?, ?)
-	";
-	$stmt = exec_query(
-		$query,
-		array(
-			$cfg->ITEM_ENABLED_STATUS, $cfg->ITEM_DISABLED_STATUS, $cfg->ITEM_UNINSTALLED_STATUS,
-			$cfg->ITEM_TOINSTALL_STATUS, $cfg->ITEM_TOUPDATE_STATUS, $cfg->ITEM_TOUNINSTALL_STATUS,
-			$cfg->ITEM_TOENABLE_STATUS, $cfg->ITEM_TODISABLE_STATUS, $cfg->ITEM_TODELETE_STATUS
-		)
-	);
-
-	if (!$stmt->rowCount()) {
-		$tpl->assign(array('PLUGIN_LIST' => '', 'TR_PLUGIN_MESSAGE' => tr('No errors')));
-		$tpl->parse('PLUGIN_MESSAGE', 'plugin_message');
-	} else {
-		while ($row = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
-			$tpl->assign(
-				array(
-					'PLUGIN_MESSAGE' => '',
-					'PLUGIN_NAME' => tohtml($row['plugin_name']),
-					'PLUGIN_ERROR' => tohtml($row['plugin_status']),
-					'CHANGE_ID' => $row['plugin_id'],
-					'CHANGE_TYPE' => 'plugin')
-			);
-
-			$tpl->parse('PLUGIN_LIST', '.plugin_list');
-		}
-	}
-}
-
-/**
  * Get plugin items errors
  *
  * @param iMSCP_pTemplate $tpl
@@ -656,8 +607,7 @@ $rqstCount += debugger_countRequests('status', 'mail_users');
 $rqstCount += debugger_countRequests('status', 'htaccess');
 $rqstCount += debugger_countRequests('status', 'htaccess_groups');
 $rqstCount += debugger_countRequests('status', 'htaccess_users');
-$rqstCount += debugger_countRequests('plugin_status', 'plugin');
-$rqstCount += debugger_countRequests();
+$rqstCount += debugger_countRequests(); // Plugin items
 
 if (isset($_GET['action'])) {
 	if ($_GET['action'] == 'run') {

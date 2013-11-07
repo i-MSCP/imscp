@@ -181,39 +181,13 @@
 <table>
 	<thead>
 	<tr>
-		<th>{TR_PLUGINS_ERRORS}</th>
-	</tr>
-	</thead>
-	<tbody>
-	<!-- BDP: plugins_message -->
-	<tr>
-		<td>{TR_PLUGIN_MESSAGE}</td>
-	</tr>
-	<!-- EDP: plugin_message -->
-	<!-- BDP: plugin_list -->
-	<tr>
-		<td>
-			<p>
-				<span class="bold">{PLUGIN_NAME}</span> - <a
-					href="imscp_debugger.php?action=change&amp;id={CHANGE_ID}&amp;type={CHANGE_TYPE}"
-					class="link">{TR_CHANGE_STATUS}</a>
-			</p>
-			<span style="color:red;">{PLUGIN_ERROR}</span></td>
-	</tr>
-	<!-- EDP: plugin_list -->
-	</tbody>
-</table>
-
-<table>
-	<thead>
-	<tr>
 		<th>{TR_PLUGIN_ITEM_ERRORS}</th>
 	</tr>
 	</thead>
 	<tbody>
 	<!-- BDP: plugin_item_message -->
 	<tr>
-		<td>{TR_PLUGIN_MESSAGE}</td>
+		<td>{TR_PLUGIN_ITEM_MESSAGE}</td>
 	</tr>
 	<!-- EDP: plugin_item_message -->
 	<!-- BDP: plugin_item_list -->
