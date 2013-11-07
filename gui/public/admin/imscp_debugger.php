@@ -714,7 +714,6 @@ debugger_getSubErrors($tpl);
 debugger_getAlssubErrors($tpl);
 debugger_getMailsErrors($tpl);
 debugger_getHtaccessErrors($tpl);
-debugger_getPluginsErrors($tpl);
 debugger_getPluginItemErrors($tpl);
 
 $tpl->assign(
