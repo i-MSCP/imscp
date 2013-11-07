@@ -44,7 +44,6 @@ use iMSCP::File;
 use iMSCP::Dir;
 use iMSCP::Ext2Attributes qw(setImmutable clearImmutable isImmutable);
 use iMSCP::Rights;
-#use POSIX;
 use File::Temp;
 use File::Basename;
 use version;
@@ -1336,7 +1335,7 @@ sub deleteTmp
 			} else {
 				my $max = 0;
 				$file =~ m/^\s*session.gc_maxlifetime\s*=\s*([0-9]+).*$/mgi;
-				$max = floor($1/60) if $1 && $max < floor($1/60);
+				$max = POSIX::floor($1/60) if $1 && $max < POSIX::floor($1/60);
 				$max = 24 unless $max;
 
 				my $cmd = "[ -d /var/www/imscp/gui/data/sessions/ ] && find /var/www/imscp/gui/data/sessions/ -type f -cmin +$max -delete";
@@ -1377,7 +1376,7 @@ sub deleteTmp
 				}
 
 				$file =~ m/^\s*session.gc_maxlifetime\s*=\s*([0-9]+).*$/mgi;
-				$max = floor($1/60) if $1 && $max < floor($1/60);
+				$max = POSIX::floor($1/60) if $1 && $max < POSIX::floor($1/60);
 			}
 
 			$max = 24 unless $max;

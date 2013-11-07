@@ -9,6 +9,7 @@ CONFIG:
 	- Removed: DATABASE_UTF8 parameter
 
 ENGINE:
+	- Fixed: imscp-del-tmp script is broken (Undefined subroutine floor...)
 	- Fixed: Plugin (backend part) must be re-installed if missing
 	- Fixed: Plugin (backend part) must be removed on compile time error
 	- Fixed: Plugin (backend part) must be removed when a plugin is being deactivated
@@ -17,7 +18,7 @@ ENGINE:
 
 GUI:
 	- Added: onBeforeSendCircular and onAfterSendCircular events
-	- Added: Option allowing to keep postfix configuration even when using external mail server
+	- Added: Spam Filter option which allow to keep postfix configuration (external mail server interface)
 	- Changed: EventsManager - listener stack become a priority queue (Performance issues)
 	- Fixed: Configuration variable `/var/log/rkhunter.log` is missing
 	- Fixed: Set internal encoding to UTF-8
