@@ -1,9 +1,12 @@
 <script type="text/javascript">
 	/*<![CDATA[*/
+	var nbLog = {NB_LOG};
+
 	$(document).ready(function () {
 		$(".logtable").hide();
-		var h = $("body").height() - 300;
-		$(".log").height(h/2);
+		var h = ($("body").height() - 300) / nbLog;
+		if(h < 150) h = 200;
+		$(".log").height(h);
 		$(".logtable").show();
 	});
 	/*]]>*/
