@@ -12,6 +12,7 @@ ENGINE:
 	- Fixed: Plugin (backend part) must be re-installed if missing
 	- Fixed: Plugin (backend part) must be removed on compile time error
 	- Fixed: Plugin (backend part) must be removed when a plugin is being deactivated
+	- Fixed: Quota script is broken (A critical error has been encountered while executing function main::quotaSql...)
 	- Removed: iMSCP::Database::mysql::Result
 
 GUI:

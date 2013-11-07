@@ -248,7 +248,7 @@ sub quotaSql
 		iMSCP::Mail->new()->errmsg($rdata);
 		$rs = 1;
 	} elsif(%{$rdata}) {
-		for (keys %$rdata) {
+		for (keys %{$rdata}) {
 			my $domainId = $_;
 			my $domainName = $rdata->{$domainId}->{'domain_name'};
 			my $diskUsage = $rdata->{$domainId}->{'domain_disk_usage'};
@@ -269,7 +269,7 @@ sub quotaSql
 				my $sqlDbName = $_;
 
 				if(grep{$_ eq $sqlDbName} keys %{$databases}) {
-					my $sqlDbTables = $database->doQuery('Name ', "SHOW TABLE STATUS FROM `$sqlDbName`");
+					my $sqlDbTables = $database->doQuery('1', "SHOW TABLE STATUS FROM `$sqlDbName`");
 					unless (ref $sqlDbTables eq 'HASH') {
 						error($sqlDbTables);
 						iMSCP::Mail->new()->errmsg($sqlDbTables);
@@ -277,16 +277,8 @@ sub quotaSql
 					} elsif(%{$sqlDbTables}) {
 						for(keys %{$sqlDbTables}) {
 							$size +=
-								(
-									($sqlDbTables->{$_}->{'Data_length'} =~ /^\d+$/)
-										? $sqlDbTables->{$_}->{'Data_length'}
-										: 0
-								) +
-								(
-									($sqlDbTables->{$_}->{'Index_length'} =~ /^\d+$/)
-										? $sqlDbTables->{$_}->{'Index_length'}
-										: 0
-								);
+								(($sqlDbTables->{$_}->{'Data_length'}) ? $sqlDbTables->{$_}->{'Data_length'} : 0) +
+								(($sqlDbTables->{$_}->{'Index_length'}) ? $sqlDbTables->{$_}->{'Index_length'} : 0);
 						}
 					}
 				} else {
@@ -313,10 +305,7 @@ sub quotaSql
 				}
 
 				$quota = $database->doQuery(
-					'cnt',
-					'UPDATE `quotatallies` SET `bytes_in_used` = ? WHERE `name` = ?',
-					$size,
-					$domainName
+					'update', 'UPDATE `quotatallies` SET `bytes_in_used` = ? WHERE `name` = ?', $size, $domainName
 				);
 				unless (ref $quota eq 'HASH') {
 					error($quota);
