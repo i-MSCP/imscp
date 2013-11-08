@@ -92,11 +92,14 @@ function reseller_generateCustomerAcountDeletionValidationPage($customerId)
 			'TR_SUBDOMAINS' => tr('Subdomains'),
 			'TR_DATABASES' => tr('SQL databases'),
 			'TR_REALLY_WANT_TO_DELETE_CUSTOMER_ACCOUNT' => tr(
-				"Do you really want to delete the entire <strong>'%s'</strong> customer account? This operation cannot be undone.", true, $adminName
+				"Do you really want to delete the entire %s customer account? This operation cannot be undone.",
+				true,
+				"<strong>$adminName</strong>"
 			),
 			'USER_ID' => $customerId,
 			'TR_YES_DELETE_ACCOUNT' => tr('Yes, delete this account.'),
-			'TR_DELETE_ACCOUNT' => tr('Delete account')
+			'TR_DELETE' => tr('Delete'),
+			'TR_CANCEL' => tr('Cancel')
 		)
 	);
 
@@ -115,8 +118,8 @@ function reseller_generateCustomerAcountDeletionValidationPage($customerId)
 	$stmt = exec_query($query, $customerId);
 
 	if ($stmt->rowCount()) {
-		while (!$stmt->EOF) {
-			$mailTypes = explode(',', $stmt->fields['mail_type']);
+		while ($data = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
+			$mailTypes = explode(',', $data['mail_type']);
 			$mailTypesdisplayArray = array();
 
 			foreach ($mailTypes as $mtype) {
@@ -124,15 +127,16 @@ function reseller_generateCustomerAcountDeletionValidationPage($customerId)
 			}
 
 			$mailTypesdisplayTxt = implode(', ', $mailTypesdisplayArray);
-			$addr = explode('@', $stmt->fields['mail_addr']);
+			$addr = explode('@', $data['mail_addr']);
 
 			$tpl->assign(
 				array(
 					'MAIL_ADDR' => tohtml($addr[0] . '@' . decode_idna($addr[1])),
-					'MAIL_TYPE' => $mailTypesdisplayTxt));
+					'MAIL_TYPE' => $mailTypesdisplayTxt
+				)
+			);
 
 			$tpl->parse('MAIL_ITEM', '.mail_item');
-			$stmt->moveNext();
 		}
 	} else {
 		$tpl->assign('MAIL_LIST', '');
@@ -144,17 +148,17 @@ function reseller_generateCustomerAcountDeletionValidationPage($customerId)
 	$stmt = exec_query($query, $customerId);
 
 	if ($stmt->rowCount()) {
-		while (!$stmt->EOF) {
-			$username = explode('@', $stmt->fields['userid']);
+		while ($data = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
+			$username = explode('@', $data['userid']);
+
 			$tpl->assign(
 				array(
 					'FTP_USER' => tohtml($username[0] . '@' . decode_idna($username[1])),
-					'FTP_HOME' => tohtml(substr($stmt->fields['homedir'], strlen($cfg->FTP_HOMEDIR)))
+					'FTP_HOME' => tohtml(substr($data['homedir'], strlen($cfg->FTP_HOMEDIR)))
 				)
 			);
 
 			$tpl->parse('FTP_ITEM', '.ftp_item');
-			$stmt->moveNext();
 		}
 	} else {
 		$tpl->assign('FTP_LIST', '');
@@ -166,7 +170,6 @@ function reseller_generateCustomerAcountDeletionValidationPage($customerId)
 	$stmt = exec_query($query, $customerId);
 
 	$domainId = $stmt->fields['domain_id'];
-
 	$domainName = tohtml(decode_idna($stmt->fields['domain_name']));
 
 	$tpl->assign('DOMAIN_NAME', $domainName);
@@ -180,15 +183,17 @@ function reseller_generateCustomerAcountDeletionValidationPage($customerId)
 	$stmt = exec_query($query, $domainId);
 
 	if ($stmt->rowCount()) {
-		while (!$stmt->EOF) {
-			$aliasIds[] = $stmt->fields['alias_id'];
+		while ($data = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
+			$aliasIds[] = $data['alias_id'];
+
 			$tpl->assign(
 				array(
-					'ALS_NAME' => tohtml(decode_idna($stmt->fields['alias_name'])),
-					'ALS_MNT' => tohtml($stmt->fields['alias_mount'])));
+					'ALS_NAME' => tohtml(decode_idna($data['alias_name'])),
+					'ALS_MNT' => tohtml($data['alias_mount'])
+				)
+			);
 
 			$tpl->parse('ALS_ITEM', '.als_item');
-			$stmt->moveNext();
 		}
 	} else {
 		$tpl->assign('ALS_LIST', '');
@@ -200,14 +205,15 @@ function reseller_generateCustomerAcountDeletionValidationPage($customerId)
 	$stmt = exec_query($query, $domainId);
 
 	if ($stmt->rowCount()) {
-		while (!$stmt->EOF) {
+		while ($data = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
 			$tpl->assign(
 				array(
-					'SUB_NAME' => tohtml(decode_idna($stmt->fields['subdomain_name'])),
-					'SUB_MNT' => tohtml($stmt->fields['subdomain_mount'])));
+					'SUB_NAME' => tohtml(decode_idna($data['subdomain_name'])),
+					'SUB_MNT' => tohtml($data['subdomain_mount'])
+				)
+			);
 
 			$tpl->parse('SUB_ITEM', '.sub_item');
-			$stmt->moveNext();
 		}
 	} else {
 		$tpl->assign('SUB_LIST', '');
@@ -229,16 +235,15 @@ function reseller_generateCustomerAcountDeletionValidationPage($customerId)
 		$stmt = execute_query($query);
 
 		if ($stmt->rowCount()) {
-			while (!$stmt->EOF) {
+			while ($data = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
 				$tpl->assign(
 					array(
-						'SUB_NAME' => tohtml(decode_idna($stmt->fields['subdomain_alias_name'])),
-						'SUB_MNT' => tohtml($stmt->fields['subdomain_alias_mount'])
+						'SUB_NAME' => tohtml(decode_idna($data['subdomain_alias_name'])),
+						'SUB_MNT' => tohtml($data['subdomain_alias_mount'])
 					)
 				);
 
 				$tpl->parse('SUB_ITEM', '.sub_item');
-				$stmt->moveNext();
 			}
 		}
 	}
@@ -249,28 +254,26 @@ function reseller_generateCustomerAcountDeletionValidationPage($customerId)
 	$stmt = exec_query($query, $domainId);
 
 	if ($stmt->rowCount()) {
-		while (!$stmt->EOF) {
+		while ($data = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
 			$query = "SELECT `sqlu_name` FROM `sql_user` WHERE `sqld_id` = ?";
-			$stmt2 = exec_query($query, $stmt->fields['sqld_id']);
+			$stmt2 = exec_query($query, $data['sqld_id']);
 
 			$sqlUsersList = array();
 
 			if ($stmt2->rowCount()) {
-				while (!$stmt2->EOF) {
-					$sqlUsersList[] = $stmt2->fields['sqlu_name'];
-					$stmt2->moveNext();
+				while ($data2 = $stmt2->fetchRow(PDO::FETCH_ASSOC)) {
+					$sqlUsersList[] = $data2['sqlu_name'];
 				}
 			}
 
 			$tpl->assign(
 				array(
-					'DB_NAME' => tohtml($stmt->fields['sqld_name']),
+					'DB_NAME' => tohtml($data['sqld_name']),
 					'DB_USERS' => tohtml(implode(', ', $sqlUsersList))
 				)
 			);
 
 			$tpl->parse('DB_ITEM', '.db_item');
-			$stmt->moveNext();
 		}
 	} else {
 		$tpl->assign('DB_LIST', '');
@@ -293,28 +296,39 @@ check_login('reseller');
 if (isset($_GET['id']) && !empty($_GET['id'])) {
 	$tpl = reseller_generateCustomerAcountDeletionValidationPage($_GET['id']);
 } elseif (isset($_POST['id']) && isset($_POST['delete']) && $_POST['delete'] == 1) {
-
-	$customerId = $_POST['id'];
+	$customerId = clean_input($_POST['id']);
 
 	try {
 		if (!deleteCustomer($customerId, true)) {
-			throw new iMSCP_Exception('Customer account not found.');
+			showBadRequestErrorPage();
 		}
 
 		set_page_message(tr('Customer account successfully scheduled for deletion.'), 'success');
-		write_log(sprintf('%s scheduled deletion of the customer account with ID %d', $_SESSION['user_logged'], $customerId), E_USER_NOTICE);
+		write_log(
+			sprintf('%s scheduled deletion of the customer account with ID %d', $_SESSION['user_logged'], $customerId),
+			E_USER_NOTICE
+		);
 	} catch (iMSCP_Exception $e) {
-		set_page_message(tr('Unable to schedule deletion of the customer account. A message has been sent to the administrator.'), 'error');
-		write_log(sprintf("System was unable to schedule deletion of the customer account with ID %s. Message was: %s", $customerId, $e->getMessage()), E_USER_ERROR);
+		set_page_message(
+			tr('Unable to schedule deletion of the customer account. A message has been sent to the administrator.'),
+			'error'
+		);
+		write_log(
+			sprintf(
+				"System was unable to schedule deletion of the customer account with ID %s. Message was: %s",
+				$customerId, $e->getMessage()
+			),
+			E_USER_ERROR
+		);
 	}
 
 	redirectTo('users.php');
 } else {
 	if (isset($_GET['delete'])) {
-		set_page_message(tr('Wrong customer ID.'), 'error');
+		showBadRequestErrorPage();
 	} else {
 		set_page_message(tr('You must confirm customer account deletion.'), 'error');
-		redirectTo('user_delete.php?id=' . $_POST['user_id']);
+		redirectTo('user_delete.php?id=' . $_POST['id']);
 	}
 
 	redirectTo('users.php');
@@ -327,4 +341,5 @@ $tpl->parse('LAYOUT_CONTENT', 'page');
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onResellerScriptEnd, array('templateEngine' => $tpl));
 
 $tpl->prnt();
+
 unsetMessages();

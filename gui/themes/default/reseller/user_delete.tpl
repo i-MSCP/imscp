@@ -1,4 +1,16 @@
 
+<script>
+	$(document).ready(function () {
+		$("#delete").on('change',function () {
+			if ($(this).is(':checked')) {
+				$("#submit").show();
+			} else {
+				$("#submit").hide();
+			}
+		}).trigger("change");
+	});
+</script>
+
 <form name="reseller_delete_customer_frm" method="post" action="user_delete.php">
 	<table class="firstColFixed">
 		<thead>
@@ -77,7 +89,6 @@
 		</tr>
 		<tr>
 			<td colspan="2">
-				<input type="hidden" name="id" value="{USER_ID}"/>
 				<p>{TR_REALLY_WANT_TO_DELETE_CUSTOMER_ACCOUNT}</p>
 				<input type="checkbox" value="1" name="delete" id="delete"/>
 				<label for="delete">{TR_YES_DELETE_ACCOUNT}</label>
@@ -87,6 +98,8 @@
 	</table>
 
 	<div class="buttons">
-		<input type="submit" value="{TR_DELETE_ACCOUNT}"/>
+		<input type="hidden" name="id" value="{USER_ID}"/>
+		<input type="submit" id="submit" value="{TR_DELETE}"/>
+		<a href="users.php" class="link_as_button">{TR_CANCEL}</a>
 	</div>
 </form>

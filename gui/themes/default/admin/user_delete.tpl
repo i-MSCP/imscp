@@ -1,4 +1,16 @@
 
+<script>
+	$(document).ready(function () {
+		$("#delete").on('change', function() {
+			if($(this).is(':checked')) {
+				$("#submit").show();
+			} else {
+				$("#submit").hide();
+			}
+		}).trigger("change");
+	});
+</script>
+
 <form name="admin_delete_customer_frm" method="post" action="user_delete.php">
 	<table class="firstColFixed">
 		<thead>
@@ -89,7 +101,7 @@
 
 	<div class="buttons">
 		<input type="hidden" name="user_id" value="{USER_ID}"/>
-		<input type="submit" value="{TR_DELETE}"/>
+		<input type="submit" id="submit" value="{TR_DELETE}"/>
 		<a class ="link_as_button" href="manage_users.php">{TR_CANCEL}</a>
 	</div>
 </form>
