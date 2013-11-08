@@ -1,4 +1,3 @@
-
 <form name="sql_add_user_frm" method="post" action="sql_user_add.php">
 	<!-- BDP: show_sqluser_list -->
 	<table class="firstColFixed">
@@ -51,13 +50,13 @@
 				{TR_USE_DMN_ID}
 			</td>
 			<td>
+				<!-- BDP: mysql_prefix_all -->
 				<label>
 					<select name="id_pos">
 						<option value="start"{START_ID_POS_CHECKED}>{TR_START_ID_POS}</option>
 						<option value="end"{START_ID_POS_CHECKED}>{TR_END_ID_POS}</option>
 					</select>
 				</label>
-				<!-- BDP: mysql_prefix_all -->
 				<!-- EDP: mysql_prefix_all -->
 				<!-- BDP: mysql_prefix_infront -->
 				<input type="hidden" name="id_pos" value="start" checked="checked"/>{TR_START_ID_POS}
