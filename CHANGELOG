@@ -34,6 +34,7 @@ Tickets:
 	- Fixed #935: Enhancement - Add option to keep the postfix configuration even when using external mail server
 	- Fixed #952: Bug - Backup script - several issues
 	- Fixed #954: Bug - Mass mail is not working (admin and reseller interfaces)
+	- Fixed #956: Bug - Infinite loop (Reseller UI)
 
 ------------------------------------------------------------------------------------------------------------------------
 1.1.0-rc4.6
