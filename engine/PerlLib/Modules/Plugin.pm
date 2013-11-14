@@ -362,34 +362,34 @@ sub _exec($$$)
 {
 	my ($self, $pluginName, $pluginMethod) = @_;
 
-	my $pluginFile = "$main::imscpConfig{'ENGINE_ROOT_DIR'}/Plugins/$pluginName.pm";
+	my $backendPluginFile = "$main::imscpConfig{'ENGINE_ROOT_DIR'}/Plugins/$pluginName.pm";
 	my $forceBackendInstall = 0;
 	my $rs = 0;
 
 	INSTALL_PLUGIN_BACKEND: {
 		if($forceBackendInstall || $pluginMethod ~~ ['install', 'update', 'enable']) {
-			my $guiPluginDir = "$main::imscpConfig{'GUI_ROOT_DIR'}/plugins";
+			my $guiPluginFile = "$main::imscpConfig{'GUI_ROOT_DIR'}/plugins/$pluginName/backend/$pluginName.pm";
 
-			if(-f "$guiPluginDir/$pluginName/backend/$pluginName.pm") {
+			if(-f $guiPluginFile) {
 				debug("Plugin Manager: Installing $pluginName.pm in backend plugin repository");
-				my $file = iMSCP::File->new('filename' => "$guiPluginDir/$pluginName/backend/$pluginName.pm");
+				my $file = iMSCP::File->new('filename' => $guiPluginFile);
 
-				$rs = $file->copyFile($pluginFile, { 'preserve' => 'no' });
+				$rs = $file->copyFile($backendPluginFile, { 'preserve' => 'no' });
 				return $rs if $rs;
 			} else {
-				error("Unable to install backend plugin: File $pluginFile not found");
+				error("Unable to install backend plugin: File $guiPluginFile not found");
 				return 1;
 			}
 		}
 	}
 
 	# We trap any compile time error(s)
-	eval { require $pluginFile; };
+	eval { require $backendPluginFile; };
 
 	if($@) { # We got an error due to a compile time error or missing file
-		if(-f $pluginFile) {
+		if(-f $backendPluginFile) {
 			# Compile time error, we remove the file to force re-installation on next run
-			iMSCP::File->new('filename' => $pluginFile)->delFile();
+			iMSCP::File->new('filename' => $backendPluginFile)->delFile();
 		} else {
 			$forceBackendInstall = 1;
 			goto INSTALL_PLUGIN_BACKEND; # File not found, we try to re-install it from the plugin package
@@ -429,8 +429,8 @@ sub _exec($$$)
 
 	# When these method are run, we remove the backend part of the plugin from the backend plugins directory
 	if($pluginMethod ~~ ['disable', 'uninstall']) {
-		debug("Plugin Manager: Deleting $pluginName.pm from plugin repository");
-		my $file = iMSCP::File->new('filename' => $pluginFile);
+		debug("Plugin Manager: Deleting $pluginName.pm from backend plugin repository");
+		my $file = iMSCP::File->new('filename' => $backendPluginFile);
 		$rs = $file->delFile();
 	}
 
