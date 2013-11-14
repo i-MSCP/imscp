@@ -146,7 +146,7 @@ class iMSCP_Events
 	const onClientScriptEnd = 'onClientScriptEnd';
 
 	/**
-	 * The onExceptioToBrowserStart event is triggered before of exception browser write processs.
+	 * The onExceptioToBrowserStart event is triggered before of exception browser write process.
 	 *
 	 * The listeners receive an iMSCP_Envents_Event object with the following parameter:
 	 *
@@ -190,7 +190,7 @@ class iMSCP_Events
 	 *
 	 * @const string
 	 */
-    const onAuthentication = 'onAuthentication';
+	const onAuthentication = 'onAuthentication';
 
 	/**
 	 * The onBeforeAuthentication event is triggered after the authentication process.
@@ -210,7 +210,7 @@ class iMSCP_Events
 	 * The listeners receive an iMSCP_Events_Event object with the following parameters:
 	 *
 	 * - context: An iMSCP_Authentication object, the context in which the event is triggered
-	 * - identity: A stdClass object that contains the user' identity data
+	 * - identity: A stdClass object that contains the user identity data
 	 *
 	 * @const string
 	 */
@@ -250,7 +250,7 @@ class iMSCP_Events
 	const  onAfterUnsetIdentity = 'onAfterUnsetIdentity';
 
 	/**
-	 * The onBeforeEditAdminGeneralSettings event is triggered before the admin general settings are editied.
+	 * The onBeforeEditAdminGeneralSettings event is triggered before the admin general settings are edited.
 	 *
 	 * The listeners receive an iMSCP_Events_Event object.
 	 *
@@ -259,7 +259,7 @@ class iMSCP_Events
 	const onBeforeEditAdminGeneralSettings = 'onBeforeEditAdminGeneralSettings';
 
 	/**
-	 * The onAfterEditAdminGeneralSettings event is triggered after the admin general settings are editied.
+	 * The onAfterEditAdminGeneralSettings event is triggered after the admin general settings are edited.
 	 *
 	 * The listeners receive an iMSCP_Events_Event object.
 	 *
@@ -268,7 +268,7 @@ class iMSCP_Events
 	const onAfterEditAdminGeneralSettings = 'onAfterEditAdminGeneralSettings';
 
 	/**
-	 * The onBeforeAddUser event is triggered before a user is created.
+	 * The onBeforeAddUser event is triggered before an user is created.
 	 *
 	 * The listeners receive an iMSCP_Events_Event object.
 	 *
@@ -277,7 +277,7 @@ class iMSCP_Events
 	const onBeforeAddUser = 'onBeforeAddUser';
 
 	/**
-	 * The onAfterAddUser event is triggered after a user is created.
+	 * The onAfterAddUser event is triggered after an user is created.
 	 *
 	 * The listeners receive an iMSCP_Events_Event object.
 	 *
@@ -286,7 +286,7 @@ class iMSCP_Events
 	const onAfterAddUser = 'onAfterAddUser';
 
 	/**
-	 * The onBeforeEditUser event is triggered before a user is edited.
+	 * The onBeforeEditUser event is triggered before an user is edited.
 	 *
 	 * The listeners receive an iMSCP_Events_Event object with the following parameter:
 	 *
@@ -297,7 +297,7 @@ class iMSCP_Events
 	const onBeforeEditUser = 'onBeforeEditUser';
 
 	/**
-	 * The onAfterEditUser event is triggered after a user is edited.
+	 * The onAfterEditUser event is triggered after an user is edited.
 	 *
 	 * The listeners receive an iMSCP_Events_Event object with the following parameter:
 	 *
@@ -308,7 +308,7 @@ class iMSCP_Events
 	const onAfterEditUser = 'onAfterEditUser';
 
 	/**
-	 * The onBeforeDeleteUser event is triggered before a user is deleted.
+	 * The onBeforeDeleteUser event is triggered before an user is deleted.
 	 *
 	 * The listeners receive an iMSCP_Events_Event object with the following parameter:
 	 *
@@ -319,7 +319,7 @@ class iMSCP_Events
 	const onBeforeDeleteUser = 'onBeforeDeleteUser';
 
 	/**
-	 * The onAfterDeleteUser event is triggered after a user is deleted.
+	 * The onAfterDeleteUser event is triggered after an user is deleted.
 	 *
 	 * The listeners receive an iMSCP_Events_Event object with the following parameter:
 	 *
@@ -352,7 +352,7 @@ class iMSCP_Events
 	const onAfterDeleteCustomer = 'onAfterDeleteCustomer';
 
 	/**
-	 * The onBeforeAddFtp event is triggered after a Ftp account is created.
+	 * The onBeforeAddFtp event is triggered after an Ftp account is created.
 	 *
 	 * The listeners receive an iMSCP_Events_Event object with the following parameters:
 	 *
@@ -369,7 +369,7 @@ class iMSCP_Events
 	const onBeforeAddFtp = 'onBeforeAddFtp';
 
 	/**
-	 * The onAfterAddFtp event is triggered after a Ftp account is created.
+	 * The onAfterAddFtp event is triggered after an Ftp account is created.
 	 *
 	 * The listeners receive an iMSCP_Events_Event object with the following parameters:
 	 *
@@ -386,7 +386,7 @@ class iMSCP_Events
 	const onAfterAddFtp = 'onAfterAddFtp';
 
 	/**
-	 * The onBeforeEditFtp event is triggered before a Ftp account is edited.
+	 * The onBeforeEditFtp event is triggered before an Ftp account is edited.
 	 *
 	 * The listeners receive an iMSCP_Events_Event object with the following parameter:
 	 *
@@ -397,7 +397,7 @@ class iMSCP_Events
 	const onBeforeEditFtp = 'onBeforeEditFtp';
 
 	/**
-	 * The onAfterEditFtp event is triggered after a Ftp account is edited.
+	 * The onAfterEditFtp event is triggered after an Ftp account is edited.
 	 *
 	 * The listeners receive an iMSCP_Events_Event object with the following parameter:
 	 *
@@ -408,7 +408,7 @@ class iMSCP_Events
 	const onAfterEditFtp = 'onAfterEditFtp';
 
 	/**
-	 * The onBeforeDeleteFtp event is triggered before a Ftp account is deleted.
+	 * The onBeforeDeleteFtp event is triggered before an Ftp account is deleted.
 	 *
 	 * The listeners receive an iMSCP_Events_Event object with the following parameter:
 	 *
@@ -419,7 +419,7 @@ class iMSCP_Events
 	const onBeforeDeleteFtp = 'onBeforeDeleteFtp';
 
 	/**
-	 * The onAfterDeleteFtp event is triggered after a Ftp account is deleted.
+	 * The onAfterDeleteFtp event is triggered after an Ftp account is deleted.
 	 *
 	 * The listeners receive an iMSCP_Events_Event object with the following parameter:
 	 *
@@ -430,7 +430,7 @@ class iMSCP_Events
 	const onAfterDeleteFtp = 'onAfterDeleteFtp';
 
 	/**
-	 * The onBeforeAddSqlUser event is triggered before a Sql user is created.
+	 * The onBeforeAddSqlUser event is triggered before an Sql user is created.
 	 *
 	 * The listeners receive an iMSCP_Events_Event object.
 	 *
@@ -439,7 +439,7 @@ class iMSCP_Events
 	const onBeforeAddSqlUser = 'onBeforeAddSqlUser';
 
 	/**
-	 * The onAfterAddSqlUser event is triggered after a Sql user is created.
+	 * The onAfterAddSqlUser event is triggered after an Sql user is created.
 	 *
 	 * The listeners receive an iMSCP_Events_Event object.
 	 *
@@ -448,7 +448,7 @@ class iMSCP_Events
 	const onAfterAddSqlUser = 'onAfterAddSqlUser';
 
 	/**
-	 * The onBeforeEditSqlUser event is triggered before a Sql user is edited.
+	 * The onBeforeEditSqlUser event is triggered before an Sql user is edited.
 	 *
 	 * The listeners receive an iMSCP_Events_Event object with the following parameter:
 	 *
@@ -459,7 +459,7 @@ class iMSCP_Events
 	const onBeforeEditSqlUser = 'onBeforeEditSqlUser';
 
 	/**
-	 * The onAfterEditSqlUser event is triggered after a Sql user is edited.
+	 * The onAfterEditSqlUser event is triggered after an Sql user is edited.
 	 *
 	 * The listeners receive an iMSCP_Events_Event object with the following parameter:
 	 *
@@ -470,7 +470,7 @@ class iMSCP_Events
 	const onAfterEditSqlUser = 'onAfterEditSqlUser';
 
 	/**
-	 * The onBeforeDeleteSqlUser event is triggered before a Sql user is deleted.
+	 * The onBeforeDeleteSqlUser event is triggered before an Sql user is deleted.
 	 *
 	 * The listeners receive an iMSCP_Events_Event object with the following parameter:
 	 *
@@ -481,7 +481,7 @@ class iMSCP_Events
 	const onBeforeDeleteSqlUser = 'onBeforeDeleteSqlUser';
 
 	/**
-	 * The onAfterDeleteSqlUser event is triggered after a Sql user is deleted.
+	 * The onAfterDeleteSqlUser event is triggered after an Sql user is deleted.
 	 *
 	 * The listeners receive an iMSCP_Events_Event object with the following parameter:
 	 *
@@ -492,7 +492,7 @@ class iMSCP_Events
 	const onAfterDeleteSqlUser = 'onAfterDeleteSqlUser';
 
 	/**
-	 * The onBeforeAddSqlDb event is triggered before a Sql database is created.
+	 * The onBeforeAddSqlDb event is triggered before an Sql database is created.
 	 *
 	 * The listeners receive an iMSCP_Events_Event object with the following parameter:
 	 *
@@ -503,7 +503,7 @@ class iMSCP_Events
 	const onBeforeAddSqlDb = 'onBeforeAddSqlDb';
 
 	/**
-	 * The onAfterAddSqlDb event is triggered after a Sql database is created.
+	 * The onAfterAddSqlDb event is triggered after an Sql database is created.
 	 *
 	 * The listeners receive an iMSCP_Events_Event object with the following parameter:
 	 *
@@ -514,7 +514,7 @@ class iMSCP_Events
 	const onAfterAddSqlDb = 'onAfterAddSqlDb';
 
 	/**
-	 * The onBeforeDeleteSqlDb event is triggered before a Sql database is deleted.
+	 * The onBeforeDeleteSqlDb event is triggered before an Sql database is deleted.
 	 *
 	 * The listeners receive an iMSCP_Events_Event object with the following parameter:
 	 *
@@ -525,7 +525,7 @@ class iMSCP_Events
 	const onBeforeDeleteSqlDb = 'onBeforeDeleteSqlDb';
 
 	/**
-	 * The onAfterDeleteSqlDb event is triggered after a Sql database is deleted.
+	 * The onAfterDeleteSqlDb event is triggered after an Sql database is deleted.
 	 *
 	 * The listeners receive an iMSCP_Events_Event object with the following parameter:
 	 *
@@ -558,7 +558,7 @@ class iMSCP_Events
 	 *
 	 * The listeners receive an iMSCP_Envents_Event object with the following parameter:
 	 *
-	 * - pluginManager: An iMSCP_Plugin_Manager instance
+	 * - pluginManager: iMSCP_Plugin_Manager instance
 	 *
 	 * @const string
 	 */
@@ -569,78 +569,117 @@ class iMSCP_Events
 	 *
 	 * The listeners receive an iMSCP_Envents_Event object with the following parameter:
 	 *
-	 * - pluginManager: An iMSCP_Plugin_Manager instance
-	 * - pluginInstance: An iMSCP_Plugin instance
+	 * - pluginManager: iMSCP_Plugin_Manager instance
 	 *
 	 * @const string
 	 */
 	const onAfterUpdatePluginList = 'onAfterUpdatePLuginList';
 
 	/**
-	 * The onAfterUpdatePluginList event is triggered before a plugin activation.
+	 * The onBeforeInstallPlugin event is triggered before a plugin installation.
 	 *
 	 * The listeners receive an iMSCP_Envents_Event object with the following parameters:
 	 *
-	 * - pluginManager: An iMSCP_Plugin_Manager instance
+	 * - pluginManager: iMSCP_Plugin_Manager instance
 	 * - pluginName: Plugin name
-	 * - pluginVersion: Plugin version
-	 * - pluginInstance: An iMSCP_Plugin instance
 	 *
 	 * @const string
 	 */
-	const onBeforeActivatePlugin = 'onBeforeActivatePlugin';
+	const onBeforeInstallPlugin = 'onBeforeInstallPlugin';
 
 	/**
-	 * The onAfterActivatePlugin event is triggered after a plugin activation
+	 * The onAfterInstallPlugin event is triggered after a plugin installation.
 	 *
 	 * The listeners receive an iMSCP_Envents_Event object with the following parameters:
 	 *
-	 * - pluginManager: An iMSCP_Plugin_Manager instance
+	 * - pluginManager: iMSCP_Plugin_Manager instance
 	 * - pluginName: Plugin name
-	 * - pluginVersion: Plugin version
-	 * - pluginInstance: An iMSCP_Plugin instance
 	 *
 	 * @const string
 	 */
-	const onAfterActivatePlugin = 'onAfterActivatePlugin';
+	const onAfterInstallPlugin = 'onAfterInstallPlugin';
 
 	/**
-	 * The onBeforeDeactivatePlugin event is triggered before a plugin deactivation.
+	 * The onBeforeEnablePlugin event is triggered before a plugin activation.
 	 *
 	 * The listeners receive an iMSCP_Envents_Event object with the following parameters:
 	 *
-	 * - pluginManager: An iMSCP_Plugin_Manager instance
+	 * - pluginManager: iMSCP_Plugin_Manager instance
 	 * - pluginName: Plugin name
-	 * - pluginVersion: Plugin version
-	 * - pluginInstance: An iMSCP_Plugin instance
 	 *
 	 * @const string
 	 */
-	const onBeforeDeactivatePlugin = 'onBeforeDeactivatePlugin';
+	const onBeforeEnablePlugin = 'onBeforeEnablePlugin';
 
 	/**
-	 * The onAfterDeactivatePlugin event is triggered after a plugin deactivation.
+	 * The onAfterEnablePlugin event is triggered after a plugin activation.
 	 *
 	 * The listeners receive an iMSCP_Envents_Event object with the following parameters:
 	 *
-	 * - pluginManager: An iMSCP_Plugin_Manager instance
+	 * - pluginManager: iMSCP_Plugin_Manager instance
 	 * - pluginName: Plugin name
-	 * - pluginVersion: Plugin version
-	 * - pluginInstance: An iMSCP_Plugin instance
 	 *
 	 * @const string
 	 */
-	const onAfterDeactivatePlugin = 'onAfterDeactivatePlugin';
+	const onAfterEnablePlugin = 'onAfterEnablePlugin';
 
 	/**
-	 * The onBeforeUpdatePlugin event is triggered before a plugin updae.
+	 * The onBeforeDisablePlugin event is triggered before a plugin deactivation.
 	 *
 	 * The listeners receive an iMSCP_Envents_Event object with the following parameters:
 	 *
-	 * - pluginManager: An iMSCP_Plugin_Manager instance
+	 * - pluginManager: iMSCP_Plugin_Manager instance
 	 * - pluginName: Plugin name
-	 * - pluginVersion: Plugin version
-	 * - pluginInstance: An iMSCP_Plugin instance
+	 *
+	 * @const string
+	 */
+	const onBeforeDisablePlugin = 'onBeforeDisablePlugin';
+
+	/**
+	 * The onAfterDisablePlugin event is triggered after a plugin deactivation.
+	 *
+	 * The listeners receive an iMSCP_Envents_Event object with the following parameters:
+	 *
+	 * - pluginManager: iMSCP_Plugin_Manager instance
+	 * - pluginName: Plugin name
+	 *
+	 * @const string
+	 */
+	const onAfterDisablePlugin = 'onAfterDisablePlugin';
+
+	/**
+	 * The onBeforeChangePlugin event is triggered before a plugin change.
+	 *
+	 * The listeners receive an iMSCP_Envents_Event object with the following parameters:
+	 *
+	 * - pluginManager: iMSCP_Plugin_Manager instance
+	 * - pluginName: Plugin name
+	 *
+	 * @const string
+	 */
+	const onBeforeChangePlugin = 'onBeforeChangePlugin';
+
+	/**
+	 * The onAfterChangePlugin event is triggered after a plugin change.
+	 *
+	 * The listeners receive an iMSCP_Envents_Event object with the following parameters:
+	 *
+	 * - pluginManager: iMSCP_Plugin_Manager instance
+	 * - pluginName: Plugin name
+	 *
+	 * @const string
+	 */
+	const onAfterChangePlugin = 'onAfterChangePlugin';
+
+	/**
+	 * The onBeforeUpdatePlugin event is triggered before a plugin update.
+	 *
+	 * The listeners receive an iMSCP_Envents_Event object with the following parameters:
+	 *
+	 * - pluginManager: iMSCP_Plugin_Manager instance
+	 * - pluginName: Plugin name
+	 * - pluginFromVersion: Version from wich plugin is being updated
+	 * - PluginToVersion: Version to which plugin is being updated
 	 *
 	 * @const string
 	 */
@@ -651,24 +690,70 @@ class iMSCP_Events
 	 *
 	 * The listeners receive an iMSCP_Envents_Event object with the following parameters:
 	 *
-	 * - pluginManager: An iMSCP_Plugin_Manager instance
+	 * - pluginManager: iMSCP_Plugin_Manager instance
 	 * - pluginName: Plugin name
-	 * - pluginVersion: Plugin version
-	 * - pluginInstance: An iMSCP_Plugin instance
+	 * - PluginFromVersion: Version to which plugin has been updated
+	 * - PluginToVersion: Version from which plugin has been updated
 	 *
 	 * @const string
 	 */
 	const onAfterUpdatePlugin = 'onAfterUpdatePlugin';
 
 	/**
+	 * The onBeforeUninstallPlugin event is triggered before a plugin installation.
+	 *
+	 * The listeners receive an iMSCP_Envents_Event object with the following parameters:
+	 *
+	 * - pluginManager: iMSCP_Plugin_Manager instance
+	 * - pluginName: Plugin name
+	 *
+	 * @const string
+	 */
+	const onBeforeUninstallPlugin = 'onBeforeUninstallPlugin';
+
+	/**
+	 * The onAfterUninstallPlugin event is triggered after a plugin installation.
+	 *
+	 * The listeners receive an iMSCP_Envents_Event object with the following parameters:
+	 *
+	 * - pluginManager: iMSCP_Plugin_Manager instance
+	 * - pluginName: Plugin name
+	 *
+	 * @const string
+	 */
+	const onAfterUninstallPlugin = 'onAfterUninstallPlugin';
+
+	/**
+	 * The onBeforeUninstall event is triggered before a plugin uninstallation.
+	 *
+	 * The listeners receive an iMSCP_Envents_Event object with the following parameters:
+	 *
+	 * - pluginManager: iMSCP_Plugin_Manager instance
+	 * - pluginName: Plugin name
+	 *
+	 * @const string
+	 */
+	const onBeforeUninstall = 'onBeforeUninstall';
+
+	/**
+	 * The onAfterDeletePlugin event is triggered after a plugin uninstallation.
+	 *
+	 * The listeners receive an iMSCP_Envents_Event object with the following parameters:
+	 *
+	 * - pluginManager: iMSCP_Plugin_Manager instance
+	 * - pluginName: Plugin name
+	 *
+	 * @const string
+	 */
+	const onAfterUninstall = 'onAfterUninstall';
+
+	/**
 	 * The onBeforeDeletePlugin event is triggered before a plugin deletion.
 	 *
 	 * The listeners receive an iMSCP_Envents_Event object with the following parameters:
 	 *
-	 * - pluginManager: An iMSCP_Plugin_Manager instance
+	 * - pluginManager: iMSCP_Plugin_Manager instance
 	 * - pluginName: Plugin name
-	 * - pluginVersion: Plugin version
-	 * - pluginInstance: An iMSCP_Plugin instance
 	 *
 	 * @const string
 	 */
@@ -679,10 +764,8 @@ class iMSCP_Events
 	 *
 	 * The listeners receive an iMSCP_Envents_Event object with the following parameters:
 	 *
-	 * - pluginManager: An iMSCP_Plugin_Manager instance
+	 * - pluginManager: iMSCP_Plugin_Manager instance
 	 * - pluginName: Plugin name
-	 * - pluginVersion: Plugin version
-	 * - pluginInstance: An iMSCP_Plugin instance
 	 *
 	 * @const string
 	 */
@@ -693,9 +776,8 @@ class iMSCP_Events
 	 *
 	 * The listeners receive an iMSCP_Envents_Event object with the following parameters:
 	 *
-	 * - pluginManager: An iMSCP_Plugin_Manager instance
+	 * - pluginManager: iMSCP_Plugin_Manager instance
 	 * - pluginName: Plugin name
-	 * - pluginInstance: An iMSCP_Plugin instance
 	 *
 	 * @const string
 	 */
@@ -706,9 +788,8 @@ class iMSCP_Events
 	 *
 	 * The listeners receive an iMSCP_Envents_Event object with the following parameters:
 	 *
-	 * - pluginManager: An iMSCP_Plugin_Manager instance
+	 * - pluginManager: iMSCP_Plugin_Manager instance
 	 * - pluginName: Plugin name
-	 * - pluginInstance: An iMSCP_Plugin instance
 	 *
 	 * @const string
 	 */
@@ -1063,7 +1144,7 @@ class iMSCP_Events
 	/**
 	 * The onBeforeAssembleTemplateFiles event is triggered before the first parent template is loaded.
 	 *
-	 * The listeners receive an iMSCP_Events_Event object with the following parameters
+	 * The listeners receive an iMSCP_Events_Event object with the following parameters:
 	 *
 	 * - context: An iMSCP_pTemplate object, the context in which the event is triggered
 	 * - templatePath: The filepath of the template being loaded
@@ -1087,7 +1168,7 @@ class iMSCP_Events
 	/**
 	 * The onBeforeLoadTemplateFile event is triggered before a template is loaded.
 	 *
-	 * The listeners receive an iMSCP_Events_Event object with the following parameters
+	 * The listeners receive an iMSCP_Events_Event object with the following parameters:
 	 *
 	 * - context: An iMSCP_pTemplate object, the context in which the event is triggered
 	 * - templatePath: The filepath of the template being loaded
@@ -1132,7 +1213,7 @@ class iMSCP_Events
 	const onAfterGenerateNavigation = 'onAfterGenerateNavigation';
 
 	/**
-	 * The onBeforeAddExternalMailServer event is triggered before addition of external mail server entries in database
+	 * The onBeforeAddExternalMailServer event is triggered before addition of external mail server entries in database.
 	 *
 	 * The listeners receive an iMSCP_Events_Event object with the following parameter:
 	 *
@@ -1143,7 +1224,7 @@ class iMSCP_Events
 	const onBeforeAddExternalMailServer = 'onBeforeAddExternalMailServer';
 
 	/**
-	 * The onAfterAddExternalMailServer event is triggered after addition of external mail server entries in database
+	 * The onAfterAddExternalMailServer event is triggered after addition of external mail server entries in database.
 	 *
 	 * The listeners receive an iMSCP_Events_Event object with the following parameter:
 	 *
@@ -1154,9 +1235,9 @@ class iMSCP_Events
 	const onAfterAddExternalMailServer = 'onAfterAddExternalMailServer';
 
 	/**
-	 * The onBeforeChangeDomainStatus event is triggered before an user account is being activated or deactivated
+	 * The onBeforeChangeDomainStatus event is triggered before an user account is being activated or deactivated.
 	 *
-	 * The listeners receive an iMSCP_Events_Event object with the following parameters
+	 * The listeners receive an iMSCP_Events_Event object with the following parameters:
 	 *
 	 * - customerId: An integer representing the ID of the customer for wich the subdomain has been added
 	 * - action: An string representing the action being processed (activate|deactivate)
@@ -1166,9 +1247,9 @@ class iMSCP_Events
 	const onBeforeChangeDomainStatus = 'onBeforeChangeDomainStatus';
 
 	/**
-	 * The onAfterChangeDomainStatus event is triggered before an user account get activated or deactivated
+	 * The onAfterChangeDomainStatus event is triggered before an user account get activated or deactivated.
 	 *
-	 * The listeners receive an iMSCP_Events_Event object with the following parameters
+	 * The listeners receive an iMSCP_Events_Event object with the following parameters:
 	 *
 	 * - customerId: An integer representing the ID of the customer for wich the subdomain has been added
 	 * - action: - action: An string representing the action that was processed (activate|deactivate)
@@ -1178,9 +1259,9 @@ class iMSCP_Events
 	const onAfterChangeDomainStatus = 'onAfterChangeDomainStatus';
 
 	/**
-	 * The onBeforeSendCircular event is triggered before an admin or reseller send a circular
+	 * The onBeforeSendCircular event is triggered before an admin or reseller send a circular.
 	 *
-	 * The listeners receive an iMSCP_Events_Event object with the following parameters
+	 * The listeners receive an iMSCP_Events_Event object with the following parameters:
 	 *
 	 * - sender_name Sender name
 	 * - sender_email Sender email
@@ -1192,9 +1273,9 @@ class iMSCP_Events
 	const onBeforeSendCircular = 'onBeforeSendCircular';
 
 	/**
-	 * The onAfterSendCircular event is triggered after an admin or reseller has sent a circular
-
-	 * The listeners receive an iMSCP_Events_Event object with the following parameters
+	 * The onAfterSendCircular event is triggered after an admin or reseller has sent a circular.
+	 *
+	 * The listeners receive an iMSCP_Events_Event object with the following parameters:
 	 *
 	 * - sender_name Sender name
 	 * - sender_email Sender email

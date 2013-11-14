@@ -71,8 +71,7 @@ use parent 'Common::SingletonClass';
 
 sub addTask($$)
 {
-	my $self = shift;
-	my $data = shift;
+	my ($self, $data) = @_;
 
 	$data = {} unless ref $data eq 'HASH';
 
@@ -109,8 +108,8 @@ sub addTask($$)
 		my $cleanBTag = "# [{TASKID}] task START.\n";
 		my $cleanETag = "# [{TASKID}] task END.\n";
 
-		my $bTag = process({ TASKID => $data->{'TASKID'} }, $cleanBTag);
-		my $eTag = process({ TASKID => $data->{'TASKID'} }, $cleanETag);
+		my $bTag = "# [$data->{'TASKID'}] task START.\n";
+		my $eTag = "# [$data->{'TASKID'}] task END.\n";
 
 		my $tag = sprintf(
 			"%s %s %s %s %s %s %s\n",
@@ -120,7 +119,7 @@ sub addTask($$)
 
 		$tag =~ s/ +/ /;
 
-		$wrkFileContent = replaceBloc($bTag, $eTag, '', $wrkFileContent);
+		$wrkFileContent = replaceBloc($bTag, $eTag, '', $wrkFileContent); # Remove any previous task with same id
 		$wrkFileContent = replaceBloc($cleanBTag, $cleanETag, "$bTag$tag$eTag", $wrkFileContent, 'preserve');
 
 		# Store file in working directory
@@ -158,8 +157,7 @@ sub addTask($$)
 
 sub deleteTask($$)
 {
-	my $self = shift;
-	my $data = shift;
+	my ($self, $data) = @_;
 
 	$data = {} unless ref $data eq 'HASH';
 
@@ -189,8 +187,8 @@ sub deleteTask($$)
 		my $cleanBTag = "# [{TASKID}] task START.\n";
 		my $cleanETag = "# [{TASKID}] task END.\n";
 
-		my $bTag = process({ TASKID => $data->{'TASKID'} }, $cleanBTag);
-		my $eTag = process({ TASKID => $data->{'TASKID'} }, $cleanETag);
+        my $bTag = "# [$data->{'TASKID'}] task START.\n";
+        my $eTag = "# [$data->{'TASKID'}] task END.\n";
 
 		$wrkFileContent = replaceBloc($bTag, $eTag, '', $wrkFileContent);
 

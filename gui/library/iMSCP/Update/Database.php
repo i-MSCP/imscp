@@ -2690,4 +2690,14 @@ class iMSCP_Update_Database extends iMSCP_Update
 			"UPDATE `domain_aliasses` SET `external_mail` = 'domain' WHERE `external_mail` = 'on'"
 		);
 	}
+
+	/**
+	 * Delete deprecated plugin.plugin_previous_status field
+	 *
+	 * @return string SQL statement to be executed
+	 */
+	protected function _databaseUpdate_171()
+	{
+		return $this->_dropColumn('plugin', 'plugin_previous_status');
+	}
 }

@@ -41,21 +41,15 @@ if (iMSCP_Registry::isRegistered('pluginManager')) {
 	if (!empty($plugins)) {
 		/** @var $plugin iMSCP_Plugin_Action */
 		foreach ($plugins as $plugin) {
-			if (is_callable(array($plugin, 'route'))) {
-				if ($plugin->route($urlComponents, $actionScript)) {
+			$actionScript = $plugin->route($urlComponents);
+
+			if($actionScript) break;
+
+			foreach ($plugin->getRoutes() as $pluginRoute => $pluginActionScript) {
+				if ($pluginRoute == $urlComponents['path']) {
+					$actionScript = $pluginActionScript;
+					$_SERVER['SCRIPT_NAME'] = $pluginRoute;
 					break;
-				}
-			}
-
-			$pluginRoutes = $plugin->getRoutes();
-
-			if (!empty($pluginRoutes)) {
-				foreach ($pluginRoutes as $pluginRoute => $pluginActionScript) {
-					if ($pluginRoute == $urlComponents['path']) {
-						$actionScript = $pluginActionScript;
-						$_SERVER['SCRIPT_NAME'] = $pluginRoute;
-						break;
-					}
 				}
 			}
 		}

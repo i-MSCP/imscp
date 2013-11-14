@@ -17,14 +17,13 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
- * @category	iMSCP
- * @package		iMSCP_Core
- * @subpackage	Plugin_Exception
- * @copyright	2010-2013 2010-2013 by i-MSCP Team
- * @author		Laurent Declercq <l.declercq@nuxwin.com>
- * @version		0.0.1
- * @link		http://www.i-mscp.net i-MSCP Home Site
- * @license		http://www.gnu.org/licenses/gpl-2.0.html GPL v2
+ * @category    iMSCP
+ * @package     iMSCP_Core
+ * @subpackage  Plugin_Exception
+ * @copyright   2010-2013 2010-2013 by i-MSCP Team
+ * @author      Laurent Declercq <l.declercq@nuxwin.com>
+ * @link        http://www.i-mscp.net i-MSCP Home Site
+ * @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
  */
 
 /** @See iMSCP_Exception */
@@ -33,11 +32,10 @@ require_once 'iMSCP/Exception.php';
 /**
  * Plugin Exception class.
  *
- * @category	iMSCP
- * @package		iMSCP_Core
- * @subpackage	Plugin_Exception
- * @author		Laurent Declercq <l.declercq@nuxwin.com>
- * @version		0.0.1
+ * @category    iMSCP
+ * @package     iMSCP_Core
+ * @subpackage  Plugin_Exception
+ * @author      Laurent Declercq <l.declercq@nuxwin.com>
  */
 class iMSCP_Plugin_Exception extends iMSCP_Exception
 {
