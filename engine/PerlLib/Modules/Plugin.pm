@@ -411,7 +411,7 @@ sub _exec($$$)
 
 	# We execute the action on the plugin only if it implements it
 	if($pluginInstance->can($pluginMethod)) {
-		debug("Plugin Manager: Running $pluginClass::$pluginMethod action");
+		debug("Plugin Manager: Running ${pluginClass}::${pluginMethod}() action");
 		$rs = $pluginInstance->$pluginMethod(@_);
 
 		# Return value from run() action is ignored by default because it's the responsability of the plugins to set
