@@ -648,30 +648,6 @@ class iMSCP_Events
 	const onAfterDisablePlugin = 'onAfterDisablePlugin';
 
 	/**
-	 * The onBeforeChangePlugin event is triggered before a plugin change.
-	 *
-	 * The listeners receive an iMSCP_Envents_Event object with the following parameters:
-	 *
-	 * - pluginManager: iMSCP_Plugin_Manager instance
-	 * - pluginName: Plugin name
-	 *
-	 * @const string
-	 */
-	const onBeforeChangePlugin = 'onBeforeChangePlugin';
-
-	/**
-	 * The onAfterChangePlugin event is triggered after a plugin change.
-	 *
-	 * The listeners receive an iMSCP_Envents_Event object with the following parameters:
-	 *
-	 * - pluginManager: iMSCP_Plugin_Manager instance
-	 * - pluginName: Plugin name
-	 *
-	 * @const string
-	 */
-	const onAfterChangePlugin = 'onAfterChangePlugin';
-
-	/**
 	 * The onBeforeUpdatePlugin event is triggered before a plugin update.
 	 *
 	 * The listeners receive an iMSCP_Envents_Event object with the following parameters:

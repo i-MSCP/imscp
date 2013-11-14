@@ -44,7 +44,7 @@ abstract class iMSCP_Plugin_Action extends iMSCP_Plugin
 	/**
 	 * @var iMSCP_Events_Manager_Interface
 	 */
-	protected $eventManager;
+	protected $eventsManager;
 
 	/**
 	 * Register a callback for the given event(s)
@@ -58,17 +58,17 @@ abstract class iMSCP_Plugin_Action extends iMSCP_Plugin
 	}
 
 	/**
-	 * Return events controller
+	 * Return events manager
 	 *
 	 * @return iMSCP_Events_Manager
 	 */
-	public function getController()
+	public function getEventsManager()
 	{
-		if(!isset($this->controller)) {
-			$this->controller = iMSCP_Events_Manager::getInstance();
+		if(!isset($this->eventsManager)) {
+			$this->eventsManager = iMSCP_Events_Manager::getInstance();
 		}
 
-		return $this->controller;
+		return $this->eventsManager;
 	}
 
 	/**
