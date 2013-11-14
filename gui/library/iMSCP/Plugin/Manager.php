@@ -426,7 +426,8 @@ class iMSCP_Plugin_Manager
 	 *
 	 * @throws iMSCP_Plugin_Exception When $pluginName is not known
 	 * @param string $pluginName Plugin name
-	 * @param array $info
+	 * @param array $info Plugin Info
+	 * @return void
 	 */
 	public function overridePluginInfo($pluginName, array $info)
 	{
@@ -1177,7 +1178,7 @@ class iMSCP_Plugin_Manager
 	 * - Enabled plugins for which configuration has been updated get changed.
 	 * - Plugins which are not longer available in the plugin repository are deleted from the database
 	 *
-	 * @return array An array containing information about added, updated and deleted plugins.
+	 * @return array An array containing information about added, updated and deleted plugins
 	 */
 	public function updatePluginList()
 	{
@@ -1414,8 +1415,8 @@ class iMSCP_Plugin_Manager
 	/**
 	 * Update plugin info
 	 *
-	 * @param string $pluginName Plugin info
-	 * @param array $info plugin info
+	 * @param string $pluginName Plugin Name
+	 * @param array $info Plugin info
 	 * @return void
 	 */
 	protected function updatePluginInfo($pluginName, array $info)
@@ -1428,7 +1429,7 @@ class iMSCP_Plugin_Manager
 	 * Delete plugin from database
 	 *
 	 * @param string $pluginName Plugin name
-	 * @return bool TRUE if $pluginName has been deleted from database, FALSE otherwise.
+	 * @return bool TRUE if $pluginName has been deleted from database, FALSE otherwise
 	 */
 	protected function deletePluginFromDatabase($pluginName)
 	{
