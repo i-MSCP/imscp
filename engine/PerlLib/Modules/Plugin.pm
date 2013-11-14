@@ -193,6 +193,28 @@ sub _install($$)
 	$rs;
 }
 
+=item _uninstall($pluginName)
+
+ Uninstall the given plugin
+
+ Param string Plugin name
+ Return int 0 on success, other on failure
+
+=cut
+
+sub _uninstall($$)
+{
+	my ($self, $pluginName) = @_;
+
+	my $rs ||= $self->{'hooksManager'}->trigger('onBeforeUninstallPlugin', $pluginName);
+
+	$rs ||= $self->_exec($pluginName, 'uninstall');
+
+	$rs ||= $self->{'hooksManager'}->trigger('onAfterUninstallPlugin', $pluginName);
+
+	$rs;
+}
+
 =item _enable($pluginName)
 
  Enable the given plugin
