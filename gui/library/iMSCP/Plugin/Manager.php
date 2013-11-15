@@ -1030,22 +1030,21 @@ class iMSCP_Plugin_Manager
 						$pluginInstance->delete($this);
 
 						$this->deletePluginFromDatabase($pluginName);
-						unset($this->pluginData[$pluginName]);
 
 						$pluginDir = $this->pluginsDirectory . '/' . $pluginName;
 
 						if (is_dir($pluginDir)) {
 							if (!utils_removeDir($pluginDir)) {
-								write_log(
-									sprintf('Plugin Manager: Unable to delete the %s plugin files', $pluginName),
-									E_USER_ERROR
-								);
-
-								throw new iMSCP_Plugin_Exception(
-									sprintf(
+								set_page_message(
+									tr(
 										'Unable to delete the %s plugin files. Please, remove them manually.',
 										"<strong>$pluginName</strong>"
-									)
+									),
+									'warning'
+								);
+								write_log(
+									sprintf('Plugin Manager: Unable to delete the %s plugin files', $pluginName),
+									E_USER_WARNING
 								);
 							}
 						}
@@ -1447,7 +1446,6 @@ class iMSCP_Plugin_Manager
 			$this->updateProtectFile();
 		}
 
-		unset($this->pluginData[$pluginName]);
 		write_log(sprintf('Plugin Manager: %s plugin has been removed from database', $pluginName), E_USER_NOTICE);
 
 		return true;
