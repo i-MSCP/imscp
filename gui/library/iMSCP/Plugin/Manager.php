@@ -932,13 +932,13 @@ class iMSCP_Plugin_Manager
 								'pluginManager' => $this,
 								'pluginName' => $pluginName,
 								'PluginFromVersion' => $pluginInfo['version'],
-								'PluginToVersion' => $pluginInfo['nversion']
+								'PluginToVersion' => $pluginInfo['__nversion__']
 							)
 						);
 
 						if (!$responses->isStopped()) {
 							// Run the update plugin method
-							$pluginInstance->update($this, $pluginInfo['version'], $pluginInfo['nversion']);
+							$pluginInstance->update($this, $pluginInfo['version'], $pluginInfo['__nversion__']);
 
 							// Trigger the onAfterUpdatePlugin event
 							$this->eventsManager->dispatch(
@@ -947,7 +947,7 @@ class iMSCP_Plugin_Manager
 									'pluginManager' => $this,
 									'pluginName' => $pluginName,
 									'PluginFromVersion' => $pluginInfo['version'],
-									'PluginToVersion' => $pluginInfo['nversion']
+									'PluginToVersion' => $pluginInfo['__nversion__']
 								)
 							);
 
@@ -958,7 +958,7 @@ class iMSCP_Plugin_Manager
 								if ($this->hasPluginBackend($pluginName)) {
 									$this->backendRequest = true;
 								} else {
-									$pluginInfo['version'] = $pluginInfo['nversion'];
+									$pluginInfo['version'] = $pluginInfo['__nversion__'];
 									$this->overridePluginInfo($pluginName, $pluginInfo);
 									$this->updatePluginInfo($pluginName, $pluginInfo);
 									$this->setPluginStatus($pluginName, 'enabled');
