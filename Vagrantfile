@@ -43,6 +43,11 @@ Vagrant.configure("2") do |config|
 
   # Provision i-MSCP
   $script = <<SCRIPT
+echo Setting up default locale...
+apt-get install -y language-pack-en
+echo 'dictionaries-common dictionaries-common/default-ispell string american (American English)' | debconf-set-selections
+echo 'dictionaries-common dictionaries-common/default-wordlist string american (American English)' | debconf-set-selections
+
 echo Setting up i-MSCP with defaults from docs/preseed.pl ...
 cd /vagrant/
 ./imscp-autoinstall --debug --noprompt --preseed docs/preseed.pl
