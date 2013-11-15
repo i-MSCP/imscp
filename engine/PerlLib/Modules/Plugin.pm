@@ -292,7 +292,7 @@ sub _update($$)
 {
 	my ($self, $pluginName) = @_;
 
-	my $rs = $self->_disable();
+	my $rs = $self->_disable($pluginName);
 
 	$rs ||= $self->{'hooksManager'}->trigger('onBeforeUpdatePlugin', $pluginName);
 
@@ -319,7 +319,7 @@ sub _update($$)
 
 	$rs ||= $self->{'hooksManager'}->trigger('onAfterUpdatePlugin', $pluginName);
 
-	$rs ||= $self->_enable();
+	$rs ||= $self->_enable($pluginName);
 
 	$rs;
 }
