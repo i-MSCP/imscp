@@ -43,9 +43,9 @@ Vagrant.configure("2") do |config|
 
   # Provision i-MSCP
   $script = <<SCRIPT
-echo Setting up i-MSCP with defaults...
+echo Setting up i-MSCP with defaults from docs/preseed.pl ...
 cd /vagrant/
-./imscp-autoinstall -d
+./imscp-autoinstall --debug --noprompt --preseed docs/preseed.pl
 SCRIPT
 
   config.vm.provision "shell", inline: $script
