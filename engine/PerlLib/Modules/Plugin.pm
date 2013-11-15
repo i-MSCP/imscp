@@ -64,7 +64,7 @@ info about specification.
 
 =item loadData($pluginId)
 
- Load plugin data from database
+ Load plugin data
 
  Param int Plugin unique identifier
  Return int 0 on success, 1 on failure
@@ -351,21 +351,22 @@ sub _run($$)
  Execute the given plugin method
 
  Param string Plugin name
- Param string method to run on the plugin
- Param string OPTIONAL $fromVersion
- Param string OPTIONAL $toVersion
+ Param string Plugin method to execute
+ Param string OPTIONAL Version from which the plugin is updated
+ Param string OPTIONAL Version to which the plugin is updated
  Return int 0 on success, other on failure
 
 =cut
 
-sub _exec($$$)
+sub _exec($$$;$$)
 {
-	my ($self, $pluginName, $pluginMethod) = @_;
+	my ($self, $pluginName, $pluginMethod, $fromVersion, $toVersion) = @_;
 
 	my $backendPluginFile = "$main::imscpConfig{'ENGINE_ROOT_DIR'}/Plugins/$pluginName.pm";
 	my $forceBackendInstall = 0;
 	my $rs = 0;
 
+	# When the plugin gets installed, updated or enabled, we copy the plugin into the backend plugin directory.
 	INSTALL_PLUGIN_BACKEND: {
 		if($forceBackendInstall || $pluginMethod ~~ ['install', 'update', 'enable']) {
 			my $guiPluginFile = "$main::imscpConfig{'GUI_ROOT_DIR'}/plugins/$pluginName/backend/$pluginName.pm";
@@ -411,10 +412,10 @@ sub _exec($$$)
 
 	# We execute the action on the plugin only if it implements it
 	if($pluginInstance->can($pluginMethod)) {
-		debug("Plugin Manager: Running ${pluginClass}::${pluginMethod}() action");
-		$rs = $pluginInstance->$pluginMethod(@_);
+		debug("Plugin Manager: Executing ${pluginClass}::${pluginMethod}() action");
+		$rs = $pluginInstance->$pluginMethod($fromVersion, $toVersion);
 
-		# Return value from run() action is ignored by default because it's the responsability of the plugins to set
+		# Return value from the run() action is ignored by default because it's the responsability of the plugins to set
 		# error status for their items. In case a plugin doesn't manage any item, it can force return value by
 		# defining the FORCE_RETVAL attribute and set it to 'yes'
 		if(
@@ -427,11 +428,14 @@ sub _exec($$$)
 		}
 	}
 
-	# When these method are run, we remove the backend part of the plugin from the backend plugins directory
+	# In case the plugin do not implement the uninstall() method and has been disabled, we delete it.
+	# In case the plugin has been uninstalled, we delete it.
 	if($pluginMethod ~~ ['disable', 'uninstall']) {
-		debug("Plugin Manager: Deleting $pluginName.pm from backend plugin repository");
-		my $file = iMSCP::File->new('filename' => $backendPluginFile);
-		$rs = $file->delFile();
+		unless($pluginMethod eq 'disable' && $pluginInstance->can('uninstall')) {
+			debug("Plugin Manager: Deleting $pluginName.pm from backend plugin repository");
+			my $file = iMSCP::File->new('filename' => $backendPluginFile);
+			$rs = $file->delFile();
+		}
 	}
 
 	$rs;

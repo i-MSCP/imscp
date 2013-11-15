@@ -288,7 +288,7 @@ class iMSCP_Plugin_Manager
 	}
 
 	/**
-	 * Get plugin instance
+	 * Get instance of loaded plugin
 	 *
 	 * Note: $pluginName must be already loaded.
 	 *
@@ -374,9 +374,7 @@ class iMSCP_Plugin_Manager
 	{
 		if ($this->isPluginKnown($pluginName)) {
 			if ($pluginError !== $this->pluginData[$pluginName]['error']) {
-				exec_query(
-					'UPDATE plugin SET plugin_error = ? WHERE plugin_name = ?', array($pluginError, $pluginName)
-				);
+				exec_query('UPDATE plugin SET plugin_error = ? WHERE plugin_name = ?', array($pluginError, $pluginName));
 				$this->pluginData[$pluginName]['error'] = $pluginError;
 			}
 		} else {
@@ -474,7 +472,7 @@ class iMSCP_Plugin_Manager
 	public function isPluginInstalled($pluginName)
 	{
 		if ($this->isPluginKnown($pluginName)) {
-			return ($this->getPluginStatus($pluginName) != 'uninstalled');
+			return ! in_array($this->getPluginStatus($pluginName), array('toinstall', 'uninstalled'));
 		} else {
 			write_log(sprintf('Plugin Manager: Unknown plugin %s', $pluginName), E_USER_ERROR);
 			throw new iMSCP_Plugin_Exception(sprintf('Plugin Manager: Unknown plugin %s', $pluginName));
@@ -764,7 +762,7 @@ class iMSCP_Plugin_Manager
 	public function isPluginDisabled($pluginName)
 	{
 		if ($this->isPluginKnown($pluginName)) {
-			return in_array($this->getPluginStatus($pluginName), array('uninstalled', 'disabled'));
+			return ($this->getPluginStatus($pluginName) == 'disabled');
 		} else {
 			write_log(sprintf('Plugin Manager: Unknown plugin %s', $pluginName), E_USER_ERROR);
 			throw new iMSCP_Plugin_Exception(sprintf('Plugin Manager: Unknown plugin %s', $pluginName));
@@ -1037,7 +1035,7 @@ class iMSCP_Plugin_Manager
 							if (!utils_removeDir($pluginDir)) {
 								set_page_message(
 									tr(
-										'Unable to delete the %s plugin files. Please, remove them manually.',
+										'Plugin Manager: Unable to delete the %s plugin files. Please, remove them manually.',
 										"<strong>$pluginName</strong>"
 									),
 									'warning'
