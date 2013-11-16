@@ -44,13 +44,27 @@ Vagrant.configure("2") do |config|
   # Provision i-MSCP
   $script = <<SCRIPT
 echo Setting up default locale...
-apt-get install -y language-pack-en
+apt-get update
+apt-get install -y language-pack-en libdata-validate-ip-perl
 echo 'dictionaries-common dictionaries-common/default-ispell string american (American English)' | debconf-set-selections
 echo 'dictionaries-common dictionaries-common/default-wordlist string american (American English)' | debconf-set-selections
 
 echo Setting up i-MSCP with defaults from docs/preseed.pl ...
 cd /vagrant/
-./imscp-autoinstall --debug --noprompt --preseed docs/preseed.pl
+head -n -1 docs/preseed.pl > /tmp/preseed.pl
+echo "\\\$main::questions{'SERVER_HOSTNAME'} = 'vagrant.i-mscp.net';" >> /tmp/preseed.pl
+echo "\\\$main::questions{'BASE_SERVER_VHOST'} = 'panel.vagrant.i-mscp.net';" >> /tmp/preseed.pl
+echo "use iMSCP::IP;" >> /tmp/preseed.pl
+echo "my \\\$ips = iMSCP::IP->new();" >> /tmp/preseed.pl
+echo "my \\\$rs = \\\$ips->loadIPs();" >> /tmp/preseed.pl
+echo "my @serverIps = \\\$ips->getIPs();" >> /tmp/preseed.pl
+echo "while (@serverIps[0] eq '127.0.0.1' || @serverIps[0] eq \\\$ips->normalize('::1')) { shift(@serverIps); }" >> /tmp/preseed.pl
+echo "print \\"Server IP: \\";" >> /tmp/preseed.pl
+echo "print @serverIps[0];" >> /tmp/preseed.pl
+echo "\\\$main::questions{'BASE_SERVER_IP'} = @serverIps[0];" >> /tmp/preseed.pl
+echo "" >> /tmp/preseed.pl
+echo "1;" >> /tmp/preseed.pl
+./imscp-autoinstall --debug --noprompt --preseed /tmp/preseed.pl
 SCRIPT
 
   config.vm.provision "shell", inline: $script
