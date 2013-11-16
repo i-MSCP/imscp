@@ -7,11 +7,11 @@ Vagrant.configure("2") do |config|
   # please see the online documentation at vagrantup.com.
 
   # Every Vagrant virtual environment requires a box to build off of.
-  config.vm.box = "precise32"
+  #config.vm.box = "precise32"
 
   # The url from where the 'config.vm.box' box will be fetched if it
   # doesn't already exist on the user's system.
-  config.vm.box_url = "http://files.vagrantup.com/precise32.box"
+  #config.vm.box_url = "http://files.vagrantup.com/precise32.box"
 
   # Create a forwarded port mapping which allows access to a specific port
   # within the machine from a port on the host machine. In the example below,
@@ -37,8 +37,16 @@ Vagrant.configure("2") do |config|
   # backing providers for Vagrant. These expose provider-specific options.
 
   # Drop the memory requirement to 256 for now.
-  config.vm.provider :virtualbox do |vb|
+  config.vm.provider :virtualbox do |vb, override|
     vb.customize ["modifyvm", :id, "--memory", "256"]
+    override.vm.box = "precise32"
+    override.vm.box_url = "http://files.vagrantup.com/precise32.box"
+  end
+
+  config.vm.provider :lxc do |lxc, override|
+    lxc.cgroup.memory.limit_in_bytes='256M'
+    override.vm.box = "precise64"
+    override.vm.box_url = "http://bit.ly/vagrant-lxc-precise64-2013-10-23"
   end
 
   # Provision i-MSCP
