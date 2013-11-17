@@ -538,7 +538,9 @@ class iMSCP_Events
 	/**
 	 * The onBeforePluginRoute event is triggered before routing of plugins.
 	 *
-	 * The listeners receive an iMSCP_Events_Event object.
+	 * The listeners receive an iMSCP_Envents_Event object with the following parameter:
+	 *
+	 * - pluginManager: iMSCP_Plugin_Manager instance
 	 *
 	 * @const string
 	 */
@@ -547,7 +549,10 @@ class iMSCP_Events
 	/**
 	 * The onAfterPluginRoute event is triggered after routing of plugins.
 	 *
-	 * The listeners receive an iMSCP_Events_Event object.
+	 * The listeners receive an iMSCP_Envents_Event object with the following parameter:
+	 *
+	 * - pluginManager: iMSCP_Plugin_Manager instance
+	 * - controllePath: Plugin controller path
 	 *
 	 * @const string
 	 */
