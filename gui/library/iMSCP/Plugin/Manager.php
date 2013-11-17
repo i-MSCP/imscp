@@ -271,10 +271,10 @@ class iMSCP_Plugin_Manager
 	}
 
 	/**
-	 * Returns loaded plugins
+	 * Returns loaded plugins by type
 	 *
 	 * @param string $type Type of loaded plugins to return
-	 * @return array Array containing plugins instances
+	 * @return iMSCP_Plugin[]|iMSCP_Plugin_Action[] Array containing plugins instances
 	 */
 	public function getLoadedPlugins($type = 'all')
 	{
@@ -294,7 +294,7 @@ class iMSCP_Plugin_Manager
 	 *
 	 * @throws iMSCP_Plugin_Exception When $pluginName is not loaded
 	 * @param string $pluginName Plugin name
-	 * @return iMSCP_Plugin
+	 * @return iMSCP_Plugin|iMSCP_Plugin_Action
 	 */
 	public function getPlugin($pluginName)
 	{
