@@ -5,7 +5,7 @@
 # See documentation at http://wiki.i-mscp.net/doku.php?id=start:preseeding
 #
 # Author: Laurent Declercq <l.declercq@nuxwin.com>
-# Last update: 2013.10.07
+# Last update: 2013.11.18
 # Status: (Experimental)
 
 # Server to use for the HTTP service

@@ -8,6 +8,9 @@ Git Master
 CONFIG:
 	- Removed: DATABASE_UTF8 parameter
 
+DOCS:
+	- Fixed: Updated preseed template file
+
 ENGINE:
 	- Fixed: imscp-del-tmp script is broken (Undefined subroutine floor...)
 	- Fixed: Plugin (backend part) must be re-installed if missing
@@ -28,6 +31,7 @@ GUI:
 	- Updated: plugin API (version 0.1.2)
 
 SETUP:
+	- Added: Vagrantfile allowing to setup a virtual machines using Vagrant
 	- Fixed: ispCP migration script must not delete Web data while deleting unix users
 
 Tickets:
