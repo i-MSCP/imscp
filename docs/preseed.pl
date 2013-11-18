@@ -15,8 +15,8 @@ $main::questions{'HTTPD_SERVER'} = 'apache_fcgi';
 # apache_fcgi - Only relevant if the server for the http service is set to 'apache_fcgi'
 $main::questions{'PHP_FASTCGI'} = 'fcgid'; # 'fcgid' or 'fastcgi'
 
-# apache_php_fpm - Only relevant if the server for the http service is set to 'apache_fgci'
-$main::questions{'FCGI_PHP_INI_LEVEL'} = 'per_user'; # 'per_user' or 'per_domain' or 'per_vhost'
+# apache_fcgi - Only relevant if the server for the http service is set to 'apache_fgci'
+$main::questions{'INI_LEVEL'} = 'per_user'; # 'per_user' or 'per_domain' or 'per_vhost'
 
 # apache_php_fpm - Only relevant if the server for the http server is set to 'apache_php_fpm'
 $main::questions{'PHP_FPM_POOLS_LEVEL'} = 'per_user'; # 'per_user' or 'per_domain' or 'per_site'
@@ -142,7 +142,7 @@ $main::questions{'BACKUP_DOMAINS'} = 'yes'; # 'yes' or 'no'
 $main::questions{'WEBSTATS_ADDONS'} = 'Awstats'; # 'Awstats' or 'No'
 
 # Only relevant if WEBSTATS_ADDONS is set to 'Awstats'
-$main::questions{'AWSTATS_MODE'} = ''; # Empty value if WEBSTATS_ADDONS is set to 'No', 0 for dynamic or 1 for static
+$main::questions{'AWSTATS_MODE'} = '0'; # Empty value if WEBSTATS_ADDONS is set to 'No', 0 for dynamic or 1 for static
 
 # Ftp Web file manager
 $main::questions{'FILEMANAGER_ADDON'} = 'AjaXplorer'; # AjaXplorer or Net2ftp
