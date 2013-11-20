@@ -89,7 +89,7 @@ abstract class iMSCP_Plugin
 
 		$info = array();
 
-		if (is_readable($infoFile)) {
+		if (@is_readable($infoFile)) {
 			$info = include $infoFile;
 		} else {
 			if (!file_exists($infoFile)) {

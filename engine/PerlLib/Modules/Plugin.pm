@@ -406,7 +406,7 @@ sub _exec($$$;$$)
 	eval { $pluginInstance = $pluginClass->getInstance('hooksManager' => $self->{'hooksManager'}); };
 
 	if($@) {
-		error("Plugin $pluginName has an invalid package name. Must be: $pluginClass");
+		error("An unexpected error occured: $@");
 		return 1;
 	}
 
