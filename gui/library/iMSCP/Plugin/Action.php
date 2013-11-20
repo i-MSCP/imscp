@@ -34,8 +34,6 @@ require_once 'iMSCP/Plugin.php';
  *
  * All i-MSCP plugins to interfere with the event system need to inherit from this class.
  *
- * @method route
- *
  * @category    iMSCP
  * @package     iMSCP_Core
  * @subpackage  Plugin_Action
@@ -46,40 +44,74 @@ abstract class iMSCP_Plugin_Action extends iMSCP_Plugin
 	/**
 	 * @var iMSCP_Events_Manager_Interface
 	 */
-	protected $_controller;
+	protected $eventsManager;
 
 	/**
-	 * Register a callback for the given event(s).
+	 * Register a callback for the given event(s)
 	 *
-	 * @param iMSCP_Events_Manager_Interface $controller
+	 * @param iMSCP_Events_Manager_Interface $eventsManager
 	 * @return void
 	 */
-	public function register(iMSCP_Events_Manager_Interface $controller)
+	public function register(iMSCP_Events_Manager_Interface $eventsManager)
 	{
 		trigger_error(sprintf('register() not implemented in %s', get_class($this)), E_USER_WARNING);
 	}
 
 	/**
-	 * Return events controller.
+	 * Return events manager
 	 *
 	 * @return iMSCP_Events_Manager
 	 */
-	public function getController()
+	public function getEventsManager()
 	{
-		if(!isset($this->_controller)) {
-			$this->_controller = iMSCP_Events_Manager::getInstance();
+		if(!isset($this->eventsManager)) {
+			$this->eventsManager = iMSCP_Events_Manager::getInstance();
 		}
 
-		return $this->_controller;
+		return $this->eventsManager;
 	}
 
 	/**
 	 * Get routes
 	 *
-	 * @return array
+	 * This method allow the plugin to provide it own routes. For instance:
+	 *
+	 * <code>
+	 * $pluginDir = PLUGINS_PATH . '/' . $this->getName();
+	 *
+	 * return array(
+	 *  '/admin/mailgraph.php' => $pluginDir . '/frontend/mailgraph.php',
+	 * 	'/admin/mailgraphics.php' => $pluginDir . '/frontend/mailgraphics.php'
+	 * );
+	 * </code>
+	 *
+	 * @return array An array containing action script paths
+	 * @TODO merge this method with the route() method
 	 */
 	public function getRoutes()
 	{
 		return array();
+	}
+
+	/**
+	 * Route an URL
+	 *
+	 * This method allow the plugin to provide its own routing logic. If a route match the given URL, this method MUST
+	 * return a string representing the action script to load, else, NULL must be returned. For instance:
+	 *
+	 * <code>
+	 * if (strpos($urlComponents['path'], '/mydns/api/') === 0) {
+	 *  return PLUGINS_PATH . '/' . $this->getName() . '/api.php';
+	 * }
+	 *
+	 * return null;
+	 * </code>
+	 *
+	 * @param array $urlComponents Associative array containing URL components
+	 * @return string|null Either a string representing an action script path or null if not route match the URL
+	 */
+	public function route($urlComponents)
+	{
+		return null;
 	}
 }

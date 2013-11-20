@@ -2142,7 +2142,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	}
 
 	/**
-	 * Add plugin.plugin_previous_status and plugin_plugin_error columns
+	 * Add plugin_plugin_error columns
 	 *
 	 * @return array SQL statements to be e executed
 	 */
@@ -2153,18 +2153,8 @@ class iMSCP_Update_Database extends iMSCP_Update
 		if (
 			($q = $this->_addColumn(
 				'plugin',
-				'plugin_previous_status',
-				"VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL AFTER `plugin_status`"
-			)) != ''
-		) {
-			$sqlUdp[] = $q;
-		}
-
-		if (
-			($q = $this->_addColumn(
-				'plugin',
 				'plugin_error',
-				"TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL AFTER `plugin_previous_status`"
+				"TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL AFTER `plugin_status`"
 			)) != ''
 		) {
 			$sqlUdp[] = $q;
@@ -2689,5 +2679,15 @@ class iMSCP_Update_Database extends iMSCP_Update
 			"UPDATE `domain` SET `external_mail` = 'domain' WHERE `external_mail` = 'on'",
 			"UPDATE `domain_aliasses` SET `external_mail` = 'domain' WHERE `external_mail` = 'on'"
 		);
+	}
+
+	/**
+	 * Delete deprecated plugin.plugin_previous_status field
+	 *
+	 * @return string SQL statement to be executed
+	 */
+	protected function _databaseUpdate_171()
+	{
+		return $this->_dropColumn('plugin', 'plugin_previous_status');
 	}
 }

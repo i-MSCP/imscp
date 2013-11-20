@@ -23,13 +23,14 @@
 		$(".i_change_password").click(function (e) {
 			e.preventDefault();
 			var href = $(this).attr("href");
+			var $dialogBox = $("#dialog_box");
 
-			$("#dialog_box").dialog("option", "buttons", {
+			$dialogBox.dialog("option", "buttons", {
 				"{TR_PROTECT}": function () { window.location.href = href; },
 				"{TR_CANCEL}": function () { $(this).dialog("close"); }
 			});
 
-			$("#dialog_box").dialog("open");
+			$dialogBox.dialog("open");
 		});
 
 		$('#bulkActionsTop, #bulkActionsBottom').change(function () {
@@ -40,7 +41,7 @@
 			function ($e) { $("table :checkbox").prop('checked', $(this).is(':checked')); }
 		);
 
-		$('button[name=updatePluginList]').click(function () { document.location = "?updatePluginList=all"; });
+		$('button[name=update_plugin_list]').click(function () { document.location = "?update_plugin_list=all"; });
 
 		$(".plugin_error").click(function (e) {
 			var errDialog = $('<div>' + '<pre>' + $.trim($(this).html()) + '</pre>' + '</div>');
@@ -80,7 +81,7 @@
 	<p>{TR_PROTECT_CONFIRMATION}</p>
 </div>
 
-<form name="pluginsFrm" action="settings_plugins.php" method="post">
+<form name="plugin_frm" action="settings_plugins.php" method="post">
 	<table class="datatable">
 		<thead>
 		<tr style="border: none;">
@@ -115,7 +116,7 @@
 			<td>
 				{PLUGIN_STATUS}
 				<!-- BDP: plugin_status_details_block -->
-				<span id="{PLUGIN_NAME}" style="vertical-align: middle" class="plugin_error icon i_help"
+				<span id="{PLUGIN_NAME}" style="vertical-align: middle;" class="plugin_error icon i_help"
 					  title="{TR_CLICK_FOR_MORE_DETAILS}">
 					{PLUGIN_STATUS_DETAILS}
 				</span>
@@ -123,15 +124,16 @@
 			</td>
 			<td>
 				<!-- BDP: plugin_activate_link -->
-				<a style="vertical-align: middle" class="icon i_open" href="settings_plugins.php?activate={PLUGIN_NAME}"
+				<a style="vertical-align: middle;" class="icon i_open" href="settings_plugins.php?{ACTIVATE_ACTION}={PLUGIN_NAME}"
 				   title="{TR_ACTIVATE_TOOLTIP}"></a>
-				<a style="vertical-align: middle" class="icon i_close" href="settings_plugins.php?delete={PLUGIN_NAME}"
-				   title="{TR_DELETE_TOOLTIP}"></a>
+				<a style="vertical-align: middle;" class="icon i_close" href="settings_plugins.php?{UNINSTALL_ACTION}={PLUGIN_NAME}"
+				   title="{TR_UNINSTALL_TOOLTIP}"></a>
 				<!-- EDP: plugin_activate_link -->
+
 				<!-- BDP: plugin_deactivate_link -->
-				<a style="vertical-align: middle" class="icon i_close"
-				   href="settings_plugins.php?deactivate={PLUGIN_NAME}" title="{TR_DEACTIVATE_TOOLTIP}"></a>
-				<a style="vertical-align: middle" class="icon i_change_password"
+				<a style="vertical-align: middle;" class="icon i_close"
+				   href="settings_plugins.php?disable={PLUGIN_NAME}" title="{TR_DEACTIVATE_TOOLTIP}"></a>
+				<a style="vertical-align: middle;" class="icon i_change_password"
 				   href="settings_plugins.php?protect={PLUGIN_NAME}" title="{TR_PROTECT_TOOLTIP}"></a>
 				<!-- EDP: plugin_deactivate_link -->
 			</td>
@@ -140,27 +142,29 @@
 		</tbody>
 	</table>
 	<div style="float:left;">
-		<select name="bulkActions" id="bulkActionsBottom">
+		<select name="bulk_actions" id="bulk_actions">
 			<option value="dummy">{TR_BULK_ACTIONS}</option>
-			<option value="activate">{TR_ACTIVATE}</option>
-			<option value="deactivate">{TR_DEACTIVATE}</option>
+			<option value="install">{TR_INSTALL}</option>
+			<option value="enable">{TR_ACTIVATE}</option>
+			<option value="disable">{TR_DEACTIVATE}</option>
+			<option value="uninstall">{TR_UNINSTALL}</option>
 			<option value="protect">{TR_PROTECT}</option>
 			<option value="delete">{TR_DELETE}</option>
 		</select>
-		<label for="bulkActionsBottom"><input type="submit" name="Submit" value="{TR_APPLY}"/></label>
+		<label for="bulk_actions"><input type="submit" name="Submit" value="{TR_APPLY}"/></label>
 	</div>
 </form>
 <!-- EDP: plugins_block -->
 
 <div class="buttons">
-	<button type="button" name="updatePluginList">{TR_UPDATE_PLUGIN_LIST}</button>
+	<button type="button" name="update_plugin_list">{TR_UPDATE_PLUGIN_LIST}</button>
 </div>
 
 <br/>
 
 <h2 class="plugin"><span>{TR_PLUGIN_UPLOAD}</span></h2>
 
-<form name="pluginsUploadFrm" action="settings_plugins.php" method="post" enctype="multipart/form-data">
+<form name="plugin_upload_frm" action="settings_plugins.php" method="post" enctype="multipart/form-data">
 	<table class="firstColFixed">
 		<thead>
 		<tr>
@@ -174,7 +178,7 @@
 				<span class="tips icon i_help" title="{TR_PLUGIN_ARCHIVE_TOOLTIP}"></span>
 			</td>
 			<td>
-				<input type="file" name="pluginArchive"/>
+				<input type="file" name="plugin_archive"/>
 				<input type="submit" value="{TR_UPLOAD}"/>
 			</td>
 		</tr>

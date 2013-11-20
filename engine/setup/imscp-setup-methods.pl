@@ -2004,7 +2004,7 @@ sub setupRebuildCustomerFiles
 				UPDATE
 					`plugin`
 				SET
-					`plugin_previous_status` = `plugin_status`, `plugin_status` = 'tochange'
+					`plugin_status` = 'tochange'
 				WHERE
 					`plugin_status` = 'enabled'
 				AND

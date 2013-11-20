@@ -27,7 +27,7 @@
  */
 
 /**
- * Plugin base class.
+ * iMSCP_Plugin class
  *
  * Please, do not inherite from this class. Instead, inherite from the specialized classes localized into
  * gui/library/iMSCP/Plugin/
@@ -40,21 +40,19 @@
 abstract class iMSCP_Plugin
 {
 	/**
-	 * Plugin configuration parameters.
-	 *
-	 * @var array
+	 * @var array Plugin configuration parameters
 	 */
 	protected $_config = array();
 
 	/**
-	 * Whether or not plugin configuration is loaded.
-	 *
 	 * @var bool TRUE if plugin configuration is loaded, FALSE otherwise
 	 */
-	protected $_isLoadedConfig = false;
+	protected $isLoadedConfig = false;
 
 	/**
 	 * Constructor
+	 *
+	 * @return iMSCP_Plugin
 	 */
 	public function __construct()
 	{
@@ -62,110 +60,7 @@ abstract class iMSCP_Plugin
 	}
 
 	/**
-	 * Allow plugin initialization.
-	 * return void
-	 */
-	public function init()
-	{
-	}
-
-	/**
-	 * Plugin installation
-	 *
-	 * @throws iMSCP_Plugin_Exception
-	 * @param iMSCP_Plugin_Manager $pluginManager
-	 * @return void
-	 */
-	public function install(iMSCP_Plugin_Manager $pluginManager)
-	{
-	}
-
-	/**
-	 * Plugin update
-	 *
-	 * @throws iMSCP_Plugin_Exception
-	 * @param iMSCP_Plugin_Manager $pluginManager
-	 * @param string $fromVersion Version from which update is initiated
-	 * @param string $toVersion Version to which plugin is updated
-	 * @return void
-	 */
-	public function update(iMSCP_Plugin_Manager $pluginManager, $fromVersion, $toVersion)
-	{
-	}
-
-	/**
-	 * PLugin uninstallation
-	 *
-	 * @throws iMSCP_Plugin_Exception
-	 * @param iMSCP_Plugin_Manager $pluginManager
-	 * @return void
-	 */
-	public function uninstall(iMSCP_Plugin_Manager $pluginManager)
-	{
-	}
-
-	/**
-	 * Plugin activation
-	 *
-	 * @throws iMSCP_Plugin_Exception
-	 * @param iMSCP_Plugin_Manager $pluginManager
-	 * @return void
-	 */
-	public function enable(iMSCP_Plugin_Manager $pluginManager)
-	{
-	}
-
-	/**
-	 * Plugin deactivation
-	 *
-	 * @throws iMSCP_Plugin_Exception
-	 * @param iMSCP_Plugin_Manager $pluginManager
-	 * @return void
-	 */
-	public function disable(iMSCP_Plugin_Manager $pluginManager)
-	{
-	}
-
-	/**
-	 * Get plugin item with error status
-	 *
-	 * Note: *MUST* be implemented by any plugin which manage its own items.
-	 *
-	 * @return array
-	 */
-	public function getItemWithErrorStatus()
-	{
-		return array();
-	}
-
-	/**
-	 * Set status of the given plugin item to 'tochange'
-	 *
-	 * Note: *MUST* be implemented by any plugin which manage its own items.
-	 *
-	 * @param string $table Table name
-	 * @param string $field Status field name
-	 * @param int $itemId item unique identifier
-	 * @return void
-	 */
-	public function changeItemStatus($table, $field, $itemId)
-	{
-	}
-
-	/**
-	 * Return count of request in progress
-	 *
-	 * Note: *MUST* be implemented by any plugin which manage its own items.
-	 *
-	 * @return int
-	 */
-	public function getCountRequests()
-	{
-		return 0;
-	}
-
-	/**
-	 * Returns plugin general information.
+	 * Returns plugin general information
 	 *
 	 * Need return an associative array with the following info:
 	 *
@@ -177,6 +72,13 @@ abstract class iMSCP_Plugin
 	 * desc: Plugin short description (text only)
 	 * url: Website in which it's possible to found more information about the plugin.
 	 *
+	 * Of course, a plugin can provide other info for its own needs. However, you must note that the following keywords
+	 * are reserved for internal use:
+	 *
+	 * - __nversion__: Contain the last available plugin version
+	 * - __installable__: Tell the plugin manager whether or not the plugin is installable
+	 * - __uninstallable__: Tell the plugin manager whether or not the plugin can be uninstalled
+	 *
 	 * @throws iMSCP_Plugin_Exception in case plugin info file cannot be read
 	 * @return array An array containing information about plugin
 	 */
@@ -187,7 +89,7 @@ abstract class iMSCP_Plugin
 
 		$info = array();
 
-		if (is_readable($infoFile)) {
+		if (@is_readable($infoFile)) {
 			$info = include $infoFile;
 		} else {
 			if (!file_exists($infoFile)) {
@@ -220,36 +122,45 @@ abstract class iMSCP_Plugin
 	}
 
 	/**
-	 * Returns plugin type.
+	 * Returns plugin type
 	 *
 	 * @return string
 	 */
 	final public function getType()
 	{
-		list(, , $type) = explode('_', get_parent_class($this), 3);
+		static $type = null;
+
+		if (null === $type) {
+			list(, , $type) = explode('_', get_parent_class($this), 3);
+		}
 
 		return $type;
 	}
 
 	/**
-	 * Returns plugin name.
+	 * Returns plugin name
 	 *
 	 * @return string
 	 */
 	final public function getName()
 	{
-		list(, , $name) = explode('_', get_class($this), 3);
+		static $name = null;
+
+		if (null === $name) {
+			list(, , $name) = explode('_', get_class($this), 3);
+		}
+
 		return $name;
 	}
 
 	/**
-	 * Return plugin configuration parameters.
+	 * Return plugin configuration
 	 *
-	 * @return array
+	 * @return array An associative array which contain plugin configuration
 	 */
 	final public function getConfig()
 	{
-		if (!$this->_isLoadedConfig) {
+		if (!$this->isLoadedConfig) {
 			$this->loadConfig();
 		}
 
@@ -257,7 +168,7 @@ abstract class iMSCP_Plugin
 	}
 
 	/**
-	 * Return plugin default configuration parameters.
+	 * Return plugin configuration from file
 	 *
 	 * @throws iMSCP_Plugin_Exception in case plugin configuration file is not readable
 	 * @return array
@@ -267,8 +178,8 @@ abstract class iMSCP_Plugin
 		$configFile = iMSCP_Registry::get('pluginManager')->getPluginDirectory() . '/' . $this->getName() . '/config.php';
 		$config = array();
 
-		if (file_exists($configFile)) {
-			if (is_readable($configFile)) {
+		if (@file_exists($configFile)) {
+			if (@is_readable($configFile)) {
 				$config = include $configFile;
 			} else {
 				throw new iMSCP_Plugin_Exception(
@@ -281,26 +192,23 @@ abstract class iMSCP_Plugin
 	}
 
 	/**
-	 * Returns given configuration parameter.
+	 * Returns the given plugin configuration
 	 *
 	 * @param string $paramName Configuration parameter name
+	 * @param mixed $default Default value returned in case $paramName is not found
 	 * @return mixed Configuration parameter value or NULL if $paramName not found
 	 */
-	final public function getConfigParam($paramName = null)
+	final public function getConfigParam($paramName, $default = null)
 	{
-		if (!$this->_isLoadedConfig) {
+		if (!$this->isLoadedConfig) {
 			$this->loadConfig();
 		}
 
-		if (isset($this->_config[$paramName])) {
-			return $this->_config[$paramName];
-		}
-
-		return null;
+		return (isset($this->_config[$paramName])) ? $this->_config[$paramName] : $default;
 	}
 
 	/**
-	 * Load plugin configuration parameters from database.
+	 * Load plugin configuration from database
 	 *
 	 * @return void
 	 */
@@ -313,5 +221,140 @@ abstract class iMSCP_Plugin
 		} else {
 			$this->_config = array();
 		}
+	}
+
+	/**
+	 * Allow plugin initialization
+	 *
+	 * This method allow to do some initialization tasks without overriding the constructor.
+	 *
+	 * @return void
+	 */
+	protected function init()
+	{
+	}
+
+	/**
+	 * Plugin installation
+	 *
+	 * This method is automatically called by the plugin manager when the plugin is being installed.
+	 *
+	 * @throws iMSCP_Plugin_Exception
+	 * @param iMSCP_Plugin_Manager $pluginManager
+	 * @return void
+	 */
+	public function install(iMSCP_Plugin_Manager $pluginManager)
+	{
+	}
+
+	/**
+	 * Plugin activation
+	 *
+	 * This method is automatically called by the plugin manager when the plugin is being enabled (activated).
+	 *
+	 * @throws iMSCP_Plugin_Exception
+	 * @param iMSCP_Plugin_Manager $pluginManager
+	 * @return void
+	 */
+	public function enable(iMSCP_Plugin_Manager $pluginManager)
+	{
+	}
+
+	/**
+	 * Plugin deactivation
+	 *
+	 * This method is automatically called by the plugin manager when the plugin is being disabled (deactivated).
+	 *
+	 * @throws iMSCP_Plugin_Exception
+	 * @param iMSCP_Plugin_Manager $pluginManager
+	 * @return void
+	 */
+	public function disable(iMSCP_Plugin_Manager $pluginManager)
+	{
+	}
+
+	/**
+	 * Plugin update
+	 *
+	 * This method is automatically called by the plugin manager when the plugin is being updated.
+	 *
+	 * @throws iMSCP_Plugin_Exception
+	 * @param iMSCP_Plugin_Manager $pluginManager
+	 * @param string $fromVersion Version from which plugin update is initiated
+	 * @param string $toVersion Version to which plugin is updated
+	 * @return void
+	 */
+	public function update(iMSCP_Plugin_Manager $pluginManager, $fromVersion, $toVersion)
+	{
+	}
+
+	/**
+	 * Plugin uninstallation
+	 *
+	 * This method is automatically called by the plugin manager when the plugin is being uninstalled.
+	 *
+	 * @throws iMSCP_Plugin_Exception
+	 * @param iMSCP_Plugin_Manager $pluginManager
+	 * @return void
+	 */
+	public function uninstall(iMSCP_Plugin_Manager $pluginManager)
+	{
+	}
+
+	/**
+	 * Plugin deletion
+	 *
+	 * This method is automatically called by the plugin manager when the plugin is being deleted.
+	 *
+	 * @throws iMSCP_Plugin_Exception
+	 * @param iMSCP_Plugin_Manager $pluginManager
+	 * @return void
+	 */
+	public function delete(iMSCP_Plugin_Manager $pluginManager)
+	{
+	}
+
+	/**
+	 * Get plugin item with error status
+	 *
+	 * This method is called by the i-MSCP debugger.
+	 *
+	 * Note: *MUST* be implemented by any plugin which manage its own items.
+	 *
+	 * @return array
+	 */
+	public function getItemWithErrorStatus()
+	{
+		return array();
+	}
+
+	/**
+	 * Set status of the given plugin item to 'tochange'
+	 *
+	 * This method is called by the i-MSCP debugger.
+	 *
+	 * Note: *MUST* be implemented by any plugin which manage its own items.
+	 *
+	 * @param string $table Table name
+	 * @param string $field Status field name
+	 * @param int $itemId item unique identifier
+	 * @return void
+	 */
+	public function changeItemStatus($table, $field, $itemId)
+	{
+	}
+
+	/**
+	 * Return count of request in progress
+	 *
+	 * This method is called by the i-MSCP debugger.
+	 *
+	 * Note: *MUST* be implemented by any plugin which manage its own items.
+	 *
+	 * @return int
+	 */
+	public function getCountRequests()
+	{
+		return 0;
 	}
 }

@@ -147,7 +147,7 @@ class iMSCP_Authentication_Bruteforce extends iMSCP_Plugin_Action
 	 *
 	 * @return void
 	 */
-	public function init()
+	protected function init()
 	{
 		$query = 'SELECT * FROM `login` WHERE `ipaddr` = ? AND `user_name` IS NULL';
 		$stmt = exec_query($query, $this->_ipAddr);
@@ -192,15 +192,13 @@ class iMSCP_Authentication_Bruteforce extends iMSCP_Plugin_Action
 	/**
 	 * Register a callback for the given event(s).
 	 *
-	 * @param iMSCP_Events_Manager_Interface $controller
+	 * @param iMSCP_Events_Manager_Interface $eventsManager
 	 */
-	public function register(iMSCP_Events_Manager_Interface $controller)
+	public function register(iMSCP_Events_Manager_Interface $eventsManager)
 	{
-		$controller->registerListener(
+		$eventsManager->registerListener(
 			array(iMSCP_Events::onBeforeAuthentication, iMSCP_Events::onBeforeSetIdentity), $this, -999
 		);
-
-		$this->_controller = $controller;
 	}
 
 	/**
