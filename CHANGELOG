@@ -28,7 +28,7 @@ GUI:
 	- Fixed: Use mb_encode_mimeheader() to encode MIME header when available
 	- Fixed: Identity garbage on session timeout
 	- Rewritten: Circular interface (admin and reseller levels)
-	- Updated: plugin API (version 0.1.2)
+	- Updated: plugin API (version 0.2.0)
 
 SETUP:
 	- Added: Vagrantfile allowing to setup a virtual machine using Vagrant
