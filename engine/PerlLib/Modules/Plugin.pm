@@ -403,7 +403,11 @@ sub _exec($$$;$$)
 	my $pluginClass = "Plugin::$pluginName";
 	my $pluginInstance;
 
-	eval { $pluginInstance = $pluginClass->getInstance('hooksManager' => $self->{'hooksManager'}); };
+	eval {
+		$pluginInstance = $pluginClass->getInstance(
+			'hooksManager' => $self->{'hooksManager'}, 'action' => $pluginMethod
+		);
+	};
 
 	if($@) {
 		error("An unexpected error occured: $@");
