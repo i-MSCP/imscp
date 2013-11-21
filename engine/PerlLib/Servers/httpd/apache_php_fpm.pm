@@ -1633,7 +1633,7 @@ sub startApache
 	debug($stdout) if $stdout;
 	warning($stderr) if $stderr && ! $rs;
 	error($stderr) if $stderr && $rs;
-	error('Error while starting Apache') if $rs && ! $stderr;
+	error('Error while starting Apache2') if $rs && ! $stderr;
 	return $rs if $rs;
 
 	$self->{'hooksManager'}->trigger('afterHttpdStart');
@@ -1659,7 +1659,7 @@ sub stopApache
 	debug($stdout) if $stdout;
 	debug($stderr) if $stderr && ! $rs;
 	error($stderr) if $stderr && $rs;
-	error('Error while stopping Apache') if $rs && ! $stderr;
+	error('Error while stopping Apache2') if $rs && ! $stderr;
 	return $rs if $rs;
 
 	$self->{'hooksManager'}->trigger('afterHttpdStop');
@@ -1688,7 +1688,7 @@ sub restartApache
 	warning($stderr) if $stderr && ! $rs;
 	error($stderr) if $stderr && $rs;
 	error($stdout) if $stdout && ! $stderr && $rs;
-	error("Error while " . ($self->{'forceRestart'} ? 'restarting' : 'reloading') . ' Apache')
+	error("Error while " . ($self->{'forceRestart'} ? 'restarting' : 'reloading') . ' Apache2')
 		if $rs && ! $stderr && ! $stdout;
 	return $rs if $rs;
 
