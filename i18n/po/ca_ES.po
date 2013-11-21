@@ -18,9 +18,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
-"Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2013-10-28 11:50+0100\n"
-"PO-Revision-Date: 2013-10-28 10:52+0000\n"
+"Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
+"POT-Creation-Date: 2013-11-21 23:25+0100\n"
+"PO-Revision-Date: 2013-11-21 22:27+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Catalan (Spain) (http://www.transifex.com/projects/p/i-MSCP/language/ca_ES/)\n"
 "MIME-Version: 1.0\n"
@@ -315,8 +315,8 @@ msgid "%s doesn't exist"
 msgstr "%s no existeix"
 
 #, php-format
-msgid "%s doesn't exist or is empty"
-msgstr "%s no existeix o és buit"
+msgid "%s doesn't exist or is empty."
+msgstr ""
 
 #, php-format
 msgid "%s field is empty or invalid."
@@ -336,8 +336,9 @@ msgstr ""
 
 #, php-format
 msgid ""
-"%s new plugin(s) found, %s plugin(s) updated, and %s plugin(s) deleted."
-msgstr "%s nous plugin(s) trobats, %s plugin(s) actualitzats, i %s plugin(s) esborrats."
+"%s new plugin(s) found, %s plugin(s) updated, %s plugin(s) changed, and %s "
+"plugin(s) deleted."
+msgstr ""
 
 #, php-format
 msgid "%s of %s"
@@ -570,14 +571,20 @@ msgstr "Tipus del compte"
 msgid "Action"
 msgstr "Acció"
 
+msgid "Action has been stopped."
+msgstr ""
+
+msgid "Action has failed."
+msgstr ""
+
 msgid "Actions"
 msgstr "Accions"
 
 msgid "Activate"
 msgstr "Activar"
 
-msgid "Activate this plugin."
-msgstr "Activar aquest plugin."
+msgid "Activate this plugin"
+msgstr ""
 
 msgid "Activated"
 msgstr "Activat"
@@ -893,6 +900,12 @@ msgstr "Accedir com a administrador"
 msgid "Administrators"
 msgstr "Administradors"
 
+msgid "Administrators and customers"
+msgstr ""
+
+msgid "Administrators and resellers"
+msgstr ""
+
 msgid ""
 "After your upload the package it will be installed on your systems.<br "
 "/>Refresh your site to see the new status!"
@@ -925,14 +938,8 @@ msgstr "Àlies"
 msgid "All"
 msgstr "Tots"
 
-msgid "All administrators"
-msgstr "Tots els administradors"
-
 msgid "All closed tickets were successfully deleted."
 msgstr "Tots els tiquets tancats s'han eliminat correctament."
-
-msgid "All customers"
-msgstr "Tots els clients"
 
 msgid "All fields are required."
 msgstr "Necessitem tots els camps."
@@ -955,14 +962,11 @@ msgstr "Total Sortida"
 msgid "All reseller"
 msgstr "Tots els distribuidors"
 
-msgid "All resellers"
-msgstr "Tots els distribuïdors"
-
-msgid "All resellers and customers"
-msgstr "Tots els distribuïdors i clients"
-
 msgid "All traffic"
 msgstr "Tot el trànsit"
+
+msgid "All users"
+msgstr ""
 
 msgid "Allow URL fopen"
 msgstr "Permetre URL fopen"
@@ -995,6 +999,9 @@ msgstr "En ús"
 
 msgid "Alternative URL to reach your website"
 msgstr "URL alternativa per arribar a la teva web"
+
+msgid "An entry is defined twice below."
+msgstr ""
 
 msgid "An error has been found in mail forward list."
 msgstr "Hi ha hagut un error a la llista de redireccions de correu."
@@ -1209,6 +1216,12 @@ msgstr "Temps de bloqueig entre temptatives de inici de sessió i captcha."
 msgid "Blocktime <small>(in minutes)</small>"
 msgstr "Temps de bloqueig <small>(en minuts)</small>"
 
+msgid "Body"
+msgstr ""
+
+msgid "Body is missing."
+msgstr ""
+
 msgid "Bogomips"
 msgstr "Bogomips"
 
@@ -1350,6 +1363,9 @@ msgstr "Escolliu el vostre idioma"
 
 msgid "Circular"
 msgstr "Circular"
+
+msgid "Circular successfully sent."
+msgstr ""
 
 msgid "City"
 msgstr "Ciutat"
@@ -1788,7 +1804,7 @@ msgstr "Desactivar"
 msgid "Deactivate selected items"
 msgstr "Desactivar els seleccionats"
 
-msgid "Deactivate this plugin."
+msgid "Deactivate this plugin"
 msgstr ""
 
 msgid "Deactivated"
@@ -1866,9 +1882,6 @@ msgstr "Esborrar"
 msgid "Delete CatchAll"
 msgstr "Esborrar CatchAll"
 
-msgid "Delete account"
-msgstr ""
-
 msgid "Delete all tickets"
 msgstr "Eliminar tots els tiquets"
 
@@ -1890,14 +1903,14 @@ msgstr "Eliminar aplicació del distribuïdor"
 msgid "Delete selected items"
 msgstr ""
 
+msgid "Delete this plugin"
+msgstr ""
+
 msgid "Delete ticket"
 msgstr ""
 
 msgid "Deletion in progress"
 msgstr "Eliminació en progrés"
-
-msgid "Deletion in progress..."
-msgstr ""
 
 msgid "Demo Version!"
 msgstr "Versió de mostra!"
@@ -1958,8 +1971,8 @@ msgstr "No mostrar cap error."
 
 #, php-format
 msgid ""
-"Do you really want to delete the entire <strong>'%s'</strong> customer "
-"account? This operation cannot be undone."
+"Do you really want to delete the entire %s customer account? This operation "
+"cannot be undone."
 msgstr ""
 
 msgid "Domain"
@@ -2119,8 +2132,8 @@ msgid "Domain type"
 msgstr ""
 
 msgid ""
-"Domain: Setup an MX record to relay mail of your entire domain (including "
-"subdomains) to an external mail server."
+"Domain: Setup a DNS MX record to relay mail of your entire domain, including"
+" subdomains."
 msgstr ""
 
 msgid "Domains"
@@ -2361,13 +2374,13 @@ msgstr ""
 msgid "External mail server"
 msgstr "Servidor Extern de correu"
 
-msgid "External mail server entries successfully scheduled for addition."
+msgid "External mail server successfully scheduled for addition."
 msgstr ""
 
-msgid "External mail server entries successfully scheduled for deletion."
+msgid "External mail server successfully scheduled for deactivation."
 msgstr ""
 
-msgid "External mail server entries successfully scheduled for update."
+msgid "External mail server successfully scheduled for update."
 msgstr ""
 
 msgid "External mail servers"
@@ -2423,6 +2436,10 @@ msgstr "Dona"
 
 #, php-format
 msgid "File %s doesn't exist or cannot be reached!"
+msgstr ""
+
+#, php-format
+msgid "File %s has not been found in plugin directory."
 msgstr ""
 
 #, php-format
@@ -2799,11 +2816,17 @@ msgstr ""
 msgid "Install path"
 msgstr "Ruta d'instal·lació"
 
+msgid "Install this plugin"
+msgstr ""
+
 msgid "Install various Web applications with a few clicks."
 msgstr "Instal·lar diverses aplicacions amb uns pocs clics."
 
 msgid "Installation details"
 msgstr "Detalls de la instal·lació"
+
+msgid "Installation in progress..."
+msgstr ""
 
 msgid "Installation path"
 msgstr ""
@@ -2850,6 +2873,9 @@ msgstr ""
 msgid "Invalid MX priority."
 msgstr ""
 
+msgid "Invalid MX type."
+msgstr ""
+
 msgid "Invalid NAME."
 msgstr ""
 
@@ -2891,9 +2917,6 @@ msgstr "Nom incorrecte."
 
 msgid "Invalid target."
 msgstr "Destí incorrecte."
-
-msgid "Invalid type detected."
-msgstr ""
 
 msgid "Invalid type given. String expected"
 msgstr "Tipus invàlid. S'esperava una cadena"
@@ -3058,10 +3081,17 @@ msgstr ""
 msgid "Mail feature is disabled."
 msgstr ""
 
-msgid "Mail host is not valid."
+msgid "Mail usage"
 msgstr ""
 
-msgid "Mail usage"
+#, php-format
+msgid "Mailhost %s is not valid."
+msgstr ""
+
+msgid "Mailhost cannot be empty."
+msgstr ""
+
+msgid "Mailhost must not be equal to the domain name for which you add it."
 msgstr ""
 
 msgid "Main menu labels visibility successfully updated."
@@ -3110,9 +3140,6 @@ msgstr "Gestionar les seves àrees protegides, usuaris i grups."
 msgid "Mark"
 msgstr "Marca"
 
-msgid "Mass email successfully sent."
-msgstr ""
-
 msgid "Master domain cannot be used."
 msgstr "No podeu utilitzar el domini principal del panell."
 
@@ -3152,18 +3179,6 @@ msgstr ""
 
 msgid "Message"
 msgstr "Missatge"
-
-msgid "Message body"
-msgstr ""
-
-msgid "Message body is missing."
-msgstr ""
-
-msgid "Message subject"
-msgstr "Assumpte del missatge"
-
-msgid "Message subject is missing."
-msgstr ""
 
 msgid "Message template"
 msgstr "Plantilla de missatge"
@@ -3408,7 +3423,7 @@ msgstr ""
 msgid "Not used"
 msgstr "No usat"
 
-msgid "Note: You can mix these options."
+msgid "Note: You cannot mix Spam filter and domain options"
 msgstr ""
 
 msgid "Nothing found - sorry"
@@ -3420,7 +3435,7 @@ msgstr "No s'ha modificat res."
 msgid "Nothing has been deleted."
 msgstr ""
 
-msgid "Nothing has been scheduled for deletion."
+msgid "Nothing has been scheduled for deactivation."
 msgstr ""
 
 msgid "Nothing to do. Daemon request has been canceled."
@@ -3456,7 +3471,7 @@ msgstr ""
 msgid "Only positive numbers are allowed."
 msgstr "Només s'accepten nombres positius."
 
-msgid "Only tar.gz, tar.bz2 and zip archives are accepted."
+msgid "Only tar.gz, tar.bz2 and zip archives are accepted"
 msgstr ""
 
 msgid "Only tar.gz, tar.bz2 and zip archives are supported."
@@ -3756,6 +3771,14 @@ msgid "Plugin %s is already deactivated."
 msgstr ""
 
 #, php-format
+msgid "Plugin %s is already installed."
+msgstr ""
+
+#, php-format
+msgid "Plugin %s is already uninstalled."
+msgstr ""
+
+#, php-format
 msgid "Plugin %s is protected."
 msgstr ""
 
@@ -3764,11 +3787,23 @@ msgid "Plugin %s successfully activated."
 msgstr ""
 
 #, php-format
+msgid "Plugin %s successfully changed."
+msgstr ""
+
+#, php-format
 msgid "Plugin %s successfully deactivated."
 msgstr ""
 
 #, php-format
 msgid "Plugin %s successfully deleted."
+msgstr ""
+
+#, php-format
+msgid "Plugin %s successfully installed."
+msgstr ""
+
+#, php-format
+msgid "Plugin %s successfully protected."
 msgstr ""
 
 #, php-format
@@ -3784,7 +3819,11 @@ msgid "Plugin %s successfully scheduled for deactivation."
 msgstr ""
 
 #, php-format
-msgid "Plugin %s successfully scheduled for deletion."
+msgid "Plugin %s successfully scheduled for installation."
+msgstr ""
+
+#, php-format
+msgid "Plugin %s successfully scheduled for uninstallation."
 msgstr ""
 
 #, php-format
@@ -3792,7 +3831,49 @@ msgid "Plugin %s successfully scheduled for update."
 msgstr ""
 
 #, php-format
+msgid "Plugin %s successfully uninstalled."
+msgstr ""
+
+#, php-format
 msgid "Plugin %s successfully updated."
+msgstr ""
+
+#, php-format
+msgid "Plugin Manager: Unable to activate the %s plugin: %s"
+msgstr ""
+
+#, php-format
+msgid "Plugin Manager: Unable to change the %s plugin: %s"
+msgstr ""
+
+#, php-format
+msgid "Plugin Manager: Unable to deactivate the %s plugin: %s"
+msgstr ""
+
+#, php-format
+msgid ""
+"Plugin Manager: Unable to delete the %s plugin files. Please, remove them "
+"manually."
+msgstr ""
+
+#, php-format
+msgid "Plugin Manager: Unable to delete the %s plugin: %s"
+msgstr ""
+
+#, php-format
+msgid "Plugin Manager: Unable to install the %s plugin: %s"
+msgstr ""
+
+#, php-format
+msgid "Plugin Manager: Unable to protect the %s plugin: %s"
+msgstr ""
+
+#, php-format
+msgid "Plugin Manager: Unable to uninstall the %s plugin: %s"
+msgstr ""
+
+#, php-format
+msgid "Plugin Manager: Unable to update the %s plugin: %s"
 msgstr ""
 
 msgid "Plugin archive"
@@ -3803,15 +3884,7 @@ msgid ""
 "Plugin archive exceeds the maximum upload size (%s). Max upload size is: %s."
 msgstr ""
 
-#, php-format
-msgid "Plugin class %s not found in file %s"
-msgstr ""
-
 msgid "Plugin errors"
-msgstr ""
-
-#, php-format
-msgid "Plugin file %s doesn't exist or is not readable."
 msgstr ""
 
 msgid "Plugin item errors"
@@ -3827,33 +3900,7 @@ msgid "Plugin management"
 msgstr ""
 
 #, php-format
-msgid ""
-"Plugin manager has not been able to delete the %s plugin files. Please, "
-"remove them manually."
-msgstr ""
-
-#, php-format
-msgid "Plugin manager was unable to activate the %s plugin."
-msgstr ""
-
-#, php-format
-msgid "Plugin manager was unable to change the %s plugin."
-msgstr ""
-
-#, php-format
-msgid "Plugin manager was unable to deactivate the %s plugin."
-msgstr ""
-
-#, php-format
-msgid "Plugin manager was unable to delete the %s plugin."
-msgstr ""
-
-#, php-format
-msgid "Plugin manager was unable to protect the %s plugin."
-msgstr ""
-
-#, php-format
-msgid "Plugin manager was unable to update the %s plugin."
+msgid "Plugin manager was unable to load plugin %s"
 msgstr ""
 
 msgid "Plugin successfully uploaded."
@@ -3940,9 +3987,6 @@ msgstr "Àrea protegida programada per a ésser actualitzada."
 
 msgid "Protected areas"
 msgstr "Àrees protegides"
-
-msgid "Protected plugin"
-msgstr "Plugin protegit"
 
 msgid "Protocol"
 msgstr "Protocol"
@@ -4179,6 +4223,9 @@ msgstr "Distribuïdor / Estadístiques d'IPs"
 msgid "Resellers"
 msgstr "Distribuïdors"
 
+msgid "Resellers and customers"
+msgstr ""
+
 msgid "Resellers assignment"
 msgstr "Assignació de distribuïdor"
 
@@ -4218,9 +4265,6 @@ msgstr "Trànsit SMTP"
 msgid "SQL"
 msgstr "SQL"
 
-msgid "SQL account limit reached."
-msgstr ""
-
 msgid "SQL database"
 msgstr ""
 
@@ -4231,6 +4275,9 @@ msgid "SQL database limit is disabled but SQL user limit is not."
 msgstr ""
 
 msgid "SQL database limit is not <i>disabled</i>."
+msgstr ""
+
+msgid "SQL database limit reached."
 msgstr ""
 
 msgid "SQL database successfully added."
@@ -4328,6 +4375,9 @@ msgstr ""
 msgid "Send"
 msgstr "Enviar"
 
+msgid "Send circular"
+msgstr ""
+
 msgid "Send message"
 msgstr "Enviar missatge"
 
@@ -4342,6 +4392,9 @@ msgstr "Enviar resposta"
 
 msgid "Send reply"
 msgstr "Enviar resposta"
+
+msgid "Send to"
+msgstr ""
 
 msgid "Sender email"
 msgstr ""
@@ -4549,6 +4602,14 @@ msgstr "Versió"
 msgid "Softwaredepot"
 msgstr "Repositori d'aplicacions"
 
+msgid "Spam Filter"
+msgstr ""
+
+msgid ""
+"Spam Filter: Setup a DNS MX record to relay mail of your entire domain, "
+"including subdomains, but retains our server as final mailhost."
+msgstr ""
+
 msgid "Specified database name already exists."
 msgstr "El nom de Base de Dades especificat ja existeix."
 
@@ -4644,6 +4705,9 @@ msgstr "Subdominis"
 
 msgid "Subject"
 msgstr "Assumpte"
+
+msgid "Subject is missing."
+msgstr ""
 
 msgid "Submit changes"
 msgstr "Enviar canvis"
@@ -4802,14 +4866,6 @@ msgstr "El domini o almenys alguna de les seves entitats te un estat diferent de
 
 msgid "The domain you are trying to edit doesn't exist."
 msgstr "El domini que estàs intentant editar no existeix."
-
-#, php-format
-msgid "The entry %s already exists or is defined twice below."
-msgstr ""
-
-msgid ""
-"The mail host must not be equal to the domain name for which you add it."
-msgstr ""
 
 msgid "The menu you are trying to edit doesn't exist."
 msgstr ""
@@ -5098,6 +5154,9 @@ msgstr ""
 msgid "Unable to write the %s file for protected plugins."
 msgstr ""
 
+msgid "Unallowed database name."
+msgstr ""
+
 msgid "Unauthorized"
 msgstr ""
 
@@ -5106,6 +5165,15 @@ msgstr ""
 
 msgid "Uninstall"
 msgstr "Desinstal.lar"
+
+msgid "Uninstall this plugin"
+msgstr ""
+
+msgid "Uninstallation in progress..."
+msgstr ""
+
+msgid "Uninstalled"
+msgstr ""
 
 msgid "Unknown"
 msgstr "Desconegut"
@@ -5137,6 +5205,9 @@ msgstr ""
 
 #, php-format
 msgid "Unknown service name '%s'."
+msgstr ""
+
+msgid "Unknown status"
 msgstr ""
 
 msgid "Unknown type."
@@ -5416,15 +5487,8 @@ msgid ""
 "needed by many applications but can cause some security issues"
 msgstr "Quan està permés, els scripts poden cridar la funció PHP exec(). Aquesta funció es necessita a moltes aplicacions però pot provocar alguns problemes de seguretat."
 
-msgid "Wildcard"
-msgstr ""
-
-msgid "Wildcard MX only"
-msgstr ""
-
 msgid ""
-"Wildcard: Setup an MX record for inexistent subdomains, for which an "
-"external mail server can handle mail."
+"Wildcard: Setup a DNS MX record to relay mail for inexistent subdomains."
 msgstr ""
 
 #, php-format
@@ -5436,9 +5500,6 @@ msgstr "Adreça IP errònia."
 
 msgid "Wrong SQL user identifier."
 msgstr "Identificador d'usuari SQL erroni."
-
-msgid "Wrong customer ID."
-msgstr ""
 
 msgid "Wrong mail syntax in forward list."
 msgstr ""
@@ -5770,12 +5831,6 @@ msgid ""
 "reseller."
 msgstr ""
 
-msgid "Your are not the owner of this domain alias."
-msgstr ""
-
-msgid "Your are not the owner of this domain."
-msgstr ""
-
 msgid "Your consumption"
 msgstr "El teu consum."
 
@@ -6026,6 +6081,9 @@ msgstr "veure àlies"
 
 msgid "waiting for activation"
 msgstr "esperant activació"
+
+msgid "wildcard"
+msgstr ""
 
 msgid "yes"
 msgstr "sí"
