@@ -6,6 +6,7 @@ Git Master
 ------------------------------------------------------------------------------------------------------------------------
 
 CONFIG:
+	- Added: Vagrantfile allowing to setup a virtual machine using Vagrant
 	- Removed: DATABASE_UTF8 parameter
 
 DOCS:
@@ -31,7 +32,6 @@ GUI:
 	- Updated: plugin API (version 0.2.0)
 
 SETUP:
-	- Added: Vagrantfile allowing to setup a virtual machine using Vagrant
 	- Fixed: ispCP migration script must not delete Web data while deleting unix users
 
 Tickets:
