@@ -527,7 +527,7 @@ sub _setupDatabase
 			error($rs);
 			return 1;
 		}
-     }
+	}
 
 	# The PhpMyAdmin database doesn't exist or doesn't have any table
 	unless(%$rs) {

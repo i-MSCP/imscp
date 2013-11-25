@@ -22,7 +22,7 @@
  * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
  *
  * @category    i-MSCP
- * @package        iMSCP_Database
+ * @package     iMSCP_Database
  * @copyright   2006-2010 by ispCP | http://isp-control.net
  * @copyright   2010-2013 by i-MSCP | http://i-mscp.net
  * @link        http://i-mscp.net i-MSCP Home Site
@@ -30,7 +30,7 @@
  */
 
 /**
- * DatabaseResult class -  Wrap the PDOStatement class
+ * Class iMSCP_Database_ResultSet
  *
  * @property mixed EOF
  * @property mixed fields
