@@ -661,7 +661,7 @@ Important: No check is made on the entered value. Please refer to the following 
 ",
 					$host // setupGetQuestion('BASE_SERVER_IP')
 				);
-			} while($rs != 30);
+			} while($rs != 30 && $host eq '');
 		}
 
 		setupSetQuestion('DATABASE_USER_HOST', $host) if $rs != 30;
