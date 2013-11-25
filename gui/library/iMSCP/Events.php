@@ -1045,28 +1045,6 @@ class iMSCP_Events
 	const onAfterDeleteMail = 'onAfterDeleteMail';
 
 	/**
-	 * The onBeforeDatabaseConnection event is triggered before the connection to the database is made.
-	 *
-	 * The listeners receive an iMSCP_Events_Event instance with the following parameter:
-	 *
-	 * - context: An iMSCP_Database instance, the context in which the event is triggered
-	 *
-	 * @const string
-	 */
-	const onBeforeDatabaseConnection = 'onBeforeDatabaseConnection';
-
-	/**
-	 * The onAfterDatabaseConnection event is triggered after the connection to the database is made.
-	 *
-	 * The listeners receive an iMSCP_Events_Event instance with the following parameter:
-	 *
-	 * - context: An iMSCP_Database object, the context in which the event is triggered
-	 *
-	 * @const string
-	 */
-	const onAfterDatabaseConnection = 'onAfterDatabaseConnection';
-
-	/**
 	 * The onBeforeQueryPrepare event is triggered before an SQL statement is prepared for execution.
 	 *
 	 * The listeners receive an iMSCP_Database_Events_Database instance with the following parameters:

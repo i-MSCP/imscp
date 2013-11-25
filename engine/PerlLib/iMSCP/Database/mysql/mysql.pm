@@ -318,7 +318,7 @@ sub quoteIdentifier
 
 sub quote
 {
-	my ($self, $string)	= (@_);
+	my ($self, $string) = (@_);
 
 	$self->{'connection'}->quote($string);
 }

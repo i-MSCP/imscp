@@ -242,7 +242,7 @@ sub _setupDatabase
 			"GRANT SELECT ON `$main::imscpConfig{'DATABASE_NAME'}`.`$_` TO ?@? IDENTIFIED BY ?",
 			$dbUser, $dbUserHost, $dbPass
 		);
-		if(ref $rs ne 'HASH') {
+		unless(ref $rs eq 'HASH') {
 			error(
 				"Unable to add privileges on the '$main::imscpConfig{'DATABASE_NAME'}.$_' table for the Proftpd " .
 				"'$dbUser\@$dbUserHost' SQL user: $rs"
@@ -257,7 +257,7 @@ sub _setupDatabase
 			"GRANT SELECT, INSERT, UPDATE ON `$main::imscpConfig{'DATABASE_NAME'}`.`$_` TO ?@? IDENTIFIED BY ?",
 			$dbUser, $dbUserHost, $dbPass
 		);
-		if(ref $rs ne 'HASH') {
+		unless(ref $rs eq 'HASH') {
 			error(
 				"Unable to add privileges on the '$main::imscpConfig{'DATABASE_NAME'}.$_' table for the Proftpd " .
 				"'$dbUser\@$dbUserHost' SQL user: $rs"
@@ -363,7 +363,7 @@ sub _oldEngineCompatibility
 	my $rs = $self->{'hooksManager'}->trigger('beforeFtpdOldEngineCompatibility');
 	return $rs if $rs;
 
-	#if(exists $self::oldConfig{'FTPD_CONF_DIR'} && -d $self::oldConfig{'FTPD_CONF_DIR'}) {
+	#if(exists $self::oldConfig{'FTPD_CONF_DIR'}) {
 	#	$rs = iMSCP::Dir->new('dirname' => $self::oldConfig{'FTPD_CONF_DIR'})->remove();
 	#	return $rs if $rs;
 	#}

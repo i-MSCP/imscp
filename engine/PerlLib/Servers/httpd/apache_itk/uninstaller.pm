@@ -94,7 +94,7 @@ sub removeDirs
 		$self->{'config'}->{'APACHE_USERS_LOG_DIR'}, $self->{'config'}->{'APACHE_BACKUP_LOG_DIR'},
 		$self->{'config'}->{'APACHE_CUSTOM_SITES_CONFIG_DIR'}, $self->{'config'}->{'SCOREBOARDS_DIR'}
 	) {
-		$rs = iMSCP::Dir->new('dirname' => $_)->remove() if -d $_;
+		$rs = iMSCP::Dir->new('dirname' => $_)->remove();
 		return $rs if $rs;
 	}
 

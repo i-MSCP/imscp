@@ -46,9 +46,6 @@ use parent 'Common::SingletonClass';
  The hook functions are references to subroutines that hooks into the i-MSCP engine hooks. They can receive parameters
 which, in most cases, are passed by reference to the hook function to allow it to act as filter.
 
- The i-MSCP hooks are triggered once. That mean that if you want trigger them again, the hook functions must re-register
-by itself on the manager. Any hook function must return 0 on success and 1 on failure.
-
 =head1 PUBLIC METHODS
 
 =over 4
@@ -114,8 +111,6 @@ sub trigger($$)
 		debug("Trigger $hook hook");
 
 		my @hookFunctions = @{$self->{'hooks'}->{$hook}};
-
-		$self->unregisterHook($hook);
 
 		for(@hookFunctions) {
 			if($rs = $_->(@_)) {

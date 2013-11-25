@@ -359,12 +359,8 @@ sub deleteDmn($$)
 	$rs = $self->disableDmn($data);
 	return $rs if $rs;
 
-	if(-d "$self->{'config'}->{'MTA_VIRTUAL_MAIL_DIR'}/$data->{'DOMAIN_NAME'}") {
-		$rs = iMSCP::Dir->new(
-			'dirname' => "$self->{'config'}->{'MTA_VIRTUAL_MAIL_DIR'}/$data->{'DOMAIN_NAME'}"
-		)->remove();
-		return $rs if $rs;
-	}
+	$rs = iMSCP::Dir->new('dirname' => "$self->{'config'}->{'MTA_VIRTUAL_MAIL_DIR'}/$data->{'DOMAIN_NAME'}")->remove();
+	return $rs if $rs;
 
 	$rs = $self->{'hooksManager'}->trigger('afterMtaDelDmn', $data);
 }
@@ -1181,10 +1177,8 @@ sub _deleteMailBox($$)
 
 	my $mailDir = "$self->{'config'}->{'MTA_VIRTUAL_MAIL_DIR'}/$data->{'DOMAIN_NAME'}/$data->{'MAIL_ACC'}";
 
-	if(-d $mailDir) {
-		$rs = iMSCP::Dir->new('dirname' => $mailDir)->remove();
-		return $rs if $rs;
-	}
+	$rs = iMSCP::Dir->new('dirname' => $mailDir)->remove();
+	return $rs if $rs;
 
 	$self->{'hooksManager'}->trigger('afterMtaDelMailbox', $data);
 }

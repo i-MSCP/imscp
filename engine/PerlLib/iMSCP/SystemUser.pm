@@ -47,16 +47,14 @@ sub _init
 sub addSystemUser
 {
 	my $self = shift;
-
-	fatal('Please use only instance of class not static calls', 1) if ref $self ne __PACKAGE__;
-
 	my $userName = shift || $self->{'username'};
-	$self->{'username'} = $userName;
 
 	if(! $userName) {
-		error('No username was provided');
+		error('Username is missing');
 		return 1;
 	}
+
+	$self->{'username'} = $userName;
 
 	my $password = $self->{'password'} ? '-p ' . escapeShell($self->{'password'}) : '';
 	my $comment	= $self->{'comment'} ? $self->{'comment'} : 'iMSCPuser';
@@ -89,7 +87,7 @@ sub addSystemUser
 		);
 	} else { # Modify existent user
 		@cmd = (
-			"$main::imscpConfig{'CMD_PKILL'} -KILL " . escapeShell($userName) . '; ',
+			"$main::imscpConfig{'CMD_PKILL'} -KILL -f -u" . escapeShell($userName) . '; ',
 			$main::imscpConfig{'CMD_USERMOD'},
 			($^O =~ /bsd$/ ? escapeShell($userName) : ''),	# username bsd way
 			$password,										# Password
@@ -115,24 +113,22 @@ sub addSystemUser
 sub delSystemUser
 {
 	my $self = shift;
-
-	fatal('Please use only instance of class not static calls', 1) if ref $self ne __PACKAGE__;
-
 	my $userName = shift || $self->{'username'};
-	$self->{'username'} = $userName;
 
 	if(! $userName) {
-		error('No username was provided');
+		error('Username is missing');
 		return 1;
 	}
 
+	$self->{'username'} = $userName;
+
 	if(getpwnam($userName)) {
 		my  @cmd = (
-			($self->{'force'} ? '' : "$main::imscpConfig{'CMD_PKILL'} -KILL " . escapeShell($userName) . '; '),
+			"$main::imscpConfig{'CMD_PKILL'} -KILL -f -u" . escapeShell($userName) . '; ',
 			$main::imscpConfig{'CMD_USERDEL'},
 			($^O =~ /bsd$/ ? escapeShell($userName) : ''),
 			($self->{'keepHome'} ? '' : '-r'),
-			($self->{'force'} ? '-f' : ''),
+			(($self->{'force'} && ! $self->{'keepHome'}) ? '-f' : ''),
 			($^O !~ /bsd$/ ? escapeShell($userName) : '')
 		);
 
@@ -151,24 +147,21 @@ sub delSystemUser
 sub addToGroup
 {
 	my $self = shift;
-
-	fatal('Please use only instance of class not static calls', 1) if ref $self ne __PACKAGE__;
-
 	my $groupName = shift || $self->{'groupname'};
-	$self->{'groupname'} = $groupName;
-
 	my $userName = shift || $self->{'username'};
-	$self->{'username'} = $userName;
 
 	if(! $groupName) {
-		error('No group name was provided');
+		error('Group name is missing');
 		return 1;
 	}
 
 	if(! $userName) {
-		error('No username was provided');
+		error('Username is missing');
 		return 1;
 	}
+
+	$self->{'groupname'} = $groupName;
+	$self->{'username'} = $userName;
 
 	if(getgrnam($groupName) && getpwnam($userName)) {
 		my (@cmd, $rs, $stdout, $stderr);
@@ -182,12 +175,7 @@ sub addToGroup
 				my $newGroups = join(',', keys %{$self->{'userGroups'}});
 				$newGroups = ($newGroups ne '') ? "$newGroups,$groupName" : $groupName;
 
-				@cmd = (
-					$main::imscpConfig{'CMD_USERMOD'},
-					escapeShell($userName),
-					'-G', escapeShell($newGroups)
-				);
-
+				@cmd = ($main::imscpConfig{'CMD_USERMOD'}, escapeShell($userName), '-G', escapeShell($newGroups));
 				$rs = execute("@cmd", \$stdout, \$stderr);
 				debug($stdout) if $stdout;
 				error($stderr) if $stderr && $rs;
@@ -196,7 +184,6 @@ sub addToGroup
 			}
 		} else { # Linux way
 			@cmd = ($main::imscpConfig{'CMD_GPASSWD'}, '-a', escapeShell($userName), escapeShell($groupName));
-
 			$rs = execute("@cmd", \$stdout, \$stderr);
 			debug($stdout) if $stdout;
 			error($stderr) if $stderr && $rs && $rs != 3;
@@ -212,24 +199,21 @@ sub addToGroup
 sub removeFromGroup
 {
 	my $self = shift;
-
-	fatal(': Please use only instance of class not static calls', 1) if ref $self ne __PACKAGE__;
-
 	my $groupName = shift || $self->{'groupname'} || undef;
-	$self->{'groupname'} = $groupName;
-
 	my $userName = shift || $self->{'username'} || undef;
-	$self->{'username'} = $userName;
 
 	if(! $groupName){
-		error('No group name was provided');
+		error('Group name is missing');
 		return 1;
 	}
 
 	if(! $userName){
-		error('No username was provided');
+		error('Username is missing');
 		return 1;
 	}
+
+	$self->{'groupname'} = $groupName;
+	$self->{'username'} = $userName;
 
 	if(getpwnam($userName) && getgrnam($groupName)) {
 		my (@cmd, $rs, $stdout, $stderr);
@@ -242,12 +226,7 @@ sub removeFromGroup
 
 			my $newGroups =  join(',', keys %{$self->{'userGroups'}});
 
-			@cmd = (
-				$main::imscpConfig{'CMD_USERMOD'},
-				escapeShell($userName),
-				'-G', escapeShell($newGroups)
-			);
-
+			@cmd = ($main::imscpConfig{'CMD_USERMOD'}, escapeShell($userName), '-G', escapeShell($newGroups));
 			$rs = execute("@cmd", \$stdout, \$stderr);
 			debug($stdout) if $stdout;
 			error($stderr) if $stderr && $rs;
@@ -255,7 +234,6 @@ sub removeFromGroup
 			return $rs if $rs;
 		} else {
 			@cmd = ($main::imscpConfig{'CMD_GPASSWD'}, '-d', escapeShell($userName), escapeShell($groupName));
-
 			$rs = execute("@cmd", \$stdout, \$stderr);
 			debug($stdout) if $stdout;
 			error($stderr) if $stderr && $rs && $rs != 3;
@@ -271,14 +249,16 @@ sub removeFromGroup
 sub getUserGroups
 {
 	my $self = shift;
-
-	fatal('Please use only instance of class not static calls', 1) if ref $self ne __PACKAGE__;
-
 	my $userName = shift || $self->{'username'} || undef;
+
+	if(! $userName) {
+		error('Username is missing');
+		return 1;
+	}
+
 	$self->{'username'} = $userName;
 
 	my ($rs, $stdout, $stderr);
-
 	$rs = execute("$main::imscpConfig{'CMD_ID'} -nG " . escapeShell($userName), \$stdout, \$stderr);
 	debug($stdout) if $stdout;
 	error($stderr) if $stderr && $rs;

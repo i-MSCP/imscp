@@ -362,39 +362,49 @@ sub _setupDatabase
 	my $dbOldUser = $self->{'oldConfig'}->{'DATABASE_USER'} || '';
 
 	# Get SQL connection with full privileges
-	my ($database, $errStr) = main::setupGetSqlConnect();
-	if(! $database) {
+	my ($db, $errStr) = main::setupGetSqlConnect();
+	if(! $db) {
 		error("Unable to connect to SQL server: $errStr");
 		return 1;
 	}
 
+	my $quotedDbName = $db->quoteIdentifier($roundcubeDbName);
+
 	# Check for Roundcube database existence
-	my $rs = $database->doQuery('1', 'SHOW DATABASES LIKE ?', $roundcubeDbName);
+	my $rs = $db->doQuery('1', 'SHOW DATABASES LIKE ?', $roundcubeDbName);
 	unless(ref $rs eq 'HASH') {
 		error($rs);
 		return 1;
-	}
+	} elsif(%$rs) {
+		# Ensure that the Roundcube database has tables (recovery case)
+		$rs = $db->doQuery('1', "SHOW TABLES FROM $quotedDbName");
+		unless(ref $rs eq 'HASH') {
+			error($rs);
+			return 1;
+		}
+     }
 
-	# The Roundcube database doesn't exist, create it
+	# The Roundcube database doesn't exist or doesn't have any table
 	unless(%$rs) {
-		my $qdbName = $database->quoteIdentifier($roundcubeDbName);
-		$rs = $database->doQuery('dummy', "CREATE DATABASE $qdbName CHARACTER SET utf8 COLLATE utf8_unicode_ci;");
+		$rs = $db->doQuery(
+			'dummy', "CREATE DATABASE IF NOT EXISTS $quotedDbName CHARACTER SET utf8 COLLATE utf8_unicode_ci;"
+		);
 		unless(ref $rs eq 'HASH') {
 			error("Unable to create the Roundcube '$roundcubeDbName' SQL database: $rs");
 			return 1;
 		}
 
 		# Connect to newly created Roundcube database
-		$database->set('DATABASE_NAME', $roundcubeDbName);
+		$db->set('DATABASE_NAME', $roundcubeDbName);
 
-		$rs = $database->connect();
+		$rs = $db->connect();
 		if($rs) {
 			error("Unable to connect to the Roundcube '$roundcubeDbName' SQL database: $rs");
 			return $rs if $rs;
 		}
 
 		# Import Roundcube database schema
-		$rs = main::setupImportSqlSchema($database, "$roundcubeDir/SQL/mysql.initial.sql");
+		$rs = main::setupImportSqlSchema($db, "$roundcubeDir/SQL/mysql.initial.sql");
 		return $rs if $rs;
 	} else {
 		$self->{'newInstall'} = 0;
@@ -415,7 +425,7 @@ sub _setupDatabase
 
 	# Add new Roundcube restricted SQL user with needed privileges
 
-	$rs = $database->doQuery(
+	$rs = $db->doQuery(
 		'dummy', "GRANT ALL PRIVILEGES ON `$roundcubeDbName`.* TO ?@? IDENTIFIED BY ?;",  $dbUser, $dbUserHost, $dbPass
 	);
 	unless(ref $rs eq 'HASH') {
@@ -424,7 +434,7 @@ sub _setupDatabase
 	}
 
 	# Needed for password changer plugin
-	$rs = $database->doQuery(
+	$rs = $db->doQuery(
 		'dummy',
 		"GRANT SELECT,UPDATE ON `$imscpDbName`.`mail_users` TO ?@? IDENTIFIED BY ?;",
 		$dbUser, $dbUserHost, $dbPass

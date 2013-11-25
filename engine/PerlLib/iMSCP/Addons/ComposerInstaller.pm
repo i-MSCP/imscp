@@ -90,6 +90,9 @@ sub _init
 {
 	my $self = shift;
 
+	# Increase composer process timeout for slow connections
+	$ENV{'COMPOSER_PROCESS_TIMEOUT'} = 2000;
+
 	$self->{'toInstall'} = [];
 	$self->{'cacheDir'} = $main::imscpConfig{'ADDON_PACKAGES_CACHE_DIR'};
 	$self->{'phpCmd'} = $main::imscpConfig{'CMD_PHP'} .

@@ -99,10 +99,8 @@ sub _deleteFiles
 				$rs = clearImmutable("$main::imscpConfig{'USER_WEB_DIR'}/$_") if $isImmutableHomeDir;
 				return $rs if $rs;
 
-				if(-d "$main::imscpConfig{'USER_WEB_DIR'}/$_/statistics") {
-					$rs = iMSCP::Dir->new('dirname' => "$main::imscpConfig{'USER_WEB_DIR'}/$_/statistics")->remove();
-					return $rs if $rs;
-				}
+				$rs = iMSCP::Dir->new('dirname' => "$main::imscpConfig{'USER_WEB_DIR'}/$_/statistics")->remove();
+				return $rs if $rs;
 
 				$rs = setImmutable("$main::imscpConfig{'USER_WEB_DIR'}/$_") if $isImmutableHomeDir;
 				return $rs if $rs;

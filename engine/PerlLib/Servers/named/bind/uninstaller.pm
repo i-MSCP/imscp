@@ -151,7 +151,6 @@ sub _deleteDbFiles
 	return $rs;
 
 	$rs = iMSCP::Dir->new('dirname' => "$self->{'config'}->{'BIND_DB_DIR'}/slave")->remove()
-		if -d "$self->{'config'}->{'BIND_DB_DIR'}/slave";
 	return $rs if $rs;
 
 	0;

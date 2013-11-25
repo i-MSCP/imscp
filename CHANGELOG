@@ -5,6 +5,27 @@
 Git Master
 ------------------------------------------------------------------------------------------------------------------------
 
+ADDONS:
+	- Fixed: Roundcube|PhpMyAdmin - Ensure that database tables exist (recovery case)
+
+ENGINE:
+	- Changed: The event listeners are now persistent. This allow to avoid self-registering
+	- Fixed: Removed useless file tests on directory deletion
+	- Fixed: When using pkill, the pattern should match against the full command line
+
+GUI:
+	- Added: quoteValue() function, which allow to quote string for use in SQL statements
+
+SETUP:
+	- Fixed: Composer process timeout must be increased for slow connections
+
+------------------------------------------------------------------------------------------------------------------------
+1.1.0-rc4.7
+------------------------------------------------------------------------------------------------------------------------
+
+2013-11-21: Laurent Declercq
+	- RELEASE i-MSCP 1.1.0-rc4.7
+
 CONFIG:
 	- Added: Vagrantfile allowing to setup a virtual machine using Vagrant
 	- Removed: DATABASE_UTF8 parameter

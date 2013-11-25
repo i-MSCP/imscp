@@ -497,9 +497,7 @@ sub _makeDirs
 		return $rs if $rs;
 	}
 
-	$rs = iMSCP::Dir->new(
-		'dirname' => $self->{'config'}->{'PHP_STARTER_DIR'}
-	)->remove() if -d $self->{'config'}->{'PHP_STARTER_DIR'};
+	$rs = iMSCP::Dir->new('dirname' => $self->{'config'}->{'PHP_STARTER_DIR'})->remove();
 	return $rs if $rs;
 
 	$self->{'hooksManager'}->trigger('afterHttpdMakeDirs');

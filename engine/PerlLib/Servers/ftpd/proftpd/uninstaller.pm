@@ -70,7 +70,7 @@ sub removeDirs
 
 	# TODO: if this is directory referenced in the restored conf file, it must not be removed. Otherwise proftpd WILL fail. For the time beeing, this is disabled
 	#for("$main::imscpConfig{'TRAFF_LOG_DIR'}/proftpd"){
-	#	$rs = iMSCP::Dir->new('dirname' => $_)->remove() if -d $_;
+	#	$rs = iMSCP::Dir->new('dirname' => $_)->remove();
 	#	return $rs if $rs;
 	#}
 

@@ -17,16 +17,16 @@
  * The Initial Developer of the Original Code is ispCP Team.
  * Portions created by Initial Developer are Copyright (C) 2006-2010 by
  * isp Control Panel. All Rights Reserved.
- * 
+ *
  * Portions created by the i-MSCP Team are Copyright (C) 2010-2013 by
  * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
  *
- * @category	i-MSCP
- * @package		iMSCP_Database
- * @copyright 	2006-2010 by ispCP | http://isp-control.net
- * @copyright 	2010-2013 by i-MSCP | http://i-mscp.net
- * @link		http://i-mscp.net i-MSCP Home Site
- * @license		http://www.mozilla.org/MPL/ MPL 1.1
+ * @category    i-MSCP
+ * @package        iMSCP_Database
+ * @copyright   2006-2010 by ispCP | http://isp-control.net
+ * @copyright   2010-2013 by i-MSCP | http://i-mscp.net
+ * @link        http://i-mscp.net i-MSCP Home Site
+ * @license     http://www.mozilla.org/MPL/ MPL 1.1
  */
 
 /**
@@ -35,13 +35,13 @@
  * @property mixed EOF
  * @property mixed fields
  *
- * @category	i-MSCP
+ * @category    i-MSCP
  * @package     iMSCP_Database
  * @author      ispCP Team
  * @author      iMSCP team
  */
-class iMSCP_Database_ResultSet {
-
+class iMSCP_Database_ResultSet
+{
 	/**
 	 * PDOStatement object
 	 *
@@ -50,18 +50,16 @@ class iMSCP_Database_ResultSet {
 	protected $_stmt = null;
 
 	/**
-     * Default fetch mode
+	 * Default fetch mode
 	 *
-	 * Controls how the next row will be returned to the caller. This value must
-	 * be one of the PDO::FETCH_* constants
-     *
-     * @var integer
-     */
-    protected $_fetchMode = PDO::FETCH_ASSOC;
+	 * Controls how the next row will be returned to the caller. This value must be one of the PDO::FETCH_* constants.
+	 *
+	 * @var integer
+	 */
+	protected $_fetchMode = PDO::FETCH_ASSOC;
 
 	/**
-	 * A row from the result set associated with the referenced PDOStatement
-	 * object
+	 * A row from the result set associated with the referenced PDOStatement object
 	 *
 	 * @see fields()
 	 * @see _get()
@@ -75,12 +73,10 @@ class iMSCP_Database_ResultSet {
 	 * @throws iMSCP_Exception_Database
 	 * @param PDOStatement $stmt A PDOStatement instance
 	 */
-	public function __construct($stmt) {
-
-		if(!($stmt instanceof PDOStatement)) {
-			throw new iMSCP_Exception_Database(
-				'Argument passed to ' . __METHOD__ . '() must be a PDOStatement object!'
-			);
+	public function __construct($stmt)
+	{
+		if (!($stmt instanceof PDOStatement)) {
+			throw new iMSCP_Exception_Database('Argument passed to ' . __METHOD__ . '() must be a PDOStatement object!');
 		}
 
 		$this->_stmt = $stmt;
@@ -89,17 +85,16 @@ class iMSCP_Database_ResultSet {
 	/**
 	 * Php overloading
 	 *
-	 * Php overloading method that allows to fetch the first row in the result
-	 * set or check if one row exist in the result set
+	 * Php overloading method that allows to fetch the first row in the result set or check if one row exist in the
+	 * result set
 	 *
 	 * @throws iMSCP_Exception_Database
-	 * @param  string $param
-	 * @return mixed Depending of the $param value, this method can returns the
-	 * first row of a result set or a boolean that indicate if any rows exists
-	 * in the result set
+	 * @param string $param
+	 * @return mixed Depending of the $param value, this method can returns the first row of a result set or a boolean
+	 *         that indicate if any rows exists in the result set
 	 */
-	public function __get($param) {
-
+	public function __get($param)
+	{
 		if ($param == 'fields') {
 			if (is_null($this->_fields)) {
 				$this->_fields = $this->fetchRow();
@@ -126,8 +121,8 @@ class iMSCP_Database_ResultSet {
 	 * @param string $param Colum field name
 	 * @return mixed Column value
 	 */
-	public function fields($param) {
-
+	public function fields($param)
+	{
 		return $this->fields[$param];
 	}
 
@@ -137,15 +132,14 @@ class iMSCP_Database_ResultSet {
 	 * This method returns the number of rows affected by the last DELETE,
 	 * INSERT, or UPDATE SQL statement
 	 *
-	 * If the last SQL statement executed by the associated PDOStatement was a
-	 * SELECT statement, some RDBMS (like Mysql) may return the number of rows
-	 * returned by that statement. However, this behaviour is not guaranteed for
-	 * all RDBMS and should not be relied on for portable applications.
+	 * If the last SQL statement executed by the associated PDOStatement was a SELECT statement, some RDBMS (like Mysql)
+	 * may return the number of rows returned by that statement. However, this behaviour is not guaranteed for all RDBMS
+	 * and should not be relied on for portable applications.
 	 *
 	 * @return int Number of rows affected by the last SQL statement
 	 */
-	public function rowCount() {
-
+	public function rowCount()
+	{
 		return $this->_stmt->rowCount();
 	}
 
@@ -155,27 +149,25 @@ class iMSCP_Database_ResultSet {
 	 * @see rowCount()
 	 * @return int Number of rows affected by the last SQL statement
 	 */
-	public function recordCount() {
-
+	public function recordCount()
+	{
 		return $this->_stmt->rowCount();
 	}
 
 	/**
 	 * Set fetch style globally
 	 *
-	 * This methods allows to set fetch style globally for all rows
+	 * This methods allows to set fetch style globally for all rows.
 	 *
-	 * Note: Currently, all fetch style are not implemented
+	 * Note: Currently, all fetch style are not implemented.
 	 *
-	 * @author Laurent Declercq <l.declercq@nuxwin.com>
-	 * @since 1.0.7 (ispCP)
-	 * @param  int $fetchStyle Controls how the next row will be returned to the
-	 * caller. This value must be one of the PDO::FETCH_* constants
+	 * @param  int $fetchStyle Controls how the next row will be returned to the caller. This value must be one of the
+	 *                         PDO::FETCH_* constants
 	 * @return void
 	 * @todo Finish fetch style implementation
 	 */
-	public function setFetchStyle($fetchStyle) {
-
+	public function setFetchStyle($fetchStyle)
+	{
 		$this->_fetchMode = $fetchStyle;
 	}
 
@@ -185,14 +177,14 @@ class iMSCP_Database_ResultSet {
 	 * Fetches a row from the result set. The fetch_style parameter determines
 	 * how the row is returned.
 	 *
-	 * @param int $fetchStyle Controls how the next row will be returned to the
-	 * caller. This value must be one of the PDO::FETCH_* constants
-	 * @return mixed The return value of this function on success depends on the
-	 * fetch style. In all cases, FALSE is returned on failure.
+	 * @param int $fetchStyle Controls how the next row will be returned to the caller. This value must be one of the
+	 *                        PDO::FETCH_* constants
+	 * @return mixed The return value of this function on success depends on the fetch style. In all cases, FALSE is
+	 *               returned on failure.
 	 * @todo Finish fetch style implementation
 	 */
-	public function fetchRow($fetchStyle = null) {
-
+	public function fetchRow($fetchStyle = null)
+	{
 		$fetchStyle = is_null($fetchStyle) ? $this->_fetchMode : $fetchStyle;
 
 		return $this->_stmt->fetch($fetchStyle);
@@ -201,20 +193,16 @@ class iMSCP_Database_ResultSet {
 	/**
 	 * Fetches all rows from the current result set
 	 *
-	 * Fetches all row from the result set. The fetch_style parameter determines
-	 * how the rows are returned.
+	 * Fetches all row from the result set. The fetch_style parameter determines how the rows are returned.
 	 *
-	 * @author Laurent Declercq <l.declercq@nuxwin.com>
-	 * @since 1.0.0 (iMSCP)
-	 * @link i-mscp.net
 	 * @param int $fetchStyle Controls how the next row will be returned to the
 	 * caller. This value must be one of the PDO::FETCH_* constants
 	 * @return mixed The return value of this function on success depends on the
 	 * fetch style. In all cases, FALSE is returned on failure.
 	 * @todo Finish fetch style implementation
 	 */
-	public function fetchAll($fetchStyle = null) {
-
+	public function fetchAll($fetchStyle = null)
+	{
 		$fetchStyle = is_null($fetchStyle) ? $this->_fetchMode : $fetchStyle;
 
 		return $this->_stmt->fetchAll($fetchStyle);
@@ -225,36 +213,30 @@ class iMSCP_Database_ResultSet {
 	 *
 	 * @return void
 	 */
-	public function moveNext() {
-
+	public function moveNext()
+	{
 		$this->_fields = $this->fetchRow();
 	}
 
 	/**
-	 * Error information associated with the last operation on the statement
-	 * handle
+	 * Error information associated with the last operation on the statement handle
 	 *
-	 * @author Laurent Declercq <l.declercq@nuxwin.com>
-	 * @since (ispCP)
 	 * @return array Error information
 	 */
-	public function errorInfo() {
-
+	public function errorInfo()
+	{
 		return $this->_stmt->errorInfo();
 	}
 
 	/**
 	 * Stringified error information
 	 *
-	 * This method returns a stringified version of the error information
-	 * associated with the last statement operation.
+	 * This method returns a stringified version of the error information associated with the last statement operation.
 	 *
-	 * @author Laurent Declercq <l.declercq@nuxwin.com>
-	 * @since (ispCP)
 	 * @return string Error information
 	 */
-	public function errorInfoToString() {
-
+	public function errorInfoToString()
+	{
 		return implode(' - ', $this->_stmt->errorInfo());
 	}
 }

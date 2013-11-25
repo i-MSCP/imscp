@@ -229,7 +229,7 @@ sub addDmn($$)
 			return $rs if $rs;
 		}
 	} else {
-		$rs = iMSCP::Dir->new('dirname' => $userStatisticsDir)->remove() if -d $userStatisticsDir;
+		$rs = iMSCP::Dir->new('dirname' => $userStatisticsDir)->remove();
 	}
 
 	# Protect home directory if needed
@@ -386,9 +386,8 @@ sub _init
 
  Add Apache configuration snippet for AWStats in the given domain vhost template file.
 
- Filter hook function responsible to build and insert Apache configuration snipped for AWStats in the given domain vhost
- file. The type of configuration snippet inserted depends on the AWStats mode (dynamic or static). If the received file
- is not the one expected, this function will register itself on the hooks manager to act on the next file.
+ Listener responsible to build and insert Apache configuration snipped for AWStats in the given domain vhost file. The
+type of configuration snippet inserted depends on the AWStats mode (dynamic or static).
 
  Param SCALAR reference - A scalar reference containing file content
  Param SCALAR Filename
@@ -426,10 +425,6 @@ sub _addAwstatsSection($$$)
 
 		# Add Apache configuration snippet for AWStats into the addons configuration section
 		$$content = replaceBloc($beginTag, $endTag, "    $beginTag$addonsConfSection    $endTag", $$content);
-	} else {
-		$rs = iMSCP::HooksManager->getInstance()->register(
-			'beforeHttpdBuildConf', sub { $self->_addAwstatsSection(@_); }
-		);
 	}
 
 	$rs;

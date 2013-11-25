@@ -507,31 +507,41 @@ sub _setupDatabase
 	my $phpmyadminDbName = $imscpDbName . '_pma';
 
 	# Get SQL connection with full privileges
-	my ($database, $errStr) = main::setupGetSqlConnect();
-	if(! $database) {
+	my ($db, $errStr) = main::setupGetSqlConnect();
+	if(! $db) {
 		error("Unable to connect to SQL server: $errStr");
 		return 1;
 	}
 
-	# Check for PhpMyAdmin database existence
-	my $rs = $database->doQuery('1', 'SHOW DATABASES LIKE ?', $phpmyadminDbName);
-	unless(ref $rs eq 'HASH') {
-		error("SQL query failed: $rs");
-		return 1;
-	}
+	my $quotedDbName = $db->quoteIdentifier($phpmyadminDbName);
 
-	# The PhpMyAdmin database doesn't exist, create it
+	# Check for PhpMyAdmin database existence
+	my $rs = $db->doQuery('1', 'SHOW DATABASES LIKE ?', $phpmyadminDbName);
+	unless(ref $rs eq 'HASH') {
+		error($rs);
+		return 1;
+	} elsif(%$rs) {
+		# Ensure that the PhpMyAdmin database has tables (recovery case)
+		$rs = $db->doQuery('1', "SHOW TABLES FROM $quotedDbName");
+		unless(ref $rs eq 'HASH') {
+			error($rs);
+			return 1;
+		}
+     }
+
+	# The PhpMyAdmin database doesn't exist or doesn't have any table
 	unless(%$rs) {
-		my $qdbName = $database->quoteIdentifier($phpmyadminDbName);
-		$rs = $database->doQuery('dummy', "CREATE DATABASE $qdbName CHARACTER SET utf8 COLLATE utf8_unicode_ci;");
+		$rs = $db->doQuery(
+			'dummy', "CREATE DATABASE IF NOT EXISTS $quotedDbName CHARACTER SET utf8 COLLATE utf8_unicode_ci;"
+		);
 		unless(ref $rs eq 'HASH') {
 			error("Unable to create the PhpMyAdmin '$phpmyadminDbName' SQL database: $rs");
 			return 1;
 		}
 
 		# Connect to newly created PhpMyAdmin database
-		$database->set('DATABASE_NAME', $phpmyadminDbName);
-		$rs = $database->connect();
+		$db->set('DATABASE_NAME', $phpmyadminDbName);
+		$rs = $db->connect();
 		if($rs) {
 			error("Unable to connect to the PhpMyAdmin '$phpmyadminDbName' SQL database: $rs");
 			return $rs if $rs;
@@ -552,7 +562,7 @@ sub _setupDatabase
 			# The PhpMyAdmin script contains the creation of the database as well
 			# We ignore this part as the database has already been created
 			if ($_ !~ /^CREATE DATABASE/ and $_ !~ /^USE/) {
-				$rs = $database->doQuery('dummy', $_);
+				$rs = $db->doQuery('dummy', $_);
 
 				unless(ref $rs eq 'HASH') {
 					error("Unable to execute SQL query: $rs");

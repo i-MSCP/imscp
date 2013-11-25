@@ -2272,10 +2272,26 @@ function quoteIdentifier($identifier)
 		$db = iMSCP_Registry::get('db');
 	}
 
-	$quoteIdentifierSymbol = $db->getQuoteIdentifierSymbol();
-	$identifier = str_replace($quoteIdentifierSymbol, '\\' . $quoteIdentifierSymbol, $identifier);
+	return $db->quoteIdentifier($identifier);
+}
 
-	return $quoteIdentifierSymbol . $identifier . $quoteIdentifierSymbol;
+/**
+ * Quote value
+ *
+ * @param mixed $value Value to quote
+ * @param int $parameterType Parameter type
+ * @return mixed quoted value
+ */
+function quoteValue($value, $parameterType = PDO::PARAM_STR)
+{
+	static $db = null;
+
+	if (null === $db) {
+		/** @var $db iMSCP_Database */
+		$db = iMSCP_Registry::get('db');
+	}
+
+	return $db->quote($value, $parameterType);
 }
 
 /***********************************************************************************************************************
@@ -2442,7 +2458,8 @@ if (!function_exists('http_build_url')) {
 			// Join the original URL path with the new path
 			if (isset($parts['path']) && ($flags & HTTP_URL_JOIN_PATH)) {
 				if (isset($parse_url['path'])) {
-					$parse_url['path'] = rtrim(str_replace(basename($parse_url['path']), '', $parse_url['path']), '/') . '/' . ltrim($parts['path'], '/');
+					$parse_url['path'] = rtrim(str_replace(basename($parse_url['path']), '', $parse_url['path']), '/') .
+						'/' . ltrim($parts['path'], '/');
 				} else {
 					$parse_url['path'] = $parts['path'];
 				}

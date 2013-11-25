@@ -455,7 +455,7 @@ sub deleteDmn($$)
 	# Remove fcgi directory if any
 	my $fcgiDir = "$self->{'config'}->{'PHP_STARTER_DIR'}/$data->{'DOMAIN_NAME'}";
 
-	$rs = iMSCP::Dir->new('dirname' => $fcgiDir)->remove() if -d $fcgiDir;
+	$rs = iMSCP::Dir->new('dirname' => $fcgiDir)->remove();
 	return $rs if $rs;
 
 	$self->{'restart'} = 'yes';
@@ -1874,7 +1874,7 @@ sub _dmnFolders($$)
 		push(@folders, ["$fcgiDir", $data->{'USER'}, $data->{'GROUP'}, 0550]);
 		push(@folders, ["$fcgiDir/php5", $data->{'USER'}, $data->{'GROUP'}, 0550]);
 	} else {
-		my $rs = iMSCP::Dir->new('dirname' => $fcgiDir)->remove() if -d $fcgiDir;
+		my $rs = iMSCP::Dir->new('dirname' => $fcgiDir)->remove();
 		return $rs if $rs;
 	}
 
@@ -1946,7 +1946,7 @@ sub _addFiles($$)
 			return 1;
 		}
 	} else {
-		$rs = iMSCP::Dir->new('dirname' => "$tmpDir/htdocs")->remove() if -d "$tmpDir/htdocs";
+		$rs = iMSCP::Dir->new('dirname' => "$tmpDir/htdocs")->remove();
 		return $rs if $rs;
 	}
 
@@ -1955,7 +1955,7 @@ sub _addFiles($$)
 		! iMSCP::Dir->new('dirname' => "$webDir/errors")->isEmpty()
 	) {
 		if(-d "$tmpDir/errors") {
-			$rs = iMSCP::Dir->new('dirname' => "$tmpDir/errors")->remove() if -d "$tmpDir/errors";
+			$rs = iMSCP::Dir->new('dirname' => "$tmpDir/errors")->remove();
 			return $rs if $rs;
 		} else {
 			warning("Web folder skeleton $skelDir should provide the 'errors' directory.");
@@ -2181,7 +2181,7 @@ END
 		$rs = $self->restart();
 	}
 
-	$rs |= iMSCP::Dir->new('dirname' => "$trafficDir.old")->remove() if -d "$trafficDir.old";
+	$rs |= iMSCP::Dir->new('dirname' => "$trafficDir.old")->remove();
 
 	$? = $exitCode || $rs;
 }

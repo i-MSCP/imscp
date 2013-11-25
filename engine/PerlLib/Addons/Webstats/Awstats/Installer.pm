@@ -183,8 +183,7 @@ sub setEnginePermissions
 
  Add or remove AWStats logrotate configuration snippet in the Apache logrotate file.
 
- Filter hook function responsible to add or remove the AWStats logrotate configuration snippet in the Apache logrotate
-file. If the file received is not the one expected, this function will auto-register itself to act on the next file.
+ Listener responsible to add or remove the AWStats logrotate configuration snippet in the Apache logrotate file.
 
  Param SCALAR reference - A reference to a scalar containing file content
  Param Param SCALAR Filename
@@ -207,11 +206,6 @@ sub _installLogrotate($$$)
 			$$content,
 			'preserve'
 		);
-	} else {
-		my $rs = iMSCP::HooksManager->getInstance()->register(
-			'beforeHttpdBuildConf', sub { return $self->_installLogrotate(@_); }
-		);
-		return $rs if $rs;
 	}
 
 	0;

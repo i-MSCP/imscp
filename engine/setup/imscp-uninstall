@@ -360,7 +360,7 @@ sub _removeFiles
 		$main::imscpConfig{'CONF_DIR'}, $main::imscpConfig{'USER_WEB_DIR'}, $main::imscpConfig{'LOG_DIR'},
 		$main::imscpConfig{'ROOT_DIR'}
 	) {
-		$rs = iMSCP::Dir->new('dirname' => $_)->remove() if -d $_;
+		$rs = iMSCP::Dir->new('dirname' => $_)->remove();
 		return $rs if $rs;
 	}
 

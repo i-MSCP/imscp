@@ -2092,7 +2092,7 @@ sub _addFiles($$)
 			return 1;
 		}
 	} else {
-		$rs = iMSCP::Dir->new('dirname' => "$tmpDir/htdocs")->remove() if -d "$tmpDir/htdocs";
+		$rs = iMSCP::Dir->new('dirname' => "$tmpDir/htdocs")->remove();
 		return $rs if $rs;
 	}
 
@@ -2101,7 +2101,7 @@ sub _addFiles($$)
 		! iMSCP::Dir->new('dirname' => "$webDir/errors")->isEmpty()
 	) {
 		if(-d "$tmpDir/errors") {
-			$rs = iMSCP::Dir->new('dirname' => "$tmpDir/errors")->remove() if -d "$tmpDir/errors";
+			$rs = iMSCP::Dir->new('dirname' => "$tmpDir/errors")->remove();
 			return $rs if $rs;
 		} else {
 			warning("Web folder skeleton $skelDir should provide the 'errors' directory.");
@@ -2238,7 +2238,7 @@ END
 		$rs |= $self->restartPhpFpm();
 	}
 
-	$rs |= iMSCP::Dir->new('dirname' => "$trafficDir.old")->remove() if -d "$trafficDir.old";
+	$rs |= iMSCP::Dir->new('dirname' => "$trafficDir.old")->remove();
 
 	$? = $exitCode || $rs;
 }
