@@ -140,7 +140,8 @@ sub add
 	my $shell = '/bin/false';
 
 	my $rs = $self->{'hooksManager'}->trigger(
-		'onBeforeAddImscpUnixUser', $userName, \$password, $groupName, \$comment, \$home, \$skeletonPath, \$shell
+		'onBeforeAddImscpUnixUser', $self->{'admin_id'}, $userName, \$password, $groupName, \$comment, \$home,
+		\$skeletonPath, \$shell
 	);
 	return $rs if $rs;
 
@@ -190,8 +191,8 @@ sub add
 	$self->{'admin_sys_gid'} = $userGid;
 
 	$self->{'hooksManager'}->trigger(
-		'onAfterAddImscpUnixUser', $userName, $password, $groupName, $comment, $home, $skeletonPath, $shell,
-		$userUid, $userGid
+		'onAfterAddImscpUnixUser', $self->{'admin_id'}, $userName, $password, $groupName, $comment, $home,
+		$skeletonPath, $shell, $userUid, $userGid
 	);
 
 	# Run the preaddUser(), addUser() and postaddUser() methods on servers/addons that implement them

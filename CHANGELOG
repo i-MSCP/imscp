@@ -12,9 +12,11 @@ ENGINE:
 	- Changed: The event listeners are now persistent. This allow to avoid self-registering
 	- Fixed: Removed useless file tests on directory deletion
 	- Fixed: When using pkill, the pattern should match against the full command line
+	- Updated: Plugin API to version 0.2.1
 
 GUI:
 	- Added: quoteValue() function, which allow to quote string for use in SQL statements
+	- Updated: Plugin API to version 0.2.1
 
 SETUP:
 	- Fixed: Composer process timeout must be increased for slow connections

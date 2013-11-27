@@ -115,18 +115,25 @@ sub process($$)
 	my $pluginName = $self->{'plugin_name'};
 
 	if($status eq 'enabled') {
+		$self->{'action'} = 'run';
 		$rs = $self->_run($pluginName);
 	} elsif($status eq 'toinstall') {
+		$self->{'action'} = 'install';
 		$rs = $self->_install($pluginName);
 	} elsif($status eq 'tochange') {
+		$self->{'action'} = 'change';
 		$rs = $self->_change($pluginName);
 	} elsif($status eq 'toupdate') {
+		$self->{'action'} = 'update';
 		$rs = $self->_update($pluginName);
 	} elsif($status eq 'touninstall') {
+		$self->{'action'} = 'uninstall';
 		$rs = $self->_uninstall($pluginName);
 	} elsif($status eq 'toenable') {
+		$self->{'action'} = 'enable';
 		$rs = $self->_enable($pluginName);
 	} elsif($status eq 'todisable') {
+		$self->{'action'} = 'disable';
 		$rs = $self->_disable($pluginName);
 	} else {
 		error("$pluginName plugin status is corrupted.");
@@ -274,6 +281,12 @@ sub _change($$)
 
 	my $rs = $self->_disable($pluginName);
 
+	$rs ||= $self->{'hooksManager'}->trigger('onBeforeChangePlugin', $pluginName);
+
+	$rs ||= $self->_exec($pluginName, 'change');
+
+	$rs ||= $self->{'hooksManager'}->trigger('onAfterChangePlugin', $pluginName);
+
 	$rs ||= $self->_enable($pluginName);
 
 	$rs;
@@ -366,7 +379,7 @@ sub _exec($$$;$$)
 	my $forceBackendInstall = 0;
 	my $rs = 0;
 
-	# When the plugin gets installed, updated or enabled, we copy the plugin into the backend plugin directory.
+	# When the plugin gets installed, updated or enabled, we install the plugin into the backend plugin directory.
 	INSTALL_PLUGIN_BACKEND: {
 		if($forceBackendInstall || $pluginMethod ~~ ['install', 'update', 'enable']) {
 			my $guiPluginFile = "$main::imscpConfig{'GUI_ROOT_DIR'}/plugins/$pluginName/backend/$pluginName.pm";
@@ -405,7 +418,7 @@ sub _exec($$$;$$)
 
 	eval {
 		$pluginInstance = $pluginClass->getInstance(
-			'hooksManager' => $self->{'hooksManager'}, 'action' => $pluginMethod
+			'hooksManager' => $self->{'hooksManager'}, 'action' => $self->{'action'}
 		);
 	};
 
@@ -421,24 +434,24 @@ sub _exec($$$;$$)
 
 		# Return value from the run() action is ignored by default because it's the responsability of the plugins to set
 		# error status for their items. In case a plugin doesn't manage any item, it can force return value by
-		# defining the FORCE_RETVAL attribute and set it to 'yes'
+		# defining the FORCE_RETVAL attribute and set it value to 'yes'
 		if(
 			$pluginMethod ne 'run' || defined $pluginInstance->{'FORCE_RETVAL'} &&
 			$pluginInstance->{'FORCE_RETVAL'} eq 'yes'
 		) {
+			iMSCP::File->new('filename' => $backendPluginFile)->delFile() if $rs && $main::imscpConfig{'DEBUG'};
 			return $rs if $rs;
 		} else {
 			$rs = 0;
 		}
 	}
 
-	# In case the plugin do not implement the uninstall() method and has been disabled, we delete it.
+	# In case the plugin doesn't implement the uninstall() method and has been disabled, we delete it.
 	# In case the plugin has been uninstalled, we delete it.
 	if($pluginMethod ~~ ['disable', 'uninstall']) {
 		unless($pluginMethod eq 'disable' && $pluginInstance->can('uninstall')) {
 			debug("Plugin Manager: Deleting $pluginName.pm from backend plugin repository");
-			my $file = iMSCP::File->new('filename' => $backendPluginFile);
-			$rs = $file->delFile();
+			$rs = iMSCP::File->new('filename' => $backendPluginFile)->delFile();
 		}
 	}
 
