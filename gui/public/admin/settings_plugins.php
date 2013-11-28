@@ -216,6 +216,11 @@ function admin_pluginManagerGeneratePluginList($tpl, $pluginManager)
 			$pluginInfo = $pluginManager->getPluginInfo($pluginName);
 			$pluginStatus = $pluginManager->getPluginStatus($pluginName);
 
+
+			if(is_array($pluginInfo['author'])) {
+				$pluginInfo['author'] = implode(' ' . tr('and') . ' ', $pluginInfo['author']);
+			}
+
 			$tpl->assign(
 				array(
 					'PLUGIN_NAME' => tohtml($pluginName),
