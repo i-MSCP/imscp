@@ -11,6 +11,7 @@ ADDONS:
 ENGINE:
 	- Changed: The event listeners are now persistent. This allow to avoid self-registering
 	- Fixed: Removed useless file tests on directory deletion
+	- Fixed: External command died with signal 9 (without core dump)
 	- Fixed: When using pkill, the pattern should match against the full command line
 	- Updated: Plugin API to version 0.2.1
 
