@@ -154,7 +154,7 @@ sub removeIspcpFiles
 				# Getting daemon name
 				my $daemonName = fileparse($_);
 
-				$rs = execute("$main::imscpConfig{'CMD_PKILL'} --KILL -f $daemonName", \$stdout, \$stderr);
+				$rs = execute("$main::imscpConfig{'CMD_PKILL'} -KILL -f $daemonName", \$stdout, \$stderr);
 				debug($stdout) if $stdout;
 				push @errors, $stderr if $stderr && $rs > 1; # See man pkill for exit status list
 
