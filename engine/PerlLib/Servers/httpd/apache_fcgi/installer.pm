@@ -474,56 +474,68 @@ sub _addUser
 		error($rdata);
 		return 1;
 	} elsif(! %{$rdata}) {
-		error('Unable to find system admin user');
+		error('Unable to find admin user in database');
 		return 1;
 	}
 
-	my $oldUserUid = $rdata->{(%{$rdata})[0]}->{'admin_sys_uid'} // 0;
-	my $oldUserName;
+	my ($oldUserName, undef, $userUid, $userGid) = getpwuid($rdata->{(%{$rdata})[0]}->{'admin_sys_uid'});
 
-	if($oldUserUid != 0 && ($oldUserName = getpwuid($oldUserUid)) && $oldUserName ne $userName) {
-		$rs = iMSCP::SystemUser->new('keepHome' => 'yes')->delSystemUser($oldUserName);
+	if(! $oldUserName || $userUid == 0) {
+		# Creating i-MSCP Master Web user
+		my $panelUName = iMSCP::SystemUser->new(
+			'username' => $userName,
+			'comment' => 'i-MSCP Master Web User',
+			'home' => $main::imscpConfig{'GUI_ROOT_DIR'},
+			'skipCreateHome' => 1
+		);
+		return $rs if $rs;
+
+		$rs = $panelUName->addSystemUser();
+		return $rs if $rs;
+
+		$userUid = getpwnam($userName);
+		$userGid = getgrnam($groupName);
+	} else {
+		# Modifying existents i-MSCP Master Web user
+		my @cmd = (
+			"$main::imscpConfig{'CMD_PKILL'} -KILL -u", escapeShell($oldUserName), ';',
+			"$main::imscpConfig{'CMD_USERMOD'}",
+			'-c', escapeShell('i-MSCP Master Web User'), # New comment
+			'-d', escapeShell($main::imscpConfig{'GUI_ROOT_DIR'}), # New home dir
+			'-l', escapeShell($userName), # New login
+			'-m', # Move current home content to new homedir
+			escapeShell($oldUserName) # Old username
+		);
+		my($stdout, $stderr);
+		$rs = execute("@cmd", \$stdout, $stderr);
+		return $rs if $rs;
+
+		# Modifying existents i-MSCP Master Web group
+		@cmd = (
+			$main::imscpConfig{'CMD_GROUPMOD'},
+			'-n', escapeShell($groupName), # New group name
+			escapeShell(getgrgid($userGid)) # Current group name
+		);
+		$rs = execute("@cmd", \$stdout, $stderr);
 		return $rs if $rs;
 	}
-
-	my $oldUserGid = $rdata->{(%{$rdata})[0]}->{'admin_sys_gid'} // 0;
-	my $oldGroupName;
-
-	if($oldUserGid != 0 && ($oldGroupName = getgrgid($oldUserGid)) && $oldGroupName ne $groupName) {
-		$rs = iMSCP::SystemGroup->getInstance()->delSystemGroup($oldGroupName);
-		return $rs if $rs;
-	}
-
-	# Creating panel user/group
-	my $panelUName = iMSCP::SystemUser->new(
-		'username' => $userName,
-		'comment' => 'iMSCP master virtual user',
-		'home' => $main::imscpConfig{'GUI_ROOT_DIR'},
-		'skipCreateHome' => 1
-	);
-
-	$rs = $panelUName->addSystemUser();
-	return $rs if $rs;
-
-	my $panelUuid = scalar getpwnam($userName);
-	my $panelUgid = scalar getgrnam($groupName);
 
 	# Updating admin.admin_sys_uid and admin.admin_sys_gid columns
 	$rdata = $database->doQuery(
 		'update',
 		'UPDATE `admin` SET `admin_sys_uid` = ?, `admin_sys_gid` = ? WHERE `admin_type` = ?',
-		$panelUuid, $panelUgid, 'admin'
+		$userUid, $userGid, 'admin'
 	);
 	unless(ref $rdata eq 'HASH') {
 		error($rdata);
 		return 1;
 	}
 
-	# Adding panel user in i-MSCP group
-	$rs = $panelUName->addToGroup($main::imscpConfig{'IMSCP_GROUP'});
+	# Adding i-MSCP Master Web user into i-MSCP group
+	$rs = iMSCP::SystemUser->new('username' => $userName)->addToGroup($main::imscpConfig{'IMSCP_GROUP'});
 	return $rs if $rs;
 
-	# Adding Apache user in panel user group
+	# Adding Apache user in i-MSCP Master Web group
 	$rs = iMSCP::SystemUser->new('username' => $self->{'config'}->{'APACHE_USER'})->addToGroup($groupName);
 	return $rs if $rs;
 

@@ -134,47 +134,59 @@ sub add
 	my $groupName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} .
 		($main::imscpConfig{'SYSTEM_USER_MIN_UID'} + $self->{'admin_id'});
 	my $password = '';
-	my $comment = 'iMSCP virtual user';
-	my $home = "$main::imscpConfig{'USER_WEB_DIR'}/$self->{'admin_name'}";
+	my $comment = 'i-MSCP Web User';
+	my $homedir = "$main::imscpConfig{'USER_WEB_DIR'}/$self->{'admin_name'}";
 	my $skeletonPath = $self->{'skeletonPath'} || '/dev/null';
 	my $shell = '/bin/false';
 
 	my $rs = $self->{'hooksManager'}->trigger(
-		'onBeforeAddImscpUnixUser', $self->{'admin_id'}, $userName, \$password, $groupName, \$comment, \$home,
+        'onBeforeAddImscpUnixUser', $self->{'admin_id'}, $userName, \$password, $groupName, \$comment, \$homedir,
 		\$skeletonPath, \$shell
 	);
 	return $rs if $rs;
 
-	clearImmutable($home) if -d $home; # Transitional code - Will be removed ASAP
+	clearImmutable($homedir) if -d $homedir;
 
-	my $oldUserUid = $self->{'admin_sys_uid'} // 0;
-	my $oldUserName;
+	my ($oldUserName, undef, $userUid, $userGid) = getpwuid($self->{'admin_sys_uid'});
 
-	if($oldUserUid != 0 && ($oldUserName = getpwuid($oldUserUid)) && $oldUserName ne $userName) {
-		$rs = iMSCP::SystemUser->new('keepHome' => 'yes')->delSystemUser($oldUserName);
+	if(! $oldUserName || $userUid == 0) {
+		# Creating i-MSCP unix user
+		$rs = iMSCP::SystemUser->new(
+			'password' => $password,
+			'comment' => $comment,
+			'home' => $homedir,
+			'skeletonPath' => $skeletonPath,
+			'shell' => $shell
+		)->addSystemUser($userName);
+		return $rs if $rs;
+
+		$userUid = getpwnam($userName);
+		$userGid = getgrnam($groupName);
+	} else {
+		# Modifying existents i-MSCP unix user
+		my @cmd = (
+			"$main::imscpConfig{'CMD_PKILL'} -KILL -u", escapeShell($oldUserName), ';',
+			"$main::imscpConfig{'CMD_USERMOD'}",
+			'-c', escapeShell($comment), # New comment
+			'-d', escapeShell($homedir), # New home dir
+			'-l', escapeShell($userName), # New login
+			'-m', # Move current home content to new homedir
+			'-s', escapeShell($shell), #  New Shell
+			escapeShell($oldUserName) # Old username
+		);
+		my($stdout, $stderr);
+		$rs = execute("@cmd", \$stdout, $stderr);
+		return $rs if $rs;
+
+		# Modifying existents i-MSCP unix group
+		@cmd = (
+			$main::imscpConfig{'CMD_GROUPMOD'},
+			'-n', escapeShell($groupName), # New group name
+			escapeShell(getgrgid($userGid)) # Current group name
+		);
+		$rs = execute("@cmd", \$stdout, $stderr);
 		return $rs if $rs;
 	}
-
-	my $oldUserGid = $self->{'admin_sys_gid'} // 0;
-	my $oldGroupName;
-
-	if($oldUserGid != 0 && ($oldGroupName = getgrgid($oldUserGid)) && $oldGroupName ne $groupName) {
-		$rs = iMSCP::SystemGroup->getInstance()->delSystemGroup($oldGroupName);
-		return $rs if $rs;
-	}
-
-	# Creating i-MSCP unix user
-	$rs = iMSCP::SystemUser->new(
-		'password' => $password,
-		'comment' => $comment,
-		'home' => $home,
-		'skeletonPath' => $skeletonPath,
-		'shell' => $shell
-	)->addSystemUser($userName);
-	return $rs if $rs;
-
-	my $userUid = scalar getpwnam($userName);
-	my $userGid = scalar getgrnam($groupName);
 
 	# Updating admin.admin_sys_uid and admin.admin_sys_gid columns
 	my @sql = (
@@ -191,7 +203,7 @@ sub add
 	$self->{'admin_sys_gid'} = $userGid;
 
 	$self->{'hooksManager'}->trigger(
-		'onAfterAddImscpUnixUser', $self->{'admin_id'}, $userName, $password, $groupName, $comment, $home,
+		'onAfterAddImscpUnixUser', $self->{'admin_id'}, $userName, $password, $groupName, $comment, $homedir,
 		$skeletonPath, $shell, $userUid, $userGid
 	);
 

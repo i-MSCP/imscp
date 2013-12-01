@@ -87,7 +87,7 @@ sub addSystemUser
 		);
 	} else { # Modify existent user
 		@cmd = (
-			"$main::imscpConfig{'CMD_PKILL'} -KILL -f -u", escapeShell($userName), ';',
+			"$main::imscpConfig{'CMD_PKILL'} -KILL -u", escapeShell($userName), ';',
 			$main::imscpConfig{'CMD_USERMOD'},
 			($^O =~ /bsd$/ ? escapeShell($userName) : ''),	# username bsd way
 			$password,										# Password
@@ -124,7 +124,7 @@ sub delSystemUser
 
 	if(getpwnam($userName)) {
 		my  @cmd = (
-			"$main::imscpConfig{'CMD_PKILL'} -KILL -f -u", escapeShell($userName), ';',
+			"$main::imscpConfig{'CMD_PKILL'} -KILL -u", escapeShell($userName), ';',
 			$main::imscpConfig{'CMD_USERDEL'},
 			($^O =~ /bsd$/ ? escapeShell($userName) : ''),
 			($self->{'keepHome'} ? '' : '-r'),
