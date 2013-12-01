@@ -175,7 +175,9 @@ sub add
 			escapeShell($oldUserName) # Old username
 		);
 		my($stdout, $stderr);
-		$rs = execute("@cmd", \$stdout, $stderr);
+		$rs = execute("@cmd", \$stdout, \$stderr);
+		debug($stdout) if $stdout;
+		debug($stderr) if stderr && $rs;
 		return $rs if $rs;
 
 		# Modifying existents i-MSCP unix group
@@ -184,7 +186,9 @@ sub add
 			'-n', escapeShell($groupName), # New group name
 			escapeShell(getgrgid($userGid)) # Current group name
 		);
-		$rs = execute("@cmd", \$stdout, $stderr);
+		$rs = execute("@cmd", \$stdout, \$stderr);
+		debug($stdout) if $stdout;
+		debug($stderr) if stderr && $rs;
 		return $rs if $rs;
 	}
 
