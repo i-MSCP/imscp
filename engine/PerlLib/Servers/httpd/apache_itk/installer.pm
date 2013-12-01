@@ -386,15 +386,12 @@ sub _addUser
 
 	if(! $oldUserName || $userUid == 0) {
 		# Creating i-MSCP Master Web user
-		my $panelUName = iMSCP::SystemUser->new(
+		$rs = iMSCP::SystemUser->new(
 			'username' => $userName,
 			'comment' => 'i-MSCP Master Web User',
 			'home' => $main::imscpConfig{'GUI_ROOT_DIR'},
 			'skipCreateHome' => 1
-		);
-		return $rs if $rs;
-
-		$rs = $panelUName->addSystemUser();
+		)->addSystemUser();
 		return $rs if $rs;
 
 		$userUid = getpwnam($userName);
@@ -405,9 +402,9 @@ sub _addUser
 			"$main::imscpConfig{'CMD_PKILL'} -KILL -u", escapeShell($oldUserName), ';',
 			"$main::imscpConfig{'CMD_USERMOD'}",
 			'-c', escapeShell('i-MSCP Master Web User'), # New comment
-			'-d', escapeShell($main::imscpConfig{'GUI_ROOT_DIR'}), # New home dir
+			'-d', escapeShell($main::imscpConfig{'GUI_ROOT_DIR'}), # New homedir
 			'-l', escapeShell($userName), # New login
-			'-m', # Move current home content to new homedir
+			'-m', # Move current homedir content to new homedir
 			escapeShell($oldUserName) # Old username
 		);
 		my($stdout, $stderr);

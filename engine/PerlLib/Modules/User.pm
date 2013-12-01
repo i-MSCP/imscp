@@ -168,9 +168,9 @@ sub add
 			"$main::imscpConfig{'CMD_PKILL'} -KILL -u", escapeShell($oldUserName), ';',
 			"$main::imscpConfig{'CMD_USERMOD'}",
 			'-c', escapeShell($comment), # New comment
-			'-d', escapeShell($homedir), # New home dir
+			'-d', escapeShell($homedir), # New homedir
 			'-l', escapeShell($userName), # New login
-			'-m', # Move current home content to new homedir
+			'-m', # Move current homedir content to new homedir
 			'-s', escapeShell($shell), #  New Shell
 			escapeShell($oldUserName) # Old username
 		);
