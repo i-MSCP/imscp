@@ -177,7 +177,7 @@ sub add
 		my($stdout, $stderr);
 		$rs = execute("@cmd", \$stdout, \$stderr);
 		debug($stdout) if $stdout;
-		debug($stderr) if stderr && $rs;
+		debug($stderr) if $stderr && $rs;
 		return $rs if $rs;
 
 		# Modifying existents i-MSCP unix group
@@ -188,7 +188,7 @@ sub add
 		);
 		$rs = execute("@cmd", \$stdout, \$stderr);
 		debug($stdout) if $stdout;
-		debug($stderr) if stderr && $rs;
+		debug($stderr) if $stderr && $rs;
 		return $rs if $rs;
 	}
 
