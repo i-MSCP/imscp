@@ -139,15 +139,15 @@ sub add
 	my $skeletonPath = $self->{'skeletonPath'} || '/dev/null';
 	my $shell = '/bin/false';
 
+	my ($oldUserName, undef, $userUid, $userGid) = getpwuid($self->{'admin_sys_uid'});
+
 	my $rs = $self->{'hooksManager'}->trigger(
         'onBeforeAddImscpUnixUser', $self->{'admin_id'}, $userName, \$password, $groupName, \$comment, \$homedir,
-		\$skeletonPath, \$shell
+		\$skeletonPath, \$shell, $userUid, $userGid
 	);
 	return $rs if $rs;
 
 	clearImmutable($homedir) if -d $homedir;
-
-	my ($oldUserName, undef, $userUid, $userGid) = getpwuid($self->{'admin_sys_uid'});
 
 	if(! $oldUserName || $userUid == 0) {
 		# Creating i-MSCP unix user
