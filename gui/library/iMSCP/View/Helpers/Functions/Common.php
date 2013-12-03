@@ -317,8 +317,9 @@ function generateNavigation($tpl)
 						continue 2;
 					}
 				} else {
+					$name = (is_array($callback['name'])) ? $callback['name'][1] : $callback['name'];
 					throw new iMSCP_Exception_Production(
-						"Privileges callback function '{$callback['name']}' is not callable"
+						sprintf('Privileges callback is not callable: %s', $name)
 					);
 				}
 			}
@@ -352,7 +353,6 @@ function generateNavigation($tpl)
 
 					/** @var $subpage Zend_Navigation_Page_Uri */
 					foreach ($iterator as $subpage) {
-
 						if (null !== ($callbacks = $subpage->get('privilege_callback'))) {
 							$callbacks = (isset($callbacks['name'])) ? array($callbacks) : $callbacks;
 
@@ -367,8 +367,9 @@ function generateNavigation($tpl)
 										continue 2;
 									}
 								} else {
+									$name = (is_array($callback['name'])) ? $callback['name'][1] : $callback['name'];
 									throw new iMSCP_Exception_Production(
-										"Privileges callback function '{$callback['name']}' is not callable"
+										sprintf('Privileges callback is not callable: %s', $name)
 									);
 								}
 							}

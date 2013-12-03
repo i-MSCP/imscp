@@ -13,11 +13,11 @@ ENGINE:
 	- Fixed: Removed useless file tests on directory deletion
 	- Fixed: External command died with signal 9 (without core dump)
 	- Fixed: Keep current unix user uid/gid when updating the SYSTEM_USER_PREFIX and SYSTEM_USER_MIN_UID prefix
-	- Updated: Plugin API to version 0.2.1
+	- Updated: Plugin API to version 0.2.2
 
 GUI:
 	- Added: quoteValue() function, which allow to quote string for use in SQL statements
-	- Updated: Plugin API to version 0.2.1
+	- Updated: Plugin API to version 0.2.2
 
 SETUP:
 	- Fixed: Composer process timeout must be increased for slow connections
