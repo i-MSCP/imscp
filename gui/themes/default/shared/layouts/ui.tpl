@@ -59,7 +59,7 @@ $(document).ready(function () {
 	<div class="body">
 		<h2 class="{TITLE_CLASS}"><span>{TR_TITLE}</span></h2>
 		<!-- BDP: page_message -->
-		<div class="{MESSAGE_CLS}">{MESSAGE}</div>
+		<div class="{MESSAGE_CLS} flash_message">{MESSAGE}</div>
 		<!-- EDP: page_message -->
 		{LAYOUT_CONTENT}
 	</div>
