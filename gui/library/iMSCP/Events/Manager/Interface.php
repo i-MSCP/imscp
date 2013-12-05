@@ -65,7 +65,7 @@ interface iMSCP_Events_Manager_Interface
 	 * @abstract
 	 * @param  string|array $event The event(s) to listen on.
 	 * @param  callable|object $listener PHP callback or object which implement method with same name as event.
-	 * @param  int $priority The higher this value, the earlier an event listener will be triggered in the chain.
+	 * @param  int $priority Higher values have higher priority.
 	 * @return iMSCP_Events_Manager_Interface Provide fluent interface, returns self
 	 */
 	public function registerListener($event, $listener, $priority = 1);

@@ -103,6 +103,7 @@ GUI:
 	- Added: Event Manager - Method allowing to unregister any listener which listen to a particular event
 	- Fixed: Plugin items with errors must be shown in debugger and the admin must be able to change their status
 	- Removed: Domain name related parameters
+	- Updated: Function generateRandomSalt() - Allow to restrict salt character ranges (i.e for unix passwords)
 
 Tickets:
 	- Fixed #447: Defect - External mail server feature is broken, when mail account limit is set to -1 (reopened)

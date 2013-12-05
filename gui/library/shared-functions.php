@@ -2795,18 +2795,11 @@ function translate_limit_value($value, $autosize = false, $to = null)
  *
  * @throws iMSCP_Exception in case no encryption algorithm is available
  * @author Laurent Declercq <l.declercq@nuxwin.com>
+ * @param bool $restrictCharRanges Restrict character ranges used to generate random salt (ie. for unix passwords)
  * @return string Random salt
  */
-function generateRandomSalt()
+function generateRandomSalt($restrictCharRanges = false)
 {
-	/*if(defined('CRYPT_BLOWFISH') && CRYPT_BLOWFISH) {
-		$saltLength = 21;
-		if(version_compare(PHP_VERSION, '3.5.7') == -1) {
-			$salt = '$2a$07$';
-		} else {
-			$salt = array_rand(array('$2x$07$' =>'', '$2y$07$' => ''));
-		}
-	} else*/
 	if (defined('CRYPT_SHA512') && CRYPT_SHA512) {
 		$saltLength = 16;
 		$salt = '$6$rounds=' . mt_rand(1500, 5000) . '$';
@@ -2823,11 +2816,14 @@ function generateRandomSalt()
 		throw new iMSCP_Exception('No encryption algorithm available.');
 	}
 
-	#if ($saltLength > 2  && $saltLength < 21) {
-	if ($saltLength > 2) {
-		$chars = array_merge(range(0x21, 0x7e));
+	if($restrictCharRanges) {
+		 $chars = array_merge(range(0x30, 0x39), range(0x41, 0x5A), range(0x61, 0x7A), array(0x2E, 0x2F));
 	} else {
-		$chars = array_merge(range(0x2E, 0x2F), range(0x30, 0x39), range(0x41, 0x5a), range(0x61, 0x7a));
+		if ($saltLength > 2) {
+			$chars = range(0x21, 0x7e);
+		} else {
+			$chars = array_merge(range(0x2E, 0x2F), range(0x30, 0x39), range(0x41, 0x5a), range(0x61, 0x7a));
+		}
 	}
 
 	for ($i = 0; $i < $saltLength; $i++) {
@@ -2841,12 +2837,12 @@ function generateRandomSalt()
  * Encrypts the given password with salt.
  *
  * @param string $password the password in clear text
- * @param string $salt OPTIONAL Salt to use
+ * @param string|null $salt OPTIONAL Salt to use
  * @return string the password encrypted with salt
  */
-function cryptPasswordWithSalt($password, $salt = '')
+function cryptPasswordWithSalt($password, $salt = null)
 {
-	return crypt($password, ($salt) ? $salt : generateRandomSalt());
+	return crypt($password, (!is_null($salt)) ? $salt : generateRandomSalt());
 }
 
 /**

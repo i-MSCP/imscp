@@ -64,7 +64,7 @@ abstract class iMSCP_Plugin
 	 *
 	 * Need return an associative array with the following info:
 	 *
-	 * author: Plugin author name
+	 * author: Plugin author name(s)
 	 * email: Plugin author email
 	 * version: Plugin version
 	 * date: Last modified date of the plugin in YYYY-MM-DD format
@@ -72,12 +72,12 @@ abstract class iMSCP_Plugin
 	 * desc: Plugin short description (text only)
 	 * url: Website in which it's possible to found more information about the plugin.
 	 *
-	 * Of course, a plugin can provide other info for its own needs. However, you must note that the following keywords
-	 * are reserved for internal use:
+	 * A plugin can provide any other info for its own needs. However, the following keywords are reserved for internal
+	 * use:
 	 *
-	 * - __nversion__: Contain the last available plugin version
-	 * - __installable__: Tell the plugin manager whether or not the plugin is installable
-	 * - __uninstallable__: Tell the plugin manager whether or not the plugin can be uninstalled
+	 *  __nversion__      : Contain the last available plugin version
+	 *  __installable__   : Tell the plugin manager whether or not the plugin is installable
+	 *  __uninstallable__ : Tell the plugin manager whether or not the plugin can be uninstalled
 	 *
 	 * @throws iMSCP_Plugin_Exception in case plugin info file cannot be read
 	 * @return array An array containing information about plugin
@@ -183,7 +183,7 @@ abstract class iMSCP_Plugin
 				$config = include $configFile;
 			} else {
 				throw new iMSCP_Plugin_Exception(
-					"Unable to read the plugin $configFile file. Please, check file permissions"
+					sprintf('Unable to read the plugin %s file. Please check file permissions', $configFile)
 				);
 			}
 		}
@@ -214,7 +214,7 @@ abstract class iMSCP_Plugin
 	 */
 	final protected function loadConfig()
 	{
-		$stmt = exec_query('SELECT `plugin_config` FROM `plugin` WHERE `plugin_name` = ?', $this->getName());
+		$stmt = exec_query('SELECT plugin_config FROM plugin WHERE plugin_name = ?', $this->getName());
 
 		if ($stmt->rowCount()) {
 			$this->_config = json_decode($stmt->fetchRow(PDO::FETCH_COLUMN), true);

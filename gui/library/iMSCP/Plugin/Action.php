@@ -32,7 +32,7 @@ require_once 'iMSCP/Plugin.php';
 /**
  * Base class for action plugins.
  *
- * All i-MSCP plugins to interfere with the event system need to inherit from this class.
+ * All i-MSCP plugins which interfere with the event system need to inherit from this class.
  *
  * @category    iMSCP
  * @package     iMSCP_Core

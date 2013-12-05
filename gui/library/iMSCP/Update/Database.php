@@ -2692,7 +2692,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	}
 
 	/**
-	 * Add admin.admin_sys_name and admin.admin_sys_gname columns and polutate them
+	 * Add admin.admin_sys_name and admin.admin_sys_gname columns and populate them
 	 *
 	 * @return array SQL statements to be executed
 	 */
