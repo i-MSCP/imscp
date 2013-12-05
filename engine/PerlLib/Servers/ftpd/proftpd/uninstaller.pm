@@ -1,5 +1,11 @@
 #!/usr/bin/perl
 
+=head1 NAME
+
+ Servers::ftpd::proftpd::uninstaller - i-MSCP Proftpd Server implementation
+
+=cut
+
 # i-MSCP - internet Multi Server Control Panel
 # Copyright (C) 2010-2013 by internet Multi Server Control Panel
 #
@@ -20,6 +26,7 @@
 # @category    i-MSCP
 # @copyright   2010-2013 by i-MSCP | http://i-mscp.net
 # @author      Daniel Andreca <sci2tech@gmail.com>
+# @author      Laurent Declercq <l.declercq@nuxwin.com>
 # @link        http://i-mscp.net i-MSCP Home Site
 # @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
@@ -35,20 +42,21 @@ use iMSCP::File;
 use Servers::ftpd::proftpd;
 use parent 'Common::SingletonClass';
 
-sub _init
-{
-	my $self = shift;
+=head1 DESCRIPTION
 
-	$self->{'ftpd'} = Servers::ftpd::proftpd->getInstance();
+ Uninstaller for the i-MSCP Poftpd Server implementation.
 
-	$self->{'cfgDir'} = $self->{'ftpd'}->{'cfgDir'};
-	$self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
-	$self->{'wrkDir'} = "$self->{'cfgDir'}/working";
+=head1 PUBLIC METHODS
 
-	$self->{'config'} = $self->{'ftpd'}->{'config'};
+=over 4
 
-	$self;
-}
+=item uninstall()
+
+ Process uninstall tasks
+
+ Return int 0 on success, other on failure
+
+=cut
 
 sub uninstall
 {
@@ -63,6 +71,14 @@ sub uninstall
 	$self->removeDirs();
 }
 
+=item removeDirs()
+
+ Remove directories
+
+ Return int 0 on success, other on failure
+
+=cut
+
 sub removeDirs
 {
 	my $self = shift;
@@ -76,6 +92,14 @@ sub removeDirs
 
 	0;
 }
+
+=item removeDB()
+
+ Remove Database data
+
+ Return int 0 on success, other on failure
+
+=cut
 
 sub removeDB
 {
@@ -98,6 +122,14 @@ sub removeDB
 	$rs;
 }
 
+=item restoreConfFile()
+
+ Restore system configuration file
+
+ Return int 0 on success, other on failure
+
+=cut
+
 sub restoreConfFile
 {
 	my $self = shift;
@@ -114,5 +146,43 @@ sub restoreConfFile
 
 	$rs;
 }
+
+=back
+
+=head1 PRIVATE METHODS
+
+=over 4
+
+=item _init()
+
+ Called by getInstance(). Initialize instance.
+
+ Return Servers::ftpd::proftpd::uninstaller
+
+=cut
+
+sub _init
+{
+	my $self = shift;
+
+	$self->{'ftpd'} = Servers::ftpd::proftpd->getInstance();
+
+	$self->{'cfgDir'} = $self->{'ftpd'}->{'cfgDir'};
+	$self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
+	$self->{'wrkDir'} = "$self->{'cfgDir'}/working";
+
+	$self->{'config'} = $self->{'ftpd'}->{'config'};
+
+	$self;
+}
+
+=back
+
+=head1 AUTHORS
+
+ Daniel Andreca <sci2tech@gmail.com>
+ Laurent Declercq <l.declercq@nuxwin.com>
+
+=cut
 
 1;

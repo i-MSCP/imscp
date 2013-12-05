@@ -65,7 +65,9 @@ use parent 'Common::SingletonClass';
 
 sub showDialog($$)
 {
-	my ($self, $dialog, $rs) = (shift, shift, 0);
+	my (undef, $dialog) =  @_;
+
+	my $rs = 0;
 	my $awstatsMode =  main::setupGetQuestion('AWSTATS_MODE');
 
 	if($main::reconfigure ~~ ['webstats', 'all', 'forced'] || not $awstatsMode ~~ ['0','1']) {
@@ -193,7 +195,7 @@ sub setEnginePermissions
 
 sub _installLogrotate($$$)
 {
-	my ($self, $content, $filename) = @_;
+	my (undef, $content, $filename) = @_;
 
 	if ($filename eq 'logrotate.conf') {
 		$$content = replaceBloc(
@@ -263,7 +265,8 @@ sub _createGlobalAwstatsVhost
 	}
 
 	$rs = $httpd->buildConfFile(
-		"$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Addons/Webstats/Awstats/Config/01_awstats.conf"
+		"$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Addons/Webstats/Awstats/Config/01_awstats.conf",
+		{}
 	);
 	return $rs if $rs;
 

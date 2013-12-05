@@ -52,7 +52,7 @@ use parent 'Common::SingletonClass';
 
 =item uninstall
 
- Process uninstall tasks.
+ Process uninstall tasks
 
  Return int 0 on success, 1 on failure
 
@@ -82,7 +82,7 @@ sub uninstall
 
 =item _init()
 
- Called by getInstance(). Initialize instance.
+ Called by getInstance(). Initialize instance
 
  Return Servers::httpd::apache_php_fpm::uninstaller
 
@@ -111,7 +111,7 @@ sub _init
 
 =item _removeUserAndGroup()
 
- Remove Panel user and group.
+ Remove Panel user and group
 
  Return int 0 on success, 1 on failure
 
@@ -136,7 +136,7 @@ sub _removeUserAndGroup
 
 =item _removeDirs()
 
- Remove Apache directories.
+ Remove Apache directories
 
  Return int 0 on success, 1 on failure
 
@@ -160,7 +160,7 @@ sub _removeDirs
 
 =item _restoreApacheConfig()
 
- Restore Apache configuration.
+ Restore Apache configuration
 
  Return int 0 on success, 1 on failure
 
@@ -218,7 +218,7 @@ sub _restoreApacheConfig
 
 =item restorePhpfpmConfig()
 
- Restore PHP FPM configuration.
+ Restore PHP FPM configuration
 
  Return int 0 on success, 1 on failure
 

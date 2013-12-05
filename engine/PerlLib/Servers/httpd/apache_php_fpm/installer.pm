@@ -59,7 +59,7 @@ use parent 'Common::SingletonClass';
 
 =item registerSetupHooks()
 
- Register setup hook functions.
+ Register setup hook functions
 
  Param iMSCP::HooksManager $hooksManager Hooks manager instance
  Return int 0 on success, other on failure
@@ -68,8 +68,7 @@ use parent 'Common::SingletonClass';
 
 sub registerSetupHooks
 {
-	my $self = shift;
-	my $hooksManager = shift;
+	my ($self, $hooksManager) = @_;
 
 	my $rs = $hooksManager->trigger('beforeHttpdRegisterSetupHooks', $hooksManager, 'apache_php_fpm');
 	return $rs if $rs;
@@ -90,7 +89,7 @@ sub registerSetupHooks
 
 =item askForPhpFpmPoolsLevel($dialog)
 
- Ask user for PHP FPM pools level to use.
+ Ask user for PHP FPM pools level to use
 
  Param iMSCP::Dialog::Dialog $dialog Dialog instance
  Return int 0 on success, other on failure
@@ -99,8 +98,7 @@ sub registerSetupHooks
 
 sub askForPhpFpmPoolsLevel
 {
-	my $self = shift;
-	my $dialog = shift;
+	my ($self, $dialog) = @_;
 
 	my $rs = 0;
 	my $poolsLevel = main::setupGetQuestion('PHP_FPM_POOLS_LEVEL') ||
@@ -139,7 +137,7 @@ Note: PHP FPM use a global php.ini configuration file but you can override any s
 
 =item install()
 
- Process install tasks.
+ Process install tasks
 
  Return int 0 on success, other on failure
 
@@ -196,7 +194,7 @@ sub install
 
 =item setGuiPermissions
 
- Set gui permissions.
+ Set gui permissions
 
  Return int 0 on success, other on failure
 
@@ -255,6 +253,14 @@ sub setGuiPermissions
 	$self->{'hooksManager'}->trigger('afterHttpdSetGuiPermissions');
 }
 
+=item setEnginePermissions
+
+ Set engine permissions
+
+ Return int 0 on success, other on failure
+
+=cut
+
 sub setEnginePermissions()
 {
 	my $self = shift;
@@ -285,7 +291,7 @@ sub setEnginePermissions()
 
 =item _init()
 
- Called by getInstance(). Initialize instance.
+ Called by getInstance(). Initialize instance
 
  Return Servers::httpd::apache_php_fpm::installer
 
@@ -378,7 +384,7 @@ sub _setApacheVersion()
 
 =item _addUser()
 
- Add panel user.
+ Add panel user
 
  Return int 0 on success, other on failure
 
@@ -402,7 +408,15 @@ sub _addUser
 
 	my $rdata = $database->doQuery(
 		'admin_sys_uid',
-		'SELECT `admin_sys_uid`, `admin_sys_gid` FROM `admin` WHERE `admin_type` = ? AND `created_by` = ? LIMIT 1',
+		'
+			SELECT
+				`admin_sys_name`, `admin_sys_uid`, `admin_sys_gname`
+			FROM
+				`admin`
+			WHERE
+				`admin_type` = ? AND `created_by` = ?
+			LIMIT 1
+		',
 		'admin',
 		'0'
 	);
@@ -415,7 +429,11 @@ sub _addUser
 		return 1;
 	}
 
-	my ($oldUserName, undef, $userUid, $userGid) = getpwuid($rdata->{(%{$rdata})[0]}->{'admin_sys_uid'});
+	my $adminSysName = $rdata->{(%{$rdata})[0]}->{'admin_sys_name'};
+	my $adminSysUid = $rdata->{(%{$rdata})[0]}->{'admin_sys_uid'};
+	my $adminSysGname = $rdata->{(%{$rdata})[0]}->{'admin_sys_gname'};
+
+	my ($oldUserName, undef, $userUid, $userGid) = getpwuid($adminSysUid);
 
 	if(! $oldUserName || $userUid == 0) {
 		# Creating i-MSCP Master Web user
@@ -438,7 +456,7 @@ sub _addUser
 			'-d', escapeShell($main::imscpConfig{'GUI_ROOT_DIR'}), # New homedir
 			'-l', escapeShell($userName), # New login
 			'-m', # Move current homedir content to new homedir
-			escapeShell($oldUserName) # Old username
+			escapeShell($adminSysName) # Old username
 		);
 		my($stdout, $stderr);
 		$rs = execute("@cmd", \$stdout, \$stderr);
@@ -450,19 +468,26 @@ sub _addUser
 		@cmd = (
 			$main::imscpConfig{'CMD_GROUPMOD'},
 			'-n', escapeShell($groupName), # New group name
-			escapeShell(getgrgid($userGid)) # Current group name
+			escapeShell($adminSysGname) # Current group name
 		);
-		$rs = execute("@cmd", \$stdout, \$stderr);
 		debug($stdout) if $stdout;
 		debug($stderr) if $stderr && $rs;
+		$rs = execute("@cmd", \$stdout, \$stderr);
 		return $rs if $rs;
 	}
 
-	# Updating admin.admin_sys_uid and admin.admin_sys_gid columns
+	# Updating admin.admin_sys_name, admin.admin_sys_uid, admin.admin_sys_gname and admin.admin_sys_gid columns
 	$rdata = $database->doQuery(
-		'update',
-		'UPDATE `admin` SET `admin_sys_uid` = ?, `admin_sys_gid` = ? WHERE `admin_type` = ?',
-		$userUid, $userGid, 'admin'
+		'dummy',
+		'
+			UPDATE
+				`admin`
+			SET
+				`admin_sys_name` = ?, `admin_sys_uid` = ?, `admin_sys_gname` = ?, `admin_sys_gid` = ?
+			WHERE
+				`admin_type` = ?
+		',
+		$userName, $userUid, $groupName, $userGid, 'admin'
 	);
 	unless(ref $rdata eq 'HASH') {
 		error($rdata);
@@ -482,7 +507,7 @@ sub _addUser
 
 =item _makeDirs()
 
- Create needed directories.
+ Create needed directories
 
  Return int 0 on success, other on failure
 
@@ -518,7 +543,7 @@ sub _makeDirs
 
 =item _buildFastCgiConfFiles()
 
- Build FastCGI configuration files.
+ Build FastCGI configuration files
 
  Return int 0 on success, other on failure
 
@@ -541,6 +566,7 @@ sub _buildFastCgiConfFiles
 
 	$rs = $self->{'httpd'}->buildConfFile(
 		"$self->{'phpfpmCfgDir'}/php_fpm_imscp.conf",
+		{},
 		{ 'destination' => "$self->{'phpfpmWrkDir'}/php_fpm_imscp.conf" },
 	);
 	return $rs if $rs;
@@ -558,6 +584,7 @@ sub _buildFastCgiConfFiles
 
 	$rs = $self->{'httpd'}->buildConfFile(
 		"$self->{'phpfpmCfgDir'}/php_fpm_imscp.load",
+		{},
 		{ 'destination' => "$self->{'phpfpmWrkDir'}/php_fpm_imscp.load" },
 	);
 	return $rs if $rs;
@@ -594,7 +621,7 @@ sub _buildFastCgiConfFiles
 
 =item _buildPhpConfFiles()
 
- Build PHP configuration files.
+ Build PHP configuration files
 
  Return int 0 on success, other on failure
 
@@ -625,7 +652,13 @@ sub _buildPhpConfFiles
 
 	$rs = $self->{'httpd'}->buildConfFile(
 		"$self->{'phpfpmCfgDir'}/parts/php$self->{'config'}->{'PHP_VERSION'}.ini",
-		{ 'destination' => "$self->{'phpfpmWrkDir'}/php.ini", 'mode' => 0644, 'user' => $rootUName, 'group' => $rootGName }
+		{},
+		{
+			'destination' => "$self->{'phpfpmWrkDir'}/php.ini",
+			'mode' => 0644,
+			'user' => $rootUName,
+			'group' => $rootGName
+		}
 	);
 	return $rs if $rs;
 
@@ -643,7 +676,7 @@ sub _buildPhpConfFiles
 	$self->{'httpd'}->setData({ PHP_VERSION => $self->{'config'}->{'PHP_VERSION'} });
 
 	$rs = $self->{'httpd'}->buildConfFile(
-		"$self->{'phpfpmCfgDir'}/php-fpm.conf", { 'destination' => "$self->{'phpfpmWrkDir'}/php-fpm.conf" }
+		"$self->{'phpfpmCfgDir'}/php-fpm.conf", {}, { 'destination' => "$self->{'phpfpmWrkDir'}/php-fpm.conf" }
 	);
 	return $rs if $rs;
 
@@ -658,7 +691,7 @@ sub _buildPhpConfFiles
 
 =item _buildMasterPhpFpmPoolFile()
 
- Build Master PHP FPM pool file.
+ Build Master PHP FPM pool file
 
  Return int 0 on success, other on failure
 
@@ -693,6 +726,7 @@ sub _buildMasterPhpFpmPoolFile
 
 	$rs = $self->{'httpd'}->buildConfFile(
 		"$self->{'phpfpmCfgDir'}/parts/master/pool.conf",
+		{},
 		{ 'destination' => "$self->{'phpfpmWrkDir'}/master.conf" }
 	);
 	return $rs if $rs;
@@ -715,7 +749,7 @@ sub _buildMasterPhpFpmPoolFile
 
 =item _buildApacheConfFiles
 
- Build main Apache configuration files.
+ Build main Apache configuration files
 
  Return int 0 on success, other on failure
 
@@ -781,7 +815,7 @@ sub _buildApacheConfFiles
 		}
 	);
 
-	$rs = $self->{'httpd'}->buildConfFile('00_nameserver.conf');
+	$rs = $self->{'httpd'}->buildConfFile('00_nameserver.conf', {});
 	return $rs if $rs;
 
 	$rs = $self->{'httpd'}->installConfFile('00_nameserver.conf');
@@ -800,7 +834,7 @@ sub _buildApacheConfFiles
 
 =item _buildMasterVhostFiles()
 
- Build Master vhost files (panel vhost files).
+ Build Master vhost files (panel vhost files)
 
  Return int 0 on success, other on failure
 
@@ -896,7 +930,7 @@ sub _buildMasterVhostFiles
 		return $rs if $rs;
 	}
 
-	$rs = $self->{'httpd'}->buildConfFile('00_master.conf');
+	$rs = $self->{'httpd'}->buildConfFile('00_master.conf', {});
 	return $rs if $rs;
 
 	$rs = $self->{'httpd'}->installConfFile('00_master.conf');
@@ -935,7 +969,7 @@ sub _buildMasterVhostFiles
 		);
 		return $rs if $rs;
 
-		$rs = $self->{'httpd'}->buildConfFile('00_master_ssl.conf');
+		$rs = $self->{'httpd'}->buildConfFile('00_master_ssl.conf', {});
 		return $rs if $rs;
 
 		$rs = $self->{'httpd'}->installConfFile('00_master_ssl.conf');
@@ -972,7 +1006,7 @@ sub _buildMasterVhostFiles
 
 =item _installLogrotate()
 
- Build and install both Apache and PHP-FPM logrotate files.
+ Build and install both Apache and PHP-FPM logrotate files
 
  Return int 0 on success, other on failure
 
@@ -990,7 +1024,7 @@ sub _installLogrotate
 	$rs = $self->{'httpd'}->apacheBkpConfFile("$main::imscpConfig{'LOGROTATE_CONF_DIR'}/apache2", '', 1);
 	return $rs if $rs;
 
-	$rs = $self->{'httpd'}->buildConfFile('logrotate.conf');
+	$rs = $self->{'httpd'}->buildConfFile('logrotate.conf', {});
 	return $rs if $rs;
 
 	$rs = $self->{'httpd'}->installConfFile(
@@ -1011,7 +1045,9 @@ sub _installLogrotate
 	return $rs if $rs;
 
 	$rs = $self->{'httpd'}->buildConfFile(
-		"$self->{'phpfpmCfgDir'}/logrotate.conf", {'destination' => "$self->{'phpfpmWrkDir'}/logrotate.conf" }
+		"$self->{'phpfpmCfgDir'}/logrotate.conf",
+		{},
+		{'destination' => "$self->{'phpfpmWrkDir'}/logrotate.conf" }
 	);
 	return $rs if $rs;
 
@@ -1026,7 +1062,7 @@ sub _installLogrotate
 
 =item _installPhpFpmInitScript()
 
- Install PHP FPM init script.
+ Install PHP FPM init script
 
  Note: We provide our own init script since the one provided in older Debian/Ubuntu versions doesnt provide the
 reopen-logs function.
@@ -1074,7 +1110,7 @@ sub _installPhpFpmInitScript
 
 =item _saveConf()
 
- Save both i-MSCP apache.data and i-MSCP php-fpm.data configuration files.
+ Save both i-MSCP apache.data and i-MSCP php-fpm.data configuration files
 
  Return int 0 on success, 1 on failure
 
@@ -1083,12 +1119,12 @@ sub _installPhpFpmInitScript
 sub _saveConf
 {
 	my $self = shift;
+
 	my $rs = 0;
 
 	my %filesToDir = ( 'apache' => $self->{'apacheCfgDir'}, 'phpfpm' => $self->{'phpfpmCfgDir'} );
 
 	for(keys %filesToDir) {
-
 		my $file = iMSCP::File->new('filename' => "$filesToDir{$_}/$_.data");
 
 		$rs = $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
@@ -1129,7 +1165,7 @@ sub _saveConf
 
 =item _oldEngineCompatibility()
 
- Remove old files.
+ Remove old files
 
  Return int 0 on success, other on failure
 
@@ -1157,7 +1193,7 @@ sub _oldEngineCompatibility()
 
 =item _fixPhpErrorReportingValues()
 
- Fix PHP error_reporting value according PHP version.
+ Fix PHP error_reporting value according PHP version
 
  This rustine fix the error_reporting integer values in the iMSCP databse according the PHP version installed on the
 system.

@@ -1,5 +1,11 @@
 #!/usr/bin/perl
 
+=head1 NAME
+
+ Servers::ftpd::proftpd::installer - i-MSCP Proftpd Server implementation
+
+=cut
+
 # i-MSCP - internet Multi Server Control Panel
 # Copyright (C) 2010-2013 by internet Multi Server Control Panel
 #
@@ -40,10 +46,26 @@ use File::Basename;
 use Servers::ftpd::proftpd;
 use parent 'Common::SingletonClass';
 
+=head1 DESCRIPTION
+
+ Installer for the i-MSCP Poftpd Server implementation.
+
+=head1 PUBLIC METHODS
+
+=over 4
+
+=item registerSetupHooks(\%$hooksManager)
+
+ Register setup hook functions
+
+ Param iMSCP::HooksManager $hooksManager Hooks manager instance
+ Return int 0 on success, other on failure
+
+=cut
+
 sub registerSetupHooks
 {
-	my $self = shift;
-	my $hooksManager = shift;
+	my ($self, $hooksManager) = @_;
 
 	my $rs = $hooksManager->trigger('beforeFtpdRegisterSetupHooks', $hooksManager, 'proftpd');
 	return $rs if $rs;
@@ -57,10 +79,18 @@ sub registerSetupHooks
 	$hooksManager->trigger('afterFtpdRegisterSetupHooks', $hooksManager, 'proftpd');
 }
 
+=item askProftpd(\%dialog)
+
+ Setup questions
+
+ Param iMSCP::Dialog::Dialog $dialog Dialog instance
+ Return int 0 on success, other on failure
+
+=cut
+
 sub askProftpd
 {
-	my $self = shift;
-	my $dialog = shift;
+	my ($self, $dialog) = @_;
 
 	my $dbType = main::setupGetQuestion('DATABASE_TYPE');
 	my $dbHost = main::setupGetQuestion('DATABASE_HOST');
@@ -76,14 +106,14 @@ sub askProftpd
 		# Ask for the proftpd restricted SQL username
 		do{
 			($rs, $dbUser) = iMSCP::Dialog->factory()->inputbox(
-				"\nPlease enter a username for the restricted proftpd SQL user:$msg", $dbUser
+				"\nPlease enter an username for the restricted proftpd SQL user:$msg", $dbUser
 			);
 
 			if($dbUser eq $main::imscpConfig{'DATABASE_USER'}) {
 				$msg = "\n\n\\Z1You cannot reuse the i-MSCP SQL user '$dbUser'.\\Zn\n\nPlease, try again:";
 				$dbUser = '';
 			} elsif(length $dbUser > 16) {
-				$msg = "\n\n\\Z1MySQL user names can be up to 16 characters long.\\Zn\n\nPlease, try again:";
+				$msg = "\n\n\\Z1MySQL username can be up to 16 characters long.\\Zn\n\nPlease, try again:";
 				$dbUser = '';
 			}
 		} while ($rs != 30 && ! $dbUser);
@@ -117,6 +147,14 @@ sub askProftpd
 	$rs;
 }
 
+=item install()
+
+ Process install tasks
+
+ Return int 0 on success, other on failure
+
+=cut
+
 sub install
 {
 	my $self = shift;
@@ -136,14 +174,25 @@ sub install
 	$rs = $self->_createTrafficLogFile();
 	return $rs if $rs;
 
-	$rs = $self->_oldEngineCompatibility();
-	return $rs if $rs;
-
 	$rs = $self->_saveConf();
 	return $rs if $rs;
 
 	$self->{'hooksManager'}->trigger('afterFtpdInstall', 'proftpd');
 }
+
+=back
+
+=head1 PRIVATE METHODS
+
+=over 4
+
+=item _init()
+
+ Called by getInstance(). Initialize instance
+
+ Return Servers::ftpd::proftpd::installer
+
+=cut
 
 sub _init
 {
@@ -182,10 +231,17 @@ sub _init
 	$self;
 }
 
+=item _bkpConfFile()
+
+ Backup file
+
+ Return int 0 on success, other on failure
+
+=cut
+
 sub _bkpConfFile
 {
-	my $self = shift;
-	my $cfgFile = shift;
+	my ($self, $cfgFile) = @_;
 
 	my $rs = $self->{'hooksManager'}->trigger('beforeFtpdBkpConfFile', $cfgFile);
 	return $rs if $rs;
@@ -205,6 +261,14 @@ sub _bkpConfFile
 
 	$self->{'hooksManager'}->trigger('afterFtpdBkpConfFile', $cfgFile);
 }
+
+=item _setupDatabase()
+
+ Setup database
+
+ Return int 0 on success, other on failure
+
+=cut
 
 sub _setupDatabase
 {
@@ -240,7 +304,9 @@ sub _setupDatabase
 		$rs = $database->doQuery(
 			'dummy',
 			"GRANT SELECT ON `$main::imscpConfig{'DATABASE_NAME'}`.`$_` TO ?@? IDENTIFIED BY ?",
-			$dbUser, $dbUserHost, $dbPass
+			$dbUser,
+			$dbUserHost,
+			$dbPass
 		);
 		unless(ref $rs eq 'HASH') {
 			error(
@@ -255,7 +321,9 @@ sub _setupDatabase
 		$rs = $database->doQuery(
 			'dummy',
 			"GRANT SELECT, INSERT, UPDATE ON `$main::imscpConfig{'DATABASE_NAME'}`.`$_` TO ?@? IDENTIFIED BY ?",
-			$dbUser, $dbUserHost, $dbPass
+			$dbUser,
+			$dbUserHost,
+			$dbPass
 		);
 		unless(ref $rs eq 'HASH') {
 			error(
@@ -268,6 +336,14 @@ sub _setupDatabase
 
 	$self->{'hooksManager'}->trigger('afterFtpSetupDb', $dbUser, $dbPass);
 }
+
+=item _buildConfigFile()
+
+ Build configuration file
+
+ Return int 0 on success, other on failure
+
+=cut
 
 sub _buildConfigFile
 {
@@ -289,7 +365,7 @@ sub _buildConfigFile
 	my $file = iMSCP::File->new('filename' => "$self->{'cfgDir'}/proftpd.conf");
 	my $cfgTpl = $file->get();
 	unless(defined $cfgTpl) {
-		error("Unable to read $self->{'cfgDir'}/proftpd.conf");
+		error("Unable to read $file->{'filename'}");
 		return 1;
 	}
 
@@ -318,6 +394,14 @@ sub _buildConfigFile
 
 	$file->copyFile($self->{'config'}->{'FTPD_CONF_FILE'});
 }
+
+=item _createTrafficLogFile()
+
+ Create traffic log file
+
+ Return int 0 on success, other on failure
+
+=cut
 
 sub _createTrafficLogFile
 {
@@ -356,20 +440,13 @@ sub _createTrafficLogFile
 	$self->{'hooksManager'}->trigger('afterFtpdCreateTrafficLogFile');
 }
 
-sub _oldEngineCompatibility
-{
-	my $self = shift;
+=item _saveConf()
 
-	my $rs = $self->{'hooksManager'}->trigger('beforeFtpdOldEngineCompatibility');
-	return $rs if $rs;
+ Save configuration
 
-	#if(exists $self::oldConfig{'FTPD_CONF_DIR'}) {
-	#	$rs = iMSCP::Dir->new('dirname' => $self::oldConfig{'FTPD_CONF_DIR'})->remove();
-	#	return $rs if $rs;
-	#}
+ Return int 0 on success, other on failure
 
-	$self->{'hooksManager'}->trigger('afterFtpdOldEngineCompatibility');
-}
+=cut
 
 sub _saveConf
 {
@@ -411,5 +488,14 @@ sub _saveConf
 
 	$self->{'hooksManager'}->trigger('afterFtpdSaveConf', 'proftpd.old.data');
 }
+
+=back
+
+=head1 AUTHORS
+
+ Daniel Andreca <sci2tech@gmail.com>
+ Laurent Declercq <l.declercq@nuxwin.com>
+
+=cut
 
 1;

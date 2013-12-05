@@ -59,7 +59,7 @@ use parent 'Common::SingletonClass';
 
 =item registerSetupHooks($hooksManager)
 
- Register setup hooks.
+ Register setup hooks
 
  Param iMSCP::HooksManager $hooksManager Hooks manager instance
  Return int 0 on success, other on failure
@@ -68,8 +68,7 @@ use parent 'Common::SingletonClass';
 
 sub registerSetupHooks
 {
-	my $self = shift;
-	my $hooksManager = shift;
+	my (undef, $hooksManager) = @_;
 
 	require Servers::httpd::apache_itk::installer;
 	Servers::httpd::apache_itk::installer->getInstance()->registerSetupHooks($hooksManager);
@@ -77,7 +76,7 @@ sub registerSetupHooks
 
 =item preinstall()
 
- Process preinstall tasks.
+ Process preinstall tasks
 
  Return int 0 on success, other on failure
 
@@ -98,7 +97,7 @@ sub preinstall
 
 =item install()
 
- Process install tasks.
+ Process install tasks
 
  Return int 0 on success, other on failure
 
@@ -114,7 +113,7 @@ sub install
 
 =item postinstall()
 
- Process postinstall tasks.
+ Process postinstall tasks
 
  Return int 0 on success, other on failure
 
@@ -134,7 +133,7 @@ sub postinstall
 
 =item uninstall()
 
- Process uninstall tasks.
+ Process uninstall tasks
 
  Return int 0 on success, other on failure
 
@@ -162,7 +161,7 @@ sub uninstall
 
 =item addUser(\%data)
 
- Process addUser tasks.
+ Process addUser tasks
 
  Param hash_ref $data Reference to a hash containing data as provided by User module
  Return int 0 on success, other on failure
@@ -171,8 +170,7 @@ sub uninstall
 
 sub addUser($$)
 {
-	my $self = shift;
-	my $data = shift;
+	my ($self, $data) = @_;
 
 	fatal('Hash reference expected') if ref $data ne 'HASH';
 
@@ -192,7 +190,7 @@ sub addUser($$)
 
 =item deleteUser(\%data)
 
- Process deleteUser tasks.
+ Process deleteUser tasks
 
  Param hash_ref $data Reference to a hash containing data as provided by User module
  Return int 0 on success, other on failure
@@ -201,8 +199,7 @@ sub addUser($$)
 
 sub deleteUser($$)
 {
-	my $self = shift;
-	my $data = shift;
+	my ($self, $data) = @_;
 
 	fatal('Hash reference expected') if ref $data ne 'HASH';
 
@@ -220,17 +217,16 @@ sub deleteUser($$)
 
 =item addDmn(\%data)
 
- Process addDmn tasks.
+ Process addDmn tasks
 
- Param hash_ref $data Reference to a hash containing data as provided by Alias|Subdomain|SubAlias modules
+ Param hash_ref $data Reference to a hash containing data as provided by Alias|Domain|Subdomain|SubAlias modules
  Return int 0 on success, other on failure
 
 =cut
 
 sub addDmn($$)
 {
-	my $self = shift;
-	my $data = shift;
+	my ($self, $data) = @_;
 
 	fatal('Hash reference expected') if ref $data ne 'HASH';
 
@@ -254,17 +250,16 @@ sub addDmn($$)
 
 =item restoreDmn
 
- Process restoreDmn tasks.
+ Process restoreDmn tasks
 
- Param hash_ref $data Reference to a hash containing data as provided by Alias|Subdomain|SubAlias modules
+ Param hash_ref $data Reference to a hash containing data as provided by Alias|Domain|Subdomain|SubAlias modules
  Return int 0 on success, other on failure
 
 =cut
 
 sub restoreDmn($$)
 {
-	my $self = shift;
-	my $data = shift;
+	my ($self, $data) = @_;
 
 	fatal('Hash reference expected') if ref $data ne 'HASH';
 
@@ -283,17 +278,16 @@ sub restoreDmn($$)
 
 =item disableDmn(\%data)
 
- Process disableDmn tasks.
+ Process disableDmn tasks
 
- Param hash_ref $data Reference to a hash containing data as provided by Alias|Subdomain|SubAlias modules
+ Param hash_ref $data Reference to a hash containing data as provided by Alias|Domain|Subdomain|SubAlias modules
  Return int 0 on success, other on failure
 
 =cut
 
 sub disableDmn($$)
 {
-	my $self = shift;
-	my $data = shift;
+	my ($self, $data) = @_;
 
 	fatal('Hash reference expected') if ref $data ne 'HASH';
 
@@ -317,6 +311,7 @@ sub disableDmn($$)
 
 	$rs = $self->buildConfFile(
 		"$self->{'tplDir'}/domain_disabled.tpl",
+		$data,
 		{ 'destination' => "$self->{'apacheWrkDir'}/$data->{'DOMAIN_NAME'}.conf" }
 	);
 	return $rs if $rs;
@@ -336,17 +331,16 @@ sub disableDmn($$)
 
 =item deleteDmn(\%data)
 
- Process deleteDmn tasks.
+ Process deleteDmn tasks
 
- Param hash_ref $data Reference to a hash containing data as provided by Alias|Subdomain|SubAlias modules
+ Param hash_ref $data Reference to a hash containing data as provided by Alias|Domain|Subdomain|SubAlias modules
  Return int 0 on success, other on failure
 
 =cut
 
 sub deleteDmn($$)
 {
-	my $self = shift;
-	my $data = shift;
+	my ($self, $data) = @_;
 
 	fatal('Hash reference expected') if ref $data ne 'HASH';
 
@@ -457,7 +451,7 @@ sub deleteDmn($$)
 
 =item addSub(\%data)
 
- Process addSub tasks.
+ Process addSub tasks
 
  Param hash_ref $data Reference to a hash containing data as provided by Subdomain|SubAlias modules
  Return int 0 on success, other on failure
@@ -466,8 +460,7 @@ sub deleteDmn($$)
 
 sub addSub($$)
 {
-	my $self = shift;
-	my $data = shift;
+	my ($self, $data) = @_;
 
 	fatal('Hash reference expected') if ref $data ne 'HASH';
 
@@ -491,7 +484,7 @@ sub addSub($$)
 
 =item restoreSub($\data)
 
- Process restoreSub tasks.
+ Process restoreSub tasks
 
  Param hash_ref $data Reference to a hash containing data as provided by Subdomain|SubAlias modules
  Return int 0 on success, other on failure
@@ -500,8 +493,7 @@ sub addSub($$)
 
 sub restoreSub($$)
 {
-	my $self = shift;
-	my $data = shift;
+	my ($self, $data) = @_;
 
 	fatal('Hash reference expected') if ref $data ne 'HASH';
 
@@ -522,7 +514,7 @@ sub restoreSub($$)
 
 =item disableSub(\$data)
 
- Process disableSub tasks.
+ Process disableSub tasks
 
  Param hash_ref $data Reference to a hash containing data as provided by Subdomain|SubAlias modules
  Return int 0 on success, other on failure
@@ -531,8 +523,7 @@ sub restoreSub($$)
 
 sub disableSub($$)
 {
-	my $self = shift;
-	my $data = shift;
+	my ($self, $data) = @_;
 
 	fatal('Hash reference expected') if ref $data ne 'HASH';
 
@@ -547,7 +538,7 @@ sub disableSub($$)
 
 =item deleteSub(\%data)
 
- Process deleteSub tasks.
+ Process deleteSub tasks
 
  Param hash_ref $data Reference to a hash containing data as provided by the module Subdomain|SubAlias
  Return int 0 on success, other on failure
@@ -556,8 +547,7 @@ sub disableSub($$)
 
 sub deleteSub($$)
 {
-	my $self = shift;
-	my $data = shift;
+	my ($self, $data) = @_;
 
 	fatal('Hash reference expected') if ref $data ne 'HASH';
 
@@ -571,7 +561,7 @@ sub deleteSub($$)
 
 =item AddHtuser(\%data)
 
- Process AddHtuser tasks.
+ Process AddHtuser tasks
 
  Param hash_ref $data Reference to a hash containing data as provided by Htuser module
  Return int 0 on success, other on failure
@@ -580,8 +570,7 @@ sub deleteSub($$)
 
 sub addHtuser($$)
 {
-	my $self = shift;
-	my $data = shift;
+	my ($self, $data) = @_;
 
 	fatal('Hash reference expected') if ref $data ne 'HASH';
 
@@ -625,7 +614,7 @@ sub addHtuser($$)
 
 =item deleteHtuser(\%data)
 
- Process deleteHtuser tasks.
+ Process deleteHtuser tasks
 
  Param hash_ref $data Reference to a hash containing data as provided by Htuser module
  Return int 0 on success, other on failure
@@ -634,8 +623,7 @@ sub addHtuser($$)
 
 sub deleteHtuser($$)
 {
-	my $self = shift;
-	my $data = shift;
+	my ($self, $data) = @_;
 
 	fatal('Hash reference expected') if ref $data ne 'HASH';
 
@@ -678,7 +666,7 @@ sub deleteHtuser($$)
 
 =item addHtgroup(\%data)
 
- Process addHtgroup tasks.
+ Process addHtgroup tasks
 
  Param hash_ref $data Reference to a hash containing data as provided by Htgroup module
  Return int 0 on success, other on failure
@@ -687,8 +675,7 @@ sub deleteHtuser($$)
 
 sub addHtgroup($$)
 {
-	my $self = shift;
-	my $data = shift;
+	my ($self, $data) = @_;
 
 	fatal('Hash reference expected') if ref $data ne 'HASH';
 
@@ -732,7 +719,7 @@ sub addHtgroup($$)
 
 =item deleteHtgroup(\%data)
 
- Process deleteHtgroup tasks.
+ Process deleteHtgroup tasks
 
  Param hash_ref $data Reference to a hash containing data as provided by Htgroup module
  Return int 0 on success, other on failure
@@ -741,8 +728,7 @@ sub addHtgroup($$)
 
 sub deleteHtgroup($$)
 {
-	my $self = shift;
-	my $data = shift;
+	my ($self, $data) = @_;
 
 	fatal('Hash reference expected') if ref $data ne 'HASH';
 
@@ -785,7 +771,7 @@ sub deleteHtgroup($$)
 
 =item addHtaccess(\%data)
 
- Process addHtaccess tasks.
+ Process addHtaccess tasks
 
  Param hash_ref $data Reference to a hash containing data as provided by Htaccess module
  Return int 0 on success, other on failure
@@ -794,8 +780,7 @@ sub deleteHtgroup($$)
 
 sub addHtaccess($$)
 {
-	my $self = shift;
-	my $data = shift;
+	my ($self, $data) = @_;
 
 	fatal('Hash reference expected') if ref $data ne 'HASH';
 
@@ -846,7 +831,7 @@ sub addHtaccess($$)
 
 =item deleteHtaccess(\%data)
 
- Process deleteHtaccess tasks.
+ Process deleteHtaccess tasks
 
  Param hash_ref $data Reference to a hash containing data as provided by Htaccess module
  Return int 0 on success, other on failure
@@ -855,8 +840,7 @@ sub addHtaccess($$)
 
 sub deleteHtaccess($$)
 {
-	my $self = shift;
-	my $data = shift;
+	my ($self, $data) = @_;
 
 	fatal('Hash reference expected') if ref $data ne 'HASH';
 
@@ -905,7 +889,7 @@ sub deleteHtaccess($$)
 
 =item addIps(\%data)
 
- Process addIps tasks..
+ Process addIps tasks
 
  Param hash_ref $data Reference to a hash containing data as provided by Ips module
  Return int 0 on success, other on failure
@@ -914,8 +898,7 @@ sub deleteHtaccess($$)
 
 sub addIps($$)
 {
-	my $self = shift;
-	my $data = shift;
+	my ($self, $data) = @_;
 
 	fatal('Hash reference expected') if ref $data ne 'HASH';
 
@@ -972,7 +955,7 @@ sub addIps($$)
 
 =item setGuiPermissions()
 
- Set gui permissions.
+ Set gui permissions
 
  Return int 0 on success, other on failure
 
@@ -980,15 +963,13 @@ sub addIps($$)
 
 sub setGuiPermissions
 {
-	my $self = shift;
-
 	require Servers::httpd::apache_itk::installer;
 	Servers::httpd::apache_itk::installer->getInstance()->setGuiPermissions();
 }
 
 =item setEnginePermissions()
 
- Set engine permissions.
+ Set engine permissions
 
  Return int 0 on success, other on failure
 
@@ -996,58 +977,56 @@ sub setGuiPermissions
 
 sub setEnginePermissions
 {
-	my $self = shift;
-
 	require Servers::httpd::apache_itk::installer;
 	Servers::httpd::apache_itk::installer->getInstance()->setEnginePermissions();
 }
 
-=item buildConf($cfgTpl, $filename)
+=item buildConf($cfgTpl, $filename, \%data)
 
- Build the given configuration template.
+ Build the given configuration template
 
  Param string $cfgTpl String representing content of the configuration template
  Param string $filename Configuration template name
+ Param hash_ref $data Reference to a hash containing data as provided by Alias|Domain|Subdomain|SubAlias modules
  Return string String representing content of configuration template or undef
 
 =cut
 
-sub buildConf($$$)
+sub buildConf($$$$)
 {
-	my $self = shift;
-	my $cfgTpl = shift;
-	my $filename = shift;
+	my ($self, $cfgTpl, $filename, $data) = @_;
 
 	unless(defined $cfgTpl) {
 		error('Empty configuration template...');
 		return undef;
 	}
 
-	$self->{'hooksManager'}->trigger('beforeHttpdBuildConf', \$cfgTpl, $filename);
+	$self->{'hooksManager'}->trigger('beforeHttpdBuildConf', \$cfgTpl, $filename, $data);
 
 	$cfgTpl = process($self->{'data'}, $cfgTpl);
 	return undef if ! $cfgTpl;
 
-	$self->{'hooksManager'}->trigger('afterHttpdBuildConf', \$cfgTpl, $filename);
+	$self->{'hooksManager'}->trigger('afterHttpdBuildConf', \$cfgTpl, $filename, $data);
 
 	$cfgTpl;
 }
 
-=item buildConfFile($file, [\%options = {}])
+=item buildConfFile($file, \%data, [\%options = {}])
 
  Build the given configuration file.
 
  Param string $file Absolute path to config file or config filename relative to the $self->{'apacheCfgDir'} directory
+ Param hash_ref $data Reference to a hash containing data as provided by Alias|Domain|Subdomain|SubAlias modules
  Param hash_ref $options Reference to a hash containing options such as destination, mode, user and group for final file
  Return int 0 on success, other on failure
 
 =cut
 
-sub buildConfFile($$;$)
+sub buildConfFile($$$;$)
 {
-	my $self = shift;
-	my $file = shift;
-	my $options = shift || {};
+	my ($self, $file, $data, $options) = @_;
+
+	$options ||= {};
 
 	fatal('Hash reference expected') if ref $options ne 'HASH';
 
@@ -1062,7 +1041,7 @@ sub buildConfFile($$;$)
 		return 1;
 	}
 
-	my $rs = $self->{'hooksManager'}->trigger('beforeHttpdBuildConfFile', \$cfgTpl, "$name$suffix", $options);
+	my $rs = $self->{'hooksManager'}->trigger('beforeHttpdBuildConfFile', \$cfgTpl, "$name$suffix", $data, $options);
 	return $rs if $rs;
 
 	$cfgTpl = $self->buildConf($cfgTpl, "$name$suffix");
@@ -1070,7 +1049,7 @@ sub buildConfFile($$;$)
 
 	$cfgTpl =~ s/\n{2,}/\n\n/g; # Remove any duplicate blank lines
 
-	$rs = $self->{'hooksManager'}->trigger('afterHttpdBuildConfFile', \$cfgTpl, "$name$suffix", $options);
+	$rs = $self->{'hooksManager'}->trigger('afterHttpdBuildConfFile', \$cfgTpl, "$name$suffix", $data, $options);
 	return $rs if $rs;
 
 	$fileH = iMSCP::File->new(
@@ -1094,7 +1073,7 @@ sub buildConfFile($$;$)
 
 =item installConfFile($file, [\%options = {}])
 
- Install the given configuration file.
+ Install the given configuration file
 
  Param string $file Absolute path to config file or config filename relative to the $self->{'apacheWrkDir'} directory
  Param hash_ref $options Reference to a hash containing options such as destination, mode, user and group for final file
@@ -1104,9 +1083,9 @@ sub buildConfFile($$;$)
 
 sub installConfFile($$;$)
 {
-	my $self = shift;
-	my $file = shift;
-	my $options = shift || {};
+	my ($self, $file, $options) = @_;
+
+	$options ||= {};
 
 	fatal('Hash reference expected') if ref $options ne 'HASH';
 
@@ -1138,17 +1117,16 @@ sub installConfFile($$;$)
 
 =item setData(\%data)
 
- Make the given data available for this server.
+ Make the given data available for this server
 
- Param hash_ref $data Reference to a hash containing data to make available for this server.
+ Param hash_ref $data Reference to a hash containing data to make available for this server
  Return int 0 on success, other on failure
 
 =cut
 
 sub setData($$)
 {
-	my $self = shift;
-	my $data = shift;
+	my ($self, $data) = @_;
 
 	fatal('Hash reference expected') if ref $data ne 'HASH';
 
@@ -1159,7 +1137,7 @@ sub setData($$)
 
 =item flushData()
 
- Flush all data set via the setData() method.
+ Flush all data set via the setData() method
 
  Return int 0
 
@@ -1167,16 +1145,14 @@ sub setData($$)
 
 sub flushData()
 {
-	my $self = shift;
-
-	delete $self->{'data'};
+	delete $_[0]->{'data'};
 
 	0;
 }
 
 =item removeSection($sectionName, \$cfgTpl)
 
- Remove the given section in the given configuration template string.
+ Remove the given section in the given configuration template string
 
  Param string $sectionName Name of section to remove
  Param string_ref $cfgTpl Reference to configuration template string
@@ -1186,9 +1162,7 @@ sub flushData()
 
 sub removeSection($$$)
 {
-	my $self = shift;
-	my $sectionName = shift;
-	my $cfgTpl = shift;
+	my ($self, $sectionName, $cfgTpl) = @_;
 
 	my $rs = $self->{'hooksManager'}->trigger('beforeHttpdRemoveSection', $sectionName, $cfgTpl);
 	return $rs if $rs;
@@ -1214,8 +1188,7 @@ sub removeSection($$$)
 
 sub getTraffic($$)
 {
-	my $self = shift;
-	my $domainName = shift;
+	my ($self, $domainName)= @_;
 
 	my $traffic = 0;
 	my $trfDir = "$self->{'config'}->{'APACHE_LOG_DIR'}/traff";
@@ -1265,7 +1238,7 @@ sub getTraffic($$)
 
 =item deleteOldLogs()
 
- Remove Apache logs (logs older than 1 year).
+ Remove Apache logs (logs older than 1 year)
 
  Return int 0 on success, other on failure
 
@@ -1297,7 +1270,7 @@ sub deleteOldLogs
 
 =item deleteTmp()
 
- Delete temporary files (PHP session files).
+ Delete temporary files (PHP session files)
 
  Return int 0 on success, other on failure
 
@@ -1330,7 +1303,7 @@ sub deleteTmp
 
 =item getRunningUser()
 
- Get user name under which the Apache server is running.
+ Get user name under which the Apache server is running
 
  Return string User name under which the apache server is running.
 
@@ -1338,29 +1311,25 @@ sub deleteTmp
 
 sub getRunningUser
 {
-	my $self = shift;
-
-	$self->{'config'}->{'APACHE_USER'};
+	$_[0]->{'config'}->{'APACHE_USER'};
 }
 
-=item getRunningUser()
+=item getRunningGroup()
 
- Get group name under which the Apache server is running.
+ Get group name under which the Apache server is running
 
- Return string Group name under which the apache server is running.
+ Return string Group name under which the apache server is running
 
 =cut
 
 sub getRunningGroup
 {
-	my $self = shift;
-
-	$self->{'config'}->{'APACHE_GROUP'};
+	$_[0]->{'config'}->{'APACHE_GROUP'};
 }
 
 =item enableSite($sites)
 
- Enable the given Apache sites.
+ Enable the given Apache sites
 
  Param string $site Names of Apache sites to enable, each separated by a space
  Return int 0 on sucess, other on failure
@@ -1369,8 +1338,7 @@ sub getRunningGroup
 
 sub enableSite($$)
 {
-	my $self = shift;
-	my $sites = shift;
+	my ($self, $sites) = @_;
 
 	my $rs = $self->{'hooksManager'}->trigger('beforeHttpdEnableSite', \$sites);
 	return $rs if $rs;
@@ -1395,7 +1363,7 @@ sub enableSite($$)
 
 =item disableSite($sites)
 
- Disable the given Apache sites.
+ Disable the given Apache sites
 
  Param string $sitse Names of Apache sites to disable, each separated by a space
  Return int 0 on sucess, other on failure
@@ -1404,8 +1372,7 @@ sub enableSite($$)
 
 sub disableSite($$)
 {
-	my $self = shift;
-	my $sites = shift;
+	my ($self, $sites) = @_;
 
 	my $rs = $self->{'hooksManager'}->trigger('beforeHttpdDisableSite', \$sites);
 	return $rs if $rs;
@@ -1430,7 +1397,7 @@ sub disableSite($$)
 
 =item enableMod($modules)
 
- Enable the given Apache modules.
+ Enable the given Apache modules
 
  Param string $modules Names of Apache modules to enable, each separated by a space
  Return int 0 on sucess, other on failure
@@ -1439,8 +1406,7 @@ sub disableSite($$)
 
 sub enableMod($$)
 {
-	my $self = shift;
-	my $modules = shift;
+	my ($self, $modules) = @_;
 
 	my $rs = $self->{'hooksManager'}->trigger('beforeHttpdEnableMod', \$modules);
 	return $rs if $rs;
@@ -1458,7 +1424,7 @@ sub enableMod($$)
 
 =item disableMod($modules)
 
- Disable the given Apache modules.
+ Disable the given Apache modules
 
  Param string $modules Names of Apache modules to disable, each separated by a space
  Return int 0 on sucess, other on failure
@@ -1467,8 +1433,7 @@ sub enableMod($$)
 
 sub disableMod($$)
 {
-	my $self = shift;
-	my $modules = shift;
+	my ($self, $modules) = @_;
 
 	my $rs = $self->{'hooksManager'}->trigger('beforeHttpdDisableMod', \$modules);
 	return $rs if $rs;
@@ -1486,7 +1451,7 @@ sub disableMod($$)
 
 =item forceRestartApache()
 
- Force Apache to be restarted instead of simply reloaded.
+ Force Apache to be restarted instead of simply reloaded
 
  Return int 0
 
@@ -1494,16 +1459,14 @@ sub disableMod($$)
 
 sub forceRestart
 {
-	my $self = shift;
-
-	$self->{'forceRestart'} = 'yes';
+	$_[0]->{'forceRestart'} = 'yes';
 
 	0;
 }
 
 =item startApache()
 
- Start Apache.
+ Start Apache
 
  Return int 0, other on failure
 
@@ -1529,7 +1492,7 @@ sub start
 
 =item stopApache()
 
- Stop Apache.
+ Stop Apache
 
  Return int 0, other on failure
 
@@ -1555,7 +1518,7 @@ sub stop
 
 =item restartApache()
 
- Restart or Reload Apache.
+ Restart or Reload Apache
 
  Return int 0, other on failure
 
@@ -1591,7 +1554,7 @@ sub restart
 
 =item _init()
 
- Called by getInstance(). Initialize instance.
+ Called by getInstance(). Initialize instance
 
  Return Servers::httpd::apache_itk
 
@@ -1625,15 +1588,14 @@ sub _init
 
  Add configuration files for the given domain or subdomain
 
- Param hash_ref Reference to a hash containing data
+ Param hash_ref $data Reference to a hash containing data as provided by Alias|Domain|Subdomain|SubAlias modules
  Return int 0 on success, other on failure
 
 =cut
 
 sub _addCfg($$)
 {
-	my $self = shift;
-	my $data = shift;
+	my ($self, $data) = @_;
 
 	fatal('Hash reference expected') if ref $data ne 'HASH';
 
@@ -1728,7 +1690,9 @@ sub _addCfg($$)
 
 		$rs = $self->buildConfFile(
 			$data->{'FORWARD'} eq 'no'
-				? "$self->{'tplDir'}/$configs{$_}->{'normal'}" : "$self->{'tplDir'}/$configs{$_}->{'redirect'}",
+				? "$self->{'tplDir'}/$configs{$_}->{'normal'}"
+				: "$self->{'tplDir'}/$configs{$_}->{'redirect'}",
+			$data,
 			{ 'destination' => "$self->{'apacheWrkDir'}/$_" }
 		);
 		return $rs if $rs;
@@ -1742,6 +1706,7 @@ sub _addCfg($$)
 	# Build and install custom Apache configuration file
 	$rs =	$self->buildConfFile(
 		"$self->{'tplDir'}/custom.conf.tpl",
+		$data,
 		{ 'destination' => "$self->{'config'}->{'APACHE_CUSTOM_SITES_CONFIG_DIR'}/$data->{'DOMAIN_NAME'}.conf" }
 	) unless (-f "$self->{'config'}->{'APACHE_CUSTOM_SITES_CONFIG_DIR'}/$data->{'DOMAIN_NAME'}.conf");
 	return $rs if $rs;
@@ -1757,15 +1722,14 @@ sub _addCfg($$)
 
  Get Web folders list to create for the given domain or subdomain
 
- Param hash_ref Reference to a hash containing needed data
+ Param hash_ref $data Reference to a hash containing data as provided by Alias|Domain|Subdomain|SubAlias modules
  Return list List of Web folders to create
 
 =cut
 
 sub _dmnFolders($$)
 {
-	my $self = shift;
-	my $data = shift;
+	my ($self, $data) = @_;
 
 	fatal('Hash reference expected') if ref $data ne 'HASH';
 
@@ -1782,15 +1746,14 @@ sub _dmnFolders($$)
 
  Add default directories and files for the given domain or subdomain
 
- Param hash_ref Reference to a hash containing needed data
+ Param hash_ref $data Reference to a hash containing data as provided by Alias|Domain|Subdomain|SubAlias modules
  Return int 0 on sucess, other on failure
 
 =cut
 
 sub _addFiles($$)
 {
-	my $self = shift;
-	my $data = shift;
+	my ($self, $data) = @_;
 
 	fatal('Hash reference expected') if ref $data ne 'HASH';
 
@@ -1832,7 +1795,7 @@ sub _addFiles($$)
 			# Test needed in case admin removed the index.html file from the skeleton
 			if(-f "$tmpDir/htdocs/index.html") {
 				my $fileSource = "$tmpDir/htdocs/index.html";
-				$rs = $self->buildConfFile($fileSource, { 'destination' => $fileSource });
+				$rs = $self->buildConfFile($fileSource, $data, { 'destination' => $fileSource });
 				return $rs if $rs;
 			}
 		} else {
@@ -1957,7 +1920,7 @@ sub _addFiles($$)
 
 =item END
 
- Code triggered at the very end of script execution.
+ Code triggered at the very end of script execution
 
  - Start or restart apache if needed
  - Remove old traffic logs directory if exists

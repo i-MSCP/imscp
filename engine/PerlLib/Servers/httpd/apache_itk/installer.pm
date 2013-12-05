@@ -60,7 +60,7 @@ use parent 'Common::SingletonClass';
 
 =item registerSetupHooks()
 
- Register setup hook functions.
+ Register setup hook functions
 
  Param iMSCP::HooksManager $hooksManager Hooks manager instance
  Return int 0 on success, other on failure
@@ -69,8 +69,7 @@ use parent 'Common::SingletonClass';
 
 sub registerSetupHooks
 {
-	my $self = shift;
-	my $hooksManager = shift;
+	my ($self, $hooksManager) = @_;
 
 	my $rs = $hooksManager->trigger('beforeHttpdRegisterSetupHooks', $hooksManager, 'apache_itk');
 	return $rs if $rs;
@@ -84,7 +83,7 @@ sub registerSetupHooks
 
 =item install()
 
- Process install tasks.
+ Process install tasks
 
  Return int 0 on success, other on failure
 
@@ -138,7 +137,7 @@ sub install
 
 =item setGuiPermissions
 
- Set gui permissions.
+ Set gui permissions
 
  Return int 0 on success, other on failure
 
@@ -199,7 +198,7 @@ sub setGuiPermissions
 
 =item setEnginePermissions
 
- Set engine permissions.
+ Set engine permissions
 
  Return int 0 on success, other on failure
 
@@ -235,7 +234,7 @@ sub setEnginePermissions()
 
 =item _init()
 
- Called by getInstance(). Initialize instance.
+ Called by getInstance(). Initialize instance
 
  Return Servers::httpd::apache_itk::installer
 
@@ -280,7 +279,7 @@ sub _init
 
 =item _bkpConfFile($cfgFile)
 
- Backup the given file.
+ Backup the given file
 
  Param string $cfgFile File to backup
  Return int 0 on success, other on failure
@@ -289,8 +288,7 @@ sub _init
 
 sub _bkpConfFile($$)
 {
-	my $self = shift;
-	my $cfgFile = shift;
+	my ($self, $cfgFile) = @_;
 
 	my $rs = $self->{'hooksManager'}->trigger('beforeHttpdBkpConfFile', $cfgFile);
 	return $rs if $rs;
@@ -345,7 +343,7 @@ sub _setApacheVersion()
 
 =item _addUser()
 
- Add panel user.
+ Add panel user
 
  Return int 0 on success, other on failure
 
@@ -369,7 +367,15 @@ sub _addUser
 
 	my $rdata = $database->doQuery(
 		'admin_sys_uid',
-		'SELECT `admin_sys_uid`, `admin_sys_gid` FROM `admin` WHERE `admin_type` = ? AND `created_by` = ? LIMIT 1',
+		'
+			SELECT
+				`admin_sys_name`, `admin_sys_uid`, `admin_sys_gname`
+			FROM
+				`admin`
+			WHERE
+				`admin_type` = ? AND `created_by` = ?
+			LIMIT 1
+		',
 		'admin',
 		'0'
 	);
@@ -382,7 +388,11 @@ sub _addUser
 		return 1;
 	}
 
-	my ($oldUserName, undef, $userUid, $userGid) = getpwuid($rdata->{(%{$rdata})[0]}->{'admin_sys_uid'});
+	my $adminSysName = $rdata->{(%{$rdata})[0]}->{'admin_sys_name'};
+	my $adminSysUid = $rdata->{(%{$rdata})[0]}->{'admin_sys_uid'};
+	my $adminSysGname = $rdata->{(%{$rdata})[0]}->{'admin_sys_gname'};
+
+	my ($oldUserName, undef, $userUid, $userGid) = getpwuid($adminSysUid);
 
 	if(! $oldUserName || $userUid == 0) {
 		# Creating i-MSCP Master Web user
@@ -405,7 +415,7 @@ sub _addUser
 			'-d', escapeShell($main::imscpConfig{'GUI_ROOT_DIR'}), # New homedir
 			'-l', escapeShell($userName), # New login
 			'-m', # Move current homedir content to new homedir
-			escapeShell($oldUserName) # Old username
+			escapeShell($adminSysName) # Old username
 		);
 		my($stdout, $stderr);
 		$rs = execute("@cmd", \$stdout, \$stderr);
@@ -417,19 +427,26 @@ sub _addUser
 		@cmd = (
 			$main::imscpConfig{'CMD_GROUPMOD'},
 			'-n', escapeShell($groupName), # New group name
-			escapeShell(getgrgid($userGid)) # Current group name
+			escapeShell($adminSysGname) # Current group name
 		);
-		$rs = execute("@cmd", \$stdout, \$stderr);
 		debug($stdout) if $stdout;
 		debug($stderr) if $stderr && $rs;
+		$rs = execute("@cmd", \$stdout, \$stderr);
 		return $rs if $rs;
 	}
 
-	# Updating admin.admin_sys_uid and admin.admin_sys_gid columns
+	# Updating admin.admin_sys_name, admin.admin_sys_uid, admin.admin_sys_gname and admin.admin_sys_gid columns
 	$rdata = $database->doQuery(
-		'update',
-		'UPDATE `admin` SET `admin_sys_uid` = ?, `admin_sys_gid` = ? WHERE `admin_type` = ?',
-		$userUid, $userGid, 'admin'
+		'dummy',
+		'
+			UPDATE
+				`admin`
+			SET
+				`admin_sys_name` = ?, `admin_sys_uid` = ?, `admin_sys_gname` = ?, `admin_sys_gid` = ?
+			WHERE
+				`admin_type` = ?
+		',
+		$userName, $userUid, $groupName, $userGid, 'admin'
 	);
 	unless(ref $rdata eq 'HASH') {
 		error($rdata);
@@ -449,7 +466,7 @@ sub _addUser
 
 =item _makeDirs()
 
- Create needed directories.
+ Create needed directories
 
  Return int 0 on success, other on failure
 
@@ -485,7 +502,7 @@ sub _makeDirs
 
 =item _buildPhpConfFiles()
 
- Build PHP configuration files.
+ Build PHP configuration files
 
  Return int 0 on success, other on failure
 
@@ -514,6 +531,7 @@ sub _buildPhpConfFiles
 	# Build file using template from apache/parts/php5.itk.ini
 	$rs = $self->{'httpd'}->buildConfFile(
 		$self->{'apacheCfgDir'} . '/parts/php' . $self->{'config'}->{'PHP_VERSION'} . '.itk.ini',
+		{},
 		{ 'destination' => "$self->{'apacheWrkDir'}/php.ini", 'mode' => 0644, 'user' => $rootUName, 'group' => $rootGName }
 	);
 	return $rs if $rs;
@@ -553,7 +571,7 @@ sub _buildPhpConfFiles
 
 =item _buildApacheConfFiles()
 
- Build Apache configuration files.
+ Build Apache configuration files
 
  Return int 0 on success, other on failure
 
@@ -622,7 +640,9 @@ sub _buildApacheConfFiles
 
 	# Build new file
 	$rs = $self->{'httpd'}->buildConfFile(
-		"$self->{'apacheCfgDir'}/00_nameserver.conf", { 'destination' => "$self->{'apacheWrkDir'}/00_nameserver.conf" }
+		"$self->{'apacheCfgDir'}/00_nameserver.conf",
+		{},
+		{ 'destination' => "$self->{'apacheWrkDir'}/00_nameserver.conf" }
 	);
 	return $rs if $rs;
 
@@ -644,7 +664,7 @@ sub _buildApacheConfFiles
 
 =item _buildMasterVhostFiles()
 
- Build Master vhost files.
+ Build Master vhost files
 
  Return int 0 on success, other on failure
 
@@ -742,7 +762,7 @@ sub _buildMasterVhostFiles
 	}
 
 	# Build file using apache/00_master.conf template
-	$rs = $self->{'httpd'}->buildConfFile("$self->{'apacheCfgDir'}/00_master.conf");
+	$rs = $self->{'httpd'}->buildConfFile("$self->{'apacheCfgDir'}/00_master.conf", {});
 	return $rs if $rs;
 
 	# Install new file in production directory
@@ -783,7 +803,7 @@ sub _buildMasterVhostFiles
 		);
 		return $rs if $rs;
 
-		$rs = $self->{'httpd'}->buildConfFile("$self->{'apacheCfgDir'}/00_master_ssl.conf");
+		$rs = $self->{'httpd'}->buildConfFile("$self->{'apacheCfgDir'}/00_master_ssl.conf", {});
 		return $rs if $rs;
 
 		$rs = iMSCP::File->new(
@@ -824,7 +844,7 @@ sub _buildMasterVhostFiles
 
 =item _installLogrotate()
 
- Build and install Apache logrotate file.
+ Build and install Apache logrotate file
 
  Return int 0 on success, other on failure
 
@@ -837,7 +857,7 @@ sub _installLogrotate
 	my $rs = $self->{'hooksManager'}->trigger('beforeHttpdInstallLogrotate', 'apache2');
 	return $rs if $rs;
 
-	$rs = $self->{'httpd'}->buildConfFile('logrotate.conf');
+	$rs = $self->{'httpd'}->buildConfFile('logrotate.conf', {});
 	return $rs if $rs;
 
 	$rs = $self->{'httpd'}->installConfFile(
@@ -850,7 +870,7 @@ sub _installLogrotate
 
 =item _saveConf()
 
- Save configuration.
+ Save configuration
 
  Return int 0 on success, other on failure
 
@@ -896,7 +916,7 @@ sub _saveConf
 
 =item _oldEngineCompatibility()
 
- Remove old files.
+ Remove old files
 
  Return int 0 on success, other on failure
 
@@ -924,7 +944,7 @@ sub _oldEngineCompatibility
 
 =item _fixPhpErrorReportingValues()
 
- Fix PHP error reporting values according current PHP version.
+ Fix PHP error reporting values according current PHP version
 
  Return int 0 on success, other on failure
 

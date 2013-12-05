@@ -2671,7 +2671,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * Update external mail server parameter
 	 *
-	 * @return array SQL statement to be executed
+	 * @return array SQL statements to be executed
 	 */
 	protected function _databaseUpdate_170()
 	{
@@ -2689,5 +2689,51 @@ class iMSCP_Update_Database extends iMSCP_Update
 	protected function _databaseUpdate_171()
 	{
 		return $this->_dropColumn('plugin', 'plugin_previous_status');
+	}
+
+	/**
+	 * Add admin.admin_sys_name and admin.admin_sys_gname columns and polutate them
+	 *
+	 * @return array SQL statements to be executed
+	 */
+	protected function  _databaseUpdate_172()
+	{
+		if(getmyuid() === 0) {
+			$sqlUdp = array(
+				$this->_addColumn(
+					'admin', 'admin_sys_name', 'varchar(16) collate utf8_unicode_ci DEFAULT NULL AFTER admin_type'
+				),
+				$this->_addColumn(
+					'admin', 'admin_sys_gname', 'varchar(32) collate utf8_unicode_ci DEFAULT NULL AFTER admin_sys_uid'
+				)
+			);
+
+			$stmt = exec_query('SELECT admin_id, admin_sys_uid FROM admin');
+
+			while($data = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
+				if($data['admin_sys_uid'] > 0) {
+					$adminSysPwUid = posix_getpwuid($data['admin_sys_uid']);
+					$adminSysGrUid = posix_getgrgid($adminSysPwUid['gid']);
+
+					$adminSysName = quoteValue($adminSysPwUid['name']);
+					$adminSysGname = quoteValue($adminSysGrUid['name']);
+
+					$sqlUdp[] = "
+						UPDATE
+							admin
+						SET
+							admin_sys_name = $adminSysName, admin_sys_gname = $adminSysGname
+						WHERE
+							admin_id = {$data['admin_id']}
+					";
+				}
+			}
+
+			return $sqlUdp;
+		} else {
+			throw new iMSCP_Update_Exception(
+				'Database update 172 require root user privileges. Please run the i-MSCP installer.'
+			);
+		}
 	}
 }

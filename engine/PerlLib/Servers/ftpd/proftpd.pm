@@ -1,5 +1,11 @@
 #!/usr/bin/perl
 
+=head1 NAME
+
+ Servers::ftpd::proftpd - i-MSCP Proftpd Server implementation
+
+=cut
+
 # i-MSCP - internet Multi Server Control Panel
 # Copyright (C) 2010-2013 by internet Multi Server Control Panel
 #
@@ -35,47 +41,74 @@ use iMSCP::Execute;
 use iMSCP::File;
 use parent 'Common::SingletonClass';
 
-sub _init
-{
-	my $self = shift;
 
-	$self->{'hooksManager'} = iMSCP::HooksManager->getInstance();
+=head1 DESCRIPTION
 
-	$self->{'hooksManager'}->trigger(
-		'beforeFtpdInit', $self, 'proftpd'
-	) and fatal('proftpd - beforeFtpdInit hook has failed');
+ i-MSCP Proftpd Server implementation.
 
-	$self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/proftpd";
-	$self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
-	$self->{'wrkDir'} = "$self->{'cfgDir'}/working";
+=head1 PUBLIC METHODS
 
-	$self->{'commentChar'} = '#';
+=over 4
 
-	tie %{$self->{'config'}}, 'iMSCP::Config', 'fileName' => "$self->{'cfgDir'}/proftpd.data";
+=item registerSetupHooks($hooksManager)
 
-	$self->{'hooksManager'}->trigger(
-		'afterFtpdInit', $self, 'proftpd'
-	) and fatal('proftpd - afterFtpdInit hook has failed');
+ Register setup hooks.
 
-	$self;
-}
+ Param iMSCP::HooksManager $hooksManager Hooks manager instance
+ Return int 0 on success, other on failure
+
+=cut
 
 sub registerSetupHooks
 {
-	my $self = shift;
-	my $hooksManager = shift;
+	my ($self, $hooksManager) = @_;
 
 	require Servers::ftpd::proftpd::installer;
 	Servers::ftpd::proftpd::installer->getInstance()->registerSetupHooks($hooksManager);
 }
 
-sub install
+=item preinstall()
+
+ Process preinstall tasks
+
+ Return int 0 on success, other on failure
+
+=cut
+
+sub preinstall
 {
 	my $self = shift;
 
+	my $rs = $self->{'hooksManager'}->trigger('beforeFtpdPreinstall');
+	return $rs if $rs;
+
+	$rs = $self->stop();
+	return $rs if $rs;
+
+	$self->{'hooksManager'}->trigger('afterFtpdPreinstall');
+}
+
+=item install()
+
+ Process install tasks.
+
+ Return int 0 on success, other on failure
+
+=cut
+
+sub install
+{
 	require Servers::ftpd::proftpd::installer;
 	Servers::ftpd::proftpd::installer->getInstance()->install();
 }
+
+=item postinstall()
+
+ Process postinstall tasks
+
+ Return int 0 on success, other on failure
+
+=cut
 
 sub postinstall
 {
@@ -84,10 +117,18 @@ sub postinstall
 	my $rs = $self->{'hooksManager'}->trigger('beforeFtpdPostInstall', 'proftpd');
 	return $rs if $rs;
 
-	$self->{'restart'} = 'yes';
+	$self->{'start'} = 'yes';
 
 	$self->{'hooksManager'}->trigger('afterFtpdPostInstall', 'proftpd');
 }
+
+=item uninstall()
+
+ Process uninstall tasks
+
+ Return int 0 on success, other on failure
+
+=cut
 
 sub uninstall
 {
@@ -103,8 +144,114 @@ sub uninstall
 	$rs = $self->{'hooksManager'}->trigger('afterFtpdUninstall', 'proftpd');
 	return $rs if $rs;
 
-	$self->restart();
+	$self->{'restart'};
+
+	0;
 }
+
+=item addUser(\%data)
+
+ Process addUser tasks.
+
+ Param hash_ref $data Reference to a hash containing data as provided by User module
+ Return int 0 on success, other on failure
+
+=cut
+
+sub addUser
+{
+	my ($self, $data) = @_;
+
+	my $rs = $self->{'hooksManager'}->trigger('beforeFtpdAddUser', $data);
+	return $rs if $rs;
+
+	my $db = iMSCP::Database->factory();
+
+	# Updating ftp_users.uid and ftp_users.gid columns
+	my $rdata = $db->doQuery(
+		'dummy',
+		'UPDATE `ftp_users` SET `uid` = ?, `gid` = ? WHERE `admin_id` = ?',
+		$data->{'USER_SYS_UID'},
+		$data->{'USER_SYS_GID'},
+		$data->{'USER_ID'}
+	);
+	unless(ref $rdata eq 'HASH') {
+		error($rdata);
+		return 1;
+	}
+
+	# Updating ftp_group.gid column
+	$rdata = $db->doQuery(
+		'dummy',
+		'UPDATE `ftp_group` SET `gid` = ? WHERE `groupname` = ?',
+		$data->{'USER_SYS_GID'},
+		$data->{'USERNAME'}
+	);
+	unless(ref $rdata eq 'HASH') {
+		error($rdata);
+		return 1;
+	}
+
+	$self->{'hooksManager'}->trigger('AfterFtpdAddUser', $data);
+}
+
+=item Start()
+
+ Start Proftpd
+
+ Return int 0, other on failure
+
+=cut
+
+sub start
+{
+	my $self = shift;
+
+	my $rs = $self->{'hooksManager'}->trigger('beforeFtpdStart');
+	return $rs if $rs;
+
+	my ($stdout, $stderr);
+	$rs = execute("$self->{'config'}->{'CMD_FTPD'} start", \$stdout, \$stderr);
+	debug($stdout) if $stdout;
+	debug($stderr) if $stderr && ! $rs;
+	error($stderr) if $stderr && $rs;
+	return $rs if $rs;
+
+	$self->{'hooksManager'}->trigger('afterFtpdStart');
+}
+
+=item stop()
+
+ Stop Proftpd
+
+ Return int 0, other on failure
+
+=cut
+
+sub stop
+{
+	my $self = shift;
+
+	my $rs = $self->{'hooksManager'}->trigger('beforeFtpdStop');
+	return $rs if $rs;
+
+	my ($stdout, $stderr);
+	$rs = execute("$self->{'config'}->{'CMD_FTPD'} stop", \$stdout, \$stderr);
+	debug($stdout) if $stdout;
+	debug($stderr) if $stderr && ! $rs;
+	error($stderr) if $stderr && $rs;
+	return $rs if $rs;
+
+	$self->{'hooksManager'}->trigger('afterFtpdStop');
+}
+
+=item restart()
+
+ Restart Proftpd
+
+ Return int 0, other on failure
+
+=cut
 
 sub restart
 {
@@ -116,7 +263,6 @@ sub restart
 	my ($stdout, $stderr);
 	$rs = execute("$self->{'config'}->{'CMD_FTPD'} restart", \$stdout, \$stderr);
 	debug($stdout) if $stdout;
-	# Debug target is expected below
 	debug($stderr) if $stderr && ! $rs;
 	error($stderr) if $stderr && $rs;
 	return $rs if $rs;
@@ -124,42 +270,18 @@ sub restart
 	$self->{'hooksManager'}->trigger('afterFtpdRestart');
 }
 
-sub addUser
-{
-	my $self = shift;
-	my $data = shift;
+=item getTraffic($domainName)
 
-	my $rs = $self->{'hooksManager'}->trigger('beforeFtpdAddUser', $data);
-	return $rs if $rs;
+ Get ftp traffic for the given domain name
 
-	my $database = iMSCP::Database->factory();
+ Param string $domainName Domain name for which traffic must be returned
+ Return int Traffic in bytes
 
-	# Updating ftp_users.uid and ftp_users.gid columns
-	my @sql = (
-		"UPDATE `ftp_users` SET `uid` = ?, `gid` = ? WHERE `admin_id` = ?",
-		$data->{'USER_SYS_UID'}, $data->{'USER_SYS_GID'}, $data->{'USER_ID'}
-	);
-	my $rdata = $database->doQuery('update', @sql);
-	unless(ref $rdata eq 'HASH') {
-		error($rdata);
-		return 1;
-	}
-
-	# Updating ftp_group.gid column
-	@sql = ('UPDATE `ftp_group` SET `gid` = ? WHERE `groupname` = ?', $data->{'USER_SYS_GID'}, $data->{'USERNAME'});
-	$rdata = $database->doQuery('update', @sql);
-	unless(ref $rdata eq 'HASH') {
-		error($rdata);
-		return 1;
-	}
-
-	$self->{'hooksManager'}->trigger('AfterFtpdAddUser', $data);
-}
+=cut
 
 sub getTraffic
 {
-	my $self = shift;
-	my $domainName = shift;
+	my ($self, $domainName) = @_;
 
 	$self->{'hooksManager'}->trigger('beforeFtpdGetTraffic', $domainName) and return 0;
 
@@ -188,6 +310,56 @@ sub getTraffic
 	(exists $self->{'logDb'}->{$domainName}) ? $self->{'logDb'}->{$domainName} : 0;
 }
 
+=back
+
+=head1 PRIVATE METHODS
+
+=over 4
+
+=item _init()
+
+ Called by getInstance(). Initialize instance.
+
+ Return Servers::ftpd::proftpd
+
+=cut
+
+sub _init
+{
+	my $self = shift;
+
+	$self->{'hooksManager'} = iMSCP::HooksManager->getInstance();
+
+	$self->{'hooksManager'}->trigger(
+		'beforeFtpdInit', $self, 'proftpd'
+	) and fatal('proftpd - beforeFtpdInit hook has failed');
+
+	$self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/proftpd";
+	$self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
+	$self->{'wrkDir'} = "$self->{'cfgDir'}/working";
+
+	$self->{'commentChar'} = '#';
+
+	tie %{$self->{'config'}}, 'iMSCP::Config', 'fileName' => "$self->{'cfgDir'}/proftpd.data";
+
+	$self->{'hooksManager'}->trigger(
+		'afterFtpdInit', $self, 'proftpd'
+	) and fatal('proftpd - afterFtpdInit hook has failed');
+
+	$self;
+}
+
+=item END
+
+ Code triggered at the very end of script execution.
+
+ - Start or restart proftpd if needed
+ - Remove old traffic logs file if exists
+
+ Return int Exit code
+
+=cut
+
 END
 {
 	my $exitCode = $?;
@@ -195,10 +367,24 @@ END
 	my $trfFile = "$main::imscpConfig{'TRAFF_LOG_DIR'}/$self->{'config'}->{'FTP_TRAFF_LOG'}";
 	my $rs = 0;
 
-	$rs = $self->restart() if defined $self->{'restart'} && $self->{'restart'} eq 'yes';
+	if($self->{'start'} && $self->{'start'} eq 'yes') {
+		$rs = $self->start();
+	} elsif($self->{'restart'} && $self->{'restart'} eq 'yes') {
+		$rs = $self->restart();
+	}
+
 	$rs |= iMSCP::File->new('filename' => "$trfFile.old")->delFile() if -f "$trfFile.old";
 
 	$? = $exitCode || $rs;
 }
+
+=back
+
+=head1 AUTHORS
+
+ Daniel Andreca <sci2tech@gmail.com>
+ Laurent Declercq <l.declercq@nuxwin.com>
+
+=cut
 
 1;

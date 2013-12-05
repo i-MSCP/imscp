@@ -9,10 +9,13 @@ ADDONS:
 	- Fixed: Roundcube|PhpMyAdmin - Ensure that database tables exist (recovery case)
 
 ENGINE:
-	- Changed: The event listeners are now persistent. This allow to avoid self-registering
-	- Fixed: Removed useless file tests on directory deletion
+	- Added: System (UNIX) user/group names are now stored database
+	- Changed: Event listeners are now persistent. This allow to avoid self-registering
 	- Fixed: External command died with signal 9 (without core dump)
-	- Fixed: Keep current unix user uid/gid when updating the SYSTEM_USER_PREFIX and SYSTEM_USER_MIN_UID prefix
+	- Fixed: Keep current unix user uid/gid when updating the SYSTEM_USER_PREFIX and SYSTEM_USER_MIN_UID parameters
+	- Fixed: Pass-in domain data to the listeners which listen to the *HttpdBuildConfFile and *HttpdBuildConf events
+	- Fixed: Proftpd server is down after update
+	- Fixed: Removed useless file tests on directory deletion
 	- Updated: Plugin API to version 0.2.2
 
 GUI:

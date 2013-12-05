@@ -61,7 +61,8 @@ sub loadData
 		'admin_id',
 		'
 			SELECT
-				`admin_id`, `admin_name`, `admin_sys_uid`, `admin_sys_gid`, `admin_status`
+				`admin_id`, `admin_name`, `admin_sys_name`, `admin_sys_uid`, `admin_sys_gname`, `admin_sys_gid`,
+				`admin_status`
 			FROM
 				`admin`
 			WHERE
@@ -172,7 +173,7 @@ sub add
 			'-l', escapeShell($userName), # New login
 			'-m', # Move current homedir content to new homedir
 			'-s', escapeShell($shell), #  New Shell
-			escapeShell($oldUserName) # Old username
+			escapeShell($self->{'admin_sys_name'}) # Old username
 		);
 		my($stdout, $stderr);
 		$rs = execute("@cmd", \$stdout, \$stderr);
@@ -184,7 +185,7 @@ sub add
 		@cmd = (
 			$main::imscpConfig{'CMD_GROUPMOD'},
 			'-n', escapeShell($groupName), # New group name
-			escapeShell(getgrgid($userGid)) # Current group name
+			escapeShell($self->{'admin_sys_gname'}) # Current group name
 		);
 		$rs = execute("@cmd", \$stdout, \$stderr);
 		debug($stdout) if $stdout;
@@ -192,10 +193,17 @@ sub add
 		return $rs if $rs;
 	}
 
-	# Updating admin.admin_sys_uid and admin.admin_sys_gid columns
+	# Updating admin.admin_sys_name, admin.admin_sys_uid, admin.admin_sys_gname and admin.admin_sys_gid columns
 	my @sql = (
-		"UPDATE `admin` SET `admin_sys_uid` = ?, `admin_sys_gid` = ? WHERE `admin_id` = ?",
-		$userUid, $userGid, $self->{'userId'}
+		'
+			UPDATE
+				`admin`
+			SET
+				`admin_sys_name` = ?, `admin_sys_uid` = ?, `admin_sys_gname` = ?, `admin_sys_gid` = ?
+			WHERE
+				`admin_id` = ?
+		',
+		$userName, $userUid, $groupName, $userGid, $self->{'userId'}
 	);
 	my $rdata = iMSCP::Database->factory()->doQuery('update', @sql);
 	unless(ref $rdata eq 'HASH') {
@@ -203,7 +211,9 @@ sub add
 		return 1;
 	}
 
+	$self->{'admin_sys_name'} = $userName;
 	$self->{'admin_sys_uid'} = $userUid;
+	$self->{'admin_sys_gname'} = $groupName;
 	$self->{'admin_sys_gid'} = $userGid;
 
 	$self->{'hooksManager'}->trigger(
