@@ -19,7 +19,7 @@ ENGINE:
 	- Updated: Plugin API to version 0.2.3
 
 GUI:
-	- Added: Allow to override plugin configuration with local files (See data/persistent/plugins/README file)
+	- Added: Allow to override plugin configuration with local file (See data/persistent/plugins/README file)
 	- Added: quoteValue() function, which allow to quote string for use in SQL statements
 	- Updated: Plugin API to version 0.2.3
 
