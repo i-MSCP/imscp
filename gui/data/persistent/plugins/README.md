@@ -32,6 +32,5 @@ return array(
 		'mysql-client',
 		'git'
 	)
-
 );
 ```

@@ -165,6 +165,7 @@ select:focus {
 }
 
 input[readonly="readonly"],
+input[readonly],
 input[type="text"]:disabled,
 input[type="password"]:disabled,
 select:disabled,
