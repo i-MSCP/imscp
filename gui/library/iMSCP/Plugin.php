@@ -175,12 +175,21 @@ abstract class iMSCP_Plugin
 	 */
 	final public function getConfigFromFile()
 	{
-		$configFile = iMSCP_Registry::get('pluginManager')->getPluginDirectory() . '/' . $this->getName() . '/config.php';
+		$pluginName =  $this->getName();
+
+		$configFile = iMSCP_Registry::get('pluginManager')->getPluginDirectory() . "/$pluginName/config.php";
 		$config = array();
 
 		if (@file_exists($configFile)) {
 			if (@is_readable($configFile)) {
 				$config = include $configFile;
+
+				$localConfigFile =  PERSISTENT_PATH . "/plugins/$pluginName.php";
+
+				if(@is_readable($localConfigFile)) {
+					$localConfig = include $localConfigFile;
+					$config = array_merge($config, $localConfig);
+				}
 			} else {
 				throw new iMSCP_Plugin_Exception(
 					sprintf('Unable to read the plugin %s file. Please check file permissions', $configFile)
