@@ -188,7 +188,7 @@ abstract class iMSCP_Plugin
 
 				if(@is_readable($localConfigFile)) {
 					$localConfig = include $localConfigFile;
-					$config = array_merge($config, $localConfig);
+					$config = array_replace_recursive($config, $localConfig);
 				}
 			} else {
 				throw new iMSCP_Plugin_Exception(

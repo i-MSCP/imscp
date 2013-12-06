@@ -26,7 +26,12 @@ Local configuration files *MUST* be named with plugin name followed by the php f
 ```php
 <?php
 return array(
-	// Override default installation path
-	'install_path' => '/usr'
+	// Override default jail_app_sections parameter to add the git section
+	'jail_app_sections' => array(
+		'imscp-base',
+		'mysql-client',
+		'git'
+	)
+
 );
 ```
