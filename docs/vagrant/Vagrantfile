@@ -36,9 +36,9 @@ Vagrant.configure("2") do |config|
 
   # Drop the memory requirement to 256 for now.
   config.vm.provider :virtualbox do |vb, override|
-    override.vm.box = "precise32"
     vb.customize ["modifyvm", :id, "--memory", "512"]
-    override.vm.box_url = "http://files.vagrantup.com/precise32.box"
+    override.vm.box = "wheezy32-05Dec2013"
+    override.vm.box_url = "http://vagrant.i-mscp.net/download/wheezy32-05Dec2013.box"
   end
 
   config.vm.provider :lxc do |lxc, override|
