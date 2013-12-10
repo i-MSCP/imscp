@@ -49,7 +49,7 @@ This class provide command line options for both imscp-autoinstall and imscp-set
 
 =over 4
 
-=item getopt($usage)
+=item parse($usage)
 
  This class method parses command line options in @ARGV with GetOptions from Getopt::Long.
 
@@ -59,7 +59,6 @@ options will be prepended to this if usage help must be printed.
  If any additonal parameters are passed to this function, they are also passed to GetOptions. This can be used to handle
 additional options.
 
- Param STRING $usage Usage text
  Return undef
 
 =cut
@@ -103,13 +102,63 @@ EOF
 
 	eval {
 		Getopt::Long::GetOptions(
-			'reconfigure|r:s', sub { shift, $class->reconfigure(shift) },
+			'reconfigure|r:s', sub { $class->reconfigure($_[1]) },
 			'noprompt|n', sub { $options->{'noprompt'} = 1 },
-			'preseed|p=s', sub { shift; $class->preseed(shift) },
-			'hook-file|h=s', sub { shift; $class->hookFile(shift) },
+			'preseed|p=s', sub { $class->preseed($_[1]) },
+			'hook-file|h=s', sub { $class->hookFile($_[1]) },
 			'clean-addons|c', sub { $options->{'cleanAddons'} = 1 },
 			'skip-addons-update|a', sub { $options->{'skipAddonsUpdate'} = 1 },
 			'debug|d', sub { $options->{'debug'} = 1 },
+			'help|?', sub { $showUsage->() },
+			@_,
+		) || $showUsage->(1);
+	};
+
+	undef;
+}
+
+=item parseNoDefault($usage)
+
+ This class method parses command line options in @ARGV with GetOptions from Getopt::Long. Default options are excluded.
+
+ The first parameter should be basic usage text for the program in question. Any following parameters are passed to
+to GetOptions.
+
+ Return undef
+
+=cut
+
+sub parseNoDefault($$)
+{
+	my $class = shift;
+	my $usage = shift;
+
+	my $showUsage = sub {
+		my $exitCode = shift || 0;
+		print STDERR output(<<EOF);
+$usage
+ -?, --help Show this help.
+
+EOF
+		debugRegisterCallBack(sub { exit $exitCode; });
+		exit $exitCode;
+	};
+
+	# Do not load Getopt::Long if not needed
+	return unless grep { $_ =~ /^-/ } @ARGV;
+
+	local $SIG{__WARN__} = sub {
+		my $error = shift;
+		$error =~ s/(.*?) at.*/$1/;
+		print STDERR output($error) if $error ne "Died\n";
+	};
+
+	require Getopt::Long;
+
+	Getopt::Long::Configure('bundling');
+
+	eval {
+		Getopt::Long::GetOptions(
 			'help|?', sub { $showUsage->() },
 			@_,
 		) || $showUsage->(1);
