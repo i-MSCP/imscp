@@ -98,3 +98,7 @@ smtpd_data_restrictions = reject_multi_recipient_bounce,
 {SSL}smtpd_tls_key_file = {GUI_CERT_DIR}/{MTA_HOSTNAME}.pem
 {SSL}smtpd_tls_auth_only = no
 {SSL}smtpd_tls_received_header = yes
+
+{SSL}smtp_tls_security_level = may
+{SSL}smtp_tls_loglevel = 2
+{SSL}smtp_tls_CAfile = /etc/ssl/certs/ca-certificates.crt
