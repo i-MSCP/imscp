@@ -172,7 +172,8 @@ function check_login($userLevel = '', $preventExternalLogin = true)
     // prevent external login / check for referer
     if ($preventExternalLogin && !empty($_SERVER['HTTP_REFERER'])) {
         // Extracting hostname from referer URL
-        $refererHostname = parse_url($_SERVER['HTTP_REFERER'], PHP_URL_HOST);
+        // Note2: We remove any braket in referer (ipv6 issue)
+        $refererHostname = str_replace(array('[', ']'), '', parse_url($_SERVER['HTTP_REFERER'], PHP_URL_HOST));
 
         // The URL does contains the host element ?
         if (!is_null($refererHostname)) {
