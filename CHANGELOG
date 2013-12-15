@@ -17,11 +17,13 @@ ENGINE:
 	- Fixed: Pass-in domain data to the listeners which listen to the *HttpdBuildConfFile and *HttpdBuildConf events
 	- Fixed: Proftpd server is down after update
 	- Fixed: Removed useless file tests on directory deletion
-	- Updated: Plugin API to version 0.2.2
 
 GUI:
-	- Added: Allow to override plugin configuration with local file (See data/persistent/plugins/README file)
 	- Added: quoteValue() function, which allow to quote string for use in SQL statements
+	- Updated: Plugin API to version 0.2.2
+
+PLUGIN:
+	- Added: Allow to override plugin configuration with local file (See data/persistent/plugins/README file)
 	- Updated: Plugin API to version 0.2.2
 
 SETUP:

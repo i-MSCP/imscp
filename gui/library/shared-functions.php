@@ -1343,6 +1343,67 @@ function utils_removeDir($directory)
 	return true;
 }
 
+/**
+ * Merge two arrays
+ *
+ * For duplicate keys, the following is done:
+ *  - Nested arrays are recursively merged
+ *  - Items in $array2 with INTEGER keys are appended
+ *  - Items in $array2 with STRING keys overwrite current values
+ *
+ * @param array $array1
+ * @param array $array2
+ * @return array
+ */
+function utils_arrayMergeRecursive(array $array1, array $array2)
+{
+	foreach ($array2 as $key => $value) {
+		if (array_key_exists($key, $array1)) {
+			if (is_int($key)) {
+				$array1[] = $value;
+			} elseif (is_array($value) && is_array($array1[$key])) {
+				$array1[$key] = utils_arrayMergeRecursive($array1[$key], $value);
+			} else {
+				$array1[$key] = $value;
+			}
+		} else {
+			$array1[$key] = $value;
+		}
+	}
+
+	return $array1;
+}
+
+/**
+ * Compares array1 against array2 (recursively) and returns the difference
+ *
+ * @param array $array1 The array to compare from
+ * @param array $array2 An array to compare against
+ * @return array An array containing all the entries from array1 that are not present in $array2.
+ */
+function utils_arrayDiffRecursive(array $array1, array $array2)
+{
+	$diff = array();
+
+	foreach ($array1 as $key => $value) {
+		if (array_key_exists($key, $array2)) {
+			if (is_array($value)) {
+				$arrDiff = utils_arrayDiffRecursive($value, $array2[$key]);
+
+				if (count($arrDiff)) {
+					$diff[$key] = $arrDiff;
+				}
+			} elseif ($value != $array2[$key]) {
+				$diff[$key] = $value;
+			}
+		} else {
+			$diff[$key] = $value;
+		}
+	}
+
+	return $diff;
+}
+
 /***********************************************************************************************************************
  * Checks functions
  */

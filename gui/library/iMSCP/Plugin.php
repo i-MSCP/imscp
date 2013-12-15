@@ -183,12 +183,18 @@ abstract class iMSCP_Plugin
 		if (@file_exists($configFile)) {
 			if (@is_readable($configFile)) {
 				$config = include $configFile;
-
 				$localConfigFile =  PERSISTENT_PATH . "/plugins/$pluginName.php";
 
 				if(@is_readable($localConfigFile)) {
 					$localConfig = include $localConfigFile;
-					$config = array_replace_recursive($config, $localConfig);
+
+					if(array_key_exists('__REMOVE__', $localConfig) && is_array($localConfig['__REMOVE__'])) {
+						$config = utils_arrayDiffRecursive($config, $localConfig['__REMOVE__']);
+
+						if(array_key_exists('__OVERRIDE__', $localConfig) && is_array($localConfig['__OVERRIDE__'])) {
+							$config = utils_arrayMergeRecursive($config, $localConfig['__OVERRIDE__']);
+						}
+					}
 				}
 			} else {
 				throw new iMSCP_Plugin_Exception(
