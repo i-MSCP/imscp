@@ -10,6 +10,7 @@ ADDONS:
 
 ENGINE:
 	- Added: System (UNIX) user/group names are now stored database
+	- Added: IMSCP_CLEAR_SCREEN environment variable which allows to not clear the terminal screen at end of script
 	- Changed: Event listeners are now persistent. This allow to avoid self-registering
 	- Fixed: External command died with signal 9 (without core dump)
 	- Fixed: Keep current unix user uid/gid when updating the SYSTEM_USER_PREFIX and SYSTEM_USER_MIN_UID parameters

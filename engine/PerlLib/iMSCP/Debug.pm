@@ -366,7 +366,7 @@ END
 			debug("Exit code: $exitCode");
 		}
 
-		system('clear') if $ENV{'TERM'};
+		system('clear') if defined $ENV{'TERM'} && (! defined $ENV{'IMSCP_CLEAR_SCREEN'} || $ENV{'IMSCP_CLEAR_SCREEN'});
 
 		my $logDir = ($main::imscpConfig{'LOG_DIR'} && -d $main::imscpConfig{'LOG_DIR'})
 			? $main::imscpConfig{'LOG_DIR'} : '/tmp';
