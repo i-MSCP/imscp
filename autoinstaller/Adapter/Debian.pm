@@ -568,7 +568,7 @@ sub _processExternalRepositories
 		my (@cmd, $stdout, $stderr);
 
 		for(keys %{$self->{'externalRepositoriesToRemove'}}) {
-			if($sourceListFileContent =~  /$_/) {
+			if($sourceListFileContent =~ /^$_/m) {
 				my $repository = $self->{'externalRepositoriesToRemove'}->{$_};
 
 				# Retrieve any packages installed from the repository to remove
@@ -585,7 +585,7 @@ sub _processExternalRepositories
 				@{$self->{'packagesToUninstall'}} = (@{$self->{'packagesToUninstall'}}, split("\n", $stdout)) if $stdout;
 
 				# Remove the repository from the sources.list file
-				$sourceListFileContent =~ s/\n?(deb|deb-src)\s+$_\n?//gm; # deb-src is kept for backward compatibility
+				$sourceListFileContent =~ s/\n?$_\n?//gm;
 			}
 		}
 
@@ -597,7 +597,7 @@ sub _processExternalRepositories
 
 		# Add needed external repositories
 		for(keys %{$self->{'externalRepositoriesToAdd'}}) {
-			if($sourceListFileContent !~ /^$_$/m) {
+			if($sourceListFileContent !~ /^$_/m) {
 				my $repository = $self->{'externalRepositoriesToAdd'}->{$_};
 
 				$sourceListFileContent .= "\n$_\n";

@@ -117,8 +117,7 @@ sub _processExternalRepositories
 		my (@cmd, $stdout, $stderr);
 
 		for(keys %{$self->{'externalRepositoriesToRemove'}}) {
-
-			if(/^ppa:/ || $sourceListFileContent =~ /$_/) {
+			if(/^ppa:/ || $sourceListFileContent =~ /^$_/m) {
 				my $repository = $self->{'externalRepositoriesToRemove'}->{$_};
 
 				my @cmd = (
@@ -153,7 +152,7 @@ sub _processExternalRepositories
 					} else { # Normal repository
 						# Remove the repository from the sources.list file
 						$sourceListFileContent = $sourceListFile->get();
-						$sourceListFileContent =~ s/\n?(deb|deb-src)\s+$_\n?//gm;
+						$sourceListFileContent =~ s/\n?$_\n?//gm;
 
 						$rs = $sourceListFile->set($sourceListFileContent);
 						return $rs if $rs;
@@ -173,7 +172,7 @@ sub _processExternalRepositories
 
 		# Add needed external repositories
 		for(keys %{$self->{'externalRepositoriesToAdd'}}) {
-			if(/^ppa:/ || $sourceListFileContent !~ /^deb\s+$_$/m) {
+			if(/^ppa:/ || $sourceListFileContent !~ /^$_/m) {
 				my $repository = $self->{'externalRepositoriesToAdd'}->{$_};
 
 				if(/^ppa:/) { # PPA repository
