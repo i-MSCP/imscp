@@ -585,7 +585,8 @@ sub _processExternalRepositories
 				@{$self->{'packagesToUninstall'}} = (@{$self->{'packagesToUninstall'}}, split("\n", $stdout)) if $stdout;
 
 				# Remove the repository from the sources.list file
-				$sourceListFileContent =~ s/\n?$_\n?//gm;
+				(my $regexp = $_) =~ s/deb/(?:deb|deb-src)/; # Ensure backward compatibility (deb-src)
+				$sourceListFileContent =~ s/\n?$regexp?\n?//gm;
 			}
 		}
 
