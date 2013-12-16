@@ -585,7 +585,7 @@ sub _processExternalRepositories
 				@{$self->{'packagesToUninstall'}} = (@{$self->{'packagesToUninstall'}}, split("\n", $stdout)) if $stdout;
 
 				# Remove the repository from the sources.list file
-				$sourceListFileContent =~ s/\n?(deb|deb-src)\s+$_\n?//gm;
+				$sourceListFileContent =~ s/\n?(deb|deb-src)\s+$_\n?//gm; # deb-src is kept for backward compatibility
 			}
 		}
 
@@ -597,10 +597,10 @@ sub _processExternalRepositories
 
 		# Add needed external repositories
 		for(keys %{$self->{'externalRepositoriesToAdd'}}) {
-			if($sourceListFileContent !~ /^deb\s+$_$/m) {
+			if($sourceListFileContent !~ /^$_$/m) {
 				my $repository = $self->{'externalRepositoriesToAdd'}->{$_};
 
-				$sourceListFileContent .= "\ndeb $_\ndeb-src $_\n";
+				$sourceListFileContent .= "\n$_\n";
 
 				if($repository->{'repository_key_srv'}) { # Add the repository key from the given server, using key id
 					if($repository->{'repository_key_id'}) {
