@@ -565,18 +565,18 @@ sub _processExternalRepositories
 
 		delete $self->{'externalRepositoriesToRemove'}->{$_} for keys %{$self->{'externalRepositoriesToAdd'}};
 
-		my ($cmd, $stdout, $stderr);
+		my (@cmd, $stdout, $stderr);
 
 		for(keys %{$self->{'externalRepositoriesToRemove'}}) {
 			if($sourceListFileContent =~  /$_/) {
 				my $repository = $self->{'externalRepositoriesToRemove'}->{$_};
 
 				# Retrieve any packages installed from the repository to remove
-				# TODO This command is too slow ; A better alternative must be found
-				$rs = execute(
-					"aptitude search '?installed?origin($repository->{'repository_origin'})' | cut -b 5- | cut -d ' ' -f 1",
-					\$stdout, \$stderr
+				my @cmd = (
+					'aptitude search', escapeShell("?installed?origin($repository->{'repository_origin'})"),
+					"| cut -b 5- | cut -d ' ' -f 1",
 				);
+				$rs = execute("@cmd", \$stdout, \$stderr);
 				debug($stdout) if $stdout;
 				error($stderr) if $stderr && $rs;
 				return $rs if $rs;
@@ -604,19 +604,23 @@ sub _processExternalRepositories
 
 				if($repository->{'repository_key_srv'}) { # Add the repository key from the given server, using key id
 					if($repository->{'repository_key_id'}) {
-						$cmd = "apt-key adv --recv-keys --keyserver $repository->{'repository_key_srv'} $repository->{'repository_key_id'}";
+						@cmd = (
+							'apt-key adv --recv-keys --keyserver',
+							escapeShell($repository->{'repository_key_srv'}),
+							escapeShell($repository->{'repository_key_id'})
+						);
 					} else {
 						error("The repository_key_id entry for the '$_' repository was not found");
 						return 1;
 					}
 				} elsif($repository->{'repository_key_uri'}) { # Add the repository key by fetching it from the given URI
-					$cmd = "wget -qO- $repository->{'repository_key_uri'} | apt-key add -";
+					@cmd = ('wget -qO-', escapeShell($repository->{'repository_key_uri'}), '| apt-key add -');
 				} else {
 					error("The repository_key_uri entry for the '$_' repository was not found");
 					return 1;
 				}
 
-				$rs = execute($cmd, \$stdout, \$stderr);
+				$rs = execute("@cmd", \$stdout, \$stderr);
 				debug($stdout) if $stdout;
 				error($stderr) if $stderr && $rs;
 				return $rs if $rs;

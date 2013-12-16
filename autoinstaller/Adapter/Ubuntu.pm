@@ -114,18 +114,19 @@ sub _processExternalRepositories
 		delete $self->{'externalRepositoriesToRemove'}->{$_} for keys %{$self->{'externalRepositoriesToAdd'}};
 
 		my $distroRelease = iMSCP::LsbRelease->getInstance()->getRelease(1);
-		my ($cmd, $stdout, $stderr);
+		my (@cmd, $stdout, $stderr);
 
 		for(keys %{$self->{'externalRepositoriesToRemove'}}) {
 
 			if(/^ppa:/ || $sourceListFileContent =~ /$_/) {
 				my $repository = $self->{'externalRepositoriesToRemove'}->{$_};
 
-				# Retrieve any packages installed from the repository to remove
-				$rs = execute(
-					"aptitude search '?installed?origin($repository->{'repository_origin'})' | cut -b 5- | cut -d ' ' -f 1",
-					\$stdout, \$stderr
+				my @cmd = (
+					'aptitude search', escapeShell("?installed?origin($repository->{'repository_origin'})"),
+					"| cut -b 5- | cut -d ' ' -f 1",
 				);
+				# Retrieve any packages installed from the repository to remove
+				$rs = execute("@cmd", \$stdout, \$stderr);
 				debug($stdout) if $stdout;
 				error($stderr) if $stderr && $rs;
 				return $rs if $rs;
@@ -134,7 +135,8 @@ sub _processExternalRepositories
 				@{$self->{'packagesToUninstall'}} = (@{$self->{'packagesToUninstall'}}, split("\n", $stdout)) if $stdout;
 
 				if($distroRelease > 10.04) {
-					$rs = execute("add-apt-repository -y -r $_", \$stdout, \$stderr);
+					@cmd = ('add-apt-repository -y -r', escapeShell($_));
+					$rs = execute("@cmd", \$stdout, \$stderr);
 					debug($stdout) if $stdout;
 					error($stderr) if $stderr && $rs;
 					return $rs if $rs;
@@ -177,23 +179,29 @@ sub _processExternalRepositories
 				if(/^ppa:/) { # PPA repository
 					if($distroRelease > 10.4) {
 						if($repository->{'repository_key_srv'}) {
-							$cmd = "add-apt-repository -y -k $repository->{'repository_key_srv'} $_";
+							@cmd = (
+								'add-apt-repository -y -k',
+								escapeShell($repository->{'repository_key_srv'}),
+								escapeShell($_)
+							);
 						} else {
-							$cmd = "add-apt-repository -y $_";
+							@cmd = ('add-apt-repository -y', escapeShell($_));
 						}
 				 	} else {
-						$cmd = "add-apt-repository $_";
+						@cmd = ('add-apt-repository', escapeShell($_));
 				 	}
 
-					$rs = execute($cmd, \$stdout, \$stderr);
+					$rs = execute("@cmd", \$stdout, \$stderr);
 					debug($stdout) if $stdout;
 					error($stderr) if $stderr && $rs;
 					return $rs if $rs
 				} else { # Normal repository
 					if($distroRelease > 10.4) {
-						$rs = execute("add-apt-repository -y $_", \$stdout, \$stderr);
+						@cmd = ('add-apt-repository -y ', escapeShell($_));
+						$rs = execute("@cmd", \$stdout, \$stderr);
 					} else {
-						$rs = execute("add-apt-repository $_", \$stdout, \$stderr);
+						@cmd = ('add-apt-repository ', escapeShell($_));
+						$rs = execute("@cmd", \$stdout, \$stderr);
 					}
 					debug($stdout) if $stdout;
 					error($stderr) if $stderr && $rs;
@@ -201,19 +209,23 @@ sub _processExternalRepositories
 
 					if($repository->{'repository_key_srv'}) {
 						if($repository->{'repository_key_id'}) {
-							$cmd = "apt-key adv --recv-keys --keyserver $repository->{'repository_key_srv'} $repository->{'repository_key_id'}";
+							@cmd = (
+								'apt-key adv --recv-keys --keyserver',
+								escapeShell($repository->{'repository_key_srv'}),
+								escapeShell($repository->{'repository_key_id'})
+							);
 						} else {
 							error("The repository_key_id entry for the '$_' repository was not found");
 							return 1;
 						}
 					} elsif($repository->{'repository_key_uri'}) {
-						$cmd = "wget -qO- $repository->{'repository_key_uri'} | apt-key add -";
+						@cmd = ('wget -qO-', escapeShell($repository->{'repository_key_uri'}), '| apt-key add -');
 					} else {
 						error("The repository_key_uri entry for the '$_' repository was not found");
 						return 1;
 					}
 
-					$rs = execute($cmd, \$stdout, \$stderr);
+					$rs = execute("@cmd", \$stdout, \$stderr);
 					debug($stdout) if $stdout;
 					error($stderr) if $stderr && $rs;
 					return $rs if $rs

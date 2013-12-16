@@ -68,36 +68,12 @@
         <alternative default="mysql_5.5">
             <mysql_5.5
                     pinning_package="mysql-server-5.5 mysql-server-5.5 mysql-common libmysqlclient18"
-                    pinning_pin="release o=Ubuntu,n=raring"
+                    pinning_pin="release o=Ubuntu,n=trusty"
                     pinning_pin_priority="1001"
                     >
                 <package>mysql-server-5.5</package>
                 <package>mysql-client-5.5</package>
             </mysql_5.5>
-            <mariadb_5.5
-                    pinning_package="mariadb-client-5.5 mariadb-server-5.5 mariadb-common mysql-common libmysqlclient18"
-                    pinning_pin="origin mirror2.hs-esslingen.de"
-                    pinning_pin_priority="1001"
-                    repository="deb http://mirror2.hs-esslingen.de/mariadb/repo/5.5/ubuntu raring main"
-                    repository_origin="MariaDB"
-                    repository_key_srv="keyserver.ubuntu.com"
-                    repository_key_id="0xcbcb082a1bb943db"
-                    >
-                <package>mariadb-client-5.5</package>
-                <package>mariadb-server-5.5</package>
-            </mariadb_5.5>
-            <mariadb_10.0
-                    pinning_package="mariadb-client-10.0 mariadb-server-10.0 mariadb-common mysql-common libmysqlclient18"
-                    pinning_pin="origin mirror2.hs-esslingen.de"
-                    pinning_pin_priority="1001"
-                    repository="deb http://mirror2.hs-esslingen.de/mariadb/repo/10.0/ubuntu raring main"
-                    repository_origin="MariaDB"
-                    repository_key_srv="keyserver.ubuntu.com"
-                    repository_key_id="0xcbcb082a1bb943db"
-                    >
-                <package>mariadb-client-10.0</package>
-                <package>mariadb-server-10.0</package>
-            </mariadb_10.0>
             <remote_server>
                 <package>mysql-client</package>
             </remote_server>
@@ -118,7 +94,7 @@
     <perl>
         <package>perl</package>
         <package>perl-base</package>
-        <package>libperl5.14</package>
+        <package>libperl5.18</package>
         <package>libberkeleydb-perl</package>
         <package>libcrypt-blowfish-perl</package>
         <package>libcrypt-cbc-perl</package>

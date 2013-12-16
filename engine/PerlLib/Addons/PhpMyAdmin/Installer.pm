@@ -37,9 +37,9 @@ use warnings;
 use iMSCP::Debug;
 use Addons::PhpMyAdmin;
 use iMSCP::Addons::ComposerInstaller;
-use parent 'Common::SingletonClass';
+use version;
 
-our $VERSION = '0.2.0';
+use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
 
@@ -147,7 +147,28 @@ sub showDialog($$)
 
 sub preinstall
 {
-	iMSCP::Addons::ComposerInstaller->getInstance()->registerPackage('imscp/phpmyadmin', "$VERSION.*\@dev");
+	my $version = undef;
+
+	if($main::imscpConfig{'SQL_SERVER'} ne 'remote_server') {
+		$version = $1 if($main::imscpConfig{'SQL_SERVER'} =~ /([0-9]+\.[0-9]+)$/);
+	} else {
+		$version = iMSCP::Database->factory()->doQuery(1, 'SELECT VERSION()');
+		unless(ref $version eq 'HASH') {
+			error($version);
+			return 1;
+		}
+
+		$version = $1 if(((keys %{$version})[0]) =~ /^([0-9]+\.[0-9]+)/);
+	}
+
+	unless(defined $version) {
+		error('Unable to find MySQL server version');
+		return 1;
+	}
+
+	my $pmaBranch = (version->new("v$version") >= version->new('v5.5')) ? '0.3.0' : '0.2.0';
+
+	iMSCP::Addons::ComposerInstaller->getInstance()->registerPackage('imscp/phpmyadmin', "$pmaBranch.*\@dev");
 }
 
 =item install()
@@ -186,10 +207,6 @@ sub install
 
 	# Build new configuration files
 	$rs = $self->_buildConfig();
-	return $rs if $rs;
-
-	# Update phpMyAdmin database if needed (should be done after phpMyAdmin config files generation)
-	$rs = $self->_updateDatabase() unless $self->{'newInstall'};
 	return $rs if $rs;
 
 	# Set new phpMyAdmin version
@@ -246,8 +263,6 @@ sub _init
 	$self->{'cfgDir'} = $self->{'phpmyadmin'}->{'cfgDir'};
 	$self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
 	$self->{'wrkDir'} = "$self->{'cfgDir'}/working";
-	$self->{'newInstall'} = 1;
-
 	$self->{'config'} = $self->{'phpmyadmin'}->{'config'};
 
 	my $oldConf	= "$self->{'cfgDir'}/phpmyadmin.old.data";
@@ -539,63 +554,43 @@ sub _setupDatabase
 			return 1;
 		}
 
-		# Connect to newly created PhpMyAdmin database
-		$db->set('DATABASE_NAME', $phpmyadminDbName);
-		$rs = $db->connect();
-		if($rs) {
-			error("Unable to connect to the PhpMyAdmin '$phpmyadminDbName' SQL database: $rs");
-			return $rs if $rs;
-		}
-
-		# Import PhpMyAdmin database schema
-		my $schemaFile = iMSCP::File->new('filename' => "$phpmyadminDir/examples/create_tables.sql");
-		
-		my $content = $schemaFile->get();
-		unless(defined $content) {
-			error("Unable to read $phpmyadminDir/examples/create_tables.sql");
-			return 1;
-		}
-
-		$content =~ s/^(--[^\n]{0,})?\n//gm;
-
-		for ((split /;\n/, $content)) {
-			# The PhpMyAdmin script contains the creation of the database as well
-			# We ignore this part as the database has already been created
-			if ($_ !~ /^CREATE DATABASE/ and $_ !~ /^USE/) {
-				$rs = $db->doQuery('dummy', $_);
-
-				unless(ref $rs eq 'HASH') {
-					error("Unable to execute SQL query: $rs");
-					return 1;
-				}
-			}
-		}
-	} else {
-		$self->{'newInstall'} = 0;
 	}
 
-	0;
-}
+	# In any case (new install / upgrade) we execute queries from the create_tables.sql file. On upgrade, this will
+	# create the missing tables
 
-=item _updateDatabase()
+	# Connect to the PhpMyAdmin database
+	$db->set('DATABASE_NAME', $phpmyadminDbName);
+	$rs = $db->connect();
+	if($rs) {
+		error("Unable to connect to the PhpMyAdmin '$phpmyadminDbName' SQL database: $rs");
+		return $rs if $rs;
+	}
 
- Update phpMyAdmin database
+	# Import PhpMyAdmin database schema
+	my $schemaFile = iMSCP::File->new('filename' => "$phpmyadminDir/examples/create_tables.sql");
+		
+	my $content = $schemaFile->get();
+	unless(defined $content) {
+		error("Unable to read $phpmyadminDir/examples/create_tables.sql");
+		return 1;
+	}
 
- Return int 0 on success other on failure
+	$content =~ s/^(--[^\n]{0,})?\n//gm;
 
-=cut
+	for ((split /;\n/, $content)) {
+		# The PhpMyAdmin script contains the creation of the database as well
+		# We ignore this part as the database has already been created
+		if ($_ !~ /^CREATE DATABASE/ and $_ !~ /^USE/) {
+			$rs = $db->doQuery('dummy', $_);
 
-sub _updateDatabase
-{
-	my $self = shift;
+			unless(ref $rs eq 'HASH') {
+				error("Unable to execute SQL query: $rs");
+				return 1;
+			}
+		}
+	}
 
-	#my $phpmyadminDir = "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/pma";
-	#my $imscpDbName = $main::imscpConfig{'DATABASE_NAME'};
-	#my $phpmyadminDbName = $imscpDbName . '_pma';
-	#my $fromVersion = $self->{'config'}->{'PHPMYADMIN_VERSION'} || '4.0.4.2';
-
-	# Currently no update here because 4.0.4.2 is the first version we have with a configuration storage
-	
 	0;
 }
 

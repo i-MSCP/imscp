@@ -6,10 +6,15 @@ Git Master
 ------------------------------------------------------------------------------------------------------------------------
 
 ADDONS:
-	- Fixed: Roundcube|PhpMyAdmin - Ensure that database tables exist (recovery case)
+	- Fixed: Roundcube|PhpMyAdmin installers - Ensure that database tables exist (recovery case)
+	- Fixed: PhpMyAdmin 4.1.0 is only compatible with MySQL Server version 5.5 and newer
+
+DISTRO
+	- Added: Packages file for Ubuntu Saucy Slamander
+	- Added: Packages file for Ubuntu Trusty Tahr (experimental)
 
 ENGINE:
-	- Added: System (UNIX) user/group names are now stored database
+	- Added: System (UNIX) user/group names are now stored in database
 	- Added: IMSCP_CLEAR_SCREEN environment variable which allows to not clear the terminal screen at end of script
 	- Changed: Event listeners are now persistent. This allow to avoid self-registering
 	- Fixed: External command died with signal 9 (without core dump)
@@ -20,14 +25,14 @@ ENGINE:
 
 GUI:
 	- Added: quoteValue() function, which allow to quote string for use in SQL statements
-	- Updated: Plugin API to version 0.2.2
 
-PLUGIN:
-	- Added: Allow to override plugin configuration with local file (See data/persistent/plugins/README file)
+PLUGINS:
+	- Added: Support for local plugin configuration files (See data/persistent/plugins/README.md)
 	- Updated: Plugin API to version 0.2.2
 
 SETUP:
 	- Fixed: Composer process timeout must be increased for slow connections
+	- Fixed: Unable to add external repository (Lucid...)
 
 ------------------------------------------------------------------------------------------------------------------------
 1.1.0-rc4.7
