@@ -34,6 +34,9 @@ PLUGINS:
 SETUP:
 	- Fixed: Composer process timeout must be increased for slow connections
 	- Fixed: Unable to add external repository (Lucid...)
+	
+Tickets:
+	- Fixed #972: Bug - Adding second External Mailserver gives an error (Edit mode)
 
 ------------------------------------------------------------------------------------------------------------------------
 1.1.0-rc4.7

@@ -35,6 +35,9 @@ $(document).ready(function () {
 	});
 	$(".add").click(function () {
 		var entry = entries.first().clone();
+		var indexNr = $('.entry').length;
+		entry.find("[name='host[0]']").attr('name', 'host[' + indexNr + ']');
+		entry.find("[name='priority[0]']").attr('name', 'priority[' + indexNr + ']');
 		entry.find("input[type=text]").val('');
 		entry.find("input[type=hidden]").remove();
 		entry.find(":checkbox").prop("checked", false).prop("disabled", true);
