@@ -40,6 +40,9 @@ use iMSCP::Addons;
 # Turn off localisation features to force any command output to be in english
 $ENV{'LC_MESSAGES'} = 'C';
 
+# Not not clear screen at end of script
+$ENV{'IMSCP_CLEAR_SCREEN'} = 0;
+
 # Mode in which the script is triggered
 # For now, this variable is only used by i-MSCP installer/setup scripts
 $main::execmode = shift || '';
