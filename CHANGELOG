@@ -37,6 +37,7 @@ SETUP:
 	
 Tickets:
 	- Fixed #972: Bug - Adding second External Mailserver gives an error (Edit mode)
+	- Fixed #975: Bug - Customers assignment - disk limitation check doesn't work correctly
 
 ------------------------------------------------------------------------------------------------------------------------
 1.1.0-rc4.7

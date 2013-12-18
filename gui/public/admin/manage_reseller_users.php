@@ -239,7 +239,7 @@ function admin_updateResellerLimits($toReseller, $fromReseller, $users, &$errors
 
 		list(
 			$subdomainsLimit, , $domainAliasesLimit, , $mailAccountsLimit, , $ftpAccountsLimit, , $sqlDatabasesLimit, ,
-			$sqlUsersLimit, $trafficLimit, $diskspaceLimit
+			$sqlUsersLimit, , $trafficLimit, $diskspaceLimit
 			) = generate_user_props($domainId);
 
 		calculate_reseller_dvals(
