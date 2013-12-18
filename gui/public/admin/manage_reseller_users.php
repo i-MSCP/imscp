@@ -138,8 +138,8 @@ function admin_generateCustomersTable($tpl)
 		} else {
 			set_page_message(tr('No unassigned users were found in the database.'), 'info');
 		}
-
-		redirectTo('manage_users.php');
+		
+		$tpl->assign('RESELLER_ITEM', '');
 	} else {
 		while (!$stmt->EOF) {
 			$adminId = $stmt->fields['admin_id'];
