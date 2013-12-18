@@ -37,6 +37,7 @@ SETUP:
 	
 Tickets:
 	- Fixed #972: Bug - Adding second External Mailserver gives an error (Edit mode)
+	- Fixed #974: Bug - Customers assignment doesn't work if the first reseller hasn't any client
 	- Fixed #975: Bug - Customers assignment - disk limitation check doesn't work correctly
 
 ------------------------------------------------------------------------------------------------------------------------
