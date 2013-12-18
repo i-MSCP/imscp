@@ -505,6 +505,7 @@ sub _addAwstatsConfig
 
 	my $tags = {
 		APACHE_LOG_DIR => $httpd->{'config'}->{'APACHE_LOG_DIR'},
+		ALIAS => $data->{'ALIAS'},
 		DOMAIN_NAME => $data->{'DOMAIN_NAME'},
 		AWSTATS_CACHE_DIR => $main::imscpConfig{'AWSTATS_CACHE_DIR'},
 		AWSTATS_ENGINE_DIR => $main::imscpConfig{'AWSTATS_ENGINE_DIR'},
