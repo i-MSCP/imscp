@@ -197,12 +197,15 @@ sub _installLogrotate($$$)
 {
 	my (undef, $content, $filename) = @_;
 
+	my $httpd = Servers::httpd->factory();
+
 	if ($filename eq 'logrotate.conf') {
 		$$content = replaceBloc(
 			"# SECTION custom BEGIN.\n",
 			"# SECTION custom END.\n",
-			"\tprerotate\n".
-			"\t\t$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Addons/Webstats/Awstats/Scripts/awstats_updateall.pl now " .
+			"\tprerotate\n" .
+			"\t\IMSCP_APACHE_LOG_DIR=$httpd->{'config'}->{'APACHE_LOG_DIR'} " .
+			"$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Addons/Webstats/Awstats/Scripts/awstats_updateall.pl now " .
 			"-awstatsprog=$main::imscpConfig{'AWSTATS_ENGINE_DIR'}/awstats.pl &> /dev/null\n" .
 			"\tendscript\n",
 			$$content,
@@ -318,6 +321,8 @@ sub _disableDebianConfig
 
 sub _addAwstatsCronTask
 {
+	my $httpd = Servers::httpd->factory();
+
 	Servers::cron->factory()->addTask(
 		{
 			TASKID => "Addons::Webstats::Awstats",
@@ -328,6 +333,7 @@ sub _addAwstatsCronTask
 			DWEEK => '*',
 			USER => $main::imscpConfig{'ROOT_USER'},
 			COMMAND =>
+				"IMSCP_APACHE_LOG_DIR=$httpd->{'config'}->{'APACHE_LOG_DIR'} " .
 				"$main::imscpConfig{'CMD_PERL'} " .
 				"$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Addons/Webstats/Awstats/Scripts/awstats_updateall.pl now " .
 				"-awstatsprog=$main::imscpConfig{'AWSTATS_ENGINE_DIR'}/awstats.pl >/dev/null 2>&1"

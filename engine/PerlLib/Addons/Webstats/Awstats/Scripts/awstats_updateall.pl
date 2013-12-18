@@ -144,20 +144,25 @@ if (@files) {
 	debug("AwstatsDir=$AwstatsDir");
 	debug("AwstatsProg=$AwstatsProg");
 
+	my $apacheLogDir = (exists $ENV{'IMSCP_APACHE_LOG_DIR'}) ? $ENV{'IMSCP_APACHE_LOG_DIR'} : '/var/log/apache2';
+
 	foreach (@files) {
 		if ($_ =~ /^awstats\.(.*)conf$/) {
 			my $domain = $1||"default"; $domain =~ s/\.$//;
-			# Define command line
-			my $command="\"$AwstatsDir/$AwstatsProg\" -update -config=$domain";
-			$command.=" -configdir=\"$DIRCONFIG\"";
-			if ($LastLine) 
-			{
-				$command.=" -lastline=$LastLine";
+
+			if(-f "$apacheLogDir/$domain-combined.log") {
+				# Define command line
+				my $command="\"$AwstatsDir/$AwstatsProg\" -update -config=$domain";
+				$command.=" -configdir=\"$DIRCONFIG\"";
+				if ($LastLine)
+				{
+					$command.=" -lastline=$LastLine";
+				}
+				# Run command line
+				print "Running '$command' to update config $domain\n";
+				my $output = `$command 2>&1`;
+				print "$output\n";
 			}
-			# Run command line
-			print "Running '$command' to update config $domain\n";
-			my $output = `$command 2>&1`;
-			print "$output\n";
 		}
 	}
 } else {
