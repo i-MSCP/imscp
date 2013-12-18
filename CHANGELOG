@@ -37,6 +37,7 @@ SETUP:
 	
 Tickets:
 	- Fixed #972: Bug - Adding second External Mailserver gives an error (Edit mode)
+	- Fixed #976: Bug - Wrong syntax for the mail quota value
 
 ------------------------------------------------------------------------------------------------------------------------
 1.1.0-rc4.7

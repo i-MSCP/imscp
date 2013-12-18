@@ -431,14 +431,16 @@ function reseller_checkData($phpini)
 	}
 
 	// Check for mail quota
-	if (!imscp_limit_check($mailQuota, null)) {
-		set_page_message(tr('Incorrect Email quota.'), 'error');
-	} elseif ($diskspace != 0 && $mailQuota > $diskspace) {
-		set_page_message(tr('Email quota cannot be bigger than disk space limit.'), 'error');
-	} elseif($diskspace != 0 && $mailQuota == 0) {
-		set_page_message(
-			tr('Email quota cannot be unlimited. Max value is %d MiB.', $diskspace), 'error'
-		);
+	if (isset($_POST['hp_mail_quota'])) {
+		if (!imscp_limit_check($mailQuota, null)) {
+			set_page_message(tr('Incorrect Email quota.'), 'error');
+		} elseif ($diskspace != 0 && $mailQuota > $diskspace) {
+			set_page_message(tr('Email quota cannot be bigger than disk space limit.'), 'error');
+		} elseif($diskspace != 0 && $mailQuota == 0) {
+			set_page_message(
+				tr('Email quota cannot be unlimited. Max value is %d MiB.', $diskspace), 'error'
+			);
+		}
 	}
 
 	if ($phpini->checkRePerm('phpiniSystem') && isset($_POST['phpiniSystem'])) {
