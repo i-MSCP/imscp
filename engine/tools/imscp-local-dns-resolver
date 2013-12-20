@@ -1,0 +1,95 @@
+#!/usr/bin/perl
+
+# i-MSCP - internet Multi Server Control Panel
+# Copyright (C) 2010-2013 by internet Multi Server Control Panel
+#
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation; either version 2
+# of the License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+#
+# @category    i-MSCP
+# @copyright   2010-2013 by i-MSCP | http://i-mscp.net
+# @author      Laurent Declercq <l.declercq@nuxwin.com>
+# @link        http://i-mscp.net i-MSCP Home Site
+# @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
+
+use strict;
+use warnings;
+
+use FindBin;
+use lib "$FindBin::Bin/..", "$FindBin::Bin/../PerlLib";
+
+use iMSCP::Debug;
+use iMSCP::Boot;
+use iMSCP::Execute;
+
+# Turn off localisation features to force any command output to be in English
+$ENV{'LC_MESSAGES'} = 'C';
+
+# Do not clear screen at end of script
+$ENV{'IMSCP_CLEAR_SCREEN'} = 0;
+
+newDebug('imscp-local-dns-resolver.log');
+
+silent(1);
+
+umask(027);
+
+iMSCP::Boot->getInstance()->boot(
+	{ 'norequirements' => 'yes', 'nodatabase' => 'yes', 'nolock' => 'yes', 'config_readonly' => 'yes' }
+);
+
+sub addLocalDnsResolver
+{
+	if(defined $main::imscpConfig{'LOCAL_DNS_RESOLVER'} && $main::imscpConfig{'LOCAL_DNS_RESOLVER'} eq 'yes') {
+		my ($stdout, $stderr);
+		my $rs = execute(
+			"$main::imscpConfig{'CMD_ECHO'} 'nameserver 127.0.0.1' | /sbin/resolvconf -a lo.imscp", \$stdout, \$stderr
+		);
+		debug($stdout) if $stdout;
+		error($stderr) if $stderr && $rs;
+		return $rs;
+	}
+
+	0;
+}
+
+sub deleteLocalDnsResolver
+{
+	my ($stdout, $stderr);
+	my $rs = execute('/sbin/resolvconf -d lo.imscp', \$stdout, \$stderr);
+	debug($stdout) if $stdout;
+	error($stderr) if $stderr && $rs;
+
+	$rs;
+}
+
+sub run
+{
+	my ($action, $rs) = ($ARGV[0] // 'unknown', 0);
+
+	if ($action eq 'start') {
+		$rs = addLocalDnsResolver();
+		return $rs if $rs;
+	} elsif ($action eq 'stop') {
+		$rs = deleteLocalDnsResolver();
+		return $rs if $rs;
+	} else {
+		error("Usage: $0 {start|stop}.");
+		return 1;
+	}
+
+	0;
+}
+
+exit run();

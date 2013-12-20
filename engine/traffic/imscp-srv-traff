@@ -43,7 +43,7 @@ use warnings;
 # Turn off localisation features to force any command output to be in english
 $ENV{'LC_MESSAGES'} = 'C';
 
-# Not not clear screen at end of script
+# Do not clear screen at end of script
 $ENV{'IMSCP_CLEAR_SCREEN'} = 0;
 
 sub srv_traff_start_up

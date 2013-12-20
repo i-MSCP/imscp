@@ -23,6 +23,7 @@ ENGINE:
 	- Fixed: Pass-in domain data to the listeners which listen to the *HttpdBuildConfFile and *HttpdBuildConf events
 	- Fixed: Proftpd server is down after update
 	- Fixed: Removed useless file tests on directory deletion
+	- Fixed: Usage of dynamic resolv.conf (See resolvconf(8))
 
 GUI:
 	- Added: quoteValue() function, which allow to quote string for use in SQL statements
@@ -36,6 +37,7 @@ SETUP:
 	- Fixed: Unable to add external repository (Lucid...)
 	
 Tickets:
+	ser
 	- Fixed #972: Bug - Adding second External Mailserver gives an error (Edit mode)
 	- Fixed #974: Bug - Customers assignment doesn't work if the first reseller hasn't any client
 	- Fixed #975: Bug - Customers assignment - disk limitation check doesn't work correctly

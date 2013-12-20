@@ -176,7 +176,6 @@ sub setupTasks
 		[\&setupCreateMasterGroup,          'Creating i-MSCP system master group'],
 		[\&setupCreateSystemDirectories,    'Creating system directories'],
 		[\&setupServerHostname,             'Setting server hostname'],
-		[\&setupLocalResolver,              'Setting local resolver'],
 		[\&setupCreateDatabase,             'Creating/updating i-MSCP database'],
 		[\&setupSecureSqlInstallation,      'Securing SQL installation'],
 		[\&setupServerIps,                  'Setting server ips'],
@@ -1451,59 +1450,6 @@ sub setupServerIps
 	}
 
 	iMSCP::HooksManager->getInstance()->trigger('afterSetupServerIps');
-}
-
-# Setup local resolver
-sub setupLocalResolver
-{
-	my $rs = iMSCP::HooksManager->getInstance()->trigger('beforeSetupLocalResolver');
-	return $rs if $rs;
-
-	my ($err, $file, $content, $out);
-
-	if(-f $main::imscpConfig{'RESOLVER_CONF_FILE'}) {
-		$file = iMSCP::File->new(filename => $main::imscpConfig{'RESOLVER_CONF_FILE'});
-		$content = $file->get();
-
-		unless (defined $content){
-			$err = "Unable to read $main::imscpConfig{'RESOLVER_CONF_FILE'}";
-			error($err);
-			return 1;
-		}
-
-		if(setupGetQuestion('LOCAL_DNS_RESOLVER') =~ /^yes$/) {
-			if($content !~ /nameserver 127.0.0.1/i) {
-				$content =~ s/(nameserver.*)/nameserver 127.0.0.1\n$1/i;
-			}
-		} else {
-			$content =~ s/nameserver 127.0.0.1//i;
-		}
-
-		$content =~ s/\n+/\n/g; # Remove any empty line
-
-		# Saving the old file if needed
-		if(! -f "$main::imscpConfig{'RESOLVER_CONF_FILE'}.bkp") {
-			$rs = $file->copyFile("$main::imscpConfig{'RESOLVER_CONF_FILE'}.bkp");
-			return $rs if $rs;
-		}
-
-		# Storing the new file
-		$rs = $file->set($content);
-		return $rs if $rs;
-
-		$rs = $file->save() ;
-		return $rs if $rs;
-
-		$rs = $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
-		return $rs if $rs;
-
-		$rs = $file->mode(0644);
-		return $rs if $rs;
-	} else {
-		warning("Unable to found the resolv.conf file on your system");
-	}
-
-	iMSCP::HooksManager->getInstance()->trigger('afterSetupLocalResolver');
 }
 
 # Create iMSCP database

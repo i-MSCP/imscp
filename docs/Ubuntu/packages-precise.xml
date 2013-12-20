@@ -180,6 +180,7 @@
         <package>policyd-weight</package>
         <package>postgrey</package>
         <package>procmail</package>
+        <package>resolvconf</package>
         <package>sasl2-bin</package>
         <package>ssh</package>
         <package>tar</package>

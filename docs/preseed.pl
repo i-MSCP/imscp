@@ -66,6 +66,9 @@ $main::questions{'SECONDARY_DNS'} = 'no'; # 'no' or list of IP addresses, each s
 # IPv6 support for DNS server
 $main::questions{'BIND_IPV6'} = 'no'; # 'yes' or 'no'
 
+# Local DNS resolver
+$main::questions{'LOCAL_DNS_RESOLVER'} = 'yes'; # 'yes' or 'no'
+
 # Server to use for the Sql service
 # Depending of your distro 'mysql_5.1' or 'mysql_5.5' or 'mariadb_5.3' or 'mariadb_5.5' or 'mariadb_10.0' or 'remote_server'
 $main::questions{'SQL_SERVER'} = 'mysql_5.5';
@@ -75,9 +78,6 @@ $main::questions{'SERVER_HOSTNAME'} = 'host.domain.tld'; # Fully qualified hostn
 
 # Domain name from which the i-MSCP frontEnd should be reachable
 $main::questions{'BASE_SERVER_VHOST'} = 'panel.domain.tld'; # Fully qualified domain name
-
-# Local DNS resolver
-$main::questions{'LOCAL_DNS_RESOLVER'} = 'yes'; # 'yes' or 'no'
 
 # Base server IP (primary external IP) - Accept both IPv4 and IPv6
 # IP must be already configured (see ifconfig)

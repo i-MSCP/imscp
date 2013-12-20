@@ -28,9 +28,7 @@ use strict;
 use warnings;
 
 use FindBin;
-use lib "$FindBin::Bin/..";
-use lib "$FindBin::Bin/../PerlLib";
-use lib "$FindBin::Bin/../PerlVendor";
+use lib "$FindBin::Bin/..", "$FindBin::Bin/../PerlLib";
 
 use iMSCP::Debug;
 use iMSCP::Boot;
@@ -40,7 +38,7 @@ use iMSCP::Addons;
 # Turn off localisation features to force any command output to be in english
 $ENV{'LC_MESSAGES'} = 'C';
 
-# Not not clear screen at end of script
+# Do not clear screen at end of script
 $ENV{'IMSCP_CLEAR_SCREEN'} = 0;
 
 # Mode in which the script is triggered

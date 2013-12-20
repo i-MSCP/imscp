@@ -8,7 +8,7 @@
 # Should-Stop:       mysql
 # Default-Start:     2 3 4 5
 # Default-Stop:      0 1 6
-# Short-Description: i-MSCP Network Traffic Logger
+# Short-Description: i-MSCP Network Service
 ### END INIT INFO
 
 # Note: do not modify any of these vars here, use /etc/default/$NAME instead
@@ -20,6 +20,7 @@ LFILE=/var/run/$NAME
 IPTABLES=/sbin/iptables
 ENGINEPATH="/var/www/imscp/engine"
 ENGINETOOLSPATH=${ENGINEPATH}"/tools"
+LOCALDNSRESOLVER="imscp-local-dns-resolver"
 NETWORKCARDMANAGER="imscp-net-interfaces-mngr"
 LOGDIR=/var/log/imscp
 LOGFILE=${LOGDIR}/${NAME}.log
@@ -115,6 +116,14 @@ remove_rules() {
 	rm $LFILE
 }
 
+add_local_dns_resolver() {
+	${ENGINETOOLSPATH}/${LOCALDNSRESOLVER} start >${LOGDIR}/${LOCALDNSRESOLVER}.log 2>&1
+}
+
+delete_local_dns_resolver() {
+	${ENGINETOOLSPATH}/${LOCALDNSRESOLVER} stop >${LOGDIR}/${LOCALDNSRESOLVER}.log 2>&1
+}
+
 add_interfaces() {
 	${ENGINETOOLSPATH}/${NETWORKCARDMANAGER} start >${LOGDIR}/${NETWORKCARDMANAGER}.log 2>&1
 }
@@ -131,6 +140,7 @@ case "$1" in
 		echo ""
 	   	log_warning_msg "${NAME} is already started" >&2
 	else
+		add_local_dns_resolver
 		add_interfaces
 		add_rules
 	fi
@@ -145,6 +155,7 @@ case "$1" in
 	else
 		remove_rules
 		remove_interfaces
+		delete_local_dns_resolver
 	fi
 
 	log_end_msg $?
@@ -158,12 +169,14 @@ case "$1" in
 	else
 		remove_rules
 		remove_interfaces
+		delete_local_dns_resolver
 		log_end_msg $?
 		[ -n "$DIETIME" ] && sleep "$DIETIME"
 	fi
 
 	log_daemon_msg "Starting $DESC" "$NAME"
 
+	add_local_dns_resolver
 	add_interfaces
 	add_rules
 

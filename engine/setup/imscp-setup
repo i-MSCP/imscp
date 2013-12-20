@@ -28,7 +28,7 @@ use strict;
 use warnings;
 
 use FindBin;
-use lib "$FindBin::Bin/..", "$FindBin::Bin/../PerlLib", "$FindBin::Bin/../PerlVendor";
+use lib "$FindBin::Bin/..", "$FindBin::Bin/../PerlLib";
 
 umask(027);
 
