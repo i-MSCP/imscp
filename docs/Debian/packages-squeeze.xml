@@ -15,7 +15,7 @@
                 <package>libapache2-mod-php5</package>
             </apache_itk>
             <apache_php_fpm
-                    repository="http://packages.dotdeb.org squeeze all"
+                    repository="deb http://packages.dotdeb.org squeeze all"
                     repository_origin="packages.dotdeb.org"
                     repository_key_uri="http://www.dotdeb.org/dotdeb.gpg"
                     >
