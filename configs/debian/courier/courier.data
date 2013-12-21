@@ -10,17 +10,17 @@ COURIER_IMAP_SSL = imapd-ssl
 
 COURIER_POP_SSL = pop3d-ssl
 
-CMD_AUTHDAEMON = /etc/init.d/courier-authdaemon
+AUTHDAEMON_SNAME = courier-authdaemon
 
-CMD_IMAP = /etc/init.d/courier-imap
+IMAPD_SNAME = courier-imap
 
-CMD_IMAP_SSL = /etc/init.d/courier-imap-ssl
+IMAPD_SSL_SNAME = courier-imap-ssl
 
 CMD_MAILDIRMAKE = /usr/bin/maildirmake
 
-CMD_POP = /etc/init.d/courier-pop
+POPD_SNAME = courier-pop
 
-CMD_POP_SSL = /etc/init.d/courier-pop-ssl
+POPD_SSL_SNAME = courier-pop-ssl
 
 DATABASE_USER =
 

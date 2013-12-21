@@ -8,7 +8,7 @@ POSTFIX_SENDMAIL_PATH = /usr/sbin/sendmail
 
 MTA_VIRTUAL_CONF_DIR = /etc/postfix/imscp
 
-CMD_MTA = /etc/init.d/postfix
+CMD_MTA = postfix
 
 MTA_LOCAL_MAIL_DIR = /var/mail
 

@@ -14,7 +14,7 @@ BIND_USER = bind
 
 BIND_GROUP = bind
 
-CMD_NAMED = /etc/init.d/bind9
+NAMED_SNAME = bind9
 
 CMD_NAMED_COMPILEZONE = /usr/sbin/named-compilezone
 

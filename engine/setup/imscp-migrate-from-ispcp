@@ -165,8 +165,8 @@ sub removeIspcpFiles
 			}
 
 			# Remove init script links
-			if(-x '/usr/sbin/update-rc.d') {
-				$rs = execute("/usr/sbin/update-rc.d -f $_ remove", \$stdout, \$stderr);
+			if($main::imscpConfig{'SERVICE_INSTALLER'} ne 'no') {
+				$rs = execute("$main::imscpConfig{'SERVICE_INSTALLER'} -f $_ remove", \$stdout, \$stderr);
 				debug($stdout) if $stdout;
 				push @errors, $stderr if $stderr && $rs;
 			}

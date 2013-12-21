@@ -211,11 +211,10 @@ sub start
 	return $rs if $rs;
 
 	my ($stdout, $stderr);
-	$rs = execute("$self->{'config'}->{'CMD_FTPD'} start", \$stdout, \$stderr);
+	$rs = execute("$main::imscpConfig{'SERVICE_MNGR'} $self->{'config'}->{'FTPD_SNAME'} start", \$stdout, \$stderr);
 	debug($stdout) if $stdout;
-	debug($stderr) if $stderr && ! $rs;
-	error($stderr) if $stderr && $rs;
-	return $rs if $rs;
+	error($stderr) if $stderr && $rs > 1;
+	return $rs if $rs > 1;
 
 	$self->{'hooksManager'}->trigger('afterFtpdStart');
 }
@@ -236,11 +235,10 @@ sub stop
 	return $rs if $rs;
 
 	my ($stdout, $stderr);
-	$rs = execute("$self->{'config'}->{'CMD_FTPD'} stop", \$stdout, \$stderr);
+	$rs = execute("$main::imscpConfig{'SERVICE_MNGR'} $self->{'config'}->{'FTPD_SNAME'} stop", \$stdout, \$stderr);
 	debug($stdout) if $stdout;
-	debug($stderr) if $stderr && ! $rs;
-	error($stderr) if $stderr && $rs;
-	return $rs if $rs;
+	error($stderr) if $stderr && $rs > 1;
+	return $rs if $rs > 1;
 
 	$self->{'hooksManager'}->trigger('afterFtpdStop');
 }
@@ -261,11 +259,10 @@ sub restart
 	return $rs if $rs;
 
 	my ($stdout, $stderr);
-	$rs = execute("$self->{'config'}->{'CMD_FTPD'} restart", \$stdout, \$stderr);
+	$rs = execute("$main::imscpConfig{'SERVICE_MNGR'} $self->{'config'}->{'FTPD_SNAME'} restart", \$stdout, \$stderr);
 	debug($stdout) if $stdout;
-	debug($stderr) if $stderr && ! $rs;
-	error($stderr) if $stderr && $rs;
-	return $rs if $rs;
+	error($stderr) if $stderr && $rs > 1;
+	return $rs if $rs > 1;
 
 	$self->{'hooksManager'}->trigger('afterFtpdRestart');
 }

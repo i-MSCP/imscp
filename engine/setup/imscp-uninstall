@@ -260,15 +260,14 @@ sub _uninstallDaemons
 {
 	my ($rs, $stdout, $stderr);
 
-	for ($main::imscpConfig{'CMD_IMSCPN'}, $main::imscpConfig{'CMD_IMSCPD'}) {
-		if(-f $_) {
-			my $serviceName = fileparse($_);
-
-			# Removing services  (Debian, Ubuntu)
-			$rs = execute("/usr/sbin/update-rc.d -f $serviceName remove", \$stdout, \$stderr);
-			debug($stdout) if $stdout;
-			error($stderr) if $stderr && $rs;
-			return $rs if $rs;
+	for ($main::imscpConfig{'IMSCP_NETWORK_SNAME'}, $main::imscpConfig{'IMSCP_DAEMON_SNAME'}) {
+		if(-f "$main::imscpConfig{'INIT_SCRIPTS_DIR'}/$_") {
+			if($main::imscpConfig{'SERVICE_INSTALLER'} ne 'no') {
+				$rs = execute("$main::imscpConfig{'SERVICE_INSTALLER'} -f $_ remove", \$stdout, \$stderr);
+				debug($stdout) if $stdout;
+				error($stderr) if $stderr && $rs;
+				return $rs if $rs;
+			}
 
 			$rs = iMSCP::File->new('filename' => $_)->delFile();
 			return $rs if $rs;

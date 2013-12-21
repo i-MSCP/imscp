@@ -1494,12 +1494,12 @@ sub startPhpFpm
 	return $rs if $rs;
 
 	my ($stdout, $stderr);
-	$rs = execute("$self->{'phpfpmConfig'}->{'CMD_PHP_FPM'} start", \$stdout, \$stderr);
+	$rs = execute(
+		"$main::imscpConfig{'SERVICE_MNGR'} $self->{'phpfpmConfig'}->{'PHP_FPM_SNAME'} start", \$stdout, \$stderr
+	);
 	debug($stdout) if $stdout;
-	warning($stderr) if $stderr && ! $rs;
-	error($stderr) if $stderr && $rs;
-	error('Error while starting PHP FPM') if $rs && ! $stderr;
-	return $rs if $rs;
+	error($stderr) if $stderr && $rs > 1;
+	return $rs if $rs > 1;
 
 	$self->{'hooksManager'}->trigger('afterHttpdStartPhpFpm');
 }
@@ -1520,12 +1520,12 @@ sub stopPhpFpm
 	return $rs if $rs;
 
 	my ($stdout, $stderr);
-	$rs = execute("$self->{'phpfpmConfig'}->{'CMD_PHP_FPM'} stop", \$stdout, \$stderr);
+	$rs = execute(
+		"$main::imscpConfig{'SERVICE_MNGR'} $self->{'phpfpmConfig'}->{'PHP_FPM_SNAME'} stop", \$stdout, \$stderr
+	);
 	debug($stdout) if $stdout;
-	debug($stderr) if $stderr && ! $rs;
-	error($stderr) if $stderr && $rs;
-	error('Error while stopping PHP FPM') if $rs && ! $stderr;
-	return $rs if $rs;
+	error($stderr) if $stderr && $rs > 1;
+	return $rs if $rs > 1;
 
 	$self->{'hooksManager'}->trigger('afterHttpdStopPhpFpm');
 }
@@ -1547,14 +1547,12 @@ sub restartPhpFpm
 
 	my ($stdout, $stderr);
 	$rs = execute(
-		"$self->{'phpfpmConfig'}->{'CMD_PHP_FPM'} " . ($self->{'forceRestart'} ? 'restart' : 'reload'), \$stdout, \$stderr
+		"$main::imscpConfig{'SERVICE_MNGR'} $self->{'phpfpmConfig'}->{'PHP_FPM_SNAME'} " .
+			($self->{'forceRestart'} ? 'restart' : 'reload'), \$stdout, \$stderr
 	);
 	debug($stdout) if $stdout;
-	warning($stderr) if $stderr && ! $rs;
-	error($stderr) if $stderr && $rs;
-	error($stdout) if $stdout && ! $stderr && $rs;
-	error("Error while " . ($self->{'forceRestart'} ? 'restarting' : 'reloading') . ' PHP FPM') if $rs && ! $stderr;
-	return $rs if $rs;
+	error($stderr) if $stderr && $rs > 1;
+	return $rs if $rs > 1;
 
 	$self->{'hooksManager'}->trigger('afterHttpdRestartPhpFpm');
 }
@@ -1590,12 +1588,10 @@ sub startApache
 	return $rs if $rs;
 
 	my ($stdout, $stderr);
-	$rs = execute("$self->{'config'}->{'CMD_HTTPD'} start", \$stdout, \$stderr);
+	$rs = execute("$main::imscpConfig{'SERVICE_MNGR'} $self->{'config'}->{'HTTPD_SNAME'} start", \$stdout, \$stderr);
 	debug($stdout) if $stdout;
-	warning($stderr) if $stderr && ! $rs;
-	error($stderr) if $stderr && $rs;
-	error('Error while starting Apache2') if $rs && ! $stderr;
-	return $rs if $rs;
+	error($stderr) if $stderr && $rs > 1;
+	return $rs if $rs > 1;
 
 	$self->{'hooksManager'}->trigger('afterHttpdStart');
 }
@@ -1616,12 +1612,10 @@ sub stopApache
 	return $rs if $rs;
 
 	my ($stdout, $stderr);
-	$rs = execute("$self->{'config'}->{'CMD_HTTPD'} stop", \$stdout, \$stderr);
+	$rs = execute("$main::imscpConfig{'SERVICE_MNGR'} $self->{'config'}->{'HTTPD_SNAME'} stop", \$stdout, \$stderr);
 	debug($stdout) if $stdout;
-	debug($stderr) if $stderr && ! $rs;
-	error($stderr) if $stderr && $rs;
-	error('Error while stopping Apache2') if $rs && ! $stderr;
-	return $rs if $rs;
+	error($stderr) if $stderr && $rs > 1;
+	return $rs if $rs > 1;
 
 	$self->{'hooksManager'}->trigger('afterHttpdStop');
 }
@@ -1643,15 +1637,14 @@ sub restartApache
 
 	my ($stdout, $stderr);
 	$rs = execute(
-		"$self->{'config'}->{'CMD_HTTPD'} " . ($self->{'forceRestart'} ? 'restart' : 'reload'), \$stdout, \$stderr
+		"$main::imscpConfig{'SERVICE_MNGR'} $self->{'config'}->{'HTTPD_SNAME'} " .
+			($self->{'forceRestart'} ? 'restart' : 'reload'),
+		\$stdout,
+		\$stderr
 	);
 	debug($stdout) if $stdout;
-	warning($stderr) if $stderr && ! $rs;
-	error($stderr) if $stderr && $rs;
-	error($stdout) if $stdout && ! $stderr && $rs;
-	error("Error while " . ($self->{'forceRestart'} ? 'restarting' : 'reloading') . ' Apache2')
-		if $rs && ! $stderr && ! $stdout;
-	return $rs if $rs;
+	error($stderr) if $stderr && $rs > 1;
+	return $rs if $rs > 1;
 
 	$self->{'hooksManager'}->trigger('afterHttpdRestart');
 }
@@ -2189,11 +2182,6 @@ END
 		$rs = $self->startApache();
 		$rs |= $self->startPhpFpm();
 	} elsif($self->{'restart'} && $self->{'restart'} eq 'yes') {
-		# Quick fix for Debian Jessie (Apache init script return 1 if Apache is not already running)
-		if(defined $main::execmode && $main::execmode eq 'setup') {
-			$self->forceRestart();
-		}
-
 		$rs = $self->restartApache();
 		$rs |= $self->restartPhpFpm();
 	}

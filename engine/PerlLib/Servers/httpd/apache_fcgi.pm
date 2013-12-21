@@ -1547,12 +1547,10 @@ sub start
 	return $rs if $rs;
 
 	my ($stdout, $stderr);
-	$rs = execute("$self->{'config'}->{'CMD_HTTPD'} start", \$stdout, \$stderr);
+	$rs = execute("$main::imscpConfig{'SERVICE_MNGR'} $self->{'config'}->{'HTTPD_SNAME'} start", \$stdout, \$stderr);
 	debug($stdout) if $stdout;
-	warning($stderr) if $stderr && ! $rs;
-	error($stderr) if $stderr && $rs;
-	error("Error while starting Apache2") if $rs && ! $stderr;
-	return $rs if $rs;
+	error($stderr) if $stderr && $rs > 1;
+	return $rs if $rs > 1;
 
 	$self->{'hooksManager'}->trigger('afterHttpdStart');
 }
@@ -1573,12 +1571,10 @@ sub stop
 	return $rs if $rs;
 
 	my ($stdout, $stderr);
-	$rs = execute("$self->{'config'}->{'CMD_HTTPD'} stop", \$stdout, \$stderr);
+	$rs = execute("$main::imscpConfig{'SERVICE_MNGR'} $self->{'config'}->{'HTTPD_SNAME'} stop", \$stdout, \$stderr);
 	debug($stdout) if $stdout;
-	debug($stderr) if $stderr && ! $rs;
-	error($stderr) if $stderr && $rs;
-	error("Error while stopping Apache2") if $rs && ! $stderr;
-	return $rs if $rs;
+	error($stderr) if $stderr && $rs > 1;
+	return $rs if $rs > 1;
 
 	$self->{'hooksManager'}->trigger('afterHttpdStop');
 }
@@ -1600,15 +1596,14 @@ sub restart
 
 	my ($stdout, $stderr);
 	$rs = execute(
-		"$self->{'config'}->{'CMD_HTTPD'} " . ($self->{'forceRestart'} ? 'restart' : 'reload'), \$stdout, \$stderr
+		"$main::imscpConfig{'SERVICE_MNGR'} $self->{'config'}->{'HTTPD_SNAME'} " .
+			($self->{'forceRestart'} ? 'restart' : 'reload'),
+		\$stdout,
+		\$stderr
 	);
 	debug($stdout) if $stdout;
-	warning($stderr) if $stderr && ! $rs;
-	error($stderr) if $stderr && $rs;
-	error($stdout) if $stdout && ! $stderr && $rs;
-	error("Error while " . ($self->{'forceRestart'} ? 'restarting' : 'reloading') . ' Apache2')
-		if $rs && ! $stderr && ! $stdout;
-	return $rs if $rs;
+	error($stderr) if $stderr && $rs > 1;
+	return $rs if $rs > 1;
 
 	$self->{'hooksManager'}->trigger('afterHttpdRestart');
 }
@@ -2136,11 +2131,6 @@ END
 	if($self->{'start'} && $self->{'start'} eq 'yes') {
 		$rs = $self->start();
 	} elsif($self->{'restart'} && $self->{'restart'} eq 'yes') {
-		# Quick fix for Debian Jessie (Apache init script return 1 if Apache is not already running)
-		if(defined $main::execmode && $main::execmode eq 'setup') {
-			$self->forceRestart();
-		}
-
 		$rs = $self->restart();
 	}
 

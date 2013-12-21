@@ -172,7 +172,7 @@ sub install
 	return $rs if $rs;
 
 	for(
-		$self->{'config'}->{'CMD_AUTHDAEMON'},
+		"$main::imscpConfig{'INIT_SCRIPTS_DIR'}/$self->{'config'}->{'AUTHDAEMON_SNAME'}",
 		"$self->{'config'}->{'AUTHLIB_CONF_DIR'}/authdaemonrc",
 		"$self->{'config'}->{'AUTHLIB_CONF_DIR'}/authmysqlrc",
 		"$self->{'config'}->{'AUTHLIB_CONF_DIR'}/self->{'config'}->{'COURIER_IMAP_SSL'}",
@@ -441,11 +441,13 @@ sub _overrideAuthdaemonInitScript
 {
 	my $self = shift;
 
-	my $file = iMSCP::File->new('filename' => $self->{'config'}->{'CMD_AUTHDAEMON'});
+	my $file = iMSCP::File->new(
+		'filename' => "$main::imscpConfig{'INIT_SCRIPTS_DIR'}/$self->{'config'}->{'AUTHDAEMON_SNAME'}"
+	);
 
 	my $fileContent = $file->get();
 	unless(defined $fileContent) {
-		error("Unable to read $self->{'config'}->{'CMD_AUTHDAEMON'} file");
+		error("Unable to read the $file->{'filename'} file");
 		return 1;
 	}
 

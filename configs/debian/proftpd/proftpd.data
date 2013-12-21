@@ -1,4 +1,4 @@
-CMD_FTPD = /etc/init.d/proftpd
+FTPD_SNAME = proftpd
 
 FTPD_CONF_FILE = /etc/proftpd/proftpd.conf
 

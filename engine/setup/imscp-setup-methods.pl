@@ -1832,16 +1832,17 @@ sub setupInitScripts
 
 	my ($rdata, $service, $stdout, $stderr);
 
-	for ($main::imscpConfig{'CMD_IMSCPN'}, $main::imscpConfig{'CMD_IMSCPD'}) {
-		# Do not process if the service is disabled
-		next if(/^no$/i);
+	for ($main::imscpConfig{'IMSCP_NETWORK_SNAME'}, $main::imscpConfig{'IMSCP_DAEMON_SNAME'}) {
+		next if $_ eq 'no';
 
-		if(! -f $_) {
-			error("File '$_' is missing");
+		my $initScriptPath = "$main::imscpConfig{'INIT_SCRIPTS_DIR'}/$_";
+
+		if(! -f$initScriptPath) {
+			error("File $initScriptPath is missing");
 			return 1;
 		}
 
-		my $file = iMSCP::File->new('filename' => $_);
+		my $file = iMSCP::File->new('filename' => $initScriptPath);
 
 		$rs = $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
 		return $rs if $rs;
@@ -1849,18 +1850,17 @@ sub setupInitScripts
 		$rs = $file->mode(0755);
 		return $rs if $rs;
 
-		$service = fileparse($_);
+		if($main::imscpConfig{'SERVICE_INSTALLER'} ne 'no') {
+			$rs = execute("$main::imscpConfig{'SERVICE_INSTALLER'} -f $_ remove", \$stdout, \$stderr);
+			debug($stdout) if $stdout;
+			error($stderr) if $stderr && $rs;
+			return $rs if $rs;
 
-		# Services installation / update (Debian, Ubuntu)
-		$rs = execute("/usr/sbin/update-rc.d -f $service remove", \$stdout, \$stderr);
-		debug($stdout) if $stdout;
-		error($stderr) if $stderr && $rs;
-		return $rs if $rs;
-
-		$rs = execute("/usr/sbin/update-rc.d $service defaults", \$stdout, \$stderr);
-		debug($stdout) if $stdout;
-		error($stderr) if $stderr && $rs;
-		return $rs if $rs;
+			$rs = execute("$main::imscpConfig{'SERVICE_INSTALLER'} $_ defaults", \$stdout, \$stderr);
+			debug($stdout) if $stdout;
+			error($stderr) if $stderr && $rs;
+			return $rs if $rs;
+		}
 	}
 
 	iMSCP::HooksManager->getInstance()->trigger('afterSetupInitScripts');
@@ -2237,10 +2237,10 @@ sub setupRestartServices
 
 	my @services = (
 		#['Variable holding command', 'command to execute', 'ignore error if 0 exit on error if 1']
-		['CMD_IMSCPN', 'restart', 1],
-		['CMD_IMSCPD', 'restart', 1],
-		['CMD_POSTGREY', 'restart', 1],
-		['CMD_POLICYD_WEIGHT', 'reload', 0] # FIXME This should be scheduled by the addon
+		[$main::imscpConfig{'IMSCP_NETWORK_SNAME'}, 'restart', 1],
+		[$main::imscpConfig{'IMSCP_DAEMON_SNAME'}, 'restart', 1],
+		[$main::imscpConfig{'POSTGREY_SNAME'}, 'restart', 1],
+		[$main::imscpConfig{'POLICYD_WEIGHT_SNAME'}, 'reload', 0] # FIXME This should be done by the addon
 	);
 
 	my ($stdout, $stderr);
@@ -2250,22 +2250,19 @@ sub setupRestartServices
 	startDetail();
 
 	for (@services) {
-		if(
-			exists $main::imscpConfig{$_->[0]} && lc($main::imscpConfig{$_->[0]}) ne 'no' &&
-			-f $main::imscpConfig{$_->[0]}
-		) {
+		if($_->[0] ne 'no' && -f "$main::imscpConfig{'INIT_SCRIPTS_DIR'}/$_->[0]") {
 			$rs = iMSCP::HooksManager->getInstance()->trigger('beforeSetupRestartService', $_->[0]);
 			return $rs if $rs;
 
 			$rs = step(
-				sub { execute("$main::imscpConfig{$_->[0]} $_->[1]", \$stdout, \$stderr)},
-				"Restarting $main::imscpConfig{$_->[0]} service",
+				sub { execute("$main::imscpConfig{'SERVICE_MNGR'} $_->[0] $_->[1]", \$stdout, \$stderr)},
+				"Restarting $_->[0] service",
 				$totalItems,
 				$counter
 			);
 			debug($stdout) if $stdout;
-			error($stderr) if $rs && $_->[2];
-			$rs = 0 unless $rs && $_->[2];
+			error($stderr) if $rs > 1 && $_->[2];
+			$rs = 0 unless $rs > 1 && $_->[2];
 			return $rs if $rs;
 
 			$rs = iMSCP::HooksManager->getInstance()->trigger('afterSetupRestartService', $_->[0]);

@@ -96,13 +96,13 @@ sub _restoreConfFile
 {
 	my $self = shift;
 
-	if(-f "$self->{'bkpDir'}/courier-authdaemon.system") {
-		my $file = iMSCP::File->new('filename' => "$self->{'bkpDir'}/courier-authdaemon.system");
+	if(-f "$self->{'bkpDir'}/$self->{'config'}->{'AUTHDAEMON_SNAME'}.system") {
+		my $file = iMSCP::File->new('filename' => "$self->{'bkpDir'}/$self->{'config'}->{'AUTHDAEMON_SNAME'}.system");
 
-		my $rs = $file->copyFile($self->{'config'}->{'CMD_AUTHDAEMON'});
+		my $rs = $file->copyFile("$main::imscpConfig{'INIT_SCRIPTS_DIR'}/$self->{'config'}->{'AUTHDAEMON_SNAME'}");
 		return $rs if $rs;
 
-		$file->{'filename'} = $self->{'config'}->{'CMD_AUTHDAEMON'};
+		$file->{'filename'} = "$main::imscpConfig{'INIT_SCRIPTS_DIR'}/$self->{'config'}->{'AUTHDAEMON_SNAME'}";
 
 		$rs = $file->mode(0755);
 		return $rs if $rs;

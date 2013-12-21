@@ -1,4 +1,4 @@
-CMD_DOVECOT	= /etc/init.d/dovecot
+DOVECOT_SNAME = dovecot
 
 DATABASE_USER =
 

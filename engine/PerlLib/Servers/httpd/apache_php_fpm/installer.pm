@@ -1080,8 +1080,10 @@ sub _installPhpFpmInitScript
 
 	my ($stdout, $stderr);
 
-	if (-f $self->{'phpfpmConfig'}->{'CMD_PHP_FPM'}) {
-		my $file = iMSCP::File->new('filename' => $self->{'phpfpmConfig'}->{'CMD_PHP_FPM'});
+	my $php5fpmInitScriptPath = "$main::imscpConfig{'INIT_SCRIPTS_DIR'}/$self->{'phpfpmConfig'}->{'PHP_FPM_SNAME'}";
+
+	if (-f $php5fpmInitScriptPath) {
+		my $file = iMSCP::File->new('filename' => $php5fpmInitScriptPath);
 
 		$rs = $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
 		return $rs if $rs;
@@ -1089,19 +1091,27 @@ sub _installPhpFpmInitScript
 		$rs = $file->mode(0755);
 		return $rs if $rs;
 
-		my $service = fileparse($self->{'phpfpmConfig'}->{'CMD_PHP_FPM'});
+		if($main::imscpConfig{'SERVICE_INSTALLER'} ne 'no') {
+			$rs = execute(
+				"$main::imscpConfig{'SERVICE_INSTALLER'} -f $self->{'phpfpmConfig'}->{'PHP_FPM_SNAME'} remove",
+				\$stdout,
+				\$stderr
+			);
+			debug ($stdout) if $stdout;
+			error($stderr) if $stderr && $rs;
+			return $rs if $rs;
 
-		$rs = execute("/usr/sbin/update-rc.d -f $service remove", \$stdout, \$stderr);
-		debug ($stdout) if $stdout;
-		error($stderr) if $stderr && $rs;
-		return $rs if $rs;
-
-		$rs = execute("/usr/sbin/update-rc.d $service defaults", \$stdout, \$stderr);
-		debug ($stdout) if $stdout;
-		error($stderr) if $stderr && $rs;
-		return $rs if $rs;
+			$rs = execute(
+				"$main::imscpConfig{'SERVICE_INSTALLER'} $self->{'phpfpmConfig'}->{'PHP_FPM_SNAME'} defaults",
+				\$stdout,
+				\$stderr
+			);
+			debug ($stdout) if $stdout;
+			error($stderr) if $stderr && $rs;
+			return $rs if $rs;
+		}
 	} else {
-		error("File '$self->{'phpfpmConfig'}->{'CMD_PHP_FPM'}' is missing");
+		error("File $php5fpmInitScriptPath is missing");
 		return 1;
 	}
 

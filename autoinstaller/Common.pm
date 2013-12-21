@@ -623,11 +623,16 @@ sub installTmp
 	my $tmpDir = $main::{'INST_PREF'};
 
 	# i-MSCP daemon must be stopped before changing any file on the files system
-	if(-x '/etc/init.d/imscp_daemon' && -f "$main::imscpConfig{'ROOT_DIR'}/daemon/imscp_daemon") {
-		$rs = execute('/etc/init.d/imscp_daemon stop', \$stdout, \$stderr);
+	if(
+		-x "$main::imscpConfig{'INIT_SCRIPTS_DIR'}/$main::imscpConfig{'IMSCP_DAEMON_SNAME'}" &&
+		-f "$main::imscpConfig{'ROOT_DIR'}/daemon/$main::imscpConfig{'IMSCP_DAEMON_SNAME'}"
+	) {
+		$rs = execute(
+			"$main::imscpConfig{'SERVICE_MNGR'} $main::imscpConfig{'IMSCP_DAEMON_SNAME'} stop", \$stdout, \$stderr
+		);
 		debug($stdout) if $stdout;
 		error($stderr) if $stderr && $rs;
-		return $rs if $rs;
+		return $rs if $rs > 1;
 	}
 
 	# Process cleanup to avoid any security risks and conflicts

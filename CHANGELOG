@@ -23,6 +23,7 @@ ENGINE:
 	- Fixed: Pass-in domain data to the listeners which listen to the *HttpdBuildConfFile and *HttpdBuildConf events
 	- Fixed: Proftpd server is down after update
 	- Fixed: Removed useless file tests on directory deletion
+	- Fixed: Upstart/SysV init - Interoperability
 	- Fixed: Usage of dynamic resolv.conf (See resolvconf(8))
 
 GUI:

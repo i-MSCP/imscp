@@ -1,5 +1,4 @@
 #!/bin/sh
-
 ### BEGIN INIT INFO
 # Provides:          imscp_network
 # Required-Start:    $local_fs $remote_fs $network
