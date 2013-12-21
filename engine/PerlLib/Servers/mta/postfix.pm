@@ -179,10 +179,10 @@ sub restart
 	return $rs if $rs;
 
 	my ($stdout, $stderr);
-	$rs = execute("$self->{'config'}->{'CMD_MTA'} restart", \$stdout, \$stderr);
+	$rs = execute("$main::imscpConfig{'SERVICE_MNGR'} $self->{'config'}->{'MTA_SNAME'} restart", \$stdout, \$stderr);
 	debug($stdout) if $stdout;
-	error($stderr) if $stderr && $rs;
-	return $rs if $rs;
+	error($stderr) if $stderr && $rs > 1;
+	return $rs if $rs > 1;
 
 	$self->{'hooksManager'}->trigger('afterMtaRestart');
 }
