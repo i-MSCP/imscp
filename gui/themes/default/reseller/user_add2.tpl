@@ -18,7 +18,7 @@
 			$("#php_editor_dialog").dialog("option", "position", { my: "center", at: "center", of: window });
 		});
 
-		$('#form').submit(function (){ $('#php_editor_dialog').parent().appendTo($(this)); });
+		$('#addFrm2').submit(function (){ $('#php_editor_dialog').parent().appendTo($(this)); });
 
 		if ($('#php_no').is(':checked')){ $('#php_editor_block').hide(); }
 
