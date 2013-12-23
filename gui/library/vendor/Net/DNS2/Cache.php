@@ -43,7 +43,7 @@
  * @author    Mike Pultz <mike@mikepultz.com>
  * @copyright 2010 Mike Pultz <mike@mikepultz.com>
  * @license   http://www.opensource.org/licenses/bsd-license.php  BSD License
- * @version   SVN: $Id: Cache.php 160 2012-07-18 03:57:32Z mike.pultz $
+ * @version   SVN: $Id: Cache.php 218 2013-11-28 22:34:20Z mike.pultz $
  * @link      http://pear.php.net/package/Net_DNS2
  * @since     File available since Release 1.1.0
  *
@@ -135,6 +135,12 @@ class Net_DNS2_Cache
         $ttl = 86400 * 365;
 
         //
+        // clear the rdata values
+        //
+        $data->rdata = '';
+        $data->rdlength = 0;
+
+        //
         // find the lowest TTL, and use that as the TTL for the whole cached 
         // object. The downside to using one TTL for the whole object, is that
         // we'll invalidate entries before they actuall expire, causing a
@@ -149,18 +155,27 @@ class Net_DNS2_Cache
             if ($rr->ttl < $ttl) {
                 $ttl = $rr->ttl;
             }
+
+            $rr->rdata = '';
+            $rr->rdlength = 0;
         }
         foreach ($data->authority as $index => $rr) {
                     
             if ($rr->ttl < $ttl) {
                 $ttl = $rr->ttl;
             }
+
+            $rr->rdata = '';
+            $rr->rdlength = 0;
         }
         foreach ($data->additional as $index => $rr) {
                     
             if ($rr->ttl < $ttl) {
                 $ttl = $rr->ttl;
             }
+
+            $rr->rdata = '';
+            $rr->rdlength = 0;
         }
 
         $this->cache_data[$key] = array(

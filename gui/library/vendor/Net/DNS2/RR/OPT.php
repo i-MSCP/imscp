@@ -43,7 +43,7 @@
  * @author    Mike Pultz <mike@mikepultz.com>
  * @copyright 2010 Mike Pultz <mike@mikepultz.com>
  * @license   http://www.opensource.org/licenses/bsd-license.php  BSD License
- * @version   SVN: $Id: OPT.php 190 2013-03-31 01:49:22Z mike.pultz $
+ * @version   SVN: $Id: OPT.php 198 2013-05-26 05:05:22Z mike.pultz $
  * @link      http://pear.php.net/package/Net_DNS2
  * @since     File available since Release 1.0.0
  *
@@ -243,7 +243,8 @@ class Net_DNS2_RR_OPT extends Net_DNS2_RR
         // build the TTL value based on the local values
         //
         $ttl = unpack(
-            'N', pack('CCCC', $this->extended_rcode, $this->version, ($this->do << 7), 0)
+            'N', 
+            pack('CCCC', $this->extended_rcode, $this->version, ($this->do << 7), 0)
         );
 
         $this->ttl = $ttl[1];

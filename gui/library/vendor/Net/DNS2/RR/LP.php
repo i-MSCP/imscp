@@ -6,7 +6,7 @@
  *
  * PHP Version 5
  *
- * Copyright (c) 2012, Mike Pultz <mike@mikepultz.com>.
+ * Copyright (c) 2013, Mike Pultz <mike@mikepultz.com>.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -41,26 +41,26 @@
  * @category  Networking
  * @package   Net_DNS2
  * @author    Mike Pultz <mike@mikepultz.com>
- * @copyright 2012 Mike Pultz <mike@mikepultz.com>
+ * @copyright 2013 Mike Pultz <mike@mikepultz.com>
  * @license   http://www.opensource.org/licenses/bsd-license.php  BSD License
- * @version   SVN: $Id: TLSA.php 198 2013-05-26 05:05:22Z mike.pultz $
+ * @version   SVN: $Id: LP.php 207 2013-06-13 01:19:55Z mike.pultz $
  * @link      http://pear.php.net/package/Net_DNS2
- * @since     File available since Release 1.2.5
+ * @since     File available since Release 1.3.1
  *
  */
 
 /**
- * TLSA Resource Record - RFC 6698
+ * LP Resource Record - RFC6742 section 2.4
  *
  *   0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
  *  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
- *  |  Cert. Usage  |   Selector    | Matching Type |               /
- *  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+               /
+ *  |          Preference           |                               /
+ *  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+                               /
  *  /                                                               /
- *  /                 Certificate Association Data                  /
+ *  /                              FQDN                             /
  *  /                                                               /
  *  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
- * 
+ *
  * @category Networking
  * @package  Net_DNS2
  * @author   Mike Pultz <mike@mikepultz.com>
@@ -69,27 +69,17 @@
  * @see      Net_DNS2_RR
  *
  */
-class Net_DNS2_RR_TLSA extends Net_DNS2_RR
+class Net_DNS2_RR_LP extends Net_DNS2_RR
 {
     /*
-     * The Certificate Usage Field
+     * The preference
      */
-    public $cert_usage;
+    public $preference;
 
     /*
-     * The Selector Field
+     * The fdqn field
      */
-    public $selector;
-
-    /*
-     * The Matching Type Field
-     */
-    public $matching_type;
-
-    /*
-     * The Certificate Association Data Field
-     */
-    public $certificate;
+    public $fqdn;
 
     /**
      * method to return the rdata portion of the packet as a string
@@ -100,8 +90,7 @@ class Net_DNS2_RR_TLSA extends Net_DNS2_RR
      */
     protected function rrToString()
     {
-        return $this->cert_usage . ' ' . $this->selector . ' ' . 
-            $this->matching_type . ' ' . base64_encode($this->certificate);
+        return $this->preference . ' ' . $this->fqdn . '.';
     }
 
     /**
@@ -115,10 +104,8 @@ class Net_DNS2_RR_TLSA extends Net_DNS2_RR
      */
     protected function rrFromString(array $rdata)
     {
-        $this->cert_usage       = array_shift($rdata);
-        $this->selector         = array_shift($rdata);
-        $this->matching_type    = array_shift($rdata);
-        $this->certificate      = base64_decode(implode('', $rdata));
+        $this->preference = array_shift($rdata);
+        $this->fqdn = trim(array_shift($rdata), '.');
 
         return true;
     }
@@ -130,53 +117,49 @@ class Net_DNS2_RR_TLSA extends Net_DNS2_RR
      *
      * @return boolean
      * @access protected
-     *
+     * 
      */
     protected function rrSet(Net_DNS2_Packet &$packet)
     {
         if ($this->rdlength > 0) {
+ 
+            //
+            // parse the preference
+            //
+            $x = unpack('npreference', $this->rdata);
+            $this->preference = $x['preference'];
+            $offset = $packet->offset + 2;
 
             //
-            // unpack the format, keytag and algorithm
+            // get the hostname
             //
-            $x = unpack('Cusage/Cselector/Ctype', $this->rdata);
-
-            $this->cert_usage       = $x['usage'];
-            $this->selector         = $x['selector'];
-            $this->matching_type    = $x['type'];
-
-            //
-            // copy the certificate
-            //
-            $this->certificate  = substr($this->rdata, 3, $this->rdlength - 3);
+            $this->fqdn = Net_DNS2_Packet::expand($packet, $offset);
 
             return true;
         }
-
+       
         return false;
     }
 
     /**
      * returns the rdata portion of the DNS packet
-     *
+     * 
      * @param Net_DNS2_Packet &$packet a Net_DNS2_Packet packet use for
      *                                 compressed names
      *
-     * @return mixed                   either returns a binary packed
+     * @return mixed                   either returns a binary packed 
      *                                 string or null on failure
      * @access protected
-     *
+     * 
      */
     protected function rrGet(Net_DNS2_Packet &$packet)
     {
-        if (strlen($this->certificate) > 0) {
+        if (strlen($this->fqdn) > 0) {
+     
+            $data = pack('n', $this->preference);
+            $packet->offset += 2;
 
-            $data = pack(
-                'CCC', $this->cert_usage, $this->selector, $this->matching_type
-            ) . $this->certificate;
-
-            $packet->offset += strlen($data);
-
+            $data .= $packet->compress($this->fqdn, $packet->offset);
             return $data;
         }
 

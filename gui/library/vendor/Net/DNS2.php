@@ -43,7 +43,7 @@
  * @author    Mike Pultz <mike@mikepultz.com>
  * @copyright 2010 Mike Pultz <mike@mikepultz.com>
  * @license   http://www.opensource.org/licenses/bsd-license.php  BSD License
- * @version   SVN: $Id: DNS2.php 193 2013-04-08 00:07:22Z mike.pultz $
+ * @version   SVN: $Id: DNS2.php 216 2013-10-28 04:24:17Z mike.pultz $
  * @link      http://pear.php.net/package/Net_DNS2
  * @since     File available since Release 0.6.0
  *
@@ -72,7 +72,7 @@ class Net_DNS2
     /*
      * the current version of this library
      */
-    const VERSION = '1.3.0';
+    const VERSION = '1.3.2';
 
     /*
      * the default path to a resolv.conf file
@@ -168,8 +168,8 @@ class Net_DNS2
      * if we should set the recursion desired bit to 1 or 0.
      *
      * by default this is set to true, we want the DNS server to perform a recursive
-     * request. If set to false, the RD bit will be set to 0, and the server will not 
-     * perform recursion on the request.
+     * request. If set to false, the RD bit will be set to 0, and the server will 
+     * not perform recursion on the request.
      */
     public $recurse = true;
 
@@ -182,21 +182,21 @@ class Net_DNS2
     public $dnssec = false;
 
     /*
-     * set the DNSSEC AD (Authentic Data) bit on/off; the AD bit on the request side was
-     * previously undefined, and resolvers we instructed to always clear the AD bit when
-     * sending a request.
+     * set the DNSSEC AD (Authentic Data) bit on/off; the AD bit on the request 
+     * side was previously undefined, and resolvers we instructed to always clear 
+     * the AD bit when sending a request.
      *
-     * RFC6840 section 5.7 defines setting the AD bit in the query as a signal to the
-     * server that it wants the value of the AD bit, without needed to request all the
-     * DNSSEC data via the DO bit.
+     * RFC6840 section 5.7 defines setting the AD bit in the query as a signal to
+     * the server that it wants the value of the AD bit, without needed to request
+     * all the DNSSEC data via the DO bit.
      *
      */
     public $dnssec_ad_flag = false;
 
     /*
-     * set the DNSSEC CD (Checking Disabled) bit on/off; turning this off, means that
-     * the DNS resolver will perform it's own signature validation- so the DNS servers
-     * simply pass through all the details.
+     * set the DNSSEC CD (Checking Disabled) bit on/off; turning this off, means
+     * that the DNS resolver will perform it's own signature validation- so the DNS
+     * servers simply pass through all the details.
      *
      */
     public $dnssec_cd_flag = false;
@@ -488,14 +488,16 @@ class Net_DNS2
      *
      * @param string $keyname   the key name to use for the TSIG RR
      * @param string $signature the key to sign the request.
+     * @param string $algorithm the algorithm to use
      * 
      * @return boolean
      * @access public
      * @since  function available since release 1.1.0
      *
      */
-    public function signTSIG($keyname, $signature = '')
-    {
+    public function signTSIG(
+        $keyname, $signature = '', $algorithm = Net_DNS2_RR_TSIG::HMAC_MD5
+    ) {
         //
         // if the TSIG was pre-created and passed in, then we can just used 
         // it as provided.
@@ -515,6 +517,11 @@ class Net_DNS2
                 strtolower(trim($keyname)) .
                 ' TSIG '. $signature
             );
+
+            //
+            // set the algorithm to use
+            //
+            $this->auth_signature->algorithm = $algorithm;
         }
           
         return true;
@@ -820,7 +827,9 @@ class Net_DNS2
 
             throw new Net_DNS2_Exception(
                 'invalid or empty packet for sending!',
-                Net_DNS2_Lookups::E_PACKET_INVALID
+                Net_DNS2_Lookups::E_PACKET_INVALID,
+                null,
+                $request
             );
         }
 
@@ -882,12 +891,18 @@ class Net_DNS2
                     if ($this->sockets_enabled === true) {
 
                         $this->sock['tcp'][$ns] = new Net_DNS2_Socket_Sockets(
-                            Net_DNS2_Socket::SOCK_STREAM, $ns, $this->dns_port, $this->timeout
+                            Net_DNS2_Socket::SOCK_STREAM, 
+                            $ns, 
+                            $this->dns_port, 
+                            $this->timeout
                         );
                     } else {
 
                         $this->sock['tcp'][$ns] = new Net_DNS2_Socket_Streams(
-                            Net_DNS2_Socket::SOCK_STREAM, $ns, $this->dns_port, $this->timeout
+                            Net_DNS2_Socket::SOCK_STREAM, 
+                            $ns, 
+                            $this->dns_port, 
+                            $this->timeout
                         );
                     }
                 }
@@ -1112,7 +1127,10 @@ class Net_DNS2
                 if (is_null($response)) {
 
                     throw new Net_DNS2_Exception(
-                        'empty response object', Net_DNS2_Lookups::E_NS_FAILED
+                        'empty response object', 
+                        Net_DNS2_Lookups::E_NS_FAILED,
+                        null,
+                        $request
                     );
                 }
 
@@ -1137,7 +1155,10 @@ class Net_DNS2
         if (is_null($response)) {
 
             throw new Net_DNS2_Exception(
-                'empty response object', Net_DNS2_Lookups::E_NS_FAILED
+                'empty response object', 
+                Net_DNS2_Lookups::E_NS_FAILED,
+                null,
+                $request
             );
         }
 
@@ -1155,7 +1176,10 @@ class Net_DNS2
 
             throw new Net_DNS2_Exception(
                 'invalid header: the request and response id do not match.',
-                Net_DNS2_Lookups::E_HEADER_INVALID
+                Net_DNS2_Lookups::E_HEADER_INVALID,
+                null,
+                $request,
+                $response
             );
         }
 
@@ -1168,7 +1192,10 @@ class Net_DNS2
 
             throw new Net_DNS2_Exception(
                 'invalid header: the response provided is not a response packet.',
-                Net_DNS2_Lookups::E_HEADER_INVALID
+                Net_DNS2_Lookups::E_HEADER_INVALID,
+                null,
+                $request,
+                $response
             );
         }
 
@@ -1180,7 +1207,10 @@ class Net_DNS2
             throw new Net_DNS2_Exception(
                 'DNS request failed: ' . 
                 Net_DNS2_Lookups::$result_code_messages[$response->header->rcode],
-                $response->header->rcode
+                $response->header->rcode,
+                null,
+                $request,
+                $response
             );
         }
 

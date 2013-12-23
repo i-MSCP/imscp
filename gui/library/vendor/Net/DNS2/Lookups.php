@@ -43,7 +43,7 @@
  * @author    Mike Pultz <mike@mikepultz.com>
  * @copyright 2010 Mike Pultz <mike@mikepultz.com>
  * @license   http://www.opensource.org/licenses/bsd-license.php  BSD License
- * @version   SVN: $Id: Lookups.php 174 2012-11-09 05:07:31Z mike.pultz $
+ * @version   SVN: $Id: Lookups.php 215 2013-10-28 04:20:36Z mike.pultz $
  * @link      http://pear.php.net/package/Net_DNS2
  * @since     File available since Release 0.6.0
  *
@@ -288,8 +288,14 @@ class Net_DNS2_Lookups
         'UID'           => 101,     // no RFC, Not implemented
         'GID'           => 102,     // no RFC, Not implemented
         'UNSPEC'        => 103,     // no RFC, Not implemented
+        'NID'           => 104,     // RFC 6742
+        'L32'           => 105,     // RFC 6742
+        'L64'           => 106,     // RFC 6742
+        'LP'            => 107,     // RFC 6742
+        'EUI48'         => 108,     // RFC 7043
+        'EUI64'         => 109,     // RFC 7043
 
-                                    // 104 - 248 unassigned
+                                    // 110 - 248 unassigned
 
         'TKEY'          => 249,     // RFC 2930
         'TSIG'          => 250,     // RFC 2845
@@ -378,13 +384,20 @@ class Net_DNS2_Lookups
         58          => 'Net_DNS2_RR_TALINK',
         59          => 'Net_DNS2_RR_CDS',
         99          => 'Net_DNS2_RR_SPF',
+        104         => 'Net_DNS2_RR_NID',
+        105         => 'Net_DNS2_RR_L32',
+        106         => 'Net_DNS2_RR_L64',
+        107         => 'Net_DNS2_RR_LP',
+        108         => 'Net_DNS2_RR_EUI48',
+        109         => 'Net_DNS2_RR_EUI64',
+
         249         => 'Net_DNS2_RR_TKEY',
         250         => 'Net_DNS2_RR_TSIG',
 
     //    251            - IXFR - handled as a full zone transfer (252)
     //    252            - AXFR - handled as a function call
-    //    255            - ANY - used only for queries
 
+        255         => 'Net_DNS2_RR_ANY',
         256         => 'Net_DNS2_RR_URI',
         257         => 'Net_DNS2_RR_CAA',
         32768       => 'Net_DNS2_RR_TA',

@@ -6,7 +6,7 @@
  *
  * PHP Version 5
  *
- * Copyright (c) 2012, Mike Pultz <mike@mikepultz.com>.
+ * Copyright (c) 2013, Mike Pultz <mike@mikepultz.com>.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -41,26 +41,24 @@
  * @category  Networking
  * @package   Net_DNS2
  * @author    Mike Pultz <mike@mikepultz.com>
- * @copyright 2012 Mike Pultz <mike@mikepultz.com>
+ * @copyright 2013 Mike Pultz <mike@mikepultz.com>
  * @license   http://www.opensource.org/licenses/bsd-license.php  BSD License
- * @version   SVN: $Id: TLSA.php 198 2013-05-26 05:05:22Z mike.pultz $
+ * @version   SVN: $Id: L32.php 207 2013-06-13 01:19:55Z mike.pultz $
  * @link      http://pear.php.net/package/Net_DNS2
- * @since     File available since Release 1.2.5
+ * @since     File available since Release 1.3.1
  *
  */
 
 /**
- * TLSA Resource Record - RFC 6698
+ * L32 Resource Record - RFC6742 section 2.2
  *
  *   0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
  *  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
- *  |  Cert. Usage  |   Selector    | Matching Type |               /
- *  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+               /
- *  /                                                               /
- *  /                 Certificate Association Data                  /
- *  /                                                               /
+ *  |          Preference           |      Locator32 (16 MSBs)      |
  *  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
- * 
+ *  |     Locator32 (16 LSBs)       |
+ *  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+ *
  * @category Networking
  * @package  Net_DNS2
  * @author   Mike Pultz <mike@mikepultz.com>
@@ -69,27 +67,17 @@
  * @see      Net_DNS2_RR
  *
  */
-class Net_DNS2_RR_TLSA extends Net_DNS2_RR
+class Net_DNS2_RR_L32 extends Net_DNS2_RR
 {
     /*
-     * The Certificate Usage Field
+     * The preference
      */
-    public $cert_usage;
+    public $preference;
 
     /*
-     * The Selector Field
+     * The locator32 field
      */
-    public $selector;
-
-    /*
-     * The Matching Type Field
-     */
-    public $matching_type;
-
-    /*
-     * The Certificate Association Data Field
-     */
-    public $certificate;
+    public $locator32;
 
     /**
      * method to return the rdata portion of the packet as a string
@@ -100,8 +88,7 @@ class Net_DNS2_RR_TLSA extends Net_DNS2_RR
      */
     protected function rrToString()
     {
-        return $this->cert_usage . ' ' . $this->selector . ' ' . 
-            $this->matching_type . ' ' . base64_encode($this->certificate);
+        return $this->preference . ' ' . $this->locator32;
     }
 
     /**
@@ -115,10 +102,8 @@ class Net_DNS2_RR_TLSA extends Net_DNS2_RR
      */
     protected function rrFromString(array $rdata)
     {
-        $this->cert_usage       = array_shift($rdata);
-        $this->selector         = array_shift($rdata);
-        $this->matching_type    = array_shift($rdata);
-        $this->certificate      = base64_decode(implode('', $rdata));
+        $this->preference = array_shift($rdata);
+        $this->locator32 = array_shift($rdata);
 
         return true;
     }
@@ -130,25 +115,24 @@ class Net_DNS2_RR_TLSA extends Net_DNS2_RR
      *
      * @return boolean
      * @access protected
-     *
+     * 
      */
     protected function rrSet(Net_DNS2_Packet &$packet)
     {
         if ($this->rdlength > 0) {
 
             //
-            // unpack the format, keytag and algorithm
+            // unpack the values
             //
-            $x = unpack('Cusage/Cselector/Ctype', $this->rdata);
+            $x = unpack('npreference/C4locator', $this->rdata);
 
-            $this->cert_usage       = $x['usage'];
-            $this->selector         = $x['selector'];
-            $this->matching_type    = $x['type'];
+            $this->preference = $x['preference'];
 
             //
-            // copy the certificate
+            // build the locator value
             //
-            $this->certificate  = substr($this->rdata, 3, $this->rdlength - 3);
+            $this->locator32 = $x['locator1'] . '.' . $x['locator2'] . '.' .
+                $x['locator3'] . '.' . $x['locator4'];
 
             return true;
         }
@@ -158,26 +142,28 @@ class Net_DNS2_RR_TLSA extends Net_DNS2_RR
 
     /**
      * returns the rdata portion of the DNS packet
-     *
+     * 
      * @param Net_DNS2_Packet &$packet a Net_DNS2_Packet packet use for
      *                                 compressed names
      *
-     * @return mixed                   either returns a binary packed
+     * @return mixed                   either returns a binary packed 
      *                                 string or null on failure
      * @access protected
-     *
+     * 
      */
     protected function rrGet(Net_DNS2_Packet &$packet)
     {
-        if (strlen($this->certificate) > 0) {
+        if (strlen($this->locator32) > 0) {
 
-            $data = pack(
-                'CCC', $this->cert_usage, $this->selector, $this->matching_type
-            ) . $this->certificate;
+            //
+            // break out the locator value
+            //
+            $n = explode('.', $this->locator32);
 
-            $packet->offset += strlen($data);
-
-            return $data;
+            //
+            // pack the data
+            //
+            return pack('nC4', $this->preference, $n[0], $n[1], $n[2], $n[3]);
         }
 
         return null;

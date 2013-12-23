@@ -43,7 +43,7 @@
  * @author    Mike Pultz <mike@mikepultz.com>
  * @copyright 2010 Mike Pultz <mike@mikepultz.com>
  * @license   http://www.opensource.org/licenses/bsd-license.php  BSD License
- * @version   SVN: $Id: Sockets.php 188 2013-03-31 01:25:46Z mike.pultz $
+ * @version   SVN: $Id: Sockets.php 217 2013-11-16 21:44:58Z mike.pultz $
  * @link      http://pear.php.net/package/Net_DNS2
  * @since     File available since Release 0.6.0
  *
@@ -144,18 +144,16 @@ class Net_DNS2_Socket_Sockets extends Net_DNS2_Socket
         //
         // select on write to check if the call to connect worked
         //
-        switch(@socket_select($read, $write, $except, $this->timeout)) {
-        case false:
+        $result = @socket_select($read, $write, $except, $this->timeout);
+        if ($result === false) {
+
             $this->last_error = socket_strerror(socket_last_error());
             return false;
-            break;
 
-        case 0:
+        } else if ($result == 0) {
+
+            $this->last_error = 'timeout on write select for connect()';
             return false;
-            break;
-            
-        default:
-            ;
         }
 
         return true;
@@ -202,18 +200,16 @@ class Net_DNS2_Socket_Sockets extends Net_DNS2_Socket
         //
         // select on write
         //
-        switch(@socket_select($read, $write, $except, $this->timeout)) {
-        case false:
+        $result = @socket_select($read, $write, $except, $this->timeout);
+        if ($result === false) {
+
             $this->last_error = socket_strerror(socket_last_error());
             return false;
-            break;
 
-        case 0:
+        } else if ($result == 0) {
+
+            $this->last_error = 'timeout on write select()';
             return false;
-            break;
-
-        default:
-            ;
         }
 
         //
@@ -271,20 +267,18 @@ class Net_DNS2_Socket_Sockets extends Net_DNS2_Socket
         //
         // select on read
         //
-        switch(@socket_select($read, $write, $except, $this->timeout)) {
-        case false:
+        $result = @socket_select($read, $write, $except, $this->timeout);
+        if ($result === false) {
+
             $this->last_error = socket_strerror(socket_last_error());
             return false;
-            break;
 
-        case 0:
+        } else if ($result == 0) {
+
+            $this->last_error = 'timeout on read select()';
             return false;
-            break;
-            
-        default:
-            ;
         }
-    
+
         $data = '';
         $length = Net_DNS2_Lookups::DNS_MAX_UDP_SIZE;
 
@@ -327,17 +321,17 @@ class Net_DNS2_Socket_Sockets extends Net_DNS2_Socket
         // loop while reading since some OS's (specifically Win < 2003) don't support
         // MSG_WAITALL properly, so they may return with less data than is available.
         //
-        // According to M$, XP and below don't support MSG_WAITALL at all; and there 
-        // also seems to be some issue in 2003 and 2008 where the MSG_WAITALL is defined
-        // as 0, but if you actually pass 8 (which is the correct defined value), it
-        // works as it's supposed to- so in these cases, it's just the define that's
-        // incorrect- this is likely a PHP issue.
+        // According to M$, XP and below don't support MSG_WAITALL at all; and there
+        // also seems to be some issue in 2003 and 2008 where the MSG_WAITALL is 
+        // defined as 0, but if you actually pass 8 (which is the correct defined 
+        // value), it works as it's supposed to- so in these cases, it's just the 
+        // define that's incorrect- this is likely a PHP issue.
         //
         $data = '';
         $size = 0;
 
-        while(1)
-        {
+        while (1) {
+
             $chunk_size = @socket_recv($this->sock, $chunk, $length, MSG_WAITALL);
             if ($chunk_size === false) {
 

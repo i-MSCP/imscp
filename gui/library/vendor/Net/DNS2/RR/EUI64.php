@@ -6,7 +6,7 @@
  *
  * PHP Version 5
  *
- * Copyright (c) 2012, Mike Pultz <mike@mikepultz.com>.
+ * Copyright (c) 2013, Mike Pultz <mike@mikepultz.com>.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -41,26 +41,24 @@
  * @category  Networking
  * @package   Net_DNS2
  * @author    Mike Pultz <mike@mikepultz.com>
- * @copyright 2012 Mike Pultz <mike@mikepultz.com>
+ * @copyright 2013 Mike Pultz <mike@mikepultz.com>
  * @license   http://www.opensource.org/licenses/bsd-license.php  BSD License
- * @version   SVN: $Id: TLSA.php 198 2013-05-26 05:05:22Z mike.pultz $
+ * @version   SVN: $Id: EUI64.php 215 2013-10-28 04:20:36Z mike.pultz $
  * @link      http://pear.php.net/package/Net_DNS2
- * @since     File available since Release 1.2.5
+ * @since     File available since Release 1.3.2
  *
  */
 
 /**
- * TLSA Resource Record - RFC 6698
+ * EUI64 Resource Record - RFC7043 section 4.1
  *
- *   0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
- *  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
- *  |  Cert. Usage  |   Selector    | Matching Type |               /
- *  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+               /
- *  /                                                               /
- *  /                 Certificate Association Data                  /
- *  /                                                               /
- *  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
- * 
+ *  0                   1                   2                   3
+ *  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+ * +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+ * |                          EUI-48 Address                       |
+ * |                                                               |
+ * +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+ *
  * @category Networking
  * @package  Net_DNS2
  * @author   Mike Pultz <mike@mikepultz.com>
@@ -69,27 +67,12 @@
  * @see      Net_DNS2_RR
  *
  */
-class Net_DNS2_RR_TLSA extends Net_DNS2_RR
+class Net_DNS2_RR_EUI64 extends Net_DNS2_RR
 {
     /*
-     * The Certificate Usage Field
+     * The EUI64 address, in hex format
      */
-    public $cert_usage;
-
-    /*
-     * The Selector Field
-     */
-    public $selector;
-
-    /*
-     * The Matching Type Field
-     */
-    public $matching_type;
-
-    /*
-     * The Certificate Association Data Field
-     */
-    public $certificate;
+    public $address;
 
     /**
      * method to return the rdata portion of the packet as a string
@@ -100,8 +83,7 @@ class Net_DNS2_RR_TLSA extends Net_DNS2_RR
      */
     protected function rrToString()
     {
-        return $this->cert_usage . ' ' . $this->selector . ' ' . 
-            $this->matching_type . ' ' . base64_encode($this->certificate);
+        return $this->address;
     }
 
     /**
@@ -115,10 +97,31 @@ class Net_DNS2_RR_TLSA extends Net_DNS2_RR
      */
     protected function rrFromString(array $rdata)
     {
-        $this->cert_usage       = array_shift($rdata);
-        $this->selector         = array_shift($rdata);
-        $this->matching_type    = array_shift($rdata);
-        $this->certificate      = base64_decode(implode('', $rdata));
+        $value = array_shift($rdata);
+
+        //
+        // re: RFC 7043, the field must be represented as 8 two-digit hex numbers
+        // separated by hyphens.
+        //
+        $a = explode('-', $value);
+        if (count($a) != 8) {
+
+            return false;
+        }
+
+        //
+        // make sure they're all hex values
+        //
+        foreach ($a as $i) {
+            if (ctype_xdigit($i) == false) {
+                return false;
+            }
+        }
+
+        //
+        // store it
+        //
+        $this->address = strtolower($value);
 
         return true;
     }
@@ -130,27 +133,20 @@ class Net_DNS2_RR_TLSA extends Net_DNS2_RR
      *
      * @return boolean
      * @access protected
-     *
+     * 
      */
     protected function rrSet(Net_DNS2_Packet &$packet)
     {
         if ($this->rdlength > 0) {
 
-            //
-            // unpack the format, keytag and algorithm
-            //
-            $x = unpack('Cusage/Cselector/Ctype', $this->rdata);
-
-            $this->cert_usage       = $x['usage'];
-            $this->selector         = $x['selector'];
-            $this->matching_type    = $x['type'];
-
-            //
-            // copy the certificate
-            //
-            $this->certificate  = substr($this->rdata, 3, $this->rdlength - 3);
-
-            return true;
+            $x = unpack('C8', $this->rdata);
+            if (count($x) == 8) {
+            
+                $this->address = vsprintf(
+                    '%02x-%02x-%02x-%02x-%02x-%02x-%02x-%02x', $x
+                );
+                return true;
+            }
         }
 
         return false;
@@ -158,29 +154,27 @@ class Net_DNS2_RR_TLSA extends Net_DNS2_RR
 
     /**
      * returns the rdata portion of the DNS packet
-     *
+     * 
      * @param Net_DNS2_Packet &$packet a Net_DNS2_Packet packet use for
      *                                 compressed names
      *
-     * @return mixed                   either returns a binary packed
+     * @return mixed                   either returns a binary packed 
      *                                 string or null on failure
      * @access protected
-     *
+     * 
      */
     protected function rrGet(Net_DNS2_Packet &$packet)
     {
-        if (strlen($this->certificate) > 0) {
+        $data = '';
 
-            $data = pack(
-                'CCC', $this->cert_usage, $this->selector, $this->matching_type
-            ) . $this->certificate;
+        $a = explode('-', $this->address);
+        foreach ($a as $b) {
 
-            $packet->offset += strlen($data);
-
-            return $data;
+            $data .= chr(hexdec($b));
         }
 
-        return null;
+        $packet->offset += 8;
+        return $data;
     }
 }
 

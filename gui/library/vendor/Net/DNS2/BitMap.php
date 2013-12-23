@@ -43,7 +43,7 @@
  * @author    Mike Pultz <mike@mikepultz.com>
  * @copyright 2010 Mike Pultz <mike@mikepultz.com>
  * @license   http://www.opensource.org/licenses/bsd-license.php  BSD License
- * @version   SVN: $Id: BitMap.php 184 2013-01-26 23:13:21Z mike.pultz $
+ * @version   SVN: $Id: BitMap.php 198 2013-05-26 05:05:22Z mike.pultz $
  * @link      http://pear.php.net/package/Net_DNS2
  * @since     File available since Release 0.6.0
  *
@@ -195,7 +195,7 @@ class Net_DNS2_BitMap
             }
 
             $bm[$current_window][$val] = 1;
-            $bm[$current_window]['length'] = ceil( ($max + 1) / 8);
+            $bm[$current_window]['length'] = ceil(($max + 1) / 8);
         }
 
         $output = '';

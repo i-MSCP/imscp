@@ -43,7 +43,7 @@
  * @author    Mike Pultz <mike@mikepultz.com>
  * @copyright 2010 Mike Pultz <mike@mikepultz.com>
  * @license   http://www.opensource.org/licenses/bsd-license.php  BSD License
- * @version   SVN: $Id: TSIG.php 179 2012-11-23 05:49:01Z mike.pultz $
+ * @version   SVN: $Id: TSIG.php 198 2013-05-26 05:05:22Z mike.pultz $
  * @link      http://pear.php.net/package/Net_DNS2
  * @since     File available since Release 0.6.0
  *
@@ -82,6 +82,30 @@
  */
 class Net_DNS2_RR_TSIG extends Net_DNS2_RR
 {
+    /*
+     * TSIG Algorithm Identifiers
+     */
+    const HMAC_MD5      = 'hmac-md5.sig-alg.reg.int';   // RFC 2845, required
+    const GSS_TSIG      = 'gss-tsig';                   // unsupported, optional
+    const HMAC_SHA1     = 'hmac-sha1';                  // RFC 4635, required
+    const HMAC_SHA224   = 'hmac-sha224';                // RFC 4635, optional
+    const HMAC_SHA256   = 'hmac-sha256';                // RFC 4635, required
+    const HMAC_SHA384   = 'hmac-sha384';                // RFC 4635, optional
+    const HMAC_SHA512   = 'hmac-sha512';                // RFC 4635, optional
+
+    /*
+     * the map of hash values to names
+     */
+    public static $hash_algorithms = array(
+
+        self::HMAC_MD5      => 'md5',
+        self::HMAC_SHA1     => 'sha1',
+        self::HMAC_SHA224   => 'sha224',
+        self::HMAC_SHA256   => 'sha256',
+        self::HMAC_SHA384   => 'sha384',
+        self::HMAC_SHA512   => 'sha512'
+    );
+
     /*
      * algorithm used; only supports HMAC-MD5
      */
@@ -178,7 +202,7 @@ class Net_DNS2_RR_TSIG extends Net_DNS2_RR
         //
         // the rest of the data is set to default
         //
-        $this->algorithm    = 'hmac-md5.sig-alg.reg.int';
+        $this->algorithm    = self::HMAC_MD5;
         $this->time_signed  = time();
         $this->fudge        = 300;
         $this->mac_size     = 0;
@@ -213,9 +237,9 @@ class Net_DNS2_RR_TSIG extends Net_DNS2_RR
             //
             // expand the algorithm
             //
-            $newoffset = $packet->offset;
-            $this->algorithm = Net_DNS2_Packet::expand($packet, $newoffset);
-            $offset = $newoffset - $packet->offset;
+            $newoffset          = $packet->offset;
+            $this->algorithm    = Net_DNS2_Packet::expand($packet, $newoffset);
+            $offset             = $newoffset - $packet->offset;
 
             //
             // unpack time, fudge and mac_size
@@ -350,7 +374,9 @@ class Net_DNS2_RR_TSIG extends Net_DNS2_RR
             //
             // sign the data
             //
-            $this->mac = $this->_signHMAC($sig_data, base64_decode($this->key));
+            $this->mac = $this->_signHMAC(
+                $sig_data, base64_decode($this->key), $this->algorithm
+            );
             $this->mac_size = strlen($this->mac);
 
             //
@@ -402,22 +428,47 @@ class Net_DNS2_RR_TSIG extends Net_DNS2_RR
     }
 
     /**
-     * signs the given data with the given key, and return sthe result
+     * signs the given data with the given key, and returns the result
      *
-     * @param string $data the data to sign
-     * @param string $key  key to use for signing
+     * @param string $data      the data to sign
+     * @param string $key       key to use for signing
+     * @param string $algorithm the algorithm to use; defaults to MD5
      *
      * @return string the signed digest
+     * @throws Net_DNS2_Exception
      * @access private
      *
      */
-    private function _signHMAC($data, $key = null)
+    private function _signHMAC($data, $key = null, $algorithm = self::HMAC_MD5)
     {
         //
-        // use mhash if it exists, it's faster
+        // use the hash extension; this is included by default in >= 5.1.2 which
+        // is our dependent version anyway- so it's easy to switch to it.
         //
-        if (extension_loaded('mhash')) {
-            return mhash(MHASH_MD5, $data, $key);
+        if (extension_loaded('hash')) {
+
+            if (!isset(self::$hash_algorithms[$algorithm])) {
+
+                throw new Net_DNS2_Exception(
+                    'invalid or unsupported algorithm',
+                    Net_DNS2_Lookups::E_PARSE_ERROR
+                );
+            }
+
+            return hash_hmac(self::$hash_algorithms[$algorithm], $data, $key, true);
+        }
+
+        //
+        // if the hash extension isn't loaded, and they selected something other
+        // than MD5, throw an exception
+        //
+        if ($algorithm != self::HMAC_MD5) {
+
+            throw new Net_DNS2_Exception(
+                'only HMAC-MD5 supported. please install the php-extension ' .
+                '"hash" in order to use the sha-family',
+                Net_DNS2_Lookups::E_PARSE_ERROR
+            );
         }
 
         //
@@ -437,7 +488,9 @@ class Net_DNS2_RR_TSIG extends Net_DNS2_RR
         $k_ipad = $key ^ str_repeat(chr(0x36), 64);
         $k_opad = $key ^ str_repeat(chr(0x5c), 64);
 
-        return $this->_signHMAC($k_opad . pack('H*', md5($k_ipad . $data)));
+        return $this->_signHMAC(
+            $k_opad . pack('H*', md5($k_ipad . $data)), null, $algorithm
+        );
     }
 }
 

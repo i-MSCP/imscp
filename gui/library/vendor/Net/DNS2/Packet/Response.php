@@ -43,7 +43,7 @@
  * @author    Mike Pultz <mike@mikepultz.com>
  * @copyright 2010 Mike Pultz <mike@mikepultz.com>
  * @license   http://www.opensource.org/licenses/bsd-license.php  BSD License
- * @version   SVN: $Id: Response.php 185 2013-01-27 00:11:07Z mike.pultz $
+ * @version   SVN: $Id: Response.php 198 2013-05-26 05:05:22Z mike.pultz $
  * @link      http://pear.php.net/package/Net_DNS2
  * @since     File available since Release 0.6.0
  *
@@ -118,12 +118,13 @@ class Net_DNS2_Packet_Response extends Net_DNS2_Packet
         $this->header = new Net_DNS2_Header($this);
 
         //
-        // if the truncation bit is set, then just return right here, because the rest
-        // of the packet is probably empty; and there's no point in processing anything else.
+        // if the truncation bit is set, then just return right here, because the
+        // rest of the packet is probably empty; and there's no point in processing
+        // anything else.
         //
-        // we also don't need to worry about checking to see if the the header is null or
-        // not, since the Net_DNS2_Header() constructor will throw an exception if the packet
-        // is invalid.
+        // we also don't need to worry about checking to see if the the header is 
+        // null or not, since the Net_DNS2_Header() constructor will throw an 
+        // exception if the packet is invalid.
         //
         if ($this->header->tc == 1) {
 
