@@ -14,9 +14,6 @@ DISTRO
 	- Added: Packages file for Ubuntu Saucy Slamander
 	- Added: Packages file for Ubuntu Trusty Tahr (experimental)
 
-VENDOR LIBS
-    - Updated Net_DNS2 to 1.32
-
 ENGINE:
 	- Added: System (UNIX) user/group names are now stored in database
 	- Added: IMSCP_CLEAR_SCREEN environment variable which allows to not clear the terminal screen at end of script
@@ -39,6 +36,9 @@ PLUGINS:
 SETUP:
 	- Fixed: Composer process timeout must be increased for slow connections
 	- Fixed: Unable to add external repository (Lucid...)
+
+VENDOR
+    - Updated: Net_DNS2 to version 1.3.2
 	
 Tickets:
 	- Fixed #528: Bug - The resolv.conf file shouldn't be edited manually
