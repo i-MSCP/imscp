@@ -341,7 +341,6 @@ sub buildNAMEDData
 		}
 
 		# We must trigger the module subalias whatever the number of entries - See #503
-		$sql = ;
 		$rdata = $db->doQuery(
 			'update',
 			'
