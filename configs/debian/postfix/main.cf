@@ -3,9 +3,15 @@ command_directory = /usr/sbin
 daemon_directory = /usr/lib/postfix
 
 # Some common configuration parameters
-inet_protocols = ipv4, ipv6
+inet_protocols = {MTA_INET_PROTOCOLS}
 inet_interfaces = all
 mynetworks_style = host
+
+# IPv4 source for outbound mail
+smtp_bind_address = {MTA_SMTP_BIND_ADDRESS}
+
+# IPv6 source for outbound mail
+#smtp_bind_address6 = {MTA_SMTP_BIND_ADDRESS6}
 
 myhostname = {MTA_HOSTNAME}
 mydomain = {MTA_LOCAL_DOMAIN}

@@ -366,7 +366,15 @@ sub setupAskServerIps
 		do {
 			# Ask user for the server base IP
 			($rs, $baseServerIp) = $dialog->radiolist(
-				"\nPlease, select the base server IP for i-MSCP:",
+"
+Please, select the base server IP for i-MSCP:
+
+Important:
+
+Because this IP is used as IP source for outbound mails, a reverse DNS lookup on this IP should match the server hostname.
+
+In case you do not fit with this requirement, several mails sent by your server will be probably considered as spams by receivers.
+",
 				[@serverIps, 'Add new ip'],
 				$baseServerIp ? $baseServerIp :  $serverIps[0]
 			);

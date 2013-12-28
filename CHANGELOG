@@ -20,6 +20,8 @@ ENGINE:
 	- Added: SPF records for subdomains and external mail servers
 	- Changed: Event listeners are now persistent. This allow to avoid self-registering
 	- Changed: iMSCP::Templator renamed to iMSCP::TemplateParser
+	- Changed: IP source for outbound mails is now set to the base server IP (Postfix - Temporary fix)
+	- Changed: Inet protocol is now set according the base server IP type (Postfix - Temporary fix)
 	- Fixed: External command died with signal 9 (without core dump)
 	- Fixed: Keep current unix user uid/gid when updating the SYSTEM_USER_PREFIX and SYSTEM_USER_MIN_UID parameters
 	- Fixed: Pass-in domain data to the listeners which listen to the *HttpdBuildConfFile and *HttpdBuildConf events

@@ -556,8 +556,13 @@ sub _buildMainCfFile
 	$rs = $self->{'hooksManager'}->trigger('beforeMtaBuildMainCfFile', \$content, 'main.cf');
 	return $rs if $rs;
 
+	my $baseServerIpType = iMSCP::IP->new()->getIpType($main::imscpConfig{'BASE_SERVER_IP'});
+
 	$content = process(
 		{
+			MTA_INET_PROTOCOLS => $baseServerIpType,
+			MTA_SMTP_BIND_ADDRESS => ($baseServerIpType eq 'ipv4') ? $main::imscpConfig{'BASE_SERVER_IP'} : '',
+			MTA_SMTP_BIND_ADDRESS6 => ($baseServerIpType eq 'ipv6') ? $main::imscpConfig{'BASE_SERVER_IP'} : '',
 			MTA_HOSTNAME => $hostname,
 			MTA_LOCAL_DOMAIN => "$hostname.local",
 			MTA_VERSION => $main::imscpConfig{'Version'},

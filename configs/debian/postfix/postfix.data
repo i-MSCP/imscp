@@ -55,3 +55,19 @@ CMD_POSTCONF = /usr/sbin/postconf
 CMD_POSTMAP = /usr/sbin/postmap
 
 CMD_NEWALIASES = /usr/bin/newaliases
+
+# Possible value: yes or no
+# (No implemented yet)
+#IPV6_SUPPORT =
+
+# This is the IPv4 addresses used as IP source for outbound mails
+# It is important that a reverse DNS lookup result matches with
+# the server hostname
+# (No implemented yet)
+#SMTP_BIND_ADDRESS =
+
+# This is the IPv6 addresses used as IP source for outbound mail.
+# It is important that a reverse DNS lookup result matches with
+# the server hostname
+# (No implemented yet)
+#SMTP_BIND_ADDRESS6 =
