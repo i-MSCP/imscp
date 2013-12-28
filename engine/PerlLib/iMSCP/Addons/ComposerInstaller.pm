@@ -38,7 +38,7 @@ use iMSCP::Debug;
 use iMSCP::File;
 use iMSCP::Dir;
 use iMSCP::Execute;
-use iMSCP::Templator;
+use iMSCP::TemplateParser;
 use iMSCP::HooksManager;
 use iMSCP::Getopt;
 use iMSCP::Dialog;
@@ -172,9 +172,7 @@ sub _buildComposerFile
 
 	iMSCP::Dialog->factory()->infobox("\nBuilding composer.json file for addon packages...");
 
-	my $composerJsonFile = iMSCP::Templator::process(
-		{ 'PACKAGES' => join ",\n", @{$self->{'toInstall'}} }, $self->_getComposerFileTpl()
-	);
+	my $composerJsonFile = process({ 'PACKAGES' => join ",\n", @{$self->{'toInstall'}} }, $self->_getComposerFileTpl());
 
 	my $file = iMSCP::File->new('filename' => "$self->{'cacheDir'}/composer.json");
 

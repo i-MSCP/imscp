@@ -45,6 +45,7 @@ use iMSCP::SystemUser;
 use iMSCP::Dir;
 use iMSCP::File;
 use File::Basename;
+use iMSCP::TemplateParser;
 use Servers::httpd::apache_fcgi;
 use version;
 use Net::LibIDN qw/idn_to_ascii/;
@@ -1034,9 +1035,6 @@ sub _buildMasterVhostFiles
 				my $fileName = shift;
 
 				if($fileName eq '00_master.conf') {
-					require iMSCP::Templator;
-					iMSCP::Templator->import();
-
 					my $customTagBegin = "    # SECTION custom BEGIN.\n";
 					my $customTagEnding = "    # SECTION custom END.\n";
 					my $customBlock =

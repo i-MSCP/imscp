@@ -36,7 +36,7 @@ use warnings;
 
 use iMSCP::Debug;
 use iMSCP::HooksManager;
-use iMSCP::Templator;
+use iMSCP::TemplateParser;
 use iMSCP::Dir;
 use iMSCP::File;
 use Servers::httpd;
@@ -204,7 +204,7 @@ sub _installLogrotate($$$)
 			"# SECTION custom BEGIN.\n",
 			"# SECTION custom END.\n",
 			"\tprerotate\n" .
-			"\t\IMSCP_APACHE_LOG_DIR=$httpd->{'config'}->{'APACHE_LOG_DIR'} " .
+			"\tIMSCP_APACHE_LOG_DIR=$httpd->{'config'}->{'APACHE_LOG_DIR'} " .
 			"$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Addons/Webstats/Awstats/Scripts/awstats_updateall.pl now " .
 			"-awstatsprog=$main::imscpConfig{'AWSTATS_ENGINE_DIR'}/awstats.pl &> /dev/null\n" .
 			"\tendscript\n",

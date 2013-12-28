@@ -35,6 +35,7 @@ use strict;
 use warnings;
 
 use iMSCP::Debug;
+use iMSCP::TemplateParser;
 use iMSCP::Addons::ComposerInstaller;
 use iMSCP::File;
 use File::Basename;
@@ -519,7 +520,7 @@ sub _buildConfig
 		# The password changer plugin act on the i-MSCP database
 		$cfg->{'DB_NAME'} = ($_ eq 'imscp.pw.changer.inc.php') ? $imscpDbName : $roundcubeDbName;
 
-		$cfgTpl = iMSCP::Templator::process($cfg, $cfgTpl);
+		$cfgTpl = process($cfg, $cfgTpl);
 		unless(defined $cfgTpl) {
 			error("Unable to process template: $confDir/$_");
 			return 1;

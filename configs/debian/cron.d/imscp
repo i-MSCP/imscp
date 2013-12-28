@@ -29,5 +29,5 @@
 # Delete old apache logfiles weekly
 @weekly root {TOOLS_ROOT_DIR}/imscp-del-logs >/dev/null 2>&1
 
-# [{TASKID}] task START.
-# [{TASKID}] task END.
+# imscp [{ENTRY_ID}] entry BEGIN
+# imscp [{ENTRY_ID}] entry ENDING

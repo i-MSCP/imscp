@@ -32,6 +32,6 @@ options {
         allow-transfer { none; };
         version "i-MSCP DNS Server";
 
-        // bind custom data BEGIN.
-        // bind custom data END.
+        // imscp [{ENTRY_ID}] entry BEGIN
+        // imscp [{ENTRY_ID}] entry ENDING
 };

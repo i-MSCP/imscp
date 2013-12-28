@@ -38,7 +38,7 @@ use iMSCP::Debug;
 use iMSCP::HooksManager;
 use iMSCP::Config;
 use iMSCP::Execute;
-use iMSCP::Templator;
+use iMSCP::TemplateParser;
 use iMSCP::File;
 use iMSCP::Dir;
 use iMSCP::Ext2Attributes qw(setImmutable clearImmutable isImmutable);

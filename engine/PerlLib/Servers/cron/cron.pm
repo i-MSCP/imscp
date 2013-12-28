@@ -2,7 +2,7 @@
 
 =head1 NAME
 
-Servers::cron::cron - i-MSCP Cron server implementation
+ Servers::cron::cron - i-MSCP Cron server implementation
 
 =cut
 
@@ -38,7 +38,7 @@ use warnings;
 use iMSCP::Debug;
 use iMSCP::HooksManager;
 use iMSCP::File;
-use iMSCP::Templator;
+use iMSCP::TemplateParser;
 use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
@@ -75,52 +75,59 @@ sub addTask($$)
 
 	$data = {} unless ref $data eq 'HASH';
 
-	my $rs = $self->{'hooksManager'}->trigger('beforeCronAddTask', $data);
-	return $rs if $rs;
+	if(-f "$self->{'wrkDir'}/imscp") {
+		$data->{'MINUTE'} = 1 unless exists $data->{'MINUTE'};
+		$data->{'HOUR'} = 1 unless exists $data->{'HOUR'};
+		$data->{'DAY'} = 1 unless exists $data->{'DAY'};
+		$data->{'MONTH'} = 1 unless exists $data->{'MONTH'};
+		$data->{'DWEEK'} = 1 unless exists $data->{'DWEEK'};
+		$data->{'USER'} = $main::imscpConfig{'ROOT_USER'} unless exists $data->{'USER'};
 
-	$data->{'MINUTE'} = 1 unless exists $data->{'MINUTE'};
-	$data->{'HOUR'} = 1 unless exists $data->{'HOUR'};
-	$data->{'DAY'} = 1 unless exists $data->{'DAY'};
-	$data->{'MONTH'} = 1 unless exists $data->{'MONTH'};
-	$data->{'DWEEK'} = 1 unless exists $data->{'DWEEK'};
-	$data->{'USER'} = $main::imscpConfig{'ROOT_USER'} unless exists $data->{'USER'};
+		unless(exists $data->{'COMMAND'} && exists $data->{'TASKID'}) {
+			error('Missing command or task ID');
+			return 1;
+		}
 
-	unless(exists $data->{'COMMAND'} && exists $data->{'TASKID'}) {
-		error('Missing command or task ID');
-		return 1;
-	}
+		my $wrkFile = iMSCP::File->new('filename' => "$main::imscpConfig{'CRON_D_DIR'}/imscp");
 
-	# Backup production file
-	$rs = iMSCP::File->new(
-		'filename' => "$main::imscpConfig{'CRON_D_DIR'}/imscp"
-	)->copyFile(
-		"$self->{'bkpDir'}/imscp." . time
-	) if -f "$main::imscpConfig{'CRON_D_DIR'}/imscp";
-	return $rs if $rs;
+		# Backup current working file
+		my $rs = $wrkFile->copyFile("$self->{'bkpDir'}/imscp." . time);
+		return $rs if $rs;
 
-	my $file = iMSCP::File->new('filename' => "$self->{'wrkDir'}/imscp");
-	my $wrkFileContent = $file->get();
+		# Getting current working file content
+		my $wrkFileContent = $wrkFile->get();
+		unless(defined $wrkFileContent){
+			error("Unable to read $wrkFile->{'filename'}");
+			return 1;
+		}
 
-	unless(defined $wrkFileContent){
-		error("Unable to read $file->{'filename'} file");
-		return 1;
-	} else {
-		my $cleanBTag = "# [{TASKID}] task START.\n";
-		my $cleanETag = "# [{TASKID}] task END.\n";
+		$rs = $self->{'hooksManager'}->trigger('beforeCronAddTask', \$wrkFileContent, $data);
+		return $rs if $rs;
 
-		my $bTag = "# [$data->{'TASKID'}] task START.\n";
-		my $eTag = "# [$data->{'TASKID'}] task END.\n";
+		my $cronEntryBegin = "# imscp [$data->{'TASKID'}] entry BEGIN\n";
+		my $cronEntryEnding = "# imscp [$data->{'TASKID'}] entry ENDING\n";
 
-		my $tag = sprintf(
+		my $cronEntry = sprintf(
 			"%s %s %s %s %s %s %s\n",
 			$data->{'MINUTE'}, $data->{'HOUR'}, $data->{'DAY'}, $data->{'MONTH'}, $data->{'DWEEK'}, $data->{'USER'},
 			$data->{'COMMAND'}
 		);
 
-		$tag =~ s/ +/ /;
+		$cronEntry =~ s/ +/ /;
 
-		$wrkFileContent = replaceBloc($bTag, $eTag, '', $wrkFileContent); # Remove any previous task with same id
-		$wrkFileContent = replaceBloc($cleanBTag, $cleanETag, "$bTag$tag$eTag", $wrkFileContent, 'preserve');
+		# Remove previous task with same id if any
+		$wrkFileContent = replaceBloc($cronEntryBegin, $cronEntryEnding, '', $wrkFileContent);
+
+		# Adding new entry
+		$wrkFileContent = replaceBloc(
+			"# imscp [{ENTRY_ID}] entry BEGIN\n",
+			"# imscp [{ENTRY_ID}] entry ENDING\n",
+			"$cronEntryBegin$cronEntry$cronEntryEnding",
+			$wrkFileContent,
+			'preserve'
+		);
+
+		$self->{'hooksManager'}->trigger('afterCronAddTask', \$wrkFileContent, $data);
 
 		# Store file in working directory
 		my $file = iMSCP::File->new('filename' => "$self->{'wrkDir'}/imscp");
@@ -138,11 +145,11 @@ sub addTask($$)
 		return $rs if $rs;
 
 		# Install file in production directory
-		$rs = $file->copyFile("$main::imscpConfig{'CRON_D_DIR'}/imscp");
-		return $rs if $rs;
+		$file->copyFile("$main::imscpConfig{'CRON_D_DIR'}/imscp");
+	} else {
+		error("File $self->{'wrkDir'}/imscp not found. Please rerun i-MSCP setup.");
+		1;
 	}
-
-	$self->{'hooksManager'}->trigger('afterCronAddTask', $data);
 }
 
 =item deleteTask(\%data)
@@ -161,36 +168,37 @@ sub deleteTask($$)
 
 	$data = {} unless ref $data eq 'HASH';
 
-	my $rs = $self->{'hooksManager'}->trigger('beforeCronDelTask', $data);
-    return $rs if $rs;
+	if(-f "$self->{'wrkDir'}/imscp") {
+		unless(exists $data->{'TASKID'}) {
+			error('Missing task ID');
+			return 1;
+		}
 
-	unless(exists $data->{'TASKID'}) {
-		error('Missing task ID');
-		return 1;
-	}
+		my $wrkFile = iMSCP::File->new('filename' => "$main::imscpConfig{'CRON_D_DIR'}/imscp");
 
-	# Backup production file
-	$rs = iMSCP::File->new(
-		filename => "$main::imscpConfig{'CRON_D_DIR'}/imscp"
-	)->copyFile(
-		"$self->{'bkpDir'}/imscp." . time
-	) if(-f "$main::imscpConfig{'CRON_D_DIR'}/imscp");
-	return $rs if $rs;
+		# Backup current working file
+		my $rs = $wrkFile->copyFile("$self->{'bkpDir'}/imscp." . time);
+		return $rs if $rs;
 
-	my $file = iMSCP::File->new('filename' => "$self->{'wrkDir'}/imscp");
-	my $wrkFileContent = $file->get();
+		# Getting current working file content
+		my $wrkFileContent = $wrkFile->get();
+		unless(defined $wrkFileContent){
+			error("Unable to read $wrkFile->{'filename'}");
+			return 1;
+		}
 
-	unless(defined $wrkFileContent){
-		error("Unable to read $file->{'filemane'} file");
-		return 1;
-	} else {
-		my $cleanBTag = "# [{TASKID}] task START.\n";
-		my $cleanETag = "# [{TASKID}] task END.\n";
+		$rs = $self->{'hooksManager'}->trigger('beforeCronDelTask', \$wrkFileContent, $data);
+		return $rs if $rs;
 
-        my $bTag = "# [$data->{'TASKID'}] task START.\n";
-        my $eTag = "# [$data->{'TASKID'}] task END.\n";
+		$wrkFileContent = replaceBloc(
+			"# imscp [$data->{'TASKID'}] entry BEGIN\n",
+			"# imscp [$data->{'TASKID'}] entry ENDING\n",
+			'',
+			$wrkFileContent
+		);
 
-		$wrkFileContent = replaceBloc($bTag, $eTag, '', $wrkFileContent);
+		$rs = $self->{'hooksManager'}->trigger('afterCronDelTask', \$wrkFileContent, $data);
+		return $rs if $rs;
 
 		# Store file in working directory
 		my $file = iMSCP::File->new('filename' => "$self->{'wrkDir'}/imscp");
@@ -208,11 +216,11 @@ sub deleteTask($$)
 		return $rs if $rs;
 
 		# Install file in production directory
-		$rs = $file->copyFile("$main::imscpConfig{'CRON_D_DIR'}/imscp");
-		return $rs if $rs;
+		$file->copyFile("$main::imscpConfig{'CRON_D_DIR'}/imscp");
+	} else {
+		error("File $self->{'wrkDir'}/imscp not found. Please rerun i-MSCP setup.");
+		1;
 	}
-
-	$self->{'hooksManager'}->trigger('afterCronDelTask', $data);
 }
 
 =item setEnginePermissions()

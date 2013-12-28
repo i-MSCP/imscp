@@ -287,37 +287,75 @@ sub buildNAMEDData
 		DOMAIN_NAME => $self->{'alias_name'},
 		DOMAIN_IP => $self->{'ip_number'},
 		USER_NAME => $userName . 'als' . $self->{'alias_id'},
-		MX => (
+		MAIL_ENABLED => (
 			($self->{'mail_on_domain'} || $self->{'domain_mailacc_limit'} >= 0) &&
 			($self->{'external_mail'} ~~ ['wildcard', 'off'])
-		) ? '' : ';'
+		) ? 1 : 0
 	};
 
 	if($self->{'action'} eq 'add') {
 		# Get DNS resource record added by 3rd party components (custom dns feature, mail feature, plugins...)
 		my $db = iMSCP::Database->factory();
 
-		my $sql = 'SELECT * FROM `domain_dns` WHERE `domain_dns`.`domain_id` = ? AND `domain_dns`.`alias_id` = ?';
-		my $rdata = $db->doQuery('domain_dns_id', $sql, $self->{'domain_id'}, $self->{'alias_id'});
+		my $rdata = $db->doQuery(
+			'domain_dns_id',
+			'SELECT * FROM `domain_dns` WHERE `domain_dns`.`domain_id` = ? AND `domain_dns`.`alias_id` = ?',
+			$self->{'domain_id'},
+			$self->{'alias_id'}
+		);
 		unless(ref $rdata eq 'HASH') {
 			error($rdata);
 			return 1;
 		}
 
-		$self->{'named'}->{'DMN_CUSTOM'}->{$_} = $rdata->{$_} for keys %{$rdata};
+		$self->{'named'}->{'CUSTOM_DNS_RECORD'}->{$_} = $rdata->{$_} for keys %{$rdata};
+
+		# Add SPF records for external MX if needed
+		if($self->{'external_mail'} ~~ ['domain', 'filter', 'wildcard']) {
+			my $hosts = { 'domain' => [], 'wildcard' => [] };
+
+			for(keys %{$self->{'named'}->{'CUSTOM_DNS_RECORD'}}) {
+				if($self->{'named'}->{'CUSTOM_DNS_RECORD'}->{$_}->{'owned_by'} eq 'ext_mail_feature') {
+					(my $host = $self->{'named'}->{'CUSTOM_DNS_RECORD'}->{$_}->{'domain_text'}) =~ s/\d+\s+(.*)\.$/$1/;
+
+					if(index($self->{'named'}->{'CUSTOM_DNS_RECORD'}->{$_}->{'domain_dns'}, '*') != 0) {
+						push @{$hosts->{'domain'}}, "a:$host";
+					} else {
+						push @{$hosts->{'wildcard'}}, "a:$host";
+					}
+				}
+			}
+
+			for my $type (keys %{$hosts}) {
+				if(@{$hosts->{$type}}) {
+					for('TXT', 'SPF') {
+						$self->{'named'}->{'CUSTOM_DNS_RECORD'}->{"$_$type"} = {
+							'domain_dns' => ($type eq 'domain') ? '@' : '*',
+							'domain_class' => 'IN',
+							'domain_type' => $_,
+							'domain_text' => "\"v=spf1 @{$hosts->{$type}} mx -all\""
+						}
+					}
+				}
+			}
+		}
 
 		# We must trigger the module subalias whatever the number of entries - See #503
-		$sql = '
-			UPDATE
-				`subdomain_alias`
-			SET
-				`subdomain_alias_status` = ?
-			WHERE
-				`subdomain_alias_status` = ?
-			AND
-				`alias_id` = ?
-		';
-		$rdata = $db->doQuery('update', $sql, 'tochange', 'ok', $self->{'alias_id'});
+		$sql = ;
+		$rdata = $db->doQuery(
+			'update',
+			'
+				UPDATE
+					`subdomain_alias`
+				SET
+					`subdomain_alias_status` = ?
+				WHERE
+					`subdomain_alias_status` = ?
+				AND
+					`alias_id` = ?
+			',
+			'tochange', 'ok', $self->{'alias_id'}
+		);
 		unless(ref $rdata eq 'HASH') {
 			error($rdata);
 			return 1;

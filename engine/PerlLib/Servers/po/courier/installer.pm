@@ -42,7 +42,7 @@ use iMSCP::Rights;
 use iMSCP::File;
 use iMSCP::Dir;
 use iMSCP::Execute;
-use iMSCP::Templator;
+use iMSCP::TemplateParser;
 use File::Basename;
 use Servers::po::courier;
 use Servers::mta::postfix;
@@ -273,7 +273,7 @@ maildrop  unix  -       n       n       -       -       pipe
  \${user} \${nexthop} \${sender}
 EOF
 
-		$$fileContent .= iMSCP::Templator::process(
+		$$fileContent .= iMSCP::TemplateParser::process(
 			{
 				MTA_MAILBOX_UID_NAME => $self->{'mta'}->{'config'}-> {'MTA_MAILBOX_UID_NAME'},
 				MTA_MAILBOX_GID_NAME => $self->{'mta'}->{'config'}-> {'MTA_MAILBOX_GID_NAME'},
@@ -524,7 +524,7 @@ sub _buildConf
 		return $rs if $rs;
 
 		# Replace placeholders
-		$cfgTpl = iMSCP::Templator::process($cfg, $cfgTpl);
+		$cfgTpl = process($cfg, $cfgTpl);
 		return 1 if ! defined $cfgTpl;
 
 		$rs = $self->{'hooksManager'}->trigger('afterPoBuildConf', \$cfgTpl, $_);

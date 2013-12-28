@@ -41,7 +41,7 @@ use iMSCP::Config;
 use iMSCP::File;
 use iMSCP::Dir;
 use iMSCP::Execute;
-use iMSCP::Templator;
+use iMSCP::TemplateParser;
 use File::Basename;
 use version;
 use Servers::po::dovecot;
@@ -244,7 +244,7 @@ dovecot   unix  -       n       n       -       -       pipe
   flags=DRhu user={MTA_MAILBOX_UID_NAME}:{MTA_MAILBOX_GID_NAME} argv={DOVECOT_DELIVER_PATH} -f \${sender} -d \${recipient} {SFLAG}
 EOF
 
-		$$fileContent .= iMSCP::Templator::process(
+		$$fileContent .= iMSCP::TemplateParser::process(
 			{
 				MTA_MAILBOX_UID_NAME => $self->{'mta'}->{'config'}-> {'MTA_MAILBOX_UID_NAME'},
 				MTA_MAILBOX_GID_NAME => $self->{'mta'}->{'config'}-> {'MTA_MAILBOX_GID_NAME'},
@@ -514,7 +514,7 @@ sub _buildConf
 		return $rs if $rs;
 
 		# Replace placeholders
-		$cfgTpl = iMSCP::Templator::process($cfg, $cfgTpl);
+		$cfgTpl = process($cfg, $cfgTpl);
 		return 1 if ! defined $cfgTpl;
 
 		$rs = $self->{'hooksManager'}->trigger('afterPoBuildConf', \$cfgTpl, $_);

@@ -42,7 +42,7 @@ use iMSCP::IP;
 use iMSCP::File;
 use iMSCP::Dir;
 use File::Basename;
-use iMSCP::Templator;
+use iMSCP::TemplateParser;
 use iMSCP::Execute;
 use Servers::named::bind;
 use parent 'Common::SingletonClass';
@@ -57,7 +57,7 @@ use parent 'Common::SingletonClass';
 
 =item registerSetupHooks($hooksManager)
 
- Register setup hooks.
+ Register setup hooks
 
  Param iMSCP::HooksManager $hooksManager Hooks manager instance
  Return int 0 on success, other on failure
@@ -66,8 +66,7 @@ use parent 'Common::SingletonClass';
 
 sub registerSetupHooks($$)
 {
-	my $self = shift;
-	my $hooksManager = shift;
+	my ($self, $hooksManager) = @_;
 
 	my $rs = $hooksManager->trigger('beforeNamedRegisterSetupHooks', $hooksManager, 'bind');
 	return $rs if $rs;
@@ -90,7 +89,7 @@ sub registerSetupHooks($$)
 
 =item askDnsServerMode($dialog)
 
- Ask user for DNS server mode.
+ Ask user for DNS server mode
 
  Param iMSCP::Dialog::Dialog $dialog Dialog instance
  Return int 0 on success, other on failure
@@ -99,8 +98,7 @@ sub registerSetupHooks($$)
 
 sub askDnsServerMode($$)
 {
-	my $self = shift;
-	my $dialog = shift;
+	my ($self, $dialog) = @_;
 
 	my $dnsServerMode = main::setupGetQuestion('BIND_MODE') || $self->{'config'}->{'BIND_MODE'};
 
@@ -122,7 +120,7 @@ sub askDnsServerMode($$)
 
 =item askDnsServerMode($dialog)
 
- Ask user for DNS server IPs.
+ Ask user for DNS server IPs
 
  Param iMSCP::Dialog::Dialog $dialog Dialog instance
  Return int 0 on success, other on failure
@@ -131,8 +129,7 @@ sub askDnsServerMode($$)
 
 sub askDnsServerIps($$)
 {
-	my $self = shift;
-	my $dialog = shift;
+	my ($self, $dialog) = @_;
 
 	my $dnsServerMode = $self->{'config'}->{'BIND_MODE'};
 
@@ -215,7 +212,7 @@ sub askDnsServerIps($$)
 
 =item askIPv6Support($dialog)
 
- Ask user for DNS server IPv6 support.
+ Ask user for DNS server IPv6 support
 
  Param iMSCP::Dialog::Dialog $dialog Dialog instance
  Return int 0 on success, other on failure
@@ -224,8 +221,7 @@ sub askDnsServerIps($$)
 
 sub askIPv6Support($$)
 {
-	my $self = shift;
-	my $dialog = shift;
+	my ($self, $dialog) = @_;
 
 	my $ipv6 = main::setupGetQuestion('BIND_IPV6') || $self->{'config'}->{'BIND_IPV6'};
 	my $rs = 0;
@@ -245,7 +241,7 @@ sub askIPv6Support($$)
 
 =item install()
 
- Process install tasks.
+ Process install tasks
 
  Return int 0 on success, other on failure
 
@@ -289,7 +285,7 @@ sub install
 
 =item _init()
 
- Called by getInstance(). Initialize instance.
+ Called by getInstance(). Initialize instance
 
  Return Servers::named::bind::installer
 
@@ -334,7 +330,7 @@ sub _init
 
 =item _bkpConfFile($cfgFile)
 
- Backup configuration file.
+ Backup configuration file
 
  Param string $cfgFile Configuration file path
  Return int 0 on success, other on failure
@@ -343,8 +339,7 @@ sub _init
 
 sub _bkpConfFile($$)
 {
-	my $self = shift;
-	my $cfgFile = shift;
+	my ($self, $cfgFile) = @_;
 
 	my $rs = $self->{'hooksManager'}->trigger('beforeNamedBkpConfFile', $cfgFile);
 	return $rs if $rs;
@@ -367,7 +362,7 @@ sub _bkpConfFile($$)
 
 =item _switchTasks($cfgFile)
 
- Process switch tasks.
+ Process switch tasks
 
  Return int 0 on success, other on failure
 
@@ -408,7 +403,7 @@ sub _switchTasks
 
 =item _buildConf()
 
- Build configuration file.
+ Build configuration file
 
  Return int 0 on success, other on failure
 
@@ -434,27 +429,6 @@ sub _buildConf
 
 		my $rs = $self->{'hooksManager'}->trigger('beforeNamedBuildConf', \$cfgTpl, $filename);
 		return $rs if $rs;
-
-		# Re-add custom bind data snippet
-		if(-f "$self->{'wrkDir'}/$filename") {
-			my $wrkFile = iMSCP::File->new('filename' => "$self->{'wrkDir'}/$filename");
-
-			my $wrkFileContent = $wrkFile->get();
-			unless(defined $wrkFileContent) {
-				error("Unable to read $self->{'wrkDir'}/$filename");
-				return 1;
-			}
-
-			my $customBindDataBeginTag = "// bind custom data BEGIN.\n";
-			my $customBindDataEndTag = "// bind custom data END.\n";
-			my $customBindDataBlock = getBloc(
-				$customBindDataBeginTag, $customBindDataEndTag, $wrkFileContent, 'includeTags'
-			);
-
-			if($customBindDataBlock ne '') {
-				$cfgTpl = replaceBloc($customBindDataBeginTag, $customBindDataEndTag, $customBindDataBlock, $cfgTpl);
-			}
-		}
 
 		if($_ eq 'BIND_CONF_FILE' && ! -f "$self->{'config'}->{'BIND_CONF_DIR'}/bind.keys") {
 			$cfgTpl =~ s%include "$self->{'config'}->{'BIND_CONF_DIR'}/bind.keys";\n%%;
@@ -533,7 +507,7 @@ sub _buildConf
 
 =item _addMasterZone()
 
- Add master zone file.
+ Add master zone file
 
  Return int 0 on success, other on failure
 
@@ -546,13 +520,11 @@ sub _addMasterZone
 	my $rs = $self->{'hooksManager'}->trigger('beforeNamedAddMasterZone');
 	return $rs if $rs;
 
-	require Servers::named::bind;
-
 	$rs = Servers::named::bind->getInstance()->addDmn(
 		{
 			DOMAIN_NAME => $main::imscpConfig{'BASE_SERVER_VHOST'},
 			DOMAIN_IP => $main::imscpConfig{'BASE_SERVER_IP'},
-			MX => ''
+			MAIL_ENABLED => 1
 		}
 	);
 	return $rs if $rs;
@@ -562,7 +534,7 @@ sub _addMasterZone
 
 =item _saveConf()
 
- Save bind.data configuration file.
+ Save bind.data configuration file
 
  Return int 0 on success, other on failure
 
@@ -608,7 +580,7 @@ sub _saveConf
 
 =item _checkIps(\@ips)
 
- Check IP addresses.
+ Check IP addresses
 
  Param array_ref $ips Reference to an array containing IP addresses to check
  Return int 1 if all IPs are valid, 0 otherwise

@@ -31,7 +31,6 @@ use warnings;
 use iMSCP::Debug;
 use iMSCP::Execute;
 use iMSCP::File;
-use iMSCP::Templator;
 use File::Basename;
 use iMSCP::File;
 use iMSCP::Dir;

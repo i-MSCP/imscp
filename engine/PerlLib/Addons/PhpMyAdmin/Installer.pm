@@ -36,6 +36,7 @@ use warnings;
 
 use iMSCP::Debug;
 use Addons::PhpMyAdmin;
+use iMSCP::TemplateParser;
 use iMSCP::Addons::ComposerInstaller;
 use version;
 
@@ -681,9 +682,7 @@ sub _buildConfig
 	my $cfgTpl = $file->get();
 	return 1 if ! defined $cfgTpl;
 
-	require iMSCP::Templator;
-
-	$cfgTpl = iMSCP::Templator::process($cfg, $cfgTpl);
+	$cfgTpl = process($cfg, $cfgTpl);
 	return 1 if ! $cfgTpl;
 
 	# store file in working directory

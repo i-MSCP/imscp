@@ -6,12 +6,5 @@
 // organization
 //include "/etc/bind/zones.rfc1918";
 
-// bind Data BEGIN.
-
-// dmn [{DOMAIN_NAME}] cfg entry BEGIN.
-// dmn [{DOMAIN_NAME}] cfg entry END.
-
-// bind Data END.
-
-// bind custom data BEGIN.
-// bind custom data END.
+// imscp [{ENTRY_ID}] entry BEGIN
+// imscp [{ENTRY_ID}] entry ENDING

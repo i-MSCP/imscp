@@ -286,12 +286,14 @@ sub buildNAMEDData
 
 	$self->{'named'} = {
 		DOMAIN_NAME => $self->{'subdomain_name'} . '.' . $self->{'user_home'},
-		PARENT_DOMAIN_NAME	=> $self->{'user_home'},
+		PARENT_DOMAIN_NAME => $self->{'user_home'},
 		DOMAIN_IP => $self->{'ip_number'},
 		USER_NAME => $userName . 'sub' . $self->{'subdomain_id'}
 	};
 
 	if($self->{'external_mail'} ~~ ['domain', 'filter']) {
+		$self->{'named'}->{'MAIL_ENABLED'} = 1;
+
 		# only no wildcard MX (NOT LIKE '*.%') must be add to existent subdomains
 		my $sql = "
 			SELECT
@@ -317,9 +319,12 @@ sub buildNAMEDData
 			return 1;
 		}
 
-		($self->{'named'}->{'MX'}->{$_}->{'domain_text'}) = ($rdata->{$_}->{'domain_text'} =~ /(.*)\.$/) for keys %{$rdata};
+		($self->{'named'}->{'MAIL_DATA'}->{$_} = $rdata->{$_}->{'domain_text'}) =~ s/(.*)\.$/$1./ for keys %{$rdata};
 	} elsif($self->{'mail_on_domain'} || $self->{'domain_mailacc_limit'} >= 0) {
-		$self->{'named'}->{'MX'}->{1}->{'domain_text'} = "10\tmail.$self->{'user_home'}";
+		$self->{'named'}->{'MAIL_ENABLED'} = 1;
+		$self->{'named'}->{'MAIL_DATA'}->{1} = "10\tmail.$self->{'user_home'}.";
+	} else {
+		$self->{'named'}->{'MAIL_ENABLED'} = 0;
 	}
 
 	0;

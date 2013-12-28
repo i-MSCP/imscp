@@ -41,7 +41,7 @@ use iMSCP::Config;
 use iMSCP::Execute;
 use iMSCP::Dir;
 use iMSCP::File;
-use iMSCP::Templator;
+use iMSCP::TemplateParser;
 use iMSCP::Rights;
 use iMSCP::SystemUser;
 use iMSCP::SystemGroup;
@@ -556,7 +556,7 @@ sub _buildMainCfFile
 	$rs = $self->{'hooksManager'}->trigger('beforeMtaBuildMainCfFile', \$content, 'main.cf');
 	return $rs if $rs;
 
-	$content = iMSCP::Templator::process(
+	$content = process(
 		{
 			MTA_HOSTNAME => $hostname,
 			MTA_LOCAL_DOMAIN => "$hostname.local",
@@ -652,7 +652,7 @@ sub _buildMasterCfFile
 	$rs = $self->{'hooksManager'}->trigger('beforeMtaBuildMasterCfFile', \$content, 'master.cf');
 	return $rs if $rs;
 
-	$content = iMSCP::Templator::process(
+	$content = process(
 		{
 			MTA_MAILBOX_UID_NAME => $self->{'config'}->{'MTA_MAILBOX_UID_NAME'},
 			IMSCP_GROUP => $main::imscpConfig{'IMSCP_GROUP'},

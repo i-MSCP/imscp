@@ -36,6 +36,9 @@ use iMSCP::File;
 # Turn off localisation features to force any command output to be in English
 $ENV{'LC_MESSAGES'} = 'C';
 
+# Do not clear screen at end of script
+$ENV{'IMSCP_CLEAR_SCREEN'} = 0;
+
 umask(027);
 
 newDebug('imscp-rkhunter-addon.log');

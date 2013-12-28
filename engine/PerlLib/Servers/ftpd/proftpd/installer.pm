@@ -40,7 +40,7 @@ use iMSCP::Config;
 use iMSCP::Execute;
 use iMSCP::File;
 use iMSCP::Dir;
-use iMSCP::Templator;
+use iMSCP::TemplateParser;
 use iMSCP::HooksManager;
 use File::Basename;
 use Servers::ftpd::proftpd;
@@ -372,7 +372,7 @@ sub _buildConfigFile
 	my $rs = $self->{'hooksManager'}->trigger('beforeFtpdBuildConf', \$cfgTpl, 'proftpd.conf');
 	return $rs if $rs;
 
-	$cfgTpl = iMSCP::Templator::process($cfg, $cfgTpl);
+	$cfgTpl = process($cfg, $cfgTpl);
 	return 1 unless defined $cfgTpl;
 
 	$rs = $self->{'hooksManager'}->trigger('afterFtpdBuildConf', \$cfgTpl, 'proftpd.conf');

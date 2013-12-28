@@ -49,7 +49,7 @@ use iMSCP::File;
 use iMSCP::Execute;
 use iMSCP::HooksManager;
 use iMSCP::Rights;
-use iMSCP::Templator;
+use iMSCP::TemplateParser;
 use iMSCP::SystemGroup;
 use iMSCP::SystemUser;
 use iMSCP::OpenSSL;
@@ -1765,12 +1765,12 @@ sub setupCron
 	my ($cfgTpl, $err);
 
 	# Directories paths
-	my $cfgDir = $main::imscpConfig{'CONF_DIR'} . '/cron.d';
-	my $bkpDir = $cfgDir . '/backup';
-	my $wrkDir = $cfgDir . '/working';
+	my $cfgDir = "$main::imscpConfig{'CONF_DIR'}/cron.d";
+	my $bkpDir = "$cfgDir/backup";
+	my $wrkDir = "$cfgDir/working";
 	my $prodDir = "$main::imscpConfig{'CRON_D_DIR'}";
 
-	# Saving the current production file if it exists
+	# Saving current production file if it exists
 	if(-f "$prodDir/imscp") {
 		$rs = iMSCP::File->new('filename' => "$prodDir/imscp")->copyFile("$bkpDir/imscp." . time);
 		return $rs if $rs;
@@ -1781,12 +1781,12 @@ sub setupCron
 	# Loading the template from /etc/imscp/cron.d/imscp
 	$cfgTpl = iMSCP::File->new('filename' => "$cfgDir/imscp")->get();
 	unless(defined $cfgTpl) {
-		error("Unable to read $cfgDir/imscp");
+		error("Unable to read $cfgDir/imscp file");
 		return 1;
 	}
 
 	# Building the new file
-	$cfgTpl = iMSCP::Templator::process(
+	$cfgTpl = process(
 		{
 			'LOG_DIR' => $main::imscpConfig{'LOG_DIR'},
 			'CONF_DIR' => $main::imscpConfig{'CONF_DIR'},

@@ -44,7 +44,7 @@ use iMSCP::Dir;
 use iMSCP::SystemUser;
 use iMSCP::SystemGroup;
 use iMSCP::Execute;
-use iMSCP::Templator;
+use iMSCP::TemplateParser;
 use File::Basename;
 use Data::Dumper;
 use version;
@@ -54,13 +54,9 @@ use version;
 #
 
 # Re-encrypt the given password with i-MSCP database key
-sub _reencryptPassword
+sub _reencryptPassword($$$$$)
 {
-	my $tableName = shift;
-	my $idFieldName = shift;
-	my $pwdFieldName = shift;
-	my $row = shift;
-	my $errors = shift;
+	my ($tableName, $idFieldName, $pwdFieldName, $row, $errors) = @_;
 
 	my $crypt = iMSCP::Crypt->getInstance();
 
@@ -284,7 +280,7 @@ sub dbUpgrade
 	my $database = iMSCP::Database->new('db' => 'mysql')->factory();
 
 	my $result = $database->doQuery(
-		'mail_id', "UPDATE `config` SET `value` = '47' WHERE `config`.`name` = 'DATABASE_REVISION' AND `value` > '47'"
+		'mail_id', "UPDATE `config` SET `value` = '45' WHERE `name` = 'DATABASE_REVISION' AND `value` > '45'"
 	);
 	unless(ref $result eq 'HASH') {
 		push @errors, $result;
