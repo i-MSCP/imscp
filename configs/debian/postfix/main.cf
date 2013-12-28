@@ -7,10 +7,10 @@ inet_protocols = {MTA_INET_PROTOCOLS}
 inet_interfaces = all
 mynetworks_style = host
 
-# IPv4 source for outbound mail
+# IPv4 source for outbound mails
 smtp_bind_address = {MTA_SMTP_BIND_ADDRESS}
 
-# IPv6 source for outbound mail
+# IPv6 source for outbound mails
 #smtp_bind_address6 = {MTA_SMTP_BIND_ADDRESS6}
 
 myhostname = {MTA_HOSTNAME}
