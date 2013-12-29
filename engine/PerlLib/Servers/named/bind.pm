@@ -292,7 +292,7 @@ sub addSub($$)
 			$wrkDbFile = iMSCP::File->new('filename' => $wrkDbFile);
 
 			# Saving current working file
-			my $rs = $wrkDbFile->copyFile($wrkDbFile . '.' . time);
+			my $rs = $wrkDbFile->copyFile($self->{'bkpDir'} . '/' . basename($wrkDbFile->{'filename'}) . '.' . time);
 			return $rs if $rs;
 
 			# Loading current working db file
@@ -472,7 +472,7 @@ sub deleteSub($$)
 			$wrkDbFile = iMSCP::File->new('filename' => $wrkDbFile);
 
 			# Saving current working file
-			my $rs = $wrkDbFile->copyFile($wrkDbFile . '.' . time);
+			my $rs = $wrkDbFile->copyFile($self->{'bkpDir'} . '/' . basename($wrkDbFile->{'filename'}) . '.' . time);
 			return $rs if $rs;
 
 			# Loading current working db file
@@ -528,7 +528,7 @@ sub deleteSub($$)
 			);
 			debug($stdout) if $stdout;
 			error($stderr) if $stderr && $rs;
-			error("Unable to install db file $data->{'PARENT_DOMAIN_NAME'}.db") if $rs && ! $stderr;
+			error("Unable to install $data->{'PARENT_DOMAIN_NAME'}.db") if $rs && ! $stderr;
 			return $rs if $rs;
 		} else {
 			error("File $wrkDbFile not found. Please rerun the i-MSCP setup script.");
@@ -667,7 +667,7 @@ sub _addDmnConfig($$)
 		# Loading current working file
 		my $cfgWrkFileContent = $cfgFile->get();
 		unless(defined $cfgWrkFileContent) {
-			error("Unable to read $self->{'wrkDir'}/$cfgFileName file");
+			error("Unable to read $self->{'wrkDir'}/$cfgFileName");
 			return 1;
 		}
 
@@ -680,7 +680,7 @@ sub _addDmnConfig($$)
 				'filename' => "$self->{'tplDir'}/cfg_$self->{'config'}->{'BIND_MODE'}.tpl"
 			)->get();
 			unless(defined $tplCfgEntryContent) {
-				error("Unable to read $self->{'tplDir'}/cfg_$self->{'config'}->{'BIND_MODE'}.tpl file");
+				error("Unable to read $self->{'tplDir'}/cfg_$self->{'config'}->{'BIND_MODE'}.tpl");
 				return 1
 			}
 
@@ -840,17 +840,19 @@ sub _addDmnDb($$)
 
 	if(-f $wrkDbFile) {
 		# Saving current working db file
-		my $rs= iMSCP::File->new(
-			'filename' => $wrkDbFile)->copyFile("$self->{'bkpDir'}/$data->{'DOMAIN_NAME'}.db." . time
-		);
+		$wrkDbFile = iMSCP::File->new('filename' => $wrkDbFile);
+
+		my $rs = $wrkDbFile->copyFile($self->{'bkpDir'} . '/' . basename($wrkDbFile->{'filename'}) . '.' . time);
 		return $rs if $rs;
 
 		# Getting current working db file content
-		$wrkDbFileContent = iMSCP::File->new('filename' => $wrkDbFile)->get();
+		$wrkDbFileContent = $wrkDbFile->get();
 		unless(defined $wrkDbFileContent) {
-			error("Unable to read $wrkDbFile");
+			error("Unable to read $wrkDbFile->{'filename'}");
 			return 1;
 		}
+	} else {
+		$wrkDbFile = iMSCP::File->new('filename' => $wrkDbFile);
 	}
 
 	# Getting db template content
@@ -994,38 +996,32 @@ sub _addDmnDb($$)
 	return $rs if $rs;
 
 	# Storing new file in working directory
-	my $file = iMSCP::File->new('filename' => $wrkDbFile);
 
-	$rs = $file->set($tplDbFileContent);
+	$rs = $wrkDbFile->set($tplDbFileContent);
 	return $rs if $rs;
 
-	$rs = $file->save();
+	$rs = $wrkDbFile->save();
 	return $rs if $rs;
 
-	$rs = $file->mode(0640);
+	$rs = $wrkDbFile->mode(0640);
 	return $rs if $rs;
 
-	$rs = $file->owner($main::imscpConfig{'ROOT_USER'}, $self->{'config'}->{'BIND_GROUP'});
+	$rs = $wrkDbFile->owner($main::imscpConfig{'ROOT_USER'}, $self->{'config'}->{'BIND_GROUP'});
 	return $rs if $rs;
 
 	# Installing new working file in production directory
 	my ($stdout, $stderr);
 	$rs = execute(
 		"$self->{'config'}->{'CMD_NAMED_COMPILEZONE'} -i none -s relative " .
-		"-o $self->{'config'}->{'BIND_DB_DIR'}/$data->{'DOMAIN_NAME'}.db $data->{'DOMAIN_NAME'} $wrkDbFile",
+		"-o $self->{'config'}->{'BIND_DB_DIR'}/$data->{'DOMAIN_NAME'}.db $data->{'DOMAIN_NAME'} " .
+		$wrkDbFile->{'filename'},
 		\$stdout, \$stderr
 	);
 	debug($stdout) if $stdout;
 	error($stderr) if $stderr && $rs;
-	error("Unable to install zone file $data->{'DOMAIN_NAME'}.db") if $rs && ! $stderr;
-	return $rs if $rs;
+	error("Unable to install $data->{'DOMAIN_NAME'}.db") if $rs && ! $stderr;
 
-	$file = iMSCP::File->new('filename' => "$self->{'config'}->{'BIND_DB_DIR'}/$data->{'DOMAIN_NAME'}.db");
-
-	$rs = $file->mode(0640);
-	return $rs if $rs;
-
-	$file->owner($main::imscpConfig{'ROOT_USER'}, $self->{'config'}->{'BIND_GROUP'});
+	$rs;
 }
 
 =item _incTimeStamp($newDbFileContent, [$oldDbFileContent = $newDbFileContent])
