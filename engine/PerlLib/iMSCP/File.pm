@@ -1,5 +1,11 @@
 #!/usr/bin/perl
 
+=head1 NAME
+
+ iMSCP::File - i-MSCP File library
+
+=cut
+
 # i-MSCP - internet Multi Server Control Panel
 # Copyright (C) 2010-2013 by internet Multi Server Control Panel
 #
@@ -20,6 +26,7 @@
 # @category    i-MSCP
 # @copyright   2010-2013 by i-MSCP | http://i-mscp.net
 # @author      Daniel Andreca <sci2tech@gmail.com>
+# @author      Laurent Declercq <l.declercq@nuxwin.com>
 # @link        http://i-mscp.net i-MSCP Home Site
 # @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
@@ -33,85 +40,26 @@ use FileHandle;
 use File::Copy;
 use File::Basename;
 use parent 'Common::SimpleClass';
-use vars qw/$AUTOLOAD/;
 
-sub AUTOLOAD
-{
-	my $self = shift;
-	my $name = $AUTOLOAD;
-	$name =~ s/.*:://;
-	return if $name eq 'DESTROY';
+=head1 DESCRIPTION
 
-	$self->{$name} = shift if @_;
+ i-MSCP File library. Library allowing to perform common operations on files.
 
-	unless (exists $self->{$name}) {
-		error("Unable to find '$name'.");
-		return undef;
-	}
+=head1 PUBLIC METHODS
 
-	$self->{$name};
-}
+=over 4
 
-sub _init
-{
-	my $self = shift;
+=item get()
 
-	$self->{$_} = $self->{'args'}->{$_} for keys %{$self->{'args'}};
+ Get file content
 
-	$self;
-}
+ Return string|undef File content or undef on failure
 
-sub mode
-{
-	my $self = shift;
-	my $fileMode = shift;
-
-	unless(defined $self->{'filename'}) {
-		error('Attribut filename is not set');
-		return 1;
-	}
-
-	debug(sprintf("Changing mode for $self->{'filename'} to %o", $fileMode));
-
-	unless (chmod($fileMode, $self->{'filename'})) {
-		error("Unable to change mode for $self->{'filename'}: $!");
-		return 1;
-	}
-
-	0;
-}
-
-sub owner
-{
-	my $self = shift;
-	my $fileOwner = shift;
-	my $fileGroup = shift;
-
-	unless(defined $self->{'filename'}) {
-		error("Attribut 'filename' is not set");
-		return 1;
-	}
-
-	my $uid = ($fileGroup =~ /^\d+$/) ? $fileOwner : getpwnam($fileOwner);
-	$uid = -1 unless defined $uid;
-
-	my $gid = ($fileGroup =~ /^\d+$/) ? $fileGroup : getgrnam($fileGroup);
-	$gid = -1 unless defined $gid;
-
-	debug("Changing owner and group for $self->{'filename'} to $uid:$gid");
-
-	unless (chown($uid, $gid, $self->{'filename'})) {
-		error("Unable to change owner and group for $self->{'filename'}: $!");
-		return 1;
-	}
-
-	0;
-}
+=cut
 
 sub get
 {
 	my $self = shift;
-	my @lines;
 
 	unless(defined $self->{'filename'}) {
 		error("Attribut 'filename' is not set");
@@ -119,20 +67,26 @@ sub get
 	}
 
 	unless(defined $self->{'fileContent'}) {
-
 		$self->{'fileHandle'} = FileHandle->new($self->{'filename'}, 'r') or delete($self->{'fileHandle'});
 
 		unless(defined $self->{'fileHandle'}) {
-			error("Unable to open $self->{'filename'}");
+			error("Unable to open $self->{'filename'} $!");
 			return undef;
 		}
 
-		my $fh = $self->{'fileHandle'};
-		$self->{'fileContent'} =  do { local $/; <$fh> };
+		$self->{'fileContent'} =  do { local $/; readline($self->{'fileHandle'}) };
 	}
 
 	$self->{'fileContent'};
 }
+
+=item getRFileHandle()
+
+ Get filehandle for reading
+
+ Return FileHandle|undef A filehandle on success or undef on failure
+
+=cut
 
 sub getRFileHandle
 {
@@ -143,6 +97,7 @@ sub getRFileHandle
 		return undef;
 	}
 
+	$self->{'fileHandle'}->close() if defined $self->{'fileHandle'};
 	$self->{'fileHandle'} = FileHandle->new($self->{'filename'}, 'r') or delete($self->{'fileHandle'});
 
 	unless(defined $self->{'fileHandle'}) {
@@ -153,6 +108,14 @@ sub getRFileHandle
 	$self->{'fileHandle'};
 }
 
+=item getWFileHandle()
+
+ Get filehandle for writting
+
+ Return FileHandle|undef A filehandle on success or undef on failure
+
+=cut
+
 sub getWFileHandle
 {
 	my $self = shift;
@@ -162,6 +125,7 @@ sub getWFileHandle
 		return undef;
 	}
 
+	$self->{'fileHandle'}->close() if defined $self->{'fileHandle'};
 	$self->{'fileHandle'} = FileHandle->new($self->{'filename'}, 'w') or delete($self->{'fileHandle'});
 
 	unless(defined $self->{'fileHandle'}) {
@@ -172,84 +136,60 @@ sub getWFileHandle
 	$self->{'fileHandle'};
 }
 
-sub copyFile
+=item set($content)
+
+ Set file content
+
+ Param string $content New file content
+ Return int 0
+
+=cut
+
+sub set
+{
+	my($self, $content) = @_;
+
+	$self->{'fileContent'} = $content || '';
+
+	0;
+}
+
+=item save()
+
+ Save file
+
+ Return int 0 on success, 1 on failure
+
+=cut
+
+sub save
 {
 	my $self = shift;
-	my $dest = shift;
-	my $option = shift;
 
-	$option = {} unless ref $option eq 'HASH';
+	my $fh = $self->getWFileHandle();
 
-	unless(defined $self->{'filename'}) {
-		error("Attribut 'filename' is not set");
-		return undef;
-	}
+	if($fh) {
+		debug("Saving file $self->{'filename'}");
 
-	unless(-f $self->{'filename'}) {
-		error("File $self->{'filename'} doesn't exits");
+		$self->{'fileContent'} ||= '';
+
+		print {$fh} $self->{'fileContent'};
+		$fh->close();
+	} else {
+		error('Unable to save file');
 		return 1;
-	}
-
-	debug("Copying file $self->{'filename'} to $dest");
-
-	unless(copy($self->{'filename'}, $dest)) {
-		error("Unable to copy $self->{'filename'} to $dest: $!");
-		return 1;
-	}
-
-	if(-d $dest) {
-		my ($name, $path, $suffix) = fileparse($self->{'filename'});
-		$dest .= "/$name$suffix";
-	}
-
-	if(! $option->{'preserve'} || lc($option->{'preserve'}) ne 'no') {
-
-		my $fileMode = (stat($self->{'filename'}))[2] & 00777;
-		my $owner = (stat($self->{'filename'}))[4];
-		my $group = (stat($self->{'filename'}))[5];
-
-		debug(sprintf("Changing mode for $dest to %o", $fileMode));
-
-		unless (chmod($fileMode, $dest)) {
-			error("Unable to change mode for $dest: $!");
-			return 1;
-		}
-
-		debug(sprintf("Changing owner and group for $dest to %s:%s", $owner, $group));
-
-		unless (chown($owner, $group, $dest)) {
-			error("Unable to change owner and group for $dest: $!");
-			return 1;
-		}
 	}
 
 	0;
 }
 
-sub moveFile
-{
-	my $self = shift;
-	my $dest = shift;
+=item delFile()
 
-	unless(defined $self->{'filename'}) {
-		error("Attribut 'filename' is not set");
-		return undef;
-	}
+ Delete file
 
-	unless(-f $self->{'filename'}) {
-		error("File $self->{'filename'} doesn't exits");
-		return 1;
-	}
+ Return int 0 on success, 1 on failure
 
-	debug("Moving file $self->{'filename'} to $dest");
-
-	unless(move($self->{'filename'}, $dest)) {
-		error("Unable to move $self->{'filename'} to $dest: $!");
-		return 1;
-	}
-
-	0;
-}
+=cut
 
 sub delFile
 {
@@ -270,43 +210,174 @@ sub delFile
 	0;
 }
 
-sub save
+=item mode($mode)
+
+ Change file mode bits
+
+ Param int $mode New file mode (octal number)
+ Return int 0 on success, 1 on failure
+
+=cut
+
+sub mode
 {
-	my $self = shift;
+	my ($self, $mode) = @_;
+
+	unless(defined $self->{'filename'}) {
+		error('Attribut filename is not set');
+		return 1;
+	}
+
+	debug(sprintf("Changing mode for $self->{'filename'} to %o", $mode));
+
+	unless (chmod($mode, $self->{'filename'})) {
+		error("Unable to change mode for $self->{'filename'}: $!");
+		return 1;
+	}
+
+	0;
+}
+
+=item owner($owner, $group)
+
+ Change file owner and group
+
+ Param int|string $owner Either an username or user id
+ Param int|string $group Either a groupname or group id
+ Return int 0 on success, 1 on failure
+
+=cut
+
+sub owner
+{
+	my ($self, $owner, $group) = @_;
 
 	unless(defined $self->{'filename'}) {
 		error("Attribut 'filename' is not set");
 		return 1;
 	}
 
-	debug("Saving file $self->{'filename'}");
+	my $uid = (($owner =~ /^\d+$/) ? $owner : getpwnam($owner)) // -1;
+	my $gid = (($group =~ /^\d+$/) ? $group : getgrnam($group)) // -1;
 
-	$self->{'fileHandle'}->close() if defined $self->{'fileHandle'};
-	$self->{'fileHandle'} = FileHandle->new($self->{'filename'}, 'w');
+	debug("Changing owner and group for $self->{'filename'} to $uid:$gid");
 
-	unless(defined $self->{'fileHandle'}) {
-		error("Unable to open file $self->{'filename'}");
+	unless (chown($uid, $gid, $self->{'filename'})) {
+		error("Unable to change owner and group for $self->{'filename'}: $!");
 		return 1;
 	}
 
-	$self->{'fileContent'} = '' unless $self->{'fileContent'};
+	0;
+}
 
-	print {$self->{'fileHandle'}} $self->{'fileContent'};
+=item copyFile($dest, [\%options = { 'preserve' => 'yes' }])
 
-	$self->{'fileHandle'}->close();
+ Copy file to the given destination
+
+ Param string $dest Destination path
+ Param hash_ref $options Options
+ Return int 0 on success, 1 on failure
+
+=cut
+
+sub copyFile
+{
+	my ($self, $dest, $options) = @_;
+
+	$options = {} unless ref $options eq 'HASH';
+
+	unless(defined $self->{'filename'}) {
+		error("Attribut 'filename' is not set");
+		return 1;
+	}
+
+	debug("Copying file $self->{'filename'} to $dest");
+
+	unless(copy($self->{'filename'}, $dest)) {
+		error("Unable to copy $self->{'filename'} to $dest: $!");
+		return 1;
+	}
+
+	$dest .= '/' . basename($self->{'filename'}) if -d $dest;
+
+	if(!defined $options->{'preserve'} || lc($options->{'preserve'}) ne 'no') {
+		my $mode = (stat($self->{'filename'}))[2] & 00777;
+		my $owner = (stat($self->{'filename'}))[4];
+		my $group = (stat($self->{'filename'}))[5];
+
+		debug(sprintf("Changing mode for $dest to %o", $mode));
+
+		unless (chmod($mode, $dest)) {
+			error("Unable to change mode for $dest: $!");
+			return 1;
+		}
+
+		debug(sprintf("Changing owner and group for $dest to %s:%s", $owner, $group));
+
+		unless (chown($owner, $group, $dest)) {
+			error("Unable to change owner and group for $dest: $!");
+			return 1;
+		}
+	}
 
 	0;
 }
 
-sub set
+=item moveFile($dest)
+
+ Move file to the given destination
+ Param string $dest Destination path
+ Return int 0 on success, 1 on failure
+
+=cut
+
+sub moveFile
+{
+	my ($self, $dest) = @_;
+
+	unless(defined $self->{'filename'}) {
+		error("Attribut 'filename' is not set");
+		return 1;
+	}
+
+	debug("Moving file $self->{'filename'} to $dest");
+
+	unless(move($self->{'filename'}, $dest)) {
+		error("Unable to move $self->{'filename'} to $dest: $!");
+		return 1;
+	}
+
+	0;
+}
+
+=back
+
+=head1 PRIVATE METHODS
+
+=over 4
+
+=item _init()
+
+ Initialize instance
+
+ Return iMSCP:File
+
+=cut
+
+sub _init
 {
 	my $self = shift;
-	my $content = shift || '';
 
-	$self->{'fileContent'} = $content;
+	$self->{$_} = $self->{'args'}->{$_} for keys %{$self->{'args'}};
 
-	0;
+	$self;
 }
+
+=item DESTROY()
+
+ Close last filehandle opened when instance get destroyed
+
+=cut
 
 sub DESTROY
 {
@@ -316,5 +387,14 @@ sub DESTROY
 
 	0;
 }
+
+=back
+
+=head1 AUTHORS
+
+ Daniel Andreca <sci2tech@gmail.com>
+ Laurent Declercq <l.declercq@nuxwin.com>
+
+=cut
 
 1;
