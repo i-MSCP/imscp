@@ -399,7 +399,7 @@ sub addSub($$)
 			);
 			debug($stdout) if $stdout;
 			error($stderr) if $stderr && $rs;
-			error("Unable to install db file $data->{'PARENT_DOMAIN_NAME'}.db") if $rs && ! $stderr;
+			error("Unable to install $data->{'PARENT_DOMAIN_NAME'}.db") if $rs && ! $stderr;
 			return $rs if $rs;
 		} else {
 			error("File $wrkDbFile not found. Please rerun the i-MSCP setup script.");
