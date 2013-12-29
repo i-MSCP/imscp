@@ -149,7 +149,7 @@ sub set
 {
 	my($self, $content) = @_;
 
-	$self->{'fileContent'} = $content || '';
+	$self->{'fileContent'} = $content // '';
 
 	0;
 }
@@ -171,7 +171,7 @@ sub save
 	if($fh) {
 		debug("Saving file $self->{'filename'}");
 
-		$self->{'fileContent'} ||= '';
+		$self->{'fileContent'} //= '';
 
 		print {$fh} $self->{'fileContent'};
 		$fh->close();
