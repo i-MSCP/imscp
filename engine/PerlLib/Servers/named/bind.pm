@@ -383,12 +383,6 @@ sub addSub($$)
 			$rs = $wrkDbFile->save();
 			return $rs if $rs;
 
-			$rs = $wrkDbFile->mode(0640);
-			return $rs if $rs;
-
-			$rs = $wrkDbFile->owner($main::imscpConfig{'ROOT_USER'}, $self->{'config'}->{'BIND_GROUP'});
-			return $rs if $rs;
-
 			# Installing new working file in production directory
 			my ($stdout, $stderr);
 			$rs = execute(
@@ -400,6 +394,16 @@ sub addSub($$)
 			debug($stdout) if $stdout;
 			error($stderr) if $stderr && $rs;
 			error("Unable to install $data->{'PARENT_DOMAIN_NAME'}.db") if $rs && ! $stderr;
+			return $rs if $rs;
+
+			my $prodFile = iMSCP::File->new(
+				'filename' => "$self->{'config'}->{'BIND_DB_DIR'}/$data->{'PARENT_DOMAIN_NAME'}.db"
+			);
+
+			$rs = $prodFile->mode(0640);
+			return $rs if $rs;
+
+			$rs = $prodFile->owner($main::imscpConfig{'ROOT_USER'}, $self->{'config'}->{'BIND_GROUP'});
 			return $rs if $rs;
 		} else {
 			error("File $wrkDbFile not found. Please rerun the i-MSCP setup script.");
@@ -511,12 +515,6 @@ sub deleteSub($$)
 			$rs = $wrkDbFile->save();
 			return $rs if $rs;
 
-			$rs = $wrkDbFile->mode(0640);
-			return $rs if $rs;
-
-			$rs = $wrkDbFile->owner($main::imscpConfig{'ROOT_USER'}, $self->{'config'}->{'BIND_GROUP'});
-			return $rs if $rs;
-
 			# Installing new working file in production directory
 			my ($stdout, $stderr);
 			$rs = execute(
@@ -529,6 +527,16 @@ sub deleteSub($$)
 			debug($stdout) if $stdout;
 			error($stderr) if $stderr && $rs;
 			error("Unable to install $data->{'PARENT_DOMAIN_NAME'}.db") if $rs && ! $stderr;
+			return $rs if $rs;
+
+			my $prodFile = iMSCP::File->new(
+				'filename' => "$self->{'config'}->{'BIND_DB_DIR'}/$data->{'PARENT_DOMAIN_NAME'}.db"
+			);
+
+			$rs = $prodFile->mode(0640);
+			return $rs if $rs;
+
+			$rs = $prodFile->owner($main::imscpConfig{'ROOT_USER'}, $self->{'config'}->{'BIND_GROUP'});
 			return $rs if $rs;
 		} else {
 			error("File $wrkDbFile not found. Please rerun the i-MSCP setup script.");
@@ -1003,12 +1011,6 @@ sub _addDmnDb($$)
 	$rs = $wrkDbFile->save();
 	return $rs if $rs;
 
-	$rs = $wrkDbFile->mode(0640);
-	return $rs if $rs;
-
-	$rs = $wrkDbFile->owner($main::imscpConfig{'ROOT_USER'}, $self->{'config'}->{'BIND_GROUP'});
-	return $rs if $rs;
-
 	# Installing new working file in production directory
 	my ($stdout, $stderr);
 	$rs = execute(
@@ -1020,8 +1022,14 @@ sub _addDmnDb($$)
 	debug($stdout) if $stdout;
 	error($stderr) if $stderr && $rs;
 	error("Unable to install $data->{'DOMAIN_NAME'}.db") if $rs && ! $stderr;
+	return $rs if $rs;
 
-	$rs;
+	my $prodFile = iMSCP::File->new('filename' => "$self->{'config'}->{'BIND_DB_DIR'}/$data->{'DOMAIN_NAME'}.db");
+
+	$rs = $prodFile->mode(0640);
+	return $rs if $rs;
+
+	$prodFile->owner($main::imscpConfig{'ROOT_USER'}, $self->{'config'}->{'BIND_GROUP'});
 }
 
 =item _incTimeStamp($newDbFileContent, [$oldDbFileContent = $newDbFileContent])
