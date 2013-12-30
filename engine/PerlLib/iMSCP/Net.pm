@@ -55,7 +55,7 @@ use parent 'Common::SingletonClass';
 
 =cut
 
-sub getAddresses($)
+sub getAddresses()
 {
 	my $self = shift;
 
@@ -66,6 +66,8 @@ sub getAddresses($)
 
  Add the given IP to the given network device
 
+ Param string $addr IP address
+ Param string $dev Network device name
  Return int 0 on success, other on failure
 
 =cut
@@ -109,6 +111,7 @@ sub addAddr($$$)
 
  Delete the given IP
 
+ Param string $addr IP address
  Return int 0 on success, other on failure
 
 =cut
@@ -144,6 +147,7 @@ sub delAddr($$)
 
  Get version of the given IP (ipv4|ipv6)
 
+ Param string $addr IP address
  Return string|undef IP version or undef in case the given IP is invalid
 
 =cut
@@ -166,6 +170,7 @@ sub getAddrVersion($$)
 
  Return the network device name to which the given IP belong to
 
+ Param string $addr IP address
  Return string|undef Network device name or undef if the given IP is either invalid or not known by this module
 
 =cut
@@ -189,8 +194,9 @@ sub getAddrDevice($$)
 
 =item isKnownAddr($addr)
 
- Is the given IP known by this module?
+ Is the given IP known?
 
+ Param string $addr IP address
  Return int 1 if the given IP is known, 0 otherwise
 
 =cut
@@ -202,10 +208,11 @@ sub isKnownAddr($$)
 	(exists($self->{'addresses'}->{$self->normalizeAddr($addr, 6)})) ? 1 : 0;
 }
 
-=item isValidAddr($$)
+=item isValidAddr($addr)
 
  Check whether or not the given IP is valid
 
+ Param string $addr IP address
  Return int 1 if valid, 0 otherwise
 
 =cut
@@ -222,6 +229,7 @@ sub isValidAddr($$)
 
  Normalize the given IP
 
+ Param string $addr IP address
  Return string Normalized IP on success, undef on failure
 
 =cut
@@ -233,7 +241,9 @@ sub normalizeAddr($$)
 	ip_compress_address($addr, 6);
 }
 
-=item getDevices([$status = 'all'])
+=item getDevices()
+
+ Get network devices list
 
  Return array|string List of devices
 
@@ -248,8 +258,9 @@ sub getDevices($;$)
 
 =item isKnownDevice($dev)
 
- Is the given network device known by this module?
+ Is the given network device known?
 
+ Param string $dev Network device name
  Return int 1 if the network device is known, 0 otherwise
 
 =cut
@@ -265,7 +276,7 @@ sub isKnownDevice($$)
 
  Up the given network device
 
- Param string Device name
+ Param string $dev Network device name
  Return int 0 on success, other on failure
 
 =cut
@@ -290,11 +301,11 @@ sub upDevice($$)
 	$rs;
 }
 
-=item downDevice($$)
+=item downDevice($dev)
 
  Down the given network device
 
- Param string Device name
+ Param string $dev Network device name
  Return int 0 on success, other on failure
 
 =cut
@@ -319,10 +330,11 @@ sub downDevice($$)
 	$rs;
 }
 
-=item isDeviceUp($$)
+=item isDeviceUp($dev)
 
  Is the given network device up?
 
+ Param string $dev Network device name
  Return int 1 if the given device is known and  up, 0 otherwise
 
 =cut
@@ -334,10 +346,11 @@ sub isDeviceUp($$)
 	($self->isKnownDevice($dev) && $self->{'devices'}->{$dev}->{'status'} eq 'UP') ? 1 : 0;
 }
 
-=item isDeviceDown($$)
+=item isDeviceDown($dev)
 
  Is the given device down?
 
+ Param string $dev Network device name
  Return int 1 if the given device is known and down, 0 otherwise
 
 =cut
