@@ -267,13 +267,12 @@ function reseller_generateAlsList($tpl, $resellerId)
 		$showAlsForward = ($alsForward == 'no') ? '-' : $alsForward;
 		$dmnName = decode_idna($stmt->fields['domain_name']);
 
-		$query = "SELECT `ip_number`, `ip_domain` FROM `server_ips` WHERE `ip_id` = ?";
+		$query = "SELECT `ip_number` FROM `server_ips` WHERE `ip_id` = ?";
 
 		$alsIpR = exec_query($query, $alsIpId);
 		$alsIpD = $alsIpR->fetchRow();
 
 		$alsIp = $alsIpD['ip_number'];
-		$alsIpName = $alsIpD['ip_domain'];
 
 		if ($alsStatus === $cfg->ITEM_OK_STATUS) {
 			$deleteLink = "alias_delete.php?id=" . $alsId;
@@ -322,7 +321,6 @@ function reseller_generateAlsList($tpl, $resellerId)
 		$tpl->assign(
 			array(
 				'NAME' => tohtml($alsName),
-				'ALIAS_IP' => tohtml("$alsIp ($alsIpName)"),
 				'OWNER' => tohtml($dmnName),
 				'MOUNT_POINT' => tohtml($alsMountPoint),
 				'FORWARD' => tohtml($showAlsForward),

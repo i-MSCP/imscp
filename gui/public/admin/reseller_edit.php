@@ -90,7 +90,7 @@ function &admin_getData($resellerId, $forUpdate = false)
 		// Ip data begin
 
 		// Fetch server ip list
-		$query = "SELECT `ip_id`, `ip_number`, `ip_domain` FROM `server_ips`  ORDER BY `ip_number`";
+		$query = "SELECT `ip_id`, `ip_number` FROM `server_ips`  ORDER BY `ip_number`";
 		$stmt = exec_query($query);
 
 		if ($stmt->rowCount()) {
@@ -219,7 +219,6 @@ function _admin_generateIpListForm($tpl, &$data)
 			array(
 				'IP_ID' => tohtml($ipData['ip_id']),
 				'IP_NUMBER' => tohtml($ipData['ip_number']),
-				'IP_DOMAIN' => tohtml(decode_idna($ipData['ip_domain'])),
 				'IP_ASSIGNED' => ($resellerHasIp) ? $htmlChecked : '',
 				'IP_STATUS' => ($isUsedIp) ? $assignedTranslation : $unusedTranslation,
 				'IP_READONLY' => ($isUsedIp) ? $htmlDisabled : ''

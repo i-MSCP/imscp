@@ -116,7 +116,7 @@
 		<td colspan="2">
 			<select id="domain_ip_id" name="domain_ip_id">
 				<!-- BDP: ip_entry -->
-				<option value="{IP_VALUE}" {IP_SELECTED}>{IP_NUM} ({IP_NAME})</option>
+				<option value="{IP_VALUE}" {IP_SELECTED}>{IP_NUM}</option>
 				<!-- EDP: ip_entry -->
 			</select>
 		</td>

@@ -168,6 +168,7 @@
         <package>gcc</package>
         <package>gzip</package>
         <package>iptables</package>
+        <package>iproute</package>
         <package>ispell</package>
         <package>libc6-dev</package>
         <package>libexpat1</package>

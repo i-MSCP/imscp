@@ -31,9 +31,12 @@ ENGINE:
 	- Fixed: Usage of dynamic resolv.conf (See resolvconf(8))
 	- Fixed: Wrong DNS record type for subdomain with IPv6 (A instead of AAAA)
 	- Removed: Useless bind9 templates
+	- Replaced: iMSCP::IP library by IMSCP::Net library (full rewrite using iproute tools instead of net-tools)
 
 GUI:
 	- Added: quoteValue() function, which allow to quote string for use in SQL statements
+	- Removed: IP domain name and IP alias name
+	- Removed: Useless ip_ssl_domain_id field form server_ips database table
 
 PLUGINS:
 	- Added: Support for local plugin configuration files (See data/persistent/plugins/README.md)
@@ -48,6 +51,7 @@ VENDOR
 	
 Tickets:
 	- Fixed #528: Bug - The resolv.conf file shouldn't be edited manually
+	- Fixed #969: Defect - IPv6 addresses are not removed properly through interface
 	- Fixed #972: Bug - Adding second External Mailserver gives an error (Edit mode)
 	- Fixed #974: Bug - Customers assignment doesn't work if the first reseller hasn't any client
 	- Fixed #975: Bug - Customers assignment - disk limitation check doesn't work correctly

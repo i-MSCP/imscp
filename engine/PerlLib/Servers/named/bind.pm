@@ -40,7 +40,7 @@ use iMSCP::HooksManager;
 use iMSCP::Execute;
 use iMSCP::File;
 use iMSCP::TemplateParser;
-use iMSCP::IP;
+use iMSCP::Net;
 use File::Basename;
 use iMSCP::Config;
 use parent 'Common::SingletonClass';
@@ -182,7 +182,7 @@ sub postaddDmn($$)
 				DMN_ADD => {
 					NAME => $data->{'USER_NAME'},
 					CLASS => 'IN',
-					TYPE => ($self->{'ipMngr'}->getIpType($data->{'DOMAIN_IP'})) eq 'ipv4' ? 'A' : 'AAAA',
+					TYPE => ($self->{'ipMngr'}->getAddrVersion($data->{'DOMAIN_IP'})) eq 'ipv4' ? 'A' : 'AAAA',
 					DATA => $data->{'DOMAIN_IP'}
 				}
 			}
@@ -350,7 +350,7 @@ sub addSub($$)
 			my $subEntry = process(
 				{
 					SUBDOMAIN_NAME => $data->{'DOMAIN_NAME'},
-					IP_TYPE => ($self->{'ipMngr'}->getIpType($data->{'DOMAIN_IP'}) eq 'ipv4') ? 'A' : 'AAAA',
+					IP_TYPE => ($self->{'ipMngr'}->getAddrVersion($data->{'DOMAIN_IP'}) eq 'ipv4') ? 'A' : 'AAAA',
 					DOMAIN_IP => $data->{'DOMAIN_IP'}
 				},
 				$subEntry
@@ -436,7 +436,7 @@ sub postaddSub($$)
 				DMN_ADD => {
 					NAME => $data->{'USER_NAME'},
 					CLASS => 'IN',
-					TYPE => ($self->{'ipMngr'}->getIpType($data->{'DOMAIN_IP'})) eq 'ipv4' ? 'A' : 'AAAA',
+					TYPE => ($self->{'ipMngr'}->getAddrVersion($data->{'DOMAIN_IP'})) eq 'ipv4' ? 'A' : 'AAAA',
 					DATA => $data->{'DOMAIN_IP'}
 				}
 			}
@@ -629,7 +629,7 @@ sub _init
 	$self->{'wrkDir'} = "$self->{'cfgDir'}/working";
 	$self->{'tplDir'} = "$self->{'cfgDir'}/parts";
 
-	$self->{'ipMngr'} = iMSCP::IP->new();
+	$self->{'ipMngr'} = iMSCP::Net->getInstance();
 
 	tie %{$self->{'config'}}, 'iMSCP::Config', 'fileName' => "$self->{'cfgDir'}/bind.data";
 
@@ -891,7 +891,7 @@ sub _addDmnDb($$)
 		$dmnNsAentries .= process(
 			{
 				NS_NUMBER => $nsNumber,
-				NS_IP_TYPE  => ($self->{'ipMngr'}->getIpType($_) eq 'ipv4') ? 'A' : 'AAAA',
+				NS_IP_TYPE  => ($self->{'ipMngr'}->getAddrVersion($_) eq 'ipv4') ? 'A' : 'AAAA',
 				NS_IP => $_
 			},
 			$dmnNsAEntry
@@ -915,7 +915,7 @@ sub _addDmnDb($$)
 	if($data->{'MAIL_ENABLED'}) {
 		$dmnMailEntry = process(
 			{
-				BASE_SERVER_IP_TYPE => ($self->{'ipMngr'}->getIpType($main::imscpConfig{'BASE_SERVER_IP'}) eq 'ipv4')
+				BASE_SERVER_IP_TYPE => ($self->{'ipMngr'}->getAddrVersion($main::imscpConfig{'BASE_SERVER_IP'}) eq 'ipv4')
 					? 'A' : 'AAAA',
 				BASE_SERVER_IP => $main::imscpConfig{'BASE_SERVER_IP'}
 			},
@@ -986,7 +986,7 @@ sub _addDmnDb($$)
 	$tplDbFileContent = process(
 		{
 			DOMAIN_NAME => $data->{'DOMAIN_NAME'},
-			IP_TYPE => ($self->{'ipMngr'}->getIpType($data->{'DOMAIN_IP'}) eq 'ipv4') ? 'A' : 'AAAA',
+			IP_TYPE => ($self->{'ipMngr'}->getAddrVersion($data->{'DOMAIN_IP'}) eq 'ipv4') ? 'A' : 'AAAA',
 			DOMAIN_IP => $data->{'DOMAIN_IP'}
 		},
 		$tplDbFileContent

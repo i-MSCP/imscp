@@ -38,7 +38,7 @@ use Symbol qw/gensym/;
 use File::Basename;
 use iMSCP::LsbRelease;
 use iMSCP::Debug;
-use iMSCP::IP;
+use iMSCP::Net;
 use iMSCP::Boot;
 use iMSCP::Dialog;
 use iMSCP::Stepper;
@@ -327,12 +327,11 @@ sub setupAskServerIps
 	my %serverIpsToDelete = ();
 	my %serverIpsReplMap = ();
 
-	my $ips = iMSCP::IP->new();
-	my $rs = $ips->loadIPs();
-	return $rs if $rs;
+	my $net = iMSCP::Net->getInstance();
+	my $rs = 0;
 
 	# Retrieve list of all configured IP addresses
-	my @serverIps = $ips->getIPs();
+	my @serverIps = $net->getAddresses();
 	if(! @serverIps) {
 		error('Unable to retrieve servers IPs');
 		return 1;
@@ -359,10 +358,7 @@ sub setupAskServerIps
 
 	@serverIps = sort keys %{ { map { $_ => 1 } @serverIps, @{$serverIpsToAdd} } };
 
-	if(
-		$main::reconfigure ~~ ['ips', 'all', 'forced'] ||
-		! ($baseServerIp ~~ @serverIps && $baseServerIp ne '127.0.0.1' && $baseServerIp ne $ips->normalize('::1'))
-	) {
+	if($main::reconfigure ~~ ['ips', 'all', 'forced'] || ! ($baseServerIp ~~ @serverIps)) {
 		do {
 			# Ask user for the server base IP
 			($rs, $baseServerIp) = $dialog->radiolist(
@@ -390,14 +386,14 @@ In case you do not fit with this requirement, several mails sent by your server 
 			} while(
 				$rs != 30 &&
 				! (
-					$baseServerIp ne '127.0.0.1' && $baseServerIp ne $ips->normalize('::1') &&
-					$ips->isValidIp($baseServerIp)
+					$net->isValidAddr($baseServerIp) && $baseServerIp ne '127.0.0.1' &&
+					$net->normalizeAddr($baseServerIp) ne '::1'
 				)
 			);
 
 			if($rs != 30 && ! ($baseServerIp ~~ @serverIps)) {
 				my $networkCard = undef;
-				my @networkCardList = $ips->getNetCards();
+				my @networkCardList = $net->getDevices();
 
 				if(@networkCardList > 1) { # Do not ask about network card if not more than one is available
 					($rs, $networkCard) = $dialog->radiolist(
@@ -408,8 +404,7 @@ In case you do not fit with this requirement, several mails sent by your server 
 				}
 
 				if($rs != 30) {
-					$ips->attachIpToNetCard($networkCard, $baseServerIp);
-					$rs = $ips->reset();
+					$rs = $net->addAddr($baseServerIp, $networkCard);
 					return $rs if $rs;
 					$manualIp = 1;
 				}
@@ -420,8 +415,7 @@ In case you do not fit with this requirement, several mails sent by your server 
 		my $manualBaseServerIp = setupGetQuestion('MANUAL_BASE_SERVER_IP');
 
 		if($manualBaseServerIp && $manualBaseServerIp ne $baseServerIp) {
-			$ips->detachIpFromNetCard($manualBaseServerIp);
-			$rs = $ips->reset();
+			$rs = $net->delAddr($manualBaseServerIp);
 			return $rs if $rs;
 			@serverIps = grep $_ ne $manualBaseServerIp, @serverIps;
 			delete $main::questions{'MANUAL_BASE_SERVER_IP'};
@@ -570,7 +564,7 @@ sub setupAskSqlDsn
 				$rs != 30 &&
 				! (
 					$dbHost eq 'localhost' || Data::Validate::Domain->new(%options)->is_domain($dbHost) ||
-					iMSCP::IP->new()->isValidIp($dbHost)
+					iMSCP::Net->getInstance()->isValidAddr($dbHost)
 				)
 			);
 
@@ -1231,13 +1225,14 @@ sub setupServerHostname
 	$rs = $file->copyFile('/etc/hosts.bkp') if ! -f '/etc/hosts.bkp';
 	return $rs if $rs;
 
+	my $net = iMSCP::Net->getInstance();
 	my $content = "# 'hosts' file configuration.\n\n";
 
 	$content .= "127.0.0.1\t$hostnameLocal\tlocalhost\n";
 	$content .= "$baseServerIp\t$hostname\t$host\n";
-	$content .= "::ffff:$baseServerIp\t$hostname\t$host\n" if iMSCP::IP->new()->getIpType($baseServerIp) eq 'ipv4';
-	$content .= "::1\tip6-localhost\tip6-loopback\n" if iMSCP::IP->new()->getIpType($baseServerIp) eq 'ipv4';
-	$content .= "::1\tip6-localhost\tip6-loopback\t$host\n" if iMSCP::IP->new()->getIpType($baseServerIp) ne 'ipv4';
+	$content .= "::ffff:$baseServerIp\t$hostname\t$host\n" if $net->getAddrVersion($baseServerIp) eq 'ipv4';
+	$content .= "::1\tip6-localhost\tip6-loopback\n" if $net->getAddrVersion($baseServerIp) eq 'ipv4';
+	$content .= "::1\tip6-localhost\tip6-loopback\t$host\n" if $net->getAddrVersion($baseServerIp) eq 'ipv6';
 	$content .= "fe00::0\tip6-localnet\n";
 	$content .= "ff00::0\tip6-mcastprefix\n";
 	$content .= "ff02::1\tip6-allnodes\n";
@@ -1323,17 +1318,15 @@ sub setupServerIps
 		}
 	}
 
-	my $ips = iMSCP::IP->new();
-	$rs = $ips->loadIPs();
-	return $rs if $rs;
+	my $net = iMSCP::Net->getInstance();
 
 	# Process server IPs addition
 
-	my ($defaultNetcard) = $ips->getNetCards();
+	my ($defaultNetcard) = $net->getDevices();
 
 	for (@serverIps) {
 		next if exists $serverIpsToReplace->{$_};
-		my $netCard = $ips->getCardByIP($_) || $defaultNetcard;
+		my $netCard = $net->getAddrDevice($_) || $defaultNetcard;
 
 		if($netCard) {
 			my $rs = $database->doQuery(
@@ -1355,26 +1348,6 @@ sub setupServerIps
 			error("Unable to add the '$_' IP into database");
 			return 1;
 		}
-	}
-
-	# Setup/update domain name and alias for the base server IP
-
-	my ($alias) =  split /\./, $serverHostname;
-
-	$rs = $database->doQuery(
-		'dummy', 'UPDATE `server_ips` SET `ip_domain` = ?, `ip_alias` = ? WHERE `ip_number` = ?',
-		$serverHostname, $alias, $baseServerIp
-	);
-	return $rs if ref $rs ne 'HASH';
-
-	$rs = $database->doQuery(
-		'dummy',
-		'UPDATE `server_ips` SET `ip_domain` = NULL, `ip_alias` = NULL WHERE `ip_number` <> ?  AND `ip_domain` = ?',
-		$baseServerIp, $serverHostname
-	);
-	unless(ref $rs eq 'HASH') {
-		error($rs);
-		return 1;
 	}
 
 	# Server IPs replacement

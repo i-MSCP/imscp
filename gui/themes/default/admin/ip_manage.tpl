@@ -34,8 +34,6 @@
 	<thead>
 	<tr>
 		<th>{TR_IP}</th>
-		<th>{TR_DOMAIN}</th>
-		<th>{TR_ALIAS}</th>
 		<th>{TR_NETWORK_CARD}</th>
 		<th>{TR_ACTION}</th>
 	</tr>
@@ -44,8 +42,6 @@
 	<!-- BDP: ip_address_block -->
 	<tr>
 		<td>{IP}</td>
-		<td>{DOMAIN}</td>
-		<td>{ALIAS}</td>
 		<td>{NETWORK_CARD}</td>
 		<td>
 			<a class="icon i_delete" href="{ACTION_URL}" onclick="return confirm_deletion('{IP}')" title="{ACTION_NAME}"
@@ -71,14 +67,6 @@
 		<tr>
 			<td><label for="ip_number">{TR_IP}</label></td>
 			<td><input name="ip_number" id="ip_number" type="text" value="{VALUE_IP}" maxlength="39"/></td>
-		</tr>
-		<tr>
-			<td><label for="domain">{TR_DOMAIN}</label></td>
-			<td><input type="text" name="domain" id="domain" value="{VALUE_DOMAIN}"/></td>
-		</tr>
-		<tr>
-			<td><label for="alias">{TR_ALIAS}</label></td>
-			<td><input type="text" name="alias" id="alias" value="{VALUE_ALIAS}"/></td>
 		</tr>
 		<tr>
 			<td><label for="ip_card">{TR_NETWORK_CARD}</label></td>

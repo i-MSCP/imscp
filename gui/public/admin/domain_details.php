@@ -84,16 +84,12 @@ function admin_generatePage($tpl, $domainId)
 	$cfg = iMSCP_Registry::get('config');
 
 	// Domain IP address info
-	$stmt = exec_query(
-		"SELECT `ip_number`, `ip_domain`  FROM `server_ips` WHERE `ip_id` = ?", $domainProperties['domain_ip_id']
-	);
+	$stmt = exec_query("SELECT `ip_number` FROM `server_ips` WHERE `ip_id` = ?", $domainProperties['domain_ip_id']);
 
 	if (!$stmt->rowCount()) {
 		$domainIpAddr = tr('Not found.');
 	} else {
-		$domainIpAddr = "{$stmt->fields['ip_number']} " . (
-			($stmt->fields['ip_domain']) ? "({$stmt->fields['ip_domain']})" : ''
-		);
+		$domainIpAddr = $stmt->fields['ip_number'];
 	}
 
 	$domainStatus = $domainProperties['domain_status'];

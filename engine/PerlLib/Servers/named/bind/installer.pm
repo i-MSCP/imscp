@@ -38,7 +38,7 @@ use warnings;
 use iMSCP::Debug;
 use iMSCP::HooksManager;
 use iMSCP::Config;
-use iMSCP::IP;
+use iMSCP::Net;
 use iMSCP::File;
 use iMSCP::Dir;
 use File::Basename;
@@ -589,13 +589,12 @@ sub _saveConf
 
 sub _checkIps($$)
 {
-	my $self = shift;
-	my $ips = shift;
+	my ($self, $ips) = @_;
 
-	my $ip = iMSCP::IP->new();
+	my $net = iMSCP::Net->getInstance();
 
 	for(@{$ips}) {
-		return 0 if $_ eq '127.0.0.1' || ! $ip->isValidIp($_);
+		return 0 if $_ eq '127.0.0.1' || ! $net->getInstance()->isValidAddr($_);
 	}
 
 	1;

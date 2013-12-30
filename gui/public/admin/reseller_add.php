@@ -49,9 +49,8 @@ function &admin_getData()
 	static $data = null;
 
 	if (null === $data) {
-
 		// Fetch server ip list
-		$query = "SELECT `ip_id`, `ip_number`, `ip_domain` FROM `server_ips`  ORDER BY `ip_number`";
+		$query = "SELECT `ip_id`, `ip_number` FROM `server_ips`  ORDER BY `ip_number`";
 		$stmt = exec_query($query);
 
 		if ($stmt->rowCount()) {
@@ -180,7 +179,6 @@ function _admin_generateIpListForm($tpl, &$data)
 			array(
 				 'IP_ID' => tohtml($ipData['ip_id']),
 				 'IP_NUMBER' => tohtml($ipData['ip_number']),
-				 'IP_DOMAIN' => tohtml(decode_idna($ipData['ip_domain'])),
 				 'IP_ASSIGNED' => in_array($ipData['ip_id'], $data['reseller_ips']) ? $htmlChecked : ''));
 
 		$tpl->parse('IP_BLOCK', '.ip_block');

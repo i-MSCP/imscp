@@ -154,7 +154,6 @@
 	<thead>
 	<tr>
 		<th>{TR_IP_ADDRESS}</th>
-		<th>{TR_IP_LABEL}</th>
 		<th>{TR_ASSIGN}</th>
 	</tr>
 	</thead>
@@ -162,7 +161,6 @@
 	<!-- BDP: ip_block -->
 	<tr>
 		<td>{IP_NUMBER}</td>
-		<td><label for="ip_{IP_ID}">{IP_DOMAIN}</label></td>
 		<td><input type="checkbox" id="ip_{IP_ID}" name="reseller_ips[]" value="{IP_ID}" {IP_ASSIGNED} /></td>
 	</tr>
 	<!-- EDP: ip_block -->

@@ -2736,4 +2736,18 @@ class iMSCP_Update_Database extends iMSCP_Update
 			);
 		}
 	}
+
+	/**
+	 * Remove useless fields from the server_ips table
+	 *
+	 * @return array SQL statements to be executed
+	 */
+	protected function _databaseUpdate_173()
+	{
+		return array(
+			$this->_dropColumn('server_ips', 'ip_domain'),
+			$this->_dropColumn('server_ips', 'ip_alias'),
+			$this->_dropColumn('server_ips', 'ip_ssl_domain_id')
+		);
+	}
 }

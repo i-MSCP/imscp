@@ -96,8 +96,6 @@ function _client_generateIpsList($tpl)
 			$tpl->assign(
 				array(
 					 'IP' => $stmt->fields['ip_number'],
-					 'DOMAIN' => tohtml(decode_idna($stmt->fields['ip_domain'])),
-					 'ALIAS' => tohtml(decode_idna($stmt->fields['ip_alias'])),
 					 'NETWORK_CARD' => ($stmt->fields['ip_card'] === NULL) ? '' : tohtml($stmt->fields['ip_card'])
 				)
 			);
@@ -183,27 +181,18 @@ function _client_generateNetcardsList($tpl)
  * Checks IP data.
  *
  * @param string $ipNumber IP number
- * @param string $domain Domain
- * @param string $alias Alias
  * @param string $netcard Network card
  * @return bool TRUE if data are valid, FALSE otherwise
  */
-function client_checkIpData($ipNumber, $domain, $alias, $netcard)
+function client_checkIpData($ipNumber, $netcard)
 {
 	/** @var $networkCardObject iMSCP_NetworkCard */
 	$networkCardObject = iMSCP_Registry::get('networkCardObject');
 
 	$errFieldsStack = array();
 
-	$query = "
-		SELECT
-			COUNT(IF(`ip_number` = ?, 1, NULL)) `isRegisteredIp`,
-			COUNT(IF(`ip_domain`= ?, 1, NULL)) `isAssignedDomain`,
-			COUNT(IF(`ip_alias`= ?, 1, NULL)) `isAssignedAlias`
-		FROM
-			`server_ips`
-	";
-	$stmt = exec_query($query, array($ipNumber, encode_idna($domain), encode_idna($alias)));
+	$query = "SELECT COUNT(IF(`ip_number` = ?, 1, NULL)) `isRegisteredIp` FROM `server_ips`";
+	$stmt = exec_query($query, $ipNumber);
 
 	if (filter_var($ipNumber, FILTER_VALIDATE_IP) === false) {
 		set_page_message(tr('Wrong IP address.'), 'error');
@@ -211,28 +200,6 @@ function client_checkIpData($ipNumber, $domain, $alias, $netcard)
 	} elseif($stmt->fields['isRegisteredIp']) {
 		set_page_message(tr('IP address already known by the system.'), 'error');
 		$errFieldsStack[] = 'ip_number';
-	}
-
-	global $dmnNameValidationErrMsg;
-
-	if(!isValidDomainName($domain)) {
-		set_page_message($dmnNameValidationErrMsg, 'error');
-		$errFieldsStack[] = 'domain';
-	} elseif($stmt->fields['isAssignedDomain']) {
-		set_page_message(tr('Domain already assigned to another IP address.'), 'error');
-		$errFieldsStack[] = 'domain';
-	}
-
-	if(
-		!iMSCP_Validate::getInstance()->hostname(
-			encode_idna($alias), array('allow' => Zend_Validate_Hostname::ALLOW_LOCAL)
-		) ||
-		strpos($alias, '.') !== false) {
-		set_page_message('Wrong alias syntax.', 'error');
-		$errFieldsStack[] = 'alias';
-	} elseif($stmt->fields['isAssignedAlias']) {
-		set_page_message(tr('Alias already assigned to another IP address.'), 'error');
-		$errFieldsStack[] = 'alias';
 	}
 
 	if (!in_array($netcard, $networkCardObject->getAvailableInterface())) {
@@ -254,27 +221,16 @@ function client_checkIpData($ipNumber, $domain, $alias, $netcard)
  * Register new IP.
  *
  * @param string $ipNumber IP number (dot notation)
- * @param string $domain Domain
- * @param string $alias Alias
  * @param string $netcard Network card
  * @return void
  */
-function client_registerIp($ipNumber, $domain, $alias, $netcard)
+function client_registerIp($ipNumber, $netcard)
 {
 	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
 
-	$query = "
-		INSERT INTO `server_ips` (
-			`ip_number`, `ip_domain`, `ip_alias`, `ip_card`, `ip_ssl_domain_id`, `ip_status`
-		) VALUES (
-			?, ?, ?, ?, ?, ?
-		)
-	";
-	exec_query(
-		$query,
-		array($ipNumber, encode_idna($domain), encode_idna($alias), $netcard, null, $cfg->ITEM_TOADD_STATUS)
-	);
+	$query = "INSERT INTO `server_ips` (`ip_number`, `ip_card`, `ip_status`) VALUES (?, ?, ?)";
+	exec_query($query, array($ipNumber, $netcard, $cfg->ITEM_TOADD_STATUS));
 
 	send_request();
 	set_page_message(tr('IP address scheduled for addition.'), 'success');
@@ -301,12 +257,10 @@ iMSCP_Registry::set('networkCardObject', new iMSCP_NetworkCard());
 
 if (!empty($_POST)) {
 	$ipNumber = isset($_POST['ip_number']) ? trim($_POST['ip_number']) : '';
-	$domain = isset($_POST['domain']) ? clean_input($_POST['domain']) : '';
-	$alias = isset($_POST['alias']) ? clean_input($_POST['alias']) : '';
 	$netCard = isset($_POST['ip_card']) ? clean_input($_POST['ip_card']) : '';
 
-	if (client_checkIpData($ipNumber, $domain, $alias, $netCard)) {
-		client_registerIp($ipNumber, $domain, $alias, $netCard);
+	if (client_checkIpData($ipNumber, $netCard)) {
+		client_registerIp($ipNumber, $netCard);
 	}
 }
 

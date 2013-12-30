@@ -17,11 +17,12 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
-# @category		i-MSCP
-# @copyright	2010-2013 by i-MSCP | http://i-mscp.net
-# @author		Daniel Andreca <sci2tech@gmail.com>
-# @link			http://i-mscp.net i-MSCP Home Site
-# @license		http://www.gnu.org/licenses/gpl-2.0.html GPL v2
+# @category    i-MSCP
+# @copyright   2010-2013 by i-MSCP | http://i-mscp.net
+# @author      Daniel Andreca <sci2tech@gmail.com>
+# @author      Laurent Declercq <l.declercq@nuxwin.com>
+# @link        http://i-mscp.net i-MSCP Home Site
+# @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
 use strict;
 use warnings;
@@ -31,7 +32,7 @@ use lib "$FindBin::Bin/..", "$FindBin::Bin/../PerlLib";
 
 use iMSCP::Debug;
 use iMSCP::Boot;
-use iMSCP::IP;
+use iMSCP::Net;
 use iMSCP::Mail;
 use iMSCP::Database;
 use iMSCP::Execute;
@@ -48,52 +49,29 @@ silent(1);
 
 our $proceed = $ARGV[0];
 
-sub startUp
+umask(027);
+
+iMSCP::Boot->getInstance()->boot({ 'nolock' => 'yes', 'config_readonly' => 'yes' });
+
+sub addAddresses
 {
-	umask(027);
+	my $rs = 0;
 
-	iMSCP::Boot->getInstance()->boot({ 'nolock' => 'yes', 'config_readonly' => 'yes' });
-
-	0;
-}
-
-sub addVirtualNetcard
-{
-	my ($rs, $stdout, $stderr);
-	my $database = iMSCP::Database->new()->factory();
-	my $ips = iMSCP::IP->new();
-	my $rdata = $database->doQuery('ip_id', 'SELECT `ip_id`, `ip_number`, `ip_card` FROM `server_ips`');
-
+	my $rdata = iMSCP::Database->new()->factory()->doQuery('ip_id', 'SELECT ip_id, ip_number, ip_card FROM server_ips');
 	unless (ref $rdata eq 'HASH') {
 		error($rdata);
 		iMSCP::Mail->new()->errmsg($rdata);
 	} else {
-		for(values %$rdata){
-			if($ips->getCardByIP($_->{'ip_number'})) { # is an IP attached to a network card?
-				# if is a virtual interface?
-				my $vcard = $ips->addedToVCard($_->{'ip_number'});
-				#if($vcard){
-					#my $msg =
-						#"$_->{ip_number} is already attached to $vcard\n".
-						#"Consider remove from network configuration ".
-						#"and let i-MSCP handle it"
-					#;
-					#warning("$msg");
-					#iMSCP::Mail->new()->warnMsg($msg);
-				#}
-			} else { # IP is not attached so we will attach to virtual card
-				# check if physical network card exits
-				if($ips->existsNetCard($_->{'ip_card'})) {
-					$rs = $ips->attachIpToNetCard($_->{'ip_card'}, $_->{'ip_number'});
+		my $net = iMSCP::Net->getInstance();
 
-					if($rs) {
-						my $msg = "Unable to add $_->{'ip_number'} to $_->{'ip_card'}";
-						error($msg) if $rs;
-						iMSCP::Mail->new()->errmsg($msg);
-					}
+		for(values %$rdata){
+			if(! $net->isKnownAddr($_->{'ip_number'})) {
+				if($net->isKnownDevice($_->{'ip_card'})) {
+					$rs |= $net->addAddr($_->{'ip_number'}, $_->{'ip_card'});
+					iMSCP::Mail->new()->errmsg(iMSCP::Debug::getLastError()) if $rs;
 				} else {
 					my $msg =
-						"Card $_->{'ip_card'} doesn't exist. Please fix this in " .
+						"Network device $_->{'ip_card'} doesn't exist. Please fix this in " .
 						"$main::imscpConfig{BASE_SERVER_VHOST_PREFIX}" .
 						"$main::imscpConfig{BASE_SERVER_VHOST}/admin/ip_manage.php";
 					error($msg);
@@ -102,29 +80,24 @@ sub addVirtualNetcard
 			}
 		}
 
-		my @cards = $ips->getNetCards();
+		my @devices = $net->getDevices();
 
-		for(@cards) {
-			if(!$ips->isCardUp($_)) {
-				# netcard is not up so we try put that up
-				$rs = execute("/sbin/ifconfig $_ up", \$stdout, \$stderr);
-				debug($stdout) if $stdout;
-				error($stderr) if $stderr && $rs;
-				iMSCP::Mail->new()->errmsg($stderr) if $stderr && $rs;
+		for(@devices) {
+			if(! $net->isDeviceUp($_)) {
+				$rs |= $net->upDevice($_);
+				iMSCP::Mail->new()->errmsg(iMSCP::Debug::getLastError()) if $rs;
 			}
 		}
 	}
 
-	0;
+	$rs;
 }
 
-sub removeVirtualNetcard
+sub removeAddresses
 {
-	my $database = iMSCP::Database->new()->factory();
-	my $ips = iMSCP::IP->new();
-	$ips->loadIPs();
+	my $rs = 0;
 
-	my $rdata = $database->doQuery(
+	my $rdata = iMSCP::Database->new()->factory()->doQuery(
 		'ip_id',
 		"
 			SELECT
@@ -139,23 +112,15 @@ sub removeVirtualNetcard
 		error($rdata);
 		iMSCP::Mail->new()->errmsg($rdata);
 	} else {
-		for(values %$rdata) {
-			my $vcard = $ips->addedToVCard($_->{'ip_number'});
+		my $net = iMSCP::Net->getInstance();
 
-			if($vcard) {
-				# We bring down only virtual network cards
-				my $rs = $ips->detachIpFromNetCard($_->{'ip_number'});
-
-				if($rs) {
-					my $msg = "Unable to detach $_->{'ip_number'}";
-					error($msg);
-					iMSCP::Mail->new()->errmsg($msg);
-				}
-			}
+		for(values %{$rdata}) {
+			$rs |= $net->delAddr($_->{'ip_number'});
+			iMSCP::Mail->new()->errmsg(iMSCP::Debug::getLastError()) if $rs;
 		}
 	}
 
-	0;
+	$rs;
 }
 
 sub process
@@ -163,15 +128,15 @@ sub process
 	my $rs = 0;
 
 	if ($proceed && $proceed eq 'start') {
-		$rs = addVirtualNetcard();
+		$rs = addAddresses();
 		return $rs if $rs;
 	} elsif ($proceed && $proceed eq 'restart') {
-		$rs = removeVirtualNetcard();
+		$rs = removeAddresses();
 		return $rs if $rs;
-		$rs = addVirtualNetcard();
+		$rs = addAddresses();
 		return $rs if $rs;
 	} elsif ($proceed && $proceed eq 'stop') {
-		$rs = removeVirtualNetcard();
+		$rs = removeAddresses();
 		return $rs if $rs;
 	} else {
 		my $msg = "Must be called with 'start', 'restart' or 'stop' argument";
@@ -197,9 +162,4 @@ sub process
 	0;
 }
 
-my $rs = 0;
-
-$rs = startUp();
-$rs ||= process();
-
-exit $rs;
+exit process();

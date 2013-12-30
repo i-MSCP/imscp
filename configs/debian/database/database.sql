@@ -84,7 +84,7 @@ INSERT IGNORE INTO `config` (`name`, `value`) VALUES
 ('PREVENT_EXTERNAL_LOGIN_ADMIN', '1'),
 ('PREVENT_EXTERNAL_LOGIN_RESELLER', '1'),
 ('PREVENT_EXTERNAL_LOGIN_CLIENT', '1'),
-('DATABASE_REVISION', '172'),
+('DATABASE_REVISION', '173'),
 ('PHPINI_ALLOW_URL_FOPEN', 'off'),
 ('PHPINI_DISPLAY_ERRORS', 'off'),
 ('PHPINI_UPLOAD_MAX_FILESIZE', '10'),
@@ -529,10 +529,7 @@ CREATE TABLE IF NOT EXISTS `reseller_props` (
 CREATE TABLE IF NOT EXISTS `server_ips` (
   `ip_id` int(10) unsigned NOT NULL auto_increment,
   `ip_number` varchar(40) collate utf8_unicode_ci DEFAULT NULL,
-  `ip_domain` varchar(200) collate utf8_unicode_ci DEFAULT NULL,
-  `ip_alias` varchar(200) collate utf8_unicode_ci DEFAULT NULL,
   `ip_card` varchar(255) collate utf8_unicode_ci DEFAULT NULL,
-  `ip_ssl_domain_id` int(10) DEFAULT NULL,
   `ip_status` varchar(255) collate utf8_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`ip_id`),
   UNIQUE KEY `ip_number` (`ip_number`)

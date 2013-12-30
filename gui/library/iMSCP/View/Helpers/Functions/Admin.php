@@ -55,7 +55,6 @@ function generate_ip_list($tpl)
 		$tpl->assign(
 			array(
 				'IP_NUM' => $data['ip_number'],
-				'IP_NAME' => tohtml($data['ip_domain']),
 				'IP_VALUE' => $ipId,
 				'IP_SELECTED' => $selected
 			)
