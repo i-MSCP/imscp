@@ -143,22 +143,6 @@ sub getPackages
 	['awstats'];
 }
 
-=item preaddDmn(\%data)
-
- Schedule addition of Apache configuration snipped for AWStats.
-
- Param HASH reference - A reference to a hash containing domain data
- Return int - 0 on success, 1 on failure
-
-=cut
-
-sub preaddDmn($$)
-{
-	my ($self, $data) = @_;
-
-	iMSCP::HooksManager->getInstance()->register('beforeHttpdBuildConf', sub { $self->_addAwstatsSection(@_); });
-}
-
 =item addDmn(\%data)
 
  Add AWStats configuration file and cron task.
@@ -379,6 +363,8 @@ sub _init
 	$self->{'wrkDir'} = "$self->{'cfgDir'}/working";
 	$self->{'tplDir'} = "$self->{'cfgDir'}/parts";
 
+	iMSCP::HooksManager->getInstance()->register('beforeHttpdBuildConf', sub { $self->_addAwstatsSection(@_); });
+
 	$self;
 }
 
@@ -405,14 +391,10 @@ sub _addAwstatsSection($$$)
 		require Servers::httpd;
 		my $httpd = Servers::httpd->factory();
 
-		my $beginTag = "# SECTION addons BEGIN.\n";
-		my $endTag = "# SECTION addons END.\n";
-
-		# Getting addons configuration section from Apache template file
-		my $addonsConfSection = getBloc($beginTag, $endTag, $$content);
+		debug('Nuxwin: awstats snippet addition');
 
 		# Build Apache configuration snippet for AWStats
-		$addonsConfSection .= process(
+		my $addonsConfSection = process(
 			{
 				AWSTATS_WEB_DIR => $main::imscpConfig{'AWSTATS_WEB_DIR'},
 				WEBSTATS_GROUP_AUTH => $main::imscpConfig{'WEBSTATS_GROUP_AUTH'},
@@ -424,7 +406,9 @@ sub _addAwstatsSection($$$)
 		);
 
 		# Add Apache configuration snippet for AWStats into the addons configuration section
-		$$content = replaceBloc($beginTag, $endTag, "    $beginTag$addonsConfSection    $endTag", $$content);
+		$$content = replaceBloc(
+			"# SECTION addons BEGIN.\n", "# SECTION addons END.\n", "$addonsConfSection", $$content, 'preserve'
+		);
 	}
 
 	$rs;

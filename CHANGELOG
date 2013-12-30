@@ -6,6 +6,7 @@ Git Master
 ------------------------------------------------------------------------------------------------------------------------
 
 ADDONS:
+	- Fixed: Awstats: _addAwstatsSection() event listener registered too many times
 	- Fixed: Awstats - Error: Couldn't open server log file...
 	- Fixed: Roundcube|PhpMyAdmin installers - Ensure that database tables exist (recovery case)
 	- Fixed: PhpMyAdmin 4.1.0 is only compatible with MySQL Server version 5.5 and newer
