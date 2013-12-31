@@ -287,6 +287,8 @@ sub dumpdb
 	return $rs if $rs;
 
 	$dbName = escapeShell($dbName);
+	$filename = escapeShell($filename);
+
 	my $dbHost = escapeShell($self->{'db'}->{'DATABASE_HOST'});
 	my $dbPort = escapeShell($self->{'db'}->{'DATABASE_PORT'});
 	my $dbUser = escapeShell($self->{'db'}->{'DATABASE_USER'});
