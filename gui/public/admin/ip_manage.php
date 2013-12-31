@@ -54,21 +54,9 @@ function client_generatePage($tpl)
 	_client_generateNetcardsList($tpl);
 
 	if (isset($_POST['ip_number'])) {
-		$tpl->assign(
-			array(
-				'VALUE_IP' => tohtml($_POST['ip_number']),
-				'VALUE_DOMAIN' => clean_input($_POST['domain'], true),
-				'VALUE_ALIAS' => clean_input($_POST['alias'], true
-				)
-			));
+		$tpl->assign('VALUE_IP', tohtml($_POST['ip_number']));
 	} else {
-		$tpl->assign(
-			array(
-				'VALUE_IP' => '',
-				'VALUE_DOMAIN' => '',
-				'VALUE_ALIAS' => ''
-			)
-		);
+		$tpl->assign('VALUE_IP', '');
 	}
 }
 
@@ -133,9 +121,9 @@ function _client_generateIpAction($ipId, $status)
 	if ($status == $cfg->ITEM_OK_STATUS) {
 		return array(tr('Remove IP'), 'ip_delete.php?delete_id=' . $ipId);
 	} elseif($status == $cfg->ITEM_TODELETE_STATUS) {
-		return array(tr('Deletion in progress'), '#');
+		return array(translate_dmn_status($cfg->ITEM_TODELETE_STATUS), '#');
 	} elseif($status == $cfg->ITEM_TOADD_STATUS) {
-		return array(tr('Addition in progress'), '#');
+		return array(translate_dmn_status($cfg->ITEM_TOADD_STATUS), '#');
 	} elseif(
 		!in_array(
 			$status,
@@ -166,13 +154,15 @@ function _client_generateNetcardsList($tpl)
 
 	$networkCards = $networkCardObject->getAvailableInterface();
 
+	sort($networkCards);
+
 	if (!empty($networkCards)) {
 		foreach ($networkCards as $networkCard) {
 			$tpl->assign('NETWORK_CARD', $networkCard);
 			$tpl->parse('NETWORK_CARD_BLOCK', '.network_card_block');
 		}
 	} else { // Should never occur but who knows.
-		set_page_message(tr('Unable to find network cards. You cannot add new IP address.'), 'error');
+		set_page_message(tr('Unable to find any network interface. You cannot add new IP address.'), 'error');
 		$tpl->assign('IP_ADDRESS_FORM_BLOCK', '');
 	}
 }
@@ -198,12 +188,12 @@ function client_checkIpData($ipNumber, $netcard)
 		set_page_message(tr('Wrong IP address.'), 'error');
 		$errFieldsStack[] = 'ip_number';
 	} elseif($stmt->fields['isRegisteredIp']) {
-		set_page_message(tr('IP address already known by the system.'), 'error');
+		set_page_message(tr('IP address already under the control of i-MSCP.'), 'error');
 		$errFieldsStack[] = 'ip_number';
 	}
 
 	if (!in_array($netcard, $networkCardObject->getAvailableInterface())) {
-		set_page_message(tr('You must select a network card.'), 'error');
+		set_page_message(tr('You must select a network interface.'), 'error');
 	}
 
 	if (Zend_Session::namespaceIsset('pageMessages')) {
@@ -233,8 +223,8 @@ function client_registerIp($ipNumber, $netcard)
 	exec_query($query, array($ipNumber, $netcard, $cfg->ITEM_TOADD_STATUS));
 
 	send_request();
-	set_page_message(tr('IP address scheduled for addition.'), 'success');
-	write_log("IP address {$ipNumber} was added by {$_SESSION['user_logged']}", E_USER_NOTICE);
+	set_page_message(tr('IP address successfully scheduled for addition.'), 'success');
+	write_log("{$_SESSION['user_logged']} added new IP address: $ipNumber", E_USER_NOTICE);
 	redirectTo('ip_manage.php');
 }
 
@@ -280,25 +270,24 @@ $tpl->define_dynamic(
 
 $tpl->assign(
 	array(
-		'TR_PAGE_TITLE' => tr('Admin / Settings / IP Management'),
+		'TR_PAGE_TITLE' => tr('Admin / Settings / IP Addresses Management'),
 		'ISP_LOGO' => layout_getUserLogo(),
-		'MANAGE_IPS' => tr('Manage IPs'),
-		'TR_IP' => tr('IP'),
-		'TR_DOMAIN' => tr('Domain'),
-		'TR_ALIAS' => tr('Alias'),
-		'TR_STATUS' => tr('Status'),
+		#'MANAGE_IPS' => tr('Manage IP Addresses'),
+		'TR_IP' => tr('IP Address'),
 		'TR_ACTION' => tr('Action'),
 		'TR_NETWORK_CARD' => tr('Network interface'),
 		'TR_ADD' => tr('Add'),
         'TR_CANCEL' => tr('Cancel'),
-		'TR_CONFIGURED_IPS' => tr('IP addresses configured'),
+		'TR_CONFIGURED_IPS' => tr('IP addresses under control of i-MSCP'),
 		'TR_ADD_NEW_IP' => tr('Add new IP address'),
 		'TR_IP_DATA' => tr('IP address data'),
 		'TR_MESSAGE_DELETE' => json_encode(tr('Are you sure you want to delete this IP: %s?', true, '%s')),
 		'TR_MESSAGE_DENY_DELETE' => json_encode(tr('You cannot remove the %s IP address.', true, '%s')),
 		'ERR_FIELDS_STACK' => (iMSCP_Registry::isRegistered('errFieldsStack'))
 			 ? json_encode(iMSCP_Registry::get('errFieldsStack')) : '[]',
-		'DATATABLE_TRANSLATIONS' => getDataTablesPluginTranslations()
+		'DATATABLE_TRANSLATIONS' => getDataTablesPluginTranslations(),
+		'TR_TIP' => tr('This interface allow to add or remove IP addresses. IP addresses listed below are already under the control of i-MSCP. IP addresses which are added through this interface will be automatically added into the i-MSCP database, and will be available for assignment to one or many of your resellers. If an IP address is not already configured on the system, it will be attached to the selected network interface.')
+
 	)
 );
 

@@ -19,7 +19,6 @@
 #
 # @category    i-MSCP
 # @copyright   2010-2013 by i-MSCP | http://i-mscp.net
-# @author      Daniel Andreca <sci2tech@gmail.com>
 # @author      Laurent Declercq <l.declercq@nuxwin.com>
 # @link        http://i-mscp.net i-MSCP Home Site
 # @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
@@ -32,60 +31,42 @@ use lib "$FindBin::Bin/..", "$FindBin::Bin/../PerlLib";
 
 use iMSCP::Debug;
 use iMSCP::Boot;
-use iMSCP::Net;
-use iMSCP::Mail;
 use iMSCP::Database;
-use iMSCP::Execute;
+use iMSCP::Net;
 
-# Turn off localisation features to force any command output to be in English
 $ENV{'LC_MESSAGES'} = 'C';
-
-# Do not clear screen at end of script
 $ENV{'IMSCP_CLEAR_SCREEN'} = 0;
 
 newDebug('imscp-net-interfaces-mngr.log');
 
 silent(1);
 
-our $proceed = $ARGV[0];
-
 umask(027);
 
-iMSCP::Boot->getInstance()->boot({ 'nolock' => 'yes', 'config_readonly' => 'yes' });
+iMSCP::Boot->getInstance()->boot({ 'nolock' => 'yes', 'norequirements' => 'yes', 'config_readonly' => 'yes' });
 
-sub addAddresses
+sub _addAddresses
 {
 	my $rs = 0;
 
-	my $rdata = iMSCP::Database->new()->factory()->doQuery('ip_id', 'SELECT ip_id, ip_number, ip_card FROM server_ips');
+	my $rdata = iMSCP::Database->new()->factory()->doQuery('ip_number', 'SELECT ip_number, ip_card FROM server_ips');
 	unless (ref $rdata eq 'HASH') {
 		error($rdata);
-		iMSCP::Mail->new()->errmsg($rdata);
-	} else {
+		$rs = 1;
+	} elsif(%{$rdata}) {
 		my $net = iMSCP::Net->getInstance();
 
-		for(values %$rdata){
-			if(! $net->isKnownAddr($_->{'ip_number'})) {
-				if($net->isKnownDevice($_->{'ip_card'})) {
-					$rs |= $net->addAddr($_->{'ip_number'}, $_->{'ip_card'});
-					iMSCP::Mail->new()->errmsg(iMSCP::Debug::getLastError()) if $rs;
+		for my $addr(reverse(sort(keys %{$rdata}))){
+			unless($net->isKnownAddr($addr)) {
+				my $dev = $rdata->{$addr}->{'ip_card'};
+
+				if($net->isKnownDevice($dev)) {
+					$rs |= $net->addAddr($addr, $dev);
+					$rs |= $net->upDevice($dev) if ! $net->isDeviceUp($dev);
 				} else {
-					my $msg =
-						"Network device $_->{'ip_card'} doesn't exist. Please fix this in " .
-						"$main::imscpConfig{BASE_SERVER_VHOST_PREFIX}" .
-						"$main::imscpConfig{BASE_SERVER_VHOST}/admin/ip_manage.php";
-					error($msg);
-					iMSCP::Mail->new()->errmsg($msg);
+					error("Network device $dev doesn't exist. Please fix this.");
+					$rs |= 1;
 				}
-			}
-		}
-
-		my @devices = $net->getDevices();
-
-		for(@devices) {
-			if(! $net->isDeviceUp($_)) {
-				$rs |= $net->upDevice($_);
-				iMSCP::Mail->new()->errmsg(iMSCP::Debug::getLastError()) if $rs;
 			}
 		}
 	}
@@ -93,73 +74,61 @@ sub addAddresses
 	$rs;
 }
 
-sub removeAddresses
+sub _removeAddresses
 {
 	my $rs = 0;
 
 	my $rdata = iMSCP::Database->new()->factory()->doQuery(
-		'ip_id',
-		"
-			SELECT
-				`ip_id`, `ip_number`, `ip_card`
-			FROM
-				`server_ips`
-			WHERE
-				`ip_number` != '$main::imscpConfig{'BASE_SERVER_IP'}'
-		"
+		'ip_number', "SELECT ip_number FROM server_ips WHERE ip_number <> '$main::imscpConfig{'BASE_SERVER_IP'}'"
 	);
 	unless (ref $rdata eq 'HASH') {
 		error($rdata);
-		iMSCP::Mail->new()->errmsg($rdata);
-	} else {
+		$rs = 1;
+	} elsif(%{$rdata}) {
 		my $net = iMSCP::Net->getInstance();
-
-		for(values %{$rdata}) {
-			$rs |= $net->delAddr($_->{'ip_number'});
-			iMSCP::Mail->new()->errmsg(iMSCP::Debug::getLastError()) if $rs;
-		}
+		$rs |= $net->delAddr($_) for keys %{$rdata};
 	}
 
 	$rs;
 }
 
-sub process
+sub run
 {
+	my $action = $ARGV[0] // 'unknown';
 	my $rs = 0;
 
-	if ($proceed && $proceed eq 'start') {
-		$rs = addAddresses();
-		return $rs if $rs;
-	} elsif ($proceed && $proceed eq 'restart') {
-		$rs = removeAddresses();
-		return $rs if $rs;
-		$rs = addAddresses();
-		return $rs if $rs;
-	} elsif ($proceed && $proceed eq 'stop') {
-		$rs = removeAddresses();
-		return $rs if $rs;
+	if ($action eq 'start') {
+		$rs = _addAddresses();
+	} elsif ($action eq 'restart') {
+		$rs = _removeAddresses();
+		$rs |= _addAddresses();
+	} elsif ($action eq 'stop') {
+		$rs = _removeAddresses();
 	} else {
-		my $msg = "Must be called with 'start', 'restart' or 'stop' argument";
-		error($msg);
-		iMSCP::Mail->new()->errmsg($msg);
-		exit 1;
+		error("Must be called with 'start', 'restart' or 'stop' argument");
+		$rs = 1;
 	}
 
-	my $database = iMSCP::Database->new('db' => $main::imscpConfig{'DATABASE_TYPE'})->factory();
+	my $db = iMSCP::Database->new()->factory();
 
-	my $rdata = $database->doQuery('dummy', "DELETE FROM `server_ips` WHERE `ip_status` = 'todelete'");
+	my $rdata = $db->doQuery('dummy', "DELETE FROM server_ips WHERE ip_status = 'todelete'");
 	unless (ref $rdata eq 'HASH') {
 		error($rdata);
-		iMSCP::Mail->new()->errmsg($rdata);
+		$rs = 1;
 	}
 
-	$rdata = $database->doQuery('dummy', "UPDATE `server_ips` SET `ip_status` = 'ok'");
+	$rdata = $db->doQuery('dummy', "UPDATE server_ips SET ip_status = 'ok'");
 	unless (ref $rdata eq 'HASH') {
 		error($rdata);
-		iMSCP::Mail->new()->errmsg($rdata);
+		$rs |= 1;
 	}
 
-	0;
+	if($rs) {
+		require iMSCP::Mail;
+		iMSCP::Mail->new()->errmsg(join "\n\n", iMSCP::Debug::getLastError());
+	}
+
+	$rs;
 }
 
-exit process();
+exit run();
