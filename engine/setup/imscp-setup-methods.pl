@@ -172,13 +172,13 @@ sub setupTasks
 
 	my @steps = (
 		[\&setupSaveOldConfig,              'Saving old i-MSCP main configuration file'],
-		[\&setupWriteNewConfig,             'Write new i-MSCP main configuration file'],
+		[\&setupWriteNewConfig,             'Writing new i-MSCP main configuration file'],
 		[\&setupCreateMasterGroup,          'Creating i-MSCP system master group'],
 		[\&setupCreateSystemDirectories,    'Creating system directories'],
 		[\&setupServerHostname,             'Setting server hostname'],
 		[\&setupCreateDatabase,             'Creating/updating i-MSCP database'],
 		[\&setupSecureSqlInstallation,      'Securing SQL installation'],
-		[\&setupServerIps,                  'Setting server ips'],
+		[\&setupServerIps,                  'Setting server IP addresses'],
 		[\&setupDefaultAdmin,               'Creating default admin'],
 		[\&setupSsl,                        'Setup SSL'],
 		[\&setupCron,                       'Setup cron tasks'],

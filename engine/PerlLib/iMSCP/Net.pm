@@ -79,6 +79,8 @@ sub addAddr($$$)
 	if($self->isValidAddr($addr)) {
 		if($self->isKnownDevice($dev)) {
 			if(! $self->isKnownAddr($addr)) {
+				$addr = $self->normalizeAddr($addr);
+
 				my $cidr = (ip_is_ipv4($addr)) ? 32 : 64; # TODO should be configurable
 
 				my ($stdout, $stderr);
@@ -88,8 +90,8 @@ sub addAddr($$$)
 				error("Unable to add IP $addr to network device $dev") if $rs && ! $stderr;
 				return $rs if $rs;
 
-				# The module must be aware of this new IP
-				$self->{'addresses'}->{$self->normalizeAddr($addr, 6)} = {
+				# This class must be aware of this new IP
+				$self->{'addresses'}->{$addr} = {
 					'device' => $dev,
 					'version' => $self->getAddrVersion($addr),
 					'cidr' =>  $cidr
@@ -121,6 +123,8 @@ sub delAddr($$)
 	my ($self, $addr) = @_;
 
 	if($self->isKnownAddr($addr)) {
+		$addr = $self->normalizeAddr($addr);
+
 		if($self->isValidAddr($addr)) {
 			my $dev = $self->{'addresses'}->{$addr}->{'device'};
 			my $cidr = $self->{'addresses'}->{$addr}->{'cidr'};
@@ -132,8 +136,8 @@ sub delAddr($$)
 			error("Unable to delete IP $addr from network device $dev") if $rs && ! $stderr;
 			return $rs if $rs;
 
-			# The module must be aware of this deletion
-			delete $self->{'addresses'}->{$self->normalizeAddr($addr, 6)};
+			# This class must be aware of this deletion
+			delete $self->{'addresses'}->{$addr};
 		} else {
 			error("Invalid IP: $addr");
 			return 1;
@@ -205,7 +209,7 @@ sub isKnownAddr($$)
 {
 	my ($self, $addr) = @_;
 
-	(exists($self->{'addresses'}->{$self->normalizeAddr($addr, 6)})) ? 1 : 0;
+	(exists($self->{'addresses'}->{$self->normalizeAddr($addr)})) ? 1 : 0;
 }
 
 =item isValidAddr($addr)
@@ -274,7 +278,7 @@ sub isKnownDevice($$)
 
 =item upDevice($dev)
 
- Up the given network device
+ Bring the the given network device up
 
  Param string $dev Network device name
  Return int 0 on success, other on failure
@@ -292,7 +296,7 @@ sub upDevice($$)
 		my $rs = execute("$main::imscpConfig{'CMD_IP'} link set dev $dev up", \$stdout, \$stderr);
 		debug($stdout) if $stdout;
 		error($stderr) if $stderr && $rs;
-		error("Unable to up the $dev network device") if $rs && ! $stderr;
+		error("Unable to bring the network device up: $dev") if $rs && ! $stderr;
 	} else {
 		error("Unknown network device: $dev");
 	 	$rs = 1;
@@ -303,7 +307,7 @@ sub upDevice($$)
 
 =item downDevice($dev)
 
- Down the given network device
+ Bring the given network device down
 
  Param string $dev Network device name
  Return int 0 on success, other on failure
@@ -321,7 +325,7 @@ sub downDevice($$)
 		my $rs = execute("$main::imscpConfig{'CMD_IP'} link set dev $dev down", \$stdout, \$stderr);
 		debug($stdout) if $stdout;
 		error($stderr) if $stderr && $rs;
-		error("Unable to down the $dev network device") if $rs && ! $stderr;
+		error("Unable to bring the network device down: $dev") if $rs && ! $stderr;
 	} else {
 		error("Unknown network device: $dev");
 		$rs = 1;
@@ -435,7 +439,7 @@ sub _getAddresses
 
 	while($stdout =~ m%^\d+:\s+(.*?)\s+(inet6?)\s+([^/]+)/(\d+)%gm) {
 		next if $1 eq 'lo';
-		$addresses->{$self->normalizeAddr($3, 6)} = {
+		$addresses->{$self->normalizeAddr($3)} = {
 			'device' => $1,
 			'version' => ($2 eq 'inet') ? 'ipv4' : 'ipv6',
 			'cidr' => $4
