@@ -3,7 +3,7 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-# kajla <adamradovits12@hotmail.com>, 2013
+# Ádám Radovits <adamradovits12@hotmail.com>, 2013
 # Zoltán Balázs <balazsz@citromail.hu>, 2011-2012
 # knorbi555 <k.norbi555@gmail.com>, 2012
 # Zoltán Balázs <balazsz@citromail.hu>, 2012-2013
@@ -12,9 +12,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2013-11-21 23:25+0100\n"
-"PO-Revision-Date: 2013-11-21 22:27+0000\n"
-"Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
+"POT-Creation-Date: 2013-12-31 17:54+0100\n"
+"PO-Revision-Date: 2013-12-31 16:54+0000\n"
+"Last-Translator: Torsten Widmann <info@goover.de>\n"
 "Language-Team: Hungarian (Hungary) (http://www.transifex.com/projects/p/i-MSCP/language/hu_HU/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -309,7 +309,7 @@ msgstr "%s nem létezik"
 
 #, php-format
 msgid "%s doesn't exist or is empty."
-msgstr ""
+msgstr "%s nem létezik vagy üres."
 
 #, php-format
 msgid "%s field is empty or invalid."
@@ -331,7 +331,7 @@ msgstr "%s nem része a(z) %s domainnak."
 msgid ""
 "%s new plugin(s) found, %s plugin(s) updated, %s plugin(s) changed, and %s "
 "plugin(s) deleted."
-msgstr ""
+msgstr "%s új bővítmény található, %s bővítmény frissítve, %s bővítmény megváltozott és %s bővítmény törölve."
 
 #, php-format
 msgid "%s of %s"
@@ -565,10 +565,10 @@ msgid "Action"
 msgstr "Művelet"
 
 msgid "Action has been stopped."
-msgstr ""
+msgstr "A művelet leállt."
 
 msgid "Action has failed."
-msgstr ""
+msgstr "A művelet sikertelen."
 
 msgid "Actions"
 msgstr "Műveletek"
@@ -577,7 +577,7 @@ msgid "Activate"
 msgstr "Aktiválás"
 
 msgid "Activate this plugin"
-msgstr ""
+msgstr "Bővítmény aktiválása"
 
 msgid "Activated"
 msgstr "Aktiv"
@@ -738,8 +738,8 @@ msgstr "Adminisztrátor / Profil / Személyes adatok módosítása"
 msgid "Admin / Settings"
 msgstr "Adminisztrátor / Beállítások"
 
-msgid "Admin / Settings / IP Management"
-msgstr "Adminisztrátor / Beállítások / IP-címek kezelése"
+msgid "Admin / Settings / IP Addresses Management"
+msgstr ""
 
 msgid "Admin / Settings / Languages"
 msgstr "Adminisztrátor / Beállítások / Nyelv beállítása"
@@ -748,7 +748,7 @@ msgid "Admin / Settings / Lost Password Email"
 msgstr "Adminisztrátor / Beállítások / Elvesztett jelszó e-mail"
 
 msgid "Admin / Settings / Plugin Management"
-msgstr "Adminisztrátor / Beállítások / Bővítmények kezelése"
+msgstr "Adminisztrátor / Beállítások / Bővítménykezelő"
 
 msgid "Admin / Settings / Server Traffic"
 msgstr "Adminisztrátor / Beállítások / Szerverforgalom beállításai"
@@ -894,21 +894,15 @@ msgid "Administrators"
 msgstr "Adminisztrátorok"
 
 msgid "Administrators and customers"
-msgstr ""
+msgstr "Adminisztrátorok és ügyfelek"
 
 msgid "Administrators and resellers"
-msgstr ""
+msgstr "Adminisztrátorok és viszonteladók"
 
 msgid ""
 "After your upload the package it will be installed on your systems.<br "
 "/>Refresh your site to see the new status!"
 msgstr "A feltöltés után a rendszer telepíti a programcsomagot. <br /> Frissítse a weboldalt az új állapot megtekintéséhez!"
-
-msgid "Alias"
-msgstr "Domain álnév"
-
-msgid "Alias already assigned to another IP address."
-msgstr "Álnév már hozzá van rendelve egy másik IP-címhez"
 
 msgid "Alias forward"
 msgstr "Továbbított alternatív email cím"
@@ -959,7 +953,7 @@ msgid "All traffic"
 msgstr "Teljes forgalom"
 
 msgid "All users"
-msgstr ""
+msgstr "Összes felhasználó"
 
 msgid "Allow URL fopen"
 msgstr "URL fopen engedélyezése"
@@ -994,7 +988,7 @@ msgid "Alternative URL to reach your website"
 msgstr "Alternatív webcím a weboldal eléréséhez"
 
 msgid "An entry is defined twice below."
-msgstr ""
+msgstr "Ilyen nevű már létezik."
 
 msgid "An error has been found in mail forward list."
 msgstr "Hiba található a levél továbbítási listában."
@@ -1210,10 +1204,10 @@ msgid "Blocktime <small>(in minutes)</small>"
 msgstr "Blokkolási idő <small>(percben)</small>"
 
 msgid "Body"
-msgstr ""
+msgstr "Törzs"
 
 msgid "Body is missing."
-msgstr ""
+msgstr "Törzs hiányzik."
 
 msgid "Bogomips"
 msgstr "BogoMips:"
@@ -1358,7 +1352,7 @@ msgid "Circular"
 msgstr "Körlevél küldése"
 
 msgid "Circular successfully sent."
-msgstr ""
+msgstr "Körlevél sikeresen elküldve."
 
 msgid "City"
 msgstr "Város"
@@ -1558,7 +1552,7 @@ msgid "Confirmation for domain order {DOMAIN}"
 msgstr "{DOMAIN} domain név megrendelésének megerősítése "
 
 msgid "Confirmation for plugin protection"
-msgstr "Bővítőmodul védelem megerősítése"
+msgstr "Bővítmény védelemének megerősítése"
 
 #, php-format
 msgid "Conflict with an existent %s record."
@@ -1798,7 +1792,7 @@ msgid "Deactivate selected items"
 msgstr "Kijelölt elemek felfüggesztése (kikapcsolása)"
 
 msgid "Deactivate this plugin"
-msgstr ""
+msgstr "Bővítmény deaktiválása"
 
 msgid "Deactivated"
 msgstr "Felfüggesztett"
@@ -1897,7 +1891,7 @@ msgid "Delete selected items"
 msgstr "Kijelölt elemek törlése"
 
 msgid "Delete this plugin"
-msgstr ""
+msgstr "Bővítmény törlése"
 
 msgid "Delete ticket"
 msgstr "Hibajegy törlése"
@@ -1966,7 +1960,7 @@ msgstr "Minden hibaüzenet elrejtése"
 msgid ""
 "Do you really want to delete the entire %s customer account? This operation "
 "cannot be undone."
-msgstr ""
+msgstr "Biztosan törölni akarod %s fiókját? Ezt a műveletet nem lehet visszavonni!"
 
 msgid "Domain"
 msgstr "Domain"
@@ -2040,9 +2034,6 @@ msgstr "A törlendő domain álnévnek van aldomainja. Előbb azt töröld!"
 
 msgid "Domain aliases"
 msgstr "Domain álnevek"
-
-msgid "Domain already assigned to another IP address."
-msgstr "Domain név már hozzá van rendelve egy másik IP-címhez"
 
 msgid "Domain already registered on the system."
 msgstr "Ezt a domaint már regisztrálták a rendszerben"
@@ -2127,7 +2118,7 @@ msgstr "Domain típusa"
 msgid ""
 "Domain: Setup a DNS MX record to relay mail of your entire domain, including"
 " subdomains."
-msgstr ""
+msgstr "Domain: MX-rekord létrehozása a teljes domainre vonatkozik beleértve az aldomainokat is."
 
 msgid "Domains"
 msgstr "Domainek"
@@ -2368,13 +2359,13 @@ msgid "External mail server"
 msgstr "Külső levelező szerver"
 
 msgid "External mail server successfully scheduled for addition."
-msgstr ""
+msgstr "Külső levelező szerver hozzáadása sikeresen beütemezve."
 
 msgid "External mail server successfully scheduled for deactivation."
-msgstr ""
+msgstr "Külső levelező szerver deaktiválása sikeresen beütemezve."
 
 msgid "External mail server successfully scheduled for update."
-msgstr ""
+msgstr "Külső levelező szerver frissítése sikeresen beütemezve."
 
 msgid "External mail servers"
 msgstr "Külső levelező szerverek"
@@ -2433,11 +2424,11 @@ msgstr "%s fájl nem létezik vagy nem elérhető!"
 
 #, php-format
 msgid "File %s has not been found in plugin directory."
-msgstr ""
+msgstr "%s fájl nem található a bővítmény könyvtárában."
 
 #, php-format
 msgid "File %s is missing in plugin directory."
-msgstr "%s fájl hiányzik a plugin könyvtárból."
+msgstr "%s fájl hiányzik a bővítmény könyvtárából."
 
 #, php-format
 msgid "File does not exist. %1$s.tar.gz"
@@ -2666,17 +2657,14 @@ msgstr "Védett felhasználó létrehozása sikeresen beütemezve"
 msgid "Http traffic"
 msgstr "HTTP"
 
-msgid "IP"
-msgstr "IP-cím"
-
 msgid "IP Address"
 msgstr "IP-cím"
 
 msgid "IP address"
 msgstr "IPv4-cím"
 
-msgid "IP address already known by the system."
-msgstr "IP-címet már ismeri a rendszer"
+msgid "IP address already under the control of i-MSCP."
+msgstr ""
 
 msgid "IP address data"
 msgstr "IP-cím adatok"
@@ -2684,14 +2672,14 @@ msgstr "IP-cím adatok"
 msgid "IP address field is empty or invalid."
 msgstr "IP cím mező üres vagy hibás."
 
-msgid "IP address scheduled for addition."
-msgstr "IP-címek hozzáadása beütemezve"
+msgid "IP address successfully scheduled for addition."
+msgstr ""
 
 msgid "IP address successfully scheduled for deletion."
 msgstr "IP-cím törlése sikeresen beütemezve"
 
-msgid "IP addresses configured"
-msgstr "Beállított IP-címek"
+msgid "IP addresses under control of i-MSCP"
+msgstr ""
 
 msgid "IP management"
 msgstr "IP-cím kezelő"
@@ -2736,7 +2724,7 @@ msgid "In front"
 msgstr "Elején"
 
 msgid "In maintenance mode, only administrators can login."
-msgstr "Karbantartási módban csak adminisztrátorok léphetnek be."
+msgstr "Karbantartási módban csak az adminisztrátorok léphetnek be."
 
 msgid ""
 "In this page, you can configure some of the aspects of PHP's behavior. You "
@@ -2810,7 +2798,7 @@ msgid "Install path"
 msgstr "Telepítés célkönyvtára"
 
 msgid "Install this plugin"
-msgstr ""
+msgstr "Bővítmény telepítése"
 
 msgid "Install various Web applications with a few clicks."
 msgstr "Webes alkalmazások telepítése"
@@ -2819,7 +2807,7 @@ msgid "Installation details"
 msgstr "Telepítés részletei"
 
 msgid "Installation in progress..."
-msgstr ""
+msgstr "Telepítés folyamatban..."
 
 msgid "Installation path"
 msgstr "Telepítés útvonala"
@@ -2867,7 +2855,7 @@ msgid "Invalid MX priority."
 msgstr "Érvénytelen MX prioritás"
 
 msgid "Invalid MX type."
-msgstr ""
+msgstr "Érvénytelen MX típus."
 
 msgid "Invalid NAME."
 msgstr "Hibás NAME."
@@ -3079,13 +3067,13 @@ msgstr "Levelezés tárhely foglaltsága"
 
 #, php-format
 msgid "Mailhost %s is not valid."
-msgstr ""
+msgstr "Hibás levelező kiszolgáló (%s)."
 
 msgid "Mailhost cannot be empty."
-msgstr ""
+msgstr "Levelező kiszolgáló nem lehet üres."
 
 msgid "Mailhost must not be equal to the domain name for which you add it."
-msgstr ""
+msgstr "A levelező kiszolgáló nem egyezhet meg azzal a domain névvel, amelyhez hozzáadtad."
 
 msgid "Main menu labels visibility successfully updated."
 msgstr "Főmenü hivatkozások sikeresen frissültek"
@@ -3111,9 +3099,6 @@ msgstr "Hibás SQL lekérdezés megjavítása"
 
 msgid "Manage Domains"
 msgstr "Domainek kezelése"
-
-msgid "Manage IPs"
-msgstr "IP-címek kezelése"
 
 msgid "Manage SQL"
 msgstr "Adatbázisok kezelése"
@@ -3168,7 +3153,7 @@ msgid "Member of group"
 msgstr "Csoporttagság"
 
 msgid "Memory information"
-msgstr "Memória információ"
+msgstr "Memória információk"
 
 msgid "Message"
 msgstr "Üzenet"
@@ -3417,7 +3402,7 @@ msgid "Not used"
 msgstr "Nem elérhető"
 
 msgid "Note: You cannot mix Spam filter and domain options"
-msgstr ""
+msgstr "Megjegyzés: Nem keverheted össze a spamszürő és domain beállításokat."
 
 msgid "Nothing found - sorry"
 msgstr "Nem található - sajnálom"
@@ -3429,7 +3414,7 @@ msgid "Nothing has been deleted."
 msgstr "Semmi sem változott."
 
 msgid "Nothing has been scheduled for deactivation."
-msgstr ""
+msgstr "Semmi nem lett beütemezve deaktiválásra."
 
 msgid "Nothing to do. Daemon request has been canceled."
 msgstr "Nem történt semmi. Daemon kérés meg lett szakítva."
@@ -3465,7 +3450,7 @@ msgid "Only positive numbers are allowed."
 msgstr "Csak pozitív szám adható meg"
 
 msgid "Only tar.gz, tar.bz2 and zip archives are accepted"
-msgstr ""
+msgstr "Csak a tar.gz, tar.bz2 és a zip archívumok az elfogadottak"
 
 msgid "Only tar.gz, tar.bz2 and zip archives are supported."
 msgstr "Csak a tar.gz, tar.bz2 és a zip archívumok a támogatottak."
@@ -3599,7 +3584,7 @@ msgid "Panel default language"
 msgstr "Kezelőfelület alapértelmezett nyelve"
 
 msgid "Parent directory"
-msgstr "Szülő könyvtár"
+msgstr "Szülőkönyvtár"
 
 msgid "Partition"
 msgstr "Csatolási pont"
@@ -3753,7 +3738,7 @@ msgid "Please type your message."
 msgstr "Adja meg az üzenetet"
 
 msgid "Plugin"
-msgstr "Bővítőmodul (plugin)"
+msgstr "Bővítmény"
 
 #, php-format
 msgid "Plugin %s is already activated."
@@ -3765,11 +3750,11 @@ msgstr "%s bővítmény már deaktiválva."
 
 #, php-format
 msgid "Plugin %s is already installed."
-msgstr ""
+msgstr "%s bővítmény már telepítve."
 
 #, php-format
 msgid "Plugin %s is already uninstalled."
-msgstr ""
+msgstr "%s bővítmény már eltávolítva."
 
 #, php-format
 msgid "Plugin %s is protected."
@@ -3777,27 +3762,27 @@ msgstr "%s bővítmény védve."
 
 #, php-format
 msgid "Plugin %s successfully activated."
-msgstr "%s bővítmény sikeresen aktiválva."
+msgstr "%s bővítmény sikeresen aktiválva!"
 
 #, php-format
 msgid "Plugin %s successfully changed."
-msgstr ""
+msgstr "%s bővítmény sikeresen megváltoztatva!"
 
 #, php-format
 msgid "Plugin %s successfully deactivated."
-msgstr "%s bővítmény sikeresen deaktiválva."
+msgstr "%s bővítmény sikeresen deaktiválva!"
 
 #, php-format
 msgid "Plugin %s successfully deleted."
-msgstr "%s bővítmény sikeresen törölve."
+msgstr "%s bővítmény sikeresen törölve!"
 
 #, php-format
 msgid "Plugin %s successfully installed."
-msgstr ""
+msgstr "%s bővítmény sikeresen telepítve!"
 
 #, php-format
 msgid "Plugin %s successfully protected."
-msgstr ""
+msgstr "%s bővítmény sikeresen levédve!"
 
 #, php-format
 msgid "Plugin %s successfully scheduled for activation."
@@ -3813,11 +3798,11 @@ msgstr "%s bővítmény deaktiválása sikeresen beütemezve."
 
 #, php-format
 msgid "Plugin %s successfully scheduled for installation."
-msgstr ""
+msgstr "%s bővítmény telepítése sikeresen beütemezve."
 
 #, php-format
 msgid "Plugin %s successfully scheduled for uninstallation."
-msgstr ""
+msgstr "%s bővítmény eltávolítása sikeresen beütemezve."
 
 #, php-format
 msgid "Plugin %s successfully scheduled for update."
@@ -3825,52 +3810,52 @@ msgstr "%s bővítmény frissítése sikeresen beütemezve."
 
 #, php-format
 msgid "Plugin %s successfully uninstalled."
-msgstr ""
+msgstr "%s bővítmény sikeresen eltávolítva!"
 
 #, php-format
 msgid "Plugin %s successfully updated."
-msgstr "%s bővítmény sikeresen frissítve."
+msgstr "%s bővítmény sikeresen frissítve!"
 
 #, php-format
 msgid "Plugin Manager: Unable to activate the %s plugin: %s"
-msgstr ""
+msgstr "Bővítménykezelő: Nem lehet aktiválni a(z) %s bővítményt: %s"
 
 #, php-format
 msgid "Plugin Manager: Unable to change the %s plugin: %s"
-msgstr ""
+msgstr "Bővítménykezelő: Nem lehet megváltoztatni a(z) %s bővítményt: %s"
 
 #, php-format
 msgid "Plugin Manager: Unable to deactivate the %s plugin: %s"
-msgstr ""
+msgstr "Bővítménykezelő: Nem lehet deaktiválni a(z) %s bővítményt: %s"
 
 #, php-format
 msgid ""
 "Plugin Manager: Unable to delete the %s plugin files. Please, remove them "
 "manually."
-msgstr ""
+msgstr "Bővítménykezelő: %s bővítmény fájljait nem lehet törölni. Kérjük, töröld kézileg!"
 
 #, php-format
 msgid "Plugin Manager: Unable to delete the %s plugin: %s"
-msgstr ""
+msgstr "Bővítménykezelő: Nem lehet törölni a(z) %s bővítményt: %s"
 
 #, php-format
 msgid "Plugin Manager: Unable to install the %s plugin: %s"
-msgstr ""
+msgstr "Bővítménykezelő: Nem lehet telepíteni a(z) %s bővítményt: %s"
 
 #, php-format
 msgid "Plugin Manager: Unable to protect the %s plugin: %s"
-msgstr ""
+msgstr "Bővítménykezelő: Nem lehet levédeni a(z) %s bővítményt: %s"
 
 #, php-format
 msgid "Plugin Manager: Unable to uninstall the %s plugin: %s"
-msgstr ""
+msgstr "Bővítménykezelő: Nem lehet eltávolítani a(z) %s bővítményt: %s"
 
 #, php-format
 msgid "Plugin Manager: Unable to update the %s plugin: %s"
-msgstr ""
+msgstr "Bővítménykezelő: Nem lehet frissíteni a(z) %s bővítményt: %s"
 
 msgid "Plugin archive"
-msgstr "Tömöritett bővítőmodul (plugin)"
+msgstr "Tömöritett bővítmény"
 
 #, php-format
 msgid ""
@@ -3881,10 +3866,10 @@ msgid "Plugin errors"
 msgstr "Bővítmény hibák"
 
 msgid "Plugin item errors"
-msgstr "Bővítményelem hibák"
+msgstr "Bővítményelem hibái"
 
 msgid "Plugin list is empty."
-msgstr "Plugin lista üres."
+msgstr "Bővítmény lista üres."
 
 msgid "Plugin list successfully updated."
 msgstr "Bővítmény lista sikeresen frissítve!"
@@ -3894,13 +3879,13 @@ msgstr "Bővítménykezelő"
 
 #, php-format
 msgid "Plugin manager was unable to load plugin %s"
-msgstr ""
+msgstr "Bővítménykezelő nem tudta betölteni a(z) %s bővítményt"
 
 msgid "Plugin successfully uploaded."
-msgstr "Bővítmény sikeresen feltöltve."
+msgstr "Bővítmény sikeresen feltöltve!"
 
 msgid "Plugins Upload"
-msgstr "Bővítőmodul feltöltése"
+msgstr "Bővítmény feltöltése"
 
 #, php-format
 msgid ""
@@ -3961,7 +3946,7 @@ msgid "Protect it"
 msgstr "Levédés"
 
 msgid "Protect this plugin"
-msgstr "Bővítőmodul (plugin) levédése"
+msgstr "Bővítmény levédése"
 
 msgid "Protected"
 msgstr "Védett"
@@ -4217,7 +4202,7 @@ msgid "Resellers"
 msgstr "Viszonteladók"
 
 msgid "Resellers and customers"
-msgstr ""
+msgstr "Viszonteladók és ügyfelek"
 
 msgid "Resellers assignment"
 msgstr "Viszonteladók átadása"
@@ -4271,7 +4256,7 @@ msgid "SQL database limit is not <i>disabled</i>."
 msgstr "SQL adatbázis korlát nincs <i>kikapcsolva</i>."
 
 msgid "SQL database limit reached."
-msgstr ""
+msgstr "SQL adatbázis limit elérve."
 
 msgid "SQL database successfully added."
 msgstr "SQL adatbázis sikeresen létrehozva"
@@ -4369,7 +4354,7 @@ msgid "Send"
 msgstr "Küldés"
 
 msgid "Send circular"
-msgstr ""
+msgstr "Körlevél küldése"
 
 msgid "Send message"
 msgstr "Üzenet küldése"
@@ -4387,7 +4372,7 @@ msgid "Send reply"
 msgstr "Válasz küldése"
 
 msgid "Send to"
-msgstr ""
+msgstr "Küldés neki:"
 
 msgid "Sender email"
 msgstr "Feladó email címe"
@@ -4596,12 +4581,12 @@ msgid "Softwaredepot"
 msgstr "Programtároló"
 
 msgid "Spam Filter"
-msgstr ""
+msgstr "Spamszűrő"
 
 msgid ""
 "Spam Filter: Setup a DNS MX record to relay mail of your entire domain, "
 "including subdomains, but retains our server as final mailhost."
-msgstr ""
+msgstr "Spamszűrő: MX-rekord létrehozása a teljes domainre vonatkozik beleértve az aldomainokat is, de a szervered lesz a végső levelező kiszolgáló."
 
 msgid "Specified database name already exists."
 msgstr "A megadott adatbázisnév már létezik"
@@ -4700,7 +4685,7 @@ msgid "Subject"
 msgstr "Tárgy"
 
 msgid "Subject is missing."
-msgstr ""
+msgstr "A tárgy hiányzik."
 
 msgid "Submit changes"
 msgstr "Változások mentése"
@@ -4730,7 +4715,7 @@ msgid "System"
 msgstr "Rendszer"
 
 msgid "System data"
-msgstr "Rendszer adatok"
+msgstr "Rendszeradatok"
 
 msgid "System error - custom error page was not updated."
 msgstr "Rendszerhiba - a saját hibaleírás NEM lett módosítva"
@@ -4940,6 +4925,15 @@ msgstr "Ez a védett csoport már létezik"
 msgid "This htaccess user already exist."
 msgstr "Ez a védett felhasználó már létezik"
 
+msgid ""
+"This interface allow to add or remove IP addresses. IP addresses listed "
+"below are already under the control of i-MSCP. IP addresses which are added "
+"through this interface will be automatically added into the i-MSCP database,"
+" and will be available for assignment to one or many of your resellers. If "
+"an IP address is not already configured on the system, it will be attached "
+"to the selected network interface."
+msgstr ""
+
 msgid "This package already exists in the administrator software repository."
 msgstr "Ez a csomag már létezik az adminisztrátor szoftverraktárában."
 
@@ -5005,7 +4999,7 @@ msgstr "Új tulajdonos (viszonteladó):"
 
 #, php-format
 msgid "To unprotect this plugin, you must edit the %s file"
-msgstr "Védelem kikapcsolásához szerkesztenie kell a %s fájlt"
+msgstr "%s fájlt kell szerkesztened a védelem kikapcsolásához"
 
 msgid "Too long user password."
 msgstr "Felhasználó jelszava túl hosszú"
@@ -5088,8 +5082,8 @@ msgstr "Nem sikerült kibontani a bővítmény archívumát."
 msgid "Unable to extract plugin archive: %s"
 msgstr "Nem sikerült kibontani a bővítmény archívumát: %s"
 
-msgid "Unable to find network cards. You cannot add new IP address."
-msgstr "Nem található hálózati kártya. Új IP-cím hozzáadása nem lehetséges. "
+msgid "Unable to find any network interface. You cannot add new IP address."
+msgstr ""
 
 msgid "Unable to find plugin root directory."
 msgstr "Nem található a bővítmény gyökérkönyvtára."
@@ -5148,7 +5142,7 @@ msgid "Unable to write the %s file for protected plugins."
 msgstr "Nem írható a(z) %s fájl a védett bővítményeknek."
 
 msgid "Unallowed database name."
-msgstr ""
+msgstr "Nem engedélyezett adatbázis név."
 
 msgid "Unauthorized"
 msgstr "Jogosulatlan"
@@ -5160,13 +5154,13 @@ msgid "Uninstall"
 msgstr "Törlés"
 
 msgid "Uninstall this plugin"
-msgstr ""
+msgstr "Bővítmény eltávolítása"
 
 msgid "Uninstallation in progress..."
-msgstr ""
+msgstr "Eltávolítás folyamatban..."
 
 msgid "Uninstalled"
-msgstr ""
+msgstr "Eltávolítva!"
 
 msgid "Unknown"
 msgstr "Ismeretlen"
@@ -5178,11 +5172,11 @@ msgid "Unknown FTP user id."
 msgstr "Ismeretlen FTP felhasználó azonosító"
 
 msgid "Unknown action requested."
-msgstr "Ismeretlen művelet"
+msgstr "Ismeretlen művelet."
 
 #, php-format
 msgid "Unknown action: %s"
-msgstr "Ismeretlen akció: %s"
+msgstr "Ismeretlen művelet: %s"
 
 msgid "Unknown error"
 msgstr "Ismeretlen hiba"
@@ -5201,7 +5195,7 @@ msgid "Unknown service name '%s'."
 msgstr "Ismeretlen szolgáltatás név: %s."
 
 msgid "Unknown status"
-msgstr ""
+msgstr "Ismeretlen állapot"
 
 msgid "Unknown type."
 msgstr "Ismeretlen típus"
@@ -5248,7 +5242,7 @@ msgid ""
 msgstr "A webes alkalmazásokhoz tartozó index frissítése megszakadt. Hiányzó vagy üres mezők."
 
 msgid "Update plugin list"
-msgstr "Lista frissítése"
+msgstr "Bővítmény lista frissítése"
 
 msgid "Updates"
 msgstr "Frissítések"
@@ -5417,7 +5411,7 @@ msgid "View ticket"
 msgstr "Hibajegy megnézése"
 
 msgid "Visit plugin site"
-msgstr "Plugin weboldalának megjelenítése"
+msgstr "Bővítmény weboldalának meglátogatása"
 
 msgid "Warning traffic"
 msgstr "Figyelmeztetési szint [MB]"
@@ -5482,7 +5476,7 @@ msgstr "Ha engedélyezi, a  PHP exec() függvény használható lesz. Erre a fun
 
 msgid ""
 "Wildcard: Setup a DNS MX record to relay mail for inexistent subdomains."
-msgstr ""
+msgstr "Wildcard: MX-rekord létrehozása a nem létező aldomainek leveleinek továbbítására."
 
 #, php-format
 msgid "Wildcards such as %% and ? are not allowed."
@@ -5587,7 +5581,7 @@ msgid "You can only upload images."
 msgstr "Csak képeket tud feltölteni"
 
 msgid "You can't install the software outside the htdocs directory."
-msgstr "Nem telepíthetsz alkalmazást a htdocs könyvtáron kívül!"
+msgstr "Nem telepíthetsz alkalmazást a 'htdocs' könyvtáron kívül!"
 
 msgid "You cannot delete a reseller that has customer accounts."
 msgstr "Nem törölhetsz olyan viszonteladót akinek van ügyfélfiókja."
@@ -5794,8 +5788,8 @@ msgstr "Legalább egy elemet ki kell jelölni a törléshez"
 msgid "You must select a least one mail account to delete."
 msgstr "Legalább egy postafiókot ki kell jelölni a törléshez."
 
-msgid "You must select a network card."
-msgstr "Meg kell adni a hálózati kártyát"
+msgid "You must select a network interface."
+msgstr ""
 
 msgid "You must select a plugin."
 msgstr "Ki kell választanod egy bővítményt!"
@@ -5884,6 +5878,9 @@ msgstr "aktivált"
 msgid "activated (Softwaredepot)"
 msgstr "aktívált (programtároló)"
 
+msgid "and"
+msgstr ""
+
 msgid "day"
 msgstr "nap"
 
@@ -5967,7 +5964,7 @@ msgid "i-MSCP / Software Installer / Management"
 msgstr "i-MSCP - Programtelepítő / Kezelő"
 
 msgid "i-MSCP Daemon tools"
-msgstr "i-MSCP Háttérfolyamatok"
+msgstr "i-MSCP háttérfolyamatok"
 
 msgid "i-MSCP Notice"
 msgstr "i-MSCP Körlevél"
@@ -6076,7 +6073,7 @@ msgid "waiting for activation"
 msgstr "aktiválásra vár"
 
 msgid "wildcard"
-msgstr ""
+msgstr "helyettesítő"
 
 msgid "yes"
 msgstr "igen"

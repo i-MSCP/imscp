@@ -12,9 +12,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2013-11-21 23:25+0100\n"
-"PO-Revision-Date: 2013-11-21 22:27+0000\n"
-"Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
+"POT-Creation-Date: 2013-12-31 17:54+0100\n"
+"PO-Revision-Date: 2013-12-31 16:54+0000\n"
+"Last-Translator: Torsten Widmann <info@goover.de>\n"
 "Language-Team: Russian (Russia) (http://www.transifex.com/projects/p/i-MSCP/language/ru_RU/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -309,7 +309,7 @@ msgstr "%s не существует"
 
 #, php-format
 msgid "%s doesn't exist or is empty."
-msgstr ""
+msgstr "%s не существует или пуст"
 
 #, php-format
 msgid "%s field is empty or invalid."
@@ -331,7 +331,7 @@ msgstr "%s не является частью домена %s."
 msgid ""
 "%s new plugin(s) found, %s plugin(s) updated, %s plugin(s) changed, and %s "
 "plugin(s) deleted."
-msgstr ""
+msgstr "%s новых плагин(ов) найдено, %s плагин(ов) обновлено, и %s плагин(ов) удалено."
 
 #, php-format
 msgid "%s of %s"
@@ -565,10 +565,10 @@ msgid "Action"
 msgstr "Действие"
 
 msgid "Action has been stopped."
-msgstr ""
+msgstr "Действие было остановлено."
 
 msgid "Action has failed."
-msgstr ""
+msgstr "Действие не выполнено."
 
 msgid "Actions"
 msgstr "Действия"
@@ -577,7 +577,7 @@ msgid "Activate"
 msgstr "Активировать"
 
 msgid "Activate this plugin"
-msgstr ""
+msgstr "Активировать плагин"
 
 msgid "Activated"
 msgstr "Активировано"
@@ -738,8 +738,8 @@ msgstr "Админ / Профиль / Персональные данные"
 msgid "Admin / Settings"
 msgstr "Админ / Настройки"
 
-msgid "Admin / Settings / IP Management"
-msgstr "Админ / Настройки / Управление IP"
+msgid "Admin / Settings / IP Addresses Management"
+msgstr ""
 
 msgid "Admin / Settings / Languages"
 msgstr "Админ / Настройки / Языки"
@@ -894,21 +894,15 @@ msgid "Administrators"
 msgstr "Администраторы"
 
 msgid "Administrators and customers"
-msgstr ""
+msgstr "Администраторы и клиенты"
 
 msgid "Administrators and resellers"
-msgstr ""
+msgstr "Администраторы и реселлеры"
 
 msgid ""
 "After your upload the package it will be installed on your systems.<br "
 "/>Refresh your site to see the new status!"
 msgstr "После загрузки пакета, он будет установлен в вашу систему.<br />Обновите Ваш сайт, чтобы увидеть новый статус!"
-
-msgid "Alias"
-msgstr "Алиас"
-
-msgid "Alias already assigned to another IP address."
-msgstr "Алиас уже прикреплен к другому IP адресу."
 
 msgid "Alias forward"
 msgstr "Перенаправление алиаса"
@@ -959,7 +953,7 @@ msgid "All traffic"
 msgstr "Весь трафик"
 
 msgid "All users"
-msgstr ""
+msgstr "Все пользователи"
 
 msgid "Allow URL fopen"
 msgstr "Allow URL fopen"
@@ -994,7 +988,7 @@ msgid "Alternative URL to reach your website"
 msgstr "Альтернативный URL для доступа к сайту"
 
 msgid "An entry is defined twice below."
-msgstr ""
+msgstr "Вхождение указано дважды."
 
 msgid "An error has been found in mail forward list."
 msgstr "Была найдена ошибка в списке перенаправления."
@@ -1210,10 +1204,10 @@ msgid "Blocktime <small>(in minutes)</small>"
 msgstr "Время блокировки <small>(в минутах)</small>"
 
 msgid "Body"
-msgstr ""
+msgstr "Тело"
 
 msgid "Body is missing."
-msgstr ""
+msgstr "Тело отсутствует."
 
 msgid "Bogomips"
 msgstr "Bogomips"
@@ -1358,7 +1352,7 @@ msgid "Circular"
 msgstr "Почтовая рассылка"
 
 msgid "Circular successfully sent."
-msgstr ""
+msgstr "Циркуляр успешно отправлен."
 
 msgid "City"
 msgstr "Город / Населенный пункт"
@@ -1798,7 +1792,7 @@ msgid "Deactivate selected items"
 msgstr "Деактивировать выбранное"
 
 msgid "Deactivate this plugin"
-msgstr ""
+msgstr "Деактивировать плагин"
 
 msgid "Deactivated"
 msgstr "Деактивировано"
@@ -1897,7 +1891,7 @@ msgid "Delete selected items"
 msgstr "Удалить выбранные пункты"
 
 msgid "Delete this plugin"
-msgstr ""
+msgstr "Удалить этот плагин"
 
 msgid "Delete ticket"
 msgstr "Удалить тикет"
@@ -1966,7 +1960,7 @@ msgstr "Не отображать ошибки"
 msgid ""
 "Do you really want to delete the entire %s customer account? This operation "
 "cannot be undone."
-msgstr ""
+msgstr "Вы действительно хотите удалить учетную запись пользователя %s ? Эта операция не может быть отменена."
 
 msgid "Domain"
 msgstr "Домен"
@@ -2040,9 +2034,6 @@ msgstr "Алиас домена, который Вы пытаетесь удал
 
 msgid "Domain aliases"
 msgstr "Алиасы домена"
-
-msgid "Domain already assigned to another IP address."
-msgstr "Домен уже назначен на другой IP адрес."
 
 msgid "Domain already registered on the system."
 msgstr "Домен уже зарегистрирован в системе."
@@ -2127,7 +2118,7 @@ msgstr "Тип домена"
 msgid ""
 "Domain: Setup a DNS MX record to relay mail of your entire domain, including"
 " subdomains."
-msgstr ""
+msgstr "Домен: Установите запись DNS MX для переадресации с Вашего текущего домена, включая поддомены."
 
 msgid "Domains"
 msgstr "Домены"
@@ -2368,13 +2359,13 @@ msgid "External mail server"
 msgstr "Внешний почтовый сервер"
 
 msgid "External mail server successfully scheduled for addition."
-msgstr ""
+msgstr "Внешний почтовый сервер успешно помечен для добавления."
 
 msgid "External mail server successfully scheduled for deactivation."
-msgstr ""
+msgstr "Внешний почтовый сервер успешно помечен для деактивации."
 
 msgid "External mail server successfully scheduled for update."
-msgstr ""
+msgstr "Внешний почтовый сервер успешно помечен для обновления."
 
 msgid "External mail servers"
 msgstr "Внешние почтовые сервера"
@@ -2433,7 +2424,7 @@ msgstr "Файл %s не существует или недоступен!"
 
 #, php-format
 msgid "File %s has not been found in plugin directory."
-msgstr ""
+msgstr "Файл %s не был найден в каталоге плагина."
 
 #, php-format
 msgid "File %s is missing in plugin directory."
@@ -2666,17 +2657,14 @@ msgstr "Пользователь Htaccess успешно помечен для �
 msgid "Http traffic"
 msgstr "HTTP трафик"
 
-msgid "IP"
-msgstr "IP адрес"
-
 msgid "IP Address"
 msgstr "IP адрес"
 
 msgid "IP address"
 msgstr "IP адрес"
 
-msgid "IP address already known by the system."
-msgstr "IP адрес уже известен системе."
+msgid "IP address already under the control of i-MSCP."
+msgstr ""
 
 msgid "IP address data"
 msgstr "Данные IP адресов"
@@ -2684,14 +2672,14 @@ msgstr "Данные IP адресов"
 msgid "IP address field is empty or invalid."
 msgstr "Поле адреса IP пустует или неверно."
 
-msgid "IP address scheduled for addition."
-msgstr "IP адрес помечен для добавления."
+msgid "IP address successfully scheduled for addition."
+msgstr ""
 
 msgid "IP address successfully scheduled for deletion."
 msgstr "IP адрес успешно помечен для удаления."
 
-msgid "IP addresses configured"
-msgstr "Сконфигурированные IP адреса"
+msgid "IP addresses under control of i-MSCP"
+msgstr ""
 
 msgid "IP management"
 msgstr "Управление IP"
@@ -2810,7 +2798,7 @@ msgid "Install path"
 msgstr "Путь установки"
 
 msgid "Install this plugin"
-msgstr ""
+msgstr "Установить этот плагин"
 
 msgid "Install various Web applications with a few clicks."
 msgstr "Установите Ваши Web-приложения в несколько кликов."
@@ -2819,7 +2807,7 @@ msgid "Installation details"
 msgstr "Детали установки"
 
 msgid "Installation in progress..."
-msgstr ""
+msgstr "Установка в процессе..."
 
 msgid "Installation path"
 msgstr "Путь установки"
@@ -2867,7 +2855,7 @@ msgid "Invalid MX priority."
 msgstr "Неверный MX приоритет."
 
 msgid "Invalid MX type."
-msgstr ""
+msgstr "Неверный MX тип."
 
 msgid "Invalid NAME."
 msgstr "Неверное имя"
@@ -3079,13 +3067,13 @@ msgstr "Использование почты"
 
 #, php-format
 msgid "Mailhost %s is not valid."
-msgstr ""
+msgstr "Почтовый узел %s не допустим."
 
 msgid "Mailhost cannot be empty."
-msgstr ""
+msgstr "Почтовый хост не может быть пуст."
 
 msgid "Mailhost must not be equal to the domain name for which you add it."
-msgstr ""
+msgstr "Почтовый хост не может совпадать с доменом, для которого вы его добавляете."
 
 msgid "Main menu labels visibility successfully updated."
 msgstr "Отображение ярлыков меню успешно обновлено. "
@@ -3111,9 +3099,6 @@ msgstr "Искаженный запрос SQL"
 
 msgid "Manage Domains"
 msgstr "Домены"
-
-msgid "Manage IPs"
-msgstr "Управление IP адресами"
 
 msgid "Manage SQL"
 msgstr "Управление SQL"
@@ -3417,7 +3402,7 @@ msgid "Not used"
 msgstr "Не используется"
 
 msgid "Note: You cannot mix Spam filter and domain options"
-msgstr ""
+msgstr "Замечание: Вы не можете совмещать фильтр спама и настройки домена"
 
 msgid "Nothing found - sorry"
 msgstr "Ничего не найдено"
@@ -3429,7 +3414,7 @@ msgid "Nothing has been deleted."
 msgstr "Ничего не было удалено"
 
 msgid "Nothing has been scheduled for deactivation."
-msgstr ""
+msgstr "Ничего не было помечено для деактивации."
 
 msgid "Nothing to do. Daemon request has been canceled."
 msgstr "Задача отсутствует. Запрос демона был отклонен."
@@ -3465,7 +3450,7 @@ msgid "Only positive numbers are allowed."
 msgstr "Разрешены только положительные числа"
 
 msgid "Only tar.gz, tar.bz2 and zip archives are accepted"
-msgstr ""
+msgstr "Поддерживаются только tar.gz, tar.bz2 и zip архивы."
 
 msgid "Only tar.gz, tar.bz2 and zip archives are supported."
 msgstr "Поддерживаются только tar.gz, tar.bz2 и zip архивы."
@@ -3765,11 +3750,11 @@ msgstr "Плагин %s уже деактивирован."
 
 #, php-format
 msgid "Plugin %s is already installed."
-msgstr ""
+msgstr "Плагин  %s уже установлен."
 
 #, php-format
 msgid "Plugin %s is already uninstalled."
-msgstr ""
+msgstr "Плагин  %s уже удален."
 
 #, php-format
 msgid "Plugin %s is protected."
@@ -3781,7 +3766,7 @@ msgstr "Плагин %s успешно активирован."
 
 #, php-format
 msgid "Plugin %s successfully changed."
-msgstr ""
+msgstr "Плагин %s успешно изменен."
 
 #, php-format
 msgid "Plugin %s successfully deactivated."
@@ -3793,11 +3778,11 @@ msgstr "Плагин %s успешно удален."
 
 #, php-format
 msgid "Plugin %s successfully installed."
-msgstr ""
+msgstr "Плагин %s успешно установлен."
 
 #, php-format
 msgid "Plugin %s successfully protected."
-msgstr ""
+msgstr "Плагин %s успешно защищен."
 
 #, php-format
 msgid "Plugin %s successfully scheduled for activation."
@@ -3813,11 +3798,11 @@ msgstr "Плагин %s успешно помечен для деактивац�
 
 #, php-format
 msgid "Plugin %s successfully scheduled for installation."
-msgstr ""
+msgstr "Плагин %s успешно помечен для установки."
 
 #, php-format
 msgid "Plugin %s successfully scheduled for uninstallation."
-msgstr ""
+msgstr "Плагин %s успешно помечен для удаления."
 
 #, php-format
 msgid "Plugin %s successfully scheduled for update."
@@ -3825,7 +3810,7 @@ msgstr "Плагин %s успешно помечен для обновлени�
 
 #, php-format
 msgid "Plugin %s successfully uninstalled."
-msgstr ""
+msgstr "Плагин %s успешно удален."
 
 #, php-format
 msgid "Plugin %s successfully updated."
@@ -3833,41 +3818,41 @@ msgstr "Плагин %s успешно обновлен."
 
 #, php-format
 msgid "Plugin Manager: Unable to activate the %s plugin: %s"
-msgstr ""
+msgstr "Менеджер плагинов: Невозможно активировать плагин %s: %s"
 
 #, php-format
 msgid "Plugin Manager: Unable to change the %s plugin: %s"
-msgstr ""
+msgstr "Менеджер плагинов: Невозможно изменить плагин %s: %s"
 
 #, php-format
 msgid "Plugin Manager: Unable to deactivate the %s plugin: %s"
-msgstr ""
+msgstr "Менеджер плагинов: Невозможно деактивировать плагин %s: %s"
 
 #, php-format
 msgid ""
 "Plugin Manager: Unable to delete the %s plugin files. Please, remove them "
 "manually."
-msgstr ""
+msgstr "Менеджер плагинов: Невозможноудалить файлы плагина %s. Пожалуйста, удалите их вручную."
 
 #, php-format
 msgid "Plugin Manager: Unable to delete the %s plugin: %s"
-msgstr ""
+msgstr "Менеджер плагинов: Невозможно удалить плагин %s: %s"
 
 #, php-format
 msgid "Plugin Manager: Unable to install the %s plugin: %s"
-msgstr ""
+msgstr "Менеджер плагинов: Невозможно установить плагин %s: %s"
 
 #, php-format
 msgid "Plugin Manager: Unable to protect the %s plugin: %s"
-msgstr ""
+msgstr "Менеджер плагинов: Невозможно защитить плагин %s: %s"
 
 #, php-format
 msgid "Plugin Manager: Unable to uninstall the %s plugin: %s"
-msgstr ""
+msgstr "Менеджер плагинов: Невозможно деинсталлировать плагин %s: %s"
 
 #, php-format
 msgid "Plugin Manager: Unable to update the %s plugin: %s"
-msgstr ""
+msgstr "Менеджер плагинов: Невозможно обновить плагин %s: %s"
 
 msgid "Plugin archive"
 msgstr "Архив плагинов"
@@ -3894,7 +3879,7 @@ msgstr "Управление плагинами"
 
 #, php-format
 msgid "Plugin manager was unable to load plugin %s"
-msgstr ""
+msgstr "Менеджер плагинов не может загрузить плагин %s"
 
 msgid "Plugin successfully uploaded."
 msgstr "Плагин успешно загружен."
@@ -4217,7 +4202,7 @@ msgid "Resellers"
 msgstr "Реселлеры"
 
 msgid "Resellers and customers"
-msgstr ""
+msgstr "Реселлеры и клиенты"
 
 msgid "Resellers assignment"
 msgstr "Назначение реселлеров"
@@ -4271,7 +4256,7 @@ msgid "SQL database limit is not <i>disabled</i>."
 msgstr "Базы данных SQL не <i>отключены</i>."
 
 msgid "SQL database limit reached."
-msgstr ""
+msgstr "Лимит баз данных SQL достигнут."
 
 msgid "SQL database successfully added."
 msgstr "База данных успешно добавлена."
@@ -4369,7 +4354,7 @@ msgid "Send"
 msgstr "Отправит"
 
 msgid "Send circular"
-msgstr ""
+msgstr "Отправить рассылку"
 
 msgid "Send message"
 msgstr "Отправить сообщение"
@@ -4387,7 +4372,7 @@ msgid "Send reply"
 msgstr "Отправить ответ"
 
 msgid "Send to"
-msgstr ""
+msgstr "Отправить"
 
 msgid "Sender email"
 msgstr "Адрес отправителя"
@@ -4596,12 +4581,12 @@ msgid "Softwaredepot"
 msgstr "Репозиторий ПО"
 
 msgid "Spam Filter"
-msgstr ""
+msgstr "Фильтр спама"
 
 msgid ""
 "Spam Filter: Setup a DNS MX record to relay mail of your entire domain, "
 "including subdomains, but retains our server as final mailhost."
-msgstr ""
+msgstr "Фильтр спама: Установите запись MX для переадресации с Вашего внутреннего домена, включая поддомены, но оставить наш сервер в качестве конечного почтового хоста."
 
 msgid "Specified database name already exists."
 msgstr "Указанное имя базы данных уже существует."
@@ -4700,7 +4685,7 @@ msgid "Subject"
 msgstr "Тема"
 
 msgid "Subject is missing."
-msgstr ""
+msgstr "Тема сообщения отсутствует."
 
 msgid "Submit changes"
 msgstr "Применить изменения"
@@ -4940,6 +4925,15 @@ msgstr "Группа htaccess уже существует."
 msgid "This htaccess user already exist."
 msgstr "Пользователь htaccess уже существует."
 
+msgid ""
+"This interface allow to add or remove IP addresses. IP addresses listed "
+"below are already under the control of i-MSCP. IP addresses which are added "
+"through this interface will be automatically added into the i-MSCP database,"
+" and will be available for assignment to one or many of your resellers. If "
+"an IP address is not already configured on the system, it will be attached "
+"to the selected network interface."
+msgstr ""
+
 msgid "This package already exists in the administrator software repository."
 msgstr "Этот пакет уже существует в репозитории администратора."
 
@@ -5088,8 +5082,8 @@ msgstr "Невозможно извлечь архив с плагином."
 msgid "Unable to extract plugin archive: %s"
 msgstr "Невозможно извлечь архив с плагином: %s"
 
-msgid "Unable to find network cards. You cannot add new IP address."
-msgstr "Невозможно найти сетевую карту. Форма добавления IP адресов была отключена."
+msgid "Unable to find any network interface. You cannot add new IP address."
+msgstr ""
 
 msgid "Unable to find plugin root directory."
 msgstr "Невозможно найти корневой каталог плагина."
@@ -5148,7 +5142,7 @@ msgid "Unable to write the %s file for protected plugins."
 msgstr "Менеджер плагинов не может записать %s файл для защищенных плагинов."
 
 msgid "Unallowed database name."
-msgstr ""
+msgstr "Недозволенное имя базы данных"
 
 msgid "Unauthorized"
 msgstr "Неавторизовано"
@@ -5160,13 +5154,13 @@ msgid "Uninstall"
 msgstr "Удалить"
 
 msgid "Uninstall this plugin"
-msgstr ""
+msgstr "Удалить плагин"
 
 msgid "Uninstallation in progress..."
-msgstr ""
+msgstr "Удаление в процессе..."
 
 msgid "Uninstalled"
-msgstr ""
+msgstr "Удалено"
 
 msgid "Unknown"
 msgstr "Неизвестно"
@@ -5201,7 +5195,7 @@ msgid "Unknown service name '%s'."
 msgstr "Неизвестное имя службы  '%s'."
 
 msgid "Unknown status"
-msgstr ""
+msgstr "Неизвестный статус"
 
 msgid "Unknown type."
 msgstr "Неизвестный тип."
@@ -5482,7 +5476,7 @@ msgstr "Когда разрешено, скрипт может вызывать 
 
 msgid ""
 "Wildcard: Setup a DNS MX record to relay mail for inexistent subdomains."
-msgstr ""
+msgstr "Групповой символ: Настройте записи MX для несуществующих поддоменов."
 
 #, php-format
 msgid "Wildcards such as %% and ? are not allowed."
@@ -5794,8 +5788,8 @@ msgstr "Вы должны выбрать как минимум один пунк
 msgid "You must select a least one mail account to delete."
 msgstr "Вы должны выбрать как минимум один почтовый ящик для удаления."
 
-msgid "You must select a network card."
-msgstr "Вы должны выбрать сетевую карту."
+msgid "You must select a network interface."
+msgstr ""
 
 msgid "You must select a plugin."
 msgstr "Вы должны выбрать плагин."
@@ -5883,6 +5877,9 @@ msgstr "активировано"
 
 msgid "activated (Softwaredepot)"
 msgstr "активирован (Репозиторий)"
+
+msgid "and"
+msgstr ""
 
 msgid "day"
 msgstr "день"
@@ -6076,7 +6073,7 @@ msgid "waiting for activation"
 msgstr "ожидание активации"
 
 msgid "wildcard"
-msgstr ""
+msgstr "Групповой символ"
 
 msgid "yes"
 msgstr "да"

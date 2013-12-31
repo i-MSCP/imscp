@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.0.1.6\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2013-11-21 23:25+0100\n"
+"POT-Creation-Date: 2013-12-31 17:58+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -733,7 +733,7 @@ msgstr ""
 msgid "Admin / Settings"
 msgstr ""
 
-msgid "Admin / Settings / IP Management"
+msgid "Admin / Settings / IP Addresses Management"
 msgstr ""
 
 msgid "Admin / Settings / Languages"
@@ -897,12 +897,6 @@ msgstr ""
 msgid ""
 "After your upload the package it will be installed on your systems.<br /"
 ">Refresh your site to see the new status!"
-msgstr ""
-
-msgid "Alias"
-msgstr ""
-
-msgid "Alias already assigned to another IP address."
 msgstr ""
 
 msgid "Alias forward"
@@ -2035,9 +2029,6 @@ msgstr ""
 msgid "Domain aliases"
 msgstr ""
 
-msgid "Domain already assigned to another IP address."
-msgstr ""
-
 msgid "Domain already registered on the system."
 msgstr ""
 
@@ -2660,16 +2651,13 @@ msgstr ""
 msgid "Http traffic"
 msgstr ""
 
-msgid "IP"
-msgstr ""
-
 msgid "IP Address"
 msgstr ""
 
 msgid "IP address"
 msgstr ""
 
-msgid "IP address already known by the system."
+msgid "IP address already under the control of i-MSCP."
 msgstr ""
 
 msgid "IP address data"
@@ -2678,13 +2666,13 @@ msgstr ""
 msgid "IP address field is empty or invalid."
 msgstr ""
 
-msgid "IP address scheduled for addition."
+msgid "IP address successfully scheduled for addition."
 msgstr ""
 
 msgid "IP address successfully scheduled for deletion."
 msgstr ""
 
-msgid "IP addresses configured"
+msgid "IP addresses under control of i-MSCP"
 msgstr ""
 
 msgid "IP management"
@@ -3104,9 +3092,6 @@ msgid "Malformed resolver SQL query"
 msgstr ""
 
 msgid "Manage Domains"
-msgstr ""
-
-msgid "Manage IPs"
 msgstr ""
 
 msgid "Manage SQL"
@@ -4932,6 +4917,15 @@ msgstr ""
 msgid "This htaccess user already exist."
 msgstr ""
 
+msgid ""
+"This interface allow to add or remove IP addresses. IP addresses listed "
+"below are already under the control of i-MSCP. IP addresses which are added "
+"through this interface will be automatically added into the i-MSCP database, "
+"and will be available for assignment to one or many of your resellers. If an "
+"IP address is not already configured on the system, it will be attached to "
+"the selected network interface."
+msgstr ""
+
 msgid "This package already exists in the administrator software repository."
 msgstr ""
 
@@ -5080,7 +5074,7 @@ msgstr ""
 msgid "Unable to extract plugin archive: %s"
 msgstr ""
 
-msgid "Unable to find network cards. You cannot add new IP address."
+msgid "Unable to find any network interface. You cannot add new IP address."
 msgstr ""
 
 msgid "Unable to find plugin root directory."
@@ -5785,7 +5779,7 @@ msgstr ""
 msgid "You must select a least one mail account to delete."
 msgstr ""
 
-msgid "You must select a network card."
+msgid "You must select a network interface."
 msgstr ""
 
 msgid "You must select a plugin."
@@ -5873,6 +5867,9 @@ msgid "activated"
 msgstr ""
 
 msgid "activated (Softwaredepot)"
+msgstr ""
+
+msgid "and"
 msgstr ""
 
 msgid "day"

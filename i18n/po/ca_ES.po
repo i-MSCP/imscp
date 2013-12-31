@@ -19,9 +19,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2013-11-21 23:25+0100\n"
-"PO-Revision-Date: 2013-11-21 22:27+0000\n"
-"Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
+"POT-Creation-Date: 2013-12-31 17:54+0100\n"
+"PO-Revision-Date: 2013-12-31 16:54+0000\n"
+"Last-Translator: Torsten Widmann <info@goover.de>\n"
 "Language-Team: Catalan (Spain) (http://www.transifex.com/projects/p/i-MSCP/language/ca_ES/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -745,8 +745,8 @@ msgstr "Admin / Perfil / Dades Personals"
 msgid "Admin / Settings"
 msgstr "Admin / Paràmetres"
 
-msgid "Admin / Settings / IP Management"
-msgstr "Admin / Paràmetres / Gestió de IPs"
+msgid "Admin / Settings / IP Addresses Management"
+msgstr ""
 
 msgid "Admin / Settings / Languages"
 msgstr "Admin / Paràmetres / Idiomes"
@@ -910,12 +910,6 @@ msgid ""
 "After your upload the package it will be installed on your systems.<br "
 "/>Refresh your site to see the new status!"
 msgstr "Després de la càrrega, el paquet s'instal.larà als teus sistemes,<br/>Refresca el teu lloc per veure el nou estat!"
-
-msgid "Alias"
-msgstr "Àlies"
-
-msgid "Alias already assigned to another IP address."
-msgstr "Aquest alias ja s'ha assignat a una altra adreça IP."
 
 msgid "Alias forward"
 msgstr "Reenviament d'àlies"
@@ -2048,9 +2042,6 @@ msgstr ""
 msgid "Domain aliases"
 msgstr "Àlies de domini"
 
-msgid "Domain already assigned to another IP address."
-msgstr "Aquest domini ja està assignat a unaltra adreça IP."
-
 msgid "Domain already registered on the system."
 msgstr "Aquest domini ja està donat d'alta al panell."
 
@@ -2673,17 +2664,14 @@ msgstr "Usuari htaccess programat per ser afegit."
 msgid "Http traffic"
 msgstr "Tràfic Http"
 
-msgid "IP"
-msgstr "IP"
-
 msgid "IP Address"
 msgstr ""
 
 msgid "IP address"
 msgstr "Adreça IP"
 
-msgid "IP address already known by the system."
-msgstr "Aquest IP ja existeix al sistema."
+msgid "IP address already under the control of i-MSCP."
+msgstr ""
 
 msgid "IP address data"
 msgstr ""
@@ -2691,14 +2679,14 @@ msgstr ""
 msgid "IP address field is empty or invalid."
 msgstr ""
 
-msgid "IP address scheduled for addition."
-msgstr "Adreça IP programada per ser afegida."
+msgid "IP address successfully scheduled for addition."
+msgstr ""
 
 msgid "IP address successfully scheduled for deletion."
 msgstr ""
 
-msgid "IP addresses configured"
-msgstr "Adreces IP configurades"
+msgid "IP addresses under control of i-MSCP"
+msgstr ""
 
 msgid "IP management"
 msgstr ""
@@ -3118,9 +3106,6 @@ msgstr ""
 
 msgid "Manage Domains"
 msgstr "Administrar Dominis"
-
-msgid "Manage IPs"
-msgstr "Administrar IPs"
 
 msgid "Manage SQL"
 msgstr "Administrar SQL"
@@ -4947,6 +4932,15 @@ msgstr "Aquest grup de htaccess ja existeix."
 msgid "This htaccess user already exist."
 msgstr "Aquest usuari de htaccess ja existeix."
 
+msgid ""
+"This interface allow to add or remove IP addresses. IP addresses listed "
+"below are already under the control of i-MSCP. IP addresses which are added "
+"through this interface will be automatically added into the i-MSCP database,"
+" and will be available for assignment to one or many of your resellers. If "
+"an IP address is not already configured on the system, it will be attached "
+"to the selected network interface."
+msgstr ""
+
 msgid "This package already exists in the administrator software repository."
 msgstr ""
 
@@ -5095,7 +5089,7 @@ msgstr ""
 msgid "Unable to extract plugin archive: %s"
 msgstr ""
 
-msgid "Unable to find network cards. You cannot add new IP address."
+msgid "Unable to find any network interface. You cannot add new IP address."
 msgstr ""
 
 msgid "Unable to find plugin root directory."
@@ -5801,8 +5795,8 @@ msgstr ""
 msgid "You must select a least one mail account to delete."
 msgstr ""
 
-msgid "You must select a network card."
-msgstr "Heu de triar una targeta de xarxa."
+msgid "You must select a network interface."
+msgstr ""
 
 msgid "You must select a plugin."
 msgstr ""
@@ -5890,6 +5884,9 @@ msgstr "activat"
 
 msgid "activated (Softwaredepot)"
 msgstr "activat (Repositiri de Programari)"
+
+msgid "and"
+msgstr ""
 
 msgid "day"
 msgstr "dia"

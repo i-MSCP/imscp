@@ -15,9 +15,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2013-11-21 23:25+0100\n"
-"PO-Revision-Date: 2013-11-21 22:27+0000\n"
-"Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
+"POT-Creation-Date: 2013-12-31 17:54+0100\n"
+"PO-Revision-Date: 2013-12-31 16:54+0000\n"
+"Last-Translator: Torsten Widmann <info@goover.de>\n"
 "Language-Team: Italian (Italy) (http://www.transifex.com/projects/p/i-MSCP/language/it_IT/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -741,8 +741,8 @@ msgstr "Admin / Profilo / Dati personali"
 msgid "Admin / Settings"
 msgstr "Admin / Settaggi"
 
-msgid "Admin / Settings / IP Management"
-msgstr "Admin / Settaggi / Gestione IP"
+msgid "Admin / Settings / IP Addresses Management"
+msgstr ""
 
 msgid "Admin / Settings / Languages"
 msgstr "Admin / Settaggi / Linguaggi"
@@ -906,12 +906,6 @@ msgid ""
 "After your upload the package it will be installed on your systems.<br "
 "/>Refresh your site to see the new status!"
 msgstr "Dopo il caricamento del pacchetto, sarà installato sul tuo sistema.<br />Ricarica il tuo sito per vedere  il nuovo stato!"
-
-msgid "Alias"
-msgstr "Alias"
-
-msgid "Alias already assigned to another IP address."
-msgstr "Alias già assegnato ad un altro indirizzo IP."
 
 msgid "Alias forward"
 msgstr "Inoltro Alias"
@@ -2044,9 +2038,6 @@ msgstr "L'alias di Dominio che stai provando a rimuovere ha dei sottodomini. Eli
 msgid "Domain aliases"
 msgstr "Alias di dominio"
 
-msgid "Domain already assigned to another IP address."
-msgstr "Il dominio è già assegnato ad un altro IP."
-
 msgid "Domain already registered on the system."
 msgstr "Il dominio è già registrato su un altro sistema."
 
@@ -2669,17 +2660,14 @@ msgstr "L'utente Htaccess è stato schedulato con successo per l'aggiunta"
 msgid "Http traffic"
 msgstr "Traffico Http"
 
-msgid "IP"
-msgstr "IP"
-
 msgid "IP Address"
 msgstr ""
 
 msgid "IP address"
 msgstr "Indirizzo IP"
 
-msgid "IP address already known by the system."
-msgstr "L'indirizzo IP è già noto al sistema."
+msgid "IP address already under the control of i-MSCP."
+msgstr ""
 
 msgid "IP address data"
 msgstr "Dati indirizzo IP"
@@ -2687,14 +2675,14 @@ msgstr "Dati indirizzo IP"
 msgid "IP address field is empty or invalid."
 msgstr ""
 
-msgid "IP address scheduled for addition."
-msgstr "L'indirizzo IP schedulato per l'aggiunta"
+msgid "IP address successfully scheduled for addition."
+msgstr ""
 
 msgid "IP address successfully scheduled for deletion."
 msgstr "L'indirizzo IP è stato schedato con successo per l'eliminazione."
 
-msgid "IP addresses configured"
-msgstr "Indirizzo IP configurato"
+msgid "IP addresses under control of i-MSCP"
+msgstr ""
 
 msgid "IP management"
 msgstr ""
@@ -3114,9 +3102,6 @@ msgstr "SQL query resolver non valido"
 
 msgid "Manage Domains"
 msgstr "Gestione domini"
-
-msgid "Manage IPs"
-msgstr "Gestione indirizzi IP"
 
 msgid "Manage SQL"
 msgstr "Gestione SQL"
@@ -4943,6 +4928,15 @@ msgstr "Questo htaccess group già esiste"
 msgid "This htaccess user already exist."
 msgstr "Questo htaccess utente già esiste."
 
+msgid ""
+"This interface allow to add or remove IP addresses. IP addresses listed "
+"below are already under the control of i-MSCP. IP addresses which are added "
+"through this interface will be automatically added into the i-MSCP database,"
+" and will be available for assignment to one or many of your resellers. If "
+"an IP address is not already configured on the system, it will be attached "
+"to the selected network interface."
+msgstr ""
+
 msgid "This package already exists in the administrator software repository."
 msgstr "Questo pacchetto esiste già nel repository software di amministratore."
 
@@ -5091,8 +5085,8 @@ msgstr "Impossibile estrarre l'archivio del plugin"
 msgid "Unable to extract plugin archive: %s"
 msgstr "Impossibile estrarre l'archivio del plugin: %s"
 
-msgid "Unable to find network cards. You cannot add new IP address."
-msgstr "Impossibile trovare una scheda di rete. Tu non puoi aggiungere un nuovo indirizzo IP."
+msgid "Unable to find any network interface. You cannot add new IP address."
+msgstr ""
 
 msgid "Unable to find plugin root directory."
 msgstr "Impossibile trovare la directory principale del plugin."
@@ -5797,8 +5791,8 @@ msgstr "È necessario selezionare un almeno un elemento da eliminare"
 msgid "You must select a least one mail account to delete."
 msgstr "È necessario selezionare un almeno una casella di posta da eliminare."
 
-msgid "You must select a network card."
-msgstr "È necessario selezionare una scheda di rete."
+msgid "You must select a network interface."
+msgstr ""
 
 msgid "You must select a plugin."
 msgstr "Devi selezionare un plugin."
@@ -5886,6 +5880,9 @@ msgstr "attivato"
 
 msgid "activated (Softwaredepot)"
 msgstr "attivato (Deposito Software)"
+
+msgid "and"
+msgstr ""
 
 msgid "day"
 msgstr "giorno"
