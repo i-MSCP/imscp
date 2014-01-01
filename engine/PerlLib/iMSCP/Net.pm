@@ -432,7 +432,7 @@ sub _extractAddresses($$)
 
 	my $addresses = {};
 
-	while($data =~ m%^\d+:\s+(.*?)\s+(inet6?)\s+([^/]+)/(\d+).*?\s+scope\s+global%gm) {
+	while($data =~ m%^\d+:\s+(.*?)\s+(inet6?)\s+([^/\s]+).*?/((\d+)).*?\s+scope\s+global%gm) {
 		$addresses->{$self->normalizeAddr($3)} = {
 			'prefix_length' => $4,
 			'version' => ($2 eq 'inet') ? 'ipv4' : 'ipv6',
