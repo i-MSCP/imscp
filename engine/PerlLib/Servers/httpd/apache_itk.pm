@@ -1866,7 +1866,7 @@ sub _cleanTemplate($$$)
 {
 	my ($self, $cfgTpl, $filename, $data) = @_;
 
-	if($filename =~ /(?:domain.tpl|domain_ssl.tpl|00_master.conf|00_master_ssl.conf)/) {
+	if($filename =~ /(?:domain\.tpl|domain_ssl\.tpl|00_master\.conf|00_master_ssl\.conf)/) {
 		$$cfgTpl = replaceBloc("# SECTION suexec BEGIN.\n", "# SECTION suexec END.\n", '', $$cfgTpl);
 
 		unless($data->{'CGI_SUPPORT'} eq 'yes') {
