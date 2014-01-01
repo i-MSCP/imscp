@@ -1000,32 +1000,6 @@ sub _buildMasterVhostFiles
 
 	# Build 00_master.conf file
 
-	# Schedule deletion of useless itk sections
-	$rs = $self->{'hooksManager'}->register(
-		'beforeHttpdBuildConfFile', sub { $self->{'httpd'}->removeSection('itk', @_) }
-	);
-	return $rs if $rs;
-
-	if($self->{'config'}->{'PHP_FASTCGI'} eq 'fastcgi') {
-		# Schedule deletion of useless fcgid section
-		$rs = $self->{'hooksManager'}->register(
-			'beforeHttpdBuildConfFile', sub { $self->{'httpd'}->removeSection('fcgid', @_) }
-		);
-		return $rs if $rs;
-	} else {
-		# Schedule deletion of useless fastcgi section
-		$rs = $self->{'hooksManager'}->register(
-			'beforeHttpdBuildConfFile', sub { $self->{'httpd'}->removeSection('fastcgi', @_) }
-		);
-		return $rs if $rs;
-	}
-
-	# Schedule deletion of useless php_fpm sections
-	$rs = $self->{'hooksManager'}->register(
-		'beforeHttpdBuildConfFile', sub { $self->{'httpd'}->removeSection('php_fpm', @_) }
-	);
-	return $rs if $rs;
-
 	# Force HTTPS if needed
 	if($main::imscpConfig{'BASE_SERVER_VHOST_PREFIX'} eq 'https://') {
 		$rs = $self->{'hooksManager'}->register(
@@ -1055,7 +1029,7 @@ sub _buildMasterVhostFiles
 	}
 
 	# Build file using apache/00_master.conf template
-	$rs = $self->{'httpd'}->buildConfFile("$self->{'apacheCfgDir'}/00_master.conf", {});
+	$rs = $self->{'httpd'}->buildConfFile('00_master.conf', { CGI_SUPPORT => 'no', PHP_SUPPORT => 'yes' });
 	return $rs if $rs;
 
 	# Install new file in production directory
@@ -1072,33 +1046,7 @@ sub _buildMasterVhostFiles
 	if($main::imscpConfig{'SSL_ENABLED'} eq 'yes') {
 		# Build 00_master_ssl.conf file
 
-		# Schedule deletion of useless itk sections
-		$rs = $self->{'hooksManager'}->register(
-			'beforeHttpdBuildConfFile', sub { $self->{'httpd'}->removeSection('itk', @_) }
-		);
-		return $rs if $rs;
-
-		if($self->{'config'}->{'PHP_FASTCGI'} eq 'fastcgi') {
-			# Schedule deletion of useless fcgid section
-			$rs = $self->{'hooksManager'}->register(
-				'beforeHttpdBuildConfFile', sub { $self->{'httpd'}->removeSection('fcgid', @_) }
-			);
-			return $rs if $rs;
-		} else {
-			# Schedule deletion of useless fastcgi section
-			$rs = $self->{'hooksManager'}->register(
-				'beforeHttpdBuildConfFile', sub { $self->{'httpd'}->removeSection('fastcgi', @_) }
-			);
-			return $rs if $rs;
-		}
-
-		# Schedule deletion of useless php_fpm sections
-		$rs = $self->{'hooksManager'}->register(
-			'beforeHttpdBuildConfFile', sub { $self->{'httpd'}->removeSection('php_fpm', @_) }
-		);
-		return $rs if $rs;
-
-		$rs = $self->{'httpd'}->buildConfFile("$self->{'apacheCfgDir'}/00_master_ssl.conf", {});
+		$rs = $self->{'httpd'}->buildConfFile('00_master_ssl.conf', { CGI_SUPPORT => 'no', PHP_SUPPORT => 'yes' });
 		return $rs if $rs;
 
 		iMSCP::File->new(

@@ -1159,33 +1159,6 @@ sub flushData()
 	0;
 }
 
-=item removeSection($sectionName, \$cfgTpl)
-
- Remove the given section in the given configuration template string
-
- Param string $sectionName Name of section to remove
- Param string_ref $cfgTpl Reference to configuration template string
- Return int 0
-
-=cut
-
-sub removeSection($$$)
-{
-	my ($self, $sectionName, $cfgTpl) = @_;
-
-	my $rs = $self->{'hooksManager'}->trigger('beforeHttpdRemoveSection', $sectionName, $cfgTpl);
-	return $rs if $rs;
-
-	my $bTag = "# SECTION $sectionName BEGIN.\n";
-	my $eTag = "# SECTION $sectionName END.\n";
-
-	debug("Removing useless section: $sectionName");
-
-	$$cfgTpl = replaceBloc($bTag, $eTag, '', $$cfgTpl);
-
-	$self->{'hooksManager'}->trigger('afterHttpdRemoveSection', $sectionName, $cfgTpl);
-}
-
 =item getTraffic($domainName)
 
  Get httpd traffic for the given domain name
@@ -1643,6 +1616,9 @@ sub _init
 		'afterHttpdInit', $self, 'apache_fcgi'
 	) and fatal('apache_fcgi - afterHttpdInit hook has failed');
 
+	# Register event listener which is responsible to clean vhost template files
+	$self->{'hooksManager'}->register('beforeHttpdBuildConfFile', sub { $self->_cleanTemplate(@_)});
+
 	$self;
 }
 
@@ -1729,46 +1705,6 @@ sub _addCfg($$)
 	);
 
 	for(keys %configs) {
-		# Schedule deletion of useless sections if needed
-		if($data->{'FORWARD'} eq 'no') {
-			$rs = $self->{'hooksManager'}->register(
-				'beforeHttpdBuildConfFile', sub { $self->removeSection('cgi_support', @_) }
-			) unless $data->{'CGI_SUPPORT'} eq 'yes';
-			return $rs if $rs;
-
-			$rs = $self->{'hooksManager'}->register(
-				'beforeHttpdBuildConfFile', sub { $self->removeSection('php_enabled', @_) }
-			) unless $data->{'PHP_SUPPORT'} eq 'yes';
-			return $rs if $rs;
-
-			$rs = $self->{'hooksManager'}->register(
-				'beforeHttpdBuildConfFile', sub { $self->removeSection('php_disabled', @_) }
-			) if $data->{'PHP_SUPPORT'} eq 'yes';
-			return $rs if $rs;
-
-			if($self->{'config'}->{'PHP_FASTCGI'} eq 'fastcgi') {
-				$rs = $self->{'hooksManager'}->register(
-					'beforeHttpdBuildConfFile', sub { $self->removeSection('fcgid', @_) }
-				);
-				return $rs if $rs;
-			} else {
-				$rs = $self->{'hooksManager'}->register(
-					'beforeHttpdBuildConfFile', sub { $self->removeSection('fastcgi', @_) }
-				);
-				return $rs if $rs;
-			}
-
-			$rs = $self->{'hooksManager'}->register(
-				'beforeHttpdBuildConfFile', sub { $self->removeSection('php_fpm', @_) }
-			);
-			return $rs if $rs;
-
-			$rs = $self->{'hooksManager'}->register(
-				'beforeHttpdBuildConfFile', sub { $self->removeSection('itk', @_) }
-			);
-			return $rs if $rs;
-		}
-
 		$rs = $self->buildConfFile(
 			$data->{'FORWARD'} eq 'no'
 				? "$self->{'tplDir'}/$configs{$_}->{'normal'}"
@@ -2108,6 +2044,47 @@ sub _buildPHPini($$)
 	return $rs if $rs;
 
 	$self->{'hooksManager'}->trigger('afterHttpdBuildPhpIni', $data);
+}
+
+=item _cleanTemplate($sectionName, \$cfgTpl, \%data)
+
+ Event listener which is responsible to remove useless configuration snippets in vhost template files
+
+ Param string_ref $cfgTpl Reference to template file content
+ Param string $filename Template filename
+ Param hash_ref $data Reference to a hash containing data as provided by Alias|Domain|Subdomain|SubAlias modules
+ Return int 0
+
+=cut
+
+sub _cleanTemplate($$$)
+{
+	my ($self, $cfgTpl, $filename, $data) = @_;
+
+	if($filename =~ /(?:domain.tpl|domain_ssl.tpl|00_master.conf|00_master_ssl.conf)/) {
+		unless($data->{'CGI_SUPPORT'} eq 'yes') {
+			$$cfgTpl = replaceBloc("# SECTION cgi_support BEGIN.\n", "# SECTION cgi_support END.\n", '', $$cfgTpl);
+		}
+
+		if($data->{'PHP_SUPPORT'} eq 'yes') {
+			$$cfgTpl = replaceBloc("# SECTION php_disabled BEGIN.\n", "# SECTION php_disabled END.\n", '', $$cfgTpl);
+
+			if($self->{'config'}->{'PHP_FASTCGI'} eq 'fastcgi') {
+				$$cfgTpl = replaceBloc("# SECTION fcgid BEGIN.\n", "# SECTION fcgid END.\n", '', $$cfgTpl);
+			} else {
+				$$cfgTpl = replaceBloc("# SECTION fastcgi BEGIN.\n", "# SECTION fastcgi END.\n", '', $$cfgTpl);
+			}
+		} else {
+			$$cfgTpl = replaceBloc("# SECTION php_enabled BEGIN.\n", "# SECTION php_enabled END.\n", '', $$cfgTpl);
+			$$cfgTpl = replaceBloc("# SECTION fcgid BEGIN.\n", "# SECTION fcgid END.\n", '', $$cfgTpl);
+			$$cfgTpl = replaceBloc("# SECTION fastcgi BEGIN.\n", "# SECTION fastcgi END.\n", '', $$cfgTpl);
+		}
+
+		$$cfgTpl = replaceBloc("# SECTION php_fpm BEGIN.\n", "# SECTION php_fpm END.\n", '', $$cfgTpl);
+		$$cfgTpl = replaceBloc("# SECTION itk BEGIN.\n", "# SECTION itk END.\n", '', $$cfgTpl);
+	}
+
+	0;
 }
 
 =item END

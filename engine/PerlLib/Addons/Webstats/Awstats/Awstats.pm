@@ -363,35 +363,34 @@ sub _init
 	$self->{'wrkDir'} = "$self->{'cfgDir'}/working";
 	$self->{'tplDir'} = "$self->{'cfgDir'}/parts";
 
+	# Register event listener which is responsible to add Awstats configuration snippet in Apache vhost file
 	iMSCP::HooksManager->getInstance()->register('beforeHttpdBuildConf', sub { $self->_addAwstatsSection(@_); });
 
 	$self;
 }
 
-=item _addAwstatsSection(\$content, $filename)
+=item _addAwstatsSection(\$cfgTpl, $filename)
 
  Add Apache configuration snippet for AWStats in the given domain vhost template file.
 
  Listener responsible to build and insert Apache configuration snipped for AWStats in the given domain vhost file. The
 type of configuration snippet inserted depends on the AWStats mode (dynamic or static).
 
- Param SCALAR reference - A scalar reference containing file content
- Param SCALAR Filename
+ Param string $cfgTpl Reference to template file content
+ Param string Template filename
  Return int - 0 on success, 1 on failure
 
 =cut
 
 sub _addAwstatsSection($$$)
 {
-	my ($self, $content, $filename) = @_;
+	my ($self, $cfgTpl, $filename) = @_;
 
 	my $rs = 0;
 
 	if($filename =~ /domain.*tpl/) {
 		require Servers::httpd;
 		my $httpd = Servers::httpd->factory();
-
-		debug('Nuxwin: awstats snippet addition');
 
 		# Build Apache configuration snippet for AWStats
 		my $addonsConfSection = process(
@@ -406,8 +405,8 @@ sub _addAwstatsSection($$$)
 		);
 
 		# Add Apache configuration snippet for AWStats into the addons configuration section
-		$$content = replaceBloc(
-			"# SECTION addons BEGIN.\n", "# SECTION addons END.\n", "$addonsConfSection", $$content, 'preserve'
+		$$cfgTpl = replaceBloc(
+			"# SECTION addons BEGIN.\n", "# SECTION addons END.\n", "$addonsConfSection", $$cfgTpl, 'preserve'
 		);
 	}
 

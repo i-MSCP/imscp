@@ -50,19 +50,19 @@ which, in most cases, are passed by reference to the hook function to allow it t
 
 =over 4
 
-=item register(hook, hookFunction)
+=item register($hook, $hookFunction)
 
  Register the given hook function on the manager for the given hook.
 
+ Param string $hook Hook name
+ Param code_ref $hookFunction function
  Return int - 0 on success, 1 on failure
 
 =cut
 
 sub register($$$)
 {
-	my $self = shift;
-	my $hook = shift;
-	my $hookFunction = shift;
+	my ($self, $hook, $hookFunction) = @_;
 
 	if (ref $hookFunction eq 'CODE') {
 		debug("Register hook function on the '$hook' hook");
@@ -75,36 +75,38 @@ sub register($$$)
 	0;
 }
 
-=item register(hook)
+=item register($hook)
 
  Unregister hook functions for the given hook.
 
+ Param string Hook name
  Return int - 0
 
 =cut
 
 sub unregisterHook($$)
 {
-	my $self = shift;
-	my $hook = shift;
+	my ($self, $hook) = @_;
 
-	delete $self->{'hooks'}->{$hook} if exists $self->{'hooks'}->{$hook};
+	delete $self->{'hooks'}->{$hook};
 
 	0;
 }
 
-=item trigger(hook, [parameters][...])
+=item trigger($hook, [$params][...])
 
  Trigger the given hook.
 
+ Param string Hook name
+ Param mixed OPTIONAL parameters which are passed to the hook function
  Return int - 0 on success, other on failure
 
 =cut
 
 sub trigger($$)
 {
-	my $self = shift;
-    my $hook = shift;
+	my ($self, $hook, @params) = @_;
+
     my $rs = 0;
 
 	if(exists $self->{'hooks'}->{$hook}) {
@@ -113,7 +115,7 @@ sub trigger($$)
 		my @hookFunctions = @{$self->{'hooks'}->{$hook}};
 
 		for(@hookFunctions) {
-			if($rs = $_->(@_)) {
+			if($rs = $_->(@params)) {
 				my $caller = (caller(1))[3] ? (caller(1))[3] : 'main';
 				require Data::Dumper;
 				Data::Dumper->import();
