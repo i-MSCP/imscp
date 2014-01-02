@@ -77,16 +77,16 @@ sub execute($;$$)
 
 	if(defined $stdout && defined $stderr) {
 		$pid = open3(gensym, *CATCHOUT, *CATCHERR, $command);
-        $sel->add(*CATCHOUT, *CATCHERR);
+	$sel->add(*CATCHOUT, *CATCHERR);
 		_readIO($sel, $stdout, $stderr);
 	} elsif(defined $stdout) {
 		$pid = open3(gensym, *CATCHOUT, ">&STDERR", $command);
-        $sel->add(*CATCHOUT);
+		$sel->add(*CATCHOUT);
 		_readIO($sel, $stdout);
 	} elsif(defined $stderr) {
 		$pid = open3(gensym, ">&STDOUT", *CATCHERR, $command);
-	    $sel->add(*CATCHERR);
-    	_readIO($sel, undef, $stderr);
+		$sel->add(*CATCHERR);
+		_readIO($sel, undef, $stderr);
 	} else {
 		system($command);
 	}
