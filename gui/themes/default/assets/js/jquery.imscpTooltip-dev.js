@@ -18,7 +18,7 @@
  * @category    iMSCP
  * @package     iMSCP_Core
  * @subpackage  Layout
- * @copyright   2010-2013 by i-MSCP | http://i-mscp.net
+ * @copyright   2010-2014 by i-MSCP | http://i-mscp.net
  * @link        http://i-mscp.net
  * @author      Laurent Declercq <l.declercq@nuxwin.com>
  * @version 0.0.4

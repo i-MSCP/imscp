@@ -1,7 +1,7 @@
 #!/usr/bin/perl
 #
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010-2013 by internet Multi Server Control Panel
+# Copyright (C) 2010-2014 by internet Multi Server Control Panel
 #
 # The contents of this file are subject to the Mozilla Public License
 # Version 1.1 (the "License"); you may not use this file except in
@@ -19,7 +19,7 @@
 #  Portions created by Initial Developer are Copyright (C) 2010
 #  i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
 #
-# Copyright: (C) 2010-2013 by i-MSCP | http://i-mscp.net
+# Copyright: (C) 2010-2014 by i-MSCP | http://i-mscp.net
 # Author: Sacha Bay <sascha.bay@i-mscp.net>
 # Project Site: http://i-mscp.net
 # License http://www.mozilla.org/MPL/ MPL 1.1
