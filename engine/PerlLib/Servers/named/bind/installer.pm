@@ -160,6 +160,8 @@ sub askDnsServerIps($$)
 						"\nPlease enter slave DNS server IP addresses, each separated by space: $msg", "@slaveDnsIps"
 					);
 
+					$msg = '';
+
 					if($rs != 30) {
 						@slaveDnsIps = split ' ', $answer;
 
@@ -184,6 +186,8 @@ sub askDnsServerIps($$)
 			($rs, $answer) = $dialog->inputbox(
 				"\nPlease enter master DNS server IP addresses, each separated by space: $msg", "@masterDnsIps"
 			);
+
+			$msg = '';
 
 			if($rs != 30) {
 				@masterDnsIps = split ' ', $answer;
