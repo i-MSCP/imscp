@@ -32,7 +32,7 @@
 #
 
 use FindBin;
-use lib "$FindBin::Bin/";
+use lib "$FindBin::Bin";
 require 'imscp_common_code.pl';
 
 use strict;
