@@ -59,6 +59,7 @@ Tickets:
 	- Fixed #976: Bug - Wrong syntax for the mail quota value
 	- Fixed #978: Defect - SPF records for subdomains and external mail server
 	- Fixed #980: Bug - PHP-Editor - Values not saved while adding new customer
+	- Fixed #982: Defect - No access to /var/www from localhost
 	- Fixed #987: Bug - Backup - iMSCP::Database::mysql::mysql::dumpdb: mysqldump: Couldn't find table...
 
 ------------------------------------------------------------------------------------------------------------------------
