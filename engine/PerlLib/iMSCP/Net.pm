@@ -415,7 +415,7 @@ sub _extractDevices()
 
 	my $devices = {};
 
-	$devices->{$1}->{'status'} = $2 while($stdout =~ /^[^\s]+\s+(.*?):.*?state\s+(UP|DOWN)/gm);
+	$devices->{$1}->{'status'} = $2 while($stdout =~ /^[^\s]+\s+(.*?):\s+<.*?(UP).*?>/gm);
 
 	$devices;
 }
