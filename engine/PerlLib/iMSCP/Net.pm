@@ -258,9 +258,9 @@ sub normalizeAddr($$)
 
 =cut
 
-sub getDevices($;$)
+sub getDevices()
 {
-	my ($self, $status) = @_;
+	my $self = shift;
 
 	wantarray ? keys %{$self->{'devices'}} : join(' ', keys %{$self->{'devices'}});
 }
@@ -352,7 +352,7 @@ sub isDeviceUp($$)
 {
 	my ($self, $dev) = @_;
 
-	($self->isKnownDevice($dev) && $self->{'devices'}->{$dev}->{'status'} eq 'UP') ? 1 : 0;
+	($self->{'devices'}->{$dev}->{'flags'} =~ /^(?:.*,)?UP(?:,.*)?$/) ? 1 : 0;
 }
 
 =item isDeviceDown($dev)
@@ -368,7 +368,7 @@ sub isDeviceDown($$)
 {
 	my ($self, $dev) = @_;
 
-	($self->isKnownDevice($dev) && $self->{'devices'}->{$dev}->{'status'} eq 'DOWN') ? 1 : 0;
+	($self->{'devices'}->{$dev}->{'flags'} =~ /^(?:.*,)?UP(?:,.*)?$/) ? 0 : 1;
 }
 
 =back
@@ -397,7 +397,7 @@ sub _init
 
 =item _extractDevices()
 
- Extract network devices data (excluding loopback interface)
+ Extract network devices data
 
  Return hash|undef A hash describing each device found or undef on failure
 
@@ -415,14 +415,14 @@ sub _extractDevices()
 
 	my $devices = {};
 
-	$devices->{$1}->{'status'} = $2 while($stdout =~ /^[^\s]+\s+(.*?):\s+<.*?(UP).*?>/gm);
+	$devices->{$1}->{'flags'} = $2 while($stdout =~ /^[^\s]+\s+(.*?):\s+<(.*)>/gm);
 
 	$devices;
 }
 
 =item _extractAddresses()
 
- Extract addresses data (excluding those set on loopback interface)
+ Extract addresses data (scope global only)
 
  Return hash|undef A hash describing each IP found or undef on failure
 
