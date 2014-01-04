@@ -42,8 +42,6 @@ HTACCESS_GROUPS_FILE_NAME = .htgroup
 
 HTPASSWD_CMD = /usr/bin/htpasswd2
 
-SCOREBOARDS_DIR = /var/www/scoreboards
-
 ##### Obsolete
 
 APACHE_WWW_DIR = /var/www/virtual
