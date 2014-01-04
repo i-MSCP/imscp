@@ -5,7 +5,6 @@
     <folders>${SYSTEM_CONF}/php-fpm</folders>
     <folders>${SYSTEM_CONF}/php-fpm/backup</folders>
     <folders>${SYSTEM_CONF}/php-fpm/working</folders>
-    <copy_config mode="0755" user="${ROOT_USER}" group="${ROOT_GROUP}">${ROOT_CONF}/init.d/php5-fpm</copy_config>
     <copy_config>${SYSTEM_CONF}/php-fpm/parts</copy_config>
     <copy_config>${SYSTEM_CONF}/php-fpm/logrotate.conf</copy_config>
     <copy_config>${SYSTEM_CONF}/php-fpm/php-fpm.conf</copy_config>

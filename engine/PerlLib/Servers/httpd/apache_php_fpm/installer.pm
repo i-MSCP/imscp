@@ -178,9 +178,6 @@ sub install
 	$rs = $self->_installLogrotate();
 	return $rs if $rs;
 
-	$rs = $self->_installPhpFpmInitScript();
-	return $rs if $rs;
-
 	$rs = $self->_saveConf();
 	return $rs if $rs;
 
@@ -1008,64 +1005,6 @@ sub _installLogrotate
 	return $rs if $rs;
 
 	$self->{'hooksManager'}->trigger('afterHttpdInstallLogrotate', 'php5-fpm');
-}
-
-=item _installPhpFpmInitScript()
-
- Install PHP FPM init script
-
- Note: We provide our own init script since the one provided in older Debian/Ubuntu versions doesnt provide the
-reopen-logs function.
-
- Return int 0 on success, other on failure
-
-=cut
-
-sub _installPhpFpmInitScript
-{
-	my $self = shift;
-
-	my $rs = $self->{'hooksManager'}->trigger('beforeHttpdInstallPhpFpmInitScript');
-	return $rs if $rs;
-
-	my ($stdout, $stderr);
-
-	my $php5fpmInitScriptPath = "$main::imscpConfig{'INIT_SCRIPTS_DIR'}/$self->{'phpfpmConfig'}->{'PHP_FPM_SNAME'}";
-
-	if (-f $php5fpmInitScriptPath) {
-		my $file = iMSCP::File->new('filename' => $php5fpmInitScriptPath);
-
-		$rs = $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
-		return $rs if $rs;
-
-		$rs = $file->mode(0755);
-		return $rs if $rs;
-
-		if($main::imscpConfig{'SERVICE_INSTALLER'} ne 'no') {
-			$rs = execute(
-				"$main::imscpConfig{'SERVICE_INSTALLER'} -f $self->{'phpfpmConfig'}->{'PHP_FPM_SNAME'} remove",
-				\$stdout,
-				\$stderr
-			);
-			debug ($stdout) if $stdout;
-			error($stderr) if $stderr && $rs;
-			return $rs if $rs;
-
-			$rs = execute(
-				"$main::imscpConfig{'SERVICE_INSTALLER'} $self->{'phpfpmConfig'}->{'PHP_FPM_SNAME'} defaults",
-				\$stdout,
-				\$stderr
-			);
-			debug ($stdout) if $stdout;
-			error($stderr) if $stderr && $rs;
-			return $rs if $rs;
-		}
-	} else {
-		error("File $php5fpmInitScriptPath is missing");
-		return 1;
-	}
-
-	$self->{'hooksManager'}->trigger('afterHttpdInstallPhpFpmInitScript');
 }
 
 =item _saveConf()
