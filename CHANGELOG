@@ -62,7 +62,7 @@ Tickets:
 	- Fixed #982: Defect - No access to /var/www from localhost
 	- Fixed #987: Bug - Backup - iMSCP::Database::mysql::mysql::dumpdb: mysqldump: Couldn't find table...
 	- Fixed #989: Security Issue - Any user on a server can read others files
-
+	- Fixed #990: Security issue - Any user can obtain mysql root pasword
 ------------------------------------------------------------------------------------------------------------------------
 1.1.0-rc4.7
 ------------------------------------------------------------------------------------------------------------------------

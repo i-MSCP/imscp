@@ -164,153 +164,155 @@ sub restore
 	return 0 unless @bkpFiles;
 
 	for (@bkpFiles) {
-		if(/^(.+?)\.sql\.(bz2|gz|lzma|xz)$/) { # Restore SQL database
-			my $sql = "
-				SELECT
-					*
-				FROM
-					`sql_database`, `sql_user`
-				WHERE
-					`sql_database`.`domain_id` = ?
-				AND
-					`sql_user`.`sqld_id` = `sql_database`.`sqld_id`
-				AND
-					`sql_database`.`sqld_name` = ?
-			";
-			$rdata = iMSCP::Database->factory()->doQuery('sqld_name', $sql, $self->{'domain_id'}, $1);
-			unless(ref $rdata eq 'HASH') {
-				error($rdata);
-				return 1,
-			}
-
-			unless(exists $rdata->{$1}) {
-				$rdata = iMSCP::Database->factory()->doQuery(
-					'dummy',
-					"
-						INSERT INTO `log` (
-							`log_message`
-						) VALUES (
-							'
-								Unable to restore the <strong>$1</strong> SQL database of domain $self->{'domain_name'}:
-								Unknown database.
-							'
-						)
-					"
-				);
+		unless(-l "$dmnBkpdir/$_") { # Doesn't follow any symlink (See #990)
+			if(/^(.+?)\.sql\.(bz2|gz|lzma|xz)$/) { # Restore SQL database
+				my $sql = "
+					SELECT
+						*
+					FROM
+						`sql_database`, `sql_user`
+					WHERE
+						`sql_database`.`domain_id` = ?
+					AND
+						`sql_user`.`sqld_id` = `sql_database`.`sqld_id`
+					AND
+						`sql_database`.`sqld_name` = ?
+				";
+				$rdata = iMSCP::Database->factory()->doQuery('sqld_name', $sql, $self->{'domain_id'}, $1);
 				unless(ref $rdata eq 'HASH') {
 					error($rdata);
 					return 1,
 				}
 
-				warning("orphaned database found ($1). skipping...");
-				next;
-			}
+				unless(exists $rdata->{$1}) {
+					$rdata = iMSCP::Database->factory()->doQuery(
+						'dummy',
+						"
+							INSERT INTO `log` (
+								`log_message`
+							) VALUES (
+								'
+									Unable to restore the <strong>$1</strong> SQL database of domain $self->{'domain_name'}:
+									Unknown database.
+								'
+							)
+						"
+					);
+					unless(ref $rdata eq 'HASH') {
+						error($rdata);
+						return 1,
+					}
 
-			if(scalar keys %{$rdata}) {
-				my $dbuser = escapeShell($rdata->{$1}->{'sqlu_name'});
-				my $dbpass = escapeShell($rdata->{$1}->{'sqlu_pass'});
-				my $dbname = escapeShell($rdata->{$1}->{'sqld_name'});
-
-				if($2 eq 'bz2') {
-					$cmd = "$main::imscpConfig{'CMD_BZCAT'} -d ";
-				} elsif($2 eq 'gz') {
-					$cmd = "$main::imscpConfig{'CMD_GZCAT'} -d ";
-				} elsif($2 eq 'lzma') {
-					$cmd = "$main::imscpConfig{'CMD_LZMA'} -dc ";
-				} elsif($2 eq 'xz') {
-					$cmd = "$main::imscpConfig{'CMD_XZ'} -dc ";
+					warning("orphaned database found ($1). skipping...");
+					next;
 				}
 
-				$cmd .= "$dmnBkpdir/$_ | $main::imscpConfig{'CMD_MYSQL'} -u$dbuser -p$dbpass $dbname";
+				if(scalar keys %{$rdata}) {
+					my $dbuser = escapeShell($rdata->{$1}->{'sqlu_name'});
+					my $dbpass = escapeShell($rdata->{$1}->{'sqlu_pass'});
+					my $dbname = escapeShell($rdata->{$1}->{'sqld_name'});
 
+					if($2 eq 'bz2') {
+						$cmd = "$main::imscpConfig{'CMD_BZCAT'} -d ";
+					} elsif($2 eq 'gz') {
+						$cmd = "$main::imscpConfig{'CMD_GZCAT'} -d ";
+					} elsif($2 eq 'lzma') {
+						$cmd = "$main::imscpConfig{'CMD_LZMA'} -dc ";
+					} elsif($2 eq 'xz') {
+						$cmd = "$main::imscpConfig{'CMD_XZ'} -dc ";
+					}
+
+					$cmd .= "$dmnBkpdir/$_ | $main::imscpConfig{'CMD_MYSQL'} -u$dbuser -p$dbpass $dbname";
+
+					$rs = execute($cmd, \$stdout, \$stderr);
+					debug($stdout) if $stdout;
+					error($stderr) if $stderr && $rs;
+					return $rs if $rs;
+				}
+			} elsif(/^.+?\.tar\.(bz2|gz|lzma|xz)$/) { # Restore domain files
+				# Since we are now using extended attribute to protect some folders, we must in order do the following
+				# to restore a backup archive:
+				#
+				# - Update status of sub, als and alssub, entities linked to the parent domain to 'torestore'
+				# - Un-protect user home dir (clear immutable flag recursively)
+				# - restore the files
+				# - Run the restore() parent method
+				#
+				# The first and last tasks allow the i-MSCP Httpd server implementations to set correct permissions and
+				# set immutable flag on folders if needed for each entity
+				#
+				# Note: This is a bunch of works but this will be fixed when the backup feature will be rewritten
+
+				my $type = $1;
+
+				if($type eq 'bz2') {
+					$type = 'bzip2';
+				} elsif($type eq 'gz') {
+					$type = 'gzip';
+				}
+
+				# TODO: Should we also update status of htuser, htgroup and htaccess entities?
+				my $database = iMSCP::Database->factory();
+
+				# Update status of any sub to 'torestore'
+				$rdata = $database->doQuery(
+					'dummy',
+					"UPDATE `subdomain` SET `subdomain_status` = 'torestore' WHERE `domain_id` = ?",
+					$self->{'domain_id'}
+				);
+				unless(ref $rdata eq 'HASH') {
+					error($rdata);
+					return 1;
+				}
+
+				# Update status of any als to 'torestore'
+				$rdata = $database->doQuery(
+					'dummy',
+					"UPDATE `domain_aliasses` SET `alias_status` = 'torestore' WHERE `domain_id` = ?",
+					$self->{'domain_id'}
+				);
+				unless(ref $rdata eq 'HASH') {
+					error($rdata);
+					return 1;
+				}
+
+				# Update status of any alssub to 'torestore'
+				$rdata = $database->doQuery(
+					'dummy',
+					"
+						UPDATE
+							`subdomain_alias`
+						SET
+							`subdomain_alias_status` = 'torestore'
+						WHERE
+							`alias_id` IN (SELECT `alias_id` FROM `domain_aliasses` WHERE `domain_id` = ?)
+					",
+					$self->{'domain_id'}
+				);
+				unless(ref $rdata eq 'HASH') {
+					error($rdata);
+					return 1;
+				}
+
+				# Un-protect folders recursively
+				clearImmutable($dmnDir, 1);
+
+				$cmd = "$main::imscpConfig{'CMD_TAR'} -x -p --$type -C '$dmnDir' -f '$dmnBkpdir/$_'";
 				$rs = execute($cmd, \$stdout, \$stderr);
 				debug($stdout) if $stdout;
 				error($stderr) if $stderr && $rs;
 				return $rs if $rs;
+
+				my $groupName =
+				my $userName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} .
+					($main::imscpConfig{'SYSTEM_USER_MIN_UID'} + $self->{'domain_admin_id'});
+
+				$rs = setRights($dmnDir, { 'user' => $userName, 'group' => $groupName, 'recursive' => 1 });
+				return $rs if $rs;
+
+				$rs = $self->SUPER::restore();
+				return $rs if $rs;
 			}
-		} elsif(/^.+?\.tar\.(bz2|gz|lzma|xz)$/) { # Restore domain files
-			# Since we are now using extended attribute to protect some folders, we must in order do the following to
-			# restore a backup archive:
-			#
-			# - Update status of sub, als and alssub, entities linked to the parent domain to 'torestore'
-			# - Un-protect user home dir (clear immutable flag recursively)
-			# - restore the files
-			# - Run the restore() parent method
-			#
-			# The first and last tasks allow the i-MSCP Httpd server implementations to set correct permissions and set
-			# immutable flag on folders if needed for each entity
-			#
-			# Note: This is a bunch of works but this will be fixed when the backup feature will be rewritten
-
-			my $type = $1;
-
-			if($type eq 'bz2') {
-				$type = 'bzip2';
-			} elsif($type eq 'gz') {
-				$type = 'gzip';
-			}
-
-			# TODO: Should we also update status of htuser, htgroup and htaccess entities?
-			my $database = iMSCP::Database->factory();
-
-			# Update status of any sub to 'torestore'
-			$rdata = $database->doQuery(
-				'dummy',
-				"UPDATE `subdomain` SET `subdomain_status` = 'torestore' WHERE `domain_id` = ?",
-				$self->{'domain_id'}
-			);
-			unless(ref $rdata eq 'HASH') {
-				error($rdata);
-				return 1;
-			}
-
-			# Update status of any als to 'torestore'
-			$rdata = $database->doQuery(
-				'dummy',
-				"UPDATE `domain_aliasses` SET `alias_status` = 'torestore' WHERE `domain_id` = ?",
-				$self->{'domain_id'}
-			);
-			unless(ref $rdata eq 'HASH') {
-				error($rdata);
-				return 1;
-			}
-
-			# Update status of any alssub to 'torestore'
-			$rdata = $database->doQuery(
-				'dummy',
-				"
-					UPDATE
-						`subdomain_alias`
-					SET
-						`subdomain_alias_status` = 'torestore'
-					WHERE
-						`alias_id` IN (SELECT `alias_id` FROM `domain_aliasses` WHERE `domain_id` = ?)
-				",
-				$self->{'domain_id'}
-			);
-			unless(ref $rdata eq 'HASH') {
-				error($rdata);
-				return 1;
-			}
-
-			# Un-protect folders recursively
-			clearImmutable($dmnDir, 1);
-
-			$cmd = "$main::imscpConfig{'CMD_TAR'} -x -p --$type -C '$dmnDir' -f '$dmnBkpdir/$_'";
-			$rs = execute($cmd, \$stdout, \$stderr);
-			debug($stdout) if $stdout;
-			error($stderr) if $stderr && $rs;
-			return $rs if $rs;
-
-			my $groupName =
-			my $userName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} .
-				($main::imscpConfig{'SYSTEM_USER_MIN_UID'} + $self->{'domain_admin_id'});
-
-			$rs = setRights($dmnDir, { 'user' => $userName, 'group' => $groupName, 'recursive' => 1 });
-			return $rs if $rs;
-
-			$rs = $self->SUPER::restore();
-			return $rs if $rs;
 		}
 	}
 
