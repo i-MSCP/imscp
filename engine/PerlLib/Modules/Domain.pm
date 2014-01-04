@@ -181,7 +181,7 @@ sub restore
 				$rdata = iMSCP::Database->factory()->doQuery('sqld_name', $sql, $self->{'domain_id'}, $1);
 				unless(ref $rdata eq 'HASH') {
 					error($rdata);
-					return 1,
+					return 1;
 				}
 
 				unless(exists $rdata->{$1}) {
@@ -200,7 +200,7 @@ sub restore
 					);
 					unless(ref $rdata eq 'HASH') {
 						error($rdata);
-						return 1,
+						return 1;
 					}
 
 					warning("orphaned database found ($1). skipping...");
