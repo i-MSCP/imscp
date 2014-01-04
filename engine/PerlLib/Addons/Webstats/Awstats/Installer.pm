@@ -255,8 +255,7 @@ sub _createGlobalAwstatsVhost
 			AWSTATS_ENGINE_DIR => $main::imscpConfig{'AWSTATS_ENGINE_DIR'},
 			AWSTATS_WEB_DIR => $main::imscpConfig{'AWSTATS_WEB_DIR'},
 			WEBSTATS_RPATH => $main::imscpConfig{'WEBSTATS_RPATH'},
-			AUTHZ_ALLOW_ALL => $apache24 ? 'Require all granted' : "Order allow,deny\n    Allow from all",
-			AUTHZ_DENY_ALL => $apache24 ? 'Require all denied' : "Order deny,allow\n    Deny from all"
+			AUTHZ_ALLOW_ALL => $apache24 ? 'Require all granted' : "Order allow,deny\n    Allow from all"
 		}
 	);
 

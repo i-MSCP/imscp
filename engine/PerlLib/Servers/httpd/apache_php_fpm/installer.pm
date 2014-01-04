@@ -803,13 +803,17 @@ sub _buildApacheConfFiles
 		$pipeSyntax .= '|';
 	}
 
+	my $apache24 = (version->new("v$self->{'httpd'}->{'config'}->{'APACHE_VERSION'}") >= version->new('v2.4.0'));
+
 	# Set needed data
 	$self->{'httpd'}->setData(
 		{
 			BASE_SERVER_VHOST_PREFIX => $main::imscpConfig{'BASE_SERVER_VHOST_PREFIX'},
 			BASE_SERVER_VHOST => $main::imscpConfig{'BASE_SERVER_VHOST'},
 			ROOT_DIR => $main::imscpConfig{'ROOT_DIR'},
-			PIPE => $pipeSyntax
+			APACHE_ROOT_DIR => $self->{'httpd'}->{'config'}->{'APACHE_ROOT_DIR'},
+			PIPE => $pipeSyntax,
+			AUTHZ_DENY_ALL => $apache24 ? 'Require all denied' : "Order deny,allow\n    Deny from all"
 		}
 	);
 

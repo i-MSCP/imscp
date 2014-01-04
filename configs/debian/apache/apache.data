@@ -16,6 +16,8 @@ APACHE_CONF_DIR = /etc/apache2
 
 APACHE_LOG_DIR = /var/log/apache2
 
+APACHE_ROOT_DIR = /var/www
+
 APACHE_BACKUP_LOG_DIR = /var/log/apache2/backup
 
 APACHE_USERS_LOG_DIR = /var/log/apache2/users

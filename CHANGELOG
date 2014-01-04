@@ -61,6 +61,7 @@ Tickets:
 	- Fixed #980: Bug - PHP-Editor - Values not saved while adding new customer
 	- Fixed #982: Defect - No access to /var/www from localhost
 	- Fixed #987: Bug - Backup - iMSCP::Database::mysql::mysql::dumpdb: mysqldump: Couldn't find table...
+	- Fixed #989: Security Issue - Any user on a server can read others files
 
 ------------------------------------------------------------------------------------------------------------------------
 1.1.0-rc4.7
