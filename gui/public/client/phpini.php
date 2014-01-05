@@ -75,7 +75,7 @@ if (!empty($_POST)) { // Post request
 				foreach (
 					array(
 						'show_source', 'system', 'shell_exec', 'shell_exec', 'passthru', 'exec', 'phpinfo', 'shell',
-						'symlink'
+						'symlink', 'proc_open', 'popen'
 					) as $function
 				) {
 					if (isset($_POST[$function])) { // we are safe here
@@ -205,7 +205,9 @@ if (PHP_SAPI ==  'apache2handler' || $phpini->getClPermVal('phpiniDisableFunctio
 	$tplVars['DISABLE_FUNCTIONS_BLOCK'] = '';
 } else {
 	$disableFunctions = explode(',', $phpini->getDataVal('phpiniDisableFunctions'));
-	$disableFunctionsAll = array('SHOW_SOURCE', 'SYSTEM', 'SHELL_EXEC', 'PASSTHRU', 'EXEC', 'PHPINFO', 'SHELL', 'SYMLINK');
+	$disableFunctionsAll = array(
+		'SHOW_SOURCE', 'SYSTEM', 'SHELL_EXEC', 'PASSTHRU', 'EXEC', 'PHPINFO', 'SHELL', 'SYMLINK', 'PROC_OPEN', 'POPEN'
+	);
 
 	foreach ($disableFunctionsAll as $function) {
 		$tplVars[$function] = in_array(strtolower($function), $disableFunctions) ? $htmlChecked : '';

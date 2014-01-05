@@ -35,6 +35,7 @@ ENGINE:
 	- Replaced: iMSCP::IP library by IMSCP::Net library (full rewrite using iproute tools instead of net-tools)
 
 GUI:
+	- Added: proc_open and popen in PHP editor
 	- Added: quoteValue() function, which allow to quote string for use in SQL statements
 	- Removed: IP domain name and IP alias name
 	- Removed: Useless ip_ssl_domain_id field form server_ips database table

@@ -99,7 +99,8 @@ if (isset($_POST['uaction']) && $_POST['uaction'] == 'apply') {
 
 		foreach (
 			array(
-				'show_source', 'system', 'shell_exec', 'shell_exec', 'passthru', 'exec',  'phpinfo', 'shell', 'symlink'
+				'show_source', 'system', 'shell_exec', 'shell_exec', 'passthru', 'exec',  'phpinfo', 'shell', 'symlink',
+				'proc_open', 'popen'
 			) as $function
 		) {
 			if (isset($_POST[$function])) { // we are safe here
@@ -571,7 +572,9 @@ $htmlChecked = $cfg->HTML_CHECKED;
 
 if (PHP_SAPI != 'apache2handler') {
 	$disabledFunctions = explode(',', $phpini->getDataVal('phpiniDisableFunctions'));
-	$disabledFunctionsAll = array('SHOW_SOURCE', 'SYSTEM', 'SHELL_EXEC', 'PASSTHRU', 'EXEC', 'PHPINFO', 'SHELL', 'SYMLINK');
+	$disabledFunctionsAll = array(
+		'SHOW_SOURCE', 'SYSTEM', 'SHELL_EXEC', 'PASSTHRU', 'EXEC', 'PHPINFO', 'SHELL', 'SYMLINK', 'PROC_OPEN', 'POPEN',
+	);
 
 	foreach ($disabledFunctionsAll as $function) {
 		$tpl->assign($function, in_array(strtolower($function), $disabledFunctions) ? $htmlChecked : '');

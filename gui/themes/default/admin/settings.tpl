@@ -272,6 +272,10 @@
 				<label for="shell">shell</label>
 				<input name="symlink" id="symlink" type="checkbox" {SYMLINK} value="symlink"/>
 				<label for="symlink">symlink</label>
+				<input name="proc_open" id="proc_open" type="checkbox"{PROC_OPEN} value="proc_open"/>
+				<label for="proc_open">proc_open</label>
+				<input name="popen" id="popen" type="checkbox"{POPEN} value="popen"/>
+				<label for="popen">popen</label>
 			</div>
 		</div>
 	</div>

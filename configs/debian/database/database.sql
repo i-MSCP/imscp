@@ -94,7 +94,7 @@ INSERT IGNORE INTO `config` (`name`, `value`) VALUES
 ('PHPINI_MAX_INPUT_TIME', '60'),
 ('PHPINI_MAX_EXECUTION_TIME', '30'),
 ('PHPINI_ERROR_REPORTING', '30711'),
-('PHPINI_DISABLE_FUNCTIONS', 'show_source,system,shell_exec,passthru,exec,phpinfo,shell,symlink');
+('PHPINI_DISABLE_FUNCTIONS', 'show_source,system,shell_exec,passthru,exec,phpinfo,shell,symlink,proc_open,popen');
 
 -- --------------------------------------------------------
 

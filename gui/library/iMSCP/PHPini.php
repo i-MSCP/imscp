@@ -831,7 +831,8 @@ class iMSCP_PHPini
 	protected function _checkDisableFunctionsSyntax($disabledFunctions)
 	{
 		$defaultDisabledFunctions = array(
-			'show_source', 'system', 'shell_exec', 'passthru', 'exec', 'shell', 'symlink', 'phpinfo'
+			'show_source', 'system', 'shell_exec', 'passthru', 'exec', 'shell', 'symlink', 'phpinfo', 'proc_open',
+			'popen'
 		);
 
 		if (!empty($disabledFunctions)) {
