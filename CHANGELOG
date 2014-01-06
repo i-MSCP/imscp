@@ -11,6 +11,9 @@ ADDONS:
 	- Fixed: Roundcube|PhpMyAdmin installers - Ensure that database tables exist (recovery case)
 	- Fixed: PhpMyAdmin 4.1.0 is only compatible with MySQL Server version 5.5 and newer
 
+CONFIG:
+	- Changed: Tools access is now provider only through the panel domain
+	- Removed: Useless wget-hack prevention which doesn't prevent nothing in reality
 DISTRO
 	- Added: Packages file for Ubuntu Saucy Slamander
 	- Added: Packages file for Ubuntu Trusty Tahr (experimental)
@@ -24,6 +27,7 @@ ENGINE:
 	- Changed: IP source for outbound mails is now set to the base server IP (Postfix - Temporary fix)
 	- Changed: Inet protocol is now set according the base server IP type (Postfix - Temporary fix)
 	- Fixed: External command died with signal 9 (without core dump)
+	- Fixed: iMSCP::Rights - Any target referenced by a symlink must not be affected by owner/group modification
 	- Fixed: Keep current unix user uid/gid when updating the SYSTEM_USER_PREFIX and SYSTEM_USER_MIN_UID parameters
 	- Fixed: Pass-in domain data to the listeners which listen to the *HttpdBuildConfFile and *HttpdBuildConf events
 	- Fixed: Proftpd server is down after update
@@ -63,7 +67,8 @@ Tickets:
 	- Fixed #982: Defect - No access to /var/www from localhost
 	- Fixed #987: Bug - Backup - iMSCP::Database::mysql::mysql::dumpdb: mysqldump: Couldn't find table...
 	- Fixed #989: Security Issue - Any user on a server can read others files
-	- Fixed #990: Security issue - Any user can obtain mysql root pasword
+	- Fixed #990: Security issue - Any user can obtain mysql root password
+
 ------------------------------------------------------------------------------------------------------------------------
 1.1.0-rc4.7
 ------------------------------------------------------------------------------------------------------------------------
