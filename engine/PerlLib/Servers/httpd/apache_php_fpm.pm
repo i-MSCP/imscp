@@ -1771,11 +1771,13 @@ sub _addCfg($$)
 		}
 	}
 
+	my $apache24 = (version->new("v$self->{'config'}->{'APACHE_VERSION'}") >= version->new('v2.4.0'));
+
 	$self->setData(
 		{
 			APACHE_CUSTOM_SITES_CONFIG_DIR => $self->{'config'}->{'APACHE_CUSTOM_SITES_CONFIG_DIR'},
-			AUTHZ_ALLOW_ALL => (version->new("v$self->{'config'}->{'APACHE_VERSION'}") >= version->new('v2.4.0'))
-				? 'Require all granted' : 'Allow from all'
+			AUTHZ_ALLOW_ALL => $apache24 ? 'Require all granted' : 'Allow from all',
+			AUTHZ_DENY_ALL => $apache24 ? 'Require all denied' : 'Deny from all'
 		}
 	);
 
