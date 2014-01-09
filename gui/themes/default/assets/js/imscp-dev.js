@@ -142,7 +142,7 @@ function sprintf() {
  * @return false
  */
 function chooseFtpDir() {
-		var dialog1 = $('<div id="dial_ftp_dir" style="overflow: hidden;"/>').append($('<iframe scrolling="auto" height="100%" style="overflow: hidden;"/>').
+		var dialog1 = $('<div id="dial_ftp_dir" style="overflow: hidden;"/>').append($('<iframe scrolling="auto" height="100%"/>').
 			attr("src", "ftp_choose_dir.php")).dialog(
 			{
 				hide: 'blind',
