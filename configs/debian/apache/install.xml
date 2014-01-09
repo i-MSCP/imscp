@@ -13,7 +13,6 @@
     <copy_config>${SYSTEM_CONF}/apache/00_master_ssl.conf</copy_config>
     <copy_config>${SYSTEM_CONF}/apache/00_nameserver.conf</copy_config>
     <copy_config>${SYSTEM_CONF}/apache/apache.data</copy_config>
-    <copy_config>${SYSTEM_CONF}/apache/fastcgi_imscp.conf</copy_config>
     <copy_config>${SYSTEM_CONF}/apache/fcgid_imscp.conf</copy_config>
     <copy_config>${SYSTEM_CONF}/apache/logrotate.conf</copy_config>
 </install>

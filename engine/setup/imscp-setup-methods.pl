@@ -2013,7 +2013,7 @@ sub setupPreInstallServers
 
 		if($server->can('preinstall')) {
 			$rs = step(
-				sub { $server->preinstall }, sprintf("Running %s preinstall tasks...", ref $server), $nbServers, $step
+				sub { $server->preinstall() }, sprintf("Running %s preinstall tasks...", ref $server), $nbServers, $step
 			);
 			last if $rs;
 		}
@@ -2049,7 +2049,7 @@ sub setupPreInstallAddons
 
 		if($addon->can('preinstall')) {
 			$rs = step(
-				sub { $addon->preinstall }, sprintf("Running %s addon preinstall tasks...", ref $addon), $nbAddons, $step
+				sub { $addon->preinstall() }, sprintf("Running %s addon preinstall tasks...", ref $addon), $nbAddons, $step
 			);
 			last if $rs;
 		}
@@ -2085,7 +2085,7 @@ sub setupInstallServers
 
 		if($server->can('install')) {
 			$rs = step(
-				sub { $server->install }, sprintf("Running %s install tasks...", ref $server), $nbServers, $step
+				sub { $server->install() }, sprintf("Running %s install tasks...", ref $server), $nbServers, $step
 			);
 			last if $rs;
 		}
@@ -2121,7 +2121,7 @@ sub setupInstallAddons
 
 		if($addon->can('install')) {
 			$rs = step(
-				sub { $addon->install }, sprintf("Running %s addon install tasks...", ref $addon), $nbAddons, $step
+				sub { $addon->install() }, sprintf("Running %s addon install tasks...", ref $addon), $nbAddons, $step
 			);
 			last if $rs;
 		}
@@ -2157,7 +2157,7 @@ sub setupPostInstallServers
 
 		if($server->can('postinstall')) {
 			$rs = step(
-				sub { $server->postinstall }, sprintf("Running %s postinstall tasks...", ref $server), scalar @servers,
+				sub { $server->postinstall() }, sprintf("Running %s postinstall tasks...", ref $server), scalar @servers,
 				$step
 			);
 			last if $rs;
@@ -2194,7 +2194,7 @@ sub setupPostInstallAddons
 
 		if($addon->can('postinstall')) {
 			$rs = step(
-				sub { $addon->postinstall }, sprintf("Running %s addon postinstall tasks...", ref $addon), $nbAddons,
+				sub { $addon->postinstall() }, sprintf("Running %s addon postinstall tasks...", ref $addon), $nbAddons,
 				$step
 			);
 			last if $rs;

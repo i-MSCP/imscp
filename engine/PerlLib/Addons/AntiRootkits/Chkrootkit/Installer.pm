@@ -42,7 +42,7 @@ use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
 
- Chkrootkit addon installer.
+ Chkrootkit addon installer
 
 =head1 PUBLIC METHODS
 
@@ -50,7 +50,7 @@ use parent 'Common::SingletonClass';
 
 =item preinstall()
 
- Process preinstall tasks.
+ Process preinstall tasks
 
  Return int 0 on success, other on failure
 
@@ -65,7 +65,7 @@ sub preinstall
 
 =item install()
 
- Process install tasks.
+ Process install tasks
 
  Return int 0 on success, other on failure
 
@@ -111,7 +111,7 @@ sub _disableDebianConfig
 
 =item _addCronTask()
 
- Add cron task.
+ Add cron task
 
  Return int 0 on success, 1 on failure
 

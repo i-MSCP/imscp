@@ -41,7 +41,7 @@ use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
 
- Webstats addon for i-MSCP.
+ Webstats addon for i-MSCP
 
  i-MSCP Webstats addon. This is a wrapper that handle all available Webstats addons found in the Webstats directory.
 
@@ -51,7 +51,7 @@ use parent 'Common::SingletonClass';
 
 =item registerSetupHooks(\%hooksManager)
 
- Register setup hook functions.
+ Register setup hook functions
 
  Param iMSCP::HooksManager instance
  Return int 0 on success, 1 on failure
@@ -69,7 +69,7 @@ sub registerSetupHooks($$)
 
 =item showDialog(\%dialog)
 
- Show dialog.
+ Show dialog
 
  Param iMSCP::Dialog::Dialog|iMSCP::Dialog::Whiptail $dialog
  Return int 0 or 30
@@ -118,7 +118,7 @@ sub showDialog($$)
 
 =item preinstall()
 
- Process preinstall tasks.
+ Process preinstall tasks
 
  Note: This method also trigger uninstallation of unselected Webstats addons.
 
@@ -187,7 +187,7 @@ sub preinstall
 
 =item install()
 
- Process install tasks.
+ Process install tasks
 
  Return int 0 on success, other on failure
 
@@ -218,7 +218,7 @@ sub install
 
 =item uninstall()
 
- Process uninstall tasks.
+ Process uninstall tasks
 
  Return int 0 on success, other on failure
 
@@ -258,7 +258,7 @@ sub uninstall
 
 =item setEnginePermissions()
 
- Set file permissions.
+ Set file permissions
 
  Return int 0 on success, other on failure
 
@@ -291,7 +291,7 @@ sub setEnginePermissions
 
 =item preaddDmn(\%data)
 
- Process preAddDmn tasks.
+ Process preAddDmn tasks
 
  Param hash_ref $data A reference to a hash containing domain data
  Return int 0 on success, other on failure
@@ -327,7 +327,7 @@ sub preaddDmn($$)
 
 =item addDmn(\%data)
 
- Process addDmn tasks.
+ Process addDmn tasks
 
  Return int 0 on success, other on failure
 
@@ -362,7 +362,7 @@ sub addDmn($$)
 
 =item deleteDmn(\%data)
 
- Process deleteDmn tasks.
+ Process deleteDmn tasks
 
  Return int 0 on success, other on failure
 
@@ -397,7 +397,7 @@ sub deleteDmn($$)
 
 =item preaddSub(\%data)
 
- Process preaddSub tasks.
+ Process preaddSub tasks
 
  Return int 0 on success, other on failure
 
@@ -412,7 +412,7 @@ sub preaddSub($$)
 
 =item addSub(\%data)
 
- Process addSub tasks.
+ Process addSub tasks
 
  Return int 0 on success, other on failure
 
@@ -427,7 +427,7 @@ sub addSub($$)
 
 =item deleteSub(\%data)
 
- Process deleteSub tasks.
+ Process deleteSub tasks
 
  Return int 0 on success, other on failure
 
@@ -448,7 +448,7 @@ sub deleteSub($$)
 
 =item init()
 
- Called by getInstance(). Initialize instance.
+ Initialize instance
 
  Return Addons::Webstats
 
@@ -468,7 +468,7 @@ sub _init()
 
 =item _installPackages(\@packages)
 
- Install packages.
+ Install packages
 
  Param array_ref $packages List of packages to install
  Return int 0 on success, other on failure
@@ -500,7 +500,7 @@ sub _installPackages($$)
 
 =item _removePackages(\@packages)
 
- Remove packages.
+ Remove packages
 
  Param array_ref $packages List of packages to remove
  Return int 0 on success, other on failure

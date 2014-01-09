@@ -38,7 +38,7 @@ use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
 
- i-MSCP Chkrootkit addon.
+ i-MSCP Chkrootkit addon
 
  The chkrootkit security scanner searches the local system for signs that it is infected with a 'rootkit'. Rootkits are
 set of programs and hacks designed to take control of a target machine by using known security flaws.
@@ -49,7 +49,7 @@ set of programs and hacks designed to take control of a target machine by using 
 
 =item preinstall()
 
- Process preinstall tasks.
+ Process preinstall tasks
 
  Return int 0 on success, other on failure
 
@@ -58,12 +58,12 @@ set of programs and hacks designed to take control of a target machine by using 
 sub preinstall
 {
 	require Addons::AntiRootkits::Chkrootkit::Installer;
-	Addons::AntiRootkits::Chkrootkit::Installer->preinstall();
+	Addons::AntiRootkits::Chkrootkit::Installer->getInstance()->preinstall();
 }
 
 =item install()
 
- Process install tasks.
+ Process install tasks
 
  Return int 0 on success, other on failure
 
@@ -72,12 +72,12 @@ sub preinstall
 sub install
 {
 	require Addons::AntiRootkits::Chkrootkit::Installer;
-	Addons::AntiRootkits::Chkrootkit::Installer->install();
+	Addons::AntiRootkits::Chkrootkit::Installer->getInstance()->install();
 }
 
 =item uninstall()
 
- Process uninstall tasks.
+ Process uninstall tasks
 
  Return int 0 on success, other on failure
 
@@ -86,7 +86,7 @@ sub install
 sub uninstall
 {
 	require Addons::AntiRootkits::Chkrootkit::Uninstaller;
-	Addons::AntiRootkits::Chkrootkit::Uninstaller->uninstall();
+	Addons::AntiRootkits::Chkrootkit::Uninstaller->getInstance()->uninstall();
 }
 
 =item getPackages()

@@ -43,7 +43,7 @@ use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
 
- Rkhunter addon installer.
+ Rkhunter addon installer
 
 =head1 PUBLIC METHODS
 
@@ -51,7 +51,7 @@ use parent 'Common::SingletonClass';
 
 =item preinstall()
 
- Process preinstall tasks.
+ Process preinstall tasks
 
  Return int 0 on success, other on failure
 
@@ -66,7 +66,7 @@ sub preinstall
 
 =item install()
 
- Process install tasks.
+ Process install tasks
 
  Return int 0 on success, other on failure
 
@@ -84,7 +84,7 @@ sub install
 
 =item setEnginePermissions()
 
- Set file permissions.
+ Set file permissions
 
  Return int 0 on success, other on failure
 
@@ -183,7 +183,7 @@ sub _disableDebianConfig
 
 =item _addCronTask()
 
- Add cron task.
+ Add cron task
 
  Return int 0 on success, 1 on failure
 

@@ -45,7 +45,7 @@ our $VERSION = '0.3.0';
 
 =head1 DESCRIPTION
 
- This is the installer for the i-MSCP Roundcube addon.
+ This is the installer for the i-MSCP Roundcube addon
 
  See Addons::Roundcube for more information.
 
@@ -55,7 +55,7 @@ our $VERSION = '0.3.0';
 
 =item registerSetupHooks(\%hooksManager)
 
- Register Roundcube setup hook functions.
+ Register Roundcube setup hook functions
 
  Param iMSCP::HooksManager instance
  Return int 0 on success, other on failure
@@ -73,7 +73,7 @@ sub registerSetupHooks($$)
 
 =item showDialog(\%dialog)
 
- Show Roundcube installer questions.
+ Show Roundcube installer questions
 
  Param iMSCP::Dialog::Dialog|iMSCP::Dialog::Whiptail $dialog
  Return int 0 or 30
@@ -141,7 +141,7 @@ sub showDialog($$)
 
 =item preinstall()
 
- Register Roundcube addon package for installation.
+ Register Roundcube addon package for installation
 
  Return int 0
 
@@ -154,7 +154,7 @@ sub preinstall
 
 =item install()
 
- Process Roundcube addon install tasks.
+ Process Roundcube addon install tasks
 
  Return int 0 on success, other on failure
 
@@ -206,7 +206,7 @@ sub install
 
 =item setGuiPermissions()
 
- Set Roundcube files permissions.
+ Set Roundcube files permissions
 
  Return int 0 on success, other on failure
 
@@ -241,7 +241,7 @@ sub setGuiPermissions
 
 =item _init()
 
- Called by getInstance(). Initialize Roundcube addon installer instance.
+ Initialize instance
 
  Return Addons::Roundcube::Installer
 
@@ -277,7 +277,7 @@ sub _init
 
 =item _backupConfigFile($cfgFile)
 
- Backup the given Roundcube configuration file.
+ Backup the given Roundcube configuration file
 
  Param string $cfgFile Path of file to backup
  Return int 0, other on failure
@@ -301,7 +301,7 @@ sub _backupConfigFile($$)
 
 =item _installFiles()
 
- Install Roundcube files in production directory.
+ Install Roundcube files in production directory
 
  Return int 0 on success, other on failure
 
@@ -342,7 +342,7 @@ sub _installFiles
 
 =item _setupDatabase()
 
- Setup Roundcube database.
+ Setup Roundcube database
 
  Return int 0 on success, other on failure
 
@@ -452,7 +452,7 @@ sub _setupDatabase
 
 =item _generateDESKey()
 
- Generate DES key for Roundcube.
+ Generate DES key for Roundcube
 
  Return int 0
 
@@ -474,7 +474,7 @@ sub _generateDESKey
 
 =item _buildConfig()
 
- Process Roundcube addon install tasks.
+ Process Roundcube addon install tasks
 
  Return int 0 on success, other on failure
 
@@ -641,7 +641,7 @@ sub _updateDatabase
 
 =item _setVersion()
 
- Set Roundcube version.
+ Set Roundcube version
 
  Return int 0 on success, 1 on failure
 
@@ -672,7 +672,7 @@ sub _setVersion
 
 =item _saveConfig()
 
- Save Roundcube configuration.
+ Save Roundcube configuration
 
  Return int 0 on success, other on failure
 

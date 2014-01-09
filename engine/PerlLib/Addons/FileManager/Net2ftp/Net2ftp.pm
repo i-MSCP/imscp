@@ -39,9 +39,9 @@ use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
 
- i-MSCP  addon.
+ i-MSCP Net2ftp addon
 
-  is a web-based FTP client written in PHP.
+ Net2ftp is a web-based FTP client written in PHP.
 
  Project homepage: http://www..com/
 
@@ -51,7 +51,7 @@ use parent 'Common::SingletonClass';
 
 =item preinstall()
 
- Process preinstall tasks.
+ Process preinstall tasks
 
  Return int 0 on success, other on failure
 
@@ -60,12 +60,12 @@ use parent 'Common::SingletonClass';
 sub preinstall
 {
 	require Addons::FileManager::Net2ftp::Installer;
-	Addons::FileManager::Net2ftp::Installer->preinstall();
+	Addons::FileManager::Net2ftp::Installer->getInstance()->preinstall();
 }
 
 =item install()
 
- Process install tasks.
+ Process install tasks
 
  Return int 0 on success, 1 on failure
 
@@ -74,12 +74,12 @@ sub preinstall
 sub install
 {
 	require Addons::FileManager::Net2ftp::Installer;
-	Addons::FileManager::Net2ftp::Installer->install();
+	Addons::FileManager::Net2ftp::Installer->getInstance()->install();
 }
 
 =item setGuiPermissions()
 
- Set file permissions.
+ Set file permissions
 
  Return int 0 on success, other on failure
 
@@ -88,7 +88,7 @@ sub install
 sub setGuiPermissions
 {
 	require Addons::FileManager::Net2ftp::Installer;
-	Addons::FileManager::Net2ftp::Installer->setGuiPermissions();
+	Addons::FileManager::Net2ftp::Installer->getInstance()->setGuiPermissions();
 }
 
 =back

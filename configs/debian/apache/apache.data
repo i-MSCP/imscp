@@ -1,9 +1,5 @@
 APACHE_VERSION =
 
-PHP_FASTCGI =
-
-PHP_VERSION = 5
-
 ITK_PHP5_PATH = /etc/php5/apache2/php.ini
 
 CMD_A2ENSITE = /usr/sbin/a2ensite

@@ -40,7 +40,7 @@ use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
 
- i-MSCP Net2ftp addon installer.
+ i-MSCP Net2ftp addon installer
 
 =head1 PUBLIC METHODS
 
@@ -71,12 +71,12 @@ sub install
 {
 	my $self = shift;
 
-	$self->_installFiles(); # Install AjaXplorer files from local addon packages repository
+	$self->_installFiles();
 }
 
 =item setGuiPermissions()
 
- Set file permissions.
+ Set file permissions
 
  Return int 0 on success, other on failure
 
@@ -104,7 +104,7 @@ sub setGuiPermissions
 
 =item _installFiles()
 
- Install Net2ftp files in production directory.
+ Install Net2ftp files in production directory
 
  Return int 0 on success, other on failure
 

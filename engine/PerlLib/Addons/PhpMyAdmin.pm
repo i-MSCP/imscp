@@ -38,7 +38,7 @@ use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
 
- PhpMyAdmin addon for i-MSCP.
+ PhpMyAdmin addon for i-MSCP
 
  PhpMyAdmin allows administering of MySQL with a web interface.
 
@@ -72,7 +72,7 @@ use parent 'Common::SingletonClass';
 
 =item registerSetupHooks(\%hooksManager)
 
- Register setup hook functions.
+ Register setup hook functions
 
  Param iMSCP::HooksManager instance
  Return int 0 on success, 1 on failure
@@ -89,7 +89,7 @@ sub registerSetupHooks($$)
 
 =item preinstall()
 
- Process preinstall tasks.
+ Process preinstall tasks
 
 =cut
 
@@ -101,7 +101,7 @@ sub preinstall
 
 =item install()
 
- Process install tasks.
+ Process install tasks
 
  Return int 0 on success, 1 on failure
 
@@ -115,7 +115,7 @@ sub install
 
 =item uninstall()
 
- Process uninstall tasks.
+ Process uninstall tasks
 
  Return int 0 on success, other on failure
 
@@ -129,7 +129,7 @@ sub uninstall
 
 =item setGuiPermissions()
 
- Set file permissions.
+ Set file permissions
 
  Return int 0 on success, other on failure
 
@@ -149,7 +149,7 @@ sub setGuiPermissions
 
 =item _init()
 
- Called by getInstance(). Initialize instance.
+ Initialize instance
 
  Return Addons::PhpMyAdmin
 

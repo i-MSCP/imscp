@@ -2,7 +2,7 @@
 
 =head1 NAME
 
- Servers::httpd::apache_php_fpm::uninstaller - i-MSCP Apache PHP-FPM Server uninstaller
+ Servers::httpd::apache_php_fpm::uninstaller - i-MSCP Apache2/PHP-FPM Server uninstaller
 
 =cut
 
@@ -46,7 +46,7 @@ use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
 
- i-MSCP Apache PHP FPM Server uninstaller.
+ i-MSCP Apache2/PHP-FPM Server uninstaller
 
 =head1 PUBLIC METHODS
 

@@ -40,7 +40,7 @@ use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
 
- This is the Policyd Weight configurator addon for i-MSCP.
+ This is the Policyd Weight configurator addon for i-MSCP
 
  Perl policy daemon for the Postfix MTA Its intended to eliminate forged envelope senders and HELOs
 (i.e. in bogus mails). It allows you to score DNSBLs (RBL/RHSBL), HELO, MAIL FROM and client IP addresses
@@ -55,7 +55,7 @@ improved blocking of spam and virus mails. policyd-weight caches the most freque
 
 =item registerSetupHooks(\%hooksManager)
 
- Register setup hook functions.
+ Register setup hook functions
 
  Param iMSCP::HooksManager instance
  Return int 0 on success, 1 on failure
@@ -72,7 +72,7 @@ sub registerSetupHooks($$)
 
 =item install()
 
- Process install tasks.
+ Process install tasks
 
  Return int 0 on success, 1 on failure
 
@@ -92,7 +92,7 @@ sub install
 
 =item _init()
 
- Called by getInstance(). Initialize instance.
+ Initialize instance
 
  Return Addons::Policyd
 

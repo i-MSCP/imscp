@@ -205,7 +205,6 @@ sub buildHTTPDData
 		MOUNT_POINT => $self->{'subdomain_mount'},
 		PEAR_DIR => $main::imscpConfig{'PEAR_DIR'},
 		PHP_TIMEZONE => $main::imscpConfig{'PHP_TIMEZONE'},
-		PHP_VERSION => $main::imscpConfig{'PHP_VERSION'},
 		BASE_SERVER_VHOST_PREFIX => $main::imscpConfig{'BASE_SERVER_VHOST_PREFIX'},
 		BASE_SERVER_VHOST => $main::imscpConfig{'BASE_SERVER_VHOST'},
 		USER => $userName,

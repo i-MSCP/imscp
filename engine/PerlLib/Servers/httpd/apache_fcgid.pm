@@ -2,7 +2,7 @@
 
 =head1 NAME
 
- Servers::httpd::apache_fcgi - i-MSCP Apache FCGI Server implementation
+ Servers::httpd::apache_fcgid - i-MSCP Apache2/FastCGI Server implementation
 
 =cut
 
@@ -30,7 +30,7 @@
 # @link        http://i-mscp.net i-MSCP Home Site
 # @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
-package Servers::httpd::apache_fcgi;
+package Servers::httpd::apache_fcgid;
 
 use strict;
 use warnings;
@@ -51,7 +51,7 @@ use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
 
- i-MSCP Apache FCGI (Fcgid/FastCGI) Server implementation.
+ i-MSCP Apache2/FastCGI Server implementation
 
 =head1 PUBLIC METHODS
 
@@ -70,8 +70,8 @@ sub registerSetupHooks($$)
 {
 	my (undef, $hooksManager) = @_;
 
-	require Servers::httpd::apache_fcgi::installer;
-	Servers::httpd::apache_fcgi::installer->getInstance()->registerSetupHooks($hooksManager);
+	require Servers::httpd::apache_fcgid::installer;
+	Servers::httpd::apache_fcgid::installer->getInstance()->registerSetupHooks($hooksManager);
 }
 
 =item preinstall()
@@ -105,8 +105,8 @@ sub preinstall
 
 sub install
 {
-	require Servers::httpd::apache_fcgi::installer;
-	Servers::httpd::apache_fcgi::installer->getInstance()->install();
+	require Servers::httpd::apache_fcgid::installer;
+	Servers::httpd::apache_fcgid::installer->getInstance()->install();
 }
 
 =item postinstall()
@@ -121,12 +121,12 @@ sub postinstall
 {
 	my $self = shift;
 
-	my $rs = $self->{'hooksManager'}->trigger('beforeHttpdPostInstall', 'apache_fcgi');
+	my $rs = $self->{'hooksManager'}->trigger('beforeHttpdPostInstall', 'apache_fcgid');
 	return $rs if $rs;
 
 	$self->{'start'} = 'yes';
 
-	$self->{'hooksManager'}->trigger('afterHttpdPostInstall', 'apache_fcgi');
+	$self->{'hooksManager'}->trigger('afterHttpdPostInstall', 'apache_fcgid');
 }
 
 =item uninstall()
@@ -144,14 +144,14 @@ sub uninstall
 	my $rs = $self->stop();
 	return $rs if $rs;
 
-	$rs = $self->{'hooksManager'}->trigger('beforeHttpdUninstall', 'apache_fcgi');
+	$rs = $self->{'hooksManager'}->trigger('beforeHttpdUninstall', 'apache_fcgid');
 	return $rs if $rs;
 
-	require Servers::httpd::apache_fcgi::uninstaller;
-	$rs = Servers::httpd::apache_fcgi::uninstaller->getInstance()->uninstall();
+	require Servers::httpd::apache_fcgid::uninstaller;
+	$rs = Servers::httpd::apache_fcgid::uninstaller->getInstance()->uninstall();
 	return $rs if $rs;
 
-	$rs = $self->{'hooksManager'}->trigger('afterHttpdUninstall', 'apache_fcgi');
+	$rs = $self->{'hooksManager'}->trigger('afterHttpdUninstall', 'apache_fcgid');
 	return $rs if $rs;
 
 	$self->start();
@@ -169,8 +169,6 @@ sub uninstall
 sub addUser($$)
 {
 	my ($self, $data) = @_;
-
-	fatal('Hash reference expected') if ref $data ne 'HASH';
 
 	my $rs = $self->{'hooksManager'}->trigger('beforeHttpdAddUser', $data);
 	return $rs if $rs;
@@ -201,8 +199,6 @@ sub deleteUser($$)
 {
 	my ($self, $data) = @_;
 
-	fatal('Hash reference expected') if ref $data ne 'HASH';
-
 	my $rs = $self->{'hooksManager'}->trigger('beforeHttpdDelUser', $data);
 	return $rs if $rs;
 
@@ -227,8 +223,6 @@ sub deleteUser($$)
 sub addDmn($$)
 {
 	my ($self, $data) = @_;
-
-	fatal('Hash reference expected') if ref $data ne 'HASH';
 
 	my $rs = $self->{'hooksManager'}->trigger('beforeHttpdAddDmn', $data);
 	return $rs if $rs;
@@ -261,8 +255,6 @@ sub restoreDmn($$)
 {
 	my ($self, $data) = @_;
 
-	fatal('Hash reference expected') if ref $data ne 'HASH';
-
 	my $rs = $self->{'hooksManager'}->trigger('beforeHttpdRestoreDmn', $data);
 	return $rs if $rs;
 
@@ -289,8 +281,6 @@ sub disableDmn($$)
 {
 	my ($self, $data) = @_;
 
-	fatal('Hash reference expected') if ref $data ne 'HASH';
-
 	my $rs = $self->{'hooksManager'}->trigger('beforeHttpdDisableDmn', $data);
 	return $rs if $rs;
 
@@ -298,7 +288,7 @@ sub disableDmn($$)
 	$self->setData(
 		{
 			AUTHZ_ALLOW_ALL => (version->new("v$self->{'config'}->{'APACHE_VERSION'}") >= version->new('v2.4.0'))
-				? 'Require all granted' : "Order allow,deny\n    Allow from all"
+				? 'Require all granted' : 'Allow from all'
 		}
 	);
 
@@ -341,8 +331,6 @@ sub disableDmn($$)
 sub deleteDmn($$)
 {
 	my ($self, $data) = @_;
-
-	fatal('Hash reference expected') if ref $data ne 'HASH';
 
 	my $rs = $self->{'hooksManager'}->trigger('beforeHttpdDelDmn', $data);
 	return $rs if $rs;
@@ -468,8 +456,6 @@ sub addSub($$)
 {
 	my ($self, $data) = @_;
 
-	fatal('Hash reference expected') if ref $data ne 'HASH';
-
 	my $rs = $self->{'hooksManager'}->trigger('beforeHttpdAddSub', $data);
 	return $rs if $rs;
 
@@ -501,8 +487,6 @@ sub restoreSub($$)
 {
 	my ($self, $data) = @_;
 
-	fatal('Hash reference expected') if ref $data ne 'HASH';
-
 	my $rs = $self->{'hooksManager'}->trigger('beforeHttpdRestoreSub', $data);
 	return $rs if $rs;
 
@@ -531,8 +515,6 @@ sub disableSub($$)
 {
 	my ($self, $data) = @_;
 
-	fatal('Hash reference expected') if ref $data ne 'HASH';
-
 	my $rs = $self->{'hooksManager'}->trigger('beforeHttpdDisableSub', $data);
 	return $rs if $rs;
 
@@ -555,8 +537,6 @@ sub deleteSub($$)
 {
 	my ($self, $data) = @_;
 
-	fatal('Hash reference expected') if ref $data ne 'HASH';
-
 	my $rs = $self->{'hooksManager'}->trigger('beforeHttpdDelSub', $data);
 
 	$rs = $self->deleteDmn($data);
@@ -577,8 +557,6 @@ sub deleteSub($$)
 sub addHtuser($$)
 {
 	my ($self, $data) = @_;
-
-	fatal('Hash reference expected') if ref $data ne 'HASH';
 
 	my $webDir = $data->{'WEB_DIR'};
 	my $fileName = $self->{'config'}->{'HTACCESS_USERS_FILE_NAME'};
@@ -631,8 +609,6 @@ sub deleteHtuser($$)
 {
 	my ($self, $data) = @_;
 
-	fatal('Hash reference expected') if ref $data ne 'HASH';
-
 	my $webDir = $data->{'WEB_DIR'};
 	my $fileName = $self->{'config'}->{'HTACCESS_USERS_FILE_NAME'};
 	my $filePath = "$webDir/$fileName";
@@ -682,8 +658,6 @@ sub deleteHtuser($$)
 sub addHtgroup($$)
 {
 	my ($self, $data) = @_;
-
-	fatal('Hash reference expected') if ref $data ne 'HASH';
 
 	my $webDir = $data->{'WEB_DIR'};
 	my $fileName = $self->{'config'}->{'HTACCESS_GROUPS_FILE_NAME'};
@@ -736,8 +710,6 @@ sub deleteHtgroup($$)
 {
 	my ($self, $data) = @_;;
 
-	fatal('Hash reference expected') if ref $data ne 'HASH';
-
 	my $webDir = $data->{'WEB_DIR'};
 	my $fileName = $self->{'config'}->{'HTACCESS_GROUPS_FILE_NAME'};
 	my $filePath = "$webDir/$fileName";
@@ -787,8 +759,6 @@ sub deleteHtgroup($$)
 sub addHtaccess($$)
 {
 	my ($self, $data) = @_;
-
-	fatal('Hash reference expected') if ref $data ne 'HASH';
 
 	# Here we process only if AUTH_PATH directory exists
 	# Note: It's temporary fix for 1.1.0-rc2 (See #749)
@@ -848,8 +818,6 @@ sub deleteHtaccess($$)
 {
 	my ($self, $data) = @_;
 
-	fatal('Hash reference expected') if ref $data ne 'HASH';
-
 	# Here we process only if AUTH_PATH directory exists
 	# Note: It's temporary fix for 1.1.0-rc2 (See #749)
 	if(-d $data->{'AUTH_PATH'}) {
@@ -905,8 +873,6 @@ sub deleteHtaccess($$)
 sub addIps($$)
 {
 	my ($self, $data) = @_;
-
-	fatal('Hash reference expected') if ref $data ne 'HASH';
 
 	my $wrkFile = "$self->{'apacheWrkDir'}/00_nameserver.conf";
 
@@ -969,8 +935,8 @@ sub setGuiPermissions
 {
 	my $self = shift;
 
-	require Servers::httpd::apache_fcgi::installer;
-	Servers::httpd::apache_fcgi::installer->getInstance()->setGuiPermissions();
+	require Servers::httpd::apache_fcgid::installer;
+	Servers::httpd::apache_fcgid::installer->getInstance()->setGuiPermissions();
 }
 
 =item setEnginePermissions()
@@ -985,8 +951,8 @@ sub setEnginePermissions
 {
 	my $self = shift;
 
-	require Servers::httpd::apache_fcgi::installer;
-	Servers::httpd::apache_fcgi::installer->getInstance()->setEnginePermissions();
+	require Servers::httpd::apache_fcgid::installer;
+	Servers::httpd::apache_fcgid::installer->getInstance()->setEnginePermissions();
 }
 
 =item buildConf($cfgTpl, $filename, \%data)
@@ -1036,8 +1002,6 @@ sub buildConfFile($$$;$)
 
 	$options ||= {};
 
-	fatal('Hash reference expected') if ref $options ne 'HASH';
-
 	my ($name, $path, $suffix) = fileparse($file);
 
 	$file = "$self->{'apacheCfgDir'}/$file" unless -d $path && $path ne './';
@@ -1055,10 +1019,10 @@ sub buildConfFile($$$;$)
 	$cfgTpl = $self->buildConf($cfgTpl, "$name$suffix", $data);
 	return 1 unless defined $cfgTpl;
 
-	$cfgTpl =~ s/\n{2,}/\n\n/g; # Remove any duplicate blank lines
-
 	$rs = $self->{'hooksManager'}->trigger('afterHttpdBuildConfFile', \$cfgTpl, "$name$suffix", $data, $options);
 	return $rs if $rs;
+
+	$cfgTpl =~ s/\n{2,}/\n\n/g; # Remove any duplicate blank lines
 
 	$fileH = iMSCP::File->new(
 		'filename' => ($options->{'destination'} ? $options->{'destination'} : "$self->{'apacheWrkDir'}/$name$suffix")
@@ -1094,8 +1058,6 @@ sub installConfFile($$;$)
 	my ($self, $file, $options) = @_;
 
 	$options ||= {};
-
-	fatal('Hash reference expected') if ref $options ne 'HASH';
 
 	my ($name, $path, $suffix) = fileparse($file);
 
@@ -1136,8 +1098,6 @@ sub installConfFile($$;$)
 sub setData($$)
 {
 	my ($self, $data) = @_;
-
-	fatal('Hash reference expected') if ref $data ne 'HASH';
 
 	@{$self->{'data'}}{keys %{$data}} = values %{$data};
 
@@ -1591,7 +1551,7 @@ sub restart
 
  Called by getInstance(). Initialize instance
 
- Return Servers::httpd::apache_fcgi
+ Return Servers::httpd::apache_fcgid
 
 =cut
 
@@ -1602,8 +1562,8 @@ sub _init
 	$self->{'hooksManager'} = iMSCP::HooksManager->getInstance();
 
 	$self->{'hooksManager'}->trigger(
-		'beforeHttpdInit', $self, 'apache_fcgi'
-	) and fatal('apache_fcgi - beforeHttpdInit hook has failed');
+		'beforeHttpdInit', $self, 'apache_fcgid'
+	) and fatal('apache_fcgid - beforeHttpdInit hook has failed');
 
 	$self->{'apacheCfgDir'} = "$main::imscpConfig{'CONF_DIR'}/apache";
 	$self->{'apacheBkpDir'} = "$self->{'apacheCfgDir'}/backup";
@@ -1613,11 +1573,11 @@ sub _init
 	tie %{$self->{'config'}}, 'iMSCP::Config', 'fileName' => "$self->{'apacheCfgDir'}/apache.data";
 
 	$self->{'hooksManager'}->trigger(
-		'afterHttpdInit', $self, 'apache_fcgi'
-	) and fatal('apache_fcgi - afterHttpdInit hook has failed');
+		'afterHttpdInit', $self, 'apache_fcgid'
+	) and fatal('apache_fcgid - afterHttpdInit hook has failed');
 
 	# Register event listener which is responsible to clean vhost template files
-	$self->{'hooksManager'}->register('beforeHttpdBuildConfFile', sub { $self->_cleanTemplate(@_)});
+	$self->{'hooksManager'}->register('afterHttpdBuildConfFile', sub { $self->_cleanTemplate(@_)});
 
 	$self;
 }
@@ -1634,8 +1594,6 @@ sub _init
 sub _addCfg($$)
 {
 	my ($self, $data) = @_;
-
-	fatal('Hash reference expected') if ref $data ne 'HASH';
 
 	my $rs = $self->{'hooksManager'}->trigger('beforeHttpdAddCfg', $data);
 	return $rs if $rs;
@@ -1696,11 +1654,10 @@ sub _addCfg($$)
 
 	$self->setData(
 		{
-			PHP_VERSION => $self->{'config'}->{'PHP_VERSION'},
 			PHP_STARTER_DIR => $self->{'config'}->{'PHP_STARTER_DIR'},
 			APACHE_CUSTOM_SITES_CONFIG_DIR => $self->{'config'}->{'APACHE_CUSTOM_SITES_CONFIG_DIR'},
 			AUTHZ_ALLOW_ALL => (version->new("v$self->{'config'}->{'APACHE_VERSION'}") >= version->new('v2.4.0'))
-				? 'Require all granted' : "Order allow,deny\n    Allow from all"
+				? 'Require all granted' : 'Allow from all'
 		}
 	);
 
@@ -1749,8 +1706,6 @@ sub _dmnFolders($$)
 {
 	my ($self, $data) = @_;;
 
-	fatal('Hash reference expected') if ref $data ne 'HASH';
-
 	my $domainType = $data->{'DOMAIN_TYPE'};
 	my @folders = ();
 
@@ -1791,8 +1746,6 @@ sub _dmnFolders($$)
 sub _addFiles($$)
 {
 	my ($self, $data) = @_;
-
-	fatal('Hash reference expected') if ref $data ne 'HASH';
 
 	my $rs = $self->{'hooksManager'}->trigger('beforeHttpdAddFiles', $data);
 	return $rs if $rs;
@@ -1985,13 +1938,10 @@ sub _buildPHPini($$)
 {
 	my ($self, $data) = @_;
 
-	fatal('Hash reference expected') if ref $data ne 'HASH';
-
 	my $rs = $self->{'hooksManager'}->trigger('beforeHttpdBuildPhpIni', $data);
 
 	$self->setData(
 		{
-			PHP_VERSION => $self->{'config'}->{'PHP_VERSION'},
 			PHP_STARTER_DIR => $self->{'config'}->{'PHP_STARTER_DIR'},
 			PHP5_FASTCGI_BIN => $self->{'config'}->{'PHP5_FASTCGI_BIN'}
 		}
@@ -1999,39 +1949,20 @@ sub _buildPHPini($$)
 
 	my $php5Dir = "$self->{'config'}->{'PHP_STARTER_DIR'}/$data->{'DOMAIN_NAME'}";
 
-	if($self->{'config'}->{'PHP_FASTCGI'} eq 'fcgid') {
-		# Fcgid wrapper setup
-		my $fileSource = "$main::imscpConfig{'CONF_DIR'}/fcgi/parts/php5-fcgid-starter.tpl";
-		my $destFile = "$php5Dir/php5-fcgid-starter";
+	# Fcgid wrapper setup
+	my $fileSource = "$main::imscpConfig{'CONF_DIR'}/fcgi/parts/php5-fcgid-starter.tpl";
+	my $destFile = "$php5Dir/php5-fcgid-starter";
 
-		$rs = $self->buildConfFile($fileSource, $data, { 'destination' => $destFile });
+	$rs = $self->buildConfFile($fileSource, $data, { 'destination' => $destFile });
+	return $rs if $rs;
+
+	$rs = setRights($destFile, { 'user' => $data->{'USER'}, 'group' => $data->{'GROUP'}, 'mode' => '0550' });
+	return $rs if $rs;
+
+	# Transitional
+	if(-f "$php5Dir/php5-fastcgi-starter") {
+		$rs = iMSCP::File->new('filename' => "$php5Dir/php5-fastcgi-starter")->delFile();
 		return $rs if $rs;
-
-		$rs = setRights($destFile, { 'user' => $data->{'USER'}, 'group' => $data->{'GROUP'}, 'mode' => '0550' });
-		return $rs if $rs;
-
-		if(-f "$php5Dir/php5-fastcgi-starter") {
-			$rs = iMSCP::File->new('filename' => "$php5Dir/php5-fastcgi-starter")->delFile();
-			return $rs if $rs;
-		}
-	} elsif($self->{'config'}->{'PHP_FASTCGI'} eq 'fastcgi') {
-		# fastCGI wrapper setup
-		my $fileSource = "$main::imscpConfig{'CONF_DIR'}/fcgi/parts/php5-fastcgi-starter.tpl";
-		my $destFile = "$php5Dir/php5-fastcgi-starter";
-
-		$rs = $self->buildConfFile($fileSource, $data, { 'destination' => $destFile });
-		return $rs if $rs;
-
-		$rs = setRights($destFile, { 'user' => $data->{'USER'}, 'group' => $data->{'GROUP'}, 'mode' => '0550' });
-		return $rs if $rs;
-
-		if(-f "$php5Dir/php5-fcgid-starter") {
-			$rs = iMSCP::File->new('filename' => "$php5Dir/php5-fcgid-starter")->delFile();
-			return $rs if $rs;
-		}
-	} else {
-		error('Unknown FastCGI mode. Rerun i-MSCP installer to fix this error.');
-		return 1;
 	}
 
 	my $fileSource = "$main::imscpConfig{'CONF_DIR'}/fcgi/parts/php5/php.ini";
@@ -2068,20 +1999,15 @@ sub _cleanTemplate($$$)
 
 		if($data->{'PHP_SUPPORT'} eq 'yes') {
 			$$cfgTpl = replaceBloc("# SECTION php_disabled BEGIN.\n", "# SECTION php_disabled END.\n", '', $$cfgTpl);
-
-			if($self->{'config'}->{'PHP_FASTCGI'} eq 'fastcgi') {
-				$$cfgTpl = replaceBloc("# SECTION fcgid BEGIN.\n", "# SECTION fcgid END.\n", '', $$cfgTpl);
-			} else {
-				$$cfgTpl = replaceBloc("# SECTION fastcgi BEGIN.\n", "# SECTION fastcgi END.\n", '', $$cfgTpl);
-			}
 		} else {
 			$$cfgTpl = replaceBloc("# SECTION php_enabled BEGIN.\n", "# SECTION php_enabled END.\n", '', $$cfgTpl);
-			$$cfgTpl = replaceBloc("# SECTION fcgid BEGIN.\n", "# SECTION fcgid END.\n", '', $$cfgTpl);
-			$$cfgTpl = replaceBloc("# SECTION fastcgi BEGIN.\n", "# SECTION fastcgi END.\n", '', $$cfgTpl);
 		}
 
 		$$cfgTpl = replaceBloc("# SECTION php_fpm BEGIN.\n", "# SECTION php_fpm END.\n", '', $$cfgTpl);
 		$$cfgTpl = replaceBloc("# SECTION itk BEGIN.\n", "# SECTION itk END.\n", '', $$cfgTpl);
+
+		$$cfgTpl = replaceBloc("# SECTION custom BEGIN.\n", "# SECTION custom END.\n", '', $$cfgTpl);
+		$$cfgTpl = replaceBloc("# SECTION addons BEGIN.\n", "# SECTION addons END.\n", '', $$cfgTpl);
 	}
 
 	0;
@@ -2101,7 +2027,7 @@ sub _cleanTemplate($$$)
 END
 {
 	my $exitCode = $?;
-	my $self = Servers::httpd::apache_fcgi->getInstance();
+	my $self = Servers::httpd::apache_fcgid->getInstance();
 	my $trafficDir = "$self->{'config'}->{'APACHE_LOG_DIR'}/traff";
 	my $rs = 0;
 

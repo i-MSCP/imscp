@@ -23,7 +23,7 @@
 # @link        http://i-mscp.net i-MSCP Home Site
 # @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
-package Servers::httpd::apache_fcgi::uninstaller;
+package Servers::httpd::apache_fcgid::uninstaller;
 
 use strict;
 use warnings;
@@ -34,14 +34,14 @@ use iMSCP::SystemGroup;
 use iMSCP::File;
 use iMSCP::Dir;
 use File::Basename;
-use Servers::httpd::apache_fcgi;
+use Servers::httpd::apache_fcgid;
 use parent 'Common::SingletonClass';
 
 sub _init
 {
 	my $self = shift;
 
-	$self->{'httpd'} = Servers::httpd::apache_fcgi->getInstance();
+	$self->{'httpd'} = Servers::httpd::apache_fcgid->getInstance();
 
 	$self->{'apacheCfgDir'} = $self->{'httpd'}->{'apacheCfgDir'};
 	$self->{'apacheBkpDir'} = "$self->{'apacheCfgDir'}/backup";
@@ -90,6 +90,7 @@ sub removeUsers
 sub removeDirs
 {
 	my $self = shift;
+
 	my $rs = 0;
 
 	for (
@@ -125,14 +126,12 @@ sub fastcgiConf
 {
 	my $self = shift;
 
-	my $rs = 0;
+	my $rs = 0:
 
-	for('fastcgi_imscp', 'fcgid_imscp') {
-		$rs = $self->{'httpd'}->disableMod($_) if -f "$self->{'config'}->{'APACHE_MODS_DIR'}/$_.load";
-		return $rs if $rs;
-	}
+	$rs = $self->{'httpd'}->disableMod($_) if -f "$self->{'config'}->{'APACHE_MODS_DIR'}/fcgid_imscp.load";
+	return $rs if $rs;
 	
-	for ('fastcgi_imscp.conf', 'fastcgi_imscp.load', 'fcgid_imscp.conf', 'fcgid_imscp.load') {
+	for ('fcgid_imscp.conf', 'fcgid_imscp.load') {
 		$rs = iMSCP::File->new('filename' => "$self->{'config'}->{'APACHE_MODS_DIR'}/$_")->delFile()
 			if -f "$self->{'config'}->{'APACHE_MODS_DIR'}/$_";
 		return $rs if $rs;

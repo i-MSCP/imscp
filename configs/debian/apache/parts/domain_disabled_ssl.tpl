@@ -1,5 +1,4 @@
 <VirtualHost {DOMAIN_IP}:443>
-
     ServerAdmin webmaster@{DOMAIN_NAME}
     ServerName {DOMAIN_NAME}
     ServerAlias www.{DOMAIN_NAME} {ALIAS}.{BASE_SERVER_VHOST}
@@ -9,13 +8,10 @@
     Alias /errors {HOME_DIR}/errors/
 
     <Directory {HOME_DIR}/domain_disable_page>
-        Options -Indexes +Includes +FollowSymLinks +MultiViews
-        AllowOverride None
         {AUTHZ_ALLOW_ALL}
     </Directory>
 
     SSLEngine On
     SSLCertificateFile {CERT}
     SSLCertificateChainFile {CERT}
-
 </VirtualHost>

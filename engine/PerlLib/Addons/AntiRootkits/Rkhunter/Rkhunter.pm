@@ -38,7 +38,7 @@ use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
 
- Rkhunter addon installer.
+ Rkhunter addon installer
 
 =head1 PUBLIC METHODS
 
@@ -46,7 +46,7 @@ use parent 'Common::SingletonClass';
 
 =item preinstall()
 
- Process preinstall tasks.
+ Process preinstall tasks
 
  Return int 0 on success, other on failure
 
@@ -55,12 +55,12 @@ use parent 'Common::SingletonClass';
 sub preinstall
 {
 	require Addons::AntiRootkits::Rkhunter::Installer;
-	Addons::AntiRootkits::Rkhunter::Installer->preinstall();
+	Addons::AntiRootkits::Rkhunter::Installer->getInstance()->preinstall();
 }
 
 =item install()
 
- Process install tasks.
+ Process install tasks
 
  Return int 0 on success, other on failure
 
@@ -69,12 +69,12 @@ sub preinstall
 sub install
 {
 	require Addons::AntiRootkits::Rkhunter::Installer;
-	Addons::AntiRootkits::Rkhunter::Installer->install();
+	Addons::AntiRootkits::Rkhunter::Installer->getInstance()->install();
 }
 
 =item uninstall()
 
- Process uninstall tasks.
+ Process uninstall tasks
 
  Return int 0 on success, other on failure
 
@@ -83,7 +83,7 @@ sub install
 sub uninstall
 {
 	require Addons::AntiRootkits::Rkhunter::Uninstaller;
-	Addons::AntiRootkits::Rkhunter::Uninstaller->uninstall();
+	Addons::AntiRootkits::Rkhunter::Uninstaller->getInstance()->uninstall();
 }
 
 =item setEnginePermissions()
@@ -97,12 +97,12 @@ sub uninstall
 sub setEnginePermissions
 {
 	require Addons::AntiRootkits::Rkhunter::Installer;
-	Addons::AntiRootkits::Rkhunter::Installer->setEnginePermissions();
+	Addons::AntiRootkits::Rkhunter::Installer->getInstance()->setEnginePermissions();
 }
 
 =item getPackages()
 
- Get list of Debian packages to which this addon depends.
+ Get list of Debian packages to which this addon depends
 
  Return array_ref An array containing list of packages
 

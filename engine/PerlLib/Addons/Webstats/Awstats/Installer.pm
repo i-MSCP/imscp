@@ -23,11 +23,11 @@ Addons::Webstats::Awstats::Installer - i-MSCP AWStats addon installer
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
-# @category		i-MSCP
-# @copyright	2010-2014 by i-MSCP | http://i-mscp.net
-# @author		Laurent Declercq <l.declercq@nuxwin.com>
-# @link			http://i-mscp.net i-MSCP Home Site
-# @license		http://www.gnu.org/licenses/gpl-2.0.html GPL v2
+# @category    i-MSCP
+# @copyright   2010-2014 by i-MSCP | http://i-mscp.net
+# @author      Laurent Declercq <l.declercq@nuxwin.com>
+# @link        http://i-mscp.net i-MSCP Home Site
+# @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
 package Addons::Webstats::Awstats::Installer;
 
@@ -46,7 +46,7 @@ use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
 
- AWStats addon installer.
+ AWStats addon installer
 
  See Addons::Webstats::Awstats::Awstats for more information.
 
@@ -56,7 +56,7 @@ use parent 'Common::SingletonClass';
 
 =item showDialog(\%dialog)
 
- Show AWStats installer questions.
+ Show AWStats installer questions
 
  Param iMSCP::Dialog::Dialog|iMSCP::Dialog::Whiptail $dialog
  Return int 0 or 30
@@ -68,13 +68,11 @@ sub showDialog($$)
 	my (undef, $dialog) =  @_;
 
 	my $rs = 0;
-	my $awstatsMode =  main::setupGetQuestion('AWSTATS_MODE');
+	my $awstatsMode = main::setupGetQuestion('AWSTATS_MODE');
 
 	if($main::reconfigure ~~ ['webstats', 'all', 'forced'] || not $awstatsMode ~~ ['0','1']) {
 		($rs, $awstatsMode) = $dialog->radiolist(
-			"\nPlease, select the AWStats mode you want use:",
-			['Dynamic', 'Static'],
-			$awstatsMode ? 'Static' : 'Dynamic'
+			"\nPlease, select the AWStats mode you want use:", ['Dynamic', 'Static'], $awstatsMode ? 'Static' : 'Dynamic'
 		);
 
 		$awstatsMode = $awstatsMode eq 'Dynamic' ? 0 : 1 if $rs != 30;
@@ -87,7 +85,7 @@ sub showDialog($$)
 
 =item preinstall()
 
- Process preinstall tasks.
+ Process preinstall tasks
 
  Return int 0 on success, other on failure
 
@@ -102,7 +100,7 @@ sub preinstall
 
 =item install()
 
- Process install tasks.
+ Process install tasks
 
  Return int 0 on success, other on failure
 
@@ -112,7 +110,7 @@ sub install
 {
 	my $self = shift;
 
-	my $rs = $self->_disableDebianConfig();
+	my $rs = $self->_disableDefaultConfig();
 	return $rs if $rs;
 
 	$rs = $self->_makeCacheDir();
@@ -130,7 +128,7 @@ sub install
 
 =item setEnginePermissions()
 
- Set files permissions.
+ Set files permissions
 
  Return int 0 on success, other on failure
 
@@ -159,13 +157,11 @@ sub setEnginePermissions
 		}
 	);
 
-	my $httpd = Servers::httpd->factory();
-
 	$rs = setRights(
 		$main::imscpConfig{'AWSTATS_CACHE_DIR'},
 		{
 			'user' => $main::imscpConfig{'ROOT_USER'},
-			'group' => $httpd->getRunningGroup(),
+			'group' => Servers::httpd->factory()->getRunningGroup(),
 			'dirmode' => '02750',
 			'filemode' => '0640',
 			'recursive' => 1
@@ -181,11 +177,26 @@ sub setEnginePermissions
 
 =over 4
 
+=item _init()
+
+ Initialize instance
+
+ Return Addons::Webstats::Awstats::Installer
+
+=cut
+
+sub _init
+{
+	my $self = shift;
+
+	$self->{'httpd'} = Servers::httpd->factory();
+
+	$self;
+}
+
 =item _installLogrotate(\$content, $filename)
 
- Add or remove AWStats logrotate configuration snippet in the Apache logrotate file.
-
- Listener responsible to add or remove the AWStats logrotate configuration snippet in the Apache logrotate file.
+ Event listener responsible to add or remove the AWStats logrotate configuration snippet in the Apache logrotate file
 
  Param SCALAR reference - A reference to a scalar containing file content
  Param Param SCALAR Filename
@@ -195,16 +206,14 @@ sub setEnginePermissions
 
 sub _installLogrotate($$$)
 {
-	my (undef, $content, $filename) = @_;
-
-	my $httpd = Servers::httpd->factory();
+	my ($self, $content, $filename) = @_;
 
 	if ($filename eq 'logrotate.conf') {
 		$$content = replaceBloc(
 			"# SECTION custom BEGIN.\n",
 			"# SECTION custom END.\n",
 			"\tprerotate\n" .
-			"\tIMSCP_APACHE_LOG_DIR=$httpd->{'config'}->{'APACHE_LOG_DIR'} " .
+			"\tIMSCP_APACHE_LOG_DIR=$self->{'httpd'}->{'config'}->{'APACHE_LOG_DIR'} " .
 			"$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Addons/Webstats/Awstats/Scripts/awstats_updateall.pl now " .
 			"-awstatsprog=$main::imscpConfig{'AWSTATS_ENGINE_DIR'}/awstats.pl &> /dev/null\n" .
 			"\tendscript\n",
@@ -218,7 +227,7 @@ sub _installLogrotate($$$)
 
 =item _makeCacheDir()
 
- Create cache directory for AWStats.
+ Create cache directory for AWStats
 
  Return int 0 on success, other on failure
 
@@ -226,18 +235,18 @@ sub _installLogrotate($$$)
 
 sub _makeCacheDir
 {
-	my $httpd = Servers::httpd->factory();
+	my $self = shift;
 
 	iMSCP::Dir->new(
 		'dirname' => $main::imscpConfig{'AWSTATS_CACHE_DIR'}
 	)->make(
-		{ 'user' => $main::imscpConfig{'ROOT_USER'}, 'group' => $httpd->getRunningGroup(), 'mode' => 02750 }
+		{ 'user' => $main::imscpConfig{'ROOT_USER'}, 'group' => $self->{'httpd'}->getRunningGroup(), 'mode' => 02750 }
 	);
 }
 
 =item _createGlobalAwstatsVhost()
 
- Create and install global awstats Apache vhost file.
+ Create and install global awstats Apache vhost file
 
  Return int 0 on success, other on failure
 
@@ -245,48 +254,42 @@ sub _makeCacheDir
 
 sub _createGlobalAwstatsVhost
 {
+	my $self = shift;
+
 	my $rs = 0;
 
-	my $httpd = Servers::httpd->factory();
-	my $apache24 = (version->new("v$httpd->{'config'}->{'APACHE_VERSION'}") >= version->new('v2.4.0'));
+	my $apache24 = (version->new("v$self->{'httpd'}->{'config'}->{'APACHE_VERSION'}") >= version->new('v2.4.0'));
 
-	$httpd->setData(
+	$self->{'httpd'}->setData(
 		{
+			NAMEVIRTUALHOST => $apache24 ? '' : 'NameVirtualHost 127.0.0.1:80',
 			AWSTATS_ENGINE_DIR => $main::imscpConfig{'AWSTATS_ENGINE_DIR'},
 			AWSTATS_WEB_DIR => $main::imscpConfig{'AWSTATS_WEB_DIR'},
 			WEBSTATS_RPATH => $main::imscpConfig{'WEBSTATS_RPATH'},
-			AUTHZ_ALLOW_ALL => $apache24 ? 'Require all granted' : "Order allow,deny\n    Allow from all"
+			AUTHZ_ALLOW_ALL => $apache24 ? 'Require all granted' : 'Allow from all'
 		}
 	);
 
-	if($apache24) {
-		$rs = iMSCP::HooksManager->getInstance()->register(
-			'beforeHttpdBuildConfFile', sub { my $content = shift; $$content =~ s/NameVirtualHost[^\n]+\n//gi; 0; }
-		);
-		return $rs if $rs;
-	}
-
-	$rs = $httpd->buildConfFile(
-		"$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Addons/Webstats/Awstats/Config/01_awstats.conf",
-		{}
+	$rs = $self->{'httpd'}->buildConfFile(
+		"$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Addons/Webstats/Awstats/Config/01_awstats.conf", {}
 	);
 	return $rs if $rs;
 
-	$rs = $httpd->installConfFile('01_awstats.conf');
+	$rs = $self->{'httpd'}->installConfFile('01_awstats.conf');
 	return $rs if $rs;
 
-	$httpd->enableSite('01_awstats.conf');
+	$self->{'httpd'}->enableSite('01_awstats.conf');
 }
 
-=item _disableDebianConfig()
+=item _disableDefaultConfig()
 
- Disable default AWStats cron task and configuration file as provided by awstats Debian package.
+ Disable default AWStats cron task and configuration file
 
  Return int 0 on success, other on failure
 
 =cut
 
-sub _disableDebianConfig
+sub _disableDefaultConfig
 {
 	my $rs = 0;
 
@@ -312,7 +315,7 @@ sub _disableDebianConfig
 
 =item _addAwstatsCronTask()
 
- Add AWStats cron task for dynamic mode.
+ Add AWStats cron task for dynamic mode
 
  Return int - 0 on success, 1 on failure
 
@@ -320,7 +323,7 @@ sub _disableDebianConfig
 
 sub _addAwstatsCronTask
 {
-	my $httpd = Servers::httpd->factory();
+	my $self = shift;
 
 	Servers::cron->factory()->addTask(
 		{
@@ -332,7 +335,7 @@ sub _addAwstatsCronTask
 			DWEEK => '*',
 			USER => $main::imscpConfig{'ROOT_USER'},
 			COMMAND =>
-				"IMSCP_APACHE_LOG_DIR=$httpd->{'config'}->{'APACHE_LOG_DIR'} " .
+				"IMSCP_APACHE_LOG_DIR=$self->{'httpd'}->{'config'}->{'APACHE_LOG_DIR'} " .
 				"$main::imscpConfig{'CMD_PERL'} " .
 				"$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Addons/Webstats/Awstats/Scripts/awstats_updateall.pl now " .
 				"-awstatsprog=$main::imscpConfig{'AWSTATS_ENGINE_DIR'}/awstats.pl >/dev/null 2>&1"

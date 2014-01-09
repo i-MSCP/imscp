@@ -5,17 +5,13 @@
 # See documentation at http://wiki.i-mscp.net/doku.php?id=start:preseeding
 #
 # Author: Laurent Declercq <l.declercq@nuxwin.com>
-# Last update: 2013.11.18
-# Status: (Experimental)
+# Last update: 2014.01.09
 
 # Server to use for the HTTP service
-# (apache_itk|apache_fcgi|apache_php_fpm)
-$main::questions{'HTTPD_SERVER'} = 'apache_fcgi';
+# (apache_itk|apache_fcgid|apache_php_fpm)
+$main::questions{'HTTPD_SERVER'} = 'apache_fcgid';
 
-# apache_fcgi - Only relevant if the server for the http service is set to 'apache_fcgi'
-$main::questions{'PHP_FASTCGI'} = 'fcgid'; # 'fcgid' or 'fastcgi'
-
-# apache_fcgi - Only relevant if the server for the http service is set to 'apache_fgci'
+# apache_fcgid - Only relevant if the server for the http service is set to 'apache_fgcid'
 $main::questions{'INI_LEVEL'} = 'per_user'; # 'per_user' or 'per_domain' or 'per_vhost'
 
 # apache_php_fpm - Only relevant if the server for the http server is set to 'apache_php_fpm'

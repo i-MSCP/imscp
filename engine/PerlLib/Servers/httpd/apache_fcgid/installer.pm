@@ -2,7 +2,7 @@
 
 =head1 NAME
 
- Servers::httpd::apache_fcgi::installer - i-MSCP Apache FCGI Server implementation
+ Servers::httpd::apache_fcgid::installer - i-MSCP Apache2/FastCGI Server implementation
 
 =cut
 
@@ -30,7 +30,7 @@
 # @link        http://i-mscp.net i-MSCP Home Site
 # @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
-package Servers::httpd::apache_fcgi::installer;
+package Servers::httpd::apache_fcgid::installer;
 
 use strict;
 use warnings;
@@ -46,14 +46,14 @@ use iMSCP::Dir;
 use iMSCP::File;
 use File::Basename;
 use iMSCP::TemplateParser;
-use Servers::httpd::apache_fcgi;
+use Servers::httpd::apache_fcgid;
 use version;
 use Net::LibIDN qw/idn_to_ascii/;
 use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
 
- Installer for the i-MSCP Apache FCGI Server implementation.
+ Installer for the i-MSCP Apache2/FastCGI Server implementation.
 
 =head1 PUBLIC METHODS
 
@@ -72,15 +72,10 @@ sub registerSetupHooks($$)
 {
 	my ($self, $hooksManager) = @_;
 
-	my $rs = $hooksManager->trigger('beforeHttpdRegisterSetupHooks', $hooksManager, 'apache_fcgi');
+	my $rs = $hooksManager->trigger('beforeHttpdRegisterSetupHooks', $hooksManager, 'apache_fcgid');
 	return $rs if $rs;
 
 	# Add installer dialog in setup dialog stack
-	$rs = $hooksManager->register(
-		'beforeSetupDialog',
-		sub { my $dialogStack = shift; push(@$dialogStack, sub { $self->askCgiModule(@_) }); 0; }
-	);
-	return $rs if $rs;
 
 	$rs = $hooksManager->register(
 		'beforeSetupDialog',
@@ -92,36 +87,7 @@ sub registerSetupHooks($$)
 	$rs = $hooksManager->register('afterSetupCreateDatabase', sub { $self->_fixPhpErrorReportingValues(@_) });
 	return $rs if $rs;
 
-	$hooksManager->trigger('afterHttpdRegisterSetupHooks', $hooksManager, 'apache_fcgi');
-}
-
-=item askCgiModule($dialog)
-
- Ask user the fastCGI Apache module to use
-
- Param iMSCP::Dialog::Dialog $dialog Dialog instance
- Return int 0 on success, other on failure
-
-=cut
-
-sub askCgiModule($$)
-{
-	my ($self, $dialog) = @_;
-
-	my $rs = 0;
-	my $cgiModule = main::setupGetQuestion('PHP_FASTCGI') || $self->{'config'}->{'PHP_FASTCGI'} || '';
-
-	if($main::reconfigure ~~ ['httpd', 'servers', 'all', 'forced'] || $cgiModule !~ /^fcgid|fastcgi$/) {
-		($rs, $cgiModule) = $dialog->radiolist(
-			"\nPlease, select the fastCGI Apache module you want use:",
-			['fcgid', 'fastcgi'],
-			$cgiModule ne 'fastcgi' ? 'fcgid' : 'fastcgi'
-		);
-	}
-
-	$self->{'config'}->{'PHP_FASTCGI'} = $cgiModule if $rs != 30;
-
-	$rs;
+	$hooksManager->trigger('afterHttpdRegisterSetupHooks', $hooksManager, 'apache_fcgid');
 }
 
 =item askForPhpIniLevel($dialog)
@@ -182,7 +148,7 @@ sub install
 {
 	my $self = shift;
 
-	my $rs = $self->{'hooksManager'}->trigger('beforeHttpdInstall', 'apache_fcgi');
+	my $rs = $self->{'hooksManager'}->trigger('beforeHttpdInstall', 'apache_fcgid');
 	return $rs if $rs;
 
 	# Saving all system configuration files if they exists
@@ -224,7 +190,7 @@ sub install
 	$rs = $self->setEnginePermissions();
 	return $rs if $rs;
 
-	$self->{'hooksManager'}->trigger('afterHttpdInstall', 'apache_fcgi');
+	$self->{'hooksManager'}->trigger('afterHttpdInstall', 'apache_fcgid');
 }
 
 =item setGuiPermissions
@@ -313,9 +279,8 @@ sub setEnginePermissions()
 	# eg. /var/www/imscp/engine/imscp-apache-logger
 	# FIXME: This is a quick fix
 	$rs = setRights(
-		"$main::imscpConfig{'ROOT_DIR'}/engine/imscp-apache-logger", {
-			'user' => $rootUName, 'group' => $rootGName, 'mode' => '0750'
-		}
+		"$main::imscpConfig{'ROOT_DIR'}/engine/imscp-apache-logger",
+		{ 'user' => $rootUName, 'group' => $rootGName, 'mode' => '0750' }
 	);
 	return $rs if $rs;
 
@@ -332,7 +297,7 @@ sub setEnginePermissions()
 
  Called by getInstance(). Initialize instance
 
- Return Servers::httpd::apache_fcgi::installer
+ Return Servers::httpd::apache_fcgid::installer
 
 =cut
 
@@ -342,11 +307,11 @@ sub _init
 
 	$self->{'hooksManager'} = iMSCP::HooksManager->getInstance();
 
-	$self->{'httpd'} = Servers::httpd::apache_fcgi->getInstance();
+	$self->{'httpd'} = Servers::httpd::apache_fcgid->getInstance();
 
 	$self->{'hooksManager'}->trigger(
-		'beforeHttpdInitInstaller', $self, 'apache_fcgi'
-	) and fatal('apache_fcgi - beforeHttpdInitInstaller hook has failed');
+		'beforeHttpdInitInstaller', $self, 'apache_fcgid'
+	) and fatal('apache_fcgid - beforeHttpdInitInstaller hook has failed');
 
 	$self->{'apacheCfgDir'} = $self->{'httpd'}->{'apacheCfgDir'};
 	$self->{'apacheBkpDir'} = "$self->{'apacheCfgDir'}/backup";
@@ -367,8 +332,8 @@ sub _init
 	}
 
 	$self->{'hooksManager'}->trigger(
-		'afterHttpdInitInstaller', $self, 'apache_fcgi'
-	) and fatal('apache_fcgi - afterHttpdInitInstaller hook has failed');
+		'afterHttpdInitInstaller', $self, 'apache_fcgid'
+	) and fatal('apache_fcgid - afterHttpdInitInstaller hook has failed');
 
 	$self;
 }
@@ -614,12 +579,14 @@ sub _buildFastCgiConfFiles
 	my $rs = $self->{'hooksManager'}->trigger('beforeHttpdBuildFastCgiConfFiles');
 
 	# Save current production files if any
-	for ('fastcgi_imscp.conf', 'fastcgi_imscp.load', 'fcgid_imscp.conf', 'fcgid_imscp.load') {
+	for ('fcgid_imscp.conf', 'fcgid_imscp.load') {
 		$rs = $self->_bkpConfFile("$self->{'config'}->{'APACHE_MODS_DIR'}/$_");
 		return $rs if $rs;
 	}
 
 	# Build, store and install new files
+
+	my $apache24 = (version->new("v$self->{'httpd'}->{'config'}->{'APACHE_VERSION'}") >= version->new('v2.4.0'));
 
 	# Set needed data
 	$self->{'httpd'}->setData(
@@ -627,67 +594,61 @@ sub _buildFastCgiConfFiles
 			SYSTEM_USER_PREFIX => $main::imscpConfig{'SYSTEM_USER_PREFIX'},
 			SYSTEM_USER_MIN_UID => $main::imscpConfig{'SYSTEM_USER_MIN_UID'},
 			PHP_STARTER_DIR => $self->{'config'}->{'PHP_STARTER_DIR'},
-			PHP_VERSION => $self->{'config'}->{'PHP_VERSION'}
+			AUTHZ_ALLOW_ALL => $apache24 ? 'Require all granted' : 'Allow from all'
 		}
 	);
 
-	# fastcgi_imscp.conf / fcgid_imscp.conf
-	for ('fastcgi', 'fcgid') {
-		# Load template from /etc/imscp/apache directory
+	# fcgid_imscp.conf
 
-		$rs = $self->{'httpd'}->buildConfFile("$self->{'apacheCfgDir'}/${_}_imscp.conf", {});
-		return $rs if $rs;
+	# Load template from /etc/imscp/apache directory
 
-		my $file = iMSCP::File->new('filename' => "$self->{'apacheWrkDir'}/${_}_imscp.conf");
+	$rs = $self->{'httpd'}->buildConfFile("$self->{'apacheCfgDir'}/fcgid_imscp.conf", {});
+	return $rs if $rs;
 
-		$rs = $file->copyFile($self->{'config'}->{'APACHE_MODS_DIR'});
-		return $rs if $rs;
+	my $file = iMSCP::File->new('filename' => "$self->{'apacheWrkDir'}/fcgid_imscp.conf");
 
-		next if(! -f "$self->{'config'}->{'APACHE_MODS_DIR'}/$_.load");
+	$rs = $file->copyFile($self->{'config'}->{'APACHE_MODS_DIR'});
+	return $rs if $rs;
 
-		# Load system configuration file
-		$file = iMSCP::File->new('filename' => "$self->{'config'}->{'APACHE_MODS_DIR'}/$_.load");
+	# Load system configuration file
+	$file = iMSCP::File->new('filename' => "$self->{'config'}->{'APACHE_MODS_DIR'}/fcgid.load");
 
-		my $cfgTpl = $file->get();
-		unless(defined $cfgTpl) {
-			error("Unable to read $file->{'filename'}");
-			return 1;
-		}
-
-		# Build new configuration file and store it in working directory
-		$file = iMSCP::File->new('filename' => "$self->{'apacheWrkDir'}/${_}_imscp.load");
-
-		$cfgTpl = "<IfModule !mod_$_.c>\n" . $cfgTpl . "</IfModule>\n";
-
-		$rs = $file->set($cfgTpl);
-		return $rs if $rs;
-
-		# Store new file
-		$rs = $file->save();
-		return $rs if $rs;
-
-		$rs = $file->mode(0644);
-		return $rs if $rs;
-
-		$rs = $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
-		return $rs if $rs;
-
-		# Install new file in production directory
-		$rs = $file->copyFile($self->{'config'}->{'APACHE_MODS_DIR'});
-		return $rs if $rs;
+	my $cfgTpl = $file->get();
+	unless(defined $cfgTpl) {
+		error("Unable to read $file->{'filename'}");
+		return 1;
 	}
+
+	# Build new configuration file and store it in working directory
+	$file = iMSCP::File->new('filename' => "$self->{'apacheWrkDir'}/fcgid_imscp.load");
+
+	$cfgTpl = "<IfModule !mod_fcgid.c>\n" . $cfgTpl . "</IfModule>\n";
+
+	$rs = $file->set($cfgTpl);
+	return $rs if $rs;
+
+	# Store new file
+	$rs = $file->save();
+	return $rs if $rs;
+
+	$rs = $file->mode(0644);
+	return $rs if $rs;
+
+	$rs = $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
+	return $rs if $rs;
+
+	# Install new file in production directory
+	$rs = $file->copyFile($self->{'config'}->{'APACHE_MODS_DIR'});
+	return $rs if $rs;
 
 	# Disable/Enable Apache modules
 
+	# # Transitional: fastcgi_imscp
 	my @toDisableModules = (
-		'fastcgi', 'fcgid', 'php4', 'php5', 'php5_cgi', 'php5filter', 'php_fpm_imscp',
-		($self->{'config'}->{'PHP_FASTCGI'} eq 'fastcgi' ? 'fcgid_imscp' : 'fastcgi_imscp')
+		'fastcgi', 'fcgid', 'php4', 'php5', 'php5_cgi', 'php5filter', 'php_fpm_imscp', 'fastcgi_imscp'
 	);
 
-	my @toEnableModules = (
-		'actions',
-		$self->{'config'}->{'PHP_FASTCGI'} eq 'fastcgi' ? 'fastcgi_imscp' : 'fcgid_imscp',
-	);
+	my @toEnableModules = ('actions', 'fcgid_imscp',);
 
 	if((version->new("v$self->{'config'}->{'APACHE_VERSION'}") >= version->new('v2.4.0'))) {
 		push (@toDisableModules, ('mpm_event', 'mpm_itk', 'mpm_prefork'));
@@ -728,7 +689,7 @@ sub _buildPhpConfFiles
 	my $timestamp = time;
 
 	# Backup any current file
-	for ('php5-fcgid-starter', 'php5-fastcgi-starter', 'php5/php.ini', 'php5/browscap.ini') {
+	for ('php5-fcgid-starter', 'php5/php.ini', 'php5/browscap.ini') {
 		if(-f "$self->{'config'}->{'PHP_STARTER_DIR'}/master/$_") {
 			my (undef, $name) = split('/');
 			$name = $_ if ! defined $name;
@@ -745,7 +706,6 @@ sub _buildPhpConfFiles
 	$self->{'httpd'}->setData(
 		{
 			PHP_STARTER_DIR => $self->{'config'}->{'PHP_STARTER_DIR'},
-			PHP_VERSION => $self->{'config'}->{'PHP_VERSION'},
 			PHP5_FASTCGI_BIN => $self->{'config'}->{'PHP5_FASTCGI_BIN'},
 			HOME_DIR => $main::imscpConfig{'GUI_ROOT_DIR'},
 			WEB_DIR => $main::imscpConfig{'GUI_ROOT_DIR'},
@@ -759,55 +719,30 @@ sub _buildPhpConfFiles
 	my $wrkFcgidStarter = "$wrkDir/master.php5-fcgid-starter";
 	my $prodFcgidStarter = "$self->{'config'}->{'PHP_STARTER_DIR'}/master/php5-fcgid-starter";
 
+	# Kept for bc reasons
 	my $wrkFastCgiStarter = "$wrkDir/master.php5-fastcgi-starter";
 	my $prodFastCgiStarter = "$self->{'config'}->{'PHP_STARTER_DIR'}/master/php5-fastcgi-starter";
 
-	if($self->{'config'}->{'PHP_FASTCGI'} eq 'fcgid') { # PHP5 Starter script (fcgid)
-		if(-f $wrkFastCgiStarter) {
-			$rs = iMSCP::File->new('filename' => $wrkFastCgiStarter)->delFile();
-			return $rs if $rs;
-		}
-
-		if(-f $prodFastCgiStarter) {
-			$rs = iMSCP::File->new('filename' => $prodFastCgiStarter)->delFile();
-			return $rs if $rs;
-		}
-
-		$rs = $self->{'httpd'}->buildConfFile(
-			"$cfgDir/parts/master/php5-fcgid-starter.tpl",
-			{},
-			{ 'destination' => $wrkFcgidStarter, 'mode' => 0550, 'user' => $panelUname, 'group' => $panelGName }
-		);
+	if(-f $wrkFastCgiStarter) {
+		$rs = iMSCP::File->new('filename' => $wrkFastCgiStarter)->delFile();
 		return $rs if $rs;
-
-		# Install new file in production directory
-		$rs = iMSCP::File->new('filename' => $wrkFcgidStarter)->copyFile($prodFcgidStarter);
-		return $rs if $rs;
-	 } elsif($self->{'config'}->{'PHP_FASTCGI'} eq 'fastcgi') { # PHP5 Starter script (fastcgi)
-		if(-f $wrkFcgidStarter) {
-			$rs = iMSCP::File->new('filename' => $wrkFcgidStarter)->delFile();
-			return $rs if $rs;
-		}
-
-		if(-f $prodFcgidStarter) {
-			$rs = iMSCP::File->new('filename' => $prodFcgidStarter)->delFile();
-			return $rs if $rs;
-		}
-
-		$rs = $self->{'httpd'}->buildConfFile(
-			"$cfgDir/parts/master/php5-fastcgi-starter.tpl",
-			{},
-			{ 'destination' => $wrkFastCgiStarter, 'mode' => 0550, 'user' => $panelUname, 'group' => $panelGName }
-		);
-		return $rs if $rs;
-
-		# Install new file in production directory
-		$rs = iMSCP::File->new('filename' => $wrkFastCgiStarter)->copyFile($prodFastCgiStarter);
-		return $rs if $rs;
-	} else {
-		error("Unknown fastCGI module: $self->{'config'}->{'PHP_FASTCGI'}");
-		return 1;
 	}
+
+	if(-f $prodFastCgiStarter) {
+		$rs = iMSCP::File->new('filename' => $prodFastCgiStarter)->delFile();
+		return $rs if $rs;
+	}
+
+	$rs = $self->{'httpd'}->buildConfFile(
+		"$cfgDir/parts/master/php5-fcgid-starter.tpl",
+		{},
+		{ 'destination' => $wrkFcgidStarter, 'mode' => 0550, 'user' => $panelUname, 'group' => $panelGName }
+	);
+	return $rs if $rs;
+
+	# Install new file in production directory
+	$rs = iMSCP::File->new('filename' => $wrkFcgidStarter)->copyFile($prodFcgidStarter);
+	return $rs if $rs;
 
 	# Build php.ini file
 
@@ -883,8 +818,6 @@ sub _buildApacheConfFiles
 	# Backup, build, store and install ports.conf file if exists
 
 	if(-f "$self->{'config'}->{'APACHE_CONF_DIR'}/ports.conf") {
-
-		# Load file
 		my $file = iMSCP::File->new('filename' => "$self->{'config'}->{'APACHE_CONF_DIR'}/ports.conf");
 		my $rdata = $file->get();
 		unless(defined $rdata) {
@@ -934,7 +867,8 @@ sub _buildApacheConfFiles
 			ROOT_DIR => $main::imscpConfig{'ROOT_DIR'},
 			APACHE_ROOT_DIR => $self->{'httpd'}->{'config'}->{'APACHE_ROOT_DIR'},
 			PIPE => $pipeSyntax,
-			AUTHZ_DENY_ALL => $apache24 ? 'Require all denied' : "Order deny,allow\n    Deny from all"
+			AUTHZ_DENY_ALL => $apache24 ? 'Require all denied' : 'Deny from all',
+			AUTHZ_ALLOW_ALL => $apache24 ? 'Require all granted' : 'Allow from all'
 		}
 	);
 
@@ -996,9 +930,8 @@ sub _buildMasterVhostFiles
 			GUI_CERT_DIR => $main::imscpConfig{'GUI_CERT_DIR'},
 			SERVER_HOSTNAME => $main::imscpConfig{'SERVER_HOSTNAME'},
 			PHP_STARTER_DIR => $self->{'config'}->{'PHP_STARTER_DIR'},
-			PHP_VERSION => $self->{'config'}->{'PHP_VERSION'},
 			AUTHZ_ALLOW_ALL => (version->new("v$self->{'config'}->{'APACHE_VERSION'}") >= version->new('v2.4.0'))
-				? 'Require all granted' : "Order allow,deny\n    Allow from all"
+				? 'Require all granted' : 'Allow from all'
 		}
 	);
 
@@ -1019,8 +952,7 @@ sub _buildMasterVhostFiles
 						$customTagBegin .
 						getBloc($customTagBegin, $customTagEnding, $$fileContent) .
 						"    RewriteEngine On\n" .
-						"    RewriteCond %{HTTPS} off\n" .
-						"    RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]\n" .
+						"    RewriteRule .* https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]\n" .
 						$customTagEnding;
 
 					$$fileContent = replaceBloc($customTagBegin, $customTagEnding, $customBlock, $$fileContent);

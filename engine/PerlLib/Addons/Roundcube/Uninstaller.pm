@@ -42,7 +42,7 @@ use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
 
- i-MSCP Roundcube addon uninstaller.
+ i-MSCP Roundcube addon uninstaller
 
 =head1 PUBLIC METHODS
 
@@ -50,7 +50,7 @@ use parent 'Common::SingletonClass';
 
 =item uninstall()
 
- Process uninstall tasks.
+ Process uninstall tasks
 
  Return int 0 on success, other on failure
 
@@ -77,7 +77,7 @@ sub uninstall
 
 =item _init()
 
- Called by getInstance(). Initialize instance.
+ Called by getInstance(). Initialize instance
 
  Return Addons::Roundcube::Uninstaller
 
@@ -100,7 +100,7 @@ sub _init
 
 =item _removeSqlUser()
 
- Remove any Roundcube SQL user.
+ Remove any Roundcube SQL user
 
  Return int 0
 
@@ -125,7 +125,7 @@ sub _removeSqlUser
 
 =item _removeSqlDatabase()
 
- Remove Roundcube SQL database.
+ Remove Roundcube SQL database
 
  Return int 0
 
@@ -146,7 +146,7 @@ sub _removeSqlDatabase
 
 =item _removeFiles()
 
- Remove Roundcube files.
+ Remove Roundcube files
 
  Return int 0
 

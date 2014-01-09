@@ -39,7 +39,7 @@ use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
 
- Rkhunter addon uninstaller.
+ Rkhunter addon uninstaller
 
 =head1 PUBLIC METHODS
 
@@ -47,7 +47,7 @@ use parent 'Common::SingletonClass';
 
 =item uninstall()
 
- Process uninstall tasks.
+ Process uninstall tasks
 
  Return int 0 on success, other on failure
 

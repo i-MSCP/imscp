@@ -40,7 +40,7 @@ use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
 
- i-MSCP AjaXplorer addon installer.
+ i-MSCP AjaXplorer addon installer
 
 =head1 PUBLIC METHODS
 
@@ -48,7 +48,7 @@ use parent 'Common::SingletonClass';
 
 =item preinstall()
 
- Process preinstall tasks.
+ Process preinstall tasks
 
  Return int 0 on success, other on failure
 
@@ -71,12 +71,12 @@ sub install
 {
 	my $self = shift;
 
-	$self->_installFiles(); # Install AjaxPlorer files from local addon packages repository
+	$self->_installFiles();
 }
 
 =item setGuiPermissions()
 
- Set file permissions.
+ Set file permissions
 
  Return int 0 on success, other on failure
 
@@ -112,7 +112,7 @@ sub setGuiPermissions
 
 =item _installFiles()
 
- Install AjaXplorer files in production directory.
+ Install AjaXplorer files in production directory
 
  Return int 0 on success, other on failure
 

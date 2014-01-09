@@ -42,7 +42,7 @@ use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
 
- i-MSCP PhpMyAdmin addon uninstaller.
+ i-MSCP PhpMyAdmin addon uninstaller
 
 =head1 PUBLIC METHODS
 
@@ -50,7 +50,7 @@ use parent 'Common::SingletonClass';
 
 =item uninstall()
 
- Process uninstall tasks.
+ Process uninstall tasks
 
  Return int 0 on success, other on failure
 
@@ -77,7 +77,7 @@ sub uninstall
 
 =item _init()
 
- Called by getInstance(). Initialize instance.
+ Called by getInstance(). Initialize instance
 
  Return Addons::PhpMyAdmin::Uninstaller
 
@@ -100,7 +100,7 @@ sub _init
 
 =item _removeSqlUser()
 
- Remove any PhpMyAdmin SQL user.
+ Remove any PhpMyAdmin SQL user
 
  Return int 0
 
@@ -125,7 +125,7 @@ sub _removeSqlUser
 
 =item _removeSqlDatabase()
 
- Remove PhpMyAdmin SQL database.
+ Remove PhpMyAdmin SQL database
 
  Return int 0
 
@@ -146,7 +146,7 @@ sub _removeSqlDatabase
 
 =item _removeFiles()
 
- Remove PhpMyAdmin files.
+ Remove PhpMyAdmin files
 
  Return int 0
 

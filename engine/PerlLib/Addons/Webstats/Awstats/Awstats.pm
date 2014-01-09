@@ -45,7 +45,7 @@ use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
 
- AWStats addon for i-MSCP.
+ AWStats addon for i-MSCP
 
  Advanced Web Statistics (AWStats) is a powerful Web server logfile analyzer written in perl that shows you all your Web
 statistics including visits, unique visitors, pages, hits, rush hours, search engines, keywords used to find your site,
@@ -59,7 +59,7 @@ robots, broken links and more.
 
 =item showDialog(\%dialog)
 
- Show dialog.
+ Show dialog
 
  Param iMSCP::Dialog::Dialog|iMSCP::Dialog::Whiptail $dialog
  Return int 0 or 30
@@ -71,12 +71,12 @@ sub showDialog($$)
 	my ($self, $dialog) = @_;
 
 	require Addons::Webstats::Awstats::Installer;
-	Addons::Webstats::Awstats::Installer->showDialog($dialog);
+	Addons::Webstats::Awstats::Installer->getInstance()->showDialog($dialog);
 }
 
 =item preinstall()
 
- Process preinstall tasks.
+ Process preinstall tasks
 
  Return int 0 on success, other on failure
 
@@ -85,12 +85,12 @@ sub showDialog($$)
 sub preinstall
 {
 	require Addons::Webstats::Awstats::Installer;
-	Addons::Webstats::Awstats::Installer->preinstall();
+	Addons::Webstats::Awstats::Installer->getInstance()->preinstall();
 }
 
 =item install()
 
- Process install tasks.
+ Process install tasks
 
  Return int 0 on success, other on failure
 
@@ -99,12 +99,12 @@ sub preinstall
 sub install
 {
 	require Addons::Webstats::Awstats::Installer;
-	Addons::Webstats::Awstats::Installer->install();
+	Addons::Webstats::Awstats::Installer->getInstance()->install();
 }
 
 =item uninstall()
 
- Process uninstall tasks.
+ Process uninstall tasks
 
  Return int 0 on success, other on failure
 
@@ -113,12 +113,12 @@ sub install
 sub uninstall
 {
 	require Addons::Webstats::Awstats::Uninstaller;
-	Addons::Webstats::Awstats::Uninstaller->uninstall();
+	Addons::Webstats::Awstats::Uninstaller->getInstance()->uninstall();
 }
 
 =item setEnginePermissions()
 
- Set files permissions.
+ Set files permissions
 
  Return int 0 on success, other on failure
 
@@ -127,12 +127,12 @@ sub uninstall
 sub setEnginePermissions
 {
 	require Addons::Webstats::Awstats::Installer;
-	Addons::Webstats::Awstats::Installer->setEnginePermissions();
+	Addons::Webstats::Awstats::Installer->getInstance()->setEnginePermissions();
 }
 
 =item getPackages()
 
- Get list of Debian packages to which this addon depends.
+ Get list of Debian packages to which this addon depends
 
  Return array_ref An array containing list of packages
 
@@ -145,7 +145,7 @@ sub getPackages
 
 =item addDmn(\%data)
 
- Add AWStats configuration file and cron task.
+ Add AWStats configuration file and cron task
 
  Param HASH reference - A reference to a hash containing domain data
  Return int - 0 on success, 1 on failure
@@ -225,7 +225,7 @@ sub addDmn($$)
 
 =item deleteDmn(\%data)
 
- Delete AWStats configuration.
+ Delete AWStats configuration
 
  Param HASH reference - A reference to a hash containing domain data
  Return int - 0 on success, 1 on failure
@@ -294,7 +294,7 @@ sub deleteDmn($$)
 
 =item preaddSub(\%data)
 
- Schedule addition of Apache configuration snipped for AWStats.
+ Schedule addition of Apache configuration snipped for AWStats
 
  Param HASH reference - A reference to a hash containing domain data
  Return int - 0 on success, 1 on failure
@@ -310,7 +310,7 @@ sub preaddSub
 
 =item addSub(\%data)
 
- Add AWStats configuration file and cron task.
+ Add AWStats configuration file and cron task
 
  Param HASH reference - A reference to a hash containing domain data
  Return int - 0 on success, 1 on failure
@@ -326,7 +326,7 @@ sub addSub
 
 =item deleteSub(\%data)
 
- Delete AWStats configuration.
+ Delete AWStats configuration
 
  Param HASH reference - A reference to a hash containing domain data
  Return int - 0 on success, 1 on failure
@@ -348,7 +348,7 @@ sub deleteSub($$)
 
 =item _init()
 
- Called by getInstance() - Initialize instance.
+ Called by getInstance() - Initialize instance
 
  Return Addons::Awstats
 
@@ -371,7 +371,7 @@ sub _init
 
 =item _addAwstatsSection(\$cfgTpl, $filename)
 
- Add Apache configuration snippet for AWStats in the given domain vhost template file.
+ Add Apache configuration snippet for AWStats in the given domain vhost template file
 
  Listener responsible to build and insert Apache configuration snipped for AWStats in the given domain vhost file. The
 type of configuration snippet inserted depends on the AWStats mode (dynamic or static).
@@ -392,21 +392,25 @@ sub _addAwstatsSection($$$)
 		require Servers::httpd;
 		my $httpd = Servers::httpd->factory();
 
-		# Build Apache configuration snippet for AWStats
-		my $addonsConfSection = process(
-			{
-				AWSTATS_WEB_DIR => $main::imscpConfig{'AWSTATS_WEB_DIR'},
-				WEBSTATS_GROUP_AUTH => $main::imscpConfig{'WEBSTATS_GROUP_AUTH'},
-				WEBSTATS_RPATH => $main::imscpConfig{'WEBSTATS_RPATH'},
-				HTACCESS_USERS_FILE_NAME => $httpd->{'config'}->{'HTACCESS_USERS_FILE_NAME'},
-				HTACCESS_GROUPS_FILE_NAME => $httpd->{'config'}->{'HTACCESS_GROUPS_FILE_NAME'}
-			},
-			$self->_getApacheConfSnippet()
-		);
+		# Build and add Apache configuration snippet for AWStats
 
-		# Add Apache configuration snippet for AWStats into the addons configuration section
 		$$cfgTpl = replaceBloc(
-			"# SECTION addons BEGIN.\n", "# SECTION addons END.\n", "$addonsConfSection", $$cfgTpl, 'preserve'
+        	"# SECTION addons BEGIN.\n",
+        	"# SECTION addons END.\n",
+			process(
+				{
+					AWSTATS_WEB_DIR => $main::imscpConfig{'AWSTATS_WEB_DIR'},
+					WEBSTATS_GROUP_AUTH => $main::imscpConfig{'WEBSTATS_GROUP_AUTH'},
+					WEBSTATS_RPATH => $main::imscpConfig{'WEBSTATS_RPATH'},
+					HTACCESS_USERS_FILE_NAME => $httpd->{'config'}->{'HTACCESS_USERS_FILE_NAME'},
+					HTACCESS_GROUPS_FILE_NAME => $httpd->{'config'}->{'HTACCESS_GROUPS_FILE_NAME'},
+					AUTHZ_ALLOW_ALL => (version->new("v$httpd->{'config'}->{'APACHE_VERSION'}") >= version->new('v2.4.0'))
+						? 'Require all granted' : 'Allow from all'
+				},
+				$self->_getApacheConfSnippet()
+			),
+			$$cfgTpl,
+			'preserve'
 		);
 	}
 
@@ -415,7 +419,7 @@ sub _addAwstatsSection($$$)
 
 =item _getApacheConfSnippet()
 
- Get apache configuration snippet.
+ Get apache configuration snippet
 
  Return string
 
@@ -427,12 +431,13 @@ sub _getApacheConfSnippet
 		<<EOF;
     Alias /awstatsicons "{AWSTATS_WEB_DIR}/icon/"
     Alias /{WEBSTATS_RPATH} "{HOME_DIR}/statistics/"
+
     <Directory "{HOME_DIR}/statistics">
         AllowOverride AuthConfig
         DirectoryIndex awstats.{DOMAIN_NAME}.html
-        Order allow,deny
-        Allow from all
+        {AUTHZ_ALLOW_ALL}
     </Directory>
+
     <Location /{WEBSTATS_RPATH}>
         AuthType Basic
         AuthName "Statistics for domain {DOMAIN_NAME}"
@@ -446,11 +451,10 @@ EOF
     ProxyRequests Off
     ProxyPass /{WEBSTATS_RPATH} http://localhost/{WEBSTATS_RPATH}/{DOMAIN_NAME}
     ProxyPassReverse /{WEBSTATS_RPATH} http://localhost/{WEBSTATS_RPATH}/{DOMAIN_NAME}
+
     <Location /{WEBSTATS_RPATH}>
-        <IfModule mod_rewrite.c>
-            RewriteEngine on
-            RewriteRule ^(.+)\?config=([^\?\&]+)(.*) \$1\?config={DOMAIN_NAME}&\$3 [NC,L]
-        </IfModule>
+        RewriteEngine on
+        RewriteRule ^(.+)\?config=([^\?\&]+)(.*) \$1\?config={DOMAIN_NAME}&\$3 [NC,L]
         AuthType Basic
         AuthName "Statistics for domain {DOMAIN_NAME}"
         AuthUserFile {HOME_DIR}/{HTACCESS_USERS_FILE_NAME}
@@ -463,7 +467,7 @@ EOF
 
 =item _addAwstatsConfig(\$data)
 
- Add awstats configuration file for the given domain.
+ Add awstats configuration file for the given domain
 
  Param HASH reference - A reference to a hash containing domain data
  Return int - 0 on success, other on failure
@@ -521,7 +525,7 @@ sub _addAwstatsConfig
 
 =item _addAwstatsCronTask(\%data)
 
- Add Awstats cron task.
+ Add Awstats cron task
 
  Param HASH reference - A reference to a hash containing domain data
  Return int - 0 on success, 1 on failure
@@ -554,7 +558,7 @@ sub _addAwstatsCronTask($$)
 
 =item _deleteAwstatsCronTask(\%data)
 
- Remove AWStats cron task.
+ Remove AWStats cron task
 
  Param HASH reference - A reference to a hash containing domain data
  Return int - 0 on success, 1 on failure

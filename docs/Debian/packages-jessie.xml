@@ -1,13 +1,12 @@
 <packages>
     <httpd>
         <alternative default="apache_php_fpm">
-            <apache_fcgi>
+            <apache_fcgid>
                 <package>apache2</package>
                 <package>apache2-suexec-pristine</package>
                 <package>libapache2-mod-fcgid</package>
-                <package>libapache2-mod-fastcgi</package>
                 <package>php5-cgi</package>
-            </apache_fcgi>
+            </apache_fcgid>
             <apache_itk>
                 <package>apache2</package>
                 <package>libapache2-mod-php5</package>

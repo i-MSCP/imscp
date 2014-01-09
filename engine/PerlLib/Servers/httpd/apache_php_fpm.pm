@@ -2,7 +2,7 @@
 
 =head1 NAME
 
- Servers::httpd::apache_php_fpm - i-MSCP Apache PHP-FPM Server implementation
+ Servers::httpd::apache_php_fpm - i-MSCP Apache2/PHP-FPM Server implementation
 
 =cut
 
@@ -51,7 +51,7 @@ use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
 
- i-MSCP Apache PHP FPM Server implementation.
+ i-MSCP Apache2/PHP-FPM Server implementation
 
 =head1 PUBLIC METHODS
 
@@ -179,8 +179,6 @@ sub addUser($$)
 {
 	my ($self, $data) = @_;
 
-	fatal('Hash reference expected') if ref $data ne 'HASH';
-
 	my $rs = $self->{'hooksManager'}->trigger('beforeHttpdAddUser', $data);
 	return $rs if $rs;
 
@@ -210,8 +208,6 @@ sub deleteUser($$)
 {
 	my ($self, $data) = @_;
 
-	fatal('Hash reference expected') if ref $data ne 'HASH';
-
 	my $rs = $self->{'hooksManager'}->trigger('beforeHttpdDelUser', $data);
 	return $rs if $rs;
 
@@ -236,8 +232,6 @@ sub deleteUser($$)
 sub addDmn($$)
 {
 	my ($self, $data) = @_;
-
-	fatal('Hash reference expected') if ref $data ne 'HASH';
 
 	my $rs = $self->{'hooksManager'}->trigger('beforeHttpdAddDmn', $data);
 	return $rs if $rs;
@@ -270,8 +264,6 @@ sub restoreDmn($$)
 {
 	my ($self, $data) = @_;
 
-	fatal('Hash reference expected') if ref $data ne 'HASH';
-
 	my $rs = $self->{'hooksManager'}->trigger('beforeHttpdRestoreDmn', $data);
 	return $rs if $rs;
 
@@ -298,8 +290,6 @@ sub disableDmn($$)
 {
 	my ($self, $data) = @_;
 
-	fatal('Hash reference expected') if ref $data ne 'HASH';
-
 	my $rs = $self->{'hooksManager'}->trigger('beforeHttpdDisableDmn', $data);
 	return $rs if $rs;
 
@@ -307,7 +297,7 @@ sub disableDmn($$)
 	$self->setData(
 		{
 			AUTHZ_ALLOW_ALL => (version->new("v$self->{'config'}->{'APACHE_VERSION'}") >= version->new('v2.4.0'))
-				? 'Require all granted' : "Order allow,deny\n    Allow from all"
+				? 'Require all granted' : 'Allow from all'
 		}
 	);
 
@@ -346,8 +336,6 @@ sub disableDmn($$)
 sub deleteDmn($$)
 {
 	my ($self, $data) = @_;
-
-	fatal('Hash reference expected') if ref $data ne 'HASH';
 
 	my $rs = $self->{'hooksManager'}->trigger('beforeHttpdDelDmn', $data);
 	return $rs if $rs;
@@ -468,8 +456,6 @@ sub addSub($$)
 {
 	my ($self, $data) = @_;
 
-	fatal('Hash reference expected') if ref $data ne 'HASH';
-
 	my $rs = $self->{'hooksManager'}->trigger('beforeHttpdAddSub', $data);
 	return $rs if $rs;
 
@@ -501,8 +487,6 @@ sub restoreSub($$)
 {
 	my ($self, $data) = @_;
 
-	fatal('Hash reference expected') if ref $data ne 'HASH';
-
 	my $rs = $self->{'hooksManager'}->trigger('beforeHttpdRestoreSub', $data);
 	return $rs if $rs;
 
@@ -531,8 +515,6 @@ sub disableSub($$)
 {
 	my ($self, $data) = @_;
 
-	fatal('Hash reference expected') if ref $data ne 'HASH';
-
 	my $rs = $self->{'hooksManager'}->trigger('beforeHttpdDisableSub', $data);
 	return $rs if $rs;
 
@@ -555,8 +537,6 @@ sub deleteSub($$)
 {
 	my ($self, $data) = @_;
 
-	fatal('Hash reference expected') if ref $data ne 'HASH';
-
 	my $rs = $self->{'hooksManager'}->trigger('beforeHttpdDelSub', $data);
 
 	$rs = $self->deleteDmn($data);
@@ -577,8 +557,6 @@ sub deleteSub($$)
 sub addHtuser($$)
 {
 	my ($self, $data) = @_;
-
-	fatal('Hash reference expected') if ref $data ne 'HASH';
 
 	my $webDir = $data->{'WEB_DIR'};
 	my $fileName = $self->{'config'}->{'HTACCESS_USERS_FILE_NAME'};
@@ -631,8 +609,6 @@ sub deleteHtuser($$)
 {
 	my ($self, $data) = @_;
 
-	fatal('Hash reference expected') if ref $data ne 'HASH';
-
 	my $webDir = $data->{'WEB_DIR'};
 	my $fileName = $self->{'config'}->{'HTACCESS_USERS_FILE_NAME'};
 	my $filePath = "$webDir/$fileName";
@@ -682,8 +658,6 @@ sub deleteHtuser($$)
 sub addHtgroup($$)
 {
 	my ($self, $data) = @_;;
-
-	fatal('Hash reference expected') if ref $data ne 'HASH';
 
 	my $webDir = $data->{'WEB_DIR'};
 	my $fileName = $self->{'config'}->{'HTACCESS_GROUPS_FILE_NAME'};
@@ -736,8 +710,6 @@ sub deleteHtgroup
 {
 	my ($self, $data) = @_;
 
-	fatal('Hash reference expected') if ref $data ne 'HASH';
-
 	my $webDir = $data->{'WEB_DIR'};
 	my $fileName = $self->{'config'}->{'HTACCESS_GROUPS_FILE_NAME'};
 	my $filePath = "$webDir/$fileName";
@@ -787,8 +759,6 @@ sub deleteHtgroup
 sub addHtaccess
 {
 	my ($self, $data) = @_;
-
-	fatal('Hash reference expected') if ref $data ne 'HASH';
 
 	# Here we process only if AUTH_PATH directory exists
 	# Note: It's temporary fix for 1.1.0-rc2 (See #749)
@@ -848,8 +818,6 @@ sub deleteHtaccess($$)
 {
 	my ($self, $data) = @_;
 
-	fatal('Hash reference expected') if ref $data ne 'HASH';
-
 	# Here we process only if AUTH_PATH directory exists
 	# Note: It's temporary fix for 1.1.0-rc2 (See #749)
 	if(-d $data->{'AUTH_PATH'}) {
@@ -905,8 +873,6 @@ sub deleteHtaccess($$)
 sub addIps($$)
 {
 	my ($self, $data) = @_;
-
-	fatal('Hash reference expected') if ref $data ne 'HASH';
 
 	my $wrkFile = "$self->{'apacheWrkDir'}/00_nameserver.conf";
 
@@ -1030,8 +996,6 @@ sub buildConfFile($$$;$)
 
 	$options ||= {};
 
-	fatal('Hash reference expected') if ref $options ne 'HASH';
-
 	my ($name, $path, $suffix) = fileparse($file);
 
 	$file = "$self->{'apacheCfgDir'}/$file" unless -d $path && $path ne './';
@@ -1049,10 +1013,10 @@ sub buildConfFile($$$;$)
 	$cfgTpl = $self->buildConf($cfgTpl, "$name$suffix");
 	return 1 unless defined $cfgTpl;
 
-	$cfgTpl =~ s/\n{2,}/\n\n/g; # Remove any duplicate blank lines
-
 	$rs = $self->{'hooksManager'}->trigger('afterHttpdBuildConfFile', \$cfgTpl, "$name$suffix", $data, $options);
 	return $rs if $rs;
+
+	$cfgTpl =~ s/\n{2,}/\n\n/g; # Remove any duplicate blank lines
 
 	$fileH = iMSCP::File->new(
 		'filename' => ($options->{'destination'} ? $options->{'destination'} : "$self->{'apacheWrkDir'}/$name$suffix")
@@ -1088,8 +1052,6 @@ sub installConfFile($$;$)
 	my ($self, $file, $options) = @_;
 
 	$options ||= {};
-
-	fatal('Hash reference expected') if ref $options ne 'HASH';
 
 	my ($name, $path, $suffix) = fileparse($file);
 
@@ -1130,8 +1092,6 @@ sub installConfFile($$;$)
 sub setData($$)
 {
 	my ($self, $data) = @_;
-
-	fatal('Hash reference expected') if ref $data ne 'HASH';
 
 	@{$self->{'data'}}{keys %{$data}} = values %{$data};
 
@@ -1739,7 +1699,7 @@ sub _init
 	) and fatal('apache_php_fpm - afterHttpdInit hook has failed');
 
 	# Register event listener which is responsible to clean vhost template files
-	$self->{'hooksManager'}->register('beforeHttpdBuildConfFile', sub { $self->_cleanTemplate(@_)});
+	$self->{'hooksManager'}->register('afterHttpdBuildConfFile', sub { $self->_cleanTemplate(@_)});
 
 	$self;
 }
@@ -1756,8 +1716,6 @@ sub _init
 sub _addCfg($$)
 {
 	my ($self, $data) = @_;
-
-	fatal('Hash reference expected') if ref $data ne 'HASH';
 
 	my $rs = $self->{'hooksManager'}->trigger('beforeHttpdAddCfg', $data);
 	return $rs if $rs;
@@ -1815,10 +1773,9 @@ sub _addCfg($$)
 
 	$self->setData(
 		{
-			PHP_VERSION => $self->{'config'}->{'PHP_VERSION'},
 			APACHE_CUSTOM_SITES_CONFIG_DIR => $self->{'config'}->{'APACHE_CUSTOM_SITES_CONFIG_DIR'},
 			AUTHZ_ALLOW_ALL => (version->new("v$self->{'config'}->{'APACHE_VERSION'}") >= version->new('v2.4.0'))
-				? 'Require all granted' : "Order allow,deny\n    Allow from all"
+				? 'Require all granted' : 'Allow from all'
 		}
 	);
 
@@ -1910,8 +1867,6 @@ sub _dmnFolders($$)
 {
 	my ($self, $data) = @_;
 
-	fatal('Hash reference expected') if ref $data ne 'HASH';
-
 	my @folders = ();
 
 	$self->{'hooksManager'}->trigger('beforeHttpdDmnFolders', \@folders);
@@ -1933,8 +1888,6 @@ sub _dmnFolders($$)
 sub _addFiles($$)
 {
 	my ($self, $data) = @_;
-
-	fatal('Hash reference expected') if ref $data ne 'HASH';
 
 	my $rs = $self->{'hooksManager'}->trigger('beforeHttpdAddFiles', $data);
 	return $rs if $rs;
@@ -2122,12 +2075,13 @@ sub _cleanTemplate($$$)
 			$$cfgTpl = replaceBloc("# SECTION php_disabled BEGIN.\n", "# SECTION php_disabled END.\n", '', $$cfgTpl);
 		} else {
 			$$cfgTpl = replaceBloc("# SECTION php_enabled BEGIN.\n", "# SECTION php_enabled END.\n", '', $$cfgTpl);
-			$$cfgTpl = replaceBloc("# SECTION php_fpm BEGIN.\n", "# SECTION php_fpm END.\n", '', $$cfgTpl);
 		}
 
 		$$cfgTpl = replaceBloc("# SECTION fcgid BEGIN.\n", "# SECTION fcgid END.\n", '', $$cfgTpl);
-		$$cfgTpl = replaceBloc("# SECTION fastcgi BEGIN.\n", "# SECTION fastcgi END.\n", '', $$cfgTpl);
 		$$cfgTpl = replaceBloc("# SECTION itk BEGIN.\n", "# SECTION itk END.\n", '', $$cfgTpl);
+
+		$$cfgTpl = replaceBloc("# SECTION custom BEGIN.\n", "# SECTION custom END.\n", '', $$cfgTpl);
+		$$cfgTpl = replaceBloc("# SECTION addons BEGIN.\n", "# SECTION addons END.\n", '', $$cfgTpl);
 	}
 
 	0;
