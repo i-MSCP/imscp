@@ -81,7 +81,7 @@
 		<input type="hidden" name="uaction" value="add_user"/>
 		<input type="hidden" name="id" value="{ID}"/>
 		<input name="Add_New" type="submit" id="Add_New" value="{TR_ADD}"/>
-		<a class ="link_as_button" href="sql_manage.php">{TR_CANCEL}</a>
+		<a class="link_as_button" href="sql_manage.php">{TR_CANCEL}</a>
 	</div>
 	<!-- EDP: create_sqluser -->
 </form>

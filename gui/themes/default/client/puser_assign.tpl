@@ -42,7 +42,7 @@
 	</table>
 
 	<div class="buttons">
-		<a class ="link_as_button" href="protected_user_manage.php">{TR_CANCEL}</a>
+		<a class="link_as_button" href="protected_user_manage.php">{TR_CANCEL}</a>
 		<input type="hidden" name="nadmin_name" value="{UID}"/>
 		<input type="hidden" name="uaction" value=""/>
 	</div>

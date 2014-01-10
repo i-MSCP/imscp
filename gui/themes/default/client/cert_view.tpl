@@ -43,6 +43,6 @@
 		<input name="send" type="submit" value="{TR_SAVE}"/>
 		<!-- EDP: cert_enable -->
 		<input name="delete" type="submit" value="{TR_DELETE}"/>
-		<a class ="link_as_button" href="domains_manage.php">{TR_CANCEL}</a>
+		<a class="link_as_button" href="domains_manage.php">{TR_CANCEL}</a>
 	</div>
 </form>

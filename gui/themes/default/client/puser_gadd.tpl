@@ -17,6 +17,6 @@
 	<div class="buttons">
 		<input type="hidden" name="uaction" value="add_group"/>
 		<input name="Submit" type="submit" value="{TR_ADD_GROUP}"/>
-		<a class ="link_as_button" href="protected_user_manage.php">{TR_CANCEL}</a>
+		<a class="link_as_button" href="protected_user_manage.php">{TR_CANCEL}</a>
 	</div>
 </form>

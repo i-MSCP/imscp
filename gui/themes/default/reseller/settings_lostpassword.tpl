@@ -85,6 +85,6 @@
 		<input type="hidden" name="sender_name" value="{SENDER_NAME_VALUE}"/>
 		<input type="hidden" name="uaction" value="apply"/>
 		<input name="Submit" type="submit" value="{TR_UPDATE}"/>
-		<a class ="link_as_button" href="users.php">{TR_CANCEL}</a>
+		<a class="link_as_button" href="users.php">{TR_CANCEL}</a>
 	</div>
 </form>

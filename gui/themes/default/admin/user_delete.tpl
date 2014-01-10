@@ -102,6 +102,6 @@
 	<div class="buttons">
 		<input type="hidden" name="user_id" value="{USER_ID}"/>
 		<input type="submit" id="submit" value="{TR_DELETE}"/>
-		<a class ="link_as_button" href="manage_users.php">{TR_CANCEL}</a>
+		<a class="link_as_button" href="manage_users.php">{TR_CANCEL}</a>
 	</div>
 </form>

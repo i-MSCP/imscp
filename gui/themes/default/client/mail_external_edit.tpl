@@ -139,6 +139,6 @@ $(document).ready(function () {
 
 	<div class="buttons">
 		<input name="submit" type="submit" value="{TR_UPDATE}"/>
-		<a class ="link_as_button" href="mail_external.php">{TR_CANCEL}</a>
+		<a class="link_as_button" href="mail_external.php">{TR_CANCEL}</a>
 	</div>
 </form>

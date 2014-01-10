@@ -74,6 +74,6 @@
 
 	<div class="buttons">
 		<input type="hidden" name="uaction" id="uaction" value=""/>
-		<a class ="link_as_button" href="settings.php">{TR_CANCEL}</a>
+		<a class="link_as_button" href="settings.php">{TR_CANCEL}</a>
 	</div>
 </form>

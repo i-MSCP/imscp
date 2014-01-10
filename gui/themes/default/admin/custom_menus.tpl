@@ -91,7 +91,7 @@
 	<!-- BDP: add_menu -->
 	<div class="buttons">
 		<input name="addMenu" type="button" value="{TR_ADD}" onclick="return sbmt(document.forms[0], 'menu_add');"/>
-		<a class ="link_as_button" href="settings.php" tabindex="4">{TR_CANCEL}</a>
+		<a class="link_as_button" href="settings.php" tabindex="4">{TR_CANCEL}</a>
 	</div>
 	<!-- EDP: add_menu -->
 
@@ -99,7 +99,7 @@
 	<div class="buttons">
 		<input name="editMenu" type="button" value="{TR_UPDATE}"
 			   onclick="return sbmt(document.forms[0], 'menu_update');"/>
-		<a class ="link_as_button" href="custom_menus.php">{TR_CANCEL}</a>
+		<a class="link_as_button" href="custom_menus.php">{TR_CANCEL}</a>
 		<input type="hidden" name="edit_id" value="{EDIT_ID}" /">
 	</div>
 	<!-- EDP: edit_menu -->

@@ -5,7 +5,7 @@
 
 	<div class="buttons">
 		<input type="submit" name="submit" value="{TR_ACTION}"/>
-		<a class ="link_as_button" href="mail_accounts.php">{TR_CANCEL}</a>
+		<a class="link_as_button" href="mail_accounts.php">{TR_CANCEL}</a>
 		<input type="hidden" name="mail_account_id" value="{MAIL_ACCOUNT_ID}"/>
 	</div>
 </form>

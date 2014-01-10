@@ -102,6 +102,6 @@
 	<!-- EDP: php_editor_first_block -->
 	<div class="buttons">
 		<input name="Submit" type="submit" value="{TR_UPDATE_DATA}"/>
-		<a class ="link_as_button" href="domains_manage.php">{TR_CANCEL}</a>
+		<a class="link_as_button" href="domains_manage.php">{TR_CANCEL}</a>
 	</div>
 </form>

@@ -95,10 +95,10 @@
 			   onclick="return sbmt(document.forms[0],'protect_it');"/>
 
 		<!-- BDP: unprotect_it -->
-		<a class ="link_as_button" href="protected_areas_delete.php?id={CDIR}">{TR_UNPROTECT_IT}</a>
+		<a class="link_as_button" href="protected_areas_delete.php?id={CDIR}">{TR_UNPROTECT_IT}</a>
 		<!-- EDP: unprotect_it -->
 
-		<a class ="link_as_button" href="protected_user_manage.php">{TR_MANAGE_USERS_AND_GROUPS}</a>
-		<a class ="link_as_button" href="protected_areas.php">{TR_CANCEL}</a>
+		<a class="link_as_button" href="protected_user_manage.php">{TR_MANAGE_USERS_AND_GROUPS}</a>
+		<a class="link_as_button" href="protected_areas.php">{TR_CANCEL}</a>
 	</div>
 </form>

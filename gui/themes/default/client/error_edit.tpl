@@ -6,6 +6,6 @@
 		<input type="hidden" name="uaction" value="updt_error"/>
 		<input type="hidden" name="eid" value="{EID}"/>
 		<input name="Submit" type="submit" value="{TR_SAVE}"/>
-		<a class ="link_as_button" href="error_pages.php">{TR_CANCEL}</a>
+		<a class="link_as_button" href="error_pages.php">{TR_CANCEL}</a>
 	</div>
 </form>

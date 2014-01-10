@@ -123,6 +123,6 @@
 
 	<div class="buttons">
 		<input name="Submit" type="submit" value="{TR_ADD}"/>
-		<a class ="link_as_button" href="alias.php">{TR_CANCEL}</a>
+		<a class="link_as_button" href="alias.php">{TR_CANCEL}</a>
 	</div>
 </form>

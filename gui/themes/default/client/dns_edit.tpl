@@ -200,7 +200,7 @@ function filterChars(e, allowed) {
 		<!-- BDP: form_add_mode -->
 		<input name="Submit" type="submit" value="{TR_ADD}"/>
 		<!-- EDP: form_add_mode -->
-		<a class ="link_as_button" href="domains_manage.php">{TR_CANCEL}</a>
+		<a class="link_as_button" href="domains_manage.php">{TR_CANCEL}</a>
 	</div>
 </form>
 
