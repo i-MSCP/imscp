@@ -154,7 +154,7 @@ sub _readIO
 {
 	my ($sel, $stdout, $stderr) = @_;
 
-	while (my @ready = $sel->can_read()) {
+	while (my @ready = $sel->can_read(3)) {
 		if(@ready) {
 			foreach my $fh (@ready) {
 				if ($stderr && fileno($fh) == fileno(CATCHERR)) {
@@ -165,9 +165,9 @@ sub _readIO
 
 				$sel->remove($fh) if eof($fh);
 			}
+		} else {
+			last;
 		}
-
-		last;
 	}
 }
 

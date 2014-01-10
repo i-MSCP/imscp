@@ -17,11 +17,11 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
-# @category		i-MSCP
-# @copyright	2010-2014 by i-MSCP | http://i-mscp.net
-# @author		Daniel Andreca <sci2tech@gmail.com>
-# @link			http://i-mscp.net i-MSCP Home Site
-# @license      http://www.gnu.org/licenses/gpl-2.0.html GPL v2
+# @category    i-MSCP
+# @copyright   2010-2014 by i-MSCP | http://i-mscp.net
+# @author      Daniel Andreca <sci2tech@gmail.com>
+# @link        http://i-mscp.net i-MSCP Home Site
+# @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
 #####################################################################################
 # Package description:
@@ -78,8 +78,16 @@ sub _init
 	};
 
 	$self->{'programs'} = {
-		'php' => { 'version' => "$main::imscpConfig{'CMD_PHP'} -v", 'regexp' => 'PHP ([\d.]+)', 'minversion' => '5.3.2' },
-		'perl' => { 'version' => "$main::imscpConfig{'CMD_PERL'} -v", 'regexp' => 'v([\d.]+)', 'minversion' => '5.10.1' }
+		'PHP' => {
+			'version_command' => "$main::imscpConfig{'CMD_PHP'} -v",
+			'version_regexp' => 'PHP\s([\d.]+)',
+			'minimum_version' => '5.3.2'
+		},
+		'Perl' => {
+			'version_command' => "$main::imscpConfig{'CMD_PERL'} -v",
+			'version_regexp' => 'v([\d.]+)',
+			'minimum_version' => '5.10.1'
+		}
 	};
 }
 
@@ -90,8 +98,7 @@ sub _init
 # @return void
 sub test
 {
-	my $self = shift;
-	my $test = shift;
+	my ($self, $test) = @_;
 
 	if($self->can($test)) {
 		$self->$test();
@@ -131,6 +138,7 @@ sub user
 sub _modules
 {
 	my $self = shift;
+
 	my @mod_missing = ();
 
 	for my $mod (keys %{$self->{'needed'}}) {
@@ -153,24 +161,27 @@ sub _modules
 sub _externalProgram
 {
 	my $self = shift;
-	my ($rs, $stdout, $stderr);
 
-	$rs = execute('which which', \$stdout, $stderr);
+	my ($stdout, $stderr);
+	my $rs = execute('which which', \$stdout, $stderr);
 	debug($stdout) if $stdout;
 	debug($stderr) if $rs && $stderr;
 	fatal("Unable to find the 'which' program.") if $rs;
 
-	for my $program (keys %{$self->{'programs'}}){
-		$rs = execute("which $program", \$stdout, \$stderr);
+	for my $program (keys %{$self->{'programs'}}) {
+		my $lcProgram = lc($program);
+
+		$rs = execute("which $lcProgram", \$stdout, \$stderr);
 		debug($stdout) if $stdout;
 		debug($stderr) if $stderr && $rs;
-		fatal("Unable to find the '$program' program.") if $rs;
+		fatal("Unable to find the $program command.") if $rs;
 
-		if($self->{'programs'}->{$program}->{'version'}) {
+		if(exists $self->{'programs'}->{$program}->{'version_command'}) {
 			my $result = $self->_programVersions(
-				$self->{'programs'}->{$program}->{'version'},
-				$self->{'programs'}->{$program}->{'regexp'},
-				$self->{'programs'}->{$program}->{'minversion'}
+				$program,
+				$self->{'programs'}->{$program}->{'version_command'},
+				$self->{'programs'}->{$program}->{'version_regexp'},
+				$self->{'programs'}->{$program}->{'minimum_version'}
 			);
 
 			fatal "$program $result" if $result;
@@ -183,22 +194,24 @@ sub _externalProgram
 # @throws fatal error if a program is not found on the system
 # @access private
 # @param self $self iMSCP::Requirements instance
-# @param string $program program name
-# @param string $regexp regular expression to find the program version
-# @param string $minversion program minimum version required
+# @param string $program Program name
+# @param string $command Command to run to retrieve program version
+# @param string $regexp Regular expression to find the program version
+# @param string $minversion Program minimum version required
 # @return mixed 0 on success, error string on error
 sub _programVersions
 {
-	my ($self, $program, $regexp, $minversion) = @_;
+	my ($self, $program, $command, $regexp, $minversion) = @_;
 
 	my ($stdout, $stderr);
-	execute($program, \$stdout, \$stderr);
+	execute($command, \$stdout, \$stderr);
 	debug($stdout) if $stdout;
 	debug($stderr) if $stderr;
+
 	fatal("Unable to find $program version: No output") if ! $stdout;
 
 	if($regexp) {
-		if($stdout =~ m!$regexp!) {
+		if($stdout =~ /$regexp/m) {
 			$stdout = $1;
 		} else {
 			fatal("Unable to find $program version. Output was: $stdout");
@@ -214,13 +227,12 @@ sub _programVersions
 # @param string $version version to be checked
 # @param string $minversion minimum accepted version
 # @param string $maxversion OPTIONAL maximum accepted version
-# @return mixed 0 on success, string on failure
+# @return mixed 0 on success, error string on failure
 sub checkVersion
 {
-	my $self = shift;
-	my $version = shift;
-	my $minversion = shift;
-	my $maxversion = shift || '';
+	my ($self, $version, $minversion, $maxversion) = @_;
+
+	my $maxversion ||= '';
 
 	if(version->new($version) < version->new($minversion)) {
 		return "$version is older then required version $minversion";

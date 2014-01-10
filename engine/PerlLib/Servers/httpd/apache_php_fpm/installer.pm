@@ -1119,11 +1119,11 @@ sub _fixPhpErrorReportingValues
 	my ($stdout, $stderr);
 	my $rs = execute("$main::imscpConfig{'CMD_PHP'} -v", \$stdout, \$stderr);
 	debug($stdout) if $stdout;
-	warning($stderr) if $stderr && ! $rs;
+	debug($stderr) if $stderr && ! $rs;
 	error($stderr) if $stderr && $rs;
 	return $rs if $rs;
 
-	my $phpVersion = $1 if $stdout =~ /^PHP\s([0-9.]{3})/;
+	my $phpVersion = $1 if $stdout =~ /^PHP\s([\d.]{3})/;
 
 	if(defined $phpVersion) {
 		if($phpVersion == 5.3) {
