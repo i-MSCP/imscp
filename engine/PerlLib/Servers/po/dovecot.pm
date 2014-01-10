@@ -229,15 +229,14 @@ sub restart
 	my $rs = $self->{'hooksManager'}->trigger('beforePoRestart');
 	return $rs if $rs;
 
-	my ($stdout, $stderr);
-	$rs = execute("$main::imscpConfig{'SERVICE_MNGR'} $self->{'config'}->{'DOVECOT_SNAME'} restart", \$stdout, \$stderr);
+	my ($stdout);
+	$rs = execute("$main::imscpConfig{'SERVICE_MNGR'} $self->{'config'}->{'DOVECOT_SNAME'} restart", \$stdout, undef);
 	debug($stdout) if $stdout;
-	error($stderr) if $stderr && $rs > 1;
+	error('Unable to restart Dovecot') if $rs > 1;
 	return $rs if $rs > 1;
 
 	$self->{'hooksManager'}->trigger('afterPoRestart');
 }
-
 
 =item getTraffic($domainName)
 

@@ -76,25 +76,35 @@ sub execute($;$$)
 	my $pid;
 
 	if(defined $stdout && defined $stderr) {
-		$pid = open3(gensym, *CATCHOUT, *CATCHERR, $command);
-	$sel->add(*CATCHOUT, *CATCHERR);
-		_readIO($sel, $stdout, $stderr);
+		$pid = open3(gensym, \*CATCHOUT, \*CATCHERR, $command);
+		$sel->add(\*CATCHOUT, \*CATCHERR);
 	} elsif(defined $stdout) {
-		$pid = open3(gensym, *CATCHOUT, ">&STDERR", $command);
-		$sel->add(*CATCHOUT);
-		_readIO($sel, $stdout);
+		$pid = open3(gensym, \*CATCHOUT, ">&STDERR", $command);
+		$sel->add(\*CATCHOUT);
 	} elsif(defined $stderr) {
-		$pid = open3(gensym, ">&STDOUT", *CATCHERR, $command);
-		$sel->add(*CATCHERR);
-		_readIO($sel, undef, $stderr);
+		$pid = open3(gensym, ">&STDOUT", \*CATCHERR, $command);
+		$sel->add(\*CATCHERR);
 	} else {
 		system($command);
+		return getExitCode($?);
+	}
+
+	while (my @ready = $sel->can_read()) {
+		foreach my $fh (@ready) {
+			if ($stderr && fileno($fh) == fileno(\*CATCHERR)) {
+				$$stderr .= do { local $/; <$fh> };
+			} elsif($stdout) {
+				$$stdout .= do { local $/; <$fh> };
+			}
+
+			$sel->remove($fh) if eof($fh);
+		}
 	}
 
 	waitpid($pid, 0) if $pid;
 
-	close(CATCHOUT) if defined $stdout;
-	close(CATCHERR) if defined $stderr;
+	close(\*CATCHOUT) if defined $stdout;
+	close(\*CATCHERR) if defined $stderr;
 
 	chomp($$stdout ||= '');
 	chomp($$stderr ||= '');
@@ -148,27 +158,6 @@ sub getExitCode(;$)
 	}
 
 	$exitValue;
-}
-
-sub _readIO
-{
-	my ($sel, $stdout, $stderr) = @_;
-
-	while (my @ready = $sel->can_read(3)) {
-		if(@ready) {
-			foreach my $fh (@ready) {
-				if ($stderr && fileno($fh) == fileno(CATCHERR)) {
-					$$stderr = do { local $/; <CATCHERR> };
-				} elsif($stdout) {
-					$$stdout = do { local $/; <CATCHOUT> };
-				}
-
-				$sel->remove($fh) if eof($fh);
-			}
-		} else {
-			last;
-		}
-	}
 }
 
 =back
