@@ -163,7 +163,7 @@ sub _externalProgram
 	my $self = shift;
 
 	my ($stdout, $stderr);
-	my $rs = execute('which which', \$stdout, $stderr);
+	my $rs = execute('which which', \$stdout, \$stderr);
 	debug($stdout) if $stdout;
 	debug($stderr) if $rs && $stderr;
 	fatal("Unable to find the 'which' program.") if $rs;
