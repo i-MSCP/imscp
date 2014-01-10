@@ -244,7 +244,7 @@ sub postaddMail
 			my @maildirmakeCmdArgs = (escapeShell("$data->{'MAIL_QUOTA'}S"), escapeShell("$mailDir"));
 
 			my($stdout, $stderr);
-			$rs = execute("$self->{'config'}->{'CMD_MAILDIRMAKE'} -q @maildirmakeCmdArgs", \$stdout, $stderr);
+			$rs = execute("$self->{'config'}->{'CMD_MAILDIRMAKE'} -q @maildirmakeCmdArgs", \$stdout, \$stderr);
 			debug($stdout) if $stdout;
 			error($stderr) if $stderr && $rs;
 			return $rs if $rs;

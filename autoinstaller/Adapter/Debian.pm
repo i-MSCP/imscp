@@ -788,7 +788,7 @@ EOF
 	print $debconfSelectionsFile $selectionsFileContent;
 
 	my ($stdout, $stderr);
-	my $rs = execute("debconf-set-selections $debconfSelectionsFile", \$stdout, $stderr);
+	my $rs = execute("debconf-set-selections $debconfSelectionsFile", \$stdout, \$stderr);
 	debug($stdout) if $stdout;
 	error($stderr) if $rs && $stderr;
 	error('Unable to insert entries in debconf database') if $rs && ! $stderr;
