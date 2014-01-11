@@ -64,7 +64,7 @@ function client_updateHtaccessUser(&$dmn_id, &$uuser_id)
 				return;
 			}
 
-			$nadmin_password = cryptPasswordWithSalt($_POST['pass']);
+			$nadmin_password = cryptPasswordWithSalt($_POST['pass'], generateRandomSalt(true));
 
 			$change_status = $cfg->ITEM_TOCHANGE_STATUS;
 
