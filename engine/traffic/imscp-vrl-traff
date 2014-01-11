@@ -95,7 +95,7 @@ sub run
 		$rs = 1;
 	} elsif(%{$domains}) {
 		# Getting server list
-		@servers = iMSCP::Servers->getInstance()->get();
+		my @servers = iMSCP::Servers->getInstance()->get();
 
 		# For each domain (dmn|sub|als|alssub)
 		for (keys %{$domains}) {

@@ -248,7 +248,7 @@ sub restart
 
 sub getTraffic($$)
 {
-	my ($self, $domainName) = @_
+	my ($self, $domainName) = @_;
 
 	my $dbName = "$self->{'wrkDir'}/log.db";
 	my $logFile = "$main::imscpConfig{'TRAFF_LOG_DIR'}/mail.log";
