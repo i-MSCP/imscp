@@ -35,6 +35,8 @@ package Servers::httpd::apache_itk;
 use strict;
 use warnings;
 
+no if $] >= 5.017011, warnings => 'experimental::smartmatch';
+
 use iMSCP::Debug;
 use iMSCP::HooksManager;
 use iMSCP::Config;
@@ -1412,10 +1414,10 @@ sub start
 	my $rs = $self->{'hooksManager'}->trigger('beforeHttpdStart');
 	return $rs if $rs;
 
-	my ($stdout, $stderr);
-	$rs = execute("$main::imscpConfig{'SERVICE_MNGR'} $self->{'config'}->{'HTTPD_SNAME'} start", \$stdout, \$stderr);
+	my $stdout;
+	$rs = execute("$main::imscpConfig{'SERVICE_MNGR'} $self->{'config'}->{'HTTPD_SNAME'} start", \$stdout);
 	debug($stdout) if $stdout;
-	error($stderr) if $stderr && $rs > 1;
+	error('Unable to start Apache2') if $rs > 1;
 	return $rs if $rs > 1;
 
 	$self->{'hooksManager'}->trigger('afterHttpdStart');
@@ -1436,10 +1438,10 @@ sub stop
 	my $rs = $self->{'hooksManager'}->trigger('beforeHttpdStop');
 	return $rs if $rs;
 
-	my ($stdout, $stderr);
-	$rs = execute("$main::imscpConfig{'SERVICE_MNGR'} $self->{'config'}->{'HTTPD_SNAME'} stop", \$stdout, \$stderr);
+	my $stdout;
+	$rs = execute("$main::imscpConfig{'SERVICE_MNGR'} $self->{'config'}->{'HTTPD_SNAME'} stop", \$stdout);
 	debug($stdout) if $stdout;
-	error($stderr) if $stderr && $rs > 1;
+	error('Unable to stop Apache2') if $rs > 1;
 	return $rs if $rs > 1;
 
 	$self->{'hooksManager'}->trigger('afterHttpdStop');
@@ -1460,15 +1462,14 @@ sub restart
 	my $rs = $self->{'hooksManager'}->trigger('beforeHttpdRestart');
 	return $rs if $rs;
 
-	my ($stdout, $stderr);
+	my $stdout;
 	$rs = execute(
 		"$main::imscpConfig{'SERVICE_MNGR'} $self->{'config'}->{'HTTPD_SNAME'} " .
 			($self->{'forceRestart'} ? 'restart' : 'reload'),
 		\$stdout,
-		\$stderr
 	);
 	debug($stdout) if $stdout;
-	error($stderr) if $stderr && $rs > 1;
+	error('Unable to restart/reload Apache2') if $rs > 1;
 	return $rs if $rs > 1;
 
 	$self->{'hooksManager'}->trigger('afterHttpdRestart');

@@ -144,7 +144,7 @@ sub uninstall
 	$rs = $self->{'hooksManager'}->trigger('afterFtpdUninstall', 'proftpd');
 	return $rs if $rs;
 
-	$self->{'restart'};
+	$self->{'restart'} = 'yes';
 
 	0;
 }
@@ -210,10 +210,10 @@ sub start
 	my $rs = $self->{'hooksManager'}->trigger('beforeFtpdStart');
 	return $rs if $rs;
 
-	my ($stdout, $stderr);
-	$rs = execute("$main::imscpConfig{'SERVICE_MNGR'} $self->{'config'}->{'FTPD_SNAME'} start", \$stdout, \$stderr);
+	my $stdout;
+	$rs = execute("$main::imscpConfig{'SERVICE_MNGR'} $self->{'config'}->{'FTPD_SNAME'} start", \$stdout);
 	debug($stdout) if $stdout;
-	error($stderr) if $stderr && $rs > 1;
+	error('Unable to start Proftpd') if $rs > 1;
 	return $rs if $rs > 1;
 
 	$self->{'hooksManager'}->trigger('afterFtpdStart');
@@ -234,10 +234,10 @@ sub stop
 	my $rs = $self->{'hooksManager'}->trigger('beforeFtpdStop');
 	return $rs if $rs;
 
-	my ($stdout, $stderr);
-	$rs = execute("$main::imscpConfig{'SERVICE_MNGR'} $self->{'config'}->{'FTPD_SNAME'} stop", \$stdout, \$stderr);
+	my $stdout;
+	$rs = execute("$main::imscpConfig{'SERVICE_MNGR'} $self->{'config'}->{'FTPD_SNAME'} stop", \$stdout);
 	debug($stdout) if $stdout;
-	error($stderr) if $stderr && $rs > 1;
+	error('Unable to stop Proftpd') if $rs > 1;
 	return $rs if $rs > 1;
 
 	$self->{'hooksManager'}->trigger('afterFtpdStop');
@@ -258,10 +258,10 @@ sub restart
 	my $rs = $self->{'hooksManager'}->trigger('beforeFtpdRestart');
 	return $rs if $rs;
 
-	my ($stdout, $stderr);
-	$rs = execute("$main::imscpConfig{'SERVICE_MNGR'} $self->{'config'}->{'FTPD_SNAME'} restart", \$stdout, \$stderr);
+	my $stdout;
+	$rs = execute("$main::imscpConfig{'SERVICE_MNGR'} $self->{'config'}->{'FTPD_SNAME'} restart", \$stdout);
 	debug($stdout) if $stdout;
-	error($stderr) if $stderr && $rs > 1;
+	error('Unable to restart Proftpd') if $rs > 1;
 	return $rs if $rs > 1;
 
 	$self->{'hooksManager'}->trigger('afterFtpdRestart');

@@ -34,6 +34,8 @@ package Modules::Plugin;
 use strict;
 use warnings;
 
+no if $] >= 5.017011, warnings => 'experimental::smartmatch';
+
 use iMSCP::Debug;
 use iMSCP::Database;
 use iMSCP::HooksManager;

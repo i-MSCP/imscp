@@ -27,6 +27,8 @@
 use strict;
 use warnings;
 
+no if $] >= 5.017011, warnings => 'experimental::smartmatch';
+
 use FindBin;
 use iMSCP::HooksManager;
 use DateTime;
@@ -2217,7 +2219,7 @@ sub setupRestartServices
 	return $rs if $rs;
 
 	my @services = (
-		#['Variable holding command', 'command to execute', 'ignore error if 0 exit on error if 1']
+		#['Variable holding service name', 'command to execute', 'ignore error if 0 exit on error if 1']
 		[$main::imscpConfig{'IMSCP_NETWORK_SNAME'}, 'restart', 1],
 		[$main::imscpConfig{'IMSCP_DAEMON_SNAME'}, 'restart', 1],
 		[$main::imscpConfig{'POSTGREY_SNAME'}, 'restart', 1],
@@ -2231,22 +2233,26 @@ sub setupRestartServices
 	startDetail();
 
 	for (@services) {
-		if($_->[0] ne 'no' && -f "$main::imscpConfig{'INIT_SCRIPTS_DIR'}/$_->[0]") {
-			$rs = iMSCP::HooksManager->getInstance()->trigger('beforeSetupRestartService', $_->[0]);
+		my $sName = $_->[0];
+		my $task = $_->[1];
+		my $exitOnError = $_->[2];
+
+		if($sName ne 'no' && -f "$main::imscpConfig{'INIT_SCRIPTS_DIR'}/$sName") {
+			$rs = iMSCP::HooksManager->getInstance()->trigger('beforeSetupRestartService', $sName);
 			return $rs if $rs;
 
 			$rs = step(
-				sub { execute("$main::imscpConfig{'SERVICE_MNGR'} $_->[0] $_->[1]", \$stdout, \$stderr)},
-				"Restarting $_->[0] service",
+				sub { execute("$main::imscpConfig{'SERVICE_MNGR'} $sName $_->[1]", \$stdout) },
+				"Restarting/Reloading $sName",
 				$totalItems,
 				$counter
 			);
 			debug($stdout) if $stdout;
-			error($stderr) if $rs > 1 && $_->[2];
-			$rs = 0 unless $rs > 1 && $_->[2];
+			error("Unable to $task $sName") if $rs > 1 && $exitOnError;
+			$rs = 0 unless $rs > 1 && $exitOnError;
 			return $rs if $rs;
 
-			$rs = iMSCP::HooksManager->getInstance()->trigger('afterSetupRestartService', $_->[0]);
+			$rs = iMSCP::HooksManager->getInstance()->trigger('afterSetupRestartService', $sName);
 			return $rs if $rs;
 		}
 

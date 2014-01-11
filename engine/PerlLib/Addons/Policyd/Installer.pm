@@ -35,6 +35,8 @@ package Addons::Policyd::Installer;
 use strict;
 use warnings;
 
+no if $] >= 5.017011, warnings => 'experimental::smartmatch';
+
 use iMSCP::Debug;
 use File::Basename;
 use iMSCP::File;

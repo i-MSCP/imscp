@@ -623,15 +623,10 @@ sub installTmp
 	my $tmpDir = $main::{'INST_PREF'};
 
 	# i-MSCP daemon must be stopped before changing any file on the files system
-	if(
-		-x "$main::imscpConfig{'INIT_SCRIPTS_DIR'}/$main::imscpConfig{'IMSCP_DAEMON_SNAME'}" &&
-		-f "$main::imscpConfig{'ROOT_DIR'}/daemon/$main::imscpConfig{'IMSCP_DAEMON_SNAME'}"
-	) {
-		$rs = execute(
-			"$main::imscpConfig{'SERVICE_MNGR'} $main::imscpConfig{'IMSCP_DAEMON_SNAME'} stop", \$stdout, \$stderr
-		);
+	if(-x "$main::imscpConfig{'INIT_SCRIPTS_DIR'}/$main::imscpConfig{'IMSCP_DAEMON_SNAME'}") {
+		$rs = execute("$main::imscpConfig{'SERVICE_MNGR'} $main::imscpConfig{'IMSCP_DAEMON_SNAME'} stop", \$stdout);
 		debug($stdout) if $stdout;
-		error($stderr) if $stderr && $rs;
+		error('Unable to stop i-MSCP Daemon') if $rs > 1;
 		return $rs if $rs > 1;
 	}
 

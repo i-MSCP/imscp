@@ -232,7 +232,7 @@ sub checkVersion
 {
 	my ($self, $version, $minversion, $maxversion) = @_;
 
-	my $maxversion ||= '';
+	$maxversion ||= '';
 
 	if(version->new($version) < version->new($minversion)) {
 		return "$version is older then required version $minversion";

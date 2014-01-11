@@ -178,10 +178,10 @@ sub restart
 	my $rs = $self->{'hooksManager'}->trigger('beforeMtaRestart');
 	return $rs if $rs;
 
-	my ($stdout, $stderr);
-	$rs = execute("$main::imscpConfig{'SERVICE_MNGR'} $self->{'config'}->{'MTA_SNAME'} restart", \$stdout, \$stderr);
+	my $stdout;
+	$rs = execute("$main::imscpConfig{'SERVICE_MNGR'} $self->{'config'}->{'MTA_SNAME'} restart", \$stdout);
 	debug($stdout) if $stdout;
-	error($stderr) if $stderr && $rs > 1;
+	error('Unable to restart Postfix') if $rs > 1;
 	return $rs if $rs > 1;
 
 	$self->{'hooksManager'}->trigger('afterMtaRestart');

@@ -347,7 +347,7 @@ sub addSub($$)
 			}
 
 			# Process other entries
-			my $subEntry = process(
+			$subEntry = process(
 				{
 					SUBDOMAIN_NAME => $data->{'DOMAIN_NAME'},
 					IP_TYPE => ($self->{'ipMngr'}->getAddrVersion($data->{'DOMAIN_IP'}) eq 'ipv4') ? 'A' : 'AAAA',
@@ -599,10 +599,10 @@ sub restart
 	my $rs = $self->{'hooksManager'}->trigger('beforeNamedRestart');
 	return $rs if $rs;
 
-	my ($stdout, $stderr);
-	$rs = execute("$main::imscpConfig{'SERVICE_MNGR'} $self->{'config'}->{'NAMED_SNAME'} restart", \$stdout, \$stderr);
+	my $stdout;
+	$rs = execute("$main::imscpConfig{'SERVICE_MNGR'} $self->{'config'}->{'NAMED_SNAME'} restart", \$stdout);
 	debug($stdout) if $stdout;
-	error($stderr) if $stderr && $rs > 1;
+	error('Unable to restart Bind9') if $rs > 1;
 	return $rs if $rs > 1;
 
 	$self->{'hooksManager'}->trigger('afterNamedRestart');

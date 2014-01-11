@@ -38,8 +38,11 @@ use warnings;
 use iMSCP::Debug;
 use IPC::Open3;
 use IO::Select;
+use Scalar::Util qw(openhandle);
 use Symbol qw/gensym/;
 use parent 'Exporter';
+use POSIX;
+
 
 our @EXPORT = qw/execute escapeShell getExitCode/;
 
@@ -70,46 +73,49 @@ sub execute($;$$)
 	fatal('$stdout must be a scalar reference') if $stdout && ref $stdout ne 'SCALAR';
 	fatal('$stderr must be a scalar reference') if $stderr && ref $stderr ne 'SCALAR';
 
-	debug("Execute $command");
-
 	my $sel = IO::Select->new();
 	my $pid;
 
-	if(defined $stdout && defined $stderr) {
-		$pid = open3(gensym, \*CATCHOUT, \*CATCHERR, $command);
-		$sel->add(\*CATCHOUT, \*CATCHERR);
-	} elsif(defined $stdout) {
-		$pid = open3(gensym, \*CATCHOUT, ">&STDERR", $command);
-		$sel->add(\*CATCHOUT);
-	} elsif(defined $stderr) {
-		$pid = open3(gensym, ">&STDOUT", \*CATCHERR, $command);
-		$sel->add(\*CATCHERR);
+	if($stdout && $stderr) {
+		$pid = open3(*IN, *OUT, *ERR, $command);
+		$sel->add(*OUT, *ERR);
+	} elsif($stdout) {
+		$pid = open3(*IN, *OUT, ">&STDERR", $command);
+		$sel->add(*OUT);
+	} elsif($stderr) {
+		$pid = open3(*IN, ">&STDOUT", *ERR, $command);
+		$sel->add(*ERR);
 	} else {
 		system($command);
 		return getExitCode($?);
 	}
 
+	close IN;
+
+	$$stdout = '';
+	$$stderr = '';
+
 	while (my @ready = $sel->can_read()) {
 		foreach my $fh (@ready) {
-			if ($stderr && fileno($fh) == fileno(\*CATCHERR)) {
-				$$stderr .= do { local $/; <$fh> };
-			} elsif($stdout) {
-				$$stdout .= do { local $/; <$fh> };
-			}
+			if (openhandle(*ERR) && fileno($fh) == fileno(ERR)) {
+				$$stderr .= scalar <ERR>;
+ 			} else {
+ 				$$stdout .= scalar <OUT>;
+ 			}
 
-			$sel->remove($fh) if eof($fh);
-		}
+ 			$sel->remove($fh) if eof($fh);
+ 		}
 	}
 
-	waitpid($pid, 0) if $pid;
+	close OUT;
+	close ERR;
 
-	close(\*CATCHOUT) if defined $stdout;
-	close(\*CATCHERR) if defined $stderr;
+	waitpid($pid, 0) if $pid > 0;
 
-	chomp($$stdout ||= '');
-	chomp($$stderr ||= '');
+	chomp($$stdout);
+	chomp($$stderr);
 
-	getExitCode($?);
+	getExitCode();
 }
 
 =item escapeShell($string)

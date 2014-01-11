@@ -35,6 +35,8 @@ package Servers::named::bind::installer;
 use strict;
 use warnings;
 
+no if $] >= 5.017011, warnings => 'experimental::smartmatch';
+
 use iMSCP::Debug;
 use iMSCP::HooksManager;
 use iMSCP::Config;

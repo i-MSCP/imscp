@@ -282,13 +282,12 @@ sub start
 	my $rs = $self->{'hooksManager'}->trigger('beforePoStart');
 	return $rs if $rs;
 
-	my ($stdout, $stderr);
-
 	for('AUTHDAEMON_SNAME', 'POPD_SNAME', 'IMAPD_SNAME', 'POPD_SSL_SNAME', 'IMAPD_SSL_SNAME') {
-		$rs = execute("$main::imscpConfig{'SERVICE_MNGR'} $self->{'config'}->{$_} start", \$stdout, \$stderr);
+		my $stdout;
+		$rs = execute("$main::imscpConfig{'SERVICE_MNGR'} $self->{'config'}->{$_} start", \$stdout);
 		debug($stdout) if $stdout;
-		error($stderr) if $stderr && $rs;
-		return $rs if $rs;
+		error("Unable to start $self->{'config'}->{$_}") if $rs > 1;
+		return $rs if $rs > 1;
 	}
 
 	$self->{'hooksManager'}->trigger('afterPoStart');
@@ -309,12 +308,11 @@ sub stop
 	my $rs = $self->{'hooksManager'}->trigger('beforePoStop');
 	return $rs if $rs;
 
-	my ($stdout, $stderr);
-
 	for('AUTHDAEMON_SNAME', 'POPD_SNAME', 'IMAPD_SNAME', 'POPD_SSL_SNAME', 'IMAPD_SSL_SNAME') {
-		$rs = execute("$main::imscpConfig{'SERVICE_MNGR'} $self->{'config'}->{$_} stop", \$stdout, \$stderr);
+		my $stdout;
+		$rs = execute("$main::imscpConfig{'SERVICE_MNGR'} $self->{'config'}->{$_} stop", \$stdout);
 		debug($stdout) if $stdout;
-		error($stderr) if $stderr && $rs > 1;
+		error("Unable to stop $self->{'config'}->{$_}") if $rs > 1;
 		return $rs if $rs > 1;
 	}
 
@@ -336,12 +334,11 @@ sub restart
 	my $rs = $self->{'hooksManager'}->trigger('beforePoRestart');
 	return $rs if $rs;
 
-	my ($stdout, $stderr);
-
 	for('AUTHDAEMON_SNAME', 'POPD_SNAME', 'IMAPD_SNAME', 'POPD_SSL_SNAME', 'IMAPD_SSL_SNAME') {
-		$rs = execute("$main::imscpConfig{'SERVICE_MNGR'} $self->{'config'}->{$_} restart", \$stdout, \$stderr);
+		my $stdout;
+		$rs = execute("$main::imscpConfig{'SERVICE_MNGR'} $self->{'config'}->{$_} restart", \$stdout);
 		debug($stdout) if $stdout;
-		error($stderr) if $stderr && $rs > 1;
+		error("Unable to restart my $self->{'config'}->{$_}") if $rs > 1;
 		return $rs if $rs > 1;
 	}
 

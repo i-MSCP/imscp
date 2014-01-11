@@ -34,6 +34,8 @@ package Addons::FileManager;
 use strict;
 use warnings;
 
+no if $] >= 5.017011, warnings => 'experimental::smartmatch';
+
 use iMSCP::Debug;
 use parent 'Common::SingletonClass';
 
