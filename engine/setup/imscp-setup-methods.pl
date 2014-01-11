@@ -2242,7 +2242,7 @@ sub setupRestartServices
 			return $rs if $rs;
 
 			$rs = step(
-				sub { execute("$main::imscpConfig{'SERVICE_MNGR'} $sName $_->[1]", \$stdout) },
+				sub { execute("$main::imscpConfig{'SERVICE_MNGR'} $sName $_->[1] 2>/dev/null", \$stdout) },
 				"Restarting/Reloading $sName",
 				$totalItems,
 				$counter

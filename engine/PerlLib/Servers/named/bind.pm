@@ -600,7 +600,7 @@ sub restart
 	return $rs if $rs;
 
 	my $stdout;
-	$rs = execute("$main::imscpConfig{'SERVICE_MNGR'} $self->{'config'}->{'NAMED_SNAME'} restart", \$stdout);
+	$rs = execute("$main::imscpConfig{'SERVICE_MNGR'} $self->{'config'}->{'NAMED_SNAME'} restart 2>/dev/null", \$stdout);
 	debug($stdout) if $stdout;
 	error('Unable to restart Bind9') if $rs > 1;
 	return $rs if $rs > 1;

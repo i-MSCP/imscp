@@ -45,19 +45,11 @@ newDebug('imscp-vrl-traff.log');
 
 silent(1);
 
-sub startUp
-{
-	umask(027);
+umask(027);
 
-	iMSCP::Boot->getInstance()->boot({ 'nolock' => 'yes', 'config_readonly' => 'yes' });
+iMSCP::Boot->getInstance()->boot({ 'norequirements' => 'yes', 'nolock' => 'yes', 'config_readonly' => 'yes' });
 
-	# Getting server list
-	@{$main::Servers} = iMSCP::Servers->getInstance()->get();
-
-	0;
-}
-
-sub process
+sub run
 {
 	my $rs = 0;
 	my $timestamp = time;
@@ -102,13 +94,16 @@ sub process
 		iMSCP::Mail->new()->errmsg($domains);
 		$rs = 1;
 	} elsif(%{$domains}) {
+		# Getting server list
+		@servers = iMSCP::Servers->getInstance()->get();
+
 		# For each domain (dmn|sub|als|alssub)
 		for (keys %{$domains}) {
 			my $domainName = $_;
 			my $domainId = $domains->{$_}->{'domain_id'};
 
 			# For each server (ftpd|httpd|mta|po)
-			for (@{$main::Servers}) {
+			for (@servers) {
 				s/\.pm//;
 				my $file = "Servers/$_.pm";
 				my $class = "Servers::$_";
@@ -209,9 +204,4 @@ sub process
 	$rs;
 }
 
-# Main program
-
-my $rs = startUp();
-$rs ||= process();
-
-exit $rs;
+exit run();

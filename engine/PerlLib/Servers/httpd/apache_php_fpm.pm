@@ -1429,7 +1429,9 @@ sub startPhpFpm
 	return $rs if $rs;
 
 	my $stdout;
-	$rs = execute("$main::imscpConfig{'SERVICE_MNGR'} $self->{'phpfpmConfig'}->{'PHP_FPM_SNAME'} start", \$stdout);
+	$rs = execute(
+		"$main::imscpConfig{'SERVICE_MNGR'} $self->{'phpfpmConfig'}->{'PHP_FPM_SNAME'} start 2>/dev/null", \$stdout
+	);
 	debug($stdout) if $stdout;
 	error('Unable to start PHP-FPM') if $rs > 1;
 	return $rs if $rs > 1;
@@ -1453,7 +1455,9 @@ sub stopPhpFpm
 	return $rs if $rs;
 
 	my $stdout;
-	$rs = execute("$main::imscpConfig{'SERVICE_MNGR'} $self->{'phpfpmConfig'}->{'PHP_FPM_SNAME'} stop", \$stdout);
+	$rs = execute(
+		"$main::imscpConfig{'SERVICE_MNGR'} $self->{'phpfpmConfig'}->{'PHP_FPM_SNAME'} stop 2>/dev/null", \$stdout
+	);
 	debug($stdout) if $stdout;
 	error('Unable to stop PHP-FPM') if $rs > 1;
 	return $rs if $rs > 1;
@@ -1479,7 +1483,7 @@ sub restartPhpFpm
 	my $stdout;
 	$rs = execute(
 		"$main::imscpConfig{'SERVICE_MNGR'} $self->{'phpfpmConfig'}->{'PHP_FPM_SNAME'} " .
-			($self->{'forceRestart'} ? 'restart' : 'reload'), \$stdout
+			($self->{'forceRestart'} ? 'restart' : 'reload') . ' 2>/dev/null', \$stdout
 	);
 	debug($stdout) if $stdout;
 	error('Unable to restart/reload PHP-FPM') if $rs > 1;
@@ -1519,7 +1523,7 @@ sub startApache
 	return $rs if $rs;
 
 	my $stdout;
-	$rs = execute("$main::imscpConfig{'SERVICE_MNGR'} $self->{'config'}->{'HTTPD_SNAME'} start", \$stdout);
+	$rs = execute("$main::imscpConfig{'SERVICE_MNGR'} $self->{'config'}->{'HTTPD_SNAME'} start 2>/dev/null", \$stdout);
 	debug($stdout) if $stdout;
 	error('Unable to start Apache2') if $rs > 1;
 	return $rs if $rs > 1;
@@ -1543,7 +1547,7 @@ sub stopApache
 	return $rs if $rs;
 
 	my $stdout;
-	$rs = execute("$main::imscpConfig{'SERVICE_MNGR'} $self->{'config'}->{'HTTPD_SNAME'} stop", \$stdout);
+	$rs = execute("$main::imscpConfig{'SERVICE_MNGR'} $self->{'config'}->{'HTTPD_SNAME'} stop 2>/dev/null", \$stdout);
 	debug($stdout) if $stdout;
 	error('Unable to stop Apache2') if $rs > 1;
 	return $rs if $rs > 1;
@@ -1569,7 +1573,7 @@ sub restartApache
 	my $stdout;
 	$rs = execute(
 		"$main::imscpConfig{'SERVICE_MNGR'} $self->{'config'}->{'HTTPD_SNAME'} " .
-			($self->{'forceRestart'} ? 'restart' : 'reload'),
+			($self->{'forceRestart'} ? 'restart' : 'reload') . ' 2>/dev/null',
 		\$stdout,
 	);
 	debug($stdout) if $stdout;

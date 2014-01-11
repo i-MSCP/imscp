@@ -61,10 +61,9 @@ use parent 'Common::SingletonClass';
 
 =cut
 
-sub registerSetupHooks
+sub registerSetupHooks($$)
 {
-	my $self = shift;
-	my $hooksManager = shift;
+	my ($self, $hooksManager) = @_;
 
 	require Servers::po::dovecot::installer;
 	Servers::po::dovecot::installer->getInstance()->registerSetupHooks($hooksManager);
@@ -80,8 +79,6 @@ sub registerSetupHooks
 
 sub install
 {
-	my $self = shift;
-
 	require Servers::po::dovecot::installer;
 	Servers::po::dovecot::installer->getInstance()->install();
 }
@@ -114,10 +111,10 @@ sub postinstall
 
 =cut
 
-sub postaddMail
+sub postaddMail($$)
 {
-	my $self = shift;
-	my $data = shift;
+	my ($self, $data) = @_;
+
 	my $rs = 0;
 
 	if($data->{'MAIL_TYPE'} =~ /_mail/) {
@@ -230,7 +227,9 @@ sub restart
 	return $rs if $rs;
 
 	my $stdout;
-	$rs = execute("$main::imscpConfig{'SERVICE_MNGR'} $self->{'config'}->{'DOVECOT_SNAME'} restart", \$stdout);
+	$rs = execute(
+		"$main::imscpConfig{'SERVICE_MNGR'} $self->{'config'}->{'DOVECOT_SNAME'} restart 2>/dev/null", \$stdout
+	);
 	debug($stdout) if $stdout;
 	error('Unable to restart Dovecot') if $rs > 1;
 	return $rs if $rs > 1;
@@ -247,10 +246,9 @@ sub restart
 
 =cut
 
-sub getTraffic
+sub getTraffic($$)
 {
-	my $self = shift;
-	my $domainName = shift;
+	my ($self, $domainName) = @_
 
 	my $dbName = "$self->{'wrkDir'}/log.db";
 	my $logFile = "$main::imscpConfig{'TRAFF_LOG_DIR'}/mail.log";

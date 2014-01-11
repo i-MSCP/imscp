@@ -1415,7 +1415,7 @@ sub start
 	return $rs if $rs;
 
 	my $stdout;
-	$rs = execute("$main::imscpConfig{'SERVICE_MNGR'} $self->{'config'}->{'HTTPD_SNAME'} start", \$stdout);
+	$rs = execute("$main::imscpConfig{'SERVICE_MNGR'} $self->{'config'}->{'HTTPD_SNAME'} start 2>/dev/null", \$stdout);
 	debug($stdout) if $stdout;
 	error('Unable to start Apache2') if $rs > 1;
 	return $rs if $rs > 1;
@@ -1439,7 +1439,7 @@ sub stop
 	return $rs if $rs;
 
 	my $stdout;
-	$rs = execute("$main::imscpConfig{'SERVICE_MNGR'} $self->{'config'}->{'HTTPD_SNAME'} stop", \$stdout);
+	$rs = execute("$main::imscpConfig{'SERVICE_MNGR'} $self->{'config'}->{'HTTPD_SNAME'} stop 2>/dev/null", \$stdout);
 	debug($stdout) if $stdout;
 	error('Unable to stop Apache2') if $rs > 1;
 	return $rs if $rs > 1;
@@ -1465,7 +1465,7 @@ sub restart
 	my $stdout;
 	$rs = execute(
 		"$main::imscpConfig{'SERVICE_MNGR'} $self->{'config'}->{'HTTPD_SNAME'} " .
-			($self->{'forceRestart'} ? 'restart' : 'reload'),
+			($self->{'forceRestart'} ? 'restart' : 'reload') . ' 2>/dev/null',
 		\$stdout,
 	);
 	debug($stdout) if $stdout;

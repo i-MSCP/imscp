@@ -80,8 +80,6 @@ sub registerSetupHooks
 
 sub preinstall
 {
-	my $self = shift;
-
 	require Servers::mta::postfix::installer;
 	Servers::mta::postfix::installer->getInstance()->preinstall();
 }
@@ -96,8 +94,6 @@ sub preinstall
 
 sub install
 {
-	my $self = shift;
-
 	require Servers::mta::postfix::installer;
 	Servers::mta::postfix::installer->getInstance()->install();
 }
@@ -157,8 +153,6 @@ sub postinstall
 
 sub setEnginePermissions
 {
-	my $self= shift;
-
 	require Servers::mta::postfix::installer;
 	Servers::mta::postfix::installer->getInstance()->setEnginePermissions();
 }
@@ -179,7 +173,7 @@ sub restart
 	return $rs if $rs;
 
 	my $stdout;
-	$rs = execute("$main::imscpConfig{'SERVICE_MNGR'} $self->{'config'}->{'MTA_SNAME'} restart", \$stdout);
+	$rs = execute("$main::imscpConfig{'SERVICE_MNGR'} $self->{'config'}->{'MTA_SNAME'} restart 2>/dev/null", \$stdout);
 	debug($stdout) if $stdout;
 	error('Unable to restart Postfix') if $rs > 1;
 	return $rs if $rs > 1;
@@ -197,9 +191,9 @@ sub restart
 
 sub postmap($$;$)
 {
-	my $self = shift;
-	my $filename = shift;
-	my $filetype = shift || 'hash';
+	my ($self, $filename, $filetype) = @_;
+
+	$filetype ||= 'hash';
 
 	my $rs = $self->{'hooksManager'}->trigger('beforeMtaPostmap', \$filename, \$filetype);
 	return $rs if $rs;

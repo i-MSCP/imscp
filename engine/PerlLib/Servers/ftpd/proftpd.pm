@@ -211,7 +211,7 @@ sub start
 	return $rs if $rs;
 
 	my $stdout;
-	$rs = execute("$main::imscpConfig{'SERVICE_MNGR'} $self->{'config'}->{'FTPD_SNAME'} start", \$stdout);
+	$rs = execute("$main::imscpConfig{'SERVICE_MNGR'} $self->{'config'}->{'FTPD_SNAME'} start 2>/dev/null", \$stdout);
 	debug($stdout) if $stdout;
 	error('Unable to start Proftpd') if $rs > 1;
 	return $rs if $rs > 1;
@@ -235,7 +235,7 @@ sub stop
 	return $rs if $rs;
 
 	my $stdout;
-	$rs = execute("$main::imscpConfig{'SERVICE_MNGR'} $self->{'config'}->{'FTPD_SNAME'} stop", \$stdout);
+	$rs = execute("$main::imscpConfig{'SERVICE_MNGR'} $self->{'config'}->{'FTPD_SNAME'} stop 2>/dev/null", \$stdout);
 	debug($stdout) if $stdout;
 	error('Unable to stop Proftpd') if $rs > 1;
 	return $rs if $rs > 1;
@@ -259,7 +259,7 @@ sub restart
 	return $rs if $rs;
 
 	my $stdout;
-	$rs = execute("$main::imscpConfig{'SERVICE_MNGR'} $self->{'config'}->{'FTPD_SNAME'} restart", \$stdout);
+	$rs = execute("$main::imscpConfig{'SERVICE_MNGR'} $self->{'config'}->{'FTPD_SNAME'} restart 2>/dev/null", \$stdout);
 	debug($stdout) if $stdout;
 	error('Unable to restart Proftpd') if $rs > 1;
 	return $rs if $rs > 1;
