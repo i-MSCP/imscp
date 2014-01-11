@@ -140,9 +140,9 @@ sub _installPackages
 
 	iMSCP::Dialog->factory()->infobox(
 '
-Getting composer addon packages from packagist.org.
+Getting i-MSCP addon packages from GitHub.
 
-Please wait, this may take a few minutes...
+Please wait, depending of your connection, this may take few minutes.
 '
 	);
 
@@ -153,7 +153,7 @@ Please wait, this may take a few minutes...
 	);
 	debug($stdout) if $stdout;
 	error($stderr) if $stderr && $rs;
-	error('Unable to get i-MSCP addon packages from packagist.org') if $rs && ! $stderr;
+	error('Unable to get i-MSCP addon packages from GitHub') if $rs && ! $stderr;
 
 	$rs;
 }
@@ -208,7 +208,7 @@ sub _getComposer
 "
 Getting composer installer from http://getcomposer.org.
 
-Please wait, this may take a few seconds...
+Please wait, depending of your connection, this may take few seconds...
 "
 		);
 
@@ -236,7 +236,7 @@ Please wait, this may take a few seconds...
 "
 Updating composer installer from http://getcomposer.org.
 
-Please wait, this may take a few seconds...
+Please wait, depending of your connection, this may take few seconds...
 "
 		);
 
