@@ -36,7 +36,8 @@ use DateTime::TimeZone;
 use Net::LibIDN qw/idn_to_ascii idn_to_unicode/;
 use Data::Validate::Domain qw/is_domain/;
 use IPC::Open3;
-use Symbol qw/gensym/;
+use IO::Select;
+use Scalar::Util qw(openhandle);
 use File::Basename;
 use iMSCP::LsbRelease;
 use iMSCP::Debug;
@@ -1859,21 +1860,38 @@ sub setupSetPermissions
 	$main::imscpConfig{'DEBUG'} = (iMSCP::Getopt->debug) ? 1 : 0;
 
 	for my $script ('set-engine-permissions.pl', 'set-gui-permissions.pl') {
-
 		startDetail();
 
-		my $pid = open3(gensym, \*CATCHOUT, \*CATCHERR, "perl $main::imscpConfig{'ENGINE_ROOT_DIR'}/setup/$script setup");
+		my $pid;
 
-		while(<CATCHOUT>) {
+		eval {
+			$pid = open3(
+				*FHIN,
+				*FHOUT,
+				*FHERR,
+				"$main::imscpConfig{'CMD_PERL'} $main::imscpConfig{'ENGINE_ROOT_DIR'}/setup/$script setup"
+			);
+		};
+
+		if($@) {
+			error("Unable to set permissions: $@");
+			return 1;
+		}
+
+		close FHIN;
+
+		while(<FHOUT>) {
 			chomp;
 			step(undef, $1, $2, $3) if /^(.*)\t(.*)\t(.*)$/;
 		}
 
-		my $stderr = do { local $/; <CATCHERR> };
+		my $stderr = do { local $/; <FHERR> };
 
-		waitpid($pid, 0) if $pid;
+		close FHOUT;
+		close FHERR;
 
-		$rs = getExitCode($?);
+		waitpid($pid, 0) if $pid > 0;
+		$rs = getExitCode();
 
 		endDetail();
 
@@ -1962,24 +1980,37 @@ sub setupRebuildCustomerFiles
 
 	startDetail();
 
-	my $pid = open3(
-		gensym,
-		\*CATCHOUT,
-		\*CATCHERR,
-		"$main::imscpConfig{'CMD_PERL'} $main::imscpConfig{'ENGINE_ROOT_DIR'}/imscp-rqst-mngr setup"
-	);
+	my $pid;
 
-	while(<CATCHOUT>) {
+	eval {
+	 	$pid = open3(
+			*FHIN,
+			*FHOUT,
+			*FHERR,
+			"$main::imscpConfig{'CMD_PERL'} $main::imscpConfig{'ENGINE_ROOT_DIR'}/imscp-rqst-mngr setup"
+		);
+	};
+
+	if($@) {
+		error("Unable to rebuild customers files: $@");
+		return 1;
+	}
+
+	close FHIN;
+
+	while(<FHOUT>) {
 		# "$type\t$status\t$name\t$id\t$total\t$i\n"
 		chomp;
 		step(undef, "Processing $1 ($2) tasks: $3 (ID $4)", $5, $6) if /^(.*)\t(.*)\t(.*)\t(.*)\t(.*)\t(.*)$/;
 	}
 
-	my $stderr = do { local $/; <CATCHERR> };
+	my $stderr = do { local $/; <FHERR> };
 
-	waitpid($pid, 0) if $pid;
+	close FHOUT;
+	close FHERR;
 
-	$rs = getExitCode($?);
+	waitpid($pid, 0) if $pid > 0;
+	$rs = getExitCode();
 
 	endDetail();
 

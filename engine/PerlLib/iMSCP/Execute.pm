@@ -39,10 +39,7 @@ use iMSCP::Debug;
 use IPC::Open3;
 use IO::Select;
 use Scalar::Util qw(openhandle);
-use Symbol qw/gensym/;
 use parent 'Exporter';
-use POSIX;
-
 
 our @EXPORT = qw/execute escapeShell getExitCode/;
 
@@ -73,20 +70,25 @@ sub execute($;$$)
 	fatal('$stdout must be a scalar reference') if $stdout && ref $stdout ne 'SCALAR';
 	fatal('$stderr must be a scalar reference') if $stderr && ref $stderr ne 'SCALAR';
 
+	debug("Executing command: $command");
+
 	my $sel = IO::Select->new();
 	my $pid;
 
 	if($stdout && $stderr) {
-		$pid = open3(*IN, *OUT, *ERR, $command);
+		eval { $pid = open3(*IN, *OUT, *ERR, $command); };
+		fatal("Unable to execute command: $@") if $@;
 		$sel->add(*OUT, *ERR);
 	} elsif($stdout) {
-		$pid = open3(*IN, *OUT, ">&STDERR", $command);
+		eval { $pid = open3(*IN, *OUT, ">&STDERR", $command); };
+		fatal("Unable to execute command: $@") if $@;
 		$sel->add(*OUT);
 	} elsif($stderr) {
-		$pid = open3(*IN, ">&STDOUT", *ERR, $command);
+		eval { $pid = open3(*IN, ">&STDOUT", *ERR, $command); };
+		fatal("Unable to execute command: $@") if $@;
 		$sel->add(*ERR);
 	} else {
-		system($command);
+		fatal("Unable to execute command: $!") if system($command) == -1;
 		return getExitCode($?);
 	}
 
@@ -103,8 +105,8 @@ sub execute($;$$)
  				$$stdout .= scalar <OUT>;
  			}
 
- 			$sel->remove($fh) if eof($fh);
- 		}
+			$sel->remove($fh) if eof($fh);
+		}
 	}
 
 	close OUT;
