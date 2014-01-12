@@ -66,11 +66,11 @@ sub run
 		return $rs if $rs;
 
 		# Getting inbound traffic per service
-		my ($smtpIn, $pop3ImapIn, $httpIn, $allIn) = (0, 0, 0, 0, 0);
+		my ($smtpIn, $pop3ImapIn, $httpIn, $allIn) = (0, 0, 0, 0);
 		_parseTraffiData($inboundTraffic, \$smtpIn, \$pop3ImapIn, \$httpIn, \$allIn);
 
 		# Getting outbound traffic per service
-		my ($smtpOut, $pop3ImapOut, $httpOut, $allOut) = (0, 0, 0, 0, 0);
+		my ($smtpOut, $pop3ImapOut, $httpOut, $allOut) = (0, 0, 0, 0);
 		_parseTraffiData($outboundTraffic, \$smtpOut, \$pop3ImapOut, \$httpOut, \$allOut);
 
 		# Updating traffic data in database
