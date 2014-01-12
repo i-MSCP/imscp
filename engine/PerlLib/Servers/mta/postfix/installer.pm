@@ -166,9 +166,9 @@ sub setEnginePermissions
 
 	# eg. /usr/sbin/maillogconvert.pl
 	$rs = setRights(
-		$self->{'config'}->{'CMD_PFLOGSUM'},
-		{ 'user' => $rootUName, 'group' => $rootGName, 'mode' => 0750 }
+		$self->{'config'}->{'CMD_PFLOGSUM'}, { 'user' => $rootUName, 'group' => $rootGName, 'mode' => '0750' }
 	);
+	return $rs if $rs;
 
 	$self->{'hooksManager'}->trigger('afterMtaSetEnginePermissions');
 }
