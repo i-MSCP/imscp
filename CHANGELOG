@@ -39,6 +39,7 @@ ENGINE:
 	- Fixed: Wrong DNS record type for subdomain with IPv6 (A instead of AAAA)
 	- Removed: Useless bind9 templates
 	- Replaced: iMSCP::IP library by IMSCP::Net library (full rewrite using iproute tools instead of net-tools)
+	- Rewritten: imscp-srv-traff script
 
 GUI:
 	- Added: proc_open and popen in PHP editor
