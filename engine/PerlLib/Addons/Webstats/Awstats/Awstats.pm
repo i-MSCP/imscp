@@ -364,7 +364,7 @@ sub _init
 	$self->{'tplDir'} = "$self->{'cfgDir'}/parts";
 
 	# Register event listener which is responsible to add Awstats configuration snippet in Apache vhost file
-	iMSCP::HooksManager->getInstance()->register('beforeHttpdBuildConf', sub { $self->_addAwstatsSection(@_); });
+	iMSCP::HooksManager->getInstance()->register('afterHttpdBuildConf', sub { $self->_addAwstatsSection(@_); });
 
 	$self;
 }
@@ -384,11 +384,11 @@ type of configuration snippet inserted depends on the AWStats mode (dynamic or s
 
 sub _addAwstatsSection($$$)
 {
-	my ($self, $cfgTpl, $filename) = @_;
+	my ($self, $cfgTpl, $tplName) = @_;
 
 	my $rs = 0;
 
-	if($filename =~ /domain.*tpl/) {
+	if($tplName =~ /domain.*tpl/) {
 		require Servers::httpd;
 		my $httpd = Servers::httpd->factory();
 
@@ -410,7 +410,7 @@ sub _addAwstatsSection($$$)
 				$self->_getApacheConfSnippet()
 			),
 			$$cfgTpl,
-			'preserve'
+			'preserveTags'
 		);
 	}
 

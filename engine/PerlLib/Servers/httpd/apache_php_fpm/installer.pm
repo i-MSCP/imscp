@@ -882,22 +882,19 @@ sub _buildMasterVhostFiles
 	# Force HTTPS if needed
 	if($main::imscpConfig{'BASE_SERVER_VHOST_PREFIX'} eq 'https://') {
 		$rs = $self->{'hooksManager'}->register(
-			'afterHttpdBuildConfFile',
+			'afterHttpdBuildConf',
 			sub {
-				my $fileContent = shift;
-				my $fileName = shift;
+				my ($cfgTpl, $tplName) = @_;
 
-				if($fileName eq '00_master.conf') {
-					my $customTagBegin = "    # SECTION custom BEGIN.\n";
-					my $customTagEnding = "    # SECTION custom END.\n";
-					my $customBlock =
-						$customTagBegin .
-						getBloc($customTagBegin, $customTagEnding, $$fileContent) .
+				if($tplName eq '00_master.conf') {
+					$$cfgTpl = replaceBloc(
+						"# SECTION custom BEGIN.\n",
+						"# SECTION custom END.\n",
 						"    RewriteEngine On\n" .
-						"    RewriteRule .* https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]\n" .
-						$customTagEnding;
-
-					$$fileContent = replaceBloc($customTagBegin, $customTagEnding, $customBlock, $$fileContent);
+						"    RewriteRule .* https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]\n",
+						$$cfgTpl,
+						"preserveTags"
+					);
 				}
 
 				0;

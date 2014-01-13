@@ -108,10 +108,11 @@ sub getBloc($$$;$)
 
  Replace a bloc within the given template content
 
- Param string Bloc begin tag
- Param string Bloc ending tag
- param string Template content which contain the bloc
- Param bool $includeTags Whether or not begin and ending tag should be included in result
+ Param string $beginTag Bloc begin tag
+ Param string $endingTag Bloc ending tag
+ Param string $replacement Bloc replacement string
+ param string String which contain the bloc to replace
+ Param bool $preserveTags Whether or not begin and ending tag should be preverved
  Return string Parsed template content
 
 =cut
