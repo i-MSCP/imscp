@@ -2008,9 +2008,6 @@ sub _cleanTemplate($$$)
 
 		$$cfgTpl = replaceBloc("# SECTION php_fpm BEGIN.\n", "# SECTION php_fpm END.\n", '', $$cfgTpl);
 		$$cfgTpl = replaceBloc("# SECTION itk BEGIN.\n", "# SECTION itk END.\n", '', $$cfgTpl);
-
-		$$cfgTpl = replaceBloc("# SECTION custom BEGIN.\n", "# SECTION custom END.\n", '', $$cfgTpl);
-		$$cfgTpl = replaceBloc("# SECTION addons BEGIN.\n", "# SECTION addons END.\n", '', $$cfgTpl);
 	}
 
 	0;

@@ -723,10 +723,17 @@ sub _buildMasterVhostFiles
 					$$cfgTpl = replaceBloc(
 						"# SECTION custom BEGIN.\n",
 						"# SECTION custom END.\n",
+
+						"    # SECTION custom BEGIN.\n" .
+						getBloc(
+							"# SECTION custom BEGIN.\n",
+							"# SECTION custom END.\n",
+							$$cfgTpl
+						) .
 						"    RewriteEngine On\n" .
-						"    RewriteRule .* https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]\n",
-						$$cfgTpl,
-						"preserveTags"
+						"    RewriteRule .* https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]\n" .
+						"    # SECTION custom END.\n",
+						$$cfgTpl
 					);
 				}
 

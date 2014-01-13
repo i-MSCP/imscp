@@ -395,8 +395,14 @@ sub _addAwstatsSection($$$)
 		# Build and add Apache configuration snippet for AWStats
 
 		$$cfgTpl = replaceBloc(
-        	"# SECTION addons BEGIN.\n",
-        	"# SECTION addons END.\n",
+			"# SECTION addons BEGIN.\n",
+			"# SECTION addons END.\n",
+			"    # SECTION addons BEGIN.\n" .
+			getBloc(
+				"# SECTION addons BEGIN.\n",
+				"# SECTION addons END.\n",
+        		$$cfgTpl
+        	) .
 			process(
 				{
 					AWSTATS_WEB_DIR => $main::imscpConfig{'AWSTATS_WEB_DIR'},
@@ -408,9 +414,9 @@ sub _addAwstatsSection($$$)
 						? 'Require all granted' : 'Allow from all'
 				},
 				$self->_getApacheConfSnippet()
-			),
-			$$cfgTpl,
-			'preserveTags'
+			) .
+			"    # SECTION addons END.\n",
+			$$cfgTpl
 		);
 	}
 
