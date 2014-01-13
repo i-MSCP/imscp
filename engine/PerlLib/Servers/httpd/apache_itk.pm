@@ -1010,7 +1010,7 @@ sub buildConfFile($$$;$)
 	my $rs = $self->{'hooksManager'}->trigger('beforeHttpdBuildConfFile', \$cfgTpl, "$name$suffix", $data, $options);
 	return $rs if $rs;
 
-	$cfgTpl = $self->buildConf($cfgTpl, "$name$suffix");
+	$cfgTpl = $self->buildConf($cfgTpl, "$name$suffix", $data);
 	return 1 unless defined $cfgTpl;
 
 	$rs = $self->{'hooksManager'}->trigger('afterHttpdBuildConfFile', \$cfgTpl, "$name$suffix", $data, $options);

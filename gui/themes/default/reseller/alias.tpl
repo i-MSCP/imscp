@@ -52,7 +52,6 @@
 			<!-- BDP: status_reload_false -->
 			<span class="icon i_domain_icon">{NAME}</span>
 			<!-- EDP: status_reload_false -->
-			<br/>{ALIAS_IP}
 		</td>
 		<td>{MOUNT_POINT}</td>
 		<td>{FORWARD}</td>

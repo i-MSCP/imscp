@@ -378,15 +378,14 @@ type of configuration snippet inserted depends on the AWStats mode (dynamic or s
 
  Param string $cfgTpl Reference to template file content
  Param string Template filename
+ Param hash Domain data
  Return int - 0 on success, 1 on failure
 
 =cut
 
-sub _addAwstatsSection($$$)
+sub _addAwstatsSection($$$$)
 {
-	my ($self, $cfgTpl, $tplName) = @_;
-
-	my $rs = 0;
+	my ($self, $cfgTpl, $tplName, $data) = @_;
 
 	if($tplName =~ /domain.*tpl/) {
 		require Servers::httpd;
@@ -397,30 +396,34 @@ sub _addAwstatsSection($$$)
 		$$cfgTpl = replaceBloc(
 			"# SECTION addons BEGIN.\n",
 			"# SECTION addons END.\n",
+
 			"    # SECTION addons BEGIN.\n" .
 			getBloc(
 				"# SECTION addons BEGIN.\n",
 				"# SECTION addons END.\n",
-        		$$cfgTpl
-        	) .
+				$$cfgTpl
+			) .
 			process(
 				{
+					AUTHZ_ALLOW_ALL => (version->new("v$httpd->{'config'}->{'APACHE_VERSION'}") >= version->new('v2.4.0'))
+						? 'Require all granted' : 'Allow from all',
 					AWSTATS_WEB_DIR => $main::imscpConfig{'AWSTATS_WEB_DIR'},
-					WEBSTATS_GROUP_AUTH => $main::imscpConfig{'WEBSTATS_GROUP_AUTH'},
-					WEBSTATS_RPATH => $main::imscpConfig{'WEBSTATS_RPATH'},
+					DOMAIN_NAME => $data->{'DOMAIN_NAME'},
+					HOME_DIR => $data->{'HOME_DIR'},
 					HTACCESS_USERS_FILE_NAME => $httpd->{'config'}->{'HTACCESS_USERS_FILE_NAME'},
 					HTACCESS_GROUPS_FILE_NAME => $httpd->{'config'}->{'HTACCESS_GROUPS_FILE_NAME'},
-					AUTHZ_ALLOW_ALL => (version->new("v$httpd->{'config'}->{'APACHE_VERSION'}") >= version->new('v2.4.0'))
-						? 'Require all granted' : 'Allow from all'
+					WEBSTATS_GROUP_AUTH => $main::imscpConfig{'WEBSTATS_GROUP_AUTH'},
+					WEBSTATS_RPATH => $main::imscpConfig{'WEBSTATS_RPATH'}
 				},
 				$self->_getApacheConfSnippet()
 			) .
 			"    # SECTION addons END.\n",
+
 			$$cfgTpl
 		);
 	}
 
-	$rs;
+	0;
 }
 
 =item _getApacheConfSnippet()

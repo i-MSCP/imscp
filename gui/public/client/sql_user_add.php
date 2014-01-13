@@ -66,6 +66,7 @@ if (isset($_GET['id'])) {
 	$db_id = $_POST['id'];
 } else {
 	redirectTo('sql_manage.php');
+	exit;
 }
 
 /**
@@ -320,11 +321,11 @@ function add_sql_user($customerId, $databaseId)
 			$dbName = $stmt->fields['sqld_name'];
 			$dbName = preg_replace('/([_%\?\*])/', '\\\$1', $dbName);
 
+			$sqlUserCreated = false;
+
 			// Here we cannot use transaction because the GRANT statement cause an implicit commit
 			// We execute the GRANT statements first to let the i-MSCP database in clean state if one of them fails.
 			try {
-				$sqlUserCreated = false;
-
 				$query = 'GRANT ALL PRIVILEGES ON ' . quoteIdentifier($dbName) . '.* TO ?@? IDENTIFIED BY ?';
 
 				// Todo prepare the statement only once here
@@ -353,7 +354,7 @@ function add_sql_user($customerId, $databaseId)
 					try { // We don't care about result here - An exception is throw in case the user do not exists
 						exec_query("DROP USER ?@'localhost'", $sqlUser);
 						exec_query("DROP USER ?@'%'", $sqlUser);
-					} catch(iMSCP_Debug_Bar_Exception $e) {}
+					} catch(iMSCP_Exception_Database $e) {}
 				}
 
 				set_page_message(tr('System was unable to add the SQL user.'), 'error');
