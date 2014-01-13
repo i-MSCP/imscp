@@ -902,7 +902,6 @@ sub _buildMasterVhostFiles
 						"    # SECTION custom END.\n",
 						$$cfgTpl
 					);
-					);
 				}
 
 				0;
