@@ -387,7 +387,7 @@ sub _addAwstatsSection($$$$)
 {
 	my ($self, $cfgTpl, $tplName, $data) = @_;
 
-	if($tplName =~ /domain.*tpl/) {
+	if($tplName =~ /^domain(?:_ssl)?\.tpl$/) {
 		require Servers::httpd;
 		my $httpd = Servers::httpd->factory();
 
