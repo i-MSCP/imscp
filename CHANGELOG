@@ -41,7 +41,7 @@ ENGINE:
 	- Fixed: Upstart/SysV init - Interoperability
 	- Fixed: Usage of dynamic resolv.conf (See resolvconf(8))
 	- Fixed: Wrong DNS record type for subdomain with IPv6 (A instead of AAAA)
-	- Removed: Useless bind9
+	- Removed: Useless bind9 templates
 	- Removed: Useless backup and users log directories (Httpd server impl.)
 	- Replaced: iMSCP::IP library by IMSCP::Net library (full rewrite using iproute tools instead of net-tools)
 	- Replaced: imscp-apache-logger by vlogger (i-MSCP specific version)
