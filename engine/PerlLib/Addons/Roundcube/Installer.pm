@@ -366,10 +366,7 @@ sub _setupDatabase
 
 	# Getting SQL connection with full privileges
 	my ($db, $errStr) = main::setupGetSqlConnect();
-	unless($db) {
-		error("Unable to connect to SQL server: $errStr");
-		return 1;
-	}
+	fatal("Unable to connect to SQL Server: $errStr") if ! $db;
 
 	my $quotedDbName = $db->quoteIdentifier($roundcubeDbName);
 
