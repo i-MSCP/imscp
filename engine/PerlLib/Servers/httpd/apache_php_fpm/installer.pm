@@ -180,6 +180,9 @@ sub install
 	$rs = $self->_installLogrotate();
 	return $rs if $rs;
 
+	$rs = $self->_setupVlogger();
+	return $rs if $rs;
+
 	$rs = $self->_saveConf();
 	return $rs if $rs;
 
@@ -271,12 +274,7 @@ sub setEnginePermissions()
 	my $rs = $self->{'hooksManager'}->trigger('beforeHttpdSetEnginePermissions');
 	return $rs if $rs;
 
-	# eg. /var/www/imscp/engine/imscp-apache-logger
-	# FIXME: This is a quick fix
-	$rs = setRights(
-		"$main::imscpConfig{'ROOT_DIR'}/engine/imscp-apache-logger",
-		{ 'user' => $rootUName, 'group' => $rootGName, 'mode' => '0750' }
-	);
+	$rs = setRights('/usr/local/sbin/vlogger', { 'user' => $rootUName, 'group' => $rootGName, mode => '0750' });
 	return $rs if $rs;
 
 	$self->{'hooksManager'}->trigger('afterHttpdSetEnginePermissions');
@@ -523,8 +521,8 @@ sub _makeDirs
 	my $rootGName = $main::imscpConfig{'ROOT_GROUP'};
 
 	for (
-		[$self->{'config'}->{'APACHE_USERS_LOG_DIR'}, $rootUName, $rootUName, 0750],
-		[$self->{'config'}->{'APACHE_BACKUP_LOG_DIR'}, $rootUName, $rootGName, 0750]
+		[$self->{'config'}->{'APACHE_LOG_DIR'}, $rootUName, $rootUName, 0755],
+		["$self->{'config'}->{'APACHE_LOG_DIR'}/$main::imscpConfig{'BASE_SERVER_VHOST'}", $rootUName, $rootUName, 0750],
 	) {
 		$rs = iMSCP::Dir->new(
 			'dirname' => $_->[0]
@@ -534,6 +532,8 @@ sub _makeDirs
 		return $rs if $rs;
 	}
 
+	# Todo move this statement into the httpd apache_fcgid server implementation (uninstaller) when it will be ready for
+	# call when switching to another httpd server implementation.
 	$rs = iMSCP::Dir->new('dirname' => $self->{'config'}->{'PHP_STARTER_DIR'})->remove();
 	return $rs if $rs;
 
@@ -571,7 +571,7 @@ sub _buildFastCgiConfFiles
 	$rs = $self->{'httpd'}->buildConfFile(
 		"$self->{'phpfpmCfgDir'}/php_fpm_imscp.conf",
 		{},
-		{ 'destination' => "$self->{'phpfpmWrkDir'}/php_fpm_imscp.conf" },
+		{ 'destination' => "$self->{'phpfpmWrkDir'}/php_fpm_imscp.conf" }
 	);
 	return $rs if $rs;
 
@@ -589,7 +589,7 @@ sub _buildFastCgiConfFiles
 	$rs = $self->{'httpd'}->buildConfFile(
 		"$self->{'phpfpmCfgDir'}/php_fpm_imscp.load",
 		{},
-		{ 'destination' => "$self->{'phpfpmWrkDir'}/php_fpm_imscp.load" },
+		{ 'destination' => "$self->{'phpfpmWrkDir'}/php_fpm_imscp.load" }
 	);
 	return $rs if $rs;
 
@@ -792,6 +792,22 @@ sub _buildApacheConfFiles
 		return $rs if $rs;
 	}
 
+	# Turn off default log
+	if(-f "$self->{'config'}->{'APACHE_CONF_DIR'}/conf.d/other-vhosts-access-log") {
+		$rs = iMSCP::File->new(
+			'filename' => "$self->{'config'}->{'APACHE_CONF_DIR'}/conf.d/other-vhosts-access-log"
+		)->delFile();
+		return $rs if $rs;
+	}
+
+	# Remove default log
+	if(-f "$self->{'config'}->{'APACHE_LOG_DIR'}/other_vhosts_access.log") {
+		$rs = iMSCP::File->new(
+			'filename' => "$self->{'config'}->{'APACHE_LOG_DIR'}/other_vhosts_access.log"
+		)->delFile();
+		return $rs if $rs;
+	}
+
 	# Backup, build, store and install 00_nameserver.conf file
 
 	$rs = $self->{'httpd'}->apacheBkpConfFile("$self->{'apacheWrkDir'}/00_nameserver.conf");
@@ -805,18 +821,18 @@ sub _buildApacheConfFiles
 		$pipeSyntax .= '|';
 	}
 
-	my $apache24 = (version->new("v$self->{'httpd'}->{'config'}->{'APACHE_VERSION'}") >= version->new('v2.4.0'));
+	my $apache24 = (version->new("v$self->{'config'}->{'APACHE_VERSION'}") >= version->new('v2.4.0'));
 
 	# Set needed data
 	$self->{'httpd'}->setData(
 		{
-			BASE_SERVER_VHOST_PREFIX => $main::imscpConfig{'BASE_SERVER_VHOST_PREFIX'},
-			BASE_SERVER_VHOST => $main::imscpConfig{'BASE_SERVER_VHOST'},
-			ROOT_DIR => $main::imscpConfig{'ROOT_DIR'},
-			APACHE_ROOT_DIR => $self->{'httpd'}->{'config'}->{'APACHE_ROOT_DIR'},
-			PIPE => $pipeSyntax,
+			APACHE_LOG_DIR => $self->{'config'}->{'APACHE_LOG_DIR'},
+			APACHE_ROOT_DIR => $self->{'config'}->{'APACHE_ROOT_DIR'},
 			AUTHZ_DENY_ALL => $apache24 ? 'Require all denied' : 'Deny from all',
-			AUTHZ_ALLOW_ALL => $apache24 ? 'Require all granted' : 'Allow from all'
+			AUTHZ_ALLOW_ALL => $apache24 ? 'Require all granted' : 'Allow from all',
+			CMD_VLOGGER => $self->{'config'}->{'CMD_VLOGGER'},
+			PIPE => $pipeSyntax,
+			VLOGGER_CONF => "$self->{'apacheCfgDir'}/vlogger.conf"
 		}
 	);
 
@@ -860,6 +876,7 @@ sub _buildMasterVhostFiles
 	# Set needed data
 	$self->{'httpd'}->setData(
 		{
+			APACHE_LOG_DIR => $self->{'config'}->{'APACHE_LOG_DIR'},
 			BASE_SERVER_IP => $main::imscpConfig{'BASE_SERVER_IP'},
 			BASE_SERVER_VHOST => $main::imscpConfig{'BASE_SERVER_VHOST'},
 			DEFAULT_ADMIN_ADDRESS => $adminEmailAddress,
@@ -1016,6 +1033,80 @@ sub _installLogrotate
 	$self->{'hooksManager'}->trigger('afterHttpdInstallLogrotate', 'php5-fpm');
 }
 
+=item _setupVlogger()
+
+ Setup vlogger
+
+ Return int 0 on success, other on failure
+
+=cut
+
+sub _setupVlogger
+{
+	my $self = shift;
+
+	my $dbHost = main::setupGetQuestion('DATABASE_HOST');
+	$dbHost = ($dbHost eq 'localhost') ? '127.0.0.1' : $dbHost;
+	my $dbPort = main::setupGetQuestion('DATABASE_PORT');
+	my $dbName = main::setupGetQuestion('DATABASE_NAME');
+	my $tableName = 'httpd_vlogger';
+	my $dbUser = 'vlogger_user';
+	my $dbUserHost = main::setupGetQuestion('DATABASE_USER_HOST');
+	$dbUserHost = ($dbUserHost eq 'localhost') ? '127.0.0.1' : $dbUserHost;
+	my $dbPassword = '';
+	$dbPassword .= ('A'..'Z', 'a'..'z', '0'..'9', '_')[rand(62)] for 1..16;
+
+	# Getting SQL connection with full privileges
+	my ($db, $errStr) = main::setupGetSqlConnect($dbName);
+	fatal("Unable to connect to SQL Server: $errStr") if ! $db;
+
+	# Creating database table
+	if(-f "$self->{'apacheCfgDir'}/vlogger.sql") {
+		my $rs = main::setupImportSqlSchema($db, "$self->{'apacheCfgDir'}/vlogger.sql");
+		return $rs if $rs;
+	} else {
+		error("File $self->{'apacheCfgDir'}/vlogger.sql not found.");
+		return 1;
+	}
+
+	# Removing any old SQL user (including privileges)
+	for($dbUserHost, $main::imscpOldConfig{'DATABASE_HOST'}, $main::imscpOldConfig{'BASE_SERVER_IP'}) {
+		next if ! $_;
+
+		if(main::setupDeleteSqlUser($dbUser, $_)) {
+			error("Unable to remove SQL user or one of its privileges");
+			return 1;
+		}
+	}
+
+	# Adding new SQL user with needed privileges
+	my $rs = $db->doQuery(
+		'dummy',
+		"GRANT SELECT, INSERT, UPDATE ON `$main::imscpConfig{'DATABASE_NAME'}`.`$tableName` TO ?@? IDENTIFIED BY ?",
+		$dbUser,
+		$dbUserHost,
+		$dbPassword
+	);
+	unless(ref $rs eq 'HASH') {
+		error("Unable to add privileges: $rs");
+		return 1;
+	}
+
+	# Building configuration file
+	$self->{'httpd'}->setData(
+		{
+			DATABASE_NAME => $dbName,
+			DATABASE_HOST => $dbHost,
+			DATABASE_PORT => $dbPort,
+			DATABASE_USER => $dbUser,
+			DATABASE_PASSWORD => $dbPassword
+		}
+	);
+	$self->{'httpd'}->buildConfFile(
+		"$self->{'apacheCfgDir'}/vlogger.conf", {}, { 'destination' => "$self->{'apacheCfgDir'}/vlogger.conf" }
+	);
+}
+
 =item _saveConf()
 
  Save both i-MSCP apache.data and i-MSCP php-fpm.data configuration files
@@ -1094,6 +1185,15 @@ sub _oldEngineCompatibility()
 			$rs = iMSCP::File->new('filename' => "$self->{'config'}->{'APACHE_SITES_DIR'}/$_")->delFile();
 			return $rs if $rs;
 		}
+	}
+
+	# Removing directories no longer needed (since 1.1.0)
+	for(
+		$self->{'config'}->{'APACHE_BACKUP_LOG_DIR'}, $self->{'config'}->{'APACHE_USERS_LOG_DIR'},
+		$self->{'config'}->{'APACHE_SCOREBOARDS_DIR'}
+	) {
+		$rs = iMSCP::Dir->new('dirname' => $_)->remove();
+		return $rs if $rs;
 	}
 
 	$self->{'hooksManager'}->trigger('afterHttpdOldEngineCompatibility');

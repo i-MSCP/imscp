@@ -145,17 +145,8 @@ sub _removeUserAndGroup
 sub _removeDirs
 {
 	my $self = shift;
-	my $rs = 0;
 
-	for (
-		$self->{'config'}->{'APACHE_USERS_LOG_DIR'}, $self->{'config'}->{'APACHE_BACKUP_LOG_DIR'},
-		$self->{'config'}->{'APACHE_CUSTOM_SITES_CONFIG_DIR'}, $self->{'config'}->{'SCOREBOARDS_DIR'}
-	) {
-		$rs = iMSCP::Dir->new('dirname' => $_)->remove();
-		return $rs if $rs;
-	}
-
-	0;
+	iMSCP::Dir->new('dirname' => $self->{'config'}->{'APACHE_CUSTOM_SITES_CONFIG_DIR')->remove();
 }
 
 =item _restoreApacheConfig()
@@ -200,13 +191,9 @@ sub _restoreApacheConfig
 		return $rs if $rs;
 	}
 
-	for (
-		$self->{'config'}->{'APACHE_USERS_LOG_DIR'}, $self->{'config'}->{'APACHE_BACKUP_LOG_DIR'},
-		$self->{'config'}->{'APACHE_CUSTOM_SITES_CONFIG_DIR'}
-	) {
-		$rs = iMSCP::Dir->new('dirname' => $_)->remove();
-		return $rs if $rs;
-	}
+
+	$rs = iMSCP::Dir->new('dirname' => $self->{'config'}->{'APACHE_CUSTOM_SITES_CONFIG_DIR'})->remove();
+	return $rs if $rs;
 
 	for('000-default', 'default') {
 		$rs = $self->{'httpd'}->enableSite($_) if -f "$self->{'config'}->{'APACHE_SITES_DIR'}/$_";

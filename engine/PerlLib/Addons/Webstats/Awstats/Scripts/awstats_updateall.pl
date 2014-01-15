@@ -150,7 +150,7 @@ if (@files) {
 		if ($_ =~ /^awstats\.(.*)conf$/) {
 			my $domain = $1||"default"; $domain =~ s/\.$//;
 
-			if(-f "$apacheLogDir/$domain-combined.log") {
+			if(-e "$apacheLogDir/$domain/access.log") {
 				# Define command line
 				my $command="\"$AwstatsDir/$AwstatsProg\" -update -config=$domain";
 				$command.=" -configdir=\"$DIRCONFIG\"";

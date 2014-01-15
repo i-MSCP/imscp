@@ -88,17 +88,7 @@ sub removeDirs
 {
 	my $self = shift;
 
-	my $rs = 0;
-
-	for (
-		$self->{'config'}->{'APACHE_USERS_LOG_DIR'}, $self->{'config'}->{'APACHE_BACKUP_LOG_DIR'},
-		$self->{'config'}->{'APACHE_CUSTOM_SITES_CONFIG_DIR'}, $self->{'config'}->{'SCOREBOARDS_DIR'}
-	) {
-		$rs = iMSCP::Dir->new('dirname' => $_)->remove();
-		return $rs if $rs;
-	}
-
-	0;
+	iMSCP::Dir->new('dirname' => $self->{'config'}->{'APACHE_CUSTOM_SITES_CONFIG_DIR'})->remove();
 }
 
 sub restoreConf

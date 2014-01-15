@@ -440,6 +440,16 @@ sub deleteDmn($$)
 		}
 	}
 
+	# Remove vlogger entry if any
+	require iMSCP::Database;
+	$rs = iMSCP::Database->factory()->doQuery(
+		'dummy', 'DELETE FROM httpd_vlogger WHERE vhost = ?', $data->{'DOMAIN_NAME'}
+	);
+	unless(ref $rs eq 'HASH') {
+		error("Unable to delete vlogger entry: $rs");
+		return 1;
+	}
+
 	$self->{'restart'} = 'yes';
 
 	$self->{'hooksManager'}->trigger('afterHttpdDelDmn', $data);
@@ -1128,50 +1138,29 @@ sub getTraffic($$)
 {
 	my ($self, $domainName) = @_;
 
-	my $traffic = 0;
-	my $trfDir = "$self->{'config'}->{'APACHE_LOG_DIR'}/traff";
-	my ($rv, $rs, $stdout, $stderr);
-
 	$self->{'hooksManager'}->trigger('beforeHttpdGetTraffic', $domainName);
 
-	unless($self->{'logDb'}) {
-		$self->{'logDb'} = 1;
+	my $domainTraffic = 0;
 
-		$rs = execute("$main::imscpConfig{'CMD_PS'} -o pid,args -C 'imscp-apache-logger'", \$stdout, \$stderr);
-		error($stderr) if $stderr && $rs;
+	require iMSCP::Database;
 
-		my $rv = iMSCP::Dir->new('dirname' => $trfDir)->moveDir("$trfDir.old") if -d $trfDir;
+	my $db = iMSCP::Database->factory();
+	my $trafficData = $db->doQuery('vhost', 'SELECT vhost, bytes FROM httpd_vlogger WHERE vhost = ?', $domainName);
 
-		if($rv) {
-			delete $self->{'logDb'};
-			return 0;
+	unless(ref $trafficData eq 'HASH') {
+		error($trafficData);
+	} elsif(%{$trafficData}) {
+		my $rs = $db->doQuery('dummy', 'UPDATE httpd_vlogger set bytes = 0 WHERE vhost = ?', $domainName);
+		unless(ref $rs eq 'HASH') {
+			error($rs);
 		}
 
-		if($rs || ! $stdout) {
-			error('imscp-apache-logger is not running') unless $stderr;
-		} else {
-			while($stdout =~ m/^\s{0,}(\d+)(?!.*error)/gm) {
-				$rs = execute("/bin/kill -s HUP $1", \$stdout, \$stderr);
-				debug($stdout) if $stdout;
-				error($stderr) if $stderr && $rs;
-			}
-		}
-	}
-
-	if(-d "$trfDir.old" && -f "$trfDir.old/$domainName-traf.log") {
-		my $content = iMSCP::File->new('filename' => "$trfDir.old/$domainName-traf.log")->get();
-
-		if($content) {
-			my @lines = split("\n", $content);
-			$traffic += $_ for @lines;
-		} else {
-			error("Unable to read $trfDir.old/$domainName-traf.log");
-		}
+		$domainTraffic = $trafficData->{$domainName}->{'bytes'};
 	}
 
 	$self->{'hooksManager'}->trigger('afterHttpdGetTraffic', $domainName);
 
-	$traffic;
+	$domainTraffic;
 }
 
 =item deleteOldLogs()
@@ -1190,18 +1179,14 @@ sub deleteOldLogs
 	return $rs if $rs;
 
 	my $logDir = $self->{'config'}->{'APACHE_LOG_DIR'};
-	my $backupLogDir = $self->{'config'}->{'APACHE_BACKUP_LOG_DIR'};
-	my $usersLogDir = $self->{'config'}->{'APACHE_USERS_LOG_DIR'};
 	my ($stdout, $stderr);
 
-	for ($logDir, $backupLogDir, $usersLogDir) {
-		my $cmd = "/usr/bin/nice -n 19 /usr/bin/find $_ -maxdepth 1 -type f -name '*.log*' -mtime +365 -exec rm -v {} \\;";
-		$rs = execute($cmd, \$stdout, \$stderr);
-		debug($stdout) if $stdout;
-		error($stderr) if $stderr && $rs;
-		error("Error while executing $cmd.\nReturned value is $rs") if $rs && ! $stderr;
-		return $rs if $rs;
-	}
+	my $cmd = "/usr/bin/nice -n 19 /usr/bin/find $logDir -maxdepth 1 -type f -name '*.log*' -mtime +365 -exec rm -v {} \\;";
+	$rs = execute($cmd, \$stdout, \$stderr);
+	debug($stdout) if $stdout;
+	error($stderr) if $stderr && $rs;
+	error("Error while executing $cmd.\nReturned value is $rs") if $rs && ! $stderr;
+	return $rs if $rs;
 
 	$self->{'hooksManager'}->trigger('afterHttpdDelOldLogs');
 }
@@ -1776,6 +1761,7 @@ sub _addCfg($$)
 
 	$self->setData(
 		{
+			APACHE_LOG_DIR => $self->{'config'}->{'APACHE_LOG_DIR'},
 			APACHE_CUSTOM_SITES_CONFIG_DIR => $self->{'config'}->{'APACHE_CUSTOM_SITES_CONFIG_DIR'},
 			AUTHZ_ALLOW_ALL => $apache24 ? 'Require all granted' : 'Allow from all',
 			AUTHZ_DENY_ALL => $apache24 ? 'Require all denied' : 'Deny from all'
@@ -1870,9 +1856,16 @@ sub _dmnFolders($$)
 {
 	my ($self, $data) = @_;
 
-	my @folders = ();
+	my @folders;
 
 	$self->{'hooksManager'}->trigger('beforeHttpdDmnFolders', \@folders);
+
+	push(@folders, [
+		"$self->{'config'}->{'APACHE_LOG_DIR'}/$data->{'DOMAIN_NAME'}",
+		$main::imscpConfig{'ROOT_USER'},
+		$main::imscpConfig{'ROOT_GROUP'},
+		0750
+	]);
 
 	$self->{'hooksManager'}->trigger('afterHttpdDmnFolders', \@folders);
 

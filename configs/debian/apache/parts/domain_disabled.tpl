@@ -5,6 +5,9 @@
 
     DocumentRoot {HOME_DIR}/domain_disable_page
 
+    LogLevel error
+    ErrorLog {APACHE_LOG_DIR}/{DOMAIN_NAME}/error.log
+
     Alias /errors {HOME_DIR}/errors/
 
     <Directory {HOME_DIR}/domain_disable_page>

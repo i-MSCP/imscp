@@ -1,0 +1,569 @@
+#!/usr/bin/perl -T
+#
+# vlogger - smarter logging for apache
+# steve j. kondik  <shade@chemlab.org>
+#
+# this script will take piped logs in STDIN, break off the first component
+# and log the line into the proper directory under $LOGDIR.  it will roll the
+# logs over at midnight on-the-fly and maintain a symlink to the most recent log.
+#
+#
+# This library is free software; you can redistribute it and/or
+# modify it under the terms of the GNU Library General Public
+# License as published by the Free Software Foundation; either
+# version 2 of the License, or (at your option) any later version.
+#
+# This library is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+# Library General Public License for more details.
+#
+# CHANGELOG:
+# 0.1    initial release
+# 0.2    cleanups, added -e option for errorlogs, added strict stuff
+# 0.3    cleanups, bugfixes, docs, added -r size rotation option
+# 0.4    added dbi usage tracking option, code cleanups from cz@digitalfreaks.org
+# 1.0    small bugfixes, first production release
+# 1.1    bugfix release
+# 1.2    support for mod_logio
+# 1.3    various contributed bugfixes
+# 1.4    version by i-MSCP Team
+#
+# TODO:
+# configurable file compression using Compress::Zlib, maybe.
+#
+
+package vlogger;
+
+$ENV{PATH} = "/bin:/usr/bin";
+
+my $VERSION = "1.4";
+
+=head1 NAME
+
+vlogger - flexible log rotation and usage tracking in perl
+
+=head1 SYNOPSIS
+
+vlogger [OPTIONS]... [LOGDIR]
+
+=head1 DESCRIPTION
+
+Vlogger is designed to make webserver log rotation simple and easy to manage.
+It deals with VirtualHost logs automatically, so only one directive is required
+to manage all hosts on a webserver.  Vlogger takes piped output from Apache or
+another webserver, splits off the first field, and writes the logs to logfiles
+in subdirectories.  It uses a filehandle cache to avoid resource limitations.
+It will start a new logfile at the beginning of a new day, and optionally start
+new files when a certain filesize is reached.  It can maintain a symlink to
+the most recent log for easy access.  Optionally, host parsing can be disabled
+for use in ErrorLog directives.
+
+To use vlogger, you need to add a "%v" to the first part of your LogFormat:
+
+LogFormat "%v %h %l %u %t \"%r\" %>s %b \"%{Referer}i\" \"%{User-Agent}i\"" combined
+
+Then call it from a customlog:
+
+CustomLog "| /usr/local/sbin/vlogger -s access.log -u www-logs -g www-logs /var/log/apache" combined
+
+=head1 OPTIONS
+
+Options are given in short format on the command line.
+
+-a
+	Do not autoflush files.  This may improve performance but may break logfile
+analyzers that depend on full entries in the logs.
+
+-e
+	ErrorLog mode.  In this mode, the host parsing is disabled, and the file is
+written out using the template under the specified LOGDIR.
+
+-n
+	Disables rotation.  This option disables rotation altogether.
+
+-f MAXFILES
+	Maximum number of filehandles to keep open.  Defaults to 70.  Setting this
+value too high may result in the system running out of file descriptors.
+Setting it too low may affect performance.
+
+-u UID
+	Change user to UID when running as root.
+
+-g GID
+	Change group to GID when running as root.
+
+-t TEMPLATE
+	Filename template using Date::Format codes.  Default is "%m%d%Y-access.log",
+or "%m%d%Y-error.log".  When using the -r option, the default becomes
+"%m%d%Y-%T-access.log" or "%m%d%Y-%T-error.log".
+
+-s SYMLINK
+	Specifies the name of a symlink to the current file.
+
+-r SIZE
+	Rotate files when they reach SIZE.  SIZE is given in bytes.
+
+-d CONFIG
+	Use the DBI usage tracker.
+
+-i
+	Extract mod_logio instead of filesize
+
+-h
+	Displays help.
+
+-v
+	Prints version information.
+
+=head1 DBI USAGE TRACKER
+
+	Vlogger can automatically keep track of per-virtualhost usage statistics in a
+database.  DBI and the relevant drivers (eg. DBD::mysql) needs to be installed for
+this to work.  Create a table in your database to hold the data.  A "mysql_create.sql"
+script is provided for using this feature with MySQL.  Configure the dsn, user, pass
+and dump values in the vlogger-dbi.conf file.  The "dump" parameter controls how often
+vlogger will dump its stats into the database (the default is 30 seconds).  Copy this
+file to somewhere convienient on your filesystem (like /etc/apache/vlogger-dbi.conf) and
+start vlogger with "-d /etc/apache/vlogger-dbi.conf".  You might want to use this feature
+to easily bill customers on a daily/weekly/monthly basis for bandwidth usage.
+
+=head1 SEE ALSO
+cronolog(1), httplog(1)
+
+=head1 BUGS
+None, yet.
+
+=head1 AUTHORS
+Steve J. Kondik <shade@chemlab.org>
+
+WWW: http://n0rp.chemlab.org/vlogger
+
+=cut
+
+# a couple modules we need
+use strict;
+no strict "refs";
+use warnings;
+use sigtrap qw(handler exitall HUP USR1 TERM INT PIPE);
+use Date::Format;
+use Getopt::Std;
+use IO::Handle;
+
+# get command line options
+our %OPTS;
+getopts( 'f:t:s:hu:g:aeivnr:d:', \%OPTS );
+
+# print out version
+if ( $OPTS{'v'} ) {
+	print "VLogger $VERSION (apache logfile parser)\n";
+	print "Written by Steve J. Kondik <shade\@chemlab.org>\n\n";
+	print "Modified by Laurent Declercq <l.declercq\@nuxwin.com> for i-MSCP project.\n\n";
+	print "This is free software; see the source for copying conditions.  There is NO\n";
+	print "warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n";
+	exit;
+}
+
+# print help
+if ( $OPTS{'h'} || !$ARGV[0] ) {
+	usage();
+	exit;
+}
+
+# log directory
+my $LOGDIR;
+if ( $ARGV[0] ) {
+	if ( !-d $ARGV[0] ) {
+		print STDERR "[vlogger] target directory $ARGV[0] does not exist - exiting.\n\n";
+		exit;
+	}
+	$LOGDIR = $ARGV[0];
+}
+$LOGDIR =~ /(.*)/;
+$LOGDIR = $1;
+
+# change uid/gid if requested (and running as root)
+if ( $> == "0" ) {
+	if ( $OPTS{'g'} ) {
+		my $guid = getgrnam( $OPTS{'g'} );
+
+		if ( !defined $guid || $guid == 0 ) {
+			print STDERR "[vlogger] cannot run as root or nonexistant group.\n\n";
+			exit;
+		}
+
+		$) = $guid;
+		$( = $guid;
+
+		if ( $) != $guid and $) != ( $guid - 2**32 ) ) {
+			die "fatal: setgid to gid $guid failed\n";
+		}
+	}
+
+	if ( $OPTS{'u'} ) {
+		my $uuid = getpwnam( $OPTS{'u'} );
+
+		if ( !defined $uuid || $uuid == 0 ) {
+			print STDERR "[vlogger] cannot run as root or nonexistant user.\n\n";
+			exit;
+		}
+
+		$> = $uuid;
+		$< = $uuid;
+
+		if ( $> != $uuid and $> != ( $uuid - 2**32 ) ) {
+			die "fatal: setuid to uid $uuid failed\n";
+		}
+	}
+}
+
+# set up dbi stuffs
+
+my $DBI_DSN;
+my $DBI_USER;
+my $DBI_PASS;
+my $DBI_DUMP;
+if ( $OPTS{'d'} ) {
+	if ( $OPTS{'e'} ) {
+		print "-d not valid with -e. exiting.\n";
+		exit;
+	}
+
+	eval "use DBI";
+
+	if(-f $OPTS{'d'}) {
+		open CONF, $OPTS{'d'} or die("Unable to open vlogger configuration file: $!");
+
+		while (<CONF>) {
+			chomp;
+			my @conf = split (/\s+/);
+
+			if ( $conf[0] eq "dsn" ) {
+				$DBI_DSN = $conf[1];
+			} elsif ( $conf[0] eq "user" ) {
+				$DBI_USER = $conf[1];
+			} elsif ( $conf[0] eq "pass" ) {
+				$DBI_PASS = $conf[1];
+			} elsif ( $conf[0] eq "dump" ) {
+				$DBI_DUMP = $conf[1];
+			}
+		}
+
+		close CONF;
+
+		unless ( $DBI_DSN && $DBI_USER && $DBI_PASS && $DBI_DUMP ) {
+			print "\n[vlogger] All values for DBI configuration are not properly defined. DBI feature turned off.\n\n";
+			delete $OPTS{'d'};
+		} else {
+			# test the connection
+			my $dbh = DBI->connect( $DBI_DSN, $DBI_USER, $DBI_PASS );
+
+			if ( $dbh ) {
+				$dbh->disconnect;
+
+				# SIGALRM dumps the tracker hash
+				$SIG{ALRM} = \&dump_tracker;
+
+				alarm $DBI_DUMP;
+			} else {
+				print "\nvlogger: Unable to connect to MySQL server. DBI feature turned off.\n\n";
+				delete $OPTS{'d'};
+			}
+		}
+	} else {
+		print "\n[vlogger] File $OPTS{'d'} not found. DBI feature turned off.\n\n";
+		delete $OPTS{'d'};
+	}
+}
+
+# max files to keep open
+my $MAXFILES;
+if ( $OPTS{'f'} ) {
+	$MAXFILES = $OPTS{'f'};
+} else {
+	$MAXFILES = "70";
+}
+
+# filesize rotation
+my $MAXSIZE;
+if ( $OPTS{'r'} ) {
+	$MAXSIZE = $OPTS{'r'};
+}
+
+# filename template
+my $TEMPLATE;
+if ( $OPTS{'t'} ) {
+	$TEMPLATE = $OPTS{'t'};
+	$TEMPLATE =~ /(.*)/;
+	$TEMPLATE = $1;
+} elsif ( $OPTS{'e'} ) {
+	if ( $OPTS{'r'} ) {
+		$TEMPLATE = "%m%d%Y-%T-error.log";
+	} else {
+		$TEMPLATE = "%m%d%Y-error.log";
+	}
+} else {
+	if ( $OPTS{'r'} ) {
+		$TEMPLATE = "%m%d%Y-%T-access.log";
+	} else {
+		$TEMPLATE = "%m%d%Y-access.log";
+	}
+}
+
+# symlink
+if ( $OPTS{'s'} ) {
+	$OPTS{'s'} =~ /(.*)/;
+	$OPTS{'s'} = $1;
+}
+
+# chroot to the logdir
+chdir($LOGDIR);
+chroot(".");
+
+my %logs = ();
+my %tracker = ();
+my $LASTDUMP = time();
+
+# pick a mode
+if ( $OPTS{'e'} ) {
+	my $logtime;
+	$0 = "vlogger (error log)";
+	# errorlog mode
+	$logtime=time();
+	open ELOG, ">>" . time2str( $TEMPLATE, time() ) or die ( "can't open $LOGDIR/" . time2str( $TEMPLATE, $logtime ) );
+
+	unless ( $OPTS{'a'} ) {
+		ELOG->autoflush(1);
+	}
+
+	if ( $OPTS{'s'} ) {
+		if ( -l $OPTS{'s'} ) {
+			unlink( $OPTS{'s'} );
+		}
+
+		symlink( time2str( $TEMPLATE, $logtime ), $OPTS{'s'} );
+	}
+
+	my $LASTWRITE = time();
+
+	while ( my $log_line = <STDIN> ) {
+		unless ( $OPTS{'n'} ) {
+			if ( time2str( "%Y%m%d", $logtime ) > time2str( "%Y%m%d", $LASTWRITE ) ) {
+                # open a new file
+				close ELOG;
+				open_errorlog();
+			} elsif ( $OPTS{'r'} ) {
+				# check the size
+				my @filesize = ELOG->stat;
+				print $filesize[7] . "\n";
+
+				if ( $filesize[7] > $MAXSIZE ) {
+					close ELOG;
+					open_errorlog();
+				}
+			}
+
+			$LASTWRITE = time();
+		}
+
+		# we dont need to do any other parsing at all, so write the line.
+		print ELOG $log_line;
+	}
+} else {
+	# accesslog mode
+	$0 = "vlogger (access log)";
+
+	while ( my $log_line = <STDIN> ) {
+		# parse out the first word (the vhost)
+		my @this_line = split ( /\s/, $log_line );
+		my ($vhost) = $this_line[0];
+		my $reqsize = $this_line[10];
+		$vhost = lc($vhost) || "default";
+
+		if ( $vhost =~ m#[/\\]# ) { $vhost = "default" }
+
+		$vhost =~ /(.*)/o;
+		$vhost = $1;
+		$vhost = 'default' unless $vhost;
+
+		if ( $OPTS{'i'} ) {
+			$reqsize = $this_line[1] + $this_line[2];
+		}
+
+		# if we're writing to a log, and it rolls to a new day, close all files.
+		unless ( $OPTS{'n'} ) {
+			if ( $logs{$vhost} && ( time2str( "%Y%m%d", time() ) > time2str( "%Y%m%d", $logs{$vhost} ) ) ) {
+				foreach my $key ( keys %logs ) {
+					close $key;
+				}
+
+				%logs = ();
+			} elsif ( $OPTS{'r'} && $logs{$vhost} ) {
+				# check the size
+				my @filesize = $vhost->stat;
+
+				if ( $filesize[7] > $MAXSIZE ) {
+					close $vhost;
+					delete( $logs{$vhost} );
+				}
+			}
+		}
+
+		# open a new log
+		if ( !$logs{$vhost} ) {
+			my $logtime;
+
+			# check how many files we have open, close the oldest one
+			if ( keys(%logs) > $MAXFILES ) {
+				my ( $key, $value ) =
+				sort { $logs{$a} <=> $logs{$b} } ( keys(%logs) );
+				close $key;
+				delete( $logs{$key} );
+			}
+
+			# check if directory is there
+			unless ( -d "${vhost}" ) {
+				mkdir("${vhost}");
+			}
+
+			# open the file using the template
+			$logtime=time();
+			open $vhost, ">>${vhost}/" . time2str( $TEMPLATE, time() ) or die (
+				"can't open $LOGDIR/${vhost}/" . time2str( $TEMPLATE, $logtime )
+			);
+
+			# autoflush the handle unless -a
+			if ( !$OPTS{'a'} ) {
+				$vhost->autoflush(1);
+			}
+
+			# make a symlink if -s
+			if ( $OPTS{'s'} ) {
+				chdir("${vhost}");
+
+				if ( -l $OPTS{'s'} ) {
+					unlink( $OPTS{'s'} );
+				}
+
+				symlink( time2str( $TEMPLATE, $logtime ), $OPTS{'s'} );
+				chdir("..");
+			}
+		}
+
+		# update the timestamp and write the line
+		$logs{$vhost} = time();
+
+		if ($OPTS{'i'}) {
+			$log_line =~ s/^\S*\s+\S*\s+\S*\s+//o;
+		} else {
+			$log_line =~ s/^\S*\s+//o;
+		}
+
+		if ( $reqsize =~ m/^\d*$/ && $reqsize > 0 ) {
+			$tracker{$vhost} += $reqsize;
+		}
+
+		print $vhost $log_line;
+    }
+}
+
+# sub to close all files
+sub closeall {
+	if ( $OPTS{'e'} ) {
+		close ELOG;
+	} else {
+		foreach my $key ( keys %logs ) {
+			close $key;
+		}
+
+		%logs = ();
+
+		if ( $OPTS{'d'} ) {
+			vlogger::dump_tracker();
+		}
+	}
+}
+
+sub exitall {
+	vlogger::closeall;
+	exit;
+}
+
+# sub to open new errorlog
+sub open_errorlog {
+	my $logtime;
+	$logtime=time();
+	open ELOG, ">>" . time2str( $TEMPLATE, $logtime ) or die ( "can't open $LOGDIR/" . time2str( $TEMPLATE, time() ) );
+
+	if ( $OPTS{'s'} ) {
+		if ( -l $OPTS{'s'} ) {
+			unlink( $OPTS{'s'} );
+		}
+
+		symlink( time2str( $TEMPLATE, $logtime ), $OPTS{'s'} );
+	}
+
+	# autoflush it unless -a
+	unless ( $OPTS{'a'} ) {
+		ELOG->autoflush(1);
+	}
+}
+
+# sub to update the database with the tracker data
+sub dump_tracker {
+	if ( keys(%tracker) > 0 ) {
+		my $dbh = DBI->connect( $DBI_DSN, $DBI_USER, $DBI_PASS ) or warn "DBI Error: $!";
+
+		foreach my $key ( keys(%tracker) ) {
+			my $ts = time2str( "%m%d%Y", time() );
+			my $sth = $dbh->prepare( "select * from httpd_vlogger where vhost='" . $key . "' and ldate='" . $ts . "'" );
+			$sth->execute;
+
+			if ( $sth->rows ) {
+				my $query = "update httpd_vlogger set bytes=bytes+" . $tracker{$key} . " where vhost='" . $key .
+					"' and ldate='" . $ts . "'";
+
+				$dbh->do($query);
+			} else {
+				my $query = "insert into httpd_vlogger (vhost, ldate, bytes) values ('$key', '$ts', '$tracker{$key}')";
+				$dbh->do($query);
+			}
+		}
+
+		$dbh->disconnect;
+		%tracker = ();
+	}
+
+	alarm $DBI_DUMP;
+}
+
+# print usage info
+sub usage {
+	print "Usage: vlogger [OPTIONS]... [LOGDIR]\n";
+	print "Handles a piped logfile from a webserver, splitting it into it's\n";
+	print "host components, and rotates the files daily.\n\n";
+	print "  -a                          do not autoflush files\n";
+	print "  -e                          errorlog mode\n";
+	print "  -n                          don't rotate files\n";
+	print "  -f MAXFILES                 max number of files to keep open\n";
+	print "  -u UID                      uid to switch to when running as root\n";
+	print "  -g GID                      gid to switch to when running as root\n";
+	print "  -t TEMPLATE                 filename template (see perldoc Date::Format)\n";
+	print "  -s SYMLINK                  maintain a symlink to most recent file\n";
+	print "  -r SIZE                     rotate when file reaches SIZE\n";
+	print "  -d CONFIG                   use DBI usage tracker (see perldoc vlogger)\n";
+	print "  -i                          extract mod_logio instead of filesize\n";
+	print "  -h                          display this help\n";
+	print "  -v                          output version information\n\n";
+	print "TEMPLATE may be a filename with Date::Format codes.  The default template\n";
+	print "is %m%d%Y-access.log.  SYMLINK is the name of a file that will be linked to\n";
+	print "the most recent file inside the log directory.  The default is access.log.\n";
+	print "MAXFILES is the maximum number of filehandles to cache.  This defaults to 100.\n";
+	print "When running with -a, performance may improve, but this might confuse some\n";
+	print "log analysis software that expects complete log entries at all times.\n";
+	print "Errorlog mode is used when running with an Apache errorlog.  In this mode,\n";
+	print "virtualhost parsing is disabled, and a single file is written in LOGDIR\n";
+	print "using the TEMPLATE (%m%d%Y-error.log is default for -e).  When running with\n";
+	print "-r, the template becomes %m%d%Y-%T-xxx.log.  SIZE is given in bytes.\n\n";
+	print "Report bugs to <shade\@chemlab.org>.\n";
+}

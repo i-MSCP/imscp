@@ -5,6 +5,9 @@
 
     DocumentRoot {WEB_DIR}/htdocs
 
+    LogLevel error
+    ErrorLog {APACHE_LOG_DIR}/{DOMAIN_NAME}/error.log
+
     Alias /errors {HOME_DIR}/errors/
 
     # SECTION itk BEGIN.

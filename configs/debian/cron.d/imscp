@@ -1,9 +1,9 @@
 # Quota
 @daily root umask 027; {QUOTA_ROOT_DIR}/imscp-dsk-quota &>{LOG_DIR}/imscp-dsk-quota.log
 
-# Traffic accounting
-0,15 * * * * root umask 027; {TRAFF_ROOT_DIR}/imscp-srv-traff &>{LOG_DIR}/imscp-srv-traff.log
-0,15 * * * * root umask 027; {TRAFF_ROOT_DIR}/imscp-vrl-traff &>{LOG_DIR}/imscp-vrl-traff.log
+# Traffic accounting (updated every 30 minutes)
+0,30 * * * * root umask 027; {TRAFF_ROOT_DIR}/imscp-srv-traff &>{LOG_DIR}/imscp-srv-traff.log
+0,30 * * * * root umask 027; {TRAFF_ROOT_DIR}/imscp-vrl-traff &>{LOG_DIR}/imscp-vrl-traff.log
 
 # Customer logs
 @daily root umask 027; {TOOLS_ROOT_DIR}/imscp-httpd-logs-mngr &>{LOG_DIR}/imscp-httpd-logs-mngr.log
@@ -23,7 +23,7 @@
 # Disable entities (dmn, als, sub, alssub and mail) of expired accounts
 @daily root umask 027; {TOOLS_ROOT_DIR}/imscp-disable-accounts >/dev/null 2>&1
 
-# Look for and purge old sessions every 30 minutes
+# Look for and purge old PHP sessions every 30 minutes
 0,30 * * * * root {TOOLS_ROOT_DIR}/imscp-del-tmp >/dev/null 2>&1
 
 # Delete old apache logfiles weekly

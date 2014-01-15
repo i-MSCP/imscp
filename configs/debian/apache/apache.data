@@ -6,6 +6,8 @@ CMD_A2ENSITE = /usr/sbin/a2ensite
 CMD_A2DISSITE = /usr/sbin/a2dissite
 CMD_A2ENMOD = /usr/sbin/a2enmod
 CMD_A2DISMOD = /usr/sbin/a2dismod
+CMD_VLOGGER = /usr/local/sbin/vlogger
+
 HTTPD_SNAME = apache2
 
 APACHE_CONF_DIR = /etc/apache2
@@ -23,6 +25,8 @@ APACHE_MODS_DIR = /etc/apache2/mods-available
 APACHE_SITES_DIR = /etc/apache2/sites-available
 
 APACHE_CUSTOM_SITES_CONFIG_DIR = /etc/apache2/imscp
+
+APACHE_SCOREBOARDS_DIR = /var/www/scoreboards
 
 APACHE_USER = www-data
 

@@ -16,7 +16,9 @@ CONFIG:
 	- Changed: Tools access is now provided only through the panel domain
 	- Removed: Useless wget-hack prevention which doesn't prevent nothing in reality
 	- Removed: mod_fastcgi support (FastCGI is now provided through mod_fcgid only)
-	- Updated: Fcgid/PHP-FPM config to fit with servers which have at least 4GB ram
+	- Removed: Useless logs directory from both subdomain and alias Web folder skeletons
+	- Updated: Apache2 logrotate configuration file (logs are now rotated daily)
+	- Updated: Fcgid/PHP-FPM config to fit with servers which have at least 4GiB ram
 
 DISTRO
 	- Added: Packages file for Ubuntu Saucy Slamander and Ubuntu Trusty Tahr (experimental)
@@ -32,14 +34,17 @@ ENGINE:
 	- Fixed: External command died with signal 9 (without core dump)
 	- Fixed: iMSCP::Rights - Any target referenced by a symlink must not be affected by owner/group modification
 	- Fixed: Keep current unix user uid/gid when updating the SYSTEM_USER_PREFIX and SYSTEM_USER_MIN_UID parameters
+	- Fixed: Missing customer logs directories cannot be re-created (permissions denied)
 	- Fixed: Pass-in domain data to the listeners which listen to the *HttpdBuildConfFile and *HttpdBuildConf events
 	- Fixed: Proftpd server is down after update
 	- Fixed: Removed useless file tests on directory deletion
 	- Fixed: Upstart/SysV init - Interoperability
 	- Fixed: Usage of dynamic resolv.conf (See resolvconf(8))
 	- Fixed: Wrong DNS record type for subdomain with IPv6 (A instead of AAAA)
-	- Removed: Useless bind9 templates
+	- Removed: Useless bind9
+	- Removed: Useless backup and users log directories (Httpd server impl.)
 	- Replaced: iMSCP::IP library by IMSCP::Net library (full rewrite using iproute tools instead of net-tools)
+	- Replaced: imscp-apache-logger by vlogger (i-MSCP specific version)
 	- Rewritten: imscp-srv-traff script
 
 GUI:
