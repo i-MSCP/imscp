@@ -364,22 +364,22 @@ sub _setupDatabase
 
 	my $dbOldUser = $self->{'oldConfig'}->{'DATABASE_USER'} || '';
 
-	# Get SQL connection with full privileges
+	# Getting SQL connection with full privileges
 	my ($db, $errStr) = main::setupGetSqlConnect();
-	if(! $db) {
+	unless($db) {
 		error("Unable to connect to SQL server: $errStr");
 		return 1;
 	}
 
 	my $quotedDbName = $db->quoteIdentifier($roundcubeDbName);
 
-	# Check for Roundcube database existence
+	# Checking for database existence
 	my $rs = $db->doQuery('1', 'SHOW DATABASES LIKE ?', $roundcubeDbName);
 	unless(ref $rs eq 'HASH') {
 		error($rs);
 		return 1;
-	} elsif(%$rs) {
-		# Ensure that the Roundcube database has tables (recovery case)
+	} elsif(%{$rs}) {
+		# Ensure that the database has tables (recovery case)
 		$rs = $db->doQuery('1', "SHOW TABLES FROM $quotedDbName");
 		unless(ref $rs eq 'HASH') {
 			error($rs);
@@ -387,52 +387,48 @@ sub _setupDatabase
 		}
 	}
 
-	# The Roundcube database doesn't exist or doesn't have any table
-	unless(%$rs) {
+	# Database doesn't exist or doesn't have any table
+	unless(%{$rs}) {
 		$rs = $db->doQuery(
 			'dummy', "CREATE DATABASE IF NOT EXISTS $quotedDbName CHARACTER SET utf8 COLLATE utf8_unicode_ci;"
 		);
 		unless(ref $rs eq 'HASH') {
-			error("Unable to create the Roundcube '$roundcubeDbName' SQL database: $rs");
+			error("Unable to create SQL database: $rs");
 			return 1;
 		}
 
-		# Connect to newly created Roundcube database
-		$db->set('DATABASE_NAME', $roundcubeDbName);
+		# Connecting to newly created database
+		my ($db, $errStr) = main::setupGetSqlConnect($roundcubeDbName);
+		fatal("Unable to connect to SQL Server: $errStr") if ! $db;
 
-		$rs = $db->connect();
-		if($rs) {
-			error("Unable to connect to the Roundcube '$roundcubeDbName' SQL database: $rs");
-			return $rs if $rs;
-		}
-
-		# Import Roundcube database schema
+		# Importing database schema
 		$rs = main::setupImportSqlSchema($db, "$roundcubeDir/SQL/mysql.initial.sql");
 		return $rs if $rs;
 	} else {
 		$self->{'newInstall'} = 0;
 	}
 
-	# Remove any old roundcube SQL user (including privileges)
+	# Removing any old SQL user (including privileges)
 	for my $sqlUser ($dbOldUser, $dbUser) {
 		next if ! $sqlUser;
 
 		for($dbUserHost, $main::imscpOldConfig{'DATABASE_HOST'}, $main::imscpOldConfig{'BASE_SERVER_IP'}) {
 			next if ! $_;
 
-			$rs = main::setupDeleteSqlUser($sqlUser, $_);
-			error("Unable to remove '$sqlUser\@$_' SQL user or one of its privileges") if $rs;
-			return 1 if $rs;
+			if(main::setupDeleteSqlUser($sqlUser, $_)) {
+				error("Unable to remove SQL user or one of its privileges");
+				return 1;
+			}
 		}
 	}
 
-	# Add new Roundcube restricted SQL user with needed privileges
+	# Adding SQL user with needed privileges
 
 	$rs = $db->doQuery(
 		'dummy', "GRANT ALL PRIVILEGES ON `$roundcubeDbName`.* TO ?@? IDENTIFIED BY ?;",  $dbUser, $dbUserHost, $dbPass
 	);
 	unless(ref $rs eq 'HASH') {
-		error("Unable to add privileges on the '$roundcubeDbName' database tables for the Roundcube Roundcube '$dbUser\@$dbUserHost' SQL user: $rs");
+		error("Unable to add privileges: $rs");
 		return 1;
 	}
 
@@ -443,9 +439,7 @@ sub _setupDatabase
 		$dbUser, $dbUserHost, $dbPass
 	);
 	unless(ref $rs eq 'HASH') {
-		error(
-			"Unable to add privileges on the '$imscpDbName.mail_users' table for the '$dbUser\@$dbUserHost' SQL user: $rs"
-		);
+		error("Unable to add privileges: $rs");
 		return 1;
 	}
 
@@ -464,10 +458,8 @@ sub _generateDESKey
 {
 	my $self = shift;
 
-	my @allowedChars = ('A'..'Z', 'a'..'z', '0'..'9', '_', '+', '-', '^', '=', '*', '{', '}', '~');
-
 	my $desKey = '';
-	$desKey .= $allowedChars[rand @allowedChars] for 1..24;
+	$desKey .= ('A'..'Z', 'a'..'z', '0'..'9', '_', '+', '-', '^', '=', '*', '{', '}', '~')[rand(70)] for 1..24;
 
 	$self->{'config'}->{'DES_KEY'} = $desKey;
 
@@ -492,13 +484,13 @@ sub _buildConfig
 	my $imscpDbName = $main::imscpConfig{'DATABASE_NAME'};
 	my $roundcubeDbName = $imscpDbName . '_roundcube';
 	my $dbUser = $self->{'config'}->{'DATABASE_USER'};
-	my $dbUserHost = main::setupGetQuestion('DATABASE_USER_HOST');
+	my $dbHost = main::setupGetQuestion('DATABASE_HOST');
 	my $dbPass = $self->{'config'}->{'DATABASE_PASSWORD'};
 	my $rs = 0;
 
 	my $cfg = {
 		BASE_SERVER_VHOST => $main::imscpConfig{'BASE_SERVER_VHOST'},
-		DB_HOST => $dbUserHost,
+		DB_HOST => $dbHost,
 		DB_USER => $dbUser,
 		DB_PASS => $dbPass,
 		TMP_PATH => "$main::imscpConfig{'GUI_ROOT_DIR'}/data/tmp",
@@ -579,7 +571,7 @@ sub _updateDatabase
 	my ($stdout, $stderr);
 	my $rs = execute(
 		"$main::imscpConfig{'CMD_PHP'} -d suhosin.session.encrypt=off $roundcubeDir/bin/updatedb.sh " .
-		"--version=$fromVersion --dir=$roundcubeDir/SQL --package=roundcube",
+		"--version=$fromVersion --dir=$roundcubeDir/SQL --package=roundcube 2>/dev/null",
 		\$stdout, \$stderr
 	);
 	debug($stdout) if $stdout;
@@ -591,7 +583,7 @@ sub _updateDatabase
 
 	my ($database, $errStr) = main::setupGetSqlConnect($roundcubeDbName);
 	if(! $database) {
-		error("Unable to connect to the '$roundcubeDbName' SQL database: $errStr");
+		error("Unable to connect to SQL database: $errStr");
 		return 1;
 	}
 
@@ -602,17 +594,17 @@ sub _updateDatabase
 	}
 
 	unless(%$rdata) {
-		error("Roundcube database schema update failed: 'system' table not found.");
+		error("Database schema update failed: 'system' table not found.");
 		return 1
 	}
 
 	$rdata = $database->doQuery('name', 'SELECT * FROM `system` WHERE `name` = ?', 'roundcube-version');
 	unless(ref $rdata eq 'HASH') {
-		error("SQL query failed: $rs");
+		error("SQL query failed: $rdata");
 		return 1;
 	}
 
-	if(%$rdata) {
+	if(%{$rdata}) {
 		require iMSCP::Dir;
 
 		my @updateFiles = iMSCP::Dir->new('dirname' => "$roundcubeDir/SQL/mysql", 'fileType' => '.sql')->getFiles();
@@ -627,14 +619,14 @@ sub _updateDatabase
 
 		if($rdata->{'roundcube-version'}->{'value'} < $lastAvailableUpdate) {
 			error(
-				'Roundcube database schema update failed: ' .
+				'Database schema update failed: ' .
 				"roundcube-version value ($rs->{'roundcube-version'}->{'value'}) is smaller than the last available " .
 				"database update version ($lastAvailableUpdate)"
 			);
 			return 1
 		}
 	} else {
-		error("Roundcube database schema update failed: roundcube-version value not found in 'system' table.");
+		error("Database schema update failed: roundcube-version value not found in 'system' table.");
 		return 1
 	}
 

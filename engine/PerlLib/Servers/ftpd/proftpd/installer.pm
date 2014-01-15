@@ -285,25 +285,27 @@ sub _setupDatabase
 	my $rs = $self->{'hooksManager'}->trigger('beforeFtpdSetupDb', $dbUser, $dbPass);
 	return $rs if $rs;
 
-	# Remove any old proftpd SQL user (including privileges)
+	# Removing any old SQL user (including privileges)
 	for my $sqlUser ($dbOldUser, $dbUser) {
 		next if ! $sqlUser;
 
 		for($dbUserHost, $main::imscpOldConfig{'DATABASE_HOST'}, $main::imscpOldConfig{'BASE_SERVER_IP'}) {
 			next if ! $_;
 
-			$rs = main::setupDeleteSqlUser($sqlUser, $_);
-			error("Unable to remove $sqlUser\@$_' SQL user or one of its privileges") if $rs;
-			return 1 if $rs;
+			if(main::setupDeleteSqlUser($sqlUser, $_)) {
+				error("Unable to remove SQL user or one of its privileges: $rs");
+				return 1;
+			}
 		}
 	}
 
-	# Get SQL connection with full privileges
-	my $database = main::setupGetSqlConnect();
+	# Getting SQL connection with full privileges
+	my ($db, $errStr) = main::setupGetSqlConnect();
+	fatal("Unable to connect to SQL Server: $errStr") if ! $db;
 
-	# Add new proftpd restricted SQL user with needed privileges
+	# Adding new SQL user with needed privileges
 	for('ftp_users', 'ftp_group') {
-		$rs = $database->doQuery(
+		$rs = $db->doQuery(
 			'dummy',
 			"GRANT SELECT ON `$main::imscpConfig{'DATABASE_NAME'}`.`$_` TO ?@? IDENTIFIED BY ?",
 			$dbUser,
@@ -311,16 +313,13 @@ sub _setupDatabase
 			$dbPass
 		);
 		unless(ref $rs eq 'HASH') {
-			error(
-				"Unable to add privileges on the '$main::imscpConfig{'DATABASE_NAME'}.$_' table for the Proftpd " .
-				"'$dbUser\@$dbUserHost' SQL user: $rs"
-			);
+			error("Unable to add privileges: $rs");
 			return 1;
 		}
 	}
 
 	for( 'quotalimits', 'quotatallies') {
-		$rs = $database->doQuery(
+		$rs = $db->doQuery(
 			'dummy',
 			"GRANT SELECT, INSERT, UPDATE ON `$main::imscpConfig{'DATABASE_NAME'}`.`$_` TO ?@? IDENTIFIED BY ?",
 			$dbUser,
@@ -328,10 +327,7 @@ sub _setupDatabase
 			$dbPass
 		);
 		unless(ref $rs eq 'HASH') {
-			error(
-				"Unable to add privileges on the '$main::imscpConfig{'DATABASE_NAME'}.$_' table for the Proftpd " .
-				"'$dbUser\@$dbUserHost' SQL user: $rs"
-			);
+			error("Unable to add privileges: $rs");
 			return 1;
 		}
 	}

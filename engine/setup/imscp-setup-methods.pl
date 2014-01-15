@@ -2327,15 +2327,15 @@ sub setupSetQuestion
 sub setupCheckSqlConnect
 {
 	my ($dbType, $dbName, $dbHost, $dbPort, $dbUser, $dbPass) = (@_);
-	my $database = iMSCP::Database->new('db' => $dbType)->factory();
+	my $db = iMSCP::Database->new('db' => $dbType)->factory();
 
-	$database->set('DATABASE_NAME', $dbName);
-	$database->set('DATABASE_HOST', $dbHost);
-	$database->set('DATABASE_PORT', $dbPort);
-	$database->set('DATABASE_USER', $dbUser);
-	$database->set('DATABASE_PASSWORD', $dbPass);
+	$db->set('DATABASE_NAME', $dbName);
+	$db->set('DATABASE_HOST', $dbHost);
+	$db->set('DATABASE_PORT', $dbPort);
+	$db->set('DATABASE_USER', $dbUser);
+	$db->set('DATABASE_PASSWORD', $dbPass);
 
-	$database->connect();
+	$db->connect();
 }
 
 # Return database connection
@@ -2345,44 +2345,41 @@ sub setupCheckSqlConnect
 sub setupGetSqlConnect
 {
 	my $dbName = shift || '';
-	my $database = iMSCP::Database->new('db' => setupGetQuestion('DATABASE_TYPE'))->factory();
+	my $db = iMSCP::Database->new('db' => setupGetQuestion('DATABASE_TYPE'))->factory();
 
-	$database->set('DATABASE_NAME', $dbName);
-	$database->set('DATABASE_HOST', setupGetQuestion('DATABASE_HOST') || '');
-	$database->set('DATABASE_PORT', setupGetQuestion('DATABASE_PORT') || '');
-	$database->set('DATABASE_USER', setupGetQuestion('DATABASE_USER') || '');
-	$database->set(
+	$db->set('DATABASE_NAME', $dbName);
+	$db->set('DATABASE_HOST', setupGetQuestion('DATABASE_HOST') || '');
+	$db->set('DATABASE_PORT', setupGetQuestion('DATABASE_PORT') || '');
+	$db->set('DATABASE_USER', setupGetQuestion('DATABASE_USER') || '');
+	$db->set(
 		'DATABASE_PASSWORD',
 		setupGetQuestion('DATABASE_PASSWORD')
-			? iMSCP::Crypt->getInstance()->decrypt_db_password(setupGetQuestion('DATABASE_PASSWORD'))
-			: ''
+			? iMSCP::Crypt->getInstance()->decrypt_db_password(setupGetQuestion('DATABASE_PASSWORD')) : ''
 	);
 
-	my $rs = $database->connect();
-	my ($ret, $errstr) = ! $rs ? ($database, '') : (0, $rs);
+	my $rs = $db->connect();
+	my ($ret, $errstr) = ! $rs ? ($db, '') : (0, $rs);
 
 	wantarray ? ($ret, $errstr) : $ret;
 }
-
-
 
 # Return int - 1 if database exists and look like an i-MSCP database, 0 othewise
 sub setupIsImscpDb
 {
 	my $dbName = shift;
 
-	my ($database, $errstr) = setupGetSqlConnect();
-	fatal("Unable to connect to the SQL Server: $errstr") if ! $database;
+	my ($db, $errstr) = setupGetSqlConnect();
+	fatal("Unable to connect to SQL Server: $errstr") if ! $db;
 
-	my $rs = $database->doQuery('1', 'SHOW DATABASES LIKE ?', $dbName);
+	my $rs = $db->doQuery('1', 'SHOW DATABASES LIKE ?', $dbName);
 	fatal('SQL query failed: $rs') if ref $rs ne 'HASH';
 
 	return 0 if ! %$rs;
 
-	($database, $errstr) = setupGetSqlConnect($dbName);
-	fatal("Unable to connect to the '$dbName' SQL database: $errstr") if ! $database;
+	($db, $errstr) = setupGetSqlConnect($dbName);
+	fatal("Unable to connect to SQL database: $errstr") if ! $db;
 
-	$rs = $database->doQuery('1', 'SHOW TABLES');
+	$rs = $db->doQuery('1', 'SHOW TABLES');
 	fatal("SQL query failed: $rs") if ref $rs ne 'HASH';
 
 	for (qw/server_ips user_gui_props reseller_props/) {
@@ -2397,10 +2394,10 @@ sub setupIsSqlUser($)
 {
 	my $sqlUser = shift;
 
-	my ($database, $errstr) = setupGetSqlConnect('mysql');
-	fatal("Unable to connect to the SQL Server: $errstr") if ! $database;
+	my ($db, $errstr) = setupGetSqlConnect('mysql');
+	fatal("Unable to connect to the SQL Server: $errstr") if ! $db;
 
-	my $rs = $database->doQuery('1', 'SELECT EXISTS(SELECT 1 FROM `user` WHERE `user` = ?)', $sqlUser);
+	my $rs = $db->doQuery('1', 'SELECT EXISTS(SELECT 1 FROM `user` WHERE `user` = ?)', $sqlUser);
 	fatal($rs) if ref $rs ne 'HASH';
 
 	$$rs{1} ? 1 : 0;
@@ -2414,46 +2411,46 @@ sub setupDeleteSqlUser
 	my $user = shift;
 	my $host = shift || '%';
 
-	my ($database, $errstr) = setupGetSqlConnect('mysql');
-	fatal("Unable to connect to the mysql database: $errstr") if ! $database;
+	my ($db, $errstr) = setupGetSqlConnect('mysql');
+	fatal("Unable to connect to the mysql database: $errstr") if ! $db;
 
 	# Remove any columns privileges for the given user
-	$errstr = $database->doQuery('dummy', "DELETE FROM `columns_priv` WHERE `Host` = ? AND `User` = ?", $host, $user);
+	$errstr = $db->doQuery('dummy', "DELETE FROM `columns_priv` WHERE `Host` = ? AND `User` = ?", $host, $user);
 	unless(ref $errstr eq 'HASH') {
-		error("Unable to delete columns privileges for the '$user\@$host' SQL user: $errstr");
+		error("Unable to remove columns privileges: $errstr");
 		return 1;
 	}
 
 	# Remove any tables privileges for the given user
-	$errstr = $database->doQuery('dummy', 'DELETE FROM `tables_priv` WHERE `Host` = ? AND `User` = ?', $host, $user);
+	$errstr = $db->doQuery('dummy', 'DELETE FROM `tables_priv` WHERE `Host` = ? AND `User` = ?', $host, $user);
 	unless(ref $errstr eq 'HASH') {
-		error("Unable to delete tables privileges for the '$user\@$host' SQL user: $errstr");
+		error("Unable to remove tables privileges: $errstr");
 		return 1;
 	}
 
 	# Remove any proc privileges for the given user
-	$errstr = $database->doQuery('dummy', 'DELETE FROM `procs_priv` WHERE `Host` = ? AND `User` = ?', $host, $user);
+	$errstr = $db->doQuery('dummy', 'DELETE FROM `procs_priv` WHERE `Host` = ? AND `User` = ?', $host, $user);
 	unless(ref $errstr eq 'HASH') {
-		error("Unable to delete procs privileges for the '$user\@$host' SQL user: $errstr");
+		error("Unable to remove procs privileges: $errstr");
 		return 1;
 	}
 
 	# Remove any database privileges for the given user
-	$errstr = $database->doQuery('dummy', 'DELETE FROM `db` WHERE `Host` = ? AND `User` = ?', $host, $user);
+	$errstr = $db->doQuery('dummy', 'DELETE FROM `db` WHERE `Host` = ? AND `User` = ?', $host, $user);
 	unless(ref $errstr eq 'HASH') {
-		error("Unable to delete database privileges from the '$user\@$host' SQL user: $errstr");
+		error("Unable to remove privileges: $errstr");
 		return 1;
 	}
 
 	# Remove any global privileges for the given user and the user itself
-	$errstr = $database->doQuery('dummy', "DELETE FROM `user` WHERE `Host` = ? AND `User` = ?", $host, $user);
+	$errstr = $db->doQuery('dummy', "DELETE FROM `user` WHERE `Host` = ? AND `User` = ?", $host, $user);
 	unless(ref $errstr eq 'HASH') {
-		error("Unable to delete the '$user\@$host' SQL user: $errstr");
+		error("Unable to delete SQL user: $errstr");
 		return 1;
 	}
 
 	# Reload privileges
-	$errstr = $database->doQuery('dummy','FLUSH PRIVILEGES');
+	$errstr = $db->doQuery('dummy','FLUSH PRIVILEGES');
 	unless(ref $errstr eq 'HASH') {
 		error("Unable to flush SQL privileges: $errstr");
 		return 1;

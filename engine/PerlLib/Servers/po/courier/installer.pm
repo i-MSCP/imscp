@@ -394,26 +394,27 @@ sub _setupSqlUser
 	my $rs = $self->{'hooksManager'}->trigger('beforePoSetupDb', $dbUser, $dbOldUser, $dbPass, $dbUserHost);
 	return $rs if $rs;
 
-	# Remove any old authdaemon SQL user (including privileges)
+	# Removing any old SQL user (including privileges)
 	for my $sqlUser ($dbOldUser, $dbUser) {
 		next if ! $sqlUser;
 
 		for($dbUserHost, $main::imscpOldConfig{'DATABASE_HOST'}, $main::imscpOldConfig{'BASE_SERVER_IP'}) {
 			next if ! $_;
 
-			$rs = main::setupDeleteSqlUser($sqlUser, $_);
-			error("Unable to remove '$sqlUser\@$_' SQL user or one of its privileges") if $rs;
-			return 1 if $rs;
+			if(main::setupDeleteSqlUser($sqlUser, $_)) {
+				error("Unable to remove SQL user or one of its privileges");
+				return 1;
+			}
 		}
 	}
 
-	# Get SQL connection with full privileges
-	my ($database, $errStr) = main::setupGetSqlConnect();
-	fatal("Unable to connect to SQL Server: $errStr") if ! $database;
+	# Getting SQL connection with full privileges
+	my ($db, $errStr) = main::setupGetSqlConnect();
+	fatal("Unable to connect to SQL Server: $errStr") if ! $db;
 
-	# Add new authdaemon restricted SQL user with needed privileges
+	# Adding new SQL user with needed privileges
 
-	$rs = $database->doQuery(
+	$rs = $db->doQuery(
 		'dummy',
 		"GRANT SELECT ON `$main::imscpConfig{'DATABASE_NAME'}`.`mail_users` TO ?@? IDENTIFIED BY ?",
 		$dbUser,
@@ -421,10 +422,7 @@ sub _setupSqlUser
 		$dbPass
 	);
 	unless(ref $rs eq 'HASH') {
-		error(
-			"Unable to add privileges on the `$main::imscpConfig{'DATABASE_NAME'}`.`mail_users` table for the '$dbUser'" .
-			" SQL user: $rs"
-		);
+		error("Unable to add privileges: $rs");
 		return 1;
 	}
 
