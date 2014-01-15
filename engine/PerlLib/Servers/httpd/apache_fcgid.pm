@@ -234,7 +234,7 @@ sub addDmn($$)
 	$rs = $self->_addCfg($data);
 	return $rs if $rs;
 
-	$rs = $self->_addFiles($data) if $data->{'FORWARD'} eq 'no';
+	$rs = $self->_addFiles($data);
 	return $rs if $rs;
 
 	$self->{'restart'} = 'yes';
@@ -262,7 +262,7 @@ sub restoreDmn($$)
 
 	$self->setData($data);
 
-	$rs = $self->_addFiles($data) if $data->{'FORWARD'} eq 'no';
+	$rs = $self->_addFiles($data);
 	return $rs if $rs;
 
 	$self->flushData();
@@ -476,7 +476,7 @@ sub addSub($$)
 	$rs = $self->_addCfg($data);
 	return $rs if $rs;
 
-	$rs = $self->_addFiles($data) if $data->{'FORWARD'} eq 'no';
+	$rs = $self->_addFiles($data);
 	return $rs if $rs;
 
 	$self->{'restart'} = 'yes';
@@ -504,7 +504,7 @@ sub restoreSub($$)
 
 	$self->setData($data);
 
-	$rs = $self->_addFiles($data) if $data->{'FORWARD'} eq 'no';
+	$rs = $self->_addFiles($data);
 	return $rs if $rs;
 
 	$self->flushData();
@@ -1187,7 +1187,6 @@ sub deleteOldLogs
 	my $logDir = $self->{'config'}->{'APACHE_LOG_DIR'};
 	my ($stdout, $stderr);
 
-
 	my $cmd = "nice -n 19 find $logDir -maxdepth 1 -type f -name '*.log*' -mtime +365 -exec rm -v {} \\;";
 	$rs = execute($cmd, \$stdout, \$stderr);
 	debug($stdout) if $stdout;
@@ -1747,98 +1746,7 @@ sub _addFiles($$)
 	my $rs = $self->{'hooksManager'}->trigger('beforeHttpdAddFiles', $data);
 	return $rs if $rs;
 
-	my $webDir = $data->{'WEB_DIR'};
-
-	# Build domain/subdomain Web directory tree using skeleton from (eg /etc/imscp/apache/skel) - BEGIN
-
-	my $skelDir;
-
-	if($data->{'DOMAIN_TYPE'} eq 'dmn') {
-		$skelDir = "$self->{'apacheCfgDir'}/skel/domain";
-	} elsif($data->{'DOMAIN_TYPE'} eq 'als') {
-		$skelDir = "$self->{'apacheCfgDir'}/skel/alias";
-	} else {
-		$skelDir = "$self->{'apacheCfgDir'}/skel/subdomain";
-	}
-
-	my ($tmpDir, $stdout, $stderr);
-
-	if(-d $skelDir) {
-		$tmpDir = File::Temp->newdir();
-
-		$rs = execute("$main::imscpConfig{'CMD_CP'} -RT $skelDir $tmpDir", \$stdout, \$stderr);
-		debug($stdout) if $stdout;
-		error($stderr) if $stderr && $rs;
-		return $rs if $rs;
-	} else {
-		error("Skeleton directory $skelDir doesn't exist.");
-		return 1;
-	}
-
-	# Build default domain/subdomain page if needed (if htdocs doesn't exist or is empty)
-	# Remove it from Web directory tree otherwise
-	if(! -d "$webDir/htdocs" || iMSCP::Dir->new('dirname' => "$webDir/htdocs")->isEmpty()) {
-		if(-d "$tmpDir/htdocs") {
-			# Test needed in case admin removed the index.html file from the skeleton
-			if(-f "$tmpDir/htdocs/index.html") {
-				my $fileSource = "$tmpDir/htdocs/index.html";
-				$rs = $self->buildConfFile($fileSource, $data, { 'destination' => $fileSource });
-				return $rs if $rs;
-			}
-		} else {
-			# TODO should we just create it instead?
-			error("Web folder skeleton $skelDir must provide the 'htdocs' directory.");
-			return 1;
-		}
-	} else {
-		$rs = iMSCP::Dir->new('dirname' => "$tmpDir/htdocs")->remove();
-		return $rs if $rs;
-	}
-
-	if(
-		$data->{'DOMAIN_TYPE'} eq 'dmn' && -d "$webDir/errors" &&
-		! iMSCP::Dir->new('dirname' => "$webDir/errors")->isEmpty()
-	) {
-		if(-d "$tmpDir/errors") {
-			$rs = iMSCP::Dir->new('dirname' => "$tmpDir/errors")->remove();
-			return $rs if $rs;
-		} else {
-			warning("Web folder skeleton $skelDir should provide the 'errors' directory.");
-		}
-	}
-
-	# Build domain/subdomain Web directory tree using skeleton from (eg /etc/imscp/apache/skel) - END
-
-	my $protectedParentDir = dirname($webDir);
-	$protectedParentDir = dirname($protectedParentDir) while(! -d $protectedParentDir);
-	my $isProtectedParentDir = 0;
-
-	# Unprotect parent directory if needed
-	if(isImmutable($protectedParentDir)) {
-		$isProtectedParentDir = 1;
-		clearImmutable($protectedParentDir);
-	}
-
-	# Unprotect Web root directory
-	if(-d $webDir) {
-		clearImmutable($webDir);
-	} else {
-		# Create Web directory
-		$rs = iMSCP::Dir->new(
-			'dirname' => $webDir
-		)->make(
-			{ 'user' => $data->{'USER'}, 'group' => $data->{'GROUP'}, 'mode' => 0750 }
-		);
-		return $rs if $rs;
-	}
-
-	# Copy Web directory tree to the Web directory
-	$rs = execute("$main::imscpConfig{'CMD_CP'} -nRT $tmpDir $webDir", \$stdout, \$stderr);
-	debug($stdout) if $stdout;
-	error($stderr) if $stderr && $rs;
-	return $rs if $rs;
-
-	# Create other directories as returned by the dmnFolders() method
+	# Create directories as returned by the dmnFolders() method
 	for ($self->_dmnFolders($data)) {
 		$rs = iMSCP::Dir->new(
 			'dirname' => $_->[0]
@@ -1848,75 +1756,166 @@ sub _addFiles($$)
 		return $rs if $rs;
 	}
 
-	# Permissions, owner and group - Begin
+	# Create Web folder tree only if th domain is not forwarded
+	if($data->{'FORWARD'} eq 'no') {
+		my $webDir = $data->{'WEB_DIR'};
 
-	# Sets permissions for root of Web folder
-	$rs = setRights($webDir, { 'user' => $data->{'USER'}, 'group' => $data->{'GROUP'}, 'mode' => '0750' });
-	return $rs if $rs;
+		# Build domain/subdomain Web directory tree using skeleton from (eg /etc/imscp/apache/skel) - BEGIN
 
-	# Get list of directories/files for which permissions, owner and group must be set
-	my @items = iMSCP::Dir->new('dirname' => $skelDir)->getAll();
+		my $skelDir;
 
-	# Set default owner and group recursively
-	for(@items) {
-		$rs = setRights(
-			"$webDir/$_", { 'user' => $data->{'USER'}, 'group' => $data->{'GROUP'}, 'recursive' => 1 }
-		) if -e "$webDir/$_";
-		return $rs if $rs;
-	}
+		if($data->{'DOMAIN_TYPE'} eq 'dmn') {
+			$skelDir = "$self->{'apacheCfgDir'}/skel/domain";
+		} elsif($data->{'DOMAIN_TYPE'} eq 'als') {
+			$skelDir = "$self->{'apacheCfgDir'}/skel/alias";
+		} else {
+			$skelDir = "$self->{'apacheCfgDir'}/skel/subdomain";
+		}
 
-	# Sets default permissions recursively, excepted for directories for which permissions of directories and files
-	# they contain should be preserved
-	for(@items) {
-		$rs = setRights(
-			"$webDir/$_",
-			{
-				'dirmode' => '0750',
-				'filemode' => '0640',
-				'recursive' => ($_ eq '00_private' || $_ eq 'cgi-bin' || $_ eq 'htdocs') ? 0 : 1
+		my ($tmpDir, $stdout, $stderr);
+
+		if(-d $skelDir) {
+			$tmpDir = File::Temp->newdir();
+
+			$rs = execute("$main::imscpConfig{'CMD_CP'} -RT $skelDir $tmpDir", \$stdout, \$stderr);
+			debug($stdout) if $stdout;
+			error($stderr) if $stderr && $rs;
+			return $rs if $rs;
+		} else {
+			error("Skeleton directory $skelDir doesn't exist.");
+			return 1;
+		}
+
+		# Build default domain/subdomain page if needed (if htdocs doesn't exist or is empty)
+		# Remove it from Web directory tree otherwise
+		if(! -d "$webDir/htdocs" || iMSCP::Dir->new('dirname' => "$webDir/htdocs")->isEmpty()) {
+			if(-d "$tmpDir/htdocs") {
+				# Test needed in case admin removed the index.html file from the skeleton
+				if(-f "$tmpDir/htdocs/index.html") {
+					my $fileSource = "$tmpDir/htdocs/index.html";
+					$rs = $self->buildConfFile($fileSource, $data, { 'destination' => $fileSource });
+					return $rs if $rs;
+				}
+			} else {
+				# TODO should we just create it instead?
+				error("Web folder skeleton $skelDir must provide the 'htdocs' directory.");
+				return 1;
 			}
-		) if -d _;
-		return $rs if $rs;
-	}
+		} else {
+			$rs = iMSCP::Dir->new('dirname' => "$tmpDir/htdocs")->remove();
+			return $rs if $rs;
+		}
 
-	# Sets owner and group for files that should be hidden to user
-	for('domain_disable_page', '.htgroup', '.htpasswd') {
-		$rs = setRights(
-			"$webDir/$_",
-			{
-				'user' => $main::imscpConfig{'ROOT_USER'},
-				'group' => $self->getRunningGroup(),
-				'recursive' => 1
+		if(
+			$data->{'DOMAIN_TYPE'} eq 'dmn' && -d "$webDir/errors" &&
+			! iMSCP::Dir->new('dirname' => "$webDir/errors")->isEmpty()
+		) {
+			if(-d "$tmpDir/errors") {
+				$rs = iMSCP::Dir->new('dirname' => "$tmpDir/errors")->remove();
+				return $rs if $rs;
+			} else {
+				warning("Web folder skeleton $skelDir should provide the 'errors' directory.");
 			}
-		) if -e "$webDir/$_";
+		}
+
+		# Build domain/subdomain Web directory tree using skeleton from (eg /etc/imscp/apache/skel) - END
+
+		my $protectedParentDir = dirname($webDir);
+		$protectedParentDir = dirname($protectedParentDir) while(! -d $protectedParentDir);
+		my $isProtectedParentDir = 0;
+
+		# Unprotect parent directory if needed
+		if(isImmutable($protectedParentDir)) {
+			$isProtectedParentDir = 1;
+			clearImmutable($protectedParentDir);
+		}
+
+		# Unprotect Web root directory
+		if(-d $webDir) {
+			clearImmutable($webDir);
+		} else {
+			# Create Web directory
+			$rs = iMSCP::Dir->new(
+				'dirname' => $webDir
+			)->make(
+				{ 'user' => $data->{'USER'}, 'group' => $data->{'GROUP'}, 'mode' => 0750 }
+			);
+			return $rs if $rs;
+		}
+
+		# Copy Web directory tree to the Web directory
+		$rs = execute("$main::imscpConfig{'CMD_CP'} -nRT $tmpDir $webDir", \$stdout, \$stderr);
+		debug($stdout) if $stdout;
+		error($stderr) if $stderr && $rs;
 		return $rs if $rs;
-	}
 
-	# Permissions, owner and group - Ending
+		# Permissions, owner and group - Begin
 
-	if($data->{'WEB_FOLDER_PROTECTION'} eq 'yes') {
-		# Protect Web root directory
-		setImmutable($webDir);
+		# Sets permissions for root of Web folder
+		$rs = setRights($webDir, { 'user' => $data->{'USER'}, 'group' => $data->{'GROUP'}, 'mode' => '0750' });
+		return $rs if $rs;
 
-		# Protect parent directory if needed
-		setImmutable($protectedParentDir) if $isProtectedParentDir;
-	}
+		# Get list of directories/files for which permissions, owner and group must be set
+		my @items = iMSCP::Dir->new('dirname' => $skelDir)->getAll();
 
-	# Build fcgi wrapper and php configuration files
+		# Set default owner and group recursively
+		for(@items) {
+			$rs = setRights(
+				"$webDir/$_", { 'user' => $data->{'USER'}, 'group' => $data->{'GROUP'}, 'recursive' => 1 }
+			) if -e "$webDir/$_";
+			return $rs if $rs;
+		}
 
-	my $domainType = $data->{'DOMAIN_TYPE'};
-	my $phpiniLevel = $self->{'config'}->{'INI_LEVEL'};
+		# Sets default permissions recursively, excepted for directories for which permissions of directories and files
+		# they contain should be preserved
+		for(@items) {
+			$rs = setRights(
+				"$webDir/$_",
+				{
+					'dirmode' => '0750',
+					'filemode' => '0640',
+					'recursive' => ($_ eq '00_private' || $_ eq 'cgi-bin' || $_ eq 'htdocs') ? 0 : 1
+				}
+			) if -d _;
+			return $rs if $rs;
+		}
 
-	if(
-		$data->{'FORWARD'} eq 'no' &&
-		(
+		# Sets owner and group for files that should be hidden to user
+		for('domain_disable_page', '.htgroup', '.htpasswd') {
+			$rs = setRights(
+			"$webDir/$_",
+				{
+					'user' => $main::imscpConfig{'ROOT_USER'},
+					'group' => $self->getRunningGroup(),
+					'recursive' => 1
+				}
+			) if -e "$webDir/$_";
+			return $rs if $rs;
+		}
+
+		# Permissions, owner and group - Ending
+
+		if($data->{'WEB_FOLDER_PROTECTION'} eq 'yes') {
+			# Protect Web root directory
+			setImmutable($webDir);
+
+			# Protect parent directory if needed
+			setImmutable($protectedParentDir) if $isProtectedParentDir;
+		}
+
+		# Build fcgi wrapper and php configuration files
+
+		my $domainType = $data->{'DOMAIN_TYPE'};
+		my $phpiniLevel = $self->{'config'}->{'INI_LEVEL'};
+
+		if(
 			($phpiniLevel eq 'per_user' && $domainType eq 'dmn') ||
 			($phpiniLevel eq 'per_domain' && ($domainType eq 'dmn' || $domainType eq 'als')) ||
 			$phpiniLevel eq 'per_site'
-		)
-	) {
-		$rs = $self->_buildPHPini($data);
-		return $rs if $rs;
+		) {
+			$rs = $self->_buildPHPini($data);
+			return $rs if $rs;
+		}
 	}
 
 	$self->{'hooksManager'}->trigger('afterHttpdAddFiles', $data);
