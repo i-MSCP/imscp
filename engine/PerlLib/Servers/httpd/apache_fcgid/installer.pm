@@ -1081,13 +1081,13 @@ sub _setupVlogger
 	my $self = shift;
 
 	my $dbHost = main::setupGetQuestion('DATABASE_HOST');
+	# vlogger is chrooted so we force connection to MySQL server through TCP
 	$dbHost = ($dbHost eq 'localhost') ? '127.0.0.1' : $dbHost;
 	my $dbPort = main::setupGetQuestion('DATABASE_PORT');
 	my $dbName = main::setupGetQuestion('DATABASE_NAME');
 	my $tableName = 'httpd_vlogger';
 	my $dbUser = 'vlogger_user';
 	my $dbUserHost = main::setupGetQuestion('DATABASE_USER_HOST');
-	$dbUserHost = ($dbUserHost eq 'localhost') ? '127.0.0.1' : $dbUserHost;
 	my $dbPassword = '';
 	$dbPassword .= ('A'..'Z', 'a'..'z', '0'..'9', '_')[rand(62)] for 1..16;
 
@@ -1105,7 +1105,7 @@ sub _setupVlogger
 	}
 
 	# Removing any old SQL user (including privileges)
-	for($dbUserHost, $main::imscpOldConfig{'DATABASE_HOST'}, $main::imscpOldConfig{'BASE_SERVER_IP'}) {
+	for($dbUserHost, $main::imscpOldConfig{'DATABASE_USER_HOST'}) {
 		next if ! $_;
 
 		if(main::setupDeleteSqlUser($dbUser, $_)) {

@@ -110,15 +110,10 @@ sub _removeSqlUser
 {
 	my $self = shift;
 
-	my $database = iMSCP::Database->factory();
+	my $db = iMSCP::Database->factory();
 
-	# We do not catch any error here - It's expected
-	for($main::imscpConfig{'DATABASE_USER_HOST'}, $main::imscpConfig{'BASE_SERVER_IP'}, 'localhost', '127.0.0.1', '%') {
-		next if ! $_;
-		$database->doQuery('dummy', "DROP USER ?@?", $self->{'config'}->{'DATABASE_USER'}, $_);
-	}
-
-	$database->doQuery('dummy', 'FLUSH PRIVILEGES');
+	$db->doQuery('dummy', "DROP USER ?@?", $self->{'config'}->{'DATABASE_USER'}, $main::imscpConfig{'DATABASE_USER_HOST'});
+	$db->doQuery('dummy', 'FLUSH PRIVILEGES');
 
 	0;
 }

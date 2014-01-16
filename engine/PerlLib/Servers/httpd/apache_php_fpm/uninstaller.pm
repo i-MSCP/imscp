@@ -65,6 +65,9 @@ sub uninstall
 	my $rs = $self->_removeUserAndGroup();
 	return $rs if $rs;
 
+	$rs = $self->_removeVloggerSqlUser();
+	return $rs if $rs;
+
 	$rs = $self->_removeDirs();
 	return $rs if $rs;
 
@@ -133,6 +136,25 @@ sub _removeUserAndGroup
 	);
 }
 
+=item _removeVloggerSqlUser()
+
+ Remove vlogger SQL user
+
+ Return int 0
+
+=cut
+
+sub _removeVloggerSqlUser
+{
+	my $self = shift;
+
+	my $db = iMSCP::Database->new()->factory();
+
+	$db->doQuery('dummy', 'DROP USER ?@?', 'vlogger_user', $main::imscpConfig{'DATABASE_USER_HOST'});
+	$db->doQuery('dummy', 'FLUSH PRIVILEGES');
+
+	0;
+}
 
 =item _removeDirs()
 

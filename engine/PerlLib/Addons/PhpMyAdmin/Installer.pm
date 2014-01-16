@@ -40,6 +40,7 @@ use iMSCP::Debug;
 use Addons::PhpMyAdmin;
 use iMSCP::TemplateParser;
 use iMSCP::Addons::ComposerInstaller;
+use iMSCP::File;
 use version;
 
 use parent 'Common::SingletonClass';
@@ -301,8 +302,6 @@ sub _backupConfigFile($$)
 
 		my $filename = fileparse($cfgFile);
 
-		require iMSCP::File;
-
 		my $file = iMSCP::File->new('filename' => $cfgFile);
 		my $rs = $file->copyFile("$self->{'bkpDir'}/$filename." . time);
 
@@ -368,8 +367,6 @@ sub _saveConfig
 	my $rootUname = $main::imscpConfig{'ROOT_USER'};
 	my $rootGname = $main::imscpConfig{'ROOT_GROUP'};
 
-	require iMSCP::File;
-
 	my $file = iMSCP::File->new('filename' => "$self->{'cfgDir'}/phpmyadmin.data");
 
 	my $rs = $file->owner($rootUname, $rootGname);
@@ -412,50 +409,46 @@ sub _setupSqlUser
 
 	my $imscpDbName = $main::imscpConfig{'DATABASE_NAME'};
 	my $phpmyadminDbName = $imscpDbName . '_pma';
-
 	my $dbUser = $self->{'config'}->{'DATABASE_USER'};
 	my $dbUserHost = main::setupGetQuestion('DATABASE_USER_HOST');
 	my $dbPass = $self->{'config'}->{'DATABASE_PASSWORD'};
-
 	my $dbOldUser = $self->{'oldConfig'}->{'DATABASE_USER'} || '';
 
-	my $rs = 0;
-
-	# Remove any old phpmyadmin SQL user (including privileges)
+	# Removing any old SQL user (including privileges)
 	for my $sqlUser ($dbOldUser, $dbUser) {
 		next if ! $sqlUser;
 
-		for($dbUserHost, $main::imscpOldConfig{'DATABASE_HOST'}, $main::imscpOldConfig{'BASE_SERVER_IP'}) {
+		for($dbUserHost, $main::imscpOldConfig{'DATABASE_USER_HOST'}) {
 			next if ! $_;
 
-			$rs = main::setupDeleteSqlUser($sqlUser, $_);
-			error("Unable to remove '$sqlUser\@$_' SQL user or one of its privileges") if $rs;
-			return 1 if $rs;
+			if(main::setupDeleteSqlUser($sqlUser, $_)) {
+				error("Unable to remove SQL user or one of its privileges.");
+				return 1;
+			}
 		}
 	}
 
-	# Get SQL connection with full privileges
-	my ($database, $errStr) = main::setupGetSqlConnect();
-	fatal('Unable to connect to SQL Server: $errStr') if ! $database;
+	# Getting SQL connection with full privileges
+	my ($db, $errStr) = main::setupGetSqlConnect();
+	fatal('Unable to connect to SQL Server: $errStr') if ! $db;
 
-	# Add new phpmyadmin restricted SQL user with needed privileges
+	# Adding new SQL user with needed privileges
 
-	# Add USAGE privilege on the mysql database (also create PhpMyAdmin user)
-	$rs = $database->doQuery('dummy', 'GRANT USAGE ON `mysql`.* TO ?@? IDENTIFIED BY ?', $dbUser, $dbUserHost, $dbPass);
-	if(ref $rs ne 'HASH') {
-		error("Failed to add USAGE privilege on the 'mysql' database for the PhpMyadmin '$dbUser\@$dbUserHost' SQL user: $rs");
+	# Adding privileges
+
+	my $rs = $db->doQuery('dummy', 'GRANT USAGE ON `mysql`.* TO ?@? IDENTIFIED BY ?', $dbUser, $dbUserHost, $dbPass);
+	unless(ref $rs eq 'HASH') {
+		error("Unable to add privilege: $rs");
 		return 1;
 	}
 
-	# Add SELECT privilege on the mysql.db table
-	$rs = $database->doQuery('dummy', 'GRANT SELECT ON `mysql`.`db` TO ?@?', $dbUser, $dbUserHost);
-	if(ref $rs ne 'HASH') {
-		error("Failed to add SELECT privilege on the 'mysql.db' table for the PhpMyAdmin '$dbUser\@$dbUserHost' SQL user: $rs");
+	$rs = $db->doQuery('dummy', 'GRANT SELECT ON `mysql`.`db` TO ?@?', $dbUser, $dbUserHost);
+	unless(ref $rs eq 'HASH') {
+		error("Unable to add privilege: $rs");
 		return 1;
 	}
 
-	# Add SELECT privilege on many columns of the mysql.user table
-	$rs = $database->doQuery(
+	$rs = $db->doQuery(
 		'dummy',
 		'
 			GRANT SELECT (Host, User, Select_priv, Insert_priv, Update_priv, Delete_priv, Create_priv, Drop_priv,
@@ -467,39 +460,35 @@ sub _setupSqlUser
 		',
 		$dbUser, $dbUserHost
 	);
-	if(ref $rs ne 'HASH') {
-		error("Failed to add SELECT privileges on columns of the 'mysql.user' table for the PhpMyAdmin '$dbUser\@$dbUserHost' SQL user: $rs");
+	unless(ref $rs eq 'HASH') {
+		error("Unable to add privilege: $rs");
 		return 1;
 	}
 
-	# Add SELECT privilege on the mysql.host table
-	$rs = $database->doQuery('dummy', 'GRANT SELECT ON `mysql`.`host` TO ?@?', $dbUser, $dbUserHost);
-	if(ref $rs ne 'HASH') {
-		error("Failed to add SELECT privilege on the 'mysql.host' table for the PhpMyadmin '$dbUser\@$dbUserHost' SQL user: $rs");
+	$rs = $db->doQuery('dummy', 'GRANT SELECT ON `mysql`.`host` TO ?@?', $dbUser, $dbUserHost);
+	unless(ref $rs eq 'HASH') {
+		error("Unable to add privilege: $rs");
 		return 1;
 	}
 
-	# Add SELECT privilege on many columns of the mysql.tables_priv table
-	$rs = $database->doQuery(
+	$rs = $db->doQuery(
 		'dummy',
 		'
 			GRANT SELECT (`Host`, `Db`, `User`, `Table_name`, `Table_priv`, `Column_priv`)
 			ON `mysql`.`tables_priv`
 			TO?@?
 		',
-		$dbUser, $dbUserHost
+		$dbUser,
+		$dbUserHost
 	);
-	if(ref $rs ne 'HASH') {
-		error("Failed to add SELECT privilege on columns of the 'mysql.tables_priv' table for the PhpMyAdmin '$dbUser\@$dbUserHost' SQL user: $rs");
+	unless(ref $rs eq 'HASH') {
+		error("Unable to add privilege: $rs");
 		return 1;
 	}
-	
-	# Add ALL privileges for the phpMyAdmin configuration storage
-	$rs = $database->doQuery(
-		'dummy', "GRANT ALL PRIVILEGES ON `$phpmyadminDbName`.* TO ?@?;",  $dbUser, $dbUserHost
-	);
-	if(ref $rs ne 'HASH') {
-		error("Unable to add privileges on the '$phpmyadminDbName' database tables for the phpMyAdmin '$dbUser\@$dbUserHost' SQL user: $rs");
+
+	$rs = $db->doQuery('dummy', "GRANT ALL PRIVILEGES ON `$phpmyadminDbName`.* TO ?@?;",  $dbUser, $dbUserHost);
+	unless(ref $rs eq 'HASH') {
+		error("Unable to add privilege: $rs");
 		return 1;
 	}
 
@@ -517,29 +506,24 @@ sub _setupSqlUser
 sub _setupDatabase
 {
 	my $self = shift;
-	
-	require iMSCP::File;
-	
+
 	my $phpmyadminDir = "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/pma";
 	my $imscpDbName = $main::imscpConfig{'DATABASE_NAME'};
 	my $phpmyadminDbName = $imscpDbName . '_pma';
 
-	# Get SQL connection with full privileges
+	# Getting SQL connection with full privileges
 	my ($db, $errStr) = main::setupGetSqlConnect();
-	if(! $db) {
-		error("Unable to connect to SQL server: $errStr");
-		return 1;
-	}
+	fatal("Unable to connect to SQL Server: $errStr") if ! $db;
 
 	my $quotedDbName = $db->quoteIdentifier($phpmyadminDbName);
 
-	# Check for PhpMyAdmin database existence
+	# Check for database existence
 	my $rs = $db->doQuery('1', 'SHOW DATABASES LIKE ?', $phpmyadminDbName);
 	unless(ref $rs eq 'HASH') {
 		error($rs);
 		return 1;
-	} elsif(%$rs) {
-		# Ensure that the PhpMyAdmin database has tables (recovery case)
+	} elsif(%{$rs}) {
+		# Ensure that the database has tables (recovery case)
 		$rs = $db->doQuery('1', "SHOW TABLES FROM $quotedDbName");
 		unless(ref $rs eq 'HASH') {
 			error($rs);
@@ -547,8 +531,8 @@ sub _setupDatabase
 		}
 	}
 
-	# The PhpMyAdmin database doesn't exist or doesn't have any table
-	unless(%$rs) {
+	# Database doesn't exist or doesn't have any table
+	unless(%{$rs}) {
 		$rs = $db->doQuery(
 			'dummy', "CREATE DATABASE IF NOT EXISTS $quotedDbName CHARACTER SET utf8 COLLATE utf8_unicode_ci;"
 		);
@@ -556,32 +540,25 @@ sub _setupDatabase
 			error("Unable to create the PhpMyAdmin '$phpmyadminDbName' SQL database: $rs");
 			return 1;
 		}
-
 	}
 
 	# In any case (new install / upgrade) we execute queries from the create_tables.sql file. On upgrade, this will
 	# create the missing tables
 
-	# Connect to the PhpMyAdmin database
-	$db->set('DATABASE_NAME', $phpmyadminDbName);
-	$rs = $db->connect();
-	if($rs) {
-		error("Unable to connect to the PhpMyAdmin '$phpmyadminDbName' SQL database: $rs");
-		return $rs if $rs;
-	}
+	# Connecting to newly created database
+	my ($db, $errStr) = main::setupGetSqlConnect($phpmyadminDbName);
+	fatal("Unable to connect to SQL Server: $errStr") if ! $db;
 
-	# Import PhpMyAdmin database schema
-	my $schemaFile = iMSCP::File->new('filename' => "$phpmyadminDir/examples/create_tables.sql");
-		
-	my $content = $schemaFile->get();
-	unless(defined $content) {
+	# Import database schema
+	my $schemaFile = iMSCP::File->new('filename' => "$phpmyadminDir/examples/create_tables.sql")->get();
+	unless(defined $schemaFile) {
 		error("Unable to read $phpmyadminDir/examples/create_tables.sql");
 		return 1;
 	}
 
-	$content =~ s/^(--[^\n]{0,})?\n//gm;
+	$schemaFile =~ s/^(--[^\n]{0,})?\n//gm;
 
-	for ((split /;\n/, $content)) {
+	for ((split /;\n/, $schemaFile)) {
 		# The PhpMyAdmin script contains the creation of the database as well
 		# We ignore this part as the database has already been created
 		if ($_ !~ /^CREATE DATABASE/ and $_ !~ /^USE/) {
@@ -611,7 +588,6 @@ sub _setVersion
 
 	my $guiPublicDir = $main::imscpConfig{'GUI_PUBLIC_DIR'};
 
-	require iMSCP::File;
 	require JSON;
 	JSON->import();
 
@@ -640,10 +616,8 @@ sub _generateBlowfishSecret
 {
 	my $self = shift;
 
-	my @allowedChars = ('A'..'Z', 'a'..'z', '0'..'9', '_', '+', '-', '^', '=', '*', '{', '}', '~');
-
 	my $blowfishSecret = '';
-	$blowfishSecret .= $allowedChars[rand @allowedChars] for 1..56;
+	$blowfishSecret .= ('A'..'Z', 'a'..'z', '0'..'9', '_', '+', '-', '^', '=', '*', '{', '}', '~')[rand(70)] for 1..56;
 
 	$self->{'config'}->{'BLOWFISH_SECRET'} = $blowfishSecret;
 
@@ -677,8 +651,6 @@ sub _buildConfig
 		TMP_DIR => "$main::imscpConfig{'GUI_ROOT_DIR'}/data/tmp",
 		BLOWFISH => $self->{'config'}->{'BLOWFISH_SECRET'},
 	};
-
-	require iMSCP::File;
 
 	my $file = iMSCP::File->new(filename => "$confDir/imscp.config.inc.php");
 	my $cfgTpl = $file->get();

@@ -279,7 +279,6 @@ sub _setupDatabase
 	my $dbUser = $self->{'config'}->{'DATABASE_USER'};
 	my $dbUserHost = main::setupGetQuestion('DATABASE_USER_HOST');
 	my $dbPass = $self->{'config'}->{'DATABASE_PASSWORD'};
-
 	my $dbOldUser = $self->{'oldConfig'}->{'DATABASE_USER'} || '';
 
 	my $rs = $self->{'hooksManager'}->trigger('beforeFtpdSetupDb', $dbUser, $dbPass);
@@ -289,7 +288,7 @@ sub _setupDatabase
 	for my $sqlUser ($dbOldUser, $dbUser) {
 		next if ! $sqlUser;
 
-		for($dbUserHost, $main::imscpOldConfig{'DATABASE_HOST'}, $main::imscpOldConfig{'BASE_SERVER_IP'}) {
+		for($dbUserHost, $main::imscpOldConfig{'DATABASE_USER_HOST'}) {
 			next if ! $_;
 
 			if(main::setupDeleteSqlUser($sqlUser, $_)) {

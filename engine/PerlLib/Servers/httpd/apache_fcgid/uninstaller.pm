@@ -37,6 +37,29 @@ use File::Basename;
 use Servers::httpd::apache_fcgid;
 use parent 'Common::SingletonClass';
 
+
+sub uninstall
+{
+	my $self = shift;
+
+	my $rs = $self->_removeUsers();
+	return $rs if $rs;
+
+	$rs = $self->_removeVloggerSqlUser();
+	return $rs if $rs;
+
+	$rs = $self->_removeDirs();
+	return $rs if $rs;
+
+	$rs = $self->_fastcgiConf();
+	return $rs if $rs;
+
+	$rs = $self->_vHostConf();
+	return $rs if $rs;
+
+	$self->_restoreConf();
+}
+
 sub _init
 {
 	my $self = shift;
@@ -52,26 +75,7 @@ sub _init
 	$self;
 }
 
-sub uninstall
-{
-	my $self = shift;
-
-	my $rs = $self->removeUsers();
-	return $rs if $rs;
-
-	$rs = $self->removeDirs();
-	return $rs if $rs;
-
-	$rs = $self->fastcgiConf();
-	return $rs if $rs;
-
-	$rs = $self->vHostConf();
-	return $rs if $rs;
-
-	$self->restoreConf();
-}
-
-sub removeUsers
+sub _removeUsers
 {
 	my $self = shift;
 
@@ -87,7 +91,19 @@ sub removeUsers
 	);
 }
 
-sub removeDirs
+sub _removeVloggerSqlUser
+{
+	my $self = shift;
+
+	my $db = iMSCP::Database->new()->factory();
+
+	$db->doQuery('dummy', 'DROP USER ?@?', 'vlogger_user', $main::imscpConfig{'DATABASE_USER_HOST'});
+	$db->doQuery('dummy', 'FLUSH PRIVILEGES');
+
+	0;
+}
+
+sub _removeDirs
 {
 	my $self = shift;
 
@@ -101,7 +117,7 @@ sub removeDirs
 	0;
 }
 
-sub restoreConf
+sub _restoreConf
 {
 	my $self = shift;
 	my $rs = 0;
@@ -118,7 +134,7 @@ sub restoreConf
 	0;
 }
 
-sub fastcgiConf
+sub _fastcgiConf
 {
 	my $self = shift;
 
@@ -136,7 +152,7 @@ sub fastcgiConf
 	0;
 }
 
-sub vHostConf
+sub _vHostConf
 {
 	my $self = shift;
 

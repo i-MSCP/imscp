@@ -236,7 +236,7 @@ if ( $OPTS{'d'} ) {
 
 		while (<CONF>) {
 			chomp;
-			my @conf = split (/\s+/);
+			my @conf = split;
 
 			if ( $conf[0] eq "dsn" ) {
 				$DBI_DSN = $conf[1];
@@ -514,19 +514,15 @@ sub dump_tracker {
 	if ( keys(%tracker) > 0 ) {
 		my $dbh = DBI->connect( $DBI_DSN, $DBI_USER, $DBI_PASS ) or warn "DBI Error: $!";
 
-		foreach my $key ( keys(%tracker) ) {
+		foreach my $vhost ( keys(%tracker) ) {
 			my $ts = time2str( "%m%d%Y", time() );
-			my $sth = $dbh->prepare( "select * from httpd_vlogger where vhost='" . $key . "' and ldate='" . $ts . "'" );
+			my $sth = $dbh->prepare("SELECT vhost AS cnt FROM httpd_vlogger WHERE vhost='$vhost'");
 			$sth->execute;
 
 			if ( $sth->rows ) {
-				my $query = "update httpd_vlogger set bytes=bytes+" . $tracker{$key} . " where vhost='" . $key .
-					"' and ldate='" . $ts . "'";
-
-				$dbh->do($query);
+				$dbh->do("UPDATE httpd_vlogger SET ldate='$ts', bytes=bytes+$tracker{$vhost} WHERE vhost='$vhost'");
 			} else {
-				my $query = "insert into httpd_vlogger (vhost, ldate, bytes) values ('$key', '$ts', '$tracker{$key}')";
-				$dbh->do($query);
+				$dbh->do("INSERT INTO httpd_vlogger (vhost, ldate, bytes) VALUE ('$vhost', '$ts', '$tracker{$vhost}')");
 			}
 		}
 

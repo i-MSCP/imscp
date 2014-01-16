@@ -104,22 +104,13 @@ sub removeDirs
 sub removeDB
 {
 	my $self = shift;
-	my $rs = 0;
-	my $err = 0;
-	my $database = iMSCP::Database->new()->factory();
 
-	if($self->{'config'}->{'DATABASE_USER'}){
-		$err = $database->doQuery('delete', "DROP USER ?@?", $self->{'config'}->{'DATABASE_USER'}, 'localhost');
-		$err = $database->doQuery('delete', "DROP USER ?@?", $self->{'config'}->{'DATABASE_USER'}, '%');
-		$err = $database->doQuery('dummy', 'FLUSH PRIVILEGES');
+	my $db = iMSCP::Database->new()->factory();
 
-		unless (ref $err eq 'HASH'){
-			error($err);
-			$rs = 1;
-		}
-	}
+	$db->doQuery('dummy', 'DROP USER ?@?', $self->{'config'}->{'DATABASE_USER'}, $main::imscpConfig{'DATABASE_USER_HOST'});
+	$db->doQuery('dummy', 'FLUSH PRIVILEGES');
 
-	$rs;
+	0;
 }
 
 =item restoreConfFile()
