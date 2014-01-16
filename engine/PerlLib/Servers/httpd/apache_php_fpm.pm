@@ -23,11 +23,11 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 #
-# @category		i-MSCP
-# @copyright	2010-2014 by i-MSCP | http://i-mscp.net
-# @author		Laurent Declercq <l.declercq@nuxwin.com>
-# @link			http://i-mscp.net i-MSCP Home Site
-# @license		http://www.gnu.org/licenses/gpl-2.0.html GPL v2
+# @category     i-MSCP
+# @copyright    2010-2014 by i-MSCP | http://i-mscp.net
+# @author       Laurent Declercq <l.declercq@nuxwin.com>
+# @link         http://i-mscp.net i-MSCP Home Site
+# @license      http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
 package Servers::httpd::apache_php_fpm;
 
@@ -91,10 +91,10 @@ sub preinstall
 	my $rs = $self->{'hooksManager'}->trigger('beforeHttpdPreInstall', 'apache_php_fpm');
 	return $rs if $rs;
 
-	$rs = $self->stopPhpFpm();
+	$rs = $self->stopApache();
 	return $rs if $rs;
 
-	$rs = $self->stopApache();
+	$rs = $self->stopPhpFpm();
 	return $rs if $rs;
 
 	$self->{'hooksManager'}->trigger('afterHttpdPreInstall', 'apache_php_fpm');
@@ -2103,11 +2103,11 @@ END
 	my $rs = 0;
 
 	if($self->{'start'} && $self->{'start'} eq 'yes') {
-		$rs = $self->startApache();
-		$rs |= $self->startPhpFpm();
+		$rs = $self->startPhpFpm();
+		$rs |= $self->startApache();
 	} elsif($self->{'restart'} && $self->{'restart'} eq 'yes') {
-		$rs = $self->restartApache();
-		$rs |= $self->restartPhpFpm();
+		$rs |= $self->restartApache();
+		$rs = $self->restartPhpFpm();
 	}
 
 	$rs |= iMSCP::Dir->new('dirname' => "$trafficDir.old")->remove();

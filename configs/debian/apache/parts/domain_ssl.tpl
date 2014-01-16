@@ -23,6 +23,7 @@
 
     FastCGIExternalServer /var/lib/apache2/fastcgi/php5-fcgi-{DOMAIN_NAME}-ssl \
       -socket /var/run/php5-fpm-{POOL_NAME}.socket \
+      -idle-timeout 300 \
       -pass-header Authorization
     # SECTION php_fpm END.
     # SECTION php_enabled END.
