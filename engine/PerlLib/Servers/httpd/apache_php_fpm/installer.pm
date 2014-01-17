@@ -1053,6 +1053,7 @@ sub _setupVlogger
 	my $tableName = 'httpd_vlogger';
 	my $dbUser = 'vlogger_user';
 	my $dbUserHost = main::setupGetQuestion('DATABASE_USER_HOST');
+	$dbUserHost = ($dbUserHost eq '127.0.0.1') ? 'localhost' : $dbHost;
 	my $dbPassword = '';
 	$dbPassword .= ('A'..'Z', 'a'..'z', '0'..'9', '_')[rand(62)] for 1..16;
 
@@ -1070,7 +1071,7 @@ sub _setupVlogger
 	}
 
 	# Removing any old SQL user (including privileges)
-	for($dbUserHost, $main::imscpOldConfig{'DATABASE_USER_HOST'}) {
+	for($dbUserHost, $main::imscpOldConfig{'DATABASE_USER_HOST'}, '127.0.0.1') {
 		next if ! $_;
 
 		if(main::setupDeleteSqlUser($dbUser, $_)) {
@@ -1079,17 +1080,25 @@ sub _setupVlogger
 		}
 	}
 
-	# Adding new SQL user with needed privileges
-	my $rs = $db->doQuery(
-		'dummy',
-		"GRANT SELECT, INSERT, UPDATE ON `$main::imscpConfig{'DATABASE_NAME'}`.`$tableName` TO ?@? IDENTIFIED BY ?",
-		$dbUser,
-		$dbUserHost,
-		$dbPassword
-	);
-	unless(ref $rs eq 'HASH') {
-		error("Unable to add privileges: $rs");
-		return 1;
+	my @dbUserHosts = ($dbUserHost);
+
+	if($dbUserHost ~~ ['localhost', '127.0.0.1']) {
+		push @dbUserHosts, ($dbUserHost eq '127.0.0.1') ? 'localhost' : '127.0.0.1';
+	}
+
+	for(@dbUserHosts) {
+		# Adding new SQL user with needed privileges
+		my $rs = $db->doQuery(
+			'dummy',
+			"GRANT SELECT, INSERT, UPDATE ON `$main::imscpConfig{'DATABASE_NAME'}`.`$tableName` TO ?@? IDENTIFIED BY ?",
+			$dbUser,
+			$_,
+			$dbPassword
+		);
+		unless(ref $rs eq 'HASH') {
+			error("Unable to add privileges: $rs");
+			return 1;
+		}
 	}
 
 	# Building configuration file

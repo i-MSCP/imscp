@@ -108,7 +108,10 @@ or "%m%d%Y-error.log".  When using the -r option, the default becomes
 	Use the DBI usage tracker.
 
 -i
-	Extract mod_logio instead of filesize
+	Extract mod_logio instead of filesize.  For this to work, you must add the
+mod_logio variables after the "%v" variable in your LogFormat:
+
+	LogFormat "%v %I %O %h %l %u %t \"%r\" %>s %b \"%{Referer}i\" \"%{User-Agent}i\"" combined
 
 -h
 	Displays help.
@@ -127,6 +130,9 @@ vlogger will dump its stats into the database (the default is 30 seconds).  Copy
 file to somewhere convienient on your filesystem (like /etc/apache/vlogger-dbi.conf) and
 start vlogger with "-d /etc/apache/vlogger-dbi.conf".  You might want to use this feature
 to easily bill customers on a daily/weekly/monthly basis for bandwidth usage.
+
+This feature is safe.  This mean that even if the MySQL connection fails for any reason,
+vlogger will continue to do its main job.
 
 =head1 SEE ALSO
 cronolog(1), httplog(1)
@@ -152,7 +158,7 @@ use IO::Handle;
 
 # get command line options
 our %OPTS;
-getopts( 'f:t:s:hu:g:aeivnr:d:', \%OPTS );
+getopts( 'f:t:s:hu:g:aeivr:d:n', \%OPTS );
 
 # print out version
 if ( $OPTS{'v'} ) {
@@ -177,6 +183,7 @@ if ( $ARGV[0] ) {
 		print STDERR "[vlogger] target directory $ARGV[0] does not exist - exiting.\n\n";
 		exit;
 	}
+
 	$LOGDIR = $ARGV[0];
 }
 $LOGDIR =~ /(.*)/;
@@ -222,7 +229,7 @@ if ( $> == "0" ) {
 my $DBI_DSN;
 my $DBI_USER;
 my $DBI_PASS;
-my $DBI_DUMP;
+my $DBI_DUMP = 30;
 if ( $OPTS{'d'} ) {
 	if ( $OPTS{'e'} ) {
 		print "-d not valid with -e. exiting.\n";
@@ -251,8 +258,8 @@ if ( $OPTS{'d'} ) {
 
 		close CONF;
 
-		unless ( $DBI_DSN && $DBI_USER && $DBI_PASS && $DBI_DUMP ) {
-			print "\n[vlogger] All values for DBI configuration are not properly defined. DBI feature turned off.\n\n";
+		unless ( $DBI_DSN && $DBI_USER && $DBI_PASS ) {
+			print "\n[vlogger] All values for DBI configuration are not properly defined. Tracker feature turned off.\n\n";
 			delete $OPTS{'d'};
 		} else {
 			# test the connection
@@ -266,12 +273,12 @@ if ( $OPTS{'d'} ) {
 
 				alarm $DBI_DUMP;
 			} else {
-				print "\nvlogger: Unable to connect to MySQL server. DBI feature turned off.\n\n";
+				print "\n[vlogger] Unable to connect to MySQL server. Tracker feature is turned off.\n\n";
 				delete $OPTS{'d'};
 			}
 		}
 	} else {
-		print "\n[vlogger] File $OPTS{'d'} not found. DBI feature turned off.\n\n";
+		print "\n[vlogger] File $OPTS{'d'} not found. Tracker feature turned off.\n\n";
 		delete $OPTS{'d'};
 	}
 }
@@ -322,15 +329,16 @@ chroot(".");
 
 my %logs = ();
 my %tracker = ();
-my $LASTDUMP = time();
 
 # pick a mode
 if ( $OPTS{'e'} ) {
-	my $logtime;
+	my $initlogtime = time();
 	$0 = "vlogger (error log)";
+
 	# errorlog mode
-	$logtime=time();
-	open ELOG, ">>" . time2str( $TEMPLATE, time() ) or die ( "can't open $LOGDIR/" . time2str( $TEMPLATE, $logtime ) );
+	open ELOG, ">>" . time2str( $TEMPLATE, $initlogtime ) or die (
+		"can't open $LOGDIR/" . time2str( $TEMPLATE, $initlogtime )
+	);
 
 	unless ( $OPTS{'a'} ) {
 		ELOG->autoflush(1);
@@ -341,17 +349,19 @@ if ( $OPTS{'e'} ) {
 			unlink( $OPTS{'s'} );
 		}
 
-		symlink( time2str( $TEMPLATE, $logtime ), $OPTS{'s'} );
+		symlink( time2str( $TEMPLATE, $initlogtime ), $OPTS{'s'} );
 	}
 
-	my $LASTWRITE = time();
+	my $LASTWRITE = $initlogtime;
 
 	while ( my $log_line = <STDIN> ) {
+		my $logtime = time();
+
 		unless ( $OPTS{'n'} ) {
 			if ( time2str( "%Y%m%d", $logtime ) > time2str( "%Y%m%d", $LASTWRITE ) ) {
                 # open a new file
 				close ELOG;
-				open_errorlog();
+				open_errorlog($logtime);
 			} elsif ( $OPTS{'r'} ) {
 				# check the size
 				my @filesize = ELOG->stat;
@@ -359,11 +369,11 @@ if ( $OPTS{'e'} ) {
 
 				if ( $filesize[7] > $MAXSIZE ) {
 					close ELOG;
-					open_errorlog();
+					open_errorlog($logtime);
 				}
 			}
 
-			$LASTWRITE = time();
+			$LASTWRITE = $logtime;
 		}
 
 		# we dont need to do any other parsing at all, so write the line.
@@ -374,6 +384,7 @@ if ( $OPTS{'e'} ) {
 	$0 = "vlogger (access log)";
 
 	while ( my $log_line = <STDIN> ) {
+		my $logtime = time();
 		# parse out the first word (the vhost)
 		my @this_line = split ( /\s/, $log_line );
 		my ($vhost) = $this_line[0];
@@ -392,7 +403,7 @@ if ( $OPTS{'e'} ) {
 
 		# if we're writing to a log, and it rolls to a new day, close all files.
 		unless ( $OPTS{'n'} ) {
-			if ( $logs{$vhost} && ( time2str( "%Y%m%d", time() ) > time2str( "%Y%m%d", $logs{$vhost} ) ) ) {
+			if ( $logs{$vhost} && ( time2str( "%Y%m%d", $logtime ) > time2str( "%Y%m%d", $logs{$vhost} ) ) ) {
 				foreach my $key ( keys %logs ) {
 					close $key;
 				}
@@ -410,13 +421,10 @@ if ( $OPTS{'e'} ) {
 		}
 
 		# open a new log
-		if ( !$logs{$vhost} ) {
-			my $logtime;
-
+		if ( ! $logs{$vhost} ) {
 			# check how many files we have open, close the oldest one
 			if ( keys(%logs) > $MAXFILES ) {
-				my ( $key, $value ) =
-				sort { $logs{$a} <=> $logs{$b} } ( keys(%logs) );
+				my ( $key, $value ) = sort { $logs{$a} <=> $logs{$b} } ( keys(%logs) );
 				close $key;
 				delete( $logs{$key} );
 			}
@@ -427,13 +435,12 @@ if ( $OPTS{'e'} ) {
 			}
 
 			# open the file using the template
-			$logtime=time();
-			open $vhost, ">>${vhost}/" . time2str( $TEMPLATE, time() ) or die (
+			open $vhost, ">>${vhost}/" . time2str( $TEMPLATE, $logtime ) or die (
 				"can't open $LOGDIR/${vhost}/" . time2str( $TEMPLATE, $logtime )
 			);
 
 			# autoflush the handle unless -a
-			if ( !$OPTS{'a'} ) {
+			if ( ! $OPTS{'a'} ) {
 				$vhost->autoflush(1);
 			}
 
@@ -491,9 +498,11 @@ sub exitall {
 
 # sub to open new errorlog
 sub open_errorlog {
-	my $logtime;
-	$logtime=time();
-	open ELOG, ">>" . time2str( $TEMPLATE, $logtime ) or die ( "can't open $LOGDIR/" . time2str( $TEMPLATE, time() ) );
+	my $logtime = $_[0];
+
+	open ELOG, ">>" . time2str( $TEMPLATE, $logtime ) or die (
+		"can't open $LOGDIR/" . time2str( $TEMPLATE, $logtime )
+	);
 
 	if ( $OPTS{'s'} ) {
 		if ( -l $OPTS{'s'} ) {
@@ -516,13 +525,13 @@ sub dump_tracker {
 
 		foreach my $vhost ( keys(%tracker) ) {
 			my $ts = time2str( "%m%d%Y", time() );
-			my $sth = $dbh->prepare("SELECT vhost AS cnt FROM httpd_vlogger WHERE vhost='$vhost'");
+			my $sth = $dbh->prepare( "SELECT COUNT(*) AS cnt FROM httpd_vlogger WHERE vhost='$vhost'" );
 			$sth->execute;
 
 			if ( $sth->rows ) {
-				$dbh->do("UPDATE httpd_vlogger SET ldate='$ts', bytes=bytes+$tracker{$vhost} WHERE vhost='$vhost'");
+				$dbh->do( "UPDATE httpd_vlogger SET ldate='$ts', bytes=bytes+$tracker{$vhost} WHERE vhost='$vhost'" );
 			} else {
-				$dbh->do("INSERT INTO httpd_vlogger (vhost, ldate, bytes) VALUE ('$vhost', '$ts', '$tracker{$vhost}')");
+				$dbh->do( "INSERT INTO httpd_vlogger (vhost, ldate, bytes) VALUE ('$vhost', '$ts', '$tracker{$vhost}')" );
 			}
 		}
 
@@ -561,5 +570,5 @@ sub usage {
 	print "virtualhost parsing is disabled, and a single file is written in LOGDIR\n";
 	print "using the TEMPLATE (%m%d%Y-error.log is default for -e).  When running with\n";
 	print "-r, the template becomes %m%d%Y-%T-xxx.log.  SIZE is given in bytes.\n\n";
-	print "Report bugs to <shade\@chemlab.org>.\n";
+	print "Report bugs to <l.declercq\@nuxwin.com>.\n";
 }

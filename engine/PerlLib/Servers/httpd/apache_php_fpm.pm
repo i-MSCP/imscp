@@ -2106,8 +2106,8 @@ END
 		$rs = $self->startPhpFpm();
 		$rs |= $self->startApache();
 	} elsif($self->{'restart'} && $self->{'restart'} eq 'yes') {
-		$rs |= $self->restartApache();
 		$rs = $self->restartPhpFpm();
+		$rs |= $self->restartApache();
 	}
 
 	$rs |= iMSCP::Dir->new('dirname' => "$trafficDir.old")->remove();
