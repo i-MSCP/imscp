@@ -65,19 +65,20 @@ VENDOR
     - Updated: Net_DNS2 to version 1.3.2
 
 Tickets:
-	- Fixed #528: Bug - The resolv.conf file shouldn't be edited manually
-	- Fixed #969: Defect - IPv6 addresses are not removed properly through interface
-	- Fixed #972: Bug - Adding second External Mailserver gives an error (Edit mode)
-	- Fixed #974: Bug - Customers assignment doesn't work if the first reseller hasn't any client
-	- Fixed #975: Bug - Customers assignment - disk limitation check doesn't work correctly
-	- Fixed #976: Bug - Wrong syntax for the mail quota value
-	- Fixed #978: Defect - SPF records for subdomains and external mail server
-	- Fixed #980: Bug - PHP-Editor - Values not saved while adding new customer
-	- Fixed #982: Defect - No access to /var/www from localhost
-	- Fixed #987: Bug - Backup - iMSCP::Database::mysql::mysql::dumpdb: mysqldump: Couldn't find table...
-	- Fixed #989: Security Issue - Any user on a server can read others files
-	- Fixed #990: Security issue - Any user can obtain mysql root password
-	- Fixed #995: Defect - Missing scrollbar in Ftp directory chooser dialog
+	- Fixed #0528: Bug - The resolv.conf file shouldn't be edited manually
+	- Fixed #0969: Defect - IPv6 addresses are not removed properly through interface
+	- Fixed #0972: Bug - Adding second External Mailserver gives an error (Edit mode)
+	- Fixed #0974: Bug - Customers assignment doesn't work if the first reseller hasn't any client
+	- Fixed #0975: Bug - Customers assignment - disk limitation check doesn't work correctly
+	- Fixed #0976: Bug - Wrong syntax for the mail quota value
+	- Fixed #0978: Defect - SPF records for subdomains and external mail server
+	- Fixed #0980: Bug - PHP-Editor - Values not saved while adding new customer
+	- Fixed #0982: Defect - No access to /var/www from localhost
+	- Fixed #0987: Bug - Backup - iMSCP::Database::mysql::mysql::dumpdb: mysqldump: Couldn't find table...
+	- Fixed #0989: Security Issue - Any user on a server can read others files
+	- Fixed #0990: Security issue - Any user can obtain mysql root password
+	- Fixed #0995: Defect - Missing scrollbar in Ftp directory chooser dialog
+	- Fixed #1000: Bug - When a domain is being disabled, apache won't restart
 
 ------------------------------------------------------------------------------------------------------------------------
 1.1.0-rc4.7

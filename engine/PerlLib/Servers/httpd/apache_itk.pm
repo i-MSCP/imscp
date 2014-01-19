@@ -290,7 +290,8 @@ sub disableDmn($$)
 	$self->setData(
 		{
 			AUTHZ_ALLOW_ALL => (version->new("v$self->{'config'}->{'APACHE_VERSION'}") >= version->new('v2.4.0'))
-				? 'Require all granted' : 'Allow from all'
+				? 'Require all granted' : 'Allow from all',
+			APACHE_LOG_DIR => $self->{'config'}->{'APACHE_LOG_DIR'}
 		}
 	);
 
