@@ -78,7 +78,7 @@ sub TIEHASH
 
 sub _init
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	$self->{'confFile'} = ();
 	$self->{'configValues'} = {};
@@ -108,7 +108,7 @@ sub _init
 
 sub _loadConfig
 {
-	my $self = shift;
+	my $self = $_[0];
 	my $mode;
 
 	debug("Loading $self->{'confFileName'}");
@@ -147,7 +147,7 @@ sub _loadConfig
 
 sub _parseConfig
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $lineNo = 0;
 
@@ -174,8 +174,7 @@ sub _parseConfig
 
 sub FETCH
 {
-	my $self = shift;
-	my $config = shift;
+	my ($self, $config) = @_;
 
 	if (! exists $self->{'configValues'}->{$config} && ! $self->{'args'}->{'noerrors'}) {
 		error(sprintf('Accessing non existing config value %s', $config));
@@ -194,9 +193,7 @@ sub FETCH
 
 sub STORE
 {
-	my $self = shift;
-	my $config = shift;
-	my $value = shift;
+	my ($self, $config, $value) = @_;
 
 	if(! $self->{'args'}->{'readonly'}) {
 		if(! exists $self->{'configValues'}->{$config}) {
@@ -222,7 +219,7 @@ sub STORE
 
 sub FIRSTKEY
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	$self->{'_list'} = [ sort keys %{$self->{'configValues'}} ];
 
@@ -239,9 +236,7 @@ sub FIRSTKEY
 
 sub NEXTKEY
 {
-	my $self = shift;
-
-	shift @{$self->{'_list'}};
+	shift @{$_[0]->{'_list'}};
 }
 
 =item
@@ -254,8 +249,7 @@ sub NEXTKEY
 
 sub EXISTS
 {
-	my $self = shift;
-	my $config = shift;
+	my ($self, $config) = @_;
 
 	exists $self->{'configValues'}->{$config};
 }
@@ -272,9 +266,7 @@ sub EXISTS
 
 sub _replaceConfig
 {
-	my $self = shift;
-	my $config = shift;
-	my $value = shift;
+	my ($self, $config, $value) = @_;
 
 	$value = '' unless defined $value;
 
@@ -294,9 +286,7 @@ sub _replaceConfig
 
 sub _insertConfig
 {
-	my $self = shift;
-	my $config = shift;
-	my $value = shift;
+	my ($self, $config, $value) = @_;
 
 	$value = '' unless defined $value;
 
