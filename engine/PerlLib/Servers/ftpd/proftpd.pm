@@ -291,7 +291,7 @@ sub getTraffic
 		my $logContent = iMSCP::File->new('filename' => "$trafficLogFile.old")->get();
 		die(iMSCP::Debug::getLastError()) unless defined $logContent;
 
-		$trafficDb{$2} += $1 while($logContent =~ /^(\d+)\s+(.*)$/gmo);
+		$trafficDb{$2} += $1 while($logContent =~ /^(\d+)\s+[^\@]+\@(.*)$/gmo);
 
 		$rs = iMSCP::File->new('filename' => "$trafficLogFile.old")->delFile();
 		die(iMSCP::Debug::getLastError()) if $rs;
