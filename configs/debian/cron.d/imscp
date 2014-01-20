@@ -1,33 +1,30 @@
 # Quota
-@daily root umask 027; {QUOTA_ROOT_DIR}/imscp-dsk-quota &>{LOG_DIR}/imscp-dsk-quota.log
+@daily root {QUOTA_ROOT_DIR}/imscp-dsk-quota &>{LOG_DIR}/imscp-dsk-quota.log
 
 # Traffic accounting (updated every 30 minutes)
-0,30 * * * * root umask 027; {TRAFF_ROOT_DIR}/imscp-srv-traff &>{LOG_DIR}/imscp-srv-traff.log
-0,30 * * * * root umask 027; {TRAFF_ROOT_DIR}/imscp-vrl-traff &>{LOG_DIR}/imscp-vrl-traff.log
+0,30 * * * * root {TRAFF_ROOT_DIR}/imscp-srv-traff &>{LOG_DIR}/imscp-srv-traff.log
+0,30 * * * * root {TRAFF_ROOT_DIR}/imscp-vrl-traff &>{LOG_DIR}/imscp-vrl-traff.log
 
 # Customer logs
-@daily root umask 027; {TOOLS_ROOT_DIR}/imscp-httpd-logs-mngr &>{LOG_DIR}/imscp-httpd-logs-mngr.log
+@daily root {TOOLS_ROOT_DIR}/imscp-httpd-logs-mngr &>{LOG_DIR}/imscp-httpd-logs-mngr.log
 
 # Backup for all the customers' data depending of the domain properties
-@daily root umask 027; {BACKUP_ROOT_DIR}/imscp-backup-all yes &>{LOG_DIR}/imscp-backup-all-mngr.log
+@daily root {BACKUP_ROOT_DIR}/imscp-backup-all yes &>{LOG_DIR}/imscp-backup-all-mngr.log
 
 # Backup for i-MSCP database and all /etc/imscp/* configuration files
-@daily root umask 027; {BACKUP_ROOT_DIR}/imscp-backup-imscp noreport &>{LOG_DIR}/imscp-backup-imscp-mngr.log
+@weekly root {BACKUP_ROOT_DIR}/imscp-backup-imscp noreport &>{LOG_DIR}/imscp-backup-imscp-mngr.log
 
-# Remove config backups older than seven days
+# Remove config backups older than 7 days
 @daily root find {CONF_DIR}/*/backup/* -maxdepth 0 -type f -mtime +7 -print | egrep '.*\.[0-9]+$' | xargs -r /bin/rm
 
-# Remove Daemon Logs older than 14 days (except .gz files)
-@daily root find {LOG_DIR}/* -maxdepth 1 -type f -mtime +14 -print | egrep '.*\.gz$' | xargs -r /bin/rm
+# Remove Daemon Logs older than 7 days (except .gz files)
+@daily root find {LOG_DIR}/* -maxdepth 1 -type f -mtime +7 -print | egrep '.*\.gz$' | xargs -r /bin/rm
 
 # Disable entities (dmn, als, sub, alssub and mail) of expired accounts
-@daily root umask 027; {TOOLS_ROOT_DIR}/imscp-disable-accounts >/dev/null 2>&1
+@daily root {TOOLS_ROOT_DIR}/imscp-disable-accounts >/dev/null 2>&1
 
 # Look for and purge old PHP sessions every 30 minutes
 0,30 * * * * root {TOOLS_ROOT_DIR}/imscp-del-tmp >/dev/null 2>&1
-
-# Delete old apache logfiles weekly
-@weekly root {TOOLS_ROOT_DIR}/imscp-del-logs >/dev/null 2>&1
 
 # imscp [{ENTRY_ID}] entry BEGIN
 # imscp [{ENTRY_ID}] entry ENDING

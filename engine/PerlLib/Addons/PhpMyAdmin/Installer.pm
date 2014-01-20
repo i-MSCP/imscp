@@ -546,7 +546,7 @@ sub _setupDatabase
 	# create the missing tables
 
 	# Connecting to newly created database
-	my ($db, $errStr) = main::setupGetSqlConnect($phpmyadminDbName);
+	($db, $errStr) = main::setupGetSqlConnect($phpmyadminDbName);
 	fatal("Unable to connect to SQL Server: $errStr") if ! $db;
 
 	# Import database schema

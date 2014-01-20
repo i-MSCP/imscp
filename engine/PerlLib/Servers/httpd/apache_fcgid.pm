@@ -1132,70 +1132,72 @@ sub flushData()
 	0;
 }
 
-=item getTraffic($domainName)
+=item getTraffic($timestamp)
 
- Get httpd traffic for the given domain name
+ Get httpd traffic data
 
- Param string $domainName Domain name for which traffic must be returned
- Return int Traffic in bytes
+ Param string $timestamp Timestamp
+ Return hash_ref Traffic data or die on failure
 
 =cut
 
 sub getTraffic($$)
 {
-	my ($self, $domainName) = @_;
-
-	$self->{'hooksManager'}->trigger('beforeHttpdGetTraffic', $domainName);
-
-	my $domainTraffic = 0;
-
-	require iMSCP::Database;
+	my ($self, $timestamp) = @_;
 
 	my $db = iMSCP::Database->factory();
-	my $trafficData = $db->doQuery('vhost', 'SELECT vhost, bytes FROM httpd_vlogger WHERE vhost = ?', $domainName);
 
-	unless(ref $trafficData eq 'HASH') {
-		error($trafficData);
-	} elsif(%{$trafficData}) {
-		my $rs = $db->doQuery('dummy', 'UPDATE httpd_vlogger set bytes = 0 WHERE vhost = ?', $domainName);
-		unless(ref $rs eq 'HASH') {
-			error($rs);
+	my $rawDb = $db->startTransaction();
+
+	my %trafficDb;
+
+	# Collect data from upstream traffic data source
+	eval {
+		require Date::Format;
+		Date::Format->import();
+
+		my $ldate = time2str('%Y%m%d', $timestamp);
+
+		my $trafficData = $db->doQuery(
+		 	'vhost', 'SELECT vhost, bytes FROM httpd_vlogger WHERE ldate <= ? FOR UPDATE', $ldate
+		);
+
+		if(%{$trafficData}) {
+			# Stash the data in a traffic database. This allow to not lost them on failure.
+        	tie %trafficDb, 'iMSCP::Config', 'fileName' => "$self->{'apacheWrkDir'}/traffic.db", 'noerrors' => 1;
+			$trafficDb{$_} += $trafficData->{$_}->{'bytes'} for keys %{$trafficData};
+
+			# Deleting upstream source data
+			$rawDb->do('DELETE FROM httpd_vlogger WHERE ldate <= ?', undef, $ldate);
+
+			# Schedule deletion of traffic database. This is only done on success. On failure, the traffic database is
+			# kept in place for later processing. In such case, data already processed (put in database) are zeroed by
+			# the traffic processor script.
+			$self->{'hooksManager'}->register(
+				'afterVrlTraffic',
+				sub {
+					if(-f "$self->{'apacheWrkDir'}/traffic.db") {
+						iMSCP::File->new('filename' => "$self->{'apacheWrkDir'}/traffic.db")->delFile();
+					} else {
+						0;
+					}
+				}
+			) and die(iMSCP::Debug::getLastError());
 		}
 
-		$domainTraffic = $trafficData->{$domainName}->{'bytes'};
+		$rawDb->commit();
+	};
+
+	if($@) {
+		$rawDb->rollback();
+		%trafficDb = ();
+		$db->endTransaction();
+		die("Unable to collect traffic data: $@");
 	}
 
-	$self->{'hooksManager'}->trigger('afterHttpdGetTraffic', $domainName);
+	$db->endTransaction();
 
-	$domainTraffic;
-}
-
-=item deleteOldLogs()
-
- Remove Apache logs (logs older than 1 year)
-
- Return int 0 on success, other on failure
-
-=cut
-
-sub deleteOldLogs
-{
-	my $self = shift;
-
-	my $rs = $self->{'hooksManager'}->trigger('beforeHttpdDelOldLogs');
-	return $rs if $rs;
-
-	my $logDir = $self->{'config'}->{'APACHE_LOG_DIR'};
-	my ($stdout, $stderr);
-
-	my $cmd = "nice -n 19 find $logDir -maxdepth 1 -type f -name '*.log*' -mtime +365 -exec rm -v {} \\;";
-	$rs = execute($cmd, \$stdout, \$stderr);
-	debug($stdout) if $stdout;
-	error($stderr) if $stderr && $rs;
-	error("Error while executing $cmd.\nReturned value is $rs") if $rs && ! $stderr;
-	return $rs if $rs;
-
-	$self->{'hooksManager'}->trigger('afterHttpdDelOldLogs');
+	\%trafficDb;
 }
 
 =item deleteTmp()
@@ -1962,8 +1964,8 @@ sub _buildPHPini($$)
 		return $rs if $rs;
 	}
 
-	my $fileSource = "$main::imscpConfig{'CONF_DIR'}/fcgi/parts/php5/php.ini";
-	my $destFile = "$php5Dir/php5/php.ini";
+	$fileSource = "$main::imscpConfig{'CONF_DIR'}/fcgi/parts/php5/php.ini";
+	$destFile = "$php5Dir/php5/php.ini";
 
 	$rs = $self->buildConfFile($fileSource, $data, { 'destination' => $destFile });
 	return $rs if $rs;
@@ -2012,7 +2014,6 @@ sub _cleanTemplate($$$)
  Code triggered at the very end of script execution
 
  - Start or restart apache if needed
- - Remove old traffic logs directory if exists
 
  Return int Exit code
 
@@ -2022,7 +2023,6 @@ END
 {
 	my $exitCode = $?;
 	my $self = Servers::httpd::apache_fcgid->getInstance();
-	my $trafficDir = "$self->{'config'}->{'APACHE_LOG_DIR'}/traff";
 	my $rs = 0;
 
 	if($self->{'start'} && $self->{'start'} eq 'yes') {
@@ -2030,8 +2030,6 @@ END
 	} elsif($self->{'restart'} && $self->{'restart'} eq 'yes') {
 		$rs = $self->restart();
 	}
-
-	$rs |= iMSCP::Dir->new('dirname' => "$trafficDir.old")->remove();
 
 	$? = $exitCode || $rs;
 }

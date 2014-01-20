@@ -49,7 +49,7 @@ sub _addAddresses
 {
 	my $rs = 0;
 
-	my $rdata = iMSCP::Database->new()->factory()->doQuery('ip_number', 'SELECT ip_number, ip_card FROM server_ips');
+	my $rdata = iMSCP::Database->factory()->doQuery('ip_number', 'SELECT ip_number, ip_card FROM server_ips');
 	unless (ref $rdata eq 'HASH') {
 		error($rdata);
 		$rs = 1;
@@ -78,7 +78,7 @@ sub _removeAddresses
 {
 	my $rs = 0;
 
-	my $rdata = iMSCP::Database->new()->factory()->doQuery(
+	my $rdata = iMSCP::Database->factory()->doQuery(
 		'ip_number', "SELECT ip_number FROM server_ips WHERE ip_number <> '$main::imscpConfig{'BASE_SERVER_IP'}'"
 	);
 	unless (ref $rdata eq 'HASH') {
@@ -109,7 +109,7 @@ sub run
 		$rs = 1;
 	}
 
-	my $db = iMSCP::Database->new()->factory();
+	my $db = iMSCP::Database->factory();
 
 	my $rdata = $db->doQuery('dummy', "DELETE FROM server_ips WHERE ip_status = 'todelete'");
 	unless (ref $rdata eq 'HASH') {

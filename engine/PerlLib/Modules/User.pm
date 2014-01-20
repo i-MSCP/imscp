@@ -205,7 +205,7 @@ sub add
 		',
 		$userName, $userUid, $groupName, $userGid, $self->{'userId'}
 	);
-	my $rdata = iMSCP::Database->factory()->doQuery('update', @sql);
+	my $rdata = iMSCP::Database->factory()->doQuery('dummy', @sql);
 	unless(ref $rdata eq 'HASH') {
 		error($rdata);
 		return 1;

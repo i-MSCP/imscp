@@ -57,7 +57,7 @@ sub quotaFiles
 {
 	my $rs = 0;
 
-	my $database = iMSCP::Database->new()->factory();
+	my $database = iMSCP::Database->factory();
 
 	my $mainDomains = $database->doQuery(
 		'domain_id', "SELECT `domain_id`, `domain_name` FROM `domain` WHERE `domain_status` = 'ok'"
@@ -233,7 +233,7 @@ sub quotaFiles
 sub quotaSql
 {
 	my $rs = 0;
-	my $database = iMSCP::Database->new()->factory();
+	my $database = iMSCP::Database->factory();
 
 	my $databases = $database->doQuery('Database', 'SHOW DATABASES');
 	unless (ref $databases eq 'HASH'){

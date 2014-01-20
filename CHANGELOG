@@ -6,11 +6,15 @@ Git Master
 ------------------------------------------------------------------------------------------------------------------------
 
 ADDONS:
+	- Added: Awstats - logresolvemerge.pl script for last rotated log processing
 	- Fixed: Awstats - _addAwstatsSection() event listener is registered too many times
-	- Fixed: Awstats - Error: Couldn't open server log file...
+	- Fixed: Awstats - Avoid concurrent processes of the awstats_updateall.pl script
+	- Fixed: Awstats - Error: Couldn't open server log file... (missing files are now ignored silently)
+	- Fixed: Awstats - Traffic data are lost when logs are rotated
 	- Fixed: Roundcube|PhpMyAdmin installers - Ensure that database tables exist (recovery case)
 	- Fixed: Roundcube - Wrong SQL server host when using remote server
 	- Fixed: PhpMyAdmin 4.1.0 is only compatible with MySQL Server version 5.5 and newer
+	- Removed: Awstats - logrotate entry (no longer needed)
 
 CONFIG:
 	- Changed: Tools access is now provided only through the panel domain
@@ -31,6 +35,7 @@ ENGINE:
 	- Changed: iMSCP::Templator renamed to iMSCP::TemplateParser
 	- Changed: IP source for outbound mails is now set to the base server IP (Postfix - Temporary fix)
 	- Changed: Inet protocol is now set according the base server IP type (Postfix - Temporary fix)
+	- Fixed: Do not compute traffic data for disabled domains
 	- Fixed: External command died with signal 9 (without core dump)
 	- Fixed: iMSCP::Rights - Any target referenced by a symlink must not be affected by owner/group modification
 	- Fixed: Keep current unix user uid/gid when updating the SYSTEM_USER_PREFIX and SYSTEM_USER_MIN_UID parameters
@@ -38,6 +43,7 @@ ENGINE:
 	- Fixed: Pass-in domain data to the listeners which listen to the *HttpdBuildConfFile and *HttpdBuildConf events
 	- Fixed: Proftpd server is down after update
 	- Fixed: Removed useless file tests on directory deletion
+	- Fixed: Traffic data must not be lost in case where the imscp-vrl-traff script dies for any reason
 	- Fixed: Upstart/SysV init - Interoperability
 	- Fixed: Usage of dynamic resolv.conf (See resolvconf(8))
 	- Fixed: Wrong DNS record type for subdomain with IPv6 (A instead of AAAA)
@@ -45,7 +51,9 @@ ENGINE:
 	- Removed: Useless backup and users log directories (Httpd server impl.)
 	- Replaced: iMSCP::IP library by IMSCP::Net library (full rewrite using iproute tools instead of net-tools)
 	- Replaced: imscp-apache-logger by vlogger (i-MSCP specific version)
-	- Rewritten: imscp-srv-traff script
+	- Rewritten: getTraffic() methods from server implementations
+	- Rewritten: iMSCP::Database class
+	- Rewritten: imscp-srv-traff and imscp-vrl-traff scripts
 
 GUI:
 	- Added: proc_open and popen in PHP editor

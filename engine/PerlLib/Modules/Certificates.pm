@@ -109,7 +109,7 @@ sub loadData
 
 		# Update the status of the SSL certificate which is orphaned. If the installer is run again, it will be skipped
 		my $rdata = iMSCP::Database->factory()->doQuery(
-			'update', 'UPDATE `ssl_certs` SET `status` = ? WHERE `cert_id` = ?', 'Error: Orphaned entry'
+			'dummy', 'UPDATE `ssl_certs` SET `status` = ? WHERE `cert_id` = ?', 'Error: Orphaned entry'
 		);
 
 		return 1;

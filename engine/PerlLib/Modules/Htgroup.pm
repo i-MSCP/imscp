@@ -97,7 +97,7 @@ sub loadData
 			$self->{'htgroupId'}
 		);
 
-		my $rdata = iMSCP::Database->factory()->doQuery('update', @sql);
+		my $rdata = iMSCP::Database->factory()->doQuery('dummy', @sql);
 		return 1;
 	}
 

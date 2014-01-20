@@ -91,7 +91,7 @@ sub _dropSqlUser
 	my $self = shift;
 
 	if($self->{'config'}->{'DATABASE_USER'}) {
-		my $database = iMSCP::Database->new()->factory();
+		my $database = iMSCP::Database->factory();
 
 		$database->doQuery('delete', 'DROP USER ?@?', $self->{'config'}->{'DATABASE_USER'}, 'localhost');
 		$database->doQuery('delete', 'DROP USER ?@?', $self->{'config'}->{'DATABASE_USER'}, '%');

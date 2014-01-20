@@ -155,7 +155,7 @@ sub _removeCustomers
 		ssl_certs => 'status'
 	};
 
-	my $database = iMSCP::Database->new()->factory();
+	my $database = iMSCP::Database->factory();
 
 	my $aditionalCondition;
 

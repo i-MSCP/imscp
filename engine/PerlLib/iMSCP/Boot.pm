@@ -91,7 +91,7 @@ sub boot
 	unless ($options->{'nodatabase'} && $options->{'nodatabase'} eq 'yes') {
 		require iMSCP::Crypt;
 		my $crypt = iMSCP::Crypt->getInstance();
-		my $database = iMSCP::Database->new('db' => $main::imscpConfig{'DATABASE_TYPE'})->factory();
+		my $database = iMSCP::Database->factory();
 
 		$database->set('DATABASE_HOST', $main::imscpConfig{'DATABASE_HOST'});
 		$database->set('DATABASE_PORT', $main::imscpConfig{'DATABASE_PORT'});

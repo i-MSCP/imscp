@@ -136,7 +136,7 @@ sub shutDown
 
 sub _backupDatabase
 {
-	my $database = iMSCP::Database->new('db' => $main::imscpConfig{'DATABASE_TYPE'})->factory();
+	my $database = iMSCP::Database->factory();
 
 	# TODO check if database exists
 

@@ -586,80 +586,97 @@ sub disableMail($$)
 	$self->{'hooksManager'}->trigger('afterMtaDisableMail', $data);
 }
 
-=item getTraffic($domainName)
+=item getTraffic()
 
- Get traffic
+ Get Smtp traffic data
 
- Return int traffic
+ Return hash_ref Traffic data or die on failure
 
 =cut
 
-sub getTraffic($$)
+sub getTraffic
 {
-	my ($self, $domainName) = @_;
+	my $self = $_[0];
 
-	my $dbName = "$self->{'wrkDir'}/log.db";
-	my $logFile = "$main::imscpConfig{'TRAFF_LOG_DIR'}/mail.log";
-	my $wrkLogFile = "$main::imscpConfig{'LOG_DIR'}/mail.smtp.log";
-	my ($rs, $rv, $stdout, $stderr);
+	my $trafficLogFile = "$main::imscpConfig{'TRAFF_LOG_DIR'}/$main::imscpConfig{'MAIL_TRAFF_LOG'}";
+	my %trafficDb;
 
-	$self->{'hooksManager'}->trigger('beforeMtaGetTraffic', $domainName) and return 0;
+	if(-f $trafficLogFile && -s _) {
+		my $wrkLogFile = "$main::imscpConfig{'LOG_DIR'}/mail.smtp.log";
 
-	# We process only if the file has not been aleady parsed during this session
-	unless($self->{'logDb'}) {
 		# We are using a small file to memorize the number of the last line that has been read and his content
-		tie %{$self->{'logDb'}}, 'iMSCP::Config', 'fileName' => $dbName, 'noerrors' => 1;
+		tie my %logDb, 'iMSCP::Config', 'fileName' => "$self->{'wrkDir'}/log.db", 'noerrors' => 1;
 
-		$self->{'logDb'}->{'line'} = 0 unless $self->{'logDb'}->{'line'};
-		$self->{'logDb'}->{'content'} = '' unless $self->{'logDb'}->{'content'};
+		$logDb{'lineNo'} = 0 unless $logDb{'lineNo'};
+		$logDb{'lineContent'} = '' unless $logDb{'lineContent'};
 
-		my $lastLineNo = $self->{'logDb'}->{'line'};
-		my $lastLine = $self->{'logDb'}->{'content'};
+		my $lastLineNo = $logDb{'lineNo'};
+		my $lastlineContent = $logDb{'lineContent'};
 
-		$rs = iMSCP::File->new('filename' => $logFile)->copyFile($wrkLogFile) if -f $logFile;
-		return 0 if $rs;
+		# Creating working file from current state of upstream data source
+		my $rs = iMSCP::File->new('filename' => $trafficLogFile)->copyFile($wrkLogFile);
+		die(iMSCP::Debug::getLastError()) if $rs;
 
 		require Tie::File;
-		tie my @content, 'Tie::File', $wrkLogFile or return 0;
+		tie my @content, 'Tie::File', $wrkLogFile or die("Unable to tie file $wrkLogFile");
 
-		# Saving last line number and content from the current working file
-		$self->{'logDb'}->{'line'} = $#content;
-		$self->{'logDb'}->{'content'} = $content[$#content];
+		# Saving last line number and line date content from the current working file
+		$logDb{'lineNo'} = $#content;
+		$logDb{'lineContent'} = $content[$#content];
 
 		# Test for logrotation
-		if($content[$lastLineNo] && $content[$lastLineNo] eq $lastLine) {
+		if($content[$lastLineNo] && $content[$lastLineNo] eq $lastlineContent) {
 			# No logrotation occured. We want parse only new lines so we skip those already processed
 			(tied @content)->defer;
 			@content = @content[$lastLineNo + 1 .. $#content];
 			(tied @content)->flush;
 		}
 
-		# Create working log file using the maillogconvert.pl utility script
+		# TODO: Parse the last rotated mail.log (i.e mail.log.1) file to cover the case where a rotation has been made.
+		# This should allow to retrieve traffic data logged between the last collect and the log rotation. Those data
+		# are currently lost because they are never collected.
+
+		# Making the working log file ready for analyze using the maillogconvert.pl utility script
+		my ($stdout, $stderr);
 		$rs = execute(
 			"$main::imscpConfig{'CMD_GREP'} 'postfix' $wrkLogFile | $self->{'config'}->{'CMD_PFLOGSUM'} standard",
 			\$stdout,
 			\$stderr
 		);
-		error($stderr) if $stderr && $rs;
-		return 0 if $rs;
+
+		# Stash the data in a traffic database. This allow to not lost them on failure.
+		tie %trafficDb, 'iMSCP::Config', 'fileName' => "$self->{'wrkDir'}/traffic.db", 'noerrors' => 1;
 
 		# Getting SMTP traffic from working log file
 		#
 		# SMTP traffic line sample (as provided by the maillogconvert.pl utility script)
+		#                               1                 2               3                     4                                     5
+		# [^\s]+      [^\s]+   [^\s\@]+\@([^\s]+)   [^\s\@]+\@([^\s]+) ([^\s]+)              ([^\s]+)           [^\s]+ [^\s]+ [^\s]+ (\d+)
+		# 2013-09-14  13:23:35 from_user@domain.tld to_user@domain.tld host_from.domain.tld  host_to.domain.tld SMTP    -     1      626
 		#
-		# 2013-09-14 13:23:35 from_user@domain.tld to_user@domain.tld host_from.domain.tld host_to.domain.tld SMTP - 1 626
-		#
-		while($stdout =~ /^[^\s]+\s[^\s]+\s[^\s\@]+\@([^\s]+)\s[^\s\@]+\@([^\s]+)\s([^\s]+)\s([^\s]+)\s[^\s]+\s[^\s]+\s[^\s]+\s(\d+)$/gim) {
+		while($stdout =~ /^[^\s]+\s[^\s]+\s[^\s\@]+\@([^\s]+)\s[^\s\@]+\@([^\s]+)\s([^\s]+)\s([^\s]+)\s[^\s]+\s[^\s]+\s[^\s]+\s(\d+)$/gimo) {
 			if($4 !~ /virtual/ && !($3 =~ /localhost|127.0.0.1/ && $4 =~ /localhost|127.0.0.1/)) {
-				$self->{'traffic'}->{$1} += $5;
-				$self->{'traffic'}->{$2} += $5;
+				$trafficDb{$1} += $5;
+				$trafficDb{$2} += $5;
 			}
 		}
+
+		# Schedule deletion of traffic database. This is only done on success. On failure, the traffic database is kept
+		# in place for later processing. In such case, data already processed (put in database) are zeroed by the
+		# traffic processor script.
+		$self->{'hooksManager'}->register(
+			'afterVrlTraffic',
+			sub {
+				if(-f "$self->{'wrkDir'}/traffic.db") {
+					iMSCP::File->new('filename' => "$self->{'wrkDir'}/traffic.db")->delFile();
+				} else {
+					0;
+				}
+			}
+		) and die(iMSCP::Debug::getLastError());
 	}
 
-	$self->{'hooksManager'}->trigger('afterMtaGetTraffic', $domainName) and return 0;
-
-	(exists $self->{'traffic'}->{$domainName}) ? $self->{'traffic'}->{$domainName} : 0;
+	\%trafficDb;
 }
 
 =back

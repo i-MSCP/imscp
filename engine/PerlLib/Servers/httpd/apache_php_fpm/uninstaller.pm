@@ -148,7 +148,7 @@ sub _removeVloggerSqlUser
 {
 	my $self = shift;
 
-	my $db = iMSCP::Database->new()->factory();
+	my $db = iMSCP::Database->factory();
 
 	$db->doQuery('dummy', 'DROP USER ?@?', 'vlogger_user', $main::imscpConfig{'DATABASE_USER_HOST'});
 	$db->doQuery('dummy', 'FLUSH PRIVILEGES');

@@ -521,17 +521,32 @@ sub open_errorlog {
 # sub to update the database with the tracker data
 sub dump_tracker {
 	if ( keys(%tracker) > 0 ) {
-		my $dbh = DBI->connect( $DBI_DSN, $DBI_USER, $DBI_PASS ) or warn "DBI Error: $!";
+		my $dbh = DBI->connect(
+			$DBI_DSN, $DBI_USER, $DBI_PASS, { 'AutoCommit' => 0, 'RaiseError' => 1}
+		) or warn "DBI Error: $!";
 
-		foreach my $vhost ( keys(%tracker) ) {
-			my $ts = time2str( "%m%d%Y", time() );
-			my $sth = $dbh->prepare( "SELECT COUNT(*) AS cnt FROM httpd_vlogger WHERE vhost='$vhost'" );
-			$sth->execute;
+		foreach my $key ( keys(%tracker) ) {
+			eval {
+				my $ts = time2str( "%Y%m%d", time() );
+				my $sth = $dbh->prepare(
+					"SELECT vhost FROM httpd_vlogger WHERE vhost='$key' AND ldate = '$ts'"
+				);
+				$sth->execute;
 
-			if ( $sth->rows ) {
-				$dbh->do( "UPDATE httpd_vlogger SET ldate='$ts', bytes=bytes+$tracker{$vhost} WHERE vhost='$vhost'" );
-			} else {
-				$dbh->do( "INSERT INTO httpd_vlogger (vhost, ldate, bytes) VALUE ('$vhost', '$ts', '$tracker{$vhost}')" );
+				if ( $sth->rows ) {
+					$dbh->do(
+						"UPDATE httpd_vlogger set bytes = bytes + $tracker{$key} WHERE vhost = '$key' AND ldate = '$ts'"
+					);
+				} else {
+					$dbh->do("INSERT INTO httpd_vlogger (vhost, ldate, bytes) VALUE ('$key', '$ts', '$tracker{$key}')");
+				}
+
+				$dbh->commit();
+			};
+
+			if($@) {
+				$dbh->rollback();
+				warn "DBI Error: $@";
 			}
 		}
 

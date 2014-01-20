@@ -2327,7 +2327,7 @@ sub setupSetQuestion
 sub setupCheckSqlConnect
 {
 	my ($dbType, $dbName, $dbHost, $dbPort, $dbUser, $dbPass) = (@_);
-	my $db = iMSCP::Database->new('db' => $dbType)->factory();
+	my $db = iMSCP::Database->factory();
 
 	$db->set('DATABASE_NAME', $dbName);
 	$db->set('DATABASE_HOST', $dbHost);
@@ -2345,7 +2345,7 @@ sub setupCheckSqlConnect
 sub setupGetSqlConnect
 {
 	my $dbName = shift || '';
-	my $db = iMSCP::Database->new('db' => setupGetQuestion('DATABASE_TYPE'))->factory();
+	my $db = iMSCP::Database->factory();
 
 	$db->set('DATABASE_NAME', $dbName);
 	$db->set('DATABASE_HOST', setupGetQuestion('DATABASE_HOST') || '');
@@ -2372,7 +2372,7 @@ sub setupIsImscpDb
 	fatal("Unable to connect to SQL Server: $errstr") if ! $db;
 
 	my $rs = $db->doQuery('1', 'SHOW DATABASES LIKE ?', $dbName);
-	fatal('SQL query failed: $rs') if ref $rs ne 'HASH';
+	fatal("SQL query failed: $rs") if ref $rs ne 'HASH';
 
 	return 0 if ! %$rs;
 

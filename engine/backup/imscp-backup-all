@@ -76,7 +76,7 @@ sub process
 
 	my $rs = 0;
 	my ($ret, $rdata, $stdout, $stderr);
-	my $database = iMSCP::Database->new()->factory();
+	my $database = iMSCP::Database->factory();
 	my $canDumpDatabases = $database->can('dumpdb');
 	my $cmdTar = $main::imscpConfig{'CMD_TAR'};
 	my $algorithm = lc($main::imscpConfig{'ZIP'});
@@ -184,7 +184,7 @@ sub process
 					}
 
 					for (keys %$dbData) {
-						$ret = iMSCP::Database->new()->factory()->dumpdb($_, "$bkpDir/$_.sql");
+						$ret = iMSCP::Database->factory()->dumpdb($_, "$bkpDir/$_.sql");
 
 						if($ret) {
 							$rs |= $ret;

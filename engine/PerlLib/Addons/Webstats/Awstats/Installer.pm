@@ -85,20 +85,22 @@ sub showDialog($$)
 	$rs;
 }
 
-=item preinstall()
-
- Process preinstall tasks
-
- Return int 0 on success, other on failure
-
-=cut
-
-sub preinstall
-{
-	my $self = shift;
-
-	iMSCP::HooksManager->getInstance()->register('beforeHttpdBuildConf', sub { $self->_installLogrotate(@_); });
-}
+#=item preinstall()
+#
+# Process preinstall tasks
+#
+# Return int 0 on success, other on failure
+#
+#=cut
+#
+#sub preinstall
+#{
+#	my $self = shift;
+#
+#	# No longer needed since we are now logresolvemerge.pl which always parse also last rotated log file
+#	#iMSCP::HooksManager->getInstance()->register('beforeHttpdBuildConf', sub { $self->_installLogrotate(@_); });
+#
+#}
 
 =item install()
 
@@ -196,36 +198,37 @@ sub _init
 	$self;
 }
 
-=item _installLogrotate(\$content, $filename)
-
- Event listener responsible to add or remove the AWStats logrotate configuration snippet in the Apache logrotate file
-
- Param SCALAR reference - A reference to a scalar containing file content
- Param Param SCALAR Filename
- Return int 0 on success, other on failure
-
-=cut
-
-sub _installLogrotate($$$)
-{
-	my ($self, $content, $filename) = @_;
-
-	if ($filename eq 'logrotate.conf') {
-		$$content = replaceBloc(
-			"# SECTION custom BEGIN.\n",
-			"# SECTION custom END.\n",
-			"\tprerotate\n" .
-			"\tIMSCP_APACHE_LOG_DIR=$self->{'httpd'}->{'config'}->{'APACHE_LOG_DIR'} " .
-			"$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Addons/Webstats/Awstats/Scripts/awstats_updateall.pl now " .
-			"-awstatsprog=$main::imscpConfig{'AWSTATS_ENGINE_DIR'}/awstats.pl &> /dev/null\n" .
-			"\tendscript\n",
-			$$content,
-			'preserve'
-		);
-	}
-
-	0;
-}
+# No longer needed since we are now logresolvemerge.pl which always parse also last rotated log file
+#=item _installLogrotate(\$content, $filename)
+#
+# Event listener responsible to add or remove the AWStats logrotate configuration snippet in the Apache logrotate file
+#
+# Param SCALAR reference - A reference to a scalar containing file content
+# Param Param SCALAR Filename
+# Return int 0 on success, other on failure
+#
+#=cut
+#
+#sub _installLogrotate($$$)
+#{
+#	my ($self, $content, $filename) = @_;
+#
+#	if ($filename eq 'logrotate.conf') {
+#		$$content = replaceBloc(
+#			"# SECTION custom BEGIN.\n",
+#			"# SECTION custom END.\n",
+#			"  prerotate\n" .
+#			"    IMSCP_APACHE_LOG_DIR=$self->{'httpd'}->{'config'}->{'APACHE_LOG_DIR'} " .
+#			"$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Addons/Webstats/Awstats/Scripts/awstats_updateall.pl now " .
+#			"-awstatsprog=$main::imscpConfig{'AWSTATS_ENGINE_DIR'}/awstats.pl &> /dev/null\n" .
+#			"  endscript\n",
+#			$$content,
+#			'preserve'
+#		);
+#	}
+#
+#	0;
+#}
 
 =item _makeCacheDir()
 
@@ -331,14 +334,12 @@ sub _addAwstatsCronTask
 		{
 			TASKID => "Addons::Webstats::Awstats",
 			MINUTE => '15',
-			HOUR => '*/6',
+			HOUR => '9-3/6',
 			DAY => '*',
 			MONTH => '*',
 			DWEEK => '*',
 			USER => $main::imscpConfig{'ROOT_USER'},
-			COMMAND =>
-				"IMSCP_APACHE_LOG_DIR=$self->{'httpd'}->{'config'}->{'APACHE_LOG_DIR'} " .
-				"$main::imscpConfig{'CMD_PERL'} " .
+			COMMAND => "$main::imscpConfig{'CMD_PERL'} " .
 				"$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Addons/Webstats/Awstats/Scripts/awstats_updateall.pl now " .
 				"-awstatsprog=$main::imscpConfig{'AWSTATS_ENGINE_DIR'}/awstats.pl >/dev/null 2>&1"
 		}

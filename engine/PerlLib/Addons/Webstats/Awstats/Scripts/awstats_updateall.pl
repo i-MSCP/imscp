@@ -5,6 +5,14 @@
 #------------------------------------------------------------------------------
 # $Revision: 1.15 $ - $Author: eldy $ - $Date: 2006/07/23 22:57:48 $
 
+use Fcntl ":flock";
+
+## i-MSCP Fix to avoid any concurrent process
+# Particularly needed on heavy systems where a process can still be running when another is spawned
+# In case the lock cannot be acquired , just exit.
+# FIXME: Portability
+open(my $lockFile, '>', '/tmp/awstats_updateall.pl.lock') or die("Unable to open lock file: $!");
+exit unless flock($lockFile, LOCK_EX | LOCK_NB);
 
 #------------------------------------------------------------------------------
 # Defines
@@ -23,8 +31,6 @@ my $AwstatsDir='';
 my $AwstatsProg='';
 my $LastLine='';
 
-
-
 #------------------------------------------------------------------------------
 # Functions
 #------------------------------------------------------------------------------
@@ -37,10 +43,9 @@ my $LastLine='';
 # Return:		None
 #------------------------------------------------------------------------------
 sub error {
-	print STDERR "Error: $_[0].\n";
+	print "Error: $_[0].\n";
     exit 1;
 }
-
 
 #------------------------------------------------------------------------------
 # Function:     Write debug message and exit
@@ -57,7 +62,6 @@ sub debug {
 		print localtime(time)." - DEBUG $level - $debugstring\n";
 	}
 }
-
 
 #------------------------------------------------------------------------------
 # MAIN
@@ -144,25 +148,20 @@ if (@files) {
 	debug("AwstatsDir=$AwstatsDir");
 	debug("AwstatsProg=$AwstatsProg");
 
-	my $apacheLogDir = (exists $ENV{'IMSCP_APACHE_LOG_DIR'}) ? $ENV{'IMSCP_APACHE_LOG_DIR'} : '/var/log/apache2';
-
 	foreach (@files) {
 		if ($_ =~ /^awstats\.(.*)conf$/) {
 			my $domain = $1||"default"; $domain =~ s/\.$//;
-
-			if(-e "$apacheLogDir/$domain/access.log") {
-				# Define command line
-				my $command="\"$AwstatsDir/$AwstatsProg\" -update -config=$domain";
-				$command.=" -configdir=\"$DIRCONFIG\"";
-				if ($LastLine)
-				{
-					$command.=" -lastline=$LastLine";
-				}
-				# Run command line
-				print "Running '$command' to update config $domain\n";
-				my $output = `$command 2>&1`;
-				print "$output\n";
+			# Define command line
+			my $command="\"$AwstatsDir/$AwstatsProg\" -update -config=$domain";
+			$command.=" -configdir=\"$DIRCONFIG\"";
+			if ($LastLine)
+			{
+				$command.=" -lastline=$LastLine";
 			}
+			# Run command line
+			print "Running '$command' to update config $domain\n";
+			my $output = `$command 2>&1`;
+			print "$output\n";
 		}
 	}
 } else {
@@ -170,4 +169,3 @@ if (@files) {
 }
 
 0;	# Do not remove this line
-

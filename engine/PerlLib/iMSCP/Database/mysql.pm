@@ -1,5 +1,11 @@
 #!/usr/bin/perl
 
+=head1 NAME
+
+ iMSCP::Database::mysql iMSCP MySQL database adapter
+
+=cut
+
 # i-MSCP - internet Multi Server Control Panel
 # Copyright (C) 2010-2014 by internet Multi Server Control Panel
 #
@@ -24,7 +30,7 @@
 # @link         http://i-mscp.net i-MSCP Home Site
 # @license      http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
-package iMSCP::Database::mysql::mysql;
+package iMSCP::Database::mysql;
 
 use strict;
 use warnings;
@@ -35,51 +41,54 @@ use iMSCP::Execute;
 use POSIX ':signal_h';
 use parent 'Common::SingletonClass';
 
-sub _init
+=head1 DESCRIPTION
+
+ iMSCP database adapter factory.
+
+=cut
+
+=head1 FUNCTIONS
+
+=over 4
+
+=item factory($adapterName)
+
+ Param string $adapterName Adapter name
+ Return an instance of the specified database adapter
+
+=cut
+
+=item($prop, $value)
+
+ Set properties
+
+ Param string $prop Propertie name
+ Param string $value Propertie value
+ Return string Value of propertie which has been set
+
+=cut
+
+sub set($$$)
 {
-	my $self = shift;
+	my ($self, $prop, $value) = @_;
 
-	$self->{'db'}->{'DATABASE_NAME'} = '';
-	$self->{'db'}->{'DATABASE_HOST'} = '';
-	$self->{'db'}->{'DATABASE_PORT'} = '';
-	$self->{'db'}->{'DATABASE_USER'} = '';
-	$self->{'db'}->{'DATABASE_PASSWORD'} = '';
-	$self->{'db'}->{'DATABASE_SETTINGS'} = {
-		'AutoCommit' => 1,
-		'PrintError' => 0,
-		'RaiseError' => 1,
-		'mysql_auto_reconnect' => 1,
-		'mysql_enable_utf8' => 1
-	};
-
-	# For internal use only
-	$self->{'_dsn'} = '';
-	$self->{'_currentUser'} = '';
-	$self->{'_currentPassword'} = '';
-
-	$self;
-}
-
-# Set database properties (eg DSN propertie)
-sub set
-{
-	my $self = shift;
-	my $prop = shift;
-	my $value = shift;
-
-	debug("Setting $prop as " . ($value ? $value : 'undef'));
 	$self->{'db'}->{$prop} = $value if exists $self->{'db'}->{$prop};
 }
 
-# Try to connect to the MySQL server with the current DSN (as set via the set() method)
-# Return mixed - 0 on success, error string on failure
+=item connect()
+
+ Connect to the MySQL server
+
+ Return int - 0 on success, error string on failure
+
+=cut
+
 sub connect
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $dsn =
-		'dbi:mysql:' .
-		'database=' . $self->{'db'}->{'DATABASE_NAME'} .
+		"dbi:mysql:database=$self->{'db'}->{'DATABASE_NAME'}" .
 		($self->{'db'}->{'DATABASE_HOST'} ? ';host=' . $self->{'db'}->{'DATABASE_HOST'} : '').
 		($self->{'db'}->{'DATABASE_PORT'} ? ';port=' . $self->{'db'}->{'DATABASE_PORT'} : '');
 
@@ -91,7 +100,6 @@ sub connect
 		)
 	) {
 		$self->{'connection'}->disconnect() if $self->{'connection'};
-		debug("Connecting with ($dsn, $self->{'db'}->{'DATABASE_USER'}, $self->{'db'}->{'DATABASE_PASSWORD'})");
 
 		# Set connection timeout to 3 seconds
 		my $mask = POSIX::SigSet->new(SIGALRM);
@@ -122,17 +130,20 @@ sub connect
 		$self->{'_currentUser'} = $self->{'db'}->{'DATABASE_USER'};
 		$self->{'_currentPassword'} = $self->{'db'}->{'DATABASE_PASSWORD'};
 		$self->{'connection'}->{'RaiseError'} = 0;
-	} else {
-		debug('Reusing previous SQL connection');
 	}
 
 	0;
 }
 
-# Start transaction and return raw db connection
+=item startTransaction()
+
+ Start a database transaction
+
+=cut
+
 sub startTransaction
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $rawDb = $self->getRawDb();
 
@@ -142,10 +153,15 @@ sub startTransaction
 	$rawDb;
 }
 
-# End transaction
+=item endTransaction()
+
+ End a database transaction
+
+=cut
+
 sub endTransaction
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $rawDb = $self->getRawDb();
 
@@ -156,12 +172,17 @@ sub endTransaction
 	$self->{'connection'};
 }
 
-# Return raw db connection
+=item getRawDb()
+
+ Get raw database connection
+
+=cut
+
 sub getRawDb
 {
-	my $self = shift;
+	my $self = $_[0];
 
-	if(!$self->{'connection'}) {
+	if(! $self->{'connection'}) {
 		my $rs = $self->connect();
 		fatal("Unable to connect: $rs") if $rs;
 	}
@@ -169,46 +190,51 @@ sub getRawDb
 	$self->{'connection'};
 }
 
-# Execute the given query
-#
-# Param int|string Query key
-# Param string SQL statement to be executed
-# Param array| string... Optionnal binds parameters
-sub doQuery
+=item doQuery($key, $query, [@bindValues = undef])
+
+ Execute the given SQL statement
+
+ Param int|string $key Query key
+ Param string $query SQL statement to be executed
+ Param array @bindValues Optionnal binds parameters
+ Return Hash An anonymous hash containing data if any on success, error string on failure
+
+=cut
+
+sub doQuery($$$;@)
 {
-	my $self = shift;
-	my $key = shift;
-	my $query = shift || error('No query provided');
-	my @bindValues = @_;
+	my ($self, $key, $query, @bindValues) = @_;
 
-	debug("$query" . ((@bindValues) ? ' with: ' . join(', ', @bindValues) : ''));
+	$query or error('No query provided');
 
-	$self->{'sth'} = $self->{'connection'}->prepare($query) || return "Error while preparing query: $DBI::errstr $key|$query";
+	$self->{'sth'} = $self->{'connection'}->prepare($query)
+		or return "Error while preparing query: $DBI::errstr $key|$query";
 
-	if(@bindValues) {
-		return "Error while executing query: $DBI::errstr" unless $self->{'sth'}->execute(@bindValues);
-	} else {
-		return "Error while executing query: $DBI::errstr" unless $self->{'sth'}->execute();
-	}
+	return "Error while executing query: $DBI::errstr" unless $self->{'sth'}->execute(@bindValues);
 
 	($self->{'sth'}->{'NUM_OF_FIELDS'}) ? $self->{'sth'}->fetchall_hashref($key) : {};
 }
 
-# Return tables for the current database (see DATABASE_NAME attribute)
-#
-# Return ARRAY REFERENCCE on success, error string on failure
+=item getDBTables()
+
+ Return list of table for the current selected database
+
+ Return array_ref on success, error string on failure
+
+=cut
+
 sub getDBTables
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	$self->{'sth'} = $self->{'connection'}->prepare(
 		"
 			SELECT
-				`TABLE_NAME`
+				TABLE_NAME
 			FROM
-				`INFORMATION_SCHEMA`.`COLUMNS`
+				INFORMATION_SCHEMA.COLUMNS
 			WHERE
-				`TABLE_SCHEMA` = '$self->{'db'}->{'DATABASE_NAME'}'
+				TABLE_SCHEMA = '$self->{'db'}->{'DATABASE_NAME'}'
 		"
 	);
 
@@ -221,24 +247,28 @@ sub getDBTables
 	\@tables;
 }
 
-# Return columns for the given table of the current database (see DATABASE_NAME attribute)
-#
-# Return ARRAY REFERENCCE on success, error string on failure
-sub getTableColumns($ $)
+=item getTableColumns($tableName)
+
+ Return list of columns for the given table
+
+ Return array_ref on success, error string on failure
+
+=cut
+
+sub getTableColumns($$)
 {
-	my $self = shift;
-	my $tableName = shift;
+	my ($self, $tableName) = @_;
 
 	$self->{'sth'} = $self->{'connection'}->prepare(
 		"
 			SELECT
-				`COLUMN_NAME`
+				COLUMN_NAME
 			FROM
-				`INFORMATION_SCHEMA`.`COLUMNS`
+				INFORMATION_SCHEMA.COLUMNS
 			WHERE
-				`TABLE_SCHEMA` = '$self->{'db'}->{'DATABASE_NAME'}'
+				TABLE_SCHEMA = '$self->{'db'}->{'DATABASE_NAME'}'
 			AND
-				`TABLE_NAME` = '$tableName'
+				TABLE_NAME = '$tableName'
 		"
 	);
 
@@ -251,40 +281,26 @@ sub getTableColumns($ $)
 	\@columns;
 }
 
-# Dump the given database in the given filename
-#
-# Param string Database name
-# Param string Path of filename where the database should be dumped
-# Return int 0 on success 1 on failure
+=item dumpdb($dbName, $filename)
+
+ Dump the given database in the given filename
+
+ Param string Database name
+ Param string Path of filename where the database should be dumped
+ Return int 0 on success 1 on failure
+
+=cut
+
 sub dumpdb
 {
-	my $self = shift;
-	my $dbName = shift || $self->{'db'}->{'DATABASE_NAME'};
-	my $filename = shift;
-
-	unless($self->{'connection'}) {
-		error('Not database name provided');
-		return 1;
-	}
-
-	unless($self ne __PACKAGE__) {
-		error('Not an instance');
-		return 1;
-	}
+	my ($self, $dbName, $filename) = @_;
 
 	unless($filename) {
 		error('No filename provided');
 		return 1;
 	}
 
-	debug("Dumping $dbName into $filename");
-
-	my ($rs, $stdout, $stderr);
-	$rs = execute('which mysqldump', \$stdout, \$stderr);
-	debug($stdout) if $stdout;
-	error($stderr) if $stderr && $rs;
-	error('Unable to find mysqldump programm') if $rs && ! $stderr;
-	return $rs if $rs;
+	debug("Dump $dbName into $filename");
 
 	$dbName = escapeShell($dbName);
 	$filename = escapeShell($filename);
@@ -294,11 +310,12 @@ sub dumpdb
 	my $dbUser = escapeShell($self->{'db'}->{'DATABASE_USER'});
 	my $dbPass = escapeShell($self->{'db'}->{'DATABASE_PASSWORD'});
 
-	my $bkpCmd = "$stdout --add-drop-database --add-drop-table --allow-keywords --compress --create-options " .
+	my $bkpCmd = "mysqldump --add-drop-database --add-drop-table --allow-keywords --compress --create-options " .
 		"--default-character-set=utf8 --extended-insert --lock-tables --quote-names -h $dbHost -P $dbPort -u $dbUser " .
 		"-p$dbPass $dbName > $filename";
 
-	$rs = execute($bkpCmd, \$stdout, \$stderr);
+	my ($stdout, $stderr);
+	my $rs = execute($bkpCmd, \$stdout, \$stderr);
 	debug($stdout) if $stdout;
 	error($stderr) if $stderr && $rs;
 	error("Unable to dump $dbName") if $rs && ! $stderr;
@@ -306,23 +323,80 @@ sub dumpdb
 	$rs;
 }
 
-# Quote the given identifier (database name, table name or column name)
-#
-# Return string Quoted identifier
+=item quoteIdentifier($identifier)
+
+ Quote the given identifier (database name, table name or column name)
+
+ Return string Quoted identifier
+
+=cut
+
 sub quoteIdentifier
 {
-	my ($self, $identifier)	= (@_);
+	my ($self, $identifier) = @_;
 
 	$identifier = join(', ', $identifier) if ref $identifier eq 'ARRAY';
 
 	$self->{'connection'}->quote_identifier($identifier);
 }
 
+=item quote($string)
+
+=cut
+
 sub quote
 {
-	my ($self, $string) = (@_);
+	my ($self, $string) = @_;
 
 	$self->{'connection'}->quote($string);
 }
+
+=back
+
+=head1 PRIVATE METHODS
+
+=over 4
+
+=item _init()
+
+ Initialize instance.
+
+ Return iMSCP::Database::mysql
+
+=cut
+
+sub _init
+{
+	my $self = $_[0];
+
+	$self->{'db'}->{'DATABASE_NAME'} = '';
+	$self->{'db'}->{'DATABASE_HOST'} = '';
+	$self->{'db'}->{'DATABASE_PORT'} = '';
+	$self->{'db'}->{'DATABASE_USER'} = '';
+	$self->{'db'}->{'DATABASE_PASSWORD'} = '';
+	$self->{'db'}->{'DATABASE_SETTINGS'} = {
+		'AutoCommit' => 1,
+		'PrintError' => 0,
+		'RaiseError' => 1,
+		'mysql_auto_reconnect' => 1,
+		'mysql_enable_utf8' => 1
+	};
+
+	# For internal use only
+	$self->{'_dsn'} = '';
+	$self->{'_currentUser'} = '';
+	$self->{'_currentPassword'} = '';
+
+	$self;
+}
+
+=back
+
+=head1 AUTHORS
+
+ Daniel Andreca <sci2tech@gmail.com>
+ Laurent Declercq <l.declercq@nuxwin.com>
+
+=cut
 
 1;

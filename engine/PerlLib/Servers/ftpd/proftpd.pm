@@ -267,44 +267,51 @@ sub restart
 	$self->{'hooksManager'}->trigger('afterFtpdRestart');
 }
 
-=item getTraffic($domainName)
+=item getTraffic()
 
- Get ftp traffic for the given domain name
+ Get ftpd traffic data
 
- Param string $domainName Domain name for which traffic must be returned
- Return int Traffic in bytes
+ Return hash_ref Traffic data or die on failure
 
 =cut
 
 sub getTraffic
 {
-	my ($self, $domainName) = @_;
+	my $self = $_[0];
 
-	$self->{'hooksManager'}->trigger('beforeFtpdGetTraffic', $domainName) and return 0;
+	my $trafficLogFile = "$main::imscpConfig{'TRAFF_LOG_DIR'}$self->{'config'}->{'FTP_TRAFF_LOG'}";
+	my %trafficDb;
 
-	my $trfFile = "$main::imscpConfig{'TRAFF_LOG_DIR'}/$self->{'config'}->{'FTP_TRAFF_LOG'}";
+	if(-f $trafficLogFile && -s _) {
+		my $rs = iMSCP::File->new('filename' => $trafficLogFile)->moveFile("$trafficLogFile.old");
+		die(iMSCP::Debug::getLastError()) if $rs;
 
-	unless(exists $self->{'logDb'}) {
-		$self->{'logDb'} = {};
-		my $rs = iMSCP::File->new('filename' => $trfFile)->moveFile("$trfFile.old") if -f $trfFile;
+		tie %trafficDb, 'iMSCP::Config', 'fileName' => "$self->{'wrkDir'}/traffic.db", 'noerrors' => 1;
 
-		if($rs) {
-			delete $self->{'logDb'};
-			return 0;
-		}
+		my $logContent = iMSCP::File->new('filename' => "$trafficLogFile.old")->get();
+		die(iMSCP::Debug::getLastError()) unless defined $logContent;
 
-		if(-f "$trfFile.old") {
-			my $content = iMSCP::File->new('filename' => "$trfFile.old")->get();
+		$trafficDb{$2} += $1 while($logContent =~ /^(\d+)\s+(.*)$/gmo);
 
-			while($content =~ /^(\d+)\s[^\@]+\@(.*)$/gm){
-				$self->{'logDb'}->{$2} += $1 if (defined $2 && defined $1);
+		$rs = iMSCP::File->new('filename' => "$trafficLogFile.old")->delFile();
+		die(iMSCP::Debug::getLastError()) if $rs;
+
+		# Schedule deletion of traffic database. This is only done on success. On failure, the traffic database is kept
+		# in place for later processing. In such case, data already processed (put in database) are zeroed by the
+		# traffic processor script.
+		$self->{'hooksManager'}->register(
+			'afterVrlTraffic',
+			sub {
+				if(-f "$self->{'wrkDir'}/traffic.db") {
+					iMSCP::File->new('filename' => "$self->{'wrkDir'}/traffic.db")->delFile();
+				} else {
+					0;
+				}
 			}
-		}
+		) and die(iMSCP::Debug::getLastError());
 	}
 
-	$self->{'hooksManager'}->trigger('afterFtpdGetTraffic', $domainName) and return 0;
-
-	(exists $self->{'logDb'}->{$domainName}) ? $self->{'logDb'}->{$domainName} : 0;
+	\%trafficDb;
 }
 
 =back
@@ -361,7 +368,6 @@ END
 {
 	my $exitCode = $?;
 	my $self = Servers::ftpd::proftpd->getInstance();
-	my $trfFile = "$main::imscpConfig{'TRAFF_LOG_DIR'}/$self->{'config'}->{'FTP_TRAFF_LOG'}";
 	my $rs = 0;
 
 	if($self->{'start'} && $self->{'start'} eq 'yes') {
@@ -370,7 +376,7 @@ END
 		$rs = $self->restart();
 	}
 
-	$rs |= iMSCP::File->new('filename' => "$trfFile.old")->delFile() if -f "$trfFile.old";
+
 
 	$? = $exitCode || $rs;
 }

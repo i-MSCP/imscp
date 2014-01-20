@@ -1,5 +1,11 @@
 #!/usr/bin/perl
 
+=head1 NAME
+
+ iMSCP::Database iMSCP database adapter factory
+
+=cut
+
 # i-MSCP - internet Multi Server Control Panel
 # Copyright (C) 2010-2014 by internet Multi Server Control Panel
 #
@@ -19,7 +25,7 @@
 #
 # @category    i-MSCP
 # @copyright   2010-2014 by i-MSCP | http://i-mscp.net
-# @author      Daniel Andreca <sci2tech@gmail.com>
+# @author      Laurent Declercq <l.declercq@nuxwin.com>
 # @link        http://i-mscp.net i-MSCP Home Site
 # @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
@@ -28,21 +34,48 @@ package iMSCP::Database;
 use strict;
 use warnings;
 
-use iMSCP::Debug 'fatal';
-use parent 'Common::SimpleClass';
+use iMSCP::Debug;
 
-sub factory
+my %adapterInstances;
+
+=head1 DESCRIPTION
+
+ iMSCP database adapter factory.
+
+=cut
+
+=head1 FUNCTIONS
+
+=over 4
+
+=item factory($adapterName)
+
+ Create and return a database adapter instance. Instance is created once.
+
+ Param string $adapterName Adapter name
+ Return an instance of the specified database adapter
+
+=cut
+
+sub factory($$)
 {
-	my $self = shift;
+	my $adapterName = $_[1] || $main::imscpConfig{'DATABASE_TYPE'};
 
-	$self = iMSCP::Database->new() if ref $self ne __PACKAGE__;
+	unless($adapterInstances{$adapterName}) {
+		my $adapter = "iMSCP::Database::${adapterName}";
+		eval "require $adapter" or fatal("Unable to load database adapter $adapter: $@");
+		$adapterInstances{$adapterName} = $adapter->getInstance();
+	}
 
-	my $dbAdapter = defined $self->{'args'}->{'db'} ? lc($self->{'args'}->{'db'}) : lc($main::imscpConfig{'DATABASE_TYPE'});
-	$dbAdapter = "iMSCP::Database::${dbAdapter}::${dbAdapter}";
-
-	eval "require $dbAdapter" or fatal("Unable to load database driver $dbAdapter: $@");
-
-	$dbAdapter->getInstance();
+	$adapterInstances{$adapterName};
 }
+
+=back
+
+=head1 AUTHOR
+
+ Laurent Declercq <l.declercq@nuxwin.com>
+
+=cut
 
 1;

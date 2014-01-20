@@ -107,7 +107,7 @@ sub loadData
 			'Orphan entry: ' . Dumper($rdata->{$self->{'htaccessId'}}),
 			$self->{'htaccessId'}
 		);
-		my $rdata = iMSCP::Database->factory()->doQuery('update', @sql);
+		my $rdata = iMSCP::Database->factory()->doQuery('dummy', @sql);
 
 		return 1;
 	}

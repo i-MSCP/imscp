@@ -74,7 +74,7 @@ sub _reencryptPassword($$$$$)
 	# Encrypt password using i-MSCP database key
 	my $password = $crypt->encrypt_db_password($password);
 
-	my $database = iMSCP::Database->new(db => 'mysql')->factory();
+	my $database = iMSCP::Database->factory();
 
 	my $result = $database->doQuery(
 		'dummy', "UPDATE `$tableName` SET `$pwdFieldName` = ? WHERE `$idFieldName` = ?", $password, $row->{$idFieldName}
@@ -93,7 +93,7 @@ sub _ispCPdbConnect
 	$crypt->set('key', $main::ispcpDBKey);
 	$crypt->set('iv', $main::ispcpDBiv);
 
-	my $database = iMSCP::Database->new('db' => 'mysql')->factory();
+	my $database = iMSCP::Database->factory();
 
 	$database->set('DATABASE_NAME', $main::ispcpConfig{'DATABASE_NAME'});
 	$database->set('DATABASE_HOST', $main::ispcpConfig{'DATABASE_HOST'});
@@ -228,7 +228,7 @@ EOF
 sub saveIspLogo
 {
 	my @errors;
-	my $database = iMSCP::Database->new('db' => 'mysql')->factory();
+	my $database = iMSCP::Database->factory();
 
 	my $result = $database->doQuery(
 		'logo', "SELECT DISTINCT `logo` FROM `user_gui_props` WHERE logo <> '0' AND logo <> ''"
@@ -276,7 +276,7 @@ EOF
 sub dbUpgrade
 {
 	my @errors;
-	my $database = iMSCP::Database->new('db' => 'mysql')->factory();
+	my $database = iMSCP::Database->factory();
 
 	my $result = $database->doQuery(
 		'mail_id', "UPDATE `config` SET `value` = '45' WHERE `name` = 'DATABASE_REVISION' AND `value` > '45'"
@@ -364,7 +364,7 @@ sub saveIspcpConfigFiles
 		push @errors, $stderr if $stderr && $rs;
 	}
 
-	my $result = iMSCP::Database->new('db' => 'mysql')->factory()->doQuery(
+	my $result = iMSCP::Database->factory()->doQuery(
 		'name',
 		"
 			SELECT `domain_name` AS 'name' FROM `domain`
@@ -431,7 +431,7 @@ sub deleteIspCPunixUsers
 	push @errors, "Unable to delete $groupName unix group" if $rs;
 
 	# Customer unix users/groups
-	my $database = iMSCP::Database->new('db' => 'mysql')->factory();
+	my $database = iMSCP::Database->factory();
 
 	my $result = $database->doQuery('domain_uid', 'SELECT `domain_uid`, `domain_gid` FROM `domain`');
 	unless (ref $result eq 'HASH'){
@@ -588,7 +588,7 @@ sub databaseIntegrityTests
 		}
 	);
 
-	my $database = iMSCP::Database->new('db' => 'mysql')->factory();
+	my $database = iMSCP::Database->factory();
 
 	my @errors = ();
 	local $Data::Dumper::Terse = 1;

@@ -77,12 +77,12 @@ sub getInstance
 
 sub hasInstance
 {
-    my $self = shift;
+	my $self = shift;
 
-    $self = ref $self || $self;
-    no strict 'refs';
+	$self = ref $self || $self;
+	no strict 'refs';
 
-    return ${"$self\::_instance"};
+	${"$self\::_instance"};
 }
 
 =back
@@ -101,7 +101,7 @@ sub hasInstance
 
 sub _init
 {
-	shift;
+	$_[0];
 }
 
 =back

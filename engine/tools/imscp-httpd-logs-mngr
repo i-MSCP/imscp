@@ -91,7 +91,7 @@ sub run
 		WHERE
 			subdomain_alias_status = 'ok'
 	";
-	my $rdata = iMSCP::Database->new()->factory()->doQuery('domain_name', $sql);
+	my $rdata = iMSCP::Database->factory()->doQuery('domain_name', $sql);
 
 	unless (ref $rdata eq 'HASH') {
 		error($rdata);

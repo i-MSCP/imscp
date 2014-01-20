@@ -74,19 +74,19 @@ sub showDialog($$)
 	Addons::Webstats::Awstats::Installer->getInstance()->showDialog($dialog);
 }
 
-=item preinstall()
-
- Process preinstall tasks
-
- Return int 0 on success, other on failure
-
-=cut
-
-sub preinstall
-{
-	require Addons::Webstats::Awstats::Installer;
-	Addons::Webstats::Awstats::Installer->getInstance()->preinstall();
-}
+#=item preinstall()
+#
+# Process preinstall tasks
+#
+# Return int 0 on success, other on failure
+#
+#=cut
+#
+#sub preinstall
+#{
+#	require Addons::Webstats::Awstats::Installer;
+#	Addons::Webstats::Awstats::Installer->getInstance()->preinstall();
+#}
 
 =item install()
 
@@ -487,10 +487,10 @@ sub _addAwstatsConfig
 {
 	my ($self, $data) = @_;
 
+	my $awstatsAddonRootDir = "$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Addons/Webstats/Awstats";
+
 	# Loading template file
-	my $tplFileContent = iMSCP::File->new(
-		'filename' => "$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Addons/Webstats/Awstats/Config/awstats.imscp_tpl.conf"
-	)->get();
+	my $tplFileContent = iMSCP::File->new('filename' => "$awstatsAddonRootDir/Config/awstats.imscp_tpl.conf")->get();
 	unless(defined $tplFileContent) {
 		error("Unable to read $tplFileContent->{'filename'}");
 		return 1;
@@ -500,12 +500,13 @@ sub _addAwstatsConfig
 	my $httpd = Servers::httpd->factory();
 
 	my $tags = {
-		APACHE_LOG_DIR => $httpd->{'config'}->{'APACHE_LOG_DIR'},
 		ALIAS => $data->{'ALIAS'},
-		DOMAIN_NAME => $data->{'DOMAIN_NAME'},
 		AWSTATS_CACHE_DIR => $main::imscpConfig{'AWSTATS_CACHE_DIR'},
 		AWSTATS_ENGINE_DIR => $main::imscpConfig{'AWSTATS_ENGINE_DIR'},
-		AWSTATS_WEB_DIR => $main::imscpConfig{'AWSTATS_WEB_DIR'}
+		AWSTATS_WEB_DIR => $main::imscpConfig{'AWSTATS_WEB_DIR'},
+		CMD_LOGRESOLVEMERGE => "$main::imscpConfig{'CMD_PERL'} $awstatsAddonRootDir/Scripts/logresolvemerge.pl",
+		DOMAIN_NAME => $data->{'DOMAIN_NAME'},
+		LOG_DIR => "$httpd->{'config'}->{'APACHE_LOG_DIR'}/$data->{'DOMAIN_NAME'}",
 	};
 
 	$tplFileContent = process($tags, $tplFileContent);
