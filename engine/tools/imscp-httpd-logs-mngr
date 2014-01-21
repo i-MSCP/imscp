@@ -47,8 +47,9 @@ newDebug('imscp-httpd-logs-mngr.log');
 
 silent(1);
 
-iMSCP::Boot->getInstance()->boot({ 'norequirements' => 'yes', 'nolock' => 'yes', 'config_readonly' => 'yes' });
-
+my $bootstrapper = iMSCP::Boot->getInstance();
+exit unless $bootstrapper->lock('/tmp/imscp-httpd-logs-mngr.lock', 'nowait');
+$bootstrapper->boot({ 'norequirements' => 'yes', 'nolock' => 'yes', 'config_readonly' => 'yes' });
 
 sub run
 {
@@ -166,5 +167,6 @@ sub run
 	$rs;
 }
 
-# Main script
-exit run();
+my $rs = run();
+$bootstrapper->unlock('/tmp/imscp-httpd-logs-mngr.lock');
+exit $rs;

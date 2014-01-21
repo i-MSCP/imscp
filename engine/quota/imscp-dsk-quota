@@ -44,14 +44,11 @@ $ENV{'IMSCP_CLEAR_SCREEN'} = 0;
 
 newDebug('imscp-dsk-quota.log');
 
-sub startUp
-{
-	umask(027);
+umask(027);
 
-	iMSCP::Boot->getInstance()->boot({ 'nolock' => 'yes', 'config_readonly' => 'yes' });
-
-	0;
-}
+my $bootstrapper = iMSCP::Boot->getInstance();
+exit unless $bootstrapper->lock('/tmp/imscp-dsk-quota.lock', 'nowait');
+$bootstrapper->boot({ 'norequirements' => 'yes', 'nolock' => 'yes', 'config_readonly' => 'yes' });
 
 sub quotaFiles
 {
@@ -321,10 +318,7 @@ sub quotaSql
 	$rs;
 }
 
-my $rs = 0;
-
-$rs = startUp();
-$rs ||= quotaFiles();
+my $rs = quotaFiles();
 $rs ||= quotaSql();
-
+$bootstrapper->unlock('/tmp/imscp-dsk-quota.lock');
 exit $rs;
