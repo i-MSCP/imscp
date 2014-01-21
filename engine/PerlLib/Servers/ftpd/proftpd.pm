@@ -285,7 +285,7 @@ sub getTraffic
 	# Load traffic database
     tie my %trafficDb, 'iMSCP::Config', 'fileName' => $trafficDbPath, 'noerrors' => 1;
 
-	my $trafficLogFile = "$main::imscpConfig{'TRAFF_LOG_DIR'}/$self->{'config'}->{'FTP_TRAFF_LOG'}";
+	my $trafficLogFile = "$main::imscpConfig{'TRAFF_LOG_DIR'}/$self->{'config'}->{'FTP_TRAFF_LOG_PATH'}";
 
 	if(-f $trafficLogFile && -s _) {
 		my $wrkLogFile = "$main::imscpConfig{'LOG_DIR'}/" . basename($trafficLogFile);
