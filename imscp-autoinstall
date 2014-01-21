@@ -238,7 +238,7 @@ unless($main::buildonly) {
 
 	my @locks = (
 		'imscp-backup-all', 'imscp-backup-imscp', 'imscp-dsk-quota', 'imscp-srv-traff', 'imscp-vrl-traff',
-		'awstats_updateall.pl', 'imscp.lock'
+		'awstats_updateall.pl', 'imscp'
 	);
 
 	my @runningProcesses = ();
@@ -246,7 +246,7 @@ unless($main::buildonly) {
 
 	for(@locks) {
 		if(! $bootstrapper->getInstance()->lock("/tmp/$_.lock", 'nowait')) {
-			 push @runningProcesses, (($_ eq 'imscp') ? 'i-MSCP backend' : $_);
+			 push @runningProcesses, ($_ eq 'imscp') ? 'i-MSCP backend' : $_;
 		}
 	}
 
