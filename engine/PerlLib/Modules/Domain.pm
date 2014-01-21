@@ -45,7 +45,7 @@ use parent 'Modules::Abstract';
 
 sub _init
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	$self->{'type'} = 'Dmn';
 
@@ -54,7 +54,7 @@ sub _init
 
 sub loadData
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $sql = "
 		SELECT
@@ -95,8 +95,8 @@ sub loadData
 
 sub process
 {
-	my $self = shift;
-	$self->{'dmnId'} = shift;
+	my $self = $_[0];
+	$self->{'dmnId'} = $_[1];
 
 	my $rs = $self->loadData();
 	return $rs if $rs;
@@ -152,7 +152,7 @@ sub process
 
 sub restore
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	$self->{'action'} = 'restore';
 
@@ -323,7 +323,7 @@ sub restore
 
 sub buildHTTPDData
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $groupName = my $userName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} .
 		($main::imscpConfig{'SYSTEM_USER_MIN_UID'} + $self->{'domain_admin_id'});
@@ -417,7 +417,7 @@ sub buildHTTPDData
 
 sub buildMTAData
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	$self->{'mta'} = {
 		DOMAIN_NAME => $self->{'domain_name'},
@@ -432,7 +432,7 @@ sub buildMTAData
 
 sub buildNAMEDData
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $userName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} .
 		($main::imscpConfig{'SYSTEM_USER_MIN_UID'} + $self->{'domain_admin_id'});
@@ -510,7 +510,7 @@ sub buildNAMEDData
 
 sub buildADDONData
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $userName = my $groupName  = $main::imscpConfig{'SYSTEM_USER_PREFIX'} .
 		($main::imscpConfig{'SYSTEM_USER_MIN_UID'} + $self->{'domain_admin_id'});
@@ -535,8 +535,7 @@ sub buildADDONData
 
 sub testCert
 {
-	my $self = shift;
-	my $domainName = shift;
+	my ($self, $domainName) = @_;
 
 	my $certFile = "$main::imscpConfig{'GUI_ROOT_DIR'}/data/certs/$domainName.pem";
 	my $openSSL = iMSCP::OpenSSL->getInstance();

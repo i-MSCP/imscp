@@ -29,5 +29,6 @@ program. If not, see <http://www.gnu.org/licenses/>
 	<folders export="SYSTEM_CONF">${INST_PREF}/etc/imscp</folders>
 	<folders export="SYSTEM_LOG">${INST_PREF}/var/log/imscp</folders>
 	<folders export="SYSTEM_VIRTUAL">${INST_PREF}/var/www/virtual</folders>
-	<folders export="SYSTEM_MAIL_VIRTUAL">${INST_PREF}/var/mail/virtual</folders>
+	<folders exrpot="CACHE_DATA_DIR">${INST_PREF}/var/cache/imscp</folders>
+	<folders export="VARIABLE_DATA_DIR">${INST_PREF}/var/local/imscp</folders>
 </install>

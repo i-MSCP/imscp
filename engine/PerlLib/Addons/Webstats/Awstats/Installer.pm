@@ -112,7 +112,7 @@ sub showDialog($$)
 
 sub install
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $rs = $self->_disableDefaultConfig();
 	return $rs if $rs;
@@ -191,7 +191,7 @@ sub setEnginePermissions
 
 sub _init
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	$self->{'httpd'} = Servers::httpd->factory();
 
@@ -240,7 +240,7 @@ sub _init
 
 sub _makeCacheDir
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	iMSCP::Dir->new(
 		'dirname' => $main::imscpConfig{'AWSTATS_CACHE_DIR'}
@@ -259,7 +259,7 @@ sub _makeCacheDir
 
 sub _createGlobalAwstatsVhost
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $rs = 0;
 
@@ -328,7 +328,7 @@ sub _disableDefaultConfig
 
 sub _addAwstatsCronTask
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	Servers::cron->factory()->addTask(
 		{

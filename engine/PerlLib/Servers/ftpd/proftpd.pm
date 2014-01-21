@@ -77,7 +77,7 @@ sub registerSetupHooks
 
 sub preinstall
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $rs = $self->{'hooksManager'}->trigger('beforeFtpdPreinstall');
 	return $rs if $rs;
@@ -112,7 +112,7 @@ sub install
 
 sub postinstall
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $rs = $self->{'hooksManager'}->trigger('beforeFtpdPostInstall', 'proftpd');
 	return $rs if $rs;
@@ -132,7 +132,7 @@ sub postinstall
 
 sub uninstall
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $rs = $self->{'hooksManager'}->trigger('beforeFtpdUninstall', 'proftpd');
 	return $rs if $rs;
@@ -205,7 +205,7 @@ sub addUser
 
 sub start
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $rs = $self->{'hooksManager'}->trigger('beforeFtpdStart');
 	return $rs if $rs;
@@ -229,7 +229,7 @@ sub start
 
 sub stop
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $rs = $self->{'hooksManager'}->trigger('beforeFtpdStop');
 	return $rs if $rs;
@@ -253,7 +253,7 @@ sub stop
 
 sub restart
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $rs = $self->{'hooksManager'}->trigger('beforeFtpdRestart');
 	return $rs if $rs;
@@ -283,18 +283,22 @@ sub getTraffic
 	my %trafficDb;
 
 	if(-f $trafficLogFile && -s _) {
-		my $rs = iMSCP::File->new('filename' => $trafficLogFile)->moveFile("$trafficLogFile.old");
+		my $trafficDbPath = "$main::imscpConfig{'VARIABLE_DATA_DIR'}/ftp_traffic.db";
+		my $wrkLogFile = "$main::imscpConfig{'LOG_DIR'}$self->{'config'}->{'FTP_TRAFF_LOG'}";
+
+		# Creating working file from current state of upstream data source
+		my $rs = iMSCP::File->new('filename' => $trafficLogFile)->moveFile($wrkLogFile);
 		die(iMSCP::Debug::getLastError()) if $rs;
 
-		tie %trafficDb, 'iMSCP::Config', 'fileName' => "$self->{'wrkDir'}/traffic.db", 'noerrors' => 1;
+		# Getting working file content
+		my $wrkLogContent = iMSCP::File->new('filename' => $wrkLogFile)->get();
+		die(iMSCP::Debug::getLastError()) unless defined $wrkLogContent;
 
-		my $logContent = iMSCP::File->new('filename' => "$trafficLogFile.old")->get();
-		die(iMSCP::Debug::getLastError()) unless defined $logContent;
+		# Stash the data in a traffic database. This allow to not lost them on failure.
+		tie %trafficDb, 'iMSCP::Config', 'fileName' => $trafficDbPath, 'noerrors' => 1;
 
-		$trafficDb{$2} += $1 while($logContent =~ /^(\d+)\s+[^\@]+\@(.*)$/gmo);
-
-		$rs = iMSCP::File->new('filename' => "$trafficLogFile.old")->delFile();
-		die(iMSCP::Debug::getLastError()) if $rs;
+		# Getting FTP traffic
+		$trafficDb{$2} += $1 while($wrkLogContent =~ /^(\d+)\s+[^\@]+\@(.*)$/gmo);
 
 		# Schedule deletion of traffic database. This is only done on success. On failure, the traffic database is kept
 		# in place for later processing. In such case, data already processed (put in database) are zeroed by the
@@ -302,8 +306,8 @@ sub getTraffic
 		$self->{'hooksManager'}->register(
 			'afterVrlTraffic',
 			sub {
-				if(-f "$self->{'wrkDir'}/traffic.db") {
-					iMSCP::File->new('filename' => "$self->{'wrkDir'}/traffic.db")->delFile();
+				if(-f $trafficDbPath) {
+					iMSCP::File->new('filename' => $trafficDbPath)->delFile();
 				} else {
 					0;
 				}
@@ -330,7 +334,7 @@ sub getTraffic
 
 sub _init
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	$self->{'hooksManager'} = iMSCP::HooksManager->getInstance();
 

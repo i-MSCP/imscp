@@ -164,7 +164,7 @@ sub preinstall
 
 sub install
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $rs = 0;
 
@@ -251,7 +251,7 @@ sub setGuiPermissions
 
 sub _init
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	$self->{'roundcube'} = Addons::Roundcube->getInstance();
 
@@ -311,7 +311,7 @@ sub _backupConfigFile($$)
 
 sub _installFiles
 {
-	my $repoDir = $main::imscpConfig{'ADDON_PACKAGES_CACHE_DIR'};
+	my $repoDir = "$main::imscpConfig{'CACHE_DATA_DIR'}/addons";
 	my $rs = 0;
 
 	if(-d "$repoDir/vendor/imscp/roundcube") {
@@ -352,7 +352,7 @@ sub _installFiles
 
 sub _setupDatabase
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $roundcubeDir = "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/webmail";
 	my $imscpDbName = $main::imscpConfig{'DATABASE_NAME'};
@@ -453,12 +453,10 @@ sub _setupDatabase
 
 sub _generateDESKey
 {
-	my $self = shift;
-
 	my $desKey = '';
 	$desKey .= ('A'..'Z', 'a'..'z', '0'..'9', '_', '+', '-', '^', '=', '*', '{', '}', '~')[rand(70)] for 1..24;
 
-	$self->{'config'}->{'DES_KEY'} = $desKey;
+	$_[0]->{'config'}->{'DES_KEY'} = $desKey;
 
 	0;
 }
@@ -473,7 +471,7 @@ sub _generateDESKey
 
 sub _buildConfig
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $panelUName =
 	my $panelGName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} . $main::imscpConfig{'SYSTEM_USER_MIN_UID'};
@@ -554,7 +552,7 @@ sub _buildConfig
 
 sub _updateDatabase
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $roundcubeDir = "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/webmail";
 	my $roundcubeDbName = $main::imscpConfig{'DATABASE_NAME'} . '_roundcube';
@@ -640,7 +638,7 @@ sub _updateDatabase
 
 sub _setVersion
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $guiPublicDir = $main::imscpConfig{'GUI_PUBLIC_DIR'};
 
@@ -671,7 +669,7 @@ sub _setVersion
 
 sub _saveConfig
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $rootUname = $main::imscpConfig{'ROOT_USER'};
 	my $rootGname = $main::imscpConfig{'ROOT_GROUP'};

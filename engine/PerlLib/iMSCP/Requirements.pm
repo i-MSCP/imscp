@@ -46,7 +46,7 @@ use parent 'Common::SimpleClass';
 
 sub _init
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	# Initialize the 'needed' attribute that is a hash where each pair is a Perl
 	# module name and the value, an script that contains the method(s)/subroutine(s)
@@ -110,14 +110,16 @@ sub test
 # Process all tests for requirements.
 #
 # @param self $self iMSCP::Requirements instance
-# @return void
+# @return undef
 sub all
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	$self->user();
 	$self->_modules();
 	$self->_externalProgram();
+
+	undef;
 }
 
 # Checks for user that run the imscp-autoinstaller script.
@@ -137,7 +139,7 @@ sub user
 # @return void
 sub _modules
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my @mod_missing = ();
 
@@ -157,10 +159,10 @@ sub _modules
 # @throws fatal error if a program is not found on the system
 # @throws fatal error if a program version is older than required
 # @param self $self iMSCP::Requirements instance
-# @return void
+# @return undef
 sub _externalProgram
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my ($stdout, $stderr);
 	my $rs = execute('which which', \$stdout, \$stderr);
@@ -187,6 +189,8 @@ sub _externalProgram
 			fatal "$program $result" if $result;
 		}
 	}
+
+	undef;
 }
 
 # Check for program version.

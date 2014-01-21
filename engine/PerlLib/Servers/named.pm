@@ -30,8 +30,8 @@ use warnings;
 
 sub factory
 {
-	my $self = shift;
-	my $server = shift || $main::imscpConfig{'NAMED_SERVER'};
+	my $self = $_[0];
+	my $server = $_[1] || $main::imscpConfig{'NAMED_SERVER'};
 
 	my ($file, $class);
 

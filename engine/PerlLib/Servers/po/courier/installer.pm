@@ -69,8 +69,7 @@ use parent 'Common::SingletonClass';
 
 sub registerSetupHooks($$)
 {
-	my $self = shift;
-	my $hooksManager = shift;
+	my ($self, $hooksManager) = @_;
 
 	if(defined $main::imscpConfig{'MTA_SERVER'} && lc($main::imscpConfig{'MTA_SERVER'}) eq 'postfix') {
 		my $rs = $hooksManager->trigger('beforePoRegisterSetupHooks', $hooksManager, 'courier');
@@ -107,8 +106,7 @@ sub registerSetupHooks($$)
 
 sub askCourier($$)
 {
-	my $self = shift;
-	my $dialog = shift;
+	my ($self, $dialog) = @_;
 
 	my $dbUser = main::setupGetQuestion('AUTHDAEMON_SQL_USER') || $self->{'config'}->{'DATABASE_USER'} || 'authdaemon_user';
 	my $dbPass = main::setupGetQuestion('AUTHDAEMON_SQL_PASSWORD') || $self->{'config'}->{'DATABASE_PASSWORD'} || '';
@@ -168,7 +166,7 @@ sub askCourier($$)
 
 sub install
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $rs = $self->{'hooksManager'}->trigger('beforePoInstall', 'courier');
 	return $rs if $rs;
@@ -202,6 +200,9 @@ sub install
 		return $rs if $rs;
 	}
 
+	$rs = $self->_oldEngineCompatibility();
+	return $rs if $rs;
+
 	$self->{'hooksManager'}->trigger('afterPoInstall', 'courier');
 }
 
@@ -215,7 +216,7 @@ sub install
 
 sub setEnginePermissions
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $rs = $self->{'hooksManager'}->trigger('beforePoSetEnginePermissions');
 	return $rs if $rs;
@@ -255,9 +256,7 @@ sub setEnginePermissions
 
 sub buildPostfixConf($$$)
 {
-	my $self = shift;
-	my $fileContent = shift;
-	my $fileName = shift;
+	my ($self, $fileContent, $fileName) = @_;
 
 	if($fileName eq 'main.cf') {
 		$$fileContent .= <<EOF
@@ -304,7 +303,7 @@ EOF
 
 sub _init
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	$self->{'hooksManager'} = iMSCP::HooksManager->getInstance();
 
@@ -351,8 +350,7 @@ sub _init
 
 sub _bkpConfFile($$)
 {
-	my $self = shift;
-	my $filePath = shift;
+	my ($self, $filePath) = @_;
 
 	my $rs = $self->{'hooksManager'}->trigger('beforePoBkpConfFile', $filePath);
 	return $rs if $rs;
@@ -384,7 +382,7 @@ sub _bkpConfFile($$)
 
 sub _setupSqlUser
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $dbUser = $self->{'config'}->{'DATABASE_USER'};
 	my $dbUserHost = main::setupGetQuestion('DATABASE_USER_HOST');
@@ -439,7 +437,7 @@ sub _setupSqlUser
 
 sub _overrideAuthdaemonInitScript
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $file = iMSCP::File->new(
 		'filename' => "$main::imscpConfig{'INIT_SCRIPTS_DIR'}/$self->{'config'}->{'AUTHDAEMON_SNAME'}"
@@ -479,7 +477,7 @@ sub _overrideAuthdaemonInitScript
 
 sub _buildConf
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $rs = $self->_buildAuthdaemonrcFile();
 	return $rs if $rs;
@@ -564,7 +562,7 @@ sub _buildConf
 
 sub _buildAuthdaemonrcFile
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	# Loading the system file from /etc/imscp/backup
 	my $file = iMSCP::File->new('filename' => "$self->{'bkpDir'}/authdaemonrc.system");
@@ -628,7 +626,7 @@ sub buildAuthmysqlrcFile
 
 sub _buildSslConfFiles
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	if($main::imscpConfig{'SSL_ENABLED'} eq 'yes') {
 		for ($self->{'config'}->{'COURIER_IMAP_SSL'}, $self->{'config'}->{'COURIER_POP_SSL'}) {
@@ -686,7 +684,7 @@ sub _buildSslConfFiles
 
 sub _saveConf
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $file = iMSCP::File->new('filename' => "$self->{'cfgDir'}/courier.data");
 
@@ -732,7 +730,7 @@ sub _saveConf
 
 sub _migrateFromDovecot
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $rs = $self->{'hooksManager'}->trigger('beforePoMigrateFromDovecot');
 	return $rs if $rs;
@@ -793,6 +791,25 @@ sub _migrateFromDovecot
 	}
 
 	$self->{'hooksManager'}->trigger('afterPoMigrateFromDovecot');
+}
+
+=item _oldEngineCompatibility()
+
+ Remove old files
+
+ Return int 0 on success, other on failure
+
+=cut
+
+sub _oldEngineCompatibility
+{
+	my $self = $_[0];
+
+	my $rs = $self->{'hooksManager'}->trigger('beforePoOldEngineCompatibility');
+	return $rs if $rs;
+
+
+	$self->{'hooksManager'}->trigger('afterPodOldEngineCompatibility');
 }
 
 =back

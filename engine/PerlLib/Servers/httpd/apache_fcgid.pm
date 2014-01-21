@@ -86,7 +86,7 @@ sub registerSetupHooks($$)
 
 sub preinstall
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $rs = $self->{'hooksManager'}->trigger('beforeHttpdPreinstall');
 	return $rs if $rs;
@@ -121,7 +121,7 @@ sub install
 
 sub postinstall
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $rs = $self->{'hooksManager'}->trigger('beforeHttpdPostInstall', 'apache_fcgid');
 	return $rs if $rs;
@@ -141,7 +141,7 @@ sub postinstall
 
 sub uninstall
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $rs = $self->stop();
 	return $rs if $rs;
@@ -946,8 +946,6 @@ sub addIps($$)
 
 sub setGuiPermissions
 {
-	my $self = shift;
-
 	require Servers::httpd::apache_fcgid::installer;
 	Servers::httpd::apache_fcgid::installer->getInstance()->setGuiPermissions();
 }
@@ -962,8 +960,6 @@ sub setGuiPermissions
 
 sub setEnginePermissions
 {
-	my $self = shift;
-
 	require Servers::httpd::apache_fcgid::installer;
 	Servers::httpd::apache_fcgid::installer->getInstance()->setEnginePermissions();
 }
@@ -1163,8 +1159,12 @@ sub getTraffic($$)
 		);
 
 		if(%{$trafficData}) {
+			my $trafficDbPath = "$main::imscpConfig{'VARIABLE_DATA_DIR'}/httpd_traffic.db";
+
 			# Stash the data in a traffic database. This allow to not lost them on failure.
-        	tie %trafficDb, 'iMSCP::Config', 'fileName' => "$self->{'apacheWrkDir'}/traffic.db", 'noerrors' => 1;
+			tie %trafficDb, 'iMSCP::Config', 'fileName' => $trafficDbPath, 'noerrors' => 1;
+
+			# Getting HTTPD traffic
 			$trafficDb{$_} += $trafficData->{$_}->{'bytes'} for keys %{$trafficData};
 
 			# Deleting upstream source data
@@ -1176,8 +1176,8 @@ sub getTraffic($$)
 			$self->{'hooksManager'}->register(
 				'afterVrlTraffic',
 				sub {
-					if(-f "$self->{'apacheWrkDir'}/traffic.db") {
-						iMSCP::File->new('filename' => "$self->{'apacheWrkDir'}/traffic.db")->delFile();
+					if(-f $trafficDbPath) {
+						iMSCP::File->new('filename' => $trafficDbPath)->delFile();
 					} else {
 						0;
 					}
@@ -1210,7 +1210,7 @@ sub getTraffic($$)
 
 sub deleteTmp
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $rs = $self->{'hooksManager'}->trigger('beforeHttpdDelTmp');
 	return $rs if $rs;
@@ -1464,7 +1464,7 @@ sub forceRestart
 
 sub start
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $rs = $self->{'hooksManager'}->trigger('beforeHttpdStart');
 	return $rs if $rs;
@@ -1488,7 +1488,7 @@ sub start
 
 sub stop
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $rs = $self->{'hooksManager'}->trigger('beforeHttpdStop');
 	return $rs if $rs;
@@ -1512,7 +1512,7 @@ sub stop
 
 sub restart
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $rs = $self->{'hooksManager'}->trigger('beforeHttpdRestart');
 	return $rs if $rs;
@@ -1546,7 +1546,7 @@ sub restart
 
 sub _init
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	$self->{'hooksManager'} = iMSCP::HooksManager->getInstance();
 

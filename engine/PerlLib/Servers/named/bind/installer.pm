@@ -255,7 +255,7 @@ sub askIPv6Support($$)
 
 sub install
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $rs = $self->{'hooksManager'}->trigger('beforeNamedInstall', 'bind');
 	return $rs if $rs;
@@ -280,6 +280,9 @@ sub install
 	$rs = $self->_saveConf();
 	return $rs if $rs;
 
+	$rs = $self->_oldEngineCompatibility();
+	return $rs if $rs;
+
 	$self->{'hooksManager'}->trigger('afterNamedInstall', 'bind');
 }
 
@@ -299,7 +302,7 @@ sub install
 
 sub _init
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	$self->{'hooksManager'} = iMSCP::HooksManager->getInstance();
 
@@ -376,7 +379,7 @@ sub _bkpConfFile($$)
 
 sub _switchTasks
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $slaveDbDir = iMSCP::Dir->new('dirname' => "$self->{'config'}->{'BIND_DB_DIR'}/slave");
 
@@ -417,7 +420,7 @@ sub _switchTasks
 
 sub _buildConf
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	for('BIND_CONF_FILE', 'BIND_LOCAL_CONF_FILE', 'BIND_OPTIONS_CONF_FILE') {
 		# Handle case where the file is not provided by specfic distribution
@@ -521,7 +524,7 @@ sub _buildConf
 
 sub _addMasterZone
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $rs = $self->{'hooksManager'}->trigger('beforeNamedAddMasterZone');
 	return $rs if $rs;
@@ -548,7 +551,7 @@ sub _addMasterZone
 
 sub _saveConf
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $file = iMSCP::File->new('filename' => "$self->{'cfgDir'}/bind.data");
 
@@ -604,6 +607,25 @@ sub _checkIps($$)
 	}
 
 	1;
+}
+
+=item _oldEngineCompatibility()
+
+ Remove old files
+
+ Return int 0 on success, other on failure
+
+=cut
+
+sub _oldEngineCompatibility
+{
+	my $self = $_[0];
+
+	my $rs = $self->{'hooksManager'}->trigger('beforeNamedOldEngineCompatibility');
+	return $rs if $rs;
+
+
+	$self->{'hooksManager'}->trigger('afterNameddOldEngineCompatibility');
 }
 
 =back

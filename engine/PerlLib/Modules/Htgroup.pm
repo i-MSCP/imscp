@@ -33,7 +33,7 @@ use parent 'Modules::Abstract';
 
 sub _init
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	$self->{'type'} = 'Htgroup';
 
@@ -42,7 +42,7 @@ sub _init
 
 sub loadData
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $sql = "
 		SELECT
@@ -108,9 +108,9 @@ sub loadData
 
 sub process
 {
-	my $self = shift;
+	my $self = $_[0];
 
-	$self->{'htgroupId'} = shift;
+	$self->{'htgroupId'} = $_[1];
 
 	my $rs = $self->loadData();
 	return $rs if $rs;
@@ -150,7 +150,7 @@ sub process
 
 sub buildHTTPDData
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $groupName =
 	my $userName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} .

@@ -43,7 +43,7 @@ use parent 'Modules::Domain';
 
 sub loadData
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $sql = "
 		SELECT
@@ -92,8 +92,8 @@ sub loadData
 
 sub process
 {
-	my $self = shift;
-	$self->{'alsId'} = shift;
+	my $self = $_[0];
+	$self->{'alsId'} = $_[1];
 
 	my $rs = $self->loadData();
 	return $rs if $rs;
@@ -149,14 +149,12 @@ sub process
 
 sub restore
 {
-	my $self = shift;
-
-	$self->Modules::Abstract::restore();
+	$_[0]->Modules::Abstract::restore();
 }
 
 sub buildHTTPDData
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $groupName = my $userName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} .
 		($main::imscpConfig{'SYSTEM_USER_MIN_UID'} + $self->{'domain_admin_id'});
@@ -264,7 +262,7 @@ sub buildHTTPDData
 
 sub buildMTAData
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	$self->{'mta'} = {
 		DOMAIN_NAME => $self->{'alias_name'},
@@ -279,7 +277,7 @@ sub buildMTAData
 
 sub buildNAMEDData
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $userName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} .
 		($main::imscpConfig{'SYSTEM_USER_MIN_UID'} + $self->{'domain_admin_id'});
@@ -367,7 +365,7 @@ sub buildNAMEDData
 
 sub buildADDONData
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $userName = my $groupName =  $main::imscpConfig{'SYSTEM_USER_PREFIX'} .
 		($main::imscpConfig{'SYSTEM_USER_MIN_UID'} + $self->{'domain_admin_id'});
@@ -396,7 +394,7 @@ sub buildADDONData
 
 sub _getSharedMountPoints
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $regexp = "^$self->{'alias_mount'}(/.*|\$)";
 	my @sql = (

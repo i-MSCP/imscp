@@ -149,7 +149,7 @@ sub escapeShell($)
 
 sub getExitCode(;$)
 {
-	my $exitValue = shift // $?;
+	my $exitValue = $_[0] // $?;
 
 	if ($exitValue == -1) {
 		error("Failed to execute external command: $!");

@@ -34,19 +34,17 @@ use parent 'Common::SingletonClass';
 
 sub load
 {
-	my $self = shift;
+
 	my $addons = iMSCP::Dir->new('dirname' => "$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Addons");
 
-	@{$self->{'addons'}} = $addons->getFiles();
-
-	debug("Returning: @{$self->{addons}}");
+	@{$_[0]->{'addons'}} = $addons->getFiles();
 
 	0;
 }
 
 sub get
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	$self->load() unless exists $self->{'addons'};
 

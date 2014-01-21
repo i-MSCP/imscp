@@ -57,7 +57,7 @@ use parent 'Common::SingletonClass';
 
 sub resetLabels
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	$self->{'_opts'}->{"$_-label"} = undef for (qw/ok yes no cancel extra help/);
 
@@ -75,13 +75,13 @@ sub resetLabels
 
 sub fselect
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $begin = $self->{'_opts'}->{'begin'};
 	$self->{'_opts'}->{'begin'} = undef;
 	$self->{'lines'} = $self->{'lines'} - 8;
 
-	my ($exitCode, $output) = $self->_execute(shift, undef, 'fselect');
+	my ($exitCode, $output) = $self->_execute($_[1], undef, 'fselect');
 
 	$self->{'_opts'}->{'begin'} = $begin;
 	$self->{'lines'} = $self->{'lines'} + 8;
@@ -154,9 +154,9 @@ sub checkbox
 
 sub tailbox
 {
-	my $self = shift;
+	my $self = $_[0];
 
-	my ($exitCode) = $self->_execute(shift, undef, 'tailbox');
+	my ($exitCode) = $self->_execute($_[1], undef, 'tailbox');
 
 	$exitCode;
 }
@@ -172,9 +172,9 @@ sub tailbox
 
 sub editbox
 {
-	my $self = shift;
+	my $self = $_[0];
 
-	$self->_execute(shift, undef, 'editbox');
+	$self->_execute($_[1], undef, 'editbox');
 }
 
 =item dselect($dir)
@@ -187,10 +187,10 @@ sub editbox
 
 sub dselect
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	$self->{'lines'} = $self->{'lines'} - 8;
-	my ($exitCode, $output) = $self->_execute(shift, undef, 'dselect');
+	my ($exitCode, $output) = $self->_execute($_[1], undef, 'dselect');
 	$self->{'lines'} = $self->{'lines'} + 8;
 
 	wantarray ? ($exitCode, $output) : $output;
@@ -207,9 +207,9 @@ sub dselect
 
 sub msgbox
 {
-	my $self = shift;
+	my $self = $_[0];
 
-	$self->_textbox(shift, 'msgbox');
+	$self->_textbox($_[1], 'msgbox');
 }
 
 =item yesno($text)
@@ -223,9 +223,9 @@ sub msgbox
 
 sub yesno
 {
-	my $self = shift;
+	my $self = $_[0];
 
-	my ($exitCode) = $self->_textbox(shift, 'yesno');
+	my ($exitCode) = $self->_textbox($_[1], 'yesno');
 
 	$exitCode;
 }
@@ -281,12 +281,12 @@ sub passwordbox
 
 sub infobox
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $clear = $self->{'_opts'}->{'clear'};
 	$self->{'_opts'}->{'clear'} = undef;
 
-	my ($exitCode) = $self->_textbox(shift, 'infobox');
+	my ($exitCode) = $self->_textbox($_[1], 'infobox');
 	$self->{'_opts'}->{'clear'}	= $clear;
 
 	$exitCode;
@@ -350,7 +350,7 @@ sub hasGauge
 {
 	return 0 if $main::noprompt;
 
-	my $self = shift;
+	my $self = $_[0];
 
 	(exists $self->{'gauge'}->{'FH'}) ? 1 : 0;
 }
@@ -448,7 +448,7 @@ sub set
 
 sub _init
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	# Force usage of graphic lines (UNICODE values) when using putty (See #540)
 	$ENV{'NCURSES_NO_UTF8_ACS'} = '1';
@@ -521,7 +521,8 @@ sub _init
 
 sub _determineDialogVariant
 {
-	my $self = shift;
+	my $self = $_[0];
+
 	my $str = `$self->{'bin'} --help 2>&1`;
 
 	if ($str =~ /cdialog\s\(ComeOn\sDialog\!\)\sversion\s\d+\.\d+\-(.{4})/ && $1 >= 2003) {
@@ -549,9 +550,9 @@ sub _determineDialogVariant
 
 sub _determineConsoleSize
 {
-	my $self = shift;
-	my ($output, $error);
+	my $self = $_[0];
 
+	my ($output, $error);
 	execute($self->{'bin'} . ' --print-maxsize', \$output, \$error);
 	$error =~ /MaxSize:\s(\d+),\s(\d+)/;
 	$self->{'lines'} = (defined($1) && $1 != 0) ? $1 - 3 : 23;
@@ -573,9 +574,9 @@ sub _determineConsoleSize
 
 sub _findBin
 {
-	my ($self, $variant) = (shift, shift);
-	my ($rs, $stdout, $stderr);
+	my ($self, $variant) = @_;
 
+	my ($rs, $stdout, $stderr);
 	$rs = execute("which $variant", \$stdout, \$stderr);
 	debug("Found $stdout") if $stdout;
 	fatal("Can't find $variant binary: $stderr") if $stderr;
@@ -597,7 +598,7 @@ sub _findBin
 
 sub _stripFormats
 {
-	my ($self, $string) = (shift, shift);
+	my ($self, $string) = @_;
 
 	$string =~ s/\\Z[0-9bBuUrRn]//gmi;
 
@@ -614,7 +615,8 @@ sub _stripFormats
 
 sub _buildCommandOptions
 {
-	my $self = shift;
+	my $self = $_[0];
+
 	my $commandOptions = '';
 
 	for(keys %{$self->{'_opts'}}){
@@ -646,7 +648,7 @@ sub _buildCommandOptions
 
 sub _restoreDefaults
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	for my $prop (keys %{$self->{'_opts'}}) {
 		$self->{'_opts'}->{$prop} = undef if ! grep $_ eq $prop, qw/title backtitle colors begin/;

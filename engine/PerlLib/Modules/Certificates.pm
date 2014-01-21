@@ -37,7 +37,7 @@ use parent 'Modules::Abstract';
 
 sub _init
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	$self->{'type'} = 'Certificates';
 	$self->{'certsDir'} = "$main::imscpConfig{'GUI_ROOT_DIR'}/data/certs";
@@ -52,7 +52,7 @@ sub _init
 
 sub loadData
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $sql = "SELECT * FROM `ssl_certs` WHERE `cert_id` = ?";
 
@@ -122,9 +122,9 @@ sub loadData
 
 sub process
 {
-	my $self = shift;
+	my $self = $_[0];
 
-	$self->{'cert_id'} = shift;
+	$self->{'cert_id'} = $_[1];
 
 	my $rs = $self->loadData();
 	return $rs if $rs;
@@ -162,7 +162,7 @@ sub process
 
 sub add
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $openSSL = iMSCP::OpenSSL->getInstance();
 
@@ -214,7 +214,7 @@ sub add
 
 sub delete
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $certFile = "$self->{'certsDir'}/$self->{'name'}.pem";
 	my $rs = 0;

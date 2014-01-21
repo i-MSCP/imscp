@@ -185,7 +185,7 @@ sub preinstall
 
 sub install
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	# Backup current configuration file if it exists (only relevant when running imscp-setup)
 	my $rs = $self->_backupConfigFile(
@@ -260,7 +260,7 @@ sub setGuiPermissions
 
 sub _init
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	$self->{'phpmyadmin'} = Addons::PhpMyAdmin->getInstance();
 
@@ -321,7 +321,7 @@ sub _backupConfigFile($$)
 
 sub _installFiles
 {
-	my $repoDir = $main::imscpConfig{'ADDON_PACKAGES_CACHE_DIR'};
+	my $repoDir = "$main::imscpConfig{'CACHE_DATA_DIR'}/addons";
 	my $rs = 0;
 
 	if(-d "$repoDir/vendor/imscp/phpmyadmin") {
@@ -362,7 +362,7 @@ sub _installFiles
 
 sub _saveConfig
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $rootUname = $main::imscpConfig{'ROOT_USER'};
 	my $rootGname = $main::imscpConfig{'ROOT_GROUP'};
@@ -405,7 +405,7 @@ sub _saveConfig
 
 sub _setupSqlUser
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $imscpDbName = $main::imscpConfig{'DATABASE_NAME'};
 	my $phpmyadminDbName = $imscpDbName . '_pma';
@@ -505,7 +505,7 @@ sub _setupSqlUser
 
 sub _setupDatabase
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $phpmyadminDir = "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/pma";
 	my $imscpDbName = $main::imscpConfig{'DATABASE_NAME'};
@@ -584,7 +584,7 @@ sub _setupDatabase
 
 sub _setVersion
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $guiPublicDir = $main::imscpConfig{'GUI_PUBLIC_DIR'};
 
@@ -614,12 +614,10 @@ sub _setVersion
 
 sub _generateBlowfishSecret
 {
-	my $self = shift;
-
 	my $blowfishSecret = '';
 	$blowfishSecret .= ('A'..'Z', 'a'..'z', '0'..'9', '_', '+', '-', '^', '=', '*', '{', '}', '~')[rand(70)] for 1..56;
 
-	$self->{'config'}->{'BLOWFISH_SECRET'} = $blowfishSecret;
+	$_[0]->{'config'}->{'BLOWFISH_SECRET'} = $blowfishSecret;
 
 	0;
 }
@@ -634,7 +632,7 @@ sub _generateBlowfishSecret
 
 sub _buildConfig
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $panelUName =
 	my $panelGName =  $main::imscpConfig{'SYSTEM_USER_PREFIX'} . $main::imscpConfig{'SYSTEM_USER_MIN_UID'};

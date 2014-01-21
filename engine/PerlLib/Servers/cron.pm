@@ -53,8 +53,8 @@ use warnings;
 
 sub factory
 {
-	my $self = shift;
-	my $server = shift || 'cron';
+	my $self = $_[0];
+	my $server = $_[1] || 'cron';
 
 	my ($file, $class);
 

@@ -130,7 +130,7 @@ sub showDialog($$)
 
 sub preinstall
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $rs = 0;
 	my @addons = split ',', main::setupGetQuestion('WEBSTATS_ADDONS');
@@ -228,7 +228,7 @@ sub install
 
 sub uninstall
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my @addons = split ',', $main::imscpConfig{'WEBSTATS_ADDONS'};
 
@@ -268,7 +268,7 @@ sub uninstall
 
 sub setEnginePermissions
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my @addons = split ',', $main::imscpConfig{'WEBSTATS_ADDONS'};
 
@@ -458,7 +458,7 @@ sub deleteSub($$)
 
 sub _init()
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	# Find list of available Webstats addons
 	@{$self->{'ADDONS'}} = iMSCP::Dir->new(

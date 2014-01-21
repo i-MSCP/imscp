@@ -266,7 +266,7 @@ sub setEnginePermissions
 
 sub _init
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	$self->{'hooksManager'} = iMSCP::HooksManager->getInstance();
 

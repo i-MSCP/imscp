@@ -77,7 +77,7 @@ sub getInstance
 
 sub hasInstance
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	$self = ref $self || $self;
 	no strict 'refs';

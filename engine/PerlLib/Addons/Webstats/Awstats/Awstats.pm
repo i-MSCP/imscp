@@ -356,7 +356,7 @@ sub deleteSub($$)
 
 sub _init
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	$self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/awstats";
 	$self->{'bkpDir'} = "$self->{'cfgDir'}/backup";

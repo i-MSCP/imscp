@@ -59,7 +59,7 @@ use parent 'Common::SingletonClass';
 
 sub getAddresses()
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	wantarray ? keys %{$self->{'addresses'}} : join(' ', keys %{$self->{'addresses'}});
 }
@@ -260,7 +260,7 @@ sub normalizeAddr($$)
 
 sub getDevices()
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	wantarray ? keys %{$self->{'devices'}} : join(' ', keys %{$self->{'devices'}});
 }
@@ -387,7 +387,7 @@ sub isDeviceDown($$)
 
 sub _init
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	$self->{'devices'} = $self->_extractDevices();
 	$self->{'addresses'} = $self->_extractAddresses();
@@ -405,7 +405,7 @@ sub _init
 
 sub _extractDevices()
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my ($stdout, $stderr);
 	my $rs = execute("$main::imscpConfig{'CMD_IP'} -o link show", \$stdout, \$stderr);
@@ -430,7 +430,7 @@ sub _extractDevices()
 
 sub _extractAddresses()
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my ($stdout, $stderr);
 	my $rs = execute("$main::imscpConfig{'CMD_IP'} -o addr show scope global", \$stdout, \$stderr);

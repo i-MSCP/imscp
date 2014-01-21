@@ -36,7 +36,7 @@ use parent 'Common::SimpleClass';
 # Initialize instance
 sub _init
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	$self->{$_} = $self->{'args'}->{$_} for keys %{$self->{'args'}};
 

@@ -69,9 +69,7 @@ sub preinstall
 
 sub install
 {
-	my $self = shift;
-
-	$self->_installFiles();
+	$_[0]->_installFiles();
 }
 
 =item setGuiPermissions()
@@ -112,7 +110,7 @@ sub setGuiPermissions
 
 sub _installFiles
 {
-	my $repoDir = $main::imscpConfig{'ADDON_PACKAGES_CACHE_DIR'};
+	my $repoDir = "$main::imscpConfig{'CACHE_DATA_DIR'}/addons";
 	my $rs = 0;
 
 	if(-d "$repoDir/vendor/imscp/net2ftp") {

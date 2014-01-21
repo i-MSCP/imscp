@@ -112,6 +112,18 @@ sub process
 	$rs = setRights($logDir, { 'user' => $rootUName, 'group' => $imscpGName, 'mode' => '0750'} );
 	return $rs if $rs;
 
+	# eg. /var/cache/imscp
+	$rs = setRights(
+		$main::imscpConfig{'CACHE_DATA_DIR'}, { 'user' => $rootUName, 'group' => $rootGName, 'mode' => '0750' }
+	);
+	return $rs if $rs;
+
+	# eg. /var/local/imscp
+	$rs = setRights(
+		$main::imscpConfig{'VARIABLE_DATA_DIR'}, { 'user' => $rootUName, 'group' => $rootGName, 'mode' => '0750' }
+	);
+	return $rs if $rs;
+
 	$counter++;
 
 	# Set base permissions - ending

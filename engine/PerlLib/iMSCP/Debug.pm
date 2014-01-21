@@ -78,7 +78,7 @@ $self->{'prevLog'} = $self->{'curLog'} = $self->{'logs'}->{'default'} = iMSCP::L
 
 sub newDebug
 {
-	my $logName = shift;
+	my $logName = $_[0];
 
 	$self->{'logs'}->{$logName} = iMSCP::Log->new();
 	$self->{'prevLog'} = $self->{'curLog'};

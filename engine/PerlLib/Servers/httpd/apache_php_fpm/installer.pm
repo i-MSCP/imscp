@@ -148,7 +148,7 @@ Note: PHP FPM use a global php.ini configuration file but you can override any s
 
 sub install
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $rs = $self->{'hooksManager'}->trigger('afterHttpdInstall', 'apache_php_fpm');
 	return $rs if $rs;
@@ -189,8 +189,8 @@ sub install
 	$rs = $self->_oldEngineCompatibility();
 	return $rs if $rs;
 
-	$rs = $self->setEnginePermissions();
-	return $rs if $rs;
+	#$rs = $self->setEnginePermissions();
+	#return $rs if $rs;
 
 	$self->{'hooksManager'}->trigger('afterHttpdInstall', 'apache_php_fpm');
 }
@@ -205,7 +205,7 @@ sub install
 
 sub setGuiPermissions
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $panelUName = $main::imscpConfig{'SYSTEM_USER_PREFIX'}.$main::imscpConfig{'SYSTEM_USER_MIN_UID'};
 	my $panelGName = $main::imscpConfig{'SYSTEM_USER_PREFIX'}.$main::imscpConfig{'SYSTEM_USER_MIN_UID'};
@@ -266,7 +266,7 @@ sub setGuiPermissions
 
 sub setEnginePermissions()
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $rootUName = $main::imscpConfig{'ROOT_USER'};
 	my $rootGName = $main::imscpConfig{'ROOT_GROUP'};
@@ -296,7 +296,7 @@ sub setEnginePermissions()
 
 sub _init
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	$self->{'hooksManager'} = iMSCP::HooksManager->getInstance();
 
@@ -359,7 +359,7 @@ sub _init
 
 sub _setApacheVersion()
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my ($stdout, $stderr);
 	my $rs = execute("$self->{'config'}->{'CMD_HTTPD_CTL'} -v", \$stdout, \$stderr);
@@ -389,7 +389,7 @@ sub _setApacheVersion()
 
 sub _addUser
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $rs = $self->{'hooksManager'}->trigger('beforeHttpdAddUser');
 	return $rs if $rs;
@@ -512,7 +512,7 @@ sub _addUser
 
 sub _makeDirs
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $rs = $self->{'hooksManager'}->trigger('beforeHttpdMakeDirs');
 	return $rs if $rs;
@@ -550,7 +550,7 @@ sub _makeDirs
 
 sub _buildFastCgiConfFiles
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $rs = $self->{'hooksManager'}->trigger('beforeHttpdBuildFastCgiConfFiles');
 	return $rs if $rs;
@@ -634,7 +634,7 @@ sub _buildFastCgiConfFiles
 
 sub _buildPhpConfFiles
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $rs = $self->{'hooksManager'}->trigger('beforeHttpdBuildPhpConfFiles');
 	return $rs if $rs;
@@ -701,7 +701,7 @@ sub _buildPhpConfFiles
 
 sub _buildMasterPhpFpmPoolFile
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $rs = $self->{'hooksManager'}->trigger('beforeBuildMasterPhpFpmPoolFile');
 	return $rs if $rs;
@@ -758,7 +758,7 @@ sub _buildMasterPhpFpmPoolFile
 
 sub _buildApacheConfFiles
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $rs = $self->{'hooksManager'}->trigger('beforeHttpdBuildApacheConfFiles');
 	return $rs if $rs;
@@ -863,7 +863,7 @@ sub _buildApacheConfFiles
 
 sub _buildMasterVhostFiles
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $rs = $self->{'hooksManager'}->trigger('beforeHttpdBuildMasterVhostFiles');
 	return $rs if $rs;
@@ -987,7 +987,7 @@ sub _buildMasterVhostFiles
 
 sub _installLogrotate
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	# Apache logrotate file
 
@@ -1043,7 +1043,7 @@ sub _installLogrotate
 
 sub _setupVlogger
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $dbHost = main::setupGetQuestion('DATABASE_HOST');
 	# vlogger is chrooted so we force connection to MySQL server through TCP
@@ -1126,7 +1126,7 @@ sub _setupVlogger
 
 sub _saveConf
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $rs = 0;
 
@@ -1181,7 +1181,7 @@ sub _saveConf
 
 sub _oldEngineCompatibility()
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $rs = $self->{'hooksManager'}->trigger('beforeHttpdOldEngineCompatibility');
 	return $rs if $rs;
@@ -1223,7 +1223,7 @@ system.
 
 sub _fixPhpErrorReportingValues
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my ($database, $errStr) = main::setupGetSqlConnect($main::imscpConfig{'DATABASE_NAME'});
 	if(! $database) {

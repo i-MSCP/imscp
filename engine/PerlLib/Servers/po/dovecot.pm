@@ -93,7 +93,7 @@ sub install
 
 sub postinstall
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $rs = $self->{'hooksManager'}->trigger('beforePoPostinstall', 'dovecot');
 	return $rs if $rs;
@@ -195,7 +195,7 @@ sub postaddMail($$)
 
 sub uninstall
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $rs = $self->{'hooksManager'}->trigger('beforePoUninstall', 'dovecot');
 	return $rs if $rs;
@@ -221,7 +221,7 @@ sub uninstall
 
 sub restart
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $rs = $self->{'hooksManager'}->trigger('beforePoRestart');
 	return $rs if $rs;
@@ -252,28 +252,29 @@ sub getTraffic($$)
 	my $trafficLogFile = "$main::imscpConfig{'TRAFF_LOG_DIR'}/$main::imscpConfig{'MAIL_TRAFF_LOG'}";
 	my %trafficDb;
 
-	if(-f $trafficLogFile) {
+	if(-f $trafficLogFile && -s _) {
+		my $variableDataDir = $main::imscpConfig{'VARIABLE_DATA_DIR'};
 		my $wrkLogFile = "$main::imscpConfig{'LOG_DIR'}/mail.po.log";
 
 		# We are using a small file to memorize the number of the last line that has been read and his content
-		tie my %logDb, 'iMSCP::Config', 'fileName' => "$self->{'wrkDir'}/log.db", 'noerrors' => 1;
+		tie my %indexDb, 'iMSCP::Config', 'fileName' => "$variableDataDir/traffic_index.db", 'noerrors' => 1;
 
-		$logDb{'lineNo'} = 0 unless $logDb{'lineNo'};
-		$logDb{'lineContent'} = '' unless $logDb{'lineContent'};
+		$indexDb{'po_lineNo'} = 0 unless $indexDb{'po_lineNo'};
+		$indexDb{'po_lineContent'} = '' unless $indexDb{'po_lineContent'};
 
-		my $lastLineNo = $logDb{'lineNo'};
-		my $lastlineContent = $logDb{'lineContent'};
+		my $lastLineNo = $indexDb{'po_lineNo'};
+		my $lastlineContent = $indexDb{'po_lineContent'};
 
 		# Creating working file from current state of upstream data source
-		my $rs = iMSCP::File->new('filename' => $trafficLogFile)->copyFile($wrkLogFile);
+		my $rs = iMSCP::File->new('filename' => $trafficLogFile)->copyFile($wrkLogFile, { 'preserve' => 'no' });
 		die(iMSCP::Debug::getLastError()) if $rs;
 
 		require Tie::File;
-		tie my @content, 'Tie::File', $wrkLogFile or die("Unable to tie file $wrkLogFile");
+		tie my @content, 'Tie::File', $wrkLogFile or die("Unable to tie file $wrkLogFile: $!");
 
 		# Saving last line number and line date content from the current working file
-		$logDb{'lineNo'} = $#content;
-		$logDb{'lineContent'} = $content[$#content];
+		$indexDb{'po_lineNo'} = $#content;
+		$indexDb{'po_lineContent'} = $content[$#content];
 
 		# Test for logrotation
 		if($content[$lastLineNo] && $content[$lastLineNo] eq $lastlineContent) {
@@ -291,31 +292,31 @@ sub getTraffic($$)
 		die(iMSCP::Debug::getLastError()) unless defined $wrkLogContent;
 
 		# Stash the data in a traffic database. This allow to not lost them on failure.
-		tie %trafficDb, 'iMSCP::Config', 'fileName' => "$self->{'wrkDir'}/traffic.db", 'noerrors' => 1;
+		tie %trafficDb, 'iMSCP::Config', 'fileName' => "$variableDataDir/po_traffic.db", 'noerrors' => 1;
 
-		# Getting IMAP traffic from working log file
+		# Getting IMAP traffic
 		#
 		# IMAP traffic line sample (< Dovecot 1.2.1)
 		#
 		# Sep 13 20:11:27 imscp dovecot: IMAP(user@domain.tld): Disconnected: Logged out bytes=244/850
 		#
-		# IMAP traffuc line sample (>= Dovecot 1.2.1)
+		# IMAP traffic line sample (>= Dovecot 1.2.1)
 		#
 		# Sep 13 22:06:09 imscp dovecot: imap(user@domain.tld): Disconnected: Logged out in=244 out=858
 		#
-		while($wrkLogContent =~ /^.*imap\([^\@]+\@([^\)]+)\):\sDisconnected:.*(?:bytes|in)=(\d+)(?:\/|\sout=)(\d+)$/gimo) {
-			$trafficDb{$1} += $2 + $3;
-		}
+		$trafficDb{$1} += $2 + $3 while(
+			$wrkLogContent =~ /^.*imap\([^\@]+\@([^\)]+)\):\sDisconnected:.*(?:bytes|in)=(\d+)(?:\/|\sout=)(\d+)$/gimo
+		);
 
-		# Getting POP traffic from working log file
+		# Getting POP traffic
 		#
 		# POP traffic Line sample
 		#
 		# Sep 13 20:14:16 imscp dovecot: POP3(user@domain.tld): Disconnected: Logged out top=1/3214, retr=0/0, del=0/1, size=27510
 		#
-		while($wrkLogContent =~ /^.*pop3\([^\@]+\@([^\)]+)\):\sDisconnected:.*retr=(\d+)\/(\d+).*$/gimo) {
-			$trafficDb{$1} += $2 + $3;
-		}
+		$trafficDb{$1} += $2 + $3 while(
+			$wrkLogContent =~ /^.*pop3\([^\@]+\@([^\)]+)\):\sDisconnected:.*retr=(\d+)\/(\d+).*$/gimo
+		);
 
 		# Schedule deletion of traffic database. This is only done on success. On failure, the traffic database is kept
 		# in place for later processing. In such case, data already processed (put in database) are zeroed by the
@@ -323,8 +324,8 @@ sub getTraffic($$)
 		$self->{'hooksManager'}->register(
 			'afterVrlTraffic',
 			sub {
-				if(-f "$self->{'wrkDir'}/traffic.db") {
-					iMSCP::File->new('filename' => "$self->{'wrkDir'}/traffic.db")->delFile();
+				if(-f "$variableDataDir/po_traffic.db") {
+					iMSCP::File->new('filename' => "$variableDataDir/po_traffic.db")->delFile();
 				} else {
 					0;
 				}
@@ -351,7 +352,7 @@ sub getTraffic($$)
 
 sub _init
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	$self->{'hooksManager'} = iMSCP::HooksManager->getInstance();
 
@@ -387,11 +388,9 @@ END
 {
 	my $exitCode = $?;
 	my $self = Servers::po::dovecot->getInstance();
-	my $wrkLogFile = "$main::imscpConfig{'LOG_DIR'}/mail.po.log";
 	my $rs = 0;
 
 	$rs = $self->restart() if $self->{'restart'} && $self->{'restart'} eq 'yes';
-	$rs |= iMSCP::File->new('filename' => $wrkLogFile)->delFile() if -f $wrkLogFile;
 
 	$? = $exitCode || $rs;
 }

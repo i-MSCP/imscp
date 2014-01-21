@@ -59,10 +59,7 @@ use parent 'Common::SingletonClass';
 
 sub getId
 {
-	my $self = shift;
-	my $short = shift;
-
-	$self->{'lsbInfo'} = $self->getDistroInformation() if ! $self->{'lsbInfo'};
+	my ($self, $short) = @_;
 
 	if($short) {
 		$self->{'lsbInfo'}->{'ID'} ? $self->{'lsbInfo'}->{'ID'} : "n/a" ;
@@ -83,10 +80,7 @@ sub getId
 
 sub getDescription
 {
-	my $self = shift;
-	my $short = shift;
-
-	$self->{'lsbInfo'} = $self->getDistroInformation() if ! $self->{'lsbInfo'};
+	my ($self, $short) = @_;
 
 	if($short) {
 		$self->{'lsbInfo'}->{'DESCRIPTION'} ? $self->{'lsbInfo'}->{'DESCRIPTION'} : "n/a" ;
@@ -107,10 +101,7 @@ sub getDescription
 
 sub getRelease()
 {
-	my $self = shift;
-	my $short = shift;
-
-	$self->{'lsbInfo'} = $self->getDistroInformation() if ! $self->{'lsbInfo'};
+	my ($self, $short) = @_;
 
 	if($short) {
 		$self->{'lsbInfo'}->{'RELEASE'} ? $self->{'lsbInfo'}->{'RELEASE'} : "n/a" ;
@@ -131,10 +122,7 @@ sub getRelease()
 
 sub getCodename
 {
-	my $self = shift;
-	my $short = shift;
-
-	$self->{'lsbInfo'} = $self->getDistroInformation() if ! $self->{'lsbInfo'};
+	my ($self, $short) = @_;
 
 	if($short) {
 		$self->{'lsbInfo'}->{'CODENAME'} ? $self->{'lsbInfo'}->{'CODENAME'} : "n/a" ;
@@ -155,8 +143,7 @@ sub getCodename
 
 sub getAll
 {
-	my $self = shift;
-	my $short = shift;
+	my ($self, $short) = @_;
 
 	sprintf(
 		"%s\n%s\n%s\n%s",
@@ -184,7 +171,7 @@ sub getAll
 
 sub getDistroInformation
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	if(! $self->{'lsbInfo'}) {
 		# Try to retrieve information from /etc/lsb-release first
@@ -204,7 +191,7 @@ sub getDistroInformation
 
 =item reset()
 
- Reset instance. Allow to force reload of distribution-specific information.
+ Force reload of distribution-specific information.
 
  Return iMSCP::LsbRelease
 
@@ -212,9 +199,9 @@ sub getDistroInformation
 
 sub reset
 {
-	my $self = shift;
+	my $self = $_[0];
 
-	$self->{'lsbInfo'} = undef;
+	$self->{'lsbInfo'} = $self->getDistroInformation();
 
 	$self;
 }
@@ -235,9 +222,9 @@ sub reset
 
 sub _init
 {
-	my $self = shift;
+	my $self = $_[0];
 
-	$self->{'lsbInfo'} = undef;
+	$self->{'lsbInfo'} = $self->getDistroInformation() if ! $self->{'lsbInfo'};
 
 	$self;
 }
@@ -271,9 +258,7 @@ my $RELEASE_CODENAME_LOOKUP = {
 
 sub _lookupCodename($$)
 {
-	my $self = shift;
-	my $release = shift;
-	my $unknown = shift;
+	my ($self, $release, $unknown) = @_;
 
 	return $unknown if $release !~ /(\d+)\.(\d+)(r(\d+))?/;
 
@@ -302,8 +287,7 @@ my $longnames = {'v' => 'version', 'o' => 'origin', 'a' => 'suite', 'c'  => 'com
 
 sub _parsePolicyLine($$)
 {
-	my $self = shift;
-	my $data = shift;
+	my ($self, $data) = @_;
 
 	my ($retval, @bits) = ({}, split ',', $data);
 
@@ -329,7 +313,8 @@ sub _parsePolicyLine($$)
 
 sub _parseAptPolicy
 {
-	my $self = shift;
+	my $self = $_[0];
+
 	my $data = [];
 
 	my ($rs, $stdout, $stderr);
@@ -402,7 +387,8 @@ my $TESTING_CODENAME = 'unknown.new.testing';
 
 sub _guessDebianRelease
 {
-	my $self = shift;
+	my $self = $_[0];
+
 	my $distinfo = {'ID' => 'Debian'};
 	my ($rs, $stdout, $stderr, $release, $codename);
 
@@ -493,11 +479,11 @@ sub _guessDebianRelease
 
 sub _getLsbInformation
 {
-	my $self = shift;
+	my $self = $_[0];
+
 	my $distinfo = {};
 
 	if(-f '/etc/lsb-release') {
-
 		my $lsbReleaseFile = iMSCP::File->new('filename' => '/etc/lsb-release')->get();
 
 		unless(defined $lsbReleaseFile) {

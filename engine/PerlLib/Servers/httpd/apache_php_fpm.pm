@@ -86,7 +86,7 @@ sub registerSetupHooks($$)
 
 sub preinstall
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $rs = $self->{'hooksManager'}->trigger('beforeHttpdPreInstall', 'apache_php_fpm');
 	return $rs if $rs;
@@ -124,7 +124,7 @@ sub install
 
 sub postinstall
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $rs = $self->{'hooksManager'}->trigger('beforeHttpdPostInstall', 'apache_php_fpm');
 	return $rs if $rs;
@@ -144,7 +144,7 @@ sub postinstall
 
 sub uninstall
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $rs = $self->stopPhpFpm();
 	return $rs if $rs;
@@ -1157,8 +1157,12 @@ sub getTraffic($$)
 		);
 
 		if(%{$trafficData}) {
+			my $trafficDbPath = "$main::imscpConfig{'VARIABLE_DATA_DIR'}/http_traffic.db";
+
 			# Stash the data in a traffic database. This allow to not lost them on failure.
-        	tie %trafficDb, 'iMSCP::Config', 'fileName' => "$self->{'apacheWrkDir'}/traffic.db", 'noerrors' => 1;
+			tie %trafficDb, 'iMSCP::Config', 'fileName' => $trafficDbPath, 'noerrors' => 1;
+
+			# Getting HTTPD traffic
 			$trafficDb{$_} += $trafficData->{$_}->{'bytes'} for keys %{$trafficData};
 
 			# Deleting upstream source data
@@ -1170,8 +1174,8 @@ sub getTraffic($$)
 			$self->{'hooksManager'}->register(
 				'afterVrlTraffic',
 				sub {
-					if(-f "$self->{'apacheWrkDir'}/traffic.db") {
-						iMSCP::File->new('filename' => "$self->{'apacheWrkDir'}/traffic.db")->delFile();
+					if(-f $trafficDbPath) {
+						iMSCP::File->new('filename' => $trafficDbPath)->delFile();
 					} else {
 						0;
 					}
@@ -1204,7 +1208,7 @@ sub getTraffic($$)
 
 sub deleteTmp
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $rs = $self->{'hooksManager'}->trigger('beforeHttpdDelTmp');
 	return $rs if $rs;
@@ -1243,7 +1247,7 @@ sub deleteTmp
 
 	# customers sessions gc
 	# TODO should we check for any maxlifetime overriden in pools configuration file?
-	$cmd = "/usr/bin/nice -n 19 /usr/bin/find $main::imscpConfig{'USER_WEB_DIR'} -type f -path '*/phptmp/sess_*' -cmin +$max -exec rm -v {} \\;";
+	$cmd = "$main::imscpConfig{'CMD_NICE'} -n 19 /usr/bin/find $main::imscpConfig{'USER_WEB_DIR'} -type f -path '*/phptmp/sess_*' -cmin +$max -exec rm -v {} \\;";
 	$rs = execute($cmd, \$stdout, \$stderr);
 	debug($stdout) if $stdout;
 	error($stderr) if $stderr && $rs;
@@ -1411,7 +1415,7 @@ sub disableMod($$)
 
 sub startPhpFpm
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $rs = $self->{'hooksManager'}->trigger('beforeHttpdStartPhpFpm');
 	return $rs if $rs;
@@ -1437,7 +1441,7 @@ sub startPhpFpm
 
 sub stopPhpFpm
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $rs = $self->{'hooksManager'}->trigger('beforeHttpdStopPhpFpm');
 	return $rs if $rs;
@@ -1463,7 +1467,7 @@ sub stopPhpFpm
 
 sub restartPhpFpm
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $rs = $self->{'hooksManager'}->trigger('beforeHttpdRestartPhpFpm');
 	return $rs if $rs;
@@ -1505,7 +1509,7 @@ sub forceRestart
 
 sub startApache
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $rs = $self->{'hooksManager'}->trigger('beforeHttpdStart');
 	return $rs if $rs;
@@ -1529,7 +1533,7 @@ sub startApache
 
 sub stopApache
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $rs = $self->{'hooksManager'}->trigger('beforeHttpdStop');
 	return $rs if $rs;
@@ -1553,7 +1557,7 @@ sub stopApache
 
 sub restartApache
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $rs = $self->{'hooksManager'}->trigger('beforeHttpdRestart');
 	return $rs if $rs;
@@ -1661,7 +1665,7 @@ sub phpfpmBkpConfFile($$;$$)
 
 sub _init
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	$self->{'hooksManager'} = iMSCP::HooksManager->getInstance();
 

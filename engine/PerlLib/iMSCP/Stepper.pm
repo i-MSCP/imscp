@@ -38,7 +38,7 @@ use vars qw/@EXPORT_OK @EXPORT %EXPORT_TAGS/;
 
 sub _init
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	$self->{'title'} = "\n\\ZbPerforming step %s from total of %s\\Zn\n\n%s";
 	$self->{'all'} = [];

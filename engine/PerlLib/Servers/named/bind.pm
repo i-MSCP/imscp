@@ -94,7 +94,7 @@ sub install
 
 sub postinstall
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $rs = $self->{'hooksManager'}->trigger('beforeNamedPostInstall');
 	return $rs if $rs;
@@ -114,7 +114,7 @@ sub postinstall
 
 sub uninstall
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $rs = $self->{'hooksManager'}->trigger('beforeNamedUninstall', 'bind');
 	return $rs if $rs;
@@ -172,6 +172,8 @@ sub postaddDmn($$)
 	my $rs = $self->{'hooksManager'}->trigger('beforeNamedPostAddDmn', $data);
 	return $rs if $rs;
 
+	my $ipMngr = iMSCP::Net->getInstance();
+
 	if($self->{'config'}->{'BIND_MODE'} eq 'master') {
 		# Add DNS entry for domain alternative URL in master zone file
 		$rs = $self->addDmn(
@@ -182,7 +184,7 @@ sub postaddDmn($$)
 				DMN_ADD => {
 					NAME => $data->{'USER_NAME'},
 					CLASS => 'IN',
-					TYPE => ($self->{'ipMngr'}->getAddrVersion($data->{'DOMAIN_IP'})) eq 'ipv4' ? 'A' : 'AAAA',
+					TYPE => ($ipMngr->getAddrVersion($data->{'DOMAIN_IP'})) eq 'ipv4' ? 'A' : 'AAAA',
 					DATA => $data->{'DOMAIN_IP'}
 				}
 			}
@@ -346,11 +348,13 @@ sub addSub($$)
 				$subEntry = replaceBloc("; sub SPF entry BEGIN\n", "; sub SPF entry ENDING\n", '', $subEntry);
 			}
 
+			my $ipMngr = iMSCP::Net->getInstance();
+
 			# Process other entries
 			$subEntry = process(
 				{
 					SUBDOMAIN_NAME => $data->{'DOMAIN_NAME'},
-					IP_TYPE => ($self->{'ipMngr'}->getAddrVersion($data->{'DOMAIN_IP'}) eq 'ipv4') ? 'A' : 'AAAA',
+					IP_TYPE => ($ipMngr->getAddrVersion($data->{'DOMAIN_IP'}) eq 'ipv4') ? 'A' : 'AAAA',
 					DOMAIN_IP => $data->{'DOMAIN_IP'}
 				},
 				$subEntry
@@ -431,6 +435,8 @@ sub postaddSub($$)
 	return $rs if $rs;
 
 	if($self->{'config'}->{'BIND_MODE'} eq 'master') {
+		my $ipMngr = iMSCP::Net->getInstance();
+
 		# Adding DNS entry for subdomain alternative URL in master zone file
 		$rs = $self->addDmn(
 			{
@@ -440,7 +446,7 @@ sub postaddSub($$)
 				DMN_ADD => {
 					NAME => $data->{'USER_NAME'},
 					CLASS => 'IN',
-					TYPE => ($self->{'ipMngr'}->getAddrVersion($data->{'DOMAIN_IP'})) eq 'ipv4' ? 'A' : 'AAAA',
+					TYPE => ($ipMngr->getAddrVersion($data->{'DOMAIN_IP'})) eq 'ipv4' ? 'A' : 'AAAA',
 					DATA => $data->{'DOMAIN_IP'}
 				}
 			}
@@ -594,7 +600,7 @@ sub postdeleteSub($$)
 
 sub restart
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $rs = $self->{'hooksManager'}->trigger('beforeNamedRestart');
 	return $rs if $rs;
@@ -624,7 +630,7 @@ sub restart
 
 sub _init
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	$self->{'hooksManager'} = iMSCP::HooksManager->getInstance();
 
@@ -636,8 +642,6 @@ sub _init
 	$self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
 	$self->{'wrkDir'} = "$self->{'cfgDir'}/working";
 	$self->{'tplDir'} = "$self->{'cfgDir'}/parts";
-
-	$self->{'ipMngr'} = iMSCP::Net->getInstance();
 
 	tie %{$self->{'config'}}, 'iMSCP::Config', 'fileName' => "$self->{'cfgDir'}/bind.data";
 
@@ -892,6 +896,7 @@ sub _addDmnDb($$)
 		($self->{'config'}->{'SECONDARY_DNS'} eq 'no') ? () : split ';', $self->{'config'}->{'SECONDARY_DNS'}
 	);
 
+	my $ipMngr = iMSCP::Net->getInstance();
 	my ($dmnNsEntries, $dmnNsAentries, $nsNumber) = (undef, undef, 1);
 
 	for(@nsIPs) {
@@ -899,7 +904,7 @@ sub _addDmnDb($$)
 		$dmnNsAentries .= process(
 			{
 				NS_NUMBER => $nsNumber,
-				NS_IP_TYPE  => ($self->{'ipMngr'}->getAddrVersion($_) eq 'ipv4') ? 'A' : 'AAAA',
+				NS_IP_TYPE  => ($ipMngr->getAddrVersion($_) eq 'ipv4') ? 'A' : 'AAAA',
 				NS_IP => $_
 			},
 			$dmnNsAEntry
@@ -923,7 +928,7 @@ sub _addDmnDb($$)
 	if($data->{'MAIL_ENABLED'}) {
 		$dmnMailEntry = process(
 			{
-				BASE_SERVER_IP_TYPE => ($self->{'ipMngr'}->getAddrVersion($main::imscpConfig{'BASE_SERVER_IP'}) eq 'ipv4')
+				BASE_SERVER_IP_TYPE => ($ipMngr->getAddrVersion($main::imscpConfig{'BASE_SERVER_IP'}) eq 'ipv4')
 					? 'A' : 'AAAA',
 				BASE_SERVER_IP => $main::imscpConfig{'BASE_SERVER_IP'}
 			},
@@ -994,7 +999,7 @@ sub _addDmnDb($$)
 	$tplDbFileContent = process(
 		{
 			DOMAIN_NAME => $data->{'DOMAIN_NAME'},
-			IP_TYPE => ($self->{'ipMngr'}->getAddrVersion($data->{'DOMAIN_IP'}) eq 'ipv4') ? 'A' : 'AAAA',
+			IP_TYPE => ($ipMngr->getAddrVersion($data->{'DOMAIN_IP'}) eq 'ipv4') ? 'A' : 'AAAA',
 			DOMAIN_IP => $data->{'DOMAIN_IP'}
 		},
 		$tplDbFileContent

@@ -149,7 +149,7 @@ sub trigger($$)
 
 sub _init
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	$self->{'hooks'} = {};
 

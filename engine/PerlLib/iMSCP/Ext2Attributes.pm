@@ -244,7 +244,7 @@ for my $functName (keys %constants) {
 
 sub _getAttributes
 {
-	my $filename = shift;
+	my $filename = $_[0];
 
 	open my $fh, $filename or fatal("Unable to open $filename: $!");
 	my $ret = pack 'i', 0;
@@ -255,8 +255,7 @@ sub _getAttributes
 
 sub _setAttributes
 {
-	my $filename = shift;
-	my $flags = shift;
+	my ($filename, $flags) = @_;
 
 	open my $fh, $filename or fatal("Unable to open $filename: $!");
 	my $flag = pack 'i', $flags;

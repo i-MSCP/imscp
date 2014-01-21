@@ -42,7 +42,7 @@ use parent 'Modules::Subdomain';
 
 sub loadData
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $sql = "
 		SELECT
@@ -91,8 +91,8 @@ sub loadData
 
 sub process
 {
-	my $self = shift;
-	$self->{'subId'} = shift;
+	my $self = $_[0];
+	$self->{'subId'} = $_[1];
 
 	my $rs = $self->loadData();
 	return $rs if $rs;
@@ -148,7 +148,7 @@ sub process
 
 sub buildHTTPDData
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $groupName = my $userName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} .
 		($main::imscpConfig{'SYSTEM_USER_MIN_UID'} + $self->{'domain_admin_id'});
@@ -258,7 +258,7 @@ sub buildHTTPDData
 
 sub buildMTAData
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	$self->{'mta'} = {
 		DOMAIN_NAME => $self->{'subdomain_alias_name'} . '.' . $self->{'alias_name'},
@@ -273,7 +273,7 @@ sub buildMTAData
 
 sub buildNAMEDData
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $userName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} .
 		($main::imscpConfig{'SYSTEM_USER_MIN_UID'} + $self->{'domain_admin_id'});
@@ -326,7 +326,7 @@ sub buildNAMEDData
 
 sub buildADDONData
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $userName = my $groupName =  $main::imscpConfig{'SYSTEM_USER_PREFIX'} .
 		($main::imscpConfig{'SYSTEM_USER_MIN_UID'} + $self->{'domain_admin_id'});
@@ -356,7 +356,7 @@ sub buildADDONData
 
 sub _getSharedMountPoints
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $regexp = "^$self->{'subdomain_alias_mount'}(/.*|\$)";
 	my @sql = (

@@ -59,9 +59,7 @@ use parent 'Common::SingletonClass';
 
 sub preinstall
 {
-	my $self = shift;
-
-	$self->_disableDebianConfig();
+	$_[0]->_disableDebianConfig();
 }
 
 =item install()
@@ -74,7 +72,7 @@ sub preinstall
 
 sub install
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $rs = $self->_addCronTask();
 	return $rs if $rs;

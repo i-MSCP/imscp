@@ -37,6 +37,7 @@ use warnings;
 use iMSCP::Debug;
 use iMSCP::File;
 use iMSCP::Execute;
+use iMSCP::Rights;
 use Servers::cron;
 use parent 'Common::SingletonClass';
 
@@ -58,9 +59,7 @@ use parent 'Common::SingletonClass';
 
 sub preinstall
 {
-	my $self = shift;
-
-	$self->_disableDebianConfig();
+	$_[0]->_disableDebianConfig();
 }
 
 =item install()
@@ -73,12 +72,28 @@ sub preinstall
 
 sub install
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $rs = $self->_addCronTask();
 	return $rs if $rs;
 
 	$self->_scheduleCheck();
+}
+
+=item setEnginePermissions
+
+ Set engine permissions
+
+ Return int 0 on success, other on failure
+
+=cut
+
+sub setEnginePermissions()
+{
+	my $rootUName = $main::imscpConfig{'ROOT_USER'};
+	my $rootGName = $main::imscpConfig{'ROOT_GROUP'};
+
+	setRights($main::imscpConfig{'CHKROOTKIT_LOG'}, { 'user' => $rootUName, 'group' => $rootGName, mode => '0640' });
 }
 
 =back
@@ -129,7 +144,7 @@ sub _addCronTask
 			DWEEK => '',
 			USER => $main::imscpConfig{'ROOT_USER'},
 			COMMAND => "$main::imscpConfig{'CMD_NICE'} -n 19 $main::imscpConfig{'CMD_CHKROOTKIT'} " .
-				"1>$main::imscpConfig{'CHKROOTKIT_LOG'} 2>&1"
+				"1> $main::imscpConfig{'CHKROOTKIT_LOG'} 2>&1"
 		}
 	);
 }
@@ -156,8 +171,8 @@ sub _scheduleCheck
 
 		my ($stdout, $stderr);
 		$rs = execute(
-			"umask 027; $main::imscpConfig{'CMD_ECHO'} '$main::imscpConfig{'CMD_NICE'} -n 19 " .
-			"1>$main::imscpConfig{'CHKROOTKIT_LOG'} 2>&1' " .
+			"$main::imscpConfig{'CMD_ECHO'} '$main::imscpConfig{'CMD_NICE'} -n 19 " .
+			"$main::imscpConfig{'CMD_CHKROOTKIT'} 1> $main::imscpConfig{'CHKROOTKIT_LOG'} 2>&1' " .
 			"| $main::imscpConfig{'CMD_BATCH'}",
 			\$stdout,
 			\$stderr

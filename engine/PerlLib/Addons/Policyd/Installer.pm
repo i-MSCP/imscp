@@ -117,7 +117,7 @@ Do you want to disable additional checks for MTA, HELO and domain?\n
 
 sub install
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $rs = $self->_bkpConfFile($self->{'config'}->{'POLICYD_CONF_FILE'});
 	return $rs if $rs;
@@ -144,7 +144,7 @@ sub install
 
 sub _init
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	$self->{'policyd'} = Addons::Policyd->getInstance();
 
@@ -203,7 +203,7 @@ sub _bkpConfFile($$)
 
 sub _buildConf
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $rs = 0;
 	my $uName = $self->{'config'}->{'POLICYD_USER'};
@@ -257,7 +257,7 @@ sub _buildConf
 
 sub _saveConf
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $rootUname = $main::imscpConfig{'ROOT_USER'};
 	my $rootGname = $main::imscpConfig{'ROOT_GROUP'};

@@ -42,7 +42,7 @@ use parent 'Modules::Abstract';
 
 sub _init
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	$self->{$_} = $self->{'args'}->{$_} for keys %{$self->{'args'}};
 
@@ -55,7 +55,7 @@ sub _init
 
 sub loadData
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $rdata = iMSCP::Database->factory()->doQuery(
 		'admin_id',
@@ -87,9 +87,9 @@ sub loadData
 
 sub process
 {
-	my $self = shift;
+	my $self = $_[0];
 
-	$self->{'userId'} = shift;
+	$self->{'userId'} = $_[1];
 
 	my $rs = $self->loadData();
 	return $rs if $rs;
@@ -129,7 +129,7 @@ sub process
 
 sub add
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $userName =
 	my $groupName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} .
@@ -227,7 +227,7 @@ sub add
 
 sub delete
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $userName =
 	my $groupName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} .
@@ -253,7 +253,7 @@ sub delete
 
 sub buildHTTPDData
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $groupName =
 	my $userName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} .
@@ -269,7 +269,7 @@ sub buildHTTPDData
 
 sub buildFTPDData
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $groupName =
 	my $userName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} .

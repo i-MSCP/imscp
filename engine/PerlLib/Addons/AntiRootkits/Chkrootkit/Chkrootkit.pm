@@ -89,6 +89,20 @@ sub uninstall
 	Addons::AntiRootkits::Chkrootkit::Uninstaller->getInstance()->uninstall();
 }
 
+=item setEnginePermissions()
+
+ Set engine permissions
+
+ Return int 0 on success, other on failure
+
+=cut
+
+sub setEnginePermissions
+{
+	require Addons::AntiRootkits::Chkrootkit::Installer;
+	Addons::AntiRootkits::Chkrootkit::Installer->getInstance()->setEnginePermissions();
+}
+
 =item getPackages()
 
  Get list of Debian packages to which this addon depends.

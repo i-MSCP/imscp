@@ -45,7 +45,7 @@ sub new
 
 sub _init
 {
-	shift;
+	$_[0];
 }
 
 1;

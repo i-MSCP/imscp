@@ -69,8 +69,7 @@ use parent 'Common::SingletonClass';
 
 sub registerSetupHooks($$)
 {
-	my $self = shift;
-	my $hooksManager = shift;
+	my ($self, $hooksManager) = @_;
 
 	if(defined $main::imscpConfig{'MTA_SERVER'} && lc($main::imscpConfig{'MTA_SERVER'}) eq 'postfix') {
 		my $rs = $hooksManager->trigger('beforePoRegisterSetupHooks', $hooksManager, 'dovecot');
@@ -107,8 +106,7 @@ sub registerSetupHooks($$)
 
 sub askDovecot($$)
 {
-	my $self = shift;
-	my $dialog = shift;
+	my ($self, $dialog) = @_;
 
 	my $dbUser = main::setupGetQuestion('DOVECOT_SQL_USER') || $self->{'config'}->{'DATABASE_USER'} || 'dovecot_user';
 	my $dbPass = main::setupGetQuestion('DOVECOT_SQL_PASSWORD') || $self->{'config'}->{'DATABASE_PASSWORD'} || '';
@@ -168,7 +166,7 @@ sub askDovecot($$)
 
 sub install
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $rs = $self->{'hooksManager'}->trigger('beforePoInstall', 'dovecot');
 	return $rs if $rs;
@@ -190,6 +188,9 @@ sub install
 		$rs = $self->_migrateFromCourier();
 		return $rs if $rs;
 	}
+
+	$rs = $self->_oldEngineCompatibility();
+	return $rs if $rs;
 
 	$self->{'hooksManager'}->trigger('afterPoInstall', 'dovecot');
 }
@@ -218,9 +219,7 @@ sub install
 
 sub buildPostfixConf($$$)
 {
-	my $self = shift;
-	my $fileContent	= shift;
-	my $fileName = shift;
+	my ($self, $fileContent, $fileName) = @_;
 
 	if($fileName eq 'main.cf') {
 		# SASL part
@@ -276,7 +275,7 @@ EOF
 
 sub _init
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	$self->{'hooksManager'} = iMSCP::HooksManager->getInstance();
 
@@ -324,7 +323,7 @@ sub _init
 
 sub _getVersion
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $rs = $self->{'hooksManager'}->trigger('beforePoGetVersion');
 	return $rs if $rs;
@@ -360,8 +359,7 @@ sub _getVersion
 
 sub _bkpConfFile($$)
 {
-	my $self = shift;
-	my $cfgFile = shift;
+	my ($self, $cfgFile) = @_;
 
 	my $rs = $self->{'hooksManager'}->trigger('beforePoBkpConfFile', $cfgFile);
 	return $rs if $rs;
@@ -392,7 +390,7 @@ sub _bkpConfFile($$)
 
 sub _setupSqlUser
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $dbUser = $self->{'config'}->{'DATABASE_USER'};
 	my $dbUserHost = main::setupGetQuestion('DATABASE_USER_HOST');
@@ -447,7 +445,7 @@ sub _setupSqlUser
 
 sub _buildConf
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $cfg = {
 		DATABASE_TYPE => $main::imscpConfig{'DATABASE_TYPE'},
@@ -554,7 +552,7 @@ sub _buildConf
 
 sub _saveConf
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $file = iMSCP::File->new('filename' => "$self->{'cfgDir'}/dovecot.data");
 
@@ -600,7 +598,7 @@ sub _saveConf
 
 sub _migrateFromCourier
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $rs = $self->{'hooksManager'}->trigger('beforePoMigrateFromCourier');
 	return $rs if $rs;
@@ -661,6 +659,25 @@ sub _migrateFromCourier
 	}
 
 	$self->{'hooksManager'}->trigger('afterPoMigrateFromCourier');
+}
+
+=item _oldEngineCompatibility()
+
+ Remove old files
+
+ Return int 0 on success, other on failure
+
+=cut
+
+sub _oldEngineCompatibility
+{
+	my $self = $_[0];
+
+	my $rs = $self->{'hooksManager'}->trigger('beforePoOldEngineCompatibility');
+	return $rs if $rs;
+
+
+	$self->{'hooksManager'}->trigger('afterPodOldEngineCompatibility');
 }
 
 =back

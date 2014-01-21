@@ -130,7 +130,7 @@ sub showDialog($$)
 
 sub preinstall
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $rs = 0;
 	my @addons = split ',', main::setupGetQuestion('ANTI_ROOTKITS_ADDONS');
@@ -227,7 +227,7 @@ sub install
 
 sub uninstall
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my @addons = split ',', $main::imscpConfig{'ANTI_ROOTKITS_ADDONS'};
 
@@ -267,7 +267,7 @@ sub uninstall
 
 sub setEnginePermissions
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my @addons = split ',', $main::imscpConfig{'ANTI_ROOTKITS_ADDONS'};
 
@@ -306,7 +306,7 @@ sub setEnginePermissions
 
 sub _init()
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	# Find list of available AntiRootkits addons
 	@{$self->{'ADDONS'}} = iMSCP::Dir->new(

@@ -93,8 +93,7 @@ sub addSystemGroup($$;$)
 
 sub delSystemGroup($$)
 {
-	my $self = shift;
-	my $groupName = shift;
+	my ($self, $groupName) = @_;
 
 	if(getgrnam($groupName)) {
 		my ($stdout, $stderr);

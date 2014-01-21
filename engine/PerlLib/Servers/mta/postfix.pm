@@ -108,7 +108,7 @@ sub install
 
 sub uninstall
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $rs = $self->{'hooksManager'}->trigger('beforeMtaUninstall', 'postfix');
 	return $rs if $rs;
@@ -133,7 +133,7 @@ sub uninstall
 
 sub postinstall
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $rs = $self->{'hooksManager'}->trigger('beforeMtaPostinstall', 'postfix');
 	return $rs if $rs;
@@ -167,7 +167,7 @@ sub setEnginePermissions
 
 sub restart
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $rs = $self->{'hooksManager'}->trigger('beforeMtaRestart');
 	return $rs if $rs;
@@ -602,27 +602,28 @@ sub getTraffic
 	my %trafficDb;
 
 	if(-f $trafficLogFile && -s _) {
+		my $variableDataDir = $main::imscpConfig{'VARIABLE_DATA_DIR'};
 		my $wrkLogFile = "$main::imscpConfig{'LOG_DIR'}/mail.smtp.log";
 
 		# We are using a small file to memorize the number of the last line that has been read and his content
-		tie my %logDb, 'iMSCP::Config', 'fileName' => "$self->{'wrkDir'}/log.db", 'noerrors' => 1;
+		tie my %indexDb, 'iMSCP::Config', 'fileName' => "$variableDataDir/traffic_index.db", 'noerrors' => 1;
 
-		$logDb{'lineNo'} = 0 unless $logDb{'lineNo'};
-		$logDb{'lineContent'} = '' unless $logDb{'lineContent'};
+		$indexDb{'smtp_lineNo'} = 0 unless $indexDb{'smtp_lineNo'};
+		$indexDb{'smtp_lineContent'} = '' unless $indexDb{'smtp_lineContent'};
 
-		my $lastLineNo = $logDb{'lineNo'};
-		my $lastlineContent = $logDb{'lineContent'};
+		my $lastLineNo = $indexDb{'smtp_lineNo'};
+		my $lastlineContent = $indexDb{'smtp_lineContent'};
 
 		# Creating working file from current state of upstream data source
-		my $rs = iMSCP::File->new('filename' => $trafficLogFile)->copyFile($wrkLogFile);
+		my $rs = iMSCP::File->new('filename' => $trafficLogFile)->copyFile($wrkLogFile, { 'preserve' => 'no' });
 		die(iMSCP::Debug::getLastError()) if $rs;
 
 		require Tie::File;
 		tie my @content, 'Tie::File', $wrkLogFile or die("Unable to tie file $wrkLogFile");
 
 		# Saving last line number and line date content from the current working file
-		$logDb{'lineNo'} = $#content;
-		$logDb{'lineContent'} = $content[$#content];
+		$indexDb{'smtp_lineNo'} = $#content;
+		$indexDb{'smtp_lineContent'} = $content[$#content];
 
 		# Test for logrotation
 		if($content[$lastLineNo] && $content[$lastLineNo] eq $lastlineContent) {
@@ -645,9 +646,9 @@ sub getTraffic
 		);
 
 		# Stash the data in a traffic database. This allow to not lost them on failure.
-		tie %trafficDb, 'iMSCP::Config', 'fileName' => "$self->{'wrkDir'}/traffic.db", 'noerrors' => 1;
+		tie %trafficDb, 'iMSCP::Config', 'fileName' => "$variableDataDir/smtp_traffic.db", 'noerrors' => 1;
 
-		# Getting SMTP traffic from working log file
+		# Getting SMTP traffic
 		#
 		# SMTP traffic line sample (as provided by the maillogconvert.pl utility script)
 		#                               1                 2               3                     4                                     5
@@ -667,8 +668,8 @@ sub getTraffic
 		$self->{'hooksManager'}->register(
 			'afterVrlTraffic',
 			sub {
-				if(-f "$self->{'wrkDir'}/traffic.db") {
-					iMSCP::File->new('filename' => "$self->{'wrkDir'}/traffic.db")->delFile();
+				if(-f "$variableDataDir/smtp_traffic.db") {
+					iMSCP::File->new('filename' => "$variableDataDir/smtp_traffic.db")->delFile();
 				} else {
 					0;
 				}
@@ -695,7 +696,7 @@ sub getTraffic
 
 sub _init
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	$self->{'hooksManager'} = iMSCP::HooksManager->getInstance();
 
@@ -1551,7 +1552,6 @@ END
 {
 	my $exitCode = $?;
 	my $self = Servers::mta::postfix->getInstance();
-	my $wrkLogFile = "$main::imscpConfig{'LOG_DIR'}/mail.smtp.log";
 	my $rs = 0;
 
 	# In any case we postmap if needed
@@ -1562,8 +1562,6 @@ END
 	if($self->{'restart'} && $self->{'restart'} eq 'yes') {
 		$rs |= $self->restart();
 	}
-
-	$rs |= iMSCP::File->new('filename' => $wrkLogFile)->delFile() if -f $wrkLogFile;
 
 	$? = $exitCode || $rs;
 }

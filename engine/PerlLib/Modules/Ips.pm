@@ -34,7 +34,7 @@ use parent 'Modules::Abstract';
 
 sub _init
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	$self->{'type'} = 'Ips';
 
@@ -43,7 +43,7 @@ sub _init
 
 sub process
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $sql = "
 		SELECT
@@ -134,7 +134,7 @@ sub process
 
 sub buildHTTPDData
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	$self->{'httpd'} = {
 		IPS => $self->{'IPs'},

@@ -35,7 +35,7 @@ use parent 'Common::SingletonClass';
 
 sub _init
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	$self->{'cipher'}->{'key'} = '';
 	$self->{'cipher'}->{'keysize'} = 32;
@@ -48,12 +48,9 @@ sub _init
 
 sub set
 {
-	my $self = shift;
-	my $prop = shift;
-	my $value = shift;
+	my ($self, $prop, $value) = @_;
 
 	if(exists $self->{'cipher'}->{$prop}) {
-		debug("Setting $prop as $value");
 		$self->{'cipher'}->{$prop} = $value;
 	} else {
 		fatal("Unknown property: $prop");
@@ -81,15 +78,12 @@ sub randomString
 		}
 	}
 
-	debug("Returning $string");
-
 	$string;
 }
 
 sub encrypt_db_password
 {
-	my $self = shift;
-	my $pass = shift;
+	my ($self, $pass) = @_;
 
 	error('Undefined input data...') if ! defined $pass || $pass eq '';
 	error('KEY or IV has invalid length')
@@ -99,15 +93,12 @@ sub encrypt_db_password
 	my $encoded	= encode_base64($cipher->encrypt($pass));
 	chop($encoded);
 
-	debug("Returning $encoded");
-
 	$encoded;
 }
 
 sub decrypt_db_password
 {
-	my $self = shift;
-	my $pass = shift;
+	my ($self, $pass) = @_;
 
 	if (! defined $pass || $pass eq ''){
 		error('Undefined input data...') ;
@@ -120,8 +111,6 @@ sub decrypt_db_password
 
 	my $cipher = Crypt::CBC -> new($self->{'cipher'});
 	my $plaintext = $cipher->decrypt(decode_base64("$pass\n"));
-
-	debug("Returning $plaintext");
 
 	$plaintext;
 }
@@ -137,7 +126,7 @@ sub crypt_md5_data
 	}
 
 	if (! $data) {
-		debug("Undefined input data, data: |$data| !");
+		debug('Undefined input data');
 		return undef;
 	}
 
@@ -146,8 +135,6 @@ sub crypt_md5_data
 	use Crypt::PasswdMD5;
 
 	$data = unix_md5_crypt($data, $self->randomString(8));
-
-	debug("Returning $data");
 
 	$data;
 }

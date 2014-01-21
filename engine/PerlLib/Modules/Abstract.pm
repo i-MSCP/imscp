@@ -56,7 +56,7 @@ use parent 'Common::SimpleClass';
 
 sub _init
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	fatal(ref($self) . ' module must implement the _init() method');
 }
@@ -71,7 +71,7 @@ sub _init
 
 sub loadData
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	fatal(ref($self) . ' module must implement the loadData() method');
 }
@@ -86,7 +86,7 @@ sub loadData
 
 sub process
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	fatal(ref($self) . ' module must implement the process() method');
 }
@@ -103,7 +103,7 @@ sub process
 
 sub add
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	$self->{'action'} = 'add';
 	$self->runAllActions();
@@ -121,7 +121,7 @@ sub add
 
 sub delete
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	$self->{'action'} = 'delete';
 	$self->runAllActions();
@@ -139,7 +139,7 @@ sub delete
 
 sub restore
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	$self->{'action'} = 'restore';
 	$self->runAllActions();
@@ -157,7 +157,7 @@ sub restore
 
 sub disable
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	$self->{'action'} = 'disable';
 	$self->runAllActions();
@@ -173,7 +173,7 @@ sub disable
 
 sub runAllActions
 {
-	my $self = shift;
+	my $self = $_[0];
 	my $rs = 0;
 
 	@{$self->{'Servers'}} = iMSCP::Servers->getInstance()->get();
@@ -209,11 +209,9 @@ sub runAllActions
 
 sub runAction
 {
-	my $self = shift;
-	my $action = shift;
-	my $type = shift;
-	my $rs = 0;
+	my ($self, $action, $type) = @_;
 
+	my $rs = 0;
 	my ($file, $class, $instance);
 
 	for (@{$self->{$type}}) {

@@ -43,7 +43,7 @@ use parent 'Modules::Abstract';
 
 sub _init
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	$self->{'type'} = 'Sub';
 
@@ -52,7 +52,7 @@ sub _init
 
 sub loadData
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $sql = "
 		SELECT
@@ -101,8 +101,8 @@ sub loadData
 
 sub process
 {
-	my $self = shift;
-	$self->{'subId'} = shift;
+	my $self = $_[0];
+	$self->{'subId'} = $_[1];
 
 	my $rs = $self->loadData();
 	return $rs if $rs;
@@ -154,7 +154,7 @@ sub process
 
 sub buildHTTPDData
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $groupName = my $userName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} .
 		($main::imscpConfig{'SYSTEM_USER_MIN_UID'} + $self->{'domain_admin_id'});
@@ -265,7 +265,7 @@ sub buildHTTPDData
 
 sub buildMTAData
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	$self->{'mta'} = {
 		DOMAIN_NAME => $self->{'subdomain_name'} . '.' . $self->{'user_home'},
@@ -280,7 +280,7 @@ sub buildMTAData
 
 sub buildNAMEDData
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $userName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} .
 		($main::imscpConfig{'SYSTEM_USER_MIN_UID'} + $self->{'domain_admin_id'});
@@ -333,7 +333,7 @@ sub buildNAMEDData
 
 sub buildADDONData
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $userName = my $groupName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} .
 		($main::imscpConfig{'SYSTEM_USER_MIN_UID'} + $self->{'domain_admin_id'});
@@ -363,8 +363,7 @@ sub buildADDONData
 
 sub testCert
 {
-	my $self = shift;
-	my $subdomainName = shift;
+	my ($self, $subdomainName) = @_;
 
 	my $certFile = "$main::imscpConfig{'GUI_ROOT_DIR'}/data/certs/$subdomainName.pem";
 	my $openSSL = iMSCP::OpenSSL->getInstance();
@@ -379,7 +378,7 @@ sub testCert
 
 sub _getSharedMountPoints
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $regexp = "^$self->{'subdomain_mount'}(/.*|\$)";
 	my @sql = (

@@ -68,7 +68,7 @@ use parent 'Common::SingletonClass';
 
 sub preinstall
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $rs = $self->{'hooksManager'}->trigger('beforeMtaPreInstall', 'postfix');
 
@@ -91,7 +91,7 @@ sub preinstall
 
 sub install
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $rs = $self->{'hooksManager'}->trigger('beforeMtaInstall', 'postfix');
 	return $rs if $rs;
@@ -103,6 +103,9 @@ sub install
 	return $rs if $rs;
 
 	$rs = $self->_buildAliasesDb();
+	return $rs if $rs;
+
+	$rs = $self->_oldEngineCompatibility();
 	return $rs if $rs;
 
 	$rs = $self->_saveConf();
@@ -121,7 +124,7 @@ sub install
 
 sub setEnginePermissions
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $rootUName = $main::imscpConfig{'ROOT_USER'};
 	my $rootGName = $main::imscpConfig{'ROOT_GROUP'};
@@ -189,7 +192,7 @@ sub setEnginePermissions
 
 sub _init
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	$self->{'hooksManager'} = iMSCP::HooksManager->getInstance();
 
@@ -235,7 +238,7 @@ sub _init
 
 sub _addUsersAndGroups
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my @groups = (
 		[
@@ -317,7 +320,7 @@ sub _addUsersAndGroups
 
 sub _makeDirs
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my @directories = (
 		[
@@ -365,7 +368,7 @@ sub _makeDirs
 
 sub _buildConf
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $rs = $self->{'hooksManager'}->trigger('beforeMtaBuildConf');
 	return $rs if $rs;
@@ -389,7 +392,7 @@ sub _buildConf
 
 sub _buildLookupTables
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $dir = iMSCP::Dir->new('dirname' => $self->{'lkptsDir'});
 	my @lookupTables = $dir->getFiles();
@@ -429,7 +432,7 @@ sub _buildLookupTables
 
 sub _buildAliasesDb
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $rs = $self->{'hooksManager'}->trigger('beforeMtaBuildAliases');
 	return $rs if $rs;
@@ -454,7 +457,7 @@ sub _buildAliasesDb
 
 sub _saveConf
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $file = iMSCP::File->new('filename' => "$self->{'cfgDir'}/postfix.data");
 
@@ -500,8 +503,7 @@ sub _saveConf
 
 sub _bkpConfFile($$)
 {
-	my $self = shift;
-	my $cfgFile = shift;
+	my ($self, $cfgFile) = @_;
 
 	my $rs = $self->{'hooksManager'}->trigger('beforeMtaBkpConfFile', $cfgFile);
 	return $rs if $rs;
@@ -533,7 +535,7 @@ sub _bkpConfFile($$)
 
 sub _buildMainCfFile
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	# Backup current file if any
 	my $rs = $self->_bkpConfFile("self->{'config'}->{'MTA_VIRTUAL_CONF_DIR'}/main.cf");
@@ -639,7 +641,7 @@ sub _buildMainCfFile
 
 sub _buildMasterCfFile
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	# Backup current file if any
 	my $rs = $self->_bkpConfFile("self->{'config'}->{'MTA_VIRTUAL_CONF_DIR'}/master.cf");
@@ -690,6 +692,24 @@ sub _buildMasterCfFile
 
 	# Copy file in production directory
 	$file->copyFile($self->{'config'}->{'POSTFIX_MASTER_CONF_FILE'});
+}
+
+=item _oldEngineCompatibility()
+
+ Remove old files
+
+ Return int 0 on success, other on failure
+
+=cut
+
+sub _oldEngineCompatibility
+{
+	my $self = $_[0];
+
+	my $rs = $self->{'hooksManager'}->trigger('beforeMtaOldEngineCompatibility');
+	return $rs if $rs;
+
+	$self->{'hooksManager'}->trigger('afterMtadOldEngineCompatibility');
 }
 
 =back

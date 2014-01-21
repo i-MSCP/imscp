@@ -174,7 +174,7 @@ sub install
 
 sub setGuiPermissions
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $addon = $main::imscpConfig{'FILEMANAGER_ADDON'};
 
@@ -211,7 +211,7 @@ sub setGuiPermissions
 
 sub _init()
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	# Find list of available FileManager addons
 	@{$self->{'ADDONS'}} = iMSCP::Dir->new(

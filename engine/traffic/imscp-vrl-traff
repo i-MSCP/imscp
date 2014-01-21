@@ -47,7 +47,12 @@ silent(1);
 
 umask(027);
 
-iMSCP::Boot->getInstance()->boot({ 'norequirements' => 'yes', 'nolock' => 'yes', 'config_readonly' => 'yes' });
+my $bootstrapper = iMSCP::Boot->getInstance();
+
+# Avoid any concurrent process
+exit unless $bootstrapper->lock('/tmp/imscp-vrl-traff.lock', 'nowait');
+
+$bootstrapper->boot({ 'norequirements' => 'yes', 'nolock' => 'yes', 'config_readonly' => 'yes' });
 
 sub run
 {
@@ -208,12 +213,18 @@ sub run
 	}
 
 	# Event triggered only if no error occured for the whole process
-	$rs ||= iMSCP::HooksManager->getInstance()->trigger('afterVrlTraffic');
+	#$rs ||= iMSCP::HooksManager->getInstance()->trigger('afterVrlTraffic');
 
 	if($rs) {
 		require iMSCP::Mail;
 		iMSCP::Mail->new()->errmsg(join "\n\n", iMSCP::Debug::getLastError());
 	}
+
+	$bootstrapper->unlock('/tmp/imscp-vrl-traff.lock');
+
+	$rs;
 }
 
-exit run();
+my $rs = run();
+$bootstrapper->unlock('/tmp/imscp-vrl-traff.lock');
+exit $rs;

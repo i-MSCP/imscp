@@ -37,7 +37,7 @@ use vars qw/$AUTOLOAD/;
 
 sub _init
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	$self->{$_} = $self->{'args'}->{$_} for keys %{$self->{'args'}};
 
@@ -46,7 +46,7 @@ sub _init
 
 sub getFiles
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	if(! $self->{'files'}) {
 		$self->{'files'} = [];
@@ -67,7 +67,7 @@ sub getFiles
 
 sub getDirs
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	unless(defined $self->{'dirs'}) {
 		$self->{'dirs'} = [];
@@ -86,7 +86,7 @@ sub getDirs
 
 sub getAll
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my @all = ($self->getDirs(), $self->getFiles());
 
@@ -244,7 +244,7 @@ sub make
 
 sub remove
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	unless(defined $self->{'dirname'}) {
 		error("Attribut 'dirname' is not set");
@@ -278,9 +278,8 @@ sub remove
 
 sub rcopy
 {
-	my $self = shift;
-	my $destDir = shift;
-	my $options = shift;
+	my ($self, $destDir, $options) = @_;
+
 	my $rs = 0;
 
 	$options = {} if ref $options ne 'HASH';
@@ -345,8 +344,7 @@ sub rcopy
 
 sub moveDir
 {
-	my $self = shift;
-	my $dest = shift;
+	my ($self, $dest) = @_;
 
 	unless(defined $self->{'dirname'}) {
 		error("Attribut 'dirname' is not set");
@@ -370,7 +368,7 @@ sub moveDir
 
 sub _get
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	unless(defined $self->{'dirContent'}) {
 		debug("Opening directory $self->{'dirname'}");

@@ -33,7 +33,7 @@ use parent 'Modules::Abstract';
 
 sub _init
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	$self->{'type'} = 'Mail';
 
@@ -42,7 +42,7 @@ sub _init
 
 sub loadData
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $sql = '
 		SELECT
@@ -80,9 +80,9 @@ sub loadData
 
 sub process
 {
-	my $self = shift;
+	my $self = $_[0];
 
-	$self->{'mailId'} = shift;
+	$self->{'mailId'} = $_[1];
 
 	my $rs = $self->loadData();
 	return $rs if $rs;
@@ -127,7 +127,7 @@ sub process
 
 sub buildMTAData
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $mail = $self->{'mail_addr'};
 	$mail =~ s/^\s+//;
@@ -177,7 +177,7 @@ sub buildMTAData
 
 sub buildPOData
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $mail = $self->{mail_addr};
 	$mail =~ s/^\s+//;
@@ -196,7 +196,7 @@ sub buildPOData
 
 sub buildADDONData
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $mail = $self->{'mail_addr'};
 	$mail =~ s/^\s+//;

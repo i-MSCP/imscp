@@ -148,7 +148,7 @@ Please, choose the PHP INI level you want use for PHP. Available levels are:
 
 sub install
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $rs = $self->{'hooksManager'}->trigger('beforeHttpdInstall', 'apache_fcgid');
 	return $rs if $rs;
@@ -192,8 +192,8 @@ sub install
 	$rs = $self->_oldEngineCompatibility();
 	return $rs if $rs;
 
-	$rs = $self->setEnginePermissions();
-	return $rs if $rs;
+	#$rs = $self->setEnginePermissions();
+	#return $rs if $rs;
 
 	$self->{'hooksManager'}->trigger('afterHttpdInstall', 'apache_fcgid');
 }
@@ -208,7 +208,7 @@ sub install
 
 sub setGuiPermissions
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $panelUName = $main::imscpConfig{'SYSTEM_USER_PREFIX'}.$main::imscpConfig{'SYSTEM_USER_MIN_UID'};
 	my $panelGName = $main::imscpConfig{'SYSTEM_USER_PREFIX'}.$main::imscpConfig{'SYSTEM_USER_MIN_UID'};
@@ -269,7 +269,7 @@ sub setGuiPermissions
 
 sub setEnginePermissions()
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $rootUName = $main::imscpConfig{'ROOT_USER'};
 	my $rootGName = $main::imscpConfig{'ROOT_GROUP'};
@@ -303,7 +303,7 @@ sub setEnginePermissions()
 
 sub _init
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	$self->{'hooksManager'} = iMSCP::HooksManager->getInstance();
 
@@ -382,7 +382,7 @@ sub _bkpConfFile($$)
 
 sub _setApacheVersion()
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my ($stdout, $stderr);
 	my $rs = execute("$self->{'config'}->{'CMD_HTTPD_CTL'} -v", \$stdout, \$stderr);
@@ -412,7 +412,7 @@ sub _setApacheVersion()
 
 sub _addUser
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $rs = $self->{'hooksManager'}->trigger('beforeHttpdAddUser');
 	return $rs if $rs;
@@ -535,7 +535,7 @@ sub _addUser
 
 sub _makeDirs
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $rs = $self->{'hooksManager'}->trigger('beforeHttpdMakeDirs');
 	return $rs if $rs;
@@ -574,7 +574,7 @@ sub _makeDirs
 
 sub _buildFastCgiConfFiles
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $rs = $self->{'hooksManager'}->trigger('beforeHttpdBuildFastCgiConfFiles');
 
@@ -676,7 +676,7 @@ sub _buildFastCgiConfFiles
 
 sub _buildPhpConfFiles
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $rs = $self->{'hooksManager'}->trigger('beforeHttpdBuildPhpConfFiles');
 	return $rs if $rs;
@@ -810,7 +810,7 @@ sub _buildPhpConfFiles
 
 sub _buildApacheConfFiles
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $rs = $self->{'hooksManager'}->trigger('beforeHttpdBuildApacheConfFiles');
 	return $rs if $rs;
@@ -922,7 +922,7 @@ sub _buildApacheConfFiles
 
 sub _buildMasterVhostFiles
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $rs = $self->{'hooksManager'}->trigger('beforeHttpdBuildMasterVhostFiles');
 	return $rs if $rs;
@@ -1052,7 +1052,7 @@ sub _buildMasterVhostFiles
 
 sub _installLogrotate
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $rs = $self->{'hooksManager'}->trigger('beforeHttpdInstallLogrotate', 'apache2');
 	return $rs if $rs;
@@ -1078,7 +1078,7 @@ sub _installLogrotate
 
 sub _setupVlogger
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $dbHost = main::setupGetQuestion('DATABASE_HOST');
 	# vlogger is chrooted so we force connection to MySQL server through TCP
@@ -1161,7 +1161,7 @@ sub _setupVlogger
 
 sub _saveConf
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $file = iMSCP::File->new('filename' => "$self->{'apacheCfgDir'}/apache.data");
 
@@ -1207,7 +1207,7 @@ sub _saveConf
 
 sub _oldEngineCompatibility
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $rs = $self->{'hooksManager'}->trigger('beforeHttpdOldEngineCompatibility');
 	return $rs if $rs;
@@ -1244,7 +1244,7 @@ sub _oldEngineCompatibility
 
 sub _fixPhpErrorReportingValues
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my ($database, $errStr) = main::setupGetSqlConnect($main::imscpConfig{'DATABASE_NAME'});
 	if(! $database) {

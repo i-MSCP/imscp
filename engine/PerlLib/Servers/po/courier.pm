@@ -78,7 +78,7 @@ sub registerSetupHooks($$)
 
 sub preinstall
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $rs = $self->{'hooksManager'}->trigger('beforePoPreinstall', 'courier');
 	return $rs if $rs;
@@ -113,7 +113,7 @@ sub install
 
 sub postinstall
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $rs = $self->{'hooksManager'}->trigger('beforePoPostinstall', 'courier');
 	return $rs if $rs;
@@ -134,7 +134,7 @@ sub postinstall
 
 sub uninstall
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $rs = $self->{'hooksManager'}->trigger('beforePoUninstall', 'courier');
 	return $rs if $rs;
@@ -271,7 +271,7 @@ sub postaddMail($$)
 
 sub start
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $rs = $self->{'hooksManager'}->trigger('beforePoStart');
 	return $rs if $rs;
@@ -297,7 +297,7 @@ sub start
 
 sub stop
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $rs = $self->{'hooksManager'}->trigger('beforePoStop');
 	return $rs if $rs;
@@ -323,7 +323,7 @@ sub stop
 
 sub restart
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $rs = $self->{'hooksManager'}->trigger('beforePoRestart');
 	return $rs if $rs;
@@ -355,27 +355,28 @@ sub getTraffic
 	my %trafficDb;
 
 	if(-f $trafficLogFile && -s _) {
+		my $variableDataDir = $main::imscpConfig{'VARIABLE_DATA_DIR'};
 		my $wrkLogFile = "$main::imscpConfig{'LOG_DIR'}/mail.po.log";
 
 		# We are using a small file to memorize the number of the last line that has been read and his content
-		tie my %logDb, 'iMSCP::Config', 'fileName' => "$self->{'wrkDir'}/log.db", 'noerrors' => 1;
+		tie my %indexDb, 'iMSCP::Config', 'fileName' => "$variableDataDir/traffic_index.db", 'noerrors' => 1;
 
-		$logDb{'lineNo'} = 0 unless $logDb{'lineNo'};
-		$logDb{'lineContent'} = '' unless $logDb{'lineContent'};
+		$indexDb{'po_lineNo'} = 0 unless $indexDb{'po_lineNo'};
+		$indexDb{'po_lineContent'} = '' unless $indexDb{'po_lineContent'};
 
-		my $lastLineNo = $logDb{'lineNo'};
-		my $lastlineContent = $logDb{'lineContent'};
+		my $lastLineNo = $indexDb{'po_lineNo'};
+		my $lastlineContent = $indexDb{'po_lineContent'};
 
 		# Creating working file from current state of upstream data source
-		my $rs = iMSCP::File->new('filename' => $trafficLogFile)->copyFile($wrkLogFile);
+		my $rs = iMSCP::File->new('filename' => $trafficLogFile)->copyFile($wrkLogFile, { 'preserve' => 'no' });
 		die(iMSCP::Debug::getLastError()) if $rs;
 
 		require Tie::File;
 		tie my @content, 'Tie::File', $wrkLogFile or die("Unable to tie file $wrkLogFile");
 
 		# Saving last line number and line date content from the current working file
-		$logDb{'lineNo'} = $#content;
-		$logDb{'lineContent'} = $content[$#content];
+		$indexDb{'po_lineNo'} = $#content;
+		$indexDb{'po_lineContent'} = $content[$#content];
 
 		# Test for logrotation
 		if($content[$lastLineNo] && $content[$lastLineNo] eq $lastlineContent) {
@@ -393,9 +394,9 @@ sub getTraffic
 		die(iMSCP::Debug::getLastError()) unless defined $wrkLogContent;
 
 		# Stash the data in a traffic database. This allow to not lost them on failure.
-		tie %trafficDb, 'iMSCP::Config', 'fileName' => "$self->{'wrkDir'}/traffic.db", 'noerrors' => 1;
+		tie %trafficDb, 'iMSCP::Config', 'fileName' => "$variableDataDir/po_traffic.db", 'noerrors' => 1;
 
-		# Getting IMAP traffic from working log file
+		# Getting IMAP traffic
 		#
 		# Important consideration for both IMAP and POP traffic accounting with courier
 		#
@@ -414,7 +415,7 @@ sub getTraffic
 			}
 		}
 
-		# Getting POP traffic from working log file
+		# Getting POP traffic
 		#
 		# POP traffic line sample
 		#
@@ -435,8 +436,8 @@ sub getTraffic
 		$self->{'hooksManager'}->register(
 			'afterVrlTraffic',
 			sub {
-				if(-f "$self->{'wrkDir'}/traffic.db") {
-					iMSCP::File->new('filename' => "$self->{'wrkDir'}/traffic.db")->delFile();
+				if(-f "$variableDataDir/po_traffic.db") {
+					iMSCP::File->new('filename' => "$variableDataDir/po_traffic.db")->delFile();
 				} else {
 					0;
 				}
@@ -463,7 +464,7 @@ sub getTraffic
 
 sub _init
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	$self->{'hooksManager'} = iMSCP::HooksManager->getInstance();
 
@@ -499,11 +500,9 @@ END
 {
 	my $exitCode = $?;
 	my $self = Servers::po::courier->getInstance();
-	my $wrkLogFile = "$main::imscpConfig{'LOG_DIR'}/mail.po.log";
 	my $rs = 0;
 
 	$rs = $self->restart() if $self->{'restart'} && $self->{'restart'} eq 'yes';
-	$rs |= iMSCP::File->new('filename' => $wrkLogFile)->delFile() if -f $wrkLogFile;
 
 	$? = $exitCode || $rs;
 }

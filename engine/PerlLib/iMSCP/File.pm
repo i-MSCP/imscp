@@ -59,7 +59,7 @@ use parent 'Common::SimpleClass';
 
 sub get
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	unless(defined $self->{'filename'}) {
 		error("Attribut 'filename' is not set");
@@ -70,7 +70,7 @@ sub get
 		$self->{'fileHandle'} = FileHandle->new($self->{'filename'}, 'r') or delete($self->{'fileHandle'});
 
 		unless(defined $self->{'fileHandle'}) {
-			error("Unable to open $self->{'filename'} $!");
+			error("Unable to open $self->{'filename'}: $!");
 			return undef;
 		}
 
@@ -90,7 +90,7 @@ sub get
 
 sub getRFileHandle
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	unless(defined $self->{'filename'}) {
 		error("Attribut 'filename' is not set");
@@ -118,7 +118,7 @@ sub getRFileHandle
 
 sub getWFileHandle
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	unless(defined $self->{'filename'}) {
 		error("Attribut 'filename' is not set");
@@ -164,7 +164,7 @@ sub set
 
 sub save
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $fh = $self->getWFileHandle();
 
@@ -193,7 +193,7 @@ sub save
 
 sub delFile
 {
-	my $self= shift;
+	my $self = $_[0];
 
 	unless(defined $self->{'filename'}) {
 		error("Attribut 'filename' is not set");
@@ -366,7 +366,7 @@ sub moveFile
 
 sub _init
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	$self->{$_} = $self->{'args'}->{$_} for keys %{$self->{'args'}};
 
@@ -381,7 +381,7 @@ sub _init
 
 sub DESTROY
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	$self->{'fileHandle'}->close() if $self->{'fileHandle'};
 

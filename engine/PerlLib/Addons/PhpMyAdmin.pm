@@ -157,7 +157,7 @@ sub setGuiPermissions
 
 sub _init
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	$self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/pma";
 	$self->{'bkpDir'} = "$self->{'cfgDir'}/backup";

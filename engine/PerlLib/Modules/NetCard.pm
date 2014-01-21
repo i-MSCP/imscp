@@ -34,7 +34,7 @@ use parent 'Common::SimpleClass';
 
 sub process
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my ($stdour, $stderr);
 	my $rs = execute(

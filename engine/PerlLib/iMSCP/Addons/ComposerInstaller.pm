@@ -94,7 +94,7 @@ sub _init
 	$ENV{'COMPOSER_PROCESS_TIMEOUT'} = 2000;
 
 	$self->{'toInstall'} = [];
-	$self->{'cacheDir'} = $main::imscpConfig{'ADDON_PACKAGES_CACHE_DIR'};
+	$self->{'cacheDir'} = "$main::imscpConfig{'CACHE_DATA_DIR'}/addons";
 	$self->{'phpCmd'} = $main::imscpConfig{'CMD_PHP'} .
 		' -d memory_limit=512M -d allow_url_fopen=1' .
 		' -d suhosin.executor.include.whitelist=phar';
@@ -140,7 +140,7 @@ sub _installPackages
 
 	iMSCP::Dialog->factory()->infobox(
 '
-Getting i-MSCP addon packages from GitHub.
+Fetching i-MSCP addon packages from GitHub.
 
 Please wait, depending of your connection, this may take few minutes.
 '
@@ -206,7 +206,7 @@ sub _getComposer
 
 		iMSCP::Dialog->factory()->infobox(
 "
-Getting composer installer from http://getcomposer.org.
+Fetching composer installer from http://getcomposer.org.
 
 Please wait, depending of your connection, this may take few seconds...
 "

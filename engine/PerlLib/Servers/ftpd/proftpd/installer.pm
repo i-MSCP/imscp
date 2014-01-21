@@ -159,7 +159,7 @@ sub askProftpd
 
 sub install
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $rs = $self->{'hooksManager'}->trigger('beforeFtpdInstall', 'proftpd');
 	return $rs if $rs;
@@ -177,6 +177,9 @@ sub install
 	return $rs if $rs;
 
 	$rs = $self->_saveConf();
+	return $rs if $rs;
+
+	$rs = $self->_oldEngineCompatibility();
 	return $rs if $rs;
 
 	$self->{'hooksManager'}->trigger('afterFtpdInstall', 'proftpd');
@@ -198,7 +201,7 @@ sub install
 
 sub _init
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	$self->{'hooksManager'} = iMSCP::HooksManager->getInstance();
 
@@ -274,7 +277,7 @@ sub _bkpConfFile
 
 sub _setupDatabase
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $dbUser = $self->{'config'}->{'DATABASE_USER'};
 	my $dbUserHost = main::setupGetQuestion('DATABASE_USER_HOST');
@@ -344,7 +347,7 @@ sub _setupDatabase
 
 sub _buildConfigFile
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $cfg = {
 		HOST_NAME => $main::imscpConfig{'SERVER_HOSTNAME'},
@@ -402,7 +405,7 @@ sub _buildConfigFile
 
 sub _createTrafficLogFile
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $rs = $self->{'hooksManager'}->trigger('beforeFtpdCreateTrafficLogFile');
 	return $rs if $rs;
@@ -447,7 +450,7 @@ sub _createTrafficLogFile
 
 sub _saveConf
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $rootUname = $main::imscpConfig{'ROOT_USER'};
 	my $rootGname = $main::imscpConfig{'ROOT_GROUP'};
@@ -484,6 +487,25 @@ sub _saveConf
 	return $rs if $rs;
 
 	$self->{'hooksManager'}->trigger('afterFtpdSaveConf', 'proftpd.old.data');
+}
+
+=item _oldEngineCompatibility()
+
+ Remove old files
+
+ Return int 0 on success, other on failure
+
+=cut
+
+sub _oldEngineCompatibility
+{
+	my $self = $_[0];
+
+	my $rs = $self->{'hooksManager'}->trigger('beforeNamedOldEngineCompatibility');
+	return $rs if $rs;
+
+
+	$self->{'hooksManager'}->trigger('afterNameddOldEngineCompatibility');
 }
 
 =back

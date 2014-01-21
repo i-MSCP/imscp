@@ -62,8 +62,7 @@ use parent 'Common::SingletonClass';
 
 sub boot
 {
-	my $self = shift;
-	my $options = shift;
+	my ($self, $options) = @_;
 
 	my $mode = $options->{'mode'} || 'backend';
 	debug("Booting $mode...");
@@ -174,7 +173,7 @@ sub unlock
 
 sub _genKeys
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $keyFile = "$main::imscpConfig{'CONF_DIR'}/imscp-db-keys";
 	our $db_pass_key = '{KEY}';
@@ -210,8 +209,6 @@ sub _genKeys
 
 	iMSCP::Crypt->getInstance()->set('key', $main::imscpDBKey);
 	iMSCP::Crypt->getInstance()->set('iv', $main::imscpDBiv);
-
-	debug("Key: |$main::imscpDBKey|, iv:|$main::imscpDBiv|");
 
 	undef;
 }

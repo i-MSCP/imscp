@@ -60,7 +60,7 @@ use parent 'Common::SingletonClass';
 
 sub ssl_check_key
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	if ($self->{'key_path'} eq '') {
 		error('Path to SSL private key container file is not set.');
@@ -98,7 +98,7 @@ sub ssl_check_key
 
 sub ssl_check_intermediate_cert
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	if ($self->{'intermediate_cert_path'} ne '' && ! -f $self->{'intermediate_cert_path'}) {
 		error("Intermediate SSL certificate $self->{'intermediate_cert_path'} doesn't exist.");
@@ -120,7 +120,7 @@ sub ssl_check_intermediate_cert
 
 sub ssl_check_cert
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	if ($self->{'cert_path'} eq '') {
 		error('Path to SSL certificat container file is not set.');
@@ -162,7 +162,7 @@ sub ssl_check_cert
 
 sub ssl_check_all
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $rs = $self->ssl_check_key();
 	return $rs if $rs;
@@ -186,7 +186,7 @@ sub ssl_check_all
 
 sub ssl_export_key
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $keyPassword = (($self->{'key_pass'} ne '') ? $self->{'key_pass'} : 'dummypass') . "\n";
 	my $keyPaswordFile = File::Temp->new();
@@ -217,7 +217,7 @@ sub ssl_export_key
 
 sub ssl_export_cert
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $cmd =
 		"$self->{'openssl_path'} x509 -in $self->{'cert_path'} " .
@@ -243,7 +243,7 @@ sub ssl_export_cert
 
 sub ssl_export_intermediate_cert
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	return 0 if $self->{'intermediate_cert_path'} eq '';
 
@@ -304,7 +304,8 @@ sub ssl_generate_selsigned_cert
 
 sub ssl_export_all
 {
-	my $self = shift;
+	my $self = $_[0];
+
 	my $rs = 0;
 
 	if($self->{'cert_selfsigned'} eq 'yes') {
@@ -340,7 +341,7 @@ sub ssl_export_all
 
 sub _init
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	# Should contain the path to the openssl binary
 	$self->{'openssl_path'} = '';
