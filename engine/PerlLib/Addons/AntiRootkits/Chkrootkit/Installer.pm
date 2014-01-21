@@ -91,9 +91,9 @@ sub install
 sub setEnginePermissions()
 {
 	my $rootUName = $main::imscpConfig{'ROOT_USER'};
-	my $rootGName = $main::imscpConfig{'ROOT_GROUP'};
+	my $imscpGName = $main::imscpConfig{'IMSCP_GROUP'};
 
-	setRights($main::imscpConfig{'CHKROOTKIT_LOG'}, { 'user' => $rootUName, 'group' => $rootGName, mode => '0640' });
+	setRights($main::imscpConfig{'CHKROOTKIT_LOG'}, { 'user' => $rootUName, 'group' => $imscpGName, mode => '0640' });
 }
 
 =back
