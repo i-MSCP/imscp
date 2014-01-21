@@ -276,7 +276,7 @@ EOF
 		[\&setupRegisterHooks,  'Registering servers/addons setup hooks'],
 		[\&setupDialog,         'Processing i-MSCP setup dialog if any'],
 		[\&setupTasks,          'Processing i-MSCP setup tasks'],
-		[\&removeTmp,           'Removing temporary files'],
+		[\&removeTmp,           'Removing temporary files']
 	);
 
 	iMSCP::HooksManager->getInstance()->trigger('beforeInstall', \@steps) and exit 1;
