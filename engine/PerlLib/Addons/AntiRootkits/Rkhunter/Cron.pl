@@ -29,7 +29,7 @@ use warnings;
 use lib '{IMSCP_PERLLIB_PATH}';
 
 use iMSCP::Debug;
-use iMSCP::Boot;
+use iMSCP::Bootstrapper;
 use iMSCP::Execute;
 use iMSCP::File;
 
@@ -45,7 +45,7 @@ newDebug('imscp-rkhunter-addon.log');
 
 silent(1);
 
-iMSCP::Boot->getInstance()->boot(
+iMSCP::Bootstrapper->getInstance()->boot(
 	{
 		'nolock' => 'yes', 'norequirements' => 'yes', 'nokeys' => 'yes', 'nodatabase' => 'yes',
 		'config_readonly' => 'yes'

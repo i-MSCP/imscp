@@ -33,7 +33,7 @@ use lib "$FindBin::Bin/..", "$FindBin::Bin/../PerlLib", "$FindBin::Bin/../PerlVe
 umask(027);
 
 use iMSCP::Debug;
-use iMSCP::Boot;
+use iMSCP::Bootstrapper;
 use iMSCP::Dialog;
 use iMSCP::HooksManager;
 use iMSCP::Getopt;

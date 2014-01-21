@@ -33,7 +33,7 @@ use lib "$FindBin::Bin/..", "$FindBin::Bin/../PerlLib", "$FindBin::Bin/../PerlVe
 
 use iMSCP::Debug;
 use iMSCP::Getopt;
-use iMSCP::Boot;
+use iMSCP::Bootstrapper;
 use iMSCP::Dialog;
 use iMSCP::Dir;
 use iMSCP::File;
@@ -57,7 +57,7 @@ silent(1);
 sub startUp
 {
 	iMSCP::Getopt->debug(1); # Enforce debug mode (logs)
-	iMSCP::Boot->getInstance()->boot();
+	iMSCP::Bootstrapper->getInstance()->boot();
 
 	0;
 }
@@ -174,7 +174,7 @@ sub _removeCustomers
 		}
 	}
 
-	iMSCP::Boot->getInstance()->unlock();
+	iMSCP::Bootstrapper->getInstance()->unlock();
 
 	my ($rs, $stdout, $stderr);
 	$rs = execute(
@@ -185,7 +185,7 @@ sub _removeCustomers
 	error("Error while deleting customers") if $rs && ! $stderr;
 	return $rs if $rs;
 
-	iMSCP::Boot->getInstance()->lock();
+	iMSCP::Bootstrapper->getInstance()->lock();
 
 	0;
 }

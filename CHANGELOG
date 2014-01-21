@@ -49,6 +49,7 @@ ENGINE:
 	- Fixed: Wrong DNS record type for subdomain with IPv6 (A instead of AAAA)
 	- Removed: Useless bind9 templates
 	- Removed: Useless backup and users log directories (Httpd server impl.)
+	- Renamed: iMSCP::Boot to iMSCP::Bootstrapper
 	- Replaced: iMSCP::IP library by IMSCP::Net library (full rewrite using iproute tools instead of net-tools)
 	- Replaced: imscp-apache-logger by vlogger (i-MSCP specific version)
 	- Rewritten: getTraffic() methods from server implementations
@@ -672,7 +673,7 @@ ENGINE:
 	- Added: engine hooks manager
 	- Added: several hooks in both addons and servers packages (still a lot to add...)
 	- Fixed: iMSCP::IP - Ips stack not flushed on reset
-	- Fixed: iMSCP::Boot - Do not create the imscp.conf file if do not exists, raise error instead
+	- Fixed: iMSCP::Bootstrapper - Do not create the imscp.conf file if do not exists, raise error instead
 
 GUI:
 	Core:

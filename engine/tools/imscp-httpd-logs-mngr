@@ -30,7 +30,7 @@ use FindBin;
 use lib "$FindBin::Bin/..", "$FindBin::Bin/../PerlLib", "$FindBin::Bin/../PerlVendor";
 
 use iMSCP::Debug;
-use iMSCP::Boot;
+use iMSCP::Bootstrapper;
 use iMSCP::Database;
 use iMSCP::Ext2Attributes qw(setImmutable clearImmutable isImmutable);
 use File::Basename;
@@ -47,7 +47,7 @@ newDebug('imscp-httpd-logs-mngr.log');
 
 silent(1);
 
-my $bootstrapper = iMSCP::Boot->getInstance();
+my $bootstrapper = iMSCP::Bootstrapper->getInstance();
 exit unless $bootstrapper->lock('/tmp/imscp-httpd-logs-mngr.lock', 'nowait');
 $bootstrapper->boot({ 'norequirements' => 'yes', 'nolock' => 'yes', 'config_readonly' => 'yes' });
 

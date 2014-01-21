@@ -44,7 +44,7 @@ use iMSCP::Stepper;
 use iMSCP::Dir;
 use iMSCP::File;
 use iMSCP::Getopt;
-use iMSCP::Boot;
+use iMSCP::Bootstrapper;
 use autoinstaller::Common;
 
 newDebug('imscp-build.log');
@@ -242,7 +242,7 @@ unless($main::buildonly) {
 	);
 
 	my @runningProcesses = ();
-	my $bootstrapper = iMSCP::Boot->getInstance();
+	my $bootstrapper = iMSCP::Bootstrapper->getInstance();
 
 	for(@locks) {
 		if(! $bootstrapper->getInstance()->lock("/tmp/$_.lock", 'nowait')) {

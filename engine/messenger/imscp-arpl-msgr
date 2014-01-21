@@ -31,7 +31,7 @@ use FindBin;
 use lib "$FindBin::Bin/..", "$FindBin::Bin/../PerlLib", "$FindBin::Bin/../PerlVendor";
 
 use iMSCP::Debug;
-use iMSCP::Boot;
+use iMSCP::Bootstrapper;
 use Mail::Address;
 use MIME::Entity;
 use Email::Simple;
@@ -49,7 +49,9 @@ newDebug('imscp-arpl-msgr/imscp-arpl-msgr.log');
 
 sub startUp
 {
-	iMSCP::Boot->getInstance()->boot({ 'nolock' => 'yes', 'norequirements' => 'yes', 'config_readonly' => 'yes' });
+	iMSCP::Bootstrapper->getInstance()->boot(
+		{ 'nolock' => 'yes', 'norequirements' => 'yes', 'config_readonly' => 'yes' }
+	);
 
 	0;
 }

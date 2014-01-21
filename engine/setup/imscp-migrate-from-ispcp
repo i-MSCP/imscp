@@ -32,7 +32,7 @@ use lib "$FindBin::Bin/..", "$FindBin::Bin/../PerlLib", "$FindBin::Bin/../PerlVe
 
 use iMSCP::Debug;
 use iMSCP::Config;
-use iMSCP::Boot;
+use iMSCP::Bootstrapper;
 use iMSCP::Requirements;
 use iMSCP::Dialog;
 use iMSCP::Stepper;
@@ -886,6 +886,6 @@ newDebug('imscp-migrate-from-ispcp.log');
 
 silent(1);
 
-iMSCP::Boot->getInstance()->boot({ 'mode' => 'setup', 'nodatabase' => 'yes' });
+iMSCP::Bootstrapper->getInstance()->boot({ 'mode' => 'setup', 'nodatabase' => 'yes' });
 
 exit processMigration();

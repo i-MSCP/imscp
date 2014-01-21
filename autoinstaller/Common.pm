@@ -473,7 +473,7 @@ sub doImscpBackup
 	my $rs = 0;
 
 	if(-x "$main::imscpConfig{'ROOT_DIR'}/engine/backup/imscp-backup-imscp" && -f "$main::{'SYSTEM_CONF'}/imscp.conf") {
-		iMSCP::Boot->getInstance()->unlock("/tmp/imscp-backup-imscp.lock");
+		iMSCP::Bootstrapper->getInstance()->unlock("/tmp/imscp-backup-imscp.lock");
 
 		my ($stdout, $stderr);
 		$rs = execute("$main::imscpConfig{'ROOT_DIR'}/engine/backup/imscp-backup-imscp", \$stdout, \$stderr);

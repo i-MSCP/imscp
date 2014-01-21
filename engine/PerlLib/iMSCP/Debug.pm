@@ -45,16 +45,16 @@ our @EXPORT = qw/
 
 BEGIN
 {
+	# Handler which trap uncaught exceptions
 	$SIG{__DIE__} = sub {
 		if(defined $^S && !$^S) {
-			debug('Developer dump:');
-			fatal(@_);
+			fatal(@_) if (((caller(1))[3] || 'main') ne 'iMSCP::Debug::fatal');
 		}
 	};
 
+	# Handler which trap warns
 	$SIG{__WARN__} = sub {
 		if(defined $^S && !$^S) {
-			debug('Developer dumps:');
 			error(@_);
 		}
 	};
@@ -112,7 +112,7 @@ sub endDebug
 
 sub silent
 {
-	$self->{'silent'} = int(shift || 0);
+	$self->{'silent'} = int($_[0] || 0);
 	debug("Entering in silent mode") if $self->{'silent'};
 
 	0;
@@ -128,7 +128,7 @@ sub silent
 
 sub verbose
 {
-	my $verbose = shift || 0;
+	my $verbose = $_[0] || 0;
 
 	unless($verbose) {
 		# Remove any debug message from the current log
@@ -152,8 +152,9 @@ sub verbose
 sub debug
 {
 	if($self->{'verbose'}) {
-		my $caller = (caller(1))[3] ? (caller(1))[3] : 'main';
-		my $message = shift || '';
+		my $message = $_[0] || '';
+
+		my $caller = (caller(1))[3] || 'main';
 
 		$self->{'curLog'}->store(message => "$caller: $message", tag => 'debug');
 	}
@@ -171,9 +172,10 @@ sub debug
 
 sub warning
 {
-	my $caller = (caller(1))[3] ? (caller(1))[3] : 'main';
-	my $message = shift || '';
-	my $verbosity = shift or 1;
+	my $message = $_[0] || '';
+	my $verbosity = $_[1] or 1;
+
+	my $caller = (caller(1))[3] || 'main';
 
 	$self->{'curLog'}->store(message => "$caller: $message", tag => 'warn');
 
@@ -192,9 +194,10 @@ sub warning
 
 sub error
 {
-	my $caller = (caller(1))[3] ? (caller(1))[3] : 'main';
-	my $message = shift || '';
-	my $verbosity = shift or 1;
+	my $message = $_[0] || '';
+	my $verbosity = $_[1] or 1;
+
+	my $caller = (caller(1))[3] || 'main';
 
 	$self->{'curLog'}->store(message => "$caller: $message", tag => 'error');
 
@@ -208,19 +211,19 @@ sub error
  Log a fatal error message in the current log, print it on STDERR if not in silent mode and exit
 
  Return void
+
 =cut
 
 sub fatal
 {
-	my $caller = (caller(1))[3] ? (caller(1))[3] : 'main';
-	my $message = shift || '';
-	my $verbosity = shift or 1;
+	my $message = $_[0] || '';
+	my $verbosity = $_[1] or 1;
+
+	my $caller = (caller(1))[3] || 'main';
 
 	$self->{'curLog'}->store(message => "$caller: $message", tag => 'fatal error');
 
-	print STDERR output("$caller: $message", 'fatal');
-
-	exit 1;
+	die output("$caller: $message", 'fatal');
 }
 
 sub getLastError
@@ -230,8 +233,7 @@ sub getLastError
 
 sub getMessageByType
 {
-	my $mode = shift;
-	my $opts = shift;
+	my ($mode, $opts) = @_;
 
 	$opts = {} unless ref $opts eq 'HASH';
 
@@ -263,8 +265,7 @@ sub getMessageByType
 
 sub writeLogs
 {
-	my $logName = shift;
-	my $logFile = shift;
+	my ($logName, $logFile) = @_;
 
 	my $logs = _getMessagesFromLog($logName);
 
@@ -291,7 +292,7 @@ sub writeLogs
 
 sub _getMessagesFromLog
 {
-	my $logName = shift;
+	my $logName = $_[0];
 
 	my $buffer = '';
 
@@ -314,8 +315,7 @@ sub _getMessagesFromLog
 
 sub output
 {
-	my $text = shift;
-	my $level = shift;
+	my ($text, $level) = @_;
 
 	my $output = '';
 
@@ -348,9 +348,7 @@ sub output
 
 sub debugRegisterCallBack
 {
-	my $callback = shift;
-
-	push @{$self->{'debugCallBacks'}}, $callback;
+	push @{$self->{'debugCallBacks'}}, $_[0];
 
 	0;
 }
@@ -362,7 +360,7 @@ END
 	&$_ for @{$self->{'debugCallBacks'}};
 
 	if(%{$self->{'logs'}}) {
-		if($exitCode) {
+		if($exitCode && $exitCode != 255) {
 			error("Exit code: $exitCode");
 		} else {
 			debug("Exit code: $exitCode");

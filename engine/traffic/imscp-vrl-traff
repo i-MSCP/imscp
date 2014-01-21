@@ -30,7 +30,7 @@ use FindBin;
 use lib "$FindBin::Bin/..", "$FindBin::Bin/../PerlLib", "$FindBin::Bin/../PerlVendor";
 
 use iMSCP::Debug;
-use iMSCP::Boot;
+use iMSCP::Bootstrapper;
 use iMSCP::Servers;
 use iMSCP::Database;
 use iMSCP::HooksManager;
@@ -47,7 +47,7 @@ silent(1);
 
 umask(027);
 
-my $bootstrapper = iMSCP::Boot->getInstance();
+my $bootstrapper = iMSCP::Bootstrapper->getInstance();
 exit unless $bootstrapper->lock('/tmp/imscp-vrl-traff.lock', 'nowait');
 $bootstrapper->boot({ 'norequirements' => 'yes', 'nolock' => 'yes', 'config_readonly' => 'yes' });
 

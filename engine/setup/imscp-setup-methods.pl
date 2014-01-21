@@ -42,7 +42,7 @@ use File::Basename;
 use iMSCP::LsbRelease;
 use iMSCP::Debug;
 use iMSCP::Net;
-use iMSCP::Boot;
+use iMSCP::Bootstrapper;
 use iMSCP::Dialog;
 use iMSCP::Stepper;
 use iMSCP::Crypt;
@@ -65,7 +65,7 @@ use iMSCP::Getopt;
 sub setupBoot
 {
 	# We do not try to establish connection to the database since needed data can be unavailable
-	iMSCP::Boot->getInstance()->boot({ 'mode' => 'setup', 'nodatabase' => 'yes' });
+	iMSCP::Bootstrapper->getInstance()->boot({ 'mode' => 'setup', 'nodatabase' => 'yes' });
 
 	if(! %main::imscpOldConfig) {
 		%main::imscpOldConfig = ();
@@ -1973,7 +1973,7 @@ sub setupRebuildCustomerFiles
 
 	$database->endTransaction();
 
-	iMSCP::Boot->getInstance()->unlock();
+	iMSCP::Bootstrapper->getInstance()->unlock();
 
 	my $debug = $main::imscpConfig{'DEBUG'} || 0;
 	$main::imscpConfig{'DEBUG'} = (iMSCP::Getopt->debug) ? 1 : 0;
@@ -2014,7 +2014,7 @@ sub setupRebuildCustomerFiles
 
 	endDetail();
 
-	iMSCP::Boot->getInstance()->lock();
+	iMSCP::Bootstrapper->getInstance()->lock();
 
 	$main::imscpConfig{'DEBUG'} = $debug;
 

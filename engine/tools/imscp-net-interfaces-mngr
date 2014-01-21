@@ -30,7 +30,7 @@ use FindBin;
 use lib "$FindBin::Bin/..", "$FindBin::Bin/../PerlLib", "$FindBin::Bin/../PerlVendor";
 
 use iMSCP::Debug;
-use iMSCP::Boot;
+use iMSCP::Bootstrapper;
 use iMSCP::Database;
 use iMSCP::Net;
 
@@ -43,7 +43,9 @@ silent(1);
 
 umask(027);
 
-iMSCP::Boot->getInstance()->boot({ 'nolock' => 'yes', 'norequirements' => 'yes', 'config_readonly' => 'yes' });
+iMSCP::Bootstrapper->getInstance()->boot(
+	{ 'nolock' => 'yes', 'norequirements' => 'yes', 'config_readonly' => 'yes' }
+);
 
 sub _addAddresses
 {

@@ -32,7 +32,7 @@ use lib "$FindBin::Bin/..", "$FindBin::Bin/../PerlLib", "$FindBin::Bin/../PerlVe
 
 use POSIX;
 use iMSCP::Debug;
-use iMSCP::Boot;
+use iMSCP::Bootstrapper;
 use iMSCP::Execute;
 use iMSCP::File;
 use iMSCP::Dir;
@@ -54,7 +54,7 @@ newDebug('imscp-backup-imscp.log');
 
 silent(1);
 
-my $bootstrapper = iMSCP::Boot->getInstance();
+my $bootstrapper = iMSCP::Bootstrapper->getInstance();
 exit unless $bootstrapper->lock('/tmp/imscp-backup-imscp.lock', 'nowait');
 $bootstrapper->boot({ 'norequirements' => 'yes', 'nofail' => 'yes', 'nolock' => 'yes', 'config_readonly' => 'yes' });
 

@@ -31,7 +31,7 @@ use FindBin;
 use lib "$FindBin::Bin/..", "$FindBin::Bin/../PerlLib", "$FindBin::Bin/../PerlVendor";
 
 use iMSCP::Debug;
-use iMSCP::Boot;
+use iMSCP::Bootstrapper;
 use iMSCP::Servers;
 use iMSCP::Addons;
 
@@ -51,7 +51,7 @@ newDebug('imscp-set-gui-permissions.log');
 
 silent(1);
 
-iMSCP::Boot->getInstance()->boot(
+iMSCP::Bootstrapper->getInstance()->boot(
 	{ 'norequirements' => 'yes', 'nolock' => 'yes', 'nodatabase' => 'yes', 'nokeys' => 'yes' }
 );
 

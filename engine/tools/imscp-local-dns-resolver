@@ -30,7 +30,7 @@ use FindBin;
 use lib "$FindBin::Bin/..", "$FindBin::Bin/../PerlLib", "$FindBin::Bin/../PerlVendor";
 
 use iMSCP::Debug;
-use iMSCP::Boot;
+use iMSCP::Bootstrapper;
 use iMSCP::Execute;
 
 # Turn off localisation features to force any command output to be in English
@@ -45,7 +45,7 @@ silent(1);
 
 umask(027);
 
-iMSCP::Boot->getInstance()->boot(
+iMSCP::Bootstrapper->getInstance()->boot(
 	{ 'norequirements' => 'yes', 'nodatabase' => 'yes', 'nolock' => 'yes', 'config_readonly' => 'yes' }
 );
 

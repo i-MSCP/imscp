@@ -31,7 +31,7 @@ use FindBin;
 use lib "$FindBin::Bin/..", "$FindBin::Bin/../PerlLib", "$FindBin::Bin/../PerlVendor";
 
 use iMSCP::Debug;
-use iMSCP::Boot;
+use iMSCP::Bootstrapper;
 use iMSCP::Execute;
 use iMSCP::Dir;
 use iMSCP::Ext2Attributes qw( setImmutable clearImmutable );
@@ -50,7 +50,7 @@ newDebug('imscp-backup-all.log');
 # Entering in silent mode
 silent(1);
 
-my $bootstrapper = iMSCP::Boot->getInstance();
+my $bootstrapper = iMSCP::Bootstrapper->getInstance();
 exit unless $bootstrapper->lock('/tmp/imscp-backup-all.lock', 'nowait');
 $bootstrapper->boot({ 'norequirements' => 'yes', 'nofail' => 'yes', 'nolock' => 'yes', 'config_readonly' => 'yes' });
 

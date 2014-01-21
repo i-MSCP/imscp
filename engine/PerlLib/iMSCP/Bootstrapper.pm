@@ -2,7 +2,7 @@
 
 =head1 NAME
 
- iMSCP::Boot - Boot i-MSCP
+ iMSCP::Bootstrapper - Boot i-MSCP
 
 =cut
 
@@ -30,7 +30,7 @@
 # @link        http://i-mscp.net i-MSCP Home Site
 # @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
-package iMSCP::Boot;
+package iMSCP::Bootstrapper;
 
 use strict;
 use warnings;
@@ -56,7 +56,7 @@ use parent 'Common::SingletonClass';
 
  Boot i-MSCP.
 
- Return iMSCP::Boot
+ Return iMSCP::Bootstrapper
 
 =cut
 
@@ -137,7 +137,7 @@ sub lock
 
  Unlock the given lock file or the engine lock file.
 
- Return iMSCP::Boot
+ Return iMSCP::Bootstrapper
 
 =cut
 

@@ -109,6 +109,7 @@ sub _init
 sub _loadConfig
 {
 	my $self = $_[0];
+
 	my $mode;
 
 	debug("Loading $self->{'confFileName'}");

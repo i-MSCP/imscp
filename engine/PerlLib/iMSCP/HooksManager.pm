@@ -116,7 +116,7 @@ sub trigger($$)
 
 		for(@hookFunctions) {
 			if($rs = $_->(@params)) {
-				my $caller = (caller(1))[3] ? (caller(1))[3] : 'main';
+				my $caller = (caller(1))[3] || 'main';
 				require Data::Dumper;
 				Data::Dumper->import();
 				local $Data::Dumper::Terse = 1;

@@ -31,7 +31,7 @@ use FindBin;
 use lib "$FindBin::Bin/..", "$FindBin::Bin/../PerlLib", "$FindBin::Bin/../PerlVendor";
 
 use iMSCP::Debug;
-use iMSCP::Boot;
+use iMSCP::Bootstrapper;
 use iMSCP::Execute;
 use iMSCP::Mail;
 use Servers::mta;
@@ -46,7 +46,7 @@ newDebug('imscp-dsk-quota.log');
 
 umask(027);
 
-my $bootstrapper = iMSCP::Boot->getInstance();
+my $bootstrapper = iMSCP::Bootstrapper->getInstance();
 exit unless $bootstrapper->lock('/tmp/imscp-dsk-quota.lock', 'nowait');
 $bootstrapper->boot({ 'norequirements' => 'yes', 'nolock' => 'yes', 'config_readonly' => 'yes' });
 
