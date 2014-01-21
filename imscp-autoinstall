@@ -305,9 +305,6 @@ Please go to $main::imscpConfig{'BASE_SERVER_VHOST_PREFIX'}$main::imscpConfig{'B
 Thanks for using i-MSCP.
 EOF
 } else {
-
-	BUILDONLY:
-
 	my $msg = <<EOF;
 
 \\Z4\\ZuBuild Step Successful\\Zn
