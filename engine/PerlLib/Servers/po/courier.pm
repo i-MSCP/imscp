@@ -350,6 +350,7 @@ sub restart
 sub getTraffic
 {
 	my $self = $_[0];
+
 	my $variableDataDir = $main::imscpConfig{'VARIABLE_DATA_DIR'};
 
 	# Load traffic database
