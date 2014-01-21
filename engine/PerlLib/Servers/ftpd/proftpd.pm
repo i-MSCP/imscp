@@ -39,6 +39,7 @@ use iMSCP::Debug;
 use iMSCP::HooksManager;
 use iMSCP::Execute;
 use iMSCP::File;
+use File::Basename;
 use parent 'Common::SingletonClass';
 
 
@@ -279,12 +280,15 @@ sub getTraffic
 {
 	my $self = $_[0];
 
-	my $trafficLogFile = "$main::imscpConfig{'TRAFF_LOG_DIR'}$self->{'config'}->{'FTP_TRAFF_LOG'}";
-	my %trafficDb;
+	my $trafficDbPath = "$main::imscpConfig{'VARIABLE_DATA_DIR'}/ftp_traffic.db";
+
+	# Load traffic database
+    tie my %trafficDb, 'iMSCP::Config', 'fileName' => $trafficDbPath, 'noerrors' => 1;
+
+	my $trafficLogFile = "$main::imscpConfig{'TRAFF_LOG_DIR'}/$self->{'config'}->{'FTP_TRAFF_LOG'}";
 
 	if(-f $trafficLogFile && -s _) {
-		my $trafficDbPath = "$main::imscpConfig{'VARIABLE_DATA_DIR'}/ftp_traffic.db";
-		my $wrkLogFile = "$main::imscpConfig{'LOG_DIR'}$self->{'config'}->{'FTP_TRAFF_LOG'}";
+		my $wrkLogFile = "$main::imscpConfig{'LOG_DIR'}/" . basename($trafficLogFile);
 
 		# Creating working file from current state of upstream data source
 		my $rs = iMSCP::File->new('filename' => $trafficLogFile)->moveFile($wrkLogFile);
@@ -294,26 +298,23 @@ sub getTraffic
 		my $wrkLogContent = iMSCP::File->new('filename' => $wrkLogFile)->get();
 		die(iMSCP::Debug::getLastError()) unless defined $wrkLogContent;
 
-		# Stash the data in a traffic database. This allow to not lost them on failure.
-		tie %trafficDb, 'iMSCP::Config', 'fileName' => $trafficDbPath, 'noerrors' => 1;
-
 		# Getting FTP traffic
 		$trafficDb{$2} += $1 while($wrkLogContent =~ /^(\d+)\s+[^\@]+\@(.*)$/gmo);
-
-		# Schedule deletion of traffic database. This is only done on success. On failure, the traffic database is kept
-		# in place for later processing. In such case, data already processed (put in database) are zeroed by the
-		# traffic processor script.
-		$self->{'hooksManager'}->register(
-			'afterVrlTraffic',
-			sub {
-				if(-f $trafficDbPath) {
-					iMSCP::File->new('filename' => $trafficDbPath)->delFile();
-				} else {
-					0;
-				}
-			}
-		) and die(iMSCP::Debug::getLastError());
 	}
+
+	# Schedule deletion of traffic database. This is only done on success. On failure, the traffic database is kept
+	# in place for later processing. In such case, data already processed (put in database) are zeroed by the
+	# traffic processor script.
+	$self->{'hooksManager'}->register(
+		'afterVrlTraffic',
+		sub {
+			if(-f $trafficDbPath) {
+				iMSCP::File->new('filename' => $trafficDbPath)->delFile();
+			} else {
+				0;
+			}
+		}
+	) and die(iMSCP::Debug::getLastError());
 
 	\%trafficDb;
 }

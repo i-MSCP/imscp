@@ -149,41 +149,38 @@ sub run
 					my $rdata = iMSCP::Database->factory()->doQuery(
 						'dtraff_id',
 						'SELECT dtraff_id FROM domain_traffic WHERE domain_id = ? AND dtraff_time >= ? LIMIT 1',
-							$_,
-							$timestamp
+						$_, $timestamp
 					);
+
 					unless (ref $rdata eq 'HASH') {
 						die($rdata);
+					} elsif (%{$rdata}) {
+						$rawDb->do(
+							'
+								UPDATE
+									domain_traffic
+								SET
+									dtraff_web = dtraff_web + ?, dtraff_ftp = dtraff_ftp + ?,
+									dtraff_mail = dtraff_mail + ?, dtraff_pop = dtraff_pop + ?, dtraff_time = ?
+								WHERE
+									domain_id = ?
+								AND
+									dtraff_id = ?
+							',
+							undef, $httpdTraffic, $ftpdTraffic, $mtaTraffic, $poTraffic, $halfTimestamp, $domainId,
+							(keys %{$rdata})[0]
+						);
 					} else {
-						unless (%{$rdata}) {
-							$rawDb->do(
-								'
-									INSERT INTO domain_traffic (
-										domain_id, dtraff_time, dtraff_web, dtraff_ftp, dtraff_mail, dtraff_pop
-									) VALUES (
-										?, ?, ?, ?, ?, ?
-									)
-								',
-								undef, $domainId, $halfTimestamp, $httpdTraffic, $ftpdTraffic, $mtaTraffic, $poTraffic
-							);
-						} else {
-							$rawDb->do(
-								'
-									UPDATE
-										domain_traffic
-									SET
-										dtraff_web = dtraff_web + ?, dtraff_ftp = dtraff_ftp + ?,
-										dtraff_mail = dtraff_mail + ?, dtraff_pop = dtraff_pop + ?,
-										dtraff_time = ?
-									WHERE
-										domain_id = ?
-									AND
-										dtraff_id = ?
-								',
-								undef, $httpdTraffic, $ftpdTraffic, $mtaTraffic, $poTraffic, $halfTimestamp, $domainId,
-								(keys %{$rdata})[0]
-							);
-						}
+						$rawDb->do(
+							'
+								INSERT INTO domain_traffic (
+									domain_id, dtraff_time, dtraff_web, dtraff_ftp, dtraff_mail, dtraff_pop
+								) VALUES (
+									?, ?, ?, ?, ?, ?
+								)
+							',
+							undef, $domainId, $halfTimestamp, $httpdTraffic, $ftpdTraffic, $mtaTraffic, $poTraffic
+						);
 					}
 
 					$trafficDb{'httpd'}->{$_} = 0;

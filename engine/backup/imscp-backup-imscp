@@ -17,12 +17,12 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
-# @category		i-MSCP
-# @copyright	2010-2014 by i-MSCP | http://i-mscp.net
-# @author		Daniel Andreca <sci2tech@gmail.com>
-# @author		Laurent Declercq <l.declercq@nuxwin.com>
-# @link			http://i-mscp.net i-MSCP Home Site
-# @license		http://www.gnu.org/licenses/gpl-2.0.html GPL v2
+# @category    i-MSCP
+# @copyright   2010-2014 by i-MSCP | http://i-mscp.net
+# @author      Daniel Andreca <sci2tech@gmail.com>
+# @author      Laurent Declercq <l.declercq@nuxwin.com>
+# @link        http://i-mscp.net i-MSCP Home Site
+# @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
 use strict;
 use warnings;
@@ -54,6 +54,10 @@ newDebug('imscp-backup-imscp.log');
 
 silent(1);
 
+my $bootstrapper = iMSCP::Boot->getInstance();
+exit unless $bootstrapper->lock('/tmp/imscp-backup-imscp.lock', 'nowait');
+$bootstrapper->boot({ 'norequirements' => 'yes', 'nofail' => 'yes', 'nolock' => 'yes', 'config_readonly' => 'yes' });
+
 our $command = {
 	'pbzip2' => { 'extension' => 'bz2', 'command' => 'CMD_PBZIP'},
 	'bzip2' => { 'extension' => 'bz2', 'command' => 'CMD_BZIP'},
@@ -61,28 +65,8 @@ our $command = {
 	'lzma' => { 'extension' => 'lzma', 'command' => 'CMD_LZMA'}
 };
 
-# Public functions
 
-sub startUp
-{
-
-	iMSCP::Boot->getInstance()->boot(
-		{ 'nofail' => 'yes', 'nolock' => 'yes', 'config_readonly' => 'yes' }
-	)->lock('/tmp/imscp-backup-imscp.lock');
-
-	my $rs = 0;
-
-	unless($main::execmode eq 'setup') {
-		require iMSCP::HooksManager;
-		$rs = iMSCP::HooksManager->getInstance()->register(
-			'beforeExit', sub { shift; my $clearScreen = shift; $$clearScreen = 0; 0; }
-		)
-	}
-
-	$rs;
-}
-
-sub process
+sub run
 {
 	return 0 if $main::imscpConfig{'BACKUP_IMSCP'} ne 'yes';
 
@@ -119,17 +103,14 @@ sub process
 	error('Unable to remove old i-MSCP backups') if $rs && ! $stderr;
 	return $rs if $rs;
 
-	0;
-}
-
-sub shutDown
-{
 	my @errorMessages = (getMessageByType('warn'), getMessageByType('error'));
 
 	if(@errorMessages) {
 		require iMSCP::Mail;
 		iMSCP::Mail->new()->errmsg("@errorMessages");
 	}
+
+	0;
 }
 
 # Private functions
@@ -200,10 +181,7 @@ sub _backupConfig
 	$file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
 }
 
-# Main program
-my $rs = startUp();
 
-$rs ||= process();
-shutDown();
-
+my $rs = run();
+$bootstrapper->unlock('/tmp/imscp-backup-imscp.lock');
 exit $rs;

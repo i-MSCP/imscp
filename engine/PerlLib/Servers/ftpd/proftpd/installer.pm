@@ -422,9 +422,9 @@ sub _createTrafficLogFile
 		return $rs if $rs;
 	}
 
-	if(! -f "$main::imscpConfig{'TRAFF_LOG_DIR'}$self->{'config'}->{'FTP_TRAFF_LOG'}") {
+	if(! -f "$main::imscpConfig{'TRAFF_LOG_DIR'}/$self->{'config'}->{'FTP_TRAFF_LOG'}") {
 		my $file = iMSCP::File->new(
-			'filename' => "$main::imscpConfig{'TRAFF_LOG_DIR'}$self->{'config'}->{'FTP_TRAFF_LOG'}"
+			'filename' => "$main::imscpConfig{'TRAFF_LOG_DIR'}/$self->{'config'}->{'FTP_TRAFF_LOG'}"
 		);
 
 		$rs = $file->save();

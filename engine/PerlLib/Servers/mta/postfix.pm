@@ -598,11 +598,14 @@ sub getTraffic
 {
 	my $self = $_[0];
 
+	my $variableDataDir = $main::imscpConfig{'VARIABLE_DATA_DIR'};
+
+	# Load traffic database
+	tie my %trafficDb, 'iMSCP::Config', 'fileName' => "$variableDataDir/smtp_traffic.db", 'noerrors' => 1;
+
 	my $trafficLogFile = "$main::imscpConfig{'TRAFF_LOG_DIR'}/$main::imscpConfig{'MAIL_TRAFF_LOG'}";
-	my %trafficDb;
 
 	if(-f $trafficLogFile && -s _) {
-		my $variableDataDir = $main::imscpConfig{'VARIABLE_DATA_DIR'};
 		my $wrkLogFile = "$main::imscpConfig{'LOG_DIR'}/mail.smtp.log";
 
 		# We are using a small file to memorize the number of the last line that has been read and his content
@@ -645,9 +648,6 @@ sub getTraffic
 			\$stderr
 		);
 
-		# Stash the data in a traffic database. This allow to not lost them on failure.
-		tie %trafficDb, 'iMSCP::Config', 'fileName' => "$variableDataDir/smtp_traffic.db", 'noerrors' => 1;
-
 		# Getting SMTP traffic
 		#
 		# SMTP traffic line sample (as provided by the maillogconvert.pl utility script)
@@ -661,21 +661,21 @@ sub getTraffic
 				$trafficDb{$2} += $5;
 			}
 		}
-
-		# Schedule deletion of traffic database. This is only done on success. On failure, the traffic database is kept
-		# in place for later processing. In such case, data already processed (put in database) are zeroed by the
-		# traffic processor script.
-		$self->{'hooksManager'}->register(
-			'afterVrlTraffic',
-			sub {
-				if(-f "$variableDataDir/smtp_traffic.db") {
-					iMSCP::File->new('filename' => "$variableDataDir/smtp_traffic.db")->delFile();
-				} else {
-					0;
-				}
-			}
-		) and die(iMSCP::Debug::getLastError());
 	}
+
+	# Schedule deletion of traffic database. This is only done on success. On failure, the traffic database is kept
+	# in place for later processing. In such case, data already processed (put in database) are zeroed by the
+	# traffic processor script.
+	$self->{'hooksManager'}->register(
+		'afterVrlTraffic',
+		sub {
+			if(-f "$variableDataDir/smtp_traffic.db") {
+				iMSCP::File->new('filename' => "$variableDataDir/smtp_traffic.db")->delFile();
+			} else {
+				0;
+			}
+		}
+	) and die(iMSCP::Debug::getLastError());
 
 	\%trafficDb;
 }

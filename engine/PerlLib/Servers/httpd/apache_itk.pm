@@ -1136,11 +1136,14 @@ sub getTraffic($$)
 {
 	my ($self, $timestamp) = @_;
 
+	my $trafficDbPath = "$main::imscpConfig{'VARIABLE_DATA_DIR'}/http_traffic.db";
+
+	# Load traffic database
+	tie my %trafficDb, 'iMSCP::Config', 'fileName' => $trafficDbPath, 'noerrors' => 1;
+
 	my $db = iMSCP::Database->factory();
 
 	my $rawDb = $db->startTransaction();
-
-	my %trafficDb;
 
 	# Collect data from upstream traffic data source
 	eval {
@@ -1154,30 +1157,11 @@ sub getTraffic($$)
 		);
 
 		if(%{$trafficData}) {
-			my $trafficDbPath = "$main::imscpConfig{'VARIABLE_DATA_DIR'}/httpd_traffic.db";
-
-			# Stash the data in a traffic database. This allow to not lost them on failure.
-			tie %trafficDb, 'iMSCP::Config', 'fileName' => $trafficDbPath, 'noerrors' => 1;
-
 			# Getting HTTPD traffic
 			$trafficDb{$_} += $trafficData->{$_}->{'bytes'} for keys %{$trafficData};
 
 			# Deleting upstream source data
 			$rawDb->do('DELETE FROM httpd_vlogger WHERE ldate <= ?', undef, $ldate);
-
-			# Schedule deletion of traffic database. This is only done on success. On failure, the traffic database is
-			# kept in place for later processing. In such case, data already processed (put in database) are zeroed by
-			# the traffic processor script.
-			$self->{'hooksManager'}->register(
-				'afterVrlTraffic',
-				sub {
-					if(-f $trafficDbPath) {
-						iMSCP::File->new('filename' => $trafficDbPath)->delFile();
-					} else {
-						0;
-					}
-				}
-			) and die(iMSCP::Debug::getLastError());
 		}
 
 		$rawDb->commit();
@@ -1191,6 +1175,20 @@ sub getTraffic($$)
 	}
 
 	$db->endTransaction();
+
+	# Schedule deletion of traffic database. This is only done on success. On failure, the traffic database is
+	# kept in place for later processing. In such case, data already processed (put in database) are zeroed by
+	# the traffic processor script.
+	$self->{'hooksManager'}->register(
+		'afterVrlTraffic',
+		sub {
+			if(-f $trafficDbPath) {
+				iMSCP::File->new('filename' => $trafficDbPath)->delFile();
+			} else {
+				0;
+			}
+		}
+	) and die(iMSCP::Debug::getLastError());
 
 	\%trafficDb;
 }

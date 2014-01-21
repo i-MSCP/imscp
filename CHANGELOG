@@ -66,6 +66,7 @@ PLUGINS:
 	- Updated: Plugin API to version 0.2.3
 
 SETUP:
+	- Fixed: Auto installer must check for any i-MSCP running process
 	- Fixed: Composer process timeout must be increased for slow connections
 	- Fixed: Unable to add external repository (Lucid...)
 

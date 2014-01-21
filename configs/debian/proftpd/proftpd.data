@@ -2,7 +2,7 @@ FTPD_SNAME = proftpd
 
 FTPD_CONF_FILE = /etc/proftpd/proftpd.conf
 
-FTP_TRAFF_LOG = /proftpd/ftp_traff.log
+FTP_TRAFF_LOG = proftpd/ftp_traff.log
 
 MIN_UID = 1001
 
