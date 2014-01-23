@@ -884,7 +884,7 @@ sub _buildApacheConfFiles
 			AUTHZ_ALLOW_ALL => $apache24 ? 'Require all granted' : 'Allow from all',
 			CMD_VLOGGER => $self->{'config'}->{'CMD_VLOGGER'},
 			PIPE => $pipeSyntax,
-			VLOGGER_CONF => "$self->{'apacheCfgDir'}/vlogger.conf"
+			VLOGGER_CONF => "$self->{'apacheWrkDir'}/vlogger.conf"
 		}
 	);
 
@@ -1147,7 +1147,7 @@ sub _setupVlogger
 		}
 	);
 	$self->{'httpd'}->buildConfFile(
-		"$self->{'apacheCfgDir'}/vlogger.conf", {}, { 'destination' => "$self->{'apacheCfgDir'}/vlogger.conf" }
+		"$self->{'apacheCfgDir'}/vlogger.conf.tpl", {}, { 'destination' => "$self->{'apacheWrkDir'}/vlogger.conf" }
 	);
 }
 

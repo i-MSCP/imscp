@@ -60,8 +60,6 @@ sub getFiles
 
 	my @files = $self->{'files'} ? @{$self->{'files'}} : ();
 
-	debug("Return @{$self->{'files'}}");
-
 	wantarray ? @files : join(' ', @files);
 }
 
@@ -79,8 +77,6 @@ sub getDirs
 		}
 	}
 
-	debug("Return @{$self->{'dirs'}}");
-
 	wantarray ? @{$self->{'dirs'}} : join(' ', @{$self->{'dirs'}});
 }
 
@@ -89,8 +85,6 @@ sub getAll
 	my $self = $_[0];
 
 	my @all = ($self->getDirs(), $self->getFiles());
-
-	debug("Return @all");
 
 	wantarray ? @all : join(' ', @all);
 }

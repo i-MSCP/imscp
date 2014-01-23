@@ -16,6 +16,6 @@
     <copy_config>${SYSTEM_CONF}/apache/fcgid_imscp.conf</copy_config>
     <copy_config>${SYSTEM_CONF}/apache/logrotate.conf</copy_config>
     <copy_config mode="0750" user="${ROOT_USER}" group="${ROOT_GROUP}">/usr/local/sbin/vlogger</copy_config>
-    <copy_config>${SYSTEM_CONF}/apache/vlogger.conf</copy_config>
+    <copy_config>${SYSTEM_CONF}/apache/vlogger.conf.tpl</copy_config>
     <copy_config>${SYSTEM_CONF}/apache/vlogger.sql</copy_config>
 </install>

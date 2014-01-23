@@ -676,7 +676,6 @@ sub _oldEngineCompatibility
 	my $rs = $self->{'hooksManager'}->trigger('beforePoOldEngineCompatibility');
 	return $rs if $rs;
 
-
 	$self->{'hooksManager'}->trigger('afterPodOldEngineCompatibility');
 }
 

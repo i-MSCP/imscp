@@ -381,8 +381,6 @@ END
 		$rs = $self->restart();
 	}
 
-
-
 	$? = $exitCode || $rs;
 }
 

@@ -504,7 +504,6 @@ sub _oldEngineCompatibility
 	my $rs = $self->{'hooksManager'}->trigger('beforeNamedOldEngineCompatibility');
 	return $rs if $rs;
 
-
 	$self->{'hooksManager'}->trigger('afterNameddOldEngineCompatibility');
 }
 
