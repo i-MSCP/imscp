@@ -38,7 +38,7 @@
  */
 
 /**
- * Get ftp login credentials.
+ * Get ftp login credentials
  *
  * @author Laurent Declercq <l.declercq@nuxwin.com>
  * @access private
@@ -49,15 +49,15 @@ function _getLoginCredentials($userId)
 {
 	$query = "
 		SELECT
-			`t1`.`userid`, `t1`.`rawpasswd`
+			t1.userid, t1.rawpasswd
 		FROM
-			`ftp_users` AS `t1`
+			ftp_users AS t1
 		INNER JOIN
-			`admin` AS `t2` ON(`t2`.`admin_sys_uid` = `t1`.`uid` AND `t2`.`admin_sys_gid` = `t1`.`gid`)
+			admin AS t2 ON(t2.admin_sys_uid = t1.uid AND t2.admin_sys_gid = t1.gid)
 		WHERE
-			`t1`.`userid` = ?
+			t1.userid = ?
 		AND
-			`t2`.`admin_id` = ?
+			t2.admin_id = ?
 	";
 	$stmt = exec_query($query, array($userId, $_SESSION['user_id']));
 
@@ -69,7 +69,7 @@ function _getLoginCredentials($userId)
 }
 
 /**
- * Creates all cookies for AjaxPlorer.
+ * Creates all cookies for Pydio (AjaXplorer)
  *
  * @author Laurent Declercq <l.declercq@nuxwin.com>
  * @access private
@@ -84,7 +84,7 @@ function _ajaxplorerCreateCookies($cookies)
 }
 
 /**
- * AjaxPlorer authentication.
+ * Pydio (AjaXplorer) authentication
  *
  * @author Laurent Declercq <l.declercq@nuxwin.com>
  * @param  int $userId ftp username
@@ -96,25 +96,12 @@ function _ajaxplorerAuth($userId)
 		@unlink(GUI_ROOT_DIR . '/data/tmp/failedAJXP.log');
 	}
 
-	$credentials = _getLoginCredentials($userId);
-
-	if ($credentials) {
-		$data = http_build_query(
-			array(
-				'userid' => $credentials[0],
-				'password' => stripcslashes($credentials[1]),
-				'get_action' => 'login',
-				'login_seed' => '-1',
-				'_method' => 'put',
-				"remember_me" => ''
-			)
-		);
-	} else {
+	if(! ($credentials = _getLoginCredentials($userId))) {
 		set_page_message(tr('Unknown FTP user id.'), 'error');
 		return false;
 	}
 
-	// Prepares AjaxPlorer absolute Uri to use
+	// Prepares Pydio (AjaXplorer) absolute Uri to use
 	if (isset($_SERVER['HTTPS']) && !empty($_SERVER['HTTPS'])) {
 		$port = ($_SERVER['SERVER_PORT'] != '443') ? ':' . $_SERVER['SERVER_PORT'] : '';
 		$ajaxplorerUri = "https://{$_SERVER['SERVER_NAME']}$port/ftp/";
@@ -123,40 +110,23 @@ function _ajaxplorerAuth($userId)
 		$ajaxplorerUri = "http://{$_SERVER['SERVER_NAME']}$port/ftp/";
 	}
 
-	// AjaxPlorer session initialization
+	// Pydio (AjaXplorer) authentication
 
-	stream_context_get_default(
+	# Getting secure token
+	$secureToken = file_get_contents("$ajaxplorerUri/index.php?action=get_secure_token");
+
+	$data = http_build_query(
 		array(
-			'http' => array(
-				'method' => 'HEAD',
-				'header' => "Host: {$_SERVER['SERVER_NAME']}\r\n" .
-					"Connection: close\r\n\r\n",
-				'user_agent' => $_SERVER["HTTP_USER_AGENT"],
-			)
+			'get_action' => 'login',
+			'userid' => $credentials[0],
+			'login_seed' => '-1',
+			"remember_me" => 'false',
+			'password' => stripcslashes($credentials[1]),
+			'_method' => 'put'
 		)
 	);
 
-	$headers = get_headers($ajaxplorerUri, true);
-
-	// AjaxPlorer secure token
-
-	stream_context_get_default(
-		array(
-			'http' => array(
-				'method' => 'GET',
-				'header' => "Host: {$_SERVER['SERVER_NAME']}\r\n" .
-					"Connection: close\r\n" .
-					"Cookie: {$headers['Set-Cookie']}\r\n\r\n",
-				'user_agent' => $_SERVER["HTTP_USER_AGENT"]
-			)
-		)
-	);
-
-	$secureToken = file_get_contents("{$ajaxplorerUri}/?action=get_secure_token");
-
-	// AjaxPlorer authentication
-
-	stream_context_get_default(
+	stream_context_set_default(
 		array(
 			'http' => array(
 				'method' => 'POST',
@@ -164,10 +134,9 @@ function _ajaxplorerAuth($userId)
 					"Connection: close\r\n" .
 					"Content-Type: application/x-www-form-urlencoded\r\n" .
 					"X-Requested-With: XMLHttpRequest\r\n" .
-					'Content-Length: ' . strlen($data) . "\r\n" .
-					"Cookie: {$headers['Set-Cookie']}\r\n\r\n",
+					'Content-Length: ' . strlen($data) . "\r\n",
 				'content' => $data,
-				'user_agent' => $_SERVER["HTTP_USER_AGENT"],
+				'user_agent' => $_SERVER["HTTP_USER_AGENT"]
 			)
 		)
 	);
@@ -175,9 +144,9 @@ function _ajaxplorerAuth($userId)
 	$headers = get_headers("{$ajaxplorerUri}?secure_token={$secureToken}", true);
 
 	_ajaxplorerCreateCookies($headers['Set-Cookie']);
-	header("Location: {$ajaxplorerUri}");
 
-	return true;
+	redirectTo($ajaxplorerUri);
+	exit;
 }
 
 /***********************************************************************************************************************

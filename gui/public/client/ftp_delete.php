@@ -82,6 +82,18 @@ if (customerHasFeature('ftp') && isset($_GET['id'])) {
 
 		exec_query('DELETE FROM `ftp_users` WHERE `userid` = ?', $ftpUserId);
 
+		/** @var $cfg iMSCP_Config_Handler_File */
+		$cfg = iMSCP_Registry::get('config');
+
+		if(isset($cfg->FILEMANAGER_ADDON) && $cfg->FILEMANAGER_ADDON == 'AjaXplorer') {
+			// Quick fix to disable Ftp preference directory as created by AjaXplorer (Pydio)
+			// FIXME: Move this statement at engine level
+			$userPrefDir = $cfg->GUI_PUBLIC_DIR . '/tools/filemanager/data/plugins/auth.serial/' . $ftpUserId;
+			if(is_dir($userPrefDir)) {
+				utils_removeDir($userPrefDir);
+			}
+		}
+
 		$db->commit();
 
 		iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAfterDeleteFtp, array('ftpUserId' => $ftpUserId));
