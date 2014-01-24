@@ -2947,7 +2947,7 @@ function passgen()
 }
 
 /**
- * Return UNIX timestamp representing first day of $month for $year.
+ * Return timestamp for the first day of $month of $year
  *
  * @param int $month OPTIONAL a month
  * @param int $year OPTIONAL A year (two or 4 digits, whatever)
@@ -2963,7 +2963,7 @@ function getFirstDayOfMonth($month = null, $year = null)
 }
 
 /**
- * Return UNIX timestamp representing last day of month for $year.
+ * Return timestamp for last day of month of $year
  *
  * @param int $month OPTIONAL a month
  * @param int $year OPTIONAL A year (two or 4 digits, whatever)
@@ -2974,6 +2974,5 @@ function getLastDayOfMonth($month = null, $year = null)
 	$month = $month ? : date('m');
 	$year = $year ? : date('y');
 
-	return mktime(1, 0, 0, $month + 1, 0, $year);
+	return mktime(23, 59, 59, $month + 1, 0, $year);
 }
-

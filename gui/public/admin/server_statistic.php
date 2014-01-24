@@ -24,22 +24,22 @@
  * Portions created by the i-MSCP Team are Copyright (C) 2010-2014 by
  * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
  *
- * @category	i-MSCP
- * @package		iMSCP_Core
- * @subpackage	Admin
- * @copyright	2001-2006 by moleSoftware GmbH
- * @copyright	2006-2010 by ispCP | http://isp-control.net
- * @copyright	2010-2014 by i-MSCP | http://i-mscp.net
- * @author		ispCP Team
- * @author		i-MSCP Team
- * @link		http://i-mscp.net
+ * @category    i-MSCP
+ * @package     iMSCP_Core
+ * @subpackage  Admin
+ * @copyright   2001-2006 by moleSoftware GmbH
+ * @copyright   2006-2010 by ispCP | http://isp-control.net
+ * @copyright   2010-2014 by i-MSCP | http://i-mscp.net
+ * @author      ispCP Team
+ * @author      i-MSCP Team
+ * @link        http://i-mscp.net
  */
 
-/******************************************************************************
+/***********************************************************************************************************************
  * Script functions
  */
 /**
- * Return server traffic information for the given period.
+ * Return server traffic information for the given period
  *
  * @param int $beginDate An UNIX timestamp representing a begin date
  * @param int $endDate An UNIX timestamp representing an end date
@@ -49,14 +49,14 @@ function admin_getServerTraffic($beginDate, $endDate)
 {
 	$query = "
 		SELECT
-			IFNULL(SUM(`bytes_in`), 0) `sbin`, IFNULL(SUM(`bytes_out`), 0) `sbout`,
-			IFNULL(SUM(`bytes_mail_in`), 0) `smbin`, IFNULL(SUM(`bytes_mail_out`), 0) `smbout`,
-			IFNULL(SUM(`bytes_pop_in`), 0) `spbin`, IFNULL(SUM(`bytes_pop_out`), 0) `spbout`,
-			IFNULL(SUM(`bytes_web_in`), 0) `swbin`, IFNULL(SUM(`bytes_web_out`), 0) `swbout`
+			IFNULL(SUM(bytes_in), 0) sbin, IFNULL(SUM(bytes_out), 0) sbout,
+			IFNULL(SUM(bytes_mail_in), 0) smbin, IFNULL(SUM(bytes_mail_out), 0) smbout,
+			IFNULL(SUM(bytes_pop_in), 0) spbin, IFNULL(SUM(bytes_pop_out), 0) spbout,
+			IFNULL(SUM(bytes_web_in), 0) swbin, IFNULL(SUM(bytes_web_out), 0) swbout
 		FROM
-			`server_traffic`
+			server_traffic
 		WHERE
-			`traff_time` > ? AND `traff_time` < ?
+			traff_time >= ? AND traff_time <= ?
 	";
 	$stmt = exec_query($query, array($beginDate, $endDate));
 
@@ -74,7 +74,7 @@ function admin_getServerTraffic($beginDate, $endDate)
 }
 
 /**
- * generates statistics page for the given period.
+ * Generates statistics page for the given period
  *
  * @param iMSCP_pTemplate $tpl template engine instance
  * @param int $month Month of the period for which statistics are requested
@@ -84,8 +84,10 @@ function admin_getServerTraffic($beginDate, $endDate)
 function admin_generatePage($tpl, $month, $year)
 {
 	// Let see if we have any statistics available for the given periode
-	$query = "SELECT `bytes_in` FROM `server_traffic` WHERE `traff_time` > ? AND `traff_time` < ? LIMIT 1";
-	$stmt = exec_query($query, array(getFirstDayOfMonth($month, $year), getLastDayOfMonth($month, $year)));
+	$stmt = exec_query(
+		"SELECT bytes_in FROM server_traffic WHERE traff_time >= ? AND traff_time <= ? LIMIT 1",
+		array(getFirstDayOfMonth($month, $year), getLastDayOfMonth($month, $year))
+	);
 
 	if ($stmt->rowCount()) { // Statistic were found for the period
 		if ($month == date('m') && $year == date('y')) { // Statistics needed only from begin of month to today
@@ -146,14 +148,16 @@ function admin_generatePage($tpl, $month, $year)
 				'POP_IN_ALL' => bytesHuman($all[4]), 'POP_OUT_ALL' => bytesHuman($all[5]),
 				'OTHER_IN_ALL' => bytesHuman($allOtherIn), 'OTHER_OUT_ALL' => bytesHuman($allOtherOut),
 				'ALL_IN_ALL' => bytesHuman($all[6]), 'ALL_OUT_ALL' => bytesHuman($all[7]),
-				'ALL_ALL' => bytesHuman($all[6] + $all[7])));
+				'ALL_ALL' => bytesHuman($all[6] + $all[7])
+			)
+		);
 	} else { // no statistic available for the given period
 		set_page_message(tr('No statistics found for the given period. Try another period.'), 'info');
 		$tpl->assign('SERVER_STATISTICS_BLOCK', '');
 	}
 }
 
-/******************************************************************************
+/***********************************************************************************************************************
  * Main script
  */
 
@@ -177,11 +181,11 @@ if (isset($_GET['month']) && isset($_GET['year'])) {
 }
 
 // Retrieve smaller timestamp to define max number of years to show in select element
-$stmt = exec_query('SELECT `traff_time` FROM `server_traffic`  ORDER BY `traff_time` ASC LIMIT 1');
+$stmt = exec_query('SELECT traff_time FROM server_traffic ORDER BY traff_time ASC LIMIT 1');
 
-if($stmt->recordCount()) {
+if ($stmt->rowCount()) {
 	$numberYears = date('y') - date('y', $stmt->fields['traff_time']);
-	$numberYears = $numberYears == 0 ? 1 : $numberYears;
+	$numberYears =  $numberYears ? $numberYears + 1: 1;
 } else {
 	$numberYears = 1;
 }
@@ -203,7 +207,6 @@ $tpl->assign(
 	array(
 		'TR_PAGE_TITLE' => tr('Admin / Statistics / Server Statistics'),
 		'ISP_LOGO' => layout_getUserLogo(),
-		'TR_SERVER_STATISTICS' => tr('Server statistics'),
 		'TR_MONTH' => tr('Month'),
 		'TR_YEAR' => tr('Year'),
 		'TR_SHOW' => tr('Show'),
@@ -218,7 +221,7 @@ $tpl->assign(
 		'TR_OTHER_OUT' => tr('Other out'),
 		'TR_ALL_IN' => tr('All in'),
 		'TR_ALL_OUT' => tr('All out'),
-		'TR_ALL' => tr('All'),
+		'TR_ALL' => tr('All')
 	)
 );
 

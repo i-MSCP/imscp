@@ -61,7 +61,7 @@ function admin_generatePage($tpl, $year, $month, $day)
 		FROM
 			`server_traffic`
 		WHERE
-			`traff_time` > ? AND `traff_time` < ?
+			`traff_time` >= ? AND `traff_time` <= ?
 	";
 	$stmt = exec_query($query, array($firstHourOfDay, $lastHourOfDay));
 
@@ -156,6 +156,7 @@ if (isset($_GET['month']) && isset($_GET['year']) && isset($_GET['day'])) {
 	$day = intval($_GET['day']);
 } else {
 	showBadRequestErrorPage();
+	exit;
 }
 
 $tpl->assign(
@@ -178,7 +179,7 @@ $tpl->assign(
 		'TR_ALL_OUT' => tr('All out'),
 		'TR_ALL' => tr('All'),
 		'MONTH' => $month,
-		'YEAR' => date('Y', mktime(0,0,0,1, $year)),
+		'YEAR' => date('Y', mktime(0, 0, 0, $month, $day, $year)),
 		'DAY' => $day,
 	)
 );

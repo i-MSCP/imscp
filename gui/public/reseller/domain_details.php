@@ -50,7 +50,7 @@ function reseller_gen_mail_quota_limit_mgs($customerId)
 	$mainDmnProps = get_domain_default_props($customerId, $_SESSION['user_id']);
 
 	$stmt = exec_query(
-		'SELECT SUM(`quota`) AS `quota` FROM `mail_users` WHERE `domain_id` = ? AND `quota` IS NOT NULL',
+		'SELECT SUM(quota) AS quota FROM mail_users WHERE domain_id = ? AND quota IS NOT NULL',
 		$mainDmnProps['domain_id']
 	);
 
@@ -70,7 +70,7 @@ function reseller_gen_mail_quota_limit_mgs($customerId)
  */
 function reseller_generatePage($tpl, $domainId)
 {
-	$query = "SELECT `domain_admin_id` FROM `domain` WHERE `domain_id` = ? AND `domain_created_id` = ?";
+	$query = "SELECT domain_admin_id FROM domain WHERE domain_id = ? AND domain_created_id = ?";
 	$stmt = exec_query($query, array($domainId, $_SESSION['user_id']));
 
 	if (!$stmt->rowCount()) {
@@ -85,7 +85,7 @@ function reseller_generatePage($tpl, $domainId)
 	$cfg = iMSCP_Registry::get('config');
 
 	// Domain IP address info
-	$stmt = exec_query("SELECT `ip_number` FROM `server_ips` WHERE `ip_id` = ?", $domainProperties['domain_ip_id']);
+	$stmt = exec_query("SELECT ip_number FROM server_ips WHERE ip_id = ?", $domainProperties['domain_ip_id']);
 
 	if (!$stmt->rowCount()) {
 		$domainIpAddr = tr('Not found.');
@@ -112,16 +112,16 @@ function reseller_generatePage($tpl, $domainId)
 
 	$query = "
 		SELECT
-			IFNULL(SUM(`dtraff_web`), 0) `dtraff_web`, IFNULL(SUM(`dtraff_ftp`), 0) `dtraff_ftp`,
-			IFNULL(SUM(`dtraff_mail`), 0) `dtraff_mail`, IFNULL(SUM(`dtraff_pop`), 0) `dtraff_pop`
+			IFNULL(SUM(dtraff_web), 0) dtraff_web, IFNULL(SUM(dtraff_ftp), 0) dtraff_ftp,
+			IFNULL(SUM(dtraff_mail), 0) dtraff_mail, IFNULL(SUM(dtraff_pop), 0) dtraff_pop
 		FROM
-			`domain_traffic`
+			domain_traffic
 		WHERE
-			`domain_id` = ?
+			domain_id = ?
 		AND
-			`dtraff_time` > ?
+			dtraff_time >= ?
 		AND
-			`dtraff_time` < ?
+			dtraff_time <= ?
 	";
 	$stmt = exec_query($query, array($domainProperties['domain_id'], getFirstDayOfMonth(), getLastDayOfMonth()));
 

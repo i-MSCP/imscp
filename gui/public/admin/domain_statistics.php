@@ -24,18 +24,18 @@
  * Portions created by the i-MSCP Team are Copyright (C) 2010-2014 by
  * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
  *
- * @category	i-MSCP
- * @package		iMSCP_Core
- * @subpackage	Admin
- * @copyright	2001-2006 by moleSoftware GmbH
- * @copyright	2006-2010 by ispCP | http://isp-control.net
- * @copyright	2010-2014 by i-MSCP | http://i-mscp.net
- * @author		ispCP Team
- * @author		i-MSCP Team
- * @link		http://i-mscp.net
+ * @category    i-MSCP
+ * @package     iMSCP_Core
+ * @subpackage  Admin
+ * @copyright   2001-2006 by moleSoftware GmbH
+ * @copyright   2006-2010 by ispCP | http://isp-control.net
+ * @copyright   2010-2014 by i-MSCP | http://i-mscp.net
+ * @author      ispCP Team
+ * @author      i-MSCP Team
+ * @link        http://i-mscp.net
  */
 
-/*********************************************************************************
+/***********************************************************************************************************************
  * Script functions
  */
 
@@ -52,12 +52,12 @@ function _admin_getDomainTraffic($domainId, $beginTime, $endTime)
 {
 	$query = "
 		SELECT
-			IFNULL(SUM(`dtraff_web`), 0) `web_dr`, IFNULL(SUM(`dtraff_ftp`), 0) `ftp_dr`,
-			IFNULL(SUM(`dtraff_mail`), 0) `mail_dr`, IFNULL(SUM(`dtraff_pop`), 0) `pop_dr`
+			IFNULL(SUM(dtraff_web), 0) web_dr, IFNULL(SUM(dtraff_ftp), 0) ftp_dr,
+			IFNULL(SUM(dtraff_mail), 0) mail_dr, IFNULL(SUM(dtraff_pop), 0) pop_dr
 		FROM
-			`domain_traffic`
+			domain_traffic
 		WHERE
-			`domain_id` = ? AND `dtraff_time` >= ? AND `dtraff_time` <= ?
+			domain_id = ? AND dtraff_time >= ? AND dtraff_time <= ?
 	";
 	$stmt = exec_query($query, array($domainId, $beginTime, $endTime));
 
@@ -82,7 +82,7 @@ function _admin_getDomainTraffic($domainId, $beginTime, $endTime)
 function admin_generatePage($tpl, $domainId, $month, $year)
 {
 	// Let see if the domain exists
-	$stmt = exec_query('SELECT `domain_id` FROM `domain` WHERE `domain_id` = ?', $domainId);
+	$stmt = exec_query('SELECT domain_id FROM domain WHERE domain_id = ?', $domainId);
 
 	if(!$stmt->rowCount()) {
 		set_page_message(tr('Domain not found.'), 'error');
@@ -90,7 +90,7 @@ function admin_generatePage($tpl, $domainId, $month, $year)
 	}
 
 	// Let see if we have any statistics available for the given period
-	$query = "SELECT `domain_id` FROM `domain_traffic` WHERE `dtraff_time` > ? AND `dtraff_time` < ? LIMIT 1";
+	$query = "SELECT domain_id FROM domain_traffic WHERE dtraff_time >= ? AND dtraff_time <= ? LIMIT 1";
 	$stmt = exec_query($query, array(getFirstDayOfMonth($month, $year), getLastDayOfMonth($month, $year)));
 
 	$tpl->assign('DOMAIN_ID', $domainId);
@@ -147,7 +147,7 @@ function admin_generatePage($tpl, $domainId, $month, $year)
 	}
 }
 
-/******************************************************************************
+/***********************************************************************************************************************
  * Main script
  */
 
@@ -181,12 +181,12 @@ if (isset($_POST['month']) && isset($_POST['year'])) {
 
 // Retrieve smaller timestamp to define max number of years to show in select element
 $stmt = exec_query(
-	'SELECT `dtraff_time` FROM `domain_traffic` WHERE `domain_id` = ? ORDER BY `dtraff_time` ASC LIMIT 1', $domainId
+	'SELECT dtraff_time FROM domain_traffic WHERE domain_id = ? ORDER BY dtraff_time ASC LIMIT 1', $domainId
 );
 
-if($stmt->recordCount()) {
+if ($stmt->rowCount()) {
 	$numberYears = date('y') - date('y', $stmt->fields['dtraff_time']);
-	$numberYears = $numberYears == 0 ? 1 : $numberYears;
+	$numberYears =  $numberYears ? $numberYears + 1: 1;
 } else {
 	$numberYears = 1;
 }
@@ -208,8 +208,6 @@ $tpl->assign(
 	array(
 		'TR_PAGE_TITLE' => tr("Admin / Statistics / Reseller Statistics / Customer Statistics / Domain Statistics"),
 		'ISP_LOGO' => layout_getUserLogo(),
-		'TR_DOMAIN_STATISTICS' => tr('Domain statistics'),
-		'TR_RESELLER_USER_STATISTICS' => tr('Reseller users table'),
 		'TR_MONTH' => tr('Month'),
 		'TR_YEAR' => tr('Year'),
 		'TR_SHOW' => tr('Show'),

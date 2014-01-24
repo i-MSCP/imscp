@@ -90,6 +90,7 @@ Tickets:
 	- Fixed #0990: Security issue - Any user can obtain mysql root password
 	- Fixed #0995: Defect - Missing scrollbar in Ftp directory chooser dialog
 	- Fixed #1000: Bug - When a domain is being disabled, apache won't restart
+	- Fixed #1003: Defect: Admin/Reseller statistic shows only the current year
 
 ------------------------------------------------------------------------------------------------------------------------
 1.1.0-rc4.7

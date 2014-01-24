@@ -50,15 +50,15 @@ function admin_generateSupportQuestionsMessage()
 {
 	$query = "
         SELECT
-            COUNT(`ticket_id`) `nbQuestions`
+            COUNT(ticket_id) AS nbQuestions
         FROM
-            `tickets`
+            tickets
         WHERE
-            `ticket_to` = ?
+            ticket_to = ?
         AND
-            `ticket_status` IN (1, 2)
+            ticket_status IN (1, 2)
         AND
-            `ticket_reply` = 0
+            ticket_reply = 0
     ";
 	$stmt = exec_query($query, $_SESSION['user_id']);
 
@@ -162,13 +162,13 @@ function admin_generateServerTrafficInfo($tpl)
 	// Getting server traffic usage value in bytes for the current month
 	$query = "
 		SELECT
-			IFNULL((SUM(`bytes_in`) + SUM(`bytes_out`)), 0) `serverTrafficUsage`
+			IFNULL((SUM(bytes_in) + SUM(bytes_out)), 0) AS serverTrafficUsage
 		FROM
-			`server_traffic`
+			server_traffic
 		WHERE
-			`traff_time` > ?
+			traff_time >= ?
 		AND
-			`traff_time` < ?
+			traff_time <= ?
     ";
 	$stmt = exec_query($query, array(getFirstDayOfMonth(), getLastDayOfMonth()));
 
