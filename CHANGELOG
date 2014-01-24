@@ -23,6 +23,7 @@ CONFIG:
 	- Removed: Useless logs directory from both subdomain and alias Web folder skeletons
 	- Updated: Apache2 logrotate configuration file (logs are now rotated daily)
 	- Updated: Fcgid/PHP-FPM config to fit with servers which have at least 4GiB ram
+	- Disabled: PHP opcache module for master (needed for some tools which are not compatible with this module)
 
 DISTRO
 	- Added: Packages file for Ubuntu Saucy Slamander and Ubuntu Trusty Tahr (experimental)
