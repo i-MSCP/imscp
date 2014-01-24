@@ -18,12 +18,12 @@ ADDONS:
 
 CONFIG:
 	- Changed: Tools access is now provided only through the panel domain
+	- Disabled: PHP opcache module for master (needed for some tools which are not compatible with this module)
 	- Removed: Useless wget-hack prevention which doesn't prevent nothing in reality
 	- Removed: mod_fastcgi support (FastCGI is now provided through mod_fcgid only)
 	- Removed: Useless logs directory from both subdomain and alias Web folder skeletons
 	- Updated: Apache2 logrotate configuration file (logs are now rotated daily)
 	- Updated: Fcgid/PHP-FPM config to fit with servers which have at least 4GiB ram
-	- Disabled: PHP opcache module for master (needed for some tools which are not compatible with this module)
 
 DISTRO
 	- Added: Packages file for Ubuntu Saucy Slamander and Ubuntu Trusty Tahr (experimental)
