@@ -27,6 +27,7 @@ CONFIG:
 
 DISTRO
 	- Added: Packages file for Ubuntu Saucy Slamander and Ubuntu Trusty Tahr (experimental)
+	- Removed: Courier from Jessie packages list (See https://release.debian.org/migration/testing.pl?package=courier)
 
 ENGINE:
 	- Added: System (UNIX) user/group names are now stored in database
