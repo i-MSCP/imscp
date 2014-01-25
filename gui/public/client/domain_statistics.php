@@ -51,12 +51,14 @@ function _client_getDomainTraffic($domainId, $beginTime, $endTime)
 {
 	$query = "
 		SELECT
-			IFNULL(SUM(dtraff_web), 0) web_dr, IFNULL(SUM(dtraff_ftp), 0) ftp_dr,
-			IFNULL(SUM(dtraff_mail), 0) mail_dr, IFNULL(SUM(dtraff_pop), 0) pop_dr
+			IFNULL(SUM(dtraff_web), 0) AS web_dr, IFNULL(SUM(dtraff_ftp), 0) AS ftp_dr,
+			IFNULL(SUM(dtraff_mail), 0) AS mail_dr, IFNULL(SUM(dtraff_pop), 0) AS pop_dr
 		FROM
 			domain_traffic
 		WHERE
-			domain_id = ? AND dtraff_time >= ? AND dtraff_time <= ?
+			domain_id = ?
+		AND
+			dtraff_time BETWEEN ? AND ?
 	";
 	$stmt = exec_query($query, array($domainId, $beginTime, $endTime));
 

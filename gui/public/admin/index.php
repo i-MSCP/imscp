@@ -166,9 +166,7 @@ function admin_generateServerTrafficInfo($tpl)
 		FROM
 			server_traffic
 		WHERE
-			traff_time >= ?
-		AND
-			traff_time <= ?
+			traff_time BETWEEN ? AND ?
     ";
 	$stmt = exec_query($query, array(getFirstDayOfMonth(), getLastDayOfMonth()));
 

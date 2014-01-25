@@ -49,14 +49,14 @@ function admin_getServerTraffic($beginDate, $endDate)
 {
 	$query = "
 		SELECT
-			IFNULL(SUM(bytes_in), 0) sbin, IFNULL(SUM(bytes_out), 0) sbout,
-			IFNULL(SUM(bytes_mail_in), 0) smbin, IFNULL(SUM(bytes_mail_out), 0) smbout,
-			IFNULL(SUM(bytes_pop_in), 0) spbin, IFNULL(SUM(bytes_pop_out), 0) spbout,
-			IFNULL(SUM(bytes_web_in), 0) swbin, IFNULL(SUM(bytes_web_out), 0) swbout
+			IFNULL(SUM(bytes_in), 0) AS sbin, IFNULL(SUM(bytes_out), 0) AS sbout,
+			IFNULL(SUM(bytes_mail_in), 0) AS smbin, IFNULL(SUM(bytes_mail_out), 0) AS smbout,
+			IFNULL(SUM(bytes_pop_in), 0) AS spbin, IFNULL(SUM(bytes_pop_out), 0) AS spbout,
+			IFNULL(SUM(bytes_web_in), 0) AS swbin, IFNULL(SUM(bytes_web_out), 0) AS swbout
 		FROM
 			server_traffic
 		WHERE
-			traff_time >= ? AND traff_time <= ?
+			traff_time BETWEEN ? AND ?
 	";
 	$stmt = exec_query($query, array($beginDate, $endDate));
 
@@ -85,7 +85,7 @@ function admin_generatePage($tpl, $month, $year)
 {
 	// Let see if we have any statistics available for the given periode
 	$stmt = exec_query(
-		"SELECT bytes_in FROM server_traffic WHERE traff_time >= ? AND traff_time <= ? LIMIT 1",
+		"SELECT bytes_in FROM server_traffic WHERE traff_time BETWEEN ? AND ? LIMIT 1",
 		array(getFirstDayOfMonth($month, $year), getLastDayOfMonth($month, $year))
 	);
 

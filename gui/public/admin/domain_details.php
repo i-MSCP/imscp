@@ -111,16 +111,14 @@ function admin_generatePage($tpl, $domainId)
 
 	$query = "
 		SELECT
-			IFNULL(SUM(dtraff_web), 0) dtraff_web, IFNULL(SUM(dtraff_ftp), 0) dtraff_ftp,
-			IFNULL(SUM(dtraff_mail), 0) dtraff_mail, IFNULL(SUM(dtraff_pop), 0) dtraff_pop
+			IFNULL(SUM(dtraff_web), 0) AS dtraff_web, IFNULL(SUM(dtraff_ftp), 0) AS dtraff_ftp,
+			IFNULL(SUM(dtraff_mail), 0) AS dtraff_mail, IFNULL(SUM(dtraff_pop), 0) AS dtraff_pop
 		FROM
 			domain_traffic
 		WHERE
 			domain_id = ?
 		AND
-			dtraff_time >= ?
-		AND
-			dtraff_time <= ?
+			dtraff_time BETWEEN ? AND ?
 	";
 	$stmt = exec_query($query, array($domainProperties['domain_id'], getFirstDayOfMonth(), getLastDayOfMonth()));
 

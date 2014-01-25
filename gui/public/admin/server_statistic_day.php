@@ -55,13 +55,13 @@ function admin_generatePage($tpl, $year, $month, $day)
 
 	$query = "
 		SELECT
-			`traff_time` `ttime`, `bytes_in` `sbin`, `bytes_out` `sbout`, `bytes_mail_in` `smbin`,
-			`bytes_mail_out` `smbout`, `bytes_pop_in` `spbin`, `bytes_pop_out` `spbout`, `bytes_web_in` `swbin`,
-			`bytes_web_out` `swbout`
+			traff_time AS ttime, bytes_in AS sbin, bytes_out AS sbout, bytes_mail_in AS smbin,
+			bytes_mail_out AS smbout, bytes_pop_in AS spbin, bytes_pop_out AS spbout, bytes_web_in AS swbin,
+			bytes_web_out AS swbout
 		FROM
-			`server_traffic`
+			server_traffic
 		WHERE
-			`traff_time` >= ? AND `traff_time` <= ?
+			traff_time BETWEEN ? AND ?
 	";
 	$stmt = exec_query($query, array($firstHourOfDay, $lastHourOfDay));
 
@@ -125,7 +125,7 @@ function admin_generatePage($tpl, $year, $month, $day)
 	}
 }
 
-/******************************************************************************
+/***********************************************************************************************************************
  * Main script
  */
 
