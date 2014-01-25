@@ -2708,10 +2708,10 @@ class iMSCP_Update_Database extends iMSCP_Update
 				)
 			);
 
-			$stmt = exec_query('SELECT admin_id, admin_sys_uid FROM admin');
+			$stmt = exec_query("SELECT admin_id, admin_sys_uid FROM admin WHERE admin_type in('admin', 'user')");
 
 			while($data = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
-				if($data['admin_sys_uid'] > 0) {
+				if($data['admin_sys_uid']) {
 					$adminSysPwUid = posix_getpwuid($data['admin_sys_uid']);
 					$adminSysGrUid = posix_getgrgid($adminSysPwUid['gid']);
 
