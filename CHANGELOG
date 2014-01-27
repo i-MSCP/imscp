@@ -97,6 +97,7 @@ Tickets:
 	- Fixed #1002: Defect - Plugin Version does not change on update
 	- Fixed #1003: Defect: Admin/Reseller statistic shows only the current year
 	- Fixed #1004: Defect - Unable to find any network interface. You cannot add new IP address
+	- Fixed #1005: Defect - pma_tracker table not locked while importing database
 
 ------------------------------------------------------------------------------------------------------------------------
 1.1.0-rc4.7

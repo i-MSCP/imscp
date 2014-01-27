@@ -291,14 +291,9 @@ sub getTableColumns($$)
 
 =cut
 
-sub dumpdb
+sub dumpdb($$$)
 {
 	my ($self, $dbName, $filename) = @_;
-
-	unless($filename) {
-		error('No filename provided');
-		return 1;
-	}
 
 	debug("Dump $dbName into $filename");
 
@@ -310,12 +305,14 @@ sub dumpdb
 	my $dbUser = escapeShell($self->{'db'}->{'DATABASE_USER'});
 	my $dbPass = escapeShell($self->{'db'}->{'DATABASE_PASSWORD'});
 
-	my $bkpCmd = "mysqldump --add-drop-database --add-drop-table --allow-keywords --compress --create-options " .
-		"--default-character-set=utf8 --extended-insert --lock-tables --quote-names -h $dbHost -P $dbPort -u $dbUser " .
-		"-p$dbPass $dbName > $filename";
+	my @cmd = (
+		'mysqldump', '--add-drop-database', '--add-drop-table', '--add-locks', '--allow-keywords', '--compress',
+		'--create-options', '--default-character-set=utf8', '--extended-insert', '--lock-tables', '--quote-names',
+		"-h $dbHost", "-P $dbPort", "-u $dbUser", "-p$dbPass", "$dbName > $filename"
+	);
 
 	my ($stdout, $stderr);
-	my $rs = execute($bkpCmd, \$stdout, \$stderr);
+	my $rs = execute("@cmd", \$stdout, \$stderr);
 	debug($stdout) if $stdout;
 	error($stderr) if $stderr && $rs;
 	error("Unable to dump $dbName") if $rs && ! $stderr;

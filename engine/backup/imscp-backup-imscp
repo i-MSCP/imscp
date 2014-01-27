@@ -65,7 +65,6 @@ our $command = {
 	'lzma' => { 'extension' => 'lzma', 'command' => 'CMD_LZMA'}
 };
 
-
 sub run
 {
 	return 0 if $main::imscpConfig{'BACKUP_IMSCP'} ne 'yes';
