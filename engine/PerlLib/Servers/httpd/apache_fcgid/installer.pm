@@ -1088,7 +1088,7 @@ sub _setupVlogger
 	my $tableName = 'httpd_vlogger';
 	my $dbUser = 'vlogger_user';
 	my $dbUserHost = main::setupGetQuestion('DATABASE_USER_HOST');
-	$dbUserHost = ($dbUserHost eq '127.0.0.1') ? 'localhost' : $dbHost;
+	$dbUserHost = ($dbUserHost eq '127.0.0.1') ? 'localhost' : $dbUserHost;
 	my $dbPassword = '';
 	$dbPassword .= ('A'..'Z', 'a'..'z', '0'..'9', '_')[rand(62)] for 1..16;
 
