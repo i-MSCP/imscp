@@ -227,7 +227,7 @@ function admin_pluginManagerGeneratePluginList($tpl, $pluginManager)
 					'PLUGIN_DESCRIPTION' => tohtml($pluginInfo['desc']),
 					'PLUGIN_STATUS' => ($pluginManager->hasPluginError($pluginName))
 						? tohtml(tr('Unknown Error')) : tohtml(admin_pluginManagerTrStatus($pluginStatus)),
-					'PLUGIN_VERSION' => tohtml($pluginInfo['version']),
+					'PLUGIN_VERSION' => tohtml($pluginInfo['__nversion__']),
 					'PLUGIN_AUTHOR' => tohtml($pluginInfo['author']),
 					'PLUGIN_MAILTO' => tohtml($pluginInfo['email']),
 					'PLUGIN_SITE' => tohtml($pluginInfo['url'])
@@ -636,7 +636,7 @@ $tpl->assign(
 		'TR_VERSION' => tr('Version'),
 		'TR_BY' => tr('By'),
 		'TR_VISIT_PLUGIN_SITE' => tr('Visit plugin site'),
-		'TR_UPDATE_PLUGIN_LIST' => tr('Update plugin list'),
+		'TR_UPDATE_PLUGIN_LIST' => tr('Update Plugins'),
 		'TR_APPLY' => tr('Apply'),
 		'TR_PLUGIN_UPLOAD' => tr('Plugins Upload'),
 		'TR_UPLOAD' => tr('Upload'),

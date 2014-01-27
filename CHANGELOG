@@ -66,7 +66,10 @@ GUI:
 
 PLUGINS:
 	- Added: Support for local plugin configuration files (See data/persistent/plugins/README.md)
-	- Updated: Plugin API to version 0.2.3
+	- Fixed: Plugin interface must always show the last plugin available version
+	- Fixed: Bulk action must not be a valid option (Plugin interface)
+	- Fixed: When a new plugin version is available, the plugin must be updated and not only enabled
+	- Updated: Plugin API to version 0.2.4
 
 SETUP:
 	- Fixed: Auto installer must check for any i-MSCP running process
@@ -91,6 +94,7 @@ Tickets:
 	- Fixed #0990: Security issue - Any user can obtain mysql root password
 	- Fixed #0995: Defect - Missing scrollbar in Ftp directory chooser dialog
 	- Fixed #1000: Bug - When a domain is being disabled, apache won't restart
+	- Fixed #1002: Defect - Plugin Version does not change on update
 	- Fixed #1003: Defect: Admin/Reseller statistic shows only the current year
 	- Fixed #1004: Defect - Unable to find any network interface. You cannot add new IP address
 

@@ -143,13 +143,14 @@
 	</table>
 	<div style="float:left;">
 		<select name="bulk_actions" id="bulk_actions">
-			<option value="dummy">{TR_BULK_ACTIONS}</option>
+			<option value="dummy" disabled="disabled"  selected="selected">{TR_BULK_ACTIONS}</option>
 			<option value="install">{TR_INSTALL}</option>
 			<option value="enable">{TR_ACTIVATE}</option>
 			<option value="disable">{TR_DEACTIVATE}</option>
 			<option value="uninstall">{TR_UNINSTALL}</option>
 			<option value="protect">{TR_PROTECT}</option>
 			<option value="delete">{TR_DELETE}</option>
+
 		</select>
 		<label for="bulk_actions"><input type="submit" name="Submit" value="{TR_APPLY}"/></label>
 	</div>
