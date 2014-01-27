@@ -444,11 +444,6 @@ Do you agree?
 
 	@{$self->{'packagesToUninstall'}} = uniq(@{$self->{'packagesToUninstall'}});
 
-	# Do not remove a package scheduled for installation
-	@{$self->{'packagesToUninstall'}} = grep {
-		not $_ ~~  @{$self->{'packagesToInstall'}}
-	} @{$self->{'packagesToUninstall'}};
-
 	# This test is needed to be sure to not try to remove package no longer available
 	if(@{$self->{'packagesToUninstall'}}) {
 		my ($stdout, $stderr);

@@ -72,6 +72,7 @@
                     >
                 <package>mysql-server-5.5</package>
                 <package>mysql-client-5.5</package>
+                <package>libmysqlclient18</package>
             </mysql_5.5>
             <mariadb_5.5
                     pinning_package="mariadb-client-5.5 mariadb-server-5.5 mariadb-common mysql-common libmysqlclient18"
@@ -84,6 +85,7 @@
                     >
                 <package>mariadb-client-5.5</package>
                 <package>mariadb-server-5.5</package>
+                <package>libmysqlclient18</package>
             </mariadb_5.5>
             <mariadb_10.0
                     pinning_package="mariadb-client-10.0 mariadb-server-10.0 mariadb-common libmysqlclient18"
@@ -96,6 +98,7 @@
                     >
                 <package>mariadb-client-10.0</package>
                 <package>mariadb-server-10.0</package>
+                <package>libmysqlclient18</package>
             </mariadb_10.0>
             <remote_server>
                 <package>mysql-client</package>
@@ -111,7 +114,7 @@
         <package>php5-imap</package>
         <package>php5-intl</package>
         <package>php5-mcrypt</package>
-        <package>php5-mysql</package>
+        <package>php5-mysqlnd</package>
     </php>
     <perl>
         <package>perl</package>

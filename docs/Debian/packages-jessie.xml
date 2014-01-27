@@ -60,6 +60,7 @@
                     >
                 <package>mysql-server-5.5</package>
                 <package>mysql-client-5.5</package>
+                <package>libmysqlclient18</package>
             </mysql_5.5>
             <remote_server>
                 <package>mysql-client</package>
