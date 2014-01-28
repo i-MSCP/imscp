@@ -63,7 +63,7 @@
     ScriptAlias /cgi-bin/ {WEB_DIR}/cgi-bin/
 
     <Directory {WEB_DIR}/cgi-bin>
-        AllowOverride AuthConfig Indexes Limit
+        AllowOverride AuthConfig Indexes Limit Options=Indexes
         {AUTHZ_ALLOW_ALL}
     </Directory>
     # SECTION cgi_support END.
@@ -78,9 +78,6 @@
     # SECTION php_fpm BEGIN.
     RemoveHandler .php php5
     # SECTION php_fpm END.
-    <FilesMatch ".+\.ph(p5?|t|tml)$">
-        {AUTHZ_DENY_ALL}
-    </FilesMatch>
     # SECTION php_disabled END.
 
     # SECTION addons BEGIN.

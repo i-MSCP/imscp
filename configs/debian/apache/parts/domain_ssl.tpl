@@ -31,7 +31,7 @@
     <Directory {WEB_DIR}/htdocs>
         Options +FollowSymlinks
         # SECTION php_disabled BEGIN.
-        AllowOverride AuthConfig Indexes Limit
+        AllowOverride AuthConfig Indexes Limit Options=Indexes
         # SECTION php_disabled END.
         # SECTION php_enabled BEGIN.
         AllowOverride All
@@ -78,9 +78,6 @@
     # SECTION php_fpm BEGIN.
     RemoveHandler .php php5
     # SECTION php_fpm END.
-    <FilesMatch ".+\.ph(p5?|t|tml)$">
-        {AUTHZ_DENY_ALL}
-    </FilesMatch>
     # SECTION php_disabled END.
 
     # SECTION addons BEGIN.
