@@ -35,6 +35,8 @@ use strict;
 use warnings;
 
 use iMSCP::Debug;
+use iMSCP::Execute;
+use iMSCP::Rights;
 use iMSCP::Addons::ComposerInstaller;
 use parent 'Common::SingletonClass';
 
@@ -85,12 +87,8 @@ sub setGuiPermissions
 	my $panelUName =
 	my $panelGName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} . $main::imscpConfig{'SYSTEM_USER_MIN_UID'};
 	my $guiPublicDir = $main::imscpConfig{'GUI_PUBLIC_DIR'};
-	my $rs = 0;
 
-	require iMSCP::Rights;
-	iMSCP::Rights->import();
-
-	$rs = setRights(
+	my $rs = setRights(
 		"$guiPublicDir/tools/filemanager",
 		{ 'user' => $panelUName, 'group' => $panelGName, 'dirmode' => '0550', 'filemode' => '0440', 'recursive' => 1 }
 	);
@@ -124,12 +122,14 @@ sub _installFiles
 	if(-d "$repoDir/vendor/imscp/ajaxplorer") {
 		my $guiPublicDir = $main::imscpConfig{'GUI_PUBLIC_DIR'};
 
-		require iMSCP::Execute;
-		iMSCP::Execute->import();
-
 		my ($stdout, $stderr);
+		$rs = execute("$main::imscpConfig{'CMD_RM'} -fR $guiPublicDir/tools/filemanager", \$stdout, \$stderr);
+		debug($stdout) if $stdout;
+		error($stderr) if $rs && $stderr;
+		return $rs if $rs;
+
 		$rs = execute(
-			"$main::imscpConfig{'CMD_CP'} -fRT $repoDir/vendor/imscp/ajaxplorer $guiPublicDir/tools/filemanager",
+			"$main::imscpConfig{'CMD_CP'} -R $repoDir/vendor/imscp/ajaxplorer $guiPublicDir/tools/filemanager",
 			\$stdout,
 			\$stderr
 		);

@@ -40,7 +40,11 @@ use iMSCP::Debug;
 use Addons::PhpMyAdmin;
 use iMSCP::TemplateParser;
 use iMSCP::Addons::ComposerInstaller;
+use iMSCP::Execute;
+use iMSCP::Rights;
 use iMSCP::File;
+use File::Basename;
+use JSON;
 use version;
 
 use parent 'Common::SingletonClass';
@@ -119,10 +123,8 @@ sub showDialog($$)
 
 			if($rs != 30) {
 				if(! $dbPass) {
-					my @allowedChars = ('A'..'Z', 'a'..'z', '0'..'9', '_');
-
 					$dbPass = '';
-					$dbPass .= $allowedChars[rand @allowedChars] for 1..16;
+					$dbPass .= ('A'..'Z', 'a'..'z', '0'..'9', '_')[rand(62)] for 1..16;
 				}
 
 				$dbPass =~ s/('|"|`|#|;|\/|\s|\||<|\?|\\)/_/g;
@@ -235,9 +237,6 @@ sub setGuiPermissions
 	my $panelGName =
 		$main::imscpConfig{'SYSTEM_USER_PREFIX'} . $main::imscpConfig{'SYSTEM_USER_MIN_UID'};
 
-	require iMSCP::Rights;
-	iMSCP::Rights->import();
-
 	setRights(
 		"$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/pma",
 		{ 'user' => $panelUName, 'group' => $panelGName, 'dirmode' => '0550', 'filemode' => '0440', 'recursive' => 1 }
@@ -269,7 +268,7 @@ sub _init
 	$self->{'wrkDir'} = "$self->{'cfgDir'}/working";
 	$self->{'config'} = $self->{'phpmyadmin'}->{'config'};
 
-	my $oldConf	= "$self->{'cfgDir'}/phpmyadmin.old.data";
+	my $oldConf = "$self->{'cfgDir'}/phpmyadmin.old.data";
 
 	if(-f $oldConf) {
 		tie %{$self->{'oldConfig'}}, 'iMSCP::Config', 'fileName' => $oldConf, 'noerrors' => 1;
@@ -297,9 +296,6 @@ sub _backupConfigFile($$)
 	my ($self, $cfgFile) = @_;
 
 	if(-f $cfgFile) {
-		require File::Basename;
-		File::Basename->import();
-
 		my $filename = fileparse($cfgFile);
 
 		my $file = iMSCP::File->new('filename' => $cfgFile);
@@ -327,12 +323,14 @@ sub _installFiles
 	if(-d "$repoDir/vendor/imscp/phpmyadmin") {
 		my $guiPublicDir = $main::imscpConfig{'GUI_PUBLIC_DIR'};
 
-		require iMSCP::Execute;
-		iMSCP::Execute->import();
-
 		my ($stdout, $stderr);
+		$rs = execute("$main::imscpConfig{'CMD_RM'} -fR $guiPublicDir/tools/pma", \$stdout, \$stderr);
+		debug($stdout) if $stdout;
+		error($stderr) if $rs && $stderr;
+		return $rs if $rs;
+
 		$rs = execute(
-			"$main::imscpConfig{'CMD_CP'} -fRT $repoDir/vendor/imscp/phpmyadmin $guiPublicDir/tools/pma",
+			"$main::imscpConfig{'CMD_CP'} -R $repoDir/vendor/imscp/phpmyadmin $guiPublicDir/tools/pma",
 			\$stdout,
 			\$stderr
 		);
@@ -340,7 +338,7 @@ sub _installFiles
 		error($stderr) if $rs && $stderr;
 		return $rs if $rs;
 
-		$rs = execute("$main::imscpConfig{'CMD_RM'} -fR $guiPublicDir/tools/pma/.git", \$stdout, \$stderr);
+		$rs = execute("$main::imscpConfig{'CMD_RM'} -R $guiPublicDir/tools/pma/.git", \$stdout, \$stderr);
 		debug($stdout) if $stdout;
 		error($stderr) if $rs && $stderr;
 		return $rs if $rs;
@@ -433,8 +431,6 @@ sub _setupSqlUser
 	fatal('Unable to connect to SQL Server: $errStr') if ! $db;
 
 	# Adding new SQL user with needed privileges
-
-	# Adding privileges
 
 	my $rs = $db->doQuery('dummy', 'GRANT USAGE ON `mysql`.* TO ?@? IDENTIFIED BY ?', $dbUser, $dbUserHost, $dbPass);
 	unless(ref $rs eq 'HASH') {
@@ -587,9 +583,6 @@ sub _setVersion
 	my $self = $_[0];
 
 	my $guiPublicDir = $main::imscpConfig{'GUI_PUBLIC_DIR'};
-
-	require JSON;
-	JSON->import();
 
 	my $json = iMSCP::File->new('filename' => "$guiPublicDir/tools/pma/composer.json")->get();
 	unless(defined $json) {

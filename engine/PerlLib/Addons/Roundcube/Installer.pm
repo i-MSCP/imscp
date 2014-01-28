@@ -39,8 +39,12 @@ no if $] >= 5.017011, warnings => 'experimental::smartmatch';
 use iMSCP::Debug;
 use iMSCP::TemplateParser;
 use iMSCP::Addons::ComposerInstaller;
+use iMSCP::Execute;
+use iMSCP::Rights;
 use iMSCP::File;
+use iMSCP::Dir;
 use File::Basename;
+use JSON;
 use parent 'Common::SingletonClass';
 
 our $VERSION = '0.3.0';
@@ -120,10 +124,8 @@ sub showDialog($$)
 
 			if($rs != 30) {
 				if(! $dbPass) {
-					my @allowedChars = ('A'..'Z', 'a'..'z', '0'..'9', '_');
-
 					$dbPass = '';
-					$dbPass .= $allowedChars[rand @allowedChars] for 1..16;
+					$dbPass .= ('A'..'Z', 'a'..'z', '0'..'9', '_')[rand(62)] for 1..16;
 				}
 
 				$dbPass =~ s/('|"|`|#|;|\/|\s|\||<|\?|\\)/_/g;
@@ -220,9 +222,6 @@ sub setGuiPermissions
 	my $panelGName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} . $main::imscpConfig{'SYSTEM_USER_MIN_UID'};
 	my $guiPublicDir = $main::imscpConfig{'GUI_PUBLIC_DIR'};
 
-	require iMSCP::Rights;
-	iMSCP::Rights->import();
-
 	my $rs = setRights(
 		"$guiPublicDir/tools/webmail",
 		{ 'user' => $panelUName, 'group' => $panelGName, 'dirmode' => '0550', 'filemode' => '0440', 'recursive' => 1 }
@@ -317,12 +316,14 @@ sub _installFiles
 	if(-d "$repoDir/vendor/imscp/roundcube") {
 		my $guiPublicDir = $main::imscpConfig{'GUI_PUBLIC_DIR'};
 
-		require iMSCP::Execute;
-		iMSCP::Execute->import();
-
 		my ($stdout, $stderr);
+		$rs = execute("$main::imscpConfig{'CMD_RM'} -fR $guiPublicDir/tools/webmail", \$stdout, \$stderr);
+		debug($stdout) if $stdout;
+		error($stderr) if $rs && $stderr;
+		return $rs if $rs;
+
 		$rs = execute(
-			"$main::imscpConfig{'CMD_CP'} -fRT $repoDir/vendor/imscp/roundcube $guiPublicDir/tools/webmail",
+			"$main::imscpConfig{'CMD_CP'} -R $repoDir/vendor/imscp/roundcube $guiPublicDir/tools/webmail",
 			\$stdout,
 			\$stderr
 		);
@@ -330,7 +331,7 @@ sub _installFiles
 		error($stderr) if $rs && $stderr;
 		return $rs if $rs;
 
-		$rs = execute("$main::imscpConfig{'CMD_RM'} -rf $guiPublicDir/tools/webmail/.git", \$stdout, \$stderr);
+		$rs = execute("$main::imscpConfig{'CMD_RM'} -fR $guiPublicDir/tools/webmail/.git", \$stdout, \$stderr);
 		debug($stdout) if $stdout;
 		error($stderr) if $rs && $stderr;
 		return $rs if $rs;
@@ -558,9 +559,6 @@ sub _updateDatabase
 	my $roundcubeDbName = $main::imscpConfig{'DATABASE_NAME'} . '_roundcube';
 	my $fromVersion = $self->{'config'}->{'ROUNDCUBE_VERSION'} || '0.8.4';
 
-	require iMSCP::Execute;
-	iMSCP::Execute->import();
-
 	# Check on suhosin.session.encrypt=off will be removed in next roundcube version
 	# See http://trac.roundcube.net/ticket/1489044
 	my ($stdout, $stderr);
@@ -600,8 +598,6 @@ sub _updateDatabase
 	}
 
 	if(%{$rdata}) {
-		require iMSCP::Dir;
-
 		my @updateFiles = iMSCP::Dir->new('dirname' => "$roundcubeDir/SQL/mysql", 'fileType' => '.sql')->getFiles();
 		unless(@updateFiles) {
 			error('Unable to get list of available database updates.');
@@ -641,10 +637,6 @@ sub _setVersion
 	my $self = $_[0];
 
 	my $guiPublicDir = $main::imscpConfig{'GUI_PUBLIC_DIR'};
-
-	require iMSCP::File;
-	require JSON;
-	JSON->import();
 
 	my $json = iMSCP::File->new('filename' => "$guiPublicDir/tools/webmail/composer.json")->get();
 	unless(defined $json) {
