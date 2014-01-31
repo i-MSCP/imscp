@@ -99,6 +99,7 @@ Tickets:
 	- Fixed #1004: Defect - Unable to find any network interface. You cannot add new IP address
 	- Fixed #1005: Defect - pma_tracker table not locked while importing database
 	- Fixed #1006: Defect - Options Indexes not working if PHP is disabled
+	- Fixed #1011: Defect: Unable to add domain such as: 1291.com
 
 ------------------------------------------------------------------------------------------------------------------------
 1.1.0-rc4.7

@@ -321,7 +321,7 @@ function isValidDomainName($domainName)
 	} elseif (($asciiDomainName = encode_idna($domainName)) !== false) {
 		$asciiDomainName = strtolower($asciiDomainName);
 
-		if ($asciiDomainName > 255) {
+		if (strlen($asciiDomainName) > 255) {
 			$dmnNameValidationErrMsg = tr(
 				'Domain name (in it ASCII form) cannot be greater than 255 characters.'
 			);
