@@ -357,7 +357,7 @@ function admin_generateCustomerAcountDeletionValidationPage($userId)
 
 	if ($stmt->rowCount()) {
 		while ($data = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
-			$username = explode('@', $stmt->fields['userid']);
+			$username = explode('@', $data['userid']);
 
 			$tpl->assign(
 				array(
