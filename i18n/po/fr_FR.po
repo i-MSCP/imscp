@@ -14,7 +14,7 @@
 # krok <krok@totalynet.fr>, 2011-2013
 # krok <krok@totalynet.fr>, 2013
 # krok <krok@totalynet.fr>, 2011, 2012
-# Laurent Declercq <l.declercq@nuxwin.com>, 2011-2013
+# Laurent Declercq <l.declercq@nuxwin.com>, 2011-2014
 # Laurent Declercq <l.declercq@nuxwin.com>, 2011
 # Afresh <ludofloria@aifesdespets.fr>, 2013
 # Afresh <ludofloria@aifesdespets.fr>, 2012
@@ -25,13 +25,13 @@
 # Athar <athar@funstargate.com>, 2013
 # sebtiz13 <sebtiz13@gmail.com>, 2013
 # sebtiz13 <sebtiz13@gmail.com>, 2013
-# Stéphane Aulery <lkppo@free.fr>, 2012
+# Stéphane Aulery, 2012
 msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2013-12-31 17:54+0100\n"
-"PO-Revision-Date: 2013-12-31 16:54+0000\n"
+"POT-Creation-Date: 2014-02-01 16:22+0100\n"
+"PO-Revision-Date: 2014-02-01 15:22+0000\n"
 "Last-Translator: Torsten Widmann <info@goover.de>\n"
 "Language-Team: French (France) (http://www.transifex.com/projects/p/i-MSCP/language/fr_FR/)\n"
 "MIME-Version: 1.0\n"
@@ -757,7 +757,7 @@ msgid "Admin / Settings"
 msgstr "Administrateur / Paramètres"
 
 msgid "Admin / Settings / IP Addresses Management"
-msgstr ""
+msgstr "Administrateur / Paramètres / Gestion des adresses IP"
 
 msgid "Admin / Settings / Languages"
 msgstr "Administrateur / Paramètres / Langues"
@@ -1379,7 +1379,7 @@ msgid "Class"
 msgstr "Classe"
 
 msgid "Clear log"
-msgstr "Nettoyer le journal"
+msgstr "Vider le journal"
 
 msgid "Click here for more details"
 msgstr "Cliquez ici pour plus de détails"
@@ -1669,7 +1669,7 @@ msgid "Customer"
 msgstr "Client"
 
 msgid "Customer ID"
-msgstr "ID du client"
+msgstr "ID de l'utilisateur"
 
 msgid "Customer ID cannot have more than 200 characters"
 msgstr "L'ID du client ne peut pas avoir plus de 200 caractères"
@@ -1897,7 +1897,7 @@ msgid "Delete customer - {DOMAIN_NAME}"
 msgstr "Supprimer le client - {DOMAIN_NAME}"
 
 msgid "Delete from log:"
-msgstr "Effacer les entrées :"
+msgstr "Effacer les entrées:"
 
 msgid "Delete order"
 msgstr "Supprimer la commande"
@@ -2344,7 +2344,7 @@ msgid "Error in php.ini values."
 msgstr "Certaines valeurs du php.ini sont erronnées"
 
 msgid "Error pages"
-msgstr "Pages d'erreur"
+msgstr "Pages d'erreurs"
 
 msgid "Error reporting"
 msgstr "Signaler une erreur"
@@ -2682,7 +2682,7 @@ msgid "IP address"
 msgstr "Adresse IP"
 
 msgid "IP address already under the control of i-MSCP."
-msgstr ""
+msgstr "Adresses IP déjà contrôlées par i-MSCP."
 
 msgid "IP address data"
 msgstr "Données de l'adresse IP"
@@ -2691,13 +2691,13 @@ msgid "IP address field is empty or invalid."
 msgstr "Le champs adresse IP est vide ou invalide."
 
 msgid "IP address successfully scheduled for addition."
-msgstr ""
+msgstr "L'adresse IP va être ajoutée."
 
 msgid "IP address successfully scheduled for deletion."
 msgstr "L'adresse IP va être supprimée."
 
 msgid "IP addresses under control of i-MSCP"
-msgstr ""
+msgstr "Adresses IP contrôlées par i-MSCP"
 
 msgid "IP management"
 msgstr "Gestion des adresses IP"
@@ -2974,7 +2974,7 @@ msgid "Last translator"
 msgstr "Dernier traducteur"
 
 msgid "Layout"
-msgstr "Personnaliser l'affichage"
+msgstr "Theme"
 
 msgid "Layout color"
 msgstr "Couleur du thème"
@@ -3044,7 +3044,7 @@ msgid "Logout"
 msgstr "Déconnexion"
 
 msgid "Lost password"
-msgstr "Mot de passe oublié"
+msgstr "Mot de passe perdu"
 
 msgid "Lost password email"
 msgstr "E-mail de mot de passe oublié"
@@ -3119,7 +3119,7 @@ msgid "Manage Domains"
 msgstr "Gestion des domaines"
 
 msgid "Manage SQL"
-msgstr "Gestion SQL"
+msgstr "Databases"
 
 msgid "Manage htaccess users and groups"
 msgstr "Gestion des groupe et utilisateurs htaccess"
@@ -3861,6 +3861,10 @@ msgid "Plugin Manager: Unable to install the %s plugin: %s"
 msgstr "Gestionnaire de plugins : Impossible d'installer le plugin %s : %s"
 
 #, php-format
+msgid "Plugin Manager: Unable to load plugin %s"
+msgstr ""
+
+#, php-format
 msgid "Plugin Manager: Unable to protect the %s plugin: %s"
 msgstr "Gestionnaire de plugins : Impossible de protéger le plugin %s : %s"
 
@@ -3871,6 +3875,10 @@ msgstr "Gestionnaire de plugins : Impossible de désinstaller le plugin %s : %s"
 #, php-format
 msgid "Plugin Manager: Unable to update the %s plugin: %s"
 msgstr "Gestionnaire de plugins : Impossible de mettre à jour le plugin %s : %s"
+
+#, php-format
+msgid "Plugin Manager: Unable to write the %s file for protected plugins."
+msgstr ""
 
 msgid "Plugin archive"
 msgstr "Archive de plugin"
@@ -3894,10 +3902,6 @@ msgstr "La liste des plugins a été mise à jour avec succès."
 
 msgid "Plugin management"
 msgstr "Gestion des plugins"
-
-#, php-format
-msgid "Plugin manager was unable to load plugin %s"
-msgstr "Le gestionnaire de plugins n'a pas pu charger le plugin %s"
 
 msgid "Plugin successfully uploaded."
 msgstr "Plugin téléversé avec succès."
@@ -4204,9 +4208,6 @@ msgstr "Revendeur total"
 msgid "Reseller users"
 msgstr "Revendeurs"
 
-msgid "Reseller users table"
-msgstr "Tableau des utilisateurs du revendeur"
-
 msgid "Reseller with permissions total"
 msgstr "Revendeur avec accès total"
 
@@ -4334,7 +4335,7 @@ msgid "SSL feature is disabled. You cannot add / change certificates"
 msgstr "La fonctionnalité SSL est désactivée. Vous ne pouvez pas ajouter / modifier de certificats"
 
 msgid "Save"
-msgstr "Sauver"
+msgstr "Sauvegarder"
 
 msgid "Search"
 msgstr "Rechercher"
@@ -4411,7 +4412,7 @@ msgid "Separate multiple email addresses with a line-break."
 msgstr "Séparez chaque adresse e-mail par un retour à la ligne."
 
 msgid "Server ports"
-msgstr "Ports des serveurs"
+msgstr "Ports des services"
 
 msgid "Server statistics"
 msgstr "Statistiques du serveur"
@@ -4950,7 +4951,7 @@ msgid ""
 " and will be available for assignment to one or many of your resellers. If "
 "an IP address is not already configured on the system, it will be attached "
 "to the selected network interface."
-msgstr ""
+msgstr "Cette interface permet d'ajouter ou supprimer des adresses IP. Les adresses IP listées ci-dessous sont déjà contrôlées par i-MSCP. Les adresses IP qui seront ajoutées depuis cette interface seront automatiquements ajoutées à la base de données d'i-MSCP, et seront disponibles pour être assignées à un ou plusieurs de vos revendeurs. Si une adresse IP n'est pas encore configurée sur le système, elle sera attachée à l'interface réseau sélectionnée."
 
 msgid "This package already exists in the administrator software repository."
 msgstr "Ce paquet existe déjà dans le dépôt de logiciels de l'administrateur."
@@ -5101,7 +5102,7 @@ msgid "Unable to extract plugin archive: %s"
 msgstr "Impossible d'extraire l'archive du plugin: %s"
 
 msgid "Unable to find any network interface. You cannot add new IP address."
-msgstr ""
+msgstr "Impossible de trouver une interface réseau. Vous ne pouvez pas ajouter une nouvelle adresse IP."
 
 msgid "Unable to find plugin root directory."
 msgstr "Impossible de trouver des plugins dans le répertoire racine."
@@ -5154,10 +5155,6 @@ msgstr "Impossible de supprimer le compte client. Veuillez consulter les journau
 #, php-format
 msgid "Unable to upload file. Max. upload filesize (%1$d MB) reached?"
 msgstr "Impossible de téléverser le fichier. Taille maximale du fichier (%1$d MB) atteinte ?"
-
-#, php-format
-msgid "Unable to write the %s file for protected plugins."
-msgstr "Impossible d'écrire le fichier %s pour la protection des plugins."
 
 msgid "Unallowed database name."
 msgstr "Nom de la base de données non autorisé."
@@ -5230,6 +5227,9 @@ msgstr "Enlever la protection"
 msgid "Update"
 msgstr "Mise à jour"
 
+msgid "Update Plugins"
+msgstr ""
+
 msgid "Update SQL user password"
 msgstr "Mettre à jour le mot de passe SQL"
 
@@ -5258,9 +5258,6 @@ msgid ""
 "Update of Web software repository index has been aborted. Missing or empty "
 "fields."
 msgstr "La mise à jour de l'index du dépôt de logiciels Web a été annulée. Champ(s) manquant(s) ou vide(s)."
-
-msgid "Update plugin list"
-msgstr "Mettre à jour"
 
 msgid "Updates"
 msgstr "Mises à jour"
@@ -5807,7 +5804,7 @@ msgid "You must select a least one mail account to delete."
 msgstr "Vous devez sélectionner au moins un compte e-mail à supprimer."
 
 msgid "You must select a network interface."
-msgstr ""
+msgstr "Vous devez sélectionner une interface réseau."
 
 msgid "You must select a plugin."
 msgstr "Vous devez sélectionner un plugin."
@@ -5897,7 +5894,7 @@ msgid "activated (Softwaredepot)"
 msgstr "activé (Dépôt de logiciels)"
 
 msgid "and"
-msgstr ""
+msgstr "et"
 
 msgid "day"
 msgstr "jour"
@@ -5993,11 +5990,11 @@ msgstr "i-MSCP Installateur de logiciel / Dépôt de logiciels Web"
 msgid "i-MSCP Web software repository"
 msgstr "Dépôt de logiciels Web d'i-MSCP"
 
-msgid "i-MSCP plugin repository"
-msgstr "Dépôt de plugins d'i-MSCP"
+msgid "i-MSCP plugin store"
+msgstr ""
 
 msgid "i-MSCP updates"
-msgstr "Mises à jour d'i-MSCP"
+msgstr "Mises à jour"
 
 msgid "installed"
 msgstr "installé"
@@ -6006,7 +6003,7 @@ msgid "installing"
 msgstr "installation"
 
 msgid "internet Multi Server Control Panel"
-msgstr "internet Multi Server Control Panel"
+msgstr "internet - Multi Server Control Panel"
 
 msgid "kB"
 msgstr "ko"
@@ -6061,7 +6058,7 @@ msgid "orphan entry"
 msgstr "entrée orpheline"
 
 msgid "phpMyAdmin"
-msgstr "phpMyAdmin"
+msgstr "PhpMyAdmin"
 
 msgid "required"
 msgstr "requis"
@@ -6085,7 +6082,7 @@ msgid "unlimited"
 msgstr "illimité"
 
 msgid "view aliases"
-msgstr "Afficher les alias"
+msgstr "Afficher les aliasses"
 
 msgid "waiting for activation"
 msgstr "en attente d'activation"
@@ -6102,5 +6099,5 @@ msgstr "{ADMIN} a activé votre logiciel"
 msgid "{RESELLER} uploaded a new software package"
 msgstr "{RESELLER} a téléversé un nouveau logiciel"
 
-msgid "© 2010-2013 i-MSCP Team<br/>All Rights Reserved"
-msgstr "© 2010-2013 i-MSCP Team<br/>Tous droits réservés"
+msgid "© 2010-2014 i-MSCP Team<br/>All Rights Reserved"
+msgstr ""

@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2013-12-31 17:54+0100\n"
-"PO-Revision-Date: 2013-12-31 16:54+0000\n"
+"POT-Creation-Date: 2014-02-01 16:22+0100\n"
+"PO-Revision-Date: 2014-02-01 15:22+0000\n"
 "Last-Translator: Torsten Widmann <info@goover.de>\n"
 "Language-Team: Spanish (Argentina) (http://www.transifex.com/projects/p/i-MSCP/language/es_AR/)\n"
 "MIME-Version: 1.0\n"
@@ -3840,6 +3840,10 @@ msgid "Plugin Manager: Unable to install the %s plugin: %s"
 msgstr ""
 
 #, php-format
+msgid "Plugin Manager: Unable to load plugin %s"
+msgstr ""
+
+#, php-format
 msgid "Plugin Manager: Unable to protect the %s plugin: %s"
 msgstr ""
 
@@ -3849,6 +3853,10 @@ msgstr ""
 
 #, php-format
 msgid "Plugin Manager: Unable to update the %s plugin: %s"
+msgstr ""
+
+#, php-format
+msgid "Plugin Manager: Unable to write the %s file for protected plugins."
 msgstr ""
 
 msgid "Plugin archive"
@@ -3872,10 +3880,6 @@ msgid "Plugin list successfully updated."
 msgstr ""
 
 msgid "Plugin management"
-msgstr ""
-
-#, php-format
-msgid "Plugin manager was unable to load plugin %s"
 msgstr ""
 
 msgid "Plugin successfully uploaded."
@@ -4182,9 +4186,6 @@ msgstr "Total Revendedor"
 
 msgid "Reseller users"
 msgstr "Usuarios revendedores"
-
-msgid "Reseller users table"
-msgstr "Tabla de usuarios del revendedor"
 
 msgid "Reseller with permissions total"
 msgstr "Total Revendedores con permisos"
@@ -5134,10 +5135,6 @@ msgstr ""
 msgid "Unable to upload file. Max. upload filesize (%1$d MB) reached?"
 msgstr ""
 
-#, php-format
-msgid "Unable to write the %s file for protected plugins."
-msgstr ""
-
 msgid "Unallowed database name."
 msgstr ""
 
@@ -5209,6 +5206,9 @@ msgstr "Desproteger"
 msgid "Update"
 msgstr "Actualizar"
 
+msgid "Update Plugins"
+msgstr ""
+
 msgid "Update SQL user password"
 msgstr ""
 
@@ -5236,9 +5236,6 @@ msgstr ""
 msgid ""
 "Update of Web software repository index has been aborted. Missing or empty "
 "fields."
-msgstr ""
-
-msgid "Update plugin list"
 msgstr ""
 
 msgid "Updates"
@@ -5972,7 +5969,7 @@ msgstr ""
 msgid "i-MSCP Web software repository"
 msgstr ""
 
-msgid "i-MSCP plugin repository"
+msgid "i-MSCP plugin store"
 msgstr ""
 
 msgid "i-MSCP updates"
@@ -6081,5 +6078,5 @@ msgstr ""
 msgid "{RESELLER} uploaded a new software package"
 msgstr ""
 
-msgid "© 2010-2013 i-MSCP Team<br/>All Rights Reserved"
+msgid "© 2010-2014 i-MSCP Team<br/>All Rights Reserved"
 msgstr ""

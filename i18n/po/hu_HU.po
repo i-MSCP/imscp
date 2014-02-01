@@ -3,17 +3,17 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-# Ádám Radovits <adamradovits12@hotmail.com>, 2013
+# Ádám Radovits <adamradovits12@hotmail.com>, 2013-2014
 # Zoltán Balázs <balazsz@citromail.hu>, 2011-2012
 # knorbi555 <k.norbi555@gmail.com>, 2012
 # Zoltán Balázs <balazsz@citromail.hu>, 2012-2013
-# Zsolt Jónás <jonas.zsolt@naxonet.hu>, 2011,2013
+# Zsolt Jónás <jonas.zsolt@naxonet.hu>, 2011,2013-2014
 msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2013-12-31 17:54+0100\n"
-"PO-Revision-Date: 2013-12-31 16:54+0000\n"
+"POT-Creation-Date: 2014-02-01 16:22+0100\n"
+"PO-Revision-Date: 2014-02-01 15:22+0000\n"
 "Last-Translator: Torsten Widmann <info@goover.de>\n"
 "Language-Team: Hungarian (Hungary) (http://www.transifex.com/projects/p/i-MSCP/language/hu_HU/)\n"
 "MIME-Version: 1.0\n"
@@ -47,7 +47,7 @@ msgid ""
 "___________________________\n"
 "The i-MSCP Team\n"
 "\n"
-msgstr "\n\nKedves {NAME},\n\nTárhelye sikeresen elkészült a következő beállításokkal:\n\nAz Ön hozzáférési adatai:\n\nFelhasználói szint:  {USERTYPE}\nFelhasználó neve:  {USERNAME}\nJelszava:                {PASSWORD}\n\nKérjük, változtassa meg ideiglenes jelszavát az első bejelentkezéskor!\n\nA következő oldalon tud belépni: {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}\n\nStatisztika elérése: http://{USERNAME}/{WEBSTATS_RPATH}\n(A belépési adatok megegyeznek  a megadott felhasználónévvel és jelszóval)\n\nKöszönjük, hogy minket választott.\n\n___________________________\nThe i-MSCP Team\n"
+msgstr "\nKedves {NAME}!\n\nTárhelye sikeresen elkészült a következő beállításokkal:\n\nHozzáférési adatok:\n\nFelhasználói szint: {USERTYPE}\nFelhasználó neve: {USERNAME}\nFelhasználó jelszava: {PASSWORD}\n\nKérjük, változtassa meg ideiglenes jelszavát az első bejelentkezéskor!\n\nEzen az oldalon tud belépni: {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}\n\nStatisztika elérése: http://{USERNAME}/{WEBSTATS_RPATH}\n(A belépési adatok megegyeznek  a megadott felhasználónévvel és jelszóval)\n\nKöszönjük, hogy minket választott!\n\n___________________________\ni-MSCP Csapat\n"
 
 msgid ""
 "\n"
@@ -71,7 +71,7 @@ msgid ""
 "___________________________\n"
 "The i-MSCP Team\n"
 "\n"
-msgstr "\n\nKedves {NAME},\n\nTárhelye sikeresen elkészült a következő beállításokkal:\n\nAz Ön hozzáférési adatai:\n\nFelhasználói szint:  {USERTYPE}\nFelhasználó neve:  {USERNAME}\nJelszava:                {PASSWORD}\n\nKérjük, változtassa meg ideiglenes jelszavát az első bejelentkezéskor!\n\nA következő oldalon tud belépni: {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}\n\nKöszönjük, hogy minket választott.\n\n___________________________\nThe i-MSCP Team\n\n"
+msgstr "\nKedves {NAME}!\n\nTárhelye sikeresen elkészült a következő beállításokkal:\n\nHozzáférési adatok:\n\nFelhasználói szint: {USERTYPE}\nFelhasználó neve: {USERNAME}\nFelhasználó jelszava: {PASSWORD}\n\nKérjük, változtassa meg ideiglenes jelszavát az első bejelentkezéskor!\n\nA következő oldalon tud belépni: {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}\n\nKöszönjük, hogy minket választott!\n\n___________________________\ni-MSCP Csapat\n\n"
 
 msgid ""
 "\n"
@@ -94,7 +94,7 @@ msgid ""
 "___________________________\n"
 "The i-MSCP Team\n"
 "\n"
-msgstr "\n\nKedves {NAME},\n\nEz egy automatikus visszaigazolás a következő domain megrendeléséről:\n\n{DOMAIN}\n\nA megrendelés megerősítéséhez kattintson a következő hivatkozásra:\n\n{ACTIVATION_LINK}\n\nHa Ön nem erősíti meg ezt a {EXPIRE_DATE} -ig, megrendelése\nautomatikusan törlődik.\n\nKöszönjük, hogy igénybe vette szolgáltatásainkat.\n\n___________________________\nThe i-MSCP Team\n\n"
+msgstr "\n\nKedves {NAME}!\n\nEz egy automatikus visszaigazolás a következő domain megrendeléséről:\n\n{DOMAIN}\n\nA megrendelés megerősítéséhez kattintson a következő hivatkozásra:\n\n{ACTIVATION_LINK}\n\nHa Ön nem erősíti meg ezt a {EXPIRE_DATE} -ig, megrendelése\nautomatikusan törlődik.\n\nKöszönjük, hogy igénybe veszi szolgáltatásainkat!\n\n___________________________\ni-MSCP Csapat\n\n"
 
 msgid ""
 "\n"
@@ -110,7 +110,7 @@ msgid ""
 "___________________________\n"
 "The i-MSCP Team\n"
 "\n"
-msgstr "\n\nKedves {NAME},\n\nAz új jelszavának aktiválásához kattintson a következő hivatkozásra:\n\n{LINK}\n\nKöszönjük, hogy igénybe vette szolgáltatásainkat.\n\n___________________________\nThe i-MSCP Team\n\n"
+msgstr "\nKedves {NAME}!\n\nAz új jelszavának aktiválásához kattintson a következő hivatkozásra:\n\n{LINK}\n\nKöszönjük, hogy igénybe veszi szolgáltatásainkat!\n\n___________________________\ni-MSCP Csapat\n\n"
 
 msgid ""
 "\n"
@@ -128,7 +128,7 @@ msgid ""
 "___________________________\n"
 "The i-MSCP Team\n"
 "\n"
-msgstr "\n\nKedves {RESELLER},\n\n{CUSTOMER} ügyfelének aktiválásra váró álneve van:\n\n{ALIAS}\n\nAz új álnév aktiválásához a következő oldalon tud belépni: {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}/reseller/alias.php\n\nKöszönjük, hogy igénybe vette szolgáltatásainkat.\n\n___________________________\nThe i-MSCP Team\n\n"
+msgstr "\nKedves {RESELLER}!\n\n{CUSTOMER} ügyfelének aktiválásra váró álneve van:\n\n{ALIAS}\n\nAz új álnév aktiválásához a következő oldalon tud belépni: {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}/reseller/alias.php\n\nKöszönjük, hogy igénybe veszi szolgáltatásainkat!\n\n___________________________\ni-MSCP Csapat\n\n"
 
 msgid ""
 "\n"
@@ -145,7 +145,7 @@ msgid ""
 "___________________________\n"
 "The i-MSCP Team\n"
 "\n"
-msgstr "\n\nHello {NAME},\n\nFelhasználó neve:  {USERNAME}\nJelszava:                {PASSWORD}\n\nA következő oldalon tud belépni: {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}\n\nKöszönjük, hogy igénybe vette szolgálatásainkat.\n\n___________________________\nThe i-MSCP Team\n\n"
+msgstr "\nKedves {NAME}!\n\nFelhasználó neve: {USERNAME}\nFelhasználó jelszava: {PASSWORD}\n\nA következő oldalon tud belépni: {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}\n\nKöszönjük, hogy igénybe veszi szolgálatásainkat!\n\n___________________________\ni-MSCP Csapat\n\n"
 
 msgid " Admin / Support / Open Tickets"
 msgstr "Adminisztrátor / Ügyfélszolgálat / Nyitott hibajegyek"
@@ -389,7 +389,7 @@ msgstr "'% hostname%' nem érvényes gépnév az e-mail cím '% value%'"
 msgid ""
 "'%hostname%' is not in a routable network segment. The email address "
 "'%value%' should not be resolved from public network"
-msgstr "'%hostname%' is not in a routable network segment. The email address '%value%' should not be resolved from public network"
+msgstr "'%hostname%' nem egy routolható hálózati szegmens. Az e-mail címet '%value%' nem lehet elérni a nyilvános hálózatról"
 
 #, php-format
 msgid "'%localPart%' can not be matched against dot-atom format"
@@ -451,7 +451,7 @@ msgstr "'%value%' úgy tűnik, hogy a domain name but the given punycode notatio
 msgid ""
 "'%value%' appears to be a local network name but local network names are not"
 " allowed"
-msgstr "'%value%' úgy tűnik, hogy a local network name but local network names are not allowed"
+msgstr "'%value%' egy helyi hálózati névnek tűnik, de a helyi hálózati nevek nem engedélyezettek"
 
 msgid "'%value%' appears to be a subdomain name but cannot extract TLD part"
 msgstr "'%value%' úgy tűnik, hogy a subdomain name but cannot extract TLD part"
@@ -739,7 +739,7 @@ msgid "Admin / Settings"
 msgstr "Adminisztrátor / Beállítások"
 
 msgid "Admin / Settings / IP Addresses Management"
-msgstr ""
+msgstr "Adminisztrátor / Beállítások / IP-címek kezelése"
 
 msgid "Admin / Settings / Languages"
 msgstr "Adminisztrátor / Beállítások / Nyelv beállítása"
@@ -1805,14 +1805,14 @@ msgid ""
 "Dear %s,\n"
 "\n"
 "You have a new ticket:\n"
-msgstr "Kedves %s,\n\nÚj hibajegye érkezett:\n"
+msgstr "Kedves %s!\n\nÚj hibajegye érkezett:\n"
 
 #, php-format
 msgid ""
 "Dear %s,\n"
 "\n"
 "You have an answer for this ticket:\n"
-msgstr "Kedves %s,\n\nVálasz érkezett erre a hibajegyre:\n"
+msgstr "Kedves %s!\n\nVálasz érkezett erre a hibajegyre:\n"
 
 msgid ""
 "Dear {ADMIN},\n"
@@ -1824,7 +1824,7 @@ msgid ""
 "\tPackage ID: {SOFTWARE_ID}\n"
 "\n"
 "\tPlease login into your i-MSCP control panel for more details."
-msgstr "Kedves {ADMIN},\n\t{RESELLER} új programcsomagot töltött fel.\n\n\tRészletek:\n\tViszonteladó azonosítója: {RESELLER_ID}\n\tProgramcsomag neve: {SOFTWARE}\n\tProgramcsomag azonosítója: {SOFTWARE_ID}\n\n\tKérjük, a részletekért lépjen be az i-MSCP kezelőpaneljébe."
+msgstr "Kedves {ADMIN}!\n\n{RESELLER} új programcsomagot töltött fel.\n\nRészletek:\n\nViszonteladó azonosítója: {RESELLER_ID}\nProgramcsomag neve: {SOFTWARE}\nProgramcsomag azonosítója: {SOFTWARE_ID}\n\nKérjük, a részletekért lépjen be az i-MSCP kezelőfelületére!"
 
 msgid ""
 "Dear {RESELLER},\n"
@@ -1836,7 +1836,7 @@ msgid ""
 "\n"
 "\tMessage from {ADMIN}:\n"
 "\t"
-msgstr "Kedves {RESELLER},\n\t\tA feltöltött programcsomagját a(z) {ADMIN} törölte.\n\n\tRészletek:\n\tProgramcsomag neve: {SOFTWARE}\n\tProgramcsomag azonosítója: {SOFTWARE_ID}\n\n\tÜzenet a(z) {ADMIN} -tól:\n\t"
+msgstr "Kedves {RESELLER}!\n\nA feltöltött programcsomagját a(z) {ADMIN} törölte.\n\nRészletek:\nProgramcsomag neve: {SOFTWARE}\nProgramcsomag azonosítója: {SOFTWARE_ID}\n\nÜzenet a(z) {ADMIN} -tól:"
 
 msgid ""
 "Dear {RESELLER},\n"
@@ -1847,7 +1847,7 @@ msgid ""
 "\tPackage ID: {SOFTWARE_ID}\n"
 "\n"
 "\tPlease login into your i-MSCP control panel for more details."
-msgstr "Kedves {RESELLER},\n\tFeltöltött programcsomagját a(z) {ADMIN} sikeresen aktiválta.\n\n\tRészletek:\n\tProgamcsomag neve: {SOFTWARE}\n\tProgramcsomag azonosítója: {SOFTWARE_ID}\n\n\tKérjük, a részletekért lépjen be az i-MSCP kezelőpaneljébe."
+msgstr "Kedves {RESELLER}!\n\nFeltöltött programcsomagját a(z) {ADMIN} sikeresen aktiválta.\n\nRészletek:\nProgamcsomag neve: {SOFTWARE}\nProgramcsomag azonosítója: {SOFTWARE_ID}\n\nKérjük, a részletekért lépjen be az i-MSCP kezelőfelületére!"
 
 msgid "Debugger"
 msgstr "Hibakereső"
@@ -2664,7 +2664,7 @@ msgid "IP address"
 msgstr "IPv4-cím"
 
 msgid "IP address already under the control of i-MSCP."
-msgstr ""
+msgstr "Ezt az IP-címet már kezeli az i-MSCP."
 
 msgid "IP address data"
 msgstr "IP-cím adatok"
@@ -2673,13 +2673,13 @@ msgid "IP address field is empty or invalid."
 msgstr "IP cím mező üres vagy hibás."
 
 msgid "IP address successfully scheduled for addition."
-msgstr ""
+msgstr "IP-cím hozzáadása sikeresen beütemezve."
 
 msgid "IP address successfully scheduled for deletion."
 msgstr "IP-cím törlése sikeresen beütemezve"
 
 msgid "IP addresses under control of i-MSCP"
-msgstr ""
+msgstr "i-MSCP által kezelt IP-címek"
 
 msgid "IP management"
 msgstr "IP-cím kezelő"
@@ -2696,7 +2696,7 @@ msgstr "IPv6-cím mező üres vagy hibás."
 msgid ""
 "If set to 'yes', Web folders as provisioned by i-MSCP will be protected "
 "against deletion using the immutable flag (Extended attributes)."
-msgstr "Ha 'igen'-t választasz, akkor a Web könyvtárakat az i-MSCP megváltozhatatlan jelöléssel megvédi az esetleges törléstől (kiterjesztett attribútumok)."
+msgstr "Ha 'igen'-t választ, akkor a Web könyvtárakat az i-MSCP megváltozhatatlan jelöléssel megvédi az esetleges törléstől (kiterjesztett attribútumok)."
 
 msgid ""
 "If you protect a plugin, you'll no longer be able to deactivate it from the "
@@ -3672,13 +3672,13 @@ msgid "PiB"
 msgstr "PB"
 
 msgid "Please activate your new i-MSCP password"
-msgstr "Kérem aktiválja új jelszavát"
+msgstr "Kérjük, aktiválja az új jelszavát!"
 
 msgid "Please check the PHP editor settings."
-msgstr "Kérjük ellenőrizd a PHP szerkesztő beállításait."
+msgstr "Kérjük, ellenőrizze a PHP szerkesztő beállításait!"
 
 msgid "Please choose htaccess user or htaccess group."
-msgstr "Kérem válasszon védett felhasználót vagy védett csoportot"
+msgstr "Kérem, válasszon védett felhasználót vagy védett csoportot!"
 
 msgid ""
 "Please contact the administrator!<br />Ask him for the permissions to use "
@@ -3843,6 +3843,10 @@ msgid "Plugin Manager: Unable to install the %s plugin: %s"
 msgstr "Bővítménykezelő: Nem lehet telepíteni a(z) %s bővítményt: %s"
 
 #, php-format
+msgid "Plugin Manager: Unable to load plugin %s"
+msgstr ""
+
+#, php-format
 msgid "Plugin Manager: Unable to protect the %s plugin: %s"
 msgstr "Bővítménykezelő: Nem lehet levédeni a(z) %s bővítményt: %s"
 
@@ -3853,6 +3857,10 @@ msgstr "Bővítménykezelő: Nem lehet eltávolítani a(z) %s bővítményt: %s"
 #, php-format
 msgid "Plugin Manager: Unable to update the %s plugin: %s"
 msgstr "Bővítménykezelő: Nem lehet frissíteni a(z) %s bővítményt: %s"
+
+#, php-format
+msgid "Plugin Manager: Unable to write the %s file for protected plugins."
+msgstr ""
 
 msgid "Plugin archive"
 msgstr "Tömöritett bővítmény"
@@ -3876,10 +3884,6 @@ msgstr "Bővítmény lista sikeresen frissítve!"
 
 msgid "Plugin management"
 msgstr "Bővítménykezelő"
-
-#, php-format
-msgid "Plugin manager was unable to load plugin %s"
-msgstr "Bővítménykezelő nem tudta betölteni a(z) %s bővítményt"
 
 msgid "Plugin successfully uploaded."
 msgstr "Bővítmény sikeresen feltöltve!"
@@ -4184,9 +4188,6 @@ msgid "Reseller total"
 msgstr "Viszonteladó összesen"
 
 msgid "Reseller users"
-msgstr "Viszonteladó felhasználói"
-
-msgid "Reseller users table"
 msgstr "Viszonteladó felhasználói"
 
 msgid "Reseller with permissions total"
@@ -4932,7 +4933,7 @@ msgid ""
 " and will be available for assignment to one or many of your resellers. If "
 "an IP address is not already configured on the system, it will be attached "
 "to the selected network interface."
-msgstr ""
+msgstr "Ezen a felületen tudsz hozzáadni vagy eltávolítani IP-címeket. Az alább felsorolt IP-címeket már kezeli az i-MSCP. Ezen a felületen keresztül hozzáadott IP-címek automatikusan hozzáadásra kerülnek az i-MSCP adatbázisához, és kioszthatóak lesznek egy vagy több viszonteladónak. Ha egy IP-címet még nem konfiguráltál a rendszerben, akkor hozzáadásra kerül a kiválasztott hálózati csatolóhoz."
 
 msgid "This package already exists in the administrator software repository."
 msgstr "Ez a csomag már létezik az adminisztrátor szoftverraktárában."
@@ -5083,7 +5084,7 @@ msgid "Unable to extract plugin archive: %s"
 msgstr "Nem sikerült kibontani a bővítmény archívumát: %s"
 
 msgid "Unable to find any network interface. You cannot add new IP address."
-msgstr ""
+msgstr "Nem található hálózati csatoló. Új IP-cím hozzáadása nem lehetséges. "
 
 msgid "Unable to find plugin root directory."
 msgstr "Nem található a bővítmény gyökérkönyvtára."
@@ -5136,10 +5137,6 @@ msgstr "Nem lehet az ügyfélfiók törlését beütemezni. Kérjük, nézd meg 
 #, php-format
 msgid "Unable to upload file. Max. upload filesize (%1$d MB) reached?"
 msgstr "Nem tölthető fel a fájl. Feltötlhető max. fájlméretet (%1$d MB) túllépte?"
-
-#, php-format
-msgid "Unable to write the %s file for protected plugins."
-msgstr "Nem írható a(z) %s fájl a védett bővítményeknek."
 
 msgid "Unallowed database name."
 msgstr "Nem engedélyezett adatbázis név."
@@ -5212,6 +5209,9 @@ msgstr "Védelem feloldása"
 msgid "Update"
 msgstr "Frissítés"
 
+msgid "Update Plugins"
+msgstr ""
+
 msgid "Update SQL user password"
 msgstr "SQL felhasználó jelszava frissítve"
 
@@ -5240,9 +5240,6 @@ msgid ""
 "Update of Web software repository index has been aborted. Missing or empty "
 "fields."
 msgstr "A webes alkalmazásokhoz tartozó index frissítése megszakadt. Hiányzó vagy üres mezők."
-
-msgid "Update plugin list"
-msgstr "Bővítmény lista frissítése"
 
 msgid "Updates"
 msgstr "Frissítések"
@@ -5467,7 +5464,7 @@ msgid "Welcome email"
 msgstr "Üdvözlő e-mail"
 
 msgid "Welcome {USERNAME} to i-MSCP"
-msgstr "Üdvözöljük {USERNAME} az i-MSCP-ben"
+msgstr "Üdvözöljük {USERNAME} az i-MSCP rendszerben!"
 
 msgid ""
 "When allowed, scripts can call the PHP exec() function. This function is "
@@ -5789,7 +5786,7 @@ msgid "You must select a least one mail account to delete."
 msgstr "Legalább egy postafiókot ki kell jelölni a törléshez."
 
 msgid "You must select a network interface."
-msgstr ""
+msgstr "Meg kell adnod a hálózati csatolót!"
 
 msgid "You must select a plugin."
 msgstr "Ki kell választanod egy bővítményt!"
@@ -5825,7 +5822,7 @@ msgid "Your message"
 msgstr "Üzenet szövege"
 
 msgid "Your message has been successfully sent."
-msgstr "Üzenet sikeresen elküldve"
+msgstr "Üzenet sikeresen elküldve."
 
 msgid "Your new i-MSCP login"
 msgstr "Az Ön új belépési azonosítója"
@@ -5838,12 +5835,12 @@ msgstr "Az Ön csomagja nem megfelelő, kérjük javítsa!"
 
 #, php-format
 msgid "Your remote filesize (%s) is lower than 1 Byte. Please check your URL."
-msgstr "A távoli fájlméret (%s) kevesebb, mint 1 bájt. Kérjük ellenőrizze a webcímet"
+msgstr "A távoli fájlméret (%s) kevesebb, mint 1 bájt. Kérjük, ellenőrizze a webcímet!"
 
 msgid ""
 "Your request for new password has been registered. You will receive an email"
 " with instructions to complete the process."
-msgstr "Jelszó változtatási igényét regisztráltuk. Hamarosan kapni fog egy email-t  a további teendőkről."
+msgstr "Jelszó változtatási igényét regisztráltuk! Hamarosan kapni fog egy email-t a további teendőkkel kapcsolatban."
 
 msgid "ZB"
 msgstr "ZB"
@@ -5879,7 +5876,7 @@ msgid "activated (Softwaredepot)"
 msgstr "aktívált (programtároló)"
 
 msgid "and"
-msgstr ""
+msgstr "és"
 
 msgid "day"
 msgstr "nap"
@@ -5975,8 +5972,8 @@ msgstr "i-MSCP Alkalmazástelepítő webes programtárolóból"
 msgid "i-MSCP Web software repository"
 msgstr "i-MSCP Webes programtároló"
 
-msgid "i-MSCP plugin repository"
-msgstr "i-MSCP bővítmény tároló"
+msgid "i-MSCP plugin store"
+msgstr ""
 
 msgid "i-MSCP updates"
 msgstr "i-MSCP frissítések"
@@ -6084,5 +6081,5 @@ msgstr "{ADMIN} aktívált program csomagjai"
 msgid "{RESELLER} uploaded a new software package"
 msgstr "{RESELLER} által fetöltött új program csomagok"
 
-msgid "© 2010-2013 i-MSCP Team<br/>All Rights Reserved"
-msgstr "© 2010-2013 i-MSCP Team<br/>Minden jog fenntartva"
+msgid "© 2010-2014 i-MSCP Team<br/>All Rights Reserved"
+msgstr ""

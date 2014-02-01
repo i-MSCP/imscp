@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2013-12-31 17:54+0100\n"
-"PO-Revision-Date: 2013-12-31 16:54+0000\n"
+"POT-Creation-Date: 2014-02-01 16:22+0100\n"
+"PO-Revision-Date: 2014-02-01 15:22+0000\n"
 "Last-Translator: Torsten Widmann <info@goover.de>\n"
 "Language-Team: Russian (Russia) (http://www.transifex.com/projects/p/i-MSCP/language/ru_RU/)\n"
 "MIME-Version: 1.0\n"
@@ -739,7 +739,7 @@ msgid "Admin / Settings"
 msgstr "Админ / Настройки"
 
 msgid "Admin / Settings / IP Addresses Management"
-msgstr ""
+msgstr "Админ / Настройки / Управление IP адресами"
 
 msgid "Admin / Settings / Languages"
 msgstr "Админ / Настройки / Языки"
@@ -2664,7 +2664,7 @@ msgid "IP address"
 msgstr "IP адрес"
 
 msgid "IP address already under the control of i-MSCP."
-msgstr ""
+msgstr "IP адрес уже под контролем i-MSCP."
 
 msgid "IP address data"
 msgstr "Данные IP адресов"
@@ -2673,13 +2673,13 @@ msgid "IP address field is empty or invalid."
 msgstr "Поле адреса IP пустует или неверно."
 
 msgid "IP address successfully scheduled for addition."
-msgstr ""
+msgstr "IP адрес успешно помечен для добавления."
 
 msgid "IP address successfully scheduled for deletion."
 msgstr "IP адрес успешно помечен для удаления."
 
 msgid "IP addresses under control of i-MSCP"
-msgstr ""
+msgstr "IP адреса под контролем i-MSCP."
 
 msgid "IP management"
 msgstr "Управление IP"
@@ -3843,6 +3843,10 @@ msgid "Plugin Manager: Unable to install the %s plugin: %s"
 msgstr "Менеджер плагинов: Невозможно установить плагин %s: %s"
 
 #, php-format
+msgid "Plugin Manager: Unable to load plugin %s"
+msgstr ""
+
+#, php-format
 msgid "Plugin Manager: Unable to protect the %s plugin: %s"
 msgstr "Менеджер плагинов: Невозможно защитить плагин %s: %s"
 
@@ -3853,6 +3857,10 @@ msgstr "Менеджер плагинов: Невозможно деинстал
 #, php-format
 msgid "Plugin Manager: Unable to update the %s plugin: %s"
 msgstr "Менеджер плагинов: Невозможно обновить плагин %s: %s"
+
+#, php-format
+msgid "Plugin Manager: Unable to write the %s file for protected plugins."
+msgstr ""
 
 msgid "Plugin archive"
 msgstr "Архив плагинов"
@@ -3876,10 +3884,6 @@ msgstr "Список плагинов успешно обновлен."
 
 msgid "Plugin management"
 msgstr "Управление плагинами"
-
-#, php-format
-msgid "Plugin manager was unable to load plugin %s"
-msgstr "Менеджер плагинов не может загрузить плагин %s"
 
 msgid "Plugin successfully uploaded."
 msgstr "Плагин успешно загружен."
@@ -4185,9 +4189,6 @@ msgstr "Всего реселлеров"
 
 msgid "Reseller users"
 msgstr "Реселлеры"
-
-msgid "Reseller users table"
-msgstr "Таблица пользователей реселлера"
 
 msgid "Reseller with permissions total"
 msgstr "Всего реселлеров с правами"
@@ -4932,7 +4933,7 @@ msgid ""
 " and will be available for assignment to one or many of your resellers. If "
 "an IP address is not already configured on the system, it will be attached "
 "to the selected network interface."
-msgstr ""
+msgstr "Этот интерфейс позволяет добавлять или удалять IP адреса. IP адреса, перчисленные ниже уже находятся под контролем i-MSCP. IP адреса, которые добавляются через этот интерфейс, будут автоматически добавлены в базу данных i-MSCP, и будут добавлены для одного или нескольких Ваших реселлеров. Если IP адреса еще не настроены в системе, они будут прикреплены к выбранному сетевому интерфейсу."
 
 msgid "This package already exists in the administrator software repository."
 msgstr "Этот пакет уже существует в репозитории администратора."
@@ -5083,7 +5084,7 @@ msgid "Unable to extract plugin archive: %s"
 msgstr "Невозможно извлечь архив с плагином: %s"
 
 msgid "Unable to find any network interface. You cannot add new IP address."
-msgstr ""
+msgstr "Невозможно найти сетевой интерфейс. Форма добавления IP адресов была отключена."
 
 msgid "Unable to find plugin root directory."
 msgstr "Невозможно найти корневой каталог плагина."
@@ -5136,10 +5137,6 @@ msgstr "Не удается удалить учетную запись клие�
 #, php-format
 msgid "Unable to upload file. Max. upload filesize (%1$d MB) reached?"
 msgstr "Невозможно загрузить файл. Максимальный размер файла (%1$d MB) достигнут?"
-
-#, php-format
-msgid "Unable to write the %s file for protected plugins."
-msgstr "Менеджер плагинов не может записать %s файл для защищенных плагинов."
 
 msgid "Unallowed database name."
 msgstr "Недозволенное имя базы данных"
@@ -5212,6 +5209,9 @@ msgstr "Снять защиту"
 msgid "Update"
 msgstr "Изменить"
 
+msgid "Update Plugins"
+msgstr ""
+
 msgid "Update SQL user password"
 msgstr "Обновить пароль SQL"
 
@@ -5240,9 +5240,6 @@ msgid ""
 "Update of Web software repository index has been aborted. Missing or empty "
 "fields."
 msgstr "Обновление индекса Web-репозитория было отменено. Необходимые поля отсутствуют или пусты."
-
-msgid "Update plugin list"
-msgstr "Обновить список плагинов"
 
 msgid "Updates"
 msgstr "Обновления"
@@ -5789,7 +5786,7 @@ msgid "You must select a least one mail account to delete."
 msgstr "Вы должны выбрать как минимум один почтовый ящик для удаления."
 
 msgid "You must select a network interface."
-msgstr ""
+msgstr "Вы должны выбрать сетевой интерфейс."
 
 msgid "You must select a plugin."
 msgstr "Вы должны выбрать плагин."
@@ -5879,7 +5876,7 @@ msgid "activated (Softwaredepot)"
 msgstr "активирован (Репозиторий)"
 
 msgid "and"
-msgstr ""
+msgstr "и"
 
 msgid "day"
 msgstr "день"
@@ -5975,8 +5972,8 @@ msgstr "i-MSCP - Установка ПО / Web-репозиторий"
 msgid "i-MSCP Web software repository"
 msgstr "i-MSCP - Web-репозиторий"
 
-msgid "i-MSCP plugin repository"
-msgstr "i-MSCP репозиторий плагинов"
+msgid "i-MSCP plugin store"
+msgstr ""
 
 msgid "i-MSCP updates"
 msgstr "Обновления i-MSCP"
@@ -6084,5 +6081,5 @@ msgstr "{ADMIN} активировал Ваш пакет ПО"
 msgid "{RESELLER} uploaded a new software package"
 msgstr "{RESELLER} загрузил новый пакет ПО"
 
-msgid "© 2010-2013 i-MSCP Team<br/>All Rights Reserved"
-msgstr "© 2010-2013 i-MSCP Team<br/>Все права защищены"
+msgid "© 2010-2014 i-MSCP Team<br/>All Rights Reserved"
+msgstr ""

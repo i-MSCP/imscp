@@ -3,15 +3,15 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-# kazuo <kazu.nito@gmail.com>, 2013
+# kazuo <kazu.nito@gmail.com>, 2013-2014
 # kazuo <kazu.nito@gmail.com>, 2011-2013
 # kazuo <kazu.nito@gmail.com>, 2013
 msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2013-12-31 17:54+0100\n"
-"PO-Revision-Date: 2013-12-31 16:54+0000\n"
+"POT-Creation-Date: 2014-02-01 16:22+0100\n"
+"PO-Revision-Date: 2014-02-01 15:22+0000\n"
 "Last-Translator: Torsten Widmann <info@goover.de>\n"
 "Language-Team: Japanese (Japan) (http://www.transifex.com/projects/p/i-MSCP/language/ja_JP/)\n"
 "MIME-Version: 1.0\n"
@@ -737,7 +737,7 @@ msgid "Admin / Settings"
 msgstr "管理者 / 設定"
 
 msgid "Admin / Settings / IP Addresses Management"
-msgstr ""
+msgstr "管理者 / 設定 / IPアドレス管理"
 
 msgid "Admin / Settings / Languages"
 msgstr "管理者 / 設定 / 言語"
@@ -2662,7 +2662,7 @@ msgid "IP address"
 msgstr "IPアドレス"
 
 msgid "IP address already under the control of i-MSCP."
-msgstr ""
+msgstr "既にi-MSCPの制御下にあるIPアドレスです。"
 
 msgid "IP address data"
 msgstr "IPアドレスデータ"
@@ -2671,13 +2671,13 @@ msgid "IP address field is empty or invalid."
 msgstr "IPアドレスフィールドが空または無効です。"
 
 msgid "IP address successfully scheduled for addition."
-msgstr ""
+msgstr "IPアドレスの追加が予定されました。"
 
 msgid "IP address successfully scheduled for deletion."
 msgstr "IPアドレスの削除が予定されました。"
 
 msgid "IP addresses under control of i-MSCP"
-msgstr ""
+msgstr " i-MSCPの制御下にあるIPアドレス"
 
 msgid "IP management"
 msgstr "IP管理"
@@ -3841,6 +3841,10 @@ msgid "Plugin Manager: Unable to install the %s plugin: %s"
 msgstr "プラグインマネージャ：%sのプラグインをインストールできません：%s"
 
 #, php-format
+msgid "Plugin Manager: Unable to load plugin %s"
+msgstr ""
+
+#, php-format
 msgid "Plugin Manager: Unable to protect the %s plugin: %s"
 msgstr "プラグインマネージャ：%sのプラグインを保護できません：%s"
 
@@ -3851,6 +3855,10 @@ msgstr "プラグインマネージャ：%sのプラグインをアンインス�
 #, php-format
 msgid "Plugin Manager: Unable to update the %s plugin: %s"
 msgstr "プラグインマネージャ：%sのプラグインを更新できません：%s"
+
+#, php-format
+msgid "Plugin Manager: Unable to write the %s file for protected plugins."
+msgstr ""
 
 msgid "Plugin archive"
 msgstr "プラグインアーカイブ"
@@ -3874,10 +3882,6 @@ msgstr "プラグインリストは更新されました。"
 
 msgid "Plugin management"
 msgstr "プラグイン管理"
-
-#, php-format
-msgid "Plugin manager was unable to load plugin %s"
-msgstr "プラグインマネージャ：%sのプラグインをロードできません：%s"
 
 msgid "Plugin successfully uploaded."
 msgstr "プラグインがアップロードされました。"
@@ -4183,9 +4187,6 @@ msgstr "代理店の合計"
 
 msgid "Reseller users"
 msgstr "代理店ユーザー"
-
-msgid "Reseller users table"
-msgstr "代理店ユーザーテーブル"
 
 msgid "Reseller with permissions total"
 msgstr "代理店のアクセス権合計"
@@ -4930,7 +4931,7 @@ msgid ""
 " and will be available for assignment to one or many of your resellers. If "
 "an IP address is not already configured on the system, it will be attached "
 "to the selected network interface."
-msgstr ""
+msgstr "このインターフェースは、IPアドレスを追加又は削除することができます。以下に示すIPアドレスは、i-MSCPの制御下に既にあります。このインタフェースを介して追加されたIPアドレスは、自動的にi-MSCPデータベースに追加され、1つ又は多くのリセラーへの割り当てのために利用できるようになります。 IPアドレスが既にシステムに設定されていない場合は、選択したネットワークインターフェイスに接続されます。"
 
 msgid "This package already exists in the administrator software repository."
 msgstr "パッケージには、管理者のソフトウェアリポジトリに既に存在しています。"
@@ -5081,7 +5082,7 @@ msgid "Unable to extract plugin archive: %s"
 msgstr "プラグインアーカイブを解凍することができません：%s"
 
 msgid "Unable to find any network interface. You cannot add new IP address."
-msgstr ""
+msgstr "ネットワークインターフェイスが見つかりません。新しいIPアドレスを追加することはできません。"
 
 msgid "Unable to find plugin root directory."
 msgstr "プラグインのルートディレクトリが見つかりません。"
@@ -5134,10 +5135,6 @@ msgstr "顧客アカウントの削除を予定することができません。
 #, php-format
 msgid "Unable to upload file. Max. upload filesize (%1$d MB) reached?"
 msgstr "ファイルをアップロードすることができません。最大アップロードファイルサイズ（％1 $ dのMB）に達しましたか？"
-
-#, php-format
-msgid "Unable to write the %s file for protected plugins."
-msgstr "保護されたプラグイン%sのファイルを書き込むことができません。"
 
 msgid "Unallowed database name."
 msgstr "許可されていないデータベース名。"
@@ -5210,6 +5207,9 @@ msgstr "保護を解除する"
 msgid "Update"
 msgstr "更新"
 
+msgid "Update Plugins"
+msgstr ""
+
 msgid "Update SQL user password"
 msgstr "SQLユーザーパスワードの更新"
 
@@ -5238,9 +5238,6 @@ msgid ""
 "Update of Web software repository index has been aborted. Missing or empty "
 "fields."
 msgstr "Webソフトウェアリポジトリ索引の更新が中止されました。欠落しているか、空のフィールドです。"
-
-msgid "Update plugin list"
-msgstr "プラグインリストを更新"
 
 msgid "Updates"
 msgstr "アップデート"
@@ -5787,7 +5784,7 @@ msgid "You must select a least one mail account to delete."
 msgstr "削除するには、少なくとも1つのメールアカウントを選択する必要があります。"
 
 msgid "You must select a network interface."
-msgstr ""
+msgstr "ネットワークインターフェイスを選択する必要があります。"
 
 msgid "You must select a plugin."
 msgstr "プラグインを選択する必要があります。"
@@ -5877,7 +5874,7 @@ msgid "activated (Softwaredepot)"
 msgstr "有効 (ソフトウェアデポット)"
 
 msgid "and"
-msgstr ""
+msgstr "と"
 
 msgid "day"
 msgstr "日"
@@ -5973,8 +5970,8 @@ msgstr "i-MSCP ソフトウェアインストール / Webソフトウェアリ�
 msgid "i-MSCP Web software repository"
 msgstr "i-MSCP Webソフトウェアリポジトリー"
 
-msgid "i-MSCP plugin repository"
-msgstr "i-MSCP プラグインリポジトリ"
+msgid "i-MSCP plugin store"
+msgstr ""
 
 msgid "i-MSCP updates"
 msgstr "i-MSCPアップデート"
@@ -6082,5 +6079,5 @@ msgstr "{ADMIN} ソフトウェアパッケージを有効化"
 msgid "{RESELLER} uploaded a new software package"
 msgstr "{RESELLER} 新しいソフトウェアパッケージをアップロード"
 
-msgid "© 2010-2013 i-MSCP Team<br/>All Rights Reserved"
-msgstr "© 2010-2013 i-MSCP チーム<br/>All Rights Reserved"
+msgid "© 2010-2014 i-MSCP Team<br/>All Rights Reserved"
+msgstr ""
