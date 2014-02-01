@@ -375,7 +375,7 @@ Because this IP is used as IP source for outbound mails, a reverse DNS lookup on
 In case you do not fit with this requirement, several mails sent by your server will be probably considered as spams by receivers.
 ",
 				[@serverIps, 'Add new ip'],
-				$baseServerIp ? $baseServerIp :  $serverIps[0]
+				$baseServerIp ? $baseServerIp : $serverIps[0]
 			);
 		} while($rs != 30 && ! $baseServerIp);
 
@@ -396,11 +396,11 @@ In case you do not fit with this requirement, several mails sent by your server 
 
 			if($rs != 30 && ! ($baseServerIp ~~ @serverIps)) {
 				my $networkCard = undef;
-				my @networkCardList = $net->getDevices();
+				my @networkCardList = grep { $_ ne 'lo' } $net->getDevices();
 
 				if(@networkCardList > 1) { # Do not ask about network card if not more than one is available
 					($rs, $networkCard) = $dialog->radiolist(
-						"\nPlease, select the network card on which you want to add the IP address:", @networkCardList
+						"\nPlease, select the network card on which you want to add the IP address:", [@networkCardList]
 					);
 				} else {
 					$networkCard = pop(@networkCardList);
