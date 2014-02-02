@@ -43,43 +43,47 @@ function get_email_tpl_data($userId, $tplName)
 {
 	$stmt = exec_query("SELECT `fname`, `lname`, `firm`, `email` FROM `admin` WHERE `admin_id` = ?", $userId);
 
-	$firstname = trim($stmt->fields('fname'));
-	$lastname = trim($stmt->fields('lname'));
-
-	if ($firstname != '' && $lastname != '') {
-		$data['sender_name'] = $firstname . ' ' . $lastname;
-	} else if ($firstname != '') {
-		$data['sender_name'] = $firstname;
-	} else if ($lastname != '') {
-		$data['sender_name'] = $lastname;
-	} else {
-		$data['sender_name'] = '';
-	}
-
-	$firm = trim($stmt->fields('firm'));
-
-	if ($firm != '') {
-		if ($data['sender_name'] != '') {
-			$data['sender_name'] .= ' ' . '[' . $firm . ']';
-		} else {
-			$data['sender_name'] = $firm;
-		}
-	}
-
-	$data['sender_email'] = $stmt->fields('email');
-
-	$query = "SELECT `subject`, `message` FROM `email_tpls` WHERE `owner_id` = ? AND `name` = ?";
-	$stmt = exec_query($query, array($userId, $tplName));
-
 	if ($stmt->rowCount()) {
-		$data['subject'] = $stmt->fields['subject'];
-		$data['message'] = $stmt->fields['message'];
-	} else {
-		$data['subject'] = '';
-		$data['message'] = '';
-	}
+		$firstname = trim($stmt->fields('fname'));
+		$lastname = trim($stmt->fields('lname'));
 
-	return $data;
+		if ($firstname != '' && $lastname != '') {
+			$data['sender_name'] = $firstname . ' ' . $lastname;
+		} else if ($firstname != '') {
+			$data['sender_name'] = $firstname;
+		} else if ($lastname != '') {
+			$data['sender_name'] = $lastname;
+		} else {
+			$data['sender_name'] = '';
+		}
+
+		$firm = trim($stmt->fields('firm'));
+
+		if ($firm != '') {
+			if ($data['sender_name'] != '') {
+				$data['sender_name'] .= " [$firm]";
+			} else {
+				$data['sender_name'] = $firm;
+			}
+		}
+
+		$data['sender_email'] = $stmt->fields('email');
+
+		$query = "SELECT `subject`, `message` FROM `email_tpls` WHERE `owner_id` = ? AND `name` = ?";
+		$stmt = exec_query($query, array($userId, $tplName));
+
+		if ($stmt->rowCount()) {
+			$data['subject'] = $stmt->fields['subject'];
+			$data['message'] = $stmt->fields['message'];
+		} else {
+			$data['subject'] = '';
+			$data['message'] = '';
+		}
+
+		return $data;
+	} else {
+		throw new iMSCP_Exception('Unable to find email template data');
+	}
 }
 
 /**
@@ -120,18 +124,17 @@ function get_welcome_email($userId, $userType = 'user')
 
 	$data = get_email_tpl_data($userId, 'add-user-auto-msg');
 
-	if (empty($data['subject'])) {
+	if ($data['subject'] == '') {
 		$data['subject'] = tr('Welcome {USERNAME} to i-MSCP', true);
 	}
 
 	// No custom template for welcome mail - return the default
-	if (empty($data['message'])) {
+	if ($data['message'] == '') {
 		if ($userType == 'user' && $cfg->WEBSTATS_ADDONS != 'No') {
 			$data['message'] = tr('
-
 Dear {NAME},
 
-A new i-MSCP account has been created for you.
+A new account has been created for you.
 
 Your account information:
 
@@ -146,19 +149,14 @@ You can login right now at {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}
 Statistics: http://{USERNAME}/{WEBSTATS_RPATH}
 (Same username and password than above)
 
-Thank you for using i-MSCP services.
-
-___________________________
-The i-MSCP Team
-
+Thank you for using our services.
 ', true);
 
 		} else {
 			$data['message'] = tr('
-
 Dear {NAME},
 
-A new i-MSCP account has been created for you.
+A new account has been created for you.
 
 Your account information:
 
@@ -170,11 +168,7 @@ Remember to change your password often and the first time you login.
 
 You can login right now at {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}
 
-Thank you for using i-MSCP services.
-
-___________________________
-The i-MSCP Team
-
+Thank you for using our services.
 ', true);
 		}
 	}

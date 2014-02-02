@@ -92,6 +92,7 @@ Tickets:
 	- Fixed #0987: Bug - Backup - iMSCP::Database::mysql::mysql::dumpdb: mysqldump: Couldn't find table...
 	- Fixed #0989: Security Issue - Any user on a server can read others files
 	- Fixed #0990: Security issue - Any user can obtain mysql root password
+	- Fixed #0992: Bug - Hungarian welcome e-mail UTF-8 problem
 	- Fixed #0995: Defect - Missing scrollbar in Ftp directory chooser dialog
 	- Fixed #1000: Bug - When a domain is being disabled, apache won't restart
 	- Fixed #1002: Defect - Plugin Version does not change on update

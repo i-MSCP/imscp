@@ -114,15 +114,15 @@ function admin_updateUserData($userId)
 		$stmt = exec_query($query, $userId);
 
 		if ($stmt->fields['admin_type'] == 'admin') {
-			$admin_type = tr('Administrator');
+			$admin_type = tr('Administrator', true);
 		} elseif ($stmt->fields['admin_type'] == 'reseller') {
-			$admin_type = tr('Reseller');
+			$admin_type = tr('Reseller', true);
 		} else {
-			$admin_type = tr('Customer');
+			$admin_type = tr('Customer', true);
 		}
 
 		send_add_user_auto_msg(
-			$userId, $userName, $_POST['password'], $_POST['email'], $_POST['fname'], $_POST['lname'], tr($admin_type)
+			$userId, $userName, $_POST['password'], $_POST['email'], $_POST['fname'], $_POST['lname'], $admin_type
 		);
 
 		set_page_message(tr('Login data successfully sent to %s.', $userName), 'success');

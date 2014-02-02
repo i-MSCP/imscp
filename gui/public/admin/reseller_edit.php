@@ -763,8 +763,8 @@ function admin_checkAndUpdateData($resellerId)
 			// Send mail to reseller for new password
 			if ($data['password'] != '') {
 				send_add_user_auto_msg(
-					$_SESSION['user_id'], $data['admin_name'], $data['password'],
-					$data['email'], $data['fname'], $data['lname'], tr('Reseller')
+					$_SESSION['user_id'], $data['admin_name'], $data['password'], $data['email'], $data['fname'],
+					$data['lname'], tr('Reseller', true)
 				);
 			}
 

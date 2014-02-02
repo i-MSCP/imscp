@@ -1690,17 +1690,12 @@ function send_add_user_auto_msg($adminId, $uname, $upass, $uemail, $ufname, $uln
 	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
 
-	$adminLogin = $_SESSION['user_logged'];
 	$data = get_welcome_email($adminId, $_SESSION['user_type']);
-	$fromName = $data['sender_name'];
-	$fromEmail = $data['sender_email'];
-	$message = $data['message'];
-	$baseVhost = $cfg->BASE_SERVER_VHOST;
 
-	if ($fromName) {
-		$from = encode_mime_header($fromName) . " <$fromEmail>";
+	if ($data['sender_name']) {
+		$from = encode_mime_header($data['sender_name']) . " <{$data['sender_email']}>";
 	} else {
-		$from = $fromEmail;
+		$from = $data['sender_email'];
 	}
 
 	if ($ufname && $ulname) {
@@ -1711,30 +1706,32 @@ function send_add_user_auto_msg($adminId, $uname, $upass, $uemail, $ufname, $uln
 		$to = $uemail;
 	}
 
-	$username = $uname;
-	$password = $upass;
-	$subject = $data['subject'];
 	$search = array();
 	$replace = array();
+
 	$search [] = '{USERNAME}';
-	$replace[] = decode_idna($username);
+	$replace[] = decode_idna($uname);
+
 	$search [] = '{USERTYPE}';
 	$replace[] = $utype;
+
 	$search [] = '{NAME}';
 	$replace[] = decode_idna($name);
+
 	$search [] = '{PASSWORD}';
-	$replace[] = $password;
+	$replace[] = $upass;
+
 	$search [] = '{BASE_SERVER_VHOST}';
-	$replace[] = $baseVhost;
+	$replace[] = $cfg->BASE_SERVER_VHOST;
+
 	$search [] = '{BASE_SERVER_VHOST_PREFIX}';
 	$replace[] = $cfg->BASE_SERVER_VHOST_PREFIX;
+
 	$search[] = '{WEBSTATS_RPATH}';
 	$replace[] = $cfg->WEBSTATS_RPATH;
 
-	$subject = str_replace($search, $replace, $subject);
-	$message = str_replace($search, $replace, $message);
-
-	$subject = encode_mime_header($subject);
+	$data['subject'] = str_replace($search, $replace, $data['subject']);
+	$message = str_replace($search, $replace, $data['message']);
 
 	$headers = "From: $from\r\n";
 	$headers .= "MIME-Version: 1.0\r\n";
@@ -1742,15 +1739,16 @@ function send_add_user_auto_msg($adminId, $uname, $upass, $uemail, $ufname, $uln
 	$headers .= "Content-Transfer-Encoding: 8bit\r\n";
 	$headers .= "X-Mailer: i-MSCP Mailer";
 
-	$mailStatus = (mail($to, encode_mime_header($subject), $message, $headers, "-f $fromEmail")) ? 'OK' : 'NOT OK';
+	$mailStatus = mail($to, encode_mime_header($data['subject']), $message, $headers, "-f {$data['sender_email']}")
+		? 'OK' : 'NOT OK';
 
 	$name = tohtml($name);
-	$fromName = tohtml($fromName);
+	$fromName = tohtml($data['sender_name']);
 	
-	$logentry = (!$fromName) ? $fromEmail : "$fromName - $fromEmail";
+	$logEntry = (!$fromName) ? $data['sender_email'] : "$fromName - {$data['sender_email']}";
 
 	write_log(
-		"$adminLogin: Auto Add User To: |$name - $uemail |, From: |$logentry|, Status: |$mailStatus|!",
+		"{$_SESSION['user_logged']}: Auto Add User To: |$name - $uemail |, From: |$logEntry|, Status: |$mailStatus|!",
 		E_USER_NOTICE
 	);
 }

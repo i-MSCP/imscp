@@ -614,7 +614,8 @@ function admin_checkAndCreateResellerAccount()
 			// Send welcome mail to the new reseller
 			send_add_user_auto_msg(
 				$_SESSION['user_id'], $data['admin_name'], $data['password'],
-				$data['email'], $data['fname'], $data['lname'], tr('Reseller'));
+				$data['email'], $data['fname'], $data['lname'], tr('Reseller', true)
+			);
 
 			write_log("A new reseller account (<b>{$data['admin_name']}</b>) has been created by {$_SESSION['user_logged']}", E_USER_NOTICE);
 

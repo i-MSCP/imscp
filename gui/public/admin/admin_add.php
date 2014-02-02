@@ -24,9 +24,9 @@
  * Portions created by the i-MSCP Team are Copyright (C) 2010-2014 by
  * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
  *
- * @category	i-MSCP
- * @package		iMSCP_Core
- * @subpackage	Admin
+ * @category    i-MSCP
+ * @package     iMSCP_Core
+ * @subpackage  Admin
  * @copyright   2001-2006 by moleSoftware GmbH
  * @copyright   2006-2010 by ispCP | http://isp-control.net
  * @copyright   2010-2014 by i-MSCP | http://i-mscp.net
@@ -50,7 +50,9 @@ $tpl->define_dynamic(
 	array(
 		'layout' => 'shared/layouts/ui.tpl',
 		'page' => 'admin/admin_add.tpl',
-		'page_message' => 'layout'));
+		'page_message' => 'layout'
+	)
+);
 
 $tpl->assign(
 	array(
@@ -65,8 +67,8 @@ $tpl->assign(
  */
 function add_user($tpl)
 {
-    /** @var $cfg iMSCP_Config_Handler_File */
-    $cfg = iMSCP_Registry::get('config');
+	/** @var $cfg iMSCP_Config_Handler_File */
+	$cfg = iMSCP_Registry::get('config');
 
 	// Dispatches the request
 	if (is_xhr()) { // Password generation (AJAX request)
@@ -77,87 +79,85 @@ function add_user($tpl)
 		echo passgen();
 		exit;
 	} elseif (isset($_POST['uaction']) && $_POST['uaction'] === 'add_user') {
-
 		iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onBeforeAddUser);
 
-        if (check_user_data()) {
+		if (check_user_data()) {
 			$upass = cryptPasswordWithSalt(clean_input($_POST['password']));
+			$user_id = $_SESSION['user_id'];
+			$username = clean_input($_POST['username']);
+			$fname = clean_input($_POST['fname']);
+			$lname = clean_input($_POST['lname']);
+			$gender = clean_input($_POST['gender']);
+			$firm = clean_input($_POST['firm']);
+			$zip = clean_input($_POST['zip']);
+			$city = clean_input($_POST['city']);
+			$state = clean_input($_POST['state']);
+			$country = clean_input($_POST['country']);
+			$email = clean_input($_POST['email']);
+			$phone = clean_input($_POST['phone']);
+			$fax = clean_input($_POST['fax']);
+			$street1 = clean_input($_POST['street1']);
+			$street2 = clean_input($_POST['street2']);
 
-            $user_id = $_SESSION['user_id'];
+			if (get_gender_by_code($gender, true) === null) {
+				$gender = '';
+			}
 
-            $username = clean_input($_POST['username']);
-            $fname = clean_input($_POST['fname']);
-            $lname = clean_input($_POST['lname']);
-            $gender = clean_input($_POST['gender']);
-            $firm = clean_input($_POST['firm']);
-            $zip = clean_input($_POST['zip']);
-            $city = clean_input($_POST['city']);
-            $state = clean_input($_POST['state']);
-            $country = clean_input($_POST['country']);
-            $email = clean_input($_POST['email']);
-            $phone = clean_input($_POST['phone']);
-            $fax = clean_input($_POST['fax']);
-            $street1 = clean_input($_POST['street1']);
-            $street2 = clean_input($_POST['street2']);
-
-            if (get_gender_by_code($gender, true) === null) {
-                $gender = '';
-            }
-
-            $query = "
-				INSERT INTO
-				    `admin` (
-                        `admin_name`, `admin_pass`, `admin_type`, `domain_created`,
-                        `created_by`, `fname`, `lname`, `firm`, `zip`, `city`, `state`,
-						`country`, `email`, `phone`, `fax`, `street1`, `street2`,
-						`gender`
-                    ) VALUES (
-                        ?, ?, 'admin', unix_timestamp(), ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,
-                        ?, ?, ?, ?
-					)
+			$query = "
+				INSERT INTO `admin` (
+					`admin_name`, `admin_pass`, `admin_type`, `domain_created`, `created_by`, `fname`, `lname`, `firm`,
+					`zip`, `city`, `state`, `country`, `email`, `phone`, `fax`, `street1`, `street2`, `gender`
+				) VALUES (
+					?, ?, 'admin', unix_timestamp(), ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
+				)
 			";
 
-            exec_query($query, array($username, $upass, $user_id, $fname, $lname,
-                                    $firm, $zip, $city, $state, $country, $email,
-                                    $phone, $fax, $street1, $street2, $gender));
+			exec_query(
+				$query,
+				array(
+					$username, $upass, $user_id, $fname, $lname, $firm, $zip, $city, $state, $country, $email,
+					$phone, $fax, $street1, $street2, $gender
+				)
+			);
 
-            /** @var $db iMSCP_Database */
-            $db = iMSCP_Registry::get('db');
-            $new_admin_id = $db->insertId();
-            $user_logged = $_SESSION['user_logged'];
+			/** @var $db iMSCP_Database */
+			$db = iMSCP_Registry::get('db');
+			$new_admin_id = $db->insertId();
+			$user_logged = $_SESSION['user_logged'];
 
-            write_log("$user_logged: add admin: $username", E_USER_WARNING);
+			write_log("$user_logged: add admin: $username", E_USER_WARNING);
 
-            $user_def_lang = $cfg->USER_INITIAL_LANG;
-            $user_theme_color = $cfg->USER_INITIAL_THEME;
+			$user_def_lang = $cfg->USER_INITIAL_LANG;
+			$user_theme_color = $cfg->USER_INITIAL_THEME;
 
-            $query = "
-				REPLACE INTO
-				    `user_gui_props` (
-                        `user_id`, `lang`, `layout`
-                    ) VALUES (
-                        ?, ?, ?
-                    )
+			$query = "
+				REPLACE INTO `user_gui_props` (
+					`user_id`, `lang`, `layout`
+				) VALUES (
+					?, ?, ?
+				)
 			";
 
-            exec_query($query, array($new_admin_id, $user_def_lang, $user_theme_color));
+			exec_query($query, array($new_admin_id, $user_def_lang, $user_theme_color));
 
 			iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAfterAddUser);
 
-            send_add_user_auto_msg($user_id, clean_input($_POST['username']),
-                                   clean_input($_POST['password']),
-                                   clean_input($_POST['email']),
-                                   clean_input($_POST['fname']),
-                                   clean_input($_POST['lname']),
-                                   tr('Administrator')
-                                   );
+			send_add_user_auto_msg(
+				$user_id,
+				clean_input($_POST['username']),
+				clean_input($_POST['password']),
+				clean_input($_POST['email']),
+				clean_input($_POST['fname']),
+				clean_input($_POST['lname']),
+				tr('Administrator', true)
+			);
 
-            //$_SESSION['user_added'] = 1;
+			//$_SESSION['user_added'] = 1;
 			set_page_message(tr('Admin account successfully created.'), 'success');
 
-            redirectTo('manage_users.php');
-        } else { // check user data
-            $tpl->assign(
+			redirectTo('manage_users.php');
+		} else { // check user data
+			$tpl->assign(
 				array(
 					'EMAIL' => clean_input($_POST['email'], true),
 					'USERNAME' => clean_input($_POST['username'], true),
@@ -172,19 +172,14 @@ function add_user($tpl)
 					'STREET_2' => clean_input($_POST['street2'], true),
 					'PHONE' => clean_input($_POST['phone'], true),
 					'FAX' => clean_input($_POST['fax'], true),
-					'VL_MALE' => (($_POST['gender'] == 'M')
-						? $cfg->HTML_SELECTED
-						: ''),
-					'VL_FEMALE' => (($_POST['gender'] == 'F')
-						? $cfg->HTML_SELECTED
-						: ''),
-					'VL_UNKNOWN' => ((($_POST['gender'] == 'U') || (empty($_POST['gender'])))
-						? $cfg->HTML_SELECTED : '')
+					'VL_MALE' => ($_POST['gender'] == 'M') ? $cfg->HTML_SELECTED : '',
+					'VL_FEMALE' => ($_POST['gender'] == 'F') ? $cfg->HTML_SELECTED : '',
+					'VL_UNKNOWN' => (($_POST['gender'] == 'U') || empty($_POST['gender'])) ? $cfg->HTML_SELECTED : ''
 				)
 			);
-        }
-    } else {
-        $tpl->assign(
+		}
+	} else {
+		$tpl->assign(
 			array(
 				'EMAIL' => '',
 				'USERNAME' => '',
@@ -202,7 +197,7 @@ function add_user($tpl)
 				'VL_MALE' => '',
 				'VL_FEMALE' => '',
 				'VL_UNKNOWN' => $cfg->HTML_SELECTED));
-    }
+	}
 }
 
 /**
@@ -210,37 +205,37 @@ function add_user($tpl)
  */
 function check_user_data()
 {
-    if (!validates_username($_POST['username'])) {
-        set_page_message(tr('Incorrect username length or syntax.'), 'error');
-        return false;
-    }
+	if (!validates_username($_POST['username'])) {
+		set_page_message(tr('Incorrect username length or syntax.'), 'error');
+		return false;
+	}
 
 	if ($_POST['password'] != $_POST['password_confirmation']) {
 		set_page_message(tr("Passwords do not match."), 'error');
 		return false;
 	}
 
-    if (!checkPasswordSyntax($_POST['password'])) {
-        return false;
-    }
+	if (!checkPasswordSyntax($_POST['password'])) {
+		return false;
+	}
 
-    if (!chk_email($_POST['email'])) {
-        set_page_message(tr("Incorrect email length or syntax."), 'error');
-        return false;
-    }
+	if (!chk_email($_POST['email'])) {
+		set_page_message(tr("Incorrect email length or syntax."), 'error');
+		return false;
+	}
 
-    $query = "SELECT `admin_id` FROM `admin` WHERE `admin_name` = ?";
+	$query = "SELECT `admin_id` FROM `admin` WHERE `admin_name` = ?";
 
-    $username = clean_input($_POST['username']);
-    $rs = exec_query($query, $username);
+	$username = clean_input($_POST['username']);
+	$rs = exec_query($query, $username);
 
-    if ($rs->recordCount() != 0) {
-        set_page_message(tr('This user name already exist.'), 'warning');
+	if ($rs->recordCount() != 0) {
+		set_page_message(tr('This user name already exist.'), 'warning');
 
-        return false;
-    }
+		return false;
+	}
 
-    return true;
+	return true;
 }
 
 generateNavigation($tpl);
@@ -254,7 +249,7 @@ $tpl->assign(
 		'TR_CORE_DATA' => tr('Core data'),
 		'TR_USERNAME' => tr('Username'),
 		'TR_PASSWORD' => tr('Password'),
-		'TR_PASSWORD_REPEAT' =>  tr('Password confirmation'),
+		'TR_PASSWORD_REPEAT' => tr('Password confirmation'),
 		'TR_EMAIL' => tr('Email'),
 		'TR_ADDITIONAL_DATA' => tr('Additional data'),
 		'TR_FIRST_NAME' => tr('First name'),
