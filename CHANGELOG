@@ -9,7 +9,7 @@ GUI:
 	- Fixed: jQuery library included twice in the simple layout
 
 PLUGINS:
-	- Changed: updatePluginInfo() method is now public
+	- Changed: The iMSCP_Plugin_Manager::updatePluginInfo() method is now public
 	- Updated: Plugin API to version 0.2.5 (changes are backward compatible)
 
 ------------------------------------------------------------------------------------------------------------------------
