@@ -421,6 +421,18 @@ class iMSCP_Plugin_Manager
 	}
 
 	/**
+	 * Update plugin info
+	 *
+	 * @param string $pluginName Plugin Name
+	 * @param array $info Plugin info
+	 * @return void
+	 */
+	public function updatePluginInfo($pluginName, array $info)
+	{
+		exec_query('UPDATE plugin SET plugin_info = ? WHERE plugin_name = ?', array(json_encode($info), $pluginName));
+	}
+
+	/**
 	 * Is the given plugin installable?
 	 *
 	 * @throws iMSCP_Plugin_Exception When $pluginName is not known
@@ -1392,18 +1404,6 @@ class iMSCP_Plugin_Manager
 				)
 			);
 		}
-	}
-
-	/**
-	 * Update plugin info
-	 *
-	 * @param string $pluginName Plugin Name
-	 * @param array $info Plugin info
-	 * @return void
-	 */
-	protected function updatePluginInfo($pluginName, array $info)
-	{
-		exec_query('UPDATE plugin SET plugin_info = ? WHERE plugin_name = ?', array(json_encode($info), $pluginName));
 	}
 
 	/**
