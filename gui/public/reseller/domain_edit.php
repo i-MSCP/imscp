@@ -1189,6 +1189,7 @@ $tpl->assign(
 		 'TR_DOMAIN_IP' => tr('Domain IP'),
 		 'TR_UPDATE' => tr('Update'),
 		 'TR_CANCEL' => tr('Cancel'),
+		 'CANCEL_LINK' => 'users.php',
 		 'ERR_FIELDS_STACK' => (iMSCP_Registry::isRegistered('errFieldsStack'))
 			? json_encode(iMSCP_Registry::get('errFieldsStack')) : '[]'
 	)

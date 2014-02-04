@@ -12,6 +12,9 @@ PLUGINS:
 	- Changed: The iMSCP_Plugin_Manager::updatePluginInfo() method is now public
 	- Updated: Plugin API to version 0.2.5 (changes are backward compatible)
 
+Tickets:
+	- Fixed #1014: Bug - Link for "cancel" in Reseller - edit Domain is wrong
+
 ------------------------------------------------------------------------------------------------------------------------
 1.1.0
 ------------------------------------------------------------------------------------------------------------------------
