@@ -78,14 +78,8 @@ sub run
 	# eg. /etc/imscp/*
 	my $rs = setRights(
 		$confDir,
-		{ 'user' => $rootUName, 'group' => $rootGName, 'dirmode' => '0750', 'filemode' => '0640', 'recursive' => 1 }
+		{ 'user' => $rootUName, 'group' => $imscpGName, 'dirmode' => '0750', 'filemode' => '0640', 'recursive' => 1 }
 	);
-
-	# eg. /etc/imscp
-	$rs |= setRights($confDir, { 'user' => $rootUName, 'group' => $imscpGName } );
-
-	# eg. /etc/imscp/imscp*
-	$rs |= setRights("$confDir/imscp*", { 'user' => $rootUName, 'group' => $imscpGName, 'mode' => '0640'} );
 
 	# eg. /var/www/imscp/engine
 	$rs |= setRights(
