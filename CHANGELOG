@@ -5,6 +5,9 @@
 1.1.1
 ------------------------------------------------------------------------------------------------------------------------
 
+ADDONS:
+	- Fixed: Awstats - Cron task is not running (dynamic mode)
+
 GUI:
 	- Fixed: jQuery library included twice in the simple layout
 

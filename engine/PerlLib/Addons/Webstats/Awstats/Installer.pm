@@ -334,7 +334,7 @@ sub _addAwstatsCronTask
 		{
 			TASKID => "Addons::Webstats::Awstats",
 			MINUTE => '15',
-			HOUR => '9-3/6',
+			HOUR => '3-21/6',
 			DAY => '*',
 			MONTH => '*',
 			DWEEK => '*',
