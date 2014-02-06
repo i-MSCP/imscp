@@ -304,19 +304,19 @@ sub addSub($$)
 				return 1;
 			}
 
-			$rs = $self->{'hooksManager'}->trigger('beforeNamedAddSub', \$wrkDbFileContent, $data);
+			my $subEntry = iMSCP::File->new('filename' => "$self->{'tplDir'}/db_sub.tpl")->get();
+			unless(defined $subEntry) {
+				error("Unable to read $self->{'tplDir'}/db_sub.tpl file");
+				return 1;
+			}
+
+			$rs = $self->{'hooksManager'}->trigger('beforeNamedAddSub', \$wrkDbFileContent, \$subEntry, $data);
 			return $rs if $rs;
 
 			# Updating timestamp entry
 			$wrkDbFileContent = $self->_incTimeStamp($wrkDbFileContent);
 			unless(defined $wrkDbFileContent) {
 				error('Unable to update timestamp entry');
-				return 1;
-			}
-
-			my $subEntry = iMSCP::File->new('filename' => "$self->{'tplDir'}/db_sub.tpl")->get();
-			unless(defined $subEntry) {
-				error("Unable to read $self->{'tplDir'}/db_sub.tpl file");
 				return 1;
 			}
 
@@ -683,9 +683,6 @@ sub _addDmnConfig($$)
 			return 1;
 		}
 
-		$rs = $self->{'hooksManager'}->trigger('beforeNamedAddDmnConfig', \$cfgWrkFileContent, $data);
-		return $rs if $rs;
-
 		if(defined $self->{'config'}->{'BIND_MODE'} && $self->{'config'}->{'BIND_MODE'} ne '') {
 			# Loading cfg template
 			my $tplCfgEntryContent = iMSCP::File->new(
@@ -695,6 +692,11 @@ sub _addDmnConfig($$)
 				error("Unable to read $self->{'tplDir'}/cfg_$self->{'config'}->{'BIND_MODE'}.tpl");
 				return 1
 			}
+
+			$rs = $self->{'hooksManager'}->trigger(
+				'beforeNamedAddDmnConfig', \$cfgWrkFileContent, \$tplCfgEntryContent, $data
+			);
+			return $rs if $rs;
 
 			my $tags = {
 				DB_DIR => $self->{'config'}->{'BIND_DB_DIR'},

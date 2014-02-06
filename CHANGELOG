@@ -8,15 +8,22 @@
 ADDONS:
 	- Fixed: Awstats - Cron task is not running (dynamic mode)
 
+ENGINE:
+	- Fixed: DNS sub templates must be passed-in to event listeners
+
 GUI:
-	- Fixed: jQuery library included twice in the simple layout
+	- Fixed: jQuery library included twice in simple layout
+	- Fixed: Wrong events triggered in client/profile.php
 
 PLUGINS:
-	- Changed: The iMSCP_Plugin_Manager::updatePluginInfo() method is now public
+	- Changed: iMSCP_Plugin_Manager::updatePluginInfo() method is now public
 	- Updated: Plugin API to version 0.2.5 (changes are backward compatible)
 
 SETUP:
 	- Changed: imscp group is now allowed to read all files from configuration directory
+
+VENDOR:
+	- Updated: DataTables to version 1.9.4
 
 Tickets:
 	- Fixed #1014: Bug - Link for "cancel" in Reseller - edit Domain is wrong

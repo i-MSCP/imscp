@@ -21,7 +21,7 @@
  * @copyright   2010-2014 by i-MSCP | http://i-mscp.net
  * @link        http://i-mscp.net
  * @author      Laurent Declercq <l.declercq@nuxwin.com>
- * @author		i-MSCP Team
+ * @author      i-MSCP Team
  */
 
 /* http://meyerweb.com/eric/tools/css/reset/
@@ -1040,80 +1040,110 @@ table .icon {
     background-image: url(../images/icons/close.png);
 }
 
-/* data tables */
+/* * * * * * *
+ * DataTables
+ */
+
 .dataTables_wrapper {
     position: relative;
-    width: 100%;
     clear: both;
-    /*white-space: nowrap;*/
-    margin: 0.5em 0;
-    overflow-y: hidden;
+    zoom: 1; /* Feeling sorry for IE */
     overflow-x: auto;
-    padding-bottom: 10px;
+}
+
+.dataTables_processing {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 250px;
+    height: 30px;
+    margin-left: -125px;
+    margin-top: -15px;
+    padding: 14px 0 2px 0;
+    border: 1px solid #ddd;
+    text-align: center;
+    color: #999;
+    font-size: 14px;
+    background-color: white;
 }
 
 .dataTables_length {
+    width: 40%;
     float: left;
-    width: 60%;
 }
 
 .dataTables_filter {
+    width: 50%;
     float: right;
-    width: 40%;
     text-align: right;
 }
 
+/* nxw add */
 .dataTables_length,
 .dataTables_filter {
     margin-bottom: 0.5em;
 }
 
+/* nxw add */
+.datatable thead th {
+    cursor: pointer;
+    /*padding-right: 18px;*/
+}
+
 .dataTables_info {
-    float: left;
     width: 60%;
+    float: left;
 }
 
 .dataTables_paginate {
     float: right;
+    text-align: right;
+}
+
+/* Pagination nested */
+.paginate_disabled_previous, .paginate_enabled_previous,
+.paginate_disabled_next, .paginate_enabled_next {
+    float: left;
+    cursor: pointer;
+    *cursor: hand;
+    color: transparent !important;
+
+    display: inline-block;
+    overflow: hidden;
+    width: 0;
+    height: 20px;
+    padding-left: 23px;
 }
 
 .dataTables_info,
 .dataTables_paginate {
     margin-top: 0.5em;
-}
-
-/* Pagination */
-.paginate_disabled_previous,
-.paginate_enabled_previous,
-.paginate_disabled_next,
-.paginate_enabled_next {
-    float: left;
-    background-repeat: no-repeat;
-    background-position: center left;
-    height: 20px;
-    width: 20px;
-    margin-left: 0.5em;
+    margin-bottom: 1.5em;
 }
 
 .paginate_disabled_previous {
-    background-image: url('../images/icons/prev_gray.png');
+    background: url('../images/icons/prev_gray.png') no-repeat top left;
 }
 
 .paginate_enabled_previous {
-    background-image: url('../images/icons/prev.png');
+    background: url('../images/icons/prev.png') no-repeat top left;
 }
 
 .paginate_disabled_next {
-    background-image: url('../images/icons/next_gray.png');
+    background: url('../images/icons/next_gray.png') no-repeat top right;
 }
 
 .paginate_enabled_next {
-    background-image: url('../images/icons/next.png');
+    background: url('../images/icons/next.png') no-repeat top right;
 }
 
-.datatable thead th {
-    cursor: pointer;
-    padding-right: 18px;
+/* * * * * * * * * **
+ * DataTables display
+ */
+table.display {
+    margin: 0 auto;
+    clear: both;
+    width: 100%;
 }
 
 /* Form elements */
