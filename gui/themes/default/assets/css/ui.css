@@ -1078,16 +1078,13 @@ table .icon {
     text-align: right;
 }
 
-/* nxw add */
 .dataTables_length,
 .dataTables_filter {
     margin-bottom: 0.5em;
 }
 
-/* nxw add */
 .datatable thead th {
     cursor: pointer;
-    /*padding-right: 18px;*/
 }
 
 .dataTables_info {
