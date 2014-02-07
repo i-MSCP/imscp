@@ -17,6 +17,7 @@ GUI:
 
 PLUGINS:
 	- Changed: iMSCP_Plugin_Manager::updatePluginInfo() method is now public
+	- Fixed: Plugin Store link
 	- Updated: Plugin API to version 0.2.5 (changes are backward compatible)
 
 SETUP:
