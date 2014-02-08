@@ -504,16 +504,23 @@ sub _buildConf
 
 	for (keys %cfgFiles) {
 		# Get configuration template content
-		my $file = iMSCP::File->new('filename' => "$self->{'cfgDir'}/$_");
-		my $cfgTpl = $file->get();
-		return 1 if ! defined $cfgTpl;
+		my $cfgTpl;
+		my $rs = $self->{'hooksManager'}->trigger('onLoadTemplate', 'dovecot', $_, \$cfgTpl, {});
+		return $rs if $rs;
 
-		my $rs = $self->{'hooksManager'}->trigger('beforePoBuildConf', \$cfgTpl, $_);
+		if(!$cfgTpl) {
+			$cfgTpl= iMSCP::File->new('filename' => "$self->{'cfgDir'}/$_")->get();
+			unless(defined $cfgTpl) {
+				error("Unable to read $self->{'cfgDir'}/$_");
+				return 1;
+			}
+		}
+
+		$rs = $self->{'hooksManager'}->trigger('beforePoBuildConf', \$cfgTpl, $_);
 		return $rs if $rs;
 
 		# Replace placeholders
 		$cfgTpl = process($cfg, $cfgTpl);
-		return 1 if ! defined $cfgTpl;
 
 		$rs = $self->{'hooksManager'}->trigger('afterPoBuildConf', \$cfgTpl, $_);
 		return $rs if $rs;
@@ -522,7 +529,7 @@ sub _buildConf
 		my $filename = fileparse($cfgFiles{$_}->[0]);
 
 		# Store file in working directory
-		$file = iMSCP::File->new('filename' => "$self->{'wrkDir'}/$filename");
+		my $file = iMSCP::File->new('filename' => "$self->{'wrkDir'}/$filename");
 
 		$rs = $file->set($cfgTpl);
 		return $rs if $rs;

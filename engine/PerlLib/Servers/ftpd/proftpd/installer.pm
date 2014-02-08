@@ -362,23 +362,27 @@ sub _buildConfigFile
 		SSL => main::setupGetQuestion('SSL_ENABLED') eq 'yes' ? '' : '#'
 	};
 
-	my $file = iMSCP::File->new('filename' => "$self->{'cfgDir'}/proftpd.conf");
-	my $cfgTpl = $file->get();
-	unless(defined $cfgTpl) {
-		error("Unable to read $file->{'filename'}");
-		return 1;
+	my $cfgTpl;
+	my $rs = $self->{'hooksManager'}->trigger('onLoadTemplate', 'proftpd', 'proftpd.conf', \$cfgTpl, {});
+	return $rs if $rs;
+
+	if(!$cfgTpl) {
+		$cfgTpl = iMSCP::File->new('filename' => "$self->{'cfgDir'}/proftpd.conf")->get();
+		unless(defined $cfgTpl) {
+			error("Unable to read $self->{'cfgDir'}/proftpd.conf");
+			return 1;
+		}
 	}
 
-	my $rs = $self->{'hooksManager'}->trigger('beforeFtpdBuildConf', \$cfgTpl, 'proftpd.conf');
+	$rs = $self->{'hooksManager'}->trigger('beforeFtpdBuildConf', \$cfgTpl, 'proftpd.conf');
 	return $rs if $rs;
 
 	$cfgTpl = process($cfg, $cfgTpl);
-	return 1 unless defined $cfgTpl;
 
 	$rs = $self->{'hooksManager'}->trigger('afterFtpdBuildConf', \$cfgTpl, 'proftpd.conf');
 	return $rs if $rs;
 
-	$file = iMSCP::File->new('filename' => "$self->{'wrkDir'}/proftpd.conf");
+	my $file = iMSCP::File->new('filename' => "$self->{'wrkDir'}/proftpd.conf");
 
 	$rs = $file->set($cfgTpl);
 	return $rs if $rs;

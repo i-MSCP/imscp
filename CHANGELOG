@@ -9,6 +9,7 @@ ADDONS:
 	- Fixed: Awstats - Cron task is not running (dynamic mode)
 
 ENGINE:
+	- Added: onLoadTemplate event in all server implementations
 	- Fixed: DNS sub templates must be passed-in to event listeners
 
 GUI:
@@ -21,7 +22,7 @@ PLUGINS:
 	- Updated: Plugin API to version 0.2.5 (changes are backward compatible)
 
 SETUP:
-	- Changed: imscp group is now allowed to read all files from configuration directory
+	- Changed: imscp group is now allowed to read all files from i-MSCP configuration directory
 
 VENDOR:
 	- Updated: DataTables to version 1.9.4

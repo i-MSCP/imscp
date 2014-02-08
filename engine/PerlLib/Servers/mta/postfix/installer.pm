@@ -542,12 +542,17 @@ sub _buildMainCfFile
 	return $rs if $rs;
 
 	# Load template
-	my $file = iMSCP::File->new('filename' => "$self->{'cfgDir'}/main.cf");
 
-	my $content = $file->get();
-	unless(defined $content) {
-		error("Unable to read $file->{'filename'}");
-		return 1;
+	my $cfgTpl;
+	$rs = $self->{'hooksManager'}->trigger('onLoadTemplate', 'postfix', 'main.cf', \$cfgTpl, {});
+	return $rs if $rs;
+
+	if(!$cfgTpl) {
+		$cfgTpl = iMSCP::File->new('filename' => "$self->{'cfgDir'}/main.cf")->get();
+		unless(defined $cfgTpl) {
+			error("Unable to read $self->{'cfgDir'}/main.cf");
+			return 1;
+		}
 	}
 
 	# Build new file
@@ -555,12 +560,12 @@ sub _buildMainCfFile
 	my $gid = getgrnam($self->{'config'}->{'MTA_MAILBOX_GID_NAME'});
 	my $uid = getpwnam($self->{'config'}->{'MTA_MAILBOX_UID_NAME'});
 
-	$rs = $self->{'hooksManager'}->trigger('beforeMtaBuildMainCfFile', \$content, 'main.cf');
+	$rs = $self->{'hooksManager'}->trigger('beforeMtaBuildMainCfFile', \$cfgTpl, 'main.cf');
 	return $rs if $rs;
 
 	my $baseServerIpType = iMSCP::Net->getInstance->getAddrVersion($main::imscpConfig{'BASE_SERVER_IP'});
 
-	$content = process(
+	$cfgTpl = process(
 		{
 			MTA_INET_PROTOCOLS => $baseServerIpType,
 			MTA_SMTP_BIND_ADDRESS => ($baseServerIpType eq 'ipv4') ? $main::imscpConfig{'BASE_SERVER_IP'} : '',
@@ -583,9 +588,9 @@ sub _buildMainCfFile
 			GUI_CERT_DIR => $main::imscpConfig{'GUI_CERT_DIR'},
 			SSL => ($main::imscpConfig{'SSL_ENABLED'} eq 'yes' ? '' : '#')
 		},
-		$content
+		$cfgTpl
 	);
-	unless(defined $content) {
+	unless(defined $cfgTpl) {
 		error('Unable to build main.cf file');
 		return 1;
 	}
@@ -606,16 +611,16 @@ sub _buildMainCfFile
 	chomp($stdout);
 
 	if(version->parse($stdout) >= version->parse('2.10.0')) {
-		$content =~ s/smtpd_recipient_restrictions/smtpd_relay_restrictions =\n\nsmtpd_recipient_restrictions/;
+		$cfgTpl =~ s/smtpd_recipient_restrictions/smtpd_relay_restrictions =\n\nsmtpd_recipient_restrictions/;
 	}
 
-	$rs = $self->{'hooksManager'}->trigger('afterMtaBuildMainCfFile', \$content, 'main.cf');
+	$rs = $self->{'hooksManager'}->trigger('afterMtaBuildMainCfFile', \$cfgTpl, 'main.cf');
 	return $rs if $rs;
 
 	# Store file in working directory
-	$file = iMSCP::File->new('filename' => "$self->{'wrkDir'}/main.cf");
+	my $file = iMSCP::File->new('filename' => "$self->{'wrkDir'}/main.cf");
 
-	$rs = $file->set($content);
+	$rs = $file->set($cfgTpl);
 	return $rs if $rs;
 
 	$rs = $file->save();
@@ -648,37 +653,42 @@ sub _buildMasterCfFile
 	return $rs if $rs;
 
 	# Load template
-	my $file = iMSCP::File->new('filename' => "$self->{'cfgDir'}/master.cf");
 
-	my $content = $file->get();
-	unless(defined $content) {
-		error("Unable to read $file->{'filename'}");
-		return 1;
-	}
-
-	$rs = $self->{'hooksManager'}->trigger('beforeMtaBuildMasterCfFile', \$content, 'master.cf');
+	my $cfgTpl;
+	$rs = $self->{'hooksManager'}->trigger('onLoadTemplate', 'postfix', 'master.cf', \$cfgTpl, {});
 	return $rs if $rs;
 
-	$content = process(
+	if(!$cfgTpl) {
+		$cfgTpl = iMSCP::File->new('filename' => "$self->{'cfgDir'}/master.cf")->get();
+		unless(defined $cfgTpl) {
+			error("Unable to read $self->{'cfgDir'}/master.cf");
+			return 1;
+		}
+	}
+
+	$rs = $self->{'hooksManager'}->trigger('beforeMtaBuildMasterCfFile', \$cfgTpl, 'master.cf');
+	return $rs if $rs;
+
+	$cfgTpl = process(
 		{
 			MTA_MAILBOX_UID_NAME => $self->{'config'}->{'MTA_MAILBOX_UID_NAME'},
 			IMSCP_GROUP => $main::imscpConfig{'IMSCP_GROUP'},
 			ARPL_PATH => $main::imscpConfig{'ROOT_DIR'}."/engine/messenger/imscp-arpl-msgr"
 		},
-		$content
+		$cfgTpl
 	);
-	unless(defined $content) {
+	unless(defined $cfgTpl) {
 		error('Unable to build master.cf file');
 		return 1;
 	}
 
-	$rs = $self->{'hooksManager'}->trigger('afterMtaBuildMasterCfFile', \$content, 'master.cf');
+	$rs = $self->{'hooksManager'}->trigger('afterMtaBuildMasterCfFile', \$cfgTpl, 'master.cf');
 	return $rs if $rs;
 
 	# Store file in working directory
-	$file = iMSCP::File->new('filename' => "$self->{'wrkDir'}/master.cf");
+	my $file = iMSCP::File->new('filename' => "$self->{'wrkDir'}/master.cf");
 
-	$rs = $file->set($content);
+	$rs = $file->set($cfgTpl);
 	return $rs if $rs;
 
 	$rs = $file->save();

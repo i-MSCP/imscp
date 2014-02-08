@@ -532,7 +532,12 @@ sub _buildPhpConfFiles
 	$rs = $self->{'httpd'}->buildConfFile(
 		$self->{'apacheCfgDir'} . '/parts/php5.itk.ini',
 		{},
-		{ 'destination' => "$self->{'apacheWrkDir'}/php.ini", 'mode' => 0644, 'user' => $rootUName, 'group' => $rootGName }
+		{
+			'destination' => "$self->{'apacheWrkDir'}/php.ini",
+			'mode' => 0644,
+			'user' => $rootUName,
+			'group' => $rootGName
+		}
 	);
 	return $rs if $rs;
 
@@ -588,24 +593,32 @@ sub _buildApacheConfFiles
 	# Backup, build, store and install ports.conf file if exists
 
 	if(-f "$self->{'config'}->{'APACHE_CONF_DIR'}/ports.conf") {
+		my $cfgTpl;
+		$rs = $self->{'hooksManager'}->trigger('onLoadTemplate', 'apache_itk', 'ports.conf', \$cfgTpl, {});
+		return $rs if $rs;
 
-		# Load file
-		my $file = iMSCP::File->new('filename' => "$self->{'config'}->{'APACHE_CONF_DIR'}/ports.conf");
-		my $rdata = $file->get();
-		unless(defined $rdata) {
-			error("Unable to read $self->{'config'}->{'APACHE_CONF_DIR'}/ports.conf");
-			return 1;
+		if(!$cfgTpl) {
+			$cfgTpl = iMSCP::File->new('filename' => "$self->{'config'}->{'APACHE_CONF_DIR'}/ports.conf")->get();
+			unless(defined $cfgTpl) {
+				error("Unable to read $self->{'config'}->{'APACHE_CONF_DIR'}/ports.conf");
+				return 1;
+			}
 		}
 
-		$rs = $self->{'hooksManager'}->trigger('beforeHttpdBuildConfFile', \$rdata, 'ports.conf');
+		$rs = $self->{'hooksManager'}->trigger('beforeHttpdBuildConfFile', \$cfgTpl, 'ports.conf');
 		return $rs if $rs;
 
-		$rdata =~ s/^(NameVirtualHost\s+\*:80)/#$1/gmi;
+		$cfgTpl =~ s/^(NameVirtualHost\s+\*:80)/#$1/gmi;
 
-		$rs = $self->{'hooksManager'}->trigger('afterHttpdBuildConfFile', \$rdata, 'ports.conf');
+		$rs = $self->{'hooksManager'}->trigger('afterHttpdBuildConfFile', \$cfgTpl, 'ports.conf');
 		return $rs if $rs;
 
-		$rs = $file->set($rdata);
+		my $file = iMSCP::File->new('filename' => "$self->{'config'}->{'APACHE_CONF_DIR'}/ports.conf");
+
+		$rs = $file->set($cfgTpl);
+		return $rs if $rs;
+
+		$rs = $file->mode(0644);
 		return $rs if $rs;
 
 		$rs = $file->save();

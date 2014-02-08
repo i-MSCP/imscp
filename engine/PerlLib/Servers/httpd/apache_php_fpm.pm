@@ -1011,16 +1011,21 @@ sub buildConfFile($$$;$)
 
 	my ($name, $path, $suffix) = fileparse($file);
 
-	$file = "$self->{'apacheCfgDir'}/$file" unless -d $path && $path ne './';
+	my $cfgTpl;
+	my $rs = $self->{'hooksManager'}->trigger('onLoadTemplate', 'apache_php_fpm', $name, \$cfgTpl, $data);
+	return $rs if $rs;
 
-	my $fileH = iMSCP::File->new('filename' => $file);
-	my $cfgTpl = $fileH->get();
-	unless(defined $cfgTpl) {
-		error("Unable to read $file");
-		return 1;
+	if(!$cfgTpl) {
+		$file = "$self->{'apacheCfgDir'}/$file" unless -d $path && $path ne './';
+
+		$cfgTpl = iMSCP::File->new('filename' => $file)->get();
+		unless(defined $cfgTpl) {
+			error("Unable to read $file");
+			return 1;
+		}
 	}
 
-	my $rs = $self->{'hooksManager'}->trigger('beforeHttpdBuildConfFile', \$cfgTpl, "$name$suffix", $data, $options);
+	$rs = $self->{'hooksManager'}->trigger('beforeHttpdBuildConfFile', \$cfgTpl, "$name$suffix", $data, $options);
 	return $rs if $rs;
 
 	$cfgTpl = $self->buildConf($cfgTpl, "$name$suffix", $data);
@@ -1031,20 +1036,20 @@ sub buildConfFile($$$;$)
 
 	$cfgTpl =~ s/\n{2,}/\n\n/g; # Remove any duplicate blank lines
 
-	$fileH = iMSCP::File->new(
+	my $fileHandler = iMSCP::File->new(
 		'filename' => ($options->{'destination'} ? $options->{'destination'} : "$self->{'apacheWrkDir'}/$name$suffix")
 	);
 
-	$rs = $fileH->set($cfgTpl);
+	$rs = $fileHandler->set($cfgTpl);
 	return $rs if $rs;
 
-	$rs = $fileH->save();
+	$rs = $fileHandler->save();
 	return $rs if $rs;
 
-	$rs = $fileH->mode($options->{'mode'} ? $options->{'mode'} : 0644);
+	$rs = $fileHandler->mode($options->{'mode'} ? $options->{'mode'} : 0644);
 	return $rs if $rs;
 
-	$fileH->owner(
+	$fileHandler->owner(
 		$options->{'user'} ? $options->{'user'} : $main::imscpConfig{'ROOT_USER'},
 		$options->{'group'} ? $options->{'group'} : $main::imscpConfig{'ROOT_GROUP'}
 	);
@@ -1073,18 +1078,18 @@ sub installConfFile($$;$)
 
 	$file = "$self->{'apacheWrkDir'}/$file" unless -d $path && $path ne './';
 
-	my $fileH = iMSCP::File->new('filename' => $file);
+	my $fileHandler = iMSCP::File->new('filename' => $file);
 
-	$rs = $fileH->mode($options->{'mode'} ? $options->{'mode'} : 0644);
+	$rs = $fileHandler->mode($options->{'mode'} ? $options->{'mode'} : 0644);
 	return $rs if $rs;
 
-	$rs = $fileH->owner(
+	$rs = $fileHandler->owner(
 		$options->{'user'} ? $options->{'user'} : $main::imscpConfig{'ROOT_USER'},
 		$options->{'group'} ? $options->{'group'} : $main::imscpConfig{'ROOT_GROUP'}
 	);
 	return $rs if $rs;
 
-	$rs = $fileH->copyFile(
+	$rs = $fileHandler->copyFile(
 		$options->{'destination'}
 			? $options->{'destination'} : "$self->{'config'}->{'APACHE_SITES_DIR'}/$name$suffix"
 	);

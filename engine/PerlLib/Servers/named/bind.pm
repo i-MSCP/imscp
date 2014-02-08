@@ -304,10 +304,17 @@ sub addSub($$)
 				return 1;
 			}
 
-			my $subEntry = iMSCP::File->new('filename' => "$self->{'tplDir'}/db_sub.tpl")->get();
-			unless(defined $subEntry) {
-				error("Unable to read $self->{'tplDir'}/db_sub.tpl file");
-				return 1;
+			# Loading subdomain entry template
+			my $subEntry;
+			$rs = $self->{'hooksManager'}->trigger('onLoadTemplate', 'bind', 'db_sub.tpl', \$subEntry, $data);
+			return $rs if $rs;
+
+			if(!$subEntry) {
+				$subEntry = iMSCP::File->new('filename' => "$self->{'tplDir'}/db_sub.tpl")->get();
+				unless(defined $subEntry) {
+					error("Unable to read $self->{'tplDir'}/db_sub.tpl file");
+					return 1;
+				}
 			}
 
 			$rs = $self->{'hooksManager'}->trigger('beforeNamedAddSub', \$wrkDbFileContent, \$subEntry, $data);
@@ -684,13 +691,21 @@ sub _addDmnConfig($$)
 		}
 
 		if(defined $self->{'config'}->{'BIND_MODE'} && $self->{'config'}->{'BIND_MODE'} ne '') {
+			my $tplCfgEntryContent;
+			$rs = $self->{'hooksManager'}->trigger(
+				'onLoadTemplate', 'bind', "cfg_$self->{'config'}->{'BIND_MODE'}.tpl", \$tplCfgEntryContent, $data
+			);
+			return $rs if $rs;
+
 			# Loading cfg template
-			my $tplCfgEntryContent = iMSCP::File->new(
-				'filename' => "$self->{'tplDir'}/cfg_$self->{'config'}->{'BIND_MODE'}.tpl"
-			)->get();
-			unless(defined $tplCfgEntryContent) {
-				error("Unable to read $self->{'tplDir'}/cfg_$self->{'config'}->{'BIND_MODE'}.tpl");
-				return 1
+			if(!$tplCfgEntryContent) {
+				$tplCfgEntryContent = iMSCP::File->new(
+					'filename' => "$self->{'tplDir'}/cfg_$self->{'config'}->{'BIND_MODE'}.tpl"
+				)->get();
+				unless(defined $tplCfgEntryContent) {
+					error("Unable to read $self->{'tplDir'}/cfg_$self->{'config'}->{'BIND_MODE'}.tpl");
+					return 1;
+				}
 			}
 
 			$rs = $self->{'hooksManager'}->trigger(
@@ -870,13 +885,19 @@ sub _addDmnDb($$)
 	}
 
 	# Getting db template content
-	my $tplDbFileContent = iMSCP::File->new('filename' => "$self->{'tplDir'}/db.tpl")->get();
-	unless(defined $tplDbFileContent) {
-		error("Unable to read $self->{'tplDir'}/db.tpl");
-		return 1;
+	my $tplDbFileContent;
+	my $rs = $self->{'hooksManager'}->trigger('onLoadTemplate', 'bind', 'db.tpl', \$tplDbFileContent, $data);
+	return $rs if $rs;
+
+	if(!$tplDbFileContent) {
+		$tplDbFileContent = iMSCP::File->new('filename' => "$self->{'tplDir'}/db.tpl")->get();
+		unless(defined $tplDbFileContent) {
+			error("Unable to read $self->{'tplDir'}/db.tpl");
+			return 1;
+		}
 	}
 
-	my $rs = $self->{'hooksManager'}->trigger('beforeNamedAddDmnDb', \$tplDbFileContent, $data);
+	$rs = $self->{'hooksManager'}->trigger('beforeNamedAddDmnDb', \$tplDbFileContent, $data);
 	return $rs if $rs;
 
 	# Process timestamp entry

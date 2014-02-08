@@ -429,14 +429,20 @@ sub _buildConf
 		# Retrieving file basename
 		my $filename = fileparse($self->{'config'}->{$_});
 
-		# Loading the template file
-		my $cfgTpl = iMSCP::File->new('filename' => "$self->{'cfgDir'}/$filename")->get();
-		unless(defined $cfgTpl) {
-			error("Unable to read $self->{'cfgDir'}/$filename");
-			return 1;
+		my $cfgTpl;
+		my $rs = $self->{'hooksManager'}->trigger('onLoadTemplate', 'bind', $filename, \$cfgTpl, {});
+		return $rs if $rs;
+
+		if(!$cfgTpl) {
+			# Loading the template file
+			$cfgTpl = iMSCP::File->new('filename' => "$self->{'cfgDir'}/$filename")->get();
+			unless(defined $cfgTpl) {
+				error("Unable to read $self->{'cfgDir'}/$filename");
+				return 1;
+			}
 		}
 
-		my $rs = $self->{'hooksManager'}->trigger('beforeNamedBuildConf', \$cfgTpl, $filename);
+		$rs = $self->{'hooksManager'}->trigger('beforeNamedBuildConf', \$cfgTpl, $filename);
 		return $rs if $rs;
 
 		if($_ eq 'BIND_CONF_FILE' && ! -f "$self->{'config'}->{'BIND_CONF_DIR'}/bind.keys") {
