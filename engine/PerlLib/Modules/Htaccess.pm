@@ -174,6 +174,7 @@ sub buildHTTPDData
 	$hDir =~ s~/+~/~g;
 
 	$self->{'httpd'} = {
+		DOMAIN_ADMIN_ID => $self->{'domain_admin_id'},
 		USER => $userName,
 		GROUP => $groupName,
 		AUTH_TYPE => $self->{'auth_type'},

@@ -193,6 +193,7 @@ sub buildHTTPDData
 	my $haveCert = exists $certData->{$self->{'alias_id'}} && !$self->testCert($self->{'alias_name'});
 
 	$self->{'httpd'} = {
+		DOMAIN_ADMIN_ID => $self->{'domain_admin_id'},
 		DOMAIN_TYPE => 'als',
 		DOMAIN_NAME => $self->{'alias_name'},
 		DOMAIN_NAME_UNICODE => idn_to_unicode($self->{'alias_name'}, 'UTF-8'),
@@ -265,6 +266,7 @@ sub buildMTAData
 	my $self = $_[0];
 
 	$self->{'mta'} = {
+		DOMAIN_ADMIN_ID => $self->{'domain_admin_id'},
 		DOMAIN_NAME => $self->{'alias_name'},
 		DOMAIN_TYPE => $self->{'type'},
 		TYPE => 'vals_entry',
@@ -283,6 +285,7 @@ sub buildNAMEDData
 		($main::imscpConfig{'SYSTEM_USER_MIN_UID'} + $self->{'domain_admin_id'});
 
 	$self->{'named'} = {
+		DOMAIN_ADMIN_ID => $self->{'domain_admin_id'},
 		DOMAIN_NAME => $self->{'alias_name'},
 		DOMAIN_IP => $self->{'ip_number'},
 		USER_NAME => $userName . 'als' . $self->{'alias_id'},
@@ -379,6 +382,7 @@ sub buildADDONData
 	$webDir =~ s~/$~~g;
 
 	$self->{'AddonsData'} = {
+		DOMAIN_ADMIN_ID => $self->{'domain_admin_id'},
 		ALIAS => $userName,
 		DOMAIN_NAME => $self->{'alias_name'},
 		USER => $userName,

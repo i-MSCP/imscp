@@ -195,6 +195,7 @@ sub buildHTTPDData
 		! $self->testCert($self->{'subdomain_name'} . '.' . $self->{'user_home'});
 
 	$self->{'httpd'} = {
+		DOMAIN_ADMIN_ID => $self->{'domain_admin_id'},
 		DOMAIN_TYPE => 'sub',
 		DOMAIN_NAME => $self->{'subdomain_name'} . '.' . $self->{'user_home'},
 		DOMAIN_NAME_UNICODE => idn_to_unicode($self->{'subdomain_name'} . '.' . $self->{'user_home'}, 'UTF-8'),
@@ -268,6 +269,7 @@ sub buildMTAData
 	my $self = $_[0];
 
 	$self->{'mta'} = {
+		DOMAIN_ADMIN_ID => $self->{'domain_admin_id'},
 		DOMAIN_NAME => $self->{'subdomain_name'} . '.' . $self->{'user_home'},
 		DOMAIN_TYPE => $self->{'type'},
 		TYPE => 'vsub_entry',
@@ -286,6 +288,7 @@ sub buildNAMEDData
 		($main::imscpConfig{'SYSTEM_USER_MIN_UID'} + $self->{'domain_admin_id'});
 
 	$self->{'named'} = {
+		DOMAIN_ADMIN_ID => $self->{'domain_admin_id'},
 		DOMAIN_NAME => $self->{'subdomain_name'} . '.' . $self->{'user_home'},
 		PARENT_DOMAIN_NAME => $self->{'user_home'},
 		DOMAIN_IP => $self->{'ip_number'},
@@ -347,6 +350,7 @@ sub buildADDONData
 	$webDir =~ s~/$~~g;
 
 	$self->{'AddonsData'} = {
+		DOMAIN_ADMIN_ID => $self->{'domain_admin_id'},
 		ALIAS => $userName,
 		DOMAIN_NAME => $self->{'subdomain_name'} . '.' . $self->{'user_home'},
 		USER => $userName,
