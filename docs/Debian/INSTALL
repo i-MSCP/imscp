@@ -64,11 +64,12 @@ Make sure you are logged in as root:
 2.  Untar or unzip the distribution files to a secure directory
 
 	# cd /usr/local/src
-	# tar xjvf imscp-1.1.1.tar.bz2
+	# wget https://github.com/i-MSCP/imscp/archive/<version>.tar.gz
+	# tar xjvf <version>.tar.gz
 
 3.  Change to the newly created directory
 
-	# cd ./imscp-1.1.1
+	# cd imscp-<version>
 
 4.  (optional) Check the imscp.conf and adapt it to your requirements.
 
@@ -90,11 +91,12 @@ Make sure you are logged in as root and MySQL is running.
 1.  Untar or unzip the distribution files to a secure directory
 
 	# cd /usr/local/src
-	# tar xjvf imscp-1.1.1.tar.bz2
+	# wget https://github.com/i-MSCP/imscp/archive/<version>.tar.gz
+	# tar xjvf <version>.tar.gz
 
 2. Change to the newly created directory
 
-	# cd ./imscp-1.1.1
+	# cd imscp-<version>
 
 3.  Update by running the imscp-autoinstall script
 
