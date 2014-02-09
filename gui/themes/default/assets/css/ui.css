@@ -126,7 +126,7 @@ a {
 
 .header {
     position: relative;
-    width: 100%;
+    white-space: nowrap;
     height: 89px;
     overflow: hidden;
 }
