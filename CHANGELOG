@@ -30,6 +30,7 @@ VENDOR:
 
 Tickets:
 	- Fixed #1014: Bug - Link for "cancel" in Reseller - edit Domain is wrong
+	- Fixed #1020: Bug - Wrong SQL query - Search feature
 
 ------------------------------------------------------------------------------------------------------------------------
 1.1.0

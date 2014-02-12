@@ -278,7 +278,7 @@ function gen_user_list($tpl)
 
 	// Search request generated ?
 	if (isset($_POST['uaction']) && !empty($_POST['uaction'])) {
-		$_SESSION['search_for'] = trim(clean_input($_POST['search_for']));
+		$_SESSION['search_for'] = clean_input($_POST['search_for']);
 		$_SESSION['search_common'] = $_POST['search_common'];
 		$_SESSION['search_status'] = $_POST['search_status'];
 		$startIndex = 0;
