@@ -2587,8 +2587,8 @@ function getDataTablesPluginTranslations()
 			'sInfoEmpty' => tr('Showing 0 to 0 of 0 records', true),
 			'sInfoFiltered' => tr('(filtered from %s total records)', true, '_MAX_'),
 			'sSearch' => tr('Search', true),
-			'oPaginate' => array('sPrevious' => tr('Previous', true), 'sNext' => tr('Next', true)
-			)
+			'oPaginate' => array('sPrevious' => tr('Previous', true), 'sNext' => tr('Next', true)),
+			'sProcessing' => tr('Processing...', true),
 		)
 	);
 }
