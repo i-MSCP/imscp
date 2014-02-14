@@ -16,6 +16,7 @@ ENGINE:
 GUI:
 	- Fixed: jQuery library included twice in simple layout
 	- Fixed: Ticket notification won't be delivered (Support ticket feature)
+	- Fixed: Wrong download link for new release
 	- Fixed: Wrong events triggered in client/profile.php
 	- Updated: Datatable translations
 

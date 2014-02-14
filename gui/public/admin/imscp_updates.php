@@ -66,7 +66,7 @@ function get_update_infos($tpl)
 			array(
 				'UPDATE_INFOS' => '',
 				'UPDATE' => tr('New i-MSCP update is available'),
-				'TR_MESSAGE' => tr('Get it at') . " <a href=\"http://www.i-mscp.net/download\" class=\"link\" target=\"_blank\">http://www.i-mscp.net/download</a>"
+				'TR_MESSAGE' => tr('Get it on') . " <a href=\"https://github.com/i-MSCP/imscp/releases/latest\" class=\"link\" target=\"_blank\">GitHub</a>"
 			)
 		);
 
