@@ -768,7 +768,7 @@ function _sendTicketNotification($toId, $fromId, $ticketSubject, $ticketMessage,
 	}
 
 	if ($toFname && $toLname) {
-		$to = '"' . encode_mime_header($toFname . ' ' . $toLname) . " <$toEmail>";
+		$to = encode_mime_header($toFname . ' ' . $toLname) . " <$toEmail>";
 		$toname = "$toFname $toLname";
 	} else {
 		$toname = $toUname;
