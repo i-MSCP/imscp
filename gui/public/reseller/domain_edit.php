@@ -716,6 +716,10 @@ function reseller_checkAndUpdateData($domainId, $recoveryMode = false)
 													 $data['max_sql_db_cnt'], ($data['nbSqlDatabases'] > 1 ) ? tr('SQL databases'): tr('SQL database'))
 			) {
 				$errFieldsStack[] = 'domain_sqld_limit';
+			} elseif ($data['domain_sqld_limit'] != -1 && $data['domain_sqlu_limit'] == -1) {
+				set_page_message(tr('SQL user limit is disabled.'), 'error');
+				$errFieldsStack[] = 'domain_sqld_limit';
+				$errFieldsStack[] = 'domain_sqlu_limit';
 			}
 		}
 
@@ -729,6 +733,10 @@ function reseller_checkAndUpdateData($domainId, $recoveryMode = false)
 													 $data['max_sql_user_cnt'], ($data['nbSqlUsers'] > 1) ?  tr('SQL users') : tr('SQL user'))
 			) {
 				$errFieldsStack[] = 'domain_sqlu_limit';
+			} elseif ($data['domain_sqlu_limit'] != -1 && $data['domain_sqld_limit'] == -1) {
+				set_page_message(tr('SQL database limit is disabled.'), 'error');
+				$errFieldsStack[] = 'domain_sqlu_limit';
+				$errFieldsStack[] = 'domain_sqld_limit';
 			}
 		}
 
