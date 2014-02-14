@@ -328,11 +328,11 @@ function check_user_data($phpini)
 	}
 
 	if (!resellerHasFeature('sql_db')) {
-		$sqlDb = '-1';
+		$sqlDb = -1;
 	} elseif (!imscp_limit_check($sqlDb, -1)) {
 		set_page_message(tr('Incorrect SQL database limit.'), 'error');
-	} elseif ($sqlUser != -1 && $sqlDb == -1) {
-		set_page_message(tr('SQL user limit is <i>disabled</i>.'), 'error');
+	} elseif ($sqlDb != -1 && $sqlUser == -1) {
+		set_page_message(tr('SQL user limit is disabled.'), 'error');
 	}
 
 	// SQL users limit
@@ -342,11 +342,11 @@ function check_user_data($phpini)
 	}
 
 	if (!resellerHasFeature('sql_user')) {
-		$sqlUser = '-1';
+		$sqlUser = -1;
 	} elseif (!imscp_limit_check($sqlUser, -1)) {
 		set_page_message(tr('Incorrect SQL user limit.'), 'error');
-	} elseif ($sqlUser == -1 && $sqlDb != -1) {
-		set_page_message(tr('SQL database limit is not <i>disabled</i>.'), 'error');
+	} elseif ($sqlUser != -1 && $sqlDb == -1) {
+		set_page_message(tr("SQL database limit is disabled."), 'error');
 	}
 
 	// Monthly traffic limit
