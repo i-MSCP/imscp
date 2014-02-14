@@ -103,8 +103,6 @@ if (isset($_GET['action']) && $_GET['action'] == "delete") {
 						$stmt = exec_query($query, $mainDmnId);
 
 						if ($stmt->rowCount()) {
-							$customerEmail = $stmt->fields['email'];
-
 							client_mail_add_default_accounts(
 								$mainDmnId, $stmt->fields['email'], $alsName, 'alias', $alsId
 							);

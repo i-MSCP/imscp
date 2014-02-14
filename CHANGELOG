@@ -33,6 +33,7 @@ VENDOR:
 Tickets:
 	- Fixed #1014: Bug - Link for "cancel" in Reseller - edit Domain is wrong
 	- Fixed #1020: Bug - Wrong SQL query - Search feature
+	- Fixed #1022: Defect - standard email aliases not created while adding domain alias
 
 ------------------------------------------------------------------------------------------------------------------------
 1.1.0

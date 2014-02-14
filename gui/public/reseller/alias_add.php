@@ -335,41 +335,73 @@ function reseller_addDomainAlias()
 	/** @var $db iMSCP_Database */
 	$db = iMSCP_Registry::get('db');
 
-	iMSCP_Events_Manager::getInstance()->dispatch(
-		iMSCP_Events::onBeforeAddDomainAlias,
-		array(
-			'domainId' => $domainId,
-			'domainAliasName' => $domainAliasName
-		)
-	);
-
-	exec_query(
-		'
-			INSERT INTO `domain_aliasses` (
-				`domain_id`, `alias_name`, `alias_mount`, `alias_status`, `alias_ip_id`, `url_forward`
-			) VALUES (
-				?, ?, ?, ?, ?, ?
+	try {
+		iMSCP_Events_Manager::getInstance()->dispatch(
+			iMSCP_Events::onBeforeAddDomainAlias,
+			array(
+				'domainId' => $domainId,
+				'domainAliasName' => $domainAliasName
 			)
-		',
-		array(
-			$domainId, $domainAliasNameAscii, $mountPoint, $cfg->ITEM_TOADD_STATUS, $mainDmnProps['domain_ip_id'],
-			$forwardUrl
-		)
-	);
+		);
 
-	iMSCP_Events_Manager::getInstance()->dispatch(
-		iMSCP_Events::onAfterAddDomainAlias,
-		array(
-			'domainId' => $domainId,
-			'domainAliasName' => $domainAliasName,
-			'domainAliasId' => $db->insertId()
-		)
-	);
+		$db->beginTransaction();
 
-	send_request();
+		exec_query(
+			'
+				INSERT INTO `domain_aliasses` (
+					`domain_id`, `alias_name`, `alias_mount`, `alias_status`, `alias_ip_id`, `url_forward`
+				) VALUES (
+					?, ?, ?, ?, ?, ?
+				)
+			',
+			array(
+				$domainId, $domainAliasNameAscii, $mountPoint, $cfg->ITEM_TOADD_STATUS, $mainDmnProps['domain_ip_id'],
+				$forwardUrl
+			)
+		);
 
-	write_log("{$_SESSION['user_logged']}: scheduled addition of domain alias: $domainAliasName.", E_USER_NOTICE);
-	set_page_message(tr('Domain alias successfully scheduled for addition.'), 'success');
+		$alsId = $db->insertId();
+
+		// Create default email addresses if needed
+		if ($cfg->CREATE_DEFAULT_EMAIL_ADDRESSES) {
+			$query = '
+				SELECT
+					`email`
+				FROM
+					`admin`
+				LEFT JOIN
+					`domain` ON(`admin`.`admin_id` = `domain`.`domain_admin_id`)
+				WHERE
+					`domain`.`domain_id` = ?
+			';
+			$stmt = exec_query($query, $domainId);
+
+			if ($stmt->rowCount()) {
+				client_mail_add_default_accounts(
+					$domainId, $stmt->fields['email'], $domainAliasNameAscii, 'alias', $alsId
+				);
+			}
+		}
+
+		$db->commit();
+
+		iMSCP_Events_Manager::getInstance()->dispatch(
+			iMSCP_Events::onAfterAddDomainAlias,
+			array(
+				'domainId' => $domainId,
+				'domainAliasName' => $domainAliasNameAscii,
+				'domainAliasId' => $alsId
+			)
+		);
+
+		send_request();
+
+		write_log("{$_SESSION['user_logged']}: scheduled addition of domain alias: $domainAliasName.", E_USER_NOTICE);
+		set_page_message(tr('Domain alias successfully scheduled for addition.'), 'success');
+	} catch(iMSCP_Exception_Database $e) {
+		$db->rollBack();
+		throw new iMSCP_Exception_Database($e->getMessage(), $e->getQuery(), $e->getCode(), $e);
+	}
 
 	return true;
 }
