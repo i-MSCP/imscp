@@ -67,7 +67,16 @@
         </alternative>
     </named>
     <sql>
-        <alternative default="mysql_5.5">
+        <alternative default="mysql_5.1">
+            <mysql_5.1
+                    pinning_package="mysql-client-5.1 mysql-server-5.1 mysql-common libmysqlclient16"
+                    pinning_pin="release o=Debian,n=squeeze"
+                    pinning_pin_priority="1001"
+                    >
+                <package>mysql-server-5.1</package>
+                <package>mysql-client-5.1</package>
+                <package>libmysqlclient16</package>
+            </mysql_5.1>
             <mysql_5.5
                     pinning_package="mysql-server-5.5 mysql-server-5.5 mysql-common libmysqlclient18"
                     pinning_pin="origin packages.dotdeb.org"
@@ -80,6 +89,19 @@
                 <package>mysql-client-5.5</package>
                 <package>libmysqlclient18</package>
             </mysql_5.5>
+            <mariadb_5.3
+                    pinning_package="mariadb-client-5.3 mariadb-server-5.3 mariadb-common libmysqlclient16"
+                    pinning_pin="origin mirror2.hs-esslingen.de"
+                    pinning_pin_priority="1001"
+                    repository="deb http://mirror2.hs-esslingen.de/mariadb/repo/5.3/debian squeeze main"
+                    repository_origin="MariaDB"
+                    repository_key_srv="keyserver.ubuntu.com"
+                    repository_key_id="0xcbcb082a1bb943db"
+                    >
+                <package>mariadb-client-5.3</package>
+                <package>mariadb-server-5.3</package>
+                <package>libmysqlclient16</package>
+            </mariadb_5.3>
             <mariadb_5.5
                     pinning_package="mariadb-client-5.5 mariadb-server-5.5 mariadb-common libmysqlclient18"
                     pinning_pin="origin mirror.netcologne.de"

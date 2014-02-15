@@ -8,9 +8,6 @@ Git stable
 ADDONS:
 	- Fixed: Awstats - Cron task is not running (dynamic mode)
 
-CONFIGS:
-	- Removed: MySQL 5.1 and therefore MariaDB 5.3 support (no longer supported by PhpMyAdmin)
-
 ENGINE:
 	- Added: onLoadTemplate event in all server implementations
 	- Fixed: DNS sub templates must be passed-in to event listeners
