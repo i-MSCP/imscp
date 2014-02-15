@@ -80,7 +80,7 @@ sub _init
 {
 	my $self = $_[0];
 
-	$self->{'confFile'} = ();
+	@{$self->{'confFile'}} = ();
 	$self->{'configValues'} = {};
 	$self->{'lineMap'} = {};
 
@@ -188,7 +188,7 @@ sub FETCH
 
  Store the given configuration parameters.
 
- Return undef;
+ Return stored value;
 
 =cut
 
@@ -206,9 +206,8 @@ sub STORE
 		fatal('Config object is readonly');
 	}
 
-	undef;
+	$value;
 }
-
 
 =item
 
@@ -253,6 +252,24 @@ sub EXISTS
 	my ($self, $config) = @_;
 
 	exists $self->{'configValues'}->{$config};
+}
+
+
+=item
+
+ Clear all configuration parameters.
+
+=cut
+
+sub CLEAR
+{
+	my $self = $_[0];
+
+	@{$self->{'confFile'}} = ();
+	$self->{'configValues'} = {};
+	$self->{'lineMap'} = {};
+
+	$self;
 }
 
 =item _insertConfig($config, $value)

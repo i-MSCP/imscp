@@ -12,6 +12,7 @@ ENGINE:
 	- Added: onLoadTemplate event in all server implementations
 	- Fixed: DNS sub templates must be passed-in to event listeners
 	- Fixed: Domain owner unique identifier must be passed-in to related servers and addons
+	- Fixed: Missing CLEAR method in iMSCP::Config handler
 
 GUI:
 	- Fixed: jQuery library included twice in simple layout
