@@ -42,6 +42,7 @@ Tickets:
 	- Fixed #1020: Bug - Wrong SQL query - Search feature
 	- Fixed #1022: Defect - standard email aliases not created while adding domain alias
 	- Fixed #1024: Bug - Apache2 ITK server implementation - Error on update
+	- Fixed #1025: Bug - Notice: Undefined index: _: Localised language
 
 ------------------------------------------------------------------------------------------------------------------------
 1.1.0

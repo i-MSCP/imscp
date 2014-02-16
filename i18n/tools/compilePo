@@ -21,13 +21,13 @@
 # Portions created by Initial Developer are Copyright (C) 2010-2011 by
 # internet Multi Server Control Panel. All Rights Reserved.
 #
-# @category		i-MSCP
-# @package		i-MSCP_Tools
-# @subpackage	Tools_i18n
-# @copyright	2010-2014 by i-MSCP | http://i-mscp.net
-# @author		Laurent Declercq <l.declercq@nuxwin.com>
-# @link			http://i-mscp.net i-MSCP Home Site
-# @license		http://www.gnu.org/licenses/ GPL v2
+# @category    i-MSCP
+# @package     i-MSCP_Tools
+# @subpackage  Tools_i18n
+# @copyright   2010-2014 by i-MSCP | http://i-mscp.net
+# @author      Laurent Declercq <l.declercq@nuxwin.com>
+# @link        http://i-mscp.net i-MSCP Home Site
+# @license     http://www.gnu.org/licenses/ GPL v2
 
 set -e
 
@@ -40,8 +40,11 @@ fi
 
 cd $GUI
 
+# Purge any old language file
+rm -fR gui/i18n/locales/*
+
 for i in `find i18n/po -name '*.po' | sed -r 's/.*\/(.*)/\1/'`; do
-	echo "Compiling the ${i} machine object file..."
+	echo "Compiling machine object file: ${i}"
 	LOCALE=`echo ${i} | cut -d '.' -f 1`
 	DESTDIR="gui/i18n/locales/${LOCALE}/LC_MESSAGES"
 	mkdir -p ${DESTDIR}

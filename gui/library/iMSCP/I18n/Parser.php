@@ -27,10 +27,11 @@
  */
 
 /**
- * Base class to parse gettex files (*.po, *.mo)
+ * Class iMSCP_I18n_Parser
+ *
+ * Base class for Gettext Portable Object and Machine Object file parsers
  *
  * @author Laurent Declercq <l.declercq@nuxwin.com>
- * @version 0.0.1
  */
 abstract class iMSCP_I18n_Parser
 {
@@ -53,14 +54,14 @@ abstract class iMSCP_I18n_Parser
 	 *
 	 * @var resource
 	 */
-	protected $_fh;
+	protected $fh;
 
 	/**
 	 * Path to the gettext file.
 	 *
 	 * @var string
 	 */
-	protected $_filePath;
+	protected $filePath;
 
 	/**
 	 * Headers from gettext file.
@@ -69,7 +70,7 @@ abstract class iMSCP_I18n_Parser
 	 *
 	 * @var string
 	 */
-	protected $_headers = '';
+	protected $headers = '';
 
 	/**
 	 * Translation table.
@@ -79,13 +80,13 @@ abstract class iMSCP_I18n_Parser
 	 *
 	 * @var array
 	 */
-	protected $_translationTable = array();
+	protected $translationTable = array();
 
 	/**
 	 * Constructor.
 	 *
 	 * @throws iMSCP_i18n_Exception When file is not readable
-	 * @param $filePath Path to gettext file
+	 * @param string $filePath Path to gettext file
 	 */
 	public function __construct($filePath)
 	{
@@ -96,7 +97,7 @@ abstract class iMSCP_I18n_Parser
 			throw new iMSCP_i18n_Parser_Exception("$filePath is not readable");
 		}
 
-		$this->_filePath = $filePath;
+		$this->filePath = $filePath;
 	}
 
 	/**
@@ -106,26 +107,26 @@ abstract class iMSCP_I18n_Parser
 	 */
 	public function getHeaders()
 	{
-		if (empty($this->_headers)) {
-			$this->_headers = $this->_parse(self::HEADERS);
+		if (empty($this->headers)) {
+			$this->headers = $this->_parse(self::HEADERS);
 		}
 
-		return $this->_headers;
+		return $this->headers;
 	}
 
 	/**
 	 * Returns translation table.
 	 *
-	 * @return array An array of pairs key/value where the keys are the original
-	 *               strings (msgid) and the values, the translated strings (msgstr)
+	 * @return array An array of pairs key/value where the keys are the original strings (msgid) and the values, the
+	 *               translated strings (msgstr)
 	 */
 	public function getTranslationTable()
 	{
-		if (empty($this->_translationTable)) {
-			$this->_translationTable = $this->_parse(self::TRANSLATION_TABLE);
+		if (empty($this->translationTable)) {
+			$this->translationTable = $this->_parse(self::TRANSLATION_TABLE);
 		}
 
-		return $this->_translationTable;
+		return $this->translationTable;
 	}
 
 	/**
@@ -250,12 +251,10 @@ abstract class iMSCP_I18n_Parser
 	 * Parse file.
 	 *
 	 * @abstract
-	 * @param int $part Part file to parse {@link self::HEADER} or
-	 *                  {@link self::TRANSLATION_TABLE}
-	 * @return array|string An array of pairs key/value where the keys are the
-	 *                      original strings (msgid) and the values, the translated
-	 *                      strings (msgstr) or a string that contains headers, each
-	 * 						of them separated by EOL.
+	 * @param int $part Part file to parse {@link self::HEADER} or {@link self::TRANSLATION_TABLE}
+	 * @return array|string An array of pairs key/value where the keys are the original strings (msgid) and the values,
+	 *                      the translated strings (msgstr) or a string that contains headers, each of them separated by
+	 *                      EOL.
 	 */
 	abstract protected function _parse($part);
 
@@ -270,8 +269,7 @@ abstract class iMSCP_I18n_Parser
 		$headers = $this->getHeaders();
 		$header = str_replace(chr(13), '',substr($headers, strpos($headers, $header)));
 
-		$header =  substr($header, ($start = strpos($header, ':') + 2),
-			(strpos($header, chr(10)) - $start));
+		$header =  substr($header, ($start = strpos($header, ':') + 2), (strpos($header, chr(10)) - $start));
 
 		return (!empty($header)) ? $header : '';
 	}
@@ -281,8 +279,8 @@ abstract class iMSCP_I18n_Parser
 	 */
 	public function __destruct()
 	{
-		if($this->_fh !== null) {
-			fclose($this->_fh);
+		if($this->fh !== null) {
+			fclose($this->fh);
 		}
 	}
 }

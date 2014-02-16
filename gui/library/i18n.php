@@ -138,19 +138,33 @@ function i18n_buildLanguageIndex()
 
 		if ($item->isReadable()) {
 			$parser = new iMSCP_I18n_Parser_Mo($item->getPathname());
-			$poRevisionDate = DateTime::createFromFormat(
-				'Y-m-d H:i O', $parser->getPotCreationDate());
-
-			$availableLanguages[$basename] = array(
-				'locale' => $parser->getLanguage(),
-				'revision' => $poRevisionDate->format('Y-m-d H:i'),
-				'translatedStrings' => $parser->getNumberOfTranslatedStrings(),
-				'lastTranslator' => $parser->getLastTranslator()
-			);
-
-			// Getting localized language name
 			$translationTable = $parser->getTranslationTable();
-			$availableLanguages[$basename]['language'] = $translationTable['_: Localised language'];
+
+			if(!empty($translationTable)) {
+				$poRevisionDate = DateTime::createFromFormat('Y-m-d H:i O', $parser->getPotCreationDate());
+
+				$availableLanguages[$basename] = array(
+					'locale' => $parser->getLanguage(),
+					'revision' => $poRevisionDate->format('Y-m-d H:i'),
+					'translatedStrings' => $parser->getNumberOfTranslatedStrings(),
+					'lastTranslator' => $parser->getLastTranslator()
+				);
+
+				// Getting localized language name
+				if(!isset($translationTable['_: Localised language'])) {
+					$availableLanguages[$basename]['language'] = tr('Unknown');
+				} else {
+					$availableLanguages[$basename]['language'] = $translationTable['_: Localised language'];
+				}
+			} else {
+				set_page_message(
+					tr(
+						'The %s translation file has been ignored: Translation table is empty.',
+						"<strong>$basename</strong>"
+					),
+					'warning'
+				);
+			}
 		}
 	}
 
@@ -180,7 +194,7 @@ function i18n_getAvailableLanguages()
 		i18n_buildLanguageIndex();
 	}
 
-	return unserialize(($cfg->AVAILABLE_LANGUAGES));
+	return unserialize($cfg->AVAILABLE_LANGUAGES);
 }
 
 /**
