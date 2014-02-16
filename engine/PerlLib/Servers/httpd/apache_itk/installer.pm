@@ -560,7 +560,8 @@ sub _buildPhpConfFiles
 	my @toEnableModules = ('php5');
 
 	if((version->new("v$self->{'config'}->{'APACHE_VERSION'}") >= version->new('v2.4.0'))) {
-		push (@toDisableModules, ('mpm_event', 'mpm_prefork', 'mpm_worker'));
+		# MPM management is a mess in Jessie. We so disable all and re-enable only needed MPM
+		push (@toDisableModules, ('mpm_itk', 'mpm_prefork', 'mpm_event', 'mpm_prefork', 'mpm_worker'));
 		push(@toEnableModules, 'mpm_itk', 'authz_groupfile');
 	}
 

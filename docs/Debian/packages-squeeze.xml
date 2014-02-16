@@ -186,6 +186,7 @@
     <other>
         <package>at</package>
         <package>bash</package>
+        <package>bash-completion</package>
         <package>pbzip2</package>
         <package>bzip2</package>
         <package>dialog</package>

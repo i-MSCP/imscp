@@ -8,6 +8,10 @@ Git stable
 ADDONS:
 	- Fixed: Awstats - Cron task is not running (dynamic mode)
 
+CONFIGS
+	- Added: bash-completion package
+	- Disabled: Opcache support (PHP5.5)
+
 ENGINE:
 	- Added: onLoadTemplate event in all server implementations
 	- Fixed: DNS sub templates must be passed-in to event listeners
@@ -37,6 +41,7 @@ Tickets:
 	- Fixed #1019: Bug - Unable to create customer with SQL feature set to disabled
 	- Fixed #1020: Bug - Wrong SQL query - Search feature
 	- Fixed #1022: Defect - standard email aliases not created while adding domain alias
+	- Fixed #1024: Bug - Apache2 ITK server implementation - Error on update
 
 ------------------------------------------------------------------------------------------------------------------------
 1.1.0

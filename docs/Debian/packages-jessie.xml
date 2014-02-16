@@ -9,6 +9,7 @@
             </apache_fcgid>
             <apache_itk>
                 <package>apache2</package>
+                <package>libapache2-mpm-itk</package>
                 <package>libapache2-mod-php5</package>
             </apache_itk>
             <apache_php_fpm>
@@ -119,6 +120,7 @@
     <other>
         <package>at</package>
         <package>bash</package>
+        <package>bash-completion</package>
         <package>pbzip2</package>
         <package>bzip2</package>
         <package>dialog</package>

@@ -3,8 +3,7 @@
         <alternative default="apache_php_fpm">
             <apache_fcgid>
                 <package>apache2</package>
-                <package>apache2-mpm-worker</package>
-                <package>apache2-suexec</package>
+                <package>apache2-suexec-pristine</package>
                 <package>libapache2-mod-fcgid</package>
                 <package>php5-cgi</package>
             </apache_fcgid>
@@ -15,8 +14,7 @@
             </apache_itk>
             <apache_php_fpm>
                 <package>apache2</package>
-                <package>apache2-suexec</package>
-                <package>apache2-mpm-worker</package>
+                <package>apache2-suexec-pristine</package>
                 <package>libapache2-mod-fastcgi</package>
                 <package>php5-fpm</package>
             </apache_php_fpm>
@@ -159,6 +157,7 @@
     <other>
         <package>at</package>
         <package>bash</package>
+        <package>bash-completion</package>
         <package>pbzip2</package>
         <package>bzip2</package>
         <package>dialog</package>
