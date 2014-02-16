@@ -40,20 +40,20 @@
 
 set -e
 
-if [ $1 ] && [ -d $1 ]; then
-	GUI=${1}
-else
-	GUI=../../gui
+I18N=../
+
+if [ ! -d ${I18N}/po ]; then
+	echo "You must run this script from the i18n/tools directory."
+	exit 1
 fi
 
-if [ ! -f ${GUI}/public/index.php ]; then
-	if [ -f ${GUI}/gui/index.php ]; then
-		GUI=${GUI}/gui/
-	fi
-fi
+# Purge any old language file
+rm -fR ${I18N}/po/*.po
+
+GUI=../../gui
 
 if [ ! -f ${GUI}/public/index.php ]; then
-	echo "${GUI} isn't a valid gui/ location."
+	echo "${GUI} isn't a valid GUI location."
 	exit 1
 fi
 
@@ -73,8 +73,8 @@ ${GUI}/library/iMSCP/View/Helpers/Functions/*.php \
 ${GUI}/public/*.php \
 ${GUI}/public/*/*.php \
 --from-code=utf-8 \
--p ../po \
--o "iMSCP.pot"
+-p ${I18N}/po \
+-o ${I18N}/iMSCP.pot
 
 # XML files
 /usr/bin/xgettext \
@@ -83,15 +83,15 @@ ${GUI}/public/*/*.php \
 -d "i-MSCP" \
 --copyright-holder="iMSCP Team - All rights reserved" \
 --package-name="i-MSCP" \
---package-version="1.0.1.6" \
+--package-version="1.1.1" \
 --msgid-bugs-address="i18n@i-mscp.net" \
 --keyword="label" \
 --no-location \
 ${GUI}/themes/*/*/*.xml \
--p ../po \
--o "iMSCP.pot" -j -s
+-p ${I18N}/po \
+-o ${I18N}/iMSCP.pot -j -s
 
-sed --in-place '/#. Please ignore this entry/d' ../po/iMSCP.pot
-sed --in-place 's/msgid "encoding"/#. Please ignore this entry\nmsgid "encoding"/' ../po/iMSCP.pot
+sed --in-place '/#. Please ignore this entry/d' ../iMSCP.pot
+sed --in-place 's/msgid "encoding"/#. Please ignore this entry\nmsgid "encoding"/' ../iMSCP.pot
 
 exit 0

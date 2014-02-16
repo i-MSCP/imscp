@@ -31,14 +31,14 @@
 
 set -e
 
-GUI="../.."
+cd ../..
 
-if [ ! -f "${GUI}/gui/public/index.php" ]; then
+echo `pwd`
+
+if [ ! -f "gui/public/index.php" ]; then
 	echo "You must run this script from the i18n/tools directory!"
 	exit 1
 fi
-
-cd $GUI
 
 # Purge any old language file
 rm -fR gui/i18n/locales/*
