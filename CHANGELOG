@@ -8,7 +8,7 @@ Git stable
 ADDONS:
 	- Fixed: Awstats - Cron task is not running (dynamic mode)
 
-CONFIGS
+CONFIGS:
 	- Added: bash-completion package
 	- Disabled: Opcache support (PHP5.5)
 
