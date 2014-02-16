@@ -15,8 +15,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2014-02-03 02:25+0100\n"
-"PO-Revision-Date: 2014-02-03 01:26+0000\n"
+"POT-Creation-Date: 2014-02-17 00:44+0100\n"
+"PO-Revision-Date: 2014-02-16 23:45+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Italian (Italy) (http://www.transifex.com/projects/p/i-MSCP/language/it_IT/)\n"
 "MIME-Version: 1.0\n"
@@ -2542,8 +2542,8 @@ msgstr "Genera password"
 msgid "Get a new image"
 msgstr "Immetti una nuova immagine"
 
-msgid "Get it at"
-msgstr "Prendi a"
+msgid "Get it on"
+msgstr ""
 
 msgid "GiB"
 msgstr "GiB"
@@ -3923,6 +3923,9 @@ msgstr "Priorità: %s\n"
 msgid "Process update"
 msgstr "Aggiorna processo"
 
+msgid "Processing..."
+msgstr ""
+
 msgid "Processor data"
 msgstr "Dati processore"
 
@@ -4246,6 +4249,9 @@ msgstr "Limite database SQL"
 msgid "SQL database limit is disabled but SQL user limit is not."
 msgstr "Limite al database SQL è disattivato, ma limite utente SQL non lo è."
 
+msgid "SQL database limit is disabled."
+msgstr ""
+
 msgid "SQL database limit is not <i>disabled</i>."
 msgstr "Il limite del database SQL non è <i> disabilitato </ i>."
 
@@ -4275,6 +4281,9 @@ msgstr "Il limite degli utente SQL è <i> disabilitato </ i>."
 
 msgid "SQL user limit is disabled but SQL database limit is not."
 msgstr "Limite utente SQL è disattivato, ma il limite al database di SQL non lo è."
+
+msgid "SQL user limit is disabled."
+msgstr ""
 
 msgid "SQL user limit reached."
 msgstr "Limite utente SQL raggiunto."
@@ -4807,6 +4816,10 @@ msgid ""
 "The %s limit for this customer cannot be unlimited because your are limited "
 "for this service."
 msgstr "La %s limite per questo cliente non può essere illimitata, perché tu sei limitato per questo servizio."
+
+#, php-format
+msgid "The %s translation file has been ignored: Translation table is empty."
+msgstr ""
 
 msgid "The IP address you're trying to remove is assigned to a reseller."
 msgstr "L'indirizzo IP che stai provando ad eliminare è assegnato a un rivenditore."

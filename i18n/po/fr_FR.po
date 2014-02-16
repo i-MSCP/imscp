@@ -30,8 +30,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2014-02-03 02:25+0100\n"
-"PO-Revision-Date: 2014-02-03 01:27+0000\n"
+"POT-Creation-Date: 2014-02-17 00:44+0100\n"
+"PO-Revision-Date: 2014-02-16 23:45+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: French (France) (http://www.transifex.com/projects/p/i-MSCP/language/fr_FR/)\n"
 "MIME-Version: 1.0\n"
@@ -134,7 +134,7 @@ msgid ""
 "(Same username and password than above)\n"
 "\n"
 "Thank you for using our services.\n"
-msgstr ""
+msgstr "\nCher {NAME},\n\nUn nouveau compte a été créé pour vous.\n\nVos informations sont :\n\nType d'utilisateur : {USERTYPE}\nNom d'utilisateur : {USERNAME}\nMot de passe : {PASSWORD}\n\nN'oubliez pas de changer votre mot de passe la première fois que vous vous connectez et régulièrement.\n\nVous pouvez maintenant vous connecter sur {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}\n\nLes statistiques sont accessibles sur http://{USERNAME}/{WEBSTATS_RPATH}\n(même nom d'utilisateur et mot de passe qu'au dessus)\n\nMerci d'utiliser nos services.\n"
 
 msgid ""
 "\n"
@@ -153,7 +153,7 @@ msgid ""
 "You can login right now at {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}\n"
 "\n"
 "Thank you for using our services.\n"
-msgstr ""
+msgstr "\nCher {NAME},\n\nUn nouveau compte a été créé pour vous.\n\nVos informations sont :\n\nType d'utilisateur : {USERTYPE}\nNom d'utilisateur : {USERNAME}\nMot de passe : {PASSWORD}\n\nN'oubliez pas de changer votre mot de passe la première fois que vous vous connectez et régulièrement.\n\nVous pouvez maintenant vous connecter sur {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}\n\nMerci d'utiliser nos services.\n"
 
 msgid " Admin / Support / Open Tickets"
 msgstr "Admininistrateur / Support / Tickets ouverts"
@@ -2557,8 +2557,8 @@ msgstr "Générer le mot de passe"
 msgid "Get a new image"
 msgstr "Récupérer une nouvelle image"
 
-msgid "Get it at"
-msgstr "Récupérer à partir de"
+msgid "Get it on"
+msgstr ""
 
 msgid "GiB"
 msgstr "GiB"
@@ -3938,6 +3938,9 @@ msgstr "Priorité : %s\n"
 msgid "Process update"
 msgstr "Lancer la mise à jour"
 
+msgid "Processing..."
+msgstr ""
+
 msgid "Processor data"
 msgstr "Données du processeur"
 
@@ -4261,6 +4264,9 @@ msgstr "Limite de base de données SQL"
 msgid "SQL database limit is disabled but SQL user limit is not."
 msgstr "La limite de base de données SQL est désactivée mais la limite d'utilisateur SQL est toujours active."
 
+msgid "SQL database limit is disabled."
+msgstr ""
+
 msgid "SQL database limit is not <i>disabled</i>."
 msgstr "La limite de base de données SQL n'est pas <i>désactivée</b>."
 
@@ -4290,6 +4296,9 @@ msgstr "La limite d'utilisateur SQL est <i>désactivée</i>."
 
 msgid "SQL user limit is disabled but SQL database limit is not."
 msgstr "La limite d'utilisateur SQL est désactivée mais la limite de base de données SQL est toujours active."
+
+msgid "SQL user limit is disabled."
+msgstr ""
 
 msgid "SQL user limit reached."
 msgstr "Limite d'utilisateur SQL atteinte."
@@ -4822,6 +4831,10 @@ msgid ""
 "The %s limit for this customer cannot be unlimited because your are limited "
 "for this service."
 msgstr "La limite de %s pour ce client ne peut pas être illimitée car vous avez une limite pour ce service."
+
+#, php-format
+msgid "The %s translation file has been ignored: Translation table is empty."
+msgstr ""
 
 msgid "The IP address you're trying to remove is assigned to a reseller."
 msgstr "L'adresse IP que vous essayez de supprimer est assignée à un revendeur."

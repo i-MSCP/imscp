@@ -33,8 +33,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2014-02-03 02:25+0100\n"
-"PO-Revision-Date: 2014-02-03 01:27+0000\n"
+"POT-Creation-Date: 2014-02-17 00:44+0100\n"
+"PO-Revision-Date: 2014-02-16 23:45+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: German (Germany) (http://www.transifex.com/projects/p/i-MSCP/language/de_DE/)\n"
 "MIME-Version: 1.0\n"
@@ -2560,8 +2560,8 @@ msgstr "Passwort generieren"
 msgid "Get a new image"
 msgstr "Hole neues Bild"
 
-msgid "Get it at"
-msgstr "Download von"
+msgid "Get it on"
+msgstr ""
 
 msgid "GiB"
 msgstr "GiB"
@@ -3941,6 +3941,9 @@ msgstr "Priorität: %s\n"
 msgid "Process update"
 msgstr "Update ausführen"
 
+msgid "Processing..."
+msgstr ""
+
 msgid "Processor data"
 msgstr "Prozessor Daten"
 
@@ -4264,6 +4267,9 @@ msgstr "SQL Datenbank Limit"
 msgid "SQL database limit is disabled but SQL user limit is not."
 msgstr "Das SQL Datenbanklimit ist deaktiviert, aber das SQL Benutzerlimit ist es nicht."
 
+msgid "SQL database limit is disabled."
+msgstr ""
+
 msgid "SQL database limit is not <i>disabled</i>."
 msgstr "SQL Datenbank Limit ist nicht <i>deaktiviert</i>."
 
@@ -4293,6 +4299,9 @@ msgstr "SQL Benutzer Limit ist <i>deaktiviert</i>."
 
 msgid "SQL user limit is disabled but SQL database limit is not."
 msgstr "Das SQL Benutzerlimit ist deaktiviert, aber das SQL Datenbanklimit ist es nicht."
+
+msgid "SQL user limit is disabled."
+msgstr ""
 
 msgid "SQL user limit reached."
 msgstr "SQL Benutzer Limit erreicht."
@@ -4826,6 +4835,10 @@ msgid ""
 "for this service."
 msgstr "Das %s Limit für diesen Kunden kann nicht \"unbegrenzt\" sein, denn Sie haben diesen Dienst begrenzt."
 
+#, php-format
+msgid "The %s translation file has been ignored: Translation table is empty."
+msgstr ""
+
 msgid "The IP address you're trying to remove is assigned to a reseller."
 msgstr "Die IP-Adresse die Sie löschen möchten, ist einem Reseller zugewiesen."
 
@@ -5221,7 +5234,7 @@ msgid "Update"
 msgstr "Aktualisieren"
 
 msgid "Update Plugins"
-msgstr ""
+msgstr "Plugins aktualisieren"
 
 msgid "Update SQL user password"
 msgstr "SQL-Benutzerpasswort aktualisieren"
@@ -5984,7 +5997,7 @@ msgid "i-MSCP Web software repository"
 msgstr "i-MSCP Web Software Repository"
 
 msgid "i-MSCP plugin store"
-msgstr ""
+msgstr "i-MSCP Plugin Store"
 
 msgid "i-MSCP updates"
 msgstr "i-MSCP Updates"
@@ -6093,4 +6106,4 @@ msgid "{RESELLER} uploaded a new software package"
 msgstr "{RESELLER} hat ein neues Software-Paket hochgeladen"
 
 msgid "© 2010-2014 i-MSCP Team<br/>All Rights Reserved"
-msgstr ""
+msgstr "© 2010-2014 i-MSCP Team<br/>Alle Rechte vorbehalten"

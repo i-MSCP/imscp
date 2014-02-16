@@ -11,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2014-02-03 02:25+0100\n"
-"PO-Revision-Date: 2014-02-03 01:26+0000\n"
+"POT-Creation-Date: 2014-02-17 00:44+0100\n"
+"PO-Revision-Date: 2014-02-16 23:45+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Danish (Denmark) (http://www.transifex.com/projects/p/i-MSCP/language/da_DK/)\n"
 "MIME-Version: 1.0\n"
@@ -115,7 +115,7 @@ msgid ""
 "(Same username and password than above)\n"
 "\n"
 "Thank you for using our services.\n"
-msgstr ""
+msgstr "\nKære {NAME},\n\nEn ny konto er blevet oprettet for dig.\n\nDine kontooplysninger:\n\nBrugertype: {USERTYPE}\nBrugernavn: {USERNAME}\nPassword: {PASSWORD}\n\nHusk at ændre din adgangskode ofte og første gang du logger ind.\n\nDu kan logge ind lige nu på {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}\n\nStatistik: http://{USERNAME}/{WEBSTATS_RPATH}\n(Samme brugernavn og password som ovenfor)\n\nTak fordi du bruger vores tjenester.\n"
 
 msgid ""
 "\n"
@@ -134,7 +134,7 @@ msgid ""
 "You can login right now at {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}\n"
 "\n"
 "Thank you for using our services.\n"
-msgstr ""
+msgstr "\nKære {NAME},\n\nEn ny konto er blevet oprettet for dig.\n\nDine kontooplysninger:\n\nBrugertype: {USERTYPE}\nBrugernavn: {USERNAME}\nPassword: {PASSWORD}\n\nHusk at ændre din adgangskode ofte og første gang du logger ind.\n\nDu kan logge ind lige nu på {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}\n\nTak fordi du bruger vores tjenester.\n"
 
 msgid " Admin / Support / Open Tickets"
 msgstr "Admin / Support / Åbne Tickets"
@@ -2538,8 +2538,8 @@ msgstr "Lav adgangskode"
 msgid "Get a new image"
 msgstr "Anskaf et nyt billede"
 
-msgid "Get it at"
-msgstr "Hent den på"
+msgid "Get it on"
+msgstr ""
 
 msgid "GiB"
 msgstr "GiB"
@@ -3833,7 +3833,7 @@ msgstr "Plugin Manager: Kan ikke installere %s plugin: %s"
 
 #, php-format
 msgid "Plugin Manager: Unable to load plugin %s"
-msgstr ""
+msgstr "Plugin Manager: Er ikke i stand til at indlæse plugin %s"
 
 #, php-format
 msgid "Plugin Manager: Unable to protect the %s plugin: %s"
@@ -3849,7 +3849,7 @@ msgstr "Plugin Manager: Kan ikke opdatere %s plugin: %s"
 
 #, php-format
 msgid "Plugin Manager: Unable to write the %s file for protected plugins."
-msgstr ""
+msgstr "Plugin Manager: Er ikke i stand til at skrive %s filen for beskyttede plugins."
 
 msgid "Plugin archive"
 msgstr "Plugin arkiv"
@@ -3918,6 +3918,9 @@ msgstr "Prioritet: %s\n"
 
 msgid "Process update"
 msgstr "Process opdatering"
+
+msgid "Processing..."
+msgstr ""
 
 msgid "Processor data"
 msgstr "Processor data"
@@ -4242,6 +4245,9 @@ msgstr "SQL database grænse"
 msgid "SQL database limit is disabled but SQL user limit is not."
 msgstr "SQL database grænse er deaktiveret, men SQL bruger grænse er det ikke."
 
+msgid "SQL database limit is disabled."
+msgstr ""
+
 msgid "SQL database limit is not <i>disabled</i>."
 msgstr "SQL database grænse er ikke <i>deaktiveret</i> "
 
@@ -4271,6 +4277,9 @@ msgstr "SQL bruger grænse er <i>deaktiveret</i>."
 
 msgid "SQL user limit is disabled but SQL database limit is not."
 msgstr "SQL bruger grænse er deaktiveret, men SQL database grænsen er det ikke."
+
+msgid "SQL user limit is disabled."
+msgstr ""
 
 msgid "SQL user limit reached."
 msgstr "SQL bruger grænse er nået."
@@ -4804,6 +4813,10 @@ msgid ""
 "for this service."
 msgstr "Grænsen %s for denne kunde kan ikke være ubegrænset, fordi din er begrænsede for denne service."
 
+#, php-format
+msgid "The %s translation file has been ignored: Translation table is empty."
+msgstr ""
+
 msgid "The IP address you're trying to remove is assigned to a reseller."
 msgstr "Den IP-adresse, du forsøger at fjerne er tildelt en forhandler."
 
@@ -5199,7 +5212,7 @@ msgid "Update"
 msgstr "Opdater"
 
 msgid "Update Plugins"
-msgstr ""
+msgstr "Opdater Plugins"
 
 msgid "Update SQL user password"
 msgstr "Opdater SQL bruger password"
@@ -5962,7 +5975,7 @@ msgid "i-MSCP Web software repository"
 msgstr "I-MSCP Web softwarearkiv"
 
 msgid "i-MSCP plugin store"
-msgstr ""
+msgstr "I-MSCP plugin opbevaring"
 
 msgid "i-MSCP updates"
 msgstr "i-MSCP opdateringer"
@@ -6071,4 +6084,4 @@ msgid "{RESELLER} uploaded a new software package"
 msgstr "{FORHANDLER} uploadede en ny softwarepakke"
 
 msgid "© 2010-2014 i-MSCP Team<br/>All Rights Reserved"
-msgstr ""
+msgstr "© 2010-2014 i-MSCP Team<br/>Alle rettigheder forbeholdes"

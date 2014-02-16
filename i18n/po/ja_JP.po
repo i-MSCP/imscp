@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2014-02-03 02:25+0100\n"
-"PO-Revision-Date: 2014-02-03 01:26+0000\n"
+"POT-Creation-Date: 2014-02-17 00:44+0100\n"
+"PO-Revision-Date: 2014-02-16 23:45+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Japanese (Japan) (http://www.transifex.com/projects/p/i-MSCP/language/ja_JP/)\n"
 "MIME-Version: 1.0\n"
@@ -114,7 +114,7 @@ msgid ""
 "(Same username and password than above)\n"
 "\n"
 "Thank you for using our services.\n"
-msgstr ""
+msgstr "\n親愛なる {NAME}様,\n\n新しいアカウントが作成されました。\n\nアカウント情報：\n\nユーザ種別: {USERTYPE}\nユーザ名: {USERNAME}\nパスワード: {PASSWORD}\n\n最初にログイン時にパスワードを変更するのを忘れないでください。\n\n今、ログインできます {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}\n\n統計: http://{USERNAME}/{WEBSTATS_RPATH}\n(上記と同じ、ユーザ名とパスワード)\n\nサービスをご利用いただきありがとうございます。\n"
 
 msgid ""
 "\n"
@@ -133,7 +133,7 @@ msgid ""
 "You can login right now at {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}\n"
 "\n"
 "Thank you for using our services.\n"
-msgstr ""
+msgstr "\n親愛なる {NAME}様,\n\n新しいアカウントが作成されました。\n\nアカウント情報：\n\nユーザ種別: {USERTYPE}\nユーザ名: {USERNAME}\nパスワード: {PASSWORD}\n\n最初にログイン時にパスワードを変更するのを忘れないでください。\n\n今、ログインできます {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}\n\nサービスをご利用いただきありがとうございます。\n"
 
 msgid " Admin / Support / Open Tickets"
 msgstr "管理者 / サポート / オープンチケット"
@@ -2537,8 +2537,8 @@ msgstr "パスワードの生成"
 msgid "Get a new image"
 msgstr "新しいイメージを取得"
 
-msgid "Get it at"
-msgstr "取得します"
+msgid "Get it on"
+msgstr ""
 
 msgid "GiB"
 msgstr "GiB"
@@ -3832,7 +3832,7 @@ msgstr "プラグインマネージャ：%sのプラグインをインストー�
 
 #, php-format
 msgid "Plugin Manager: Unable to load plugin %s"
-msgstr ""
+msgstr "プラグイン管理：プラグイン%sをロードできません"
 
 #, php-format
 msgid "Plugin Manager: Unable to protect the %s plugin: %s"
@@ -3848,7 +3848,7 @@ msgstr "プラグインマネージャ：%sのプラグインを更新できま�
 
 #, php-format
 msgid "Plugin Manager: Unable to write the %s file for protected plugins."
-msgstr ""
+msgstr "プラグイン管理：保護されたプラグインの%sファイルを書き込むことができません。"
 
 msgid "Plugin archive"
 msgstr "プラグインアーカイブ"
@@ -3917,6 +3917,9 @@ msgstr "優先度： %s\n"
 
 msgid "Process update"
 msgstr "プロセス更新"
+
+msgid "Processing..."
+msgstr ""
 
 msgid "Processor data"
 msgstr "プロセッサデータ"
@@ -4241,6 +4244,9 @@ msgstr "SQLデータベースの制限"
 msgid "SQL database limit is disabled but SQL user limit is not."
 msgstr "SQLデータベース制限が無効になったが、SQLユーザに制限はない。"
 
+msgid "SQL database limit is disabled."
+msgstr ""
+
 msgid "SQL database limit is not <i>disabled</i>."
 msgstr "SQLデータベースの制限が<i>無効</i>になっていません。"
 
@@ -4270,6 +4276,9 @@ msgstr "SQLユーザ制限が<i>無効</i>になっています。"
 
 msgid "SQL user limit is disabled but SQL database limit is not."
 msgstr "SQLユーザの制限が無効になりますが、SQLデータベース制限はない。"
+
+msgid "SQL user limit is disabled."
+msgstr ""
 
 msgid "SQL user limit reached."
 msgstr "SQLユーザの制限に達しました。"
@@ -4803,6 +4812,10 @@ msgid ""
 "for this service."
 msgstr "顧客のための %s 制限は、サービスのために制限されているので無制限とすることはできません。"
 
+#, php-format
+msgid "The %s translation file has been ignored: Translation table is empty."
+msgstr ""
+
 msgid "The IP address you're trying to remove is assigned to a reseller."
 msgstr "削除しようとしているIPアドレスは、代理店に割り当てられています。"
 
@@ -5198,7 +5211,7 @@ msgid "Update"
 msgstr "更新"
 
 msgid "Update Plugins"
-msgstr ""
+msgstr "プラグイン更新"
 
 msgid "Update SQL user password"
 msgstr "SQLユーザーパスワードの更新"
@@ -5961,7 +5974,7 @@ msgid "i-MSCP Web software repository"
 msgstr "i-MSCP Webソフトウェアリポジトリー"
 
 msgid "i-MSCP plugin store"
-msgstr ""
+msgstr "i-MSCP プラグインストア"
 
 msgid "i-MSCP updates"
 msgstr "i-MSCPアップデート"
@@ -6070,4 +6083,4 @@ msgid "{RESELLER} uploaded a new software package"
 msgstr "{RESELLER} 新しいソフトウェアパッケージをアップロード"
 
 msgid "© 2010-2014 i-MSCP Team<br/>All Rights Reserved"
-msgstr ""
+msgstr "© 2010-2014 i-MSCP Team<br/>All Rights Reserved"

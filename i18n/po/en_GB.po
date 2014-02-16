@@ -17,8 +17,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2014-02-03 02:25+0100\n"
-"PO-Revision-Date: 2014-02-03 01:26+0000\n"
+"POT-Creation-Date: 2014-02-17 00:44+0100\n"
+"PO-Revision-Date: 2014-02-16 23:45+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: English (United Kingdom) (http://www.transifex.com/projects/p/i-MSCP/language/en_GB/)\n"
 "MIME-Version: 1.0\n"
@@ -2544,8 +2544,8 @@ msgstr "Generate password"
 msgid "Get a new image"
 msgstr "Get a new image"
 
-msgid "Get it at"
-msgstr "Get it at"
+msgid "Get it on"
+msgstr ""
 
 msgid "GiB"
 msgstr "GiB"
@@ -3925,6 +3925,9 @@ msgstr "Priority: %s\n"
 msgid "Process update"
 msgstr "Process update"
 
+msgid "Processing..."
+msgstr ""
+
 msgid "Processor data"
 msgstr ""
 
@@ -4248,6 +4251,9 @@ msgstr "SQL database limit"
 msgid "SQL database limit is disabled but SQL user limit is not."
 msgstr "SQL database limit is disabled but SQL user limit is not."
 
+msgid "SQL database limit is disabled."
+msgstr ""
+
 msgid "SQL database limit is not <i>disabled</i>."
 msgstr "SQL database limit is not <i>disabled</i>."
 
@@ -4277,6 +4283,9 @@ msgstr "SQL user limit is <i>disabled</i>."
 
 msgid "SQL user limit is disabled but SQL database limit is not."
 msgstr "SQL user limit is disabled but SQL database limit is not."
+
+msgid "SQL user limit is disabled."
+msgstr ""
 
 msgid "SQL user limit reached."
 msgstr "SQL user limit reached."
@@ -4809,6 +4818,10 @@ msgid ""
 "The %s limit for this customer cannot be unlimited because your are limited "
 "for this service."
 msgstr "The %s limit for this customer cannot be unlimited because your are limited for this service."
+
+#, php-format
+msgid "The %s translation file has been ignored: Translation table is empty."
+msgstr ""
 
 msgid "The IP address you're trying to remove is assigned to a reseller."
 msgstr "The IP address you're trying to remove is assigned to a reseller."

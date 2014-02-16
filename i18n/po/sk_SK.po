@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2014-02-03 02:25+0100\n"
-"PO-Revision-Date: 2014-02-03 01:26+0000\n"
+"POT-Creation-Date: 2014-02-17 00:44+0100\n"
+"PO-Revision-Date: 2014-02-16 23:45+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Slovak (Slovakia) (http://www.transifex.com/projects/p/i-MSCP/language/sk_SK/)\n"
 "MIME-Version: 1.0\n"
@@ -2535,8 +2535,8 @@ msgstr "Zopakovať heslo"
 msgid "Get a new image"
 msgstr ""
 
-msgid "Get it at"
-msgstr "Získať to na"
+msgid "Get it on"
+msgstr ""
 
 msgid "GiB"
 msgstr ""
@@ -3916,6 +3916,9 @@ msgstr ""
 msgid "Process update"
 msgstr ""
 
+msgid "Processing..."
+msgstr ""
+
 msgid "Processor data"
 msgstr ""
 
@@ -4239,6 +4242,9 @@ msgstr ""
 msgid "SQL database limit is disabled but SQL user limit is not."
 msgstr ""
 
+msgid "SQL database limit is disabled."
+msgstr ""
+
 msgid "SQL database limit is not <i>disabled</i>."
 msgstr ""
 
@@ -4267,6 +4273,9 @@ msgid "SQL user limit is <i>disabled</i>."
 msgstr ""
 
 msgid "SQL user limit is disabled but SQL database limit is not."
+msgstr ""
+
+msgid "SQL user limit is disabled."
 msgstr ""
 
 msgid "SQL user limit reached."
@@ -4799,6 +4808,10 @@ msgstr ""
 msgid ""
 "The %s limit for this customer cannot be unlimited because your are limited "
 "for this service."
+msgstr ""
+
+#, php-format
+msgid "The %s translation file has been ignored: Translation table is empty."
 msgstr ""
 
 msgid "The IP address you're trying to remove is assigned to a reseller."
