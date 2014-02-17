@@ -44,6 +44,10 @@ sub loadData
 {
 	my $self = $_[0];
 
+	my $db = iMSCP::Database->factory();
+
+	$db->doQuery('dummy', 'SET SESSION group_concat_max_len = 8192');
+
 	my $sql = "
 		SELECT
 			`t2`.`id`, `t2`.`ugroup`, `t2`.`status`, `t2`.`users`, `t3`.`domain_name`, `t3`.`domain_admin_id`,
@@ -74,7 +78,7 @@ sub loadData
 			`id` = ?
 	";
 
-	my $rdata = iMSCP::Database->factory()->doQuery('id', $sql, $self->{'htgroupId'}, $self->{'htgroupId'});
+	my $rdata = $db->doQuery('id', $sql, $self->{'htgroupId'}, $self->{'htgroupId'});
 	unless(ref $rdata eq 'HASH') {
 		error($rdata);
 		return 1;
@@ -97,7 +101,7 @@ sub loadData
 			$self->{'htgroupId'}
 		);
 
-		my $rdata = iMSCP::Database->factory()->doQuery('dummy', @sql);
+		$db->doQuery('dummy', @sql);
 		return 1;
 	}
 

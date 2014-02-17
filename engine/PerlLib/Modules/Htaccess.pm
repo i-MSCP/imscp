@@ -44,6 +44,10 @@ sub loadData
 {
 	my $self = $_[0];
 
+	my $db = iMSCP::Database->factory();
+
+	$db->doQuery('dummy', 'SET SESSION group_concat_max_len = 8192');
+
 	my $sql = "
 		SELECT
 			`t3`.`id`, `t3`.`auth_type`, `t3`.`auth_name`, `t3`.`path`, `t3`.`status`,
@@ -82,10 +86,7 @@ sub loadData
 			`t3`.`id` = ?
 	";
 
-	my $rdata = iMSCP::Database->factory()->doQuery(
-		'id', $sql, $self->{'htaccessId'}, $self->{'htaccessId'}, $self->{'htaccessId'}
-	);
-
+	my $rdata = $db->doQuery('id', $sql, $self->{'htaccessId'}, $self->{'htaccessId'}, $self->{'htaccessId'});
 	unless(ref $rdata eq 'HASH') {
 		error($rdata);
 		return 1;
@@ -107,8 +108,7 @@ sub loadData
 			'Orphan entry: ' . Dumper($rdata->{$self->{'htaccessId'}}),
 			$self->{'htaccessId'}
 		);
-		my $rdata = iMSCP::Database->factory()->doQuery('dummy', @sql);
-
+		$db->doQuery('dummy', @sql);
 		return 1;
 	}
 

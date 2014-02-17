@@ -2204,7 +2204,7 @@ function send_request()
 
 		socket_close($socket);
 	} else {
-		write_log(sprintf('Unable to send request: %s' . socket_strerror(socket_last_error())), E_USER_ERROR);
+		write_log(sprintf('Unable to send request: %s', socket_strerror(socket_last_error())), E_USER_ERROR);
 		$ret = false;
 	}
 
