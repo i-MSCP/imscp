@@ -159,7 +159,7 @@ function client_genetateGroupsList($tpl, $domainId)
 				$query = "SELECT `uname` FROM `htaccess_users` WHERE `id` IN({$group['members']})";
 				$stmt = execute_query($query);
 
-				$tpl->assign('MEMBER', tohtml(implode(',', $stmt->fetchAll(PDO::FETCH_COLUMN))));
+				$tpl->assign('MEMBER', tohtml(implode(', ', $stmt->fetchAll(PDO::FETCH_COLUMN))));
 				$tpl->parse('GROUP_MEMBERS', '.group_members');
 			}
 
