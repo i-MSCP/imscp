@@ -18,6 +18,10 @@ IMAPD_SSL_SNAME = courier-imap-ssl
 
 CMD_MAILDIRMAKE = /usr/bin/maildirmake
 
+# Only used for transition
+# We are now using the authmysql module
+CMD_MAKEUSERDB = /usr/sbin/makeuserdb
+
 POPD_SNAME = courier-pop
 
 POPD_SSL_SNAME = courier-pop-ssl

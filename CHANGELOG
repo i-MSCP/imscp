@@ -5,6 +5,9 @@
 Git stable
 ------------------------------------------------------------------------------------------------------------------------
 
+ENGINE:
+	- Fixed: Old passwords are still working even when they are updated (courier-authdaemon)
+
 Tickets:
 	- Fixed #1021: Bug - Some htusers are not added into the htgroup file
 

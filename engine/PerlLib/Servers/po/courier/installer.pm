@@ -589,9 +589,11 @@ sub _buildAuthdaemonrcFile
 	return $rs if $rs;
 
 	# Building new file (Adding the authmysql module if needed)
-	if($cfgTpl !~ /^\s*authmodulelist="(?:.*)?authmysql.*"$/gm) {
-		$cfgTpl =~ s/(authmodulelist=")/$1authmysql /gm;
-	}
+	#if($cfgTpl !~ /^\s*authmodulelist="(?:.*)?authmysql.*"$/gm) {
+	#	$cfgTpl =~ s/(authmodulelist=")/$1authmysql /gm;
+	#}
+
+	$cfgTpl =~ s/authmodulelist=".*"/authmodulelist="authmysql authpam"/;
 
 	$rs = $self->{'hooksManager'}->trigger('afterPoBuildAuthdaemonrcFile', \$cfgTpl, 'authdaemonrc');
 	return $rs if $rs;
@@ -823,6 +825,30 @@ sub _oldEngineCompatibility
 
 	my $rs = $self->{'hooksManager'}->trigger('beforePoOldEngineCompatibility');
 	return $rs if $rs;
+
+	# authuserdb module is no longer used. We ensure that the userdb file is free of any old entry.
+	if(-f "$self->{'config'}->{'AUTHLIB_CONF_DIR'}/userdb") {
+		my $file = iMSCP::File->new('filename' => "$self->{'config'}->{'AUTHLIB_CONF_DIR'}/userdb");
+
+		$rs = $file->set('');
+		return $rs if $rs;
+
+		$rs = $file->save();
+		return $rs if $rs;
+
+		$rs = $file->mode(0600);
+		return $rs if $rs;
+
+		my ($stdout, $stderr);
+		$rs = execute(
+			"$self->{'config'}->{'CMD_MAKEUSERDB'} -f $self->{'config'}->{'AUTHLIB_CONF_DIR'}/userdb",
+			\$stdout,
+			\$stderr
+		);
+		debug($stdout) if $stdout;
+		error($stderr) if $stderr && $rs;
+		return $rs if $rs;
+	}
 
 	$self->{'hooksManager'}->trigger('afterPodOldEngineCompatibility');
 }
