@@ -35,8 +35,8 @@ use strict;
 use warnings;
 
 use iMSCP::Debug;
-use version;
 use iMSCP::Execute;
+use version;
 use parent 'Common::SimpleClass';
 
 # Initializer.
@@ -238,11 +238,11 @@ sub checkVersion
 
 	$maxversion ||= '';
 
-	if(version->new($version) < version->new($minversion)) {
+	if(qv("v$version") < qv("v$minversion")) {
 		return "$version is older then required version $minversion";
 	}
 
-	if($maxversion && version->new($version) > version->new($maxversion)) {
+	if($maxversion && qv("v$version") > qv("v$maxversion")) {
 		return "$version is newer then required version $minversion";
 	}
 

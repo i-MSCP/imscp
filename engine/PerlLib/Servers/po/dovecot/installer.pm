@@ -250,7 +250,7 @@ EOF
 				MTA_MAILBOX_UID_NAME => $self->{'mta'}->{'config'}-> {'MTA_MAILBOX_UID_NAME'},
 				MTA_MAILBOX_GID_NAME => $self->{'mta'}->{'config'}-> {'MTA_MAILBOX_GID_NAME'},
 				DOVECOT_DELIVER_PATH => $self->{'config'}->{'DOVECOT_DELIVER_PATH'},
-				SFLAG => (version->new($self->{'version'}) < version->new('2.0.0') ? '-s' : '')
+				SFLAG => (qv("v$self->{'version'}") < qv('v2.0.0') ? '-s' : '')
 			},
 			$configSnippet
 		);
@@ -482,7 +482,7 @@ sub _buildConf
 	}
 
 	my %cfgFiles = (
-		((version->new($self->{'version'}) < version->new('2.0.0')) ? 'dovecot.conf.1' : 'dovecot.conf.2') => [
+		((qv("v$self->{'version'}") < qv('v2.0.0')) ? 'dovecot.conf.1' : 'dovecot.conf.2') => [
 			"$self->{'config'}->{'DOVECOT_CONF_DIR'}/dovecot.conf", # Destpath
 			$main::imscpConfig{'ROOT_USER'}, # Owner
 			$self->{'mta'}->{'config'}->{'MTA_MAILBOX_GID_NAME'}, # Group
@@ -494,7 +494,7 @@ sub _buildConf
 			$self->{'mta'}->{'config'}->{'MTA_MAILBOX_GID_NAME'}, # Group
 			0644 # Permissions
 		],
-		((version->new($self->{'version'}) < version->new('2.0.0')) ? 'quota-warning.1' : 'quota-warning.2') => [
+		((qv("v$self->{'version'}") < qv('v2.0.0')) ? 'quota-warning.1' : 'quota-warning.2') => [
 			"$main::imscpConfig{'ENGINE_ROOT_DIR'}/quota/imscp-dovecot-quota.sh", # Destpath
 			$self->{'mta'}->{'config'}->{'MTA_MAILBOX_UID_NAME'}, # Owner
 			$self->{'mta'}->{'config'}->{'MTA_MAILBOX_GID_NAME'}, # Group

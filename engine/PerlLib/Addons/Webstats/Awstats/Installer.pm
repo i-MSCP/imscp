@@ -263,7 +263,7 @@ sub _createGlobalAwstatsVhost
 
 	my $rs = 0;
 
-	my $apache24 = (version->new("v$self->{'httpd'}->{'config'}->{'APACHE_VERSION'}") >= version->new('v2.4.0'));
+	my $apache24 = (qv("v$self->{'httpd'}->{'config'}->{'APACHE_VERSION'}") >= qv('v2.4.0'));
 
 	$self->{'httpd'}->setData(
 		{

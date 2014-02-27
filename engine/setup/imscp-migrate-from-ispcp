@@ -764,7 +764,7 @@ EOF
 sub checkIspcpVersion
 {
 	if($main::ispcpConfig{'Version'} =~ /([\d.]+)/) {
-		if(version->new($1) < version->new('1.0.7')) {
+		if(qv("v$1") < qv('v1.0.7')) {
 			iMSCP::Dialog->factory()->set('defaultno', '');
 
 			if(iMSCP::Dialog->factory()->yesno(<<EOF)) {

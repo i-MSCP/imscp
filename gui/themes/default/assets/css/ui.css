@@ -1040,6 +1040,14 @@ table .icon {
     background-image: url(../images/icons/close.png);
 }
 
+.i_lock {
+    background-image: url('../images/login/i_lock.png');
+}
+
+.i_unlock {
+    background-image: url('../images/login/i_unlock.png');
+}
+
 /* * * * * * *
  * DataTables
  */

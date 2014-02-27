@@ -65,7 +65,7 @@ sub register($$$)
 	my ($self, $hook, $hookFunction) = @_;
 
 	if (ref $hookFunction eq 'CODE') {
-		debug("Register hook function on the '$hook' hook");
+		debug("Registering listener on the '$hook' hook from " . ((caller(1))[3] || 'main'));
 		push(@{$self->{'hooks'}{$hook}}, $hookFunction);
 	} else {
 		error("Invalid hook function provided for the '$hook' hook");

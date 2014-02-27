@@ -52,367 +52,405 @@ newDebug('imscp-rqst-mngr.log');
 
 silent(1);
 
-sub startUp
-{
-	iMSCP::Bootstrapper->getInstance()->boot({ 'norequirements' => 'yes' });
+iMSCP::Bootstrapper->getInstance()->boot({ 'norequirements' => 'yes' });
 
-	0;
-}
-
-sub engine
+sub run
 {
 	my $rs = 0;
 
 	# Process plugins
 	# Should always be processed first to allow plugins to register their listeners on the hooks manager
-	my $sql = "
-		SELECT
-			`plugin_id` AS `id`, `plugin_name` AS `name`, `plugin_status` AS `status`
-		FROM
-			`plugin`
-		WHERE
-			`plugin_status` IN ('enabled', 'toinstall', 'toenable', 'toupdate', 'tochange', 'todisable', 'touninstall')
-		AND
-			`plugin_error` IS NULL
-		AND
-			`plugin_backend` = 'yes'
-	";
-	$rs = _process('Plugin', $sql);
-	return $rs if $rs;
+	$rs = _process(
+		'Plugin',
+		"
+			SELECT
+				plugin_id AS id, plugin_name AS name, plugin_status AS status
+			FROM
+				plugin
+			WHERE
+				plugin_status IN ('enabled', 'toinstall', 'toenable', 'toupdate', 'tochange', 'todisable', 'touninstall')
+			AND
+				plugin_error IS NULL
+			AND
+				plugin_backend = 'yes'
+		"
+	);
 
-	$rs =  iMSCP::HooksManager->getInstance()->trigger("beforeDispatchRequest");
-	return $rs if $rs;
+	$rs ||= iMSCP::HooksManager->getInstance()->trigger('beforeDispatchRequest');
 
 	# Process toadd|tochange SSL certificates tasks
-	$sql = "
-		SELECT
-			`cert_id` AS `id`, `type` AS `name`, `status` AS `status`
-		FROM
-			`ssl_certs`
-		WHERE
-			`status` IN ('toadd', 'tochange', 'todelete')
-	";
-	$rs = _process('Certificates', $sql);
-	return $rs if $rs;
+	$rs ||= _process(
+		'Certificates',
+		"
+			SELECT
+				cert_id AS id, type AS name, status AS status
+			FROM
+				ssl_certs
+			WHERE
+				status IN ('toadd', 'tochange', 'todelete')
+		"
+	);
 
 	# Process toadd|tochange users tasks
-	$sql = "
-		SELECT
-			`admin_id` AS `id`, `admin_name` AS `name`, `admin_status` AS `status`
-		FROM
-			`admin`
-		WHERE
-			`admin_type` = 'user'
-		AND
-			`admin_status` IN ('toadd', 'tochange');
-	";
-	$rs = _process('User', $sql);
-	return $rs if $rs;
+	$rs ||= _process(
+		'User',
+		"
+			SELECT
+				admin_id AS id, admin_name AS name, admin_status AS status
+			FROM
+				admin
+			WHERE
+				admin_type = 'user'
+			AND
+				admin_status IN ('toadd', 'tochange')
+		"
+	);
 
 	my $ipsMod = 0;
 
 	# Process toadd|tochange|torestore|toenable|todisable domain tasks
-	$sql = "
-		SELECT
-			`domain_id` AS `id`, `domain_name` AS `name`, `domain_status` AS `status`
-		FROM
-			`domain`
-		WHERE
-			`domain_status` IN ('toadd', 'tochange', 'torestore', 'toenable', 'todisable', 'disabled')
-	";
-	$rs = _process('Domain', $sql, \$ipsMod);
-	return $rs if $rs;
+	$rs ||= _process(
+		'Domain',
+		"
+			SELECT
+				domain_id AS id, domain_name AS name, domain_status AS status
+			FROM
+				domain
+			WHERE
+				domain_status IN ('toadd', 'tochange', 'torestore', 'toenable', 'todisable', 'disabled')
+		",
+		\$ipsMod
+	);
 
 	# Process toadd|tochange|torestore|toenable|todisable subdomains tasks
-	$sql = "
-		SELECT
-			`subdomain_id` AS `id`, `subdomain_name` AS `name`, `subdomain_status` AS `status`
-		FROM
-			`subdomain`
-		WHERE
-			`subdomain_status` IN ('toadd', 'tochange', 'torestore', 'toenable', 'todisable', 'disabled')
-	";
-	$rs = _process('Subdomain', $sql, \$ipsMod);
-	return $rs if $rs;
+	$rs ||= _process(
+		'Subdomain',
+		"
+			SELECT
+				subdomain_id AS id, subdomain_name AS name, subdomain_status AS status
+			FROM
+				subdomain
+			WHERE
+				subdomain_status IN ('toadd', 'tochange', 'torestore', 'toenable', 'todisable', 'disabled')
+		",
+		\$ipsMod
+	);
 
 	# Process toadd|tochange|torestore|toenable|todisable domain aliases tasks
-	$sql = "
-		SELECT
-			`alias_id` AS `id`, `alias_name` AS `name`, `alias_status` AS `status`
-		FROM
-			`domain_aliasses`
-		WHERE
-			`alias_status` IN ('toadd', 'tochange', 'torestore', 'toenable', 'todisable', 'disabled')
-	";
-	$rs = _process('Alias', $sql, \$ipsMod);
-	return $rs if $rs;
+	$rs ||= _process(
+		'Alias',
+		 "
+			SELECT
+				alias_id AS id, alias_name AS name, alias_status AS status
+			FROM
+				domain_aliasses
+			WHERE
+				alias_status IN ('toadd', 'tochange', 'torestore', 'toenable', 'todisable', 'disabled')
+		 ",
+		 \$ipsMod
+	);
 
 	# Process toadd|tochange|torestore|toenable|todisable subdomains of domain aliases tasks
-	$sql = "
-		SELECT
-			`subdomain_alias_id` AS `id`, `subdomain_alias_name` AS `name`, `subdomain_alias_status` AS `status`
-		FROM
-			`subdomain_alias`
-		WHERE
-			`subdomain_alias_status` IN ('toadd', 'tochange', 'torestore', 'toenable', 'todisable', 'disabled')
-	";
-	$rs = _process('SubAlias', $sql, \$ipsMod);
-	return $rs if $rs;
+	$rs ||= _process(
+		'SubAlias',
+		"
+			SELECT
+				subdomain_alias_id AS id, subdomain_alias_name AS name, subdomain_alias_status AS status
+			FROM
+				subdomain_alias
+			WHERE
+				subdomain_alias_status IN ('toadd', 'tochange', 'torestore', 'toenable', 'todisable', 'disabled')
+		",
+		\$ipsMod
+	);
 
 	# Process toadd|tochange|toenable|todisable|todelete mail tasks
-	$sql = "
-		SELECT
-			`mail_id` AS `id`, `mail_addr` AS `name`, `status` AS `status`
-		FROM
-			`mail_users`
-		WHERE
-			`status` IN ('toadd', 'tochange', 'toenable', 'todelete', 'todisable')
-	";
-	$rs = _process('Mail', $sql);
-	return $rs if $rs;
+	$rs ||= _process(
+		'Mail',
+		"
+			SELECT
+				mail_id AS id, mail_addr AS name, status AS status
+			FROM
+				mail_users
+			WHERE
+				status IN ('toadd', 'tochange', 'toenable', 'todelete', 'todisable')
+		"
+	);
 
 	# Process toadd|tochange|todelete Htusers tasks
-	$sql = "
-		SELECT
-			`id`, `uname` AS `name`, `status`
-		FROM
-			`htaccess_users`
-		WHERE
-			`status` IN ('toadd', 'tochange', 'todelete')
-	";
-	$rs = _process('Htusers', $sql);
-	return $rs if $rs;
+	$rs ||= _process(
+		'Htusers',
+		"
+			SELECT
+				id, uname AS name, status
+			FROM
+				htaccess_users
+			WHERE
+				status IN ('toadd', 'tochange', 'todelete')
+		"
+	);
 
 	# Process toadd|tochange|todelete Htgroups tasks
-	$sql = "
-		SELECT
-			`id` AS `id`, CONCAT(`ugroup`, ':', `id`) AS `name`, `status`
-		FROM
-			`htaccess_groups`
-		WHERE
-			`status` IN ('toadd', 'tochange', 'todelete')
-	";
-	$rs = _process('Htgroup', $sql);
-	return $rs if $rs;
+	$rs ||= _process(
+		'Htgroup',
+		"
+			SELECT
+				id AS id, CONCAT(ugroup, ':', id) AS name, status
+			FROM
+				htaccess_groups
+			WHERE
+				status IN ('toadd', 'tochange', 'todelete')
+		"
+	);
 
 	# Process toadd|tochange|todelete Htaccess tasks
-	$sql = "
-		SELECT
-			`id`, `auth_name` AS `name`, `status`
-		FROM
-			`htaccess`
-		WHERE
-			`status` IN ('toadd', 'tochange', 'todelete')
-	";
-	$rs = _process('Htaccess', $sql);
-	return $rs if $rs;
+	$rs ||= _process(
+		'Htaccess',
+		"
+			SELECT
+				id, auth_name AS name, status
+			FROM
+				htaccess
+			WHERE
+				status IN ('toadd', 'tochange', 'todelete')
+		"
+	);
 
 	# Process todelete subdomain aliases tasks
-	$sql = "
-		SELECT
-			`subdomain_alias_id` AS `id`, `subdomain_alias_name` AS `name`, `subdomain_alias_status` AS `status`
-		FROM
-			`subdomain_alias`
-		WHERE
-			`subdomain_alias_status` = 'todelete'
-	";
-	$rs = _process('SubAlias', $sql, \$ipsMod);
-	return $rs if $rs;
+	$rs ||= _process(
+		'SubAlias',
+		"
+			SELECT
+				subdomain_alias_id AS id, subdomain_alias_name AS name, subdomain_alias_status AS status
+			FROM
+				subdomain_alias
+			WHERE
+				subdomain_alias_status = 'todelete'
+		",
+		\$ipsMod
+	);
 
 	# Process todelete subdomains tasks
-	$sql = "
-		SELECT
-			`subdomain_id` AS `id`, `subdomain_name` AS `name`, `subdomain_status` AS `status`
-		FROM
-			`subdomain`
-		WHERE
-			`subdomain_status` = 'todelete'
-	";
-	$rs = _process('Subdomain', $sql, \$ipsMod);
-	return $rs if $rs;
+	$rs ||= _process(
+		'Subdomain',
+		"
+			SELECT
+				subdomain_id AS id, subdomain_name AS name, subdomain_status AS status
+			FROM
+				subdomain
+			WHERE
+				subdomain_status = 'todelete'
+		",
+		\$ipsMod
+	);
 
 	# Process todelete domain aliases tasks
-	$sql = "
-		SELECT
-			`alias_id` AS `id`, `alias_name` AS `name`, `alias_status` AS `status`
-		FROM
-			`domain_aliasses`
-		WHERE
-			`alias_status` = 'todelete'
-	";
-	$rs = _process('Alias', $sql, \$ipsMod);
-	return $rs if $rs;
+	$rs ||= _process(
+		'Alias',
+		"
+			SELECT
+				alias_id AS id, alias_name AS name, alias_status AS status
+			FROM
+				domain_aliasses
+			WHERE
+				alias_status = 'todelete'
+		",
+		\$ipsMod
+	);
 
 	# Process todelete domains tasks
-	$sql = "
-		SELECT
-			`domain_id` AS `id`, `domain_name` AS `name`, `domain_status` AS `status`
-		FROM
-			`domain`
-		WHERE
-			`domain_status` = 'todelete'
-	";
-	$rs = _process('Domain', $sql, \$ipsMod);
-	return $rs if $rs;
+	$rs ||= _process(
+		'Domain',
+		"
+			SELECT
+				domain_id AS id, domain_name AS name, domain_status AS status
+			FROM
+				domain
+			WHERE
+				domain_status = 'todelete'
+		",
+		\$ipsMod
+	);
 
 	# Process todelete users tasks
-	$sql = "
-		SELECT
-			`admin_id` AS `id`, `admin_name` AS `name`, `admin_status` AS `status`
-		FROM
-			`admin`
-		WHERE
-			`admin_type` = 'user'
-		AND
-			`admin_status` = 'todelete';
-	";
-	$rs = _process('User', $sql);
-	return $rs if $rs;
+	$rs ||= _process(
+		'User',
+		"
+			SELECT
+				admin_id AS id, admin_name AS name, admin_status AS status
+			FROM
+				admin
+			WHERE
+				admin_type = 'user'
+			AND
+				admin_status = 'todelete'
+		"
+	);
 
 	# Process network cards tasks
-	$sql = "
-		SELECT
-			`ip_id` AS `id`, `ip_status` AS `name`, `ip_status` AS `status`
-		FROM
-			`server_ips`
-		WHERE
-			`ip_status` != 'ok'
-	";
-	$rs = _process('NetCard', $sql);
-	return $rs if $rs;
-
+	$rs ||= _process(
+		'NetCard',
+		"
+			SELECT
+				ip_id AS id, ip_status AS name, ip_status AS status
+			FROM
+				server_ips
+			WHERE
+				ip_status <> 'ok'
+		"
+	);
 
 	# Process IP addresses tasks
 	# This module should always me processed to handle case were only one domain is registered and disabled)
-	if($ipsMod != 0) {
+	if(! $rs && $ipsMod != 0) {
 		newDebug("Ips_mngr.log");
 
 		require Modules::Ips;
 		$rs = Modules::Ips->new()->process();
 
 		endDebug();
-
-		return $rs if $rs;
 	}
 
 	# software installation BEGIN
 
-	$sql = "
-		SELECT
-			`domain_id`, `alias_id`, `subdomain_id`, `subdomain_alias_id`, `software_id`, `path`, `software_prefix`,
-			`db`, `database_user`, `database_tmp_pwd`, `install_username`, `install_password`, `install_email`,
-			`software_status`, `software_depot`, `software_master_id`
-		FROM
-			`web_software_inst`
-		WHERE
-			`software_status` IN ('toadd', 'todelete')
-		ORDER BY
-			`domain_id`
-	";
-	my $rdata = iMSCP::Database->factory()->doQuery('software_id', $sql);
-	unless(ref $rdata eq 'HASH'){
-		error($rdata);
-		return 1;
+	unless($rs) {
+		my $db = iMSCP::Database->factory();
+
+		my $rdata = $db->doQuery(
+			'software_id',
+			"
+				SELECT
+					domain_id, alias_id, subdomain_id, subdomain_alias_id, software_id, path, software_prefix,
+					db, database_user, database_tmp_pwd, install_username, install_password, install_email,
+					software_status, software_depot, software_master_id
+				FROM
+					web_software_inst
+				WHERE
+					software_status IN ('toadd', 'todelete')
+				ORDER BY
+					domain_id
+			"
+		);
+		unless(ref $rdata eq 'HASH'){
+			error($rdata);
+			$rs = 1;
+		} else {
+			my $count = scalar keys %{$rdata};
+
+			newDebug('imscp_sw_mngr_engine') if $count;
+
+			for (keys %$rdata) {
+				my (
+					$sw_domain_id, $sw_aliasdomain_id, $sw_subdomain_id, $sw_aliassubdomain_id, $sw_software_id,
+					$sw_path, $sw_software_prefix, $sw_database, $sw_database_user, $sw_database_tmp_pwd,
+					$sw_install_username, $sw_install_password, $sw_install_email, $sw_software_status,
+					$sw_software_depot, $sw_software_master_id
+				) = (
+					$rdata->{$_}->{'domain_id'}, $rdata->{$_}->{'alias_id'}, $rdata->{$_}->{'subdomain_id'},
+					$rdata->{$_}->{'subdomain_alias_id'}, $rdata->{$_}->{'software_id'}, $rdata->{$_}->{'path'},
+					$rdata->{$_}->{'software_prefix'}, $rdata->{$_}->{'db'}, $rdata->{$_}->{'database_user'},
+					$rdata->{$_}->{'database_tmp_pwd'}, $rdata->{$_}->{'install_username'},
+					$rdata->{$_}->{'install_password'}, $rdata->{$_}->{'install_email'},
+					$rdata->{$_}->{'software_status'}, $rdata->{$_}->{'software_depot'},
+					$rdata->{$_}->{'software_master_id'}
+				);
+
+				# Encoding data to push to another script
+				my $imscp_sw_mngr_pushstring = encode_base64(
+					"$sw_domain_id,$sw_software_id,$sw_path,$sw_software_prefix,$sw_database,$sw_database_user," .
+					"$sw_database_tmp_pwd,$sw_install_username,$sw_install_password,$sw_install_email," .
+					"$sw_software_status,$sw_software_depot,$sw_software_master_id,$sw_aliasdomain_id," .
+					"$sw_subdomain_id,$sw_aliassubdomain_id"
+				);
+
+				debug("Processing encoded pushtring: $imscp_sw_mngr_pushstring.");
+
+				my ($stdout, $stderr);
+				$rs = execute(
+					"$main::imscpConfig{'CMD_PERL'} $main::imscpConfig{'ENGINE_ROOT_DIR'}/imscp-sw-mngr " .
+						"\"$imscp_sw_mngr_pushstring\"",
+					\$stdout,
+					\$stderr
+				);
+				debug($stdout) if $stdout;
+				error($stderr) if $stderr && $rs;
+				last if $rs;
+
+				$rs = execute(
+					"$main::imscpConfig{'CMD_RM'} -fR /tmp/sw-$sw_domain_id-$sw_software_id", \$stdout, \$stderr
+				);
+				debug($stdout) if $stdout;
+				error($stderr) if $stderr && $rs;
+				last if $rs;
+			}
+
+			endDebug() if $count;
+
+			unless($rs) {
+				$rdata = $db->doQuery(
+					'software_id',
+					"
+						SELECT
+							software_id, reseller_id, software_archive, software_status, software_depot
+						FROM
+							web_software
+						WHERE
+							software_status = 'toadd'
+						ORDER BY
+							reseller_id
+					"
+				);
+				unless(ref $rdata eq 'HASH'){
+					error($rdata);
+					$rs = 1;
+				} else {
+					$count = scalar keys %$rdata;
+
+					newDebug('imscp_pkt_mngr_engine.log') if $count;
+
+					for (keys %$rdata) {
+						my (
+							$sw_software_id, $sw_reseller_id, $sw_software_archive, $sw_software_status,
+							$sw_software_depot
+						) = (
+							$rdata->{$_}->{'software_id'}, $rdata->{$_}->{'reseller_id'},
+							$rdata->{$_}->{'software_archive'}, $rdata->{$_}->{'software_status'},
+							$rdata->{$_}->{'software_depot'}
+						);
+
+						# Encoding data to push to another script
+						my $pushstring = encode_base64(
+							"$sw_software_id,$sw_reseller_id,$sw_software_archive,$sw_software_status,$sw_software_depot"
+						);
+
+						my ($stdout, $stderr);
+						$rs = execute(
+							"$main::imscpConfig{'CMD_PERL'} $main::imscpConfig{'ENGINE_ROOT_DIR'}/imscp-pkt-mngr " .
+								"\"$pushstring\"",
+							\$stdout,
+							\$stderr
+						);
+						debug($stdout) if $stdout;
+						error($stderr) if $stderr && $rs;
+						last if $rs;
+
+						$rs = execute(
+							"$main::imscpConfig{'CMD_RM'} -fR /tmp/sw-$sw_software_archive-$sw_software_id",
+							\$stdout,
+							\$stderr
+						);
+						debug($stdout) if $stdout;
+						error($stderr) if $stderr && $rs;
+						last if $rs;
+					}
+				}
+			}
+
+			endDebug() if $count;
+		}
 	}
 
-	my $count = scalar keys %$rdata;
-
-	newDebug('imscp_sw_mngr_engine') if $count;
-
-	for (keys %$rdata) {
-		my (
-			$sw_domain_id, $sw_aliasdomain_id, $sw_subdomain_id, $sw_aliassubdomain_id, $sw_software_id, $sw_path,
-			$sw_software_prefix, $sw_database, $sw_database_user, $sw_database_tmp_pwd, $sw_install_username,
-			$sw_install_password, $sw_install_email, $sw_software_status, $sw_software_depot, $sw_software_master_id
-		) = (
-			$rdata->{$_}->{domain_id}, $rdata->{$_}->{alias_id}, $rdata->{$_}->{subdomain_id},
-			$rdata->{$_}->{subdomain_alias_id}, $rdata->{$_}->{software_id}, $rdata->{$_}->{path},
-			$rdata->{$_}->{software_prefix}, $rdata->{$_}->{db}, $rdata->{$_}->{database_user},
-			$rdata->{$_}->{database_tmp_pwd}, $rdata->{$_}->{install_username}, $rdata->{$_}->{install_password},
-			$rdata->{$_}->{install_email}, $rdata->{$_}->{software_status}, $rdata->{$_}->{software_depot},
-			$rdata->{$_}->{software_master_id}
-		);
-
-		# Encoding data to push to another script
-		my $imscp_sw_mngr_pushstring = encode_base64(
-			"$sw_domain_id,$sw_software_id,$sw_path,$sw_software_prefix,$sw_database,$sw_database_user," .
-			"$sw_database_tmp_pwd,$sw_install_username,$sw_install_password,$sw_install_email,$sw_software_status," .
-			"$sw_software_depot,$sw_software_master_id,$sw_aliasdomain_id,$sw_subdomain_id,$sw_aliassubdomain_id"
-		);
-
-		debug("Processing encoded pushtring: $imscp_sw_mngr_pushstring.");
-
-		my ($stdout, $stderr);
-		$rs = execute(
-			"perl $main::imscpConfig{ENGINE_ROOT_DIR}/imscp-sw-mngr \"$imscp_sw_mngr_pushstring\"", \$stdout, \$stderr
-		);
-		debug($stdout) if $stdout;
-		error($stderr) if $stderr && $rs;
-		last if $rs;
-
-		$rs = execute("$main::imscpConfig{CMD_RM} -fR /tmp/sw-$sw_domain_id-$sw_software_id", \$stdout, \$stderr);
-		debug($stdout) if $stdout;
-		error($stderr) if $stderr && $rs;
-		last if $rs;
-	}
-
-	endDebug() if $count;
-	return $rs if $rs;
-
-	$sql = "
-		SELECT
-			`software_id`, `reseller_id`, `software_archive`, `software_status`, `software_depot`
-		FROM
-			`web_software`
-		WHERE
-			`software_status` = 'toadd'
-		ORDER BY
-			`reseller_id`
-	";
-	$rdata = iMSCP::Database->factory()->doQuery('software_id', $sql);
-	unless(ref $rdata eq 'HASH'){
-		error($rdata);
-		return 1;
-	}
-
-	$count = scalar keys %$rdata;
-
-	newDebug('imscp_pkt_mngr_engine.log') if $count;
-
-	for (keys %$rdata) {
-		my (
-			$sw_software_id, $sw_reseller_id, $sw_software_archive, $sw_software_status, $sw_software_depot
-		) = (
-			$rdata->{$_}->{software_id}, $rdata->{$_}->{reseller_id}, $rdata->{$_}->{software_archive},
-			$rdata->{$_}->{software_status}, $rdata->{$_}->{software_depot}
-		);
-
-		# Encoding data to push to another script
-		debug("$sw_software_id,$sw_reseller_id,$sw_software_archive,$sw_software_status,$sw_software_depot");
-		my $imscp_pkt_mngr_pushstring = encode_base64(
-			"$sw_software_id,$sw_reseller_id,$sw_software_archive,$sw_software_status,$sw_software_depot"
-		);
-
-		debug("Processing encoded pushtring: $imscp_pkt_mngr_pushstring");
-
-		my ($stdout, $stderr);
-		$rs = execute(
-			"$main::imscpConfig{'CMD_PERL'} $main::imscpConfig{ENGINE_ROOT_DIR}/imscp-pkt-mngr \"$imscp_pkt_mngr_pushstring\"",
-			\$stdout, \$stderr
-		);
-		debug($stdout) if $stdout;
-		error($stderr) if $stderr && $rs;
-		last if $rs;
-
-		$rs = execute("$main::imscpConfig{CMD_RM} -fR /tmp/sw-$sw_software_archive-$sw_software_id", \$stdout, \$stderr);
-		debug($stdout) if $stdout;
-		error($stderr) if $stderr && $rs;
-		last if $rs
-	}
-
-	endDebug() if $count;
-
-	iMSCP::HooksManager->getInstance()->trigger("afterDispatchRequest");
+	iMSCP::HooksManager->getInstance()->trigger('afterDispatchRequest', $rs);
 }
 
 sub _process
@@ -427,9 +465,7 @@ sub _process
 		print("Processing type $type.\n");
 	}
 
-	my $database = iMSCP::Database->factory();
-	my $rdata = $database->doQuery('id', $sql);
-
+	my $rdata = iMSCP::Database->factory()->doQuery('id', $sql);
 	unless(ref $rdata eq 'HASH') {
 		error($rdata);
 		return 1;
@@ -451,7 +487,7 @@ sub _process
 			debug("Processing $id, $name, $status.");
 
 			if($main::execmode ne 'setup') {
-				print("Processing $id, $name, $status. ($i of $total: remaining " . ($total -$i) . ")\n");
+				print("Processing $id, $name, $status. ($i of $total: remaining " . ($total - $i) . ")\n");
 			} else {
 				print STDOUT ("$type\t$status\t$name\t$id\t$total\t$i\n");
 			}
@@ -477,13 +513,10 @@ sub _process
 			return $rs if $rs;
 		}
 	} else {
-			debug("No $type to process.");
+		debug("No $type to process.");
 	}
 
 	0;
 }
 
-my $rs = startUp();
-$rs ||= engine();
-
-exit $rs;
+exit run();

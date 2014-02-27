@@ -1935,7 +1935,7 @@ sub setupRebuildCustomerFiles
 	eval {
 		my $aditionalCondition;
 
-		while (my ($table, $field) = each %$tables) {
+		while (my ($table, $field) = each %{$tables}) {
 			if(ref $field eq 'ARRAY') {
 				$aditionalCondition = $field->[1];
 				$field = $field->[0];
@@ -1943,21 +1943,29 @@ sub setupRebuildCustomerFiles
 				$aditionalCondition = ''
 			}
 
-			$rawDb->do("UPDATE `$table` SET `$field` = 'tochange' WHERE `$field` = 'ok' $aditionalCondition");
+			$rawDb->do(
+				"
+					UPDATE
+						$table
+					SET
+						$field = 'tochange'
+					WHERE
+						$field NOT IN('toadd', 'tochange', 'torestore', 'todisable', 'disabled', 'ordered', 'todelete')
+					$aditionalCondition
+				"
+			);
 		}
 
 		$rawDb->do(
 			"
 				UPDATE
-					`plugin`
+					plugin
 				SET
-					`plugin_status` = 'tochange'
+					plugin_status = 'tochange', plugin_error = NULL
 				WHERE
-					`plugin_status` = 'enabled'
+					plugin_status IN ('tochange', 'enabled')
 				AND
-					`plugin_error` IS NULL
-				AND
-					`plugin_backend` = 'yes'
+					plugin_backend = 'yes'
 			"
 		);
 

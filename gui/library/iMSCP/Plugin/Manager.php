@@ -42,7 +42,7 @@ class iMSCP_Plugin_Manager
 	/**
 	 * @const string Plugin API version
 	 */
-	const PLUGIN_API_VERSION = '0.2.5';
+	const PLUGIN_API_VERSION = '0.2.6';
 
 	/**
 	 * @const int Action failure
@@ -477,6 +477,7 @@ class iMSCP_Plugin_Manager
 	/**
 	 * Install the given plugin
 	 *
+	 * @see pluginEnable() subaction
 	 * @param string $pluginName Plugin name
 	 * @return self::ACTION_SUCCESS|self::ACTION_STOPPED|self::ACTION_FAILURE
 	 */
@@ -681,27 +682,32 @@ class iMSCP_Plugin_Manager
 	/**
 	 * Enable (activate) the given plugin
 	 *
+	 * @see pluginUpdate() action
 	 * @param string $pluginName Plugin name
-	 * @param bool $inheritPluginStatus Inherit plugin status
+	 * @param bool $isSubaction Whether this action is run as subaction
 	 * @return self::ACTION_SUCCESS|self::ACTION_STOPPED|self::ACTION_FAILURE
 	 */
-	public function pluginEnable($pluginName, $inheritPluginStatus = false)
+	public function pluginEnable($pluginName, $isSubaction = false)
 	{
 		if ($this->isPluginKnown($pluginName)) {
 			$pluginStatus = $this->getPluginStatus($pluginName);
 
-			if ($inheritPluginStatus || in_array($pluginStatus, array('toenable', 'disabled'))) {
+			if ($isSubaction || in_array($pluginStatus, array('toenable', 'disabled'))) {
 				try {
 					$pluginInstance = $this->loadPlugin($pluginName, false, false);
 					$pluginInstance->register($this->eventsManager);
 
-					if (!$inheritPluginStatus) {
+					if (!$isSubaction) {
 						$pluginInfo = $this->getPluginInfo($pluginName);
 
-						# A plugin update is available. Switch to update mode
 						if($pluginInfo['version'] != $pluginInfo['__nversion__']) {
+							# A plugin update is available. Run update action
 							$this->setPluginStatus($pluginName, 'toupdate');
 							return $this->pluginUpdate($pluginName);
+						} elseif(isset($pluginInfo['__need_change__']) && $pluginInfo['__need_change__']) {
+							# A plugin change is needed. Run change action
+							$this->setPluginStatus($pluginName, 'tochange');
+							return $this->pluginChange($pluginName);
 						}
 
 						$this->setPluginStatus($pluginName, 'toenable');
@@ -733,12 +739,12 @@ class iMSCP_Plugin_Manager
 
 						if ($this->hasPluginBackend($pluginName)) {
 							$this->backendRequest = true;
-						} elseif (!$inheritPluginStatus) {
+						} elseif (!$isSubaction) {
 							$this->setPluginStatus($pluginName, 'enabled');
 						}
 
 						return self::ACTION_SUCCESS;
-					} elseif (!$inheritPluginStatus) {
+					} elseif (!$isSubaction) {
 						// This action has been stopped by an event listener before having a chance to start. Therefore,
 						// the plugin status is set back to its initial state.
 						$this->setPluginStatus($pluginName, $pluginStatus);
@@ -776,20 +782,20 @@ class iMSCP_Plugin_Manager
 	 * Disable (deactivate) the given plugin
 	 *
 	 * @param string $pluginName Plugin name
-	 * @param bool $inheritPluginStatus Inherit plugin status
+	 * @param bool $isSubaction Whether this action is run as subaction
 	 * @return self::ACTION_SUCCESS|self::ACTION_STOPPED|self::ACTION_FAILURE
 	 */
-	public function pluginDisable($pluginName, $inheritPluginStatus = false)
+	public function pluginDisable($pluginName, $isSubaction = false)
 	{
 		if ($this->isPluginKnown($pluginName)) {
 			$pluginStatus = $this->getPluginStatus($pluginName);
 
-			if ($inheritPluginStatus || in_array($pluginStatus, array('todisable', 'enabled'))) {
+			if ($isSubaction || in_array($pluginStatus, array('todisable', 'enabled'))) {
 				try {
 					$pluginInstance = $this->loadPlugin($pluginName, false, false);
 					$pluginInstance->register($this->eventsManager);
 
-					if (!$inheritPluginStatus) {
+					if (!$isSubaction) {
 						$this->setPluginStatus($pluginName, 'todisable');
 					}
 
@@ -819,12 +825,12 @@ class iMSCP_Plugin_Manager
 
 						if ($this->hasPluginBackend($pluginName)) {
 							$this->backendRequest = true;
-						} elseif (!$inheritPluginStatus) {
+						} elseif (!$isSubaction) {
 							$this->setPluginStatus($pluginName, 'disabled');
 						}
 
 						return self::ACTION_SUCCESS;
-					} elseif (!$inheritPluginStatus) {
+					} elseif (!$isSubaction) {
 						// This action has been stopped by an event listener before having a chance to start. Therefore,
 						// the plugin status is set back to its initial state.
 						$this->setPluginStatus($pluginName, $pluginStatus);
@@ -844,6 +850,8 @@ class iMSCP_Plugin_Manager
 	/**
 	 * Change the given plugin
 	 *
+	 * @see pluginDisable() subaction
+	 * @see pluginEnable() subaction
 	 * @param string $pluginName Plugin name
 	 * @return self::ACTION_SUCCESS|self::ACTION_STOPPED|self::ACTION_FAILURE
 	 */
@@ -871,6 +879,9 @@ class iMSCP_Plugin_Manager
 							if ($this->hasPluginBackend($pluginName)) {
 								$this->backendRequest = true;
 							} else {
+								$pluginInfo = $this->getPluginInfo($pluginName);
+								$pluginInfo['__need_change__'] = false;
+								$this->updatePluginInfo($pluginName, $pluginInfo);
 								$this->setPluginStatus($pluginName, 'enabled');
 							}
 						} elseif ($ret == self::ACTION_STOPPED) {
@@ -906,6 +917,8 @@ class iMSCP_Plugin_Manager
 	/**
 	 * Update the given plugin
 	 *
+	 * @see pluginDisable() subaction
+	 * @see pluginEnable() subaction
 	 * @param string $pluginName Plugin name
 	 * @return self::ACTION_SUCCESS|self::ACTION_STOPPED|self::ACTION_FAILURE
 	 */
@@ -1168,7 +1181,7 @@ class iMSCP_Plugin_Manager
 	/**
 	 * Update plugin list
 	 *
-	 * This method is responsible to updated the plugin list and trigger plugin update, change and deletion.
+	 * This method is responsible to update the plugin list and trigger plugin update, change and deletion.
 	 *
 	 * @return array An array containing information about added, updated and deleted plugins
 	 */
@@ -1185,8 +1198,6 @@ class iMSCP_Plugin_Manager
 		if ($stmt->rowCount()) {
 			$knownPlugins = $stmt->fetchAll(PDO::FETCH_UNIQUE | PDO::FETCH_ASSOC);
 		}
-
-		// Updating plugin data
 
 		/** @var $fileInfo SplFileInfo */
 		foreach (new RecursiveDirectoryIterator($this->pluginsDirectory, FilesystemIterator::SKIP_DOTS) as $fileInfo) {
@@ -1227,28 +1238,56 @@ class iMSCP_Plugin_Manager
 						$pluginConfig = json_decode($knownPlugins[$pluginName]['plugin_config'], true);
 
 						$newestPluginInfo = $pluginInstance->getInfo();
+						$newestPluginConfig = $pluginInstance->getConfigFromFile();
 
-						$pluginInfo['__nversion__'] = $newestPluginInfo['version'];
+						$newestPluginInfo['__nversion__'] = $newestPluginInfo['version'];
+						$newestPluginInfo['version'] = $pluginInfo['version'];
+
+						if(version_compare($newestPluginInfo['__nversion__'], $pluginInfo['version'], '<')) {
+							set_page_message(
+								tr(
+									'Plugin Manager: Downgrade of plugin is not supported. You must update the %s plugin.',
+									"<strong>$pluginName</strong>"
+								),
+								'error'
+							);
+							continue;
+						}
+
+						if(isset($pluginInfo['db_schema_version'])) {
+							$newestPluginInfo['db_schema_version'] = $pluginInfo['db_schema_version'];
+						}
 
 						$r = new ReflectionMethod($pluginInstance, 'install');
-						$pluginInfo['__installable__'] = ('iMSCP_Plugin' !== $r->getDeclaringClass()->getName());
+						$newestPluginInfo['__installable__'] = ('iMSCP_Plugin' !== $r->getDeclaringClass()->getName());
 
 						$r = new ReflectionMethod($pluginInstance, 'uninstall');
-						$pluginInfo['__uninstallable__'] = ('iMSCP_Plugin' !== $r->getDeclaringClass()->getName());
+						$newestPluginInfo['__uninstallable__'] = ('iMSCP_Plugin' !== $r->getDeclaringClass()->getName());
+
+						$pluginInfo = $newestPluginInfo;
 
 						if ($pluginStatus == 'enabled') { // Plugin update
 							// Does the plugin need to be updated?
-							if ($pluginInfo['version'] != $newestPluginInfo['version']) {
+							if (version_compare($pluginInfo['version'], $pluginInfo['__nversion__'], '<')) {
+								$pluginConfig = $newestPluginConfig;
 								$toUpdatePlugins[] = $pluginName;
 								$returnInfo['updated']++;
 								// Does the plugin need to be reconfigured?
-							} elseif ($pluginConfig !== ($newestpluginConfig = $pluginInstance->getConfigFromFile())) {
-								$pluginConfig = $newestpluginConfig;
+							} elseif ($pluginConfig !== $newestPluginConfig) {
+								$pluginInfo['__need_change__'] = true;
+								$pluginConfig = $newestPluginConfig;
 								$toChangePlugins[] = $pluginName;
 								$returnInfo['changed']++;
 							} else {
 								continue; // No new version nor config change
 							}
+						} elseif($pluginConfig !== $newestPluginConfig) {
+							// Does the plugin need to be scheduled for change on next activation?
+							$pluginInfo['__need_change__'] = true;
+							$pluginConfig = $newestPluginConfig;
+							$returnInfo['changed']++;
+						} else {
+							continue; // No config change
 						}
 					}
 

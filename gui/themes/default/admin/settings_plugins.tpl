@@ -124,18 +124,22 @@
 			</td>
 			<td>
 				<!-- BDP: plugin_activate_link -->
-				<a style="vertical-align: middle;" class="icon i_open" href="settings_plugins.php?{ACTIVATE_ACTION}={PLUGIN_NAME}"
-				   title="{TR_ACTIVATE_TOOLTIP}"></a>
-				<a style="vertical-align: middle;" class="icon i_close" href="settings_plugins.php?{UNINSTALL_ACTION}={PLUGIN_NAME}"
-				   title="{TR_UNINSTALL_TOOLTIP}"></a>
+				<a style="vertical-align: middle;" class="icon i_open"
+				   href="settings_plugins.php?{ACTIVATE_ACTION}={PLUGIN_NAME}" title="{TR_ACTIVATE_TOOLTIP}"></a>
+				<a style="vertical-align: middle;" class="icon i_close"
+				   href="settings_plugins.php?{UNINSTALL_ACTION}={PLUGIN_NAME}" title="{TR_UNINSTALL_TOOLTIP}"></a>
 				<!-- EDP: plugin_activate_link -->
 
 				<!-- BDP: plugin_deactivate_link -->
 				<a style="vertical-align: middle;" class="icon i_close"
 				   href="settings_plugins.php?disable={PLUGIN_NAME}" title="{TR_DEACTIVATE_TOOLTIP}"></a>
-				<a style="vertical-align: middle;" class="icon i_change_password"
+				<a style="vertical-align: middle;" class="icon i_lock"
 				   href="settings_plugins.php?protect={PLUGIN_NAME}" title="{TR_PROTECT_TOOLTIP}"></a>
 				<!-- EDP: plugin_deactivate_link -->
+
+				<!-- BDP: plugin_protected_link -->
+				<span style="vertical-align: middle;" class="icon i_unlock" title="{TR_UNPROTECT_TOOLTIP}">&nbsp;</span>
+				<!-- EDP: plugin_protected_link -->
 			</td>
 		</tr>
 		<!-- EDP: plugin_block -->

@@ -49,7 +49,7 @@ function admin_pluginManagerUploadPlugin($pluginManager)
 			$tmpFilePath = $_FILES['plugin_archive']['tmp_name'];
 
 			if (!checkMimeType($tmpFilePath, array('application/x-gzip', 'application/x-bzip2', 'application/zip'))) {
-				set_page_message(tr('Only tar.gz, tar.bz2 and zip archives are supported.'), 'error');
+				set_page_message(tr('Only tar.gz, tar.bz2 and zip archives are accepted.'), 'error');
 				return false;
 			}
 
@@ -207,15 +207,12 @@ function admin_pluginManagerGeneratePluginList($tpl, $pluginManager)
 		$tpl->assign('PLUGINS_BLOCK', '');
 		set_page_message(tr('Plugin list is empty.'), 'info');
 	} else {
-		sort($pluginList);
+		sort($pluginList, SORT_NATURAL);
 		$cacheFile = PERSISTENT_PATH . '/protected_plugins.php';
-		$protectTooltip = '<span style="color:rgb(96, 0, 14);cursor:pointer;" title="' .
-			tr('To unprotect this plugin, you must edit the %s file', $cacheFile) . '">' . tr('Protected') . '</span>';
 
 		foreach ($pluginList as $pluginName) {
 			$pluginInfo = $pluginManager->getPluginInfo($pluginName);
 			$pluginStatus = $pluginManager->getPluginStatus($pluginName);
-
 
 			if(is_array($pluginInfo['author'])) {
 				$pluginInfo['author'] = implode(' ' . tr('and') . ' ', $pluginInfo['author']);
@@ -243,19 +240,25 @@ function admin_pluginManagerGeneratePluginList($tpl, $pluginManager)
 				$tpl->assign(
 					array(
 						'PLUGIN_DEACTIVATE_LINK' => '',
-						'PLUGIN_ACTIVATE_LINK' => ''
+						'PLUGIN_ACTIVATE_LINK' => '',
+						'PLUGIN_PROTECTED_LINK' => ''
 					)
 				);
 			} else {
 				$tpl->assign('PLUGIN_STATUS_DETAILS_BLOCK', '');
 
-				if ($pluginManager->isPluginProtected($pluginName)) {
+				if ($pluginManager->isPluginProtected($pluginName)) { // Protected plugin
 					$tpl->assign(
 						array(
-							'PLUGIN_ACTIVATE_LINK' => $protectTooltip,
-							'PLUGIN_DEACTIVATE_LINK' => ''
+							'PLUGIN_ACTIVATE_LINK' => '',
+							'PLUGIN_DEACTIVATE_LINK' => '',
+							'TR_UNPROTECT_TOOLTIP' => tr(
+								'To unprotect this plugin, you must edit the %s file', $cacheFile
+							)
 						)
 					);
+
+					$tpl->parse('PLUGIN_PROTECTED_LINK', 'plugin_protected_link');
 				} elseif ($pluginManager->isPluginUninstalled($pluginName)) { // Uninstalled plugin
 					$tpl->assign(
 						array(
@@ -263,7 +266,8 @@ function admin_pluginManagerGeneratePluginList($tpl, $pluginManager)
 							'ACTIVATE_ACTION' => 'install',
 							'TR_ACTIVATE_TOOLTIP' => tr('Install this plugin'),
 							'UNINSTALL_ACTION' => 'delete',
-							'TR_UNINSTALL_TOOLTIP' => tr('Delete this plugin')
+							'TR_UNINSTALL_TOOLTIP' => tr('Delete this plugin'),
+							'PLUGIN_PROTECTED_LINK' => ''
 						)
 					);
 
@@ -278,18 +282,26 @@ function admin_pluginManagerGeneratePluginList($tpl, $pluginManager)
 								? 'uninstall' : 'delete',
 							'TR_UNINSTALL_TOOLTIP' => $pluginManager->isPluginUninstallable($pluginName)
 								? tr('Uninstall this plugin') : tr('Delete this plugin'),
+							'PLUGIN_PROTECTED_LINK' => ''
 						)
 					);
 
 					$tpl->parse('PLUGIN_ACTIVATE_LINK', 'plugin_activate_link');
 				} elseif ($pluginManager->isPluginEnabled($pluginName)) { // Enabled plugin
-					$tpl->assign('PLUGIN_ACTIVATE_LINK', '');
+					$tpl->assign(
+						array(
+							'PLUGIN_ACTIVATE_LINK' => '',
+							'PLUGIN_PROTECTED_LINK' => ''
+						)
+					);
+
 					$tpl->parse('PLUGIN_DEACTIVATE_LINK', 'plugin_deactivate_link');
 				} else { // Plugin with unknown status - TODO add specific action for such case
 					$tpl->assign(
 						array(
 							'PLUGIN_DEACTIVATE_LINK' => '',
-							'PLUGIN_ACTIVATE_LINK' => ''
+							'PLUGIN_ACTIVATE_LINK' => '',
+							'PLUGIN_PROTECTED_LINK' => ''
 						)
 					);
 				}
@@ -576,7 +588,9 @@ if (!empty($_REQUEST) || !empty($_FILES)) {
 					$action = 'delete';
 					break;
 				default:
-					showBadRequestErrorPage();
+					// Handle case where the error field is not NULL and status field is in unexpected state
+					$pluginManager->setPluginStatus($pluginName, 'todisable');
+					$action = 'disable';
 			}
 
 			admin_pluginManagerDoAction($pluginManager, $pluginName, $action);
@@ -588,7 +602,9 @@ if (!empty($_REQUEST) || !empty($_FILES)) {
 	} elseif (!empty($_FILES)) {
 		if (admin_pluginManagerUploadPlugin($pluginManager)) {
 			set_page_message(tr('Plugin successfully uploaded.'), 'success');
-			admin_pluginManagerUpdatePluginList($pluginManager);
+			# This is no longer done automatically because in some cases, user want restore their own configuration
+			# files before triggering plugin update
+			#admin_pluginManagerUpdatePluginList($pluginManager);
 		}
 	}
 
@@ -608,7 +624,8 @@ $tpl->define_dynamic(
 		'plugin_block' => 'plugins_block',
 		'plugin_status_details_block' => 'plugin_block',
 		'plugin_activate_link' => 'plugin_block',
-		'plugin_deactivate_link' => 'plugin_block'
+		'plugin_deactivate_link' => 'plugin_block',
+		'plugin_protected_link' => 'plugin_block'
 	)
 );
 
@@ -641,7 +658,7 @@ $tpl->assign(
 		'TR_PLUGIN_UPLOAD' => tr('Plugins Upload'),
 		'TR_UPLOAD' => tr('Upload'),
 		'TR_PLUGIN_ARCHIVE' => tr('Plugin archive'),
-		'TR_PLUGIN_ARCHIVE_TOOLTIP' => tr('Only tar.gz, tar.bz2 and zip archives are accepted'),
+		'TR_PLUGIN_ARCHIVE_TOOLTIP' => tr('Only tar.gz, tar.bz2 and zip archives are accepted.'),
 		'TR_PLUGIN_HINT' => tr('Plugins hook into i-MSCP to extend its functionality with custom features. Plugins are developed independently from the core i-MSCP application by thousands of developers all over the world. You can find new plugins to install by browsing the %s.', true, '<u><a href="http://i-mscp.net/filebase/index.php/Filebase/" target="_blank">' . tr('i-MSCP plugin store') . '</a></u>'),
 		'TR_CLICK_FOR_MORE_DETAILS' => tr('Click here for more details'),
 		'TR_ERROR_DETAILS' => tojs(tr('Error details', true)),

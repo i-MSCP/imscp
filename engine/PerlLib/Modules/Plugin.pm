@@ -40,6 +40,8 @@ use iMSCP::Debug;
 use iMSCP::Database;
 use iMSCP::HooksManager;
 use iMSCP::File;
+use version;
+use JSON;
 use parent 'Common::SimpleClass';
 
 # Map action status to next status
@@ -55,10 +57,7 @@ my %actionStatusToNextStatus = (
 
 =head1 DESCRIPTION
 
- This module represent the backend part of the i-MSCP plugin manager.
-
- See http://forum.i-mscp.net/Thread-DEV-Plugin-API-documentation-Relation-between-plugin-status-and-actions for more
-info about specification.
+ This module provide the backend part of the i-MSCP plugin manager.
 
 =head1 PUBLIC METHODS
 
@@ -143,8 +142,9 @@ sub process($$)
 	}
 
 	my @sql = (
-		"UPDATE plugin SET " . (($rs) ? 'plugin_error' : 'plugin_status') . " = ? WHERE plugin_id = ?",
-		($rs ? (scalar getMessageByType('error') || 'unknown error') : $actionStatusToNextStatus{$status}), $pluginId
+		"UPDATE plugin SET " . ($rs ? 'plugin_error' : 'plugin_status') . " = ? WHERE plugin_id = ?",
+		$rs ? (scalar getMessageByType('error') || 'unknown error') : $actionStatusToNextStatus{$status},
+		$pluginId
 	);
 	my $rdata = iMSCP::Database->factory()->doQuery('dummy', @sql);
 	unless(ref $rdata eq 'HASH') {
@@ -191,7 +191,7 @@ sub _install($$)
 {
 	my ($self, $pluginName) = @_;
 
-	my $rs ||= $self->{'hooksManager'}->trigger('onBeforeInstallPlugin', $pluginName);
+	my $rs = $self->{'hooksManager'}->trigger('onBeforeInstallPlugin', $pluginName);
 
 	$rs ||= $self->_exec($pluginName, 'install');
 
@@ -215,7 +215,7 @@ sub _uninstall($$)
 {
 	my ($self, $pluginName) = @_;
 
-	my $rs ||= $self->{'hooksManager'}->trigger('onBeforeUninstallPlugin', $pluginName);
+	my $rs = $self->{'hooksManager'}->trigger('onBeforeUninstallPlugin', $pluginName);
 
 	$rs ||= $self->_exec($pluginName, 'uninstall');
 
@@ -237,7 +237,7 @@ sub _enable($$)
 {
 	my ($self, $pluginName) = @_;
 
-	my $rs ||= $self->{'hooksManager'}->trigger('onBeforeEnablePlugin', $pluginName);
+	my $rs = $self->{'hooksManager'}->trigger('onBeforeEnablePlugin', $pluginName);
 
 	$rs ||= $self->_exec($pluginName, 'enable');
 
@@ -287,6 +287,22 @@ sub _change($$)
 
 	$rs ||= $self->_exec($pluginName, 'change');
 
+	my $info = decode_json($self->{'plugin_info'});
+
+	if($info->{'__need_change__'}) {
+		$info->{'__need_change__'} = JSON::false;
+
+		$rs = iMSCP::Database->factory()->doQuery(
+			'dummy', 'UPDATE plugin SET plugin_info = ? WHERE plugin_name = ?', encode_json($info), $pluginName
+		);
+		unless(ref $rs eq 'HASH') {
+			error($rs);
+			$rs = 1;
+		} else {
+			$rs = 0;
+		}
+	}
+
 	$rs ||= $self->{'hooksManager'}->trigger('onAfterChangePlugin', $pluginName);
 
 	$rs ||= $self->_enable($pluginName);
@@ -311,15 +327,13 @@ sub _update($$)
 
 	$rs ||= $self->{'hooksManager'}->trigger('onBeforeUpdatePlugin', $pluginName);
 
-	require JSON;
-	JSON->import();
-
 	my $info = decode_json($self->{'plugin_info'});
 
 	$rs ||= $self->_exec($pluginName, 'update', $info->{'version'}, $info->{'__nversion__'});
 
-	unless($rs || $info->{'version'} eq $info->{'__nversion__'}) {
+	if(! $rs && ($info->{'__need_change__'} || qv("v$info->{'__nversion__'}") > qv("v$info->{'version'}"))) {
 		$info->{'version'} = $info->{'__nversion__'};
+		$info->{'__need_change__'} = JSON::false;
 
 		$rs = iMSCP::Database->factory()->doQuery(
 			'dummy', 'UPDATE plugin SET plugin_info = ? WHERE plugin_name = ?', encode_json($info), $pluginName
@@ -425,6 +439,7 @@ sub _exec($$$;$$)
 	};
 
 	if($@) {
+		iMSCP::File->new('filename' => $backendPluginFile)->delFile();
 		error("An unexpected error occured: $@");
 		return 1;
 	}
@@ -437,11 +452,7 @@ sub _exec($$$;$$)
 		# Return value from the run() action is ignored by default because it's the responsability of the plugins to set
 		# error status for their items. In case a plugin doesn't manage any item, it can force return value by
 		# defining the FORCE_RETVAL attribute and set it value to 'yes'
-		if(
-			$pluginMethod ne 'run' || defined $pluginInstance->{'FORCE_RETVAL'} &&
-			$pluginInstance->{'FORCE_RETVAL'} eq 'yes'
-		) {
-			iMSCP::File->new('filename' => $backendPluginFile)->delFile() if $rs && $main::imscpConfig{'DEBUG'};
+		if($pluginMethod ne 'run' || $pluginInstance->{'FORCE_RETVAL'} && $pluginInstance->{'FORCE_RETVAL'} eq 'yes') {
 			return $rs if $rs;
 		} else {
 			$rs = 0;

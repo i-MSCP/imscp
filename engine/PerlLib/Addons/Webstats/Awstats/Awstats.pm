@@ -41,6 +41,7 @@ use iMSCP::TemplateParser;
 use iMSCP::Dir;
 use iMSCP::File;
 use iMSCP::Ext2Attributes qw(setImmutable clearImmutable);
+use version;
 use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
@@ -405,7 +406,7 @@ sub _addAwstatsSection($$$$)
 			) .
 			process(
 				{
-					AUTHZ_ALLOW_ALL => (version->new("v$httpd->{'config'}->{'APACHE_VERSION'}") >= version->new('v2.4.0'))
+					AUTHZ_ALLOW_ALL => (qv("v$httpd->{'config'}->{'APACHE_VERSION'}") >= qv('v2.4.0'))
 						? 'Require all granted' : 'Allow from all',
 					AWSTATS_WEB_DIR => $main::imscpConfig{'AWSTATS_WEB_DIR'},
 					DOMAIN_NAME => $data->{'DOMAIN_NAME'},

@@ -289,7 +289,7 @@ sub disableDmn($$)
 	$self->setData($data);
 	$self->setData(
 		{
-			AUTHZ_ALLOW_ALL => (version->new("v$self->{'config'}->{'APACHE_VERSION'}") >= version->new('v2.4.0'))
+			AUTHZ_ALLOW_ALL => (qv("v$self->{'config'}->{'APACHE_VERSION'}") >= qv('v2.4.0'))
 				? 'Require all granted' : 'Allow from all',
 			APACHE_LOG_DIR => $self->{'config'}->{'APACHE_LOG_DIR'}
 		}
@@ -902,7 +902,7 @@ sub addIps($$)
 	$rs = $self->{'hooksManager'}->trigger('beforeHttpdAddIps', \$content, $data);
 	return $rs if $rs;
 
-	if(!(version->new("v$self->{'config'}->{'APACHE_VERSION'}") >= version->new('v2.4.0'))) {
+	unless(qv("v$self->{'config'}->{'APACHE_VERSION'}") >= qv('v2.4.0')) {
 		$content =~ s/NameVirtualHost[^\n]+\n//gi;
 		$content.= "NameVirtualHost $_:443\n" for @{$data->{'SSLIPS'}};
 		$content.= "NameVirtualHost $_:80\n" for @{$data->{'IPS'}};
@@ -1566,7 +1566,7 @@ sub _addCfg($$)
 		$self->setData({ CERT => "$main::imscpConfig{'GUI_ROOT_DIR'}/data/certs/$data->{'DOMAIN_NAME'}.pem" });
 	}
 
-	my $apache24 = (version->new("v$self->{'config'}->{'APACHE_VERSION'}") >= version->new('v2.4.0'));
+	my $apache24 = (qv("v$self->{'config'}->{'APACHE_VERSION'}") >= qv('v2.4.0'));
 
 	$self->setData(
 		{

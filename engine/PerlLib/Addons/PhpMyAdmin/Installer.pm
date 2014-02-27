@@ -172,7 +172,7 @@ sub preinstall
 		return 1;
 	}
 
-	my $pmaBranch = (version->new("v$version") >= version->new('v5.5')) ? '0.3.0' : '0.2.0';
+	my $pmaBranch = (qv("v$version") >= qv('v5.5')) ? '0.3.0' : '0.2.0';
 
 	iMSCP::Addons::ComposerInstaller->getInstance()->registerPackage('imscp/phpmyadmin', "$pmaBranch.*\@dev");
 }

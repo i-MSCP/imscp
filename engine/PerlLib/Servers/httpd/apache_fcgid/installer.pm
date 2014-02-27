@@ -585,8 +585,7 @@ sub _buildFastCgiConfFiles
 	}
 
 	# Build, store and install new files
-
-	my $apache24 = (version->new("v$self->{'config'}->{'APACHE_VERSION'}") >= version->new('v2.4.0'));
+	my $apache24 = (qv("v$self->{'config'}->{'APACHE_VERSION'}") >= qv('v2.4.0'));
 
 	# Set needed data
 	$self->{'httpd'}->setData(
@@ -648,7 +647,7 @@ sub _buildFastCgiConfFiles
 
 	my @toEnableModules = ('actions', 'fcgid_imscp',);
 
-	if((version->new("v$self->{'config'}->{'APACHE_VERSION'}") >= version->new('v2.4.0'))) {
+	if(qv("v$self->{'config'}->{'APACHE_VERSION'}") >= qv('v2.4.0')) {
 		push (@toDisableModules, ('mpm_event', 'mpm_itk', 'mpm_prefork'));
 		push (@toEnableModules, 'mpm_worker', 'authz_groupfile');
 	}
@@ -877,11 +876,11 @@ sub _buildApacheConfFiles
 	# The alternative syntax does not involve the shell (from Apache 2.2.12)
 	my $pipeSyntax = '|';
 
-	if(version->new("v$self->{'config'}->{'APACHE_VERSION'}") >= version->new('v2.2.12')) {
+	if(qv("v$self->{'config'}->{'APACHE_VERSION'}") >= qv('v2.2.12')) {
 		$pipeSyntax .= '|';
 	}
 
-	my $apache24 = (version->new("v$self->{'httpd'}->{'config'}->{'APACHE_VERSION'}") >= version->new('v2.4.0'));
+	my $apache24 = (qv("v$self->{'httpd'}->{'config'}->{'APACHE_VERSION'}") >= qv('v2.4.0'));
 
 	# Set needed data
 	$self->{'httpd'}->setData(
@@ -955,7 +954,7 @@ sub _buildMasterVhostFiles
 			GUI_CERT_DIR => $main::imscpConfig{'GUI_CERT_DIR'},
 			SERVER_HOSTNAME => $main::imscpConfig{'SERVER_HOSTNAME'},
 			PHP_STARTER_DIR => $self->{'config'}->{'PHP_STARTER_DIR'},
-			AUTHZ_ALLOW_ALL => (version->new("v$self->{'config'}->{'APACHE_VERSION'}") >= version->new('v2.4.0'))
+			AUTHZ_ALLOW_ALL => (qv("v$self->{'config'}->{'APACHE_VERSION'}") >= qv('v2.4.0'))
 				? 'Require all granted' : 'Allow from all'
 		}
 	);
