@@ -11,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2014-02-17 00:44+0100\n"
-"PO-Revision-Date: 2014-02-16 23:45+0000\n"
+"POT-Creation-Date: 2014-02-27 13:52+0100\n"
+"PO-Revision-Date: 2014-02-27 12:54+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Portuguese (Brazil) (http://www.transifex.com/projects/p/i-MSCP/language/pt_BR/)\n"
 "MIME-Version: 1.0\n"
@@ -3438,10 +3438,7 @@ msgstr ""
 msgid "Only positive numbers are allowed."
 msgstr "Apenas números positivos são permitidos."
 
-msgid "Only tar.gz, tar.bz2 and zip archives are accepted"
-msgstr ""
-
-msgid "Only tar.gz, tar.bz2 and zip archives are supported."
+msgid "Only tar.gz, tar.bz2 and zip archives are accepted."
 msgstr ""
 
 msgid "Open ticket"
@@ -3803,6 +3800,12 @@ msgstr ""
 
 #, php-format
 msgid "Plugin %s successfully updated."
+msgstr ""
+
+#, php-format
+msgid ""
+"Plugin Manager: Downgrade of plugin is not supported. You must update the %s"
+" plugin."
 msgstr ""
 
 #, php-format

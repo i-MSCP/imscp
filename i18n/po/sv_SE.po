@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2014-02-17 00:44+0100\n"
-"PO-Revision-Date: 2014-02-16 23:45+0000\n"
+"POT-Creation-Date: 2014-02-27 13:52+0100\n"
+"PO-Revision-Date: 2014-02-27 12:54+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Swedish (Sweden) (http://www.transifex.com/projects/p/i-MSCP/language/sv_SE/)\n"
 "MIME-Version: 1.0\n"
@@ -2537,7 +2537,7 @@ msgid "Get a new image"
 msgstr "Tar fram ett nytt bild"
 
 msgid "Get it on"
-msgstr ""
+msgstr "Få den på"
 
 msgid "GiB"
 msgstr "GiB"
@@ -3436,11 +3436,8 @@ msgstr "Endast siffror i intervallet 0 till 65535 är tillåtna."
 msgid "Only positive numbers are allowed."
 msgstr "Endast positiva tal är tillåtna."
 
-msgid "Only tar.gz, tar.bz2 and zip archives are accepted"
-msgstr "Endast tar.gz, tar.bz2 och zip arkiv accepteras"
-
-msgid "Only tar.gz, tar.bz2 and zip archives are supported."
-msgstr "Only tar.gz, tar.bz2 and zip archives are supported."
+msgid "Only tar.gz, tar.bz2 and zip archives are accepted."
+msgstr ""
 
 msgid "Open ticket"
 msgstr "Open ticket"
@@ -3804,6 +3801,12 @@ msgid "Plugin %s successfully updated."
 msgstr "Plugin %s successfully updated."
 
 #, php-format
+msgid ""
+"Plugin Manager: Downgrade of plugin is not supported. You must update the %s"
+" plugin."
+msgstr ""
+
+#, php-format
 msgid "Plugin Manager: Unable to activate the %s plugin: %s"
 msgstr "Plugin Manager: Unable to activate the %s plugin: %s"
 
@@ -3918,7 +3921,7 @@ msgid "Process update"
 msgstr "Process update"
 
 msgid "Processing..."
-msgstr ""
+msgstr "Bearbetning ..."
 
 msgid "Processor data"
 msgstr "Processor data"
@@ -4244,7 +4247,7 @@ msgid "SQL database limit is disabled but SQL user limit is not."
 msgstr "SQL database limit is disabled but SQL user limit is not."
 
 msgid "SQL database limit is disabled."
-msgstr ""
+msgstr "SQL-databas begränsning är inaktiverad."
 
 msgid "SQL database limit is not <i>disabled</i>."
 msgstr "SQL database limit is not <i>disabled</i>."
@@ -4277,7 +4280,7 @@ msgid "SQL user limit is disabled but SQL database limit is not."
 msgstr "SQL user limit is disabled but SQL database limit is not."
 
 msgid "SQL user limit is disabled."
-msgstr ""
+msgstr "SQL-användare är inaktiverad."
 
 msgid "SQL user limit reached."
 msgstr "SQL user limit reached."
@@ -4813,7 +4816,7 @@ msgstr "The %s limit for this customer cannot be unlimited because your are limi
 
 #, php-format
 msgid "The %s translation file has been ignored: Translation table is empty."
-msgstr ""
+msgstr "%s översättningsfil har ignorerats: Översättning tabellen är tom."
 
 msgid "The IP address you're trying to remove is assigned to a reseller."
 msgstr "The IP address you trying to remove is assigned to a reseller."

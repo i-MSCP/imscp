@@ -3,12 +3,13 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
+# indjov <al@indjov.info>, 2014
 msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2014-02-17 00:44+0100\n"
-"PO-Revision-Date: 2014-02-16 23:45+0000\n"
+"POT-Creation-Date: 2014-02-27 13:52+0100\n"
+"PO-Revision-Date: 2014-02-27 12:54+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Bulgarian (Bulgaria) (http://www.transifex.com/projects/p/i-MSCP/language/bg_BG/)\n"
 "MIME-Version: 1.0\n"
@@ -140,7 +141,7 @@ msgstr ""
 
 msgid ""
 " Show all errors, except for warnings about deprecated code (Production)"
-msgstr ""
+msgstr "Покажи всички грешки, с изключение на предупреждения за непрепоръчителен код (Production)"
 
 msgid " Wrong IP address."
 msgstr ""
@@ -186,7 +187,7 @@ msgstr ""
 
 #, php-format
 msgid "%1$s - (Version: %2$s, Language: %3$s)"
-msgstr ""
+msgstr "%1$s - (Версия: %2$s, Език: %3$s)"
 
 #, php-format
 msgid "%1$s / %2$s"
@@ -226,7 +227,7 @@ msgstr ""
 
 #, php-format
 msgid "%d %s remaining until account expiration"
-msgstr ""
+msgstr "%d %s оставащо до изтичане на акаунта"
 
 #, php-format
 msgid "%d / unlimited"
@@ -238,11 +239,11 @@ msgstr ""
 
 #, php-format
 msgid "%d configuration parameter(s) have/has been created."
-msgstr ""
+msgstr "%d конфигурационните параметри са създадени"
 
 #, php-format
 msgid "%d configuration parameter(s) have/has been updated."
-msgstr ""
+msgstr "%d конфигурационните параметри са или бяха ъпдейтнати"
 
 #, php-format
 msgid "%d of %s"
@@ -250,7 +251,7 @@ msgstr ""
 
 #, php-format
 msgid "%d strings translated"
-msgstr ""
+msgstr "%d преведени редове"
 
 #, php-format
 msgid "%s / %s of %s"
@@ -262,7 +263,7 @@ msgstr ""
 
 #, php-format
 msgid "%s account successfully deleted."
-msgstr ""
+msgstr "%s Акаунтът е успешно изтрит."
 
 #, php-format
 msgid "%s deleted the admin log older than one month."
@@ -306,7 +307,7 @@ msgstr ""
 
 #, php-format
 msgid "%s is not a valid i-MSCP language file."
-msgstr ""
+msgstr "%s  не е валиден I-MSCP езиков файл."
 
 #, php-format
 msgid "%s is not part of domain %s."
@@ -332,7 +333,7 @@ msgstr ""
 
 #, php-format
 msgid "%s record"
-msgstr ""
+msgstr "%s запис"
 
 #, php-format
 msgid ""
@@ -366,49 +367,49 @@ msgstr ""
 msgid ""
 "'%hostname%' does not appear to have a valid MX record for the email address"
 " '%value%'"
-msgstr ""
+msgstr "'%hostname%' не изглежда да има валиден запис MX за имейл адреса '%value%'"
 
 msgid "'%hostname%' is no valid hostname for email address '%value%'"
-msgstr ""
+msgstr "'%hostname%' не е валидно име на хост за имейл адрес '%value%'"
 
 msgid ""
 "'%hostname%' is not in a routable network segment. The email address "
 "'%value%' should not be resolved from public network"
-msgstr ""
+msgstr "'%hostname%' не е в маршрутизируем сегмент на мрежата. Имейл адресът '%value%' не трябва да бъде решен от обществена мрежа"
 
 #, php-format
 msgid "'%localPart%' can not be matched against dot-atom format"
-msgstr ""
+msgstr "'%localPart%' не може да се сравнява с дот-атом формат"
 
 #, php-format
 msgid "'%localPart%' can not be matched against quoted-string format"
-msgstr ""
+msgstr "'%localPart%'  не може да се сравнява с quoted-string формат"
 
 msgid "'%localPart%' is no valid local part for email address '%value%'"
-msgstr ""
+msgstr "'%localPart%' не е валидна местната част за имейл адрес  '%value%'"
 
 msgid "'%value%' appears to be a DNS hostname but cannot extract TLD part"
-msgstr ""
+msgstr "'%value%' изглежда е DNS име на хост, но не може да се извлече TLD част"
 
 msgid ""
 "'%value%' appears to be a DNS hostname but cannot match TLD against known "
 "list"
-msgstr ""
+msgstr "'%value%' изглежда е DNS име на хост, но не може да се сравнява с TLD срещу известен списък"
 
 msgid ""
 "'%value%' appears to be a DNS hostname but cannot match against hostname "
 "schema for TLD '%tld%'"
-msgstr ""
+msgstr "'%value%' изглежда е DNS име на хост, но не може да се сравнява срещу хост схема за TLD '%ltd%'"
 
 msgid ""
 "'%value%' appears to be a DNS hostname but contains a dash in an invalid "
 "position"
-msgstr ""
+msgstr "'%value%' изглежда е DNS хост но съдържа тире в невалидна позиция"
 
 msgid ""
 "'%value%' appears to be a DNS hostname but the given punycode notation "
 "cannot be decoded"
-msgstr ""
+msgstr "'%value%' изглежда е DNS име на хост, но дадената Punycode нотация не могат да бъдат декодирани"
 
 msgid "'%value%' appears to be a domain name but cannot extract TLD part"
 msgstr ""
@@ -436,7 +437,7 @@ msgstr ""
 msgid ""
 "'%value%' appears to be a local network name but local network names are not"
 " allowed"
-msgstr ""
+msgstr "'%value%' изглежда, че е име на локална мрежа, но местни имена на мрежа не са позволени"
 
 msgid "'%value%' appears to be a subdomain name but cannot extract TLD part"
 msgstr ""
@@ -463,19 +464,19 @@ msgstr ""
 
 msgid ""
 "'%value%' appears to be an IP address, but IP addresses are not allowed"
-msgstr ""
+msgstr "'%value%' изглежда като IP адрес, но IP адреси не са позволени"
 
 msgid "'%value%' does not appear to be a valid IP address"
-msgstr ""
+msgstr "'%value%' не изглежда да е валиден IP адрес"
 
 msgid "'%value%' does not appear to be a valid URI hostname"
-msgstr ""
+msgstr "'%value%' не изглежда да е валиден URL име на хост"
 
 msgid "'%value%' does not appear to be a valid local network name"
-msgstr ""
+msgstr "'%value%' не изглежда да е валиден за наименование на мрежа"
 
 msgid "'%value%' does not match the expected structure for a DNS hostname"
-msgstr ""
+msgstr "'%value%' не съвпада с очакваната структура за DNS име на хост"
 
 msgid "'%value%' does not match the expected structure for a domain name"
 msgstr ""
@@ -484,18 +485,18 @@ msgid "'%value%' does not match the expected structure for a subdomain name"
 msgstr ""
 
 msgid "'%value%' exceeds the allowed length"
-msgstr ""
+msgstr "'%value%' превишава допустимата дължина "
 
 msgid ""
 "'%value%' is no valid email address in the basic format local-part@hostname"
-msgstr ""
+msgstr "'%value%' не е валиден имейл адрес в основния формат на име@хост"
 
 #, php-format
 msgid "(filtered from %s total records)"
 msgstr ""
 
 msgid "(usually named"
-msgstr ""
+msgstr "(обикновено име"
 
 #, php-format
 msgid "<b>%1$s</b> has unlimited rights for a <b>%2$s</b> Service.<br />"
@@ -523,10 +524,10 @@ msgid "Access your domain statistics through the Web interface."
 msgstr ""
 
 msgid "Access your files through the web interface."
-msgstr ""
+msgstr "Достъп до вашите файлове чрез уеб интерфейс."
 
 msgid "Access your mail through the web interface."
-msgstr ""
+msgstr "Достъп до вашата поща чрез уеб интерфейс."
 
 msgid "Account data"
 msgstr ""
@@ -613,7 +614,7 @@ msgid "Add catchall"
 msgstr ""
 
 msgid "Add custom DNS record"
-msgstr ""
+msgstr "Добавяне на собствен DNS запис"
 
 msgid "Add custom menu"
 msgstr ""
@@ -655,16 +656,16 @@ msgid "Add new protected area"
 msgstr "Добави нова защитена зона"
 
 msgid "Add new service port"
-msgstr ""
+msgstr "Добавяне на нов порт към услуга"
 
 msgid "Add permissions"
-msgstr ""
+msgstr "Добавяне на правомощия"
 
 msgid "Add permissions for reseller to software:"
-msgstr ""
+msgstr "Добавяне на правомощия за риселър на софтуер:"
 
 msgid "Add protected area"
-msgstr ""
+msgstr "Добавяне на защитен зона."
 
 msgid "Add reseller"
 msgstr "Добави риселър"
@@ -676,7 +677,7 @@ msgid "Add user"
 msgstr "Добави потребител"
 
 msgid "Added by"
-msgstr ""
+msgstr "Добавен от"
 
 msgid "Addition in progress"
 msgstr ""
@@ -685,7 +686,7 @@ msgid "Additional data"
 msgstr "Допълнителни данни"
 
 msgid "Admin"
-msgstr ""
+msgstr "Админ"
 
 msgid "Admin / General / Admin Log"
 msgstr ""
@@ -852,7 +853,7 @@ msgid "Admin users"
 msgstr "Администратори"
 
 msgid "Admin/IP usage statistics"
-msgstr ""
+msgstr "Админ/IP данни за употребата"
 
 msgid "Administrator"
 msgstr "Администратор"
@@ -870,7 +871,7 @@ msgid "Administrator and reseller"
 msgstr ""
 
 msgid "Administrator level"
-msgstr "Ниво администратор"
+msgstr "Администраторско Ниво"
 
 msgid "Administrator login"
 msgstr "Административен Вход"
@@ -911,10 +912,10 @@ msgid "All"
 msgstr "Всички"
 
 msgid "All closed tickets were successfully deleted."
-msgstr ""
+msgstr "Всички затворени билети бяха изтрити."
 
 msgid "All fields are required."
-msgstr ""
+msgstr "Всички полета са задължителни."
 
 msgid "All fields seem to be valid."
 msgstr ""
@@ -926,7 +927,7 @@ msgid "All levels"
 msgstr ""
 
 msgid "All open tickets were successfully deleted."
-msgstr ""
+msgstr "Всички отворени билети бяха успешно изтрити."
 
 msgid "All out"
 msgstr "Всички-изход"
@@ -970,7 +971,7 @@ msgid "Already in use"
 msgstr ""
 
 msgid "Alternative URL to reach your website"
-msgstr ""
+msgstr "Алтернативно URL до вашия уеб сайт"
 
 msgid "An entry is defined twice below."
 msgstr ""
@@ -1005,7 +1006,7 @@ msgid "Anti-Rootkits Logs"
 msgstr ""
 
 msgid "Application installer"
-msgstr ""
+msgstr "Инсталиране на Апликации"
 
 msgid "Apply"
 msgstr ""
@@ -1014,7 +1015,7 @@ msgid "Apply changes"
 msgstr "Приеми промените"
 
 msgid "Are you sure to install this package from the webdepot?"
-msgstr ""
+msgstr "Сигурен ли сте , че искате да инсталирате този пакет от уеб депото?"
 
 msgid "Are you sure to install this package?"
 msgstr ""
@@ -1024,18 +1025,18 @@ msgstr ""
 
 #, php-format
 msgid "Are you sure you want delete the '%s' SQL user?"
-msgstr ""
+msgstr "Сигурни ли сте , че искате да изтриете този '%s' SQL user?"
 
 msgid "Are you sure you want to activate this package?"
-msgstr ""
+msgstr "Сигурен ли си , че искате да активирате този пакет?"
 
 #, php-format
 msgid "Are you sure you want to change the status of %s domain account?"
-msgstr ""
+msgstr "Сигурни ли сте , че искате да смените статуса на %s домейн потребителя?"
 
 #, php-format
 msgid "Are you sure you want to change the status of %s?"
-msgstr ""
+msgstr "Сигурни ли сте , че искате да смените статуса от %s?"
 
 #, php-format
 msgid ""
@@ -1045,28 +1046,28 @@ msgstr ""
 
 #, php-format
 msgid "Are you sure you want to delete %s service port ?"
-msgstr ""
+msgstr "Сигурни ли сте , че искате да изтриете %s този порт"
 
 #, php-format
 msgid "Are you sure you want to delete %s?"
-msgstr ""
+msgstr "Сигурни ли сте , че искате да изтриете %s?"
 
 msgid "Are you sure you want to delete all closed tickets?"
-msgstr ""
+msgstr "Сигурни ли сте , че искате да изтриете всички приключени запитвания?"
 
 msgid "Are you sure you want to delete all selected items?"
 msgstr ""
 
 msgid "Are you sure you want to delete all tickets?"
-msgstr ""
+msgstr "Сигурни ли сте , че искате да изтриете всички билети?"
 
 #, php-format
 msgid "Are you sure you want to delete the %s FTP user?"
-msgstr ""
+msgstr "Сигурни ли сте, че искате да изтриете този %s FTP потребител ?"
 
 #, php-format
 msgid "Are you sure you want to delete the %s catch all?"
-msgstr ""
+msgstr "Сигурни ли сте, че искате да изтриете %s catch all?"
 
 #, php-format
 msgid "Are you sure you want to delete the %s hosting plan?"
@@ -1078,19 +1079,19 @@ msgstr ""
 
 #, php-format
 msgid "Are you sure you want to delete the '%s' ticket?"
-msgstr ""
+msgstr "Сигурни ли сте , че искате да изтриете '%s' билет?"
 
 #, php-format
 msgid "Are you sure you want to delete this IP: %s?"
-msgstr ""
+msgstr "Сигурни ли сте , че искате да изтриете това IP: %s?"
 
 msgid "Are you sure you want to delete this package?"
-msgstr ""
+msgstr "Сигурен ли сте , че искате да изтриете този пакет"
 
 msgid ""
 "Are you sure you want to import this package into the local software "
 "repository?"
-msgstr ""
+msgstr "Наистина ли искате да импортирате този пакет в местното софтуерно хранилище?"
 
 msgid "Are you sure you want to import this package into the software depot?"
 msgstr ""
@@ -1098,7 +1099,7 @@ msgstr ""
 msgid ""
 "Are you sure you want to install this package from the Web software "
 "repository?"
-msgstr ""
+msgstr "Наистина ли искате да инсталирате този пакет от хранилището на уеб софтуера?"
 
 msgid "Are you sure you want to restore the backup?"
 msgstr "Сигурни ли сте,че искате да възстановите архивното копие?"
@@ -1110,7 +1111,7 @@ msgid "Assign"
 msgstr "Назначи"
 
 msgid "Assign existing SQL user"
-msgstr ""
+msgstr "Присвояване на съществуващ SQL потребител"
 
 msgid "Assign group"
 msgstr ""
@@ -1146,7 +1147,7 @@ msgid "Available software"
 msgstr ""
 
 msgid "Awaiting activation"
-msgstr ""
+msgstr "Изчакване на активирането"
 
 msgid "Awaiting approval"
 msgstr ""
@@ -1161,7 +1162,7 @@ msgid "Backup"
 msgstr "Бекап"
 
 msgid "Backup and restore settings."
-msgstr ""
+msgstr "Архивиране и възстановяване на настройки."
 
 msgid "Backup has been successfully scheduled for restoration."
 msgstr ""
@@ -1240,7 +1241,7 @@ msgid "Canonical name"
 msgstr ""
 
 msgid "Captcha fontfile not found."
-msgstr ""
+msgstr "Captcha файл не е намерен."
 
 msgid "Catch all"
 msgstr "Обхвани Всички"
@@ -1285,13 +1286,13 @@ msgid "Change in progress..."
 msgstr ""
 
 msgid "Change password"
-msgstr "Смени парола"
+msgstr "Сменя на парола"
 
 msgid "Change personal data"
-msgstr "Промяна персоналниданни"
+msgstr "Промяна персонални данни"
 
 msgid "Check for update"
-msgstr ""
+msgstr "Проверка за ъпдейт"
 
 msgid ""
 "Check the reseller uploads!<br />It is not allowed to upload this package "
@@ -1334,7 +1335,7 @@ msgid "Choose your language"
 msgstr ""
 
 msgid "Circular"
-msgstr ""
+msgstr "Кръгов"
 
 msgid "Circular successfully sent."
 msgstr ""
@@ -1343,10 +1344,10 @@ msgid "City"
 msgstr "Град"
 
 msgid "Class"
-msgstr ""
+msgstr "Клас"
 
 msgid "Clear log"
-msgstr "Изпразни лога"
+msgstr "Изчисти лога"
 
 msgid "Click here for more details"
 msgstr ""
@@ -1516,10 +1517,10 @@ msgid "Clock speed (MHz)"
 msgstr ""
 
 msgid "Close"
-msgstr ""
+msgstr "затворено"
 
 msgid "Close the ticket"
-msgstr ""
+msgstr "Затваряне на билет"
 
 msgid "Close ticket"
 msgstr ""
@@ -1531,7 +1532,7 @@ msgid "Company"
 msgstr "Компания"
 
 msgid "Compress HTML output"
-msgstr ""
+msgstr "Компресиране HTML изход"
 
 msgid "Confirmation for domain order {DOMAIN}"
 msgstr ""
@@ -1544,13 +1545,13 @@ msgid "Conflict with an existent %s record."
 msgstr ""
 
 msgid "Core data"
-msgstr "данни ядро"
+msgstr "Данни на ядрото"
 
 msgid "Cores"
 msgstr ""
 
 msgid "Could not upload file."
-msgstr ""
+msgstr "Не може да качите файла."
 
 msgid "Could not upload file. File not found."
 msgstr ""
@@ -1561,7 +1562,7 @@ msgid ""
 msgstr ""
 
 msgid "Couldn't check for updates. Website not reachable."
-msgstr ""
+msgstr "Не може да се направи проверка за ъпдейт. УебСайтът е недостъпен "
 
 msgid "Count default email addresses"
 msgstr ""
@@ -1582,7 +1583,7 @@ msgid "Create directory, if not existing!"
 msgstr ""
 
 msgid "Created by"
-msgstr "Автор "
+msgstr "Създаден от"
 
 msgid "Creation date"
 msgstr "Дата на създаване"
@@ -1597,7 +1598,7 @@ msgid "Custom DNS record"
 msgstr ""
 
 msgid "Custom DNS record scheduled for deletion."
-msgstr ""
+msgstr "Персонализиран DNS запис в графика за изтриване."
 
 msgid "Custom DNS record successfully scheduled for addition."
 msgstr ""
@@ -1606,10 +1607,10 @@ msgid "Custom DNS record successfully scheduled for update."
 msgstr ""
 
 msgid "Custom DNS records"
-msgstr ""
+msgstr "Персонални DNS записи"
 
 msgid "Custom error page updated."
-msgstr ""
+msgstr "Персоналната страница за грешка актуализира."
 
 msgid "Custom error pages"
 msgstr "Персонална страница за грешки"
@@ -1630,7 +1631,7 @@ msgid "Custom menu successfully updated."
 msgstr ""
 
 msgid "Custom menus"
-msgstr "Персоналное меню"
+msgstr "Персонално меню"
 
 msgid "Customer"
 msgstr ""
@@ -1657,7 +1658,7 @@ msgid "Customer account successfully scheduled for deletion."
 msgstr ""
 
 msgid "Customer account successfully updated."
-msgstr ""
+msgstr "Профила на клиента успешно обновен."
 
 msgid "Customer account summary"
 msgstr ""
@@ -1684,16 +1685,16 @@ msgid "Customer(s) successfully moved."
 msgstr ""
 
 msgid "Customers"
-msgstr ""
+msgstr "Клиент"
 
 msgid "Customers assignment"
 msgstr ""
 
 msgid "Customize error pages for your domain."
-msgstr ""
+msgstr "Персонализиране на страници с грешки за вашия домейн."
 
 msgid "DNS record already exist."
-msgstr ""
+msgstr "DNS записа вече съществува."
 
 msgid "DNS server unavailable. Please contact your reseller."
 msgstr ""
@@ -1714,13 +1715,13 @@ msgid "Data were been altered. Please try again."
 msgstr ""
 
 msgid "Database"
-msgstr ""
+msgstr "База данни"
 
 msgid "Database Name and Users"
 msgstr "Име и потребители на бази данни"
 
 msgid "Database Update Revision"
-msgstr ""
+msgstr "Проверка за обновяване на База данни"
 
 msgid "Database Update details"
 msgstr ""
@@ -1729,16 +1730,16 @@ msgid "Database name"
 msgstr "Име на базата данни"
 
 msgid "Database name is too long."
-msgstr ""
+msgstr "Име на базата данни е твърде дълго."
 
 msgid "Database prefix"
-msgstr ""
+msgstr "представка за база данни"
 
 msgid "Database prefix/suffix"
 msgstr ""
 
 msgid "Database required"
-msgstr ""
+msgstr "Изисква се база от данни"
 
 msgid "Database update"
 msgstr ""
@@ -1768,7 +1769,7 @@ msgid "Day statistics"
 msgstr ""
 
 msgid "Days"
-msgstr ""
+msgstr "Дни"
 
 msgid "Deactivate"
 msgstr ""
@@ -1838,10 +1839,10 @@ msgid "Debugger"
 msgstr ""
 
 msgid "Default language"
-msgstr ""
+msgstr "Език по подразбиране"
 
 msgid "Default language successfully updated."
-msgstr ""
+msgstr "Езикът по подразбиране успешно актуализиран."
 
 msgid ""
 "Defines whether or not customers can add/change SSL certificates for their "
@@ -1855,7 +1856,7 @@ msgid "Delete CatchAll"
 msgstr "Изтрий CatchAll"
 
 msgid "Delete all tickets"
-msgstr ""
+msgstr "Изтриване не всички билети"
 
 msgid "Delete customer"
 msgstr ""
@@ -1870,7 +1871,7 @@ msgid "Delete order"
 msgstr "Изтрий заявка"
 
 msgid "Delete reseller software"
-msgstr ""
+msgstr "Премахване на Риселърски софтуер"
 
 msgid "Delete selected items"
 msgstr ""
@@ -1885,7 +1886,7 @@ msgid "Deletion in progress"
 msgstr ""
 
 msgid "Demo Version!"
-msgstr ""
+msgstr "Демо Версия!"
 
 msgid "Depot import"
 msgstr ""
@@ -1939,7 +1940,7 @@ msgid "Display errors"
 msgstr ""
 
 msgid "Do not show any error"
-msgstr ""
+msgstr "Да не се показват никакви грешки"
 
 #, php-format
 msgid ""
@@ -1957,13 +1958,13 @@ msgid "Domain Limit"
 msgstr ""
 
 msgid "Domain Name"
-msgstr ""
+msgstr "Име на Домейн"
 
 msgid "Domain account"
-msgstr "Домейна акаунт"
+msgstr "Домейн акаунт"
 
 msgid "Domain account expired."
-msgstr ""
+msgstr " Domain акаунтът е изтекъл."
 
 msgid "Domain accounts"
 msgstr ""
@@ -1986,7 +1987,7 @@ msgid "Domain alias limit"
 msgstr ""
 
 msgid "Domain alias name"
-msgstr ""
+msgstr "Domain псевдоним"
 
 msgid "Domain alias successfully ordered."
 msgstr ""
@@ -1995,7 +1996,7 @@ msgid "Domain alias successfully scheduled for addition."
 msgstr ""
 
 msgid "Domain alias successfully scheduled for deletion."
-msgstr ""
+msgstr "Псевдонимът на домейна успешно маркиран  за изтриване."
 
 msgid "Domain alias successfully scheduled for update."
 msgstr ""
@@ -2021,13 +2022,13 @@ msgid "Domain aliases"
 msgstr "Псевдоними на домейна"
 
 msgid "Domain already registered on the system."
-msgstr ""
+msgstr "Домейна вече е регистриран в системата ни"
 
 msgid "Domain and SQL databases"
 msgstr ""
 
 msgid "Domain data were been altered. Please try again."
-msgstr ""
+msgstr "Данните на домейна са били променени.Моля опитайте отново."
 
 msgid "Domain details"
 msgstr "Информация за домейна"
@@ -2039,7 +2040,7 @@ msgid "Domain expiration date"
 msgstr ""
 
 msgid "Domain expiration date must be filled."
-msgstr ""
+msgstr "Domain срока на изтичане трябва да бъде попълнен"
 
 msgid "Domain limit"
 msgstr ""
@@ -2077,7 +2078,7 @@ msgid "Domain new expiration date"
 msgstr ""
 
 msgid "Domain not found."
-msgstr ""
+msgstr "Домейнът не е намерен."
 
 msgid "Domain overview"
 msgstr ""
@@ -2112,13 +2113,13 @@ msgid "Domains per page"
 msgstr "Домейни на страница"
 
 msgid "Don't use special chars like \"@, $, %...\" in the password."
-msgstr ""
+msgstr "Не използвайте специални символи като \"@, $,% ...\" в паролата."
 
 msgid "Done"
 msgstr "Готово"
 
 msgid "Download"
-msgstr ""
+msgstr "Сваляне"
 
 msgid "Download the archives stored in this directory"
 msgstr ""
@@ -2142,7 +2143,7 @@ msgid "Edit auto responder"
 msgstr ""
 
 msgid "Edit custom DNS record"
-msgstr ""
+msgstr "Промяна на потребителски DNS запис"
 
 msgid "Edit custom error page"
 msgstr ""
@@ -2154,19 +2155,19 @@ msgid "Edit customer"
 msgstr ""
 
 msgid "Edit domain"
-msgstr ""
+msgstr "Промяна на Домейн"
 
 msgid "Edit domain alias"
-msgstr "Редакция на псевдоним на домейна"
+msgstr "Редактиране  на псевдоним на домейн"
 
 msgid "Edit error page"
-msgstr "Редакция на страницата с грешки"
+msgstr "Редактиране  на страницата с грешки"
 
 msgid "Edit external mail server for {DOMAIN_UTF8}"
 msgstr ""
 
 msgid "Edit hosting plan"
-msgstr "Редакция на хостинг-план"
+msgstr "Промяна на хостинг-план"
 
 msgid "Edit htaccess user"
 msgstr ""
@@ -2178,16 +2179,16 @@ msgid "Edit mail quota"
 msgstr ""
 
 msgid "Edit protected area"
-msgstr ""
+msgstr "Промяна на защитен зона."
 
 msgid "Edit reseller"
 msgstr "Редакция на риселър"
 
 msgid "Edit subdomain"
-msgstr ""
+msgstr "Промяна на събдомейн "
 
 msgid "Edit user"
-msgstr "Редакция потребител"
+msgstr "Проняна на потребител"
 
 msgid "EiB"
 msgstr ""
@@ -2288,13 +2289,13 @@ msgid "Enabled"
 msgstr "Включено"
 
 msgid "Enabled for SQL databases"
-msgstr ""
+msgstr "Активирано за SQL бази данни"
 
 msgid "Enabled for domain data"
-msgstr ""
+msgstr "Активирано за домейн"
 
 msgid "Enabled for domain data and databases"
-msgstr ""
+msgstr "Активирано за домейни и бази данни"
 
 msgid ""
 "Entries associated to your external mail servers were not found. A "
@@ -2308,7 +2309,7 @@ msgid "Error details"
 msgstr ""
 
 msgid "Error in php.ini values."
-msgstr ""
+msgstr "Грешка в php.ini опциите."
 
 msgid "Error pages"
 msgstr "Страници с грешки"
@@ -2317,13 +2318,13 @@ msgid "Error reporting"
 msgstr ""
 
 msgid "Error while trying to obtain list of network cards."
-msgstr ""
+msgstr "Грешка,  опитва се да получи списък на мрежовите карти."
 
 msgid "Error: Remote File not found!"
-msgstr ""
+msgstr "Грешка: Отдалечения файл не е намерен"
 
 msgid "Errors"
-msgstr ""
+msgstr "Грешки"
 
 msgid "Excl. default mails"
 msgstr ""
@@ -2332,7 +2333,7 @@ msgid "Execute requests"
 msgstr "Изпълни заявка"
 
 msgid "Expire date"
-msgstr ""
+msgstr "Дата на изтичане"
 
 msgid "Ext. mail server"
 msgstr ""
@@ -2356,7 +2357,7 @@ msgid "External mail servers"
 msgstr ""
 
 msgid "FTP Users"
-msgstr ""
+msgstr "ФТП потребител"
 
 msgid "FTP account"
 msgstr "FTP акаунт"
@@ -2401,7 +2402,7 @@ msgid "Features"
 msgstr ""
 
 msgid "Female"
-msgstr "Женски"
+msgstr "Жена"
 
 #, php-format
 msgid "File %s doesn't exist or cannot be reached!"
@@ -2417,7 +2418,7 @@ msgstr ""
 
 #, php-format
 msgid "File does not exist. %1$s.tar.gz"
-msgstr ""
+msgstr "Файлът не съществува. %1$s.tar.gz "
 
 msgid "File exceeds the size limit."
 msgstr ""
@@ -2426,19 +2427,19 @@ msgid "File has been successfully uploaded."
 msgstr ""
 
 msgid "File is not readable."
-msgstr ""
+msgstr "Файлът не може да се чете."
 
 msgid "File needs to be a 'tar.gz' archive."
-msgstr ""
+msgstr "Файлът трябва да е 'tar.gz' архив."
 
 msgid "File successfully uploaded."
-msgstr ""
+msgstr "Файлът качен успешно."
 
 msgid "File usage"
 msgstr ""
 
 msgid "FileManager"
-msgstr ""
+msgstr "Файлов Мениджър"
 
 msgid "Filemanager"
 msgstr "Файл Мениджър"
@@ -2472,7 +2473,7 @@ msgid "Forward URL %s is not valid."
 msgstr ""
 
 msgid "Forward list is empty."
-msgstr ""
+msgstr "Forward списък е празен."
 
 msgid "Forward mail"
 msgstr "Пренасочен имейл"
@@ -2505,10 +2506,10 @@ msgid "Ftp account with same username already exists."
 msgstr ""
 
 msgid "Ftp accounts"
-msgstr ""
+msgstr "Фтп Акаунт"
 
 msgid "Full"
-msgstr ""
+msgstr "Пълно "
 
 msgid "GB"
 msgstr ""
@@ -2572,7 +2573,7 @@ msgid "Home directory '%s' doesn't exist"
 msgstr ""
 
 msgid "Homepage"
-msgstr ""
+msgstr "Начална страница"
 
 msgid "Hosting plan"
 msgstr "Хостинг-план"
@@ -2596,7 +2597,7 @@ msgid "Hosting plan successfully updated."
 msgstr ""
 
 msgid "Hosting plan values exceed reseller maximum values."
-msgstr ""
+msgstr "Хостинг-план  стойности надхвърлят Риселърските максимални стойности."
 
 msgid "Hosting plan values exceed your own limits."
 msgstr ""
@@ -2605,13 +2606,13 @@ msgid "Hosting plans"
 msgstr "Хостинг-планове"
 
 msgid "Hosting plans available for"
-msgstr ""
+msgstr "Хостинг планове на разположение са"
 
 msgid "Hour"
 msgstr "Час"
 
 msgid "Hours"
-msgstr ""
+msgstr "Часове"
 
 msgid "Htaccess errors"
 msgstr ""
@@ -2646,7 +2647,7 @@ msgid "IP Address"
 msgstr ""
 
 msgid "IP address"
-msgstr ""
+msgstr "IP Адрес "
 
 msgid "IP address already under the control of i-MSCP."
 msgstr ""
@@ -2670,10 +2671,10 @@ msgid "IP management"
 msgstr ""
 
 msgid "IP usage"
-msgstr ""
+msgstr "Използвани IP-та"
 
 msgid "IPv6 address"
-msgstr ""
+msgstr "IPv6 Адрес"
 
 msgid "IPv6 address field is empty or invalid."
 msgstr ""
@@ -2689,7 +2690,7 @@ msgid ""
 msgstr ""
 
 msgid "If you want to limit the reseller, you must first limit its customers."
-msgstr ""
+msgstr "Ако искате да ограничите на дистрибутора, първо трябва да ограничи своите клиенти."
 
 msgid "Images have to be smaller than 500 x 90 pixels."
 msgstr ""
@@ -2698,7 +2699,7 @@ msgid "Import"
 msgstr ""
 
 msgid "Import in local repository"
-msgstr ""
+msgstr "Качване в местното хранилище"
 
 msgid ""
 "In case domain expiration date is 'N/A', the expiration date will be set "
@@ -2716,7 +2717,7 @@ msgid ""
 "must note that for now, the directives defined here apply to your entire "
 "domain account (including subdomains and domain aliases). Of course some "
 "values can be modified through the PHP ini_set() function."
-msgstr ""
+msgstr "В тази страница можете да конфигурирате някои от аспектите на поведението на PHP. Трябва да се отбележи, че за сега, на директивите, определени тук важат за целия ви профил домейн (включително поддомейни и псевдоними на домейни). Разбира се някои стойности могат да бъдат модифицирани чрез PHP ini_set () функцията."
 
 msgid "Incl. default mails"
 msgstr ""
@@ -2749,11 +2750,11 @@ msgid "Incorrect email account limit."
 msgstr ""
 
 msgid "Incorrect email length or syntax."
-msgstr ""
+msgstr "Некоректна дължина или синтаксис на имейл адреса"
 
 #, php-format
 msgid "Incorrect limit for %s."
-msgstr ""
+msgstr "Некоректно ограничения за %s."
 
 msgid "Incorrect monthly traffic limit."
 msgstr ""
@@ -2768,25 +2769,25 @@ msgid "Incorrect syntax for email address."
 msgstr ""
 
 msgid "Incorrect username length or syntax."
-msgstr ""
+msgstr "Некоректна дължина на потребителско име."
 
 msgid "Install"
 msgstr "Инсталиране"
 
 msgid "Install Software"
-msgstr ""
+msgstr "Инсталирай Софтуер"
 
 msgid "Install in progress"
 msgstr ""
 
 msgid "Install path"
-msgstr ""
+msgstr "Инсталирай Пач "
 
 msgid "Install this plugin"
 msgstr ""
 
 msgid "Install various Web applications with a few clicks."
-msgstr ""
+msgstr "Инсталирайте различни уеб приложения с няколко щраквания на мишката."
 
 msgid "Installation details"
 msgstr ""
@@ -2807,7 +2808,7 @@ msgid "Installed in software repository"
 msgstr ""
 
 msgid "Installed on"
-msgstr ""
+msgstr "Инсталиране на "
 
 msgid "Installing your uploaded package. Please refresh this page."
 msgstr ""
@@ -2822,7 +2823,7 @@ msgid "Internal Server Error"
 msgstr ""
 
 msgid "Internationalization"
-msgstr ""
+msgstr "Интернационализация"
 
 msgid "Invalid CNAME"
 msgstr ""
@@ -2885,7 +2886,7 @@ msgid "Invalid target."
 msgstr ""
 
 msgid "Invalid type given. String expected"
-msgstr ""
+msgstr "Невалиден тип e зададен."
 
 #, php-format
 msgid "Ip %s is blocked for %s minutes."
@@ -2896,7 +2897,7 @@ msgid "Ip %s is waiting %s seconds."
 msgstr ""
 
 msgid "Kernel Version"
-msgstr ""
+msgstr "Кернъл Версия "
 
 msgid "Kill session"
 msgstr "Закрий сесията"
@@ -2920,10 +2921,10 @@ msgid "Languages"
 msgstr ""
 
 msgid "Languages index was successfully re-built."
-msgstr ""
+msgstr "Индекса на езиците бе успешно преконфигуриран"
 
 msgid "Last Web software repository update"
-msgstr ""
+msgstr "Последно обновяване на софтуера от Web хранилището"
 
 msgid "Last access"
 msgstr "Последен достъп"
@@ -2935,10 +2936,10 @@ msgid "Last name cannot have more than 200 characters."
 msgstr ""
 
 msgid "Last reply date"
-msgstr ""
+msgstr "Последна дата на отговор"
 
 msgid "Last translator"
-msgstr ""
+msgstr "Последен превод"
 
 msgid "Layout"
 msgstr "Макет"
@@ -2965,10 +2966,10 @@ msgid "Link"
 msgstr ""
 
 msgid "Link to authors homepage"
-msgstr ""
+msgstr "Линк към автора на страницата"
 
 msgid "Load (1 Min, 5 Min, 15 Min)"
-msgstr ""
+msgstr "натоварване  (1 Min, 5 Min, 15 Min)"
 
 msgid "Log entries successfully deleted."
 msgstr ""
@@ -2980,7 +2981,7 @@ msgid "Login"
 msgstr "Вход"
 
 msgid "Login As"
-msgstr ""
+msgstr "Влезли сте като"
 
 #, php-format
 msgid "Login data successfully sent to %s."
@@ -3002,10 +3003,10 @@ msgid "Logo file"
 msgstr "Файл за Лого"
 
 msgid "Logo successfully removed."
-msgstr ""
+msgstr "Логът е успешно премахнат."
 
 msgid "Logo successfully updated."
-msgstr ""
+msgstr "Лога е успешно обновен."
 
 msgid "Logout"
 msgstr "Изход"
@@ -3077,13 +3078,13 @@ msgid "Maintenance settings"
 msgstr ""
 
 msgid "Male"
-msgstr "Мъжки"
+msgstr "Мъж"
 
 msgid "Malformed resolver SQL query"
 msgstr ""
 
 msgid "Manage Domains"
-msgstr ""
+msgstr "Управление на домейни"
 
 msgid "Manage SQL"
 msgstr "Управление SQL"
@@ -3098,16 +3099,16 @@ msgid "Manage users and groups"
 msgstr "Управление потребители и групи"
 
 msgid "Manage your protected areas, users and groups."
-msgstr ""
+msgstr "Управление на защитени зони, потребители и групи."
 
 msgid "Mark"
 msgstr "Марка"
 
 msgid "Master domain cannot be used."
-msgstr ""
+msgstr "Главния домейн не може да се използва."
 
 msgid "Max number of login attempts"
-msgstr "Максимум брои опити за влизане"
+msgstr "Максимум брой опити за влизане"
 
 msgid "Max traffic"
 msgstr ""
@@ -3150,7 +3151,7 @@ msgid "Message template info"
 msgstr "Информация за шаблона"
 
 msgid "Message to reseller before deleting the software"
-msgstr ""
+msgstr "Съобщение до Риселъра  преди изтриването на софтуера"
 
 msgid "Messages"
 msgstr "Съобщения"
@@ -3159,13 +3160,13 @@ msgid "MiB"
 msgstr ""
 
 msgid "Minute"
-msgstr ""
+msgstr "Минута"
 
 msgid "Minutes"
-msgstr ""
+msgstr "Минути"
 
 msgid "Missing domain"
-msgstr ""
+msgstr "Липсва Домейн"
 
 msgid "Model"
 msgstr ""
@@ -3189,7 +3190,7 @@ msgid "Monthly traffic warning must be a number."
 msgstr ""
 
 msgid "More Details"
-msgstr ""
+msgstr "Повече информация"
 
 msgid "Mount"
 msgstr ""
@@ -3216,7 +3217,7 @@ msgid "Name cannot be empty."
 msgstr ""
 
 msgid "Network interface"
-msgstr ""
+msgstr "Мрежов Интерфейс"
 
 msgid "Never"
 msgstr ""
@@ -3228,10 +3229,10 @@ msgid "New alias order for {CUSTOMER}"
 msgstr ""
 
 msgid "New i-MSCP update is available"
-msgstr ""
+msgstr "Нов i-MSCP ъпдейт е наличен"
 
 msgid "New password has not been sent. Ask your administrator."
-msgstr ""
+msgstr "Новата парола не е изпратена. За повече информация се обърнете към Администратор"
 
 msgid "New password is"
 msgstr ""
@@ -3240,7 +3241,7 @@ msgid "New ticket"
 msgstr "Нов билет"
 
 msgid "Next"
-msgstr ""
+msgstr "Следващ"
 
 msgid "Next step"
 msgstr "Следваща стъпка"
@@ -3255,7 +3256,7 @@ msgid "No IP statistics to be shown."
 msgstr ""
 
 msgid "No administrator accounts found."
-msgstr ""
+msgstr "Не е намерен администраторски акаунт."
 
 msgid "No anti-rootkits logs"
 msgstr ""
@@ -3270,7 +3271,7 @@ msgid "No custom menu found."
 msgstr ""
 
 msgid "No customer accounts found."
-msgstr ""
+msgstr "Не е намерен клиентски акаунт."
 
 msgid "No database update available."
 msgstr ""
@@ -3297,7 +3298,7 @@ msgid "No hosting plan available. Please contact your administrator."
 msgstr ""
 
 msgid "No languages found."
-msgstr ""
+msgstr "Не са намерени езици."
 
 msgid "No logs found."
 msgstr ""
@@ -3306,13 +3307,13 @@ msgid "No new i-MSCP updates available"
 msgstr "Няма достъпни i-MSCP обновявания"
 
 msgid "No records found"
-msgstr ""
+msgstr "Не са намерени записи"
 
 msgid "No records found matching the search criteria."
 msgstr ""
 
 msgid "No reseller accounts found."
-msgstr ""
+msgstr "Не е намерен риселърски акаунт."
 
 msgid "No reseller available to add the permissions."
 msgstr ""
@@ -3354,7 +3355,7 @@ msgid "No users found for this reseller."
 msgstr ""
 
 msgid "No."
-msgstr ""
+msgstr "Не."
 
 msgid "None"
 msgstr "Празно"
@@ -3375,7 +3376,7 @@ msgid "Not Found"
 msgstr ""
 
 msgid "Not Set"
-msgstr ""
+msgstr "Не е зададен"
 
 msgid "Not found."
 msgstr ""
@@ -3405,16 +3406,16 @@ msgid "Nothing to do. Daemon request has been canceled."
 msgstr ""
 
 msgid "Notices, Warnings and Errors"
-msgstr ""
+msgstr "Съобщения, предупреждения и грешки"
 
 msgid "OK"
 msgstr "Ок"
 
 msgid "Ok"
-msgstr ""
+msgstr "ОК"
 
 msgid "One or more database updates are now available. See the details below."
-msgstr ""
+msgstr "Една или повече актуализации на базата данни вече са на разположение. Виж данните по-долу."
 
 msgid "Only 'tar.gz' archives are accepted."
 msgstr ""
@@ -3426,18 +3427,15 @@ msgid "Only exec"
 msgstr ""
 
 msgid "Only gettext Machine Object files (MO files) are accepted."
-msgstr ""
+msgstr "Само  (MO файлове) се приемат."
 
 msgid "Only numbers in range from 0 to 65535 are allowed."
 msgstr ""
 
 msgid "Only positive numbers are allowed."
-msgstr ""
+msgstr "Само положителни числа са разрешени."
 
-msgid "Only tar.gz, tar.bz2 and zip archives are accepted"
-msgstr ""
-
-msgid "Only tar.gz, tar.bz2 and zip archives are supported."
+msgid "Only tar.gz, tar.bz2 and zip archives are accepted."
 msgstr ""
 
 msgid "Open ticket"
@@ -3494,7 +3492,7 @@ msgid "PHP Editor Settings"
 msgstr ""
 
 msgid "PHP GD extension not loaded."
-msgstr ""
+msgstr "PHP GD не е зареден."
 
 msgid "PHP Settings"
 msgstr ""
@@ -3515,16 +3513,16 @@ msgid "PHP settings"
 msgstr ""
 
 msgid "POP3/IMAP in"
-msgstr ""
+msgstr "POP3/IMAP вход"
 
 msgid "POP3/IMAP out"
-msgstr ""
+msgstr "POP3/IMAP изход"
 
 msgid "POP3/IMAP traffic"
 msgstr "POP3/IMAP трафик"
 
 msgid "Package actions"
-msgstr ""
+msgstr "Действия на пакета"
 
 msgid "Package already exists in the reseller depot!"
 msgstr ""
@@ -3539,7 +3537,7 @@ msgid "Package already exists in your software repository!"
 msgstr ""
 
 msgid "Package install type"
-msgstr ""
+msgstr "Инсталационен тип на пакета"
 
 msgid "Package installed successfully!"
 msgstr ""
@@ -3548,25 +3546,25 @@ msgid "Package installed successfully... Awaiting release from admin!"
 msgstr ""
 
 msgid "Package language"
-msgstr ""
+msgstr "Език на Пакета"
 
 msgid "Package name"
-msgstr ""
+msgstr "Име на пакет"
 
 msgid "Package title"
-msgstr ""
+msgstr "Заглавие на пакет"
 
 msgid "Package type"
-msgstr ""
+msgstr "Тип пакет"
 
 msgid "Package vendor HP"
 msgstr ""
 
 msgid "Package version"
-msgstr ""
+msgstr "Версия на пакета"
 
 msgid "Panel default language"
-msgstr ""
+msgstr "Език по подразбиране на Панела"
 
 msgid "Parent directory"
 msgstr ""
@@ -3603,7 +3601,7 @@ msgid "Password is shorter than %s characters."
 msgstr ""
 
 msgid "Password length"
-msgstr ""
+msgstr "Дължина на Паролата"
 
 #, php-format
 msgid ""
@@ -3612,10 +3610,10 @@ msgid ""
 msgstr ""
 
 msgid "Password settings"
-msgstr ""
+msgstr "Настройки на Парола"
 
 msgid "Password successfully updated."
-msgstr ""
+msgstr "Паролата е успешно обновена."
 
 msgid "Passwords do not match"
 msgstr ""
@@ -3636,13 +3634,13 @@ msgid "Percent"
 msgstr "Процент"
 
 msgid "Permissions"
-msgstr ""
+msgstr "Привилегии "
 
 msgid "Personal data"
-msgstr "Персоналниданни"
+msgstr "Персонални данни"
 
 msgid "Personal data successfully updated."
-msgstr ""
+msgstr "Личните данни са актуализирани успешно."
 
 msgid "Personalise template"
 msgstr "Персонализирайте шаблон"
@@ -3684,13 +3682,13 @@ msgid "Please enter a username."
 msgstr ""
 
 msgid "Please enter protected area path"
-msgstr ""
+msgstr "Моля въведете зона за защита"
 
 msgid "Please enter your auto-responder message below"
 msgstr ""
 
 msgid "Please fill up both data fields for password."
-msgstr ""
+msgstr "Моля, запълнете двете полета с данни за парола."
 
 msgid "Please select a valid SQL user for the database."
 msgstr ""
@@ -3708,19 +3706,19 @@ msgid ""
 msgstr ""
 
 msgid "Please specify a message content."
-msgstr ""
+msgstr "Моля, посочете съдържание на съобщение."
 
 msgid "Please specify a message subject."
-msgstr ""
+msgstr "Моля, въведете тема съобщение."
 
 msgid "Please type database name."
-msgstr ""
+msgstr "Моля въведете име на базата данни."
 
 msgid "Please type user password."
-msgstr ""
+msgstr "Моля, въведете потребителска парола."
 
 msgid "Please type your message."
-msgstr ""
+msgstr "Моля въведете вашето съобщение."
 
 msgid "Plugin"
 msgstr ""
@@ -3799,6 +3797,12 @@ msgstr ""
 
 #, php-format
 msgid "Plugin %s successfully updated."
+msgstr ""
+
+#, php-format
+msgid ""
+"Plugin Manager: Downgrade of plugin is not supported. You must update the %s"
+" plugin."
 msgstr ""
 
 #, php-format
@@ -3891,13 +3895,13 @@ msgid "Port must be a number."
 msgstr ""
 
 msgid "Prevent external login for admins"
-msgstr ""
+msgstr "Предотвратяване на външен вход за администратори"
 
 msgid "Prevent external login for clients"
-msgstr ""
+msgstr "Предотвратяване на външен вход за клиенти"
 
 msgid "Prevent external login for resellers"
-msgstr ""
+msgstr "Предотвратяване на външен вход за риселъри"
 
 msgid "Previous"
 msgstr ""
@@ -3925,7 +3929,7 @@ msgid "Profile"
 msgstr ""
 
 msgid "Properties"
-msgstr ""
+msgstr "Информация"
 
 #, php-format
 msgid "Properties for reseller with ID %d were not found in database."
@@ -3944,7 +3948,7 @@ msgid "Protected"
 msgstr ""
 
 msgid "Protected area status should be 'OK' if you want to delete it."
-msgstr ""
+msgstr "Статусът на защитената зона трябва да бъде \"OK\", ако искате да го изтриете."
 
 msgid "Protected area successfully scheduled for addition."
 msgstr ""
@@ -3972,7 +3976,7 @@ msgid "Quota in MiB (Max: %s)"
 msgstr ""
 
 msgid "RAM"
-msgstr ""
+msgstr "Памет "
 
 msgid "Read ticket"
 msgstr ""
@@ -3981,10 +3985,10 @@ msgid "Rebuild languages index"
 msgstr ""
 
 msgid "Record data"
-msgstr ""
+msgstr "Запис на данни"
 
 msgid "Redirect"
-msgstr ""
+msgstr "Пренасочване"
 
 msgid "Redistribute unused quota across existing mailboxes"
 msgstr ""
@@ -4005,10 +4009,10 @@ msgid "Remote file not found."
 msgstr ""
 
 msgid "Remove"
-msgstr "изтриете"
+msgstr "Премахни"
 
 msgid "Remove IP"
-msgstr "изтриете IP"
+msgstr "Премахване на IP"
 
 msgid "Remove last entry"
 msgstr ""
@@ -4032,7 +4036,7 @@ msgid "Request from foreign host was blocked."
 msgstr ""
 
 msgid "Requires Database?"
-msgstr ""
+msgstr "Изисква се база данни?"
 
 msgid "Reseller"
 msgstr "Риселър"
@@ -4128,13 +4132,13 @@ msgid "Reseller /Hosting Plans / {TR_DYNAMIC_TITLE}"
 msgstr ""
 
 msgid "Reseller Name"
-msgstr ""
+msgstr "Име на Риселър"
 
 msgid "Reseller account successfully created."
 msgstr ""
 
 msgid "Reseller account successfully updated."
-msgstr ""
+msgstr "Риселър акаунта е успешно актуализиран."
 
 msgid "Reseller and customer"
 msgstr ""
@@ -4149,43 +4153,43 @@ msgid "Reseller consumption"
 msgstr ""
 
 msgid "Reseller data"
-msgstr ""
+msgstr "Риселър данни"
 
 msgid "Reseller level"
-msgstr "Ниво риселър"
+msgstr " Риселърско Ниво"
 
 msgid "Reseller list"
-msgstr ""
+msgstr "Списък на Риселъри "
 
 msgid "Reseller list is empty."
-msgstr ""
+msgstr "Риселър списък е празен."
 
 msgid "Reseller name"
 msgstr "Име на риселъра"
 
 msgid "Reseller software list"
-msgstr ""
+msgstr "Софтуерен списък на Риселър "
 
 msgid "Reseller statistics"
 msgstr ""
 
 msgid "Reseller successfully added."
-msgstr ""
+msgstr "Риселъра е успешно добавен."
 
 msgid "Reseller total"
-msgstr ""
+msgstr "Всички риселъри"
 
 msgid "Reseller users"
 msgstr "Потребители на риселъра"
 
 msgid "Reseller with permissions total"
-msgstr ""
+msgstr "Всички Ресилъри с правомощия"
 
 msgid "Reseller's layout color successfully updated."
 msgstr ""
 
 msgid "Reseller/IP usage statistics"
-msgstr ""
+msgstr "Риселър/IP данни "
 
 msgid "Resellers"
 msgstr "Риселъри"
@@ -4206,7 +4210,7 @@ msgid "Restore"
 msgstr "Възстанови"
 
 msgid "Restore backup"
-msgstr "Възстанови архивно копие"
+msgstr "Възстановяване на архивно копие"
 
 msgid "Revision date"
 msgstr ""
@@ -4221,16 +4225,16 @@ msgid "Rights successfully removed."
 msgstr ""
 
 msgid "SMTP in"
-msgstr ""
+msgstr "SMTP вход"
 
 msgid "SMTP out"
-msgstr ""
+msgstr "SMTP изход"
 
 msgid "SMTP traffic"
 msgstr "SMTP трафик"
 
 msgid "SQL"
-msgstr ""
+msgstr "SQL"
 
 msgid "SQL database"
 msgstr ""
@@ -4326,13 +4330,13 @@ msgid "Security code"
 msgstr "Секретен код"
 
 msgid "Select Domain"
-msgstr ""
+msgstr "Избери Домейн "
 
 msgid "Select all entries for deletion."
 msgstr ""
 
 msgid "Select database"
-msgstr ""
+msgstr "Избери база данни "
 
 msgid "Select group"
 msgstr ""
@@ -4346,7 +4350,7 @@ msgid ""
 msgstr ""
 
 msgid "Send"
-msgstr ""
+msgstr "Изпрати"
 
 msgid "Send circular"
 msgstr ""
@@ -4361,7 +4365,7 @@ msgid "Send new login data"
 msgstr "Изпрати новата информация за вход"
 
 msgid "Send new reply"
-msgstr ""
+msgstr "Изпрати нов отговор"
 
 msgid "Send reply"
 msgstr "Отправит ответ"
@@ -4400,7 +4404,7 @@ msgid "Server traffic"
 msgstr "Трафик на сървъра"
 
 msgid "Server traffic settings"
-msgstr "настройки за трафик на сървъра"
+msgstr "настройки за трафика на сървъра"
 
 msgid "Server traffic settings successfully updated."
 msgstr ""
@@ -4412,7 +4416,7 @@ msgid "Service Unavailable"
 msgstr ""
 
 msgid "Service name"
-msgstr ""
+msgstr "Име на Услуга"
 
 msgid "Service name already exists."
 msgstr ""
@@ -4427,10 +4431,10 @@ msgid "Service ports"
 msgstr ""
 
 msgid "Service protocol"
-msgstr ""
+msgstr "Протокол на услугата "
 
 msgid "Services status"
-msgstr ""
+msgstr "Статус на Услугите "
 
 msgid "Sessions"
 msgstr ""
@@ -4459,12 +4463,12 @@ msgstr ""
 
 msgid ""
 "Show all errors, except for notices and coding standards warnings (Default)"
-msgstr ""
+msgstr "Покажи всички грешки, с изключение на съобщения и предупреждения стандарти за кодиране (Default)"
 
 msgid ""
 "Show all errors, warnings and notices including coding standards "
 "(Development)"
-msgstr ""
+msgstr "Покажи всички грешки, предупреждения и уведомления, включително стандарти за кодиране (Development)"
 
 msgid "Show detailed statistics for this domain"
 msgstr ""
@@ -4489,22 +4493,22 @@ msgid "Size"
 msgstr "Размер"
 
 msgid "Software"
-msgstr ""
+msgstr "Софтуер"
 
 msgid "Software Description"
 msgstr ""
 
 msgid "Software available"
-msgstr ""
+msgstr "Наличен софтуер"
 
 msgid "Software deleted."
-msgstr ""
+msgstr "Изтриване на софтуер."
 
 msgid "Software depot upload"
-msgstr ""
+msgstr "Софтуер за качване на депо"
 
 msgid "Software details"
-msgstr ""
+msgstr "Детайли за софтуера"
 
 msgid "Software has been deleted."
 msgstr ""
@@ -4513,10 +4517,10 @@ msgid "Software has been successfully imported."
 msgstr ""
 
 msgid "Software in repository"
-msgstr ""
+msgstr "Софтуер в хранилище"
 
 msgid "Software installation"
-msgstr ""
+msgstr "Инсталиране на софтуер"
 
 msgid "Software installer"
 msgstr ""
@@ -4534,7 +4538,7 @@ msgid "Software management"
 msgstr ""
 
 msgid "Software name"
-msgstr ""
+msgstr "Име на софтуер"
 
 msgid "Software not found!"
 msgstr ""
@@ -4543,37 +4547,37 @@ msgid "Software options"
 msgstr ""
 
 msgid "Software permissions"
-msgstr ""
+msgstr "Софтуерни правомощия"
 
 msgid "Software repository"
-msgstr ""
+msgstr "Софтуерно хранилище"
 
 msgid "Software scheduled for deletion."
-msgstr ""
+msgstr "Софтуера е в графа за изтриване."
 
 msgid "Software status"
-msgstr ""
+msgstr "Статус на софтуера"
 
 msgid "Software total"
-msgstr ""
+msgstr "Всички Софуери"
 
 msgid "Software upload"
-msgstr ""
+msgstr "Качете софтуер"
 
 msgid "Software was activated."
-msgstr ""
+msgstr "Софтуера е активиран"
 
 msgid "Software was deleted."
-msgstr ""
+msgstr "Софтуера е премахнат"
 
 msgid "Software-Synonym"
 msgstr ""
 
 msgid "Software-Version"
-msgstr ""
+msgstr "Версия на софтуера"
 
 msgid "Softwaredepot"
-msgstr ""
+msgstr "Софтуер Депо"
 
 msgid "Spam Filter"
 msgstr ""
@@ -4584,7 +4588,7 @@ msgid ""
 msgstr ""
 
 msgid "Specified database name already exists."
-msgstr ""
+msgstr "Това име за база данни вече съществува."
 
 msgid "Start installation"
 msgstr ""
@@ -4593,7 +4597,7 @@ msgid "State"
 msgstr ""
 
 msgid "State/Province"
-msgstr ""
+msgstr "Област/Провинция"
 
 msgid "Statistics"
 msgstr "Статистика"
@@ -4625,7 +4629,7 @@ msgid "Subdomain %s cannot be forwarded on itself."
 msgstr ""
 
 msgid "Subdomain alias"
-msgstr ""
+msgstr "Алиасес за поддомейни "
 
 msgid "Subdomain alias errors"
 msgstr ""
@@ -4677,7 +4681,7 @@ msgid "Subdomains"
 msgstr "Поддомейни"
 
 msgid "Subject"
-msgstr "Тема"
+msgstr "Отностно"
 
 msgid "Subject is missing."
 msgstr ""
@@ -4686,7 +4690,7 @@ msgid "Submit changes"
 msgstr "Приеми промените"
 
 msgid "Support"
-msgstr ""
+msgstr "Поддръжка"
 
 msgid "Support system"
 msgstr "Служба за поддръжка"
@@ -4698,7 +4702,7 @@ msgid "Swap"
 msgstr "Swap Файл"
 
 msgid "Switch"
-msgstr "Переключит"
+msgstr "Превключи"
 
 msgid "Switch to the backups directory"
 msgstr ""
@@ -4713,7 +4717,7 @@ msgid "System data"
 msgstr ""
 
 msgid "System error - custom error page was not updated."
-msgstr ""
+msgstr "Системна грешка - личната  страница за грешки не е актуализирана."
 
 msgid "System information"
 msgstr ""
@@ -4768,7 +4772,7 @@ msgid "Target port"
 msgstr ""
 
 msgid "Template for Auto email successfully updated."
-msgstr ""
+msgstr "Шаблон за автоматично  разпращане на имейли е успешно актуализиран."
 
 msgid "Temporary folder not found."
 msgstr ""
@@ -4902,7 +4906,7 @@ msgstr ""
 
 #, php-format
 msgid "This IP (%s) is not assigned to any network card!"
-msgstr ""
+msgstr "Това IP (%s) не се разпознава от  никоя мрежова карта!"
 
 #, php-format
 msgid ""
@@ -4916,7 +4920,7 @@ msgid ""
 "This database will be permanently deleted. This process cannot be recovered."
 " All users linked to this database will also be deleted if not linked to "
 "another database. Are you sure you want to delete the '%s' database?"
-msgstr ""
+msgstr "Тази база данни ще бъдат окончателно изтрита. Този процес не може да бъде възстановена. Всички свързани с тази база данни също ще бъдат изтрити, ако не са свързани с друга база данни. Сигурни ли сте, че искате да изтриете базата данни '%s' ли си?"
 
 msgid "This htaccess group already exists."
 msgstr ""
@@ -4963,7 +4967,7 @@ msgid ""
 msgstr ""
 
 msgid "This user name already exist."
-msgstr ""
+msgstr "Потребителското има вече съществува."
 
 msgid "TiB"
 msgstr ""
@@ -4972,16 +4976,16 @@ msgid "Ticket Information"
 msgstr ""
 
 msgid "Ticket information"
-msgstr ""
+msgstr "Информация за билет"
 
 msgid "Ticket not found."
-msgstr ""
+msgstr "Билета не е намерен."
 
 msgid "Ticket successfully closed."
 msgstr ""
 
 msgid "Ticket successfully deleted."
-msgstr ""
+msgstr "Билета е успешно изтрит."
 
 msgid "Ticket successfully reopened."
 msgstr ""
@@ -5001,13 +5005,13 @@ msgid "To unprotect this plugin, you must edit the %s file"
 msgstr ""
 
 msgid "Too long user password."
-msgstr ""
+msgstr "Твърде дълга потребителска парола."
 
 msgid "Total"
 msgstr "Всичко"
 
 msgid "Total Domains"
-msgstr ""
+msgstr "Всички Домейни"
 
 msgid "Total Software"
 msgstr ""
@@ -5016,7 +5020,7 @@ msgid "Total Web software repositories"
 msgstr ""
 
 msgid "Total installations"
-msgstr ""
+msgstr "Всички инсталации"
 
 #, php-format
 msgid "Total mails: %s / %s %s"
@@ -5026,7 +5030,7 @@ msgid "Total packages in Web software repository"
 msgstr ""
 
 msgid "Total reseller"
-msgstr ""
+msgstr "Всички риселъри"
 
 msgid "Total software"
 msgstr ""
@@ -5038,7 +5042,7 @@ msgid "Traffic usage"
 msgstr "Използван трафик"
 
 msgid "Translated strings"
-msgstr ""
+msgstr "Преведени редове"
 
 msgid "Type"
 msgstr "Тип"
@@ -5050,10 +5054,10 @@ msgid "URL forwarding"
 msgstr ""
 
 msgid "URL protocol"
-msgstr ""
+msgstr "УРЛ протокол"
 
 msgid "URL to this admin panel"
-msgstr ""
+msgstr "URL на тази администраторски панел"
 
 #, php-format
 msgid "Unable to backup %s plugin directory."
@@ -5065,14 +5069,14 @@ msgstr ""
 
 #, php-format
 msgid "Unable to create '%s' directory for language file."
-msgstr ""
+msgstr "Не може да се създаде '%s' директория за езиков файл"
 
 msgid "Unable to create 'LC_MESSAGES' directory for language file."
-msgstr ""
+msgstr "Не може да се създаде 'LC_MESSAGES' директория за езиков файл"
 
 #, php-format
 msgid "Unable to delete user with Id: %d"
-msgstr ""
+msgstr "Не може да изтриете потребител с Id:%d"
 
 msgid "Unable to extract plugin archive."
 msgstr ""
@@ -5164,14 +5168,14 @@ msgid "Unknown Error"
 msgstr "Неизвестна Грешка"
 
 msgid "Unknown FTP user id."
-msgstr ""
+msgstr "Неизвестно FTP потребителското име."
 
 msgid "Unknown action requested."
-msgstr ""
+msgstr "Заявено е неизвестно действие."
 
 #, php-format
 msgid "Unknown action: %s"
-msgstr ""
+msgstr "Неизвестно действие: %s"
 
 msgid "Unknown error"
 msgstr ""
@@ -5199,7 +5203,7 @@ msgid "Unknown username."
 msgstr ""
 
 msgid "Unlimited"
-msgstr ""
+msgstr "Неограничен"
 
 msgid "Unprotect it"
 msgstr "Махни защита"
@@ -5214,7 +5218,7 @@ msgid "Update SQL user password"
 msgstr ""
 
 msgid "Update checking is disabled."
-msgstr ""
+msgstr "Проверката за обновяване е деактивирано."
 
 msgid "Update data"
 msgstr "Промяна данни"
@@ -5223,13 +5227,13 @@ msgid "Update details"
 msgstr "Обнови детайлите"
 
 msgid "Update from Web software repository"
-msgstr ""
+msgstr "Актуализиране от уеб софтуер хранилище"
 
 msgid "Update from web depot"
-msgstr ""
+msgstr "Актуализиране от уеб депо"
 
 msgid "Update hosting plan"
-msgstr ""
+msgstr "Обновяване на хостинг план"
 
 msgid "Update in progress..."
 msgstr ""
@@ -5243,13 +5247,13 @@ msgid "Updates"
 msgstr ""
 
 msgid "Upload"
-msgstr "Закачка"
+msgstr "Закачи"
 
 msgid "Upload logo"
 msgstr "Качи лого"
 
 msgid "Upload now"
-msgstr ""
+msgstr "Качи сега"
 
 msgid "Uptime"
 msgstr ""
@@ -5267,7 +5271,7 @@ msgid "Use secure connection (SSL)"
 msgstr ""
 
 msgid "Use strong Passwords"
-msgstr ""
+msgstr "Използвайте по трудна парола "
 
 msgid "Used"
 msgstr "Използовано"
@@ -5294,7 +5298,7 @@ msgid "User data successfully updated."
 msgstr ""
 
 msgid "User data were not updated."
-msgstr ""
+msgstr "Потребителските данни не са променени."
 
 msgid "User data were successfully updated."
 msgstr ""
@@ -5305,7 +5309,7 @@ msgstr ""
 
 msgid ""
 "User does not exist or you do not have permission to access this interface"
-msgstr ""
+msgstr "Потребителя не съществува или няма разрешение за достъп до този интерфейс"
 
 msgid "User errors"
 msgstr ""
@@ -5329,7 +5333,7 @@ msgid "User real (first and last) name"
 msgstr "Настоящо Име и Фамилия на потребител"
 
 msgid "User scheduled for deletion."
-msgstr ""
+msgstr "Потребителят е маркиран за изтриване."
 
 msgid "User session successfully destroyed."
 msgstr ""
@@ -5344,7 +5348,7 @@ msgid "User type"
 msgstr "Тип потребител"
 
 msgid "User type (admin, reseller, user)"
-msgstr ""
+msgstr "Ниво на потребител (Администратор , риселър , потребител)"
 
 msgid "Username"
 msgstr "Потребител"
@@ -5373,13 +5377,13 @@ msgid ""
 msgstr ""
 
 msgid "Values"
-msgstr ""
+msgstr "Стойности"
 
 msgid "Vendor hompage"
 msgstr ""
 
 msgid "Version"
-msgstr ""
+msgstr "Версия "
 
 msgid "Very high"
 msgstr "Много висок"
@@ -5412,7 +5416,7 @@ msgid "Warning traffic"
 msgstr ""
 
 msgid "Warnings and Errors"
-msgstr ""
+msgstr "Предупреждения и Грешки"
 
 msgid ""
 "We are sorry, but the system is currently under maintenance.\n"
@@ -5435,7 +5439,7 @@ msgid "Web out"
 msgstr "Уеб-изход"
 
 msgid "Web software depot packages total"
-msgstr ""
+msgstr "Депо за всички уеб софтуерни пакети"
 
 msgid "Web software repository"
 msgstr ""
@@ -5453,7 +5457,7 @@ msgid "Web traffic"
 msgstr "Web трафик"
 
 msgid "Webmail"
-msgstr ""
+msgstr "Имейли"
 
 msgid "Webtools"
 msgstr "Уеб-инструменти"
@@ -5475,7 +5479,7 @@ msgstr ""
 
 #, php-format
 msgid "Wildcards such as %% and ? are not allowed."
-msgstr ""
+msgstr "Wildcards като%% и ? Не са позволени."
 
 msgid "Wrong IP address."
 msgstr ""
@@ -5487,16 +5491,16 @@ msgid "Wrong mail syntax in forward list."
 msgstr ""
 
 msgid "Wrong request."
-msgstr ""
+msgstr "Грешна заявка."
 
 msgid "Wrong reseller id."
-msgstr ""
+msgstr "Грешна Идентификация на Риселър "
 
 msgid "Wrong security code"
-msgstr ""
+msgstr "Грешен код за сигурност "
 
 msgid "Wrong software id."
-msgstr ""
+msgstr "Грешно ID на софтуера "
 
 msgid "Wrong syntax for new expire date."
 msgstr ""
@@ -5582,7 +5586,7 @@ msgid "You cannot delete a reseller that has customer accounts."
 msgstr ""
 
 msgid "You cannot delete the last active IP address."
-msgstr ""
+msgstr "Вие не можете да изтриете последния активен IP адрес."
 
 #, php-format
 msgid "You cannot forward %s on itself."
@@ -5602,7 +5606,7 @@ msgstr ""
 
 #, php-format
 msgid "You cannot remove the %s IP address."
-msgstr ""
+msgstr "Вие не можете да премахнете %s IP адрес."
 
 msgid "You cannot remove this entry."
 msgstr ""
@@ -5623,16 +5627,16 @@ msgid "You do not have any software uploaded yet"
 msgstr ""
 
 msgid "You do not have custom DNS records."
-msgstr ""
+msgstr "Вие нямате DNS записи."
 
 msgid "You do not have customers."
-msgstr ""
+msgstr "Вие нямате клиенти"
 
 msgid "You do not have databases."
 msgstr ""
 
 msgid "You do not have domain aliases."
-msgstr ""
+msgstr "Не е нужен псевдоним на домейни"
 
 msgid "You do not have permission to install software yet"
 msgstr ""
@@ -5641,10 +5645,10 @@ msgid "You do not have permissions to upload software"
 msgstr ""
 
 msgid "You do not have protected areas."
-msgstr ""
+msgstr "Вие не сте защитили тези зона."
 
 msgid "You do not have subdomains."
-msgstr ""
+msgstr "Вие нямате събдомейни."
 
 msgid "You do not have sufficient permissions to perform this operation."
 msgstr ""
@@ -5708,7 +5712,7 @@ msgid "You have no closed tickets."
 msgstr ""
 
 msgid "You have no groups."
-msgstr ""
+msgstr "Вие нямате групи."
 
 msgid "You have no open tickets."
 msgstr ""
@@ -5739,10 +5743,10 @@ msgid "You have received %s new support ticket(s)."
 msgstr ""
 
 msgid "You have to choose between file-upload and wget-function."
-msgstr ""
+msgstr "Вие трябва да изберете между качване  ма файл или wget функцията"
 
 msgid "You must assign at least one IP per reseller."
-msgstr ""
+msgstr "Трябва да дадете поне един IP един търговец."
 
 msgid "You must choose between local and remote upload."
 msgstr ""
@@ -5772,7 +5776,7 @@ msgid "You must select a file to upload."
 msgstr ""
 
 msgid "You must select a file to upload/download."
-msgstr ""
+msgstr "Трябва да изберете файл за качване/сваляне."
 
 msgid "You must select a least one item to deactivate."
 msgstr ""
@@ -5790,10 +5794,10 @@ msgid "You must select a plugin."
 msgstr ""
 
 msgid "You must specify a message."
-msgstr ""
+msgstr "Трябва да посочите съобщение."
 
 msgid "You must specify a subject."
-msgstr ""
+msgstr "Трябва да зададете въпрос."
 
 msgid "You need a Database for this software"
 msgstr ""
@@ -5806,7 +5810,7 @@ msgid "Your account has expired."
 msgstr ""
 
 msgid "Your account has expired. Please renew your subscription."
-msgstr ""
+msgstr "Вашия акаунт  е изтекъл. Моля подновете абонамента си."
 
 msgid ""
 "Your account is currently in maintenance or disabled. Please, contact your "
@@ -5865,7 +5869,7 @@ msgid "[Ticket]"
 msgstr ""
 
 msgid "_: Localised language"
-msgstr "български език - Bulgarian"
+msgstr "Български език - Bulgarian"
 
 msgid "activated"
 msgstr ""
@@ -5877,10 +5881,10 @@ msgid "and"
 msgstr ""
 
 msgid "day"
-msgstr ""
+msgstr "Ден"
 
 msgid "days"
-msgstr ""
+msgstr "Дни"
 
 msgid "deleting"
 msgstr ""
@@ -5889,16 +5893,16 @@ msgid "disabled"
 msgstr ""
 
 msgid "disk space"
-msgstr ""
+msgstr "Дисково пространство"
 
 msgid "domain"
-msgstr ""
+msgstr "Домейн"
 
 msgid "domain alias"
 msgstr ""
 
 msgid "domain aliases"
-msgstr ""
+msgstr "псевдоними на домейни"
 
 msgid "domains"
 msgstr ""
@@ -5920,7 +5924,7 @@ msgid "everything"
 msgstr "всичко"
 
 msgid "from other browser"
-msgstr ""
+msgstr "От друг браузър"
 
 #, php-format
 msgid ""
@@ -5929,13 +5933,13 @@ msgid ""
 msgstr ""
 
 msgid "i-MSCP - Application Management (Permissions)"
-msgstr ""
+msgstr "i-MSCP - Заявление за управление (позволение)"
 
 msgid "i-MSCP - Client/Create CatchAll Mail Account"
-msgstr "i-MSCP - Клиент/Создат CatchAll пощенска кутия"
+msgstr "i-MSCP - Клиент/Създай CatchAll пощенска кутия"
 
 msgid "i-MSCP - Multi Server Control Panel / Login"
-msgstr ""
+msgstr "Вход към i-MSCP "
 
 msgid "i-MSCP - Multi Server Control Panel / Lost Password"
 msgstr ""
@@ -5974,7 +5978,7 @@ msgid "i-MSCP plugin store"
 msgstr ""
 
 msgid "i-MSCP updates"
-msgstr "Обновявания i-MSCP"
+msgstr "Обновяване на i-MSCP"
 
 msgid "installed"
 msgstr ""
@@ -5983,7 +5987,7 @@ msgid "installing"
 msgstr ""
 
 msgid "internet Multi Server Control Panel"
-msgstr ""
+msgstr "Интернет Разнообразен Контролен Панел"
 
 msgid "kB"
 msgstr ""
@@ -5995,16 +5999,16 @@ msgid "mail"
 msgstr ""
 
 msgid "missing alias"
-msgstr ""
+msgstr "Липсва Алиас"
 
 msgid "missing domain"
-msgstr ""
+msgstr "Липсва Домейн"
 
 msgid "no"
 msgstr "не"
 
 msgid "not available"
-msgstr ""
+msgstr "Не е налично"
 
 msgid "not required"
 msgstr ""
@@ -6016,7 +6020,7 @@ msgid "older than 12 months"
 msgstr "по-стари от година"
 
 msgid "older than 2 weeks"
-msgstr "по-старо от 2 седмици"
+msgstr "по-стари от 2 седмици"
 
 msgid "older than 3 months"
 msgstr "по-старо от 3 месеца"
@@ -6047,13 +6051,13 @@ msgid "subdomain"
 msgstr ""
 
 msgid "subdomains"
-msgstr ""
+msgstr "Поддомейнни"
 
 msgid "tcp"
 msgstr ""
 
 msgid "traffic"
-msgstr ""
+msgstr "Трафик"
 
 msgid "udp"
 msgstr ""

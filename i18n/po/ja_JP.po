@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2014-02-17 00:44+0100\n"
-"PO-Revision-Date: 2014-02-16 23:45+0000\n"
+"POT-Creation-Date: 2014-02-27 13:52+0100\n"
+"PO-Revision-Date: 2014-02-27 12:54+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Japanese (Japan) (http://www.transifex.com/projects/p/i-MSCP/language/ja_JP/)\n"
 "MIME-Version: 1.0\n"
@@ -2538,7 +2538,7 @@ msgid "Get a new image"
 msgstr "新しいイメージを取得"
 
 msgid "Get it on"
-msgstr ""
+msgstr "始め"
 
 msgid "GiB"
 msgstr "GiB"
@@ -3437,11 +3437,8 @@ msgstr "0〜65535の範囲の数値だけが許可されます。"
 msgid "Only positive numbers are allowed."
 msgstr "正の数値のみが許可されます。"
 
-msgid "Only tar.gz, tar.bz2 and zip archives are accepted"
-msgstr "tar.gz形式、tar.bz2形式とzipアーカイブのみが受け付けます"
-
-msgid "Only tar.gz, tar.bz2 and zip archives are supported."
-msgstr "tar.gz、tar.bz2、そしてzipアーカイブのみがサポートされています。"
+msgid "Only tar.gz, tar.bz2 and zip archives are accepted."
+msgstr ""
 
 msgid "Open ticket"
 msgstr "未解決のチケット"
@@ -3805,6 +3802,12 @@ msgid "Plugin %s successfully updated."
 msgstr "プラグイン %s は更新されました。"
 
 #, php-format
+msgid ""
+"Plugin Manager: Downgrade of plugin is not supported. You must update the %s"
+" plugin."
+msgstr ""
+
+#, php-format
 msgid "Plugin Manager: Unable to activate the %s plugin: %s"
 msgstr "プラグインマネージャ：%sのプラグインを有効にできません：%s"
 
@@ -3919,7 +3922,7 @@ msgid "Process update"
 msgstr "プロセス更新"
 
 msgid "Processing..."
-msgstr ""
+msgstr "処理中..."
 
 msgid "Processor data"
 msgstr "プロセッサデータ"
@@ -4245,7 +4248,7 @@ msgid "SQL database limit is disabled but SQL user limit is not."
 msgstr "SQLデータベース制限が無効になったが、SQLユーザに制限はない。"
 
 msgid "SQL database limit is disabled."
-msgstr ""
+msgstr "SQLデータベース制限が無効です。"
 
 msgid "SQL database limit is not <i>disabled</i>."
 msgstr "SQLデータベースの制限が<i>無効</i>になっていません。"
@@ -4278,7 +4281,7 @@ msgid "SQL user limit is disabled but SQL database limit is not."
 msgstr "SQLユーザの制限が無効になりますが、SQLデータベース制限はない。"
 
 msgid "SQL user limit is disabled."
-msgstr ""
+msgstr "SQLユーザ制限が無効です。"
 
 msgid "SQL user limit reached."
 msgstr "SQLユーザの制限に達しました。"
@@ -4814,7 +4817,7 @@ msgstr "顧客のための %s 制限は、サービスのために制限され�
 
 #, php-format
 msgid "The %s translation file has been ignored: Translation table is empty."
-msgstr ""
+msgstr " %sの翻訳ファイルは無視されました：変換テーブルは空です。"
 
 msgid "The IP address you're trying to remove is assigned to a reseller."
 msgstr "削除しようとしているIPアドレスは、代理店に割り当てられています。"

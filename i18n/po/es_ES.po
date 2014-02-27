@@ -15,8 +15,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2014-02-17 00:44+0100\n"
-"PO-Revision-Date: 2014-02-16 23:45+0000\n"
+"POT-Creation-Date: 2014-02-27 13:52+0100\n"
+"PO-Revision-Date: 2014-02-27 12:54+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Spanish (Spain) (http://www.transifex.com/projects/p/i-MSCP/language/es_ES/)\n"
 "MIME-Version: 1.0\n"
@@ -3442,11 +3442,8 @@ msgstr "Sólo se permiten números en el rango entre 0 y 65535."
 msgid "Only positive numbers are allowed."
 msgstr "Solo se admiten números positivos."
 
-msgid "Only tar.gz, tar.bz2 and zip archives are accepted"
-msgstr "Sólo tar.gz, tar.bz2 y archivos zip son aceptados"
-
-msgid "Only tar.gz, tar.bz2 and zip archives are supported."
-msgstr "Sólo tar.gz, tar.bz2 y archivos zip son compatibles."
+msgid "Only tar.gz, tar.bz2 and zip archives are accepted."
+msgstr ""
 
 msgid "Open ticket"
 msgstr "Abrir tiquet"
@@ -3808,6 +3805,12 @@ msgstr "Plugin %s desinstalado correctamente."
 #, php-format
 msgid "Plugin %s successfully updated."
 msgstr "El plugin %s se actualizó correctamente."
+
+#, php-format
+msgid ""
+"Plugin Manager: Downgrade of plugin is not supported. You must update the %s"
+" plugin."
+msgstr ""
 
 #, php-format
 msgid "Plugin Manager: Unable to activate the %s plugin: %s"

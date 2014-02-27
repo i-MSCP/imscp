@@ -21,6 +21,7 @@
 # Alex H <paderwan@googlemail.com>, 2012
 # Pascal Küppers <>, 2012
 # MuhKuh <peter@obanax.ch>, 2013
+# mrpink, 2014
 # design <schlanki_26@web.de>, 2011
 # kreilinger <strauss3@gmx.at>, 2011
 # Tango <tango-net@freenet.de>, 2011
@@ -33,8 +34,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2014-02-17 00:44+0100\n"
-"PO-Revision-Date: 2014-02-16 23:45+0000\n"
+"POT-Creation-Date: 2014-02-27 13:52+0100\n"
+"PO-Revision-Date: 2014-02-27 12:54+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: German (Germany) (http://www.transifex.com/projects/p/i-MSCP/language/de_DE/)\n"
 "MIME-Version: 1.0\n"
@@ -137,7 +138,7 @@ msgid ""
 "(Same username and password than above)\n"
 "\n"
 "Thank you for using our services.\n"
-msgstr ""
+msgstr "\nHallo {NAME},\n\nEs wurde ein neuer Account für Sie eingerichtet.\n\nIhre Account Daten:\n\nBenutzer Typ: {USERTYPE}\nBenutzername: {USERNAME}\nPasswort: {PASSWORD}\n\nBitte ändern Sie ihr Passwort regelmäßig und nach dem ersten Login.\n\nSie können sich unter {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST} einloggen.\n\nStatistiken: http://{USERNAME}/{WEBSTATS_RPATH}\n(Gleiche Account Daten wie oben)\n\nDanke, dass Sie unseren Service nutzen.\n"
 
 msgid ""
 "\n"
@@ -156,7 +157,7 @@ msgid ""
 "You can login right now at {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}\n"
 "\n"
 "Thank you for using our services.\n"
-msgstr ""
+msgstr "\nHallo {NAME},\n\nEs wurde ein neuer Account für Sie eingerichtet.\n\nIhre Account Daten:\n\nBenutzer Typ: {USERTYPE}\nBenutzername: {USERNAME}\nPasswort: {PASSWORD}\n\nBitte ändern Sie ihr Passwort regelmäßig und nach dem ersten Login.\n\nSie können sich unter {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST} einloggen.\n\nDanke, dass Sie unseren Service nutzen.\n"
 
 msgid " Admin / Support / Open Tickets"
 msgstr " Admin / Support / Offene Tickets"
@@ -2561,7 +2562,7 @@ msgid "Get a new image"
 msgstr "Hole neues Bild"
 
 msgid "Get it on"
-msgstr ""
+msgstr "Download von"
 
 msgid "GiB"
 msgstr "GiB"
@@ -2675,7 +2676,7 @@ msgid "IP address"
 msgstr "IP-Adresse"
 
 msgid "IP address already under the control of i-MSCP."
-msgstr ""
+msgstr "IP-Adresse bereits unter der Kontrolle von i-MSCP."
 
 msgid "IP address data"
 msgstr "IP-Adressdaten"
@@ -2684,13 +2685,13 @@ msgid "IP address field is empty or invalid."
 msgstr "IP-Adressfeld ist leer oder fehlerhaft."
 
 msgid "IP address successfully scheduled for addition."
-msgstr ""
+msgstr "IP-Adresse erfolgreich zum Hinzufügen vorgemerkt."
 
 msgid "IP address successfully scheduled for deletion."
 msgstr "IP-Adresse erfolgreich zum Löschen vorgemerkt."
 
 msgid "IP addresses under control of i-MSCP"
-msgstr ""
+msgstr "IP-Adresse unter der Kontrolle von i-MSCP."
 
 msgid "IP management"
 msgstr "IP Verwaltung"
@@ -3460,11 +3461,8 @@ msgstr "Es sind nur Zahlen im Bereich von 0 bis 65535 erlaubt."
 msgid "Only positive numbers are allowed."
 msgstr "Nur positive Zahlen sind erlaubt."
 
-msgid "Only tar.gz, tar.bz2 and zip archives are accepted"
-msgstr "Nur tar.gz, tar.bz2 und zip Archive werden akzeptiert"
-
-msgid "Only tar.gz, tar.bz2 and zip archives are supported."
-msgstr "Nur tar.gz, tar.bz2 und zip Archive werden unterstützt."
+msgid "Only tar.gz, tar.bz2 and zip archives are accepted."
+msgstr ""
 
 msgid "Open ticket"
 msgstr "Offenes Ticket"
@@ -3828,6 +3826,12 @@ msgid "Plugin %s successfully updated."
 msgstr "Plugin %s erfolgreich aktualisiert."
 
 #, php-format
+msgid ""
+"Plugin Manager: Downgrade of plugin is not supported. You must update the %s"
+" plugin."
+msgstr ""
+
+#, php-format
 msgid "Plugin Manager: Unable to activate the %s plugin: %s"
 msgstr "Plugin Manager: Unmöglich %s Plugin zu aktivieren: %s"
 
@@ -3855,7 +3859,7 @@ msgstr "Plugin Manager: Unmöglich %s Plugin zu installieren: %s"
 
 #, php-format
 msgid "Plugin Manager: Unable to load plugin %s"
-msgstr ""
+msgstr "Plugin Manager: Konnte das Plugin %s nicht laden."
 
 #, php-format
 msgid "Plugin Manager: Unable to protect the %s plugin: %s"
@@ -3871,7 +3875,7 @@ msgstr "Plugin Manager: Unmöglich %s Plugin zu aktualisieren: %s"
 
 #, php-format
 msgid "Plugin Manager: Unable to write the %s file for protected plugins."
-msgstr ""
+msgstr "Plugin Manager: Schreiben der %s Datei für geschützte Plugins nicht möglich."
 
 msgid "Plugin archive"
 msgstr "Plugin-Archiv"
@@ -3942,7 +3946,7 @@ msgid "Process update"
 msgstr "Update ausführen"
 
 msgid "Processing..."
-msgstr ""
+msgstr "Verarbeitung..."
 
 msgid "Processor data"
 msgstr "Prozessor Daten"
@@ -4268,7 +4272,7 @@ msgid "SQL database limit is disabled but SQL user limit is not."
 msgstr "Das SQL Datenbanklimit ist deaktiviert, aber das SQL Benutzerlimit ist es nicht."
 
 msgid "SQL database limit is disabled."
-msgstr ""
+msgstr "SQL Datenbanken Limit ist deaktiviert."
 
 msgid "SQL database limit is not <i>disabled</i>."
 msgstr "SQL Datenbank Limit ist nicht <i>deaktiviert</i>."
@@ -4301,7 +4305,7 @@ msgid "SQL user limit is disabled but SQL database limit is not."
 msgstr "Das SQL Benutzerlimit ist deaktiviert, aber das SQL Datenbanklimit ist es nicht."
 
 msgid "SQL user limit is disabled."
-msgstr ""
+msgstr "SQL Benutzer Limit ist deaktiviert."
 
 msgid "SQL user limit reached."
 msgstr "SQL Benutzer Limit erreicht."
@@ -4837,7 +4841,7 @@ msgstr "Das %s Limit für diesen Kunden kann nicht \"unbegrenzt\" sein, denn Sie
 
 #, php-format
 msgid "The %s translation file has been ignored: Translation table is empty."
-msgstr ""
+msgstr "Die Übersetzungsdatei %s wurde ignoriert: Übersetzungstabelle ist leer."
 
 msgid "The IP address you're trying to remove is assigned to a reseller."
 msgstr "Die IP-Adresse die Sie löschen möchten, ist einem Reseller zugewiesen."
@@ -4957,7 +4961,7 @@ msgid ""
 " and will be available for assignment to one or many of your resellers. If "
 "an IP address is not already configured on the system, it will be attached "
 "to the selected network interface."
-msgstr ""
+msgstr "IP-Adressen können über diese Schnittstelle hinzugefügt oder entfernt werden. Unten aufgeführte IP-Adressen sind bereits unter der Kontrolle von i-MSCP. Über diese Schnittstelle hinzugefügte IP-Adressen werden automatisch in die i-MSCP Datenbank eingetragen und stehen für die Zuordnung einem oder mehreren Ihrer Reseller zur Verfügung. Wenn eine IP-Adresse nicht bereits im System konfiguriert ist, wird sie der ausgewählten Netzwerkschnittstelle hinzugefügt."
 
 msgid "This package already exists in the administrator software repository."
 msgstr "Das Paket existiert berreits im Administrator Software-Repository."
@@ -5108,7 +5112,7 @@ msgid "Unable to extract plugin archive: %s"
 msgstr "Entpacken des Plugin-Archives %s unmöglich."
 
 msgid "Unable to find any network interface. You cannot add new IP address."
-msgstr ""
+msgstr "Kann keine Netzwerkkarten finden. Sie können keine neue IP-Adresse hinzufügen."
 
 msgid "Unable to find plugin root directory."
 msgstr "Plugin-Wurzelverzeichnis konnte nicht gefunden werden."

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.1.1\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2014-02-17 00:44+0100\n"
+"POT-Creation-Date: 2014-02-27 13:52+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -3433,10 +3433,7 @@ msgstr ""
 msgid "Only positive numbers are allowed."
 msgstr ""
 
-msgid "Only tar.gz, tar.bz2 and zip archives are accepted"
-msgstr ""
-
-msgid "Only tar.gz, tar.bz2 and zip archives are supported."
+msgid "Only tar.gz, tar.bz2 and zip archives are accepted."
 msgstr ""
 
 msgid "Open ticket"
@@ -3798,6 +3795,12 @@ msgstr ""
 
 #, php-format
 msgid "Plugin %s successfully updated."
+msgstr ""
+
+#, php-format
+msgid ""
+"Plugin Manager: Downgrade of plugin is not supported. You must update the %s "
+"plugin."
 msgstr ""
 
 #, php-format
