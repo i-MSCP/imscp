@@ -4,7 +4,7 @@
             <apache_fcgid>
                 <package>apache2</package>
                 <package>apache2-mpm-worker</package>
-                <package>apache2-suexec</package>
+                <package>apache2-suexec-custom</package>
                 <package>libapache2-mod-fcgid</package>
                 <package>php5-cgi</package>
             </apache_fcgid>
@@ -15,7 +15,7 @@
             </apache_itk>
             <apache_php_fpm>
                 <package>apache2</package>
-                <package>apache2-suexec</package>
+                <package>apache2-suexec-custom</package>
                 <package>apache2-mpm-worker</package>
                 <package>libapache2-mod-fastcgi</package>
                 <package>php5-fpm</package>

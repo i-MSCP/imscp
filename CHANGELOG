@@ -5,6 +5,9 @@
 Git stable
 ------------------------------------------------------------------------------------------------------------------------
 
+CONFIGS:
+	- Replaced: apache2-suexec/apache2-suexec-pristine packages by apache2-suexec-custom package
+
 ENGINE:
 	- Fixed: Old passwords are still working even when they are updated (courier-authdaemon)
 
