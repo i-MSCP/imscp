@@ -485,7 +485,7 @@ sub _buildConf
 	$rs = $self->_buildSslConfFiles();
 	return $rs if $rs;
 
-	my $cfg = {
+	my $data = {
 		DATABASE_HOST => $main::imscpConfig{'DATABASE_HOST'},
 		DATABASE_PORT => $main::imscpConfig{'DATABASE_PORT'},
 		DATABASE_USER => $self->{'config'}->{'DATABASE_USER'},
@@ -513,13 +513,13 @@ sub _buildConf
 	);
 
 	for (keys %cfgFiles) {
-		# Get configuration template content
+		# Loat template
 
 		my $cfgTpl;
-		my $rs = $self->{'hooksManager'}->trigger('onLoadTemplate', 'courier', $_, \$cfgTpl, {});
+		my $rs = $self->{'hooksManager'}->trigger('onLoadTemplate', 'courier', $_, \$cfgTpl, $data);
 		return $rs if $rs;
 
-		if(!$cfgTpl) {
+		unless(defined $cfgTpl) {
 			$cfgTpl= iMSCP::File->new('filename' => "$self->{'cfgDir'}/$_")->get();
 			unless(defined $cfgTpl) {
 				error("Unable to read $self->{'cfgDir'}/$_");
@@ -527,19 +527,20 @@ sub _buildConf
 			}
 		}
 
+		# Build file
+
 		$rs = $self->{'hooksManager'}->trigger('beforePoBuildConf', \$cfgTpl, $_);
 		return $rs if $rs;
 
-		# Replace placeholders
-		$cfgTpl = process($cfg, $cfgTpl);
+		$cfgTpl = process($data, $cfgTpl);
 
 		$rs = $self->{'hooksManager'}->trigger('afterPoBuildConf', \$cfgTpl, $_);
 		return $rs if $rs;
 
-		# Retrieve filename
+		# Store file
+
 		my $filename = fileparse($cfgFiles{$_}->[0]);
 
-		# Store file in working directory
 		my $file = iMSCP::File->new('filename' => "$self->{'wrkDir'}/$filename");
 
 		$rs = $file->set($cfgTpl);
@@ -554,7 +555,6 @@ sub _buildConf
 		$rs = $file->owner($cfgFiles{$_}->[1], $cfgFiles{$_}->[2]);
 		return $rs if $rs;
 
-		# Install file in production directory
 		$rs = $file->copyFile($cfgFiles{$_}->[0]);
 		return $rs if $rs;
 	}
@@ -572,12 +572,13 @@ sub _buildAuthdaemonrcFile
 {
 	my $self = $_[0];
 
+	# Load template
+
 	my $cfgTpl;
 	my $rs = $self->{'hooksManager'}->trigger('onLoadTemplate', 'courier', 'authdaemonrc', \$cfgTpl, {});
 	return $rs if $rs;
 
-	if(!$cfgTpl) {
-		# Loading the system file from /etc/imscp/backup
+	unless(defined $cfgTpl) {
 		$cfgTpl = iMSCP::File->new('filename' => "$self->{'bkpDir'}/authdaemonrc.system")->get();
 		unless (defined $cfgTpl) {
 			error("Unable to read $self->{'bkpDir'}/authdaemonrc.system file");
@@ -585,20 +586,18 @@ sub _buildAuthdaemonrcFile
 		}
 	}
 
+	# Build file
+
 	$rs = $self->{'hooksManager'}->trigger('beforePoBuildAuthdaemonrcFile', \$cfgTpl, 'authdaemonrc');
 	return $rs if $rs;
-
-	# Building new file (Adding the authmysql module if needed)
-	#if($cfgTpl !~ /^\s*authmodulelist="(?:.*)?authmysql.*"$/gm) {
-	#	$cfgTpl =~ s/(authmodulelist=")/$1authmysql /gm;
-	#}
 
 	$cfgTpl =~ s/authmodulelist=".*"/authmodulelist="authmysql authpam"/;
 
 	$rs = $self->{'hooksManager'}->trigger('afterPoBuildAuthdaemonrcFile', \$cfgTpl, 'authdaemonrc');
 	return $rs if $rs;
 
-	# Storing new file in the working directory
+	# Store file
+
 	my $file = iMSCP::File->new('filename' => "$self->{'wrkDir'}/authdaemonrc");
 
 	$rs = $file->set($cfgTpl);
@@ -613,7 +612,6 @@ sub _buildAuthdaemonrcFile
 	$rs = $file->owner($self->{'config'}->{'AUTHDAEMON_USER'}, $self->{'config'}->{'AUTHDAEMON_GROUP'});
 	return $rs if $rs;
 
-	# Installing the new file in the production directory
 	$file->copyFile("$self->{'config'}->{'AUTHLIB_CONF_DIR'}");
 }
 
@@ -644,14 +642,13 @@ sub _buildSslConfFiles
 
 	if($main::imscpConfig{'SSL_ENABLED'} eq 'yes') {
 		for ($self->{'config'}->{'COURIER_IMAP_SSL'}, $self->{'config'}->{'COURIER_POP_SSL'}) {
-			my $rs = $self->{'hooksManager'}->trigger('beforePoBuildSslConfFiles', $_);
-			return $rs if $rs;
+			# Load template
 
 			my $cfgTpl;
-			$rs = $self->{'hooksManager'}->trigger('onLoadTemplate', 'courier', 'authdaemonrc', \$cfgTpl, {});
+			my $rs = $self->{'hooksManager'}->trigger('onLoadTemplate', 'courier', 'authdaemonrc', \$cfgTpl, {});
 			return $rs if $rs;
 
-			if(!$cfgTpl) {
+			unless(defined $cfgTpl) {
 				$cfgTpl = iMSCP::File->new('filename' => "$self->{'config'}->{'AUTHLIB_CONF_DIR'}/$_")->get();
 				unless (defined $cfgTpl) {
 					error("Unable to read $self->{'config'}->{'AUTHLIB_CONF_DIR'}/$_ file");
@@ -659,13 +656,22 @@ sub _buildSslConfFiles
 				}
 			}
 
+			# Build file
+
+			$rs = $self->{'hooksManager'}->trigger('beforePoBuildSslConfFile', \$cfgTpl, $_);
+			return $rs if $rs;
+
 			if($cfgTpl =~ m/^TLS_CERTFILE=/msg) {
 				$cfgTpl =~ s!^TLS_CERTFILE=.*$!TLS_CERTFILE=$main::imscpConfig{'GUI_CERT_DIR'}/$main::imscpConfig{'SERVER_HOSTNAME'}.pem!gm;
 			} else {
 				$cfgTpl .= "TLS_CERTFILE=$main::imscpConfig{'GUI_CERT_DIR'}/$main::imscpConfig{'SERVER_HOSTNAME'}.pem";
 			}
 
-			# Store file in working directory
+			$rs = $self->{'hooksManager'}->trigger('afterPoBuildSslConfFile', \$cfgTpl, $_);
+			return $rs if $rs;
+
+			# Store file
+
 			my $file = iMSCP::File->new('filename' => "$self->{'wrkDir'}/$_");
 
 			$rs = $file->set($cfgTpl);
@@ -680,11 +686,7 @@ sub _buildSslConfFiles
 			$rs = $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
 			return $rs if $rs;
 
-			# Install file in production directory
 			$rs = $file->copyFile("$self->{'config'}->{'AUTHLIB_CONF_DIR'}");
-			return $rs if $rs;
-
-			$rs = $self->{'hooksManager'}->trigger('afterPoBuildSslConfFiles', $_);
 			return $rs if $rs;
 		}
 	}

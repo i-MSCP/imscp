@@ -261,8 +261,6 @@ sub _createGlobalAwstatsVhost
 {
 	my $self = $_[0];
 
-	my $rs = 0;
-
 	my $apache24 = (qv("v$self->{'httpd'}->{'config'}->{'APACHE_VERSION'}") >= qv('v2.4.0'));
 
 	$self->{'httpd'}->setData(
@@ -275,7 +273,7 @@ sub _createGlobalAwstatsVhost
 		}
 	);
 
-	$rs = $self->{'httpd'}->buildConfFile(
+	my $rs = $self->{'httpd'}->buildConfFile(
 		"$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Addons/Webstats/Awstats/Config/01_awstats.conf", {}
 	);
 	return $rs if $rs;

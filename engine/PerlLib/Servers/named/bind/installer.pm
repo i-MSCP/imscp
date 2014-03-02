@@ -426,15 +426,15 @@ sub _buildConf
 		# Handle case where the file is not provided by specfic distribution
 		next unless defined $self->{'config'}->{$_} && $self->{'config'}->{$_} ne '';
 
-		# Retrieving file basename
 		my $filename = fileparse($self->{'config'}->{$_});
+
+		# Load template
 
 		my $cfgTpl;
 		my $rs = $self->{'hooksManager'}->trigger('onLoadTemplate', 'bind', $filename, \$cfgTpl, {});
 		return $rs if $rs;
 
-		if(!$cfgTpl) {
-			# Loading the template file
+		unless(defined $cfgTpl) {
 			$cfgTpl = iMSCP::File->new('filename' => "$self->{'cfgDir'}/$filename")->get();
 			unless(defined $cfgTpl) {
 				error("Unable to read $self->{'cfgDir'}/$filename");
@@ -442,27 +442,34 @@ sub _buildConf
 			}
 		}
 
+		# Build file
+
 		$rs = $self->{'hooksManager'}->trigger('beforeNamedBuildConf', \$cfgTpl, $filename);
 		return $rs if $rs;
 
 		if($_ eq 'BIND_CONF_FILE' && ! -f "$self->{'config'}->{'BIND_CONF_DIR'}/bind.keys") {
 			$cfgTpl =~ s%include "$self->{'config'}->{'BIND_CONF_DIR'}/bind.keys";\n%%;
 		} elsif($_ eq 'BIND_OPTIONS_CONF_FILE') {
-			$cfgTpl =~ s/listen-on-v6 { any; };/listen-on-v6 { none; };/
-				unless $self->{'config'}->{'BIND_IPV6'} eq 'yes';
+			$cfgTpl =~ s/listen-on-v6 { any; };/listen-on-v6 { none; };/ if $self->{'config'}->{'BIND_IPV6'} eq 'no';
 
-			if(
-				defined($self->{'config'}->{'BIND_CONF_DEFAULT_FILE'}) &&
-				-f $self->{'config'}->{'BIND_CONF_DEFAULT_FILE'}
-			) {
+			if($self->{'config'}->{'BIND_CONF_DEFAULT_FILE'} && -f $self->{'config'}->{'BIND_CONF_DEFAULT_FILE'}) {
 				my $filename = fileparse($self->{'config'}->{'BIND_CONF_DEFAULT_FILE'});
-				my $file = iMSCP::File->new('filename' => $self->{'config'}->{'BIND_CONF_DEFAULT_FILE'});
 
-				my $fileContent = $file->get();
+				# Load template
+
+				my $fileContent;
+				my $rs = $self->{'hooksManager'}->trigger('onLoadTemplate', 'bind', $filename, \$fileContent, {});
+				return $rs if $rs;
+
 				unless(defined $fileContent) {
-					error("Unable to read $self->{'config'}->{'BIND_CONF_DEFAULT_FILE'}");
-					return 1;
+					$fileContent = iMSCP::File->new('filename' => $self->{'config'}->{'BIND_CONF_DEFAULT_FILE'})->get();
+					unless(defined $fileContent) {
+						error("Unable to read $self->{'config'}->{'BIND_CONF_DEFAULT_FILE'}");
+						return 1;
+					}
 				}
+
+				# Build file
 
 				$rs = $self->{'hooksManager'}->trigger('beforeNamedBuildConf', \$fileContent, $filename);
 				return $rs if $rs;
@@ -473,8 +480,9 @@ sub _buildConf
 				$rs = $self->{'hooksManager'}->trigger('afterNamedBuildConf', \$fileContent, $filename);
 				return $rs if $rs;
 
-				# Storing new file in working directory
-				$file = iMSCP::File->new('filename' => "$self->{'wrkDir'}/$filename");
+				# Store file
+
+				my $file = iMSCP::File->new('filename' => "$self->{'wrkDir'}/$filename");
 
 				$rs = $file->set($fileContent);
 				return $rs if $rs;
@@ -488,7 +496,6 @@ sub _buildConf
 				$rs = $file->mode(0644);
 				return $rs if $rs;
 
-				# Installing new file in production directory
 				$rs = $file->copyFile($self->{'config'}->{'BIND_CONF_DEFAULT_FILE'});
 				return $rs if $rs;
 			}
@@ -497,7 +504,8 @@ sub _buildConf
 		$rs = $self->{'hooksManager'}->trigger('afterNamedBuildConf', \$cfgTpl, $filename);
 		return $rs if $rs;
 
-		# Storing new file in working directory
+		# Store file
+
 		my $file = iMSCP::File->new('filename' => "$self->{'wrkDir'}/$filename");
 
 		$rs = $file->set($cfgTpl);
@@ -512,7 +520,6 @@ sub _buildConf
 		$rs = $file->mode(0644);
 		return $rs if $rs;
 
-		# Installing new file in production directory
 		$rs = $file->copyFile($self->{'config'}->{$_});
 		return $rs if $rs;
 	}

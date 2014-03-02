@@ -37,6 +37,7 @@ use warnings;
 no if $] >= 5.017011, warnings => 'experimental::smartmatch';
 
 use iMSCP::Debug;
+use iMSCP::HooksManager;
 use iMSCP::TemplateParser;
 use iMSCP::Addons::ComposerInstaller;
 use iMSCP::Execute;
@@ -47,7 +48,7 @@ use File::Basename;
 use JSON;
 use parent 'Common::SingletonClass';
 
-our $VERSION = '0.3.0';
+our $VERSION = '0.4.0';
 
 =head1 DESCRIPTION
 
@@ -188,10 +189,6 @@ sub install
 	$rs = $self->_setupDatabase();
 	return $rs if $rs;
 
-	# Generate Roundcube DES key
-	$rs = $self->_generateDESKey();
-	return $rs if $rs;
-
 	# Build new Roundcube configuration files
 	$rs = $self->_buildConfig();
 	return $rs if $rs;
@@ -253,6 +250,7 @@ sub _init
 	my $self = $_[0];
 
 	$self->{'roundcube'} = Addons::Roundcube->getInstance();
+	$self->{'hooksManager'} = iMSCP::HooksManager->getInstance();
 
 	$self->{'cfgDir'} = $self->{'roundcube'}->{'cfgDir'};
 	$self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
@@ -356,8 +354,7 @@ sub _setupDatabase
 	my $self = $_[0];
 
 	my $roundcubeDir = "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/webmail";
-	my $imscpDbName = $main::imscpConfig{'DATABASE_NAME'};
-	my $roundcubeDbName = $imscpDbName . '_roundcube';
+	my $roundcubeDbName =  $main::imscpConfig{'DATABASE_NAME'} . '_roundcube';
 
 	my $dbUser = $self->{'config'}->{'DATABASE_USER'};
 	my $dbUserHost = main::setupGetQuestion('DATABASE_USER_HOST');
@@ -430,17 +427,6 @@ sub _setupDatabase
 		return 1;
 	}
 
-	# Needed for password changer plugin
-	$rs = $db->doQuery(
-		'dummy',
-		"GRANT SELECT,UPDATE ON `$imscpDbName`.`mail_users` TO ?@? IDENTIFIED BY ?;",
-		$dbUser, $dbUserHost, $dbPass
-	);
-	unless(ref $rs eq 'HASH') {
-		error("Unable to add privileges: $rs");
-		return 1;
-	}
-
 	0;
 }
 
@@ -448,7 +434,7 @@ sub _setupDatabase
 
  Generate DES key for Roundcube
 
- Return int 0
+ Return string DES key
 
 =cut
 
@@ -457,9 +443,7 @@ sub _generateDESKey
 	my $desKey = '';
 	$desKey .= ('A'..'Z', 'a'..'z', '0'..'9', '_', '+', '-', '^', '=', '*', '{', '}', '~')[rand(70)] for 1..24;
 
-	$_[0]->{'config'}->{'DES_KEY'} = $desKey;
-
-	0;
+	$desKey;
 }
 
 =item _buildConfig()
@@ -477,46 +461,51 @@ sub _buildConfig
 	my $panelUName =
 	my $panelGName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} . $main::imscpConfig{'SYSTEM_USER_MIN_UID'};
 	my $confDir = "$main::imscpConfig{'GUI_PUBLIC_DIR'}/$self->{'config'}->{'ROUNDCUBE_CONF_DIR'}";
-	my $imscpDbName = $main::imscpConfig{'DATABASE_NAME'};
-	my $roundcubeDbName = $imscpDbName . '_roundcube';
+	my $roundcubeDbName =  $main::imscpConfig{'DATABASE_NAME'} . '_roundcube';
 	my $dbUser = $self->{'config'}->{'DATABASE_USER'};
 	my $dbHost = main::setupGetQuestion('DATABASE_HOST');
 	my $dbPass = $self->{'config'}->{'DATABASE_PASSWORD'};
 	my $rs = 0;
 
-	my $cfg = {
+	# Define data
+
+	my $data = {
 		BASE_SERVER_VHOST => $main::imscpConfig{'BASE_SERVER_VHOST'},
+		DB_NAME => $roundcubeDbName,
 		DB_HOST => $dbHost,
 		DB_USER => $dbUser,
 		DB_PASS => $dbPass,
 		TMP_PATH => "$main::imscpConfig{'GUI_ROOT_DIR'}/data/tmp",
-		DES_KEY => $self->{'config'}->{'DES_KEY'},
+		DES_KEY => $self->_generateDESKey(),
 		PLUGINS => $self->{'config'}->{'PLUGINS'}
 	};
 
 	my $cfgFiles = {
 		'imscp.db.inc.php' => "$confDir/db.inc.php",
-		'imscp.main.inc.php' => "$confDir/main.inc.php",
-		'imscp.pw.changer.inc.php' => "$main::imscpConfig{'GUI_PUBLIC_DIR'}/$self->{'config'}->{'ROUNDCUBE_PWCHANGER_DIR'}/config.inc.php"
+		'imscp.main.inc.php' => "$confDir/main.inc.php"
 	};
 
 	for (keys %{$cfgFiles}) {
-		my $cfgTpl = iMSCP::File->new('filename' => "$confDir/$_")->get();
+		# Load template
+
+		my $cfgTpl;
+		$rs = $self->{'hooksManager'}->trigger('onLoadTemplate', 'roundcube', $_, \$cfgTpl, $data);
+		return $rs if $rs;
+
 		unless(defined $cfgTpl) {
-			error("Unable to read $confDir/$_");
-			return 1;
+			$cfgTpl = iMSCP::File->new('filename' => "$confDir/$_")->get();
+			unless(defined $cfgTpl) {
+				error("Unable to read file $confDir/$_");
+				return 1;
+			}
 		}
 
-		# The password changer plugin act on the i-MSCP database
-		$cfg->{'DB_NAME'} = ($_ eq 'imscp.pw.changer.inc.php') ? $imscpDbName : $roundcubeDbName;
+		# Build file
 
-		$cfgTpl = process($cfg, $cfgTpl);
-		unless(defined $cfgTpl) {
-			error("Unable to process template: $confDir/$_");
-			return 1;
-		}
+		$cfgTpl = process($data, $cfgTpl);
 
-		# Store new file in working directory
+		# Store file
+
 		my $file = iMSCP::File->new('filename' => "$self->{'wrkDir'}/$_");
 
 		$rs = $file->set($cfgTpl);
@@ -531,11 +520,9 @@ sub _buildConfig
 		$rs = $file->owner($panelUName, $panelGName);
 		return $rs if $rs;
 
-		# Install new file in production directory
 		$rs = $file->copyFile($cfgFiles->{$_});
 		return $rs if $rs;
 
-		# Remove template file from production directory
 		$rs = iMSCP::File->new('filename' => "$confDir/$_")->delFile();
 		return $rs if $rs;
 	}

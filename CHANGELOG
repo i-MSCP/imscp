@@ -5,6 +5,19 @@
 Git stable
 ------------------------------------------------------------------------------------------------------------------------
 
+ADDONS:
+	- Added: onLoadTemplate events
+	- Removed: PasswordChanger install part (Roundcube). This plugin will be part of the RoundcubePlugins plugin
+
+ENGINE
+	- Added: Missing onLoadTemplate events
+
+PLUGINS:
+	- Added: iMSCP_Plugin::migrateDb() method which allow to migrate plugin database schema
+	- Fixed: Plugin info not updated when the plugin is deactivated which prevent update to be triggered when needed
+	- Readded: Automatic triggering of the updatePluginList action after plugin upload
+	- Updated: Plugin API to version 0.2.7 (changes are backward compatible)
+
 Tickets:
 
 ------------------------------------------------------------------------------------------------------------------------

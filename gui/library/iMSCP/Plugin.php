@@ -42,7 +42,7 @@ abstract class iMSCP_Plugin
 	/**
 	 * @var array Plugin configuration parameters
 	 */
-	protected $_config = array();
+	protected $config = array();
 
 	/**
 	 * @var bool TRUE if plugin configuration is loaded, FALSE otherwise
@@ -78,6 +78,8 @@ abstract class iMSCP_Plugin
 	 *  __nversion__      : Contain the last available plugin version
 	 *  __installable__   : Tell the plugin manager whether or not the plugin is installable
 	 *  __uninstallable__ : Tell the plugin manager whether or not the plugin can be uninstalled
+	 * __need_change__    : Tell the plugin manager wheter or not the plugin need change
+	 * db_schema_version  : Contain the last applied plugin database migration
 	 *
 	 * @throws iMSCP_Plugin_Exception in case plugin info file cannot be read
 	 * @return array An array containing information about plugin
@@ -164,7 +166,7 @@ abstract class iMSCP_Plugin
 			$this->loadConfig();
 		}
 
-		return $this->_config;
+		return $this->config;
 	}
 
 	/**
@@ -175,7 +177,7 @@ abstract class iMSCP_Plugin
 	 */
 	final public function getConfigFromFile()
 	{
-		$pluginName =  $this->getName();
+		$pluginName = $this->getName();
 
 		$configFile = iMSCP_Registry::get('pluginManager')->getPluginDirectory() . "/$pluginName/config.php";
 		$config = array();
@@ -183,15 +185,15 @@ abstract class iMSCP_Plugin
 		if (@file_exists($configFile)) {
 			if (@is_readable($configFile)) {
 				$config = include $configFile;
-				$localConfigFile =  PERSISTENT_PATH . "/plugins/$pluginName.php";
+				$localConfigFile = PERSISTENT_PATH . "/plugins/$pluginName.php";
 
-				if(@is_readable($localConfigFile)) {
+				if (@is_readable($localConfigFile)) {
 					$localConfig = include $localConfigFile;
 
-					if(array_key_exists('__REMOVE__', $localConfig) && is_array($localConfig['__REMOVE__'])) {
+					if (array_key_exists('__REMOVE__', $localConfig) && is_array($localConfig['__REMOVE__'])) {
 						$config = utils_arrayDiffRecursive($config, $localConfig['__REMOVE__']);
 
-						if(array_key_exists('__OVERRIDE__', $localConfig) && is_array($localConfig['__OVERRIDE__'])) {
+						if (array_key_exists('__OVERRIDE__', $localConfig) && is_array($localConfig['__OVERRIDE__'])) {
 							$config = utils_arrayMergeRecursive($config, $localConfig['__OVERRIDE__']);
 						}
 					}
@@ -219,7 +221,7 @@ abstract class iMSCP_Plugin
 			$this->loadConfig();
 		}
 
-		return (isset($this->_config[$paramName])) ? $this->_config[$paramName] : $default;
+		return (isset($this->config[$paramName])) ? $this->config[$paramName] : $default;
 	}
 
 	/**
@@ -232,9 +234,9 @@ abstract class iMSCP_Plugin
 		$stmt = exec_query('SELECT plugin_config FROM plugin WHERE plugin_name = ?', $this->getName());
 
 		if ($stmt->rowCount()) {
-			$this->_config = json_decode($stmt->fetchRow(PDO::FETCH_COLUMN), true);
+			$this->config = json_decode($stmt->fetchRow(PDO::FETCH_COLUMN), true);
 		} else {
-			$this->_config = array();
+			$this->config = array();
 		}
 	}
 
@@ -371,5 +373,136 @@ abstract class iMSCP_Plugin
 	public function getCountRequests()
 	{
 		return 0;
+	}
+
+	/**
+	 * Migrate plugin database schema
+	 *
+	 * This method provide a convenient way to alter plugins's database schema over the time in a consistent and easy
+	 * way.
+	 *
+	 * This method considers each migration as being a new 'version' of the database schema. A schema starts off with
+	 * nothing in it, and each migation modifies it to add or remove tables, columns, or entries. Each time a new
+	 * migration is applied, the 'db_schema_version' info field is updated. This allow to keep track of the last applied
+	 * database migration.
+	 *
+	 * This method can work in both senses update (up) and downgrade (down) modes.
+	 *
+	 * USAGE:
+	 *
+	 * Any plugin which uses this method *MUST* provide an sql directory at the root of its directory, which contain all
+	 * migration files.
+	 *
+	 * Migration file naming convention:
+	 *
+	 * Each migration file must be named using the following naming convention:
+	 *
+	 * <version>_<description>.php where:
+	 *
+	 * - <version> is the migration version number such as 003
+	 * - <description> is the migration description such as add_version_confdir_path_prev
+	 *
+	 * Resulting to the following migration file:
+	 *
+	 * 003_add_version_confdir_path_prev.php
+	 *
+	 * Note: version of first migration file *MUST* start to 001 and not 000.
+	 *
+	 * Migration file structure:
+	 *
+	 * A migration file is a simple PHP file which return an associative array containing exactly two pairs of key/value:
+	 *
+	 * - The 'up' key for which the value must be the SQL statement to be executed in the 'up' mode
+	 * - The 'down' key for which the value must be the SQL statement to be executed in the 'down' mode
+	 *
+	 * If one of these keys is missing, the migrateDb method won't complain and will simply continue its work normally.
+	 * However, it's greatly recommended to always provide both SQL statements as described above.
+	 *
+	 * Sample:
+	 *
+	 * <code>
+	 * return array(
+	 *     'up' => '
+	 *         ALTER TABLE
+	 *             php_switcher_version
+	 *         ADD
+	 *             version_confdir_path_prev varchar(255) COLLATE utf8_unicode_ci NULL DEFAULT NULL
+	 *         AFTER
+	 *             version_binary_path
+	 *      ',
+	 *      'down' => '
+	 *          ALTER TABLE php_switcher_version DROP COLUMN version_confdir_path_prev
+	 *      '
+	 * );
+	 * </code>
+	 *
+	 * @throws iMSCP_Plugin_Exception When an error occurs
+	 * @param string $migrationMode Migration mode (up|down)
+	 * @return void
+	 */
+	protected function migrateDb($migrationMode = 'up')
+	{
+		$pluginName = $this->getName();
+
+		/** @var iMSCP_Plugin_Manager $pluginManager */
+		$pluginManager = iMSCP_Registry::get('pluginManager');
+		$pluginInfo = $pluginManager->getPluginInfo($pluginName);
+		$dbSchemaVersion = (isset($pluginInfo['db_schema_version'])) ? $pluginInfo['db_schema_version'] : '000';
+		$migrationFiles = array();
+
+		$parts = explode('_', get_class($this));
+		$sqlDir = $pluginManager->getPluginDirectory() . '/' . $parts[2] . '/sql';
+
+		if (is_dir($sqlDir)) {
+			/** @var $migrationFileInfo DirectoryIterator */
+			foreach (new DirectoryIterator($sqlDir) as $migrationFileInfo) {
+				if (!$migrationFileInfo->isDot()) {
+					$migrationFiles[] = $migrationFileInfo->getRealPath();
+				}
+			}
+
+			natsort($migrationFiles);
+
+			if ($migrationMode == 'down') {
+				$migrationFiles = array_reverse($migrationFiles);
+			}
+
+			try {
+				foreach ($migrationFiles as $migrationFile) {
+					if (is_readable($migrationFile)) {
+						if (preg_match('%/(\d+)_[^/]+?\.php$%', $migrationFile, $version)) {
+							if (
+								($migrationMode == 'up' && $version[1] > $dbSchemaVersion) ||
+								($migrationMode == 'down' && $version[1] <= $dbSchemaVersion)
+							) {
+								$migrationFilesContent = include($migrationFile);
+
+								if (isset($migrationFilesContent[$migrationMode])) {
+									execute_query($migrationFilesContent[$migrationMode]);
+								}
+
+								$dbSchemaVersion = $version[1];
+							}
+						} else {
+							throw new iMSCP_Plugin_Exception(
+								sprintf("File %s doesn't look like a migration file.", $migrationFile)
+							);
+						}
+					} else {
+						throw new iMSCP_Plugin_Exception(sprintf('Migration file %s is not readable.', $migrationFile));
+					}
+				}
+
+				$pluginInfo['db_schema_version'] = ($migrationMode == 'up') ? $dbSchemaVersion : '000';
+				$pluginManager->updatePluginInfo($pluginName, $pluginInfo);
+			} catch (iMSCP_Exception $e) {
+				$pluginInfo['db_schema_version'] = $dbSchemaVersion;
+				$pluginManager->updatePluginInfo($pluginName, $pluginInfo);
+
+				throw new iMSCP_Plugin_Exception($e->getMessage(), $e->getCode(), $e);
+			}
+		} else {
+			throw new iMSCP_Plugin_Exception(sprintf("Directory %s doesn't exists.", $sqlDir));
+		}
 	}
 }

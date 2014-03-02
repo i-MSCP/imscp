@@ -537,17 +537,48 @@ sub _buildMainCfFile
 {
 	my $self = $_[0];
 
-	# Backup current file if any
+	# Backup file
+
 	my $rs = $self->_bkpConfFile("self->{'config'}->{'MTA_VIRTUAL_CONF_DIR'}/main.cf");
 	return $rs if $rs;
+
+	# Define data
+
+	my $baseServerIpType = iMSCP::Net->getInstance->getAddrVersion($main::imscpConfig{'BASE_SERVER_IP'});
+	my $gid = getgrnam($self->{'config'}->{'MTA_MAILBOX_GID_NAME'});
+	my $uid = getpwnam($self->{'config'}->{'MTA_MAILBOX_UID_NAME'});
+	my $hostname = $main::imscpConfig{'SERVER_HOSTNAME'};
+
+	my $data = {
+		MTA_INET_PROTOCOLS => $baseServerIpType,
+		MTA_SMTP_BIND_ADDRESS => ($baseServerIpType eq 'ipv4') ? $main::imscpConfig{'BASE_SERVER_IP'} : '',
+		MTA_SMTP_BIND_ADDRESS6 => ($baseServerIpType eq 'ipv6') ? $main::imscpConfig{'BASE_SERVER_IP'} : '',
+		MTA_HOSTNAME => $hostname,
+		MTA_LOCAL_DOMAIN => "$hostname.local",
+		MTA_VERSION => $main::imscpConfig{'Version'},
+		MTA_TRANSPORT_HASH => $self->{'config'}->{'MTA_TRANSPORT_HASH'},
+		MTA_LOCAL_MAIL_DIR => $self->{'config'}->{'MTA_LOCAL_MAIL_DIR'},
+		MTA_LOCAL_ALIAS_HASH => $self->{'config'}->{'MTA_LOCAL_ALIAS_HASH'},
+		MTA_VIRTUAL_MAIL_DIR => $self->{'config'}->{'MTA_VIRTUAL_MAIL_DIR'},
+		MTA_VIRTUAL_DMN_HASH => $self->{'config'}->{'MTA_VIRTUAL_DMN_HASH'},
+		MTA_VIRTUAL_MAILBOX_HASH => $self->{'config'}->{'MTA_VIRTUAL_MAILBOX_HASH'},
+		MTA_VIRTUAL_ALIAS_HASH => $self->{'config'}->{'MTA_VIRTUAL_ALIAS_HASH'},
+		MTA_RELAY_HASH => $self->{'config'}->{'MTA_RELAY_HASH'},
+		MTA_MAILBOX_MIN_UID => $uid,
+		MTA_MAILBOX_UID => $uid,
+		MTA_MAILBOX_GID => $gid,
+		PORT_POSTGREY => $main::imscpConfig{'PORT_POSTGREY'},
+		GUI_CERT_DIR => $main::imscpConfig{'GUI_CERT_DIR'},
+		SSL => ($main::imscpConfig{'SSL_ENABLED'} eq 'yes' ? '' : '#')
+	};
 
 	# Load template
 
 	my $cfgTpl;
-	$rs = $self->{'hooksManager'}->trigger('onLoadTemplate', 'postfix', 'main.cf', \$cfgTpl, {});
+	$rs = $self->{'hooksManager'}->trigger('onLoadTemplate', 'postfix', 'main.cf', \$cfgTpl, $data);
 	return $rs if $rs;
 
-	if(!$cfgTpl) {
+	unless(defined $cfgTpl) {
 		$cfgTpl = iMSCP::File->new('filename' => "$self->{'cfgDir'}/main.cf")->get();
 		unless(defined $cfgTpl) {
 			error("Unable to read $self->{'cfgDir'}/main.cf");
@@ -555,45 +586,12 @@ sub _buildMainCfFile
 		}
 	}
 
-	# Build new file
-	my $hostname = $main::imscpConfig{'SERVER_HOSTNAME'};
-	my $gid = getgrnam($self->{'config'}->{'MTA_MAILBOX_GID_NAME'});
-	my $uid = getpwnam($self->{'config'}->{'MTA_MAILBOX_UID_NAME'});
+	# Build file
 
 	$rs = $self->{'hooksManager'}->trigger('beforeMtaBuildMainCfFile', \$cfgTpl, 'main.cf');
 	return $rs if $rs;
 
-	my $baseServerIpType = iMSCP::Net->getInstance->getAddrVersion($main::imscpConfig{'BASE_SERVER_IP'});
-
-	$cfgTpl = process(
-		{
-			MTA_INET_PROTOCOLS => $baseServerIpType,
-			MTA_SMTP_BIND_ADDRESS => ($baseServerIpType eq 'ipv4') ? $main::imscpConfig{'BASE_SERVER_IP'} : '',
-			MTA_SMTP_BIND_ADDRESS6 => ($baseServerIpType eq 'ipv6') ? $main::imscpConfig{'BASE_SERVER_IP'} : '',
-			MTA_HOSTNAME => $hostname,
-			MTA_LOCAL_DOMAIN => "$hostname.local",
-			MTA_VERSION => $main::imscpConfig{'Version'},
-			MTA_TRANSPORT_HASH => $self->{'config'}->{'MTA_TRANSPORT_HASH'},
-			MTA_LOCAL_MAIL_DIR => $self->{'config'}->{'MTA_LOCAL_MAIL_DIR'},
-			MTA_LOCAL_ALIAS_HASH => $self->{'config'}->{'MTA_LOCAL_ALIAS_HASH'},
-			MTA_VIRTUAL_MAIL_DIR => $self->{'config'}->{'MTA_VIRTUAL_MAIL_DIR'},
-			MTA_VIRTUAL_DMN_HASH => $self->{'config'}->{'MTA_VIRTUAL_DMN_HASH'},
-			MTA_VIRTUAL_MAILBOX_HASH => $self->{'config'}->{'MTA_VIRTUAL_MAILBOX_HASH'},
-			MTA_VIRTUAL_ALIAS_HASH => $self->{'config'}->{'MTA_VIRTUAL_ALIAS_HASH'},
-			MTA_RELAY_HASH => $self->{'config'}->{'MTA_RELAY_HASH'},
-			MTA_MAILBOX_MIN_UID => $uid,
-			MTA_MAILBOX_UID => $uid,
-			MTA_MAILBOX_GID => $gid,
-			PORT_POSTGREY => $main::imscpConfig{'PORT_POSTGREY'},
-			GUI_CERT_DIR => $main::imscpConfig{'GUI_CERT_DIR'},
-			SSL => ($main::imscpConfig{'SSL_ENABLED'} eq 'yes' ? '' : '#')
-		},
-		$cfgTpl
-	);
-	unless(defined $cfgTpl) {
-		error('Unable to build main.cf file');
-		return 1;
-	}
+	$cfgTpl = process($data, $cfgTpl);
 
 	# Fix for #790
 	my ($stdout, $stderr);
@@ -617,7 +615,8 @@ sub _buildMainCfFile
 	$rs = $self->{'hooksManager'}->trigger('afterMtaBuildMainCfFile', \$cfgTpl, 'main.cf');
 	return $rs if $rs;
 
-	# Store file in working directory
+	# Store file
+
 	my $file = iMSCP::File->new('filename' => "$self->{'wrkDir'}/main.cf");
 
 	$rs = $file->set($cfgTpl);
@@ -632,7 +631,6 @@ sub _buildMainCfFile
 	$rs = $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
 	return $rs if $rs;
 
-	# Copy file in production directory
 	$file->copyFile($self->{'config'}->{'POSTFIX_CONF_FILE'});
 }
 
@@ -648,17 +646,26 @@ sub _buildMasterCfFile
 {
 	my $self = $_[0];
 
-	# Backup current file if any
+	# Backup file
+
 	my $rs = $self->_bkpConfFile("self->{'config'}->{'MTA_VIRTUAL_CONF_DIR'}/master.cf");
 	return $rs if $rs;
+
+	# Define data
+
+	my $data = {
+		MTA_MAILBOX_UID_NAME => $self->{'config'}->{'MTA_MAILBOX_UID_NAME'},
+		IMSCP_GROUP => $main::imscpConfig{'IMSCP_GROUP'},
+		ARPL_PATH => $main::imscpConfig{'ROOT_DIR'}."/engine/messenger/imscp-arpl-msgr"
+	};
 
 	# Load template
 
 	my $cfgTpl;
-	$rs = $self->{'hooksManager'}->trigger('onLoadTemplate', 'postfix', 'master.cf', \$cfgTpl, {});
+	$rs = $self->{'hooksManager'}->trigger('onLoadTemplate', 'postfix', 'master.cf', \$cfgTpl, $data);
 	return $rs if $rs;
 
-	if(!$cfgTpl) {
+	unless(defined $cfgTpl) {
 		$cfgTpl = iMSCP::File->new('filename' => "$self->{'cfgDir'}/master.cf")->get();
 		unless(defined $cfgTpl) {
 			error("Unable to read $self->{'cfgDir'}/master.cf");
@@ -666,26 +673,18 @@ sub _buildMasterCfFile
 		}
 	}
 
+	# Build file
+
 	$rs = $self->{'hooksManager'}->trigger('beforeMtaBuildMasterCfFile', \$cfgTpl, 'master.cf');
 	return $rs if $rs;
 
-	$cfgTpl = process(
-		{
-			MTA_MAILBOX_UID_NAME => $self->{'config'}->{'MTA_MAILBOX_UID_NAME'},
-			IMSCP_GROUP => $main::imscpConfig{'IMSCP_GROUP'},
-			ARPL_PATH => $main::imscpConfig{'ROOT_DIR'}."/engine/messenger/imscp-arpl-msgr"
-		},
-		$cfgTpl
-	);
-	unless(defined $cfgTpl) {
-		error('Unable to build master.cf file');
-		return 1;
-	}
+	$cfgTpl = process($data, $cfgTpl);
 
 	$rs = $self->{'hooksManager'}->trigger('afterMtaBuildMasterCfFile', \$cfgTpl, 'master.cf');
 	return $rs if $rs;
 
-	# Store file in working directory
+	# Store file
+
 	my $file = iMSCP::File->new('filename' => "$self->{'wrkDir'}/master.cf");
 
 	$rs = $file->set($cfgTpl);
@@ -700,7 +699,6 @@ sub _buildMasterCfFile
 	$rs = $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
 	return $rs if $rs;
 
-	# Copy file in production directory
 	$file->copyFile($self->{'config'}->{'POSTFIX_MASTER_CONF_FILE'});
 }
 

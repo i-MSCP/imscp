@@ -38,6 +38,7 @@ no if $] >= 5.017011, warnings => 'experimental::smartmatch';
 
 use iMSCP::Debug;
 use Addons::PhpMyAdmin;
+use iMSCP::HooksManager;
 use iMSCP::TemplateParser;
 use iMSCP::Addons::ComposerInstaller;
 use iMSCP::Execute;
@@ -262,6 +263,7 @@ sub _init
 	my $self = $_[0];
 
 	$self->{'phpmyadmin'} = Addons::PhpMyAdmin->getInstance();
+	$self->{'hooksManager'} = iMSCP::HooksManager->getInstance();
 
 	$self->{'cfgDir'} = $self->{'phpmyadmin'}->{'cfgDir'};
 	$self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
@@ -628,11 +630,12 @@ sub _buildConfig
 	my $self = $_[0];
 
 	my $panelUName =
-	my $panelGName =  $main::imscpConfig{'SYSTEM_USER_PREFIX'} . $main::imscpConfig{'SYSTEM_USER_MIN_UID'};
+	my $panelGName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} . $main::imscpConfig{'SYSTEM_USER_MIN_UID'};
 	my $confDir = "$main::imscpConfig{'GUI_PUBLIC_DIR'}/$self->{'config'}->{'PHPMYADMIN_CONF_DIR'}";
-	my $rs = 0;
 
-	my $cfg = {
+	# Define data
+
+	my $data = {
 		PMA_DATABASE => $main::imscpConfig{'DATABASE_NAME'} . '_pma',
 		PMA_USER => $self->{'config'}->{'DATABASE_USER'},
 		PMA_PASS => $self->{'config'}->{'DATABASE_PASSWORD'},
@@ -640,18 +643,30 @@ sub _buildConfig
 		PORT => $main::imscpConfig{'DATABASE_PORT'},
 		UPLOADS_DIR => "$main::imscpConfig{'GUI_ROOT_DIR'}/data/uploads",
 		TMP_DIR => "$main::imscpConfig{'GUI_ROOT_DIR'}/data/tmp",
-		BLOWFISH => $self->{'config'}->{'BLOWFISH_SECRET'},
+		BLOWFISH => $self->{'config'}->{'BLOWFISH_SECRET'}
 	};
 
-	my $file = iMSCP::File->new(filename => "$confDir/imscp.config.inc.php");
-	my $cfgTpl = $file->get();
-	return 1 if ! defined $cfgTpl;
+	# Load template
 
-	$cfgTpl = process($cfg, $cfgTpl);
-	return 1 if ! $cfgTpl;
+	my $cfgTpl;
+	my $rs = $self->{'hooksManager'}->trigger('onLoadTemplate', 'phpmyadmin', 'imscp.config.inc.php', \$cfgTpl, $data);
+	return $rs if $rs;
 
-	# store file in working directory
-	$file = iMSCP::File->new(filename => "$self->{'wrkDir'}/$_");
+	unless(defined $cfgTpl) {
+		$cfgTpl = iMSCP::File->new('filename' => "$confDir/imscp.config.inc.php")->get();
+		unless(defined $cfgTpl) {
+			error("Unable to read file $confDir/imscp.config.inc.php");
+			return 1;
+		}
+	}
+
+	# Build file
+
+	$cfgTpl = process($data, $cfgTpl);
+
+	# Store file
+
+	my $file = iMSCP::File->new('filename' => "$self->{'wrkDir'}/$_");
 	$rs = $file->set($cfgTpl);
 	return $rs if $rs;
 
@@ -664,7 +679,6 @@ sub _buildConfig
 	$rs = $file->owner($panelUName, $panelGName);
 	return $rs if $rs;
 
-	# Install new file in production directory
 	$file->copyFile("$confDir/config.inc.php");
 }
 

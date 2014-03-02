@@ -763,20 +763,22 @@ sub _buildApacheConfFiles
 	my $rs = $self->{'hooksManager'}->trigger('beforeHttpdBuildApacheConfFiles');
 	return $rs if $rs;
 
-	# Backup, build, store and install ports.conf file if exists
-
 	if(-f "$self->{'config'}->{'APACHE_CONF_DIR'}/ports.conf") {
+		# Load template
+
 		my $cfgTpl;
 		$rs = $self->{'hooksManager'}->trigger('onLoadTemplate', 'apache_php_fpm', 'ports.conf', \$cfgTpl, {});
 		return $rs if $rs;
 
-		if(!$cfgTpl) {
+		unless(defined $cfgTpl) {
 			$cfgTpl = iMSCP::File->new('filename' => "$self->{'config'}->{'APACHE_CONF_DIR'}/ports.conf")->get();
 			unless(defined $cfgTpl) {
 				error("Unable to read $self->{'config'}->{'APACHE_CONF_DIR'}/ports.conf");
 				return 1;
 			}
 		}
+
+		# Build file
 
 		$rs = $self->{'hooksManager'}->trigger('beforeHttpdBuildConfFile', \$cfgTpl, 'ports.conf');
 		return $rs if $rs;
@@ -785,6 +787,8 @@ sub _buildApacheConfFiles
 
 		$rs = $self->{'hooksManager'}->trigger('afterHttpdBuildConfFile', \$cfgTpl, 'ports.conf');
 		return $rs if $rs;
+
+		# Store file
 
 		my $file = iMSCP::File->new('filename' => "$self->{'config'}->{'APACHE_CONF_DIR'}/ports.conf");
 

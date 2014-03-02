@@ -309,7 +309,7 @@ sub addSub($$)
 			$rs = $self->{'hooksManager'}->trigger('onLoadTemplate', 'bind', 'db_sub.tpl', \$subEntry, $data);
 			return $rs if $rs;
 
-			if(!$subEntry) {
+			unless(defined $subEntry) {
 				$subEntry = iMSCP::File->new('filename' => "$self->{'tplDir'}/db_sub.tpl")->get();
 				unless(defined $subEntry) {
 					error("Unable to read $self->{'tplDir'}/db_sub.tpl file");
@@ -691,14 +691,14 @@ sub _addDmnConfig($$)
 		}
 
 		if(defined $self->{'config'}->{'BIND_MODE'} && $self->{'config'}->{'BIND_MODE'} ne '') {
+			# Load template
 			my $tplCfgEntryContent;
 			$rs = $self->{'hooksManager'}->trigger(
 				'onLoadTemplate', 'bind', "cfg_$self->{'config'}->{'BIND_MODE'}.tpl", \$tplCfgEntryContent, $data
 			);
 			return $rs if $rs;
 
-			# Loading cfg template
-			if(!$tplCfgEntryContent) {
+			unless(defined $tplCfgEntryContent) {
 				$tplCfgEntryContent = iMSCP::File->new(
 					'filename' => "$self->{'tplDir'}/cfg_$self->{'config'}->{'BIND_MODE'}.tpl"
 				)->get();
@@ -884,12 +884,13 @@ sub _addDmnDb($$)
 		$wrkDbFile = iMSCP::File->new('filename' => $wrkDbFile);
 	}
 
-	# Getting db template content
+	# Load template
+
 	my $tplDbFileContent;
 	my $rs = $self->{'hooksManager'}->trigger('onLoadTemplate', 'bind', 'db.tpl', \$tplDbFileContent, $data);
 	return $rs if $rs;
 
-	if(!$tplDbFileContent) {
+	unless(defined $tplDbFileContent) {
 		$tplDbFileContent = iMSCP::File->new('filename' => "$self->{'tplDir'}/db.tpl")->get();
 		unless(defined $tplDbFileContent) {
 			error("Unable to read $self->{'tplDir'}/db.tpl");

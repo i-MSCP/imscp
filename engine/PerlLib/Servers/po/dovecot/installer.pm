@@ -447,7 +447,9 @@ sub _buildConf
 {
 	my $self = $_[0];
 
-	my $cfg = {
+	# Define data
+
+	my $data = {
 		DATABASE_TYPE => $main::imscpConfig{'DATABASE_TYPE'},
 		DATABASE_HOST =>
 			($main::imscpConfig{'DATABASE_PORT'} && $main::imscpConfig{'DATABASE_PORT'} ne 'localhost')
@@ -503,12 +505,13 @@ sub _buildConf
 	);
 
 	for (keys %cfgFiles) {
-		# Get configuration template content
+		# Load template
+
 		my $cfgTpl;
-		my $rs = $self->{'hooksManager'}->trigger('onLoadTemplate', 'dovecot', $_, \$cfgTpl, {});
+		my $rs = $self->{'hooksManager'}->trigger('onLoadTemplate', 'dovecot', $_, \$cfgTpl, $data);
 		return $rs if $rs;
 
-		if(!$cfgTpl) {
+		unless(defined $cfgTpl) {
 			$cfgTpl= iMSCP::File->new('filename' => "$self->{'cfgDir'}/$_")->get();
 			unless(defined $cfgTpl) {
 				error("Unable to read $self->{'cfgDir'}/$_");
@@ -516,19 +519,20 @@ sub _buildConf
 			}
 		}
 
+		# Build file
+
 		$rs = $self->{'hooksManager'}->trigger('beforePoBuildConf', \$cfgTpl, $_);
 		return $rs if $rs;
 
-		# Replace placeholders
-		$cfgTpl = process($cfg, $cfgTpl);
+		$cfgTpl = process($data, $cfgTpl);
 
 		$rs = $self->{'hooksManager'}->trigger('afterPoBuildConf', \$cfgTpl, $_);
 		return $rs if $rs;
 
-		# Retrieve filename
+		# Store file
+
 		my $filename = fileparse($cfgFiles{$_}->[0]);
 
-		# Store file in working directory
 		my $file = iMSCP::File->new('filename' => "$self->{'wrkDir'}/$filename");
 
 		$rs = $file->set($cfgTpl);
@@ -543,7 +547,6 @@ sub _buildConf
 		$rs = $file->mode($cfgFiles{$_}->[3]);
 		return $rs if $rs;
 
-		# Install file in production directory
 		$rs = $file->copyFile($cfgFiles{$_}->[0]);
 		return $rs if $rs;
 	}

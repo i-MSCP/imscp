@@ -42,7 +42,12 @@ class iMSCP_Plugin_Manager
 	/**
 	 * @const string Plugin API version
 	 */
-	const PLUGIN_API_VERSION = '0.2.6';
+	const PLUGIN_API_VERSION = '0.2.7';
+
+	/**
+	 * @const int Action success
+	 */
+	const ACTION_SUCCESS = 1;
 
 	/**
 	 * @const int Action failure
@@ -53,11 +58,6 @@ class iMSCP_Plugin_Manager
 	 * @const int Action stopped
 	 */
 	const ACTION_STOPPED = -1;
-
-	/**
-	 * @const int Action success
-	 */
-	const ACTION_SUCCESS = 1;
 
 	/**
 	 * @var string Plugins directory
@@ -494,7 +494,6 @@ class iMSCP_Plugin_Manager
 					$this->setPluginStatus($pluginName, 'toinstall');
 					$this->setPluginError($pluginName, null);
 
-					// Trigger the onBeforeInstallPLugin event
 					$responses = $this->eventsManager->dispatch(
 						iMSCP_Events::onBeforeInstallPlugin,
 						array(
@@ -504,10 +503,8 @@ class iMSCP_Plugin_Manager
 					);
 
 					if (!$responses->isStopped()) {
-						// Run the install plugin method
 						$pluginInstance->install($this);
 
-						// Trigger the onAfterInstallPLugin event
 						$this->eventsManager->dispatch(
 							iMSCP_Events::onAfterInstallPlugin,
 							array(
@@ -516,7 +513,6 @@ class iMSCP_Plugin_Manager
 							)
 						);
 
-						// Run the enable subaction
 						$ret = $this->pluginEnable($pluginName, true);
 
 						if ($ret == self::ACTION_SUCCESS) {
@@ -526,20 +522,14 @@ class iMSCP_Plugin_Manager
 								$this->setPluginStatus($pluginName, 'enabled');
 							}
 						} elseif ($ret == self::ACTION_STOPPED) {
-							// The 'enable' subaction has been stopped by an event listener before having a chance to
-							// start. Therefore, the plugin status is set back to its initial state.
 							$this->setPluginStatus($pluginName, $pluginStatus);
 						} else {
-							// The 'enable' subaction has failed. Therefore, the plugin status is left untouched, giving
-							// a chance to re-run this action once the problem is fixed.
 							throw new iMSCP_Plugin_Exception($this->getPluginError($pluginName));
 						}
 
 						return $ret;
 					}
 
-					// This action has been stopped by an event listener before having a chance to start. Therefore, the
-					// plugin status is set back to its initial state.
 					$this->setPluginStatus($pluginName, $pluginStatus);
 					return self::ACTION_STOPPED;
 				} catch (iMSCP_Plugin_Exception $e) {
@@ -613,7 +603,6 @@ class iMSCP_Plugin_Manager
 					$this->setPluginStatus($pluginName, 'touninstall');
 					$this->setPluginError($pluginName, null);
 
-					// Trigger the onBeforeUninstallPLugin event
 					$responses = $this->eventsManager->dispatch(
 						iMSCP_Events::onBeforeUninstallPlugin,
 						array(
@@ -623,10 +612,8 @@ class iMSCP_Plugin_Manager
 					);
 
 					if (!$responses->isStopped()) {
-						// Run the uninstall plugin method
 						$pluginInstance->uninstall($this);
 
-						// Trigger the onAfterUninstallPLugin event
 						$this->eventsManager->dispatch(
 							iMSCP_Events::onAfterUninstallPlugin,
 							array(
@@ -644,8 +631,6 @@ class iMSCP_Plugin_Manager
 						return self::ACTION_SUCCESS;
 					}
 
-					// This action has been stopped by an event listener before having a chance to start. Therefore, the
-					// plugin status is set back to its initial state.
 					$this->setPluginStatus($pluginName, $pluginStatus);
 					return self::ACTION_STOPPED;
 				} catch (iMSCP_Plugin_Exception $e) {
@@ -700,12 +685,10 @@ class iMSCP_Plugin_Manager
 					if (!$isSubaction) {
 						$pluginInfo = $this->getPluginInfo($pluginName);
 
-						if($pluginInfo['version'] != $pluginInfo['__nversion__']) {
-							# A plugin update is available. Run update action
+						if (version_compare($pluginInfo['version'], $pluginInfo['__nversion__'], '<')) {
 							$this->setPluginStatus($pluginName, 'toupdate');
 							return $this->pluginUpdate($pluginName);
-						} elseif(isset($pluginInfo['__need_change__']) && $pluginInfo['__need_change__']) {
-							# A plugin change is needed. Run change action
+						} elseif (isset($pluginInfo['__need_change__']) && $pluginInfo['__need_change__']) {
 							$this->setPluginStatus($pluginName, 'tochange');
 							return $this->pluginChange($pluginName);
 						}
@@ -725,10 +708,8 @@ class iMSCP_Plugin_Manager
 					);
 
 					if (!$responses->isStopped()) {
-						// Run the enable plugin method
 						$pluginInstance->enable($this);
 
-						// Trigger the onAfterEnablePlugin event
 						$this->eventsManager->dispatch(
 							iMSCP_Events::onAfterEnablePlugin,
 							array(
@@ -745,8 +726,6 @@ class iMSCP_Plugin_Manager
 
 						return self::ACTION_SUCCESS;
 					} elseif (!$isSubaction) {
-						// This action has been stopped by an event listener before having a chance to start. Therefore,
-						// the plugin status is set back to its initial state.
 						$this->setPluginStatus($pluginName, $pluginStatus);
 					}
 
@@ -801,7 +780,6 @@ class iMSCP_Plugin_Manager
 
 					$this->setPluginError($pluginName, null);
 
-					// Trigger the onBeforeDisablePlugin event
 					$responses = $this->eventsManager->dispatch(
 						iMSCP_Events::onBeforeDisablePlugin,
 						array(
@@ -811,10 +789,8 @@ class iMSCP_Plugin_Manager
 					);
 
 					if (!$responses->isStopped()) {
-						// Run the disable plugin method
 						$pluginInstance->disable($this);
 
-						// Trigger the onAfterDisablePlugin event
 						$this->eventsManager->dispatch(
 							iMSCP_Events::onAfterDisablePlugin,
 							array(
@@ -831,8 +807,6 @@ class iMSCP_Plugin_Manager
 
 						return self::ACTION_SUCCESS;
 					} elseif (!$isSubaction) {
-						// This action has been stopped by an event listener before having a chance to start. Therefore,
-						// the plugin status is set back to its initial state.
 						$this->setPluginStatus($pluginName, $pluginStatus);
 					}
 
@@ -868,11 +842,9 @@ class iMSCP_Plugin_Manager
 					$this->setPluginStatus($pluginName, 'tochange');
 					$this->setPluginError($pluginName, null);
 
-					// Run the disable subaction
 					$ret = $this->pluginDisable($pluginName, true);
 
 					if ($ret == self::ACTION_SUCCESS) {
-						// Run the enable subaction
 						$ret = $this->pluginEnable($pluginName, true);
 
 						if ($ret == self::ACTION_SUCCESS) {
@@ -885,21 +857,13 @@ class iMSCP_Plugin_Manager
 								$this->setPluginStatus($pluginName, 'enabled');
 							}
 						} elseif ($ret == self::ACTION_STOPPED) {
-							// The 'enable' subaction has been stopped by an event listener before having a change to
-							// start. Therefore, the plugin status is set back to its initial state.
 							$this->setPluginStatus($pluginName, $pluginStatus);
 						} else {
-							// The 'enable' subaction has failed. Therefore, the plugin status is left untouched, giving
-							// a chance to re-run this action once the problem is fixed.
 							throw new iMSCP_Plugin_Exception($this->getPluginError($pluginName));
 						}
 					} elseif ($ret == self::ACTION_STOPPED) {
-						// The 'disable' subaction has been stopped by an event listener before having a change to start.
-						// Therefore, the plugin status is set back to its initial state.
 						$this->setPluginStatus($pluginName, $pluginStatus);
 					} else {
-						// The 'disable' subaction has failed. Therefore, the plugin status is left untouched, giving a
-						// chance to re-run this action once the problem is fixed.
 						throw new iMSCP_Plugin_Exception($this->getPluginError($pluginName));
 					}
 
@@ -935,39 +899,34 @@ class iMSCP_Plugin_Manager
 					$this->setPluginStatus($pluginName, 'toupdate');
 					$this->setPluginError($pluginName, null);
 
-					// Run the disable subaction
 					$ret = $this->pluginDisable($pluginName, true);
 
 					if ($ret == self::ACTION_SUCCESS) {
 						$pluginInfo = $this->getPluginInfo($pluginName);
 
-						// Trigger the onBeforeUpdatePlugin event
 						$responses = $this->eventsManager->dispatch(
 							iMSCP_Events::onBeforeUpdatePlugin,
 							array(
 								'pluginManager' => $this,
 								'pluginName' => $pluginName,
-								'PluginFromVersion' => $pluginInfo['version'],
-								'PluginToVersion' => $pluginInfo['__nversion__']
+								'fromVersion' => $pluginInfo['version'],
+								'toVersion' => $pluginInfo['__nversion__']
 							)
 						);
 
 						if (!$responses->isStopped()) {
-							// Run the update plugin method
 							$pluginInstance->update($this, $pluginInfo['version'], $pluginInfo['__nversion__']);
 
-							// Trigger the onAfterUpdatePlugin event
 							$this->eventsManager->dispatch(
 								iMSCP_Events::onAfterUpdatePlugin,
 								array(
 									'pluginManager' => $this,
 									'pluginName' => $pluginName,
-									'PluginFromVersion' => $pluginInfo['version'],
-									'PluginToVersion' => $pluginInfo['__nversion__']
+									'fromVersion' => $pluginInfo['version'],
+									'toVersion' => $pluginInfo['__nversion__']
 								)
 							);
 
-							// Run the enable subaction
 							$ret = $this->pluginEnable($pluginName, true);
 
 							if ($ret == self::ACTION_SUCCESS) {
@@ -979,21 +938,13 @@ class iMSCP_Plugin_Manager
 									$this->setPluginStatus($pluginName, 'enabled');
 								}
 							} elseif ($ret == self::ACTION_STOPPED) {
-								// The 'enable' subaction has been stopped by an event listener before having a chance
-								// to start. Therefore, the plugin status is set back to its initial state.
 								$this->setPluginStatus($pluginName, $pluginStatus);
 							} else {
-								// The 'enable' subaction has failed. Therefore, the plugin status is left untouched,
-								// giving a chance to re-run this action once the problem is fixed.
 								throw new iMSCP_Plugin_Exception($this->getPluginError($pluginName));
 							}
 						} elseif ($ret == self::ACTION_STOPPED) {
-							// The 'disable' subaction has been stopped by an event listener before having a chance to
-							// start. Therefore, the plugin status is set back to its initial state.
 							$this->setPluginStatus($pluginName, $pluginStatus);
 						} else {
-							// The 'disable' subaction has failed. Therefore, the plugin status is left untouched,
-							// giving a chance to re-run this action once the problem is fixed.
 							throw new iMSCP_Plugin_Exception($this->getPluginError($pluginName));
 						}
 					}
@@ -1029,7 +980,6 @@ class iMSCP_Plugin_Manager
 					$this->setPluginStatus($pluginName, 'todelete');
 					$this->setPluginError($pluginName, null);
 
-					// Trigger the onBeforeDeletePlugin event
 					$responses = $this->eventsManager->dispatch(
 						iMSCP_Events::onBeforeDeletePlugin,
 						array(
@@ -1039,7 +989,6 @@ class iMSCP_Plugin_Manager
 					);
 
 					if (!$responses->isStopped()) {
-						// Run the delete plugin method
 						$pluginInstance->delete($this);
 
 						$this->deletePluginFromDatabase($pluginName);
@@ -1062,7 +1011,6 @@ class iMSCP_Plugin_Manager
 							}
 						}
 
-						// Trigger the onAfterDeletePlugin event
 						$this->eventsManager->dispatch(
 							iMSCP_Events::onAfterDeletePlugin,
 							array(
@@ -1071,12 +1019,9 @@ class iMSCP_Plugin_Manager
 							)
 						);
 
-						// At this stage, the plugin must be fully deleted.
 						return self::ACTION_SUCCESS;
 					}
 
-					// This action has been stopped by an event listener before having a chance to start. Therefore, the
-					// plugin status is set back to its initial state.
 					$this->setPluginStatus($pluginName, $pluginStatus);
 					return self::ACTION_STOPPED;
 				} catch (iMSCP_Plugin_Exception $e) {
@@ -1204,11 +1149,9 @@ class iMSCP_Plugin_Manager
 			if ($fileInfo->isDir() && $fileInfo->isReadable()) {
 				$pluginName = $fileInfo->getBasename();
 
-				// Trying to load plugin
 				$pluginInstance = $this->loadPlugin($pluginName, true, false);
 
 				if ($pluginInstance) {
-					// Mark the plugin as seen
 					$seenPlugins[] = $pluginName;
 
 					if (!isset($knownPlugins[$pluginName])) { // New plugin
@@ -1219,7 +1162,6 @@ class iMSCP_Plugin_Manager
 
 						$r = new ReflectionMethod($pluginInstance, 'install');
 
-						# Setup initial plugin status
 						if ('iMSCP_Plugin' !== $r->getDeclaringClass()->getName()) {
 							$pluginStatus = 'uninstalled';
 							$pluginInfo['__installable__'] = true;
@@ -1243,7 +1185,7 @@ class iMSCP_Plugin_Manager
 						$newestPluginInfo['__nversion__'] = $newestPluginInfo['version'];
 						$newestPluginInfo['version'] = $pluginInfo['version'];
 
-						if(version_compare($newestPluginInfo['__nversion__'], $pluginInfo['version'], '<')) {
+						if (version_compare($newestPluginInfo['__nversion__'], $pluginInfo['version'], '<')) {
 							set_page_message(
 								tr(
 									'Plugin Manager: Downgrade of plugin is not supported. You must update the %s plugin.',
@@ -1254,7 +1196,7 @@ class iMSCP_Plugin_Manager
 							continue;
 						}
 
-						if(isset($pluginInfo['db_schema_version'])) {
+						if (isset($pluginInfo['db_schema_version'])) {
 							$newestPluginInfo['db_schema_version'] = $pluginInfo['db_schema_version'];
 						}
 
@@ -1263,6 +1205,7 @@ class iMSCP_Plugin_Manager
 
 						$r = new ReflectionMethod($pluginInstance, 'uninstall');
 						$newestPluginInfo['__uninstallable__'] = ('iMSCP_Plugin' !== $r->getDeclaringClass()->getName());
+
 
 						$pluginInfo = $newestPluginInfo;
 
@@ -1281,13 +1224,13 @@ class iMSCP_Plugin_Manager
 							} else {
 								continue; // No new version nor config change
 							}
-						} elseif($pluginConfig !== $newestPluginConfig) {
+						} elseif ($pluginConfig !== $newestPluginConfig) {
 							// Does the plugin need to be scheduled for change on next activation?
 							$pluginInfo['__need_change__'] = true;
 							$pluginConfig = $newestPluginConfig;
 							$returnInfo['changed']++;
-						} else {
-							continue; // No config change
+						} elseif (version_compare($pluginInfo['version'], $pluginInfo['__nversion__'], '=')) {
+							continue; // No change.
 						}
 					}
 
@@ -1301,7 +1244,7 @@ class iMSCP_Plugin_Manager
 							'status' => $pluginStatus,
 							'backend' => (
 								file_exists($fileInfo->getPathname() . "/backend/$pluginName.pm") ? 'yes' : 'no'
-							)
+								)
 						)
 					);
 				} else {

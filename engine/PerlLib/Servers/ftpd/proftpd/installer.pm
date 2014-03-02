@@ -349,7 +349,9 @@ sub _buildConfigFile
 {
 	my $self = $_[0];
 
-	my $cfg = {
+	# Define data
+
+	my $data = {
 		HOST_NAME => $main::imscpConfig{'SERVER_HOSTNAME'},
 		DATABASE_NAME => $main::imscpConfig{'DATABASE_NAME'},
 		DATABASE_HOST => $main::imscpConfig{'DATABASE_HOST'},
@@ -362,11 +364,13 @@ sub _buildConfigFile
 		SSL => main::setupGetQuestion('SSL_ENABLED') eq 'yes' ? '' : '#'
 	};
 
+	# Load template
+
 	my $cfgTpl;
-	my $rs = $self->{'hooksManager'}->trigger('onLoadTemplate', 'proftpd', 'proftpd.conf', \$cfgTpl, {});
+	my $rs = $self->{'hooksManager'}->trigger('onLoadTemplate', 'proftpd', 'proftpd.conf', \$cfgTpl, $data);
 	return $rs if $rs;
 
-	if(!$cfgTpl) {
+	unless(defined $cfgTpl) {
 		$cfgTpl = iMSCP::File->new('filename' => "$self->{'cfgDir'}/proftpd.conf")->get();
 		unless(defined $cfgTpl) {
 			error("Unable to read $self->{'cfgDir'}/proftpd.conf");
@@ -374,13 +378,17 @@ sub _buildConfigFile
 		}
 	}
 
+	# Build file
+
 	$rs = $self->{'hooksManager'}->trigger('beforeFtpdBuildConf', \$cfgTpl, 'proftpd.conf');
 	return $rs if $rs;
 
-	$cfgTpl = process($cfg, $cfgTpl);
+	$cfgTpl = process($data, $cfgTpl);
 
 	$rs = $self->{'hooksManager'}->trigger('afterFtpdBuildConf', \$cfgTpl, 'proftpd.conf');
 	return $rs if $rs;
+
+	# Store file
 
 	my $file = iMSCP::File->new('filename' => "$self->{'wrkDir'}/proftpd.conf");
 

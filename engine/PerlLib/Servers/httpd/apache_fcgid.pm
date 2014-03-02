@@ -1013,11 +1013,13 @@ sub buildConfFile($$$;$)
 
 	my ($name, $path, $suffix) = fileparse($file);
 
+	# Load template
+
 	my $cfgTpl;
 	my $rs = $self->{'hooksManager'}->trigger('onLoadTemplate', 'apache_fcgid', $name, \$cfgTpl, $data);
 	return $rs if $rs;
 
-	if(!$cfgTpl) {
+	unless(defined $cfgTpl) {
 		$file = "$self->{'apacheCfgDir'}/$file" unless -d $path && $path ne './';
 
 		$cfgTpl = iMSCP::File->new('filename' => $file)->get();
@@ -1027,16 +1029,20 @@ sub buildConfFile($$$;$)
 		}
 	}
 
+	# Build file
+
 	$rs = $self->{'hooksManager'}->trigger('beforeHttpdBuildConfFile', \$cfgTpl, "$name$suffix", $data, $options);
 	return $rs if $rs;
 
 	$cfgTpl = $self->buildConf($cfgTpl, "$name$suffix", $data);
 	return 1 unless defined $cfgTpl;
 
+	$cfgTpl =~ s/\n{2,}/\n\n/g; # Remove any duplicate blank lines
+
 	$rs = $self->{'hooksManager'}->trigger('afterHttpdBuildConfFile', \$cfgTpl, "$name$suffix", $data, $options);
 	return $rs if $rs;
 
-	$cfgTpl =~ s/\n{2,}/\n\n/g; # Remove any duplicate blank lines
+	# Store file
 
 	my $fileHandler = iMSCP::File->new(
 		'filename' => ($options->{'destination'} ? $options->{'destination'} : "$self->{'apacheWrkDir'}/$name$suffix")
