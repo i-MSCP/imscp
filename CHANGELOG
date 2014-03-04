@@ -19,6 +19,7 @@ PLUGINS:
 	- Updated: Plugin API to version 0.2.7 (changes are backward compatible)
 
 Tickets:
+	- Fixed: #1032: Bug - Use of undefined constant SORT_NATURAL (PHP < 5.4)
 
 ------------------------------------------------------------------------------------------------------------------------
 1.1.2
