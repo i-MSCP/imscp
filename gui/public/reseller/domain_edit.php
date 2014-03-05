@@ -177,20 +177,22 @@ function &reseller_getData($domainId, $forUpdate = false)
 
 		$query = "
 			SELECT
-				`t1`.`domain_status`, COUNT(`t2`.`subdomain_status`) + COUNT(`t3`.`alias_status`) +
-				COUNT(`t4`.`subdomain_alias_status`) AS `statusNotOk`
+				t1.domain_status, COUNT(t2.subdomain_status) + COUNT(t3.alias_status) +
+				COUNT(t4.subdomain_alias_status) AS statusNotOk
 			FROM
-				`domain` `t1`
+				domain AS t1
+			INNER JOIN
+				admin AS t2 ON(admin_id = domain_admin_id)
 			LEFT JOIN
-				`subdomain` `t2` ON (`t1`.`domain_id` = `t2`.`domain_id` AND `t2`.`subdomain_status` NOT RLIKE ?)
+				subdomain AS t3 ON (t1.domain_id = t3.domain_id AND t3.subdomain_status NOT RLIKE ?)
 			LEFT JOIN
-				`domain_aliasses` `t3` ON (`t1`.`domain_id` = `t3`.`domain_id` AND `t3`.`alias_status` NOT RLIKE ?)
+				domain_aliasses AS t4 ON (t1.domain_id = t4.domain_id AND t4.alias_status NOT RLIKE ?)
 			LEFT JOIN
-				`subdomain_alias` `t4` ON (`t4`.`alias_id` = `t3`.`alias_id` AND `t4`.`subdomain_alias_status` NOT RLIKE ?)
+				subdomain_alias AS t5 ON (t5.alias_id = t4.alias_id AND t5.subdomain_alias_status NOT RLIKE ?)
 			WHERE
-				`t1`.`domain_id` = ?
+				t1.domain_id = ?
 			AND
-				`t1`.`domain_created_id` = ?
+				t2.created_by = ?
 		";
 		$stmt = exec_query($query, array($statusOk, $statusOk, $statusOk, $domainId, $_SESSION['user_id']));
 

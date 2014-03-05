@@ -51,15 +51,17 @@ if (resellerHasFeature('domain_aliases') && isset($_GET['id'])) {
 
 	$query = "
 		SELECT
-			`t1`.`domain_id`, `t1`.`alias_id`, `t1`.`alias_name`, `t2`.`domain_id`, `t2`.`domain_created_id`
+			domain_id, alias_id, alias_name, domain_id
 		FROM
-			`domain_aliasses` AS `t1`, `domain` AS `t2`
+			domain_aliasses
+		INNER JOIN
+			domain USING (domain_id)
+		INNER JOIN
+			admin ON(admin_id = domain_admin_id)
 		WHERE
-			`t1`.`alias_id` = ?
+			alias_id = ?
 		AND
-			`t1`.`domain_id` = `t2`.`domain_id`
-		AND
-			`t2`.`domain_created_id` = ?
+			created_by = ?
 	";
 	$stmt = exec_query($query, array($alsId, $_SESSION['user_id']));
 

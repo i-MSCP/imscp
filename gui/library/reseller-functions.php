@@ -314,47 +314,51 @@ function get_user_props($user_id)
  */
 function imscp_domain_exists($domainName, $resellerId)
 {
-	$queryDomain = "SELECT COUNT(`domain_id`) AS `cnt` FROM `domain` WHERE `domain_name` = ?";
+	$queryDomain = "SELECT COUNT(domain_id) AS cnt FROM domain WHERE domain_name = ?";
 	$stmtDomain = exec_query($queryDomain, $domainName);
 
 	// query to check if the domain name exists in the table for domain aliases
 	$queryAliases = "
 		SELECT
-			COUNT(`t1`.`alias_id`) AS `cnt`
+			COUNT(alias_id) AS cnt
 		FROM
-			`domain_aliasses` AS `t1`, `domain` AS `t2`
+			domain_aliasses
+		INNER JOIN
+			domain USING(domain_id)
 		WHERE
-			`t1`.`domain_id` = `t2`.`domain_id`
-		AND
-			`t1`.`alias_name` = ?
+			alias_name = ?
 	";
 	$stmtAliases = exec_query($queryAliases, $domainName);
 
 	// redefine query to check in the table domain/acounts if 3rd level for this reseller is allowed
 	$queryDomain = "
 		SELECT
-			COUNT(`domain_id`) AS `cnt`
+			COUNT(domain_id) AS cnt
 		FROM
-			`domain`
+			domain
+		INNER JOIN
+			admin ON(admin_id = domain_admin_id)
 		WHERE
-			`domain_name` = ?
+			domain_name = ?
 		AND
-			`domain_created_id` <> ?
+			created_by <> ?
 	";
 
 	// redefine query to check in the table aliases if 3rd level for this reseller is allowed
-	$queryAliases = "
+	$queryAliases = '
 		SELECT
-			COUNT(`t1`.`alias_id`) AS cnt
+			COUNT(alias_id) AS cnt
 		FROM
-			`domain_aliasses` AS `t1`, `domain` AS `t2`
+			domain_aliasses
+		INNER JOIN
+			domain USING(domain_id)
+		INNER JOIN
+			admin ON(admin_id = domain_admin_id)
 		WHERE
-			`t1`.`domain_id` = `t2`.`domain_id`
+			alias_name = ?
 		AND
-			`t1`.`alias_name` = ?
-		AND
-			`t2`.`domain_created_id` <> ?
-	";
+			created_by <> ?
+	';
 	// here we split the domain name by point separator
 	$splitDomain = explode('.', trim($domainName));
 	//$dom_cnt = strlen(trim($domain_name));
@@ -377,9 +381,7 @@ function imscp_domain_exists($domainName, $resellerId)
 
 	// if we have : db entry in the tables domain AND no problem with 3rd level domains
 	// AND enduser (no reseller) => the function returns OK => domain can be added
-	if ($stmtDomain->fields['cnt'] == 0 && $stmtAliases->fields['cnt'] == 0 &&
-		$error == 0 && $resellerId == 0
-	) {
+	if ($stmtDomain->fields['cnt'] == 0 && $stmtAliases->fields['cnt'] == 0 && $error == 0 && $resellerId == 0) {
 		return false;
 	}
 
@@ -392,13 +394,15 @@ function imscp_domain_exists($domainName, $resellerId)
 	// query to check if the domain does not exist as subdomain
 	$querySubdomains = "
 		SELECT
-			`t1`.`subdomain_name`, `t2`.`domain_name`
+			subdomain_name, domain_name
 		FROM
-			`subdomain` AS `t1`, `domain` AS `t2`
+			subdomain
+		INNER JOIN
+			domain USING(domain_id)
+		INNER JOIN
+			admin ON(admin_id = domain_admin_id)
 		WHERE
-			`t1`.`domain_id` = `t2`.`domain_id`
-		AND
-			`t2`.`domain_created_id` = ?
+			created_by = ?
 	";
 	$stmtSubdomains = exec_query($querySubdomains, $resellerId);
 
@@ -437,92 +441,103 @@ function gen_manage_domain_query(
 ) {
 	if ($searchFor === 'n/a' && $searchCommon === 'n/a' && $searchStatus === 'n/a') {
 		// We have pure list query;
-		$countQuery = "SELECT COUNT(`domain_id`) AS `cnt` FROM `domain` WHERE `domain_created_id` = '$resellerId'";
+		$countQuery = "
+			SELECT
+				COUNT(domain_id) AS cnt
+			FROM
+				domain
+			INNER JOIN
+				admin ON(admin_id = domain_admin_id)
+			WHERE
+				created_by = '$resellerId'
+		";
 
 		$searchQuery = "
 			SELECT
 				*
 			FROM
-				`domain`
-			LEFT JOIN `admin` ON(`domain_admin_id` = `admin_id`)
+				domain
+			INNER JOIN
+				admin ON(admin_id = domain_admin_id)
 			WHERE
-				`domain_created_id` = '$resellerId'
+				created_by = '$resellerId'
 			ORDER BY
-				`domain_name` ASC
+				domain_name ASC
 			LIMIT
 				$startIndex, $rowsPerPage
 		";
 	} elseif ($searchFor == '' && $searchStatus != '') {
 		if ($searchStatus == 'all') {
-			$addQuery = "`domain_created_id` = '$resellerId'";
+			$addQuery = "created_by = '$resellerId'";
 		} else {
-			$addQuery = "`domain_created_id` = '$resellerId' AND `domain_status` = '$searchStatus'";
+			$addQuery = "created_by = '$resellerId' AND domain_status = '$searchStatus'";
 		}
 
-		$countQuery = " SELECT COUNT(`domain_id`) AS `cnt` FROM `domain` WHERE $addQuery";
+		$countQuery = "SELECT COUNT(domain_id) AS cnt FROM domain WHERE $addQuery";
 
 		$searchQuery = "
 			SELECT
 				*
 			FROM
-				`domain`
-			LEFT JOIN `admin` ON(`domain_admin_id` = `admin_id`)
+				domain
+			INNER JOIN
+				admin ON(admin_id = domain_admin_id)
 			WHERE
 				$addQuery
 			ORDER BY
-				`domain_name` ASC
+				domain_name ASC
 			LIMIT
 				$startIndex, $rowsPerPage
 		";
 	} elseif ($searchFor != '') {
 		if ($searchCommon == 'domain_name') {
 			$searchFor = encode_idna($searchFor);
-			$addQuery = "WHERE `admin_name` RLIKE '" . addslashes($searchFor) . "' %s";
+			$addQuery = "WHERE admin_name RLIKE '" . addslashes($searchFor) . "' %s";
 		} elseif ($searchCommon == 'customer_id') {
-			$addQuery = "WHERE `customer_id` RLIKE '" . addslashes($searchFor) . "' %s";
+			$addQuery = "WHERE customer_id RLIKE '" . addslashes($searchFor) . "' %s";
 		} elseif ($searchCommon == 'lname') {
-			$addQuery = "WHERE (`lname` RLIKE '" . addslashes($searchFor) .
-				"' OR `fname` RLIKE '" . addslashes($searchFor) . "') %s";
+			$addQuery = "WHERE (lname RLIKE '" . addslashes($searchFor) .
+				"' OR fname RLIKE '" . addslashes($searchFor) . "') %s";
 		} elseif ($searchCommon == 'firm') {
-			$addQuery = "WHERE `firm` RLIKE '" . addslashes($searchFor) . "' %s";
+			$addQuery = "WHERE firm RLIKE '" . addslashes($searchFor) . "' %s";
 		} elseif ($searchCommon == 'city') {
-			$addQuery = "WHERE `city` RLIKE '" . addslashes($searchFor) . "' %s";
+			$addQuery = "WHERE city RLIKE '" . addslashes($searchFor) . "' %s";
 		} elseif ($searchCommon == 'state') {
-			$addQuery = "WHERE `state` RLIKE '" . addslashes($searchFor) . "' %s";
+			$addQuery = "WHERE state RLIKE '" . addslashes($searchFor) . "' %s";
 		} elseif ($searchCommon == 'country') {
-			$addQuery = "WHERE `country` RLIKE '" . addslashes($searchFor) . "' %s";
+			$addQuery = "WHERE country RLIKE '" . addslashes($searchFor) . "' %s";
 		}
 
 		if (isset($addQuery)) {
 			if ($searchStatus != 'all') {
 				$addQuery = sprintf(
-					$addQuery, " AND t1.`created_by` = '$resellerId' AND t2.`domain_status` = '$searchStatus'"
+					$addQuery, " AND created_by = '$resellerId' AND domain_status = '$searchStatus'"
 				);
 
 				$countQuery = "
 				    SELECT
-					    COUNT(`admin_id`) AS `cnt`
+					    COUNT(admin_id) AS cnt
 				    FROM
-					    `admin` AS `t1`, `domain` AS `t2`
+					    admin AS t1, domain AS t2
 				    $addQuery
 				AND
-					`t1`.`admin_id` = `t2`.`domain_admin_id`
+					t1.admin_id = t2.domain_admin_id
 			";
 			} else {
 				$addQuery = sprintf($addQuery, " AND `created_by` = '$resellerId'");
-				$countQuery = "SELECT COUNT(`admin_id`) AS `cnt` FROM `admin` $addQuery";
+				$countQuery = "SELECT COUNT(admin_id) AS cnt FROM admin $addQuery";
 			}
 
 			$searchQuery = "
 			    SELECT
-				    `t1`.`admin_id`, t1.`admin_status`, `t2`.*
+				    t1.admin_id, t1.admin_status, t2.*
 			    FROM
-				    `admin` AS `t1`, `domain` AS `t2`
+				    admin AS t1, domain AS t2
 			    $addQuery
 			    AND
-				    `t1`.`admin_id` = `t2`.`domain_admin_id`
+				    t1.admin_id = t2.domain_admin_id
 			    ORDER BY
-				    `t2`.`domain_name` ASC
+				    t2.domain_name ASC
 			    LIMIT
 				    $startIndex, $rowsPerPage
 		    ";
@@ -801,61 +816,6 @@ function client_mail_add_default_accounts($domainId, $userEmail, $domainPart, $d
 }
 
 /**
- * Recalculate current_ properties of reseller
- *
- * Important:
- *
- * This is not based on the objects consumed by customers. This is based on objects assigned by the reseller to its
- * customers. In other words, it's useless to call this function on client side.
- *
- *
- * @throws iMSCP_Exception in case the given reseller doesn't exist
- * @param int $resellerId Reseller unique identifier
- * @return array list of properties
- */
-function recalc_reseller_c_props($resellerId)
-{
-	/** @var $cfg iMSCP_Config_Handler_File */
-	$cfg = iMSCP_Registry::get('config');
-
-	// Get all users of reseller
-	$query = "
-		SELECT
-			COUNT(`t1`.`domain_id`) AS `current_domain_cnt`,
-			IFNULL(SUM(IF(`t1`.`domain_subd_limit` >= 0, `t1`.`domain_subd_limit`, 0)), 0) AS `current_sub_cnt`,
-			IFNULL(SUM(IF(`t1`.`domain_alias_limit` >= 0, `t1`.`domain_alias_limit`, 0)), 0) AS `current_als_cnt`,
-			IFNULL(SUM(IF(`t1`.`domain_mailacc_limit` >= 0, `t1`.`domain_mailacc_limit`, 0)), 0) AS `current_mail_cnt`,
-			IFNULL(SUM(IF(`t1`.`domain_ftpacc_limit` >= 0, `t1`.`domain_ftpacc_limit`, 0)), 0) AS `current_ftp_cnt`,
-			IFNULL(SUM(IF(`t1`.`domain_sqld_limit` >= 0, `t1`.`domain_sqld_limit`, 0)), 0) AS `current_sql_db_cnt`,
-			IFNULL(SUM(IF(`t1`.`domain_sqlu_limit` >= 0, `t1`.`domain_sqlu_limit`, 0)), 0) AS `current_sql_user_cnt`,
-			IFNULL(SUM(`t1`.`domain_disk_limit`), 0) AS `current_disk_amnt`,
-			IFNULL(SUM(`t1`.`domain_traffic_limit`), 0) AS `current_traff_amnt`,
-			IFNULL(`t2`.`admin_id`, 0) AS `reseller_id`
-		FROM
-			`domain` AS `t1`
-		RIGHT JOIN
-			`admin` AS t2 ON(`t2`.`admin_id` = ? AND `t2`.`admin_type` = ?)
-		WHERE
-			`t1`.`domain_created_id` = ?
-		AND
-			`t1`.`domain_status` != ?
-	";
-	$stmt = exec_query($query, array($resellerId, 'reseller', $resellerId, $cfg->ITEM_TODELETE_STATUS));
-
-	$row = $stmt->fetchRow();
-
-	if($row['reseller_id'] == 0) {
-		throw new iMSCP_Exception("Reseller with ID $resellerId has not been found.");
-	}
-
-	return array(
-		$row['current_domain_cnt'], $row['current_sub_cnt'], $row['current_als_cnt'], $row['current_mail_cnt'],
-		$row['current_ftp_cnt'], $row['current_sql_db_cnt'], $row['current_sql_user_cnt'], $row['current_disk_amnt'],
-		$row['current_traff_amnt']
-	);
-}
-
-/**
  * Recalculates the reseller's current properties.
  *
  * Important:
@@ -868,20 +828,43 @@ function recalc_reseller_c_props($resellerId)
  */
 function update_reseller_c_props($resellerId)
 {
-	$query = "
-		UPDATE
-			`reseller_props`
-		SET
-			`current_dmn_cnt` = ?, `current_sub_cnt` = ?, `current_als_cnt` = ?, `current_mail_cnt` = ?,
-			`current_ftp_cnt` = ?, `current_sql_db_cnt` = ?, `current_sql_user_cnt` = ?, `current_disk_amnt` = ?,
-			`current_traff_amnt` = ?
-		WHERE
-			`reseller_id` = ?
-	";
-
-	$props = recalc_reseller_c_props($resellerId);
-	$props[] = $resellerId;
-	exec_query($query, $props);
+	exec_query(
+		'
+			UPDATE
+    			reseller_props AS t1
+			INNER JOIN(
+    			SELECT
+					COUNT(domain_id) As dmnCount,
+					IFNULL(SUM(IF(domain_subd_limit >= 0, domain_subd_limit, 0)), 0) AS subCount,
+					IFNULL(SUM(IF(domain_alias_limit >= 0, domain_alias_limit, 0)), 0) AS alsLimit,
+					IFNULL(SUM(IF(domain_mailacc_limit >= 0, domain_mailacc_limit, 0)), 0) AS mailLimit,
+					IFNULL(SUM(IF(domain_ftpacc_limit >= 0, domain_ftpacc_limit, 0)), 0) AS ftpLimit,
+					IFNULL(SUM(IF(domain_sqld_limit >= 0, domain_sqld_limit, 0)), 0) AS sqldLimit,
+					IFNULL(SUM(IF(domain_sqlu_limit >= 0, domain_sqlu_limit, 0)), 0) AS sqluLimit,
+					IFNULL(SUM(domain_disk_limit), 0) AS diskLimit,
+					IFNULL(SUM(domain_traffic_limit), 0) AS trafficLimit,
+    				created_by
+    			FROM
+        			domain
+    			INNER JOIN
+        			admin ON(admin_id = domain_admin_id)
+    			GROUP BY created_by
+			) t2 ON t1.reseller_id = t2.created_by
+			SET
+    			t1.current_dmn_cnt = t2.dmnCount,
+				t1.current_sub_cnt = t2.subCount,
+				t1.current_als_cnt = t2.alsLimit,
+				t1.current_mail_cnt = t2.mailLimit,
+				t1.current_ftp_cnt = t2.ftpLimit,
+				t1.current_sql_db_cnt = t2.sqldLimit,
+				t1.current_sql_user_cnt = t2.sqluLimit,
+				t1.current_disk_amnt = t2.diskLimit,
+				t1.current_traff_amnt = t2.trafficLimit
+			WHERE
+    			t1.reseller_id = ?
+    	',
+		$resellerId
+	);
 }
 
 /**
@@ -890,6 +873,7 @@ function update_reseller_c_props($resellerId)
  * @param int $domainId Domain unique identifier
  * @return int Reseller unique identifier or 0 in on error
  */
+/*
 function get_reseller_id($domainId)
 {
 	$query = "
@@ -910,6 +894,7 @@ function get_reseller_id($domainId)
 
 	return $stmt->fields('created_by');
 }
+*/
 
 /**
  * Convert datepicker date to Unix-Timestamp.

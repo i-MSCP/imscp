@@ -84,14 +84,14 @@ function admin_getResellerProps($resellerId)
 {
 	$query = '
 		SELECT
-			`reseller_id`, `current_sub_cnt`, `max_sub_cnt`, `current_als_cnt`, `max_als_cnt`, `current_mail_cnt`,
-			`max_mail_cnt`, `current_ftp_cnt`, `max_ftp_cnt`, `current_sql_db_cnt`, `max_sql_db_cnt`,
-			`current_sql_user_cnt`, `max_sql_user_cnt`, `current_disk_amnt`, `max_disk_amnt`, `current_traff_amnt`,
-			`max_traff_amnt`, `software_allowed`, `php_ini_system` AS `reseller_php_ini_system`
+			reseller_id, current_sub_cnt, max_sub_cnt, current_als_cnt, max_als_cnt, current_mail_cnt,
+			max_mail_cnt, current_ftp_cnt, max_ftp_cnt, current_sql_db_cnt, max_sql_db_cnt,
+			current_sql_user_cnt, max_sql_user_cnt, current_disk_amnt, max_disk_amnt, current_traff_amnt,
+			max_traff_amnt, software_allowed, php_ini_system AS reseller_php_ini_system
 		FROM
-			`reseller_props`
+			reseller_props
 		WHERE
-			`reseller_id` = ?
+			reseller_id = ?
 		';
 	$stmt = exec_query($query, $resellerId);
 
@@ -108,16 +108,18 @@ function admin_getDomainProps($domainId)
 {
 	$query = "
 		SELECT
-			`domain_id`, `domain_name`, `domain_expires`, `domain_created_id`, `domain_status`, `domain_ip_id`,
-			`domain_subd_limit`, `domain_alias_limit`, `domain_mailacc_limit`, `domain_ftpacc_limit`,
-			`domain_sqld_limit`, `domain_sqlu_limit`, `domain_disk_limit`, `domain_disk_usage`, `domain_traffic_limit`,
-			`domain_php`, `domain_cgi`, `domain_dns`, `domain_software_allowed`, `allowbackup`,
-			`phpini_perm_system` AS `customer_php_ini_system`, `domain_external_mail`, `web_folder_protection`,
-			(`mail_quota` / 1048576) AS `mail_quota`
+			domain_id, domain_name, domain_expires, created_by, domain_status, domain_ip_id,
+			domain_subd_limit, domain_alias_limit, domain_mailacc_limit, domain_ftpacc_limit,
+			domain_sqld_limit, domain_sqlu_limit, domain_disk_limit, domain_disk_usage, domain_traffic_limit,
+			domain_php, domain_cgi, domain_dns, domain_software_allowed, allowbackup,
+			phpini_perm_system AS customer_php_ini_system, domain_external_mail, web_folder_protection,
+			(mail_quota / 1048576) AS mail_quota
 		FROM
-			`domain`
+			domain
+		INNER JOIN
+			admin ON(admin_id = domain_admin_id)
 		WHERE
-			`domain_id` = ?
+			domain_id = ?
 		";
 	$stmt = exec_query($query, $domainId);
 	$data = $stmt->fetchRow();
@@ -187,8 +189,12 @@ function &admin_getData($domainId, $forUpdate = false)
 		if($stmt->fields['domain_status'] == '') {
 			set_page_message(tr("The domain you are trying to edit doesn't exist."), 'error');
 			redirectTo('manage_users.php');
-		} elseif(($stmt->fields['domain_status'] != $cfg->ITEM_OK_STATUS && $stmt->fields['domain_status'] != $cfg->ITEM_DISABLED_STATUS)
-				 || $stmt->fields('statusNotOk') > 0
+		} elseif(
+			(
+				$stmt->fields['domain_status'] != $cfg->ITEM_OK_STATUS &&
+				$stmt->fields['domain_status'] != $cfg->ITEM_DISABLED_STATUS
+			) ||
+			$stmt->fields('statusNotOk') > 0
 		) {
 			set_page_message(tr("The domain or at least one of its entities has a different status than 'ok'."), 'warning');
 			redirectTo('manage_users.php');
@@ -197,7 +203,7 @@ function &admin_getData($domainId, $forUpdate = false)
 		}
 
 		$domainProps = admin_getDomainProps($domainId);
-		$resellerProps = admin_getResellerProps($domainProps['domain_created_id']);
+		$resellerProps = admin_getResellerProps($domainProps['created_by']);
 
 		list(
 			$subCount, $alsCount, $mailCount, $ftpCount, $sqlDbCount, $sqlUsersCount

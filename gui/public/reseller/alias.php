@@ -98,19 +98,20 @@ function reseller_generateAlsList($tpl, $resellerId)
 
 	if (isset($_SESSION['search_for']) && $_SESSION['search_for'] != '') {
 		if (isset($searchCommon) && $searchCommon == 'alias_name') {
+
 			$query = "
 				SELECT
-					t1.*, t2.`domain_id`, t2.`domain_name`, t2.`domain_created_id`
+					t1.*, t2.domain_id, t2.domain_name
 				FROM
-					`domain_aliasses` AS t1, `domain` AS t2
+					domain_aliasses AS t1
+				INNER JOIN
+					domain AS t2 USING(domain_id)
+				INNER JOIN
+					admin AS t3 ON(t3.admin_id = t2.domain_admin_id)
 				WHERE
-					`alias_name` RLIKE '$searchFor'
-				AND
-					t2.`domain_created_id` = ?
-				AND
-					t1.`domain_id` = t2.`domain_id`
+					t3.created_by = ?
 				ORDER BY
-					t1.`alias_name` ASC
+					t1.alias_name
 				LIMIT
 					$startIndex, $rowsPerPage
 			";
@@ -118,61 +119,68 @@ function reseller_generateAlsList($tpl, $resellerId)
 			// count query
 			$count_query = "
 				SELECT
-					COUNT(`alias_id`) AS cnt
+					COUNT(alias_id) AS cnt
 				FROM
-					`domain_aliasses` AS t1, `domain` AS t2
+					domain_aliasses
+				INNER JOIN
+					domain USING(domain_id)
+				INNER JOIN
+					admin ON(admin_id = domain_admin_id)
 				WHERE
-					t2.`domain_created_id` = ?
+					created_by = ?
 				AND
-					`alias_name` RLIKE '$searchFor'
-				AND
-					t1.`domain_id` = t2.`domain_id`
+					alias_name RLIKE '$searchFor'
 			";
 		} else {
 			$query = "
 				SELECT
-					t1.*, t2.`domain_id`, t2.`domain_name`, t2.`domain_created_id`
+					t1.*, t2.domain_id, t2.domain_name
 				FROM
-					`domain_aliasses` AS t1, `domain` AS t2
+					domain_aliasses AS t1
+				INNER JOIN
+					domain AS t2 USING(domain_id)
+				INNER JOIN
+					admin AS t3 ON(t3.admin_id = t2.domain_admin_id)
 				WHERE
-					t2.`domain_name` RLIKE '$searchFor'
+					t3.created_by = ?
 				AND
-					t1.`domain_id` = t2.`domain_id`
-				AND
-					t2.`domain_created_id` = ?
+					t2.domain_name RLIKE '$searchFor'
 				ORDER BY
-					t1.`alias_name` ASC
+					t1.alias_name ASC
 				LIMIT
 					$startIndex, $rowsPerPage
-				;
 			";
 
 			// count query
 			$count_query = "
 				SELECT
-					COUNT(`alias_id`) AS cnt
+					COUNT(alias_id) AS cnt
 				FROM
-					`domain_aliasses` AS t1, `domain` AS t2
+					domain_aliasses
+				INNER JOIN
+					domain USING(domain_id)
+				INNER JOIN
+					admin ON(admin_id = domain_admin_id)
 				WHERE
-					t2.`domain_created_id` = ?
+					created_by = ?
 				AND
-					t2.`domain_name` RLIKE '$searchFor'
-				AND
-					t1.`domain_id` = t2.`domain_id`
+					domain_name RLIKE '$searchFor'
 			";
 		}
 	} else {
 		$query = "
 			SELECT
-				t1.*, t2.`domain_id`, t2.`domain_name`, t2.`domain_created_id`
+				t1.*, t2.domain_id, t2.domain_name
 			FROM
-				`domain_aliasses` AS t1, `domain` AS t2
+				domain_aliasses AS t1
+			INNER JOIN
+				domain AS t2 USING(domain_id)
+			INNER JOIN
+				admin AS t3 ON(t3.admin_id = t2.domain_admin_id)
 			WHERE
-				t1.`domain_id` = t2.`domain_id`
-			AND
-				t2.`domain_created_id` = ?
+				t3.created_by = ?
 			ORDER BY
-				t1.`alias_name` ASC
+				t1.alias_name ASC
 			LIMIT
 				$startIndex, $rowsPerPage
 		";
@@ -180,13 +188,15 @@ function reseller_generateAlsList($tpl, $resellerId)
 		// count query
 		$count_query = "
 			SELECT
-				COUNT(`alias_id`) AS cnt
+				COUNT(alias_id) AS cnt
 			FROM
-				`domain_aliasses` AS t1, `domain` AS t2
-			WHERE
-				t1.`domain_id` = t2.domain_id
+				domain_aliasses
+			INNER JOIN
+				domain USING(domain_id)
+			INNER JOIN
+				admin ON(admin_id = domain_admin_id)
 			AND
-				t2.`domain_created_id` = ?
+				created_by = ?
 		";
 	}
 

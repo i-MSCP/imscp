@@ -38,104 +38,79 @@
  */
 function listIPDomains($tpl)
 {
-	$stmt = execute_query('SELECT `ip_id`, `ip_number` FROM `server_ips`');
+	$stmt = execute_query('SELECT ip_id, ip_number FROM server_ips');
 
-	if ($stmt->rowCount()) {
-		while (!$stmt->EOF) {
-			$noDomains = false;
-			$noDomainAliases = false;
-
-			$query = "
+	while ($ip = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
+		$stmt2 = exec_query(
+			'
 				SELECT
-					`d`.`domain_name`, `a`.`admin_name`
+					t1.domain_name, t3.admin_name
 				FROM
-					`domain` d
+					domain AS t1
 				INNER JOIN
-					`admin` a ON (`a`.`admin_id` = `d`.`domain_created_id`)
+					admin AS t2 ON(t2.admin_id = t1.domain_admin_id)
+				INNER JOIN
+					admin as t3 ON(t3.admin_id = t2.created_by)
 				WHERE
-					`d`.`domain_ip_id` = ?
-				ORDER BY
-					`d`.`domain_name`
-			";
+					t1.domain_ip_id = ?
+			',
+			$ip['ip_id']
+		);
 
-			$stmt2 = exec_query($query, $stmt->fields['ip_id']);
-			$domainsCount = $stmt2->recordCount();
+		$domainsCount = $stmt2->rowCount();
 
-			if (!$stmt2->rowCount()) {
-				$noDomains = true;
-			}
-
-			while (!$stmt2->EOF) {
-				$tpl->assign(
-					array(
-						'DOMAIN_NAME' => $stmt2->fields['domain_name'],
-						'RESELLER_NAME' => $stmt2->fields['admin_name']
-					)
-				);
-
-				$tpl->parse('DOMAIN_ROW', '.domain_row');
-				$stmt2->moveNext();
-			}
-
-			$query = "
-				SELECT
-					`da`.`alias_name`, `a`.`admin_name`
-				FROM
-				`domain_aliasses` da
-				INNER JOIN
-					`domain` d ON (`d`.`domain_id` = `da`.`domain_id`)
-				INNER JOIN
-					`admin` a ON (`a`.`admin_id` = `d`.`domain_created_id`)
-				WHERE
-					`da`.`alias_ip_id` = ?
-				ORDER BY
-					`da`.`alias_name`
-			";
-
-			$stmt3 = exec_query($query, $stmt->fields['ip_id']);
-			$domainaliasesCount = $stmt3->recordCount();
-
-			if (!$stmt3->rowCount()) {
-				$noDomainAliases = true;
-			}
-
-			while (!$stmt3->EOF) {
-				$tpl->assign(
-					array(
-						'DOMAIN_NAME' => $stmt3->fields['alias_name'],
-						'RESELLER_NAME' => $stmt3->fields['admin_name']
-					)
-				);
-
-				$tpl->parse('DOMAIN_ROW', '.domain_row');
-				$stmt3->moveNext();
-			}
-
+		while ($data = $stmt2->fetchRow(PDO::FETCH_ASSOC)) {
 			$tpl->assign(
 				array(
-					'IP' => $stmt->fields['ip_number'],
-					'RECORD_COUNT' => tr('Total Domains') . ' : ' . ($domainsCount + $domainaliasesCount)
+					'DOMAIN_NAME' => idn_to_utf8(tohtml($data['domain_name'])),
+					'RESELLER_NAME' => tohtml($data['admin_name'])
 				)
 			);
 
-			if ($noDomains && $noDomainAliases) {
+			$tpl->parse('DOMAIN_ROW', '.domain_row');
+		}
+
+		$stmt3 = exec_query(
+			'
+				SELECT
+					t1.alias_name, t4.admin_name
+				FROM
+					domain_aliasses AS t1
+				INNER JOIN
+					domain AS t2 USING(domain_id)
+				INNER JOIN
+					admin AS t3 ON(admin_id = domain_admin_id)
+				INNER JOIN
+					admin AS t4 ON(t4.admin_id = t3.created_by)
+				WHERE
+					alias_ip_id = ?
+			',
+			$ip['ip_id']
+		);
+
+		$aliasesCount = $stmt3->rowCount();
+
+		if ($aliasesCount) {
+			while ($data = $stmt3->fetchRow(PDO::FETCH_ASSOC)) {
 				$tpl->assign(
 					array(
-						'DOMAIN_NAME' => tr("No records found"),
-						'RESELLER_NAME' => ''
+						'DOMAIN_NAME' => tohtml(idn_to_utf8($data['alias_name'])),
+						'RESELLER_NAME' => tohtml($data['admin_name'])
 					)
 				);
 
 				$tpl->parse('DOMAIN_ROW', '.domain_row');
 			}
-
-			$tpl->parse('IP_ROW', '.ip_row');
-			$tpl->assign('DOMAIN_ROW', '');
-			$stmt->moveNext();
 		}
-	} else {
-		$tpl->assign('STATISTICS', '');
-		set_page_message('No statistics available.', 'info');
+
+		$tpl->assign(
+			array(
+				'IP' => tohtml($ip['ip_number']),
+				'RECORD_COUNT' => tr('Total Domains') . ': ' . ($domainsCount + $aliasesCount)
+			)
+		);
+
+		$tpl->parse('IP_ROW', '.ip_row');
 	}
 }
 
@@ -150,7 +125,7 @@ iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAdminScriptStart);
 
 check_login('admin');
 
-if(!systemHasResellersOrCustomers()) {
+if (!systemHasCustomers()) {
 	showBadRequestErrorPage();
 }
 
@@ -160,8 +135,9 @@ $tpl->define_dynamic(
 	array(
 		'layout' => 'shared/layouts/ui.tpl',
 		'page' => 'admin/ip_usage.tpl',
-		'ip_row' => 'page',
-		'domain_row' => 'page'
+		'ip_usage_statistics' => 'page',
+		'ip_row' => 'ip_usage_statistics',
+		'domain_row' => 'ip_row'
 	)
 );
 

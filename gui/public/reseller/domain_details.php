@@ -70,8 +70,21 @@ function reseller_gen_mail_quota_limit_mgs($customerId)
  */
 function reseller_generatePage($tpl, $domainId)
 {
-	$query = "SELECT domain_admin_id FROM domain WHERE domain_id = ? AND domain_created_id = ?";
-	$stmt = exec_query($query, array($domainId, $_SESSION['user_id']));
+	$stmt = exec_query(
+		'
+			SELECT
+				domain_admin_id
+			FROM
+				domain
+			INNER JOIN
+				admin ON(admin_id = domain_admin_id)
+			WHERE
+				domain_id = ?
+			AND
+				created_by = ?
+		',
+		array($domainId, $_SESSION['user_id'])
+	);
 
 	if (!$stmt->rowCount()) {
 		showBadRequestErrorPage();

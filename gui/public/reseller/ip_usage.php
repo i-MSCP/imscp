@@ -20,10 +20,97 @@
  * @package     iMSCP_Core
  * @subpackage  Client
  * @copyright   2010-2014 by i-MSCP team
- * @author      Klaas Tammling <klaas.tammling@st-city.net>
  * @author      iMSCP Team
  * @link        http://www.i-mscp.net i-MSCP Home Site
  * @license     http://www.gnu.org/licenses/gpl-2.0.txt GPL v2
+ */
+
+/***********************************************************************************************************************
+ * Script functions
+ */
+
+/**
+ * Generate List of Domains assigned to IPs
+ *
+ * @param  iMSCP_pTemplate $tpl Template engine
+ * @return void
+ */
+function listIPDomains($tpl)
+{
+	$resellerId = $_SESSION['user_id'];
+
+	$stmt = exec_query('SELECT reseller_ips FROM reseller_props WHERE reseller_id = ?', $resellerId);
+	$data = $stmt->fetchRow();
+	$resellerIps = explode(';', substr($data['reseller_ips'], 0, -1));
+
+	$stmt = execute_query('SELECT ip_id, ip_number FROM server_ips WHERE ip_id IN (' . implode(',', $resellerIps) . ')');
+
+	while ($ip = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
+		$stmt2 = exec_query(
+			'
+				SELECT
+					domain_name
+				FROM
+					domain
+				INNER JOIN
+					admin ON(admin_id = domain_admin_id)
+				WHERE
+					domain_ip_id = ?
+				AND
+					created_by = ?
+			',
+			array($ip['ip_id'], $resellerId)
+		);
+
+		$domainsCount = $stmt2->rowCount();
+
+		while ($data = $stmt2->fetchRow(PDO::FETCH_ASSOC)) {
+			$tpl->assign('DOMAIN_NAME', idn_to_utf8(tohtml($data['domain_name'])));
+			$tpl->parse('DOMAIN_ROW', '.domain_row');
+		}
+
+		$stmt3 = exec_query(
+			'
+				SELECT
+					alias_name
+				FROM
+					domain_aliasses
+				INNER JOIN
+					domain USING(domain_id)
+				INNER JOIN
+					admin ON(admin_id = domain_admin_id)
+				WHERE
+					alias_ip_id = ?
+				AND
+					created_by = ?
+			',
+			array($ip['ip_id'], $resellerId)
+		);
+
+		$aliasesCount = $stmt3->rowCount();
+
+		if ($aliasesCount) {
+			while ($data = $stmt3->fetchRow(PDO::FETCH_ASSOC)) {
+				$tpl->assign('DOMAIN_NAME', tohtml(idn_to_utf8($data['alias_name'])));
+				$tpl->parse('DOMAIN_ROW', '.domain_row');
+			}
+		}
+
+		$tpl->assign(
+			array(
+				'IP' => tohtml($ip['ip_number']),
+				'RECORD_COUNT' => tr('Total Domains') . ': ' . ($domainsCount + $aliasesCount)
+			)
+		);
+
+		$tpl->parse('IP_ROW', '.ip_row');
+	}
+
+
+}
+
+/***********************************************************************************************************************
+ * Main script
  */
 
 // Include core library
@@ -31,143 +118,11 @@ require 'imscp-lib.php';
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onResellerScriptStart);
 
-/************************************************************************************
- * Script functions
- */
-
-/**
- * Generate List of Domains assigned to IPs.
- *
- * @param  iMSCP_pTemplate $tpl Template engine
- * @return void
- */
-function listIPDomains($tpl)
-{
-    global $reseller_id;
-
-    $query = "
-		SELECT
-			`reseller_ips`
-		FROM
-			`reseller_props`
-		WHERE
-			`reseller_id` = ?
-	";
-
-    $res = exec_query($query, $reseller_id);
-    $data = $res->fetchRow();
-    $reseller_ips = explode(";", substr($data['reseller_ips'], 0, -1));
-
-    $query = "
-		SELECT
-			`ip_id`, `ip_number`
-		FROM
-			`server_ips`
-		WHERE
-			`ip_id`
-		IN
-			(" . implode(',', $reseller_ips) . ")
-	";
-
-    $rs = execute_query($query);
-
-    if ($rs->recordCount()) {
-        while (!$rs->EOF) {
-
-            $no_domains = false;
-            $no_alias_domains = false;
-
-            $query = "
-			SELECT
-				`d`.`domain_name`, `a`.`admin_name`
-			FROM
-				`domain` d
-			INNER JOIN
-				`admin` a
-			ON
-				(`a`.`admin_id` = `d`.`domain_created_id`)
-			WHERE
-				`d`.`domain_ip_id` = ?
-			AND
-				`d`.`domain_created_id` = ?
-			ORDER BY
-				`d`.`domain_name`
-		";
-
-            $rs2 = exec_query($query, array($rs->fields['ip_id'], $reseller_id));
-            $domain_count = $rs2->recordCount();
-
-            if ($rs2->recordCount() == 0) {
-                $no_domains = true;
-            }
-
-            while (!$rs2->EOF) {
-                $tpl->assign('DOMAIN_NAME', $rs2->fields['domain_name']);
-                $tpl->parse('DOMAIN_ROW', '.domain_row');
-                $rs2->moveNext();
-            }
-
-            $query = "
-			    SELECT
-				    `da`.`alias_name`, `a`.`admin_name`
-			    FROM
-				    `domain_aliasses` da
-			    INNER JOIN
-				    `domain` d
-                ON
-				    (`d`.`domain_id` = `da`.`domain_id`)
-			    INNER JOIN
-				    `admin` a
-			    ON
-				    (`a`.`admin_id` = `d`.`domain_created_id`)
-			    WHERE
-				    `da`.`alias_ip_id` = ?
-			    AND
-				    `d`.`domain_created_id` = ?
-			    ORDER BY
-				    `da`.`alias_name`
-		";
-
-            $rs3 = exec_query($query, array($rs->fields['ip_id'], $reseller_id));
-            $alias_count = $rs3->recordCount();
-
-            if ($rs3->recordCount() == 0) {
-                $no_alias_domains = true;
-            }
-
-            while (!$rs3->EOF) {
-                $tpl->assign('DOMAIN_NAME', $rs3->fields['alias_name']);
-                $tpl->parse('DOMAIN_ROW', '.domain_row');
-                $rs3->moveNext();
-            }
-
-            $tpl->assign(array(
-                              'IP' => $rs->fields['ip_number'],
-                              'RECORD_COUNT' => tr('Total Domains') . " : " . ($domain_count + $alias_count)));
-
-            if ($no_domains && $no_alias_domains) {
-                $tpl->assign(array(
-                                  'DOMAIN_NAME' => tr("No records found"),
-                                  'RESELLER_NAME' => ''));
-
-                $tpl->parse('DOMAIN_ROW', '.domain_row');
-            }
-
-            $tpl->parse('IP_ROW', '.ip_row');
-            $tpl->assign('DOMAIN_ROW', '');
-            $rs->moveNext();
-        }
-    } else {
-        $tpl->assign('IP_USAGE_STATISTICS', '');
-        set_page_message(tr('No IP statistics to be shown.'), 'info');
-    }
-}
-
-/************************************************************************************
- * Main script
- */
-
 check_login('reseller');
+
+if (!resellerHasCustomers()) {
+	showBadRequestErrorPage();
+}
 
 /** @var $cfg iMSCP_Config_Handler_File */
 $cfg = iMSCP_Registry::get('config');
@@ -180,22 +135,18 @@ $tpl->define_dynamic(
 		'layout' => 'shared/layouts/ui.tpl',
 		'page' => 'reseller/ip_usage.tpl',
 		'page_message' => 'layout',
-		'ip_row' => 'page',
-		'domain_row' => 'page'));
+		'ip_usage_statistics' => 'page',
+		'ip_row' => 'ip_usage_statistics',
+		'domain_row' => 'ip_row'
+	)
+);
 
 $reseller_id = $_SESSION['user_id'];
 
 $tpl->assign(
 	array(
 		'TR_PAGE_TITLE' => tr('Reseller / Statistics / IP Usage'),
-		'ISP_LOGO' => layout_getUserLogo()));
-
-generateNavigation($tpl);
-
-listIPDomains($tpl);
-
-$tpl->assign(
-	array(
+		'ISP_LOGO' => layout_getUserLogo(),
 		'TR_DOMAIN_STATISTICS' => tr('Domain statistics'),
 		'TR_IP_RESELLER_USAGE_STATISTICS' => tr('Reseller/IP usage statistics'),
 		'TR_DOMAIN_NAME' => tr('Domain Name'),
@@ -203,7 +154,9 @@ $tpl->assign(
 	)
 );
 
+generateNavigation($tpl);
 generatePageMessage($tpl);
+listIPDomains($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
 

@@ -47,24 +47,34 @@ iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onResellerScriptStar
 check_login('reseller');
 
 if (isset($_GET['domain_id'])) {
-	/** @var $cfg iMSCP_Config_Handler_File */
-	$cfg = iMSCP_Registry::get('config');
+	$domainId = intval($_GET['domain_id']);
 
-	$domainId = clean_input($_GET['domain_id']);
+	$stmt = exec_query(
+		'
+			SELECT
+				admin_id, created_by, domain_status
+			FROM
+				domain
+			INNER JOIN
+				admin ON(admin_id = domain_admin_id)
+			WHERE
+				domain_id = ?
+		',
+		$domainId
+	);
 
-	$query = "SELECT `domain_admin_id`, `domain_created_id`, `domain_status` FROM `domain` WHERE `domain_id` = ?";
-	$stmt = exec_query($query, $domainId);
+	if ($stmt->rowCount()) {
+		$data = $stmt->fetchRow(PDO::FETCH_ASSOC);
 
-	if ($stmt->rowCount() && $stmt->fields['domain_created_id'] == $_SESSION['user_id']) {
-		$customerId = $stmt->fields['domain_admin_id'];
+		if ($data['created_by'] == $_SESSION['user_id']) {
+			if ($data['domain_status'] == 'ok') {
+				change_domain_status($data['admin_id'], 'deactivate');
+			} elseif ($data['domain_status'] == 'disabled') {
+				change_domain_status($data['admin_id'], 'activate');
+			}
 
-		if ($stmt->fields['domain_status'] == $cfg->ITEM_OK_STATUS) {
-			change_domain_status($customerId, 'deactivate');
-		} elseif ($stmt->fields['domain_status'] == $cfg->ITEM_DISABLED_STATUS) {
-			change_domain_status($customerId, 'activate');
+			redirectTo('users.php');
 		}
-
-		redirectTo('users.php');
 	}
 }
 

@@ -243,7 +243,7 @@ function reseller_addCustomer($resellerId)
 
 		$query = "
 			INSERT INTO `domain` (
-				`domain_name`, `domain_admin_id`, `domain_created_id`, `domain_created`, `domain_expires`,
+				`domain_name`, `domain_admin_id`, `domain_created`, `domain_expires`,
 				`domain_mailacc_limit`, `domain_ftpacc_limit`, `domain_traffic_limit`, `domain_sqld_limit`,
 				`domain_sqlu_limit`, `domain_status`, `domain_alias_limit`, `domain_subd_limit`, `domain_ip_id`,
 				`domain_disk_limit`, `domain_disk_usage`, `domain_php`, `domain_cgi`, `allowbackup`, `domain_dns`,
@@ -251,13 +251,13 @@ function reseller_addCustomer($resellerId)
 				`phpini_perm_display_errors`, `phpini_perm_disable_functions`, `domain_external_mail`,
 				`web_folder_protection`, `mail_quota`
 			) VALUES (
-				?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
+				?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
 			)
 		";
 		exec_query(
 			$query,
 			array(
-				$dmnName, $recordId, $resellerId, time(), $dmnExpire, $mail, $ftp, $traff, $sql_db, $sql_user,
+				$dmnName, $recordId, time(), $dmnExpire, $mail, $ftp, $traff, $sql_db, $sql_user,
 				$cfg->ITEM_TOADD_STATUS, $als, $sub, $domainIp, $disk, 0, $php, $cgi, $backup, $dns, $aps, $phpEditor,
 				$phpiniAllowUrlFopen, $phpiniDisplayErrors, $phpiniDisableFunctions, $extMailServer,
 				$webFolderProtection, $mailQuota

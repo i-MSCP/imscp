@@ -303,9 +303,7 @@ function gen_user_list($tpl)
 
 		$stmt = exec_query($countQuery);
 	} else {
-		gen_admin_domain_query($searchQuery, $countQuery, $startIndex,
-			$rowsPerPage, 'n/a', 'n/a', 'n/a');
-
+		gen_admin_domain_query($searchQuery, $countQuery, $startIndex, $rowsPerPage, 'n/a', 'n/a', 'n/a');
 		gen_admin_domain_search_options($tpl, 'n/a', 'n/a', 'n/a');
 		$stmt = exec_query($countQuery);
 	}
@@ -378,13 +376,11 @@ function gen_user_list($tpl)
 			)
 		);
 
-		while (!$stmt->EOF) {
+		while ($data = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
 			// user status icon
-			$domainCreatedId = $stmt->fields['domain_created_id'];
+			$domainCreatedBy = $data['created_by'];
 
-			$stmt2 = exec_query(
-				"SELECT `admin_name`, `admin_status` FROM `admin` WHERE `admin_id` = ?", $domainCreatedId
-			);
+			$stmt2 = exec_query('SELECT admin_name, admin_status FROM admin WHERE admin_id = ?', $domainCreatedBy);
 
 			if (!isset($stmt2->fields['admin_name'])) {
 				$createdByName = tr('N/A');
@@ -395,14 +391,14 @@ function gen_user_list($tpl)
 			$tpl->assign(
 				array(
 					'USR_DELETE_SHOW' => '',
-					'USER_ID' => $stmt->fields['admin_id'],
-					'DOMAIN_ID' => $stmt->fields['domain_id'],
+					'USER_ID' =>$data['admin_id'],
+					'DOMAIN_ID' => $data['domain_id'],
 					'TR_DELETE' => tr('Delete'),
-					'URL_DELETE_USR' => 'user_delete.php?domain_id=' . $stmt->fields['domain_id'],
+					'URL_DELETE_USR' => 'user_delete.php?domain_id=' . $data['domain_id'],
 					'TR_CHANGE_USER_INTERFACE' => tr('Switch to user interface'),
 					'GO_TO_USER_INTERFACE' => tr('Switch'),
-					'URL_CHANGE_INTERFACE' => 'change_user_interface.php?to_id=' . $stmt->fields['domain_admin_id'],
-					'USR_USERNAME' => tohtml($stmt->fields['domain_name']),
+					'URL_CHANGE_INTERFACE' => 'change_user_interface.php?to_id=' . $data['domain_admin_id'],
+					'USR_USERNAME' => tohtml($data['domain_name']),
 					'TR_EDIT_DOMAIN' => tr('Edit domain'),
 					'TR_EDIT_USR' => tr('Edit user')
 				)
@@ -410,49 +406,43 @@ function gen_user_list($tpl)
 
 			$tpl->parse('USR_DELETE_LINK', 'usr_delete_link');
 
-			if (
-				$stmt->fields['admin_status'] == $cfg->ITEM_OK_STATUS &&
-				$stmt->fields['domain_status'] == $cfg->ITEM_OK_STATUS
-			) {
+			if ($data['admin_status'] == $cfg->ITEM_OK_STATUS && $data['domain_status'] == $cfg->ITEM_OK_STATUS) {
 				$status = 'ok';
-				$statusTxt = translate_dmn_status($stmt->fields['domain_status']);
-				$statusUrl = 'domain_status_change.php?domain_id=' . $stmt->fields['domain_id'];
+				$statusTxt = translate_dmn_status($data['domain_status']);
+				$statusUrl = 'domain_status_change.php?domain_id=' . $data['domain_id'];
 				$statusBool = true;
-			} elseif ($stmt->fields['domain_status'] == $cfg->ITEM_DISABLED_STATUS) {
+			} elseif ($data['domain_status'] == $cfg->ITEM_DISABLED_STATUS) {
 				$status = 'disabled';
-				$statusTxt = translate_dmn_status($stmt->fields['domain_status']);
-				$statusUrl = 'domain_status_change.php?domain_id=' . $stmt->fields['domain_id'];
+				$statusTxt = translate_dmn_status($data['domain_status']);
+				$statusUrl = 'domain_status_change.php?domain_id=' . $data['domain_id'];
 				$statusBool = false;
 			} elseif (
 				(
-					$stmt->fields['admin_status'] == $cfg->ITEM_TOADD_STATUS ||
-					$stmt->fields['admin_status'] == $cfg->ITEM_TOCHANGE_STATUS ||
-					$stmt->fields['admin_status'] == $cfg->ITEM_TODELETE_STATUS
-				) ||
-				(
-					$stmt->fields['domain_status'] == $cfg->ITEM_TOADD_STATUS ||
-					$stmt->fields['domain_status'] == $cfg->ITEM_TORESTORE_STATUS ||
-					$stmt->fields['domain_status'] == $cfg->ITEM_TOCHANGE_STATUS ||
-					$stmt->fields['domain_status'] == $cfg->ITEM_TOENABLE_STATUS ||
-					$stmt->fields['domain_status'] == $cfg->ITEM_TODISABLE_STATUS ||
-					$stmt->fields['domain_status'] == $cfg->ITEM_TODELETE_STATUS
+					$data['admin_status'] == $cfg->ITEM_TOADD_STATUS ||
+					$data['admin_status'] == $cfg->ITEM_TOCHANGE_STATUS ||
+					$data['admin_status'] == $cfg->ITEM_TODELETE_STATUS
+				) || (
+					$data['domain_status'] == $cfg->ITEM_TOADD_STATUS ||
+					$data['domain_status'] == $cfg->ITEM_TORESTORE_STATUS ||
+					$data['domain_status'] == $cfg->ITEM_TOCHANGE_STATUS ||
+					$data['domain_status'] == $cfg->ITEM_TOENABLE_STATUS ||
+					$data['domain_status'] == $cfg->ITEM_TODISABLE_STATUS ||
+					$data['domain_status'] == $cfg->ITEM_TODELETE_STATUS
 				)
 			) {
 
 				$status = 'reload';
 				$statusTxt = translate_dmn_status(
-					($stmt->fields['admin_status'] != $cfg->ITEM_OK_STATUS)
-						? $stmt->fields['admin_status'] : $stmt->fields['domain_status']
+					($data['admin_status'] != $cfg->ITEM_OK_STATUS) ? $data['admin_status'] : $data['domain_status']
 				);
 				$statusUrl = '#';
 				$statusBool = false;
 			} else {
 				$status = 'error';
 				$statusTxt = translate_dmn_status(
-					($stmt->fields['admin_status'] != $cfg->ITEM_OK_STATUS)
-						? $stmt->fields['admin_status'] : $stmt->fields['domain_status']
+					($data['admin_status'] != $cfg->ITEM_OK_STATUS) ? $data['admin_status'] : $data['domain_status']
 				);
-				$statusUrl = 'domain_details.php?domain_id=' . $stmt->fields['domain_id'];
+				$statusUrl = 'domain_details.php?domain_id=' . $data['domain_id'];
 				$statusBool = false;
 			}
 
@@ -464,8 +454,8 @@ function gen_user_list($tpl)
 				)
 			);
 
-			$adminName = decode_idna($stmt->fields['domain_name']);
-			$domainCreated = $stmt->fields['domain_created'];
+			$adminName = decode_idna($data['domain_name']);
+			$domainCreated = $data['domain_created'];
 
 			if ($domainCreated == 0) {
 				$domainCreated = tr('N/A');
@@ -474,7 +464,7 @@ function gen_user_list($tpl)
 				$domainCreated = date($date_formt, $domainCreated);
 			}
 
-			$domainExpires = $stmt->fields['domain_expires'];
+			$domainExpires = $data['domain_expires'];
 
 			if ($domainExpires == 0) {
 				$domainExpires = tr('Not Set');
@@ -499,17 +489,16 @@ function gen_user_list($tpl)
 					'USER_EXPIRES_ON' => $domainExpires,
 					'USR_CREATED_BY' => tohtml($createdByName),
 					'USR_OPTIONS' => '',
-					'URL_EDIT_USR' => 'admin_edit.php?edit_id=' . $stmt->fields['domain_admin_id'],
+					'URL_EDIT_USR' => 'admin_edit.php?edit_id=' . $data['domain_admin_id'],
 					'TR_MESSAGE_CHANGE_STATUS' => tr('Are you sure you want to change the status of %s domain account?', '%s'),
 					'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete %s?', '%s'
 					)
 				)
 			);
 
-			gen_domain_details($tpl, $stmt->fields['domain_id']);
+			gen_domain_details($tpl, $data['domain_id']);
 
 			$tpl->parse('USR_ITEM', '.usr_item');
-			$stmt->moveNext();
 		}
 
 		$tpl->parse('USR_LIST', 'usr_list');

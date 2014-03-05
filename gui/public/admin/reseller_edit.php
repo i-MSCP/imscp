@@ -104,8 +104,19 @@ function &admin_getData($resellerId, $forUpdate = false)
 		$data['reseller_ips'] = explode(';', trim($data['reseller_ips'], ';'));
 
 		// Fetch all ip id used by reseller's customers
-		$query = "SELECT DISTINCT `domain_ip_id` FROM `domain` WHERE `domain_created_id` = ?";
-		$stmt = exec_query($query, $resellerId);
+		$stmt = exec_query(
+			'
+				SELECT DISTINCT
+					domain_ip_id
+				FROM
+					domain
+				INNER JOIN
+					admin ON(admin_id = domain_admin_id)
+				WHERE
+					created_by = ?
+			',
+			$resellerId
+		);
 
 		if ($stmt->rowCount()) {
 			$data['used_ips'] = $stmt->fetchAll(PDO::FETCH_COLUMN);
@@ -736,8 +747,19 @@ function admin_checkAndUpdateData($resellerId)
 			// Updating software installer properties
 
 			if ($data['software_allowed'] == 'no') {
-				$query = 'UPDATE `domain` SET `domain_software_allowed` = ? WHERE `domain_created_id` = ?';
-				exec_query($query, array($data['softwaredepot_allowed'], $resellerId));
+				exec_query(
+					'
+						UPDATE
+							domain
+						INNER JOIN
+							admin ON(admin_id = domain_admin_id)
+						SET
+							domain_software_allowed = ?
+						WHERE
+							created_by = ?
+					',
+					array($data['softwaredepot_allowed'], $resellerId)
+				);
 			}
 
 			if ($data['websoftwaredepot_allowed'] == 'no') {

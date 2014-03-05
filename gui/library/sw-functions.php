@@ -49,13 +49,15 @@ function update_existing_client_installations_res_upload($software_id, $reseller
 {
 	$query = "
         SELECT
-            `domain_id`
+            domain_id
         FROM
-            `domain`
+            domain
+        INNER JOIN
+        	admin on (admin_id = domain_admin_id)
         WHERE
-            `domain_software_allowed` = 'yes'
+            domain_software_allowed = 'yes'
         AND
-            `domain_created_id` = ?
+            created_by = ?
     ";
 	$res = exec_query($query, $reseller_id);
 
@@ -105,14 +107,16 @@ function update_existing_client_installations_res_upload($software_id, $reseller
 function update_existing_client_installations_sw_depot($software_id, $software_master_id, $reseller_id)
 {
 	$query = "
-        SELECT
-            `domain_id`
-        FROM
-            `domain`
-        WHERE
-            `domain_software_allowed` = 'yes'
-        AND
-            `domain_created_id` = ?
+		SELECT
+			domain_id
+		FROM
+			domain
+		INNER JOIN
+			admin ON(admin_id = domain_admin_id)
+		WHERE
+			domain_software_allowed = 'yes'
+		AND
+			created_by = ?
      ";
 	$stmt = exec_query($query, $reseller_id);
 

@@ -46,17 +46,19 @@ function _reseller_getAliasData($domainAliasId)
 
 		$query = "
 			SELECT
-				`alias_name`, `url_forward` AS `forward_url`
+				alias_name, url_forward AS forward_url
 			FROM
-				`domain_aliasses`
+				domain_aliasses
 			INNER JOIN
-				`domain` USING(`domain_id`)
+				domain USING(domain_id)
+			INNER JOIN
+				admin ON(admin_id = domain_admin_id)
 			WHERE
-				`alias_id` = ?
+				alias_id = ?
 			AND
-				`alias_status` = ?
+				alias_status = ?
 			AND
-				`domain_created_id` = ?
+				created_by = ?
 		";
 		$stmt = exec_query($query, array($domainAliasId, $cfg->ITEM_OK_STATUS, $_SESSION['user_id']));
 

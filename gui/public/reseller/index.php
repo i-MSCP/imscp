@@ -81,22 +81,30 @@ function reseller_generateOrdersAliasesMessage()
 
 	$query = "
 		SELECT
-			COUNT(`alias_id`) `nbOrdersAliases`
+			COUNT(alias_id) AS nbOrdersAliases
 		FROM
-			`domain_aliasses` `t1`
+			domain_aliasses
 		INNER JOIN
-			`domain` `t2` ON(`t2`.`domain_created_id` = ?)
+			domain USING(domain_id)
+		INNER JOIN
+			admin ON(admin_id = domain_admin_id)
 		WHERE
-			`t1`.`domain_id` = `t2`.`domain_id`
+			alias_status = ?
 		AND
-			`t1`.`alias_status` = ?
+			created_by = ?
 	";
-	$stmt = exec_query($query, array($_SESSION['user_id'], $cfg->ITEM_ORDERED_STATUS));
+	$stmt = exec_query($query, array($cfg->ITEM_ORDERED_STATUS, $_SESSION['user_id']));
 
 	$nbOrdersAliases = $stmt->fields['nbOrdersAliases'];
 
 	if ($nbOrdersAliases) {
-		set_page_message(tr('You have %d new domain alias %s.', $nbOrdersAliases, ($nbOrdersAliases > 1) ? tr('orders') : tr('order')), 'info');
+		set_page_message(
+			tr(
+				'You have %d new domain alias %s.', $nbOrdersAliases,
+				($nbOrdersAliases > 1) ? tr('orders') : tr('order')
+			),
+			'info'
+		);
 	}
 }
 

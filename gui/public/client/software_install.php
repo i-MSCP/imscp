@@ -48,9 +48,12 @@ function client_generatePage($tpl, $customerId)
 
 	$domainProperties = get_domain_default_props($customerId);
 
+	$stmt = exec_query('SELECT created_by FROM admin WHERE admin_id = ?', $customerId);
+
 	get_software_props_install(
-		$tpl, $domainProperties['domain_id'], $softwareId, $domainProperties['domain_created_id'],
-		$domainProperties['domain_sqld_limit']);
+		$tpl, $domainProperties['domain_id'], $softwareId, $stmt->fields['created_by'],
+		$domainProperties['domain_sqld_limit']
+	);
 
 	return $softwareId;
 }

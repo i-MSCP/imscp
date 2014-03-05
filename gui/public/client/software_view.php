@@ -42,16 +42,19 @@ function client_generatePage($tpl)
 		showBadRequestErrorPage();
 		exit; // Useless but avoid IDE warning about possible undefined variable
 	} else {
-		$software_id = intval($_GET['id']);
+		$softwareId = intval($_GET['id']);
 	}
 
 	$domainProperties = get_domain_default_props($_SESSION['user_id']);
 
-	get_software_props (
-		$tpl, $domainProperties['domain_id'], $software_id, $domainProperties['domain_created_id'],
-		$domainProperties['domain_sqld_limit']);
+	$stmt = exec_query('SELECT created_by FROM admin WHERE admin_id = ?', $_SESSION['user_id']);
 
-	return $software_id;
+	get_software_props (
+		$tpl, $domainProperties['domain_id'], $softwareId, $stmt->fields['created_by'],
+		$domainProperties['domain_sqld_limit']
+	);
+
+	return $softwareId;
 }
 
 /************************************************************************************

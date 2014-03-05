@@ -1,5 +1,5 @@
 
-<!-- BDP: statistics -->
+<!-- BDP: ip_usage_statistics -->
 <!-- BDP: ip_row -->
 <table class="firstColFixed">
 	<thead>
@@ -26,4 +26,4 @@
 	</tbody>
 </table>
 <!-- EDP: ip_row -->
-<!-- EDP: statistics -->
+<!-- EDP: ip_usage_statistics -->

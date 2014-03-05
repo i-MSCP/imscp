@@ -72,21 +72,30 @@ function get_domain_default_props($domainAdminId, $createdBy = null)
 	static $domainProperties = null;
 
 	if (null === $domainProperties) {
-		$query = 'SELECT * FROM `domain` WHERE `domain_admin_id` = ?';
-		$params[] = $domainAdminId;
 
-		if(null !== $createdBy) {
-			$query .= ' AND `domain_created_id` = ?';
-			$params[] = $createdBy;
+		if(is_null($createdBy)) {
+			$stmt = exec_query('SELECT * FROM domain WHERE domain_admin_id = ?', $domainAdminId);
+		} else {
+			$stmt = exec_query(
+				'
+					SELECT
+						*
+					FROM
+						domain
+					INNER JOIN
+						admin ON(admin_id = domain_admin_id)
+					WHERE
+						created_by = ?
+					',
+				$createdBy
+			);
 		}
-
-		$stmt = exec_query($query, $params);
 
 		if(!$stmt->rowCount()) {
 			showBadRequestErrorPage();
 		}
 
-		$domainProperties = $stmt->fetchRow();
+		$domainProperties = $stmt->fetchRow(PDO::FETCH_ASSOC);
 	}
 
 	return $domainProperties;

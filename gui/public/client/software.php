@@ -38,9 +38,12 @@
  */
 function client_generatePageLists($tpl)
 {
-    $domainProperties = get_domain_default_props($_SESSION['user_id']);
-    $software_poss = gen_software_list($tpl, $domainProperties['domain_id'], $domainProperties['domain_created_id']);
-    $tpl->assign('TOTAL_SOFTWARE_AVAILABLE', $software_poss);
+	$domainProperties = get_domain_default_props($_SESSION['user_id']);
+
+	$stmt = exec_query('SELECT created_by FROM admin WHERE admin_id = ?', $_SESSION['user_id']);
+
+	$software_poss = gen_software_list($tpl, $domainProperties['domain_id'], $stmt->fields['created_by']);
+	$tpl->assign('TOTAL_SOFTWARE_AVAILABLE', $software_poss);
 }
 
 /************************************************************************************

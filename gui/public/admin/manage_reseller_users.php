@@ -52,7 +52,7 @@ function admin_generateCustomersTable($tpl)
 	$query = 'SELECT `admin_id`, `admin_name` FROM `admin` WHERE `admin_type` = ? ORDER BY `admin_name`';
 	$stmt = exec_query($query, 'reseller');
 
-	if (!$stmt->rowCount()) {
+	if (!$stmt->rowCount()) { // Should never occurs
 		set_page_message(tr('Reseller list is empty.'), 'error');
 		redirectTo('manage_users.php');
 	}
@@ -332,9 +332,6 @@ function admin_updateResellerLimits($toReseller, $fromReseller, $users, &$errors
 
 		for ($i = 0, $countUsersList = count($usersList) - 1; $i < $countUsersList; $i++) {
 			$query = 'UPDATE `admin` SET `created_by` = ? WHERE `admin_id` = ?';
-			exec_query($query, array($toReseller, $usersList[$i]));
-
-			$query = 'UPDATE `domain` SET `domain_created_id` = ? WHERE `domain_admin_id` = ?';
 			exec_query($query, array($toReseller, $usersList[$i]));
 		}
 

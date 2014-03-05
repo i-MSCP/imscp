@@ -110,7 +110,7 @@ function _reseller_generateDomainStatisticsEntry($tpl, $domainId)
  */
 function reseller_generatePage($tpl)
 {
-	$query = 'SELECT `domain_id` FROM `domain` WHERE `domain_created_id` = ?';
+	$query = 'SELECT domain_id FROM domain INNER JOIN admin ON (admin_id = domain_admin_id) WHERE created_by = ?';
 	$stmt = exec_query($query, $_SESSION['user_id']);
 
 	if ($stmt->rowCount()) {

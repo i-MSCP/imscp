@@ -181,16 +181,16 @@ function gen_admin_domain_query(
 
 	if ($searchFor == 'n/a' && $searchCommon == 'n/a' && $searchStatus == 'n/a') {
 		// We have pure list query;
-		$countQuery = 'SELECT COUNT(*) AS `cnt` FROM `domain`';
+		$countQuery = 'SELECT COUNT(*) AS cnt FROM domain';
 		$searchQuery = "
 			SELECT
 				*
 			FROM
-				`domain` AS `t1`
+				domain AS t1
 			INNER JOIN
-				`admin` AS `t2` ON (`t2`.`admin_id` = `t1`.`domain_admin_id`)
+				admin AS t2 ON (t2.admin_id = t1.domain_admin_id)
 			ORDER BY
-				`t1`.`domain_name` ASC
+				t1.domain_name ASC
 			LIMIT
 				$startIndex, $rowsPerPage
 		";
@@ -202,20 +202,20 @@ function gen_admin_domain_query(
 
 		if ($searchFor == '' && $searchStatus != '') {
 			if ($searchStatus != 'all') {
-				$condition = 'WHERE `t1`.`domain_status` = ' . $db->quote($searchStatus);
+				$condition = 'WHERE t1.domain_status = ' . $db->quote($searchStatus);
 			}
 
-			$countQuery = "SELECT COUNT(*) AS `cnt` FROM `domain` AS `t1` $condition";
+			$countQuery = "SELECT COUNT(*) AS cnt FROM domain AS t1 $condition";
 			$searchQuery = "
 				SELECT
 					*
 				FROM
-					`domain` AS `t1`
+					domain AS t1
 				INNER JOIN
-					`admin` AS `t2` ON (`t2`.`admin_id` = `t1`.`domain_admin_id`)
+					admin AS t2 ON (t2.admin_id = t1.domain_admin_id)
 				$condition
 				ORDER BY
-					`t1`.`domain_name` ASC
+					t1.domain_name ASC
 				LIMIT
 					$startIndex, $rowsPerPage
         	";
@@ -224,52 +224,52 @@ function gen_admin_domain_query(
 
 			if ($searchCommon == 'domain_name') {
 				$searchFor = $db->quote('%' . encode_idna($searchFor) . '%');
-				$condition = "WHERE `t1`.`domain_name` LIKE $searchFor ESCAPE '!'";
+				$condition = "WHERE t1.domain_name LIKE $searchFor ESCAPE '!'";
 			} elseif ($searchCommon == 'customer_id') {
 				$searchFor = $db->quote("%$searchFor%");
-				$condition = "WHERE `t2`.`customer_id` LIKE $searchFor ESCAPE '!'";
+				$condition = "WHERE t2.customer_id LIKE $searchFor ESCAPE '!'";
 			} elseif ($searchCommon == 'lname') {
 				$searchFor = $db->quote("%$searchFor%");
-				$condition = "WHERE (`t2`.`lname` LIKE $searchFor ESCAPE '=' OR `fname` LIKE $searchFor ESCAPE '!')";
+				$condition = "WHERE (t2.lname LIKE $searchFor ESCAPE '=' OR fname LIKE $searchFor ESCAPE '!')";
 			} elseif ($searchCommon == 'firm') {
 				$searchFor = $db->quote("%$searchFor%");
-				$condition = "WHERE `t2`.`firm` LIKE $searchFor ESCAPE '!'";
+				$condition = "WHERE t2.firm LIKE $searchFor ESCAPE '!'";
 			} elseif ($searchCommon == 'city') {
 				$searchFor = $db->quote("%$searchFor%");
-				$condition = "WHERE `t2`.`city` LIKE $searchFor ESCAPE '!'";
+				$condition = "WHERE t2.city LIKE $searchFor ESCAPE '!'";
 			} elseif ($searchCommon == 'state') {
 				$searchFor = $db->quote("%$searchFor%");
-				$condition = "WHERE `t2`.`state` LIKE $searchFor ESCAPE '!'";
+				$condition = "WHERE t2.state LIKE $searchFor ESCAPE '!'";
 			} elseif ($searchCommon == 'country') {
 				$searchFor = $db->quote("%$searchFor%");
-				$condition = "WHERE `t2`.`country` LIKE $searchFor ESCAPE '!'";
+				$condition = "WHERE t2.country LIKE $searchFor ESCAPE '!'";
 			}
 
 			if ($condition != '') {
 				if ($searchStatus != 'all') {
-					$condition .= ' AND `t1`.`domain_status` = ' . $db->quote($searchStatus);
+					$condition .= ' AND t1.domain_status = ' . $db->quote($searchStatus);
 				}
 
 				$countQuery = "
 					SELECT
-						COUNT(*) AS `cnt`
+						COUNT(*) AS cnt
 				   	FROM
-						`domain` AS `t1`
+						domain AS t1
 				    INNER JOIN
-						`admin` AS `t2` ON(`t2`.`admin_id` = `t1`.`domain_admin_id`)
+						admin AS t2 ON(t2.admin_id = t1.domain_admin_id)
 					$condition
 			    ";
 
 				$searchQuery = "
 					SELECT
-						`t2`.`admin_id`, `t2`.`admin_status`, `t1`.*
+						t2.admin_id, t2.admin_status, t2.created_by, t1.*
 					FROM
-						`domain` AS t1
+						domain AS t1
 					INNER JOIN
-						`admin` AS t2 ON(`t2`.`admin_id` = `t1`.`domain_admin_id`)
+						admin AS t2 ON(t2.admin_id = t1.domain_admin_id)
 					$condition
 					ORDER BY
-						`t1`.`domain_name` ASC
+						t1.domain_name ASC
 					LIMIT
 						$startIndex, $rowsPerPage
 				";

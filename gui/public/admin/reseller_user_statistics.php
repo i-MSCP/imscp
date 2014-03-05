@@ -48,8 +48,19 @@
  */
 function admin_generatePage($tpl, $resellerId)
 {
-	$query = "SELECT `domain_id` FROM `domain` WHERE `domain_created_id` = ?";
-	$stmt = exec_query($query, $resellerId);
+	$stmt = exec_query(
+		'
+			SELECT
+				domain_id
+			FROM
+				domain
+			INNER JOIN
+				admin ON (admin_id = domain_admin_id)
+			WHERE
+				created_by = ?
+		',
+		$resellerId
+	);
 
 	if ($stmt->rowCount()) {
 		foreach ($stmt->fetchAll(PDO::FETCH_COLUMN) as $domainId) {
