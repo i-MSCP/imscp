@@ -177,8 +177,8 @@ function &reseller_getData($domainId, $forUpdate = false)
 
 		$query = "
 			SELECT
-				t1.domain_status, COUNT(t2.subdomain_status) + COUNT(t3.alias_status) +
-				COUNT(t4.subdomain_alias_status) AS statusNotOk
+				t1.domain_status, COUNT(t3.subdomain_status) + COUNT(t4.alias_status) +
+				COUNT(t5.subdomain_alias_status) AS statusNotOk
 			FROM
 				domain AS t1
 			INNER JOIN
