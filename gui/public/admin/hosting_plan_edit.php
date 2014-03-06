@@ -196,6 +196,10 @@ function admin_generatePage($tpl, $id, $phpini)
 		)
 	);
 
+	if($cfg['NAMED_SERVER'] == 'external_server') {
+		$tpl->assign('CUSTOM_DNS_RECORDS_FEATURE', '');
+	}
+
 	if ($cfg->BACKUP_DOMAINS != 'no') {
 		$tpl->assign(
 			array(
@@ -262,6 +266,10 @@ function admin_generateErrorPage($tpl, $phpini)
 			'STATUS_NO' => (!$status) ? $checked : ''
 		)
 	);
+
+	if($cfg['NAMED_SERVER'] == 'external_server') {
+		$tpl->assign('CUSTOM_DNS_RECORDS_FEATURE', '');
+	}
 
 	if ($cfg->BACKUP_DOMAINS != 'no') {
 		$tpl->assign(
@@ -514,6 +522,7 @@ if (isset($cfg->HOSTING_PLANS_LEVEL) && $cfg->HOSTING_PLANS_LEVEL == 'admin') {
 			'page' => 'shared/partials/forms/hosting_plan_edit.tpl',
 			'page_message' => 'layout',
 			'php_editor_disable_functions_block' => 'php_editor_feature',
+			'custom_dns_records_feature' => 'page',
 			'web_folder_protection_feature' => 'page',
 			'backup_feature' => 'page'
 		)

@@ -285,10 +285,6 @@ function reseller_generateErrorPage($tpl, $phpini)
 		);
 	}
 
-	if(!$cfg->WEB_FOLDER_PROTECTION) {
-		$tpl->assign('WEB_FOLDER_PROTECTION_FEATURE', '');
-	}
-
 	_reseller_generatePhpBlock($tpl, $phpini);
 }
 
@@ -551,7 +547,7 @@ if (isset($cfg->HOSTING_PLANS_LEVEL) && $cfg->HOSTING_PLANS_LEVEL == 'reseller')
 			'php_editor_disable_functions_block' => 'php_editor_permissions_block',
 			'php_editor_default_values_block' => 'php_editor_feature',
 			'cgi_feature' => 'page',
-			'custom_dns_feature' => 'page',
+			'custom_dns_records_feature' => 'page',
 			'aps_feature' => 'page',
 			'backup_feature' => 'page',
 			'web_folder_protection_feature' => 'page'
@@ -629,10 +625,11 @@ if (isset($cfg->HOSTING_PLANS_LEVEL) && $cfg->HOSTING_PLANS_LEVEL == 'reseller')
 	if (!resellerHasFeature('php')) $tpl->assign('PHP_FEATURE', '');
 	if (!resellerHasFeature('php_editor')) $tpl->assign('PHP_EDITOR_FEATURE', '');
 	if (!resellerHasFeature('cgi')) $tpl->assign('CGI_FEATURE', '');
-	if (!resellerHasFeature('custom_dns_records')) $tpl->assign('CUSTOM_DNS_FEATURE', '');
+	if (!resellerHasFeature('custom_dns_records')) $tpl->assign('CUSTOM_DNS_RECORDS_FEATURE', '');
 	if (!resellerHasFeature('aps')) $tpl->assign('APS_FEATURE', '');
 	if (!resellerHasFeature('external_mail')) $tpl->assign('EXT_MAIL_FEATURE', '');
 	if (!resellerHasFeature('backup')) $tpl->assign('BACKUP_FEATURE', '');
+	if (!resellerHasFeature('web_folder_protection')) $tpl->assign('WEB_FOLDER_PROTECTION_FEATURE', '');
 
 	$tpl->parse('LAYOUT_CONTENT', 'page');
 

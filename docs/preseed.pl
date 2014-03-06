@@ -5,7 +5,7 @@
 # See documentation at http://wiki.i-mscp.net/doku.php?id=start:preseeding
 #
 # Author: Laurent Declercq <l.declercq@nuxwin.com>
-# Last update: 2014.01.09
+# Last update: 2014.03.06
 
 # Server to use for the HTTP service
 # (apache_itk|apache_fcgid|apache_php_fpm)
@@ -45,7 +45,7 @@ $main::questions{'MTA_SERVER'} = 'postfix';
 $main::questions{'DNSBL_CHECKS_ONLY'} = 'no'; # 'yes' or 'no'
 
 # Server to use for the Dns service
-# (bind)
+# (bind or external_server)
 $main::questions{'NAMED_SERVER'} = 'bind';
 
 # Mode in which the DNS server should acts

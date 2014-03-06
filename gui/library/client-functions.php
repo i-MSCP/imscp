@@ -500,16 +500,18 @@ function customerHasFeature($featureNames, $forceReload = false)
 			'mail' => ($dmnProps['domain_mailacc_limit'] != '-1') ? true : false,
 			'subdomains' => ($dmnProps['domain_subd_limit'] != '-1') ? true : false,
 			'domain_aliases' => ($dmnProps['domain_alias_limit'] != '-1') ? true : false,
-			'custom_dns_records' => ($dmnProps['domain_dns'] != 'no') ? true : false,
+			'custom_dns_records' =>
+				($dmnProps['domain_dns'] != 'no' && $cfg['NAMED_SERVER'] != 'external_server') ? true : false,
 			'webstats' => ($cfg->WEBSTATS_ADDONS != 'No') ? true : false,
 			'backup' => ($cfg->BACKUP_DOMAINS != 'no' && $dmnProps['allowbackup'] != 'no') ? true : false,
 			'protected_areas' => true,
 			'custom_error_pages' => true,
-			'aps' => ($dmnProps['domain_software_allowed'] != 'no' && $dmnProps['domain_ftpacc_limit'] != '-1') ? true : false
+			'aps' => ($dmnProps['domain_software_allowed'] != 'no' && $dmnProps['domain_ftpacc_limit'] != '-1')
+					? true : false
 		);
 
 		if (($cfg->IMSCP_SUPPORT_SYSTEM)) {
-			$query = "SELECT `support_system` FROM `reseller_props` WHERE `reseller_id` = ?";
+			$query = "SELECT support_system FROM reseller_props WHERE reseller_id = ?";
 			$stmt = exec_query($query, $_SESSION['user_created_by']);
 			$availableFeatures['support'] = ($stmt->fields['support_system'] == 'yes') ? true : false;
 		} else {

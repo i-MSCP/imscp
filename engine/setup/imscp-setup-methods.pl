@@ -218,7 +218,7 @@ sub setupTasks
 # Ask for server hostname
 sub setupAskServerHostname
 {
-	my $dialog = shift;
+	my $dialog = $_[0];
 
 	my $hostname = setupGetQuestion('SERVER_HOSTNAME');
 	my %options = ($main::imscpConfig{'DEBUG'} || iMSCP::Getopt->debug)
@@ -263,7 +263,7 @@ sub setupAskServerHostname
 # Ask for i-MSCP frontend vhost
 sub setupAskImscpVhost
 {
-	my $dialog = shift;
+	my $dialog = $_[0];
 
 	my $vhost = setupGetQuestion('BASE_SERVER_VHOST');
 	my %options = ($main::imscpConfig{'DEBUG'} || iMSCP::Getopt->debug)
@@ -299,17 +299,21 @@ sub setupAskImscpVhost
 # Ask for local DNS resolver
 sub setupAskLocalDnsResolver
 {
-	my $dialog = shift;
+	my $dialog = $_[0];
 
 	my $localDnsResolver = setupGetQuestion('LOCAL_DNS_RESOLVER');
 	my $rs = 0;
 
-	if($main::reconfigure ~~ ['resolver', 'all', 'forced'] || $localDnsResolver !~ /^yes|no$/) {
-		($rs, $localDnsResolver) = $dialog->radiolist(
-			"\nDo you want allow the system resolver to use the local nameserver?",
-			['yes', 'no'],
-			$localDnsResolver ne 'no' ? 'yes' : 'no'
-		);
+	unless($main::imscpConfig{'NAMED_SERVER'} ~~ ['no', 'external_server']) {
+		if($main::reconfigure ~~ ['resolver', 'all', 'forced'] || $localDnsResolver !~ /^yes|no$/) {
+			($rs, $localDnsResolver) = $dialog->radiolist(
+				"\nDo you want allow the system resolver to use the local nameserver?",
+				['yes', 'no'],
+				$localDnsResolver ne 'no' ? 'yes' : 'no'
+			);
+		}
+	} else {
+		$localDnsResolver = 'no';
 	}
 
 	setupSetQuestion('LOCAL_DNS_RESOLVER', $localDnsResolver) if $rs != 30;
@@ -320,7 +324,7 @@ sub setupAskLocalDnsResolver
 # Ask for server ips
 sub setupAskServerIps
 {
-	my $dialog = shift;
+	my $dialog = $_[0];
 
 	my $baseServerIp = setupGetQuestion('BASE_SERVER_IP');
 	my $manualIp = 0;
@@ -525,7 +529,7 @@ The IP address '$serverIpsToDelete{$_}' is already in use. Please, choose an IP 
 # Ask for Sql DSN and SQL username/password
 sub setupAskSqlDsn
 {
-	my $dialog = shift;
+	my $dialog = $_[0];
 
 	my $dbType = setupGetQuestion('DATABASE_TYPE') || 'mysql';
 	my $dbHost = setupGetQuestion('DATABASE_HOST') || 'localhost';
@@ -647,7 +651,7 @@ Please, try again.
 # Ask for hosts from which SQL users are allowed to connect from
 sub setupAskSqlUserHost
 {
-	my $dialog = shift;
+	my $dialog = $_[0];
 
 	my $host = setupGetQuestion('DATABASE_USER_HOST');
 	my $rs = 0;
@@ -679,7 +683,7 @@ Important: No check is made on the entered value. Please refer to the following 
 # Ask for i-MSCP database name
 sub setupAskImscpDbName
 {
-	my $dialog = shift;
+	my $dialog = $_[0];
 
 	my $dbName = setupGetQuestion('DATABASE_NAME') || 'imscp';
 	my $rs = 0;
@@ -736,7 +740,7 @@ Keep in mind that the new database will be free of any reseller and customer dat
 # Ask for database prefix/suffix
 sub setupAskDbPrefixSuffix
 {
-	my $dialog = shift;
+	my $dialog = $_[0];
 
 	my $prefix = setupGetQuestion('MYSQL_PREFIX');
 	my $prefixType = setupGetQuestion('MYSQL_PREFIX_TYPE');
@@ -783,7 +787,7 @@ Do you want use a prefix or suffix for customers's SQL databases?
 # Ask for default administrator
 sub setupAskDefaultAdmin
 {
-	my $dialog = shift;
+	my $dialog = $_[0];
 
 	my ($adminLoginName, $password, $rpassword) = ('', '', '');
 	my ($rs, $msg) = (0, '');
@@ -888,7 +892,7 @@ sub setupAskDefaultAdmin
 # Ask for administrator email
 sub setupAskAdminEmail
 {
-	my $dialog = shift;
+	my $dialog = $_[0];
 
 	my $adminEmail = setupGetQuestion('DEFAULT_ADMIN_ADDRESS');
 	my $rs = 0;
@@ -910,7 +914,7 @@ sub setupAskAdminEmail
 # Ask for PHP timezone
 sub setupAskPhpTimezone
 {
-	my $dialog = shift;
+	my $dialog = $_[0];
 
 	my $defaultTimezone = DateTime->new(year => 0, time_zone => 'local')->time_zone->name;
 	my $timezone = setupGetQuestion('PHP_TIMEZONE');
@@ -934,7 +938,7 @@ sub setupAskPhpTimezone
 # Ask for i-MSCP SSL
 sub setupAskSsl
 {
-	my($dialog) = shift;
+	my($dialog) = $_[0];
 
 	my $hostname =  setupGetQuestion('SERVER_HOSTNAME');
 	my $sslEnabled = setupGetQuestion('SSL_ENABLED');
@@ -1073,7 +1077,7 @@ sub setupAskSsl
 # Ask for i-MSCP backup feature
 sub setupAskImscpBackup
 {
-	my $dialog = shift;
+	my $dialog = $_[0];
 
 	my $backupImscp = setupGetQuestion('BACKUP_IMSCP');
 	my $rs = 0;
@@ -1102,7 +1106,7 @@ activate this feature.
 # Ask for customer backup feature
 sub setupAskDomainBackup
 {
-	my $dialog = shift;
+	my $dialog = $_[0];
 
 	my $backupDomains = setupGetQuestion('BACKUP_DOMAINS');
 	my $rs = 0;
@@ -1479,8 +1483,7 @@ sub setupCreateDatabase
 # Convenience method allowing to create or update a database schema
 sub setupImportSqlSchema
 {
-	my $database = shift;
-	my $file = shift;
+	my ($database, $file) = @_;
 
 	my $rs = iMSCP::HooksManager->getInstance()->trigger('beforeSetupImportSqlSchema', \$file);
 
@@ -1808,7 +1811,6 @@ sub setupCron
 }
 
 # Setup i-MSCP init scripts
-# TODO review
 sub setupInitScripts
 {
 	my $rs = iMSCP::HooksManager->getInstance()->trigger('beforeSetupInitScripts');
@@ -2310,8 +2312,8 @@ sub setupRestartServices
 # Retrieve question answer
 sub setupGetQuestion
 {
-	my $qname = shift;
-	my $default = shift || '';
+	my ($qname, $default) = @_;
+	$default ||= '';
 
 	return (exists $main::questions{$qname})
 		? $main::questions{$qname}
@@ -2324,17 +2326,15 @@ sub setupGetQuestion
 
 sub setupSetQuestion
 {
-	my $qname = shift;
-	my $qvalue = shift;
-
-	$main::questions{$qname} = $qvalue;
+	$main::questions{$_[0]} = $_[1];
 }
 
 # Check SQL connection
 # Return int 0 on success, error string on failure
 sub setupCheckSqlConnect
 {
-	my ($dbType, $dbName, $dbHost, $dbPort, $dbUser, $dbPass) = (@_);
+	my ($dbType, $dbName, $dbHost, $dbPort, $dbUser, $dbPass) = @_;
+
 	my $db = iMSCP::Database->factory();
 
 	$db->set('DATABASE_NAME', $dbName);
@@ -2352,7 +2352,8 @@ sub setupCheckSqlConnect
 # Return ARRAY [iMSCP::Database|0, errstr] or SCALAR iMSCP::Database|0
 sub setupGetSqlConnect
 {
-	my $dbName = shift || '';
+	my $dbName = $_[0] || '';
+
 	my $db = iMSCP::Database->factory();
 
 	$db->set('DATABASE_NAME', $dbName);
@@ -2374,7 +2375,7 @@ sub setupGetSqlConnect
 # Return int - 1 if database exists and look like an i-MSCP database, 0 othewise
 sub setupIsImscpDb
 {
-	my $dbName = shift;
+	my $dbName = $_[0];
 
 	my ($db, $errstr) = setupGetSqlConnect();
 	fatal("Unable to connect to SQL Server: $errstr") if ! $db;
@@ -2400,7 +2401,7 @@ sub setupIsImscpDb
 # Return int - 1 if the given SQL user exists, 0 otherwise
 sub setupIsSqlUser($)
 {
-	my $sqlUser = shift;
+	my $sqlUser = $_[0];
 
 	my ($db, $errstr) = setupGetSqlConnect('mysql');
 	fatal("Unable to connect to the SQL Server: $errstr") if ! $db;
@@ -2416,8 +2417,8 @@ sub setupIsSqlUser($)
 # Return int 0 on success, 1 on error
 sub setupDeleteSqlUser
 {
-	my $user = shift;
-	my $host = shift || '%';
+	my ($user, $host) = @_;
+	$host ||= '%';
 
 	my ($db, $errstr) = setupGetSqlConnect('mysql');
 	fatal("Unable to connect to the mysql database: $errstr") if ! $db;

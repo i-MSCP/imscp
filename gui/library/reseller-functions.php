@@ -942,16 +942,19 @@ function resellerHasFeature($featureName, $forceReload = false)
 			'php' => true,
 			'php_editor' => ($resellerProps['php_ini_system'] == 'yes') ? true : false,
 			'cgi' => true,
-			'custom_dns_records' => true,
+			'custom_dns_records' => ($cfg['NAMED_SERVER'] != 'external_server') ? true : false,
 			'aps' => ($resellerProps['software_allowed'] != 'no') ? true : false, // aps feature check must be revisted
 			'external_mail' => true,
-			'backup' => ($cfg->BACKUP_DOMAINS != 'no') ? true : false,
-			'support' => ($cfg->IMSCP_SUPPORT_SYSTEM && $resellerProps['support_system'] == 'yes') ? true : false
+			'backup' => ($cfg['BACKUP_DOMAINS'] != 'no') ? true : false,
+			'support' => ($cfg['IMSCP_SUPPORT_SYSTEM'] && $resellerProps['support_system'] == 'yes') ? true : false,
+			'web_folder_protection' => ($cfg['WEB_FOLDER_PROTECTION']) ? true : false
 		);
 	}
 
 	if (!array_key_exists($featureName, $availableFeatures)) {
-		throw new iMSCP_Exception(sprintf("Feature %s is not known by the resellerHasFeature() function.", $featureName));
+		throw new iMSCP_Exception(
+			sprintf("Feature %s is not known by the resellerHasFeature() function.", $featureName)
+		);
 	}
 
 	return $availableFeatures[$featureName];

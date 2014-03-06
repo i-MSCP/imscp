@@ -12,6 +12,14 @@ ADDONS:
 ENGINE
 	- Added: Missing onLoadTemplate events
 
+GUI:
+	- Added: Disable custom DNS records feature in case of external DNS server usage
+
+INSTALLER:
+	- Added: External server option for DNS server
+	- Fixed: Local resolver must be disabled in case of external DNS server usage
+	- Fixed: When switching to external DNS server, uninstallation of current DNS server must be triggered
+
 PLUGINS:
 	- Added: iMSCP_Plugin::migrateDb() method which allow to migrate plugin database schema
 	- Fixed: Plugin info not updated when the plugin is deactivated which prevent update to be triggered when needed

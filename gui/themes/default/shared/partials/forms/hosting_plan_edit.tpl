@@ -308,7 +308,7 @@
 	</td>
 </tr>
 <!-- EDP: cgi_feature -->
-<!-- BDP: custom_dns_feature -->
+<!-- BDP: custom_dns_records_feature -->
 <tr>
 	<td>{TR_DNS}</td>
 	<td>
@@ -320,7 +320,7 @@
 		</div>
 	</td>
 </tr>
-<!-- EDP: custom_dns_feature -->
+<!-- EDP: custom_dns_records_feature -->
 <!-- BDP: aps_feature -->
 <tr>
 	<td>{TR_SOFTWARE_SUPP}</td>

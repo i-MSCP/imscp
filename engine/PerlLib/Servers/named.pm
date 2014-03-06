@@ -28,6 +28,8 @@ package Servers::named;
 use strict;
 use warnings;
 
+use iMSCP::Debug;
+
 sub factory
 {
 	my $self = $_[0];
@@ -35,7 +37,19 @@ sub factory
 
 	my ($file, $class);
 
-	if($server eq 'no') {
+	if($server eq 'external_server') {
+		my $oldServer = $main::imscpOldConfig{'NAMED_SERVER'} || 'external_server';
+
+		unless($oldServer eq 'external_server') {
+			$file = "Servers/named/$oldServer.pm";
+			$class = "Servers::named::$oldServer";
+
+			require $file;
+
+			my $rs = $class->getInstance()->uninstall();
+			fatal("Unable to uninstall $oldServer server") if $rs;
+		}
+
 		$file = 'Servers/noserver.pm';
 		$class = 'Servers::noserver';
 	} else {

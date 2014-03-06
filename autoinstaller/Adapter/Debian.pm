@@ -130,6 +130,24 @@ sub preBuild
 			return $rs if $rs;
 			$step++;
 		}
+
+		# Small workaround to ensure DNS resolution when switching to external DNS server (local resolver get removed)
+		# - Remove local resolver
+		# - Add google free DNS as temporary local resolver
+		if($main::imscpConfig{'LOCAL_DNS_RESOLVER'} eq 'yes' && -x '/sbin/resolvconf') {
+			my ($stdout, $stderr);
+			$rs = execute('/sbin/resolvconf -d lo.imscp', \$stdout, \$stderr);
+			debug($stdout) if $stdout;
+			error($stderr) if $stderr && $rs;
+			return $rs if $rs;
+
+			$rs = execute(
+				"$main::imscpConfig{'CMD_ECHO'} 'nameserver 8.8.8.8' | /sbin/resolvconf -a lo.imscp", \$stdout, \$stderr
+			);
+			debug($stdout) if $stdout;
+			error($stderr) if $stderr && $rs;
+			return $rs if $rs;
+		}
 	}
 
 	iMSCP::HooksManager->getInstance()->trigger('afterPreBuild');
@@ -370,8 +388,10 @@ Do you agree?
 				$server = $newServer;
 			}
 
-			$self->{'userSelection'}->{$service} = $server eq 'Not used' ? 'no' : $server;
-			$main::questions{uc($service) . '_SERVER'} = $server eq 'Not used' ? 'no' : $server;
+			#$self->{'userSelection'}->{$service} = $server eq 'Not used' ? 'no' : $server;
+			$self->{'userSelection'}->{$service} = $server;
+			#$main::questions{uc($service) . '_SERVER'} = $server eq 'Not used' ? 'no' : $server;
+			$main::questions{uc($service) . '_SERVER'} = $server;
 
 			for(@alternative) {
 				# Remove unselected server

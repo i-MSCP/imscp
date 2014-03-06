@@ -50,6 +50,7 @@
             <bind>
                 <package>bind9</package>
             </bind>
+            <external_server/>
         </alternative>
     </named>
     <sql>

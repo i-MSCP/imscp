@@ -306,6 +306,7 @@
 		</div>
 	</td>
 </tr>
+<!-- BDP: custom_dns_records_feature -->
 <tr>
 	<td>{TR_DNS}</td>
 	<td>
@@ -317,6 +318,7 @@
 		</div>
 	</td>
 </tr>
+<!-- EDP: custom_dns_records_feature -->
 <!-- BDP: ext_mail_feature -->
 <tr>
 	<td>{TR_EXTMAIL}</td>

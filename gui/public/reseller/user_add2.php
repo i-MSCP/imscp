@@ -95,8 +95,11 @@ function get_init_au2_page($tpl, $phpini)
 	$tplVars['VL_PHPN'] = ($php == '_no_') ? $htmlChecked : '';
 	$tplVars['VL_CGIY'] = ($cgi == '_yes_') ? $htmlChecked : '';
 	$tplVars['VL_CGIN'] = ($cgi == '_no_') ? $htmlChecked : '';
-	$tplVars['VL_DNSY'] = ($dns == '_yes_') ? $htmlChecked : '';
-	$tplVars['VL_DNSN'] = ($dns == '_no_') ? $htmlChecked : '';
+
+	if(resellerHasFeature('custom_dns_records')) {
+		$tplVars['VL_DNSY'] = ($dns == '_yes_') ? $htmlChecked : '';
+		$tplVars['VL_DNSN'] = ($dns == '_no_') ? $htmlChecked : '';
+	}
 
 
 	if(resellerHasFeature('aps')) {
@@ -442,10 +445,14 @@ function check_user_data($phpini)
 
 	// Custom DNS records feature
 
-	if (isset($_POST['dns'])) {
-		$dns = $_POST['dns'];
+	if(resellerHasFeature('custom_dns_records')) {
+		if (isset($_POST['dns'])) {
+			$dns = $_POST['dns'];
+		} else {
+			$dns = '_no_';
+		}
 	} else {
-		$dns = '_no';
+		$dns = '_no_';
 	}
 
 	// External mail server feature
@@ -521,6 +528,7 @@ $tpl->define_dynamic(
 		'subdomain_feature' => 'page',
 		'alias_feature' => 'page',
 		'mail_feature' => 'page',
+		'custom_dns_records_feature' => 'page',
 		'ext_mail_feature' => 'page',
 		'ftp_feature' => 'page',
 		'sql_feature' => 'page',
@@ -619,6 +627,10 @@ if (!resellerHasFeature('subdomains')) {
 
 if (!resellerHasFeature('domain_aliases')) {
 	$tpl->assign('ALIAS_FEATURE', '');
+}
+
+if (!resellerHasFeature('custom_dns_records')) {
+	$tpl->assign('CUSTOM_DNS_RECORDS_FEATURE', '');
 }
 
 if (!resellerHasFeature('mail')) {

@@ -60,7 +60,7 @@ use parent 'Common::SingletonClass';
 
 sub uninstall
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $rs = $self->_restoreConfFiles();
 	return $rs if $rs;
@@ -84,7 +84,7 @@ sub uninstall
 
 sub _init
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	$self->{'named'} = Servers::named::bind->getInstance();
 
@@ -108,23 +108,23 @@ sub _init
 
 sub _restoreConfFiles
 {
-	my $self = shift;
+	my $self = $_[0];
 
-	for (
-		$self->{'config'}->{'BIND_CONF_DEFAULT_FILE'}, $self->{'config'}->{'BIND_CONF_FILE'},
-		$self->{'config'}->{'BIND_LOCAL_CONF_FILE'}, $self->{'config'}->{'BIND_OPTIONS_CONF_FILE'}
-	) {
-		next if ! defined $_;
-		my $filename = fileparse($_);
+	if(-d $self->{'config'}->{'BIND_CONF_DIR'}) {
+		for (
+			$self->{'config'}->{'BIND_CONF_DEFAULT_FILE'}, $self->{'config'}->{'BIND_CONF_FILE'},
+			$self->{'config'}->{'BIND_LOCAL_CONF_FILE'}, $self->{'config'}->{'BIND_OPTIONS_CONF_FILE'}
+		) {
+			next if ! defined $_;
+			my $filename = fileparse($_);
 
-		if(-f "$self->{'bkpDir'}/$filename.system"){
-			my $rs = iMSCP::File->new(
-				'filename' => "$self->{'bkpDir'}/$filename.system"
-			)->copyFile($_);
+			if(-f "$self->{'bkpDir'}/$filename.system"){
+				my $rs = iMSCP::File->new('filename' => "$self->{'bkpDir'}/$filename.system")->copyFile($_);
 
-			# Config file mode is incorrect after copy from backup, therefore set it right
-			$rs = iMSCP::File->new('filename' => $_)->mode(0644);
-			return $rs if $rs;
+				# Config file mode is incorrect after copy from backup, therefore set it right
+				$rs = iMSCP::File->new('filename' => $_)->mode(0644);
+				return $rs if $rs;
+			}
 		}
 	}
 
@@ -141,16 +141,20 @@ sub _restoreConfFiles
 
 sub _deleteDbFiles
 {
-	my $self = shift;
-	my $stdout;
-	my $stderr;
+	my $self = $_[0];
 
+	my ($stdout, $stderr);
 	my $rs = execute("$main::imscpConfig{'CMD_RM'} -f $self->{'config'}->{'BIND_DB_DIR'}/*.db", \$stdout, \$stderr);
 	debug($stdout) if $stdout;
 	error($stderr) if $stderr && $rs;
-	return $rs;
+	return $rs if $rs;
 
-	$rs = iMSCP::Dir->new('dirname' => "$self->{'config'}->{'BIND_DB_DIR'}/slave")->remove()
+	my $rs = execute("$main::imscpConfig{'CMD_RM'} -f $self->{'wrkDir'}/*", \$stdout, \$stderr);
+	debug($stdout) if $stdout;
+	error($stderr) if $stderr && $rs;
+	return $rs if $rs;
+
+	$rs = iMSCP::Dir->new('dirname' => "$self->{'config'}->{'BIND_DB_DIR'}/slave")->remove();
 	return $rs if $rs;
 
 	0;
