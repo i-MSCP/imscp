@@ -87,7 +87,7 @@ sub showDialog($$)
 
 	$dnsblCheckOnly = lc($dnsblCheckOnly);
 
-	if($main::reconfigure ~~ ['mailfilters', 'all', 'forced'] || $dnsblCheckOnly !~ /^yes|no$/i) {
+	if($main::reconfigure ~~ ['mailfilters', 'all', 'forced'] || not $dnsblCheckOnly ~~ ['yes', 'no']) {
 		($rs, $dnsblCheckOnly) = $dialog->radiolist(
 "
 \\Z4\\Zb\\Zui-MSCP Policyd Weight Addon\\Zn
@@ -228,7 +228,7 @@ sub _buildConf
 		return 1;
 	}
 
-	my $dnsblChecksOnly = $self->{'config'}->{'DNSBL_CHECKS_ONLY'} =~ /^yes$/i ? 0 : 1;
+	my $dnsblChecksOnly = ($self->{'config'}->{'DNSBL_CHECKS_ONLY'} eq 'yes') ? 1 : 0;
 	$cfgTpl =~ s/^\s{0,}\$dnsbl_checks_only\s{0,}=.*$/\n   \$dnsbl_checks_only = $dnsblChecksOnly;          # 1: ON, 0: OFF (default)/mi;
 
 	$file = iMSCP::File->new('filename' => "$self->{'wrkDir'}/$name$suffix");

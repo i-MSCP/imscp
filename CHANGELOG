@@ -27,8 +27,9 @@ PLUGINS:
 	- Updated: Plugin API to version 0.2.7 (changes are backward compatible)
 
 Tickets:
-	- Fixed #993: Bug - Inconsistent data in database for created_by field from customers
+	- Fixed #0993: Bug - Inconsistent data in database for created_by field from customers
 	- Fixed #1032: Bug - Use of undefined constant SORT_NATURAL (PHP < 5.4)
+	- Fixed #1034: Defect - Policyd-Weight Addon - Configuration mismatch
 
 ------------------------------------------------------------------------------------------------------------------------
 1.1.2
