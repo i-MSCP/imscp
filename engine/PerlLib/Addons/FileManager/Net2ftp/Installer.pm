@@ -38,7 +38,11 @@ use iMSCP::Debug;
 use iMSCP::Execute;
 use iMSCP::Rights;
 use iMSCP::Addons::ComposerInstaller;
+use iMSCP::TemplateParser;
+use iMSCP::File;
 use parent 'Common::SingletonClass';
+
+our $VERSION = '0.1.0';
 
 =head1 DESCRIPTION
 
@@ -50,7 +54,7 @@ use parent 'Common::SingletonClass';
 
 =item preinstall()
 
- Process preinstall tasks.
+ Process preinstall tasks
 
  Return int 0 on success, other on failure
 
@@ -58,12 +62,12 @@ use parent 'Common::SingletonClass';
 
 sub preinstall
 {
-	iMSCP::Addons::ComposerInstaller->getInstance()->registerPackage('imscp/net2ftp');
+	iMSCP::Addons::ComposerInstaller->getInstance()->registerPackage('imscp/net2ftp', "$VERSION.*\@dev");
 }
 
 =item install()
 
- Process install tasks.
+ Process install tasks
 
  Return int 0 on success, 1 on failure
 
@@ -71,7 +75,12 @@ sub preinstall
 
 sub install
 {
-	$_[0]->_installFiles();
+	my $self = $_[0];
+
+	my $rs = $self->_installFiles();
+	return $rs if $rs;
+
+	$self->_buildConfig();
 }
 
 =item setGuiPermissions()
@@ -98,6 +107,23 @@ sub setGuiPermissions
 =head1 PRIVATE METHODS
 
 =over 4
+
+=item _init()
+
+ Called by getInstance(). Initialize Net2ftp addon installer instance
+
+ Return Addons::FileManager::Net2ftp::Installer
+
+=cut
+
+sub _init
+{
+	my $self = $_[0];
+
+	$self->{'hooksManager'} = iMSCP::HooksManager->getInstance();
+
+	$self;
+}
 
 =item _installFiles()
 
@@ -141,6 +167,78 @@ sub _installFiles
 	}
 
 	$rs;
+}
+
+=item _generateMd5SaltString()
+
+ Generate MD5 salt string
+
+ Return int 0
+
+=cut
+
+sub _generateMd5SaltString
+{
+	my $saltString = '';
+	$saltString .= ('A'..'Z', '0'..'9')[rand(36)] for 1..38;
+
+	$saltString;
+}
+
+=item _buildConfig()
+
+ Build Net2ftp configuration file
+
+ Return int 0 on success, 1 on failure
+
+=cut
+
+sub _buildConfig
+{
+	my $self = $_[0];
+
+	my $panelUName =
+	my $panelGName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} . $main::imscpConfig{'SYSTEM_USER_MIN_UID'};
+	my $conffile = "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/filemanager/settings.inc.php";
+
+	# Define data
+
+	my $data = {
+		ADMIN_EMAIL => ($main::imscpConfig{'DEFAULT_ADMIN_ADDRESS'}) ? $main::imscpConfig{'DEFAULT_ADMIN_ADDRESS'} : '',
+		MD5_SALT_STRING => $self->_generateMd5SaltString()
+	};
+
+	# Load template
+
+	my $cfgTpl;
+	my $rs = $self->{'hooksManager'}->trigger('onLoadTemplate', 'net2ftp', 'settings.inc.php', \$cfgTpl, $data);
+	return $rs if $rs;
+
+	unless(defined $cfgTpl) {
+		$cfgTpl = iMSCP::File->new('filename' => $conffile)->get();
+		unless(defined $cfgTpl) {
+			error("Unable to read file $conffile");
+			return 1;
+		}
+	}
+
+	# Build file
+
+	$cfgTpl = process($data, $cfgTpl);
+
+	# Store file
+
+	my $file = iMSCP::File->new('filename' => $conffile);
+	$rs = $file->set($cfgTpl);
+	return $rs if $rs;
+
+	$rs = $file->save();
+	return $rs if $rs;
+
+	$rs = $file->mode(0640);
+	return $rs if $rs;
+
+	$file->owner($panelUName, $panelGName);
 }
 
 =back

@@ -8,6 +8,7 @@ Git stable
 ADDONS:
 	- Added: onLoadTemplate events
 	- Removed: PasswordChanger install part (Roundcube). This plugin will be part of the RoundcubePlugins plugin
+	- Updated: Net2ftp installer
 
 ENGINE
 	- Added: Missing onLoadTemplate events
