@@ -180,7 +180,7 @@ sub _installFiles
 sub _generateMd5SaltString
 {
 	my $saltString = '';
-	$saltString .= ('A'..'Z', '0'..'9')[rand(36)] for 1..38;
+	$saltString .= ('A'..'Z', '0'..'9')[rand(35)] for 1..38;
 
 	$saltString;
 }
