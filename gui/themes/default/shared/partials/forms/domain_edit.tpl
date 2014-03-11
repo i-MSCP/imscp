@@ -359,7 +359,7 @@
 	</td>
 </tr>
 <!-- EDP: cgi_block -->
-<!-- BDP: dns_block -->
+<!-- BDP: custom_dns_records_feature -->
 <tr>
 	<td>{TR_DNS}</td>
 	<td>
@@ -371,7 +371,7 @@
 		</div>
 	</td>
 </tr>
-<!-- EDP: dns_block -->
+<!-- EDP: custom_dns_records_feature -->
 <!-- BDP: aps_block -->
 <tr>
 	<td>{TR_APS}</td>

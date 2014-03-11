@@ -289,7 +289,7 @@ function &admin_getData($domainId, $forUpdate = false)
 				? clean_input($_POST['domain_cgi']) : $data['domain_cgi'];
 
 			$data['domain_dns'] = isset($_POST['domain_dns'])
-				? clean_input($_POST['domain_dns']) : $data['domain_software_allowed'];
+				? clean_input($_POST['domain_dns']) : $data['domain_dns'];
 
 			if ($data['software_allowed'] == 'yes') {
 				$data['domain_software_allowed'] = isset($_POST['domain_software_allowed'])
@@ -459,15 +459,6 @@ function _admin_generateFeaturesForm($tpl, &$data)
 
 	$tplVars['TR_FEATURES'] = tr('Features');
 
-	// External mail support
-	if($data['max_mail_cnt'] == '-1') {
-		$tplVars['EXT_MAIL_BLOCK'] =  '';
-	} else {
-		$tplVars['TR_EXTMAIL'] = tr('External mail server');
-		$tplVars['EXTMAIL_YES'] = ($data['domain_external_mail'] == 'yes') ? $htmlChecked : '';
-		$tplVars['EXTMAIL_NO'] = ($data['domain_external_mail'] != 'yes') ? $htmlChecked : '';
-	}
-
 	// PHP support
 	$tplVars['TR_PHP'] = tr('PHP');
 	$tplVars['PHP_YES'] = ($data['domain_php'] == 'yes') ? $htmlChecked : '';
@@ -563,9 +554,13 @@ function _admin_generateFeaturesForm($tpl, &$data)
 	$tplVars['CGI_NO'] = ($data['domain_cgi'] != 'yes') ? $htmlChecked : '';
 
 	// Custom DNS records
-	$tplVars['TR_DNS'] = tr('Custom DNS records');
-	$tplVars['DNS_YES'] = ($data['domain_dns'] == 'yes') ? $htmlChecked : '';
-	$tplVars['DNS_NO'] = ($data['domain_dns'] != 'yes') ? $htmlChecked : '';
+	if($cfg['NAMED_SERVER'] != 'external_server') {
+		$tplVars['TR_DNS'] = tr('Custom DNS records');
+		$tplVars['DNS_YES'] = ($data['domain_dns'] == 'yes') ? $htmlChecked : '';
+		$tplVars['DNS_NO'] = ($data['domain_dns'] != 'yes') ? $htmlChecked : '';
+	} else {
+		$tplVars['CUSTOM_DNS_RECORDS_FEATURE'] = '';
+	}
 
 	// APS support
 	if($data['software_allowed'] == 'no') {
@@ -574,6 +569,15 @@ function _admin_generateFeaturesForm($tpl, &$data)
 		$tplVars['TR_APS'] = tr('Software installer');
 		$tplVars['APS_YES'] = ($data['domain_software_allowed'] == 'yes') ? $htmlChecked : '';
 		$tplVars['APS_NO'] = ($data['domain_software_allowed'] != 'yes') ? $htmlChecked : '';
+	}
+
+	// External mail support
+	if($data['max_mail_cnt'] == '-1') {
+		$tplVars['EXT_MAIL_BLOCK'] =  '';
+	} else {
+		$tplVars['TR_EXTMAIL'] = tr('External mail server');
+		$tplVars['EXTMAIL_YES'] = ($data['domain_external_mail'] == 'yes') ? $htmlChecked : '';
+		$tplVars['EXTMAIL_NO'] = ($data['domain_external_mail'] != 'yes') ? $htmlChecked : '';
 	}
 
 	// Backup support
@@ -857,10 +861,6 @@ function admin_checkAndUpdateData($domainId)
 		$phpEditorNew = array_merge($phpEditor->getData(), $phpEditor->getClPerm());
 		// Check for PHP editor values - End
 
-		// Check for External mail server support (we are safe here)
-		$data['domain_external_mail'] = (in_array($data['domain_external_mail'], array('no', 'yes')))
-			? $data['domain_external_mail'] : $data['fallback_domain_external_mail'];
-
 		// Check for CGI support (we are safe here)
 		$data['domain_cgi'] = (in_array($data['domain_cgi'], array('no', 'yes')))
 			? $data['domain_cgi'] : $data['fallback_domain_cgi'];
@@ -872,6 +872,10 @@ function admin_checkAndUpdateData($domainId)
 		// Check for APS support (we are safe here)
 		$data['domain_software_allowed'] = (in_array($data['domain_software_allowed'], array('no', 'yes')))
 			? $data['domain_software_allowed'] : $data['fallback_domain_software_allowed'];
+
+		// Check for External mail server support (we are safe here)
+		$data['domain_external_mail'] = (in_array($data['domain_external_mail'], array('no', 'yes')))
+			? $data['domain_external_mail'] : $data['fallback_domain_external_mail'];
 
 		// Check for backup support (we are safe here)
 		$data['allowbackup'] = (in_array($data['allowbackup'], array('dmn', 'sql', 'full', 'no')))
@@ -1161,7 +1165,7 @@ $tpl->define_dynamic(
 		 'php_editor_disable_functions_block' => 'php_editor_permissions_block',
 		 'php_editor_default_values_block' => 'php_directives_editor_block',
 		 'cgi_block' => 'page',
-		 'dns_block' => 'page',
+		 'custom_dns_records_feature' => 'page',
 		 'aps_block' => 'page',
 		 'backup_block' => 'page',
 		 'web_folder_protection_block' => 'page'
