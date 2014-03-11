@@ -11,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2014-02-27 13:52+0100\n"
-"PO-Revision-Date: 2014-02-27 12:54+0000\n"
+"POT-Creation-Date: 2014-03-11 09:12+0100\n"
+"PO-Revision-Date: 2014-03-11 08:14+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Danish (Denmark) (http://www.transifex.com/projects/p/i-MSCP/language/da_DK/)\n"
 "MIME-Version: 1.0\n"
@@ -2539,7 +2539,7 @@ msgid "Get a new image"
 msgstr "Anskaf et nyt billede"
 
 msgid "Get it on"
-msgstr ""
+msgstr "Komme igang"
 
 msgid "GiB"
 msgstr "GiB"
@@ -3255,9 +3255,6 @@ msgstr "Nej"
 msgid "No IP address found."
 msgstr "Ingen IP adresse fundet."
 
-msgid "No IP statistics to be shown."
-msgstr "Ingen IP statistikker, at vise."
-
 msgid "No administrator accounts found."
 msgstr "Ingen administrator konti fundet."
 
@@ -3308,9 +3305,6 @@ msgstr "Ingen logs fundet."
 
 msgid "No new i-MSCP updates available"
 msgstr "Ingen nye i-MSCP opdateringer tilgængelig"
-
-msgid "No records found"
-msgstr "Ingen poster fundet"
 
 msgid "No records found matching the search criteria."
 msgstr "Har ikke fundet records, der matcher søgekriterierne."
@@ -3439,7 +3433,7 @@ msgid "Only positive numbers are allowed."
 msgstr "Kun positive tal er tilladt."
 
 msgid "Only tar.gz, tar.bz2 and zip archives are accepted."
-msgstr ""
+msgstr "Kun tar.gz, tar.bz2 og zip-arkiver accepteres."
 
 msgid "Open ticket"
 msgstr "Åben support ticket"
@@ -3806,7 +3800,7 @@ msgstr "Plugin %s succesfuldt opdateret."
 msgid ""
 "Plugin Manager: Downgrade of plugin is not supported. You must update the %s"
 " plugin."
-msgstr ""
+msgstr "Plugin Manager: Nedgradering af plugin er ikke understøttet. Du skal opdatere %s plugin."
 
 #, php-format
 msgid "Plugin Manager: Unable to activate the %s plugin: %s"
@@ -3923,7 +3917,7 @@ msgid "Process update"
 msgstr "Process opdatering"
 
 msgid "Processing..."
-msgstr ""
+msgstr "Behandler ..."
 
 msgid "Processor data"
 msgstr "Processor data"
@@ -4249,7 +4243,7 @@ msgid "SQL database limit is disabled but SQL user limit is not."
 msgstr "SQL database grænse er deaktiveret, men SQL bruger grænse er det ikke."
 
 msgid "SQL database limit is disabled."
-msgstr ""
+msgstr "SQL database grænse er deaktiveret."
 
 msgid "SQL database limit is not <i>disabled</i>."
 msgstr "SQL database grænse er ikke <i>deaktiveret</i> "
@@ -4282,7 +4276,7 @@ msgid "SQL user limit is disabled but SQL database limit is not."
 msgstr "SQL bruger grænse er deaktiveret, men SQL database grænsen er det ikke."
 
 msgid "SQL user limit is disabled."
-msgstr ""
+msgstr "SQL bruger grænse er deaktiveret."
 
 msgid "SQL user limit reached."
 msgstr "SQL bruger grænse er nået."
@@ -4818,7 +4812,7 @@ msgstr "Grænsen %s for denne kunde kan ikke være ubegrænset, fordi din er beg
 
 #, php-format
 msgid "The %s translation file has been ignored: Translation table is empty."
-msgstr ""
+msgstr "Den %s oversættelses fil er blevet ignoreret: Oversættelses tabellen er tom."
 
 msgid "The IP address you're trying to remove is assigned to a reseller."
 msgstr "Den IP-adresse, du forsøger at fjerne er tildelt en forhandler."

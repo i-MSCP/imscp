@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2014-02-27 13:52+0100\n"
-"PO-Revision-Date: 2014-02-27 12:54+0000\n"
+"POT-Creation-Date: 2014-03-11 09:12+0100\n"
+"PO-Revision-Date: 2014-03-11 08:14+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Hungarian (Hungary) (http://www.transifex.com/projects/p/i-MSCP/language/hu_HU/)\n"
 "MIME-Version: 1.0\n"
@@ -3256,9 +3256,6 @@ msgstr "Nem"
 msgid "No IP address found."
 msgstr "IP-cím nem található"
 
-msgid "No IP statistics to be shown."
-msgstr "Nincs megjeleníthető IP statisztika"
-
 msgid "No administrator accounts found."
 msgstr "Adminisztrátor nem található"
 
@@ -3309,9 +3306,6 @@ msgstr "Napló nem található"
 
 msgid "No new i-MSCP updates available"
 msgstr "Nincs elérhető i-MSCP frissítés"
-
-msgid "No records found"
-msgstr "Nem található bejegyzés"
 
 msgid "No records found matching the search criteria."
 msgstr "A keresési feltételek alapján nem találhatók rekordok."
@@ -3440,7 +3434,7 @@ msgid "Only positive numbers are allowed."
 msgstr "Csak pozitív szám adható meg"
 
 msgid "Only tar.gz, tar.bz2 and zip archives are accepted."
-msgstr ""
+msgstr "Csak a tar.gz, tar.bz2 és a zip archívumok az elfogadottak."
 
 msgid "Open ticket"
 msgstr "Hibajegy megnyitása"
@@ -3807,7 +3801,7 @@ msgstr "%s bővítmény sikeresen frissítve!"
 msgid ""
 "Plugin Manager: Downgrade of plugin is not supported. You must update the %s"
 " plugin."
-msgstr ""
+msgstr "Bővítménykezelő: ezt a bővítményt nem lehet visszatartani. Frissítened kell a(z) %s bővítményt."
 
 #, php-format
 msgid "Plugin Manager: Unable to activate the %s plugin: %s"

@@ -4,12 +4,13 @@
 # 
 # Translators:
 # Danel Ibañez <laborategia@gmail.com>, 2008
+# raasta <raasta@gmail.com>, 2014
 msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2014-02-27 13:52+0100\n"
-"PO-Revision-Date: 2014-02-27 12:54+0000\n"
+"POT-Creation-Date: 2014-03-11 09:12+0100\n"
+"PO-Revision-Date: 2014-03-11 08:14+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Basque (Spain) (http://www.transifex.com/projects/p/i-MSCP/language/eu_ES/)\n"
 "MIME-Version: 1.0\n"
@@ -179,7 +180,7 @@ msgstr "%1$d%% [%2$s mugagabetik]"
 
 #, php-format
 msgid "%1$s (%2$s)"
-msgstr ""
+msgstr "%1$s (%2$s)"
 
 #, php-format
 msgid "%1$s - (Softwaredepot)"
@@ -239,11 +240,11 @@ msgstr ""
 
 #, php-format
 msgid "%d configuration parameter(s) have/has been created."
-msgstr ""
+msgstr "%d ezarpen parametro sortu dira."
 
 #, php-format
 msgid "%d configuration parameter(s) have/has been updated."
-msgstr ""
+msgstr "%d ezarpen parametro eguneratu dira."
 
 #, php-format
 msgid "%d of %s"
@@ -656,7 +657,7 @@ msgid "Add new protected area"
 msgstr "Gehitu babestutako gune berria"
 
 msgid "Add new service port"
-msgstr ""
+msgstr "Zerbitzu portu berria gehitu"
 
 msgid "Add permissions"
 msgstr ""
@@ -853,7 +854,7 @@ msgid "Admin users"
 msgstr "Adminsitrari erabiltzaileak"
 
 msgid "Admin/IP usage statistics"
-msgstr ""
+msgstr "Amdin/IP erabilera estadistikak"
 
 msgid "Administrator"
 msgstr "Administraria"
@@ -915,7 +916,7 @@ msgid "All closed tickets were successfully deleted."
 msgstr ""
 
 msgid "All fields are required."
-msgstr ""
+msgstr "Eremu guztiak beharrezkoak dira."
 
 msgid "All fields seem to be valid."
 msgstr ""
@@ -1046,7 +1047,7 @@ msgstr ""
 
 #, php-format
 msgid "Are you sure you want to delete %s service port ?"
-msgstr ""
+msgstr "Zihur zaude %s zerbitzu portua ezabatu nahi duzula?"
 
 #, php-format
 msgid "Are you sure you want to delete %s?"
@@ -1562,7 +1563,7 @@ msgid ""
 msgstr ""
 
 msgid "Couldn't check for updates. Website not reachable."
-msgstr ""
+msgstr "Eguneraketak ezin izan dira egiaztatu. Webgunea ez da aurkitu."
 
 msgid "Count default email addresses"
 msgstr ""
@@ -1769,7 +1770,7 @@ msgid "Day statistics"
 msgstr ""
 
 msgid "Days"
-msgstr ""
+msgstr "Egunak"
 
 msgid "Deactivate"
 msgstr ""
@@ -1871,7 +1872,7 @@ msgid "Delete order"
 msgstr "Ezabatu eskaera"
 
 msgid "Delete reseller software"
-msgstr ""
+msgstr "Ezabatu birsaltzailearen softwarea"
 
 msgid "Delete selected items"
 msgstr ""
@@ -1886,7 +1887,7 @@ msgid "Deletion in progress"
 msgstr ""
 
 msgid "Demo Version!"
-msgstr ""
+msgstr "Demo Bertsioa!"
 
 msgid "Depot import"
 msgstr ""
@@ -1958,7 +1959,7 @@ msgid "Domain Limit"
 msgstr ""
 
 msgid "Domain Name"
-msgstr ""
+msgstr "Domeinu Izena"
 
 msgid "Domain account"
 msgstr "Domeinu kontua"
@@ -2318,7 +2319,7 @@ msgid "Error reporting"
 msgstr ""
 
 msgid "Error while trying to obtain list of network cards."
-msgstr ""
+msgstr "Errorea sareko txartelen zerrenda eskuratzerakoan."
 
 msgid "Error: Remote File not found!"
 msgstr ""
@@ -2418,7 +2419,7 @@ msgstr ""
 
 #, php-format
 msgid "File does not exist. %1$s.tar.gz"
-msgstr ""
+msgstr "Fitxategia ez da existitzen, %1$s.tar.gz"
 
 msgid "File exceeds the size limit."
 msgstr ""
@@ -2439,7 +2440,7 @@ msgid "File usage"
 msgstr ""
 
 msgid "FileManager"
-msgstr ""
+msgstr "Fitxategi arakatzailea"
 
 msgid "Filemanager"
 msgstr "Artxibo kudeaketa"
@@ -2612,7 +2613,7 @@ msgid "Hour"
 msgstr "Ordua"
 
 msgid "Hours"
-msgstr ""
+msgstr "Orduak"
 
 msgid "Htaccess errors"
 msgstr ""
@@ -2671,7 +2672,7 @@ msgid "IP management"
 msgstr ""
 
 msgid "IP usage"
-msgstr ""
+msgstr "IP erabillera"
 
 msgid "IPv6 address"
 msgstr "IPv6 helbideak"
@@ -2823,7 +2824,7 @@ msgid "Internal Server Error"
 msgstr ""
 
 msgid "Internationalization"
-msgstr ""
+msgstr "Internazionalizazioa"
 
 msgid "Invalid CNAME"
 msgstr ""
@@ -3151,7 +3152,7 @@ msgid "Message template info"
 msgstr "Mezu txantiloiaren informazioa"
 
 msgid "Message to reseller before deleting the software"
-msgstr ""
+msgstr "Mezua bidali birsaltzaileari softwarea ezabatu aurretik"
 
 msgid "Messages"
 msgstr "Mezuak"
@@ -3160,13 +3161,13 @@ msgid "MiB"
 msgstr ""
 
 msgid "Minute"
-msgstr ""
+msgstr "Minutu"
 
 msgid "Minutes"
-msgstr ""
+msgstr "Minutuak"
 
 msgid "Missing domain"
-msgstr ""
+msgstr "Domeinu galdua"
 
 msgid "Model"
 msgstr ""
@@ -3232,7 +3233,7 @@ msgid "New i-MSCP update is available"
 msgstr ""
 
 msgid "New password has not been sent. Ask your administrator."
-msgstr ""
+msgstr "Pasahitz berria ez da bidali. Galdetu zure administrariari."
 
 msgid "New password is"
 msgstr ""
@@ -3250,9 +3251,6 @@ msgid "No"
 msgstr "Ez"
 
 msgid "No IP address found."
-msgstr ""
-
-msgid "No IP statistics to be shown."
 msgstr ""
 
 msgid "No administrator accounts found."
@@ -3305,9 +3303,6 @@ msgstr ""
 
 msgid "No new i-MSCP updates available"
 msgstr "Ez dago i-MSCP eguneraketarik eskuragarri"
-
-msgid "No records found"
-msgstr ""
 
 msgid "No records found matching the search criteria."
 msgstr ""
@@ -3376,7 +3371,7 @@ msgid "Not Found"
 msgstr ""
 
 msgid "Not Set"
-msgstr ""
+msgstr "Ezarri gabe"
 
 msgid "Not found."
 msgstr ""
@@ -3412,7 +3407,7 @@ msgid "OK"
 msgstr "Ados"
 
 msgid "Ok"
-msgstr ""
+msgstr "Ados"
 
 msgid "One or more database updates are now available. See the details below."
 msgstr ""
@@ -3522,7 +3517,7 @@ msgid "POP3/IMAP traffic"
 msgstr "POP3/IMAP trafikoa"
 
 msgid "Package actions"
-msgstr ""
+msgstr "Paketearen ekintzak"
 
 msgid "Package already exists in the reseller depot!"
 msgstr ""
@@ -3537,7 +3532,7 @@ msgid "Package already exists in your software repository!"
 msgstr ""
 
 msgid "Package install type"
-msgstr ""
+msgstr "Paketearen instalazio mota"
 
 msgid "Package installed successfully!"
 msgstr ""
@@ -3546,22 +3541,22 @@ msgid "Package installed successfully... Awaiting release from admin!"
 msgstr ""
 
 msgid "Package language"
-msgstr ""
+msgstr "Paketearen hizkuntza"
 
 msgid "Package name"
 msgstr ""
 
 msgid "Package title"
-msgstr ""
+msgstr "Paketearen izenburua"
 
 msgid "Package type"
-msgstr ""
+msgstr "Pakete mota"
 
 msgid "Package vendor HP"
-msgstr ""
+msgstr "Pakete saltzailea HP"
 
 msgid "Package version"
-msgstr ""
+msgstr "Paketearen bertsioa"
 
 msgid "Panel default language"
 msgstr "Panelaren berezko hizkuntza"
@@ -3579,7 +3574,7 @@ msgid "Password cannot be longer than 30 characters."
 msgstr ""
 
 msgid "Password change is deactivated!"
-msgstr ""
+msgstr "Pasahitz aldaketa ez dago aktibatuta!"
 
 msgid "Password confirmation"
 msgstr ""
@@ -4132,7 +4127,7 @@ msgid "Reseller /Hosting Plans / {TR_DYNAMIC_TITLE}"
 msgstr ""
 
 msgid "Reseller Name"
-msgstr ""
+msgstr "Birsaltzailearen Izena"
 
 msgid "Reseller account successfully created."
 msgstr ""
@@ -4153,7 +4148,7 @@ msgid "Reseller consumption"
 msgstr ""
 
 msgid "Reseller data"
-msgstr ""
+msgstr "Birsaltzailearen datuak"
 
 msgid "Reseller level"
 msgstr "Bersaltzaile maila"
@@ -4434,7 +4429,7 @@ msgid "Service protocol"
 msgstr "Zerbitzari protokoloa"
 
 msgid "Services status"
-msgstr ""
+msgstr "Zerbitzuaren egoera"
 
 msgid "Sessions"
 msgstr ""
@@ -4565,10 +4560,10 @@ msgid "Software upload"
 msgstr ""
 
 msgid "Software was activated."
-msgstr ""
+msgstr "Softwarea aktibatua izan da."
 
 msgid "Software was deleted."
-msgstr ""
+msgstr "Softwarea ezabatua izan da."
 
 msgid "Software-Synonym"
 msgstr ""
@@ -4967,7 +4962,7 @@ msgid ""
 msgstr ""
 
 msgid "This user name already exist."
-msgstr ""
+msgstr "Erabiltzaile izena iada badago."
 
 msgid "TiB"
 msgstr ""
@@ -5011,7 +5006,7 @@ msgid "Total"
 msgstr "Guztira"
 
 msgid "Total Domains"
-msgstr ""
+msgstr "Domeinuak Guztira"
 
 msgid "Total Software"
 msgstr ""
@@ -5230,7 +5225,7 @@ msgid "Update from Web software repository"
 msgstr ""
 
 msgid "Update from web depot"
-msgstr ""
+msgstr "Web biltegitik eguneratu"
 
 msgid "Update hosting plan"
 msgstr ""
@@ -5500,7 +5495,7 @@ msgid "Wrong security code"
 msgstr ""
 
 msgid "Wrong software id."
-msgstr ""
+msgstr "Software id okerra."
 
 msgid "Wrong syntax for new expire date."
 msgstr ""
@@ -5939,7 +5934,7 @@ msgid "i-MSCP - Client/Create CatchAll Mail Account"
 msgstr "i-MSCP - Erabiltzailea/Sortu CatchAll Posta Kontua"
 
 msgid "i-MSCP - Multi Server Control Panel / Login"
-msgstr ""
+msgstr "i-MSCP - Multi Server Control Panel / Sarrera"
 
 msgid "i-MSCP - Multi Server Control Panel / Lost Password"
 msgstr ""
@@ -5987,7 +5982,7 @@ msgid "installing"
 msgstr ""
 
 msgid "internet Multi Server Control Panel"
-msgstr ""
+msgstr "Internet Multi Server Control Panel"
 
 msgid "kB"
 msgstr ""
@@ -5999,10 +5994,10 @@ msgid "mail"
 msgstr ""
 
 msgid "missing alias"
-msgstr ""
+msgstr "izen-goiti galdua"
 
 msgid "missing domain"
-msgstr ""
+msgstr "domeinu galdua"
 
 msgid "no"
 msgstr "ez"
@@ -6039,7 +6034,7 @@ msgid "orders"
 msgstr ""
 
 msgid "orphan entry"
-msgstr ""
+msgstr "sarrera umezurtza"
 
 msgid "phpMyAdmin"
 msgstr "phpMyAdmin-a"

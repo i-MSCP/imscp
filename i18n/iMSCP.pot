@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.1.1\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2014-02-27 13:52+0100\n"
+"POT-Creation-Date: 2014-03-11 09:12+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -3250,9 +3250,6 @@ msgstr ""
 msgid "No IP address found."
 msgstr ""
 
-msgid "No IP statistics to be shown."
-msgstr ""
-
 msgid "No administrator accounts found."
 msgstr ""
 
@@ -3302,9 +3299,6 @@ msgid "No logs found."
 msgstr ""
 
 msgid "No new i-MSCP updates available"
-msgstr ""
-
-msgid "No records found"
 msgstr ""
 
 msgid "No records found matching the search criteria."

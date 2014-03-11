@@ -22,6 +22,7 @@
 # Pascal Küppers <>, 2012
 # MuhKuh <peter@obanax.ch>, 2013
 # mrpink, 2014
+# mrpink, 2014
 # design <schlanki_26@web.de>, 2011
 # kreilinger <strauss3@gmx.at>, 2011
 # Tango <tango-net@freenet.de>, 2011
@@ -34,8 +35,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2014-02-27 13:52+0100\n"
-"PO-Revision-Date: 2014-02-27 12:54+0000\n"
+"POT-Creation-Date: 2014-03-11 09:12+0100\n"
+"PO-Revision-Date: 2014-03-11 08:14+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: German (Germany) (http://www.transifex.com/projects/p/i-MSCP/language/de_DE/)\n"
 "MIME-Version: 1.0\n"
@@ -3278,9 +3279,6 @@ msgstr "Nein"
 msgid "No IP address found."
 msgstr "Keine IP-Adresse gefunden."
 
-msgid "No IP statistics to be shown."
-msgstr "Keine IP-Statistiken vorhanden."
-
 msgid "No administrator accounts found."
 msgstr "Keine Administratorkonten gefunden."
 
@@ -3331,9 +3329,6 @@ msgstr "Keine Logs gefunden."
 
 msgid "No new i-MSCP updates available"
 msgstr "Keine neuen i-MSCP Updates verfügbar"
-
-msgid "No records found"
-msgstr "Keinen Eintrag gefunden"
 
 msgid "No records found matching the search criteria."
 msgstr "Keine Einträge gefunden welche den Suchkriterien entsprechen."
@@ -3462,7 +3457,7 @@ msgid "Only positive numbers are allowed."
 msgstr "Nur positive Zahlen sind erlaubt."
 
 msgid "Only tar.gz, tar.bz2 and zip archives are accepted."
-msgstr ""
+msgstr "Es werden nur tar.gz, tar.bz2 und zip Archive akzeptiert."
 
 msgid "Open ticket"
 msgstr "Offenes Ticket"
@@ -3829,7 +3824,7 @@ msgstr "Plugin %s erfolgreich aktualisiert."
 msgid ""
 "Plugin Manager: Downgrade of plugin is not supported. You must update the %s"
 " plugin."
-msgstr ""
+msgstr "Plugin Manager: Downgrade des Plugins wird nicht unterstützt. Sie müssen das %s Plugin aktualisieren."
 
 #, php-format
 msgid "Plugin Manager: Unable to activate the %s plugin: %s"

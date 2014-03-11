@@ -30,8 +30,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2014-02-27 13:52+0100\n"
-"PO-Revision-Date: 2014-02-27 12:54+0000\n"
+"POT-Creation-Date: 2014-03-11 09:12+0100\n"
+"PO-Revision-Date: 2014-03-11 08:14+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: French (France) (http://www.transifex.com/projects/p/i-MSCP/language/fr_FR/)\n"
 "MIME-Version: 1.0\n"
@@ -3274,9 +3274,6 @@ msgstr "Non"
 msgid "No IP address found."
 msgstr "Aucun adresse IP trouvé."
 
-msgid "No IP statistics to be shown."
-msgstr "Aucune statistique pour cette IP à afficher."
-
 msgid "No administrator accounts found."
 msgstr "Aucun comptes Administrateurs ont été trouvés."
 
@@ -3327,9 +3324,6 @@ msgstr "Aucun journal trouvé."
 
 msgid "No new i-MSCP updates available"
 msgstr "Aucune mise à jour d'i-MSCP disponible"
-
-msgid "No records found"
-msgstr "Aucun enregistrement trouvé"
 
 msgid "No records found matching the search criteria."
 msgstr "Aucun enregistrement trouvé pour ces critères de recherche."
@@ -3458,7 +3452,7 @@ msgid "Only positive numbers are allowed."
 msgstr "Seuls les nombre positifs sont autorisés."
 
 msgid "Only tar.gz, tar.bz2 and zip archives are accepted."
-msgstr ""
+msgstr "Seules les archives tar.gz, tar.bz2 et zip sont acceptées."
 
 msgid "Open ticket"
 msgstr "Ouvrir un ticket"
@@ -3825,7 +3819,7 @@ msgstr "Le plugin %s a été mis à jour avec succès."
 msgid ""
 "Plugin Manager: Downgrade of plugin is not supported. You must update the %s"
 " plugin."
-msgstr ""
+msgstr "Gestionnaire de plugins : Downgrade du plugin non supporté. Vous devez mettre à jour le plugin %s."
 
 #, php-format
 msgid "Plugin Manager: Unable to activate the %s plugin: %s"

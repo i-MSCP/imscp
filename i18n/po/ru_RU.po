@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2014-02-27 13:52+0100\n"
-"PO-Revision-Date: 2014-02-27 12:54+0000\n"
+"POT-Creation-Date: 2014-03-11 09:12+0100\n"
+"PO-Revision-Date: 2014-03-11 08:14+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Russian (Russia) (http://www.transifex.com/projects/p/i-MSCP/language/ru_RU/)\n"
 "MIME-Version: 1.0\n"
@@ -3256,9 +3256,6 @@ msgstr "Нет"
 msgid "No IP address found."
 msgstr "Не найдено IP адресов."
 
-msgid "No IP statistics to be shown."
-msgstr "Нет статистики IP для отображения."
-
 msgid "No administrator accounts found."
 msgstr "Не найдено учетных записей администраторов."
 
@@ -3309,9 +3306,6 @@ msgstr "Не найдено логов"
 
 msgid "No new i-MSCP updates available"
 msgstr "Нет доступных обновлений i-MSCP"
-
-msgid "No records found"
-msgstr "Записей не найдено"
 
 msgid "No records found matching the search criteria."
 msgstr "Не найдено записей, удовлетворяющих критерию."

@@ -11,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2014-02-27 13:52+0100\n"
-"PO-Revision-Date: 2014-02-27 12:54+0000\n"
+"POT-Creation-Date: 2014-03-11 09:12+0100\n"
+"PO-Revision-Date: 2014-03-11 08:14+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Portuguese (Brazil) (http://www.transifex.com/projects/p/i-MSCP/language/pt_BR/)\n"
 "MIME-Version: 1.0\n"
@@ -3255,9 +3255,6 @@ msgstr "Não"
 msgid "No IP address found."
 msgstr "Nenhum endereço de IP encontrado."
 
-msgid "No IP statistics to be shown."
-msgstr ""
-
 msgid "No administrator accounts found."
 msgstr "Nenhuma conta de administrador encontrada."
 
@@ -3308,9 +3305,6 @@ msgstr "Nenhum log encontrado."
 
 msgid "No new i-MSCP updates available"
 msgstr "Nenhuma atualização do i-MSCP disponível"
-
-msgid "No records found"
-msgstr "Nenhum registro encontrado"
 
 msgid "No records found matching the search criteria."
 msgstr ""

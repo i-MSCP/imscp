@@ -5,13 +5,13 @@
 # Translators:
 # jui <appukonrad@gmail.com>, 2012
 # jui <appukonrad@gmail.com>, 2012
-# Tumik <petrik.tumik@seznam.cz>, 2013
+# Tumik <petrik.tumik@seznam.cz>, 2013-2014
 msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2014-02-27 13:52+0100\n"
-"PO-Revision-Date: 2014-02-27 12:54+0000\n"
+"POT-Creation-Date: 2014-03-11 09:12+0100\n"
+"PO-Revision-Date: 2014-03-11 08:14+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Czech (Czech Republic) (http://www.transifex.com/projects/p/i-MSCP/language/cs_CZ/)\n"
 "MIME-Version: 1.0\n"
@@ -568,7 +568,7 @@ msgid "Activate this plugin"
 msgstr ""
 
 msgid "Activated"
-msgstr ""
+msgstr "Aktivovat"
 
 msgid "Activated software"
 msgstr ""
@@ -607,7 +607,7 @@ msgid "Add SSL certificate"
 msgstr ""
 
 msgid "Add a new entry"
-msgstr ""
+msgstr "Přidat nový záznam"
 
 msgid "Add admin"
 msgstr "Přidat administrátora"
@@ -861,7 +861,7 @@ msgid "Administrator"
 msgstr "Administrátor"
 
 msgid "Administrator and Reseller levels"
-msgstr ""
+msgstr "Úroveň administrátora a "
 
 msgid "Administrator and customer"
 msgstr ""
@@ -1140,7 +1140,7 @@ msgid "Auto-responder successfully scheduled for update."
 msgstr ""
 
 msgid "Available"
-msgstr ""
+msgstr "Dostupné"
 
 msgid "Available i-MSCP updates"
 msgstr "Dostupné i-MSCP aktualizace"
@@ -1243,7 +1243,7 @@ msgid "Canonical name"
 msgstr "Kanonické jméno"
 
 msgid "Captcha fontfile not found."
-msgstr ""
+msgstr "Soubor fontů pro Captcha nebyl nalezen."
 
 msgid "Catch all"
 msgstr "Doménový koš"
@@ -1553,7 +1553,7 @@ msgid "Cores"
 msgstr ""
 
 msgid "Could not upload file."
-msgstr ""
+msgstr "Nelze nahrát tento soubor."
 
 msgid "Could not upload file. File not found."
 msgstr ""
@@ -1750,7 +1750,7 @@ msgid "Database update is available"
 msgstr ""
 
 msgid "Database usage"
-msgstr ""
+msgstr "Využití databáze"
 
 msgid "Database user list is empty!"
 msgstr "Databáze se seznamem uživatelů je prázdná!"
@@ -1777,13 +1777,13 @@ msgid "Deactivate"
 msgstr ""
 
 msgid "Deactivate selected items"
-msgstr ""
+msgstr "Deaktivace vybraných položek"
 
 msgid "Deactivate this plugin"
 msgstr ""
 
 msgid "Deactivated"
-msgstr ""
+msgstr "Deaktivováno"
 
 msgid "Deactivation in progress..."
 msgstr ""
@@ -1927,7 +1927,7 @@ msgid "Disk"
 msgstr "Diskový prostor"
 
 msgid "Disk space"
-msgstr ""
+msgstr "Velikost disku"
 
 msgid "Disk space limit [MiB]"
 msgstr ""
@@ -2039,7 +2039,7 @@ msgid "Domain errors"
 msgstr ""
 
 msgid "Domain expiration date"
-msgstr ""
+msgstr "Doména vyprší dne"
 
 msgid "Domain expiration date must be filled."
 msgstr "Datum konce platnosti domény musí být vyplněno."
@@ -2077,7 +2077,7 @@ msgid "Domain name labels cannot start nor end with hyphen."
 msgstr ""
 
 msgid "Domain new expiration date"
-msgstr ""
+msgstr "Doména vyprší dne"
 
 msgid "Domain not found."
 msgstr "Doména nenalezena."
@@ -2101,7 +2101,7 @@ msgid "Domain successfully updated."
 msgstr ""
 
 msgid "Domain type"
-msgstr ""
+msgstr "Typ Domény"
 
 msgid ""
 "Domain: Setup a DNS MX record to relay mail of your entire domain, including"
@@ -2371,7 +2371,7 @@ msgid "FTP account limit reached."
 msgstr ""
 
 msgid "FTP account successfully added."
-msgstr ""
+msgstr "FTP účet úspěšně přidán."
 
 msgid "FTP account successfully deleted."
 msgstr ""
@@ -2435,7 +2435,7 @@ msgid "File needs to be a 'tar.gz' archive."
 msgstr "Soubor musí být  'tar.gz' archiv."
 
 msgid "File successfully uploaded."
-msgstr ""
+msgstr "Soubor byl úspěšně nahrán."
 
 msgid "File usage"
 msgstr ""
@@ -2562,7 +2562,7 @@ msgid "HTTP traffic"
 msgstr ""
 
 msgid "Hide aliases"
-msgstr ""
+msgstr "Skrýt aliasy"
 
 msgid "High"
 msgstr "Vysoká"
@@ -2743,7 +2743,7 @@ msgid "Incorrect alias limit."
 msgstr ""
 
 msgid "Incorrect disk space limit."
-msgstr ""
+msgstr "Překročily jste limit vašeho místa na disku."
 
 msgid "Incorrect domain alias limit."
 msgstr ""
@@ -2783,7 +2783,7 @@ msgid "Install in progress"
 msgstr ""
 
 msgid "Install path"
-msgstr ""
+msgstr "Cesta instalace"
 
 msgid "Install this plugin"
 msgstr ""
@@ -2990,7 +2990,7 @@ msgid "Login data successfully sent to %s."
 msgstr ""
 
 msgid "Login into phpMyAdmin"
-msgstr ""
+msgstr "Přihlásit se do phpMyAdminu"
 
 msgid "Login password"
 msgstr ""
@@ -3005,10 +3005,10 @@ msgid "Logo file"
 msgstr "Soubor s logem"
 
 msgid "Logo successfully removed."
-msgstr ""
+msgstr "Logo bylo odstraněno."
 
 msgid "Logo successfully updated."
-msgstr ""
+msgstr "Logo bylo úspěšně aktualizováno."
 
 msgid "Logout"
 msgstr "Odhlásit"
@@ -3168,7 +3168,7 @@ msgid "Minutes"
 msgstr "Minuty"
 
 msgid "Missing domain"
-msgstr ""
+msgstr "Chybějící doména"
 
 msgid "Model"
 msgstr ""
@@ -3192,7 +3192,7 @@ msgid "Monthly traffic warning must be a number."
 msgstr ""
 
 msgid "More Details"
-msgstr ""
+msgstr "Více Podrobností"
 
 msgid "Mount"
 msgstr "Bod připojení"
@@ -3254,9 +3254,6 @@ msgstr "Ne"
 msgid "No IP address found."
 msgstr ""
 
-msgid "No IP statistics to be shown."
-msgstr ""
-
 msgid "No administrator accounts found."
 msgstr "Nenalezeny žádné účty administrátora."
 
@@ -3307,9 +3304,6 @@ msgstr ""
 
 msgid "No new i-MSCP updates available"
 msgstr "Nejsou dostupné i-MSCP aktualizace"
-
-msgid "No records found"
-msgstr "Nebyly nalezeny žádné záznamy"
 
 msgid "No records found matching the search criteria."
 msgstr ""
@@ -3524,7 +3518,7 @@ msgid "POP3/IMAP traffic"
 msgstr "Přenesená data POP3/IMAP"
 
 msgid "Package actions"
-msgstr ""
+msgstr "Akce balíčku"
 
 msgid "Package already exists in the reseller depot!"
 msgstr ""
@@ -3600,7 +3594,7 @@ msgstr ""
 
 #, php-format
 msgid "Password is shorter than %s characters."
-msgstr ""
+msgstr "Heslo je kratší než %s znaků"
 
 msgid "Password length"
 msgstr "Délka hesla"
@@ -3894,7 +3888,7 @@ msgid "Port"
 msgstr "Port"
 
 msgid "Port must be a number."
-msgstr ""
+msgstr "Port musí být číslo!"
 
 msgid "Prevent external login for admins"
 msgstr "Zabránit externímu přihlašování adminů"
@@ -3987,7 +3981,7 @@ msgid "Rebuild languages index"
 msgstr "Znovu vytvořit index jazyků"
 
 msgid "Record data"
-msgstr ""
+msgstr "Nahraná data"
 
 msgid "Redirect"
 msgstr "Přesměrovat"
@@ -3999,7 +3993,7 @@ msgid "Registration date"
 msgstr ""
 
 msgid "Relative weight"
-msgstr ""
+msgstr "Relativní váha"
 
 msgid "Relative weight must be a number."
 msgstr ""
@@ -4008,7 +4002,7 @@ msgid "Remote Web software repository"
 msgstr ""
 
 msgid "Remote file not found."
-msgstr ""
+msgstr "Vzdálený soubor nebyl nalezen!"
 
 msgid "Remove"
 msgstr "Smazat"
@@ -4155,7 +4149,7 @@ msgid "Reseller consumption"
 msgstr ""
 
 msgid "Reseller data"
-msgstr ""
+msgstr "Data partnera"
 
 msgid "Reseller level"
 msgstr "Úroveň partnera"
@@ -4290,7 +4284,7 @@ msgid "SQL user name"
 msgstr "Jméno SQL uživatele"
 
 msgid "SQL user not found."
-msgstr ""
+msgstr "SQL uživatel nebyl nalezen"
 
 msgid "SQL user password successfully updated."
 msgstr ""
@@ -4376,13 +4370,13 @@ msgid "Send to"
 msgstr ""
 
 msgid "Sender email"
-msgstr ""
+msgstr "Email odesílatele"
 
 msgid "Sender email is missing."
 msgstr ""
 
 msgid "Sender name"
-msgstr ""
+msgstr "Jméno odesílatele"
 
 msgid "Sender name is missing."
 msgstr ""
@@ -4498,7 +4492,7 @@ msgid "Software"
 msgstr "Software"
 
 msgid "Software Description"
-msgstr ""
+msgstr "Popis Software"
 
 msgid "Software available"
 msgstr "Software k dispozici"
@@ -4510,13 +4504,13 @@ msgid "Software depot upload"
 msgstr ""
 
 msgid "Software details"
-msgstr ""
+msgstr "Podrobnosti software"
 
 msgid "Software has been deleted."
-msgstr ""
+msgstr "Software byl smazán."
 
 msgid "Software has been successfully imported."
-msgstr ""
+msgstr "Software byl úspěšně importován."
 
 msgid "Software in repository"
 msgstr ""
@@ -4540,7 +4534,7 @@ msgid "Software management"
 msgstr ""
 
 msgid "Software name"
-msgstr ""
+msgstr "Název software"
 
 msgid "Software not found!"
 msgstr ""
@@ -4558,16 +4552,16 @@ msgid "Software scheduled for deletion."
 msgstr ""
 
 msgid "Software status"
-msgstr ""
+msgstr "Stav software"
 
 msgid "Software total"
-msgstr ""
+msgstr "Celkem programů"
 
 msgid "Software upload"
 msgstr "Nahrát Software"
 
 msgid "Software was activated."
-msgstr ""
+msgstr "Software byl aktivován."
 
 msgid "Software was deleted."
 msgstr "Software byl smazán."
@@ -4756,7 +4750,7 @@ msgid "TTL"
 msgstr "TTL"
 
 msgid "TTL must be a number."
-msgstr ""
+msgstr "TTL musí být číslo!"
 
 msgid "TXT data"
 msgstr "TXT data"
@@ -5032,7 +5026,7 @@ msgid "Total packages in Web software repository"
 msgstr ""
 
 msgid "Total reseller"
-msgstr ""
+msgstr "Celkem partnerů"
 
 msgid "Total software"
 msgstr ""
@@ -5067,7 +5061,7 @@ msgstr ""
 
 #, php-format
 msgid "Unable to close the ticket with Id '%s'."
-msgstr ""
+msgstr "Nelze uzavřít lístek s ID '%s'."
 
 #, php-format
 msgid "Unable to create '%s' directory for language file."
@@ -5170,7 +5164,7 @@ msgid "Unknown Error"
 msgstr "Neznámá chyba"
 
 msgid "Unknown FTP user id."
-msgstr ""
+msgstr "Neznámé ID FTP uživatele."
 
 msgid "Unknown action requested."
 msgstr "Požádáno o neznámou akci."
@@ -5214,7 +5208,7 @@ msgid "Update"
 msgstr "Aktualizace"
 
 msgid "Update Plugins"
-msgstr ""
+msgstr "Aktualizace Pluginu"
 
 msgid "Update SQL user password"
 msgstr ""
@@ -5235,7 +5229,7 @@ msgid "Update from web depot"
 msgstr ""
 
 msgid "Update hosting plan"
-msgstr ""
+msgstr "Aktualizace hostingového plánu"
 
 msgid "Update in progress..."
 msgstr ""
@@ -5311,7 +5305,7 @@ msgstr ""
 
 msgid ""
 "User does not exist or you do not have permission to access this interface"
-msgstr ""
+msgstr "Uživatel neexistuje nebo nemáte oprávnění pro přístup k tomuto rozhraní"
 
 msgid "User errors"
 msgstr ""
@@ -5426,7 +5420,7 @@ msgid ""
 msgstr ""
 
 msgid "Web Statistics"
-msgstr ""
+msgstr "Statistiky webu"
 
 msgid "Web files only"
 msgstr ""
@@ -5502,7 +5496,7 @@ msgid "Wrong security code"
 msgstr "Chybný bezpečnostní kód"
 
 msgid "Wrong software id."
-msgstr ""
+msgstr "Chybné ID software"
 
 msgid "Wrong syntax for new expire date."
 msgstr ""
@@ -5588,7 +5582,7 @@ msgid "You cannot delete a reseller that has customer accounts."
 msgstr ""
 
 msgid "You cannot delete the last active IP address."
-msgstr ""
+msgstr "Nemůžete odstranit poslední aktivní IP adresy."
 
 #, php-format
 msgid "You cannot forward %s on itself."
@@ -5608,7 +5602,7 @@ msgstr ""
 
 #, php-format
 msgid "You cannot remove the %s IP address."
-msgstr ""
+msgstr "Nemůžete odstranit tuto %s IP adresu."
 
 msgid "You cannot remove this entry."
 msgstr ""
@@ -5626,7 +5620,7 @@ msgid "You do not have any orders for domain aliases."
 msgstr ""
 
 msgid "You do not have any software uploaded yet"
-msgstr ""
+msgstr "Ještě nemáte nějaký software nahraný"
 
 msgid "You do not have custom DNS records."
 msgstr "Nemáte vlastní DNS záznamy."
@@ -5880,7 +5874,7 @@ msgid "activated (Softwaredepot)"
 msgstr ""
 
 msgid "and"
-msgstr ""
+msgstr "a"
 
 msgid "day"
 msgstr "den"
@@ -5941,7 +5935,7 @@ msgid "i-MSCP - Client/Create CatchAll Mail Account"
 msgstr "i-MSCP - Klient/Vytvořit doménový koš"
 
 msgid "i-MSCP - Multi Server Control Panel / Login"
-msgstr ""
+msgstr "i-MSCP - Multi Serverový Ovládací Panel / Přihlášení"
 
 msgid "i-MSCP - Multi Server Control Panel / Lost Password"
 msgstr ""
@@ -5977,7 +5971,7 @@ msgid "i-MSCP Web software repository"
 msgstr ""
 
 msgid "i-MSCP plugin store"
-msgstr ""
+msgstr "Obchod s pluginy pro I-MSCP"
 
 msgid "i-MSCP updates"
 msgstr "i-MSCP aktualizace"
@@ -5986,7 +5980,7 @@ msgid "installed"
 msgstr ""
 
 msgid "installing"
-msgstr ""
+msgstr "Instalovat"
 
 msgid "internet Multi Server Control Panel"
 msgstr "Internetový Multiserverový Ovládací Panel"

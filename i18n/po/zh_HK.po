@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2014-02-27 13:52+0100\n"
-"PO-Revision-Date: 2014-02-27 12:54+0000\n"
+"POT-Creation-Date: 2014-03-11 09:12+0100\n"
+"PO-Revision-Date: 2014-03-11 08:14+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Chinese (Hong Kong) (http://www.transifex.com/projects/p/i-MSCP/language/zh_HK/)\n"
 "MIME-Version: 1.0\n"
@@ -3252,9 +3252,6 @@ msgstr "否"
 msgid "No IP address found."
 msgstr ""
 
-msgid "No IP statistics to be shown."
-msgstr ""
-
 msgid "No administrator accounts found."
 msgstr ""
 
@@ -3305,9 +3302,6 @@ msgstr ""
 
 msgid "No new i-MSCP updates available"
 msgstr "沒有新的 i-MSCP 更新可用"
-
-msgid "No records found"
-msgstr ""
 
 msgid "No records found matching the search criteria."
 msgstr ""

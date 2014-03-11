@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2014-02-27 13:52+0100\n"
-"PO-Revision-Date: 2014-02-27 12:54+0000\n"
+"POT-Creation-Date: 2014-03-11 09:12+0100\n"
+"PO-Revision-Date: 2014-03-11 08:14+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Swedish (Sweden) (http://www.transifex.com/projects/p/i-MSCP/language/sv_SE/)\n"
 "MIME-Version: 1.0\n"
@@ -3253,9 +3253,6 @@ msgstr "Nej"
 msgid "No IP address found."
 msgstr "No IP address found."
 
-msgid "No IP statistics to be shown."
-msgstr "Inga IP-statistik som ska visas."
-
 msgid "No administrator accounts found."
 msgstr "Inga administratörskonton hittats."
 
@@ -3306,9 +3303,6 @@ msgstr "Inga loggar hittades."
 
 msgid "No new i-MSCP updates available"
 msgstr "Det finns inga tillgängliga uppdateringar för i-MSCP"
-
-msgid "No records found"
-msgstr "Inga poster hittades"
 
 msgid "No records found matching the search criteria."
 msgstr "Hittades inte poster som matchar sökkriteriet."
@@ -3437,7 +3431,7 @@ msgid "Only positive numbers are allowed."
 msgstr "Endast positiva tal är tillåtna."
 
 msgid "Only tar.gz, tar.bz2 and zip archives are accepted."
-msgstr ""
+msgstr "Endast tar.gz, tar.bz2 och zip arkiv accepteras"
 
 msgid "Open ticket"
 msgstr "Open ticket"
@@ -3804,7 +3798,7 @@ msgstr "Plugin %s successfully updated."
 msgid ""
 "Plugin Manager: Downgrade of plugin is not supported. You must update the %s"
 " plugin."
-msgstr ""
+msgstr "Plugin Manager: nedgradering av plugin stöds inte. Du måste uppdatera %s plugin."
 
 #, php-format
 msgid "Plugin Manager: Unable to activate the %s plugin: %s"
