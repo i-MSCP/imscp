@@ -35,7 +35,7 @@ $plugins = $pluginManager->getLoadedPlugins('Action');
 $controllerPath = null;
 
 if (!empty($plugins)) {
-	$eventsManager = IMSCP_Events_Manager::getInstance();
+	$eventsManager = iMSCP_Events_Manager::getInstance();
 
 	if (($urlComponents = parse_url($_SERVER['REQUEST_URI'])) !== false) {
 		$responses = $eventsManager->dispatch(
