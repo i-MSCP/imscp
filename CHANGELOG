@@ -5,7 +5,7 @@
 Git stable
 ------------------------------------------------------------------------------------------------------------------------
 
-CONGIS:
+CONFIGS:
 	- Allow usage of mod_rewrite even when PHP is disabled
 
 Tickets:
@@ -22,7 +22,7 @@ ADDONS:
 	- Removed: PasswordChanger install part (Roundcube). This plugin will be part of the RoundcubePlugins plugin
 	- Updated: Net2ftp installer
 
-ENGINE
+ENGINE:
 	- Added: Missing onLoadTemplate events
 
 GUI:
