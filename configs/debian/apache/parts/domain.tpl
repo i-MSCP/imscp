@@ -31,7 +31,7 @@
     <Directory {WEB_DIR}/htdocs>
         Options +FollowSymlinks
         # SECTION php_disabled BEGIN.
-        AllowOverride AuthConfig Indexes Limit
+        AllowOverride AuthConfig Indexes Limit Fileinfo=RewriteEngine,RewriteOptions,RewriteBase,RewriteCond,RewriteRule
         # SECTION php_disabled END.
         # SECTION php_enabled BEGIN.
         AllowOverride All
