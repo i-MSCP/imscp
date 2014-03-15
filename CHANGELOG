@@ -8,7 +8,12 @@ Git stable
 CONFIGS:
 	- Allow usage of mod_rewrite even when PHP is disabled
 
+ENGINE:
+	- Fixed: DNS records (subdomains) are not deleted from zone files (bind9 server impl.)
+	- Fixed: SOA Serial is not updated in zone files (bind9 server impl.)
+
 Tickets:
+	Fixed: #1042: Bug - Serial and DNS records in zone files aren't updated/deleted
 
 ------------------------------------------------------------------------------------------------------------------------
 1.1.3

@@ -181,7 +181,7 @@ sub postaddDmn($$)
 				DOMAIN_NAME => $main::imscpConfig{'BASE_SERVER_VHOST'},
 				DOMAIN_IP => $main::imscpConfig{'BASE_SERVER_IP'},
 				MAIL_ENABLED => 1,
-				DMN_ADD => {
+				CTM_ALS_ENTRY_ADD => {
 					NAME => $data->{'USER_NAME'},
 					CLASS => 'IN',
 					TYPE => ($ipMngr->getAddrVersion($data->{'DOMAIN_IP'})) eq 'ipv4' ? 'A' : 'AAAA',
@@ -260,7 +260,7 @@ sub postdeleteDmn($$)
 				DOMAIN_NAME => $main::imscpConfig{'BASE_SERVER_VHOST'},
 				DOMAIN_IP => $main::imscpConfig{'BASE_SERVER_IP'},
 				MAIL_ENABLED => 1,
-				DMN_DEL => { NAME => $data->{'USER_NAME'} }
+				CTM_ALS_ENTRY_DEL => { NAME => $data->{'USER_NAME'} }
 			}
 		);
 		return $rs if $rs;
@@ -321,9 +321,9 @@ sub addSub($$)
 			return $rs if $rs;
 
 			# Updating timestamp entry
-			$wrkDbFileContent = $self->_incTimeStamp($wrkDbFileContent);
+			$wrkDbFileContent = $self->_generateSoalSerialNumber($wrkDbFileContent);
 			unless(defined $wrkDbFileContent) {
-				error('Unable to update timestamp entry');
+				error('Unable to update SOA Serial');
 				return 1;
 			}
 
@@ -417,7 +417,7 @@ sub addSub($$)
 			$rs = $prodFile->owner($main::imscpConfig{'ROOT_USER'}, $self->{'config'}->{'BIND_GROUP'});
 			return $rs if $rs;
 		} else {
-			error("File $wrkDbFile not found. Please rerun the i-MSCP setup script.");
+			error("File $wrkDbFile not found. Please run the i-MSCP setup script.");
 			return 1;
 		}
 	}
@@ -450,7 +450,7 @@ sub postaddSub($$)
 				DOMAIN_NAME => $main::imscpConfig{'BASE_SERVER_VHOST'},
 				DOMAIN_IP => $main::imscpConfig{'BASE_SERVER_IP'},
 				MAIL_ENABLED => 1,
-				DMN_ADD => {
+				CTM_ALS_ENTRY_ADD => {
 					NAME => $data->{'USER_NAME'},
 					CLASS => 'IN',
 					TYPE => ($ipMngr->getAddrVersion($data->{'DOMAIN_IP'})) eq 'ipv4' ? 'A' : 'AAAA',
@@ -488,12 +488,13 @@ sub deleteSub($$)
 		if(-f $wrkDbFile) {
 			$wrkDbFile = iMSCP::File->new('filename' => $wrkDbFile);
 
-			# Saving current working file
+			# Backup current working file
 			my $rs = $wrkDbFile->copyFile($self->{'bkpDir'} . '/' . basename($wrkDbFile->{'filename'}) . '.' . time);
 			return $rs if $rs;
 
-			# Loading current working db file
+			# Loading current working file
 			my $wrkDbFileContent = $wrkDbFile->get();
+
 			unless(defined $wrkDbFileContent) {
 				error("Unable to read $wrkDbFile->{'filename'}");
 				return 1;
@@ -503,16 +504,16 @@ sub deleteSub($$)
 			return $rs if $rs;
 
 			# Udapting timestamp entry
-			$wrkDbFileContent = $self->_incTimeStamp($wrkDbFileContent);
+			$wrkDbFileContent = $self->_generateSoalSerialNumber($wrkDbFileContent);
 			unless(defined $wrkDbFileContent) {
-				error('Unable to update timestamp entry');
+				error('Unable to update SOA Serial');
 				return 1;
 			}
 
 			# Removing subdomain entry
 			$wrkDbFileContent = replaceBloc(
-				"; sub [{$data->{'DOMAIN_NAME'}}] entry BEGIN\n",
-				"; sub [{$data->{'DOMAIN_NAME'}}] entry ENDING\n",
+				"; sub [$data->{'DOMAIN_NAME'}] entry BEGIN\n",
+				"; sub [$data->{'DOMAIN_NAME'}] entry ENDING\n",
 				'',
 				$wrkDbFileContent
 			);
@@ -520,7 +521,7 @@ sub deleteSub($$)
 			$rs = $self->{'hooksManager'}->trigger('afterNamedDelSub', \$wrkDbFileContent, $data);
 			return $rs if $rs;
 
-			# Updating working file
+			# Saving working file
 
 			$rs = $wrkDbFile->set($wrkDbFileContent);
 			return $rs if $rs;
@@ -528,7 +529,7 @@ sub deleteSub($$)
 			$rs = $wrkDbFile->save();
 			return $rs if $rs;
 
-			# Installing new working file in production directory
+			# Compiling new production file from working file
 			my ($stdout, $stderr);
 			$rs = execute(
 				"$self->{'config'}->{'CMD_NAMED_COMPILEZONE'} -i none -s relative " .
@@ -552,7 +553,7 @@ sub deleteSub($$)
 			$rs = $prodFile->owner($main::imscpConfig{'ROOT_USER'}, $self->{'config'}->{'BIND_GROUP'});
 			return $rs if $rs;
 		} else {
-			error("File $wrkDbFile not found. Please rerun the i-MSCP setup script.");
+			error("File $wrkDbFile not found. Please run the i-MSCP setup script.");
 			return 1;
 		}
 	}
@@ -583,7 +584,7 @@ sub postdeleteSub($$)
 				DOMAIN_NAME => $main::imscpConfig{'BASE_SERVER_VHOST'},
 				DOMAIN_IP => $main::imscpConfig{'BASE_SERVER_IP'},
 				MAIL_ENABLED => 1,
-				DMN_DEL => { NAME => $data->{'USER_NAME'} }
+				CTM_ALS_ENTRY_DEL => { NAME => $data->{'USER_NAME'} }
 			}
 		);
 		return $rs if $rs;
@@ -868,13 +869,13 @@ sub _addDmnDb($$)
 	my $wrkDbFileContent;
 
 	if(-f $wrkDbFile) {
-		# Saving current working db file
+		# Saving current working file
 		$wrkDbFile = iMSCP::File->new('filename' => $wrkDbFile);
 
 		my $rs = $wrkDbFile->copyFile($self->{'bkpDir'} . '/' . basename($wrkDbFile->{'filename'}) . '.' . time);
 		return $rs if $rs;
 
-		# Getting current working db file content
+		# Getting current working file content
 		$wrkDbFileContent = $wrkDbFile->get();
 		unless(defined $wrkDbFileContent) {
 			error("Unable to read $wrkDbFile->{'filename'}");
@@ -902,11 +903,11 @@ sub _addDmnDb($$)
 	return $rs if $rs;
 
 	# Process timestamp entry
-	$tplDbFileContent = $self->_incTimeStamp(
-		$tplDbFileContent, (defined $wrkDbFileContent) ? $wrkDbFileContent : $tplDbFileContent
+	$tplDbFileContent = $self->_generateSoalSerialNumber(
+		$tplDbFileContent, (defined $wrkDbFileContent) ? $wrkDbFileContent : undef
 	);
 	unless(defined $tplDbFileContent) {
-		error('Unable to add timestamp entry');
+		error('Unable to add/update SOA Serial');
 		return 1;
 	}
 
@@ -964,7 +965,7 @@ sub _addDmnDb($$)
 		"; dmn MAIL entry BEGIN\n", "; dmn MAIL entry ENDING\n", $dmnMailEntry, $tplDbFileContent
 	);
 
-	# Process custom DNS entries
+	# Process custom DNS records entries
 
 	my $customDnsEntries = '';
 
@@ -986,11 +987,11 @@ sub _addDmnDb($$)
 		"; custom DNS entries BEGIN\n", "; custom DNS entries ENDING\n", $customDnsEntries, $tplDbFileContent
 	);
 
-	# Process customer als entries
+	# Process customer als entries if any (those entries)
 
-	if($data->{'DMN_ADD'}) {
+	if(exists $data->{'CTM_ALS_ENTRY_ADD'}) {
 		# Remove previous entry if any
-		$wrkDbFileContent =~ s/^$data->{'DMN_ADD'}->{'NAME'}\s+[^\n]*\n//m if defined $wrkDbFileContent;
+		$wrkDbFileContent =~ s/^$data->{'CTM_ALS_ENTRY_ADD'}->{'NAME'}\s+[^\n]*\n//m if defined $wrkDbFileContent;
 
 		# Adding new entry
 		$tplDbFileContent = replaceBloc(
@@ -1004,10 +1005,10 @@ sub _addDmnDb($$)
 			) .
 			process(
 				{
-					NAME => $data->{'DMN_ADD'}->{'NAME'},
-					CLASS => $data->{'DMN_ADD'}->{'CLASS'},
-					TYPE => $data->{'DMN_ADD'}->{'TYPE'},
-					DATA => $data->{'DMN_ADD'}->{'DATA'}
+					NAME => $data->{'CTM_ALS_ENTRY_ADD'}->{'NAME'},
+					CLASS => $data->{'CTM_ALS_ENTRY_ADD'}->{'CLASS'},
+					TYPE => $data->{'CTM_ALS_ENTRY_ADD'}->{'TYPE'},
+					DATA => $data->{'CTM_ALS_ENTRY_ADD'}->{'DATA'}
 				},
 				"{NAME}\t{CLASS}\t{TYPE}\t{DATA}\n"
 			) .
@@ -1017,7 +1018,7 @@ sub _addDmnDb($$)
 	}
 
 	# Removing entry
-	$tplDbFileContent =~ s/^$data->{'DMN_DEL'}->{'NAME'}\s+[^\n]*\n//m if defined $data->{'DMN_DEL'};
+	$tplDbFileContent =~ s/^$data->{'CTM_ALS_ENTRY_DEL'}->{'NAME'}\s+[^\n]*\n//m if exists $data->{'CTM_ALS_ENTRY_DEL'};
 
 	# Process any other variable
 	$tplDbFileContent = process(
@@ -1061,31 +1062,34 @@ sub _addDmnDb($$)
 	$prodFile->owner($main::imscpConfig{'ROOT_USER'}, $self->{'config'}->{'BIND_GROUP'});
 }
 
-=item _incTimeStamp($newDbFileContent, [$oldDbFileContent = $newDbFileContent])
+=item _generateSoalSerialNumber($newDbFile, [$oldDbFile = undef])
 
- Create or update serial number according RFC 1912
+ Generate SOA Serial Number according RFC 1912
 
- Param string $newDbFileContent New DB file content
- Param string $oldDbFileContent Old DB file content
- Return string
+ Param string $newDbFile New DB file content
+ Param string|undef $oldDbFile Old DB file content
+ Return string|undef
 
 =cut
 
-sub _incTimeStamp($$;$)
+sub _generateSoalSerialNumber($$;$)
 {
-	my ($self, $newDbFileContent, $oldDbFileContent) = @_;
+	my ($self, $newDbFile, $oldDbFile) = @_;
 
-	$oldDbFileContent ||= $newDbFileContent;
+	$oldDbFile ||= $newDbFile;
 
-	my $regExp = '^[\s]+(?:(\d{4})(\d{2})(\d{2})(\d{2})|(\{TIMESTAMP\}))';
-	my (undef, undef, undef, $day, $mon, $year) = localtime;
+	if(
+		(my $tyear, my $tmon, my $tday, my $nn, my $placeholder) = (
+			$oldDbFile =~ /^[\s]+(?:(\d{4})(\d{2})(\d{2})(\d{2})|(\{TIMESTAMP\}))/m
+		)
+	) {
+		my (undef, undef, undef, $day, $mon, $year) = localtime;
+		my ($newSerial, $oldSerial);
 
-	if((my $tyear, my $tmon, my $tday, my $nn, my $new) = ($oldDbFileContent =~ /$regExp/m)) {
-		if($new) {
-			$newDbFileContent = process(
-				{ TIMESTAMP => sprintf('%04d%02d%02d00', $year + 1900, $mon + 1, $day) }, $newDbFileContent
-			);
+		if($placeholder) {
+			$newSerial = sprintf('%04d%02d%02d00', $year + 1900, $mon + 1, $day);
 		} else {
+			$oldSerial = "$tyear$tmon$tday$nn";
 			$nn++;
 
 			if($nn >= 99) {
@@ -1093,17 +1097,18 @@ sub _incTimeStamp($$;$)
 				$tday++;
 			}
 
-			my $timestamp = ((($year + 1900) * 10000 + ($mon + 1) * 100 + $day) > ($tyear * 10000 + $tmon * 100 + $tday))
+			$newSerial = ((($year + 1900) * 10000 + ($mon + 1) * 100 + $day) > ($tyear * 10000 + $tmon * 100 + $tday))
 				? (sprintf '%04d%02d%02d00', $year + 1900, $mon + 1, $day)
 				: (sprintf '%04d%02d%02d%02d', $tyear, $tmon, $tday, $nn);
-
-			$newDbFileContent = process({ TIMESTAMP => $timestamp }, $newDbFileContent);
 		}
 
-		$newDbFileContent;
+		$newDbFile =~ s/$oldSerial/$newSerial/ if defined $oldSerial;
+		$newDbFile = process({ TIMESTAMP => $newSerial }, $newDbFile);
 	} else {
-		undef;
+		$newDbFile = undef;
 	}
+
+	$newDbFile;
 }
 
 END
