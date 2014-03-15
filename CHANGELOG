@@ -14,6 +14,7 @@ ENGINE:
 
 Tickets:
 	Fixed: #1042: Bug - Serial and DNS records in zone files aren't updated/deleted
+	Fixed: #1045: Bug - All customer alias DNS records are removed when a subdomain is being deleted
 
 ------------------------------------------------------------------------------------------------------------------------
 1.1.3

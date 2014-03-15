@@ -987,38 +987,46 @@ sub _addDmnDb($$)
 		"; custom DNS entries BEGIN\n", "; custom DNS entries ENDING\n", $customDnsEntries, $tplDbFileContent
 	);
 
-	# Process customer als entries if any (those entries)
+	# Process customer als entries if any
 
-	if(exists $data->{'CTM_ALS_ENTRY_ADD'}) {
-		# Remove previous entry if any
-		$wrkDbFileContent =~ s/^$data->{'CTM_ALS_ENTRY_ADD'}->{'NAME'}\s+[^\n]*\n//m if defined $wrkDbFileContent;
+	if(defined $wrkDbFileContent) {
+		if(exists $data->{'CTM_ALS_ENTRY_ADD'}) {
+			# Remove previous entry if any
+			$wrkDbFileContent =~ s/^$data->{'CTM_ALS_ENTRY_ADD'}->{'NAME'}\s+[^\n]*\n//m;
 
-		# Adding new entry
-		$tplDbFileContent = replaceBloc(
-			"; ctm als entries BEGIN\n",
-			"; ctm als entries ENDING\n",
-			"; ctm als entries BEGIN\n" .
-			getBloc(
+			# Adding new entry
+			$tplDbFileContent = replaceBloc(
 				"; ctm als entries BEGIN\n",
 				"; ctm als entries ENDING\n",
-				(defined $wrkDbFileContent) ? $wrkDbFileContent : $tplDbFileContent
-			) .
-			process(
-				{
-					NAME => $data->{'CTM_ALS_ENTRY_ADD'}->{'NAME'},
-					CLASS => $data->{'CTM_ALS_ENTRY_ADD'}->{'CLASS'},
-					TYPE => $data->{'CTM_ALS_ENTRY_ADD'}->{'TYPE'},
-					DATA => $data->{'CTM_ALS_ENTRY_ADD'}->{'DATA'}
-				},
-				"{NAME}\t{CLASS}\t{TYPE}\t{DATA}\n"
-			) .
-			"; ctm als entries ENDING\n",
-			$tplDbFileContent
-		);
-	}
+				"; ctm als entries BEGIN\n" .
+				getBloc("; ctm als entries BEGIN\n", "; ctm als entries ENDING\n", $wrkDbFileContent) .
+				process(
+					{
+						NAME => $data->{'CTM_ALS_ENTRY_ADD'}->{'NAME'},
+						CLASS => $data->{'CTM_ALS_ENTRY_ADD'}->{'CLASS'},
+						TYPE => $data->{'CTM_ALS_ENTRY_ADD'}->{'TYPE'},
+						DATA => $data->{'CTM_ALS_ENTRY_ADD'}->{'DATA'}
+					},
+					"{NAME}\t{CLASS}\t{TYPE}\t{DATA}\n"
+				) .
+				"; ctm als entries ENDING\n",
+				$tplDbFileContent
+			);
+		} else {
+			# Readd current entries
+			$tplDbFileContent = replaceBloc(
+				"; ctm als entries BEGIN\n",
+				"; ctm als entries ENDING\n",
+				getBloc("; ctm als entries BEGIN\n", "; ctm als entries ENDING\n", $wrkDbFileContent, 1),
+				$tplDbFileContent
+			);
 
-	# Removing entry
-	$tplDbFileContent =~ s/^$data->{'CTM_ALS_ENTRY_DEL'}->{'NAME'}\s+[^\n]*\n//m if exists $data->{'CTM_ALS_ENTRY_DEL'};
+			if(exists $data->{'CTM_ALS_ENTRY_DEL'}) {
+				# Removing entry
+				$tplDbFileContent =~ s/^$data->{'CTM_ALS_ENTRY_DEL'}->{'NAME'}\s+[^\n]*\n//m ;
+			}
+		}
+	}
 
 	# Process any other variable
 	$tplDbFileContent = process(
