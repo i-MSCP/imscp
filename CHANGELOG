@@ -12,6 +12,9 @@ ENGINE:
 	- Fixed: DNS records (subdomains) are not deleted from zone files (bind9 server impl.)
 	- Fixed: SOA Serial is not updated in zone files (bind9 server impl.)
 
+GUI:
+	- Fixed: Stop propagation of onAuthentication event on first successful authentication attempt
+
 Tickets:
 	Fixed: #1042: Bug - Serial and DNS records in zone files aren't updated/deleted
 	Fixed: #1045: Bug - All customer alias DNS records are removed when a subdomain is being deleted

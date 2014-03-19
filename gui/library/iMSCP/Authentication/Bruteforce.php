@@ -22,6 +22,7 @@
  * @subpackage	Bruteforce
  * @copyright	2010-2014 by i-MSCP team
  * @author		Daniel Andreca <sci2tech@gmail.com>
+ * @author		Laurent Declercq <l.declercq@nuxwin.com>
  * @link		http://www.i-mscp.net i-MSCP Home Site
  * @license		http://www.gnu.org/licenses/gpl-2.0.txt GPL v2
  */
@@ -37,12 +38,6 @@
  * - As an action plugin that listen to some events triggered in i-MSCP core code and that doing some specific actions
  *   related to bruteforce detection
  * - As a simple object queried by hand in external components.
- *
- * @category	iMSCP
- * @package		iMSCP_Authentication
- * @subpackage	Bruteforce
- * @author		Daniel Andreca <sci2tech@gmail.com>
- * @version		0.0.4
  */
 class iMSCP_Authentication_Bruteforce extends iMSCP_Plugin_Action
 {
@@ -179,12 +174,12 @@ class iMSCP_Authentication_Bruteforce extends iMSCP_Plugin_Action
 	public function getInfo()
 	{
 		return array(
-			'author' => 'Daniel Andreca',
+			'author' => array('Daniel Andreca', 'Laurent Declercq'),
 			'email' => 'sci2tech@gmail.com',
-			'version' => '0.0.3',
+			'version' => '0.0.4',
 			'date' => '2012-03-20',
 			'name' => 'Bruteforce',
-			'desc' => 'Allow to improve system security by detecting any dictionnary attacks and blocking them according a set of configuration parameters',
+			'desc' => 'Allow to improve system security by detecting any dictionary attacks and blocking them according a set of configuration parameters',
 			'url' => 'http://www.i-mscp.net'
 		);
 	}
@@ -215,7 +210,7 @@ class iMSCP_Authentication_Bruteforce extends iMSCP_Plugin_Action
 			return $this->getLastMessage();
 		}
 
-		if($event->getParam('username')) {
+		if($event->getParam('context')->getUsername()) {
 			$this->recordAttempt();
 		}
 
@@ -231,7 +226,7 @@ class iMSCP_Authentication_Bruteforce extends iMSCP_Plugin_Action
 	 */
 	public function onBeforeSetIdentity($event)
 	{
-		exec_query('DELETE FROM `login` WHERE `session_id` = ?', $this->_sessionId);
+		exec_query('DELETE FROM login WHERE session_id = ?', $this->_sessionId);
 	}
 
 	/**
@@ -317,11 +312,11 @@ class iMSCP_Authentication_Bruteforce extends iMSCP_Plugin_Action
 	{
 		$query = "
 			UPDATE
-				`login`
+				login
 			SET
-				`lastaccess` = UNIX_TIMESTAMP(), `{$this->_type}_count` = `{$this->_type}_count` + 1
+				lastaccess = UNIX_TIMESTAMP(), {$this->_type}_count = {$this->_type}_count + 1
 			WHERE
-				`ipaddr`= ? AND `user_name` IS NULL
+				ipaddr= ? AND user_name IS NULL
 		";
 		exec_query($query, ($this->_ipAddr));
 	}
@@ -334,8 +329,8 @@ class iMSCP_Authentication_Bruteforce extends iMSCP_Plugin_Action
 	protected function _createRecord()
 	{
 		$query = "
-			REPLACE INTO `login` (
-				`session_id`, `ipaddr`, `{$this->_type}_count`, `user_name`, `lastaccess`
+			REPLACE INTO login (
+				session_id, ipaddr, {$this->_type}_count, user_name, lastaccess
 				) VALUES (
 					?, ?, 1, NULL, UNIX_TIMESTAMP()
 			)
@@ -352,7 +347,7 @@ class iMSCP_Authentication_Bruteforce extends iMSCP_Plugin_Action
 	{
 		$timeout = time() - ($this->_blockTime * 60);
 
-		$query = "DELETE FROM `login` WHERE `lastaccess` < ? AND `{$this->_type}_count` > 0";
+		$query = "DELETE FROM login WHERE lastaccess < ? AND `{$this->_type}_count` > 0";
 		exec_query($query, $timeout);
 	}
 }
