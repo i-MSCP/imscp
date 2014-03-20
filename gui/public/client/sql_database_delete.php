@@ -49,23 +49,31 @@ check_login('user');
 if (customerHasFeature('sql') && isset($_GET['id'])) {
 	$databaseId = intval($_GET['id']);
 
+	/** @var $db iMSCP_Database */
+	$db = iMSCP_Database::getInstance();
+
 	try {
-		iMSCP_Database::getInstance()->beginTransaction();
+		$db->beginTransaction();
 
 		if (!delete_sql_database(get_user_domain_id($_SESSION['user_id']), $databaseId)) {
-			throw new iMSCP_Exception(sprintf('SQL database with ID %d not found in iMSCP database or not owned by customer with ID %d.', $_SESSION['user_id'], $databaseId));
+			throw new iMSCP_Exception(
+				sprintf(
+					'SQL database with ID %d not found in iMSCP database or not owned by customer with ID %d.',
+					$_SESSION['user_id'],
+					$databaseId
+				)
+			);
 		}
 
 		// Just for fun since an implicit commit is made before in the delete_sql_database() function
-		iMSCP_Database::getInstance()->commit();
+		$db->commit();
 
 		set_page_message(tr('SQL database successfully deleted.'), 'success');
 		write_log(sprintf("{$_SESSION['user_logged']} deleted SQL database with ID %s", $databaseId), E_USER_NOTICE);
 	} catch (iMSCP_Exception $e) {
-		iMSCP_Database::getInstance()->rollBack();
+		$db->rollBack();
 
-		set_page_message(tr('System was unable to remove the SQL database.'), 'error');
-		write_log(sprintf("System was unable to delete SQL database with ID %d. Message was: %s", $databaseId, $e->getMessage()), E_USER_ERROR);
+		throw $e;
 	}
 
 	redirectTo('sql_manage.php');

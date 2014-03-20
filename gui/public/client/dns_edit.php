@@ -646,8 +646,8 @@ function client_saveDnsRecord($dnsRecordId)
 		}
 
 		if (!Zend_Session::namespaceIsset('pageMessages')) {
-			/** @var iMSCP_Database $db */
-			$db = iMSCP_Registry::get('db');
+			/** @var $db iMSCP_Database */
+			$db = iMSCP_Database::getInstance();
 
 			try {
 				$db->beginTransaction();
@@ -707,7 +707,7 @@ function client_saveDnsRecord($dnsRecordId)
 					return false;
 				}
 
-				throw new iMSCP_Exception_Database($e->getMessage(), $e->getQuery(), $e->getCode(), $e);
+				throw $e;
 			}
 
 			return true;

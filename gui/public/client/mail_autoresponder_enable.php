@@ -92,7 +92,7 @@ function client_ActivateAutoresponder($mailAccountId, $autoresponderMessage)
 		$config = iMSCP_Registry::get('config');
 
 		/** @var $db iMSCP_Database */
-		$db = iMSCP_Registry::get('db');
+		$db = iMSCP_Database::getInstance();
 
 		try {
 			$db->beginTransaction();
@@ -129,7 +129,7 @@ function client_ActivateAutoresponder($mailAccountId, $autoresponderMessage)
 			set_page_message(tr('Auto-responder successfully scheduled for activation.'), 'success');
 		} catch (iMSCP_Exception_Database $e) {
 			$db->rollBack();
-			set_page_message(tr('An unexpected error occurred, please contact your reseller.'), 'error');
+			throw $e;
 		}
 	}
 }

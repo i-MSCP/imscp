@@ -51,7 +51,7 @@ function client_deleteMailAccount($mailId, $dmnProps)
 
 		exec_query('UPDATE `mail_users` SET `status` = ? WHERE `mail_id` = ?', array($toDeleteStatus, $mailId));
 
-		// Schedule deletetion of all catchall which belong to the mail account
+		// Schedule deleltion of all catchall which belong to the mail account
 		exec_query(
 			'
 				UPDATE
@@ -98,7 +98,8 @@ if (customerHasFeature('mail') && isset($_REQUEST['id'])) {
 	$mailIds = (array)$_REQUEST['id'];
 
 	if (!empty($mailIds)) {
-		$db = iMSCP_Database::getRawInstance();
+		/** @var $db iMSCP_Database */
+		$db = iMSCP_Database::getInstance();
 
 		try {
 			$db->beginTransaction();

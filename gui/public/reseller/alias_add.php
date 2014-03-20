@@ -333,7 +333,7 @@ function reseller_addDomainAlias()
 	$cfg = iMSCP_Registry::get('config');
 
 	/** @var $db iMSCP_Database */
-	$db = iMSCP_Registry::get('db');
+	$db = iMSCP_Database::getInstance();
 
 	try {
 		iMSCP_Events_Manager::getInstance()->dispatch(
@@ -400,7 +400,7 @@ function reseller_addDomainAlias()
 		set_page_message(tr('Domain alias successfully scheduled for addition.'), 'success');
 	} catch(iMSCP_Exception_Database $e) {
 		$db->rollBack();
-		throw new iMSCP_Exception_Database($e->getMessage(), $e->getQuery(), $e->getCode(), $e);
+		throw $e;
 	}
 
 	return true;

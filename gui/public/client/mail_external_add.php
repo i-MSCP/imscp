@@ -186,10 +186,11 @@ function client_addExternalMailServerEntries($item)
 			// Add DNS entries into database
 			if (!$error) {
 				/** @var $db iMSCP_Database */
-				$db = iMSCP_Registry::get('db');
-				$db->beginTransaction(); // All successfully inserted or nothing
+				$db = iMSCP_Database::getInstance();
 
 				try {
+					$db->beginTransaction(); // All successfully inserted or nothing
+
 					$dnsEntriesIds = '';
 
 					for ($index = 0; $index < $entriesCount; $index++) {
@@ -265,10 +266,10 @@ function client_addExternalMailServerEntries($item)
 				} catch (iMSCP_Exception_Database $e) {
 					$db->rollBack();
 
-					if ($e->getCode() === 23000) { // Entry already exists in domain_dns table or is defined twice in entries stack?
+					if ($e->getCode() == '23000') { // Entry already exists in domain_dns table or is defined twice in entries stack?
 						set_page_message(tr('An entry is defined twice below.'), 'error');
 					} else { // Another error?
-						throw new iMSCP_Exception_Database($e->getMessage(), $e->getQuery(), $e->getCode(), $e);
+						throw $e;
 					}
 				}
 			}

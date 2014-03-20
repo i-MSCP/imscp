@@ -316,7 +316,7 @@ function ftp_addAccount($mainDmnName)
 			);
 
 			/** @var $db iMSCP_Database */
-			$db = iMSCP_Registry::get('db');
+			$db = iMSCP_Database::getInstance();
 
 			try {
 				$db->beginTransaction();
@@ -369,7 +369,7 @@ function ftp_addAccount($mainDmnName)
 					set_page_message(tr('Ftp account with same username already exists.'), 'error');
 					$ret = false;
 				} else {
-					throw new iMSCP_Exception_Database($e->getMessage(), $e->getQuery(), $e->getCode(), $e);
+					throw $e;
 				}
 			}
 

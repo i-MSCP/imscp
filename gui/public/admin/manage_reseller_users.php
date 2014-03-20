@@ -302,9 +302,11 @@ function admin_updateResellerLimits($toReseller, $fromReseller, $users, &$errors
 	}
 
 	// Update reseller properties
+	/** @var $db iMSCP_Database */
+	$db = iMSCP_Database::getInstance();
 
 	try {
-		iMSCP_Database::getInstance()->beginTransaction();
+		$db->beginTransaction();
 
 		$newFromResellerProperties = "{$fromResellerProperties['current_dmn_cnt']};{$fromResellerProperties['max_dmn_cnt']};";
 		$newFromResellerProperties .= "{$fromResellerProperties['current_sub_cnt']};{$fromResellerProperties['max_sub_cnt']};";
@@ -335,11 +337,10 @@ function admin_updateResellerLimits($toReseller, $fromReseller, $users, &$errors
 			exec_query($query, array($toReseller, $usersList[$i]));
 		}
 
-		iMSCP_Database::getInstance()->commit();
-
+		$db->commit();
 	} catch (iMSCP_Exception_Database $e) {
-		iMSCP_Database::getInstance()->rollBack();
-		throw new iMSCP_Exception_Database($e->getMessage(), $e->getQuery(), $e->getCode(), $e);
+		$db->rollBack();
+		throw $e;
 	}
 
 	return true;

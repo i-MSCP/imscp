@@ -61,7 +61,7 @@ if (isset($_GET['id'])) {
 	$aliasId = $stmt->fields['alias_id'];
 
 	/** @var $db iMSCP_Database */
-	$db = iMSCP_Registry::get('db');
+	$db = iMSCP_Database::getInstance();
 
 	try {
 		$db->beginTransaction();
@@ -85,8 +85,7 @@ if (isset($_GET['id'])) {
 		set_page_message(tr('Custom DNS record scheduled for deletion.'), 'success');
 	} catch (iMSCP_Exception_Database $e) {
 		$db->rollBack();
-		write_log("System was unable to schedule deletion of DNS record with ID: $dnsRecordId");
-		throw new iMSCP_Exception_Database($e->getMessage(), $e->getQuery(), $e->getCode(), $e);
+		throw new $e;
 	}
 
 	redirectTo('domains_manage.php');

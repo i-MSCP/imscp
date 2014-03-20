@@ -55,7 +55,7 @@ function admin_deleteUser($userId)
 	$cfg = iMSCP_Registry::get('config');
 
 	/** @var $db iMSCP_Database */
-	$db = iMSCP_Registry::get('db');
+	$db = iMSCP_Database::getInstance();
 
 	$query = "
 		SELECT
@@ -154,14 +154,7 @@ function admin_deleteUser($userId)
 		write_log($_SESSION['user_logged'] . ": deletes user " . $userId, E_USER_NOTICE);
 	} catch (iMSCP_Exception_Database $e) {
 		$db->rollBack();
-
-		if (!$cfg->DEBUG) {
-			set_page_message(tr('Unable to delete user with Id: %d', $userId), 'error');
-			write_log(sprintf("Unable to delete user with Id '%s' for the following reason: %s",
-				$userId, $e->getMessage()), E_USER_ERROR);
-		} else {
-			throw new iMSCP_Exception_Database($e->getMessage());
-		}
+		throw $e;
 	}
 
 	iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAfterDeleteUser, array('userId' => $userId));

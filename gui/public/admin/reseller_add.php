@@ -387,7 +387,7 @@ function admin_checkAndCreateResellerAccount()
 	$data =& admin_getData();
 
 	/** @var $db iMSCP_Database */
-	$db = iMSCP_Registry::get('db');
+	$db = iMSCP_Database::getInstance();
 
 	try {
 		$db->beginTransaction();
@@ -625,7 +625,7 @@ function admin_checkAndCreateResellerAccount()
 		}
 	} catch(iMSCP_Exception_Database $e) {
 		$db->rollBack();
-		throw new iMSCP_Exception_Database($e->getMessage(),  $e->getQuery(), $e->getCode(), $e);
+		throw $e;
 	}
 
 	if(!empty($errFieldsStack)) {

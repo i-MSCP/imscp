@@ -52,7 +52,7 @@ if (customerHasFeature('ftp') && isset($_GET['id'])) {
 	$ftpUserGid = $stmt->fields['gid'];
 
 	/** @var $db iMSCP_Database */
-	$db = iMSCP_Registry::get('db');
+	$db = iMSCP_Database::getInstance();
 
 	try {
 		$db->beginTransaction();
@@ -102,7 +102,7 @@ if (customerHasFeature('ftp') && isset($_GET['id'])) {
 		set_page_message(tr('FTP account successfully deleted.'), 'success');
 	} catch (iMSCP_Exception_Database $e) {
 		$db->rollBack();
-		throw new iMSCP_Exception_Database($e->getMessage(), $e->getQuery(), $e->getCode(), $e);
+		throw $e;
 	}
 
 	redirectTo('ftp_accounts.php');

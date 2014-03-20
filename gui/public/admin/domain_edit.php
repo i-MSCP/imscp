@@ -621,7 +621,7 @@ function _admin_generateFeaturesForm($tpl, &$data)
 function admin_checkAndUpdateData($domainId)
 {
 	/** @var $db iMSCP_Database */
-	$db = iMSCP_Registry::get('db');
+	$db = iMSCP_Database::getInstance();
 
 	$errFieldsStack = array();
 
@@ -1070,7 +1070,7 @@ function admin_checkAndUpdateData($domainId)
 		}
 	} catch (iMSCP_Exception_Database $e) {
 		$db->rollBack();
-		throw new iMSCP_Exception_Database($e->getMessage(),  $e->getQuery(), $e->getCode(), $e);
+		throw $e;
 	}
 
 	if(!empty($errFieldsStack)) {

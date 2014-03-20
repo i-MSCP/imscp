@@ -73,6 +73,11 @@ class iMSCP_Database
 	public $nameQuote = '`';
 
 	/**
+	 * @var int Transaction counter
+	 */
+	protected $transactionCounter = 0;
+
+	/**
 	 * Singleton - Make new unavailable
 	 *
 	 * Creates a PDO object and connects to the database.
@@ -426,9 +431,13 @@ class iMSCP_Database
 	 */
 	public function beginTransaction()
 	{
-		return $this->_db->beginTransaction();
-	}
+		if(!$this->transactionCounter) {
+			$this->transactionCounter++;
+			return $this->_db->beginTransaction();
+		}
 
+		return true;
+	}
 
 	/**
 	 * Commits a transaction
@@ -438,7 +447,13 @@ class iMSCP_Database
 	 */
 	public function commit()
 	{
-		return $this->_db->commit();
+		--$this->transactionCounter;
+
+		if(!$this->transactionCounter) {
+			return $this->_db->commit();
+		}
+
+		return (bool) $this->transactionCounter;
 	}
 
 	/**
@@ -449,7 +464,14 @@ class iMSCP_Database
 	 */
 	public function rollBack()
 	{
-		return $this->_db->rollBack();
+		if($this->transactionCounter) {
+			$this->transactionCounter = 0;
+			return $this->_db->rollBack();
+		}
+
+		$this->transactionCounter = 0;
+
+		return false;
 	}
 
 	/**

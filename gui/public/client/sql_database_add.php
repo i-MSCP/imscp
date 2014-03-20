@@ -176,31 +176,21 @@ function client_addSqlDb($userId)
 
 			$dbCreated = true;
 
-			iMSCP_Database::getInstance()->beginTransaction();
-
 			$query = "INSERT INTO `sql_database` (`domain_id`, `sqld_name`) VALUES (?, ?)";
 			exec_query($query, array($mainDmnId, $dbName));
-
-			iMSCP_Database::getInstance()->commit();
-
-			iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAfterAddSqlDb, array('dbName' => $dbName));
 
 			set_page_message(tr('SQL database successfully added.'), 'success');
 			write_log($_SESSION['user_logged'] . ": added new SQL database: " . tohtml($dbName), E_USER_NOTICE);
 		} catch (iMSCP_Exception_Database $e) {
-			if ($dbCreated) { // Our transaction failed so we rollback and we remove the database previously created
-				iMSCP_Database::getInstance()->rollBack();
+			if ($dbCreated) {
 				execute_query('DROP DATABASE IF EXISTS ' . quoteIdentifier($dbName));
 			}
 
-			set_page_message(tr('System was unable to add the SQL database.'), 'error');
-			write_log(
-				sprintf("System was unable to add the '%s' SQL database. Message was: %s", $dbName, $e->getMessage()),
-				E_USER_ERROR
-			);
+			throw $e;
 		}
-	}
 
+		iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAfterAddSqlDb, array('dbName' => $dbName));
+	}
 
 	redirectTo('sql_manage.php');
 }

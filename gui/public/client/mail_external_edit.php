@@ -192,7 +192,7 @@ function client_editExternalMailServerEntries($item)
 			// Add entries into database
 			if (!$error) {
 				/** @var $db iMSCP_Database */
-				$db = iMSCP_Registry::get('db');
+				$db = iMSCP_Database::getInstance();
 
 				try {
 					$db->beginTransaction(); // All successfully updated or nothing
@@ -339,7 +339,7 @@ function client_editExternalMailServerEntries($item)
 					if ($e->getCode() === 23000) { // Entry already exists in domain_dns table or is defined twice in entries stack?
 						set_page_message(tr('An entry is defined twice below.'), 'error');
 					} else { // Another error?
-						throw new iMSCP_Exception_Database($e->getMessage(), $e->getQuery(), $e->getCode(), $e);
+						throw $e;
 					}
 				}
 			}

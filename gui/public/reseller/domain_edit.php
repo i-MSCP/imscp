@@ -630,7 +630,7 @@ function _reseller_generateFeaturesForm($tpl, &$data)
 function reseller_checkAndUpdateData($domainId, $recoveryMode = false)
 {
 	/** @var $db iMSCP_Database */
-	$db = iMSCP_Registry::get('db');
+	$db = iMSCP_Database::getInstance();
 
 	$errFieldsStack = array();
 
@@ -1081,7 +1081,7 @@ function reseller_checkAndUpdateData($domainId, $recoveryMode = false)
 		}
 	} catch (iMSCP_Exception_Database $e) {
 		$db->rollBack();
-		throw new iMSCP_Exception_Database($e->getMessage(),  $e->getQuery(), $e->getCode(), $e);
+		throw $e;
 	}
 
 	if(!empty($errFieldsStack)) {

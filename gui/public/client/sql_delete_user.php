@@ -46,22 +46,30 @@ check_login('user');
 if (customerHasFeature('sql') && isset($_GET['id'])) {
 	$sqlUserId = intval($_GET['id']);
 
+	/** @var $db iMSCP_Database */
+	$db = iMSCP_Database::getInstance();
+
 	try {
-		iMSCP_Database::getInstance()->beginTransaction();
+		$db->beginTransaction();
 
 		if (!sql_delete_user(get_user_domain_id($_SESSION['user_id']), $sqlUserId)) {
-			throw new iMSCP_Exception(sprintf('SQL user with ID %d not found in iMSCP database or not owned by customer with ID %d.', $_SESSION['user_id'], $sqlUserId));
+			throw new iMSCP_Exception(
+				sprintf(
+					'SQL user with ID %d not found in iMSCP database or not owned by customer with ID %d.',
+					$_SESSION['user_id'],
+					$sqlUserId
+				)
+			);
 		}
 
-		iMSCP_Database::getInstance()->commit();
+		$db->commit();
 
 		set_page_message(tr('SQL user successfully deleted.'), 'success');
 		write_log(sprintf("{$_SESSION['user_logged']} deleted SQL user with ID %d", $sqlUserId), E_USER_NOTICE);
 	} catch (iMSCP_Exception $e) {
-		iMSCP_Database::getInstance()->rollBack();
+		$db->rollBack();
 
-		set_page_message(tr('System was unable to remove the SQL user.'), 'error');
-		write_log(sprintf("System was unable to delete SQL user with ID %d. Message was: %s", $sqlUserId, $e->getMessage()), E_USER_ERROR);
+		throw $e;
 	}
 
 	redirectTo('sql_manage.php');

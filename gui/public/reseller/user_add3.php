@@ -207,7 +207,7 @@ function reseller_addCustomer($resellerId)
 	}
 
 	/** @var $db iMSCP_Database */
-	$db = iMSCP_Registry::get('db');
+	$db = iMSCP_Database::getInstance();
 
 	try {
 		iMSCP_Events_Manager::getInstance()->dispatch(
@@ -325,7 +325,7 @@ function reseller_addCustomer($resellerId)
 		redirectTo('users.php');
 	} catch (iMSCP_Exception_Database $e) {
 		$db->rollBack();
-		throw new iMSCP_Exception_Database($e->getMessage(), $e->getQuery(), $e->getCode(), $e);
+		throw $e;
 	}
 }
 

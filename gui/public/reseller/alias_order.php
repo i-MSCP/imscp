@@ -75,8 +75,8 @@ if (isset($_GET['action']) && $_GET['action'] == "delete") {
 			$alsName = $stmt->fields['alias_name'];
 			$mainDmnId = $stmt->fields['domain_id'];
 
-			/** @var iMSCP_Database $db */
-			$db = iMSCP_Registry::get('db');
+			/** @var $db iMSCP_Database */
+			$db = iMSCP_Database::getInstance();
 
 			try {
 				iMSCP_Events_Manager::getInstance()->dispatch(
@@ -126,7 +126,7 @@ if (isset($_GET['action']) && $_GET['action'] == "delete") {
 				redirectTo('alias.php');
 			} catch(iMSCP_Exception_Database $e) {
 				$db->rollBack();
-				throw new iMSCP_Exception_Database($e->getMessage(), $e->getQuery(), $e->getCode(), $e);
+				throw $e;
 			}
 		}
 	}

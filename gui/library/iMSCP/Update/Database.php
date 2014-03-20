@@ -2760,4 +2760,33 @@ class iMSCP_Update_Database extends iMSCP_Update
 	{
 		return $this->_dropColumn('domain', 'domain_created_id');
 	}
+
+	/**
+	 * #879: Security Issue - SQL user hostname - Remove wildcard
+	 *
+	 * @return array SQL statements to be executed
+	 */
+	protected function _databaseUpdate_175()
+	{
+		$sqlUserHost = quoteValue(iMSCP_Registry::get('config')->DATABASE_USER_HOST);
+
+		$stmt = exec_query('SELECT sqlu_name FROM sql_user GROUP BY sqlu_name;');
+		$sqlUdp = array();
+
+		if($stmt->rowCount()) {
+			while($row = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
+				$sqlUser = quoteValue($row['sqlu_name']);
+
+				$sqlUdp[] = "DELETE FROM mysql.user WHERE Host = '%' AND User = $sqlUser";
+				$sqlUdp[] = "DELETE FROM mysql.db WHERE Host = '%' AND User = $sqlUser" ;
+
+				$sqlUdp[] = "UPDATE mysql.user SET Host = $sqlUserHost WHERE User = $sqlUser";
+				$sqlUdp[] = "UPDATE mysql.db SET Host = $sqlUserHost WHERE Host = $sqlUser";
+			}
+
+			$sqlUdp[] = 'FLUSH PRIVILEGES';
+		}
+
+		return $sqlUdp;
+	}
 }

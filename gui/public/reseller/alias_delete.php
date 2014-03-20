@@ -77,7 +77,7 @@ if (resellerHasFeature('domain_aliases') && isset($_GET['id'])) {
 		$cfg = iMSCP_Registry::get('config');
 
 		/** @var $db iMSCP_Database */
-		$db = iMSCP_Registry::get('db');
+		$db = iMSCP_Database::getInstance();
 
 		try {
 			$db->beginTransaction();
@@ -199,7 +199,7 @@ if (resellerHasFeature('domain_aliases') && isset($_GET['id'])) {
 			$db->commit();
 		} catch (iMSCP_Exception_Database $e) {
 			$db->rollBack();
-			throw new iMSCP_Exception_Database($e->getMessage(), $e->getQuery(), $e->getCode(), $e);
+			throw $e;
 		}
 
 		iMSCP_Events_Manager::getInstance()->dispatch(

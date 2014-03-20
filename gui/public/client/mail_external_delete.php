@@ -44,11 +44,12 @@ function client_deleteExternalMailServers($items, $postRequest)
         $cfg = iMSCP_Registry::get('config');
         $domainId = get_user_domain_id($_SESSION['user_id']);
 
-        /** @var $db iMSCP_Database */
-        $db = iMSCP_Registry::get('db');
-        $db->beginTransaction();
+		/** @var $db iMSCP_Database */
+		$db = iMSCP_Database::getInstance();
 
         try {
+			$db->beginTransaction();
+
             $numberDeletedEntries = 0;
 
             if (!empty($items['normal'])) {
@@ -132,7 +133,7 @@ function client_deleteExternalMailServers($items, $postRequest)
             }
         } catch (iMSCP_Exception_Database $e) {
             $db->rollBack();
-            throw new iMSCP_Exception_Database($e->getMessage(), $e->getQuery(), $e->getCode(), $e);
+            throw $e;
         }
     } else {
         if ($postRequest) {

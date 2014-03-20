@@ -103,6 +103,9 @@ function change_sql_user_pass($db_user_id, $db_user_name)
 
 	$user_pass = $_POST['pass'];
 
+	/** @var $db iMSCP_Database */
+	$db = iMSCP_Database::getInstance();
+
 	try {
 		// Update SQL user password in the mysql system tables;
 
@@ -113,7 +116,7 @@ function change_sql_user_pass($db_user_id, $db_user_name)
 
 		$passwordUpdated = true;
 
-		iMSCP_Database::getInstance()->beginTransaction();
+		$db->beginTransaction();
 
 		$stmt = exec_query('SELECT `sqlu_pass` FROM `sql_user` WHERE `sqlu_name` = ? LIMIT 1', $db_user_name);
 
@@ -128,7 +131,7 @@ function change_sql_user_pass($db_user_id, $db_user_name)
 		$query = "UPDATE `sql_user` SET `sqlu_pass` = ? WHERE `sqlu_name` = ?";
 		exec_query($query, array($user_pass, $db_user_name));
 
-		iMSCP_Database::getInstance()->commit();
+		$db->commit();
 
 		iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAfterEditSqlUser, array('sqlUserId' => $db_user_id));
 

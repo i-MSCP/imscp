@@ -407,7 +407,7 @@ function change_domain_status($customerId, $action)
 	$domainName = decode_idna($stmt->fields['domain_name']);
 
 	/** @var $db iMSCP_Database */
-	$db = iMSCP_Registry::get('db');
+	$db = iMSCP_Database::getInstance();
 
 	try {
 		$db->beginTransaction();
@@ -479,7 +479,7 @@ function change_domain_status($customerId, $action)
 
 	iMSCP_Events_Manager::getInstance()->dispatch(
 		iMSCP_Events::onAfterChangeDomainStatus, array('customerId' => $customerId, 'action' => $action)
-);
+	);
 
 	// Send request to i-MSCP daemon
 	send_request();
@@ -548,24 +548,27 @@ function deleteCustomer($customerId, $checkCreatedBy = false)
 		$query = 'SELECT `sqld_id` FROM `sql_database` WHERE `domain_id` = ?';
 		$stmt = exec_query($query, $mainDomainId);
 
+		/** @var $db iMSCP_Database */
+		$db = iMSCP_Database::getInstance();
+
 		while (!$stmt->EOF) {
 			try {
-				iMSCP_Database::getInstance()->beginTransaction();
+				$db->beginTransaction();
 
 				// Delete all SQL databases and users. Must be done in isolated transaction (implicit commit)
 				delete_sql_database($mainDomainId, $stmt->fields['sqld_id']);
 
 				// just for fun since an implicit commit is made before in the delete_sql_database() function
-				iMSCP_Database::getInstance()->commit();
+				$db->commit();
 
 				$stmt->moveNext();
 			} catch (iMSCP_Exception $e) {
-				iMSCP_Database::getInstance()->rollBack();
+				$db->rollBack();
 				throw new iMSCP_Exception($e->getMessage(), $e->getCode(), $e);
 			}
 		}
 
-		iMSCP_Database::getInstance()->beginTransaction();
+		$db->beginTransaction();
 
 		// Deletes all protected areas data (areas, groups and users)
 
@@ -694,13 +697,13 @@ function deleteCustomer($customerId, $checkCreatedBy = false)
 		update_reseller_c_props($resellerId);
 
 		// Commit all changes to database server
-		iMSCP_Database::getInstance()->commit();
+		$db->commit();
 
 		iMSCP_Events_Manager::getInstance()->dispatch(
 			iMSCP_Events::onAfterDeleteCustomer, array('customerId' => $customerId)
 		);
 	} catch (iMSCP_Exception $e) {
-		iMSCP_Database::getInstance()->rollBack();
+		$db->rollBack();
 		throw new iMSCP_Exception($e->getMessage(), $e->getCode(), $e);
 	}
 
@@ -2615,11 +2618,26 @@ function showBadRequestErrorPage()
 	$cfg = iMSCP_Registry::get('config');
 
 	$filePath = $cfg->GUI_ROOT_DIR . '/public/errordocs/400.html';
+	$response = null;
 
 	header("Status: 400 Bad Request");
 
-	if(!is_xhr()) {
+	if(isset($_SERVER['HTTP_ACCEPT'])) {
+		if(strpos($_SERVER['HTTP_ACCEPT'], 'application/json') !== false) {
+			header("Content-type: application/json");
+			$response = json_encode(array('code' => 400, 'message' => 'Bad Request'));
+		} elseif(strpos($_SERVER['HTTP_ACCEPT'], 'application/xml') !== false) {
+			header("Content-type: text/xml;charset=utf-8");
+			$response = '<?xml version="1.0" encoding="utf-8"?>';
+			$response = $response.'<response><code>400</code>';
+			$response = $response.'<message>Bad Request</message></response>';
+		}
+	}
+
+	if(!$response && !is_xhr()) {
 		include $filePath;
+	} elseif($response) {
+		echo $response;
 	}
 
 	exit();
@@ -2638,11 +2656,26 @@ function showNotFoundErrorPage()
 	$cfg = iMSCP_Registry::get('config');
 
 	$filePath = $cfg->GUI_ROOT_DIR . '/public/errordocs/404.html';
+	$response = null;
 
 	header("Status: 404 Not Found");
 
-	if(!is_xhr()) {
+	if(isset($_SERVER['HTTP_ACCEPT'])) {
+		if(strpos($_SERVER['HTTP_ACCEPT'], 'application/json') !== false) {
+			header("Content-type: application/json");
+			$response = json_encode(array('code' => 404, 'message' => 'Not Found'));
+		} elseif(strpos($_SERVER['HTTP_ACCEPT'], 'application/xml') !== false) {
+			header("Content-type: text/xml;charset=utf-8");
+			$response = '<?xml version="1.0" encoding="utf-8"?>';
+			$response = $response.'<response><code>400</code>';
+			$response = $response.'<message>Bad Request</message></response>';
+		}
+	}
+
+	if(!$response && !is_xhr()) {
 		include $filePath;
+	} elseif($response) {
+		echo $response;
 	}
 
 	exit();
