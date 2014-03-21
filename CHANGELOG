@@ -4,6 +4,8 @@
 ------------------------------------------------------------------------------------------------------------------------
 Git stable
 ------------------------------------------------------------------------------------------------------------------------
+ADDONS:
+	- Fixed: Awstats addon uninstaller fails in case the cache directory contain a directory
 
 CONFIGS:
 	- Allow usage of mod_rewrite even when PHP is disabled
@@ -13,8 +15,11 @@ ENGINE:
 	- Fixed: SOA Serial is not updated in zone files (bind9 server impl.)
 
 GUI:
-	- Added: Database transaction counter
+	- Added: Counter to allow nested transactions
 	- Fixed: Stop propagation of the onAuthentication event on first successful authentication attempt
+
+PLUGINS:
+	- Updated: Plugin API to version 0.2.8 (changes are backward compatible)
 
 Tickets:
 	Fixed: #0879: Security Issue - SQL user hostname - Remove wildcard

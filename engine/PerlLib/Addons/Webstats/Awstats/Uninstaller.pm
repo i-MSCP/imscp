@@ -110,7 +110,7 @@ sub _deleteFiles
 
 	# Remove cache directory content
 	if(-d $main::imscpConfig{'AWSTATS_CACHE_DIR'}) {
-		$rs = execute("$main::imscpConfig{'CMD_RM'} -f $main::imscpConfig{'AWSTATS_CACHE_DIR'}/*",  \$stdout, \$stderr);
+		$rs = execute("$main::imscpConfig{'CMD_RM'} -fR $main::imscpConfig{'AWSTATS_CACHE_DIR'}/*",  \$stdout, \$stderr);
 		debug($stdout) if $stdout;
 		error($stderr) if $stderr && $rs;
 		return $rs if $rs;
@@ -119,7 +119,7 @@ sub _deleteFiles
 	# Remove configuration files created by i-MSCP
 	if(-d $main::imscpConfig{'AWSTATS_CONFIG_DIR'}) {
 		$rs = execute(
-			"$main::imscpConfig{'CMD_RM'} -fR $main::imscpConfig{'AWSTATS_CONFIG_DIR'}/awstats.*.conf",
+			"$main::imscpConfig{'CMD_RM'} -f $main::imscpConfig{'AWSTATS_CONFIG_DIR'}/awstats.*.conf",
 			\$stdout,
 			\$stderr
 		);

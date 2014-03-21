@@ -73,7 +73,7 @@ class iMSCP_Database
 	public $nameQuote = '`';
 
 	/**
-	 * @var int Transaction counter
+	 * @var int Transaction counter which allow nested transactions
 	 */
 	protected $transactionCounter = 0;
 
@@ -447,13 +447,15 @@ class iMSCP_Database
 	 */
 	public function commit()
 	{
-		--$this->transactionCounter;
+		if($this->transactionCounter) {
+			if(!--$this->transactionCounter) {
+				return $this->_db->commit();
+			}
 
-		if(!$this->transactionCounter) {
-			return $this->_db->commit();
+			return true;
 		}
 
-		return (bool) $this->transactionCounter;
+		return false;
 	}
 
 	/**
@@ -468,8 +470,6 @@ class iMSCP_Database
 			$this->transactionCounter = 0;
 			return $this->_db->rollBack();
 		}
-
-		$this->transactionCounter = 0;
 
 		return false;
 	}
