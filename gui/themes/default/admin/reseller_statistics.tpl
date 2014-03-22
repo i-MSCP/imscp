@@ -46,13 +46,13 @@
 	<!-- BDP: reseller_statistics_entry_block -->
 	<tr>
 		<td>
-			<a href="reseller_user_statistics.php?rid={RESELLER_ID}&amp;month={MONTH}&amp;year={YEAR}"
+			<a href="reseller_user_statistics.php?rid={RESELLER_ID}"
 			   title="{TR_RESELLER_TOOLTIP}" class="icon i_domain_icon">{RESELLER_NAME}</a>
 		</td>
 		<td>
 			<div class="graph">
 				<span style="width: {TRAFF_PERCENT}%"></span>
-				<strong>{TRAFF_PERCENT} %</strong>
+				<strong>{TRAFF_PERCENT}%</strong>
 			</div>
 			{TRAFF_MSG}
 		</td>

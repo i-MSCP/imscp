@@ -101,9 +101,7 @@ function _admin_generateDomainStatisticsEntry($tpl, $domainId)
 
 	$tpl->assign(
 		array(
-			'DOMAIN_NAME' => tohtml( decode_idna($domain_name)),
-			'MONTH' => date('m'),
-			'YEAR' => date('y'),
+			'DOMAIN_NAME' => tohtml(decode_idna($domain_name)),
 			'DOMAIN_ID' => $domainId,
 			'TRAFF_PERCENT' => $trafficUsagePercent,
 			'TRAFF_MSG' => ($trafficLimitBytes)
@@ -150,11 +148,13 @@ iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAdminScriptStart);
 
 check_login('admin');
 
-if (!isset($_GET['rid'])) {
+$resellerId = (isset($_GET['rid'])) ? intval($_GET['rid']) : (isset($_SESSION['rid']) ? $_SESSION['rid'] : null);
+
+if (!$resellerId) {
 	showBadRequestErrorPage();
 	exit; // Useless but avoid IDE warning about possible undefined variable
 } else {
-	$resellerId = intval($_GET['rid']);
+	$_SESSION['rid'] = $resellerId;
 }
 
 /** @var $cfg iMSCP_Config_Handler_File */

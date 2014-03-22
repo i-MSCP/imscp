@@ -91,8 +91,6 @@ function _admin_generateResellerStatisticsEntry($tpl, $resellerId, $resellerName
 		array(
 			'RESELLER_NAME' => tohtml($resellerName),
 			'RESELLER_ID' => $resellerId,
-			'MONTH' => date('m'),
-			'YEAR' => date('y'),
 			'TRAFF_PERCENT' => $trafficUsagePercent,
 			'TRAFF_MSG' => ($trafficLimitBytes)
 				? tr('%1$s / %2$s of %3$s', bytesHuman($utraff_current), bytesHuman($trafficUsageBytes), bytesHuman($trafficLimitBytes))

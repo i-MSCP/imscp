@@ -22,9 +22,10 @@ PLUGINS:
 	- Updated: Plugin API to version 0.2.8 (changes are backward compatible)
 
 Tickets:
-	Fixed: #0879: Security Issue - SQL user hostname - Remove wildcard
-	Fixed: #1042: Bug - Serial and DNS records in zone files aren't updated/deleted
-	Fixed: #1045: Bug - All customer alias DNS records are removed when a subdomain is being deleted
+	- Fixed: #0879: Security Issue - SQL user hostname - Remove wildcard
+	- Fixed: #1042: Bug - Serial and DNS records in zone files aren't updated/deleted
+	- Fixed: #1045: Bug - All customer alias DNS records are removed when a subdomain is being deleted
+	- Fixed: #1048: Bug - Bad Request - Breadcrumb - Customer statistics
 
 ------------------------------------------------------------------------------------------------------------------------
 1.1.3

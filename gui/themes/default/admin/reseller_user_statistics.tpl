@@ -52,7 +52,7 @@
 	<!-- BDP: domain_statistics_entry_block -->
 	<tr>
 		<td>
-			<a href="domain_statistics.php?month={MONTH}&amp;year={YEAR}&amp;domain_id={DOMAIN_ID}"
+			<a href="domain_statistics.php?domain_id={DOMAIN_ID}"
 			   class="icon i_domain_icon" title="{TR_DOMAIN_TOOLTIP}">{DOMAIN_NAME}</a>
 		</td>
 		<td>

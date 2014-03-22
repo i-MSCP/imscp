@@ -162,20 +162,28 @@ check_login('admin');
 
 $cfg = iMSCP_Registry::get('config');
 
+check_login('admin');
+
+
 if (isset($_POST['domain_id'])) {
-	$domainId = $_POST['domain_id'];
-} elseif (isset($_GET['domain_id'])) {
-	$domainId = $_GET['domain_id'];
+	$domainId = intval($_POST['domain_id']);
+	$_SESSION['domain_id'] = $domainId;
 } else {
-	showBadRequestErrorPage();
+
+	$domainId = (isset($_GET['domain_id']))
+		? intval($_GET['domain_id']) : (isset($_SESSION['domain_id']) ? $_SESSION['domain_id'] : null);
+
+	if (!$domainId) {
+		showBadRequestErrorPage();
+		exit; // Useless but avoid IDE warning about possible undefined variable
+	}
+
+	$_SESSION['domain_id'] = $domainId;
 }
 
 if (isset($_POST['month']) && isset($_POST['year'])) {
 	$year = intval($_POST['year']);
 	$month = intval($_POST['month']);
-} else if (isset($_GET['month']) && isset($_GET['year'])) {
-	$month = intval($_GET['month']);
-	$year = intval($_GET['year']);
 } else {
 	$month = date('m');
 	$year = date('y');

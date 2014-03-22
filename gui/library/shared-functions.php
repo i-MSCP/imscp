@@ -540,28 +540,24 @@ function deleteCustomer($customerId, $checkCreatedBy = false)
 	$resellerId = $stmt->fields['created_by'];
 	$deleteStatus = $cfg['ITEM_TODELETE_STATUS'];
 
+	/** @var $db iMSCP_Database */
+	$db = iMSCP_Database::getInstance();
+
 	try {
 		// First, remove customer sessions to prevent any problems
-		$query = 'DELETE FROM `login` WHERE `user_name` = ?';
-		exec_query($query, $customerName);
+		exec_query('DELETE FROM login WHERE user_name = ?', $customerName);
 
-		$query = 'SELECT `sqld_id` FROM `sql_database` WHERE `domain_id` = ?';
-		$stmt = exec_query($query, $mainDomainId);
+		$stmt = exec_query('SELECT sqld_id FROM sql_database WHERE domain_id = ?', $mainDomainId);
 
-		/** @var $db iMSCP_Database */
-		$db = iMSCP_Database::getInstance();
-
-		while (!$stmt->EOF) {
+		while ($row = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
 			try {
 				$db->beginTransaction();
 
 				// Delete all SQL databases and users. Must be done in isolated transaction (implicit commit)
-				delete_sql_database($mainDomainId, $stmt->fields['sqld_id']);
+				delete_sql_database($mainDomainId, $row['sqld_id']);
 
 				// just for fun since an implicit commit is made before in the delete_sql_database() function
 				$db->commit();
-
-				$stmt->moveNext();
 			} catch (iMSCP_Exception $e) {
 				$db->rollBack();
 				throw new iMSCP_Exception($e->getMessage(), $e->getCode(), $e);
@@ -572,21 +568,23 @@ function deleteCustomer($customerId, $checkCreatedBy = false)
 
 		// Deletes all protected areas data (areas, groups and users)
 
-		$query = "
-			DELETE
-				`t2`, `t3`, `t4`
-			FROM
-				`domain` AS `t1`
-			LEFT JOIN
-				`htaccess` AS `t2` ON (`t2`.`dmn_id` = `t1`.`domain_id`)
-			LEFT JOIN
-				`htaccess_users` AS `t3` ON (`t3`.`dmn_id` = `t1`.`domain_id`)
-			LEFT JOIN
-				`htaccess_groups` AS `t4` ON (`t4`.`dmn_id` = `t1`.`domain_id`)
-			WHERE
-				`t1`.`domain_id` = ?
-		";
-		exec_query($query, $mainDomainId);
+		exec_query(
+			'
+				DELETE
+					`t2`, `t3`, `t4`
+				FROM
+					`domain` AS `t1`
+				LEFT JOIN
+					`htaccess` AS `t2` ON (`t2`.`dmn_id` = `t1`.`domain_id`)
+				LEFT JOIN
+					`htaccess_users` AS `t3` ON (`t3`.`dmn_id` = `t1`.`domain_id`)
+				LEFT JOIN
+					`htaccess_groups` AS `t4` ON (`t4`.`dmn_id` = `t1`.`domain_id`)
+				WHERE
+					`t1`.`domain_id` = ?
+			',
+			$mainDomainId
+		);
 
 		// Deletes domain traffic entries
 		exec_query('DELETE FROM `domain_traffic` WHERE`domain_id` = ?', $mainDomainId);
@@ -617,18 +615,20 @@ function deleteCustomer($customerId, $checkCreatedBy = false)
 		exec_query('UPDATE `mail_users` SET `status` = ? WHERE `domain_id` = ?', array($deleteStatus, $mainDomainId));
 
 		// Schedule subdomain's aliasses deletion
-		$query = "
-			UPDATE
-				`subdomain_alias` AS `t1`
-			JOIN
-				`domain_aliasses` AS `t2` ON(`t2`.`domain_id` = ?)
-			SET
-				`t1`.`subdomain_alias_status` = ?
-			WHERE
-				`t1`.`alias_id` = `t2`.`alias_id`
 
-		";
-		exec_query($query, array($mainDomainId, $deleteStatus));
+		exec_query(
+			'
+				UPDATE
+					`subdomain_alias` AS `t1`
+				JOIN
+					`domain_aliasses` AS `t2` ON(`t2`.`domain_id` = ?)
+				SET
+					`t1`.`subdomain_alias_status` = ?
+				WHERE
+					`t1`.`alias_id` = `t2`.`alias_id`
+			',
+			array($mainDomainId, $deleteStatus)
+		);
 
 		// Schedule Domain aliases deletion
 		exec_query(
@@ -1145,24 +1145,9 @@ function array_encode_idna($array, $asPath = false)
  */
 function encode_idna($string)
 {
-	if(function_exists('idn_to_ascii') && defined('IDNA_NONTRANSITIONAL_TO_ASCII')) {
-		if(strpos($string, '@') !== false) {
-			$parts =  explode('@', $string);
+	$idn = new idna_convert(array('idn_version' => '2008'));
 
-			foreach($parts as &$part) {
-				if(($part = idn_to_ascii($part, IDNA_NONTRANSITIONAL_TO_ASCII, INTL_IDNA_VARIANT_UTS46)) === false) {
-					return false;
-				}
-			}
-
-			return implode('@', $parts);
-		} else {
-			return idn_to_ascii($string, IDNA_NONTRANSITIONAL_TO_ASCII, INTL_IDNA_VARIANT_UTS46);
-		}
-	} else {
-		$idn = new idna_convert(array('idn_version' => '2008'));
-		return $idn->encode($string);
-	}
+	return $idn->encode($string);
 }
 
 /**
@@ -1173,24 +1158,10 @@ function encode_idna($string)
  */
 function decode_idna($string)
 {
-	if(function_exists('idn_to_utf8') && defined('IDNA_NONTRANSITIONAL_TO_UNICODE')) {
-		if(strpos($string, '@') !== false) {
-			$parts =  explode('@', $string);
 
-			foreach($parts as &$part) {
-				if(($part = idn_to_utf8($part, IDNA_NONTRANSITIONAL_TO_UNICODE, INTL_IDNA_VARIANT_UTS46)) === false) {
-					return false;
-				}
-			}
+	$idn = new idna_convert(array('idn_version' => '2008'));
 
-			return implode('@', $parts);
-		} else {
-			return idn_to_utf8($string, IDNA_NONTRANSITIONAL_TO_UNICODE, INTL_IDNA_VARIANT_UTS46);
-		}
-	} else {
-		$idn = new idna_convert(array('idn_version' => '2008'));
-		return $idn->decode($string);
-	}
+	return $idn->decode($string);
 }
 
 /**
@@ -1313,6 +1284,7 @@ function utils_getPhpValueInBytes($value)
 			$val *= 1024;
 		case 'k':
 			$val *= 1024;
+		break;
 	}
 
 	return $val;
@@ -1526,66 +1498,68 @@ function make_usage_vals($amount, $total)
  */
 function generate_user_traffic($domainId)
 {
-	$crnt_month = date('m');
-	$crnt_year = date('Y');
+	$curMonth = date('m');
+	$curYear = date('Y');
 
-	$from_timestamp = mktime(0, 0, 0, $crnt_month, 1, $crnt_year);
+	$fromTimestamp = mktime(0, 0, 0, $curMonth, 1, $curYear);
 
-	if ($crnt_month == 12) {
-		$to_timestamp = mktime(0, 0, 0, 1, 1, $crnt_year + 1);
+	if ($curMonth == 12) {
+		$toTImestamp = mktime(0, 0, 0, 1, 1, $curYear + 1);
 	} else {
-		$to_timestamp = mktime(0, 0, 0, $crnt_month + 1, 1, $crnt_year);
+		$toTImestamp = mktime(0, 0, 0, $curMonth + 1, 1, $curYear);
 	}
 
-	$query = "
-		SELECT
-			`domain_id`, IFNULL(`domain_disk_usage`, 0) AS `domain_disk_usage`,
-			IFNULL(`domain_traffic_limit`, 0) AS `domain_traffic_limit`,
-			IFNULL(`domain_disk_limit`, 0) AS `domain_disk_limit`, `domain_name`
-		FROM
-			`domain`
-		WHERE
-			`domain_id` = ?
-		ORDER BY
-			`domain_name`
-	";
+	$stmt = exec_query(
+		'
+			SELECT
+				domain_id, IFNULL(domain_disk_usage, 0) AS domain_disk_usage,
+				IFNULL(domain_traffic_limit, 0) AS domain_traffic_limit,
+				IFNULL(domain_disk_limit, 0) AS domain_disk_limit, domain_name
+			FROM
+				domain
+			WHERE
+				domain_id = ?
+			ORDER BY
+				domain_name
+		',
+		$domainId
+	);
 
-	$stmt = exec_query($query, $domainId);
+	if (!$stmt->rowCount()) {
+		showBadRequestErrorPage();
+		exit;
+	} else {
+		$domainData = $stmt->fetchRow(PDO::FETCH_ASSOC);
 
-	if ($stmt->rowCount() == 0 || $stmt->rowCount() > 1) {
-		write_log(
-			'TRAFFIC WARNING: ' . $stmt->fields['domain_name'] .
-				' manages incorrect number of domains: ' . $stmt->rowCount(), E_USER_WARNING
+		$domainDiskUsage = $domainData['domain_disk_usage'];
+		$domainTraffLimit = $domainData['domain_traffic_limit'];
+		$domainDiskLimit = $domainData['domain_disk_limit'];
+		$domainName = $domainData['domain_name'];
+
+		$stmt = exec_query(
+			'
+				SELECT
+					IFNULL(SUM(dtraff_web), 0) AS web,
+					IFNULL(SUM(dtraff_ftp), 0) AS ftp,
+					IFNULL(SUM(dtraff_mail), 0) AS smtp,
+					IFNULL(SUM(dtraff_pop), 0) AS pop,
+					IFNULL(SUM(dtraff_web), 0) + IFNULL(SUM(dtraff_ftp), 0) +
+					IFNULL(SUM(dtraff_mail), 0) + IFNULL(SUM(dtraff_pop), 0) AS total
+				FROM
+					domain_traffic
+				WHERE
+					domain_id = ?
+				AND
+					dtraff_time >= ?
+				AND
+					dtraff_time < ?
+			',
+			array($domainId, $fromTimestamp, $toTImestamp)
 		);
 
-		return array('n/a', 0, 0, 0, 0, 0, 0, 0, 0, 0);
-	} else {
-		$domain_id = $stmt->fields['domain_id'];
-		$domain_disk_usage = $stmt->fields['domain_disk_usage'];
-		$domain_traff_limit = $stmt->fields['domain_traffic_limit'];
-		$domain_disk_limit = $stmt->fields['domain_disk_limit'];
-		$domain_name = $stmt->fields['domain_name'];
-
-		$query = "
-			SELECT
-				IFNULL(SUM(`dtraff_web`), 0) AS web, IFNULL(SUM(`dtraff_ftp`), 0) AS ftp,
-				IFNULL(SUM(`dtraff_mail`), 0) AS smtp, IFNULL(SUM(`dtraff_pop`), 0) AS pop,
-				IFNULL(SUM(`dtraff_web`), 0) + IFNULL(SUM(`dtraff_ftp`), 0) +
-				IFNULL(SUM(`dtraff_mail`), 0) + IFNULL(SUM(`dtraff_pop`), 0) AS total
-			FROM
-				`domain_traffic`
-			WHERE
-				`domain_id` = ?
-			AND
-				`dtraff_time` >= ?
-			AND
-				`dtraff_time` < ?
-		";
-		$stmt = exec_query($query, array($domain_id, $from_timestamp, $to_timestamp));
-
 		return array(
-			$domain_name, $domain_id, $stmt->fields['web'], $stmt->fields['ftp'], $stmt->fields['smtp'],
-			$stmt->fields['pop'], $stmt->fields['total'], $domain_disk_usage, $domain_traff_limit, $domain_disk_limit
+			$domainName, $domainId, $stmt->fields['web'], $stmt->fields['ftp'], $stmt->fields['smtp'],
+			$stmt->fields['pop'], $stmt->fields['total'], $domainDiskUsage, $domainTraffLimit, $domainDiskLimit
 		);
 	}
 }
@@ -2618,29 +2592,39 @@ function showBadRequestErrorPage()
 	$cfg = iMSCP_Registry::get('config');
 
 	$filePath = $cfg->GUI_ROOT_DIR . '/public/errordocs/400.html';
-	$response = null;
 
 	header("Status: 400 Bad Request");
 
+	$response = '';
+
 	if(isset($_SERVER['HTTP_ACCEPT'])) {
-		if(strpos($_SERVER['HTTP_ACCEPT'], 'application/json') !== false) {
+		if(
+			(
+				strpos($_SERVER['HTTP_ACCEPT'], 'text/html') !== false ||
+				strpos($_SERVER['HTTP_ACCEPT'], 'application/xhtml') !== false
+			) && !is_xhr()
+		) {
+			$response = file_get_contents($filePath);
+		} elseif(strpos($_SERVER['HTTP_ACCEPT'], 'application/json') !== false) {
 			header("Content-type: application/json");
-			$response = json_encode(array('code' => 400, 'message' => 'Bad Request'));
-		} elseif(strpos($_SERVER['HTTP_ACCEPT'], 'application/xml') !== false) {
+			$response =  json_encode(array('code' => 400, 'message' => 'Bad Request'));
+		} elseif(strpos($_SERVER['HTTP_ACCEPT'], 'application/xmls') !== false) {
 			header("Content-type: text/xml;charset=utf-8");
 			$response = '<?xml version="1.0" encoding="utf-8"?>';
 			$response = $response.'<response><code>400</code>';
 			$response = $response.'<message>Bad Request</message></response>';
+		} elseif(!is_xhr()) {
+			include $filePath;
 		}
+	} elseif(!is_xhr()) {
+		$response = file_get_contents($filePath);
 	}
 
-	if(!$response && !is_xhr()) {
-		include $filePath;
-	} elseif($response) {
+	if($response != '') {
 		echo $response;
 	}
 
-	exit();
+	exit;
 }
 
 /**
@@ -2656,29 +2640,39 @@ function showNotFoundErrorPage()
 	$cfg = iMSCP_Registry::get('config');
 
 	$filePath = $cfg->GUI_ROOT_DIR . '/public/errordocs/404.html';
-	$response = null;
 
 	header("Status: 404 Not Found");
 
+	$response = '';
+
 	if(isset($_SERVER['HTTP_ACCEPT'])) {
-		if(strpos($_SERVER['HTTP_ACCEPT'], 'application/json') !== false) {
+		if(
+			(
+				strpos($_SERVER['HTTP_ACCEPT'], 'text/html') !== false ||
+				strpos($_SERVER['HTTP_ACCEPT'], 'application/xhtml') !== false
+			) && !is_xhr()
+		) {
+			$response = file_get_contents($filePath);
+		} elseif(strpos($_SERVER['HTTP_ACCEPT'], 'application/json') !== false) {
 			header("Content-type: application/json");
-			$response = json_encode(array('code' => 404, 'message' => 'Not Found'));
-		} elseif(strpos($_SERVER['HTTP_ACCEPT'], 'application/xml') !== false) {
+			$response =  json_encode(array('code' => 404, 'message' => 'Not Found'));
+		} elseif(strpos($_SERVER['HTTP_ACCEPT'], 'application/xmls') !== false) {
 			header("Content-type: text/xml;charset=utf-8");
 			$response = '<?xml version="1.0" encoding="utf-8"?>';
-			$response = $response.'<response><code>400</code>';
-			$response = $response.'<message>Bad Request</message></response>';
+			$response = $response.'<response><code>404</code>';
+			$response = $response.'<message>Not Found</message></response>';
+		} elseif(!is_xhr()) {
+			include $filePath;
 		}
+	} elseif(!is_xhr()) {
+		$response = file_get_contents($filePath);
 	}
 
-	if(!$response && !is_xhr()) {
-		include $filePath;
-	} elseif($response) {
+	if($response != '') {
 		echo $response;
 	}
 
-	exit();
+	exit;
 }
 
 /**

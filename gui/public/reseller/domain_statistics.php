@@ -204,9 +204,6 @@ if (isset($_POST['domain_id'])) {
 if (isset($_POST['month']) && isset($_POST['year'])) {
 	$year = intval($_POST['year']);
 	$month = intval($_POST['month']);
-} else if (isset($_GET['month']) && isset($_GET['year'])) {
-	$month = intval($_GET['month']);
-	$year = intval($_GET['year']);
 } else {
 	$month = date('m');
 	$year = date('Y');
