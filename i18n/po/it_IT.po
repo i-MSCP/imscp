@@ -15,8 +15,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2014-03-11 09:12+0100\n"
-"PO-Revision-Date: 2014-03-11 08:14+0000\n"
+"POT-Creation-Date: 2014-03-23 16:38+0100\n"
+"PO-Revision-Date: 2014-03-23 15:40+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Italian (Italy) (http://www.transifex.com/projects/p/i-MSCP/language/it_IT/)\n"
 "MIME-Version: 1.0\n"
@@ -997,9 +997,6 @@ msgstr ""
 
 msgid "An unexpected error occured. Please retry"
 msgstr "Un errore inaspettato è occorso. Per piacere riprova"
-
-msgid "An unexpected error occurred, please contact your reseller."
-msgstr "Un errore inaspettato è occorso, per piacere contatta il tuo rivenditore."
 
 #, php-format
 msgid "An unexpected error occurred: %s"
@@ -2058,7 +2055,7 @@ msgstr "Posta dominio"
 msgid "Domain name"
 msgstr "Nome dominio"
 
-msgid "Domain name (in it ASCII form) cannot be greater than 255 characters."
+msgid "Domain name (ASCII form) cannot be greater than 255 characters."
 msgstr ""
 
 msgid "Domain name cannot be empty."
@@ -2075,7 +2072,7 @@ msgstr ""
 msgid "Domain name label '%s' contain an invalid character: %s"
 msgstr ""
 
-msgid "Domain name labels cannot bu greater than 63 characters."
+msgid "Domain name labels cannot be greater than 63 characters."
 msgstr ""
 
 msgid "Domain name labels cannot start nor end with hyphen."
@@ -4282,9 +4279,6 @@ msgstr "Limite utente SQL è disattivato, ma il limite al database di SQL non lo
 msgid "SQL user limit is disabled."
 msgstr ""
 
-msgid "SQL user limit reached."
-msgstr "Limite utente SQL raggiunto."
-
 msgid "SQL user name"
 msgstr "Nome dell'utente SQL"
 
@@ -4733,18 +4727,6 @@ msgstr "Strumenti di Sistema"
 msgid "System under maintenance"
 msgstr "Sistema in manutenzione"
 
-msgid "System was unable to add the SQL database."
-msgstr "Il sistema non è riuscito ad aggiungere il database SQL."
-
-msgid "System was unable to add the SQL user."
-msgstr "Il sistema non è riuscito ad aggiungere l'utente SQL."
-
-msgid "System was unable to remove the SQL database."
-msgstr "Il sistema non è riuscito a rimuovere il database SQL."
-
-msgid "System was unable to remove the SQL user."
-msgstr "Il sistema non è riuscito a rimuovere l'utente SQL."
-
 msgid "System was unable to update the SQL user password."
 msgstr "Il sistema non è riuscito ad aggiornare la password dell'utente SQL."
 
@@ -5074,10 +5056,6 @@ msgstr "Impossibile creare ' %s' directory per file di lingua."
 
 msgid "Unable to create 'LC_MESSAGES' directory for language file."
 msgstr "Impossibile creare la directory 'LC_MESSAGES' per i file di lingua."
-
-#, php-format
-msgid "Unable to delete user with Id: %d"
-msgstr "Impossibile eliminare l'utente con Id: %d"
 
 msgid "Unable to extract plugin archive."
 msgstr "Impossibile estrarre l'archivio del plugin"

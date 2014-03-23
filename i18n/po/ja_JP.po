@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2014-03-11 09:12+0100\n"
-"PO-Revision-Date: 2014-03-11 08:14+0000\n"
+"POT-Creation-Date: 2014-03-23 16:38+0100\n"
+"PO-Revision-Date: 2014-03-23 15:40+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Japanese (Japan) (http://www.transifex.com/projects/p/i-MSCP/language/ja_JP/)\n"
 "MIME-Version: 1.0\n"
@@ -992,9 +992,6 @@ msgstr "予期しないエラーが発生しました。代理店にお問い合
 
 msgid "An unexpected error occured. Please retry"
 msgstr "予期しないエラーが発生しました。再試行してください"
-
-msgid "An unexpected error occurred, please contact your reseller."
-msgstr "予期しないエラーが発生しました。代理店にお問い合わせください。"
 
 #, php-format
 msgid "An unexpected error occurred: %s"
@@ -2053,8 +2050,8 @@ msgstr "ドメインメール"
 msgid "Domain name"
 msgstr "ドメイン名"
 
-msgid "Domain name (in it ASCII form) cannot be greater than 255 characters."
-msgstr "ドメイン名(ASCII形式で)255文字を超えることはできません。"
+msgid "Domain name (ASCII form) cannot be greater than 255 characters."
+msgstr ""
 
 msgid "Domain name cannot be empty."
 msgstr "ドメイン名を空にすることはできません。"
@@ -2070,8 +2067,8 @@ msgstr "ドメイン名が無効な文字が含まれていた：%s"
 msgid "Domain name label '%s' contain an invalid character: %s"
 msgstr "ドメイン名のラベル'%s'は無効な文字が含まれていた：%s"
 
-msgid "Domain name labels cannot bu greater than 63 characters."
-msgstr "ドメイン名のラベルは63文字を超えることはできません。"
+msgid "Domain name labels cannot be greater than 63 characters."
+msgstr ""
 
 msgid "Domain name labels cannot start nor end with hyphen."
 msgstr "ドメイン名のラベルは開始またはハイフンで終了することはできません。"
@@ -4277,9 +4274,6 @@ msgstr "SQLユーザの制限が無効になりますが、SQLデータベース
 msgid "SQL user limit is disabled."
 msgstr "SQLユーザ制限が無効です。"
 
-msgid "SQL user limit reached."
-msgstr "SQLユーザの制限に達しました。"
-
 msgid "SQL user name"
 msgstr "SQLユーザー名"
 
@@ -4728,18 +4722,6 @@ msgstr "システムツール"
 msgid "System under maintenance"
 msgstr "保守対象のシステム"
 
-msgid "System was unable to add the SQL database."
-msgstr "システムは、SQLデータベースを追加できませんでした。"
-
-msgid "System was unable to add the SQL user."
-msgstr "システムは、SQLユーザーを追加できませんでした。"
-
-msgid "System was unable to remove the SQL database."
-msgstr "システムは、SQLデータベースを削除できませんでした。"
-
-msgid "System was unable to remove the SQL user."
-msgstr "システムは、SQLユーザーを削除できませんでした。"
-
 msgid "System was unable to update the SQL user password."
 msgstr "システムは、SQLユーザーのパスワードを更新できませんでした。"
 
@@ -5069,10 +5051,6 @@ msgstr "言語ファイルのための'%s' ディレクトリを作成できま�
 
 msgid "Unable to create 'LC_MESSAGES' directory for language file."
 msgstr "言語ファイルのための\"LC_MESSAGES\"ディレクトリを作成できません。"
-
-#, php-format
-msgid "Unable to delete user with Id: %d"
-msgstr "このIDを持つユーザーを削除することができない： %d"
 
 msgid "Unable to extract plugin archive."
 msgstr "プラグインのアーカイブを解凍することができません。"

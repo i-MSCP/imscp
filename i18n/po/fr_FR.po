@@ -30,8 +30,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2014-03-11 09:12+0100\n"
-"PO-Revision-Date: 2014-03-11 08:14+0000\n"
+"POT-Creation-Date: 2014-03-23 16:38+0100\n"
+"PO-Revision-Date: 2014-03-23 15:40+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: French (France) (http://www.transifex.com/projects/p/i-MSCP/language/fr_FR/)\n"
 "MIME-Version: 1.0\n"
@@ -1012,9 +1012,6 @@ msgstr "Une erreur inattendue est survenue. Veuillez contacter votre revendeur."
 
 msgid "An unexpected error occured. Please retry"
 msgstr "Une erreur inattendue est survenue. Veuillez réessayer."
-
-msgid "An unexpected error occurred, please contact your reseller."
-msgstr "Une erreur inattendue est survenue. Veuillez contacter votre revendeur."
 
 #, php-format
 msgid "An unexpected error occurred: %s"
@@ -2073,8 +2070,8 @@ msgstr "E-mail du domaine"
 msgid "Domain name"
 msgstr "Nom de domaine"
 
-msgid "Domain name (in it ASCII form) cannot be greater than 255 characters."
-msgstr "Le nom de domaine (dans sa forme ACII) ne peut pas être supérieur à 255 caractères."
+msgid "Domain name (ASCII form) cannot be greater than 255 characters."
+msgstr ""
 
 msgid "Domain name cannot be empty."
 msgstr "Le nom du domaine ne peut être vide."
@@ -2090,8 +2087,8 @@ msgstr "Le nom de domaine contient des caractères invalides : %s"
 msgid "Domain name label '%s' contain an invalid character: %s"
 msgstr "Le label du nom de domaine '%s' contient des caractères invalides : %s"
 
-msgid "Domain name labels cannot bu greater than 63 characters."
-msgstr "Les labels d'un nom de domaine ne peuvent pas être supérieurs à 63 caractères."
+msgid "Domain name labels cannot be greater than 63 characters."
+msgstr ""
 
 msgid "Domain name labels cannot start nor end with hyphen."
 msgstr "Les labels d'un nom de domaine ne peuvent pas commencer ou finir par un trait d'union."
@@ -4297,9 +4294,6 @@ msgstr "La limite d'utilisateur SQL est désactivée mais la limite de base de d
 msgid "SQL user limit is disabled."
 msgstr "La limite d'utilisateur SQL est désactivée."
 
-msgid "SQL user limit reached."
-msgstr "Limite d'utilisateur SQL atteinte."
-
 msgid "SQL user name"
 msgstr "Utilisateur SQL"
 
@@ -4748,18 +4742,6 @@ msgstr "Outils système"
 msgid "System under maintenance"
 msgstr "Système en maintenance"
 
-msgid "System was unable to add the SQL database."
-msgstr "Le système n'a pas été capable de créer la base de données SQL."
-
-msgid "System was unable to add the SQL user."
-msgstr "Le système n'a pas été capable de créer l'utilisateur SQL."
-
-msgid "System was unable to remove the SQL database."
-msgstr "Le système n'a pas été capable de supprimer la base de données SQL."
-
-msgid "System was unable to remove the SQL user."
-msgstr "Le système n'a pas été capable de supprimer l'utilisateur SQL."
-
 msgid "System was unable to update the SQL user password."
 msgstr "Le système n'a pas été capable de mettre à jour le mot de passe de l'utilisateur SQL."
 
@@ -5089,10 +5071,6 @@ msgstr "Impossible de créer le répertoire '%s'  pour le fichier langue."
 
 msgid "Unable to create 'LC_MESSAGES' directory for language file."
 msgstr "Impossible de créer le répertoire 'LC_MESSAGE' pour le fichier langue."
-
-#, php-format
-msgid "Unable to delete user with Id: %d"
-msgstr "Impossible de supprimer l'utilisateur ayant pour Id: %d"
 
 msgid "Unable to extract plugin archive."
 msgstr "Impossible d'extraire l'archive de plugin"

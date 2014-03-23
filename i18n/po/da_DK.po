@@ -11,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2014-03-11 09:12+0100\n"
-"PO-Revision-Date: 2014-03-11 08:14+0000\n"
+"POT-Creation-Date: 2014-03-23 16:38+0100\n"
+"PO-Revision-Date: 2014-03-23 15:40+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Danish (Denmark) (http://www.transifex.com/projects/p/i-MSCP/language/da_DK/)\n"
 "MIME-Version: 1.0\n"
@@ -993,9 +993,6 @@ msgstr "En uventet fejl opstod. Kontakt din forhandler."
 
 msgid "An unexpected error occured. Please retry"
 msgstr "En uventet fejl opstod. Forsøg igen"
-
-msgid "An unexpected error occurred, please contact your reseller."
-msgstr "En uventet fejl opstod, du skal kontakte din forhandler."
 
 #, php-format
 msgid "An unexpected error occurred: %s"
@@ -2054,8 +2051,8 @@ msgstr "Domæne mail"
 msgid "Domain name"
 msgstr "Domæne navn"
 
-msgid "Domain name (in it ASCII form) cannot be greater than 255 characters."
-msgstr "Domænenavnet (i dets ASCII form) kan ikke være større end 255 tegn."
+msgid "Domain name (ASCII form) cannot be greater than 255 characters."
+msgstr ""
 
 msgid "Domain name cannot be empty."
 msgstr "Domænenavn kan ikke være tomt."
@@ -2071,8 +2068,8 @@ msgstr "Domænenavnet indeholder et ugyldigt tegn: %s"
 msgid "Domain name label '%s' contain an invalid character: %s"
 msgstr "Domænenavn label '%s' indeholder et ugyldigt tegn: %s"
 
-msgid "Domain name labels cannot bu greater than 63 characters."
-msgstr "Domænenavn labels kan ikke være større end 63 tegn."
+msgid "Domain name labels cannot be greater than 63 characters."
+msgstr ""
 
 msgid "Domain name labels cannot start nor end with hyphen."
 msgstr "Domænenavn labels kan ikke starte eller slutte med bindestreg."
@@ -4278,9 +4275,6 @@ msgstr "SQL bruger grænse er deaktiveret, men SQL database grænsen er det ikke
 msgid "SQL user limit is disabled."
 msgstr "SQL bruger grænse er deaktiveret."
 
-msgid "SQL user limit reached."
-msgstr "SQL bruger grænse er nået."
-
 msgid "SQL user name"
 msgstr "SQL Brugernavn"
 
@@ -4729,18 +4723,6 @@ msgstr "System værktøjer"
 msgid "System under maintenance"
 msgstr "System under vedligeholdelse"
 
-msgid "System was unable to add the SQL database."
-msgstr "Systemet kunne ikke tilføje SQL-databasen."
-
-msgid "System was unable to add the SQL user."
-msgstr "Systemet kunne ikke tilføje SQL bruger."
-
-msgid "System was unable to remove the SQL database."
-msgstr "Systemet kunne ikke fjerne SQL-databasen."
-
-msgid "System was unable to remove the SQL user."
-msgstr "Systemet kunne ikke fjerne SQL bruger."
-
 msgid "System was unable to update the SQL user password."
 msgstr "Systemet kunne ikke opdatere SQL bruger password."
 
@@ -5070,10 +5052,6 @@ msgstr "Kunne ikke oprette '%s' mappe for sprog-fil."
 
 msgid "Unable to create 'LC_MESSAGES' directory for language file."
 msgstr "Kan ikke skabe 'LC_MESSAGES' mappe for sprog-fil."
-
-#, php-format
-msgid "Unable to delete user with Id: %d"
-msgstr "Kan ikke slette bruger med Id: %d"
 
 msgid "Unable to extract plugin archive."
 msgstr "Kan ikke udpakke plugin arkiv."

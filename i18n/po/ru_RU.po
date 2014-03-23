@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2014-03-11 09:12+0100\n"
-"PO-Revision-Date: 2014-03-11 08:14+0000\n"
+"POT-Creation-Date: 2014-03-23 16:38+0100\n"
+"PO-Revision-Date: 2014-03-23 15:40+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Russian (Russia) (http://www.transifex.com/projects/p/i-MSCP/language/ru_RU/)\n"
 "MIME-Version: 1.0\n"
@@ -994,9 +994,6 @@ msgstr "Произошла неизвестная ошибка, пожалуйс
 
 msgid "An unexpected error occured. Please retry"
 msgstr "Произошла неизвестная ошибка, пожалуйста, попробуйте заново"
-
-msgid "An unexpected error occurred, please contact your reseller."
-msgstr "Произошла неизвестная ошибка, пожалуйста, свяжитесь с Вашим реселлером."
 
 #, php-format
 msgid "An unexpected error occurred: %s"
@@ -2055,8 +2052,8 @@ msgstr "Почта домена"
 msgid "Domain name"
 msgstr "Имя домена"
 
-msgid "Domain name (in it ASCII form) cannot be greater than 255 characters."
-msgstr "Доменное имя (в его ASCII форме) не может быть длиннее 255 знаков."
+msgid "Domain name (ASCII form) cannot be greater than 255 characters."
+msgstr ""
 
 msgid "Domain name cannot be empty."
 msgstr "Доменное имя не может пустовать."
@@ -2072,8 +2069,8 @@ msgstr "Доменное имя содержит неверный символ: 
 msgid "Domain name label '%s' contain an invalid character: %s"
 msgstr "Ярлык доменного имени '%s' содержит неверный символ: %s"
 
-msgid "Domain name labels cannot bu greater than 63 characters."
-msgstr "Ярлыки доменного имени не могут быть длиннее 63 знаков."
+msgid "Domain name labels cannot be greater than 63 characters."
+msgstr ""
 
 msgid "Domain name labels cannot start nor end with hyphen."
 msgstr "Доменное имя не может начинаться и заканчиваться дефисом."
@@ -2540,7 +2537,7 @@ msgid "Get a new image"
 msgstr "Взять новое изображение"
 
 msgid "Get it on"
-msgstr ""
+msgstr "Скачать с"
 
 msgid "GiB"
 msgstr "Гб"
@@ -3434,7 +3431,7 @@ msgid "Only positive numbers are allowed."
 msgstr "Разрешены только положительные числа"
 
 msgid "Only tar.gz, tar.bz2 and zip archives are accepted."
-msgstr ""
+msgstr "Поддерживаются только tar.gz, tar.bz2 и zip архивы."
 
 msgid "Open ticket"
 msgstr "Открыть тикет"
@@ -3801,7 +3798,7 @@ msgstr "Плагин %s успешно обновлен."
 msgid ""
 "Plugin Manager: Downgrade of plugin is not supported. You must update the %s"
 " plugin."
-msgstr ""
+msgstr "Менеджер плагинов: Откат плагина не поддерживается. Вы должны обновить обновить плагин %s ."
 
 #, php-format
 msgid "Plugin Manager: Unable to activate the %s plugin: %s"
@@ -3918,7 +3915,7 @@ msgid "Process update"
 msgstr "Процесс обновления"
 
 msgid "Processing..."
-msgstr ""
+msgstr "Выполнение..."
 
 msgid "Processor data"
 msgstr "Данные процессора"
@@ -4244,7 +4241,7 @@ msgid "SQL database limit is disabled but SQL user limit is not."
 msgstr "SQL базы данных отключены, однако пользователи - нет."
 
 msgid "SQL database limit is disabled."
-msgstr ""
+msgstr "Лимит баз данных SQL отключен."
 
 msgid "SQL database limit is not <i>disabled</i>."
 msgstr "Базы данных SQL не <i>отключены</i>."
@@ -4277,10 +4274,7 @@ msgid "SQL user limit is disabled but SQL database limit is not."
 msgstr "Лимит пользователей SQL отключен, однако лимит баз данных - нет"
 
 msgid "SQL user limit is disabled."
-msgstr ""
-
-msgid "SQL user limit reached."
-msgstr "Лимит пользователей SQL достигнут."
+msgstr "Лимит пользователей SQL отключен."
 
 msgid "SQL user name"
 msgstr "Имя пользователя SQL"
@@ -4730,18 +4724,6 @@ msgstr "Системные инструменты"
 msgid "System under maintenance"
 msgstr "Система на отладке"
 
-msgid "System was unable to add the SQL database."
-msgstr "Система не может добавить базу данных."
-
-msgid "System was unable to add the SQL user."
-msgstr "Система не может добавить пользователя SQL."
-
-msgid "System was unable to remove the SQL database."
-msgstr "Система не может удалить базу данных."
-
-msgid "System was unable to remove the SQL user."
-msgstr "Система не может удалить пользователя SQL."
-
 msgid "System was unable to update the SQL user password."
 msgstr "Система не может обновить пароль пользователя SQL."
 
@@ -4813,7 +4795,7 @@ msgstr "Лимит %s для этого клиента не может быть 
 
 #, php-format
 msgid "The %s translation file has been ignored: Translation table is empty."
-msgstr ""
+msgstr "Язык %s перевода был проигнорирован: Таблица перевода пуста."
 
 msgid "The IP address you're trying to remove is assigned to a reseller."
 msgstr "IP адрес, который вы пытаетесь удалить, назначен реселлеру."
@@ -5071,10 +5053,6 @@ msgstr "Невозможно создать каталог '%s' для язык�
 
 msgid "Unable to create 'LC_MESSAGES' directory for language file."
 msgstr "Невозможно создать каталог 'LC_MESSAGES' для языкового файла."
-
-#, php-format
-msgid "Unable to delete user with Id: %d"
-msgstr "Невозможно удалить пользователя с ID: %d"
 
 msgid "Unable to extract plugin archive."
 msgstr "Невозможно извлечь архив с плагином."

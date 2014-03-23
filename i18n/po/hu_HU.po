@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2014-03-11 09:12+0100\n"
-"PO-Revision-Date: 2014-03-11 08:14+0000\n"
+"POT-Creation-Date: 2014-03-23 16:38+0100\n"
+"PO-Revision-Date: 2014-03-23 15:40+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Hungarian (Hungary) (http://www.transifex.com/projects/p/i-MSCP/language/hu_HU/)\n"
 "MIME-Version: 1.0\n"
@@ -994,9 +994,6 @@ msgstr "Váratlan hiba történt. kérjük, lépj kapcsolatba viszonteladóddal.
 
 msgid "An unexpected error occured. Please retry"
 msgstr "Váratlan hiba történt. Kérjük, próbáld meg újra! "
-
-msgid "An unexpected error occurred, please contact your reseller."
-msgstr "Váratlan hiba történt. Kérjük, lépj kapcsolatba viszonteladóddal. "
 
 #, php-format
 msgid "An unexpected error occurred: %s"
@@ -2055,8 +2052,8 @@ msgstr "Domain email cím"
 msgid "Domain name"
 msgstr "Domain név"
 
-msgid "Domain name (in it ASCII form) cannot be greater than 255 characters."
-msgstr "A domain név (ASCII alakban) nem lehet hosszabb 255 karakternél."
+msgid "Domain name (ASCII form) cannot be greater than 255 characters."
+msgstr ""
 
 msgid "Domain name cannot be empty."
 msgstr "A domain név nem lehet üres."
@@ -2072,8 +2069,8 @@ msgstr "Domain név tartalmaz hibás karaktert: %s"
 msgid "Domain name label '%s' contain an invalid character: %s"
 msgstr "%s domain név címke tartalmaz hibás karaktert: %s"
 
-msgid "Domain name labels cannot bu greater than 63 characters."
-msgstr "A domain név címkék nem lehetnek hosszabbak 63 karakternél."
+msgid "Domain name labels cannot be greater than 63 characters."
+msgstr ""
 
 msgid "Domain name labels cannot start nor end with hyphen."
 msgstr "A domain név címkék nem kezdődhetnek / végződhetnek kötőjellel."
@@ -4279,9 +4276,6 @@ msgstr "SQL felhasználók száma nincs korlátozva, de az SQL adatbázisok szá
 msgid "SQL user limit is disabled."
 msgstr "SQL felhasználó korlát kikapcsolva."
 
-msgid "SQL user limit reached."
-msgstr "Túllépted az SQL felhasználó korlátod."
-
 msgid "SQL user name"
 msgstr "SQL felhasználó neve"
 
@@ -4730,18 +4724,6 @@ msgstr "Rendszereszközök"
 msgid "System under maintenance"
 msgstr "Rendszer karbantartás alatt van"
 
-msgid "System was unable to add the SQL database."
-msgstr "Rendszer nem tudta hozzáadni az SQL-adatbázist"
-
-msgid "System was unable to add the SQL user."
-msgstr "Rendszer nem tudta hozzáadni az SQL-felhasználót"
-
-msgid "System was unable to remove the SQL database."
-msgstr "Rendszer nem tudta törölni az SQL-adatbázist"
-
-msgid "System was unable to remove the SQL user."
-msgstr "Rendszer nem tudta törölni az SQL-felhasználót"
-
 msgid "System was unable to update the SQL user password."
 msgstr "Rendszer nem tudta frissíteni a SQL-felhasználó jelszavát"
 
@@ -5071,10 +5053,6 @@ msgstr "Nem hozható létre a(z) '%s' könyvtár a nyelvi fájl számára"
 
 msgid "Unable to create 'LC_MESSAGES' directory for language file."
 msgstr "Nem hozható létre a 'LC_MESSAGES' könyvtár a nyelvi fájl számára"
-
-#, php-format
-msgid "Unable to delete user with Id: %d"
-msgstr "Nem lehet törölni %d azonosítójú felhasználót"
 
 msgid "Unable to extract plugin archive."
 msgstr "Nem sikerült kibontani a bővítmény archívumát."

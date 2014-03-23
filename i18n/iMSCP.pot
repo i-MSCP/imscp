@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.1.1\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2014-03-11 09:12+0100\n"
+"POT-Creation-Date: 2014-03-23 16:38+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -987,9 +987,6 @@ msgid "An unexpected error occured. Please contact your reseller."
 msgstr ""
 
 msgid "An unexpected error occured. Please retry"
-msgstr ""
-
-msgid "An unexpected error occurred, please contact your reseller."
 msgstr ""
 
 #, php-format
@@ -2049,7 +2046,7 @@ msgstr ""
 msgid "Domain name"
 msgstr ""
 
-msgid "Domain name (in it ASCII form) cannot be greater than 255 characters."
+msgid "Domain name (ASCII form) cannot be greater than 255 characters."
 msgstr ""
 
 msgid "Domain name cannot be empty."
@@ -2066,7 +2063,7 @@ msgstr ""
 msgid "Domain name label '%s' contain an invalid character: %s"
 msgstr ""
 
-msgid "Domain name labels cannot bu greater than 63 characters."
+msgid "Domain name labels cannot be greater than 63 characters."
 msgstr ""
 
 msgid "Domain name labels cannot start nor end with hyphen."
@@ -4273,9 +4270,6 @@ msgstr ""
 msgid "SQL user limit is disabled."
 msgstr ""
 
-msgid "SQL user limit reached."
-msgstr ""
-
 msgid "SQL user name"
 msgstr ""
 
@@ -4722,18 +4716,6 @@ msgstr ""
 msgid "System under maintenance"
 msgstr ""
 
-msgid "System was unable to add the SQL database."
-msgstr ""
-
-msgid "System was unable to add the SQL user."
-msgstr ""
-
-msgid "System was unable to remove the SQL database."
-msgstr ""
-
-msgid "System was unable to remove the SQL user."
-msgstr ""
-
 msgid "System was unable to update the SQL user password."
 msgstr ""
 
@@ -5062,10 +5044,6 @@ msgid "Unable to create '%s' directory for language file."
 msgstr ""
 
 msgid "Unable to create 'LC_MESSAGES' directory for language file."
-msgstr ""
-
-#, php-format
-msgid "Unable to delete user with Id: %d"
 msgstr ""
 
 msgid "Unable to extract plugin archive."

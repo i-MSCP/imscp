@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2014-03-11 09:12+0100\n"
-"PO-Revision-Date: 2014-03-11 08:14+0000\n"
+"POT-Creation-Date: 2014-03-23 16:38+0100\n"
+"PO-Revision-Date: 2014-03-23 15:40+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Basque (Spain) (http://www.transifex.com/projects/p/i-MSCP/language/eu_ES/)\n"
 "MIME-Version: 1.0\n"
@@ -188,7 +188,7 @@ msgstr ""
 
 #, php-format
 msgid "%1$s - (Version: %2$s, Language: %3$s)"
-msgstr ""
+msgstr "%1$s - (Bertsioa: %2$s, Hizkuntza: %3$s)"
 
 #, php-format
 msgid "%1$s / %2$s"
@@ -252,7 +252,7 @@ msgstr ""
 
 #, php-format
 msgid "%d strings translated"
-msgstr ""
+msgstr "%d kate itzulita"
 
 #, php-format
 msgid "%s / %s of %s"
@@ -660,10 +660,10 @@ msgid "Add new service port"
 msgstr "Zerbitzu portu berria gehitu"
 
 msgid "Add permissions"
-msgstr ""
+msgstr "Gehitu baimenak"
 
 msgid "Add permissions for reseller to software:"
-msgstr ""
+msgstr "Gehitu baimenak bersaltzailearen softwareari:"
 
 msgid "Add protected area"
 msgstr ""
@@ -678,7 +678,7 @@ msgid "Add user"
 msgstr "Gehitu erabiltzailea"
 
 msgid "Added by"
-msgstr ""
+msgstr "Nork gehitua"
 
 msgid "Addition in progress"
 msgstr ""
@@ -972,7 +972,7 @@ msgid "Already in use"
 msgstr ""
 
 msgid "Alternative URL to reach your website"
-msgstr ""
+msgstr "Zure web gunera iristeko URL ezberdina"
 
 msgid "An entry is defined twice below."
 msgstr ""
@@ -990,9 +990,6 @@ msgid "An unexpected error occured. Please contact your reseller."
 msgstr ""
 
 msgid "An unexpected error occured. Please retry"
-msgstr ""
-
-msgid "An unexpected error occurred, please contact your reseller."
 msgstr ""
 
 #, php-format
@@ -1016,7 +1013,7 @@ msgid "Apply changes"
 msgstr "Aldaketak ezarri"
 
 msgid "Are you sure to install this package from the webdepot?"
-msgstr ""
+msgstr "Zihur zaude pakete hau instalatu nahi duzula web biltegitik?"
 
 msgid "Are you sure to install this package?"
 msgstr ""
@@ -1029,7 +1026,7 @@ msgid "Are you sure you want delete the '%s' SQL user?"
 msgstr ""
 
 msgid "Are you sure you want to activate this package?"
-msgstr ""
+msgstr "Zihu zaude pakete hau gaitu nahi duzula?"
 
 #, php-format
 msgid "Are you sure you want to change the status of %s domain account?"
@@ -1087,7 +1084,7 @@ msgid "Are you sure you want to delete this IP: %s?"
 msgstr "Ziur zaude ezabatu nahi duzula IP hau: %s?"
 
 msgid "Are you sure you want to delete this package?"
-msgstr ""
+msgstr "Zihur zaude pakete hau ezabatu nahi duzula?"
 
 msgid ""
 "Are you sure you want to import this package into the local software "
@@ -1242,7 +1239,7 @@ msgid "Canonical name"
 msgstr "Izen kanonikoa"
 
 msgid "Captcha fontfile not found."
-msgstr ""
+msgstr "Captcharen hizki fitxategia ez da aurlitu."
 
 msgid "Catch all"
 msgstr "Catch all"
@@ -1716,7 +1713,7 @@ msgid "Data were been altered. Please try again."
 msgstr ""
 
 msgid "Database"
-msgstr ""
+msgstr "Datu basea"
 
 msgid "Database Name and Users"
 msgstr "Datubaseen Izen eta Erabiltzaileak"
@@ -1734,13 +1731,13 @@ msgid "Database name is too long."
 msgstr ""
 
 msgid "Database prefix"
-msgstr ""
+msgstr "Datu base aurrizkia"
 
 msgid "Database prefix/suffix"
 msgstr ""
 
 msgid "Database required"
-msgstr ""
+msgstr "Datu basea beharrezkoa"
 
 msgid "Database update"
 msgstr ""
@@ -1840,7 +1837,7 @@ msgid "Debugger"
 msgstr ""
 
 msgid "Default language"
-msgstr ""
+msgstr "Lehenetsikato hizkuntza"
 
 msgid "Default language successfully updated."
 msgstr ""
@@ -1997,7 +1994,7 @@ msgid "Domain alias successfully scheduled for addition."
 msgstr ""
 
 msgid "Domain alias successfully scheduled for deletion."
-msgstr ""
+msgstr "Domeinu ezizena arrakastaz progamatu da ezabatzeko."
 
 msgid "Domain alias successfully scheduled for update."
 msgstr ""
@@ -2023,13 +2020,13 @@ msgid "Domain aliases"
 msgstr "Domeinu ezizenak"
 
 msgid "Domain already registered on the system."
-msgstr ""
+msgstr "Dagoeneko domeinua erregistratua sisteman."
 
 msgid "Domain and SQL databases"
 msgstr ""
 
 msgid "Domain data were been altered. Please try again."
-msgstr ""
+msgstr "Domeinaren datuak aldatuak izan dira. Mesedez saiatu berriz."
 
 msgid "Domain details"
 msgstr "Domeinuaren xehetasunak"
@@ -2041,7 +2038,7 @@ msgid "Domain expiration date"
 msgstr ""
 
 msgid "Domain expiration date must be filled."
-msgstr ""
+msgstr "Domeinuaren iraungitze data bete behar da."
 
 msgid "Domain limit"
 msgstr ""
@@ -2052,7 +2049,7 @@ msgstr ""
 msgid "Domain name"
 msgstr "Domeinuaren izena"
 
-msgid "Domain name (in it ASCII form) cannot be greater than 255 characters."
+msgid "Domain name (ASCII form) cannot be greater than 255 characters."
 msgstr ""
 
 msgid "Domain name cannot be empty."
@@ -2069,7 +2066,7 @@ msgstr ""
 msgid "Domain name label '%s' contain an invalid character: %s"
 msgstr ""
 
-msgid "Domain name labels cannot bu greater than 63 characters."
+msgid "Domain name labels cannot be greater than 63 characters."
 msgstr ""
 
 msgid "Domain name labels cannot start nor end with hyphen."
@@ -2120,7 +2117,7 @@ msgid "Done"
 msgstr "Egina"
 
 msgid "Download"
-msgstr ""
+msgstr "Jaitsi"
 
 msgid "Download the archives stored in this directory"
 msgstr ""
@@ -2186,7 +2183,7 @@ msgid "Edit reseller"
 msgstr "Aldatu bersaltzailea"
 
 msgid "Edit subdomain"
-msgstr ""
+msgstr "Aldatu azpidomeinua"
 
 msgid "Edit user"
 msgstr "Aldatu erabiltzailea"
@@ -2322,7 +2319,7 @@ msgid "Error while trying to obtain list of network cards."
 msgstr "Errorea sareko txartelen zerrenda eskuratzerakoan."
 
 msgid "Error: Remote File not found!"
-msgstr ""
+msgstr "Errorea: Hurruneko Artxiboa ez da aurkitu!"
 
 msgid "Errors"
 msgstr "Akatsak"
@@ -2428,7 +2425,7 @@ msgid "File has been successfully uploaded."
 msgstr ""
 
 msgid "File is not readable."
-msgstr ""
+msgstr "Artxiboa ez da irakurgai."
 
 msgid "File needs to be a 'tar.gz' archive."
 msgstr ""
@@ -2574,7 +2571,7 @@ msgid "Home directory '%s' doesn't exist"
 msgstr ""
 
 msgid "Homepage"
-msgstr ""
+msgstr "Hasiera orria"
 
 msgid "Hosting plan"
 msgstr "Hostatze plana"
@@ -2598,7 +2595,7 @@ msgid "Hosting plan successfully updated."
 msgstr ""
 
 msgid "Hosting plan values exceed reseller maximum values."
-msgstr ""
+msgstr "Ostatze planaren balioak bersaltzailearen balioak gainditzen ditu."
 
 msgid "Hosting plan values exceed your own limits."
 msgstr ""
@@ -2776,13 +2773,13 @@ msgid "Install"
 msgstr "instalatu"
 
 msgid "Install Software"
-msgstr ""
+msgstr "Instalatu Softwarea"
 
 msgid "Install in progress"
 msgstr ""
 
 msgid "Install path"
-msgstr ""
+msgstr "Instalazio bidea"
 
 msgid "Install this plugin"
 msgstr ""
@@ -2809,7 +2806,7 @@ msgid "Installed in software repository"
 msgstr ""
 
 msgid "Installed on"
-msgstr ""
+msgstr "Non instalatua"
 
 msgid "Installing your uploaded package. Please refresh this page."
 msgstr ""
@@ -2898,7 +2895,7 @@ msgid "Ip %s is waiting %s seconds."
 msgstr ""
 
 msgid "Kernel Version"
-msgstr ""
+msgstr "Kernel Bertsioa"
 
 msgid "Kill session"
 msgstr "Amaitu saioa"
@@ -2922,7 +2919,7 @@ msgid "Languages"
 msgstr ""
 
 msgid "Languages index was successfully re-built."
-msgstr ""
+msgstr "Hizkuntzen indizea egokiro berregina."
 
 msgid "Last Web software repository update"
 msgstr ""
@@ -2940,7 +2937,7 @@ msgid "Last reply date"
 msgstr ""
 
 msgid "Last translator"
-msgstr ""
+msgstr "Azken itzultzailea"
 
 msgid "Layout"
 msgstr "Txantiloia"
@@ -2967,10 +2964,10 @@ msgid "Link"
 msgstr ""
 
 msgid "Link to authors homepage"
-msgstr ""
+msgstr "Esteka egilearen hasiera orrira"
 
 msgid "Load (1 Min, 5 Min, 15 Min)"
-msgstr ""
+msgstr "Zama (Min 1, 5 Min, 15 Min)"
 
 msgid "Log entries successfully deleted."
 msgstr ""
@@ -2982,7 +2979,7 @@ msgid "Login"
 msgstr "Saioa hasi"
 
 msgid "Login As"
-msgstr ""
+msgstr "Honela izena eman"
 
 #, php-format
 msgid "Login data successfully sent to %s."
@@ -3106,7 +3103,7 @@ msgid "Mark"
 msgstr "Marka"
 
 msgid "Master domain cannot be used."
-msgstr ""
+msgstr "Domeinu nagusia ezin da erabili."
 
 msgid "Max number of login attempts"
 msgstr "Gehienezko izen emate saiakerak"
@@ -3230,7 +3227,7 @@ msgid "New alias order for {CUSTOMER}"
 msgstr ""
 
 msgid "New i-MSCP update is available"
-msgstr ""
+msgstr "i-MSCP-ko eguneraketa berri bat eskuragarri"
 
 msgid "New password has not been sent. Ask your administrator."
 msgstr "Pasahitz berria ez da bidali. Galdetu zure administrariari."
@@ -3242,7 +3239,7 @@ msgid "New ticket"
 msgstr "Txartel berria"
 
 msgid "Next"
-msgstr ""
+msgstr "Hurrengoa"
 
 msgid "Next step"
 msgstr "Hurrengo pausua"
@@ -3428,7 +3425,7 @@ msgid "Only numbers in range from 0 to 65535 are allowed."
 msgstr ""
 
 msgid "Only positive numbers are allowed."
-msgstr ""
+msgstr "Soilik zenbaki positiboak onartzen dira."
 
 msgid "Only tar.gz, tar.bz2 and zip archives are accepted."
 msgstr ""
@@ -3487,7 +3484,7 @@ msgid "PHP Editor Settings"
 msgstr ""
 
 msgid "PHP GD extension not loaded."
-msgstr ""
+msgstr "PHPko GD gehigarria ez da kargatu."
 
 msgid "PHP Settings"
 msgstr ""
@@ -3899,7 +3896,7 @@ msgid "Prevent external login for resellers"
 msgstr "Aurrezaindu kanpo sarrera birsaltzaileei"
 
 msgid "Previous"
-msgstr ""
+msgstr "Aurrekoa"
 
 msgid "Priority"
 msgstr "Lehentasuna"
@@ -3977,7 +3974,7 @@ msgid "Read ticket"
 msgstr ""
 
 msgid "Rebuild languages index"
-msgstr ""
+msgstr "Berregin hizkuntzen indizea"
 
 msgid "Record data"
 msgstr "Erregistro data"
@@ -4013,7 +4010,7 @@ msgid "Remove last entry"
 msgstr ""
 
 msgid "Remove permissions"
-msgstr ""
+msgstr "Ezabatu baimenak"
 
 msgid "Reopen"
 msgstr ""
@@ -4031,7 +4028,7 @@ msgid "Request from foreign host was blocked."
 msgstr ""
 
 msgid "Requires Database?"
-msgstr ""
+msgstr "Datu basea beharrezkoa?"
 
 msgid "Reseller"
 msgstr "Bersaltzailea"
@@ -4154,7 +4151,7 @@ msgid "Reseller level"
 msgstr "Bersaltzaile maila"
 
 msgid "Reseller list"
-msgstr ""
+msgstr "Bersaltzaile zerrenda"
 
 msgid "Reseller list is empty."
 msgstr ""
@@ -4163,7 +4160,7 @@ msgid "Reseller name"
 msgstr "Bersaltzailearen izena"
 
 msgid "Reseller software list"
-msgstr ""
+msgstr "Bersaltzailearen software zerrenda"
 
 msgid "Reseller statistics"
 msgstr ""
@@ -4172,19 +4169,19 @@ msgid "Reseller successfully added."
 msgstr ""
 
 msgid "Reseller total"
-msgstr ""
+msgstr "Bersaltzaile guztira"
 
 msgid "Reseller users"
 msgstr "Bersaltzailearen erabiltzaileak"
 
 msgid "Reseller with permissions total"
-msgstr ""
+msgstr "Bersaltzailea baimen guztiekin"
 
 msgid "Reseller's layout color successfully updated."
 msgstr ""
 
 msgid "Reseller/IP usage statistics"
-msgstr ""
+msgstr "Bersaltzaile/IP erabilera estadistikak"
 
 msgid "Resellers"
 msgstr "Bersaltzaileak"
@@ -4276,9 +4273,6 @@ msgstr ""
 msgid "SQL user limit is disabled."
 msgstr ""
 
-msgid "SQL user limit reached."
-msgstr ""
-
 msgid "SQL user name"
 msgstr "SQL erabiltzaile izena"
 
@@ -4325,13 +4319,13 @@ msgid "Security code"
 msgstr "Segurtasun kodea"
 
 msgid "Select Domain"
-msgstr ""
+msgstr "Aukeratu Domeinua"
 
 msgid "Select all entries for deletion."
 msgstr ""
 
 msgid "Select database"
-msgstr ""
+msgstr "Aukeratu datu basea"
 
 msgid "Select group"
 msgstr ""
@@ -4345,7 +4339,7 @@ msgid ""
 msgstr ""
 
 msgid "Send"
-msgstr ""
+msgstr "Bidali"
 
 msgid "Send circular"
 msgstr ""
@@ -4488,22 +4482,22 @@ msgid "Size"
 msgstr "Tamaina"
 
 msgid "Software"
-msgstr ""
+msgstr "Software-a"
 
 msgid "Software Description"
 msgstr ""
 
 msgid "Software available"
-msgstr ""
+msgstr "Softwarea eskuragarri"
 
 msgid "Software deleted."
 msgstr ""
 
 msgid "Software depot upload"
-msgstr ""
+msgstr "Software biltegi igoera"
 
 msgid "Software details"
-msgstr ""
+msgstr "Software-aren xehetasunak"
 
 msgid "Software has been deleted."
 msgstr ""
@@ -4515,7 +4509,7 @@ msgid "Software in repository"
 msgstr ""
 
 msgid "Software installation"
-msgstr ""
+msgstr "Software instalazioa"
 
 msgid "Software installer"
 msgstr ""
@@ -4542,7 +4536,7 @@ msgid "Software options"
 msgstr ""
 
 msgid "Software permissions"
-msgstr ""
+msgstr "Software baimenak"
 
 msgid "Software repository"
 msgstr ""
@@ -4551,13 +4545,13 @@ msgid "Software scheduled for deletion."
 msgstr ""
 
 msgid "Software status"
-msgstr ""
+msgstr "Softwarearen egoera"
 
 msgid "Software total"
-msgstr ""
+msgstr "Softwarea guztira"
 
 msgid "Software upload"
-msgstr ""
+msgstr "Softwarea igo"
 
 msgid "Software was activated."
 msgstr "Softwarea aktibatua izan da."
@@ -4566,13 +4560,13 @@ msgid "Software was deleted."
 msgstr "Softwarea ezabatua izan da."
 
 msgid "Software-Synonym"
-msgstr ""
+msgstr "Software-Sinonimo"
 
 msgid "Software-Version"
-msgstr ""
+msgstr "Software-Bertsioa"
 
 msgid "Softwaredepot"
-msgstr ""
+msgstr "Software biltegia"
 
 msgid "Spam Filter"
 msgstr ""
@@ -4725,18 +4719,6 @@ msgid "System tools"
 msgstr "Sistema tresnak"
 
 msgid "System under maintenance"
-msgstr ""
-
-msgid "System was unable to add the SQL database."
-msgstr ""
-
-msgid "System was unable to add the SQL user."
-msgstr ""
-
-msgid "System was unable to remove the SQL database."
-msgstr ""
-
-msgid "System was unable to remove the SQL user."
 msgstr ""
 
 msgid "System was unable to update the SQL user password."
@@ -5015,7 +4997,7 @@ msgid "Total Web software repositories"
 msgstr ""
 
 msgid "Total installations"
-msgstr ""
+msgstr "Instalazioak guztira"
 
 #, php-format
 msgid "Total mails: %s / %s %s"
@@ -5037,7 +5019,7 @@ msgid "Traffic usage"
 msgstr "Trafiko erabilera"
 
 msgid "Translated strings"
-msgstr ""
+msgstr "Itzulitako kateak"
 
 msgid "Type"
 msgstr "Mota"
@@ -5067,10 +5049,6 @@ msgid "Unable to create '%s' directory for language file."
 msgstr ""
 
 msgid "Unable to create 'LC_MESSAGES' directory for language file."
-msgstr ""
-
-#, php-format
-msgid "Unable to delete user with Id: %d"
 msgstr ""
 
 msgid "Unable to extract plugin archive."
@@ -5248,7 +5226,7 @@ msgid "Upload logo"
 msgstr "Logoa igo"
 
 msgid "Upload now"
-msgstr ""
+msgstr "Igo orain"
 
 msgid "Uptime"
 msgstr ""
@@ -5293,7 +5271,7 @@ msgid "User data successfully updated."
 msgstr ""
 
 msgid "User data were not updated."
-msgstr ""
+msgstr "Erabiltzailearen datuak ez dira eguneratu."
 
 msgid "User data were successfully updated."
 msgstr ""
@@ -5328,7 +5306,7 @@ msgid "User real (first and last) name"
 msgstr "Erabiltzailearen benetako izena (izen eta abizenak)"
 
 msgid "User scheduled for deletion."
-msgstr ""
+msgstr "Erabiltzailea ezabatzeko programatua."
 
 msgid "User session successfully destroyed."
 msgstr ""
@@ -5378,7 +5356,7 @@ msgid "Vendor hompage"
 msgstr ""
 
 msgid "Version"
-msgstr ""
+msgstr "Bertsioa"
 
 msgid "Very high"
 msgstr "Oso altua"
@@ -5434,7 +5412,7 @@ msgid "Web out"
 msgstr "Web irteera"
 
 msgid "Web software depot packages total"
-msgstr ""
+msgstr "Web software biltegiko pakete kopurua"
 
 msgid "Web software repository"
 msgstr ""
@@ -5489,10 +5467,10 @@ msgid "Wrong request."
 msgstr ""
 
 msgid "Wrong reseller id."
-msgstr ""
+msgstr "Bersaltzaile ID okerra."
 
 msgid "Wrong security code"
-msgstr ""
+msgstr "Segurtasun kode okerra"
 
 msgid "Wrong software id."
 msgstr "Software id okerra."
@@ -5625,13 +5603,13 @@ msgid "You do not have custom DNS records."
 msgstr ""
 
 msgid "You do not have customers."
-msgstr ""
+msgstr "Ez daukazu bezerorik."
 
 msgid "You do not have databases."
 msgstr ""
 
 msgid "You do not have domain aliases."
-msgstr ""
+msgstr "Ez daukazu domeinu ezizenik."
 
 msgid "You do not have permission to install software yet"
 msgstr ""
@@ -5738,7 +5716,7 @@ msgid "You have received %s new support ticket(s)."
 msgstr ""
 
 msgid "You have to choose between file-upload and wget-function."
-msgstr ""
+msgstr "Fitxategi-igoera eta wget-funtzioen artean aukeratu behar duzu."
 
 msgid "You must assign at least one IP per reseller."
 msgstr ""
@@ -5771,7 +5749,7 @@ msgid "You must select a file to upload."
 msgstr ""
 
 msgid "You must select a file to upload/download."
-msgstr ""
+msgstr "Artxibo bat aukeratu behar duzu igotzeko/jesteko."
 
 msgid "You must select a least one item to deactivate."
 msgstr ""
@@ -5919,7 +5897,7 @@ msgid "everything"
 msgstr "dena"
 
 msgid "from other browser"
-msgstr ""
+msgstr "beste nabigatzailetik"
 
 #, php-format
 msgid ""
@@ -5928,7 +5906,7 @@ msgid ""
 msgstr ""
 
 msgid "i-MSCP - Application Management (Permissions)"
-msgstr ""
+msgstr "i-MSCP - Aplikazio Kudeaketa (Baimenak)"
 
 msgid "i-MSCP - Client/Create CatchAll Mail Account"
 msgstr "i-MSCP - Erabiltzailea/Sortu CatchAll Posta Kontua"
@@ -6003,7 +5981,7 @@ msgid "no"
 msgstr "ez"
 
 msgid "not available"
-msgstr ""
+msgstr "ez dago eskuragarri"
 
 msgid "not required"
 msgstr ""

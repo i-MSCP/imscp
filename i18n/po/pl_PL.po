@@ -3,7 +3,7 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-# alex_joe <voxar@voxar.pl>, 2013
+# alex_joe <voxar@voxar.pl>, 2013-2014
 # b13n1u <b13n1u@gmail.com>, 2013-2014
 # b13n1u <b13n1u@gmail.com>, 2012-2013
 # cgr <cobragr@tlen.pl>, 2013
@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2014-03-11 09:12+0100\n"
-"PO-Revision-Date: 2014-03-11 08:14+0000\n"
+"POT-Creation-Date: 2014-03-23 16:38+0100\n"
+"PO-Revision-Date: 2014-03-23 15:40+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Polish (Poland) (http://www.transifex.com/projects/p/i-MSCP/language/pl_PL/)\n"
 "MIME-Version: 1.0\n"
@@ -353,12 +353,12 @@ msgstr ""
 
 #, php-format
 msgid "%s: This reseller has customer(s) with unlimited items."
-msgstr ""
+msgstr "%s: Ten reseller ma użytkownika(ów) z nielimitowanymi usługami."
 
 #, php-format
 msgid ""
 "%s: You cannot disable a service already consumed by reseller's customers"
-msgstr ""
+msgstr "%s: Nie możesz wyłączyć usługi, która jest wykorzystywana przez klientów resellerów."
 
 #, php-format
 msgid "%s: You cannot disable a service already sold to reseller's customers."
@@ -815,7 +815,7 @@ msgid "Admin / Users / Add Reseller"
 msgstr "Admin / Użytkownicy / Dodawanie Reseller'a"
 
 msgid "Admin / Users / Circular"
-msgstr "Admin / Użytkownicy / Rozsyłanie Emaili"
+msgstr "Admin / Użytkownicy /Okólnik"
 
 msgid "Admin / Users / Customers Assignment"
 msgstr "Admin / Użytkownicy / Przypisanie Użytkowników"
@@ -994,9 +994,6 @@ msgstr ""
 
 msgid "An unexpected error occured. Please retry"
 msgstr "Wystąpił nieoczekiwany błąd. Spróbuj jeszcze raz"
-
-msgid "An unexpected error occurred, please contact your reseller."
-msgstr ""
 
 #, php-format
 msgid "An unexpected error occurred: %s"
@@ -1339,10 +1336,10 @@ msgid "Choose your language"
 msgstr "Wybierz swój język"
 
 msgid "Circular"
-msgstr "Kołowy"
+msgstr "Okólnik"
 
 msgid "Circular successfully sent."
-msgstr ""
+msgstr "Okólnik został wysłany."
 
 msgid "City"
 msgstr "Miasto"
@@ -2055,7 +2052,7 @@ msgstr "Poczta domeny"
 msgid "Domain name"
 msgstr "Nazwa domeny"
 
-msgid "Domain name (in it ASCII form) cannot be greater than 255 characters."
+msgid "Domain name (ASCII form) cannot be greater than 255 characters."
 msgstr ""
 
 msgid "Domain name cannot be empty."
@@ -2072,7 +2069,7 @@ msgstr ""
 msgid "Domain name label '%s' contain an invalid character: %s"
 msgstr ""
 
-msgid "Domain name labels cannot bu greater than 63 characters."
+msgid "Domain name labels cannot be greater than 63 characters."
 msgstr ""
 
 msgid "Domain name labels cannot start nor end with hyphen."
@@ -2654,7 +2651,7 @@ msgid "IP address"
 msgstr "Adres IP"
 
 msgid "IP address already under the control of i-MSCP."
-msgstr ""
+msgstr "Adres IP jest pod kontrolą i-MSCP."
 
 msgid "IP address data"
 msgstr ""
@@ -2663,13 +2660,13 @@ msgid "IP address field is empty or invalid."
 msgstr ""
 
 msgid "IP address successfully scheduled for addition."
-msgstr ""
+msgstr "Adres IP został zaplanowany do dodania."
 
 msgid "IP address successfully scheduled for deletion."
 msgstr "Adres IP został zaplanowany do usunięcia."
 
 msgid "IP addresses under control of i-MSCP"
-msgstr ""
+msgstr "Adresy IP pod kontrolą i-MSCP"
 
 msgid "IP management"
 msgstr "Zarządzanie IP"
@@ -3918,7 +3915,7 @@ msgid "Process update"
 msgstr "Proces aktualizacji"
 
 msgid "Processing..."
-msgstr ""
+msgstr "Przetwarzanie..."
 
 msgid "Processor data"
 msgstr "Informacje o procesorze"
@@ -4046,7 +4043,7 @@ msgid "Reseller / Customers / Add Customer - Next Step"
 msgstr "Reseller / Klienci / Dodawanie Klienta - Następny Krok"
 
 msgid "Reseller / Customers / Circular"
-msgstr "Reseller / Klienci / Roześlij email"
+msgstr "Reseller / Klienci / Okólnik"
 
 msgid "Reseller / Customers / Domain Aliases"
 msgstr "Reseller / Klienci / Aliasy Domeny"
@@ -4244,7 +4241,7 @@ msgid "SQL database limit is disabled but SQL user limit is not."
 msgstr ""
 
 msgid "SQL database limit is disabled."
-msgstr ""
+msgstr "Limit baz SQL jest wyłączony."
 
 msgid "SQL database limit is not <i>disabled</i>."
 msgstr ""
@@ -4277,10 +4274,7 @@ msgid "SQL user limit is disabled but SQL database limit is not."
 msgstr ""
 
 msgid "SQL user limit is disabled."
-msgstr ""
-
-msgid "SQL user limit reached."
-msgstr ""
+msgstr "Limit użytkowników SQL jest wyłączony."
 
 msgid "SQL user name"
 msgstr "Nazwa użytkownika SQL"
@@ -4351,7 +4345,7 @@ msgid "Send"
 msgstr "Wyślij"
 
 msgid "Send circular"
-msgstr ""
+msgstr "Wyślij okólnik"
 
 msgid "Send message"
 msgstr "Wyślij wiadomość"
@@ -4682,7 +4676,7 @@ msgid "Subject"
 msgstr "Temat"
 
 msgid "Subject is missing."
-msgstr ""
+msgstr "Brak tematu."
 
 msgid "Submit changes"
 msgstr "Zapisz zmiany"
@@ -4729,18 +4723,6 @@ msgstr "Narzędzia systemowe"
 
 msgid "System under maintenance"
 msgstr "Tryb serwisowy włączony."
-
-msgid "System was unable to add the SQL database."
-msgstr "System nie mógł dodać bazy danych."
-
-msgid "System was unable to add the SQL user."
-msgstr "System nie mógł dodać użytkownika bazy danych."
-
-msgid "System was unable to remove the SQL database."
-msgstr "System nie mógł skasować bazy danych."
-
-msgid "System was unable to remove the SQL user."
-msgstr "System nie mógł skasować użytkownika bazy danych."
 
 msgid "System was unable to update the SQL user password."
 msgstr "System nie mógł zaktualizować hasła użytkownika SQL."
@@ -5072,10 +5054,6 @@ msgstr "Nie udało się stworzyć katalogu '%s' dla pliku."
 msgid "Unable to create 'LC_MESSAGES' directory for language file."
 msgstr "Nie udało się stworzyć katalogu  'LC_MESSAGES' dla pliku z tłumaczeniem."
 
-#, php-format
-msgid "Unable to delete user with Id: %d"
-msgstr "Nie można usunąć użytkownika z id: %d"
-
 msgid "Unable to extract plugin archive."
 msgstr "Nie można rozpakować archiwum rozszerzenia."
 
@@ -5139,7 +5117,7 @@ msgid "Unable to upload file. Max. upload filesize (%1$d MB) reached?"
 msgstr "Nie można wysłać pliku. Możliwe, że  został osiągnięty maksymalny dozwolony rozmiar pliku (%1$d MB)."
 
 msgid "Unallowed database name."
-msgstr ""
+msgstr "Niedozwolona nazwa bazy danych."
 
 msgid "Unauthorized"
 msgstr ""
@@ -5151,10 +5129,10 @@ msgid "Uninstall"
 msgstr "Odinstaluj "
 
 msgid "Uninstall this plugin"
-msgstr ""
+msgstr "Odinstaluj to rozszerzenie"
 
 msgid "Uninstallation in progress..."
-msgstr ""
+msgstr "Deinstalacja w toku..."
 
 msgid "Uninstalled"
 msgstr "Odinstalowane"
@@ -5192,7 +5170,7 @@ msgid "Unknown service name '%s'."
 msgstr ""
 
 msgid "Unknown status"
-msgstr ""
+msgstr "Nieznany status"
 
 msgid "Unknown type."
 msgstr "Typ nieznany."
@@ -5210,7 +5188,7 @@ msgid "Update"
 msgstr "Aktualizuj"
 
 msgid "Update Plugins"
-msgstr ""
+msgstr "Aktualizuj rozszerzenia"
 
 msgid "Update SQL user password"
 msgstr "Zmień hasło użytkownika bazy SQL"
@@ -5973,7 +5951,7 @@ msgid "i-MSCP Web software repository"
 msgstr "i-MSCP / Repozytorium oprogramowania."
 
 msgid "i-MSCP plugin store"
-msgstr ""
+msgstr "i-MSCP dodatki i rozszerzenia"
 
 msgid "i-MSCP updates"
 msgstr "Aktualizacje i-MSCP"
@@ -6070,7 +6048,7 @@ msgid "waiting for activation"
 msgstr "oczekuję na aktywację"
 
 msgid "wildcard"
-msgstr ""
+msgstr "wildcard"
 
 msgid "yes"
 msgstr "tak"
