@@ -5,11 +5,15 @@
 Git stable
 ------------------------------------------------------------------------------------------------------------------------
 
+CONFIGS:
+	- Fixed: Missing Fileinfo option in domain_ssl.tpl (Apache)
+	- Fixed: Missing Indexes option in domain.tpl (Apache)
+
 ENGINE:
 	- Fixed: SQL server hostname and port must be specified when restoring database (needed for remote MySQL server)
 
 GUI:
-	- Added: Check for www label which is reserved (subdomain)
+	- Added: Check for www label which is reserved and which cause DNS errors (subdomain)
 	- Added: Prefix for subdomains mount points which match with default directories
 	- Added: Run-time check for php5-imap module availability
 	- Added: SQL user host field to allow customers to set host from which SQL users can connect to the MySQL server
