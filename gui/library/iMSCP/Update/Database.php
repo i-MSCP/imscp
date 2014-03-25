@@ -645,7 +645,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	{
 		$sqlUpd = array();
 
-		$status = iMSCP_Registry::get('config')->ITEM_TOCHANGE_STATUS;
+		$status = 'tochange';
 
 		/** @var $db iMSCP_Database */
 		$db = iMSCP_Registry::get('db');
@@ -2128,10 +2128,8 @@ class iMSCP_Update_Database extends iMSCP_Update
 
 		$sqlUpd = array();
 
-		/** @var iMSCP_Config_Handler_File $config */
-		$config = iMSCP_Registry::get('config');
-		$tochange = $config['ITEM_TOCHANGE_STATUS'];
-		$todelete = $config['ITEM_TODELETE_STATUS'];
+		$tochange = 'tochange';
+		$todelete = 'todelete';
 
 		foreach ($map as $table => $field) {
 			$sqlUpd[] = "UPDATE `$table` SET `$field` = '$tochange' WHERE `$field` IN('change', 'dnschange')";
@@ -2161,18 +2159,15 @@ class iMSCP_Update_Database extends iMSCP_Update
 		}
 
 		if (!empty($sqlUdp)) {
-			/** @var iMSCP_Config_Handler_File $config */
-			$config = iMSCP_Registry::get('config');
-
-			$enabled = $config['ITEM_ENABLED_STATUS'];
-			$disabled = $config['ITEM_DISABLED_STATUS'];
-			$uninstalled = $config['ITEM_UNINSTALLED_STATUS'];
-			$toinstall = $config['ITEM_TOINSTALL_STATUS'];
-			$toupdate = $config['ITEM_TOUPDATE_STATUS'];
-			$touninstall = $config['ITEM_TOUNINSTALL_STATUS'];
-			$toenable = $config['ITEM_TOENABLE_STATUS'];
-			$todisable = $config['ITEM_TODISABLE_STATUS'];
-			$todelete = $config['ITEM_TODELETE_STATUS'];
+			$enabled = 'enabed';
+			$disabled = 'disabled';
+			$uninstalled = 'uninstalled';
+			$toinstall = 'toinstall';
+			$toupdate = 'toupdate';
+			$touninstall = 'touninstall';
+			$toenable = 'toenable';
+			$todisable = 'todisable';
+			$todelete = 'todelete';
 
 			$sqlUdp[] = "
 				UPDATE
@@ -2762,26 +2757,86 @@ class iMSCP_Update_Database extends iMSCP_Update
 	}
 
 	/**
-	 * #879: Security Issue - SQL user hostname - Remove wildcard
+	 * Update sql_database and sql_user table structure
 	 *
 	 * @return array SQL statements to be executed
 	 */
-	protected function _databaseUpdate_175()
+	protected function _databaseUpdate_176()
 	{
-		$sqlUserHost = quoteValue(iMSCP_Registry::get('config')->DATABASE_USER_HOST);
+		return array(
+			// sql_database table update
+			'ALTER TABLE sql_database CHANGE domain_id domain_id INT(10) UNSIGNED NOT NULL',
+			'ALTER TABLE sql_database CHANGE sqld_name sqld_name VARCHAR(64) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL',
 
-		$stmt = exec_query('SELECT sqlu_name FROM sql_user GROUP BY sqlu_name;');
+			// sql_user table update
+			'ALTER TABLE sql_user CHANGE sqld_id sqld_id INT(10) UNSIGNED NOT NULL',
+			'ALTER TABLE sql_user CHANGE sqlu_name sqlu_name VARCHAR(16) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL',
+			'ALTER TABLE sql_user CHANGE sqlu_pass sqlu_pass VARCHAR(64) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL',
+			$this->_addColumn(
+				'sql_user',
+				'sqlu_host',
+				'VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL AFTER sqlu_name'
+			),
+			$this->_addIndex('sql_user', 'sqlu_name', 'INDEX', 'sqlu_name'),
+			$this->_addIndex('sql_user', 'sqlu_host', 'INDEX', 'sqlu_host')
+		);
+	}
+
+	/**
+	 * Fix Sql user hosts
+	 *
+	 * @return string SQL statetement to be executed
+	 */
+	protected function _databaseUpdate_177()
+	{
 		$sqlUdp = array();
+
+		$sqlUserHost = iMSCP_Registry::get('config')->DATABASE_USER_HOST;
+
+		if($sqlUserHost == '127.0.0.1') {
+			$sqlUserHost = 'localhost';
+		}
+
+		$sqlUserHost = quoteValue($sqlUserHost);
+
+		$stmt = exec_query('SELECT DISTINCT sqlu_name FROM sql_user');
 
 		if($stmt->rowCount()) {
 			while($row = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
 				$sqlUser = quoteValue($row['sqlu_name']);
 
-				$sqlUdp[] = "DELETE FROM mysql.user WHERE Host = '%' AND User = $sqlUser";
-				$sqlUdp[] = "DELETE FROM mysql.db WHERE Host = '%' AND User = $sqlUser" ;
+				$sqlUdp[] = "
+					UPDATE
+						mysql.user
+					SET
+						Host = $sqlUserHost
+					WHERE
+						User = $sqlUser
+					AND
+						Host NOT IN ($sqlUserHost, '%')
+				";
 
-				$sqlUdp[] = "UPDATE mysql.user SET Host = $sqlUserHost WHERE User = $sqlUser";
-				$sqlUdp[] = "UPDATE mysql.db SET Host = $sqlUserHost WHERE Host = $sqlUser";
+				$sqlUdp[] = "
+					UPDATE
+						mysql.db
+					SET
+						Host = $sqlUserHost
+					WHERE
+						User = $sqlUser
+					AND
+						Host NOT IN ($sqlUserHost, '%')
+				";
+
+				$sqlUdp[] = "
+					UPDATE
+						sql_user
+					SET
+						sqlu_host = $sqlUserHost
+					WHERE
+						sqlu_name = $sqlUser
+					AND
+						sqlu_host NOT IN ($sqlUserHost, '%')
+				";
 			}
 
 			$sqlUdp[] = 'FLUSH PRIVILEGES';

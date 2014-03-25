@@ -210,9 +210,11 @@ sub restore
 				}
 
 				if(scalar keys %{$rdata}) {
-					my $dbuser = escapeShell($rdata->{$1}->{'sqlu_name'});
-					my $dbpass = escapeShell($rdata->{$1}->{'sqlu_pass'});
-					my $dbname = escapeShell($rdata->{$1}->{'sqld_name'});
+					my $dbHostname = escapeShell($main::imscpConfig{'DATABASE_HOST'});
+					my $dbPort = escapeShell($main::imscpConfig{'DATABASE_PORT'});
+					my $sqlUsername = escapeShell($rdata->{$1}->{'sqlu_name'});
+					my $sqlUserpass = escapeShell($rdata->{$1}->{'sqlu_pass'});
+					my $dbName = escapeShell($rdata->{$1}->{'sqld_name'});
 
 					if($2 eq 'bz2') {
 						$cmd = "$main::imscpConfig{'CMD_BZCAT'} -d ";
@@ -224,9 +226,16 @@ sub restore
 						$cmd = "$main::imscpConfig{'CMD_XZ'} -dc ";
 					}
 
-					$cmd .= "$dmnBkpdir/$_ | $main::imscpConfig{'CMD_MYSQL'} -u$dbuser -p$dbpass $dbname";
+					$cmd .= (
+						"$dmnBkpdir/$_ | $main::imscpConfig{'CMD_MYSQL'}",
+						"-h $dbHostname",
+						"-P $dbPort",
+						"-u $sqlUsername",
+						"-p$sqlUserpass",
+						$dbName
+					);
 
-					$rs = execute($cmd, \$stdout, \$stderr);
+					$rs = execute("$cmd", \$stdout, \$stderr);
 					debug($stdout) if $stdout;
 					error($stderr) if $stderr && $rs;
 					return $rs if $rs;

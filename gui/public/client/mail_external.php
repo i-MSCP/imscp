@@ -46,7 +46,7 @@ function _client_generateItem($tpl, $externalMail, $domainId, $domainName, $stat
 	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
 	$idnDomainName = decode_idna($domainName);
-	$statusOk = $cfg->ITEM_OK_STATUS;
+	$statusOk = 'ok';
 	$queryParam = urlencode("$domainId;$type");
 	$htmlDisabled = $cfg->HTML_DISABLED;
 

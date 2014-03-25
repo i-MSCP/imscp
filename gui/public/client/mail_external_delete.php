@@ -40,8 +40,6 @@
 function client_deleteExternalMailServers($items, $postRequest)
 {
     if (isset($items['normal']) || isset($items['alias'])) {
-        /** @var $cfg iMSCP_Config_Handler_File */
-        $cfg = iMSCP_Registry::get('config');
         $domainId = get_user_domain_id($_SESSION['user_id']);
 
 		/** @var $db iMSCP_Database */
@@ -76,7 +74,7 @@ function client_deleteExternalMailServers($items, $postRequest)
                           WHERE
                             `domain_id` = ?
 					    ';
-                        exec_query($query, array('off', $cfg->ITEM_TOCHANGE_STATUS, null, $itemId));
+                        exec_query($query, array('off', 'tochange', null, $itemId));
 
                         $numberDeletedEntries++;
                     }
@@ -116,7 +114,7 @@ function client_deleteExternalMailServers($items, $postRequest)
                           AND
                             `domain_id` = ?
     					';
-                        exec_query($query, array('off', $cfg->ITEM_TOCHANGE_STATUS, null, $itemId, $domainId));
+                        exec_query($query, array('off', 'tochange', null, $itemId, $domainId));
 
                         $numberDeletedEntries++;
                     }
@@ -166,6 +164,7 @@ if (customerHasFeature('external_mail')) {
         $postRequest = false;
     } else {
 		showBadRequestErrorPage();
+		exit;
     }
 
     client_deleteExternalMailServers($items, $postRequest);

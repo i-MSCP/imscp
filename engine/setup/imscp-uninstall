@@ -300,10 +300,9 @@ sub _removeSqlData
 {
 	my $database = iMSCP::Database->factory();
 
-
 	# Remove customer's sql users
 
-	my $rdata = $database->doQuery('sqlu_name', 'SELECT DISTINCT(`sqlu_name`) FROM `sql_user`');
+	my $rdata = $database->doQuery('sqlu_name', 'SELECT DISTINCT sqlu_name, sqlu_host FROM sql_user');
 	unless(ref $rdata eq 'HASH') {
 		error($rdata);
 		return 1;
@@ -311,9 +310,7 @@ sub _removeSqlData
 
 	for (keys %{$rdata}) {
 		# We do not catch any error and it's expected
-		$database->doQuery('delete', "DROP USER ?@?", $rdata->{$_}->{'sqlu_name'}, 'localhost');
-		$database->doQuery('delete', "DROP USER ?@?", $rdata->{$_}->{'sqlu_name'}, '127.0.0.1');
-		$database->doQuery('delete', "DROP USER ?@?", $rdata->{$_}->{'sqlu_name'}, '%');
+		$database->doQuery('delete', 'DROP USER ?@?', $rdata->{$_}->{'sqlu_name'}, $rdata->{$_}->{'sqlu_host'});
 	}
 
 	$rdata = $database->doQuery('dummy', 'FLUSH PRIVILEGES');
@@ -324,7 +321,7 @@ sub _removeSqlData
 
 	# Remove customer's sql datatabases
 
-	$rdata = $database->doQuery('sqld_name', 'SELECT `sqld_name` FROM `sql_database`');
+	$rdata = $database->doQuery('sqld_name', 'SELECT sqld_name FROM sql_database');
 	unless(ref $rdata eq 'HASH') {
 		error($rdata);
 		return 1;

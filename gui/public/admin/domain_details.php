@@ -80,9 +80,6 @@ function admin_generatePage($tpl, $domainId)
 
 	$domainProperties = get_domain_default_props($domainAdminId);
 
-	/** @var $cfg iMSCP_Config_Handler_File */
-	$cfg = iMSCP_Registry::get('config');
-
 	// Domain IP address info
 	$stmt = exec_query("SELECT ip_number FROM server_ips WHERE ip_id = ?", $domainProperties['domain_ip_id']);
 
@@ -97,10 +94,10 @@ function admin_generatePage($tpl, $domainId)
 	// Domain status
 
 	if (
-		$domainStatus == $cfg->ITEM_OK_STATUS || $domainStatus == $cfg->ITEM_DISABLED_STATUS ||
-		$domainStatus == $cfg->ITEM_TODELETE_STATUS || $domainStatus == $cfg->ITEM_TOADD_STATUS ||
-		$domainStatus == $cfg->ITEM_TORESTORE_STATUS || $domainStatus == $cfg->ITEM_TOCHANGE_STATUS ||
-		$domainStatus == $cfg->ITEM_TOENABLE_STATUS || $domainStatus == $cfg->ITEM_TODISABLE_STATUS
+		$domainStatus == 'ok' || $domainStatus == 'disabled' ||
+		$domainStatus == 'todelete' || $domainStatus == 'toadd' ||
+		$domainStatus == 'torestore' || $domainStatus == 'tochange' ||
+		$domainStatus == 'toenable' || $domainStatus == 'todisable'
 	) {
 		$domainStatus = '<span style="color:green">' . tohtml(translate_dmn_status($domainStatus)) . '</span>';
 	} else {

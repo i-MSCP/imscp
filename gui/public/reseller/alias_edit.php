@@ -41,9 +41,6 @@ function _reseller_getAliasData($domainAliasId)
 	static $domainAliasData = null;
 
 	if (null === $domainAliasData) {
-		/** @var iMSCP_Config_Handler_File $cfg */
-		$cfg = iMSCP_Registry::get('config');
-
 		$query = "
 			SELECT
 				alias_name, url_forward AS forward_url
@@ -60,7 +57,7 @@ function _reseller_getAliasData($domainAliasId)
 			AND
 				created_by = ?
 		";
-		$stmt = exec_query($query, array($domainAliasId, $cfg->ITEM_OK_STATUS, $_SESSION['user_id']));
+		$stmt = exec_query($query, array($domainAliasId, 'ok', $_SESSION['user_id']));
 
 		if (!$stmt->rowCount()) {
 			return false;
@@ -176,16 +173,13 @@ function reseller_editDomainAlias()
 				}
 			}
 
-			/** @var $cfg iMSCP_Config_Handler_File */
-			$cfg = iMSCP_Registry::get('config');
-
 			iMSCP_Events_Manager::getInstance()->dispatch(
 				iMSCP_Events::onBeforeEditDomainAlias, array('domainAliasId' => $domainAliasId)
 			);
 
 			exec_query(
 				'UPDATE `domain_aliasses` SET `url_forward` = ?, `alias_status` = ? WHERE `alias_id` = ?',
-				array($forwardUrl, $cfg->ITEM_TOCHANGE_STATUS, $domainAliasId)
+				array($forwardUrl, 'tochange', $domainAliasId)
 			);
 
 			iMSCP_Events_Manager::getInstance()->dispatch(

@@ -91,7 +91,7 @@ $main::questions{'DATABASE_NAME'} = 'imscp'; # Database name
 
 # i-MSCP SQL user
 $main::questions{'DATABASE_USER'} = 'root'; # SQL user  - User must exist and have full privileges on SQL server
-$main::questions{'DATABASE_USER_HOST'} = 'localhost'; # Host from which SQL users should be allowed to connect to the MySQL server
+$main::questions{'DATABASE_USER_HOST'} = 'localhost'; # Host from which SQL users created by i-MSCP are allowed to connect to the MySQL server
 $main::questions{'DATABASE_PASSWORD'} = '<password>'; # Password must not empty
 
 # MySQL prefix/sufix

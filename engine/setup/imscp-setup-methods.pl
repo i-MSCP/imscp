@@ -376,7 +376,7 @@ Important:
 
 Because this IP is used as IP source for outbound mails, a reverse DNS lookup on this IP should match the server hostname.
 
-In case you do not fit with this requirement, several mails sent by your server will be probably considered as spams by receivers.
+In case you do not fit with this requirement, several mails sent by your server will be probably considered as spams.
 ",
 				[@serverIps, 'Add new ip'],
 				$baseServerIp ? $baseServerIp : $serverIps[0]
@@ -656,21 +656,26 @@ sub setupAskSqlUserHost
 	my $host = setupGetQuestion('DATABASE_USER_HOST');
 	my $rs = 0;
 
-	if(not setupGetQuestion('DATABASE_HOST') ~~ ['localhost', '127.0.0.1']) {
+	if(not setupGetQuestion('DATABASE_HOST') ~~ ['localhost', '127.0.0.1']) { # Remote MySQL server
 		if($main::reconfigure ~~ ['sql', 'servers', 'all', 'forced'] || ! $host) {
 			do {
 				($rs, $host) = $dialog->inputbox(
 "
-Please, enter the host from which SQL users created by i-MSCP should be allowed to connect to your SQL server:
+Please, enter the host from which SQL users created by i-MSCP must be allowed to connect to your SQL server:
 
 Important: No check is made on the entered value. Please refer to the following document for allowed values.
 
 	http://dev.mysql.com/doc/refman/5.5/en/account-names.html
+
+Note that 127.0.0.7 is always mapped to 'localhost'.
 ",
 					$host // setupGetQuestion('BASE_SERVER_IP')
 				);
 			} while($rs != 30 && $host eq '');
 		}
+
+		# map 127.0.0.1 to localhost for consistency reasons
+		$host = 'localhost' if($host eq '127.0.0.1');
 
 		setupSetQuestion('DATABASE_USER_HOST', $host) if $rs != 30;
 	} else {
@@ -1565,20 +1570,21 @@ sub setupSecureSqlInstallation
 	return $rs if $rs;
 
 	my ($database, $errStr) = setupGetSqlConnect();
+
 	if(! $database) {
 		error("Unable to connect to SQL server: $errStr");
 		return 1;
 	}
 
 	# Remove anonymous users
-	$errStr = $database->doQuery('dummy', "DELETE FROM `mysql`.`user` WHERE `User` = ''");
+	$errStr = $database->doQuery('dummy', "DELETE FROM mysql.user WHERE User = ''");
 	unless(ref $errStr eq 'HASH') {
 		error("Unable to delete anonymous users: $errStr");
 		return 1;
 	}
 
 	# Remove user without password set
-	my $rdata = $database->doQuery('User', "SELECT `User`, `Host` FROM `mysql`.`user` WHERE `Password` = ''");
+	my $rdata = $database->doQuery('User', "SELECT User, Host FROM mysql.user WHERE Password = ''");
 
 	for (keys %{$rdata}) {
 		$errStr = $database->doQuery('dummy', "DROP USER ?@?", $_, $rdata->{$_}->{'Host'});
@@ -1590,13 +1596,13 @@ sub setupSecureSqlInstallation
 
 	# Remove test database if any
 	$errStr = $database->doQuery('dummy', 'DROP DATABASE IF EXISTS `test`');
-	unless(ref $errStr eq 'HASH'){
+	unless(ref $errStr eq 'HASH') {
 		error("Unable to remove database test : $errStr"); # Not critical, keep moving...
 		return 1;
 	}
 
 	# Remove privileges on test database
-	$errStr = $database->doQuery('dummy', "DELETE FROM `mysql`.`db` WHERE `Db` = 'test' OR `Db` = 'test\\_%'");
+	$errStr = $database->doQuery('dummy', "DELETE FROM mysql.db WHERE Db = 'test' OR Db = 'test\\_%'");
 	unless(ref $errStr eq 'HASH') {
 		error("Unable to remove privileges on test database: $errStr");
 		return 1;
@@ -1606,7 +1612,7 @@ sub setupSecureSqlInstallation
 	if($main::imscpConfig{'SQL_SERVER'} ne 'remote_server') {
 		$errStr = $database->doQuery(
 			'dummy',
-			"DELETE FROM `mysql`.`user` WHERE `User` = 'root' AND `Host` NOT IN ('localhost', '127.0.0.1', '::1');"
+			"DELETE FROM mysql.user WHERE User = 'root' AND Host NOT IN ('localhost', '127.0.0.1', '::1');"
 		);
 		unless(ref $errStr eq 'HASH'){
 			error("Unable to remove remote root users: $errStr");

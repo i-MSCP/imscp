@@ -42,10 +42,7 @@ function client_deleteMailAccount($mailId, $dmnProps)
 
 	if ($stmt->rowCount()) {
 		$mailAddr = $stmt->fields['mail_addr'];
-
-		/** @var iMSCP_Config_Handler_File $cfg */
-		$cfg = iMSCP_Registry::get('config');
-		$toDeleteStatus = $cfg['ITEM_TODELETE_STATUS'];
+		$toDeleteStatus = 'todelete';
 
 		iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onBeforeDeleteMail, array('mailId' => $mailId));
 

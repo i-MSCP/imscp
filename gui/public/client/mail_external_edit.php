@@ -278,8 +278,6 @@ function client_editExternalMailServerEntries($item)
 						}
 					}
 
-					/** @var $cfg iMSCP_Config_Handler_File */
-					$cfg = iMSCP_Registry::get('config');
 					$externalMailServer = ($dnsEntriesIds != '')
 						? (($spamFilterMX) ? 'filter' : (($wildcardMxOnly) ? 'wildcard' : 'domain')) : 'off';
 
@@ -294,7 +292,7 @@ function client_editExternalMailServerEntries($item)
 							$query,
 							array(
 								$externalMailServer,
-								$cfg->ITEM_TOCHANGE_STATUS,
+								'tochange',
 								ltrim($dnsEntriesIds, ','),
 								$verifiedData['item_id']
 							)
@@ -311,7 +309,7 @@ function client_editExternalMailServerEntries($item)
 							$query,
 							array(
 								$externalMailServer,
-								$cfg->ITEM_TOCHANGE_STATUS,
+								'tochange',
 								ltrim($dnsEntriesIds, ','),
 								$verifiedData['item_id']
 							)
@@ -390,9 +388,7 @@ function client_editExternalMailServerEntries($item)
 					";
 				}
 
-				/** @var $cfg iMSCP_Config_Handler_File */
-				$cfg = iMSCP_Registry::get('config');
-				exec_query($query, array($cfg->ITEM_TOCHANGE_STATUS, 'off', null, $verifiedData['item_id']));
+				exec_query($query, array('tochange', 'off', null, $verifiedData['item_id']));
 				send_request();
 
 				set_page_message(

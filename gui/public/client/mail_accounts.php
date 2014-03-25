@@ -39,9 +39,6 @@
  */
 function _client_countDefaultMails($mainDmnId)
 {
-	/** @var iMSCP_Config_Handler_File $cfg */
-	$cfg = iMSCP_Registry::get('config');
-
 	$stmt = exec_query(
 		'
 			SELECT
@@ -55,7 +52,7 @@ function _client_countDefaultMails($mainDmnId)
 			AND
 				(`mail_acc` = ? OR `mail_acc` = ? OR `mail_acc` = ?)
 		',
-		array($mainDmnId, $cfg->ITEM_OK_STATUS, $cfg->ITEM_TOADD_STATUS, 'abuse', 'postmaster', 'webmaster')
+		array($mainDmnId, 'ok', 'toadd', 'abuse', 'postmaster', 'webmaster')
 	);
 
 	return $stmt->fields['cnt'];
@@ -70,10 +67,7 @@ function _client_countDefaultMails($mainDmnId)
  */
 function _client_generateUserMailAction($mailId, $mailStatus)
 {
-	/** @var $cfg iMSCP_Config_Handler_File */
-	$cfg = iMSCP_Registry::get('config');
-
-	if ($mailStatus == $cfg->ITEM_OK_STATUS) {
+	if ($mailStatus == 'ok') {
 		return array(
 			tr('Delete'), "mail_delete.php?id=$mailId",
 			tr('Edit'), "mail_edit.php?id=$mailId"
@@ -94,10 +88,7 @@ function _client_generateUserMailAction($mailId, $mailStatus)
  */
 function _client_generateUserMailAutoRespond($tpl, $mailId, $mailStatus, $mailAutoRespond)
 {
-	/** @var $cfg iMSCP_Config_Handler_File */
-	$cfg = iMSCP_Registry::get('config');
-
-	if ($mailStatus == $cfg->ITEM_OK_STATUS) {
+	if ($mailStatus == 'ok') {
 		if (!$mailAutoRespond) {
 			$tpl->assign(
 				array(
@@ -164,7 +155,16 @@ function _client_generateMailAccountsList($tpl, $mainDmnId)
 	} else {
 		$mainDmnProps = get_domain_default_props($_SESSION['user_id']);
 		$mailQuotaLimit  = ($mainDmnProps['mail_quota']) ? bytesHuman($mainDmnProps['mail_quota']) : 0;
-		imap_timeout(IMAP_OPENTIMEOUT, 1);
+
+		$imapAvailable = function_exists('imap_open');
+
+		if($imapAvailable) {
+			imap_timeout(IMAP_OPENTIMEOUT, 1);
+			imap_timeout(IMAP_READTIMEOUT, 2);
+			imap_timeout(IMAP_CLOSETIMEOUT, 4);
+		}
+
+		$imapTimeoutReached = false;
 
 		while ($row = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
 			list(
@@ -188,26 +188,38 @@ function _client_generateMailAccountsList($tpl, $mainDmnId)
 				$mailType .= '<br />';
 			}
 
-			if ($isMailbox && $row['status'] == $cfg->ITEM_OK_STATUS) {
-				$quotaMax = $row['quota'];
+			if ($isMailbox && $row['status'] == 'ok') {
+				if ($imapAvailable) {
+					$quotaMax = $row['quota'];
 
-				if($quotaMax && ($imapStream = @imap_open("{localhost/notls}", $mailAddr, $row['mail_pass'], OP_HALFOPEN))) {
-					$quotaUsage = imap_get_quotaroot($imapStream, 'INBOX');
-					imap_close($imapStream);
+					if ($quotaMax) {
+						if(
+							!$imapTimeoutReached &&
+							$imapStream = @imap_open("{localhost/notls}", $mailAddr, $row['mail_pass'], OP_HALFOPEN)
+						) {
+							$quotaUsage = imap_get_quotaroot($imapStream, 'INBOX');
+							imap_close($imapStream);
 
-					if(!empty($quotaUsage)) {
-						$quotaUsage = $quotaUsage['usage'] * 1024;
+							if (!empty($quotaUsage)) {
+								$quotaUsage = $quotaUsage['usage'] * 1024;
+							} else {
+								$quotaUsage = 0;
+							}
+
+							$quotaMax = bytesHuman($quotaMax);
+
+							$txtQuota = ($mailQuotaLimit) ?
+								tr('%s / %s of %s', bytesHuman($quotaUsage), $quotaMax, $mailQuotaLimit)
+								: sprintf('%s / %s', bytesHuman($quotaUsage), $quotaMax);
+						} else {
+							$imapTimeoutReached = true;
+							$txtQuota = tr('Info Unavailable');
+						}
 					} else {
-						$quotaUsage = 0;
+						$txtQuota = tr('unlimited');
 					}
-
-					$quotaMax = bytesHuman($quotaMax);
-
-					$txtQuota = ($mailQuotaLimit) ?
-						tr('%s / %s of %s', bytesHuman($quotaUsage), $quotaMax, $mailQuotaLimit)
-						: sprintf('%s / %s', bytesHuman($quotaUsage), $quotaMax);
 				} else {
-					$txtQuota = tr('unlimited');
+					$txtQuota = tr('Info Unavailable');
 				}
 			} else {
 				$txtQuota = '---';
@@ -224,7 +236,7 @@ function _client_generateMailAccountsList($tpl, $mainDmnId)
 					'MAIL_EDIT_SCRIPT' => $mailEditScript,
 					'MAIL_QUOTA_VALUE' => $txtQuota,
 					'DEL_ITEM' => $row['mail_id'],
-					'DISABLED_DEL_ITEM' => ($row['status'] != $cfg->ITEM_OK_STATUS) ? $cfg->HTML_DISABLED : ''
+					'DISABLED_DEL_ITEM' => ($row['status'] != 'ok') ? $cfg->HTML_DISABLED : ''
 				)
 			);
 
@@ -295,9 +307,6 @@ iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptStart)
 check_login('user');
 
 if (customerHasMailOrExtMailFeatures()) {
-	/** @var $cfg iMSCP_Config_Handler_File */
-	$cfg = iMSCP_Registry::get('config');
-
 	$tpl = new iMSCP_pTemplate();
 	$tpl->define_dynamic(
 		array(

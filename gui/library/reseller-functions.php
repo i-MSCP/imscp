@@ -306,124 +306,6 @@ function get_user_props($user_id)
 }
 
 /**
- * Checks if a domain name already exist.
- *
- * @param string $domainName Domain name to be checked
- * @param int $resellerId Reseller unique identifier
- * @return bool TRUE if the domain already exist, FALSE otherwise
- */
-function imscp_domain_exists($domainName, $resellerId)
-{
-	$queryDomain = "SELECT COUNT(domain_id) AS cnt FROM domain WHERE domain_name = ?";
-	$stmtDomain = exec_query($queryDomain, $domainName);
-
-	// query to check if the domain name exists in the table for domain aliases
-	$queryAliases = "
-		SELECT
-			COUNT(alias_id) AS cnt
-		FROM
-			domain_aliasses
-		INNER JOIN
-			domain USING(domain_id)
-		WHERE
-			alias_name = ?
-	";
-	$stmtAliases = exec_query($queryAliases, $domainName);
-
-	// redefine query to check in the table domain/acounts if 3rd level for this reseller is allowed
-	$queryDomain = "
-		SELECT
-			COUNT(domain_id) AS cnt
-		FROM
-			domain
-		INNER JOIN
-			admin ON(admin_id = domain_admin_id)
-		WHERE
-			domain_name = ?
-		AND
-			created_by <> ?
-	";
-
-	// redefine query to check in the table aliases if 3rd level for this reseller is allowed
-	$queryAliases = '
-		SELECT
-			COUNT(alias_id) AS cnt
-		FROM
-			domain_aliasses
-		INNER JOIN
-			domain USING(domain_id)
-		INNER JOIN
-			admin ON(admin_id = domain_admin_id)
-		WHERE
-			alias_name = ?
-		AND
-			created_by <> ?
-	';
-	// here we split the domain name by point separator
-	$splitDomain = explode('.', trim($domainName));
-	//$dom_cnt = strlen(trim($domain_name));
-	$domainPartCnt = 0;
-	$error = 0;
-
-	// here starts a loop to check if the splitted domain is available for other resellers
-	for ($i = 0, $cntSplitDomain = count($splitDomain) - 1; $i < $cntSplitDomain; $i++) {
-		$domainPartCnt = $domainPartCnt + strlen($splitDomain[$i]) + 1;
-		$idom = substr($domainName, $domainPartCnt);
-		// execute query the redefined queries for domains/accounts and aliases tables
-		$stmt2 = exec_query($queryDomain, array($idom, $resellerId));
-		$stmt3 = exec_query($queryAliases, array($idom, $resellerId));
-
-		// do we have available record. id yes => the variable error get value different 0
-		if ($stmt2->fields['cnt'] > 0 || $stmt3->fields['cnt'] > 0) {
-			$error++;
-		}
-	}
-
-	// if we have : db entry in the tables domain AND no problem with 3rd level domains
-	// AND enduser (no reseller) => the function returns OK => domain can be added
-	if ($stmtDomain->fields['cnt'] == 0 && $stmtAliases->fields['cnt'] == 0 && $error == 0 && $resellerId == 0) {
-		return false;
-	}
-
-	// if we have domain add one by end user OR some error => the funcion returns ERROR
-	if ($resellerId == 0 || $error) {
-		return true;
-	}
-
-	// ok we do not have end user and we do not have error
-	// query to check if the domain does not exist as subdomain
-	$querySubdomains = "
-		SELECT
-			subdomain_name, domain_name
-		FROM
-			subdomain
-		INNER JOIN
-			domain USING(domain_id)
-		INNER JOIN
-			admin ON(admin_id = domain_admin_id)
-		WHERE
-			created_by = ?
-	";
-	$stmtSubdomains = exec_query($querySubdomains, $resellerId);
-
-	$subdomains = array();
-
-	while (!$stmtSubdomains->EOF) {
-		$subdomains[] = $stmtSubdomains->fields['subdomain_name'] . '.' .
-			$stmtSubdomains->fields['domain_name'];
-		$stmtSubdomains->moveNext();
-	}
-
-	if ($stmtDomain->fields['cnt'] == 0 && $stmtAliases->fields['cnt'] == 0
-		&& !in_array($domainName, $subdomains)
-	) {
-		return false;
-	} else {
-		return true;
-	}
-}
-
-/**
  * Must be documented.
  *
  * @param $searchQuery
@@ -790,7 +672,7 @@ function client_mail_add_default_accounts($domainId, $userEmail, $domainPart, $d
 		exec_query(
 			$query,
 			array(
-				'webmaster', '_no_', $userEmail, $domainId, $forwardType, $subId, $cfg->ITEM_TOADD_STATUS, '_no_',
+				'webmaster', '_no_', $userEmail, $domainId, $forwardType, $subId, 'toadd', '_no_',
 				NULL, 'webmaster@' . $domainPart
 			)
 		);
@@ -799,7 +681,7 @@ function client_mail_add_default_accounts($domainId, $userEmail, $domainPart, $d
 		exec_query(
 			$query,
 			array(
-				'postmaster', '_no_', $_SESSION['user_email'], $domainId, $forwardType, $subId, $cfg->ITEM_TOADD_STATUS,
+				'postmaster', '_no_', $_SESSION['user_email'], $domainId, $forwardType, $subId, 'toadd',
 				'_no_', NULL, 'postmaster@' . $domainPart
 			)
 		);
@@ -808,7 +690,7 @@ function client_mail_add_default_accounts($domainId, $userEmail, $domainPart, $d
 		exec_query(
 			$query,
 			array(
-				'abuse', '_no_', $_SESSION['user_email'], $domainId, $forwardType, $subId, $cfg->ITEM_TOADD_STATUS,
+				'abuse', '_no_', $_SESSION['user_email'], $domainId, $forwardType, $subId, 'toadd',
 				'_no_', NULL, 'abuse@' . $domainPart
 			)
 		);
@@ -987,7 +869,7 @@ function resellerHasCustomers($minNbCustomers = 1)
 				AND
 					`admin_status` <> ?
 			',
-			array('user', $_SESSION['user_id'], $cfg->ITEM_TODELETE_STATUS)
+			array('user', $_SESSION['user_id'], 'todelete')
 		);
 
 		$customerCount = $stmt->fields['count'];

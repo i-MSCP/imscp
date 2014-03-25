@@ -205,9 +205,6 @@ function client_editMailAccount()
 			iMSCP_Events::onBeforeEditMail, array('mailId' => $mailData['mail_id'])
 		);
 
-		/** @var iMSCP_Config_Handler_File $cfg */
-		$cfg = iMSCP_Registry::get('config');
-
 		$query = '
 			UPDATE
 				`mail_users`
@@ -217,7 +214,7 @@ function client_editMailAccount()
 				`mail_id` = ?
 		';
 		exec_query(
-			$query, array($password, $forwardList, $mailType, $cfg->ITEM_TOCHANGE_STATUS, $quota, $mailData['mail_id'])
+			$query, array($password, $forwardList, $mailType, 'tochange', $quota, $mailData['mail_id'])
 		);
 
 		iMSCP_Events_Manager::getInstance()->dispatch(

@@ -37,10 +37,9 @@
  */
 function get_sql_user_count()
 {
-	$query = "SELECT DISTINCT `sqlu_name` FROM `sql_user`";
-	$rs = execute_query($query);
+	$stmt = execute_query('SELECT DISTINCT sqlu_name FROM sql_user');
 
-	return $rs->recordCount();
+	return $stmt->rowCount();
 }
 
 /**
@@ -314,7 +313,7 @@ function systemHasCustomers($minNbCustomers = 1)
 
 		$stmt = exec_query(
 			'SELECT COUNT(`admin_id`) AS `count` FROM `admin` WHERE `admin_type` = ? AND `admin_status` <> ?',
-			array('user', $cfg->ITEM_TODELETE_STATUS)
+			array('user', 'todelete')
 		);
 
 		$customersCount = $stmt->fields['count'];

@@ -24,15 +24,19 @@
  * Portions created by the i-MSCP Team are Copyright (C) 2010-2014 by
  * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
  *
- * @category	i-MSCP
- * @package		iMSCP_Core
- * @subpackage	Client
- * @copyright	2001-2006 by moleSoftware GmbH
- * @copyright	2006-2010 by ispCP | http://isp-control.net
- * @copyright	2010-2014 by i-MSCP | http://i-mscp.net
- * @author		ispCP Team
- * @author		i-MSCP Team
- * @link		http://i-mscp.net
+ * @category    i-MSCP
+ * @package     iMSCP_Core
+ * @subpackage  Client
+ * @copyright   2001-2006 by moleSoftware GmbH
+ * @copyright   2006-2010 by ispCP | http://isp-control.net
+ * @copyright   2010-2014 by i-MSCP | http://i-mscp.net
+ * @author      ispCP Team
+ * @author      i-MSCP Team
+ * @link        http://i-mscp.net
+ */
+
+/***********************************************************************************************************************
+ * Main script
  */
 
 // Include core library
@@ -42,37 +46,15 @@ iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptStart)
 
 check_login('user');
 
-// If the feature is disabled, redirects in silent way
 if (customerHasFeature('sql') && isset($_GET['id'])) {
 	$sqlUserId = intval($_GET['id']);
 
-	/** @var $db iMSCP_Database */
-	$db = iMSCP_Database::getInstance();
-
-	try {
-		$db->beginTransaction();
-
-		if (!sql_delete_user(get_user_domain_id($_SESSION['user_id']), $sqlUserId)) {
-			throw new iMSCP_Exception(
-				sprintf(
-					'SQL user with ID %d not found in iMSCP database or not owned by customer with ID %d.',
-					$_SESSION['user_id'],
-					$sqlUserId
-				)
-			);
-		}
-
-		$db->commit();
-
-		set_page_message(tr('SQL user successfully deleted.'), 'success');
+	if (sql_delete_user(get_user_domain_id($_SESSION['user_id']), $sqlUserId)) {
+		set_page_message(tr('Sql user successfully deleted.'), 'success');
 		write_log(sprintf("{$_SESSION['user_logged']} deleted SQL user with ID %d", $sqlUserId), E_USER_NOTICE);
-	} catch (iMSCP_Exception $e) {
-		$db->rollBack();
 
-		throw $e;
+		redirectTo('sql_manage.php');
 	}
-
-	redirectTo('sql_manage.php');
 }
 
 showBadRequestErrorPage();

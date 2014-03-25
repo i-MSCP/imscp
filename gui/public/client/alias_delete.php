@@ -109,9 +109,6 @@ if (customerHasFeature('domain_aliases') && isset($_GET['id'])) {
 				array('domainAliasId' => $alsId, 'domainAliasName' => $alsName)
 			);
 
-			/** @var $cfg iMSCP_Config_Handler_File */
-			$cfg = iMSCP_Registry::get('config');
-
 			/** @var $db iMSCP_Database */
 			$db = iMSCP_Database::getInstance();
 
@@ -120,11 +117,11 @@ if (customerHasFeature('domain_aliases') && isset($_GET['id'])) {
 
 				# Schedule deletion of any SSL certificat, which have domain alias as parent
 				$query = "UPDATE `ssl_certs` SET `status` = ? WHERE `id` = ? AND `type` = ?";
-				exec_query($query, array($cfg->ITEM_TODELETE_STATUS, $alsId, 'als'));
+				exec_query($query, array('todelete', $alsId, 'als'));
 
 				# Schedule deletion of domain alias
 				$query = "UPDATE `domain_aliasses` SET `alias_status` = ? WHERE `alias_id` = ?";
-				exec_query($query, array($cfg->ITEM_TODELETE_STATUS, $alsId));
+				exec_query($query, array('todelete', $alsId));
 
 				$db->commit();
 			} catch (iMSCP_Exception_Database $e) {

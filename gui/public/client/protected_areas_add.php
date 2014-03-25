@@ -46,9 +46,6 @@
  */
 function protect_area($domainId)
 {
-	/** @var $cfg iMSCP_Config_Handler_File */
-	$cfg = iMSCP_Registry::get('config');
-
 	if (!isset($_POST['uaction']) || $_POST['uaction'] != 'protect_it') {
 		return;
 	}
@@ -157,8 +154,8 @@ function protect_area($domainId)
 	";
 
 	$rs = exec_query($query, array($domainId, $path, $alt_path));
-	$toadd_status = $cfg->ITEM_TOADD_STATUS;
-	$tochange_status = $cfg->ITEM_TOCHANGE_STATUS;
+	$toadd_status = 'toadd';
+	$tochange_status = 'tochange';
 
 	if ($rs->rowCount() !== 0) {
 		$update_id = $rs->fields['id'];
@@ -234,7 +231,7 @@ function gen_protect_it($tpl, $domainId)
 		$status = $rs->fields['status'];
 		$path = $rs->fields['path'];
 		$auth_name = $rs->fields['auth_name'];
-		$ok_status = $cfg->ITEM_OK_STATUS;
+		$ok_status = 'ok';
 
 		if ($status !== $ok_status) {
 			set_page_message(tr("Status for protected area must be 'OK' if you want to edit it."), 'error');

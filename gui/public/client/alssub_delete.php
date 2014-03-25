@@ -104,9 +104,6 @@ if (customerHasFeature('domain_aliases') && isset($_GET['id'])) {
 				iMSCP_Events::onBeforeDeleteSubdomain, array('subdomainId' => $alssubId, 'type' => 'alssub')
 			);
 
-			/** @var $cfg iMSCP_Config_Handler_File */
-			$cfg = iMSCP_Registry::get('config');
-
 			/** @var $db iMSCP_Database */
 			$db = iMSCP_Database::getInstance();
 
@@ -114,10 +111,10 @@ if (customerHasFeature('domain_aliases') && isset($_GET['id'])) {
 				$db->beginTransaction();
 
 				$query = "UPDATE `subdomain_alias` SET `subdomain_alias_status` = ? WHERE `subdomain_alias_id` = ?";
-				$stmt = exec_query($query, array($cfg->ITEM_TODELETE_STATUS, $alssubId));
+				$stmt = exec_query($query, array('todelete', $alssubId));
 
 				$query = "UPDATE `ssl_certs` SET `status` = ? WHERE `id` = ? AND `type` = ?";
-				$stmt = exec_query($query, array($cfg->ITEM_TODELETE_STATUS, $alssubId, 'alssub'));
+				$stmt = exec_query($query, array('todelete', $alssubId, 'alssub'));
 
 				$db->commit();
 			} catch (iMSCP_Exception_Database $e) {

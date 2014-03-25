@@ -421,7 +421,7 @@ function get_avail_softwaredepot($tpl)
 									  'TR_SOFTWARE_RIGHTS' => '',
 									  'SOFTWARE_RIGHTS_LINK' => ''));
 				} else {
-					if ($rs->fields['swstatus'] == $cfg->ITEM_TODELETE_STATUS) {
+					if ($rs->fields['swstatus'] == 'todelete') {
 						$tpl->assign(array(
 										  'TR_NAME' => tr('Failure in the package. Deleting!'),
 										  'LINK_COLOR' => '#FF0000',
@@ -1161,7 +1161,7 @@ function get_avail_software_reseller($tpl, $user_id)
 										  'SW_STATUS' => tr('installing'),
 										  'SOFTWARE_ICON' => 'disabled'));
 					} else {
-						if ($rs->fields['swstatus'] == $cfg->ITEM_TODELETE_STATUS) {
+						if ($rs->fields['swstatus'] == 'todelete') {
 							$tpl->assign(array(
 											  'SW_NAME' => tr('Failure in the package. Deleting!'),
 											  'LINK_COLOR' => '#FF0000',
@@ -1262,7 +1262,7 @@ function gen_user_software_action($software_id, $dmn_id, $tpl)
 		} elseif ($stmt->fields['software_status'] == 'toadd') {
 			$software_status = 'installing';
 			$software_icon = 'disabled';
-		} elseif ($stmt->fields['software_status'] == $cfg->ITEM_TODELETE_STATUS) {
+		} elseif ($stmt->fields['software_status'] == 'todelete') {
 			$software_status = 'deleting';
 			$software_icon = 'delete';
 		} else {
@@ -1357,7 +1357,7 @@ function gen_software_list($tpl, $domainId, $resellerId)
 						'TR_RES_MESSAGE_DELETE' => tr('Are you sure you want to delete this package?', true)
 					)
 				);
-			} elseif ($stmt->fields['software_status'] == $cfg->ITEM_TODELETE_STATUS) {
+			} elseif ($stmt->fields['software_status'] == 'todelete') {
 				$delsoftware_status = 'deleting';
 				$del_software_action_script = '';
 
@@ -1836,17 +1836,17 @@ function check_db_user_list($tpl, $db_id)
 	$count = 0;
 	$query = "
 		SELECT
-			`sqlu_id`, `sqlu_name`
+			sqlu_id, sqlu_name
 		FROM
-			`sql_user`
+			sql_user
 		WHERE
-			`sqld_id` = ?
+			sqld_id = ?
 		ORDER BY
-			`sqlu_name`
+			sqlu_name
 	";
 	$rs = exec_query($query, $db_id);
 
-	if ($rs->recordCount() == 0) {
+	if ($rs->rowCount() == 0) {
 		$tpl->assign(array(
 						  'STATUS_COLOR' => 'red',
 						  'SQLUSER_STATUS_MESSAGE' => tr('Database user list is empty!'),

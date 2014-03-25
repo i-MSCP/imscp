@@ -41,9 +41,6 @@ function _client_getDomainsList()
 	if (null === $domainsList) {
 		$mainDmnProps = get_domain_default_props($_SESSION['user_id']);
 
-		/** @var iMSCP_Config_Handler_File $cfg */
-		$cfg = iMSCP_Registry::get('config');
-
 		$domainsList = array(
 			array(
 				'name' => $mainDmnProps['domain_name'],
@@ -87,7 +84,7 @@ function _client_getDomainsList()
 			AND
 				`subdomain_alias_status` = :status_ok
 		";
-		$stmt = exec_query($query, array('domain_id' => $mainDmnProps['domain_id'], 'status_ok' => $cfg->ITEM_OK_STATUS));
+		$stmt = exec_query($query, array('domain_id' => $mainDmnProps['domain_id'], 'status_ok' => 'ok'));
 
 		if ($stmt->rowCount()) {
 			$domainsList = array_merge($domainsList, $stmt->fetchAll(PDO::FETCH_ASSOC));
@@ -193,6 +190,12 @@ function client_addSubdomain()
 	}
 
 	$subLabel = clean_input((strtolower($_POST['subdomain_name'])));
+
+	if($subLabel == 'www') {
+		set_page_message(tr('%s is not allowed as subdomain label.', "<strong>www</strong>"), 'error');
+		return false;
+	}
+
 	$subdomainName = $subLabel . '.' . $domainName;
 
 	// Check for subdomain syntax
@@ -215,7 +218,19 @@ function client_addSubdomain()
 	}
 
 	// Set default mount point
-	$mountPoint = ($domainType == 'dmn') ? "/$subLabelAscii" : "/$domainName/$subLabelAscii";
+	if($domainType == 'dmn') {
+		if(in_array($subLabelAscii, array('backups', 'cgi-bin', 'errors', 'logs', 'phptmp'))) {
+			$mountPoint = "/sub_$subLabelAscii";
+		} else {
+			$mountPoint = "/$subLabelAscii";
+		}
+	} else {
+		if(in_array($subLabelAscii, array('cgi-bin', 'phptmp'))) {
+			$mountPoint = "/$domainName/sub_$subLabelAscii";
+		} else {
+			$mountPoint = "/$domainName/$subLabelAscii";
+		}
+	}
 
 	// Check for shared mount point option
 
@@ -268,11 +283,7 @@ function client_addSubdomain()
 		}
 	}
 
-	/** @var $cfg iMSCP_Config_Handler_File */
-	$cfg = iMSCP_Registry::get('config');
-
-	/** @var $db iMSCP_Database */
-	$db = iMSCP_Registry::get('db');
+	$db = iMSCP_Database::getInstance();
 
 	iMSCP_Events_Manager::getInstance()->dispatch(
 		iMSCP_Events::onBeforeAddSubdomain,
@@ -305,7 +316,7 @@ function client_addSubdomain()
 		";
 	}
 
-	exec_query($query, array($domainId, $subLabelAscii, $mountPoint, $forwardUrl, $cfg->ITEM_TOADD_STATUS));
+	exec_query($query, array($domainId, $subLabelAscii, $mountPoint, $forwardUrl, 'toadd'));
 
 	iMSCP_Events_Manager::getInstance()->dispatch(
 		iMSCP_Events::onAfterAddSubdomain,

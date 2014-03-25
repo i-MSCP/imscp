@@ -59,6 +59,121 @@ function get_user_name($user_id)
  */
 
 /**
+ * Checks if the given domain name already exist
+ *
+ * Rules:
+ *
+ * A domain is considered as existing if:
+ *
+ * - It is found either in the domain table or in the domain_aliasses table
+ * - It is a subzone of another domain which doesn't belong to the given reseller
+ * - It already exist as subdomain (whatever the subdomain type (sub,alssub)
+ *
+ * @param string $domainName Domain name to match
+ * @param int $resellerId Reseller unique identifier
+ * @return bool TRUE if the domain already exist, FALSE otherwise
+ */
+function imscp_domain_exists($domainName, $resellerId)
+{
+	// Be sure to work with ASCII domain name
+	$domainName = encode_idna($domainName);
+
+	// Does the domain already exist in the domain table?
+	$stmt = exec_query('SELECT COUNT(domain_id) AS cnt FROM domain WHERE domain_name = ?', $domainName);
+	$row = $stmt->fetchRow(PDO::FETCH_ASSOC);
+	if($row['cnt']) return true;
+
+	// Does the domain already exists in the domain_aliasses table?
+	$stmt = exec_query(
+		'SELECT COUNT(alias_id) AS cnt FROM domain_aliasses INNER JOIN domain USING(domain_id) WHERE alias_name = ?',
+		$domainName
+	);
+	$row = $stmt->fetchRow(PDO::FETCH_ASSOC);
+	if($row['cnt']) return true;
+
+	# Does the domain is a subzone of another domain which doesn't belong to the given reseller?
+
+	$queryDomain = '
+		SELECT
+			COUNT(domain_id) AS cnt
+		FROM
+			domain
+		INNER JOIN
+			admin ON(admin_id = domain_admin_id)
+		WHERE
+			domain_name = ?
+		AND
+			created_by <> ?
+	';
+
+	$queryAliases = '
+		SELECT
+			COUNT(alias_id) AS cnt
+		FROM
+			domain_aliasses
+		INNER JOIN
+			domain USING(domain_id)
+		INNER JOIN
+			admin ON(admin_id = domain_admin_id)
+		WHERE
+			alias_name = ?
+		AND
+			created_by <> ?
+	';
+
+	$domainLabels = explode('.', trim($domainName));
+	$domainPartCnt = 0;
+
+	for ($i = 0, $countDomainLabels = count($domainLabels) - 1; $i < $countDomainLabels; $i++) {
+		$domainPartCnt = $domainPartCnt + strlen($domainLabels[$i]) + 1;
+		$parentDomain = substr($domainName, $domainPartCnt);
+
+		// Execute query the redefined queries for domains/accounts and aliases tables
+		$stmt = exec_query($queryDomain, array($parentDomain, $resellerId));
+		$row = $stmt->fetchRow(PDO::FETCH_ASSOC);
+		if($row['cnt']) return true;
+
+		$stmt = exec_query($queryAliases, array($parentDomain, $resellerId));
+		$row = $stmt->fetchRow(PDO::FETCH_ASSOC);
+		if($row['cnt']) return true;
+	}
+
+	// Does the domain already exists as subdomain?
+
+	$stmt = exec_query(
+		"
+			SELECT
+				'found'
+			FROM
+				subdomain
+			INNER JOIN
+				domain USING(domain_id)
+			WHERE
+				CONCAT(subdomain_name, '.', domain_name) = ?
+		",
+		 $domainName
+	);
+	if($stmt->rowCount()) return true;
+
+	$stmt = exec_query(
+		"
+			SELECT
+				'found'
+			FROM
+				subdomain_alias
+			INNER JOIN
+				domain_aliasses USING(alias_id)
+			WHERE
+				CONCAT(subdomain_alias_name, '.', alias_name) = ?
+		",
+		$domainName
+	);
+	if($stmt->rowCount()) return true;
+
+	return false;
+}
+
+/**
  * Returns domain default properties
  *
  * Note: For performance reasons, the data are retrieved once per request.
@@ -72,7 +187,6 @@ function get_domain_default_props($domainAdminId, $createdBy = null)
 	static $domainProperties = null;
 
 	if (null === $domainProperties) {
-
 		if(is_null($createdBy)) {
 			$stmt = exec_query('SELECT * FROM domain WHERE domain_admin_id = ?', $domainAdminId);
 		} else {
@@ -85,9 +199,11 @@ function get_domain_default_props($domainAdminId, $createdBy = null)
 					INNER JOIN
 						admin ON(admin_id = domain_admin_id)
 					WHERE
+						domain_admin_id = ?
+					AND
 						created_by = ?
-					',
-				$createdBy
+				',
+				array($domainAdminId, $createdBy)
 			);
 		}
 
@@ -224,25 +340,22 @@ function generate_user_props($domainId)
  */
 function translate_dmn_status($status)
 {
-	/** @var $cfg iMSCP_Config_Handler_File */
-	$cfg = iMSCP_Registry::get('config');
-
 	switch ($status) {
-		case $cfg->ITEM_OK_STATUS:
+		case 'ok':
 			return tr('Ok');
-		case $cfg->ITEM_TOADD_STATUS:
+		case 'toadd':
 			return tr('Addition in progress');
-		case $cfg->ITEM_TOCHANGE_STATUS:
+		case 'tochange':
 			return tr('Modification in progress');
-		case $cfg->ITEM_TODELETE_STATUS:
+		case 'todelete':
 			return tr('Deletion in progress');
-		case $cfg->ITEM_DISABLED_STATUS:
+		case 'disabled':
 			return tr('Suspended');
-		case $cfg->ITEM_TOENABLE_STATUS:
+		case 'toenable':
 			return tr('Being enabled');
-		case $cfg->ITEM_TODISABLE_STATUS:
+		case 'todisable':
 			return tr('Being suspended');
-		case $cfg->ITEM_ORDERED_STATUS:
+		case 'ordered':
 			return tr('Awaiting approval');
 		default:
 			return tr('Unknown error');
@@ -290,7 +403,7 @@ function update_user_props($domainId, $props)
 
 	// No record found. That mean that a least one value was changed
 	if (!$stmt->rowCount()) {
-		$updateStatus = $cfg->ITEM_TOCHANGE_STATUS;
+		$updateStatus = 'tochange';
 
 		// Update customer limits/features and schedule domain update
 		$query = "
@@ -385,9 +498,9 @@ function change_domain_status($customerId, $action)
 	$cfg = iMSCP_Registry::get('config');
 
 	if ($action == 'deactivate') {
-		$newStatus = $cfg->ITEM_TODISABLE_STATUS;
+		$newStatus = 'todisable';
 	} else if ($action == 'activate') {
-		$newStatus = $cfg->ITEM_TOENABLE_STATUS;
+		$newStatus = 'toenable';
 	} else {
 		throw new iMSCP_Exception("Unknow action: $action");
 	}
@@ -448,7 +561,7 @@ function change_domain_status($customerId, $action)
 					return;
 				}
 
-				$mailStatus = $cfg->ITEM_TOCHANGE_STATUS;
+				$mailStatus = 'tochange';
 			}
 
 			$query = "UPDATE `mail_users` SET `mail_pass` = ?, `status` = ? WHERE `mail_id` = ?";
@@ -494,6 +607,162 @@ function change_domain_status($customerId, $action)
 }
 
 /**
+ * Deletes an SQL user
+ *
+ * @throws iMSCP_Exception_Database
+ * @param  int $domainId Domain unique identifier
+ * @param  int $sqlUserId Sql user unique identifier
+ * @param bool $flushPrivileges Whether or not privilege must be flushed
+ * @return bool TRUE if $sqlUserId has been found and successfully removed, FALSE otherwise
+ */
+function sql_delete_user($domainId, $sqlUserId, $flushPrivileges = true)
+{
+	iMSCP_Events_Manager::getInstance()->dispatch(
+		iMSCP_Events::onBeforeDeleteSqlUser, array('sqlUserId' => $sqlUserId)
+	);
+
+	$db = iMSCP_Database::getInstance();
+
+	try {
+		$db->beginTransaction();
+
+		$stmt = exec_query(
+			'
+				SELECT
+					sqlu_name, sqlu_host, sqld_name
+				FROM
+					sql_user
+				INNER JOIN
+					sql_database USING(sqld_id)
+				WHERE
+					sqlu_id = ?
+				AND
+					domain_id = ?
+			',
+			array($sqlUserId, $domainId)
+		);
+
+		if (!$stmt->rowCount()) {
+			return false;
+		}
+
+		$row = $stmt->fetchRow(PDO::FETCH_ASSOC);
+
+		$sqlUserName = $row['sqlu_name'];
+		$sqlUserHost = $row['sqlu_host'];
+		$sqlDbName = $row['sqld_name'];
+
+		$stmt = exec_query(
+			'SELECT COUNT(sqlu_id) AS cnt FROM sql_user WHERE sqlu_name = ? AND sqlu_host = ?',
+			array($sqlUserName, $sqlUserHost)
+		);
+
+		if ($stmt->fields['cnt'] == 1) {
+			// SQL user is assigned to one database only. We can remove it completely
+			exec_query('DELETE FROM mysql.user WHERE User = ? AND Host = ?', array($sqlUserName, $sqlUserHost));
+			exec_query('DELETE FROM mysql.db WHERE Host = ? AND User = ?', array($sqlUserName, $sqlUserHost));
+		} else {
+			// SQL user is assigned to many databases. We remove its privileges for the involved database only
+			exec_query(
+				'DELETE FROM mysql.db WHERE Host = ? AND Db = ? AND User = ?',
+				array($sqlUserHost, $sqlDbName, $sqlUserName)
+			);
+		}
+
+		// Delete SQL user from i-MSCP database
+		exec_query('DELETE FROM sql_user WHERE sqlu_id = ?', $sqlUserId);
+
+		$db->commit();
+
+		// Flush SQL privileges
+		if($flushPrivileges) {
+			execute_query('FLUSH PRIVILEGES');
+		}
+
+		iMSCP_Events_Manager::getInstance()->dispatch(
+			iMSCP_Events::onAfterDeleteSqlUser, array('sqlUserId' => $sqlUserId)
+		);
+	} catch(iMSCP_Exception_Database $e) {
+		$db->rollBack();
+		throw $e;
+	}
+
+	return true;
+}
+
+/**
+ * Deletes the given SQL database
+ *
+ * @throws iMSCP_Exception in case an SQL user which belong to the given database cannot be removed
+ * @param  int $domainId Domain unique identifier
+ * @param  int $databaseId Databse unique identifier
+ * @return bool TRUE when $databaseId has been found and successfully deleted, FALSE otherwise
+ */
+function delete_sql_database($domainId, $databaseId)
+{
+	$db = iMSCP_Database::getInstance();
+
+	iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onBeforeDeleteSqlDb, array('sqlDbId' => $databaseId));
+
+	try {
+		$db->beginTransaction();
+
+		// Get name of database
+		$stmt = exec_query(
+			'SELECT sqld_name FROM sql_database WHERE domain_id = ? AND sqld_id = ?', array($domainId, $databaseId)
+		);
+
+		if ($stmt->rowCount()) {
+			$row = $stmt->fetchRow(PDO::FETCH_ASSOC);
+			$databaseName = quoteIdentifier($row['sqld_name']);
+
+			// Get list of SQL users assigned to the database being removed
+
+			$stmt = exec_query(
+				'
+					SELECT
+						sqlu_id
+					FROM
+						sql_user
+					INNER JOIN
+						sql_database USING(sqld_id)
+					WHERE
+						sqld_id = ?
+					AND
+						domain_id = ?
+				',
+				array($databaseId, $domainId,)
+			);
+
+			if ($stmt->rowCount()) {
+				while ($row = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
+					if (!sql_delete_user($domainId, $row['sqlu_id'], false)) {
+						return false;
+					}
+				}
+			}
+
+			exec_query('DELETE FROM sql_database WHERE domain_id = ? AND sqld_id = ?', array($domainId, $databaseId));
+
+			// Must be done last due to the implicit commit
+			execute_query("DROP DATABASE IF EXISTS $databaseName");
+			execute_query('FLUSH PRIVILEGES');
+
+			iMSCP_Events_Manager::getInstance()->dispatch(
+				iMSCP_Events::onAfterDeleteSqlDb, array('sqlDbId' => $databaseId)
+			);
+
+			return true;
+		}
+	} catch(iMSCP_Exception_Database $e) {
+		$db->rollBack();
+		throw $e;
+	}
+
+	return false;
+}
+
+/**
  * Deletes the given customer
  *
  * @throws iMSCP_Exception
@@ -509,23 +778,20 @@ function deleteCustomer($customerId, $checkCreatedBy = false)
 		iMSCP_Events::onBeforeDeleteCustomer, array('customerId' => $customerId)
 	);
 
-	/** @var $cfg iMSCP_Config_Handler_File */
-	$cfg = iMSCP_Registry::get('config');
-
 	// Get username, uid and gid of domain user
-	$query = "
+	$query = '
 		SELECT
-			`admin_name`, `created_by`, `domain_id`
+			admin_name, created_by, domain_id
 		FROM
-			`admin`
+			admin
 		INNER JOIN
-			`domain` ON(`domain_admin_id` = `admin_id`)
+			domain ON(domain_admin_id = admin_id)
 		WHERE
-			`admin_id` = ?
-	";
+			admin_id = ?
+	';
 
 	if ($checkCreatedBy) {
-		$query .= 'AND `created_by` = ?';
+		$query .= 'AND created_by = ?';
 		$stmt = exec_query($query, array($customerId, $_SESSION['user_id']));
 	} else {
 		$stmt = exec_query($query, $customerId);
@@ -538,30 +804,19 @@ function deleteCustomer($customerId, $checkCreatedBy = false)
 	$customerName = $stmt->fields['admin_name'];
 	$mainDomainId = $stmt->fields['domain_id'];
 	$resellerId = $stmt->fields['created_by'];
-	$deleteStatus = $cfg['ITEM_TODELETE_STATUS'];
+	$deleteStatus = 'todelete';
 
-	/** @var $db iMSCP_Database */
 	$db = iMSCP_Database::getInstance();
 
 	try {
 		// First, remove customer sessions to prevent any problems
 		exec_query('DELETE FROM login WHERE user_name = ?', $customerName);
 
+		// Remove customer's databases and Sql users
 		$stmt = exec_query('SELECT sqld_id FROM sql_database WHERE domain_id = ?', $mainDomainId);
 
 		while ($row = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
-			try {
-				$db->beginTransaction();
-
-				// Delete all SQL databases and users. Must be done in isolated transaction (implicit commit)
-				delete_sql_database($mainDomainId, $row['sqld_id']);
-
-				// just for fun since an implicit commit is made before in the delete_sql_database() function
-				$db->commit();
-			} catch (iMSCP_Exception $e) {
-				$db->rollBack();
-				throw new iMSCP_Exception($e->getMessage(), $e->getCode(), $e);
-			}
+			delete_sql_database($mainDomainId, $row['sqld_id']);
 		}
 
 		$db->beginTransaction();
@@ -571,121 +826,121 @@ function deleteCustomer($customerId, $checkCreatedBy = false)
 		exec_query(
 			'
 				DELETE
-					`t2`, `t3`, `t4`
+					t2, t3, t4
 				FROM
-					`domain` AS `t1`
+					domain AS t1
 				LEFT JOIN
-					`htaccess` AS `t2` ON (`t2`.`dmn_id` = `t1`.`domain_id`)
+					htacces AS t2 ON (t2.dmn_id = t1.domain_id)
 				LEFT JOIN
-					`htaccess_users` AS `t3` ON (`t3`.`dmn_id` = `t1`.`domain_id`)
+					htaccess_users AS t3 ON (t3.dmn_id = t1.domain_id)
 				LEFT JOIN
-					`htaccess_groups` AS `t4` ON (`t4`.`dmn_id` = `t1`.`domain_id`)
+					htaccess_groups AS t4 ON (t4.dmn_id = t1.domain_id)
 				WHERE
-					`t1`.`domain_id` = ?
+					t1.domain_id = ?
 			',
 			$mainDomainId
 		);
 
 		// Deletes domain traffic entries
-		exec_query('DELETE FROM `domain_traffic` WHERE`domain_id` = ?', $mainDomainId);
+		exec_query('DELETE FROM domain_traffic WHERE domain_id = ?', $mainDomainId);
 
 		// Deletes custom DNS records
-		exec_query('DELETE FROM `domain_dns` WHERE `domain_id` = ?', $mainDomainId);
+		exec_query('DELETE FROM domain_dns WHERE domain_id = ?', $mainDomainId);
 
 		// Deletes FTP accounts (users and groups)
-		exec_query('DELETE FROM `ftp_users` WHERE `admin_id` = ?', $customerId);
-		exec_query('DELETE FROM `ftp_group` WHERE `groupname` = ?', $customerName);
+		exec_query('DELETE FROM ftp_users WHERE admin_id = ?', $customerId);
+		exec_query('DELETE FROM ftp_group WHERE groupname = ?', $customerName);
 
 		// Deletes quota entries
-		exec_query('DELETE FROM `quotalimits` WHERE `name` = ?', $customerName);
-		exec_query('DELETE FROM `quotatallies` WHERE `name` = ?', $customerName);
+		exec_query('DELETE FROM quotalimits WHERE name = ?', $customerName);
+		exec_query('DELETE FROM quotatallies WHERE name = ?', $customerName);
 
 		// Deletes support tickets
-		exec_query('DELETE FROM `tickets` WHERE ticket_from = ? OR ticket_to = ?', array($customerId, $customerId));
+		exec_query('DELETE FROM tickets WHERE ticket_from = ? OR ticket_to = ?', array($customerId, $customerId));
 
 		// Deletes user gui properties
-		exec_query('DELETE FROM `user_gui_props` WHERE `user_id` = ?', $customerId);
+		exec_query('DELETE FROM user_gui_props WHERE user_id = ?', $customerId);
 
 		// Deletes own php.ini entry
-		exec_query('DELETE FROM `php_ini` WHERE `domain_id` = ?', $mainDomainId);
+		exec_query('DELETE FROM php_ini WHERE domain_id = ?', $mainDomainId);
 
 		// Delegated tasks - begin
 
 		// Schedule mail accounts deletion
-		exec_query('UPDATE `mail_users` SET `status` = ? WHERE `domain_id` = ?', array($deleteStatus, $mainDomainId));
+		exec_query('UPDATE mail_users SET status = ? WHERE domain_id = ?', array($deleteStatus, $mainDomainId));
 
 		// Schedule subdomain's aliasses deletion
 
 		exec_query(
 			'
 				UPDATE
-					`subdomain_alias` AS `t1`
+					subdomain_alias AS t1
 				JOIN
-					`domain_aliasses` AS `t2` ON(`t2`.`domain_id` = ?)
+					domain_aliasses AS t2 ON(t2.domain_id = ?)
 				SET
-					`t1`.`subdomain_alias_status` = ?
+					t1.subdomain_alias_status = ?
 				WHERE
-					`t1`.`alias_id` = `t2`.`alias_id`
+					t1.alias_id = t2.alias_id
 			',
 			array($mainDomainId, $deleteStatus)
 		);
 
 		// Schedule Domain aliases deletion
 		exec_query(
-			'UPDATE `domain_aliasses` SET `alias_status` =  ? WHERE `domain_id` = ?', array($deleteStatus, $mainDomainId)
+			'UPDATE domain_aliasses SET alias_status =  ? WHERE domain_id = ?', array($deleteStatus, $mainDomainId)
 		);
 
 		// Schedule domain's subdomains deletion
 		exec_query(
-			'UPDATE `subdomain` SET `subdomain_status` = ? WHERE `domain_id` = ?', array($deleteStatus, $mainDomainId)
+			'UPDATE subdomain SET subdomain_status = ? WHERE domain_id = ?', array($deleteStatus, $mainDomainId)
 		);
 
 		// Schedule domain deletion
-		exec_query('UPDATE `domain` SET `domain_status` = ? WHERE `domain_id` = ?', array($deleteStatus, $mainDomainId));
+		exec_query('UPDATE domain SET domain_status = ? WHERE domain_id = ?', array($deleteStatus, $mainDomainId));
 
 		// Schedule user deletion
-		exec_query('UPDATE `admin` SET `admin_status` = ? WHERE `admin_id` = ?', array($deleteStatus, $customerId));
+		exec_query('UPDATE admin SET admin_status = ? WHERE admin_id = ?', array($deleteStatus, $customerId));
 
 		// Schedule SSL certificates deletion
 		exec_query(
-			"UPDATE `ssl_certs` SET `status` = ? WHERE `type` = 'dmn' AND `id` = ?", array($deleteStatus, $mainDomainId)
+			"UPDATE ssl_certs SET status = ? WHERE type = 'dmn' AND id = ?", array($deleteStatus, $mainDomainId)
 		);
 		exec_query(
 			"
 				UPDATE
-					`ssl_certs` SET `status` = ?
+					ssl_certs SET status = ?
 				WHERE
-					`type` = ?
+					type = ?
 				AND
-					`id` IN (SELECT `alias_id` FROM `domain_aliasses` WHERE `domain_id` = ?)
+					id IN (SELECT alias_id FROM domain_aliasses WHERE domain_id = ?)
 			",
 			array($deleteStatus, 'als', $mainDomainId)
 		);
 		exec_query(
 			"
 				UPDATE
-					`ssl_certs` SET `status` = ?
+					ssl_certs SET status = ?
 				WHERE
-					`type` = ?
+					type = ?
 				AND
-					`id` IN (SELECT `subdomain_id` FROM `subdomain` WHERE `domain_id` = ?)
+					id IN (SELECT subdomain_id FROM subdomain WHERE domain_id = ?)
 			",
 			array($deleteStatus, 'sub', $mainDomainId)
 		);
 		exec_query(
 			"
 				UPDATE
-					`ssl_certs` SET `status` = ?
+					ssl_certs SET status = ?
 				WHERE
-					`type` = ?
+					type = ?
 				AND
-					`id` IN (
+					id IN (
 						SELECT
-							`subdomain_alias_id`
+							subdomain_alias_id
 						FROM
-							`subdomain_alias`
+							subdomain_alias
 						WHERE
-							`alias_id` IN (SELECT `alias_id` FROM `domain_aliasses` WHERE `domain_id` = ?)
+							alias_id IN (SELECT alias_id FROM domain_aliasses WHERE domain_id = ?)
 					)
 			",
 			array($deleteStatus, 'alssub', $mainDomainId)

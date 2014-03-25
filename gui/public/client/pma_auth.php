@@ -46,21 +46,23 @@
  */
 function _client_pmaGetLoginCredentials($dbUserId)
 {
-	$query = "
-		SELECT
-			`sqlu_name`, `sqlu_pass`
-		FROM
-			`sql_user` `t1`
-		INNER JOIN
-			`domain` `t2` ON(`t2`.`domain_admin_id` = ?)
-		INNER JOIN
-			`sql_database` `t3` ON(`t3`.`domain_id` = `t2`.`domain_id`)
-		WHERE
-			`t1`.`sqld_id` = `t3`.`sqld_id`
-		AND
-			`t1`.`sqlu_id` = ?
-	";
-	$stmt = exec_query($query, array((int)$_SESSION['user_id'], $dbUserId));
+	$stmt = exec_query(
+		'
+			SELECT
+				sqlu_name, sqlu_pass
+			FROM
+				sql_user t1
+			INNER JOIN
+				domain t2 ON(t2.domain_admin_id = ?)
+			INNER JOIN
+				sql_database t3 ON(t3.domain_id = t2.domain_id)
+			WHERE
+				t1.sqld_id = t3.sqld_id
+			AND
+				t1.sqlu_id = ?
+		',
+		array((int)$_SESSION['user_id'], $dbUserId)
+	);
 
 	return $stmt->fetchRow(PDO::FETCH_NUM);
 }

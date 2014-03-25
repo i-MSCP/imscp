@@ -47,9 +47,6 @@
  */
 function client_addHtaccessGroup($domainId)
 {
-	/** @var $cfg iMSCP_Config_Handler_File */
-	$cfg = iMSCP_Registry::get('config');
-
 	if (isset($_POST['uaction']) && $_POST['uaction'] == 'add_group') {
 		// we have to add the group
 		if (isset($_POST['groupname'])) {
@@ -73,7 +70,7 @@ function client_addHtaccessGroup($domainId)
 			$rs = exec_query($query, array($groupname, $domainId));
 
 			if ($rs->rowCount() == 0) {
-				$change_status = $cfg->ITEM_TOADD_STATUS;
+				$change_status = 'toadd';
 
 				$query = "
 					INSERT INTO `htaccess_groups` (

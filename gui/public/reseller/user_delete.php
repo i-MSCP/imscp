@@ -250,13 +250,11 @@ function reseller_generateCustomerAcountDeletionValidationPage($customerId)
 
 	// Checks for databases and SQL users
 
-	$query = "SELECT `sqld_id`, `sqld_name` FROM `sql_database` WHERE `domain_id` = ?";
-	$stmt = exec_query($query, $domainId);
+	$stmt = exec_query('SELECT sqld_id, sqld_name FROM sql_database WHERE domain_id = ?', $domainId);
 
 	if ($stmt->rowCount()) {
 		while ($data = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
-			$query = "SELECT `sqlu_name` FROM `sql_user` WHERE `sqld_id` = ?";
-			$stmt2 = exec_query($query, $data['sqld_id']);
+			$stmt2 = exec_query('SELECT sqlu_name FROM sql_user WHERE sqld_id = ?', $data['sqld_id']);
 
 			$sqlUsersList = array();
 

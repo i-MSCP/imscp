@@ -41,9 +41,6 @@ function _client_getDomainsList()
 	if (null === $domainsList) {
 		$mainDmnProps = get_domain_default_props($_SESSION['user_id']);
 
-		/** @var iMSCP_Config_Handler_File $cfg */
-		$cfg = iMSCP_Registry::get('config');
-
 		$domainsList = array(
 			array(
 				'name' => $mainDmnProps['domain_name'],
@@ -55,39 +52,39 @@ function _client_getDomainsList()
 
 		$query = "
 			SELECT
-				CONCAT(`t1`.`subdomain_name`, '.', `t2`.`domain_name`) AS `name`,
-				`t1`.`subdomain_mount` AS `mount_point`
+				CONCAT(t1.subdomain_name, '.', t2.domain_name) AS name,
+				t1.subdomain_mount AS mount_point
 			FROM
-				`subdomain` AS `t1`
+				subdomain AS t1
 			INNER JOIN
-				`domain` AS `t2` USING(`domain_id`)
+				domain AS t2 USING(domain_id)
 			WHERE
-				`t1`.`domain_id` = :domain_id
+				t1.domain_id = :domain_id
 			AND
-				`t1`.`subdomain_status` = :status_ok
+				t1.subdomain_status = :status_ok
 			UNION
 			SELECT
-				`alias_name` AS `name`, `alias_mount` AS `mount_point`
+				alias_name AS name, alias_mount AS mount_point
 			FROM
-				`domain_aliasses`
+				domain_aliasses
 			WHERE
-				`domain_id` = :domain_id
+				domain_id = :domain_id
 			AND
-				`alias_status` = :status_ok
+				alias_status = :status_ok
 			UNION
 			SELECT
-				CONCAT(`t1`.`subdomain_alias_name`, '.', `t2`.`alias_name`) AS `name`,
-				`t1`.`subdomain_alias_mount` AS `mount_point`
+				CONCAT(t1.subdomain_alias_name, '.', t2.alias_name) AS name,
+				t1.subdomain_alias_mount AS mount_point
 			FROM
-				`subdomain_alias` AS `t1`
+				subdomain_alias AS t1
 			INNER JOIN
-				`domain_aliasses` AS `t2` USING(`alias_id`)
+				domain_aliasses AS t2 USING(alias_id)
 			WHERE
-				`t2`.`domain_id` = :domain_id
+				t2.domain_id = :domain_id
 			AND
-				`subdomain_alias_status` = :status_ok
+				subdomain_alias_status = :status_ok
 		";
-		$stmt = exec_query($query, array('domain_id' => $mainDmnProps['domain_id'], 'status_ok' => $cfg->ITEM_OK_STATUS));
+		$stmt = exec_query($query, array('domain_id' => $mainDmnProps['domain_id'], 'status_ok' => 'ok'));
 
 		if ($stmt->rowCount()) {
 			$domainsList = array_merge($domainsList, $stmt->fetchAll(PDO::FETCH_ASSOC));
@@ -176,18 +173,15 @@ function client_addDomainAlias()
 		return false;
 	}
 
-	$domainAliasNameAscii = encode_idna($domainAliasName);
-	$domainList = _client_getDomainsList();
-
 	// Check for domain alias existence
 
-	foreach ($domainList as $domain) {
-		if ($domain['name'] == $domainAliasNameAscii) {
-			set_page_message(tr('Domain alias %s already exist.', "<strong>$domainAliasName</strong>"), 'error');
-			return false;
-		}
+	if(imscp_domain_exists($domainAliasName, $_SESSION['user_created_by'])) {
+		set_page_message(tr('Domain %s is unavailable.', "<strong>$domainAliasName</strong>"), 'error');
+		return false;
 	}
 
+	$domainAliasNameAscii = encode_idna($domainAliasName);
+	
 	// Set default mount point
 	$mountPoint = "/$domainAliasNameAscii";
 
@@ -196,6 +190,7 @@ function client_addDomainAlias()
 	if (isset($_POST['shared_mount_point']) && $_POST['shared_mount_point'] == 'yes') { // We are safe here
 		if (isset($_POST['shared_mount_point_domain'])) {
 			$sharedMountPointDomain = clean_input($_POST['shared_mount_point_domain']);
+			$domainList = _client_getDomainsList();
 
 			// Get shared mount point
 			foreach ($domainList as $domain) {
@@ -245,9 +240,6 @@ function client_addDomainAlias()
 	$mainDmnProps = get_domain_default_props($_SESSION['user_id']);
 	$domainId = $mainDmnProps['domain_id'];
 
-	/** @var $cfg iMSCP_Config_Handler_File */
-	$cfg = iMSCP_Registry::get('config');
-
 	/** @var $db iMSCP_Database */
 	$db = iMSCP_Registry::get('db');
 
@@ -259,7 +251,7 @@ function client_addDomainAlias()
 		)
 	);
 
-	$status = $cfg->ITEM_ORDERED_STATUS;
+	$status = 'ordered';
 
 	exec_query(
 		'
@@ -281,7 +273,7 @@ function client_addDomainAlias()
 		)
 	);
 
-	if ($status == $cfg->ITEM_ORDERED_STATUS) {
+	if ($status == 'ordered') {
 		send_alias_order_email($domainAliasName); // // Notify the reseller
 		write_log("{$_SESSION['user_logged']}: ordered new domain alias: $domainAliasName.", E_USER_NOTICE);
 		set_page_message(tr('Domain alias successfully ordered.'), 'success');

@@ -385,7 +385,7 @@ client_generateDiskUsageBar(
 	$domainProperties['domain_disk_limit'] * 1024 * 1024, 400);
 
 
-if ($domainProperties['domain_status'] == $cfg->ITEM_OK_STATUS) {
+if ($domainProperties['domain_status'] == 'ok') {
 	$tpl->assign(
 		'HREF_DOMAIN_ALTERNATIVE_URL', "http://{$cfg->SYSTEM_USER_PREFIX}" . ($cfg->SYSTEM_USER_MIN_UID + $_SESSION['user_id']) . ".{$cfg->BASE_SERVER_VHOST}");
 } else {

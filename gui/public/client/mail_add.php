@@ -41,9 +41,6 @@ function _client_getDomainsList()
 	if (null === $domainsList) {
 		$mainDmnProps = get_domain_default_props($_SESSION['user_id']);
 
-		/** @var iMSCP_Config_Handler_File $cfg */
-		$cfg = iMSCP_Registry::get('config');
-
 		$domainsList = array(
 			array(
 				'name' => $mainDmnProps['domain_name'],
@@ -87,7 +84,7 @@ function _client_getDomainsList()
 				`subdomain_alias_status` = :status_ok
 		";
 		$stmt = exec_query(
-			$query, array('domain_id' => $mainDmnProps['domain_id'], 'status_ok' => $cfg->ITEM_OK_STATUS)
+			$query, array('domain_id' => $mainDmnProps['domain_id'], 'status_ok' => 'ok')
 		);
 
 		if ($stmt->rowCount()) {
@@ -271,9 +268,6 @@ function client_addMailAccount()
 				iMSCP_Events::onBeforeAddMail, array('mailUsername' => $username, 'MailAddress' => $mailAddr)
 			);
 
-			/** @var iMSCP_Config_Handler_File $cfg */
-			$cfg = iMSCP_Registry::get('config');
-
 			$query = '
 				INSERT INTO `mail_users` (
 					`mail_acc`, `mail_pass`, `mail_forward`, `domain_id`, `mail_type`, `sub_id`, `status`,
@@ -285,7 +279,7 @@ function client_addMailAccount()
 				$query,
 				array(
 					$username, $password, $forwardList, $mainDmnProps['domain_id'], $mailType, $subId,
-					$cfg->ITEM_TOADD_STATUS, '0', NULL, $quota, $mailAddr
+					'toadd', '0', NULL, $quota, $mailAddr
 				)
 			);
 

@@ -47,20 +47,16 @@ iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAdminScriptStart);
 check_login('admin');
 
 if (isset($_GET['domain_id'])) {
-	/** @var $cfg iMSCP_Config_Handler_File */
-	$cfg = iMSCP_Registry::get('config');
-
-	$domainId = clean_input($_GET['domain_id']);
-
-	$query = "SELECT `domain_admin_id`, `domain_status` FROM `domain` WHERE `domain_id` = ?";
-	$stmt = exec_query($query, $domainId);
+	$domainId = intval($_GET['domain_id']);
+	$stmt = exec_query('SELECT `domain_admin_id`, `domain_status` FROM `domain` WHERE `domain_id` = ?', $domainId);
 
 	if ($stmt->rowCount()) {
-		$customerId = $stmt->fields['domain_admin_id'];
+		$row = $stmt->fetchRow(PDO::FETCH_ASSOC);
+		$customerId = $row['domain_admin_id'];
 
-		if ($stmt->fields['domain_status'] == $cfg->ITEM_OK_STATUS) {
+		if ($row['domain_status'] == 'ok') {
 			change_domain_status($customerId, 'deactivate');
-		} elseif ($stmt->fields['domain_status'] == $cfg->ITEM_DISABLED_STATUS) {
+		} elseif ($stmt->fields['domain_status'] == 'disabled') {
 			change_domain_status($customerId, 'activate');
 		}
 

@@ -49,14 +49,14 @@ $cfg = iMSCP_Registry::get('config');
 
 $dmn_id = get_user_domain_id($_SESSION['user_id']);
 
-
 if (isset($_GET['gname']) && $_GET['gname'] !== '' && is_numeric($_GET['gname'])) {
 	$group_id = $_GET['gname'];
 } else {
 	redirectTo('protected_areas.php');
+	exit;
 }
 
-$change_status = $cfg->ITEM_TODELETE_STATUS;
+$change_status = 'todelete';
 $webstats_auth = $cfg->WEBSTATS_GROUP_AUTH;
 
 $query = "
@@ -86,10 +86,10 @@ while (!$rs->EOF) {
 	if ($key !== false) {
 		unset($grp_id_splited[$key]);
 		if (count($grp_id_splited) == 0) {
-			$status = $cfg->ITEM_TODELETE_STATUS;
+			$status = 'todelete';
 		} else {
 			$grp_id = implode(",", $grp_id_splited);
-			$status = $cfg->ITEM_TOCHANGE_STATUS;
+			$status = 'tochange';
 		}
 		$update_query = "
 			UPDATE

@@ -118,16 +118,16 @@ function _client_generateIpAction($ipId, $status)
 	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
 
-	if ($status == $cfg->ITEM_OK_STATUS) {
+	if ($status == 'ok') {
 		return array(tr('Remove IP'), 'ip_delete.php?delete_id=' . $ipId);
-	} elseif($status == $cfg->ITEM_TODELETE_STATUS) {
-		return array(translate_dmn_status($cfg->ITEM_TODELETE_STATUS), '#');
-	} elseif($status == $cfg->ITEM_TOADD_STATUS) {
-		return array(translate_dmn_status($cfg->ITEM_TOADD_STATUS), '#');
+	} elseif($status == 'todelete') {
+		return array(translate_dmn_status('todelete'), '#');
+	} elseif($status == 'toadd') {
+		return array(translate_dmn_status('toadd'), '#');
 	} elseif(
 		!in_array(
 			$status,
-			array($cfg->ITEM_TOADD_STATUS, $cfg->ITEM_TOCHANGE_STATUS, $cfg->ITEM_OK_STATUS, $cfg->ITEM_TODELETE_STATUS)
+			array('toadd', 'tochange', 'ok', 'todelete')
 		)
 	) {
 		return array(tr('Unknown Error'), '#');
@@ -216,11 +216,8 @@ function client_checkIpData($ipNumber, $netcard)
  */
 function client_registerIp($ipNumber, $netcard)
 {
-	/** @var $cfg iMSCP_Config_Handler_File */
-	$cfg = iMSCP_Registry::get('config');
-
 	$query = "INSERT INTO `server_ips` (`ip_number`, `ip_card`, `ip_status`) VALUES (?, ?, ?)";
-	exec_query($query, array($ipNumber, $netcard, $cfg->ITEM_TOADD_STATUS));
+	exec_query($query, array($ipNumber, $netcard, 'toadd'));
 
 	send_request();
 	set_page_message(tr('IP address successfully scheduled for addition.'), 'success');
@@ -238,9 +235,6 @@ require 'imscp-lib.php';
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAdminScriptStart);
 
 check_login('admin');
-
-/** @var $cfg iMSCP_Config_Handler_File */
-$cfg = iMSCP_Registry::get('config');
 
 // Register iMSCP_NetworkCard instance in registry for shared access
 iMSCP_Registry::set('networkCardObject', new iMSCP_NetworkCard());

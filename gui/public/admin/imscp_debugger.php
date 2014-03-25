@@ -47,9 +47,6 @@
  */
 function debugger_getUserErrors($tpl)
 {
-	/** @var $cfg iMSCP_Config_Handler_File */
-	$cfg = iMSCP_Registry::get('config');
-
 	$query = "
 		SELECT
 			`admin_name`, `admin_status`, `admin_id`
@@ -62,7 +59,7 @@ function debugger_getUserErrors($tpl)
 	";
 	$stmt = exec_query(
 		$query,
-		array($cfg->ITEM_OK_STATUS, $cfg->ITEM_TOADD_STATUS, $cfg->ITEM_TOCHANGE_STATUS, $cfg->ITEM_TODELETE_STATUS)
+		array('ok', 'toadd', 'tochange', 'todelete')
 	);
 
 	if (!$stmt->rowCount()) {
@@ -93,9 +90,6 @@ function debugger_getUserErrors($tpl)
  */
 function debugger_getDmnErrors($tpl)
 {
-	/** @var $cfg iMSCP_Config_Handler_File */
-	$cfg = iMSCP_Registry::get('config');
-
 	$query = "
 		SELECT
 			`domain_name`, `domain_status`, `domain_id`
@@ -105,12 +99,7 @@ function debugger_getDmnErrors($tpl)
 			`domain_status` NOT IN (?, ?, ?, ?, ?, ?, ?, ?)
 	";
 	$stmt = exec_query(
-		$query,
-		array(
-			$cfg->ITEM_OK_STATUS, $cfg->ITEM_DISABLED_STATUS, $cfg->ITEM_TOADD_STATUS, $cfg->ITEM_TOCHANGE_STATUS,
-			$cfg->ITEM_TORESTORE_STATUS, $cfg->ITEM_TOENABLE_STATUS, $cfg->ITEM_TODISABLE_STATUS,
-			$cfg->ITEM_TODELETE_STATUS
-		)
+		$query, array('ok', 'disabled', 'toadd', 'tochange', 'torestore', 'toenable', 'todisable', 'todelete')
 	);
 
 	if (!$stmt->rowCount()) {
@@ -141,9 +130,6 @@ function debugger_getDmnErrors($tpl)
  */
 function debugger_getAlsErrors($tpl)
 {
-	/** @var $cfg iMSCP_Config_Handler_File */
-	$cfg = iMSCP_Registry::get('config');
-
 	$query = "
 		SELECT
 			`alias_name`, `alias_status`, `alias_id`
@@ -153,12 +139,7 @@ function debugger_getAlsErrors($tpl)
 			`alias_status` NOT IN (?, ?, ?, ?, ?, ?, ?, ?, ?)
 	";
 	$stmt = exec_query(
-		$query,
-		array(
-			$cfg->ITEM_OK_STATUS, $cfg->ITEM_DISABLED_STATUS, $cfg->ITEM_TOADD_STATUS, $cfg->ITEM_TOCHANGE_STATUS,
-			$cfg->ITEM_TORESTORE_STATUS, $cfg->ITEM_TOENABLE_STATUS, $cfg->ITEM_TODISABLE_STATUS,
-			$cfg->ITEM_TODELETE_STATUS, $cfg->ITEM_ORDERED_STATUS
-		)
+		$query, array('ok', 'disabled', 'toadd', 'tochange', 'torestore', 'toenable', 'todisable', 'todelete', 'ordered')
 	);
 
 	if (!$stmt->rowCount()) {
@@ -189,9 +170,6 @@ function debugger_getAlsErrors($tpl)
  */
 function debugger_getSubErrors($tpl)
 {
-	/** @var $cfg iMSCP_Config_Handler_File */
-	$cfg = iMSCP_Registry::get('config');
-
 	$query = "
 		SELECT
 			`subdomain_name`, `subdomain_status`, `subdomain_id`, `domain_name`
@@ -204,12 +182,7 @@ function debugger_getSubErrors($tpl)
 			(?, ?, ?, ?, ?, ?, ?, ?)
 	";
 	$stmt = exec_query(
-		$query,
-		array(
-			$cfg->ITEM_OK_STATUS, $cfg->ITEM_DISABLED_STATUS, $cfg->ITEM_TOADD_STATUS, $cfg->ITEM_TOCHANGE_STATUS,
-			$cfg->ITEM_TORESTORE_STATUS, $cfg->ITEM_TOENABLE_STATUS, $cfg->ITEM_TODISABLE_STATUS,
-			$cfg->ITEM_TODELETE_STATUS
-		)
+		$query, array('ok', 'disabled', 'toadd', 'tochange', 'torestore', 'toenable', 'todisable', 'todelete')
 	);
 
 	if (!$stmt->rowCount()) {
@@ -240,9 +213,6 @@ function debugger_getSubErrors($tpl)
  */
 function debugger_getAlssubErrors($tpl)
 {
-	/** @var $cfg iMSCP_Config_Handler_File */
-	$cfg = iMSCP_Registry::get('config');
-
 	$query = "
 		SELECT
 			`subdomain_alias_name`, `subdomain_alias_status`, `subdomain_alias_id`, `alias_name`
@@ -254,12 +224,7 @@ function debugger_getAlssubErrors($tpl)
 			`subdomain_alias_status` NOT IN (?, ?, ?, ?, ?, ?, ?, ?)
 	";
 	$stmt = exec_query(
-		$query,
-		array(
-			$cfg->ITEM_OK_STATUS, $cfg->ITEM_DISABLED_STATUS, $cfg->ITEM_TOADD_STATUS, $cfg->ITEM_TOCHANGE_STATUS,
-			$cfg->ITEM_TORESTORE_STATUS, $cfg->ITEM_TOENABLE_STATUS, $cfg->ITEM_TODISABLE_STATUS,
-			$cfg->ITEM_TODELETE_STATUS
-		)
+		$query, array('ok', 'disabled', 'toadd', 'tochange', 'torestore', 'toenable', 'todisable', 'todelete')
 	);
 
 	if (!$stmt->rowCount()) {
@@ -290,9 +255,6 @@ function debugger_getAlssubErrors($tpl)
  */
 function debugger_getHtaccessErrors($tpl)
 {
-	/** @var $cfg iMSCP_Config_Handler_File */
-	$cfg = iMSCP_Registry::get('config');
-
 	$dmn_query = "
 		SELECT
 			`id`, `dmn_id`, `status`, 'htaccess' AS `type`, `domain_name`
@@ -324,8 +286,8 @@ function debugger_getHtaccessErrors($tpl)
 	$stmt = exec_query(
 		$dmn_query,
 		array(
-			'ok' => $cfg->ITEM_OK_STATUS, 'toadd' => $cfg->ITEM_TOADD_STATUS, 'tochange' => $cfg->ITEM_TOCHANGE_STATUS,
-			'todelete' => $cfg->ITEM_TODELETE_STATUS
+			'ok' => 'ok', 'toadd' => 'toadd', 'tochange' => 'tochange',
+			'todelete' => 'todelete'
 		)
 	);
 
@@ -359,9 +321,6 @@ function debugger_getHtaccessErrors($tpl)
  */
 function debugger_getMailsErrors($tpl)
 {
-	/** @var $cfg iMSCP_Config_Handler_File */
-	$cfg = iMSCP_Registry::get('config');
-
 	$query = "
 		SELECT
 			`mail_acc`, `domain_id`, `mail_type`, `status`, `mail_id`
@@ -371,12 +330,7 @@ function debugger_getMailsErrors($tpl)
 			`status` NOT IN (?, ?, ?, ?, ?, ?, ?, ?, ?)
 	";
 	$stmt = exec_query(
-		$query,
-		array(
-			$cfg->ITEM_OK_STATUS, $cfg->ITEM_DISABLED_STATUS, $cfg->ITEM_TOADD_STATUS, $cfg->ITEM_TOCHANGE_STATUS,
-			$cfg->ITEM_TORESTORE_STATUS, $cfg->ITEM_TOENABLE_STATUS, $cfg->ITEM_TODISABLE_STATUS,
-			$cfg->ITEM_TODELETE_STATUS, $cfg->ITEM_ORDERED_STATUS
-		)
+		$query, array('ok', 'disabled', 'toadd', 'tochange', 'torestore', 'toenable', 'todisable', 'todelete', 'ordered')
 	);
 
 	if (!$stmt->rowCount()) {
@@ -549,16 +503,12 @@ function debugger_setPluginItemToChange($pluginName, $table, $field, $itemId)
 function debugger_countRequests($statusField = null, $tableName = null)
 {
 	if ($statusField && $tableName) {
-		/** @var $cfg iMSCP_Config_Handler_File */
-		$cfg = iMSCP_Registry::get('config');
-
 		$query = "SELECT `$statusField` FROM `$tableName` WHERE `$statusField` IN (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 		$stmt = exec_query(
 			$query,
 			array(
-				$cfg->ITEM_TOINSTALL_STATUS, $cfg->ITEM_TOUPDATE_STATUS, $cfg->ITEM_TOUNINSTALL_STATUS,
-				$cfg->ITEM_TOADD_STATUS, $cfg->ITEM_TOCHANGE_STATUS, $cfg->ITEM_TORESTORE_STATUS,
-				$cfg->ITEM_TOENABLE_STATUS, $cfg->ITEM_TODISABLE_STATUS, $cfg->ITEM_TODELETE_STATUS,
+				'toinstall', 'toupdate', 'touninstall', 'toadd', 'tochange', 'torestore', 'toenable', 'todisable',
+				'todelete',
 			)
 		);
 
@@ -666,7 +616,7 @@ if (isset($_GET['action'])) {
 				redirectTo('imscp_debugger.php');
 		}
 
-		$stmt = exec_query($query, array($cfg->ITEM_TOCHANGE_STATUS, $_GET['id']));
+		$stmt = exec_query($query, array('tochange', $_GET['id']));
 
 		if ($stmt !== false) {
 			set_page_message(tr('Done'), 'success');

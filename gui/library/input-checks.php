@@ -582,7 +582,7 @@ function who_owns_this($id, $type = 'dmn', $forcefinal = false)
 	$resolvers['sql_database_id']['next'] = 'dmn';
 
 	$resolvers['sql_user'] = array();
-	$resolvers['sql_user']['query'] = 'SELECT `sqld_id` FROM `sql_user` WHERE `sqlu_name` = ? LIMIT 1;';
+	$resolvers['sql_user']['query'] = 'SELECT sqld_id FROM sql_user WHERE sqlu_name = ? LIMIT 1;';
 	$resolvers['sql_user']['is_final'] = false;
 	$resolvers['sql_user']['next'] = 'sqld_id';
 

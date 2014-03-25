@@ -419,7 +419,7 @@ function client_generatePage($tpl, $dnsRecordId)
 			AND
 				`alias_status` <> ?
 		";
-		$stmt = exec_query($query, array($mainDomainId, $mainDomainId, $cfg->ITEM_ORDERED_STATUS));
+		$stmt = exec_query($query, array($mainDomainId, $mainDomainId, 'ordered'));
 
 		$domainId = client_getPost('domain_id', '0');
 		$selected = $cfg->HTML_SELECTED;
@@ -494,9 +494,6 @@ function client_generatePage($tpl, $dnsRecordId)
  */
 function client_saveDnsRecord($dnsRecordId)
 {
-	/** @var $cfg iMSCP_Config_Handler_File */
-	$cfg = iMSCP_Registry::get('config');
-
 	$mainDmnProps = get_domain_default_props($_SESSION['user_id']);
 	$mainDmnId = $mainDmnProps['domain_id'];
 
@@ -685,10 +682,10 @@ function client_saveDnsRecord($dnsRecordId)
 
 				if ($domainType == 'dmn') {
 					$query = 'UPDATE `domain` SET `domain_status` = ? WHERE `domain_id` = ?';
-					exec_query($query, array($cfg->ITEM_TOCHANGE_STATUS, $mainDmnId));
+					exec_query($query, array('tochange', $mainDmnId));
 				} else {
 					$query = 'UPDATE `domain_aliasses` SET `alias_status` = ? WHERE `domain_id` = ? AND `alias_id` = ?';
-					exec_query($query, array($cfg->ITEM_TOCHANGE_STATUS, $mainDmnId, $domainId));
+					exec_query($query, array('tochange', $mainDmnId, $domainId));
 				}
 
 				$db->commit();

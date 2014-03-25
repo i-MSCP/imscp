@@ -49,9 +49,6 @@
  */
 function client_updateHtaccessUser(&$dmn_id, &$uuser_id)
 {
-	/** @var $cfg iMSCP_Config_Handler_File */
-	$cfg = iMSCP_Registry::get('config');
-
 	if (isset($_POST['uaction']) && $_POST['uaction'] == 'modify_user') {
 		// we have to add the user
 		if (isset($_POST['pass']) && isset($_POST['pass_rep'])) {
@@ -66,7 +63,7 @@ function client_updateHtaccessUser(&$dmn_id, &$uuser_id)
 
 			$nadmin_password = cryptPasswordWithSalt($_POST['pass'], generateRandomSalt(true));
 
-			$change_status = $cfg->ITEM_TOCHANGE_STATUS;
+			$change_status = 'tochange';
 
 			$query = "
 				UPDATE
@@ -117,7 +114,7 @@ function check_get(&$get_input)
 	}
 }
 
-/*************************************************************
+/***********************************************************************************************************************
  * Main script
  */
 
@@ -129,9 +126,6 @@ iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptStart)
 check_login('user');
 
 customerHasFeature('protected_areas') or showBadRequestErrorPage();
-
-/** @var $cfg iMSCP_Config_Handler_File */
-$cfg = iMSCP_Registry::get('config');
 
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic(

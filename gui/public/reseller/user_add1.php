@@ -63,14 +63,10 @@ function reseller_checkData()
 		return;
 	}
 
-	// Must be perfomed after domain names syntax validation
-	$dmnName = encode_idna($dmnName);
+	$asciiDmnName = encode_idna($dmnName);
 
-	if (imscp_domain_exists($dmnName, $_SESSION['user_id'])) {
-		set_page_message(tr('Domain already registered on the system.'), 'error');
-		return;
-	} else if ($dmnName == $cfg->BASE_SERVER_VHOST) {
-		set_page_message(tr('Master domain cannot be used.'), 'error');
+	if (imscp_domain_exists($asciiDmnName, $_SESSION['user_id']) || $asciiDmnName == $cfg->BASE_SERVER_VHOST) {
+		set_page_message(tr('Domain %s is unavailable.', "<strong>$dmnName</strong>"), 'error');
 		return;
 	}
 
@@ -104,7 +100,7 @@ function reseller_checkData()
 
 	// Reseller want customise hosting plan or not hosting plan is provided
 	if (!$hpId || $customizeHp == '_yes_') {
-		$_SESSION['dmn_name'] = $dmnName;
+		$_SESSION['dmn_name'] = $asciiDmnName;
 		$_SESSION['dmn_expire'] = $dmnExpire;
 		$_SESSION['dmn_tpl'] = $hpId;
 		$_SESSION['chtpl'] = '_yes_';
@@ -113,7 +109,7 @@ function reseller_checkData()
 		redirectTo('user_add2.php');
 	} else {
 		if (reseller_limits_check($_SESSION['user_id'], $hpId)) {
-			$_SESSION['dmn_name'] = $dmnName;
+			$_SESSION['dmn_name'] = $asciiDmnName;
 			$_SESSION['dmn_expire'] = $dmnExpire;
 			$_SESSION['dmn_tpl'] = $hpId;
 			$_SESSION['chtpl'] = $customizeHp;

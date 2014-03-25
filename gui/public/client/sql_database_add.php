@@ -119,9 +119,6 @@ function client_addSqlDb($userId)
 {
 	if (!isset($_POST['uaction'])) return;
 
-	/** @var $cfg iMSCP_Config_Handler_File */
-	$cfg = iMSCP_Registry::get('config');
-
 	if (empty($_POST['db_name'])) {
 		set_page_message(tr('Please type database name.'), 'error');
 		return;
@@ -147,7 +144,7 @@ function client_addSqlDb($userId)
 		return;
 	}
 
-	if (strlen($dbName) > $cfg['MAX_SQL_DATABASE_LENGTH']) {
+	if (strlen($dbName) > 64) {
 		set_page_message(tr('Database name is too long.'), 'error');
 		return;
 	}

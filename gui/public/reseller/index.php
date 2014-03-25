@@ -76,9 +76,6 @@ function reseller_generateSupportQuestionsMessage()
  */
 function reseller_generateOrdersAliasesMessage()
 {
-	/** @var $cfg iMSCP_Config_Handler_File */
-	$cfg = iMSCP_Registry::get('config');
-
 	$query = "
 		SELECT
 			COUNT(alias_id) AS nbOrdersAliases
@@ -93,7 +90,7 @@ function reseller_generateOrdersAliasesMessage()
 		AND
 			created_by = ?
 	";
-	$stmt = exec_query($query, array($cfg->ITEM_ORDERED_STATUS, $_SESSION['user_id']));
+	$stmt = exec_query($query, array('ordered', $_SESSION['user_id']));
 
 	$nbOrdersAliases = $stmt->fields['nbOrdersAliases'];
 

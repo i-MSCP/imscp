@@ -406,41 +406,41 @@ function gen_user_list($tpl)
 
 			$tpl->parse('USR_DELETE_LINK', 'usr_delete_link');
 
-			if ($data['admin_status'] == $cfg->ITEM_OK_STATUS && $data['domain_status'] == $cfg->ITEM_OK_STATUS) {
+			if ($data['admin_status'] == 'ok' && $data['domain_status'] == 'ok') {
 				$status = 'ok';
 				$statusTxt = translate_dmn_status($data['domain_status']);
 				$statusUrl = 'domain_status_change.php?domain_id=' . $data['domain_id'];
 				$statusBool = true;
-			} elseif ($data['domain_status'] == $cfg->ITEM_DISABLED_STATUS) {
+			} elseif ($data['domain_status'] == 'disabled') {
 				$status = 'disabled';
 				$statusTxt = translate_dmn_status($data['domain_status']);
 				$statusUrl = 'domain_status_change.php?domain_id=' . $data['domain_id'];
 				$statusBool = false;
 			} elseif (
 				(
-					$data['admin_status'] == $cfg->ITEM_TOADD_STATUS ||
-					$data['admin_status'] == $cfg->ITEM_TOCHANGE_STATUS ||
-					$data['admin_status'] == $cfg->ITEM_TODELETE_STATUS
+					$data['admin_status'] == 'toadd' ||
+					$data['admin_status'] == 'tochange' ||
+					$data['admin_status'] == 'todelete'
 				) || (
-					$data['domain_status'] == $cfg->ITEM_TOADD_STATUS ||
-					$data['domain_status'] == $cfg->ITEM_TORESTORE_STATUS ||
-					$data['domain_status'] == $cfg->ITEM_TOCHANGE_STATUS ||
-					$data['domain_status'] == $cfg->ITEM_TOENABLE_STATUS ||
-					$data['domain_status'] == $cfg->ITEM_TODISABLE_STATUS ||
-					$data['domain_status'] == $cfg->ITEM_TODELETE_STATUS
+					$data['domain_status'] == 'toadd' ||
+					$data['domain_status'] == 'torestore' ||
+					$data['domain_status'] == 'tochange' ||
+					$data['domain_status'] == 'toenable' ||
+					$data['domain_status'] == 'todisable' ||
+					$data['domain_status'] == 'todelete'
 				)
 			) {
 
 				$status = 'reload';
 				$statusTxt = translate_dmn_status(
-					($data['admin_status'] != $cfg->ITEM_OK_STATUS) ? $data['admin_status'] : $data['domain_status']
+					($data['admin_status'] != 'ok') ? $data['admin_status'] : $data['domain_status']
 				);
 				$statusUrl = '#';
 				$statusBool = false;
 			} else {
 				$status = 'error';
 				$statusTxt = translate_dmn_status(
-					($data['admin_status'] != $cfg->ITEM_OK_STATUS) ? $data['admin_status'] : $data['domain_status']
+					($data['admin_status'] != 'ok') ? $data['admin_status'] : $data['domain_status']
 				);
 				$statusUrl = 'domain_details.php?domain_id=' . $data['domain_id'];
 				$statusBool = false;

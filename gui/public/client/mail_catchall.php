@@ -48,16 +48,13 @@
 function client_generateAction($mailId, $mailStatus)
 {
 
-	/** @var $cfg iMSCP_Config_Handler_File */
-	$cfg = iMSCP_Registry::get('config');
-
-	if ($mailStatus == $cfg->ITEM_TOADD_STATUS) {
+	if ($mailStatus == 'toadd') {
 		return array(tr('N/A'), '#');
-	} else if ($mailStatus == $cfg->ITEM_OK_STATUS) {
+	} else if ($mailStatus == 'ok') {
 		return array(tr('Delete CatchAll'), "mail_catchall_delete.php?id=$mailId");
-	} else if ($mailStatus == $cfg->ITEM_TOCHANGE_STATUS) {
+	} else if ($mailStatus == 'tochange') {
 		return array(tr('N/A'), '#');
-	} else if ($mailStatus == $cfg->ITEM_TODELETE_STATUS) {
+	} else if ($mailStatus == 'todelete') {
 		return array(tr('N/A'), '#');
 	} else {
 		return null;
@@ -125,10 +122,7 @@ function client_generateCatchallItem($tpl, $action, $dmnId, $dmnName, $mailId, $
  */
 function client_generateCatchallList($tpl, $dmnId, $dmnName)
 {
-	/** @var iMSCP_Config_Handler_File $cfg */
-	$cfg = iMSCP_Registry::get('config');
-
-	$statusOk = $cfg->ITEM_OK_STATUS;
+	$statusOk = 'ok';
 
 	$query = "
 		SELECT

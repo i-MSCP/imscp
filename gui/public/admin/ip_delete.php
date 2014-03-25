@@ -46,9 +46,6 @@ iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAdminScriptStart);
 
 check_login('admin');
 
-/** @var $cfg iMSCP_Config_Handler_File */
-$cfg = iMSCP_Registry::get('config');
-
 if (isset($_GET['delete_id'])) {
 	$deleteIpId = clean_input($_GET['delete_id']);
 
@@ -75,7 +72,7 @@ if (isset($_GET['delete_id'])) {
 	write_log("{$_SESSION['user_logged']}: deleted IP address {$stmt->fields['ipNumber']}", E_USER_NOTICE);
 
 	$query = "UPDATE `server_ips` SET `ip_status` = ? WHERE `ip_id` = ?";
-	$stmt = exec_query($query, array($cfg->ITEM_TODELETE_STATUS, $deleteIpId));
+	$stmt = exec_query($query, array('todelete', $deleteIpId));
 
 	send_request();
 

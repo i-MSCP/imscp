@@ -40,20 +40,6 @@ require_once  'iMSCP/Config/Handler.php';
  * iMSCP_Config_Handler adapter class to handle configuration parameters that are stored in a flat file where each pair
  * of key-values are separated by the equal sign.
  *
- * @property string ITEM_OK_STATUS ok status
- * @property string ITEM_ENABLED_STATUS enabled status
- * @property string ITEM_DISABLED_STATUS disabled status
- * @property string ITEM_UNINSTALLED_STATUS uninstalled status
- * @property string ITEM_TOINSTALL_STATUS toinstall status
- * @property string ITEM_TOUPDATE_STATUS toupdate status
- * @property string ITEM_TOUNINSTALL_STATUS touninstall status
- * @property string ITEM_TOADD_STATUS toadd status
- * @property string ITEM_TOCHANGE_STATUS tochange status
- * @property string ITEM_TORESTORE_STATUS torestore status
- * @property string ITEM_TOENABLE_STATUS toenable status
- * @property string ITEM_TODISABLE_STATUS todisable status
- * @property string ITEM_TODELETE_STATUS todelete status
- * @property string ITEM_ORDERED_STATUS ordered status
  * @property string ROOT_TEMPLATE_PATH Root templates path
  * @property string USER_INITIAL_THEME User initial theme
  * @property string LOGIN_TEMPLATE_PATH Login templates path
@@ -70,9 +56,6 @@ require_once  'iMSCP/Config/Handler.php';
  * @property bool DUMP_GUI_DEBUG If true, display some information for debugging
  * @property bool SHOW_COMPRESSION_SIZE If TRUE, show page compression info
  * @property int SESSION_TIMEOUT Session timeout
- * @property int MAX_SQL_DATABASE_LENGTH Max. length for database name
- * @property int MAX_SQL_USER_LENGTH Max. length for Sql username
- * @property int MAX_SQL_PASS_LENGTH Max. length for Sql password
  * @property int DOMAIN_ROWS_PER_PAGE Number for domain displayed per page
  * @property string HOSTING_PLANS_LEVEL Hosting plan level (admin|reseller)
  * @property bool IMSCP_SUPPORT_SYSTEM If TRUE, support system is available

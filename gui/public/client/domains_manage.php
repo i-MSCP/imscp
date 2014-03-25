@@ -66,7 +66,7 @@ function client_generateDomainsList($tpl, $userId)
 	while (!$stmt->EOF) {
 		$domainName = decode_idna($stmt->fields['domain_name']);
 
-		if ($stmt->fields['domain_status'] == $cfg->ITEM_OK_STATUS) {
+		if ($stmt->fields['domain_status'] == 'ok') {
 			$tpl->assign(
 				array(
 					'DOMAIN_NAME' => tohtml($domainName),
@@ -216,7 +216,7 @@ function _client_generateDomainAliasAction($id, $status)
 	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
 
-	if ($status == $cfg->ITEM_OK_STATUS) {
+	if ($status == 'ok') {
 		return array(
 			tr('Delete'),
 			tohtml("alias_delete.php?id=$id"),
@@ -224,7 +224,7 @@ function _client_generateDomainAliasAction($id, $status)
 			tr('View certificates'),
 			tohtml("cert_view.php?id=$id&type=als")
 		);
-	} elseif ($status == $cfg->ITEM_ORDERED_STATUS) {
+	} elseif ($status == 'ordered') {
 		return array(tr('Delete order'), tohtml("alias_order_delete.php?del_id=$id"), false, '-', '#');
 	} else {
 		return array(tr('N/A'), '#', false, tr('N/A'), '#');
@@ -246,17 +246,17 @@ function _client_generateDomainAliasRedirect($id, $status, $redirectUrl)
 	$cfg = iMSCP_Registry::get('config');
 
 	if ($redirectUrl == 'no') {
-		if ($status == $cfg->ITEM_OK_STATUS) {
+		if ($status == 'ok') {
 			return array('-', tohtml("alias_edit.php?id=$id"), tr('Edit'));
-		} elseif ($status == $cfg->ITEM_ORDERED_STATUS) {
+		} elseif ($status == 'ordered') {
 			return array('-', '#', tr('N/A'));
 		} else {
 			return array(tr('N/A'), '#', tr('N/A'));
 		}
 	} else {
-		if ($status == $cfg->ITEM_OK_STATUS) {
+		if ($status == 'ok') {
 			return array($redirectUrl, tohtml("alias_edit.php?id=$id"), tr('Edit'));
-		} elseif ($status == $cfg->ITEM_ORDERED_STATUS) {
+		} elseif ($status == 'ordered') {
 			return array($redirectUrl, '#', tr('N/A'));
 		} else {
 			return array(tr('N/A'), '#', tr('N/A'));
@@ -464,16 +464,13 @@ function client_generateSubdomainsList($tpl, $userId)
  */
 function _client_generateSubdomainRedirect($id, $status, $redirectUrl, $entityType)
 {
-	/** @var $cfg iMSCP_Config_Handler_File */
-	$cfg = iMSCP_Registry::get('config');
-
-	if ($status == $cfg->ITEM_OK_STATUS) {
+	if ($status == 'ok') {
 		return array(
 			($redirectUrl == 'no') ? '-' : $redirectUrl,
 			tohtml("subdomain_edit.php?id=$id&type=$entityType"),
 			tr('Edit')
 		);
-	} elseif ($status == $cfg->ITEM_ORDERED_STATUS) {
+	} elseif ($status == 'ordered') {
 		return array(($redirectUrl == 'no') ? '-' : $redirectUrl, '#', tr('N/A'));
 	} else {
 		return array(tr('N/A'), '#', tr('N/A'));
@@ -490,10 +487,7 @@ function _client_generateSubdomainRedirect($id, $status, $redirectUrl, $entityTy
  */
 function _client_generateSubdomainAction($id, $status)
 {
-	/** @var $cfg iMSCP_Config_Handler_File */
-	$cfg = iMSCP_Registry::get('config');
-
-	if ($status == $cfg->ITEM_OK_STATUS) {
+	if ($status == 'ok') {
 		return array(
 			tr('Delete'), tohtml("subdomain_delete.php?id=$id"),
 			true,
@@ -515,10 +509,7 @@ function _client_generateSubdomainAction($id, $status)
  */
 function _client_generateSubdomainAliasAction($id, $status)
 {
-	/** @var $cfg iMSCP_Config_Handler_File */
-	$cfg = iMSCP_Registry::get('config');
-
-	if ($status == $cfg->ITEM_OK_STATUS) {
+	if ($status == 'ok') {
 		return array(
 			tr('Delete'),
 			tohtml("alssub_delete.php?id=$id"),
@@ -649,10 +640,7 @@ function client_generateCustomDnsRecordsList($tpl, $userId)
  */
 function _client_generateCustomDnsRecordAction($action, $id, $status, $ownedBy = 'custom_dns_feature')
 {
-	/** @var $cfg iMSCP_Config_Handler_File */
-	$cfg = iMSCP_Registry::get('config');
-
-	if($status == $cfg->ITEM_OK_STATUS) {
+	if($status == 'ok') {
 		if($action == 'edit') {
 			if($ownedBy === 'custom_dns_feature') {
 				return array(tr('Edit'), tohtml("dns_edit.php?id=$id"));

@@ -180,8 +180,7 @@ if (!empty($_POST)) {
 	if ($stmt->fields['software_db'] == '1') {
 		$selected_db = clean_input($_POST['selected_db'], true);
 		$sql_user = clean_input($_POST['sql_user'], true);
-		$query = "SELECT `sqlu_pass` FROM `sql_user` WHERE `sqlu_name` = ?";
-		$rsdatabase = exec_query($query, $sql_user);
+		$rsdatabase = exec_query('SELECT sqlu_pass FROM sql_user WHERE sqlu_name = ?', $sql_user);
 
 		$db_connection_ok = check_db_connection($selected_db, $sql_user, $rsdatabase->fields['sqlu_pass']);
 		$sql_pass = $rsdatabase->fields['sqlu_pass'];
@@ -230,7 +229,7 @@ if (!empty($_POST)) {
 					$dmn_id, $posted_aliasdomain_id, $posted_subdomain_id, $posted_aliassubdomain_id, $id,
 					$software_master_id, $sw_software_name, $sw_software_version, $software_language,
 					$other_dir, $prefix, $selected_db, $sql_user, $sql_pass, $install_username, $install_password,
-					$install_email, $cfg->ITEM_TOADD_STATUS, $software_depot));
+					$install_email, 'toadd', $software_depot));
 		} else {
 			$query = "
 				INSERT INTO `web_software_inst` (
@@ -248,7 +247,7 @@ if (!empty($_POST)) {
 					$dmn_id, $posted_aliasdomain_id, $posted_subdomain_id, $posted_aliassubdomain_id, $id,
 					$software_master_id, $sw_software_name, $sw_software_version, $software_language, $other_dir,
 					'not_required', 'not_required', 'not_required', 'not_required', $install_username, $install_password,
-					$install_email, $cfg->ITEM_TOADD_STATUS, $software_depot));
+					$install_email, 'toadd', $software_depot));
 		}
 
 		send_request();

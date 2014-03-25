@@ -43,14 +43,12 @@ check_login('user');
 
 customerHasFeature('domain_aliases') or showBadRequestErrorPage();
 
-/** @var $cfg iMSCP_Config_Handler_File */
-$cfg = iMSCP_Registry::get('config');
-
 if (isset($_GET['del_id'])) {
-	$alsId = clean_input($_GET['del_id']);
+	$alsId = intval($_GET['del_id']);
 
-	$query = 'DELETE FROM `domain_aliasses` WHERE `alias_id` = ? AND `domain_id` = ? AND `alias_status` = ?';
-	$stmt = exec_query($query, array($alsId, get_user_domain_id($_SESSION['user_id']), $cfg->ITEM_ORDERED_STATUS));
+	$stmt = exec_query(
+		'DELETE FROM domain_aliasses WHERE alias_id = ? AND domain_id = ? AND alias_status = ?',
+		array($alsId, get_user_domain_id($_SESSION['user_id']), 'ordered'));
 
 	if($stmt->rowCount()) {
 		set_page_message(tr('Order successfully deleted.'), 'success');

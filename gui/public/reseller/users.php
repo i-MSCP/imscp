@@ -170,35 +170,32 @@ function generate_users_list($tpl, $resellerId)
 		}
 
 		while (!$stmt->EOF) {
-			if (
-				$stmt->fields['admin_status'] == $cfg->ITEM_OK_STATUS &&
-				$stmt->fields['domain_status'] == $cfg->ITEM_OK_STATUS
-			) {
+			if ($stmt->fields['admin_status'] == 'ok' && $stmt->fields['domain_status'] == 'ok') {
 				$statusIcon = 'ok';
 				$statusDomain = translate_dmn_status($stmt->fields['domain_status']);
 				$statusBool = true;
-			} else if ($stmt->fields['domain_status'] == $cfg->ITEM_DISABLED_STATUS) {
+			} else if ($stmt->fields['domain_status'] == 'disabled') {
 				$statusIcon = 'disabled';
 				$statusDomain = translate_dmn_status($stmt->fields['domain_status']);
 				$statusBool = false;
 			} else if (
 				(
-					$stmt->fields['admin_status'] == $cfg->ITEM_TOADD_STATUS ||
-					$stmt->fields['admin_status'] == $cfg->ITEM_TOCHANGE_STATUS ||
-					$stmt->fields['admin_status'] == $cfg->ITEM_TODELETE_STATUS
+					$stmt->fields['admin_status'] == 'toadd' ||
+					$stmt->fields['admin_status'] == 'tochange' ||
+					$stmt->fields['admin_status'] == 'todelete'
 				) ||
 				(
-					$stmt->fields['domain_status'] == $cfg->ITEM_TOADD_STATUS ||
-					$stmt->fields['domain_status'] == $cfg->ITEM_TORESTORE_STATUS ||
-					$stmt->fields['domain_status'] == $cfg->ITEM_TOCHANGE_STATUS ||
-					$stmt->fields['domain_status'] == $cfg->ITEM_TOENABLE_STATUS ||
-					$stmt->fields['domain_status'] == $cfg->ITEM_TODISABLE_STATUS ||
-					$stmt->fields['domain_status'] == $cfg->ITEM_TODELETE_STATUS
+					$stmt->fields['domain_status'] == 'toadd' ||
+					$stmt->fields['domain_status'] == 'torestore' ||
+					$stmt->fields['domain_status'] == 'tochange' ||
+					$stmt->fields['domain_status'] == 'toenable' ||
+					$stmt->fields['domain_status'] == 'todisable' ||
+					$stmt->fields['domain_status'] == 'todelete'
 				)
 			) {
 				$statusIcon = 'reload';
 				$statusDomain = translate_dmn_status(
-					($stmt->fields['admin_status'] != $cfg->ITEM_OK_STATUS)
+					($stmt->fields['admin_status'] != 'ok')
 						? $stmt->fields['admin_status']
 						: $stmt->fields['domain_status']
 				);
@@ -206,7 +203,7 @@ function generate_users_list($tpl, $resellerId)
 			} else {
 				$statusIcon = 'error';
 				$statusDomain = translate_dmn_status(
-					($stmt->fields['admin_status'] != $cfg->ITEM_OK_STATUS)
+					($stmt->fields['admin_status'] != 'ok')
 						? $stmt->fields['admin_status']
 						: $stmt->fields['domain_status']
 				);

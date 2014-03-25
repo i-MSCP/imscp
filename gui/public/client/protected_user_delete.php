@@ -44,9 +44,6 @@ check_login('user');
 
 customerHasFeature('protected_areas') or showBadRequestErrorPage();
 
-/** @var $cfg iMSCP_Config_Handler_File */
-$cfg = iMSCP_Registry::get('config');
-
 $dmn_id = get_user_domain_id($_SESSION['user_id']);
 
 if (isset($_GET['uname']) && $_GET['uname'] !== '' && is_numeric($_GET['uname'])) {
@@ -60,7 +57,7 @@ $rs = exec_query($query, array($dmn_id, $uuser_id));
 
 $uname = $rs->fields['uname'];
 
-$change_status = $cfg->ITEM_TODELETE_STATUS;
+$change_status = 'todelete';
 // let's delete the user from the SQL
 $query = "UPDATE `htaccess_users` SET `status` = ? WHERE `id` = ? AND `dmn_id` = ?";
 $rs = exec_query($query, array($change_status, $uuser_id, $dmn_id));
@@ -78,7 +75,7 @@ $rs = exec_query($query, $dmn_id);
 		if ($key !== false) {
 			unset($members[$key]);
 			$members = implode(",", $members);
-			$change_status = $cfg->ITEM_TOCHANGE_STATUS;
+			$change_status = 'tochange';
 			$update_query = "
 				UPDATE
 					`htaccess_groups`
@@ -107,10 +104,10 @@ while (!$rs->EOF) {
 	if ($key !== false) {
 		unset($usr_id_splited[$key]);
 		if (count($usr_id_splited) == 0) {
-			$status = $cfg->ITEM_TODELETE_STATUS;
+			$status = 'todelete';
 		} else {
 			$usr_id = implode(",", $usr_id_splited);
-			$status = $cfg->ITEM_TOCHANGE_STATUS;
+			$status = 'tochange';
 		}
 
 		$update_query = "UPDATE `htaccess` SET `user_id` = ?, `status` = ? WHERE `id` = ?";

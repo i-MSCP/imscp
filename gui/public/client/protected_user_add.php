@@ -47,9 +47,6 @@
  */
 function client_addHtaccessUser($domainId)
 {
-	/** @var $cfg iMSCP_Config_Handler_File */
-	$cfg = iMSCP_Registry::get('config');
-
 	if (isset($_POST['uaction']) && $_POST['uaction'] == 'add_user') {
 		// we have to add the user
 		if (isset($_POST['username']) && isset($_POST['pass']) && isset($_POST['pass_rep'])) {
@@ -67,7 +64,7 @@ function client_addHtaccessUser($domainId)
 				return;
 			}
 
-			$status = $cfg->ITEM_TOADD_STATUS;
+			$status = 'toadd';
 			$uname = clean_input($_POST['username']);
 			$upass = cryptPasswordWithSalt($_POST['pass'], generateRandomSalt(true));
 

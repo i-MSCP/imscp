@@ -94,10 +94,7 @@ function ftp_getDomainList($mainDmnName, $mainDmnId, $dmnType = 'dmn')
 	}
 
 	if (isset($query)) {
-		/** @var $cfg iMSCP_Config_Handler_File */
-		$cfg = iMSCP_Registry::get('config');
-
-		$stmt = exec_query($query, array($mainDmnId, $cfg->ITEM_OK_STATUS));
+		$stmt = exec_query($query, array($mainDmnId, 'ok'));
 
 		if (!$stmt->rowCount()) {
 			showBadRequestErrorPage();

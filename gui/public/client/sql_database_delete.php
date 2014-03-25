@@ -24,18 +24,18 @@
  * Portions created by the i-MSCP Team are Copyright (C) 2010-2014 by
  * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
  *
- * @category	i-MSCP
- * @package		iMSCP_Core
- * @subpackage	Client
- * @copyright	2001-2006 by moleSoftware GmbH
- * @copyright	2006-2010 by ispCP | http://isp-control.net
- * @copyright	2010-2014 by i-MSCP | http://i-mscp.net
- * @author		ispCP Team
- * @author		i-MSCP Team
- * @link		http://i-mscp.net
+ * @category    i-MSCP
+ * @package     iMSCP_Core
+ * @subpackage  Client
+ * @copyright   2001-2006 by moleSoftware GmbH
+ * @copyright   2006-2010 by ispCP | http://isp-control.net
+ * @copyright   2010-2014 by i-MSCP | http://i-mscp.net
+ * @author      ispCP Team
+ * @author      i-MSCP Team
+ * @link        http://i-mscp.net
  */
 
-/*******************************************************************************
+/***********************************************************************************************************************
  * Main script
  */
 
@@ -49,34 +49,12 @@ check_login('user');
 if (customerHasFeature('sql') && isset($_GET['id'])) {
 	$databaseId = intval($_GET['id']);
 
-	/** @var $db iMSCP_Database */
-	$db = iMSCP_Database::getInstance();
-
-	try {
-		$db->beginTransaction();
-
-		if (!delete_sql_database(get_user_domain_id($_SESSION['user_id']), $databaseId)) {
-			throw new iMSCP_Exception(
-				sprintf(
-					'SQL database with ID %d not found in iMSCP database or not owned by customer with ID %d.',
-					$_SESSION['user_id'],
-					$databaseId
-				)
-			);
-		}
-
-		// Just for fun since an implicit commit is made before in the delete_sql_database() function
-		$db->commit();
-
+	if(delete_sql_database(get_user_domain_id($_SESSION['user_id']), $databaseId)) {
 		set_page_message(tr('SQL database successfully deleted.'), 'success');
 		write_log(sprintf("{$_SESSION['user_logged']} deleted SQL database with ID %s", $databaseId), E_USER_NOTICE);
-	} catch (iMSCP_Exception $e) {
-		$db->rollBack();
 
-		throw $e;
+		redirectTo('sql_manage.php');
 	}
-
-	redirectTo('sql_manage.php');
 }
 
 showBadRequestErrorPage();

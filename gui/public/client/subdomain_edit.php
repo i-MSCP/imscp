@@ -42,9 +42,6 @@ function _client_getSubdomainData($subdomainId, $subdomainType)
 	static $subdomainData = null;
 
 	if (null === $subdomainData) {
-		/** @var iMSCP_Config_Handler_File $cfg */
-		$cfg = iMSCP_Registry::get('config');
-
 		$mainDmnProps = get_domain_default_props($_SESSION['user_id']);
 		$domainId = $mainDmnProps['domain_id'];
 		$domainName = $mainDmnProps['domain_name'];
@@ -80,7 +77,7 @@ function _client_getSubdomainData($subdomainId, $subdomainType)
 			';
 		}
 
-		$stmt = exec_query($query, array($subdomainId, $domainId, $cfg->ITEM_OK_STATUS));
+		$stmt = exec_query($query, array($subdomainId, $domainId, 'ok'));
 
 		if (!$stmt->rowCount()) {
 			return false;
@@ -205,9 +202,6 @@ function client_editSubdomain()
 				}
 			}
 
-			/** @var $cfg iMSCP_Config_Handler_File */
-			$cfg = iMSCP_Registry::get('config');
-
 			iMSCP_Events_Manager::getInstance()->dispatch(
 				iMSCP_Events::onBeforeEditSubdomain, array('subdomainId' => $subdomainId)
 			);
@@ -232,7 +226,7 @@ function client_editSubdomain()
 				';
 			}
 
-			exec_query($query, array($forwardUrl, $cfg->ITEM_TOCHANGE_STATUS, $subdomainId));
+			exec_query($query, array($forwardUrl, 'tochange', $subdomainId));
 
 			iMSCP_Events_Manager::getInstance()->dispatch(
 				iMSCP_Events::onAfterEditSubdomain, array('subdomainId' => $subdomainId)

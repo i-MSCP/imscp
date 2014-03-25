@@ -164,7 +164,7 @@ function &admin_getData($domainId, $forUpdate = false)
 	$cfg = iMSCP_Registry::get('config');
 
 	if(null == $data) {
-		$statusOk = "$cfg->ITEM_OK_STATUS|$cfg->ITEM_DISABLED_STATUS";
+		$statusOk = "ok|disabled";
 
 		// Checks for domain existence and status
 
@@ -191,14 +191,13 @@ function &admin_getData($domainId, $forUpdate = false)
 			redirectTo('manage_users.php');
 		} elseif(
 			(
-				$stmt->fields['domain_status'] != $cfg->ITEM_OK_STATUS &&
-				$stmt->fields['domain_status'] != $cfg->ITEM_DISABLED_STATUS
+				$stmt->fields['domain_status'] != 'ok' && $stmt->fields['domain_status'] != 'disabled'
 			) ||
 			$stmt->fields('statusNotOk') > 0
 		) {
 			set_page_message(tr("The domain or at least one of its entities has a different status than 'ok'."), 'warning');
 			redirectTo('manage_users.php');
-		} elseif($stmt->fields['domain_status'] == $cfg->ITEM_DISABLED_STATUS) {
+		} elseif($stmt->fields['domain_status'] == 'disabled') {
 			set_page_message(tr('The domain is currently deactivated. The modification of some of its properties will result in a complete or partial reactivation of it.'), 'warning');
 		}
 
@@ -626,9 +625,6 @@ function admin_checkAndUpdateData($domainId)
 	$errFieldsStack = array();
 
 	try {
-		/** @var $cfg iMSCP_Config_Handler_File */
-		$cfg = iMSCP_Registry::get('config');
-
 		// Getting domain data
 		$data =& admin_getData($domainId, true);
 
@@ -943,12 +939,12 @@ function admin_checkAndUpdateData($domainId)
 						AND
 							`alias_status` != ?
 					";
-					exec_query($query, array($cfg->ITEM_TOCHANGE_STATUS, $domainId, $cfg->ITEM_ORDERED_STATUS));
+					exec_query($query, array('tochange', $domainId, 'ordered'));
 				}
 
 				if($data['domain_subd_limit'] != '-1') {
 					$query = "UPDATE `subdomain` SET `subdomain_status` = ? WHERE `domain_id` = ?";
-					exec_query($query, array($cfg->ITEM_TOCHANGE_STATUS, $domainId));
+					exec_query($query, array('tochange', $domainId));
 
 					$query = "
 						UPDATE
@@ -958,7 +954,7 @@ function admin_checkAndUpdateData($domainId)
 						WHERE
 							`alias_id` IN (SELECT `alias_id` FROM `domain_aliasses` WHERE `domain_id` = ?)
 					";
-					exec_query($query, array($cfg->ITEM_TOCHANGE_STATUS, $domainId));
+					exec_query($query, array('tochange', $domainId));
 				}
 
 				$daemonRequest = true;
@@ -995,7 +991,7 @@ function admin_checkAndUpdateData($domainId)
 					$data['domain_expires'], time(), $data['domain_mailacc_limit'],
 					$data['domain_ftpacc_limit'], $data['domain_traffic_limit'],
 					$data['domain_sqld_limit'], $data['domain_sqlu_limit'],
-					($daemonRequest) ? $cfg->ITEM_TOCHANGE_STATUS : $cfg->ITEM_OK_STATUS,
+					($daemonRequest) ? 'tochange' : 'ok',
 					$data['domain_alias_limit'], $data['domain_subd_limit'], $data['domain_ip_id'],
 					$data['domain_disk_limit'], $data['domain_php'], $data['domain_cgi'],
 					$data['allowbackup'], $data['domain_dns'],

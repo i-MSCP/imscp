@@ -48,9 +48,6 @@ function client_checkMailAccountOwner($mailAccountId)
 {
 	$domainProps = get_domain_default_props($_SESSION['user_id']);
 
-	/** @var $config iMSCP_Config_Handler_File */
-	$config = iMSCP_Registry::get('config');
-
 	$query = '
 		SELECT
 			`t1`.*, `t2`.`domain_id`, `t2`.`domain_name`
@@ -67,7 +64,7 @@ function client_checkMailAccountOwner($mailAccountId)
 		AND
 			`t1`.`status` = ?
 	';
-	$stmt = exec_query($query, array($mailAccountId, $domainProps['domain_id'], 1, $config->ITEM_OK_STATUS));
+	$stmt = exec_query($query, array($mailAccountId, $domainProps['domain_id'], 1, 'ok'));
 
 	return (bool) $stmt->rowCount();
 }
@@ -80,10 +77,6 @@ function client_checkMailAccountOwner($mailAccountId)
  */
 function client_deactivateAutoresponder($mailAccountId)
 {
-	/** @var $config iMSCP_Config_Handler_File */
-	$config = iMSCP_Registry::get('config');
-
-	/** @var $db iMSCP_Database */
 	$db = iMSCP_Database::getInstance();
 
 	try {
@@ -93,7 +86,7 @@ function client_deactivateAutoresponder($mailAccountId)
 		$stmt = exec_query($query, $mailAccountId);
 
 		$query = "UPDATE `mail_users` SET `status` = ?, `mail_auto_respond` = ? WHERE `mail_id` = ?";
-		exec_query($query, array($config->ITEM_TOCHANGE_STATUS, 0, $mailAccountId));
+		exec_query($query, array('tochange', 0, $mailAccountId));
 
 		// Purge autoreplies log entries
 		delete_autoreplies_log_entries();

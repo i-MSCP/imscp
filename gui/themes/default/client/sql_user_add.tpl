@@ -12,7 +12,7 @@
 			<td>
 				<select name="sqluser_id" id="sqluser_id">
 					<!-- BDP: sqluser_list -->
-					<option value="{SQLUSER_ID}" {SQLUSER_SELECTED}>{SQLUSER_NAME}</option>
+					<option value="{SQLUSER_ID}" {SQLUSER_SELECTED}>{SQLUSER_NAME}@{SQLUSER_HOST}</option>
 					<!-- EDP: sqluser_list -->
 				</select>
 			</td>
@@ -38,6 +38,10 @@
 		<tr>
 			<td><label for="user_name">{TR_USER_NAME}</label></td>
 			<td><input type="text" id="user_name" name="user_name" value="{USER_NAME}"/></td>
+		</tr>
+		<tr>
+			<td><label for="user_host">{TR_USER_HOST}<span class="tips icon i_help" title="{TR_USER_HOST_TIP}"></span></label></td>
+			<td><input type="text" id="user_host" name="user_host" value="{USER_HOST}"/></td>
 		</tr>
 		<tr>
 			<td>

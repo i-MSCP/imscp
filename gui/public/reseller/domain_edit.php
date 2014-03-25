@@ -171,7 +171,7 @@ function &reseller_getData($domainId, $forUpdate = false)
 	$cfg = iMSCP_Registry::get('config');
 
 	if(null == $data) {
-		$statusOk = "$cfg->ITEM_OK_STATUS|$cfg->ITEM_DISABLED_STATUS|$cfg->ITEM_ORDERED_STATUS";
+		$statusOk = "ok|disabled|ordered";
 
 		// Checks for domain existence and status
 
@@ -200,12 +200,12 @@ function &reseller_getData($domainId, $forUpdate = false)
 			set_page_message(tr("The domain you are trying to edit doesn't exist."), 'error');
 			redirectTo('users.php');
 		} elseif(
-			($stmt->fields['domain_status'] != $cfg->ITEM_OK_STATUS && $stmt->fields['domain_status'] != $cfg->ITEM_DISABLED_STATUS)
+			($stmt->fields['domain_status'] != 'ok' && $stmt->fields['domain_status'] != 'disabled')
 				 || $stmt->fields('statusNotOk') > 0
 		) {
 			set_page_message(tr("The domain or at least one of its entities has a different status than 'ok'."), 'warning');
 			redirectTo('users.php');
-		} elseif($stmt->fields['domain_status'] == $cfg->ITEM_DISABLED_STATUS) {
+		} elseif($stmt->fields['domain_status'] == 'disabled') {
 			set_page_message(tr('The domain is currently deactivated. The modification of some of its properties will result by a complete or partial reactivation of it.'), 'warning');
 		}
 
@@ -635,9 +635,6 @@ function reseller_checkAndUpdateData($domainId, $recoveryMode = false)
 	$errFieldsStack = array();
 
 	try {
-		/** @var $cfg iMSCP_Config_Handler_File */
-		$cfg = iMSCP_Registry::get('config');
-
 		// Getting domain data
 		$data =& reseller_getData($domainId, true, $recoveryMode);
 
@@ -952,12 +949,12 @@ function reseller_checkAndUpdateData($domainId, $recoveryMode = false)
 						AND
 							`alias_status` != ?
 					";
-					exec_query($query, array($cfg->ITEM_TOCHANGE_STATUS, $domainId, $cfg->ITEM_ORDERED_STATUS));
+					exec_query($query, array('tochange', $domainId, 'ordered'));
 				}
 
 				if($data['domain_subd_limit'] != '-1') {
 					$query = "UPDATE `subdomain` SET `subdomain_status` = ? WHERE `domain_id` = ?";
-					exec_query($query, array($cfg->ITEM_TOCHANGE_STATUS, $domainId));
+					exec_query($query, array('tochange', $domainId));
 
 					$query = "
 						UPDATE
@@ -967,7 +964,7 @@ function reseller_checkAndUpdateData($domainId, $recoveryMode = false)
 						WHERE
 							`alias_id` IN (SELECT `alias_id` FROM `domain_aliasses` WHERE `domain_id` = ?)
 					";
-					exec_query($query, array($cfg->ITEM_TOCHANGE_STATUS, $domainId));
+					exec_query($query, array('tochange', $domainId));
 				}
 
 				$daemonRequest = true;
@@ -1004,7 +1001,7 @@ function reseller_checkAndUpdateData($domainId, $recoveryMode = false)
 					$data['domain_expires'], time(), $data['domain_mailacc_limit'],
 					$data['domain_ftpacc_limit'], $data['domain_traffic_limit'],
 					$data['domain_sqld_limit'], $data['domain_sqlu_limit'],
-					($daemonRequest) ? $cfg->ITEM_TOCHANGE_STATUS : $cfg->ITEM_OK_STATUS,
+					($daemonRequest) ? 'tochange' : 'ok',
 					$data['domain_alias_limit'], $data['domain_subd_limit'], $data['domain_ip_id'],
 					$data['domain_disk_limit'], $data['domain_php'], $data['domain_cgi'],
 					$data['allowbackup'], $data['domain_dns'],

@@ -60,7 +60,7 @@ function client_generatePage($tpl, $id)
 		redirectTo('mail_catchall.php');
 	}
 
-	$okStatus = $cfg->ITEM_OK_STATUS;
+	$okStatus = 'ok';
 	$match = array();
 
 	if (preg_match("/^(\d+);(normal|alias|subdom|alssub)$/", $id, $match)) {
@@ -309,9 +309,6 @@ function client_generatePage($tpl, $id)
  */
 function client_addCatchall($id)
 {
-	/** @var $cfg iMSCP_Config_Handler_File */
-	$cfg = iMSCP_Registry::get('config');
-
 	list($realId, $type) = explode(';', $id);
 
 	// Check if user is owner of the domain
@@ -364,7 +361,7 @@ function client_addCatchall($id)
 				exec_query(
 					$query,
 					array(
-						$mailAccount, '_no_', '_no_', $dmnId, $mailType, $subId, $cfg->ITEM_TOADD_STATUS, '_no_', NULL,
+						$mailAccount, '_no_', '_no_', $dmnId, $mailType, $subId, 'toadd', '_no_', NULL,
 						$mailAddr
 					)
 				);
@@ -456,7 +453,7 @@ function client_addCatchall($id)
 			exec_query(
 				$query,
 				array(
-					implode(',', $mailAccount), '_no_', '_no_', $dmnId, $mailType, $subId, $cfg->ITEM_TOADD_STATUS,
+					implode(',', $mailAccount), '_no_', '_no_', $dmnId, $mailType, $subId, 'toadd',
 					'_no_', NULL, $mailAddr
 				)
 			);

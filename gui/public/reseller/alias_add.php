@@ -39,25 +39,22 @@ function _reseller_getCustomersList()
 	static $customersList = null;
 
 	if (null === $customersList) {
-		/** @var iMSCP_Config_Handler_File $cfg */
-		$cfg = iMSCP_Registry::get('config');
-
 		$stmt = exec_query(
 			'
 				SELECT
-					`admin_id`, `admin_name`, `domain_id`
+					admin_id, admin_name, domain_id
 				FROM
-					`admin`
+					admin
 				INNER JOIN
-					`domain` ON(`domain_admin_id` = `admin_id`)
+					`domain` ON(domain_admin_id = admin_id)
 				WHERE
-					`created_by` = ?
+					created_by = ?
 				AND
-					`admin_status` = ?
+					admin_status = ?
 				ORDER BY
-					`admin_name`
+					admin_name
 			',
-			array($_SESSION['user_id'], $cfg->ITEM_OK_STATUS)
+			array($_SESSION['user_id'], 'ok')
 		);
 
 		if (!$stmt->rowCount()) {
@@ -103,9 +100,6 @@ function _reseller_getDomainsList($customerId)
 	if (null === $domainsList) {
 		$mainDmnProps = get_domain_default_props($customerId, $_SESSION['user_id']);
 
-		/** @var iMSCP_Config_Handler_File $cfg */
-		$cfg = iMSCP_Registry::get('config');
-
 		$domainsList = array(
 			array(
 				'name' => $mainDmnProps['domain_name'],
@@ -117,39 +111,38 @@ function _reseller_getDomainsList($customerId)
 
 		$query = "
 			SELECT
-				CONCAT(`t1`.`subdomain_name`, '.', `t2`.`domain_name`) AS `name`,
-				`t1`.`subdomain_mount` AS `mount_point`
+				CONCAT(t1.subdomain_name, '.', t2.domain_name) AS name, t1.subdomain_mount AS mount_point
 			FROM
-				`subdomain` AS `t1`
+				subdomain AS t1
 			INNER JOIN
-				`domain` AS `t2` USING(`domain_id`)
+				domain AS t2 USING(domain_id)
 			WHERE
-				`t1`.`domain_id` = :domain_id
+				t1.domain_id = :domain_id
 			AND
-				`t1`.`subdomain_status` = :status_ok
+				t1.subdomain_status = :status_ok
 			UNION
 			SELECT
-				`alias_name` AS `name`, `alias_mount` AS `mount_point`
+				alias_name AS name, alias_mount AS mount_point
 			FROM
-				`domain_aliasses`
+				domain_aliasses
 			WHERE
-				`domain_id` = :domain_id
+				domain_id = :domain_id
 			AND
-				`alias_status` = :status_ok
+				alias_status = :status_ok
 			UNION
 			SELECT
-				CONCAT(`t1`.`subdomain_alias_name`, '.', `t2`.`alias_name`) AS `name`,
-				`t1`.`subdomain_alias_mount` AS `mount_point`
+				CONCAT(t1.subdomain_alias_name, '.', t2.alias_name) AS name,
+				t1.subdomain_alias_mount AS mount_point
 			FROM
-				`subdomain_alias` AS `t1`
+				subdomain_alias AS t1
 			INNER JOIN
-				`domain_aliasses` AS `t2` USING(`alias_id`)
+				domain_aliasses AS t2 USING(alias_id)
 			WHERE
-				`t2`.`domain_id` = :domain_id
+				t2.domain_id = :domain_id
 			AND
-				`subdomain_alias_status` = :status_ok
+				subdomain_alias_status = :status_ok
 		";
-		$stmt = exec_query($query, array('domain_id' => $mainDmnProps['domain_id'], 'status_ok' => $cfg->ITEM_OK_STATUS));
+		$stmt = exec_query($query, array('domain_id' => $mainDmnProps['domain_id'], 'status_ok' => 'ok'));
 
 		if ($stmt->rowCount()) {
 			$domainsList = array_merge($domainsList, $stmt->fetchAll(PDO::FETCH_ASSOC));
@@ -260,17 +253,14 @@ function reseller_addDomainAlias()
 		return false;
 	}
 
-	$domainAliasNameAscii = encode_idna($domainAliasName);
-	$domainList = _reseller_getDomainsList($customerId);
-
 	// Check for domain alias existence
 
-	foreach ($domainList as $domain) {
-		if ($domain['name'] == $domainAliasNameAscii) {
-			set_page_message(tr('Domain alias %s already exist.', "<strong>$domainAliasName</strong>"), 'error');
-			return false;
-		}
+	if(imscp_domain_exists($domainAliasName, $_SESSION['user_id'])) {
+		set_page_message(tr('Domain %s is unavailable.', "<strong>$domainAliasName</strong>"), 'error');
+		return false;
 	}
+
+	$domainAliasNameAscii = encode_idna($domainAliasName);
 
 	// Set default mount point
 	$mountPoint = "/$domainAliasNameAscii";
@@ -280,6 +270,8 @@ function reseller_addDomainAlias()
 	if (isset($_POST['shared_mount_point']) && $_POST['shared_mount_point'] == 'yes') { // We are safe here
 		if (isset($_POST['shared_mount_point_domain'])) {
 			$sharedMountPointDomain = clean_input($_POST['shared_mount_point_domain']);
+
+			$domainList = _reseller_getDomainsList($customerId);
 
 			// Get shared mount point
 			foreach ($domainList as $domain) {
@@ -332,7 +324,6 @@ function reseller_addDomainAlias()
 	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
 
-	/** @var $db iMSCP_Database */
 	$db = iMSCP_Database::getInstance();
 
 	try {
@@ -348,14 +339,14 @@ function reseller_addDomainAlias()
 
 		exec_query(
 			'
-				INSERT INTO `domain_aliasses` (
-					`domain_id`, `alias_name`, `alias_mount`, `alias_status`, `alias_ip_id`, `url_forward`
+				INSERT INTO domain_aliasses (
+					domain_id, alias_name, alias_mount, alias_status, alias_ip_id, url_forward
 				) VALUES (
 					?, ?, ?, ?, ?, ?
 				)
 			',
 			array(
-				$domainId, $domainAliasNameAscii, $mountPoint, $cfg->ITEM_TOADD_STATUS, $mainDmnProps['domain_ip_id'],
+				$domainId, $domainAliasNameAscii, $mountPoint, 'toadd', $mainDmnProps['domain_ip_id'],
 				$forwardUrl
 			)
 		);
@@ -366,13 +357,13 @@ function reseller_addDomainAlias()
 		if ($cfg->CREATE_DEFAULT_EMAIL_ADDRESSES) {
 			$query = '
 				SELECT
-					`email`
+					email
 				FROM
-					`admin`
+					admin
 				LEFT JOIN
-					`domain` ON(`admin`.`admin_id` = `domain`.`domain_admin_id`)
+					domain ON(admin.admin_id = domain.domain_admin_id)
 				WHERE
-					`domain`.`domain_id` = ?
+					domain.domain_id = ?
 			';
 			$stmt = exec_query($query, $domainId);
 
@@ -427,7 +418,9 @@ if (is_xhr() && isset($_POST['customer_id'])) {
 $resellerProps = imscp_getResellerProperties($_SESSION['user_id']);
 
 if ($resellerProps['max_als_cnt'] != 0 && $resellerProps['current_als_cnt'] >= $resellerProps['max_als_cnt']) {
-	set_page_message(tr('You have reached the maximum number of domain aliasses allowed by your subscription.'), 'warning');
+	set_page_message(
+		tr('You have reached the maximum number of domain aliasses allowed by your subscription.'), 'warning'
+	);
 	redirectTo('users.php');
 } elseif (!empty($_POST) && reseller_addDomainAlias()) {
 	redirectTo('alias.php');

@@ -219,9 +219,6 @@ function client_addExternalMailServerEntries($item)
 						$dnsEntriesIds .= ',' . $db->insertId();
 					}
 
-					/** @var $cfg iMSCP_Config_Handler_File */
-					$cfg = iMSCP_Registry::get('config');
-
 					if ($verifiedData['item_type'] == 'normal') {
 						exec_query(
 							'
@@ -232,7 +229,7 @@ function client_addExternalMailServerEntries($item)
 							',
 							array(
 								($spamFilterMX) ? 'filter' : (($wildcardMxOnly) ? 'wildcard' : 'domain'),
-								$cfg->ITEM_TOCHANGE_STATUS,
+								'tochange',
 								ltrim($dnsEntriesIds, ','),
 								$verifiedData['item_id']
 							)
@@ -248,7 +245,7 @@ function client_addExternalMailServerEntries($item)
 							',
 							array(
 								($spamFilterMX) ? 'filter' : (($wildcardMxOnly) ? 'wildcard' : 'domain'),
-								$cfg->ITEM_TOCHANGE_STATUS,
+								'tochange',
 								ltrim($dnsEntriesIds, ','),
 								$verifiedData['item_id'])
 						);

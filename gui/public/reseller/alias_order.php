@@ -57,7 +57,7 @@ if (isset($_GET['action']) && $_GET['action'] == "delete") {
 		$alsId = clean_input($_GET['del_id']);
 
 		$query = "DELETE FROM `domain_aliasses` WHERE `alias_id` = ? AND `alias_status` = ?";
-		$stmt = exec_query($query, array($alsId, $cfg->ITEM_ORDERED_STATUS));
+		$stmt = exec_query($query, array($alsId, 'ordered'));
 
 		if($stmt->rowCount()) {
 			set_page_message('Order successfully deleted.', 'success');
@@ -69,7 +69,7 @@ if (isset($_GET['action']) && $_GET['action'] == "delete") {
 		$alsId = clean_input($_GET['act_id']);
 
 		$query = "SELECT `alias_name`, `domain_id` FROM `domain_aliasses` WHERE `alias_id` = ? AND `alias_status` = ?";
-		$stmt = exec_query($query, array($alsId, $cfg->ITEM_ORDERED_STATUS));
+		$stmt = exec_query($query, array($alsId, 'ordered'));
 
 		if ($stmt->rowCount()) {
 			$alsName = $stmt->fields['alias_name'];
@@ -85,7 +85,7 @@ if (isset($_GET['action']) && $_GET['action'] == "delete") {
 				$db->beginTransaction();
 
 				$query = "UPDATE `domain_aliasses` SET `alias_status` = ? WHERE `alias_id` = ? AND `alias_status` = ?";
-				$stmt = exec_query($query, array($cfg->ITEM_TOADD_STATUS, $alsId, $cfg->ITEM_ORDERED_STATUS));
+				$stmt = exec_query($query, array('toadd', $alsId, 'ordered'));
 
 				if($stmt->rowCount()) {
 					// Create default email addresses if needed

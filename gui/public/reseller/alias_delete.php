@@ -169,7 +169,7 @@ if (resellerHasFeature('domain_aliases') && isset($_GET['id'])) {
 					`mail_type` LIKE ?
 				)
 			";
-			exec_query($query, array($cfg->ITEM_TODELETE_STATUS, $alsId, '%alias_%', $alsId, '%alssub_%'));
+			exec_query($query, array('todelete', $alsId, '%alias_%', $alsId, '%alssub_%'));
 
 			# Schedule deletion of any SSL certificat linked to subdomain, which have $alsId as parent
 			$query = "
@@ -182,19 +182,19 @@ if (resellerHasFeature('domain_aliases') && isset($_GET['id'])) {
 				AND
 					`id` IN (SELECT `subdomain_alias_id` FROM `subdomain_alias` WHERE `alias_id` = ?)
 			";
-			exec_query($query, array($cfg->ITEM_TODELETE_STATUS, 'alssub', $alsId));
+			exec_query($query, array('todelete', 'alssub', $alsId));
 
 			# Schedule deletion of any SSL certificate linked to this domain alias
 			$query = "UPDATE `ssl_certs` SET `status` = ? WHERE `type` = ? AND `id` = ?";
-			exec_query($query, array($cfg->ITEM_TODELETE_STATUS, 'als', $alsId));
+			exec_query($query, array('todelete', 'als', $alsId));
 
 			# Schedule deletion of any subdomain, which have $alsId alias as parent
 			$query = "UPDATE `subdomain_alias` SET `subdomain_alias_status` = ? WHERE `alias_id` = ?";
-			exec_query($query, array($cfg->ITEM_TODELETE_STATUS, $alsId));
+			exec_query($query, array('todelete', $alsId));
 
 			# Schedule domain alias deletion
 			$query = "UPDATE `domain_aliasses` SET `alias_status` = ? WHERE `alias_id` = ?";
-			exec_query($query, array($cfg->ITEM_TODELETE_STATUS, $alsId));
+			exec_query($query, array('todelete', $alsId));
 
 			$db->commit();
 		} catch (iMSCP_Exception_Database $e) {

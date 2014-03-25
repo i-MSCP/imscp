@@ -145,9 +145,6 @@ function client_generatePage($tpl, &$dmn_id)
  */
 function client_addHtaccessUserToHtaccessGroup(&$dmn_id)
 {
-	/** @var $cfg iMSCP_Config_Handler_File */
-	$cfg = iMSCP_Registry::get('config');
-
 	if (isset($_POST['uaction']) && $_POST['uaction'] == 'add' &&
 		isset($_POST['groups']) && !empty($_POST['groups']) &&
 		isset($_POST['nadmin_name']) && is_numeric($_POST['groups']) &&
@@ -175,7 +172,7 @@ function client_addHtaccessUserToHtaccessGroup(&$dmn_id)
 			$members = $members . "," . $uuser_id;
 		}
 
-		$change_status = $cfg->ITEM_TOCHANGE_STATUS;
+		$change_status = 'tochange';
 
 		$update_query = "
 			UPDATE
@@ -204,9 +201,6 @@ function client_addHtaccessUserToHtaccessGroup(&$dmn_id)
  */
 function client_removeHtaccessUserFromHtaccessGroup(&$dmn_id)
 {
-	/** @var $cfg iMSCP_Config_Handler_File */
-	$cfg = iMSCP_Registry::get('config');
-
 	if (isset($_POST['uaction']) && $_POST['uaction'] == 'remove' &&
 		isset($_POST['groups_in']) && !empty($_POST['groups_in']) &&
 		isset($_POST['nadmin_name']) && is_numeric($_POST['groups_in']) &&
@@ -232,7 +226,7 @@ function client_removeHtaccessUserFromHtaccessGroup(&$dmn_id)
 		if ($key !== false) {
 			unset($members[$key]);
 			$members = implode(",", $members);
-			$change_status = $cfg->ITEM_TOCHANGE_STATUS;
+			$change_status = 'tochange';
 			$update_query = "
 				UPDATE
 					`htaccess_groups`

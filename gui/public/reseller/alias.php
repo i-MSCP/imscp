@@ -277,13 +277,13 @@ function reseller_generateAlsList($tpl, $resellerId)
 		$dmnName = decode_idna($stmt->fields['domain_name']);
 
 
-		if ($alsStatus === $cfg->ITEM_OK_STATUS) {
+		if ($alsStatus === 'ok') {
 			$deleteLink = "alias_delete.php?id=" . $alsId;
 			$editLink = "alias_edit.php?id=" . $alsId;
 			$actionText = tr('Delete');
 			$editText = tr('Edit');
 			$statusBool = true;
-		} elseif ($alsStatus == $cfg->ITEM_ORDERED_STATUS) {
+		} elseif ($alsStatus == 'ordered') {
 			$deleteLink = 'alias_order.php?action=delete&del_id=' . $alsId;
 			$editLink = 'alias_order.php?action=activate&act_id=' . $alsId;
 			$actionText = tr('Delete order');
@@ -355,9 +355,6 @@ iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onResellerScriptStar
 check_login('reseller');
 
 resellerHasFeature('domain_aliases') or showBadRequestErrorPage();
-
-/** @var $cfg iMSCP_Config_Handler_File */
-$cfg = iMSCP_Registry::get('config');
 
 /** @var $tpl iMSCP_pTemplate */
 $tpl = new iMSCP_pTemplate();

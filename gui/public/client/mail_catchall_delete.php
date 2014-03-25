@@ -47,9 +47,6 @@ check_login('user');
 
 customerHasFeature('mail') or showBadRequestErrorPage();
 
-/** @var $cfg iMSCP_Config_Handler_File */
-$cfg = iMSCP_Registry::get('config');
-
 if (isset($_GET['id'])) {
 	$catchallId = clean_input($_GET['id']);
 
@@ -62,7 +59,7 @@ if (isset($_GET['id'])) {
 	}
 
 	$query = "UPDATE `mail_users` SET `status` = ? WHERE `mail_id` = ?";
-	exec_query($query, array($cfg->ITEM_TODELETE_STATUS, $catchallId));
+	exec_query($query, array('todelete', $catchallId));
 
 	send_request();
 

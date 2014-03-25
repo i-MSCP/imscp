@@ -42,18 +42,19 @@
  */
 function get_domain_running_sub_cnt($domain_id)
 {
-	$query = "SELECT COUNT(*) AS `cnt` FROM `subdomain` WHERE `domain_id` = ?";
-	$stmt1 = exec_query($query, $domain_id);
+	$stmt1 = exec_query('SELECT COUNT(*) AS cnt FROM subdomain WHERE domain_id = ?', $domain_id);
 
-	$query = "
-		SELECT
-			COUNT(`subdomain_alias_id`) AS `cnt`
-		FROM
-			`subdomain_alias`
-		WHERE
-			`alias_id` IN (SELECT `alias_id` FROM `domain_aliasses` WHERE `domain_id` = ?)
-	";
-	$stmt2 = exec_query($query, $domain_id);
+	$stmt2 = exec_query(
+		'
+			SELECT
+				COUNT(subdomain_alias_id) AS cnt
+			FROM
+				subdomain_alias
+			WHERE
+				alias_id IN (SELECT alias_id FROM domain_aliasses WHERE domain_id = ?)
+		',
+		$domain_id
+	);
 
 	return $stmt1->fields['cnt'] + $stmt2->fields['cnt'];
 }
@@ -69,8 +70,10 @@ function get_domain_running_als_cnt($domain_id)
 	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
 
-	$query = "SELECT COUNT(`alias_id`) AS `cnt` FROM `domain_aliasses` WHERE `domain_id` = ? AND `alias_status` != ?";
-	$stmt = exec_query($query, array($domain_id, $cfg->ITEM_ORDERED_STATUS));
+	$stmt = exec_query(
+		'SELECT COUNT(alias_id) AS cnt FROM domain_aliasses WHERE domain_id = ? AND alias_status != ?',
+		array($domain_id, 'ordered')
+	);
 
 	return $stmt->fields['cnt'];
 }
@@ -78,9 +81,9 @@ function get_domain_running_als_cnt($domain_id)
 /**
  * Returns information about number of mail account for a specific domain
  *
- * @param  int $domainId  Domain unique identifier
- * @return array          An array of values where the first item is the sum of all other items, and where each other
- *                        item represents total number of a specific Mail account type
+ * @param  int $domainId Domain unique identifier
+ * @return array An array of values where the first item is the sum of all other items, and where each other item
+ *               represents total number of a specific Mail account type
  */
 function get_domain_running_mail_acc_cnt($domainId)
 {
@@ -89,26 +92,26 @@ function get_domain_running_mail_acc_cnt($domainId)
 
 	$query = "
 		SELECT
-			COUNT(`mail_id`) AS `cnt`
+			COUNT(mail_id) AS cnt
 		FROM
-			`mail_users`
+			mail_users
 		WHERE
-			`mail_type` RLIKE ?
+			mail_type RLIKE ?
 		AND
-			`mail_type` NOT LIKE ?
+			mail_type NOT LIKE ?
 		AND
-			`domain_id` = ?
+			domain_id = ?
 	";
 
-	if ($cfg->COUNT_DEFAULT_EMAIL_ADDRESSES == 0) {
+	if ($cfg['COUNT_DEFAULT_EMAIL_ADDRESSES'] == 0) {
 		$query .=
 			"
-			AND
-				`mail_acc` != 'abuse'
-			AND
-				`mail_acc` != 'postmaster'
-			AND
-				`mail_acc` != 'webmaster'
+				AND
+					mail_acc != 'abuse'
+				AND
+					mail_acc != 'postmaster'
+				AND
+					mail_acc != 'webmaster'
 			";
 	}
 
@@ -137,20 +140,20 @@ function get_domain_running_mail_acc_cnt($domainId)
  */
 function get_customer_running_ftp_acc_cnt($customerId)
 {
-	$stmt = exec_query('SELECT COUNT(`userid`) AS `count` FROM `ftp_users` WHERE `admin_id` = ?', $customerId);
+	$stmt = exec_query('SELECT COUNT(userid) AS cnt FROM ftp_users WHERE admin_id = ?', $customerId);
 
-	return $stmt->fields['count'];
+	return $stmt->fields['cnt'];
 }
 
 /**
  * Returns total number of databases that belong to a specific domain
  *
- * @param  int $domain_id Domain unique identifier
+ * @param  int $domainId Domain unique identifier
  * @return int Total number of databases for a specific domain
  */
-function get_domain_running_sqld_acc_cnt($domain_id)
+function get_domain_running_sqld_acc_cnt($domainId)
 {
-	$stmt = exec_query('SELECT COUNT(*) AS `cnt` FROM `sql_database` WHERE `domain_id` = ?', $domain_id);
+	$stmt = exec_query('SELECT COUNT(*) AS cnt FROM sql_database WHERE domain_id = ?', $domainId);
 
 	return $stmt->fields['cnt'];
 }
@@ -158,38 +161,28 @@ function get_domain_running_sqld_acc_cnt($domain_id)
 /**
  * Returns total number of SQL user that belong to a specific domain
  *
- * @param  int $domain_id Domain unique identifier
+ * @param  int $domainId Domain unique identifier
  * @return int Total number of SQL users for a specific domain
  */
-function get_domain_running_sqlu_acc_cnt($domain_id)
+function get_domain_running_sqlu_acc_cnt($domainId)
 {
-	$query = "
-		SELECT DISTINCT
-			`t1`.`sqlu_name`
-		FROM
-			`sql_user` AS `t1`, `sql_database` AS `t2`
-		WHERE
-			`t2`.`domain_id` = ?
-		AND
-			`t2`.`sqld_id` = `t1`.`sqld_id`
-	";
-	$stmt = exec_query($query, $domain_id);
+	$stmt = exec_query(
+		'SELECT DISTINCT sqlu_name FROM sql_user INNER JOIN sql_database USING(sqld_id) WHERE domain_id = ?',
+		$domainId
+	);
 
-	return $stmt->recordCount();
+	return $stmt->rowCount();
 }
 
 /**
  * Returns both total number of database and SQL user that belong to a specific domain
  *
- * @param  int $domain_id Domain unique identifier
+ * @param  int $domainId Domain unique identifier
  * @return array An array where the first item is the Database total number, and the second the SQL users total number.
  */
-function get_domain_running_sql_acc_cnt($domain_id)
+function get_domain_running_sql_acc_cnt($domainId)
 {
-	return array(
-		get_domain_running_sqld_acc_cnt($domain_id),
-		get_domain_running_sqlu_acc_cnt($domain_id)
-	);
+	return array(get_domain_running_sqld_acc_cnt($domainId), get_domain_running_sqlu_acc_cnt($domainId));
 }
 
 /**
@@ -206,8 +199,7 @@ function get_domain_running_props_cnt($domainId)
 	list($mailAccCount) = get_domain_running_mail_acc_cnt($domainId);
 
 	// Transitional query - Will be removed asap
-	$query = "SELECT `domain_admin_id` FROM `domain` WHERE `domain_id` = ?";
-	$stmt = exec_query($query, $domainId);
+	$stmt = exec_query('SELECT domain_admin_id FROM domain WHERE domain_id = ?', $domainId);
 
 	$ftpAccCount = get_customer_running_ftp_acc_cnt($stmt->fields['domain_admin_id']);
 	list($sqlDbCount, $sqlUserCount) = get_domain_running_sql_acc_cnt($domainId);
@@ -249,161 +241,14 @@ function user_trans_mail_type($mail_type)
 }
 
 /**
- * Count SQL user by name
+ * Checks if an user has permissions on a specific SQL user
  *
- * @param string $sqlu_name SQL user name to match against
- * @return int
+ * @param  int $sqlUserId SQL user unique identifier
+ * @return bool TRUE if the logged in user has permission on SQL user, FALSE otherwise
  */
-function count_sql_user_by_name($sqlu_name)
+function check_user_sql_perms($sqlUserId)
 {
-	$stmt = exec_query('SELECT COUNT(*) AS `cnt` FROM `sql_user` WHERE `sqlu_name` = ?', $sqlu_name);
-
-	return $stmt->fields['cnt'];
-}
-
-/**
- * Checks if a user has permissions on a specific SQL user
- *
- * @param  int $db_user_id SQL user unique identifier.
- * @return bool TRUE if user have permission on SQL user, FALSE otherwise.
- */
-function check_user_sql_perms($db_user_id)
-{
-	if (who_owns_this($db_user_id, 'sqlu_id') != $_SESSION['user_id']) {
-		return false;
-	}
-
-	return true;
-}
-
-/**
- * Checks if a user has permissions on  specific SQL Database
- *
- * @param  int $db_id Database unique identifier
- * @return bool TRUE if user have permission on SQL user, FALSE otherwise.
- */
-function check_db_sql_perms($db_id)
-{
-	if (who_owns_this($db_id, 'sqld_id') != $_SESSION['user_id']) {
-		return false;
-	}
-
-	return true;
-}
-
-/**
- * Deletes an SQL user
- *
- * Note: Please be sure to execute this function inside a MySQL transaction to ensure data consistency.
- *
- * @param  int $domainId Domain unique identifier
- * @param  int $sqlUserId Sql user unique identifier
- * @return bool TRUE if $sqlUserId has been found and successfully removed, FALSE otherwise
- */
-function sql_delete_user($domainId, $sqlUserId)
-{
-	iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onBeforeDeleteSqlUser, array('sqlUserId' => $sqlUserId));
-
-	$query = "
-		SELECT
-			`t1`.`sqld_id`, `t1`.`sqlu_name`, `t2`.`sqld_name`, `t1`.`sqlu_name`
-		FROM
-			`sql_user` `t1`, `sql_database` `t2`
-		WHERE
-			`t1`.`sqld_id` = `t2`.`sqld_id`
-		AND
-			`t2`.`domain_id` = ?
-		AND
-			`t1`.`sqlu_id` = ?
-	";
-	$stmt = exec_query($query, array($domainId, $sqlUserId));
-
-	if (!$stmt->rowCount()) {
-		return false;
-	}
-
-	$sqlUserName = $stmt->fields['sqlu_name'];
-
-	// If SQL user is only assigned to one database we can remove it completely
-	if (count_sql_user_by_name($sqlUserName) == 1) {
-		exec_query('DELETE FROM `mysql`.`user` WHERE `User` = ?', $sqlUserName);
-		exec_query('DELETE FROM `mysql`.`db` WHERE `User` = ?', $sqlUserName);
-	} else {
-		exec_query(
-			'DELETE FROM `mysql`.`db` WHERE `User` = ? AND `Db` = ?', array($sqlUserName, $stmt->fields['sqld_name'])
-		);
-	}
-
-	// Flush SQL privileges
-	execute_query('FLUSH PRIVILEGES');
-
-	// Delete the database from the i-MSCP sql_user table
-	// Must be done at end of process
-	exec_query('DELETE FROM `sql_user` WHERE `sqlu_id` = ?', $sqlUserId);
-
-	iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAfterDeleteSqlUser, array('sqlUserId' => $sqlUserId));
-
-	return true;
-}
-
-/**
- * Deletes the given SQL database
- *
- * @throws iMSCP_Exception in case a SQL user linked to the given databsae cannot be removed
- * @param  int $domainId Domain unique identifier
- * @param  int $databaseId Databse unique identifier
- * @return bool TRUE when $databaseId has been found and successfully deleted, FALSE otherwise
- */
-function delete_sql_database($domainId, $databaseId)
-{
-	iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onBeforeDeleteSqlDb, array('sqlDbId' => $databaseId));
-
-	// Get name of $databaseId being deleted
-	$query = "SELECT `sqld_name` FROM `sql_database` WHERE `domain_id` = ? AND `sqld_id` = ?";
-	$stmt = exec_query($query, array($domainId, $databaseId));
-
-	if (!$stmt->rowCount()) {
-		return false;
-	}
-
-	$databaseName = quoteIdentifier($stmt->fields['sqld_name']);
-
-	// Get list of users assigned to the database to remove
-	$query = "
-		SELECT
-			`t2`.`sqlu_id`
-		FROM
-			`sql_database` `t1`, `sql_user` `t2`
-		WHERE
-			`t1`.`sqld_id` = `t2`.`sqld_id`
-		AND
-			`t1`.`domain_id` = ?
-		AND
-			`t1`.`sqld_id` = ?
-	";
-	$stmt = exec_query($query, array($domainId, $databaseId));
-
-	if ($stmt->rowCount()) {
-		while (!$stmt->EOF) {
-			$sqlUserId = $stmt->fields['sqlu_id'];
-
-			if (!sql_delete_user($domainId, $sqlUserId)) {
-				throw new iMSCP_Exception(sprintf('Unable to delete SQL user linked to database with ID %d.', $sqlUserId));
-			}
-
-			$stmt->moveNext();
-		}
-	}
-
-	$query = "DELETE FROM `sql_database` WHERE `domain_id` = ? AND `sqld_id` = ?";
-	exec_query($query, array($domainId, $databaseId));
-
-	// Must be done last due to the implicit commit
-	exec_query("DROP DATABASE IF EXISTS $databaseName");
-
-	iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAfterDeleteSqlDb, array('sqlDbId' => $databaseId));
-
-	return true;
+	return (who_owns_this($sqlUserId, 'sqlu_id') == $_SESSION['user_id']);
 }
 
 /**
@@ -425,42 +270,6 @@ function get_gender_by_code($code, $nullOnBad = false)
 		default:
 			return (!$nullOnBad) ? tr('Unknown') : null;
 	}
-}
-
-/**
- * Checks if a mount point exists
- *
- * @param  int $domain_id Domain unique identifier
- * @param  string $mnt_point mount point to check
- * @return bool TRUE if the mount point exists, FALSE otherwise
- */
-function mount_point_exists($domain_id, $mnt_point)
-{
-	$query = "
-		SELECT
-			`t1`.`domain_id`, `t2`.`alias_mount`, `t3`.`subdomain_mount`, `t4`.`subdomain_alias_mount`
-		FROM
-			`domain` AS `t1`
-		LEFT JOIN
-			`domain_aliasses` AS `t2` ON (`t1`.`domain_id` = `t2`.`domain_id`)
-		LEFT JOIN
-			`subdomain` AS `t3` ON (`t1`.`domain_id` = `t3`.`domain_id`)
-		LEFT JOIN
-			`subdomain_alias` AS `t4` ON (`t2`.`alias_id` = `t4`.`alias_id`)
-		WHERE
-			`t1`.`domain_id` = ?
-		AND
-			(`alias_mount` = ? OR `subdomain_mount` = ? OR `subdomain_alias_mount` = ?)
-	";
-
-	$stmt = exec_query($query, array(
-		$domain_id, $mnt_point, $mnt_point, $mnt_point));
-
-	if ($stmt->rowCount()) {
-		return true;
-	}
-
-	return false;
 }
 
 /**
@@ -560,67 +369,74 @@ function customerHasDomain($domainName, $customerId)
 	$domainName = encode_idna($domainName);
 
 	// Check in domain table
-	$query = "SELECT 'found' FROM `domain` WHERE `domain_admin_id` = ? AND `domain_name` = ?";
-	$stmt = exec_query($query, array($customerId, $domainName));
+	$stmt = exec_query(
+		"SELECT 'found' FROM domain WHERE domain_admin_id = ? AND domain_name = ?", array($customerId, $domainName)
+	);
 
 	if ($stmt->rowCount()) {
 		return true;
 	}
 
 	// Check in domain_aliasses table
-	$query = "
-		SELECT
-			'found'
-		FROM
-			`domain` AS `t1`
-		INNER JOIN
-			`domain_aliasses` AS `t2` ON(`t2`.`domain_id` = `t1`.`domain_id`)
-		WHERE
-			`t1`.`domain_admin_id` = ?
-		AND
-			`t2`.`alias_name` = ?
-	";
-	$stmt = exec_query($query, array($customerId, $domainName));
+	$stmt = exec_query(
+		"
+			SELECT
+				'found'
+			FROM
+				domain AS t1
+			INNER JOIN
+				domain_aliasses AS t2 ON(t2.domain_id = t1.domain_id)
+			WHERE
+				t1.domain_admin_id = ?
+			AND
+				t2.alias_name = ?
+		",
+		array($customerId, $domainName)
+	);
 
 	if ($stmt->rowCount()) {
 		return true;
 	}
 
 	// Check in subdomain table
-	$query = "
-		SELECT
-			'found'
-		FROM
-			`domain` AS `t1`
-		INNER JOIN
-			`subdomain` AS `t2` ON (`t2`.`domain_id` = `t1`.`domain_id`)
-		WHERE
-			`t1`.`domain_admin_id` = ?
-		AND
-			CONCAT(`t2`.`subdomain_name`, '.', `t1`.`domain_name`) = ?
-	";
-	$stmt = exec_query($query, array($customerId, $domainName));
+	$stmt = exec_query(
+		"
+			SELECT
+				'found'
+			FROM
+				domain AS t1
+			INNER JOIN
+				subdomain AS t2 ON (t2.domain_id = t1.domain_id)
+			WHERE
+				t1.domain_admin_id = ?
+			AND
+				CONCAT(t2.subdomain_name, '.', t1.domain_name) = ?
+		",
+		array($customerId, $domainName)
+	);
 
 	if ($stmt->rowCount()) {
 		return true;
 	}
 
 	// Check in subdomain_alias table
-	$query = "
-		SELECT
-			'found'
-		FROM
-			`domain` AS `t1`
-		INNER JOIN
-			`domain_aliasses` AS `t2` ON(`t2`.`domain_id` = `t1`.`domain_id`)
-		INNER JOIN
-		 	`subdomain_alias` AS `t3` ON(`t3`.`alias_id` = `t2`.`alias_id`)
-		WHERE
-			`t1`.`domain_admin_id` = ?
-		AND
-			CONCAT(`t3`.`subdomain_alias_name`, '.', `t2`.`alias_name`) = ?
-	";
-	$stmt = exec_query($query, array($customerId, $domainName));
+	$stmt = exec_query(
+		"
+			SELECT
+				'found'
+			FROM
+				domain AS t1
+			INNER JOIN
+				domain_aliasses AS t2 ON(t2.domain_id = t1.domain_id)
+			INNER JOIN
+			 	subdomain_alias AS t3 ON(t3.alias_id = t2.alias_id)
+			WHERE
+				t1.domain_admin_id = ?
+			AND
+				CONCAT(t3.subdomain_alias_name, '.', t2.alias_name) = ?
+		",
+		array($customerId, $domainName)
+	);
 
 	if ($stmt->rowCount()) {
 		return true;
@@ -636,5 +452,5 @@ function customerHasDomain($domainName, $customerId)
  */
 function delete_autoreplies_log_entries()
 {
-	exec_query("DELETE FROM `autoreplies_log` WHERE `from` NOT IN (SELECT `mail_addr` FROM `mail_users`)");
+	exec_query("DELETE FROM autoreplies_log WHERE `from` NOT IN (SELECT mail_addr FROM mail_users)");
 }

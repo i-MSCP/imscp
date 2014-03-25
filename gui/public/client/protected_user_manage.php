@@ -48,10 +48,7 @@
  */
 function _client_generateUserAction($status)
 {
-	/** @var $cfg iMSCP_Config_Handler_File */
-	$cfg = iMSCP_Registry::get('config');
-
-	if ($status == $cfg->ITEM_OK_STATUS) {
+	if ($status == 'ok') {
 		return array(tr('Delete'), "action_delete('protected_user_delete.php?uname={USER_ID}', '{UNAME}')", tr('Edit'), "protected_user_edit.php?uname={USER_ID}");
 	} else {
 		return array(tr('N/A'), '', tr('N/A'), '#');
@@ -71,7 +68,7 @@ function _client_generateHtgroupAction($status, $group)
 	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
 
-	if ($status == $cfg->ITEM_OK_STATUS && $group != $cfg->WEBSTATS_GROUP_AUTH) {
+	if ($status == 'ok' && $group != $cfg->WEBSTATS_GROUP_AUTH) {
 		return array(tr('Delete'), "action_delete('protected_group_delete.php?gname={GROUP_ID}', '{GNAME}')");
 	} else {
 		return array(tr('N/A'), '');

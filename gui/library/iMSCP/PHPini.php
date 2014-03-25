@@ -478,7 +478,7 @@ class iMSCP_PHPini
 		# TODO changing only the domain status is not sufficicent since
 		# we are providing many level for php.ini file
 		$query = "UPDATE `domain` SET `domain_status` = ? WHERE `domain_id` = ?";
-		exec_query($query, array($this->_cfg->ITEM_TOCHANGE_STATUS, $domainId));
+		exec_query($query, array('tochange', $domainId));
 		send_request();
 	}
 
@@ -706,7 +706,7 @@ class iMSCP_PHPini
 		$query = "SELECT `domain_status` FROM `domain` WHERE `domain_id` = ?";
 		$stmt = exec_query($query, $domainId);
 
-		if ($stmt->fields('domain_status') == $this->_cfg->ITEM_OK_STATUS) {
+		if ($stmt->fields('domain_status') == 'ok') {
 			return true;
 		}
 

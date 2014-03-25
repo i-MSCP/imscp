@@ -42,12 +42,12 @@
  */
 function do_session_timeout()
 {
-    /** @var $cfg iMSCP_Config_Handler_File */
-    $cfg = iMSCP_Registry::get('config');
+	/** @var $cfg iMSCP_Config_Handler_File */
+	$cfg = iMSCP_Registry::get('config');
 
-    // We must not remove bruteforce plugin data (AND `user_name` IS NOT NULL)
-    $query = "DELETE FROM `login` WHERE `lastaccess` < ? AND `user_name` IS NOT NULL";
-    exec_query($query, time() - $cfg->SESSION_TIMEOUT * 60);
+	// We must not remove bruteforce plugin data (AND `user_name` IS NOT NULL)
+	$query = "DELETE FROM login WHERE lastaccess < ? AND user_name IS NOT NULL";
+	exec_query($query, time() - $cfg->SESSION_TIMEOUT * 60);
 }
 
 /**
@@ -58,16 +58,16 @@ function do_session_timeout()
  */
 function init_login($events)
 {
-    /** @var $cfg iMSCP_Config_Handler_File */
-    $cfg = iMSCP_Registry::get('config');
+	/** @var $cfg iMSCP_Config_Handler_File */
+	$cfg = iMSCP_Registry::get('config');
 
-    if ($cfg->BRUTEFORCE) {
-        $bruteforce = new iMSCP_Authentication_Bruteforce();
-        $bruteforce->register($events);
-    }
+	if ($cfg->BRUTEFORCE) {
+		$bruteforce = new iMSCP_Authentication_Bruteforce();
+		$bruteforce->register($events);
+	}
 
-    // Register listener method to check domain status and expire date when the onBeforeSetIdentity event is triggered
-    $events->registerListener(iMSCP_Events::onBeforeSetIdentity, 'login_checkDomainAccount');
+	// Register listener method to check domain status and expire date when the onBeforeSetIdentity event is triggered
+	$events->registerListener(iMSCP_Events::onBeforeSetIdentity, 'login_checkDomainAccount');
 }
 
 /**
@@ -80,47 +80,42 @@ function init_login($events)
  */
 function login_checkDomainAccount($event)
 {
-    /** @var $identity stdClass */
-    $identity = $event->getParam('identity');
+	/** @var $identity stdClass */
+	$identity = $event->getParam('identity');
 
-    if ($identity->admin_type == 'user') {
-        /** @var $cfg iMSCP_Config_Handler_File */
-        $cfg = iMSCP_Registry::get('config');
-
-        $query = '
-            SELECT
-                `domain_expires`, `domain_status`, `admin_status`
-            FROM
-                `domain`
-            LEFT JOIN `admin` ON(`domain_admin_id` = `admin_id`)
-            WHERE
-                `domain_admin_id` = ?
+	if ($identity->admin_type == 'user') {
+		$query = '
+			SELECT
+				domain_expires, domain_status, admin_status
+			FROM
+				domain
+			INNER JOIN
+				admin ON(domain_admin_id = admin_id)
+			WHERE
+				domain_admin_id = ?
         ';
-        $stmt = exec_query($query, $identity->admin_id);
+		$stmt = exec_query($query, $identity->admin_id);
 
-        $isAccountStateOk = true;
+		$isAccountStateOk = true;
 
-        if (
-	        ($stmt->fields['admin_status'] != $cfg->ITEM_OK_STATUS) ||
-	        ($stmt->fields['domain_status'] != $cfg->ITEM_OK_STATUS)
-        ) {
-            $isAccountStateOk = false;
-            set_page_message(
-	            tr('Your account is currently in maintenance or disabled. Please, contact your reseller.'), 'error'
-            );
-        } else {
-            $domainExpireDate = $stmt->fields['domain_expires'];
+		if (($stmt->fields['admin_status'] != 'ok') || ($stmt->fields['domain_status'] != 'ok')) {
+			$isAccountStateOk = false;
+			set_page_message(
+				tr('Your account is currently in maintenance or disabled. Please, contact your reseller.'), 'error'
+			);
+		} else {
+			$domainExpireDate = $stmt->fields['domain_expires'];
 
-            if ($domainExpireDate && $domainExpireDate < time()) {
-                $isAccountStateOk = false;
-                set_page_message(tr('Your account has expired.'), 'error');
-            }
-        }
+			if ($domainExpireDate && $domainExpireDate < time()) {
+				$isAccountStateOk = false;
+				set_page_message(tr('Your account has expired.'), 'error');
+			}
+		}
 
-        if (!$isAccountStateOk) {
-            redirectTo('index.php');
-        }
-    }
+		if (!$isAccountStateOk) {
+			redirectTo('index.php');
+		}
+	}
 }
 
 /**
@@ -131,77 +126,77 @@ function login_checkDomainAccount($event)
  */
 function check_login($userLevel = '', $preventExternalLogin = true)
 {
-    do_session_timeout();
+	do_session_timeout();
 
-    $auth = iMSCP_Authentication::getInstance();
+	$auth = iMSCP_Authentication::getInstance();
 
-    if (!$auth->hasIdentity()) {
+	if (!$auth->hasIdentity()) {
 		$auth->unsetIdentity(); // Ensure deletion of all entity data
 
-        if (is_xhr()) {
-            header('HTTP/1.0 403 Forbidden');
-            exit;
-        }
+		if (is_xhr()) {
+			header('HTTP/1.0 403 Forbidden');
+			exit;
+		}
 
-        redirectTo('/index.php');
-    }
+		redirectTo('/index.php');
+	}
 
-    /** @var $cfg iMSCP_Config_Handler_File */
-    $cfg = iMSCP_Registry::get('config');
+	/** @var $cfg iMSCP_Config_Handler_File */
+	$cfg = iMSCP_Registry::get('config');
 
-    $identity = $auth->getIdentity();
+	$identity = $auth->getIdentity();
 
-    if ($cfg->MAINTENANCEMODE && $identity->admin_type != 'admin' &&
-        (!isset($_SESSION['logged_from_type']) || $_SESSION['logged_from_type'] != 'admin')
-    ) {
-        $auth->unsetIdentity();
-        redirectTo('/index.php');
-    }
+	if ($cfg->MAINTENANCEMODE && $identity->admin_type != 'admin' &&
+		(!isset($_SESSION['logged_from_type']) || $_SESSION['logged_from_type'] != 'admin')
+	) {
+		$auth->unsetIdentity();
+		redirectTo('/index.php');
+	}
 
-    // Check user level
-    if (!empty($userLevel) && ($userType = $identity->admin_type) != $userLevel) {
-        if ($userType != 'admin' && (!isset($_SESSION['logged_from']) || $_SESSION['logged_from'] != 'admin')) {
-            $loggedUser = isset($_SESSION['logged_from']) ? $_SESSION['logged_from'] : $identity->admin_name;
-            write_log('Warning! user |' . $loggedUser . '| requested |' . tohtml($_SERVER['REQUEST_URI']) .
-                '| with REQUEST_METHOD |' . $_SERVER['REQUEST_METHOD'] . '|', E_USER_WARNING);
-        }
+	// Check user level
+	if (!empty($userLevel) && ($userType = $identity->admin_type) != $userLevel) {
+		if ($userType != 'admin' && (!isset($_SESSION['logged_from']) || $_SESSION['logged_from'] != 'admin')) {
+			$loggedUser = isset($_SESSION['logged_from']) ? $_SESSION['logged_from'] : $identity->admin_name;
+			write_log('Warning! user |' . $loggedUser . '| requested |' . tohtml($_SERVER['REQUEST_URI']) .
+				'| with REQUEST_METHOD |' . $_SERVER['REQUEST_METHOD'] . '|', E_USER_WARNING);
+		}
 
-        redirectTo('/index.php');
-    }
+		redirectTo('/index.php');
+	}
 
-    // prevent external login / check for referer
-    if ($preventExternalLogin && !empty($_SERVER['HTTP_REFERER'])) {
-        // Extracting hostname from referer URL
-        // Note2: We remove any braket in referer (ipv6 issue)
-        $refererHostname = str_replace(array('[', ']'), '', parse_url($_SERVER['HTTP_REFERER'], PHP_URL_HOST));
+	// prevent external login / check for referer
+	if ($preventExternalLogin && !empty($_SERVER['HTTP_REFERER'])) {
+		// Extracting hostname from referer URL
+		// Note2: We remove any braket in referer (ipv6 issue)
+		$refererHostname = str_replace(array('[', ']'), '', parse_url($_SERVER['HTTP_REFERER'], PHP_URL_HOST));
 
-        // The URL does contains the host element ?
-        if (!is_null($refererHostname)) {
-            // Note1: We don't care about the scheme, we only want make parse_url() happy
-            // Note2: We remove any braket in hostname (ipv6 issue)
-            $http_host = str_replace(array('[', ']'), '', parse_url("http://{$_SERVER['HTTP_HOST']}", PHP_URL_HOST));
+		// The URL does contains the host element ?
+		if (!is_null($refererHostname)) {
+			// Note1: We don't care about the scheme, we only want make parse_url() happy
+			// Note2: We remove any braket in hostname (ipv6 issue)
+			$http_host = str_replace(array('[', ']'), '', parse_url("http://{$_SERVER['HTTP_HOST']}", PHP_URL_HOST));
 
-            // The referer doesn't match the panel hostname ?
-            if (!in_array($refererHostname, array($http_host, $_SERVER['SERVER_NAME']))) {
-                set_page_message(tr('Request from foreign host was blocked.'), 'info');
+			// The referer doesn't match the panel hostname ?
+			if (!in_array($refererHostname, array($http_host, $_SERVER['SERVER_NAME']))) {
+				set_page_message(tr('Request from foreign host was blocked.'), 'info');
 
-                # Quick fix for #96 (will be rewritten ASAP)
-                isset($_SERVER['REDIRECT_URL']) ? : $_SERVER['REDIRECT_URL'] = '';
+				# Quick fix for #96 (will be rewritten ASAP)
+				isset($_SERVER['REDIRECT_URL']) ? : $_SERVER['REDIRECT_URL'] = '';
 
-                if (!(substr($_SERVER['SCRIPT_FILENAME'], (int)-strlen($_SERVER['REDIRECT_URL']),
-                    strlen($_SERVER['REDIRECT_URL'])) == $_SERVER['REDIRECT_URL'])
-                ) {
-                    redirectToUiLevel();
-                }
-            }
-        }
-    }
+				if (!(substr($_SERVER['SCRIPT_FILENAME'], (int)-strlen($_SERVER['REDIRECT_URL']),
+						strlen($_SERVER['REDIRECT_URL'])) == $_SERVER['REDIRECT_URL'])
+				) {
+					redirectToUiLevel();
+				}
+			}
+		}
+	}
 
-    // If all goes fine update session and lastaccess
-    $_SESSION['user_login_time'] = time();
-    exec_query(
-        'UPDATE `login` SET `lastaccess` = ? WHERE `session_id` = ?', array($_SESSION['user_login_time'], session_id())
-    );
+	// If all goes fine update session and lastaccess
+	$_SESSION['user_login_time'] = time();
+	exec_query(
+		'UPDATE login SET lastaccess = ? WHERE session_id = ?', array($_SESSION['user_login_time'], session_id())
+	);
 }
 
 /**
@@ -213,66 +208,68 @@ function check_login($userLevel = '', $preventExternalLogin = true)
  */
 function change_user_interface($fromId, $toId)
 {
-    $toActionScript = false;
+	$toActionScript = false;
 
-    while (1) { // We loop over nothing here, it's just a way to avoid code repetition
-        $query = '
-		    SELECT
-		        `admin_id`, `admin_name`, `admin_type`, `email`, `created_by`
-		    FROM
-		        `admin`
-		    WHERE
-		        `admin_id` IN(?, ?)
-		    ORDER BY FIELD(admin_id, ?, ?)
-		    LIMIT 2
+	while (1) { // We loop over nothing here, it's just a way to avoid code repetition
+		$query = '
+			SELECT
+				admin_id, admin_name, admin_type, email, created_by
+			FROM
+				admin
+			WHERE
+				admin_id IN(?, ?)
+			ORDER BY
+				FIELD(admin_id, ?, ?)
+			LIMIT
+				2
 		';
-        $stmt = exec_query($query, array($fromId, $toId, $fromId, $toId));
+		$stmt = exec_query($query, array($fromId, $toId, $fromId, $toId));
 
-        if ($stmt->rowCount() < 2) {
-            set_page_message(tr('Wrong request.'), 'error');
-        }
+		if ($stmt->rowCount() < 2) {
+			set_page_message(tr('Wrong request.'), 'error');
+		}
 
-        list($from, $to) = $stmt->fetchAll(PDO::FETCH_OBJ);
+		list($from, $to) = $stmt->fetchAll(PDO::FETCH_OBJ);
 
-        $fromToMap = array();
-        $fromToMap['admin']['BACK'] = 'manage_users.php';
-        $fromToMap['admin']['reseller'] = 'index.php';
-        $fromToMap['admin']['user'] = 'index.php';
-        $fromToMap['reseller']['user'] = 'index.php';
-        $fromToMap['reseller']['BACK'] = 'users.php';
+		$fromToMap = array();
+		$fromToMap['admin']['BACK'] = 'manage_users.php';
+		$fromToMap['admin']['reseller'] = 'index.php';
+		$fromToMap['admin']['user'] = 'index.php';
+		$fromToMap['reseller']['user'] = 'index.php';
+		$fromToMap['reseller']['BACK'] = 'users.php';
 
-        if (!isset($fromToMap[$from->admin_type][$to->admin_type]) || ($from->admin_type == $to->admin_type)) {
-            if (isset($_SESSION['logged_from_id']) && $_SESSION['logged_from_id'] == $to->admin_id) {
-                $toActionScript = $fromToMap[$to->admin_type]['BACK'];
-            } else {
-                set_page_message(tr('Wrong request.'), 'error');
-                write_log(sprintf("%s tried to switch onto %s's interface", $from->admin_name, decode_idna($to->admin_name)),  E_USER_WARNING);
-                break;
-            }
-        }
+		if (!isset($fromToMap[$from->admin_type][$to->admin_type]) || ($from->admin_type == $to->admin_type)) {
+			if (isset($_SESSION['logged_from_id']) && $_SESSION['logged_from_id'] == $to->admin_id) {
+				$toActionScript = $fromToMap[$to->admin_type]['BACK'];
+			} else {
+				set_page_message(tr('Wrong request.'), 'error');
+				write_log(sprintf("%s tried to switch onto %s's interface", $from->admin_name, decode_idna($to->admin_name)), E_USER_WARNING);
+				break;
+			}
+		}
 
-        $toActionScript = ($toActionScript) ? $toActionScript : $fromToMap[$from->admin_type][$to->admin_type];
+		$toActionScript = ($toActionScript) ? $toActionScript : $fromToMap[$from->admin_type][$to->admin_type];
 
-        // Set new identity
-        $auth = iMSCP_Authentication::getInstance();
-        $auth->unsetIdentity();
-        $auth->setIdentity($to);
+		// Set new identity
+		$auth = iMSCP_Authentication::getInstance();
+		$auth->unsetIdentity();
+		$auth->setIdentity($to);
 
-        if ($from->admin_type != 'user' && $to->admin_type != 'admin') {
-            // Set additional data about user from wich we are logged from
-            $_SESSION['logged_from_type'] = $from->admin_type;
-            $_SESSION['logged_from'] = $from->admin_name;
-            $_SESSION['logged_from_id'] = $from->admin_id;
+		if ($from->admin_type != 'user' && $to->admin_type != 'admin') {
+			// Set additional data about user from wich we are logged from
+			$_SESSION['logged_from_type'] = $from->admin_type;
+			$_SESSION['logged_from'] = $from->admin_name;
+			$_SESSION['logged_from_id'] = $from->admin_id;
 
-            write_log(sprintf("%s switched onto %s's interface", $from->admin_name, decode_idna($to->admin_name)), E_USER_NOTICE);
-        } else {
-            write_log(sprintf("%s switched back from %s's interface", $to->admin_name, decode_idna($from->admin_name)), E_USER_NOTICE);
-        }
+			write_log(sprintf("%s switched onto %s's interface", $from->admin_name, decode_idna($to->admin_name)), E_USER_NOTICE);
+		} else {
+			write_log(sprintf("%s switched back from %s's interface", $to->admin_name, decode_idna($from->admin_name)), E_USER_NOTICE);
+		}
 
-        break;
-    }
+		break;
+	}
 
-    redirectToUiLevel($toActionScript);
+	redirectToUiLevel($toActionScript);
 }
 
 /**
@@ -284,22 +281,22 @@ function change_user_interface($fromId, $toId)
  */
 function redirectToUiLevel($actionScript = 'index.php')
 {
-    $auth = iMSCP_Authentication::getInstance();
+	$auth = iMSCP_Authentication::getInstance();
 
-    if ($auth->hasIdentity()) {
-        $userType = $auth->getIdentity()->admin_type;
-        switch ($userType) {
-            case 'user':
-            case 'admin':
-            case 'reseller':
-                // Prevents display of any old message when switching to another user level
-                Zend_Session::namespaceUnset('pageMessages');
-                redirectTo('/' . (($userType == 'user') ? 'client' : $userType . '/' . $actionScript));
-                exit;
-            default:
-                throw new iMSCP_Exception('Unknown UI level');
-        }
-    }
+	if ($auth->hasIdentity()) {
+		$userType = $auth->getIdentity()->admin_type;
+		switch ($userType) {
+			case 'user':
+			case 'admin':
+			case 'reseller':
+				// Prevents display of any old message when switching to another user level
+				Zend_Session::namespaceUnset('pageMessages');
+				redirectTo('/' . (($userType == 'user') ? 'client' : $userType . '/' . $actionScript));
+				exit;
+			default:
+				throw new iMSCP_Exception('Unknown UI level');
+		}
+	}
 }
 
 /**
@@ -311,26 +308,26 @@ function redirectToUiLevel($actionScript = 'index.php')
  */
 function getIpAddr()
 {
-    $ipAddr = (!empty($_SERVER['HTTP_CLIENT_IP'])) ? $_SERVER['HTTP_CLIENT_IP'] : false;
+	$ipAddr = (!empty($_SERVER['HTTP_CLIENT_IP'])) ? $_SERVER['HTTP_CLIENT_IP'] : false;
 
-    if (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
-        $ipAddrs = explode(', ', $_SERVER['HTTP_X_FORWARDED_FOR']);
+	if (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+		$ipAddrs = explode(', ', $_SERVER['HTTP_X_FORWARDED_FOR']);
 
-        if ($ipAddr) {
-            array_unshift($ipAddrs, $ipAddr);
-            $ipAddr = false;
-        }
+		if ($ipAddr) {
+			array_unshift($ipAddrs, $ipAddr);
+			$ipAddr = false;
+		}
 
-        $countIpAddrs = count($ipAddrs);
+		$countIpAddrs = count($ipAddrs);
 
-        // Loop over ip stack as long an ip out of private range is not found
-        for ($i = 0; $i < $countIpAddrs; $i++) {
-            if (filter_var($ipAddrs[$i], FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE)) {
-                $ipAddr = $ipAddrs[$i];
-                break;
-            }
-        }
-    }
+		// Loop over ip stack as long an ip out of private range is not found
+		for ($i = 0; $i < $countIpAddrs; $i++) {
+			if (filter_var($ipAddrs[$i], FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE)) {
+				$ipAddr = $ipAddrs[$i];
+				break;
+			}
+		}
+	}
 
-    return ($ipAddr ? $ipAddr : $_SERVER['REMOTE_ADDR']);
+	return ($ipAddr ? $ipAddr : $_SERVER['REMOTE_ADDR']);
 }
