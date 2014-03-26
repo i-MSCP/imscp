@@ -24,7 +24,8 @@ INSTALLER:
 	- Fixed: 127.0.0.1 is now mapped to localhost for consistency (SQL user host)
 
 Tickets:
-	- Fixed: #1050: Bug - Customers can order domains which already exists through domain aliases interface
+	- Fixed #1050: Bug - Customers can order domains which already exists through domain aliases interface
+	- Fixed #1051: Bug - Trying to get property of non-object - Integrity constraint violation: 1062 Duplicate entry
 
 ------------------------------------------------------------------------------------------------------------------------
 1.1.4
@@ -50,10 +51,10 @@ PLUGINS:
 	- Updated: Plugin API to version 0.2.8 (changes are backward compatible)
 
 Tickets:
-	- Fixed: #0879: Security Issue - SQL user hostname - Remove wildcard
-	- Fixed: #1042: Bug - Serial and DNS records in zone files aren't updated/deleted
-	- Fixed: #1045: Bug - All customer alias DNS records are removed when a subdomain is being deleted
-	- Fixed: #1048: Bug - Bad Request - Breadcrumb - Customer statistics
+	- Fixed #0879: Security Issue - SQL user hostname - Remove wildcard
+	- Fixed #1042: Bug - Serial and DNS records in zone files aren't updated/deleted
+	- Fixed #1045: Bug - All customer alias DNS records are removed when a subdomain is being deleted
+	- Fixed #1048: Bug - Bad Request - Breadcrumb - Customer statistics
 
 ------------------------------------------------------------------------------------------------------------------------
 1.1.3
