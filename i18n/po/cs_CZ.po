@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2014-03-23 16:38+0100\n"
-"PO-Revision-Date: 2014-03-23 15:40+0000\n"
+"POT-Creation-Date: 2014-03-27 02:06+0100\n"
+"PO-Revision-Date: 2014-03-27 01:08+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Czech (Czech Republic) (http://www.transifex.com/projects/p/i-MSCP/language/cs_CZ/)\n"
 "MIME-Version: 1.0\n"
@@ -309,6 +309,10 @@ msgstr ""
 
 #, php-format
 msgid "%s is not a valid i-MSCP language file."
+msgstr ""
+
+#, php-format
+msgid "%s is not allowed as subdomain label."
 msgstr ""
 
 #, php-format
@@ -1278,14 +1282,8 @@ msgstr ""
 msgid "Change"
 msgstr "Přepnout"
 
-msgid "Change SQL user password"
-msgstr "Změnit heslo pro SQL uživatele"
-
 msgid "Change in progress..."
 msgstr ""
-
-msgid "Change password"
-msgstr "Změnit heslo"
 
 msgid "Change personal data"
 msgstr "Změnit osobní údaje"
@@ -1731,6 +1729,9 @@ msgstr "Název databáze"
 msgid "Database name is too long."
 msgstr "Název databáze je příliš dlouhý."
 
+msgid "Database name is unavailable."
+msgstr ""
+
 msgid "Database prefix"
 msgstr "Předpona databáze"
 
@@ -1884,9 +1885,6 @@ msgstr ""
 msgid "Deletion in progress"
 msgstr ""
 
-msgid "Demo Version!"
-msgstr "Demo verze!"
-
 msgid "Depot import"
 msgstr ""
 
@@ -1950,6 +1948,10 @@ msgstr ""
 msgid "Domain"
 msgstr "Doména"
 
+#, php-format
+msgid "Domain %s is unavailable."
+msgstr ""
+
 msgid "Domain IP"
 msgstr "IP adresa domény"
 
@@ -1970,10 +1972,6 @@ msgstr ""
 
 msgid "Domain alias"
 msgstr "Doménový alias"
-
-#, php-format
-msgid "Domain alias %s already exist."
-msgstr ""
 
 #, php-format
 msgid "Domain alias %s cannot be forwarded on itself."
@@ -2019,9 +2017,6 @@ msgstr ""
 
 msgid "Domain aliases"
 msgstr "Doménové aliasy"
-
-msgid "Domain already registered on the system."
-msgstr "Doména zaregistrována v systému."
 
 msgid "Domain and SQL databases"
 msgstr ""
@@ -2110,9 +2105,6 @@ msgstr "Domény"
 
 msgid "Domains per page"
 msgstr "Domén na stránku"
-
-msgid "Don't use special chars like \"@, $, %...\" in the password."
-msgstr "Nepoužívejte v heslu speciální znaky jako \"@, $,%...\"."
 
 msgid "Done"
 msgstr "Hotovo"
@@ -2770,6 +2762,9 @@ msgstr ""
 msgid "Incorrect username length or syntax."
 msgstr "Nesprávná délka, nebo syntaxe uživatelského jména ."
 
+msgid "Info Unavailable"
+msgstr ""
+
 msgid "Install"
 msgstr "Instalovat"
 
@@ -2843,6 +2838,10 @@ msgid "Invalid MX type."
 msgstr ""
 
 msgid "Invalid NAME."
+msgstr ""
+
+#, php-format
+msgid "Invalid SQL user host: %s"
 msgstr ""
 
 msgid "Invalid TXT data"
@@ -3102,9 +3101,6 @@ msgstr "Spravujte své chráněné oblasti, uživatele a skupiny."
 
 msgid "Mark"
 msgstr "Vybrat"
-
-msgid "Master domain cannot be used."
-msgstr "Hlavní doména nemůže být použita."
 
 msgid "Max number of login attempts"
 msgstr "Maximální počet pokusů o přihlášení"
@@ -3571,9 +3567,6 @@ msgstr "Heslo"
 msgid "Password cannot be longer than 30 characters."
 msgstr ""
 
-msgid "Password change is deactivated!"
-msgstr "Změa hesla je deaktivována!"
-
 msgid "Password confirmation"
 msgstr ""
 
@@ -3592,6 +3585,9 @@ msgstr ""
 #, php-format
 msgid "Password is shorter than %s characters."
 msgstr "Heslo je kratší než %s znaků"
+
+msgid "Password is too long."
+msgstr ""
 
 msgid "Password length"
 msgstr "Délka hesla"
@@ -3662,7 +3658,7 @@ msgid ""
 "/>Refresh your site to see the new status!"
 msgstr ""
 
-msgid "Please don't use special chars such as '@, $, %...' in the password."
+msgid "Please don't use special chars such as '@, $, %...' in password."
 msgstr ""
 
 msgid "Please enter a name for the protected area."
@@ -3671,7 +3667,10 @@ msgstr ""
 msgid "Please enter a password."
 msgstr "Prosím zadejte heslo."
 
-msgid "Please enter a username."
+msgid "Please enter an SQL user host."
+msgstr ""
+
+msgid "Please enter an username."
 msgstr ""
 
 msgid "Please enter protected area path"
@@ -3706,9 +3705,6 @@ msgstr "Zadejte předmět zprávy."
 
 msgid "Please type database name."
 msgstr ""
-
-msgid "Please type user password."
-msgstr "Prosím, zadejte uživatelské heslo."
 
 msgid "Please type your message."
 msgstr "Prosím, zadejte svou zprávu."
@@ -4262,6 +4258,13 @@ msgstr ""
 msgid "SQL user"
 msgstr ""
 
+#, php-format
+msgid "SQL user %s already exits."
+msgstr ""
+
+msgid "SQL user host"
+msgstr ""
+
 msgid "SQL user limit"
 msgstr ""
 
@@ -4277,9 +4280,6 @@ msgstr ""
 msgid "SQL user name"
 msgstr "Jméno SQL uživatele"
 
-msgid "SQL user not found."
-msgstr "SQL uživatel nebyl nalezen"
-
 msgid "SQL user password successfully updated."
 msgstr ""
 
@@ -4287,12 +4287,6 @@ msgid "SQL user prefix/suffix"
 msgstr ""
 
 msgid "SQL user successfully added."
-msgstr ""
-
-msgid "SQL user successfully deleted."
-msgstr ""
-
-msgid "SQL username already in use."
 msgstr ""
 
 msgid "SQL users"
@@ -4577,8 +4571,8 @@ msgid ""
 "including subdomains, but retains our server as final mailhost."
 msgstr ""
 
-msgid "Specified database name already exists."
-msgstr "Zvolený název databáze již existuje."
+msgid "Sql user successfully deleted."
+msgstr ""
 
 msgid "Start installation"
 msgstr ""
@@ -4720,9 +4714,6 @@ msgid "System tools"
 msgstr "Systémové nástroje"
 
 msgid "System under maintenance"
-msgstr ""
-
-msgid "System was unable to update the SQL user password."
 msgstr ""
 
 msgid "TB"
@@ -4915,6 +4906,13 @@ msgid ""
 "to the selected network interface."
 msgstr ""
 
+#, php-format
+msgid ""
+"This is the host from which this SQL user must be allowed to connect to the "
+"SQL server. Enter the % character to allow this SQL user to connect from any"
+" host."
+msgstr ""
+
 msgid "This package already exists in the administrator software repository."
 msgstr ""
 
@@ -4981,9 +4979,6 @@ msgstr "Pro partnera"
 #, php-format
 msgid "To unprotect this plugin, you must edit the %s file"
 msgstr ""
-
-msgid "Too long user password."
-msgstr "Příliš dlouhé uživatelské heslo."
 
 msgid "Total"
 msgstr "Celkem"
@@ -5114,9 +5109,6 @@ msgstr ""
 msgid "Unable to upload file. Max. upload filesize (%1$d MB) reached?"
 msgstr ""
 
-msgid "Unallowed database name."
-msgstr ""
-
 msgid "Unauthorized"
 msgstr ""
 
@@ -5217,6 +5209,9 @@ msgid ""
 "fields."
 msgstr ""
 
+msgid "Update password"
+msgstr ""
+
 msgid "Updates"
 msgstr ""
 
@@ -5281,10 +5276,6 @@ msgid ""
 "User do not exist or you do not have permission to access this interface"
 msgstr ""
 
-msgid ""
-"User does not exist or you do not have permission to access this interface"
-msgstr "Uživatel neexistuje nebo nemáte oprávnění pro přístup k tomuto rozhraní"
-
 msgid "User errors"
 msgstr ""
 
@@ -5296,9 +5287,6 @@ msgstr "Přihlašovací jméno uživatele (systémové)"
 
 msgid "User name"
 msgstr "Uživatelské jméno"
-
-msgid "User name too long!"
-msgstr "Uživatelské jméno je příliš dlouhé!"
 
 msgid "User password"
 msgstr "Uživatelské heslo"
@@ -5328,6 +5316,9 @@ msgid "Username"
 msgstr "Uživatelské jméno"
 
 msgid "Username and password for application login"
+msgstr ""
+
+msgid "Username is too long."
 msgstr ""
 
 msgid "Users"
@@ -5452,7 +5443,11 @@ msgid ""
 msgstr ""
 
 #, php-format
-msgid "Wildcards such as %% and ? are not allowed."
+msgid "Wildcards such as %% and ? are not allowed in username."
+msgstr ""
+
+#, php-format
+msgid "Wildcards such as %% and are not allowed."
 msgstr ""
 
 msgid "Wrong IP address."

@@ -19,8 +19,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2014-03-23 16:38+0100\n"
-"PO-Revision-Date: 2014-03-23 15:40+0000\n"
+"POT-Creation-Date: 2014-03-27 02:06+0100\n"
+"PO-Revision-Date: 2014-03-27 01:08+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Catalan (Spain) (http://www.transifex.com/projects/p/i-MSCP/language/ca_ES/)\n"
 "MIME-Version: 1.0\n"
@@ -319,6 +319,10 @@ msgstr ""
 #, php-format
 msgid "%s is not a valid i-MSCP language file."
 msgstr "%s no és un fitxer d'idioma vàlid per i-MSCP."
+
+#, php-format
+msgid "%s is not allowed as subdomain label."
+msgstr ""
 
 #, php-format
 msgid "%s is not part of domain %s."
@@ -1287,14 +1291,8 @@ msgstr "S'ha programat l'eliminació del certificat."
 msgid "Change"
 msgstr "Canviar"
 
-msgid "Change SQL user password"
-msgstr "Canviar contrasenya usuari SQL"
-
 msgid "Change in progress..."
 msgstr "Canvi en progrés..."
-
-msgid "Change password"
-msgstr "Canviar contrasenya"
 
 msgid "Change personal data"
 msgstr "Canviar dades personals"
@@ -1740,6 +1738,9 @@ msgstr "Nom de base de dades"
 msgid "Database name is too long."
 msgstr "El nom de la Base de Dades és massa llarg."
 
+msgid "Database name is unavailable."
+msgstr ""
+
 msgid "Database prefix"
 msgstr "Prefix de la base de dades"
 
@@ -1893,9 +1894,6 @@ msgstr ""
 msgid "Deletion in progress"
 msgstr "Eliminació en progrés"
 
-msgid "Demo Version!"
-msgstr "Versió de mostra!"
-
 msgid "Depot import"
 msgstr "Importació de magatzem"
 
@@ -1959,6 +1957,10 @@ msgstr ""
 msgid "Domain"
 msgstr "Domini"
 
+#, php-format
+msgid "Domain %s is unavailable."
+msgstr ""
+
 msgid "Domain IP"
 msgstr "IP del domini"
 
@@ -1979,10 +1981,6 @@ msgstr "Comptes de domini"
 
 msgid "Domain alias"
 msgstr "Àlies de dominis"
-
-#, php-format
-msgid "Domain alias %s already exist."
-msgstr ""
 
 #, php-format
 msgid "Domain alias %s cannot be forwarded on itself."
@@ -2028,9 +2026,6 @@ msgstr ""
 
 msgid "Domain aliases"
 msgstr "Àlies de domini"
-
-msgid "Domain already registered on the system."
-msgstr "Aquest domini ja està donat d'alta al panell."
 
 msgid "Domain and SQL databases"
 msgstr ""
@@ -2119,9 +2114,6 @@ msgstr "Dominis"
 
 msgid "Domains per page"
 msgstr "Dominis per pàgina"
-
-msgid "Don't use special chars like \"@, $, %...\" in the password."
-msgstr "No useu caracters especials com \"@, $, %...\" a la contrasenya."
 
 msgid "Done"
 msgstr "Fet"
@@ -2779,6 +2771,9 @@ msgstr "L'adreça de correu no és vàlida."
 msgid "Incorrect username length or syntax."
 msgstr "La sintaxi o longitud de l'usuari no són valides."
 
+msgid "Info Unavailable"
+msgstr ""
+
 msgid "Install"
 msgstr "Instal·lar"
 
@@ -2852,6 +2847,10 @@ msgid "Invalid MX type."
 msgstr ""
 
 msgid "Invalid NAME."
+msgstr ""
+
+#, php-format
+msgid "Invalid SQL user host: %s"
 msgstr ""
 
 msgid "Invalid TXT data"
@@ -3111,9 +3110,6 @@ msgstr "Gestionar les seves àrees protegides, usuaris i grups."
 
 msgid "Mark"
 msgstr "Marca"
-
-msgid "Master domain cannot be used."
-msgstr "No podeu utilitzar el domini principal del panell."
 
 msgid "Max number of login attempts"
 msgstr "Número màxim d'intents d'accés"
@@ -3580,9 +3576,6 @@ msgstr "Contrasenya"
 msgid "Password cannot be longer than 30 characters."
 msgstr ""
 
-msgid "Password change is deactivated!"
-msgstr "Canvi de contrasenya desactivat!"
-
 msgid "Password confirmation"
 msgstr "Confirmació de contrasenya"
 
@@ -3600,6 +3593,9 @@ msgstr ""
 
 #, php-format
 msgid "Password is shorter than %s characters."
+msgstr ""
+
+msgid "Password is too long."
 msgstr ""
 
 msgid "Password length"
@@ -3671,7 +3667,7 @@ msgid ""
 "/>Refresh your site to see the new status!"
 msgstr "Siusplau contacta amb l'administrador!<br />Pregunta-li pels permisos per usar aquest paquet.<br />no està permés carregar aquest paquet dues vegades.<br />Refresca el teu lloc per a veure el nou estat!"
 
-msgid "Please don't use special chars such as '@, $, %...' in the password."
+msgid "Please don't use special chars such as '@, $, %...' in password."
 msgstr ""
 
 msgid "Please enter a name for the protected area."
@@ -3680,7 +3676,10 @@ msgstr "Siusplau introdueix un nom per l'àrea protegida."
 msgid "Please enter a password."
 msgstr "Siusplau introdueix una contrasenya."
 
-msgid "Please enter a username."
+msgid "Please enter an SQL user host."
+msgstr ""
+
+msgid "Please enter an username."
 msgstr ""
 
 msgid "Please enter protected area path"
@@ -3715,9 +3714,6 @@ msgstr "Introduïu l'assumpte pel missatge."
 
 msgid "Please type database name."
 msgstr "Siusplau introdueix el nom de la Base de Dades."
-
-msgid "Please type user password."
-msgstr "Siusplau intrudueix la contrasenya d'usuari."
 
 msgid "Please type your message."
 msgstr "Introduïu el vostre missatge."
@@ -4271,6 +4267,13 @@ msgstr ""
 msgid "SQL user"
 msgstr ""
 
+#, php-format
+msgid "SQL user %s already exits."
+msgstr ""
+
+msgid "SQL user host"
+msgstr ""
+
 msgid "SQL user limit"
 msgstr ""
 
@@ -4286,9 +4289,6 @@ msgstr ""
 msgid "SQL user name"
 msgstr "Nom d'usuari SQL"
 
-msgid "SQL user not found."
-msgstr ""
-
 msgid "SQL user password successfully updated."
 msgstr "Contrasenya d'usuari SQL actualitzada correctament."
 
@@ -4297,12 +4297,6 @@ msgstr ""
 
 msgid "SQL user successfully added."
 msgstr "Usuari SQL afegit correctament."
-
-msgid "SQL user successfully deleted."
-msgstr "Usuari SQL esborrat correctament."
-
-msgid "SQL username already in use."
-msgstr ""
 
 msgid "SQL users"
 msgstr "Usuaris SQL"
@@ -4586,8 +4580,8 @@ msgid ""
 "including subdomains, but retains our server as final mailhost."
 msgstr ""
 
-msgid "Specified database name already exists."
-msgstr "El nom de Base de Dades especificat ja existeix."
+msgid "Sql user successfully deleted."
+msgstr ""
 
 msgid "Start installation"
 msgstr "Iniciar instal.lació"
@@ -4730,9 +4724,6 @@ msgstr "Eines del sistema"
 
 msgid "System under maintenance"
 msgstr "Sistema en manteniment"
-
-msgid "System was unable to update the SQL user password."
-msgstr "El sistema no ha pogut actualitzar la contrasenya de l'usuari SQL."
 
 msgid "TB"
 msgstr "TB"
@@ -4924,6 +4915,13 @@ msgid ""
 "to the selected network interface."
 msgstr ""
 
+#, php-format
+msgid ""
+"This is the host from which this SQL user must be allowed to connect to the "
+"SQL server. Enter the % character to allow this SQL user to connect from any"
+" host."
+msgstr ""
+
 msgid "This package already exists in the administrator software repository."
 msgstr ""
 
@@ -4990,9 +4988,6 @@ msgstr "Al distribuïdor"
 #, php-format
 msgid "To unprotect this plugin, you must edit the %s file"
 msgstr "Per a desprotegir aquest plugin, cal que editis l'arxiu %s "
-
-msgid "Too long user password."
-msgstr "Contrasenya d'usuari massa llarga."
 
 msgid "Total"
 msgstr "Total"
@@ -5123,9 +5118,6 @@ msgstr ""
 msgid "Unable to upload file. Max. upload filesize (%1$d MB) reached?"
 msgstr ""
 
-msgid "Unallowed database name."
-msgstr ""
-
 msgid "Unauthorized"
 msgstr ""
 
@@ -5226,6 +5218,9 @@ msgid ""
 "fields."
 msgstr ""
 
+msgid "Update password"
+msgstr ""
+
 msgid "Updates"
 msgstr "Actualitzacions"
 
@@ -5290,10 +5285,6 @@ msgid ""
 "User do not exist or you do not have permission to access this interface"
 msgstr ""
 
-msgid ""
-"User does not exist or you do not have permission to access this interface"
-msgstr "El vostre usuari no existeix o no té permisos per accedir aquesta interfície."
-
 msgid "User errors"
 msgstr ""
 
@@ -5305,9 +5296,6 @@ msgstr "Accés de l'usuari (sistema)"
 
 msgid "User name"
 msgstr "Nom d'usuari"
-
-msgid "User name too long!"
-msgstr "Nom d'usuari massa llarg!"
 
 msgid "User password"
 msgstr "Contrasenya d'usuari"
@@ -5338,6 +5326,9 @@ msgstr "Nom d'usuari"
 
 msgid "Username and password for application login"
 msgstr "Nom d'usuari i contrasenya per iniciar sessió en l'aplicació"
+
+msgid "Username is too long."
+msgstr ""
 
 msgid "Users"
 msgstr "Usuaris"
@@ -5461,8 +5452,12 @@ msgid ""
 msgstr ""
 
 #, php-format
-msgid "Wildcards such as %% and ? are not allowed."
-msgstr "No estan permesos els comodins tipus %% i ?."
+msgid "Wildcards such as %% and ? are not allowed in username."
+msgstr ""
+
+#, php-format
+msgid "Wildcards such as %% and are not allowed."
+msgstr ""
 
 msgid "Wrong IP address."
 msgstr "Adreça IP errònia."

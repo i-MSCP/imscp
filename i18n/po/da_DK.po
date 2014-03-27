@@ -11,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2014-03-23 16:38+0100\n"
-"PO-Revision-Date: 2014-03-23 15:40+0000\n"
+"POT-Creation-Date: 2014-03-27 02:06+0100\n"
+"PO-Revision-Date: 2014-03-27 01:08+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Danish (Denmark) (http://www.transifex.com/projects/p/i-MSCP/language/da_DK/)\n"
 "MIME-Version: 1.0\n"
@@ -311,6 +311,10 @@ msgstr "%s host felt er tomt eller ugyldigt."
 #, php-format
 msgid "%s is not a valid i-MSCP language file."
 msgstr "%s er ikke en gyldig i-MSCP sprogfil."
+
+#, php-format
+msgid "%s is not allowed as subdomain label."
+msgstr ""
 
 #, php-format
 msgid "%s is not part of domain %s."
@@ -1279,14 +1283,8 @@ msgstr "Certifikat planlagt til sletning."
 msgid "Change"
 msgstr "Ændre"
 
-msgid "Change SQL user password"
-msgstr "Ændre SQL bruger adgangskode"
-
 msgid "Change in progress..."
 msgstr "Ændring igangsat..."
-
-msgid "Change password"
-msgstr "Ændre adgangskode"
 
 msgid "Change personal data"
 msgstr "Ændre personlig data"
@@ -1732,6 +1730,9 @@ msgstr "Database navn"
 msgid "Database name is too long."
 msgstr "Database navn er for langt."
 
+msgid "Database name is unavailable."
+msgstr ""
+
 msgid "Database prefix"
 msgstr "Database prefix"
 
@@ -1885,9 +1886,6 @@ msgstr "Slet ticket"
 msgid "Deletion in progress"
 msgstr "Sletning i gang"
 
-msgid "Demo Version!"
-msgstr "Demo Version!"
-
 msgid "Depot import"
 msgstr "Depot import"
 
@@ -1951,6 +1949,10 @@ msgstr "Ønsker du virkelig at slette hele %s kundekontoen? Denne handling kan i
 msgid "Domain"
 msgstr "Domæne"
 
+#, php-format
+msgid "Domain %s is unavailable."
+msgstr ""
+
 msgid "Domain IP"
 msgstr "Domæne IP Adresse"
 
@@ -1971,10 +1973,6 @@ msgstr "Domain konti"
 
 msgid "Domain alias"
 msgstr "Domænealias"
-
-#, php-format
-msgid "Domain alias %s already exist."
-msgstr "Domæne alias %s findes allerede."
 
 #, php-format
 msgid "Domain alias %s cannot be forwarded on itself."
@@ -2020,9 +2018,6 @@ msgstr "Domæne aliaset du prøver at fjerne har subdomæner. Slet dem først."
 
 msgid "Domain aliases"
 msgstr "Domæne aliaser"
-
-msgid "Domain already registered on the system."
-msgstr "Domain allerede er registreret på systemet."
 
 msgid "Domain and SQL databases"
 msgstr "Domæne og SQL databaser"
@@ -2111,9 +2106,6 @@ msgstr "Domæner"
 
 msgid "Domains per page"
 msgstr "Domæner pr side"
-
-msgid "Don't use special chars like \"@, $, %...\" in the password."
-msgstr "Bruge ikke specielle tegn som \"@, $, %...\" i password."
 
 msgid "Done"
 msgstr "Færdig"
@@ -2771,6 +2763,9 @@ msgstr "Forkert syntaks for e-mail adresse."
 msgid "Incorrect username length or syntax."
 msgstr "Forkert brugernavn længde eller syntaks."
 
+msgid "Info Unavailable"
+msgstr ""
+
 msgid "Install"
 msgstr "Installér"
 
@@ -2845,6 +2840,10 @@ msgstr "Invalid MX type."
 
 msgid "Invalid NAME."
 msgstr "Ugyldig NAVN."
+
+#, php-format
+msgid "Invalid SQL user host: %s"
+msgstr ""
 
 msgid "Invalid TXT data"
 msgstr "Ugyldig TXT data"
@@ -3103,9 +3102,6 @@ msgstr "Administrere dine beskyttede områder, brugere og grupper."
 
 msgid "Mark"
 msgstr "Afmærk"
-
-msgid "Master domain cannot be used."
-msgstr "Master domæne kan ikke bruges."
 
 msgid "Max number of login attempts"
 msgstr "Max antal af logind forsøg"
@@ -3572,9 +3568,6 @@ msgstr "Adgangskode"
 msgid "Password cannot be longer than 30 characters."
 msgstr "Password kan ikke være større end 30 tegn."
 
-msgid "Password change is deactivated!"
-msgstr "Password ændring er deaktiveret!"
-
 msgid "Password confirmation"
 msgstr "Password bekræftelse"
 
@@ -3593,6 +3586,9 @@ msgstr "Password mangler."
 #, php-format
 msgid "Password is shorter than %s characters."
 msgstr "Password er kortere end %s tegn."
+
+msgid "Password is too long."
+msgstr ""
 
 msgid "Password length"
 msgstr "Adgangskode længde"
@@ -3663,8 +3659,8 @@ msgid ""
 "/>Refresh your site to see the new status!"
 msgstr "Kontakt venligst administratoren!<br />Spørg ham om tilladelser til at bruge denne pakke.<br />Det er ikke tilladt at uploade denne pakke to gange.<br />Opdater dit websted for at se den nye status!"
 
-msgid "Please don't use special chars such as '@, $, %...' in the password."
-msgstr "Bruge ikke specielle tegn som \"@, $, %...\" i password."
+msgid "Please don't use special chars such as '@, $, %...' in password."
+msgstr ""
 
 msgid "Please enter a name for the protected area."
 msgstr "Indtast et navn for det beskyttede område."
@@ -3672,8 +3668,11 @@ msgstr "Indtast et navn for det beskyttede område."
 msgid "Please enter a password."
 msgstr "Angiv et password."
 
-msgid "Please enter a username."
-msgstr "Indtast venligst et brugernavn."
+msgid "Please enter an SQL user host."
+msgstr ""
+
+msgid "Please enter an username."
+msgstr ""
 
 msgid "Please enter protected area path"
 msgstr "Indtast sti til beskyttet område"
@@ -3707,9 +3706,6 @@ msgstr "Angiv besked emne."
 
 msgid "Please type database name."
 msgstr "Angiv database navn."
-
-msgid "Please type user password."
-msgstr "Angiv bruger password."
 
 msgid "Please type your message."
 msgstr "Indtast din meddelelse."
@@ -4263,6 +4259,13 @@ msgstr "Kun SQL databaser"
 msgid "SQL user"
 msgstr "SQL bruger"
 
+#, php-format
+msgid "SQL user %s already exits."
+msgstr ""
+
+msgid "SQL user host"
+msgstr ""
+
 msgid "SQL user limit"
 msgstr "SQL bruger grænse"
 
@@ -4278,9 +4281,6 @@ msgstr "SQL bruger grænse er deaktiveret."
 msgid "SQL user name"
 msgstr "SQL Brugernavn"
 
-msgid "SQL user not found."
-msgstr "SQL bruger blev ikke fundet."
-
 msgid "SQL user password successfully updated."
 msgstr "SQL bruger password korrekt opdateret."
 
@@ -4289,12 +4289,6 @@ msgstr "SQL bruger præfiks/suffiks"
 
 msgid "SQL user successfully added."
 msgstr "SQL bruger tilføjet."
-
-msgid "SQL user successfully deleted."
-msgstr "SQL bruger blev slettet."
-
-msgid "SQL username already in use."
-msgstr "SQL brugernavn er allerede i brug."
 
 msgid "SQL users"
 msgstr "SQL brugere"
@@ -4578,8 +4572,8 @@ msgid ""
 "including subdomains, but retains our server as final mailhost."
 msgstr "Spam Filter: Setup en DNS MX-record til relay mail af hele dit domæne, herunder underdomæner, men bevarer vores server som endelig mailhost."
 
-msgid "Specified database name already exists."
-msgstr "Angivne database navn findes allerede."
+msgid "Sql user successfully deleted."
+msgstr ""
 
 msgid "Start installation"
 msgstr "Start installation"
@@ -4722,9 +4716,6 @@ msgstr "System værktøjer"
 
 msgid "System under maintenance"
 msgstr "System under vedligeholdelse"
-
-msgid "System was unable to update the SQL user password."
-msgstr "Systemet kunne ikke opdatere SQL bruger password."
 
 msgid "TB"
 msgstr "TB"
@@ -4916,6 +4907,13 @@ msgid ""
 "to the selected network interface."
 msgstr "Dette interface gør det muligt at tilføje eller fjerne IP-adresser. IP-adresser, der er anført nedenfor er allerede under kontrol af I-MSCP. IP-adresser, som tilføjes via dette interface vil automatisk blive tilføjet i i-MSCP databasen, og vil være tilgængelige for tildeling til en eller mange af dine forhandlere. Hvis en IP-adresse ikke allerede er konfigureret på systemet, vil det blive knyttet til det valgte netværks interface."
 
+#, php-format
+msgid ""
+"This is the host from which this SQL user must be allowed to connect to the "
+"SQL server. Enter the % character to allow this SQL user to connect from any"
+" host."
+msgstr ""
+
 msgid "This package already exists in the administrator software repository."
 msgstr "Denne pakke findes allerede i administratorens softwarearkiv."
 
@@ -4982,9 +4980,6 @@ msgstr "Til Forhandler"
 #, php-format
 msgid "To unprotect this plugin, you must edit the %s file"
 msgstr "For at ophæve beskyttelsen af dette plugin, skal du redigere %s filen"
-
-msgid "Too long user password."
-msgstr "For lang bruger password."
 
 msgid "Total"
 msgstr "Total"
@@ -5115,9 +5110,6 @@ msgstr "Kan ikke planlægge sletning af kundens konto. Venligst konsultere admin
 msgid "Unable to upload file. Max. upload filesize (%1$d MB) reached?"
 msgstr "Kan ikke uploade filen. Max. upload filstørrelse (%1$d MB) nået?"
 
-msgid "Unallowed database name."
-msgstr "Ikke tilladte database navn."
-
 msgid "Unauthorized"
 msgstr "Uautoriseret"
 
@@ -5218,6 +5210,9 @@ msgid ""
 "fields."
 msgstr "Opdatering af Web softwarearkiv indeks er blevet afbrudt. Manglende eller tomme felter."
 
+msgid "Update password"
+msgstr ""
+
 msgid "Updates"
 msgstr "Opdateringer"
 
@@ -5282,10 +5277,6 @@ msgid ""
 "User do not exist or you do not have permission to access this interface"
 msgstr "Bruger eksistere ikke, eller du har ikke adgang til dette interface!"
 
-msgid ""
-"User does not exist or you do not have permission to access this interface"
-msgstr "Bruger eksisterer ikke eller du har ikke tilladelse til at adgang til dette interface"
-
 msgid "User errors"
 msgstr "Bruger fejl"
 
@@ -5297,9 +5288,6 @@ msgstr "Bruger login (system) navn"
 
 msgid "User name"
 msgstr "Bruger navn"
-
-msgid "User name too long!"
-msgstr "Brugernavn er for langt!"
 
 msgid "User password"
 msgstr "Bruger adgangskode"
@@ -5330,6 +5318,9 @@ msgstr "Brugernavn"
 
 msgid "Username and password for application login"
 msgstr "Brugernavn og adgangskode for program login"
+
+msgid "Username is too long."
+msgstr ""
 
 msgid "Users"
 msgstr "Brugere"
@@ -5453,8 +5444,12 @@ msgid ""
 msgstr "Wildcard: Setup en DNS MX-record til at videresende post til ikke-eksisterende underdomæner."
 
 #, php-format
-msgid "Wildcards such as %% and ? are not allowed."
-msgstr "Jokertegn såsom %% og ? er ikke tilladt."
+msgid "Wildcards such as %% and ? are not allowed in username."
+msgstr ""
+
+#, php-format
+msgid "Wildcards such as %% and are not allowed."
+msgstr ""
 
 msgid "Wrong IP address."
 msgstr "Forkert IP-adresse."

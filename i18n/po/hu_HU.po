@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2014-03-23 16:38+0100\n"
-"PO-Revision-Date: 2014-03-23 15:40+0000\n"
+"POT-Creation-Date: 2014-03-27 02:06+0100\n"
+"PO-Revision-Date: 2014-03-27 01:08+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Hungarian (Hungary) (http://www.transifex.com/projects/p/i-MSCP/language/hu_HU/)\n"
 "MIME-Version: 1.0\n"
@@ -312,6 +312,10 @@ msgstr "%s kiszolgáló mező üres vagy hibás."
 #, php-format
 msgid "%s is not a valid i-MSCP language file."
 msgstr "%s nem érvényes i-MSCP nyelvi fájl"
+
+#, php-format
+msgid "%s is not allowed as subdomain label."
+msgstr ""
 
 #, php-format
 msgid "%s is not part of domain %s."
@@ -1280,14 +1284,8 @@ msgstr "Tanúsítvány törlése sikeresen beütemezve."
 msgid "Change"
 msgstr "Módosítás"
 
-msgid "Change SQL user password"
-msgstr "SQL felhasználó jelszavának módosítása"
-
 msgid "Change in progress..."
 msgstr "Változtatás folyamatban..."
-
-msgid "Change password"
-msgstr "Jelszó megváltoztatása"
 
 msgid "Change personal data"
 msgstr "Személyes adatok módosítása"
@@ -1733,6 +1731,9 @@ msgstr "Adatbázis neve"
 msgid "Database name is too long."
 msgstr "Adatbázis neve túl hosszú"
 
+msgid "Database name is unavailable."
+msgstr ""
+
 msgid "Database prefix"
 msgstr "Adatbázis előtag"
 
@@ -1886,9 +1887,6 @@ msgstr "Hibajegy törlése"
 msgid "Deletion in progress"
 msgstr "Törlés folyamatban"
 
-msgid "Demo Version!"
-msgstr "Demo változat!"
-
 msgid "Depot import"
 msgstr "Raktár import"
 
@@ -1952,6 +1950,10 @@ msgstr "Biztosan törölni akarod %s fiókját? Ezt a műveletet nem lehet vissz
 msgid "Domain"
 msgstr "Domain"
 
+#, php-format
+msgid "Domain %s is unavailable."
+msgstr ""
+
 msgid "Domain IP"
 msgstr "Domain IP-címe"
 
@@ -1972,10 +1974,6 @@ msgstr "Domain azonosítók"
 
 msgid "Domain alias"
 msgstr "Domain álnév"
-
-#, php-format
-msgid "Domain alias %s already exist."
-msgstr "%s domain álnév már létezik."
 
 #, php-format
 msgid "Domain alias %s cannot be forwarded on itself."
@@ -2022,9 +2020,6 @@ msgstr "A törlendő domain álnévnek van aldomainja. Előbb azt töröld!"
 msgid "Domain aliases"
 msgstr "Domain álnevek"
 
-msgid "Domain already registered on the system."
-msgstr "Ezt a domaint már regisztrálták a rendszerben"
-
 msgid "Domain and SQL databases"
 msgstr "Domain és adatbázisok"
 
@@ -2053,7 +2048,7 @@ msgid "Domain name"
 msgstr "Domain név"
 
 msgid "Domain name (ASCII form) cannot be greater than 255 characters."
-msgstr ""
+msgstr "A domain név (ASCII alakban) nem lehet hosszabb 255 karakternél."
 
 msgid "Domain name cannot be empty."
 msgstr "A domain név nem lehet üres."
@@ -2070,7 +2065,7 @@ msgid "Domain name label '%s' contain an invalid character: %s"
 msgstr "%s domain név címke tartalmaz hibás karaktert: %s"
 
 msgid "Domain name labels cannot be greater than 63 characters."
-msgstr ""
+msgstr "A domain név címkék nem lehetnek hosszabbak 63 karakternél."
 
 msgid "Domain name labels cannot start nor end with hyphen."
 msgstr "A domain név címkék nem kezdődhetnek / végződhetnek kötőjellel."
@@ -2112,9 +2107,6 @@ msgstr "Domainek"
 
 msgid "Domains per page"
 msgstr "Domainek száma oldalanként"
-
-msgid "Don't use special chars like \"@, $, %...\" in the password."
-msgstr "Jelszóban ne használjon  \"@, $, %...\" speciális jeleket!"
 
 msgid "Done"
 msgstr "Kész"
@@ -2537,7 +2529,7 @@ msgid "Get a new image"
 msgstr "Új kép"
 
 msgid "Get it on"
-msgstr ""
+msgstr "Letöltés"
 
 msgid "GiB"
 msgstr "GB"
@@ -2772,6 +2764,9 @@ msgstr "Hibásan formázott email cím"
 msgid "Incorrect username length or syntax."
 msgstr "Hibás felhasználónév: nem megfelelő hossz, vagy szintaktikai hiba"
 
+msgid "Info Unavailable"
+msgstr ""
+
 msgid "Install"
 msgstr "Telepítés"
 
@@ -2846,6 +2841,10 @@ msgstr "Érvénytelen MX típus."
 
 msgid "Invalid NAME."
 msgstr "Hibás NAME."
+
+#, php-format
+msgid "Invalid SQL user host: %s"
+msgstr ""
 
 msgid "Invalid TXT data"
 msgstr "Érvénytelen TXT adat"
@@ -3104,9 +3103,6 @@ msgstr "Védett területek, felhasználók és csoportok kezelése"
 
 msgid "Mark"
 msgstr "Kijelölés"
-
-msgid "Master domain cannot be used."
-msgstr "Fődomain nem használható"
 
 msgid "Max number of login attempts"
 msgstr "Belépési kísérletek száma"
@@ -3573,9 +3569,6 @@ msgstr "Jelszó"
 msgid "Password cannot be longer than 30 characters."
 msgstr "A jelszó nem lehet hosszabb, mint 30 karakter!"
 
-msgid "Password change is deactivated!"
-msgstr "A jelszó megváltoztatása nem engedélyezett!"
-
 msgid "Password confirmation"
 msgstr "Jelszó megerősítése"
 
@@ -3594,6 +3587,9 @@ msgstr "Jelszó hiányzik."
 #, php-format
 msgid "Password is shorter than %s characters."
 msgstr "A jelszó rövidebb, mint %s karakter"
+
+msgid "Password is too long."
+msgstr ""
 
 msgid "Password length"
 msgstr "Jelszavak hossza"
@@ -3664,8 +3660,8 @@ msgid ""
 "/>Refresh your site to see the new status!"
 msgstr "Kérjük, forduljon az adminisztrátorhoz! <br /> Kérdezze meg ennek a programcsomag a jogosultságait. <br /> Nem töltheti fel ezt a programcsomagot mégegyszer. <br /> Frissítse a weboldalt az új állapot megtekintéséhez!"
 
-msgid "Please don't use special chars such as '@, $, %...' in the password."
-msgstr "Kérjük ne használj speciális karaktereket '@, $, %...' a jelszóban!"
+msgid "Please don't use special chars such as '@, $, %...' in password."
+msgstr ""
 
 msgid "Please enter a name for the protected area."
 msgstr "Kérem a védett terület nevét"
@@ -3673,8 +3669,11 @@ msgstr "Kérem a védett terület nevét"
 msgid "Please enter a password."
 msgstr "Adja meg a jelszót"
 
-msgid "Please enter a username."
-msgstr "Írj be egy felhasználónevet."
+msgid "Please enter an SQL user host."
+msgstr ""
+
+msgid "Please enter an username."
+msgstr ""
 
 msgid "Please enter protected area path"
 msgstr "Kérem a védett terület útvonalát"
@@ -3708,9 +3707,6 @@ msgstr "Adja meg az üzenet tárgyát"
 
 msgid "Please type database name."
 msgstr "Adja meg az adatbázis nevét"
-
-msgid "Please type user password."
-msgstr "Adja meg a felhasználó jelszavát"
 
 msgid "Please type your message."
 msgstr "Adja meg az üzenetet"
@@ -4264,6 +4260,13 @@ msgstr "csak SQL adatbázis"
 msgid "SQL user"
 msgstr "SQL felhasználó"
 
+#, php-format
+msgid "SQL user %s already exits."
+msgstr ""
+
+msgid "SQL user host"
+msgstr ""
+
 msgid "SQL user limit"
 msgstr "SQL felhasználó korlát"
 
@@ -4279,9 +4282,6 @@ msgstr "SQL felhasználó korlát kikapcsolva."
 msgid "SQL user name"
 msgstr "SQL felhasználó neve"
 
-msgid "SQL user not found."
-msgstr "SQL felhasználó nem található"
-
 msgid "SQL user password successfully updated."
 msgstr "SQL felhasználó jelszava sikeresen frissítve"
 
@@ -4290,12 +4290,6 @@ msgstr "SQL felhasználó elő-/utótag"
 
 msgid "SQL user successfully added."
 msgstr "SQL felhasználó sikeresen hozzáadva"
-
-msgid "SQL user successfully deleted."
-msgstr "SQL felhasználó sikeresen törölve"
-
-msgid "SQL username already in use."
-msgstr "SQL felhasználó már létezik."
 
 msgid "SQL users"
 msgstr "SQL felhasználók"
@@ -4579,8 +4573,8 @@ msgid ""
 "including subdomains, but retains our server as final mailhost."
 msgstr "Spamszűrő: MX-rekord létrehozása a teljes domainre vonatkozik beleértve az aldomainokat is, de a szervered lesz a végső levelező kiszolgáló."
 
-msgid "Specified database name already exists."
-msgstr "A megadott adatbázisnév már létezik"
+msgid "Sql user successfully deleted."
+msgstr ""
 
 msgid "Start installation"
 msgstr "Telepítés megkezdése"
@@ -4723,9 +4717,6 @@ msgstr "Rendszereszközök"
 
 msgid "System under maintenance"
 msgstr "Rendszer karbantartás alatt van"
-
-msgid "System was unable to update the SQL user password."
-msgstr "Rendszer nem tudta frissíteni a SQL-felhasználó jelszavát"
 
 msgid "TB"
 msgstr "TB"
@@ -4917,6 +4908,13 @@ msgid ""
 "to the selected network interface."
 msgstr "Ezen a felületen tudsz hozzáadni vagy eltávolítani IP-címeket. Az alább felsorolt IP-címeket már kezeli az i-MSCP. Ezen a felületen keresztül hozzáadott IP-címek automatikusan hozzáadásra kerülnek az i-MSCP adatbázisához, és kioszthatóak lesznek egy vagy több viszonteladónak. Ha egy IP-címet még nem konfiguráltál a rendszerben, akkor hozzáadásra kerül a kiválasztott hálózati csatolóhoz."
 
+#, php-format
+msgid ""
+"This is the host from which this SQL user must be allowed to connect to the "
+"SQL server. Enter the % character to allow this SQL user to connect from any"
+" host."
+msgstr ""
+
 msgid "This package already exists in the administrator software repository."
 msgstr "Ez a csomag már létezik az adminisztrátor szoftverraktárában."
 
@@ -4983,9 +4981,6 @@ msgstr "Új tulajdonos (viszonteladó):"
 #, php-format
 msgid "To unprotect this plugin, you must edit the %s file"
 msgstr "%s fájlt kell szerkesztened a védelem kikapcsolásához"
-
-msgid "Too long user password."
-msgstr "Felhasználó jelszava túl hosszú"
 
 msgid "Total"
 msgstr "Összes"
@@ -5116,9 +5111,6 @@ msgstr "Nem lehet az ügyfélfiók törlését beütemezni. Kérjük, nézd meg 
 msgid "Unable to upload file. Max. upload filesize (%1$d MB) reached?"
 msgstr "Nem tölthető fel a fájl. Feltötlhető max. fájlméretet (%1$d MB) túllépte?"
 
-msgid "Unallowed database name."
-msgstr "Nem engedélyezett adatbázis név."
-
 msgid "Unauthorized"
 msgstr "Jogosulatlan"
 
@@ -5219,6 +5211,9 @@ msgid ""
 "fields."
 msgstr "A webes alkalmazásokhoz tartozó index frissítése megszakadt. Hiányzó vagy üres mezők."
 
+msgid "Update password"
+msgstr ""
+
 msgid "Updates"
 msgstr "Frissítések"
 
@@ -5283,10 +5278,6 @@ msgid ""
 "User do not exist or you do not have permission to access this interface"
 msgstr "Nincs ilyen felhasználó, vagy nincs jogosultságod ehhez az oldalhoz"
 
-msgid ""
-"User does not exist or you do not have permission to access this interface"
-msgstr "Nincs ilyen felhasználó, vagy nincs jogosultsága ehhez az oldalhoz"
-
 msgid "User errors"
 msgstr "Felhasználói hibák"
 
@@ -5298,9 +5289,6 @@ msgstr "Felhasználó bejelentkezési neve"
 
 msgid "User name"
 msgstr "Felhaszálónév"
-
-msgid "User name too long!"
-msgstr "Felhasználó neve túl hosszú"
 
 msgid "User password"
 msgstr "Felhasználó jelszava"
@@ -5331,6 +5319,9 @@ msgstr "Felhasználónév"
 
 msgid "Username and password for application login"
 msgstr "Felhasználónév és jelszó a bejeletkezéshez "
+
+msgid "Username is too long."
+msgstr ""
 
 msgid "Users"
 msgstr "Felhasználók"
@@ -5454,8 +5445,12 @@ msgid ""
 msgstr "Wildcard: MX-rekord létrehozása a nem létező aldomainek leveleinek továbbítására."
 
 #, php-format
-msgid "Wildcards such as %% and ? are not allowed."
-msgstr "A %% és ? helyettesítő karakterek nem megengedettek"
+msgid "Wildcards such as %% and ? are not allowed in username."
+msgstr ""
+
+#, php-format
+msgid "Wildcards such as %% and are not allowed."
+msgstr ""
 
 msgid "Wrong IP address."
 msgstr "Hibás IP-cím"
