@@ -830,7 +830,7 @@ function deleteCustomer($customerId, $checkCreatedBy = false)
 				FROM
 					domain AS t1
 				LEFT JOIN
-					htacces AS t2 ON (t2.dmn_id = t1.domain_id)
+					htaccess AS t2 ON (t2.dmn_id = t1.domain_id)
 				LEFT JOIN
 					htaccess_users AS t3 ON (t3.dmn_id = t1.domain_id)
 				LEFT JOIN
