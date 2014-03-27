@@ -664,9 +664,11 @@ sub setupAskSqlUserHost
 	my $dialog = $_[0];
 
 	my $host = setupGetQuestion('DATABASE_USER_HOST');
+	$host = ($host eq '127.0.0.1') ? 'localhost' : $host;
+
 	my $rs = 0;
 
-	if(not setupGetQuestion('DATABASE_HOST') ~~ ['localhost', '127.0.0.1']) { # Remote MySQL server
+	if(setupGetQuestion('DATABASE_HOST' ne 'localhost') ) { # Remote MySQL server
 		if($main::reconfigure ~~ ['sql', 'servers', 'all', 'forced'] || ! $host) {
 			do {
 				($rs, $host) = $dialog->inputbox(
@@ -682,10 +684,10 @@ Note that 127.0.0.7 is always mapped to 'localhost'.
 					$host // setupGetQuestion('BASE_SERVER_IP')
 				);
 			} while($rs != 30 && $host eq '');
-		}
 
-		# map 127.0.0.1 to localhost for consistency reasons
-		$host = 'localhost' if($host eq '127.0.0.1');
+			# map 127.0.0.1 to localhost for consistency reasons
+			$host = 'localhost' if $host eq '127.0.0.1';
+		}
 
 		setupSetQuestion('DATABASE_USER_HOST', $host) if $rs != 30;
 	} else {
