@@ -292,7 +292,7 @@ function reseller_addCustomer($resellerId)
 		exec_query($query, array($dmnId, $cfg->WEBSTATS_GROUP_AUTH, $user_id, 'toadd'));
 
 		// Create default addresses if needed
-		if ($cfg->CREATE_DEFAULT_EMAIL_ADDRESSES) {
+		if ($cfg['CREATE_DEFAULT_EMAIL_ADDRESSES']) {
 			client_mail_add_default_accounts($dmnId, $userEmail, $dmnName);
 		}
 
