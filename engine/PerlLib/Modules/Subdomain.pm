@@ -33,8 +33,6 @@ no if $] >= 5.017011, warnings => 'experimental::smartmatch';
 
 use iMSCP::Debug;
 use iMSCP::Database;
-use iMSCP::Servers;
-use iMSCP::Addons;
 use iMSCP::Execute;
 use iMSCP::Dir;
 use iMSCP::OpenSSL;
@@ -152,7 +150,7 @@ sub process
 	$rs;
 }
 
-sub buildHTTPDData
+sub _getHttpdData
 {
 	my $self = $_[0];
 
@@ -264,7 +262,7 @@ sub buildHTTPDData
 	0;
 }
 
-sub buildMTAData
+sub _getMtaData
 {
 	my $self = $_[0];
 
@@ -280,7 +278,7 @@ sub buildMTAData
 	0;
 }
 
-sub buildNAMEDData
+sub _getNamedData
 {
 	my $self = $_[0];
 
@@ -334,7 +332,7 @@ sub buildNAMEDData
 	0;
 }
 
-sub buildADDONData
+sub _getAddonsData
 {
 	my $self = $_[0];
 
@@ -349,7 +347,7 @@ sub buildADDONData
 	$webDir =~ s~/+~/~g;
 	$webDir =~ s~/$~~g;
 
-	$self->{'AddonsData'} = {
+	$self->{'addons'} = {
 		DOMAIN_ADMIN_ID => $self->{'domain_admin_id'},
 		ALIAS => $userName,
 		DOMAIN_NAME => $self->{'subdomain_name'} . '.' . $self->{'user_home'},

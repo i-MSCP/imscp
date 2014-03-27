@@ -80,29 +80,39 @@ sub setupBoot
 # Allow any server/addon to register its setup hook functions on the hooks manager before any other tasks
 sub setupRegisterHooks()
 {
-	my $rs = 0;
-	my ($file, $class, $instance);
-	my $hooksManager = iMSCP::HooksManager->getInstance();
+	my ($hooksManager, $rs) = (iMSCP::HooksManager->getInstance(), 0);
 
 	for(iMSCP::Servers->getInstance()->get()) {
-		s/\.pm//;
-		$file = "Servers/$_.pm";
-		$class = "Servers::$_";
-		require $file;
+		next if $_ eq 'noserver';
 
-		$instance = $class->factory();
-		$rs = $instance->registerSetupHooks($hooksManager) if $instance->can('registerSetupHooks');
+		my $package = "Servers::$_";
+
+		eval "require $package";
+
+		unless($@) {
+			my $instance = $package->factory();
+			$rs = $instance->registerSetupHooks($hooksManager) if $instance->can('registerSetupHooks');
+		} else {
+			error($@);
+        	$rs = 1;
+		}
+
 		return $rs if $rs;
 	}
 
 	for(iMSCP::Addons->getInstance()->get()) {
-		s/\.pm//;
-		$file = "Addons/$_.pm";
-		$class = "Addons::$_";
+		my $package = "Addons::$_";
 
-		require $file;
-		$instance = $class->getInstance();
-		$rs = $instance->registerSetupHooks($hooksManager) if $instance->can('registerSetupHooks');
+		eval "require $package";
+
+		unless($@) {
+			my $instance = $package->getInstance();
+			$rs = $instance->registerSetupHooks($hooksManager) if $instance->can('registerSetupHooks');
+		} else {
+			error($@);
+        	$rs = 1;
+		}
+
 		return $rs if $rs;
 	}
 
@@ -2054,17 +2064,29 @@ sub setupPreInstallServers
 	startDetail();
 
 	for(@servers) {
-		s/\.pm//;
-		my $file = "Servers/$_.pm";
-		my $class = "Servers::$_";
-		require $file;
-		my $server = $class->factory();
+		next if $_ eq 'noserver';
 
-		if($server->can('preinstall')) {
-			$rs = step(
-				sub { $server->preinstall() }, sprintf("Running %s preinstall tasks...", ref $server), $nbServers, $step
-			);
-			last if $rs;
+		my $package = "Servers::$_";
+
+		eval "require $package";
+
+		unless($@) {
+			my $server = $package->factory();
+
+			if($server->can('preinstall')) {
+				$rs = step(
+					sub { $server->preinstall() },
+					sprintf("Running %s preinstall tasks...", ref $server),
+					$nbServers,
+					$step
+				);
+
+				last if $rs;
+			}
+		} else {
+			error($@);
+			$rs = 1;
+			last;
 		}
 
 		$step++;
@@ -2090,17 +2112,27 @@ sub setupPreInstallAddons
 	startDetail();
 
 	for(@addons) {
-		s/\.pm//;
-		my $file = "Addons/$_.pm";
-		my $class = "Addons::$_";
-		require $file;
-		my $addon = $class->getInstance();
+		my $package = "Addons::$_";
 
-		if($addon->can('preinstall')) {
-			$rs = step(
-				sub { $addon->preinstall() }, sprintf("Running %s addon preinstall tasks...", ref $addon), $nbAddons, $step
-			);
-			last if $rs;
+		eval "require $package";
+
+		unless($@) {
+			my $addon = $package->getInstance();
+
+			if($addon->can('preinstall')) {
+				$rs = step(
+					sub { $addon->preinstall() },
+					sprintf("Running %s addon preinstall tasks...", ref $addon),
+					$nbAddons,
+					$step
+				);
+
+				last if $rs;
+			}
+		} else {
+			error($@);
+			$rs = 1;
+			last;
 		}
 
 		$step++;
@@ -2126,17 +2158,29 @@ sub setupInstallServers
 	startDetail();
 
 	for(@servers) {
-		s/\.pm//;
-		my $file = "Servers/$_.pm";
-		my $class = "Servers::$_";
-		require $file;
-		my $server = $class->factory();
+		my $package = "Servers::$_";
 
-		if($server->can('install')) {
-			$rs = step(
-				sub { $server->install() }, sprintf("Running %s install tasks...", ref $server), $nbServers, $step
-			);
-			last if $rs;
+		eval "require $package";
+
+		unless($@) {
+			next if $_ eq 'noserver';
+
+			my $server = $package->factory();
+
+			if($server->can('install')) {
+				$rs = step(
+					sub { $server->install() },
+					sprintf("Running %s install tasks...", ref $server),
+					$nbServers,
+					$step
+				);
+
+				last if $rs;
+			}
+		} else {
+			error($@);
+			$rs = 1;
+			last;
 		}
 
 		$step++;
@@ -2149,7 +2193,7 @@ sub setupInstallServers
 	iMSCP::HooksManager->getInstance()->trigger('afterSetupInstallServers');
 }
 
-# Call install method on all i-MSCP addong packages
+# Call install method on all i-MSCP addon packages
 sub setupInstallAddons
 {
 	my $rs = iMSCP::HooksManager->getInstance()->trigger('beforeSetupInstallAddons');
@@ -2162,17 +2206,27 @@ sub setupInstallAddons
 	startDetail();
 
 	for(@addons) {
-		s/\.pm//;
-		my $file = "Addons/$_.pm";
-		my $class = "Addons::$_";
-		require $file;
-		my $addon = $class->getInstance();
+		my $package = "Addons::$_";
 
-		if($addon->can('install')) {
-			$rs = step(
-				sub { $addon->install() }, sprintf("Running %s addon install tasks...", ref $addon), $nbAddons, $step
-			);
-			last if $rs;
+		eval "require $package";
+
+		unless($@) {
+			my $addon = $package->getInstance();
+
+			if($addon->can('install')) {
+				$rs = step(
+					sub { $addon->install() },
+					sprintf("Running %s addon install tasks...", ref $addon),
+					$nbAddons,
+					$step
+				);
+
+				last if $rs;
+			}
+		} else {
+			error($@);
+			$rs = 1;
+			last;
 		}
 
 		$step++;
@@ -2198,18 +2252,29 @@ sub setupPostInstallServers
 	startDetail();
 
 	for(@servers) {
-		s/\.pm//;
-		my $file = "Servers/$_.pm";
-		my $class = "Servers::$_";
-		require $file;
-		my $server = $class->factory();
+		next if $_ eq 'noserver';
 
-		if($server->can('postinstall')) {
-			$rs = step(
-				sub { $server->postinstall() }, sprintf("Running %s postinstall tasks...", ref $server), scalar @servers,
-				$step
-			);
-			last if $rs;
+		my $package = "Servers::$_";
+
+		eval "require $package";
+
+		unless($@) {
+			my $server = $package->factory();
+
+			if($server->can('postinstall')) {
+				$rs = step(
+					sub { $server->postinstall() },
+					sprintf("Running %s postinstall tasks...", ref $server),
+					$nbServers,
+					$step
+				);
+
+				last if $rs;
+			}
+		} else {
+			error($@);
+			$rs = 1;
+			last;
 		}
 
 		$step++;
@@ -2235,18 +2300,27 @@ sub setupPostInstallAddons
 	startDetail();
 
 	for(@addons) {
-		s/\.pm//;
-		my $file = "Addons/$_.pm";
-		my $class = "Addons::$_";
-		require $file;
-		my $addon = $class->getInstance();
+		my $package = "Addons::$_";
 
-		if($addon->can('postinstall')) {
-			$rs = step(
-				sub { $addon->postinstall() }, sprintf("Running %s addon postinstall tasks...", ref $addon), $nbAddons,
-				$step
-			);
-			last if $rs;
+		eval "require $package";
+
+		unless($@) {
+			my $addon = $package->getInstance();
+
+			if($addon->can('postinstall')) {
+				$rs = step(
+					sub { $addon->postinstall() },
+					sprintf("Running %s addon postinstall tasks...", ref $addon),
+					$nbAddons,
+					$step
+				);
+
+				last if $rs;
+			}
+		} else {
+			error($@);
+			$rs = 1;
+			last;
 		}
 
 		$step++;

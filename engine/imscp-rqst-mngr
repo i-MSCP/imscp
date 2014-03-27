@@ -54,13 +54,82 @@ silent(1);
 
 iMSCP::Bootstrapper->getInstance()->boot({ 'norequirements' => 'yes' });
 
-sub run
+sub _process
 {
+	my ($moduleName, $sql, $ipMods) = @_;
 	my $rs = 0;
 
+	debug("Processing $moduleName module items");
+
+	if ($main::execmode ne 'setup') {
+		print("=======================\n");
+		print("Processing $moduleName items.\n");
+	}
+
+	my $rdata = iMSCP::Database->factory()->doQuery('id', $sql);
+	unless(ref $rdata eq 'HASH') {
+		error($rdata);
+		return 1;
+	}
+
+	my $i = 1;
+	my $total = scalar keys %{$rdata};
+	$$ipMods += $total if ref $ipMods;
+
+	if(%{$rdata}) {
+		for (keys %{$rdata}) {
+			my $id = $rdata->{$_}->{'id'};
+			my $name = $rdata->{$_}->{'name'};
+			my $status = $rdata->{$_}->{'status'};
+
+			# Needed to run ips module in case all registered domain are disabled
+			next if $rdata->{$_}->{'status'} eq 'disabled';
+
+			debug("Processing $id, $name, $status.");
+
+			if($main::execmode ne 'setup') {
+				print("Processing $id, $name, $status. ($i of $total: remaining " . ($total - $i) . ")\n");
+			} else {
+				print STDOUT ("$moduleName\t$status\t$name\t$id\t$total\t$i\n");
+			}
+
+			$i++;
+
+			newDebug("${moduleName}_module_$name.log");
+
+			my $package = "Modules::$moduleName";
+
+			eval "require $package";
+
+			unless($@) {
+				$rs = $package->new()->process($id);
+			} else {
+				error($@);
+				$rs = 1;
+			}
+
+			endDebug();
+
+			if($rs) {
+				error("Error while processing $id, $name, $status.");
+				my $logDir = defined $main::imscpConfig{'LOG_DIR'} ? $main::imscpConfig{'LOG_DIR'} : '';
+				error("See $logDir/${moduleName}_module_$name.log for more details.");
+			}
+
+			return $rs if $rs;
+		}
+	} else {
+		debug("No item to process for the $moduleName module.");
+	}
+
+	0;
+}
+
+sub run
+{
 	# Process plugins
 	# Should always be processed first to allow plugins to register their listeners on the hooks manager
-	$rs = _process(
+	my $rs = _process(
 		'Plugin',
 		"
 			SELECT
@@ -451,72 +520,8 @@ sub run
 	}
 
 	iMSCP::HooksManager->getInstance()->trigger('afterDispatchRequest', $rs);
-}
 
-sub _process
-{
-	my ($type, $sql, $ipMods) = @_;
-	my $rs = 0;
-
-	debug("Processing type $type");
-
-	if ($main::execmode ne 'setup') {
-		print("=======================\n");
-		print("Processing type $type.\n");
-	}
-
-	my $rdata = iMSCP::Database->factory()->doQuery('id', $sql);
-	unless(ref $rdata eq 'HASH') {
-		error($rdata);
-		return 1;
-	}
-
-	my $i = 1;
-	my $total = scalar keys %$rdata;
-	$$ipMods += $total if ref $ipMods;
-
-	if(%{$rdata}) {
-		for (keys %{$rdata}) {
-			my $id = $rdata->{$_}->{'id'};
-			my $name = $rdata->{$_}->{'name'};
-			my $status = $rdata->{$_}->{'status'};
-
-			# Needed to run ips module in case all registered domain are disabled
-			next if $rdata->{$_}->{'status'} eq 'disabled';
-
-			debug("Processing $id, $name, $status.");
-
-			if($main::execmode ne 'setup') {
-				print("Processing $id, $name, $status. ($i of $total: remaining " . ($total - $i) . ")\n");
-			} else {
-				print STDOUT ("$type\t$status\t$name\t$id\t$total\t$i\n");
-			}
-
-			$i++;
-
-			newDebug("${type}_mngr_$name.log");
-
-			my $file = "Modules/${type}.pm";
-			my $class = "Modules::$type";
-
-			require $file;
-			$rs = $class->new()->process($id);
-
-			endDebug();
-
-			if($rs) {
-				error("Error while processing $id, $name, $status.");
-				my $logDir = defined $main::imscpConfig{'LOG_DIR'} ? $main::imscpConfig{'LOG_DIR'} : '';
-				error("See $logDir/${type}_mngr_$name.log for details.");
-			}
-
-			return $rs if $rs;
-		}
-	} else {
-		debug("No $type to process.");
-	}
-
-	0;
+	$rs;
 }
 
 exit run();

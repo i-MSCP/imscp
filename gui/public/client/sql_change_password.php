@@ -84,8 +84,6 @@ function client_updateSqlUserPassword($sqlUserId, $sqlUserName, $sqlUserHost, $o
 		return;
 	}
 
-	iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onBeforeEditSqlUser, array('sqlUserId' => $sqlUserId));
-
 	if (empty($_POST['pass'])) {
 		set_page_message(tr('Please enter a password.'), 'error');
 		return;
@@ -113,6 +111,8 @@ function client_updateSqlUserPassword($sqlUserId, $sqlUserName, $sqlUserHost, $o
 	$password = $_POST['pass'];
 	$passwordUpdated = false;
 
+	iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onBeforeEditSqlUser, array('sqlUserId' => $sqlUserId));
+
 	try {
 		// Update SQL user password in the mysql system tables;
 
@@ -127,10 +127,6 @@ function client_updateSqlUserPassword($sqlUserId, $sqlUserName, $sqlUserHost, $o
 			array($password, $sqlUserName, $sqlUserHost)
 		);
 
-		iMSCP_Events_Manager::getInstance()->dispatch(
-			iMSCP_Events::onAfterEditSqlUser, array('sqlUserId' => $sqlUserId)
-		);
-
 		set_page_message(tr('SQL user password successfully updated.'), 'success');
 		write_log(
 			sprintf("%s updated password for the '%s' SQL user.", $_SESSION['user_logged'], tohtml($sqlUserName)),
@@ -138,14 +134,15 @@ function client_updateSqlUserPassword($sqlUserId, $sqlUserName, $sqlUserHost, $o
 		);
 	} catch (iMSCP_Exception_Database $e) {
 		if($passwordUpdated) {
-			// Our transaction failed so we try to rollback by restoring old password
-			try { // We don't care about result here - An exception is throw in case the user do not exists
+			try {
 				exec_query("SET PASSWORD FOR ?@? = PASSWORD(?)", array($sqlUserName, $sqlUserHost, $oldSqlPassword));
 			} catch(iMSCP_Exception_Database $f) { }
 		}
 
 		throw $e;
 	}
+
+	iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAfterEditSqlUser, array('sqlUserId' => $sqlUserId));
 
 	redirectTo('sql_manage.php');
 }

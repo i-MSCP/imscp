@@ -251,7 +251,7 @@ sub delete
 }
 
 
-sub buildHTTPDData
+sub _getHttpdData
 {
 	my $self = $_[0];
 
@@ -267,7 +267,7 @@ sub buildHTTPDData
 	0;
 }
 
-sub buildFTPDData
+sub _getFtpdData
 {
 	my $self = $_[0];
 

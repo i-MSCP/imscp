@@ -2542,8 +2542,7 @@ function exec_query($query, $bind = null)
 	static $db = null;
 
 	if (null === $db) {
-		/** @var $db iMSCP_Database */
-		$db = iMSCP_Registry::get('db');
+		$db = iMSCP_Database::getInstance();
 	}
 
 	try {

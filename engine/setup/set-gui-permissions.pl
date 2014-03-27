@@ -57,7 +57,6 @@ iMSCP::Bootstrapper->getInstance()->boot(
 
 sub run
 {
-	my ($instance, $file, $class);
 	my @servers = iMSCP::Servers->getInstance()->get();
 	my @addons = iMSCP::Addons->getInstance()->get();
 	my $totalItems = @servers + @addons;
@@ -65,36 +64,52 @@ sub run
 	my $rs = 0;
 
 	for(@servers) {
-		s/\.pm//;
+		next if $_ eq 'noserver';
 
-		$file = "Servers/$_.pm";
-		$class = "Servers::$_";
+		my $package = "Servers::$_";
 
-		require $file;
-		$instance = $class->factory();
+		eval "require $package";
 
-		if($instance->can('setGuiPermissions')) {
-			debug("Setting $_ server frontEnd permissions");
-			print "Setting frontEnd permissions for the $_ server\t$totalItems\t$counter\n" if $main::execmode eq 'setup';
-			$rs |= $instance->setGuiPermissions();
+		unless($@) {
+			my $instance = $package->factory();
+
+			if($instance->can('setGuiPermissions')) {
+				debug("Setting $_ server frontEnd permissions");
+
+				if ($main::execmode eq 'setup') {
+					print "Setting frontEnd permissions for the $_ server\t$totalItems\t$counter\n";
+				}
+
+				$rs |= $instance->setGuiPermissions();
+			}
+		} else {
+			error($@);
+			$rs = 1;
 		}
 
 		$counter++;
 	}
 
 	for(@addons) {
-		s/\.pm//;
+		my $package = "Addons::$_";
 
-		$file = "Addons/$_.pm";
-		$class = "Addons::$_";
+		eval "require $package";
 
-		require $file;
-		$instance = $class->getInstance();
+		unless($@) {
+			my $instance = $package->getInstance();
 
-		if($instance->can('setGuiPermissions')) {
-			debug("Setting $_ addon frontEnd permissions");
-			print "Setting frontEnd permissions for the $_ addon\t$totalItems\t$counter\n" if $main::execmode eq 'setup';
-			$rs |= $instance->setGuiPermissions();
+			if($instance->can('setGuiPermissions')) {
+				debug("Setting $_ addon frontEnd permissions");
+
+				if ($main::execmode eq 'setup') {
+					print "Setting frontEnd permissions for the $_ addon\t$totalItems\t$counter\n";
+				}
+
+				$rs |= $instance->setGuiPermissions();
+			}
+		} else {
+			error($@);
+			$rs = 1;
 		}
 
 		$counter++;

@@ -19,7 +19,7 @@
 #
 # @category    i-MSCP
 # @copyright   2010-2014 by i-MSCP | http://i-mscp.net
-# @author      Daniel Andreca <sci2tech@gmail.com>
+# @author      Laurent Declercq <l.declercq@nuxwin.com>
 # @link        http://i-mscp.net i-MSCP Home Site
 # @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
@@ -34,31 +34,32 @@ sub factory
 {
 	my $self = $_[0];
 	my $server = $_[1] || $main::imscpConfig{'NAMED_SERVER'};
-
-	my ($file, $class);
+	my $package = undef;
 
 	if($server eq 'external_server') {
 		my $oldServer = $main::imscpOldConfig{'NAMED_SERVER'} || 'external_server';
 
 		unless($oldServer eq 'external_server') {
-			$file = "Servers/named/$oldServer.pm";
-			$class = "Servers::named::$oldServer";
+			$package = "Servers::named::$oldServer";
 
-			require $file;
+			eval "require $package";
 
-			my $rs = $class->getInstance()->uninstall();
+			fatal($@) if $@;
+
+			my $rs = $package->getInstance()->uninstall();
 			fatal("Unable to uninstall $oldServer server") if $rs;
 		}
 
-		$file = 'Servers/noserver.pm';
-		$class = 'Servers::noserver';
+		$package = 'Servers::noserver';
 	} else {
-		$file = "Servers/named/$server.pm";
-		$class = "Servers::named::$server";
+		$package = "Servers::named::$server";
 	}
 
-	require $file;
-	$class->getInstance();
+	eval "require $package";
+
+	fatal($@) if $@;
+
+	$package->getInstance();
 }
 
 1;

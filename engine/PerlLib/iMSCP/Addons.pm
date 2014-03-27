@@ -19,7 +19,7 @@
 #
 # @category    i-MSCP
 # @copyright   2010-2014 by i-MSCP | http://i-mscp.net
-# @author      Daniel Andreca <sci2tech@gmail.com>
+# @author      Laurent Declercq <l.declercq@nuxwin.com>
 # @link        http://i-mscp.net i-MSCP Home Site
 # @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
@@ -28,27 +28,61 @@ package iMSCP::Addons;
 use strict;
 use warnings;
 
-use iMSCP::Debug;
 use iMSCP::Dir;
 use parent 'Common::SingletonClass';
 
-sub load
-{
+=head1 DESCRIPTION
 
-	my $addons = iMSCP::Dir->new('dirname' => "$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Addons");
+ Package which allow addons list retrieval.
 
-	@{$_[0]->{'addons'}} = $addons->getFiles();
+=head1 PUBLIC METHODS
 
-	0;
-}
+=over 4
+
+=item get()
+
+ Get addons list
+
+ Return addon list
+
+=cut
 
 sub get
 {
+	@{$_[0]->{'items'}};
+}
+
+=back
+
+=head1 PRIVATE METHODS
+
+=over 4
+
+=item _init()
+
+ Initialize instance
+ 
+ Return iMSCP::Addons
+
+=cut
+
+sub _init
+{
 	my $self = $_[0];
 
-	$self->load() unless exists $self->{'addons'};
+	$_ = substr($_, 0, -3) for @{$self->{'items'}} = iMSCP::Dir->new(
+		'dirname' => "$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Addons"
+	)->getFiles();
 
-	return (exists $self->{'addons'} ? @{$self->{'addons'}} : ());
+	$self;
 }
+
+=back
+
+=head1 AUTHOR
+
+Laurent Declercq <l.declercq@nuxwin.com>
+
+=cut
 
 1;

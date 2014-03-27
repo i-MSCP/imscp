@@ -19,7 +19,7 @@
 #
 # @category    i-MSCP
 # @copyright   2010-2014 by i-MSCP | http://i-mscp.net
-# @author      Daniel Andreca <sci2tech@gmail.com>
+# @author      Laurent Declercq <l.declercq@nuxwin.com>
 # @link        http://i-mscp.net i-MSCP Home Site
 # @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
@@ -28,23 +28,19 @@ package Servers::mta;
 use strict;
 use warnings;
 
+use iMSCP::Debug;
+
 sub factory
 {
 	my $self = $_[0];
 	my $server = $_[1] || $main::imscpConfig{'MTA_SERVER'};
+	my $package = ($server eq 'no') ? 'Servers::noserver' : "Servers::mta::$server";
 
-	my ($file, $class);
+	eval "require $package";
 
-	if($server eq 'no') {
-		$file = 'Servers/noserver.pm';
-		$class = 'Servers::noserver';
-	} else {
-		$file = "Servers/mta/$server.pm";
-		$class = "Servers::mta::$server";
-	}
+	fatal($@) if $@;
 
-	require $file;
-	$class->getInstance();
+	$package->getInstance();
 }
 
 1;
