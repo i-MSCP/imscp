@@ -6,7 +6,7 @@ Git stable
 ------------------------------------------------------------------------------------------------------------------------
 
 CONFIGS:
-	- Added support for MariaDB (Debian Jessie)
+	- Added support for MariaDB (Debian Jessie / Ubuntu Trusty)
 
 Tickets:
 	- Fixed #1056: Bug - Incorrect value '_no_' in SQL query on create default email-accounts

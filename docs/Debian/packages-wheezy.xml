@@ -76,7 +76,7 @@
                 <package>libmysqlclient18</package>
             </mysql_5.5>
             <mariadb_5.5
-                    pinning_package="mariadb-client-5.5 mariadb-server-5.5 mariadb-common mysql-common libmysqlclient18"
+                    pinning_package="mariadb-client-5.5 mariadb-server-5.5 mariadb-common libmysqlclient18"
                     pinning_pin="origin mirror.netcologne.de"
                     pinning_pin_priority="1001"
                     repository="deb http://mirror.netcologne.de/mariadb/repo/5.5/debian wheezy main"
