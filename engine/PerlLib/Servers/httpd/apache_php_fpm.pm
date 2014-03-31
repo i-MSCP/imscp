@@ -304,21 +304,31 @@ sub disableDmn($$)
 		}
 	);
 
-	$rs = $self->apacheBkpConfFile("$self->{'apacheWrkDir'}/$data->{'DOMAIN_NAME'}.conf");
-	return $rs if $rs;
+	my @configTpl = ('');
 
-	$rs = $self->buildConfFile(
-		"$self->{'apacheTplDir'}/domain_disabled.tpl",
-		$data,
-		{ 'destination' => "$self->{'apacheWrkDir'}/$data->{'DOMAIN_NAME'}.conf" }
-	);
-	return $rs if $rs;
+	if($data->{'SSL_SUPPORT'}) {
+		$self->setData({ CERT => "$main::imscpConfig{'GUI_ROOT_DIR'}/data/certs/$data->{'DOMAIN_NAME'}.pem" });
+		push @configTpl, '_ssl';
+	}
 
-	$rs = $self->installConfFile("$data->{'DOMAIN_NAME'}.conf");
-	return $rs if $rs;
+	for(@configTpl) {
+		$rs = iMSCP::File->new(
+			'filename' => "$self->{'apacheWrkDir'}/$data->{'DOMAIN_NAME'}$_.conf"
+		)->copyFile(
+			"$self->{'apacheBkpDir'}/$data->{'DOMAIN_NAME'}$_.conf". time
+		) if -f "$self->{'apacheWrkDir'}/$data->{'DOMAIN_NAME'}$_.conf";
+		return $rs if $rs;
 
-	$rs = $self->enableSite("$data->{'DOMAIN_NAME'}.conf");
-	return $rs if $rs;
+		$rs = $self->buildConfFile(
+			"$self->{'tplDir'}/domain_disabled$_.tpl",
+			$data,
+			{ 'destination' => "$self->{'apacheWrkDir'}/$data->{'DOMAIN_NAME'}$_.conf" }
+		);
+		return $rs if $rs;
+
+		$rs = $self->installConfFile("$data->{'DOMAIN_NAME'}$_.conf");
+		return $rs if $rs;
+	}
 
 	$self->{'restart'} = 'yes';
 

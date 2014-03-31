@@ -11,6 +11,7 @@ CONFIGS:
 Tickets:
 	- Fixed #1056: Bug - Incorrect value '_no_' in SQL query on create default email-accounts
 	- Fixed #1065: Bug - Unable to unsuspend customer account from admin UI
+	- Fixed #1066: Bug - Customer's domains remain reachable through HTTPS when they are deactivated
 
 ------------------------------------------------------------------------------------------------------------------------
 1.1.5
