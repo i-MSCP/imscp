@@ -40,7 +40,6 @@ use warnings;
 use iMSCP::Debug;
 use iMSCP::Execute;
 use File::Find qw( finddepth );
-use feature 'state';
 use parent qw( Exporter );
 use vars qw( @EXPORT_OK );
 
