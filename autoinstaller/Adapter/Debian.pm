@@ -746,8 +746,9 @@ sub _debconfSetSelections
 
 	if(defined $sqlServer) {
 		if($sqlServer ne 'remote_server') {
-			if( $sqlServer =~ /^(mysql|mariadb)_(\d+\.\d+)$/) {
-				$sqlServerPackageName = "$1-server-$2";
+			if( $sqlServer =~ /^(mysql|mariadb|percona)_(\d+\.\d+)$/) {
+
+				$sqlServerPackageName = "$1-server" . ($1 eq 'percona' ? '-server' : '') . "-$2";
 			} else {
 				error("Unknown SQL server package name: $sqlServer");
 				return 1;

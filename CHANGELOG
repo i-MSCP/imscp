@@ -6,7 +6,14 @@ Git stable
 ------------------------------------------------------------------------------------------------------------------------
 
 CONFIGS:
+	- Added: Percona MySQL server support (Debian squeeze, wheezy / Ubuntu lucid, precise, quantal, raring, saucy)
 	- Added support for MariaDB (Debian Jessie / Ubuntu Trusty)
+
+ENGINE:
+	- Fixed: iMSCP::Ext2Attributes must not act on systems which do not support extended fs attributes
+
+INSTALLER:
+	 Added: Percona MySQL server support
 
 Tickets:
 	- Fixed #1056: Bug - Incorrect value '_no_' in SQL query on create default email-accounts
