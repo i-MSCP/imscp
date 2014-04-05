@@ -293,7 +293,6 @@ sub _isSupported
 		my $rs = execute(
 			"$main::imscpConfig{'CMD_DF'} -TP " . escapeShell($main::imscpConfig{'USER_WEB_DIR'}), \$stdout, \$stderr
 		);
-		debug($stdout) if $stdout;
 		fatal($stderr) if $stderr && $rs;
 
 		my %filePartitionInfo;
