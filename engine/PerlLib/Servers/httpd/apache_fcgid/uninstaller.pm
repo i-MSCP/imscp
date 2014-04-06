@@ -40,7 +40,7 @@ use parent 'Common::SingletonClass';
 
 sub uninstall
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $rs = $self->_removeUsers();
 	return $rs if $rs;
@@ -62,7 +62,7 @@ sub uninstall
 
 sub _init
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	$self->{'httpd'} = Servers::httpd::apache_fcgid->getInstance();
 
@@ -77,7 +77,7 @@ sub _init
 
 sub _removeUsers
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	# Panel user
 	my $rs  = iMSCP::SystemUser->new('force' => 'yes')->delSystemUser(
@@ -87,13 +87,13 @@ sub _removeUsers
 
 	# Panel group
 	iMSCP::SystemGroup->getInstance()->delSystemGroup(
-		$main::imscpConfig{'SYSTEM_USER_PREFIX'} . $main::imscpConfig{'SYSTEM_USER_MIN_UID'}'
+		$main::imscpConfig{'SYSTEM_USER_PREFIX'} . $main::imscpConfig{'SYSTEM_USER_MIN_UID'}
 	);
 }
 
 sub _removeVloggerSqlUser
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $db = iMSCP::Database->factory();
 
@@ -105,7 +105,7 @@ sub _removeVloggerSqlUser
 
 sub _removeDirs
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $rs = 0;
 
@@ -119,7 +119,7 @@ sub _removeDirs
 
 sub _restoreConf
 {
-	my $self = shift;
+	my $self = $_[0];
 	my $rs = 0;
 
 	for ("$main::imscpConfig{'LOGROTATE_CONF_DIR'}/apache2", "$self->{'config'}->{'APACHE_CONF_DIR'}/ports.conf") {
@@ -136,7 +136,7 @@ sub _restoreConf
 
 sub _fastcgiConf
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $rs = 0:
 
@@ -154,7 +154,7 @@ sub _fastcgiConf
 
 sub _vHostConf
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $rs = 0;
 

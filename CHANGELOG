@@ -14,6 +14,7 @@ ENGINE:
 
 INSTALLER:
 	 Added: Percona MySQL server support
+	 Fixed: apache_php_fpm uninstaller is broken
 
 Tickets:
 	- Fixed #1056: Bug - Incorrect value '_no_' in SQL query on create default email-accounts

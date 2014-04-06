@@ -60,7 +60,7 @@ use parent 'Common::SingletonClass';
 
 sub uninstall
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $rs = $self->_removeUserAndGroup();
 	return $rs if $rs;
@@ -93,7 +93,7 @@ sub uninstall
 
 sub _init
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	$self->{'httpd'} = Servers::httpd::apache_php_fpm->getInstance();
 
@@ -122,7 +122,7 @@ sub _init
 
 sub _removeUserAndGroup
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	# Panel user
 	my $rs  = iMSCP::SystemUser->new('force' => 'yes')->delSystemUser(
@@ -146,7 +146,7 @@ sub _removeUserAndGroup
 
 sub _removeVloggerSqlUser
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $db = iMSCP::Database->factory();
 
@@ -166,9 +166,9 @@ sub _removeVloggerSqlUser
 
 sub _removeDirs
 {
-	my $self = shift;
+	my $self = $_[0];
 
-	iMSCP::Dir->new('dirname' => $self->{'config'}->{'APACHE_CUSTOM_SITES_CONFIG_DIR')->remove();
+	iMSCP::Dir->new('dirname' => $self->{'config'}->{'APACHE_CUSTOM_SITES_CONFIG_DIR'})->remove();
 }
 
 =item _restoreApacheConfig()
@@ -181,7 +181,7 @@ sub _removeDirs
 
 sub _restoreApacheConfig
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $rs = $self->{'httpd'}->disableMod('php_fpm_imscp')
 		if -f "$self->{'config'}->{'APACHE_MODS_DIR'}/php_fpm_imscp.load";
@@ -235,7 +235,7 @@ sub _restoreApacheConfig
 
 sub _restorePhpfpmConfig
 {
-	my $self = shift;
+	my $self = $_[0];
 
 	my $rs = iMSCP::File->new(
 		'filename' => "$self->{'phpfpmConfig'}->{'PHP_FPM_POOLS_CONF_DIR'}/master.conf"
