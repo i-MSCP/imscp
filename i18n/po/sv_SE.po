@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2014-03-23 16:38+0100\n"
-"PO-Revision-Date: 2014-03-23 15:40+0000\n"
+"POT-Creation-Date: 2014-03-27 02:06+0100\n"
+"PO-Revision-Date: 2014-03-27 01:08+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Swedish (Sweden) (http://www.transifex.com/projects/p/i-MSCP/language/sv_SE/)\n"
 "MIME-Version: 1.0\n"
@@ -309,6 +309,10 @@ msgstr "%s värddatorfältet är tom eller ogiltig."
 #, php-format
 msgid "%s is not a valid i-MSCP language file."
 msgstr "%s är inte ett giltigt i-MSCP språkfil."
+
+#, php-format
+msgid "%s is not allowed as subdomain label."
+msgstr ""
 
 #, php-format
 msgid "%s is not part of domain %s."
@@ -1277,14 +1281,8 @@ msgstr "Certificate successfully scheduled for deletion."
 msgid "Change"
 msgstr "Ändra"
 
-msgid "Change SQL user password"
-msgstr "Ändra SQL-användarens lösenord"
-
 msgid "Change in progress..."
 msgstr "Change in progress..."
-
-msgid "Change password"
-msgstr "Byta lösenord"
 
 msgid "Change personal data"
 msgstr "Ändra personligt information"
@@ -1730,6 +1728,9 @@ msgstr "Databasnamn"
 msgid "Database name is too long."
 msgstr "Databas namn är för långt."
 
+msgid "Database name is unavailable."
+msgstr ""
+
 msgid "Database prefix"
 msgstr "Databas prefix"
 
@@ -1883,9 +1884,6 @@ msgstr "Ta bort ticket"
 msgid "Deletion in progress"
 msgstr "Radering pågår"
 
-msgid "Demo Version!"
-msgstr "Demoversion!"
-
 msgid "Depot import"
 msgstr "Depå import"
 
@@ -1949,6 +1947,10 @@ msgstr "Vill du verkligen ta bort hela %s kund konto? Den här operationen kan i
 msgid "Domain"
 msgstr "Domän"
 
+#, php-format
+msgid "Domain %s is unavailable."
+msgstr ""
+
 msgid "Domain IP"
 msgstr "Domän-IP"
 
@@ -1969,10 +1971,6 @@ msgstr "Domain accounts"
 
 msgid "Domain alias"
 msgstr "Domain alias"
-
-#, php-format
-msgid "Domain alias %s already exist."
-msgstr "Domän alias %s finns redan."
 
 #, php-format
 msgid "Domain alias %s cannot be forwarded on itself."
@@ -2018,9 +2016,6 @@ msgstr "Domänaliaset du försöker ta bort har subdomäner!<br>Vänligen ta bor
 
 msgid "Domain aliases"
 msgstr "Domänalias"
-
-msgid "Domain already registered on the system."
-msgstr "Domän registrerades redan på systemet."
 
 msgid "Domain and SQL databases"
 msgstr "Domain och SQL databaser"
@@ -2109,9 +2104,6 @@ msgstr "Domäner"
 
 msgid "Domains per page"
 msgstr "Domäner per sida"
-
-msgid "Don't use special chars like \"@, $, %...\" in the password."
-msgstr "Använd inte specialtecken som \"@, $, %...\" i lösenordet."
 
 msgid "Done"
 msgstr "Klar"
@@ -2769,6 +2761,9 @@ msgstr "Incorrect syntax for email address."
 msgid "Incorrect username length or syntax."
 msgstr "Felaktigt användarnamn längd eller syntax."
 
+msgid "Info Unavailable"
+msgstr ""
+
 msgid "Install"
 msgstr "Intallera"
 
@@ -2843,6 +2838,10 @@ msgstr "Ogiltig MX type."
 
 msgid "Invalid NAME."
 msgstr "Ogiltigt namn."
+
+#, php-format
+msgid "Invalid SQL user host: %s"
+msgstr ""
 
 msgid "Invalid TXT data"
 msgstr "TXT ogiltiga data"
@@ -3101,9 +3100,6 @@ msgstr "Hantera dina skyddade områden, användare och grupper."
 
 msgid "Mark"
 msgstr "Välj"
-
-msgid "Master domain cannot be used."
-msgstr "Master domän kan inte användas."
 
 msgid "Max number of login attempts"
 msgstr "Max antal inloggningförsök"
@@ -3570,9 +3566,6 @@ msgstr "Lösenord"
 msgid "Password cannot be longer than 30 characters."
 msgstr "Lösenord får inte vara längre än 30 teken"
 
-msgid "Password change is deactivated!"
-msgstr "Byte av lösenord är inaktiverat!"
-
 msgid "Password confirmation"
 msgstr "Lösenord bekräftelse"
 
@@ -3591,6 +3584,9 @@ msgstr "Lösenord saknas."
 #, php-format
 msgid "Password is shorter than %s characters."
 msgstr "Lösenordet är kortare än %s tecken."
+
+msgid "Password is too long."
+msgstr ""
 
 msgid "Password length"
 msgstr "Lösenordslängd"
@@ -3661,8 +3657,8 @@ msgid ""
 "/>Refresh your site to see the new status!"
 msgstr "Please contact the administrator!<br />Ask him for the permissions to use this package.<br />It is not allowed to upload this packet two times.<br />Refresh your site to see the new status!"
 
-msgid "Please don't use special chars such as '@, $, %...' in the password."
-msgstr "Var god och inte använd '@, $, %...' i lösenord."
+msgid "Please don't use special chars such as '@, $, %...' in password."
+msgstr ""
 
 msgid "Please enter a name for the protected area."
 msgstr "Please enter a name for the protected area."
@@ -3670,8 +3666,11 @@ msgstr "Please enter a name for the protected area."
 msgid "Please enter a password."
 msgstr "Var god och skriv ett lösenord."
 
-msgid "Please enter a username."
-msgstr "Var god och skriv ett användarnamn."
+msgid "Please enter an SQL user host."
+msgstr ""
+
+msgid "Please enter an username."
+msgstr ""
 
 msgid "Please enter protected area path"
 msgstr "Ange skyddat område vägen"
@@ -3705,9 +3704,6 @@ msgstr "Vänligen ange ett ämne för meddelandet."
 
 msgid "Please type database name."
 msgstr "Vänligen ange databas-namn."
-
-msgid "Please type user password."
-msgstr "Vänligen skriv användarens lösenord."
 
 msgid "Please type your message."
 msgstr "Skriv ditt meddelande."
@@ -4261,6 +4257,13 @@ msgstr "Bara SQL-databaser"
 msgid "SQL user"
 msgstr "SQL-användare"
 
+#, php-format
+msgid "SQL user %s already exits."
+msgstr ""
+
+msgid "SQL user host"
+msgstr ""
+
 msgid "SQL user limit"
 msgstr "SQL user limit"
 
@@ -4276,9 +4279,6 @@ msgstr "SQL-användare är inaktiverad."
 msgid "SQL user name"
 msgstr "SQL-användarnamn"
 
-msgid "SQL user not found."
-msgstr "SQL-användare hittades inte."
-
 msgid "SQL user password successfully updated."
 msgstr "SQL användarens lösenord uppdaterades."
 
@@ -4287,12 +4287,6 @@ msgstr "SQL-användare prefix/suffix"
 
 msgid "SQL user successfully added."
 msgstr "SQL användare skapades."
-
-msgid "SQL user successfully deleted."
-msgstr "SQL användare raderades."
-
-msgid "SQL username already in use."
-msgstr "Angiven SQL-användarnamn finns redan."
 
 msgid "SQL users"
 msgstr "SQL-användare"
@@ -4576,8 +4570,8 @@ msgid ""
 "including subdomains, but retains our server as final mailhost."
 msgstr "Spam-filtrar: Setup en DNS-MX-post till reläet post för hela din domän, inklusive underdomäner, men behåller vår server som slutlig mailhost."
 
-msgid "Specified database name already exists."
-msgstr "Angivna databasen namn finns redan."
+msgid "Sql user successfully deleted."
+msgstr ""
 
 msgid "Start installation"
 msgstr "Starta installationen"
@@ -4720,9 +4714,6 @@ msgstr "Systemverktyg"
 
 msgid "System under maintenance"
 msgstr "System är på underhåll"
-
-msgid "System was unable to update the SQL user password."
-msgstr "Systemet kunde inte uppdaterar SQL användarens lösenord."
 
 msgid "TB"
 msgstr "TB"
@@ -4914,6 +4905,13 @@ msgid ""
 "to the selected network interface."
 msgstr "Detta gränssnitt ger möjlighet att lägga till eller ta bort IP-adresser. IP-adresser nedan är redan under kontroll av i-MSCP. IP-adresser som läggs till genom detta gränssnitt läggs automatiskt till i-MSCP databas, och kommer att vara tillgängliga för tilldelning till en eller flera av dina återförsäljare. Om en IP-adress inte har konfigurerats på systemet, det kommer att vara ansluten till det valda nätverket har kontakt med."
 
+#, php-format
+msgid ""
+"This is the host from which this SQL user must be allowed to connect to the "
+"SQL server. Enter the % character to allow this SQL user to connect from any"
+" host."
+msgstr ""
+
 msgid "This package already exists in the administrator software repository."
 msgstr "This package already exists in the administrator software repository."
 
@@ -4980,9 +4978,6 @@ msgstr "Till återförsäljare"
 #, php-format
 msgid "To unprotect this plugin, you must edit the %s file"
 msgstr "To unprotect this plugin, you must edit the %s file"
-
-msgid "Too long user password."
-msgstr "För lång användarens lösenord."
 
 msgid "Total"
 msgstr "Totalt"
@@ -5113,9 +5108,6 @@ msgstr "Unable to schedule deletion of the customer account. Please consult admi
 msgid "Unable to upload file. Max. upload filesize (%1$d MB) reached?"
 msgstr "Unable to upload file. Max. upload filesize (%1$d MB) reached?"
 
-msgid "Unallowed database name."
-msgstr "Vänligen ange databas-namn."
-
 msgid "Unauthorized"
 msgstr "Obehörig"
 
@@ -5216,6 +5208,9 @@ msgid ""
 "fields."
 msgstr "Uppdatering av webben programvaruförråd index har avbrutits. Saknas eller tomma fält."
 
+msgid "Update password"
+msgstr ""
+
 msgid "Updates"
 msgstr "Updates"
 
@@ -5280,10 +5275,6 @@ msgid ""
 "User do not exist or you do not have permission to access this interface"
 msgstr "Användaren finns inte eller du har inte behörighet till detta gränssnitt"
 
-msgid ""
-"User does not exist or you do not have permission to access this interface"
-msgstr "Användaren finns inte eller du har inte behörighet till det här gränssnittet!"
-
 msgid "User errors"
 msgstr "User errors"
 
@@ -5295,9 +5286,6 @@ msgstr "Användarinloggning för systemet"
 
 msgid "User name"
 msgstr "Användarnamn"
-
-msgid "User name too long!"
-msgstr "Användarnamnet är för långt!"
 
 msgid "User password"
 msgstr "Användarlösenord"
@@ -5328,6 +5316,9 @@ msgstr "Användarnamn"
 
 msgid "Username and password for application login"
 msgstr "Användarnamn och lösenord för inloggning"
+
+msgid "Username is too long."
+msgstr ""
 
 msgid "Users"
 msgstr "Användare"
@@ -5451,8 +5442,12 @@ msgid ""
 msgstr "Jokertecken: Setup en DNS-MX-post till reläet post för obefintligt underdomäner."
 
 #, php-format
-msgid "Wildcards such as %% and ? are not allowed."
-msgstr "Jokertecken som%% och? är inte tillåtna."
+msgid "Wildcards such as %% and ? are not allowed in username."
+msgstr ""
+
+#, php-format
+msgid "Wildcards such as %% and are not allowed."
+msgstr ""
 
 msgid "Wrong IP address."
 msgstr "Fel IP adr."

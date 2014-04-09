@@ -84,21 +84,23 @@ if (isset($_GET['action']) && $_GET['action'] == "delete") {
 				
 				$db->beginTransaction();
 
-				$query = "UPDATE `domain_aliasses` SET `alias_status` = ? WHERE `alias_id` = ? AND `alias_status` = ?";
-				$stmt = exec_query($query, array('toadd', $alsId, 'ordered'));
+				$stmt = exec_query(
+					'UPDATE domain_aliasses SET alias_status = ? WHERE alias_id = ? AND alias_status = ?',
+					array('toadd', $alsId, 'ordered')
+				);
 
 				if($stmt->rowCount()) {
 					// Create default email addresses if needed
-					if ($cfg->CREATE_DEFAULT_EMAIL_ADDRESSES) {
+					if ($cfg['CREATE_DEFAULT_EMAIL_ADDRESSES']) {
 						$query = '
 							SELECT
-								`email`
+								email
 							FROM
-								`admin`
+								admin
 							LEFT JOIN
-								`domain` ON(`admin`.`admin_id` = `domain`.`domain_admin_id`)
+								domain ON(admin.admin_id = domain.domain_admin_id)
 							WHERE
-								`domain`.`domain_id` = ?
+								domain.domain_id = ?
 						';
 						$stmt = exec_query($query, $mainDmnId);
 

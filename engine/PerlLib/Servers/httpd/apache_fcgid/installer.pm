@@ -190,10 +190,7 @@ sub install
 	return $rs if $rs;
 
 	$rs = $self->_oldEngineCompatibility();
-	return $rs if $rs;
-
-	#$rs = $self->setEnginePermissions();
-	#return $rs if $rs;
+	return $rs if $rs,
 
 	$self->{'hooksManager'}->trigger('afterHttpdInstall', 'apache_fcgid');
 }

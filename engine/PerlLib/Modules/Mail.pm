@@ -125,7 +125,7 @@ sub process
 	$rs;
 }
 
-sub buildMTAData
+sub _getMtaData
 {
 	my $self = $_[0];
 
@@ -175,7 +175,7 @@ sub buildMTAData
 	0;
 }
 
-sub buildPOData
+sub _getPoData
 {
 	my $self = $_[0];
 
@@ -194,14 +194,14 @@ sub buildPOData
 	0;
 }
 
-sub buildADDONData
+sub _getAddonsData
 {
 	my $self = $_[0];
 
 	my $mail = $self->{'mail_addr'};
 	$mail =~ s/^\s+//;
 
-	$self->{'AddonsData'} = {
+	$self->{'addons'} = {
 		DOMAIN_NAME => (split('@', $mail))[1],
 		MAIL_ACC => (split('@', $mail))[0],
 		MAIL_ADDR => $mail,

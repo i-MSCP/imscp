@@ -73,6 +73,28 @@
                 <package>mysql-client-5.5</package>
                 <package>libmysqlclient18</package>
             </mysql_5.5>
+            <mariadb_5.5
+                    pinning_package="mariadb-client-5.5 mariadb-server-5.5 mariadb-common libmysqlclient18"
+                    pinning_pin="release o=Ubuntu,n=trusty"
+                    pinning_pin_priority="1001"
+                    >
+                <package>mariadb-client-5.5</package>
+                <package>mariadb-server-5.5</package>
+                <package>libmysqlclient18</package>
+            </mariadb_5.5>
+            <mariadb_10.0
+                    pinning_package="mariadb-client-10.0 mariadb-server-10.0 mariadb-common mysql-common libmysqlclient18"
+                    pinning_pin="origin mirror2.hs-esslingen.de"
+                    pinning_pin_priority="1001"
+                    repository="deb http://mirror2.hs-esslingen.de/mariadb/repo/10.0/ubuntu trusty main"
+                    repository_origin="MariaDB"
+                    repository_key_srv="keyserver.ubuntu.com"
+                    repository_key_id="0xcbcb082a1bb943db"
+                    >
+                <package>mariadb-client-10.0</package>
+                <package>mariadb-server-10.0</package>
+                <package>libmysqlclient18</package>
+            </mariadb_10.0>
             <remote_server>
                 <package>mysql-client</package>
             </remote_server>

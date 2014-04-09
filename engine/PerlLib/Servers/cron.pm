@@ -25,7 +25,6 @@ Servers::cron - i-MSCP Cron server implementation
 #
 # @category    i-MSCP
 # @copyright   2010-2014 by i-MSCP | http://i-mscp.net
-# @author      Daniel Andreca <sci2tech@gmail.com>
 # @author      Laurent Declercq <l.declercq@nuxwin.com>
 # @link        http://i-mscp.net i-MSCP Home Site
 # @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
@@ -55,26 +54,19 @@ sub factory
 {
 	my $self = $_[0];
 	my $server = $_[1] || 'cron';
+	my $package = ($server eq 'no') ? 'Servers::noserver' : "Servers::cron::$server";
 
-	my ($file, $class);
+	eval "require $package";
 
-	if($server eq 'no') {
-		$file = "Servers/noserver.pm";
-		$class = "Servers::noserver";
-	} else {
-		$file = "Servers/cron/$server.pm";
-		$class = "Servers::cron::$server";
-	}
+	fatal($@) if $@;
 
-	require $file;
-	$class->getInstance();
+	$package->getInstance();
 }
 
 =back
 
 =head1 AUTHORS
 
- Daniel Andreca <sci2tech@gmail.com>
  Laurent Declercq <l.declercq@nuxwin.com>
 
 =cut

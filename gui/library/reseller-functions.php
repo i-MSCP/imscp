@@ -47,7 +47,7 @@ define('MT_ALIAS_CATCHALL', 'alias_catchall');
 define('MT_ALSSUB_CATCHALL', 'alssub_catchall');
 
 /**
- * Generates user's properties.
+ * Generates user's properties
  *
  * @param int $resellerId Reseller unique identifier
  * @return array An array that contains user's properties
@@ -61,8 +61,7 @@ function generate_reseller_user_props($resellerId)
 	$rdmn_uf = $rsub_uf = $rals_uf = $rmail_uf = $rftp_uf = $rsql_db_uf =
 	$rsql_user_uf = $rtraff_uf = $rdisk_uf = '_off_';
 
-	$query = "SELECT `admin_id` FROM `admin` WHERE `created_by` = ?";
-	$stmt = exec_query($query, $resellerId);
+	$stmt = exec_query('SELECT admin_id FROM admin WHERE created_by = ?', $resellerId);
 
 	if (!$stmt->rowCount()) {
 		return array_fill(0, 27, 0);
@@ -71,8 +70,7 @@ function generate_reseller_user_props($resellerId)
 	while ($data = $stmt->fetchRow()) {
 		$admin_id = $data['admin_id'];
 
-		$query = "SELECT `domain_id` FROM `domain` WHERE `domain_admin_id` = ?";
-		$stmt1 = exec_query($query, $admin_id);
+		$stmt1 = exec_query('SELECT domain_id FROM domain WHERE domain_admin_id = ?', $admin_id);
 
 		$ddata = $stmt1->fetchRow();
 		$user_id = $ddata['domain_id'];
@@ -160,7 +158,7 @@ function generate_reseller_user_props($resellerId)
 }
 
 /**
- * Returns information about customer traffic and disk usage.
+ * Returns information about customer traffic and disk usage
  *
  * @throws iMSCP_Exception in case customer main domain is not found
  * @param int $customerId Customer unique identifier
@@ -170,14 +168,14 @@ function get_user_trafficAndDiskUsage($customerId)
 {
 	$query = "
 		SELECT
-			`domain_id`,
-			IFNULL(`domain_disk_usage`, 0) AS `diskspace_usage`,
-			IFNULL(`domain_traffic_limit`, 0) AS `monthly_traffic_limit`,
-			IFNULL(`domain_disk_limit`, 0) AS `diskspace_limit`
+			domain_id,
+			IFNULL(domain_disk_usage, 0) AS diskspace_usage,
+			IFNULL(domain_traffic_limit, 0) AS monthly_traffic_limit,
+			IFNULL(domain_disk_limit, 0) AS diskspace_limit
 		FROM
-			`domain`
+			domain
 		WHERE
-			`domain_admin_id` = ?
+			domain_admin_id = ?
 	";
 	$stmt = exec_query($query, $customerId);
 
@@ -193,19 +191,19 @@ function get_user_trafficAndDiskUsage($customerId)
 
 		$query = "
 			SELECT
-				YEAR(FROM_UNIXTIME(`dtraff_time`)) AS `tyear`,
-				MONTH(FROM_UNIXTIME(`dtraff_time`)) AS `tmonth`,
-				SUM(`dtraff_web`) AS `web`,
-				SUM(`dtraff_ftp`) AS `ftp`,
-				SUM(`dtraff_mail`) AS `smtp`,
-				SUM(`dtraff_pop`) AS `pop`,
-				SUM(`dtraff_web`) + SUM(`dtraff_ftp`) + SUM(`dtraff_mail`) + SUM(`dtraff_pop`) AS `total`
+				YEAR(FROM_UNIXTIME(dtraff_time)) AS tyear,
+				MONTH(FROM_UNIXTIME(dtraff_time)) AS tmonth,
+				SUM(dtraff_web) AS web,
+				SUM(dtraff_ftp) AS ftp,
+				SUM(dtraff_mail) AS smtp,
+				SUM(dtraff_pop) AS pop,
+				SUM(dtraff_web) + SUM(dtraff_ftp) + SUM(dtraff_mail) + SUM(dtraff_pop) AS total
 			FROM
-				`domain_traffic`
+				domain_traffic
 			WHERE
-				`domain_id` = ?
+				domain_id = ?
 			GROUP BY
-				`tyear`, `tmonth`
+				tyear, tmonth
 		";
 		$stmt = exec_query($query, $domainId);
 
@@ -247,8 +245,7 @@ function get_user_props($user_id)
 	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
 
-	$query = "SELECT * FROM `domain` WHERE `domain_id` = ?";
-	$stmt = exec_query($query, $user_id);
+	$stmt = exec_query('SELECT * FROM domain WHERE domain_id = ?', $user_id);
 
 	if (!$stmt->rowCount()) {
 		return array_fill(0, 14, 0);
@@ -260,22 +257,22 @@ function get_user_props($user_id)
 	$als_current = records_count('domain_aliasses', 'domain_id', $user_id);
 	$als_max = $data['domain_alias_limit'];
 
-	if ($cfg->COUNT_DEFAULT_EMAIL_ADDRESSES) {
+	if ($cfg['COUNT_DEFAULT_EMAIL_ADDRESSES']) {
 		// Catch all is not a mailbox and haven't to be count
 		$mail_current = records_count('mail_users',
 			'mail_type NOT RLIKE \'_catchall\' AND domain_id',
 			$user_id);
 	} else {
 		$where = "
-				`mail_acc` != 'abuse'
+				mail_acc != 'abuse'
 			AND
-				`mail_acc` != 'postmaster'
+				mail_acc != 'postmaster'
 			AND
-				`mail_acc` != 'webmaster'
+				mail_acc != 'webmaster'
 			AND
-				`mail_type` NOT RLIKE '_catchall'
+				mail_type NOT RLIKE '_catchall'
 			AND
-				`domain_id`
+				domain_id
 		";
 
 		$mail_current = records_count('mail_users', $where, $user_id);
@@ -306,7 +303,7 @@ function get_user_props($user_id)
 }
 
 /**
- * Must be documented.
+ * Must be documented
  *
  * @param $searchQuery
  * @param $countQuery
@@ -441,7 +438,7 @@ function reseller_limits_check($resellerId, $hp)
 		if (isset($_SESSION['ch_hpprops'])) {
 			$hostingPlanProperties = $_SESSION['ch_hpprops'];
 		} else {
-			$stmt = exec_query("SELECT `props` FROM `hosting_plans` WHERE `id` = ?", $hp);
+			$stmt = exec_query('SELECT props FROM hosting_plans WHERE id = ?', $hp);
 
 			if ($stmt->rowCount()) {
 				$data = $stmt->fetchRow();
@@ -459,9 +456,7 @@ function reseller_limits_check($resellerId, $hp)
 		$newDiskspaceLimit
 	) = explode(';', $hostingPlanProperties);
 
-	$query = "SELECT * FROM `reseller_props` WHERE `reseller_id` = ?";
-
-	$stmt = exec_query($query, $resellerId);
+	$stmt = exec_query('SELECT * FROM reseller_props WHERE reseller_id = ?', $resellerId);
 	$data = $stmt->fetchRow();
 	$currentDmnLimit = $data['current_dmn_cnt'];
 	$maxDmnLimit = $data['max_dmn_cnt'];
@@ -570,7 +565,7 @@ function reseller_limits_check($resellerId, $hp)
 }
 
 /**
- * Send alias order email.
+ * Send alias order email
  *
  * @param  string $aliasName
  * @return void
@@ -583,8 +578,7 @@ function send_alias_order_email($aliasName)
 	$userId = $_SESSION['user_id'];
 	$resellerId = who_owns_this($userId, 'user');
 
-	$query = 'SELECT `fname`, `lname` FROM `admin` WHERE `admin_id` = ?;';
-	$stmt = exec_query($query, $userId);
+	$stmt = exec_query('SELECT fname, lname FROM admin WHERE admin_id = ?', $userId);
 	$userFirstname = $stmt->fields['fname'];
 	$userLastname = $stmt->fields['lname'];
 	$userEmail = $_SESSION['user_email'];
@@ -640,65 +634,60 @@ function send_alias_order_email($aliasName)
 }
 
 /**
- * Add default emails for new domain.
+ * Add default emails accounts for domain or domain alias.
  *
- * @param int $domainId Domain unique identifier
- * @param string $userEmail
- * @param string $domainPart
- * @param string $domainType
+ * @throws iMSCP_Exception_Database
+ * @param int $dmnId Domain unique identifier
+ * @param string $userEmail User email
+ * @param string $dmnName Domain name
+ * @param string $dmnType Domain type
  * @param int $subId
  * @return void
  */
-function client_mail_add_default_accounts($domainId, $userEmail, $domainPart, $domainType = 'domain', $subId = 0)
+function client_mail_add_default_accounts($dmnId, $userEmail, $dmnName, $dmnType = 'domain', $subId = 0)
 {
-	/** @var $cfg iMSCP_Config_Handler_File */
-	$cfg = iMSCP_Registry::get('config');
+	$forwardType = ($dmnType == 'alias') ? 'alias_forward' : 'normal_forward';
+	$resellerEmail = $_SESSION['user_email'];
 
-	if ($cfg->CREATE_DEFAULT_EMAIL_ADDRESSES) {
-		$forwardType = ($domainType == 'alias') ? 'alias_forward' : 'normal_forward';
+	$db = iMSCP_Database::getInstance();
 
-		// prepare SQL
-		$query = "
-			INSERT INTO
-			    mail_users (
-					`mail_acc`, `mail_pass`, `mail_forward`,`domain_id`, `mail_type`, `sub_id`, `status`,
-					`mail_auto_respond`,`quota`, `mail_addr`
+	try {
+		$db->beginTransaction();
+
+		// Prepare the statement once
+		$stmt = $db->getRawInstance()->prepare(
+			'
+				INSERT INTO mail_users (
+					mail_acc, mail_pass, mail_forward, domain_id, mail_type, sub_id, status, mail_auto_respond, quota,
+					mail_addr
 				) VALUES (
 					?, ?, ?, ?, ?, ?, ?, ?, ?, ?
 				)
-		";
-
-		// create default forwarder for webmaster@domain.tld to the account's owner
-		exec_query(
-			$query,
-			array(
-				'webmaster', '_no_', $userEmail, $domainId, $forwardType, $subId, 'toadd', '_no_',
-				NULL, 'webmaster@' . $domainPart
-			)
+			'
 		);
 
-		// create default forwarder for postmaster@domain.tld to the account's reseller
-		exec_query(
-			$query,
+		foreach(
 			array(
-				'postmaster', '_no_', $_SESSION['user_email'], $domainId, $forwardType, $subId, 'toadd',
-				'_no_', NULL, 'postmaster@' . $domainPart
-			)
-		);
+				'webmaster' => $userEmail, 'postmaster' => $resellerEmail, 'abuse' => $resellerEmail
+			) as $umail => $forwardTo
+		) {
+			$stmt->execute(
+				array(
+					$umail, '_no_', $forwardTo, $dmnId, $forwardType, $subId, 'toadd', 0, NULL,
+					$umail . '@' . $dmnName
+				)
+			);
+		}
 
-		// create default forwarder for abuse@domain.tld to the account's reseller
-		exec_query(
-			$query,
-			array(
-				'abuse', '_no_', $_SESSION['user_email'], $domainId, $forwardType, $subId, 'toadd',
-				'_no_', NULL, 'abuse@' . $domainPart
-			)
-		);
+		$db->commit();
+	} catch(PDOException $e) {
+		$db->rollBack();
+		throw new iMSCP_Exception_Database($e->getMessage(), $e->getCode(), null, $e);
 	}
 }
 
 /**
- * Recalculates the reseller's current properties.
+ * Recalculates the reseller's current properties
  *
  * Important:
  *
@@ -750,36 +739,7 @@ function update_reseller_c_props($resellerId)
 }
 
 /**
- * Get reseller id of given domain.
- *
- * @param int $domainId Domain unique identifier
- * @return int Reseller unique identifier or 0 in on error
- */
-/*
-function get_reseller_id($domainId)
-{
-	$query = "
-		SELECT
-			`t1`.`created_by`
-		FROM
-			`domain` AS `t1`
-		INNER JOIN
-			`admin` AS `t2` ON (t2.`admin_id` = `t1`.`domain_admin_id`)
-		WHERE
-			t1.`domain_id` = ?
-	";
-	$stmt = exec_query($query, $domainId);
-
-	if (!$stmt->rowCount()) {
-		return 0;
-	}
-
-	return $stmt->fields('created_by');
-}
-*/
-
-/**
- * Convert datepicker date to Unix-Timestamp.
+ * Convert datepicker date to Unix-Timestamp
  *
  * @author Peter Ziergoebel <info@fisa4.de>
  * @since 1.0.0 (i-MSCP)
@@ -853,33 +813,30 @@ function resellerHasCustomers($minNbCustomers = 1)
 	static $customerCount = null;
 
 	if (null === $customerCount ) {
-		/** @var $cfg iMSCP_Config_Handler_File */
-		$cfg = iMSCP_Registry::get('config');
-
 		$stmt = exec_query(
 			'
 				SELECT
-					COUNT(`admin_id`) AS `count`
+					COUNT(admin_id) AS cnt
 				FROM
-					`admin`
+					admin
 				WHERE
-					`admin_type` = ?
+					admin_type = ?
 				AND
-					`created_by` = ?
+					created_by = ?
 				AND
-					`admin_status` <> ?
+					admin_status <> ?
 			',
 			array('user', $_SESSION['user_id'], 'todelete')
 		);
 
-		$customerCount = $stmt->fields['count'];
+		$customerCount = $stmt->fields['cnt'];
 	}
 
 	return ($customerCount >= $minNbCustomers);
 }
 
 /**
- * Check user data.
+ * Check user data
  *
  * @param  bool $noPass
  * @return bool

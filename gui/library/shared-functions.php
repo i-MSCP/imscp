@@ -830,7 +830,7 @@ function deleteCustomer($customerId, $checkCreatedBy = false)
 				FROM
 					domain AS t1
 				LEFT JOIN
-					htacces AS t2 ON (t2.dmn_id = t1.domain_id)
+					htaccess AS t2 ON (t2.dmn_id = t1.domain_id)
 				LEFT JOIN
 					htaccess_users AS t3 ON (t3.dmn_id = t1.domain_id)
 				LEFT JOIN
@@ -2542,8 +2542,7 @@ function exec_query($query, $bind = null)
 	static $db = null;
 
 	if (null === $db) {
-		/** @var $db iMSCP_Database */
-		$db = iMSCP_Registry::get('db');
+		$db = iMSCP_Database::getInstance();
 	}
 
 	try {

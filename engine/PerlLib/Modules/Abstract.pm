@@ -42,54 +42,11 @@ use parent 'Common::SimpleClass';
 
 =head1 DESCRIPTION
 
- Base class for i-MSCP Modules.
+ i-MSCP modules abstract class.
 
-=head1 METHODS
+=head1 PUBLIC METHODS
 
 =over 4
-
-=item _init()
-
- Called by new(). Initialize instance.
-
-=cut
-
-sub _init
-{
-	my $self = $_[0];
-
-	fatal(ref($self) . ' module must implement the _init() method');
-}
-
-=item loadData()
-
- Load data for current module.
-
- return int - 0 on success, other on failure
-
-=cut
-
-sub loadData
-{
-	my $self = $_[0];
-
-	fatal(ref($self) . ' module must implement the loadData() method');
-}
-
-=item process()
-
- Process action (add|delete|restore|disable) according item status.
-
- return int - 0 on success, other on failure
-
-=cut
-
-sub process
-{
-	my $self = $_[0];
-
-	fatal(ref($self) . ' module must implement the process() method');
-}
 
 =item add()
 
@@ -97,7 +54,7 @@ sub process
 
  Should be called for items with 'toadd|tochange|toenable' status.
 
- return int - 0 on success, other on failure
+ return int 0 on success, other on failure
 
 =cut
 
@@ -106,16 +63,17 @@ sub add
 	my $self = $_[0];
 
 	$self->{'action'} = 'add';
-	$self->runAllActions();
+
+	$self->_runAllActions();
 }
 
 =item delete()
 
- Delete item.
+ Delete item
 
  Should be called for items with 'todelete' status.
 
- return int - 0 on success, other on failure
+ return int 0 on success, other on failure
 
 =cut
 
@@ -124,16 +82,17 @@ sub delete
 	my $self = $_[0];
 
 	$self->{'action'} = 'delete';
-	$self->runAllActions();
+
+	$self->_runAllActions();
 }
 
 =item
 
- Restore item.
+ Restore item
 
  Should be called for items with 'torestore' status.
 
- return int - 0 on success, other on failure
+ return int 0 on success, other on failure
 
 =cut restore()
 
@@ -142,16 +101,17 @@ sub restore
 	my $self = $_[0];
 
 	$self->{'action'} = 'restore';
-	$self->runAllActions();
+
+	$self->_runAllActions();
 }
 
 =item disable()
 
- Disable item.
+ Disable item
 
  Should be called for database items with 'todisable' status.
 
- return int - 0 on success, other on failure
+ return int 0 on success, other on failure
 
 =cut
 
@@ -160,189 +120,250 @@ sub disable
 	my $self = $_[0];
 
 	$self->{'action'} = 'disable';
-	$self->runAllActions();
+
+	$self->_runAllActions();
 }
 
-=item runAllActions()
+=back
 
- Trigger actions (preAction, Action, postAction) on each i-MSCP servers and addons.
+=head1 ABSTRACT METHODS
 
- return int - 0 on success, other on failure
+=over 4
+
+=item loadData()
+
+ Load data for current module
+
+ return int 0 on success, other on failure
 
 =cut
 
-sub runAllActions
+sub loadData
 {
-	my $self = $_[0];
-	my $rs = 0;
-
-	@{$self->{'Servers'}} = iMSCP::Servers->getInstance()->get();
-	@{$self->{'Addons'}} = iMSCP::Addons->getInstance()->get();
-
-	# Build service/addon data if provided by the module
-	for(@{$self->{'Servers'}}, 'Addon') {
-		next if $_ eq 'noserver.pm';
-		my $fname = 'build' . uc($_) . 'Data';
-		$fname =~ s/\.pm//i;
-		$rs = $self->$fname();
-		return $rs if $rs;
-	}
-
-	for('pre', '', 'post') {
-		$rs = $self->runAction("$_$self->{'action'}$self->{'type'}", 'Servers');
-    	return $rs if $rs;
-
-    	$rs = $self->runAction("$_$self->{'action'}$self->{'type'}", 'Addons');
-        return $rs if $rs;
-	}
-
-	$rs;
+	fatal(ref($_[0]) . ' module must implement the loadData() method');
 }
 
-=item runAction()
+=item process()
 
- Run the given action on each server/addon that implement it.
+ Process action (add|delete|restore|disable) according item status.
 
- return int - 0 on success, other on failure
+ return int 0 on success, other on failure
 
 =cut
 
-sub runAction
+sub process
 {
-	my ($self, $action, $type) = @_;
+	fatal(ref($_[0]) . ' module must implement the process() method');
+}
 
-	my $rs = 0;
-	my ($file, $class, $instance);
+=back
 
-	for (@{$self->{$type}}) {
-		s/\.pm//;
-		my $paramName = ($type eq 'Addons') ? 'AddonsData' : $_;
+=head1 PRIVATES METHODS
 
+=over 4
+
+=back
+
+=item _init()
+
+ Initialize instance
+
+=cut
+
+sub _init
+{
+	fatal(ref($_[0]) . ' module must implement the _init() method');
+}
+
+=item _runAction($action, \@items, $itemType)
+
+ Run the given action on each server/addon that implement it
+
+ return int 0 on success, other on failure
+
+=cut
+
+sub _runAction ($$$$)
+{
+	my ($self, $action, $items, $itemType) = @_;
+
+	for (@{$items}) {
+		my $paramName = ($itemType eq 'Addons') ? 'addons' : $_;
+
+		# Does this module provide data for the current item
 		if(exists $self->{$paramName}) {
-			$file = "$type/$_.pm";
-			$class = "${type}::$_";
-			require $file;
-			$instance = $type ne 'Addons' ? $class->factory() : $class->getInstance();
+			my $package = "${itemType}::$_";
 
-			if ($instance->can($action)) {
-				debug("Calling action $action from ${type}::$_");
-				$rs = $instance->$action($self->{$paramName});
-				return $rs if $rs;
+			eval "require $package";
+
+			unless($@) {
+				my $instance = ($itemType eq 'Addons') ? $package->getInstance() : $package->factory();
+
+				if ($instance->can($action)) {
+					debug("Calling action $action on $package");
+					my $rs = $instance->$action($self->{$paramName});
+					return $rs if $rs;
+				}
+			} else {
+				error($@);
+				return 1;
 			}
 		}
 	}
 
-	$rs;
+	0;
 }
 
-=item buildHTTPDData()
+=item _runAllActions()
 
- Build HTTPD data.
+ Trigger actions (pre<Action>, <Action>, post<Action>) on each i-MSCP servers and addons.
 
- This method should be implemented by any module that provides data for HTTPD service.
+ return int 0 on success, other on failure
+
+=cut
+
+sub _runAllActions
+{
+	my $self = $_[0];
+
+	my @servers = iMSCP::Servers->getInstance()->get();
+	my @addons = iMSCP::Addons->getInstance()->get();
+
+	# Build service/addon data if provided by the module
+	for(@servers, 'Addons') {
+		next if $_ eq 'noserver';
+
+		my $methodName = '_get' . ucfirst($_) . 'Data';
+
+		my $rs = $self->$methodName();
+		return $rs if $rs;
+	}
+
+	for('pre', '', 'post') {
+		my $rs = $self->_runAction("$_$self->{'action'}$self->{'type'}", \@servers, 'Servers');
+		return $rs if $rs;
+
+		$rs = $self->_runAction("$_$self->{'action'}$self->{'type'}", \@addons, 'Addons');
+		return $rs if $rs;
+	}
+
+	0;
+}
+
+=back
+
+=head1 STUB METHODS
+
+=over 4
+
+=item _getHttpdData()
+
+ Get Httpd data
+
+ This method should be implemented by any module which provides data for HTTPD service.
  Resulting data must be stored in an anonymous hash accessible through the 'httpd' attribute.
 
- return int - 0 on success, other on failure
+ return int 0 on success, other on failure
 
 =cut
 
-sub buildHTTPDData
+sub _getHttpdData
 {
 	0;
 }
 
-=item buildMTAData()
+=item _getMtaData()
 
- Build MTA data.
+ Get MTA data
 
- This method should be implemented by any module that provides data for MTA service.
+ This method should be implemented by any module which provides data for MTA service.
  Resulting data must be stored in an anonymous hash accessible through the 'mta' attribute.
 
- return int - 0 on success, other on failure
+ return int 0 on success, other on failure
 
 =cut
 
-sub buildMTAData
+sub _getMtaData
 {
 	0;
 }
 
-=item buildPOData()
+=item _getPoData()
 
- Build PO data.
+ Get PO data
 
- This method should be implemented by any module that provides data for PO service.
+ This method should be implemented by any module which provides data for PO service.
  Resulting data must be stored in an anonymous hash accessible through the 'po' attribute.
 
- return int - 0 on success, other on failure
+ return int 0 on success, other on failure
 
 =cut
 
-sub buildPOData
+sub _getPoData
 {
 	0;
 }
 
-=item buildNAMEDData()
+=item _getNamedData()
 
- Build NAMED data.
+ Get named data.
 
- This method should be implemented by any module that provides data for NAMED service.
+ This method should be implemented by any module which provides data for NAMED service.
  Resulting data must be stored in an anonymous hash accessible through the 'named' attribute.
 
- return int - 0 on success, other on failure
+ return int 0 on success, other on failure
 
 =cut
 
-sub buildNAMEDData
+sub _getNamedData
 {
 	0;
 }
 
-=item buildFTPDData()
+=item _getFtpdData()
 
- Build FTPD data.
+ Get FTPD data
 
- This method should be implemented by any module that provides data for FTPD service.
+ This method should be implemented by any module which provides data for FTPD service.
  Resulting data must be stored in an anonymous hash accessible through the 'ftpd' attribute.
 
- return int - 0 on success, other on failure
+ return int 0 on success, other on failure
 
 =cut
 
-sub buildFTPDData
+sub _getFtpdData
 {
 	0;
 }
 
-=item buildCRONData()
+=item _getCronData()
 
- Build CRON data.
+ Get CRON data
 
- This method should be implemented by any module that provides data for CRON service.
+ This method should be implemented by any module which provides data for CRON service.
  Resulting data must be stored in an anonymous hash accessible through the 'cron' attribute.
 
- return int - 0 on success, other on failure
+ return int 0 on success, other on failure
 
 =cut
 
-sub buildCRONData
+sub _getCronData
 {
 	0;
 }
 
-=item buildADDONData()
+=item _getAddonsData()
 
- Build ADDON data.
+ Get addon data
 
- This method should be implemented by any module that provides data for i-MSCP Addonss.
- Resulting data must be stored in an anonymous hash accessible through the 'AddonsData' attribute.
+ This method should be implemented by any module which provides data for i-MSCP Addonss.
+ Resulting data must be stored in an anonymous hash accessible through the 'addons' attribute.
 
- return int - 0 on success, other on failure
+ return int 0 on success, other on failure
 
 =cut
 
-sub buildADDONData
+sub _getAddonsData
 {
 	0;
 }

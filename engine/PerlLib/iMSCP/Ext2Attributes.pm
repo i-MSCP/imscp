@@ -38,6 +38,7 @@ use strict;
 use warnings;
 
 use iMSCP::Debug;
+use iMSCP::Execute;
 use File::Find qw( finddepth );
 use parent qw( Exporter );
 use vars qw( @EXPORT_OK );
@@ -53,13 +54,30 @@ use vars qw( @EXPORT_OK );
 	setNoAtime clearNoAtime isNoAtime
 );
 
+my $isSupported;
+
 BEGIN
 {
 	chomp(my $bitness = `getconf LONG_BIT`);
 	my $module = "iMSCP::Ext2Attributes::Ext2Fs$bitness";
 
 	eval "require $module";
-	$module->import();
+
+	unless($@) {
+		$module->import()
+	} else {
+		$isSupported = 0;
+		use constant EXT2_SECRM_FL => 'dummy';
+		use constant EXT2_UNRM_FL => 'dummy';
+		use constant EXT2_COMPR_FL => 'dummy';
+		use constant EXT2_SYNC_FL => 'dummy';
+		use constant EXT2_IMMUTABLE_FL => 'dummy';
+		use constant EXT2_APPEND_FL => 'dummy';
+		use constant EXT2_NODUMP_FL => 'dummy';
+		use constant EXT2_NOATIME_FL => 'dummy';
+		use constant EXT2_IOC_GETFLAGS => 'dummy';
+		use constant EXT2_IOC_SETFLAGS => 'dummy';
+	}
 }
 
 =head1 DESCRIPTION
@@ -185,8 +203,9 @@ This function takes a filename and returns true if the immutable flag is set and
 
 for my $functName (keys %constants) {
 	my $set = sub {
-		my $filename = shift;
-		my $recursive = shift || 0;
+		my ($filename, $recursive) = @_;
+
+		return 0 unless _isSupported();
 
 		debug("Setting '$functName' extended attribute on $filename" . ($recursive ? ' recursively' : ''));
 
@@ -207,8 +226,9 @@ for my $functName (keys %constants) {
 	};
 
 	my $clear = sub {
-		my $filename = shift;
-		my $recursive = shift || 0;
+		my ($filename, $recursive) = @_;
+
+		return 0 unless _isSupported();
 
 		debug("Clearing '$functName' extended attribute on $filename" . ($recursive ? ' recursively' : ''));
 
@@ -229,7 +249,10 @@ for my $functName (keys %constants) {
 	};
 
 	my $is = sub {
-		my $filename = shift;
+		my $filename = $_[0];
+
+		return 0 unless _isSupported();
+
 		my $flags = _getAttributes($filename);
 
 		(defined $flags && $flags & $constants{$functName}) ? 1 : 0;
@@ -261,6 +284,30 @@ sub _setAttributes
 	my $flag = pack 'i', $flags;
 	ioctl($fh, EXT2_IOC_SETFLAGS, $flag) or fatal("Unable to set extended attribute: $!");
 	close $fh;
+}
+
+sub _isSupported
+{
+	unless(defined $isSupported) {
+		my ($stdout, $stderr);
+		my $rs = execute(
+			"$main::imscpConfig{'CMD_DF'} -TP " . escapeShell($main::imscpConfig{'USER_WEB_DIR'}), \$stdout, \$stderr
+		);
+		fatal($stderr) if $stderr && $rs;
+
+		my %filePartitionInfo;
+		@filePartitionInfo{
+			('mount', 'fstype', 'size', 'used', 'free', 'percent', 'disk')
+		} = split /\s+/, (split "\n", $stdout)[1];
+
+		if($filePartitionInfo{'fstype'} =~ /^(?:ext[2-4]|reiserfs)$/) {
+			$isSupported = 1;
+		} else {
+			$isSupported = 0;
+		}
+	}
+
+	$isSupported;
 }
 
 =back

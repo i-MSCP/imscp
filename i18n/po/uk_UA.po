@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2014-03-23 16:38+0100\n"
-"PO-Revision-Date: 2014-03-23 15:40+0000\n"
+"POT-Creation-Date: 2014-03-27 02:06+0100\n"
+"PO-Revision-Date: 2014-03-27 01:08+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Ukrainian (Ukraine) (http://www.transifex.com/projects/p/i-MSCP/language/uk_UA/)\n"
 "MIME-Version: 1.0\n"
@@ -312,6 +312,10 @@ msgstr ""
 #, php-format
 msgid "%s is not a valid i-MSCP language file."
 msgstr "%s неверный языковой файл i-MSCP."
+
+#, php-format
+msgid "%s is not allowed as subdomain label."
+msgstr ""
 
 #, php-format
 msgid "%s is not part of domain %s."
@@ -1280,14 +1284,8 @@ msgstr ""
 msgid "Change"
 msgstr "Изменить"
 
-msgid "Change SQL user password"
-msgstr "Изменить пароль пользователя SQL"
-
 msgid "Change in progress..."
 msgstr ""
-
-msgid "Change password"
-msgstr "Змінити пароль"
 
 msgid "Change personal data"
 msgstr "Змінити персональні дані"
@@ -1733,6 +1731,9 @@ msgstr "Имя базы данных"
 msgid "Database name is too long."
 msgstr "Имя базы данных слишком длинное."
 
+msgid "Database name is unavailable."
+msgstr ""
+
 msgid "Database prefix"
 msgstr "Префикс базы данных"
 
@@ -1886,9 +1887,6 @@ msgstr ""
 msgid "Deletion in progress"
 msgstr "Удаление в процессе"
 
-msgid "Demo Version!"
-msgstr "Демонстраційна версія!"
-
 msgid "Depot import"
 msgstr "Импорт репозитория"
 
@@ -1952,6 +1950,10 @@ msgstr ""
 msgid "Domain"
 msgstr "Домен"
 
+#, php-format
+msgid "Domain %s is unavailable."
+msgstr ""
+
 msgid "Domain IP"
 msgstr "IP домену"
 
@@ -1972,10 +1974,6 @@ msgstr "Учтные записи домена"
 
 msgid "Domain alias"
 msgstr "Аліаси доменів"
-
-#, php-format
-msgid "Domain alias %s already exist."
-msgstr ""
 
 #, php-format
 msgid "Domain alias %s cannot be forwarded on itself."
@@ -2021,9 +2019,6 @@ msgstr ""
 
 msgid "Domain aliases"
 msgstr "Аліаси домену"
-
-msgid "Domain already registered on the system."
-msgstr "Домен уже зарегистрирован в системе."
 
 msgid "Domain and SQL databases"
 msgstr ""
@@ -2112,9 +2107,6 @@ msgstr "Домени"
 
 msgid "Domains per page"
 msgstr "Доменів на сторінці"
-
-msgid "Don't use special chars like \"@, $, %...\" in the password."
-msgstr "Не используйте спецсимволы \"@, $, %...\" в пароле."
 
 msgid "Done"
 msgstr "Готово"
@@ -2772,6 +2764,9 @@ msgstr "Неверный синтаксис email адреса"
 msgid "Incorrect username length or syntax."
 msgstr "Неверная длина имени пользователя или синтаксис."
 
+msgid "Info Unavailable"
+msgstr ""
+
 msgid "Install"
 msgstr "Установить"
 
@@ -2845,6 +2840,10 @@ msgid "Invalid MX type."
 msgstr ""
 
 msgid "Invalid NAME."
+msgstr ""
+
+#, php-format
+msgid "Invalid SQL user host: %s"
 msgstr ""
 
 msgid "Invalid TXT data"
@@ -3104,9 +3103,6 @@ msgstr "Управление защищенными зонами, пользов
 
 msgid "Mark"
 msgstr "Мітка"
-
-msgid "Master domain cannot be used."
-msgstr "Мастер-домен не может быть использован."
 
 msgid "Max number of login attempts"
 msgstr "Максимальна кількість спроб входу"
@@ -3573,9 +3569,6 @@ msgstr "Пароль"
 msgid "Password cannot be longer than 30 characters."
 msgstr ""
 
-msgid "Password change is deactivated!"
-msgstr "Зміну пароля відключено!"
-
 msgid "Password confirmation"
 msgstr "Подтверждение пароля"
 
@@ -3593,6 +3586,9 @@ msgstr ""
 
 #, php-format
 msgid "Password is shorter than %s characters."
+msgstr ""
+
+msgid "Password is too long."
 msgstr ""
 
 msgid "Password length"
@@ -3664,7 +3660,7 @@ msgid ""
 "/>Refresh your site to see the new status!"
 msgstr "Пожалуйста, свяжитесь с администратором!<br />Обратитесь к нему за разрешениями на пакет.<br />Не разрешается загружать один и тот же пакет дважды.<br />Обновите страницу, чтобы увидеть новый статус!"
 
-msgid "Please don't use special chars such as '@, $, %...' in the password."
+msgid "Please don't use special chars such as '@, $, %...' in password."
 msgstr ""
 
 msgid "Please enter a name for the protected area."
@@ -3673,7 +3669,10 @@ msgstr "Пожалуйста, введите имя для защищенной 
 msgid "Please enter a password."
 msgstr "Пожалуйста, введите пароль."
 
-msgid "Please enter a username."
+msgid "Please enter an SQL user host."
+msgstr ""
+
+msgid "Please enter an username."
 msgstr ""
 
 msgid "Please enter protected area path"
@@ -3708,9 +3707,6 @@ msgstr "Пожалуйста, укажите тему сообщения. "
 
 msgid "Please type database name."
 msgstr "Пожалуйста, укажите название базы данных. "
-
-msgid "Please type user password."
-msgstr "Пожалуйста, укажите пароль. "
 
 msgid "Please type your message."
 msgstr "Пожалуйста, напишите Ваше сообщение. "
@@ -4264,6 +4260,13 @@ msgstr ""
 msgid "SQL user"
 msgstr ""
 
+#, php-format
+msgid "SQL user %s already exits."
+msgstr ""
+
+msgid "SQL user host"
+msgstr ""
+
 msgid "SQL user limit"
 msgstr ""
 
@@ -4279,9 +4282,6 @@ msgstr ""
 msgid "SQL user name"
 msgstr "Имя пользователя SQL"
 
-msgid "SQL user not found."
-msgstr ""
-
 msgid "SQL user password successfully updated."
 msgstr "Пароль пользователя SQL успешно обновлен."
 
@@ -4290,12 +4290,6 @@ msgstr ""
 
 msgid "SQL user successfully added."
 msgstr "Пользователь SQL успешно добавлен."
-
-msgid "SQL user successfully deleted."
-msgstr "Пользователь SQL успешно удален."
-
-msgid "SQL username already in use."
-msgstr ""
 
 msgid "SQL users"
 msgstr "Користувачі SQL"
@@ -4579,8 +4573,8 @@ msgid ""
 "including subdomains, but retains our server as final mailhost."
 msgstr ""
 
-msgid "Specified database name already exists."
-msgstr "Указанное имя базы данных уже существует."
+msgid "Sql user successfully deleted."
+msgstr ""
 
 msgid "Start installation"
 msgstr "Добавить в репозиторий"
@@ -4723,9 +4717,6 @@ msgstr "Системні інструменти"
 
 msgid "System under maintenance"
 msgstr "Система на отладке"
-
-msgid "System was unable to update the SQL user password."
-msgstr "Система не может обновить пароль пользователя SQL."
 
 msgid "TB"
 msgstr "ТБ"
@@ -4917,6 +4908,13 @@ msgid ""
 "to the selected network interface."
 msgstr ""
 
+#, php-format
+msgid ""
+"This is the host from which this SQL user must be allowed to connect to the "
+"SQL server. Enter the % character to allow this SQL user to connect from any"
+" host."
+msgstr ""
+
 msgid "This package already exists in the administrator software repository."
 msgstr ""
 
@@ -4983,9 +4981,6 @@ msgstr "До реселлера"
 #, php-format
 msgid "To unprotect this plugin, you must edit the %s file"
 msgstr "Чтобы снять защиту с этого плагина, Вы должны отредактировать файл %s"
-
-msgid "Too long user password."
-msgstr "Слишном длинный пользовательский пароль."
 
 msgid "Total"
 msgstr "Всього"
@@ -5116,9 +5111,6 @@ msgstr ""
 msgid "Unable to upload file. Max. upload filesize (%1$d MB) reached?"
 msgstr ""
 
-msgid "Unallowed database name."
-msgstr ""
-
 msgid "Unauthorized"
 msgstr ""
 
@@ -5219,6 +5211,9 @@ msgid ""
 "fields."
 msgstr ""
 
+msgid "Update password"
+msgstr ""
+
 msgid "Updates"
 msgstr "Обновления"
 
@@ -5283,10 +5278,6 @@ msgid ""
 "User do not exist or you do not have permission to access this interface"
 msgstr ""
 
-msgid ""
-"User does not exist or you do not have permission to access this interface"
-msgstr "Пользователь не существует, или у Вас нет прав для доступа к этому интерфейсу"
-
 msgid "User errors"
 msgstr ""
 
@@ -5298,9 +5289,6 @@ msgstr "Логін користувача"
 
 msgid "User name"
 msgstr "Ім'я користувача"
-
-msgid "User name too long!"
-msgstr "Имя пользователя слишком длинное!"
 
 msgid "User password"
 msgstr "Пароль користувача"
@@ -5331,6 +5319,9 @@ msgstr "Ім'я користувача"
 
 msgid "Username and password for application login"
 msgstr "Имя пользователя и пароль для входа в приложение"
+
+msgid "Username is too long."
+msgstr ""
 
 msgid "Users"
 msgstr "Користувачі"
@@ -5454,8 +5445,12 @@ msgid ""
 msgstr ""
 
 #, php-format
-msgid "Wildcards such as %% and ? are not allowed."
-msgstr "Групповые символы, такие как %% и ? не разрешены."
+msgid "Wildcards such as %% and ? are not allowed in username."
+msgstr ""
+
+#, php-format
+msgid "Wildcards such as %% and are not allowed."
+msgstr ""
 
 msgid "Wrong IP address."
 msgstr "Неверный IP адрес."

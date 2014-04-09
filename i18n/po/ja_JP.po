@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2014-03-23 16:38+0100\n"
-"PO-Revision-Date: 2014-03-23 15:40+0000\n"
+"POT-Creation-Date: 2014-03-27 02:06+0100\n"
+"PO-Revision-Date: 2014-03-27 01:08+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Japanese (Japan) (http://www.transifex.com/projects/p/i-MSCP/language/ja_JP/)\n"
 "MIME-Version: 1.0\n"
@@ -310,6 +310,10 @@ msgstr "%s ホストフィールドが空又は無効です。"
 #, php-format
 msgid "%s is not a valid i-MSCP language file."
 msgstr "%sは、有効なi-MSCP言語ファイルでありません。"
+
+#, php-format
+msgid "%s is not allowed as subdomain label."
+msgstr ""
 
 #, php-format
 msgid "%s is not part of domain %s."
@@ -1278,14 +1282,8 @@ msgstr "証明書の削除が予定されました。"
 msgid "Change"
 msgstr "変更"
 
-msgid "Change SQL user password"
-msgstr "SQLユーザーのパスワード変更"
-
 msgid "Change in progress..."
 msgstr "変更処理中..."
-
-msgid "Change password"
-msgstr "パスワード変更"
 
 msgid "Change personal data"
 msgstr "個人情報変更"
@@ -1731,6 +1729,9 @@ msgstr "データベース名"
 msgid "Database name is too long."
 msgstr "データベース名が長すぎます。"
 
+msgid "Database name is unavailable."
+msgstr ""
+
 msgid "Database prefix"
 msgstr "データベースプレフィックス"
 
@@ -1884,9 +1885,6 @@ msgstr "チケット削除"
 msgid "Deletion in progress"
 msgstr "削除中"
 
-msgid "Demo Version!"
-msgstr "デモ版！"
-
 msgid "Depot import"
 msgstr "デポットのインポート"
 
@@ -1950,6 +1948,10 @@ msgstr "本当に%sの顧客アカウントを削除してもよろしいです�
 msgid "Domain"
 msgstr "ドメイン"
 
+#, php-format
+msgid "Domain %s is unavailable."
+msgstr ""
+
 msgid "Domain IP"
 msgstr "ドメインIP"
 
@@ -1970,10 +1972,6 @@ msgstr "ドメインアカウント"
 
 msgid "Domain alias"
 msgstr "ドメインエイリアス"
-
-#, php-format
-msgid "Domain alias %s already exist."
-msgstr "ドメインエイリアス%sは既に存在している。"
 
 #, php-format
 msgid "Domain alias %s cannot be forwarded on itself."
@@ -2020,9 +2018,6 @@ msgstr "削除しようとしたドメインエイリアスは、サブドメイ
 msgid "Domain aliases"
 msgstr "ドメインエイリアス"
 
-msgid "Domain already registered on the system."
-msgstr "ドメインが既にシステムに登録されています。"
-
 msgid "Domain and SQL databases"
 msgstr "ドメイン及びSQLデータベース"
 
@@ -2051,7 +2046,7 @@ msgid "Domain name"
 msgstr "ドメイン名"
 
 msgid "Domain name (ASCII form) cannot be greater than 255 characters."
-msgstr ""
+msgstr "ドメイン名(ASCII形式)は、255文字を超えることはできません。"
 
 msgid "Domain name cannot be empty."
 msgstr "ドメイン名を空にすることはできません。"
@@ -2068,7 +2063,7 @@ msgid "Domain name label '%s' contain an invalid character: %s"
 msgstr "ドメイン名のラベル'%s'は無効な文字が含まれていた：%s"
 
 msgid "Domain name labels cannot be greater than 63 characters."
-msgstr ""
+msgstr "ドメイン名ラベルは、63文字を超えることはできません。"
 
 msgid "Domain name labels cannot start nor end with hyphen."
 msgstr "ドメイン名のラベルは開始またはハイフンで終了することはできません。"
@@ -2110,9 +2105,6 @@ msgstr "ドメイン"
 
 msgid "Domains per page"
 msgstr "1ページあたりのドメイン数"
-
-msgid "Don't use special chars like \"@, $, %...\" in the password."
-msgstr "\"@、$、%...\"のような特殊文字をパスワードに使用しないでください。"
 
 msgid "Done"
 msgstr "完了"
@@ -2770,6 +2762,9 @@ msgstr "メールアドレスの誤った構文があります。"
 msgid "Incorrect username length or syntax."
 msgstr "ユーザー名の長さか構文が誤っています。"
 
+msgid "Info Unavailable"
+msgstr ""
+
 msgid "Install"
 msgstr "インストール"
 
@@ -2844,6 +2839,10 @@ msgstr "無効なMX種別。"
 
 msgid "Invalid NAME."
 msgstr "無効なNAMEです。"
+
+#, php-format
+msgid "Invalid SQL user host: %s"
+msgstr ""
 
 msgid "Invalid TXT data"
 msgstr "無効なTXTデータです"
@@ -3102,9 +3101,6 @@ msgstr "あなたのアクセス制限領域、ユーザーとグループを管
 
 msgid "Mark"
 msgstr "マーク"
-
-msgid "Master domain cannot be used."
-msgstr "マスタードメインは使用できません。"
 
 msgid "Max number of login attempts"
 msgstr "最大数のログインの試み"
@@ -3571,9 +3567,6 @@ msgstr "パスワード"
 msgid "Password cannot be longer than 30 characters."
 msgstr "パスワードは30文字より長くすることはできません。"
 
-msgid "Password change is deactivated!"
-msgstr "パスワードの変更は無効です！"
-
 msgid "Password confirmation"
 msgstr "パスワードの確認"
 
@@ -3592,6 +3585,9 @@ msgstr "パスワードが欠落しています。"
 #, php-format
 msgid "Password is shorter than %s characters."
 msgstr "パスワードは%s文字よりも短い。"
+
+msgid "Password is too long."
+msgstr ""
 
 msgid "Password length"
 msgstr "パスワードの長さ"
@@ -3662,8 +3658,8 @@ msgid ""
 "/>Refresh your site to see the new status!"
 msgstr "管理者に連絡してください！<br />このパッケージを使用する許可を、彼に求めてください。<br />これは、このパッケージの2重アップロードが許可されていません。<br />新しいステータスを表示するにはサイトを更新してください！"
 
-msgid "Please don't use special chars such as '@, $, %...' in the password."
-msgstr " パスワードには、'@、$、％を...'などの特殊文字は使用しないでください"
+msgid "Please don't use special chars such as '@, $, %...' in password."
+msgstr ""
 
 msgid "Please enter a name for the protected area."
 msgstr "アクセス制限領域の名前を入力してください。"
@@ -3671,8 +3667,11 @@ msgstr "アクセス制限領域の名前を入力してください。"
 msgid "Please enter a password."
 msgstr "パスワードを入力してください。"
 
-msgid "Please enter a username."
-msgstr "ユーザー名を入力してください。"
+msgid "Please enter an SQL user host."
+msgstr ""
+
+msgid "Please enter an username."
+msgstr ""
 
 msgid "Please enter protected area path"
 msgstr "アクセス制限領域のパスを入力してください"
@@ -3706,9 +3705,6 @@ msgstr "メッセージの件名を指定してください。"
 
 msgid "Please type database name."
 msgstr "データベース名を入力してください。"
-
-msgid "Please type user password."
-msgstr "ユーザーのパスワードを入力してください。"
 
 msgid "Please type your message."
 msgstr "メッセージを入力してください。"
@@ -4262,6 +4258,13 @@ msgstr "SQLデータベースのみ"
 msgid "SQL user"
 msgstr "SQLユーザー"
 
+#, php-format
+msgid "SQL user %s already exits."
+msgstr ""
+
+msgid "SQL user host"
+msgstr ""
+
 msgid "SQL user limit"
 msgstr "SQLユーザーの制限"
 
@@ -4277,9 +4280,6 @@ msgstr "SQLユーザ制限が無効です。"
 msgid "SQL user name"
 msgstr "SQLユーザー名"
 
-msgid "SQL user not found."
-msgstr "SQLユーザーが見つかりません。"
-
 msgid "SQL user password successfully updated."
 msgstr "SQLユーザーのパスワードを更新しました。"
 
@@ -4288,12 +4288,6 @@ msgstr "SQLユーザプレフィックス/サフィックス"
 
 msgid "SQL user successfully added."
 msgstr "SQLユーザーを追加しました。"
-
-msgid "SQL user successfully deleted."
-msgstr "SQLユーザーを削除しました。"
-
-msgid "SQL username already in use."
-msgstr "既に使用中のSQLユーザー名です。"
 
 msgid "SQL users"
 msgstr "SQLユーザー"
@@ -4577,8 +4571,8 @@ msgid ""
 "including subdomains, but retains our server as final mailhost."
 msgstr "スパムフィルタ：サブドメインを含むドメイン全体のメールを中継にDNSのMXレコードを設定しますが、最終的なメールホストとして私たちのサーバーを保持します。"
 
-msgid "Specified database name already exists."
-msgstr "指定されたデータベース名は既に存在します。"
+msgid "Sql user successfully deleted."
+msgstr ""
 
 msgid "Start installation"
 msgstr "インストールを開始します。"
@@ -4721,9 +4715,6 @@ msgstr "システムツール"
 
 msgid "System under maintenance"
 msgstr "保守対象のシステム"
-
-msgid "System was unable to update the SQL user password."
-msgstr "システムは、SQLユーザーのパスワードを更新できませんでした。"
 
 msgid "TB"
 msgstr "TB"
@@ -4915,6 +4906,13 @@ msgid ""
 "to the selected network interface."
 msgstr "このインターフェースは、IPアドレスを追加又は削除することができます。以下に示すIPアドレスは、i-MSCPの制御下に既にあります。このインタフェースを介して追加されたIPアドレスは、自動的にi-MSCPデータベースに追加され、1つ又は多くのリセラーへの割り当てのために利用できるようになります。 IPアドレスが既にシステムに設定されていない場合は、選択したネットワークインターフェイスに接続されます。"
 
+#, php-format
+msgid ""
+"This is the host from which this SQL user must be allowed to connect to the "
+"SQL server. Enter the % character to allow this SQL user to connect from any"
+" host."
+msgstr ""
+
 msgid "This package already exists in the administrator software repository."
 msgstr "パッケージには、管理者のソフトウェアリポジトリに既に存在しています。"
 
@@ -4981,9 +4979,6 @@ msgstr "代理店へ"
 #, php-format
 msgid "To unprotect this plugin, you must edit the %s file"
 msgstr "このプラグインを解除するには、 %s ファイルを編集する必要があります。"
-
-msgid "Too long user password."
-msgstr "ユーザーのパスワードが長すぎます。"
 
 msgid "Total"
 msgstr "合計"
@@ -5114,9 +5109,6 @@ msgstr "顧客アカウントの削除を予定することができません。
 msgid "Unable to upload file. Max. upload filesize (%1$d MB) reached?"
 msgstr "ファイルをアップロードすることができません。最大アップロードファイルサイズ（％1 $ dのMB）に達しましたか？"
 
-msgid "Unallowed database name."
-msgstr "許可されていないデータベース名。"
-
 msgid "Unauthorized"
 msgstr "許可されていない"
 
@@ -5217,6 +5209,9 @@ msgid ""
 "fields."
 msgstr "Webソフトウェアリポジトリ索引の更新が中止されました。欠落しているか、空のフィールドです。"
 
+msgid "Update password"
+msgstr ""
+
 msgid "Updates"
 msgstr "アップデート"
 
@@ -5281,10 +5276,6 @@ msgid ""
 "User do not exist or you do not have permission to access this interface"
 msgstr "ユーザーが存在しないか、このインターフェイスにアクセス権限がありません"
 
-msgid ""
-"User does not exist or you do not have permission to access this interface"
-msgstr "ユーザーが存在しないか、このインターフェイスにアクセスする権限がありません"
-
 msgid "User errors"
 msgstr "ユーザーエラー"
 
@@ -5296,9 +5287,6 @@ msgstr "ユーザーのログイン名"
 
 msgid "User name"
 msgstr "ユーザー名"
-
-msgid "User name too long!"
-msgstr "ユーザー名が長すぎます"
 
 msgid "User password"
 msgstr "ユーザーパスワード"
@@ -5329,6 +5317,9 @@ msgstr "ユーザー名"
 
 msgid "Username and password for application login"
 msgstr "アプリケーションへのログイン用のユーザー名とパスワード"
+
+msgid "Username is too long."
+msgstr ""
 
 msgid "Users"
 msgstr "ユーザー"
@@ -5452,8 +5443,12 @@ msgid ""
 msgstr "ワイルドカード：存在しないサブドメインのメールをリレーするDNSのMXレコードを設定。"
 
 #, php-format
-msgid "Wildcards such as %% and ? are not allowed."
-msgstr "%%と？などのワイルドカードは許可されません。"
+msgid "Wildcards such as %% and ? are not allowed in username."
+msgstr ""
+
+#, php-format
+msgid "Wildcards such as %% and are not allowed."
+msgstr ""
 
 msgid "Wrong IP address."
 msgstr "IPアドレスに誤りがあります"

@@ -93,20 +93,14 @@ function client_generatePage($tpl)
 /**
  * Whether or not the given database already exists
  *
- * @param  string $dbName database name to be checked
+ * @param string $dbName database name to be checked
  * @return boolean TRUE if database exists, false otherwise
  */
-function client_dbExits($dbName)
+function client_isDatabase($dbName)
 {
-	$stmt = exec_query('SHOW DATABASES');
+	$stmt = exec_query('SHOW DATABASES LIKE ?', $dbName);
 
-	while ($data = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
-		if ($dbName == $data->fields['Database']) {
-			return true;
-		}
-	}
-
-	return false;
+	return (bool) $stmt->rowCount();
 }
 
 /**
@@ -139,24 +133,19 @@ function client_addSqlDb($userId)
 		$dbName = clean_input($_POST['db_name']);
 	}
 
-	if ($dbName == 'test') {
-		set_page_message(tr('Unallowed database name.'), 'error');
-		return;
-	}
-
 	if (strlen($dbName) > 64) {
 		set_page_message(tr('Database name is too long.'), 'error');
 		return;
 	}
 
-	if (client_dbExits($dbName)) {
-		set_page_message(tr('Specified database name already exists.'), 'error');
+	if ($dbName == 'test' || client_isDatabase($dbName)) {
+		set_page_message(tr('Database name is unavailable.'), 'error');
 		return;
 	}
 
 	// Are wildcards used?
 	if (preg_match("/[%|\?]+/", $dbName)) {
-		set_page_message(tr('Wildcards such as %% and ? are not allowed.'), 'error');
+		set_page_message(tr('Wildcards such as %% and are not allowed.'), 'error');
 		return;
 	}
 
@@ -173,8 +162,7 @@ function client_addSqlDb($userId)
 
 			$dbCreated = true;
 
-			$query = "INSERT INTO `sql_database` (`domain_id`, `sqld_name`) VALUES (?, ?)";
-			exec_query($query, array($mainDmnId, $dbName));
+			exec_query('INSERT INTO sql_database (domain_id, sqld_name) VALUES (?, ?)', array($mainDmnId, $dbName));
 
 			set_page_message(tr('SQL database successfully added.'), 'success');
 			write_log($_SESSION['user_logged'] . ": added new SQL database: " . tohtml($dbName), E_USER_NOTICE);

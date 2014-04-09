@@ -27,6 +27,8 @@
 use strict;
 use warnings;
 
+no if $] >= 5.017011, warnings => 'experimental::smartmatch';
+
 use FindBin;
 use lib "$FindBin::Bin", "$FindBin::Bin/PerlLib", "$FindBin::Bin/PerlVendor";
 
@@ -54,13 +56,83 @@ silent(1);
 
 iMSCP::Bootstrapper->getInstance()->boot({ 'norequirements' => 'yes' });
 
-sub run
+sub _process
 {
+	my ($moduleName, $sql, $ipModule) = @_;
 	my $rs = 0;
 
+	debug("Processing $moduleName module items");
+
+	if ($main::execmode ne 'setup') {
+		print("=======================\n");
+		print("Processing $moduleName items.\n");
+	}
+
+	my $rdata = iMSCP::Database->factory()->doQuery('id', $sql);
+	unless(ref $rdata eq 'HASH') {
+		error($rdata);
+		return 1;
+	}
+
+	if(%{$rdata}) {
+		my $i = 1;
+		my $totalItems = scalar keys %{$rdata};
+
+		for (keys %{$rdata}) {
+			my $id = $rdata->{$_}->{'id'};
+			my $name = $rdata->{$_}->{'name'};
+			my $status = $rdata->{$_}->{'status'};
+
+			$$ipModule++ if $moduleName ~~ ['Domain', 'Subdomain', 'Alias', 'SubAlias'];
+
+			debug("Processing $id, $name, $status.");
+
+			if($main::execmode ne 'setup') {
+				print("Processing $id, $name, $status. ($i of $totalItems: remaining " . ($totalItems - $i) . ")\n");
+			} else {
+				print STDOUT ("$moduleName\t$status\t$name\t$id\t$totalItems\t$i\n");
+			}
+
+			$i++;
+
+			newDebug("${moduleName}_module_$name.log");
+
+			my $package = "Modules::$moduleName";
+
+			eval "require $package";
+
+			unless($@) {
+				$rs = $package->new()->process($id);
+			} else {
+				error($@);
+				$rs = 1;
+			}
+
+			endDebug();
+
+			if($rs) {
+				error("Error while processing $id, $name, $status.");
+				my $logDir = defined $main::imscpConfig{'LOG_DIR'} ? $main::imscpConfig{'LOG_DIR'} : '';
+				error("See $logDir/${moduleName}_module_$name.log for more details.");
+			}
+
+			return $rs if $rs;
+		}
+	} else {
+		debug("No item to process for the $moduleName module.");
+		if ($main::execmode ne 'setup') {
+			print("No item found.\n");
+		}
+	}
+
+	0;
+}
+
+sub run
+{
 	# Process plugins
 	# Should always be processed first to allow plugins to register their listeners on the hooks manager
-	$rs = _process(
+	my $rs = _process(
 		'Plugin',
 		"
 			SELECT
@@ -106,7 +178,7 @@ sub run
 		"
 	);
 
-	my $ipsMod = 0;
+	my $ipsModule = 0;
 
 	# Process toadd|tochange|torestore|toenable|todisable domain tasks
 	$rs ||= _process(
@@ -117,9 +189,9 @@ sub run
 			FROM
 				domain
 			WHERE
-				domain_status IN ('toadd', 'tochange', 'torestore', 'toenable', 'todisable', 'disabled')
+				domain_status IN ('toadd', 'tochange', 'torestore', 'toenable', 'todisable')
 		",
-		\$ipsMod
+		\$ipsModule
 	);
 
 	# Process toadd|tochange|torestore|toenable|todisable subdomains tasks
@@ -131,9 +203,9 @@ sub run
 			FROM
 				subdomain
 			WHERE
-				subdomain_status IN ('toadd', 'tochange', 'torestore', 'toenable', 'todisable', 'disabled')
+				subdomain_status IN ('toadd', 'tochange', 'torestore', 'toenable', 'todisable')
 		",
-		\$ipsMod
+		\$ipsModule
 	);
 
 	# Process toadd|tochange|torestore|toenable|todisable domain aliases tasks
@@ -145,9 +217,9 @@ sub run
 			FROM
 				domain_aliasses
 			WHERE
-				alias_status IN ('toadd', 'tochange', 'torestore', 'toenable', 'todisable', 'disabled')
+				alias_status IN ('toadd', 'tochange', 'torestore', 'toenable', 'todisable')
 		 ",
-		 \$ipsMod
+		 \$ipsModule
 	);
 
 	# Process toadd|tochange|torestore|toenable|todisable subdomains of domain aliases tasks
@@ -159,9 +231,9 @@ sub run
 			FROM
 				subdomain_alias
 			WHERE
-				subdomain_alias_status IN ('toadd', 'tochange', 'torestore', 'toenable', 'todisable', 'disabled')
+				subdomain_alias_status IN ('toadd', 'tochange', 'torestore', 'toenable', 'todisable')
 		",
-		\$ipsMod
+		\$ipsModule
 	);
 
 	# Process toadd|tochange|toenable|todisable|todelete mail tasks
@@ -227,21 +299,7 @@ sub run
 			WHERE
 				subdomain_alias_status = 'todelete'
 		",
-		\$ipsMod
-	);
-
-	# Process todelete subdomains tasks
-	$rs ||= _process(
-		'Subdomain',
-		"
-			SELECT
-				subdomain_id AS id, subdomain_name AS name, subdomain_status AS status
-			FROM
-				subdomain
-			WHERE
-				subdomain_status = 'todelete'
-		",
-		\$ipsMod
+		\$ipsModule
 	);
 
 	# Process todelete domain aliases tasks
@@ -255,7 +313,21 @@ sub run
 			WHERE
 				alias_status = 'todelete'
 		",
-		\$ipsMod
+		\$ipsModule
+	);
+
+	# Process todelete subdomains tasks
+	$rs ||= _process(
+		'Subdomain',
+		"
+			SELECT
+				subdomain_id AS id, subdomain_name AS name, subdomain_status AS status
+			FROM
+				subdomain
+			WHERE
+				subdomain_status = 'todelete'
+		",
+		\$ipsModule
 	);
 
 	# Process todelete domains tasks
@@ -269,7 +341,7 @@ sub run
 			WHERE
 				domain_status = 'todelete'
 		",
-		\$ipsMod
+		\$ipsModule
 	);
 
 	# Process todelete users tasks
@@ -301,12 +373,17 @@ sub run
 	);
 
 	# Process IP addresses tasks
-	# This module should always me processed to handle case were only one domain is registered and disabled)
-	if(! $rs && $ipsMod != 0) {
-		newDebug("Ips_mngr.log");
+	unless($rs || ! $ipsModule) {
+		newDebug("Ips_module.log");
 
-		require Modules::Ips;
-		$rs = Modules::Ips->new()->process();
+		eval { require Modules::Ips };
+
+		unless($@) {
+			$rs = Modules::Ips->new()->process();
+		} else {
+			error($@);
+			$rs = 1;
+		}
 
 		endDebug();
 	}
@@ -451,72 +528,8 @@ sub run
 	}
 
 	iMSCP::HooksManager->getInstance()->trigger('afterDispatchRequest', $rs);
-}
 
-sub _process
-{
-	my ($type, $sql, $ipMods) = @_;
-	my $rs = 0;
-
-	debug("Processing type $type");
-
-	if ($main::execmode ne 'setup') {
-		print("=======================\n");
-		print("Processing type $type.\n");
-	}
-
-	my $rdata = iMSCP::Database->factory()->doQuery('id', $sql);
-	unless(ref $rdata eq 'HASH') {
-		error($rdata);
-		return 1;
-	}
-
-	my $i = 1;
-	my $total = scalar keys %$rdata;
-	$$ipMods += $total if ref $ipMods;
-
-	if(%{$rdata}) {
-		for (keys %{$rdata}) {
-			my $id = $rdata->{$_}->{'id'};
-			my $name = $rdata->{$_}->{'name'};
-			my $status = $rdata->{$_}->{'status'};
-
-			# Needed to run ips module in case all registered domain are disabled
-			next if $rdata->{$_}->{'status'} eq 'disabled';
-
-			debug("Processing $id, $name, $status.");
-
-			if($main::execmode ne 'setup') {
-				print("Processing $id, $name, $status. ($i of $total: remaining " . ($total - $i) . ")\n");
-			} else {
-				print STDOUT ("$type\t$status\t$name\t$id\t$total\t$i\n");
-			}
-
-			$i++;
-
-			newDebug("${type}_mngr_$name.log");
-
-			my $file = "Modules/${type}.pm";
-			my $class = "Modules::$type";
-
-			require $file;
-			$rs = $class->new()->process($id);
-
-			endDebug();
-
-			if($rs) {
-				error("Error while processing $id, $name, $status.");
-				my $logDir = defined $main::imscpConfig{'LOG_DIR'} ? $main::imscpConfig{'LOG_DIR'} : '';
-				error("See $logDir/${type}_mngr_$name.log for details.");
-			}
-
-			return $rs if $rs;
-		}
-	} else {
-		debug("No $type to process.");
-	}
-
-	0;
+	$rs;
 }
 
 exit run();

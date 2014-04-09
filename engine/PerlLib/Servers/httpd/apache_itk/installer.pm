@@ -133,9 +133,6 @@ sub install
 	$self->_oldEngineCompatibility();
 	return $rs if $rs;
 
-	#$rs = $self->setEnginePermissions();
-	#return $rs if $rs;
-
 	$self->{'hooksManager'}->trigger('afterHttpdInstall', 'apache_itk');
 }
 

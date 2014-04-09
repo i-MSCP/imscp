@@ -81,7 +81,7 @@ class iMSCP_Update_Version extends iMSCP_Update
     }
 
     /**
-     * Return next update.
+     * Return build number for the last available i-MSCP version.
      *
      * @return int 0 if not update or server not reachable.
      */
@@ -90,7 +90,7 @@ class iMSCP_Update_Version extends iMSCP_Update
         ini_set('user_agent', 'Mozilla/5.0');
 
         $timeout = ini_set('default_socket_timeout', 3);
-        $fh = @fopen('https://raw.github.com/i-MSCP/imscp/master/latest.txt', 'r');
+        $fh = @fopen('https://raw.githubusercontent.com/i-MSCP/imscp/stable/latest.txt', 'r');
 
         // Restore previous timeout
         ini_set('default_socket_timeout', $timeout);
@@ -101,10 +101,10 @@ class iMSCP_Update_Version extends iMSCP_Update
             return 0;
         }
 
-        $nextUpdate = (int)fread($fh, 8);
+        $lastVersion = (int)fread($fh, 8);
         fclose($fh);
 
-        return $nextUpdate;
+        return $lastVersion;
     }
 
     /**

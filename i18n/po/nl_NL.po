@@ -15,8 +15,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2014-03-23 16:38+0100\n"
-"PO-Revision-Date: 2014-03-23 15:40+0000\n"
+"POT-Creation-Date: 2014-03-27 02:06+0100\n"
+"PO-Revision-Date: 2014-03-27 01:08+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Dutch (Netherlands) (http://www.transifex.com/projects/p/i-MSCP/language/nl_NL/)\n"
 "MIME-Version: 1.0\n"
@@ -314,6 +314,10 @@ msgstr ""
 
 #, php-format
 msgid "%s is not a valid i-MSCP language file."
+msgstr ""
+
+#, php-format
+msgid "%s is not allowed as subdomain label."
 msgstr ""
 
 #, php-format
@@ -1283,14 +1287,8 @@ msgstr ""
 msgid "Change"
 msgstr "Verander"
 
-msgid "Change SQL user password"
-msgstr "Verander wachtwoord MySQL gebruiker"
-
 msgid "Change in progress..."
 msgstr ""
-
-msgid "Change password"
-msgstr "Verander wachtwoord"
 
 msgid "Change personal data"
 msgstr "Verander pers. informatie"
@@ -1736,6 +1734,9 @@ msgstr "Database naam"
 msgid "Database name is too long."
 msgstr "Database naam is te lang"
 
+msgid "Database name is unavailable."
+msgstr ""
+
 msgid "Database prefix"
 msgstr ""
 
@@ -1889,9 +1890,6 @@ msgstr ""
 msgid "Deletion in progress"
 msgstr ""
 
-msgid "Demo Version!"
-msgstr "Demo Versie!"
-
 msgid "Depot import"
 msgstr ""
 
@@ -1955,6 +1953,10 @@ msgstr "Wilt u deze %s Klant account compleet verwijderen? Deze actie is permane
 msgid "Domain"
 msgstr "Domein"
 
+#, php-format
+msgid "Domain %s is unavailable."
+msgstr ""
+
 msgid "Domain IP"
 msgstr "Domein IP"
 
@@ -1975,10 +1977,6 @@ msgstr ""
 
 msgid "Domain alias"
 msgstr "Domein alias"
-
-#, php-format
-msgid "Domain alias %s already exist."
-msgstr ""
 
 #, php-format
 msgid "Domain alias %s cannot be forwarded on itself."
@@ -2024,9 +2022,6 @@ msgstr ""
 
 msgid "Domain aliases"
 msgstr "Domein aliassen"
-
-msgid "Domain already registered on the system."
-msgstr "Domein reeds geregistreerd op het systeem."
 
 msgid "Domain and SQL databases"
 msgstr ""
@@ -2115,9 +2110,6 @@ msgstr "Domeinen"
 
 msgid "Domains per page"
 msgstr "Domeinen per pagina"
-
-msgid "Don't use special chars like \"@, $, %...\" in the password."
-msgstr "Gebruik geen  \"@, $, %...\" in uw paswoord."
 
 msgid "Done"
 msgstr "Gereed"
@@ -2775,6 +2767,9 @@ msgstr ""
 msgid "Incorrect username length or syntax."
 msgstr ""
 
+msgid "Info Unavailable"
+msgstr ""
+
 msgid "Install"
 msgstr "Installeer"
 
@@ -2848,6 +2843,10 @@ msgid "Invalid MX type."
 msgstr ""
 
 msgid "Invalid NAME."
+msgstr ""
+
+#, php-format
+msgid "Invalid SQL user host: %s"
 msgstr ""
 
 msgid "Invalid TXT data"
@@ -3107,9 +3106,6 @@ msgstr ""
 
 msgid "Mark"
 msgstr "Markeer"
-
-msgid "Master domain cannot be used."
-msgstr ""
 
 msgid "Max number of login attempts"
 msgstr "Maximale aantal inlog pogingen"
@@ -3576,9 +3572,6 @@ msgstr "Wachtwoord"
 msgid "Password cannot be longer than 30 characters."
 msgstr ""
 
-msgid "Password change is deactivated!"
-msgstr "Wachtwoord veranderen uitgeschakeld!"
-
 msgid "Password confirmation"
 msgstr "Paswoord Bevestigen"
 
@@ -3596,6 +3589,9 @@ msgstr "Paswoord ontbreekt"
 
 #, php-format
 msgid "Password is shorter than %s characters."
+msgstr ""
+
+msgid "Password is too long."
 msgstr ""
 
 msgid "Password length"
@@ -3667,7 +3663,7 @@ msgid ""
 "/>Refresh your site to see the new status!"
 msgstr ""
 
-msgid "Please don't use special chars such as '@, $, %...' in the password."
+msgid "Please don't use special chars such as '@, $, %...' in password."
 msgstr ""
 
 msgid "Please enter a name for the protected area."
@@ -3676,7 +3672,10 @@ msgstr ""
 msgid "Please enter a password."
 msgstr ""
 
-msgid "Please enter a username."
+msgid "Please enter an SQL user host."
+msgstr ""
+
+msgid "Please enter an username."
 msgstr ""
 
 msgid "Please enter protected area path"
@@ -3711,9 +3710,6 @@ msgstr ""
 
 msgid "Please type database name."
 msgstr "Typ de database naam"
-
-msgid "Please type user password."
-msgstr "Typ gebruikers paswoord"
 
 msgid "Please type your message."
 msgstr "Typ uw boodschap"
@@ -4267,6 +4263,13 @@ msgstr ""
 msgid "SQL user"
 msgstr ""
 
+#, php-format
+msgid "SQL user %s already exits."
+msgstr ""
+
+msgid "SQL user host"
+msgstr ""
+
 msgid "SQL user limit"
 msgstr ""
 
@@ -4282,9 +4285,6 @@ msgstr ""
 msgid "SQL user name"
 msgstr "MySQL gebruikersnaam"
 
-msgid "SQL user not found."
-msgstr ""
-
 msgid "SQL user password successfully updated."
 msgstr ""
 
@@ -4292,12 +4292,6 @@ msgid "SQL user prefix/suffix"
 msgstr ""
 
 msgid "SQL user successfully added."
-msgstr ""
-
-msgid "SQL user successfully deleted."
-msgstr ""
-
-msgid "SQL username already in use."
 msgstr ""
 
 msgid "SQL users"
@@ -4582,8 +4576,8 @@ msgid ""
 "including subdomains, but retains our server as final mailhost."
 msgstr ""
 
-msgid "Specified database name already exists."
-msgstr "Database naam bestaat al"
+msgid "Sql user successfully deleted."
+msgstr ""
 
 msgid "Start installation"
 msgstr ""
@@ -4726,9 +4720,6 @@ msgstr "Systeem tools"
 
 msgid "System under maintenance"
 msgstr "In onderhouds Modus"
-
-msgid "System was unable to update the SQL user password."
-msgstr ""
 
 msgid "TB"
 msgstr ""
@@ -4920,6 +4911,13 @@ msgid ""
 "to the selected network interface."
 msgstr ""
 
+#, php-format
+msgid ""
+"This is the host from which this SQL user must be allowed to connect to the "
+"SQL server. Enter the % character to allow this SQL user to connect from any"
+" host."
+msgstr ""
+
 msgid "This package already exists in the administrator software repository."
 msgstr ""
 
@@ -4986,9 +4984,6 @@ msgstr "Naar reseller"
 #, php-format
 msgid "To unprotect this plugin, you must edit the %s file"
 msgstr ""
-
-msgid "Too long user password."
-msgstr "gebruikers paswoord te lang"
 
 msgid "Total"
 msgstr "Totaal"
@@ -5119,9 +5114,6 @@ msgstr ""
 msgid "Unable to upload file. Max. upload filesize (%1$d MB) reached?"
 msgstr ""
 
-msgid "Unallowed database name."
-msgstr "Database naam niet toegestaan"
-
 msgid "Unauthorized"
 msgstr ""
 
@@ -5222,6 +5214,9 @@ msgid ""
 "fields."
 msgstr ""
 
+msgid "Update password"
+msgstr ""
+
 msgid "Updates"
 msgstr ""
 
@@ -5286,10 +5281,6 @@ msgid ""
 "User do not exist or you do not have permission to access this interface"
 msgstr ""
 
-msgid ""
-"User does not exist or you do not have permission to access this interface"
-msgstr ""
-
 msgid "User errors"
 msgstr ""
 
@@ -5301,9 +5292,6 @@ msgstr "Gebruikers(login-)naam"
 
 msgid "User name"
 msgstr "Gebruikersnaam"
-
-msgid "User name too long!"
-msgstr "Gebruikersnaam is te lang"
 
 msgid "User password"
 msgstr "Gebruikerswachtwoord"
@@ -5333,6 +5321,9 @@ msgid "Username"
 msgstr "Gebruikersnaam"
 
 msgid "Username and password for application login"
+msgstr ""
+
+msgid "Username is too long."
 msgstr ""
 
 msgid "Users"
@@ -5457,7 +5448,11 @@ msgid ""
 msgstr ""
 
 #, php-format
-msgid "Wildcards such as %% and ? are not allowed."
+msgid "Wildcards such as %% and ? are not allowed in username."
+msgstr ""
+
+#, php-format
+msgid "Wildcards such as %% and are not allowed."
 msgstr ""
 
 msgid "Wrong IP address."

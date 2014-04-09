@@ -30,8 +30,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2014-03-23 16:38+0100\n"
-"PO-Revision-Date: 2014-03-23 15:40+0000\n"
+"POT-Creation-Date: 2014-03-27 02:06+0100\n"
+"PO-Revision-Date: 2014-03-27 01:08+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: French (France) (http://www.transifex.com/projects/p/i-MSCP/language/fr_FR/)\n"
 "MIME-Version: 1.0\n"
@@ -330,6 +330,10 @@ msgstr "Le champ hôte %s est vide ou invalide."
 #, php-format
 msgid "%s is not a valid i-MSCP language file."
 msgstr "%s n'est pas un fichier de langue valide."
+
+#, php-format
+msgid "%s is not allowed as subdomain label."
+msgstr ""
 
 #, php-format
 msgid "%s is not part of domain %s."
@@ -1298,14 +1302,8 @@ msgstr "Le certificat va être supprimé."
 msgid "Change"
 msgstr "Changer"
 
-msgid "Change SQL user password"
-msgstr "Changer le mot de passe SQL"
-
 msgid "Change in progress..."
 msgstr "Changement en cours..."
-
-msgid "Change password"
-msgstr "Changement de mot de passe"
 
 msgid "Change personal data"
 msgstr "Modifier les informations personnelles"
@@ -1751,6 +1749,9 @@ msgstr "Nom de la base de données"
 msgid "Database name is too long."
 msgstr "Le nom de la base de données est trop long."
 
+msgid "Database name is unavailable."
+msgstr ""
+
 msgid "Database prefix"
 msgstr "Préfixe de base de données"
 
@@ -1904,9 +1905,6 @@ msgstr "Supprimer le ticket"
 msgid "Deletion in progress"
 msgstr "Suppression en cours"
 
-msgid "Demo Version!"
-msgstr "Version de démonstration !"
-
 msgid "Depot import"
 msgstr "Import du dépôt"
 
@@ -1970,6 +1968,10 @@ msgstr "Voulez-vous vraiment supprimer tout le compte client %s ? Cette opérati
 msgid "Domain"
 msgstr "Domaine"
 
+#, php-format
+msgid "Domain %s is unavailable."
+msgstr ""
+
 msgid "Domain IP"
 msgstr "IP du domaine"
 
@@ -1990,10 +1992,6 @@ msgstr "Domaine du compte"
 
 msgid "Domain alias"
 msgstr "Alias de domaine"
-
-#, php-format
-msgid "Domain alias %s already exist."
-msgstr "L'alias de domaine %s existe déjà."
 
 #, php-format
 msgid "Domain alias %s cannot be forwarded on itself."
@@ -2040,9 +2038,6 @@ msgstr "L'alias de domaine que vous essayez de supprimer a des sous-domaines. Su
 msgid "Domain aliases"
 msgstr "Alias de domaines"
 
-msgid "Domain already registered on the system."
-msgstr "Le domaine est déjà enregistré sur le système."
-
 msgid "Domain and SQL databases"
 msgstr "Domaine et bases de données SQL"
 
@@ -2071,7 +2066,7 @@ msgid "Domain name"
 msgstr "Nom de domaine"
 
 msgid "Domain name (ASCII form) cannot be greater than 255 characters."
-msgstr ""
+msgstr "Un nom de domaine (sous forme ASCII) ne peut pas faire plus de 255 caractères."
 
 msgid "Domain name cannot be empty."
 msgstr "Le nom du domaine ne peut être vide."
@@ -2088,7 +2083,7 @@ msgid "Domain name label '%s' contain an invalid character: %s"
 msgstr "Le label du nom de domaine '%s' contient des caractères invalides : %s"
 
 msgid "Domain name labels cannot be greater than 63 characters."
-msgstr ""
+msgstr "Les labels d'un nom de domaine ne peuvent pas faire plus de 63 caractères."
 
 msgid "Domain name labels cannot start nor end with hyphen."
 msgstr "Les labels d'un nom de domaine ne peuvent pas commencer ou finir par un trait d'union."
@@ -2130,9 +2125,6 @@ msgstr "Domaines"
 
 msgid "Domains per page"
 msgstr "Nombre de domaines affichés par page"
-
-msgid "Don't use special chars like \"@, $, %...\" in the password."
-msgstr "Les caractères \"@, $, % ....\" sont interdit pour les mots de passe."
 
 msgid "Done"
 msgstr "Fait"
@@ -2790,6 +2782,9 @@ msgstr "Syntaxe de l'adresse e-mail incorrect."
 msgid "Incorrect username length or syntax."
 msgstr "Longueur ou syntaxe du nom d'utilisateur incorrecte"
 
+msgid "Info Unavailable"
+msgstr ""
+
 msgid "Install"
 msgstr "Installer"
 
@@ -2864,6 +2859,10 @@ msgstr "Type MX invalide."
 
 msgid "Invalid NAME."
 msgstr "NAME invalide."
+
+#, php-format
+msgid "Invalid SQL user host: %s"
+msgstr ""
 
 msgid "Invalid TXT data"
 msgstr "Données TXT invalides"
@@ -3122,9 +3121,6 @@ msgstr "Gérez vos zones protégées, vos utilisateurs et vos groupes."
 
 msgid "Mark"
 msgstr "Marque"
-
-msgid "Master domain cannot be used."
-msgstr "Le nom de domaine du panneau de contrôle ne peut pas être utilisé."
 
 msgid "Max number of login attempts"
 msgstr "Nombre maximum de tentatives de connexion"
@@ -3591,9 +3587,6 @@ msgstr "Mot de passe"
 msgid "Password cannot be longer than 30 characters."
 msgstr "Le mot de passe ne peut pas être plus long que 30 caractères."
 
-msgid "Password change is deactivated!"
-msgstr "La modification du mot de passe est désactivée !"
-
 msgid "Password confirmation"
 msgstr "Confirmation du mot de pass"
 
@@ -3612,6 +3605,9 @@ msgstr "Mot de passe manquant."
 #, php-format
 msgid "Password is shorter than %s characters."
 msgstr "Le mot de passe est plus court que %s caractères."
+
+msgid "Password is too long."
+msgstr ""
 
 msgid "Password length"
 msgstr "Longueur minimale des mots de passe"
@@ -3682,8 +3678,8 @@ msgid ""
 "/>Refresh your site to see the new status!"
 msgstr "Veuillez contacter l'administrateur !<br />Demandez-lui la permission d'utiliser ce paquet.<br />Il n'est pas autorisé de téléversé ce paquet deux fois.<br />Rafraichissez votre site pour voir le nouveau statut !"
 
-msgid "Please don't use special chars such as '@, $, %...' in the password."
-msgstr "Veuillez ne pas utiliser de caractères spéciaux comme '@, $, %...' dans le mot de passe."
+msgid "Please don't use special chars such as '@, $, %...' in password."
+msgstr ""
 
 msgid "Please enter a name for the protected area."
 msgstr "Veuillez saisir un nom pour la zone protégée."
@@ -3691,8 +3687,11 @@ msgstr "Veuillez saisir un nom pour la zone protégée."
 msgid "Please enter a password."
 msgstr "Veuillez saisir un mot de passe."
 
-msgid "Please enter a username."
-msgstr "Veuillez saisir un nom d'utilisateur."
+msgid "Please enter an SQL user host."
+msgstr ""
+
+msgid "Please enter an username."
+msgstr ""
 
 msgid "Please enter protected area path"
 msgstr "Merci de saisir le chemin de la zone protégée"
@@ -3726,9 +3725,6 @@ msgstr "Veuillez insérer un sujet pour le message."
 
 msgid "Please type database name."
 msgstr "Veuillez insérer un nom pour la base de données."
-
-msgid "Please type user password."
-msgstr "Merci de saisir le mot de passe utilisateur."
 
 msgid "Please type your message."
 msgstr "Veuillez écrire un message"
@@ -4282,6 +4278,13 @@ msgstr "Bases de données SQL seulement"
 msgid "SQL user"
 msgstr "Utilisateur SQL"
 
+#, php-format
+msgid "SQL user %s already exits."
+msgstr ""
+
+msgid "SQL user host"
+msgstr ""
+
 msgid "SQL user limit"
 msgstr "Limite d'utilisateurs SQL"
 
@@ -4297,9 +4300,6 @@ msgstr "La limite d'utilisateur SQL est désactivée."
 msgid "SQL user name"
 msgstr "Utilisateur SQL"
 
-msgid "SQL user not found."
-msgstr "Utilisateur SQL non trouvé."
-
 msgid "SQL user password successfully updated."
 msgstr "Le mot de passe de l'utilisateur SQL a été mis à jour."
 
@@ -4308,12 +4308,6 @@ msgstr "Préfixe/Suffixe d'utilisateur SQL"
 
 msgid "SQL user successfully added."
 msgstr "L'utilisateur SQL a été ajouté."
-
-msgid "SQL user successfully deleted."
-msgstr "L'utilisateur SQL a été supprimé."
-
-msgid "SQL username already in use."
-msgstr "Cet utilisateur SQL est déjà utilisé."
 
 msgid "SQL users"
 msgstr "Utilisateurs SQL"
@@ -4597,8 +4591,8 @@ msgid ""
 "including subdomains, but retains our server as final mailhost."
 msgstr "Filtre anti-spam : Configurer un enregistrement DNS MX pour relayer les e-mails de tout le domaine, incluant les sous-domaines, mais retenir votre serveur comme hôte e-mail final."
 
-msgid "Specified database name already exists."
-msgstr "Une base de données avec ce nom existe déjà."
+msgid "Sql user successfully deleted."
+msgstr ""
 
 msgid "Start installation"
 msgstr "Débuter l'installation"
@@ -4741,9 +4735,6 @@ msgstr "Outils système"
 
 msgid "System under maintenance"
 msgstr "Système en maintenance"
-
-msgid "System was unable to update the SQL user password."
-msgstr "Le système n'a pas été capable de mettre à jour le mot de passe de l'utilisateur SQL."
 
 msgid "TB"
 msgstr "TB"
@@ -4935,6 +4926,13 @@ msgid ""
 "to the selected network interface."
 msgstr "Cette interface permet d'ajouter ou supprimer des adresses IP. Les adresses IP listées ci-dessous sont déjà contrôlées par i-MSCP. Les adresses IP qui seront ajoutées depuis cette interface seront automatiquements ajoutées à la base de données d'i-MSCP, et seront disponibles pour être assignées à un ou plusieurs de vos revendeurs. Si une adresse IP n'est pas encore configurée sur le système, elle sera attachée à l'interface réseau sélectionnée."
 
+#, php-format
+msgid ""
+"This is the host from which this SQL user must be allowed to connect to the "
+"SQL server. Enter the % character to allow this SQL user to connect from any"
+" host."
+msgstr ""
+
 msgid "This package already exists in the administrator software repository."
 msgstr "Ce paquet existe déjà dans le dépôt de logiciels de l'administrateur."
 
@@ -5001,9 +4999,6 @@ msgstr "Au revendeur"
 #, php-format
 msgid "To unprotect this plugin, you must edit the %s file"
 msgstr "Pour dé-protéger ce plugin, vous devez éditer le fichier %s"
-
-msgid "Too long user password."
-msgstr "Le mot de passe utilisateur est trop long."
 
 msgid "Total"
 msgstr "Total"
@@ -5134,9 +5129,6 @@ msgstr "Impossible de supprimer le compte client. Veuillez consulter les journau
 msgid "Unable to upload file. Max. upload filesize (%1$d MB) reached?"
 msgstr "Impossible de téléverser le fichier. Taille maximale du fichier (%1$d MB) atteinte ?"
 
-msgid "Unallowed database name."
-msgstr "Nom de la base de données non autorisé."
-
 msgid "Unauthorized"
 msgstr "Non autorisé"
 
@@ -5237,6 +5229,9 @@ msgid ""
 "fields."
 msgstr "La mise à jour de l'index du dépôt de logiciels Web a été annulée. Champ(s) manquant(s) ou vide(s)."
 
+msgid "Update password"
+msgstr ""
+
 msgid "Updates"
 msgstr "Mises à jour"
 
@@ -5301,10 +5296,6 @@ msgid ""
 "User do not exist or you do not have permission to access this interface"
 msgstr "L'utilisateur n'existe pas ou vous n'avez pas accès à cette interface."
 
-msgid ""
-"User does not exist or you do not have permission to access this interface"
-msgstr "L'utilisateur n'existe pas ou vous n'avez pas la permission d'accéder à cette interface"
-
 msgid "User errors"
 msgstr "Erreurs liées aux utilisateurs"
 
@@ -5316,9 +5307,6 @@ msgstr "Identifiant de l'utilisateur (système)"
 
 msgid "User name"
 msgstr "Nom de l'utilisateur"
-
-msgid "User name too long!"
-msgstr "Nom d'utilisateur trop long!"
 
 msgid "User password"
 msgstr "Mot de passe utilisateur"
@@ -5349,6 +5337,9 @@ msgstr "Nom d'utilisateur"
 
 msgid "Username and password for application login"
 msgstr "Utilisateur et mot de passe de l'application"
+
+msgid "Username is too long."
+msgstr ""
 
 msgid "Users"
 msgstr "Utilisateurs"
@@ -5472,8 +5463,12 @@ msgid ""
 msgstr "Joker : Configurer un enregistrement DNS MX pour relayer les e-mails pour les sous-domaines inexistants."
 
 #, php-format
-msgid "Wildcards such as %% and ? are not allowed."
-msgstr "Les jokers comme %% et ? ne sont pas autorisés."
+msgid "Wildcards such as %% and ? are not allowed in username."
+msgstr ""
+
+#, php-format
+msgid "Wildcards such as %% and are not allowed."
+msgstr ""
 
 msgid "Wrong IP address."
 msgstr "Mauvais adresse IP."

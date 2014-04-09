@@ -330,7 +330,7 @@ sub restore
 	0;
 }
 
-sub buildHTTPDData
+sub _getHttpdData
 {
 	my $self = $_[0];
 
@@ -343,22 +343,24 @@ sub buildHTTPDData
 
 	my $db = iMSCP::Database->factory();
 
-	my $sql = "SELECT * FROM `config` WHERE `name` LIKE 'PHPINI%'";
-	my $rdata = $db->doQuery('name', $sql);
+	my $rdata = $db->doQuery('name', "SELECT * FROM `config` WHERE `name` LIKE 'PHPINI%'");
 	unless(ref $rdata eq 'HASH') {
 		error($rdata);
 		return 1;
 	}
 
-	$sql = "SELECT * FROM `php_ini` WHERE `domain_id` = ?";
-	my $phpiniData = $db->doQuery('domain_id', $sql, $self->{'domain_id'});
+	my $phpiniData = $db->doQuery('domain_id', "SELECT * FROM `php_ini` WHERE `domain_id` = ?", $self->{'domain_id'});
 	unless(ref $phpiniData eq 'HASH') {
 		error($phpiniData);
 		return 1;
 	}
 
-	$sql = "SELECT * FROM `ssl_certs` WHERE `id` = ? AND `type` = ? AND `status` = ?";
-	my $certData = $db->doQuery('id', $sql, $self->{'domain_id'}, 'dmn', 'ok');
+	my $certData = $db->doQuery(
+		'id',
+		"SELECT * FROM `ssl_certs` WHERE `id` = ? AND `type` = ? AND `status` = ?", $self->{'domain_id'},
+		'dmn',
+		'ok'
+	);
 	unless(ref $certData eq 'HASH') {
 		error($certData);
 		return 1;
@@ -425,7 +427,7 @@ sub buildHTTPDData
 	0;
 }
 
-sub buildMTAData
+sub _getMtaData
 {
 	my $self = $_[0];
 
@@ -441,7 +443,7 @@ sub buildMTAData
 	0;
 }
 
-sub buildNAMEDData
+sub _getNamedData
 {
 	my $self = $_[0];
 
@@ -520,7 +522,7 @@ sub buildNAMEDData
 	0;
 }
 
-sub buildADDONData
+sub _getAddonsData
 {
 	my $self = $_[0];
 
@@ -531,7 +533,7 @@ sub buildADDONData
 	$homeDir =~ s~/+~/~g;
 	$homeDir =~ s~/$~~g;
 
-	$self->{'AddonsData'} = {
+	$self->{'addons'} = {
 		DOMAIN_ADMIN_ID => $self->{'domain_admin_id'},
 		ALIAS => $userName,
 		DOMAIN_NAME => $self->{'domain_name'},

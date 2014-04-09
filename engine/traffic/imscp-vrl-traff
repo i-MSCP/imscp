@@ -62,25 +62,32 @@ sub run
 	my %trafficDb;
 
 	for(iMSCP::Servers->getInstance()->get()) {
-		s/\.pm//;
-		my $file = "Servers/$_.pm";
-		my $class = "Servers::$_";
+		next if $_ eq 'noserver';
 
-		require $file;
-		my $instance = $class->factory();
+		my $package = "Servers::$_";
 
-		if ($instance->can('getTraffic')) {
-			eval {
-				# Any getTraffic() method from server implementations must die with last error message on failure
-				debug("Calling Servers::${_}::getTraffic()");
-				$trafficDb{$_} = $instance->getTraffic($timestamp);
-			};
+		eval "require $package";
 
-			if ($@) {
-				error("$@");
-				$rs = 1;
-				last;
+		unless($@) {
+			my $instance = $package->factory();
+
+			if ($instance->can('getTraffic')) {
+				eval {
+					# Any getTraffic() method from server implementations must die with last error message on failure
+					debug("Calling Servers::${_}::getTraffic()");
+					$trafficDb{$_} = $instance->getTraffic($timestamp);
+				};
+
+				if ($@) {
+					error($@);
+					$rs = 1;
+					last;
+				}
 			}
+		} else {
+			error($@);
+			$rs = 1;
+			last;
 		}
 	}
 

@@ -132,7 +132,7 @@ sub process
 	$self->add();
 }
 
-sub buildHTTPDData
+sub _getHttpdData
 {
 	my $self = $_[0];
 

@@ -63,27 +63,33 @@ sub process
 	my $rs = 0;
 
 	for(iMSCP::Servers->getInstance()->get()) {
-		s/\.pm//;
 		next if $_ eq 'noserver';
-		my $file = "Servers/$_.pm";
-		my $class = "Servers::$_";
-		require $file;
-		my $instance = $class->factory();
 
-		$rs = $instance->deleteTmp() if $instance->can('deleteTmp');
-		return $rs if $rs;
+		my $package = "Servers::$_";
+
+		eval "require $package";
+
+		unless($@) {
+			my $instance = $package->factory();
+			$rs |= $instance->deleteTmp() if $instance->can('deleteTmp');
+		} else {
+			error($@);
+			$rs = 1;
+		}
 	}
 
 	for(iMSCP::Addons->getInstance()->get()) {
-		s/\.pm//;
-		next if $_ eq 'noserver';
-		my $file = "Addons/$_.pm";
-		my $class = "Addons::$_";
-		require $file;
+		my $package = "Addons::$_";
 
-		my $instance = $class->getInstance();
-		$rs = $instance->deleteTmp() if $instance->can('deleteTmp');
-		return $rs if $rs;
+		eval "require $package";
+
+		unless($@) {
+			my $instance = $package->getInstance();
+			$rs |= $instance->deleteTmp() if $instance->can('deleteTmp');
+		} else {
+			error($@);
+			$rs = 1;
+		}
 	}
 
 	0;

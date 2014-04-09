@@ -163,7 +163,7 @@ $tpl->assign(
 		'TR_MANAGE_SQL' => tr('Manage SQL'),
 		'TR_DELETE' => tr('Delete'),
 		'TR_DATABASE' => tr('Database Name and Users'),
-		'TR_CHANGE_PASSWORD' => tr('Change password'),
+		'TR_CHANGE_PASSWORD' => tr('Update password'),
 		'TR_ACTIONS' => tr('Actions'),
 		'TR_PHPMYADMIN' => tr('phpMyAdmin'),
 		'TR_DATABASE_USERS' => tr('Database users'),

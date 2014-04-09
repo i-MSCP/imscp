@@ -25,7 +25,7 @@ $(document).ready(function () {
 	setTimeout(function () { $('.timeout').fadeOut(1000); }, 5000);
 	$('.main_menu a').imscpTooltip();
 	$('.body a, .body span, .body input, .dataTables_paginate div').imscpTooltip({ extraClass: "tooltip_icon tooltip_notice" });
-	$("input:submit, input:button, button, .link_as_button").button();
+	$("input:submit, input:button, input:reset, button, .link_as_button").button();
 	$(".radio, .checkbox").buttonset();
 	$('body').on("updateTable", "tbody", function() {
 		$(this).find("tr:visible:odd").removeClass("odd").addClass("even");

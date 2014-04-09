@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2014-03-23 16:38+0100\n"
-"PO-Revision-Date: 2014-03-23 15:40+0000\n"
+"POT-Creation-Date: 2014-03-27 02:06+0100\n"
+"PO-Revision-Date: 2014-03-27 01:08+0000\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Bulgarian (Bulgaria) (http://www.transifex.com/projects/p/i-MSCP/language/bg_BG/)\n"
 "MIME-Version: 1.0\n"
@@ -308,6 +308,10 @@ msgstr ""
 #, php-format
 msgid "%s is not a valid i-MSCP language file."
 msgstr "%s  не е валиден I-MSCP езиков файл."
+
+#, php-format
+msgid "%s is not allowed as subdomain label."
+msgstr ""
 
 #, php-format
 msgid "%s is not part of domain %s."
@@ -1276,14 +1280,8 @@ msgstr ""
 msgid "Change"
 msgstr "Промяна"
 
-msgid "Change SQL user password"
-msgstr "Промяна паролата на SQL потребител"
-
 msgid "Change in progress..."
 msgstr ""
-
-msgid "Change password"
-msgstr "Сменя на парола"
 
 msgid "Change personal data"
 msgstr "Промяна персонални данни"
@@ -1729,6 +1727,9 @@ msgstr "Име на базата данни"
 msgid "Database name is too long."
 msgstr "Име на базата данни е твърде дълго."
 
+msgid "Database name is unavailable."
+msgstr ""
+
 msgid "Database prefix"
 msgstr "представка за база данни"
 
@@ -1882,9 +1883,6 @@ msgstr ""
 msgid "Deletion in progress"
 msgstr ""
 
-msgid "Demo Version!"
-msgstr "Демо Версия!"
-
 msgid "Depot import"
 msgstr ""
 
@@ -1948,6 +1946,10 @@ msgstr ""
 msgid "Domain"
 msgstr "Домейн"
 
+#, php-format
+msgid "Domain %s is unavailable."
+msgstr ""
+
 msgid "Domain IP"
 msgstr "домейн IP"
 
@@ -1968,10 +1970,6 @@ msgstr ""
 
 msgid "Domain alias"
 msgstr "Псевдоними на домейни"
-
-#, php-format
-msgid "Domain alias %s already exist."
-msgstr ""
 
 #, php-format
 msgid "Domain alias %s cannot be forwarded on itself."
@@ -2017,9 +2015,6 @@ msgstr ""
 
 msgid "Domain aliases"
 msgstr "Псевдоними на домейна"
-
-msgid "Domain already registered on the system."
-msgstr "Домейна вече е регистриран в системата ни"
 
 msgid "Domain and SQL databases"
 msgstr ""
@@ -2108,9 +2103,6 @@ msgstr "Домейни"
 
 msgid "Domains per page"
 msgstr "Домейни на страница"
-
-msgid "Don't use special chars like \"@, $, %...\" in the password."
-msgstr "Не използвайте специални символи като \"@, $,% ...\" в паролата."
 
 msgid "Done"
 msgstr "Готово"
@@ -2768,6 +2760,9 @@ msgstr ""
 msgid "Incorrect username length or syntax."
 msgstr "Некоректна дължина на потребителско име."
 
+msgid "Info Unavailable"
+msgstr ""
+
 msgid "Install"
 msgstr "Инсталиране"
 
@@ -2841,6 +2836,10 @@ msgid "Invalid MX type."
 msgstr ""
 
 msgid "Invalid NAME."
+msgstr ""
+
+#, php-format
+msgid "Invalid SQL user host: %s"
 msgstr ""
 
 msgid "Invalid TXT data"
@@ -3100,9 +3099,6 @@ msgstr "Управление на защитени зони, потребите�
 
 msgid "Mark"
 msgstr "Марка"
-
-msgid "Master domain cannot be used."
-msgstr "Главния домейн не може да се използва."
 
 msgid "Max number of login attempts"
 msgstr "Максимум брой опити за влизане"
@@ -3569,9 +3565,6 @@ msgstr "Парола"
 msgid "Password cannot be longer than 30 characters."
 msgstr ""
 
-msgid "Password change is deactivated!"
-msgstr ""
-
 msgid "Password confirmation"
 msgstr "Паролата е потвърдена"
 
@@ -3589,6 +3582,9 @@ msgstr ""
 
 #, php-format
 msgid "Password is shorter than %s characters."
+msgstr ""
+
+msgid "Password is too long."
 msgstr ""
 
 msgid "Password length"
@@ -3660,7 +3656,7 @@ msgid ""
 "/>Refresh your site to see the new status!"
 msgstr ""
 
-msgid "Please don't use special chars such as '@, $, %...' in the password."
+msgid "Please don't use special chars such as '@, $, %...' in password."
 msgstr ""
 
 msgid "Please enter a name for the protected area."
@@ -3669,7 +3665,10 @@ msgstr ""
 msgid "Please enter a password."
 msgstr ""
 
-msgid "Please enter a username."
+msgid "Please enter an SQL user host."
+msgstr ""
+
+msgid "Please enter an username."
 msgstr ""
 
 msgid "Please enter protected area path"
@@ -3704,9 +3703,6 @@ msgstr "Моля, въведете тема съобщение."
 
 msgid "Please type database name."
 msgstr "Моля въведете име на базата данни."
-
-msgid "Please type user password."
-msgstr "Моля, въведете потребителска парола."
 
 msgid "Please type your message."
 msgstr "Моля въведете вашето съобщение."
@@ -4260,6 +4256,13 @@ msgstr ""
 msgid "SQL user"
 msgstr ""
 
+#, php-format
+msgid "SQL user %s already exits."
+msgstr ""
+
+msgid "SQL user host"
+msgstr ""
+
 msgid "SQL user limit"
 msgstr ""
 
@@ -4275,9 +4278,6 @@ msgstr ""
 msgid "SQL user name"
 msgstr "SQL потребителско име"
 
-msgid "SQL user not found."
-msgstr ""
-
 msgid "SQL user password successfully updated."
 msgstr ""
 
@@ -4285,12 +4285,6 @@ msgid "SQL user prefix/suffix"
 msgstr ""
 
 msgid "SQL user successfully added."
-msgstr ""
-
-msgid "SQL user successfully deleted."
-msgstr ""
-
-msgid "SQL username already in use."
 msgstr ""
 
 msgid "SQL users"
@@ -4575,8 +4569,8 @@ msgid ""
 "including subdomains, but retains our server as final mailhost."
 msgstr ""
 
-msgid "Specified database name already exists."
-msgstr "Това име за база данни вече съществува."
+msgid "Sql user successfully deleted."
+msgstr ""
 
 msgid "Start installation"
 msgstr ""
@@ -4718,9 +4712,6 @@ msgid "System tools"
 msgstr "Системни инструменти"
 
 msgid "System under maintenance"
-msgstr ""
-
-msgid "System was unable to update the SQL user password."
 msgstr ""
 
 msgid "TB"
@@ -4913,6 +4904,13 @@ msgid ""
 "to the selected network interface."
 msgstr ""
 
+#, php-format
+msgid ""
+"This is the host from which this SQL user must be allowed to connect to the "
+"SQL server. Enter the % character to allow this SQL user to connect from any"
+" host."
+msgstr ""
+
 msgid "This package already exists in the administrator software repository."
 msgstr ""
 
@@ -4979,9 +4977,6 @@ msgstr "За риселъра"
 #, php-format
 msgid "To unprotect this plugin, you must edit the %s file"
 msgstr ""
-
-msgid "Too long user password."
-msgstr "Твърде дълга потребителска парола."
 
 msgid "Total"
 msgstr "Всичко"
@@ -5112,9 +5107,6 @@ msgstr ""
 msgid "Unable to upload file. Max. upload filesize (%1$d MB) reached?"
 msgstr ""
 
-msgid "Unallowed database name."
-msgstr ""
-
 msgid "Unauthorized"
 msgstr ""
 
@@ -5215,6 +5207,9 @@ msgid ""
 "fields."
 msgstr ""
 
+msgid "Update password"
+msgstr ""
+
 msgid "Updates"
 msgstr ""
 
@@ -5279,10 +5274,6 @@ msgid ""
 "User do not exist or you do not have permission to access this interface"
 msgstr ""
 
-msgid ""
-"User does not exist or you do not have permission to access this interface"
-msgstr "Потребителя не съществува или няма разрешение за достъп до този интерфейс"
-
 msgid "User errors"
 msgstr ""
 
@@ -5294,9 +5285,6 @@ msgstr "Системно име (логин) потребител"
 
 msgid "User name"
 msgstr "Потребителско име"
-
-msgid "User name too long!"
-msgstr "Потребителското име е твърде дълго!"
 
 msgid "User password"
 msgstr "Потребителска парола"
@@ -5326,6 +5314,9 @@ msgid "Username"
 msgstr "Потребител"
 
 msgid "Username and password for application login"
+msgstr ""
+
+msgid "Username is too long."
 msgstr ""
 
 msgid "Users"
@@ -5450,8 +5441,12 @@ msgid ""
 msgstr ""
 
 #, php-format
-msgid "Wildcards such as %% and ? are not allowed."
-msgstr "Wildcards като%% и ? Не са позволени."
+msgid "Wildcards such as %% and ? are not allowed in username."
+msgstr ""
+
+#, php-format
+msgid "Wildcards such as %% and are not allowed."
+msgstr ""
 
 msgid "Wrong IP address."
 msgstr ""

@@ -192,7 +192,7 @@ sub _removeCustomers
 
 sub _uninstallAddons
 {
-	my ($rs, $file, $class, $server, $msg);
+	my $rs = 0;
 
 	startDetail();
 
@@ -201,18 +201,26 @@ sub _uninstallAddons
 	my $step = 1;
 
 	for(@addons) {
-		s/\.pm//;
-		$file = "Addons/$_.pm";
-		$class = "Addons::$_";
-		require $file;
+		my $package = "Addons::$_";
 
-		my $addon = $class->getInstance();
+		eval "require $package";
 
-		if($addon->can('uninstall')) {
-			$rs = step(
-				sub { $addon->uninstall }, sprintf("Running %s uninstall tasks...", ref $addon), $nbAddons, $step
-			);
-			last if $rs;
+		unless($@) {
+			my $addon = $package->getInstance();
+
+			if($addon->can('uninstall')) {
+				$rs = step(
+					sub { $addon->uninstall }, sprintf("Running %s uninstall tasks...", ref $addon),
+					$nbAddons,
+					$step
+            	);
+
+				last if $rs;
+			}
+		} else {
+			error($@);
+			$rs = 1;
+			last;
 		}
 
 		$step++;
@@ -225,7 +233,7 @@ sub _uninstallAddons
 
 sub _uninstallServers
 {
-	my ($rs, $file, $class, $server, $msg);
+	my $rs = 0;
 
 	startDetail();
 
@@ -234,18 +242,29 @@ sub _uninstallServers
 	my $step = 1;
 
 	for(@servers) {
-		s/\.pm//;
-		$file = "Servers/$_.pm";
-		$class = "Servers::$_";
-		require $file;
+		next if $_ eq 'noserver';
 
-		$server = $class->factory();
+		my $package = "Servers::$_";
 
-		if($server->can('uninstall')) {
-			$rs = step(
-				sub { $server->uninstall }, sprintf("Running %s uninstall tasks...", ref $server), $nbServers, $step
-			);
-			last if $rs;
+		eval "require $package";
+
+		unless($@) {
+			my $server = $package->factory();
+
+			if($server->can('uninstall')) {
+				$rs = step(
+					sub { $server->uninstall },
+					sprintf("Running %s uninstall tasks...", ref $server),
+					$nbServers,
+					$step
+				);
+
+				last if $rs;
+			}
+		} else {
+			error($@);
+			$rs = 1;
+			last;
 		}
 
 		$step++;

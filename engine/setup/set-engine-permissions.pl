@@ -65,7 +65,6 @@ sub run
 	my $rootDir = $main::imscpConfig{'ROOT_DIR'};
 	my $logDir = $main::imscpConfig{'LOG_DIR'};
 
-	my ($instance, $file, $class);
 	my @servers = iMSCP::Servers->getInstance()->get();
 	my @addons = iMSCP::Addons->getInstance()->get();
 	my $totalItems = @servers + @addons + 1;
@@ -106,18 +105,27 @@ sub run
 	# Trigger the setEnginePermissions() method on all i-MSCP server packages implementing it
 
 	for(@servers) {
-		s/\.pm//;
+		next if $_ eq 'noserver';
 
-		$file = "Servers/$_.pm";
-		$class = "Servers::$_";
+		my $package = "Servers::$_";
 
-		require $file;
-		$instance = $class->factory();
+		eval "require $package";
 
-		if($instance->can('setEnginePermissions')) {
-			debug("Setting $_ server backend permissions");
-			print "Setting backend permissions for the $_ server\t$totalItems\t$counter\n" if $main::execmode eq 'setup';
-			$rs |= $instance->setEnginePermissions();
+		unless($@) {
+			my $instance = $package->factory();
+
+			if($instance->can('setEnginePermissions')) {
+				debug("Setting $_ server backend permissions");
+
+				if ($main::execmode eq 'setup') {
+					print "Setting backend permissions for the $_ server\t$totalItems\t$counter\n";
+				}
+
+				$rs |= $instance->setEnginePermissions();
+			}
+		} else {
+			error($@);
+			$rs = 1;
 		}
 
 		$counter++;
@@ -125,18 +133,25 @@ sub run
 
 	# Trigger the setEnginePermissions() method on all i-MSCP addon packages implementing it
 	for(@addons) {
-		s/\.pm//;
+		my $package = "Addons::$_";
 
-		$file = "Addons/$_.pm";
-		$class = "Addons::$_";
+		eval "require $package";
 
-		require $file;
-		$instance = $class->getInstance();
+		unless($@) {
+			my $instance = $package->getInstance();
 
-		if($instance->can('setEnginePermissions')) {
-			debug("Setting $_ addon backend permissions");
-			print "Setting backend permissions for the $_ addon\t$totalItems\t$counter\n" if $main::execmode eq 'setup';
-			$rs |= $instance->setEnginePermissions();
+			if($instance->can('setEnginePermissions')) {
+				debug("Setting $_ addon backend permissions");
+
+				if ($main::execmode eq 'setup') {
+					print "Setting backend permissions for the $_ addon\t$totalItems\t$counter\n";
+				}
+
+				$rs |= $instance->setEnginePermissions();
+			}
+		} else {
+			error($@);
+			$rs = 1;
 		}
 
 		$counter++;

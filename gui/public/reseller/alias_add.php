@@ -46,7 +46,7 @@ function _reseller_getCustomersList()
 				FROM
 					admin
 				INNER JOIN
-					`domain` ON(domain_admin_id = admin_id)
+					domain ON(domain_admin_id = admin_id)
 				WHERE
 					created_by = ?
 				AND
@@ -354,7 +354,7 @@ function reseller_addDomainAlias()
 		$alsId = $db->insertId();
 
 		// Create default email addresses if needed
-		if ($cfg->CREATE_DEFAULT_EMAIL_ADDRESSES) {
+		if ($cfg['CREATE_DEFAULT_EMAIL_ADDRESSES']) {
 			$query = '
 				SELECT
 					email
