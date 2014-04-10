@@ -902,7 +902,7 @@ function admin_checkAndUpdateData($domainId)
 				return true;
 			}
 
-			iMSCP_Events_Manager::getInstance()->dispatch(
+			iMSCP_Events_Aggregator::getInstance()->dispatch(
 				iMSCP_Events::onBeforeEditDomain, array('domainId' => $domainId)
 			);
 
@@ -1050,7 +1050,7 @@ function admin_checkAndUpdateData($domainId)
 
 			$db->commit();
 
-			iMSCP_Events_Manager::getInstance()->dispatch(
+			iMSCP_Events_Aggregator::getInstance()->dispatch(
 				iMSCP_Events::onAfterEditDomain, array('domainId' => $domainId)
 			);
 
@@ -1115,7 +1115,7 @@ function _admin_isValidServiceLimit($newCustomerLimit, $customerConsumption,
 // Include core library
 require 'imscp-lib.php';
 
-iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAdminScriptStart);
+iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptStart);
 
 check_login('admin');
 
@@ -1203,6 +1203,6 @@ generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
 
-iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAdminScriptEnd, array('templateEngine' => $tpl));
+iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptEnd, array('templateEngine' => $tpl));
 
 $tpl->prnt();

@@ -30,12 +30,7 @@
 require_once 'iMSCP/Events/Exception.php';
 
 /**
- * Events Listener Exception class.
- *
- * @category    iMSCP
- * @package     iMSCP_Events
- * @subpackage  Manager
- * @author      Laurent Declercq <l.declercq@nuxwin.com>
+ * Class iMSCP_Events_Manager_Exception
  */
 class iMSCP_Events_Manager_Exception extends iMSCP_Events_Exception
 {

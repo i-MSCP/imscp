@@ -38,7 +38,7 @@
 require_once 'imscp-lib.php';
 require_once 'lostpassword-functions.php';
 
-iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onLostPasswordScriptStart);
+iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onLostPasswordScriptStart);
 
 // Purge expired sessions
 do_session_timeout();
@@ -129,6 +129,6 @@ generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
 
-iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onLostPasswordScriptEnd, array('templateEngine' => $tpl));
+iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onLostPasswordScriptEnd, array('templateEngine' => $tpl));
 
 $tpl->prnt();

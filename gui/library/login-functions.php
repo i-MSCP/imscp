@@ -101,7 +101,7 @@ function login_checkDomainAccount($event)
 		if (($stmt->fields['admin_status'] != 'ok') || ($stmt->fields['domain_status'] != 'ok')) {
 			$isAccountStateOk = false;
 			set_page_message(
-				tr('Your account is currently in maintenance or disabled. Please, contact your reseller.'), 'error'
+				tr('Your account is currently under maintenance or disabled. Please, contact your reseller.'), 'error'
 			);
 		} else {
 			$domainExpireDate = $stmt->fields['domain_expires'];

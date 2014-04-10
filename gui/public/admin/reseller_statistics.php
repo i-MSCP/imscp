@@ -131,7 +131,7 @@ require 'imscp-lib.php';
 
 check_login('admin');
 
-iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAdminScriptStart);
+iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptStart);
 
 if(!systemHasResellers()) {
 	showBadRequestErrorPage();
@@ -174,7 +174,7 @@ generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
 
-iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAdminScriptEnd, array('templateEngine' => $tpl));
+iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptEnd, array('templateEngine' => $tpl));
 
 $tpl->prnt();
 

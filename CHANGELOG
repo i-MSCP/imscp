@@ -6,14 +6,26 @@ Git stable
 ------------------------------------------------------------------------------------------------------------------------
 
 CONFIGS:
-	- Added: Percona MySQL server support (Debian squeeze, wheezy / Ubuntu lucid, precise, quantal, raring, saucy)
-	- Added support for MariaDB (Debian Jessie / Ubuntu Trusty)
+	- Added: Support for Percona MySQL server (Debian squeeze, wheezy / Ubuntu lucid, precise, quantal, raring, saucy)
+	- Added support for MariaDB using official repositories (Debian Jessie / Ubuntu Trusty)
 
 ENGINE:
 	- Fixed: iMSCP::Ext2Attributes must not act on systems which do not support extended fs attributes
 
+GUI:
+	- Added iMSCP_Events_Aggregator
+	- Changed: EventManager is no longer static (shared). The getInstance() method is now deprecated. It now return an
+		iMSCP_Events_Aggregator instance to ensure backward compatibility with plugins which are already released
+	- Deprecated: iMSCP_Events_Manager::getInstance() (will be removed in next minor version)
+
+PLUGINS:
+	- Changed: Implementation of the register() method is no longer mandatory in action plugins
+	- Fixed: Plugin manager must have its own eventManager
+	- Fixed: Plugin event listeners are registered twice in some contexts
+	- Updated: Plugin API to version 0.2.9 (changes are backward compatible)
+
 INSTALLER:
-	 Added: Percona MySQL server support
+	 Added: Support for Percona MySQL server
 	 Fixed: apache_php_fpm uninstaller is broken
 
 Tickets:

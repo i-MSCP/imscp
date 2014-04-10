@@ -30,12 +30,7 @@
 require_once 'iMSCP/Exception.php';
 
 /**
- * Events Exception class.
- *
- * @category    iMSCP
- * @package     iMSCP_Core
- * @subpackage  Events
- * @author      Laurent Declercq <l.declercq@nuxwin.com>
+ * Class iMSCP_Events_Exception
  */
 class iMSCP_Events_Exception extends iMSCP_Exception
 {

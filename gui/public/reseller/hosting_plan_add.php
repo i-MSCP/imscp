@@ -517,7 +517,7 @@ function reseller_addHostingPlan($resellerId, $phpini)
 // Include core library
 require 'imscp-lib.php';
 
-iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onResellerScriptStart);
+iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onResellerScriptStart);
 
 check_login('reseller');
 
@@ -633,7 +633,7 @@ if (isset($cfg->HOSTING_PLANS_LEVEL) && $cfg->HOSTING_PLANS_LEVEL == 'reseller')
 
 	$tpl->parse('LAYOUT_CONTENT', 'page');
 
-	iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onResellerScriptEnd, array('templateEngine' => $tpl));
+	iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onResellerScriptEnd, array('templateEngine' => $tpl));
 
 	$tpl->prnt();
 } else {

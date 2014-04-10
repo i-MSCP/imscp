@@ -214,7 +214,7 @@ function admin_pluginManagerGeneratePluginList($tpl, $pluginManager)
 			$pluginInfo = $pluginManager->getPluginInfo($pluginName);
 			$pluginStatus = $pluginManager->getPluginStatus($pluginName);
 
-			if(is_array($pluginInfo['author'])) {
+			if (is_array($pluginInfo['author'])) {
 				$pluginInfo['author'] = implode(' ' . tr('and') . ' ', $pluginInfo['author']);
 			}
 
@@ -223,7 +223,7 @@ function admin_pluginManagerGeneratePluginList($tpl, $pluginManager)
 					'PLUGIN_NAME' => tohtml($pluginName),
 					'PLUGIN_DESCRIPTION' => tohtml($pluginInfo['desc']),
 					'PLUGIN_STATUS' => ($pluginManager->hasPluginError($pluginName))
-						? tohtml(tr('Unknown Error')) : tohtml(admin_pluginManagerTrStatus($pluginStatus)),
+							? tohtml(tr('Unknown Error')) : tohtml(admin_pluginManagerTrStatus($pluginStatus)),
 					'PLUGIN_VERSION' => tohtml($pluginInfo['__nversion__']),
 					'PLUGIN_AUTHOR' => tohtml($pluginInfo['author']),
 					'PLUGIN_MAILTO' => tohtml($pluginInfo['email']),
@@ -279,9 +279,9 @@ function admin_pluginManagerGeneratePluginList($tpl, $pluginManager)
 							'ACTIVATE_ACTION' => 'enable',
 							'TR_ACTIVATE_TOOLTIP' => tr('Activate this plugin'),
 							'UNINSTALL_ACTION' => $pluginManager->isPluginUninstallable($pluginName)
-								? 'uninstall' : 'delete',
+									? 'uninstall' : 'delete',
 							'TR_UNINSTALL_TOOLTIP' => $pluginManager->isPluginUninstallable($pluginName)
-								? tr('Uninstall this plugin') : tr('Delete this plugin'),
+									? tr('Uninstall this plugin') : tr('Delete this plugin'),
 							'PLUGIN_PROTECTED_LINK' => ''
 						)
 					);
@@ -313,6 +313,85 @@ function admin_pluginManagerGeneratePluginList($tpl, $pluginManager)
 }
 
 /**
+ * Check plugin action
+ *
+ * @param iMSCP_Plugin_Manager $pluginManager
+ * @param string $pluginName PLugin name
+ * @param string $action Action
+ * @return bool
+ */
+function admin_pluginManagerCheckAction($pluginManager, $pluginName, $action)
+{
+	if ($pluginManager->isPluginProtected($pluginName)) {
+		set_page_message(tr('Plugin %s is protected.', "<strong>$pluginName</strong>"), 'warning');
+		return false;
+	}
+
+	$ret = true;
+
+	switch ($action) {
+		case 'install':
+			if ($pluginManager->isPluginInstallable($pluginName)) {
+				if ($pluginManager->isPluginInstalled($pluginName)) {
+					set_page_message(tr('Plugin %s is already installed.', "<strong>$pluginName</strong>"), 'warning');
+					$ret = false;
+				}
+			} else {
+				set_page_message(tr('Plugin %s is not installable.', "<strong>$pluginName</strong>"), 'warning');
+				$ret = false;
+			}
+			break;
+		case 'update':
+			break;
+		case 'uninstall':
+			if ($pluginManager->isPluginUninstallable($pluginName)) {
+				if ($pluginManager->isPluginUninstalled($pluginName)) {
+					set_page_message(tr('Plugin %s is already uninstalled.', "<strong>$pluginName</strong>"), 'warning');
+					$ret = false;
+				}
+			} else {
+				set_page_message(tr('Plugin %s is not uninstallable.', "<strong>$pluginName</strong>"), 'warning');
+				$ret = false;
+			}
+			break;
+		case 'enable':
+			if ($pluginManager->isPluginEnabled($pluginName)) {
+				set_page_message(tr('Plugin %s is already activated.', "<strong>$pluginName</strong>"), 'warning');
+				$ret = false;
+			} elseif (!$pluginManager->isPluginDisabled($pluginName)) {
+				set_page_message(tr('Plugin %s cannot be enabled.', "<strong>$pluginName</strong>"), 'warning');
+				$ret = false;
+			}
+			break;
+		case 'disable':
+			if ($pluginManager->isPluginDisabled($pluginName)) {
+				set_page_message(tr('Plugin %s is already deactivated.', "<strong>$pluginName</strong>"), 'warning');
+				$ret = false;
+			} elseif (!$pluginManager->isPluginEnabled($pluginName)) {
+				set_page_message(tr('Plugin %s cannot be disabled.', "<strong>$pluginName</strong>"), 'warning');
+				$ret = false;
+			}
+			break;
+		case 'delete':
+			if (
+				(
+					$pluginManager->isPluginUninstallable($pluginName) &&
+					!$pluginManager->isPluginUninstalled($pluginName)
+				) ||
+				!$pluginManager->isPluginDisabled($pluginName)
+			) {
+				set_page_message(tr('Plugin %s cannot be deleted.', "<strong>$pluginName</strong>"), 'warning');
+				$ret = false;
+			}
+			break;
+		default:
+			showBadRequestErrorPage();
+	}
+
+	return $ret;
+}
+
+/**
  * Do the given action for the given plugin
  *
  * @param iMSCP_Plugin_Manager $pluginManager
@@ -323,152 +402,97 @@ function admin_pluginManagerGeneratePluginList($tpl, $pluginManager)
 function admin_pluginManagerDoAction($pluginManager, $pluginName, $action)
 {
 	if ($pluginManager->isPluginKnown($pluginName)) {
-		if ($pluginManager->isPluginProtected($pluginName)) {
-			set_page_message(tr('Plugin %s is protected.', "<strong>$pluginName</strong>"), 'warning');
-		} elseif ($action == 'install' && $pluginManager->isPluginInstalled($pluginName)) {
-			set_page_message(tr('Plugin %s is already installed.', "<strong>$pluginName</strong>"), 'warning');
-		} elseif ($action == 'enable' && $pluginManager->isPluginEnabled($pluginName)) {
-			set_page_message(tr('Plugin %s is already activated.', "<strong>$pluginName</strong>"), 'warning');
-		} elseif ($action == 'disable' && $pluginManager->isPluginDisabled($pluginName)) {
-			set_page_message(tr('Plugin %s is already deactivated.', "<strong>$pluginName</strong>"), 'warning');
-		} elseif ($action == 'uninstall' && $pluginManager->isPluginUninstalled($pluginName)) {
-			set_page_message(tr('Plugin %s is already uninstalled.', "<strong>$pluginName</strong>"), 'warning');
-		} else {
+		if (admin_pluginManagerCheckAction($pluginManager, $pluginName, $action)) {
 			$ret = $pluginManager->{"plugin{$action}"}($pluginName);
 
 			if ($ret == iMSCP_Plugin_Manager::ACTION_FAILURE || $ret == iMSCP_Plugin_Manager::ACTION_STOPPED) {
-				$submessage = ($ret == iMSCP_Plugin_Manager::ACTION_FAILURE)
+				$msg = ($ret == iMSCP_Plugin_Manager::ACTION_FAILURE)
 					? tr('Action has failed.') : tr('Action has been stopped.');
 
 				switch ($action) {
 					case 'install':
-						$message = tr(
-							'Plugin Manager: Unable to install the %s plugin: %s',
-							"<strong>$pluginName</strong>",
-							$submessage
-						);
+						$msg = tr('Unable to install the %s plugin: %s', "<strong>$pluginName</strong>", $msg);
 						break;
 					case 'enable':
-						$message = tr(
-							'Plugin Manager: Unable to activate the %s plugin: %s',
-							"<strong>$pluginName</strong>",
-							$submessage
-						);
+						$msg = tr('Unable to activate the %s plugin: %s', "<strong>$pluginName</strong>", $msg);
 						break;
 					case 'disable':
-						$message = tr(
-							'Plugin Manager: Unable to deactivate the %s plugin: %s',
-							"<strong>$pluginName</strong>",
-							$submessage
-						);
+						$msg = tr('Unable to deactivate the %s plugin: %s', "<strong>$pluginName</strong>", $msg);
 						break;
 					case 'change':
-						$message = tr(
-							'Plugin Manager: Unable to change the %s plugin: %s',
-							"<strong>$pluginName</strong>",
-							$submessage
-						);
+						$msg = tr('Unable to change the %s plugin: %s', "<strong>$pluginName</strong>", $msg);
 						break;
 					case 'update':
-						$message = tr(
-							'Plugin Manager: Unable to update the %s plugin: %s',
-							"<strong>$pluginName</strong>",
-							$submessage
-						);
+						$msg = tr('Unable to update the %s plugin: %s', "<strong>$pluginName</strong>", $msg);
 						break;
 					case 'uninstall':
-						$message = tr(
-							'Plugin Manager: Unable to uninstall the %s plugin: %s',
-							"<strong>$pluginName</strong>",
-							$submessage
-						);
+						$msg = tr('Unable to uninstall the %s plugin: %s', "<strong>$pluginName</strong>", $msg);
 						break;
 					case 'delete':
-						$message = tr('Plugin Manager: Unable to delete the %s plugin: %s',
-							"<strong>$pluginName</strong>",
-							$submessage
-						);
+						$msg = tr('Unable to delete the %s plugin: %s', "<strong>$pluginName</strong>", $msg);
 						break;
 					case 'protect':
-						$message = tr('Plugin Manager: Unable to protect the %s plugin: %s',
-							"<strong>$pluginName</strong>",
-							$submessage
-						);
+						$msg = tr('Unable to protect the %s plugin: %s', "<strong>$pluginName</strong>", $msg);
 						break;
 					default:
-						$message = tr(
-							'Plugin Manager: Unable to protect the %s plugin: %s',
-							"<strong>$pluginName</strong>",
-							$submessage
-						);
+						$msg = tr('Unable to protect the %s plugin: %s', "<strong>$pluginName</strong>", $msg);
 				}
 
-				set_page_message($message, 'error');
+				set_page_message($msg, 'error');
 			} else {
 				if ($pluginManager->hasPluginBackend($pluginName)) {
 					switch ($action) {
 						case 'install':
-							$message = tr(
-								'Plugin %s successfully scheduled for installation.', "<strong>$pluginName</strong>"
-							);
+							$msg = tr('Plugin %s scheduled for installation.', "<strong>$pluginName</strong>");
 							break;
 						case 'enable':
-							$message = tr(
-								'Plugin %s successfully scheduled for activation.', "<strong>$pluginName</strong>"
-							);
+							$msg = tr('Plugin %s scheduled for activation.', "<strong>$pluginName</strong>");
 							break;
 						case 'disable':
-							$message = tr(
-								'Plugin %s successfully scheduled for deactivation.', "<strong>$pluginName</strong>"
-							);
+							$msg = tr('Plugin %s scheduled for deactivation.', "<strong>$pluginName</strong>");
 							break;
 						case 'change':
-							$message = tr(
-								'Plugin %s successfully scheduled for change.', "<strong>$pluginName</strong>"
-							);
+							$msg = tr('Plugin %s scheduled for change.', "<strong>$pluginName</strong>");
 							break;
 						case 'update':
-							$message = tr(
-								'Plugin %s successfully scheduled for update.', "<strong>$pluginName</strong>"
-							);
+							$msg = tr('Plugin %s scheduled for update.', "<strong>$pluginName</strong>");
 							break;
 						case 'uninstall':
-							$message = tr(
-								'Plugin %s successfully scheduled for uninstallation.', "<strong>$pluginName</strong>"
-							);
+							$msg = tr('Plugin %s scheduled for uninstallation.', "<strong>$pluginName</strong>");
 							break;
 						default:
-							$message = tr('Plugin %s successfully deleted.', "<strong>$pluginName</strong>");
+							$msg = tr('Plugin %s deleted.', "<strong>$pluginName</strong>");
 					}
-					set_page_message($message, 'success');
+
+					set_page_message($msg, 'success');
 				} else {
 					switch ($action) {
 						case 'install':
-							$message = tr('Plugin %s successfully installed.', "<strong>$pluginName</strong>");
+							$msg = tr('Plugin %s installed.', "<strong>$pluginName</strong>");
 							break;
 						case 'enable':
-							$message = tr('Plugin %s successfully activated.', "<strong>$pluginName</strong>");
+							$msg = tr('Plugin %s activated.', "<strong>$pluginName</strong>");
 							break;
 						case 'disable':
-							$message = tr('Plugin %s successfully deactivated.', "<strong>$pluginName</strong>");
+							$msg = tr('Plugin %s deactivated.', "<strong>$pluginName</strong>");
 							break;
 						case 'change':
-							$message = tr('Plugin %s successfully changed.', "<strong>$pluginName</strong>");
+							$msg = tr('Plugin %s changed.', "<strong>$pluginName</strong>");
 							break;
 						case 'update':
-							$message = tr('Plugin %s successfully updated.', "<strong>$pluginName</strong>");
+							$msg = tr('Plugin %s updated.', "<strong>$pluginName</strong>");
 							break;
 						case 'uninstall':
-							$message = tr('Plugin %s successfully uninstalled.', "<strong>$pluginName</strong>");
+							$msg = tr('Plugin %s uninstalled.', "<strong>$pluginName</strong>");
 							break;
 						case 'protect':
-							$message = tr('Plugin %s successfully protected.', "<strong>$pluginName</strong>");
+							$msg = tr('Plugin %s protected.', "<strong>$pluginName</strong>");
 							break;
 						default:
-							$message = tr('Plugin %s successfully deleted.', "<strong>$pluginName</strong>");
+							$msg = tr('Plugin %s deleted.', "<strong>$pluginName</strong>");
 					}
 
-					set_page_message($message, 'success');
+					set_page_message($msg, 'success');
 				}
 			}
 		}
@@ -506,19 +530,20 @@ function admin_pluginManagerDoBulkAction($pluginManager)
  */
 function admin_pluginManagerUpdatePluginList($pluginManager)
 {
-	$responses = iMSCP_Events_Manager::getInstance()->dispatch(
+	$eventManager = $pluginManager->getEventManager();
+
+	/** @var iMSCP_Events_Listener_ResponseCollection $responses */
+	$responses = $eventManager->dispatch(
 		iMSCP_Events::onBeforeUpdatePluginList, array('pluginManager' => $pluginManager)
 	);
 
 	if (!$responses->isStopped()) {
 		$updateInfo = $pluginManager->updatePluginList();
 
-		iMSCP_Events_Manager::getInstance()->dispatch(
-			iMSCP_Events::onAfterUpdatePluginList, array('pluginManager' => $pluginManager)
-		);
+		$eventManager->dispatch(iMSCP_Events::onAfterUpdatePluginList, array('pluginManager' => $pluginManager));
 
 		set_page_message(
-			tr('Plugin list successfully updated.') . '<br />' .
+			tr('Plugin list updated.') . '<br />' .
 			tr(
 				'%s new plugin(s) found, %s plugin(s) updated, %s plugin(s) changed, and %s plugin(s) deleted.',
 				"<strong>{$updateInfo['new']}</strong>",
@@ -538,7 +563,7 @@ function admin_pluginManagerUpdatePluginList($pluginManager)
 // Include core library
 require 'imscp-lib.php';
 
-iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAdminScriptStart);
+iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptStart);
 
 check_login('admin');
 
@@ -601,7 +626,7 @@ if (!empty($_REQUEST) || !empty($_FILES)) {
 		admin_pluginManagerDoBulkAction($pluginManager);
 	} elseif (!empty($_FILES)) {
 		if (admin_pluginManagerUploadPlugin($pluginManager)) {
-			set_page_message(tr('Plugin successfully uploaded.'), 'success');
+			set_page_message(tr('Plugin uploaded.'), 'success');
 			admin_pluginManagerUpdatePluginList($pluginManager);
 		}
 	}
@@ -671,7 +696,7 @@ generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
 
-iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAdminScriptEnd, array('templateEngine' => $tpl));
+iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptEnd, array('templateEngine' => $tpl));
 
 $tpl->prnt();
 

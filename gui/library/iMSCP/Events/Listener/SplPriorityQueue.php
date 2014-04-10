@@ -30,11 +30,6 @@
  * Class iMSCP_Events_Listener_SplPriorityQueue
  *
  * Allows to keep order for listeners with same priority (FIFO order).
- *
- * @category    iMSCP
- * @package     iMSCP_Core
- * @subpackage  Events_Listener
- * @author      Laurent Declercq <l.declercq@nuxwin.com>
  */
 class iMSCP_Events_Listener_SplPriorityQueue extends SplPriorityQueue
 {

@@ -40,7 +40,7 @@ require 'imscp-lib.php';
 // Purge expired sessions
 do_session_timeout();
 
-iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onLoginScriptStart);
+iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onLoginScriptStart);
 
 $action = isset($_REQUEST['action']) ? $_REQUEST['action'] : 'default';
 $auth = iMSCP_Authentication::getInstance();
@@ -150,6 +150,6 @@ generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
 
-iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onLoginScriptEnd, array('templateEngine' => $tpl));
+iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onLoginScriptEnd, array('templateEngine' => $tpl));
 
 $tpl->prnt();

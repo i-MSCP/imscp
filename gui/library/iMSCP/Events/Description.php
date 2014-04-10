@@ -26,43 +26,37 @@
  */
 
 /**
- * Representation of an event
- *
- * Note: Most part of this code was borrowed to Zend Framework 2.
- *
- * @category    iMSCP
- * @package     Events
- * @author      Laurent Declercq <l.declercq@nuxwin.com>
+ * Interface iMSCP_Events_Description
  */
 interface iMSCP_Events_Description
 {
 	/**
-	 * Returns event name.
+	 * Returns event name
 	 *
 	 * @return string
 	 */
 	public function getName();
 
 	/**
-	 * Returns parameters passed to the event.
+	 * Returns parameters passed to the event
 	 *
 	 * @return array|ArrayAccess
 	 */
 	public function getParams();
 
 	/**
-	 * Returns a single parameter by name.
+	 * Returns a single parameter by name
 	 *
-	 * @param  string $name
-	 * @param  mixed $default Default value to return if parameter does not exist
+	 * @param string $name
+	 * @param mixed $default Default value to return if parameter does not exist
 	 * @return mixed
 	 */
 	public function getParam($name, $default = null);
 
 	/**
-	 * Set the event name.
+	 * Set the event name
 	 *
-	 * @param  string $name Event name
+	 * @param string $name Event name
 	 * @return iMSCP_Events_Description Provides fluent interface, return self
 	 */
 	public function setName($name);
@@ -76,7 +70,7 @@ interface iMSCP_Events_Description
 	public function setParams($params);
 
 	/**
-	 * Set a single parameter by name.
+	 * Set a single parameter by name
 	 *
 	 * @param  string $name Parameter name
 	 * @param  mixed $value Parameter value

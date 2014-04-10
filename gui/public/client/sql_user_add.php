@@ -319,7 +319,7 @@ function client_addSqlUser($customerId, $databaseId)
 
 			$sqlUserCreated = false;
 
-			iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onBeforeAddSqlUser);
+			iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeAddSqlUser);
 
 			// Here we cannot use transaction because the GRANT statement cause an implicit commit
 			// We execute the GRANT statements first to let the i-MSCP database in clean state if one of them fails.
@@ -347,7 +347,7 @@ function client_addSqlUser($customerId, $databaseId)
 				throw $e;
 			}
 
-			iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAfterAddSqlUser);
+			iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterAddSqlUser);
 
 			set_page_message(tr('SQL user successfully added.'), 'success');
 			write_log(sprintf("%s added new SQL user: %s", $_SESSION['user_logged'], tohtml($sqlUser)), E_USER_NOTICE);
@@ -432,7 +432,7 @@ function client_generatePage($tpl, $databaseId)
 // Include core library
 require_once 'imscp-lib.php';
 
-iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
+iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
 
 check_login('user');
 
@@ -493,7 +493,7 @@ generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
 
-iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, array('templateEngine' => $tpl));
+iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, array('templateEngine' => $tpl));
 
 $tpl->prnt();
 

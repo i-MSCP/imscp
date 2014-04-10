@@ -132,7 +132,7 @@ function reseller_generatePage($tpl)
  */
 function reseller_updateUserData($adminId)
 {
-	iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onBeforeEditUser, array('userId' => $adminId));
+	iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeEditUser, array('userId' => $adminId));
 
 	global $dmnUsername, $userEmail, $customerId, $firstName, $lastName, $firm, $zip, $gender, $city, $state, $country,
 		$street1, $street2, $mail, $phone, $fax, $password;
@@ -210,7 +210,7 @@ function reseller_updateUserData($adminId)
 		exec_query($query, $adminName);
 	}
 
-	iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAfterEditUser, array('userId' => $adminId));
+	iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterEditUser, array('userId' => $adminId));
 
 	set_page_message(tr('User data successfully updated'), 'success');
 	write_log("{$_SESSION['user_logged']} updated data for $dmnUsername.", E_USER_NOTICE);
@@ -229,7 +229,7 @@ function reseller_updateUserData($adminId)
 // Include core library
 require 'imscp-lib.php';
 
-iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onResellerScriptStart);
+iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onResellerScriptStart);
 
 /** @var $cfg iMSCP_Config_Handler_File */
 $cfg = iMSCP_Registry::get('config');
@@ -300,7 +300,7 @@ if (isset($_REQUEST['edit_id'])) {
 
 	$tpl->parse('LAYOUT_CONTENT', 'page');
 
-	iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onResellerScriptEnd, array('templateEngine' => $tpl));
+	iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onResellerScriptEnd, array('templateEngine' => $tpl));
 
 	$tpl->prnt();
 } else {

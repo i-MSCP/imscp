@@ -912,7 +912,7 @@ function reseller_checkAndUpdateData($domainId, $recoveryMode = false)
 				return true;
 			}
 
-			iMSCP_Events_Manager::getInstance()->dispatch(
+			iMSCP_Events_Aggregator::getInstance()->dispatch(
 				iMSCP_Events::onBeforeEditDomain, array('domainId' => $domainId)
 			);
 
@@ -1060,7 +1060,7 @@ function reseller_checkAndUpdateData($domainId, $recoveryMode = false)
 
 			$db->commit();
 
-			iMSCP_Events_Manager::getInstance()->dispatch(
+			iMSCP_Events_Aggregator::getInstance()->dispatch(
 				iMSCP_Events::onAfterEditDomain, array('domainId' => $domainId)
 			);
 
@@ -1127,7 +1127,7 @@ function _reseller_isValidServiceLimit($newCustomerLimit, $customerConsumption,
 // Include core library
 require 'imscp-lib.php';
 
-iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onResellerScriptStart);
+iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onResellerScriptStart);
 
 check_login('reseller');
 
@@ -1217,6 +1217,6 @@ generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
 
-iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onResellerScriptEnd, array('templateEngine' => $tpl));
+iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onResellerScriptEnd, array('templateEngine' => $tpl));
 
 $tpl->prnt();

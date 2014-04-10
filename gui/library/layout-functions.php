@@ -610,7 +610,7 @@ function layout_LoadNavigation($event)
 		iMSCP_Registry::set('navigation', new Zend_Navigation(new Zend_Config_Xml($menuPath, 'navigation')));
 
 		// Set main menu labels visibility for the current environment
-		iMSCP_Events_Manager::getInstance()->registerListener(
+		iMSCP_Events_Aggregator::getInstance()->registerListener(
 			iMSCP_Events::onBeforeGenerateNavigation, 'layout_setMainMenuLabelsVisibilityEvt'
 		);
 	}

@@ -120,7 +120,7 @@ class iMSCP_Exception_Writer_Mail extends iMSCP_Exception_Writer
 
 
 
-		$em = iMSCP_Events_Manager::getInstance();
+		$em = iMSCP_Events_Aggregator::getInstance();
 
 		// Set Mail body footprints expiry time
 		$em->registerListener(iMSCP_Events::onAfterInitialize, array($this, 'setExpiryTime'));

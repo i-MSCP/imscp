@@ -327,7 +327,7 @@ function reseller_addDomainAlias()
 	$db = iMSCP_Database::getInstance();
 
 	try {
-		iMSCP_Events_Manager::getInstance()->dispatch(
+		iMSCP_Events_Aggregator::getInstance()->dispatch(
 			iMSCP_Events::onBeforeAddDomainAlias,
 			array(
 				'domainId' => $domainId,
@@ -376,7 +376,7 @@ function reseller_addDomainAlias()
 
 		$db->commit();
 
-		iMSCP_Events_Manager::getInstance()->dispatch(
+		iMSCP_Events_Aggregator::getInstance()->dispatch(
 			iMSCP_Events::onAfterAddDomainAlias,
 			array(
 				'domainId' => $domainId,
@@ -404,7 +404,7 @@ function reseller_addDomainAlias()
 // Include core library
 require_once 'imscp-lib.php';
 
-iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onResellerScriptStart);
+iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onResellerScriptStart);
 
 check_login('reseller');
 
@@ -465,7 +465,7 @@ if ($resellerProps['max_als_cnt'] != 0 && $resellerProps['current_als_cnt'] >= $
 
 	$tpl->parse('LAYOUT_CONTENT', 'page');
 
-	iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onResellerScriptEnd, array('templateEngine' => $tpl));
+	iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onResellerScriptEnd, array('templateEngine' => $tpl));
 
 	$tpl->prnt();
 

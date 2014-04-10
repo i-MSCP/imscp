@@ -27,12 +27,7 @@
  */
 
 /**
- * Responses class.
- *
- * @category    iMSCP
- * @package     iMSCP_Core
- * @subpackage  Events_Listener
- * @author      Laurent Declercq <l.declercq@nuxwin.com>
+ * Class iMSCP_Events_Listener_ResponseCollection
  */
 class iMSCP_Events_Listener_ResponseCollection extends SplStack
 {

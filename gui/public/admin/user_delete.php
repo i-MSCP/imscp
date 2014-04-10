@@ -47,7 +47,7 @@
  */
 function admin_deleteUser($userId)
 {
-	iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onBeforeDeleteUser, array('userId' => $userId));
+	iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeDeleteUser, array('userId' => $userId));
 
 	$userId = (int)$userId;
 
@@ -157,7 +157,7 @@ function admin_deleteUser($userId)
 		throw $e;
 	}
 
-	iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAfterDeleteUser, array('userId' => $userId));
+	iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterDeleteUser, array('userId' => $userId));
 
 	redirectTo('manage_users.php');
 }
@@ -487,7 +487,7 @@ function admin_generateCustomerAcountDeletionValidationPage($userId)
 // Include core library
 require 'imscp-lib.php';
 
-iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAdminScriptStart);
+iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptStart);
 
 check_login('admin');
 
@@ -553,7 +553,7 @@ generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
 
-iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAdminScriptEnd, array('templateEngine' => $tpl));
+iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptEnd, array('templateEngine' => $tpl));
 
 $tpl->prnt();
 

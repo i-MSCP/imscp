@@ -42,7 +42,7 @@
 // Include core library
 require 'imscp-lib.php';
 
-iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAdminScriptStart);
+iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptStart);
 
 check_login('admin');
 
@@ -54,7 +54,7 @@ $phpini = iMSCP_PHPini::getInstance();
 
 if (isset($_POST['uaction']) && $_POST['uaction'] == 'apply') {
 
-	iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onBeforeEditAdminGeneralSettings);
+	iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeEditAdminGeneralSettings);
 
 	$lostPasswd = $_POST['lostpassword'];
 	$lostPasswdTimeout = clean_input($_POST['lostpassword_timeout']);
@@ -174,7 +174,7 @@ if (isset($_POST['uaction']) && $_POST['uaction'] == 'apply') {
 		$dbCfg->PHPINI_DISABLE_FUNCTIONS = $phpini->getDataVal('phpiniDisableFunctions');
 
 		if($cfg->replaceWith($dbCfg)) {
-			iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAfterEditAdminGeneralSettings);
+			iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterEditAdminGeneralSettings);
 
 			// gets the number of queries that were been executed
 			$updtCount = $dbCfg->countQueries('update');
@@ -716,7 +716,7 @@ generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
 
-iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAdminScriptEnd, array('templateEngine' => $tpl));
+iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptEnd, array('templateEngine' => $tpl));
 
 $tpl->prnt();
 

@@ -29,12 +29,6 @@
  * Representation of an event
  *
  * Encapsulates the parameters passed, and provides some behavior for interacting with the events manager.
- *
- * Note: Most part of this code was borrowed to Zend Framework 2.
- *
- * @category    iMSCP
- * @package     iMSCP_Events
- * @author      Laurent Declercq <l.declercq@i-mscp.net>
  */
 class iMSCP_Events_Event implements iMSCP_Events_Description
 {
@@ -54,7 +48,7 @@ class iMSCP_Events_Event implements iMSCP_Events_Description
 	protected $stopPropagation = false;
 
 	/**
-	 * Constructor.
+	 * Constructor
 	 *
 	 * @param string $name Event name
 	 * @param array|ArrayAccess $params
@@ -71,7 +65,7 @@ class iMSCP_Events_Event implements iMSCP_Events_Description
 	}
 
 	/**
-	 * Returns event name.
+	 * Returns event name
 	 *
 	 * @return string
 	 */
@@ -81,7 +75,7 @@ class iMSCP_Events_Event implements iMSCP_Events_Description
 	}
 
 	/**
-	 * Set parameters.
+	 * Set parameters
 	 *
 	 * Overwrites parameters
 	 *
@@ -101,7 +95,7 @@ class iMSCP_Events_Event implements iMSCP_Events_Description
 	}
 
 	/**
-	 * Returns all parameters.
+	 * Returns all parameters
 	 *
 	 * @return array|object|ArrayAccess
 	 */
@@ -111,7 +105,7 @@ class iMSCP_Events_Event implements iMSCP_Events_Description
 	}
 
 	/**
-	 * Return an individual parameter.
+	 * Return an individual parameter
 	 *
 	 * If the parameter does not exist, the $default value will be returned.
 	 *
@@ -139,7 +133,7 @@ class iMSCP_Events_Event implements iMSCP_Events_Description
 	}
 
 	/**
-	 * Set the event name.
+	 * Set the event name
 	 *
 	 * @param  string $name Event Name
 	 * @return iMSCP_Events_Event Provides fluent interface, returns self
@@ -152,7 +146,7 @@ class iMSCP_Events_Event implements iMSCP_Events_Description
 	}
 
 	/**
-	 * Set an individual parameter to a value.
+	 * Set an individual parameter to a value
 	 *
 	 * @param string|int $name Parameter name
 	 * @param mixed $value Parameter value
@@ -172,7 +166,7 @@ class iMSCP_Events_Event implements iMSCP_Events_Description
 	}
 
 	/**
-	 * Stop further event propagation.
+	 * Stop further event propagation
 	 *
 	 * @param  bool $flag TRUE to stop propagation, FALSE otherwise
 	 * @return void

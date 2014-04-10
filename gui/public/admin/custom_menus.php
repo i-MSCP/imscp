@@ -202,7 +202,9 @@ function admin_isValidMenu($menuName, $menuLink, $menuTarget, $menuLevel, $menuO
 		$errorFieldsStack[] = 'menu_name';
 	}
 
-	if (empty($menuLink) || !filter_var($menuLink, FILTER_VALIDATE_URL, FILTER_FLAG_SCHEME_REQUIRED | FILTER_FLAG_HOST_REQUIRED)) {
+	if (empty($menuLink) || !filter_var(
+			$menuLink, FILTER_VALIDATE_URL, FILTER_FLAG_SCHEME_REQUIRED | FILTER_FLAG_HOST_REQUIRED)
+	) {
 		set_page_message(tr('Invalid URL.'), 'error');
 		$errorFieldsStack[] = 'menu_link';
 	}
@@ -317,7 +319,7 @@ function admin_deleteMenu($menuId)
 // Include core library
 require 'imscp-lib.php';
 
-iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAdminScriptStart);
+iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptStart);
 
 check_login('admin');
 
@@ -388,7 +390,9 @@ generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
 
-iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAdminScriptEnd, array('templateEngine' => $tpl));
+iMSCP_Events_Aggregator::getInstance()->dispatch(
+	iMSCP_Events::onAdminScriptEnd, array('templateEngine' => $tpl)
+);
 
 $tpl->prnt();
 

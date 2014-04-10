@@ -47,7 +47,9 @@
  */
 function admin_updateUserData($userId)
 {
-	iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onBeforeEditUser, array('userId' => $userId));
+	iMSCP_Events_Aggregator::getInstance()->dispatch(
+		iMSCP_Events::onBeforeEditUser, array('userId' => $userId)
+	);
 
 	$fname = isset($_POST['fname']) ? clean_input($_POST['fname']) : '';
 	$lname = isset($_POST['lname']) ? clean_input($_POST['lname']) : '';
@@ -107,7 +109,9 @@ function admin_updateUserData($userId)
 		}
 	}
 
-	iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAfterEditUser, array('userId' => $userId));
+	iMSCP_Events_Aggregator::getInstance()->dispatch(
+		iMSCP_Events::onAfterEditUser, array('userId' => $userId)
+	);
 
 	if (isset($_POST['send_data']) && !empty($_POST['password'])) {
 		$query = 'SELECT `admin_type` FROM `admin` WHERE `admin_id` = ?';
@@ -164,7 +168,7 @@ function admin_isValidData()
 // Include core library
 require 'imscp-lib.php';
 
-iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAdminScriptStart);
+iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptStart);
 
 check_login('admin');
 
@@ -283,7 +287,9 @@ generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
 
-iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAdminScriptEnd, array('templateEngine' => $tpl));
+iMSCP_Events_Aggregator::getInstance()->dispatch(
+	iMSCP_Events::onAdminScriptEnd, array('templateEngine' => $tpl)
+);
 
 $tpl->prnt();
 

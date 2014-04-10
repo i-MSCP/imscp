@@ -172,7 +172,7 @@ function client_editDomainAlias()
 				}
 			}
 
-			iMSCP_Events_Manager::getInstance()->dispatch(
+			iMSCP_Events_Aggregator::getInstance()->dispatch(
 				iMSCP_Events::onBeforeEditDomainAlias, array('domainAliasId' => $domainAliasId)
 			);
 
@@ -181,7 +181,7 @@ function client_editDomainAlias()
 				array($forwardUrl, 'tochange', $domainAliasId)
 			);
 
-			iMSCP_Events_Manager::getInstance()->dispatch(
+			iMSCP_Events_Aggregator::getInstance()->dispatch(
 				iMSCP_Events::onAfterEditDomainALias, array('domainAliasId' => $domainAliasId)
 			);
 
@@ -208,7 +208,7 @@ function client_editDomainAlias()
 // Include core library
 require_once 'imscp-lib.php';
 
-iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
+iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
 
 check_login('user');
 
@@ -252,7 +252,7 @@ if (!empty($_POST) && client_editDomainAlias()) {
 
 	$tpl->parse('LAYOUT_CONTENT', 'page');
 
-	iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, array('templateEngine' => $tpl));
+	iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, array('templateEngine' => $tpl));
 
 	$tpl->prnt();
 

@@ -173,7 +173,7 @@ function reseller_editDomainAlias()
 				}
 			}
 
-			iMSCP_Events_Manager::getInstance()->dispatch(
+			iMSCP_Events_Aggregator::getInstance()->dispatch(
 				iMSCP_Events::onBeforeEditDomainAlias, array('domainAliasId' => $domainAliasId)
 			);
 
@@ -182,7 +182,7 @@ function reseller_editDomainAlias()
 				array($forwardUrl, 'tochange', $domainAliasId)
 			);
 
-			iMSCP_Events_Manager::getInstance()->dispatch(
+			iMSCP_Events_Aggregator::getInstance()->dispatch(
 				iMSCP_Events::onAfterEditDomainALias, array('domainAliasId' => $domainAliasId)
 			);
 
@@ -209,7 +209,7 @@ function reseller_editDomainAlias()
 // Include core library
 require_once 'imscp-lib.php';
 
-iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onResellerScriptStart);
+iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onResellerScriptStart);
 
 check_login('reseller');
 
@@ -253,7 +253,7 @@ if (!empty($_POST) && reseller_editDomainAlias()) {
 
 	$tpl->parse('LAYOUT_CONTENT', 'page');
 
-	iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onResellerScriptEnd, array('templateEngine' => $tpl));
+	iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onResellerScriptEnd, array('templateEngine' => $tpl));
 
 	$tpl->prnt();
 

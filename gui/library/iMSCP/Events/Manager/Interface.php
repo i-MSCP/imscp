@@ -30,50 +30,42 @@
 require_once 'iMSCP/Events/Listener.php';
 
 /**
- * Events Manager interface.
+ * Events Manager interface
  *
- * The Events Manager interface is the central point of i-MSCP's event listener
- * system. The listeners are registered on the manager, and events are dispatched through
- * the manager.
+ * The Events Manager interface is the central point of i-MSCP's event listener system. The listeners are registered on
+ * the manager, and events are dispatched through the manager.
  *
  * A listener is an object or a callback function that listen on a particular event. The events are defined in many
  * places in the core code or components. When a event is dispatched, the listener methods of all the listeners that
  * listens this event are executed.
- *
- * @category    iMSCP
- * @package     iMSCP_Events
- * @subpackage  Manager
- * @author      Laurent Declercq <l.declercq@nuxwin.com>
  */
 interface iMSCP_Events_Manager_Interface
 {
 	/**
-	 * Dispatches an event to all registered listeners.
+	 * Dispatches an event to all registered listeners
 	 *
 	 * @throws iMSCP_Events_Manager_Exception When an listener is an object that do not implement the listener method or
 	 *                              when the listener is not a valid PHP callback
-	 * @param string $eventName The name of the event to dispatch.
-	 * @param mixed $arguments OPTIONAL The data to pass to the event listener method.
-	 *
+	 * @param string $event The name of the event to dispatch
+	 * @param mixed $arguments OPTIONAL The data to pass to the event listener method
 	 * @return iMSCP_Events_Listener_ResponseCollection
 	 */
-	public function dispatch($eventName, $arguments = array());
+	public function dispatch($event, $arguments = array());
 
 	/**
-	 * Registers an event listener that listens on the specified events.
+	 * Registers an event listener that listens on the specified events
 	 *
-	 * @abstract
-	 * @param  string|array $event The event(s) to listen on.
-	 * @param  callable|object $listener PHP callback or object which implement method with same name as event.
-	 * @param  int $priority Higher values have higher priority.
+	 * @param string|array $event The event(s) to listen on
+	 * @param callable|object $listener PHP callback or object which implement method with same name as event
+	 * @param int $priority Higher values have higher priority
 	 * @return iMSCP_Events_Manager_Interface Provide fluent interface, returns self
 	 */
 	public function registerListener($event, $listener, $priority = 1);
 
 	/**
-	 * Unregister an event listener from an event.
+	 * Unregister an event listener from an event
 	 *
-	 * @param iMSCP_Listener $listener The listener object to remove.
+	 * @param iMSCP_Listener $listener The listener object to remove
 	 * @return bool TRUE if $listener is found and unregistered, FALSE otherwise
 	 */
 	public function unregisterListener(iMSCP_Listener $listener);
@@ -81,16 +73,14 @@ interface iMSCP_Events_Manager_Interface
 	/**
 	 * Retrieve all registered events
 	 *
-	 * @abstract
 	 * @return array
 	 */
 	public function getEvents();
 
 	/**
-	 * Retrieve all listener which listen to a particular event.
+	 * Retrieve all listener which listen to a particular event
 	 *
-	 * @abstract
-	 * @param  string|null $event Event name
+	 * @param string|null $event Event name
 	 * @return SplPriorityQueue
 	 */
 	public function getListeners($event);
@@ -98,18 +88,16 @@ interface iMSCP_Events_Manager_Interface
 	/**
 	 * Clear all listeners for a given event
 	 *
-	 * @abstract
 	 * @param string $event Event name
 	 * @return void
 	 */
 	public function clearListeners($event);
 
 	/**
-	 * Checks whether an event has any registered listeners.
+	 * Checks whether an event has any registered listeners
 	 *
-	 * @abstract
-	 * @param string $eventName The name of the event.
+	 * @param string $event The name of the event.
 	 * @return bool TRUE if the specified event has any listeners, FALSE otherwise.
 	 */
-	public function hasListener($eventName);
+	public function hasListener($event);
 }

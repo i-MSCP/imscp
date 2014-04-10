@@ -144,7 +144,7 @@ function reseller_sendCircular()
 		$body = clean_input($_POST['body'], false);
 
 		if (reseller_isValidCircular($senderName, $senderEmail, $subject, $body)) {
-			$responses = iMSCP_Events_Manager::getInstance()->dispatch(
+			$responses = iMSCP_Events_Aggregator::getInstance()->dispatch(
 				iMSCP_Events::onBeforeSendCircular,
 				array(
 					'sender_name' => $senderName, 'sender_email' => $senderEmail, 'rcpt_to' => 'customers',
@@ -155,7 +155,7 @@ function reseller_sendCircular()
 			if (!$responses->isStopped()) {
 				reseller_sendToCustomers($senderName, $senderEmail, $subject, $body);
 
-				iMSCP_Events_Manager::getInstance()->dispatch(
+				iMSCP_Events_Aggregator::getInstance()->dispatch(
 					iMSCP_Events::onAfterSendCircular,
 					array(
 						'sender_name' => $senderName, 'sender_email' => $senderEmail, 'rcpt_to' => 'customers',
@@ -234,7 +234,7 @@ function reseller_generatePageData($tpl)
 // Include core library
 require 'imscp-lib.php';
 
-iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onResellerScriptStart);
+iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onResellerScriptStart);
 
 check_login('reseller');
 
@@ -273,7 +273,7 @@ if (!(!empty($_POST) && reseller_sendCircular())) {
 
 	$tpl->parse('LAYOUT_CONTENT', 'page');
 
-	iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onResellerScriptEnd, array('templateEngine' => $tpl));
+	iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onResellerScriptEnd, array('templateEngine' => $tpl));
 
 	$tpl->prnt();
 

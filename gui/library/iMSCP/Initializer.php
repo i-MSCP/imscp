@@ -49,7 +49,7 @@ class iMSCP_Initializer
 	 *
 	 * @var iMSCP_Config_Handler_File
 	 */
-	private $_config;
+	protected $_config;
 
 	/**
 	 * Initialization status.
@@ -67,7 +67,7 @@ class iMSCP_Initializer
 	 *
 	 * <i>Usage example:</i>
 	 * <code>
-	 *	iMSCP_Initializer::run('_setIncludePath')
+	 *    iMSCP_Initializer::run('_setIncludePath')
 	 * </code>
 	 *
 	 * This is useful if you only want the include_path path initialized, without incurring the overhead of completely
@@ -184,12 +184,45 @@ class iMSCP_Initializer
 	 */
 	protected function _setDisplayErrors()
 	{
-		if(	$this->_config->DEBUG) {
+		if ($this->_config->DEBUG) {
 			ini_set('display_errors', 1);
 			ini_set('log_errors', 1);
 			ini_set('error_log', $this->_config->GUI_ROOT_DIR . '/data/logs/errors.log');
 		} else {
 			ini_set('display_errors', 0);
+		}
+	}
+
+	/**
+	 * Initialize layout.
+	 *
+	 * @return void
+	 */
+	protected function _initializeLayout()
+	{
+		// Set template root directory
+		iMSCP_pTemplate::setRootDir($this->_config->ROOT_TEMPLATE_PATH);
+
+		$eventManager = iMSCP_Events_Aggregator::getInstance();
+
+		// Set layout color for the current environment (Must be donne at end)
+		$eventManager->registerListener(
+			array(
+				iMSCP_Events::onLoginScriptEnd,
+				iMSCP_Events::onLostPasswordScriptEnd,
+				iMSCP_Events::onAdminScriptEnd,
+				iMSCP_Events::onResellerScriptEnd,
+				iMSCP_Events::onClientScriptEnd,
+				iMSCP_Events::onExceptionToBrowserEnd
+			),
+			'layout_init'
+		);
+
+		if (!isset($_SESSION['user_logged'])) {
+			$eventManager->registerListener(
+				iMSCP_Events::onAfterSetIdentity, function () {
+				unset($_SESSION['user_theme_color']);
+			});
 		}
 	}
 
@@ -213,41 +246,6 @@ class iMSCP_Initializer
 			if (!empty($admin_email)) {
 				$exceptionHandler->attach(new iMSCP_Exception_Writer_Mail($admin_email));
 			}
-		}
-	}
-
-	/**
-	 * Initialize layout.
-	 *
-	 * @return void
-	 */
-	protected function _initializeLayout()
-	{
-		// Set template root directory
-		iMSCP_pTemplate::setRootDir($this->_config->ROOT_TEMPLATE_PATH);
-
-		$eventManager = iMSCP_Events_Manager::getInstance();
-
-		// Set layout color for the current environment (Must be donne at end)
-		$eventManager->registerListener(
-			array(
-				iMSCP_Events::onLoginScriptEnd,
-				iMSCP_Events::onLostPasswordScriptEnd,
-				iMSCP_Events::onAdminScriptEnd,
-				iMSCP_Events::onResellerScriptEnd,
-				iMSCP_Events::onClientScriptEnd,
-				iMSCP_Events::onExceptionToBrowserEnd
-			),
-			'layout_init'
-		);
-
-		if (!isset($_SESSION['user_logged'])) {
-			$eventManager->registerListener(
-				iMSCP_Events::onAfterSetIdentity,
-				function($event) {
-					unset($_SESSION['user_theme_color']);
-				}
-			);
 		}
 	}
 
@@ -382,9 +380,9 @@ class iMSCP_Initializer
 			if (!date_default_timezone_set($timezone)) {
 				throw new iMSCP_Exception(
 					'Invalid timezone identifier set in your imscp.conf file. Please fix this error and re-run the ' .
-						'imscp-setup script to fix the value in all your customers\' php.ini files. The list of valid ' .
-						'identifiers is available at the <a href="http://www.php.net/manual/en/timezones.php" ' .
-						'target="_blank">PHP Homepage</a> .'
+					'imscp-setup script to fix the value in all your customers\' php.ini files. The list of valid ' .
+					'identifiers is available at the <a href="http://www.php.net/manual/en/timezones.php" ' .
+					'target="_blank">PHP Homepage</a> .'
 				);
 			}
 		}
@@ -411,7 +409,7 @@ class iMSCP_Initializer
 		$dbConfig = new iMSCP_Config_Handler_Db($pdo);
 
 		// Now, we can override our basis configuration object with parameter that come from the database
-		if(!$this->_config->replaceWith($dbConfig)) {
+		if (!$this->_config->replaceWith($dbConfig)) {
 			throw new iMSCP_Exception('An unexpected error occured.');
 		}
 
@@ -431,7 +429,7 @@ class iMSCP_Initializer
 	{
 		if (isset($this->_config->COMPRESS_OUTPUT) && $this->_config->COMPRESS_OUTPUT) {
 			// Create a new filter that will be applyed on the buffer output
-			/** @var $filter iMSCP_Filter_Compress_Gzip*/
+			/** @var $filter iMSCP_Filter_Compress_Gzip */
 			$filter = iMSCP_Registry::set(
 				'bufferFilter',
 				new iMSCP_Filter_Compress_Gzip(iMSCP_Filter_Compress_Gzip::FILTER_BUFFER)
@@ -487,10 +485,9 @@ class iMSCP_Initializer
 	 */
 	protected function _checkForDatabaseUpdate()
 	{
-		iMSCP_Events_Manager::getInstance()->registerListener(
+		iMSCP_Events_Aggregator::getInstance()->registerListener(
 			array(iMSCP_Events::onLoginScriptStart, iMSCP_Events::onBeforeSetIdentity),
-			function($event)
-			{
+			function ($event) {
 				if (iMSCP_Update_Database::getInstance()->isAvailableUpdate()) {
 					iMSCP_Registry::get('config')->MAINTENANCEMODE = true;
 
@@ -518,7 +515,7 @@ class iMSCP_Initializer
 	 */
 	protected function _initializeNavigation()
 	{
-		iMSCP_Events_Manager::getInstance()->registerListener(
+		iMSCP_Events_Aggregator::getInstance()->registerListener(
 			array(
 				iMSCP_Events::onAdminScriptStart,
 				iMSCP_Events::onResellerScriptStart,
@@ -537,16 +534,14 @@ class iMSCP_Initializer
 	{
 		/** @var iMSCP_Plugin_Manager $pluginManager */
 		$pluginManager = iMSCP_Registry::set('pluginManager', new iMSCP_Plugin_Manager(PLUGINS_PATH));
+
+		// Get list of enabled plugins
 		$pluginList = $pluginManager->getPluginList('Action');
 
 		if (!empty($pluginList)) {
-			$eventManager = iMSCP_Events_Manager::getInstance();
-
 			foreach ($pluginList as $pluginName) {
 				/** @var $plugin iMSCP_Plugin_Action */
-				if(($plugin = $pluginManager->loadPlugin($pluginName)) !== null) {
-					$plugin->register($eventManager);
-				}
+				$pluginManager->loadPlugin($pluginName);
 			}
 		}
 	}
@@ -558,6 +553,6 @@ class iMSCP_Initializer
 	 */
 	protected function _afterInitialize()
 	{
-		iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAfterInitialize, array('context' => $this));
+		iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterInitialize, array('context' => $this));
 	}
 }

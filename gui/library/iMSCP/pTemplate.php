@@ -91,6 +91,22 @@ class iMSCP_pTemplate
 	protected $namespace = array();
 
 	/**
+	 * @var iMSCP_Events_Aggregator
+	 */
+	protected $eventManager;
+
+	/**
+	 * @var array
+	 */
+	protected $events = array(
+		iMSCP_Events::onBeforeAssembleTemplateFiles,
+		iMSCP_Events::onBeforeLoadTemplateFile,
+		iMSCP_Events::onAfterLoadTemplateFile,
+		iMSCP_Events::onAfterAssembleTemplateFiles,
+		iMSCP_Events::onBeforeAssembleTemplateFiles,
+	);
+
+	/**
 	 * Templates root directory.
 	 *
 	 * @var string
@@ -157,6 +173,9 @@ class iMSCP_pTemplate
 	 */
 	public function __construct()
 	{
+		$this->eventManager = iMSCP_Events_Aggregator::getInstance();
+		$this->eventManager->addEvents('pTemplate', $this->events);
+
 		$this->tpl_start_rexpr = '/';
 		$this->tpl_start_rexpr .= $this->tpl_start_tag;
 		$this->tpl_start_rexpr .= $this->tpl_start_tag_name;
@@ -503,7 +522,7 @@ class iMSCP_pTemplate
 		static $parentTplDir = null;
 
 		if (!is_array($fname)) {
-			iMSCP_Events_Manager::getInstance()->dispatch(
+			$this->eventManager->dispatch(
 				iMSCP_Events::onBeforeAssembleTemplateFiles,
 				array('context' => $this, 'templatePath' => self::$_root_dir . '/'. $fname)
 			);
@@ -515,16 +534,15 @@ class iMSCP_pTemplate
 			$prevParentTplDir = $parentTplDir;
 			$parentTplDir = dirname($fname);
 
-			iMSCP_Events_Manager::getInstance()->dispatch(
+			$this->eventManager->dispatch(
 				iMSCP_Events::onBeforeLoadTemplateFile,
 				array('context' => $this, 'templatePath' => self::$_root_dir . '/'. $fname)
 			);
 
 			$fileContent = file_get_contents(self::$_root_dir . '/' . $fname);
 
-			iMSCP_Events_Manager::getInstance()->dispatch(
-				iMSCP_Events::onAfterLoadTemplateFile,
-				array('context' => $this, 'templateContent' => $fileContent)
+			$this->eventManager->dispatch(
+				iMSCP_Events::onAfterLoadTemplateFile, array('context' => $this, 'templateContent' => $fileContent)
 			);
 
 			$fileContent = preg_replace_callback($this->tpl_include, array($this, 'get_file'), $fileContent);
@@ -533,9 +551,8 @@ class iMSCP_pTemplate
 			throw new iMSCP_Exception(sprintf('Unable to find the %s template file', $fname));
 		}
 
-		iMSCP_Events_Manager::getInstance()->dispatch(
-			iMSCP_Events::onAfterAssembleTemplateFiles,
-			array('context' => $this, 'templateContent' => $fileContent)
+		$this->eventManager->dispatch(
+			iMSCP_Events::onAfterAssembleTemplateFiles, array('context' => $this, 'templateContent' => $fileContent)
 		);
 
 		return $fileContent;

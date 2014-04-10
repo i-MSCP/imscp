@@ -201,7 +201,7 @@ function client_editMailAccount()
 
 		// Update mail account into database
 
-		iMSCP_Events_Manager::getInstance()->dispatch(
+		iMSCP_Events_Aggregator::getInstance()->dispatch(
 			iMSCP_Events::onBeforeEditMail, array('mailId' => $mailData['mail_id'])
 		);
 
@@ -217,7 +217,7 @@ function client_editMailAccount()
 			$query, array($password, $forwardList, $mailType, 'tochange', $quota, $mailData['mail_id'])
 		);
 
-		iMSCP_Events_Manager::getInstance()->dispatch(
+		iMSCP_Events_Aggregator::getInstance()->dispatch(
 			iMSCP_Events::onAfterEditMail, array('mailId' => $mailData['mail_id'])
 		);
 
@@ -307,7 +307,7 @@ function client_generatePage($tpl)
 // Include core library
 require 'imscp-lib.php';
 
-iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
+iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
 
 check_login('user');
 
@@ -353,7 +353,7 @@ if (isset($_GET['id']) && customerHasFeature('mail')) {
 
 	$tpl->parse('LAYOUT_CONTENT', 'page');
 
-	iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, array('templateEngine' => $tpl));
+	iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, array('templateEngine' => $tpl));
 
 	$tpl->prnt();
 } else {

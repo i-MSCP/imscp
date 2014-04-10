@@ -42,7 +42,7 @@
 // Include core library
 require 'imscp-lib.php';
 
-iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onResellerScriptStart);
+iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onResellerScriptStart);
 
 check_login('reseller');
 
@@ -68,7 +68,7 @@ if (resellerHasFeature('domain_aliases') && isset($_GET['id'])) {
 	if ($stmt->rowCount()) {
 		$alsName = $stmt->fields['alias_name'];
 
-		iMSCP_Events_Manager::getInstance()->dispatch(
+		iMSCP_Events_Aggregator::getInstance()->dispatch(
 			iMSCP_Events::onBeforeDeleteDomainAlias,
 			array('domainAliasId' => $alsId, 'domainAliasName' => $alsName)
 		);
@@ -202,7 +202,7 @@ if (resellerHasFeature('domain_aliases') && isset($_GET['id'])) {
 			throw $e;
 		}
 
-		iMSCP_Events_Manager::getInstance()->dispatch(
+		iMSCP_Events_Aggregator::getInstance()->dispatch(
 			iMSCP_Events::onAfterDeleteDomainAlias, array('domainAliasId' => $alsId, 'domainAliasName' => $alsName)
 		);
 

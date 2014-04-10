@@ -105,7 +105,7 @@ class iMSCP_Exception_Writer_Browser extends iMSCP_Exception_Writer
 
 		$tpl->parse('LAYOUT', 'layout');
 
-		iMSCP_Events_Manager::getInstance()->dispatch(
+		iMSCP_Events_Aggregator::getInstance()->dispatch(
 			iMSCP_Events::onExceptionToBrowserEnd, array('context' => $this, 'templateEngine' => $tpl)
 		);
 
@@ -120,7 +120,7 @@ class iMSCP_Exception_Writer_Browser extends iMSCP_Exception_Writer
 	 */
 	public function update(SplSubject $exceptionHandler)
 	{
-		iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onExceptionToBrowserStart, array('context', $this));
+		iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onExceptionToBrowserStart, array('context', $this));
 
 		/** @var $exceptionHandler iMSCP_Exception_Handler */
 		// Always write the real exception message if we are the admin

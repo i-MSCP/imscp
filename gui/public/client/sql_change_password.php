@@ -111,7 +111,7 @@ function client_updateSqlUserPassword($sqlUserId, $sqlUserName, $sqlUserHost, $o
 	$password = $_POST['pass'];
 	$passwordUpdated = false;
 
-	iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onBeforeEditSqlUser, array('sqlUserId' => $sqlUserId));
+	iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeEditSqlUser, array('sqlUserId' => $sqlUserId));
 
 	try {
 		// Update SQL user password in the mysql system tables;
@@ -142,7 +142,7 @@ function client_updateSqlUserPassword($sqlUserId, $sqlUserName, $sqlUserHost, $o
 		throw $e;
 	}
 
-	iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAfterEditSqlUser, array('sqlUserId' => $sqlUserId));
+	iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterEditSqlUser, array('sqlUserId' => $sqlUserId));
 
 	redirectTo('sql_manage.php');
 }
@@ -154,7 +154,7 @@ function client_updateSqlUserPassword($sqlUserId, $sqlUserName, $sqlUserHost, $o
 // Include core library
 require_once 'imscp-lib.php';
 
-iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
+iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
 
 check_login('user');
 
@@ -199,7 +199,7 @@ generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
 
-iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, array('templateEngine' => $tpl));
+iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, array('templateEngine' => $tpl));
 
 $tpl->prnt();
 

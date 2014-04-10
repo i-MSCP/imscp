@@ -41,7 +41,7 @@
 // Include core library
 require_once 'imscp-lib.php';
 
-iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
+iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
 
 check_login('user');
 
@@ -100,7 +100,7 @@ if (customerHasFeature('domain_aliases') && isset($_GET['id'])) {
 		}
 
 		if (!$ret) {
-			iMSCP_Events_Manager::getInstance()->dispatch(
+			iMSCP_Events_Aggregator::getInstance()->dispatch(
 				iMSCP_Events::onBeforeDeleteSubdomain, array('subdomainId' => $alssubId, 'type' => 'alssub')
 			);
 
@@ -122,7 +122,7 @@ if (customerHasFeature('domain_aliases') && isset($_GET['id'])) {
 				throw $e;
 			}
 
-			iMSCP_Events_Manager::getInstance()->dispatch(
+			iMSCP_Events_Aggregator::getInstance()->dispatch(
 				iMSCP_Events::onAfterDeleteSubdomain, array('subdomainId' => $alssubId, 'type' => 'alssub')
 			);
 

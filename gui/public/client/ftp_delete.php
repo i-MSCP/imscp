@@ -33,14 +33,14 @@
 // Include core library
 require_once 'imscp-lib.php';
 
-iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
+iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
 
 check_login('user');
 
 if (customerHasFeature('ftp') && isset($_GET['id'])) {
 	$ftpUserId = clean_input($_GET['id']);
 
-	iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onBeforeDeleteFtp, array('ftpUserId' => $ftpUserId));
+	iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeDeleteFtp, array('ftpUserId' => $ftpUserId));
 
 	$query = "SELECT `gid` FROM `ftp_users` WHERE `userid` = ? AND `admin_id` = ?";
 	$stmt = exec_query($query, array($ftpUserId, $_SESSION['user_id']));
@@ -96,7 +96,7 @@ if (customerHasFeature('ftp') && isset($_GET['id'])) {
 
 		$db->commit();
 
-		iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAfterDeleteFtp, array('ftpUserId' => $ftpUserId));
+		iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterDeleteFtp, array('ftpUserId' => $ftpUserId));
 
 		write_log(sprintf("%s: deleted FTP account: %s", $_SESSION['user_logged'], $ftpUserId), E_USER_NOTICE);
 		set_page_message(tr('FTP account successfully deleted.'), 'success');

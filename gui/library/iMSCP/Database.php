@@ -121,7 +121,7 @@ class iMSCP_Database
 		if (null !== $events) {
 			$this->_events = $events;
 		} elseif (null === $this->_events) {
-			$this->_events = iMSCP_Events_Manager::getInstance();
+			$this->_events = iMSCP_Events_Aggregator::getInstance();
 		}
 
 		return $this->_events;

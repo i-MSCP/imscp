@@ -285,7 +285,7 @@ function client_addSubdomain()
 
 	$db = iMSCP_Database::getInstance();
 
-	iMSCP_Events_Manager::getInstance()->dispatch(
+	iMSCP_Events_Aggregator::getInstance()->dispatch(
 		iMSCP_Events::onBeforeAddSubdomain,
 		array(
 			'subdomainName' => $subdomainName,
@@ -318,7 +318,7 @@ function client_addSubdomain()
 
 	exec_query($query, array($domainId, $subLabelAscii, $mountPoint, $forwardUrl, 'toadd'));
 
-	iMSCP_Events_Manager::getInstance()->dispatch(
+	iMSCP_Events_Aggregator::getInstance()->dispatch(
 		iMSCP_Events::onAfterAddSubdomain,
 		array(
 			'subdomainName' => $subdomainName,
@@ -345,7 +345,7 @@ function client_addSubdomain()
 // Include core library
 require_once 'imscp-lib.php';
 
-iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
+iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
 
 check_login('user');
 
@@ -399,7 +399,7 @@ if ($mainDmnProps['domain_subd_limit'] != 0 && $subdomainsCount >= $mainDmnProps
 
 	$tpl->parse('LAYOUT_CONTENT', 'page');
 
-	iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, array('templateEngine' => $tpl));
+	iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, array('templateEngine' => $tpl));
 
 	$tpl->prnt();
 

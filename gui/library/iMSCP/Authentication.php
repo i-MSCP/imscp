@@ -110,7 +110,7 @@ class iMSCP_Authentication
 		if (null !== $events) {
 			$this->events = $events;
 		} elseif (null === $this->events) {
-			$this->events = iMSCP_Events_Manager::getInstance();
+			$this->events = iMSCP_Events_Aggregator::getInstance();
 		}
 
 		return $this->events;

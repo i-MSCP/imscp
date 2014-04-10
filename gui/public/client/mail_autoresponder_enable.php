@@ -147,7 +147,7 @@ function client_generatePage($tpl, $mailAccountId)
 // Include core library
 require_once 'imscp-lib.php';
 
-iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
+iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
 
 check_login('user');
 
@@ -185,7 +185,7 @@ if (customerHasFeature('mail') && (isset($_REQUEST['mail_account_id']) && is_num
 
 			$tpl->parse('LAYOUT_CONTENT', 'page');
 
-			iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, array('templateEngine' => $tpl));
+			iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, array('templateEngine' => $tpl));
 
 			$tpl->prnt();
 

@@ -30,12 +30,7 @@
 require_once 'iMSCP/Exception.php';
 
 /**
- * Plugin Exception class.
- *
- * @category    iMSCP
- * @package     iMSCP_Core
- * @subpackage  Plugin_Exception
- * @author      Laurent Declercq <l.declercq@nuxwin.com>
+ * Class iMSCP_Plugin_Exception
  */
 class iMSCP_Plugin_Exception extends iMSCP_Exception
 {

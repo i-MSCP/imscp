@@ -38,7 +38,7 @@
 // Include core library
 require_once 'imscp-lib.php';
 
-iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
+iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
 
 check_login('user');
 
@@ -107,7 +107,7 @@ function gen_user_personal_data($tpl, $user_id) {
  */
 function update_user_personal_data($user_id) {
 
-	iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onBeforeEditUser, array('userId' => $user_id));
+	iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeEditUser, array('userId' => $user_id));
 
 	$fname = clean_input($_POST['fname']);
 	$lname = clean_input($_POST['lname']);
@@ -137,7 +137,7 @@ function update_user_personal_data($user_id) {
                             $street1, $street2, $email, $phone, $fax, $gender,
                             $user_id));
 
-	iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAfterEditUser, array('userId' => $user_id));
+	iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterEditUser, array('userId' => $user_id));
 
 	write_log($_SESSION['user_logged'] . ": update personal data", E_USER_NOTICE);
 	set_page_message(tr('Personal data successfully updated.'), 'success');
@@ -171,7 +171,7 @@ generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
 
-iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, array('templateEngine' => $tpl));
+iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, array('templateEngine' => $tpl));
 
 $tpl->prnt();
 

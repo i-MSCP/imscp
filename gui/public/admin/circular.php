@@ -187,7 +187,7 @@ function admin_sendCircular()
 		$body = clean_input($_POST['body'], false);
 
 		if (admin_isValidCircular($senderName, $senderEmail, $subject, $body)) {
-			$responses = iMSCP_Events_Manager::getInstance()->dispatch(
+			$responses = iMSCP_Events_Aggregator::getInstance()->dispatch(
 				iMSCP_Events::onBeforeSendCircular,
 				array(
 					'sender_name' => $senderName, 'sender_email' => $senderEmail, 'rcpt_to' => $rcptTo,
@@ -217,7 +217,7 @@ function admin_sendCircular()
 					admin_sendToCustomers($senderName, $senderEmail, $subject, $body);
 				}
 
-				iMSCP_Events_Manager::getInstance()->dispatch(
+				iMSCP_Events_Aggregator::getInstance()->dispatch(
 					iMSCP_Events::onAfterSendCircular,
 					array(
 						'sender_name' => $senderName, 'sender_email' => $senderEmail, 'rcpt_to' => $rcptTo,
@@ -337,7 +337,7 @@ function admin_generatePageData($tpl)
 // Include core library
 require 'imscp-lib.php';
 
-iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAdminScriptStart);
+iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptStart);
 
 check_login('admin');
 
@@ -377,7 +377,9 @@ if (!(!empty($_POST) && admin_sendCircular())) {
 
 	$tpl->parse('LAYOUT_CONTENT', 'page');
 
-	iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAdminScriptEnd, array('templateEngine' => $tpl));
+	iMSCP_Events_Aggregator::getInstance()->dispatch(
+		iMSCP_Events::onAdminScriptEnd, array('templateEngine' => $tpl)
+	);
 
 	$tpl->prnt();
 

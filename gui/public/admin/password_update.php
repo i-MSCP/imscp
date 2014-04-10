@@ -47,7 +47,7 @@ function admin_updatePassword()
 	} elseif (!empty($_POST)) {
 		$userId = $_SESSION['user_id'];
 
-		iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onBeforeEditUser, array('userId' => $userId));
+		iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeEditUser, array('userId' => $userId));
 
 		if (empty($_POST['current_password']) || empty($_POST['password']) || empty($_POST['password_confirmation'])) {
 			set_page_message(tr('All fields are required.'), 'error');
@@ -59,7 +59,7 @@ function admin_updatePassword()
 			$query = 'UPDATE `admin` SET `admin_pass` = ? WHERE `admin_id` = ?';
 			exec_query($query, array(cryptPasswordWithSalt($_POST['password']), $userId));
 
-			iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAfterEditUser, array('userId' => $userId));
+			iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterEditUser, array('userId' => $userId));
 
 			write_log($_SESSION['user_logged'] . ': updated password.', E_USER_NOTICE);
 			set_page_message(tr('Password successfully updated.'), 'success');
@@ -95,7 +95,7 @@ function _admin_checkCurrentPassword($password)
 // Include core library
 require 'imscp-lib.php';
 
-iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAdminScriptStart);
+iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptStart);
 
 check_login('admin');
 
@@ -135,7 +135,7 @@ generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
 
-iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAdminScriptEnd, array('templateEngine' => $tpl));
+iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptEnd, array('templateEngine' => $tpl));
 
 $tpl->prnt();
 

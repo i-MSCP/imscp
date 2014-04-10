@@ -34,16 +34,12 @@ require_once 'iMSCP/Events/Listener.php';
 
 /**
  * Class iMSCP_Listener_PriorityQueue
- *
- * @category    iMSCP
- * @package     iMSCP_Core
- * @subpackage  Events_Listener
- * @author      Laurent Declercq <l.declercq@nuxwin.com>
  */
 class iMSCP_Listener_PriorityQueue implements Countable, IteratorAggregate
 {
 	/**
-	 * Actual items aggregated in the priority queue. Each item is an array with keys "listener" and "priority".
+	 * Actual items aggregated in the priority queue. Each item is an array with keys "listener" and "priority"
+	 *
 	 * @var array
 	 */
 	protected $items = array();

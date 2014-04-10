@@ -28,11 +28,6 @@
 
 /**
  * Class iMSCP_Listener
- *
- * @category    iMSCP
- * @package     iMSCP_Events
- * @subpackage  Events_Listener
- * @author      Laurent Declercq <l.declercq@nuxwin.com>
  */
 class iMSCP_Listener
 {

@@ -42,7 +42,7 @@
 // Include core library
 require 'imscp-lib.php';
 
-iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onResellerScriptStart);
+iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onResellerScriptStart);
 
 check_login('reseller');
 
@@ -79,7 +79,7 @@ if (isset($_GET['action']) && $_GET['action'] == "delete") {
 			$db = iMSCP_Database::getInstance();
 
 			try {
-				iMSCP_Events_Manager::getInstance()->dispatch(
+				iMSCP_Events_Aggregator::getInstance()->dispatch(
 					iMSCP_Events::onBeforeAddDomainAlias, array('domainId' => $mainDmnId, 'domainAliasName' => $alsName));
 				
 				$db->beginTransaction();
@@ -114,7 +114,7 @@ if (isset($_GET['action']) && $_GET['action'] == "delete") {
 
 				$db->commit();
 
-				iMSCP_Events_Manager::getInstance()->dispatch(
+				iMSCP_Events_Aggregator::getInstance()->dispatch(
 					iMSCP_Events::onAfterAddDomainAlias,
 					array(
 						'domainId' => $mainDmnId,

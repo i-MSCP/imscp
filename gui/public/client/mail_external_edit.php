@@ -166,7 +166,7 @@ function client_editExternalMailServerEntries($item)
 		$data['priority'] = (isset($_POST['priority'])) ? $_POST['priority'] : array();
 		$data['host'] = (isset($_POST['host'])) ? $_POST['host'] : array();
 
-		$responses = iMSCP_Events_Manager::getInstance()->dispatch(
+		$responses = iMSCP_Events_Aggregator::getInstance()->dispatch(
 			iMSCP_Events::onBeforeAddExternalMailServer, array('externalMailServerEntries' => $data)
 		);
 
@@ -318,7 +318,7 @@ function client_editExternalMailServerEntries($item)
 
 					$db->commit(); // Commit the transaction - All data will be now added into the database
 
-					iMSCP_Events_Manager::getInstance()->dispatch(
+					iMSCP_Events_Aggregator::getInstance()->dispatch(
 						iMSCP_Events::onAfterAddExternalMailServer, array('externalMailServerEntries' => $data)
 					);
 
@@ -517,7 +517,7 @@ function client_generateView($verifiedData, $data)
 // Include core library
 require_once 'imscp-lib.php';
 
-iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
+iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
 
 check_login('user');
 
@@ -542,7 +542,7 @@ if (
 	client_editExternalMailServerEntries($item);
 	generatePageMessage($tpl);
 	$tpl->parse('LAYOUT_CONTENT', 'page');
-	iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, array('templateEngine' => $tpl));
+	iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, array('templateEngine' => $tpl));
 	$tpl->prnt();
 	unsetMessages();
 } else {

@@ -149,7 +149,7 @@ function client_addSqlDb($userId)
 		return;
 	}
 
-	$responses = iMSCP_Events_Manager::getInstance()->dispatch(
+	$responses = iMSCP_Events_Aggregator::getInstance()->dispatch(
 		iMSCP_Events::onBeforeAddSqlDb, array('dbName' => $dbName)
 	);
 
@@ -174,7 +174,7 @@ function client_addSqlDb($userId)
 			throw $e;
 		}
 
-		iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAfterAddSqlDb, array('dbName' => $dbName));
+		iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterAddSqlDb, array('dbName' => $dbName));
 	}
 
 	redirectTo('sql_manage.php');
@@ -206,7 +206,7 @@ function client_checkSqlDbLimit()
 // Include core library
 require_once 'imscp-lib.php';
 
-iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
+iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
 
 check_login('user');
 
@@ -251,6 +251,6 @@ generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
 
-iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, array('templateEngine' => $tpl));
+iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, array('templateEngine' => $tpl));
 
 $tpl->prnt();

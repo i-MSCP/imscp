@@ -243,7 +243,7 @@ function client_addDomainAlias()
 	/** @var $db iMSCP_Database */
 	$db = iMSCP_Registry::get('db');
 
-	iMSCP_Events_Manager::getInstance()->dispatch(
+	iMSCP_Events_Aggregator::getInstance()->dispatch(
 		iMSCP_Events::onBeforeAddDomainAlias,
 		array(
 			'domainId' => $domainId,
@@ -264,7 +264,7 @@ function client_addDomainAlias()
 		array($domainId, $domainAliasNameAscii, $mountPoint, $status, $mainDmnProps['domain_ip_id'], $forwardUrl)
 	);
 
-	iMSCP_Events_Manager::getInstance()->dispatch(
+	iMSCP_Events_Aggregator::getInstance()->dispatch(
 		iMSCP_Events::onAfterAddDomainAlias,
 		array(
 			'domainId' => $domainId,
@@ -293,7 +293,7 @@ function client_addDomainAlias()
 // Include core library
 require_once 'imscp-lib.php';
 
-iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
+iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
 
 check_login('user');
 
@@ -346,7 +346,7 @@ if ($mainDmnProps['domain_alias_limit'] != 0 && $domainAliasesCount >= $mainDmnP
 
 	$tpl->parse('LAYOUT_CONTENT', 'page');
 
-	iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, array('templateEngine' => $tpl));
+	iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, array('templateEngine' => $tpl));
 
 	$tpl->prnt();
 

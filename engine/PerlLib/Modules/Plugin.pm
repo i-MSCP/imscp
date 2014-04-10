@@ -401,7 +401,7 @@ sub _exec($$$;$$)
 			my $guiPluginFile = "$main::imscpConfig{'GUI_ROOT_DIR'}/plugins/$pluginName/backend/$pluginName.pm";
 
 			if(-f $guiPluginFile) {
-				debug("Plugin Manager: Installing $pluginName.pm in backend plugin repository");
+				debug("Installing $pluginName.pm in backend plugin repository");
 				my $file = iMSCP::File->new('filename' => $guiPluginFile);
 
 				$rs = $file->copyFile($backendPluginFile, { 'preserve' => 'no' });
@@ -446,7 +446,7 @@ sub _exec($$$;$$)
 
 	# We execute the action on the plugin only if it implements it
 	if($pluginInstance->can($pluginMethod)) {
-		debug("Plugin Manager: Executing ${pluginClass}::${pluginMethod}() action");
+		debug("Executing ${pluginClass}::${pluginMethod}() action");
 		$rs = $pluginInstance->$pluginMethod($fromVersion, $toVersion);
 
 		# Return value from the run() action is ignored by default because it's the responsability of the plugins to set
@@ -462,7 +462,7 @@ sub _exec($$$;$$)
 	# In case the plugin has been disabled or uninstalled, we remove it.
 	if($pluginMethod ~~ ['disable', 'uninstall']) {
 		unless($pluginMethod eq 'disable' && $pluginInstance->can('uninstall')) {
-			debug("Plugin Manager: Deleting $pluginName.pm from backend plugin repository");
+			debug("Deleting $pluginName.pm from backend plugin repository");
 			$rs = iMSCP::File->new('filename' => $backendPluginFile)->delFile();
 		}
 	}

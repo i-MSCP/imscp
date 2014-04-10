@@ -30,22 +30,12 @@
 require_once 'iMSCP/Plugin.php';
 
 /**
- * Base class for action plugins.
+ * Class iMSCP_Plugin_Action
  *
  * All i-MSCP plugins which interfere with the event system need to inherit from this class.
- *
- * @category    iMSCP
- * @package     iMSCP_Core
- * @subpackage  Plugin_Action
- * @author      Laurent Declercq <l.declercq@nuxwin.com>
  */
 abstract class iMSCP_Plugin_Action extends iMSCP_Plugin
 {
-	/**
-	 * @var iMSCP_Events_Manager_Interface
-	 */
-	protected $eventsManager;
-
 	/**
 	 * Register a callback for the given event(s)
 	 *
@@ -54,21 +44,7 @@ abstract class iMSCP_Plugin_Action extends iMSCP_Plugin
 	 */
 	public function register(iMSCP_Events_Manager_Interface $eventsManager)
 	{
-		trigger_error(sprintf('register() not implemented in %s', get_class($this)), E_USER_WARNING);
-	}
-
-	/**
-	 * Return events manager
-	 *
-	 * @return iMSCP_Events_Manager
-	 */
-	public function getEventsManager()
-	{
-		if(!isset($this->eventsManager)) {
-			$this->eventsManager = iMSCP_Events_Manager::getInstance();
-		}
-
-		return $this->eventsManager;
+		//trigger_error(sprintf('register() not implemented in %s', get_class($this)), E_USER_WARNING);
 	}
 
 	/**

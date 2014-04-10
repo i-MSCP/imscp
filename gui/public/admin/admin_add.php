@@ -38,7 +38,7 @@
 // Include core library
 require 'imscp-lib.php';
 
-iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAdminScriptStart);
+iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptStart);
 
 check_login('admin');
 
@@ -79,7 +79,7 @@ function add_user($tpl)
 		echo passgen();
 		exit;
 	} elseif (isset($_POST['uaction']) && $_POST['uaction'] === 'add_user') {
-		iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onBeforeAddUser);
+		iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeAddUser);
 
 		if (check_user_data()) {
 			$upass = cryptPasswordWithSalt(clean_input($_POST['password']));
@@ -140,7 +140,7 @@ function add_user($tpl)
 
 			exec_query($query, array($new_admin_id, $user_def_lang, $user_theme_color));
 
-			iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAfterAddUser);
+			iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterAddUser);
 
 			send_add_user_auto_msg(
 				$user_id,
@@ -280,7 +280,9 @@ generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
 
-iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAdminScriptEnd, array('templateEngine' => $tpl));
+iMSCP_Events_Aggregator::getInstance()->dispatch(
+	iMSCP_Events::onAdminScriptEnd, array('templateEngine' => $tpl)
+);
 
 $tpl->prnt();
 

@@ -36,77 +36,28 @@ require_once 'iMSCP/Events/Listener/PriorityQueue.php';
 require_once 'iMSCP/Events/Listener.php';
 
 /**
- * Events Manager class.
- *
- * The events manager is the central point of i-MSCP's event listener system.
- * Listeners are registered on the manager and events are dispatched through the manager.
- *
- * A listener can be an object that implements listener method (method named as event names) or ANY PHP callback function
- * such as user function, anonymous function, closure, functor... Again, ANY PHP callback is allowed.
- *
- * @category    iMSCP
- * @package     iMSCP_Events
- * @subpackage  Manager
- * @author      Laurent Declercq <l.declercq@nuxwin.com>
+ * Class iMSCP_Events_Manager
  */
 class iMSCP_Events_Manager implements iMSCP_Events_Manager_Interface
 {
-	/**
-	 * @var iMSCP_Events_Manager
-	 */
-	protected static $instance;
-
 	/**
 	 * @var iMSCP_Listener_PriorityQueue[] Array that contains events listeners stacks.
 	 */
 	protected $events = array();
 
 	/**
-	 * Singleton object - Make new unavailable.
-	 */
-	protected function __construct()
-	{
-
-	}
-
-	/**
-	 * Singleton object - Make clone unavailable.
+	 * Return iMSCP_Events_Aggregator instance
 	 *
-	 * @return void
-	 */
-	protected function __clone()
-	{
-
-	}
-
-	/**
-	 * Implements Singleton design pattern.
-	 *
-	 * @static
-	 * @return iMSCP_Events_Manager
+	 * @return iMSCP_Events_Aggregator
+	 * @deprecated 1.1.6 (will be removed in later version
 	 */
 	public static function getInstance()
 	{
-		if (null === self::$instance) {
-			self::$instance = new self();
-		}
-
-		return self::$instance;
+		return iMSCP_Events_Aggregator::getInstance();
 	}
 
 	/**
-	 * Reset instance.
-	 *
-	 * @static
-	 * @return void
-	 */
-	public static function resetInstance()
-	{
-		self::$instance = null;
-	}
-
-	/**
-	 * Dispatches an event to all registered listeners.
+	 * Dispatches an event to all registered listeners
 	 *
 	 * @param string|iMSCP_Events_Description $event Event name or iMSCP_Events_Description object
 	 * @param array|ArrayAccess $arguments Array of arguments (eg. an associative array)
@@ -140,7 +91,7 @@ class iMSCP_Events_Manager implements iMSCP_Events_Manager_Interface
 	}
 
 	/**
-	 * Registers an event listener that listens on the specified events.
+	 * Registers an event listener that listens on the specified events
 	 *
 	 * @param string|array $event  The event(s) to listen on
 	 * @param callable|object $listener PHP callback or object which implement method with same name as event
@@ -170,7 +121,7 @@ class iMSCP_Events_Manager implements iMSCP_Events_Manager_Interface
 	}
 
 	/**
-	 * Unregister all listeners which listen on the given event.
+	 * Unregister all listeners which listen on the given event
 	 *
 	 * @throws iMSCP_Events_Exception If $event is not a string
 	 * @param  string $event The event for which any event must be removed.
@@ -188,9 +139,9 @@ class iMSCP_Events_Manager implements iMSCP_Events_Manager_Interface
 	}
 
 	/**
-	 * Unregister a listener from an event.
+	 * Unregister a listener from an event
 	 *
-	 * @param iMSCP_Listener $listener The listener object to remove.
+	 * @param iMSCP_Listener $listener The listener object to remove
 	 * @return bool TRUE if $listener is found and unregistered, FALSE otherwise
 	 */
 	public function unregisterListener(iMSCP_Listener $listener)
@@ -213,7 +164,7 @@ class iMSCP_Events_Manager implements iMSCP_Events_Manager_Interface
 	}
 
 	/**
-	 * Retrieve all registered events.
+	 * Retrieve all registered events
 	 *
 	 * @return array
 	 */
@@ -223,7 +174,7 @@ class iMSCP_Events_Manager implements iMSCP_Events_Manager_Interface
 	}
 
 	/**
-	 * Retrieve all listeners which listen to a particular event.
+	 * Retrieve all listeners which listen to a particular event
 	 *
 	 * @param string $event Event name
 	 * @return iMSCP_Listener_PriorityQueue
@@ -238,7 +189,7 @@ class iMSCP_Events_Manager implements iMSCP_Events_Manager_Interface
 	}
 
 	/**
-	 * Clear all listeners for a given event.
+	 * Clear all listeners for a given event
 	 *
 	 * @param string $event Event name
 	 * @return void
@@ -251,7 +202,7 @@ class iMSCP_Events_Manager implements iMSCP_Events_Manager_Interface
 	}
 
 	/**
-	 * Checks whether an event has any registered listeners.
+	 * Checks whether an event has any registered listeners
 	 *
 	 * @param string $eventName The name of the event.
 	 * @return bool TRUE if the specified event has any listeners, FALSE otherwise.
