@@ -348,6 +348,20 @@ function admin_pluginManagerCheckAction($pluginManager, $pluginName, $action)
 			}
 			break;
 		case 'update':
+			if($pluginStatus != 'toupdate') {
+				if (!$pluginManager->isPluginEnabled($pluginName)) {
+					set_page_message(tr('Plugin %s cannot be updated.', "<strong>$pluginName</strong>"), 'warning');
+					$ret = false;
+				}
+			}
+			break;
+		case 'change':
+			if($pluginStatus != 'tochange') {
+				if (!$pluginManager->isPluginEnabled($pluginName)) {
+					set_page_message(tr('Plugin %s cannot be changed.', "<strong>$pluginName</strong>"), 'warning');
+					$ret = false;
+				}
+			}
 			break;
 		case 'uninstall':
 			if ($pluginStatus != 'touninstall') {
