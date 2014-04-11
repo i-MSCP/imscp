@@ -329,59 +329,77 @@ function admin_pluginManagerCheckAction($pluginManager, $pluginName, $action)
 
 	$ret = true;
 
+	$pluginStatus = $pluginManager->getPluginStatus($pluginName);
+
 	switch ($action) {
 		case 'install':
-			if ($pluginManager->isPluginInstallable($pluginName)) {
-				if ($pluginManager->isPluginInstalled($pluginName)) {
-					set_page_message(tr('Plugin %s is already installed.', "<strong>$pluginName</strong>"), 'warning');
+			if ($pluginStatus != 'toinstall') {
+				if ($pluginManager->isPluginInstallable($pluginName)) {
+					if ($pluginManager->isPluginInstalled($pluginName)) {
+						set_page_message(
+							tr('Plugin %s is already installed.', "<strong>$pluginName</strong>"), 'warning'
+						);
+						$ret = false;
+					}
+				} else {
+					set_page_message(tr('Plugin %s is not installable.', "<strong>$pluginName</strong>"), 'warning');
 					$ret = false;
 				}
-			} else {
-				set_page_message(tr('Plugin %s is not installable.', "<strong>$pluginName</strong>"), 'warning');
-				$ret = false;
 			}
 			break;
 		case 'update':
 			break;
 		case 'uninstall':
-			if ($pluginManager->isPluginUninstallable($pluginName)) {
-				if ($pluginManager->isPluginUninstalled($pluginName)) {
-					set_page_message(tr('Plugin %s is already uninstalled.', "<strong>$pluginName</strong>"), 'warning');
+			if ($pluginStatus != 'touninstall') {
+				if ($pluginManager->isPluginUninstallable($pluginName)) {
+					if ($pluginManager->isPluginUninstalled($pluginName)) {
+						set_page_message(
+							tr('Plugin %s is already uninstalled.', "<strong>$pluginName</strong>"), 'warning'
+						);
+						$ret = false;
+					}
+				} else {
+					set_page_message(tr('Plugin %s is not uninstallable.', "<strong>$pluginName</strong>"), 'warning');
 					$ret = false;
 				}
-			} else {
-				set_page_message(tr('Plugin %s is not uninstallable.', "<strong>$pluginName</strong>"), 'warning');
-				$ret = false;
 			}
 			break;
 		case 'enable':
-			if ($pluginManager->isPluginEnabled($pluginName)) {
-				set_page_message(tr('Plugin %s is already activated.', "<strong>$pluginName</strong>"), 'warning');
-				$ret = false;
-			} elseif (!$pluginManager->isPluginDisabled($pluginName)) {
-				set_page_message(tr('Plugin %s cannot be enabled.', "<strong>$pluginName</strong>"), 'warning');
-				$ret = false;
+			if ($pluginStatus != 'toenable') {
+				if ($pluginManager->isPluginEnabled($pluginName)) {
+					set_page_message(tr('Plugin %s is already activated.', "<strong>$pluginName</strong>"), 'warning');
+					$ret = false;
+				} elseif (!$pluginManager->isPluginDisabled($pluginName)) {
+					set_page_message(tr('Plugin %s cannot be enabled.', "<strong>$pluginName</strong>"), 'warning');
+					$ret = false;
+				}
 			}
 			break;
 		case 'disable':
-			if ($pluginManager->isPluginDisabled($pluginName)) {
-				set_page_message(tr('Plugin %s is already deactivated.', "<strong>$pluginName</strong>"), 'warning');
-				$ret = false;
-			} elseif (!$pluginManager->isPluginEnabled($pluginName)) {
-				set_page_message(tr('Plugin %s cannot be disabled.', "<strong>$pluginName</strong>"), 'warning');
-				$ret = false;
+			if ($pluginStatus != 'todisable') {
+				if ($pluginManager->isPluginDisabled($pluginName)) {
+					set_page_message(
+						tr('Plugin %s is already deactivated.', "<strong>$pluginName</strong>"), 'warning'
+					);
+					$ret = false;
+				} elseif (!$pluginManager->isPluginEnabled($pluginName)) {
+					set_page_message(tr('Plugin %s cannot be disabled.', "<strong>$pluginName</strong>"), 'warning');
+					$ret = false;
+				}
 			}
 			break;
 		case 'delete':
-			if (
-				(
-					$pluginManager->isPluginUninstallable($pluginName) &&
-					!$pluginManager->isPluginUninstalled($pluginName)
-				) ||
-				!$pluginManager->isPluginDisabled($pluginName)
-			) {
-				set_page_message(tr('Plugin %s cannot be deleted.', "<strong>$pluginName</strong>"), 'warning');
-				$ret = false;
+			if ($pluginStatus != 'todelete') {
+				if (
+					(
+						$pluginManager->isPluginUninstallable($pluginName) &&
+						!$pluginManager->isPluginUninstalled($pluginName)
+					) ||
+					!$pluginManager->isPluginDisabled($pluginName)
+				) {
+					set_page_message(tr('Plugin %s cannot be deleted.', "<strong>$pluginName</strong>"), 'warning');
+					$ret = false;
+				}
 			}
 			break;
 		default:
