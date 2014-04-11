@@ -98,7 +98,7 @@ class iMSCP_Events_Aggregator implements iMSCP_Events_Manager_Interface
 	public function addEvents($type, array $events = array())
 	{
 		if (isset($this->events[$type])) {
-			$this->events[$type] = $this->events[$type] + $events;
+			$this->events[$type] += $events;
 		} else {
 			$this->events[$type] = $events;
 			$this->eventManagers[$type] = new iMSCP_Events_Manager();
@@ -229,8 +229,8 @@ class iMSCP_Events_Aggregator implements iMSCP_Events_Manager_Interface
 	/**
 	 * Checks whether an event has any registered listeners
 	 *
-	 * @param string $event The name of the event.
-	 * @return bool TRUE if the specified event has any listeners, FALSE otherwise.
+	 * @param string $event The name of the event
+	 * @return bool TRUE if the specified event has any listeners, FALSE otherwise
 	 */
 	public function hasListener($event)
 	{

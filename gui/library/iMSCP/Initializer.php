@@ -56,7 +56,12 @@ class iMSCP_Initializer
 	 *
 	 * @staticvar boolean
 	 */
-	private static $_initialized = false;
+	protected static $_initialized = false;
+
+	/**
+	 * @var iMSCP_Events_Manager
+	 */
+	protected $eventManager;
 
 	/**
 	 * Runs initializer
@@ -130,6 +135,8 @@ class iMSCP_Initializer
 	 */
 	protected function _processAll()
 	{
+		$this->eventManager = iMSCP_Events_Aggregator::getInstance();
+
 		$this->_setInternalEncoding();
 		$this->_setDisplayErrors();
 		$this->_initializeLayout();
@@ -143,7 +150,7 @@ class iMSCP_Initializer
 		$this->_initializeUserGuiProperties();
 		$this->_initializeLocalization();
 		$this->_initializeNavigation();
-		$this->_initializeActionPlugins();
+		$this->_initializePlugins();
 
 		// Run after initialize callbacks
 		$this->_afterInitialize();
@@ -203,10 +210,8 @@ class iMSCP_Initializer
 		// Set template root directory
 		iMSCP_pTemplate::setRootDir($this->_config->ROOT_TEMPLATE_PATH);
 
-		$eventManager = iMSCP_Events_Aggregator::getInstance();
-
 		// Set layout color for the current environment (Must be donne at end)
-		$eventManager->registerListener(
+		$this->eventManager->registerListener(
 			array(
 				iMSCP_Events::onLoginScriptEnd,
 				iMSCP_Events::onLostPasswordScriptEnd,
@@ -219,7 +224,7 @@ class iMSCP_Initializer
 		);
 
 		if (!isset($_SESSION['user_logged'])) {
-			$eventManager->registerListener(
+			$this->eventManager->registerListener(
 				iMSCP_Events::onAfterSetIdentity, function () {
 				unset($_SESSION['user_theme_color']);
 			});
@@ -485,7 +490,7 @@ class iMSCP_Initializer
 	 */
 	protected function _checkForDatabaseUpdate()
 	{
-		iMSCP_Events_Aggregator::getInstance()->registerListener(
+		$this->eventManager->registerListener(
 			array(iMSCP_Events::onLoginScriptStart, iMSCP_Events::onBeforeSetIdentity),
 			function ($event) {
 				if (iMSCP_Update_Database::getInstance()->isAvailableUpdate()) {
@@ -515,7 +520,7 @@ class iMSCP_Initializer
 	 */
 	protected function _initializeNavigation()
 	{
-		iMSCP_Events_Aggregator::getInstance()->registerListener(
+		$this->eventManager->registerListener(
 			array(
 				iMSCP_Events::onAdminScriptStart,
 				iMSCP_Events::onResellerScriptStart,
@@ -530,19 +535,14 @@ class iMSCP_Initializer
 	 *
 	 * @return void
 	 */
-	protected function _initializeActionPlugins()
+	protected function _initializePlugins()
 	{
 		/** @var iMSCP_Plugin_Manager $pluginManager */
 		$pluginManager = iMSCP_Registry::set('pluginManager', new iMSCP_Plugin_Manager(PLUGINS_PATH));
 
-		// Get list of enabled plugins
-		$pluginList = $pluginManager->getPluginList('Action');
-
-		if (!empty($pluginList)) {
-			foreach ($pluginList as $pluginName) {
-				/** @var $plugin iMSCP_Plugin_Action */
-				$pluginManager->loadPlugin($pluginName);
-			}
+		foreach ($pluginManager->getPluginList() as $pluginName) {
+			/** @var $plugin iMSCP_Plugin_Action */
+			$pluginManager->loadPlugin($pluginName);
 		}
 	}
 
@@ -553,6 +553,6 @@ class iMSCP_Initializer
 	 */
 	protected function _afterInitialize()
 	{
-		iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterInitialize, array('context' => $this));
+		$this->eventManager->dispatch(iMSCP_Events::onAfterInitialize, array('context' => $this));
 	}
 }
