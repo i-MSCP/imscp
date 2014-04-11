@@ -100,10 +100,9 @@ class iMSCP_pTemplate
 	 */
 	protected $events = array(
 		iMSCP_Events::onBeforeAssembleTemplateFiles,
-		iMSCP_Events::onBeforeLoadTemplateFile,
-		iMSCP_Events::onAfterLoadTemplateFile,
 		iMSCP_Events::onAfterAssembleTemplateFiles,
-		iMSCP_Events::onBeforeAssembleTemplateFiles,
+		iMSCP_Events::onBeforeLoadTemplateFile,
+		iMSCP_Events::onAfterLoadTemplateFile
 	);
 
 	/**
