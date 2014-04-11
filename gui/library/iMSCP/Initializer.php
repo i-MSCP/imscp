@@ -541,7 +541,6 @@ class iMSCP_Initializer
 		$pluginManager = iMSCP_Registry::set('pluginManager', new iMSCP_Plugin_Manager(PLUGINS_PATH));
 
 		foreach ($pluginManager->getPluginList() as $pluginName) {
-			/** @var $plugin iMSCP_Plugin_Action */
 			$pluginManager->loadPlugin($pluginName);
 		}
 	}
